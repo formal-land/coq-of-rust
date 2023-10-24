@@ -2,61 +2,73 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module Point.
-  Unset Primitive Projections.
-  Record t `{State.Trait} : Set := {
-    x : i32;
-    y : i32;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_x `{State.Trait} : Notation.Dot "x" := {
-    Notation.dot x' := let* x' := M.read x' in Pure x'.(x) : M _;
-  }.
-  Global Instance Get_AF_x `{State.Trait} : Notation.DoubleColon t "x" := {
-    Notation.double_colon x' := let* x' := M.read x' in Pure x'.(x) : M _;
-  }.
-  Global Instance Get_y `{State.Trait} : Notation.Dot "y" := {
-    Notation.dot x := let* x := M.read x in Pure x.(y) : M _;
-  }.
-  Global Instance Get_AF_y `{State.Trait} : Notation.DoubleColon t "y" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(y) : M _;
-  }.
+  Section Point.
+    Context `{State.Trait}.
+    
+    Unset Primitive Projections.
+    Record t : Set := {
+      x : i32;
+      y : i32;
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_x : Notation.Dot "x" := {
+      Notation.dot x' := let* x' := M.read x' in Pure x'.(x) : M _;
+    }.
+    Global Instance Get_AF_x : Notation.DoubleColon t "x" := {
+      Notation.double_colon x' := let* x' := M.read x' in Pure x'.(x) : M _;
+    }.
+    Global Instance Get_y : Notation.Dot "y" := {
+      Notation.dot x := let* x := M.read x in Pure x.(y) : M _;
+    }.
+    Global Instance Get_AF_y : Notation.DoubleColon t "y" := {
+      Notation.double_colon x := let* x := M.read x in Pure x.(y) : M _;
+    }.
+  End Point.
 End Point.
-Definition Point `{State.Trait} : Set := M.val (Point.t).
+Definition Point `{State.Trait} : Set := M.val Point.t.
 
 Module Impl_core_clone_Clone_for_scoping_rules_borrowing_the_ref_pattern_Point.
-  Definition Self `{State.Trait} :=
-    scoping_rules_borrowing_the_ref_pattern.Point.
-  
-  Definition clone
-      `{State.Trait}
-      (self : ref Self)
-      : M scoping_rules_borrowing_the_ref_pattern.Point :=
-    let _ := tt in
-    deref self scoping_rules_borrowing_the_ref_pattern.Point.
-  
-  Global Instance Method_clone `{State.Trait} : Notation.Dot "clone" := {
-    Notation.dot := clone;
-  }.
-  
-  Global Instance I `{State.Trait} : core.clone.Clone.Trait Self := {
-    core.clone.Clone.clone := clone;
-  }.
+  Section
+    Impl_core_clone_Clone_for_scoping_rules_borrowing_the_ref_pattern_Point.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := scoping_rules_borrowing_the_ref_pattern.Point.
+    
+    Definition clone
+        (self : ref Self)
+        : M scoping_rules_borrowing_the_ref_pattern.Point :=
+      let* _ := M.alloc tt in
+      deref self scoping_rules_borrowing_the_ref_pattern.Point.
+    
+    Global Instance AssociatedFunction_clone :
+      Notation.DoubleColon Self "clone" := {
+      Notation.double_colon := clone;
+    }.
+    
+    Global Instance I : core.clone.Clone.Trait Self := {
+      core.clone.Clone.clone := clone;
+    }.
+  End Impl_core_clone_Clone_for_scoping_rules_borrowing_the_ref_pattern_Point.
   Global Hint Resolve I : core.
 End Impl_core_clone_Clone_for_scoping_rules_borrowing_the_ref_pattern_Point.
 
 Module Impl_core_marker_Copy_for_scoping_rules_borrowing_the_ref_pattern_Point.
-  Definition Self `{State.Trait} :=
-    scoping_rules_borrowing_the_ref_pattern.Point.
-  
-  Global Instance I `{State.Trait} : core.marker.Copy.Trait Self := {
-  }.
+  Section
+    Impl_core_marker_Copy_for_scoping_rules_borrowing_the_ref_pattern_Point.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := scoping_rules_borrowing_the_ref_pattern.Point.
+    
+    Global Instance I : core.marker.Copy.Trait Self := {
+    }.
+  End Impl_core_marker_Copy_for_scoping_rules_borrowing_the_ref_pattern_Point.
   Global Hint Resolve I : core.
 End Impl_core_marker_Copy_for_scoping_rules_borrowing_the_ref_pattern_Point.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{State.Trait} : M unit :=
-  let* c := "Q"%char in
+  let* c := M.alloc "Q"%char in
   let ref_c1 := c in
   let* ref_c2 := borrow c char in
   let* _ :=
@@ -82,7 +94,7 @@ Definition main `{State.Trait} : M unit :=
       let* α14 := pointer_coercion "Unsize" α13 in
       let* α15 := core.fmt.Arguments::["new_v1"] α3 α14 in
       std.io.stdio._print α15 in
-    Pure tt in
+    M.alloc tt in
   let* point :=
     let* α0 := M.alloc 0 in
     let* α1 := M.alloc 0 in
@@ -111,7 +123,7 @@ Definition main `{State.Trait} : M unit :=
       let* α0 := deref mut_ref_to_y i32 in
       let* α1 := M.alloc 1 in
       assign α0 α1 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -138,7 +150,7 @@ Definition main `{State.Trait} : M unit :=
       let* α17 := pointer_coercion "Unsize" α16 in
       let* α18 := core.fmt.Arguments::["new_v1"] α3 α17 in
       std.io.stdio._print α18 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -165,7 +177,7 @@ Definition main `{State.Trait} : M unit :=
       let* α17 := pointer_coercion "Unsize" α16 in
       let* α18 := core.fmt.Arguments::["new_v1"] α3 α17 in
       std.io.stdio._print α18 in
-    Pure tt in
+    M.alloc tt in
   let* mutable_tuple :=
     let* α0 := M.alloc 5 in
     let* α1 := (alloc.boxed.Box _ alloc.alloc.Global)::["new"] α0 in
@@ -177,7 +189,7 @@ Definition main `{State.Trait} : M unit :=
       let* α0 := deref last u32 in
       let* α1 := M.alloc 2 in
       assign α0 α1 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* _ :=
       let* α0 := borrow [ mk_str "tuple is "; mk_str "
@@ -196,5 +208,5 @@ Definition main `{State.Trait} : M unit :=
       let* α11 := pointer_coercion "Unsize" α10 in
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
-    Pure tt in
-  Pure tt.
+    M.alloc tt in
+  M.alloc tt.

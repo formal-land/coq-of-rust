@@ -92,7 +92,9 @@ End Unsize.
 (* pub trait Copy: Clone { } *)
 Module Copy.
   Unset Primitive Projections.
-  Class Trait (Self : Set) `{core.clone.Clone.Trait Self} : Set := { }.
+  Class Trait `{State.Trait} (Self : Set) : Set := {
+    _ :: core.clone.Clone.Trait Self;
+  }.
   Set Primitive Projections.
 End Copy.
 

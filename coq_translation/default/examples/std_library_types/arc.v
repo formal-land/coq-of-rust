@@ -51,15 +51,15 @@ Definition main `{State.Trait} : M unit :=
                       let* α11 := pointer_coercion "Unsize" α10 in
                       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
                       std.io.stdio._print α12 in
-                    Pure tt in
-                  Pure tt in
-              Pure tt
+                    M.alloc tt in
+                  M.alloc tt in
+              M.alloc tt
             end in
-          Pure tt)
+          M.alloc tt)
       end in
     use α4 in
   let* _ :=
     let* α0 := M.alloc 1 in
     let* α1 := core.time.Duration::["from_secs"] α0 in
     std.thread.sleep α1 in
-  Pure tt.
+  M.alloc tt.

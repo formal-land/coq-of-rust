@@ -21,7 +21,7 @@ Definition main `{State.Trait} : M unit :=
       let* α11 := pointer_coercion "Unsize" α10 in
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* _ :=
       let* α0 := borrow [ mk_str "Words in reverse
@@ -31,7 +31,7 @@ Definition main `{State.Trait} : M unit :=
       let* α3 := pointer_coercion "Unsize" α2 in
       let* α4 := core.fmt.Arguments::["new_const"] α3 in
       std.io.stdio._print α4 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* α0 := deref pangram str in
     let* α1 := borrow α0 str in
@@ -79,10 +79,10 @@ Definition main `{State.Trait} : M unit :=
                   let* α11 := pointer_coercion "Unsize" α10 in
                   let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
                   std.io.stdio._print α12 in
-                Pure tt in
-              Pure tt
+                M.alloc tt in
+              M.alloc tt
             end in
-          Pure tt)
+          M.alloc tt)
       end in
     use α5 in
   let* chars :=
@@ -131,14 +131,14 @@ Definition main `{State.Trait} : M unit :=
                 let* α1 := deref (mk_str ", ") str in
                 let* α2 := borrow α1 str in
                 alloc.string.String::["push_str"] α0 α2 in
-              Pure tt
+              M.alloc tt
             end in
-          Pure tt)
+          M.alloc tt)
       end in
     use α1 in
   let* chars_to_trim :=
-    let* α0 := " "%char in
-    let* α1 := ","%char in
+    let* α0 := M.alloc " "%char in
+    let* α1 := M.alloc ","%char in
     let* α2 := borrow [ α0; α1 ] (list char) in
     let* α3 := deref α2 (list char) in
     let* α4 := borrow α3 (list char) in
@@ -169,7 +169,7 @@ Definition main `{State.Trait} : M unit :=
       let* α11 := pointer_coercion "Unsize" α10 in
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
-    Pure tt in
+    M.alloc tt in
   let* alice := core.convert.From.from (mk_str "I like dogs") in
   let* bob :=
     let* α0 := borrow alice alloc.string.String in
@@ -197,7 +197,7 @@ Definition main `{State.Trait} : M unit :=
       let* α11 := pointer_coercion "Unsize" α10 in
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* _ :=
       let* α0 := borrow [ mk_str "Bob says: "; mk_str "
@@ -215,5 +215,5 @@ Definition main `{State.Trait} : M unit :=
       let* α11 := pointer_coercion "Unsize" α10 in
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
-    Pure tt in
-  Pure tt.
+    M.alloc tt in
+  M.alloc tt.

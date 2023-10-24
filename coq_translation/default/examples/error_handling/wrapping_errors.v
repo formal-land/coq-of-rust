@@ -12,132 +12,147 @@ End DoubleError.
 Definition DoubleError `{State.Trait} : Set := DoubleError.t.
 
 Module Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
-  Definition Self `{State.Trait} := wrapping_errors.DoubleError.
-  
-  Definition fmt
-      `{State.Trait}
-      (self : ref Self)
-      (f : mut_ref core.fmt.Formatter)
-      : M core.fmt.Result :=
-    match self with
-    | wrapping_errors.DoubleError  =>
-      let* α0 := deref f core.fmt.Formatter in
-      let* α1 := borrow_mut α0 core.fmt.Formatter in
-      let* α2 := deref (mk_str "EmptyVec") str in
-      let* α3 := borrow α2 str in
-      core.fmt.Formatter::["write_str"] α1 α3
-    | wrapping_errors.DoubleError __self_0 =>
-      let* α0 := deref f core.fmt.Formatter in
-      let* α1 := borrow_mut α0 core.fmt.Formatter in
-      let* α2 := deref (mk_str "Parse") str in
-      let* α3 := borrow α2 str in
-      let* α4 := borrow __self_0 (ref core.num.error.ParseIntError) in
-      let* α5 := deref α4 (ref core.num.error.ParseIntError) in
-      let* α6 := borrow α5 (ref core.num.error.ParseIntError) in
-      let* α7 := pointer_coercion "Unsize" α6 in
-      core.fmt.Formatter::["debug_tuple_field1_finish"] α1 α3 α7
-    end.
-  
-  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
-    Notation.dot := fmt;
-  }.
-  
-  Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt := fmt;
-  }.
+  Section Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := wrapping_errors.DoubleError.
+    
+    Definition fmt
+        (self : ref Self)
+        (f : mut_ref core.fmt.Formatter)
+        : M core.fmt.Result :=
+      match self with
+      | wrapping_errors.DoubleError  =>
+        let* α0 := deref f core.fmt.Formatter in
+        let* α1 := borrow_mut α0 core.fmt.Formatter in
+        let* α2 := deref (mk_str "EmptyVec") str in
+        let* α3 := borrow α2 str in
+        core.fmt.Formatter::["write_str"] α1 α3
+      | wrapping_errors.DoubleError __self_0 =>
+        let* α0 := deref f core.fmt.Formatter in
+        let* α1 := borrow_mut α0 core.fmt.Formatter in
+        let* α2 := deref (mk_str "Parse") str in
+        let* α3 := borrow α2 str in
+        let* α4 := borrow __self_0 (ref core.num.error.ParseIntError) in
+        let* α5 := deref α4 (ref core.num.error.ParseIntError) in
+        let* α6 := borrow α5 (ref core.num.error.ParseIntError) in
+        let* α7 := pointer_coercion "Unsize" α6 in
+        core.fmt.Formatter::["debug_tuple_field1_finish"] α1 α3 α7
+      end.
+    
+    Global Instance AssociatedFunction_fmt :
+      Notation.DoubleColon Self "fmt" := {
+      Notation.double_colon := fmt;
+    }.
+    
+    Global Instance I : core.fmt.Debug.Trait Self := {
+      core.fmt.Debug.fmt := fmt;
+    }.
+  End Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
   Global Hint Resolve I : core.
 End Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
 
 Module Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
-  Definition Self `{State.Trait} := wrapping_errors.DoubleError.
-  
-  Definition fmt
-      `{State.Trait}
-      (self : ref Self)
-      (f : mut_ref core.fmt.Formatter)
-      : M core.fmt.Result :=
-    let* α0 := deref self wrapping_errors.DoubleError in
-    match α0 with
-    | wrapping_errors.DoubleError  =>
-      let* α0 := deref f core.fmt.Formatter in
-      let* α1 := borrow_mut α0 core.fmt.Formatter in
-      let* α2 :=
-        borrow
-          [ mk_str "please use a vector with at least one element" ]
-          (list (ref str)) in
-      let* α3 := deref α2 (list (ref str)) in
-      let* α4 := borrow α3 (list (ref str)) in
-      let* α5 := pointer_coercion "Unsize" α4 in
-      let* α6 := core.fmt.Arguments::["new_const"] α5 in
-      core.fmt.Formatter::["write_fmt"] α1 α6
-    | wrapping_errors.DoubleError  =>
-      let* α0 := deref f core.fmt.Formatter in
-      let* α1 := borrow_mut α0 core.fmt.Formatter in
-      let* α2 :=
-        borrow
-          [ mk_str "the provided string could not be parsed as int" ]
-          (list (ref str)) in
-      let* α3 := deref α2 (list (ref str)) in
-      let* α4 := borrow α3 (list (ref str)) in
-      let* α5 := pointer_coercion "Unsize" α4 in
-      let* α6 := core.fmt.Arguments::["new_const"] α5 in
-      core.fmt.Formatter::["write_fmt"] α1 α6
-    end.
-  
-  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
-    Notation.dot := fmt;
-  }.
-  
-  Global Instance I `{State.Trait} : core.fmt.Display.Trait Self := {
-    core.fmt.Display.fmt := fmt;
-  }.
+  Section Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := wrapping_errors.DoubleError.
+    
+    Definition fmt
+        (self : ref Self)
+        (f : mut_ref core.fmt.Formatter)
+        : M core.fmt.Result :=
+      let* α0 := deref self wrapping_errors.DoubleError in
+      match α0 with
+      | wrapping_errors.DoubleError  =>
+        let* α0 := deref f core.fmt.Formatter in
+        let* α1 := borrow_mut α0 core.fmt.Formatter in
+        let* α2 :=
+          borrow
+            [ mk_str "please use a vector with at least one element" ]
+            (list (ref str)) in
+        let* α3 := deref α2 (list (ref str)) in
+        let* α4 := borrow α3 (list (ref str)) in
+        let* α5 := pointer_coercion "Unsize" α4 in
+        let* α6 := core.fmt.Arguments::["new_const"] α5 in
+        core.fmt.Formatter::["write_fmt"] α1 α6
+      | wrapping_errors.DoubleError  =>
+        let* α0 := deref f core.fmt.Formatter in
+        let* α1 := borrow_mut α0 core.fmt.Formatter in
+        let* α2 :=
+          borrow
+            [ mk_str "the provided string could not be parsed as int" ]
+            (list (ref str)) in
+        let* α3 := deref α2 (list (ref str)) in
+        let* α4 := borrow α3 (list (ref str)) in
+        let* α5 := pointer_coercion "Unsize" α4 in
+        let* α6 := core.fmt.Arguments::["new_const"] α5 in
+        core.fmt.Formatter::["write_fmt"] α1 α6
+      end.
+    
+    Global Instance AssociatedFunction_fmt :
+      Notation.DoubleColon Self "fmt" := {
+      Notation.double_colon := fmt;
+    }.
+    
+    Global Instance I : core.fmt.Display.Trait Self := {
+      core.fmt.Display.fmt := fmt;
+    }.
+  End Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
   Global Hint Resolve I : core.
 End Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
 
 Module Impl_core_error_Error_for_wrapping_errors_DoubleError.
-  Definition Self `{State.Trait} := wrapping_errors.DoubleError.
-  
-  Definition source
-      `{State.Trait}
-      (self : ref Self)
-      : M (core.option.Option (ref _ (* dyn *))) :=
-    let* α0 := deref self wrapping_errors.DoubleError in
-    match α0 with
-    | wrapping_errors.DoubleError  => Pure (core.option.Option.None tt)
-    | wrapping_errors.DoubleError e =>
-      let* α0 := deref e core.num.error.ParseIntError in
-      let* α1 := borrow α0 core.num.error.ParseIntError in
-      let* α2 := pointer_coercion "Unsize" α1 in
-      Pure (core.option.Option.Some α2)
-    end.
-  
-  Global Instance Method_source `{State.Trait} : Notation.Dot "source" := {
-    Notation.dot := source;
-  }.
-  
-  Global Instance I `{State.Trait} : core.error.Error.Trait Self := {
-  }.
+  Section Impl_core_error_Error_for_wrapping_errors_DoubleError.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := wrapping_errors.DoubleError.
+    
+    Definition source
+        (self : ref Self)
+        : M (core.option.Option (ref _ (* dyn *))) :=
+      let* α0 := deref self wrapping_errors.DoubleError in
+      match α0 with
+      | wrapping_errors.DoubleError  => Pure (core.option.Option.None tt)
+      | wrapping_errors.DoubleError e =>
+        let* α0 := deref e core.num.error.ParseIntError in
+        let* α1 := borrow α0 core.num.error.ParseIntError in
+        let* α2 := pointer_coercion "Unsize" α1 in
+        Pure (core.option.Option.Some α2)
+      end.
+    
+    Global Instance AssociatedFunction_source :
+      Notation.DoubleColon Self "source" := {
+      Notation.double_colon := source;
+    }.
+    
+    Global Instance I : core.error.Error.Trait Self := {
+    }.
+  End Impl_core_error_Error_for_wrapping_errors_DoubleError.
   Global Hint Resolve I : core.
 End Impl_core_error_Error_for_wrapping_errors_DoubleError.
 
 Module Impl_core_convert_From_for_wrapping_errors_DoubleError.
-  Definition Self `{State.Trait} := wrapping_errors.DoubleError.
-  
-  Definition from
-      `{State.Trait}
-      (err : core.num.error.ParseIntError)
-      : M wrapping_errors.DoubleError :=
-    Pure (wrapping_errors.DoubleError.Parse err).
-  
-  Global Instance AssociatedFunction_from `{State.Trait} :
-    Notation.DoubleColon Self "from" := {
-    Notation.double_colon := from;
-  }.
-  
-  Global Instance I `{State.Trait}
-    : core.convert.From.Trait Self (T := core.num.error.ParseIntError) := {
-    core.convert.From.from := from;
-  }.
+  Section Impl_core_convert_From_for_wrapping_errors_DoubleError.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := wrapping_errors.DoubleError.
+    
+    Definition from
+        (err : core.num.error.ParseIntError)
+        : M wrapping_errors.DoubleError :=
+      Pure (wrapping_errors.DoubleError.Parse err).
+    
+    Global Instance AssociatedFunction_from :
+      Notation.DoubleColon Self "from" := {
+      Notation.double_colon := from;
+    }.
+    
+    Global Instance I
+      : core.convert.From.Trait Self (T := core.num.error.ParseIntError) := {
+      core.convert.From.from := from;
+    }.
+  End Impl_core_convert_From_for_wrapping_errors_DoubleError.
   Global Hint Resolve I : core.
 End Impl_core_convert_From_for_wrapping_errors_DoubleError.
 
@@ -205,7 +220,7 @@ Definition print
       let* α11 := pointer_coercion "Unsize" α10 in
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
-    Pure tt
+    M.alloc tt
   | core.result.Result e =>
     let* _ :=
       let* _ :=
@@ -224,7 +239,7 @@ Definition print
         let* α11 := pointer_coercion "Unsize" α10 in
         let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
         std.io.stdio._print α12 in
-      Pure tt in
+      M.alloc tt in
     let* α0 := borrow e wrapping_errors.DoubleError in
     let* α1 := core.error.Error.source α0 in
     let* α2 := let_if core.option.Option source := α1 in
@@ -247,10 +262,10 @@ Definition print
           let* α11 := pointer_coercion "Unsize" α10 in
           let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
           std.io.stdio._print α12 in
-        Pure tt in
-      Pure tt
+        M.alloc tt in
+      M.alloc tt
     else
-      Pure tt
+      M.alloc tt
   end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
@@ -285,4 +300,4 @@ Definition main `{State.Trait} : M unit :=
   let* _ :=
     let* α0 := wrapping_errors.double_first strings in
     wrapping_errors.print α0 in
-  Pure tt.
+  M.alloc tt.

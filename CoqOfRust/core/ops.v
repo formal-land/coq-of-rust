@@ -2,354 +2,354 @@ Require Import CoqOfRust.lib.lib.
 
 Module arith.
   Module Add.
-    Class Trait (Self : Set) {Rhs : Set} : Type := {
+    Class Trait `{State.Trait} (Self : Set) {Rhs : Set} : Type := {
       Output : Set;
       Rhs := Rhs;
-      add `{State.Trait} : Self -> Rhs -> M Output;
+      add : Self -> Rhs -> M Output;
     }.
 
     Module Default.
       Definition Rhs (Self : Set) : Set := Self.
     End Default.
 
-    Global Instance Method_add `{State.Trait} `(Trait) :
+    Global Instance Method_add `(Trait) :
       Notation.Dot "add" := {
       Notation.dot := add;
     }.
   End Add.
 
   Module AddAssign.
-    Class Trait (Self : Set) {Rhs : Set} : Set := {
+    Class Trait `{State.Trait} (Self : Set) {Rhs : Set} : Set := {
       Rhs := Rhs;
-      add_assign `{State.Trait} : mut_ref Self -> Rhs -> M unit;
+      add_assign : mut_ref Self -> Rhs -> M unit;
     }.
 
     Module Default.
       Definition Rhs (Self : Set) : Set := Self.
     End Default.
 
-    Global Instance Method_add_assign `{State.Trait} `(Trait) :
+    Global Instance Method_add_assign `(Trait) :
       Notation.Dot "add_assign" := {
       Notation.dot := add_assign;
     }.
   End AddAssign.
 
   Module Sub.
-    Class Trait (Self : Set) {Rhs : Set} : Type := {
+    Class Trait `{State.Trait} (Self : Set) {Rhs : Set} : Type := {
       Output : Set;
       Rhs := Rhs;
-      sub `{State.Trait} : Self -> Rhs -> M Output;
+      sub : Self -> Rhs -> M Output;
     }.
 
     Module Default.
       Definition Rhs (Self : Set) : Set := Self.
     End Default.
 
-    Global Instance Method_sub `{State.Trait} `(Trait) :
+    Global Instance Method_sub `(Trait) :
       Notation.Dot "sub" := {
       Notation.dot := sub;
     }.
   End Sub.
 
   Module SubAssign.
-    Class Trait (Self : Set) {Rhs : Set} : Set := {
+    Class Trait `{State.Trait} (Self : Set) {Rhs : Set} : Set := {
       Rhs := Rhs;
-      sub_assign `{State.Trait} : mut_ref Self -> Rhs -> M unit;
+      sub_assign : mut_ref Self -> Rhs -> M unit;
     }.
 
     Module Default.
       Definition Rhs (Self : Set) : Set := Self.
     End Default.
 
-    Global Instance Method_sub_assign `{State.Trait} `(Trait) :
+    Global Instance Method_sub_assign `(Trait) :
       Notation.Dot "sub_assign" := {
       Notation.dot := sub_assign;
     }.
   End SubAssign.
 
   Module Mul.
-    Class Trait (Self : Set) {Rhs : Set} : Type := {
+    Class Trait `{State.Trait} (Self : Set) {Rhs : Set} : Type := {
       Output : Set;
       Rhs := Rhs;
-      mul `{State.Trait} : Self -> Rhs -> M Output;
+      mul : Self -> Rhs -> M Output;
     }.
 
     Module Default.
       Definition Rhs (Self : Set) : Set := Self.
     End Default.
 
-    Global Instance Method_mul `{State.Trait} `(Trait) :
+    Global Instance Method_mul `(Trait) :
       Notation.Dot "mul" := {
       Notation.dot := mul;
     }.
   End Mul.
 
   Module MulAssign.
-    Class Trait (Self : Set) {Rhs : Set} : Set := {
+    Class Trait `{State.Trait} (Self : Set) {Rhs : Set} : Set := {
       Rhs := Rhs;
-      mul_assign `{State.Trait} : mut_ref Self -> Rhs -> M unit;
+      mul_assign : mut_ref Self -> Rhs -> M unit;
     }.
 
     Module Default.
       Definition Rhs (Self : Set) : Set := Self.
     End Default.
 
-    Global Instance Method_mul_assign `{State.Trait} `(Trait) :
+    Global Instance Method_mul_assign `(Trait) :
       Notation.Dot "mul_assign" := {
       Notation.dot := mul_assign;
     }.
   End MulAssign.
 
   Module Div.
-    Class Trait (Self : Set) {Rhs : Set} : Type := {
+    Class Trait `{State.Trait} (Self : Set) {Rhs : Set} : Type := {
       Output : Set;
       Rhs := Rhs;
-      div `{State.Trait} : Self -> Rhs -> M Output;
+      div : Self -> Rhs -> M Output;
     }.
 
     Module Default.
       Definition Rhs (Self : Set) : Set := Self.
     End Default.
 
-    Global Instance Method_div `{State.Trait} `(Trait) :
+    Global Instance Method_div `(Trait) :
       Notation.Dot "div" := {
       Notation.dot := div;
     }.
   End Div.
 
   Module DivAssign.
-    Class Trait (Self : Set) {Rhs : Set} : Set := {
+    Class Trait `{State.Trait} (Self : Set) {Rhs : Set} : Set := {
       Rhs := Rhs;
-      div_assign `{State.Trait} : mut_ref Self -> Rhs -> M unit;
+      div_assign : mut_ref Self -> Rhs -> M unit;
     }.
 
     Module Default.
       Definition Rhs (Self : Set) : Set := Self.
     End Default.
 
-    Global Instance Method_div_assign `{State.Trait} `(Trait) :
+    Global Instance Method_div_assign `(Trait) :
       Notation.Dot "div_assign" := {
       Notation.dot := div_assign;
     }.
   End DivAssign.
 
   Module Rem.
-    Class Trait (Self : Set) {Rhs : Set} : Type := {
+    Class Trait `{State.Trait} (Self : Set) {Rhs : Set} : Type := {
       Output : Set;
       Rhs := Rhs;
-      rem `{State.Trait} : Self -> Rhs -> M Output;
+      rem : Self -> Rhs -> M Output;
     }.
 
     Module Default.
       Definition Rhs (Self : Set) : Set := Self.
     End Default.
 
-    Global Instance Method_rem `{State.Trait} `(Trait) :
+    Global Instance Method_rem `(Trait) :
       Notation.Dot "rem" := {
       Notation.dot := rem;
     }.
   End Rem.
 
   Module RemAssign.
-    Class Trait (Self : Set) {Rhs : Set} : Set := {
+    Class Trait `{State.Trait} (Self : Set) {Rhs : Set} : Set := {
       Rhs := Rhs;
-      rem_assign `{State.Trait} : mut_ref Self -> Rhs -> M unit;
+      rem_assign : mut_ref Self -> Rhs -> M unit;
     }.
 
     Module Default.
       Definition Rhs (Self : Set) : Set := Self.
     End Default.
 
-    Global Instance Method_rem_assign `{State.Trait} `(Trait) :
+    Global Instance Method_rem_assign `(Trait) :
       Notation.Dot "rem_assign" := {
       Notation.dot := rem_assign;
     }.
   End RemAssign.
 
   Module BitXor.
-    Class Trait (Self : Set) {Rhs : Set} : Type := {
+    Class Trait `{State.Trait} (Self : Set) {Rhs : Set} : Type := {
       Output : Set;
       Rhs := Rhs;
-      bitxor `{State.Trait} : Self -> Rhs -> M Output;
+      bitxor : Self -> Rhs -> M Output;
     }.
 
     Module Default.
       Definition Rhs (Self : Set) : Set := Self.
     End Default.
 
-    Global Instance Method_bitxor `{State.Trait} `(Trait) :
+    Global Instance Method_bitxor `(Trait) :
       Notation.Dot "bitxor" := {
       Notation.dot := bitxor;
     }.
   End BitXor.
 
   Module BitXorAssign.
-    Class Trait (Self : Set) {Rhs : Set} : Set := {
+    Class Trait `{State.Trait} (Self : Set) {Rhs : Set} : Set := {
       Rhs := Rhs;
-      bitxor_assign `{State.Trait} : mut_ref Self -> Rhs -> M unit;
+      bitxor_assign : mut_ref Self -> Rhs -> M unit;
     }.
 
     Module Default.
       Definition Rhs (Self : Set) : Set := Self.
     End Default.
 
-    Global Instance Method_bitxor_assign `{State.Trait} `(Trait) :
+    Global Instance Method_bitxor_assign `(Trait) :
       Notation.Dot "bitxor_assign" := {
       Notation.dot := bitxor_assign;
     }.
   End BitXorAssign.
 
   Module BitAnd.
-    Class Trait (Self : Set) {Rhs : Set} : Type := {
+    Class Trait `{State.Trait} (Self : Set) {Rhs : Set} : Type := {
       Output : Set;
       Rhs := Rhs;
-      bitand `{State.Trait} : Self -> Rhs -> M Output;
+      bitand : Self -> Rhs -> M Output;
     }.
 
     Module Default.
       Definition Rhs (Self : Set) : Set := Self.
     End Default.
 
-    Global Instance Method_bitand `{State.Trait} `(Trait) :
+    Global Instance Method_bitand `(Trait) :
       Notation.Dot "bitand" := {
       Notation.dot := bitand;
     }.
   End BitAnd.
 
   Module BitAndAssign.
-    Class Trait (Self : Set) {Rhs : Set} : Set := {
+    Class Trait `{State.Trait} (Self : Set) {Rhs : Set} : Set := {
       Rhs := Rhs;
-      bitand_assign `{State.Trait} : mut_ref Self -> Rhs -> M unit;
+      bitand_assign : mut_ref Self -> Rhs -> M unit;
     }.
 
     Module Default.
       Definition Rhs (Self : Set) : Set := Self.
     End Default.
 
-    Global Instance Method_bitand_assign `{State.Trait} `(Trait) :
+    Global Instance Method_bitand_assign `(Trait) :
       Notation.Dot "bitand_assign" := {
       Notation.dot := bitand_assign;
     }.
   End BitAndAssign.
 
   Module BitOr.
-    Class Trait (Self : Set) {Rhs : Set} : Type := {
+    Class Trait `{State.Trait} (Self : Set) {Rhs : Set} : Type := {
       Output : Set;
       Rhs := Rhs;
-      bitor `{State.Trait} : Self -> Rhs -> M Output;
+      bitor : Self -> Rhs -> M Output;
     }.
 
     Module Default.
       Definition Rhs (Self : Set) : Set := Self.
     End Default.
 
-    Global Instance Method_bitor `{State.Trait} `(Trait) :
+    Global Instance Method_bitor `(Trait) :
       Notation.Dot "bitor" := {
       Notation.dot := bitor;
     }.
   End BitOr.
 
   Module BitOrAssign.
-    Class Trait (Self : Set) {Rhs : Set} : Set := {
+    Class Trait `{State.Trait} (Self : Set) {Rhs : Set} : Set := {
       Rhs := Rhs;
-      bitor_assign `{State.Trait} : mut_ref Self -> Rhs -> M unit;
+      bitor_assign : mut_ref Self -> Rhs -> M unit;
     }.
 
     Module Default.
       Definition Rhs (Self : Set) : Set := Self.
     End Default.
 
-    Global Instance Method_bitor_assign `{State.Trait} `(Trait) :
+    Global Instance Method_bitor_assign `(Trait) :
       Notation.Dot "bitor_assign" := {
       Notation.dot := bitor_assign;
     }.
   End BitOrAssign.
 
   Module Shl.
-    Class Trait (Self : Set) {Rhs : Set} : Type := {
+    Class Trait `{State.Trait} (Self : Set) {Rhs : Set} : Type := {
       Output : Set;
       Rhs := Rhs;
-      shl `{State.Trait} : Self -> Rhs -> M Output;
+      shl : Self -> Rhs -> M Output;
     }.
 
     Module Default.
       Definition Rhs (Self : Set) : Set := Self.
     End Default.
 
-    Global Instance Method_shl `{State.Trait} `(Trait) :
+    Global Instance Method_shl `(Trait) :
       Notation.Dot "shl" := {
       Notation.dot := shl;
     }.
   End Shl.
 
   Module ShlAssign.
-    Class Trait (Self : Set) {Rhs : Set} : Set := {
+    Class Trait `{State.Trait} (Self : Set) {Rhs : Set} : Set := {
       Rhs := Rhs;
-      shl_assign `{State.Trait} : mut_ref Self -> Rhs -> M unit;
+      shl_assign : mut_ref Self -> Rhs -> M unit;
     }.
 
     Module Default.
       Definition Rhs (Self : Set) : Set := Self.
     End Default.
 
-    Global Instance Method_shl_assign `{State.Trait} `(Trait) :
+    Global Instance Method_shl_assign `(Trait) :
       Notation.Dot "shl_assign" := {
       Notation.dot := shl_assign;
     }.
   End ShlAssign.
 
   Module Shr.
-    Class Trait (Self : Set) {Rhs : Set} : Type := {
+    Class Trait `{State.Trait} (Self : Set) {Rhs : Set} : Type := {
       Output : Set;
       Rhs := Rhs;
-      shr `{State.Trait} : Self -> Rhs -> M Output;
+      shr : Self -> Rhs -> M Output;
     }.
 
     Module Default.
       Definition Rhs (Self : Set) : Set := Self.
     End Default.
 
-    Global Instance Method_shr `{State.Trait} `(Trait) :
+    Global Instance Method_shr `(Trait) :
       Notation.Dot "shr" := {
       Notation.dot := shr;
     }.
   End Shr.
 
   Module ShrAssign.
-    Class Trait (Self : Set) {Rhs : Set} : Set := {
+    Class Trait `{State.Trait} (Self : Set) {Rhs : Set} : Set := {
       Rhs := Rhs;
-      shr_assign `{State.Trait} : mut_ref Self -> Rhs -> M unit;
+      shr_assign : mut_ref Self -> Rhs -> M unit;
     }.
 
     Module Default.
       Definition Rhs (Self : Set) : Set := Self.
     End Default.
 
-    Global Instance Method_shr_assign `{State.Trait} `(Trait) :
+    Global Instance Method_shr_assign `(Trait) :
       Notation.Dot "shr_assign" := {
       Notation.dot := shr_assign;
     }.
   End ShrAssign.
 
   Module Neg.
-    Class Trait (Self : Set) : Type := {
+    Class Trait `{State.Trait} (Self : Set) : Type := {
       Output : Set;
-      neg `{State.Trait} : Self -> M Output;
+      neg : Self -> M Output;
     }.
 
-    Global Instance Method_neg `{State.Trait} `(Trait) :
+    Global Instance Method_neg `(Trait) :
       Notation.Dot "neg" := {
       Notation.dot := neg;
     }.
   End Neg.
 
   Module Not.
-    Class Trait (Self : Set) : Type := {
+    Class Trait `{State.Trait} (Self : Set) : Type := {
       Output : Set;
-      not `{State.Trait} : Self -> M Output;
+      not : Self -> M Output;
     }.
 
-    Global Instance Method_not `{State.Trait} `(Trait) :
+    Global Instance Method_not `(Trait) :
       Notation.Dot "not" := {
       Notation.dot := not;
     }.
@@ -357,12 +357,12 @@ Module arith.
 End arith.
 
 Module Deref.
-  Class Trait (Self : Set) {Target : Set} : Set := {
+  Class Trait `{State.Trait} (Self : Set) {Target : Set} : Set := {
     Target := Target;
-    deref `{State.Trait} : ref Self -> M (ref Target);
+    deref : ref Self -> M (ref Target);
   }.
 
-  Global Instance Method_deref `{State.Trait} `(Trait) :
+  Global Instance Method_deref `(Trait) :
     Notation.Dot "deref" := {
     Notation.dot := deref;
   }.
@@ -370,36 +370,38 @@ End Deref.
 
 Module function.
   Module FnOnce.
-    Class Trait (Self : Set) {Args : Set} : Type := {
+    Class Trait `{State.Trait} (Self : Set) {Args : Set} : Type := {
       Output : Set;
-      call_once `{State.Trait} : Self -> Args -> M Output;
+      call_once : Self -> Args -> M Output;
     }.
   End FnOnce.
 
   Module FnMut.
-    Class Trait (Self : Set) {Args : Set}
-      `{FnOnce.Trait (Args := Args) Self} : Set := {
-      call_mut `{State.Trait} : mut_ref Self -> Args -> M FnOnce.Output;
+    Class Trait `{State.Trait} (Self : Set) {Args : Set}
+      {H1 : FnOnce.Trait Self (Args := Args)} : Set := {
+      call_mut : mut_ref Self -> Args -> M FnOnce.Output;
     }.
   End FnMut.
 End function.
 
+(* Module Impl_Add_for_i32. Section Impl_Add_for_i32.
+  Context `{State.Trait}.
 
-(* The trait implementations for [Z] are convenient but should be replaced
-    by the implementations for the native types eventually. *)
-Module Impl_Add_for_Z.
-  Definition add `{State.Trait} (z1 z2 : Z) : M Z := Pure (Z.add z1 z2).
+  Definition add (z1 z2 : i32) : M Z := Pure (Z.add z1 z2).
 
-  Global Instance Method_add `{State.Trait} : Notation.Dot "add" := {
+  Global Instance Method_add : Notation.Dot "add" := {
     Notation.dot := add;
   }.
 
-  Global Instance Add_for_Z : arith.Add.Trait Z (Rhs := arith.Add.Default.Rhs Z) := {
-    add `{State.Trait} := add;
+  Global Instance Add_for_Z :
+      arith.Add.Trait Z (Rhs := arith.Add.Default.Rhs Z) := {
+    add := add;
   }.
-End Impl_Add_for_Z.
+End Impl_Add_for_i32. End Impl_Add_for_i32.
 
 Module Impl_AddAssign_for_Z.
+  Context `{State.Trait}.
+
   Parameter add_assign : forall `{State.Trait}, mut_ref Z -> Z -> M unit.
 
   Global Instance Method_add_assign `{State.Trait} :
@@ -527,34 +529,40 @@ Module Impl_Neg_for_Z.
   Global Instance Neg_for_Z : arith.Neg.Trait Z := {
     neg `{State.Trait} := neg;
   }.
-End Impl_Neg_for_Z.
+End Impl_Neg_for_Z. *)
 
-Module Impl_Not_for_bool.
-  Definition not `{State.Trait} (b : bool) : M bool := Pure (negb b).
+Module Impl_Not_for_bool. Section Impl_Not_for_bool.
+  Context `{State.Trait}.
 
-  Global Instance Method_not `{State.Trait} : Notation.Dot "not" := {
+  Definition not `{State.Trait} (b : bool) : M bool :=
+    let* b := M.read b in
+    M.alloc (negb b).
+
+  Global Instance Method_not : Notation.Dot "not" := {
     Notation.dot := not;
   }.
 
   Global Instance Not_for_bool : arith.Not.Trait bool := {
-    not `{State.Trait} := not;
+    not := not;
   }.
-End Impl_Not_for_bool.
+End Impl_Not_for_bool. End Impl_Not_for_bool.
 
 (** For now we implement the dereferencing operator on any types, as the
     identity. *)
-Module Impl_Deref_for_any.
-  Definition deref `{State.Trait} {A : Set} (x : A) : M A := Pure x.
+Module Impl_Deref_for_any. Section Impl_Deref_for_any.
+  Context `{State.Trait}.
 
-  Global Instance Method_deref `{State.Trait} (A : Set) :
+  Definition deref {A : Set} (x : A) : M A := Pure x.
+
+  Global Instance Method_deref (A : Set) :
     Notation.Dot "deref" := {
     Notation.dot := deref (A := A);
   }.
 
   Global Instance Deref_for_any (A : Set) : Deref.Trait A := {
-    deref `{State.Trait} := deref;
+    deref := deref;
   }.
-End Impl_Deref_for_any.
+End Impl_Deref_for_any. End Impl_Deref_for_any.
 
 Module drop.
   (*
@@ -564,11 +572,11 @@ Module drop.
   }
   *)
   Module Drop.
-    Class Trait (Self : Set) : Set := {
-      drop `{State.Trait} : mut_ref Self -> M unit;
+    Class Trait `{State.Trait} (Self : Set) : Set := {
+      drop : mut_ref Self -> M unit;
     }.
 
-    Global Instance Method_drop `{State.Trait} `(Trait) :
+    Global Instance Method_drop `(Trait) :
       Notation.Dot "drop" := {
       Notation.dot := drop;
     }.

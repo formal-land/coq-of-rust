@@ -46,7 +46,7 @@ Definition try_division
       let* α15 := pointer_coercion "Unsize" α14 in
       let* α16 := core.fmt.Arguments::["new_v1"] α3 α15 in
       std.io.stdio._print α16 in
-    Pure tt
+    M.alloc tt
   | core.option.Option quotient =>
     let* _ :=
       let* α0 :=
@@ -75,7 +75,7 @@ Definition try_division
       let* α19 := pointer_coercion "Unsize" α18 in
       let* α20 := core.fmt.Arguments::["new_v1"] α3 α19 in
       std.io.stdio._print α20 in
-    Pure tt
+    M.alloc tt
   end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
@@ -118,7 +118,7 @@ Definition main `{State.Trait} : M unit :=
       let* α16 := pointer_coercion "Unsize" α15 in
       let* α17 := core.fmt.Arguments::["new_v1"] α3 α16 in
       std.io.stdio._print α17 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -144,5 +144,5 @@ Definition main `{State.Trait} : M unit :=
       let* α16 := pointer_coercion "Unsize" α15 in
       let* α17 := core.fmt.Arguments::["new_v1"] α3 α16 in
       std.io.stdio._print α17 in
-    Pure tt in
-  Pure tt.
+    M.alloc tt in
+  M.alloc tt.

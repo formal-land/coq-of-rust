@@ -42,7 +42,7 @@ Definition main `{State.Trait} : M unit :=
       let* α30 := pointer_coercion "Unsize" α29 in
       let* α31 := core.fmt.Arguments::["new_v1"] α3 α30 in
       std.io.stdio._print α31 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -61,8 +61,8 @@ Definition main `{State.Trait} : M unit :=
       let* α9 := deref α8 (ref str) in
       let* α10 := borrow α9 (ref str) in
       let* α11 := core.fmt.rt.Argument::["new_debug"] α10 in
-      let* α12 := true in
-      let* α13 := false in
+      let* α12 := M.alloc true in
+      let* α13 := M.alloc false in
       let* α14 := or α12 α13 in
       let* α15 := borrow α14 bool in
       let* α16 := deref α15 bool in
@@ -74,5 +74,5 @@ Definition main `{State.Trait} : M unit :=
       let* α22 := pointer_coercion "Unsize" α21 in
       let* α23 := core.fmt.Arguments::["new_v1"] α3 α22 in
       std.io.stdio._print α23 in
-    Pure tt in
-  Pure tt.
+    M.alloc tt in
+  M.alloc tt.

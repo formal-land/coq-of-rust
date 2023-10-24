@@ -16,7 +16,7 @@ Definition main `{State.Trait} : M unit :=
       let* α7 := pointer_coercion "Unsize" α6 in
       let* α8 := core.fmt.Arguments::["new_v1"] α3 α7 in
       std.io.stdio._print α8 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -33,7 +33,7 @@ Definition main `{State.Trait} : M unit :=
       let* α7 := pointer_coercion "Unsize" α6 in
       let* α8 := core.fmt.Arguments::["new_v1"] α3 α7 in
       std.io.stdio._print α8 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -50,7 +50,7 @@ Definition main `{State.Trait} : M unit :=
       let* α7 := pointer_coercion "Unsize" α6 in
       let* α8 := core.fmt.Arguments::["new_v1"] α3 α7 in
       std.io.stdio._print α8 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -65,7 +65,7 @@ Definition main `{State.Trait} : M unit :=
       let* α7 := pointer_coercion "Unsize" α6 in
       let* α8 := core.fmt.Arguments::["new_v1"] α3 α7 in
       std.io.stdio._print α8 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -87,7 +87,7 @@ Definition main `{State.Trait} : M unit :=
       let* α12 := pointer_coercion "Unsize" α11 in
       let* α13 := core.fmt.Arguments::["new_v1"] α3 α12 in
       std.io.stdio._print α13 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -109,7 +109,7 @@ Definition main `{State.Trait} : M unit :=
       let* α12 := pointer_coercion "Unsize" α11 in
       let* α13 := core.fmt.Arguments::["new_v1"] α3 α12 in
       std.io.stdio._print α13 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -131,7 +131,7 @@ Definition main `{State.Trait} : M unit :=
       let* α12 := pointer_coercion "Unsize" α11 in
       let* α13 := core.fmt.Arguments::["new_v1"] α3 α12 in
       std.io.stdio._print α13 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -153,7 +153,7 @@ Definition main `{State.Trait} : M unit :=
       let* α12 := pointer_coercion "Unsize" α11 in
       let* α13 := core.fmt.Arguments::["new_v1"] α3 α12 in
       std.io.stdio._print α13 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* _ :=
       let* α0 := borrow [ mk_str ""; mk_str "
@@ -171,7 +171,7 @@ Definition main `{State.Trait} : M unit :=
       let* α11 := borrow α10 (list core.fmt.rt.Argument) in
       let* α12 := pointer_coercion "Unsize" α11 in
       let* α13 := M.alloc 0 in
-      let* α14 := " "%char in
+      let* α14 := M.alloc " "%char in
       let* α15 := M.alloc 0 in
       let* α16 := M.alloc 5 in
       let* α17 := "unimplemented parent_kind" α16 in
@@ -190,7 +190,7 @@ Definition main `{State.Trait} : M unit :=
       let* α23 := core.fmt.rt.UnsafeArg::["new"] in
       let* α24 := core.fmt.Arguments::["new_v1_formatted"] α3 α12 α22 α23 in
       std.io.stdio._print α24 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* _ :=
       let* α0 := borrow [ mk_str ""; mk_str "
@@ -208,7 +208,7 @@ Definition main `{State.Trait} : M unit :=
       let* α11 := borrow α10 (list core.fmt.rt.Argument) in
       let* α12 := pointer_coercion "Unsize" α11 in
       let* α13 := M.alloc 0 in
-      let* α14 := "0"%char in
+      let* α14 := M.alloc "0"%char in
       let* α15 := M.alloc 0 in
       let* α16 := M.alloc 5 in
       let* α17 := "unimplemented parent_kind" α16 in
@@ -227,7 +227,7 @@ Definition main `{State.Trait} : M unit :=
       let* α23 := core.fmt.rt.UnsafeArg::["new"] in
       let* α24 := core.fmt.Arguments::["new_v1_formatted"] α3 α12 α22 α23 in
       std.io.stdio._print α24 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* _ :=
       let* α0 := borrow [ mk_str ""; mk_str "
@@ -250,7 +250,7 @@ Definition main `{State.Trait} : M unit :=
       let* α16 := borrow α15 (list core.fmt.rt.Argument) in
       let* α17 := pointer_coercion "Unsize" α16 in
       let* α18 := M.alloc 0 in
-      let* α19 := "0"%char in
+      let* α19 := M.alloc "0"%char in
       let* α20 := M.alloc 0 in
       let* α21 := M.alloc 1 in
       let* α22 := "unimplemented parent_kind" α21 in
@@ -269,7 +269,7 @@ Definition main `{State.Trait} : M unit :=
       let* α28 := core.fmt.rt.UnsafeArg::["new"] in
       let* α29 := core.fmt.Arguments::["new_v1_formatted"] α3 α17 α27 α28 in
       std.io.stdio._print α29 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -284,7 +284,7 @@ Definition main `{State.Trait} : M unit :=
       let* α7 := pointer_coercion "Unsize" α6 in
       let* α8 := core.fmt.Arguments::["new_v1"] α3 α7 in
       std.io.stdio._print α8 in
-    Pure tt in
+    M.alloc tt in
   let* number := M.alloc 1 (* 1.0 *) in
   let* width := M.alloc 5 in
   let* _ :=
@@ -307,7 +307,7 @@ Definition main `{State.Trait} : M unit :=
       let* α14 := borrow α13 (list core.fmt.rt.Argument) in
       let* α15 := pointer_coercion "Unsize" α14 in
       let* α16 := M.alloc 0 in
-      let* α17 := " "%char in
+      let* α17 := M.alloc " "%char in
       let* α18 := M.alloc 0 in
       let* α19 := M.alloc 1 in
       let* α20 := "unimplemented parent_kind" α19 in
@@ -326,18 +326,22 @@ Definition main `{State.Trait} : M unit :=
       let* α26 := core.fmt.rt.UnsafeArg::["new"] in
       let* α27 := core.fmt.Arguments::["new_v1_formatted"] α3 α15 α25 α26 in
       std.io.stdio._print α27 in
-    Pure tt in
-  Pure tt.
+    M.alloc tt in
+  M.alloc tt.
 
 Module Structure.
-  Unset Primitive Projections.
-  Record t `{State.Trait} : Set := {
-    x0 : i32;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
-  }.
+  Section Structure.
+    Context `{State.Trait}.
+    
+    Unset Primitive Projections.
+    Record t : Set := {
+      x0 : i32;
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_0 : Notation.Dot "0" := {
+      Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
+    }.
+  End Structure.
 End Structure.
 Definition Structure `{State.Trait} : Set := M.val Structure.t.

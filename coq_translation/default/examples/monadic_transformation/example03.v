@@ -19,4 +19,4 @@ Definition main `{State.Trait} : M unit :=
         [ α0; α1; α2; α3 ] in
     let* α5 := pointer_coercion "Unsize" α4 in
     (Slice _)::["into_vec"] α5 in
-  Pure tt.
+  M.alloc tt.

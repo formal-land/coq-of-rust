@@ -21,7 +21,7 @@ Definition main `{State.Trait} : M unit :=
       let* α3 := pointer_coercion "Unsize" α2 in
       let* α4 := core.fmt.Arguments::["new_const"] α3 in
       std.io.stdio._print α4 in
-    Pure tt in
+    M.alloc tt in
   let* upper := M.alloc 1000 in
   let* acc := M.alloc 0 in
   let* _ :=
@@ -47,17 +47,18 @@ Definition main `{State.Trait} : M unit :=
               let* α1 := use α0 in
               if (α1 : bool) then
                 let* _ := Break in
-                never_to_any tt
+                let* α0 := M.alloc tt in
+                never_to_any α0
               else
                 let* α0 := higher_order_functions.is_odd n_squared in
                 let* α1 := use α0 in
                 if (α1 : bool) then
                   let* _ := assign_op add acc n_squared in
-                  Pure tt
+                  M.alloc tt
                 else
-                  Pure tt
+                  M.alloc tt
             end in
-          Pure tt)
+          M.alloc tt)
       end in
     use α3 in
   let* _ :=
@@ -78,7 +79,7 @@ Definition main `{State.Trait} : M unit :=
       let* α11 := pointer_coercion "Unsize" α10 in
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
-    Pure tt in
+    M.alloc tt in
   let* sum_of_squared_odd_numbers :=
     let* α0 := M.alloc 0 in
     let* α1 := M.alloc {| core.ops.range.RangeFrom.start := α0; |} in
@@ -108,5 +109,5 @@ Definition main `{State.Trait} : M unit :=
       let* α11 := pointer_coercion "Unsize" α10 in
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
-    Pure tt in
-  Pure tt.
+    M.alloc tt in
+  M.alloc tt.

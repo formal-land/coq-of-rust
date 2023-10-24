@@ -9,7 +9,8 @@ Definition division `{State.Trait} (dividend : i32) (divisor : i32) : M i32 :=
     let* _ :=
       let* α0 := std.panicking.begin_panic (mk_str "division by zero") in
       never_to_any α0 in
-    never_to_any tt
+    let* α0 := M.alloc tt in
+    never_to_any α0
   else
     div dividend divisor.
 
@@ -32,5 +33,5 @@ Definition main `{State.Trait} : M unit :=
       let* α3 := pointer_coercion "Unsize" α2 in
       let* α4 := core.fmt.Arguments::["new_const"] α3 in
       std.io.stdio._print α4 in
-    Pure tt in
-  Pure tt.
+    M.alloc tt in
+  M.alloc tt.

@@ -12,37 +12,43 @@ Module checked.
   
   Module
     Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
-    Definition Self `{State.Trait} :=
-      result_chaining_with_question_mark.checked.MathError.
-    
-    Definition fmt
-        `{State.Trait}
-        (self : ref Self)
-        (f : mut_ref core.fmt.Formatter)
-        : M core.fmt.Result :=
-      let* α0 := deref f core.fmt.Formatter in
-      let* α1 := borrow_mut α0 core.fmt.Formatter in
-      let* α2 :=
-        match self with
-        | result_chaining_with_question_mark.checked.MathError  =>
-          let* α0 := deref (mk_str "DivisionByZero") str in
-          borrow α0 str
-        | result_chaining_with_question_mark.checked.MathError  =>
-          let* α0 := deref (mk_str "NonPositiveLogarithm") str in
-          borrow α0 str
-        | result_chaining_with_question_mark.checked.MathError  =>
-          let* α0 := deref (mk_str "NegativeSquareRoot") str in
-          borrow α0 str
-        end in
-      core.fmt.Formatter::["write_str"] α1 α2.
-    
-    Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
-      Notation.dot := fmt;
-    }.
-    
-    Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
-      core.fmt.Debug.fmt := fmt;
-    }.
+    Section
+      Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
+      Context `{State.Trait}.
+      
+      Definition Self : Set :=
+        result_chaining_with_question_mark.checked.MathError.
+      
+      Definition fmt
+          (self : ref Self)
+          (f : mut_ref core.fmt.Formatter)
+          : M core.fmt.Result :=
+        let* α0 := deref f core.fmt.Formatter in
+        let* α1 := borrow_mut α0 core.fmt.Formatter in
+        let* α2 :=
+          match self with
+          | result_chaining_with_question_mark.checked.MathError  =>
+            let* α0 := deref (mk_str "DivisionByZero") str in
+            borrow α0 str
+          | result_chaining_with_question_mark.checked.MathError  =>
+            let* α0 := deref (mk_str "NonPositiveLogarithm") str in
+            borrow α0 str
+          | result_chaining_with_question_mark.checked.MathError  =>
+            let* α0 := deref (mk_str "NegativeSquareRoot") str in
+            borrow α0 str
+          end in
+        core.fmt.Formatter::["write_str"] α1 α2.
+      
+      Global Instance AssociatedFunction_fmt :
+        Notation.DoubleColon Self "fmt" := {
+        Notation.double_colon := fmt;
+      }.
+      
+      Global Instance I : core.fmt.Debug.Trait Self := {
+        core.fmt.Debug.fmt := fmt;
+      }.
+    End
+      Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
     Global Hint Resolve I : core.
   End
     Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
@@ -163,7 +169,7 @@ Module checked.
         let* α11 := pointer_coercion "Unsize" α10 in
         let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
         std.io.stdio._print α12 in
-      Pure tt
+      M.alloc tt
     end.
 End checked.
 
@@ -177,37 +183,43 @@ Definition MathError `{State.Trait} : Set := MathError.t.
 
 Module
   Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
-  Definition Self `{State.Trait} :=
-    result_chaining_with_question_mark.checked.MathError.
-  
-  Definition fmt
-      `{State.Trait}
-      (self : ref Self)
-      (f : mut_ref core.fmt.Formatter)
-      : M core.fmt.Result :=
-    let* α0 := deref f core.fmt.Formatter in
-    let* α1 := borrow_mut α0 core.fmt.Formatter in
-    let* α2 :=
-      match self with
-      | result_chaining_with_question_mark.checked.MathError  =>
-        let* α0 := deref (mk_str "DivisionByZero") str in
-        borrow α0 str
-      | result_chaining_with_question_mark.checked.MathError  =>
-        let* α0 := deref (mk_str "NonPositiveLogarithm") str in
-        borrow α0 str
-      | result_chaining_with_question_mark.checked.MathError  =>
-        let* α0 := deref (mk_str "NegativeSquareRoot") str in
-        borrow α0 str
-      end in
-    core.fmt.Formatter::["write_str"] α1 α2.
-  
-  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
-    Notation.dot := fmt;
-  }.
-  
-  Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt := fmt;
-  }.
+  Section
+    Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
+    Context `{State.Trait}.
+    
+    Definition Self : Set :=
+      result_chaining_with_question_mark.checked.MathError.
+    
+    Definition fmt
+        (self : ref Self)
+        (f : mut_ref core.fmt.Formatter)
+        : M core.fmt.Result :=
+      let* α0 := deref f core.fmt.Formatter in
+      let* α1 := borrow_mut α0 core.fmt.Formatter in
+      let* α2 :=
+        match self with
+        | result_chaining_with_question_mark.checked.MathError  =>
+          let* α0 := deref (mk_str "DivisionByZero") str in
+          borrow α0 str
+        | result_chaining_with_question_mark.checked.MathError  =>
+          let* α0 := deref (mk_str "NonPositiveLogarithm") str in
+          borrow α0 str
+        | result_chaining_with_question_mark.checked.MathError  =>
+          let* α0 := deref (mk_str "NegativeSquareRoot") str in
+          borrow α0 str
+        end in
+      core.fmt.Formatter::["write_str"] α1 α2.
+    
+    Global Instance AssociatedFunction_fmt :
+      Notation.DoubleColon Self "fmt" := {
+      Notation.double_colon := fmt;
+    }.
+    
+    Global Instance I : core.fmt.Debug.Trait Self := {
+      core.fmt.Debug.fmt := fmt;
+    }.
+  End
+    Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
   Global Hint Resolve I : core.
 End
   Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
@@ -328,7 +340,7 @@ Definition op `{State.Trait} (x : f64) (y : f64) : M unit :=
       let* α11 := pointer_coercion "Unsize" α10 in
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
-    Pure tt
+    M.alloc tt
   end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
@@ -337,4 +349,4 @@ Definition main `{State.Trait} : M unit :=
     let* α0 := M.alloc 1 (* 1.0 *) in
     let* α1 := M.alloc 10 (* 10.0 *) in
     result_chaining_with_question_mark.checked.op α0 α1 in
-  Pure tt.
+  M.alloc tt.

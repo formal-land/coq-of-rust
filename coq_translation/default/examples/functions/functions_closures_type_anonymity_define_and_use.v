@@ -4,13 +4,14 @@ Require Import CoqOfRust.CoqOfRust.
 Definition apply
     `{State.Trait}
     {F : Set}
-    `{core.ops.function.Fn.Trait F (Args := unit)}
+    {ℋ_0 : core.ops.function.Fn.Trait F (Args := unit)}
     (f : F)
     : M unit :=
   let* _ :=
     let* α0 := borrow f _ in
-    core.ops.function.Fn.call α0 tt in
-  Pure tt.
+    let* α1 := M.alloc tt in
+    core.ops.function.Fn.call α0 α1 in
+  M.alloc tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{State.Trait} : M unit :=
@@ -32,6 +33,6 @@ Definition main `{State.Trait} : M unit :=
       let* α11 := pointer_coercion "Unsize" α10 in
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
-    Pure tt in
+    M.alloc tt in
   let* _ := functions_closures_type_anonymity_define_and_use.apply print in
-  Pure tt.
+  M.alloc tt.

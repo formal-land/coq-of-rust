@@ -11,106 +11,203 @@ Require CoqOfRust.ink.ink_engine.
 
 Module arithmetic.
   Module Saturating.
-    Class Trait (Self : Set) `{State.Trait} : Type := {
-      saturating_add : Self -> Self -> M Self;
-      saturating_sub : Self -> Self -> M Self;
-      saturating_mul : Self -> Self -> M Self;
-      saturating_pow : Self -> usize -> M Self;
-    }.
-    
-    Global Instance Method_saturating_add `{State.Trait} `(Trait)
-      : Notation.Dot "saturating_add" := {
-      Notation.dot := saturating_add;
-    }.
-    Global Instance Method_saturating_sub `{State.Trait} `(Trait)
-      : Notation.Dot "saturating_sub" := {
-      Notation.dot := saturating_sub;
-    }.
-    Global Instance Method_saturating_mul `{State.Trait} `(Trait)
-      : Notation.Dot "saturating_mul" := {
-      Notation.dot := saturating_mul;
-    }.
-    Global Instance Method_saturating_pow `{State.Trait} `(Trait)
-      : Notation.Dot "saturating_pow" := {
-      Notation.dot := saturating_pow;
-    }.
+    Section Saturating.
+      Context `{State.Trait}.
+      
+      Class Trait (Self : Set) : Type := {
+        saturating_add : Self -> Self -> M Self;
+        saturating_sub : Self -> Self -> M Self;
+        saturating_mul : Self -> Self -> M Self;
+        saturating_pow : Self -> usize -> M Self;
+      }.
+      
+    End Saturating.
   End Saturating.
   
   Module BaseArithmetic.
-    Unset Primitive Projections.
-    Class Trait
-        (Self : Set)
-        `{core.marker.Sized.Trait Self}
-        `{core.convert.From.Trait Self (T := u8)}
-        `{num_traits.bounds.Bounded.Trait Self}
-        `{core.cmp.Ord.Trait Self}
-        `{core.cmp.PartialOrd.Trait Self (Rhs := Self)}
-        `{num_traits.identities.Zero.Trait Self}
-        `{num_traits.identities.One.Trait Self}
-        `{num_traits.bounds.Bounded.Trait Self}
-        `{core.ops.arith.Add.Trait Self (Rhs := Self)}
-        `{core.ops.arith.AddAssign.Trait Self (Rhs := Self)}
-        `{core.ops.arith.Sub.Trait Self (Rhs := Self)}
-        `{core.ops.arith.SubAssign.Trait Self (Rhs := Self)}
-        `{core.ops.arith.Mul.Trait Self (Rhs := Self)}
-        `{core.ops.arith.MulAssign.Trait Self (Rhs := Self)}
-        `{core.ops.arith.Div.Trait Self (Rhs := Self)}
-        `{core.ops.arith.DivAssign.Trait Self (Rhs := Self)}
-        `{num_traits.ops.checked.CheckedMul.Trait Self}
-        `{ink_env.arithmetic.Saturating.Trait Self}
-        `{core.convert.TryFrom.Trait Self (T := u16)}
-        `{core.convert.TryFrom.Trait Self (T := u32)}
-        `{core.convert.TryFrom.Trait Self (T := u64)}
-        `{core.convert.TryFrom.Trait Self (T := u128)}
-        `{core.convert.TryFrom.Trait Self (T := usize)}
-        `{core.convert.TryInto.Trait Self (T := u16)}
-        `{core.convert.TryInto.Trait Self (T := u32)}
-        `{core.convert.TryInto.Trait Self (T := u64)}
-        `{core.convert.TryInto.Trait Self (T := u128)}
-        `{core.convert.TryInto.Trait Self (T := usize)}
-        `{State.Trait} :
-        Type := {
-    }.
-    Global Set Primitive Projections.
+    Section BaseArithmetic.
+      Context `{State.Trait}.
+      
+      Unset Primitive Projections.
+      Class Trait
+          (Self : Set)
+          {ℋ_0 : core.marker.Sized.Trait Self}
+          {ℋ_1 : core.convert.From.Trait Self (T := u8)}
+          {ℋ_2 : num_traits.bounds.Bounded.Trait Self}
+          {ℋ_3 : core.cmp.Ord.Trait Self}
+          {ℋ_4 : core.cmp.PartialOrd.Trait Self (Rhs := Self)}
+          {ℋ_5 : num_traits.identities.Zero.Trait Self}
+          {ℋ_6 : num_traits.identities.One.Trait Self}
+          {ℋ_7 : num_traits.bounds.Bounded.Trait Self}
+          {ℋ_8 : core.ops.arith.Add.Trait Self (Rhs := Self)}
+          {ℋ_9 : core.ops.arith.AddAssign.Trait Self (Rhs := Self)}
+          {ℋ_10 : core.ops.arith.Sub.Trait Self (Rhs := Self)}
+          {ℋ_11 : core.ops.arith.SubAssign.Trait Self (Rhs := Self)}
+          {ℋ_12 : core.ops.arith.Mul.Trait Self (Rhs := Self)}
+          {ℋ_13 : core.ops.arith.MulAssign.Trait Self (Rhs := Self)}
+          {ℋ_14 : core.ops.arith.Div.Trait Self (Rhs := Self)}
+          {ℋ_15 : core.ops.arith.DivAssign.Trait Self (Rhs := Self)}
+          {ℋ_16 : num_traits.ops.checked.CheckedMul.Trait Self}
+          {ℋ_17 : ink_env.arithmetic.Saturating.Trait Self}
+          {ℋ_18 : core.convert.TryFrom.Trait Self (T := u16)}
+          {ℋ_19 : core.convert.TryFrom.Trait Self (T := u32)}
+          {ℋ_20 : core.convert.TryFrom.Trait Self (T := u64)}
+          {ℋ_21 : core.convert.TryFrom.Trait Self (T := u128)}
+          {ℋ_22 : core.convert.TryFrom.Trait Self (T := usize)}
+          {ℋ_23 : core.convert.TryInto.Trait Self (T := u16)}
+          {ℋ_24 : core.convert.TryInto.Trait Self (T := u32)}
+          {ℋ_25 : core.convert.TryInto.Trait Self (T := u64)}
+          {ℋ_26 : core.convert.TryInto.Trait Self (T := u128)}
+          {ℋ_27 : core.convert.TryInto.Trait Self (T := usize)} :
+          Type := {
+      }.
+      Global Set Primitive Projections.
+    End BaseArithmetic.
   End BaseArithmetic.
   
   Module AtLeast32Bit.
-    Unset Primitive Projections.
-    Class Trait
-        (Self : Set)
-        `{ink_env.arithmetic.BaseArithmetic.Trait Self}
-        `{core.convert.From.Trait Self (T := u16)}
-        `{core.convert.From.Trait Self (T := u32)}
-        `{State.Trait} :
-        Type := {
-    }.
-    Global Set Primitive Projections.
+    Section AtLeast32Bit.
+      Context `{State.Trait}.
+      
+      Unset Primitive Projections.
+      Class Trait
+          (Self : Set)
+          {ℋ_0 : ink_env.arithmetic.BaseArithmetic.Trait Self}
+          {ℋ_1 : core.convert.From.Trait Self (T := u16)}
+          {ℋ_2 : core.convert.From.Trait Self (T := u32)} :
+          Type := {
+      }.
+      Global Set Primitive Projections.
+    End AtLeast32Bit.
   End AtLeast32Bit.
   
   Module AtLeast32BitUnsigned.
-    Unset Primitive Projections.
-    Class Trait
-        (Self : Set)
-        `{ink_env.arithmetic.AtLeast32Bit.Trait Self}
-        `{num_traits.sign.Unsigned.Trait Self}
-        `{State.Trait} :
-        Type := {
-    }.
-    Global Set Primitive Projections.
+    Section AtLeast32BitUnsigned.
+      Context `{State.Trait}.
+      
+      Unset Primitive Projections.
+      Class Trait
+          (Self : Set)
+          {ℋ_0 : ink_env.arithmetic.AtLeast32Bit.Trait Self}
+          {ℋ_1 : num_traits.sign.Unsigned.Trait Self} :
+          Type := {
+      }.
+      Global Set Primitive Projections.
+    End AtLeast32BitUnsigned.
   End AtLeast32BitUnsigned.
 End arithmetic.
 
 Module types.
   Module FromLittleEndian.
-    Class Trait (Self : Set) `{State.Trait} : Type := {
+    Section FromLittleEndian.
+      Context `{State.Trait}.
+      
+      Class Trait (Self : Set) : Type := {
+        Bytes : Set;
+        from_le_bytes : Bytes -> M Self;
+      }.
+      
+      Global Instance Method_Bytes `(Trait)
+        : Notation.DoubleColonType Self "Bytes" := {
+        Notation.double_colon_type := Bytes;
+      }.
+    End FromLittleEndian.
+  End FromLittleEndian.
+  
+  Module AccountIdGuard.
+    Section AccountIdGuard.
+      Context `{State.Trait}.
+      
+      Unset Primitive Projections.
+      Class Trait (Self : Set) : Type := {
+      }.
+      Global Set Primitive Projections.
+    End AccountIdGuard.
+  End AccountIdGuard.
+  
+  Module CodecAsType.
+    Section CodecAsType.
+      Context `{State.Trait}.
+      
+      Unset Primitive Projections.
+      Class Trait
+          (Self : Set)
+          {ℋ_0 : scale_decode.DecodeAsType.Trait Self}
+          {ℋ_1 : scale_encode.EncodeAsType.Trait Self} :
+          Type := {
+      }.
+      Global Set Primitive Projections.
+    End CodecAsType.
+  End CodecAsType.
+  
+  Module Environment.
+    Section Environment.
+      Context `{State.Trait}.
+      
+      Class Trait (Self : Set) : Type := {
+        MAX_EVENT_TOPICS : usize;
+        AccountId : Set;
+        Balance : Set;
+        Hash : Set;
+        Timestamp : Set;
+        BlockNumber : Set;
+        ChainExtension : Set;
+      }.
+      
+      Global Instance Method_AccountId `(Trait)
+        : Notation.DoubleColonType Self "AccountId" := {
+        Notation.double_colon_type := AccountId;
+      }.
+      Global Instance Method_Balance `(Trait)
+        : Notation.DoubleColonType Self "Balance" := {
+        Notation.double_colon_type := Balance;
+      }.
+      Global Instance Method_Hash `(Trait)
+        : Notation.DoubleColonType Self "Hash" := {
+        Notation.double_colon_type := Hash;
+      }.
+      Global Instance Method_Timestamp `(Trait)
+        : Notation.DoubleColonType Self "Timestamp" := {
+        Notation.double_colon_type := Timestamp;
+      }.
+      Global Instance Method_BlockNumber `(Trait)
+        : Notation.DoubleColonType Self "BlockNumber" := {
+        Notation.double_colon_type := BlockNumber;
+      }.
+      Global Instance Method_ChainExtension `(Trait)
+        : Notation.DoubleColonType Self "ChainExtension" := {
+        Notation.double_colon_type := ChainExtension;
+      }.
+    End Environment.
+  End Environment.
+  
+  Module NoChainExtension.
+    Inductive t `{State.Trait} : Set :=
+    .
+  End NoChainExtension.
+  Definition NoChainExtension `{State.Trait} : Set := NoChainExtension.t.
+  
+  Module DefaultEnvironment.
+    Inductive t `{State.Trait} : Set :=
+    .
+  End DefaultEnvironment.
+  Definition DefaultEnvironment `{State.Trait} : Set := DefaultEnvironment.t.
+  
+  Definition Balance `{State.Trait} : Set := u128.
+  
+  Definition Timestamp `{State.Trait} : Set := u64.
+  
+  Definition Gas `{State.Trait} : Set := u64.
+  
+  Definition BlockNumber `{State.Trait} : Set := u32.
+End types.
+
+Module FromLittleEndian.
+  Section FromLittleEndian.
+    Context `{State.Trait}.
+    
+    Class Trait (Self : Set) : Type := {
       Bytes : Set;
-      _
-        :
-        Sigma
-          `(core.default.Default.Trait Bytes)
-          `(core.convert.AsRef.Trait Bytes (T := Slice u8))
-          `(core.convert.AsMut.Trait Bytes (T := Slice u8)),
-        unit;
       from_le_bytes : Bytes -> M Self;
     }.
     
@@ -118,113 +215,49 @@ Module types.
       : Notation.DoubleColonType Self "Bytes" := {
       Notation.double_colon_type := Bytes;
     }.
-    Global Instance Method_from_le_bytes `{State.Trait} `(Trait)
-      : Notation.Dot "from_le_bytes" := {
-      Notation.dot := from_le_bytes;
-    }.
   End FromLittleEndian.
-  
-  Module AccountIdGuard.
+End FromLittleEndian.
+
+Module AccountIdGuard.
+  Section AccountIdGuard.
+    Context `{State.Trait}.
+    
     Unset Primitive Projections.
-    Class Trait (Self : Set) `{State.Trait} : Type := {
+    Class Trait (Self : Set) : Type := {
     }.
     Global Set Primitive Projections.
   End AccountIdGuard.
-  
-  Module CodecAsType.
+End AccountIdGuard.
+
+Module CodecAsType.
+  Section CodecAsType.
+    Context `{State.Trait}.
+    
     Unset Primitive Projections.
     Class Trait
         (Self : Set)
-        `{scale_decode.DecodeAsType.Trait Self}
-        `{scale_encode.EncodeAsType.Trait Self}
-        `{State.Trait} :
+        {ℋ_0 : scale_decode.DecodeAsType.Trait Self}
+        {ℋ_1 : scale_encode.EncodeAsType.Trait Self} :
         Type := {
     }.
     Global Set Primitive Projections.
   End CodecAsType.
-  
-  Module Environment.
-    Class Trait (Self : Set) `{State.Trait} : Type := {
+End CodecAsType.
+
+Module Environment.
+  Section Environment.
+    Context `{State.Trait}.
+    
+    Class Trait (Self : Set) : Type := {
       MAX_EVENT_TOPICS : usize;
       AccountId : Set;
-      _
-        :
-        Sigma
-          `(parity_scale_codec.codec.Codec.Trait AccountId)
-          `(ink_env.types.CodecAsType.Trait AccountId)
-          `(core.clone.Clone.Trait AccountId)
-          `(core.cmp.PartialEq.Trait AccountId
-              (Rhs := core.cmp.PartialEq.Default.Rhs AccountId))
-          `(core.cmp.Eq.Trait AccountId)
-          `(core.cmp.Ord.Trait AccountId)
-          `(core.convert.AsRef.Trait AccountId (T := Slice u8))
-          `(core.convert.AsMut.Trait AccountId (T := Slice u8)),
-        unit;
       Balance : Set;
-      _
-        :
-        Sigma
-          `(parity_scale_codec.codec.Codec.Trait Balance)
-          `(ink_env.types.CodecAsType.Trait Balance)
-          `(core.marker.Copy.Trait Balance)
-          `(core.clone.Clone.Trait Balance)
-          `(core.cmp.PartialEq.Trait Balance
-              (Rhs := core.cmp.PartialEq.Default.Rhs Balance))
-          `(core.cmp.Eq.Trait Balance)
-          `(ink_env.arithmetic.AtLeast32BitUnsigned.Trait Balance)
-          `(ink_env.types.FromLittleEndian.Trait Balance),
-        unit;
       Hash : Set;
-      _
-        :
-        Sigma
-          `(parity_scale_codec.codec.Codec.Trait Hash)
-          `(ink_env.types.CodecAsType.Trait Hash)
-          `(core.marker.Copy.Trait Hash)
-          `(core.clone.Clone.Trait Hash)
-          `(ink_primitives.types.Clear.Trait Hash)
-          `(core.cmp.PartialEq.Trait Hash
-              (Rhs := core.cmp.PartialEq.Default.Rhs Hash))
-          `(core.cmp.Eq.Trait Hash)
-          `(core.cmp.Ord.Trait Hash)
-          `(core.convert.AsRef.Trait Hash (T := Slice u8))
-          `(core.convert.AsMut.Trait Hash (T := Slice u8)),
-        unit;
       Timestamp : Set;
-      _
-        :
-        Sigma
-          `(parity_scale_codec.codec.Codec.Trait Timestamp)
-          `(ink_env.types.CodecAsType.Trait Timestamp)
-          `(core.marker.Copy.Trait Timestamp)
-          `(core.clone.Clone.Trait Timestamp)
-          `(core.cmp.PartialEq.Trait Timestamp
-              (Rhs := core.cmp.PartialEq.Default.Rhs Timestamp))
-          `(core.cmp.Eq.Trait Timestamp)
-          `(ink_env.arithmetic.AtLeast32BitUnsigned.Trait Timestamp)
-          `(ink_env.types.FromLittleEndian.Trait Timestamp),
-        unit;
       BlockNumber : Set;
-      _
-        :
-        Sigma
-          `(parity_scale_codec.codec.Codec.Trait BlockNumber)
-          `(ink_env.types.CodecAsType.Trait BlockNumber)
-          `(core.marker.Copy.Trait BlockNumber)
-          `(core.clone.Clone.Trait BlockNumber)
-          `(core.cmp.PartialEq.Trait BlockNumber
-              (Rhs := core.cmp.PartialEq.Default.Rhs BlockNumber))
-          `(core.cmp.Eq.Trait BlockNumber)
-          `(ink_env.arithmetic.AtLeast32BitUnsigned.Trait BlockNumber)
-          `(ink_env.types.FromLittleEndian.Trait BlockNumber),
-        unit;
       ChainExtension : Set;
     }.
     
-    Global Instance Method_MAX_EVENT_TOPICS `{State.Trait} `(Trait)
-      : Notation.Dot "MAX_EVENT_TOPICS" := {
-      Notation.dot := MAX_EVENT_TOPICS;
-    }.
     Global Instance Method_AccountId `(Trait)
       : Notation.DoubleColonType Self "AccountId" := {
       Notation.double_colon_type := AccountId;
@@ -250,176 +283,6 @@ Module types.
       Notation.double_colon_type := ChainExtension;
     }.
   End Environment.
-  
-  Module NoChainExtension.
-    Inductive t `{State.Trait} : Set :=
-    .
-  End NoChainExtension.
-  Definition NoChainExtension `{State.Trait} : Set := NoChainExtension.t.
-  
-  Module DefaultEnvironment.
-    Inductive t `{State.Trait} : Set :=
-    .
-  End DefaultEnvironment.
-  Definition DefaultEnvironment `{State.Trait} : Set := DefaultEnvironment.t.
-  
-  Definition Balance `{State.Trait} : Set := u128.
-  
-  Definition Timestamp `{State.Trait} : Set := u64.
-  
-  Definition Gas `{State.Trait} : Set := u64.
-  
-  Definition BlockNumber `{State.Trait} : Set := u32.
-End types.
-
-Module FromLittleEndian.
-  Class Trait (Self : Set) `{State.Trait} : Type := {
-    Bytes : Set;
-    _
-      :
-      Sigma
-        `(core.default.Default.Trait Bytes)
-        `(core.convert.AsRef.Trait Bytes (T := Slice u8))
-        `(core.convert.AsMut.Trait Bytes (T := Slice u8)),
-      unit;
-    from_le_bytes : Bytes -> M Self;
-  }.
-  
-  Global Instance Method_Bytes `(Trait)
-    : Notation.DoubleColonType Self "Bytes" := {
-    Notation.double_colon_type := Bytes;
-  }.
-  Global Instance Method_from_le_bytes `{State.Trait} `(Trait)
-    : Notation.Dot "from_le_bytes" := {
-    Notation.dot := from_le_bytes;
-  }.
-End FromLittleEndian.
-
-Module AccountIdGuard.
-  Unset Primitive Projections.
-  Class Trait (Self : Set) `{State.Trait} : Type := {
-  }.
-  Global Set Primitive Projections.
-End AccountIdGuard.
-
-Module CodecAsType.
-  Unset Primitive Projections.
-  Class Trait
-      (Self : Set)
-      `{scale_decode.DecodeAsType.Trait Self}
-      `{scale_encode.EncodeAsType.Trait Self}
-      `{State.Trait} :
-      Type := {
-  }.
-  Global Set Primitive Projections.
-End CodecAsType.
-
-Module Environment.
-  Class Trait (Self : Set) `{State.Trait} : Type := {
-    MAX_EVENT_TOPICS : usize;
-    AccountId : Set;
-    _
-      :
-      Sigma
-        `(parity_scale_codec.codec.Codec.Trait AccountId)
-        `(ink_env.types.CodecAsType.Trait AccountId)
-        `(core.clone.Clone.Trait AccountId)
-        `(core.cmp.PartialEq.Trait AccountId
-            (Rhs := core.cmp.PartialEq.Default.Rhs AccountId))
-        `(core.cmp.Eq.Trait AccountId)
-        `(core.cmp.Ord.Trait AccountId)
-        `(core.convert.AsRef.Trait AccountId (T := Slice u8))
-        `(core.convert.AsMut.Trait AccountId (T := Slice u8)),
-      unit;
-    Balance : Set;
-    _
-      :
-      Sigma
-        `(parity_scale_codec.codec.Codec.Trait Balance)
-        `(ink_env.types.CodecAsType.Trait Balance)
-        `(core.marker.Copy.Trait Balance)
-        `(core.clone.Clone.Trait Balance)
-        `(core.cmp.PartialEq.Trait Balance
-            (Rhs := core.cmp.PartialEq.Default.Rhs Balance))
-        `(core.cmp.Eq.Trait Balance)
-        `(ink_env.arithmetic.AtLeast32BitUnsigned.Trait Balance)
-        `(ink_env.types.FromLittleEndian.Trait Balance),
-      unit;
-    Hash : Set;
-    _
-      :
-      Sigma
-        `(parity_scale_codec.codec.Codec.Trait Hash)
-        `(ink_env.types.CodecAsType.Trait Hash)
-        `(core.marker.Copy.Trait Hash)
-        `(core.clone.Clone.Trait Hash)
-        `(ink_primitives.types.Clear.Trait Hash)
-        `(core.cmp.PartialEq.Trait Hash
-            (Rhs := core.cmp.PartialEq.Default.Rhs Hash))
-        `(core.cmp.Eq.Trait Hash)
-        `(core.cmp.Ord.Trait Hash)
-        `(core.convert.AsRef.Trait Hash (T := Slice u8))
-        `(core.convert.AsMut.Trait Hash (T := Slice u8)),
-      unit;
-    Timestamp : Set;
-    _
-      :
-      Sigma
-        `(parity_scale_codec.codec.Codec.Trait Timestamp)
-        `(ink_env.types.CodecAsType.Trait Timestamp)
-        `(core.marker.Copy.Trait Timestamp)
-        `(core.clone.Clone.Trait Timestamp)
-        `(core.cmp.PartialEq.Trait Timestamp
-            (Rhs := core.cmp.PartialEq.Default.Rhs Timestamp))
-        `(core.cmp.Eq.Trait Timestamp)
-        `(ink_env.arithmetic.AtLeast32BitUnsigned.Trait Timestamp)
-        `(ink_env.types.FromLittleEndian.Trait Timestamp),
-      unit;
-    BlockNumber : Set;
-    _
-      :
-      Sigma
-        `(parity_scale_codec.codec.Codec.Trait BlockNumber)
-        `(ink_env.types.CodecAsType.Trait BlockNumber)
-        `(core.marker.Copy.Trait BlockNumber)
-        `(core.clone.Clone.Trait BlockNumber)
-        `(core.cmp.PartialEq.Trait BlockNumber
-            (Rhs := core.cmp.PartialEq.Default.Rhs BlockNumber))
-        `(core.cmp.Eq.Trait BlockNumber)
-        `(ink_env.arithmetic.AtLeast32BitUnsigned.Trait BlockNumber)
-        `(ink_env.types.FromLittleEndian.Trait BlockNumber),
-      unit;
-    ChainExtension : Set;
-  }.
-  
-  Global Instance Method_MAX_EVENT_TOPICS `{State.Trait} `(Trait)
-    : Notation.Dot "MAX_EVENT_TOPICS" := {
-    Notation.dot := MAX_EVENT_TOPICS;
-  }.
-  Global Instance Method_AccountId `(Trait)
-    : Notation.DoubleColonType Self "AccountId" := {
-    Notation.double_colon_type := AccountId;
-  }.
-  Global Instance Method_Balance `(Trait)
-    : Notation.DoubleColonType Self "Balance" := {
-    Notation.double_colon_type := Balance;
-  }.
-  Global Instance Method_Hash `(Trait)
-    : Notation.DoubleColonType Self "Hash" := {
-    Notation.double_colon_type := Hash;
-  }.
-  Global Instance Method_Timestamp `(Trait)
-    : Notation.DoubleColonType Self "Timestamp" := {
-    Notation.double_colon_type := Timestamp;
-  }.
-  Global Instance Method_BlockNumber `(Trait)
-    : Notation.DoubleColonType Self "BlockNumber" := {
-    Notation.double_colon_type := BlockNumber;
-  }.
-  Global Instance Method_ChainExtension `(Trait)
-    : Notation.DoubleColonType Self "ChainExtension" := {
-    Notation.double_colon_type := ChainExtension;
-  }.
 End Environment.
 
 Module NoChainExtension.
@@ -444,26 +307,33 @@ Definition BlockNumber `{State.Trait} : Set := u32.
 
 Module contract.
   Module ContractEnv.
-    Class Trait (Self : Set) `{State.Trait} : Type := {
-      Env : Set;
-      _ : Sigma `(ink_env.types.Environment.Trait Env), unit;
-    }.
-    
-    Global Instance Method_Env `(Trait)
-      : Notation.DoubleColonType Self "Env" := {
-      Notation.double_colon_type := Env;
-    }.
+    Section ContractEnv.
+      Context `{State.Trait}.
+      
+      Class Trait (Self : Set) : Type := {
+        Env : Set;
+      }.
+      
+      Global Instance Method_Env `(Trait)
+        : Notation.DoubleColonType Self "Env" := {
+        Notation.double_colon_type := Env;
+      }.
+    End ContractEnv.
   End ContractEnv.
   
   Module ContractReference.
-    Class Trait (Self : Set) `{State.Trait} : Type := {
-      Type_ : Set;
-    }.
-    
-    Global Instance Method_Type_ `(Trait)
-      : Notation.DoubleColonType Self "Type_" := {
-      Notation.double_colon_type := Type_;
-    }.
+    Section ContractReference.
+      Context `{State.Trait}.
+      
+      Class Trait (Self : Set) : Type := {
+        Type_ : Set;
+      }.
+      
+      Global Instance Method_Type_ `(Trait)
+        : Notation.DoubleColonType Self "Type_" := {
+        Notation.double_colon_type := Type_;
+      }.
+    End ContractReference.
   End ContractReference.
 End contract.
 
@@ -471,122 +341,132 @@ Module call.
   Module common.
     Module ReturnType.
       Section ReturnType.
+        Context `{State.Trait}.
+        
         Context {T : Set}.
+        
         Unset Primitive Projections.
-        Record t `{State.Trait} : Set := {
+        Record t : Set := {
           x0 : core.marker.PhantomData (T);
         }.
         Global Set Primitive Projections.
         
-        Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
+        Global Instance Get_0 : Notation.Dot "0" := {
           Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
         }.
       End ReturnType.
     End ReturnType.
-    Definition ReturnType `{State.Trait} : Set := M.val ReturnType.t.
+    Definition ReturnType `{State.Trait} (T : Set) : Set :=
+      M.val (ReturnType.t (T := T)).
     
     Module Set_.
       Section Set_.
+        Context `{State.Trait}.
+        
         Context {T : Set}.
+        
         Unset Primitive Projections.
-        Record t `{State.Trait} : Set := {
+        Record t : Set := {
           x0 : T;
         }.
         Global Set Primitive Projections.
         
-        Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
+        Global Instance Get_0 : Notation.Dot "0" := {
           Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
         }.
       End Set_.
     End Set_.
-    Definition Set_ `{State.Trait} : Set := M.val Set_.t.
+    Definition Set_ `{State.Trait} (T : Set) : Set := M.val (Set_.t (T := T)).
     
     Module Unset_.
       Section Unset_.
+        Context `{State.Trait}.
+        
         Context {T : Set}.
+        
         Unset Primitive Projections.
-        Record t `{State.Trait} : Set := {
+        Record t : Set := {
           x0 : core.marker.PhantomData (T);
         }.
         Global Set Primitive Projections.
         
-        Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
+        Global Instance Get_0 : Notation.Dot "0" := {
           Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
         }.
       End Unset_.
     End Unset_.
-    Definition Unset_ `{State.Trait} : Set := M.val Unset_.t.
+    Definition Unset_ `{State.Trait} (T : Set) : Set :=
+      M.val (Unset_.t (T := T)).
     
     Module Unwrap.
-      Class Trait (Self : Set) `{State.Trait} : Type := {
-        Output : Set;
-        unwrap_or_else
-          {F : Set}
-          `{H'0 : core.ops.function.FnOnce.Trait F (Args := unit)}
-          :
-          Self -> F -> M Output;
-      }.
-      
-      Global Instance Method_Output `(Trait)
-        : Notation.DoubleColonType Self "Output" := {
-        Notation.double_colon_type := Output;
-      }.
-      Global Instance Method_unwrap_or_else `{State.Trait} `(Trait)
-        : Notation.Dot "unwrap_or_else" := {
-        Notation.dot
-          {F : Set}
-          `{H'0 : core.ops.function.FnOnce.Trait F (Args := unit)}
-          :=
-          unwrap_or_else (F := F) (H'0 := H'0);
-      }.
+      Section Unwrap.
+        Context `{State.Trait}.
+        
+        Class Trait (Self : Set) : Type := {
+          Output : Set;
+          unwrap_or_else
+            {F : Set}
+            {ℋ_0 : core.ops.function.FnOnce.Trait F (Args := unit)}
+            :
+            Self -> F -> M Output;
+        }.
+        
+        Global Instance Method_Output `(Trait)
+          : Notation.DoubleColonType Self "Output" := {
+          Notation.double_colon_type := Output;
+        }.
+      End Unwrap.
     End Unwrap.
   End common.
   
   Module selector.
     Module Selector.
-      Unset Primitive Projections.
-      Record t `{State.Trait} : Set := {
-        bytes : array u8;
-      }.
-      Global Set Primitive Projections.
-      
-      Global Instance Get_bytes `{State.Trait} : Notation.Dot "bytes" := {
-        Notation.dot x := let* x := M.read x in Pure x.(bytes) : M _;
-      }.
-      Global Instance Get_AF_bytes `{State.Trait}
-        : Notation.DoubleColon t "bytes" := {
-        Notation.double_colon x := let* x := M.read x in Pure x.(bytes) : M _;
-      }.
+      Section Selector.
+        Context `{State.Trait}.
+        
+        Unset Primitive Projections.
+        Record t : Set := {
+          bytes : array u8;
+        }.
+        Global Set Primitive Projections.
+        
+        Global Instance Get_bytes : Notation.Dot "bytes" := {
+          Notation.dot x := let* x := M.read x in Pure x.(bytes) : M _;
+        }.
+        Global Instance Get_AF_bytes : Notation.DoubleColon t "bytes" := {
+          Notation.double_colon x := let* x := M.read x in Pure x.(bytes) : M _;
+        }.
+      End Selector.
     End Selector.
-    Definition Selector `{State.Trait} : Set := M.val (Selector.t).
+    Definition Selector `{State.Trait} : Set := M.val Selector.t.
   End selector.
   
   Module execution_input.
     Module ExecutionInput.
       Section ExecutionInput.
+        Context `{State.Trait}.
+        
         Context {Args : Set}.
+        
         Unset Primitive Projections.
-        Record t `{State.Trait} : Set := {
+        Record t : Set := {
           selector : ink_env.call.selector.Selector;
           args : Args;
         }.
         Global Set Primitive Projections.
         
-        Global Instance Get_selector `{State.Trait}
-          : Notation.Dot "selector" := {
+        Global Instance Get_selector : Notation.Dot "selector" := {
           Notation.dot x := let* x := M.read x in Pure x.(selector) : M _;
         }.
-        Global Instance Get_AF_selector `{State.Trait}
-          : Notation.DoubleColon t "selector" := {
+        Global Instance Get_AF_selector : Notation.DoubleColon t "selector" := {
           Notation.double_colon x
             :=
             let* x := M.read x in Pure x.(selector) : M _;
         }.
-        Global Instance Get_args `{State.Trait} : Notation.Dot "args" := {
+        Global Instance Get_args : Notation.Dot "args" := {
           Notation.dot x := let* x := M.read x in Pure x.(args) : M _;
         }.
-        Global Instance Get_AF_args `{State.Trait}
-          : Notation.DoubleColon t "args" := {
+        Global Instance Get_AF_args : Notation.DoubleColon t "args" := {
           Notation.double_colon x := let* x := M.read x in Pure x.(args) : M _;
         }.
       End ExecutionInput.
@@ -596,26 +476,27 @@ Module call.
     
     Module ArgumentList.
       Section ArgumentList.
+        Context `{State.Trait}.
+        
         Context {Head Rest : Set}.
+        
         Unset Primitive Projections.
-        Record t `{State.Trait} : Set := {
+        Record t : Set := {
           head : Head;
           rest : Rest;
         }.
         Global Set Primitive Projections.
         
-        Global Instance Get_head `{State.Trait} : Notation.Dot "head" := {
+        Global Instance Get_head : Notation.Dot "head" := {
           Notation.dot x := let* x := M.read x in Pure x.(head) : M _;
         }.
-        Global Instance Get_AF_head `{State.Trait}
-          : Notation.DoubleColon t "head" := {
+        Global Instance Get_AF_head : Notation.DoubleColon t "head" := {
           Notation.double_colon x := let* x := M.read x in Pure x.(head) : M _;
         }.
-        Global Instance Get_rest `{State.Trait} : Notation.Dot "rest" := {
+        Global Instance Get_rest : Notation.Dot "rest" := {
           Notation.dot x := let* x := M.read x in Pure x.(rest) : M _;
         }.
-        Global Instance Get_AF_rest `{State.Trait}
-          : Notation.DoubleColon t "rest" := {
+        Global Instance Get_AF_rest : Notation.DoubleColon t "rest" := {
           Notation.double_colon x := let* x := M.read x in Pure x.(rest) : M _;
         }.
       End ArgumentList.
@@ -625,18 +506,20 @@ Module call.
     
     Module Argument.
       Section Argument.
+        Context `{State.Trait}.
+        
         Context {T : Set}.
+        
         Unset Primitive Projections.
-        Record t `{State.Trait} : Set := {
+        Record t : Set := {
           arg : T;
         }.
         Global Set Primitive Projections.
         
-        Global Instance Get_arg `{State.Trait} : Notation.Dot "arg" := {
+        Global Instance Get_arg : Notation.Dot "arg" := {
           Notation.dot x := let* x := M.read x in Pure x.(arg) : M _;
         }.
-        Global Instance Get_AF_arg `{State.Trait}
-          : Notation.DoubleColon t "arg" := {
+        Global Instance Get_AF_arg : Notation.DoubleColon t "arg" := {
           Notation.double_colon x := let* x := M.read x in Pure x.(arg) : M _;
         }.
       End Argument.
@@ -650,7 +533,11 @@ Module call.
         Rest.
     
     Module ArgumentListEnd.
-      Inductive t : Set := Build.
+      Section ArgumentListEnd.
+        Context `{State.Trait}.
+        
+        Inductive t : Set := Build.
+      End ArgumentListEnd.
     End ArgumentListEnd.
     Definition ArgumentListEnd := @ArgumentListEnd.t.
     
@@ -670,59 +557,53 @@ Module call.
     End state.
     
     Module FromAccountId.
-      Class Trait
-          (Self : Set)
-          {T : Set}
-          `{State.Trait}
-          `{ink_env.types.Environment.Trait T} :
-          Type := {
-        from_account_id
-          :
-          (ink_env.types.Environment.AccountId (Self := T)) -> M Self;
-      }.
-      
-      Global Instance Method_from_account_id `{State.Trait} `(Trait)
-        : Notation.Dot "from_account_id" := {
-        Notation.dot := from_account_id;
-      }.
+      Section FromAccountId.
+        Context `{State.Trait}.
+        
+        Class Trait
+            (Self : Set)
+            {T : Set}
+            {ℋ_0 : ink_env.types.Environment.Trait T} :
+            Type := {
+          from_account_id
+            :
+            (ink_env.types.Environment.AccountId (Self := T)) -> M Self;
+        }.
+        
+      End FromAccountId.
     End FromAccountId.
     
     Module ConstructorReturnType.
-      Class Trait (Self : Set) {C : Set} `{State.Trait} : Type := {
-        IS_RESULT : bool;
-        Output : Set;
-        Error : Set;
-        _ : Sigma `(parity_scale_codec.codec.Decode.Trait Error), unit;
-        ok : C -> M Output;
-      }.
-      
-      Global Instance Method_IS_RESULT `{State.Trait} `(Trait)
-        : Notation.Dot "IS_RESULT" := {
-        Notation.dot := IS_RESULT;
-      }.
-      Global Instance Method_Output `(Trait)
-        : Notation.DoubleColonType Self "Output" := {
-        Notation.double_colon_type := Output;
-      }.
-      Global Instance Method_Error `(Trait)
-        : Notation.DoubleColonType Self "Error" := {
-        Notation.double_colon_type := Error;
-      }.
-      Global Instance Method_ok `{State.Trait} `(Trait) : Notation.Dot "ok" := {
-        Notation.dot := ok;
-      }.
-      Global Instance Method_err `{State.Trait} `(Trait)
-        : Notation.Dot "err" := {
-        Notation.dot (_err : Error) := (axiom : M (core.option.Option Output));
-      }.
+      Section ConstructorReturnType.
+        Context `{State.Trait}.
+        
+        Class Trait (Self : Set) {C : Set} : Type := {
+          IS_RESULT : bool;
+          Output : Set;
+          Error : Set;
+          ok : C -> M Output;
+        }.
+        
+        Global Instance Method_Output `(Trait)
+          : Notation.DoubleColonType Self "Output" := {
+          Notation.double_colon_type := Output;
+        }.
+        Global Instance Method_Error `(Trait)
+          : Notation.DoubleColonType Self "Error" := {
+          Notation.double_colon_type := Error;
+        }.
+      End ConstructorReturnType.
     End ConstructorReturnType.
     
     Module CreateParams.
       Section CreateParams.
+        Context `{State.Trait}.
+        
         Context {E ContractRef Args Salt R : Set}.
-        Context `{ink_env.types.Environment.Trait E}.
+        
+        Context {ℋ_0 : ink_env.types.Environment.Trait E}.
         Unset Primitive Projections.
-        Record t `{State.Trait} : Set := {
+        Record t : Set := {
           code_hash : E::type["Hash"];
           gas_limit : u64;
           endowment : E::type["Balance"];
@@ -733,72 +614,64 @@ Module call.
         }.
         Global Set Primitive Projections.
         
-        Global Instance Get_code_hash `{State.Trait}
-          : Notation.Dot "code_hash" := {
+        Global Instance Get_code_hash : Notation.Dot "code_hash" := {
           Notation.dot x := let* x := M.read x in Pure x.(code_hash) : M _;
         }.
-        Global Instance Get_AF_code_hash `{State.Trait}
+        Global Instance Get_AF_code_hash
           : Notation.DoubleColon t "code_hash" := {
           Notation.double_colon x
             :=
             let* x := M.read x in Pure x.(code_hash) : M _;
         }.
-        Global Instance Get_gas_limit `{State.Trait}
-          : Notation.Dot "gas_limit" := {
+        Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
           Notation.dot x := let* x := M.read x in Pure x.(gas_limit) : M _;
         }.
-        Global Instance Get_AF_gas_limit `{State.Trait}
+        Global Instance Get_AF_gas_limit
           : Notation.DoubleColon t "gas_limit" := {
           Notation.double_colon x
             :=
             let* x := M.read x in Pure x.(gas_limit) : M _;
         }.
-        Global Instance Get_endowment `{State.Trait}
-          : Notation.Dot "endowment" := {
+        Global Instance Get_endowment : Notation.Dot "endowment" := {
           Notation.dot x := let* x := M.read x in Pure x.(endowment) : M _;
         }.
-        Global Instance Get_AF_endowment `{State.Trait}
+        Global Instance Get_AF_endowment
           : Notation.DoubleColon t "endowment" := {
           Notation.double_colon x
             :=
             let* x := M.read x in Pure x.(endowment) : M _;
         }.
-        Global Instance Get_exec_input `{State.Trait}
-          : Notation.Dot "exec_input" := {
+        Global Instance Get_exec_input : Notation.Dot "exec_input" := {
           Notation.dot x := let* x := M.read x in Pure x.(exec_input) : M _;
         }.
-        Global Instance Get_AF_exec_input `{State.Trait}
+        Global Instance Get_AF_exec_input
           : Notation.DoubleColon t "exec_input" := {
           Notation.double_colon x
             :=
             let* x := M.read x in Pure x.(exec_input) : M _;
         }.
-        Global Instance Get_salt_bytes `{State.Trait}
-          : Notation.Dot "salt_bytes" := {
+        Global Instance Get_salt_bytes : Notation.Dot "salt_bytes" := {
           Notation.dot x := let* x := M.read x in Pure x.(salt_bytes) : M _;
         }.
-        Global Instance Get_AF_salt_bytes `{State.Trait}
+        Global Instance Get_AF_salt_bytes
           : Notation.DoubleColon t "salt_bytes" := {
           Notation.double_colon x
             :=
             let* x := M.read x in Pure x.(salt_bytes) : M _;
         }.
-        Global Instance Get__return_type `{State.Trait}
-          : Notation.Dot "_return_type" := {
+        Global Instance Get__return_type : Notation.Dot "_return_type" := {
           Notation.dot x := let* x := M.read x in Pure x.(_return_type) : M _;
         }.
-        Global Instance Get_AF__return_type `{State.Trait}
+        Global Instance Get_AF__return_type
           : Notation.DoubleColon t "_return_type" := {
           Notation.double_colon x
             :=
             let* x := M.read x in Pure x.(_return_type) : M _;
         }.
-        Global Instance Get__phantom `{State.Trait}
-          : Notation.Dot "_phantom" := {
+        Global Instance Get__phantom : Notation.Dot "_phantom" := {
           Notation.dot x := let* x := M.read x in Pure x.(_phantom) : M _;
         }.
-        Global Instance Get_AF__phantom `{State.Trait}
-          : Notation.DoubleColon t "_phantom" := {
+        Global Instance Get_AF__phantom : Notation.DoubleColon t "_phantom" := {
           Notation.double_colon x
             :=
             let* x := M.read x in Pure x.(_phantom) : M _;
@@ -808,7 +681,7 @@ Module call.
     Definition CreateParams
         (E ContractRef Args Salt R : Set)
         `{State.Trait}
-        `{ink_env.types.Environment.Trait E}
+        {ℋ_0 : ink_env.types.Environment.Trait E}
         : Set :=
       M.val
         (CreateParams.t
@@ -820,11 +693,14 @@ Module call.
     
     Module CreateBuilder.
       Section CreateBuilder.
+        Context `{State.Trait}.
+        
         Context
           {E ContractRef CodeHash GasLimit Endowment Args Salt RetType : Set}.
-        Context `{ink_env.types.Environment.Trait E}.
+        
+        Context {ℋ_0 : ink_env.types.Environment.Trait E}.
         Unset Primitive Projections.
-        Record t `{State.Trait} : Set := {
+        Record t : Set := {
           code_hash : CodeHash;
           gas_limit : GasLimit;
           endowment : Endowment;
@@ -835,69 +711,61 @@ Module call.
         }.
         Global Set Primitive Projections.
         
-        Global Instance Get_code_hash `{State.Trait}
-          : Notation.Dot "code_hash" := {
+        Global Instance Get_code_hash : Notation.Dot "code_hash" := {
           Notation.dot x := let* x := M.read x in Pure x.(code_hash) : M _;
         }.
-        Global Instance Get_AF_code_hash `{State.Trait}
+        Global Instance Get_AF_code_hash
           : Notation.DoubleColon t "code_hash" := {
           Notation.double_colon x
             :=
             let* x := M.read x in Pure x.(code_hash) : M _;
         }.
-        Global Instance Get_gas_limit `{State.Trait}
-          : Notation.Dot "gas_limit" := {
+        Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
           Notation.dot x := let* x := M.read x in Pure x.(gas_limit) : M _;
         }.
-        Global Instance Get_AF_gas_limit `{State.Trait}
+        Global Instance Get_AF_gas_limit
           : Notation.DoubleColon t "gas_limit" := {
           Notation.double_colon x
             :=
             let* x := M.read x in Pure x.(gas_limit) : M _;
         }.
-        Global Instance Get_endowment `{State.Trait}
-          : Notation.Dot "endowment" := {
+        Global Instance Get_endowment : Notation.Dot "endowment" := {
           Notation.dot x := let* x := M.read x in Pure x.(endowment) : M _;
         }.
-        Global Instance Get_AF_endowment `{State.Trait}
+        Global Instance Get_AF_endowment
           : Notation.DoubleColon t "endowment" := {
           Notation.double_colon x
             :=
             let* x := M.read x in Pure x.(endowment) : M _;
         }.
-        Global Instance Get_exec_input `{State.Trait}
-          : Notation.Dot "exec_input" := {
+        Global Instance Get_exec_input : Notation.Dot "exec_input" := {
           Notation.dot x := let* x := M.read x in Pure x.(exec_input) : M _;
         }.
-        Global Instance Get_AF_exec_input `{State.Trait}
+        Global Instance Get_AF_exec_input
           : Notation.DoubleColon t "exec_input" := {
           Notation.double_colon x
             :=
             let* x := M.read x in Pure x.(exec_input) : M _;
         }.
-        Global Instance Get_salt `{State.Trait} : Notation.Dot "salt" := {
+        Global Instance Get_salt : Notation.Dot "salt" := {
           Notation.dot x := let* x := M.read x in Pure x.(salt) : M _;
         }.
-        Global Instance Get_AF_salt `{State.Trait}
-          : Notation.DoubleColon t "salt" := {
+        Global Instance Get_AF_salt : Notation.DoubleColon t "salt" := {
           Notation.double_colon x := let* x := M.read x in Pure x.(salt) : M _;
         }.
-        Global Instance Get_return_type `{State.Trait}
-          : Notation.Dot "return_type" := {
+        Global Instance Get_return_type : Notation.Dot "return_type" := {
           Notation.dot x := let* x := M.read x in Pure x.(return_type) : M _;
         }.
-        Global Instance Get_AF_return_type `{State.Trait}
+        Global Instance Get_AF_return_type
           : Notation.DoubleColon t "return_type" := {
           Notation.double_colon x
             :=
             let* x := M.read x in Pure x.(return_type) : M _;
         }.
-        Global Instance Get__phantom `{State.Trait}
-          : Notation.Dot "_phantom" := {
+        Global Instance Get__phantom : Notation.Dot "_phantom" := {
           Notation.dot x := let* x := M.read x in Pure x.(_phantom) : M _;
         }.
-        Global Instance Get_AF__phantom `{State.Trait}
-          : Notation.DoubleColon t "_phantom" := {
+        Global Instance Get_AF__phantom : Notation.DoubleColon t "_phantom" := {
           Notation.double_colon x
             :=
             let* x := M.read x in Pure x.(_phantom) : M _;
@@ -907,7 +775,7 @@ Module call.
     Definition CreateBuilder
         (E ContractRef CodeHash GasLimit Endowment Args Salt RetType : Set)
         `{State.Trait}
-        `{ink_env.types.Environment.Trait E}
+        {ℋ_0 : ink_env.types.Environment.Trait E}
         : Set :=
       M.val
         (CreateBuilder.t
@@ -926,64 +794,77 @@ Module engine.
   Module off_chain.
     Module call_data.
       Module CallData.
-        Unset Primitive Projections.
-        Record t `{State.Trait} : Set := {
-          bytes : alloc.vec.Vec u8 alloc.vec.Vec.Default.A;
-        }.
-        Global Set Primitive Projections.
-        
-        Global Instance Get_bytes `{State.Trait} : Notation.Dot "bytes" := {
-          Notation.dot x := let* x := M.read x in Pure x.(bytes) : M _;
-        }.
-        Global Instance Get_AF_bytes `{State.Trait}
-          : Notation.DoubleColon t "bytes" := {
-          Notation.double_colon x := let* x := M.read x in Pure x.(bytes) : M _;
-        }.
+        Section CallData.
+          Context `{State.Trait}.
+          
+          Unset Primitive Projections.
+          Record t : Set := {
+            bytes : alloc.vec.Vec u8 alloc.vec.Vec.Default.A;
+          }.
+          Global Set Primitive Projections.
+          
+          Global Instance Get_bytes : Notation.Dot "bytes" := {
+            Notation.dot x := let* x := M.read x in Pure x.(bytes) : M _;
+          }.
+          Global Instance Get_AF_bytes : Notation.DoubleColon t "bytes" := {
+            Notation.double_colon x
+              :=
+              let* x := M.read x in Pure x.(bytes) : M _;
+          }.
+        End CallData.
       End CallData.
-      Definition CallData `{State.Trait} : Set := M.val (CallData.t).
+      Definition CallData `{State.Trait} : Set := M.val CallData.t.
     End call_data.
     
     Module impls.
       Module TopicsBuilder.
-        Unset Primitive Projections.
-        Record t `{State.Trait} : Set := {
-          topics
-            :
-            alloc.vec.Vec
-              (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)
-              alloc.vec.Vec.Default.A;
-        }.
-        Global Set Primitive Projections.
-        
-        Global Instance Get_topics `{State.Trait} : Notation.Dot "topics" := {
-          Notation.dot x := let* x := M.read x in Pure x.(topics) : M _;
-        }.
-        Global Instance Get_AF_topics `{State.Trait}
-          : Notation.DoubleColon t "topics" := {
-          Notation.double_colon x
-            :=
-            let* x := M.read x in Pure x.(topics) : M _;
-        }.
+        Section TopicsBuilder.
+          Context `{State.Trait}.
+          
+          Unset Primitive Projections.
+          Record t : Set := {
+            topics
+              :
+              alloc.vec.Vec
+                (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)
+                alloc.vec.Vec.Default.A;
+          }.
+          Global Set Primitive Projections.
+          
+          Global Instance Get_topics : Notation.Dot "topics" := {
+            Notation.dot x := let* x := M.read x in Pure x.(topics) : M _;
+          }.
+          Global Instance Get_AF_topics : Notation.DoubleColon t "topics" := {
+            Notation.double_colon x
+              :=
+              let* x := M.read x in Pure x.(topics) : M _;
+          }.
+        End TopicsBuilder.
       End TopicsBuilder.
-      Definition TopicsBuilder `{State.Trait} : Set := M.val (TopicsBuilder.t).
+      Definition TopicsBuilder `{State.Trait} : Set := M.val TopicsBuilder.t.
     End impls.
     
     Module EnvInstance.
-      Unset Primitive Projections.
-      Record t `{State.Trait} : Set := {
-        engine : ink_engine.ext.Engine;
-      }.
-      Global Set Primitive Projections.
-      
-      Global Instance Get_engine `{State.Trait} : Notation.Dot "engine" := {
-        Notation.dot x := let* x := M.read x in Pure x.(engine) : M _;
-      }.
-      Global Instance Get_AF_engine `{State.Trait}
-        : Notation.DoubleColon t "engine" := {
-        Notation.double_colon x := let* x := M.read x in Pure x.(engine) : M _;
-      }.
+      Section EnvInstance.
+        Context `{State.Trait}.
+        
+        Unset Primitive Projections.
+        Record t : Set := {
+          engine : ink_engine.ext.Engine;
+        }.
+        Global Set Primitive Projections.
+        
+        Global Instance Get_engine : Notation.Dot "engine" := {
+          Notation.dot x := let* x := M.read x in Pure x.(engine) : M _;
+        }.
+        Global Instance Get_AF_engine : Notation.DoubleColon t "engine" := {
+          Notation.double_colon x
+            :=
+            let* x := M.read x in Pure x.(engine) : M _;
+        }.
+      End EnvInstance.
     End EnvInstance.
-    Definition EnvInstance `{State.Trait} : Set := M.val (EnvInstance.t).
+    Definition EnvInstance `{State.Trait} : Set := M.val EnvInstance.t.
     
     Module AccountError.
       Inductive t `{State.Trait} : Set :=
@@ -1007,46 +888,47 @@ End engine.
 Module hash.
   Module private.
     Module Sealed.
-      Unset Primitive Projections.
-      Class Trait (Self : Set) `{State.Trait} : Type := {
-      }.
-      Global Set Primitive Projections.
+      Section Sealed.
+        Context `{State.Trait}.
+        
+        Unset Primitive Projections.
+        Class Trait (Self : Set) : Type := {
+        }.
+        Global Set Primitive Projections.
+      End Sealed.
     End Sealed.
   End private.
   
   Module HashOutput.
-    Class Trait
-        (Self : Set)
-        `{ink_env.hash.private.Sealed.Trait Self}
-        `{State.Trait} :
-        Type := {
-      Type_ : Set;
-      _ : Sigma `(core.default.Default.Trait Type_), unit;
-    }.
-    
-    Global Instance Method_Type_ `(Trait)
-      : Notation.DoubleColonType Self "Type_" := {
-      Notation.double_colon_type := Type_;
-    }.
+    Section HashOutput.
+      Context `{State.Trait}.
+      
+      Class Trait (Self : Set) {ℋ_0 : ink_env.hash.private.Sealed.Trait Self} :
+          Type := {
+        Type_ : Set;
+      }.
+      
+      Global Instance Method_Type_ `(Trait)
+        : Notation.DoubleColonType Self "Type_" := {
+        Notation.double_colon_type := Type_;
+      }.
+    End HashOutput.
   End HashOutput.
   
   Module CryptoHash.
-    Class Trait
-        (Self : Set)
-        `{ink_env.hash.HashOutput.Trait Self}
-        `{State.Trait} :
-        Type := {
-      hash
-        :
-        (ref (Slice u8)) ->
-          (mut_ref (ink_env.hash.HashOutput.Type_ (Self := Self))) ->
-          M unit;
-    }.
-    
-    Global Instance Method_hash `{State.Trait} `(Trait)
-      : Notation.Dot "hash" := {
-      Notation.dot := hash;
-    }.
+    Section CryptoHash.
+      Context `{State.Trait}.
+      
+      Class Trait (Self : Set) {ℋ_0 : ink_env.hash.HashOutput.Trait Self} :
+          Type := {
+        hash
+          :
+          (ref (Slice u8)) ->
+            (mut_ref (ink_env.hash.HashOutput.Type_ (Self := Self))) ->
+            M unit;
+      }.
+      
+    End CryptoHash.
   End CryptoHash.
   
   Module Sha2x256.
@@ -1076,62 +958,52 @@ End hash.
 
 Module topics.
   Module TopicsBuilderBackend.
-    Class Trait
-        (Self : Set)
-        {E : Set}
-        `{State.Trait}
-        `{ink_env.types.Environment.Trait E} :
-        Type := {
-      Output : Set;
-      expect : (mut_ref Self) -> usize -> M unit;
-      push_topic {T : Set} `{H'0 : parity_scale_codec.codec.Encode.Trait T}
-        :
-        (mut_ref Self) -> (ref T) -> M unit;
-      output : Self -> M Output;
-    }.
-    
-    Global Instance Method_Output `(Trait)
-      : Notation.DoubleColonType Self "Output" := {
-      Notation.double_colon_type := Output;
-    }.
-    Global Instance Method_expect `{State.Trait} `(Trait)
-      : Notation.Dot "expect" := {
-      Notation.dot := expect;
-    }.
-    Global Instance Method_push_topic `{State.Trait} `(Trait)
-      : Notation.Dot "push_topic" := {
-      Notation.dot {T : Set} `{H'0 : parity_scale_codec.codec.Encode.Trait T}
-        :=
-        push_topic (T := T) (H'0 := H'0);
-    }.
-    Global Instance Method_output `{State.Trait} `(Trait)
-      : Notation.Dot "output" := {
-      Notation.dot := output;
-    }.
+    Section TopicsBuilderBackend.
+      Context `{State.Trait}.
+      
+      Class Trait
+          (Self : Set)
+          {E : Set}
+          {ℋ_0 : ink_env.types.Environment.Trait E} :
+          Type := {
+        Output : Set;
+        expect : (mut_ref Self) -> usize -> M unit;
+        push_topic {T : Set} {ℋ_0 : parity_scale_codec.codec.Encode.Trait T}
+          :
+          (mut_ref Self) -> (ref T) -> M unit;
+        output : Self -> M Output;
+      }.
+      
+      Global Instance Method_Output `(Trait)
+        : Notation.DoubleColonType Self "Output" := {
+        Notation.double_colon_type := Output;
+      }.
+    End TopicsBuilderBackend.
   End TopicsBuilderBackend.
   
   Module TopicsBuilder.
     Section TopicsBuilder.
+      Context `{State.Trait}.
+      
       Context {S E B : Set}.
+      
       Unset Primitive Projections.
-      Record t `{State.Trait} : Set := {
+      Record t : Set := {
         backend : B;
         state : core.marker.PhantomData (S * E);
       }.
       Global Set Primitive Projections.
       
-      Global Instance Get_backend `{State.Trait} : Notation.Dot "backend" := {
+      Global Instance Get_backend : Notation.Dot "backend" := {
         Notation.dot x := let* x := M.read x in Pure x.(backend) : M _;
       }.
-      Global Instance Get_AF_backend `{State.Trait}
-        : Notation.DoubleColon t "backend" := {
+      Global Instance Get_AF_backend : Notation.DoubleColon t "backend" := {
         Notation.double_colon x := let* x := M.read x in Pure x.(backend) : M _;
       }.
-      Global Instance Get_state `{State.Trait} : Notation.Dot "state" := {
+      Global Instance Get_state : Notation.Dot "state" := {
         Notation.dot x := let* x := M.read x in Pure x.(state) : M _;
       }.
-      Global Instance Get_AF_state `{State.Trait}
-        : Notation.DoubleColon t "state" := {
+      Global Instance Get_AF_state : Notation.DoubleColon t "state" := {
         Notation.double_colon x := let* x := M.read x in Pure x.(state) : M _;
       }.
     End TopicsBuilder.
@@ -1160,78 +1032,77 @@ Module topics.
   End state.
   
   Module SomeRemainingTopics.
-    Class Trait (Self : Set) `{State.Trait} : Type := {
-      Next : Set;
-    }.
-    
-    Global Instance Method_Next `(Trait)
-      : Notation.DoubleColonType Self "Next" := {
-      Notation.double_colon_type := Next;
-    }.
+    Section SomeRemainingTopics.
+      Context `{State.Trait}.
+      
+      Class Trait (Self : Set) : Type := {
+        Next : Set;
+      }.
+      
+      Global Instance Method_Next `(Trait)
+        : Notation.DoubleColonType Self "Next" := {
+        Notation.double_colon_type := Next;
+      }.
+    End SomeRemainingTopics.
   End SomeRemainingTopics.
   
   Module EventTopicsAmount.
-    Class Trait (Self : Set) `{State.Trait} : Type := {
-      AMOUNT : usize;
-    }.
-    
-    Global Instance Method_AMOUNT `{State.Trait} `(Trait)
-      : Notation.Dot "AMOUNT" := {
-      Notation.dot := AMOUNT;
-    }.
+    Section EventTopicsAmount.
+      Context `{State.Trait}.
+      
+      Class Trait (Self : Set) : Type := {
+        AMOUNT : usize;
+      }.
+      
+    End EventTopicsAmount.
   End EventTopicsAmount.
   
   Module Topics.
-    Class Trait (Self : Set) `{State.Trait} : Type := {
-      RemainingTopics : Set;
-      _ : Sigma `(ink_env.topics.EventTopicsAmount.Trait RemainingTopics), unit;
-      topics
-        {E B : Set}
-        `{H'0 : ink_env.types.Environment.Trait E}
-        `{H'1 : ink_env.topics.TopicsBuilderBackend.Trait B (E := E)}
-        :
-        (ref Self) ->
-          (ink_env.topics.TopicsBuilder ink_env.topics.state.Uninit E B) ->
-          M (ink_env.topics.TopicsBuilderBackend.Output (Self := B));
-    }.
-    
-    Global Instance Method_RemainingTopics `(Trait)
-      : Notation.DoubleColonType Self "RemainingTopics" := {
-      Notation.double_colon_type := RemainingTopics;
-    }.
-    Global Instance Method_topics `{State.Trait} `(Trait)
-      : Notation.Dot "topics" := {
-      Notation.dot
-        {E B : Set}
-        `{H'0 : ink_env.types.Environment.Trait E}
-        `{H'1 : ink_env.topics.TopicsBuilderBackend.Trait B (E := E)}
-        :=
-        topics (E := E) (B := B) (H'0 := H'0) (H'1 := H'1);
-    }.
+    Section Topics.
+      Context `{State.Trait}.
+      
+      Class Trait (Self : Set) : Type := {
+        RemainingTopics : Set;
+        topics
+          {E B : Set}
+          {ℋ_0 : ink_env.types.Environment.Trait E}
+          {ℋ_1 : ink_env.topics.TopicsBuilderBackend.Trait B (E := E)}
+          :
+          (ref Self) ->
+            (ink_env.topics.TopicsBuilder ink_env.topics.state.Uninit E B) ->
+            M (ink_env.topics.TopicsBuilderBackend.Output (Self := B));
+      }.
+      
+      Global Instance Method_RemainingTopics `(Trait)
+        : Notation.DoubleColonType Self "RemainingTopics" := {
+        Notation.double_colon_type := RemainingTopics;
+      }.
+    End Topics.
   End Topics.
   
   Module PrefixedValue.
     Section PrefixedValue.
+      Context `{State.Trait}.
+      
       Context {T : Set}.
+      
       Unset Primitive Projections.
-      Record t `{State.Trait} : Set := {
+      Record t : Set := {
         prefix : ref (Slice u8);
         value : ref T;
       }.
       Global Set Primitive Projections.
       
-      Global Instance Get_prefix `{State.Trait} : Notation.Dot "prefix" := {
+      Global Instance Get_prefix : Notation.Dot "prefix" := {
         Notation.dot x := let* x := M.read x in Pure x.(prefix) : M _;
       }.
-      Global Instance Get_AF_prefix `{State.Trait}
-        : Notation.DoubleColon t "prefix" := {
+      Global Instance Get_AF_prefix : Notation.DoubleColon t "prefix" := {
         Notation.double_colon x := let* x := M.read x in Pure x.(prefix) : M _;
       }.
-      Global Instance Get_value `{State.Trait} : Notation.Dot "value" := {
+      Global Instance Get_value : Notation.Dot "value" := {
         Notation.dot x := let* x := M.read x in Pure x.(value) : M _;
       }.
-      Global Instance Get_AF_value `{State.Trait}
-        : Notation.DoubleColon t "value" := {
+      Global Instance Get_AF_value : Notation.DoubleColon t "value" := {
         Notation.double_colon x := let* x := M.read x in Pure x.(value) : M _;
       }.
     End PrefixedValue.
@@ -1266,40 +1137,42 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
       ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Error.
   
   Module EmittedEvent.
-    Unset Primitive Projections.
-    Record t `{State.Trait} : Set := {
-      topics
-        :
-        alloc.vec.Vec
-          (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)
-          alloc.vec.Vec.Default.A;
-      data : alloc.vec.Vec u8 alloc.vec.Vec.Default.A;
-    }.
-    Global Set Primitive Projections.
-    
-    Global Instance Get_topics `{State.Trait} : Notation.Dot "topics" := {
-      Notation.dot x := let* x := M.read x in Pure x.(topics) : M _;
-    }.
-    Global Instance Get_AF_topics `{State.Trait}
-      : Notation.DoubleColon t "topics" := {
-      Notation.double_colon x := let* x := M.read x in Pure x.(topics) : M _;
-    }.
-    Global Instance Get_data `{State.Trait} : Notation.Dot "data" := {
-      Notation.dot x := let* x := M.read x in Pure x.(data) : M _;
-    }.
-    Global Instance Get_AF_data `{State.Trait}
-      : Notation.DoubleColon t "data" := {
-      Notation.double_colon x := let* x := M.read x in Pure x.(data) : M _;
-    }.
+    Section EmittedEvent.
+      Context `{State.Trait}.
+      
+      Unset Primitive Projections.
+      Record t : Set := {
+        topics
+          :
+          alloc.vec.Vec
+            (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)
+            alloc.vec.Vec.Default.A;
+        data : alloc.vec.Vec u8 alloc.vec.Vec.Default.A;
+      }.
+      Global Set Primitive Projections.
+      
+      Global Instance Get_topics : Notation.Dot "topics" := {
+        Notation.dot x := let* x := M.read x in Pure x.(topics) : M _;
+      }.
+      Global Instance Get_AF_topics : Notation.DoubleColon t "topics" := {
+        Notation.double_colon x := let* x := M.read x in Pure x.(topics) : M _;
+      }.
+      Global Instance Get_data : Notation.Dot "data" := {
+        Notation.dot x := let* x := M.read x in Pure x.(data) : M _;
+      }.
+      Global Instance Get_AF_data : Notation.DoubleColon t "data" := {
+        Notation.double_colon x := let* x := M.read x in Pure x.(data) : M _;
+      }.
+    End EmittedEvent.
   End EmittedEvent.
-  Definition EmittedEvent `{State.Trait} : Set := M.val (EmittedEvent.t).
+  Definition EmittedEvent `{State.Trait} : Set := M.val EmittedEvent.t.
   
   Parameter set_account_balance :
-      forall `{State.Trait} {T : Set} `{ink_env.types.Environment.Trait T},
+      forall `{State.Trait} {T : Set} {ℋ_0 : ink_env.types.Environment.Trait T},
       T::type["AccountId"] -> T::type["Balance"] -> M unit.
   
   Parameter get_account_balance :
-      forall `{State.Trait} {T : Set} `{ink_env.types.Environment.Trait T},
+      forall `{State.Trait} {T : Set} {ℋ_0 : ink_env.types.Environment.Trait T},
       T::type["AccountId"] ->
         M
           (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
@@ -1309,7 +1182,7 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
       forall
         `{State.Trait}
         {E : Set}
-        `{ink_engine.chain_extension.ChainExtension.Trait E},
+        {ℋ_0 : ink_engine.chain_extension.ChainExtension.Trait E},
       E -> M unit.
   
   Parameter recorded_debug_messages :
@@ -1319,15 +1192,16 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
   Parameter set_clear_storage_disabled : forall `{State.Trait}, bool -> M unit.
   
   Parameter advance_block :
-      forall `{State.Trait} {T : Set} `{ink_env.types.Environment.Trait T},
+      forall `{State.Trait} {T : Set} {ℋ_0 : ink_env.types.Environment.Trait T},
       M unit.
   
   Parameter set_caller :
       forall
         `{State.Trait}
         {T : Set}
-        `{ink_env.types.Environment.Trait T}
-        `{core.convert.From.Trait
+        {ℋ_0 : ink_env.types.Environment.Trait T}
+        {ℋ_1 :
+          core.convert.From.Trait
               (ink_env.types.Environment.AccountId (Self := T))
             (T := array u8)},
       T::type["AccountId"] -> M unit.
@@ -1336,8 +1210,9 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
       forall
         `{State.Trait}
         {T : Set}
-        `{ink_env.types.Environment.Trait T}
-        `{core.convert.From.Trait
+        {ℋ_0 : ink_env.types.Environment.Trait T}
+        {ℋ_1 :
+          core.convert.From.Trait
               (ink_env.types.Environment.AccountId (Self := T))
             (T := array u8)},
       T::type["AccountId"] -> M unit.
@@ -1346,8 +1221,9 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
       forall
         `{State.Trait}
         {T : Set}
-        `{ink_env.types.Environment.Trait T}
-        `{core.convert.From.Trait
+        {ℋ_0 : ink_env.types.Environment.Trait T}
+        {ℋ_1 :
+          core.convert.From.Trait
               (ink_env.types.Environment.AccountId (Self := T))
             (T := array u8)},
       T::type["AccountId"] -> M unit.
@@ -1356,49 +1232,53 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
       forall
         `{State.Trait}
         {T : Set}
-        `{ink_env.types.Environment.Trait T}
-        `{core.convert.From.Trait
+        {ℋ_0 : ink_env.types.Environment.Trait T}
+        {ℋ_1 :
+          core.convert.From.Trait
               (ink_env.types.Environment.AccountId (Self := T))
             (T := array u8)},
       T::type["AccountId"] -> M bool.
   
   Parameter callee :
-      forall `{State.Trait} {T : Set} `{ink_env.types.Environment.Trait T},
+      forall `{State.Trait} {T : Set} {ℋ_0 : ink_env.types.Environment.Trait T},
       M T::type["AccountId"].
   
   Parameter get_contract_storage_rw :
-      forall `{State.Trait} {T : Set} `{ink_env.types.Environment.Trait T},
+      forall `{State.Trait} {T : Set} {ℋ_0 : ink_env.types.Environment.Trait T},
       (ref T::type["AccountId"]) -> M (usize * usize).
   
   Parameter set_value_transferred :
-      forall `{State.Trait} {T : Set} `{ink_env.types.Environment.Trait T},
+      forall `{State.Trait} {T : Set} {ℋ_0 : ink_env.types.Environment.Trait T},
       T::type["Balance"] -> M unit.
   
   Parameter transfer_in :
-      forall `{State.Trait} {T : Set} `{ink_env.types.Environment.Trait T},
+      forall `{State.Trait} {T : Set} {ℋ_0 : ink_env.types.Environment.Trait T},
       T::type["Balance"] -> M unit.
   
   Parameter count_used_storage_cells :
-      forall `{State.Trait} {T : Set} `{ink_env.types.Environment.Trait T},
+      forall `{State.Trait} {T : Set} {ℋ_0 : ink_env.types.Environment.Trait T},
       (ref T::type["AccountId"]) ->
         M
           (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
             usize).
   
   Parameter set_block_timestamp :
-      forall `{State.Trait} {T : Set} `{ink_env.types.Environment.Trait T},
+      forall `{State.Trait} {T : Set} {ℋ_0 : ink_env.types.Environment.Trait T},
       T::type["Timestamp"] -> M unit.
   
   Parameter set_block_number :
-      forall `{State.Trait} {T : Set} `{ink_env.types.Environment.Trait T},
+      forall `{State.Trait} {T : Set} {ℋ_0 : ink_env.types.Environment.Trait T},
       T::type["BlockNumber"] -> M unit.
   
   Module DefaultAccounts.
     Section DefaultAccounts.
+      Context `{State.Trait}.
+      
       Context {T : Set}.
-      Context `{ink_env.types.Environment.Trait T}.
+      
+      Context {ℋ_0 : ink_env.types.Environment.Trait T}.
       Unset Primitive Projections.
-      Record t `{State.Trait} : Set := {
+      Record t : Set := {
         alice : T::type["AccountId"];
         bob : T::type["AccountId"];
         charlie : T::type["AccountId"];
@@ -1408,46 +1288,40 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
       }.
       Global Set Primitive Projections.
       
-      Global Instance Get_alice `{State.Trait} : Notation.Dot "alice" := {
+      Global Instance Get_alice : Notation.Dot "alice" := {
         Notation.dot x := let* x := M.read x in Pure x.(alice) : M _;
       }.
-      Global Instance Get_AF_alice `{State.Trait}
-        : Notation.DoubleColon t "alice" := {
+      Global Instance Get_AF_alice : Notation.DoubleColon t "alice" := {
         Notation.double_colon x := let* x := M.read x in Pure x.(alice) : M _;
       }.
-      Global Instance Get_bob `{State.Trait} : Notation.Dot "bob" := {
+      Global Instance Get_bob : Notation.Dot "bob" := {
         Notation.dot x := let* x := M.read x in Pure x.(bob) : M _;
       }.
-      Global Instance Get_AF_bob `{State.Trait}
-        : Notation.DoubleColon t "bob" := {
+      Global Instance Get_AF_bob : Notation.DoubleColon t "bob" := {
         Notation.double_colon x := let* x := M.read x in Pure x.(bob) : M _;
       }.
-      Global Instance Get_charlie `{State.Trait} : Notation.Dot "charlie" := {
+      Global Instance Get_charlie : Notation.Dot "charlie" := {
         Notation.dot x := let* x := M.read x in Pure x.(charlie) : M _;
       }.
-      Global Instance Get_AF_charlie `{State.Trait}
-        : Notation.DoubleColon t "charlie" := {
+      Global Instance Get_AF_charlie : Notation.DoubleColon t "charlie" := {
         Notation.double_colon x := let* x := M.read x in Pure x.(charlie) : M _;
       }.
-      Global Instance Get_django `{State.Trait} : Notation.Dot "django" := {
+      Global Instance Get_django : Notation.Dot "django" := {
         Notation.dot x := let* x := M.read x in Pure x.(django) : M _;
       }.
-      Global Instance Get_AF_django `{State.Trait}
-        : Notation.DoubleColon t "django" := {
+      Global Instance Get_AF_django : Notation.DoubleColon t "django" := {
         Notation.double_colon x := let* x := M.read x in Pure x.(django) : M _;
       }.
-      Global Instance Get_eve `{State.Trait} : Notation.Dot "eve" := {
+      Global Instance Get_eve : Notation.Dot "eve" := {
         Notation.dot x := let* x := M.read x in Pure x.(eve) : M _;
       }.
-      Global Instance Get_AF_eve `{State.Trait}
-        : Notation.DoubleColon t "eve" := {
+      Global Instance Get_AF_eve : Notation.DoubleColon t "eve" := {
         Notation.double_colon x := let* x := M.read x in Pure x.(eve) : M _;
       }.
-      Global Instance Get_frank `{State.Trait} : Notation.Dot "frank" := {
+      Global Instance Get_frank : Notation.Dot "frank" := {
         Notation.dot x := let* x := M.read x in Pure x.(frank) : M _;
       }.
-      Global Instance Get_AF_frank `{State.Trait}
-        : Notation.DoubleColon t "frank" := {
+      Global Instance Get_AF_frank : Notation.DoubleColon t "frank" := {
         Notation.double_colon x := let* x := M.read x in Pure x.(frank) : M _;
       }.
     End DefaultAccounts.
@@ -1455,7 +1329,7 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
   Definition DefaultAccounts
       (T : Set)
       `{State.Trait}
-      `{ink_env.types.Environment.Trait T}
+      {ℋ_0 : ink_env.types.Environment.Trait T}
       : Set :=
     M.val (DefaultAccounts.t (T := T)).
   
@@ -1463,11 +1337,13 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
       forall
         `{State.Trait}
         {T F : Set}
-        `{ink_env.types.Environment.Trait T}
-        `{core.ops.function.FnOnce.Trait F
+        {ℋ_0 : ink_env.types.Environment.Trait T}
+        {ℋ_1 :
+          core.ops.function.FnOnce.Trait F
             (Args := ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.DefaultAccounts
               T)}
-        `{core.convert.From.Trait
+        {ℋ_2 :
+          core.convert.From.Trait
               (ink_env.types.Environment.AccountId (Self := T))
             (T := array u8)},
       F ->
@@ -1479,8 +1355,9 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
       forall
         `{State.Trait}
         {T : Set}
-        `{ink_env.types.Environment.Trait T}
-        `{core.convert.From.Trait
+        {ℋ_0 : ink_env.types.Environment.Trait T}
+        {ℋ_1 :
+          core.convert.From.Trait
               (ink_env.types.Environment.AccountId (Self := T))
             (T := array u8)},
       M
@@ -1498,70 +1375,77 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
       forall
         `{State.Trait}
         {T F : Set}
-        `{ink_env.types.Environment.Trait T}
-        `{core.ops.function.FnMut.Trait F (Args := unit)}
-        `{core.panic.unwind_safe.UnwindSafe.Trait F}
-        `{core.fmt.Debug.Trait
+        {ℋ_0 : ink_env.types.Environment.Trait T}
+        {ℋ_1 : core.ops.function.FnMut.Trait F (Args := unit)}
+        {ℋ_2 : core.panic.unwind_safe.UnwindSafe.Trait F}
+        {ℋ_3 :
+          core.fmt.Debug.Trait
               (ink_env.types.Environment.AccountId (Self := T))}
-        `{core.fmt.Debug.Trait (ink_env.types.Environment.Balance (Self := T))},
+        {ℋ_4 :
+          core.fmt.Debug.Trait (ink_env.types.Environment.Balance (Self := T))},
       F -> T::type["AccountId"] -> T::type["Balance"] -> M unit.
   
   Module CallFlags.
-    Unset Primitive Projections.
-    Record t `{State.Trait} : Set := {
-      forward_input : bool;
-      clone_input : bool;
-      tail_call : bool;
-      allow_reentry : bool;
-    }.
-    Global Set Primitive Projections.
-    
-    Global Instance Get_forward_input `{State.Trait}
-      : Notation.Dot "forward_input" := {
-      Notation.dot x := let* x := M.read x in Pure x.(forward_input) : M _;
-    }.
-    Global Instance Get_AF_forward_input `{State.Trait}
-      : Notation.DoubleColon t "forward_input" := {
-      Notation.double_colon x
-        :=
-        let* x := M.read x in Pure x.(forward_input) : M _;
-    }.
-    Global Instance Get_clone_input `{State.Trait}
-      : Notation.Dot "clone_input" := {
-      Notation.dot x := let* x := M.read x in Pure x.(clone_input) : M _;
-    }.
-    Global Instance Get_AF_clone_input `{State.Trait}
-      : Notation.DoubleColon t "clone_input" := {
-      Notation.double_colon x
-        :=
-        let* x := M.read x in Pure x.(clone_input) : M _;
-    }.
-    Global Instance Get_tail_call `{State.Trait} : Notation.Dot "tail_call" := {
-      Notation.dot x := let* x := M.read x in Pure x.(tail_call) : M _;
-    }.
-    Global Instance Get_AF_tail_call `{State.Trait}
-      : Notation.DoubleColon t "tail_call" := {
-      Notation.double_colon x := let* x := M.read x in Pure x.(tail_call) : M _;
-    }.
-    Global Instance Get_allow_reentry `{State.Trait}
-      : Notation.Dot "allow_reentry" := {
-      Notation.dot x := let* x := M.read x in Pure x.(allow_reentry) : M _;
-    }.
-    Global Instance Get_AF_allow_reentry `{State.Trait}
-      : Notation.DoubleColon t "allow_reentry" := {
-      Notation.double_colon x
-        :=
-        let* x := M.read x in Pure x.(allow_reentry) : M _;
-    }.
+    Section CallFlags.
+      Context `{State.Trait}.
+      
+      Unset Primitive Projections.
+      Record t : Set := {
+        forward_input : bool;
+        clone_input : bool;
+        tail_call : bool;
+        allow_reentry : bool;
+      }.
+      Global Set Primitive Projections.
+      
+      Global Instance Get_forward_input : Notation.Dot "forward_input" := {
+        Notation.dot x := let* x := M.read x in Pure x.(forward_input) : M _;
+      }.
+      Global Instance Get_AF_forward_input
+        : Notation.DoubleColon t "forward_input" := {
+        Notation.double_colon x
+          :=
+          let* x := M.read x in Pure x.(forward_input) : M _;
+      }.
+      Global Instance Get_clone_input : Notation.Dot "clone_input" := {
+        Notation.dot x := let* x := M.read x in Pure x.(clone_input) : M _;
+      }.
+      Global Instance Get_AF_clone_input
+        : Notation.DoubleColon t "clone_input" := {
+        Notation.double_colon x
+          :=
+          let* x := M.read x in Pure x.(clone_input) : M _;
+      }.
+      Global Instance Get_tail_call : Notation.Dot "tail_call" := {
+        Notation.dot x := let* x := M.read x in Pure x.(tail_call) : M _;
+      }.
+      Global Instance Get_AF_tail_call : Notation.DoubleColon t "tail_call" := {
+        Notation.double_colon x
+          :=
+          let* x := M.read x in Pure x.(tail_call) : M _;
+      }.
+      Global Instance Get_allow_reentry : Notation.Dot "allow_reentry" := {
+        Notation.dot x := let* x := M.read x in Pure x.(allow_reentry) : M _;
+      }.
+      Global Instance Get_AF_allow_reentry
+        : Notation.DoubleColon t "allow_reentry" := {
+        Notation.double_colon x
+          :=
+          let* x := M.read x in Pure x.(allow_reentry) : M _;
+      }.
+    End CallFlags.
   End CallFlags.
-  Definition CallFlags `{State.Trait} : Set := M.val (CallFlags.t).
+  Definition CallFlags `{State.Trait} : Set := M.val CallFlags.t.
   
   Module CallParams.
     Section CallParams.
+      Context `{State.Trait}.
+      
       Context {E CallType Args R : Set}.
-      Context `{ink_env.types.Environment.Trait E}.
+      
+      Context {ℋ_0 : ink_env.types.Environment.Trait E}.
       Unset Primitive Projections.
-      Record t `{State.Trait} : Set := {
+      Record t : Set := {
         call_type : CallType;
         call_flags
           :
@@ -1572,51 +1456,45 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
       }.
       Global Set Primitive Projections.
       
-      Global Instance Get_call_type `{State.Trait}
-        : Notation.Dot "call_type" := {
+      Global Instance Get_call_type : Notation.Dot "call_type" := {
         Notation.dot x := let* x := M.read x in Pure x.(call_type) : M _;
       }.
-      Global Instance Get_AF_call_type `{State.Trait}
-        : Notation.DoubleColon t "call_type" := {
+      Global Instance Get_AF_call_type : Notation.DoubleColon t "call_type" := {
         Notation.double_colon x
           :=
           let* x := M.read x in Pure x.(call_type) : M _;
       }.
-      Global Instance Get_call_flags `{State.Trait}
-        : Notation.Dot "call_flags" := {
+      Global Instance Get_call_flags : Notation.Dot "call_flags" := {
         Notation.dot x := let* x := M.read x in Pure x.(call_flags) : M _;
       }.
-      Global Instance Get_AF_call_flags `{State.Trait}
+      Global Instance Get_AF_call_flags
         : Notation.DoubleColon t "call_flags" := {
         Notation.double_colon x
           :=
           let* x := M.read x in Pure x.(call_flags) : M _;
       }.
-      Global Instance Get__return_type `{State.Trait}
-        : Notation.Dot "_return_type" := {
+      Global Instance Get__return_type : Notation.Dot "_return_type" := {
         Notation.dot x := let* x := M.read x in Pure x.(_return_type) : M _;
       }.
-      Global Instance Get_AF__return_type `{State.Trait}
+      Global Instance Get_AF__return_type
         : Notation.DoubleColon t "_return_type" := {
         Notation.double_colon x
           :=
           let* x := M.read x in Pure x.(_return_type) : M _;
       }.
-      Global Instance Get_exec_input `{State.Trait}
-        : Notation.Dot "exec_input" := {
+      Global Instance Get_exec_input : Notation.Dot "exec_input" := {
         Notation.dot x := let* x := M.read x in Pure x.(exec_input) : M _;
       }.
-      Global Instance Get_AF_exec_input `{State.Trait}
+      Global Instance Get_AF_exec_input
         : Notation.DoubleColon t "exec_input" := {
         Notation.double_colon x
           :=
           let* x := M.read x in Pure x.(exec_input) : M _;
       }.
-      Global Instance Get__phantom `{State.Trait} : Notation.Dot "_phantom" := {
+      Global Instance Get__phantom : Notation.Dot "_phantom" := {
         Notation.dot x := let* x := M.read x in Pure x.(_phantom) : M _;
       }.
-      Global Instance Get_AF__phantom `{State.Trait}
-        : Notation.DoubleColon t "_phantom" := {
+      Global Instance Get_AF__phantom : Notation.DoubleColon t "_phantom" := {
         Notation.double_colon x
           :=
           let* x := M.read x in Pure x.(_phantom) : M _;
@@ -1626,47 +1504,47 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
   Definition CallParams
       (E CallType Args R : Set)
       `{State.Trait}
-      `{ink_env.types.Environment.Trait E}
+      {ℋ_0 : ink_env.types.Environment.Trait E}
       : Set :=
     M.val
       (CallParams.t (E := E) (CallType := CallType) (Args := Args) (R := R)).
   
   Module Call.
     Section Call.
+      Context `{State.Trait}.
+      
       Context {E : Set}.
-      Context `{ink_env.types.Environment.Trait E}.
+      
+      Context {ℋ_0 : ink_env.types.Environment.Trait E}.
       Unset Primitive Projections.
-      Record t `{State.Trait} : Set := {
+      Record t : Set := {
         callee : E::type["AccountId"];
         gas_limit : ink_env.types.Gas;
         transferred_value : E::type["Balance"];
       }.
       Global Set Primitive Projections.
       
-      Global Instance Get_callee `{State.Trait} : Notation.Dot "callee" := {
+      Global Instance Get_callee : Notation.Dot "callee" := {
         Notation.dot x := let* x := M.read x in Pure x.(callee) : M _;
       }.
-      Global Instance Get_AF_callee `{State.Trait}
-        : Notation.DoubleColon t "callee" := {
+      Global Instance Get_AF_callee : Notation.DoubleColon t "callee" := {
         Notation.double_colon x := let* x := M.read x in Pure x.(callee) : M _;
       }.
-      Global Instance Get_gas_limit `{State.Trait}
-        : Notation.Dot "gas_limit" := {
+      Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
         Notation.dot x := let* x := M.read x in Pure x.(gas_limit) : M _;
       }.
-      Global Instance Get_AF_gas_limit `{State.Trait}
-        : Notation.DoubleColon t "gas_limit" := {
+      Global Instance Get_AF_gas_limit : Notation.DoubleColon t "gas_limit" := {
         Notation.double_colon x
           :=
           let* x := M.read x in Pure x.(gas_limit) : M _;
       }.
-      Global Instance Get_transferred_value `{State.Trait}
+      Global Instance Get_transferred_value
         : Notation.Dot "transferred_value" := {
         Notation.dot x
           :=
           let* x := M.read x in Pure x.(transferred_value) : M _;
       }.
-      Global Instance Get_AF_transferred_value `{State.Trait}
+      Global Instance Get_AF_transferred_value
         : Notation.DoubleColon t "transferred_value" := {
         Notation.double_colon x
           :=
@@ -1677,26 +1555,27 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
   Definition Call
       (E : Set)
       `{State.Trait}
-      `{ink_env.types.Environment.Trait E}
+      {ℋ_0 : ink_env.types.Environment.Trait E}
       : Set :=
     M.val (Call.t (E := E)).
   
   Module DelegateCall.
     Section DelegateCall.
+      Context `{State.Trait}.
+      
       Context {E : Set}.
-      Context `{ink_env.types.Environment.Trait E}.
+      
+      Context {ℋ_0 : ink_env.types.Environment.Trait E}.
       Unset Primitive Projections.
-      Record t `{State.Trait} : Set := {
+      Record t : Set := {
         code_hash : E::type["Hash"];
       }.
       Global Set Primitive Projections.
       
-      Global Instance Get_code_hash `{State.Trait}
-        : Notation.Dot "code_hash" := {
+      Global Instance Get_code_hash : Notation.Dot "code_hash" := {
         Notation.dot x := let* x := M.read x in Pure x.(code_hash) : M _;
       }.
-      Global Instance Get_AF_code_hash `{State.Trait}
-        : Notation.DoubleColon t "code_hash" := {
+      Global Instance Get_AF_code_hash : Notation.DoubleColon t "code_hash" := {
         Notation.double_colon x
           :=
           let* x := M.read x in Pure x.(code_hash) : M _;
@@ -1706,586 +1585,326 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
   Definition DelegateCall
       (E : Set)
       `{State.Trait}
-      `{ink_env.types.Environment.Trait E}
+      {ℋ_0 : ink_env.types.Environment.Trait E}
       : Set :=
     M.val (DelegateCall.t (E := E)).
   
   Module ReturnFlags.
-    Unset Primitive Projections.
-    Record t `{State.Trait} : Set := {
-      value : u32;
-    }.
-    Global Set Primitive Projections.
-    
-    Global Instance Get_value `{State.Trait} : Notation.Dot "value" := {
-      Notation.dot x := let* x := M.read x in Pure x.(value) : M _;
-    }.
-    Global Instance Get_AF_value `{State.Trait}
-      : Notation.DoubleColon t "value" := {
-      Notation.double_colon x := let* x := M.read x in Pure x.(value) : M _;
-    }.
+    Section ReturnFlags.
+      Context `{State.Trait}.
+      
+      Unset Primitive Projections.
+      Record t : Set := {
+        value : u32;
+      }.
+      Global Set Primitive Projections.
+      
+      Global Instance Get_value : Notation.Dot "value" := {
+        Notation.dot x := let* x := M.read x in Pure x.(value) : M _;
+      }.
+      Global Instance Get_AF_value : Notation.DoubleColon t "value" := {
+        Notation.double_colon x := let* x := M.read x in Pure x.(value) : M _;
+      }.
+    End ReturnFlags.
   End ReturnFlags.
-  Definition ReturnFlags `{State.Trait} : Set := M.val (ReturnFlags.t).
+  Definition ReturnFlags `{State.Trait} : Set := M.val ReturnFlags.t.
   
   Module EnvBackend.
-    Class Trait (Self : Set) `{State.Trait} : Type := {
-      set_contract_storage
-        {K V : Set}
-        `{H'0 : parity_scale_codec.codec.Encode.Trait K}
-        `{H'1 : ink_storage_traits.storage.Storable.Trait V}
-        :
-        (mut_ref Self) -> (ref K) -> (ref V) -> M (core.option.Option u32);
-      get_contract_storage
-        {K R : Set}
-        `{H'0 : parity_scale_codec.codec.Encode.Trait K}
-        `{H'1 : ink_storage_traits.storage.Storable.Trait R}
-        :
-        (mut_ref Self) ->
-          (ref K) ->
-          M
-            (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-              (core.option.Option R));
-      take_contract_storage
-        {K R : Set}
-        `{H'0 : parity_scale_codec.codec.Encode.Trait K}
-        `{H'1 : ink_storage_traits.storage.Storable.Trait R}
-        :
-        (mut_ref Self) ->
-          (ref K) ->
-          M
-            (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-              (core.option.Option R));
-      contains_contract_storage
-        {K : Set}
-        `{H'0 : parity_scale_codec.codec.Encode.Trait K}
-        :
-        (mut_ref Self) -> (ref K) -> M (core.option.Option u32);
-      clear_contract_storage
-        {K : Set}
-        `{H'0 : parity_scale_codec.codec.Encode.Trait K}
-        :
-        (mut_ref Self) -> (ref K) -> M (core.option.Option u32);
-      decode_input {T : Set} `{H'0 : parity_scale_codec.codec.Decode.Trait T}
-        :
-        (mut_ref Self) ->
-          M
-            (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-              T);
-      return_value {R : Set} `{H'0 : parity_scale_codec.codec.Encode.Trait R}
-        :
-        (mut_ref Self) ->
-          ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.ReturnFlags
-          ->
-          (ref R) ->
-          M Empty_set;
-      debug_message : (mut_ref Self) -> (ref str) -> M unit;
-      hash_bytes {H : Set} `{H'0 : ink_env.hash.CryptoHash.Trait H}
-        :
-        (mut_ref Self) ->
-          (ref (Slice u8)) ->
-          (mut_ref (ink_env.hash.HashOutput.Type_ (Self := H))) ->
-          M unit;
-      hash_encoded
-        {H T : Set}
-        `{H'0 : ink_env.hash.CryptoHash.Trait H}
-        `{H'1 : parity_scale_codec.codec.Encode.Trait T}
-        :
-        (mut_ref Self) ->
-          (ref T) ->
-          (mut_ref (ink_env.hash.HashOutput.Type_ (Self := H))) ->
-          M unit;
-      ecdsa_recover
-        :
-        (mut_ref Self) ->
-          (ref (array u8)) ->
-          (ref (array u8)) ->
-          (mut_ref (array u8)) ->
-          M
-            (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-              unit);
-      ecdsa_to_eth_address
-        :
-        (mut_ref Self) ->
-          (ref (array u8)) ->
-          (mut_ref (array u8)) ->
-          M
-            (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-              unit);
-      call_chain_extension
-        {I T E ErrorCode F D : Set}
-        `{H'0 : parity_scale_codec.codec.Encode.Trait I}
-        `{H'1 : parity_scale_codec.codec.Decode.Trait T}
-        `{H'2 : core.convert.From.Trait E (T := ErrorCode)}
-        `{H'3 : core.ops.function.FnOnce.Trait F (Args := u32)}
-        `{H'4 : core.ops.function.FnOnce.Trait D (Args := ref (Slice u8))}
-        :
-        (mut_ref Self) ->
-          u32 ->
-          (ref I) ->
-          F ->
-          D ->
-          M (core.result.Result T E);
-      set_code_hash
-        :
-        (mut_ref Self) ->
-          (ref (Slice u8)) ->
-          M
-            (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-              unit);
-    }.
-    
-    Global Instance Method_set_contract_storage `{State.Trait} `(Trait)
-      : Notation.Dot "set_contract_storage" := {
-      Notation.dot
-        {K V : Set}
-        `{H'0 : parity_scale_codec.codec.Encode.Trait K}
-        `{H'1 : ink_storage_traits.storage.Storable.Trait V}
-        :=
-        set_contract_storage (K := K) (V := V) (H'0 := H'0) (H'1 := H'1);
-    }.
-    Global Instance Method_get_contract_storage `{State.Trait} `(Trait)
-      : Notation.Dot "get_contract_storage" := {
-      Notation.dot
-        {K R : Set}
-        `{H'0 : parity_scale_codec.codec.Encode.Trait K}
-        `{H'1 : ink_storage_traits.storage.Storable.Trait R}
-        :=
-        get_contract_storage (K := K) (R := R) (H'0 := H'0) (H'1 := H'1);
-    }.
-    Global Instance Method_take_contract_storage `{State.Trait} `(Trait)
-      : Notation.Dot "take_contract_storage" := {
-      Notation.dot
-        {K R : Set}
-        `{H'0 : parity_scale_codec.codec.Encode.Trait K}
-        `{H'1 : ink_storage_traits.storage.Storable.Trait R}
-        :=
-        take_contract_storage (K := K) (R := R) (H'0 := H'0) (H'1 := H'1);
-    }.
-    Global Instance Method_contains_contract_storage `{State.Trait} `(Trait)
-      : Notation.Dot "contains_contract_storage" := {
-      Notation.dot {K : Set} `{H'0 : parity_scale_codec.codec.Encode.Trait K}
-        :=
-        contains_contract_storage (K := K) (H'0 := H'0);
-    }.
-    Global Instance Method_clear_contract_storage `{State.Trait} `(Trait)
-      : Notation.Dot "clear_contract_storage" := {
-      Notation.dot {K : Set} `{H'0 : parity_scale_codec.codec.Encode.Trait K}
-        :=
-        clear_contract_storage (K := K) (H'0 := H'0);
-    }.
-    Global Instance Method_decode_input `{State.Trait} `(Trait)
-      : Notation.Dot "decode_input" := {
-      Notation.dot {T : Set} `{H'0 : parity_scale_codec.codec.Decode.Trait T}
-        :=
-        decode_input (T := T) (H'0 := H'0);
-    }.
-    Global Instance Method_return_value `{State.Trait} `(Trait)
-      : Notation.Dot "return_value" := {
-      Notation.dot {R : Set} `{H'0 : parity_scale_codec.codec.Encode.Trait R}
-        :=
-        return_value (R := R) (H'0 := H'0);
-    }.
-    Global Instance Method_debug_message `{State.Trait} `(Trait)
-      : Notation.Dot "debug_message" := {
-      Notation.dot := debug_message;
-    }.
-    Global Instance Method_hash_bytes `{State.Trait} `(Trait)
-      : Notation.Dot "hash_bytes" := {
-      Notation.dot {H : Set} `{H'0 : ink_env.hash.CryptoHash.Trait H}
-        :=
-        hash_bytes (H := H) (H'0 := H'0);
-    }.
-    Global Instance Method_hash_encoded `{State.Trait} `(Trait)
-      : Notation.Dot "hash_encoded" := {
-      Notation.dot
-        {H T : Set}
-        `{H'0 : ink_env.hash.CryptoHash.Trait H}
-        `{H'1 : parity_scale_codec.codec.Encode.Trait T}
-        :=
-        hash_encoded (H := H) (T := T) (H'0 := H'0) (H'1 := H'1);
-    }.
-    Global Instance Method_ecdsa_recover `{State.Trait} `(Trait)
-      : Notation.Dot "ecdsa_recover" := {
-      Notation.dot := ecdsa_recover;
-    }.
-    Global Instance Method_ecdsa_to_eth_address `{State.Trait} `(Trait)
-      : Notation.Dot "ecdsa_to_eth_address" := {
-      Notation.dot := ecdsa_to_eth_address;
-    }.
-    Global Instance Method_call_chain_extension `{State.Trait} `(Trait)
-      : Notation.Dot "call_chain_extension" := {
-      Notation.dot
-        {I T E ErrorCode F D : Set}
-        `{H'0 : parity_scale_codec.codec.Encode.Trait I}
-        `{H'1 : parity_scale_codec.codec.Decode.Trait T}
-        `{H'2 : core.convert.From.Trait E (T := ErrorCode)}
-        `{H'3 : core.ops.function.FnOnce.Trait F (Args := u32)}
-        `{H'4 : core.ops.function.FnOnce.Trait D (Args := ref (Slice u8))}
-        :=
+    Section EnvBackend.
+      Context `{State.Trait}.
+      
+      Class Trait (Self : Set) : Type := {
+        set_contract_storage
+          {K V : Set}
+          {ℋ_0 : parity_scale_codec.codec.Encode.Trait K}
+          {ℋ_1 : ink_storage_traits.storage.Storable.Trait V}
+          :
+          (mut_ref Self) -> (ref K) -> (ref V) -> M (core.option.Option u32);
+        get_contract_storage
+          {K R : Set}
+          {ℋ_0 : parity_scale_codec.codec.Encode.Trait K}
+          {ℋ_1 : ink_storage_traits.storage.Storable.Trait R}
+          :
+          (mut_ref Self) ->
+            (ref K) ->
+            M
+              (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+                (core.option.Option R));
+        take_contract_storage
+          {K R : Set}
+          {ℋ_0 : parity_scale_codec.codec.Encode.Trait K}
+          {ℋ_1 : ink_storage_traits.storage.Storable.Trait R}
+          :
+          (mut_ref Self) ->
+            (ref K) ->
+            M
+              (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+                (core.option.Option R));
+        contains_contract_storage
+          {K : Set}
+          {ℋ_0 : parity_scale_codec.codec.Encode.Trait K}
+          :
+          (mut_ref Self) -> (ref K) -> M (core.option.Option u32);
+        clear_contract_storage
+          {K : Set}
+          {ℋ_0 : parity_scale_codec.codec.Encode.Trait K}
+          :
+          (mut_ref Self) -> (ref K) -> M (core.option.Option u32);
+        decode_input {T : Set} {ℋ_0 : parity_scale_codec.codec.Decode.Trait T}
+          :
+          (mut_ref Self) ->
+            M
+              (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+                T);
+        return_value {R : Set} {ℋ_0 : parity_scale_codec.codec.Encode.Trait R}
+          :
+          (mut_ref Self) ->
+            ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.ReturnFlags
+            ->
+            (ref R) ->
+            M Empty_set;
+        debug_message : (mut_ref Self) -> (ref str) -> M unit;
+        hash_bytes {H : Set} {ℋ_0 : ink_env.hash.CryptoHash.Trait H}
+          :
+          (mut_ref Self) ->
+            (ref (Slice u8)) ->
+            (mut_ref (ink_env.hash.HashOutput.Type_ (Self := H))) ->
+            M unit;
+        hash_encoded
+          {H T : Set}
+          {ℋ_0 : ink_env.hash.CryptoHash.Trait H}
+          {ℋ_1 : parity_scale_codec.codec.Encode.Trait T}
+          :
+          (mut_ref Self) ->
+            (ref T) ->
+            (mut_ref (ink_env.hash.HashOutput.Type_ (Self := H))) ->
+            M unit;
+        ecdsa_recover
+          :
+          (mut_ref Self) ->
+            (ref (array u8)) ->
+            (ref (array u8)) ->
+            (mut_ref (array u8)) ->
+            M
+              (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+                unit);
+        ecdsa_to_eth_address
+          :
+          (mut_ref Self) ->
+            (ref (array u8)) ->
+            (mut_ref (array u8)) ->
+            M
+              (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+                unit);
         call_chain_extension
-            (I := I)
-            (T := T)
-            (E := E)
-            (ErrorCode := ErrorCode)
-            (F := F)
-            (D := D)
-          (H'0 := H'0)
-          (H'1 := H'1)
-          (H'2 := H'2)
-          (H'3 := H'3)
-          (H'4 := H'4);
-    }.
-    Global Instance Method_set_code_hash `{State.Trait} `(Trait)
-      : Notation.Dot "set_code_hash" := {
-      Notation.dot := set_code_hash;
-    }.
+          {I T E ErrorCode F D : Set}
+          {ℋ_0 : parity_scale_codec.codec.Encode.Trait I}
+          {ℋ_1 : parity_scale_codec.codec.Decode.Trait T}
+          {ℋ_2 : core.convert.From.Trait E (T := ErrorCode)}
+          {ℋ_3 : core.ops.function.FnOnce.Trait F (Args := u32)}
+          {ℋ_4 : core.ops.function.FnOnce.Trait D (Args := ref (Slice u8))}
+          :
+          (mut_ref Self) ->
+            u32 ->
+            (ref I) ->
+            F ->
+            D ->
+            M (core.result.Result T E);
+        set_code_hash
+          :
+          (mut_ref Self) ->
+            (ref (Slice u8)) ->
+            M
+              (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+                unit);
+      }.
+      
+    End EnvBackend.
   End EnvBackend.
   
   Module TypedEnvBackend.
-    Class Trait
-        (Self : Set)
-        `{ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.EnvBackend.Trait
-              Self}
-        `{State.Trait} :
-        Type := {
-      caller {E : Set} `{H'0 : ink_env.types.Environment.Trait E}
-        :
-        (mut_ref Self) -> M E::type["AccountId"];
-      transferred_value {E : Set} `{H'0 : ink_env.types.Environment.Trait E}
-        :
-        (mut_ref Self) -> M E::type["Balance"];
-      weight_to_fee {E : Set} `{H'0 : ink_env.types.Environment.Trait E}
-        :
-        (mut_ref Self) -> u64 -> M E::type["Balance"];
-      gas_left {E : Set} `{H'0 : ink_env.types.Environment.Trait E}
-        :
-        (mut_ref Self) -> M u64;
-      block_timestamp {E : Set} `{H'0 : ink_env.types.Environment.Trait E}
-        :
-        (mut_ref Self) -> M E::type["Timestamp"];
-      account_id {E : Set} `{H'0 : ink_env.types.Environment.Trait E}
-        :
-        (mut_ref Self) -> M E::type["AccountId"];
-      balance {E : Set} `{H'0 : ink_env.types.Environment.Trait E}
-        :
-        (mut_ref Self) -> M E::type["Balance"];
-      block_number {E : Set} `{H'0 : ink_env.types.Environment.Trait E}
-        :
-        (mut_ref Self) -> M E::type["BlockNumber"];
-      minimum_balance {E : Set} `{H'0 : ink_env.types.Environment.Trait E}
-        :
-        (mut_ref Self) -> M E::type["Balance"];
-      emit_event
-        {E Event : Set}
-        `{H'0 : ink_env.types.Environment.Trait E}
-        `{H'1 : ink_env.topics.Topics.Trait Event}
-        `{H'2 : parity_scale_codec.codec.Encode.Trait Event}
-        :
-        (mut_ref Self) -> Event -> M unit;
-      invoke_contract
-        {E Args R : Set}
-        `{H'0 : ink_env.types.Environment.Trait E}
-        `{H'1 : parity_scale_codec.codec.Encode.Trait Args}
-        `{H'2 : parity_scale_codec.codec.Decode.Trait R}
-        :
-        (mut_ref Self) ->
-          (ref
-            (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallParams
-              E
-              (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Call
-                E)
-              Args
-              R))
-          ->
-          M
-            (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-              (ink_primitives.MessageResult R));
-      invoke_contract_delegate
-        {E Args R : Set}
-        `{H'0 : ink_env.types.Environment.Trait E}
-        `{H'1 : parity_scale_codec.codec.Encode.Trait Args}
-        `{H'2 : parity_scale_codec.codec.Decode.Trait R}
-        :
-        (mut_ref Self) ->
-          (ref
-            (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallParams
-              E
-              (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.DelegateCall
-                E)
-              Args
-              R))
-          ->
-          M
-            (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-              (ink_primitives.MessageResult R));
-      instantiate_contract
-        {E ContractRef Args Salt R : Set}
-        `{H'0 : ink_env.types.Environment.Trait E}
-        `{H'1
+    Section TypedEnvBackend.
+      Context `{State.Trait}.
+      
+      Class Trait
+          (Self : Set)
+          {ℋ_0 :
+            ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.EnvBackend.Trait
+                Self} :
+          Type := {
+        caller {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E}
           :
-          ink_env.call.create_builder.FromAccountId.Trait ContractRef (T := E)}
-        `{H'2 : parity_scale_codec.codec.Encode.Trait Args}
-        `{H'3 : core.convert.AsRef.Trait Salt (T := Slice u8)}
-        `{H'4
+          (mut_ref Self) -> M E::type["AccountId"];
+        transferred_value {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E}
           :
-          ink_env.call.create_builder.ConstructorReturnType.Trait R
-            (C := ContractRef)}
-        :
-        (mut_ref Self) ->
-          (ref
-            (ink_env.call.create_builder.CreateParams
-              E
-              ContractRef
-              Args
-              Salt
-              R))
-          ->
-          M
-            (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-              (ink_primitives.ConstructorResult
-                (ink_env.call.create_builder.ConstructorReturnType.Output
-                  (Self := R))));
-      terminate_contract {E : Set} `{H'0 : ink_env.types.Environment.Trait E}
-        :
-        (mut_ref Self) -> E::type["AccountId"] -> M Empty_set;
-      transfer {E : Set} `{H'0 : ink_env.types.Environment.Trait E}
-        :
-        (mut_ref Self) ->
-          E::type["AccountId"] ->
-          E::type["Balance"] ->
-          M
-            (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-              unit);
-      is_contract {E : Set} `{H'0 : ink_env.types.Environment.Trait E}
-        :
-        (mut_ref Self) -> (ref E::type["AccountId"]) -> M bool;
-      caller_is_origin {E : Set} `{H'0 : ink_env.types.Environment.Trait E}
-        :
-        (mut_ref Self) -> M bool;
-      code_hash {E : Set} `{H'0 : ink_env.types.Environment.Trait E}
-        :
-        (mut_ref Self) ->
-          (ref E::type["AccountId"]) ->
-          M
-            (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-              E::type["Hash"]);
-      own_code_hash {E : Set} `{H'0 : ink_env.types.Environment.Trait E}
-        :
-        (mut_ref Self) ->
-          M
-            (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-              E::type["Hash"]);
-      call_runtime
-        {E Call : Set}
-        `{H'0 : ink_env.types.Environment.Trait E}
-        `{H'1 : parity_scale_codec.codec.Encode.Trait Call}
-        :
-        (mut_ref Self) ->
-          (ref Call) ->
-          M
-            (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-              unit);
-    }.
-    
-    Global Instance Method_caller `{State.Trait} `(Trait)
-      : Notation.Dot "caller" := {
-      Notation.dot {E : Set} `{H'0 : ink_env.types.Environment.Trait E}
-        :=
-        caller (E := E) (H'0 := H'0);
-    }.
-    Global Instance Method_transferred_value `{State.Trait} `(Trait)
-      : Notation.Dot "transferred_value" := {
-      Notation.dot {E : Set} `{H'0 : ink_env.types.Environment.Trait E}
-        :=
-        transferred_value (E := E) (H'0 := H'0);
-    }.
-    Global Instance Method_weight_to_fee `{State.Trait} `(Trait)
-      : Notation.Dot "weight_to_fee" := {
-      Notation.dot {E : Set} `{H'0 : ink_env.types.Environment.Trait E}
-        :=
-        weight_to_fee (E := E) (H'0 := H'0);
-    }.
-    Global Instance Method_gas_left `{State.Trait} `(Trait)
-      : Notation.Dot "gas_left" := {
-      Notation.dot {E : Set} `{H'0 : ink_env.types.Environment.Trait E}
-        :=
-        gas_left (E := E) (H'0 := H'0);
-    }.
-    Global Instance Method_block_timestamp `{State.Trait} `(Trait)
-      : Notation.Dot "block_timestamp" := {
-      Notation.dot {E : Set} `{H'0 : ink_env.types.Environment.Trait E}
-        :=
-        block_timestamp (E := E) (H'0 := H'0);
-    }.
-    Global Instance Method_account_id `{State.Trait} `(Trait)
-      : Notation.Dot "account_id" := {
-      Notation.dot {E : Set} `{H'0 : ink_env.types.Environment.Trait E}
-        :=
-        account_id (E := E) (H'0 := H'0);
-    }.
-    Global Instance Method_balance `{State.Trait} `(Trait)
-      : Notation.Dot "balance" := {
-      Notation.dot {E : Set} `{H'0 : ink_env.types.Environment.Trait E}
-        :=
-        balance (E := E) (H'0 := H'0);
-    }.
-    Global Instance Method_block_number `{State.Trait} `(Trait)
-      : Notation.Dot "block_number" := {
-      Notation.dot {E : Set} `{H'0 : ink_env.types.Environment.Trait E}
-        :=
-        block_number (E := E) (H'0 := H'0);
-    }.
-    Global Instance Method_minimum_balance `{State.Trait} `(Trait)
-      : Notation.Dot "minimum_balance" := {
-      Notation.dot {E : Set} `{H'0 : ink_env.types.Environment.Trait E}
-        :=
-        minimum_balance (E := E) (H'0 := H'0);
-    }.
-    Global Instance Method_emit_event `{State.Trait} `(Trait)
-      : Notation.Dot "emit_event" := {
-      Notation.dot
-        {E Event : Set}
-        `{H'0 : ink_env.types.Environment.Trait E}
-        `{H'1 : ink_env.topics.Topics.Trait Event}
-        `{H'2 : parity_scale_codec.codec.Encode.Trait Event}
-        :=
-        emit_event (E := E) (Event := Event)
-          (H'0 := H'0)
-          (H'1 := H'1)
-          (H'2 := H'2);
-    }.
-    Global Instance Method_invoke_contract `{State.Trait} `(Trait)
-      : Notation.Dot "invoke_contract" := {
-      Notation.dot
-        {E Args R : Set}
-        `{H'0 : ink_env.types.Environment.Trait E}
-        `{H'1 : parity_scale_codec.codec.Encode.Trait Args}
-        `{H'2 : parity_scale_codec.codec.Decode.Trait R}
-        :=
-        invoke_contract (E := E) (Args := Args) (R := R)
-          (H'0 := H'0)
-          (H'1 := H'1)
-          (H'2 := H'2);
-    }.
-    Global Instance Method_invoke_contract_delegate `{State.Trait} `(Trait)
-      : Notation.Dot "invoke_contract_delegate" := {
-      Notation.dot
-        {E Args R : Set}
-        `{H'0 : ink_env.types.Environment.Trait E}
-        `{H'1 : parity_scale_codec.codec.Encode.Trait Args}
-        `{H'2 : parity_scale_codec.codec.Decode.Trait R}
-        :=
-        invoke_contract_delegate (E := E) (Args := Args) (R := R)
-          (H'0 := H'0)
-          (H'1 := H'1)
-          (H'2 := H'2);
-    }.
-    Global Instance Method_instantiate_contract `{State.Trait} `(Trait)
-      : Notation.Dot "instantiate_contract" := {
-      Notation.dot
-        {E ContractRef Args Salt R : Set}
-        `{H'0 : ink_env.types.Environment.Trait E}
-        `{H'1
+          (mut_ref Self) -> M E::type["Balance"];
+        weight_to_fee {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E}
           :
-          ink_env.call.create_builder.FromAccountId.Trait ContractRef (T := E)}
-        `{H'2 : parity_scale_codec.codec.Encode.Trait Args}
-        `{H'3 : core.convert.AsRef.Trait Salt (T := Slice u8)}
-        `{H'4
+          (mut_ref Self) -> u64 -> M E::type["Balance"];
+        gas_left {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E}
           :
-          ink_env.call.create_builder.ConstructorReturnType.Trait R
-            (C := ContractRef)}
-        :=
+          (mut_ref Self) -> M u64;
+        block_timestamp {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E}
+          :
+          (mut_ref Self) -> M E::type["Timestamp"];
+        account_id {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E}
+          :
+          (mut_ref Self) -> M E::type["AccountId"];
+        balance {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E}
+          :
+          (mut_ref Self) -> M E::type["Balance"];
+        block_number {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E}
+          :
+          (mut_ref Self) -> M E::type["BlockNumber"];
+        minimum_balance {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E}
+          :
+          (mut_ref Self) -> M E::type["Balance"];
+        emit_event
+          {E Event : Set}
+          {ℋ_0 : ink_env.types.Environment.Trait E}
+          {ℋ_1 : ink_env.topics.Topics.Trait Event}
+          {ℋ_2 : parity_scale_codec.codec.Encode.Trait Event}
+          :
+          (mut_ref Self) -> Event -> M unit;
+        invoke_contract
+          {E Args R : Set}
+          {ℋ_0 : ink_env.types.Environment.Trait E}
+          {ℋ_1 : parity_scale_codec.codec.Encode.Trait Args}
+          {ℋ_2 : parity_scale_codec.codec.Decode.Trait R}
+          :
+          (mut_ref Self) ->
+            (ref
+              (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallParams
+                E
+                (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Call
+                  E)
+                Args
+                R))
+            ->
+            M
+              (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+                (ink_primitives.MessageResult R));
+        invoke_contract_delegate
+          {E Args R : Set}
+          {ℋ_0 : ink_env.types.Environment.Trait E}
+          {ℋ_1 : parity_scale_codec.codec.Encode.Trait Args}
+          {ℋ_2 : parity_scale_codec.codec.Decode.Trait R}
+          :
+          (mut_ref Self) ->
+            (ref
+              (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallParams
+                E
+                (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.DelegateCall
+                  E)
+                Args
+                R))
+            ->
+            M
+              (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+                (ink_primitives.MessageResult R));
         instantiate_contract
-            (E := E)
-            (ContractRef := ContractRef)
-            (Args := Args)
-            (Salt := Salt)
-            (R := R)
-          (H'0 := H'0)
-          (H'1 := H'1)
-          (H'2 := H'2)
-          (H'3 := H'3)
-          (H'4 := H'4);
-    }.
-    Global Instance Method_terminate_contract `{State.Trait} `(Trait)
-      : Notation.Dot "terminate_contract" := {
-      Notation.dot {E : Set} `{H'0 : ink_env.types.Environment.Trait E}
-        :=
-        terminate_contract (E := E) (H'0 := H'0);
-    }.
-    Global Instance Method_transfer `{State.Trait} `(Trait)
-      : Notation.Dot "transfer" := {
-      Notation.dot {E : Set} `{H'0 : ink_env.types.Environment.Trait E}
-        :=
-        transfer (E := E) (H'0 := H'0);
-    }.
-    Global Instance Method_is_contract `{State.Trait} `(Trait)
-      : Notation.Dot "is_contract" := {
-      Notation.dot {E : Set} `{H'0 : ink_env.types.Environment.Trait E}
-        :=
-        is_contract (E := E) (H'0 := H'0);
-    }.
-    Global Instance Method_caller_is_origin `{State.Trait} `(Trait)
-      : Notation.Dot "caller_is_origin" := {
-      Notation.dot {E : Set} `{H'0 : ink_env.types.Environment.Trait E}
-        :=
-        caller_is_origin (E := E) (H'0 := H'0);
-    }.
-    Global Instance Method_code_hash `{State.Trait} `(Trait)
-      : Notation.Dot "code_hash" := {
-      Notation.dot {E : Set} `{H'0 : ink_env.types.Environment.Trait E}
-        :=
-        code_hash (E := E) (H'0 := H'0);
-    }.
-    Global Instance Method_own_code_hash `{State.Trait} `(Trait)
-      : Notation.Dot "own_code_hash" := {
-      Notation.dot {E : Set} `{H'0 : ink_env.types.Environment.Trait E}
-        :=
-        own_code_hash (E := E) (H'0 := H'0);
-    }.
-    Global Instance Method_call_runtime `{State.Trait} `(Trait)
-      : Notation.Dot "call_runtime" := {
-      Notation.dot
-        {E Call : Set}
-        `{H'0 : ink_env.types.Environment.Trait E}
-        `{H'1 : parity_scale_codec.codec.Encode.Trait Call}
-        :=
-        call_runtime (E := E) (Call := Call) (H'0 := H'0) (H'1 := H'1);
-    }.
+          {E ContractRef Args Salt R : Set}
+          {ℋ_0 : ink_env.types.Environment.Trait E}
+          {ℋ_1 :
+            ink_env.call.create_builder.FromAccountId.Trait ContractRef
+              (T := E)}
+          {ℋ_2 : parity_scale_codec.codec.Encode.Trait Args}
+          {ℋ_3 : core.convert.AsRef.Trait Salt (T := Slice u8)}
+          {ℋ_4 :
+            ink_env.call.create_builder.ConstructorReturnType.Trait R
+              (C := ContractRef)}
+          :
+          (mut_ref Self) ->
+            (ref
+              (ink_env.call.create_builder.CreateParams
+                E
+                ContractRef
+                Args
+                Salt
+                R))
+            ->
+            M
+              (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+                (ink_primitives.ConstructorResult
+                  (ink_env.call.create_builder.ConstructorReturnType.Output
+                    (Self := R))));
+        terminate_contract {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E}
+          :
+          (mut_ref Self) -> E::type["AccountId"] -> M Empty_set;
+        transfer {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E}
+          :
+          (mut_ref Self) ->
+            E::type["AccountId"] ->
+            E::type["Balance"] ->
+            M
+              (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+                unit);
+        is_contract {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E}
+          :
+          (mut_ref Self) -> (ref E::type["AccountId"]) -> M bool;
+        caller_is_origin {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E}
+          :
+          (mut_ref Self) -> M bool;
+        code_hash {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E}
+          :
+          (mut_ref Self) ->
+            (ref E::type["AccountId"]) ->
+            M
+              (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+                E::type["Hash"]);
+        own_code_hash {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E}
+          :
+          (mut_ref Self) ->
+            M
+              (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+                E::type["Hash"]);
+        call_runtime
+          {E Call : Set}
+          {ℋ_0 : ink_env.types.Environment.Trait E}
+          {ℋ_1 : parity_scale_codec.codec.Encode.Trait Call}
+          :
+          (mut_ref Self) ->
+            (ref Call) ->
+            M
+              (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+                unit);
+      }.
+      
+    End TypedEnvBackend.
   End TypedEnvBackend.
   
   Module OnInstance.
-    Class Trait
-        (Self : Set)
-        `{ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.EnvBackend.Trait
-              Self}
-        `{ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.TypedEnvBackend.Trait
-              Self}
-        `{State.Trait} :
-        Type := {
-      on_instance
-        {F R : Set}
-        `{H'0 : core.ops.function.FnOnce.Trait F (Args := mut_ref Self)}
-        :
-        F -> M R;
-    }.
-    
-    Global Instance Method_on_instance `{State.Trait} `(Trait)
-      : Notation.Dot "on_instance" := {
-      Notation.dot
-        {F R : Set}
-        `{H'0 : core.ops.function.FnOnce.Trait F (Args := mut_ref Self)}
-        :=
-        on_instance (F := F) (R := R) (H'0 := H'0);
-    }.
+    Section OnInstance.
+      Context `{State.Trait}.
+      
+      Class Trait
+          (Self : Set)
+          {ℋ_0 :
+            ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.EnvBackend.Trait
+                Self}
+          {ℋ_1 :
+            ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.TypedEnvBackend.Trait
+                Self} :
+          Type := {
+        on_instance
+          {F R : Set}
+          {ℋ_0 : core.ops.function.FnOnce.Trait F (Args := mut_ref Self)}
+          :
+          F -> M R;
+      }.
+      
+    End OnInstance.
   End OnInstance.
   
   Module CallBuilder.
     Section CallBuilder.
+      Context `{State.Trait}.
+      
       Context {E CallType Args RetType : Set}.
-      Context `{ink_env.types.Environment.Trait E}.
+      
+      Context {ℋ_0 : ink_env.types.Environment.Trait E}.
       Unset Primitive Projections.
-      Record t `{State.Trait} : Set := {
+      Record t : Set := {
         call_type : CallType;
         call_flags
           :
@@ -2296,51 +1915,45 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
       }.
       Global Set Primitive Projections.
       
-      Global Instance Get_call_type `{State.Trait}
-        : Notation.Dot "call_type" := {
+      Global Instance Get_call_type : Notation.Dot "call_type" := {
         Notation.dot x := let* x := M.read x in Pure x.(call_type) : M _;
       }.
-      Global Instance Get_AF_call_type `{State.Trait}
-        : Notation.DoubleColon t "call_type" := {
+      Global Instance Get_AF_call_type : Notation.DoubleColon t "call_type" := {
         Notation.double_colon x
           :=
           let* x := M.read x in Pure x.(call_type) : M _;
       }.
-      Global Instance Get_call_flags `{State.Trait}
-        : Notation.Dot "call_flags" := {
+      Global Instance Get_call_flags : Notation.Dot "call_flags" := {
         Notation.dot x := let* x := M.read x in Pure x.(call_flags) : M _;
       }.
-      Global Instance Get_AF_call_flags `{State.Trait}
+      Global Instance Get_AF_call_flags
         : Notation.DoubleColon t "call_flags" := {
         Notation.double_colon x
           :=
           let* x := M.read x in Pure x.(call_flags) : M _;
       }.
-      Global Instance Get_exec_input `{State.Trait}
-        : Notation.Dot "exec_input" := {
+      Global Instance Get_exec_input : Notation.Dot "exec_input" := {
         Notation.dot x := let* x := M.read x in Pure x.(exec_input) : M _;
       }.
-      Global Instance Get_AF_exec_input `{State.Trait}
+      Global Instance Get_AF_exec_input
         : Notation.DoubleColon t "exec_input" := {
         Notation.double_colon x
           :=
           let* x := M.read x in Pure x.(exec_input) : M _;
       }.
-      Global Instance Get_return_type `{State.Trait}
-        : Notation.Dot "return_type" := {
+      Global Instance Get_return_type : Notation.Dot "return_type" := {
         Notation.dot x := let* x := M.read x in Pure x.(return_type) : M _;
       }.
-      Global Instance Get_AF_return_type `{State.Trait}
+      Global Instance Get_AF_return_type
         : Notation.DoubleColon t "return_type" := {
         Notation.double_colon x
           :=
           let* x := M.read x in Pure x.(return_type) : M _;
       }.
-      Global Instance Get__phantom `{State.Trait} : Notation.Dot "_phantom" := {
+      Global Instance Get__phantom : Notation.Dot "_phantom" := {
         Notation.dot x := let* x := M.read x in Pure x.(_phantom) : M _;
       }.
-      Global Instance Get_AF__phantom `{State.Trait}
-        : Notation.DoubleColon t "_phantom" := {
+      Global Instance Get_AF__phantom : Notation.DoubleColon t "_phantom" := {
         Notation.double_colon x
           :=
           let* x := M.read x in Pure x.(_phantom) : M _;
@@ -2350,7 +1963,7 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
   Definition CallBuilder
       (E CallType Args RetType : Set)
       `{State.Trait}
-      `{ink_env.types.Environment.Trait E}
+      {ℋ_0 : ink_env.types.Environment.Trait E}
       : Set :=
     M.val
       (CallBuilder.t
@@ -2360,7 +1973,7 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
         (RetType := RetType)).
   
   Parameter build_call :
-      forall `{State.Trait} {E : Set} `{ink_env.types.Environment.Trait E},
+      forall `{State.Trait} {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E},
       M
           (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallBuilder
             E
@@ -2375,64 +1988,64 @@ End backend_and_call_builder_and_engine_and_engine_test_api_and_error.
 
 Module api.
   Parameter caller :
-      forall `{State.Trait} {E : Set} `{ink_env.types.Environment.Trait E},
+      forall `{State.Trait} {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E},
       M E::type["AccountId"].
   
   Parameter transferred_value :
-      forall `{State.Trait} {E : Set} `{ink_env.types.Environment.Trait E},
+      forall `{State.Trait} {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E},
       M E::type["Balance"].
   
   Parameter weight_to_fee :
-      forall `{State.Trait} {E : Set} `{ink_env.types.Environment.Trait E},
+      forall `{State.Trait} {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E},
       ink_env.types.Gas -> M E::type["Balance"].
   
   Parameter gas_left :
-      forall `{State.Trait} {E : Set} `{ink_env.types.Environment.Trait E},
+      forall `{State.Trait} {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E},
       M ink_env.types.Gas.
   
   Parameter block_timestamp :
-      forall `{State.Trait} {E : Set} `{ink_env.types.Environment.Trait E},
+      forall `{State.Trait} {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E},
       M E::type["Timestamp"].
   
   Parameter account_id :
-      forall `{State.Trait} {E : Set} `{ink_env.types.Environment.Trait E},
+      forall `{State.Trait} {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E},
       M E::type["AccountId"].
   
   Parameter balance :
-      forall `{State.Trait} {E : Set} `{ink_env.types.Environment.Trait E},
+      forall `{State.Trait} {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E},
       M E::type["Balance"].
   
   Parameter block_number :
-      forall `{State.Trait} {E : Set} `{ink_env.types.Environment.Trait E},
+      forall `{State.Trait} {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E},
       M E::type["BlockNumber"].
   
   Parameter minimum_balance :
-      forall `{State.Trait} {E : Set} `{ink_env.types.Environment.Trait E},
+      forall `{State.Trait} {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E},
       M E::type["Balance"].
   
   Parameter emit_event :
       forall
         `{State.Trait}
         {E Event : Set}
-        `{ink_env.types.Environment.Trait E}
-        `{ink_env.topics.Topics.Trait Event}
-        `{parity_scale_codec.codec.Encode.Trait Event},
+        {ℋ_0 : ink_env.types.Environment.Trait E}
+        {ℋ_1 : ink_env.topics.Topics.Trait Event}
+        {ℋ_2 : parity_scale_codec.codec.Encode.Trait Event},
       Event -> M unit.
   
   Parameter set_contract_storage :
       forall
         `{State.Trait}
         {K V : Set}
-        `{parity_scale_codec.codec.Encode.Trait K}
-        `{ink_storage_traits.storage.Storable.Trait V},
+        {ℋ_0 : parity_scale_codec.codec.Encode.Trait K}
+        {ℋ_1 : ink_storage_traits.storage.Storable.Trait V},
       (ref K) -> (ref V) -> M (core.option.Option u32).
   
   Parameter get_contract_storage :
       forall
         `{State.Trait}
         {K R : Set}
-        `{parity_scale_codec.codec.Encode.Trait K}
-        `{ink_storage_traits.storage.Storable.Trait R},
+        {ℋ_0 : parity_scale_codec.codec.Encode.Trait K}
+        {ℋ_1 : ink_storage_traits.storage.Storable.Trait R},
       (ref K) ->
         M
           (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
@@ -2442,8 +2055,8 @@ Module api.
       forall
         `{State.Trait}
         {K R : Set}
-        `{parity_scale_codec.codec.Encode.Trait K}
-        `{ink_storage_traits.storage.Storable.Trait R},
+        {ℋ_0 : parity_scale_codec.codec.Encode.Trait K}
+        {ℋ_1 : ink_storage_traits.storage.Storable.Trait R},
       (ref K) ->
         M
           (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
@@ -2453,23 +2066,23 @@ Module api.
       forall
         `{State.Trait}
         {K : Set}
-        `{parity_scale_codec.codec.Encode.Trait K},
+        {ℋ_0 : parity_scale_codec.codec.Encode.Trait K},
       (ref K) -> M (core.option.Option u32).
   
   Parameter clear_contract_storage :
       forall
         `{State.Trait}
         {K : Set}
-        `{parity_scale_codec.codec.Encode.Trait K},
+        {ℋ_0 : parity_scale_codec.codec.Encode.Trait K},
       (ref K) -> M (core.option.Option u32).
   
   Parameter invoke_contract :
       forall
         `{State.Trait}
         {E Args R : Set}
-        `{ink_env.types.Environment.Trait E}
-        `{parity_scale_codec.codec.Encode.Trait Args}
-        `{parity_scale_codec.codec.Decode.Trait R},
+        {ℋ_0 : ink_env.types.Environment.Trait E}
+        {ℋ_1 : parity_scale_codec.codec.Encode.Trait Args}
+        {ℋ_2 : parity_scale_codec.codec.Decode.Trait R},
       (ref
           (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallParams
             E
@@ -2486,9 +2099,9 @@ Module api.
       forall
         `{State.Trait}
         {E Args R : Set}
-        `{ink_env.types.Environment.Trait E}
-        `{parity_scale_codec.codec.Encode.Trait Args}
-        `{parity_scale_codec.codec.Decode.Trait R},
+        {ℋ_0 : ink_env.types.Environment.Trait E}
+        {ℋ_1 : parity_scale_codec.codec.Encode.Trait Args}
+        {ℋ_2 : parity_scale_codec.codec.Decode.Trait R},
       (ref
           (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallParams
             E
@@ -2505,11 +2118,13 @@ Module api.
       forall
         `{State.Trait}
         {E ContractRef Args Salt R : Set}
-        `{ink_env.types.Environment.Trait E}
-        `{ink_env.call.create_builder.FromAccountId.Trait ContractRef (T := E)}
-        `{parity_scale_codec.codec.Encode.Trait Args}
-        `{core.convert.AsRef.Trait Salt (T := Slice u8)}
-        `{ink_env.call.create_builder.ConstructorReturnType.Trait R
+        {ℋ_0 : ink_env.types.Environment.Trait E}
+        {ℋ_1 :
+          ink_env.call.create_builder.FromAccountId.Trait ContractRef (T := E)}
+        {ℋ_2 : parity_scale_codec.codec.Encode.Trait Args}
+        {ℋ_3 : core.convert.AsRef.Trait Salt (T := Slice u8)}
+        {ℋ_4 :
+          ink_env.call.create_builder.ConstructorReturnType.Trait R
             (C := ContractRef)},
       (ref (ink_env.call.create_builder.CreateParams E ContractRef Args Salt R))
         ->
@@ -2520,11 +2135,11 @@ Module api.
                 (Self := R)))).
   
   Parameter terminate_contract :
-      forall `{State.Trait} {E : Set} `{ink_env.types.Environment.Trait E},
+      forall `{State.Trait} {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E},
       E::type["AccountId"] -> M Empty_set.
   
   Parameter transfer :
-      forall `{State.Trait} {E : Set} `{ink_env.types.Environment.Trait E},
+      forall `{State.Trait} {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E},
       E::type["AccountId"] ->
         E::type["Balance"] ->
         M
@@ -2535,7 +2150,7 @@ Module api.
       forall
         `{State.Trait}
         {T : Set}
-        `{parity_scale_codec.codec.Decode.Trait T},
+        {ℋ_0 : parity_scale_codec.codec.Decode.Trait T},
       M
           (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
             T).
@@ -2544,7 +2159,7 @@ Module api.
       forall
         `{State.Trait}
         {R : Set}
-        `{parity_scale_codec.codec.Encode.Trait R},
+        {ℋ_0 : parity_scale_codec.codec.Encode.Trait R},
       ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.ReturnFlags
         ->
         (ref R) ->
@@ -2553,7 +2168,7 @@ Module api.
   Parameter debug_message : forall `{State.Trait}, (ref str) -> M unit.
   
   Parameter hash_bytes :
-      forall `{State.Trait} {H : Set} `{ink_env.hash.CryptoHash.Trait H},
+      forall `{State.Trait} {H : Set} {ℋ_0 : ink_env.hash.CryptoHash.Trait H},
       (ref (Slice u8)) ->
         (mut_ref (ink_env.hash.HashOutput.Type_ (Self := H))) ->
         M unit.
@@ -2562,8 +2177,8 @@ Module api.
       forall
         `{State.Trait}
         {H T : Set}
-        `{ink_env.hash.CryptoHash.Trait H}
-        `{parity_scale_codec.codec.Encode.Trait T},
+        {ℋ_0 : ink_env.hash.CryptoHash.Trait H}
+        {ℋ_1 : parity_scale_codec.codec.Encode.Trait T},
       (ref T) ->
         (mut_ref (ink_env.hash.HashOutput.Type_ (Self := H))) ->
         M unit.
@@ -2586,24 +2201,24 @@ Module api.
             unit).
   
   Parameter is_contract :
-      forall `{State.Trait} {E : Set} `{ink_env.types.Environment.Trait E},
+      forall `{State.Trait} {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E},
       (ref E::type["AccountId"]) -> M bool.
   
   Parameter code_hash :
-      forall `{State.Trait} {E : Set} `{ink_env.types.Environment.Trait E},
+      forall `{State.Trait} {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E},
       (ref E::type["AccountId"]) ->
         M
           (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
             E::type["Hash"]).
   
   Parameter own_code_hash :
-      forall `{State.Trait} {E : Set} `{ink_env.types.Environment.Trait E},
+      forall `{State.Trait} {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E},
       M
           (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
             E::type["Hash"]).
   
   Parameter caller_is_origin :
-      forall `{State.Trait} {E : Set} `{ink_env.types.Environment.Trait E},
+      forall `{State.Trait} {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E},
       M bool.
   
   Parameter set_code_hash :
@@ -2614,7 +2229,7 @@ Module api.
             unit).
   
   Parameter set_code_hash2 :
-      forall `{State.Trait} {E : Set} `{ink_env.types.Environment.Trait E},
+      forall `{State.Trait} {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E},
       (ref E::type["Hash"]) ->
         M
           (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
@@ -2624,8 +2239,8 @@ Module api.
       forall
         `{State.Trait}
         {E Call : Set}
-        `{ink_env.types.Environment.Trait E}
-        `{parity_scale_codec.codec.Encode.Trait Call},
+        {ℋ_0 : ink_env.types.Environment.Trait E}
+        {ℋ_1 : parity_scale_codec.codec.Encode.Trait Call},
       (ref Call) ->
         M
           (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
@@ -2633,64 +2248,64 @@ Module api.
 End api.
 
 Parameter caller :
-    forall `{State.Trait} {E : Set} `{ink_env.types.Environment.Trait E},
+    forall `{State.Trait} {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E},
     M E::type["AccountId"].
 
 Parameter transferred_value :
-    forall `{State.Trait} {E : Set} `{ink_env.types.Environment.Trait E},
+    forall `{State.Trait} {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E},
     M E::type["Balance"].
 
 Parameter weight_to_fee :
-    forall `{State.Trait} {E : Set} `{ink_env.types.Environment.Trait E},
+    forall `{State.Trait} {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E},
     ink_env.types.Gas -> M E::type["Balance"].
 
 Parameter gas_left :
-    forall `{State.Trait} {E : Set} `{ink_env.types.Environment.Trait E},
+    forall `{State.Trait} {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E},
     M ink_env.types.Gas.
 
 Parameter block_timestamp :
-    forall `{State.Trait} {E : Set} `{ink_env.types.Environment.Trait E},
+    forall `{State.Trait} {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E},
     M E::type["Timestamp"].
 
 Parameter account_id :
-    forall `{State.Trait} {E : Set} `{ink_env.types.Environment.Trait E},
+    forall `{State.Trait} {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E},
     M E::type["AccountId"].
 
 Parameter balance :
-    forall `{State.Trait} {E : Set} `{ink_env.types.Environment.Trait E},
+    forall `{State.Trait} {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E},
     M E::type["Balance"].
 
 Parameter block_number :
-    forall `{State.Trait} {E : Set} `{ink_env.types.Environment.Trait E},
+    forall `{State.Trait} {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E},
     M E::type["BlockNumber"].
 
 Parameter minimum_balance :
-    forall `{State.Trait} {E : Set} `{ink_env.types.Environment.Trait E},
+    forall `{State.Trait} {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E},
     M E::type["Balance"].
 
 Parameter emit_event :
     forall
       `{State.Trait}
       {E Event : Set}
-      `{ink_env.types.Environment.Trait E}
-      `{ink_env.topics.Topics.Trait Event}
-      `{parity_scale_codec.codec.Encode.Trait Event},
+      {ℋ_0 : ink_env.types.Environment.Trait E}
+      {ℋ_1 : ink_env.topics.Topics.Trait Event}
+      {ℋ_2 : parity_scale_codec.codec.Encode.Trait Event},
     Event -> M unit.
 
 Parameter set_contract_storage :
     forall
       `{State.Trait}
       {K V : Set}
-      `{parity_scale_codec.codec.Encode.Trait K}
-      `{ink_storage_traits.storage.Storable.Trait V},
+      {ℋ_0 : parity_scale_codec.codec.Encode.Trait K}
+      {ℋ_1 : ink_storage_traits.storage.Storable.Trait V},
     (ref K) -> (ref V) -> M (core.option.Option u32).
 
 Parameter get_contract_storage :
     forall
       `{State.Trait}
       {K R : Set}
-      `{parity_scale_codec.codec.Encode.Trait K}
-      `{ink_storage_traits.storage.Storable.Trait R},
+      {ℋ_0 : parity_scale_codec.codec.Encode.Trait K}
+      {ℋ_1 : ink_storage_traits.storage.Storable.Trait R},
     (ref K) ->
       M
         (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
@@ -2700,28 +2315,34 @@ Parameter take_contract_storage :
     forall
       `{State.Trait}
       {K R : Set}
-      `{parity_scale_codec.codec.Encode.Trait K}
-      `{ink_storage_traits.storage.Storable.Trait R},
+      {ℋ_0 : parity_scale_codec.codec.Encode.Trait K}
+      {ℋ_1 : ink_storage_traits.storage.Storable.Trait R},
     (ref K) ->
       M
         (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
           (core.option.Option R)).
 
 Parameter contains_contract_storage :
-    forall `{State.Trait} {K : Set} `{parity_scale_codec.codec.Encode.Trait K},
+    forall
+      `{State.Trait}
+      {K : Set}
+      {ℋ_0 : parity_scale_codec.codec.Encode.Trait K},
     (ref K) -> M (core.option.Option u32).
 
 Parameter clear_contract_storage :
-    forall `{State.Trait} {K : Set} `{parity_scale_codec.codec.Encode.Trait K},
+    forall
+      `{State.Trait}
+      {K : Set}
+      {ℋ_0 : parity_scale_codec.codec.Encode.Trait K},
     (ref K) -> M (core.option.Option u32).
 
 Parameter invoke_contract :
     forall
       `{State.Trait}
       {E Args R : Set}
-      `{ink_env.types.Environment.Trait E}
-      `{parity_scale_codec.codec.Encode.Trait Args}
-      `{parity_scale_codec.codec.Decode.Trait R},
+      {ℋ_0 : ink_env.types.Environment.Trait E}
+      {ℋ_1 : parity_scale_codec.codec.Encode.Trait Args}
+      {ℋ_2 : parity_scale_codec.codec.Decode.Trait R},
     (ref
         (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallParams
           E
@@ -2738,9 +2359,9 @@ Parameter invoke_contract_delegate :
     forall
       `{State.Trait}
       {E Args R : Set}
-      `{ink_env.types.Environment.Trait E}
-      `{parity_scale_codec.codec.Encode.Trait Args}
-      `{parity_scale_codec.codec.Decode.Trait R},
+      {ℋ_0 : ink_env.types.Environment.Trait E}
+      {ℋ_1 : parity_scale_codec.codec.Encode.Trait Args}
+      {ℋ_2 : parity_scale_codec.codec.Decode.Trait R},
     (ref
         (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallParams
           E
@@ -2757,11 +2378,13 @@ Parameter instantiate_contract :
     forall
       `{State.Trait}
       {E ContractRef Args Salt R : Set}
-      `{ink_env.types.Environment.Trait E}
-      `{ink_env.call.create_builder.FromAccountId.Trait ContractRef (T := E)}
-      `{parity_scale_codec.codec.Encode.Trait Args}
-      `{core.convert.AsRef.Trait Salt (T := Slice u8)}
-      `{ink_env.call.create_builder.ConstructorReturnType.Trait R
+      {ℋ_0 : ink_env.types.Environment.Trait E}
+      {ℋ_1 :
+        ink_env.call.create_builder.FromAccountId.Trait ContractRef (T := E)}
+      {ℋ_2 : parity_scale_codec.codec.Encode.Trait Args}
+      {ℋ_3 : core.convert.AsRef.Trait Salt (T := Slice u8)}
+      {ℋ_4 :
+        ink_env.call.create_builder.ConstructorReturnType.Trait R
           (C := ContractRef)},
     (ref (ink_env.call.create_builder.CreateParams E ContractRef Args Salt R))
       ->
@@ -2772,11 +2395,11 @@ Parameter instantiate_contract :
               (Self := R)))).
 
 Parameter terminate_contract :
-    forall `{State.Trait} {E : Set} `{ink_env.types.Environment.Trait E},
+    forall `{State.Trait} {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E},
     E::type["AccountId"] -> M Empty_set.
 
 Parameter transfer :
-    forall `{State.Trait} {E : Set} `{ink_env.types.Environment.Trait E},
+    forall `{State.Trait} {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E},
     E::type["AccountId"] ->
       E::type["Balance"] ->
       M
@@ -2784,13 +2407,19 @@ Parameter transfer :
           unit).
 
 Parameter decode_input :
-    forall `{State.Trait} {T : Set} `{parity_scale_codec.codec.Decode.Trait T},
+    forall
+      `{State.Trait}
+      {T : Set}
+      {ℋ_0 : parity_scale_codec.codec.Decode.Trait T},
     M
         (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
           T).
 
 Parameter return_value :
-    forall `{State.Trait} {R : Set} `{parity_scale_codec.codec.Encode.Trait R},
+    forall
+      `{State.Trait}
+      {R : Set}
+      {ℋ_0 : parity_scale_codec.codec.Encode.Trait R},
     ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.ReturnFlags
       ->
       (ref R) ->
@@ -2799,7 +2428,7 @@ Parameter return_value :
 Parameter debug_message : forall `{State.Trait}, (ref str) -> M unit.
 
 Parameter hash_bytes :
-    forall `{State.Trait} {H : Set} `{ink_env.hash.CryptoHash.Trait H},
+    forall `{State.Trait} {H : Set} {ℋ_0 : ink_env.hash.CryptoHash.Trait H},
     (ref (Slice u8)) ->
       (mut_ref (ink_env.hash.HashOutput.Type_ (Self := H))) ->
       M unit.
@@ -2808,8 +2437,8 @@ Parameter hash_encoded :
     forall
       `{State.Trait}
       {H T : Set}
-      `{ink_env.hash.CryptoHash.Trait H}
-      `{parity_scale_codec.codec.Encode.Trait T},
+      {ℋ_0 : ink_env.hash.CryptoHash.Trait H}
+      {ℋ_1 : parity_scale_codec.codec.Encode.Trait T},
     (ref T) -> (mut_ref (ink_env.hash.HashOutput.Type_ (Self := H))) -> M unit.
 
 Parameter ecdsa_recover :
@@ -2830,24 +2459,24 @@ Parameter ecdsa_to_eth_address :
           unit).
 
 Parameter is_contract :
-    forall `{State.Trait} {E : Set} `{ink_env.types.Environment.Trait E},
+    forall `{State.Trait} {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E},
     (ref E::type["AccountId"]) -> M bool.
 
 Parameter code_hash :
-    forall `{State.Trait} {E : Set} `{ink_env.types.Environment.Trait E},
+    forall `{State.Trait} {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E},
     (ref E::type["AccountId"]) ->
       M
         (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
           E::type["Hash"]).
 
 Parameter own_code_hash :
-    forall `{State.Trait} {E : Set} `{ink_env.types.Environment.Trait E},
+    forall `{State.Trait} {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E},
     M
         (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
           E::type["Hash"]).
 
 Parameter caller_is_origin :
-    forall `{State.Trait} {E : Set} `{ink_env.types.Environment.Trait E},
+    forall `{State.Trait} {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E},
     M bool.
 
 Parameter set_code_hash :
@@ -2858,7 +2487,7 @@ Parameter set_code_hash :
           unit).
 
 Parameter set_code_hash2 :
-    forall `{State.Trait} {E : Set} `{ink_env.types.Environment.Trait E},
+    forall `{State.Trait} {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E},
     (ref E::type["Hash"]) ->
       M
         (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
@@ -2868,100 +2497,97 @@ Parameter call_runtime :
     forall
       `{State.Trait}
       {E Call : Set}
-      `{ink_env.types.Environment.Trait E}
-      `{parity_scale_codec.codec.Encode.Trait Call},
+      {ℋ_0 : ink_env.types.Environment.Trait E}
+      {ℋ_1 : parity_scale_codec.codec.Encode.Trait Call},
     (ref Call) ->
       M
         (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
           unit).
 
 Module BaseArithmetic.
-  Unset Primitive Projections.
-  Class Trait
-      (Self : Set)
-      `{core.marker.Sized.Trait Self}
-      `{core.convert.From.Trait Self (T := u8)}
-      `{num_traits.bounds.Bounded.Trait Self}
-      `{core.cmp.Ord.Trait Self}
-      `{core.cmp.PartialOrd.Trait Self (Rhs := Self)}
-      `{num_traits.identities.Zero.Trait Self}
-      `{num_traits.identities.One.Trait Self}
-      `{num_traits.bounds.Bounded.Trait Self}
-      `{core.ops.arith.Add.Trait Self (Rhs := Self)}
-      `{core.ops.arith.AddAssign.Trait Self (Rhs := Self)}
-      `{core.ops.arith.Sub.Trait Self (Rhs := Self)}
-      `{core.ops.arith.SubAssign.Trait Self (Rhs := Self)}
-      `{core.ops.arith.Mul.Trait Self (Rhs := Self)}
-      `{core.ops.arith.MulAssign.Trait Self (Rhs := Self)}
-      `{core.ops.arith.Div.Trait Self (Rhs := Self)}
-      `{core.ops.arith.DivAssign.Trait Self (Rhs := Self)}
-      `{num_traits.ops.checked.CheckedMul.Trait Self}
-      `{ink_env.arithmetic.Saturating.Trait Self}
-      `{core.convert.TryFrom.Trait Self (T := u16)}
-      `{core.convert.TryFrom.Trait Self (T := u32)}
-      `{core.convert.TryFrom.Trait Self (T := u64)}
-      `{core.convert.TryFrom.Trait Self (T := u128)}
-      `{core.convert.TryFrom.Trait Self (T := usize)}
-      `{core.convert.TryInto.Trait Self (T := u16)}
-      `{core.convert.TryInto.Trait Self (T := u32)}
-      `{core.convert.TryInto.Trait Self (T := u64)}
-      `{core.convert.TryInto.Trait Self (T := u128)}
-      `{core.convert.TryInto.Trait Self (T := usize)}
-      `{State.Trait} :
-      Type := {
-  }.
-  Global Set Primitive Projections.
+  Section BaseArithmetic.
+    Context `{State.Trait}.
+    
+    Unset Primitive Projections.
+    Class Trait
+        (Self : Set)
+        {ℋ_0 : core.marker.Sized.Trait Self}
+        {ℋ_1 : core.convert.From.Trait Self (T := u8)}
+        {ℋ_2 : num_traits.bounds.Bounded.Trait Self}
+        {ℋ_3 : core.cmp.Ord.Trait Self}
+        {ℋ_4 : core.cmp.PartialOrd.Trait Self (Rhs := Self)}
+        {ℋ_5 : num_traits.identities.Zero.Trait Self}
+        {ℋ_6 : num_traits.identities.One.Trait Self}
+        {ℋ_7 : num_traits.bounds.Bounded.Trait Self}
+        {ℋ_8 : core.ops.arith.Add.Trait Self (Rhs := Self)}
+        {ℋ_9 : core.ops.arith.AddAssign.Trait Self (Rhs := Self)}
+        {ℋ_10 : core.ops.arith.Sub.Trait Self (Rhs := Self)}
+        {ℋ_11 : core.ops.arith.SubAssign.Trait Self (Rhs := Self)}
+        {ℋ_12 : core.ops.arith.Mul.Trait Self (Rhs := Self)}
+        {ℋ_13 : core.ops.arith.MulAssign.Trait Self (Rhs := Self)}
+        {ℋ_14 : core.ops.arith.Div.Trait Self (Rhs := Self)}
+        {ℋ_15 : core.ops.arith.DivAssign.Trait Self (Rhs := Self)}
+        {ℋ_16 : num_traits.ops.checked.CheckedMul.Trait Self}
+        {ℋ_17 : ink_env.arithmetic.Saturating.Trait Self}
+        {ℋ_18 : core.convert.TryFrom.Trait Self (T := u16)}
+        {ℋ_19 : core.convert.TryFrom.Trait Self (T := u32)}
+        {ℋ_20 : core.convert.TryFrom.Trait Self (T := u64)}
+        {ℋ_21 : core.convert.TryFrom.Trait Self (T := u128)}
+        {ℋ_22 : core.convert.TryFrom.Trait Self (T := usize)}
+        {ℋ_23 : core.convert.TryInto.Trait Self (T := u16)}
+        {ℋ_24 : core.convert.TryInto.Trait Self (T := u32)}
+        {ℋ_25 : core.convert.TryInto.Trait Self (T := u64)}
+        {ℋ_26 : core.convert.TryInto.Trait Self (T := u128)}
+        {ℋ_27 : core.convert.TryInto.Trait Self (T := usize)} :
+        Type := {
+    }.
+    Global Set Primitive Projections.
+  End BaseArithmetic.
 End BaseArithmetic.
 
 Module AtLeast32Bit.
-  Unset Primitive Projections.
-  Class Trait
-      (Self : Set)
-      `{ink_env.arithmetic.BaseArithmetic.Trait Self}
-      `{core.convert.From.Trait Self (T := u16)}
-      `{core.convert.From.Trait Self (T := u32)}
-      `{State.Trait} :
-      Type := {
-  }.
-  Global Set Primitive Projections.
+  Section AtLeast32Bit.
+    Context `{State.Trait}.
+    
+    Unset Primitive Projections.
+    Class Trait
+        (Self : Set)
+        {ℋ_0 : ink_env.arithmetic.BaseArithmetic.Trait Self}
+        {ℋ_1 : core.convert.From.Trait Self (T := u16)}
+        {ℋ_2 : core.convert.From.Trait Self (T := u32)} :
+        Type := {
+    }.
+    Global Set Primitive Projections.
+  End AtLeast32Bit.
 End AtLeast32Bit.
 
 Module AtLeast32BitUnsigned.
-  Unset Primitive Projections.
-  Class Trait
-      (Self : Set)
-      `{ink_env.arithmetic.AtLeast32Bit.Trait Self}
-      `{num_traits.sign.Unsigned.Trait Self}
-      `{State.Trait} :
-      Type := {
-  }.
-  Global Set Primitive Projections.
+  Section AtLeast32BitUnsigned.
+    Context `{State.Trait}.
+    
+    Unset Primitive Projections.
+    Class Trait
+        (Self : Set)
+        {ℋ_0 : ink_env.arithmetic.AtLeast32Bit.Trait Self}
+        {ℋ_1 : num_traits.sign.Unsigned.Trait Self} :
+        Type := {
+    }.
+    Global Set Primitive Projections.
+  End AtLeast32BitUnsigned.
 End AtLeast32BitUnsigned.
 
 Module Saturating.
-  Class Trait (Self : Set) `{State.Trait} : Type := {
-    saturating_add : Self -> Self -> M Self;
-    saturating_sub : Self -> Self -> M Self;
-    saturating_mul : Self -> Self -> M Self;
-    saturating_pow : Self -> usize -> M Self;
-  }.
-  
-  Global Instance Method_saturating_add `{State.Trait} `(Trait)
-    : Notation.Dot "saturating_add" := {
-    Notation.dot := saturating_add;
-  }.
-  Global Instance Method_saturating_sub `{State.Trait} `(Trait)
-    : Notation.Dot "saturating_sub" := {
-    Notation.dot := saturating_sub;
-  }.
-  Global Instance Method_saturating_mul `{State.Trait} `(Trait)
-    : Notation.Dot "saturating_mul" := {
-    Notation.dot := saturating_mul;
-  }.
-  Global Instance Method_saturating_pow `{State.Trait} `(Trait)
-    : Notation.Dot "saturating_pow" := {
-    Notation.dot := saturating_pow;
-  }.
+  Section Saturating.
+    Context `{State.Trait}.
+    
+    Class Trait (Self : Set) : Type := {
+      saturating_add : Self -> Self -> M Self;
+      saturating_sub : Self -> Self -> M Self;
+      saturating_mul : Self -> Self -> M Self;
+      saturating_pow : Self -> usize -> M Self;
+    }.
+    
+  End Saturating.
 End Saturating.
 
 Module Error.
@@ -2989,40 +2615,42 @@ Definition Result (T : Set) `{State.Trait} : Set :=
     ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Error.
 
 Module EmittedEvent.
-  Unset Primitive Projections.
-  Record t `{State.Trait} : Set := {
-    topics
-      :
-      alloc.vec.Vec
-        (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)
-        alloc.vec.Vec.Default.A;
-    data : alloc.vec.Vec u8 alloc.vec.Vec.Default.A;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_topics `{State.Trait} : Notation.Dot "topics" := {
-    Notation.dot x := let* x := M.read x in Pure x.(topics) : M _;
-  }.
-  Global Instance Get_AF_topics `{State.Trait}
-    : Notation.DoubleColon t "topics" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(topics) : M _;
-  }.
-  Global Instance Get_data `{State.Trait} : Notation.Dot "data" := {
-    Notation.dot x := let* x := M.read x in Pure x.(data) : M _;
-  }.
-  Global Instance Get_AF_data `{State.Trait}
-    : Notation.DoubleColon t "data" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(data) : M _;
-  }.
+  Section EmittedEvent.
+    Context `{State.Trait}.
+    
+    Unset Primitive Projections.
+    Record t : Set := {
+      topics
+        :
+        alloc.vec.Vec
+          (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)
+          alloc.vec.Vec.Default.A;
+      data : alloc.vec.Vec u8 alloc.vec.Vec.Default.A;
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_topics : Notation.Dot "topics" := {
+      Notation.dot x := let* x := M.read x in Pure x.(topics) : M _;
+    }.
+    Global Instance Get_AF_topics : Notation.DoubleColon t "topics" := {
+      Notation.double_colon x := let* x := M.read x in Pure x.(topics) : M _;
+    }.
+    Global Instance Get_data : Notation.Dot "data" := {
+      Notation.dot x := let* x := M.read x in Pure x.(data) : M _;
+    }.
+    Global Instance Get_AF_data : Notation.DoubleColon t "data" := {
+      Notation.double_colon x := let* x := M.read x in Pure x.(data) : M _;
+    }.
+  End EmittedEvent.
 End EmittedEvent.
-Definition EmittedEvent `{State.Trait} : Set := M.val (EmittedEvent.t).
+Definition EmittedEvent `{State.Trait} : Set := M.val EmittedEvent.t.
 
 Parameter set_account_balance :
-    forall `{State.Trait} {T : Set} `{ink_env.types.Environment.Trait T},
+    forall `{State.Trait} {T : Set} {ℋ_0 : ink_env.types.Environment.Trait T},
     T::type["AccountId"] -> T::type["Balance"] -> M unit.
 
 Parameter get_account_balance :
-    forall `{State.Trait} {T : Set} `{ink_env.types.Environment.Trait T},
+    forall `{State.Trait} {T : Set} {ℋ_0 : ink_env.types.Environment.Trait T},
     T::type["AccountId"] ->
       M
         (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
@@ -3032,7 +2660,7 @@ Parameter register_chain_extension :
     forall
       `{State.Trait}
       {E : Set}
-      `{ink_engine.chain_extension.ChainExtension.Trait E},
+      {ℋ_0 : ink_engine.chain_extension.ChainExtension.Trait E},
     E -> M unit.
 
 Parameter recorded_debug_messages :
@@ -3042,15 +2670,16 @@ Parameter recorded_debug_messages :
 Parameter set_clear_storage_disabled : forall `{State.Trait}, bool -> M unit.
 
 Parameter advance_block :
-    forall `{State.Trait} {T : Set} `{ink_env.types.Environment.Trait T},
+    forall `{State.Trait} {T : Set} {ℋ_0 : ink_env.types.Environment.Trait T},
     M unit.
 
 Parameter set_caller :
     forall
       `{State.Trait}
       {T : Set}
-      `{ink_env.types.Environment.Trait T}
-      `{core.convert.From.Trait
+      {ℋ_0 : ink_env.types.Environment.Trait T}
+      {ℋ_1 :
+        core.convert.From.Trait
             (ink_env.types.Environment.AccountId (Self := T))
           (T := array u8)},
     T::type["AccountId"] -> M unit.
@@ -3059,8 +2688,9 @@ Parameter set_callee :
     forall
       `{State.Trait}
       {T : Set}
-      `{ink_env.types.Environment.Trait T}
-      `{core.convert.From.Trait
+      {ℋ_0 : ink_env.types.Environment.Trait T}
+      {ℋ_1 :
+        core.convert.From.Trait
             (ink_env.types.Environment.AccountId (Self := T))
           (T := array u8)},
     T::type["AccountId"] -> M unit.
@@ -3069,8 +2699,9 @@ Parameter set_contract :
     forall
       `{State.Trait}
       {T : Set}
-      `{ink_env.types.Environment.Trait T}
-      `{core.convert.From.Trait
+      {ℋ_0 : ink_env.types.Environment.Trait T}
+      {ℋ_1 :
+        core.convert.From.Trait
             (ink_env.types.Environment.AccountId (Self := T))
           (T := array u8)},
     T::type["AccountId"] -> M unit.
@@ -3079,52 +2710,55 @@ Parameter is_contract :
     forall
       `{State.Trait}
       {T : Set}
-      `{ink_env.types.Environment.Trait T}
-      `{core.convert.From.Trait
+      {ℋ_0 : ink_env.types.Environment.Trait T}
+      {ℋ_1 :
+        core.convert.From.Trait
             (ink_env.types.Environment.AccountId (Self := T))
           (T := array u8)},
     T::type["AccountId"] -> M bool.
 
 Parameter callee :
-    forall `{State.Trait} {T : Set} `{ink_env.types.Environment.Trait T},
+    forall `{State.Trait} {T : Set} {ℋ_0 : ink_env.types.Environment.Trait T},
     M T::type["AccountId"].
 
 Parameter get_contract_storage_rw :
-    forall `{State.Trait} {T : Set} `{ink_env.types.Environment.Trait T},
+    forall `{State.Trait} {T : Set} {ℋ_0 : ink_env.types.Environment.Trait T},
     (ref T::type["AccountId"]) -> M (usize * usize).
 
 Parameter set_value_transferred :
-    forall `{State.Trait} {T : Set} `{ink_env.types.Environment.Trait T},
+    forall `{State.Trait} {T : Set} {ℋ_0 : ink_env.types.Environment.Trait T},
     T::type["Balance"] -> M unit.
 
 Parameter transfer_in :
-    forall `{State.Trait} {T : Set} `{ink_env.types.Environment.Trait T},
+    forall `{State.Trait} {T : Set} {ℋ_0 : ink_env.types.Environment.Trait T},
     T::type["Balance"] -> M unit.
 
 Parameter count_used_storage_cells :
-    forall `{State.Trait} {T : Set} `{ink_env.types.Environment.Trait T},
+    forall `{State.Trait} {T : Set} {ℋ_0 : ink_env.types.Environment.Trait T},
     (ref T::type["AccountId"]) ->
       M
         (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
           usize).
 
 Parameter set_block_timestamp :
-    forall `{State.Trait} {T : Set} `{ink_env.types.Environment.Trait T},
+    forall `{State.Trait} {T : Set} {ℋ_0 : ink_env.types.Environment.Trait T},
     T::type["Timestamp"] -> M unit.
 
 Parameter set_block_number :
-    forall `{State.Trait} {T : Set} `{ink_env.types.Environment.Trait T},
+    forall `{State.Trait} {T : Set} {ℋ_0 : ink_env.types.Environment.Trait T},
     T::type["BlockNumber"] -> M unit.
 
 Parameter run_test :
     forall
       `{State.Trait}
       {T F : Set}
-      `{ink_env.types.Environment.Trait T}
-      `{core.ops.function.FnOnce.Trait F
+      {ℋ_0 : ink_env.types.Environment.Trait T}
+      {ℋ_1 :
+        core.ops.function.FnOnce.Trait F
           (Args := ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.DefaultAccounts
             T)}
-      `{core.convert.From.Trait
+      {ℋ_2 :
+        core.convert.From.Trait
             (ink_env.types.Environment.AccountId (Self := T))
           (T := array u8)},
     F ->
@@ -3136,8 +2770,9 @@ Parameter default_accounts :
     forall
       `{State.Trait}
       {T : Set}
-      `{ink_env.types.Environment.Trait T}
-      `{core.convert.From.Trait
+      {ℋ_0 : ink_env.types.Environment.Trait T}
+      {ℋ_1 :
+        core.convert.From.Trait
             (ink_env.types.Environment.AccountId (Self := T))
           (T := array u8)},
     M
@@ -3146,10 +2781,13 @@ Parameter default_accounts :
 
 Module DefaultAccounts.
   Section DefaultAccounts.
+    Context `{State.Trait}.
+    
     Context {T : Set}.
-    Context `{ink_env.types.Environment.Trait T}.
+    
+    Context {ℋ_0 : ink_env.types.Environment.Trait T}.
     Unset Primitive Projections.
-    Record t `{State.Trait} : Set := {
+    Record t : Set := {
       alice : T::type["AccountId"];
       bob : T::type["AccountId"];
       charlie : T::type["AccountId"];
@@ -3159,46 +2797,40 @@ Module DefaultAccounts.
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_alice `{State.Trait} : Notation.Dot "alice" := {
+    Global Instance Get_alice : Notation.Dot "alice" := {
       Notation.dot x := let* x := M.read x in Pure x.(alice) : M _;
     }.
-    Global Instance Get_AF_alice `{State.Trait}
-      : Notation.DoubleColon t "alice" := {
+    Global Instance Get_AF_alice : Notation.DoubleColon t "alice" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(alice) : M _;
     }.
-    Global Instance Get_bob `{State.Trait} : Notation.Dot "bob" := {
+    Global Instance Get_bob : Notation.Dot "bob" := {
       Notation.dot x := let* x := M.read x in Pure x.(bob) : M _;
     }.
-    Global Instance Get_AF_bob `{State.Trait}
-      : Notation.DoubleColon t "bob" := {
+    Global Instance Get_AF_bob : Notation.DoubleColon t "bob" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(bob) : M _;
     }.
-    Global Instance Get_charlie `{State.Trait} : Notation.Dot "charlie" := {
+    Global Instance Get_charlie : Notation.Dot "charlie" := {
       Notation.dot x := let* x := M.read x in Pure x.(charlie) : M _;
     }.
-    Global Instance Get_AF_charlie `{State.Trait}
-      : Notation.DoubleColon t "charlie" := {
+    Global Instance Get_AF_charlie : Notation.DoubleColon t "charlie" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(charlie) : M _;
     }.
-    Global Instance Get_django `{State.Trait} : Notation.Dot "django" := {
+    Global Instance Get_django : Notation.Dot "django" := {
       Notation.dot x := let* x := M.read x in Pure x.(django) : M _;
     }.
-    Global Instance Get_AF_django `{State.Trait}
-      : Notation.DoubleColon t "django" := {
+    Global Instance Get_AF_django : Notation.DoubleColon t "django" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(django) : M _;
     }.
-    Global Instance Get_eve `{State.Trait} : Notation.Dot "eve" := {
+    Global Instance Get_eve : Notation.Dot "eve" := {
       Notation.dot x := let* x := M.read x in Pure x.(eve) : M _;
     }.
-    Global Instance Get_AF_eve `{State.Trait}
-      : Notation.DoubleColon t "eve" := {
+    Global Instance Get_AF_eve : Notation.DoubleColon t "eve" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(eve) : M _;
     }.
-    Global Instance Get_frank `{State.Trait} : Notation.Dot "frank" := {
+    Global Instance Get_frank : Notation.Dot "frank" := {
       Notation.dot x := let* x := M.read x in Pure x.(frank) : M _;
     }.
-    Global Instance Get_AF_frank `{State.Trait}
-      : Notation.DoubleColon t "frank" := {
+    Global Instance Get_AF_frank : Notation.DoubleColon t "frank" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(frank) : M _;
     }.
   End DefaultAccounts.
@@ -3206,7 +2838,7 @@ End DefaultAccounts.
 Definition DefaultAccounts
     (T : Set)
     `{State.Trait}
-    `{ink_env.types.Environment.Trait T}
+    {ℋ_0 : ink_env.types.Environment.Trait T}
     : Set :=
   M.val (DefaultAccounts.t (T := T)).
 
@@ -3221,45 +2853,47 @@ Parameter assert_contract_termination :
     forall
       `{State.Trait}
       {T F : Set}
-      `{ink_env.types.Environment.Trait T}
-      `{core.ops.function.FnMut.Trait F (Args := unit)}
-      `{core.panic.unwind_safe.UnwindSafe.Trait F}
-      `{core.fmt.Debug.Trait (ink_env.types.Environment.AccountId (Self := T))}
-      `{core.fmt.Debug.Trait (ink_env.types.Environment.Balance (Self := T))},
+      {ℋ_0 : ink_env.types.Environment.Trait T}
+      {ℋ_1 : core.ops.function.FnMut.Trait F (Args := unit)}
+      {ℋ_2 : core.panic.unwind_safe.UnwindSafe.Trait F}
+      {ℋ_3 :
+        core.fmt.Debug.Trait (ink_env.types.Environment.AccountId (Self := T))}
+      {ℋ_4 :
+        core.fmt.Debug.Trait (ink_env.types.Environment.Balance (Self := T))},
     F -> T::type["AccountId"] -> T::type["Balance"] -> M unit.
 
 Module OnInstance.
-  Class Trait
-      (Self : Set)
-      `{ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.EnvBackend.Trait
-            Self}
-      `{ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.TypedEnvBackend.Trait
-            Self}
-      `{State.Trait} :
-      Type := {
-    on_instance
-      {F R : Set}
-      `{H'0 : core.ops.function.FnOnce.Trait F (Args := mut_ref Self)}
-      :
-      F -> M R;
-  }.
-  
-  Global Instance Method_on_instance `{State.Trait} `(Trait)
-    : Notation.Dot "on_instance" := {
-    Notation.dot
-      {F R : Set}
-      `{H'0 : core.ops.function.FnOnce.Trait F (Args := mut_ref Self)}
-      :=
-      on_instance (F := F) (R := R) (H'0 := H'0);
-  }.
+  Section OnInstance.
+    Context `{State.Trait}.
+    
+    Class Trait
+        (Self : Set)
+        {ℋ_0 :
+          ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.EnvBackend.Trait
+              Self}
+        {ℋ_1 :
+          ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.TypedEnvBackend.Trait
+              Self} :
+        Type := {
+      on_instance
+        {F R : Set}
+        {ℋ_0 : core.ops.function.FnOnce.Trait F (Args := mut_ref Self)}
+        :
+        F -> M R;
+    }.
+    
+  End OnInstance.
 End OnInstance.
 
 Module CallParams.
   Section CallParams.
+    Context `{State.Trait}.
+    
     Context {E CallType Args R : Set}.
-    Context `{ink_env.types.Environment.Trait E}.
+    
+    Context {ℋ_0 : ink_env.types.Environment.Trait E}.
     Unset Primitive Projections.
-    Record t `{State.Trait} : Set := {
+    Record t : Set := {
       call_type : CallType;
       call_flags
         :
@@ -3270,48 +2904,41 @@ Module CallParams.
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_call_type `{State.Trait} : Notation.Dot "call_type" := {
+    Global Instance Get_call_type : Notation.Dot "call_type" := {
       Notation.dot x := let* x := M.read x in Pure x.(call_type) : M _;
     }.
-    Global Instance Get_AF_call_type `{State.Trait}
-      : Notation.DoubleColon t "call_type" := {
+    Global Instance Get_AF_call_type : Notation.DoubleColon t "call_type" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(call_type) : M _;
     }.
-    Global Instance Get_call_flags `{State.Trait}
-      : Notation.Dot "call_flags" := {
+    Global Instance Get_call_flags : Notation.Dot "call_flags" := {
       Notation.dot x := let* x := M.read x in Pure x.(call_flags) : M _;
     }.
-    Global Instance Get_AF_call_flags `{State.Trait}
-      : Notation.DoubleColon t "call_flags" := {
+    Global Instance Get_AF_call_flags : Notation.DoubleColon t "call_flags" := {
       Notation.double_colon x
         :=
         let* x := M.read x in Pure x.(call_flags) : M _;
     }.
-    Global Instance Get__return_type `{State.Trait}
-      : Notation.Dot "_return_type" := {
+    Global Instance Get__return_type : Notation.Dot "_return_type" := {
       Notation.dot x := let* x := M.read x in Pure x.(_return_type) : M _;
     }.
-    Global Instance Get_AF__return_type `{State.Trait}
+    Global Instance Get_AF__return_type
       : Notation.DoubleColon t "_return_type" := {
       Notation.double_colon x
         :=
         let* x := M.read x in Pure x.(_return_type) : M _;
     }.
-    Global Instance Get_exec_input `{State.Trait}
-      : Notation.Dot "exec_input" := {
+    Global Instance Get_exec_input : Notation.Dot "exec_input" := {
       Notation.dot x := let* x := M.read x in Pure x.(exec_input) : M _;
     }.
-    Global Instance Get_AF_exec_input `{State.Trait}
-      : Notation.DoubleColon t "exec_input" := {
+    Global Instance Get_AF_exec_input : Notation.DoubleColon t "exec_input" := {
       Notation.double_colon x
         :=
         let* x := M.read x in Pure x.(exec_input) : M _;
     }.
-    Global Instance Get__phantom `{State.Trait} : Notation.Dot "_phantom" := {
+    Global Instance Get__phantom : Notation.Dot "_phantom" := {
       Notation.dot x := let* x := M.read x in Pure x.(_phantom) : M _;
     }.
-    Global Instance Get_AF__phantom `{State.Trait}
-      : Notation.DoubleColon t "_phantom" := {
+    Global Instance Get_AF__phantom : Notation.DoubleColon t "_phantom" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(_phantom) : M _;
     }.
   End CallParams.
@@ -3319,12 +2946,12 @@ End CallParams.
 Definition CallParams
     (E CallType Args R : Set)
     `{State.Trait}
-    `{ink_env.types.Environment.Trait E}
+    {ℋ_0 : ink_env.types.Environment.Trait E}
     : Set :=
   M.val (CallParams.t (E := E) (CallType := CallType) (Args := Args) (R := R)).
 
 Parameter build_call :
-    forall `{State.Trait} {E : Set} `{ink_env.types.Environment.Trait E},
+    forall `{State.Trait} {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E},
     M
         (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallBuilder
           E
@@ -3338,35 +2965,36 @@ Parameter build_call :
 
 Module Call.
   Section Call.
+    Context `{State.Trait}.
+    
     Context {E : Set}.
-    Context `{ink_env.types.Environment.Trait E}.
+    
+    Context {ℋ_0 : ink_env.types.Environment.Trait E}.
     Unset Primitive Projections.
-    Record t `{State.Trait} : Set := {
+    Record t : Set := {
       callee : E::type["AccountId"];
       gas_limit : ink_env.types.Gas;
       transferred_value : E::type["Balance"];
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_callee `{State.Trait} : Notation.Dot "callee" := {
+    Global Instance Get_callee : Notation.Dot "callee" := {
       Notation.dot x := let* x := M.read x in Pure x.(callee) : M _;
     }.
-    Global Instance Get_AF_callee `{State.Trait}
-      : Notation.DoubleColon t "callee" := {
+    Global Instance Get_AF_callee : Notation.DoubleColon t "callee" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(callee) : M _;
     }.
-    Global Instance Get_gas_limit `{State.Trait} : Notation.Dot "gas_limit" := {
+    Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
       Notation.dot x := let* x := M.read x in Pure x.(gas_limit) : M _;
     }.
-    Global Instance Get_AF_gas_limit `{State.Trait}
-      : Notation.DoubleColon t "gas_limit" := {
+    Global Instance Get_AF_gas_limit : Notation.DoubleColon t "gas_limit" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(gas_limit) : M _;
     }.
-    Global Instance Get_transferred_value `{State.Trait}
+    Global Instance Get_transferred_value
       : Notation.Dot "transferred_value" := {
       Notation.dot x := let* x := M.read x in Pure x.(transferred_value) : M _;
     }.
-    Global Instance Get_AF_transferred_value `{State.Trait}
+    Global Instance Get_AF_transferred_value
       : Notation.DoubleColon t "transferred_value" := {
       Notation.double_colon x
         :=
@@ -3377,25 +3005,27 @@ End Call.
 Definition Call
     (E : Set)
     `{State.Trait}
-    `{ink_env.types.Environment.Trait E}
+    {ℋ_0 : ink_env.types.Environment.Trait E}
     : Set :=
   M.val (Call.t (E := E)).
 
 Module DelegateCall.
   Section DelegateCall.
+    Context `{State.Trait}.
+    
     Context {E : Set}.
-    Context `{ink_env.types.Environment.Trait E}.
+    
+    Context {ℋ_0 : ink_env.types.Environment.Trait E}.
     Unset Primitive Projections.
-    Record t `{State.Trait} : Set := {
+    Record t : Set := {
       code_hash : E::type["Hash"];
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_code_hash `{State.Trait} : Notation.Dot "code_hash" := {
+    Global Instance Get_code_hash : Notation.Dot "code_hash" := {
       Notation.dot x := let* x := M.read x in Pure x.(code_hash) : M _;
     }.
-    Global Instance Get_AF_code_hash `{State.Trait}
-      : Notation.DoubleColon t "code_hash" := {
+    Global Instance Get_AF_code_hash : Notation.DoubleColon t "code_hash" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(code_hash) : M _;
     }.
   End DelegateCall.
@@ -3403,16 +3033,19 @@ End DelegateCall.
 Definition DelegateCall
     (E : Set)
     `{State.Trait}
-    `{ink_env.types.Environment.Trait E}
+    {ℋ_0 : ink_env.types.Environment.Trait E}
     : Set :=
   M.val (DelegateCall.t (E := E)).
 
 Module CallBuilder.
   Section CallBuilder.
+    Context `{State.Trait}.
+    
     Context {E CallType Args RetType : Set}.
-    Context `{ink_env.types.Environment.Trait E}.
+    
+    Context {ℋ_0 : ink_env.types.Environment.Trait E}.
     Unset Primitive Projections.
-    Record t `{State.Trait} : Set := {
+    Record t : Set := {
       call_type : CallType;
       call_flags
         :
@@ -3423,48 +3056,41 @@ Module CallBuilder.
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_call_type `{State.Trait} : Notation.Dot "call_type" := {
+    Global Instance Get_call_type : Notation.Dot "call_type" := {
       Notation.dot x := let* x := M.read x in Pure x.(call_type) : M _;
     }.
-    Global Instance Get_AF_call_type `{State.Trait}
-      : Notation.DoubleColon t "call_type" := {
+    Global Instance Get_AF_call_type : Notation.DoubleColon t "call_type" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(call_type) : M _;
     }.
-    Global Instance Get_call_flags `{State.Trait}
-      : Notation.Dot "call_flags" := {
+    Global Instance Get_call_flags : Notation.Dot "call_flags" := {
       Notation.dot x := let* x := M.read x in Pure x.(call_flags) : M _;
     }.
-    Global Instance Get_AF_call_flags `{State.Trait}
-      : Notation.DoubleColon t "call_flags" := {
+    Global Instance Get_AF_call_flags : Notation.DoubleColon t "call_flags" := {
       Notation.double_colon x
         :=
         let* x := M.read x in Pure x.(call_flags) : M _;
     }.
-    Global Instance Get_exec_input `{State.Trait}
-      : Notation.Dot "exec_input" := {
+    Global Instance Get_exec_input : Notation.Dot "exec_input" := {
       Notation.dot x := let* x := M.read x in Pure x.(exec_input) : M _;
     }.
-    Global Instance Get_AF_exec_input `{State.Trait}
-      : Notation.DoubleColon t "exec_input" := {
+    Global Instance Get_AF_exec_input : Notation.DoubleColon t "exec_input" := {
       Notation.double_colon x
         :=
         let* x := M.read x in Pure x.(exec_input) : M _;
     }.
-    Global Instance Get_return_type `{State.Trait}
-      : Notation.Dot "return_type" := {
+    Global Instance Get_return_type : Notation.Dot "return_type" := {
       Notation.dot x := let* x := M.read x in Pure x.(return_type) : M _;
     }.
-    Global Instance Get_AF_return_type `{State.Trait}
+    Global Instance Get_AF_return_type
       : Notation.DoubleColon t "return_type" := {
       Notation.double_colon x
         :=
         let* x := M.read x in Pure x.(return_type) : M _;
     }.
-    Global Instance Get__phantom `{State.Trait} : Notation.Dot "_phantom" := {
+    Global Instance Get__phantom : Notation.Dot "_phantom" := {
       Notation.dot x := let* x := M.read x in Pure x.(_phantom) : M _;
     }.
-    Global Instance Get_AF__phantom `{State.Trait}
-      : Notation.DoubleColon t "_phantom" := {
+    Global Instance Get_AF__phantom : Notation.DoubleColon t "_phantom" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(_phantom) : M _;
     }.
   End CallBuilder.
@@ -3472,7 +3098,7 @@ End CallBuilder.
 Definition CallBuilder
     (E CallType Args RetType : Set)
     `{State.Trait}
-    `{ink_env.types.Environment.Trait E}
+    {ℋ_0 : ink_env.types.Environment.Trait E}
     : Set :=
   M.val
     (CallBuilder.t
@@ -3482,642 +3108,485 @@ Definition CallBuilder
       (RetType := RetType)).
 
 Module ReturnFlags.
-  Unset Primitive Projections.
-  Record t `{State.Trait} : Set := {
-    value : u32;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_value `{State.Trait} : Notation.Dot "value" := {
-    Notation.dot x := let* x := M.read x in Pure x.(value) : M _;
-  }.
-  Global Instance Get_AF_value `{State.Trait}
-    : Notation.DoubleColon t "value" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(value) : M _;
-  }.
+  Section ReturnFlags.
+    Context `{State.Trait}.
+    
+    Unset Primitive Projections.
+    Record t : Set := {
+      value : u32;
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_value : Notation.Dot "value" := {
+      Notation.dot x := let* x := M.read x in Pure x.(value) : M _;
+    }.
+    Global Instance Get_AF_value : Notation.DoubleColon t "value" := {
+      Notation.double_colon x := let* x := M.read x in Pure x.(value) : M _;
+    }.
+  End ReturnFlags.
 End ReturnFlags.
-Definition ReturnFlags `{State.Trait} : Set := M.val (ReturnFlags.t).
+Definition ReturnFlags `{State.Trait} : Set := M.val ReturnFlags.t.
 
 Module CallFlags.
-  Unset Primitive Projections.
-  Record t `{State.Trait} : Set := {
-    forward_input : bool;
-    clone_input : bool;
-    tail_call : bool;
-    allow_reentry : bool;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_forward_input `{State.Trait}
-    : Notation.Dot "forward_input" := {
-    Notation.dot x := let* x := M.read x in Pure x.(forward_input) : M _;
-  }.
-  Global Instance Get_AF_forward_input `{State.Trait}
-    : Notation.DoubleColon t "forward_input" := {
-    Notation.double_colon x
-      :=
-      let* x := M.read x in Pure x.(forward_input) : M _;
-  }.
-  Global Instance Get_clone_input `{State.Trait}
-    : Notation.Dot "clone_input" := {
-    Notation.dot x := let* x := M.read x in Pure x.(clone_input) : M _;
-  }.
-  Global Instance Get_AF_clone_input `{State.Trait}
-    : Notation.DoubleColon t "clone_input" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(clone_input) : M _;
-  }.
-  Global Instance Get_tail_call `{State.Trait} : Notation.Dot "tail_call" := {
-    Notation.dot x := let* x := M.read x in Pure x.(tail_call) : M _;
-  }.
-  Global Instance Get_AF_tail_call `{State.Trait}
-    : Notation.DoubleColon t "tail_call" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(tail_call) : M _;
-  }.
-  Global Instance Get_allow_reentry `{State.Trait}
-    : Notation.Dot "allow_reentry" := {
-    Notation.dot x := let* x := M.read x in Pure x.(allow_reentry) : M _;
-  }.
-  Global Instance Get_AF_allow_reentry `{State.Trait}
-    : Notation.DoubleColon t "allow_reentry" := {
-    Notation.double_colon x
-      :=
-      let* x := M.read x in Pure x.(allow_reentry) : M _;
-  }.
+  Section CallFlags.
+    Context `{State.Trait}.
+    
+    Unset Primitive Projections.
+    Record t : Set := {
+      forward_input : bool;
+      clone_input : bool;
+      tail_call : bool;
+      allow_reentry : bool;
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_forward_input : Notation.Dot "forward_input" := {
+      Notation.dot x := let* x := M.read x in Pure x.(forward_input) : M _;
+    }.
+    Global Instance Get_AF_forward_input
+      : Notation.DoubleColon t "forward_input" := {
+      Notation.double_colon x
+        :=
+        let* x := M.read x in Pure x.(forward_input) : M _;
+    }.
+    Global Instance Get_clone_input : Notation.Dot "clone_input" := {
+      Notation.dot x := let* x := M.read x in Pure x.(clone_input) : M _;
+    }.
+    Global Instance Get_AF_clone_input
+      : Notation.DoubleColon t "clone_input" := {
+      Notation.double_colon x
+        :=
+        let* x := M.read x in Pure x.(clone_input) : M _;
+    }.
+    Global Instance Get_tail_call : Notation.Dot "tail_call" := {
+      Notation.dot x := let* x := M.read x in Pure x.(tail_call) : M _;
+    }.
+    Global Instance Get_AF_tail_call : Notation.DoubleColon t "tail_call" := {
+      Notation.double_colon x := let* x := M.read x in Pure x.(tail_call) : M _;
+    }.
+    Global Instance Get_allow_reentry : Notation.Dot "allow_reentry" := {
+      Notation.dot x := let* x := M.read x in Pure x.(allow_reentry) : M _;
+    }.
+    Global Instance Get_AF_allow_reentry
+      : Notation.DoubleColon t "allow_reentry" := {
+      Notation.double_colon x
+        :=
+        let* x := M.read x in Pure x.(allow_reentry) : M _;
+    }.
+  End CallFlags.
 End CallFlags.
-Definition CallFlags `{State.Trait} : Set := M.val (CallFlags.t).
+Definition CallFlags `{State.Trait} : Set := M.val CallFlags.t.
 
 Module EnvBackend.
-  Class Trait (Self : Set) `{State.Trait} : Type := {
-    set_contract_storage
-      {K V : Set}
-      `{H'0 : parity_scale_codec.codec.Encode.Trait K}
-      `{H'1 : ink_storage_traits.storage.Storable.Trait V}
-      :
-      (mut_ref Self) -> (ref K) -> (ref V) -> M (core.option.Option u32);
-    get_contract_storage
-      {K R : Set}
-      `{H'0 : parity_scale_codec.codec.Encode.Trait K}
-      `{H'1 : ink_storage_traits.storage.Storable.Trait R}
-      :
-      (mut_ref Self) ->
-        (ref K) ->
-        M
-          (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-            (core.option.Option R));
-    take_contract_storage
-      {K R : Set}
-      `{H'0 : parity_scale_codec.codec.Encode.Trait K}
-      `{H'1 : ink_storage_traits.storage.Storable.Trait R}
-      :
-      (mut_ref Self) ->
-        (ref K) ->
-        M
-          (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-            (core.option.Option R));
-    contains_contract_storage
-      {K : Set}
-      `{H'0 : parity_scale_codec.codec.Encode.Trait K}
-      :
-      (mut_ref Self) -> (ref K) -> M (core.option.Option u32);
-    clear_contract_storage
-      {K : Set}
-      `{H'0 : parity_scale_codec.codec.Encode.Trait K}
-      :
-      (mut_ref Self) -> (ref K) -> M (core.option.Option u32);
-    decode_input {T : Set} `{H'0 : parity_scale_codec.codec.Decode.Trait T}
-      :
-      (mut_ref Self) ->
-        M
-          (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-            T);
-    return_value {R : Set} `{H'0 : parity_scale_codec.codec.Encode.Trait R}
-      :
-      (mut_ref Self) ->
-        ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.ReturnFlags
-        ->
-        (ref R) ->
-        M Empty_set;
-    debug_message : (mut_ref Self) -> (ref str) -> M unit;
-    hash_bytes {H : Set} `{H'0 : ink_env.hash.CryptoHash.Trait H}
-      :
-      (mut_ref Self) ->
-        (ref (Slice u8)) ->
-        (mut_ref (ink_env.hash.HashOutput.Type_ (Self := H))) ->
-        M unit;
-    hash_encoded
-      {H T : Set}
-      `{H'0 : ink_env.hash.CryptoHash.Trait H}
-      `{H'1 : parity_scale_codec.codec.Encode.Trait T}
-      :
-      (mut_ref Self) ->
-        (ref T) ->
-        (mut_ref (ink_env.hash.HashOutput.Type_ (Self := H))) ->
-        M unit;
-    ecdsa_recover
-      :
-      (mut_ref Self) ->
-        (ref (array u8)) ->
-        (ref (array u8)) ->
-        (mut_ref (array u8)) ->
-        M
-          (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-            unit);
-    ecdsa_to_eth_address
-      :
-      (mut_ref Self) ->
-        (ref (array u8)) ->
-        (mut_ref (array u8)) ->
-        M
-          (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-            unit);
-    call_chain_extension
-      {I T E ErrorCode F D : Set}
-      `{H'0 : parity_scale_codec.codec.Encode.Trait I}
-      `{H'1 : parity_scale_codec.codec.Decode.Trait T}
-      `{H'2 : core.convert.From.Trait E (T := ErrorCode)}
-      `{H'3 : core.ops.function.FnOnce.Trait F (Args := u32)}
-      `{H'4 : core.ops.function.FnOnce.Trait D (Args := ref (Slice u8))}
-      :
-      (mut_ref Self) -> u32 -> (ref I) -> F -> D -> M (core.result.Result T E);
-    set_code_hash
-      :
-      (mut_ref Self) ->
-        (ref (Slice u8)) ->
-        M
-          (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-            unit);
-  }.
-  
-  Global Instance Method_set_contract_storage `{State.Trait} `(Trait)
-    : Notation.Dot "set_contract_storage" := {
-    Notation.dot
-      {K V : Set}
-      `{H'0 : parity_scale_codec.codec.Encode.Trait K}
-      `{H'1 : ink_storage_traits.storage.Storable.Trait V}
-      :=
-      set_contract_storage (K := K) (V := V) (H'0 := H'0) (H'1 := H'1);
-  }.
-  Global Instance Method_get_contract_storage `{State.Trait} `(Trait)
-    : Notation.Dot "get_contract_storage" := {
-    Notation.dot
-      {K R : Set}
-      `{H'0 : parity_scale_codec.codec.Encode.Trait K}
-      `{H'1 : ink_storage_traits.storage.Storable.Trait R}
-      :=
-      get_contract_storage (K := K) (R := R) (H'0 := H'0) (H'1 := H'1);
-  }.
-  Global Instance Method_take_contract_storage `{State.Trait} `(Trait)
-    : Notation.Dot "take_contract_storage" := {
-    Notation.dot
-      {K R : Set}
-      `{H'0 : parity_scale_codec.codec.Encode.Trait K}
-      `{H'1 : ink_storage_traits.storage.Storable.Trait R}
-      :=
-      take_contract_storage (K := K) (R := R) (H'0 := H'0) (H'1 := H'1);
-  }.
-  Global Instance Method_contains_contract_storage `{State.Trait} `(Trait)
-    : Notation.Dot "contains_contract_storage" := {
-    Notation.dot {K : Set} `{H'0 : parity_scale_codec.codec.Encode.Trait K}
-      :=
-      contains_contract_storage (K := K) (H'0 := H'0);
-  }.
-  Global Instance Method_clear_contract_storage `{State.Trait} `(Trait)
-    : Notation.Dot "clear_contract_storage" := {
-    Notation.dot {K : Set} `{H'0 : parity_scale_codec.codec.Encode.Trait K}
-      :=
-      clear_contract_storage (K := K) (H'0 := H'0);
-  }.
-  Global Instance Method_decode_input `{State.Trait} `(Trait)
-    : Notation.Dot "decode_input" := {
-    Notation.dot {T : Set} `{H'0 : parity_scale_codec.codec.Decode.Trait T}
-      :=
-      decode_input (T := T) (H'0 := H'0);
-  }.
-  Global Instance Method_return_value `{State.Trait} `(Trait)
-    : Notation.Dot "return_value" := {
-    Notation.dot {R : Set} `{H'0 : parity_scale_codec.codec.Encode.Trait R}
-      :=
-      return_value (R := R) (H'0 := H'0);
-  }.
-  Global Instance Method_debug_message `{State.Trait} `(Trait)
-    : Notation.Dot "debug_message" := {
-    Notation.dot := debug_message;
-  }.
-  Global Instance Method_hash_bytes `{State.Trait} `(Trait)
-    : Notation.Dot "hash_bytes" := {
-    Notation.dot {H : Set} `{H'0 : ink_env.hash.CryptoHash.Trait H}
-      :=
-      hash_bytes (H := H) (H'0 := H'0);
-  }.
-  Global Instance Method_hash_encoded `{State.Trait} `(Trait)
-    : Notation.Dot "hash_encoded" := {
-    Notation.dot
-      {H T : Set}
-      `{H'0 : ink_env.hash.CryptoHash.Trait H}
-      `{H'1 : parity_scale_codec.codec.Encode.Trait T}
-      :=
-      hash_encoded (H := H) (T := T) (H'0 := H'0) (H'1 := H'1);
-  }.
-  Global Instance Method_ecdsa_recover `{State.Trait} `(Trait)
-    : Notation.Dot "ecdsa_recover" := {
-    Notation.dot := ecdsa_recover;
-  }.
-  Global Instance Method_ecdsa_to_eth_address `{State.Trait} `(Trait)
-    : Notation.Dot "ecdsa_to_eth_address" := {
-    Notation.dot := ecdsa_to_eth_address;
-  }.
-  Global Instance Method_call_chain_extension `{State.Trait} `(Trait)
-    : Notation.Dot "call_chain_extension" := {
-    Notation.dot
-      {I T E ErrorCode F D : Set}
-      `{H'0 : parity_scale_codec.codec.Encode.Trait I}
-      `{H'1 : parity_scale_codec.codec.Decode.Trait T}
-      `{H'2 : core.convert.From.Trait E (T := ErrorCode)}
-      `{H'3 : core.ops.function.FnOnce.Trait F (Args := u32)}
-      `{H'4 : core.ops.function.FnOnce.Trait D (Args := ref (Slice u8))}
-      :=
+  Section EnvBackend.
+    Context `{State.Trait}.
+    
+    Class Trait (Self : Set) : Type := {
+      set_contract_storage
+        {K V : Set}
+        {ℋ_0 : parity_scale_codec.codec.Encode.Trait K}
+        {ℋ_1 : ink_storage_traits.storage.Storable.Trait V}
+        :
+        (mut_ref Self) -> (ref K) -> (ref V) -> M (core.option.Option u32);
+      get_contract_storage
+        {K R : Set}
+        {ℋ_0 : parity_scale_codec.codec.Encode.Trait K}
+        {ℋ_1 : ink_storage_traits.storage.Storable.Trait R}
+        :
+        (mut_ref Self) ->
+          (ref K) ->
+          M
+            (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+              (core.option.Option R));
+      take_contract_storage
+        {K R : Set}
+        {ℋ_0 : parity_scale_codec.codec.Encode.Trait K}
+        {ℋ_1 : ink_storage_traits.storage.Storable.Trait R}
+        :
+        (mut_ref Self) ->
+          (ref K) ->
+          M
+            (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+              (core.option.Option R));
+      contains_contract_storage
+        {K : Set}
+        {ℋ_0 : parity_scale_codec.codec.Encode.Trait K}
+        :
+        (mut_ref Self) -> (ref K) -> M (core.option.Option u32);
+      clear_contract_storage
+        {K : Set}
+        {ℋ_0 : parity_scale_codec.codec.Encode.Trait K}
+        :
+        (mut_ref Self) -> (ref K) -> M (core.option.Option u32);
+      decode_input {T : Set} {ℋ_0 : parity_scale_codec.codec.Decode.Trait T}
+        :
+        (mut_ref Self) ->
+          M
+            (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+              T);
+      return_value {R : Set} {ℋ_0 : parity_scale_codec.codec.Encode.Trait R}
+        :
+        (mut_ref Self) ->
+          ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.ReturnFlags
+          ->
+          (ref R) ->
+          M Empty_set;
+      debug_message : (mut_ref Self) -> (ref str) -> M unit;
+      hash_bytes {H : Set} {ℋ_0 : ink_env.hash.CryptoHash.Trait H}
+        :
+        (mut_ref Self) ->
+          (ref (Slice u8)) ->
+          (mut_ref (ink_env.hash.HashOutput.Type_ (Self := H))) ->
+          M unit;
+      hash_encoded
+        {H T : Set}
+        {ℋ_0 : ink_env.hash.CryptoHash.Trait H}
+        {ℋ_1 : parity_scale_codec.codec.Encode.Trait T}
+        :
+        (mut_ref Self) ->
+          (ref T) ->
+          (mut_ref (ink_env.hash.HashOutput.Type_ (Self := H))) ->
+          M unit;
+      ecdsa_recover
+        :
+        (mut_ref Self) ->
+          (ref (array u8)) ->
+          (ref (array u8)) ->
+          (mut_ref (array u8)) ->
+          M
+            (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+              unit);
+      ecdsa_to_eth_address
+        :
+        (mut_ref Self) ->
+          (ref (array u8)) ->
+          (mut_ref (array u8)) ->
+          M
+            (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+              unit);
       call_chain_extension
-          (I := I)
-          (T := T)
-          (E := E)
-          (ErrorCode := ErrorCode)
-          (F := F)
-          (D := D)
-        (H'0 := H'0)
-        (H'1 := H'1)
-        (H'2 := H'2)
-        (H'3 := H'3)
-        (H'4 := H'4);
-  }.
-  Global Instance Method_set_code_hash `{State.Trait} `(Trait)
-    : Notation.Dot "set_code_hash" := {
-    Notation.dot := set_code_hash;
-  }.
+        {I T E ErrorCode F D : Set}
+        {ℋ_0 : parity_scale_codec.codec.Encode.Trait I}
+        {ℋ_1 : parity_scale_codec.codec.Decode.Trait T}
+        {ℋ_2 : core.convert.From.Trait E (T := ErrorCode)}
+        {ℋ_3 : core.ops.function.FnOnce.Trait F (Args := u32)}
+        {ℋ_4 : core.ops.function.FnOnce.Trait D (Args := ref (Slice u8))}
+        :
+        (mut_ref Self) ->
+          u32 ->
+          (ref I) ->
+          F ->
+          D ->
+          M (core.result.Result T E);
+      set_code_hash
+        :
+        (mut_ref Self) ->
+          (ref (Slice u8)) ->
+          M
+            (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+              unit);
+    }.
+    
+  End EnvBackend.
 End EnvBackend.
 
 Module TypedEnvBackend.
-  Class Trait
-      (Self : Set)
-      `{ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.EnvBackend.Trait
-            Self}
-      `{State.Trait} :
-      Type := {
-    caller {E : Set} `{H'0 : ink_env.types.Environment.Trait E}
-      :
-      (mut_ref Self) -> M E::type["AccountId"];
-    transferred_value {E : Set} `{H'0 : ink_env.types.Environment.Trait E}
-      :
-      (mut_ref Self) -> M E::type["Balance"];
-    weight_to_fee {E : Set} `{H'0 : ink_env.types.Environment.Trait E}
-      :
-      (mut_ref Self) -> u64 -> M E::type["Balance"];
-    gas_left {E : Set} `{H'0 : ink_env.types.Environment.Trait E}
-      :
-      (mut_ref Self) -> M u64;
-    block_timestamp {E : Set} `{H'0 : ink_env.types.Environment.Trait E}
-      :
-      (mut_ref Self) -> M E::type["Timestamp"];
-    account_id {E : Set} `{H'0 : ink_env.types.Environment.Trait E}
-      :
-      (mut_ref Self) -> M E::type["AccountId"];
-    balance {E : Set} `{H'0 : ink_env.types.Environment.Trait E}
-      :
-      (mut_ref Self) -> M E::type["Balance"];
-    block_number {E : Set} `{H'0 : ink_env.types.Environment.Trait E}
-      :
-      (mut_ref Self) -> M E::type["BlockNumber"];
-    minimum_balance {E : Set} `{H'0 : ink_env.types.Environment.Trait E}
-      :
-      (mut_ref Self) -> M E::type["Balance"];
-    emit_event
-      {E Event : Set}
-      `{H'0 : ink_env.types.Environment.Trait E}
-      `{H'1 : ink_env.topics.Topics.Trait Event}
-      `{H'2 : parity_scale_codec.codec.Encode.Trait Event}
-      :
-      (mut_ref Self) -> Event -> M unit;
-    invoke_contract
-      {E Args R : Set}
-      `{H'0 : ink_env.types.Environment.Trait E}
-      `{H'1 : parity_scale_codec.codec.Encode.Trait Args}
-      `{H'2 : parity_scale_codec.codec.Decode.Trait R}
-      :
-      (mut_ref Self) ->
-        (ref
-          (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallParams
-            E
-            (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Call
-              E)
-            Args
-            R))
-        ->
-        M
-          (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-            (ink_primitives.MessageResult R));
-    invoke_contract_delegate
-      {E Args R : Set}
-      `{H'0 : ink_env.types.Environment.Trait E}
-      `{H'1 : parity_scale_codec.codec.Encode.Trait Args}
-      `{H'2 : parity_scale_codec.codec.Decode.Trait R}
-      :
-      (mut_ref Self) ->
-        (ref
-          (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallParams
-            E
-            (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.DelegateCall
-              E)
-            Args
-            R))
-        ->
-        M
-          (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-            (ink_primitives.MessageResult R));
-    instantiate_contract
-      {E ContractRef Args Salt R : Set}
-      `{H'0 : ink_env.types.Environment.Trait E}
-      `{H'1
+  Section TypedEnvBackend.
+    Context `{State.Trait}.
+    
+    Class Trait
+        (Self : Set)
+        {ℋ_0 :
+          ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.EnvBackend.Trait
+              Self} :
+        Type := {
+      caller {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E}
         :
-        ink_env.call.create_builder.FromAccountId.Trait ContractRef (T := E)}
-      `{H'2 : parity_scale_codec.codec.Encode.Trait Args}
-      `{H'3 : core.convert.AsRef.Trait Salt (T := Slice u8)}
-      `{H'4
+        (mut_ref Self) -> M E::type["AccountId"];
+      transferred_value {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E}
         :
-        ink_env.call.create_builder.ConstructorReturnType.Trait R
-          (C := ContractRef)}
-      :
-      (mut_ref Self) ->
-        (ref
-          (ink_env.call.create_builder.CreateParams E ContractRef Args Salt R))
-        ->
-        M
-          (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-            (ink_primitives.ConstructorResult
-              (ink_env.call.create_builder.ConstructorReturnType.Output
-                (Self := R))));
-    terminate_contract {E : Set} `{H'0 : ink_env.types.Environment.Trait E}
-      :
-      (mut_ref Self) -> E::type["AccountId"] -> M Empty_set;
-    transfer {E : Set} `{H'0 : ink_env.types.Environment.Trait E}
-      :
-      (mut_ref Self) ->
-        E::type["AccountId"] ->
-        E::type["Balance"] ->
-        M
-          (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-            unit);
-    is_contract {E : Set} `{H'0 : ink_env.types.Environment.Trait E}
-      :
-      (mut_ref Self) -> (ref E::type["AccountId"]) -> M bool;
-    caller_is_origin {E : Set} `{H'0 : ink_env.types.Environment.Trait E}
-      :
-      (mut_ref Self) -> M bool;
-    code_hash {E : Set} `{H'0 : ink_env.types.Environment.Trait E}
-      :
-      (mut_ref Self) ->
-        (ref E::type["AccountId"]) ->
-        M
-          (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-            E::type["Hash"]);
-    own_code_hash {E : Set} `{H'0 : ink_env.types.Environment.Trait E}
-      :
-      (mut_ref Self) ->
-        M
-          (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-            E::type["Hash"]);
-    call_runtime
-      {E Call : Set}
-      `{H'0 : ink_env.types.Environment.Trait E}
-      `{H'1 : parity_scale_codec.codec.Encode.Trait Call}
-      :
-      (mut_ref Self) ->
-        (ref Call) ->
-        M
-          (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-            unit);
-  }.
-  
-  Global Instance Method_caller `{State.Trait} `(Trait)
-    : Notation.Dot "caller" := {
-    Notation.dot {E : Set} `{H'0 : ink_env.types.Environment.Trait E}
-      :=
-      caller (E := E) (H'0 := H'0);
-  }.
-  Global Instance Method_transferred_value `{State.Trait} `(Trait)
-    : Notation.Dot "transferred_value" := {
-    Notation.dot {E : Set} `{H'0 : ink_env.types.Environment.Trait E}
-      :=
-      transferred_value (E := E) (H'0 := H'0);
-  }.
-  Global Instance Method_weight_to_fee `{State.Trait} `(Trait)
-    : Notation.Dot "weight_to_fee" := {
-    Notation.dot {E : Set} `{H'0 : ink_env.types.Environment.Trait E}
-      :=
-      weight_to_fee (E := E) (H'0 := H'0);
-  }.
-  Global Instance Method_gas_left `{State.Trait} `(Trait)
-    : Notation.Dot "gas_left" := {
-    Notation.dot {E : Set} `{H'0 : ink_env.types.Environment.Trait E}
-      :=
-      gas_left (E := E) (H'0 := H'0);
-  }.
-  Global Instance Method_block_timestamp `{State.Trait} `(Trait)
-    : Notation.Dot "block_timestamp" := {
-    Notation.dot {E : Set} `{H'0 : ink_env.types.Environment.Trait E}
-      :=
-      block_timestamp (E := E) (H'0 := H'0);
-  }.
-  Global Instance Method_account_id `{State.Trait} `(Trait)
-    : Notation.Dot "account_id" := {
-    Notation.dot {E : Set} `{H'0 : ink_env.types.Environment.Trait E}
-      :=
-      account_id (E := E) (H'0 := H'0);
-  }.
-  Global Instance Method_balance `{State.Trait} `(Trait)
-    : Notation.Dot "balance" := {
-    Notation.dot {E : Set} `{H'0 : ink_env.types.Environment.Trait E}
-      :=
-      balance (E := E) (H'0 := H'0);
-  }.
-  Global Instance Method_block_number `{State.Trait} `(Trait)
-    : Notation.Dot "block_number" := {
-    Notation.dot {E : Set} `{H'0 : ink_env.types.Environment.Trait E}
-      :=
-      block_number (E := E) (H'0 := H'0);
-  }.
-  Global Instance Method_minimum_balance `{State.Trait} `(Trait)
-    : Notation.Dot "minimum_balance" := {
-    Notation.dot {E : Set} `{H'0 : ink_env.types.Environment.Trait E}
-      :=
-      minimum_balance (E := E) (H'0 := H'0);
-  }.
-  Global Instance Method_emit_event `{State.Trait} `(Trait)
-    : Notation.Dot "emit_event" := {
-    Notation.dot
-      {E Event : Set}
-      `{H'0 : ink_env.types.Environment.Trait E}
-      `{H'1 : ink_env.topics.Topics.Trait Event}
-      `{H'2 : parity_scale_codec.codec.Encode.Trait Event}
-      :=
-      emit_event (E := E) (Event := Event)
-        (H'0 := H'0)
-        (H'1 := H'1)
-        (H'2 := H'2);
-  }.
-  Global Instance Method_invoke_contract `{State.Trait} `(Trait)
-    : Notation.Dot "invoke_contract" := {
-    Notation.dot
-      {E Args R : Set}
-      `{H'0 : ink_env.types.Environment.Trait E}
-      `{H'1 : parity_scale_codec.codec.Encode.Trait Args}
-      `{H'2 : parity_scale_codec.codec.Decode.Trait R}
-      :=
-      invoke_contract (E := E) (Args := Args) (R := R)
-        (H'0 := H'0)
-        (H'1 := H'1)
-        (H'2 := H'2);
-  }.
-  Global Instance Method_invoke_contract_delegate `{State.Trait} `(Trait)
-    : Notation.Dot "invoke_contract_delegate" := {
-    Notation.dot
-      {E Args R : Set}
-      `{H'0 : ink_env.types.Environment.Trait E}
-      `{H'1 : parity_scale_codec.codec.Encode.Trait Args}
-      `{H'2 : parity_scale_codec.codec.Decode.Trait R}
-      :=
-      invoke_contract_delegate (E := E) (Args := Args) (R := R)
-        (H'0 := H'0)
-        (H'1 := H'1)
-        (H'2 := H'2);
-  }.
-  Global Instance Method_instantiate_contract `{State.Trait} `(Trait)
-    : Notation.Dot "instantiate_contract" := {
-    Notation.dot
-      {E ContractRef Args Salt R : Set}
-      `{H'0 : ink_env.types.Environment.Trait E}
-      `{H'1
+        (mut_ref Self) -> M E::type["Balance"];
+      weight_to_fee {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E}
         :
-        ink_env.call.create_builder.FromAccountId.Trait ContractRef (T := E)}
-      `{H'2 : parity_scale_codec.codec.Encode.Trait Args}
-      `{H'3 : core.convert.AsRef.Trait Salt (T := Slice u8)}
-      `{H'4
+        (mut_ref Self) -> u64 -> M E::type["Balance"];
+      gas_left {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E}
         :
-        ink_env.call.create_builder.ConstructorReturnType.Trait R
-          (C := ContractRef)}
-      :=
+        (mut_ref Self) -> M u64;
+      block_timestamp {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E}
+        :
+        (mut_ref Self) -> M E::type["Timestamp"];
+      account_id {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E}
+        :
+        (mut_ref Self) -> M E::type["AccountId"];
+      balance {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E}
+        :
+        (mut_ref Self) -> M E::type["Balance"];
+      block_number {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E}
+        :
+        (mut_ref Self) -> M E::type["BlockNumber"];
+      minimum_balance {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E}
+        :
+        (mut_ref Self) -> M E::type["Balance"];
+      emit_event
+        {E Event : Set}
+        {ℋ_0 : ink_env.types.Environment.Trait E}
+        {ℋ_1 : ink_env.topics.Topics.Trait Event}
+        {ℋ_2 : parity_scale_codec.codec.Encode.Trait Event}
+        :
+        (mut_ref Self) -> Event -> M unit;
+      invoke_contract
+        {E Args R : Set}
+        {ℋ_0 : ink_env.types.Environment.Trait E}
+        {ℋ_1 : parity_scale_codec.codec.Encode.Trait Args}
+        {ℋ_2 : parity_scale_codec.codec.Decode.Trait R}
+        :
+        (mut_ref Self) ->
+          (ref
+            (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallParams
+              E
+              (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Call
+                E)
+              Args
+              R))
+          ->
+          M
+            (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+              (ink_primitives.MessageResult R));
+      invoke_contract_delegate
+        {E Args R : Set}
+        {ℋ_0 : ink_env.types.Environment.Trait E}
+        {ℋ_1 : parity_scale_codec.codec.Encode.Trait Args}
+        {ℋ_2 : parity_scale_codec.codec.Decode.Trait R}
+        :
+        (mut_ref Self) ->
+          (ref
+            (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallParams
+              E
+              (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.DelegateCall
+                E)
+              Args
+              R))
+          ->
+          M
+            (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+              (ink_primitives.MessageResult R));
       instantiate_contract
-          (E := E)
-          (ContractRef := ContractRef)
-          (Args := Args)
-          (Salt := Salt)
-          (R := R)
-        (H'0 := H'0)
-        (H'1 := H'1)
-        (H'2 := H'2)
-        (H'3 := H'3)
-        (H'4 := H'4);
-  }.
-  Global Instance Method_terminate_contract `{State.Trait} `(Trait)
-    : Notation.Dot "terminate_contract" := {
-    Notation.dot {E : Set} `{H'0 : ink_env.types.Environment.Trait E}
-      :=
-      terminate_contract (E := E) (H'0 := H'0);
-  }.
-  Global Instance Method_transfer `{State.Trait} `(Trait)
-    : Notation.Dot "transfer" := {
-    Notation.dot {E : Set} `{H'0 : ink_env.types.Environment.Trait E}
-      :=
-      transfer (E := E) (H'0 := H'0);
-  }.
-  Global Instance Method_is_contract `{State.Trait} `(Trait)
-    : Notation.Dot "is_contract" := {
-    Notation.dot {E : Set} `{H'0 : ink_env.types.Environment.Trait E}
-      :=
-      is_contract (E := E) (H'0 := H'0);
-  }.
-  Global Instance Method_caller_is_origin `{State.Trait} `(Trait)
-    : Notation.Dot "caller_is_origin" := {
-    Notation.dot {E : Set} `{H'0 : ink_env.types.Environment.Trait E}
-      :=
-      caller_is_origin (E := E) (H'0 := H'0);
-  }.
-  Global Instance Method_code_hash `{State.Trait} `(Trait)
-    : Notation.Dot "code_hash" := {
-    Notation.dot {E : Set} `{H'0 : ink_env.types.Environment.Trait E}
-      :=
-      code_hash (E := E) (H'0 := H'0);
-  }.
-  Global Instance Method_own_code_hash `{State.Trait} `(Trait)
-    : Notation.Dot "own_code_hash" := {
-    Notation.dot {E : Set} `{H'0 : ink_env.types.Environment.Trait E}
-      :=
-      own_code_hash (E := E) (H'0 := H'0);
-  }.
-  Global Instance Method_call_runtime `{State.Trait} `(Trait)
-    : Notation.Dot "call_runtime" := {
-    Notation.dot
-      {E Call : Set}
-      `{H'0 : ink_env.types.Environment.Trait E}
-      `{H'1 : parity_scale_codec.codec.Encode.Trait Call}
-      :=
-      call_runtime (E := E) (Call := Call) (H'0 := H'0) (H'1 := H'1);
-  }.
+        {E ContractRef Args Salt R : Set}
+        {ℋ_0 : ink_env.types.Environment.Trait E}
+        {ℋ_1 :
+          ink_env.call.create_builder.FromAccountId.Trait ContractRef (T := E)}
+        {ℋ_2 : parity_scale_codec.codec.Encode.Trait Args}
+        {ℋ_3 : core.convert.AsRef.Trait Salt (T := Slice u8)}
+        {ℋ_4 :
+          ink_env.call.create_builder.ConstructorReturnType.Trait R
+            (C := ContractRef)}
+        :
+        (mut_ref Self) ->
+          (ref
+            (ink_env.call.create_builder.CreateParams
+              E
+              ContractRef
+              Args
+              Salt
+              R))
+          ->
+          M
+            (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+              (ink_primitives.ConstructorResult
+                (ink_env.call.create_builder.ConstructorReturnType.Output
+                  (Self := R))));
+      terminate_contract {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E}
+        :
+        (mut_ref Self) -> E::type["AccountId"] -> M Empty_set;
+      transfer {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E}
+        :
+        (mut_ref Self) ->
+          E::type["AccountId"] ->
+          E::type["Balance"] ->
+          M
+            (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+              unit);
+      is_contract {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E}
+        :
+        (mut_ref Self) -> (ref E::type["AccountId"]) -> M bool;
+      caller_is_origin {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E}
+        :
+        (mut_ref Self) -> M bool;
+      code_hash {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E}
+        :
+        (mut_ref Self) ->
+          (ref E::type["AccountId"]) ->
+          M
+            (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+              E::type["Hash"]);
+      own_code_hash {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E}
+        :
+        (mut_ref Self) ->
+          M
+            (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+              E::type["Hash"]);
+      call_runtime
+        {E Call : Set}
+        {ℋ_0 : ink_env.types.Environment.Trait E}
+        {ℋ_1 : parity_scale_codec.codec.Encode.Trait Call}
+        :
+        (mut_ref Self) ->
+          (ref Call) ->
+          M
+            (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+              unit);
+    }.
+    
+  End TypedEnvBackend.
 End TypedEnvBackend.
 
 Module common.
   Module ReturnType.
     Section ReturnType.
+      Context `{State.Trait}.
+      
       Context {T : Set}.
+      
       Unset Primitive Projections.
-      Record t `{State.Trait} : Set := {
+      Record t : Set := {
         x0 : core.marker.PhantomData (T);
       }.
       Global Set Primitive Projections.
       
-      Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
+      Global Instance Get_0 : Notation.Dot "0" := {
         Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
       }.
     End ReturnType.
   End ReturnType.
-  Definition ReturnType `{State.Trait} : Set := M.val ReturnType.t.
+  Definition ReturnType `{State.Trait} (T : Set) : Set :=
+    M.val (ReturnType.t (T := T)).
   
   Module Set_.
     Section Set_.
+      Context `{State.Trait}.
+      
       Context {T : Set}.
+      
       Unset Primitive Projections.
-      Record t `{State.Trait} : Set := {
+      Record t : Set := {
         x0 : T;
       }.
       Global Set Primitive Projections.
       
-      Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
+      Global Instance Get_0 : Notation.Dot "0" := {
         Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
       }.
     End Set_.
   End Set_.
-  Definition Set_ `{State.Trait} : Set := M.val Set_.t.
+  Definition Set_ `{State.Trait} (T : Set) : Set := M.val (Set_.t (T := T)).
   
   Module Unset_.
     Section Unset_.
+      Context `{State.Trait}.
+      
       Context {T : Set}.
+      
       Unset Primitive Projections.
-      Record t `{State.Trait} : Set := {
+      Record t : Set := {
         x0 : core.marker.PhantomData (T);
       }.
       Global Set Primitive Projections.
       
-      Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
+      Global Instance Get_0 : Notation.Dot "0" := {
         Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
       }.
     End Unset_.
   End Unset_.
-  Definition Unset_ `{State.Trait} : Set := M.val Unset_.t.
+  Definition Unset_ `{State.Trait} (T : Set) : Set := M.val (Unset_.t (T := T)).
   
   Module Unwrap.
-    Class Trait (Self : Set) `{State.Trait} : Type := {
+    Section Unwrap.
+      Context `{State.Trait}.
+      
+      Class Trait (Self : Set) : Type := {
+        Output : Set;
+        unwrap_or_else
+          {F : Set}
+          {ℋ_0 : core.ops.function.FnOnce.Trait F (Args := unit)}
+          :
+          Self -> F -> M Output;
+      }.
+      
+      Global Instance Method_Output `(Trait)
+        : Notation.DoubleColonType Self "Output" := {
+        Notation.double_colon_type := Output;
+      }.
+    End Unwrap.
+  End Unwrap.
+End common.
+
+Module ReturnType.
+  Section ReturnType.
+    Context `{State.Trait}.
+    
+    Context {T : Set}.
+    
+    Unset Primitive Projections.
+    Record t : Set := {
+      x0 : core.marker.PhantomData (T);
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_0 : Notation.Dot "0" := {
+      Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
+    }.
+  End ReturnType.
+End ReturnType.
+Definition ReturnType `{State.Trait} (T : Set) : Set :=
+  M.val (ReturnType.t (T := T)).
+
+Module Set_.
+  Section Set_.
+    Context `{State.Trait}.
+    
+    Context {T : Set}.
+    
+    Unset Primitive Projections.
+    Record t : Set := {
+      x0 : T;
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_0 : Notation.Dot "0" := {
+      Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
+    }.
+  End Set_.
+End Set_.
+Definition Set_ `{State.Trait} (T : Set) : Set := M.val (Set_.t (T := T)).
+
+Module Unset_.
+  Section Unset_.
+    Context `{State.Trait}.
+    
+    Context {T : Set}.
+    
+    Unset Primitive Projections.
+    Record t : Set := {
+      x0 : core.marker.PhantomData (T);
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_0 : Notation.Dot "0" := {
+      Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
+    }.
+  End Unset_.
+End Unset_.
+Definition Unset_ `{State.Trait} (T : Set) : Set := M.val (Unset_.t (T := T)).
+
+Module Unwrap.
+  Section Unwrap.
+    Context `{State.Trait}.
+    
+    Class Trait (Self : Set) : Type := {
       Output : Set;
       unwrap_or_else
         {F : Set}
-        `{H'0 : core.ops.function.FnOnce.Trait F (Args := unit)}
+        {ℋ_0 : core.ops.function.FnOnce.Trait F (Args := unit)}
         :
         Self -> F -> M Output;
     }.
@@ -4126,87 +3595,7 @@ Module common.
       : Notation.DoubleColonType Self "Output" := {
       Notation.double_colon_type := Output;
     }.
-    Global Instance Method_unwrap_or_else `{State.Trait} `(Trait)
-      : Notation.Dot "unwrap_or_else" := {
-      Notation.dot
-        {F : Set}
-        `{H'0 : core.ops.function.FnOnce.Trait F (Args := unit)}
-        :=
-        unwrap_or_else (F := F) (H'0 := H'0);
-    }.
   End Unwrap.
-End common.
-
-Module ReturnType.
-  Section ReturnType.
-    Context {T : Set}.
-    Unset Primitive Projections.
-    Record t `{State.Trait} : Set := {
-      x0 : core.marker.PhantomData (T);
-    }.
-    Global Set Primitive Projections.
-    
-    Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
-      Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
-    }.
-  End ReturnType.
-End ReturnType.
-Definition ReturnType `{State.Trait} : Set := M.val ReturnType.t.
-
-Module Set_.
-  Section Set_.
-    Context {T : Set}.
-    Unset Primitive Projections.
-    Record t `{State.Trait} : Set := {
-      x0 : T;
-    }.
-    Global Set Primitive Projections.
-    
-    Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
-      Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
-    }.
-  End Set_.
-End Set_.
-Definition Set_ `{State.Trait} : Set := M.val Set_.t.
-
-Module Unset_.
-  Section Unset_.
-    Context {T : Set}.
-    Unset Primitive Projections.
-    Record t `{State.Trait} : Set := {
-      x0 : core.marker.PhantomData (T);
-    }.
-    Global Set Primitive Projections.
-    
-    Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
-      Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
-    }.
-  End Unset_.
-End Unset_.
-Definition Unset_ `{State.Trait} : Set := M.val Unset_.t.
-
-Module Unwrap.
-  Class Trait (Self : Set) `{State.Trait} : Type := {
-    Output : Set;
-    unwrap_or_else
-      {F : Set}
-      `{H'0 : core.ops.function.FnOnce.Trait F (Args := unit)}
-      :
-      Self -> F -> M Output;
-  }.
-  
-  Global Instance Method_Output `(Trait)
-    : Notation.DoubleColonType Self "Output" := {
-    Notation.double_colon_type := Output;
-  }.
-  Global Instance Method_unwrap_or_else `{State.Trait} `(Trait)
-    : Notation.Dot "unwrap_or_else" := {
-    Notation.dot
-      {F : Set}
-      `{H'0 : core.ops.function.FnOnce.Trait F (Args := unit)}
-      :=
-      unwrap_or_else (F := F) (H'0 := H'0);
-  }.
 End Unwrap.
 
 Module create_builder.
@@ -4219,58 +3608,53 @@ Module create_builder.
   End state.
   
   Module FromAccountId.
-    Class Trait
-        (Self : Set)
-        {T : Set}
-        `{State.Trait}
-        `{ink_env.types.Environment.Trait T} :
-        Type := {
-      from_account_id
-        :
-        (ink_env.types.Environment.AccountId (Self := T)) -> M Self;
-    }.
-    
-    Global Instance Method_from_account_id `{State.Trait} `(Trait)
-      : Notation.Dot "from_account_id" := {
-      Notation.dot := from_account_id;
-    }.
+    Section FromAccountId.
+      Context `{State.Trait}.
+      
+      Class Trait
+          (Self : Set)
+          {T : Set}
+          {ℋ_0 : ink_env.types.Environment.Trait T} :
+          Type := {
+        from_account_id
+          :
+          (ink_env.types.Environment.AccountId (Self := T)) -> M Self;
+      }.
+      
+    End FromAccountId.
   End FromAccountId.
   
   Module ConstructorReturnType.
-    Class Trait (Self : Set) {C : Set} `{State.Trait} : Type := {
-      IS_RESULT : bool;
-      Output : Set;
-      Error : Set;
-      _ : Sigma `(parity_scale_codec.codec.Decode.Trait Error), unit;
-      ok : C -> M Output;
-    }.
-    
-    Global Instance Method_IS_RESULT `{State.Trait} `(Trait)
-      : Notation.Dot "IS_RESULT" := {
-      Notation.dot := IS_RESULT;
-    }.
-    Global Instance Method_Output `(Trait)
-      : Notation.DoubleColonType Self "Output" := {
-      Notation.double_colon_type := Output;
-    }.
-    Global Instance Method_Error `(Trait)
-      : Notation.DoubleColonType Self "Error" := {
-      Notation.double_colon_type := Error;
-    }.
-    Global Instance Method_ok `{State.Trait} `(Trait) : Notation.Dot "ok" := {
-      Notation.dot := ok;
-    }.
-    Global Instance Method_err `{State.Trait} `(Trait) : Notation.Dot "err" := {
-      Notation.dot (_err : Error) := (axiom : M (core.option.Option Output));
-    }.
+    Section ConstructorReturnType.
+      Context `{State.Trait}.
+      
+      Class Trait (Self : Set) {C : Set} : Type := {
+        IS_RESULT : bool;
+        Output : Set;
+        Error : Set;
+        ok : C -> M Output;
+      }.
+      
+      Global Instance Method_Output `(Trait)
+        : Notation.DoubleColonType Self "Output" := {
+        Notation.double_colon_type := Output;
+      }.
+      Global Instance Method_Error `(Trait)
+        : Notation.DoubleColonType Self "Error" := {
+        Notation.double_colon_type := Error;
+      }.
+    End ConstructorReturnType.
   End ConstructorReturnType.
   
   Module CreateParams.
     Section CreateParams.
+      Context `{State.Trait}.
+      
       Context {E ContractRef Args Salt R : Set}.
-      Context `{ink_env.types.Environment.Trait E}.
+      
+      Context {ℋ_0 : ink_env.types.Environment.Trait E}.
       Unset Primitive Projections.
-      Record t `{State.Trait} : Set := {
+      Record t : Set := {
         code_hash : E::type["Hash"];
         gas_limit : u64;
         endowment : E::type["Balance"];
@@ -4281,71 +3665,61 @@ Module create_builder.
       }.
       Global Set Primitive Projections.
       
-      Global Instance Get_code_hash `{State.Trait}
-        : Notation.Dot "code_hash" := {
+      Global Instance Get_code_hash : Notation.Dot "code_hash" := {
         Notation.dot x := let* x := M.read x in Pure x.(code_hash) : M _;
       }.
-      Global Instance Get_AF_code_hash `{State.Trait}
-        : Notation.DoubleColon t "code_hash" := {
+      Global Instance Get_AF_code_hash : Notation.DoubleColon t "code_hash" := {
         Notation.double_colon x
           :=
           let* x := M.read x in Pure x.(code_hash) : M _;
       }.
-      Global Instance Get_gas_limit `{State.Trait}
-        : Notation.Dot "gas_limit" := {
+      Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
         Notation.dot x := let* x := M.read x in Pure x.(gas_limit) : M _;
       }.
-      Global Instance Get_AF_gas_limit `{State.Trait}
-        : Notation.DoubleColon t "gas_limit" := {
+      Global Instance Get_AF_gas_limit : Notation.DoubleColon t "gas_limit" := {
         Notation.double_colon x
           :=
           let* x := M.read x in Pure x.(gas_limit) : M _;
       }.
-      Global Instance Get_endowment `{State.Trait}
-        : Notation.Dot "endowment" := {
+      Global Instance Get_endowment : Notation.Dot "endowment" := {
         Notation.dot x := let* x := M.read x in Pure x.(endowment) : M _;
       }.
-      Global Instance Get_AF_endowment `{State.Trait}
-        : Notation.DoubleColon t "endowment" := {
+      Global Instance Get_AF_endowment : Notation.DoubleColon t "endowment" := {
         Notation.double_colon x
           :=
           let* x := M.read x in Pure x.(endowment) : M _;
       }.
-      Global Instance Get_exec_input `{State.Trait}
-        : Notation.Dot "exec_input" := {
+      Global Instance Get_exec_input : Notation.Dot "exec_input" := {
         Notation.dot x := let* x := M.read x in Pure x.(exec_input) : M _;
       }.
-      Global Instance Get_AF_exec_input `{State.Trait}
+      Global Instance Get_AF_exec_input
         : Notation.DoubleColon t "exec_input" := {
         Notation.double_colon x
           :=
           let* x := M.read x in Pure x.(exec_input) : M _;
       }.
-      Global Instance Get_salt_bytes `{State.Trait}
-        : Notation.Dot "salt_bytes" := {
+      Global Instance Get_salt_bytes : Notation.Dot "salt_bytes" := {
         Notation.dot x := let* x := M.read x in Pure x.(salt_bytes) : M _;
       }.
-      Global Instance Get_AF_salt_bytes `{State.Trait}
+      Global Instance Get_AF_salt_bytes
         : Notation.DoubleColon t "salt_bytes" := {
         Notation.double_colon x
           :=
           let* x := M.read x in Pure x.(salt_bytes) : M _;
       }.
-      Global Instance Get__return_type `{State.Trait}
-        : Notation.Dot "_return_type" := {
+      Global Instance Get__return_type : Notation.Dot "_return_type" := {
         Notation.dot x := let* x := M.read x in Pure x.(_return_type) : M _;
       }.
-      Global Instance Get_AF__return_type `{State.Trait}
+      Global Instance Get_AF__return_type
         : Notation.DoubleColon t "_return_type" := {
         Notation.double_colon x
           :=
           let* x := M.read x in Pure x.(_return_type) : M _;
       }.
-      Global Instance Get__phantom `{State.Trait} : Notation.Dot "_phantom" := {
+      Global Instance Get__phantom : Notation.Dot "_phantom" := {
         Notation.dot x := let* x := M.read x in Pure x.(_phantom) : M _;
       }.
-      Global Instance Get_AF__phantom `{State.Trait}
-        : Notation.DoubleColon t "_phantom" := {
+      Global Instance Get_AF__phantom : Notation.DoubleColon t "_phantom" := {
         Notation.double_colon x
           :=
           let* x := M.read x in Pure x.(_phantom) : M _;
@@ -4355,7 +3729,7 @@ Module create_builder.
   Definition CreateParams
       (E ContractRef Args Salt R : Set)
       `{State.Trait}
-      `{ink_env.types.Environment.Trait E}
+      {ℋ_0 : ink_env.types.Environment.Trait E}
       : Set :=
     M.val
       (CreateParams.t
@@ -4367,11 +3741,14 @@ Module create_builder.
   
   Module CreateBuilder.
     Section CreateBuilder.
+      Context `{State.Trait}.
+      
       Context
         {E ContractRef CodeHash GasLimit Endowment Args Salt RetType : Set}.
-      Context `{ink_env.types.Environment.Trait E}.
+      
+      Context {ℋ_0 : ink_env.types.Environment.Trait E}.
       Unset Primitive Projections.
-      Record t `{State.Trait} : Set := {
+      Record t : Set := {
         code_hash : CodeHash;
         gas_limit : GasLimit;
         endowment : Endowment;
@@ -4382,68 +3759,58 @@ Module create_builder.
       }.
       Global Set Primitive Projections.
       
-      Global Instance Get_code_hash `{State.Trait}
-        : Notation.Dot "code_hash" := {
+      Global Instance Get_code_hash : Notation.Dot "code_hash" := {
         Notation.dot x := let* x := M.read x in Pure x.(code_hash) : M _;
       }.
-      Global Instance Get_AF_code_hash `{State.Trait}
-        : Notation.DoubleColon t "code_hash" := {
+      Global Instance Get_AF_code_hash : Notation.DoubleColon t "code_hash" := {
         Notation.double_colon x
           :=
           let* x := M.read x in Pure x.(code_hash) : M _;
       }.
-      Global Instance Get_gas_limit `{State.Trait}
-        : Notation.Dot "gas_limit" := {
+      Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
         Notation.dot x := let* x := M.read x in Pure x.(gas_limit) : M _;
       }.
-      Global Instance Get_AF_gas_limit `{State.Trait}
-        : Notation.DoubleColon t "gas_limit" := {
+      Global Instance Get_AF_gas_limit : Notation.DoubleColon t "gas_limit" := {
         Notation.double_colon x
           :=
           let* x := M.read x in Pure x.(gas_limit) : M _;
       }.
-      Global Instance Get_endowment `{State.Trait}
-        : Notation.Dot "endowment" := {
+      Global Instance Get_endowment : Notation.Dot "endowment" := {
         Notation.dot x := let* x := M.read x in Pure x.(endowment) : M _;
       }.
-      Global Instance Get_AF_endowment `{State.Trait}
-        : Notation.DoubleColon t "endowment" := {
+      Global Instance Get_AF_endowment : Notation.DoubleColon t "endowment" := {
         Notation.double_colon x
           :=
           let* x := M.read x in Pure x.(endowment) : M _;
       }.
-      Global Instance Get_exec_input `{State.Trait}
-        : Notation.Dot "exec_input" := {
+      Global Instance Get_exec_input : Notation.Dot "exec_input" := {
         Notation.dot x := let* x := M.read x in Pure x.(exec_input) : M _;
       }.
-      Global Instance Get_AF_exec_input `{State.Trait}
+      Global Instance Get_AF_exec_input
         : Notation.DoubleColon t "exec_input" := {
         Notation.double_colon x
           :=
           let* x := M.read x in Pure x.(exec_input) : M _;
       }.
-      Global Instance Get_salt `{State.Trait} : Notation.Dot "salt" := {
+      Global Instance Get_salt : Notation.Dot "salt" := {
         Notation.dot x := let* x := M.read x in Pure x.(salt) : M _;
       }.
-      Global Instance Get_AF_salt `{State.Trait}
-        : Notation.DoubleColon t "salt" := {
+      Global Instance Get_AF_salt : Notation.DoubleColon t "salt" := {
         Notation.double_colon x := let* x := M.read x in Pure x.(salt) : M _;
       }.
-      Global Instance Get_return_type `{State.Trait}
-        : Notation.Dot "return_type" := {
+      Global Instance Get_return_type : Notation.Dot "return_type" := {
         Notation.dot x := let* x := M.read x in Pure x.(return_type) : M _;
       }.
-      Global Instance Get_AF_return_type `{State.Trait}
+      Global Instance Get_AF_return_type
         : Notation.DoubleColon t "return_type" := {
         Notation.double_colon x
           :=
           let* x := M.read x in Pure x.(return_type) : M _;
       }.
-      Global Instance Get__phantom `{State.Trait} : Notation.Dot "_phantom" := {
+      Global Instance Get__phantom : Notation.Dot "_phantom" := {
         Notation.dot x := let* x := M.read x in Pure x.(_phantom) : M _;
       }.
-      Global Instance Get_AF__phantom `{State.Trait}
-        : Notation.DoubleColon t "_phantom" := {
+      Global Instance Get_AF__phantom : Notation.DoubleColon t "_phantom" := {
         Notation.double_colon x
           :=
           let* x := M.read x in Pure x.(_phantom) : M _;
@@ -4453,7 +3820,7 @@ Module create_builder.
   Definition CreateBuilder
       (E ContractRef CodeHash GasLimit Endowment Args Salt RetType : Set)
       `{State.Trait}
-      `{ink_env.types.Environment.Trait E}
+      {ℋ_0 : ink_env.types.Environment.Trait E}
       : Set :=
     M.val
       (CreateBuilder.t
@@ -4482,58 +3849,53 @@ End Salt.
 Definition Salt `{State.Trait} : Set := Salt.t.
 
 Module FromAccountId.
-  Class Trait
-      (Self : Set)
-      {T : Set}
-      `{State.Trait}
-      `{ink_env.types.Environment.Trait T} :
-      Type := {
-    from_account_id
-      :
-      (ink_env.types.Environment.AccountId (Self := T)) -> M Self;
-  }.
-  
-  Global Instance Method_from_account_id `{State.Trait} `(Trait)
-    : Notation.Dot "from_account_id" := {
-    Notation.dot := from_account_id;
-  }.
+  Section FromAccountId.
+    Context `{State.Trait}.
+    
+    Class Trait
+        (Self : Set)
+        {T : Set}
+        {ℋ_0 : ink_env.types.Environment.Trait T} :
+        Type := {
+      from_account_id
+        :
+        (ink_env.types.Environment.AccountId (Self := T)) -> M Self;
+    }.
+    
+  End FromAccountId.
 End FromAccountId.
 
 Module ConstructorReturnType.
-  Class Trait (Self : Set) {C : Set} `{State.Trait} : Type := {
-    IS_RESULT : bool;
-    Output : Set;
-    Error : Set;
-    _ : Sigma `(parity_scale_codec.codec.Decode.Trait Error), unit;
-    ok : C -> M Output;
-  }.
-  
-  Global Instance Method_IS_RESULT `{State.Trait} `(Trait)
-    : Notation.Dot "IS_RESULT" := {
-    Notation.dot := IS_RESULT;
-  }.
-  Global Instance Method_Output `(Trait)
-    : Notation.DoubleColonType Self "Output" := {
-    Notation.double_colon_type := Output;
-  }.
-  Global Instance Method_Error `(Trait)
-    : Notation.DoubleColonType Self "Error" := {
-    Notation.double_colon_type := Error;
-  }.
-  Global Instance Method_ok `{State.Trait} `(Trait) : Notation.Dot "ok" := {
-    Notation.dot := ok;
-  }.
-  Global Instance Method_err `{State.Trait} `(Trait) : Notation.Dot "err" := {
-    Notation.dot (_err : Error) := (axiom : M (core.option.Option Output));
-  }.
+  Section ConstructorReturnType.
+    Context `{State.Trait}.
+    
+    Class Trait (Self : Set) {C : Set} : Type := {
+      IS_RESULT : bool;
+      Output : Set;
+      Error : Set;
+      ok : C -> M Output;
+    }.
+    
+    Global Instance Method_Output `(Trait)
+      : Notation.DoubleColonType Self "Output" := {
+      Notation.double_colon_type := Output;
+    }.
+    Global Instance Method_Error `(Trait)
+      : Notation.DoubleColonType Self "Error" := {
+      Notation.double_colon_type := Error;
+    }.
+  End ConstructorReturnType.
 End ConstructorReturnType.
 
 Module CreateParams.
   Section CreateParams.
+    Context `{State.Trait}.
+    
     Context {E ContractRef Args Salt R : Set}.
-    Context `{ink_env.types.Environment.Trait E}.
+    
+    Context {ℋ_0 : ink_env.types.Environment.Trait E}.
     Unset Primitive Projections.
-    Record t `{State.Trait} : Set := {
+    Record t : Set := {
       code_hash : E::type["Hash"];
       gas_limit : u64;
       endowment : E::type["Balance"];
@@ -4544,62 +3906,53 @@ Module CreateParams.
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_code_hash `{State.Trait} : Notation.Dot "code_hash" := {
+    Global Instance Get_code_hash : Notation.Dot "code_hash" := {
       Notation.dot x := let* x := M.read x in Pure x.(code_hash) : M _;
     }.
-    Global Instance Get_AF_code_hash `{State.Trait}
-      : Notation.DoubleColon t "code_hash" := {
+    Global Instance Get_AF_code_hash : Notation.DoubleColon t "code_hash" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(code_hash) : M _;
     }.
-    Global Instance Get_gas_limit `{State.Trait} : Notation.Dot "gas_limit" := {
+    Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
       Notation.dot x := let* x := M.read x in Pure x.(gas_limit) : M _;
     }.
-    Global Instance Get_AF_gas_limit `{State.Trait}
-      : Notation.DoubleColon t "gas_limit" := {
+    Global Instance Get_AF_gas_limit : Notation.DoubleColon t "gas_limit" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(gas_limit) : M _;
     }.
-    Global Instance Get_endowment `{State.Trait} : Notation.Dot "endowment" := {
+    Global Instance Get_endowment : Notation.Dot "endowment" := {
       Notation.dot x := let* x := M.read x in Pure x.(endowment) : M _;
     }.
-    Global Instance Get_AF_endowment `{State.Trait}
-      : Notation.DoubleColon t "endowment" := {
+    Global Instance Get_AF_endowment : Notation.DoubleColon t "endowment" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(endowment) : M _;
     }.
-    Global Instance Get_exec_input `{State.Trait}
-      : Notation.Dot "exec_input" := {
+    Global Instance Get_exec_input : Notation.Dot "exec_input" := {
       Notation.dot x := let* x := M.read x in Pure x.(exec_input) : M _;
     }.
-    Global Instance Get_AF_exec_input `{State.Trait}
-      : Notation.DoubleColon t "exec_input" := {
+    Global Instance Get_AF_exec_input : Notation.DoubleColon t "exec_input" := {
       Notation.double_colon x
         :=
         let* x := M.read x in Pure x.(exec_input) : M _;
     }.
-    Global Instance Get_salt_bytes `{State.Trait}
-      : Notation.Dot "salt_bytes" := {
+    Global Instance Get_salt_bytes : Notation.Dot "salt_bytes" := {
       Notation.dot x := let* x := M.read x in Pure x.(salt_bytes) : M _;
     }.
-    Global Instance Get_AF_salt_bytes `{State.Trait}
-      : Notation.DoubleColon t "salt_bytes" := {
+    Global Instance Get_AF_salt_bytes : Notation.DoubleColon t "salt_bytes" := {
       Notation.double_colon x
         :=
         let* x := M.read x in Pure x.(salt_bytes) : M _;
     }.
-    Global Instance Get__return_type `{State.Trait}
-      : Notation.Dot "_return_type" := {
+    Global Instance Get__return_type : Notation.Dot "_return_type" := {
       Notation.dot x := let* x := M.read x in Pure x.(_return_type) : M _;
     }.
-    Global Instance Get_AF__return_type `{State.Trait}
+    Global Instance Get_AF__return_type
       : Notation.DoubleColon t "_return_type" := {
       Notation.double_colon x
         :=
         let* x := M.read x in Pure x.(_return_type) : M _;
     }.
-    Global Instance Get__phantom `{State.Trait} : Notation.Dot "_phantom" := {
+    Global Instance Get__phantom : Notation.Dot "_phantom" := {
       Notation.dot x := let* x := M.read x in Pure x.(_phantom) : M _;
     }.
-    Global Instance Get_AF__phantom `{State.Trait}
-      : Notation.DoubleColon t "_phantom" := {
+    Global Instance Get_AF__phantom : Notation.DoubleColon t "_phantom" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(_phantom) : M _;
     }.
   End CreateParams.
@@ -4607,7 +3960,7 @@ End CreateParams.
 Definition CreateParams
     (E ContractRef Args Salt R : Set)
     `{State.Trait}
-    `{ink_env.types.Environment.Trait E}
+    {ℋ_0 : ink_env.types.Environment.Trait E}
     : Set :=
   M.val
     (CreateParams.t
@@ -4619,10 +3972,13 @@ Definition CreateParams
 
 Module CreateBuilder.
   Section CreateBuilder.
+    Context `{State.Trait}.
+    
     Context {E ContractRef CodeHash GasLimit Endowment Args Salt RetType : Set}.
-    Context `{ink_env.types.Environment.Trait E}.
+    
+    Context {ℋ_0 : ink_env.types.Environment.Trait E}.
     Unset Primitive Projections.
-    Record t `{State.Trait} : Set := {
+    Record t : Set := {
       code_hash : CodeHash;
       gas_limit : GasLimit;
       endowment : Endowment;
@@ -4633,59 +3989,51 @@ Module CreateBuilder.
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_code_hash `{State.Trait} : Notation.Dot "code_hash" := {
+    Global Instance Get_code_hash : Notation.Dot "code_hash" := {
       Notation.dot x := let* x := M.read x in Pure x.(code_hash) : M _;
     }.
-    Global Instance Get_AF_code_hash `{State.Trait}
-      : Notation.DoubleColon t "code_hash" := {
+    Global Instance Get_AF_code_hash : Notation.DoubleColon t "code_hash" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(code_hash) : M _;
     }.
-    Global Instance Get_gas_limit `{State.Trait} : Notation.Dot "gas_limit" := {
+    Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
       Notation.dot x := let* x := M.read x in Pure x.(gas_limit) : M _;
     }.
-    Global Instance Get_AF_gas_limit `{State.Trait}
-      : Notation.DoubleColon t "gas_limit" := {
+    Global Instance Get_AF_gas_limit : Notation.DoubleColon t "gas_limit" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(gas_limit) : M _;
     }.
-    Global Instance Get_endowment `{State.Trait} : Notation.Dot "endowment" := {
+    Global Instance Get_endowment : Notation.Dot "endowment" := {
       Notation.dot x := let* x := M.read x in Pure x.(endowment) : M _;
     }.
-    Global Instance Get_AF_endowment `{State.Trait}
-      : Notation.DoubleColon t "endowment" := {
+    Global Instance Get_AF_endowment : Notation.DoubleColon t "endowment" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(endowment) : M _;
     }.
-    Global Instance Get_exec_input `{State.Trait}
-      : Notation.Dot "exec_input" := {
+    Global Instance Get_exec_input : Notation.Dot "exec_input" := {
       Notation.dot x := let* x := M.read x in Pure x.(exec_input) : M _;
     }.
-    Global Instance Get_AF_exec_input `{State.Trait}
-      : Notation.DoubleColon t "exec_input" := {
+    Global Instance Get_AF_exec_input : Notation.DoubleColon t "exec_input" := {
       Notation.double_colon x
         :=
         let* x := M.read x in Pure x.(exec_input) : M _;
     }.
-    Global Instance Get_salt `{State.Trait} : Notation.Dot "salt" := {
+    Global Instance Get_salt : Notation.Dot "salt" := {
       Notation.dot x := let* x := M.read x in Pure x.(salt) : M _;
     }.
-    Global Instance Get_AF_salt `{State.Trait}
-      : Notation.DoubleColon t "salt" := {
+    Global Instance Get_AF_salt : Notation.DoubleColon t "salt" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(salt) : M _;
     }.
-    Global Instance Get_return_type `{State.Trait}
-      : Notation.Dot "return_type" := {
+    Global Instance Get_return_type : Notation.Dot "return_type" := {
       Notation.dot x := let* x := M.read x in Pure x.(return_type) : M _;
     }.
-    Global Instance Get_AF_return_type `{State.Trait}
+    Global Instance Get_AF_return_type
       : Notation.DoubleColon t "return_type" := {
       Notation.double_colon x
         :=
         let* x := M.read x in Pure x.(return_type) : M _;
     }.
-    Global Instance Get__phantom `{State.Trait} : Notation.Dot "_phantom" := {
+    Global Instance Get__phantom : Notation.Dot "_phantom" := {
       Notation.dot x := let* x := M.read x in Pure x.(_phantom) : M _;
     }.
-    Global Instance Get_AF__phantom `{State.Trait}
-      : Notation.DoubleColon t "_phantom" := {
+    Global Instance Get_AF__phantom : Notation.DoubleColon t "_phantom" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(_phantom) : M _;
     }.
   End CreateBuilder.
@@ -4693,7 +4041,7 @@ End CreateBuilder.
 Definition CreateBuilder
     (E ContractRef CodeHash GasLimit Endowment Args Salt RetType : Set)
     `{State.Trait}
-    `{ink_env.types.Environment.Trait E}
+    {ℋ_0 : ink_env.types.Environment.Trait E}
     : Set :=
   M.val
     (CreateBuilder.t
@@ -4710,7 +4058,7 @@ Parameter build_create :
     forall
       `{State.Trait}
       {ContractRef : Set}
-      `{ink_env.contract.ContractEnv.Trait ContractRef},
+      {ℋ_0 : ink_env.contract.ContractEnv.Trait ContractRef},
     M
         (ink_env.call.create_builder.CreateBuilder
           (ink_env.contract.ContractEnv.Env (Self := ContractRef))
@@ -4731,28 +4079,29 @@ Parameter build_create :
 Module execution_input.
   Module ExecutionInput.
     Section ExecutionInput.
+      Context `{State.Trait}.
+      
       Context {Args : Set}.
+      
       Unset Primitive Projections.
-      Record t `{State.Trait} : Set := {
+      Record t : Set := {
         selector : ink_env.call.selector.Selector;
         args : Args;
       }.
       Global Set Primitive Projections.
       
-      Global Instance Get_selector `{State.Trait} : Notation.Dot "selector" := {
+      Global Instance Get_selector : Notation.Dot "selector" := {
         Notation.dot x := let* x := M.read x in Pure x.(selector) : M _;
       }.
-      Global Instance Get_AF_selector `{State.Trait}
-        : Notation.DoubleColon t "selector" := {
+      Global Instance Get_AF_selector : Notation.DoubleColon t "selector" := {
         Notation.double_colon x
           :=
           let* x := M.read x in Pure x.(selector) : M _;
       }.
-      Global Instance Get_args `{State.Trait} : Notation.Dot "args" := {
+      Global Instance Get_args : Notation.Dot "args" := {
         Notation.dot x := let* x := M.read x in Pure x.(args) : M _;
       }.
-      Global Instance Get_AF_args `{State.Trait}
-        : Notation.DoubleColon t "args" := {
+      Global Instance Get_AF_args : Notation.DoubleColon t "args" := {
         Notation.double_colon x := let* x := M.read x in Pure x.(args) : M _;
       }.
     End ExecutionInput.
@@ -4762,26 +4111,27 @@ Module execution_input.
   
   Module ArgumentList.
     Section ArgumentList.
+      Context `{State.Trait}.
+      
       Context {Head Rest : Set}.
+      
       Unset Primitive Projections.
-      Record t `{State.Trait} : Set := {
+      Record t : Set := {
         head : Head;
         rest : Rest;
       }.
       Global Set Primitive Projections.
       
-      Global Instance Get_head `{State.Trait} : Notation.Dot "head" := {
+      Global Instance Get_head : Notation.Dot "head" := {
         Notation.dot x := let* x := M.read x in Pure x.(head) : M _;
       }.
-      Global Instance Get_AF_head `{State.Trait}
-        : Notation.DoubleColon t "head" := {
+      Global Instance Get_AF_head : Notation.DoubleColon t "head" := {
         Notation.double_colon x := let* x := M.read x in Pure x.(head) : M _;
       }.
-      Global Instance Get_rest `{State.Trait} : Notation.Dot "rest" := {
+      Global Instance Get_rest : Notation.Dot "rest" := {
         Notation.dot x := let* x := M.read x in Pure x.(rest) : M _;
       }.
-      Global Instance Get_AF_rest `{State.Trait}
-        : Notation.DoubleColon t "rest" := {
+      Global Instance Get_AF_rest : Notation.DoubleColon t "rest" := {
         Notation.double_colon x := let* x := M.read x in Pure x.(rest) : M _;
       }.
     End ArgumentList.
@@ -4791,18 +4141,20 @@ Module execution_input.
   
   Module Argument.
     Section Argument.
+      Context `{State.Trait}.
+      
       Context {T : Set}.
+      
       Unset Primitive Projections.
-      Record t `{State.Trait} : Set := {
+      Record t : Set := {
         arg : T;
       }.
       Global Set Primitive Projections.
       
-      Global Instance Get_arg `{State.Trait} : Notation.Dot "arg" := {
+      Global Instance Get_arg : Notation.Dot "arg" := {
         Notation.dot x := let* x := M.read x in Pure x.(arg) : M _;
       }.
-      Global Instance Get_AF_arg `{State.Trait}
-        : Notation.DoubleColon t "arg" := {
+      Global Instance Get_AF_arg : Notation.DoubleColon t "arg" := {
         Notation.double_colon x := let* x := M.read x in Pure x.(arg) : M _;
       }.
     End Argument.
@@ -4816,7 +4168,11 @@ Module execution_input.
       Rest.
   
   Module ArgumentListEnd.
-    Inductive t : Set := Build.
+    Section ArgumentListEnd.
+      Context `{State.Trait}.
+      
+      Inductive t : Set := Build.
+    End ArgumentListEnd.
   End ArgumentListEnd.
   Definition ArgumentListEnd := @ArgumentListEnd.t.
   
@@ -4828,26 +4184,27 @@ End execution_input.
 
 Module ExecutionInput.
   Section ExecutionInput.
+    Context `{State.Trait}.
+    
     Context {Args : Set}.
+    
     Unset Primitive Projections.
-    Record t `{State.Trait} : Set := {
+    Record t : Set := {
       selector : ink_env.call.selector.Selector;
       args : Args;
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_selector `{State.Trait} : Notation.Dot "selector" := {
+    Global Instance Get_selector : Notation.Dot "selector" := {
       Notation.dot x := let* x := M.read x in Pure x.(selector) : M _;
     }.
-    Global Instance Get_AF_selector `{State.Trait}
-      : Notation.DoubleColon t "selector" := {
+    Global Instance Get_AF_selector : Notation.DoubleColon t "selector" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(selector) : M _;
     }.
-    Global Instance Get_args `{State.Trait} : Notation.Dot "args" := {
+    Global Instance Get_args : Notation.Dot "args" := {
       Notation.dot x := let* x := M.read x in Pure x.(args) : M _;
     }.
-    Global Instance Get_AF_args `{State.Trait}
-      : Notation.DoubleColon t "args" := {
+    Global Instance Get_AF_args : Notation.DoubleColon t "args" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(args) : M _;
     }.
   End ExecutionInput.
@@ -4857,26 +4214,27 @@ Definition ExecutionInput (Args : Set) `{State.Trait} : Set :=
 
 Module ArgumentList.
   Section ArgumentList.
+    Context `{State.Trait}.
+    
     Context {Head Rest : Set}.
+    
     Unset Primitive Projections.
-    Record t `{State.Trait} : Set := {
+    Record t : Set := {
       head : Head;
       rest : Rest;
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_head `{State.Trait} : Notation.Dot "head" := {
+    Global Instance Get_head : Notation.Dot "head" := {
       Notation.dot x := let* x := M.read x in Pure x.(head) : M _;
     }.
-    Global Instance Get_AF_head `{State.Trait}
-      : Notation.DoubleColon t "head" := {
+    Global Instance Get_AF_head : Notation.DoubleColon t "head" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(head) : M _;
     }.
-    Global Instance Get_rest `{State.Trait} : Notation.Dot "rest" := {
+    Global Instance Get_rest : Notation.Dot "rest" := {
       Notation.dot x := let* x := M.read x in Pure x.(rest) : M _;
     }.
-    Global Instance Get_AF_rest `{State.Trait}
-      : Notation.DoubleColon t "rest" := {
+    Global Instance Get_AF_rest : Notation.DoubleColon t "rest" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(rest) : M _;
     }.
   End ArgumentList.
@@ -4891,18 +4249,20 @@ Definition ArgsList (Head Rest : Set) `{State.Trait} : Set :=
 
 Module Argument.
   Section Argument.
+    Context `{State.Trait}.
+    
     Context {T : Set}.
+    
     Unset Primitive Projections.
-    Record t `{State.Trait} : Set := {
+    Record t : Set := {
       arg : T;
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_arg `{State.Trait} : Notation.Dot "arg" := {
+    Global Instance Get_arg : Notation.Dot "arg" := {
       Notation.dot x := let* x := M.read x in Pure x.(arg) : M _;
     }.
-    Global Instance Get_AF_arg `{State.Trait}
-      : Notation.DoubleColon t "arg" := {
+    Global Instance Get_AF_arg : Notation.DoubleColon t "arg" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(arg) : M _;
     }.
   End Argument.
@@ -4911,7 +4271,11 @@ Definition Argument (T : Set) `{State.Trait} : Set :=
   M.val (Argument.t (T := T)).
 
 Module ArgumentListEnd.
-  Inductive t : Set := Build.
+  Section ArgumentListEnd.
+    Context `{State.Trait}.
+    
+    Inductive t : Set := Build.
+  End ArgumentListEnd.
 End ArgumentListEnd.
 Definition ArgumentListEnd := @ArgumentListEnd.t.
 
@@ -4922,75 +4286,81 @@ Definition EmptyArgumentList `{State.Trait} : Set :=
 
 Module selector.
   Module Selector.
+    Section Selector.
+      Context `{State.Trait}.
+      
+      Unset Primitive Projections.
+      Record t : Set := {
+        bytes : array u8;
+      }.
+      Global Set Primitive Projections.
+      
+      Global Instance Get_bytes : Notation.Dot "bytes" := {
+        Notation.dot x := let* x := M.read x in Pure x.(bytes) : M _;
+      }.
+      Global Instance Get_AF_bytes : Notation.DoubleColon t "bytes" := {
+        Notation.double_colon x := let* x := M.read x in Pure x.(bytes) : M _;
+      }.
+    End Selector.
+  End Selector.
+  Definition Selector `{State.Trait} : Set := M.val Selector.t.
+End selector.
+
+Module Selector.
+  Section Selector.
+    Context `{State.Trait}.
+    
     Unset Primitive Projections.
-    Record t `{State.Trait} : Set := {
+    Record t : Set := {
       bytes : array u8;
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_bytes `{State.Trait} : Notation.Dot "bytes" := {
+    Global Instance Get_bytes : Notation.Dot "bytes" := {
       Notation.dot x := let* x := M.read x in Pure x.(bytes) : M _;
     }.
-    Global Instance Get_AF_bytes `{State.Trait}
-      : Notation.DoubleColon t "bytes" := {
+    Global Instance Get_AF_bytes : Notation.DoubleColon t "bytes" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(bytes) : M _;
     }.
   End Selector.
-  Definition Selector `{State.Trait} : Set := M.val (Selector.t).
-End selector.
-
-Module Selector.
-  Unset Primitive Projections.
-  Record t `{State.Trait} : Set := {
-    bytes : array u8;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_bytes `{State.Trait} : Notation.Dot "bytes" := {
-    Notation.dot x := let* x := M.read x in Pure x.(bytes) : M _;
-  }.
-  Global Instance Get_AF_bytes `{State.Trait}
-    : Notation.DoubleColon t "bytes" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(bytes) : M _;
-  }.
 End Selector.
-Definition Selector `{State.Trait} : Set := M.val (Selector.t).
+Definition Selector `{State.Trait} : Set := M.val Selector.t.
 
 Module chain_extension.
   Module FromStatusCode.
-    Class Trait (Self : Set) `{core.marker.Sized.Trait Self} `{State.Trait} :
-        Type := {
-      from_status_code : u32 -> M (core.result.Result unit Self);
-    }.
-    
-    Global Instance Method_from_status_code `{State.Trait} `(Trait)
-      : Notation.Dot "from_status_code" := {
-      Notation.dot := from_status_code;
-    }.
+    Section FromStatusCode.
+      Context `{State.Trait}.
+      
+      Class Trait (Self : Set) {ℋ_0 : core.marker.Sized.Trait Self} : Type := {
+        from_status_code : u32 -> M (core.result.Result unit Self);
+      }.
+      
+    End FromStatusCode.
   End FromStatusCode.
   
   Module ChainExtensionMethod.
     Section ChainExtensionMethod.
+      Context `{State.Trait}.
+      
       Context {I O ErrorCode : Set}.
+      
       Unset Primitive Projections.
-      Record t `{State.Trait} : Set := {
+      Record t : Set := {
         func_id : u32;
         state : core.marker.PhantomData ((I * O) * ErrorCode);
       }.
       Global Set Primitive Projections.
       
-      Global Instance Get_func_id `{State.Trait} : Notation.Dot "func_id" := {
+      Global Instance Get_func_id : Notation.Dot "func_id" := {
         Notation.dot x := let* x := M.read x in Pure x.(func_id) : M _;
       }.
-      Global Instance Get_AF_func_id `{State.Trait}
-        : Notation.DoubleColon t "func_id" := {
+      Global Instance Get_AF_func_id : Notation.DoubleColon t "func_id" := {
         Notation.double_colon x := let* x := M.read x in Pure x.(func_id) : M _;
       }.
-      Global Instance Get_state `{State.Trait} : Notation.Dot "state" := {
+      Global Instance Get_state : Notation.Dot "state" := {
         Notation.dot x := let* x := M.read x in Pure x.(state) : M _;
       }.
-      Global Instance Get_AF_state `{State.Trait}
-        : Notation.DoubleColon t "state" := {
+      Global Instance Get_AF_state : Notation.DoubleColon t "state" := {
         Notation.double_colon x := let* x := M.read x in Pure x.(state) : M _;
       }.
     End ChainExtensionMethod.
@@ -5007,18 +4377,20 @@ Module chain_extension.
     
     Module HandleErrorCode.
       Section HandleErrorCode.
+        Context `{State.Trait}.
+        
         Context {T : Set}.
+        
         Unset Primitive Projections.
-        Record t `{State.Trait} : Set := {
+        Record t : Set := {
           error_code : core.marker.PhantomData (T);
         }.
         Global Set Primitive Projections.
         
-        Global Instance Get_error_code `{State.Trait}
-          : Notation.Dot "error_code" := {
+        Global Instance Get_error_code : Notation.Dot "error_code" := {
           Notation.dot x := let* x := M.read x in Pure x.(error_code) : M _;
         }.
-        Global Instance Get_AF_error_code `{State.Trait}
+        Global Instance Get_AF_error_code
           : Notation.DoubleColon t "error_code" := {
           Notation.double_colon x
             :=
@@ -5032,67 +4404,76 @@ Module chain_extension.
   
   Module private.
     Module IsResultTypeSealed.
-      Unset Primitive Projections.
-      Class Trait (Self : Set) `{State.Trait} : Type := {
-      }.
-      Global Set Primitive Projections.
+      Section IsResultTypeSealed.
+        Context `{State.Trait}.
+        
+        Unset Primitive Projections.
+        Class Trait (Self : Set) : Type := {
+        }.
+        Global Set Primitive Projections.
+      End IsResultTypeSealed.
     End IsResultTypeSealed.
   End private.
   
   Module IsResultType.
-    Class Trait
-        (Self : Set)
-        `{ink_env.chain_extension.private.IsResultTypeSealed.Trait Self}
-        `{State.Trait} :
-        Type := {
-      Ok : Set;
-      Err : Set;
-    }.
-    
-    Global Instance Method_Ok `(Trait) : Notation.DoubleColonType Self "Ok" := {
-      Notation.double_colon_type := Ok;
-    }.
-    Global Instance Method_Err `(Trait)
-      : Notation.DoubleColonType Self "Err" := {
-      Notation.double_colon_type := Err;
-    }.
+    Section IsResultType.
+      Context `{State.Trait}.
+      
+      Class Trait
+          (Self : Set)
+          {ℋ_0 :
+            ink_env.chain_extension.private.IsResultTypeSealed.Trait Self} :
+          Type := {
+        Ok : Set;
+        Err : Set;
+      }.
+      
+      Global Instance Method_Ok `(Trait)
+        : Notation.DoubleColonType Self "Ok" := {
+        Notation.double_colon_type := Ok;
+      }.
+      Global Instance Method_Err `(Trait)
+        : Notation.DoubleColonType Self "Err" := {
+        Notation.double_colon_type := Err;
+      }.
+    End IsResultType.
   End IsResultType.
 End chain_extension.
 
 Module FromStatusCode.
-  Class Trait (Self : Set) `{core.marker.Sized.Trait Self} `{State.Trait} :
-      Type := {
-    from_status_code : u32 -> M (core.result.Result unit Self);
-  }.
-  
-  Global Instance Method_from_status_code `{State.Trait} `(Trait)
-    : Notation.Dot "from_status_code" := {
-    Notation.dot := from_status_code;
-  }.
+  Section FromStatusCode.
+    Context `{State.Trait}.
+    
+    Class Trait (Self : Set) {ℋ_0 : core.marker.Sized.Trait Self} : Type := {
+      from_status_code : u32 -> M (core.result.Result unit Self);
+    }.
+    
+  End FromStatusCode.
 End FromStatusCode.
 
 Module ChainExtensionMethod.
   Section ChainExtensionMethod.
+    Context `{State.Trait}.
+    
     Context {I O ErrorCode : Set}.
+    
     Unset Primitive Projections.
-    Record t `{State.Trait} : Set := {
+    Record t : Set := {
       func_id : u32;
       state : core.marker.PhantomData ((I * O) * ErrorCode);
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_func_id `{State.Trait} : Notation.Dot "func_id" := {
+    Global Instance Get_func_id : Notation.Dot "func_id" := {
       Notation.dot x := let* x := M.read x in Pure x.(func_id) : M _;
     }.
-    Global Instance Get_AF_func_id `{State.Trait}
-      : Notation.DoubleColon t "func_id" := {
+    Global Instance Get_AF_func_id : Notation.DoubleColon t "func_id" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(func_id) : M _;
     }.
-    Global Instance Get_state `{State.Trait} : Notation.Dot "state" := {
+    Global Instance Get_state : Notation.Dot "state" := {
       Notation.dot x := let* x := M.read x in Pure x.(state) : M _;
     }.
-    Global Instance Get_AF_state `{State.Trait}
-      : Notation.DoubleColon t "state" := {
+    Global Instance Get_AF_state : Notation.DoubleColon t "state" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(state) : M _;
     }.
   End ChainExtensionMethod.
@@ -5110,18 +4491,20 @@ Module Wrap_state_1.
     
     Module HandleErrorCode.
       Section HandleErrorCode.
+        Context `{State.Trait}.
+        
         Context {T : Set}.
+        
         Unset Primitive Projections.
-        Record t `{State.Trait} : Set := {
+        Record t : Set := {
           error_code : core.marker.PhantomData (T);
         }.
         Global Set Primitive Projections.
         
-        Global Instance Get_error_code `{State.Trait}
-          : Notation.Dot "error_code" := {
+        Global Instance Get_error_code : Notation.Dot "error_code" := {
           Notation.dot x := let* x := M.read x in Pure x.(error_code) : M _;
         }.
-        Global Instance Get_AF_error_code `{State.Trait}
+        Global Instance Get_AF_error_code
           : Notation.DoubleColon t "error_code" := {
           Notation.double_colon x
             :=
@@ -5143,19 +4526,20 @@ Definition IgnoreErrorCode `{State.Trait} : Set := IgnoreErrorCode.t.
 
 Module HandleErrorCode.
   Section HandleErrorCode.
+    Context `{State.Trait}.
+    
     Context {T : Set}.
+    
     Unset Primitive Projections.
-    Record t `{State.Trait} : Set := {
+    Record t : Set := {
       error_code : core.marker.PhantomData (T);
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_error_code `{State.Trait}
-      : Notation.Dot "error_code" := {
+    Global Instance Get_error_code : Notation.Dot "error_code" := {
       Notation.dot x := let* x := M.read x in Pure x.(error_code) : M _;
     }.
-    Global Instance Get_AF_error_code `{State.Trait}
-      : Notation.DoubleColon t "error_code" := {
+    Global Instance Get_AF_error_code : Notation.DoubleColon t "error_code" := {
       Notation.double_colon x
         :=
         let* x := M.read x in Pure x.(error_code) : M _;
@@ -5166,120 +4550,151 @@ Definition HandleErrorCode (T : Set) `{State.Trait} : Set :=
   M.val (HandleErrorCode.t (T := T)).
 
 Module IsResultType.
-  Class Trait
-      (Self : Set)
-      `{ink_env.chain_extension.private.IsResultTypeSealed.Trait Self}
-      `{State.Trait} :
-      Type := {
-    Ok : Set;
-    Err : Set;
-  }.
-  
-  Global Instance Method_Ok `(Trait) : Notation.DoubleColonType Self "Ok" := {
-    Notation.double_colon_type := Ok;
-  }.
-  Global Instance Method_Err `(Trait) : Notation.DoubleColonType Self "Err" := {
-    Notation.double_colon_type := Err;
-  }.
+  Section IsResultType.
+    Context `{State.Trait}.
+    
+    Class Trait
+        (Self : Set)
+        {ℋ_0 : ink_env.chain_extension.private.IsResultTypeSealed.Trait Self} :
+        Type := {
+      Ok : Set;
+      Err : Set;
+    }.
+    
+    Global Instance Method_Ok `(Trait) : Notation.DoubleColonType Self "Ok" := {
+      Notation.double_colon_type := Ok;
+    }.
+    Global Instance Method_Err `(Trait)
+      : Notation.DoubleColonType Self "Err" := {
+      Notation.double_colon_type := Err;
+    }.
+  End IsResultType.
 End IsResultType.
 
 Module private.
   Module IsResultTypeSealed.
-    Unset Primitive Projections.
-    Class Trait (Self : Set) `{State.Trait} : Type := {
-    }.
-    Global Set Primitive Projections.
+    Section IsResultTypeSealed.
+      Context `{State.Trait}.
+      
+      Unset Primitive Projections.
+      Class Trait (Self : Set) : Type := {
+      }.
+      Global Set Primitive Projections.
+    End IsResultTypeSealed.
   End IsResultTypeSealed.
 End private.
 
 Module IsResultTypeSealed.
-  Unset Primitive Projections.
-  Class Trait (Self : Set) `{State.Trait} : Type := {
-  }.
-  Global Set Primitive Projections.
+  Section IsResultTypeSealed.
+    Context `{State.Trait}.
+    
+    Unset Primitive Projections.
+    Class Trait (Self : Set) : Type := {
+    }.
+    Global Set Primitive Projections.
+  End IsResultTypeSealed.
 End IsResultTypeSealed.
 
 Module ContractEnv.
-  Class Trait (Self : Set) `{State.Trait} : Type := {
-    Env : Set;
-    _ : Sigma `(ink_env.types.Environment.Trait Env), unit;
-  }.
-  
-  Global Instance Method_Env `(Trait) : Notation.DoubleColonType Self "Env" := {
-    Notation.double_colon_type := Env;
-  }.
+  Section ContractEnv.
+    Context `{State.Trait}.
+    
+    Class Trait (Self : Set) : Type := {
+      Env : Set;
+    }.
+    
+    Global Instance Method_Env `(Trait)
+      : Notation.DoubleColonType Self "Env" := {
+      Notation.double_colon_type := Env;
+    }.
+  End ContractEnv.
 End ContractEnv.
 
 Module ContractReference.
-  Class Trait (Self : Set) `{State.Trait} : Type := {
-    Type_ : Set;
-  }.
-  
-  Global Instance Method_Type_ `(Trait)
-    : Notation.DoubleColonType Self "Type_" := {
-    Notation.double_colon_type := Type_;
-  }.
+  Section ContractReference.
+    Context `{State.Trait}.
+    
+    Class Trait (Self : Set) : Type := {
+      Type_ : Set;
+    }.
+    
+    Global Instance Method_Type_ `(Trait)
+      : Notation.DoubleColonType Self "Type_" := {
+      Notation.double_colon_type := Type_;
+    }.
+  End ContractReference.
 End ContractReference.
 
 Module off_chain.
   Module call_data.
     Module CallData.
-      Unset Primitive Projections.
-      Record t `{State.Trait} : Set := {
-        bytes : alloc.vec.Vec u8 alloc.vec.Vec.Default.A;
-      }.
-      Global Set Primitive Projections.
-      
-      Global Instance Get_bytes `{State.Trait} : Notation.Dot "bytes" := {
-        Notation.dot x := let* x := M.read x in Pure x.(bytes) : M _;
-      }.
-      Global Instance Get_AF_bytes `{State.Trait}
-        : Notation.DoubleColon t "bytes" := {
-        Notation.double_colon x := let* x := M.read x in Pure x.(bytes) : M _;
-      }.
+      Section CallData.
+        Context `{State.Trait}.
+        
+        Unset Primitive Projections.
+        Record t : Set := {
+          bytes : alloc.vec.Vec u8 alloc.vec.Vec.Default.A;
+        }.
+        Global Set Primitive Projections.
+        
+        Global Instance Get_bytes : Notation.Dot "bytes" := {
+          Notation.dot x := let* x := M.read x in Pure x.(bytes) : M _;
+        }.
+        Global Instance Get_AF_bytes : Notation.DoubleColon t "bytes" := {
+          Notation.double_colon x := let* x := M.read x in Pure x.(bytes) : M _;
+        }.
+      End CallData.
     End CallData.
-    Definition CallData `{State.Trait} : Set := M.val (CallData.t).
+    Definition CallData `{State.Trait} : Set := M.val CallData.t.
   End call_data.
   
   Module impls.
     Module TopicsBuilder.
-      Unset Primitive Projections.
-      Record t `{State.Trait} : Set := {
-        topics
-          :
-          alloc.vec.Vec
-            (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)
-            alloc.vec.Vec.Default.A;
-      }.
-      Global Set Primitive Projections.
-      
-      Global Instance Get_topics `{State.Trait} : Notation.Dot "topics" := {
-        Notation.dot x := let* x := M.read x in Pure x.(topics) : M _;
-      }.
-      Global Instance Get_AF_topics `{State.Trait}
-        : Notation.DoubleColon t "topics" := {
-        Notation.double_colon x := let* x := M.read x in Pure x.(topics) : M _;
-      }.
+      Section TopicsBuilder.
+        Context `{State.Trait}.
+        
+        Unset Primitive Projections.
+        Record t : Set := {
+          topics
+            :
+            alloc.vec.Vec
+              (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)
+              alloc.vec.Vec.Default.A;
+        }.
+        Global Set Primitive Projections.
+        
+        Global Instance Get_topics : Notation.Dot "topics" := {
+          Notation.dot x := let* x := M.read x in Pure x.(topics) : M _;
+        }.
+        Global Instance Get_AF_topics : Notation.DoubleColon t "topics" := {
+          Notation.double_colon x
+            :=
+            let* x := M.read x in Pure x.(topics) : M _;
+        }.
+      End TopicsBuilder.
     End TopicsBuilder.
-    Definition TopicsBuilder `{State.Trait} : Set := M.val (TopicsBuilder.t).
+    Definition TopicsBuilder `{State.Trait} : Set := M.val TopicsBuilder.t.
   End impls.
   
   Module EnvInstance.
-    Unset Primitive Projections.
-    Record t `{State.Trait} : Set := {
-      engine : ink_engine.ext.Engine;
-    }.
-    Global Set Primitive Projections.
-    
-    Global Instance Get_engine `{State.Trait} : Notation.Dot "engine" := {
-      Notation.dot x := let* x := M.read x in Pure x.(engine) : M _;
-    }.
-    Global Instance Get_AF_engine `{State.Trait}
-      : Notation.DoubleColon t "engine" := {
-      Notation.double_colon x := let* x := M.read x in Pure x.(engine) : M _;
-    }.
+    Section EnvInstance.
+      Context `{State.Trait}.
+      
+      Unset Primitive Projections.
+      Record t : Set := {
+        engine : ink_engine.ext.Engine;
+      }.
+      Global Set Primitive Projections.
+      
+      Global Instance Get_engine : Notation.Dot "engine" := {
+        Notation.dot x := let* x := M.read x in Pure x.(engine) : M _;
+      }.
+      Global Instance Get_AF_engine : Notation.DoubleColon t "engine" := {
+        Notation.double_colon x := let* x := M.read x in Pure x.(engine) : M _;
+      }.
+    End EnvInstance.
   End EnvInstance.
-  Definition EnvInstance `{State.Trait} : Set := M.val (EnvInstance.t).
+  Definition EnvInstance `{State.Trait} : Set := M.val EnvInstance.t.
   
   Module AccountError.
     Inductive t `{State.Trait} : Set :=
@@ -5301,44 +4716,78 @@ End off_chain.
 
 Module call_data.
   Module CallData.
+    Section CallData.
+      Context `{State.Trait}.
+      
+      Unset Primitive Projections.
+      Record t : Set := {
+        bytes : alloc.vec.Vec u8 alloc.vec.Vec.Default.A;
+      }.
+      Global Set Primitive Projections.
+      
+      Global Instance Get_bytes : Notation.Dot "bytes" := {
+        Notation.dot x := let* x := M.read x in Pure x.(bytes) : M _;
+      }.
+      Global Instance Get_AF_bytes : Notation.DoubleColon t "bytes" := {
+        Notation.double_colon x := let* x := M.read x in Pure x.(bytes) : M _;
+      }.
+    End CallData.
+  End CallData.
+  Definition CallData `{State.Trait} : Set := M.val CallData.t.
+End call_data.
+
+Module CallData.
+  Section CallData.
+    Context `{State.Trait}.
+    
     Unset Primitive Projections.
-    Record t `{State.Trait} : Set := {
+    Record t : Set := {
       bytes : alloc.vec.Vec u8 alloc.vec.Vec.Default.A;
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_bytes `{State.Trait} : Notation.Dot "bytes" := {
+    Global Instance Get_bytes : Notation.Dot "bytes" := {
       Notation.dot x := let* x := M.read x in Pure x.(bytes) : M _;
     }.
-    Global Instance Get_AF_bytes `{State.Trait}
-      : Notation.DoubleColon t "bytes" := {
+    Global Instance Get_AF_bytes : Notation.DoubleColon t "bytes" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(bytes) : M _;
     }.
   End CallData.
-  Definition CallData `{State.Trait} : Set := M.val (CallData.t).
-End call_data.
-
-Module CallData.
-  Unset Primitive Projections.
-  Record t `{State.Trait} : Set := {
-    bytes : alloc.vec.Vec u8 alloc.vec.Vec.Default.A;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_bytes `{State.Trait} : Notation.Dot "bytes" := {
-    Notation.dot x := let* x := M.read x in Pure x.(bytes) : M _;
-  }.
-  Global Instance Get_AF_bytes `{State.Trait}
-    : Notation.DoubleColon t "bytes" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(bytes) : M _;
-  }.
 End CallData.
-Definition CallData `{State.Trait} : Set := M.val (CallData.t).
+Definition CallData `{State.Trait} : Set := M.val CallData.t.
 
 Module impls.
   Module TopicsBuilder.
+    Section TopicsBuilder.
+      Context `{State.Trait}.
+      
+      Unset Primitive Projections.
+      Record t : Set := {
+        topics
+          :
+          alloc.vec.Vec
+            (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)
+            alloc.vec.Vec.Default.A;
+      }.
+      Global Set Primitive Projections.
+      
+      Global Instance Get_topics : Notation.Dot "topics" := {
+        Notation.dot x := let* x := M.read x in Pure x.(topics) : M _;
+      }.
+      Global Instance Get_AF_topics : Notation.DoubleColon t "topics" := {
+        Notation.double_colon x := let* x := M.read x in Pure x.(topics) : M _;
+      }.
+    End TopicsBuilder.
+  End TopicsBuilder.
+  Definition TopicsBuilder `{State.Trait} : Set := M.val TopicsBuilder.t.
+End impls.
+
+Module TopicsBuilder.
+  Section TopicsBuilder.
+    Context `{State.Trait}.
+    
     Unset Primitive Projections.
-    Record t `{State.Trait} : Set := {
+    Record t : Set := {
       topics
         :
         alloc.vec.Vec
@@ -5347,54 +4796,35 @@ Module impls.
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_topics `{State.Trait} : Notation.Dot "topics" := {
+    Global Instance Get_topics : Notation.Dot "topics" := {
       Notation.dot x := let* x := M.read x in Pure x.(topics) : M _;
     }.
-    Global Instance Get_AF_topics `{State.Trait}
-      : Notation.DoubleColon t "topics" := {
+    Global Instance Get_AF_topics : Notation.DoubleColon t "topics" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(topics) : M _;
     }.
   End TopicsBuilder.
-  Definition TopicsBuilder `{State.Trait} : Set := M.val (TopicsBuilder.t).
-End impls.
-
-Module TopicsBuilder.
-  Unset Primitive Projections.
-  Record t `{State.Trait} : Set := {
-    topics
-      :
-      alloc.vec.Vec
-        (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)
-        alloc.vec.Vec.Default.A;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_topics `{State.Trait} : Notation.Dot "topics" := {
-    Notation.dot x := let* x := M.read x in Pure x.(topics) : M _;
-  }.
-  Global Instance Get_AF_topics `{State.Trait}
-    : Notation.DoubleColon t "topics" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(topics) : M _;
-  }.
 End TopicsBuilder.
-Definition TopicsBuilder `{State.Trait} : Set := M.val (TopicsBuilder.t).
+Definition TopicsBuilder `{State.Trait} : Set := M.val TopicsBuilder.t.
 
 Module EnvInstance.
-  Unset Primitive Projections.
-  Record t `{State.Trait} : Set := {
-    engine : ink_engine.ext.Engine;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_engine `{State.Trait} : Notation.Dot "engine" := {
-    Notation.dot x := let* x := M.read x in Pure x.(engine) : M _;
-  }.
-  Global Instance Get_AF_engine `{State.Trait}
-    : Notation.DoubleColon t "engine" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(engine) : M _;
-  }.
+  Section EnvInstance.
+    Context `{State.Trait}.
+    
+    Unset Primitive Projections.
+    Record t : Set := {
+      engine : ink_engine.ext.Engine;
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_engine : Notation.Dot "engine" := {
+      Notation.dot x := let* x := M.read x in Pure x.(engine) : M _;
+    }.
+    Global Instance Get_AF_engine : Notation.DoubleColon t "engine" := {
+      Notation.double_colon x := let* x := M.read x in Pure x.(engine) : M _;
+    }.
+  End EnvInstance.
 End EnvInstance.
-Definition EnvInstance `{State.Trait} : Set := M.val (EnvInstance.t).
+Definition EnvInstance `{State.Trait} : Set := M.val EnvInstance.t.
 
 Module OffChainError.
   Inductive t `{State.Trait} : Set :=
@@ -5414,37 +4844,35 @@ End AccountError.
 Definition AccountError `{State.Trait} : Set := AccountError.t.
 
 Module HashOutput.
-  Class Trait
-      (Self : Set)
-      `{ink_env.hash.private.Sealed.Trait Self}
-      `{State.Trait} :
-      Type := {
-    Type_ : Set;
-    _ : Sigma `(core.default.Default.Trait Type_), unit;
-  }.
-  
-  Global Instance Method_Type_ `(Trait)
-    : Notation.DoubleColonType Self "Type_" := {
-    Notation.double_colon_type := Type_;
-  }.
+  Section HashOutput.
+    Context `{State.Trait}.
+    
+    Class Trait (Self : Set) {ℋ_0 : ink_env.hash.private.Sealed.Trait Self} :
+        Type := {
+      Type_ : Set;
+    }.
+    
+    Global Instance Method_Type_ `(Trait)
+      : Notation.DoubleColonType Self "Type_" := {
+      Notation.double_colon_type := Type_;
+    }.
+  End HashOutput.
 End HashOutput.
 
 Module CryptoHash.
-  Class Trait
-      (Self : Set)
-      `{ink_env.hash.HashOutput.Trait Self}
-      `{State.Trait} :
-      Type := {
-    hash
-      :
-      (ref (Slice u8)) ->
-        (mut_ref (ink_env.hash.HashOutput.Type_ (Self := Self))) ->
-        M unit;
-  }.
-  
-  Global Instance Method_hash `{State.Trait} `(Trait) : Notation.Dot "hash" := {
-    Notation.dot := hash;
-  }.
+  Section CryptoHash.
+    Context `{State.Trait}.
+    
+    Class Trait (Self : Set) {ℋ_0 : ink_env.hash.HashOutput.Trait Self} :
+        Type := {
+      hash
+        :
+        (ref (Slice u8)) ->
+          (mut_ref (ink_env.hash.HashOutput.Type_ (Self := Self))) ->
+          M unit;
+    }.
+    
+  End CryptoHash.
 End CryptoHash.
 
 Module Sha2x256.
@@ -5474,79 +4902,77 @@ Definition Blake2x128 `{State.Trait} : Set := Blake2x128.t.
 Module Wrap_private_1.
   Module private.
     Module Sealed.
-      Unset Primitive Projections.
-      Class Trait (Self : Set) `{State.Trait} : Type := {
-      }.
-      Global Set Primitive Projections.
+      Section Sealed.
+        Context `{State.Trait}.
+        
+        Unset Primitive Projections.
+        Class Trait (Self : Set) : Type := {
+        }.
+        Global Set Primitive Projections.
+      End Sealed.
     End Sealed.
   End private.
 End Wrap_private_1.
 Import Wrap_private_1.
 
 Module Sealed.
-  Unset Primitive Projections.
-  Class Trait (Self : Set) `{State.Trait} : Type := {
-  }.
-  Global Set Primitive Projections.
+  Section Sealed.
+    Context `{State.Trait}.
+    
+    Unset Primitive Projections.
+    Class Trait (Self : Set) : Type := {
+    }.
+    Global Set Primitive Projections.
+  End Sealed.
 End Sealed.
 
 Module TopicsBuilderBackend.
-  Class Trait
-      (Self : Set)
-      {E : Set}
-      `{State.Trait}
-      `{ink_env.types.Environment.Trait E} :
-      Type := {
-    Output : Set;
-    expect : (mut_ref Self) -> usize -> M unit;
-    push_topic {T : Set} `{H'0 : parity_scale_codec.codec.Encode.Trait T}
-      :
-      (mut_ref Self) -> (ref T) -> M unit;
-    output : Self -> M Output;
-  }.
-  
-  Global Instance Method_Output `(Trait)
-    : Notation.DoubleColonType Self "Output" := {
-    Notation.double_colon_type := Output;
-  }.
-  Global Instance Method_expect `{State.Trait} `(Trait)
-    : Notation.Dot "expect" := {
-    Notation.dot := expect;
-  }.
-  Global Instance Method_push_topic `{State.Trait} `(Trait)
-    : Notation.Dot "push_topic" := {
-    Notation.dot {T : Set} `{H'0 : parity_scale_codec.codec.Encode.Trait T}
-      :=
-      push_topic (T := T) (H'0 := H'0);
-  }.
-  Global Instance Method_output `{State.Trait} `(Trait)
-    : Notation.Dot "output" := {
-    Notation.dot := output;
-  }.
+  Section TopicsBuilderBackend.
+    Context `{State.Trait}.
+    
+    Class Trait
+        (Self : Set)
+        {E : Set}
+        {ℋ_0 : ink_env.types.Environment.Trait E} :
+        Type := {
+      Output : Set;
+      expect : (mut_ref Self) -> usize -> M unit;
+      push_topic {T : Set} {ℋ_0 : parity_scale_codec.codec.Encode.Trait T}
+        :
+        (mut_ref Self) -> (ref T) -> M unit;
+      output : Self -> M Output;
+    }.
+    
+    Global Instance Method_Output `(Trait)
+      : Notation.DoubleColonType Self "Output" := {
+      Notation.double_colon_type := Output;
+    }.
+  End TopicsBuilderBackend.
 End TopicsBuilderBackend.
 
 Module TopicsBuilder.
   Section TopicsBuilder.
+    Context `{State.Trait}.
+    
     Context {S E B : Set}.
+    
     Unset Primitive Projections.
-    Record t `{State.Trait} : Set := {
+    Record t : Set := {
       backend : B;
       state : core.marker.PhantomData (S * E);
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_backend `{State.Trait} : Notation.Dot "backend" := {
+    Global Instance Get_backend : Notation.Dot "backend" := {
       Notation.dot x := let* x := M.read x in Pure x.(backend) : M _;
     }.
-    Global Instance Get_AF_backend `{State.Trait}
-      : Notation.DoubleColon t "backend" := {
+    Global Instance Get_AF_backend : Notation.DoubleColon t "backend" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(backend) : M _;
     }.
-    Global Instance Get_state `{State.Trait} : Notation.Dot "state" := {
+    Global Instance Get_state : Notation.Dot "state" := {
       Notation.dot x := let* x := M.read x in Pure x.(state) : M _;
     }.
-    Global Instance Get_AF_state `{State.Trait}
-      : Notation.DoubleColon t "state" := {
+    Global Instance Get_AF_state : Notation.DoubleColon t "state" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(state) : M _;
     }.
   End TopicsBuilder.
@@ -5596,78 +5022,77 @@ End NoRemainingTopics.
 Definition NoRemainingTopics `{State.Trait} : Set := NoRemainingTopics.t.
 
 Module SomeRemainingTopics.
-  Class Trait (Self : Set) `{State.Trait} : Type := {
-    Next : Set;
-  }.
-  
-  Global Instance Method_Next `(Trait)
-    : Notation.DoubleColonType Self "Next" := {
-    Notation.double_colon_type := Next;
-  }.
+  Section SomeRemainingTopics.
+    Context `{State.Trait}.
+    
+    Class Trait (Self : Set) : Type := {
+      Next : Set;
+    }.
+    
+    Global Instance Method_Next `(Trait)
+      : Notation.DoubleColonType Self "Next" := {
+      Notation.double_colon_type := Next;
+    }.
+  End SomeRemainingTopics.
 End SomeRemainingTopics.
 
 Module EventTopicsAmount.
-  Class Trait (Self : Set) `{State.Trait} : Type := {
-    AMOUNT : usize;
-  }.
-  
-  Global Instance Method_AMOUNT `{State.Trait} `(Trait)
-    : Notation.Dot "AMOUNT" := {
-    Notation.dot := AMOUNT;
-  }.
+  Section EventTopicsAmount.
+    Context `{State.Trait}.
+    
+    Class Trait (Self : Set) : Type := {
+      AMOUNT : usize;
+    }.
+    
+  End EventTopicsAmount.
 End EventTopicsAmount.
 
 Module Topics.
-  Class Trait (Self : Set) `{State.Trait} : Type := {
-    RemainingTopics : Set;
-    _ : Sigma `(ink_env.topics.EventTopicsAmount.Trait RemainingTopics), unit;
-    topics
-      {E B : Set}
-      `{H'0 : ink_env.types.Environment.Trait E}
-      `{H'1 : ink_env.topics.TopicsBuilderBackend.Trait B (E := E)}
-      :
-      (ref Self) ->
-        (ink_env.topics.TopicsBuilder ink_env.topics.state.Uninit E B) ->
-        M (ink_env.topics.TopicsBuilderBackend.Output (Self := B));
-  }.
-  
-  Global Instance Method_RemainingTopics `(Trait)
-    : Notation.DoubleColonType Self "RemainingTopics" := {
-    Notation.double_colon_type := RemainingTopics;
-  }.
-  Global Instance Method_topics `{State.Trait} `(Trait)
-    : Notation.Dot "topics" := {
-    Notation.dot
-      {E B : Set}
-      `{H'0 : ink_env.types.Environment.Trait E}
-      `{H'1 : ink_env.topics.TopicsBuilderBackend.Trait B (E := E)}
-      :=
-      topics (E := E) (B := B) (H'0 := H'0) (H'1 := H'1);
-  }.
+  Section Topics.
+    Context `{State.Trait}.
+    
+    Class Trait (Self : Set) : Type := {
+      RemainingTopics : Set;
+      topics
+        {E B : Set}
+        {ℋ_0 : ink_env.types.Environment.Trait E}
+        {ℋ_1 : ink_env.topics.TopicsBuilderBackend.Trait B (E := E)}
+        :
+        (ref Self) ->
+          (ink_env.topics.TopicsBuilder ink_env.topics.state.Uninit E B) ->
+          M (ink_env.topics.TopicsBuilderBackend.Output (Self := B));
+    }.
+    
+    Global Instance Method_RemainingTopics `(Trait)
+      : Notation.DoubleColonType Self "RemainingTopics" := {
+      Notation.double_colon_type := RemainingTopics;
+    }.
+  End Topics.
 End Topics.
 
 Module PrefixedValue.
   Section PrefixedValue.
+    Context `{State.Trait}.
+    
     Context {T : Set}.
+    
     Unset Primitive Projections.
-    Record t `{State.Trait} : Set := {
+    Record t : Set := {
       prefix : ref (Slice u8);
       value : ref T;
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_prefix `{State.Trait} : Notation.Dot "prefix" := {
+    Global Instance Get_prefix : Notation.Dot "prefix" := {
       Notation.dot x := let* x := M.read x in Pure x.(prefix) : M _;
     }.
-    Global Instance Get_AF_prefix `{State.Trait}
-      : Notation.DoubleColon t "prefix" := {
+    Global Instance Get_AF_prefix : Notation.DoubleColon t "prefix" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(prefix) : M _;
     }.
-    Global Instance Get_value `{State.Trait} : Notation.Dot "value" := {
+    Global Instance Get_value : Notation.Dot "value" := {
       Notation.dot x := let* x := M.read x in Pure x.(value) : M _;
     }.
-    Global Instance Get_AF_value `{State.Trait}
-      : Notation.DoubleColon t "value" := {
+    Global Instance Get_AF_value : Notation.DoubleColon t "value" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(value) : M _;
     }.
   End PrefixedValue.

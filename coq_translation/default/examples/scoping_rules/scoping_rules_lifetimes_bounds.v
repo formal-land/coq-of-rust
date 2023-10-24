@@ -3,28 +3,33 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module Ref.
   Section Ref.
+    Context `{State.Trait}.
+    
     Context {T : Set}.
+    
     Unset Primitive Projections.
-    Record t `{State.Trait} : Set := {
+    Record t : Set := {
       x0 : ref T;
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
+    Global Instance Get_0 : Notation.Dot "0" := {
       Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
   End Ref.
 End Ref.
-Definition Ref `{State.Trait} : Set := M.val Ref.t.
+Definition Ref `{State.Trait} (T : Set) : Set := M.val (Ref.t (T := T)).
 
 Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
   Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
+    Context `{State.Trait}.
+    
     Context {T : Set}.
-    Context `{core.fmt.Debug.Trait T}.
-    Definition Self `{State.Trait} := scoping_rules_lifetimes_bounds.Ref T.
+    
+    Context {ℋ_0 : core.fmt.Debug.Trait T}.
+    Definition Self : Set := scoping_rules_lifetimes_bounds.Ref T.
     
     Definition fmt
-        `{State.Trait}
         (self : ref Self)
         (f : mut_ref core.fmt.Formatter)
         : M core.fmt.Result :=
@@ -41,11 +46,12 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
       let* α10 := pointer_coercion "Unsize" α9 in
       core.fmt.Formatter::["debug_tuple_field1_finish"] α1 α3 α10.
     
-    Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
-      Notation.dot := fmt;
+    Global Instance AssociatedFunction_fmt :
+      Notation.DoubleColon Self "fmt" := {
+      Notation.double_colon := fmt;
     }.
     
-    Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
+    Global Instance I : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
   End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
@@ -55,7 +61,7 @@ End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
 Definition print
     `{State.Trait}
     {T : Set}
-    `{core.fmt.Debug.Trait T}
+    {ℋ_0 : core.fmt.Debug.Trait T}
     (t : T)
     : M unit :=
   let* _ :=
@@ -76,13 +82,13 @@ Definition print
       let* α11 := pointer_coercion "Unsize" α10 in
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
-    Pure tt in
-  Pure tt.
+    M.alloc tt in
+  M.alloc tt.
 
 Definition print_ref
     `{State.Trait}
     {T : Set}
-    `{core.fmt.Debug.Trait T}
+    {ℋ_0 : core.fmt.Debug.Trait T}
     (t : ref T)
     : M unit :=
   let* _ :=
@@ -103,8 +109,8 @@ Definition print_ref
       let* α11 := pointer_coercion "Unsize" α10 in
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
-    Pure tt in
-  Pure tt.
+    M.alloc tt in
+  M.alloc tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{State.Trait} : M unit :=
@@ -120,4 +126,4 @@ Definition main `{State.Trait} : M unit :=
     let* α2 := borrow α1 (scoping_rules_lifetimes_bounds.Ref i32) in
     scoping_rules_lifetimes_bounds.print_ref α2 in
   let* _ := scoping_rules_lifetimes_bounds.print ref_x in
-  Pure tt.
+  M.alloc tt.

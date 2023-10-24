@@ -5,16 +5,16 @@ Parameter compare_prints :
     forall
       `{State.Trait}
       {T : Set}
-      `{core.fmt.Debug.Trait T}
-      `{core.fmt.Display.Trait T},
+      {ℋ_0 : core.fmt.Debug.Trait T}
+      {ℋ_1 : core.fmt.Display.Trait T},
     (ref T) -> M unit.
 
 Parameter compare_types :
     forall
       `{State.Trait}
       {T U : Set}
-      `{core.fmt.Debug.Trait T}
-      `{core.fmt.Debug.Trait U},
+      {ℋ_0 : core.fmt.Debug.Trait T}
+      {ℋ_1 : core.fmt.Debug.Trait U},
     (ref T) -> (ref U) -> M unit.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)

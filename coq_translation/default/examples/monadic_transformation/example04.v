@@ -6,4 +6,4 @@ Definition main `{State.Trait} : M unit :=
   let* x :=
     let* α0 := M.alloc 1 in
     borrow α0 i32 in
-  Pure tt.
+  M.alloc tt.

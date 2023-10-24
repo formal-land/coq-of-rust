@@ -22,7 +22,7 @@ Definition main `{State.Trait} : M unit :=
       let* α11 := pointer_coercion "Unsize" α10 in
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     match number with
     | _ =>
@@ -34,7 +34,7 @@ Definition main `{State.Trait} : M unit :=
         let* α3 := pointer_coercion "Unsize" α2 in
         let* α4 := core.fmt.Arguments::["new_const"] α3 in
         std.io.stdio._print α4 in
-      Pure tt
+      M.alloc tt
     | (_|_|_|_|_) =>
       let* _ :=
         let* α0 := borrow [ mk_str "This is a prime
@@ -44,7 +44,7 @@ Definition main `{State.Trait} : M unit :=
         let* α3 := pointer_coercion "Unsize" α2 in
         let* α4 := core.fmt.Arguments::["new_const"] α3 in
         std.io.stdio._print α4 in
-      Pure tt
+      M.alloc tt
     | _ =>
       let* _ :=
         let* α0 := borrow [ mk_str "A teen
@@ -54,7 +54,7 @@ Definition main `{State.Trait} : M unit :=
         let* α3 := pointer_coercion "Unsize" α2 in
         let* α4 := core.fmt.Arguments::["new_const"] α3 in
         std.io.stdio._print α4 in
-      Pure tt
+      M.alloc tt
     | _ =>
       let* _ :=
         let* α0 := borrow [ mk_str "Ain't special
@@ -64,9 +64,9 @@ Definition main `{State.Trait} : M unit :=
         let* α3 := pointer_coercion "Unsize" α2 in
         let* α4 := core.fmt.Arguments::["new_const"] α3 in
         std.io.stdio._print α4 in
-      Pure tt
+      M.alloc tt
     end in
-  let* boolean := true in
+  let* boolean := M.alloc true in
   let* binary :=
     match boolean with
     | _ => M.alloc 0
@@ -94,5 +94,5 @@ Definition main `{State.Trait} : M unit :=
       let* α15 := pointer_coercion "Unsize" α14 in
       let* α16 := core.fmt.Arguments::["new_v1"] α3 α15 in
       std.io.stdio._print α16 in
-    Pure tt in
-  Pure tt.
+    M.alloc tt in
+  M.alloc tt.

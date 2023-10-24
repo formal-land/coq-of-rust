@@ -2,34 +2,38 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module Point.
-  Unset Primitive Projections.
-  Record t `{State.Trait} : Set := {
-    x : i32;
-    y : i32;
-    z : i32;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_x `{State.Trait} : Notation.Dot "x" := {
-    Notation.dot x' := let* x' := M.read x' in Pure x'.(x) : M _;
-  }.
-  Global Instance Get_AF_x `{State.Trait} : Notation.DoubleColon t "x" := {
-    Notation.double_colon x' := let* x' := M.read x' in Pure x'.(x) : M _;
-  }.
-  Global Instance Get_y `{State.Trait} : Notation.Dot "y" := {
-    Notation.dot x := let* x := M.read x in Pure x.(y) : M _;
-  }.
-  Global Instance Get_AF_y `{State.Trait} : Notation.DoubleColon t "y" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(y) : M _;
-  }.
-  Global Instance Get_z `{State.Trait} : Notation.Dot "z" := {
-    Notation.dot x := let* x := M.read x in Pure x.(z) : M _;
-  }.
-  Global Instance Get_AF_z `{State.Trait} : Notation.DoubleColon t "z" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(z) : M _;
-  }.
+  Section Point.
+    Context `{State.Trait}.
+    
+    Unset Primitive Projections.
+    Record t : Set := {
+      x : i32;
+      y : i32;
+      z : i32;
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_x : Notation.Dot "x" := {
+      Notation.dot x' := let* x' := M.read x' in Pure x'.(x) : M _;
+    }.
+    Global Instance Get_AF_x : Notation.DoubleColon t "x" := {
+      Notation.double_colon x' := let* x' := M.read x' in Pure x'.(x) : M _;
+    }.
+    Global Instance Get_y : Notation.Dot "y" := {
+      Notation.dot x := let* x := M.read x in Pure x.(y) : M _;
+    }.
+    Global Instance Get_AF_y : Notation.DoubleColon t "y" := {
+      Notation.double_colon x := let* x := M.read x in Pure x.(y) : M _;
+    }.
+    Global Instance Get_z : Notation.Dot "z" := {
+      Notation.dot x := let* x := M.read x in Pure x.(z) : M _;
+    }.
+    Global Instance Get_AF_z : Notation.DoubleColon t "z" := {
+      Notation.double_colon x := let* x := M.read x in Pure x.(z) : M _;
+    }.
+  End Point.
 End Point.
-Definition Point `{State.Trait} : Set := M.val (Point.t).
+Definition Point `{State.Trait} : Set := M.val Point.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{State.Trait} : M unit :=
@@ -83,7 +87,7 @@ Definition main `{State.Trait} : M unit :=
       let* α24 := pointer_coercion "Unsize" α23 in
       let* α25 := core.fmt.Arguments::["new_v1"] α3 α24 in
       std.io.stdio._print α25 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -122,7 +126,7 @@ Definition main `{State.Trait} : M unit :=
       let* α24 := pointer_coercion "Unsize" α23 in
       let* α25 := core.fmt.Arguments::["new_v1"] α3 α24 in
       std.io.stdio._print α25 in
-    Pure tt in
+    M.alloc tt in
   let* mutable_borrow :=
     borrow_mut point scoping_rules_borrowing_aliasing.Point in
   let* _ :=
@@ -179,7 +183,7 @@ Definition main `{State.Trait} : M unit :=
       let* α25 := pointer_coercion "Unsize" α24 in
       let* α26 := core.fmt.Arguments::["new_v1"] α3 α25 in
       std.io.stdio._print α26 in
-    Pure tt in
+    M.alloc tt in
   let* new_borrowed_point :=
     borrow point scoping_rules_borrowing_aliasing.Point in
   let* _ :=
@@ -224,5 +228,5 @@ Definition main `{State.Trait} : M unit :=
       let* α25 := pointer_coercion "Unsize" α24 in
       let* α26 := core.fmt.Arguments::["new_v1"] α3 α25 in
       std.io.stdio._print α26 in
-    Pure tt in
-  Pure tt.
+    M.alloc tt in
+  M.alloc tt.

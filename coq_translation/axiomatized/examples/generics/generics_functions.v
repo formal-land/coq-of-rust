@@ -2,38 +2,49 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module A.
-  Inductive t : Set := Build.
+  Section A.
+    Context `{State.Trait}.
+    
+    Inductive t : Set := Build.
+  End A.
 End A.
 Definition A := @A.t.
 
 Module S.
-  Unset Primitive Projections.
-  Record t `{State.Trait} : Set := {
-    x0 : generics_functions.A;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
-  }.
+  Section S.
+    Context `{State.Trait}.
+    
+    Unset Primitive Projections.
+    Record t : Set := {
+      x0 : generics_functions.A;
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_0 : Notation.Dot "0" := {
+      Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
+    }.
+  End S.
 End S.
 Definition S `{State.Trait} : Set := M.val S.t.
 
 Module SGen.
   Section SGen.
+    Context `{State.Trait}.
+    
     Context {T : Set}.
+    
     Unset Primitive Projections.
-    Record t `{State.Trait} : Set := {
+    Record t : Set := {
       x0 : T;
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
+    Global Instance Get_0 : Notation.Dot "0" := {
       Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
   End SGen.
 End SGen.
-Definition SGen `{State.Trait} : Set := M.val SGen.t.
+Definition SGen `{State.Trait} (T : Set) : Set := M.val (SGen.t (T := T)).
 
 Parameter reg_fn : forall `{State.Trait}, generics_functions.S -> M unit.
 

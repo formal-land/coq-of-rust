@@ -12,7 +12,8 @@ Definition div `{State.Trait} (a : i32) (b : i32) : M i32 :=
       let* _ :=
         let* α0 := std.panicking.begin_panic (mk_str "Divide-by-zero error") in
         never_to_any α0 in
-      never_to_any tt
+      let* α0 := M.alloc tt in
+      never_to_any α0
     else
-      Pure tt in
+      M.alloc tt in
   div a b.

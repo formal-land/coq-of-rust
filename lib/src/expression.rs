@@ -215,7 +215,10 @@ fn compile_qpath(env: &mut Env, qpath: &QPath) -> Expr {
 /// The Coq value [tt] (the inhabitant of the [unit] type) is used as default
 /// value
 pub(crate) fn tt() -> Expr {
-    Expr::LocalVar("tt".to_string())
+    Expr::Call {
+        func: Box::new(Expr::LocalVar("M.alloc".to_string())),
+        args: vec![Expr::LocalVar("tt".to_string())],
+    }
 }
 
 fn pure(e: Expr) -> Stmt {
@@ -750,11 +753,15 @@ pub(crate) fn compile_expr(env: &mut Env, expr: &rustc_hir::Expr) -> Expr {
             }
         }
         ExprKind::Tup(elements) => {
-            let elements = elements
+            let elements: Vec<_> = elements
                 .iter()
                 .map(|expr| compile_expr(env, expr))
                 .collect();
-            Expr::Tuple { elements }
+            if elements.is_empty() {
+                tt()
+            } else {
+                Expr::Tuple { elements }
+            }
         }
         ExprKind::Binary(bin_op, expr_left, expr_right) => {
             let expr_left = compile_expr(env, expr_left);
@@ -1185,19 +1192,13 @@ impl Expr {
                 line(),
                 text("]"),
             ]),
-            Expr::Tuple { elements } => {
-                if elements.is_empty() {
-                    text("tt")
-                } else {
-                    paren(
-                        true,
-                        nest([intersperse(
-                            elements.iter().map(|element| element.to_doc(false)),
-                            [text(","), line()],
-                        )]),
-                    )
-                }
-            }
+            Expr::Tuple { elements } => paren(
+                true,
+                nest([intersperse(
+                    elements.iter().map(|element| element.to_doc(false)),
+                    [text(","), line()],
+                )]),
+            ),
             Expr::LetIf { pat, init } => group([
                 text("let_if"),
                 line(),
@@ -1341,34 +1342,6 @@ impl Expr {
             Expr::Message(message) => text(format!("\"{message}\"")),
         }
     }
-
-    // All the functions starting from "parameter_for_fmt" are for
-    // printing Parameter and DoubleColon Instance for function,
-    // in fmt Definition (...crate_fmt_Debug...)
-    // get the name and arg_types of the associated function
-    // @TODO cover more cases instead of template text("struct_parameter_for_fmt"),
-    pub fn parameter_name_for_fmt(&self) -> String {
-        match self {
-            Expr::Block(bx) => bx.parameter_for_fmt(),
-            _ => "struct_parameter_for_fmt".to_string(),
-        }
-    }
-
-    fn parameter_for_fmt_print_name(&self) -> String {
-        match self {
-            Expr::AssociatedFunction { ty: _, func } => func.to_owned(),
-            _ => "struct_parameter_for_fmt".to_string(),
-        }
-    }
-
-    // get the name and the arg_types of the associated function match step2
-    fn parameter_for_fmt2(&self) -> String {
-        match self {
-            Expr::Call { func, args: _ } => func.parameter_for_fmt_print_name(),
-            // intersperse(args.iter().map(|arg| arg.to_type()), [line()]),
-            _ => "struct_parameter_for_fmt".to_string(),
-        }
-    }
 }
 
 impl Stmt {
@@ -1406,14 +1379,6 @@ impl Stmt {
                 hardline(),
                 body.to_doc(),
             ]),
-        }
-    }
-
-    // @TODO cover more cases instead of template text("struct_parameter_for_fmt"),
-    pub fn parameter_for_fmt(&self) -> String {
-        match self {
-            Stmt::Expr(expr) => expr.parameter_for_fmt2(),
-            _ => "struct_parameter_for_fmt".to_string(),
         }
     }
 }

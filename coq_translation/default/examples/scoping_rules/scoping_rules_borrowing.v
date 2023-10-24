@@ -25,8 +25,8 @@ Definition eat_box_i32
       let* α11 := pointer_coercion "Unsize" α10 in
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
-    Pure tt in
-  Pure tt.
+    M.alloc tt in
+  M.alloc tt.
 
 Definition borrow_i32 `{State.Trait} (borrowed_i32 : ref i32) : M unit :=
   let* _ :=
@@ -47,8 +47,8 @@ Definition borrow_i32 `{State.Trait} (borrowed_i32 : ref i32) : M unit :=
       let* α11 := pointer_coercion "Unsize" α10 in
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
-    Pure tt in
-  Pure tt.
+    M.alloc tt in
+  M.alloc tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{State.Trait} : M unit :=
@@ -77,6 +77,6 @@ Definition main `{State.Trait} : M unit :=
       let* α0 := deref _ref_to_i32 i32 in
       let* α1 := borrow α0 i32 in
       scoping_rules_borrowing.borrow_i32 α1 in
-    Pure tt in
+    M.alloc tt in
   let* _ := scoping_rules_borrowing.eat_box_i32 boxed_i32 in
-  Pure tt.
+  M.alloc tt.

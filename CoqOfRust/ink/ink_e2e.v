@@ -28,8 +28,8 @@ Module builders.
       forall
         `{State.Trait}
         {E ContractRef Args R : Set}
-        `{parity_scale_codec.codec.Encode.Trait Args}
-        `{ink_env.types.Environment.Trait E},
+        {ℋ_0 : parity_scale_codec.codec.Encode.Trait Args}
+        {ℋ_1 : ink_env.types.Environment.Trait E},
       (ink_e2e.builders.CreateBuilderPartial E ContractRef Args R) ->
         M (alloc.vec.Vec u8 alloc.vec.Vec.Default.A).
 End builders.
@@ -52,237 +52,284 @@ Parameter constructor_exec_input :
     forall
       `{State.Trait}
       {E ContractRef Args R : Set}
-      `{parity_scale_codec.codec.Encode.Trait Args}
-      `{ink_env.types.Environment.Trait E},
+      {ℋ_0 : parity_scale_codec.codec.Encode.Trait Args}
+      {ℋ_1 : ink_env.types.Environment.Trait E},
     (ink_e2e.builders.CreateBuilderPartial E ContractRef Args R) ->
       M (alloc.vec.Vec u8 alloc.vec.Vec.Default.A).
 
 Module xts.
   Module Weight.
-    Unset Primitive Projections.
-    Record t `{State.Trait} : Set := {
-      ref_time : u64;
-      proof_size : u64;
-    }.
-    Global Set Primitive Projections.
-    
-    Global Instance Get_ref_time `{State.Trait} : Notation.Dot "ref_time" := {
-      Notation.dot x := let* x := M.read x in Pure x.(ref_time) : M _;
-    }.
-    Global Instance Get_AF_ref_time `{State.Trait}
-      : Notation.DoubleColon t "ref_time" := {
-      Notation.double_colon x := let* x := M.read x in Pure x.(ref_time) : M _;
-    }.
-    Global Instance Get_proof_size `{State.Trait}
-      : Notation.Dot "proof_size" := {
-      Notation.dot x := let* x := M.read x in Pure x.(proof_size) : M _;
-    }.
-    Global Instance Get_AF_proof_size `{State.Trait}
-      : Notation.DoubleColon t "proof_size" := {
-      Notation.double_colon x
-        :=
-        let* x := M.read x in Pure x.(proof_size) : M _;
-    }.
+    Section Weight.
+      Context `{State.Trait}.
+      
+      Unset Primitive Projections.
+      Record t : Set := {
+        ref_time : u64;
+        proof_size : u64;
+      }.
+      Global Set Primitive Projections.
+      
+      Global Instance Get_ref_time : Notation.Dot "ref_time" := {
+        Notation.dot x := let* x := M.read x in Pure x.(ref_time) : M _;
+      }.
+      Global Instance Get_AF_ref_time : Notation.DoubleColon t "ref_time" := {
+        Notation.double_colon x
+          :=
+          let* x := M.read x in Pure x.(ref_time) : M _;
+      }.
+      Global Instance Get_proof_size : Notation.Dot "proof_size" := {
+        Notation.dot x := let* x := M.read x in Pure x.(proof_size) : M _;
+      }.
+      Global Instance Get_AF_proof_size
+        : Notation.DoubleColon t "proof_size" := {
+        Notation.double_colon x
+          :=
+          let* x := M.read x in Pure x.(proof_size) : M _;
+      }.
+    End Weight.
   End Weight.
-  Definition Weight `{State.Trait} : Set := M.val (Weight.t).
+  Definition Weight `{State.Trait} : Set := M.val Weight.t.
   
   Module Impl_core_clone_Clone_for_ink_e2e_xts_Weight.
-    Definition Self `{State.Trait} := ink_e2e.xts.Weight.
-    
-    Parameter clone : forall `{State.Trait}, (ref Self) -> M ink_e2e.xts.Weight.
-    
-    Global Instance Method_clone `{State.Trait} : Notation.Dot "clone" := {
-      Notation.dot := clone;
-    }.
-    
-    Global Instance I `{State.Trait} : core.clone.Clone.Trait Self := {
-      core.clone.Clone.clone := clone;
-    }.
+    Section Impl_core_clone_Clone_for_ink_e2e_xts_Weight.
+      Context `{State.Trait}.
+      
+      Definition Self : Set := ink_e2e.xts.Weight.
+      
+      Parameter clone : (ref Self) -> M ink_e2e.xts.Weight.
+      
+      Global Instance AssociatedFunction_clone :
+        Notation.DoubleColon Self "clone" := {
+        Notation.double_colon := clone;
+      }.
+      
+      Global Instance I : core.clone.Clone.Trait Self := {
+        core.clone.Clone.clone := clone;
+      }.
+    End Impl_core_clone_Clone_for_ink_e2e_xts_Weight.
     Global Hint Resolve I : core.
   End Impl_core_clone_Clone_for_ink_e2e_xts_Weight.
   
   Module Impl_core_marker_Copy_for_ink_e2e_xts_Weight.
-    Definition Self `{State.Trait} := ink_e2e.xts.Weight.
-    
-    Global Instance I `{State.Trait} : core.marker.Copy.Trait Self := {
-    }.
+    Section Impl_core_marker_Copy_for_ink_e2e_xts_Weight.
+      Context `{State.Trait}.
+      
+      Definition Self : Set := ink_e2e.xts.Weight.
+      
+      Global Instance I : core.marker.Copy.Trait Self := {
+      }.
+    End Impl_core_marker_Copy_for_ink_e2e_xts_Weight.
     Global Hint Resolve I : core.
   End Impl_core_marker_Copy_for_ink_e2e_xts_Weight.
   
   Module Impl_core_marker_StructuralEq_for_ink_e2e_xts_Weight.
-    Definition Self `{State.Trait} := ink_e2e.xts.Weight.
-    
-    Global Instance I `{State.Trait} : core.marker.StructuralEq.Trait Self := {
-    }.
+    Section Impl_core_marker_StructuralEq_for_ink_e2e_xts_Weight.
+      Context `{State.Trait}.
+      
+      Definition Self : Set := ink_e2e.xts.Weight.
+      
+      Global Instance I : core.marker.StructuralEq.Trait Self := {
+      }.
+    End Impl_core_marker_StructuralEq_for_ink_e2e_xts_Weight.
     Global Hint Resolve I : core.
   End Impl_core_marker_StructuralEq_for_ink_e2e_xts_Weight.
   
   Module Impl_core_cmp_PartialEq_for_ink_e2e_xts_Weight.
-    Definition Self `{State.Trait} := ink_e2e.xts.Weight.
-    
-    Parameter eq :
-        forall `{State.Trait},
-        (ref Self) -> (ref ink_e2e.xts.Weight) -> M bool.
-    
-    Global Instance Method_eq `{State.Trait} : Notation.Dot "eq" := {
-      Notation.dot := eq;
-    }.
-    
-    Global Instance I `{State.Trait}
-      : core.cmp.PartialEq.Trait Self
-          (Rhs := core.cmp.PartialEq.Default.Rhs Self)
-        := {
-      core.cmp.PartialEq.eq := eq;
-    }.
+    Section Impl_core_cmp_PartialEq_for_ink_e2e_xts_Weight.
+      Context `{State.Trait}.
+      
+      Definition Self : Set := ink_e2e.xts.Weight.
+      
+      Parameter eq : (ref Self) -> (ref ink_e2e.xts.Weight) -> M bool.
+      
+      Global Instance AssociatedFunction_eq :
+        Notation.DoubleColon Self "eq" := {
+        Notation.double_colon := eq;
+      }.
+      
+      Global Instance I
+        : core.cmp.PartialEq.Trait Self
+            (Rhs := core.cmp.PartialEq.Default.Rhs Self)
+          := {
+        core.cmp.PartialEq.eq := eq;
+      }.
+    End Impl_core_cmp_PartialEq_for_ink_e2e_xts_Weight.
     Global Hint Resolve I : core.
   End Impl_core_cmp_PartialEq_for_ink_e2e_xts_Weight.
   
   Module Impl_core_cmp_Eq_for_ink_e2e_xts_Weight.
-    Definition Self `{State.Trait} := ink_e2e.xts.Weight.
-    
-    Parameter assert_receiver_is_total_eq :
-        forall `{State.Trait},
-        (ref Self) -> M unit.
-    
-    Global Instance Method_assert_receiver_is_total_eq `{State.Trait} :
-      Notation.Dot "assert_receiver_is_total_eq" := {
-      Notation.dot := assert_receiver_is_total_eq;
-    }.
-    
-    Global Instance I `{State.Trait} : core.cmp.Eq.Trait Self := {
-    }.
+    Section Impl_core_cmp_Eq_for_ink_e2e_xts_Weight.
+      Context `{State.Trait}.
+      
+      Definition Self : Set := ink_e2e.xts.Weight.
+      
+      Parameter assert_receiver_is_total_eq : (ref Self) -> M unit.
+      
+      Global Instance AssociatedFunction_assert_receiver_is_total_eq :
+        Notation.DoubleColon Self "assert_receiver_is_total_eq" := {
+        Notation.double_colon := assert_receiver_is_total_eq;
+      }.
+      
+      Global Instance I : core.cmp.Eq.Trait Self := {
+      }.
+    End Impl_core_cmp_Eq_for_ink_e2e_xts_Weight.
     Global Hint Resolve I : core.
   End Impl_core_cmp_Eq_for_ink_e2e_xts_Weight.
   
   Module Impl_core_marker_StructuralPartialEq_for_ink_e2e_xts_Weight.
-    Definition Self `{State.Trait} := ink_e2e.xts.Weight.
-    
-    Global Instance I `{State.Trait}
-      : core.marker.StructuralPartialEq.Trait Self := {
-    }.
+    Section Impl_core_marker_StructuralPartialEq_for_ink_e2e_xts_Weight.
+      Context `{State.Trait}.
+      
+      Definition Self : Set := ink_e2e.xts.Weight.
+      
+      Global Instance I : core.marker.StructuralPartialEq.Trait Self := {
+      }.
+    End Impl_core_marker_StructuralPartialEq_for_ink_e2e_xts_Weight.
     Global Hint Resolve I : core.
   End Impl_core_marker_StructuralPartialEq_for_ink_e2e_xts_Weight.
   
   Module Impl_core_fmt_Debug_for_ink_e2e_xts_Weight.
-    Definition Self `{State.Trait} := ink_e2e.xts.Weight.
-    
-    Parameter fmt :
-        forall `{State.Trait},
-        (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
-    
-    Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
-      Notation.dot := fmt;
-    }.
-    
-    Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
-      core.fmt.Debug.fmt := fmt;
-    }.
+    Section Impl_core_fmt_Debug_for_ink_e2e_xts_Weight.
+      Context `{State.Trait}.
+      
+      Definition Self : Set := ink_e2e.xts.Weight.
+      
+      Parameter fmt :
+          (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+      
+      Global Instance AssociatedFunction_fmt :
+        Notation.DoubleColon Self "fmt" := {
+        Notation.double_colon := fmt;
+      }.
+      
+      Global Instance I : core.fmt.Debug.Trait Self := {
+        core.fmt.Debug.fmt := fmt;
+      }.
+    End Impl_core_fmt_Debug_for_ink_e2e_xts_Weight.
     Global Hint Resolve I : core.
   End Impl_core_fmt_Debug_for_ink_e2e_xts_Weight.
   
   Module Impl_core_default_Default_for_ink_e2e_xts_Weight.
-    Definition Self `{State.Trait} := ink_e2e.xts.Weight.
-    
-    Parameter default : forall `{State.Trait}, M ink_e2e.xts.Weight.
-    
-    Global Instance AssociatedFunction_default `{State.Trait} :
-      Notation.DoubleColon Self "default" := {
-      Notation.double_colon := default;
-    }.
-    
-    Global Instance I `{State.Trait} : core.default.Default.Trait Self := {
-      core.default.Default.default := default;
-    }.
+    Section Impl_core_default_Default_for_ink_e2e_xts_Weight.
+      Context `{State.Trait}.
+      
+      Definition Self : Set := ink_e2e.xts.Weight.
+      
+      Parameter default : M ink_e2e.xts.Weight.
+      
+      Global Instance AssociatedFunction_default :
+        Notation.DoubleColon Self "default" := {
+        Notation.double_colon := default;
+      }.
+      
+      Global Instance I : core.default.Default.Trait Self := {
+        core.default.Default.default := default;
+      }.
+    End Impl_core_default_Default_for_ink_e2e_xts_Weight.
     Global Hint Resolve I : core.
   End Impl_core_default_Default_for_ink_e2e_xts_Weight.
   
   Module Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Weight.
-    Definition Self `{State.Trait} := ink_e2e.xts.Weight.
-    
-    Parameter encode_as_type_to :
-        forall `{State.Trait},
-        (ref Self) ->
-          u32 ->
-          (ref scale_info.portable.PortableRegistry) ->
-          (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
-          M (core.result.Result unit scale_encode.error.Error).
-    
-    Global Instance Method_encode_as_type_to `{State.Trait} :
-      Notation.Dot "encode_as_type_to" := {
-      Notation.dot := encode_as_type_to;
-    }.
-    
-    Global Instance I `{State.Trait} : scale_encode.EncodeAsType.Trait Self := {
-      scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
-    }.
+    Section Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Weight.
+      Context `{State.Trait}.
+      
+      Definition Self : Set := ink_e2e.xts.Weight.
+      
+      Parameter encode_as_type_to :
+          (ref Self) ->
+            u32 ->
+            (ref scale_info.portable.PortableRegistry) ->
+            (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
+            M (core.result.Result unit scale_encode.error.Error).
+      
+      Global Instance AssociatedFunction_encode_as_type_to :
+        Notation.DoubleColon Self "encode_as_type_to" := {
+        Notation.double_colon := encode_as_type_to;
+      }.
+      
+      Global Instance I : scale_encode.EncodeAsType.Trait Self := {
+        scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
+      }.
+    End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Weight.
     Global Hint Resolve I : core.
   End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Weight.
   
   Module Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Weight.
-    Definition Self `{State.Trait} := ink_e2e.xts.Weight.
-    
-    Parameter encode_as_fields_to :
-        forall `{State.Trait},
-        (ref Self) ->
-          (ref (Slice scale_encode.PortableField)) ->
-          (ref scale_info.portable.PortableRegistry) ->
-          (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
-          M (core.result.Result unit scale_encode.error.Error).
-    
-    Global Instance Method_encode_as_fields_to `{State.Trait} :
-      Notation.Dot "encode_as_fields_to" := {
-      Notation.dot := encode_as_fields_to;
-    }.
-    
-    Global Instance I `{State.Trait}
-      : scale_encode.EncodeAsFields.Trait Self := {
-      scale_encode.EncodeAsFields.encode_as_fields_to := encode_as_fields_to;
-    }.
+    Section Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Weight.
+      Context `{State.Trait}.
+      
+      Definition Self : Set := ink_e2e.xts.Weight.
+      
+      Parameter encode_as_fields_to :
+          (ref Self) ->
+            (ref (Slice scale_encode.PortableField)) ->
+            (ref scale_info.portable.PortableRegistry) ->
+            (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
+            M (core.result.Result unit scale_encode.error.Error).
+      
+      Global Instance AssociatedFunction_encode_as_fields_to :
+        Notation.DoubleColon Self "encode_as_fields_to" := {
+        Notation.double_colon := encode_as_fields_to;
+      }.
+      
+      Global Instance I : scale_encode.EncodeAsFields.Trait Self := {
+        scale_encode.EncodeAsFields.encode_as_fields_to := encode_as_fields_to;
+      }.
+    End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Weight.
     Global Hint Resolve I : core.
   End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Weight.
   
   Module Impl_core_convert_From_for_ink_e2e_xts_Weight.
-    Definition Self `{State.Trait} := ink_e2e.xts.Weight.
-    
-    Parameter from :
-        forall `{State.Trait},
-        sp_weights.weight_v2.Weight -> M Self.
-    
-    Global Instance AssociatedFunction_from `{State.Trait} :
-      Notation.DoubleColon Self "from" := {
-      Notation.double_colon := from;
-    }.
-    
-    Global Instance I `{State.Trait}
-      : core.convert.From.Trait Self (T := sp_weights.weight_v2.Weight) := {
-      core.convert.From.from := from;
-    }.
+    Section Impl_core_convert_From_for_ink_e2e_xts_Weight.
+      Context `{State.Trait}.
+      
+      Definition Self : Set := ink_e2e.xts.Weight.
+      
+      Parameter from : sp_weights.weight_v2.Weight -> M Self.
+      
+      Global Instance AssociatedFunction_from :
+        Notation.DoubleColon Self "from" := {
+        Notation.double_colon := from;
+      }.
+      
+      Global Instance I
+        : core.convert.From.Trait Self (T := sp_weights.weight_v2.Weight) := {
+        core.convert.From.from := from;
+      }.
+    End Impl_core_convert_From_for_ink_e2e_xts_Weight.
     Global Hint Resolve I : core.
   End Impl_core_convert_From_for_ink_e2e_xts_Weight.
   
   Module Impl_core_convert_From_for_sp_weights_weight_v2_Weight.
-    Definition Self `{State.Trait} := sp_weights.weight_v2.Weight.
-    
-    Parameter from : forall `{State.Trait}, ink_e2e.xts.Weight -> M Self.
-    
-    Global Instance AssociatedFunction_from `{State.Trait} :
-      Notation.DoubleColon Self "from" := {
-      Notation.double_colon := from;
-    }.
-    
-    Global Instance I `{State.Trait}
-      : core.convert.From.Trait Self (T := ink_e2e.xts.Weight) := {
-      core.convert.From.from := from;
-    }.
+    Section Impl_core_convert_From_for_sp_weights_weight_v2_Weight.
+      Context `{State.Trait}.
+      
+      Definition Self : Set := sp_weights.weight_v2.Weight.
+      
+      Parameter from : ink_e2e.xts.Weight -> M Self.
+      
+      Global Instance AssociatedFunction_from :
+        Notation.DoubleColon Self "from" := {
+        Notation.double_colon := from;
+      }.
+      
+      Global Instance I
+        : core.convert.From.Trait Self (T := ink_e2e.xts.Weight) := {
+        core.convert.From.from := from;
+      }.
+    End Impl_core_convert_From_for_sp_weights_weight_v2_Weight.
     Global Hint Resolve I : core.
   End Impl_core_convert_From_for_sp_weights_weight_v2_Weight.
   
   Module InstantiateWithCode.
     Section InstantiateWithCode.
+      Context `{State.Trait}.
+      
       Context {E : Set}.
-      Context `{ink_env.types.Environment.Trait E}.
+      
+      Context {ℋ_0 : ink_env.types.Environment.Trait E}.
       Unset Primitive Projections.
-      Record t `{State.Trait} : Set := {
+      Record t : Set := {
         value : E::type["Balance"];
         gas_limit : ink_e2e.xts.Weight;
         storage_deposit_limit : core.option.Option E::type["Balance"];
@@ -292,54 +339,48 @@ Module xts.
       }.
       Global Set Primitive Projections.
       
-      Global Instance Get_value `{State.Trait} : Notation.Dot "value" := {
+      Global Instance Get_value : Notation.Dot "value" := {
         Notation.dot x := let* x := M.read x in Pure x.(value) : M _;
       }.
-      Global Instance Get_AF_value `{State.Trait}
-        : Notation.DoubleColon t "value" := {
+      Global Instance Get_AF_value : Notation.DoubleColon t "value" := {
         Notation.double_colon x := let* x := M.read x in Pure x.(value) : M _;
       }.
-      Global Instance Get_gas_limit `{State.Trait}
-        : Notation.Dot "gas_limit" := {
+      Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
         Notation.dot x := let* x := M.read x in Pure x.(gas_limit) : M _;
       }.
-      Global Instance Get_AF_gas_limit `{State.Trait}
-        : Notation.DoubleColon t "gas_limit" := {
+      Global Instance Get_AF_gas_limit : Notation.DoubleColon t "gas_limit" := {
         Notation.double_colon x
           :=
           let* x := M.read x in Pure x.(gas_limit) : M _;
       }.
-      Global Instance Get_storage_deposit_limit `{State.Trait}
+      Global Instance Get_storage_deposit_limit
         : Notation.Dot "storage_deposit_limit" := {
         Notation.dot x
           :=
           let* x := M.read x in Pure x.(storage_deposit_limit) : M _;
       }.
-      Global Instance Get_AF_storage_deposit_limit `{State.Trait}
+      Global Instance Get_AF_storage_deposit_limit
         : Notation.DoubleColon t "storage_deposit_limit" := {
         Notation.double_colon x
           :=
           let* x := M.read x in Pure x.(storage_deposit_limit) : M _;
       }.
-      Global Instance Get_code `{State.Trait} : Notation.Dot "code" := {
+      Global Instance Get_code : Notation.Dot "code" := {
         Notation.dot x := let* x := M.read x in Pure x.(code) : M _;
       }.
-      Global Instance Get_AF_code `{State.Trait}
-        : Notation.DoubleColon t "code" := {
+      Global Instance Get_AF_code : Notation.DoubleColon t "code" := {
         Notation.double_colon x := let* x := M.read x in Pure x.(code) : M _;
       }.
-      Global Instance Get_data `{State.Trait} : Notation.Dot "data" := {
+      Global Instance Get_data : Notation.Dot "data" := {
         Notation.dot x := let* x := M.read x in Pure x.(data) : M _;
       }.
-      Global Instance Get_AF_data `{State.Trait}
-        : Notation.DoubleColon t "data" := {
+      Global Instance Get_AF_data : Notation.DoubleColon t "data" := {
         Notation.double_colon x := let* x := M.read x in Pure x.(data) : M _;
       }.
-      Global Instance Get_salt `{State.Trait} : Notation.Dot "salt" := {
+      Global Instance Get_salt : Notation.Dot "salt" := {
         Notation.dot x := let* x := M.read x in Pure x.(salt) : M _;
       }.
-      Global Instance Get_AF_salt `{State.Trait}
-        : Notation.DoubleColon t "salt" := {
+      Global Instance Get_AF_salt : Notation.DoubleColon t "salt" := {
         Notation.double_colon x := let* x := M.read x in Pure x.(salt) : M _;
       }.
     End InstantiateWithCode.
@@ -347,29 +388,32 @@ Module xts.
   Definition InstantiateWithCode
       (E : Set)
       `{State.Trait}
-      `{ink_env.types.Environment.Trait E}
+      {ℋ_0 : ink_env.types.Environment.Trait E}
       : Set :=
     M.val (InstantiateWithCode.t (E := E)).
   
   Module Impl_core_fmt_Debug_for_ink_e2e_xts_InstantiateWithCode_E.
     Section Impl_core_fmt_Debug_for_ink_e2e_xts_InstantiateWithCode_E.
+      Context `{State.Trait}.
+      
       Context {E : Set}.
+      
       Context
-        `{core.fmt.Debug.Trait E}
-        `{ink_env.types.Environment.Trait E}
-        `{core.fmt.Debug.Trait E::type["Balance"]}
-        `{core.fmt.Debug.Trait E::type["Balance"]}.
-      Definition Self `{State.Trait} := ink_e2e.xts.InstantiateWithCode E.
+        {ℋ_0 : core.fmt.Debug.Trait E}
+        {ℋ_1 : ink_env.types.Environment.Trait E}
+        {ℋ_2 : core.fmt.Debug.Trait E::type["Balance"]}
+        {ℋ_3 : core.fmt.Debug.Trait E::type["Balance"]}.
+      Definition Self : Set := ink_e2e.xts.InstantiateWithCode E.
       
       Parameter fmt :
-          forall `{State.Trait},
           (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
       
-      Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
-        Notation.dot := fmt;
+      Global Instance AssociatedFunction_fmt :
+        Notation.DoubleColon Self "fmt" := {
+        Notation.double_colon := fmt;
       }.
       
-      Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
+      Global Instance I : core.fmt.Debug.Trait Self := {
         core.fmt.Debug.fmt := fmt;
       }.
     End Impl_core_fmt_Debug_for_ink_e2e_xts_InstantiateWithCode_E.
@@ -379,25 +423,26 @@ Module xts.
   Module Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_InstantiateWithCode_E.
     Section
       Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_InstantiateWithCode_E.
+      Context `{State.Trait}.
+      
       Context {E : Set}.
-      Context `{ink_env.types.Environment.Trait E}.
-      Definition Self `{State.Trait} := ink_e2e.xts.InstantiateWithCode E.
+      
+      Context {ℋ_0 : ink_env.types.Environment.Trait E}.
+      Definition Self : Set := ink_e2e.xts.InstantiateWithCode E.
       
       Parameter encode_as_type_to :
-          forall `{State.Trait},
           (ref Self) ->
             u32 ->
             (ref scale_info.portable.PortableRegistry) ->
             (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
             M (core.result.Result unit scale_encode.error.Error).
       
-      Global Instance Method_encode_as_type_to `{State.Trait} :
-        Notation.Dot "encode_as_type_to" := {
-        Notation.dot := encode_as_type_to;
+      Global Instance AssociatedFunction_encode_as_type_to :
+        Notation.DoubleColon Self "encode_as_type_to" := {
+        Notation.double_colon := encode_as_type_to;
       }.
       
-      Global Instance I `{State.Trait}
-        : scale_encode.EncodeAsType.Trait Self := {
+      Global Instance I : scale_encode.EncodeAsType.Trait Self := {
         scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
       }.
     End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_InstantiateWithCode_E.
@@ -407,25 +452,26 @@ Module xts.
   Module Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_InstantiateWithCode_E.
     Section
       Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_InstantiateWithCode_E.
+      Context `{State.Trait}.
+      
       Context {E : Set}.
-      Context `{ink_env.types.Environment.Trait E}.
-      Definition Self `{State.Trait} := ink_e2e.xts.InstantiateWithCode E.
+      
+      Context {ℋ_0 : ink_env.types.Environment.Trait E}.
+      Definition Self : Set := ink_e2e.xts.InstantiateWithCode E.
       
       Parameter encode_as_fields_to :
-          forall `{State.Trait},
           (ref Self) ->
             (ref (Slice scale_encode.PortableField)) ->
             (ref scale_info.portable.PortableRegistry) ->
             (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
             M (core.result.Result unit scale_encode.error.Error).
       
-      Global Instance Method_encode_as_fields_to `{State.Trait} :
-        Notation.Dot "encode_as_fields_to" := {
-        Notation.dot := encode_as_fields_to;
+      Global Instance AssociatedFunction_encode_as_fields_to :
+        Notation.DoubleColon Self "encode_as_fields_to" := {
+        Notation.double_colon := encode_as_fields_to;
       }.
       
-      Global Instance I `{State.Trait}
-        : scale_encode.EncodeAsFields.Trait Self := {
+      Global Instance I : scale_encode.EncodeAsFields.Trait Self := {
         scale_encode.EncodeAsFields.encode_as_fields_to := encode_as_fields_to;
       }.
     End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_InstantiateWithCode_E.
@@ -434,10 +480,13 @@ Module xts.
   
   Module Call.
     Section Call.
+      Context `{State.Trait}.
+      
       Context {E : Set}.
-      Context `{ink_env.types.Environment.Trait E}.
+      
+      Context {ℋ_0 : ink_env.types.Environment.Trait E}.
       Unset Primitive Projections.
-      Record t `{State.Trait} : Set := {
+      Record t : Set := {
         dest : subxt.utils.multi_address.MultiAddress E::type["AccountId"] unit;
         value : E::type["Balance"];
         gas_limit : ink_e2e.xts.Weight;
@@ -446,47 +495,42 @@ Module xts.
       }.
       Global Set Primitive Projections.
       
-      Global Instance Get_dest `{State.Trait} : Notation.Dot "dest" := {
+      Global Instance Get_dest : Notation.Dot "dest" := {
         Notation.dot x := let* x := M.read x in Pure x.(dest) : M _;
       }.
-      Global Instance Get_AF_dest `{State.Trait}
-        : Notation.DoubleColon t "dest" := {
+      Global Instance Get_AF_dest : Notation.DoubleColon t "dest" := {
         Notation.double_colon x := let* x := M.read x in Pure x.(dest) : M _;
       }.
-      Global Instance Get_value `{State.Trait} : Notation.Dot "value" := {
+      Global Instance Get_value : Notation.Dot "value" := {
         Notation.dot x := let* x := M.read x in Pure x.(value) : M _;
       }.
-      Global Instance Get_AF_value `{State.Trait}
-        : Notation.DoubleColon t "value" := {
+      Global Instance Get_AF_value : Notation.DoubleColon t "value" := {
         Notation.double_colon x := let* x := M.read x in Pure x.(value) : M _;
       }.
-      Global Instance Get_gas_limit `{State.Trait}
-        : Notation.Dot "gas_limit" := {
+      Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
         Notation.dot x := let* x := M.read x in Pure x.(gas_limit) : M _;
       }.
-      Global Instance Get_AF_gas_limit `{State.Trait}
-        : Notation.DoubleColon t "gas_limit" := {
+      Global Instance Get_AF_gas_limit : Notation.DoubleColon t "gas_limit" := {
         Notation.double_colon x
           :=
           let* x := M.read x in Pure x.(gas_limit) : M _;
       }.
-      Global Instance Get_storage_deposit_limit `{State.Trait}
+      Global Instance Get_storage_deposit_limit
         : Notation.Dot "storage_deposit_limit" := {
         Notation.dot x
           :=
           let* x := M.read x in Pure x.(storage_deposit_limit) : M _;
       }.
-      Global Instance Get_AF_storage_deposit_limit `{State.Trait}
+      Global Instance Get_AF_storage_deposit_limit
         : Notation.DoubleColon t "storage_deposit_limit" := {
         Notation.double_colon x
           :=
           let* x := M.read x in Pure x.(storage_deposit_limit) : M _;
       }.
-      Global Instance Get_data `{State.Trait} : Notation.Dot "data" := {
+      Global Instance Get_data : Notation.Dot "data" := {
         Notation.dot x := let* x := M.read x in Pure x.(data) : M _;
       }.
-      Global Instance Get_AF_data `{State.Trait}
-        : Notation.DoubleColon t "data" := {
+      Global Instance Get_AF_data : Notation.DoubleColon t "data" := {
         Notation.double_colon x := let* x := M.read x in Pure x.(data) : M _;
       }.
     End Call.
@@ -494,30 +538,33 @@ Module xts.
   Definition Call
       (E : Set)
       `{State.Trait}
-      `{ink_env.types.Environment.Trait E}
+      {ℋ_0 : ink_env.types.Environment.Trait E}
       : Set :=
     M.val (Call.t (E := E)).
   
   Module Impl_core_fmt_Debug_for_ink_e2e_xts_Call_E.
     Section Impl_core_fmt_Debug_for_ink_e2e_xts_Call_E.
+      Context `{State.Trait}.
+      
       Context {E : Set}.
+      
       Context
-        `{core.fmt.Debug.Trait E}
-        `{ink_env.types.Environment.Trait E}
-        `{core.fmt.Debug.Trait E::type["AccountId"]}
-        `{core.fmt.Debug.Trait E::type["Balance"]}
-        `{core.fmt.Debug.Trait E::type["Balance"]}.
-      Definition Self `{State.Trait} := ink_e2e.xts.Call E.
+        {ℋ_0 : core.fmt.Debug.Trait E}
+        {ℋ_1 : ink_env.types.Environment.Trait E}
+        {ℋ_2 : core.fmt.Debug.Trait E::type["AccountId"]}
+        {ℋ_3 : core.fmt.Debug.Trait E::type["Balance"]}
+        {ℋ_4 : core.fmt.Debug.Trait E::type["Balance"]}.
+      Definition Self : Set := ink_e2e.xts.Call E.
       
       Parameter fmt :
-          forall `{State.Trait},
           (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
       
-      Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
-        Notation.dot := fmt;
+      Global Instance AssociatedFunction_fmt :
+        Notation.DoubleColon Self "fmt" := {
+        Notation.double_colon := fmt;
       }.
       
-      Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
+      Global Instance I : core.fmt.Debug.Trait Self := {
         core.fmt.Debug.fmt := fmt;
       }.
     End Impl_core_fmt_Debug_for_ink_e2e_xts_Call_E.
@@ -526,25 +573,26 @@ Module xts.
   
   Module Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Call_E.
     Section Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Call_E.
+      Context `{State.Trait}.
+      
       Context {E : Set}.
-      Context `{ink_env.types.Environment.Trait E}.
-      Definition Self `{State.Trait} := ink_e2e.xts.Call E.
+      
+      Context {ℋ_0 : ink_env.types.Environment.Trait E}.
+      Definition Self : Set := ink_e2e.xts.Call E.
       
       Parameter encode_as_type_to :
-          forall `{State.Trait},
           (ref Self) ->
             u32 ->
             (ref scale_info.portable.PortableRegistry) ->
             (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
             M (core.result.Result unit scale_encode.error.Error).
       
-      Global Instance Method_encode_as_type_to `{State.Trait} :
-        Notation.Dot "encode_as_type_to" := {
-        Notation.dot := encode_as_type_to;
+      Global Instance AssociatedFunction_encode_as_type_to :
+        Notation.DoubleColon Self "encode_as_type_to" := {
+        Notation.double_colon := encode_as_type_to;
       }.
       
-      Global Instance I `{State.Trait}
-        : scale_encode.EncodeAsType.Trait Self := {
+      Global Instance I : scale_encode.EncodeAsType.Trait Self := {
         scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
       }.
     End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Call_E.
@@ -553,25 +601,26 @@ Module xts.
   
   Module Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Call_E.
     Section Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Call_E.
+      Context `{State.Trait}.
+      
       Context {E : Set}.
-      Context `{ink_env.types.Environment.Trait E}.
-      Definition Self `{State.Trait} := ink_e2e.xts.Call E.
+      
+      Context {ℋ_0 : ink_env.types.Environment.Trait E}.
+      Definition Self : Set := ink_e2e.xts.Call E.
       
       Parameter encode_as_fields_to :
-          forall `{State.Trait},
           (ref Self) ->
             (ref (Slice scale_encode.PortableField)) ->
             (ref scale_info.portable.PortableRegistry) ->
             (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
             M (core.result.Result unit scale_encode.error.Error).
       
-      Global Instance Method_encode_as_fields_to `{State.Trait} :
-        Notation.Dot "encode_as_fields_to" := {
-        Notation.dot := encode_as_fields_to;
+      Global Instance AssociatedFunction_encode_as_fields_to :
+        Notation.DoubleColon Self "encode_as_fields_to" := {
+        Notation.double_colon := encode_as_fields_to;
       }.
       
-      Global Instance I `{State.Trait}
-        : scale_encode.EncodeAsFields.Trait Self := {
+      Global Instance I : scale_encode.EncodeAsFields.Trait Self := {
         scale_encode.EncodeAsFields.encode_as_fields_to := encode_as_fields_to;
       }.
     End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Call_E.
@@ -580,29 +629,30 @@ Module xts.
   
   Module Transfer.
     Section Transfer.
+      Context `{State.Trait}.
+      
       Context {E C : Set}.
+      
       Context
-        `{ink_env.types.Environment.Trait E}
-        `{subxt.config.Config.Trait C}.
+        {ℋ_0 : ink_env.types.Environment.Trait E}
+        {ℋ_1 : subxt.config.Config.Trait C}.
       Unset Primitive Projections.
-      Record t `{State.Trait} : Set := {
+      Record t : Set := {
         dest : subxt.utils.static_type.Static C::type["Address"];
         value : E::type["Balance"];
       }.
       Global Set Primitive Projections.
       
-      Global Instance Get_dest `{State.Trait} : Notation.Dot "dest" := {
+      Global Instance Get_dest : Notation.Dot "dest" := {
         Notation.dot x := let* x := M.read x in Pure x.(dest) : M _;
       }.
-      Global Instance Get_AF_dest `{State.Trait}
-        : Notation.DoubleColon t "dest" := {
+      Global Instance Get_AF_dest : Notation.DoubleColon t "dest" := {
         Notation.double_colon x := let* x := M.read x in Pure x.(dest) : M _;
       }.
-      Global Instance Get_value `{State.Trait} : Notation.Dot "value" := {
+      Global Instance Get_value : Notation.Dot "value" := {
         Notation.dot x := let* x := M.read x in Pure x.(value) : M _;
       }.
-      Global Instance Get_AF_value `{State.Trait}
-        : Notation.DoubleColon t "value" := {
+      Global Instance Get_AF_value : Notation.DoubleColon t "value" := {
         Notation.double_colon x := let* x := M.read x in Pure x.(value) : M _;
       }.
     End Transfer.
@@ -610,32 +660,35 @@ Module xts.
   Definition Transfer
       (E C : Set)
       `{State.Trait}
-      `{ink_env.types.Environment.Trait E}
-      `{subxt.config.Config.Trait C}
+      {ℋ_0 : ink_env.types.Environment.Trait E}
+      {ℋ_1 : subxt.config.Config.Trait C}
       : Set :=
     M.val (Transfer.t (E := E) (C := C)).
   
   Module Impl_core_fmt_Debug_for_ink_e2e_xts_Transfer_E_C.
     Section Impl_core_fmt_Debug_for_ink_e2e_xts_Transfer_E_C.
+      Context `{State.Trait}.
+      
       Context {E C : Set}.
+      
       Context
-        `{core.fmt.Debug.Trait E}
-        `{ink_env.types.Environment.Trait E}
-        `{core.fmt.Debug.Trait C}
-        `{subxt.config.Config.Trait C}
-        `{core.fmt.Debug.Trait C::type["Address"]}
-        `{core.fmt.Debug.Trait E::type["Balance"]}.
-      Definition Self `{State.Trait} := ink_e2e.xts.Transfer E C.
+        {ℋ_0 : core.fmt.Debug.Trait E}
+        {ℋ_1 : ink_env.types.Environment.Trait E}
+        {ℋ_2 : core.fmt.Debug.Trait C}
+        {ℋ_3 : subxt.config.Config.Trait C}
+        {ℋ_4 : core.fmt.Debug.Trait C::type["Address"]}
+        {ℋ_5 : core.fmt.Debug.Trait E::type["Balance"]}.
+      Definition Self : Set := ink_e2e.xts.Transfer E C.
       
       Parameter fmt :
-          forall `{State.Trait},
           (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
       
-      Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
-        Notation.dot := fmt;
+      Global Instance AssociatedFunction_fmt :
+        Notation.DoubleColon Self "fmt" := {
+        Notation.double_colon := fmt;
       }.
       
-      Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
+      Global Instance I : core.fmt.Debug.Trait Self := {
         core.fmt.Debug.fmt := fmt;
       }.
     End Impl_core_fmt_Debug_for_ink_e2e_xts_Transfer_E_C.
@@ -644,27 +697,28 @@ Module xts.
   
   Module Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Transfer_E_C.
     Section Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Transfer_E_C.
+      Context `{State.Trait}.
+      
       Context {E C : Set}.
+      
       Context
-        `{ink_env.types.Environment.Trait E}
-        `{subxt.config.Config.Trait C}.
-      Definition Self `{State.Trait} := ink_e2e.xts.Transfer E C.
+        {ℋ_0 : ink_env.types.Environment.Trait E}
+        {ℋ_1 : subxt.config.Config.Trait C}.
+      Definition Self : Set := ink_e2e.xts.Transfer E C.
       
       Parameter encode_as_type_to :
-          forall `{State.Trait},
           (ref Self) ->
             u32 ->
             (ref scale_info.portable.PortableRegistry) ->
             (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
             M (core.result.Result unit scale_encode.error.Error).
       
-      Global Instance Method_encode_as_type_to `{State.Trait} :
-        Notation.Dot "encode_as_type_to" := {
-        Notation.dot := encode_as_type_to;
+      Global Instance AssociatedFunction_encode_as_type_to :
+        Notation.DoubleColon Self "encode_as_type_to" := {
+        Notation.double_colon := encode_as_type_to;
       }.
       
-      Global Instance I `{State.Trait}
-        : scale_encode.EncodeAsType.Trait Self := {
+      Global Instance I : scale_encode.EncodeAsType.Trait Self := {
         scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
       }.
     End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Transfer_E_C.
@@ -673,27 +727,28 @@ Module xts.
   
   Module Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Transfer_E_C.
     Section Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Transfer_E_C.
+      Context `{State.Trait}.
+      
       Context {E C : Set}.
+      
       Context
-        `{ink_env.types.Environment.Trait E}
-        `{subxt.config.Config.Trait C}.
-      Definition Self `{State.Trait} := ink_e2e.xts.Transfer E C.
+        {ℋ_0 : ink_env.types.Environment.Trait E}
+        {ℋ_1 : subxt.config.Config.Trait C}.
+      Definition Self : Set := ink_e2e.xts.Transfer E C.
       
       Parameter encode_as_fields_to :
-          forall `{State.Trait},
           (ref Self) ->
             (ref (Slice scale_encode.PortableField)) ->
             (ref scale_info.portable.PortableRegistry) ->
             (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
             M (core.result.Result unit scale_encode.error.Error).
       
-      Global Instance Method_encode_as_fields_to `{State.Trait} :
-        Notation.Dot "encode_as_fields_to" := {
-        Notation.dot := encode_as_fields_to;
+      Global Instance AssociatedFunction_encode_as_fields_to :
+        Notation.DoubleColon Self "encode_as_fields_to" := {
+        Notation.double_colon := encode_as_fields_to;
       }.
       
-      Global Instance I `{State.Trait}
-        : scale_encode.EncodeAsFields.Trait Self := {
+      Global Instance I : scale_encode.EncodeAsFields.Trait Self := {
         scale_encode.EncodeAsFields.encode_as_fields_to := encode_as_fields_to;
       }.
     End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Transfer_E_C.
@@ -708,159 +763,186 @@ Module xts.
   Definition Determinism `{State.Trait} : Set := Determinism.t.
   
   Module Impl_core_fmt_Debug_for_ink_e2e_xts_Determinism.
-    Definition Self `{State.Trait} := ink_e2e.xts.Determinism.
-    
-    Parameter fmt :
-        forall `{State.Trait},
-        (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
-    
-    Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
-      Notation.dot := fmt;
-    }.
-    
-    Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
-      core.fmt.Debug.fmt := fmt;
-    }.
+    Section Impl_core_fmt_Debug_for_ink_e2e_xts_Determinism.
+      Context `{State.Trait}.
+      
+      Definition Self : Set := ink_e2e.xts.Determinism.
+      
+      Parameter fmt :
+          (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+      
+      Global Instance AssociatedFunction_fmt :
+        Notation.DoubleColon Self "fmt" := {
+        Notation.double_colon := fmt;
+      }.
+      
+      Global Instance I : core.fmt.Debug.Trait Self := {
+        core.fmt.Debug.fmt := fmt;
+      }.
+    End Impl_core_fmt_Debug_for_ink_e2e_xts_Determinism.
     Global Hint Resolve I : core.
   End Impl_core_fmt_Debug_for_ink_e2e_xts_Determinism.
   
   Module Impl_core_clone_Clone_for_ink_e2e_xts_Determinism.
-    Definition Self `{State.Trait} := ink_e2e.xts.Determinism.
-    
-    Parameter clone :
-        forall `{State.Trait},
-        (ref Self) -> M ink_e2e.xts.Determinism.
-    
-    Global Instance Method_clone `{State.Trait} : Notation.Dot "clone" := {
-      Notation.dot := clone;
-    }.
-    
-    Global Instance I `{State.Trait} : core.clone.Clone.Trait Self := {
-      core.clone.Clone.clone := clone;
-    }.
+    Section Impl_core_clone_Clone_for_ink_e2e_xts_Determinism.
+      Context `{State.Trait}.
+      
+      Definition Self : Set := ink_e2e.xts.Determinism.
+      
+      Parameter clone : (ref Self) -> M ink_e2e.xts.Determinism.
+      
+      Global Instance AssociatedFunction_clone :
+        Notation.DoubleColon Self "clone" := {
+        Notation.double_colon := clone;
+      }.
+      
+      Global Instance I : core.clone.Clone.Trait Self := {
+        core.clone.Clone.clone := clone;
+      }.
+    End Impl_core_clone_Clone_for_ink_e2e_xts_Determinism.
     Global Hint Resolve I : core.
   End Impl_core_clone_Clone_for_ink_e2e_xts_Determinism.
   
   Module Impl_core_marker_Copy_for_ink_e2e_xts_Determinism.
-    Definition Self `{State.Trait} := ink_e2e.xts.Determinism.
-    
-    Global Instance I `{State.Trait} : core.marker.Copy.Trait Self := {
-    }.
+    Section Impl_core_marker_Copy_for_ink_e2e_xts_Determinism.
+      Context `{State.Trait}.
+      
+      Definition Self : Set := ink_e2e.xts.Determinism.
+      
+      Global Instance I : core.marker.Copy.Trait Self := {
+      }.
+    End Impl_core_marker_Copy_for_ink_e2e_xts_Determinism.
     Global Hint Resolve I : core.
   End Impl_core_marker_Copy_for_ink_e2e_xts_Determinism.
   
   Module Impl_core_marker_StructuralPartialEq_for_ink_e2e_xts_Determinism.
-    Definition Self `{State.Trait} := ink_e2e.xts.Determinism.
-    
-    Global Instance I `{State.Trait}
-      : core.marker.StructuralPartialEq.Trait Self := {
-    }.
+    Section Impl_core_marker_StructuralPartialEq_for_ink_e2e_xts_Determinism.
+      Context `{State.Trait}.
+      
+      Definition Self : Set := ink_e2e.xts.Determinism.
+      
+      Global Instance I : core.marker.StructuralPartialEq.Trait Self := {
+      }.
+    End Impl_core_marker_StructuralPartialEq_for_ink_e2e_xts_Determinism.
     Global Hint Resolve I : core.
   End Impl_core_marker_StructuralPartialEq_for_ink_e2e_xts_Determinism.
   
   Module Impl_core_cmp_PartialEq_for_ink_e2e_xts_Determinism.
-    Definition Self `{State.Trait} := ink_e2e.xts.Determinism.
-    
-    Parameter eq :
-        forall `{State.Trait},
-        (ref Self) -> (ref ink_e2e.xts.Determinism) -> M bool.
-    
-    Global Instance Method_eq `{State.Trait} : Notation.Dot "eq" := {
-      Notation.dot := eq;
-    }.
-    
-    Global Instance I `{State.Trait}
-      : core.cmp.PartialEq.Trait Self
-          (Rhs := core.cmp.PartialEq.Default.Rhs Self)
-        := {
-      core.cmp.PartialEq.eq := eq;
-    }.
+    Section Impl_core_cmp_PartialEq_for_ink_e2e_xts_Determinism.
+      Context `{State.Trait}.
+      
+      Definition Self : Set := ink_e2e.xts.Determinism.
+      
+      Parameter eq : (ref Self) -> (ref ink_e2e.xts.Determinism) -> M bool.
+      
+      Global Instance AssociatedFunction_eq :
+        Notation.DoubleColon Self "eq" := {
+        Notation.double_colon := eq;
+      }.
+      
+      Global Instance I
+        : core.cmp.PartialEq.Trait Self
+            (Rhs := core.cmp.PartialEq.Default.Rhs Self)
+          := {
+        core.cmp.PartialEq.eq := eq;
+      }.
+    End Impl_core_cmp_PartialEq_for_ink_e2e_xts_Determinism.
     Global Hint Resolve I : core.
   End Impl_core_cmp_PartialEq_for_ink_e2e_xts_Determinism.
   
   Module Impl_core_marker_StructuralEq_for_ink_e2e_xts_Determinism.
-    Definition Self `{State.Trait} := ink_e2e.xts.Determinism.
-    
-    Global Instance I `{State.Trait} : core.marker.StructuralEq.Trait Self := {
-    }.
+    Section Impl_core_marker_StructuralEq_for_ink_e2e_xts_Determinism.
+      Context `{State.Trait}.
+      
+      Definition Self : Set := ink_e2e.xts.Determinism.
+      
+      Global Instance I : core.marker.StructuralEq.Trait Self := {
+      }.
+    End Impl_core_marker_StructuralEq_for_ink_e2e_xts_Determinism.
     Global Hint Resolve I : core.
   End Impl_core_marker_StructuralEq_for_ink_e2e_xts_Determinism.
   
   Module Impl_core_cmp_Eq_for_ink_e2e_xts_Determinism.
-    Definition Self `{State.Trait} := ink_e2e.xts.Determinism.
-    
-    Parameter assert_receiver_is_total_eq :
-        forall `{State.Trait},
-        (ref Self) -> M unit.
-    
-    Global Instance Method_assert_receiver_is_total_eq `{State.Trait} :
-      Notation.Dot "assert_receiver_is_total_eq" := {
-      Notation.dot := assert_receiver_is_total_eq;
-    }.
-    
-    Global Instance I `{State.Trait} : core.cmp.Eq.Trait Self := {
-    }.
+    Section Impl_core_cmp_Eq_for_ink_e2e_xts_Determinism.
+      Context `{State.Trait}.
+      
+      Definition Self : Set := ink_e2e.xts.Determinism.
+      
+      Parameter assert_receiver_is_total_eq : (ref Self) -> M unit.
+      
+      Global Instance AssociatedFunction_assert_receiver_is_total_eq :
+        Notation.DoubleColon Self "assert_receiver_is_total_eq" := {
+        Notation.double_colon := assert_receiver_is_total_eq;
+      }.
+      
+      Global Instance I : core.cmp.Eq.Trait Self := {
+      }.
+    End Impl_core_cmp_Eq_for_ink_e2e_xts_Determinism.
     Global Hint Resolve I : core.
   End Impl_core_cmp_Eq_for_ink_e2e_xts_Determinism.
   
   Module Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Determinism.
-    Definition Self `{State.Trait} := ink_e2e.xts.Determinism.
-    
-    Parameter encode_as_type_to :
-        forall `{State.Trait},
-        (ref Self) ->
-          u32 ->
-          (ref scale_info.portable.PortableRegistry) ->
-          (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
-          M (core.result.Result unit scale_encode.error.Error).
-    
-    Global Instance Method_encode_as_type_to `{State.Trait} :
-      Notation.Dot "encode_as_type_to" := {
-      Notation.dot := encode_as_type_to;
-    }.
-    
-    Global Instance I `{State.Trait} : scale_encode.EncodeAsType.Trait Self := {
-      scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
-    }.
+    Section Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Determinism.
+      Context `{State.Trait}.
+      
+      Definition Self : Set := ink_e2e.xts.Determinism.
+      
+      Parameter encode_as_type_to :
+          (ref Self) ->
+            u32 ->
+            (ref scale_info.portable.PortableRegistry) ->
+            (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
+            M (core.result.Result unit scale_encode.error.Error).
+      
+      Global Instance AssociatedFunction_encode_as_type_to :
+        Notation.DoubleColon Self "encode_as_type_to" := {
+        Notation.double_colon := encode_as_type_to;
+      }.
+      
+      Global Instance I : scale_encode.EncodeAsType.Trait Self := {
+        scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
+      }.
+    End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Determinism.
     Global Hint Resolve I : core.
   End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Determinism.
   
   Module UploadCode.
     Section UploadCode.
+      Context `{State.Trait}.
+      
       Context {E : Set}.
-      Context `{ink_env.types.Environment.Trait E}.
+      
+      Context {ℋ_0 : ink_env.types.Environment.Trait E}.
       Unset Primitive Projections.
-      Record t `{State.Trait} : Set := {
+      Record t : Set := {
         code : alloc.vec.Vec u8 alloc.vec.Vec.Default.A;
         storage_deposit_limit : core.option.Option E::type["Balance"];
         determinism : ink_e2e.xts.Determinism;
       }.
       Global Set Primitive Projections.
       
-      Global Instance Get_code `{State.Trait} : Notation.Dot "code" := {
+      Global Instance Get_code : Notation.Dot "code" := {
         Notation.dot x := let* x := M.read x in Pure x.(code) : M _;
       }.
-      Global Instance Get_AF_code `{State.Trait}
-        : Notation.DoubleColon t "code" := {
+      Global Instance Get_AF_code : Notation.DoubleColon t "code" := {
         Notation.double_colon x := let* x := M.read x in Pure x.(code) : M _;
       }.
-      Global Instance Get_storage_deposit_limit `{State.Trait}
+      Global Instance Get_storage_deposit_limit
         : Notation.Dot "storage_deposit_limit" := {
         Notation.dot x
           :=
           let* x := M.read x in Pure x.(storage_deposit_limit) : M _;
       }.
-      Global Instance Get_AF_storage_deposit_limit `{State.Trait}
+      Global Instance Get_AF_storage_deposit_limit
         : Notation.DoubleColon t "storage_deposit_limit" := {
         Notation.double_colon x
           :=
           let* x := M.read x in Pure x.(storage_deposit_limit) : M _;
       }.
-      Global Instance Get_determinism `{State.Trait}
-        : Notation.Dot "determinism" := {
+      Global Instance Get_determinism : Notation.Dot "determinism" := {
         Notation.dot x := let* x := M.read x in Pure x.(determinism) : M _;
       }.
-      Global Instance Get_AF_determinism `{State.Trait}
+      Global Instance Get_AF_determinism
         : Notation.DoubleColon t "determinism" := {
         Notation.double_colon x
           :=
@@ -871,28 +953,31 @@ Module xts.
   Definition UploadCode
       (E : Set)
       `{State.Trait}
-      `{ink_env.types.Environment.Trait E}
+      {ℋ_0 : ink_env.types.Environment.Trait E}
       : Set :=
     M.val (UploadCode.t (E := E)).
   
   Module Impl_core_fmt_Debug_for_ink_e2e_xts_UploadCode_E.
     Section Impl_core_fmt_Debug_for_ink_e2e_xts_UploadCode_E.
+      Context `{State.Trait}.
+      
       Context {E : Set}.
+      
       Context
-        `{core.fmt.Debug.Trait E}
-        `{ink_env.types.Environment.Trait E}
-        `{core.fmt.Debug.Trait E::type["Balance"]}.
-      Definition Self `{State.Trait} := ink_e2e.xts.UploadCode E.
+        {ℋ_0 : core.fmt.Debug.Trait E}
+        {ℋ_1 : ink_env.types.Environment.Trait E}
+        {ℋ_2 : core.fmt.Debug.Trait E::type["Balance"]}.
+      Definition Self : Set := ink_e2e.xts.UploadCode E.
       
       Parameter fmt :
-          forall `{State.Trait},
           (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
       
-      Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
-        Notation.dot := fmt;
+      Global Instance AssociatedFunction_fmt :
+        Notation.DoubleColon Self "fmt" := {
+        Notation.double_colon := fmt;
       }.
       
-      Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
+      Global Instance I : core.fmt.Debug.Trait Self := {
         core.fmt.Debug.fmt := fmt;
       }.
     End Impl_core_fmt_Debug_for_ink_e2e_xts_UploadCode_E.
@@ -901,25 +986,26 @@ Module xts.
   
   Module Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_UploadCode_E.
     Section Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_UploadCode_E.
+      Context `{State.Trait}.
+      
       Context {E : Set}.
-      Context `{ink_env.types.Environment.Trait E}.
-      Definition Self `{State.Trait} := ink_e2e.xts.UploadCode E.
+      
+      Context {ℋ_0 : ink_env.types.Environment.Trait E}.
+      Definition Self : Set := ink_e2e.xts.UploadCode E.
       
       Parameter encode_as_type_to :
-          forall `{State.Trait},
           (ref Self) ->
             u32 ->
             (ref scale_info.portable.PortableRegistry) ->
             (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
             M (core.result.Result unit scale_encode.error.Error).
       
-      Global Instance Method_encode_as_type_to `{State.Trait} :
-        Notation.Dot "encode_as_type_to" := {
-        Notation.dot := encode_as_type_to;
+      Global Instance AssociatedFunction_encode_as_type_to :
+        Notation.DoubleColon Self "encode_as_type_to" := {
+        Notation.double_colon := encode_as_type_to;
       }.
       
-      Global Instance I `{State.Trait}
-        : scale_encode.EncodeAsType.Trait Self := {
+      Global Instance I : scale_encode.EncodeAsType.Trait Self := {
         scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
       }.
     End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_UploadCode_E.
@@ -928,25 +1014,26 @@ Module xts.
   
   Module Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_UploadCode_E.
     Section Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_UploadCode_E.
+      Context `{State.Trait}.
+      
       Context {E : Set}.
-      Context `{ink_env.types.Environment.Trait E}.
-      Definition Self `{State.Trait} := ink_e2e.xts.UploadCode E.
+      
+      Context {ℋ_0 : ink_env.types.Environment.Trait E}.
+      Definition Self : Set := ink_e2e.xts.UploadCode E.
       
       Parameter encode_as_fields_to :
-          forall `{State.Trait},
           (ref Self) ->
             (ref (Slice scale_encode.PortableField)) ->
             (ref scale_info.portable.PortableRegistry) ->
             (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
             M (core.result.Result unit scale_encode.error.Error).
       
-      Global Instance Method_encode_as_fields_to `{State.Trait} :
-        Notation.Dot "encode_as_fields_to" := {
-        Notation.dot := encode_as_fields_to;
+      Global Instance AssociatedFunction_encode_as_fields_to :
+        Notation.DoubleColon Self "encode_as_fields_to" := {
+        Notation.double_colon := encode_as_fields_to;
       }.
       
-      Global Instance I `{State.Trait}
-        : scale_encode.EncodeAsFields.Trait Self := {
+      Global Instance I : scale_encode.EncodeAsFields.Trait Self := {
         scale_encode.EncodeAsFields.encode_as_fields_to := encode_as_fields_to;
       }.
     End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_UploadCode_E.
@@ -955,29 +1042,30 @@ Module xts.
   
   Module ContractsApi.
     Section ContractsApi.
+      Context `{State.Trait}.
+      
       Context {C E : Set}.
+      
       Context
-        `{subxt.config.Config.Trait C}
-        `{ink_env.types.Environment.Trait E}.
+        {ℋ_0 : subxt.config.Config.Trait C}
+        {ℋ_1 : ink_env.types.Environment.Trait E}.
       Unset Primitive Projections.
-      Record t `{State.Trait} : Set := {
+      Record t : Set := {
         client : subxt.client.online_client.OnlineClient C;
         _phantom : core.marker.PhantomData (C * E);
       }.
       Global Set Primitive Projections.
       
-      Global Instance Get_client `{State.Trait} : Notation.Dot "client" := {
+      Global Instance Get_client : Notation.Dot "client" := {
         Notation.dot x := let* x := M.read x in Pure x.(client) : M _;
       }.
-      Global Instance Get_AF_client `{State.Trait}
-        : Notation.DoubleColon t "client" := {
+      Global Instance Get_AF_client : Notation.DoubleColon t "client" := {
         Notation.double_colon x := let* x := M.read x in Pure x.(client) : M _;
       }.
-      Global Instance Get__phantom `{State.Trait} : Notation.Dot "_phantom" := {
+      Global Instance Get__phantom : Notation.Dot "_phantom" := {
         Notation.dot x := let* x := M.read x in Pure x.(_phantom) : M _;
       }.
-      Global Instance Get_AF__phantom `{State.Trait}
-        : Notation.DoubleColon t "_phantom" := {
+      Global Instance Get_AF__phantom : Notation.DoubleColon t "_phantom" := {
         Notation.double_colon x
           :=
           let* x := M.read x in Pure x.(_phantom) : M _;
@@ -987,8 +1075,8 @@ Module xts.
   Definition ContractsApi
       (C E : Set)
       `{State.Trait}
-      `{subxt.config.Config.Trait C}
-      `{ink_env.types.Environment.Trait E}
+      {ℋ_0 : subxt.config.Config.Trait C}
+      {ℋ_1 : ink_env.types.Environment.Trait E}
       : Set :=
     M.val (ContractsApi.t (C := C) (E := E)).
 End xts.
@@ -1006,12 +1094,15 @@ Module client.
   
   Module InstantiationResult.
     Section InstantiationResult.
+      Context `{State.Trait}.
+      
       Context {C E : Set}.
+      
       Context
-        `{subxt.config.Config.Trait C}
-        `{ink_env.types.Environment.Trait E}.
+        {ℋ_0 : subxt.config.Config.Trait C}
+        {ℋ_1 : ink_env.types.Environment.Trait E}.
       Unset Primitive Projections.
-      Record t `{State.Trait} : Set := {
+      Record t : Set := {
         account_id : E::type["AccountId"];
         dry_run
           :
@@ -1022,28 +1113,25 @@ Module client.
       }.
       Global Set Primitive Projections.
       
-      Global Instance Get_account_id `{State.Trait}
-        : Notation.Dot "account_id" := {
+      Global Instance Get_account_id : Notation.Dot "account_id" := {
         Notation.dot x := let* x := M.read x in Pure x.(account_id) : M _;
       }.
-      Global Instance Get_AF_account_id `{State.Trait}
+      Global Instance Get_AF_account_id
         : Notation.DoubleColon t "account_id" := {
         Notation.double_colon x
           :=
           let* x := M.read x in Pure x.(account_id) : M _;
       }.
-      Global Instance Get_dry_run `{State.Trait} : Notation.Dot "dry_run" := {
+      Global Instance Get_dry_run : Notation.Dot "dry_run" := {
         Notation.dot x := let* x := M.read x in Pure x.(dry_run) : M _;
       }.
-      Global Instance Get_AF_dry_run `{State.Trait}
-        : Notation.DoubleColon t "dry_run" := {
+      Global Instance Get_AF_dry_run : Notation.DoubleColon t "dry_run" := {
         Notation.double_colon x := let* x := M.read x in Pure x.(dry_run) : M _;
       }.
-      Global Instance Get_events `{State.Trait} : Notation.Dot "events" := {
+      Global Instance Get_events : Notation.Dot "events" := {
         Notation.dot x := let* x := M.read x in Pure x.(events) : M _;
       }.
-      Global Instance Get_AF_events `{State.Trait}
-        : Notation.DoubleColon t "events" := {
+      Global Instance Get_AF_events : Notation.DoubleColon t "events" := {
         Notation.double_colon x := let* x := M.read x in Pure x.(events) : M _;
       }.
     End InstantiationResult.
@@ -1051,19 +1139,22 @@ Module client.
   Definition InstantiationResult
       (C E : Set)
       `{State.Trait}
-      `{subxt.config.Config.Trait C}
-      `{ink_env.types.Environment.Trait E}
+      {ℋ_0 : subxt.config.Config.Trait C}
+      {ℋ_1 : ink_env.types.Environment.Trait E}
       : Set :=
     M.val (InstantiationResult.t (C := C) (E := E)).
   
   Module UploadResult.
     Section UploadResult.
+      Context `{State.Trait}.
+      
       Context {C E : Set}.
+      
       Context
-        `{subxt.config.Config.Trait C}
-        `{ink_env.types.Environment.Trait E}.
+        {ℋ_0 : subxt.config.Config.Trait C}
+        {ℋ_1 : ink_env.types.Environment.Trait E}.
       Unset Primitive Projections.
-      Record t `{State.Trait} : Set := {
+      Record t : Set := {
         code_hash : E::type["Hash"];
         dry_run
           :
@@ -1074,28 +1165,24 @@ Module client.
       }.
       Global Set Primitive Projections.
       
-      Global Instance Get_code_hash `{State.Trait}
-        : Notation.Dot "code_hash" := {
+      Global Instance Get_code_hash : Notation.Dot "code_hash" := {
         Notation.dot x := let* x := M.read x in Pure x.(code_hash) : M _;
       }.
-      Global Instance Get_AF_code_hash `{State.Trait}
-        : Notation.DoubleColon t "code_hash" := {
+      Global Instance Get_AF_code_hash : Notation.DoubleColon t "code_hash" := {
         Notation.double_colon x
           :=
           let* x := M.read x in Pure x.(code_hash) : M _;
       }.
-      Global Instance Get_dry_run `{State.Trait} : Notation.Dot "dry_run" := {
+      Global Instance Get_dry_run : Notation.Dot "dry_run" := {
         Notation.dot x := let* x := M.read x in Pure x.(dry_run) : M _;
       }.
-      Global Instance Get_AF_dry_run `{State.Trait}
-        : Notation.DoubleColon t "dry_run" := {
+      Global Instance Get_AF_dry_run : Notation.DoubleColon t "dry_run" := {
         Notation.double_colon x := let* x := M.read x in Pure x.(dry_run) : M _;
       }.
-      Global Instance Get_events `{State.Trait} : Notation.Dot "events" := {
+      Global Instance Get_events : Notation.Dot "events" := {
         Notation.dot x := let* x := M.read x in Pure x.(events) : M _;
       }.
-      Global Instance Get_AF_events `{State.Trait}
-        : Notation.DoubleColon t "events" := {
+      Global Instance Get_AF_events : Notation.DoubleColon t "events" := {
         Notation.double_colon x := let* x := M.read x in Pure x.(events) : M _;
       }.
     End UploadResult.
@@ -1103,30 +1190,35 @@ Module client.
   Definition UploadResult
       (C E : Set)
       `{State.Trait}
-      `{subxt.config.Config.Trait C}
-      `{ink_env.types.Environment.Trait E}
+      {ℋ_0 : subxt.config.Config.Trait C}
+      {ℋ_1 : ink_env.types.Environment.Trait E}
       : Set :=
     M.val (UploadResult.t (C := C) (E := E)).
   
   Module Impl_core_fmt_Debug_for_ink_e2e_client_UploadResult_C_E.
     Section Impl_core_fmt_Debug_for_ink_e2e_client_UploadResult_C_E.
+      Context `{State.Trait}.
+      
       Context {C E : Set}.
+      
       Context
-        `{subxt.config.Config.Trait C}
-        `{ink_env.types.Environment.Trait E}
-        `{core.fmt.Debug.Trait (ink_env.types.Environment.Balance (Self := E))}
-        `{core.fmt.Debug.Trait (ink_env.types.Environment.Hash (Self := E))}.
-      Definition Self `{State.Trait} := ink_e2e.client.UploadResult C E.
+        {ℋ_0 : subxt.config.Config.Trait C}
+        {ℋ_1 : ink_env.types.Environment.Trait E}
+        {ℋ_2 :
+          core.fmt.Debug.Trait (ink_env.types.Environment.Balance (Self := E))}
+        {ℋ_3 :
+          core.fmt.Debug.Trait (ink_env.types.Environment.Hash (Self := E))}.
+      Definition Self : Set := ink_e2e.client.UploadResult C E.
       
       Parameter fmt :
-          forall `{State.Trait},
           (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
       
-      Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
-        Notation.dot := fmt;
+      Global Instance AssociatedFunction_fmt :
+        Notation.DoubleColon Self "fmt" := {
+        Notation.double_colon := fmt;
       }.
       
-      Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
+      Global Instance I : core.fmt.Debug.Trait Self := {
         core.fmt.Debug.fmt := fmt;
       }.
     End Impl_core_fmt_Debug_for_ink_e2e_client_UploadResult_C_E.
@@ -1135,25 +1227,30 @@ Module client.
   
   Module Impl_core_fmt_Debug_for_ink_e2e_client_InstantiationResult_C_E.
     Section Impl_core_fmt_Debug_for_ink_e2e_client_InstantiationResult_C_E.
+      Context `{State.Trait}.
+      
       Context {C E : Set}.
+      
       Context
-        `{subxt.config.Config.Trait C}
-        `{core.fmt.Debug.Trait C::type["AccountId"]}
-        `{ink_env.types.Environment.Trait E}
-        `{core.fmt.Debug.Trait
+        {ℋ_0 : subxt.config.Config.Trait C}
+        {ℋ_1 : core.fmt.Debug.Trait C::type["AccountId"]}
+        {ℋ_2 : ink_env.types.Environment.Trait E}
+        {ℋ_3 :
+          core.fmt.Debug.Trait
               (ink_env.types.Environment.AccountId (Self := E))}
-        `{core.fmt.Debug.Trait (ink_env.types.Environment.Balance (Self := E))}.
-      Definition Self `{State.Trait} := ink_e2e.client.InstantiationResult C E.
+        {ℋ_4 :
+          core.fmt.Debug.Trait (ink_env.types.Environment.Balance (Self := E))}.
+      Definition Self : Set := ink_e2e.client.InstantiationResult C E.
       
       Parameter fmt :
-          forall `{State.Trait},
           (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
       
-      Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
-        Notation.dot := fmt;
+      Global Instance AssociatedFunction_fmt :
+        Notation.DoubleColon Self "fmt" := {
+        Notation.double_colon := fmt;
       }.
       
-      Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
+      Global Instance I : core.fmt.Debug.Trait Self := {
         core.fmt.Debug.fmt := fmt;
       }.
     End Impl_core_fmt_Debug_for_ink_e2e_client_InstantiationResult_C_E.
@@ -1162,10 +1259,13 @@ Module client.
   
   Module CallDryRunResult.
     Section CallDryRunResult.
+      Context `{State.Trait}.
+      
       Context {E V : Set}.
-      Context `{ink_env.types.Environment.Trait E}.
+      
+      Context {ℋ_0 : ink_env.types.Environment.Trait E}.
       Unset Primitive Projections.
-      Record t `{State.Trait} : Set := {
+      Record t : Set := {
         exec_result
           :
           pallet_contracts_primitives.ContractExecResult E::type["Balance"];
@@ -1173,21 +1273,19 @@ Module client.
       }.
       Global Set Primitive Projections.
       
-      Global Instance Get_exec_result `{State.Trait}
-        : Notation.Dot "exec_result" := {
+      Global Instance Get_exec_result : Notation.Dot "exec_result" := {
         Notation.dot x := let* x := M.read x in Pure x.(exec_result) : M _;
       }.
-      Global Instance Get_AF_exec_result `{State.Trait}
+      Global Instance Get_AF_exec_result
         : Notation.DoubleColon t "exec_result" := {
         Notation.double_colon x
           :=
           let* x := M.read x in Pure x.(exec_result) : M _;
       }.
-      Global Instance Get__marker `{State.Trait} : Notation.Dot "_marker" := {
+      Global Instance Get__marker : Notation.Dot "_marker" := {
         Notation.dot x := let* x := M.read x in Pure x.(_marker) : M _;
       }.
-      Global Instance Get_AF__marker `{State.Trait}
-        : Notation.DoubleColon t "_marker" := {
+      Global Instance Get_AF__marker : Notation.DoubleColon t "_marker" := {
         Notation.double_colon x := let* x := M.read x in Pure x.(_marker) : M _;
       }.
     End CallDryRunResult.
@@ -1195,35 +1293,36 @@ Module client.
   Definition CallDryRunResult
       (E V : Set)
       `{State.Trait}
-      `{ink_env.types.Environment.Trait E}
+      {ℋ_0 : ink_env.types.Environment.Trait E}
       : Set :=
     M.val (CallDryRunResult.t (E := E) (V := V)).
   
   Module CallResult.
     Section CallResult.
+      Context `{State.Trait}.
+      
       Context {C E V : Set}.
+      
       Context
-        `{subxt.config.Config.Trait C}
-        `{ink_env.types.Environment.Trait E}.
+        {ℋ_0 : subxt.config.Config.Trait C}
+        {ℋ_1 : ink_env.types.Environment.Trait E}.
       Unset Primitive Projections.
-      Record t `{State.Trait} : Set := {
+      Record t : Set := {
         dry_run : ink_e2e.client.CallDryRunResult E V;
         events : subxt.blocks.block_types.ExtrinsicEvents C;
       }.
       Global Set Primitive Projections.
       
-      Global Instance Get_dry_run `{State.Trait} : Notation.Dot "dry_run" := {
+      Global Instance Get_dry_run : Notation.Dot "dry_run" := {
         Notation.dot x := let* x := M.read x in Pure x.(dry_run) : M _;
       }.
-      Global Instance Get_AF_dry_run `{State.Trait}
-        : Notation.DoubleColon t "dry_run" := {
+      Global Instance Get_AF_dry_run : Notation.DoubleColon t "dry_run" := {
         Notation.double_colon x := let* x := M.read x in Pure x.(dry_run) : M _;
       }.
-      Global Instance Get_events `{State.Trait} : Notation.Dot "events" := {
+      Global Instance Get_events : Notation.Dot "events" := {
         Notation.dot x := let* x := M.read x in Pure x.(events) : M _;
       }.
-      Global Instance Get_AF_events `{State.Trait}
-        : Notation.DoubleColon t "events" := {
+      Global Instance Get_AF_events : Notation.DoubleColon t "events" := {
         Notation.double_colon x := let* x := M.read x in Pure x.(events) : M _;
       }.
     End CallResult.
@@ -1231,32 +1330,36 @@ Module client.
   Definition CallResult
       (C E V : Set)
       `{State.Trait}
-      `{subxt.config.Config.Trait C}
-      `{ink_env.types.Environment.Trait E}
+      {ℋ_0 : subxt.config.Config.Trait C}
+      {ℋ_1 : ink_env.types.Environment.Trait E}
       : Set :=
     M.val (CallResult.t (C := C) (E := E) (V := V)).
   
   Module Impl_core_fmt_Debug_for_ink_e2e_client_CallResult_C_E_V.
     Section Impl_core_fmt_Debug_for_ink_e2e_client_CallResult_C_E_V.
+      Context `{State.Trait}.
+      
       Context {C E V : Set}.
+      
       Context
-        `{subxt.config.Config.Trait C}
-        `{core.fmt.Debug.Trait C}
-        `{ink_env.types.Environment.Trait E}
-        `{core.fmt.Debug.Trait E}
-        `{core.fmt.Debug.Trait (ink_env.types.Environment.Balance (Self := E))}
-        `{core.fmt.Debug.Trait V}.
-      Definition Self `{State.Trait} := ink_e2e.client.CallResult C E V.
+        {ℋ_0 : subxt.config.Config.Trait C}
+        {ℋ_1 : core.fmt.Debug.Trait C}
+        {ℋ_2 : ink_env.types.Environment.Trait E}
+        {ℋ_3 : core.fmt.Debug.Trait E}
+        {ℋ_4 :
+          core.fmt.Debug.Trait (ink_env.types.Environment.Balance (Self := E))}
+        {ℋ_5 : core.fmt.Debug.Trait V}.
+      Definition Self : Set := ink_e2e.client.CallResult C E V.
       
       Parameter fmt :
-          forall `{State.Trait},
           (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
       
-      Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
-        Notation.dot := fmt;
+      Global Instance AssociatedFunction_fmt :
+        Notation.DoubleColon Self "fmt" := {
+        Notation.double_colon := fmt;
       }.
       
-      Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
+      Global Instance I : core.fmt.Debug.Trait Self := {
         core.fmt.Debug.fmt := fmt;
       }.
     End Impl_core_fmt_Debug_for_ink_e2e_client_CallResult_C_E_V.
@@ -1265,23 +1368,26 @@ Module client.
   
   Module Impl_core_fmt_Debug_for_ink_e2e_client_CallDryRunResult_E_V.
     Section Impl_core_fmt_Debug_for_ink_e2e_client_CallDryRunResult_E_V.
+      Context `{State.Trait}.
+      
       Context {E V : Set}.
+      
       Context
-        `{core.fmt.Debug.Trait E}
-        `{ink_env.types.Environment.Trait E}
-        `{core.fmt.Debug.Trait V}
-        `{core.fmt.Debug.Trait E::type["Balance"]}.
-      Definition Self `{State.Trait} := ink_e2e.client.CallDryRunResult E V.
+        {ℋ_0 : core.fmt.Debug.Trait E}
+        {ℋ_1 : ink_env.types.Environment.Trait E}
+        {ℋ_2 : core.fmt.Debug.Trait V}
+        {ℋ_3 : core.fmt.Debug.Trait E::type["Balance"]}.
+      Definition Self : Set := ink_e2e.client.CallDryRunResult E V.
       
       Parameter fmt :
-          forall `{State.Trait},
           (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
       
-      Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
-        Notation.dot := fmt;
+      Global Instance AssociatedFunction_fmt :
+        Notation.DoubleColon Self "fmt" := {
+        Notation.double_colon := fmt;
       }.
       
-      Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
+      Global Instance I : core.fmt.Debug.Trait Self := {
         core.fmt.Debug.fmt := fmt;
       }.
     End Impl_core_fmt_Debug_for_ink_e2e_client_CallDryRunResult_E_V.
@@ -1289,635 +1395,6 @@ Module client.
   End Impl_core_fmt_Debug_for_ink_e2e_client_CallDryRunResult_E_V.
   
   Module Error.
-    Section Error.
-      Context {C E : Set}.
-      Context
-        `{subxt.config.Config.Trait C}
-        `{ink_env.types.Environment.Trait E}
-        `{core.fmt.Debug.Trait (ink_env.types.Environment.Balance (Self := E))}.
-      Inductive t `{State.Trait} : Set :=
-      | ContractNotFound (_ : alloc.string.String)
-      |
-        InstantiateDryRun
-        (_
-          :
-          pallet_contracts_primitives.ContractInstantiateResult
-            C::type["AccountId"]
-            E::type["Balance"])
-      | InstantiateExtrinsic (_ : subxt.error.dispatch_error.DispatchError)
-      |
-        UploadDryRun
-        (_
-          :
-          pallet_contracts_primitives.CodeUploadResult
-            E::type["Hash"]
-            E::type["Balance"])
-      | UploadExtrinsic (_ : subxt.error.dispatch_error.DispatchError)
-      |
-        CallDryRun
-        (_ : pallet_contracts_primitives.ContractExecResult E::type["Balance"])
-      | CallExtrinsic (_ : subxt.error.dispatch_error.DispatchError)
-      | Balance (_ : alloc.string.String)
-      | Decoding (_ : subxt.error.Error).
-    End Error.
-  End Error.
-  Definition Error
-      (C E : Set)
-      `{State.Trait}
-      `{subxt.config.Config.Trait C}
-      `{ink_env.types.Environment.Trait E}
-      `{core.fmt.Debug.Trait (ink_env.types.Environment.Balance (Self := E))}
-      : Set :=
-    Error.t (C := C) (E := E).
-  
-  Module Impl_core_fmt_Debug_for_ink_e2e_client_Error_C_E.
-    Section Impl_core_fmt_Debug_for_ink_e2e_client_Error_C_E.
-      Context {C E : Set}.
-      Context
-        `{subxt.config.Config.Trait C}
-        `{ink_env.types.Environment.Trait E}
-        `{core.fmt.Debug.Trait (ink_env.types.Environment.Balance (Self := E))}.
-      Definition Self `{State.Trait} := ink_e2e.client.Error C E.
-      
-      Parameter fmt :
-          forall `{State.Trait},
-          (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
-      
-      Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
-        Notation.dot := fmt;
-      }.
-      
-      Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
-        core.fmt.Debug.fmt := fmt;
-      }.
-    End Impl_core_fmt_Debug_for_ink_e2e_client_Error_C_E.
-    Global Hint Resolve I : core.
-  End Impl_core_fmt_Debug_for_ink_e2e_client_Error_C_E.
-  
-  (* Module Impl_core_fmt_Debug_for_ink_e2e_client_ContractInstantiatedEvent_E.
-    (* Section Impl_core_fmt_Debug_for_ink_e2e_client_ContractInstantiatedEvent_E.
-      Context {E : Set}.
-      Context
-        `{core.fmt.Debug.Trait E}
-        `{ink_env.types.Environment.Trait E}
-        `{core.fmt.Debug.Trait E::type["AccountId"]}
-        `{core.fmt.Debug.Trait E::type["AccountId"]}.
-      Definition Self `{State.Trait} :=
-        ink_e2e.client.ContractInstantiatedEvent E.
-      
-      Parameter fmt :
-          forall `{State.Trait},
-          (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
-      
-      Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
-        Notation.dot := fmt;
-      }.
-      
-      Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
-        core.fmt.Debug.fmt := fmt;
-      }.
-    End Impl_core_fmt_Debug_for_ink_e2e_client_ContractInstantiatedEvent_E. *)
-    Global Hint Resolve I : core.
-  End Impl_core_fmt_Debug_for_ink_e2e_client_ContractInstantiatedEvent_E. *)
-  
-  (* Module Impl_scale_encode_EncodeAsType_for_ink_e2e_client_ContractInstantiatedEvent_E.
-    (* Section Impl_scale_encode_EncodeAsType_for_ink_e2e_client_ContractInstantiatedEvent_E.
-      Context {E : Set}.
-      Context
-        `{ink_env.types.Environment.Trait E}
-        `{scale_encode.EncodeAsType.Trait E}.
-      Definition Self `{State.Trait} :=
-        ink_e2e.client.ContractInstantiatedEvent E.
-      
-      Parameter encode_as_type_to :
-          forall `{State.Trait},
-          (ref Self) ->
-            u32 ->
-            (ref scale_info.portable.PortableRegistry) ->
-            (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
-            M (core.result.Result unit scale_encode.error.Error).
-      
-      Global Instance Method_encode_as_type_to `{State.Trait} :
-        Notation.Dot "encode_as_type_to" := {
-        Notation.dot := encode_as_type_to;
-      }.
-      
-      Global Instance I `{State.Trait}
-        : scale_encode.EncodeAsType.Trait Self := {
-        scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
-      }.
-    End Impl_scale_encode_EncodeAsType_for_ink_e2e_client_ContractInstantiatedEvent_E. *)
-    Global Hint Resolve I : core.
-  End Impl_scale_encode_EncodeAsType_for_ink_e2e_client_ContractInstantiatedEvent_E. *)
-  
-  (* Module Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_ContractInstantiatedEvent_E.
-    (* Section Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_ContractInstantiatedEvent_E.
-      Context {E : Set}.
-      Context
-        `{ink_env.types.Environment.Trait E}
-        `{scale_encode.EncodeAsType.Trait E}.
-      Definition Self `{State.Trait} :=
-        ink_e2e.client.ContractInstantiatedEvent E.
-      
-      Parameter encode_as_fields_to :
-          forall `{State.Trait},
-          (ref Self) ->
-            (ref (Slice scale_encode.PortableField)) ->
-            (ref scale_info.portable.PortableRegistry) ->
-            (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
-            M (core.result.Result unit scale_encode.error.Error).
-      
-      Global Instance Method_encode_as_fields_to `{State.Trait} :
-        Notation.Dot "encode_as_fields_to" := {
-        Notation.dot := encode_as_fields_to;
-      }.
-      
-      Global Instance I `{State.Trait}
-        : scale_encode.EncodeAsFields.Trait Self := {
-        scale_encode.EncodeAsFields.encode_as_fields_to := encode_as_fields_to;
-      }.
-    End Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_ContractInstantiatedEvent_E. *)
-    Global Hint Resolve I : core.
-  End Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_ContractInstantiatedEvent_E. *)
-  
-  (* Module Impl_subxt_events_StaticEvent_for_ink_e2e_client_ContractInstantiatedEvent_E.
-    (* Section Impl_subxt_events_StaticEvent_for_ink_e2e_client_ContractInstantiatedEvent_E.
-      Context {E : Set}.
-      Context `{ink_env.types.Environment.Trait E}.
-      Definition Self `{State.Trait} :=
-        ink_e2e.client.ContractInstantiatedEvent E.
-      
-      Definition PALLET `{State.Trait} := Pure (mk_str "Contracts").
-      
-      Global Instance AssociatedFunction_PALLET `{State.Trait} :
-        Notation.DoubleColon Self "PALLET" := {
-        Notation.double_colon := PALLET;
-      }.
-      
-      Definition EVENT `{State.Trait} := Pure (mk_str "Instantiated").
-      
-      Global Instance AssociatedFunction_EVENT `{State.Trait} :
-        Notation.DoubleColon Self "EVENT" := {
-        Notation.double_colon := EVENT;
-      }.
-      
-      Global Instance I `{State.Trait}
-        : subxt.events.StaticEvent.Trait Self := {
-        subxt.events.StaticEvent.PALLET := PALLET;
-        subxt.events.StaticEvent.EVENT := EVENT;
-      }.
-    End Impl_subxt_events_StaticEvent_for_ink_e2e_client_ContractInstantiatedEvent_E. *)
-    Global Hint Resolve I : core.
-  End Impl_subxt_events_StaticEvent_for_ink_e2e_client_ContractInstantiatedEvent_E. *)
-  
-  (* Module Impl_core_fmt_Debug_for_ink_e2e_client_CodeStoredEvent_E.
-    (* Section Impl_core_fmt_Debug_for_ink_e2e_client_CodeStoredEvent_E.
-      Context {E : Set}.
-      Context
-        `{core.fmt.Debug.Trait E}
-        `{ink_env.types.Environment.Trait E}
-        `{core.fmt.Debug.Trait E::type["Hash"]}.
-      Definition Self `{State.Trait} := ink_e2e.client.CodeStoredEvent E.
-      
-      Parameter fmt :
-          forall `{State.Trait},
-          (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
-      
-      Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
-        Notation.dot := fmt;
-      }.
-      
-      Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
-        core.fmt.Debug.fmt := fmt;
-      }.
-    End Impl_core_fmt_Debug_for_ink_e2e_client_CodeStoredEvent_E. *)
-    Global Hint Resolve I : core.
-  End Impl_core_fmt_Debug_for_ink_e2e_client_CodeStoredEvent_E. *)
-  
-  (* Module Impl_scale_encode_EncodeAsType_for_ink_e2e_client_CodeStoredEvent_E.
-    (* Section Impl_scale_encode_EncodeAsType_for_ink_e2e_client_CodeStoredEvent_E.
-      Context {E : Set}.
-      Context
-        `{ink_env.types.Environment.Trait E}
-        `{scale_encode.EncodeAsType.Trait E}.
-      Definition Self `{State.Trait} := ink_e2e.client.CodeStoredEvent E.
-      
-      Parameter encode_as_type_to :
-          forall `{State.Trait},
-          (ref Self) ->
-            u32 ->
-            (ref scale_info.portable.PortableRegistry) ->
-            (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
-            M (core.result.Result unit scale_encode.error.Error).
-      
-      Global Instance Method_encode_as_type_to `{State.Trait} :
-        Notation.Dot "encode_as_type_to" := {
-        Notation.dot := encode_as_type_to;
-      }.
-      
-      Global Instance I `{State.Trait}
-        : scale_encode.EncodeAsType.Trait Self := {
-        scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
-      }.
-    End Impl_scale_encode_EncodeAsType_for_ink_e2e_client_CodeStoredEvent_E. *)
-    Global Hint Resolve I : core.
-  End Impl_scale_encode_EncodeAsType_for_ink_e2e_client_CodeStoredEvent_E. *)
-  
-  (* Module Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_CodeStoredEvent_E.
-    (* Section Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_CodeStoredEvent_E.
-      Context {E : Set}.
-      Context
-        `{ink_env.types.Environment.Trait E}
-        `{scale_encode.EncodeAsType.Trait E}.
-      Definition Self `{State.Trait} := ink_e2e.client.CodeStoredEvent E.
-      
-      Parameter encode_as_fields_to :
-          forall `{State.Trait},
-          (ref Self) ->
-            (ref (Slice scale_encode.PortableField)) ->
-            (ref scale_info.portable.PortableRegistry) ->
-            (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
-            M (core.result.Result unit scale_encode.error.Error).
-      
-      Global Instance Method_encode_as_fields_to `{State.Trait} :
-        Notation.Dot "encode_as_fields_to" := {
-        Notation.dot := encode_as_fields_to;
-      }.
-      
-      Global Instance I `{State.Trait}
-        : scale_encode.EncodeAsFields.Trait Self := {
-        scale_encode.EncodeAsFields.encode_as_fields_to := encode_as_fields_to;
-      }.
-    End Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_CodeStoredEvent_E. *)
-    Global Hint Resolve I : core.
-  End Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_CodeStoredEvent_E. *)
-  
-  (* Module Impl_subxt_events_StaticEvent_for_ink_e2e_client_CodeStoredEvent_E.
-    (* Section Impl_subxt_events_StaticEvent_for_ink_e2e_client_CodeStoredEvent_E.
-      Context {E : Set}.
-      Context `{ink_env.types.Environment.Trait E}.
-      Definition Self `{State.Trait} := ink_e2e.client.CodeStoredEvent E.
-      
-      Definition PALLET `{State.Trait} := Pure (mk_str "Contracts").
-      
-      Global Instance AssociatedFunction_PALLET `{State.Trait} :
-        Notation.DoubleColon Self "PALLET" := {
-        Notation.double_colon := PALLET;
-      }.
-      
-      Definition EVENT `{State.Trait} := Pure (mk_str "CodeStored").
-      
-      Global Instance AssociatedFunction_EVENT `{State.Trait} :
-        Notation.DoubleColon Self "EVENT" := {
-        Notation.double_colon := EVENT;
-      }.
-      
-      Global Instance I `{State.Trait}
-        : subxt.events.StaticEvent.Trait Self := {
-        subxt.events.StaticEvent.PALLET := PALLET;
-        subxt.events.StaticEvent.EVENT := EVENT;
-      }.
-    End Impl_subxt_events_StaticEvent_for_ink_e2e_client_CodeStoredEvent_E. *)
-    Global Hint Resolve I : core.
-  End Impl_subxt_events_StaticEvent_for_ink_e2e_client_CodeStoredEvent_E. *)
-  
-  Module Client.
-    Section Client.
-      Context {C E : Set}.
-      Context
-        `{subxt.config.Config.Trait C}
-        `{ink_env.types.Environment.Trait E}.
-      Unset Primitive Projections.
-      Record t `{State.Trait} : Set := {
-        api : ink_e2e.xts.ContractsApi C E;
-        contracts
-          :
-          alloc.collections.btree.map.BTreeMap
-            alloc.string.String
-            std.path.PathBuf
-            alloc.collections.btree.map.BTreeMap.Default.A;
-      }.
-      Global Set Primitive Projections.
-      
-      Global Instance Get_api `{State.Trait} : Notation.Dot "api" := {
-        Notation.dot x := let* x := M.read x in Pure x.(api) : M _;
-      }.
-      Global Instance Get_AF_api `{State.Trait}
-        : Notation.DoubleColon t "api" := {
-        Notation.double_colon x := let* x := M.read x in Pure x.(api) : M _;
-      }.
-      Global Instance Get_contracts `{State.Trait}
-        : Notation.Dot "contracts" := {
-        Notation.dot x := let* x := M.read x in Pure x.(contracts) : M _;
-      }.
-      Global Instance Get_AF_contracts `{State.Trait}
-        : Notation.DoubleColon t "contracts" := {
-        Notation.double_colon x
-          :=
-          let* x := M.read x in Pure x.(contracts) : M _;
-      }.
-    End Client.
-  End Client.
-  Definition Client
-      (C E : Set)
-      `{State.Trait}
-      `{subxt.config.Config.Trait C}
-      `{ink_env.types.Environment.Trait E}
-      : Set :=
-    M.val (Client.t (C := C) (E := E)).
-End client.
-
-Definition CallBuilderFinal (E Args RetType : Set) `{State.Trait} `{ink_env.types.Environment.Trait E} : Set :=
-  ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallBuilder
-    E
-    (ink_env.call.common.Set_
-      (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Call
-        E))
-    (ink_env.call.common.Set_
-      (ink_env.call.execution_input.ExecutionInput Args))
-    (ink_env.call.common.Set_ (ink_env.call.common.ReturnType RetType)).
-
-Module InstantiationResult.
-  Section InstantiationResult.
-    Context {C E : Set}.
-    Context `{subxt.config.Config.Trait C} `{ink_env.types.Environment.Trait E}.
-    Unset Primitive Projections.
-    Record t `{State.Trait} : Set := {
-      account_id : E::type["AccountId"];
-      dry_run
-        :
-        pallet_contracts_primitives.ContractInstantiateResult
-          C::type["AccountId"]
-          E::type["Balance"];
-      events : subxt.blocks.block_types.ExtrinsicEvents C;
-    }.
-    Global Set Primitive Projections.
-    
-    Global Instance Get_account_id `{State.Trait}
-      : Notation.Dot "account_id" := {
-      Notation.dot x := let* x := M.read x in Pure x.(account_id) : M _;
-    }.
-    Global Instance Get_AF_account_id `{State.Trait}
-      : Notation.DoubleColon t "account_id" := {
-      Notation.double_colon x
-        :=
-        let* x := M.read x in Pure x.(account_id) : M _;
-    }.
-    Global Instance Get_dry_run `{State.Trait} : Notation.Dot "dry_run" := {
-      Notation.dot x := let* x := M.read x in Pure x.(dry_run) : M _;
-    }.
-    Global Instance Get_AF_dry_run `{State.Trait}
-      : Notation.DoubleColon t "dry_run" := {
-      Notation.double_colon x := let* x := M.read x in Pure x.(dry_run) : M _;
-    }.
-    Global Instance Get_events `{State.Trait} : Notation.Dot "events" := {
-      Notation.dot x := let* x := M.read x in Pure x.(events) : M _;
-    }.
-    Global Instance Get_AF_events `{State.Trait}
-      : Notation.DoubleColon t "events" := {
-      Notation.double_colon x := let* x := M.read x in Pure x.(events) : M _;
-    }.
-  End InstantiationResult.
-End InstantiationResult.
-Definition InstantiationResult
-    (C E : Set)
-    `{State.Trait}
-    `{subxt.config.Config.Trait C}
-    `{ink_env.types.Environment.Trait E}
-    : Set :=
-  M.val (InstantiationResult.t (C := C) (E := E)).
-
-Module UploadResult.
-  Section UploadResult.
-    Context {C E : Set}.
-    Context `{subxt.config.Config.Trait C} `{ink_env.types.Environment.Trait E}.
-    Unset Primitive Projections.
-    Record t `{State.Trait} : Set := {
-      code_hash : E::type["Hash"];
-      dry_run
-        :
-        pallet_contracts_primitives.CodeUploadResult
-          E::type["Hash"]
-          E::type["Balance"];
-      events : subxt.blocks.block_types.ExtrinsicEvents C;
-    }.
-    Global Set Primitive Projections.
-    
-    Global Instance Get_code_hash `{State.Trait} : Notation.Dot "code_hash" := {
-      Notation.dot x := let* x := M.read x in Pure x.(code_hash) : M _;
-    }.
-    Global Instance Get_AF_code_hash `{State.Trait}
-      : Notation.DoubleColon t "code_hash" := {
-      Notation.double_colon x := let* x := M.read x in Pure x.(code_hash) : M _;
-    }.
-    Global Instance Get_dry_run `{State.Trait} : Notation.Dot "dry_run" := {
-      Notation.dot x := let* x := M.read x in Pure x.(dry_run) : M _;
-    }.
-    Global Instance Get_AF_dry_run `{State.Trait}
-      : Notation.DoubleColon t "dry_run" := {
-      Notation.double_colon x := let* x := M.read x in Pure x.(dry_run) : M _;
-    }.
-    Global Instance Get_events `{State.Trait} : Notation.Dot "events" := {
-      Notation.dot x := let* x := M.read x in Pure x.(events) : M _;
-    }.
-    Global Instance Get_AF_events `{State.Trait}
-      : Notation.DoubleColon t "events" := {
-      Notation.double_colon x := let* x := M.read x in Pure x.(events) : M _;
-    }.
-  End UploadResult.
-End UploadResult.
-Definition UploadResult
-    (C E : Set)
-    `{State.Trait}
-    `{subxt.config.Config.Trait C}
-    `{ink_env.types.Environment.Trait E}
-    : Set :=
-  M.val (UploadResult.t (C := C) (E := E)).
-
-Module Impl_core_fmt_Debug_for_ink_e2e_client_UploadResult_C_E.
-  Section Impl_core_fmt_Debug_for_ink_e2e_client_UploadResult_C_E.
-    Context {C E : Set}.
-    Context
-      `{subxt.config.Config.Trait C}
-      `{ink_env.types.Environment.Trait E}
-      `{core.fmt.Debug.Trait (ink_env.types.Environment.Balance (Self := E))}
-      `{core.fmt.Debug.Trait (ink_env.types.Environment.Hash (Self := E))}.
-    Definition Self `{State.Trait} := ink_e2e.client.UploadResult C E.
-    
-    Parameter fmt :
-        forall `{State.Trait},
-        (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
-    
-    Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
-      Notation.dot := fmt;
-    }.
-    
-    Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
-      core.fmt.Debug.fmt := fmt;
-    }.
-  End Impl_core_fmt_Debug_for_ink_e2e_client_UploadResult_C_E.
-  Global Hint Resolve I : core.
-End Impl_core_fmt_Debug_for_ink_e2e_client_UploadResult_C_E.
-
-Module Impl_core_fmt_Debug_for_ink_e2e_client_InstantiationResult_C_E.
-  Section Impl_core_fmt_Debug_for_ink_e2e_client_InstantiationResult_C_E.
-    Context {C E : Set}.
-    Context
-      `{subxt.config.Config.Trait C}
-      `{core.fmt.Debug.Trait C::type["AccountId"]}
-      `{ink_env.types.Environment.Trait E}
-      `{core.fmt.Debug.Trait (ink_env.types.Environment.AccountId (Self := E))}
-      `{core.fmt.Debug.Trait (ink_env.types.Environment.Balance (Self := E))}.
-    Definition Self `{State.Trait} := ink_e2e.client.InstantiationResult C E.
-    
-    Parameter fmt :
-        forall `{State.Trait},
-        (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
-    
-    Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
-      Notation.dot := fmt;
-    }.
-    
-    Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
-      core.fmt.Debug.fmt := fmt;
-    }.
-  End Impl_core_fmt_Debug_for_ink_e2e_client_InstantiationResult_C_E.
-  Global Hint Resolve I : core.
-End Impl_core_fmt_Debug_for_ink_e2e_client_InstantiationResult_C_E.
-
-Module CallResult.
-  Section CallResult.
-    Context {C E V : Set}.
-    Context `{subxt.config.Config.Trait C} `{ink_env.types.Environment.Trait E}.
-    Unset Primitive Projections.
-    Record t `{State.Trait} : Set := {
-      dry_run : ink_e2e.client.CallDryRunResult E V;
-      events : subxt.blocks.block_types.ExtrinsicEvents C;
-    }.
-    Global Set Primitive Projections.
-    
-    Global Instance Get_dry_run `{State.Trait} : Notation.Dot "dry_run" := {
-      Notation.dot x := let* x := M.read x in Pure x.(dry_run) : M _;
-    }.
-    Global Instance Get_AF_dry_run `{State.Trait}
-      : Notation.DoubleColon t "dry_run" := {
-      Notation.double_colon x := let* x := M.read x in Pure x.(dry_run) : M _;
-    }.
-    Global Instance Get_events `{State.Trait} : Notation.Dot "events" := {
-      Notation.dot x := let* x := M.read x in Pure x.(events) : M _;
-    }.
-    Global Instance Get_AF_events `{State.Trait}
-      : Notation.DoubleColon t "events" := {
-      Notation.double_colon x := let* x := M.read x in Pure x.(events) : M _;
-    }.
-  End CallResult.
-End CallResult.
-Definition CallResult
-    (C E V : Set)
-    `{State.Trait}
-    `{subxt.config.Config.Trait C}
-    `{ink_env.types.Environment.Trait E}
-    : Set :=
-  M.val (CallResult.t (C := C) (E := E) (V := V)).
-
-Module Impl_core_fmt_Debug_for_ink_e2e_client_CallResult_C_E_V.
-  Section Impl_core_fmt_Debug_for_ink_e2e_client_CallResult_C_E_V.
-    Context {C E V : Set}.
-    Context
-      `{subxt.config.Config.Trait C}
-      `{core.fmt.Debug.Trait C}
-      `{ink_env.types.Environment.Trait E}
-      `{core.fmt.Debug.Trait E}
-      `{core.fmt.Debug.Trait (ink_env.types.Environment.Balance (Self := E))}
-      `{core.fmt.Debug.Trait V}.
-    Definition Self `{State.Trait} := ink_e2e.client.CallResult C E V.
-    
-    Parameter fmt :
-        forall `{State.Trait},
-        (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
-    
-    Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
-      Notation.dot := fmt;
-    }.
-    
-    Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
-      core.fmt.Debug.fmt := fmt;
-    }.
-  End Impl_core_fmt_Debug_for_ink_e2e_client_CallResult_C_E_V.
-  Global Hint Resolve I : core.
-End Impl_core_fmt_Debug_for_ink_e2e_client_CallResult_C_E_V.
-
-Module CallDryRunResult.
-  Section CallDryRunResult.
-    Context {E V : Set}.
-    Context `{ink_env.types.Environment.Trait E}.
-    Unset Primitive Projections.
-    Record t `{State.Trait} : Set := {
-      exec_result
-        :
-        pallet_contracts_primitives.ContractExecResult E::type["Balance"];
-      _marker : core.marker.PhantomData V;
-    }.
-    Global Set Primitive Projections.
-    
-    Global Instance Get_exec_result `{State.Trait}
-      : Notation.Dot "exec_result" := {
-      Notation.dot x := let* x := M.read x in Pure x.(exec_result) : M _;
-    }.
-    Global Instance Get_AF_exec_result `{State.Trait}
-      : Notation.DoubleColon t "exec_result" := {
-      Notation.double_colon x
-        :=
-        let* x := M.read x in Pure x.(exec_result) : M _;
-    }.
-    Global Instance Get__marker `{State.Trait} : Notation.Dot "_marker" := {
-      Notation.dot x := let* x := M.read x in Pure x.(_marker) : M _;
-    }.
-    Global Instance Get_AF__marker `{State.Trait}
-      : Notation.DoubleColon t "_marker" := {
-      Notation.double_colon x := let* x := M.read x in Pure x.(_marker) : M _;
-    }.
-  End CallDryRunResult.
-End CallDryRunResult.
-Definition CallDryRunResult
-    (E V : Set)
-    `{State.Trait}
-    `{ink_env.types.Environment.Trait E}
-    : Set :=
-  M.val (CallDryRunResult.t (E := E) (V := V)).
-
-Module Impl_core_fmt_Debug_for_ink_e2e_client_CallDryRunResult_E_V.
-  Section Impl_core_fmt_Debug_for_ink_e2e_client_CallDryRunResult_E_V.
-    Context {E V : Set}.
-    Context
-      `{core.fmt.Debug.Trait E}
-      `{ink_env.types.Environment.Trait E}
-      `{core.fmt.Debug.Trait V}
-      `{core.fmt.Debug.Trait E::type["Balance"]}.
-    Definition Self `{State.Trait} := ink_e2e.client.CallDryRunResult E V.
-    
-    Parameter fmt :
-        forall `{State.Trait},
-        (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
-    
-    Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
-      Notation.dot := fmt;
-    }.
-    
-    Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
-      core.fmt.Debug.fmt := fmt;
-    }.
-  End Impl_core_fmt_Debug_for_ink_e2e_client_CallDryRunResult_E_V.
-  Global Hint Resolve I : core.
-End Impl_core_fmt_Debug_for_ink_e2e_client_CallDryRunResult_E_V.
-
-Module Error.
-  Section Error.
-    Context {C E : Set}.
-    Context
-      `{subxt.config.Config.Trait C}
-      `{ink_env.types.Environment.Trait E}
-      `{core.fmt.Debug.Trait (ink_env.types.Environment.Balance (Self := E))}.
     Inductive t `{State.Trait} : Set :=
     | ContractNotFound (_ : alloc.string.String)
     |
@@ -1943,34 +1420,691 @@ Module Error.
     | Balance (_ : alloc.string.String)
     | Decoding (_ : subxt.error.Error).
   End Error.
+  Definition Error
+      (C E : Set)
+      `{State.Trait}
+      {ℋ_0 : subxt.config.Config.Trait C}
+      {ℋ_1 : ink_env.types.Environment.Trait E}
+      {ℋ_2 :
+        core.fmt.Debug.Trait (ink_env.types.Environment.Balance (Self := E))}
+      : Set :=
+    Error.t (C := C) (E := E).
+  
+  Module Impl_core_fmt_Debug_for_ink_e2e_client_Error_C_E.
+    Section Impl_core_fmt_Debug_for_ink_e2e_client_Error_C_E.
+      Context `{State.Trait}.
+      
+      Context {C E : Set}.
+      
+      Context
+        {ℋ_0 : subxt.config.Config.Trait C}
+        {ℋ_1 : ink_env.types.Environment.Trait E}
+        {ℋ_2 :
+          core.fmt.Debug.Trait (ink_env.types.Environment.Balance (Self := E))}.
+      Definition Self : Set := ink_e2e.client.Error C E.
+      
+      Parameter fmt :
+          (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+      
+      Global Instance AssociatedFunction_fmt :
+        Notation.DoubleColon Self "fmt" := {
+        Notation.double_colon := fmt;
+      }.
+      
+      Global Instance I : core.fmt.Debug.Trait Self := {
+        core.fmt.Debug.fmt := fmt;
+      }.
+    End Impl_core_fmt_Debug_for_ink_e2e_client_Error_C_E.
+    Global Hint Resolve I : core.
+  End Impl_core_fmt_Debug_for_ink_e2e_client_Error_C_E.
+  
+  (* Module Impl_core_fmt_Debug_for_ink_e2e_client_ContractInstantiatedEvent_E.
+    (* Section Impl_core_fmt_Debug_for_ink_e2e_client_ContractInstantiatedEvent_E.
+      Context `{State.Trait}.
+      
+      Context {E : Set}.
+      
+      Context
+        {ℋ_0 : core.fmt.Debug.Trait E}
+        {ℋ_1 : ink_env.types.Environment.Trait E}
+        {ℋ_2 : core.fmt.Debug.Trait E::type["AccountId"]}
+        {ℋ_3 : core.fmt.Debug.Trait E::type["AccountId"]}.
+      Definition Self : Set := ink_e2e.client.ContractInstantiatedEvent E.
+      
+      Parameter fmt :
+          (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+      
+      Global Instance AssociatedFunction_fmt :
+        Notation.DoubleColon Self "fmt" := {
+        Notation.double_colon := fmt;
+      }.
+      
+      Global Instance I : core.fmt.Debug.Trait Self := {
+        core.fmt.Debug.fmt := fmt;
+      }.
+    End Impl_core_fmt_Debug_for_ink_e2e_client_ContractInstantiatedEvent_E. *)
+    Global Hint Resolve I : core.
+  End Impl_core_fmt_Debug_for_ink_e2e_client_ContractInstantiatedEvent_E. *)
+  
+  (* Module Impl_scale_encode_EncodeAsType_for_ink_e2e_client_ContractInstantiatedEvent_E.
+    (* Section Impl_scale_encode_EncodeAsType_for_ink_e2e_client_ContractInstantiatedEvent_E.
+      Context `{State.Trait}.
+      
+      Context {E : Set}.
+      
+      Context
+        {ℋ_0 : ink_env.types.Environment.Trait E}
+        {ℋ_1 : scale_encode.EncodeAsType.Trait E}.
+      Definition Self : Set := ink_e2e.client.ContractInstantiatedEvent E.
+      
+      Parameter encode_as_type_to :
+          (ref Self) ->
+            u32 ->
+            (ref scale_info.portable.PortableRegistry) ->
+            (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
+            M (core.result.Result unit scale_encode.error.Error).
+      
+      Global Instance AssociatedFunction_encode_as_type_to :
+        Notation.DoubleColon Self "encode_as_type_to" := {
+        Notation.double_colon := encode_as_type_to;
+      }.
+      
+      Global Instance I : scale_encode.EncodeAsType.Trait Self := {
+        scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
+      }.
+    End Impl_scale_encode_EncodeAsType_for_ink_e2e_client_ContractInstantiatedEvent_E. *)
+    Global Hint Resolve I : core.
+  End Impl_scale_encode_EncodeAsType_for_ink_e2e_client_ContractInstantiatedEvent_E. *)
+  
+  (* Module Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_ContractInstantiatedEvent_E.
+    (* Section Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_ContractInstantiatedEvent_E.
+      Context `{State.Trait}.
+      
+      Context {E : Set}.
+      
+      Context
+        {ℋ_0 : ink_env.types.Environment.Trait E}
+        {ℋ_1 : scale_encode.EncodeAsType.Trait E}.
+      Definition Self : Set := ink_e2e.client.ContractInstantiatedEvent E.
+      
+      Parameter encode_as_fields_to :
+          (ref Self) ->
+            (ref (Slice scale_encode.PortableField)) ->
+            (ref scale_info.portable.PortableRegistry) ->
+            (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
+            M (core.result.Result unit scale_encode.error.Error).
+      
+      Global Instance AssociatedFunction_encode_as_fields_to :
+        Notation.DoubleColon Self "encode_as_fields_to" := {
+        Notation.double_colon := encode_as_fields_to;
+      }.
+      
+      Global Instance I : scale_encode.EncodeAsFields.Trait Self := {
+        scale_encode.EncodeAsFields.encode_as_fields_to := encode_as_fields_to;
+      }.
+    End Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_ContractInstantiatedEvent_E. *)
+    Global Hint Resolve I : core.
+  End Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_ContractInstantiatedEvent_E. *)
+  
+  (* Module Impl_subxt_events_StaticEvent_for_ink_e2e_client_ContractInstantiatedEvent_E.
+    (* Section Impl_subxt_events_StaticEvent_for_ink_e2e_client_ContractInstantiatedEvent_E.
+      Context `{State.Trait}.
+      
+      Context {E : Set}.
+      
+      Context {ℋ_0 : ink_env.types.Environment.Trait E}.
+      Definition Self : Set := ink_e2e.client.ContractInstantiatedEvent E.
+      
+      Definition PALLET  := Pure (mk_str "Contracts").
+      
+      Global Instance AssociatedFunction_PALLET :
+        Notation.DoubleColon Self "PALLET" := {
+        Notation.double_colon := PALLET;
+      }.
+      
+      Definition EVENT  := Pure (mk_str "Instantiated").
+      
+      Global Instance AssociatedFunction_EVENT :
+        Notation.DoubleColon Self "EVENT" := {
+        Notation.double_colon := EVENT;
+      }.
+      
+      Global Instance I : subxt.events.StaticEvent.Trait Self := {
+        subxt.events.StaticEvent.PALLET := PALLET;
+        subxt.events.StaticEvent.EVENT := EVENT;
+      }.
+    End Impl_subxt_events_StaticEvent_for_ink_e2e_client_ContractInstantiatedEvent_E. *)
+    Global Hint Resolve I : core.
+  End Impl_subxt_events_StaticEvent_for_ink_e2e_client_ContractInstantiatedEvent_E. *)
+  
+  (* Module Impl_core_fmt_Debug_for_ink_e2e_client_CodeStoredEvent_E.
+    (* Section Impl_core_fmt_Debug_for_ink_e2e_client_CodeStoredEvent_E.
+      Context `{State.Trait}.
+      
+      Context {E : Set}.
+      
+      Context
+        {ℋ_0 : core.fmt.Debug.Trait E}
+        {ℋ_1 : ink_env.types.Environment.Trait E}
+        {ℋ_2 : core.fmt.Debug.Trait E::type["Hash"]}.
+      Definition Self : Set := ink_e2e.client.CodeStoredEvent E.
+      
+      Parameter fmt :
+          (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+      
+      Global Instance AssociatedFunction_fmt :
+        Notation.DoubleColon Self "fmt" := {
+        Notation.double_colon := fmt;
+      }.
+      
+      Global Instance I : core.fmt.Debug.Trait Self := {
+        core.fmt.Debug.fmt := fmt;
+      }.
+    End Impl_core_fmt_Debug_for_ink_e2e_client_CodeStoredEvent_E. *)
+    Global Hint Resolve I : core.
+  End Impl_core_fmt_Debug_for_ink_e2e_client_CodeStoredEvent_E. *)
+  
+  (* Module Impl_scale_encode_EncodeAsType_for_ink_e2e_client_CodeStoredEvent_E.
+    (* Section Impl_scale_encode_EncodeAsType_for_ink_e2e_client_CodeStoredEvent_E.
+      Context `{State.Trait}.
+      
+      Context {E : Set}.
+      
+      Context
+        {ℋ_0 : ink_env.types.Environment.Trait E}
+        {ℋ_1 : scale_encode.EncodeAsType.Trait E}.
+      Definition Self : Set := ink_e2e.client.CodeStoredEvent E.
+      
+      Parameter encode_as_type_to :
+          (ref Self) ->
+            u32 ->
+            (ref scale_info.portable.PortableRegistry) ->
+            (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
+            M (core.result.Result unit scale_encode.error.Error).
+      
+      Global Instance AssociatedFunction_encode_as_type_to :
+        Notation.DoubleColon Self "encode_as_type_to" := {
+        Notation.double_colon := encode_as_type_to;
+      }.
+      
+      Global Instance I : scale_encode.EncodeAsType.Trait Self := {
+        scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
+      }.
+    End Impl_scale_encode_EncodeAsType_for_ink_e2e_client_CodeStoredEvent_E. *)
+    Global Hint Resolve I : core.
+  End Impl_scale_encode_EncodeAsType_for_ink_e2e_client_CodeStoredEvent_E. *)
+  
+  (* Module Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_CodeStoredEvent_E.
+    (* Section Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_CodeStoredEvent_E.
+      Context `{State.Trait}.
+      
+      Context {E : Set}.
+      
+      Context
+        {ℋ_0 : ink_env.types.Environment.Trait E}
+        {ℋ_1 : scale_encode.EncodeAsType.Trait E}.
+      Definition Self : Set := ink_e2e.client.CodeStoredEvent E.
+      
+      Parameter encode_as_fields_to :
+          (ref Self) ->
+            (ref (Slice scale_encode.PortableField)) ->
+            (ref scale_info.portable.PortableRegistry) ->
+            (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
+            M (core.result.Result unit scale_encode.error.Error).
+      
+      Global Instance AssociatedFunction_encode_as_fields_to :
+        Notation.DoubleColon Self "encode_as_fields_to" := {
+        Notation.double_colon := encode_as_fields_to;
+      }.
+      
+      Global Instance I : scale_encode.EncodeAsFields.Trait Self := {
+        scale_encode.EncodeAsFields.encode_as_fields_to := encode_as_fields_to;
+      }.
+    End Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_CodeStoredEvent_E. *)
+    Global Hint Resolve I : core.
+  End Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_CodeStoredEvent_E. *)
+  
+  (* Module Impl_subxt_events_StaticEvent_for_ink_e2e_client_CodeStoredEvent_E.
+    (* Section Impl_subxt_events_StaticEvent_for_ink_e2e_client_CodeStoredEvent_E.
+      Context `{State.Trait}.
+      
+      Context {E : Set}.
+      
+      Context {ℋ_0 : ink_env.types.Environment.Trait E}.
+      Definition Self : Set := ink_e2e.client.CodeStoredEvent E.
+      
+      Definition PALLET  := Pure (mk_str "Contracts").
+      
+      Global Instance AssociatedFunction_PALLET :
+        Notation.DoubleColon Self "PALLET" := {
+        Notation.double_colon := PALLET;
+      }.
+      
+      Definition EVENT  := Pure (mk_str "CodeStored").
+      
+      Global Instance AssociatedFunction_EVENT :
+        Notation.DoubleColon Self "EVENT" := {
+        Notation.double_colon := EVENT;
+      }.
+      
+      Global Instance I : subxt.events.StaticEvent.Trait Self := {
+        subxt.events.StaticEvent.PALLET := PALLET;
+        subxt.events.StaticEvent.EVENT := EVENT;
+      }.
+    End Impl_subxt_events_StaticEvent_for_ink_e2e_client_CodeStoredEvent_E. *)
+    Global Hint Resolve I : core.
+  End Impl_subxt_events_StaticEvent_for_ink_e2e_client_CodeStoredEvent_E. *)
+  
+  Module Client.
+    Section Client.
+      Context `{State.Trait}.
+      
+      Context {C E : Set}.
+      
+      Context
+        {ℋ_0 : subxt.config.Config.Trait C}
+        {ℋ_1 : ink_env.types.Environment.Trait E}.
+      Unset Primitive Projections.
+      Record t : Set := {
+        api : ink_e2e.xts.ContractsApi C E;
+        contracts
+          :
+          alloc.collections.btree.map.BTreeMap
+            alloc.string.String
+            std.path.PathBuf
+            alloc.collections.btree.map.BTreeMap.Default.A;
+      }.
+      Global Set Primitive Projections.
+      
+      Global Instance Get_api : Notation.Dot "api" := {
+        Notation.dot x := let* x := M.read x in Pure x.(api) : M _;
+      }.
+      Global Instance Get_AF_api : Notation.DoubleColon t "api" := {
+        Notation.double_colon x := let* x := M.read x in Pure x.(api) : M _;
+      }.
+      Global Instance Get_contracts : Notation.Dot "contracts" := {
+        Notation.dot x := let* x := M.read x in Pure x.(contracts) : M _;
+      }.
+      Global Instance Get_AF_contracts : Notation.DoubleColon t "contracts" := {
+        Notation.double_colon x
+          :=
+          let* x := M.read x in Pure x.(contracts) : M _;
+      }.
+    End Client.
+  End Client.
+  Definition Client
+      (C E : Set)
+      `{State.Trait}
+      {ℋ_0 : subxt.config.Config.Trait C}
+      {ℋ_1 : ink_env.types.Environment.Trait E}
+      : Set :=
+    M.val (Client.t (C := C) (E := E)).
+End client.
+
+Definition CallBuilderFinal (E Args RetType : Set) `{State.Trait} `{ink_env.types.Environment.Trait E} : Set :=
+  ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallBuilder
+    E
+    (ink_env.call.common.Set_
+      (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Call
+        E))
+    (ink_env.call.common.Set_
+      (ink_env.call.execution_input.ExecutionInput Args))
+    (ink_env.call.common.Set_ (ink_env.call.common.ReturnType RetType)).
+
+Module InstantiationResult.
+  Section InstantiationResult.
+    Context `{State.Trait}.
+    
+    Context {C E : Set}.
+    
+    Context
+      {ℋ_0 : subxt.config.Config.Trait C}
+      {ℋ_1 : ink_env.types.Environment.Trait E}.
+    Unset Primitive Projections.
+    Record t : Set := {
+      account_id : E::type["AccountId"];
+      dry_run
+        :
+        pallet_contracts_primitives.ContractInstantiateResult
+          C::type["AccountId"]
+          E::type["Balance"];
+      events : subxt.blocks.block_types.ExtrinsicEvents C;
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_account_id : Notation.Dot "account_id" := {
+      Notation.dot x := let* x := M.read x in Pure x.(account_id) : M _;
+    }.
+    Global Instance Get_AF_account_id : Notation.DoubleColon t "account_id" := {
+      Notation.double_colon x
+        :=
+        let* x := M.read x in Pure x.(account_id) : M _;
+    }.
+    Global Instance Get_dry_run : Notation.Dot "dry_run" := {
+      Notation.dot x := let* x := M.read x in Pure x.(dry_run) : M _;
+    }.
+    Global Instance Get_AF_dry_run : Notation.DoubleColon t "dry_run" := {
+      Notation.double_colon x := let* x := M.read x in Pure x.(dry_run) : M _;
+    }.
+    Global Instance Get_events : Notation.Dot "events" := {
+      Notation.dot x := let* x := M.read x in Pure x.(events) : M _;
+    }.
+    Global Instance Get_AF_events : Notation.DoubleColon t "events" := {
+      Notation.double_colon x := let* x := M.read x in Pure x.(events) : M _;
+    }.
+  End InstantiationResult.
+End InstantiationResult.
+Definition InstantiationResult
+    (C E : Set)
+    `{State.Trait}
+    {ℋ_0 : subxt.config.Config.Trait C}
+    {ℋ_1 : ink_env.types.Environment.Trait E}
+    : Set :=
+  M.val (InstantiationResult.t (C := C) (E := E)).
+
+Module UploadResult.
+  Section UploadResult.
+    Context `{State.Trait}.
+    
+    Context {C E : Set}.
+    
+    Context
+      {ℋ_0 : subxt.config.Config.Trait C}
+      {ℋ_1 : ink_env.types.Environment.Trait E}.
+    Unset Primitive Projections.
+    Record t : Set := {
+      code_hash : E::type["Hash"];
+      dry_run
+        :
+        pallet_contracts_primitives.CodeUploadResult
+          E::type["Hash"]
+          E::type["Balance"];
+      events : subxt.blocks.block_types.ExtrinsicEvents C;
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_code_hash : Notation.Dot "code_hash" := {
+      Notation.dot x := let* x := M.read x in Pure x.(code_hash) : M _;
+    }.
+    Global Instance Get_AF_code_hash : Notation.DoubleColon t "code_hash" := {
+      Notation.double_colon x := let* x := M.read x in Pure x.(code_hash) : M _;
+    }.
+    Global Instance Get_dry_run : Notation.Dot "dry_run" := {
+      Notation.dot x := let* x := M.read x in Pure x.(dry_run) : M _;
+    }.
+    Global Instance Get_AF_dry_run : Notation.DoubleColon t "dry_run" := {
+      Notation.double_colon x := let* x := M.read x in Pure x.(dry_run) : M _;
+    }.
+    Global Instance Get_events : Notation.Dot "events" := {
+      Notation.dot x := let* x := M.read x in Pure x.(events) : M _;
+    }.
+    Global Instance Get_AF_events : Notation.DoubleColon t "events" := {
+      Notation.double_colon x := let* x := M.read x in Pure x.(events) : M _;
+    }.
+  End UploadResult.
+End UploadResult.
+Definition UploadResult
+    (C E : Set)
+    `{State.Trait}
+    {ℋ_0 : subxt.config.Config.Trait C}
+    {ℋ_1 : ink_env.types.Environment.Trait E}
+    : Set :=
+  M.val (UploadResult.t (C := C) (E := E)).
+
+Module Impl_core_fmt_Debug_for_ink_e2e_client_UploadResult_C_E.
+  Section Impl_core_fmt_Debug_for_ink_e2e_client_UploadResult_C_E.
+    Context `{State.Trait}.
+    
+    Context {C E : Set}.
+    
+    Context
+      {ℋ_0 : subxt.config.Config.Trait C}
+      {ℋ_1 : ink_env.types.Environment.Trait E}
+      {ℋ_2 :
+        core.fmt.Debug.Trait (ink_env.types.Environment.Balance (Self := E))}
+      {ℋ_3 : core.fmt.Debug.Trait (ink_env.types.Environment.Hash (Self := E))}.
+    Definition Self : Set := ink_e2e.client.UploadResult C E.
+    
+    Parameter fmt :
+        (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+    
+    Global Instance AssociatedFunction_fmt :
+      Notation.DoubleColon Self "fmt" := {
+      Notation.double_colon := fmt;
+    }.
+    
+    Global Instance I : core.fmt.Debug.Trait Self := {
+      core.fmt.Debug.fmt := fmt;
+    }.
+  End Impl_core_fmt_Debug_for_ink_e2e_client_UploadResult_C_E.
+  Global Hint Resolve I : core.
+End Impl_core_fmt_Debug_for_ink_e2e_client_UploadResult_C_E.
+
+Module Impl_core_fmt_Debug_for_ink_e2e_client_InstantiationResult_C_E.
+  Section Impl_core_fmt_Debug_for_ink_e2e_client_InstantiationResult_C_E.
+    Context `{State.Trait}.
+    
+    Context {C E : Set}.
+    
+    Context
+      {ℋ_0 : subxt.config.Config.Trait C}
+      {ℋ_1 : core.fmt.Debug.Trait C::type["AccountId"]}
+      {ℋ_2 : ink_env.types.Environment.Trait E}
+      {ℋ_3 :
+        core.fmt.Debug.Trait (ink_env.types.Environment.AccountId (Self := E))}
+      {ℋ_4 :
+        core.fmt.Debug.Trait (ink_env.types.Environment.Balance (Self := E))}.
+    Definition Self : Set := ink_e2e.client.InstantiationResult C E.
+    
+    Parameter fmt :
+        (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+    
+    Global Instance AssociatedFunction_fmt :
+      Notation.DoubleColon Self "fmt" := {
+      Notation.double_colon := fmt;
+    }.
+    
+    Global Instance I : core.fmt.Debug.Trait Self := {
+      core.fmt.Debug.fmt := fmt;
+    }.
+  End Impl_core_fmt_Debug_for_ink_e2e_client_InstantiationResult_C_E.
+  Global Hint Resolve I : core.
+End Impl_core_fmt_Debug_for_ink_e2e_client_InstantiationResult_C_E.
+
+Module CallResult.
+  Section CallResult.
+    Context `{State.Trait}.
+    
+    Context {C E V : Set}.
+    
+    Context
+      {ℋ_0 : subxt.config.Config.Trait C}
+      {ℋ_1 : ink_env.types.Environment.Trait E}.
+    Unset Primitive Projections.
+    Record t : Set := {
+      dry_run : ink_e2e.client.CallDryRunResult E V;
+      events : subxt.blocks.block_types.ExtrinsicEvents C;
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_dry_run : Notation.Dot "dry_run" := {
+      Notation.dot x := let* x := M.read x in Pure x.(dry_run) : M _;
+    }.
+    Global Instance Get_AF_dry_run : Notation.DoubleColon t "dry_run" := {
+      Notation.double_colon x := let* x := M.read x in Pure x.(dry_run) : M _;
+    }.
+    Global Instance Get_events : Notation.Dot "events" := {
+      Notation.dot x := let* x := M.read x in Pure x.(events) : M _;
+    }.
+    Global Instance Get_AF_events : Notation.DoubleColon t "events" := {
+      Notation.double_colon x := let* x := M.read x in Pure x.(events) : M _;
+    }.
+  End CallResult.
+End CallResult.
+Definition CallResult
+    (C E V : Set)
+    `{State.Trait}
+    {ℋ_0 : subxt.config.Config.Trait C}
+    {ℋ_1 : ink_env.types.Environment.Trait E}
+    : Set :=
+  M.val (CallResult.t (C := C) (E := E) (V := V)).
+
+Module Impl_core_fmt_Debug_for_ink_e2e_client_CallResult_C_E_V.
+  Section Impl_core_fmt_Debug_for_ink_e2e_client_CallResult_C_E_V.
+    Context `{State.Trait}.
+    
+    Context {C E V : Set}.
+    
+    Context
+      {ℋ_0 : subxt.config.Config.Trait C}
+      {ℋ_1 : core.fmt.Debug.Trait C}
+      {ℋ_2 : ink_env.types.Environment.Trait E}
+      {ℋ_3 : core.fmt.Debug.Trait E}
+      {ℋ_4 :
+        core.fmt.Debug.Trait (ink_env.types.Environment.Balance (Self := E))}
+      {ℋ_5 : core.fmt.Debug.Trait V}.
+    Definition Self : Set := ink_e2e.client.CallResult C E V.
+    
+    Parameter fmt :
+        (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+    
+    Global Instance AssociatedFunction_fmt :
+      Notation.DoubleColon Self "fmt" := {
+      Notation.double_colon := fmt;
+    }.
+    
+    Global Instance I : core.fmt.Debug.Trait Self := {
+      core.fmt.Debug.fmt := fmt;
+    }.
+  End Impl_core_fmt_Debug_for_ink_e2e_client_CallResult_C_E_V.
+  Global Hint Resolve I : core.
+End Impl_core_fmt_Debug_for_ink_e2e_client_CallResult_C_E_V.
+
+Module CallDryRunResult.
+  Section CallDryRunResult.
+    Context `{State.Trait}.
+    
+    Context {E V : Set}.
+    
+    Context {ℋ_0 : ink_env.types.Environment.Trait E}.
+    Unset Primitive Projections.
+    Record t : Set := {
+      exec_result
+        :
+        pallet_contracts_primitives.ContractExecResult E::type["Balance"];
+      _marker : core.marker.PhantomData V;
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_exec_result : Notation.Dot "exec_result" := {
+      Notation.dot x := let* x := M.read x in Pure x.(exec_result) : M _;
+    }.
+    Global Instance Get_AF_exec_result
+      : Notation.DoubleColon t "exec_result" := {
+      Notation.double_colon x
+        :=
+        let* x := M.read x in Pure x.(exec_result) : M _;
+    }.
+    Global Instance Get__marker : Notation.Dot "_marker" := {
+      Notation.dot x := let* x := M.read x in Pure x.(_marker) : M _;
+    }.
+    Global Instance Get_AF__marker : Notation.DoubleColon t "_marker" := {
+      Notation.double_colon x := let* x := M.read x in Pure x.(_marker) : M _;
+    }.
+  End CallDryRunResult.
+End CallDryRunResult.
+Definition CallDryRunResult
+    (E V : Set)
+    `{State.Trait}
+    {ℋ_0 : ink_env.types.Environment.Trait E}
+    : Set :=
+  M.val (CallDryRunResult.t (E := E) (V := V)).
+
+Module Impl_core_fmt_Debug_for_ink_e2e_client_CallDryRunResult_E_V.
+  Section Impl_core_fmt_Debug_for_ink_e2e_client_CallDryRunResult_E_V.
+    Context `{State.Trait}.
+    
+    Context {E V : Set}.
+    
+    Context
+      {ℋ_0 : core.fmt.Debug.Trait E}
+      {ℋ_1 : ink_env.types.Environment.Trait E}
+      {ℋ_2 : core.fmt.Debug.Trait V}
+      {ℋ_3 : core.fmt.Debug.Trait E::type["Balance"]}.
+    Definition Self : Set := ink_e2e.client.CallDryRunResult E V.
+    
+    Parameter fmt :
+        (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+    
+    Global Instance AssociatedFunction_fmt :
+      Notation.DoubleColon Self "fmt" := {
+      Notation.double_colon := fmt;
+    }.
+    
+    Global Instance I : core.fmt.Debug.Trait Self := {
+      core.fmt.Debug.fmt := fmt;
+    }.
+  End Impl_core_fmt_Debug_for_ink_e2e_client_CallDryRunResult_E_V.
+  Global Hint Resolve I : core.
+End Impl_core_fmt_Debug_for_ink_e2e_client_CallDryRunResult_E_V.
+
+Module Error.
+  Inductive t `{State.Trait} : Set :=
+  | ContractNotFound (_ : alloc.string.String)
+  |
+    InstantiateDryRun
+    (_
+      :
+      pallet_contracts_primitives.ContractInstantiateResult
+        C::type["AccountId"]
+        E::type["Balance"])
+  | InstantiateExtrinsic (_ : subxt.error.dispatch_error.DispatchError)
+  |
+    UploadDryRun
+    (_
+      :
+      pallet_contracts_primitives.CodeUploadResult
+        E::type["Hash"]
+        E::type["Balance"])
+  | UploadExtrinsic (_ : subxt.error.dispatch_error.DispatchError)
+  |
+    CallDryRun
+    (_ : pallet_contracts_primitives.ContractExecResult E::type["Balance"])
+  | CallExtrinsic (_ : subxt.error.dispatch_error.DispatchError)
+  | Balance (_ : alloc.string.String)
+  | Decoding (_ : subxt.error.Error).
 End Error.
 Definition Error
     (C E : Set)
     `{State.Trait}
-    `{subxt.config.Config.Trait C}
-    `{ink_env.types.Environment.Trait E}
-    `{core.fmt.Debug.Trait (ink_env.types.Environment.Balance (Self := E))}
+    {ℋ_0 : subxt.config.Config.Trait C}
+    {ℋ_1 : ink_env.types.Environment.Trait E}
+    {ℋ_2 : core.fmt.Debug.Trait (ink_env.types.Environment.Balance (Self := E))}
     : Set :=
   Error.t (C := C) (E := E).
 
 Module Impl_core_fmt_Debug_for_ink_e2e_client_Error_C_E.
   Section Impl_core_fmt_Debug_for_ink_e2e_client_Error_C_E.
+    Context `{State.Trait}.
+    
     Context {C E : Set}.
+    
     Context
-      `{subxt.config.Config.Trait C}
-      `{ink_env.types.Environment.Trait E}
-      `{core.fmt.Debug.Trait (ink_env.types.Environment.Balance (Self := E))}.
-    Definition Self `{State.Trait} := ink_e2e.client.Error C E.
+      {ℋ_0 : subxt.config.Config.Trait C}
+      {ℋ_1 : ink_env.types.Environment.Trait E}
+      {ℋ_2 :
+        core.fmt.Debug.Trait (ink_env.types.Environment.Balance (Self := E))}.
+    Definition Self : Set := ink_e2e.client.Error C E.
     
     Parameter fmt :
-        forall `{State.Trait},
         (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
     
-    Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
-      Notation.dot := fmt;
+    Global Instance AssociatedFunction_fmt :
+      Notation.DoubleColon Self "fmt" := {
+      Notation.double_colon := fmt;
     }.
     
-    Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
+    Global Instance I : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
   End Impl_core_fmt_Debug_for_ink_e2e_client_Error_C_E.
@@ -1979,24 +2113,26 @@ End Impl_core_fmt_Debug_for_ink_e2e_client_Error_C_E.
 
 (* Module Impl_core_fmt_Debug_for_ink_e2e_client_ContractInstantiatedEvent_E.
   (* Section Impl_core_fmt_Debug_for_ink_e2e_client_ContractInstantiatedEvent_E.
+    Context `{State.Trait}.
+    
     Context {E : Set}.
+    
     Context
-      `{core.fmt.Debug.Trait E}
-      `{ink_env.types.Environment.Trait E}
-      `{core.fmt.Debug.Trait E::type["AccountId"]}
-      `{core.fmt.Debug.Trait E::type["AccountId"]}.
-    Definition Self `{State.Trait} :=
-      ink_e2e.client.ContractInstantiatedEvent E.
+      {ℋ_0 : core.fmt.Debug.Trait E}
+      {ℋ_1 : ink_env.types.Environment.Trait E}
+      {ℋ_2 : core.fmt.Debug.Trait E::type["AccountId"]}
+      {ℋ_3 : core.fmt.Debug.Trait E::type["AccountId"]}.
+    Definition Self : Set := ink_e2e.client.ContractInstantiatedEvent E.
     
     Parameter fmt :
-        forall `{State.Trait},
         (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
     
-    Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
-      Notation.dot := fmt;
+    Global Instance AssociatedFunction_fmt :
+      Notation.DoubleColon Self "fmt" := {
+      Notation.double_colon := fmt;
     }.
     
-    Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
+    Global Instance I : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
   End Impl_core_fmt_Debug_for_ink_e2e_client_ContractInstantiatedEvent_E. *)
@@ -2005,37 +2141,36 @@ End Impl_core_fmt_Debug_for_ink_e2e_client_ContractInstantiatedEvent_E. *)
 
 (* Module Impl_parity_scale_codec_codec_Decode_for_ink_e2e_client_ContractInstantiatedEvent_E.
   (* Section Impl_parity_scale_codec_codec_Decode_for_ink_e2e_client_ContractInstantiatedEvent_E.
+    Context `{State.Trait}.
+    
     Context {E : Set}.
+    
     Context
-      `{ink_env.types.Environment.Trait E}
-      `{parity_scale_codec.codec.Decode.Trait E::type["AccountId"]}
-      `{parity_scale_codec.codec.Decode.Trait E::type["AccountId"]}
-      `{parity_scale_codec.codec.Decode.Trait E::type["AccountId"]}
-      `{parity_scale_codec.codec.Decode.Trait E::type["AccountId"]}.
-    Definition Self `{State.Trait} :=
-      ink_e2e.client.ContractInstantiatedEvent E.
+      {ℋ_0 : ink_env.types.Environment.Trait E}
+      {ℋ_1 : parity_scale_codec.codec.Decode.Trait E::type["AccountId"]}
+      {ℋ_2 : parity_scale_codec.codec.Decode.Trait E::type["AccountId"]}
+      {ℋ_3 : parity_scale_codec.codec.Decode.Trait E::type["AccountId"]}
+      {ℋ_4 : parity_scale_codec.codec.Decode.Trait E::type["AccountId"]}.
+    Definition Self : Set := ink_e2e.client.ContractInstantiatedEvent E.
     
     Parameter decode :
         forall
-          `{State.Trait}
           {__CodecInputEdqy : Set}
-          `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy},
+          {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy},
         (mut_ref __CodecInputEdqy) ->
           M (core.result.Result Self parity_scale_codec.error.Error).
     
     Global Instance AssociatedFunction_decode
-        `{State.Trait}
         {__CodecInputEdqy : Set}
-        `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :
+        {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :
       Notation.DoubleColon Self "decode" := {
       Notation.double_colon := decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
     
-    Global Instance I `{State.Trait}
-      : parity_scale_codec.codec.Decode.Trait Self := {
+    Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
       parity_scale_codec.codec.Decode.decode
         {__CodecInputEdqy : Set}
-        `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
+        {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
         :=
         decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
@@ -2045,35 +2180,36 @@ End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_client_ContractInstantiated
 
 (* Module Impl_parity_scale_codec_codec_Encode_for_ink_e2e_client_ContractInstantiatedEvent_E.
   (* Section Impl_parity_scale_codec_codec_Encode_for_ink_e2e_client_ContractInstantiatedEvent_E.
+    Context `{State.Trait}.
+    
     Context {E : Set}.
+    
     Context
-      `{ink_env.types.Environment.Trait E}
-      `{parity_scale_codec.codec.Encode.Trait E::type["AccountId"]}
-      `{parity_scale_codec.codec.Encode.Trait E::type["AccountId"]}
-      `{parity_scale_codec.codec.Encode.Trait E::type["AccountId"]}
-      `{parity_scale_codec.codec.Encode.Trait E::type["AccountId"]}.
-    Definition Self `{State.Trait} :=
-      ink_e2e.client.ContractInstantiatedEvent E.
+      {ℋ_0 : ink_env.types.Environment.Trait E}
+      {ℋ_1 : parity_scale_codec.codec.Encode.Trait E::type["AccountId"]}
+      {ℋ_2 : parity_scale_codec.codec.Encode.Trait E::type["AccountId"]}
+      {ℋ_3 : parity_scale_codec.codec.Encode.Trait E::type["AccountId"]}
+      {ℋ_4 : parity_scale_codec.codec.Encode.Trait E::type["AccountId"]}.
+    Definition Self : Set := ink_e2e.client.ContractInstantiatedEvent E.
     
     Parameter encode_to :
         forall
-          `{State.Trait}
           {__CodecOutputEdqy : Set}
-          `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
-          `{core.marker.Sized.Trait __CodecOutputEdqy},
+          {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+          {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy},
         (ref Self) -> (mut_ref __CodecOutputEdqy) -> M unit.
     
-    Global Instance Method_encode_to
-        `{State.Trait}
+    Global Instance AssociatedFunction_encode_to
         {__CodecOutputEdqy : Set}
-        `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
-        `{core.marker.Sized.Trait __CodecOutputEdqy} :
-      Notation.Dot "encode_to" := {
-      Notation.dot := encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
+        {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+        {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy} :
+      Notation.DoubleColon Self "encode_to" := {
+      Notation.double_colon
+        :=
+        encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
     }.
     
-    Global Instance I `{State.Trait}
-      : parity_scale_codec.codec.Encode.Trait Self := {
+    Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
     }.
   End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_client_ContractInstantiatedEvent_E. *)
   Global Hint Resolve I : core.
@@ -2081,17 +2217,19 @@ End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_client_ContractInstantiated
 
 (* Module Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_client_ContractInstantiatedEvent_E.
   (* Section Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_client_ContractInstantiatedEvent_E.
-    Context {E : Set}.
-    Context
-      `{ink_env.types.Environment.Trait E}
-      `{parity_scale_codec.codec.Encode.Trait E::type["AccountId"]}
-      `{parity_scale_codec.codec.Encode.Trait E::type["AccountId"]}
-      `{parity_scale_codec.codec.Encode.Trait E::type["AccountId"]}
-      `{parity_scale_codec.codec.Encode.Trait E::type["AccountId"]}.
-    Definition Self `{State.Trait} :=
-      ink_e2e.client.ContractInstantiatedEvent E.
+    Context `{State.Trait}.
     
-    Global Instance I `{State.Trait}
+    Context {E : Set}.
+    
+    Context
+      {ℋ_0 : ink_env.types.Environment.Trait E}
+      {ℋ_1 : parity_scale_codec.codec.Encode.Trait E::type["AccountId"]}
+      {ℋ_2 : parity_scale_codec.codec.Encode.Trait E::type["AccountId"]}
+      {ℋ_3 : parity_scale_codec.codec.Encode.Trait E::type["AccountId"]}
+      {ℋ_4 : parity_scale_codec.codec.Encode.Trait E::type["AccountId"]}.
+    Definition Self : Set := ink_e2e.client.ContractInstantiatedEvent E.
+    
+    Global Instance I
       : parity_scale_codec.encode_like.EncodeLike.Trait Self
           (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self)
         := {
@@ -2102,21 +2240,23 @@ End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_client_ContractIn
 
 (* Module Impl_scale_decode_IntoVisitor_for_ink_e2e_client_ContractInstantiatedEvent_E.
   (* Section Impl_scale_decode_IntoVisitor_for_ink_e2e_client_ContractInstantiatedEvent_E.
+    Context `{State.Trait}.
+    
     Context {E : Set}.
-    Context `{ink_env.types.Environment.Trait E}.
-    Definition Self `{State.Trait} :=
-      ink_e2e.client.ContractInstantiatedEvent E.
+    
+    Context {ℋ_0 : ink_env.types.Environment.Trait E}.
+    Definition Self : Set := ink_e2e.client.ContractInstantiatedEvent E.
     
     Definition Visitor : Set := ink_e2e.client._.Visitor E.
     
-    Parameter into_visitor : forall `{State.Trait}, M Visitor.
+    Parameter into_visitor : M Visitor.
     
-    Global Instance AssociatedFunction_into_visitor `{State.Trait} :
+    Global Instance AssociatedFunction_into_visitor :
       Notation.DoubleColon Self "into_visitor" := {
       Notation.double_colon := into_visitor;
     }.
     
-    Global Instance I `{State.Trait} : scale_decode.IntoVisitor.Trait Self := {
+    Global Instance I : scale_decode.IntoVisitor.Trait Self := {
       scale_decode.IntoVisitor.Visitor := Visitor;
       scale_decode.IntoVisitor.into_visitor := into_visitor;
     }.
@@ -2126,40 +2266,40 @@ End Impl_scale_decode_IntoVisitor_for_ink_e2e_client_ContractInstantiatedEvent_E
 
 (* Module Impl_scale_decode_visitor_Visitor_for_ink_e2e_client___Visitor_E.
   (* Section Impl_scale_decode_visitor_Visitor_for_ink_e2e_client___Visitor_E.
+    Context `{State.Trait}.
+    
     Context {E : Set}.
-    Context `{ink_env.types.Environment.Trait E}.
-    Definition Self `{State.Trait} := ink_e2e.client._.Visitor E.
+    
+    Context {ℋ_0 : ink_env.types.Environment.Trait E}.
+    Definition Self : Set := ink_e2e.client._.Visitor E.
     
     Definition Error : Set := scale_decode.error.Error.
     
     Definition Value : Set := ink_e2e.client.ContractInstantiatedEvent E.
     
     Parameter visit_composite :
-        forall `{State.Trait},
         Self ->
           (mut_ref scale_decode.visitor.types.composite.Composite) ->
           scale_decode.visitor.TypeId ->
           M (core.result.Result Value Error).
     
-    Global Instance Method_visit_composite `{State.Trait} :
-      Notation.Dot "visit_composite" := {
-      Notation.dot := visit_composite;
+    Global Instance AssociatedFunction_visit_composite :
+      Notation.DoubleColon Self "visit_composite" := {
+      Notation.double_colon := visit_composite;
     }.
     
     Parameter visit_tuple :
-        forall `{State.Trait},
         Self ->
           (mut_ref scale_decode.visitor.types.tuple.Tuple) ->
           scale_decode.visitor.TypeId ->
           M (core.result.Result Value Error).
     
-    Global Instance Method_visit_tuple `{State.Trait} :
-      Notation.Dot "visit_tuple" := {
-      Notation.dot := visit_tuple;
+    Global Instance AssociatedFunction_visit_tuple :
+      Notation.DoubleColon Self "visit_tuple" := {
+      Notation.double_colon := visit_tuple;
     }.
     
-    Global Instance I `{State.Trait}
-      : scale_decode.visitor.Visitor.Trait Self := {
+    Global Instance I : scale_decode.visitor.Visitor.Trait Self := {
       scale_decode.visitor.Visitor.Error := Error;
       scale_decode.visitor.Visitor.Value := Value;
     }.
@@ -2169,25 +2309,25 @@ End Impl_scale_decode_visitor_Visitor_for_ink_e2e_client___Visitor_E. *)
 
 (* Module Impl_scale_decode_DecodeAsFields_for_ink_e2e_client_ContractInstantiatedEvent_E.
   (* Section Impl_scale_decode_DecodeAsFields_for_ink_e2e_client_ContractInstantiatedEvent_E.
+    Context `{State.Trait}.
+    
     Context {E : Set}.
-    Context `{ink_env.types.Environment.Trait E}.
-    Definition Self `{State.Trait} :=
-      ink_e2e.client.ContractInstantiatedEvent E.
+    
+    Context {ℋ_0 : ink_env.types.Environment.Trait E}.
+    Definition Self : Set := ink_e2e.client.ContractInstantiatedEvent E.
     
     Parameter decode_as_fields :
-        forall `{State.Trait},
         (mut_ref (ref (Slice u8))) ->
           (ref (Slice scale_decode.PortableField)) ->
           (ref scale_info.portable.PortableRegistry) ->
           M (core.result.Result Self scale_decode.error.Error).
     
-    Global Instance AssociatedFunction_decode_as_fields `{State.Trait} :
+    Global Instance AssociatedFunction_decode_as_fields :
       Notation.DoubleColon Self "decode_as_fields" := {
       Notation.double_colon := decode_as_fields;
     }.
     
-    Global Instance I `{State.Trait}
-      : scale_decode.DecodeAsFields.Trait Self := {
+    Global Instance I : scale_decode.DecodeAsFields.Trait Self := {
       scale_decode.DecodeAsFields.decode_as_fields := decode_as_fields;
     }.
   End Impl_scale_decode_DecodeAsFields_for_ink_e2e_client_ContractInstantiatedEvent_E. *)
@@ -2196,27 +2336,28 @@ End Impl_scale_decode_DecodeAsFields_for_ink_e2e_client_ContractInstantiatedEven
 
 (* Module Impl_scale_encode_EncodeAsType_for_ink_e2e_client_ContractInstantiatedEvent_E.
   (* Section Impl_scale_encode_EncodeAsType_for_ink_e2e_client_ContractInstantiatedEvent_E.
+    Context `{State.Trait}.
+    
     Context {E : Set}.
+    
     Context
-      `{ink_env.types.Environment.Trait E}
-      `{scale_encode.EncodeAsType.Trait E}.
-    Definition Self `{State.Trait} :=
-      ink_e2e.client.ContractInstantiatedEvent E.
+      {ℋ_0 : ink_env.types.Environment.Trait E}
+      {ℋ_1 : scale_encode.EncodeAsType.Trait E}.
+    Definition Self : Set := ink_e2e.client.ContractInstantiatedEvent E.
     
     Parameter encode_as_type_to :
-        forall `{State.Trait},
         (ref Self) ->
           u32 ->
           (ref scale_info.portable.PortableRegistry) ->
           (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
           M (core.result.Result unit scale_encode.error.Error).
     
-    Global Instance Method_encode_as_type_to `{State.Trait} :
-      Notation.Dot "encode_as_type_to" := {
-      Notation.dot := encode_as_type_to;
+    Global Instance AssociatedFunction_encode_as_type_to :
+      Notation.DoubleColon Self "encode_as_type_to" := {
+      Notation.double_colon := encode_as_type_to;
     }.
     
-    Global Instance I `{State.Trait} : scale_encode.EncodeAsType.Trait Self := {
+    Global Instance I : scale_encode.EncodeAsType.Trait Self := {
       scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
     }.
   End Impl_scale_encode_EncodeAsType_for_ink_e2e_client_ContractInstantiatedEvent_E. *)
@@ -2225,28 +2366,28 @@ End Impl_scale_encode_EncodeAsType_for_ink_e2e_client_ContractInstantiatedEvent_
 
 (* Module Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_ContractInstantiatedEvent_E.
   (* Section Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_ContractInstantiatedEvent_E.
+    Context `{State.Trait}.
+    
     Context {E : Set}.
+    
     Context
-      `{ink_env.types.Environment.Trait E}
-      `{scale_encode.EncodeAsType.Trait E}.
-    Definition Self `{State.Trait} :=
-      ink_e2e.client.ContractInstantiatedEvent E.
+      {ℋ_0 : ink_env.types.Environment.Trait E}
+      {ℋ_1 : scale_encode.EncodeAsType.Trait E}.
+    Definition Self : Set := ink_e2e.client.ContractInstantiatedEvent E.
     
     Parameter encode_as_fields_to :
-        forall `{State.Trait},
         (ref Self) ->
           (ref (Slice scale_encode.PortableField)) ->
           (ref scale_info.portable.PortableRegistry) ->
           (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
           M (core.result.Result unit scale_encode.error.Error).
     
-    Global Instance Method_encode_as_fields_to `{State.Trait} :
-      Notation.Dot "encode_as_fields_to" := {
-      Notation.dot := encode_as_fields_to;
+    Global Instance AssociatedFunction_encode_as_fields_to :
+      Notation.DoubleColon Self "encode_as_fields_to" := {
+      Notation.double_colon := encode_as_fields_to;
     }.
     
-    Global Instance I `{State.Trait}
-      : scale_encode.EncodeAsFields.Trait Self := {
+    Global Instance I : scale_encode.EncodeAsFields.Trait Self := {
       scale_encode.EncodeAsFields.encode_as_fields_to := encode_as_fields_to;
     }.
   End Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_ContractInstantiatedEvent_E. *)
@@ -2255,26 +2396,28 @@ End Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_ContractInstantiatedEven
 
 (* Module Impl_subxt_events_StaticEvent_for_ink_e2e_client_ContractInstantiatedEvent_E.
   (* Section Impl_subxt_events_StaticEvent_for_ink_e2e_client_ContractInstantiatedEvent_E.
+    Context `{State.Trait}.
+    
     Context {E : Set}.
-    Context `{ink_env.types.Environment.Trait E}.
-    Definition Self `{State.Trait} :=
-      ink_e2e.client.ContractInstantiatedEvent E.
     
-    Definition PALLET `{State.Trait} := Pure (mk_str "Contracts").
+    Context {ℋ_0 : ink_env.types.Environment.Trait E}.
+    Definition Self : Set := ink_e2e.client.ContractInstantiatedEvent E.
     
-    Global Instance AssociatedFunction_PALLET `{State.Trait} :
+    Definition PALLET  := Pure (mk_str "Contracts").
+    
+    Global Instance AssociatedFunction_PALLET :
       Notation.DoubleColon Self "PALLET" := {
       Notation.double_colon := PALLET;
     }.
     
-    Definition EVENT `{State.Trait} := Pure (mk_str "Instantiated").
+    Definition EVENT  := Pure (mk_str "Instantiated").
     
-    Global Instance AssociatedFunction_EVENT `{State.Trait} :
+    Global Instance AssociatedFunction_EVENT :
       Notation.DoubleColon Self "EVENT" := {
       Notation.double_colon := EVENT;
     }.
     
-    Global Instance I `{State.Trait} : subxt.events.StaticEvent.Trait Self := {
+    Global Instance I : subxt.events.StaticEvent.Trait Self := {
       subxt.events.StaticEvent.PALLET := PALLET;
       subxt.events.StaticEvent.EVENT := EVENT;
     }.
@@ -2284,22 +2427,25 @@ End Impl_subxt_events_StaticEvent_for_ink_e2e_client_ContractInstantiatedEvent_E
 
 (* Module Impl_core_fmt_Debug_for_ink_e2e_client_CodeStoredEvent_E.
   (* Section Impl_core_fmt_Debug_for_ink_e2e_client_CodeStoredEvent_E.
+    Context `{State.Trait}.
+    
     Context {E : Set}.
+    
     Context
-      `{core.fmt.Debug.Trait E}
-      `{ink_env.types.Environment.Trait E}
-      `{core.fmt.Debug.Trait E::type["Hash"]}.
-    Definition Self `{State.Trait} := ink_e2e.client.CodeStoredEvent E.
+      {ℋ_0 : core.fmt.Debug.Trait E}
+      {ℋ_1 : ink_env.types.Environment.Trait E}
+      {ℋ_2 : core.fmt.Debug.Trait E::type["Hash"]}.
+    Definition Self : Set := ink_e2e.client.CodeStoredEvent E.
     
     Parameter fmt :
-        forall `{State.Trait},
         (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
     
-    Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
-      Notation.dot := fmt;
+    Global Instance AssociatedFunction_fmt :
+      Notation.DoubleColon Self "fmt" := {
+      Notation.double_colon := fmt;
     }.
     
-    Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
+    Global Instance I : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
   End Impl_core_fmt_Debug_for_ink_e2e_client_CodeStoredEvent_E. *)
@@ -2308,34 +2454,34 @@ End Impl_core_fmt_Debug_for_ink_e2e_client_CodeStoredEvent_E. *)
 
 (* Module Impl_parity_scale_codec_codec_Decode_for_ink_e2e_client_CodeStoredEvent_E.
   (* Section Impl_parity_scale_codec_codec_Decode_for_ink_e2e_client_CodeStoredEvent_E.
+    Context `{State.Trait}.
+    
     Context {E : Set}.
+    
     Context
-      `{ink_env.types.Environment.Trait E}
-      `{parity_scale_codec.codec.Decode.Trait E::type["Hash"]}
-      `{parity_scale_codec.codec.Decode.Trait E::type["Hash"]}.
-    Definition Self `{State.Trait} := ink_e2e.client.CodeStoredEvent E.
+      {ℋ_0 : ink_env.types.Environment.Trait E}
+      {ℋ_1 : parity_scale_codec.codec.Decode.Trait E::type["Hash"]}
+      {ℋ_2 : parity_scale_codec.codec.Decode.Trait E::type["Hash"]}.
+    Definition Self : Set := ink_e2e.client.CodeStoredEvent E.
     
     Parameter decode :
         forall
-          `{State.Trait}
           {__CodecInputEdqy : Set}
-          `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy},
+          {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy},
         (mut_ref __CodecInputEdqy) ->
           M (core.result.Result Self parity_scale_codec.error.Error).
     
     Global Instance AssociatedFunction_decode
-        `{State.Trait}
         {__CodecInputEdqy : Set}
-        `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :
+        {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :
       Notation.DoubleColon Self "decode" := {
       Notation.double_colon := decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
     
-    Global Instance I `{State.Trait}
-      : parity_scale_codec.codec.Decode.Trait Self := {
+    Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
       parity_scale_codec.codec.Decode.decode
         {__CodecInputEdqy : Set}
-        `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
+        {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
         :=
         decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
@@ -2345,58 +2491,60 @@ End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_client_CodeStoredEvent_E. *
 
 (* Module Impl_parity_scale_codec_codec_Encode_for_ink_e2e_client_CodeStoredEvent_E.
   (* Section Impl_parity_scale_codec_codec_Encode_for_ink_e2e_client_CodeStoredEvent_E.
+    Context `{State.Trait}.
+    
     Context {E : Set}.
+    
     Context
-      `{ink_env.types.Environment.Trait E}
-      `{parity_scale_codec.codec.Encode.Trait E::type["Hash"]}
-      `{parity_scale_codec.codec.Encode.Trait E::type["Hash"]}.
-    Definition Self `{State.Trait} := ink_e2e.client.CodeStoredEvent E.
+      {ℋ_0 : ink_env.types.Environment.Trait E}
+      {ℋ_1 : parity_scale_codec.codec.Encode.Trait E::type["Hash"]}
+      {ℋ_2 : parity_scale_codec.codec.Encode.Trait E::type["Hash"]}.
+    Definition Self : Set := ink_e2e.client.CodeStoredEvent E.
     
     Parameter encode_to :
         forall
-          `{State.Trait}
           {__CodecOutputEdqy : Set}
-          `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
-          `{core.marker.Sized.Trait __CodecOutputEdqy},
+          {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+          {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy},
         (ref Self) -> (mut_ref __CodecOutputEdqy) -> M unit.
     
-    Global Instance Method_encode_to
-        `{State.Trait}
+    Global Instance AssociatedFunction_encode_to
         {__CodecOutputEdqy : Set}
-        `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
-        `{core.marker.Sized.Trait __CodecOutputEdqy} :
-      Notation.Dot "encode_to" := {
-      Notation.dot := encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
+        {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+        {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy} :
+      Notation.DoubleColon Self "encode_to" := {
+      Notation.double_colon
+        :=
+        encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
     }.
     
     Parameter encode :
-        forall `{State.Trait},
         (ref Self) ->
           M (alloc.vec.Vec CoqOfRust.core.primitive.u8 alloc.vec.Vec.Default.A).
     
-    Global Instance Method_encode `{State.Trait} : Notation.Dot "encode" := {
-      Notation.dot := encode;
+    Global Instance AssociatedFunction_encode :
+      Notation.DoubleColon Self "encode" := {
+      Notation.double_colon := encode;
     }.
     
     Parameter using_encoded :
         forall
-          `{State.Trait}
           {R F : Set}
-          `{core.ops.function.FnOnce.Trait F
+          {ℋ_0 :
+            core.ops.function.FnOnce.Trait F
               (Args := ref (Slice CoqOfRust.core.primitive.u8))},
         (ref Self) -> F -> M R.
     
-    Global Instance Method_using_encoded
-        `{State.Trait}
+    Global Instance AssociatedFunction_using_encoded
         {R F : Set}
-        `{core.ops.function.FnOnce.Trait F
+        {ℋ_0 :
+          core.ops.function.FnOnce.Trait F
             (Args := ref (Slice CoqOfRust.core.primitive.u8))} :
-      Notation.Dot "using_encoded" := {
-      Notation.dot := using_encoded (R := R) (F := F);
+      Notation.DoubleColon Self "using_encoded" := {
+      Notation.double_colon := using_encoded (R := R) (F := F);
     }.
     
-    Global Instance I `{State.Trait}
-      : parity_scale_codec.codec.Encode.Trait Self := {
+    Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
     }.
   End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_client_CodeStoredEvent_E. *)
   Global Hint Resolve I : core.
@@ -2404,14 +2552,17 @@ End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_client_CodeStoredEvent_E. *
 
 (* Module Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_client_CodeStoredEvent_E.
   (* Section Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_client_CodeStoredEvent_E.
-    Context {E : Set}.
-    Context
-      `{ink_env.types.Environment.Trait E}
-      `{parity_scale_codec.codec.Encode.Trait E::type["Hash"]}
-      `{parity_scale_codec.codec.Encode.Trait E::type["Hash"]}.
-    Definition Self `{State.Trait} := ink_e2e.client.CodeStoredEvent E.
+    Context `{State.Trait}.
     
-    Global Instance I `{State.Trait}
+    Context {E : Set}.
+    
+    Context
+      {ℋ_0 : ink_env.types.Environment.Trait E}
+      {ℋ_1 : parity_scale_codec.codec.Encode.Trait E::type["Hash"]}
+      {ℋ_2 : parity_scale_codec.codec.Encode.Trait E::type["Hash"]}.
+    Definition Self : Set := ink_e2e.client.CodeStoredEvent E.
+    
+    Global Instance I
       : parity_scale_codec.encode_like.EncodeLike.Trait Self
           (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self)
         := {
@@ -2422,20 +2573,23 @@ End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_client_CodeStored
 
 (* Module Impl_scale_decode_IntoVisitor_for_ink_e2e_client_CodeStoredEvent_E.
   (* Section Impl_scale_decode_IntoVisitor_for_ink_e2e_client_CodeStoredEvent_E.
+    Context `{State.Trait}.
+    
     Context {E : Set}.
-    Context `{ink_env.types.Environment.Trait E}.
-    Definition Self `{State.Trait} := ink_e2e.client.CodeStoredEvent E.
+    
+    Context {ℋ_0 : ink_env.types.Environment.Trait E}.
+    Definition Self : Set := ink_e2e.client.CodeStoredEvent E.
     
     Definition Visitor : Set := ink_e2e.client._.Visitor E.
     
-    Parameter into_visitor : forall `{State.Trait}, M Visitor.
+    Parameter into_visitor : M Visitor.
     
-    Global Instance AssociatedFunction_into_visitor `{State.Trait} :
+    Global Instance AssociatedFunction_into_visitor :
       Notation.DoubleColon Self "into_visitor" := {
       Notation.double_colon := into_visitor;
     }.
     
-    Global Instance I `{State.Trait} : scale_decode.IntoVisitor.Trait Self := {
+    Global Instance I : scale_decode.IntoVisitor.Trait Self := {
       scale_decode.IntoVisitor.Visitor := Visitor;
       scale_decode.IntoVisitor.into_visitor := into_visitor;
     }.
@@ -2445,40 +2599,40 @@ End Impl_scale_decode_IntoVisitor_for_ink_e2e_client_CodeStoredEvent_E. *)
 
 (* Module Impl_scale_decode_visitor_Visitor_for_ink_e2e_client___Visitor_E.
   (* Section Impl_scale_decode_visitor_Visitor_for_ink_e2e_client___Visitor_E.
+    Context `{State.Trait}.
+    
     Context {E : Set}.
-    Context `{ink_env.types.Environment.Trait E}.
-    Definition Self `{State.Trait} := ink_e2e.client._.Visitor E.
+    
+    Context {ℋ_0 : ink_env.types.Environment.Trait E}.
+    Definition Self : Set := ink_e2e.client._.Visitor E.
     
     Definition Error : Set := scale_decode.error.Error.
     
     Definition Value : Set := ink_e2e.client.CodeStoredEvent E.
     
     Parameter visit_composite :
-        forall `{State.Trait},
         Self ->
           (mut_ref scale_decode.visitor.types.composite.Composite) ->
           scale_decode.visitor.TypeId ->
           M (core.result.Result Value Error).
     
-    Global Instance Method_visit_composite `{State.Trait} :
-      Notation.Dot "visit_composite" := {
-      Notation.dot := visit_composite;
+    Global Instance AssociatedFunction_visit_composite :
+      Notation.DoubleColon Self "visit_composite" := {
+      Notation.double_colon := visit_composite;
     }.
     
     Parameter visit_tuple :
-        forall `{State.Trait},
         Self ->
           (mut_ref scale_decode.visitor.types.tuple.Tuple) ->
           scale_decode.visitor.TypeId ->
           M (core.result.Result Value Error).
     
-    Global Instance Method_visit_tuple `{State.Trait} :
-      Notation.Dot "visit_tuple" := {
-      Notation.dot := visit_tuple;
+    Global Instance AssociatedFunction_visit_tuple :
+      Notation.DoubleColon Self "visit_tuple" := {
+      Notation.double_colon := visit_tuple;
     }.
     
-    Global Instance I `{State.Trait}
-      : scale_decode.visitor.Visitor.Trait Self := {
+    Global Instance I : scale_decode.visitor.Visitor.Trait Self := {
       scale_decode.visitor.Visitor.Error := Error;
       scale_decode.visitor.Visitor.Value := Value;
     }.
@@ -2488,24 +2642,25 @@ End Impl_scale_decode_visitor_Visitor_for_ink_e2e_client___Visitor_E. *)
 
 (* Module Impl_scale_decode_DecodeAsFields_for_ink_e2e_client_CodeStoredEvent_E.
   (* Section Impl_scale_decode_DecodeAsFields_for_ink_e2e_client_CodeStoredEvent_E.
+    Context `{State.Trait}.
+    
     Context {E : Set}.
-    Context `{ink_env.types.Environment.Trait E}.
-    Definition Self `{State.Trait} := ink_e2e.client.CodeStoredEvent E.
+    
+    Context {ℋ_0 : ink_env.types.Environment.Trait E}.
+    Definition Self : Set := ink_e2e.client.CodeStoredEvent E.
     
     Parameter decode_as_fields :
-        forall `{State.Trait},
         (mut_ref (ref (Slice u8))) ->
           (ref (Slice scale_decode.PortableField)) ->
           (ref scale_info.portable.PortableRegistry) ->
           M (core.result.Result Self scale_decode.error.Error).
     
-    Global Instance AssociatedFunction_decode_as_fields `{State.Trait} :
+    Global Instance AssociatedFunction_decode_as_fields :
       Notation.DoubleColon Self "decode_as_fields" := {
       Notation.double_colon := decode_as_fields;
     }.
     
-    Global Instance I `{State.Trait}
-      : scale_decode.DecodeAsFields.Trait Self := {
+    Global Instance I : scale_decode.DecodeAsFields.Trait Self := {
       scale_decode.DecodeAsFields.decode_as_fields := decode_as_fields;
     }.
   End Impl_scale_decode_DecodeAsFields_for_ink_e2e_client_CodeStoredEvent_E. *)
@@ -2514,26 +2669,28 @@ End Impl_scale_decode_DecodeAsFields_for_ink_e2e_client_CodeStoredEvent_E. *)
 
 (* Module Impl_scale_encode_EncodeAsType_for_ink_e2e_client_CodeStoredEvent_E.
   (* Section Impl_scale_encode_EncodeAsType_for_ink_e2e_client_CodeStoredEvent_E.
+    Context `{State.Trait}.
+    
     Context {E : Set}.
+    
     Context
-      `{ink_env.types.Environment.Trait E}
-      `{scale_encode.EncodeAsType.Trait E}.
-    Definition Self `{State.Trait} := ink_e2e.client.CodeStoredEvent E.
+      {ℋ_0 : ink_env.types.Environment.Trait E}
+      {ℋ_1 : scale_encode.EncodeAsType.Trait E}.
+    Definition Self : Set := ink_e2e.client.CodeStoredEvent E.
     
     Parameter encode_as_type_to :
-        forall `{State.Trait},
         (ref Self) ->
           u32 ->
           (ref scale_info.portable.PortableRegistry) ->
           (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
           M (core.result.Result unit scale_encode.error.Error).
     
-    Global Instance Method_encode_as_type_to `{State.Trait} :
-      Notation.Dot "encode_as_type_to" := {
-      Notation.dot := encode_as_type_to;
+    Global Instance AssociatedFunction_encode_as_type_to :
+      Notation.DoubleColon Self "encode_as_type_to" := {
+      Notation.double_colon := encode_as_type_to;
     }.
     
-    Global Instance I `{State.Trait} : scale_encode.EncodeAsType.Trait Self := {
+    Global Instance I : scale_encode.EncodeAsType.Trait Self := {
       scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
     }.
   End Impl_scale_encode_EncodeAsType_for_ink_e2e_client_CodeStoredEvent_E. *)
@@ -2542,27 +2699,28 @@ End Impl_scale_encode_EncodeAsType_for_ink_e2e_client_CodeStoredEvent_E. *)
 
 (* Module Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_CodeStoredEvent_E.
   (* Section Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_CodeStoredEvent_E.
+    Context `{State.Trait}.
+    
     Context {E : Set}.
+    
     Context
-      `{ink_env.types.Environment.Trait E}
-      `{scale_encode.EncodeAsType.Trait E}.
-    Definition Self `{State.Trait} := ink_e2e.client.CodeStoredEvent E.
+      {ℋ_0 : ink_env.types.Environment.Trait E}
+      {ℋ_1 : scale_encode.EncodeAsType.Trait E}.
+    Definition Self : Set := ink_e2e.client.CodeStoredEvent E.
     
     Parameter encode_as_fields_to :
-        forall `{State.Trait},
         (ref Self) ->
           (ref (Slice scale_encode.PortableField)) ->
           (ref scale_info.portable.PortableRegistry) ->
           (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
           M (core.result.Result unit scale_encode.error.Error).
     
-    Global Instance Method_encode_as_fields_to `{State.Trait} :
-      Notation.Dot "encode_as_fields_to" := {
-      Notation.dot := encode_as_fields_to;
+    Global Instance AssociatedFunction_encode_as_fields_to :
+      Notation.DoubleColon Self "encode_as_fields_to" := {
+      Notation.double_colon := encode_as_fields_to;
     }.
     
-    Global Instance I `{State.Trait}
-      : scale_encode.EncodeAsFields.Trait Self := {
+    Global Instance I : scale_encode.EncodeAsFields.Trait Self := {
       scale_encode.EncodeAsFields.encode_as_fields_to := encode_as_fields_to;
     }.
   End Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_CodeStoredEvent_E. *)
@@ -2571,25 +2729,28 @@ End Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_CodeStoredEvent_E. *)
 
 (* Module Impl_subxt_events_StaticEvent_for_ink_e2e_client_CodeStoredEvent_E.
   (* Section Impl_subxt_events_StaticEvent_for_ink_e2e_client_CodeStoredEvent_E.
+    Context `{State.Trait}.
+    
     Context {E : Set}.
-    Context `{ink_env.types.Environment.Trait E}.
-    Definition Self `{State.Trait} := ink_e2e.client.CodeStoredEvent E.
     
-    Definition PALLET `{State.Trait} := Pure (mk_str "Contracts").
+    Context {ℋ_0 : ink_env.types.Environment.Trait E}.
+    Definition Self : Set := ink_e2e.client.CodeStoredEvent E.
     
-    Global Instance AssociatedFunction_PALLET `{State.Trait} :
+    Definition PALLET  := Pure (mk_str "Contracts").
+    
+    Global Instance AssociatedFunction_PALLET :
       Notation.DoubleColon Self "PALLET" := {
       Notation.double_colon := PALLET;
     }.
     
-    Definition EVENT `{State.Trait} := Pure (mk_str "CodeStored").
+    Definition EVENT  := Pure (mk_str "CodeStored").
     
-    Global Instance AssociatedFunction_EVENT `{State.Trait} :
+    Global Instance AssociatedFunction_EVENT :
       Notation.DoubleColon Self "EVENT" := {
       Notation.double_colon := EVENT;
     }.
     
-    Global Instance I `{State.Trait} : subxt.events.StaticEvent.Trait Self := {
+    Global Instance I : subxt.events.StaticEvent.Trait Self := {
       subxt.events.StaticEvent.PALLET := PALLET;
       subxt.events.StaticEvent.EVENT := EVENT;
     }.
@@ -2599,10 +2760,15 @@ End Impl_subxt_events_StaticEvent_for_ink_e2e_client_CodeStoredEvent_E. *)
 
 Module Client.
   Section Client.
+    Context `{State.Trait}.
+    
     Context {C E : Set}.
-    Context `{subxt.config.Config.Trait C} `{ink_env.types.Environment.Trait E}.
+    
+    Context
+      {ℋ_0 : subxt.config.Config.Trait C}
+      {ℋ_1 : ink_env.types.Environment.Trait E}.
     Unset Primitive Projections.
-    Record t `{State.Trait} : Set := {
+    Record t : Set := {
       api : ink_e2e.xts.ContractsApi C E;
       contracts
         :
@@ -2613,18 +2779,16 @@ Module Client.
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_api `{State.Trait} : Notation.Dot "api" := {
+    Global Instance Get_api : Notation.Dot "api" := {
       Notation.dot x := let* x := M.read x in Pure x.(api) : M _;
     }.
-    Global Instance Get_AF_api `{State.Trait}
-      : Notation.DoubleColon t "api" := {
+    Global Instance Get_AF_api : Notation.DoubleColon t "api" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(api) : M _;
     }.
-    Global Instance Get_contracts `{State.Trait} : Notation.Dot "contracts" := {
+    Global Instance Get_contracts : Notation.Dot "contracts" := {
       Notation.dot x := let* x := M.read x in Pure x.(contracts) : M _;
     }.
-    Global Instance Get_AF_contracts `{State.Trait}
-      : Notation.DoubleColon t "contracts" := {
+    Global Instance Get_AF_contracts : Notation.DoubleColon t "contracts" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(contracts) : M _;
     }.
   End Client.
@@ -2632,8 +2796,8 @@ End Client.
 Definition Client
     (C E : Set)
     `{State.Trait}
-    `{subxt.config.Config.Trait C}
-    `{ink_env.types.Environment.Trait E}
+    {ℋ_0 : subxt.config.Config.Trait C}
+    {ℋ_1 : ink_env.types.Environment.Trait E}
     : Set :=
   M.val (Client.t (C := C) (E := E)).
 
@@ -2642,10 +2806,12 @@ Module default_accounts.
       forall
         `{State.Trait}
         {C : Set}
-        `{subxt.config.Config.Trait C}
-        `{core.convert.From.Trait C::type["Signature"]
+        {ℋ_0 : subxt.config.Config.Trait C}
+        {ℋ_1 :
+          core.convert.From.Trait C::type["Signature"]
             (T := sp_core.sr25519.Signature)}
-        `{core.convert.From.Trait C::type["AccountId"]
+        {ℋ_2 :
+          core.convert.From.Trait C::type["AccountId"]
             (T := sp_core.crypto.AccountId32)},
       M (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
   
@@ -2653,10 +2819,12 @@ Module default_accounts.
       forall
         `{State.Trait}
         {C : Set}
-        `{subxt.config.Config.Trait C}
-        `{core.convert.From.Trait C::type["Signature"]
+        {ℋ_0 : subxt.config.Config.Trait C}
+        {ℋ_1 :
+          core.convert.From.Trait C::type["Signature"]
             (T := sp_core.sr25519.Signature)}
-        `{core.convert.From.Trait C::type["AccountId"]
+        {ℋ_2 :
+          core.convert.From.Trait C::type["AccountId"]
             (T := sp_core.crypto.AccountId32)},
       M (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
   
@@ -2664,10 +2832,12 @@ Module default_accounts.
       forall
         `{State.Trait}
         {C : Set}
-        `{subxt.config.Config.Trait C}
-        `{core.convert.From.Trait C::type["Signature"]
+        {ℋ_0 : subxt.config.Config.Trait C}
+        {ℋ_1 :
+          core.convert.From.Trait C::type["Signature"]
             (T := sp_core.sr25519.Signature)}
-        `{core.convert.From.Trait C::type["AccountId"]
+        {ℋ_2 :
+          core.convert.From.Trait C::type["AccountId"]
             (T := sp_core.crypto.AccountId32)},
       M (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
   
@@ -2675,10 +2845,12 @@ Module default_accounts.
       forall
         `{State.Trait}
         {C : Set}
-        `{subxt.config.Config.Trait C}
-        `{core.convert.From.Trait C::type["Signature"]
+        {ℋ_0 : subxt.config.Config.Trait C}
+        {ℋ_1 :
+          core.convert.From.Trait C::type["Signature"]
             (T := sp_core.sr25519.Signature)}
-        `{core.convert.From.Trait C::type["AccountId"]
+        {ℋ_2 :
+          core.convert.From.Trait C::type["AccountId"]
             (T := sp_core.crypto.AccountId32)},
       M (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
   
@@ -2686,10 +2858,12 @@ Module default_accounts.
       forall
         `{State.Trait}
         {C : Set}
-        `{subxt.config.Config.Trait C}
-        `{core.convert.From.Trait C::type["Signature"]
+        {ℋ_0 : subxt.config.Config.Trait C}
+        {ℋ_1 :
+          core.convert.From.Trait C::type["Signature"]
             (T := sp_core.sr25519.Signature)}
-        `{core.convert.From.Trait C::type["AccountId"]
+        {ℋ_2 :
+          core.convert.From.Trait C::type["AccountId"]
             (T := sp_core.crypto.AccountId32)},
       M (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
   
@@ -2697,10 +2871,12 @@ Module default_accounts.
       forall
         `{State.Trait}
         {C : Set}
-        `{subxt.config.Config.Trait C}
-        `{core.convert.From.Trait C::type["Signature"]
+        {ℋ_0 : subxt.config.Config.Trait C}
+        {ℋ_1 :
+          core.convert.From.Trait C::type["Signature"]
             (T := sp_core.sr25519.Signature)}
-        `{core.convert.From.Trait C::type["AccountId"]
+        {ℋ_2 :
+          core.convert.From.Trait C::type["AccountId"]
             (T := sp_core.crypto.AccountId32)},
       M (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
   
@@ -2708,10 +2884,12 @@ Module default_accounts.
       forall
         `{State.Trait}
         {C : Set}
-        `{subxt.config.Config.Trait C}
-        `{core.convert.From.Trait C::type["Signature"]
+        {ℋ_0 : subxt.config.Config.Trait C}
+        {ℋ_1 :
+          core.convert.From.Trait C::type["Signature"]
             (T := sp_core.sr25519.Signature)}
-        `{core.convert.From.Trait C::type["AccountId"]
+        {ℋ_2 :
+          core.convert.From.Trait C::type["AccountId"]
             (T := sp_core.crypto.AccountId32)},
       M (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
   
@@ -2719,10 +2897,12 @@ Module default_accounts.
       forall
         `{State.Trait}
         {C : Set}
-        `{subxt.config.Config.Trait C}
-        `{core.convert.From.Trait C::type["Signature"]
+        {ℋ_0 : subxt.config.Config.Trait C}
+        {ℋ_1 :
+          core.convert.From.Trait C::type["Signature"]
             (T := sp_core.sr25519.Signature)}
-        `{core.convert.From.Trait C::type["AccountId"]
+        {ℋ_2 :
+          core.convert.From.Trait C::type["AccountId"]
             (T := sp_core.crypto.AccountId32)},
       M (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
 End default_accounts.
@@ -2731,10 +2911,12 @@ Parameter alice :
     forall
       `{State.Trait}
       {C : Set}
-      `{subxt.config.Config.Trait C}
-      `{core.convert.From.Trait C::type["Signature"]
+      {ℋ_0 : subxt.config.Config.Trait C}
+      {ℋ_1 :
+        core.convert.From.Trait C::type["Signature"]
           (T := sp_core.sr25519.Signature)}
-      `{core.convert.From.Trait C::type["AccountId"]
+      {ℋ_2 :
+        core.convert.From.Trait C::type["AccountId"]
           (T := sp_core.crypto.AccountId32)},
     M (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
 
@@ -2742,10 +2924,12 @@ Parameter bob :
     forall
       `{State.Trait}
       {C : Set}
-      `{subxt.config.Config.Trait C}
-      `{core.convert.From.Trait C::type["Signature"]
+      {ℋ_0 : subxt.config.Config.Trait C}
+      {ℋ_1 :
+        core.convert.From.Trait C::type["Signature"]
           (T := sp_core.sr25519.Signature)}
-      `{core.convert.From.Trait C::type["AccountId"]
+      {ℋ_2 :
+        core.convert.From.Trait C::type["AccountId"]
           (T := sp_core.crypto.AccountId32)},
     M (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
 
@@ -2753,10 +2937,12 @@ Parameter charlie :
     forall
       `{State.Trait}
       {C : Set}
-      `{subxt.config.Config.Trait C}
-      `{core.convert.From.Trait C::type["Signature"]
+      {ℋ_0 : subxt.config.Config.Trait C}
+      {ℋ_1 :
+        core.convert.From.Trait C::type["Signature"]
           (T := sp_core.sr25519.Signature)}
-      `{core.convert.From.Trait C::type["AccountId"]
+      {ℋ_2 :
+        core.convert.From.Trait C::type["AccountId"]
           (T := sp_core.crypto.AccountId32)},
     M (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
 
@@ -2764,10 +2950,12 @@ Parameter dave :
     forall
       `{State.Trait}
       {C : Set}
-      `{subxt.config.Config.Trait C}
-      `{core.convert.From.Trait C::type["Signature"]
+      {ℋ_0 : subxt.config.Config.Trait C}
+      {ℋ_1 :
+        core.convert.From.Trait C::type["Signature"]
           (T := sp_core.sr25519.Signature)}
-      `{core.convert.From.Trait C::type["AccountId"]
+      {ℋ_2 :
+        core.convert.From.Trait C::type["AccountId"]
           (T := sp_core.crypto.AccountId32)},
     M (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
 
@@ -2775,10 +2963,12 @@ Parameter eve :
     forall
       `{State.Trait}
       {C : Set}
-      `{subxt.config.Config.Trait C}
-      `{core.convert.From.Trait C::type["Signature"]
+      {ℋ_0 : subxt.config.Config.Trait C}
+      {ℋ_1 :
+        core.convert.From.Trait C::type["Signature"]
           (T := sp_core.sr25519.Signature)}
-      `{core.convert.From.Trait C::type["AccountId"]
+      {ℋ_2 :
+        core.convert.From.Trait C::type["AccountId"]
           (T := sp_core.crypto.AccountId32)},
     M (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
 
@@ -2786,10 +2976,12 @@ Parameter ferdie :
     forall
       `{State.Trait}
       {C : Set}
-      `{subxt.config.Config.Trait C}
-      `{core.convert.From.Trait C::type["Signature"]
+      {ℋ_0 : subxt.config.Config.Trait C}
+      {ℋ_1 :
+        core.convert.From.Trait C::type["Signature"]
           (T := sp_core.sr25519.Signature)}
-      `{core.convert.From.Trait C::type["AccountId"]
+      {ℋ_2 :
+        core.convert.From.Trait C::type["AccountId"]
           (T := sp_core.crypto.AccountId32)},
     M (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
 
@@ -2797,10 +2989,12 @@ Parameter one :
     forall
       `{State.Trait}
       {C : Set}
-      `{subxt.config.Config.Trait C}
-      `{core.convert.From.Trait C::type["Signature"]
+      {ℋ_0 : subxt.config.Config.Trait C}
+      {ℋ_1 :
+        core.convert.From.Trait C::type["Signature"]
           (T := sp_core.sr25519.Signature)}
-      `{core.convert.From.Trait C::type["AccountId"]
+      {ℋ_2 :
+        core.convert.From.Trait C::type["AccountId"]
           (T := sp_core.crypto.AccountId32)},
     M (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
 
@@ -2808,45 +3002,47 @@ Parameter two :
     forall
       `{State.Trait}
       {C : Set}
-      `{subxt.config.Config.Trait C}
-      `{core.convert.From.Trait C::type["Signature"]
+      {ℋ_0 : subxt.config.Config.Trait C}
+      {ℋ_1 :
+        core.convert.From.Trait C::type["Signature"]
           (T := sp_core.sr25519.Signature)}
-      `{core.convert.From.Trait C::type["AccountId"]
+      {ℋ_2 :
+        core.convert.From.Trait C::type["AccountId"]
           (T := sp_core.crypto.AccountId32)},
     M (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
 
 Module node_proc.
   Module TestNodeProcess.
     Section TestNodeProcess.
+      Context `{State.Trait}.
+      
       Context {R : Set}.
-      Context `{subxt.config.Config.Trait R}.
+      
+      Context {ℋ_0 : subxt.config.Config.Trait R}.
       Unset Primitive Projections.
-      Record t `{State.Trait} : Set := {
+      Record t : Set := {
         proc : std.process.Child;
         client : subxt.client.online_client.OnlineClient R;
         url : alloc.string.String;
       }.
       Global Set Primitive Projections.
       
-      Global Instance Get_proc `{State.Trait} : Notation.Dot "proc" := {
+      Global Instance Get_proc : Notation.Dot "proc" := {
         Notation.dot x := let* x := M.read x in Pure x.(proc) : M _;
       }.
-      Global Instance Get_AF_proc `{State.Trait}
-        : Notation.DoubleColon t "proc" := {
+      Global Instance Get_AF_proc : Notation.DoubleColon t "proc" := {
         Notation.double_colon x := let* x := M.read x in Pure x.(proc) : M _;
       }.
-      Global Instance Get_client `{State.Trait} : Notation.Dot "client" := {
+      Global Instance Get_client : Notation.Dot "client" := {
         Notation.dot x := let* x := M.read x in Pure x.(client) : M _;
       }.
-      Global Instance Get_AF_client `{State.Trait}
-        : Notation.DoubleColon t "client" := {
+      Global Instance Get_AF_client : Notation.DoubleColon t "client" := {
         Notation.double_colon x := let* x := M.read x in Pure x.(client) : M _;
       }.
-      Global Instance Get_url `{State.Trait} : Notation.Dot "url" := {
+      Global Instance Get_url : Notation.Dot "url" := {
         Notation.dot x := let* x := M.read x in Pure x.(url) : M _;
       }.
-      Global Instance Get_AF_url `{State.Trait}
-        : Notation.DoubleColon t "url" := {
+      Global Instance Get_AF_url : Notation.DoubleColon t "url" := {
         Notation.double_colon x := let* x := M.read x in Pure x.(url) : M _;
       }.
     End TestNodeProcess.
@@ -2854,23 +3050,27 @@ Module node_proc.
   Definition TestNodeProcess
       (R : Set)
       `{State.Trait}
-      `{subxt.config.Config.Trait R}
+      {ℋ_0 : subxt.config.Config.Trait R}
       : Set :=
     M.val (TestNodeProcess.t (R := R)).
   
   (* Module Impl_core_ops_drop_Drop_for_ink_e2e_node_proc_TestNodeProcess_R.
     (* Section Impl_core_ops_drop_Drop_for_ink_e2e_node_proc_TestNodeProcess_R.
+      Context `{State.Trait}.
+      
       Context {R : Set}.
-      Context `{subxt.config.Config.Trait R}.
-      Definition Self `{State.Trait} := ink_e2e.node_proc.TestNodeProcess R.
       
-      Parameter drop : forall `{State.Trait}, (mut_ref Self) -> M unit.
+      Context {ℋ_0 : subxt.config.Config.Trait R}.
+      Definition Self : Set := ink_e2e.node_proc.TestNodeProcess R.
       
-      Global Instance Method_drop `{State.Trait} : Notation.Dot "drop" := {
-        Notation.dot := drop;
+      Parameter drop : (mut_ref Self) -> M unit.
+      
+      Global Instance AssociatedFunction_drop :
+        Notation.DoubleColon Self "drop" := {
+        Notation.double_colon := drop;
       }.
       
-      Global Instance I `{State.Trait} : core.ops.drop.Drop.Trait Self := {
+      Global Instance I : core.ops.drop.Drop.Trait Self := {
         core.ops.drop.Drop.drop := drop;
       }.
     End Impl_core_ops_drop_Drop_for_ink_e2e_node_proc_TestNodeProcess_R. *)
@@ -2879,40 +3079,38 @@ Module node_proc.
   
   Module TestNodeProcessBuilder.
     Section TestNodeProcessBuilder.
+      Context `{State.Trait}.
+      
       Context {R : Set}.
+      
       Unset Primitive Projections.
-      Record t `{State.Trait} : Set := {
+      Record t : Set := {
         node_path : std.ffi.os_str.OsString;
         authority : core.option.Option sp_keyring.sr25519.Keyring;
         marker : core.marker.PhantomData R;
       }.
       Global Set Primitive Projections.
       
-      Global Instance Get_node_path `{State.Trait}
-        : Notation.Dot "node_path" := {
+      Global Instance Get_node_path : Notation.Dot "node_path" := {
         Notation.dot x := let* x := M.read x in Pure x.(node_path) : M _;
       }.
-      Global Instance Get_AF_node_path `{State.Trait}
-        : Notation.DoubleColon t "node_path" := {
+      Global Instance Get_AF_node_path : Notation.DoubleColon t "node_path" := {
         Notation.double_colon x
           :=
           let* x := M.read x in Pure x.(node_path) : M _;
       }.
-      Global Instance Get_authority `{State.Trait}
-        : Notation.Dot "authority" := {
+      Global Instance Get_authority : Notation.Dot "authority" := {
         Notation.dot x := let* x := M.read x in Pure x.(authority) : M _;
       }.
-      Global Instance Get_AF_authority `{State.Trait}
-        : Notation.DoubleColon t "authority" := {
+      Global Instance Get_AF_authority : Notation.DoubleColon t "authority" := {
         Notation.double_colon x
           :=
           let* x := M.read x in Pure x.(authority) : M _;
       }.
-      Global Instance Get_marker `{State.Trait} : Notation.Dot "marker" := {
+      Global Instance Get_marker : Notation.Dot "marker" := {
         Notation.dot x := let* x := M.read x in Pure x.(marker) : M _;
       }.
-      Global Instance Get_AF_marker `{State.Trait}
-        : Notation.DoubleColon t "marker" := {
+      Global Instance Get_AF_marker : Notation.DoubleColon t "marker" := {
         Notation.double_colon x := let* x := M.read x in Pure x.(marker) : M _;
       }.
     End TestNodeProcessBuilder.
@@ -2923,35 +3121,35 @@ End node_proc.
 
 Module TestNodeProcess.
   Section TestNodeProcess.
+    Context `{State.Trait}.
+    
     Context {R : Set}.
-    Context `{subxt.config.Config.Trait R}.
+    
+    Context {ℋ_0 : subxt.config.Config.Trait R}.
     Unset Primitive Projections.
-    Record t `{State.Trait} : Set := {
+    Record t : Set := {
       proc : std.process.Child;
       client : subxt.client.online_client.OnlineClient R;
       url : alloc.string.String;
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_proc `{State.Trait} : Notation.Dot "proc" := {
+    Global Instance Get_proc : Notation.Dot "proc" := {
       Notation.dot x := let* x := M.read x in Pure x.(proc) : M _;
     }.
-    Global Instance Get_AF_proc `{State.Trait}
-      : Notation.DoubleColon t "proc" := {
+    Global Instance Get_AF_proc : Notation.DoubleColon t "proc" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(proc) : M _;
     }.
-    Global Instance Get_client `{State.Trait} : Notation.Dot "client" := {
+    Global Instance Get_client : Notation.Dot "client" := {
       Notation.dot x := let* x := M.read x in Pure x.(client) : M _;
     }.
-    Global Instance Get_AF_client `{State.Trait}
-      : Notation.DoubleColon t "client" := {
+    Global Instance Get_AF_client : Notation.DoubleColon t "client" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(client) : M _;
     }.
-    Global Instance Get_url `{State.Trait} : Notation.Dot "url" := {
+    Global Instance Get_url : Notation.Dot "url" := {
       Notation.dot x := let* x := M.read x in Pure x.(url) : M _;
     }.
-    Global Instance Get_AF_url `{State.Trait}
-      : Notation.DoubleColon t "url" := {
+    Global Instance Get_AF_url : Notation.DoubleColon t "url" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(url) : M _;
     }.
   End TestNodeProcess.
@@ -2959,23 +3157,27 @@ End TestNodeProcess.
 Definition TestNodeProcess
     (R : Set)
     `{State.Trait}
-    `{subxt.config.Config.Trait R}
+    {ℋ_0 : subxt.config.Config.Trait R}
     : Set :=
   M.val (TestNodeProcess.t (R := R)).
 
 (* Module Impl_core_ops_drop_Drop_for_ink_e2e_node_proc_TestNodeProcess_R.
   (* Section Impl_core_ops_drop_Drop_for_ink_e2e_node_proc_TestNodeProcess_R.
+    Context `{State.Trait}.
+    
     Context {R : Set}.
-    Context `{subxt.config.Config.Trait R}.
-    Definition Self `{State.Trait} := ink_e2e.node_proc.TestNodeProcess R.
     
-    Parameter drop : forall `{State.Trait}, (mut_ref Self) -> M unit.
+    Context {ℋ_0 : subxt.config.Config.Trait R}.
+    Definition Self : Set := ink_e2e.node_proc.TestNodeProcess R.
     
-    Global Instance Method_drop `{State.Trait} : Notation.Dot "drop" := {
-      Notation.dot := drop;
+    Parameter drop : (mut_ref Self) -> M unit.
+    
+    Global Instance AssociatedFunction_drop :
+      Notation.DoubleColon Self "drop" := {
+      Notation.double_colon := drop;
     }.
     
-    Global Instance I `{State.Trait} : core.ops.drop.Drop.Trait Self := {
+    Global Instance I : core.ops.drop.Drop.Trait Self := {
       core.ops.drop.Drop.drop := drop;
     }.
   End Impl_core_ops_drop_Drop_for_ink_e2e_node_proc_TestNodeProcess_R. *)
@@ -2984,34 +3186,34 @@ End Impl_core_ops_drop_Drop_for_ink_e2e_node_proc_TestNodeProcess_R. *)
 
 Module TestNodeProcessBuilder.
   Section TestNodeProcessBuilder.
+    Context `{State.Trait}.
+    
     Context {R : Set}.
+    
     Unset Primitive Projections.
-    Record t `{State.Trait} : Set := {
+    Record t : Set := {
       node_path : std.ffi.os_str.OsString;
       authority : core.option.Option sp_keyring.sr25519.Keyring;
       marker : core.marker.PhantomData R;
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_node_path `{State.Trait} : Notation.Dot "node_path" := {
+    Global Instance Get_node_path : Notation.Dot "node_path" := {
       Notation.dot x := let* x := M.read x in Pure x.(node_path) : M _;
     }.
-    Global Instance Get_AF_node_path `{State.Trait}
-      : Notation.DoubleColon t "node_path" := {
+    Global Instance Get_AF_node_path : Notation.DoubleColon t "node_path" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(node_path) : M _;
     }.
-    Global Instance Get_authority `{State.Trait} : Notation.Dot "authority" := {
+    Global Instance Get_authority : Notation.Dot "authority" := {
       Notation.dot x := let* x := M.read x in Pure x.(authority) : M _;
     }.
-    Global Instance Get_AF_authority `{State.Trait}
-      : Notation.DoubleColon t "authority" := {
+    Global Instance Get_AF_authority : Notation.DoubleColon t "authority" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(authority) : M _;
     }.
-    Global Instance Get_marker `{State.Trait} : Notation.Dot "marker" := {
+    Global Instance Get_marker : Notation.Dot "marker" := {
       Notation.dot x := let* x := M.read x in Pure x.(marker) : M _;
     }.
-    Global Instance Get_AF_marker `{State.Trait}
-      : Notation.DoubleColon t "marker" := {
+    Global Instance Get_AF_marker : Notation.DoubleColon t "marker" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(marker) : M _;
     }.
   End TestNodeProcessBuilder.
@@ -3020,488 +3222,560 @@ Definition TestNodeProcessBuilder (R : Set) `{State.Trait} : Set :=
   M.val (TestNodeProcessBuilder.t (R := R)).
 
 Module Weight.
-  Unset Primitive Projections.
-  Record t `{State.Trait} : Set := {
-    ref_time : u64;
-    proof_size : u64;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_ref_time `{State.Trait} : Notation.Dot "ref_time" := {
-    Notation.dot x := let* x := M.read x in Pure x.(ref_time) : M _;
-  }.
-  Global Instance Get_AF_ref_time `{State.Trait}
-    : Notation.DoubleColon t "ref_time" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(ref_time) : M _;
-  }.
-  Global Instance Get_proof_size `{State.Trait} : Notation.Dot "proof_size" := {
-    Notation.dot x := let* x := M.read x in Pure x.(proof_size) : M _;
-  }.
-  Global Instance Get_AF_proof_size `{State.Trait}
-    : Notation.DoubleColon t "proof_size" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(proof_size) : M _;
-  }.
+  Section Weight.
+    Context `{State.Trait}.
+    
+    Unset Primitive Projections.
+    Record t : Set := {
+      ref_time : u64;
+      proof_size : u64;
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_ref_time : Notation.Dot "ref_time" := {
+      Notation.dot x := let* x := M.read x in Pure x.(ref_time) : M _;
+    }.
+    Global Instance Get_AF_ref_time : Notation.DoubleColon t "ref_time" := {
+      Notation.double_colon x := let* x := M.read x in Pure x.(ref_time) : M _;
+    }.
+    Global Instance Get_proof_size : Notation.Dot "proof_size" := {
+      Notation.dot x := let* x := M.read x in Pure x.(proof_size) : M _;
+    }.
+    Global Instance Get_AF_proof_size : Notation.DoubleColon t "proof_size" := {
+      Notation.double_colon x
+        :=
+        let* x := M.read x in Pure x.(proof_size) : M _;
+    }.
+  End Weight.
 End Weight.
-Definition Weight `{State.Trait} : Set := M.val (Weight.t).
+Definition Weight `{State.Trait} : Set := M.val Weight.t.
 
 Module Impl_core_marker_Copy_for_ink_e2e_xts_Weight.
-  Definition Self `{State.Trait} := ink_e2e.xts.Weight.
-  
-  Global Instance I `{State.Trait} : core.marker.Copy.Trait Self := {
-  }.
+  Section Impl_core_marker_Copy_for_ink_e2e_xts_Weight.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := ink_e2e.xts.Weight.
+    
+    Global Instance I : core.marker.Copy.Trait Self := {
+    }.
+  End Impl_core_marker_Copy_for_ink_e2e_xts_Weight.
   Global Hint Resolve I : core.
 End Impl_core_marker_Copy_for_ink_e2e_xts_Weight.
 
 Module Impl_core_clone_Clone_for_ink_e2e_xts_Weight.
-  Definition Self `{State.Trait} := ink_e2e.xts.Weight.
-  
-  Parameter clone : forall `{State.Trait}, (ref Self) -> M ink_e2e.xts.Weight.
-  
-  Global Instance Method_clone `{State.Trait} : Notation.Dot "clone" := {
-    Notation.dot := clone;
-  }.
-  
-  Global Instance I `{State.Trait} : core.clone.Clone.Trait Self := {
-    core.clone.Clone.clone := clone;
-  }.
+  Section Impl_core_clone_Clone_for_ink_e2e_xts_Weight.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := ink_e2e.xts.Weight.
+    
+    Parameter clone : (ref Self) -> M ink_e2e.xts.Weight.
+    
+    Global Instance AssociatedFunction_clone :
+      Notation.DoubleColon Self "clone" := {
+      Notation.double_colon := clone;
+    }.
+    
+    Global Instance I : core.clone.Clone.Trait Self := {
+      core.clone.Clone.clone := clone;
+    }.
+  End Impl_core_clone_Clone_for_ink_e2e_xts_Weight.
   Global Hint Resolve I : core.
 End Impl_core_clone_Clone_for_ink_e2e_xts_Weight.
 
 Module Impl_core_marker_StructuralEq_for_ink_e2e_xts_Weight.
-  Definition Self `{State.Trait} := ink_e2e.xts.Weight.
-  
-  Global Instance I `{State.Trait} : core.marker.StructuralEq.Trait Self := {
-  }.
+  Section Impl_core_marker_StructuralEq_for_ink_e2e_xts_Weight.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := ink_e2e.xts.Weight.
+    
+    Global Instance I : core.marker.StructuralEq.Trait Self := {
+    }.
+  End Impl_core_marker_StructuralEq_for_ink_e2e_xts_Weight.
   Global Hint Resolve I : core.
 End Impl_core_marker_StructuralEq_for_ink_e2e_xts_Weight.
 
 Module Impl_core_cmp_Eq_for_ink_e2e_xts_Weight.
-  Definition Self `{State.Trait} := ink_e2e.xts.Weight.
-  
-  Parameter assert_receiver_is_total_eq :
-      forall `{State.Trait},
-      (ref Self) -> M unit.
-  
-  Global Instance Method_assert_receiver_is_total_eq `{State.Trait} :
-    Notation.Dot "assert_receiver_is_total_eq" := {
-    Notation.dot := assert_receiver_is_total_eq;
-  }.
-  
-  Global Instance I `{State.Trait} : core.cmp.Eq.Trait Self := {
-  }.
+  Section Impl_core_cmp_Eq_for_ink_e2e_xts_Weight.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := ink_e2e.xts.Weight.
+    
+    Parameter assert_receiver_is_total_eq : (ref Self) -> M unit.
+    
+    Global Instance AssociatedFunction_assert_receiver_is_total_eq :
+      Notation.DoubleColon Self "assert_receiver_is_total_eq" := {
+      Notation.double_colon := assert_receiver_is_total_eq;
+    }.
+    
+    Global Instance I : core.cmp.Eq.Trait Self := {
+    }.
+  End Impl_core_cmp_Eq_for_ink_e2e_xts_Weight.
   Global Hint Resolve I : core.
 End Impl_core_cmp_Eq_for_ink_e2e_xts_Weight.
 
 Module Impl_core_marker_StructuralPartialEq_for_ink_e2e_xts_Weight.
-  Definition Self `{State.Trait} := ink_e2e.xts.Weight.
-  
-  Global Instance I `{State.Trait}
-    : core.marker.StructuralPartialEq.Trait Self := {
-  }.
+  Section Impl_core_marker_StructuralPartialEq_for_ink_e2e_xts_Weight.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := ink_e2e.xts.Weight.
+    
+    Global Instance I : core.marker.StructuralPartialEq.Trait Self := {
+    }.
+  End Impl_core_marker_StructuralPartialEq_for_ink_e2e_xts_Weight.
   Global Hint Resolve I : core.
 End Impl_core_marker_StructuralPartialEq_for_ink_e2e_xts_Weight.
 
 Module Impl_core_cmp_PartialEq_for_ink_e2e_xts_Weight.
-  Definition Self `{State.Trait} := ink_e2e.xts.Weight.
-  
-  Parameter eq :
-      forall `{State.Trait},
-      (ref Self) -> (ref ink_e2e.xts.Weight) -> M bool.
-  
-  Global Instance Method_eq `{State.Trait} : Notation.Dot "eq" := {
-    Notation.dot := eq;
-  }.
-  
-  Global Instance I `{State.Trait}
-    : core.cmp.PartialEq.Trait Self (Rhs := core.cmp.PartialEq.Default.Rhs Self)
-      := {
-    core.cmp.PartialEq.eq := eq;
-  }.
+  Section Impl_core_cmp_PartialEq_for_ink_e2e_xts_Weight.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := ink_e2e.xts.Weight.
+    
+    Parameter eq : (ref Self) -> (ref ink_e2e.xts.Weight) -> M bool.
+    
+    Global Instance AssociatedFunction_eq : Notation.DoubleColon Self "eq" := {
+      Notation.double_colon := eq;
+    }.
+    
+    Global Instance I
+      : core.cmp.PartialEq.Trait Self
+          (Rhs := core.cmp.PartialEq.Default.Rhs Self)
+        := {
+      core.cmp.PartialEq.eq := eq;
+    }.
+  End Impl_core_cmp_PartialEq_for_ink_e2e_xts_Weight.
   Global Hint Resolve I : core.
 End Impl_core_cmp_PartialEq_for_ink_e2e_xts_Weight.
 
 Module Impl_core_fmt_Debug_for_ink_e2e_xts_Weight.
-  Definition Self `{State.Trait} := ink_e2e.xts.Weight.
-  
-  Parameter fmt :
-      forall `{State.Trait},
-      (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
-  
-  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
-    Notation.dot := fmt;
-  }.
-  
-  Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt := fmt;
-  }.
+  Section Impl_core_fmt_Debug_for_ink_e2e_xts_Weight.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := ink_e2e.xts.Weight.
+    
+    Parameter fmt :
+        (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+    
+    Global Instance AssociatedFunction_fmt :
+      Notation.DoubleColon Self "fmt" := {
+      Notation.double_colon := fmt;
+    }.
+    
+    Global Instance I : core.fmt.Debug.Trait Self := {
+      core.fmt.Debug.fmt := fmt;
+    }.
+  End Impl_core_fmt_Debug_for_ink_e2e_xts_Weight.
   Global Hint Resolve I : core.
 End Impl_core_fmt_Debug_for_ink_e2e_xts_Weight.
 
 Module Impl_core_default_Default_for_ink_e2e_xts_Weight.
-  Definition Self `{State.Trait} := ink_e2e.xts.Weight.
-  
-  Parameter default : forall `{State.Trait}, M ink_e2e.xts.Weight.
-  
-  Global Instance AssociatedFunction_default `{State.Trait} :
-    Notation.DoubleColon Self "default" := {
-    Notation.double_colon := default;
-  }.
-  
-  Global Instance I `{State.Trait} : core.default.Default.Trait Self := {
-    core.default.Default.default := default;
-  }.
+  Section Impl_core_default_Default_for_ink_e2e_xts_Weight.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := ink_e2e.xts.Weight.
+    
+    Parameter default : M ink_e2e.xts.Weight.
+    
+    Global Instance AssociatedFunction_default :
+      Notation.DoubleColon Self "default" := {
+      Notation.double_colon := default;
+    }.
+    
+    Global Instance I : core.default.Default.Trait Self := {
+      core.default.Default.default := default;
+    }.
+  End Impl_core_default_Default_for_ink_e2e_xts_Weight.
   Global Hint Resolve I : core.
 End Impl_core_default_Default_for_ink_e2e_xts_Weight.
 
 Module Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Weight.
-  Definition Self `{State.Trait} := ink_e2e.xts.Weight.
-  
-  Parameter encode_to :
-      forall
-        `{State.Trait}
+  Section Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Weight.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := ink_e2e.xts.Weight.
+    
+    Parameter encode_to :
+        forall
+          {__CodecOutputEdqy : Set}
+          {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+          {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy},
+        (ref Self) -> (mut_ref __CodecOutputEdqy) -> M unit.
+    
+    Global Instance AssociatedFunction_encode_to
         {__CodecOutputEdqy : Set}
-        `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
-        `{core.marker.Sized.Trait __CodecOutputEdqy},
-      (ref Self) -> (mut_ref __CodecOutputEdqy) -> M unit.
-  
-  Global Instance Method_encode_to
-      `{State.Trait}
-      {__CodecOutputEdqy : Set}
-      `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
-      `{core.marker.Sized.Trait __CodecOutputEdqy} :
-    Notation.Dot "encode_to" := {
-    Notation.dot := encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
-  }.
-  
-  Global Instance I `{State.Trait}
-    : parity_scale_codec.codec.Encode.Trait Self := {
-  }.
+        {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+        {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy} :
+      Notation.DoubleColon Self "encode_to" := {
+      Notation.double_colon
+        :=
+        encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
+    }.
+    
+    Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
+    }.
+  End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Weight.
   Global Hint Resolve I : core.
 End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Weight.
 
 Module Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Weight.
-  Definition Self `{State.Trait} := ink_e2e.xts.Weight.
-  
-  Global Instance I `{State.Trait}
-    : parity_scale_codec.encode_like.EncodeLike.Trait Self
-        (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self)
-      := {
-  }.
+  Section Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Weight.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := ink_e2e.xts.Weight.
+    
+    Global Instance I
+      : parity_scale_codec.encode_like.EncodeLike.Trait Self
+          (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self)
+        := {
+    }.
+  End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Weight.
   Global Hint Resolve I : core.
 End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Weight.
 
 Module Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Weight.
-  Definition Self `{State.Trait} := ink_e2e.xts.Weight.
-  
-  Parameter decode :
-      forall
-        `{State.Trait}
+  Section Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Weight.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := ink_e2e.xts.Weight.
+    
+    Parameter decode :
+        forall
+          {__CodecInputEdqy : Set}
+          {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy},
+        (mut_ref __CodecInputEdqy) ->
+          M (core.result.Result Self parity_scale_codec.error.Error).
+    
+    Global Instance AssociatedFunction_decode
         {__CodecInputEdqy : Set}
-        `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy},
-      (mut_ref __CodecInputEdqy) ->
-        M (core.result.Result Self parity_scale_codec.error.Error).
-  
-  Global Instance AssociatedFunction_decode
-      `{State.Trait}
-      {__CodecInputEdqy : Set}
-      `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :
-    Notation.DoubleColon Self "decode" := {
-    Notation.double_colon := decode (__CodecInputEdqy := __CodecInputEdqy);
-  }.
-  
-  Global Instance I `{State.Trait}
-    : parity_scale_codec.codec.Decode.Trait Self := {
-    parity_scale_codec.codec.Decode.decode
-      {__CodecInputEdqy : Set}
-      `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
-      :=
-      decode (__CodecInputEdqy := __CodecInputEdqy);
-  }.
+        {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :
+      Notation.DoubleColon Self "decode" := {
+      Notation.double_colon := decode (__CodecInputEdqy := __CodecInputEdqy);
+    }.
+    
+    Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
+      parity_scale_codec.codec.Decode.decode
+        {__CodecInputEdqy : Set}
+        {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
+        :=
+        decode (__CodecInputEdqy := __CodecInputEdqy);
+    }.
+  End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Weight.
   Global Hint Resolve I : core.
 End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Weight.
 
 (* Module Impl_parity_scale_codec_max_encoded_len_MaxEncodedLen_for_ink_e2e_xts_Weight.
-  Definition Self `{State.Trait} := ink_e2e.xts.Weight.
-  
-  Parameter max_encoded_len :
-      forall `{State.Trait},
-      M CoqOfRust.core.primitive.usize.
-  
-  Global Instance AssociatedFunction_max_encoded_len `{State.Trait} :
-    Notation.DoubleColon Self "max_encoded_len" := {
-    Notation.double_colon := max_encoded_len;
-  }.
-  
-  Global Instance I `{State.Trait}
-    : parity_scale_codec.max_encoded_len.MaxEncodedLen.Trait Self := {
-    parity_scale_codec.max_encoded_len.MaxEncodedLen.max_encoded_len
-      :=
-      max_encoded_len;
-  }.
+  (* Section Impl_parity_scale_codec_max_encoded_len_MaxEncodedLen_for_ink_e2e_xts_Weight.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := ink_e2e.xts.Weight.
+    
+    Parameter max_encoded_len : M CoqOfRust.core.primitive.usize.
+    
+    Global Instance AssociatedFunction_max_encoded_len :
+      Notation.DoubleColon Self "max_encoded_len" := {
+      Notation.double_colon := max_encoded_len;
+    }.
+    
+    Global Instance I
+      : parity_scale_codec.max_encoded_len.MaxEncodedLen.Trait Self := {
+      parity_scale_codec.max_encoded_len.MaxEncodedLen.max_encoded_len
+        :=
+        max_encoded_len;
+    }.
+  End Impl_parity_scale_codec_max_encoded_len_MaxEncodedLen_for_ink_e2e_xts_Weight. *)
   Global Hint Resolve I : core.
 End Impl_parity_scale_codec_max_encoded_len_MaxEncodedLen_for_ink_e2e_xts_Weight. *)
 
 Module Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Weight.
-  Definition Self `{State.Trait} := ink_e2e.xts.Weight.
-  
-  Parameter encode_as_type_to :
-      forall `{State.Trait},
-      (ref Self) ->
-        u32 ->
-        (ref scale_info.portable.PortableRegistry) ->
-        (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
-        M (core.result.Result unit scale_encode.error.Error).
-  
-  Global Instance Method_encode_as_type_to `{State.Trait} :
-    Notation.Dot "encode_as_type_to" := {
-    Notation.dot := encode_as_type_to;
-  }.
-  
-  Global Instance I `{State.Trait} : scale_encode.EncodeAsType.Trait Self := {
-    scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
-  }.
+  Section Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Weight.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := ink_e2e.xts.Weight.
+    
+    Parameter encode_as_type_to :
+        (ref Self) ->
+          u32 ->
+          (ref scale_info.portable.PortableRegistry) ->
+          (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
+          M (core.result.Result unit scale_encode.error.Error).
+    
+    Global Instance AssociatedFunction_encode_as_type_to :
+      Notation.DoubleColon Self "encode_as_type_to" := {
+      Notation.double_colon := encode_as_type_to;
+    }.
+    
+    Global Instance I : scale_encode.EncodeAsType.Trait Self := {
+      scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
+    }.
+  End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Weight.
   Global Hint Resolve I : core.
 End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Weight.
 
 Module Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Weight.
-  Definition Self `{State.Trait} := ink_e2e.xts.Weight.
-  
-  Parameter encode_as_fields_to :
-      forall `{State.Trait},
-      (ref Self) ->
-        (ref (Slice scale_encode.PortableField)) ->
-        (ref scale_info.portable.PortableRegistry) ->
-        (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
-        M (core.result.Result unit scale_encode.error.Error).
-  
-  Global Instance Method_encode_as_fields_to `{State.Trait} :
-    Notation.Dot "encode_as_fields_to" := {
-    Notation.dot := encode_as_fields_to;
-  }.
-  
-  Global Instance I `{State.Trait} : scale_encode.EncodeAsFields.Trait Self := {
-    scale_encode.EncodeAsFields.encode_as_fields_to := encode_as_fields_to;
-  }.
+  Section Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Weight.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := ink_e2e.xts.Weight.
+    
+    Parameter encode_as_fields_to :
+        (ref Self) ->
+          (ref (Slice scale_encode.PortableField)) ->
+          (ref scale_info.portable.PortableRegistry) ->
+          (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
+          M (core.result.Result unit scale_encode.error.Error).
+    
+    Global Instance AssociatedFunction_encode_as_fields_to :
+      Notation.DoubleColon Self "encode_as_fields_to" := {
+      Notation.double_colon := encode_as_fields_to;
+    }.
+    
+    Global Instance I : scale_encode.EncodeAsFields.Trait Self := {
+      scale_encode.EncodeAsFields.encode_as_fields_to := encode_as_fields_to;
+    }.
+  End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Weight.
   Global Hint Resolve I : core.
 End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Weight.
 
 Module Impl_serde_ser_Serialize_for_ink_e2e_xts_Weight.
-  Definition Self `{State.Trait} := ink_e2e.xts.Weight.
-  
-  Parameter serialize :
-      forall `{State.Trait} {__S : Set} `{serde.ser.Serializer.Trait __S},
-      (ref Self) ->
-        __S ->
-        M (core.result.Result __S::type["Ok"] __S::type["Error"]).
-  
-  Global Instance Method_serialize
-      `{State.Trait}
-      {__S : Set}
-      `{serde.ser.Serializer.Trait __S} :
-    Notation.Dot "serialize" := {
-    Notation.dot := serialize (__S := __S);
-  }.
-  
-  Global Instance I `{State.Trait} : serde.ser.Serialize.Trait Self := {
-    serde.ser.Serialize.serialize {__S : Set} `{serde.ser.Serializer.Trait __S}
-      :=
-      serialize (__S := __S);
-  }.
+  Section Impl_serde_ser_Serialize_for_ink_e2e_xts_Weight.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := ink_e2e.xts.Weight.
+    
+    Parameter serialize :
+        forall {__S : Set} {ℋ_0 : serde.ser.Serializer.Trait __S},
+        (ref Self) ->
+          __S ->
+          M (core.result.Result __S::type["Ok"] __S::type["Error"]).
+    
+    Global Instance AssociatedFunction_serialize
+        {__S : Set}
+        {ℋ_0 : serde.ser.Serializer.Trait __S} :
+      Notation.DoubleColon Self "serialize" := {
+      Notation.double_colon := serialize (__S := __S);
+    }.
+    
+    Global Instance I : serde.ser.Serialize.Trait Self := {
+      serde.ser.Serialize.serialize
+        {__S : Set}
+        {ℋ_0 : serde.ser.Serializer.Trait __S}
+        :=
+        serialize (__S := __S);
+    }.
+  End Impl_serde_ser_Serialize_for_ink_e2e_xts_Weight.
   Global Hint Resolve I : core.
 End Impl_serde_ser_Serialize_for_ink_e2e_xts_Weight.
 
 Module Impl_serde_de_Deserialize_for_ink_e2e_xts_Weight.
-  Definition Self `{State.Trait} := ink_e2e.xts.Weight.
-  
-  Parameter deserialize :
-      forall `{State.Trait} {__D : Set} `{serde.de.Deserializer.Trait __D},
-      __D -> M (core.result.Result Self __D::type["Error"]).
-  
-  Global Instance AssociatedFunction_deserialize
-      `{State.Trait}
-      {__D : Set}
-      `{serde.de.Deserializer.Trait __D} :
-    Notation.DoubleColon Self "deserialize" := {
-    Notation.double_colon := deserialize (__D := __D);
-  }.
-  
-  Global Instance I `{State.Trait} : serde.de.Deserialize.Trait Self := {
-    serde.de.Deserialize.deserialize
-      {__D : Set}
-      `{serde.de.Deserializer.Trait __D}
-      :=
-      deserialize (__D := __D);
-  }.
+  Section Impl_serde_de_Deserialize_for_ink_e2e_xts_Weight.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := ink_e2e.xts.Weight.
+    
+    Parameter deserialize :
+        forall {__D : Set} {ℋ_0 : serde.de.Deserializer.Trait __D},
+        __D -> M (core.result.Result Self __D::type["Error"]).
+    
+    Global Instance AssociatedFunction_deserialize
+        {__D : Set}
+        {ℋ_0 : serde.de.Deserializer.Trait __D} :
+      Notation.DoubleColon Self "deserialize" := {
+      Notation.double_colon := deserialize (__D := __D);
+    }.
+    
+    Global Instance I : serde.de.Deserialize.Trait Self := {
+      serde.de.Deserialize.deserialize
+        {__D : Set}
+        {ℋ_0 : serde.de.Deserializer.Trait __D}
+        :=
+        deserialize (__D := __D);
+    }.
+  End Impl_serde_de_Deserialize_for_ink_e2e_xts_Weight.
   Global Hint Resolve I : core.
 End Impl_serde_de_Deserialize_for_ink_e2e_xts_Weight.
 
 (* Module Impl_serde_de_Visitor_for_ink_e2e_xts___deserialize___FieldVisitor.
-  Definition Self `{State.Trait} := ink_e2e.xts._.deserialize.__FieldVisitor.
-  
-  Definition Value : Set := ink_e2e.xts._.deserialize.__Field.
-  
-  Parameter expecting :
-      forall `{State.Trait},
-      (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
-  
-  Global Instance Method_expecting `{State.Trait} :
-    Notation.Dot "expecting" := {
-    Notation.dot := expecting;
-  }.
-  
-  Parameter visit_u64 :
-      forall `{State.Trait} {__E : Set} `{serde.de.Error.Trait __E},
-      Self -> u64 -> M (core.result.Result Value __E).
-  
-  Global Instance Method_visit_u64
-      `{State.Trait}
-      {__E : Set}
-      `{serde.de.Error.Trait __E} :
-    Notation.Dot "visit_u64" := {
-    Notation.dot := visit_u64 (__E := __E);
-  }.
-  
-  Parameter visit_str :
-      forall `{State.Trait} {__E : Set} `{serde.de.Error.Trait __E},
-      Self -> (ref str) -> M (core.result.Result Value __E).
-  
-  Global Instance Method_visit_str
-      `{State.Trait}
-      {__E : Set}
-      `{serde.de.Error.Trait __E} :
-    Notation.Dot "visit_str" := {
-    Notation.dot := visit_str (__E := __E);
-  }.
-  
-  Parameter visit_bytes :
-      forall `{State.Trait} {__E : Set} `{serde.de.Error.Trait __E},
-      Self -> (ref (Slice u8)) -> M (core.result.Result Value __E).
-  
-  Global Instance Method_visit_bytes
-      `{State.Trait}
-      {__E : Set}
-      `{serde.de.Error.Trait __E} :
-    Notation.Dot "visit_bytes" := {
-    Notation.dot := visit_bytes (__E := __E);
-  }.
-  
-  Global Instance I `{State.Trait} : serde.de.Visitor.Trait Self := {
-    serde.de.Visitor.Value := Value;
-    serde.de.Visitor.expecting := expecting;
-  }.
+  (* Section Impl_serde_de_Visitor_for_ink_e2e_xts___deserialize___FieldVisitor.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := ink_e2e.xts._.deserialize.__FieldVisitor.
+    
+    Definition Value : Set := ink_e2e.xts._.deserialize.__Field.
+    
+    Parameter expecting :
+        (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+    
+    Global Instance AssociatedFunction_expecting :
+      Notation.DoubleColon Self "expecting" := {
+      Notation.double_colon := expecting;
+    }.
+    
+    Parameter visit_u64 :
+        forall {__E : Set} {ℋ_0 : serde.de.Error.Trait __E},
+        Self -> u64 -> M (core.result.Result Value __E).
+    
+    Global Instance AssociatedFunction_visit_u64
+        {__E : Set}
+        {ℋ_0 : serde.de.Error.Trait __E} :
+      Notation.DoubleColon Self "visit_u64" := {
+      Notation.double_colon := visit_u64 (__E := __E);
+    }.
+    
+    Parameter visit_str :
+        forall {__E : Set} {ℋ_0 : serde.de.Error.Trait __E},
+        Self -> (ref str) -> M (core.result.Result Value __E).
+    
+    Global Instance AssociatedFunction_visit_str
+        {__E : Set}
+        {ℋ_0 : serde.de.Error.Trait __E} :
+      Notation.DoubleColon Self "visit_str" := {
+      Notation.double_colon := visit_str (__E := __E);
+    }.
+    
+    Parameter visit_bytes :
+        forall {__E : Set} {ℋ_0 : serde.de.Error.Trait __E},
+        Self -> (ref (Slice u8)) -> M (core.result.Result Value __E).
+    
+    Global Instance AssociatedFunction_visit_bytes
+        {__E : Set}
+        {ℋ_0 : serde.de.Error.Trait __E} :
+      Notation.DoubleColon Self "visit_bytes" := {
+      Notation.double_colon := visit_bytes (__E := __E);
+    }.
+    
+    Global Instance I : serde.de.Visitor.Trait Self := {
+      serde.de.Visitor.Value := Value;
+      serde.de.Visitor.expecting := expecting;
+    }.
+  End Impl_serde_de_Visitor_for_ink_e2e_xts___deserialize___FieldVisitor. *)
   Global Hint Resolve I : core.
 End Impl_serde_de_Visitor_for_ink_e2e_xts___deserialize___FieldVisitor. *)
 
 (* Module Impl_serde_de_Deserialize_for_ink_e2e_xts___deserialize___Field.
-  Definition Self `{State.Trait} := ink_e2e.xts._.deserialize.__Field.
-  
-  Parameter deserialize :
-      forall `{State.Trait} {__D : Set} `{serde.de.Deserializer.Trait __D},
-      __D -> M (core.result.Result Self __D::type["Error"]).
-  
-  Global Instance AssociatedFunction_deserialize
-      `{State.Trait}
-      {__D : Set}
-      `{serde.de.Deserializer.Trait __D} :
-    Notation.DoubleColon Self "deserialize" := {
-    Notation.double_colon := deserialize (__D := __D);
-  }.
-  
-  Global Instance I `{State.Trait} : serde.de.Deserialize.Trait Self := {
-    serde.de.Deserialize.deserialize
-      {__D : Set}
-      `{serde.de.Deserializer.Trait __D}
-      :=
-      deserialize (__D := __D);
-  }.
+  (* Section Impl_serde_de_Deserialize_for_ink_e2e_xts___deserialize___Field.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := ink_e2e.xts._.deserialize.__Field.
+    
+    Parameter deserialize :
+        forall {__D : Set} {ℋ_0 : serde.de.Deserializer.Trait __D},
+        __D -> M (core.result.Result Self __D::type["Error"]).
+    
+    Global Instance AssociatedFunction_deserialize
+        {__D : Set}
+        {ℋ_0 : serde.de.Deserializer.Trait __D} :
+      Notation.DoubleColon Self "deserialize" := {
+      Notation.double_colon := deserialize (__D := __D);
+    }.
+    
+    Global Instance I : serde.de.Deserialize.Trait Self := {
+      serde.de.Deserialize.deserialize
+        {__D : Set}
+        {ℋ_0 : serde.de.Deserializer.Trait __D}
+        :=
+        deserialize (__D := __D);
+    }.
+  End Impl_serde_de_Deserialize_for_ink_e2e_xts___deserialize___Field. *)
   Global Hint Resolve I : core.
 End Impl_serde_de_Deserialize_for_ink_e2e_xts___deserialize___Field. *)
 
 (* Module Impl_serde_de_Visitor_for_ink_e2e_xts___deserialize___Visitor.
-  Definition Self `{State.Trait} := ink_e2e.xts._.deserialize.__Visitor.
-  
-  Definition Value : Set := ink_e2e.xts.Weight.
-  
-  Parameter expecting :
-      forall `{State.Trait},
-      (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
-  
-  Global Instance Method_expecting `{State.Trait} :
-    Notation.Dot "expecting" := {
-    Notation.dot := expecting;
-  }.
-  
-  Parameter visit_seq :
-      forall `{State.Trait} {__A : Set} `{serde.de.SeqAccess.Trait __A},
-      Self -> __A -> M (core.result.Result Value __A::type["Error"]).
-  
-  Global Instance Method_visit_seq
-      `{State.Trait}
-      {__A : Set}
-      `{serde.de.SeqAccess.Trait __A} :
-    Notation.Dot "visit_seq" := {
-    Notation.dot := visit_seq (__A := __A);
-  }.
-  
-  Parameter visit_map :
-      forall `{State.Trait} {__A : Set} `{serde.de.MapAccess.Trait __A},
-      Self -> __A -> M (core.result.Result Value __A::type["Error"]).
-  
-  Global Instance Method_visit_map
-      `{State.Trait}
-      {__A : Set}
-      `{serde.de.MapAccess.Trait __A} :
-    Notation.Dot "visit_map" := {
-    Notation.dot := visit_map (__A := __A);
-  }.
-  
-  Global Instance I `{State.Trait} : serde.de.Visitor.Trait Self := {
-    serde.de.Visitor.Value := Value;
-    serde.de.Visitor.expecting := expecting;
-  }.
+  (* Section Impl_serde_de_Visitor_for_ink_e2e_xts___deserialize___Visitor.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := ink_e2e.xts._.deserialize.__Visitor.
+    
+    Definition Value : Set := ink_e2e.xts.Weight.
+    
+    Parameter expecting :
+        (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+    
+    Global Instance AssociatedFunction_expecting :
+      Notation.DoubleColon Self "expecting" := {
+      Notation.double_colon := expecting;
+    }.
+    
+    Parameter visit_seq :
+        forall {__A : Set} {ℋ_0 : serde.de.SeqAccess.Trait __A},
+        Self -> __A -> M (core.result.Result Value __A::type["Error"]).
+    
+    Global Instance AssociatedFunction_visit_seq
+        {__A : Set}
+        {ℋ_0 : serde.de.SeqAccess.Trait __A} :
+      Notation.DoubleColon Self "visit_seq" := {
+      Notation.double_colon := visit_seq (__A := __A);
+    }.
+    
+    Parameter visit_map :
+        forall {__A : Set} {ℋ_0 : serde.de.MapAccess.Trait __A},
+        Self -> __A -> M (core.result.Result Value __A::type["Error"]).
+    
+    Global Instance AssociatedFunction_visit_map
+        {__A : Set}
+        {ℋ_0 : serde.de.MapAccess.Trait __A} :
+      Notation.DoubleColon Self "visit_map" := {
+      Notation.double_colon := visit_map (__A := __A);
+    }.
+    
+    Global Instance I : serde.de.Visitor.Trait Self := {
+      serde.de.Visitor.Value := Value;
+      serde.de.Visitor.expecting := expecting;
+    }.
+  End Impl_serde_de_Visitor_for_ink_e2e_xts___deserialize___Visitor. *)
   Global Hint Resolve I : core.
 End Impl_serde_de_Visitor_for_ink_e2e_xts___deserialize___Visitor. *)
 
 Module Impl_core_convert_From_for_ink_e2e_xts_Weight.
-  Definition Self `{State.Trait} := ink_e2e.xts.Weight.
-  
-  Parameter from : forall `{State.Trait}, sp_weights.weight_v2.Weight -> M Self.
-  
-  Global Instance AssociatedFunction_from `{State.Trait} :
-    Notation.DoubleColon Self "from" := {
-    Notation.double_colon := from;
-  }.
-  
-  Global Instance I `{State.Trait}
-    : core.convert.From.Trait Self (T := sp_weights.weight_v2.Weight) := {
-    core.convert.From.from := from;
-  }.
+  Section Impl_core_convert_From_for_ink_e2e_xts_Weight.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := ink_e2e.xts.Weight.
+    
+    Parameter from : sp_weights.weight_v2.Weight -> M Self.
+    
+    Global Instance AssociatedFunction_from :
+      Notation.DoubleColon Self "from" := {
+      Notation.double_colon := from;
+    }.
+    
+    Global Instance I
+      : core.convert.From.Trait Self (T := sp_weights.weight_v2.Weight) := {
+      core.convert.From.from := from;
+    }.
+  End Impl_core_convert_From_for_ink_e2e_xts_Weight.
   Global Hint Resolve I : core.
 End Impl_core_convert_From_for_ink_e2e_xts_Weight.
 
 Module Impl_core_convert_From_for_sp_weights_weight_v2_Weight.
-  Definition Self `{State.Trait} := sp_weights.weight_v2.Weight.
-  
-  Parameter from : forall `{State.Trait}, ink_e2e.xts.Weight -> M Self.
-  
-  Global Instance AssociatedFunction_from `{State.Trait} :
-    Notation.DoubleColon Self "from" := {
-    Notation.double_colon := from;
-  }.
-  
-  Global Instance I `{State.Trait}
-    : core.convert.From.Trait Self (T := ink_e2e.xts.Weight) := {
-    core.convert.From.from := from;
-  }.
+  Section Impl_core_convert_From_for_sp_weights_weight_v2_Weight.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := sp_weights.weight_v2.Weight.
+    
+    Parameter from : ink_e2e.xts.Weight -> M Self.
+    
+    Global Instance AssociatedFunction_from :
+      Notation.DoubleColon Self "from" := {
+      Notation.double_colon := from;
+    }.
+    
+    Global Instance I
+      : core.convert.From.Trait Self (T := ink_e2e.xts.Weight) := {
+      core.convert.From.from := from;
+    }.
+  End Impl_core_convert_From_for_sp_weights_weight_v2_Weight.
   Global Hint Resolve I : core.
 End Impl_core_convert_From_for_sp_weights_weight_v2_Weight.
 
 Module InstantiateWithCode.
   Section InstantiateWithCode.
+    Context `{State.Trait}.
+    
     Context {E : Set}.
-    Context `{ink_env.types.Environment.Trait E}.
+    
+    Context {ℋ_0 : ink_env.types.Environment.Trait E}.
     Unset Primitive Projections.
-    Record t `{State.Trait} : Set := {
+    Record t : Set := {
       value : E::type["Balance"];
       gas_limit : ink_e2e.xts.Weight;
       storage_deposit_limit : core.option.Option E::type["Balance"];
@@ -3511,51 +3785,46 @@ Module InstantiateWithCode.
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_value `{State.Trait} : Notation.Dot "value" := {
+    Global Instance Get_value : Notation.Dot "value" := {
       Notation.dot x := let* x := M.read x in Pure x.(value) : M _;
     }.
-    Global Instance Get_AF_value `{State.Trait}
-      : Notation.DoubleColon t "value" := {
+    Global Instance Get_AF_value : Notation.DoubleColon t "value" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(value) : M _;
     }.
-    Global Instance Get_gas_limit `{State.Trait} : Notation.Dot "gas_limit" := {
+    Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
       Notation.dot x := let* x := M.read x in Pure x.(gas_limit) : M _;
     }.
-    Global Instance Get_AF_gas_limit `{State.Trait}
-      : Notation.DoubleColon t "gas_limit" := {
+    Global Instance Get_AF_gas_limit : Notation.DoubleColon t "gas_limit" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(gas_limit) : M _;
     }.
-    Global Instance Get_storage_deposit_limit `{State.Trait}
+    Global Instance Get_storage_deposit_limit
       : Notation.Dot "storage_deposit_limit" := {
       Notation.dot x
         :=
         let* x := M.read x in Pure x.(storage_deposit_limit) : M _;
     }.
-    Global Instance Get_AF_storage_deposit_limit `{State.Trait}
+    Global Instance Get_AF_storage_deposit_limit
       : Notation.DoubleColon t "storage_deposit_limit" := {
       Notation.double_colon x
         :=
         let* x := M.read x in Pure x.(storage_deposit_limit) : M _;
     }.
-    Global Instance Get_code `{State.Trait} : Notation.Dot "code" := {
+    Global Instance Get_code : Notation.Dot "code" := {
       Notation.dot x := let* x := M.read x in Pure x.(code) : M _;
     }.
-    Global Instance Get_AF_code `{State.Trait}
-      : Notation.DoubleColon t "code" := {
+    Global Instance Get_AF_code : Notation.DoubleColon t "code" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(code) : M _;
     }.
-    Global Instance Get_data `{State.Trait} : Notation.Dot "data" := {
+    Global Instance Get_data : Notation.Dot "data" := {
       Notation.dot x := let* x := M.read x in Pure x.(data) : M _;
     }.
-    Global Instance Get_AF_data `{State.Trait}
-      : Notation.DoubleColon t "data" := {
+    Global Instance Get_AF_data : Notation.DoubleColon t "data" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(data) : M _;
     }.
-    Global Instance Get_salt `{State.Trait} : Notation.Dot "salt" := {
+    Global Instance Get_salt : Notation.Dot "salt" := {
       Notation.dot x := let* x := M.read x in Pure x.(salt) : M _;
     }.
-    Global Instance Get_AF_salt `{State.Trait}
-      : Notation.DoubleColon t "salt" := {
+    Global Instance Get_AF_salt : Notation.DoubleColon t "salt" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(salt) : M _;
     }.
   End InstantiateWithCode.
@@ -3563,29 +3832,32 @@ End InstantiateWithCode.
 Definition InstantiateWithCode
     (E : Set)
     `{State.Trait}
-    `{ink_env.types.Environment.Trait E}
+    {ℋ_0 : ink_env.types.Environment.Trait E}
     : Set :=
   M.val (InstantiateWithCode.t (E := E)).
 
 Module Impl_core_fmt_Debug_for_ink_e2e_xts_InstantiateWithCode_E.
   Section Impl_core_fmt_Debug_for_ink_e2e_xts_InstantiateWithCode_E.
+    Context `{State.Trait}.
+    
     Context {E : Set}.
+    
     Context
-      `{core.fmt.Debug.Trait E}
-      `{ink_env.types.Environment.Trait E}
-      `{core.fmt.Debug.Trait E::type["Balance"]}
-      `{core.fmt.Debug.Trait E::type["Balance"]}.
-    Definition Self `{State.Trait} := ink_e2e.xts.InstantiateWithCode E.
+      {ℋ_0 : core.fmt.Debug.Trait E}
+      {ℋ_1 : ink_env.types.Environment.Trait E}
+      {ℋ_2 : core.fmt.Debug.Trait E::type["Balance"]}
+      {ℋ_3 : core.fmt.Debug.Trait E::type["Balance"]}.
+    Definition Self : Set := ink_e2e.xts.InstantiateWithCode E.
     
     Parameter fmt :
-        forall `{State.Trait},
         (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
     
-    Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
-      Notation.dot := fmt;
+    Global Instance AssociatedFunction_fmt :
+      Notation.DoubleColon Self "fmt" := {
+      Notation.double_colon := fmt;
     }.
     
-    Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
+    Global Instance I : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
   End Impl_core_fmt_Debug_for_ink_e2e_xts_InstantiateWithCode_E.
@@ -3596,35 +3868,39 @@ Module
   Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_InstantiateWithCode_E.
   Section
     Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_InstantiateWithCode_E.
+    Context `{State.Trait}.
+    
     Context {E : Set}.
+    
     Context
-      `{ink_env.types.Environment.Trait E}
-      `{parity_scale_codec.codec.Encode.Trait
+      {ℋ_0 : ink_env.types.Environment.Trait E}
+      {ℋ_1 :
+        parity_scale_codec.codec.Encode.Trait
             (core.option.Option E::type["Balance"])}
-      `{parity_scale_codec.codec.Encode.Trait
+      {ℋ_2 :
+        parity_scale_codec.codec.Encode.Trait
             (core.option.Option E::type["Balance"])}
-      `{parity_scale_codec.compact.HasCompact.Trait E::type["Balance"]}.
-    Definition Self `{State.Trait} := ink_e2e.xts.InstantiateWithCode E.
+      {ℋ_3 : parity_scale_codec.compact.HasCompact.Trait E::type["Balance"]}.
+    Definition Self : Set := ink_e2e.xts.InstantiateWithCode E.
     
     Parameter encode_to :
         forall
-          `{State.Trait}
           {__CodecOutputEdqy : Set}
-          `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
-          `{core.marker.Sized.Trait __CodecOutputEdqy},
+          {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+          {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy},
         (ref Self) -> (mut_ref __CodecOutputEdqy) -> M unit.
     
-    Global Instance Method_encode_to
-        `{State.Trait}
+    Global Instance AssociatedFunction_encode_to
         {__CodecOutputEdqy : Set}
-        `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
-        `{core.marker.Sized.Trait __CodecOutputEdqy} :
-      Notation.Dot "encode_to" := {
-      Notation.dot := encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
+        {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+        {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy} :
+      Notation.DoubleColon Self "encode_to" := {
+      Notation.double_colon
+        :=
+        encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
     }.
     
-    Global Instance I `{State.Trait}
-      : parity_scale_codec.codec.Encode.Trait Self := {
+    Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
     }.
   End
     Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_InstantiateWithCode_E.
@@ -3635,17 +3911,22 @@ Module
   Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_InstantiateWithCode_E.
   Section
     Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_InstantiateWithCode_E.
-    Context {E : Set}.
-    Context
-      `{ink_env.types.Environment.Trait E}
-      `{parity_scale_codec.codec.Encode.Trait
-            (core.option.Option E::type["Balance"])}
-      `{parity_scale_codec.codec.Encode.Trait
-            (core.option.Option E::type["Balance"])}
-      `{parity_scale_codec.compact.HasCompact.Trait E::type["Balance"]}.
-    Definition Self `{State.Trait} := ink_e2e.xts.InstantiateWithCode E.
+    Context `{State.Trait}.
     
-    Global Instance I `{State.Trait}
+    Context {E : Set}.
+    
+    Context
+      {ℋ_0 : ink_env.types.Environment.Trait E}
+      {ℋ_1 :
+        parity_scale_codec.codec.Encode.Trait
+            (core.option.Option E::type["Balance"])}
+      {ℋ_2 :
+        parity_scale_codec.codec.Encode.Trait
+            (core.option.Option E::type["Balance"])}
+      {ℋ_3 : parity_scale_codec.compact.HasCompact.Trait E::type["Balance"]}.
+    Definition Self : Set := ink_e2e.xts.InstantiateWithCode E.
+    
+    Global Instance I
       : parity_scale_codec.encode_like.EncodeLike.Trait Self
           (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self)
         := {
@@ -3660,37 +3941,39 @@ Module
   Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_InstantiateWithCode_E.
   Section
     Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_InstantiateWithCode_E.
+    Context `{State.Trait}.
+    
     Context {E : Set}.
+    
     Context
-      `{ink_env.types.Environment.Trait E}
-      `{parity_scale_codec.codec.Decode.Trait
+      {ℋ_0 : ink_env.types.Environment.Trait E}
+      {ℋ_1 :
+        parity_scale_codec.codec.Decode.Trait
             (core.option.Option E::type["Balance"])}
-      `{parity_scale_codec.codec.Decode.Trait
+      {ℋ_2 :
+        parity_scale_codec.codec.Decode.Trait
             (core.option.Option E::type["Balance"])}
-      `{parity_scale_codec.compact.HasCompact.Trait E::type["Balance"]}.
-    Definition Self `{State.Trait} := ink_e2e.xts.InstantiateWithCode E.
+      {ℋ_3 : parity_scale_codec.compact.HasCompact.Trait E::type["Balance"]}.
+    Definition Self : Set := ink_e2e.xts.InstantiateWithCode E.
     
     Parameter decode :
         forall
-          `{State.Trait}
           {__CodecInputEdqy : Set}
-          `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy},
+          {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy},
         (mut_ref __CodecInputEdqy) ->
           M (core.result.Result Self parity_scale_codec.error.Error).
     
     Global Instance AssociatedFunction_decode
-        `{State.Trait}
         {__CodecInputEdqy : Set}
-        `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :
+        {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :
       Notation.DoubleColon Self "decode" := {
       Notation.double_colon := decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
     
-    Global Instance I `{State.Trait}
-      : parity_scale_codec.codec.Decode.Trait Self := {
+    Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
       parity_scale_codec.codec.Decode.decode
         {__CodecInputEdqy : Set}
-        `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
+        {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
         :=
         decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
@@ -3701,24 +3984,26 @@ End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_InstantiateWithCode_E.
 
 Module Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_InstantiateWithCode_E.
   Section Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_InstantiateWithCode_E.
+    Context `{State.Trait}.
+    
     Context {E : Set}.
-    Context `{ink_env.types.Environment.Trait E}.
-    Definition Self `{State.Trait} := ink_e2e.xts.InstantiateWithCode E.
+    
+    Context {ℋ_0 : ink_env.types.Environment.Trait E}.
+    Definition Self : Set := ink_e2e.xts.InstantiateWithCode E.
     
     Parameter encode_as_type_to :
-        forall `{State.Trait},
         (ref Self) ->
           u32 ->
           (ref scale_info.portable.PortableRegistry) ->
           (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
           M (core.result.Result unit scale_encode.error.Error).
     
-    Global Instance Method_encode_as_type_to `{State.Trait} :
-      Notation.Dot "encode_as_type_to" := {
-      Notation.dot := encode_as_type_to;
+    Global Instance AssociatedFunction_encode_as_type_to :
+      Notation.DoubleColon Self "encode_as_type_to" := {
+      Notation.double_colon := encode_as_type_to;
     }.
     
-    Global Instance I `{State.Trait} : scale_encode.EncodeAsType.Trait Self := {
+    Global Instance I : scale_encode.EncodeAsType.Trait Self := {
       scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
     }.
   End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_InstantiateWithCode_E.
@@ -3728,25 +4013,26 @@ End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_InstantiateWithCode_E.
 Module Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_InstantiateWithCode_E.
   Section
     Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_InstantiateWithCode_E.
+    Context `{State.Trait}.
+    
     Context {E : Set}.
-    Context `{ink_env.types.Environment.Trait E}.
-    Definition Self `{State.Trait} := ink_e2e.xts.InstantiateWithCode E.
+    
+    Context {ℋ_0 : ink_env.types.Environment.Trait E}.
+    Definition Self : Set := ink_e2e.xts.InstantiateWithCode E.
     
     Parameter encode_as_fields_to :
-        forall `{State.Trait},
         (ref Self) ->
           (ref (Slice scale_encode.PortableField)) ->
           (ref scale_info.portable.PortableRegistry) ->
           (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
           M (core.result.Result unit scale_encode.error.Error).
     
-    Global Instance Method_encode_as_fields_to `{State.Trait} :
-      Notation.Dot "encode_as_fields_to" := {
-      Notation.dot := encode_as_fields_to;
+    Global Instance AssociatedFunction_encode_as_fields_to :
+      Notation.DoubleColon Self "encode_as_fields_to" := {
+      Notation.double_colon := encode_as_fields_to;
     }.
     
-    Global Instance I `{State.Trait}
-      : scale_encode.EncodeAsFields.Trait Self := {
+    Global Instance I : scale_encode.EncodeAsFields.Trait Self := {
       scale_encode.EncodeAsFields.encode_as_fields_to := encode_as_fields_to;
     }.
   End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_InstantiateWithCode_E.
@@ -3755,10 +4041,13 @@ End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_InstantiateWithCode_E.
 
 Module Call.
   Section Call.
+    Context `{State.Trait}.
+    
     Context {E : Set}.
-    Context `{ink_env.types.Environment.Trait E}.
+    
+    Context {ℋ_0 : ink_env.types.Environment.Trait E}.
     Unset Primitive Projections.
-    Record t `{State.Trait} : Set := {
+    Record t : Set := {
       dest : subxt.utils.multi_address.MultiAddress E::type["AccountId"] unit;
       value : E::type["Balance"];
       gas_limit : ink_e2e.xts.Weight;
@@ -3767,44 +4056,40 @@ Module Call.
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_dest `{State.Trait} : Notation.Dot "dest" := {
+    Global Instance Get_dest : Notation.Dot "dest" := {
       Notation.dot x := let* x := M.read x in Pure x.(dest) : M _;
     }.
-    Global Instance Get_AF_dest `{State.Trait}
-      : Notation.DoubleColon t "dest" := {
+    Global Instance Get_AF_dest : Notation.DoubleColon t "dest" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(dest) : M _;
     }.
-    Global Instance Get_value `{State.Trait} : Notation.Dot "value" := {
+    Global Instance Get_value : Notation.Dot "value" := {
       Notation.dot x := let* x := M.read x in Pure x.(value) : M _;
     }.
-    Global Instance Get_AF_value `{State.Trait}
-      : Notation.DoubleColon t "value" := {
+    Global Instance Get_AF_value : Notation.DoubleColon t "value" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(value) : M _;
     }.
-    Global Instance Get_gas_limit `{State.Trait} : Notation.Dot "gas_limit" := {
+    Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
       Notation.dot x := let* x := M.read x in Pure x.(gas_limit) : M _;
     }.
-    Global Instance Get_AF_gas_limit `{State.Trait}
-      : Notation.DoubleColon t "gas_limit" := {
+    Global Instance Get_AF_gas_limit : Notation.DoubleColon t "gas_limit" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(gas_limit) : M _;
     }.
-    Global Instance Get_storage_deposit_limit `{State.Trait}
+    Global Instance Get_storage_deposit_limit
       : Notation.Dot "storage_deposit_limit" := {
       Notation.dot x
         :=
         let* x := M.read x in Pure x.(storage_deposit_limit) : M _;
     }.
-    Global Instance Get_AF_storage_deposit_limit `{State.Trait}
+    Global Instance Get_AF_storage_deposit_limit
       : Notation.DoubleColon t "storage_deposit_limit" := {
       Notation.double_colon x
         :=
         let* x := M.read x in Pure x.(storage_deposit_limit) : M _;
     }.
-    Global Instance Get_data `{State.Trait} : Notation.Dot "data" := {
+    Global Instance Get_data : Notation.Dot "data" := {
       Notation.dot x := let* x := M.read x in Pure x.(data) : M _;
     }.
-    Global Instance Get_AF_data `{State.Trait}
-      : Notation.DoubleColon t "data" := {
+    Global Instance Get_AF_data : Notation.DoubleColon t "data" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(data) : M _;
     }.
   End Call.
@@ -3812,30 +4097,33 @@ End Call.
 Definition Call
     (E : Set)
     `{State.Trait}
-    `{ink_env.types.Environment.Trait E}
+    {ℋ_0 : ink_env.types.Environment.Trait E}
     : Set :=
   M.val (Call.t (E := E)).
 
 Module Impl_core_fmt_Debug_for_ink_e2e_xts_Call_E.
   Section Impl_core_fmt_Debug_for_ink_e2e_xts_Call_E.
+    Context `{State.Trait}.
+    
     Context {E : Set}.
+    
     Context
-      `{core.fmt.Debug.Trait E}
-      `{ink_env.types.Environment.Trait E}
-      `{core.fmt.Debug.Trait E::type["AccountId"]}
-      `{core.fmt.Debug.Trait E::type["Balance"]}
-      `{core.fmt.Debug.Trait E::type["Balance"]}.
-    Definition Self `{State.Trait} := ink_e2e.xts.Call E.
+      {ℋ_0 : core.fmt.Debug.Trait E}
+      {ℋ_1 : ink_env.types.Environment.Trait E}
+      {ℋ_2 : core.fmt.Debug.Trait E::type["AccountId"]}
+      {ℋ_3 : core.fmt.Debug.Trait E::type["Balance"]}
+      {ℋ_4 : core.fmt.Debug.Trait E::type["Balance"]}.
+    Definition Self : Set := ink_e2e.xts.Call E.
     
     Parameter fmt :
-        forall `{State.Trait},
         (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
     
-    Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
-      Notation.dot := fmt;
+    Global Instance AssociatedFunction_fmt :
+      Notation.DoubleColon Self "fmt" := {
+      Notation.double_colon := fmt;
     }.
     
-    Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
+    Global Instance I : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
   End Impl_core_fmt_Debug_for_ink_e2e_xts_Call_E.
@@ -3844,41 +4132,45 @@ End Impl_core_fmt_Debug_for_ink_e2e_xts_Call_E.
 
 Module Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Call_E.
   Section Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Call_E.
+    Context `{State.Trait}.
+    
     Context {E : Set}.
+    
     Context
-      `{ink_env.types.Environment.Trait E}
-      `{parity_scale_codec.codec.Decode.Trait
+      {ℋ_0 : ink_env.types.Environment.Trait E}
+      {ℋ_1 :
+        parity_scale_codec.codec.Decode.Trait
             (subxt.utils.multi_address.MultiAddress E::type["AccountId"] unit)}
-      `{parity_scale_codec.codec.Decode.Trait
+      {ℋ_2 :
+        parity_scale_codec.codec.Decode.Trait
             (subxt.utils.multi_address.MultiAddress E::type["AccountId"] unit)}
-      `{parity_scale_codec.codec.Decode.Trait
+      {ℋ_3 :
+        parity_scale_codec.codec.Decode.Trait
             (core.option.Option E::type["Balance"])}
-      `{parity_scale_codec.codec.Decode.Trait
+      {ℋ_4 :
+        parity_scale_codec.codec.Decode.Trait
             (core.option.Option E::type["Balance"])}
-      `{parity_scale_codec.compact.HasCompact.Trait E::type["Balance"]}.
-    Definition Self `{State.Trait} := ink_e2e.xts.Call E.
+      {ℋ_5 : parity_scale_codec.compact.HasCompact.Trait E::type["Balance"]}.
+    Definition Self : Set := ink_e2e.xts.Call E.
     
     Parameter decode :
         forall
-          `{State.Trait}
           {__CodecInputEdqy : Set}
-          `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy},
+          {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy},
         (mut_ref __CodecInputEdqy) ->
           M (core.result.Result Self parity_scale_codec.error.Error).
     
     Global Instance AssociatedFunction_decode
-        `{State.Trait}
         {__CodecInputEdqy : Set}
-        `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :
+        {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :
       Notation.DoubleColon Self "decode" := {
       Notation.double_colon := decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
     
-    Global Instance I `{State.Trait}
-      : parity_scale_codec.codec.Decode.Trait Self := {
+    Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
       parity_scale_codec.codec.Decode.decode
         {__CodecInputEdqy : Set}
-        `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
+        {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
         :=
         decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
@@ -3888,39 +4180,45 @@ End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Call_E.
 
 Module Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Call_E.
   Section Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Call_E.
+    Context `{State.Trait}.
+    
     Context {E : Set}.
+    
     Context
-      `{ink_env.types.Environment.Trait E}
-      `{parity_scale_codec.codec.Encode.Trait
+      {ℋ_0 : ink_env.types.Environment.Trait E}
+      {ℋ_1 :
+        parity_scale_codec.codec.Encode.Trait
             (subxt.utils.multi_address.MultiAddress E::type["AccountId"] unit)}
-      `{parity_scale_codec.codec.Encode.Trait
+      {ℋ_2 :
+        parity_scale_codec.codec.Encode.Trait
             (subxt.utils.multi_address.MultiAddress E::type["AccountId"] unit)}
-      `{parity_scale_codec.codec.Encode.Trait
+      {ℋ_3 :
+        parity_scale_codec.codec.Encode.Trait
             (core.option.Option E::type["Balance"])}
-      `{parity_scale_codec.codec.Encode.Trait
+      {ℋ_4 :
+        parity_scale_codec.codec.Encode.Trait
             (core.option.Option E::type["Balance"])}
-      `{parity_scale_codec.compact.HasCompact.Trait E::type["Balance"]}.
-    Definition Self `{State.Trait} := ink_e2e.xts.Call E.
+      {ℋ_5 : parity_scale_codec.compact.HasCompact.Trait E::type["Balance"]}.
+    Definition Self : Set := ink_e2e.xts.Call E.
     
     Parameter encode_to :
         forall
-          `{State.Trait}
           {__CodecOutputEdqy : Set}
-          `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
-          `{core.marker.Sized.Trait __CodecOutputEdqy},
+          {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+          {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy},
         (ref Self) -> (mut_ref __CodecOutputEdqy) -> M unit.
     
-    Global Instance Method_encode_to
-        `{State.Trait}
+    Global Instance AssociatedFunction_encode_to
         {__CodecOutputEdqy : Set}
-        `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
-        `{core.marker.Sized.Trait __CodecOutputEdqy} :
-      Notation.Dot "encode_to" := {
-      Notation.dot := encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
+        {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+        {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy} :
+      Notation.DoubleColon Self "encode_to" := {
+      Notation.double_colon
+        :=
+        encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
     }.
     
-    Global Instance I `{State.Trait}
-      : parity_scale_codec.codec.Encode.Trait Self := {
+    Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
     }.
   End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Call_E.
   Global Hint Resolve I : core.
@@ -3928,21 +4226,28 @@ End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Call_E.
 
 Module Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Call_E.
   Section Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Call_E.
-    Context {E : Set}.
-    Context
-      `{ink_env.types.Environment.Trait E}
-      `{parity_scale_codec.codec.Encode.Trait
-            (subxt.utils.multi_address.MultiAddress E::type["AccountId"] unit)}
-      `{parity_scale_codec.codec.Encode.Trait
-            (subxt.utils.multi_address.MultiAddress E::type["AccountId"] unit)}
-      `{parity_scale_codec.codec.Encode.Trait
-            (core.option.Option E::type["Balance"])}
-      `{parity_scale_codec.codec.Encode.Trait
-            (core.option.Option E::type["Balance"])}
-      `{parity_scale_codec.compact.HasCompact.Trait E::type["Balance"]}.
-    Definition Self `{State.Trait} := ink_e2e.xts.Call E.
+    Context `{State.Trait}.
     
-    Global Instance I `{State.Trait}
+    Context {E : Set}.
+    
+    Context
+      {ℋ_0 : ink_env.types.Environment.Trait E}
+      {ℋ_1 :
+        parity_scale_codec.codec.Encode.Trait
+            (subxt.utils.multi_address.MultiAddress E::type["AccountId"] unit)}
+      {ℋ_2 :
+        parity_scale_codec.codec.Encode.Trait
+            (subxt.utils.multi_address.MultiAddress E::type["AccountId"] unit)}
+      {ℋ_3 :
+        parity_scale_codec.codec.Encode.Trait
+            (core.option.Option E::type["Balance"])}
+      {ℋ_4 :
+        parity_scale_codec.codec.Encode.Trait
+            (core.option.Option E::type["Balance"])}
+      {ℋ_5 : parity_scale_codec.compact.HasCompact.Trait E::type["Balance"]}.
+    Definition Self : Set := ink_e2e.xts.Call E.
+    
+    Global Instance I
       : parity_scale_codec.encode_like.EncodeLike.Trait Self
           (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self)
         := {
@@ -3953,24 +4258,26 @@ End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Call_E.
 
 Module Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Call_E.
   Section Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Call_E.
+    Context `{State.Trait}.
+    
     Context {E : Set}.
-    Context `{ink_env.types.Environment.Trait E}.
-    Definition Self `{State.Trait} := ink_e2e.xts.Call E.
+    
+    Context {ℋ_0 : ink_env.types.Environment.Trait E}.
+    Definition Self : Set := ink_e2e.xts.Call E.
     
     Parameter encode_as_type_to :
-        forall `{State.Trait},
         (ref Self) ->
           u32 ->
           (ref scale_info.portable.PortableRegistry) ->
           (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
           M (core.result.Result unit scale_encode.error.Error).
     
-    Global Instance Method_encode_as_type_to `{State.Trait} :
-      Notation.Dot "encode_as_type_to" := {
-      Notation.dot := encode_as_type_to;
+    Global Instance AssociatedFunction_encode_as_type_to :
+      Notation.DoubleColon Self "encode_as_type_to" := {
+      Notation.double_colon := encode_as_type_to;
     }.
     
-    Global Instance I `{State.Trait} : scale_encode.EncodeAsType.Trait Self := {
+    Global Instance I : scale_encode.EncodeAsType.Trait Self := {
       scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
     }.
   End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Call_E.
@@ -3979,25 +4286,26 @@ End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Call_E.
 
 Module Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Call_E.
   Section Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Call_E.
+    Context `{State.Trait}.
+    
     Context {E : Set}.
-    Context `{ink_env.types.Environment.Trait E}.
-    Definition Self `{State.Trait} := ink_e2e.xts.Call E.
+    
+    Context {ℋ_0 : ink_env.types.Environment.Trait E}.
+    Definition Self : Set := ink_e2e.xts.Call E.
     
     Parameter encode_as_fields_to :
-        forall `{State.Trait},
         (ref Self) ->
           (ref (Slice scale_encode.PortableField)) ->
           (ref scale_info.portable.PortableRegistry) ->
           (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
           M (core.result.Result unit scale_encode.error.Error).
     
-    Global Instance Method_encode_as_fields_to `{State.Trait} :
-      Notation.Dot "encode_as_fields_to" := {
-      Notation.dot := encode_as_fields_to;
+    Global Instance AssociatedFunction_encode_as_fields_to :
+      Notation.DoubleColon Self "encode_as_fields_to" := {
+      Notation.double_colon := encode_as_fields_to;
     }.
     
-    Global Instance I `{State.Trait}
-      : scale_encode.EncodeAsFields.Trait Self := {
+    Global Instance I : scale_encode.EncodeAsFields.Trait Self := {
       scale_encode.EncodeAsFields.encode_as_fields_to := encode_as_fields_to;
     }.
   End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Call_E.
@@ -4006,27 +4314,30 @@ End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Call_E.
 
 Module Transfer.
   Section Transfer.
+    Context `{State.Trait}.
+    
     Context {E C : Set}.
-    Context `{ink_env.types.Environment.Trait E} `{subxt.config.Config.Trait C}.
+    
+    Context
+      {ℋ_0 : ink_env.types.Environment.Trait E}
+      {ℋ_1 : subxt.config.Config.Trait C}.
     Unset Primitive Projections.
-    Record t `{State.Trait} : Set := {
+    Record t : Set := {
       dest : subxt.utils.static_type.Static C::type["Address"];
       value : E::type["Balance"];
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_dest `{State.Trait} : Notation.Dot "dest" := {
+    Global Instance Get_dest : Notation.Dot "dest" := {
       Notation.dot x := let* x := M.read x in Pure x.(dest) : M _;
     }.
-    Global Instance Get_AF_dest `{State.Trait}
-      : Notation.DoubleColon t "dest" := {
+    Global Instance Get_AF_dest : Notation.DoubleColon t "dest" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(dest) : M _;
     }.
-    Global Instance Get_value `{State.Trait} : Notation.Dot "value" := {
+    Global Instance Get_value : Notation.Dot "value" := {
       Notation.dot x := let* x := M.read x in Pure x.(value) : M _;
     }.
-    Global Instance Get_AF_value `{State.Trait}
-      : Notation.DoubleColon t "value" := {
+    Global Instance Get_AF_value : Notation.DoubleColon t "value" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(value) : M _;
     }.
   End Transfer.
@@ -4034,32 +4345,35 @@ End Transfer.
 Definition Transfer
     (E C : Set)
     `{State.Trait}
-    `{ink_env.types.Environment.Trait E}
-    `{subxt.config.Config.Trait C}
+    {ℋ_0 : ink_env.types.Environment.Trait E}
+    {ℋ_1 : subxt.config.Config.Trait C}
     : Set :=
   M.val (Transfer.t (E := E) (C := C)).
 
 Module Impl_core_fmt_Debug_for_ink_e2e_xts_Transfer_E_C.
   Section Impl_core_fmt_Debug_for_ink_e2e_xts_Transfer_E_C.
+    Context `{State.Trait}.
+    
     Context {E C : Set}.
+    
     Context
-      `{core.fmt.Debug.Trait E}
-      `{ink_env.types.Environment.Trait E}
-      `{core.fmt.Debug.Trait C}
-      `{subxt.config.Config.Trait C}
-      `{core.fmt.Debug.Trait C::type["Address"]}
-      `{core.fmt.Debug.Trait E::type["Balance"]}.
-    Definition Self `{State.Trait} := ink_e2e.xts.Transfer E C.
+      {ℋ_0 : core.fmt.Debug.Trait E}
+      {ℋ_1 : ink_env.types.Environment.Trait E}
+      {ℋ_2 : core.fmt.Debug.Trait C}
+      {ℋ_3 : subxt.config.Config.Trait C}
+      {ℋ_4 : core.fmt.Debug.Trait C::type["Address"]}
+      {ℋ_5 : core.fmt.Debug.Trait E::type["Balance"]}.
+    Definition Self : Set := ink_e2e.xts.Transfer E C.
     
     Parameter fmt :
-        forall `{State.Trait},
         (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
     
-    Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
-      Notation.dot := fmt;
+    Global Instance AssociatedFunction_fmt :
+      Notation.DoubleColon Self "fmt" := {
+      Notation.double_colon := fmt;
     }.
     
-    Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
+    Global Instance I : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
   End Impl_core_fmt_Debug_for_ink_e2e_xts_Transfer_E_C.
@@ -4068,38 +4382,40 @@ End Impl_core_fmt_Debug_for_ink_e2e_xts_Transfer_E_C.
 
 Module Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Transfer_E_C.
   Section Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Transfer_E_C.
+    Context `{State.Trait}.
+    
     Context {E C : Set}.
+    
     Context
-      `{ink_env.types.Environment.Trait E}
-      `{subxt.config.Config.Trait C}
-      `{parity_scale_codec.codec.Decode.Trait
+      {ℋ_0 : ink_env.types.Environment.Trait E}
+      {ℋ_1 : subxt.config.Config.Trait C}
+      {ℋ_2 :
+        parity_scale_codec.codec.Decode.Trait
             (subxt.utils.static_type.Static C::type["Address"])}
-      `{parity_scale_codec.codec.Decode.Trait
+      {ℋ_3 :
+        parity_scale_codec.codec.Decode.Trait
             (subxt.utils.static_type.Static C::type["Address"])}
-      `{parity_scale_codec.compact.HasCompact.Trait E::type["Balance"]}.
-    Definition Self `{State.Trait} := ink_e2e.xts.Transfer E C.
+      {ℋ_4 : parity_scale_codec.compact.HasCompact.Trait E::type["Balance"]}.
+    Definition Self : Set := ink_e2e.xts.Transfer E C.
     
     Parameter decode :
         forall
-          `{State.Trait}
           {__CodecInputEdqy : Set}
-          `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy},
+          {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy},
         (mut_ref __CodecInputEdqy) ->
           M (core.result.Result Self parity_scale_codec.error.Error).
     
     Global Instance AssociatedFunction_decode
-        `{State.Trait}
         {__CodecInputEdqy : Set}
-        `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :
+        {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :
       Notation.DoubleColon Self "decode" := {
       Notation.double_colon := decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
     
-    Global Instance I `{State.Trait}
-      : parity_scale_codec.codec.Decode.Trait Self := {
+    Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
       parity_scale_codec.codec.Decode.decode
         {__CodecInputEdqy : Set}
-        `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
+        {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
         :=
         decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
@@ -4109,36 +4425,40 @@ End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Transfer_E_C.
 
 Module Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Transfer_E_C.
   Section Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Transfer_E_C.
+    Context `{State.Trait}.
+    
     Context {E C : Set}.
+    
     Context
-      `{ink_env.types.Environment.Trait E}
-      `{subxt.config.Config.Trait C}
-      `{parity_scale_codec.codec.Encode.Trait
+      {ℋ_0 : ink_env.types.Environment.Trait E}
+      {ℋ_1 : subxt.config.Config.Trait C}
+      {ℋ_2 :
+        parity_scale_codec.codec.Encode.Trait
             (subxt.utils.static_type.Static C::type["Address"])}
-      `{parity_scale_codec.codec.Encode.Trait
+      {ℋ_3 :
+        parity_scale_codec.codec.Encode.Trait
             (subxt.utils.static_type.Static C::type["Address"])}
-      `{parity_scale_codec.compact.HasCompact.Trait E::type["Balance"]}.
-    Definition Self `{State.Trait} := ink_e2e.xts.Transfer E C.
+      {ℋ_4 : parity_scale_codec.compact.HasCompact.Trait E::type["Balance"]}.
+    Definition Self : Set := ink_e2e.xts.Transfer E C.
     
     Parameter encode_to :
         forall
-          `{State.Trait}
           {__CodecOutputEdqy : Set}
-          `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
-          `{core.marker.Sized.Trait __CodecOutputEdqy},
+          {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+          {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy},
         (ref Self) -> (mut_ref __CodecOutputEdqy) -> M unit.
     
-    Global Instance Method_encode_to
-        `{State.Trait}
+    Global Instance AssociatedFunction_encode_to
         {__CodecOutputEdqy : Set}
-        `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
-        `{core.marker.Sized.Trait __CodecOutputEdqy} :
-      Notation.Dot "encode_to" := {
-      Notation.dot := encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
+        {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+        {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy} :
+      Notation.DoubleColon Self "encode_to" := {
+      Notation.double_colon
+        :=
+        encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
     }.
     
-    Global Instance I `{State.Trait}
-      : parity_scale_codec.codec.Encode.Trait Self := {
+    Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
     }.
   End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Transfer_E_C.
   Global Hint Resolve I : core.
@@ -4148,18 +4468,23 @@ Module
   Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Transfer_E_C.
   Section
     Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Transfer_E_C.
-    Context {E C : Set}.
-    Context
-      `{ink_env.types.Environment.Trait E}
-      `{subxt.config.Config.Trait C}
-      `{parity_scale_codec.codec.Encode.Trait
-            (subxt.utils.static_type.Static C::type["Address"])}
-      `{parity_scale_codec.codec.Encode.Trait
-            (subxt.utils.static_type.Static C::type["Address"])}
-      `{parity_scale_codec.compact.HasCompact.Trait E::type["Balance"]}.
-    Definition Self `{State.Trait} := ink_e2e.xts.Transfer E C.
+    Context `{State.Trait}.
     
-    Global Instance I `{State.Trait}
+    Context {E C : Set}.
+    
+    Context
+      {ℋ_0 : ink_env.types.Environment.Trait E}
+      {ℋ_1 : subxt.config.Config.Trait C}
+      {ℋ_2 :
+        parity_scale_codec.codec.Encode.Trait
+            (subxt.utils.static_type.Static C::type["Address"])}
+      {ℋ_3 :
+        parity_scale_codec.codec.Encode.Trait
+            (subxt.utils.static_type.Static C::type["Address"])}
+      {ℋ_4 : parity_scale_codec.compact.HasCompact.Trait E::type["Balance"]}.
+    Definition Self : Set := ink_e2e.xts.Transfer E C.
+    
+    Global Instance I
       : parity_scale_codec.encode_like.EncodeLike.Trait Self
           (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self)
         := {
@@ -4171,24 +4496,28 @@ End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Transfer_E_C.
 
 Module Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Transfer_E_C.
   Section Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Transfer_E_C.
+    Context `{State.Trait}.
+    
     Context {E C : Set}.
-    Context `{ink_env.types.Environment.Trait E} `{subxt.config.Config.Trait C}.
-    Definition Self `{State.Trait} := ink_e2e.xts.Transfer E C.
+    
+    Context
+      {ℋ_0 : ink_env.types.Environment.Trait E}
+      {ℋ_1 : subxt.config.Config.Trait C}.
+    Definition Self : Set := ink_e2e.xts.Transfer E C.
     
     Parameter encode_as_type_to :
-        forall `{State.Trait},
         (ref Self) ->
           u32 ->
           (ref scale_info.portable.PortableRegistry) ->
           (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
           M (core.result.Result unit scale_encode.error.Error).
     
-    Global Instance Method_encode_as_type_to `{State.Trait} :
-      Notation.Dot "encode_as_type_to" := {
-      Notation.dot := encode_as_type_to;
+    Global Instance AssociatedFunction_encode_as_type_to :
+      Notation.DoubleColon Self "encode_as_type_to" := {
+      Notation.double_colon := encode_as_type_to;
     }.
     
-    Global Instance I `{State.Trait} : scale_encode.EncodeAsType.Trait Self := {
+    Global Instance I : scale_encode.EncodeAsType.Trait Self := {
       scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
     }.
   End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Transfer_E_C.
@@ -4197,25 +4526,28 @@ End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Transfer_E_C.
 
 Module Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Transfer_E_C.
   Section Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Transfer_E_C.
+    Context `{State.Trait}.
+    
     Context {E C : Set}.
-    Context `{ink_env.types.Environment.Trait E} `{subxt.config.Config.Trait C}.
-    Definition Self `{State.Trait} := ink_e2e.xts.Transfer E C.
+    
+    Context
+      {ℋ_0 : ink_env.types.Environment.Trait E}
+      {ℋ_1 : subxt.config.Config.Trait C}.
+    Definition Self : Set := ink_e2e.xts.Transfer E C.
     
     Parameter encode_as_fields_to :
-        forall `{State.Trait},
         (ref Self) ->
           (ref (Slice scale_encode.PortableField)) ->
           (ref scale_info.portable.PortableRegistry) ->
           (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
           M (core.result.Result unit scale_encode.error.Error).
     
-    Global Instance Method_encode_as_fields_to `{State.Trait} :
-      Notation.Dot "encode_as_fields_to" := {
-      Notation.dot := encode_as_fields_to;
+    Global Instance AssociatedFunction_encode_as_fields_to :
+      Notation.DoubleColon Self "encode_as_fields_to" := {
+      Notation.double_colon := encode_as_fields_to;
     }.
     
-    Global Instance I `{State.Trait}
-      : scale_encode.EncodeAsFields.Trait Self := {
+    Global Instance I : scale_encode.EncodeAsFields.Trait Self := {
       scale_encode.EncodeAsFields.encode_as_fields_to := encode_as_fields_to;
     }.
   End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Transfer_E_C.
@@ -4230,251 +4562,293 @@ End Determinism.
 Definition Determinism `{State.Trait} : Set := Determinism.t.
 
 Module Impl_core_fmt_Debug_for_ink_e2e_xts_Determinism.
-  Definition Self `{State.Trait} := ink_e2e.xts.Determinism.
-  
-  Parameter fmt :
-      forall `{State.Trait},
-      (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
-  
-  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
-    Notation.dot := fmt;
-  }.
-  
-  Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt := fmt;
-  }.
+  Section Impl_core_fmt_Debug_for_ink_e2e_xts_Determinism.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := ink_e2e.xts.Determinism.
+    
+    Parameter fmt :
+        (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+    
+    Global Instance AssociatedFunction_fmt :
+      Notation.DoubleColon Self "fmt" := {
+      Notation.double_colon := fmt;
+    }.
+    
+    Global Instance I : core.fmt.Debug.Trait Self := {
+      core.fmt.Debug.fmt := fmt;
+    }.
+  End Impl_core_fmt_Debug_for_ink_e2e_xts_Determinism.
   Global Hint Resolve I : core.
 End Impl_core_fmt_Debug_for_ink_e2e_xts_Determinism.
 
 Module Impl_core_clone_Clone_for_ink_e2e_xts_Determinism.
-  Definition Self `{State.Trait} := ink_e2e.xts.Determinism.
-  
-  Parameter clone :
-      forall `{State.Trait},
-      (ref Self) -> M ink_e2e.xts.Determinism.
-  
-  Global Instance Method_clone `{State.Trait} : Notation.Dot "clone" := {
-    Notation.dot := clone;
-  }.
-  
-  Global Instance I `{State.Trait} : core.clone.Clone.Trait Self := {
-    core.clone.Clone.clone := clone;
-  }.
+  Section Impl_core_clone_Clone_for_ink_e2e_xts_Determinism.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := ink_e2e.xts.Determinism.
+    
+    Parameter clone : (ref Self) -> M ink_e2e.xts.Determinism.
+    
+    Global Instance AssociatedFunction_clone :
+      Notation.DoubleColon Self "clone" := {
+      Notation.double_colon := clone;
+    }.
+    
+    Global Instance I : core.clone.Clone.Trait Self := {
+      core.clone.Clone.clone := clone;
+    }.
+  End Impl_core_clone_Clone_for_ink_e2e_xts_Determinism.
   Global Hint Resolve I : core.
 End Impl_core_clone_Clone_for_ink_e2e_xts_Determinism.
 
 Module Impl_core_marker_Copy_for_ink_e2e_xts_Determinism.
-  Definition Self `{State.Trait} := ink_e2e.xts.Determinism.
-  
-  Global Instance I `{State.Trait} : core.marker.Copy.Trait Self := {
-  }.
+  Section Impl_core_marker_Copy_for_ink_e2e_xts_Determinism.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := ink_e2e.xts.Determinism.
+    
+    Global Instance I : core.marker.Copy.Trait Self := {
+    }.
+  End Impl_core_marker_Copy_for_ink_e2e_xts_Determinism.
   Global Hint Resolve I : core.
 End Impl_core_marker_Copy_for_ink_e2e_xts_Determinism.
 
 Module Impl_core_marker_StructuralPartialEq_for_ink_e2e_xts_Determinism.
-  Definition Self `{State.Trait} := ink_e2e.xts.Determinism.
-  
-  Global Instance I `{State.Trait}
-    : core.marker.StructuralPartialEq.Trait Self := {
-  }.
+  Section Impl_core_marker_StructuralPartialEq_for_ink_e2e_xts_Determinism.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := ink_e2e.xts.Determinism.
+    
+    Global Instance I : core.marker.StructuralPartialEq.Trait Self := {
+    }.
+  End Impl_core_marker_StructuralPartialEq_for_ink_e2e_xts_Determinism.
   Global Hint Resolve I : core.
 End Impl_core_marker_StructuralPartialEq_for_ink_e2e_xts_Determinism.
 
 Module Impl_core_cmp_PartialEq_for_ink_e2e_xts_Determinism.
-  Definition Self `{State.Trait} := ink_e2e.xts.Determinism.
-  
-  Parameter eq :
-      forall `{State.Trait},
-      (ref Self) -> (ref ink_e2e.xts.Determinism) -> M bool.
-  
-  Global Instance Method_eq `{State.Trait} : Notation.Dot "eq" := {
-    Notation.dot := eq;
-  }.
-  
-  Global Instance I `{State.Trait}
-    : core.cmp.PartialEq.Trait Self (Rhs := core.cmp.PartialEq.Default.Rhs Self)
-      := {
-    core.cmp.PartialEq.eq := eq;
-  }.
+  Section Impl_core_cmp_PartialEq_for_ink_e2e_xts_Determinism.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := ink_e2e.xts.Determinism.
+    
+    Parameter eq : (ref Self) -> (ref ink_e2e.xts.Determinism) -> M bool.
+    
+    Global Instance AssociatedFunction_eq : Notation.DoubleColon Self "eq" := {
+      Notation.double_colon := eq;
+    }.
+    
+    Global Instance I
+      : core.cmp.PartialEq.Trait Self
+          (Rhs := core.cmp.PartialEq.Default.Rhs Self)
+        := {
+      core.cmp.PartialEq.eq := eq;
+    }.
+  End Impl_core_cmp_PartialEq_for_ink_e2e_xts_Determinism.
   Global Hint Resolve I : core.
 End Impl_core_cmp_PartialEq_for_ink_e2e_xts_Determinism.
 
 Module Impl_core_marker_StructuralEq_for_ink_e2e_xts_Determinism.
-  Definition Self `{State.Trait} := ink_e2e.xts.Determinism.
-  
-  Global Instance I `{State.Trait} : core.marker.StructuralEq.Trait Self := {
-  }.
+  Section Impl_core_marker_StructuralEq_for_ink_e2e_xts_Determinism.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := ink_e2e.xts.Determinism.
+    
+    Global Instance I : core.marker.StructuralEq.Trait Self := {
+    }.
+  End Impl_core_marker_StructuralEq_for_ink_e2e_xts_Determinism.
   Global Hint Resolve I : core.
 End Impl_core_marker_StructuralEq_for_ink_e2e_xts_Determinism.
 
 Module Impl_core_cmp_Eq_for_ink_e2e_xts_Determinism.
-  Definition Self `{State.Trait} := ink_e2e.xts.Determinism.
-  
-  Parameter assert_receiver_is_total_eq :
-      forall `{State.Trait},
-      (ref Self) -> M unit.
-  
-  Global Instance Method_assert_receiver_is_total_eq `{State.Trait} :
-    Notation.Dot "assert_receiver_is_total_eq" := {
-    Notation.dot := assert_receiver_is_total_eq;
-  }.
-  
-  Global Instance I `{State.Trait} : core.cmp.Eq.Trait Self := {
-  }.
+  Section Impl_core_cmp_Eq_for_ink_e2e_xts_Determinism.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := ink_e2e.xts.Determinism.
+    
+    Parameter assert_receiver_is_total_eq : (ref Self) -> M unit.
+    
+    Global Instance AssociatedFunction_assert_receiver_is_total_eq :
+      Notation.DoubleColon Self "assert_receiver_is_total_eq" := {
+      Notation.double_colon := assert_receiver_is_total_eq;
+    }.
+    
+    Global Instance I : core.cmp.Eq.Trait Self := {
+    }.
+  End Impl_core_cmp_Eq_for_ink_e2e_xts_Determinism.
   Global Hint Resolve I : core.
 End Impl_core_cmp_Eq_for_ink_e2e_xts_Determinism.
 
 Module Impl_serde_ser_Serialize_for_ink_e2e_xts_Determinism.
-  Definition Self `{State.Trait} := ink_e2e.xts.Determinism.
-  
-  Parameter serialize :
-      forall `{State.Trait} {__S : Set} `{serde.ser.Serializer.Trait __S},
-      (ref Self) ->
-        __S ->
-        M (core.result.Result __S::type["Ok"] __S::type["Error"]).
-  
-  Global Instance Method_serialize
-      `{State.Trait}
-      {__S : Set}
-      `{serde.ser.Serializer.Trait __S} :
-    Notation.Dot "serialize" := {
-    Notation.dot := serialize (__S := __S);
-  }.
-  
-  Global Instance I `{State.Trait} : serde.ser.Serialize.Trait Self := {
-    serde.ser.Serialize.serialize {__S : Set} `{serde.ser.Serializer.Trait __S}
-      :=
-      serialize (__S := __S);
-  }.
+  Section Impl_serde_ser_Serialize_for_ink_e2e_xts_Determinism.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := ink_e2e.xts.Determinism.
+    
+    Parameter serialize :
+        forall {__S : Set} {ℋ_0 : serde.ser.Serializer.Trait __S},
+        (ref Self) ->
+          __S ->
+          M (core.result.Result __S::type["Ok"] __S::type["Error"]).
+    
+    Global Instance AssociatedFunction_serialize
+        {__S : Set}
+        {ℋ_0 : serde.ser.Serializer.Trait __S} :
+      Notation.DoubleColon Self "serialize" := {
+      Notation.double_colon := serialize (__S := __S);
+    }.
+    
+    Global Instance I : serde.ser.Serialize.Trait Self := {
+      serde.ser.Serialize.serialize
+        {__S : Set}
+        {ℋ_0 : serde.ser.Serializer.Trait __S}
+        :=
+        serialize (__S := __S);
+    }.
+  End Impl_serde_ser_Serialize_for_ink_e2e_xts_Determinism.
   Global Hint Resolve I : core.
 End Impl_serde_ser_Serialize_for_ink_e2e_xts_Determinism.
 
 Module Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Determinism.
-  Definition Self `{State.Trait} := ink_e2e.xts.Determinism.
-  
-  Parameter decode :
-      forall
-        `{State.Trait}
+  Section Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Determinism.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := ink_e2e.xts.Determinism.
+    
+    Parameter decode :
+        forall
+          {__CodecInputEdqy : Set}
+          {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy},
+        (mut_ref __CodecInputEdqy) ->
+          M (core.result.Result Self parity_scale_codec.error.Error).
+    
+    Global Instance AssociatedFunction_decode
         {__CodecInputEdqy : Set}
-        `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy},
-      (mut_ref __CodecInputEdqy) ->
-        M (core.result.Result Self parity_scale_codec.error.Error).
-  
-  Global Instance AssociatedFunction_decode
-      `{State.Trait}
-      {__CodecInputEdqy : Set}
-      `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :
-    Notation.DoubleColon Self "decode" := {
-    Notation.double_colon := decode (__CodecInputEdqy := __CodecInputEdqy);
-  }.
-  
-  Global Instance I `{State.Trait}
-    : parity_scale_codec.codec.Decode.Trait Self := {
-    parity_scale_codec.codec.Decode.decode
-      {__CodecInputEdqy : Set}
-      `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
-      :=
-      decode (__CodecInputEdqy := __CodecInputEdqy);
-  }.
+        {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :
+      Notation.DoubleColon Self "decode" := {
+      Notation.double_colon := decode (__CodecInputEdqy := __CodecInputEdqy);
+    }.
+    
+    Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
+      parity_scale_codec.codec.Decode.decode
+        {__CodecInputEdqy : Set}
+        {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
+        :=
+        decode (__CodecInputEdqy := __CodecInputEdqy);
+    }.
+  End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Determinism.
   Global Hint Resolve I : core.
 End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Determinism.
 
 Module Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Determinism.
-  Definition Self `{State.Trait} := ink_e2e.xts.Determinism.
-  
-  Parameter encode_to :
-      forall
-        `{State.Trait}
+  Section Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Determinism.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := ink_e2e.xts.Determinism.
+    
+    Parameter encode_to :
+        forall
+          {__CodecOutputEdqy : Set}
+          {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+          {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy},
+        (ref Self) -> (mut_ref __CodecOutputEdqy) -> M unit.
+    
+    Global Instance AssociatedFunction_encode_to
         {__CodecOutputEdqy : Set}
-        `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
-        `{core.marker.Sized.Trait __CodecOutputEdqy},
-      (ref Self) -> (mut_ref __CodecOutputEdqy) -> M unit.
-  
-  Global Instance Method_encode_to
-      `{State.Trait}
-      {__CodecOutputEdqy : Set}
-      `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
-      `{core.marker.Sized.Trait __CodecOutputEdqy} :
-    Notation.Dot "encode_to" := {
-    Notation.dot := encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
-  }.
-  
-  Global Instance I `{State.Trait}
-    : parity_scale_codec.codec.Encode.Trait Self := {
-  }.
+        {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+        {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy} :
+      Notation.DoubleColon Self "encode_to" := {
+      Notation.double_colon
+        :=
+        encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
+    }.
+    
+    Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
+    }.
+  End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Determinism.
   Global Hint Resolve I : core.
 End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Determinism.
 
 Module
   Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Determinism.
-  Definition Self `{State.Trait} := ink_e2e.xts.Determinism.
-  
-  Global Instance I `{State.Trait}
-    : parity_scale_codec.encode_like.EncodeLike.Trait Self
-        (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self)
-      := {
-  }.
+  Section
+    Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Determinism.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := ink_e2e.xts.Determinism.
+    
+    Global Instance I
+      : parity_scale_codec.encode_like.EncodeLike.Trait Self
+          (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self)
+        := {
+    }.
+  End
+    Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Determinism.
   Global Hint Resolve I : core.
 End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Determinism.
 
 Module Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Determinism.
-  Definition Self `{State.Trait} := ink_e2e.xts.Determinism.
-  
-  Parameter encode_as_type_to :
-      forall `{State.Trait},
-      (ref Self) ->
-        u32 ->
-        (ref scale_info.portable.PortableRegistry) ->
-        (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
-        M (core.result.Result unit scale_encode.error.Error).
-  
-  Global Instance Method_encode_as_type_to `{State.Trait} :
-    Notation.Dot "encode_as_type_to" := {
-    Notation.dot := encode_as_type_to;
-  }.
-  
-  Global Instance I `{State.Trait} : scale_encode.EncodeAsType.Trait Self := {
-    scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
-  }.
+  Section Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Determinism.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := ink_e2e.xts.Determinism.
+    
+    Parameter encode_as_type_to :
+        (ref Self) ->
+          u32 ->
+          (ref scale_info.portable.PortableRegistry) ->
+          (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
+          M (core.result.Result unit scale_encode.error.Error).
+    
+    Global Instance AssociatedFunction_encode_as_type_to :
+      Notation.DoubleColon Self "encode_as_type_to" := {
+      Notation.double_colon := encode_as_type_to;
+    }.
+    
+    Global Instance I : scale_encode.EncodeAsType.Trait Self := {
+      scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
+    }.
+  End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Determinism.
   Global Hint Resolve I : core.
 End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Determinism.
 
 Module UploadCode.
   Section UploadCode.
+    Context `{State.Trait}.
+    
     Context {E : Set}.
-    Context `{ink_env.types.Environment.Trait E}.
+    
+    Context {ℋ_0 : ink_env.types.Environment.Trait E}.
     Unset Primitive Projections.
-    Record t `{State.Trait} : Set := {
+    Record t : Set := {
       code : alloc.vec.Vec u8 alloc.vec.Vec.Default.A;
       storage_deposit_limit : core.option.Option E::type["Balance"];
       determinism : ink_e2e.xts.Determinism;
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_code `{State.Trait} : Notation.Dot "code" := {
+    Global Instance Get_code : Notation.Dot "code" := {
       Notation.dot x := let* x := M.read x in Pure x.(code) : M _;
     }.
-    Global Instance Get_AF_code `{State.Trait}
-      : Notation.DoubleColon t "code" := {
+    Global Instance Get_AF_code : Notation.DoubleColon t "code" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(code) : M _;
     }.
-    Global Instance Get_storage_deposit_limit `{State.Trait}
+    Global Instance Get_storage_deposit_limit
       : Notation.Dot "storage_deposit_limit" := {
       Notation.dot x
         :=
         let* x := M.read x in Pure x.(storage_deposit_limit) : M _;
     }.
-    Global Instance Get_AF_storage_deposit_limit `{State.Trait}
+    Global Instance Get_AF_storage_deposit_limit
       : Notation.DoubleColon t "storage_deposit_limit" := {
       Notation.double_colon x
         :=
         let* x := M.read x in Pure x.(storage_deposit_limit) : M _;
     }.
-    Global Instance Get_determinism `{State.Trait}
-      : Notation.Dot "determinism" := {
+    Global Instance Get_determinism : Notation.Dot "determinism" := {
       Notation.dot x := let* x := M.read x in Pure x.(determinism) : M _;
     }.
-    Global Instance Get_AF_determinism `{State.Trait}
+    Global Instance Get_AF_determinism
       : Notation.DoubleColon t "determinism" := {
       Notation.double_colon x
         :=
@@ -4485,28 +4859,31 @@ End UploadCode.
 Definition UploadCode
     (E : Set)
     `{State.Trait}
-    `{ink_env.types.Environment.Trait E}
+    {ℋ_0 : ink_env.types.Environment.Trait E}
     : Set :=
   M.val (UploadCode.t (E := E)).
 
 Module Impl_core_fmt_Debug_for_ink_e2e_xts_UploadCode_E.
   Section Impl_core_fmt_Debug_for_ink_e2e_xts_UploadCode_E.
+    Context `{State.Trait}.
+    
     Context {E : Set}.
+    
     Context
-      `{core.fmt.Debug.Trait E}
-      `{ink_env.types.Environment.Trait E}
-      `{core.fmt.Debug.Trait E::type["Balance"]}.
-    Definition Self `{State.Trait} := ink_e2e.xts.UploadCode E.
+      {ℋ_0 : core.fmt.Debug.Trait E}
+      {ℋ_1 : ink_env.types.Environment.Trait E}
+      {ℋ_2 : core.fmt.Debug.Trait E::type["Balance"]}.
+    Definition Self : Set := ink_e2e.xts.UploadCode E.
     
     Parameter fmt :
-        forall `{State.Trait},
         (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
     
-    Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
-      Notation.dot := fmt;
+    Global Instance AssociatedFunction_fmt :
+      Notation.DoubleColon Self "fmt" := {
+      Notation.double_colon := fmt;
     }.
     
-    Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
+    Global Instance I : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
   End Impl_core_fmt_Debug_for_ink_e2e_xts_UploadCode_E.
@@ -4515,34 +4892,38 @@ End Impl_core_fmt_Debug_for_ink_e2e_xts_UploadCode_E.
 
 Module Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_UploadCode_E.
   Section Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_UploadCode_E.
+    Context `{State.Trait}.
+    
     Context {E : Set}.
+    
     Context
-      `{ink_env.types.Environment.Trait E}
-      `{parity_scale_codec.codec.Encode.Trait
+      {ℋ_0 : ink_env.types.Environment.Trait E}
+      {ℋ_1 :
+        parity_scale_codec.codec.Encode.Trait
             (core.option.Option E::type["Balance"])}
-      `{parity_scale_codec.codec.Encode.Trait
+      {ℋ_2 :
+        parity_scale_codec.codec.Encode.Trait
             (core.option.Option E::type["Balance"])}.
-    Definition Self `{State.Trait} := ink_e2e.xts.UploadCode E.
+    Definition Self : Set := ink_e2e.xts.UploadCode E.
     
     Parameter encode_to :
         forall
-          `{State.Trait}
           {__CodecOutputEdqy : Set}
-          `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
-          `{core.marker.Sized.Trait __CodecOutputEdqy},
+          {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+          {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy},
         (ref Self) -> (mut_ref __CodecOutputEdqy) -> M unit.
     
-    Global Instance Method_encode_to
-        `{State.Trait}
+    Global Instance AssociatedFunction_encode_to
         {__CodecOutputEdqy : Set}
-        `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
-        `{core.marker.Sized.Trait __CodecOutputEdqy} :
-      Notation.Dot "encode_to" := {
-      Notation.dot := encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
+        {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+        {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy} :
+      Notation.DoubleColon Self "encode_to" := {
+      Notation.double_colon
+        :=
+        encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
     }.
     
-    Global Instance I `{State.Trait}
-      : parity_scale_codec.codec.Encode.Trait Self := {
+    Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
     }.
   End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_UploadCode_E.
   Global Hint Resolve I : core.
@@ -4552,16 +4933,21 @@ Module
   Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_UploadCode_E.
   Section
     Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_UploadCode_E.
-    Context {E : Set}.
-    Context
-      `{ink_env.types.Environment.Trait E}
-      `{parity_scale_codec.codec.Encode.Trait
-            (core.option.Option E::type["Balance"])}
-      `{parity_scale_codec.codec.Encode.Trait
-            (core.option.Option E::type["Balance"])}.
-    Definition Self `{State.Trait} := ink_e2e.xts.UploadCode E.
+    Context `{State.Trait}.
     
-    Global Instance I `{State.Trait}
+    Context {E : Set}.
+    
+    Context
+      {ℋ_0 : ink_env.types.Environment.Trait E}
+      {ℋ_1 :
+        parity_scale_codec.codec.Encode.Trait
+            (core.option.Option E::type["Balance"])}
+      {ℋ_2 :
+        parity_scale_codec.codec.Encode.Trait
+            (core.option.Option E::type["Balance"])}.
+    Definition Self : Set := ink_e2e.xts.UploadCode E.
+    
+    Global Instance I
       : parity_scale_codec.encode_like.EncodeLike.Trait Self
           (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self)
         := {
@@ -4573,36 +4959,38 @@ End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_UploadCode_E.
 
 Module Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_UploadCode_E.
   Section Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_UploadCode_E.
+    Context `{State.Trait}.
+    
     Context {E : Set}.
+    
     Context
-      `{ink_env.types.Environment.Trait E}
-      `{parity_scale_codec.codec.Decode.Trait
+      {ℋ_0 : ink_env.types.Environment.Trait E}
+      {ℋ_1 :
+        parity_scale_codec.codec.Decode.Trait
             (core.option.Option E::type["Balance"])}
-      `{parity_scale_codec.codec.Decode.Trait
+      {ℋ_2 :
+        parity_scale_codec.codec.Decode.Trait
             (core.option.Option E::type["Balance"])}.
-    Definition Self `{State.Trait} := ink_e2e.xts.UploadCode E.
+    Definition Self : Set := ink_e2e.xts.UploadCode E.
     
     Parameter decode :
         forall
-          `{State.Trait}
           {__CodecInputEdqy : Set}
-          `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy},
+          {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy},
         (mut_ref __CodecInputEdqy) ->
           M (core.result.Result Self parity_scale_codec.error.Error).
     
     Global Instance AssociatedFunction_decode
-        `{State.Trait}
         {__CodecInputEdqy : Set}
-        `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :
+        {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :
       Notation.DoubleColon Self "decode" := {
       Notation.double_colon := decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
     
-    Global Instance I `{State.Trait}
-      : parity_scale_codec.codec.Decode.Trait Self := {
+    Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
       parity_scale_codec.codec.Decode.decode
         {__CodecInputEdqy : Set}
-        `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
+        {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
         :=
         decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
@@ -4612,24 +5000,26 @@ End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_UploadCode_E.
 
 Module Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_UploadCode_E.
   Section Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_UploadCode_E.
+    Context `{State.Trait}.
+    
     Context {E : Set}.
-    Context `{ink_env.types.Environment.Trait E}.
-    Definition Self `{State.Trait} := ink_e2e.xts.UploadCode E.
+    
+    Context {ℋ_0 : ink_env.types.Environment.Trait E}.
+    Definition Self : Set := ink_e2e.xts.UploadCode E.
     
     Parameter encode_as_type_to :
-        forall `{State.Trait},
         (ref Self) ->
           u32 ->
           (ref scale_info.portable.PortableRegistry) ->
           (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
           M (core.result.Result unit scale_encode.error.Error).
     
-    Global Instance Method_encode_as_type_to `{State.Trait} :
-      Notation.Dot "encode_as_type_to" := {
-      Notation.dot := encode_as_type_to;
+    Global Instance AssociatedFunction_encode_as_type_to :
+      Notation.DoubleColon Self "encode_as_type_to" := {
+      Notation.double_colon := encode_as_type_to;
     }.
     
-    Global Instance I `{State.Trait} : scale_encode.EncodeAsType.Trait Self := {
+    Global Instance I : scale_encode.EncodeAsType.Trait Self := {
       scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
     }.
   End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_UploadCode_E.
@@ -4638,25 +5028,26 @@ End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_UploadCode_E.
 
 Module Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_UploadCode_E.
   Section Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_UploadCode_E.
+    Context `{State.Trait}.
+    
     Context {E : Set}.
-    Context `{ink_env.types.Environment.Trait E}.
-    Definition Self `{State.Trait} := ink_e2e.xts.UploadCode E.
+    
+    Context {ℋ_0 : ink_env.types.Environment.Trait E}.
+    Definition Self : Set := ink_e2e.xts.UploadCode E.
     
     Parameter encode_as_fields_to :
-        forall `{State.Trait},
         (ref Self) ->
           (ref (Slice scale_encode.PortableField)) ->
           (ref scale_info.portable.PortableRegistry) ->
           (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
           M (core.result.Result unit scale_encode.error.Error).
     
-    Global Instance Method_encode_as_fields_to `{State.Trait} :
-      Notation.Dot "encode_as_fields_to" := {
-      Notation.dot := encode_as_fields_to;
+    Global Instance AssociatedFunction_encode_as_fields_to :
+      Notation.DoubleColon Self "encode_as_fields_to" := {
+      Notation.double_colon := encode_as_fields_to;
     }.
     
-    Global Instance I `{State.Trait}
-      : scale_encode.EncodeAsFields.Trait Self := {
+    Global Instance I : scale_encode.EncodeAsFields.Trait Self := {
       scale_encode.EncodeAsFields.encode_as_fields_to := encode_as_fields_to;
     }.
   End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_UploadCode_E.
@@ -4665,32 +5056,34 @@ End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_UploadCode_E.
 
 (* Module Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcInstantiateRequest_C_E.
   (* Section Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcInstantiateRequest_C_E.
+    Context `{State.Trait}.
+    
     Context {C E : Set}.
+    
     Context
-      `{subxt.config.Config.Trait C}
-      `{ink_env.types.Environment.Trait E}
-      `{serde.ser.Serialize.Trait C::type["AccountId"]}
-      `{serde.ser.Serialize.Trait E::type["Balance"]}.
-    Definition Self `{State.Trait} := ink_e2e.xts.RpcInstantiateRequest C E.
+      {ℋ_0 : subxt.config.Config.Trait C}
+      {ℋ_1 : ink_env.types.Environment.Trait E}
+      {ℋ_2 : serde.ser.Serialize.Trait C::type["AccountId"]}
+      {ℋ_3 : serde.ser.Serialize.Trait E::type["Balance"]}.
+    Definition Self : Set := ink_e2e.xts.RpcInstantiateRequest C E.
     
     Parameter serialize :
-        forall `{State.Trait} {__S : Set} `{serde.ser.Serializer.Trait __S},
+        forall {__S : Set} {ℋ_0 : serde.ser.Serializer.Trait __S},
         (ref Self) ->
           __S ->
           M (core.result.Result __S::type["Ok"] __S::type["Error"]).
     
-    Global Instance Method_serialize
-        `{State.Trait}
+    Global Instance AssociatedFunction_serialize
         {__S : Set}
-        `{serde.ser.Serializer.Trait __S} :
-      Notation.Dot "serialize" := {
-      Notation.dot := serialize (__S := __S);
+        {ℋ_0 : serde.ser.Serializer.Trait __S} :
+      Notation.DoubleColon Self "serialize" := {
+      Notation.double_colon := serialize (__S := __S);
     }.
     
-    Global Instance I `{State.Trait} : serde.ser.Serialize.Trait Self := {
+    Global Instance I : serde.ser.Serialize.Trait Self := {
       serde.ser.Serialize.serialize
         {__S : Set}
-        `{serde.ser.Serializer.Trait __S}
+        {ℋ_0 : serde.ser.Serializer.Trait __S}
         :=
         serialize (__S := __S);
     }.
@@ -4700,39 +5093,43 @@ End Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcInstantiateRequest_C_E. *)
 
 (* Module Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_RpcInstantiateRequest_C_E.
   (* Section Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_RpcInstantiateRequest_C_E.
+    Context `{State.Trait}.
+    
     Context {C E : Set}.
+    
     Context
-      `{subxt.config.Config.Trait C}
-      `{ink_env.types.Environment.Trait E}
-      `{parity_scale_codec.codec.Encode.Trait C::type["AccountId"]}
-      `{parity_scale_codec.codec.Encode.Trait C::type["AccountId"]}
-      `{parity_scale_codec.codec.Encode.Trait E::type["Balance"]}
-      `{parity_scale_codec.codec.Encode.Trait E::type["Balance"]}
-      `{parity_scale_codec.codec.Encode.Trait
+      {ℋ_0 : subxt.config.Config.Trait C}
+      {ℋ_1 : ink_env.types.Environment.Trait E}
+      {ℋ_2 : parity_scale_codec.codec.Encode.Trait C::type["AccountId"]}
+      {ℋ_3 : parity_scale_codec.codec.Encode.Trait C::type["AccountId"]}
+      {ℋ_4 : parity_scale_codec.codec.Encode.Trait E::type["Balance"]}
+      {ℋ_5 : parity_scale_codec.codec.Encode.Trait E::type["Balance"]}
+      {ℋ_6 :
+        parity_scale_codec.codec.Encode.Trait
             (core.option.Option E::type["Balance"])}
-      `{parity_scale_codec.codec.Encode.Trait
+      {ℋ_7 :
+        parity_scale_codec.codec.Encode.Trait
             (core.option.Option E::type["Balance"])}.
-    Definition Self `{State.Trait} := ink_e2e.xts.RpcInstantiateRequest C E.
+    Definition Self : Set := ink_e2e.xts.RpcInstantiateRequest C E.
     
     Parameter encode_to :
         forall
-          `{State.Trait}
           {__CodecOutputEdqy : Set}
-          `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
-          `{core.marker.Sized.Trait __CodecOutputEdqy},
+          {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+          {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy},
         (ref Self) -> (mut_ref __CodecOutputEdqy) -> M unit.
     
-    Global Instance Method_encode_to
-        `{State.Trait}
+    Global Instance AssociatedFunction_encode_to
         {__CodecOutputEdqy : Set}
-        `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
-        `{core.marker.Sized.Trait __CodecOutputEdqy} :
-      Notation.Dot "encode_to" := {
-      Notation.dot := encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
+        {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+        {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy} :
+      Notation.DoubleColon Self "encode_to" := {
+      Notation.double_colon
+        :=
+        encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
     }.
     
-    Global Instance I `{State.Trait}
-      : parity_scale_codec.codec.Encode.Trait Self := {
+    Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
     }.
   End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_RpcInstantiateRequest_C_E. *)
   Global Hint Resolve I : core.
@@ -4740,21 +5137,26 @@ End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_RpcInstantiateRequest_C
 
 (* Module Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_RpcInstantiateRequest_C_E.
   (* Section Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_RpcInstantiateRequest_C_E.
-    Context {C E : Set}.
-    Context
-      `{subxt.config.Config.Trait C}
-      `{ink_env.types.Environment.Trait E}
-      `{parity_scale_codec.codec.Encode.Trait C::type["AccountId"]}
-      `{parity_scale_codec.codec.Encode.Trait C::type["AccountId"]}
-      `{parity_scale_codec.codec.Encode.Trait E::type["Balance"]}
-      `{parity_scale_codec.codec.Encode.Trait E::type["Balance"]}
-      `{parity_scale_codec.codec.Encode.Trait
-            (core.option.Option E::type["Balance"])}
-      `{parity_scale_codec.codec.Encode.Trait
-            (core.option.Option E::type["Balance"])}.
-    Definition Self `{State.Trait} := ink_e2e.xts.RpcInstantiateRequest C E.
+    Context `{State.Trait}.
     
-    Global Instance I `{State.Trait}
+    Context {C E : Set}.
+    
+    Context
+      {ℋ_0 : subxt.config.Config.Trait C}
+      {ℋ_1 : ink_env.types.Environment.Trait E}
+      {ℋ_2 : parity_scale_codec.codec.Encode.Trait C::type["AccountId"]}
+      {ℋ_3 : parity_scale_codec.codec.Encode.Trait C::type["AccountId"]}
+      {ℋ_4 : parity_scale_codec.codec.Encode.Trait E::type["Balance"]}
+      {ℋ_5 : parity_scale_codec.codec.Encode.Trait E::type["Balance"]}
+      {ℋ_6 :
+        parity_scale_codec.codec.Encode.Trait
+            (core.option.Option E::type["Balance"])}
+      {ℋ_7 :
+        parity_scale_codec.codec.Encode.Trait
+            (core.option.Option E::type["Balance"])}.
+    Definition Self : Set := ink_e2e.xts.RpcInstantiateRequest C E.
+    
+    Global Instance I
       : parity_scale_codec.encode_like.EncodeLike.Trait Self
           (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self)
         := {
@@ -4765,32 +5167,34 @@ End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_RpcInstantiat
 
 (* Module Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcCodeUploadRequest_C_E.
   (* Section Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcCodeUploadRequest_C_E.
+    Context `{State.Trait}.
+    
     Context {C E : Set}.
+    
     Context
-      `{subxt.config.Config.Trait C}
-      `{ink_env.types.Environment.Trait E}
-      `{serde.ser.Serialize.Trait E::type["Balance"]}
-      `{serde.ser.Serialize.Trait C::type["AccountId"]}.
-    Definition Self `{State.Trait} := ink_e2e.xts.RpcCodeUploadRequest C E.
+      {ℋ_0 : subxt.config.Config.Trait C}
+      {ℋ_1 : ink_env.types.Environment.Trait E}
+      {ℋ_2 : serde.ser.Serialize.Trait E::type["Balance"]}
+      {ℋ_3 : serde.ser.Serialize.Trait C::type["AccountId"]}.
+    Definition Self : Set := ink_e2e.xts.RpcCodeUploadRequest C E.
     
     Parameter serialize :
-        forall `{State.Trait} {__S : Set} `{serde.ser.Serializer.Trait __S},
+        forall {__S : Set} {ℋ_0 : serde.ser.Serializer.Trait __S},
         (ref Self) ->
           __S ->
           M (core.result.Result __S::type["Ok"] __S::type["Error"]).
     
-    Global Instance Method_serialize
-        `{State.Trait}
+    Global Instance AssociatedFunction_serialize
         {__S : Set}
-        `{serde.ser.Serializer.Trait __S} :
-      Notation.Dot "serialize" := {
-      Notation.dot := serialize (__S := __S);
+        {ℋ_0 : serde.ser.Serializer.Trait __S} :
+      Notation.DoubleColon Self "serialize" := {
+      Notation.double_colon := serialize (__S := __S);
     }.
     
-    Global Instance I `{State.Trait} : serde.ser.Serialize.Trait Self := {
+    Global Instance I : serde.ser.Serialize.Trait Self := {
       serde.ser.Serialize.serialize
         {__S : Set}
-        `{serde.ser.Serializer.Trait __S}
+        {ℋ_0 : serde.ser.Serializer.Trait __S}
         :=
         serialize (__S := __S);
     }.
@@ -4800,38 +5204,42 @@ End Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcCodeUploadRequest_C_E. *)
 
 (* Module Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_RpcCodeUploadRequest_C_E.
   (* Section Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_RpcCodeUploadRequest_C_E.
+    Context `{State.Trait}.
+    
     Context {C E : Set}.
+    
     Context
-      `{subxt.config.Config.Trait C}
-      `{ink_env.types.Environment.Trait E}
-      `{serde.ser.Serialize.Trait E::type["Balance"]}
-      `{parity_scale_codec.codec.Encode.Trait C::type["AccountId"]}
-      `{parity_scale_codec.codec.Encode.Trait C::type["AccountId"]}
-      `{parity_scale_codec.codec.Encode.Trait
+      {ℋ_0 : subxt.config.Config.Trait C}
+      {ℋ_1 : ink_env.types.Environment.Trait E}
+      {ℋ_2 : serde.ser.Serialize.Trait E::type["Balance"]}
+      {ℋ_3 : parity_scale_codec.codec.Encode.Trait C::type["AccountId"]}
+      {ℋ_4 : parity_scale_codec.codec.Encode.Trait C::type["AccountId"]}
+      {ℋ_5 :
+        parity_scale_codec.codec.Encode.Trait
             (core.option.Option E::type["Balance"])}
-      `{parity_scale_codec.codec.Encode.Trait
+      {ℋ_6 :
+        parity_scale_codec.codec.Encode.Trait
             (core.option.Option E::type["Balance"])}.
-    Definition Self `{State.Trait} := ink_e2e.xts.RpcCodeUploadRequest C E.
+    Definition Self : Set := ink_e2e.xts.RpcCodeUploadRequest C E.
     
     Parameter encode_to :
         forall
-          `{State.Trait}
           {__CodecOutputEdqy : Set}
-          `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
-          `{core.marker.Sized.Trait __CodecOutputEdqy},
+          {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+          {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy},
         (ref Self) -> (mut_ref __CodecOutputEdqy) -> M unit.
     
-    Global Instance Method_encode_to
-        `{State.Trait}
+    Global Instance AssociatedFunction_encode_to
         {__CodecOutputEdqy : Set}
-        `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
-        `{core.marker.Sized.Trait __CodecOutputEdqy} :
-      Notation.Dot "encode_to" := {
-      Notation.dot := encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
+        {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+        {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy} :
+      Notation.DoubleColon Self "encode_to" := {
+      Notation.double_colon
+        :=
+        encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
     }.
     
-    Global Instance I `{State.Trait}
-      : parity_scale_codec.codec.Encode.Trait Self := {
+    Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
     }.
   End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_RpcCodeUploadRequest_C_E. *)
   Global Hint Resolve I : core.
@@ -4839,20 +5247,25 @@ End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_RpcCodeUploadRequest_C_
 
 (* Module Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_RpcCodeUploadRequest_C_E.
   (* Section Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_RpcCodeUploadRequest_C_E.
-    Context {C E : Set}.
-    Context
-      `{subxt.config.Config.Trait C}
-      `{ink_env.types.Environment.Trait E}
-      `{serde.ser.Serialize.Trait E::type["Balance"]}
-      `{parity_scale_codec.codec.Encode.Trait C::type["AccountId"]}
-      `{parity_scale_codec.codec.Encode.Trait C::type["AccountId"]}
-      `{parity_scale_codec.codec.Encode.Trait
-            (core.option.Option E::type["Balance"])}
-      `{parity_scale_codec.codec.Encode.Trait
-            (core.option.Option E::type["Balance"])}.
-    Definition Self `{State.Trait} := ink_e2e.xts.RpcCodeUploadRequest C E.
+    Context `{State.Trait}.
     
-    Global Instance I `{State.Trait}
+    Context {C E : Set}.
+    
+    Context
+      {ℋ_0 : subxt.config.Config.Trait C}
+      {ℋ_1 : ink_env.types.Environment.Trait E}
+      {ℋ_2 : serde.ser.Serialize.Trait E::type["Balance"]}
+      {ℋ_3 : parity_scale_codec.codec.Encode.Trait C::type["AccountId"]}
+      {ℋ_4 : parity_scale_codec.codec.Encode.Trait C::type["AccountId"]}
+      {ℋ_5 :
+        parity_scale_codec.codec.Encode.Trait
+            (core.option.Option E::type["Balance"])}
+      {ℋ_6 :
+        parity_scale_codec.codec.Encode.Trait
+            (core.option.Option E::type["Balance"])}.
+    Definition Self : Set := ink_e2e.xts.RpcCodeUploadRequest C E.
+    
+    Global Instance I
       : parity_scale_codec.encode_like.EncodeLike.Trait Self
           (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self)
         := {
@@ -4863,33 +5276,35 @@ End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_RpcCodeUpload
 
 (* Module Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcCallRequest_C_E.
   (* Section Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcCallRequest_C_E.
+    Context `{State.Trait}.
+    
     Context {C E : Set}.
+    
     Context
-      `{subxt.config.Config.Trait C}
-      `{ink_env.types.Environment.Trait E}
-      `{serde.ser.Serialize.Trait C::type["AccountId"]}
-      `{serde.ser.Serialize.Trait E::type["AccountId"]}
-      `{serde.ser.Serialize.Trait E::type["Balance"]}.
-    Definition Self `{State.Trait} := ink_e2e.xts.RpcCallRequest C E.
+      {ℋ_0 : subxt.config.Config.Trait C}
+      {ℋ_1 : ink_env.types.Environment.Trait E}
+      {ℋ_2 : serde.ser.Serialize.Trait C::type["AccountId"]}
+      {ℋ_3 : serde.ser.Serialize.Trait E::type["AccountId"]}
+      {ℋ_4 : serde.ser.Serialize.Trait E::type["Balance"]}.
+    Definition Self : Set := ink_e2e.xts.RpcCallRequest C E.
     
     Parameter serialize :
-        forall `{State.Trait} {__S : Set} `{serde.ser.Serializer.Trait __S},
+        forall {__S : Set} {ℋ_0 : serde.ser.Serializer.Trait __S},
         (ref Self) ->
           __S ->
           M (core.result.Result __S::type["Ok"] __S::type["Error"]).
     
-    Global Instance Method_serialize
-        `{State.Trait}
+    Global Instance AssociatedFunction_serialize
         {__S : Set}
-        `{serde.ser.Serializer.Trait __S} :
-      Notation.Dot "serialize" := {
-      Notation.dot := serialize (__S := __S);
+        {ℋ_0 : serde.ser.Serializer.Trait __S} :
+      Notation.DoubleColon Self "serialize" := {
+      Notation.double_colon := serialize (__S := __S);
     }.
     
-    Global Instance I `{State.Trait} : serde.ser.Serialize.Trait Self := {
+    Global Instance I : serde.ser.Serialize.Trait Self := {
       serde.ser.Serialize.serialize
         {__S : Set}
-        `{serde.ser.Serializer.Trait __S}
+        {ℋ_0 : serde.ser.Serializer.Trait __S}
         :=
         serialize (__S := __S);
     }.
@@ -4899,41 +5314,45 @@ End Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcCallRequest_C_E. *)
 
 (* Module Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_RpcCallRequest_C_E.
   (* Section Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_RpcCallRequest_C_E.
+    Context `{State.Trait}.
+    
     Context {C E : Set}.
+    
     Context
-      `{subxt.config.Config.Trait C}
-      `{ink_env.types.Environment.Trait E}
-      `{parity_scale_codec.codec.Encode.Trait C::type["AccountId"]}
-      `{parity_scale_codec.codec.Encode.Trait C::type["AccountId"]}
-      `{parity_scale_codec.codec.Encode.Trait E::type["AccountId"]}
-      `{parity_scale_codec.codec.Encode.Trait E::type["AccountId"]}
-      `{parity_scale_codec.codec.Encode.Trait E::type["Balance"]}
-      `{parity_scale_codec.codec.Encode.Trait E::type["Balance"]}
-      `{parity_scale_codec.codec.Encode.Trait
+      {ℋ_0 : subxt.config.Config.Trait C}
+      {ℋ_1 : ink_env.types.Environment.Trait E}
+      {ℋ_2 : parity_scale_codec.codec.Encode.Trait C::type["AccountId"]}
+      {ℋ_3 : parity_scale_codec.codec.Encode.Trait C::type["AccountId"]}
+      {ℋ_4 : parity_scale_codec.codec.Encode.Trait E::type["AccountId"]}
+      {ℋ_5 : parity_scale_codec.codec.Encode.Trait E::type["AccountId"]}
+      {ℋ_6 : parity_scale_codec.codec.Encode.Trait E::type["Balance"]}
+      {ℋ_7 : parity_scale_codec.codec.Encode.Trait E::type["Balance"]}
+      {ℋ_8 :
+        parity_scale_codec.codec.Encode.Trait
             (core.option.Option E::type["Balance"])}
-      `{parity_scale_codec.codec.Encode.Trait
+      {ℋ_9 :
+        parity_scale_codec.codec.Encode.Trait
             (core.option.Option E::type["Balance"])}.
-    Definition Self `{State.Trait} := ink_e2e.xts.RpcCallRequest C E.
+    Definition Self : Set := ink_e2e.xts.RpcCallRequest C E.
     
     Parameter encode_to :
         forall
-          `{State.Trait}
           {__CodecOutputEdqy : Set}
-          `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
-          `{core.marker.Sized.Trait __CodecOutputEdqy},
+          {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+          {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy},
         (ref Self) -> (mut_ref __CodecOutputEdqy) -> M unit.
     
-    Global Instance Method_encode_to
-        `{State.Trait}
+    Global Instance AssociatedFunction_encode_to
         {__CodecOutputEdqy : Set}
-        `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
-        `{core.marker.Sized.Trait __CodecOutputEdqy} :
-      Notation.Dot "encode_to" := {
-      Notation.dot := encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
+        {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+        {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy} :
+      Notation.DoubleColon Self "encode_to" := {
+      Notation.double_colon
+        :=
+        encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
     }.
     
-    Global Instance I `{State.Trait}
-      : parity_scale_codec.codec.Encode.Trait Self := {
+    Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
     }.
   End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_RpcCallRequest_C_E. *)
   Global Hint Resolve I : core.
@@ -4941,23 +5360,28 @@ End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_RpcCallRequest_C_E. *)
 
 (* Module Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_RpcCallRequest_C_E.
   (* Section Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_RpcCallRequest_C_E.
-    Context {C E : Set}.
-    Context
-      `{subxt.config.Config.Trait C}
-      `{ink_env.types.Environment.Trait E}
-      `{parity_scale_codec.codec.Encode.Trait C::type["AccountId"]}
-      `{parity_scale_codec.codec.Encode.Trait C::type["AccountId"]}
-      `{parity_scale_codec.codec.Encode.Trait E::type["AccountId"]}
-      `{parity_scale_codec.codec.Encode.Trait E::type["AccountId"]}
-      `{parity_scale_codec.codec.Encode.Trait E::type["Balance"]}
-      `{parity_scale_codec.codec.Encode.Trait E::type["Balance"]}
-      `{parity_scale_codec.codec.Encode.Trait
-            (core.option.Option E::type["Balance"])}
-      `{parity_scale_codec.codec.Encode.Trait
-            (core.option.Option E::type["Balance"])}.
-    Definition Self `{State.Trait} := ink_e2e.xts.RpcCallRequest C E.
+    Context `{State.Trait}.
     
-    Global Instance I `{State.Trait}
+    Context {C E : Set}.
+    
+    Context
+      {ℋ_0 : subxt.config.Config.Trait C}
+      {ℋ_1 : ink_env.types.Environment.Trait E}
+      {ℋ_2 : parity_scale_codec.codec.Encode.Trait C::type["AccountId"]}
+      {ℋ_3 : parity_scale_codec.codec.Encode.Trait C::type["AccountId"]}
+      {ℋ_4 : parity_scale_codec.codec.Encode.Trait E::type["AccountId"]}
+      {ℋ_5 : parity_scale_codec.codec.Encode.Trait E::type["AccountId"]}
+      {ℋ_6 : parity_scale_codec.codec.Encode.Trait E::type["Balance"]}
+      {ℋ_7 : parity_scale_codec.codec.Encode.Trait E::type["Balance"]}
+      {ℋ_8 :
+        parity_scale_codec.codec.Encode.Trait
+            (core.option.Option E::type["Balance"])}
+      {ℋ_9 :
+        parity_scale_codec.codec.Encode.Trait
+            (core.option.Option E::type["Balance"])}.
+    Definition Self : Set := ink_e2e.xts.RpcCallRequest C E.
+    
+    Global Instance I
       : parity_scale_codec.encode_like.EncodeLike.Trait Self
           (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self)
         := {
@@ -4967,90 +5391,105 @@ End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_RpcCallRequest_C_E. *)
 End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_RpcCallRequest_C_E. *)
 
 (* Module Impl_serde_ser_Serialize_for_ink_e2e_xts_Code.
-  Definition Self `{State.Trait} := ink_e2e.xts.Code.
-  
-  Parameter serialize :
-      forall `{State.Trait} {__S : Set} `{serde.ser.Serializer.Trait __S},
-      (ref Self) ->
-        __S ->
-        M (core.result.Result __S::type["Ok"] __S::type["Error"]).
-  
-  Global Instance Method_serialize
-      `{State.Trait}
-      {__S : Set}
-      `{serde.ser.Serializer.Trait __S} :
-    Notation.Dot "serialize" := {
-    Notation.dot := serialize (__S := __S);
-  }.
-  
-  Global Instance I `{State.Trait} : serde.ser.Serialize.Trait Self := {
-    serde.ser.Serialize.serialize {__S : Set} `{serde.ser.Serializer.Trait __S}
-      :=
-      serialize (__S := __S);
-  }.
+  (* Section Impl_serde_ser_Serialize_for_ink_e2e_xts_Code.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := ink_e2e.xts.Code.
+    
+    Parameter serialize :
+        forall {__S : Set} {ℋ_0 : serde.ser.Serializer.Trait __S},
+        (ref Self) ->
+          __S ->
+          M (core.result.Result __S::type["Ok"] __S::type["Error"]).
+    
+    Global Instance AssociatedFunction_serialize
+        {__S : Set}
+        {ℋ_0 : serde.ser.Serializer.Trait __S} :
+      Notation.DoubleColon Self "serialize" := {
+      Notation.double_colon := serialize (__S := __S);
+    }.
+    
+    Global Instance I : serde.ser.Serialize.Trait Self := {
+      serde.ser.Serialize.serialize
+        {__S : Set}
+        {ℋ_0 : serde.ser.Serializer.Trait __S}
+        :=
+        serialize (__S := __S);
+    }.
+  End Impl_serde_ser_Serialize_for_ink_e2e_xts_Code. *)
   Global Hint Resolve I : core.
 End Impl_serde_ser_Serialize_for_ink_e2e_xts_Code. *)
 
 (* Module Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Code.
-  Definition Self `{State.Trait} := ink_e2e.xts.Code.
-  
-  Parameter encode_to :
-      forall
-        `{State.Trait}
+  (* Section Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Code.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := ink_e2e.xts.Code.
+    
+    Parameter encode_to :
+        forall
+          {__CodecOutputEdqy : Set}
+          {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+          {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy},
+        (ref Self) -> (mut_ref __CodecOutputEdqy) -> M unit.
+    
+    Global Instance AssociatedFunction_encode_to
         {__CodecOutputEdqy : Set}
-        `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
-        `{core.marker.Sized.Trait __CodecOutputEdqy},
-      (ref Self) -> (mut_ref __CodecOutputEdqy) -> M unit.
-  
-  Global Instance Method_encode_to
-      `{State.Trait}
-      {__CodecOutputEdqy : Set}
-      `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
-      `{core.marker.Sized.Trait __CodecOutputEdqy} :
-    Notation.Dot "encode_to" := {
-    Notation.dot := encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
-  }.
-  
-  Global Instance I `{State.Trait}
-    : parity_scale_codec.codec.Encode.Trait Self := {
-  }.
+        {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+        {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy} :
+      Notation.DoubleColon Self "encode_to" := {
+      Notation.double_colon
+        :=
+        encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
+    }.
+    
+    Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
+    }.
+  End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Code. *)
   Global Hint Resolve I : core.
 End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Code. *)
 
 (* Module Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Code.
-  Definition Self `{State.Trait} := ink_e2e.xts.Code.
-  
-  Global Instance I `{State.Trait}
-    : parity_scale_codec.encode_like.EncodeLike.Trait Self
-        (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self)
-      := {
-  }.
+  (* Section Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Code.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := ink_e2e.xts.Code.
+    
+    Global Instance I
+      : parity_scale_codec.encode_like.EncodeLike.Trait Self
+          (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self)
+        := {
+    }.
+  End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Code. *)
   Global Hint Resolve I : core.
 End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Code. *)
 
 Module ContractsApi.
   Section ContractsApi.
+    Context `{State.Trait}.
+    
     Context {C E : Set}.
-    Context `{subxt.config.Config.Trait C} `{ink_env.types.Environment.Trait E}.
+    
+    Context
+      {ℋ_0 : subxt.config.Config.Trait C}
+      {ℋ_1 : ink_env.types.Environment.Trait E}.
     Unset Primitive Projections.
-    Record t `{State.Trait} : Set := {
+    Record t : Set := {
       client : subxt.client.online_client.OnlineClient C;
       _phantom : core.marker.PhantomData (C * E);
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_client `{State.Trait} : Notation.Dot "client" := {
+    Global Instance Get_client : Notation.Dot "client" := {
       Notation.dot x := let* x := M.read x in Pure x.(client) : M _;
     }.
-    Global Instance Get_AF_client `{State.Trait}
-      : Notation.DoubleColon t "client" := {
+    Global Instance Get_AF_client : Notation.DoubleColon t "client" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(client) : M _;
     }.
-    Global Instance Get__phantom `{State.Trait} : Notation.Dot "_phantom" := {
+    Global Instance Get__phantom : Notation.Dot "_phantom" := {
       Notation.dot x := let* x := M.read x in Pure x.(_phantom) : M _;
     }.
-    Global Instance Get_AF__phantom `{State.Trait}
-      : Notation.DoubleColon t "_phantom" := {
+    Global Instance Get_AF__phantom : Notation.DoubleColon t "_phantom" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(_phantom) : M _;
     }.
   End ContractsApi.
@@ -5058,8 +5497,8 @@ End ContractsApi.
 Definition ContractsApi
     (C E : Set)
     `{State.Trait}
-    `{subxt.config.Config.Trait C}
-    `{ink_env.types.Environment.Trait E}
+    {ℋ_0 : subxt.config.Config.Trait C}
+    {ℋ_1 : ink_env.types.Environment.Trait E}
     : Set :=
   M.val (ContractsApi.t (C := C) (E := E)).
 
@@ -5070,39 +5509,43 @@ End SubstrateConfig.
 Definition SubstrateConfig `{State.Trait} : Set := SubstrateConfig.t.
 
 Module Impl_subxt_config_Config_for_ink_e2e_SubstrateConfig.
-  Definition Self `{State.Trait} := ink_e2e.SubstrateConfig.
-  
-  Definition Index : Set := u32.
-  
-  Definition Hash : Set := primitive_types.H256.
-  
-  Definition Hasher : Set := subxt.config.substrate.BlakeTwo256.
-  
-  Definition AccountId : Set := subxt.utils.account_id.AccountId32.
-  
-  Definition Address : Set :=
-    sp_runtime.multiaddress.MultiAddress AccountId u32.
-  
-  Definition Header : Set :=
-    subxt.config.substrate.SubstrateHeader
-      u32
-      subxt.config.substrate.BlakeTwo256.
-  
-  Definition Signature : Set := sp_runtime.MultiSignature.
-  
-  Definition ExtrinsicParams : Set :=
-    subxt.config.substrate.SubstrateExtrinsicParams Self.
-  
-  Global Instance I `{State.Trait} : subxt.config.Config.Trait Self := {
-    subxt.config.Config.Index := Index;
-    subxt.config.Config.Hash := Hash;
-    subxt.config.Config.Hasher := Hasher;
-    subxt.config.Config.AccountId := AccountId;
-    subxt.config.Config.Address := Address;
-    subxt.config.Config.Header := Header;
-    subxt.config.Config.Signature := Signature;
-    subxt.config.Config.ExtrinsicParams := ExtrinsicParams;
-  }.
+  Section Impl_subxt_config_Config_for_ink_e2e_SubstrateConfig.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := ink_e2e.SubstrateConfig.
+    
+    Definition Index : Set := u32.
+    
+    Definition Hash : Set := primitive_types.H256.
+    
+    Definition Hasher : Set := subxt.config.substrate.BlakeTwo256.
+    
+    Definition AccountId : Set := subxt.utils.account_id.AccountId32.
+    
+    Definition Address : Set :=
+      sp_runtime.multiaddress.MultiAddress AccountId u32.
+    
+    Definition Header : Set :=
+      subxt.config.substrate.SubstrateHeader
+        u32
+        subxt.config.substrate.BlakeTwo256.
+    
+    Definition Signature : Set := sp_runtime.MultiSignature.
+    
+    Definition ExtrinsicParams : Set :=
+      subxt.config.substrate.SubstrateExtrinsicParams Self.
+    
+    Global Instance I : subxt.config.Config.Trait Self := {
+      subxt.config.Config.Index := Index;
+      subxt.config.Config.Hash := Hash;
+      subxt.config.Config.Hasher := Hasher;
+      subxt.config.Config.AccountId := AccountId;
+      subxt.config.Config.Address := Address;
+      subxt.config.Config.Header := Header;
+      subxt.config.Config.Signature := Signature;
+      subxt.config.Config.ExtrinsicParams := ExtrinsicParams;
+    }.
+  End Impl_subxt_config_Config_for_ink_e2e_SubstrateConfig.
   Global Hint Resolve I : core.
 End Impl_subxt_config_Config_for_ink_e2e_SubstrateConfig.
 

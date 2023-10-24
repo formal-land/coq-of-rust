@@ -20,8 +20,8 @@ Definition elided_input `{State.Trait} (x : ref i32) : M unit :=
       let* α11 := pointer_coercion "Unsize" α10 in
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
-    Pure tt in
-  Pure tt.
+    M.alloc tt in
+  M.alloc tt.
 
 Definition annotated_input `{State.Trait} (x : ref i32) : M unit :=
   let* _ :=
@@ -42,8 +42,8 @@ Definition annotated_input `{State.Trait} (x : ref i32) : M unit :=
       let* α11 := pointer_coercion "Unsize" α10 in
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
-    Pure tt in
-  Pure tt.
+    M.alloc tt in
+  M.alloc tt.
 
 Definition elided_pass `{State.Trait} (x : ref i32) : M (ref i32) := Pure x.
 
@@ -84,7 +84,7 @@ Definition main `{State.Trait} : M unit :=
       let* α15 := pointer_coercion "Unsize" α14 in
       let* α16 := core.fmt.Arguments::["new_v1"] α3 α15 in
       std.io.stdio._print α16 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -107,5 +107,5 @@ Definition main `{State.Trait} : M unit :=
       let* α15 := pointer_coercion "Unsize" α14 in
       let* α16 := core.fmt.Arguments::["new_v1"] α3 α15 in
       std.io.stdio._print α16 in
-    Pure tt in
-  Pure tt.
+    M.alloc tt in
+  M.alloc tt.

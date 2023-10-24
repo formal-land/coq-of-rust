@@ -34,7 +34,7 @@ Definition main `{State.Trait} : M unit :=
       let* α11 := pointer_coercion "Unsize" α10 in
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
-    Pure tt
+    M.alloc tt
   | match_guards.Temperature t =>
     let* _ :=
       let* α0 :=
@@ -55,7 +55,7 @@ Definition main `{State.Trait} : M unit :=
       let* α11 := pointer_coercion "Unsize" α10 in
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
-    Pure tt
+    M.alloc tt
   | match_guards.Temperature t =>
     let* _ :=
       let* α0 :=
@@ -76,7 +76,7 @@ Definition main `{State.Trait} : M unit :=
       let* α11 := pointer_coercion "Unsize" α10 in
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
-    Pure tt
+    M.alloc tt
   | match_guards.Temperature t =>
     let* _ :=
       let* α0 :=
@@ -97,5 +97,5 @@ Definition main `{State.Trait} : M unit :=
       let* α11 := pointer_coercion "Unsize" α10 in
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
-    Pure tt
+    M.alloc tt
   end.

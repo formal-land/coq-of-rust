@@ -5,4 +5,4 @@ Require Import CoqOfRust.CoqOfRust.
 Definition main `{State.Trait} : M unit :=
   let* cmd := M.alloc 209 in
   let _ := InlineAssembly in
-  Pure tt.
+  M.alloc tt.

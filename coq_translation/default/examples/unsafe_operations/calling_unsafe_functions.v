@@ -53,8 +53,9 @@ Definition main `{State.Trait} : M unit :=
             α3
             α7
             (core.option.Option.None tt) in
-        never_to_any tt
+        let* α0 := M.alloc tt in
+        never_to_any α0
       else
-        Pure tt
+        M.alloc tt
     end in
-  Pure tt.
+  M.alloc tt.

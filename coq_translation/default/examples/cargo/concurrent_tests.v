@@ -12,7 +12,7 @@ Definition foo `{State.Trait} {A : Set} (o : core.option.Option A) : M unit :=
       let* α3 := pointer_coercion "Unsize" α2 in
       let* α4 := core.fmt.Arguments::["new_const"] α3 in
       std.io.stdio._print α4 in
-    Pure tt
+    M.alloc tt
   | core.option.Option  =>
     let* _ :=
       let* α0 := borrow [ mk_str "nothing
@@ -22,7 +22,7 @@ Definition foo `{State.Trait} {A : Set} (o : core.option.Option A) : M unit :=
       let* α3 := pointer_coercion "Unsize" α2 in
       let* α4 := core.fmt.Arguments::["new_const"] α3 in
       std.io.stdio._print α4 in
-    Pure tt
+    M.alloc tt
   end.
 
 Module tests.
@@ -30,11 +30,11 @@ Module tests.
     let* file :=
       let* α0 := std.fs.OpenOptions::["new"] in
       let* α1 := borrow_mut α0 std.fs.OpenOptions in
-      let* α2 := true in
+      let* α2 := M.alloc true in
       let* α3 := std.fs.OpenOptions::["append"] α1 α2 in
       let* α4 := deref α3 std.fs.OpenOptions in
       let* α5 := borrow_mut α4 std.fs.OpenOptions in
-      let* α6 := true in
+      let* α6 := M.alloc true in
       let* α7 := std.fs.OpenOptions::["create"] α5 α6 in
       let* α8 := deref α7 std.fs.OpenOptions in
       let* α9 := borrow α8 std.fs.OpenOptions in
@@ -75,9 +75,9 @@ Module tests.
                 let* α7 := deref (mk_str "Could not write to ferris.txt") str in
                 let* α8 := borrow α7 str in
                 (core.result.Result _ _)::["expect"] α6 α8 in
-              Pure tt
+              M.alloc tt
             end in
-          Pure tt)
+          M.alloc tt)
       end in
     use α4.
   
@@ -85,11 +85,11 @@ Module tests.
     let* file :=
       let* α0 := std.fs.OpenOptions::["new"] in
       let* α1 := borrow_mut α0 std.fs.OpenOptions in
-      let* α2 := true in
+      let* α2 := M.alloc true in
       let* α3 := std.fs.OpenOptions::["append"] α1 α2 in
       let* α4 := deref α3 std.fs.OpenOptions in
       let* α5 := borrow_mut α4 std.fs.OpenOptions in
-      let* α6 := true in
+      let* α6 := M.alloc true in
       let* α7 := std.fs.OpenOptions::["create"] α5 α6 in
       let* α8 := deref α7 std.fs.OpenOptions in
       let* α9 := borrow α8 std.fs.OpenOptions in
@@ -130,9 +130,9 @@ Module tests.
                 let* α7 := deref (mk_str "Could not write to ferris.txt") str in
                 let* α8 := borrow α7 str in
                 (core.result.Result _ _)::["expect"] α6 α8 in
-              Pure tt
+              M.alloc tt
             end in
-          Pure tt)
+          M.alloc tt)
       end in
     use α4.
 End tests.
@@ -141,11 +141,11 @@ Definition test_file `{State.Trait} : M unit :=
   let* file :=
     let* α0 := std.fs.OpenOptions::["new"] in
     let* α1 := borrow_mut α0 std.fs.OpenOptions in
-    let* α2 := true in
+    let* α2 := M.alloc true in
     let* α3 := std.fs.OpenOptions::["append"] α1 α2 in
     let* α4 := deref α3 std.fs.OpenOptions in
     let* α5 := borrow_mut α4 std.fs.OpenOptions in
-    let* α6 := true in
+    let* α6 := M.alloc true in
     let* α7 := std.fs.OpenOptions::["create"] α5 α6 in
     let* α8 := deref α7 std.fs.OpenOptions in
     let* α9 := borrow α8 std.fs.OpenOptions in
@@ -185,9 +185,9 @@ Definition test_file `{State.Trait} : M unit :=
               let* α7 := deref (mk_str "Could not write to ferris.txt") str in
               let* α8 := borrow α7 str in
               (core.result.Result _ _)::["expect"] α6 α8 in
-            Pure tt
+            M.alloc tt
           end in
-        Pure tt)
+        M.alloc tt)
     end in
   use α4.
 
@@ -195,11 +195,11 @@ Definition test_file_also `{State.Trait} : M unit :=
   let* file :=
     let* α0 := std.fs.OpenOptions::["new"] in
     let* α1 := borrow_mut α0 std.fs.OpenOptions in
-    let* α2 := true in
+    let* α2 := M.alloc true in
     let* α3 := std.fs.OpenOptions::["append"] α1 α2 in
     let* α4 := deref α3 std.fs.OpenOptions in
     let* α5 := borrow_mut α4 std.fs.OpenOptions in
-    let* α6 := true in
+    let* α6 := M.alloc true in
     let* α7 := std.fs.OpenOptions::["create"] α5 α6 in
     let* α8 := deref α7 std.fs.OpenOptions in
     let* α9 := borrow α8 std.fs.OpenOptions in
@@ -239,8 +239,8 @@ Definition test_file_also `{State.Trait} : M unit :=
               let* α7 := deref (mk_str "Could not write to ferris.txt") str in
               let* α8 := borrow α7 str in
               (core.result.Result _ _)::["expect"] α6 α8 in
-            Pure tt
+            M.alloc tt
           end in
-        Pure tt)
+        M.alloc tt)
     end in
   use α4.

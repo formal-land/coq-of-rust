@@ -8,5 +8,5 @@ Parameter apply :
     forall
       `{State.Trait}
       {F : Set}
-      `{core.ops.function.FnOnce.Trait F (Args := unit)},
+      {ℋ_0 : core.ops.function.FnOnce.Trait F (Args := unit)},
     F -> M unit.

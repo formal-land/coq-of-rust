@@ -133,17 +133,17 @@ Module global.
   }
   *)
   Module GlobalAlloc.
-    Class Trait (Self : Set) : Set := {
-      alloc `{H : State.Trait} :
-        ref Self -> layout.Layout -> M (H := H) (mut_ref u8);
-      dealloc `{H : State.Trait} :
-        ref Self -> mut_ref u8 -> layout.Layout -> M (H := H) unit;
+    Class Trait `{State.Trait} (Self : Set) : Set := {
+      alloc :
+        ref Self -> layout.Layout -> M (mut_ref u8);
+      dealloc :
+        ref Self -> mut_ref u8 -> layout.Layout -> M unit;
       (* Provided methods *)
-      (* alloc_zeroed `{H : State.Trait} :
-        ref Self -> layout.Layout -> M (H := H) (mut_ref u8);
-      realloc `{H : State.Trait} :
+      (* alloc_zeroed :
+        ref Self -> layout.Layout -> M (mut_ref u8);
+      realloc :
         ref Self -> mut_ref u8 -> layout.Layout -> usize ->
-        M (H := H) (mut_ref u8); *)
+        M (mut_ref u8); *)
     }.
   End GlobalAlloc.
 End global.

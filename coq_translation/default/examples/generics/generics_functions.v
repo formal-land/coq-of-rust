@@ -2,60 +2,71 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module A.
-  Inductive t : Set := Build.
+  Section A.
+    Context `{State.Trait}.
+    
+    Inductive t : Set := Build.
+  End A.
 End A.
 Definition A := @A.t.
 
 Module S.
-  Unset Primitive Projections.
-  Record t `{State.Trait} : Set := {
-    x0 : generics_functions.A;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
-  }.
+  Section S.
+    Context `{State.Trait}.
+    
+    Unset Primitive Projections.
+    Record t : Set := {
+      x0 : generics_functions.A;
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_0 : Notation.Dot "0" := {
+      Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
+    }.
+  End S.
 End S.
 Definition S `{State.Trait} : Set := M.val S.t.
 
 Module SGen.
   Section SGen.
+    Context `{State.Trait}.
+    
     Context {T : Set}.
+    
     Unset Primitive Projections.
-    Record t `{State.Trait} : Set := {
+    Record t : Set := {
       x0 : T;
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
+    Global Instance Get_0 : Notation.Dot "0" := {
       Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
   End SGen.
 End SGen.
-Definition SGen `{State.Trait} : Set := M.val SGen.t.
+Definition SGen `{State.Trait} (T : Set) : Set := M.val (SGen.t (T := T)).
 
 Definition reg_fn `{State.Trait} (_s : generics_functions.S) : M unit :=
-  Pure tt.
+  M.alloc tt.
 
 Definition gen_spec_t
     `{State.Trait}
     (_s : generics_functions.SGen generics_functions.A)
     : M unit :=
-  Pure tt.
+  M.alloc tt.
 
 Definition gen_spec_i32
     `{State.Trait}
     (_s : generics_functions.SGen i32)
     : M unit :=
-  Pure tt.
+  M.alloc tt.
 
 Definition generic
     `{State.Trait}
     {T : Set}
     (_s : generics_functions.SGen T)
     : M unit :=
-  Pure tt.
+  M.alloc tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{State.Trait} : M unit :=
@@ -69,9 +80,9 @@ Definition main `{State.Trait} : M unit :=
     let* α0 := M.alloc 6 in
     generics_functions.gen_spec_i32 (generics_functions.SGen.Build_t α0) in
   let* _ :=
-    let* α0 := "a"%char in
+    let* α0 := M.alloc "a"%char in
     generics_functions.generic (generics_functions.SGen.Build_t α0) in
   let* _ :=
-    let* α0 := "c"%char in
+    let* α0 := M.alloc "c"%char in
     generics_functions.generic (generics_functions.SGen.Build_t α0) in
-  Pure tt.
+  M.alloc tt.

@@ -15,4 +15,4 @@ Definition main `{State.Trait} : M unit :=
     let* α0 := deref (mk_str "unparsable") str in
     let* α1 := borrow α0 str in
     str::["parse"] α1 in
-  Pure tt.
+  M.alloc tt.

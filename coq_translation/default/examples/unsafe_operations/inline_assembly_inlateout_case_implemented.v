@@ -5,9 +5,9 @@ Require Import CoqOfRust.CoqOfRust.
 Definition main `{State.Trait} : M unit :=
   let* a := M.alloc 4 in
   let* b := M.alloc 4 in
-  let _ :=
+  let* _ :=
     let _ := InlineAssembly in
-    tt in
+    M.alloc tt in
   let* _ :=
     let* α0 := borrow a u64 in
     let* α1 := M.alloc 8 in
@@ -35,8 +35,9 @@ Definition main `{State.Trait} : M unit :=
             α3
             α7
             (core.option.Option.None tt) in
-        never_to_any tt
+        let* α0 := M.alloc tt in
+        never_to_any α0
       else
-        Pure tt
+        M.alloc tt
     end in
-  Pure tt.
+  M.alloc tt.

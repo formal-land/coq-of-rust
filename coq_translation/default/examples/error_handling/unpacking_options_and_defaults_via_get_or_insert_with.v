@@ -13,43 +13,49 @@ Definition Fruit `{State.Trait} : Set := Fruit.t.
 
 Module
   Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_with_Fruit.
-  Definition Self `{State.Trait} :=
-    unpacking_options_and_defaults_via_get_or_insert_with.Fruit.
-  
-  Definition fmt
-      `{State.Trait}
-      (self : ref Self)
-      (f : mut_ref core.fmt.Formatter)
-      : M core.fmt.Result :=
-    let* α0 := deref f core.fmt.Formatter in
-    let* α1 := borrow_mut α0 core.fmt.Formatter in
-    let* α2 :=
-      match self with
-      | unpacking_options_and_defaults_via_get_or_insert_with.Fruit  =>
-        let* α0 := deref (mk_str "Apple") str in
-        borrow α0 str
-      | unpacking_options_and_defaults_via_get_or_insert_with.Fruit  =>
-        let* α0 := deref (mk_str "Orange") str in
-        borrow α0 str
-      | unpacking_options_and_defaults_via_get_or_insert_with.Fruit  =>
-        let* α0 := deref (mk_str "Banana") str in
-        borrow α0 str
-      | unpacking_options_and_defaults_via_get_or_insert_with.Fruit  =>
-        let* α0 := deref (mk_str "Kiwi") str in
-        borrow α0 str
-      | unpacking_options_and_defaults_via_get_or_insert_with.Fruit  =>
-        let* α0 := deref (mk_str "Lemon") str in
-        borrow α0 str
-      end in
-    core.fmt.Formatter::["write_str"] α1 α2.
-  
-  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
-    Notation.dot := fmt;
-  }.
-  
-  Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt := fmt;
-  }.
+  Section
+    Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_with_Fruit.
+    Context `{State.Trait}.
+    
+    Definition Self : Set :=
+      unpacking_options_and_defaults_via_get_or_insert_with.Fruit.
+    
+    Definition fmt
+        (self : ref Self)
+        (f : mut_ref core.fmt.Formatter)
+        : M core.fmt.Result :=
+      let* α0 := deref f core.fmt.Formatter in
+      let* α1 := borrow_mut α0 core.fmt.Formatter in
+      let* α2 :=
+        match self with
+        | unpacking_options_and_defaults_via_get_or_insert_with.Fruit  =>
+          let* α0 := deref (mk_str "Apple") str in
+          borrow α0 str
+        | unpacking_options_and_defaults_via_get_or_insert_with.Fruit  =>
+          let* α0 := deref (mk_str "Orange") str in
+          borrow α0 str
+        | unpacking_options_and_defaults_via_get_or_insert_with.Fruit  =>
+          let* α0 := deref (mk_str "Banana") str in
+          borrow α0 str
+        | unpacking_options_and_defaults_via_get_or_insert_with.Fruit  =>
+          let* α0 := deref (mk_str "Kiwi") str in
+          borrow α0 str
+        | unpacking_options_and_defaults_via_get_or_insert_with.Fruit  =>
+          let* α0 := deref (mk_str "Lemon") str in
+          borrow α0 str
+        end in
+      core.fmt.Formatter::["write_str"] α1 α2.
+    
+    Global Instance AssociatedFunction_fmt :
+      Notation.DoubleColon Self "fmt" := {
+      Notation.double_colon := fmt;
+    }.
+    
+    Global Instance I : core.fmt.Debug.Trait Self := {
+      core.fmt.Debug.fmt := fmt;
+    }.
+  End
+    Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_with_Fruit.
   Global Hint Resolve I : core.
 End
   Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_with_Fruit.
@@ -68,7 +74,7 @@ Definition main `{State.Trait} : M unit :=
         let* α3 := pointer_coercion "Unsize" α2 in
         let* α4 := core.fmt.Arguments::["new_const"] α3 in
         std.io.stdio._print α4 in
-      Pure tt in
+      M.alloc tt in
     Pure
       (unpacking_options_and_defaults_via_get_or_insert_with.Fruit.Lemon tt) in
   let* first_available_fruit :=
@@ -108,7 +114,7 @@ Definition main `{State.Trait} : M unit :=
       let* α11 := pointer_coercion "Unsize" α10 in
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -141,7 +147,7 @@ Definition main `{State.Trait} : M unit :=
       let* α11 := pointer_coercion "Unsize" α10 in
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
-    Pure tt in
+    M.alloc tt in
   let my_apple :=
     core.option.Option.Some
       (unpacking_options_and_defaults_via_get_or_insert_with.Fruit.Apple tt) in
@@ -182,7 +188,7 @@ Definition main `{State.Trait} : M unit :=
       let* α11 := pointer_coercion "Unsize" α10 in
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -215,5 +221,5 @@ Definition main `{State.Trait} : M unit :=
       let* α11 := pointer_coercion "Unsize" α10 in
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
-    Pure tt in
-  Pure tt.
+    M.alloc tt in
+  M.alloc tt.

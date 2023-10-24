@@ -23,7 +23,7 @@ Definition create_fn `{State.Trait} : M _ (* OpaqueTy *) :=
       let* α11 := pointer_coercion "Unsize" α10 in
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
-    Pure tt.
+    M.alloc tt.
 
 Error OpaqueTy.
 
@@ -49,7 +49,7 @@ Definition create_fnmut `{State.Trait} : M _ (* OpaqueTy *) :=
       let* α11 := pointer_coercion "Unsize" α10 in
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
-    Pure tt.
+    M.alloc tt.
 
 Definition create_fnonce `{State.Trait} : M _ (* OpaqueTy *) :=
   let* text :=
@@ -73,7 +73,7 @@ Definition create_fnonce `{State.Trait} : M _ (* OpaqueTy *) :=
       let* α11 := pointer_coercion "Unsize" α10 in
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
-    Pure tt.
+    M.alloc tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{State.Trait} : M unit :=
@@ -82,9 +82,13 @@ Definition main `{State.Trait} : M unit :=
   let* fn_once := functions_closures_as_output_parameters.create_fnonce in
   let* _ :=
     let* α0 := borrow fn_plain type not implemented in
-    core.ops.function.Fn.call α0 tt in
+    let* α1 := M.alloc tt in
+    core.ops.function.Fn.call α0 α1 in
   let* _ :=
     let* α0 := borrow_mut fn_mut type not implemented in
-    core.ops.function.FnMut.call_mut α0 tt in
-  let* _ := core.ops.function.FnOnce.call_once fn_once tt in
-  Pure tt.
+    let* α1 := M.alloc tt in
+    core.ops.function.FnMut.call_mut α0 α1 in
+  let* _ :=
+    let* α0 := M.alloc tt in
+    core.ops.function.FnOnce.call_once fn_once α0 in
+  M.alloc tt.

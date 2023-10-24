@@ -28,10 +28,10 @@ Definition main `{State.Trait} : M unit :=
           let* α3 := pointer_coercion "Unsize" α2 in
           let* α4 := core.fmt.Arguments::["new_const"] α3 in
           std.io.stdio._print α4 in
-        Pure tt in
-      Pure tt
+        M.alloc tt in
+      M.alloc tt
     else
-      Pure tt in
+      M.alloc tt in
   let* _ :=
     let* α0 := let_if if_let_match_enum_values.Foo  := b in
     if (α0 : bool) then
@@ -44,10 +44,10 @@ Definition main `{State.Trait} : M unit :=
           let* α3 := pointer_coercion "Unsize" α2 in
           let* α4 := core.fmt.Arguments::["new_const"] α3 in
           std.io.stdio._print α4 in
-        Pure tt in
-      Pure tt
+        M.alloc tt in
+      M.alloc tt
     else
-      Pure tt in
+      M.alloc tt in
   let* _ :=
     let* α0 := let_if if_let_match_enum_values.Foo value := c in
     if (α0 : bool) then
@@ -68,10 +68,10 @@ Definition main `{State.Trait} : M unit :=
           let* α11 := pointer_coercion "Unsize" α10 in
           let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
           std.io.stdio._print α12 in
-        Pure tt in
-      Pure tt
+        M.alloc tt in
+      M.alloc tt
     else
-      Pure tt in
+      M.alloc tt in
   let* α0 := let_if if_let_match_enum_values.Foo (_ as value) := c in
   if (α0 : bool) then
     let* _ :=
@@ -83,7 +83,7 @@ Definition main `{State.Trait} : M unit :=
         let* α3 := pointer_coercion "Unsize" α2 in
         let* α4 := core.fmt.Arguments::["new_const"] α3 in
         std.io.stdio._print α4 in
-      Pure tt in
-    Pure tt
+      M.alloc tt in
+    M.alloc tt
   else
-    Pure tt.
+    M.alloc tt.

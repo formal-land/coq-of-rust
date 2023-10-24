@@ -413,7 +413,7 @@ Module InkE2ETest."""),
         content,
     )
     content = sub_at_least_once(
-        re.escape("""Definition InkE2ETest `{State.Trait} : Set := M.val (InkE2ETest.t).
+        re.escape("""Definition InkE2ETest `{State.Trait} : Set := M.val InkE2ETest.t.
 
 Module Impl_core_convert_From_for_ink_e2e_macro_codegen_InkE2ETest."""),
         """Definition InkE2ETest `{State.Trait} : Set := M.val InkE2ETest.t. *)
@@ -558,17 +558,6 @@ Require CoqOfRust.ink.parity_scale_codec.""",
         content,
     )
     content = sub_at_least_once(
-        "Global Instance Method_key",
-        "(* Global Instance Method_key",
-        content,
-    )
-    content = sub_at_least_once(
-        "End StorageKey.",
-        "*) End StorageKey.",
-        content,
-    )
-
-    content = sub_at_least_once(
         "Global Instance I",
         "Global Instance I'",
         content,
@@ -616,31 +605,31 @@ Require CoqOfRust.ink.ink.""",
         content,
     )
 
-    content = sub_at_least_once(
-        r"""Module Impl_core_default_Default_for_erc20_erc20_Erc20.
-    Definition Self `{State.Trait} := erc20.erc20.Erc20.""",
-        """Module Impl_core_default_Default_for_erc20_erc20_Erc20.
-    Definition Self `{State.Trait} := erc20.erc20.Erc20.
+#     content = sub_at_least_once(
+#         r"""Module Impl_core_default_Default_for_erc20_erc20_Erc20.
+#     Definition Self `{State.Trait} := erc20.erc20.Erc20.""",
+#         """Module Impl_core_default_Default_for_erc20_erc20_Erc20.
+#     Definition Self `{State.Trait} := erc20.erc20.Erc20.
 
-    Global Instance Default_for_AutoStorableHint_Type_ : default.Default.Trait
-     (forall (Self Key : Set) (H : ink_storage_traits.storage.StorageKey.Trait Key)
-        (H0 : ink_storage_traits.storage.AutoStorableHint.Trait Self),
-      H0.(ink_storage_traits.storage.AutoStorableHint.Type_)). Admitted.
-""",
-        content,
-    )
+#     Global Instance Default_for_AutoStorableHint_Type_ : default.Default.Trait
+#      (forall (Self Key : Set) (H : ink_storage_traits.storage.StorageKey.Trait Key)
+#         (H0 : ink_storage_traits.storage.AutoStorableHint.Trait Self),
+#       H0.(ink_storage_traits.storage.AutoStorableHint.Type_)). Admitted.
+# """,
+#         content,
+#     )
 
-    content = sub_at_least_once(
-        re.escape("""  End Erc20.
-  Definition Erc20 `{State.Trait} : Set := M.val (Erc20.t).
-"""),
-        """    Global Instance Erc20_New `{State.Trait} : Notation.DoubleColon t "new" (T := unit -> M t).
-    Admitted.
-  End Erc20.
-  Definition Erc20 `{State.Trait} : Set := M.val (Erc20.t).
-""",
-        content,
-    )
+#     content = sub_at_least_once(
+#         re.escape("""  End Erc20.
+#   Definition Erc20 `{State.Trait} : Set := M.val (Erc20.t).
+# """),
+#         """    Global Instance Erc20_New `{State.Trait} : Notation.DoubleColon t "new" (T := unit -> M t).
+#     Admitted.
+#   End Erc20.
+#   Definition Erc20 `{State.Trait} : Set := M.val (Erc20.t).
+# """,
+#         content,
+#     )
 
     content = sub_at_least_once(
         """Module erc20.""",
@@ -684,21 +673,6 @@ Require CoqOfRust.ink.ink.""",
     Global Hint Resolve I : core.
   End Impl_ink_env_types_Environment_for_ink_env_types_DefaultEnvironment.
 """,
-        content,
-    )
-
-    content = sub_at_least_once(
-        re.escape("""    Global Instance I `{State.Trait}
-      : ink_env.contract.ContractEnv.Trait Self := {
-      ink_env.contract.ContractEnv.Env := Env;
-    }."""),
-        """    #[refine]
-    Global Instance I : ink_env.contract.ContractEnv.Trait Self := {
-      ink_env.contract.ContractEnv.Env := Env;
-    }.
-    eauto.
-    Defined.
-    Global Hint Resolve I : core.""",
         content,
     )
 

@@ -11,8 +11,8 @@ Definition function `{State.Trait} : M unit :=
       let* α3 := pointer_coercion "Unsize" α2 in
       let* α4 := core.fmt.Arguments::["new_const"] α3 in
       std.io.stdio._print α4 in
-    Pure tt in
-  Pure tt.
+    M.alloc tt in
+  M.alloc tt.
 
 Module cool.
   Definition function `{State.Trait} : M unit :=
@@ -26,8 +26,8 @@ Module cool.
         let* α3 := pointer_coercion "Unsize" α2 in
         let* α4 := core.fmt.Arguments::["new_const"] α3 in
         std.io.stdio._print α4 in
-      Pure tt in
-    Pure tt.
+      M.alloc tt in
+    M.alloc tt.
 End cool.
 
 Definition function `{State.Trait} : M unit :=
@@ -41,8 +41,8 @@ Definition function `{State.Trait} : M unit :=
       let* α3 := pointer_coercion "Unsize" α2 in
       let* α4 := core.fmt.Arguments::["new_const"] α3 in
       std.io.stdio._print α4 in
-    Pure tt in
-  Pure tt.
+    M.alloc tt in
+  M.alloc tt.
 
 Module my.
   Definition function `{State.Trait} : M unit :=
@@ -56,8 +56,8 @@ Module my.
         let* α3 := pointer_coercion "Unsize" α2 in
         let* α4 := core.fmt.Arguments::["new_const"] α3 in
         std.io.stdio._print α4 in
-      Pure tt in
-    Pure tt.
+      M.alloc tt in
+    M.alloc tt.
   
   Module cool.
     Definition function `{State.Trait} : M unit :=
@@ -73,8 +73,8 @@ Module my.
           let* α3 := pointer_coercion "Unsize" α2 in
           let* α4 := core.fmt.Arguments::["new_const"] α3 in
           std.io.stdio._print α4 in
-        Pure tt in
-      Pure tt.
+        M.alloc tt in
+      M.alloc tt.
   End cool.
   
   Definition indirect_call `{State.Trait} : M unit :=
@@ -90,13 +90,13 @@ Module my.
         let* α3 := pointer_coercion "Unsize" α2 in
         let* α4 := core.fmt.Arguments::["new_const"] α3 in
         std.io.stdio._print α4 in
-      Pure tt in
+      M.alloc tt in
     let* _ := super_and_self.my.function in
     let* _ := super_and_self.my.function in
     let* _ := super_and_self.my.cool.function in
     let* _ := super_and_self.function in
     let* _ := super_and_self.cool.function in
-    Pure tt.
+    M.alloc tt.
 End my.
 
 Definition function `{State.Trait} : M unit :=
@@ -110,8 +110,8 @@ Definition function `{State.Trait} : M unit :=
       let* α3 := pointer_coercion "Unsize" α2 in
       let* α4 := core.fmt.Arguments::["new_const"] α3 in
       std.io.stdio._print α4 in
-    Pure tt in
-  Pure tt.
+    M.alloc tt in
+  M.alloc tt.
 
 Module Wrap_cool_1.
   Module cool.
@@ -128,8 +128,8 @@ Module Wrap_cool_1.
           let* α3 := pointer_coercion "Unsize" α2 in
           let* α4 := core.fmt.Arguments::["new_const"] α3 in
           std.io.stdio._print α4 in
-        Pure tt in
-      Pure tt.
+        M.alloc tt in
+      M.alloc tt.
   End cool.
 End Wrap_cool_1.
 Import Wrap_cool_1.
@@ -145,8 +145,8 @@ Definition function `{State.Trait} : M unit :=
       let* α3 := pointer_coercion "Unsize" α2 in
       let* α4 := core.fmt.Arguments::["new_const"] α3 in
       std.io.stdio._print α4 in
-    Pure tt in
-  Pure tt.
+    M.alloc tt in
+  M.alloc tt.
 
 Definition indirect_call `{State.Trait} : M unit :=
   let* _ :=
@@ -161,15 +161,15 @@ Definition indirect_call `{State.Trait} : M unit :=
       let* α3 := pointer_coercion "Unsize" α2 in
       let* α4 := core.fmt.Arguments::["new_const"] α3 in
       std.io.stdio._print α4 in
-    Pure tt in
+    M.alloc tt in
   let* _ := super_and_self.my.function in
   let* _ := super_and_self.my.function in
   let* _ := super_and_self.my.cool.function in
   let* _ := super_and_self.function in
   let* _ := super_and_self.cool.function in
-  Pure tt.
+  M.alloc tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{State.Trait} : M unit :=
   let* _ := super_and_self.my.indirect_call in
-  Pure tt.
+  M.alloc tt.

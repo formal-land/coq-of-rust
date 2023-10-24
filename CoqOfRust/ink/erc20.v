@@ -54,73 +54,74 @@ Module erc20.
       (Self := ink_env.types.DefaultEnvironment).
   
   Module Erc20.
-    Unset Primitive Projections.
-    Record t `{State.Trait} : Set := {
-      total_supply
-        :
-        ink_storage_traits.storage.AutoStorableHint.Type_
-          (Self := erc20.erc20.Balance);
-      balances
-        :
-        ink_storage_traits.storage.AutoStorableHint.Type_
-          (Self := ink_storage.lazy.mapping.Mapping
-            erc20.erc20.AccountId
-            erc20.erc20.Balance
-            ink_storage.lazy.mapping.Mapping.Default.KeyType);
-      allowances
-        :
-        ink_storage_traits.storage.AutoStorableHint.Type_
-          (Self := ink_storage.lazy.mapping.Mapping
-            (erc20.erc20.AccountId * erc20.erc20.AccountId)
-            erc20.erc20.Balance
-            ink_storage.lazy.mapping.Mapping.Default.KeyType);
-    }.
-    Global Set Primitive Projections.
-    
-    Global Instance Get_total_supply `{State.Trait}
-      : Notation.Dot "total_supply" := {
-      Notation.dot x := let* x := M.read x in Pure x.(total_supply) : M _;
-    }.
-    Global Instance Get_AF_total_supply `{State.Trait}
-      : Notation.DoubleColon t "total_supply" := {
-      Notation.double_colon x
-        :=
-        let* x := M.read x in Pure x.(total_supply) : M _;
-    }.
-    Global Instance Get_balances `{State.Trait} : Notation.Dot "balances" := {
-      Notation.dot x := let* x := M.read x in Pure x.(balances) : M _;
-    }.
-    Global Instance Get_AF_balances `{State.Trait}
-      : Notation.DoubleColon t "balances" := {
-      Notation.double_colon x := let* x := M.read x in Pure x.(balances) : M _;
-    }.
-    Global Instance Get_allowances `{State.Trait}
-      : Notation.Dot "allowances" := {
-      Notation.dot x := let* x := M.read x in Pure x.(allowances) : M _;
-    }.
-    Global Instance Get_AF_allowances `{State.Trait}
-      : Notation.DoubleColon t "allowances" := {
-      Notation.double_colon x
-        :=
-        let* x := M.read x in Pure x.(allowances) : M _;
-    }.
-    Global Instance Erc20_New `{State.Trait} : Notation.DoubleColon t "new" (T := unit -> M t).
-    Admitted.
+    Section Erc20.
+      Context `{State.Trait}.
+      
+      Unset Primitive Projections.
+      Record t : Set := {
+        total_supply
+          :
+          ink_storage_traits.storage.AutoStorableHint.Type_
+            (Self := erc20.erc20.Balance);
+        balances
+          :
+          ink_storage_traits.storage.AutoStorableHint.Type_
+            (Self := ink_storage.lazy.mapping.Mapping
+              erc20.erc20.AccountId
+              erc20.erc20.Balance
+              ink_storage.lazy.mapping.Mapping.Default.KeyType);
+        allowances
+          :
+          ink_storage_traits.storage.AutoStorableHint.Type_
+            (Self := ink_storage.lazy.mapping.Mapping
+              (erc20.erc20.AccountId * erc20.erc20.AccountId)
+              erc20.erc20.Balance
+              ink_storage.lazy.mapping.Mapping.Default.KeyType);
+      }.
+      Global Set Primitive Projections.
+      
+      Global Instance Get_total_supply : Notation.Dot "total_supply" := {
+        Notation.dot x := let* x := M.read x in Pure x.(total_supply) : M _;
+      }.
+      Global Instance Get_AF_total_supply
+        : Notation.DoubleColon t "total_supply" := {
+        Notation.double_colon x
+          :=
+          let* x := M.read x in Pure x.(total_supply) : M _;
+      }.
+      Global Instance Get_balances : Notation.Dot "balances" := {
+        Notation.dot x := let* x := M.read x in Pure x.(balances) : M _;
+      }.
+      Global Instance Get_AF_balances : Notation.DoubleColon t "balances" := {
+        Notation.double_colon x
+          :=
+          let* x := M.read x in Pure x.(balances) : M _;
+      }.
+      Global Instance Get_allowances : Notation.Dot "allowances" := {
+        Notation.dot x := let* x := M.read x in Pure x.(allowances) : M _;
+      }.
+      Global Instance Get_AF_allowances
+        : Notation.DoubleColon t "allowances" := {
+        Notation.double_colon x
+          :=
+          let* x := M.read x in Pure x.(allowances) : M _;
+      }.
+    End Erc20.
   End Erc20.
-  Definition Erc20 `{State.Trait} : Set := M.val (Erc20.t).
+  Definition Erc20 `{State.Trait} : Set := M.val Erc20.t.
   
   Module Impl_ink_env_contract_ContractEnv_for_erc20_erc20_Erc20.
-    Definition Self `{State.Trait} := erc20.erc20.Erc20.
-    
-    Definition Env : Set := ink_env.types.DefaultEnvironment.
-    
-    #[refine]
-    Global Instance I : ink_env.contract.ContractEnv.Trait Self := {
-      ink_env.contract.ContractEnv.Env := Env;
-    }.
-    eauto.
-    Defined.
-    Global Hint Resolve I : core.
+    Section Impl_ink_env_contract_ContractEnv_for_erc20_erc20_Erc20.
+      Context `{State.Trait}.
+      
+      Definition Self : Set := erc20.erc20.Erc20.
+      
+      Definition Env : Set := ink_env.types.DefaultEnvironment.
+      
+      Global Instance I : ink_env.contract.ContractEnv.Trait Self := {
+        ink_env.contract.ContractEnv.Env := Env;
+      }.
+    End Impl_ink_env_contract_ContractEnv_for_erc20_erc20_Erc20.
     Global Hint Resolve I : core.
   End Impl_ink_env_contract_ContractEnv_for_erc20_erc20_Erc20.
   
@@ -151,15 +152,2336 @@ Module erc20.
             (ink_env.types.DefaultEnvironment)))).
   
   Module Impl_core_default_Default_for_erc20_erc20_Erc20.
-    Definition Self `{State.Trait} := erc20.erc20.Erc20.
+    Section Impl_core_default_Default_for_erc20_erc20_Erc20.
+      Context `{State.Trait}.
+      
+      Definition Self : Set := erc20.erc20.Erc20.
+      
+      Definition default : M erc20.erc20.Erc20 :=
+        let* α0 := core.default.Default.default in
+        let* α1 := core.default.Default.default in
+        let* α2 := core.default.Default.default in
+        M.alloc
+          {|
+            erc20.erc20.Erc20.total_supply := α0;
+            erc20.erc20.Erc20.balances := α1;
+            erc20.erc20.Erc20.allowances := α2;
+          |}.
+      
+      Global Instance AssociatedFunction_default :
+        Notation.DoubleColon Self "default" := {
+        Notation.double_colon := default;
+      }.
+      
+      Global Instance I : core.default.Default.Trait Self := {
+        core.default.Default.default := default;
+      }.
+    End Impl_core_default_Default_for_erc20_erc20_Erc20.
+    Global Hint Resolve I : core.
+  End Impl_core_default_Default_for_erc20_erc20_Erc20.
+  
+  Module Transfer.
+    Section Transfer.
+      Context `{State.Trait}.
+      
+      Unset Primitive Projections.
+      Record t : Set := {
+        from : core.option.Option erc20.erc20.AccountId;
+        to : core.option.Option erc20.erc20.AccountId;
+        value : erc20.erc20.Balance;
+      }.
+      Global Set Primitive Projections.
+      
+      Global Instance Get_from : Notation.Dot "from" := {
+        Notation.dot x := let* x := M.read x in Pure x.(from) : M _;
+      }.
+      Global Instance Get_AF_from : Notation.DoubleColon t "from" := {
+        Notation.double_colon x := let* x := M.read x in Pure x.(from) : M _;
+      }.
+      Global Instance Get_to : Notation.Dot "to" := {
+        Notation.dot x := let* x := M.read x in Pure x.(to) : M _;
+      }.
+      Global Instance Get_AF_to : Notation.DoubleColon t "to" := {
+        Notation.double_colon x := let* x := M.read x in Pure x.(to) : M _;
+      }.
+      Global Instance Get_value : Notation.Dot "value" := {
+        Notation.dot x := let* x := M.read x in Pure x.(value) : M _;
+      }.
+      Global Instance Get_AF_value : Notation.DoubleColon t "value" := {
+        Notation.double_colon x := let* x := M.read x in Pure x.(value) : M _;
+      }.
+    End Transfer.
+  End Transfer.
+  Definition Transfer `{State.Trait} : Set := M.val Transfer.t.
+  
+  Module Approval.
+    Section Approval.
+      Context `{State.Trait}.
+      
+      Unset Primitive Projections.
+      Record t : Set := {
+        owner : erc20.erc20.AccountId;
+        spender : erc20.erc20.AccountId;
+        value : erc20.erc20.Balance;
+      }.
+      Global Set Primitive Projections.
+      
+      Global Instance Get_owner : Notation.Dot "owner" := {
+        Notation.dot x := let* x := M.read x in Pure x.(owner) : M _;
+      }.
+      Global Instance Get_AF_owner : Notation.DoubleColon t "owner" := {
+        Notation.double_colon x := let* x := M.read x in Pure x.(owner) : M _;
+      }.
+      Global Instance Get_spender : Notation.Dot "spender" := {
+        Notation.dot x := let* x := M.read x in Pure x.(spender) : M _;
+      }.
+      Global Instance Get_AF_spender : Notation.DoubleColon t "spender" := {
+        Notation.double_colon x := let* x := M.read x in Pure x.(spender) : M _;
+      }.
+      Global Instance Get_value : Notation.Dot "value" := {
+        Notation.dot x := let* x := M.read x in Pure x.(value) : M _;
+      }.
+      Global Instance Get_AF_value : Notation.DoubleColon t "value" := {
+        Notation.double_colon x := let* x := M.read x in Pure x.(value) : M _;
+      }.
+    End Approval.
+  End Approval.
+  Definition Approval `{State.Trait} : Set := M.val Approval.t.
+  
+  Module __ink_EventBase.
+    Inductive t `{State.Trait} : Set :=
+    | Transfer (_ : erc20.erc20.Transfer)
+    | Approval (_ : erc20.erc20.Approval).
+  End __ink_EventBase.
+  Definition __ink_EventBase `{State.Trait} : Set := __ink_EventBase.t.
+  
+  Module Impl_ink_codegen_event_topics_EventLenTopics_for_erc20_erc20_Transfer.
+    Section
+      Impl_ink_codegen_event_topics_EventLenTopics_for_erc20_erc20_Transfer.
+      Context `{State.Trait}.
+      
+      Definition Self : Set := erc20.erc20.Transfer.
+      
+      Definition LenTopics : Set := ink.codegen.event.topics.EventTopics.
+      
+      Global Instance I
+        : ink.codegen.event.topics.EventLenTopics.Trait Self := {
+        ink.codegen.event.topics.EventLenTopics.LenTopics := LenTopics;
+      }.
+    End Impl_ink_codegen_event_topics_EventLenTopics_for_erc20_erc20_Transfer.
+    Global Hint Resolve I : core.
+  End Impl_ink_codegen_event_topics_EventLenTopics_for_erc20_erc20_Transfer.
+  
+  Module Impl_ink_codegen_event_topics_EventLenTopics_for_erc20_erc20_Approval.
+    Section
+      Impl_ink_codegen_event_topics_EventLenTopics_for_erc20_erc20_Approval.
+      Context `{State.Trait}.
+      
+      Definition Self : Set := erc20.erc20.Approval.
+      
+      Definition LenTopics : Set := ink.codegen.event.topics.EventTopics.
+      
+      Global Instance I
+        : ink.codegen.event.topics.EventLenTopics.Trait Self := {
+        ink.codegen.event.topics.EventLenTopics.LenTopics := LenTopics;
+      }.
+    End Impl_ink_codegen_event_topics_EventLenTopics_for_erc20_erc20_Approval.
+    Global Hint Resolve I : core.
+  End Impl_ink_codegen_event_topics_EventLenTopics_for_erc20_erc20_Approval.
+  
+  Module
+    Impl_ink_reflect_dispatch_DispatchableConstructorInfo_for_erc20_erc20_Erc20.
+    Section
+      Impl_ink_reflect_dispatch_DispatchableConstructorInfo_for_erc20_erc20_Erc20.
+      Context `{State.Trait}.
+      
+      Definition Self : Set := erc20.erc20.Erc20.
+      
+      Definition Input : Set := erc20.erc20.Balance.
+      
+      Definition Output : Set := Self.
+      
+      Definition Storage : Set := erc20.erc20.Erc20.
+      
+      Definition Error : Set :=
+        ink.reflect.dispatch.ConstructorOutput.Error
+          (Self := ink.reflect.dispatch.ConstructorOutputValue Self).
+      
+      Definition
+        IS_RESULT
+         := Pure
+          (ink.reflect.dispatch.ConstructorOutput.IS_RESULT
+            (Self := (ink.reflect.dispatch.ConstructorOutputValue Self))).
+      
+      Global Instance AssociatedFunction_IS_RESULT :
+        Notation.DoubleColon Self "IS_RESULT" := {
+        Notation.double_colon := IS_RESULT;
+      }.
+      
+      Definition
+        CALLABLE
+         := Pure
+          (fun __ink_binding_0 => erc20.erc20.Erc20::["new"] __ink_binding_0).
+      
+      Global Instance AssociatedFunction_CALLABLE :
+        Notation.DoubleColon Self "CALLABLE" := {
+        Notation.double_colon := CALLABLE;
+      }.
+      
+      Definition PAYABLE  := M.alloc false.
+      
+      Global Instance AssociatedFunction_PAYABLE :
+        Notation.DoubleColon Self "PAYABLE" := {
+        Notation.double_colon := PAYABLE;
+      }.
+      
+      Definition
+        SELECTOR
+         := let* α0 := M.alloc 155 in
+        let* α1 := M.alloc 174 in
+        let* α2 := M.alloc 157 in
+        let* α3 := M.alloc 94 in
+        Pure [ α0; α1; α2; α3 ].
+      
+      Global Instance AssociatedFunction_SELECTOR :
+        Notation.DoubleColon Self "SELECTOR" := {
+        Notation.double_colon := SELECTOR;
+      }.
+      
+      Definition LABEL  := Pure (mk_str "new").
+      
+      Global Instance AssociatedFunction_LABEL :
+        Notation.DoubleColon Self "LABEL" := {
+        Notation.double_colon := LABEL;
+      }.
+      
+      Global Instance I
+        : ink.reflect.dispatch.DispatchableConstructorInfo.Trait Self := {
+        ink.reflect.dispatch.DispatchableConstructorInfo.Input := Input;
+        ink.reflect.dispatch.DispatchableConstructorInfo.Output := Output;
+        ink.reflect.dispatch.DispatchableConstructorInfo.Storage := Storage;
+        ink.reflect.dispatch.DispatchableConstructorInfo.Error := Error;
+        ink.reflect.dispatch.DispatchableConstructorInfo.IS_RESULT := IS_RESULT;
+        ink.reflect.dispatch.DispatchableConstructorInfo.CALLABLE := CALLABLE;
+        ink.reflect.dispatch.DispatchableConstructorInfo.PAYABLE := PAYABLE;
+        ink.reflect.dispatch.DispatchableConstructorInfo.SELECTOR := SELECTOR;
+        ink.reflect.dispatch.DispatchableConstructorInfo.LABEL := LABEL;
+      }.
+    End
+      Impl_ink_reflect_dispatch_DispatchableConstructorInfo_for_erc20_erc20_Erc20.
+    Global Hint Resolve I : core.
+  End
+    Impl_ink_reflect_dispatch_DispatchableConstructorInfo_for_erc20_erc20_Erc20.
+  
+  Module
+    Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
+    Section
+      Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
+      Context `{State.Trait}.
+      
+      Definition Self : Set := erc20.erc20.Erc20.
+      
+      Definition Input : Set := unit.
+      
+      Definition Output : Set := erc20.erc20.Balance.
+      
+      Definition Storage : Set := erc20.erc20.Erc20.
+      
+      Definition
+        CALLABLE
+         := Pure (fun storage _ => erc20.erc20.Erc20::["total_supply"] storage).
+      
+      Global Instance AssociatedFunction_CALLABLE :
+        Notation.DoubleColon Self "CALLABLE" := {
+        Notation.double_colon := CALLABLE;
+      }.
+      
+      Definition
+        SELECTOR
+         := let* α0 := M.alloc 219 in
+        let* α1 := M.alloc 99 in
+        let* α2 := M.alloc 117 in
+        let* α3 := M.alloc 168 in
+        Pure [ α0; α1; α2; α3 ].
+      
+      Global Instance AssociatedFunction_SELECTOR :
+        Notation.DoubleColon Self "SELECTOR" := {
+        Notation.double_colon := SELECTOR;
+      }.
+      
+      Definition PAYABLE  := M.alloc false.
+      
+      Global Instance AssociatedFunction_PAYABLE :
+        Notation.DoubleColon Self "PAYABLE" := {
+        Notation.double_colon := PAYABLE;
+      }.
+      
+      Definition MUTATES  := M.alloc false.
+      
+      Global Instance AssociatedFunction_MUTATES :
+        Notation.DoubleColon Self "MUTATES" := {
+        Notation.double_colon := MUTATES;
+      }.
+      
+      Definition LABEL  := Pure (mk_str "total_supply").
+      
+      Global Instance AssociatedFunction_LABEL :
+        Notation.DoubleColon Self "LABEL" := {
+        Notation.double_colon := LABEL;
+      }.
+      
+      Global Instance I
+        : ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
+        ink.reflect.dispatch.DispatchableMessageInfo.Input := Input;
+        ink.reflect.dispatch.DispatchableMessageInfo.Output := Output;
+        ink.reflect.dispatch.DispatchableMessageInfo.Storage := Storage;
+        ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE := CALLABLE;
+        ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR := SELECTOR;
+        ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE := PAYABLE;
+        ink.reflect.dispatch.DispatchableMessageInfo.MUTATES := MUTATES;
+        ink.reflect.dispatch.DispatchableMessageInfo.LABEL := LABEL;
+      }.
+    End Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
+    Global Hint Resolve I : core.
+  End Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
+  
+  Module
+    Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
+    Section
+      Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
+      Context `{State.Trait}.
+      
+      Definition Self : Set := erc20.erc20.Erc20.
+      
+      Definition Input : Set := erc20.erc20.AccountId.
+      
+      Definition Output : Set := erc20.erc20.Balance.
+      
+      Definition Storage : Set := erc20.erc20.Erc20.
+      
+      Definition
+        CALLABLE
+         := Pure
+          (fun storage __ink_binding_0 =>
+            erc20.erc20.Erc20::["balance_of"] storage __ink_binding_0).
+      
+      Global Instance AssociatedFunction_CALLABLE :
+        Notation.DoubleColon Self "CALLABLE" := {
+        Notation.double_colon := CALLABLE;
+      }.
+      
+      Definition
+        SELECTOR
+         := let* α0 := M.alloc 15 in
+        let* α1 := M.alloc 117 in
+        let* α2 := M.alloc 90 in
+        let* α3 := M.alloc 86 in
+        Pure [ α0; α1; α2; α3 ].
+      
+      Global Instance AssociatedFunction_SELECTOR :
+        Notation.DoubleColon Self "SELECTOR" := {
+        Notation.double_colon := SELECTOR;
+      }.
+      
+      Definition PAYABLE  := M.alloc false.
+      
+      Global Instance AssociatedFunction_PAYABLE :
+        Notation.DoubleColon Self "PAYABLE" := {
+        Notation.double_colon := PAYABLE;
+      }.
+      
+      Definition MUTATES  := M.alloc false.
+      
+      Global Instance AssociatedFunction_MUTATES :
+        Notation.DoubleColon Self "MUTATES" := {
+        Notation.double_colon := MUTATES;
+      }.
+      
+      Definition LABEL  := Pure (mk_str "balance_of").
+      
+      Global Instance AssociatedFunction_LABEL :
+        Notation.DoubleColon Self "LABEL" := {
+        Notation.double_colon := LABEL;
+      }.
+      
+      Global Instance I
+        : ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
+        ink.reflect.dispatch.DispatchableMessageInfo.Input := Input;
+        ink.reflect.dispatch.DispatchableMessageInfo.Output := Output;
+        ink.reflect.dispatch.DispatchableMessageInfo.Storage := Storage;
+        ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE := CALLABLE;
+        ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR := SELECTOR;
+        ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE := PAYABLE;
+        ink.reflect.dispatch.DispatchableMessageInfo.MUTATES := MUTATES;
+        ink.reflect.dispatch.DispatchableMessageInfo.LABEL := LABEL;
+      }.
+    End Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
+    Global Hint Resolve I : core.
+  End Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
+  
+  Module
+    Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
+    Section
+      Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
+      Context `{State.Trait}.
+      
+      Definition Self : Set := erc20.erc20.Erc20.
+      
+      Definition Input : Set := erc20.erc20.AccountId * erc20.erc20.AccountId.
+      
+      Definition Output : Set := erc20.erc20.Balance.
+      
+      Definition Storage : Set := erc20.erc20.Erc20.
+      
+      Definition
+        CALLABLE
+         := Pure
+          (fun storage (__ink_binding_0, __ink_binding_1) =>
+            erc20.erc20.Erc20::["allowance"]
+              storage
+              __ink_binding_0
+              __ink_binding_1).
+      
+      Global Instance AssociatedFunction_CALLABLE :
+        Notation.DoubleColon Self "CALLABLE" := {
+        Notation.double_colon := CALLABLE;
+      }.
+      
+      Definition
+        SELECTOR
+         := let* α0 := M.alloc 106 in
+        let* α1 := M.alloc 0 in
+        let* α2 := M.alloc 22 in
+        let* α3 := M.alloc 94 in
+        Pure [ α0; α1; α2; α3 ].
+      
+      Global Instance AssociatedFunction_SELECTOR :
+        Notation.DoubleColon Self "SELECTOR" := {
+        Notation.double_colon := SELECTOR;
+      }.
+      
+      Definition PAYABLE  := M.alloc false.
+      
+      Global Instance AssociatedFunction_PAYABLE :
+        Notation.DoubleColon Self "PAYABLE" := {
+        Notation.double_colon := PAYABLE;
+      }.
+      
+      Definition MUTATES  := M.alloc false.
+      
+      Global Instance AssociatedFunction_MUTATES :
+        Notation.DoubleColon Self "MUTATES" := {
+        Notation.double_colon := MUTATES;
+      }.
+      
+      Definition LABEL  := Pure (mk_str "allowance").
+      
+      Global Instance AssociatedFunction_LABEL :
+        Notation.DoubleColon Self "LABEL" := {
+        Notation.double_colon := LABEL;
+      }.
+      
+      Global Instance I
+        : ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
+        ink.reflect.dispatch.DispatchableMessageInfo.Input := Input;
+        ink.reflect.dispatch.DispatchableMessageInfo.Output := Output;
+        ink.reflect.dispatch.DispatchableMessageInfo.Storage := Storage;
+        ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE := CALLABLE;
+        ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR := SELECTOR;
+        ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE := PAYABLE;
+        ink.reflect.dispatch.DispatchableMessageInfo.MUTATES := MUTATES;
+        ink.reflect.dispatch.DispatchableMessageInfo.LABEL := LABEL;
+      }.
+    End Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
+    Global Hint Resolve I : core.
+  End Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
+  
+  Module
+    Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
+    Section
+      Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
+      Context `{State.Trait}.
+      
+      Definition Self : Set := erc20.erc20.Erc20.
+      
+      Definition Input : Set := erc20.erc20.AccountId * erc20.erc20.Balance.
+      
+      Definition Output : Set := erc20.erc20.Result unit.
+      
+      Definition Storage : Set := erc20.erc20.Erc20.
+      
+      Definition
+        CALLABLE
+         := Pure
+          (fun storage (__ink_binding_0, __ink_binding_1) =>
+            erc20.erc20.Erc20::["transfer"]
+              storage
+              __ink_binding_0
+              __ink_binding_1).
+      
+      Global Instance AssociatedFunction_CALLABLE :
+        Notation.DoubleColon Self "CALLABLE" := {
+        Notation.double_colon := CALLABLE;
+      }.
+      
+      Definition
+        SELECTOR
+         := let* α0 := M.alloc 132 in
+        let* α1 := M.alloc 161 in
+        let* α2 := M.alloc 93 in
+        let* α3 := M.alloc 161 in
+        Pure [ α0; α1; α2; α3 ].
+      
+      Global Instance AssociatedFunction_SELECTOR :
+        Notation.DoubleColon Self "SELECTOR" := {
+        Notation.double_colon := SELECTOR;
+      }.
+      
+      Definition PAYABLE  := M.alloc false.
+      
+      Global Instance AssociatedFunction_PAYABLE :
+        Notation.DoubleColon Self "PAYABLE" := {
+        Notation.double_colon := PAYABLE;
+      }.
+      
+      Definition MUTATES  := M.alloc true.
+      
+      Global Instance AssociatedFunction_MUTATES :
+        Notation.DoubleColon Self "MUTATES" := {
+        Notation.double_colon := MUTATES;
+      }.
+      
+      Definition LABEL  := Pure (mk_str "transfer").
+      
+      Global Instance AssociatedFunction_LABEL :
+        Notation.DoubleColon Self "LABEL" := {
+        Notation.double_colon := LABEL;
+      }.
+      
+      Global Instance I
+        : ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
+        ink.reflect.dispatch.DispatchableMessageInfo.Input := Input;
+        ink.reflect.dispatch.DispatchableMessageInfo.Output := Output;
+        ink.reflect.dispatch.DispatchableMessageInfo.Storage := Storage;
+        ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE := CALLABLE;
+        ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR := SELECTOR;
+        ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE := PAYABLE;
+        ink.reflect.dispatch.DispatchableMessageInfo.MUTATES := MUTATES;
+        ink.reflect.dispatch.DispatchableMessageInfo.LABEL := LABEL;
+      }.
+    End Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
+    Global Hint Resolve I : core.
+  End Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
+  
+  Module
+    Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
+    Section
+      Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
+      Context `{State.Trait}.
+      
+      Definition Self : Set := erc20.erc20.Erc20.
+      
+      Definition Input : Set := erc20.erc20.AccountId * erc20.erc20.Balance.
+      
+      Definition Output : Set := erc20.erc20.Result unit.
+      
+      Definition Storage : Set := erc20.erc20.Erc20.
+      
+      Definition
+        CALLABLE
+         := Pure
+          (fun storage (__ink_binding_0, __ink_binding_1) =>
+            erc20.erc20.Erc20::["approve"]
+              storage
+              __ink_binding_0
+              __ink_binding_1).
+      
+      Global Instance AssociatedFunction_CALLABLE :
+        Notation.DoubleColon Self "CALLABLE" := {
+        Notation.double_colon := CALLABLE;
+      }.
+      
+      Definition
+        SELECTOR
+         := let* α0 := M.alloc 104 in
+        let* α1 := M.alloc 18 in
+        let* α2 := M.alloc 102 in
+        let* α3 := M.alloc 160 in
+        Pure [ α0; α1; α2; α3 ].
+      
+      Global Instance AssociatedFunction_SELECTOR :
+        Notation.DoubleColon Self "SELECTOR" := {
+        Notation.double_colon := SELECTOR;
+      }.
+      
+      Definition PAYABLE  := M.alloc false.
+      
+      Global Instance AssociatedFunction_PAYABLE :
+        Notation.DoubleColon Self "PAYABLE" := {
+        Notation.double_colon := PAYABLE;
+      }.
+      
+      Definition MUTATES  := M.alloc true.
+      
+      Global Instance AssociatedFunction_MUTATES :
+        Notation.DoubleColon Self "MUTATES" := {
+        Notation.double_colon := MUTATES;
+      }.
+      
+      Definition LABEL  := Pure (mk_str "approve").
+      
+      Global Instance AssociatedFunction_LABEL :
+        Notation.DoubleColon Self "LABEL" := {
+        Notation.double_colon := LABEL;
+      }.
+      
+      Global Instance I
+        : ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
+        ink.reflect.dispatch.DispatchableMessageInfo.Input := Input;
+        ink.reflect.dispatch.DispatchableMessageInfo.Output := Output;
+        ink.reflect.dispatch.DispatchableMessageInfo.Storage := Storage;
+        ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE := CALLABLE;
+        ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR := SELECTOR;
+        ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE := PAYABLE;
+        ink.reflect.dispatch.DispatchableMessageInfo.MUTATES := MUTATES;
+        ink.reflect.dispatch.DispatchableMessageInfo.LABEL := LABEL;
+      }.
+    End Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
+    Global Hint Resolve I : core.
+  End Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
+  
+  Module
+    Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
+    Section
+      Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
+      Context `{State.Trait}.
+      
+      Definition Self : Set := erc20.erc20.Erc20.
+      
+      Definition Input : Set :=
+        erc20.erc20.AccountId * erc20.erc20.AccountId * erc20.erc20.Balance.
+      
+      Definition Output : Set := erc20.erc20.Result unit.
+      
+      Definition Storage : Set := erc20.erc20.Erc20.
+      
+      Definition
+        CALLABLE
+         := Pure
+          (fun storage (__ink_binding_0, __ink_binding_1, __ink_binding_2) =>
+            erc20.erc20.Erc20::["transfer_from"]
+              storage
+              __ink_binding_0
+              __ink_binding_1
+              __ink_binding_2).
+      
+      Global Instance AssociatedFunction_CALLABLE :
+        Notation.DoubleColon Self "CALLABLE" := {
+        Notation.double_colon := CALLABLE;
+      }.
+      
+      Definition
+        SELECTOR
+         := let* α0 := M.alloc 11 in
+        let* α1 := M.alloc 57 in
+        let* α2 := M.alloc 111 in
+        let* α3 := M.alloc 24 in
+        Pure [ α0; α1; α2; α3 ].
+      
+      Global Instance AssociatedFunction_SELECTOR :
+        Notation.DoubleColon Self "SELECTOR" := {
+        Notation.double_colon := SELECTOR;
+      }.
+      
+      Definition PAYABLE  := M.alloc false.
+      
+      Global Instance AssociatedFunction_PAYABLE :
+        Notation.DoubleColon Self "PAYABLE" := {
+        Notation.double_colon := PAYABLE;
+      }.
+      
+      Definition MUTATES  := M.alloc true.
+      
+      Global Instance AssociatedFunction_MUTATES :
+        Notation.DoubleColon Self "MUTATES" := {
+        Notation.double_colon := MUTATES;
+      }.
+      
+      Definition LABEL  := Pure (mk_str "transfer_from").
+      
+      Global Instance AssociatedFunction_LABEL :
+        Notation.DoubleColon Self "LABEL" := {
+        Notation.double_colon := LABEL;
+      }.
+      
+      Global Instance I
+        : ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
+        ink.reflect.dispatch.DispatchableMessageInfo.Input := Input;
+        ink.reflect.dispatch.DispatchableMessageInfo.Output := Output;
+        ink.reflect.dispatch.DispatchableMessageInfo.Storage := Storage;
+        ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE := CALLABLE;
+        ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR := SELECTOR;
+        ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE := PAYABLE;
+        ink.reflect.dispatch.DispatchableMessageInfo.MUTATES := MUTATES;
+        ink.reflect.dispatch.DispatchableMessageInfo.LABEL := LABEL;
+      }.
+    End Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
+    Global Hint Resolve I : core.
+  End Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
+  
+  Module Erc20Ref.
+    Section Erc20Ref.
+      Context `{State.Trait}.
+      
+      Unset Primitive Projections.
+      Record t : Set := {
+        inner
+          :
+          ink.codegen.dispatch.info.ContractCallBuilder.Type_
+            (Self := erc20.erc20.Erc20);
+      }.
+      Global Set Primitive Projections.
+      
+      Global Instance Get_inner : Notation.Dot "inner" := {
+        Notation.dot x := let* x := M.read x in Pure x.(inner) : M _;
+      }.
+      Global Instance Get_AF_inner : Notation.DoubleColon t "inner" := {
+        Notation.double_colon x := let* x := M.read x in Pure x.(inner) : M _;
+      }.
+    End Erc20Ref.
+  End Erc20Ref.
+  Definition Erc20Ref `{State.Trait} : Set := M.val Erc20Ref.t.
+  
+  Module Impl_core_fmt_Debug_for_erc20_erc20_Erc20Ref.
+    Section Impl_core_fmt_Debug_for_erc20_erc20_Erc20Ref.
+      Context `{State.Trait}.
+      
+      Definition Self : Set := erc20.erc20.Erc20Ref.
+      
+      Definition fmt
+          (self : ref Self)
+          (f : mut_ref core.fmt.Formatter)
+          : M core.fmt.Result :=
+        let* α0 := deref f core.fmt.Formatter in
+        let* α1 := borrow_mut α0 core.fmt.Formatter in
+        let* α2 := deref (mk_str "Erc20Ref") str in
+        let* α3 := borrow α2 str in
+        let* α4 := deref (mk_str "inner") str in
+        let* α5 := borrow α4 str in
+        let* α6 := deref self erc20.erc20.Erc20Ref in
+        let* α7 := α6.["inner"] in
+        let* α8 := borrow α7 erc20.erc20._.CallBuilder in
+        let* α9 := borrow α8 (ref erc20.erc20._.CallBuilder) in
+        let* α10 := deref α9 (ref erc20.erc20._.CallBuilder) in
+        let* α11 := borrow α10 (ref erc20.erc20._.CallBuilder) in
+        let* α12 := pointer_coercion "Unsize" α11 in
+        core.fmt.Formatter::["debug_struct_field1_finish"] α1 α3 α5 α12.
+      
+      Global Instance AssociatedFunction_fmt :
+        Notation.DoubleColon Self "fmt" := {
+        Notation.double_colon := fmt;
+      }.
+      
+      Global Instance I : core.fmt.Debug.Trait Self := {
+        core.fmt.Debug.fmt := fmt;
+      }.
+    End Impl_core_fmt_Debug_for_erc20_erc20_Erc20Ref.
+    Global Hint Resolve I : core.
+  End Impl_core_fmt_Debug_for_erc20_erc20_Erc20Ref.
+  
+  Module Impl_core_hash_Hash_for_erc20_erc20_Erc20Ref.
+    Section Impl_core_hash_Hash_for_erc20_erc20_Erc20Ref.
+      Context `{State.Trait}.
+      
+      Definition Self : Set := erc20.erc20.Erc20Ref.
+      
+      Definition hash
+          {__H : Set}
+          {ℋ_0 : core.hash.Hasher.Trait __H}
+          (self : ref Self)
+          (state : mut_ref __H)
+          : M unit :=
+        let* α0 := deref self erc20.erc20.Erc20Ref in
+        let* α1 := α0.["inner"] in
+        let* α2 := borrow α1 erc20.erc20._.CallBuilder in
+        let* α3 := deref α2 erc20.erc20._.CallBuilder in
+        let* α4 := borrow α3 erc20.erc20._.CallBuilder in
+        let* α5 := deref state _ in
+        let* α6 := borrow_mut α5 _ in
+        core.hash.Hash.hash α4 α6.
+      
+      Global Instance AssociatedFunction_hash
+          {__H : Set}
+          {ℋ_0 : core.hash.Hasher.Trait __H} :
+        Notation.DoubleColon Self "hash" := {
+        Notation.double_colon := hash (__H := __H);
+      }.
+      
+      Global Instance I : core.hash.Hash.Trait Self := {
+        core.hash.Hash.hash {__H : Set} {ℋ_0 : core.hash.Hasher.Trait __H}
+          :=
+          hash (__H := __H);
+      }.
+    End Impl_core_hash_Hash_for_erc20_erc20_Erc20Ref.
+    Global Hint Resolve I : core.
+  End Impl_core_hash_Hash_for_erc20_erc20_Erc20Ref.
+  
+  Module Impl_core_marker_StructuralPartialEq_for_erc20_erc20_Erc20Ref.
+    Section Impl_core_marker_StructuralPartialEq_for_erc20_erc20_Erc20Ref.
+      Context `{State.Trait}.
+      
+      Definition Self : Set := erc20.erc20.Erc20Ref.
+      
+      Global Instance I : core.marker.StructuralPartialEq.Trait Self := {
+      }.
+    End Impl_core_marker_StructuralPartialEq_for_erc20_erc20_Erc20Ref.
+    Global Hint Resolve I : core.
+  End Impl_core_marker_StructuralPartialEq_for_erc20_erc20_Erc20Ref.
+  
+  Module Impl_core_cmp_PartialEq_for_erc20_erc20_Erc20Ref.
+    Section Impl_core_cmp_PartialEq_for_erc20_erc20_Erc20Ref.
+      Context `{State.Trait}.
+      
+      Definition Self : Set := erc20.erc20.Erc20Ref.
+      
+      Definition eq
+          (self : ref Self)
+          (other : ref erc20.erc20.Erc20Ref)
+          : M bool :=
+        let* α0 := deref self erc20.erc20.Erc20Ref in
+        let* α1 := α0.["inner"] in
+        let* α2 := borrow α1 erc20.erc20._.CallBuilder in
+        let* α3 := deref other erc20.erc20.Erc20Ref in
+        let* α4 := α3.["inner"] in
+        let* α5 := borrow α4 erc20.erc20._.CallBuilder in
+        core.cmp.PartialEq.eq α2 α5.
+      
+      Global Instance AssociatedFunction_eq :
+        Notation.DoubleColon Self "eq" := {
+        Notation.double_colon := eq;
+      }.
+      
+      Global Instance I
+        : core.cmp.PartialEq.Trait Self
+            (Rhs := core.cmp.PartialEq.Default.Rhs Self)
+          := {
+        core.cmp.PartialEq.eq := eq;
+      }.
+    End Impl_core_cmp_PartialEq_for_erc20_erc20_Erc20Ref.
+    Global Hint Resolve I : core.
+  End Impl_core_cmp_PartialEq_for_erc20_erc20_Erc20Ref.
+  
+  Module Impl_core_marker_StructuralEq_for_erc20_erc20_Erc20Ref.
+    Section Impl_core_marker_StructuralEq_for_erc20_erc20_Erc20Ref.
+      Context `{State.Trait}.
+      
+      Definition Self : Set := erc20.erc20.Erc20Ref.
+      
+      Global Instance I : core.marker.StructuralEq.Trait Self := {
+      }.
+    End Impl_core_marker_StructuralEq_for_erc20_erc20_Erc20Ref.
+    Global Hint Resolve I : core.
+  End Impl_core_marker_StructuralEq_for_erc20_erc20_Erc20Ref.
+  
+  Module Impl_core_cmp_Eq_for_erc20_erc20_Erc20Ref.
+    Section Impl_core_cmp_Eq_for_erc20_erc20_Erc20Ref.
+      Context `{State.Trait}.
+      
+      Definition Self : Set := erc20.erc20.Erc20Ref.
+      
+      Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
+        let* _ := M.alloc tt in
+        M.alloc tt.
+      
+      Global Instance AssociatedFunction_assert_receiver_is_total_eq :
+        Notation.DoubleColon Self "assert_receiver_is_total_eq" := {
+        Notation.double_colon := assert_receiver_is_total_eq;
+      }.
+      
+      Global Instance I : core.cmp.Eq.Trait Self := {
+      }.
+    End Impl_core_cmp_Eq_for_erc20_erc20_Erc20Ref.
+    Global Hint Resolve I : core.
+  End Impl_core_cmp_Eq_for_erc20_erc20_Erc20Ref.
+  
+  Module Impl_core_clone_Clone_for_erc20_erc20_Erc20Ref.
+    Section Impl_core_clone_Clone_for_erc20_erc20_Erc20Ref.
+      Context `{State.Trait}.
+      
+      Definition Self : Set := erc20.erc20.Erc20Ref.
+      
+      Definition clone (self : ref Self) : M erc20.erc20.Erc20Ref :=
+        let* α0 := deref self erc20.erc20.Erc20Ref in
+        let* α1 := α0.["inner"] in
+        let* α2 := borrow α1 erc20.erc20._.CallBuilder in
+        let* α3 := deref α2 erc20.erc20._.CallBuilder in
+        let* α4 := borrow α3 erc20.erc20._.CallBuilder in
+        let* α5 := core.clone.Clone.clone α4 in
+        M.alloc {| erc20.erc20.Erc20Ref.inner := α5; |}.
+      
+      Global Instance AssociatedFunction_clone :
+        Notation.DoubleColon Self "clone" := {
+        Notation.double_colon := clone;
+      }.
+      
+      Global Instance I : core.clone.Clone.Trait Self := {
+        core.clone.Clone.clone := clone;
+      }.
+    End Impl_core_clone_Clone_for_erc20_erc20_Erc20Ref.
+    Global Hint Resolve I : core.
+  End Impl_core_clone_Clone_for_erc20_erc20_Erc20Ref.
+  
+  Module Impl_erc20_erc20_Erc20Ref_8.
+    Section Impl_erc20_erc20_Erc20Ref_8.
+      Context `{State.Trait}.
+      
+      Definition Self : Set := erc20.erc20.Erc20Ref.
+      
+      Definition new
+          (__ink_binding_0 : erc20.erc20.Balance)
+          :
+            M
+              (ink_env.call.create_builder.CreateBuilder
+                erc20.erc20.Environment
+                Self
+                (ink_env.call.common.Unset_ erc20.erc20.Hash)
+                (ink_env.call.common.Unset_ u64)
+                (ink_env.call.common.Unset_ erc20.erc20.Balance)
+                (ink_env.call.common.Set_
+                  (ink_env.call.execution_input.ExecutionInput
+                    (ink_env.call.execution_input.ArgumentList
+                      (ink_env.call.execution_input.Argument
+                        erc20.erc20.Balance)
+                      ink_env.call.execution_input.EmptyArgumentList)))
+                (ink_env.call.common.Unset_
+                  ink_env.call.create_builder.state.Salt)
+                (ink_env.call.common.Set_
+                  (ink_env.call.common.ReturnType Self))) :=
+        let* α0 := ink_env.call.create_builder.build_create in
+        let* α1 := M.alloc 155 in
+        let* α2 := M.alloc 174 in
+        let* α3 := M.alloc 157 in
+        let* α4 := M.alloc 94 in
+        let* α5 := ink_env.call.selector.Selector::["new"] [ α1; α2; α3; α4 ] in
+        let* α6 :=
+          (ink_env.call.execution_input.ExecutionInput
+                (ink_env.call.execution_input.ArgumentList
+                  ink_env.call.execution_input.ArgumentListEnd
+                  ink_env.call.execution_input.ArgumentListEnd))::["new"]
+            α5 in
+        let* α7 :=
+          (ink_env.call.execution_input.ExecutionInput
+                (ink_env.call.execution_input.ArgumentList
+                  ink_env.call.execution_input.ArgumentListEnd
+                  ink_env.call.execution_input.ArgumentListEnd))::["push_arg"]
+            α6
+            __ink_binding_0 in
+        let* α8 :=
+          (ink_env.call.create_builder.CreateBuilder
+                _
+                _
+                _
+                _
+                _
+                (ink_env.call.common.Unset_
+                  (ink_env.call.execution_input.ExecutionInput
+                    (ink_env.call.execution_input.ArgumentList
+                      ink_env.call.execution_input.ArgumentListEnd
+                      ink_env.call.execution_input.ArgumentListEnd)))
+                _
+                _)::["exec_input"]
+            α0
+            α7 in
+        (ink_env.call.create_builder.CreateBuilder
+              _
+              _
+              _
+              _
+              _
+              _
+              _
+              (ink_env.call.common.Unset_
+                (ink_env.call.common.ReturnType unit)))::["returns"]
+          α8.
+      
+      Global Instance AssociatedFunction_new :
+        Notation.DoubleColon Self "new" := {
+        Notation.double_colon := new;
+      }.
+      
+      Definition total_supply (self : ref Self) : M erc20.erc20.Balance :=
+        let* α0 := deref self erc20.erc20.Erc20Ref in
+        let* α1 := borrow α0 erc20.erc20.Erc20Ref in
+        let* α2 := erc20.erc20.Erc20Ref::["try_total_supply"] α1 in
+        (core.result.Result _ _)::["unwrap_or_else"]
+          α2
+          let* α0 :=
+            borrow
+              [ mk_str "encountered error while calling Erc20::total_supply: " ]
+              (list (ref str)) in
+          let* α1 := deref α0 (list (ref str)) in
+          let* α2 := borrow α1 (list (ref str)) in
+          let* α3 := pointer_coercion "Unsize" α2 in
+          let* α4 := borrow error ink_primitives.LangError in
+          let* α5 := deref α4 ink_primitives.LangError in
+          let* α6 := borrow α5 ink_primitives.LangError in
+          let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
+          let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+          let* α9 := deref α8 (list core.fmt.rt.Argument) in
+          let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+          let* α11 := pointer_coercion "Unsize" α10 in
+          let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+          let* α13 := core.panicking.panic_fmt α12 in
+          never_to_any α13.
+      
+      Global Instance AssociatedFunction_total_supply :
+        Notation.DoubleColon Self "total_supply" := {
+        Notation.double_colon := total_supply;
+      }.
+      
+      Definition try_total_supply
+          (self : ref Self)
+          : M (ink_primitives.MessageResult erc20.erc20.Balance) :=
+        let* α0 := deref self erc20.erc20.Erc20Ref in
+        let* α1 := borrow α0 erc20.erc20.Erc20Ref in
+        let* α2 :=
+          ink.codegen.trait_def.call_builder.TraitCallBuilder.call α1 in
+        let* α3 := deref α2 erc20.erc20._.CallBuilder in
+        let* α4 := borrow α3 erc20.erc20._.CallBuilder in
+        let* α5 := erc20.erc20._.CallBuilder::["total_supply"] α4 in
+        let* α6 :=
+          (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallBuilder
+                _
+                (ink_env.call.common.Set_
+                  (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Call
+                    _))
+                (ink_env.call.common.Set_
+                  (ink_env.call.execution_input.ExecutionInput _))
+                (ink_env.call.common.Set_
+                  (ink_env.call.common.ReturnType _)))::["try_invoke"]
+            α5 in
+        (core.result.Result _ _)::["unwrap_or_else"]
+          α6
+          let* α0 :=
+            borrow
+              [ mk_str "encountered error while calling Erc20::total_supply: " ]
+              (list (ref str)) in
+          let* α1 := deref α0 (list (ref str)) in
+          let* α2 := borrow α1 (list (ref str)) in
+          let* α3 := pointer_coercion "Unsize" α2 in
+          let* α4 :=
+            borrow
+              error
+              ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Error in
+          let* α5 :=
+            deref
+              α4
+              ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Error in
+          let* α6 :=
+            borrow
+              α5
+              ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Error in
+          let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
+          let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+          let* α9 := deref α8 (list core.fmt.rt.Argument) in
+          let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+          let* α11 := pointer_coercion "Unsize" α10 in
+          let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+          let* α13 := core.panicking.panic_fmt α12 in
+          never_to_any α13.
+      
+      Global Instance AssociatedFunction_try_total_supply :
+        Notation.DoubleColon Self "try_total_supply" := {
+        Notation.double_colon := try_total_supply;
+      }.
+      
+      Definition balance_of
+          (self : ref Self)
+          (owner : erc20.erc20.AccountId)
+          : M erc20.erc20.Balance :=
+        let* α0 := deref self erc20.erc20.Erc20Ref in
+        let* α1 := borrow α0 erc20.erc20.Erc20Ref in
+        let* α2 := erc20.erc20.Erc20Ref::["try_balance_of"] α1 owner in
+        (core.result.Result _ _)::["unwrap_or_else"]
+          α2
+          let* α0 :=
+            borrow
+              [ mk_str "encountered error while calling Erc20::balance_of: " ]
+              (list (ref str)) in
+          let* α1 := deref α0 (list (ref str)) in
+          let* α2 := borrow α1 (list (ref str)) in
+          let* α3 := pointer_coercion "Unsize" α2 in
+          let* α4 := borrow error ink_primitives.LangError in
+          let* α5 := deref α4 ink_primitives.LangError in
+          let* α6 := borrow α5 ink_primitives.LangError in
+          let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
+          let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+          let* α9 := deref α8 (list core.fmt.rt.Argument) in
+          let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+          let* α11 := pointer_coercion "Unsize" α10 in
+          let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+          let* α13 := core.panicking.panic_fmt α12 in
+          never_to_any α13.
+      
+      Global Instance AssociatedFunction_balance_of :
+        Notation.DoubleColon Self "balance_of" := {
+        Notation.double_colon := balance_of;
+      }.
+      
+      Definition try_balance_of
+          (self : ref Self)
+          (owner : erc20.erc20.AccountId)
+          : M (ink_primitives.MessageResult erc20.erc20.Balance) :=
+        let* α0 := deref self erc20.erc20.Erc20Ref in
+        let* α1 := borrow α0 erc20.erc20.Erc20Ref in
+        let* α2 :=
+          ink.codegen.trait_def.call_builder.TraitCallBuilder.call α1 in
+        let* α3 := deref α2 erc20.erc20._.CallBuilder in
+        let* α4 := borrow α3 erc20.erc20._.CallBuilder in
+        let* α5 := erc20.erc20._.CallBuilder::["balance_of"] α4 owner in
+        let* α6 :=
+          (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallBuilder
+                _
+                (ink_env.call.common.Set_
+                  (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Call
+                    _))
+                (ink_env.call.common.Set_
+                  (ink_env.call.execution_input.ExecutionInput _))
+                (ink_env.call.common.Set_
+                  (ink_env.call.common.ReturnType _)))::["try_invoke"]
+            α5 in
+        (core.result.Result _ _)::["unwrap_or_else"]
+          α6
+          let* α0 :=
+            borrow
+              [ mk_str "encountered error while calling Erc20::balance_of: " ]
+              (list (ref str)) in
+          let* α1 := deref α0 (list (ref str)) in
+          let* α2 := borrow α1 (list (ref str)) in
+          let* α3 := pointer_coercion "Unsize" α2 in
+          let* α4 :=
+            borrow
+              error
+              ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Error in
+          let* α5 :=
+            deref
+              α4
+              ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Error in
+          let* α6 :=
+            borrow
+              α5
+              ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Error in
+          let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
+          let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+          let* α9 := deref α8 (list core.fmt.rt.Argument) in
+          let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+          let* α11 := pointer_coercion "Unsize" α10 in
+          let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+          let* α13 := core.panicking.panic_fmt α12 in
+          never_to_any α13.
+      
+      Global Instance AssociatedFunction_try_balance_of :
+        Notation.DoubleColon Self "try_balance_of" := {
+        Notation.double_colon := try_balance_of;
+      }.
+      
+      Definition allowance
+          (self : ref Self)
+          (owner : erc20.erc20.AccountId)
+          (spender : erc20.erc20.AccountId)
+          : M erc20.erc20.Balance :=
+        let* α0 := deref self erc20.erc20.Erc20Ref in
+        let* α1 := borrow α0 erc20.erc20.Erc20Ref in
+        let* α2 := erc20.erc20.Erc20Ref::["try_allowance"] α1 owner spender in
+        (core.result.Result _ _)::["unwrap_or_else"]
+          α2
+          let* α0 :=
+            borrow
+              [ mk_str "encountered error while calling Erc20::allowance: " ]
+              (list (ref str)) in
+          let* α1 := deref α0 (list (ref str)) in
+          let* α2 := borrow α1 (list (ref str)) in
+          let* α3 := pointer_coercion "Unsize" α2 in
+          let* α4 := borrow error ink_primitives.LangError in
+          let* α5 := deref α4 ink_primitives.LangError in
+          let* α6 := borrow α5 ink_primitives.LangError in
+          let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
+          let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+          let* α9 := deref α8 (list core.fmt.rt.Argument) in
+          let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+          let* α11 := pointer_coercion "Unsize" α10 in
+          let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+          let* α13 := core.panicking.panic_fmt α12 in
+          never_to_any α13.
+      
+      Global Instance AssociatedFunction_allowance :
+        Notation.DoubleColon Self "allowance" := {
+        Notation.double_colon := allowance;
+      }.
+      
+      Definition try_allowance
+          (self : ref Self)
+          (owner : erc20.erc20.AccountId)
+          (spender : erc20.erc20.AccountId)
+          : M (ink_primitives.MessageResult erc20.erc20.Balance) :=
+        let* α0 := deref self erc20.erc20.Erc20Ref in
+        let* α1 := borrow α0 erc20.erc20.Erc20Ref in
+        let* α2 :=
+          ink.codegen.trait_def.call_builder.TraitCallBuilder.call α1 in
+        let* α3 := deref α2 erc20.erc20._.CallBuilder in
+        let* α4 := borrow α3 erc20.erc20._.CallBuilder in
+        let* α5 := erc20.erc20._.CallBuilder::["allowance"] α4 owner spender in
+        let* α6 :=
+          (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallBuilder
+                _
+                (ink_env.call.common.Set_
+                  (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Call
+                    _))
+                (ink_env.call.common.Set_
+                  (ink_env.call.execution_input.ExecutionInput _))
+                (ink_env.call.common.Set_
+                  (ink_env.call.common.ReturnType _)))::["try_invoke"]
+            α5 in
+        (core.result.Result _ _)::["unwrap_or_else"]
+          α6
+          let* α0 :=
+            borrow
+              [ mk_str "encountered error while calling Erc20::allowance: " ]
+              (list (ref str)) in
+          let* α1 := deref α0 (list (ref str)) in
+          let* α2 := borrow α1 (list (ref str)) in
+          let* α3 := pointer_coercion "Unsize" α2 in
+          let* α4 :=
+            borrow
+              error
+              ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Error in
+          let* α5 :=
+            deref
+              α4
+              ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Error in
+          let* α6 :=
+            borrow
+              α5
+              ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Error in
+          let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
+          let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+          let* α9 := deref α8 (list core.fmt.rt.Argument) in
+          let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+          let* α11 := pointer_coercion "Unsize" α10 in
+          let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+          let* α13 := core.panicking.panic_fmt α12 in
+          never_to_any α13.
+      
+      Global Instance AssociatedFunction_try_allowance :
+        Notation.DoubleColon Self "try_allowance" := {
+        Notation.double_colon := try_allowance;
+      }.
+      
+      Definition transfer
+          (self : mut_ref Self)
+          (to : erc20.erc20.AccountId)
+          (value : erc20.erc20.Balance)
+          : M (erc20.erc20.Result unit) :=
+        let* α0 := deref self erc20.erc20.Erc20Ref in
+        let* α1 := borrow_mut α0 erc20.erc20.Erc20Ref in
+        let* α2 := erc20.erc20.Erc20Ref::["try_transfer"] α1 to value in
+        (core.result.Result _ _)::["unwrap_or_else"]
+          α2
+          let* α0 :=
+            borrow
+              [ mk_str "encountered error while calling Erc20::transfer: " ]
+              (list (ref str)) in
+          let* α1 := deref α0 (list (ref str)) in
+          let* α2 := borrow α1 (list (ref str)) in
+          let* α3 := pointer_coercion "Unsize" α2 in
+          let* α4 := borrow error ink_primitives.LangError in
+          let* α5 := deref α4 ink_primitives.LangError in
+          let* α6 := borrow α5 ink_primitives.LangError in
+          let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
+          let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+          let* α9 := deref α8 (list core.fmt.rt.Argument) in
+          let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+          let* α11 := pointer_coercion "Unsize" α10 in
+          let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+          let* α13 := core.panicking.panic_fmt α12 in
+          never_to_any α13.
+      
+      Global Instance AssociatedFunction_transfer :
+        Notation.DoubleColon Self "transfer" := {
+        Notation.double_colon := transfer;
+      }.
+      
+      Definition try_transfer
+          (self : mut_ref Self)
+          (to : erc20.erc20.AccountId)
+          (value : erc20.erc20.Balance)
+          : M (ink_primitives.MessageResult (erc20.erc20.Result unit)) :=
+        let* α0 := deref self erc20.erc20.Erc20Ref in
+        let* α1 := borrow_mut α0 erc20.erc20.Erc20Ref in
+        let* α2 :=
+          ink.codegen.trait_def.call_builder.TraitCallBuilder.call_mut α1 in
+        let* α3 := deref α2 erc20.erc20._.CallBuilder in
+        let* α4 := borrow_mut α3 erc20.erc20._.CallBuilder in
+        let* α5 := erc20.erc20._.CallBuilder::["transfer"] α4 to value in
+        let* α6 :=
+          (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallBuilder
+                _
+                (ink_env.call.common.Set_
+                  (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Call
+                    _))
+                (ink_env.call.common.Set_
+                  (ink_env.call.execution_input.ExecutionInput _))
+                (ink_env.call.common.Set_
+                  (ink_env.call.common.ReturnType _)))::["try_invoke"]
+            α5 in
+        (core.result.Result _ _)::["unwrap_or_else"]
+          α6
+          let* α0 :=
+            borrow
+              [ mk_str "encountered error while calling Erc20::transfer: " ]
+              (list (ref str)) in
+          let* α1 := deref α0 (list (ref str)) in
+          let* α2 := borrow α1 (list (ref str)) in
+          let* α3 := pointer_coercion "Unsize" α2 in
+          let* α4 :=
+            borrow
+              error
+              ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Error in
+          let* α5 :=
+            deref
+              α4
+              ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Error in
+          let* α6 :=
+            borrow
+              α5
+              ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Error in
+          let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
+          let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+          let* α9 := deref α8 (list core.fmt.rt.Argument) in
+          let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+          let* α11 := pointer_coercion "Unsize" α10 in
+          let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+          let* α13 := core.panicking.panic_fmt α12 in
+          never_to_any α13.
+      
+      Global Instance AssociatedFunction_try_transfer :
+        Notation.DoubleColon Self "try_transfer" := {
+        Notation.double_colon := try_transfer;
+      }.
+      
+      Definition approve
+          (self : mut_ref Self)
+          (spender : erc20.erc20.AccountId)
+          (value : erc20.erc20.Balance)
+          : M (erc20.erc20.Result unit) :=
+        let* α0 := deref self erc20.erc20.Erc20Ref in
+        let* α1 := borrow_mut α0 erc20.erc20.Erc20Ref in
+        let* α2 := erc20.erc20.Erc20Ref::["try_approve"] α1 spender value in
+        (core.result.Result _ _)::["unwrap_or_else"]
+          α2
+          let* α0 :=
+            borrow
+              [ mk_str "encountered error while calling Erc20::approve: " ]
+              (list (ref str)) in
+          let* α1 := deref α0 (list (ref str)) in
+          let* α2 := borrow α1 (list (ref str)) in
+          let* α3 := pointer_coercion "Unsize" α2 in
+          let* α4 := borrow error ink_primitives.LangError in
+          let* α5 := deref α4 ink_primitives.LangError in
+          let* α6 := borrow α5 ink_primitives.LangError in
+          let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
+          let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+          let* α9 := deref α8 (list core.fmt.rt.Argument) in
+          let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+          let* α11 := pointer_coercion "Unsize" α10 in
+          let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+          let* α13 := core.panicking.panic_fmt α12 in
+          never_to_any α13.
+      
+      Global Instance AssociatedFunction_approve :
+        Notation.DoubleColon Self "approve" := {
+        Notation.double_colon := approve;
+      }.
+      
+      Definition try_approve
+          (self : mut_ref Self)
+          (spender : erc20.erc20.AccountId)
+          (value : erc20.erc20.Balance)
+          : M (ink_primitives.MessageResult (erc20.erc20.Result unit)) :=
+        let* α0 := deref self erc20.erc20.Erc20Ref in
+        let* α1 := borrow_mut α0 erc20.erc20.Erc20Ref in
+        let* α2 :=
+          ink.codegen.trait_def.call_builder.TraitCallBuilder.call_mut α1 in
+        let* α3 := deref α2 erc20.erc20._.CallBuilder in
+        let* α4 := borrow_mut α3 erc20.erc20._.CallBuilder in
+        let* α5 := erc20.erc20._.CallBuilder::["approve"] α4 spender value in
+        let* α6 :=
+          (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallBuilder
+                _
+                (ink_env.call.common.Set_
+                  (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Call
+                    _))
+                (ink_env.call.common.Set_
+                  (ink_env.call.execution_input.ExecutionInput _))
+                (ink_env.call.common.Set_
+                  (ink_env.call.common.ReturnType _)))::["try_invoke"]
+            α5 in
+        (core.result.Result _ _)::["unwrap_or_else"]
+          α6
+          let* α0 :=
+            borrow
+              [ mk_str "encountered error while calling Erc20::approve: " ]
+              (list (ref str)) in
+          let* α1 := deref α0 (list (ref str)) in
+          let* α2 := borrow α1 (list (ref str)) in
+          let* α3 := pointer_coercion "Unsize" α2 in
+          let* α4 :=
+            borrow
+              error
+              ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Error in
+          let* α5 :=
+            deref
+              α4
+              ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Error in
+          let* α6 :=
+            borrow
+              α5
+              ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Error in
+          let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
+          let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+          let* α9 := deref α8 (list core.fmt.rt.Argument) in
+          let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+          let* α11 := pointer_coercion "Unsize" α10 in
+          let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+          let* α13 := core.panicking.panic_fmt α12 in
+          never_to_any α13.
+      
+      Global Instance AssociatedFunction_try_approve :
+        Notation.DoubleColon Self "try_approve" := {
+        Notation.double_colon := try_approve;
+      }.
+      
+      Definition transfer_from
+          (self : mut_ref Self)
+          (from : erc20.erc20.AccountId)
+          (to : erc20.erc20.AccountId)
+          (value : erc20.erc20.Balance)
+          : M (erc20.erc20.Result unit) :=
+        let* α0 := deref self erc20.erc20.Erc20Ref in
+        let* α1 := borrow_mut α0 erc20.erc20.Erc20Ref in
+        let* α2 :=
+          erc20.erc20.Erc20Ref::["try_transfer_from"] α1 from to value in
+        (core.result.Result _ _)::["unwrap_or_else"]
+          α2
+          let* α0 :=
+            borrow
+              [ mk_str "encountered error while calling Erc20::transfer_from: "
+              ]
+              (list (ref str)) in
+          let* α1 := deref α0 (list (ref str)) in
+          let* α2 := borrow α1 (list (ref str)) in
+          let* α3 := pointer_coercion "Unsize" α2 in
+          let* α4 := borrow error ink_primitives.LangError in
+          let* α5 := deref α4 ink_primitives.LangError in
+          let* α6 := borrow α5 ink_primitives.LangError in
+          let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
+          let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+          let* α9 := deref α8 (list core.fmt.rt.Argument) in
+          let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+          let* α11 := pointer_coercion "Unsize" α10 in
+          let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+          let* α13 := core.panicking.panic_fmt α12 in
+          never_to_any α13.
+      
+      Global Instance AssociatedFunction_transfer_from :
+        Notation.DoubleColon Self "transfer_from" := {
+        Notation.double_colon := transfer_from;
+      }.
+      
+      Definition try_transfer_from
+          (self : mut_ref Self)
+          (from : erc20.erc20.AccountId)
+          (to : erc20.erc20.AccountId)
+          (value : erc20.erc20.Balance)
+          : M (ink_primitives.MessageResult (erc20.erc20.Result unit)) :=
+        let* α0 := deref self erc20.erc20.Erc20Ref in
+        let* α1 := borrow_mut α0 erc20.erc20.Erc20Ref in
+        let* α2 :=
+          ink.codegen.trait_def.call_builder.TraitCallBuilder.call_mut α1 in
+        let* α3 := deref α2 erc20.erc20._.CallBuilder in
+        let* α4 := borrow_mut α3 erc20.erc20._.CallBuilder in
+        let* α5 :=
+          erc20.erc20._.CallBuilder::["transfer_from"] α4 from to value in
+        let* α6 :=
+          (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallBuilder
+                _
+                (ink_env.call.common.Set_
+                  (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Call
+                    _))
+                (ink_env.call.common.Set_
+                  (ink_env.call.execution_input.ExecutionInput _))
+                (ink_env.call.common.Set_
+                  (ink_env.call.common.ReturnType _)))::["try_invoke"]
+            α5 in
+        (core.result.Result _ _)::["unwrap_or_else"]
+          α6
+          let* α0 :=
+            borrow
+              [ mk_str "encountered error while calling Erc20::transfer_from: "
+              ]
+              (list (ref str)) in
+          let* α1 := deref α0 (list (ref str)) in
+          let* α2 := borrow α1 (list (ref str)) in
+          let* α3 := pointer_coercion "Unsize" α2 in
+          let* α4 :=
+            borrow
+              error
+              ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Error in
+          let* α5 :=
+            deref
+              α4
+              ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Error in
+          let* α6 :=
+            borrow
+              α5
+              ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Error in
+          let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
+          let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+          let* α9 := deref α8 (list core.fmt.rt.Argument) in
+          let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+          let* α11 := pointer_coercion "Unsize" α10 in
+          let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+          let* α13 := core.panicking.panic_fmt α12 in
+          never_to_any α13.
+      
+      Global Instance AssociatedFunction_try_transfer_from :
+        Notation.DoubleColon Self "try_transfer_from" := {
+        Notation.double_colon := try_transfer_from;
+      }.
+    End Impl_erc20_erc20_Erc20Ref_8.
+  End Impl_erc20_erc20_Erc20Ref_8.
+  
+  Module
+    Impl_ink_env_call_create_builder_FromAccountId_for_erc20_erc20_Erc20Ref.
+    Section
+      Impl_ink_env_call_create_builder_FromAccountId_for_erc20_erc20_Erc20Ref.
+      Context `{State.Trait}.
+      
+      Definition Self : Set := erc20.erc20.Erc20Ref.
+      
+      Definition from_account_id
+          (account_id : erc20.erc20.AccountId)
+          : M Self :=
+        let* α0 :=
+          ink_env.call.create_builder.FromAccountId.from_account_id
+            account_id in
+        M.alloc {| erc20.erc20.Erc20Ref.inner := α0; |}.
+      
+      Global Instance AssociatedFunction_from_account_id :
+        Notation.DoubleColon Self "from_account_id" := {
+        Notation.double_colon := from_account_id;
+      }.
+      
+      Global Instance I
+        : ink_env.call.create_builder.FromAccountId.Trait Self
+            (T := erc20.erc20.Environment)
+          := {
+        ink_env.call.create_builder.FromAccountId.from_account_id
+          :=
+          from_account_id;
+      }.
+    End Impl_ink_env_call_create_builder_FromAccountId_for_erc20_erc20_Erc20Ref.
+    Global Hint Resolve I : core.
+  End Impl_ink_env_call_create_builder_FromAccountId_for_erc20_erc20_Erc20Ref.
+  
+  Module Impl_ink_contract_ref_ToAccountId_for_erc20_erc20_Erc20Ref.
+    Section Impl_ink_contract_ref_ToAccountId_for_erc20_erc20_Erc20Ref.
+      Context `{State.Trait}.
+      
+      Definition Self : Set := erc20.erc20.Erc20Ref.
+      
+      Definition to_account_id (self : ref Self) : M erc20.erc20.AccountId :=
+        let* α0 := deref self erc20.erc20.Erc20Ref in
+        let* α1 := α0.["inner"] in
+        let* α2 := borrow α1 erc20.erc20._.CallBuilder in
+        let* α3 := deref α2 erc20.erc20._.CallBuilder in
+        let* α4 := borrow α3 erc20.erc20._.CallBuilder in
+        ink.contract_ref.ToAccountId.to_account_id α4.
+      
+      Global Instance AssociatedFunction_to_account_id :
+        Notation.DoubleColon Self "to_account_id" := {
+        Notation.double_colon := to_account_id;
+      }.
+      
+      Global Instance I
+        : ink.contract_ref.ToAccountId.Trait Self (T := erc20.erc20.Environment)
+          := {
+        ink.contract_ref.ToAccountId.to_account_id := to_account_id;
+      }.
+    End Impl_ink_contract_ref_ToAccountId_for_erc20_erc20_Erc20Ref.
+    Global Hint Resolve I : core.
+  End Impl_ink_contract_ref_ToAccountId_for_erc20_erc20_Erc20Ref.
+  
+  Module Impl_core_convert_AsRef_for_erc20_erc20_Erc20Ref.
+    Section Impl_core_convert_AsRef_for_erc20_erc20_Erc20Ref.
+      Context `{State.Trait}.
+      
+      Definition Self : Set := erc20.erc20.Erc20Ref.
+      
+      Definition as_ref (self : ref Self) : M (ref erc20.erc20.AccountId) :=
+        let* α0 := deref self erc20.erc20.Erc20Ref in
+        let* α1 := α0.["inner"] in
+        let* α2 := borrow α1 erc20.erc20._.CallBuilder in
+        let* α3 := deref α2 erc20.erc20._.CallBuilder in
+        let* α4 := borrow α3 erc20.erc20._.CallBuilder in
+        let* α5 := core.convert.AsRef.as_ref α4 in
+        let* α6 := deref α5 ink_primitives.types.AccountId in
+        borrow α6 ink_primitives.types.AccountId.
+      
+      Global Instance AssociatedFunction_as_ref :
+        Notation.DoubleColon Self "as_ref" := {
+        Notation.double_colon := as_ref;
+      }.
+      
+      Global Instance I
+        : core.convert.AsRef.Trait Self (T := erc20.erc20.AccountId) := {
+        core.convert.AsRef.as_ref := as_ref;
+      }.
+    End Impl_core_convert_AsRef_for_erc20_erc20_Erc20Ref.
+    Global Hint Resolve I : core.
+  End Impl_core_convert_AsRef_for_erc20_erc20_Erc20Ref.
+  
+  Module Impl_core_convert_AsMut_for_erc20_erc20_Erc20Ref.
+    Section Impl_core_convert_AsMut_for_erc20_erc20_Erc20Ref.
+      Context `{State.Trait}.
+      
+      Definition Self : Set := erc20.erc20.Erc20Ref.
+      
+      Definition as_mut
+          (self : mut_ref Self)
+          : M (mut_ref erc20.erc20.AccountId) :=
+        let* α0 := deref self erc20.erc20.Erc20Ref in
+        let* α1 := α0.["inner"] in
+        let* α2 := borrow_mut α1 erc20.erc20._.CallBuilder in
+        let* α3 := deref α2 erc20.erc20._.CallBuilder in
+        let* α4 := borrow_mut α3 erc20.erc20._.CallBuilder in
+        let* α5 := core.convert.AsMut.as_mut α4 in
+        let* α6 := deref α5 ink_primitives.types.AccountId in
+        let* α0 := borrow_mut α6 ink_primitives.types.AccountId in
+        let* α1 := deref α0 ink_primitives.types.AccountId in
+        borrow_mut α1 ink_primitives.types.AccountId.
+      
+      Global Instance AssociatedFunction_as_mut :
+        Notation.DoubleColon Self "as_mut" := {
+        Notation.double_colon := as_mut;
+      }.
+      
+      Global Instance I
+        : core.convert.AsMut.Trait Self (T := erc20.erc20.AccountId) := {
+        core.convert.AsMut.as_mut := as_mut;
+      }.
+    End Impl_core_convert_AsMut_for_erc20_erc20_Erc20Ref.
+    Global Hint Resolve I : core.
+  End Impl_core_convert_AsMut_for_erc20_erc20_Erc20Ref.
+  
+  Module Error.
+    Inductive t `{State.Trait} : Set :=
+    | InsufficientBalance
+    | InsufficientAllowance.
+  End Error.
+  Definition Error `{State.Trait} : Set := Error.t.
+  
+  Module Impl_core_fmt_Debug_for_erc20_erc20_Error.
+    Section Impl_core_fmt_Debug_for_erc20_erc20_Error.
+      Context `{State.Trait}.
+      
+      Definition Self : Set := erc20.erc20.Error.
+      
+      Definition fmt
+          (self : ref Self)
+          (f : mut_ref core.fmt.Formatter)
+          : M core.fmt.Result :=
+        let* α0 := deref f core.fmt.Formatter in
+        let* α1 := borrow_mut α0 core.fmt.Formatter in
+        let* α2 :=
+          match self with
+          | erc20.erc20.Error  =>
+            let* α0 := deref (mk_str "InsufficientBalance") str in
+            borrow α0 str
+          | erc20.erc20.Error  =>
+            let* α0 := deref (mk_str "InsufficientAllowance") str in
+            borrow α0 str
+          end in
+        core.fmt.Formatter::["write_str"] α1 α2.
+      
+      Global Instance AssociatedFunction_fmt :
+        Notation.DoubleColon Self "fmt" := {
+        Notation.double_colon := fmt;
+      }.
+      
+      Global Instance I : core.fmt.Debug.Trait Self := {
+        core.fmt.Debug.fmt := fmt;
+      }.
+    End Impl_core_fmt_Debug_for_erc20_erc20_Error.
+    Global Hint Resolve I : core.
+  End Impl_core_fmt_Debug_for_erc20_erc20_Error.
+  
+  Module Impl_core_marker_StructuralPartialEq_for_erc20_erc20_Error.
+    Section Impl_core_marker_StructuralPartialEq_for_erc20_erc20_Error.
+      Context `{State.Trait}.
+      
+      Definition Self : Set := erc20.erc20.Error.
+      
+      Global Instance I : core.marker.StructuralPartialEq.Trait Self := {
+      }.
+    End Impl_core_marker_StructuralPartialEq_for_erc20_erc20_Error.
+    Global Hint Resolve I : core.
+  End Impl_core_marker_StructuralPartialEq_for_erc20_erc20_Error.
+  
+  Module Impl_core_cmp_PartialEq_for_erc20_erc20_Error.
+    Section Impl_core_cmp_PartialEq_for_erc20_erc20_Error.
+      Context `{State.Trait}.
+      
+      Definition Self : Set := erc20.erc20.Error.
+      
+      Definition eq
+          (self : ref Self)
+          (other : ref erc20.erc20.Error)
+          : M bool :=
+        let* __self_tag :=
+          let* α0 := deref self erc20.erc20.Error in
+          let* α1 := borrow α0 erc20.erc20.Error in
+          "unimplemented parent_kind" α1 in
+        let* __arg1_tag :=
+          let* α0 := deref other erc20.erc20.Error in
+          let* α1 := borrow α0 erc20.erc20.Error in
+          "unimplemented parent_kind" α1 in
+        eq __self_tag __arg1_tag.
+      
+      Global Instance AssociatedFunction_eq :
+        Notation.DoubleColon Self "eq" := {
+        Notation.double_colon := eq;
+      }.
+      
+      Global Instance I
+        : core.cmp.PartialEq.Trait Self
+            (Rhs := core.cmp.PartialEq.Default.Rhs Self)
+          := {
+        core.cmp.PartialEq.eq := eq;
+      }.
+    End Impl_core_cmp_PartialEq_for_erc20_erc20_Error.
+    Global Hint Resolve I : core.
+  End Impl_core_cmp_PartialEq_for_erc20_erc20_Error.
+  
+  Module Impl_core_marker_StructuralEq_for_erc20_erc20_Error.
+    Section Impl_core_marker_StructuralEq_for_erc20_erc20_Error.
+      Context `{State.Trait}.
+      
+      Definition Self : Set := erc20.erc20.Error.
+      
+      Global Instance I : core.marker.StructuralEq.Trait Self := {
+      }.
+    End Impl_core_marker_StructuralEq_for_erc20_erc20_Error.
+    Global Hint Resolve I : core.
+  End Impl_core_marker_StructuralEq_for_erc20_erc20_Error.
+  
+  Module Impl_core_cmp_Eq_for_erc20_erc20_Error.
+    Section Impl_core_cmp_Eq_for_erc20_erc20_Error.
+      Context `{State.Trait}.
+      
+      Definition Self : Set := erc20.erc20.Error.
+      
+      Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
+        M.alloc tt.
+      
+      Global Instance AssociatedFunction_assert_receiver_is_total_eq :
+        Notation.DoubleColon Self "assert_receiver_is_total_eq" := {
+        Notation.double_colon := assert_receiver_is_total_eq;
+      }.
+      
+      Global Instance I : core.cmp.Eq.Trait Self := {
+      }.
+    End Impl_core_cmp_Eq_for_erc20_erc20_Error.
+    Global Hint Resolve I : core.
+  End Impl_core_cmp_Eq_for_erc20_erc20_Error.
+  
+  Definition Result (T : Set) `{State.Trait} : Set :=
+    core.result.Result T erc20.erc20.Error.
+End erc20.
 
-    Global Instance Default_for_AutoStorableHint_Type_ : default.Default.Trait
-     (forall (Self Key : Set) (H : ink_storage_traits.storage.StorageKey.Trait Key)
-        (H0 : ink_storage_traits.storage.AutoStorableHint.Trait Self),
-      H0.(ink_storage_traits.storage.AutoStorableHint.Type_)). Admitted.
-
+Module Impl_ink_env_contract_ContractEnv_for_erc20_erc20_Erc20.
+  Section Impl_ink_env_contract_ContractEnv_for_erc20_erc20_Erc20.
+    Context `{State.Trait}.
     
-    Definition default `{State.Trait} : M erc20.erc20.Erc20 :=
+    Definition Self : Set := erc20.erc20.Erc20.
+    
+    Definition Env : Set := ink_env.types.DefaultEnvironment.
+    
+    Global Instance I : ink_env.contract.ContractEnv.Trait Self := {
+      ink_env.contract.ContractEnv.Env := Env;
+    }.
+  End Impl_ink_env_contract_ContractEnv_for_erc20_erc20_Erc20.
+  Global Hint Resolve I : core.
+End Impl_ink_env_contract_ContractEnv_for_erc20_erc20_Erc20.
+
+Definition Environment `{State.Trait} : Set :=
+  ink_env.types.DefaultEnvironment.
+
+Definition AccountId `{State.Trait} : Set :=
+  ink_env.types.Environment.AccountId
+    (Self := ink_env.types.DefaultEnvironment).
+
+Definition Balance `{State.Trait} : Set :=
+  ink_env.types.Environment.Balance
+    (Self := ink_env.types.DefaultEnvironment).
+
+Definition Hash `{State.Trait} : Set :=
+  ink_env.types.Environment.Hash
+    (Self := ink_env.types.DefaultEnvironment).
+
+Definition Timestamp `{State.Trait} : Set :=
+  ink_env.types.Environment.Timestamp
+    (Self := ink_env.types.DefaultEnvironment).
+
+Definition BlockNumber `{State.Trait} : Set :=
+  ink_env.types.Environment.BlockNumber
+    (Self := ink_env.types.DefaultEnvironment).
+
+Definition ChainExtension `{State.Trait} : Set :=
+  ink_env.types.Environment.ChainExtension
+    (Self := ink_env.types.DefaultEnvironment).
+
+Definition MAX_EVENT_TOPICS `{State.Trait} : usize :=
+  run
+    (Pure
+      (ink_env.types.Environment.MAX_EVENT_TOPICS
+        (Self :=
+          (ink_env.types.DefaultEnvironment)))).
+
+Module Check.
+  Section Check.
+    Context `{State.Trait}.
+    
+    Unset Primitive Projections.
+    Record t : Set := {
+      salt : unit;
+      field_0 : erc20.erc20.Balance;
+      field_1
+        :
+        ink_storage.lazy.mapping.Mapping
+          erc20.erc20.AccountId
+          erc20.erc20.Balance
+          ink_storage.lazy.mapping.Mapping.Default.KeyType;
+      field_2
+        :
+        ink_storage.lazy.mapping.Mapping
+          (erc20.erc20.AccountId * erc20.erc20.AccountId)
+          erc20.erc20.Balance
+          ink_storage.lazy.mapping.Mapping.Default.KeyType;
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_salt : Notation.Dot "salt" := {
+      Notation.dot x := let* x := M.read x in Pure x.(salt) : M _;
+    }.
+    Global Instance Get_AF_salt : Notation.DoubleColon t "salt" := {
+      Notation.double_colon x := let* x := M.read x in Pure x.(salt) : M _;
+    }.
+    Global Instance Get_field_0 : Notation.Dot "field_0" := {
+      Notation.dot x := let* x := M.read x in Pure x.(field_0) : M _;
+    }.
+    Global Instance Get_AF_field_0 : Notation.DoubleColon t "field_0" := {
+      Notation.double_colon x := let* x := M.read x in Pure x.(field_0) : M _;
+    }.
+    Global Instance Get_field_1 : Notation.Dot "field_1" := {
+      Notation.dot x := let* x := M.read x in Pure x.(field_1) : M _;
+    }.
+    Global Instance Get_AF_field_1 : Notation.DoubleColon t "field_1" := {
+      Notation.double_colon x := let* x := M.read x in Pure x.(field_1) : M _;
+    }.
+    Global Instance Get_field_2 : Notation.Dot "field_2" := {
+      Notation.dot x := let* x := M.read x in Pure x.(field_2) : M _;
+    }.
+    Global Instance Get_AF_field_2 : Notation.DoubleColon t "field_2" := {
+      Notation.double_colon x := let* x := M.read x in Pure x.(field_2) : M _;
+    }.
+  End Check.
+End Check.
+Definition Check `{State.Trait} : Set := M.val Check.t.
+
+Module Erc20.
+  Section Erc20.
+    Context `{State.Trait}.
+    
+    Unset Primitive Projections.
+    Record t : Set := {
+      total_supply
+        :
+        ink_storage_traits.storage.AutoStorableHint.Type_
+          (Self := erc20.erc20.Balance);
+      balances
+        :
+        ink_storage_traits.storage.AutoStorableHint.Type_
+          (Self := ink_storage.lazy.mapping.Mapping
+            erc20.erc20.AccountId
+            erc20.erc20.Balance
+            ink_storage.lazy.mapping.Mapping.Default.KeyType);
+      allowances
+        :
+        ink_storage_traits.storage.AutoStorableHint.Type_
+          (Self := ink_storage.lazy.mapping.Mapping
+            (erc20.erc20.AccountId * erc20.erc20.AccountId)
+            erc20.erc20.Balance
+            ink_storage.lazy.mapping.Mapping.Default.KeyType);
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_total_supply : Notation.Dot "total_supply" := {
+      Notation.dot x := let* x := M.read x in Pure x.(total_supply) : M _;
+    }.
+    Global Instance Get_AF_total_supply
+      : Notation.DoubleColon t "total_supply" := {
+      Notation.double_colon x
+        :=
+        let* x := M.read x in Pure x.(total_supply) : M _;
+    }.
+    Global Instance Get_balances : Notation.Dot "balances" := {
+      Notation.dot x := let* x := M.read x in Pure x.(balances) : M _;
+    }.
+    Global Instance Get_AF_balances : Notation.DoubleColon t "balances" := {
+      Notation.double_colon x := let* x := M.read x in Pure x.(balances) : M _;
+    }.
+    Global Instance Get_allowances : Notation.Dot "allowances" := {
+      Notation.dot x := let* x := M.read x in Pure x.(allowances) : M _;
+    }.
+    Global Instance Get_AF_allowances : Notation.DoubleColon t "allowances" := {
+      Notation.double_colon x
+        :=
+        let* x := M.read x in Pure x.(allowances) : M _;
+    }.
+  End Erc20.
+End Erc20.
+Definition Erc20 `{State.Trait} : Set := M.val Erc20.t.
+
+Module Impl_ink_storage_traits_storage_StorableHint_for_erc20_erc20_Erc20.
+  Section Impl_ink_storage_traits_storage_StorableHint_for_erc20_erc20_Erc20.
+    Context `{State.Trait}.
+    
+    Context {__ink_generic_salt : Set}.
+    
+    Context
+      {ℋ_0 : ink_storage_traits.storage.StorageKey.Trait __ink_generic_salt}.
+    Definition Self : Set := erc20.erc20.Erc20.
+    
+    Definition Type : Set := erc20.erc20.Erc20.
+    
+    Definition PreferredKey : Set := ink_storage_traits.impls.AutoKey.
+    
+    Global Instance I
+      : ink_storage_traits.storage.StorableHint.Trait Self
+          (Key := __ink_generic_salt)
+        := {
+      ink_storage_traits.storage.StorableHint.Type := Type;
+      ink_storage_traits.storage.StorableHint.PreferredKey := PreferredKey;
+    }.
+  End Impl_ink_storage_traits_storage_StorableHint_for_erc20_erc20_Erc20.
+  Global Hint Resolve I : core.
+End Impl_ink_storage_traits_storage_StorableHint_for_erc20_erc20_Erc20.
+
+Module Impl_ink_storage_traits_storage_StorageKey_for_erc20_erc20_Erc20.
+  Section Impl_ink_storage_traits_storage_StorageKey_for_erc20_erc20_Erc20.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := erc20.erc20.Erc20.
+    
+    Definition
+      KEY
+       := Pure (ink_storage_traits.storage.StorageKey.KEY (Self := unit)).
+    
+    Global Instance AssociatedFunction_KEY :
+      Notation.DoubleColon Self "KEY" := {
+      Notation.double_colon := KEY;
+    }.
+    
+    Global Instance I : ink_storage_traits.storage.StorageKey.Trait Self := {
+      ink_storage_traits.storage.StorageKey.KEY := KEY;
+    }.
+  End Impl_ink_storage_traits_storage_StorageKey_for_erc20_erc20_Erc20.
+  Global Hint Resolve I : core.
+End Impl_ink_storage_traits_storage_StorageKey_for_erc20_erc20_Erc20.
+
+Module Impl_ink_storage_traits_storage_Storable_for_erc20_erc20_Erc20.
+  Section Impl_ink_storage_traits_storage_Storable_for_erc20_erc20_Erc20.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := erc20.erc20.Erc20.
+    
+    Definition decode
+        {__ink_I : Set}
+        {ℋ_0 : parity_scale_codec.codec.Input.Trait __ink_I}
+        (__input : mut_ref __ink_I)
+        : M (core.result.Result Self parity_scale_codec.error.Error) :=
+      let* α0 := deref __input _ in
+      let* α1 := borrow_mut α0 _ in
+      let* α2 := ink_storage_traits.storage.Storable.decode α1 in
+      let* α3 := core.ops.try_trait.Try.branch α2 in
+      let* α4 :=
+        match α3 with
+        | core.ops.control_flow.ControlFlow residual =>
+          let* α0 := core.ops.try_trait.FromResidual.from_residual residual in
+          let* α1 := Return α0 in
+          never_to_any α1
+        | core.ops.control_flow.ControlFlow val => Pure val
+        end in
+      let* α5 := deref __input _ in
+      let* α6 := borrow_mut α5 _ in
+      let* α7 := ink_storage_traits.storage.Storable.decode α6 in
+      let* α8 := core.ops.try_trait.Try.branch α7 in
+      let* α9 :=
+        match α8 with
+        | core.ops.control_flow.ControlFlow residual =>
+          let* α0 := core.ops.try_trait.FromResidual.from_residual residual in
+          let* α1 := Return α0 in
+          never_to_any α1
+        | core.ops.control_flow.ControlFlow val => Pure val
+        end in
+      let* α10 := deref __input _ in
+      let* α11 := borrow_mut α10 _ in
+      let* α12 := ink_storage_traits.storage.Storable.decode α11 in
+      let* α13 := core.ops.try_trait.Try.branch α12 in
+      let* α14 :=
+        match α13 with
+        | core.ops.control_flow.ControlFlow residual =>
+          let* α0 := core.ops.try_trait.FromResidual.from_residual residual in
+          let* α1 := Return α0 in
+          never_to_any α1
+        | core.ops.control_flow.ControlFlow val => Pure val
+        end in
+      let* α15 :=
+        M.alloc
+          {|
+            erc20.erc20.Erc20.total_supply := α4;
+            erc20.erc20.Erc20.balances := α9;
+            erc20.erc20.Erc20.allowances := α14;
+          |} in
+      Pure (core.result.Result.Ok α15).
+    
+    Global Instance AssociatedFunction_decode
+        {__ink_I : Set}
+        {ℋ_0 : parity_scale_codec.codec.Input.Trait __ink_I} :
+      Notation.DoubleColon Self "decode" := {
+      Notation.double_colon := decode (__ink_I := __ink_I);
+    }.
+    
+    Definition encode
+        {__ink_O : Set}
+        {ℋ_0 : parity_scale_codec.codec.Output.Trait __ink_O}
+        {ℋ_1 : core.marker.Sized.Trait __ink_O}
+        (self : ref Self)
+        (__dest : mut_ref __ink_O)
+        : M unit :=
+      match self with
+      |
+          {|
+            erc20.erc20.Erc20.total_supply := __binding_0;
+            erc20.erc20.Erc20.balances := __binding_1;
+            erc20.erc20.Erc20.allowances := __binding_2;
+          |}
+          =>
+        let* _ :=
+          let* _ :=
+            let* α0 := deref __binding_0 u128 in
+            let* α1 := borrow α0 u128 in
+            let* α2 := deref __dest _ in
+            let* α3 := borrow_mut α2 _ in
+            ink_storage_traits.storage.Storable.encode α1 α3 in
+          M.alloc tt in
+        let* _ :=
+          let* _ :=
+            let* α0 :=
+              deref
+                __binding_1
+                (ink_storage.lazy.mapping.Mapping
+                  ink_primitives.types.AccountId
+                  u128
+                  (ink_storage_traits.impls.ResolverKey
+                    ink_storage_traits.impls.AutoKey
+                    (ink_storage_traits.impls.ManualKey unit))) in
+            let* α1 :=
+              borrow
+                α0
+                (ink_storage.lazy.mapping.Mapping
+                  ink_primitives.types.AccountId
+                  u128
+                  (ink_storage_traits.impls.ResolverKey
+                    ink_storage_traits.impls.AutoKey
+                    (ink_storage_traits.impls.ManualKey unit))) in
+            let* α2 := deref __dest _ in
+            let* α3 := borrow_mut α2 _ in
+            ink_storage_traits.storage.Storable.encode α1 α3 in
+          M.alloc tt in
+        let* _ :=
+          let* α0 :=
+            deref
+              __binding_2
+              (ink_storage.lazy.mapping.Mapping
+                (ink_primitives.types.AccountId *
+                  ink_primitives.types.AccountId)
+                u128
+                (ink_storage_traits.impls.ResolverKey
+                  ink_storage_traits.impls.AutoKey
+                  (ink_storage_traits.impls.ManualKey unit))) in
+          let* α1 :=
+            borrow
+              α0
+              (ink_storage.lazy.mapping.Mapping
+                (ink_primitives.types.AccountId *
+                  ink_primitives.types.AccountId)
+                u128
+                (ink_storage_traits.impls.ResolverKey
+                  ink_storage_traits.impls.AutoKey
+                  (ink_storage_traits.impls.ManualKey unit))) in
+          let* α2 := deref __dest _ in
+          let* α3 := borrow_mut α2 _ in
+          ink_storage_traits.storage.Storable.encode α1 α3 in
+        M.alloc tt
+      end.
+    
+    Global Instance AssociatedFunction_encode
+        {__ink_O : Set}
+        {ℋ_0 : parity_scale_codec.codec.Output.Trait __ink_O}
+        {ℋ_1 : core.marker.Sized.Trait __ink_O} :
+      Notation.DoubleColon Self "encode" := {
+      Notation.double_colon := encode (__ink_O := __ink_O);
+    }.
+    
+    Global Instance I : ink_storage_traits.storage.Storable.Trait Self := {
+      ink_storage_traits.storage.Storable.decode
+        {__ink_I : Set}
+        {ℋ_0 : parity_scale_codec.codec.Input.Trait __ink_I}
+        :=
+        decode (__ink_I := __ink_I);
+      ink_storage_traits.storage.Storable.encode
+        {__ink_O : Set}
+        {ℋ_0 : parity_scale_codec.codec.Output.Trait __ink_O}
+        {ℋ_1 : core.marker.Sized.Trait __ink_O}
+        :=
+        encode (__ink_O := __ink_O);
+    }.
+  End Impl_ink_storage_traits_storage_Storable_for_erc20_erc20_Erc20.
+  Global Hint Resolve I : core.
+End Impl_ink_storage_traits_storage_Storable_for_erc20_erc20_Erc20.
+
+Module Impl_scale_info_TypeInfo_for_erc20_erc20_Erc20.
+  Section Impl_scale_info_TypeInfo_for_erc20_erc20_Erc20.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := erc20.erc20.Erc20.
+    
+    Definition Identity : Set := Self.
+    
+    Definition type_info
+        : M (scale_info.ty.Type_ scale_info.ty.Type_.Default.T) :=
+      let* α0 := (scale_info.ty.Type_ scale_info.form.MetaForm)::["builder"] in
+      let* α1 :=
+        (scale_info.ty.path.Path scale_info.form.MetaForm)::["new"]
+          (mk_str "Erc20")
+          (mk_str "erc20::erc20") in
+      let* α2 :=
+        (scale_info.build.TypeBuilder
+              _
+              scale_info.build.state.PathNotAssigned)::["path"]
+          α0
+          α1 in
+      let* α3 := (alloc.vec.Vec _ alloc.alloc.Global)::["new"] in
+      let* α4 := (scale_info.build.TypeBuilder _ _)::["type_params"] α2 α3 in
+      let* α5 :=
+        borrow [ mk_str "A simple ERC-20 contract." ] (list (ref str)) in
+      let* α6 := deref α5 (list (ref str)) in
+      let* α7 := borrow α6 (list (ref str)) in
+      let* α8 := pointer_coercion "Unsize" α7 in
+      let* α9 :=
+        (scale_info.build.TypeBuilder scale_info.form.MetaForm _)::["docs"]
+          α4
+          α8 in
+      let* α10 := (scale_info.build.Fields _)::["named"] in
+      let* α11 :=
+        (scale_info.build.FieldsBuilder
+              scale_info.form.MetaForm
+              scale_info.build.NamedFields)::["field"]
+          α10
+          let* α0 :=
+            (scale_info.build.FieldBuilder
+                  scale_info.form.MetaForm
+                  _
+                  scale_info.build.field_state.TypeNotAssigned)::["ty"]
+              f in
+          let* α1 :=
+            (scale_info.build.FieldBuilder
+                  _
+                  scale_info.build.field_state.NameNotAssigned
+                  _)::["name"]
+              α0
+              (mk_str "total_supply") in
+          let* α2 :=
+            (scale_info.build.FieldBuilder _ _ _)::["type_name"]
+              α1
+              (mk_str
+                "<Balance as::ink::storage::traits::AutoStorableHint<::ink::
+storage::traits::ManualKey<375105693u32, ()>,>>::Type") in
+          let* α3 := borrow [ mk_str "Total token supply." ] (list (ref str)) in
+          let* α4 := deref α3 (list (ref str)) in
+          let* α5 := borrow α4 (list (ref str)) in
+          let* α6 := pointer_coercion "Unsize" α5 in
+          (scale_info.build.FieldBuilder scale_info.form.MetaForm _ _)::["docs"]
+            α2
+            α6 in
+      let* α12 :=
+        (scale_info.build.FieldsBuilder
+              scale_info.form.MetaForm
+              scale_info.build.NamedFields)::["field"]
+          α11
+          let* α0 :=
+            (scale_info.build.FieldBuilder
+                  scale_info.form.MetaForm
+                  _
+                  scale_info.build.field_state.TypeNotAssigned)::["ty"]
+              f in
+          let* α1 :=
+            (scale_info.build.FieldBuilder
+                  _
+                  scale_info.build.field_state.NameNotAssigned
+                  _)::["name"]
+              α0
+              (mk_str "balances") in
+          let* α2 :=
+            (scale_info.build.FieldBuilder _ _ _)::["type_name"]
+              α1
+              (mk_str
+                "<Mapping<AccountId, Balance> as::ink::storage::traits::
+AutoStorableHint<::ink::storage::traits::ManualKey<639884519u32, ()
+>,>>::Type") in
+          let* α3 :=
+            borrow
+              [ mk_str "Mapping from owner to number of owned token." ]
+              (list (ref str)) in
+          let* α4 := deref α3 (list (ref str)) in
+          let* α5 := borrow α4 (list (ref str)) in
+          let* α6 := pointer_coercion "Unsize" α5 in
+          (scale_info.build.FieldBuilder scale_info.form.MetaForm _ _)::["docs"]
+            α2
+            α6 in
+      let* α13 :=
+        (scale_info.build.FieldsBuilder
+              scale_info.form.MetaForm
+              scale_info.build.NamedFields)::["field"]
+          α12
+          let* α0 :=
+            (scale_info.build.FieldBuilder
+                  scale_info.form.MetaForm
+                  _
+                  scale_info.build.field_state.TypeNotAssigned)::["ty"]
+              f in
+          let* α1 :=
+            (scale_info.build.FieldBuilder
+                  _
+                  scale_info.build.field_state.NameNotAssigned
+                  _)::["name"]
+              α0
+              (mk_str "allowances") in
+          let* α2 :=
+            (scale_info.build.FieldBuilder _ _ _)::["type_name"]
+              α1
+              (mk_str
+                "<Mapping<(AccountId, AccountId), Balance> as::ink::storage::traits
+::AutoStorableHint<::ink::storage::traits::ManualKey<
+3969917367u32, ()>,>>::Type") in
+          let* α3 :=
+            borrow
+              [
+                mk_str
+                  "Mapping of the token amount which an account is allowed to withdraw";
+                mk_str "from another account."
+              ]
+              (list (ref str)) in
+          let* α4 := deref α3 (list (ref str)) in
+          let* α5 := borrow α4 (list (ref str)) in
+          let* α6 := pointer_coercion "Unsize" α5 in
+          (scale_info.build.FieldBuilder scale_info.form.MetaForm _ _)::["docs"]
+            α2
+            α6 in
+      (scale_info.build.TypeBuilder
+            _
+            scale_info.build.state.PathAssigned)::["composite"]
+        α9
+        α13.
+    
+    Global Instance AssociatedFunction_type_info :
+      Notation.DoubleColon Self "type_info" := {
+      Notation.double_colon := type_info;
+    }.
+    
+    Global Instance I : scale_info.TypeInfo.Trait Self := {
+      scale_info.TypeInfo.Identity := Identity;
+      scale_info.TypeInfo.type_info := type_info;
+    }.
+  End Impl_scale_info_TypeInfo_for_erc20_erc20_Erc20.
+  Global Hint Resolve I : core.
+End Impl_scale_info_TypeInfo_for_erc20_erc20_Erc20.
+
+Module Impl_ink_storage_traits_layout_StorageLayout_for_erc20_erc20_Erc20.
+  Section Impl_ink_storage_traits_layout_StorageLayout_for_erc20_erc20_Erc20.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := erc20.erc20.Erc20.
+    
+    Definition layout
+        (__key : ref ink_primitives.key.Key)
+        : M (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F) :=
+      let* α0 := deref __key u32 in
+      let* α1 := borrow α0 u32 in
+      let* α2 := ink_storage_traits.layout.StorageLayout.layout α1 in
+      let* α3 :=
+        (ink_metadata.layout.FieldLayout _)::["new"]
+          (mk_str "total_supply")
+          α2 in
+      let* α4 := deref __key u32 in
+      let* α5 := borrow α4 u32 in
+      let* α6 := ink_storage_traits.layout.StorageLayout.layout α5 in
+      let* α7 :=
+        (ink_metadata.layout.FieldLayout _)::["new"] (mk_str "balances") α6 in
+      let* α8 := deref __key u32 in
+      let* α9 := borrow α8 u32 in
+      let* α10 := ink_storage_traits.layout.StorageLayout.layout α9 in
+      let* α11 :=
+        (ink_metadata.layout.FieldLayout _)::["new"]
+          (mk_str "allowances")
+          α10 in
+      let* α12 :=
+        (ink_metadata.layout.StructLayout _)::["new"]
+          (mk_str "Erc20")
+          [ α3; α7; α11 ] in
+      Pure (ink_metadata.layout.Layout.Struct α12).
+    
+    Global Instance AssociatedFunction_layout :
+      Notation.DoubleColon Self "layout" := {
+      Notation.double_colon := layout;
+    }.
+    
+    Global Instance I : ink_storage_traits.layout.StorageLayout.Trait Self := {
+      ink_storage_traits.layout.StorageLayout.layout := layout;
+    }.
+  End Impl_ink_storage_traits_layout_StorageLayout_for_erc20_erc20_Erc20.
+  Global Hint Resolve I : core.
+End Impl_ink_storage_traits_layout_StorageLayout_for_erc20_erc20_Erc20.
+
+Module Impl_core_default_Default_for_erc20_erc20_Erc20.
+  Section Impl_core_default_Default_for_erc20_erc20_Erc20.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := erc20.erc20.Erc20.
+    
+    Definition default : M erc20.erc20.Erc20 :=
       let* α0 := core.default.Default.default in
       let* α1 := core.default.Default.default in
       let* α2 := core.default.Default.default in
@@ -170,116 +2492,1187 @@ Module erc20.
           erc20.erc20.Erc20.allowances := α2;
         |}.
     
-    Global Instance AssociatedFunction_default `{State.Trait} :
+    Global Instance AssociatedFunction_default :
       Notation.DoubleColon Self "default" := {
       Notation.double_colon := default;
     }.
     
-    Global Instance I `{State.Trait} : core.default.Default.Trait Self := {
+    Global Instance I : core.default.Default.Trait Self := {
       core.default.Default.default := default;
     }.
-    Global Hint Resolve I : core.
   End Impl_core_default_Default_for_erc20_erc20_Erc20.
-  
-  Module Transfer.
+  Global Hint Resolve I : core.
+End Impl_core_default_Default_for_erc20_erc20_Erc20.
+
+Module Impl_ink_reflect_contract_ContractName_for_erc20_erc20_Erc20.
+  Section Impl_ink_reflect_contract_ContractName_for_erc20_erc20_Erc20.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := erc20.erc20.Erc20.
+    
+    Definition NAME  := Pure (mk_str "Erc20").
+    
+    Global Instance AssociatedFunction_NAME :
+      Notation.DoubleColon Self "NAME" := {
+      Notation.double_colon := NAME;
+    }.
+    
+    Global Instance I : ink.reflect.contract.ContractName.Trait Self := {
+      ink.reflect.contract.ContractName.NAME := NAME;
+    }.
+  End Impl_ink_reflect_contract_ContractName_for_erc20_erc20_Erc20.
+  Global Hint Resolve I : core.
+End Impl_ink_reflect_contract_ContractName_for_erc20_erc20_Erc20.
+
+Module Impl_ink_codegen_env_Env_for_StaticRef_erc20_erc20_Erc20.
+  Section Impl_ink_codegen_env_Env_for_StaticRef_erc20_erc20_Erc20.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := ref erc20.erc20.Erc20.
+    
+    Definition EnvAccess : Set :=
+      ink.env_access.EnvAccess
+        (ink_env.types.DefaultEnvironment).
+    
+    Definition env (self : Self) : M EnvAccess := core.default.Default.default.
+    
+    Global Instance AssociatedFunction_env :
+      Notation.DoubleColon Self "env" := {
+      Notation.double_colon := env;
+    }.
+    
+    Global Instance I : ink.codegen.env.Env.Trait Self := {
+      ink.codegen.env.Env.EnvAccess := EnvAccess;
+      ink.codegen.env.Env.env := env;
+    }.
+  End Impl_ink_codegen_env_Env_for_StaticRef_erc20_erc20_Erc20.
+  Global Hint Resolve I : core.
+End Impl_ink_codegen_env_Env_for_StaticRef_erc20_erc20_Erc20.
+
+Module Impl_ink_codegen_env_StaticEnv_for_erc20_erc20_Erc20.
+  Section Impl_ink_codegen_env_StaticEnv_for_erc20_erc20_Erc20.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := erc20.erc20.Erc20.
+    
+    Definition EnvAccess : Set :=
+      ink.env_access.EnvAccess
+        (ink_env.types.DefaultEnvironment).
+    
+    Definition env : M EnvAccess := core.default.Default.default.
+    
+    Global Instance AssociatedFunction_env :
+      Notation.DoubleColon Self "env" := {
+      Notation.double_colon := env;
+    }.
+    
+    Global Instance I : ink.codegen.env.StaticEnv.Trait Self := {
+      ink.codegen.env.StaticEnv.EnvAccess := EnvAccess;
+      ink.codegen.env.StaticEnv.env := env;
+    }.
+  End Impl_ink_codegen_env_StaticEnv_for_erc20_erc20_Erc20.
+  Global Hint Resolve I : core.
+End Impl_ink_codegen_env_StaticEnv_for_erc20_erc20_Erc20.
+
+Module
+  Impl_ink_codegen_event_emit_EmitEvent_for_ink_env_access_EnvAccess_erc20_erc20_Environment.
+  Section
+    Impl_ink_codegen_event_emit_EmitEvent_for_ink_env_access_EnvAccess_erc20_erc20_Environment.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := ink.env_access.EnvAccess erc20.erc20.Environment.
+    
+    Definition emit_event
+        {E : Set}
+        {ℋ_0 :
+          core.convert.Into.Trait E
+            (T := ink.reflect.event.ContractEventBase.Type_
+              (Self := erc20.erc20.Erc20))}
+        (self : Self)
+        (event : E)
+        : M unit :=
+      let* _ :=
+        let* α0 := core.convert.Into.into event in
+        ink_env.api.emit_event α0 in
+      M.alloc tt.
+    
+    Global Instance AssociatedFunction_emit_event
+        {E : Set}
+        {ℋ_0 :
+          core.convert.Into.Trait E
+            (T := ink.reflect.event.ContractEventBase.Type_
+              (Self := erc20.erc20.Erc20))} :
+      Notation.DoubleColon Self "emit_event" := {
+      Notation.double_colon := emit_event (E := E);
+    }.
+    
+    Global Instance I
+      : ink.codegen.event.emit.EmitEvent.Trait Self (C := erc20.erc20.Erc20)
+        := {
+      ink.codegen.event.emit.EmitEvent.emit_event
+        {E : Set}
+        {ℋ_0 :
+          core.convert.Into.Trait E
+            (T := ink.reflect.event.ContractEventBase.Type_
+              (Self := erc20.erc20.Erc20))}
+        :=
+        emit_event (E := E);
+    }.
+  End
+    Impl_ink_codegen_event_emit_EmitEvent_for_ink_env_access_EnvAccess_erc20_erc20_Environment.
+  Global Hint Resolve I : core.
+End
+  Impl_ink_codegen_event_emit_EmitEvent_for_ink_env_access_EnvAccess_erc20_erc20_Environment.
+
+Module __ink_EventBase.
+  Inductive t `{State.Trait} : Set :=
+  | Transfer (_ : erc20.erc20.Transfer)
+  | Approval (_ : erc20.erc20.Approval).
+End __ink_EventBase.
+Definition __ink_EventBase `{State.Trait} : Set := __ink_EventBase.t.
+
+Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20___ink_EventBase.
+  Section Impl_parity_scale_codec_codec_Encode_for_erc20_erc20___ink_EventBase.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := erc20.erc20.__ink_EventBase.
+    
+    Definition encode_to
+        {__CodecOutputEdqy : Set}
+        {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+        {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy}
+        (self : ref Self)
+        (__codec_dest_edqy : mut_ref __CodecOutputEdqy)
+        : M unit :=
+      let* α0 := deref self erc20.erc20.__ink_EventBase in
+      match α0 with
+      | erc20.erc20.__ink_EventBase aa =>
+        let* _ :=
+          let* α0 := deref __codec_dest_edqy _ in
+          let* α1 := borrow_mut α0 _ in
+          let* α2 := M.alloc 0 in
+          let* α3 := cast α2 in
+          parity_scale_codec.codec.Output.push_byte α1 α3 in
+        let* _ :=
+          let* α0 := deref aa erc20.erc20.Transfer in
+          let* α1 := borrow α0 erc20.erc20.Transfer in
+          let* α2 := deref __codec_dest_edqy _ in
+          let* α3 := borrow_mut α2 _ in
+          parity_scale_codec.codec.Encode.encode_to α1 α3 in
+        M.alloc tt
+      | erc20.erc20.__ink_EventBase aa =>
+        let* _ :=
+          let* α0 := deref __codec_dest_edqy _ in
+          let* α1 := borrow_mut α0 _ in
+          let* α2 := M.alloc 1 in
+          let* α3 := cast α2 in
+          parity_scale_codec.codec.Output.push_byte α1 α3 in
+        let* _ :=
+          let* α0 := deref aa erc20.erc20.Approval in
+          let* α1 := borrow α0 erc20.erc20.Approval in
+          let* α2 := deref __codec_dest_edqy _ in
+          let* α3 := borrow_mut α2 _ in
+          parity_scale_codec.codec.Encode.encode_to α1 α3 in
+        M.alloc tt
+      | _ => M.alloc tt
+      end.
+    
+    Global Instance AssociatedFunction_encode_to
+        {__CodecOutputEdqy : Set}
+        {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+        {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy} :
+      Notation.DoubleColon Self "encode_to" := {
+      Notation.double_colon
+        :=
+        encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
+    }.
+    
+    Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
+    }.
+  End Impl_parity_scale_codec_codec_Encode_for_erc20_erc20___ink_EventBase.
+  Global Hint Resolve I : core.
+End Impl_parity_scale_codec_codec_Encode_for_erc20_erc20___ink_EventBase.
+
+Module
+  Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20___ink_EventBase.
+  Section
+    Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20___ink_EventBase.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := erc20.erc20.__ink_EventBase.
+    
+    Global Instance I
+      : parity_scale_codec.encode_like.EncodeLike.Trait Self
+          (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self)
+        := {
+    }.
+  End
+    Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20___ink_EventBase.
+  Global Hint Resolve I : core.
+End
+  Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20___ink_EventBase.
+
+Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___ink_EventBase.
+  Section Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___ink_EventBase.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := erc20.erc20.__ink_EventBase.
+    
+    Definition decode
+        {__CodecInputEdqy : Set}
+        {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
+        (__codec_input_edqy : mut_ref __CodecInputEdqy)
+        : M (core.result.Result Self parity_scale_codec.error.Error) :=
+      let* α0 := deref __codec_input_edqy _ in
+      let* α1 := borrow_mut α0 _ in
+      let* α2 := parity_scale_codec.codec.Input.read_byte α1 in
+      let* α3 :=
+        (core.result.Result _ _)::["map_err"]
+          α2
+          parity_scale_codec.error.Error::["chain"]
+            e
+            (mk_str
+              "Could not decode `__ink_EventBase`, failed to read variant byte") in
+      let* α4 := core.ops.try_trait.Try.branch α3 in
+      let* α5 :=
+        match α4 with
+        | core.ops.control_flow.ControlFlow residual =>
+          let* α0 := core.ops.try_trait.FromResidual.from_residual residual in
+          let* α1 := Return α0 in
+          never_to_any α1
+        | core.ops.control_flow.ControlFlow val => Pure val
+        end in
+      match α5 with
+      | __codec_x_edqy =>
+        let* _ :=
+          let* α0 :=
+            borrow_mut
+              let* __codec_res_edqy :=
+                let* α0 := deref __codec_input_edqy _ in
+                let* α1 := borrow_mut α0 _ in
+                parity_scale_codec.codec.Decode.decode α1 in
+              let* α0 :=
+                match __codec_res_edqy with
+                | core.result.Result e =>
+                  let* α0 :=
+                    parity_scale_codec.error.Error::["chain"]
+                      e
+                      (mk_str
+                        "Could not decode `__ink_EventBase::Transfer.0`") in
+                  let* α1 := Return (core.result.Result.Err α0) in
+                  never_to_any α1
+                | core.result.Result __codec_res_edqy => Pure __codec_res_edqy
+                end in
+              Pure
+                (core.result.Result.Ok
+                  (erc20.erc20.__ink_EventBase.Transfer α0))
+              type not implemented in
+          let* α1 := M.alloc tt in
+          let* α2 := core.ops.function.FnMut.call_mut α0 α1 in
+          Return α2 in
+        let* α0 := M.alloc tt in
+        never_to_any α0
+      | __codec_x_edqy =>
+        let* _ :=
+          let* α0 :=
+            borrow_mut
+              let* __codec_res_edqy :=
+                let* α0 := deref __codec_input_edqy _ in
+                let* α1 := borrow_mut α0 _ in
+                parity_scale_codec.codec.Decode.decode α1 in
+              let* α0 :=
+                match __codec_res_edqy with
+                | core.result.Result e =>
+                  let* α0 :=
+                    parity_scale_codec.error.Error::["chain"]
+                      e
+                      (mk_str
+                        "Could not decode `__ink_EventBase::Approval.0`") in
+                  let* α1 := Return (core.result.Result.Err α0) in
+                  never_to_any α1
+                | core.result.Result __codec_res_edqy => Pure __codec_res_edqy
+                end in
+              Pure
+                (core.result.Result.Ok
+                  (erc20.erc20.__ink_EventBase.Approval α0))
+              type not implemented in
+          let* α1 := M.alloc tt in
+          let* α2 := core.ops.function.FnMut.call_mut α0 α1 in
+          Return α2 in
+        let* α0 := M.alloc tt in
+        never_to_any α0
+      | _ =>
+        let* _ :=
+          let* α0 :=
+            borrow
+              let* α0 :=
+                core.convert.Into.into
+                  (mk_str
+                    "Could not decode `__ink_EventBase`, variant doesn't exist") in
+              Pure (core.result.Result.Err α0)
+              type not implemented in
+          let* α1 := M.alloc tt in
+          let* α2 := core.ops.function.Fn.call α0 α1 in
+          Return α2 in
+        let* α0 := M.alloc tt in
+        never_to_any α0
+      end.
+    
+    Global Instance AssociatedFunction_decode
+        {__CodecInputEdqy : Set}
+        {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :
+      Notation.DoubleColon Self "decode" := {
+      Notation.double_colon := decode (__CodecInputEdqy := __CodecInputEdqy);
+    }.
+    
+    Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
+      parity_scale_codec.codec.Decode.decode
+        {__CodecInputEdqy : Set}
+        {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
+        :=
+        decode (__CodecInputEdqy := __CodecInputEdqy);
+    }.
+  End Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___ink_EventBase.
+  Global Hint Resolve I : core.
+End Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___ink_EventBase.
+
+Module Impl_ink_reflect_event_ContractEventBase_for_erc20_erc20_Erc20.
+  Section Impl_ink_reflect_event_ContractEventBase_for_erc20_erc20_Erc20.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := erc20.erc20.Erc20.
+    
+    Definition Type : Set := erc20.erc20.__ink_EventBase.
+    
+    Global Instance I : ink.reflect.event.ContractEventBase.Trait Self := {
+      ink.reflect.event.ContractEventBase.Type := Type;
+    }.
+  End Impl_ink_reflect_event_ContractEventBase_for_erc20_erc20_Erc20.
+  Global Hint Resolve I : core.
+End Impl_ink_reflect_event_ContractEventBase_for_erc20_erc20_Erc20.
+
+Module Impl_core_convert_From_for_erc20_erc20___ink_EventBase.
+  Section Impl_core_convert_From_for_erc20_erc20___ink_EventBase.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := erc20.erc20.__ink_EventBase.
+    
+    Definition from (event : erc20.erc20.Transfer) : M Self :=
+      "unimplemented parent_kind" event.
+    
+    Global Instance AssociatedFunction_from :
+      Notation.DoubleColon Self "from" := {
+      Notation.double_colon := from;
+    }.
+    
+    Global Instance I
+      : core.convert.From.Trait Self (T := erc20.erc20.Transfer) := {
+      core.convert.From.from := from;
+    }.
+  End Impl_core_convert_From_for_erc20_erc20___ink_EventBase.
+  Global Hint Resolve I : core.
+End Impl_core_convert_From_for_erc20_erc20___ink_EventBase.
+
+Module Impl_core_convert_From_for_erc20_erc20___ink_EventBase.
+  Section Impl_core_convert_From_for_erc20_erc20___ink_EventBase.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := erc20.erc20.__ink_EventBase.
+    
+    Definition from (event : erc20.erc20.Approval) : M Self :=
+      "unimplemented parent_kind" event.
+    
+    Global Instance AssociatedFunction_from :
+      Notation.DoubleColon Self "from" := {
+      Notation.double_colon := from;
+    }.
+    
+    Global Instance I
+      : core.convert.From.Trait Self (T := erc20.erc20.Approval) := {
+      core.convert.From.from := from;
+    }.
+  End Impl_core_convert_From_for_erc20_erc20___ink_EventBase.
+  Global Hint Resolve I : core.
+End Impl_core_convert_From_for_erc20_erc20___ink_EventBase.
+
+Module __ink_UndefinedAmountOfTopics.
+  Inductive t `{State.Trait} : Set :=
+  .
+End __ink_UndefinedAmountOfTopics.
+Definition __ink_UndefinedAmountOfTopics `{State.Trait} : Set :=
+  __ink_UndefinedAmountOfTopics.t.
+
+Module
+  Impl_ink_env_topics_EventTopicsAmount_for_erc20_erc20_____ink_UndefinedAmountOfTopics.
+  Section
+    Impl_ink_env_topics_EventTopicsAmount_for_erc20_erc20_____ink_UndefinedAmountOfTopics.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := erc20.erc20._.__ink_UndefinedAmountOfTopics.
+    
+    Definition AMOUNT  := M.alloc 0.
+    
+    Global Instance AssociatedFunction_AMOUNT :
+      Notation.DoubleColon Self "AMOUNT" := {
+      Notation.double_colon := AMOUNT;
+    }.
+    
+    Global Instance I : ink_env.topics.EventTopicsAmount.Trait Self := {
+      ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
+    }.
+  End
+    Impl_ink_env_topics_EventTopicsAmount_for_erc20_erc20_____ink_UndefinedAmountOfTopics.
+  Global Hint Resolve I : core.
+End
+  Impl_ink_env_topics_EventTopicsAmount_for_erc20_erc20_____ink_UndefinedAmountOfTopics.
+
+Module Impl_ink_env_topics_Topics_for_erc20_erc20___ink_EventBase.
+  Section Impl_ink_env_topics_Topics_for_erc20_erc20___ink_EventBase.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := erc20.erc20.__ink_EventBase.
+    
+    Definition RemainingTopics : Set :=
+      erc20.erc20._.__ink_UndefinedAmountOfTopics.
+    
+    Definition topics
+        {E B : Set}
+        {ℋ_0 : ink_env.types.Environment.Trait E}
+        {ℋ_1 : ink_env.topics.TopicsBuilderBackend.Trait B (E := E)}
+        (self : ref Self)
+        (builder : ink_env.topics.TopicsBuilder ink_env.topics.state.Uninit E B)
+        : M (ink_env.topics.TopicsBuilderBackend.Output (Self := B)) :=
+      match self with
+      | erc20.erc20.__ink_EventBase event =>
+        let* α0 := deref event erc20.erc20.Transfer in
+        let* α1 := borrow α0 erc20.erc20.Transfer in
+        ink_env.topics.Topics.topics α1 builder
+      | erc20.erc20.__ink_EventBase event =>
+        let* α0 := deref event erc20.erc20.Approval in
+        let* α1 := borrow α0 erc20.erc20.Approval in
+        ink_env.topics.Topics.topics α1 builder
+      | _ =>
+        let* α0 := borrow [ mk_str "Event does not exist!" ] (list (ref str)) in
+        let* α1 := deref α0 (list (ref str)) in
+        let* α2 := borrow α1 (list (ref str)) in
+        let* α3 := pointer_coercion "Unsize" α2 in
+        let* α4 := core.fmt.Arguments::["new_const"] α3 in
+        let* α5 := core.panicking.panic_fmt α4 in
+        never_to_any α5
+      end.
+    
+    Global Instance AssociatedFunction_topics
+        {E B : Set}
+        {ℋ_0 : ink_env.types.Environment.Trait E}
+        {ℋ_1 : ink_env.topics.TopicsBuilderBackend.Trait B (E := E)} :
+      Notation.DoubleColon Self "topics" := {
+      Notation.double_colon := topics (E := E) (B := B);
+    }.
+    
+    Global Instance I : ink_env.topics.Topics.Trait Self := {
+      ink_env.topics.Topics.RemainingTopics := RemainingTopics;
+      ink_env.topics.Topics.topics
+        {E B : Set}
+        {ℋ_0 : ink_env.types.Environment.Trait E}
+        {ℋ_1 : ink_env.topics.TopicsBuilderBackend.Trait B (E := E)}
+        :=
+        topics (E := E) (B := B);
+    }.
+  End Impl_ink_env_topics_Topics_for_erc20_erc20___ink_EventBase.
+  Global Hint Resolve I : core.
+End Impl_ink_env_topics_Topics_for_erc20_erc20___ink_EventBase.
+
+Module Impl_ink_codegen_event_topics_EventLenTopics_for_erc20_erc20_Transfer.
+  Section Impl_ink_codegen_event_topics_EventLenTopics_for_erc20_erc20_Transfer.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := erc20.erc20.Transfer.
+    
+    Definition LenTopics : Set := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I : ink.codegen.event.topics.EventLenTopics.Trait Self := {
+      ink.codegen.event.topics.EventLenTopics.LenTopics := LenTopics;
+    }.
+  End Impl_ink_codegen_event_topics_EventLenTopics_for_erc20_erc20_Transfer.
+  Global Hint Resolve I : core.
+End Impl_ink_codegen_event_topics_EventLenTopics_for_erc20_erc20_Transfer.
+
+Module Impl_ink_codegen_event_topics_EventLenTopics_for_erc20_erc20_Approval.
+  Section Impl_ink_codegen_event_topics_EventLenTopics_for_erc20_erc20_Approval.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := erc20.erc20.Approval.
+    
+    Definition LenTopics : Set := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I : ink.codegen.event.topics.EventLenTopics.Trait Self := {
+      ink.codegen.event.topics.EventLenTopics.LenTopics := LenTopics;
+    }.
+  End Impl_ink_codegen_event_topics_EventLenTopics_for_erc20_erc20_Approval.
+  Global Hint Resolve I : core.
+End Impl_ink_codegen_event_topics_EventLenTopics_for_erc20_erc20_Approval.
+
+Module Transfer.
+  Section Transfer.
+    Context `{State.Trait}.
+    
     Unset Primitive Projections.
-    Record t `{State.Trait} : Set := {
+    Record t : Set := {
       from : core.option.Option erc20.erc20.AccountId;
       to : core.option.Option erc20.erc20.AccountId;
       value : erc20.erc20.Balance;
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_from `{State.Trait} : Notation.Dot "from" := {
+    Global Instance Get_from : Notation.Dot "from" := {
       Notation.dot x := let* x := M.read x in Pure x.(from) : M _;
     }.
-    Global Instance Get_AF_from `{State.Trait}
-      : Notation.DoubleColon t "from" := {
+    Global Instance Get_AF_from : Notation.DoubleColon t "from" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(from) : M _;
     }.
-    Global Instance Get_to `{State.Trait} : Notation.Dot "to" := {
+    Global Instance Get_to : Notation.Dot "to" := {
       Notation.dot x := let* x := M.read x in Pure x.(to) : M _;
     }.
-    Global Instance Get_AF_to `{State.Trait} : Notation.DoubleColon t "to" := {
+    Global Instance Get_AF_to : Notation.DoubleColon t "to" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(to) : M _;
     }.
-    Global Instance Get_value `{State.Trait} : Notation.Dot "value" := {
+    Global Instance Get_value : Notation.Dot "value" := {
       Notation.dot x := let* x := M.read x in Pure x.(value) : M _;
     }.
-    Global Instance Get_AF_value `{State.Trait}
-      : Notation.DoubleColon t "value" := {
+    Global Instance Get_AF_value : Notation.DoubleColon t "value" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(value) : M _;
     }.
   End Transfer.
-  Definition Transfer `{State.Trait} : Set := M.val (Transfer.t).
-  
-  Module Approval.
+End Transfer.
+Definition Transfer `{State.Trait} : Set := M.val Transfer.t.
+
+Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Transfer.
+  Section Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Transfer.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := erc20.erc20.Transfer.
+    
+    Definition encode_to
+        {__CodecOutputEdqy : Set}
+        {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+        {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy}
+        (self : ref Self)
+        (__codec_dest_edqy : mut_ref __CodecOutputEdqy)
+        : M unit :=
+      let* _ :=
+        let* α0 := deref self erc20.erc20.Transfer in
+        let* α1 := α0.["from"] in
+        let* α2 :=
+          borrow α1 (core.option.Option ink_primitives.types.AccountId) in
+        let* α3 :=
+          deref α2 (core.option.Option ink_primitives.types.AccountId) in
+        let* α4 :=
+          borrow α3 (core.option.Option ink_primitives.types.AccountId) in
+        let* α5 := deref __codec_dest_edqy _ in
+        let* α6 := borrow_mut α5 _ in
+        parity_scale_codec.codec.Encode.encode_to α4 α6 in
+      let* _ :=
+        let* α0 := deref self erc20.erc20.Transfer in
+        let* α1 := α0.["to"] in
+        let* α2 :=
+          borrow α1 (core.option.Option ink_primitives.types.AccountId) in
+        let* α3 :=
+          deref α2 (core.option.Option ink_primitives.types.AccountId) in
+        let* α4 :=
+          borrow α3 (core.option.Option ink_primitives.types.AccountId) in
+        let* α5 := deref __codec_dest_edqy _ in
+        let* α6 := borrow_mut α5 _ in
+        parity_scale_codec.codec.Encode.encode_to α4 α6 in
+      let* _ :=
+        let* α0 := deref self erc20.erc20.Transfer in
+        let* α1 := α0.["value"] in
+        let* α2 := borrow α1 u128 in
+        let* α3 := deref α2 u128 in
+        let* α4 := borrow α3 u128 in
+        let* α5 := deref __codec_dest_edqy _ in
+        let* α6 := borrow_mut α5 _ in
+        parity_scale_codec.codec.Encode.encode_to α4 α6 in
+      M.alloc tt.
+    
+    Global Instance AssociatedFunction_encode_to
+        {__CodecOutputEdqy : Set}
+        {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+        {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy} :
+      Notation.DoubleColon Self "encode_to" := {
+      Notation.double_colon
+        :=
+        encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
+    }.
+    
+    Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
+    }.
+  End Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Transfer.
+  Global Hint Resolve I : core.
+End Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Transfer.
+
+Module Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20_Transfer.
+  Section
+    Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20_Transfer.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := erc20.erc20.Transfer.
+    
+    Global Instance I
+      : parity_scale_codec.encode_like.EncodeLike.Trait Self
+          (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self)
+        := {
+    }.
+  End Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20_Transfer.
+  Global Hint Resolve I : core.
+End Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20_Transfer.
+
+Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Transfer.
+  Section Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Transfer.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := erc20.erc20.Transfer.
+    
+    Definition decode
+        {__CodecInputEdqy : Set}
+        {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
+        (__codec_input_edqy : mut_ref __CodecInputEdqy)
+        : M (core.result.Result Self parity_scale_codec.error.Error) :=
+      let* __codec_res_edqy :=
+        let* α0 := deref __codec_input_edqy _ in
+        let* α1 := borrow_mut α0 _ in
+        parity_scale_codec.codec.Decode.decode α1 in
+      let* α0 :=
+        match __codec_res_edqy with
+        | core.result.Result e =>
+          let* α0 :=
+            parity_scale_codec.error.Error::["chain"]
+              e
+              (mk_str "Could not decode `Transfer::from`") in
+          let* α1 := Return (core.result.Result.Err α0) in
+          never_to_any α1
+        | core.result.Result __codec_res_edqy => Pure __codec_res_edqy
+        end in
+      let* __codec_res_edqy :=
+        let* α0 := deref __codec_input_edqy _ in
+        let* α1 := borrow_mut α0 _ in
+        parity_scale_codec.codec.Decode.decode α1 in
+      let* α1 :=
+        match __codec_res_edqy with
+        | core.result.Result e =>
+          let* α0 :=
+            parity_scale_codec.error.Error::["chain"]
+              e
+              (mk_str "Could not decode `Transfer::to`") in
+          let* α1 := Return (core.result.Result.Err α0) in
+          never_to_any α1
+        | core.result.Result __codec_res_edqy => Pure __codec_res_edqy
+        end in
+      let* __codec_res_edqy :=
+        let* α0 := deref __codec_input_edqy _ in
+        let* α1 := borrow_mut α0 _ in
+        parity_scale_codec.codec.Decode.decode α1 in
+      let* α2 :=
+        match __codec_res_edqy with
+        | core.result.Result e =>
+          let* α0 :=
+            parity_scale_codec.error.Error::["chain"]
+              e
+              (mk_str "Could not decode `Transfer::value`") in
+          let* α1 := Return (core.result.Result.Err α0) in
+          never_to_any α1
+        | core.result.Result __codec_res_edqy => Pure __codec_res_edqy
+        end in
+      let* α3 :=
+        M.alloc
+          {|
+            erc20.erc20.Transfer.from := α0;
+            erc20.erc20.Transfer.to := α1;
+            erc20.erc20.Transfer.value := α2;
+          |} in
+      Pure (core.result.Result.Ok α3).
+    
+    Global Instance AssociatedFunction_decode
+        {__CodecInputEdqy : Set}
+        {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :
+      Notation.DoubleColon Self "decode" := {
+      Notation.double_colon := decode (__CodecInputEdqy := __CodecInputEdqy);
+    }.
+    
+    Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
+      parity_scale_codec.codec.Decode.decode
+        {__CodecInputEdqy : Set}
+        {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
+        :=
+        decode (__CodecInputEdqy := __CodecInputEdqy);
+    }.
+  End Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Transfer.
+  Global Hint Resolve I : core.
+End Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Transfer.
+
+Module Approval.
+  Section Approval.
+    Context `{State.Trait}.
+    
     Unset Primitive Projections.
-    Record t `{State.Trait} : Set := {
+    Record t : Set := {
       owner : erc20.erc20.AccountId;
       spender : erc20.erc20.AccountId;
       value : erc20.erc20.Balance;
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_owner `{State.Trait} : Notation.Dot "owner" := {
+    Global Instance Get_owner : Notation.Dot "owner" := {
       Notation.dot x := let* x := M.read x in Pure x.(owner) : M _;
     }.
-    Global Instance Get_AF_owner `{State.Trait}
-      : Notation.DoubleColon t "owner" := {
+    Global Instance Get_AF_owner : Notation.DoubleColon t "owner" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(owner) : M _;
     }.
-    Global Instance Get_spender `{State.Trait} : Notation.Dot "spender" := {
+    Global Instance Get_spender : Notation.Dot "spender" := {
       Notation.dot x := let* x := M.read x in Pure x.(spender) : M _;
     }.
-    Global Instance Get_AF_spender `{State.Trait}
-      : Notation.DoubleColon t "spender" := {
+    Global Instance Get_AF_spender : Notation.DoubleColon t "spender" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(spender) : M _;
     }.
-    Global Instance Get_value `{State.Trait} : Notation.Dot "value" := {
+    Global Instance Get_value : Notation.Dot "value" := {
       Notation.dot x := let* x := M.read x in Pure x.(value) : M _;
     }.
-    Global Instance Get_AF_value `{State.Trait}
-      : Notation.DoubleColon t "value" := {
+    Global Instance Get_AF_value : Notation.DoubleColon t "value" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(value) : M _;
     }.
   End Approval.
-  Definition Approval `{State.Trait} : Set := M.val (Approval.t).
-  
-  Module __ink_EventBase.
-    Inductive t `{State.Trait} : Set :=
-    | Transfer (_ : erc20.erc20.Transfer)
-    | Approval (_ : erc20.erc20.Approval).
-  End __ink_EventBase.
-  Definition __ink_EventBase `{State.Trait} : Set := __ink_EventBase.t.
-  
-  Module Impl_ink_codegen_event_topics_EventLenTopics_for_erc20_erc20_Transfer.
-    Definition Self `{State.Trait} := erc20.erc20.Transfer.
+End Approval.
+Definition Approval `{State.Trait} : Set := M.val Approval.t.
+
+Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Approval.
+  Section Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Approval.
+    Context `{State.Trait}.
     
-    Definition LenTopics : Set := ink.codegen.event.topics.EventTopics.
+    Definition Self : Set := erc20.erc20.Approval.
     
-    Global Instance I `{State.Trait}
-      : ink.codegen.event.topics.EventLenTopics.Trait Self := {
-      ink.codegen.event.topics.EventLenTopics.LenTopics := LenTopics;
+    Definition encode_to
+        {__CodecOutputEdqy : Set}
+        {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+        {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy}
+        (self : ref Self)
+        (__codec_dest_edqy : mut_ref __CodecOutputEdqy)
+        : M unit :=
+      let* _ :=
+        let* α0 := deref self erc20.erc20.Approval in
+        let* α1 := α0.["owner"] in
+        let* α2 := borrow α1 ink_primitives.types.AccountId in
+        let* α3 := deref α2 ink_primitives.types.AccountId in
+        let* α4 := borrow α3 ink_primitives.types.AccountId in
+        let* α5 := deref __codec_dest_edqy _ in
+        let* α6 := borrow_mut α5 _ in
+        parity_scale_codec.codec.Encode.encode_to α4 α6 in
+      let* _ :=
+        let* α0 := deref self erc20.erc20.Approval in
+        let* α1 := α0.["spender"] in
+        let* α2 := borrow α1 ink_primitives.types.AccountId in
+        let* α3 := deref α2 ink_primitives.types.AccountId in
+        let* α4 := borrow α3 ink_primitives.types.AccountId in
+        let* α5 := deref __codec_dest_edqy _ in
+        let* α6 := borrow_mut α5 _ in
+        parity_scale_codec.codec.Encode.encode_to α4 α6 in
+      let* _ :=
+        let* α0 := deref self erc20.erc20.Approval in
+        let* α1 := α0.["value"] in
+        let* α2 := borrow α1 u128 in
+        let* α3 := deref α2 u128 in
+        let* α4 := borrow α3 u128 in
+        let* α5 := deref __codec_dest_edqy _ in
+        let* α6 := borrow_mut α5 _ in
+        parity_scale_codec.codec.Encode.encode_to α4 α6 in
+      M.alloc tt.
+    
+    Global Instance AssociatedFunction_encode_to
+        {__CodecOutputEdqy : Set}
+        {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+        {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy} :
+      Notation.DoubleColon Self "encode_to" := {
+      Notation.double_colon
+        :=
+        encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
     }.
-    Global Hint Resolve I : core.
-  End Impl_ink_codegen_event_topics_EventLenTopics_for_erc20_erc20_Transfer.
-  
-  Module Impl_ink_codegen_event_topics_EventLenTopics_for_erc20_erc20_Approval.
-    Definition Self `{State.Trait} := erc20.erc20.Approval.
     
-    Definition LenTopics : Set := ink.codegen.event.topics.EventTopics.
-    
-    Global Instance I `{State.Trait}
-      : ink.codegen.event.topics.EventLenTopics.Trait Self := {
-      ink.codegen.event.topics.EventLenTopics.LenTopics := LenTopics;
+    Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
     }.
-    Global Hint Resolve I : core.
-  End Impl_ink_codegen_event_topics_EventLenTopics_for_erc20_erc20_Approval.
-  
-  Module
+  End Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Approval.
+  Global Hint Resolve I : core.
+End Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Approval.
+
+Module Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20_Approval.
+  Section
+    Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20_Approval.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := erc20.erc20.Approval.
+    
+    Global Instance I
+      : parity_scale_codec.encode_like.EncodeLike.Trait Self
+          (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self)
+        := {
+    }.
+  End Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20_Approval.
+  Global Hint Resolve I : core.
+End Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20_Approval.
+
+Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Approval.
+  Section Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Approval.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := erc20.erc20.Approval.
+    
+    Definition decode
+        {__CodecInputEdqy : Set}
+        {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
+        (__codec_input_edqy : mut_ref __CodecInputEdqy)
+        : M (core.result.Result Self parity_scale_codec.error.Error) :=
+      let* __codec_res_edqy :=
+        let* α0 := deref __codec_input_edqy _ in
+        let* α1 := borrow_mut α0 _ in
+        parity_scale_codec.codec.Decode.decode α1 in
+      let* α0 :=
+        match __codec_res_edqy with
+        | core.result.Result e =>
+          let* α0 :=
+            parity_scale_codec.error.Error::["chain"]
+              e
+              (mk_str "Could not decode `Approval::owner`") in
+          let* α1 := Return (core.result.Result.Err α0) in
+          never_to_any α1
+        | core.result.Result __codec_res_edqy => Pure __codec_res_edqy
+        end in
+      let* __codec_res_edqy :=
+        let* α0 := deref __codec_input_edqy _ in
+        let* α1 := borrow_mut α0 _ in
+        parity_scale_codec.codec.Decode.decode α1 in
+      let* α1 :=
+        match __codec_res_edqy with
+        | core.result.Result e =>
+          let* α0 :=
+            parity_scale_codec.error.Error::["chain"]
+              e
+              (mk_str "Could not decode `Approval::spender`") in
+          let* α1 := Return (core.result.Result.Err α0) in
+          never_to_any α1
+        | core.result.Result __codec_res_edqy => Pure __codec_res_edqy
+        end in
+      let* __codec_res_edqy :=
+        let* α0 := deref __codec_input_edqy _ in
+        let* α1 := borrow_mut α0 _ in
+        parity_scale_codec.codec.Decode.decode α1 in
+      let* α2 :=
+        match __codec_res_edqy with
+        | core.result.Result e =>
+          let* α0 :=
+            parity_scale_codec.error.Error::["chain"]
+              e
+              (mk_str "Could not decode `Approval::value`") in
+          let* α1 := Return (core.result.Result.Err α0) in
+          never_to_any α1
+        | core.result.Result __codec_res_edqy => Pure __codec_res_edqy
+        end in
+      let* α3 :=
+        M.alloc
+          {|
+            erc20.erc20.Approval.owner := α0;
+            erc20.erc20.Approval.spender := α1;
+            erc20.erc20.Approval.value := α2;
+          |} in
+      Pure (core.result.Result.Ok α3).
+    
+    Global Instance AssociatedFunction_decode
+        {__CodecInputEdqy : Set}
+        {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :
+      Notation.DoubleColon Self "decode" := {
+      Notation.double_colon := decode (__CodecInputEdqy := __CodecInputEdqy);
+    }.
+    
+    Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
+      parity_scale_codec.codec.Decode.decode
+        {__CodecInputEdqy : Set}
+        {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
+        :=
+        decode (__CodecInputEdqy := __CodecInputEdqy);
+    }.
+  End Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Approval.
+  Global Hint Resolve I : core.
+End Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Approval.
+
+Module Impl_ink_env_topics_Topics_for_erc20_erc20_Transfer.
+  Section Impl_ink_env_topics_Topics_for_erc20_erc20_Transfer.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := erc20.erc20.Transfer.
+    
+    Definition RemainingTopics : Set :=
+      list ink_env.topics.state.HasRemainingTopics.
+    
+    Definition topics
+        {E B : Set}
+        {ℋ_0 : ink_env.types.Environment.Trait E}
+        {ℋ_1 : ink_env.topics.TopicsBuilderBackend.Trait B (E := E)}
+        (self : ref Self)
+        (builder : ink_env.topics.TopicsBuilder ink_env.topics.state.Uninit E B)
+        : M (ink_env.topics.TopicsBuilderBackend.Output (Self := B)) :=
+      let* α0 :=
+        (ink_env.topics.TopicsBuilder
+              ink_env.topics.state.Uninit
+              _
+              _)::["build"]
+          builder in
+      let* α1 :=
+        [69, 114, 99, 50, 48, 58, 58, 84, 114, 97, 110, 115, 102, 101, 114] in
+      let* α2 := deref α1 (list u8) in
+      let* α3 := borrow α2 (list u8) in
+      let* α4 := [] in
+      let* α5 := deref α4 (list u8) in
+      let* α6 := borrow α5 (list u8) in
+      let* α7 := pointer_coercion "Unsize" α6 in
+      let* α8 :=
+        M.alloc
+          {|
+            ink_env.topics.PrefixedValue.value := α3;
+            ink_env.topics.PrefixedValue.prefix := α7;
+          |} in
+      let* α9 := borrow α8 (ink_env.topics.PrefixedValue (list u8)) in
+      let* α10 := deref α9 (ink_env.topics.PrefixedValue (list u8)) in
+      let* α11 := borrow α10 (ink_env.topics.PrefixedValue (list u8)) in
+      let* α12 := (ink_env.topics.TopicsBuilder _ _ _)::["push_topic"] α0 α11 in
+      let* α13 := deref self erc20.erc20.Transfer in
+      let* α14 := α13.["from"] in
+      let* α15 :=
+        borrow α14 (core.option.Option ink_primitives.types.AccountId) in
+      let* α16 :=
+        deref α15 (core.option.Option ink_primitives.types.AccountId) in
+      let* α17 :=
+        borrow α16 (core.option.Option ink_primitives.types.AccountId) in
+      let* α18 :=
+        [69, 114, 99, 50, 48, 58, 58, 84, 114, 97, 110, 115, 102, 101, 114, 58, 58, 102, 114, 111, 109] in
+      let* α19 := deref α18 (list u8) in
+      let* α20 := borrow α19 (list u8) in
+      let* α21 := pointer_coercion "Unsize" α20 in
+      let* α22 :=
+        M.alloc
+          {|
+            ink_env.topics.PrefixedValue.value := α17;
+            ink_env.topics.PrefixedValue.prefix := α21;
+          |} in
+      let* α23 :=
+        borrow
+          α22
+          (ink_env.topics.PrefixedValue
+            (core.option.Option ink_primitives.types.AccountId)) in
+      let* α24 :=
+        deref
+          α23
+          (ink_env.topics.PrefixedValue
+            (core.option.Option ink_primitives.types.AccountId)) in
+      let* α25 :=
+        borrow
+          α24
+          (ink_env.topics.PrefixedValue
+            (core.option.Option ink_primitives.types.AccountId)) in
+      let* α26 :=
+        (ink_env.topics.TopicsBuilder _ _ _)::["push_topic"] α12 α25 in
+      let* α27 := deref self erc20.erc20.Transfer in
+      let* α28 := α27.["to"] in
+      let* α29 :=
+        borrow α28 (core.option.Option ink_primitives.types.AccountId) in
+      let* α30 :=
+        deref α29 (core.option.Option ink_primitives.types.AccountId) in
+      let* α31 :=
+        borrow α30 (core.option.Option ink_primitives.types.AccountId) in
+      let* α32 :=
+        [69, 114, 99, 50, 48, 58, 58, 84, 114, 97, 110, 115, 102, 101, 114, 58, 58, 116, 111] in
+      let* α33 := deref α32 (list u8) in
+      let* α34 := borrow α33 (list u8) in
+      let* α35 := pointer_coercion "Unsize" α34 in
+      let* α36 :=
+        M.alloc
+          {|
+            ink_env.topics.PrefixedValue.value := α31;
+            ink_env.topics.PrefixedValue.prefix := α35;
+          |} in
+      let* α37 :=
+        borrow
+          α36
+          (ink_env.topics.PrefixedValue
+            (core.option.Option ink_primitives.types.AccountId)) in
+      let* α38 :=
+        deref
+          α37
+          (ink_env.topics.PrefixedValue
+            (core.option.Option ink_primitives.types.AccountId)) in
+      let* α39 :=
+        borrow
+          α38
+          (ink_env.topics.PrefixedValue
+            (core.option.Option ink_primitives.types.AccountId)) in
+      let* α40 :=
+        (ink_env.topics.TopicsBuilder _ _ _)::["push_topic"] α26 α39 in
+      (ink_env.topics.TopicsBuilder
+            ink_env.topics.state.NoRemainingTopics
+            _
+            _)::["finish"]
+        α40.
+    
+    Global Instance AssociatedFunction_topics
+        {E B : Set}
+        {ℋ_0 : ink_env.types.Environment.Trait E}
+        {ℋ_1 : ink_env.topics.TopicsBuilderBackend.Trait B (E := E)} :
+      Notation.DoubleColon Self "topics" := {
+      Notation.double_colon := topics (E := E) (B := B);
+    }.
+    
+    Global Instance I : ink_env.topics.Topics.Trait Self := {
+      ink_env.topics.Topics.RemainingTopics := RemainingTopics;
+      ink_env.topics.Topics.topics
+        {E B : Set}
+        {ℋ_0 : ink_env.types.Environment.Trait E}
+        {ℋ_1 : ink_env.topics.TopicsBuilderBackend.Trait B (E := E)}
+        :=
+        topics (E := E) (B := B);
+    }.
+  End Impl_ink_env_topics_Topics_for_erc20_erc20_Transfer.
+  Global Hint Resolve I : core.
+End Impl_ink_env_topics_Topics_for_erc20_erc20_Transfer.
+
+Module Impl_ink_env_topics_Topics_for_erc20_erc20_Approval.
+  Section Impl_ink_env_topics_Topics_for_erc20_erc20_Approval.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := erc20.erc20.Approval.
+    
+    Definition RemainingTopics : Set :=
+      list ink_env.topics.state.HasRemainingTopics.
+    
+    Definition topics
+        {E B : Set}
+        {ℋ_0 : ink_env.types.Environment.Trait E}
+        {ℋ_1 : ink_env.topics.TopicsBuilderBackend.Trait B (E := E)}
+        (self : ref Self)
+        (builder : ink_env.topics.TopicsBuilder ink_env.topics.state.Uninit E B)
+        : M (ink_env.topics.TopicsBuilderBackend.Output (Self := B)) :=
+      let* α0 :=
+        (ink_env.topics.TopicsBuilder
+              ink_env.topics.state.Uninit
+              _
+              _)::["build"]
+          builder in
+      let* α1 :=
+        [69, 114, 99, 50, 48, 58, 58, 65, 112, 112, 114, 111, 118, 97, 108] in
+      let* α2 := deref α1 (list u8) in
+      let* α3 := borrow α2 (list u8) in
+      let* α4 := [] in
+      let* α5 := deref α4 (list u8) in
+      let* α6 := borrow α5 (list u8) in
+      let* α7 := pointer_coercion "Unsize" α6 in
+      let* α8 :=
+        M.alloc
+          {|
+            ink_env.topics.PrefixedValue.value := α3;
+            ink_env.topics.PrefixedValue.prefix := α7;
+          |} in
+      let* α9 := borrow α8 (ink_env.topics.PrefixedValue (list u8)) in
+      let* α10 := deref α9 (ink_env.topics.PrefixedValue (list u8)) in
+      let* α11 := borrow α10 (ink_env.topics.PrefixedValue (list u8)) in
+      let* α12 := (ink_env.topics.TopicsBuilder _ _ _)::["push_topic"] α0 α11 in
+      let* α13 := deref self erc20.erc20.Approval in
+      let* α14 := α13.["owner"] in
+      let* α15 := borrow α14 ink_primitives.types.AccountId in
+      let* α16 := deref α15 ink_primitives.types.AccountId in
+      let* α17 := borrow α16 ink_primitives.types.AccountId in
+      let* α18 :=
+        [69, 114, 99, 50, 48, 58, 58, 65, 112, 112, 114, 111, 118, 97, 108, 58, 58, 111, 119, 110, 101, 114] in
+      let* α19 := deref α18 (list u8) in
+      let* α20 := borrow α19 (list u8) in
+      let* α21 := pointer_coercion "Unsize" α20 in
+      let* α22 :=
+        M.alloc
+          {|
+            ink_env.topics.PrefixedValue.value := α17;
+            ink_env.topics.PrefixedValue.prefix := α21;
+          |} in
+      let* α23 :=
+        borrow
+          α22
+          (ink_env.topics.PrefixedValue ink_primitives.types.AccountId) in
+      let* α24 :=
+        deref
+          α23
+          (ink_env.topics.PrefixedValue ink_primitives.types.AccountId) in
+      let* α25 :=
+        borrow
+          α24
+          (ink_env.topics.PrefixedValue ink_primitives.types.AccountId) in
+      let* α26 :=
+        (ink_env.topics.TopicsBuilder _ _ _)::["push_topic"] α12 α25 in
+      let* α27 := deref self erc20.erc20.Approval in
+      let* α28 := α27.["spender"] in
+      let* α29 := borrow α28 ink_primitives.types.AccountId in
+      let* α30 := deref α29 ink_primitives.types.AccountId in
+      let* α31 := borrow α30 ink_primitives.types.AccountId in
+      let* α32 :=
+        [69, 114, 99, 50, 48, 58, 58, 65, 112, 112, 114, 111, 118, 97, 108, 58, 58, 115, 112, 101, 110, 100, 101, 114] in
+      let* α33 := deref α32 (list u8) in
+      let* α34 := borrow α33 (list u8) in
+      let* α35 := pointer_coercion "Unsize" α34 in
+      let* α36 :=
+        M.alloc
+          {|
+            ink_env.topics.PrefixedValue.value := α31;
+            ink_env.topics.PrefixedValue.prefix := α35;
+          |} in
+      let* α37 :=
+        borrow
+          α36
+          (ink_env.topics.PrefixedValue ink_primitives.types.AccountId) in
+      let* α38 :=
+        deref
+          α37
+          (ink_env.topics.PrefixedValue ink_primitives.types.AccountId) in
+      let* α39 :=
+        borrow
+          α38
+          (ink_env.topics.PrefixedValue ink_primitives.types.AccountId) in
+      let* α40 :=
+        (ink_env.topics.TopicsBuilder _ _ _)::["push_topic"] α26 α39 in
+      (ink_env.topics.TopicsBuilder
+            ink_env.topics.state.NoRemainingTopics
+            _
+            _)::["finish"]
+        α40.
+    
+    Global Instance AssociatedFunction_topics
+        {E B : Set}
+        {ℋ_0 : ink_env.types.Environment.Trait E}
+        {ℋ_1 : ink_env.topics.TopicsBuilderBackend.Trait B (E := E)} :
+      Notation.DoubleColon Self "topics" := {
+      Notation.double_colon := topics (E := E) (B := B);
+    }.
+    
+    Global Instance I : ink_env.topics.Topics.Trait Self := {
+      ink_env.topics.Topics.RemainingTopics := RemainingTopics;
+      ink_env.topics.Topics.topics
+        {E B : Set}
+        {ℋ_0 : ink_env.types.Environment.Trait E}
+        {ℋ_1 : ink_env.topics.TopicsBuilderBackend.Trait B (E := E)}
+        :=
+        topics (E := E) (B := B);
+    }.
+  End Impl_ink_env_topics_Topics_for_erc20_erc20_Approval.
+  Global Hint Resolve I : core.
+End Impl_ink_env_topics_Topics_for_erc20_erc20_Approval.
+
+Module
+  Impl_ink_reflect_dispatch_DispatchableConstructorInfo_for_erc20_erc20_Erc20.
+  Section
     Impl_ink_reflect_dispatch_DispatchableConstructorInfo_for_erc20_erc20_Erc20.
-    Definition Self `{State.Trait} := erc20.erc20.Erc20.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := erc20.erc20.Erc20.
     
     Definition Input : Set := erc20.erc20.Balance.
     
@@ -293,53 +3686,53 @@ Module erc20.
     
     Definition
       IS_RESULT
-      `{State.Trait} := Pure
+       := Pure
         (ink.reflect.dispatch.ConstructorOutput.IS_RESULT
           (Self := (ink.reflect.dispatch.ConstructorOutputValue Self))).
     
-    Global Instance AssociatedFunction_IS_RESULT `{State.Trait} :
+    Global Instance AssociatedFunction_IS_RESULT :
       Notation.DoubleColon Self "IS_RESULT" := {
       Notation.double_colon := IS_RESULT;
     }.
     
     Definition
       CALLABLE
-      `{State.Trait} := Pure
+       := Pure
         (fun __ink_binding_0 => erc20.erc20.Erc20::["new"] __ink_binding_0).
     
-    Global Instance AssociatedFunction_CALLABLE `{State.Trait} :
+    Global Instance AssociatedFunction_CALLABLE :
       Notation.DoubleColon Self "CALLABLE" := {
       Notation.double_colon := CALLABLE;
     }.
     
-    Definition PAYABLE `{State.Trait} := false.
+    Definition PAYABLE  := M.alloc false.
     
-    Global Instance AssociatedFunction_PAYABLE `{State.Trait} :
+    Global Instance AssociatedFunction_PAYABLE :
       Notation.DoubleColon Self "PAYABLE" := {
       Notation.double_colon := PAYABLE;
     }.
     
     Definition
       SELECTOR
-      `{State.Trait} := let* α0 := M.alloc 155 in
+       := let* α0 := M.alloc 155 in
       let* α1 := M.alloc 174 in
       let* α2 := M.alloc 157 in
       let* α3 := M.alloc 94 in
       Pure [ α0; α1; α2; α3 ].
     
-    Global Instance AssociatedFunction_SELECTOR `{State.Trait} :
+    Global Instance AssociatedFunction_SELECTOR :
       Notation.DoubleColon Self "SELECTOR" := {
       Notation.double_colon := SELECTOR;
     }.
     
-    Definition LABEL `{State.Trait} := Pure (mk_str "new").
+    Definition LABEL  := Pure (mk_str "new").
     
-    Global Instance AssociatedFunction_LABEL `{State.Trait} :
+    Global Instance AssociatedFunction_LABEL :
       Notation.DoubleColon Self "LABEL" := {
       Notation.double_colon := LABEL;
     }.
     
-    Global Instance I `{State.Trait}
+    Global Instance I
       : ink.reflect.dispatch.DispatchableConstructorInfo.Trait Self := {
       ink.reflect.dispatch.DispatchableConstructorInfo.Input := Input;
       ink.reflect.dispatch.DispatchableConstructorInfo.Output := Output;
@@ -351,13 +3744,17 @@ Module erc20.
       ink.reflect.dispatch.DispatchableConstructorInfo.SELECTOR := SELECTOR;
       ink.reflect.dispatch.DispatchableConstructorInfo.LABEL := LABEL;
     }.
-    Global Hint Resolve I : core.
   End
     Impl_ink_reflect_dispatch_DispatchableConstructorInfo_for_erc20_erc20_Erc20.
-  
-  Module
+  Global Hint Resolve I : core.
+End Impl_ink_reflect_dispatch_DispatchableConstructorInfo_for_erc20_erc20_Erc20.
+
+Module Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
+  Section
     Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
-    Definition Self `{State.Trait} := erc20.erc20.Erc20.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := erc20.erc20.Erc20.
     
     Definition Input : Set := unit.
     
@@ -367,49 +3764,48 @@ Module erc20.
     
     Definition
       CALLABLE
-      `{State.Trait} := Pure
-        (fun storage _ => erc20.erc20.Erc20::["total_supply"] storage).
+       := Pure (fun storage _ => erc20.erc20.Erc20::["total_supply"] storage).
     
-    Global Instance AssociatedFunction_CALLABLE `{State.Trait} :
+    Global Instance AssociatedFunction_CALLABLE :
       Notation.DoubleColon Self "CALLABLE" := {
       Notation.double_colon := CALLABLE;
     }.
     
     Definition
       SELECTOR
-      `{State.Trait} := let* α0 := M.alloc 219 in
+       := let* α0 := M.alloc 219 in
       let* α1 := M.alloc 99 in
       let* α2 := M.alloc 117 in
       let* α3 := M.alloc 168 in
       Pure [ α0; α1; α2; α3 ].
     
-    Global Instance AssociatedFunction_SELECTOR `{State.Trait} :
+    Global Instance AssociatedFunction_SELECTOR :
       Notation.DoubleColon Self "SELECTOR" := {
       Notation.double_colon := SELECTOR;
     }.
     
-    Definition PAYABLE `{State.Trait} := false.
+    Definition PAYABLE  := M.alloc false.
     
-    Global Instance AssociatedFunction_PAYABLE `{State.Trait} :
+    Global Instance AssociatedFunction_PAYABLE :
       Notation.DoubleColon Self "PAYABLE" := {
       Notation.double_colon := PAYABLE;
     }.
     
-    Definition MUTATES `{State.Trait} := false.
+    Definition MUTATES  := M.alloc false.
     
-    Global Instance AssociatedFunction_MUTATES `{State.Trait} :
+    Global Instance AssociatedFunction_MUTATES :
       Notation.DoubleColon Self "MUTATES" := {
       Notation.double_colon := MUTATES;
     }.
     
-    Definition LABEL `{State.Trait} := Pure (mk_str "total_supply").
+    Definition LABEL  := Pure (mk_str "total_supply").
     
-    Global Instance AssociatedFunction_LABEL `{State.Trait} :
+    Global Instance AssociatedFunction_LABEL :
       Notation.DoubleColon Self "LABEL" := {
       Notation.double_colon := LABEL;
     }.
     
-    Global Instance I `{State.Trait}
+    Global Instance I
       : ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
       ink.reflect.dispatch.DispatchableMessageInfo.Input := Input;
       ink.reflect.dispatch.DispatchableMessageInfo.Output := Output;
@@ -420,12 +3816,16 @@ Module erc20.
       ink.reflect.dispatch.DispatchableMessageInfo.MUTATES := MUTATES;
       ink.reflect.dispatch.DispatchableMessageInfo.LABEL := LABEL;
     }.
-    Global Hint Resolve I : core.
   End Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
-  
-  Module
+  Global Hint Resolve I : core.
+End Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
+
+Module Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
+  Section
     Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
-    Definition Self `{State.Trait} := erc20.erc20.Erc20.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := erc20.erc20.Erc20.
     
     Definition Input : Set := erc20.erc20.AccountId.
     
@@ -435,50 +3835,50 @@ Module erc20.
     
     Definition
       CALLABLE
-      `{State.Trait} := Pure
+       := Pure
         (fun storage __ink_binding_0 =>
           erc20.erc20.Erc20::["balance_of"] storage __ink_binding_0).
     
-    Global Instance AssociatedFunction_CALLABLE `{State.Trait} :
+    Global Instance AssociatedFunction_CALLABLE :
       Notation.DoubleColon Self "CALLABLE" := {
       Notation.double_colon := CALLABLE;
     }.
     
     Definition
       SELECTOR
-      `{State.Trait} := let* α0 := M.alloc 15 in
+       := let* α0 := M.alloc 15 in
       let* α1 := M.alloc 117 in
       let* α2 := M.alloc 90 in
       let* α3 := M.alloc 86 in
       Pure [ α0; α1; α2; α3 ].
     
-    Global Instance AssociatedFunction_SELECTOR `{State.Trait} :
+    Global Instance AssociatedFunction_SELECTOR :
       Notation.DoubleColon Self "SELECTOR" := {
       Notation.double_colon := SELECTOR;
     }.
     
-    Definition PAYABLE `{State.Trait} := false.
+    Definition PAYABLE  := M.alloc false.
     
-    Global Instance AssociatedFunction_PAYABLE `{State.Trait} :
+    Global Instance AssociatedFunction_PAYABLE :
       Notation.DoubleColon Self "PAYABLE" := {
       Notation.double_colon := PAYABLE;
     }.
     
-    Definition MUTATES `{State.Trait} := false.
+    Definition MUTATES  := M.alloc false.
     
-    Global Instance AssociatedFunction_MUTATES `{State.Trait} :
+    Global Instance AssociatedFunction_MUTATES :
       Notation.DoubleColon Self "MUTATES" := {
       Notation.double_colon := MUTATES;
     }.
     
-    Definition LABEL `{State.Trait} := Pure (mk_str "balance_of").
+    Definition LABEL  := Pure (mk_str "balance_of").
     
-    Global Instance AssociatedFunction_LABEL `{State.Trait} :
+    Global Instance AssociatedFunction_LABEL :
       Notation.DoubleColon Self "LABEL" := {
       Notation.double_colon := LABEL;
     }.
     
-    Global Instance I `{State.Trait}
+    Global Instance I
       : ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
       ink.reflect.dispatch.DispatchableMessageInfo.Input := Input;
       ink.reflect.dispatch.DispatchableMessageInfo.Output := Output;
@@ -489,12 +3889,16 @@ Module erc20.
       ink.reflect.dispatch.DispatchableMessageInfo.MUTATES := MUTATES;
       ink.reflect.dispatch.DispatchableMessageInfo.LABEL := LABEL;
     }.
-    Global Hint Resolve I : core.
   End Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
-  
-  Module
+  Global Hint Resolve I : core.
+End Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
+
+Module Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
+  Section
     Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
-    Definition Self `{State.Trait} := erc20.erc20.Erc20.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := erc20.erc20.Erc20.
     
     Definition Input : Set := erc20.erc20.AccountId * erc20.erc20.AccountId.
     
@@ -504,53 +3908,53 @@ Module erc20.
     
     Definition
       CALLABLE
-      `{State.Trait} := Pure
+       := Pure
         (fun storage (__ink_binding_0, __ink_binding_1) =>
           erc20.erc20.Erc20::["allowance"]
             storage
             __ink_binding_0
             __ink_binding_1).
     
-    Global Instance AssociatedFunction_CALLABLE `{State.Trait} :
+    Global Instance AssociatedFunction_CALLABLE :
       Notation.DoubleColon Self "CALLABLE" := {
       Notation.double_colon := CALLABLE;
     }.
     
     Definition
       SELECTOR
-      `{State.Trait} := let* α0 := M.alloc 106 in
+       := let* α0 := M.alloc 106 in
       let* α1 := M.alloc 0 in
       let* α2 := M.alloc 22 in
       let* α3 := M.alloc 94 in
       Pure [ α0; α1; α2; α3 ].
     
-    Global Instance AssociatedFunction_SELECTOR `{State.Trait} :
+    Global Instance AssociatedFunction_SELECTOR :
       Notation.DoubleColon Self "SELECTOR" := {
       Notation.double_colon := SELECTOR;
     }.
     
-    Definition PAYABLE `{State.Trait} := false.
+    Definition PAYABLE  := M.alloc false.
     
-    Global Instance AssociatedFunction_PAYABLE `{State.Trait} :
+    Global Instance AssociatedFunction_PAYABLE :
       Notation.DoubleColon Self "PAYABLE" := {
       Notation.double_colon := PAYABLE;
     }.
     
-    Definition MUTATES `{State.Trait} := false.
+    Definition MUTATES  := M.alloc false.
     
-    Global Instance AssociatedFunction_MUTATES `{State.Trait} :
+    Global Instance AssociatedFunction_MUTATES :
       Notation.DoubleColon Self "MUTATES" := {
       Notation.double_colon := MUTATES;
     }.
     
-    Definition LABEL `{State.Trait} := Pure (mk_str "allowance").
+    Definition LABEL  := Pure (mk_str "allowance").
     
-    Global Instance AssociatedFunction_LABEL `{State.Trait} :
+    Global Instance AssociatedFunction_LABEL :
       Notation.DoubleColon Self "LABEL" := {
       Notation.double_colon := LABEL;
     }.
     
-    Global Instance I `{State.Trait}
+    Global Instance I
       : ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
       ink.reflect.dispatch.DispatchableMessageInfo.Input := Input;
       ink.reflect.dispatch.DispatchableMessageInfo.Output := Output;
@@ -561,12 +3965,16 @@ Module erc20.
       ink.reflect.dispatch.DispatchableMessageInfo.MUTATES := MUTATES;
       ink.reflect.dispatch.DispatchableMessageInfo.LABEL := LABEL;
     }.
-    Global Hint Resolve I : core.
   End Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
-  
-  Module
+  Global Hint Resolve I : core.
+End Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
+
+Module Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
+  Section
     Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
-    Definition Self `{State.Trait} := erc20.erc20.Erc20.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := erc20.erc20.Erc20.
     
     Definition Input : Set := erc20.erc20.AccountId * erc20.erc20.Balance.
     
@@ -576,53 +3984,53 @@ Module erc20.
     
     Definition
       CALLABLE
-      `{State.Trait} := Pure
+       := Pure
         (fun storage (__ink_binding_0, __ink_binding_1) =>
           erc20.erc20.Erc20::["transfer"]
             storage
             __ink_binding_0
             __ink_binding_1).
     
-    Global Instance AssociatedFunction_CALLABLE `{State.Trait} :
+    Global Instance AssociatedFunction_CALLABLE :
       Notation.DoubleColon Self "CALLABLE" := {
       Notation.double_colon := CALLABLE;
     }.
     
     Definition
       SELECTOR
-      `{State.Trait} := let* α0 := M.alloc 132 in
+       := let* α0 := M.alloc 132 in
       let* α1 := M.alloc 161 in
       let* α2 := M.alloc 93 in
       let* α3 := M.alloc 161 in
       Pure [ α0; α1; α2; α3 ].
     
-    Global Instance AssociatedFunction_SELECTOR `{State.Trait} :
+    Global Instance AssociatedFunction_SELECTOR :
       Notation.DoubleColon Self "SELECTOR" := {
       Notation.double_colon := SELECTOR;
     }.
     
-    Definition PAYABLE `{State.Trait} := false.
+    Definition PAYABLE  := M.alloc false.
     
-    Global Instance AssociatedFunction_PAYABLE `{State.Trait} :
+    Global Instance AssociatedFunction_PAYABLE :
       Notation.DoubleColon Self "PAYABLE" := {
       Notation.double_colon := PAYABLE;
     }.
     
-    Definition MUTATES `{State.Trait} := true.
+    Definition MUTATES  := M.alloc true.
     
-    Global Instance AssociatedFunction_MUTATES `{State.Trait} :
+    Global Instance AssociatedFunction_MUTATES :
       Notation.DoubleColon Self "MUTATES" := {
       Notation.double_colon := MUTATES;
     }.
     
-    Definition LABEL `{State.Trait} := Pure (mk_str "transfer").
+    Definition LABEL  := Pure (mk_str "transfer").
     
-    Global Instance AssociatedFunction_LABEL `{State.Trait} :
+    Global Instance AssociatedFunction_LABEL :
       Notation.DoubleColon Self "LABEL" := {
       Notation.double_colon := LABEL;
     }.
     
-    Global Instance I `{State.Trait}
+    Global Instance I
       : ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
       ink.reflect.dispatch.DispatchableMessageInfo.Input := Input;
       ink.reflect.dispatch.DispatchableMessageInfo.Output := Output;
@@ -633,12 +4041,16 @@ Module erc20.
       ink.reflect.dispatch.DispatchableMessageInfo.MUTATES := MUTATES;
       ink.reflect.dispatch.DispatchableMessageInfo.LABEL := LABEL;
     }.
-    Global Hint Resolve I : core.
   End Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
-  
-  Module
+  Global Hint Resolve I : core.
+End Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
+
+Module Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
+  Section
     Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
-    Definition Self `{State.Trait} := erc20.erc20.Erc20.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := erc20.erc20.Erc20.
     
     Definition Input : Set := erc20.erc20.AccountId * erc20.erc20.Balance.
     
@@ -648,53 +4060,53 @@ Module erc20.
     
     Definition
       CALLABLE
-      `{State.Trait} := Pure
+       := Pure
         (fun storage (__ink_binding_0, __ink_binding_1) =>
           erc20.erc20.Erc20::["approve"]
             storage
             __ink_binding_0
             __ink_binding_1).
     
-    Global Instance AssociatedFunction_CALLABLE `{State.Trait} :
+    Global Instance AssociatedFunction_CALLABLE :
       Notation.DoubleColon Self "CALLABLE" := {
       Notation.double_colon := CALLABLE;
     }.
     
     Definition
       SELECTOR
-      `{State.Trait} := let* α0 := M.alloc 104 in
+       := let* α0 := M.alloc 104 in
       let* α1 := M.alloc 18 in
       let* α2 := M.alloc 102 in
       let* α3 := M.alloc 160 in
       Pure [ α0; α1; α2; α3 ].
     
-    Global Instance AssociatedFunction_SELECTOR `{State.Trait} :
+    Global Instance AssociatedFunction_SELECTOR :
       Notation.DoubleColon Self "SELECTOR" := {
       Notation.double_colon := SELECTOR;
     }.
     
-    Definition PAYABLE `{State.Trait} := false.
+    Definition PAYABLE  := M.alloc false.
     
-    Global Instance AssociatedFunction_PAYABLE `{State.Trait} :
+    Global Instance AssociatedFunction_PAYABLE :
       Notation.DoubleColon Self "PAYABLE" := {
       Notation.double_colon := PAYABLE;
     }.
     
-    Definition MUTATES `{State.Trait} := true.
+    Definition MUTATES  := M.alloc true.
     
-    Global Instance AssociatedFunction_MUTATES `{State.Trait} :
+    Global Instance AssociatedFunction_MUTATES :
       Notation.DoubleColon Self "MUTATES" := {
       Notation.double_colon := MUTATES;
     }.
     
-    Definition LABEL `{State.Trait} := Pure (mk_str "approve").
+    Definition LABEL  := Pure (mk_str "approve").
     
-    Global Instance AssociatedFunction_LABEL `{State.Trait} :
+    Global Instance AssociatedFunction_LABEL :
       Notation.DoubleColon Self "LABEL" := {
       Notation.double_colon := LABEL;
     }.
     
-    Global Instance I `{State.Trait}
+    Global Instance I
       : ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
       ink.reflect.dispatch.DispatchableMessageInfo.Input := Input;
       ink.reflect.dispatch.DispatchableMessageInfo.Output := Output;
@@ -705,12 +4117,16 @@ Module erc20.
       ink.reflect.dispatch.DispatchableMessageInfo.MUTATES := MUTATES;
       ink.reflect.dispatch.DispatchableMessageInfo.LABEL := LABEL;
     }.
-    Global Hint Resolve I : core.
   End Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
-  
-  Module
+  Global Hint Resolve I : core.
+End Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
+
+Module Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
+  Section
     Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
-    Definition Self `{State.Trait} := erc20.erc20.Erc20.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := erc20.erc20.Erc20.
     
     Definition Input : Set :=
       erc20.erc20.AccountId * erc20.erc20.AccountId * erc20.erc20.Balance.
@@ -721,7 +4137,7 @@ Module erc20.
     
     Definition
       CALLABLE
-      `{State.Trait} := Pure
+       := Pure
         (fun storage (__ink_binding_0, __ink_binding_1, __ink_binding_2) =>
           erc20.erc20.Erc20::["transfer_from"]
             storage
@@ -729,46 +4145,46 @@ Module erc20.
             __ink_binding_1
             __ink_binding_2).
     
-    Global Instance AssociatedFunction_CALLABLE `{State.Trait} :
+    Global Instance AssociatedFunction_CALLABLE :
       Notation.DoubleColon Self "CALLABLE" := {
       Notation.double_colon := CALLABLE;
     }.
     
     Definition
       SELECTOR
-      `{State.Trait} := let* α0 := M.alloc 11 in
+       := let* α0 := M.alloc 11 in
       let* α1 := M.alloc 57 in
       let* α2 := M.alloc 111 in
       let* α3 := M.alloc 24 in
       Pure [ α0; α1; α2; α3 ].
     
-    Global Instance AssociatedFunction_SELECTOR `{State.Trait} :
+    Global Instance AssociatedFunction_SELECTOR :
       Notation.DoubleColon Self "SELECTOR" := {
       Notation.double_colon := SELECTOR;
     }.
     
-    Definition PAYABLE `{State.Trait} := false.
+    Definition PAYABLE  := M.alloc false.
     
-    Global Instance AssociatedFunction_PAYABLE `{State.Trait} :
+    Global Instance AssociatedFunction_PAYABLE :
       Notation.DoubleColon Self "PAYABLE" := {
       Notation.double_colon := PAYABLE;
     }.
     
-    Definition MUTATES `{State.Trait} := true.
+    Definition MUTATES  := M.alloc true.
     
-    Global Instance AssociatedFunction_MUTATES `{State.Trait} :
+    Global Instance AssociatedFunction_MUTATES :
       Notation.DoubleColon Self "MUTATES" := {
       Notation.double_colon := MUTATES;
     }.
     
-    Definition LABEL `{State.Trait} := Pure (mk_str "transfer_from").
+    Definition LABEL  := Pure (mk_str "transfer_from").
     
-    Global Instance AssociatedFunction_LABEL `{State.Trait} :
+    Global Instance AssociatedFunction_LABEL :
       Notation.DoubleColon Self "LABEL" := {
       Notation.double_colon := LABEL;
     }.
     
-    Global Instance I `{State.Trait}
+    Global Instance I
       : ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
       ink.reflect.dispatch.DispatchableMessageInfo.Input := Input;
       ink.reflect.dispatch.DispatchableMessageInfo.Output := Output;
@@ -779,12 +4195,2947 @@ Module erc20.
       ink.reflect.dispatch.DispatchableMessageInfo.MUTATES := MUTATES;
       ink.reflect.dispatch.DispatchableMessageInfo.LABEL := LABEL;
     }.
-    Global Hint Resolve I : core.
   End Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
-  
-  Module Erc20Ref.
+  Global Hint Resolve I : core.
+End Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
+
+Module __ink_ConstructorDecoder.
+  Inductive t `{State.Trait} : Set :=
+  |
+    Constructor0
+    (_
+      :
+      ink.reflect.dispatch.DispatchableConstructorInfo.Input
+        (Self := erc20.erc20.Erc20)).
+End __ink_ConstructorDecoder.
+Definition __ink_ConstructorDecoder `{State.Trait} : Set :=
+  __ink_ConstructorDecoder.t.
+
+Module
+  Impl_ink_reflect_dispatch_DecodeDispatch_for_erc20_erc20_____ink_ConstructorDecoder.
+  Section
+    Impl_ink_reflect_dispatch_DecodeDispatch_for_erc20_erc20_____ink_ConstructorDecoder.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := erc20.erc20._.__ink_ConstructorDecoder.
+    
+    Definition decode_dispatch
+        {I : Set}
+        {ℋ_0 : parity_scale_codec.codec.Input.Trait I}
+        (input : mut_ref I)
+        : M (core.result.Result Self ink.reflect.dispatch.DispatchError) :=
+      let* α0 := deref input _ in
+      let* α1 := borrow_mut α0 _ in
+      let* α2 := parity_scale_codec.codec.Decode.decode α1 in
+      let* α3 :=
+        (core.result.Result _ _)::["map_err"]
+          α2
+          Pure (ink.reflect.dispatch.DispatchError.InvalidSelector tt) in
+      let* α4 := core.ops.try_trait.Try.branch α3 in
+      let* α5 :=
+        match α4 with
+        | core.ops.control_flow.ControlFlow residual =>
+          let* α0 := core.ops.try_trait.FromResidual.from_residual residual in
+          let* α1 := Return α0 in
+          never_to_any α1
+        | core.ops.control_flow.ControlFlow val => Pure val
+        end in
+      match α5 with
+      | [_; _; _; _] =>
+        let* α0 := deref input _ in
+        let* α1 := borrow_mut α0 _ in
+        let* α2 := parity_scale_codec.codec.Decode.decode α1 in
+        let* α3 :=
+          (core.result.Result _ _)::["map_err"]
+            α2
+            Pure (ink.reflect.dispatch.DispatchError.InvalidParameters tt) in
+        let* α4 := core.ops.try_trait.Try.branch α3 in
+        let* α5 :=
+          match α4 with
+          | core.ops.control_flow.ControlFlow residual =>
+            let* α0 := core.ops.try_trait.FromResidual.from_residual residual in
+            let* α1 := Return α0 in
+            never_to_any α1
+          | core.ops.control_flow.ControlFlow val => Pure val
+          end in
+        let* α6 := "unimplemented parent_kind" α5 in
+        Pure (core.result.Result.Ok α6)
+      | _invalid =>
+        Pure
+          (core.result.Result.Err
+            (ink.reflect.dispatch.DispatchError.UnknownSelector tt))
+      end.
+    
+    Global Instance AssociatedFunction_decode_dispatch
+        {I : Set}
+        {ℋ_0 : parity_scale_codec.codec.Input.Trait I} :
+      Notation.DoubleColon Self "decode_dispatch" := {
+      Notation.double_colon := decode_dispatch (I := I);
+    }.
+    
+    Global Instance I : ink.reflect.dispatch.DecodeDispatch.Trait Self := {
+      ink.reflect.dispatch.DecodeDispatch.decode_dispatch
+        {I : Set}
+        {ℋ_0 : parity_scale_codec.codec.Input.Trait I}
+        :=
+        decode_dispatch (I := I);
+    }.
+  End
+    Impl_ink_reflect_dispatch_DecodeDispatch_for_erc20_erc20_____ink_ConstructorDecoder.
+  Global Hint Resolve I : core.
+End
+  Impl_ink_reflect_dispatch_DecodeDispatch_for_erc20_erc20_____ink_ConstructorDecoder.
+
+Definition CONSTRUCTOR_0 `{State.Trait} : array CoqOfRust.core.primitive.u8 :=
+  run
+    (Pure
+      (ink.reflect.dispatch.DispatchableConstructorInfo.SELECTOR
+        (Self := erc20.erc20.Erc20))).
+
+Module
+  Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_____ink_ConstructorDecoder.
+  Section
+    Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_____ink_ConstructorDecoder.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := erc20.erc20._.__ink_ConstructorDecoder.
+    
+    Definition decode
+        {I : Set}
+        {ℋ_0 : parity_scale_codec.codec.Input.Trait I}
+        (input : mut_ref I)
+        : M (core.result.Result Self parity_scale_codec.error.Error) :=
+      let* α0 := deref input _ in
+      let* α1 := borrow_mut α0 _ in
+      let* α2 := ink.reflect.dispatch.DecodeDispatch.decode_dispatch α1 in
+      (core.result.Result _ _)::["map_err"] α2 core.convert.Into.into.
+    
+    Global Instance AssociatedFunction_decode
+        {I : Set}
+        {ℋ_0 : parity_scale_codec.codec.Input.Trait I} :
+      Notation.DoubleColon Self "decode" := {
+      Notation.double_colon := decode (I := I);
+    }.
+    
+    Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
+      parity_scale_codec.codec.Decode.decode
+        {I : Set}
+        {ℋ_0 : parity_scale_codec.codec.Input.Trait I}
+        :=
+        decode (I := I);
+    }.
+  End
+    Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_____ink_ConstructorDecoder.
+  Global Hint Resolve I : core.
+End
+  Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_____ink_ConstructorDecoder.
+
+Module
+  Impl_ink_reflect_dispatch_ExecuteDispatchable_for_erc20_erc20_____ink_ConstructorDecoder.
+  Section
+    Impl_ink_reflect_dispatch_ExecuteDispatchable_for_erc20_erc20_____ink_ConstructorDecoder.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := erc20.erc20._.__ink_ConstructorDecoder.
+    
+    Definition execute_dispatchable
+        (self : Self)
+        : M (core.result.Result unit ink.reflect.dispatch.DispatchError) :=
+      match self with
+      | erc20.erc20._.__ink_ConstructorDecoder input =>
+        let* _ :=
+          let* α0 := M.alloc false in
+          let* constructor_0 := M.alloc false in
+          let constructor_0 :=
+            ink.reflect.dispatch.DispatchableConstructorInfo.PAYABLE in
+          let* α0 := or α0 constructor_0 in
+          let* α1 :=
+            not ink.reflect.dispatch.DispatchableConstructorInfo.PAYABLE in
+          let* α2 := and α0 α1 in
+          let* α3 := use α2 in
+          if (α3 : bool) then
+            let* _ :=
+              let* α0 := ink.codegen.dispatch.execution.deny_payment in
+              let* α1 := core.ops.try_trait.Try.branch α0 in
+              match α1 with
+              | core.ops.control_flow.ControlFlow residual =>
+                let* α0 :=
+                  core.ops.try_trait.FromResidual.from_residual residual in
+                let* α1 := Return α0 in
+                never_to_any α1
+              | core.ops.control_flow.ControlFlow val => Pure val
+              end in
+            M.alloc tt
+          else
+            M.alloc tt in
+        let* result :=
+          ink.reflect.dispatch.DispatchableConstructorInfo.CALLABLE input in
+        let* output_value :=
+          (ink.reflect.dispatch.ConstructorOutputValue _)::["new"] result in
+        let* output_result :=
+          let* α0 :=
+            borrow
+              output_value
+              (ink.reflect.dispatch.ConstructorOutputValue erc20.erc20.Erc20) in
+          let* α1 :=
+            deref
+              α0
+              (ink.reflect.dispatch.ConstructorOutputValue erc20.erc20.Erc20) in
+          let* α2 :=
+            borrow
+              α1
+              (ink.reflect.dispatch.ConstructorOutputValue erc20.erc20.Erc20) in
+          ink.reflect.dispatch.ConstructorOutput.as_result α2 in
+        let* _ :=
+          let* α0 :=
+            borrow
+              output_result
+              (core.result.Result (ref erc20.erc20.Erc20) (ref (ref unit))) in
+          let* α1 := (core.result.Result _ _)::["as_ref"] α0 in
+          let* α2 := let_if core.result.Result contract := α1 in
+          if (α2 : bool) then
+            let* _ :=
+              let* α0 := borrow ink_storage_traits.storage.StorageKey.KEY u32 in
+              let* α1 := deref α0 u32 in
+              let* α2 := borrow α1 u32 in
+              let* α3 := deref contract (ref erc20.erc20.Erc20) in
+              let* α4 := deref α3 erc20.erc20.Erc20 in
+              let* α5 := borrow α4 erc20.erc20.Erc20 in
+              ink_env.api.set_contract_storage α2 α5 in
+            M.alloc tt
+          else
+            M.alloc tt in
+        let* _ :=
+          let* α0 :=
+            borrow
+              output_result
+              (core.result.Result (ref erc20.erc20.Erc20) (ref (ref unit))) in
+          let* α1 := (core.result.Result _ _)::["is_err"] α0 in
+          let* α2 :=
+            ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.ReturnFlags::["new_with_reverted"]
+              α1 in
+          let* α3 :=
+            (core.result.Result _ _)::["map"] output_result M.alloc tt in
+          let* α4 := "unimplemented parent_kind" α3 in
+          let* α5 :=
+            borrow
+              α4
+              (core.result.Result
+                (core.result.Result unit (ref (ref unit)))
+                ink_primitives.LangError) in
+          let* α6 :=
+            deref
+              α5
+              (core.result.Result
+                (core.result.Result unit (ref (ref unit)))
+                ink_primitives.LangError) in
+          let* α7 :=
+            borrow
+              α6
+              (core.result.Result
+                (core.result.Result unit (ref (ref unit)))
+                ink_primitives.LangError) in
+          ink_env.api.return_value α2 α7 in
+        let* α0 := M.alloc tt in
+        never_to_any α0
+      end.
+    
+    Global Instance AssociatedFunction_execute_dispatchable :
+      Notation.DoubleColon Self "execute_dispatchable" := {
+      Notation.double_colon := execute_dispatchable;
+    }.
+    
+    Global Instance I : ink.reflect.dispatch.ExecuteDispatchable.Trait Self := {
+      ink.reflect.dispatch.ExecuteDispatchable.execute_dispatchable
+        :=
+        execute_dispatchable;
+    }.
+  End
+    Impl_ink_reflect_dispatch_ExecuteDispatchable_for_erc20_erc20_____ink_ConstructorDecoder.
+  Global Hint Resolve I : core.
+End
+  Impl_ink_reflect_dispatch_ExecuteDispatchable_for_erc20_erc20_____ink_ConstructorDecoder.
+
+Module
+  Impl_ink_reflect_dispatch_ContractConstructorDecoder_for_erc20_erc20_Erc20.
+  Section
+    Impl_ink_reflect_dispatch_ContractConstructorDecoder_for_erc20_erc20_Erc20.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := erc20.erc20.Erc20.
+    
+    Definition Type : Set := erc20.erc20._.__ink_ConstructorDecoder.
+    
+    Global Instance I
+      : ink.reflect.dispatch.ContractConstructorDecoder.Trait Self := {
+      ink.reflect.dispatch.ContractConstructorDecoder.Type := Type;
+    }.
+  End
+    Impl_ink_reflect_dispatch_ContractConstructorDecoder_for_erc20_erc20_Erc20.
+  Global Hint Resolve I : core.
+End Impl_ink_reflect_dispatch_ContractConstructorDecoder_for_erc20_erc20_Erc20.
+
+Module __ink_MessageDecoder.
+  Inductive t `{State.Trait} : Set :=
+  |
+    Message0
+    (_
+      :
+      ink.reflect.dispatch.DispatchableMessageInfo.Input
+        (Self := erc20.erc20.Erc20))
+  |
+    Message1
+    (_
+      :
+      ink.reflect.dispatch.DispatchableMessageInfo.Input
+        (Self := erc20.erc20.Erc20))
+  |
+    Message2
+    (_
+      :
+      ink.reflect.dispatch.DispatchableMessageInfo.Input
+        (Self := erc20.erc20.Erc20))
+  |
+    Message3
+    (_
+      :
+      ink.reflect.dispatch.DispatchableMessageInfo.Input
+        (Self := erc20.erc20.Erc20))
+  |
+    Message4
+    (_
+      :
+      ink.reflect.dispatch.DispatchableMessageInfo.Input
+        (Self := erc20.erc20.Erc20))
+  |
+    Message5
+    (_
+      :
+      ink.reflect.dispatch.DispatchableMessageInfo.Input
+        (Self := erc20.erc20.Erc20)).
+End __ink_MessageDecoder.
+Definition __ink_MessageDecoder `{State.Trait} : Set := __ink_MessageDecoder.t.
+
+Module
+  Impl_ink_reflect_dispatch_DecodeDispatch_for_erc20_erc20_____ink_MessageDecoder.
+  Section
+    Impl_ink_reflect_dispatch_DecodeDispatch_for_erc20_erc20_____ink_MessageDecoder.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := erc20.erc20._.__ink_MessageDecoder.
+    
+    Definition decode_dispatch
+        {I : Set}
+        {ℋ_0 : parity_scale_codec.codec.Input.Trait I}
+        (input : mut_ref I)
+        : M (core.result.Result Self ink.reflect.dispatch.DispatchError) :=
+      let* α0 := deref input _ in
+      let* α1 := borrow_mut α0 _ in
+      let* α2 := parity_scale_codec.codec.Decode.decode α1 in
+      let* α3 :=
+        (core.result.Result _ _)::["map_err"]
+          α2
+          Pure (ink.reflect.dispatch.DispatchError.InvalidSelector tt) in
+      let* α4 := core.ops.try_trait.Try.branch α3 in
+      let* α5 :=
+        match α4 with
+        | core.ops.control_flow.ControlFlow residual =>
+          let* α0 := core.ops.try_trait.FromResidual.from_residual residual in
+          let* α1 := Return α0 in
+          never_to_any α1
+        | core.ops.control_flow.ControlFlow val => Pure val
+        end in
+      match α5 with
+      | [_; _; _; _] =>
+        let* α0 := deref input _ in
+        let* α1 := borrow_mut α0 _ in
+        let* α2 := parity_scale_codec.codec.Decode.decode α1 in
+        let* α3 :=
+          (core.result.Result _ _)::["map_err"]
+            α2
+            Pure (ink.reflect.dispatch.DispatchError.InvalidParameters tt) in
+        let* α4 := core.ops.try_trait.Try.branch α3 in
+        let* α5 :=
+          match α4 with
+          | core.ops.control_flow.ControlFlow residual =>
+            let* α0 := core.ops.try_trait.FromResidual.from_residual residual in
+            let* α1 := Return α0 in
+            never_to_any α1
+          | core.ops.control_flow.ControlFlow val => Pure val
+          end in
+        let* α6 := "unimplemented parent_kind" α5 in
+        Pure (core.result.Result.Ok α6)
+      | [_; _; _; _] =>
+        let* α0 := deref input _ in
+        let* α1 := borrow_mut α0 _ in
+        let* α2 := parity_scale_codec.codec.Decode.decode α1 in
+        let* α3 :=
+          (core.result.Result _ _)::["map_err"]
+            α2
+            Pure (ink.reflect.dispatch.DispatchError.InvalidParameters tt) in
+        let* α4 := core.ops.try_trait.Try.branch α3 in
+        let* α5 :=
+          match α4 with
+          | core.ops.control_flow.ControlFlow residual =>
+            let* α0 := core.ops.try_trait.FromResidual.from_residual residual in
+            let* α1 := Return α0 in
+            never_to_any α1
+          | core.ops.control_flow.ControlFlow val => Pure val
+          end in
+        let* α6 := "unimplemented parent_kind" α5 in
+        Pure (core.result.Result.Ok α6)
+      | [_; _; _; _] =>
+        let* α0 := deref input _ in
+        let* α1 := borrow_mut α0 _ in
+        let* α2 := parity_scale_codec.codec.Decode.decode α1 in
+        let* α3 :=
+          (core.result.Result _ _)::["map_err"]
+            α2
+            Pure (ink.reflect.dispatch.DispatchError.InvalidParameters tt) in
+        let* α4 := core.ops.try_trait.Try.branch α3 in
+        let* α5 :=
+          match α4 with
+          | core.ops.control_flow.ControlFlow residual =>
+            let* α0 := core.ops.try_trait.FromResidual.from_residual residual in
+            let* α1 := Return α0 in
+            never_to_any α1
+          | core.ops.control_flow.ControlFlow val => Pure val
+          end in
+        let* α6 := "unimplemented parent_kind" α5 in
+        Pure (core.result.Result.Ok α6)
+      | [_; _; _; _] =>
+        let* α0 := deref input _ in
+        let* α1 := borrow_mut α0 _ in
+        let* α2 := parity_scale_codec.codec.Decode.decode α1 in
+        let* α3 :=
+          (core.result.Result _ _)::["map_err"]
+            α2
+            Pure (ink.reflect.dispatch.DispatchError.InvalidParameters tt) in
+        let* α4 := core.ops.try_trait.Try.branch α3 in
+        let* α5 :=
+          match α4 with
+          | core.ops.control_flow.ControlFlow residual =>
+            let* α0 := core.ops.try_trait.FromResidual.from_residual residual in
+            let* α1 := Return α0 in
+            never_to_any α1
+          | core.ops.control_flow.ControlFlow val => Pure val
+          end in
+        let* α6 := "unimplemented parent_kind" α5 in
+        Pure (core.result.Result.Ok α6)
+      | [_; _; _; _] =>
+        let* α0 := deref input _ in
+        let* α1 := borrow_mut α0 _ in
+        let* α2 := parity_scale_codec.codec.Decode.decode α1 in
+        let* α3 :=
+          (core.result.Result _ _)::["map_err"]
+            α2
+            Pure (ink.reflect.dispatch.DispatchError.InvalidParameters tt) in
+        let* α4 := core.ops.try_trait.Try.branch α3 in
+        let* α5 :=
+          match α4 with
+          | core.ops.control_flow.ControlFlow residual =>
+            let* α0 := core.ops.try_trait.FromResidual.from_residual residual in
+            let* α1 := Return α0 in
+            never_to_any α1
+          | core.ops.control_flow.ControlFlow val => Pure val
+          end in
+        let* α6 := "unimplemented parent_kind" α5 in
+        Pure (core.result.Result.Ok α6)
+      | [_; _; _; _] =>
+        let* α0 := deref input _ in
+        let* α1 := borrow_mut α0 _ in
+        let* α2 := parity_scale_codec.codec.Decode.decode α1 in
+        let* α3 :=
+          (core.result.Result _ _)::["map_err"]
+            α2
+            Pure (ink.reflect.dispatch.DispatchError.InvalidParameters tt) in
+        let* α4 := core.ops.try_trait.Try.branch α3 in
+        let* α5 :=
+          match α4 with
+          | core.ops.control_flow.ControlFlow residual =>
+            let* α0 := core.ops.try_trait.FromResidual.from_residual residual in
+            let* α1 := Return α0 in
+            never_to_any α1
+          | core.ops.control_flow.ControlFlow val => Pure val
+          end in
+        let* α6 := "unimplemented parent_kind" α5 in
+        Pure (core.result.Result.Ok α6)
+      | _invalid =>
+        Pure
+          (core.result.Result.Err
+            (ink.reflect.dispatch.DispatchError.UnknownSelector tt))
+      end.
+    
+    Global Instance AssociatedFunction_decode_dispatch
+        {I : Set}
+        {ℋ_0 : parity_scale_codec.codec.Input.Trait I} :
+      Notation.DoubleColon Self "decode_dispatch" := {
+      Notation.double_colon := decode_dispatch (I := I);
+    }.
+    
+    Global Instance I : ink.reflect.dispatch.DecodeDispatch.Trait Self := {
+      ink.reflect.dispatch.DecodeDispatch.decode_dispatch
+        {I : Set}
+        {ℋ_0 : parity_scale_codec.codec.Input.Trait I}
+        :=
+        decode_dispatch (I := I);
+    }.
+  End
+    Impl_ink_reflect_dispatch_DecodeDispatch_for_erc20_erc20_____ink_MessageDecoder.
+  Global Hint Resolve I : core.
+End
+  Impl_ink_reflect_dispatch_DecodeDispatch_for_erc20_erc20_____ink_MessageDecoder.
+
+Definition MESSAGE_0 `{State.Trait} : array CoqOfRust.core.primitive.u8 :=
+  run
+    (Pure
+      (ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR
+        (Self := erc20.erc20.Erc20))).
+
+Definition MESSAGE_1 `{State.Trait} : array CoqOfRust.core.primitive.u8 :=
+  run
+    (Pure
+      (ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR
+        (Self := erc20.erc20.Erc20))).
+
+Definition MESSAGE_2 `{State.Trait} : array CoqOfRust.core.primitive.u8 :=
+  run
+    (Pure
+      (ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR
+        (Self := erc20.erc20.Erc20))).
+
+Definition MESSAGE_3 `{State.Trait} : array CoqOfRust.core.primitive.u8 :=
+  run
+    (Pure
+      (ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR
+        (Self := erc20.erc20.Erc20))).
+
+Definition MESSAGE_4 `{State.Trait} : array CoqOfRust.core.primitive.u8 :=
+  run
+    (Pure
+      (ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR
+        (Self := erc20.erc20.Erc20))).
+
+Definition MESSAGE_5 `{State.Trait} : array CoqOfRust.core.primitive.u8 :=
+  run
+    (Pure
+      (ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR
+        (Self := erc20.erc20.Erc20))).
+
+Module
+  Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_____ink_MessageDecoder.
+  Section
+    Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_____ink_MessageDecoder.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := erc20.erc20._.__ink_MessageDecoder.
+    
+    Definition decode
+        {I : Set}
+        {ℋ_0 : parity_scale_codec.codec.Input.Trait I}
+        (input : mut_ref I)
+        : M (core.result.Result Self parity_scale_codec.error.Error) :=
+      let* α0 := deref input _ in
+      let* α1 := borrow_mut α0 _ in
+      let* α2 := ink.reflect.dispatch.DecodeDispatch.decode_dispatch α1 in
+      (core.result.Result _ _)::["map_err"] α2 core.convert.Into.into.
+    
+    Global Instance AssociatedFunction_decode
+        {I : Set}
+        {ℋ_0 : parity_scale_codec.codec.Input.Trait I} :
+      Notation.DoubleColon Self "decode" := {
+      Notation.double_colon := decode (I := I);
+    }.
+    
+    Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
+      parity_scale_codec.codec.Decode.decode
+        {I : Set}
+        {ℋ_0 : parity_scale_codec.codec.Input.Trait I}
+        :=
+        decode (I := I);
+    }.
+  End
+    Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_____ink_MessageDecoder.
+  Global Hint Resolve I : core.
+End Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_____ink_MessageDecoder.
+
+Definition push_contract
+    `{State.Trait}
+    (contract : core.mem.manually_drop.ManuallyDrop erc20.erc20.Erc20)
+    (mutates : bool)
+    : M unit :=
+  let* α0 := use mutates in
+  if (α0 : bool) then
+    let* _ :=
+      let* α0 := borrow ink_storage_traits.storage.StorageKey.KEY u32 in
+      let* α1 := deref α0 u32 in
+      let* α2 := borrow α1 u32 in
+      let* α3 :=
+        borrow
+          contract
+          (core.mem.manually_drop.ManuallyDrop erc20.erc20.Erc20) in
+      let* α4 :=
+        deref α3 (core.mem.manually_drop.ManuallyDrop erc20.erc20.Erc20) in
+      let* α5 :=
+        borrow α4 (core.mem.manually_drop.ManuallyDrop erc20.erc20.Erc20) in
+      let* α6 := core.ops.deref.Deref.deref α5 in
+      let* α7 := deref α6 erc20.erc20.Erc20 in
+      let* α8 := borrow α7 erc20.erc20.Erc20 in
+      ink_env.api.set_contract_storage α2 α8 in
+    M.alloc tt
+  else
+    M.alloc tt.
+
+Module
+  Impl_ink_reflect_dispatch_ExecuteDispatchable_for_erc20_erc20_____ink_MessageDecoder.
+  Section
+    Impl_ink_reflect_dispatch_ExecuteDispatchable_for_erc20_erc20_____ink_MessageDecoder.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := erc20.erc20._.__ink_MessageDecoder.
+    
+    Definition execute_dispatchable
+        (self : Self)
+        : M (core.result.Result unit ink.reflect.dispatch.DispatchError) :=
+      let key := ink_storage_traits.storage.StorageKey.KEY in
+      let* contract :=
+        let* α0 := borrow key u32 in
+        let* α1 := deref α0 u32 in
+        let* α2 := borrow α1 u32 in
+        let* α3 := ink_env.api.get_contract_storage α2 in
+        let* α4 :=
+          match α3 with
+          | core.result.Result core.option.Option value => Pure value
+          | core.result.Result core.option.Option  =>
+            let* α0 :=
+              borrow [ mk_str "storage entry was empty" ] (list (ref str)) in
+            let* α1 := deref α0 (list (ref str)) in
+            let* α2 := borrow α1 (list (ref str)) in
+            let* α3 := pointer_coercion "Unsize" α2 in
+            let* α4 := core.fmt.Arguments::["new_const"] α3 in
+            let* α5 := core.panicking.panic_fmt α4 in
+            never_to_any α5
+          | core.result.Result _ =>
+            let* α0 :=
+              borrow
+                [ mk_str "could not properly decode storage entry" ]
+                (list (ref str)) in
+            let* α1 := deref α0 (list (ref str)) in
+            let* α2 := borrow α1 (list (ref str)) in
+            let* α3 := pointer_coercion "Unsize" α2 in
+            let* α4 := core.fmt.Arguments::["new_const"] α3 in
+            let* α5 := core.panicking.panic_fmt α4 in
+            never_to_any α5
+          end in
+        (core.mem.manually_drop.ManuallyDrop _)::["new"] α4 in
+      let* _ :=
+        match self with
+        | erc20.erc20._.__ink_MessageDecoder input =>
+          let* _ :=
+            let* α0 := M.alloc false in
+            let* message_0 := M.alloc false in
+            let message_0 :=
+              ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
+            let* α1 := or α0 message_0 in
+            let* message_1 := M.alloc false in
+            let message_1 :=
+              ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
+            let* α2 := or α1 message_1 in
+            let* message_2 := M.alloc false in
+            let message_2 :=
+              ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
+            let* α3 := or α2 message_2 in
+            let* message_3 := M.alloc false in
+            let message_3 :=
+              ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
+            let* α4 := or α3 message_3 in
+            let* message_4 := M.alloc false in
+            let message_4 :=
+              ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
+            let* α5 := or α4 message_4 in
+            let* message_5 := M.alloc false in
+            let message_5 :=
+              ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
+            let* α0 := or α5 message_5 in
+            let* α1 :=
+              not ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
+            let* α2 := and α0 α1 in
+            let* α3 := use α2 in
+            if (α3 : bool) then
+              let* _ :=
+                let* α0 := ink.codegen.dispatch.execution.deny_payment in
+                let* α1 := core.ops.try_trait.Try.branch α0 in
+                match α1 with
+                | core.ops.control_flow.ControlFlow residual =>
+                  let* α0 :=
+                    core.ops.try_trait.FromResidual.from_residual residual in
+                  let* α1 := Return α0 in
+                  never_to_any α1
+                | core.ops.control_flow.ControlFlow val => Pure val
+                end in
+              M.alloc tt
+            else
+              M.alloc tt in
+          let* result :=
+            let* α0 :=
+              borrow_mut
+                contract
+                (core.mem.manually_drop.ManuallyDrop erc20.erc20.Erc20) in
+            let* α1 :=
+              deref
+                α0
+                (core.mem.manually_drop.ManuallyDrop erc20.erc20.Erc20) in
+            let* α2 :=
+              borrow_mut
+                α1
+                (core.mem.manually_drop.ManuallyDrop erc20.erc20.Erc20) in
+            let* α3 := core.ops.deref.DerefMut.deref_mut α2 in
+            let* α4 := deref α3 erc20.erc20.Erc20 in
+            let* α5 := borrow_mut α4 erc20.erc20.Erc20 in
+            ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE α5 input in
+          let* is_reverted :=
+            let* α0 := borrow result u128 in
+            let* α1 := deref α0 u128 in
+            let* α2 := borrow α1 u128 in
+            let* α3 :=
+              borrow
+                (ink.result_info.IsResultErr.Build_t α2)
+                (ink.result_info.IsResultErr u128) in
+            let* α0 := ink.result_info.IsResultErrFallback.value α3 in
+            and ink.result_info.IsResultTypeFallback.VALUE α0 in
+          let* _ :=
+            let* α0 := not is_reverted in
+            let* α1 := use α0 in
+            if (α1 : bool) then
+              let* _ :=
+                "unimplemented parent_kind"
+                  contract
+                  ink.reflect.dispatch.DispatchableMessageInfo.MUTATES in
+              M.alloc tt
+            else
+              M.alloc tt in
+          let* α0 :=
+            ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.ReturnFlags::["new_with_reverted"]
+              is_reverted in
+          let* α1 := "unimplemented parent_kind" result in
+          let* α2 :=
+            borrow α1 (core.result.Result u128 ink_primitives.LangError) in
+          let* α3 :=
+            deref α2 (core.result.Result u128 ink_primitives.LangError) in
+          let* α4 :=
+            borrow α3 (core.result.Result u128 ink_primitives.LangError) in
+          let* α5 := ink_env.api.return_value α0 α4 in
+          never_to_any α5
+        | erc20.erc20._.__ink_MessageDecoder input =>
+          let* _ :=
+            let* α0 := M.alloc false in
+            let* message_0 := M.alloc false in
+            let message_0 :=
+              ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
+            let* α1 := or α0 message_0 in
+            let* message_1 := M.alloc false in
+            let message_1 :=
+              ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
+            let* α2 := or α1 message_1 in
+            let* message_2 := M.alloc false in
+            let message_2 :=
+              ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
+            let* α3 := or α2 message_2 in
+            let* message_3 := M.alloc false in
+            let message_3 :=
+              ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
+            let* α4 := or α3 message_3 in
+            let* message_4 := M.alloc false in
+            let message_4 :=
+              ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
+            let* α5 := or α4 message_4 in
+            let* message_5 := M.alloc false in
+            let message_5 :=
+              ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
+            let* α0 := or α5 message_5 in
+            let* α1 :=
+              not ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
+            let* α2 := and α0 α1 in
+            let* α3 := use α2 in
+            if (α3 : bool) then
+              let* _ :=
+                let* α0 := ink.codegen.dispatch.execution.deny_payment in
+                let* α1 := core.ops.try_trait.Try.branch α0 in
+                match α1 with
+                | core.ops.control_flow.ControlFlow residual =>
+                  let* α0 :=
+                    core.ops.try_trait.FromResidual.from_residual residual in
+                  let* α1 := Return α0 in
+                  never_to_any α1
+                | core.ops.control_flow.ControlFlow val => Pure val
+                end in
+              M.alloc tt
+            else
+              M.alloc tt in
+          let* result :=
+            let* α0 :=
+              borrow_mut
+                contract
+                (core.mem.manually_drop.ManuallyDrop erc20.erc20.Erc20) in
+            let* α1 :=
+              deref
+                α0
+                (core.mem.manually_drop.ManuallyDrop erc20.erc20.Erc20) in
+            let* α2 :=
+              borrow_mut
+                α1
+                (core.mem.manually_drop.ManuallyDrop erc20.erc20.Erc20) in
+            let* α3 := core.ops.deref.DerefMut.deref_mut α2 in
+            let* α4 := deref α3 erc20.erc20.Erc20 in
+            let* α5 := borrow_mut α4 erc20.erc20.Erc20 in
+            ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE α5 input in
+          let* is_reverted :=
+            let* α0 := borrow result u128 in
+            let* α1 := deref α0 u128 in
+            let* α2 := borrow α1 u128 in
+            let* α3 :=
+              borrow
+                (ink.result_info.IsResultErr.Build_t α2)
+                (ink.result_info.IsResultErr u128) in
+            let* α0 := ink.result_info.IsResultErrFallback.value α3 in
+            and ink.result_info.IsResultTypeFallback.VALUE α0 in
+          let* _ :=
+            let* α0 := not is_reverted in
+            let* α1 := use α0 in
+            if (α1 : bool) then
+              let* _ :=
+                "unimplemented parent_kind"
+                  contract
+                  ink.reflect.dispatch.DispatchableMessageInfo.MUTATES in
+              M.alloc tt
+            else
+              M.alloc tt in
+          let* α0 :=
+            ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.ReturnFlags::["new_with_reverted"]
+              is_reverted in
+          let* α1 := "unimplemented parent_kind" result in
+          let* α2 :=
+            borrow α1 (core.result.Result u128 ink_primitives.LangError) in
+          let* α3 :=
+            deref α2 (core.result.Result u128 ink_primitives.LangError) in
+          let* α4 :=
+            borrow α3 (core.result.Result u128 ink_primitives.LangError) in
+          let* α5 := ink_env.api.return_value α0 α4 in
+          never_to_any α5
+        | erc20.erc20._.__ink_MessageDecoder input =>
+          let* _ :=
+            let* α0 := M.alloc false in
+            let* message_0 := M.alloc false in
+            let message_0 :=
+              ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
+            let* α1 := or α0 message_0 in
+            let* message_1 := M.alloc false in
+            let message_1 :=
+              ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
+            let* α2 := or α1 message_1 in
+            let* message_2 := M.alloc false in
+            let message_2 :=
+              ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
+            let* α3 := or α2 message_2 in
+            let* message_3 := M.alloc false in
+            let message_3 :=
+              ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
+            let* α4 := or α3 message_3 in
+            let* message_4 := M.alloc false in
+            let message_4 :=
+              ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
+            let* α5 := or α4 message_4 in
+            let* message_5 := M.alloc false in
+            let message_5 :=
+              ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
+            let* α0 := or α5 message_5 in
+            let* α1 :=
+              not ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
+            let* α2 := and α0 α1 in
+            let* α3 := use α2 in
+            if (α3 : bool) then
+              let* _ :=
+                let* α0 := ink.codegen.dispatch.execution.deny_payment in
+                let* α1 := core.ops.try_trait.Try.branch α0 in
+                match α1 with
+                | core.ops.control_flow.ControlFlow residual =>
+                  let* α0 :=
+                    core.ops.try_trait.FromResidual.from_residual residual in
+                  let* α1 := Return α0 in
+                  never_to_any α1
+                | core.ops.control_flow.ControlFlow val => Pure val
+                end in
+              M.alloc tt
+            else
+              M.alloc tt in
+          let* result :=
+            let* α0 :=
+              borrow_mut
+                contract
+                (core.mem.manually_drop.ManuallyDrop erc20.erc20.Erc20) in
+            let* α1 :=
+              deref
+                α0
+                (core.mem.manually_drop.ManuallyDrop erc20.erc20.Erc20) in
+            let* α2 :=
+              borrow_mut
+                α1
+                (core.mem.manually_drop.ManuallyDrop erc20.erc20.Erc20) in
+            let* α3 := core.ops.deref.DerefMut.deref_mut α2 in
+            let* α4 := deref α3 erc20.erc20.Erc20 in
+            let* α5 := borrow_mut α4 erc20.erc20.Erc20 in
+            ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE α5 input in
+          let* is_reverted :=
+            let* α0 := borrow result u128 in
+            let* α1 := deref α0 u128 in
+            let* α2 := borrow α1 u128 in
+            let* α3 :=
+              borrow
+                (ink.result_info.IsResultErr.Build_t α2)
+                (ink.result_info.IsResultErr u128) in
+            let* α0 := ink.result_info.IsResultErrFallback.value α3 in
+            and ink.result_info.IsResultTypeFallback.VALUE α0 in
+          let* _ :=
+            let* α0 := not is_reverted in
+            let* α1 := use α0 in
+            if (α1 : bool) then
+              let* _ :=
+                "unimplemented parent_kind"
+                  contract
+                  ink.reflect.dispatch.DispatchableMessageInfo.MUTATES in
+              M.alloc tt
+            else
+              M.alloc tt in
+          let* α0 :=
+            ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.ReturnFlags::["new_with_reverted"]
+              is_reverted in
+          let* α1 := "unimplemented parent_kind" result in
+          let* α2 :=
+            borrow α1 (core.result.Result u128 ink_primitives.LangError) in
+          let* α3 :=
+            deref α2 (core.result.Result u128 ink_primitives.LangError) in
+          let* α4 :=
+            borrow α3 (core.result.Result u128 ink_primitives.LangError) in
+          let* α5 := ink_env.api.return_value α0 α4 in
+          never_to_any α5
+        | erc20.erc20._.__ink_MessageDecoder input =>
+          let* _ :=
+            let* α0 := M.alloc false in
+            let* message_0 := M.alloc false in
+            let message_0 :=
+              ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
+            let* α1 := or α0 message_0 in
+            let* message_1 := M.alloc false in
+            let message_1 :=
+              ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
+            let* α2 := or α1 message_1 in
+            let* message_2 := M.alloc false in
+            let message_2 :=
+              ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
+            let* α3 := or α2 message_2 in
+            let* message_3 := M.alloc false in
+            let message_3 :=
+              ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
+            let* α4 := or α3 message_3 in
+            let* message_4 := M.alloc false in
+            let message_4 :=
+              ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
+            let* α5 := or α4 message_4 in
+            let* message_5 := M.alloc false in
+            let message_5 :=
+              ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
+            let* α0 := or α5 message_5 in
+            let* α1 :=
+              not ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
+            let* α2 := and α0 α1 in
+            let* α3 := use α2 in
+            if (α3 : bool) then
+              let* _ :=
+                let* α0 := ink.codegen.dispatch.execution.deny_payment in
+                let* α1 := core.ops.try_trait.Try.branch α0 in
+                match α1 with
+                | core.ops.control_flow.ControlFlow residual =>
+                  let* α0 :=
+                    core.ops.try_trait.FromResidual.from_residual residual in
+                  let* α1 := Return α0 in
+                  never_to_any α1
+                | core.ops.control_flow.ControlFlow val => Pure val
+                end in
+              M.alloc tt
+            else
+              M.alloc tt in
+          let* result :=
+            let* α0 :=
+              borrow_mut
+                contract
+                (core.mem.manually_drop.ManuallyDrop erc20.erc20.Erc20) in
+            let* α1 :=
+              deref
+                α0
+                (core.mem.manually_drop.ManuallyDrop erc20.erc20.Erc20) in
+            let* α2 :=
+              borrow_mut
+                α1
+                (core.mem.manually_drop.ManuallyDrop erc20.erc20.Erc20) in
+            let* α3 := core.ops.deref.DerefMut.deref_mut α2 in
+            let* α4 := deref α3 erc20.erc20.Erc20 in
+            let* α5 := borrow_mut α4 erc20.erc20.Erc20 in
+            ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE α5 input in
+          let* is_reverted :=
+            let* α0 :=
+              borrow result (core.result.Result unit erc20.erc20.Error) in
+            let* α1 := deref α0 (core.result.Result unit erc20.erc20.Error) in
+            let* α2 := borrow α1 (core.result.Result unit erc20.erc20.Error) in
+            let* α3 :=
+              borrow
+                (ink.result_info.IsResultErr.Build_t α2)
+                (ink.result_info.IsResultErr
+                  (core.result.Result unit erc20.erc20.Error)) in
+            let* α0 :=
+              (ink.result_info.IsResultErr (core.result.Result _ _))::["value"]
+                α3 in
+            and ink.result_info.VALUE α0 in
+          let* _ :=
+            let* α0 := not is_reverted in
+            let* α1 := use α0 in
+            if (α1 : bool) then
+              let* _ :=
+                "unimplemented parent_kind"
+                  contract
+                  ink.reflect.dispatch.DispatchableMessageInfo.MUTATES in
+              M.alloc tt
+            else
+              M.alloc tt in
+          let* α0 :=
+            ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.ReturnFlags::["new_with_reverted"]
+              is_reverted in
+          let* α1 := "unimplemented parent_kind" result in
+          let* α2 :=
+            borrow
+              α1
+              (core.result.Result
+                (core.result.Result unit erc20.erc20.Error)
+                ink_primitives.LangError) in
+          let* α3 :=
+            deref
+              α2
+              (core.result.Result
+                (core.result.Result unit erc20.erc20.Error)
+                ink_primitives.LangError) in
+          let* α4 :=
+            borrow
+              α3
+              (core.result.Result
+                (core.result.Result unit erc20.erc20.Error)
+                ink_primitives.LangError) in
+          let* α5 := ink_env.api.return_value α0 α4 in
+          never_to_any α5
+        | erc20.erc20._.__ink_MessageDecoder input =>
+          let* _ :=
+            let* α0 := M.alloc false in
+            let* message_0 := M.alloc false in
+            let message_0 :=
+              ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
+            let* α1 := or α0 message_0 in
+            let* message_1 := M.alloc false in
+            let message_1 :=
+              ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
+            let* α2 := or α1 message_1 in
+            let* message_2 := M.alloc false in
+            let message_2 :=
+              ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
+            let* α3 := or α2 message_2 in
+            let* message_3 := M.alloc false in
+            let message_3 :=
+              ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
+            let* α4 := or α3 message_3 in
+            let* message_4 := M.alloc false in
+            let message_4 :=
+              ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
+            let* α5 := or α4 message_4 in
+            let* message_5 := M.alloc false in
+            let message_5 :=
+              ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
+            let* α0 := or α5 message_5 in
+            let* α1 :=
+              not ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
+            let* α2 := and α0 α1 in
+            let* α3 := use α2 in
+            if (α3 : bool) then
+              let* _ :=
+                let* α0 := ink.codegen.dispatch.execution.deny_payment in
+                let* α1 := core.ops.try_trait.Try.branch α0 in
+                match α1 with
+                | core.ops.control_flow.ControlFlow residual =>
+                  let* α0 :=
+                    core.ops.try_trait.FromResidual.from_residual residual in
+                  let* α1 := Return α0 in
+                  never_to_any α1
+                | core.ops.control_flow.ControlFlow val => Pure val
+                end in
+              M.alloc tt
+            else
+              M.alloc tt in
+          let* result :=
+            let* α0 :=
+              borrow_mut
+                contract
+                (core.mem.manually_drop.ManuallyDrop erc20.erc20.Erc20) in
+            let* α1 :=
+              deref
+                α0
+                (core.mem.manually_drop.ManuallyDrop erc20.erc20.Erc20) in
+            let* α2 :=
+              borrow_mut
+                α1
+                (core.mem.manually_drop.ManuallyDrop erc20.erc20.Erc20) in
+            let* α3 := core.ops.deref.DerefMut.deref_mut α2 in
+            let* α4 := deref α3 erc20.erc20.Erc20 in
+            let* α5 := borrow_mut α4 erc20.erc20.Erc20 in
+            ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE α5 input in
+          let* is_reverted :=
+            let* α0 :=
+              borrow result (core.result.Result unit erc20.erc20.Error) in
+            let* α1 := deref α0 (core.result.Result unit erc20.erc20.Error) in
+            let* α2 := borrow α1 (core.result.Result unit erc20.erc20.Error) in
+            let* α3 :=
+              borrow
+                (ink.result_info.IsResultErr.Build_t α2)
+                (ink.result_info.IsResultErr
+                  (core.result.Result unit erc20.erc20.Error)) in
+            let* α0 :=
+              (ink.result_info.IsResultErr (core.result.Result _ _))::["value"]
+                α3 in
+            and ink.result_info.VALUE α0 in
+          let* _ :=
+            let* α0 := not is_reverted in
+            let* α1 := use α0 in
+            if (α1 : bool) then
+              let* _ :=
+                "unimplemented parent_kind"
+                  contract
+                  ink.reflect.dispatch.DispatchableMessageInfo.MUTATES in
+              M.alloc tt
+            else
+              M.alloc tt in
+          let* α0 :=
+            ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.ReturnFlags::["new_with_reverted"]
+              is_reverted in
+          let* α1 := "unimplemented parent_kind" result in
+          let* α2 :=
+            borrow
+              α1
+              (core.result.Result
+                (core.result.Result unit erc20.erc20.Error)
+                ink_primitives.LangError) in
+          let* α3 :=
+            deref
+              α2
+              (core.result.Result
+                (core.result.Result unit erc20.erc20.Error)
+                ink_primitives.LangError) in
+          let* α4 :=
+            borrow
+              α3
+              (core.result.Result
+                (core.result.Result unit erc20.erc20.Error)
+                ink_primitives.LangError) in
+          let* α5 := ink_env.api.return_value α0 α4 in
+          never_to_any α5
+        | erc20.erc20._.__ink_MessageDecoder input =>
+          let* _ :=
+            let* α0 := M.alloc false in
+            let* message_0 := M.alloc false in
+            let message_0 :=
+              ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
+            let* α1 := or α0 message_0 in
+            let* message_1 := M.alloc false in
+            let message_1 :=
+              ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
+            let* α2 := or α1 message_1 in
+            let* message_2 := M.alloc false in
+            let message_2 :=
+              ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
+            let* α3 := or α2 message_2 in
+            let* message_3 := M.alloc false in
+            let message_3 :=
+              ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
+            let* α4 := or α3 message_3 in
+            let* message_4 := M.alloc false in
+            let message_4 :=
+              ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
+            let* α5 := or α4 message_4 in
+            let* message_5 := M.alloc false in
+            let message_5 :=
+              ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
+            let* α0 := or α5 message_5 in
+            let* α1 :=
+              not ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
+            let* α2 := and α0 α1 in
+            let* α3 := use α2 in
+            if (α3 : bool) then
+              let* _ :=
+                let* α0 := ink.codegen.dispatch.execution.deny_payment in
+                let* α1 := core.ops.try_trait.Try.branch α0 in
+                match α1 with
+                | core.ops.control_flow.ControlFlow residual =>
+                  let* α0 :=
+                    core.ops.try_trait.FromResidual.from_residual residual in
+                  let* α1 := Return α0 in
+                  never_to_any α1
+                | core.ops.control_flow.ControlFlow val => Pure val
+                end in
+              M.alloc tt
+            else
+              M.alloc tt in
+          let* result :=
+            let* α0 :=
+              borrow_mut
+                contract
+                (core.mem.manually_drop.ManuallyDrop erc20.erc20.Erc20) in
+            let* α1 :=
+              deref
+                α0
+                (core.mem.manually_drop.ManuallyDrop erc20.erc20.Erc20) in
+            let* α2 :=
+              borrow_mut
+                α1
+                (core.mem.manually_drop.ManuallyDrop erc20.erc20.Erc20) in
+            let* α3 := core.ops.deref.DerefMut.deref_mut α2 in
+            let* α4 := deref α3 erc20.erc20.Erc20 in
+            let* α5 := borrow_mut α4 erc20.erc20.Erc20 in
+            ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE α5 input in
+          let* is_reverted :=
+            let* α0 :=
+              borrow result (core.result.Result unit erc20.erc20.Error) in
+            let* α1 := deref α0 (core.result.Result unit erc20.erc20.Error) in
+            let* α2 := borrow α1 (core.result.Result unit erc20.erc20.Error) in
+            let* α3 :=
+              borrow
+                (ink.result_info.IsResultErr.Build_t α2)
+                (ink.result_info.IsResultErr
+                  (core.result.Result unit erc20.erc20.Error)) in
+            let* α0 :=
+              (ink.result_info.IsResultErr (core.result.Result _ _))::["value"]
+                α3 in
+            and ink.result_info.VALUE α0 in
+          let* _ :=
+            let* α0 := not is_reverted in
+            let* α1 := use α0 in
+            if (α1 : bool) then
+              let* _ :=
+                "unimplemented parent_kind"
+                  contract
+                  ink.reflect.dispatch.DispatchableMessageInfo.MUTATES in
+              M.alloc tt
+            else
+              M.alloc tt in
+          let* α0 :=
+            ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.ReturnFlags::["new_with_reverted"]
+              is_reverted in
+          let* α1 := "unimplemented parent_kind" result in
+          let* α2 :=
+            borrow
+              α1
+              (core.result.Result
+                (core.result.Result unit erc20.erc20.Error)
+                ink_primitives.LangError) in
+          let* α3 :=
+            deref
+              α2
+              (core.result.Result
+                (core.result.Result unit erc20.erc20.Error)
+                ink_primitives.LangError) in
+          let* α4 :=
+            borrow
+              α3
+              (core.result.Result
+                (core.result.Result unit erc20.erc20.Error)
+                ink_primitives.LangError) in
+          let* α5 := ink_env.api.return_value α0 α4 in
+          never_to_any α5
+        end in
+      let* α0 := M.alloc tt in
+      never_to_any α0.
+    
+    Global Instance AssociatedFunction_execute_dispatchable :
+      Notation.DoubleColon Self "execute_dispatchable" := {
+      Notation.double_colon := execute_dispatchable;
+    }.
+    
+    Global Instance I : ink.reflect.dispatch.ExecuteDispatchable.Trait Self := {
+      ink.reflect.dispatch.ExecuteDispatchable.execute_dispatchable
+        :=
+        execute_dispatchable;
+    }.
+  End
+    Impl_ink_reflect_dispatch_ExecuteDispatchable_for_erc20_erc20_____ink_MessageDecoder.
+  Global Hint Resolve I : core.
+End
+  Impl_ink_reflect_dispatch_ExecuteDispatchable_for_erc20_erc20_____ink_MessageDecoder.
+
+Module Impl_ink_reflect_dispatch_ContractMessageDecoder_for_erc20_erc20_Erc20.
+  Section
+    Impl_ink_reflect_dispatch_ContractMessageDecoder_for_erc20_erc20_Erc20.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := erc20.erc20.Erc20.
+    
+    Definition Type : Set := erc20.erc20._.__ink_MessageDecoder.
+    
+    Global Instance I
+      : ink.reflect.dispatch.ContractMessageDecoder.Trait Self := {
+      ink.reflect.dispatch.ContractMessageDecoder.Type := Type;
+    }.
+  End Impl_ink_reflect_dispatch_ContractMessageDecoder_for_erc20_erc20_Erc20.
+  Global Hint Resolve I : core.
+End Impl_ink_reflect_dispatch_ContractMessageDecoder_for_erc20_erc20_Erc20.
+
+Definition _
+    `{State.Trait}
+    : ink.codegen.utils.same_type.IsSameType erc20.erc20.Erc20 :=
+  run ((ink.codegen.utils.same_type.IsSameType erc20.erc20.Erc20)::["new"]).
+
+Module Impl_erc20_erc20_Erc20_29.
+  Section Impl_erc20_erc20_Erc20_29.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := erc20.erc20.Erc20.
+    
+    Definition new (total_supply : erc20.erc20.Balance) : M Self :=
+      let* balances := core.default.Default.default in
+      let* caller :=
+        let* α0 := ink.codegen.env.StaticEnv.env in
+        (ink.env_access.EnvAccess _)::["caller"] α0 in
+      let* _ :=
+        let* α0 :=
+          borrow_mut
+            balances
+            (ink_storage.lazy.mapping.Mapping
+              ink_primitives.types.AccountId
+              u128
+              (ink_storage_traits.impls.ResolverKey
+                ink_storage_traits.impls.AutoKey
+                (ink_storage_traits.impls.ManualKey unit))) in
+        let* α1 := borrow total_supply u128 in
+        let* α2 := deref α1 u128 in
+        let* α3 := borrow α2 u128 in
+        (ink_storage.lazy.mapping.Mapping _ _ _)::["insert"] α0 caller α3 in
+      let* _ :=
+        let* α0 := ink.codegen.env.StaticEnv.env in
+        let* α1 :=
+          M.alloc
+            {|
+              erc20.erc20.Transfer.from := core.option.Option.None tt;
+              erc20.erc20.Transfer.to := core.option.Option.Some caller;
+              erc20.erc20.Transfer.value := total_supply;
+            |} in
+        ink.codegen.event.emit.EmitEvent.emit_event α0 α1 in
+      let* α0 := core.default.Default.default in
+      M.alloc
+        {|
+          erc20.erc20.Erc20.total_supply := total_supply;
+          erc20.erc20.Erc20.balances := balances;
+          erc20.erc20.Erc20.allowances := α0;
+        |}.
+    
+    Global Instance AssociatedFunction_new :
+      Notation.DoubleColon Self "new" := {
+      Notation.double_colon := new;
+    }.
+    
+    Definition total_supply (self : ref Self) : M erc20.erc20.Balance :=
+      let* α0 := deref self erc20.erc20.Erc20 in
+      α0.["total_supply"].
+    
+    Global Instance AssociatedFunction_total_supply :
+      Notation.DoubleColon Self "total_supply" := {
+      Notation.double_colon := total_supply;
+    }.
+    
+    Definition balance_of
+        (self : ref Self)
+        (owner : erc20.erc20.AccountId)
+        : M erc20.erc20.Balance :=
+      let* α0 := deref self erc20.erc20.Erc20 in
+      let* α1 := borrow α0 erc20.erc20.Erc20 in
+      let* α2 := borrow owner ink_primitives.types.AccountId in
+      let* α3 := deref α2 ink_primitives.types.AccountId in
+      let* α4 := borrow α3 ink_primitives.types.AccountId in
+      erc20.erc20.Erc20::["balance_of_impl"] α1 α4.
+    
+    Global Instance AssociatedFunction_balance_of :
+      Notation.DoubleColon Self "balance_of" := {
+      Notation.double_colon := balance_of;
+    }.
+    
+    Definition allowance
+        (self : ref Self)
+        (owner : erc20.erc20.AccountId)
+        (spender : erc20.erc20.AccountId)
+        : M erc20.erc20.Balance :=
+      let* α0 := deref self erc20.erc20.Erc20 in
+      let* α1 := borrow α0 erc20.erc20.Erc20 in
+      let* α2 := borrow owner ink_primitives.types.AccountId in
+      let* α3 := deref α2 ink_primitives.types.AccountId in
+      let* α4 := borrow α3 ink_primitives.types.AccountId in
+      let* α5 := borrow spender ink_primitives.types.AccountId in
+      let* α6 := deref α5 ink_primitives.types.AccountId in
+      let* α7 := borrow α6 ink_primitives.types.AccountId in
+      erc20.erc20.Erc20::["allowance_impl"] α1 α4 α7.
+    
+    Global Instance AssociatedFunction_allowance :
+      Notation.DoubleColon Self "allowance" := {
+      Notation.double_colon := allowance;
+    }.
+    
+    Definition transfer
+        (self : mut_ref Self)
+        (to : erc20.erc20.AccountId)
+        (value : erc20.erc20.Balance)
+        : M (erc20.erc20.Result unit) :=
+      let* from :=
+        let* α0 := deref self erc20.erc20.Erc20 in
+        let* α1 := borrow α0 erc20.erc20.Erc20 in
+        let* α2 := ink.codegen.env.Env.env α1 in
+        (ink.env_access.EnvAccess _)::["caller"] α2 in
+      let* α0 := deref self erc20.erc20.Erc20 in
+      let* α1 := borrow_mut α0 erc20.erc20.Erc20 in
+      let* α2 := borrow from ink_primitives.types.AccountId in
+      let* α3 := deref α2 ink_primitives.types.AccountId in
+      let* α4 := borrow α3 ink_primitives.types.AccountId in
+      let* α5 := borrow to ink_primitives.types.AccountId in
+      let* α6 := deref α5 ink_primitives.types.AccountId in
+      let* α7 := borrow α6 ink_primitives.types.AccountId in
+      erc20.erc20.Erc20::["transfer_from_to"] α1 α4 α7 value.
+    
+    Global Instance AssociatedFunction_transfer :
+      Notation.DoubleColon Self "transfer" := {
+      Notation.double_colon := transfer;
+    }.
+    
+    Definition approve
+        (self : mut_ref Self)
+        (spender : erc20.erc20.AccountId)
+        (value : erc20.erc20.Balance)
+        : M (erc20.erc20.Result unit) :=
+      let* owner :=
+        let* α0 := deref self erc20.erc20.Erc20 in
+        let* α1 := borrow α0 erc20.erc20.Erc20 in
+        let* α2 := ink.codegen.env.Env.env α1 in
+        (ink.env_access.EnvAccess _)::["caller"] α2 in
+      let* _ :=
+        let* α0 := deref self erc20.erc20.Erc20 in
+        let* α1 := α0.["allowances"] in
+        let* α2 :=
+          borrow_mut
+            α1
+            (ink_storage.lazy.mapping.Mapping
+              (ink_primitives.types.AccountId * ink_primitives.types.AccountId)
+              u128
+              (ink_storage_traits.impls.ResolverKey
+                ink_storage_traits.impls.AutoKey
+                (ink_storage_traits.impls.ManualKey unit))) in
+        let* α3 := borrow owner ink_primitives.types.AccountId in
+        let* α4 := borrow spender ink_primitives.types.AccountId in
+        let* α5 := borrow value u128 in
+        let* α6 := deref α5 u128 in
+        let* α7 := borrow α6 u128 in
+        (ink_storage.lazy.mapping.Mapping _ _ _)::["insert"] α2 (α3, α4) α7 in
+      let* _ :=
+        let* α0 := deref self erc20.erc20.Erc20 in
+        let* α1 := borrow α0 erc20.erc20.Erc20 in
+        let* α2 := ink.codegen.env.Env.env α1 in
+        let* α3 :=
+          M.alloc
+            {|
+              erc20.erc20.Approval.owner := owner;
+              erc20.erc20.Approval.spender := spender;
+              erc20.erc20.Approval.value := value;
+            |} in
+        ink.codegen.event.emit.EmitEvent.emit_event α2 α3 in
+      let* α0 := M.alloc tt in
+      Pure (core.result.Result.Ok α0).
+    
+    Global Instance AssociatedFunction_approve :
+      Notation.DoubleColon Self "approve" := {
+      Notation.double_colon := approve;
+    }.
+    
+    Definition transfer_from
+        (self : mut_ref Self)
+        (from : erc20.erc20.AccountId)
+        (to : erc20.erc20.AccountId)
+        (value : erc20.erc20.Balance)
+        : M (erc20.erc20.Result unit) :=
+      let* caller :=
+        let* α0 := deref self erc20.erc20.Erc20 in
+        let* α1 := borrow α0 erc20.erc20.Erc20 in
+        let* α2 := ink.codegen.env.Env.env α1 in
+        (ink.env_access.EnvAccess _)::["caller"] α2 in
+      let* allowance :=
+        let* α0 := deref self erc20.erc20.Erc20 in
+        let* α1 := borrow α0 erc20.erc20.Erc20 in
+        let* α2 := borrow from ink_primitives.types.AccountId in
+        let* α3 := deref α2 ink_primitives.types.AccountId in
+        let* α4 := borrow α3 ink_primitives.types.AccountId in
+        let* α5 := borrow caller ink_primitives.types.AccountId in
+        let* α6 := deref α5 ink_primitives.types.AccountId in
+        let* α7 := borrow α6 ink_primitives.types.AccountId in
+        erc20.erc20.Erc20::["allowance_impl"] α1 α4 α7 in
+      let* _ :=
+        let* α0 := lt allowance value in
+        let* α1 := use α0 in
+        if (α1 : bool) then
+          let* α0 :=
+            Return
+              (core.result.Result.Err
+                (erc20.erc20.Error.InsufficientAllowance tt)) in
+          never_to_any α0
+        else
+          M.alloc tt in
+      let* _ :=
+        let* α0 := deref self erc20.erc20.Erc20 in
+        let* α1 := borrow_mut α0 erc20.erc20.Erc20 in
+        let* α2 := borrow from ink_primitives.types.AccountId in
+        let* α3 := deref α2 ink_primitives.types.AccountId in
+        let* α4 := borrow α3 ink_primitives.types.AccountId in
+        let* α5 := borrow to ink_primitives.types.AccountId in
+        let* α6 := deref α5 ink_primitives.types.AccountId in
+        let* α7 := borrow α6 ink_primitives.types.AccountId in
+        let* α8 := erc20.erc20.Erc20::["transfer_from_to"] α1 α4 α7 value in
+        let* α9 := core.ops.try_trait.Try.branch α8 in
+        match α9 with
+        | core.ops.control_flow.ControlFlow residual =>
+          let* α0 := core.ops.try_trait.FromResidual.from_residual residual in
+          let* α1 := Return α0 in
+          never_to_any α1
+        | core.ops.control_flow.ControlFlow val => Pure val
+        end in
+      let* _ :=
+        let* α0 := deref self erc20.erc20.Erc20 in
+        let* α1 := α0.["allowances"] in
+        let* α2 :=
+          borrow_mut
+            α1
+            (ink_storage.lazy.mapping.Mapping
+              (ink_primitives.types.AccountId * ink_primitives.types.AccountId)
+              u128
+              (ink_storage_traits.impls.ResolverKey
+                ink_storage_traits.impls.AutoKey
+                (ink_storage_traits.impls.ManualKey unit))) in
+        let* α3 := borrow from ink_primitives.types.AccountId in
+        let* α4 := borrow caller ink_primitives.types.AccountId in
+        let* α5 := sub allowance value in
+        let* α6 := borrow α5 u128 in
+        let* α7 := deref α6 u128 in
+        let* α8 := borrow α7 u128 in
+        (ink_storage.lazy.mapping.Mapping _ _ _)::["insert"] α2 (α3, α4) α8 in
+      let* α0 := M.alloc tt in
+      Pure (core.result.Result.Ok α0).
+    
+    Global Instance AssociatedFunction_transfer_from :
+      Notation.DoubleColon Self "transfer_from" := {
+      Notation.double_colon := transfer_from;
+    }.
+    
+    Definition balance_of_impl
+        (self : ref Self)
+        (owner : ref erc20.erc20.AccountId)
+        : M erc20.erc20.Balance :=
+      let* α0 := deref self erc20.erc20.Erc20 in
+      let* α1 := α0.["balances"] in
+      let* α2 :=
+        borrow
+          α1
+          (ink_storage.lazy.mapping.Mapping
+            ink_primitives.types.AccountId
+            u128
+            (ink_storage_traits.impls.ResolverKey
+              ink_storage_traits.impls.AutoKey
+              (ink_storage_traits.impls.ManualKey unit))) in
+      let* α3 := (ink_storage.lazy.mapping.Mapping _ _ _)::["get"] α2 owner in
+      (core.option.Option _)::["unwrap_or_default"] α3.
+    
+    Global Instance AssociatedFunction_balance_of_impl :
+      Notation.DoubleColon Self "balance_of_impl" := {
+      Notation.double_colon := balance_of_impl;
+    }.
+    
+    Definition allowance_impl
+        (self : ref Self)
+        (owner : ref erc20.erc20.AccountId)
+        (spender : ref erc20.erc20.AccountId)
+        : M erc20.erc20.Balance :=
+      let* α0 := deref self erc20.erc20.Erc20 in
+      let* α1 := α0.["allowances"] in
+      let* α2 :=
+        borrow
+          α1
+          (ink_storage.lazy.mapping.Mapping
+            (ink_primitives.types.AccountId * ink_primitives.types.AccountId)
+            u128
+            (ink_storage_traits.impls.ResolverKey
+              ink_storage_traits.impls.AutoKey
+              (ink_storage_traits.impls.ManualKey unit))) in
+      let* α3 :=
+        (ink_storage.lazy.mapping.Mapping _ _ _)::["get"] α2 (owner, spender) in
+      (core.option.Option _)::["unwrap_or_default"] α3.
+    
+    Global Instance AssociatedFunction_allowance_impl :
+      Notation.DoubleColon Self "allowance_impl" := {
+      Notation.double_colon := allowance_impl;
+    }.
+    
+    Definition transfer_from_to
+        (self : mut_ref Self)
+        (from : ref erc20.erc20.AccountId)
+        (to : ref erc20.erc20.AccountId)
+        (value : erc20.erc20.Balance)
+        : M (erc20.erc20.Result unit) :=
+      let* from_balance :=
+        let* α0 := deref self erc20.erc20.Erc20 in
+        let* α1 := borrow α0 erc20.erc20.Erc20 in
+        let* α2 := deref from ink_primitives.types.AccountId in
+        let* α3 := borrow α2 ink_primitives.types.AccountId in
+        erc20.erc20.Erc20::["balance_of_impl"] α1 α3 in
+      let* _ :=
+        let* α0 := lt from_balance value in
+        let* α1 := use α0 in
+        if (α1 : bool) then
+          let* α0 :=
+            Return
+              (core.result.Result.Err
+                (erc20.erc20.Error.InsufficientBalance tt)) in
+          never_to_any α0
+        else
+          M.alloc tt in
+      let* _ :=
+        let* α0 := deref self erc20.erc20.Erc20 in
+        let* α1 := α0.["balances"] in
+        let* α2 :=
+          borrow_mut
+            α1
+            (ink_storage.lazy.mapping.Mapping
+              ink_primitives.types.AccountId
+              u128
+              (ink_storage_traits.impls.ResolverKey
+                ink_storage_traits.impls.AutoKey
+                (ink_storage_traits.impls.ManualKey unit))) in
+        let* α3 := sub from_balance value in
+        let* α4 := borrow α3 u128 in
+        let* α5 := deref α4 u128 in
+        let* α6 := borrow α5 u128 in
+        (ink_storage.lazy.mapping.Mapping _ _ _)::["insert"] α2 from α6 in
+      let* to_balance :=
+        let* α0 := deref self erc20.erc20.Erc20 in
+        let* α1 := borrow α0 erc20.erc20.Erc20 in
+        let* α2 := deref to ink_primitives.types.AccountId in
+        let* α3 := borrow α2 ink_primitives.types.AccountId in
+        erc20.erc20.Erc20::["balance_of_impl"] α1 α3 in
+      let* _ :=
+        let* α0 := deref self erc20.erc20.Erc20 in
+        let* α1 := α0.["balances"] in
+        let* α2 :=
+          borrow_mut
+            α1
+            (ink_storage.lazy.mapping.Mapping
+              ink_primitives.types.AccountId
+              u128
+              (ink_storage_traits.impls.ResolverKey
+                ink_storage_traits.impls.AutoKey
+                (ink_storage_traits.impls.ManualKey unit))) in
+        let* α3 := add to_balance value in
+        let* α4 := borrow α3 u128 in
+        let* α5 := deref α4 u128 in
+        let* α6 := borrow α5 u128 in
+        (ink_storage.lazy.mapping.Mapping _ _ _)::["insert"] α2 to α6 in
+      let* _ :=
+        let* α0 := deref self erc20.erc20.Erc20 in
+        let* α1 := borrow α0 erc20.erc20.Erc20 in
+        let* α2 := ink.codegen.env.Env.env α1 in
+        let* α3 := deref from ink_primitives.types.AccountId in
+        let* α4 := deref to ink_primitives.types.AccountId in
+        let* α5 :=
+          M.alloc
+            {|
+              erc20.erc20.Transfer.from := core.option.Option.Some α3;
+              erc20.erc20.Transfer.to := core.option.Option.Some α4;
+              erc20.erc20.Transfer.value := value;
+            |} in
+        ink.codegen.event.emit.EmitEvent.emit_event α2 α5 in
+      let* α0 := M.alloc tt in
+      Pure (core.result.Result.Ok α0).
+    
+    Global Instance AssociatedFunction_transfer_from_to :
+      Notation.DoubleColon Self "transfer_from_to" := {
+      Notation.double_colon := transfer_from_to;
+    }.
+  End Impl_erc20_erc20_Erc20_29.
+End Impl_erc20_erc20_Erc20_29.
+
+Module CallBuilder.
+  Section CallBuilder.
+    Context `{State.Trait}.
+    
     Unset Primitive Projections.
-    Record t `{State.Trait} : Set := {
+    Record t : Set := {
+      account_id : erc20.erc20.AccountId;
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_account_id : Notation.Dot "account_id" := {
+      Notation.dot x := let* x := M.read x in Pure x.(account_id) : M _;
+    }.
+    Global Instance Get_AF_account_id : Notation.DoubleColon t "account_id" := {
+      Notation.double_colon x
+        :=
+        let* x := M.read x in Pure x.(account_id) : M _;
+    }.
+  End CallBuilder.
+End CallBuilder.
+Definition CallBuilder `{State.Trait} : Set := M.val CallBuilder.t.
+
+Module Impl_core_fmt_Debug_for_erc20_erc20___CallBuilder.
+  Section Impl_core_fmt_Debug_for_erc20_erc20___CallBuilder.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := erc20.erc20._.CallBuilder.
+    
+    Definition fmt
+        (self : ref Self)
+        (f : mut_ref core.fmt.Formatter)
+        : M core.fmt.Result :=
+      let* α0 := deref f core.fmt.Formatter in
+      let* α1 := borrow_mut α0 core.fmt.Formatter in
+      let* α2 := deref (mk_str "CallBuilder") str in
+      let* α3 := borrow α2 str in
+      let* α4 := deref (mk_str "account_id") str in
+      let* α5 := borrow α4 str in
+      let* α6 := deref self erc20.erc20._.CallBuilder in
+      let* α7 := α6.["account_id"] in
+      let* α8 := borrow α7 ink_primitives.types.AccountId in
+      let* α9 := borrow α8 (ref ink_primitives.types.AccountId) in
+      let* α10 := deref α9 (ref ink_primitives.types.AccountId) in
+      let* α11 := borrow α10 (ref ink_primitives.types.AccountId) in
+      let* α12 := pointer_coercion "Unsize" α11 in
+      core.fmt.Formatter::["debug_struct_field1_finish"] α1 α3 α5 α12.
+    
+    Global Instance AssociatedFunction_fmt :
+      Notation.DoubleColon Self "fmt" := {
+      Notation.double_colon := fmt;
+    }.
+    
+    Global Instance I : core.fmt.Debug.Trait Self := {
+      core.fmt.Debug.fmt := fmt;
+    }.
+  End Impl_core_fmt_Debug_for_erc20_erc20___CallBuilder.
+  Global Hint Resolve I : core.
+End Impl_core_fmt_Debug_for_erc20_erc20___CallBuilder.
+
+Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20___CallBuilder.
+  Section Impl_parity_scale_codec_codec_Encode_for_erc20_erc20___CallBuilder.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := erc20.erc20._.CallBuilder.
+    
+    Definition encode_to
+        {__CodecOutputEdqy : Set}
+        {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+        {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy}
+        (self : ref Self)
+        (__codec_dest_edqy : mut_ref __CodecOutputEdqy)
+        : M unit :=
+      let* α0 := deref self erc20.erc20._.CallBuilder in
+      let* α1 := α0.["account_id"] in
+      let* α2 := borrow α1 ink_primitives.types.AccountId in
+      let* α3 := borrow α2 (ref ink_primitives.types.AccountId) in
+      let* α4 := deref α3 (ref ink_primitives.types.AccountId) in
+      let* α5 := borrow α4 (ref ink_primitives.types.AccountId) in
+      let* α6 := deref __codec_dest_edqy _ in
+      let* α7 := borrow_mut α6 _ in
+      parity_scale_codec.codec.Encode.encode_to α5 α7.
+    
+    Global Instance AssociatedFunction_encode_to
+        {__CodecOutputEdqy : Set}
+        {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+        {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy} :
+      Notation.DoubleColon Self "encode_to" := {
+      Notation.double_colon
+        :=
+        encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
+    }.
+    
+    Definition encode
+        (self : ref Self)
+        :
+          M
+            (alloc.vec.Vec
+              CoqOfRust.core.primitive.u8
+              alloc.vec.Vec.Default.A) :=
+      let* α0 := deref self erc20.erc20._.CallBuilder in
+      let* α1 := α0.["account_id"] in
+      let* α2 := borrow α1 ink_primitives.types.AccountId in
+      let* α3 := borrow α2 (ref ink_primitives.types.AccountId) in
+      let* α4 := deref α3 (ref ink_primitives.types.AccountId) in
+      let* α5 := borrow α4 (ref ink_primitives.types.AccountId) in
+      parity_scale_codec.codec.Encode.encode α5.
+    
+    Global Instance AssociatedFunction_encode :
+      Notation.DoubleColon Self "encode" := {
+      Notation.double_colon := encode;
+    }.
+    
+    Definition using_encoded
+        {R F : Set}
+        {ℋ_0 :
+          core.ops.function.FnOnce.Trait F
+            (Args := ref (Slice CoqOfRust.core.primitive.u8))}
+        (self : ref Self)
+        (f : F)
+        : M R :=
+      let* α0 := deref self erc20.erc20._.CallBuilder in
+      let* α1 := α0.["account_id"] in
+      let* α2 := borrow α1 ink_primitives.types.AccountId in
+      let* α3 := borrow α2 (ref ink_primitives.types.AccountId) in
+      let* α4 := deref α3 (ref ink_primitives.types.AccountId) in
+      let* α5 := borrow α4 (ref ink_primitives.types.AccountId) in
+      parity_scale_codec.codec.Encode.using_encoded α5 f.
+    
+    Global Instance AssociatedFunction_using_encoded
+        {R F : Set}
+        {ℋ_0 :
+          core.ops.function.FnOnce.Trait F
+            (Args := ref (Slice CoqOfRust.core.primitive.u8))} :
+      Notation.DoubleColon Self "using_encoded" := {
+      Notation.double_colon := using_encoded (R := R) (F := F);
+    }.
+    
+    Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
+    }.
+  End Impl_parity_scale_codec_codec_Encode_for_erc20_erc20___CallBuilder.
+  Global Hint Resolve I : core.
+End Impl_parity_scale_codec_codec_Encode_for_erc20_erc20___CallBuilder.
+
+Module
+  Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20___CallBuilder.
+  Section
+    Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20___CallBuilder.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := erc20.erc20._.CallBuilder.
+    
+    Global Instance I
+      : parity_scale_codec.encode_like.EncodeLike.Trait Self
+          (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self)
+        := {
+    }.
+  End
+    Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20___CallBuilder.
+  Global Hint Resolve I : core.
+End
+  Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20___CallBuilder.
+
+Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___CallBuilder.
+  Section Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___CallBuilder.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := erc20.erc20._.CallBuilder.
+    
+    Definition decode
+        {__CodecInputEdqy : Set}
+        {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
+        (__codec_input_edqy : mut_ref __CodecInputEdqy)
+        : M (core.result.Result Self parity_scale_codec.error.Error) :=
+      let* __codec_res_edqy :=
+        let* α0 := deref __codec_input_edqy _ in
+        let* α1 := borrow_mut α0 _ in
+        parity_scale_codec.codec.Decode.decode α1 in
+      let* α0 :=
+        match __codec_res_edqy with
+        | core.result.Result e =>
+          let* α0 :=
+            parity_scale_codec.error.Error::["chain"]
+              e
+              (mk_str "Could not decode `CallBuilder::account_id`") in
+          let* α1 := Return (core.result.Result.Err α0) in
+          never_to_any α1
+        | core.result.Result __codec_res_edqy => Pure __codec_res_edqy
+        end in
+      let* α1 := M.alloc {| erc20.erc20._.CallBuilder.account_id := α0; |} in
+      Pure (core.result.Result.Ok α1).
+    
+    Global Instance AssociatedFunction_decode
+        {__CodecInputEdqy : Set}
+        {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :
+      Notation.DoubleColon Self "decode" := {
+      Notation.double_colon := decode (__CodecInputEdqy := __CodecInputEdqy);
+    }.
+    
+    Definition decode_into
+        {__CodecInputEdqy : Set}
+        {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
+        (__codec_input_edqy : mut_ref __CodecInputEdqy)
+        (dst_ : mut_ref (core.mem.maybe_uninit.MaybeUninit Self))
+        :
+          M
+            (core.result.Result
+              parity_scale_codec.decode_finished.DecodeFinished
+              parity_scale_codec.error.Error) :=
+      let* _ :=
+        let* α0 := core.mem.size_of in
+        let* α1 := borrow α0 usize in
+        let* α2 := core.mem.size_of in
+        let* α3 := borrow α2 usize in
+        match (α1, α3) with
+        | (left_val, right_val) =>
+          let* α0 := deref left_val usize in
+          let* α1 := deref right_val usize in
+          let* α2 := eq α0 α1 in
+          let* α3 := not α2 in
+          let* α4 := use α3 in
+          if (α4 : bool) then
+            let kind := core.panicking.AssertKind.Eq tt in
+            let* _ :=
+              let* α0 := deref left_val usize in
+              let* α1 := borrow α0 usize in
+              let* α2 := deref α1 usize in
+              let* α3 := borrow α2 usize in
+              let* α4 := deref right_val usize in
+              let* α5 := borrow α4 usize in
+              let* α6 := deref α5 usize in
+              let* α7 := borrow α6 usize in
+              core.panicking.assert_failed
+                kind
+                α3
+                α7
+                (core.option.Option.None tt) in
+            let* α0 := M.alloc tt in
+            never_to_any α0
+          else
+            M.alloc tt
+        end in
+      let* _ :=
+        let* α0 := core.mem.size_of in
+        let* α1 := M.alloc 0 in
+        let* α2 := gt α0 α1 in
+        let* α3 := use α2 in
+        let* α4 :=
+          if (α3 : bool) then
+            M.alloc 1
+          else
+            M.alloc 0 in
+        let* α5 := M.alloc 1 in
+        let* α6 := le α4 α5 in
+        let* α7 := not α6 in
+        let* α8 := use α7 in
+        if (α8 : bool) then
+          let* α0 :=
+            core.panicking.panic
+              (mk_str
+                "assertion failed: if ::core::mem::size_of::<AccountId>() > 0 { 1 } else { 0 } <= 1") in
+          never_to_any α0
+        else
+          M.alloc tt in
+      let* _ :=
+        let* dst_ :=
+          let* α0 :=
+            deref
+              dst_
+              (core.mem.maybe_uninit.MaybeUninit erc20.erc20._.CallBuilder) in
+          borrow_mut
+            α0
+            (core.mem.maybe_uninit.MaybeUninit erc20.erc20._.CallBuilder) in
+        let* dst_ :=
+          let* α0 :=
+            deref
+              dst_
+              (core.mem.maybe_uninit.MaybeUninit erc20.erc20._.CallBuilder) in
+          let* α1 :=
+            borrow_mut
+              α0
+              (core.mem.maybe_uninit.MaybeUninit erc20.erc20._.CallBuilder) in
+          let* α2 := (core.mem.maybe_uninit.MaybeUninit _)::["as_mut_ptr"] α1 in
+          let* α3 := type not implemented::["cast"] α2 in
+          let* α4 :=
+            deref
+              α3
+              (core.mem.maybe_uninit.MaybeUninit
+                ink_primitives.types.AccountId) in
+          let* α5 :=
+            borrow_mut
+              α4
+              (core.mem.maybe_uninit.MaybeUninit
+                ink_primitives.types.AccountId) in
+          let* α6 :=
+            deref
+              α5
+              (core.mem.maybe_uninit.MaybeUninit
+                ink_primitives.types.AccountId) in
+          let* α0 :=
+            borrow_mut
+              α6
+              (core.mem.maybe_uninit.MaybeUninit
+                ink_primitives.types.AccountId) in
+          let* α1 :=
+            deref
+              α0
+              (core.mem.maybe_uninit.MaybeUninit
+                ink_primitives.types.AccountId) in
+          borrow_mut
+            α1
+            (core.mem.maybe_uninit.MaybeUninit
+              ink_primitives.types.AccountId) in
+        let* _ :=
+          let* α0 := deref __codec_input_edqy _ in
+          let* α1 := borrow_mut α0 _ in
+          let* α2 :=
+            deref
+              dst_
+              (core.mem.maybe_uninit.MaybeUninit
+                ink_primitives.types.AccountId) in
+          let* α3 :=
+            borrow_mut
+              α2
+              (core.mem.maybe_uninit.MaybeUninit
+                ink_primitives.types.AccountId) in
+          let* α4 := parity_scale_codec.codec.Decode.decode_into α1 α3 in
+          let* α5 := core.ops.try_trait.Try.branch α4 in
+          match α5 with
+          | core.ops.control_flow.ControlFlow residual =>
+            let* α0 := core.ops.try_trait.FromResidual.from_residual residual in
+            let* α1 := Return α0 in
+            never_to_any α1
+          | core.ops.control_flow.ControlFlow val => Pure val
+          end in
+        M.alloc tt in
+      let* α0 :=
+        parity_scale_codec.decode_finished.DecodeFinished::["assert_decoding_finished"] in
+      Pure (core.result.Result.Ok α0).
+    
+    Global Instance AssociatedFunction_decode_into
+        {__CodecInputEdqy : Set}
+        {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :
+      Notation.DoubleColon Self "decode_into" := {
+      Notation.double_colon
+        :=
+        decode_into (__CodecInputEdqy := __CodecInputEdqy);
+    }.
+    
+    Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
+      parity_scale_codec.codec.Decode.decode
+        {__CodecInputEdqy : Set}
+        {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
+        :=
+        decode (__CodecInputEdqy := __CodecInputEdqy);
+    }.
+  End Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___CallBuilder.
+  Global Hint Resolve I : core.
+End Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___CallBuilder.
+
+Module Impl_core_hash_Hash_for_erc20_erc20___CallBuilder.
+  Section Impl_core_hash_Hash_for_erc20_erc20___CallBuilder.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := erc20.erc20._.CallBuilder.
+    
+    Definition hash
+        {__H : Set}
+        {ℋ_0 : core.hash.Hasher.Trait __H}
+        (self : ref Self)
+        (state : mut_ref __H)
+        : M unit :=
+      let* α0 := deref self erc20.erc20._.CallBuilder in
+      let* α1 := α0.["account_id"] in
+      let* α2 := borrow α1 ink_primitives.types.AccountId in
+      let* α3 := deref α2 ink_primitives.types.AccountId in
+      let* α4 := borrow α3 ink_primitives.types.AccountId in
+      let* α5 := deref state _ in
+      let* α6 := borrow_mut α5 _ in
+      core.hash.Hash.hash α4 α6.
+    
+    Global Instance AssociatedFunction_hash
+        {__H : Set}
+        {ℋ_0 : core.hash.Hasher.Trait __H} :
+      Notation.DoubleColon Self "hash" := {
+      Notation.double_colon := hash (__H := __H);
+    }.
+    
+    Global Instance I : core.hash.Hash.Trait Self := {
+      core.hash.Hash.hash {__H : Set} {ℋ_0 : core.hash.Hasher.Trait __H}
+        :=
+        hash (__H := __H);
+    }.
+  End Impl_core_hash_Hash_for_erc20_erc20___CallBuilder.
+  Global Hint Resolve I : core.
+End Impl_core_hash_Hash_for_erc20_erc20___CallBuilder.
+
+Module Impl_core_marker_StructuralPartialEq_for_erc20_erc20___CallBuilder.
+  Section Impl_core_marker_StructuralPartialEq_for_erc20_erc20___CallBuilder.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := erc20.erc20._.CallBuilder.
+    
+    Global Instance I : core.marker.StructuralPartialEq.Trait Self := {
+    }.
+  End Impl_core_marker_StructuralPartialEq_for_erc20_erc20___CallBuilder.
+  Global Hint Resolve I : core.
+End Impl_core_marker_StructuralPartialEq_for_erc20_erc20___CallBuilder.
+
+Module Impl_core_cmp_PartialEq_for_erc20_erc20___CallBuilder.
+  Section Impl_core_cmp_PartialEq_for_erc20_erc20___CallBuilder.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := erc20.erc20._.CallBuilder.
+    
+    Definition eq
+        (self : ref Self)
+        (other : ref erc20.erc20._.CallBuilder)
+        : M bool :=
+      let* α0 := deref self erc20.erc20._.CallBuilder in
+      let* α1 := α0.["account_id"] in
+      let* α2 := borrow α1 ink_primitives.types.AccountId in
+      let* α3 := deref other erc20.erc20._.CallBuilder in
+      let* α4 := α3.["account_id"] in
+      let* α5 := borrow α4 ink_primitives.types.AccountId in
+      core.cmp.PartialEq.eq α2 α5.
+    
+    Global Instance AssociatedFunction_eq : Notation.DoubleColon Self "eq" := {
+      Notation.double_colon := eq;
+    }.
+    
+    Global Instance I
+      : core.cmp.PartialEq.Trait Self
+          (Rhs := core.cmp.PartialEq.Default.Rhs Self)
+        := {
+      core.cmp.PartialEq.eq := eq;
+    }.
+  End Impl_core_cmp_PartialEq_for_erc20_erc20___CallBuilder.
+  Global Hint Resolve I : core.
+End Impl_core_cmp_PartialEq_for_erc20_erc20___CallBuilder.
+
+Module Impl_core_marker_StructuralEq_for_erc20_erc20___CallBuilder.
+  Section Impl_core_marker_StructuralEq_for_erc20_erc20___CallBuilder.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := erc20.erc20._.CallBuilder.
+    
+    Global Instance I : core.marker.StructuralEq.Trait Self := {
+    }.
+  End Impl_core_marker_StructuralEq_for_erc20_erc20___CallBuilder.
+  Global Hint Resolve I : core.
+End Impl_core_marker_StructuralEq_for_erc20_erc20___CallBuilder.
+
+Module Impl_core_cmp_Eq_for_erc20_erc20___CallBuilder.
+  Section Impl_core_cmp_Eq_for_erc20_erc20___CallBuilder.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := erc20.erc20._.CallBuilder.
+    
+    Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
+      let* _ := M.alloc tt in
+      M.alloc tt.
+    
+    Global Instance AssociatedFunction_assert_receiver_is_total_eq :
+      Notation.DoubleColon Self "assert_receiver_is_total_eq" := {
+      Notation.double_colon := assert_receiver_is_total_eq;
+    }.
+    
+    Global Instance I : core.cmp.Eq.Trait Self := {
+    }.
+  End Impl_core_cmp_Eq_for_erc20_erc20___CallBuilder.
+  Global Hint Resolve I : core.
+End Impl_core_cmp_Eq_for_erc20_erc20___CallBuilder.
+
+Module Impl_core_clone_Clone_for_erc20_erc20___CallBuilder.
+  Section Impl_core_clone_Clone_for_erc20_erc20___CallBuilder.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := erc20.erc20._.CallBuilder.
+    
+    Definition clone (self : ref Self) : M erc20.erc20._.CallBuilder :=
+      let* α0 := deref self erc20.erc20._.CallBuilder in
+      let* α1 := α0.["account_id"] in
+      let* α2 := borrow α1 ink_primitives.types.AccountId in
+      let* α3 := deref α2 ink_primitives.types.AccountId in
+      let* α4 := borrow α3 ink_primitives.types.AccountId in
+      let* α5 := core.clone.Clone.clone α4 in
+      M.alloc {| erc20.erc20._.CallBuilder.account_id := α5; |}.
+    
+    Global Instance AssociatedFunction_clone :
+      Notation.DoubleColon Self "clone" := {
+      Notation.double_colon := clone;
+    }.
+    
+    Global Instance I : core.clone.Clone.Trait Self := {
+      core.clone.Clone.clone := clone;
+    }.
+  End Impl_core_clone_Clone_for_erc20_erc20___CallBuilder.
+  Global Hint Resolve I : core.
+End Impl_core_clone_Clone_for_erc20_erc20___CallBuilder.
+
+Module Impl_scale_info_TypeInfo_for_erc20_erc20___CallBuilder.
+  Section Impl_scale_info_TypeInfo_for_erc20_erc20___CallBuilder.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := erc20.erc20._.CallBuilder.
+    
+    Definition Identity : Set := Self.
+    
+    Definition type_info
+        : M (scale_info.ty.Type_ scale_info.ty.Type_.Default.T) :=
+      let* α0 := (scale_info.ty.Type_ scale_info.form.MetaForm)::["builder"] in
+      let* α1 :=
+        (scale_info.ty.path.Path scale_info.form.MetaForm)::["new"]
+          (mk_str "CallBuilder")
+          (mk_str "erc20::erc20") in
+      let* α2 :=
+        (scale_info.build.TypeBuilder
+              _
+              scale_info.build.state.PathNotAssigned)::["path"]
+          α0
+          α1 in
+      let* α3 := (alloc.vec.Vec _ alloc.alloc.Global)::["new"] in
+      let* α4 := (scale_info.build.TypeBuilder _ _)::["type_params"] α2 α3 in
+      let* α5 :=
+        borrow
+          [
+            mk_str "The ink! smart contract's call builder.";
+            mk_str "";
+            mk_str
+              "Implements the underlying on-chain calling of the ink! smart contract";
+            mk_str "messages and trait implementations in a type safe way."
+          ]
+          (list (ref str)) in
+      let* α6 := deref α5 (list (ref str)) in
+      let* α7 := borrow α6 (list (ref str)) in
+      let* α8 := pointer_coercion "Unsize" α7 in
+      let* α9 :=
+        (scale_info.build.TypeBuilder scale_info.form.MetaForm _)::["docs"]
+          α4
+          α8 in
+      let* α10 := (scale_info.build.Fields _)::["named"] in
+      let* α11 :=
+        (scale_info.build.FieldsBuilder
+              scale_info.form.MetaForm
+              scale_info.build.NamedFields)::["field"]
+          α10
+          let* α0 :=
+            (scale_info.build.FieldBuilder
+                  scale_info.form.MetaForm
+                  _
+                  scale_info.build.field_state.TypeNotAssigned)::["ty"]
+              f in
+          let* α1 :=
+            (scale_info.build.FieldBuilder
+                  _
+                  scale_info.build.field_state.NameNotAssigned
+                  _)::["name"]
+              α0
+              (mk_str "account_id") in
+          (scale_info.build.FieldBuilder _ _ _)::["type_name"]
+            α1
+            (mk_str "AccountId") in
+      (scale_info.build.TypeBuilder
+            _
+            scale_info.build.state.PathAssigned)::["composite"]
+        α9
+        α11.
+    
+    Global Instance AssociatedFunction_type_info :
+      Notation.DoubleColon Self "type_info" := {
+      Notation.double_colon := type_info;
+    }.
+    
+    Global Instance I : scale_info.TypeInfo.Trait Self := {
+      scale_info.TypeInfo.Identity := Identity;
+      scale_info.TypeInfo.type_info := type_info;
+    }.
+  End Impl_scale_info_TypeInfo_for_erc20_erc20___CallBuilder.
+  Global Hint Resolve I : core.
+End Impl_scale_info_TypeInfo_for_erc20_erc20___CallBuilder.
+
+Module
+  Impl_ink_storage_traits_layout_StorageLayout_for_erc20_erc20___CallBuilder.
+  Section
+    Impl_ink_storage_traits_layout_StorageLayout_for_erc20_erc20___CallBuilder.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := erc20.erc20._.CallBuilder.
+    
+    Definition layout
+        (__key : ref ink_primitives.key.Key)
+        : M (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F) :=
+      let* α0 := deref __key u32 in
+      let* α1 := borrow α0 u32 in
+      let* α2 := ink_storage_traits.layout.StorageLayout.layout α1 in
+      let* α3 :=
+        (ink_metadata.layout.FieldLayout _)::["new"] (mk_str "account_id") α2 in
+      let* α4 :=
+        (ink_metadata.layout.StructLayout _)::["new"]
+          (mk_str "CallBuilder")
+          [ α3 ] in
+      Pure (ink_metadata.layout.Layout.Struct α4).
+    
+    Global Instance AssociatedFunction_layout :
+      Notation.DoubleColon Self "layout" := {
+      Notation.double_colon := layout;
+    }.
+    
+    Global Instance I : ink_storage_traits.layout.StorageLayout.Trait Self := {
+      ink_storage_traits.layout.StorageLayout.layout := layout;
+    }.
+  End
+    Impl_ink_storage_traits_layout_StorageLayout_for_erc20_erc20___CallBuilder.
+  Global Hint Resolve I : core.
+End Impl_ink_storage_traits_layout_StorageLayout_for_erc20_erc20___CallBuilder.
+
+Module Impl_ink_codegen_dispatch_info_ContractCallBuilder_for_erc20_erc20_Erc20.
+  Section
+    Impl_ink_codegen_dispatch_info_ContractCallBuilder_for_erc20_erc20_Erc20.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := erc20.erc20.Erc20.
+    
+    Definition Type : Set := erc20.erc20._.CallBuilder.
+    
+    Global Instance I
+      : ink.codegen.dispatch.info.ContractCallBuilder.Trait Self := {
+      ink.codegen.dispatch.info.ContractCallBuilder.Type := Type;
+    }.
+  End Impl_ink_codegen_dispatch_info_ContractCallBuilder_for_erc20_erc20_Erc20.
+  Global Hint Resolve I : core.
+End Impl_ink_codegen_dispatch_info_ContractCallBuilder_for_erc20_erc20_Erc20.
+
+Module Impl_ink_env_contract_ContractEnv_for_erc20_erc20___CallBuilder.
+  Section Impl_ink_env_contract_ContractEnv_for_erc20_erc20___CallBuilder.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := erc20.erc20._.CallBuilder.
+    
+    Definition Env : Set :=
+      ink_env.types.DefaultEnvironment.
+    
+    Global Instance I : ink_env.contract.ContractEnv.Trait Self := {
+      ink_env.contract.ContractEnv.Env := Env;
+    }.
+  End Impl_ink_env_contract_ContractEnv_for_erc20_erc20___CallBuilder.
+  Global Hint Resolve I : core.
+End Impl_ink_env_contract_ContractEnv_for_erc20_erc20___CallBuilder.
+
+Module
+  Impl_ink_env_call_create_builder_FromAccountId_for_erc20_erc20___CallBuilder.
+  Section
+    Impl_ink_env_call_create_builder_FromAccountId_for_erc20_erc20___CallBuilder.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := erc20.erc20._.CallBuilder.
+    
+    Definition from_account_id (account_id : erc20.erc20.AccountId) : M Self :=
+      M.alloc {| erc20.erc20._.CallBuilder.account_id := account_id; |}.
+    
+    Global Instance AssociatedFunction_from_account_id :
+      Notation.DoubleColon Self "from_account_id" := {
+      Notation.double_colon := from_account_id;
+    }.
+    
+    Global Instance I
+      : ink_env.call.create_builder.FromAccountId.Trait Self
+          (T := erc20.erc20.Environment)
+        := {
+      ink_env.call.create_builder.FromAccountId.from_account_id
+        :=
+        from_account_id;
+    }.
+  End
+    Impl_ink_env_call_create_builder_FromAccountId_for_erc20_erc20___CallBuilder.
+  Global Hint Resolve I : core.
+End
+  Impl_ink_env_call_create_builder_FromAccountId_for_erc20_erc20___CallBuilder.
+
+Module Impl_ink_contract_ref_ToAccountId_for_erc20_erc20___CallBuilder.
+  Section Impl_ink_contract_ref_ToAccountId_for_erc20_erc20___CallBuilder.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := erc20.erc20._.CallBuilder.
+    
+    Definition to_account_id (self : ref Self) : M erc20.erc20.AccountId :=
+      let* α0 := deref self erc20.erc20._.CallBuilder in
+      let* α1 := α0.["account_id"] in
+      let* α2 := borrow α1 ink_primitives.types.AccountId in
+      let* α3 := deref α2 ink_primitives.types.AccountId in
+      let* α4 := borrow α3 ink_primitives.types.AccountId in
+      core.clone.Clone.clone α4.
+    
+    Global Instance AssociatedFunction_to_account_id :
+      Notation.DoubleColon Self "to_account_id" := {
+      Notation.double_colon := to_account_id;
+    }.
+    
+    Global Instance I
+      : ink.contract_ref.ToAccountId.Trait Self (T := erc20.erc20.Environment)
+        := {
+      ink.contract_ref.ToAccountId.to_account_id := to_account_id;
+    }.
+  End Impl_ink_contract_ref_ToAccountId_for_erc20_erc20___CallBuilder.
+  Global Hint Resolve I : core.
+End Impl_ink_contract_ref_ToAccountId_for_erc20_erc20___CallBuilder.
+
+Module Impl_core_convert_AsRef_for_erc20_erc20___CallBuilder.
+  Section Impl_core_convert_AsRef_for_erc20_erc20___CallBuilder.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := erc20.erc20._.CallBuilder.
+    
+    Definition as_ref (self : ref Self) : M (ref erc20.erc20.AccountId) :=
+      let* α0 := deref self erc20.erc20._.CallBuilder in
+      let* α1 := α0.["account_id"] in
+      let* α2 := borrow α1 ink_primitives.types.AccountId in
+      let* α3 := deref α2 ink_primitives.types.AccountId in
+      borrow α3 ink_primitives.types.AccountId.
+    
+    Global Instance AssociatedFunction_as_ref :
+      Notation.DoubleColon Self "as_ref" := {
+      Notation.double_colon := as_ref;
+    }.
+    
+    Global Instance I
+      : core.convert.AsRef.Trait Self (T := erc20.erc20.AccountId) := {
+      core.convert.AsRef.as_ref := as_ref;
+    }.
+  End Impl_core_convert_AsRef_for_erc20_erc20___CallBuilder.
+  Global Hint Resolve I : core.
+End Impl_core_convert_AsRef_for_erc20_erc20___CallBuilder.
+
+Module Impl_core_convert_AsMut_for_erc20_erc20___CallBuilder.
+  Section Impl_core_convert_AsMut_for_erc20_erc20___CallBuilder.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := erc20.erc20._.CallBuilder.
+    
+    Definition as_mut
+        (self : mut_ref Self)
+        : M (mut_ref erc20.erc20.AccountId) :=
+      let* α0 := deref self erc20.erc20._.CallBuilder in
+      let* α1 := α0.["account_id"] in
+      let* α2 := borrow_mut α1 ink_primitives.types.AccountId in
+      let* α3 := deref α2 ink_primitives.types.AccountId in
+      let* α0 := borrow_mut α3 ink_primitives.types.AccountId in
+      let* α1 := deref α0 ink_primitives.types.AccountId in
+      borrow_mut α1 ink_primitives.types.AccountId.
+    
+    Global Instance AssociatedFunction_as_mut :
+      Notation.DoubleColon Self "as_mut" := {
+      Notation.double_colon := as_mut;
+    }.
+    
+    Global Instance I
+      : core.convert.AsMut.Trait Self (T := erc20.erc20.AccountId) := {
+      core.convert.AsMut.as_mut := as_mut;
+    }.
+  End Impl_core_convert_AsMut_for_erc20_erc20___CallBuilder.
+  Global Hint Resolve I : core.
+End Impl_core_convert_AsMut_for_erc20_erc20___CallBuilder.
+
+Module Impl_erc20_erc20___CallBuilder_18.
+  Section Impl_erc20_erc20___CallBuilder_18.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := erc20.erc20._.CallBuilder.
+    
+    Definition total_supply
+        (self : ref Self)
+        :
+          M
+            (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallBuilder
+              erc20.erc20.Environment
+              (ink_env.call.common.Set_
+                (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Call
+                  erc20.erc20.Environment))
+              (ink_env.call.common.Set_
+                (ink_env.call.execution_input.ExecutionInput
+                  ink_env.call.execution_input.EmptyArgumentList))
+              (ink_env.call.common.Set_
+                (ink_env.call.common.ReturnType erc20.erc20.Balance))) :=
+      let* α0 :=
+        ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.build_call in
+      let* α1 := deref self erc20.erc20._.CallBuilder in
+      let* α2 := borrow α1 erc20.erc20._.CallBuilder in
+      let* α3 := ink.contract_ref.ToAccountId.to_account_id α2 in
+      let* α4 :=
+        (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallBuilder
+              _
+              (ink_env.call.common.Unset_ _)
+              _
+              _)::["call"]
+          α0
+          α3 in
+      let* α5 := M.alloc 219 in
+      let* α6 := M.alloc 99 in
+      let* α7 := M.alloc 117 in
+      let* α8 := M.alloc 168 in
+      let* α9 := ink_env.call.selector.Selector::["new"] [ α5; α6; α7; α8 ] in
+      let* α10 :=
+        (ink_env.call.execution_input.ExecutionInput
+              (ink_env.call.execution_input.ArgumentList
+                ink_env.call.execution_input.ArgumentListEnd
+                ink_env.call.execution_input.ArgumentListEnd))::["new"]
+          α9 in
+      let* α11 :=
+        (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallBuilder
+              _
+              _
+              (ink_env.call.common.Unset_
+                (ink_env.call.execution_input.ExecutionInput
+                  (ink_env.call.execution_input.ArgumentList
+                    ink_env.call.execution_input.ArgumentListEnd
+                    ink_env.call.execution_input.ArgumentListEnd)))
+              _)::["exec_input"]
+          α4
+          α10 in
+      (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallBuilder
+            _
+            _
+            _
+            (ink_env.call.common.Unset_
+              (ink_env.call.common.ReturnType unit)))::["returns"]
+        α11.
+    
+    Global Instance AssociatedFunction_total_supply :
+      Notation.DoubleColon Self "total_supply" := {
+      Notation.double_colon := total_supply;
+    }.
+    
+    Definition balance_of
+        (self : ref Self)
+        (__ink_binding_0 : erc20.erc20.AccountId)
+        :
+          M
+            (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallBuilder
+              erc20.erc20.Environment
+              (ink_env.call.common.Set_
+                (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Call
+                  erc20.erc20.Environment))
+              (ink_env.call.common.Set_
+                (ink_env.call.execution_input.ExecutionInput
+                  (ink_env.call.execution_input.ArgumentList
+                    (ink_env.call.execution_input.Argument
+                      erc20.erc20.AccountId)
+                    ink_env.call.execution_input.EmptyArgumentList)))
+              (ink_env.call.common.Set_
+                (ink_env.call.common.ReturnType erc20.erc20.Balance))) :=
+      let* α0 :=
+        ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.build_call in
+      let* α1 := deref self erc20.erc20._.CallBuilder in
+      let* α2 := borrow α1 erc20.erc20._.CallBuilder in
+      let* α3 := ink.contract_ref.ToAccountId.to_account_id α2 in
+      let* α4 :=
+        (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallBuilder
+              _
+              (ink_env.call.common.Unset_ _)
+              _
+              _)::["call"]
+          α0
+          α3 in
+      let* α5 := M.alloc 15 in
+      let* α6 := M.alloc 117 in
+      let* α7 := M.alloc 90 in
+      let* α8 := M.alloc 86 in
+      let* α9 := ink_env.call.selector.Selector::["new"] [ α5; α6; α7; α8 ] in
+      let* α10 :=
+        (ink_env.call.execution_input.ExecutionInput
+              (ink_env.call.execution_input.ArgumentList
+                ink_env.call.execution_input.ArgumentListEnd
+                ink_env.call.execution_input.ArgumentListEnd))::["new"]
+          α9 in
+      let* α11 :=
+        (ink_env.call.execution_input.ExecutionInput
+              (ink_env.call.execution_input.ArgumentList
+                ink_env.call.execution_input.ArgumentListEnd
+                ink_env.call.execution_input.ArgumentListEnd))::["push_arg"]
+          α10
+          __ink_binding_0 in
+      let* α12 :=
+        (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallBuilder
+              _
+              _
+              (ink_env.call.common.Unset_
+                (ink_env.call.execution_input.ExecutionInput
+                  (ink_env.call.execution_input.ArgumentList
+                    ink_env.call.execution_input.ArgumentListEnd
+                    ink_env.call.execution_input.ArgumentListEnd)))
+              _)::["exec_input"]
+          α4
+          α11 in
+      (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallBuilder
+            _
+            _
+            _
+            (ink_env.call.common.Unset_
+              (ink_env.call.common.ReturnType unit)))::["returns"]
+        α12.
+    
+    Global Instance AssociatedFunction_balance_of :
+      Notation.DoubleColon Self "balance_of" := {
+      Notation.double_colon := balance_of;
+    }.
+    
+    Definition allowance
+        (self : ref Self)
+        (__ink_binding_0 : erc20.erc20.AccountId)
+        (__ink_binding_1 : erc20.erc20.AccountId)
+        :
+          M
+            (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallBuilder
+              erc20.erc20.Environment
+              (ink_env.call.common.Set_
+                (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Call
+                  erc20.erc20.Environment))
+              (ink_env.call.common.Set_
+                (ink_env.call.execution_input.ExecutionInput
+                  (ink_env.call.execution_input.ArgumentList
+                    (ink_env.call.execution_input.Argument
+                      erc20.erc20.AccountId)
+                    (ink_env.call.execution_input.ArgumentList
+                      (ink_env.call.execution_input.Argument
+                        erc20.erc20.AccountId)
+                      ink_env.call.execution_input.EmptyArgumentList))))
+              (ink_env.call.common.Set_
+                (ink_env.call.common.ReturnType erc20.erc20.Balance))) :=
+      let* α0 :=
+        ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.build_call in
+      let* α1 := deref self erc20.erc20._.CallBuilder in
+      let* α2 := borrow α1 erc20.erc20._.CallBuilder in
+      let* α3 := ink.contract_ref.ToAccountId.to_account_id α2 in
+      let* α4 :=
+        (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallBuilder
+              _
+              (ink_env.call.common.Unset_ _)
+              _
+              _)::["call"]
+          α0
+          α3 in
+      let* α5 := M.alloc 106 in
+      let* α6 := M.alloc 0 in
+      let* α7 := M.alloc 22 in
+      let* α8 := M.alloc 94 in
+      let* α9 := ink_env.call.selector.Selector::["new"] [ α5; α6; α7; α8 ] in
+      let* α10 :=
+        (ink_env.call.execution_input.ExecutionInput
+              (ink_env.call.execution_input.ArgumentList
+                ink_env.call.execution_input.ArgumentListEnd
+                ink_env.call.execution_input.ArgumentListEnd))::["new"]
+          α9 in
+      let* α11 :=
+        (ink_env.call.execution_input.ExecutionInput
+              (ink_env.call.execution_input.ArgumentList
+                ink_env.call.execution_input.ArgumentListEnd
+                ink_env.call.execution_input.ArgumentListEnd))::["push_arg"]
+          α10
+          __ink_binding_0 in
+      let* α12 :=
+        (ink_env.call.execution_input.ExecutionInput
+              (ink_env.call.execution_input.ArgumentList
+                (ink_env.call.execution_input.Argument _)
+                _))::["push_arg"]
+          α11
+          __ink_binding_1 in
+      let* α13 :=
+        (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallBuilder
+              _
+              _
+              (ink_env.call.common.Unset_
+                (ink_env.call.execution_input.ExecutionInput
+                  (ink_env.call.execution_input.ArgumentList
+                    ink_env.call.execution_input.ArgumentListEnd
+                    ink_env.call.execution_input.ArgumentListEnd)))
+              _)::["exec_input"]
+          α4
+          α12 in
+      (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallBuilder
+            _
+            _
+            _
+            (ink_env.call.common.Unset_
+              (ink_env.call.common.ReturnType unit)))::["returns"]
+        α13.
+    
+    Global Instance AssociatedFunction_allowance :
+      Notation.DoubleColon Self "allowance" := {
+      Notation.double_colon := allowance;
+    }.
+    
+    Definition transfer
+        (self : mut_ref Self)
+        (__ink_binding_0 : erc20.erc20.AccountId)
+        (__ink_binding_1 : erc20.erc20.Balance)
+        :
+          M
+            (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallBuilder
+              erc20.erc20.Environment
+              (ink_env.call.common.Set_
+                (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Call
+                  erc20.erc20.Environment))
+              (ink_env.call.common.Set_
+                (ink_env.call.execution_input.ExecutionInput
+                  (ink_env.call.execution_input.ArgumentList
+                    (ink_env.call.execution_input.Argument erc20.erc20.Balance)
+                    (ink_env.call.execution_input.ArgumentList
+                      (ink_env.call.execution_input.Argument
+                        erc20.erc20.AccountId)
+                      ink_env.call.execution_input.EmptyArgumentList))))
+              (ink_env.call.common.Set_
+                (ink_env.call.common.ReturnType (erc20.erc20.Result unit)))) :=
+      let* α0 :=
+        ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.build_call in
+      let* α1 := deref self erc20.erc20._.CallBuilder in
+      let* α2 := borrow α1 erc20.erc20._.CallBuilder in
+      let* α3 := ink.contract_ref.ToAccountId.to_account_id α2 in
+      let* α4 :=
+        (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallBuilder
+              _
+              (ink_env.call.common.Unset_ _)
+              _
+              _)::["call"]
+          α0
+          α3 in
+      let* α5 := M.alloc 132 in
+      let* α6 := M.alloc 161 in
+      let* α7 := M.alloc 93 in
+      let* α8 := M.alloc 161 in
+      let* α9 := ink_env.call.selector.Selector::["new"] [ α5; α6; α7; α8 ] in
+      let* α10 :=
+        (ink_env.call.execution_input.ExecutionInput
+              (ink_env.call.execution_input.ArgumentList
+                ink_env.call.execution_input.ArgumentListEnd
+                ink_env.call.execution_input.ArgumentListEnd))::["new"]
+          α9 in
+      let* α11 :=
+        (ink_env.call.execution_input.ExecutionInput
+              (ink_env.call.execution_input.ArgumentList
+                ink_env.call.execution_input.ArgumentListEnd
+                ink_env.call.execution_input.ArgumentListEnd))::["push_arg"]
+          α10
+          __ink_binding_0 in
+      let* α12 :=
+        (ink_env.call.execution_input.ExecutionInput
+              (ink_env.call.execution_input.ArgumentList
+                (ink_env.call.execution_input.Argument _)
+                _))::["push_arg"]
+          α11
+          __ink_binding_1 in
+      let* α13 :=
+        (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallBuilder
+              _
+              _
+              (ink_env.call.common.Unset_
+                (ink_env.call.execution_input.ExecutionInput
+                  (ink_env.call.execution_input.ArgumentList
+                    ink_env.call.execution_input.ArgumentListEnd
+                    ink_env.call.execution_input.ArgumentListEnd)))
+              _)::["exec_input"]
+          α4
+          α12 in
+      (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallBuilder
+            _
+            _
+            _
+            (ink_env.call.common.Unset_
+              (ink_env.call.common.ReturnType unit)))::["returns"]
+        α13.
+    
+    Global Instance AssociatedFunction_transfer :
+      Notation.DoubleColon Self "transfer" := {
+      Notation.double_colon := transfer;
+    }.
+    
+    Definition approve
+        (self : mut_ref Self)
+        (__ink_binding_0 : erc20.erc20.AccountId)
+        (__ink_binding_1 : erc20.erc20.Balance)
+        :
+          M
+            (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallBuilder
+              erc20.erc20.Environment
+              (ink_env.call.common.Set_
+                (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Call
+                  erc20.erc20.Environment))
+              (ink_env.call.common.Set_
+                (ink_env.call.execution_input.ExecutionInput
+                  (ink_env.call.execution_input.ArgumentList
+                    (ink_env.call.execution_input.Argument erc20.erc20.Balance)
+                    (ink_env.call.execution_input.ArgumentList
+                      (ink_env.call.execution_input.Argument
+                        erc20.erc20.AccountId)
+                      ink_env.call.execution_input.EmptyArgumentList))))
+              (ink_env.call.common.Set_
+                (ink_env.call.common.ReturnType (erc20.erc20.Result unit)))) :=
+      let* α0 :=
+        ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.build_call in
+      let* α1 := deref self erc20.erc20._.CallBuilder in
+      let* α2 := borrow α1 erc20.erc20._.CallBuilder in
+      let* α3 := ink.contract_ref.ToAccountId.to_account_id α2 in
+      let* α4 :=
+        (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallBuilder
+              _
+              (ink_env.call.common.Unset_ _)
+              _
+              _)::["call"]
+          α0
+          α3 in
+      let* α5 := M.alloc 104 in
+      let* α6 := M.alloc 18 in
+      let* α7 := M.alloc 102 in
+      let* α8 := M.alloc 160 in
+      let* α9 := ink_env.call.selector.Selector::["new"] [ α5; α6; α7; α8 ] in
+      let* α10 :=
+        (ink_env.call.execution_input.ExecutionInput
+              (ink_env.call.execution_input.ArgumentList
+                ink_env.call.execution_input.ArgumentListEnd
+                ink_env.call.execution_input.ArgumentListEnd))::["new"]
+          α9 in
+      let* α11 :=
+        (ink_env.call.execution_input.ExecutionInput
+              (ink_env.call.execution_input.ArgumentList
+                ink_env.call.execution_input.ArgumentListEnd
+                ink_env.call.execution_input.ArgumentListEnd))::["push_arg"]
+          α10
+          __ink_binding_0 in
+      let* α12 :=
+        (ink_env.call.execution_input.ExecutionInput
+              (ink_env.call.execution_input.ArgumentList
+                (ink_env.call.execution_input.Argument _)
+                _))::["push_arg"]
+          α11
+          __ink_binding_1 in
+      let* α13 :=
+        (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallBuilder
+              _
+              _
+              (ink_env.call.common.Unset_
+                (ink_env.call.execution_input.ExecutionInput
+                  (ink_env.call.execution_input.ArgumentList
+                    ink_env.call.execution_input.ArgumentListEnd
+                    ink_env.call.execution_input.ArgumentListEnd)))
+              _)::["exec_input"]
+          α4
+          α12 in
+      (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallBuilder
+            _
+            _
+            _
+            (ink_env.call.common.Unset_
+              (ink_env.call.common.ReturnType unit)))::["returns"]
+        α13.
+    
+    Global Instance AssociatedFunction_approve :
+      Notation.DoubleColon Self "approve" := {
+      Notation.double_colon := approve;
+    }.
+    
+    Definition transfer_from
+        (self : mut_ref Self)
+        (__ink_binding_0 : erc20.erc20.AccountId)
+        (__ink_binding_1 : erc20.erc20.AccountId)
+        (__ink_binding_2 : erc20.erc20.Balance)
+        :
+          M
+            (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallBuilder
+              erc20.erc20.Environment
+              (ink_env.call.common.Set_
+                (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Call
+                  erc20.erc20.Environment))
+              (ink_env.call.common.Set_
+                (ink_env.call.execution_input.ExecutionInput
+                  (ink_env.call.execution_input.ArgumentList
+                    (ink_env.call.execution_input.Argument erc20.erc20.Balance)
+                    (ink_env.call.execution_input.ArgumentList
+                      (ink_env.call.execution_input.Argument
+                        erc20.erc20.AccountId)
+                      (ink_env.call.execution_input.ArgumentList
+                        (ink_env.call.execution_input.Argument
+                          erc20.erc20.AccountId)
+                        ink_env.call.execution_input.EmptyArgumentList)))))
+              (ink_env.call.common.Set_
+                (ink_env.call.common.ReturnType (erc20.erc20.Result unit)))) :=
+      let* α0 :=
+        ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.build_call in
+      let* α1 := deref self erc20.erc20._.CallBuilder in
+      let* α2 := borrow α1 erc20.erc20._.CallBuilder in
+      let* α3 := ink.contract_ref.ToAccountId.to_account_id α2 in
+      let* α4 :=
+        (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallBuilder
+              _
+              (ink_env.call.common.Unset_ _)
+              _
+              _)::["call"]
+          α0
+          α3 in
+      let* α5 := M.alloc 11 in
+      let* α6 := M.alloc 57 in
+      let* α7 := M.alloc 111 in
+      let* α8 := M.alloc 24 in
+      let* α9 := ink_env.call.selector.Selector::["new"] [ α5; α6; α7; α8 ] in
+      let* α10 :=
+        (ink_env.call.execution_input.ExecutionInput
+              (ink_env.call.execution_input.ArgumentList
+                ink_env.call.execution_input.ArgumentListEnd
+                ink_env.call.execution_input.ArgumentListEnd))::["new"]
+          α9 in
+      let* α11 :=
+        (ink_env.call.execution_input.ExecutionInput
+              (ink_env.call.execution_input.ArgumentList
+                ink_env.call.execution_input.ArgumentListEnd
+                ink_env.call.execution_input.ArgumentListEnd))::["push_arg"]
+          α10
+          __ink_binding_0 in
+      let* α12 :=
+        (ink_env.call.execution_input.ExecutionInput
+              (ink_env.call.execution_input.ArgumentList
+                (ink_env.call.execution_input.Argument _)
+                _))::["push_arg"]
+          α11
+          __ink_binding_1 in
+      let* α13 :=
+        (ink_env.call.execution_input.ExecutionInput
+              (ink_env.call.execution_input.ArgumentList
+                (ink_env.call.execution_input.Argument _)
+                _))::["push_arg"]
+          α12
+          __ink_binding_2 in
+      let* α14 :=
+        (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallBuilder
+              _
+              _
+              (ink_env.call.common.Unset_
+                (ink_env.call.execution_input.ExecutionInput
+                  (ink_env.call.execution_input.ArgumentList
+                    ink_env.call.execution_input.ArgumentListEnd
+                    ink_env.call.execution_input.ArgumentListEnd)))
+              _)::["exec_input"]
+          α4
+          α13 in
+      (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallBuilder
+            _
+            _
+            _
+            (ink_env.call.common.Unset_
+              (ink_env.call.common.ReturnType unit)))::["returns"]
+        α14.
+    
+    Global Instance AssociatedFunction_transfer_from :
+      Notation.DoubleColon Self "transfer_from" := {
+      Notation.double_colon := transfer_from;
+    }.
+  End Impl_erc20_erc20___CallBuilder_18.
+End Impl_erc20_erc20___CallBuilder_18.
+
+Module Erc20Ref.
+  Section Erc20Ref.
+    Context `{State.Trait}.
+    
+    Unset Primitive Projections.
+    Record t : Set := {
       inner
         :
         ink.codegen.dispatch.info.ContractCallBuilder.Type_
@@ -792,33 +7143,23 @@ Module erc20.
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_inner `{State.Trait} : Notation.Dot "inner" := {
+    Global Instance Get_inner : Notation.Dot "inner" := {
       Notation.dot x := let* x := M.read x in Pure x.(inner) : M _;
     }.
-    Global Instance Get_AF_inner `{State.Trait}
-      : Notation.DoubleColon t "inner" := {
+    Global Instance Get_AF_inner : Notation.DoubleColon t "inner" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(inner) : M _;
     }.
   End Erc20Ref.
-  Definition Erc20Ref `{State.Trait} : Set := M.val (Erc20Ref.t).
-  
-  Module Impl_core_fmt_Debug_for_erc20_erc20_Erc20Ref.
-    Definition Self `{State.Trait} := erc20.erc20.Erc20Ref.
+End Erc20Ref.
+Definition Erc20Ref `{State.Trait} : Set := M.val Erc20Ref.t.
+
+Module Impl_core_fmt_Debug_for_erc20_erc20_Erc20Ref.
+  Section Impl_core_fmt_Debug_for_erc20_erc20_Erc20Ref.
+    Context `{State.Trait}.
     
-    Parameter struct_parameter_for_fmt :
-        core.fmt.Formatter ->
-          string ->
-            string ->
-            erc20_erc20_Erc20_ink_codegen_dispatch_info_ContractCallBuilder_Type_
-            ->
-            M core.fmt.Result.
-    
-    Global Instance Deb_struct_parameter_for_fmt : Notation.DoubleColon
-      core.fmt.Formatter "struct_parameter_for_fmt" := {
-      Notation.double_colon := struct_parameter_for_fmt; }.
+    Definition Self : Set := erc20.erc20.Erc20Ref.
     
     Definition fmt
-        `{State.Trait}
         (self : ref Self)
         (f : mut_ref core.fmt.Formatter)
         : M core.fmt.Result :=
@@ -837,23 +7178,174 @@ Module erc20.
       let* α12 := pointer_coercion "Unsize" α11 in
       core.fmt.Formatter::["debug_struct_field1_finish"] α1 α3 α5 α12.
     
-    Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
-      Notation.dot := fmt;
+    Global Instance AssociatedFunction_fmt :
+      Notation.DoubleColon Self "fmt" := {
+      Notation.double_colon := fmt;
     }.
     
-    Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
+    Global Instance I : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
-    Global Hint Resolve I : core.
   End Impl_core_fmt_Debug_for_erc20_erc20_Erc20Ref.
-  
-  Module Impl_core_hash_Hash_for_erc20_erc20_Erc20Ref.
-    Definition Self `{State.Trait} := erc20.erc20.Erc20Ref.
+  Global Hint Resolve I : core.
+End Impl_core_fmt_Debug_for_erc20_erc20_Erc20Ref.
+
+Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Erc20Ref.
+  Section Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Erc20Ref.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := erc20.erc20.Erc20Ref.
+    
+    Definition encode_to
+        {__CodecOutputEdqy : Set}
+        {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+        {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy}
+        (self : ref Self)
+        (__codec_dest_edqy : mut_ref __CodecOutputEdqy)
+        : M unit :=
+      let* α0 := deref self erc20.erc20.Erc20Ref in
+      let* α1 := α0.["inner"] in
+      let* α2 := borrow α1 erc20.erc20._.CallBuilder in
+      let* α3 := borrow α2 (ref erc20.erc20._.CallBuilder) in
+      let* α4 := deref α3 (ref erc20.erc20._.CallBuilder) in
+      let* α5 := borrow α4 (ref erc20.erc20._.CallBuilder) in
+      let* α6 := deref __codec_dest_edqy _ in
+      let* α7 := borrow_mut α6 _ in
+      parity_scale_codec.codec.Encode.encode_to α5 α7.
+    
+    Global Instance AssociatedFunction_encode_to
+        {__CodecOutputEdqy : Set}
+        {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+        {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy} :
+      Notation.DoubleColon Self "encode_to" := {
+      Notation.double_colon
+        :=
+        encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
+    }.
+    
+    Definition encode
+        (self : ref Self)
+        :
+          M
+            (alloc.vec.Vec
+              CoqOfRust.core.primitive.u8
+              alloc.vec.Vec.Default.A) :=
+      let* α0 := deref self erc20.erc20.Erc20Ref in
+      let* α1 := α0.["inner"] in
+      let* α2 := borrow α1 erc20.erc20._.CallBuilder in
+      let* α3 := borrow α2 (ref erc20.erc20._.CallBuilder) in
+      let* α4 := deref α3 (ref erc20.erc20._.CallBuilder) in
+      let* α5 := borrow α4 (ref erc20.erc20._.CallBuilder) in
+      parity_scale_codec.codec.Encode.encode α5.
+    
+    Global Instance AssociatedFunction_encode :
+      Notation.DoubleColon Self "encode" := {
+      Notation.double_colon := encode;
+    }.
+    
+    Definition using_encoded
+        {R F : Set}
+        {ℋ_0 :
+          core.ops.function.FnOnce.Trait F
+            (Args := ref (Slice CoqOfRust.core.primitive.u8))}
+        (self : ref Self)
+        (f : F)
+        : M R :=
+      let* α0 := deref self erc20.erc20.Erc20Ref in
+      let* α1 := α0.["inner"] in
+      let* α2 := borrow α1 erc20.erc20._.CallBuilder in
+      let* α3 := borrow α2 (ref erc20.erc20._.CallBuilder) in
+      let* α4 := deref α3 (ref erc20.erc20._.CallBuilder) in
+      let* α5 := borrow α4 (ref erc20.erc20._.CallBuilder) in
+      parity_scale_codec.codec.Encode.using_encoded α5 f.
+    
+    Global Instance AssociatedFunction_using_encoded
+        {R F : Set}
+        {ℋ_0 :
+          core.ops.function.FnOnce.Trait F
+            (Args := ref (Slice CoqOfRust.core.primitive.u8))} :
+      Notation.DoubleColon Self "using_encoded" := {
+      Notation.double_colon := using_encoded (R := R) (F := F);
+    }.
+    
+    Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
+    }.
+  End Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Erc20Ref.
+  Global Hint Resolve I : core.
+End Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Erc20Ref.
+
+Module Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20_Erc20Ref.
+  Section
+    Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20_Erc20Ref.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := erc20.erc20.Erc20Ref.
+    
+    Global Instance I
+      : parity_scale_codec.encode_like.EncodeLike.Trait Self
+          (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self)
+        := {
+    }.
+  End Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20_Erc20Ref.
+  Global Hint Resolve I : core.
+End Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20_Erc20Ref.
+
+Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Erc20Ref.
+  Section Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Erc20Ref.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := erc20.erc20.Erc20Ref.
+    
+    Definition decode
+        {__CodecInputEdqy : Set}
+        {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
+        (__codec_input_edqy : mut_ref __CodecInputEdqy)
+        : M (core.result.Result Self parity_scale_codec.error.Error) :=
+      let* __codec_res_edqy :=
+        let* α0 := deref __codec_input_edqy _ in
+        let* α1 := borrow_mut α0 _ in
+        parity_scale_codec.codec.Decode.decode α1 in
+      let* α0 :=
+        match __codec_res_edqy with
+        | core.result.Result e =>
+          let* α0 :=
+            parity_scale_codec.error.Error::["chain"]
+              e
+              (mk_str "Could not decode `Erc20Ref::inner`") in
+          let* α1 := Return (core.result.Result.Err α0) in
+          never_to_any α1
+        | core.result.Result __codec_res_edqy => Pure __codec_res_edqy
+        end in
+      let* α1 := M.alloc {| erc20.erc20.Erc20Ref.inner := α0; |} in
+      Pure (core.result.Result.Ok α1).
+    
+    Global Instance AssociatedFunction_decode
+        {__CodecInputEdqy : Set}
+        {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :
+      Notation.DoubleColon Self "decode" := {
+      Notation.double_colon := decode (__CodecInputEdqy := __CodecInputEdqy);
+    }.
+    
+    Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
+      parity_scale_codec.codec.Decode.decode
+        {__CodecInputEdqy : Set}
+        {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
+        :=
+        decode (__CodecInputEdqy := __CodecInputEdqy);
+    }.
+  End Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Erc20Ref.
+  Global Hint Resolve I : core.
+End Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Erc20Ref.
+
+Module Impl_core_hash_Hash_for_erc20_erc20_Erc20Ref.
+  Section Impl_core_hash_Hash_for_erc20_erc20_Erc20Ref.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := erc20.erc20.Erc20Ref.
     
     Definition hash
-        `{State.Trait}
         {__H : Set}
-        `{core.hash.Hasher.Trait __H}
+        {ℋ_0 : core.hash.Hasher.Trait __H}
         (self : ref Self)
         (state : mut_ref __H)
         : M unit :=
@@ -866,36 +7358,41 @@ Module erc20.
       let* α6 := borrow_mut α5 _ in
       core.hash.Hash.hash α4 α6.
     
-    Global Instance Method_hash
-        `{State.Trait}
+    Global Instance AssociatedFunction_hash
         {__H : Set}
-        `{core.hash.Hasher.Trait __H} :
-      Notation.Dot "hash" := {
-      Notation.dot := hash (__H := __H);
+        {ℋ_0 : core.hash.Hasher.Trait __H} :
+      Notation.DoubleColon Self "hash" := {
+      Notation.double_colon := hash (__H := __H);
     }.
     
-    Global Instance I `{State.Trait} : core.hash.Hash.Trait Self := {
-      core.hash.Hash.hash {__H : Set} `{core.hash.Hasher.Trait __H}
+    Global Instance I : core.hash.Hash.Trait Self := {
+      core.hash.Hash.hash {__H : Set} {ℋ_0 : core.hash.Hasher.Trait __H}
         :=
         hash (__H := __H);
     }.
-    Global Hint Resolve I : core.
   End Impl_core_hash_Hash_for_erc20_erc20_Erc20Ref.
-  
-  Module Impl_core_marker_StructuralPartialEq_for_erc20_erc20_Erc20Ref.
-    Definition Self `{State.Trait} := erc20.erc20.Erc20Ref.
+  Global Hint Resolve I : core.
+End Impl_core_hash_Hash_for_erc20_erc20_Erc20Ref.
+
+Module Impl_core_marker_StructuralPartialEq_for_erc20_erc20_Erc20Ref.
+  Section Impl_core_marker_StructuralPartialEq_for_erc20_erc20_Erc20Ref.
+    Context `{State.Trait}.
     
-    Global Instance I `{State.Trait}
-      : core.marker.StructuralPartialEq.Trait Self := {
+    Definition Self : Set := erc20.erc20.Erc20Ref.
+    
+    Global Instance I : core.marker.StructuralPartialEq.Trait Self := {
     }.
-    Global Hint Resolve I : core.
   End Impl_core_marker_StructuralPartialEq_for_erc20_erc20_Erc20Ref.
-  
-  Module Impl_core_cmp_PartialEq_for_erc20_erc20_Erc20Ref.
-    Definition Self `{State.Trait} := erc20.erc20.Erc20Ref.
+  Global Hint Resolve I : core.
+End Impl_core_marker_StructuralPartialEq_for_erc20_erc20_Erc20Ref.
+
+Module Impl_core_cmp_PartialEq_for_erc20_erc20_Erc20Ref.
+  Section Impl_core_cmp_PartialEq_for_erc20_erc20_Erc20Ref.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := erc20.erc20.Erc20Ref.
     
     Definition eq
-        `{State.Trait}
         (self : ref Self)
         (other : ref erc20.erc20.Erc20Ref)
         : M bool :=
@@ -907,54 +7404,60 @@ Module erc20.
       let* α5 := borrow α4 erc20.erc20._.CallBuilder in
       core.cmp.PartialEq.eq α2 α5.
     
-    Global Instance Method_eq `{State.Trait} : Notation.Dot "eq" := {
-      Notation.dot := eq;
+    Global Instance AssociatedFunction_eq : Notation.DoubleColon Self "eq" := {
+      Notation.double_colon := eq;
     }.
     
-    Global Instance I `{State.Trait}
+    Global Instance I
       : core.cmp.PartialEq.Trait Self
           (Rhs := core.cmp.PartialEq.Default.Rhs Self)
         := {
       core.cmp.PartialEq.eq := eq;
     }.
-    Global Hint Resolve I : core.
   End Impl_core_cmp_PartialEq_for_erc20_erc20_Erc20Ref.
-  
-  Module Impl_core_marker_StructuralEq_for_erc20_erc20_Erc20Ref.
-    Definition Self `{State.Trait} := erc20.erc20.Erc20Ref.
+  Global Hint Resolve I : core.
+End Impl_core_cmp_PartialEq_for_erc20_erc20_Erc20Ref.
+
+Module Impl_core_marker_StructuralEq_for_erc20_erc20_Erc20Ref.
+  Section Impl_core_marker_StructuralEq_for_erc20_erc20_Erc20Ref.
+    Context `{State.Trait}.
     
-    Global Instance I `{State.Trait} : core.marker.StructuralEq.Trait Self := {
+    Definition Self : Set := erc20.erc20.Erc20Ref.
+    
+    Global Instance I : core.marker.StructuralEq.Trait Self := {
     }.
-    Global Hint Resolve I : core.
   End Impl_core_marker_StructuralEq_for_erc20_erc20_Erc20Ref.
-  
-  Module Impl_core_cmp_Eq_for_erc20_erc20_Erc20Ref.
-    Definition Self `{State.Trait} := erc20.erc20.Erc20Ref.
+  Global Hint Resolve I : core.
+End Impl_core_marker_StructuralEq_for_erc20_erc20_Erc20Ref.
+
+Module Impl_core_cmp_Eq_for_erc20_erc20_Erc20Ref.
+  Section Impl_core_cmp_Eq_for_erc20_erc20_Erc20Ref.
+    Context `{State.Trait}.
     
-    Definition assert_receiver_is_total_eq
-        `{State.Trait}
-        (self : ref Self)
-        : M unit :=
-      let _ := tt in
-      Pure tt.
+    Definition Self : Set := erc20.erc20.Erc20Ref.
     
-    Global Instance Method_assert_receiver_is_total_eq `{State.Trait} :
-      Notation.Dot "assert_receiver_is_total_eq" := {
-      Notation.dot := assert_receiver_is_total_eq;
+    Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
+      let* _ := M.alloc tt in
+      M.alloc tt.
+    
+    Global Instance AssociatedFunction_assert_receiver_is_total_eq :
+      Notation.DoubleColon Self "assert_receiver_is_total_eq" := {
+      Notation.double_colon := assert_receiver_is_total_eq;
     }.
     
-    Global Instance I `{State.Trait} : core.cmp.Eq.Trait Self := {
+    Global Instance I : core.cmp.Eq.Trait Self := {
     }.
-    Global Hint Resolve I : core.
   End Impl_core_cmp_Eq_for_erc20_erc20_Erc20Ref.
-  
-  Module Impl_core_clone_Clone_for_erc20_erc20_Erc20Ref.
-    Definition Self `{State.Trait} := erc20.erc20.Erc20Ref.
+  Global Hint Resolve I : core.
+End Impl_core_cmp_Eq_for_erc20_erc20_Erc20Ref.
+
+Module Impl_core_clone_Clone_for_erc20_erc20_Erc20Ref.
+  Section Impl_core_clone_Clone_for_erc20_erc20_Erc20Ref.
+    Context `{State.Trait}.
     
-    Definition clone
-        `{State.Trait}
-        (self : ref Self)
-        : M erc20.erc20.Erc20Ref :=
+    Definition Self : Set := erc20.erc20.Erc20Ref.
+    
+    Definition clone (self : ref Self) : M erc20.erc20.Erc20Ref :=
       let* α0 := deref self erc20.erc20.Erc20Ref in
       let* α1 := α0.["inner"] in
       let* α2 := borrow α1 erc20.erc20._.CallBuilder in
@@ -963,21 +7466,244 @@ Module erc20.
       let* α5 := core.clone.Clone.clone α4 in
       M.alloc {| erc20.erc20.Erc20Ref.inner := α5; |}.
     
-    Global Instance Method_clone `{State.Trait} : Notation.Dot "clone" := {
-      Notation.dot := clone;
+    Global Instance AssociatedFunction_clone :
+      Notation.DoubleColon Self "clone" := {
+      Notation.double_colon := clone;
     }.
     
-    Global Instance I `{State.Trait} : core.clone.Clone.Trait Self := {
+    Global Instance I : core.clone.Clone.Trait Self := {
       core.clone.Clone.clone := clone;
     }.
-    Global Hint Resolve I : core.
   End Impl_core_clone_Clone_for_erc20_erc20_Erc20Ref.
-  
-  Module Impl_erc20_erc20_Erc20Ref_8.
-    Definition Self `{State.Trait} : Set := erc20.erc20.Erc20Ref.
+  Global Hint Resolve I : core.
+End Impl_core_clone_Clone_for_erc20_erc20_Erc20Ref.
+
+Module Impl_scale_info_TypeInfo_for_erc20_erc20_Erc20Ref.
+  Section Impl_scale_info_TypeInfo_for_erc20_erc20_Erc20Ref.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := erc20.erc20.Erc20Ref.
+    
+    Definition Identity : Set := Self.
+    
+    Definition type_info
+        : M (scale_info.ty.Type_ scale_info.ty.Type_.Default.T) :=
+      let* α0 := (scale_info.ty.Type_ scale_info.form.MetaForm)::["builder"] in
+      let* α1 :=
+        (scale_info.ty.path.Path scale_info.form.MetaForm)::["new"]
+          (mk_str "Erc20Ref")
+          (mk_str "erc20::erc20") in
+      let* α2 :=
+        (scale_info.build.TypeBuilder
+              _
+              scale_info.build.state.PathNotAssigned)::["path"]
+          α0
+          α1 in
+      let* α3 := (alloc.vec.Vec _ alloc.alloc.Global)::["new"] in
+      let* α4 := (scale_info.build.TypeBuilder _ _)::["type_params"] α2 α3 in
+      let* α5 :=
+        borrow [ mk_str "A simple ERC-20 contract." ] (list (ref str)) in
+      let* α6 := deref α5 (list (ref str)) in
+      let* α7 := borrow α6 (list (ref str)) in
+      let* α8 := pointer_coercion "Unsize" α7 in
+      let* α9 :=
+        (scale_info.build.TypeBuilder scale_info.form.MetaForm _)::["docs"]
+          α4
+          α8 in
+      let* α10 := (scale_info.build.Fields _)::["named"] in
+      let* α11 :=
+        (scale_info.build.FieldsBuilder
+              scale_info.form.MetaForm
+              scale_info.build.NamedFields)::["field"]
+          α10
+          let* α0 :=
+            (scale_info.build.FieldBuilder
+                  scale_info.form.MetaForm
+                  _
+                  scale_info.build.field_state.TypeNotAssigned)::["ty"]
+              f in
+          let* α1 :=
+            (scale_info.build.FieldBuilder
+                  _
+                  scale_info.build.field_state.NameNotAssigned
+                  _)::["name"]
+              α0
+              (mk_str "inner") in
+          (scale_info.build.FieldBuilder _ _ _)::["type_name"]
+            α1
+            (mk_str "<Erc20 as::ink::codegen::ContractCallBuilder>::Type") in
+      (scale_info.build.TypeBuilder
+            _
+            scale_info.build.state.PathAssigned)::["composite"]
+        α9
+        α11.
+    
+    Global Instance AssociatedFunction_type_info :
+      Notation.DoubleColon Self "type_info" := {
+      Notation.double_colon := type_info;
+    }.
+    
+    Global Instance I : scale_info.TypeInfo.Trait Self := {
+      scale_info.TypeInfo.Identity := Identity;
+      scale_info.TypeInfo.type_info := type_info;
+    }.
+  End Impl_scale_info_TypeInfo_for_erc20_erc20_Erc20Ref.
+  Global Hint Resolve I : core.
+End Impl_scale_info_TypeInfo_for_erc20_erc20_Erc20Ref.
+
+Module Impl_ink_storage_traits_layout_StorageLayout_for_erc20_erc20_Erc20Ref.
+  Section Impl_ink_storage_traits_layout_StorageLayout_for_erc20_erc20_Erc20Ref.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := erc20.erc20.Erc20Ref.
+    
+    Definition layout
+        (__key : ref ink_primitives.key.Key)
+        : M (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F) :=
+      let* α0 := deref __key u32 in
+      let* α1 := borrow α0 u32 in
+      let* α2 := ink_storage_traits.layout.StorageLayout.layout α1 in
+      let* α3 :=
+        (ink_metadata.layout.FieldLayout _)::["new"] (mk_str "inner") α2 in
+      let* α4 :=
+        (ink_metadata.layout.StructLayout _)::["new"]
+          (mk_str "Erc20Ref")
+          [ α3 ] in
+      Pure (ink_metadata.layout.Layout.Struct α4).
+    
+    Global Instance AssociatedFunction_layout :
+      Notation.DoubleColon Self "layout" := {
+      Notation.double_colon := layout;
+    }.
+    
+    Global Instance I : ink_storage_traits.layout.StorageLayout.Trait Self := {
+      ink_storage_traits.layout.StorageLayout.layout := layout;
+    }.
+  End Impl_ink_storage_traits_layout_StorageLayout_for_erc20_erc20_Erc20Ref.
+  Global Hint Resolve I : core.
+End Impl_ink_storage_traits_layout_StorageLayout_for_erc20_erc20_Erc20Ref.
+
+Module Impl_ink_env_contract_ContractReference_for_erc20_erc20_Erc20.
+  Section Impl_ink_env_contract_ContractReference_for_erc20_erc20_Erc20.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := erc20.erc20.Erc20.
+    
+    Definition Type : Set := erc20.erc20.Erc20Ref.
+    
+    Global Instance I : ink_env.contract.ContractReference.Trait Self := {
+      ink_env.contract.ContractReference.Type := Type;
+    }.
+  End Impl_ink_env_contract_ContractReference_for_erc20_erc20_Erc20.
+  Global Hint Resolve I : core.
+End Impl_ink_env_contract_ContractReference_for_erc20_erc20_Erc20.
+
+Module
+  Impl_ink_env_call_create_builder_ConstructorReturnType_for_erc20_erc20_Erc20.
+  Section
+    Impl_ink_env_call_create_builder_ConstructorReturnType_for_erc20_erc20_Erc20.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := erc20.erc20.Erc20.
+    
+    Definition Output : Set := erc20.erc20.Erc20Ref.
+    
+    Definition Error : Set := unit.
+    
+    Definition ok (value : erc20.erc20.Erc20Ref) : M Output := Pure value.
+    
+    Global Instance AssociatedFunction_ok : Notation.DoubleColon Self "ok" := {
+      Notation.double_colon := ok;
+    }.
+    
+    Global Instance I
+      : ink_env.call.create_builder.ConstructorReturnType.Trait Self
+          (C := erc20.erc20.Erc20Ref)
+        := {
+      ink_env.call.create_builder.ConstructorReturnType.Output := Output;
+      ink_env.call.create_builder.ConstructorReturnType.Error := Error;
+      ink_env.call.create_builder.ConstructorReturnType.ok := ok;
+    }.
+  End
+    Impl_ink_env_call_create_builder_ConstructorReturnType_for_erc20_erc20_Erc20.
+  Global Hint Resolve I : core.
+End
+  Impl_ink_env_call_create_builder_ConstructorReturnType_for_erc20_erc20_Erc20.
+
+Module
+  Impl_ink_env_call_create_builder_ConstructorReturnType_for_core_result_Result_erc20_erc20_Erc20_E.
+  Section
+    Impl_ink_env_call_create_builder_ConstructorReturnType_for_core_result_Result_erc20_erc20_Erc20_E.
+    Context `{State.Trait}.
+    
+    Context {E : Set}.
+    
+    Context {ℋ_0 : parity_scale_codec.codec.Decode.Trait E}.
+    Definition Self : Set := core.result.Result erc20.erc20.Erc20 E.
+    
+    Definition IS_RESULT  := M.alloc true.
+    
+    Global Instance AssociatedFunction_IS_RESULT :
+      Notation.DoubleColon Self "IS_RESULT" := {
+      Notation.double_colon := IS_RESULT;
+    }.
+    
+    Definition Output : Set := core.result.Result erc20.erc20.Erc20Ref E.
+    
+    Definition Error : Set := E.
+    
+    Definition ok (value : erc20.erc20.Erc20Ref) : M Output :=
+      Pure (core.result.Result.Ok value).
+    
+    Global Instance AssociatedFunction_ok : Notation.DoubleColon Self "ok" := {
+      Notation.double_colon := ok;
+    }.
+    
+    Definition err (err : Error) : M (core.option.Option Output) :=
+      Pure (core.option.Option.Some (core.result.Result.Err err)).
+    
+    Global Instance AssociatedFunction_err :
+      Notation.DoubleColon Self "err" := {
+      Notation.double_colon := err;
+    }.
+    
+    Global Instance I
+      : ink_env.call.create_builder.ConstructorReturnType.Trait Self
+          (C := erc20.erc20.Erc20Ref)
+        := {
+      ink_env.call.create_builder.ConstructorReturnType.Output := Output;
+      ink_env.call.create_builder.ConstructorReturnType.Error := Error;
+      ink_env.call.create_builder.ConstructorReturnType.ok := ok;
+    }.
+  End
+    Impl_ink_env_call_create_builder_ConstructorReturnType_for_core_result_Result_erc20_erc20_Erc20_E.
+  Global Hint Resolve I : core.
+End
+  Impl_ink_env_call_create_builder_ConstructorReturnType_for_core_result_Result_erc20_erc20_Erc20_E.
+
+Module Impl_ink_env_contract_ContractEnv_for_erc20_erc20_Erc20Ref.
+  Section Impl_ink_env_contract_ContractEnv_for_erc20_erc20_Erc20Ref.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := erc20.erc20.Erc20Ref.
+    
+    Definition Env : Set :=
+      ink_env.types.DefaultEnvironment.
+    
+    Global Instance I : ink_env.contract.ContractEnv.Trait Self := {
+      ink_env.contract.ContractEnv.Env := Env;
+    }.
+  End Impl_ink_env_contract_ContractEnv_for_erc20_erc20_Erc20Ref.
+  Global Hint Resolve I : core.
+End Impl_ink_env_contract_ContractEnv_for_erc20_erc20_Erc20Ref.
+
+Module Impl_erc20_erc20_Erc20Ref_26.
+  Section Impl_erc20_erc20_Erc20Ref_26.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := erc20.erc20.Erc20Ref.
     
     Definition new
-        `{State.Trait}
         (__ink_binding_0 : erc20.erc20.Balance)
         :
           M
@@ -1043,15 +7769,12 @@ Module erc20.
               (ink_env.call.common.ReturnType unit)))::["returns"]
         α8.
     
-    Global Instance AssociatedFunction_new `{State.Trait} :
+    Global Instance AssociatedFunction_new :
       Notation.DoubleColon Self "new" := {
       Notation.double_colon := new;
     }.
     
-    Definition total_supply
-        `{State.Trait}
-        (self : ref Self)
-        : M erc20.erc20.Balance :=
+    Definition total_supply (self : ref Self) : M erc20.erc20.Balance :=
       let* α0 := deref self erc20.erc20.Erc20Ref in
       let* α1 := borrow α0 erc20.erc20.Erc20Ref in
       let* α2 := erc20.erc20.Erc20Ref::["try_total_supply"] α1 in
@@ -1076,13 +7799,12 @@ Module erc20.
         let* α13 := core.panicking.panic_fmt α12 in
         never_to_any α13.
     
-    Global Instance Method_total_supply `{State.Trait} :
-      Notation.Dot "total_supply" := {
-      Notation.dot := total_supply;
+    Global Instance AssociatedFunction_total_supply :
+      Notation.DoubleColon Self "total_supply" := {
+      Notation.double_colon := total_supply;
     }.
     
     Definition try_total_supply
-        `{State.Trait}
         (self : ref Self)
         : M (ink_primitives.MessageResult erc20.erc20.Balance) :=
       let* α0 := deref self erc20.erc20.Erc20Ref in
@@ -1132,13 +7854,12 @@ Module erc20.
         let* α13 := core.panicking.panic_fmt α12 in
         never_to_any α13.
     
-    Global Instance Method_try_total_supply `{State.Trait} :
-      Notation.Dot "try_total_supply" := {
-      Notation.dot := try_total_supply;
+    Global Instance AssociatedFunction_try_total_supply :
+      Notation.DoubleColon Self "try_total_supply" := {
+      Notation.double_colon := try_total_supply;
     }.
     
     Definition balance_of
-        `{State.Trait}
         (self : ref Self)
         (owner : erc20.erc20.AccountId)
         : M erc20.erc20.Balance :=
@@ -1166,13 +7887,12 @@ Module erc20.
         let* α13 := core.panicking.panic_fmt α12 in
         never_to_any α13.
     
-    Global Instance Method_balance_of `{State.Trait} :
-      Notation.Dot "balance_of" := {
-      Notation.dot := balance_of;
+    Global Instance AssociatedFunction_balance_of :
+      Notation.DoubleColon Self "balance_of" := {
+      Notation.double_colon := balance_of;
     }.
     
     Definition try_balance_of
-        `{State.Trait}
         (self : ref Self)
         (owner : erc20.erc20.AccountId)
         : M (ink_primitives.MessageResult erc20.erc20.Balance) :=
@@ -1223,13 +7943,12 @@ Module erc20.
         let* α13 := core.panicking.panic_fmt α12 in
         never_to_any α13.
     
-    Global Instance Method_try_balance_of `{State.Trait} :
-      Notation.Dot "try_balance_of" := {
-      Notation.dot := try_balance_of;
+    Global Instance AssociatedFunction_try_balance_of :
+      Notation.DoubleColon Self "try_balance_of" := {
+      Notation.double_colon := try_balance_of;
     }.
     
     Definition allowance
-        `{State.Trait}
         (self : ref Self)
         (owner : erc20.erc20.AccountId)
         (spender : erc20.erc20.AccountId)
@@ -1258,13 +7977,12 @@ Module erc20.
         let* α13 := core.panicking.panic_fmt α12 in
         never_to_any α13.
     
-    Global Instance Method_allowance `{State.Trait} :
-      Notation.Dot "allowance" := {
-      Notation.dot := allowance;
+    Global Instance AssociatedFunction_allowance :
+      Notation.DoubleColon Self "allowance" := {
+      Notation.double_colon := allowance;
     }.
     
     Definition try_allowance
-        `{State.Trait}
         (self : ref Self)
         (owner : erc20.erc20.AccountId)
         (spender : erc20.erc20.AccountId)
@@ -1316,13 +8034,12 @@ Module erc20.
         let* α13 := core.panicking.panic_fmt α12 in
         never_to_any α13.
     
-    Global Instance Method_try_allowance `{State.Trait} :
-      Notation.Dot "try_allowance" := {
-      Notation.dot := try_allowance;
+    Global Instance AssociatedFunction_try_allowance :
+      Notation.DoubleColon Self "try_allowance" := {
+      Notation.double_colon := try_allowance;
     }.
     
     Definition transfer
-        `{State.Trait}
         (self : mut_ref Self)
         (to : erc20.erc20.AccountId)
         (value : erc20.erc20.Balance)
@@ -1351,13 +8068,12 @@ Module erc20.
         let* α13 := core.panicking.panic_fmt α12 in
         never_to_any α13.
     
-    Global Instance Method_transfer `{State.Trait} :
-      Notation.Dot "transfer" := {
-      Notation.dot := transfer;
+    Global Instance AssociatedFunction_transfer :
+      Notation.DoubleColon Self "transfer" := {
+      Notation.double_colon := transfer;
     }.
     
     Definition try_transfer
-        `{State.Trait}
         (self : mut_ref Self)
         (to : erc20.erc20.AccountId)
         (value : erc20.erc20.Balance)
@@ -1410,13 +8126,12 @@ Module erc20.
         let* α13 := core.panicking.panic_fmt α12 in
         never_to_any α13.
     
-    Global Instance Method_try_transfer `{State.Trait} :
-      Notation.Dot "try_transfer" := {
-      Notation.dot := try_transfer;
+    Global Instance AssociatedFunction_try_transfer :
+      Notation.DoubleColon Self "try_transfer" := {
+      Notation.double_colon := try_transfer;
     }.
     
     Definition approve
-        `{State.Trait}
         (self : mut_ref Self)
         (spender : erc20.erc20.AccountId)
         (value : erc20.erc20.Balance)
@@ -1445,12 +8160,12 @@ Module erc20.
         let* α13 := core.panicking.panic_fmt α12 in
         never_to_any α13.
     
-    Global Instance Method_approve `{State.Trait} : Notation.Dot "approve" := {
-      Notation.dot := approve;
+    Global Instance AssociatedFunction_approve :
+      Notation.DoubleColon Self "approve" := {
+      Notation.double_colon := approve;
     }.
     
     Definition try_approve
-        `{State.Trait}
         (self : mut_ref Self)
         (spender : erc20.erc20.AccountId)
         (value : erc20.erc20.Balance)
@@ -1503,13 +8218,12 @@ Module erc20.
         let* α13 := core.panicking.panic_fmt α12 in
         never_to_any α13.
     
-    Global Instance Method_try_approve `{State.Trait} :
-      Notation.Dot "try_approve" := {
-      Notation.dot := try_approve;
+    Global Instance AssociatedFunction_try_approve :
+      Notation.DoubleColon Self "try_approve" := {
+      Notation.double_colon := try_approve;
     }.
     
     Definition transfer_from
-        `{State.Trait}
         (self : mut_ref Self)
         (from : erc20.erc20.AccountId)
         (to : erc20.erc20.AccountId)
@@ -1539,13 +8253,12 @@ Module erc20.
         let* α13 := core.panicking.panic_fmt α12 in
         never_to_any α13.
     
-    Global Instance Method_transfer_from `{State.Trait} :
-      Notation.Dot "transfer_from" := {
-      Notation.dot := transfer_from;
+    Global Instance AssociatedFunction_transfer_from :
+      Notation.DoubleColon Self "transfer_from" := {
+      Notation.double_colon := transfer_from;
     }.
     
     Definition try_transfer_from
-        `{State.Trait}
         (self : mut_ref Self)
         (from : erc20.erc20.AccountId)
         (to : erc20.erc20.AccountId)
@@ -1600,30 +8313,81 @@ Module erc20.
         let* α13 := core.panicking.panic_fmt α12 in
         never_to_any α13.
     
-    Global Instance Method_try_transfer_from `{State.Trait} :
-      Notation.Dot "try_transfer_from" := {
-      Notation.dot := try_transfer_from;
+    Global Instance AssociatedFunction_try_transfer_from :
+      Notation.DoubleColon Self "try_transfer_from" := {
+      Notation.double_colon := try_transfer_from;
     }.
-  End Impl_erc20_erc20_Erc20Ref_8.
-  
-  Module
-    Impl_ink_env_call_create_builder_FromAccountId_for_erc20_erc20_Erc20Ref.
-    Definition Self `{State.Trait} := erc20.erc20.Erc20Ref.
+  End Impl_erc20_erc20_Erc20Ref_26.
+End Impl_erc20_erc20_Erc20Ref_26.
+
+Module
+  Impl_ink_codegen_trait_def_call_builder_TraitCallBuilder_for_erc20_erc20_Erc20Ref.
+  Section
+    Impl_ink_codegen_trait_def_call_builder_TraitCallBuilder_for_erc20_erc20_Erc20Ref.
+    Context `{State.Trait}.
     
-    Definition from_account_id
-        `{State.Trait}
-        (account_id : erc20.erc20.AccountId)
-        : M Self :=
+    Definition Self : Set := erc20.erc20.Erc20Ref.
+    
+    Definition Builder : Set :=
+      ink.codegen.dispatch.info.ContractCallBuilder.Type_
+        (Self := erc20.erc20.Erc20).
+    
+    Definition call (self : ref Self) : M (ref Builder) :=
+      let* α0 := deref self erc20.erc20.Erc20Ref in
+      let* α1 := α0.["inner"] in
+      let* α2 := borrow α1 erc20.erc20._.CallBuilder in
+      let* α3 := deref α2 erc20.erc20._.CallBuilder in
+      borrow α3 erc20.erc20._.CallBuilder.
+    
+    Global Instance AssociatedFunction_call :
+      Notation.DoubleColon Self "call" := {
+      Notation.double_colon := call;
+    }.
+    
+    Definition call_mut (self : mut_ref Self) : M (mut_ref Builder) :=
+      let* α0 := deref self erc20.erc20.Erc20Ref in
+      let* α1 := α0.["inner"] in
+      let* α2 := borrow_mut α1 erc20.erc20._.CallBuilder in
+      let* α3 := deref α2 erc20.erc20._.CallBuilder in
+      let* α0 := borrow_mut α3 erc20.erc20._.CallBuilder in
+      let* α1 := deref α0 erc20.erc20._.CallBuilder in
+      borrow_mut α1 erc20.erc20._.CallBuilder.
+    
+    Global Instance AssociatedFunction_call_mut :
+      Notation.DoubleColon Self "call_mut" := {
+      Notation.double_colon := call_mut;
+    }.
+    
+    Global Instance I
+      : ink.codegen.trait_def.call_builder.TraitCallBuilder.Trait Self := {
+      ink.codegen.trait_def.call_builder.TraitCallBuilder.Builder := Builder;
+      ink.codegen.trait_def.call_builder.TraitCallBuilder.call := call;
+      ink.codegen.trait_def.call_builder.TraitCallBuilder.call_mut := call_mut;
+    }.
+  End
+    Impl_ink_codegen_trait_def_call_builder_TraitCallBuilder_for_erc20_erc20_Erc20Ref.
+  Global Hint Resolve I : core.
+End
+  Impl_ink_codegen_trait_def_call_builder_TraitCallBuilder_for_erc20_erc20_Erc20Ref.
+
+Module Impl_ink_env_call_create_builder_FromAccountId_for_erc20_erc20_Erc20Ref.
+  Section
+    Impl_ink_env_call_create_builder_FromAccountId_for_erc20_erc20_Erc20Ref.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := erc20.erc20.Erc20Ref.
+    
+    Definition from_account_id (account_id : erc20.erc20.AccountId) : M Self :=
       let* α0 :=
         ink_env.call.create_builder.FromAccountId.from_account_id account_id in
       M.alloc {| erc20.erc20.Erc20Ref.inner := α0; |}.
     
-    Global Instance AssociatedFunction_from_account_id `{State.Trait} :
+    Global Instance AssociatedFunction_from_account_id :
       Notation.DoubleColon Self "from_account_id" := {
       Notation.double_colon := from_account_id;
     }.
     
-    Global Instance I `{State.Trait}
+    Global Instance I
       : ink_env.call.create_builder.FromAccountId.Trait Self
           (T := erc20.erc20.Environment)
         := {
@@ -1631,16 +8395,17 @@ Module erc20.
         :=
         from_account_id;
     }.
-    Global Hint Resolve I : core.
   End Impl_ink_env_call_create_builder_FromAccountId_for_erc20_erc20_Erc20Ref.
-  
-  Module Impl_ink_contract_ref_ToAccountId_for_erc20_erc20_Erc20Ref.
-    Definition Self `{State.Trait} := erc20.erc20.Erc20Ref.
+  Global Hint Resolve I : core.
+End Impl_ink_env_call_create_builder_FromAccountId_for_erc20_erc20_Erc20Ref.
+
+Module Impl_ink_contract_ref_ToAccountId_for_erc20_erc20_Erc20Ref.
+  Section Impl_ink_contract_ref_ToAccountId_for_erc20_erc20_Erc20Ref.
+    Context `{State.Trait}.
     
-    Definition to_account_id
-        `{State.Trait}
-        (self : ref Self)
-        : M erc20.erc20.AccountId :=
+    Definition Self : Set := erc20.erc20.Erc20Ref.
+    
+    Definition to_account_id (self : ref Self) : M erc20.erc20.AccountId :=
       let* α0 := deref self erc20.erc20.Erc20Ref in
       let* α1 := α0.["inner"] in
       let* α2 := borrow α1 erc20.erc20._.CallBuilder in
@@ -1648,26 +8413,27 @@ Module erc20.
       let* α4 := borrow α3 erc20.erc20._.CallBuilder in
       ink.contract_ref.ToAccountId.to_account_id α4.
     
-    Global Instance Method_to_account_id `{State.Trait} :
-      Notation.Dot "to_account_id" := {
-      Notation.dot := to_account_id;
+    Global Instance AssociatedFunction_to_account_id :
+      Notation.DoubleColon Self "to_account_id" := {
+      Notation.double_colon := to_account_id;
     }.
     
-    Global Instance I `{State.Trait}
+    Global Instance I
       : ink.contract_ref.ToAccountId.Trait Self (T := erc20.erc20.Environment)
         := {
       ink.contract_ref.ToAccountId.to_account_id := to_account_id;
     }.
-    Global Hint Resolve I : core.
   End Impl_ink_contract_ref_ToAccountId_for_erc20_erc20_Erc20Ref.
-  
-  Module Impl_core_convert_AsRef_for_erc20_erc20_Erc20Ref.
-    Definition Self `{State.Trait} := erc20.erc20.Erc20Ref.
+  Global Hint Resolve I : core.
+End Impl_ink_contract_ref_ToAccountId_for_erc20_erc20_Erc20Ref.
+
+Module Impl_core_convert_AsRef_for_erc20_erc20_Erc20Ref.
+  Section Impl_core_convert_AsRef_for_erc20_erc20_Erc20Ref.
+    Context `{State.Trait}.
     
-    Definition as_ref
-        `{State.Trait}
-        (self : ref Self)
-        : M (ref erc20.erc20.AccountId) :=
+    Definition Self : Set := erc20.erc20.Erc20Ref.
+    
+    Definition as_ref (self : ref Self) : M (ref erc20.erc20.AccountId) :=
       let* α0 := deref self erc20.erc20.Erc20Ref in
       let* α1 := α0.["inner"] in
       let* α2 := borrow α1 erc20.erc20._.CallBuilder in
@@ -1677,22 +8443,26 @@ Module erc20.
       let* α6 := deref α5 ink_primitives.types.AccountId in
       borrow α6 ink_primitives.types.AccountId.
     
-    Global Instance Method_as_ref `{State.Trait} : Notation.Dot "as_ref" := {
-      Notation.dot := as_ref;
+    Global Instance AssociatedFunction_as_ref :
+      Notation.DoubleColon Self "as_ref" := {
+      Notation.double_colon := as_ref;
     }.
     
-    Global Instance I `{State.Trait}
+    Global Instance I
       : core.convert.AsRef.Trait Self (T := erc20.erc20.AccountId) := {
       core.convert.AsRef.as_ref := as_ref;
     }.
-    Global Hint Resolve I : core.
   End Impl_core_convert_AsRef_for_erc20_erc20_Erc20Ref.
-  
-  Module Impl_core_convert_AsMut_for_erc20_erc20_Erc20Ref.
-    Definition Self `{State.Trait} := erc20.erc20.Erc20Ref.
+  Global Hint Resolve I : core.
+End Impl_core_convert_AsRef_for_erc20_erc20_Erc20Ref.
+
+Module Impl_core_convert_AsMut_for_erc20_erc20_Erc20Ref.
+  Section Impl_core_convert_AsMut_for_erc20_erc20_Erc20Ref.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := erc20.erc20.Erc20Ref.
     
     Definition as_mut
-        `{State.Trait}
         (self : mut_ref Self)
         : M (mut_ref erc20.erc20.AccountId) :=
       let* α0 := deref self erc20.erc20.Erc20Ref in
@@ -1706,6373 +8476,16 @@ Module erc20.
       let* α1 := deref α0 ink_primitives.types.AccountId in
       borrow_mut α1 ink_primitives.types.AccountId.
     
-    Global Instance Method_as_mut `{State.Trait} : Notation.Dot "as_mut" := {
-      Notation.dot := as_mut;
+    Global Instance AssociatedFunction_as_mut :
+      Notation.DoubleColon Self "as_mut" := {
+      Notation.double_colon := as_mut;
     }.
     
-    Global Instance I `{State.Trait}
+    Global Instance I
       : core.convert.AsMut.Trait Self (T := erc20.erc20.AccountId) := {
       core.convert.AsMut.as_mut := as_mut;
     }.
-    Global Hint Resolve I : core.
   End Impl_core_convert_AsMut_for_erc20_erc20_Erc20Ref.
-  
-  Module Error.
-    Inductive t `{State.Trait} : Set :=
-    | InsufficientBalance
-    | InsufficientAllowance.
-  End Error.
-  Definition Error `{State.Trait} : Set := Error.t.
-  
-  Module Impl_core_fmt_Debug_for_erc20_erc20_Error.
-    Definition Self `{State.Trait} := erc20.erc20.Error.
-    
-    Definition fmt
-        `{State.Trait}
-        (self : ref Self)
-        (f : mut_ref core.fmt.Formatter)
-        : M core.fmt.Result :=
-      let* α0 := deref f core.fmt.Formatter in
-      let* α1 := borrow_mut α0 core.fmt.Formatter in
-      let* α2 :=
-        match self with
-        | erc20.erc20.Error  =>
-          let* α0 := deref (mk_str "InsufficientBalance") str in
-          borrow α0 str
-        | erc20.erc20.Error  =>
-          let* α0 := deref (mk_str "InsufficientAllowance") str in
-          borrow α0 str
-        end in
-      core.fmt.Formatter::["write_str"] α1 α2.
-    
-    Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
-      Notation.dot := fmt;
-    }.
-    
-    Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
-      core.fmt.Debug.fmt := fmt;
-    }.
-    Global Hint Resolve I : core.
-  End Impl_core_fmt_Debug_for_erc20_erc20_Error.
-  
-  Module Impl_core_marker_StructuralPartialEq_for_erc20_erc20_Error.
-    Definition Self `{State.Trait} := erc20.erc20.Error.
-    
-    Global Instance I `{State.Trait}
-      : core.marker.StructuralPartialEq.Trait Self := {
-    }.
-    Global Hint Resolve I : core.
-  End Impl_core_marker_StructuralPartialEq_for_erc20_erc20_Error.
-  
-  Module Impl_core_cmp_PartialEq_for_erc20_erc20_Error.
-    Definition Self `{State.Trait} := erc20.erc20.Error.
-    
-    Definition eq
-        `{State.Trait}
-        (self : ref Self)
-        (other : ref erc20.erc20.Error)
-        : M bool :=
-      let* __self_tag :=
-        let* α0 := deref self erc20.erc20.Error in
-        let* α1 := borrow α0 erc20.erc20.Error in
-        "unimplemented parent_kind" α1 in
-      let* __arg1_tag :=
-        let* α0 := deref other erc20.erc20.Error in
-        let* α1 := borrow α0 erc20.erc20.Error in
-        "unimplemented parent_kind" α1 in
-      eq __self_tag __arg1_tag.
-    
-    Global Instance Method_eq `{State.Trait} : Notation.Dot "eq" := {
-      Notation.dot := eq;
-    }.
-    
-    Global Instance I `{State.Trait}
-      : core.cmp.PartialEq.Trait Self
-          (Rhs := core.cmp.PartialEq.Default.Rhs Self)
-        := {
-      core.cmp.PartialEq.eq := eq;
-    }.
-    Global Hint Resolve I : core.
-  End Impl_core_cmp_PartialEq_for_erc20_erc20_Error.
-  
-  Module Impl_core_marker_StructuralEq_for_erc20_erc20_Error.
-    Definition Self `{State.Trait} := erc20.erc20.Error.
-    
-    Global Instance I `{State.Trait} : core.marker.StructuralEq.Trait Self := {
-    }.
-    Global Hint Resolve I : core.
-  End Impl_core_marker_StructuralEq_for_erc20_erc20_Error.
-  
-  Module Impl_core_cmp_Eq_for_erc20_erc20_Error.
-    Definition Self `{State.Trait} := erc20.erc20.Error.
-    
-    Definition assert_receiver_is_total_eq
-        `{State.Trait}
-        (self : ref Self)
-        : M unit :=
-      Pure tt.
-    
-    Global Instance Method_assert_receiver_is_total_eq `{State.Trait} :
-      Notation.Dot "assert_receiver_is_total_eq" := {
-      Notation.dot := assert_receiver_is_total_eq;
-    }.
-    
-    Global Instance I `{State.Trait} : core.cmp.Eq.Trait Self := {
-    }.
-    Global Hint Resolve I : core.
-  End Impl_core_cmp_Eq_for_erc20_erc20_Error.
-  
-  Definition Result (T : Set) `{State.Trait} : Set :=
-    core.result.Result T erc20.erc20.Error.
-End erc20.
-
-Module Impl_ink_env_contract_ContractEnv_for_erc20_erc20_Erc20.
-  Definition Self `{State.Trait} := erc20.erc20.Erc20.
-  
-  Definition Env : Set := ink_env.types.DefaultEnvironment.
-  
-  Global Instance I `{State.Trait}
-    : ink_env.contract.ContractEnv.Trait Self := {
-    ink_env.contract.ContractEnv.Env := Env;
-  }.
-  Global Hint Resolve I : core.
-End Impl_ink_env_contract_ContractEnv_for_erc20_erc20_Erc20.
-
-Definition Environment `{State.Trait} : Set :=
-  ink_env.types.DefaultEnvironment.
-
-Definition AccountId `{State.Trait} : Set :=
-  ink_env.types.Environment.AccountId
-    (Self := ink_env.types.DefaultEnvironment).
-
-Definition Balance `{State.Trait} : Set :=
-  ink_env.types.Environment.Balance
-    (Self := ink_env.types.DefaultEnvironment).
-
-Definition Hash `{State.Trait} : Set :=
-  ink_env.types.Environment.Hash
-    (Self := ink_env.types.DefaultEnvironment).
-
-Definition Timestamp `{State.Trait} : Set :=
-  ink_env.types.Environment.Timestamp
-    (Self := ink_env.types.DefaultEnvironment).
-
-Definition BlockNumber `{State.Trait} : Set :=
-  ink_env.types.Environment.BlockNumber
-    (Self := ink_env.types.DefaultEnvironment).
-
-Definition ChainExtension `{State.Trait} : Set :=
-  ink_env.types.Environment.ChainExtension
-    (Self := ink_env.types.DefaultEnvironment).
-
-Definition MAX_EVENT_TOPICS `{State.Trait} : usize :=
-  run
-    (Pure
-      (ink_env.types.Environment.MAX_EVENT_TOPICS
-        (Self :=
-          (ink_env.types.DefaultEnvironment)))).
-
-Module Check.
-  Unset Primitive Projections.
-  Record t `{State.Trait} : Set := {
-    salt : unit;
-    field_0 : erc20.erc20.Balance;
-    field_1
-      :
-      ink_storage.lazy.mapping.Mapping
-        erc20.erc20.AccountId
-        erc20.erc20.Balance
-        ink_storage.lazy.mapping.Mapping.Default.KeyType;
-    field_2
-      :
-      ink_storage.lazy.mapping.Mapping
-        (erc20.erc20.AccountId * erc20.erc20.AccountId)
-        erc20.erc20.Balance
-        ink_storage.lazy.mapping.Mapping.Default.KeyType;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_salt `{State.Trait} : Notation.Dot "salt" := {
-    Notation.dot x := let* x := M.read x in Pure x.(salt) : M _;
-  }.
-  Global Instance Get_AF_salt `{State.Trait}
-    : Notation.DoubleColon t "salt" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(salt) : M _;
-  }.
-  Global Instance Get_field_0 `{State.Trait} : Notation.Dot "field_0" := {
-    Notation.dot x := let* x := M.read x in Pure x.(field_0) : M _;
-  }.
-  Global Instance Get_AF_field_0 `{State.Trait}
-    : Notation.DoubleColon t "field_0" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(field_0) : M _;
-  }.
-  Global Instance Get_field_1 `{State.Trait} : Notation.Dot "field_1" := {
-    Notation.dot x := let* x := M.read x in Pure x.(field_1) : M _;
-  }.
-  Global Instance Get_AF_field_1 `{State.Trait}
-    : Notation.DoubleColon t "field_1" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(field_1) : M _;
-  }.
-  Global Instance Get_field_2 `{State.Trait} : Notation.Dot "field_2" := {
-    Notation.dot x := let* x := M.read x in Pure x.(field_2) : M _;
-  }.
-  Global Instance Get_AF_field_2 `{State.Trait}
-    : Notation.DoubleColon t "field_2" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(field_2) : M _;
-  }.
-End Check.
-Definition Check `{State.Trait} : Set := M.val (Check.t).
-
-Module Erc20.
-  Unset Primitive Projections.
-  Record t `{State.Trait} : Set := {
-    total_supply
-      :
-      ink_storage_traits.storage.AutoStorableHint.Type_
-        (Self := erc20.erc20.Balance);
-    balances
-      :
-      ink_storage_traits.storage.AutoStorableHint.Type_
-        (Self := ink_storage.lazy.mapping.Mapping
-          erc20.erc20.AccountId
-          erc20.erc20.Balance
-          ink_storage.lazy.mapping.Mapping.Default.KeyType);
-    allowances
-      :
-      ink_storage_traits.storage.AutoStorableHint.Type_
-        (Self := ink_storage.lazy.mapping.Mapping
-          (erc20.erc20.AccountId * erc20.erc20.AccountId)
-          erc20.erc20.Balance
-          ink_storage.lazy.mapping.Mapping.Default.KeyType);
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_total_supply `{State.Trait}
-    : Notation.Dot "total_supply" := {
-    Notation.dot x := let* x := M.read x in Pure x.(total_supply) : M _;
-  }.
-  Global Instance Get_AF_total_supply `{State.Trait}
-    : Notation.DoubleColon t "total_supply" := {
-    Notation.double_colon x
-      :=
-      let* x := M.read x in Pure x.(total_supply) : M _;
-  }.
-  Global Instance Get_balances `{State.Trait} : Notation.Dot "balances" := {
-    Notation.dot x := let* x := M.read x in Pure x.(balances) : M _;
-  }.
-  Global Instance Get_AF_balances `{State.Trait}
-    : Notation.DoubleColon t "balances" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(balances) : M _;
-  }.
-  Global Instance Get_allowances `{State.Trait} : Notation.Dot "allowances" := {
-    Notation.dot x := let* x := M.read x in Pure x.(allowances) : M _;
-  }.
-  Global Instance Get_AF_allowances `{State.Trait}
-    : Notation.DoubleColon t "allowances" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(allowances) : M _;
-  }.
-End Erc20.
-Definition Erc20 `{State.Trait} : Set := M.val (Erc20.t).
-
-Module Impl_ink_storage_traits_storage_StorableHint_for_erc20_erc20_Erc20.
-  Section Impl_ink_storage_traits_storage_StorableHint_for_erc20_erc20_Erc20.
-    Context {__ink_generic_salt : Set}.
-    Context `{ink_storage_traits.storage.StorageKey.Trait __ink_generic_salt}.
-    Definition Self `{State.Trait} := erc20.erc20.Erc20.
-    
-    Definition Type : Set := erc20.erc20.Erc20.
-    
-    Definition PreferredKey : Set := ink_storage_traits.impls.AutoKey.
-    
-    Global Instance I `{State.Trait}
-      : ink_storage_traits.storage.StorableHint.Trait Self
-          (Key := __ink_generic_salt)
-        := {
-      ink_storage_traits.storage.StorableHint.Type := Type;
-      ink_storage_traits.storage.StorableHint.PreferredKey := PreferredKey;
-    }.
-  End Impl_ink_storage_traits_storage_StorableHint_for_erc20_erc20_Erc20.
-  Global Hint Resolve I : core.
-End Impl_ink_storage_traits_storage_StorableHint_for_erc20_erc20_Erc20.
-
-Module Impl_ink_storage_traits_storage_StorageKey_for_erc20_erc20_Erc20.
-  Definition Self `{State.Trait} := erc20.erc20.Erc20.
-  
-  Definition
-    KEY
-    `{State.Trait} := Pure
-      (ink_storage_traits.storage.StorageKey.KEY (Self := unit)).
-  
-  Global Instance AssociatedFunction_KEY `{State.Trait} :
-    Notation.DoubleColon Self "KEY" := {
-    Notation.double_colon := KEY;
-  }.
-  
-  Global Instance I `{State.Trait}
-    : ink_storage_traits.storage.StorageKey.Trait Self := {
-    ink_storage_traits.storage.StorageKey.KEY := KEY;
-  }.
-  Global Hint Resolve I : core.
-End Impl_ink_storage_traits_storage_StorageKey_for_erc20_erc20_Erc20.
-
-Module Impl_ink_storage_traits_storage_Storable_for_erc20_erc20_Erc20.
-  Definition Self `{State.Trait} := erc20.erc20.Erc20.
-  
-  Definition decode
-      `{State.Trait}
-      {__ink_I : Set}
-      `{parity_scale_codec.codec.Input.Trait __ink_I}
-      (__input : mut_ref __ink_I)
-      : M (core.result.Result Self parity_scale_codec.error.Error) :=
-    let* α0 := deref __input _ in
-    let* α1 := borrow_mut α0 _ in
-    let* α2 := ink_storage_traits.storage.Storable.decode α1 in
-    let* α3 := core.ops.try_trait.Try.branch α2 in
-    let* α4 :=
-      match α3 with
-      | core.ops.control_flow.ControlFlow residual =>
-        let* α0 := core.ops.try_trait.FromResidual.from_residual residual in
-        let* α1 := Return α0 in
-        never_to_any α1
-      | core.ops.control_flow.ControlFlow val => Pure val
-      end in
-    let* α5 := deref __input _ in
-    let* α6 := borrow_mut α5 _ in
-    let* α7 := ink_storage_traits.storage.Storable.decode α6 in
-    let* α8 := core.ops.try_trait.Try.branch α7 in
-    let* α9 :=
-      match α8 with
-      | core.ops.control_flow.ControlFlow residual =>
-        let* α0 := core.ops.try_trait.FromResidual.from_residual residual in
-        let* α1 := Return α0 in
-        never_to_any α1
-      | core.ops.control_flow.ControlFlow val => Pure val
-      end in
-    let* α10 := deref __input _ in
-    let* α11 := borrow_mut α10 _ in
-    let* α12 := ink_storage_traits.storage.Storable.decode α11 in
-    let* α13 := core.ops.try_trait.Try.branch α12 in
-    let* α14 :=
-      match α13 with
-      | core.ops.control_flow.ControlFlow residual =>
-        let* α0 := core.ops.try_trait.FromResidual.from_residual residual in
-        let* α1 := Return α0 in
-        never_to_any α1
-      | core.ops.control_flow.ControlFlow val => Pure val
-      end in
-    let* α15 :=
-      M.alloc
-        {|
-          erc20.erc20.Erc20.total_supply := α4;
-          erc20.erc20.Erc20.balances := α9;
-          erc20.erc20.Erc20.allowances := α14;
-        |} in
-    Pure (core.result.Result.Ok α15).
-  
-  Global Instance AssociatedFunction_decode
-      `{State.Trait}
-      {__ink_I : Set}
-      `{parity_scale_codec.codec.Input.Trait __ink_I} :
-    Notation.DoubleColon Self "decode" := {
-    Notation.double_colon := decode (__ink_I := __ink_I);
-  }.
-  
-  Definition encode
-      `{State.Trait}
-      {__ink_O : Set}
-      `{parity_scale_codec.codec.Output.Trait __ink_O}
-      `{core.marker.Sized.Trait __ink_O}
-      (self : ref Self)
-      (__dest : mut_ref __ink_O)
-      : M unit :=
-    match self with
-    |
-        {|
-          erc20.erc20.Erc20.total_supply := __binding_0;
-          erc20.erc20.Erc20.balances := __binding_1;
-          erc20.erc20.Erc20.allowances := __binding_2;
-        |}
-        =>
-      let* _ :=
-        let* _ :=
-          let* α0 := deref __binding_0 u128 in
-          let* α1 := borrow α0 u128 in
-          let* α2 := deref __dest _ in
-          let* α3 := borrow_mut α2 _ in
-          ink_storage_traits.storage.Storable.encode α1 α3 in
-        Pure tt in
-      let* _ :=
-        let* _ :=
-          let* α0 :=
-            deref
-              __binding_1
-              (ink_storage.lazy.mapping.Mapping
-                ink_primitives.types.AccountId
-                u128
-                (ink_storage_traits.impls.ResolverKey
-                  ink_storage_traits.impls.AutoKey
-                  (ink_storage_traits.impls.ManualKey unit))) in
-          let* α1 :=
-            borrow
-              α0
-              (ink_storage.lazy.mapping.Mapping
-                ink_primitives.types.AccountId
-                u128
-                (ink_storage_traits.impls.ResolverKey
-                  ink_storage_traits.impls.AutoKey
-                  (ink_storage_traits.impls.ManualKey unit))) in
-          let* α2 := deref __dest _ in
-          let* α3 := borrow_mut α2 _ in
-          ink_storage_traits.storage.Storable.encode α1 α3 in
-        Pure tt in
-      let* _ :=
-        let* α0 :=
-          deref
-            __binding_2
-            (ink_storage.lazy.mapping.Mapping
-              (ink_primitives.types.AccountId * ink_primitives.types.AccountId)
-              u128
-              (ink_storage_traits.impls.ResolverKey
-                ink_storage_traits.impls.AutoKey
-                (ink_storage_traits.impls.ManualKey unit))) in
-        let* α1 :=
-          borrow
-            α0
-            (ink_storage.lazy.mapping.Mapping
-              (ink_primitives.types.AccountId * ink_primitives.types.AccountId)
-              u128
-              (ink_storage_traits.impls.ResolverKey
-                ink_storage_traits.impls.AutoKey
-                (ink_storage_traits.impls.ManualKey unit))) in
-        let* α2 := deref __dest _ in
-        let* α3 := borrow_mut α2 _ in
-        ink_storage_traits.storage.Storable.encode α1 α3 in
-      Pure tt
-    end.
-  
-  Global Instance Method_encode
-      `{State.Trait}
-      {__ink_O : Set}
-      `{parity_scale_codec.codec.Output.Trait __ink_O}
-      `{core.marker.Sized.Trait __ink_O} :
-    Notation.Dot "encode" := {
-    Notation.dot := encode (__ink_O := __ink_O);
-  }.
-  
-  Global Instance I `{State.Trait}
-    : ink_storage_traits.storage.Storable.Trait Self := {
-    ink_storage_traits.storage.Storable.decode
-      {__ink_I : Set}
-      `{parity_scale_codec.codec.Input.Trait __ink_I}
-      :=
-      decode (__ink_I := __ink_I);
-    ink_storage_traits.storage.Storable.encode
-      {__ink_O : Set}
-      `{parity_scale_codec.codec.Output.Trait __ink_O}
-      `{core.marker.Sized.Trait __ink_O}
-      :=
-      encode (__ink_O := __ink_O);
-  }.
-  Global Hint Resolve I : core.
-End Impl_ink_storage_traits_storage_Storable_for_erc20_erc20_Erc20.
-
-Module Impl_scale_info_TypeInfo_for_erc20_erc20_Erc20.
-  Definition Self `{State.Trait} := erc20.erc20.Erc20.
-  
-  Definition Identity : Set := Self.
-  
-  Definition type_info
-      `{State.Trait}
-      : M (scale_info.ty.Type_ scale_info.ty.Type_.Default.T) :=
-    let* α0 := (scale_info.ty.Type_ scale_info.form.MetaForm)::["builder"] in
-    let* α1 :=
-      (scale_info.ty.path.Path scale_info.form.MetaForm)::["new"]
-        (mk_str "Erc20")
-        (mk_str "erc20::erc20") in
-    let* α2 :=
-      (scale_info.build.TypeBuilder
-            _
-            scale_info.build.state.PathNotAssigned)::["path"]
-        α0
-        α1 in
-    let* α3 := (alloc.vec.Vec _ alloc.alloc.Global)::["new"] in
-    let* α4 := (scale_info.build.TypeBuilder _ _)::["type_params"] α2 α3 in
-    let* α5 := borrow [ mk_str "A simple ERC-20 contract." ] (list (ref str)) in
-    let* α6 := deref α5 (list (ref str)) in
-    let* α7 := borrow α6 (list (ref str)) in
-    let* α8 := pointer_coercion "Unsize" α7 in
-    let* α9 :=
-      (scale_info.build.TypeBuilder scale_info.form.MetaForm _)::["docs"]
-        α4
-        α8 in
-    let* α10 := (scale_info.build.Fields _)::["named"] in
-    let* α11 :=
-      (scale_info.build.FieldsBuilder
-            scale_info.form.MetaForm
-            scale_info.build.NamedFields)::["field"]
-        α10
-        let* α0 :=
-          (scale_info.build.FieldBuilder
-                scale_info.form.MetaForm
-                _
-                scale_info.build.field_state.TypeNotAssigned)::["ty"]
-            f in
-        let* α1 :=
-          (scale_info.build.FieldBuilder
-                _
-                scale_info.build.field_state.NameNotAssigned
-                _)::["name"]
-            α0
-            (mk_str "total_supply") in
-        let* α2 :=
-          (scale_info.build.FieldBuilder _ _ _)::["type_name"]
-            α1
-            (mk_str
-              "<Balance as::ink::storage::traits::AutoStorableHint<::ink::
-storage::traits::ManualKey<375105693u32, ()>,>>::Type") in
-        let* α3 := borrow [ mk_str "Total token supply." ] (list (ref str)) in
-        let* α4 := deref α3 (list (ref str)) in
-        let* α5 := borrow α4 (list (ref str)) in
-        let* α6 := pointer_coercion "Unsize" α5 in
-        (scale_info.build.FieldBuilder scale_info.form.MetaForm _ _)::["docs"]
-          α2
-          α6 in
-    let* α12 :=
-      (scale_info.build.FieldsBuilder
-            scale_info.form.MetaForm
-            scale_info.build.NamedFields)::["field"]
-        α11
-        let* α0 :=
-          (scale_info.build.FieldBuilder
-                scale_info.form.MetaForm
-                _
-                scale_info.build.field_state.TypeNotAssigned)::["ty"]
-            f in
-        let* α1 :=
-          (scale_info.build.FieldBuilder
-                _
-                scale_info.build.field_state.NameNotAssigned
-                _)::["name"]
-            α0
-            (mk_str "balances") in
-        let* α2 :=
-          (scale_info.build.FieldBuilder _ _ _)::["type_name"]
-            α1
-            (mk_str
-              "<Mapping<AccountId, Balance> as::ink::storage::traits::
-AutoStorableHint<::ink::storage::traits::ManualKey<639884519u32, ()
->,>>::Type") in
-        let* α3 :=
-          borrow
-            [ mk_str "Mapping from owner to number of owned token." ]
-            (list (ref str)) in
-        let* α4 := deref α3 (list (ref str)) in
-        let* α5 := borrow α4 (list (ref str)) in
-        let* α6 := pointer_coercion "Unsize" α5 in
-        (scale_info.build.FieldBuilder scale_info.form.MetaForm _ _)::["docs"]
-          α2
-          α6 in
-    let* α13 :=
-      (scale_info.build.FieldsBuilder
-            scale_info.form.MetaForm
-            scale_info.build.NamedFields)::["field"]
-        α12
-        let* α0 :=
-          (scale_info.build.FieldBuilder
-                scale_info.form.MetaForm
-                _
-                scale_info.build.field_state.TypeNotAssigned)::["ty"]
-            f in
-        let* α1 :=
-          (scale_info.build.FieldBuilder
-                _
-                scale_info.build.field_state.NameNotAssigned
-                _)::["name"]
-            α0
-            (mk_str "allowances") in
-        let* α2 :=
-          (scale_info.build.FieldBuilder _ _ _)::["type_name"]
-            α1
-            (mk_str
-              "<Mapping<(AccountId, AccountId), Balance> as::ink::storage::traits
-::AutoStorableHint<::ink::storage::traits::ManualKey<
-3969917367u32, ()>,>>::Type") in
-        let* α3 :=
-          borrow
-            [
-              mk_str
-                "Mapping of the token amount which an account is allowed to withdraw";
-              mk_str "from another account."
-            ]
-            (list (ref str)) in
-        let* α4 := deref α3 (list (ref str)) in
-        let* α5 := borrow α4 (list (ref str)) in
-        let* α6 := pointer_coercion "Unsize" α5 in
-        (scale_info.build.FieldBuilder scale_info.form.MetaForm _ _)::["docs"]
-          α2
-          α6 in
-    (scale_info.build.TypeBuilder
-          _
-          scale_info.build.state.PathAssigned)::["composite"]
-      α9
-      α13.
-  
-  Global Instance AssociatedFunction_type_info `{State.Trait} :
-    Notation.DoubleColon Self "type_info" := {
-    Notation.double_colon := type_info;
-  }.
-  
-  Global Instance I `{State.Trait} : scale_info.TypeInfo.Trait Self := {
-    scale_info.TypeInfo.Identity := Identity;
-    scale_info.TypeInfo.type_info := type_info;
-  }.
-  Global Hint Resolve I : core.
-End Impl_scale_info_TypeInfo_for_erc20_erc20_Erc20.
-
-Module Impl_ink_storage_traits_layout_StorageLayout_for_erc20_erc20_Erc20.
-  Definition Self `{State.Trait} := erc20.erc20.Erc20.
-  
-  Definition layout
-      `{State.Trait}
-      (__key : ref ink_primitives.key.Key)
-      : M (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F) :=
-    let* α0 := deref __key u32 in
-    let* α1 := borrow α0 u32 in
-    let* α2 := ink_storage_traits.layout.StorageLayout.layout α1 in
-    let* α3 :=
-      (ink_metadata.layout.FieldLayout _)::["new"] (mk_str "total_supply") α2 in
-    let* α4 := deref __key u32 in
-    let* α5 := borrow α4 u32 in
-    let* α6 := ink_storage_traits.layout.StorageLayout.layout α5 in
-    let* α7 :=
-      (ink_metadata.layout.FieldLayout _)::["new"] (mk_str "balances") α6 in
-    let* α8 := deref __key u32 in
-    let* α9 := borrow α8 u32 in
-    let* α10 := ink_storage_traits.layout.StorageLayout.layout α9 in
-    let* α11 :=
-      (ink_metadata.layout.FieldLayout _)::["new"] (mk_str "allowances") α10 in
-    let* α12 :=
-      (ink_metadata.layout.StructLayout _)::["new"]
-        (mk_str "Erc20")
-        [ α3; α7; α11 ] in
-    Pure (ink_metadata.layout.Layout.Struct α12).
-  
-  Global Instance AssociatedFunction_layout `{State.Trait} :
-    Notation.DoubleColon Self "layout" := {
-    Notation.double_colon := layout;
-  }.
-  
-  Global Instance I `{State.Trait}
-    : ink_storage_traits.layout.StorageLayout.Trait Self := {
-    ink_storage_traits.layout.StorageLayout.layout := layout;
-  }.
-  Global Hint Resolve I : core.
-End Impl_ink_storage_traits_layout_StorageLayout_for_erc20_erc20_Erc20.
-
-Module Impl_core_default_Default_for_erc20_erc20_Erc20.
-  Definition Self `{State.Trait} := erc20.erc20.Erc20.
-  
-  Definition default `{State.Trait} : M erc20.erc20.Erc20 :=
-    let* α0 := core.default.Default.default in
-    let* α1 := core.default.Default.default in
-    let* α2 := core.default.Default.default in
-    M.alloc
-      {|
-        erc20.erc20.Erc20.total_supply := α0;
-        erc20.erc20.Erc20.balances := α1;
-        erc20.erc20.Erc20.allowances := α2;
-      |}.
-  
-  Global Instance AssociatedFunction_default `{State.Trait} :
-    Notation.DoubleColon Self "default" := {
-    Notation.double_colon := default;
-  }.
-  
-  Global Instance I `{State.Trait} : core.default.Default.Trait Self := {
-    core.default.Default.default := default;
-  }.
-  Global Hint Resolve I : core.
-End Impl_core_default_Default_for_erc20_erc20_Erc20.
-
-Module Impl_ink_reflect_contract_ContractName_for_erc20_erc20_Erc20.
-  Definition Self `{State.Trait} := erc20.erc20.Erc20.
-  
-  Definition NAME `{State.Trait} := Pure (mk_str "Erc20").
-  
-  Global Instance AssociatedFunction_NAME `{State.Trait} :
-    Notation.DoubleColon Self "NAME" := {
-    Notation.double_colon := NAME;
-  }.
-  
-  Global Instance I `{State.Trait}
-    : ink.reflect.contract.ContractName.Trait Self := {
-    ink.reflect.contract.ContractName.NAME := NAME;
-  }.
-  Global Hint Resolve I : core.
-End Impl_ink_reflect_contract_ContractName_for_erc20_erc20_Erc20.
-
-Module Impl_ink_codegen_env_Env_for_StaticRef_erc20_erc20_Erc20.
-  Definition Self `{State.Trait} := ref erc20.erc20.Erc20.
-  
-  Definition EnvAccess : Set :=
-    ink.env_access.EnvAccess
-      (ink_env.types.DefaultEnvironment).
-  
-  Definition env `{State.Trait} (self : Self) : M EnvAccess :=
-    core.default.Default.default.
-  
-  Global Instance Method_env `{State.Trait} : Notation.Dot "env" := {
-    Notation.dot := env;
-  }.
-  
-  Global Instance I `{State.Trait} : ink.codegen.env.Env.Trait Self := {
-    ink.codegen.env.Env.EnvAccess := EnvAccess;
-    ink.codegen.env.Env.env := env;
-  }.
-  Global Hint Resolve I : core.
-End Impl_ink_codegen_env_Env_for_StaticRef_erc20_erc20_Erc20.
-
-Module Impl_ink_codegen_env_StaticEnv_for_erc20_erc20_Erc20.
-  Definition Self `{State.Trait} := erc20.erc20.Erc20.
-  
-  Definition EnvAccess : Set :=
-    ink.env_access.EnvAccess
-      (ink_env.types.DefaultEnvironment).
-  
-  Definition env `{State.Trait} : M EnvAccess := core.default.Default.default.
-  
-  Global Instance AssociatedFunction_env `{State.Trait} :
-    Notation.DoubleColon Self "env" := {
-    Notation.double_colon := env;
-  }.
-  
-  Global Instance I `{State.Trait} : ink.codegen.env.StaticEnv.Trait Self := {
-    ink.codegen.env.StaticEnv.EnvAccess := EnvAccess;
-    ink.codegen.env.StaticEnv.env := env;
-  }.
-  Global Hint Resolve I : core.
-End Impl_ink_codegen_env_StaticEnv_for_erc20_erc20_Erc20.
-
-Module
-  Impl_ink_codegen_event_emit_EmitEvent_for_ink_env_access_EnvAccess_erc20_erc20_Environment.
-  Definition Self `{State.Trait} :=
-    ink.env_access.EnvAccess erc20.erc20.Environment.
-  
-  Definition emit_event
-      `{State.Trait}
-      {E : Set}
-      `{core.convert.Into.Trait E
-          (T := ink.reflect.event.ContractEventBase.Type_
-            (Self := erc20.erc20.Erc20))}
-      (self : Self)
-      (event : E)
-      : M unit :=
-    let* _ :=
-      let* α0 := core.convert.Into.into event in
-      ink_env.api.emit_event α0 in
-    Pure tt.
-  
-  Global Instance Method_emit_event
-      `{State.Trait}
-      {E : Set}
-      `{core.convert.Into.Trait E
-          (T := ink.reflect.event.ContractEventBase.Type_
-            (Self := erc20.erc20.Erc20))} :
-    Notation.Dot "emit_event" := {
-    Notation.dot := emit_event (E := E);
-  }.
-  
-  Global Instance I `{State.Trait}
-    : ink.codegen.event.emit.EmitEvent.Trait Self (C := erc20.erc20.Erc20) := {
-    ink.codegen.event.emit.EmitEvent.emit_event
-      {E : Set}
-      `{core.convert.Into.Trait E
-          (T := ink.reflect.event.ContractEventBase.Type_
-            (Self := erc20.erc20.Erc20))}
-      :=
-      emit_event (E := E);
-  }.
-  Global Hint Resolve I : core.
-End
-  Impl_ink_codegen_event_emit_EmitEvent_for_ink_env_access_EnvAccess_erc20_erc20_Environment.
-
-Module __ink_EventBase.
-  Inductive t `{State.Trait} : Set :=
-  | Transfer (_ : erc20.erc20.Transfer)
-  | Approval (_ : erc20.erc20.Approval).
-End __ink_EventBase.
-Definition __ink_EventBase `{State.Trait} : Set := __ink_EventBase.t.
-
-Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20___ink_EventBase.
-  Definition Self `{State.Trait} := erc20.erc20.__ink_EventBase.
-  
-  Definition encode_to
-      `{State.Trait}
-      {__CodecOutputEdqy : Set}
-      `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
-      `{core.marker.Sized.Trait __CodecOutputEdqy}
-      (self : ref Self)
-      (__codec_dest_edqy : mut_ref __CodecOutputEdqy)
-      : M unit :=
-    let* α0 := deref self erc20.erc20.__ink_EventBase in
-    match α0 with
-    | erc20.erc20.__ink_EventBase aa =>
-      let* _ :=
-        let* α0 := deref __codec_dest_edqy _ in
-        let* α1 := borrow_mut α0 _ in
-        let* α2 := M.alloc 0 in
-        let* α3 := cast α2 in
-        parity_scale_codec.codec.Output.push_byte α1 α3 in
-      let* _ :=
-        let* α0 := deref aa erc20.erc20.Transfer in
-        let* α1 := borrow α0 erc20.erc20.Transfer in
-        let* α2 := deref __codec_dest_edqy _ in
-        let* α3 := borrow_mut α2 _ in
-        parity_scale_codec.codec.Encode.encode_to α1 α3 in
-      Pure tt
-    | erc20.erc20.__ink_EventBase aa =>
-      let* _ :=
-        let* α0 := deref __codec_dest_edqy _ in
-        let* α1 := borrow_mut α0 _ in
-        let* α2 := M.alloc 1 in
-        let* α3 := cast α2 in
-        parity_scale_codec.codec.Output.push_byte α1 α3 in
-      let* _ :=
-        let* α0 := deref aa erc20.erc20.Approval in
-        let* α1 := borrow α0 erc20.erc20.Approval in
-        let* α2 := deref __codec_dest_edqy _ in
-        let* α3 := borrow_mut α2 _ in
-        parity_scale_codec.codec.Encode.encode_to α1 α3 in
-      Pure tt
-    | _ => Pure tt
-    end.
-  
-  Global Instance Method_encode_to
-      `{State.Trait}
-      {__CodecOutputEdqy : Set}
-      `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
-      `{core.marker.Sized.Trait __CodecOutputEdqy} :
-    Notation.Dot "encode_to" := {
-    Notation.dot := encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
-  }.
-  
-  Global Instance I `{State.Trait}
-    : parity_scale_codec.codec.Encode.Trait Self := {
-  }.
-  Global Hint Resolve I : core.
-End Impl_parity_scale_codec_codec_Encode_for_erc20_erc20___ink_EventBase.
-
-Module
-  Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20___ink_EventBase.
-  Definition Self `{State.Trait} := erc20.erc20.__ink_EventBase.
-  
-  Global Instance I `{State.Trait}
-    : parity_scale_codec.encode_like.EncodeLike.Trait Self
-        (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self)
-      := {
-  }.
-  Global Hint Resolve I : core.
-End
-  Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20___ink_EventBase.
-
-Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___ink_EventBase.
-  Definition Self `{State.Trait} := erc20.erc20.__ink_EventBase.
-  
-  Definition decode
-      `{State.Trait}
-      {__CodecInputEdqy : Set}
-      `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
-      (__codec_input_edqy : mut_ref __CodecInputEdqy)
-      : M (core.result.Result Self parity_scale_codec.error.Error) :=
-    let* α0 := deref __codec_input_edqy _ in
-    let* α1 := borrow_mut α0 _ in
-    let* α2 := parity_scale_codec.codec.Input.read_byte α1 in
-    let* α3 :=
-      (core.result.Result _ _)::["map_err"]
-        α2
-        parity_scale_codec.error.Error::["chain"]
-          e
-          (mk_str
-            "Could not decode `__ink_EventBase`, failed to read variant byte") in
-    let* α4 := core.ops.try_trait.Try.branch α3 in
-    let* α5 :=
-      match α4 with
-      | core.ops.control_flow.ControlFlow residual =>
-        let* α0 := core.ops.try_trait.FromResidual.from_residual residual in
-        let* α1 := Return α0 in
-        never_to_any α1
-      | core.ops.control_flow.ControlFlow val => Pure val
-      end in
-    match α5 with
-    | __codec_x_edqy =>
-      let* _ :=
-        let* α0 :=
-          borrow_mut
-            let* __codec_res_edqy :=
-              let* α0 := deref __codec_input_edqy _ in
-              let* α1 := borrow_mut α0 _ in
-              parity_scale_codec.codec.Decode.decode α1 in
-            let* α0 :=
-              match __codec_res_edqy with
-              | core.result.Result e =>
-                let* α0 :=
-                  parity_scale_codec.error.Error::["chain"]
-                    e
-                    (mk_str "Could not decode `__ink_EventBase::Transfer.0`") in
-                let* α1 := Return (core.result.Result.Err α0) in
-                never_to_any α1
-              | core.result.Result __codec_res_edqy => Pure __codec_res_edqy
-              end in
-            Pure
-              (core.result.Result.Ok (erc20.erc20.__ink_EventBase.Transfer α0))
-            type not implemented in
-        let* α1 := core.ops.function.FnMut.call_mut α0 tt in
-        Return α1 in
-      never_to_any tt
-    | __codec_x_edqy =>
-      let* _ :=
-        let* α0 :=
-          borrow_mut
-            let* __codec_res_edqy :=
-              let* α0 := deref __codec_input_edqy _ in
-              let* α1 := borrow_mut α0 _ in
-              parity_scale_codec.codec.Decode.decode α1 in
-            let* α0 :=
-              match __codec_res_edqy with
-              | core.result.Result e =>
-                let* α0 :=
-                  parity_scale_codec.error.Error::["chain"]
-                    e
-                    (mk_str "Could not decode `__ink_EventBase::Approval.0`") in
-                let* α1 := Return (core.result.Result.Err α0) in
-                never_to_any α1
-              | core.result.Result __codec_res_edqy => Pure __codec_res_edqy
-              end in
-            Pure
-              (core.result.Result.Ok (erc20.erc20.__ink_EventBase.Approval α0))
-            type not implemented in
-        let* α1 := core.ops.function.FnMut.call_mut α0 tt in
-        Return α1 in
-      never_to_any tt
-    | _ =>
-      let* _ :=
-        let* α0 :=
-          borrow
-            let* α0 :=
-              core.convert.Into.into
-                (mk_str
-                  "Could not decode `__ink_EventBase`, variant doesn't exist") in
-            Pure (core.result.Result.Err α0)
-            type not implemented in
-        let* α1 := core.ops.function.Fn.call α0 tt in
-        Return α1 in
-      never_to_any tt
-    end.
-  
-  Global Instance AssociatedFunction_decode
-      `{State.Trait}
-      {__CodecInputEdqy : Set}
-      `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :
-    Notation.DoubleColon Self "decode" := {
-    Notation.double_colon := decode (__CodecInputEdqy := __CodecInputEdqy);
-  }.
-  
-  Global Instance I `{State.Trait}
-    : parity_scale_codec.codec.Decode.Trait Self := {
-    parity_scale_codec.codec.Decode.decode
-      {__CodecInputEdqy : Set}
-      `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
-      :=
-      decode (__CodecInputEdqy := __CodecInputEdqy);
-  }.
-  Global Hint Resolve I : core.
-End Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___ink_EventBase.
-
-Module Impl_ink_reflect_event_ContractEventBase_for_erc20_erc20_Erc20.
-  Definition Self `{State.Trait} := erc20.erc20.Erc20.
-  
-  Definition Type : Set := erc20.erc20.__ink_EventBase.
-  
-  Global Instance I `{State.Trait}
-    : ink.reflect.event.ContractEventBase.Trait Self := {
-    ink.reflect.event.ContractEventBase.Type := Type;
-  }.
-  Global Hint Resolve I : core.
-End Impl_ink_reflect_event_ContractEventBase_for_erc20_erc20_Erc20.
-
-Module Impl_core_convert_From_for_erc20_erc20___ink_EventBase.
-  Definition Self `{State.Trait} := erc20.erc20.__ink_EventBase.
-  
-  Definition from `{State.Trait} (event : erc20.erc20.Transfer) : M Self :=
-    "unimplemented parent_kind" event.
-  
-  Global Instance AssociatedFunction_from `{State.Trait} :
-    Notation.DoubleColon Self "from" := {
-    Notation.double_colon := from;
-  }.
-  
-  Global Instance I `{State.Trait}
-    : core.convert.From.Trait Self (T := erc20.erc20.Transfer) := {
-    core.convert.From.from := from;
-  }.
-  Global Hint Resolve I : core.
-End Impl_core_convert_From_for_erc20_erc20___ink_EventBase.
-
-Module Impl_core_convert_From_for_erc20_erc20___ink_EventBase.
-  Definition Self `{State.Trait} := erc20.erc20.__ink_EventBase.
-  
-  Definition from `{State.Trait} (event : erc20.erc20.Approval) : M Self :=
-    "unimplemented parent_kind" event.
-  
-  Global Instance AssociatedFunction_from `{State.Trait} :
-    Notation.DoubleColon Self "from" := {
-    Notation.double_colon := from;
-  }.
-  
-  Global Instance I `{State.Trait}
-    : core.convert.From.Trait Self (T := erc20.erc20.Approval) := {
-    core.convert.From.from := from;
-  }.
-  Global Hint Resolve I : core.
-End Impl_core_convert_From_for_erc20_erc20___ink_EventBase.
-
-Module __ink_UndefinedAmountOfTopics.
-  Inductive t `{State.Trait} : Set :=
-  .
-End __ink_UndefinedAmountOfTopics.
-Definition __ink_UndefinedAmountOfTopics `{State.Trait} : Set :=
-  __ink_UndefinedAmountOfTopics.t.
-
-Module
-  Impl_ink_env_topics_EventTopicsAmount_for_erc20_erc20_____ink_UndefinedAmountOfTopics.
-  Definition Self `{State.Trait} := erc20.erc20._.__ink_UndefinedAmountOfTopics.
-  
-  Definition AMOUNT `{State.Trait} := M.alloc 0.
-  
-  Global Instance AssociatedFunction_AMOUNT `{State.Trait} :
-    Notation.DoubleColon Self "AMOUNT" := {
-    Notation.double_colon := AMOUNT;
-  }.
-  
-  Global Instance I `{State.Trait}
-    : ink_env.topics.EventTopicsAmount.Trait Self := {
-    ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
-  }.
-  Global Hint Resolve I : core.
-End
-  Impl_ink_env_topics_EventTopicsAmount_for_erc20_erc20_____ink_UndefinedAmountOfTopics.
-
-Module Impl_ink_env_topics_Topics_for_erc20_erc20___ink_EventBase.
-  Definition Self `{State.Trait} := erc20.erc20.__ink_EventBase.
-  
-  Definition RemainingTopics : Set :=
-    erc20.erc20._.__ink_UndefinedAmountOfTopics.
-  
-  Definition topics
-      `{State.Trait}
-      {E B : Set}
-      `{ink_env.types.Environment.Trait E}
-      `{ink_env.topics.TopicsBuilderBackend.Trait B (E := E)}
-      (self : ref Self)
-      (builder : ink_env.topics.TopicsBuilder ink_env.topics.state.Uninit E B)
-      : M (ink_env.topics.TopicsBuilderBackend.Output (Self := B)) :=
-    match self with
-    | erc20.erc20.__ink_EventBase event =>
-      let* α0 := deref event erc20.erc20.Transfer in
-      let* α1 := borrow α0 erc20.erc20.Transfer in
-      ink_env.topics.Topics.topics α1 builder
-    | erc20.erc20.__ink_EventBase event =>
-      let* α0 := deref event erc20.erc20.Approval in
-      let* α1 := borrow α0 erc20.erc20.Approval in
-      ink_env.topics.Topics.topics α1 builder
-    | _ =>
-      let* α0 := borrow [ mk_str "Event does not exist!" ] (list (ref str)) in
-      let* α1 := deref α0 (list (ref str)) in
-      let* α2 := borrow α1 (list (ref str)) in
-      let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := core.fmt.Arguments::["new_const"] α3 in
-      let* α5 := core.panicking.panic_fmt α4 in
-      never_to_any α5
-    end.
-  
-  Global Instance Method_topics
-      `{State.Trait}
-      {E B : Set}
-      `{ink_env.types.Environment.Trait E}
-      `{ink_env.topics.TopicsBuilderBackend.Trait B (E := E)} :
-    Notation.Dot "topics" := {
-    Notation.dot := topics (E := E) (B := B);
-  }.
-  
-  Global Instance I `{State.Trait} : ink_env.topics.Topics.Trait Self := {
-    ink_env.topics.Topics.RemainingTopics := RemainingTopics;
-    ink_env.topics.Topics.topics
-      {E B : Set}
-      `{ink_env.types.Environment.Trait E}
-      `{ink_env.topics.TopicsBuilderBackend.Trait B (E := E)}
-      :=
-      topics (E := E) (B := B);
-  }.
-  Global Hint Resolve I : core.
-End Impl_ink_env_topics_Topics_for_erc20_erc20___ink_EventBase.
-
-Module Impl_ink_codegen_event_topics_EventLenTopics_for_erc20_erc20_Transfer.
-  Definition Self `{State.Trait} := erc20.erc20.Transfer.
-  
-  Definition LenTopics : Set := ink.codegen.event.topics.EventTopics.
-  
-  Global Instance I `{State.Trait}
-    : ink.codegen.event.topics.EventLenTopics.Trait Self := {
-    ink.codegen.event.topics.EventLenTopics.LenTopics := LenTopics;
-  }.
-  Global Hint Resolve I : core.
-End Impl_ink_codegen_event_topics_EventLenTopics_for_erc20_erc20_Transfer.
-
-Module Impl_ink_codegen_event_topics_EventLenTopics_for_erc20_erc20_Approval.
-  Definition Self `{State.Trait} := erc20.erc20.Approval.
-  
-  Definition LenTopics : Set := ink.codegen.event.topics.EventTopics.
-  
-  Global Instance I `{State.Trait}
-    : ink.codegen.event.topics.EventLenTopics.Trait Self := {
-    ink.codegen.event.topics.EventLenTopics.LenTopics := LenTopics;
-  }.
-  Global Hint Resolve I : core.
-End Impl_ink_codegen_event_topics_EventLenTopics_for_erc20_erc20_Approval.
-
-Module Transfer.
-  Unset Primitive Projections.
-  Record t `{State.Trait} : Set := {
-    from : core.option.Option erc20.erc20.AccountId;
-    to : core.option.Option erc20.erc20.AccountId;
-    value : erc20.erc20.Balance;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_from `{State.Trait} : Notation.Dot "from" := {
-    Notation.dot x := let* x := M.read x in Pure x.(from) : M _;
-  }.
-  Global Instance Get_AF_from `{State.Trait}
-    : Notation.DoubleColon t "from" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(from) : M _;
-  }.
-  Global Instance Get_to `{State.Trait} : Notation.Dot "to" := {
-    Notation.dot x := let* x := M.read x in Pure x.(to) : M _;
-  }.
-  Global Instance Get_AF_to `{State.Trait} : Notation.DoubleColon t "to" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(to) : M _;
-  }.
-  Global Instance Get_value `{State.Trait} : Notation.Dot "value" := {
-    Notation.dot x := let* x := M.read x in Pure x.(value) : M _;
-  }.
-  Global Instance Get_AF_value `{State.Trait}
-    : Notation.DoubleColon t "value" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(value) : M _;
-  }.
-End Transfer.
-Definition Transfer `{State.Trait} : Set := M.val (Transfer.t).
-
-Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Transfer.
-  Definition Self `{State.Trait} := erc20.erc20.Transfer.
-  
-  Definition encode_to
-      `{State.Trait}
-      {__CodecOutputEdqy : Set}
-      `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
-      `{core.marker.Sized.Trait __CodecOutputEdqy}
-      (self : ref Self)
-      (__codec_dest_edqy : mut_ref __CodecOutputEdqy)
-      : M unit :=
-    let* _ :=
-      let* α0 := deref self erc20.erc20.Transfer in
-      let* α1 := α0.["from"] in
-      let* α2 :=
-        borrow α1 (core.option.Option ink_primitives.types.AccountId) in
-      let* α3 := deref α2 (core.option.Option ink_primitives.types.AccountId) in
-      let* α4 :=
-        borrow α3 (core.option.Option ink_primitives.types.AccountId) in
-      let* α5 := deref __codec_dest_edqy _ in
-      let* α6 := borrow_mut α5 _ in
-      parity_scale_codec.codec.Encode.encode_to α4 α6 in
-    let* _ :=
-      let* α0 := deref self erc20.erc20.Transfer in
-      let* α1 := α0.["to"] in
-      let* α2 :=
-        borrow α1 (core.option.Option ink_primitives.types.AccountId) in
-      let* α3 := deref α2 (core.option.Option ink_primitives.types.AccountId) in
-      let* α4 :=
-        borrow α3 (core.option.Option ink_primitives.types.AccountId) in
-      let* α5 := deref __codec_dest_edqy _ in
-      let* α6 := borrow_mut α5 _ in
-      parity_scale_codec.codec.Encode.encode_to α4 α6 in
-    let* _ :=
-      let* α0 := deref self erc20.erc20.Transfer in
-      let* α1 := α0.["value"] in
-      let* α2 := borrow α1 u128 in
-      let* α3 := deref α2 u128 in
-      let* α4 := borrow α3 u128 in
-      let* α5 := deref __codec_dest_edqy _ in
-      let* α6 := borrow_mut α5 _ in
-      parity_scale_codec.codec.Encode.encode_to α4 α6 in
-    Pure tt.
-  
-  Global Instance Method_encode_to
-      `{State.Trait}
-      {__CodecOutputEdqy : Set}
-      `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
-      `{core.marker.Sized.Trait __CodecOutputEdqy} :
-    Notation.Dot "encode_to" := {
-    Notation.dot := encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
-  }.
-  
-  Global Instance I `{State.Trait}
-    : parity_scale_codec.codec.Encode.Trait Self := {
-  }.
-  Global Hint Resolve I : core.
-End Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Transfer.
-
-Module Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20_Transfer.
-  Definition Self `{State.Trait} := erc20.erc20.Transfer.
-  
-  Global Instance I `{State.Trait}
-    : parity_scale_codec.encode_like.EncodeLike.Trait Self
-        (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self)
-      := {
-  }.
-  Global Hint Resolve I : core.
-End Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20_Transfer.
-
-Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Transfer.
-  Definition Self `{State.Trait} := erc20.erc20.Transfer.
-  
-  Definition decode
-      `{State.Trait}
-      {__CodecInputEdqy : Set}
-      `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
-      (__codec_input_edqy : mut_ref __CodecInputEdqy)
-      : M (core.result.Result Self parity_scale_codec.error.Error) :=
-    let* __codec_res_edqy :=
-      let* α0 := deref __codec_input_edqy _ in
-      let* α1 := borrow_mut α0 _ in
-      parity_scale_codec.codec.Decode.decode α1 in
-    let* α0 :=
-      match __codec_res_edqy with
-      | core.result.Result e =>
-        let* α0 :=
-          parity_scale_codec.error.Error::["chain"]
-            e
-            (mk_str "Could not decode `Transfer::from`") in
-        let* α1 := Return (core.result.Result.Err α0) in
-        never_to_any α1
-      | core.result.Result __codec_res_edqy => Pure __codec_res_edqy
-      end in
-    let* __codec_res_edqy :=
-      let* α0 := deref __codec_input_edqy _ in
-      let* α1 := borrow_mut α0 _ in
-      parity_scale_codec.codec.Decode.decode α1 in
-    let* α1 :=
-      match __codec_res_edqy with
-      | core.result.Result e =>
-        let* α0 :=
-          parity_scale_codec.error.Error::["chain"]
-            e
-            (mk_str "Could not decode `Transfer::to`") in
-        let* α1 := Return (core.result.Result.Err α0) in
-        never_to_any α1
-      | core.result.Result __codec_res_edqy => Pure __codec_res_edqy
-      end in
-    let* __codec_res_edqy :=
-      let* α0 := deref __codec_input_edqy _ in
-      let* α1 := borrow_mut α0 _ in
-      parity_scale_codec.codec.Decode.decode α1 in
-    let* α2 :=
-      match __codec_res_edqy with
-      | core.result.Result e =>
-        let* α0 :=
-          parity_scale_codec.error.Error::["chain"]
-            e
-            (mk_str "Could not decode `Transfer::value`") in
-        let* α1 := Return (core.result.Result.Err α0) in
-        never_to_any α1
-      | core.result.Result __codec_res_edqy => Pure __codec_res_edqy
-      end in
-    let* α3 :=
-      M.alloc
-        {|
-          erc20.erc20.Transfer.from := α0;
-          erc20.erc20.Transfer.to := α1;
-          erc20.erc20.Transfer.value := α2;
-        |} in
-    Pure (core.result.Result.Ok α3).
-  
-  Global Instance AssociatedFunction_decode
-      `{State.Trait}
-      {__CodecInputEdqy : Set}
-      `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :
-    Notation.DoubleColon Self "decode" := {
-    Notation.double_colon := decode (__CodecInputEdqy := __CodecInputEdqy);
-  }.
-  
-  Global Instance I `{State.Trait}
-    : parity_scale_codec.codec.Decode.Trait Self := {
-    parity_scale_codec.codec.Decode.decode
-      {__CodecInputEdqy : Set}
-      `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
-      :=
-      decode (__CodecInputEdqy := __CodecInputEdqy);
-  }.
-  Global Hint Resolve I : core.
-End Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Transfer.
-
-Module Approval.
-  Unset Primitive Projections.
-  Record t `{State.Trait} : Set := {
-    owner : erc20.erc20.AccountId;
-    spender : erc20.erc20.AccountId;
-    value : erc20.erc20.Balance;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_owner `{State.Trait} : Notation.Dot "owner" := {
-    Notation.dot x := let* x := M.read x in Pure x.(owner) : M _;
-  }.
-  Global Instance Get_AF_owner `{State.Trait}
-    : Notation.DoubleColon t "owner" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(owner) : M _;
-  }.
-  Global Instance Get_spender `{State.Trait} : Notation.Dot "spender" := {
-    Notation.dot x := let* x := M.read x in Pure x.(spender) : M _;
-  }.
-  Global Instance Get_AF_spender `{State.Trait}
-    : Notation.DoubleColon t "spender" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(spender) : M _;
-  }.
-  Global Instance Get_value `{State.Trait} : Notation.Dot "value" := {
-    Notation.dot x := let* x := M.read x in Pure x.(value) : M _;
-  }.
-  Global Instance Get_AF_value `{State.Trait}
-    : Notation.DoubleColon t "value" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(value) : M _;
-  }.
-End Approval.
-Definition Approval `{State.Trait} : Set := M.val (Approval.t).
-
-Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Approval.
-  Definition Self `{State.Trait} := erc20.erc20.Approval.
-  
-  Definition encode_to
-      `{State.Trait}
-      {__CodecOutputEdqy : Set}
-      `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
-      `{core.marker.Sized.Trait __CodecOutputEdqy}
-      (self : ref Self)
-      (__codec_dest_edqy : mut_ref __CodecOutputEdqy)
-      : M unit :=
-    let* _ :=
-      let* α0 := deref self erc20.erc20.Approval in
-      let* α1 := α0.["owner"] in
-      let* α2 := borrow α1 ink_primitives.types.AccountId in
-      let* α3 := deref α2 ink_primitives.types.AccountId in
-      let* α4 := borrow α3 ink_primitives.types.AccountId in
-      let* α5 := deref __codec_dest_edqy _ in
-      let* α6 := borrow_mut α5 _ in
-      parity_scale_codec.codec.Encode.encode_to α4 α6 in
-    let* _ :=
-      let* α0 := deref self erc20.erc20.Approval in
-      let* α1 := α0.["spender"] in
-      let* α2 := borrow α1 ink_primitives.types.AccountId in
-      let* α3 := deref α2 ink_primitives.types.AccountId in
-      let* α4 := borrow α3 ink_primitives.types.AccountId in
-      let* α5 := deref __codec_dest_edqy _ in
-      let* α6 := borrow_mut α5 _ in
-      parity_scale_codec.codec.Encode.encode_to α4 α6 in
-    let* _ :=
-      let* α0 := deref self erc20.erc20.Approval in
-      let* α1 := α0.["value"] in
-      let* α2 := borrow α1 u128 in
-      let* α3 := deref α2 u128 in
-      let* α4 := borrow α3 u128 in
-      let* α5 := deref __codec_dest_edqy _ in
-      let* α6 := borrow_mut α5 _ in
-      parity_scale_codec.codec.Encode.encode_to α4 α6 in
-    Pure tt.
-  
-  Global Instance Method_encode_to
-      `{State.Trait}
-      {__CodecOutputEdqy : Set}
-      `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
-      `{core.marker.Sized.Trait __CodecOutputEdqy} :
-    Notation.Dot "encode_to" := {
-    Notation.dot := encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
-  }.
-  
-  Global Instance I `{State.Trait}
-    : parity_scale_codec.codec.Encode.Trait Self := {
-  }.
-  Global Hint Resolve I : core.
-End Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Approval.
-
-Module Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20_Approval.
-  Definition Self `{State.Trait} := erc20.erc20.Approval.
-  
-  Global Instance I `{State.Trait}
-    : parity_scale_codec.encode_like.EncodeLike.Trait Self
-        (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self)
-      := {
-  }.
-  Global Hint Resolve I : core.
-End Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20_Approval.
-
-Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Approval.
-  Definition Self `{State.Trait} := erc20.erc20.Approval.
-  
-  Definition decode
-      `{State.Trait}
-      {__CodecInputEdqy : Set}
-      `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
-      (__codec_input_edqy : mut_ref __CodecInputEdqy)
-      : M (core.result.Result Self parity_scale_codec.error.Error) :=
-    let* __codec_res_edqy :=
-      let* α0 := deref __codec_input_edqy _ in
-      let* α1 := borrow_mut α0 _ in
-      parity_scale_codec.codec.Decode.decode α1 in
-    let* α0 :=
-      match __codec_res_edqy with
-      | core.result.Result e =>
-        let* α0 :=
-          parity_scale_codec.error.Error::["chain"]
-            e
-            (mk_str "Could not decode `Approval::owner`") in
-        let* α1 := Return (core.result.Result.Err α0) in
-        never_to_any α1
-      | core.result.Result __codec_res_edqy => Pure __codec_res_edqy
-      end in
-    let* __codec_res_edqy :=
-      let* α0 := deref __codec_input_edqy _ in
-      let* α1 := borrow_mut α0 _ in
-      parity_scale_codec.codec.Decode.decode α1 in
-    let* α1 :=
-      match __codec_res_edqy with
-      | core.result.Result e =>
-        let* α0 :=
-          parity_scale_codec.error.Error::["chain"]
-            e
-            (mk_str "Could not decode `Approval::spender`") in
-        let* α1 := Return (core.result.Result.Err α0) in
-        never_to_any α1
-      | core.result.Result __codec_res_edqy => Pure __codec_res_edqy
-      end in
-    let* __codec_res_edqy :=
-      let* α0 := deref __codec_input_edqy _ in
-      let* α1 := borrow_mut α0 _ in
-      parity_scale_codec.codec.Decode.decode α1 in
-    let* α2 :=
-      match __codec_res_edqy with
-      | core.result.Result e =>
-        let* α0 :=
-          parity_scale_codec.error.Error::["chain"]
-            e
-            (mk_str "Could not decode `Approval::value`") in
-        let* α1 := Return (core.result.Result.Err α0) in
-        never_to_any α1
-      | core.result.Result __codec_res_edqy => Pure __codec_res_edqy
-      end in
-    let* α3 :=
-      M.alloc
-        {|
-          erc20.erc20.Approval.owner := α0;
-          erc20.erc20.Approval.spender := α1;
-          erc20.erc20.Approval.value := α2;
-        |} in
-    Pure (core.result.Result.Ok α3).
-  
-  Global Instance AssociatedFunction_decode
-      `{State.Trait}
-      {__CodecInputEdqy : Set}
-      `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :
-    Notation.DoubleColon Self "decode" := {
-    Notation.double_colon := decode (__CodecInputEdqy := __CodecInputEdqy);
-  }.
-  
-  Global Instance I `{State.Trait}
-    : parity_scale_codec.codec.Decode.Trait Self := {
-    parity_scale_codec.codec.Decode.decode
-      {__CodecInputEdqy : Set}
-      `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
-      :=
-      decode (__CodecInputEdqy := __CodecInputEdqy);
-  }.
-  Global Hint Resolve I : core.
-End Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Approval.
-
-Module Impl_ink_env_topics_Topics_for_erc20_erc20_Transfer.
-  Definition Self `{State.Trait} := erc20.erc20.Transfer.
-  
-  Definition RemainingTopics : Set :=
-    list ink_env.topics.state.HasRemainingTopics.
-  
-  Definition topics
-      `{State.Trait}
-      {E B : Set}
-      `{ink_env.types.Environment.Trait E}
-      `{ink_env.topics.TopicsBuilderBackend.Trait B (E := E)}
-      (self : ref Self)
-      (builder : ink_env.topics.TopicsBuilder ink_env.topics.state.Uninit E B)
-      : M (ink_env.topics.TopicsBuilderBackend.Output (Self := B)) :=
-    let* α0 :=
-      (ink_env.topics.TopicsBuilder ink_env.topics.state.Uninit _ _)::["build"]
-        builder in
-    let* α1 :=
-      [69, 114, 99, 50, 48, 58, 58, 84, 114, 97, 110, 115, 102, 101, 114] in
-    let* α2 := deref α1 (list u8) in
-    let* α3 := borrow α2 (list u8) in
-    let* α4 := [] in
-    let* α5 := deref α4 (list u8) in
-    let* α6 := borrow α5 (list u8) in
-    let* α7 := pointer_coercion "Unsize" α6 in
-    let* α8 :=
-      M.alloc
-        {|
-          ink_env.topics.PrefixedValue.value := α3;
-          ink_env.topics.PrefixedValue.prefix := α7;
-        |} in
-    let* α9 := borrow α8 (ink_env.topics.PrefixedValue (list u8)) in
-    let* α10 := deref α9 (ink_env.topics.PrefixedValue (list u8)) in
-    let* α11 := borrow α10 (ink_env.topics.PrefixedValue (list u8)) in
-    let* α12 := (ink_env.topics.TopicsBuilder _ _ _)::["push_topic"] α0 α11 in
-    let* α13 := deref self erc20.erc20.Transfer in
-    let* α14 := α13.["from"] in
-    let* α15 :=
-      borrow α14 (core.option.Option ink_primitives.types.AccountId) in
-    let* α16 := deref α15 (core.option.Option ink_primitives.types.AccountId) in
-    let* α17 :=
-      borrow α16 (core.option.Option ink_primitives.types.AccountId) in
-    let* α18 :=
-      [69, 114, 99, 50, 48, 58, 58, 84, 114, 97, 110, 115, 102, 101, 114, 58, 58, 102, 114, 111, 109] in
-    let* α19 := deref α18 (list u8) in
-    let* α20 := borrow α19 (list u8) in
-    let* α21 := pointer_coercion "Unsize" α20 in
-    let* α22 :=
-      M.alloc
-        {|
-          ink_env.topics.PrefixedValue.value := α17;
-          ink_env.topics.PrefixedValue.prefix := α21;
-        |} in
-    let* α23 :=
-      borrow
-        α22
-        (ink_env.topics.PrefixedValue
-          (core.option.Option ink_primitives.types.AccountId)) in
-    let* α24 :=
-      deref
-        α23
-        (ink_env.topics.PrefixedValue
-          (core.option.Option ink_primitives.types.AccountId)) in
-    let* α25 :=
-      borrow
-        α24
-        (ink_env.topics.PrefixedValue
-          (core.option.Option ink_primitives.types.AccountId)) in
-    let* α26 := (ink_env.topics.TopicsBuilder _ _ _)::["push_topic"] α12 α25 in
-    let* α27 := deref self erc20.erc20.Transfer in
-    let* α28 := α27.["to"] in
-    let* α29 :=
-      borrow α28 (core.option.Option ink_primitives.types.AccountId) in
-    let* α30 := deref α29 (core.option.Option ink_primitives.types.AccountId) in
-    let* α31 :=
-      borrow α30 (core.option.Option ink_primitives.types.AccountId) in
-    let* α32 :=
-      [69, 114, 99, 50, 48, 58, 58, 84, 114, 97, 110, 115, 102, 101, 114, 58, 58, 116, 111] in
-    let* α33 := deref α32 (list u8) in
-    let* α34 := borrow α33 (list u8) in
-    let* α35 := pointer_coercion "Unsize" α34 in
-    let* α36 :=
-      M.alloc
-        {|
-          ink_env.topics.PrefixedValue.value := α31;
-          ink_env.topics.PrefixedValue.prefix := α35;
-        |} in
-    let* α37 :=
-      borrow
-        α36
-        (ink_env.topics.PrefixedValue
-          (core.option.Option ink_primitives.types.AccountId)) in
-    let* α38 :=
-      deref
-        α37
-        (ink_env.topics.PrefixedValue
-          (core.option.Option ink_primitives.types.AccountId)) in
-    let* α39 :=
-      borrow
-        α38
-        (ink_env.topics.PrefixedValue
-          (core.option.Option ink_primitives.types.AccountId)) in
-    let* α40 := (ink_env.topics.TopicsBuilder _ _ _)::["push_topic"] α26 α39 in
-    (ink_env.topics.TopicsBuilder
-          ink_env.topics.state.NoRemainingTopics
-          _
-          _)::["finish"]
-      α40.
-  
-  Global Instance Method_topics
-      `{State.Trait}
-      {E B : Set}
-      `{ink_env.types.Environment.Trait E}
-      `{ink_env.topics.TopicsBuilderBackend.Trait B (E := E)} :
-    Notation.Dot "topics" := {
-    Notation.dot := topics (E := E) (B := B);
-  }.
-  
-  Global Instance I `{State.Trait} : ink_env.topics.Topics.Trait Self := {
-    ink_env.topics.Topics.RemainingTopics := RemainingTopics;
-    ink_env.topics.Topics.topics
-      {E B : Set}
-      `{ink_env.types.Environment.Trait E}
-      `{ink_env.topics.TopicsBuilderBackend.Trait B (E := E)}
-      :=
-      topics (E := E) (B := B);
-  }.
-  Global Hint Resolve I : core.
-End Impl_ink_env_topics_Topics_for_erc20_erc20_Transfer.
-
-Module Impl_ink_env_topics_Topics_for_erc20_erc20_Approval.
-  Definition Self `{State.Trait} := erc20.erc20.Approval.
-  
-  Definition RemainingTopics : Set :=
-    list ink_env.topics.state.HasRemainingTopics.
-  
-  Definition topics
-      `{State.Trait}
-      {E B : Set}
-      `{ink_env.types.Environment.Trait E}
-      `{ink_env.topics.TopicsBuilderBackend.Trait B (E := E)}
-      (self : ref Self)
-      (builder : ink_env.topics.TopicsBuilder ink_env.topics.state.Uninit E B)
-      : M (ink_env.topics.TopicsBuilderBackend.Output (Self := B)) :=
-    let* α0 :=
-      (ink_env.topics.TopicsBuilder ink_env.topics.state.Uninit _ _)::["build"]
-        builder in
-    let* α1 :=
-      [69, 114, 99, 50, 48, 58, 58, 65, 112, 112, 114, 111, 118, 97, 108] in
-    let* α2 := deref α1 (list u8) in
-    let* α3 := borrow α2 (list u8) in
-    let* α4 := [] in
-    let* α5 := deref α4 (list u8) in
-    let* α6 := borrow α5 (list u8) in
-    let* α7 := pointer_coercion "Unsize" α6 in
-    let* α8 :=
-      M.alloc
-        {|
-          ink_env.topics.PrefixedValue.value := α3;
-          ink_env.topics.PrefixedValue.prefix := α7;
-        |} in
-    let* α9 := borrow α8 (ink_env.topics.PrefixedValue (list u8)) in
-    let* α10 := deref α9 (ink_env.topics.PrefixedValue (list u8)) in
-    let* α11 := borrow α10 (ink_env.topics.PrefixedValue (list u8)) in
-    let* α12 := (ink_env.topics.TopicsBuilder _ _ _)::["push_topic"] α0 α11 in
-    let* α13 := deref self erc20.erc20.Approval in
-    let* α14 := α13.["owner"] in
-    let* α15 := borrow α14 ink_primitives.types.AccountId in
-    let* α16 := deref α15 ink_primitives.types.AccountId in
-    let* α17 := borrow α16 ink_primitives.types.AccountId in
-    let* α18 :=
-      [69, 114, 99, 50, 48, 58, 58, 65, 112, 112, 114, 111, 118, 97, 108, 58, 58, 111, 119, 110, 101, 114] in
-    let* α19 := deref α18 (list u8) in
-    let* α20 := borrow α19 (list u8) in
-    let* α21 := pointer_coercion "Unsize" α20 in
-    let* α22 :=
-      M.alloc
-        {|
-          ink_env.topics.PrefixedValue.value := α17;
-          ink_env.topics.PrefixedValue.prefix := α21;
-        |} in
-    let* α23 :=
-      borrow
-        α22
-        (ink_env.topics.PrefixedValue ink_primitives.types.AccountId) in
-    let* α24 :=
-      deref α23 (ink_env.topics.PrefixedValue ink_primitives.types.AccountId) in
-    let* α25 :=
-      borrow
-        α24
-        (ink_env.topics.PrefixedValue ink_primitives.types.AccountId) in
-    let* α26 := (ink_env.topics.TopicsBuilder _ _ _)::["push_topic"] α12 α25 in
-    let* α27 := deref self erc20.erc20.Approval in
-    let* α28 := α27.["spender"] in
-    let* α29 := borrow α28 ink_primitives.types.AccountId in
-    let* α30 := deref α29 ink_primitives.types.AccountId in
-    let* α31 := borrow α30 ink_primitives.types.AccountId in
-    let* α32 :=
-      [69, 114, 99, 50, 48, 58, 58, 65, 112, 112, 114, 111, 118, 97, 108, 58, 58, 115, 112, 101, 110, 100, 101, 114] in
-    let* α33 := deref α32 (list u8) in
-    let* α34 := borrow α33 (list u8) in
-    let* α35 := pointer_coercion "Unsize" α34 in
-    let* α36 :=
-      M.alloc
-        {|
-          ink_env.topics.PrefixedValue.value := α31;
-          ink_env.topics.PrefixedValue.prefix := α35;
-        |} in
-    let* α37 :=
-      borrow
-        α36
-        (ink_env.topics.PrefixedValue ink_primitives.types.AccountId) in
-    let* α38 :=
-      deref α37 (ink_env.topics.PrefixedValue ink_primitives.types.AccountId) in
-    let* α39 :=
-      borrow
-        α38
-        (ink_env.topics.PrefixedValue ink_primitives.types.AccountId) in
-    let* α40 := (ink_env.topics.TopicsBuilder _ _ _)::["push_topic"] α26 α39 in
-    (ink_env.topics.TopicsBuilder
-          ink_env.topics.state.NoRemainingTopics
-          _
-          _)::["finish"]
-      α40.
-  
-  Global Instance Method_topics
-      `{State.Trait}
-      {E B : Set}
-      `{ink_env.types.Environment.Trait E}
-      `{ink_env.topics.TopicsBuilderBackend.Trait B (E := E)} :
-    Notation.Dot "topics" := {
-    Notation.dot := topics (E := E) (B := B);
-  }.
-  
-  Global Instance I `{State.Trait} : ink_env.topics.Topics.Trait Self := {
-    ink_env.topics.Topics.RemainingTopics := RemainingTopics;
-    ink_env.topics.Topics.topics
-      {E B : Set}
-      `{ink_env.types.Environment.Trait E}
-      `{ink_env.topics.TopicsBuilderBackend.Trait B (E := E)}
-      :=
-      topics (E := E) (B := B);
-  }.
-  Global Hint Resolve I : core.
-End Impl_ink_env_topics_Topics_for_erc20_erc20_Approval.
-
-Module
-  Impl_ink_reflect_dispatch_DispatchableConstructorInfo_for_erc20_erc20_Erc20.
-  Definition Self `{State.Trait} := erc20.erc20.Erc20.
-  
-  Definition Input : Set := erc20.erc20.Balance.
-  
-  Definition Output : Set := Self.
-  
-  Definition Storage : Set := erc20.erc20.Erc20.
-  
-  Definition Error : Set :=
-    ink.reflect.dispatch.ConstructorOutput.Error
-      (Self := ink.reflect.dispatch.ConstructorOutputValue Self).
-  
-  Definition
-    IS_RESULT
-    `{State.Trait} := Pure
-      (ink.reflect.dispatch.ConstructorOutput.IS_RESULT
-        (Self := (ink.reflect.dispatch.ConstructorOutputValue Self))).
-  
-  Global Instance AssociatedFunction_IS_RESULT `{State.Trait} :
-    Notation.DoubleColon Self "IS_RESULT" := {
-    Notation.double_colon := IS_RESULT;
-  }.
-  
-  Definition
-    CALLABLE
-    `{State.Trait} := Pure
-      (fun __ink_binding_0 => erc20.erc20.Erc20::["new"] __ink_binding_0).
-  
-  Global Instance AssociatedFunction_CALLABLE `{State.Trait} :
-    Notation.DoubleColon Self "CALLABLE" := {
-    Notation.double_colon := CALLABLE;
-  }.
-  
-  Definition PAYABLE `{State.Trait} := false.
-  
-  Global Instance AssociatedFunction_PAYABLE `{State.Trait} :
-    Notation.DoubleColon Self "PAYABLE" := {
-    Notation.double_colon := PAYABLE;
-  }.
-  
-  Definition
-    SELECTOR
-    `{State.Trait} := let* α0 := M.alloc 155 in
-    let* α1 := M.alloc 174 in
-    let* α2 := M.alloc 157 in
-    let* α3 := M.alloc 94 in
-    Pure [ α0; α1; α2; α3 ].
-  
-  Global Instance AssociatedFunction_SELECTOR `{State.Trait} :
-    Notation.DoubleColon Self "SELECTOR" := {
-    Notation.double_colon := SELECTOR;
-  }.
-  
-  Definition LABEL `{State.Trait} := Pure (mk_str "new").
-  
-  Global Instance AssociatedFunction_LABEL `{State.Trait} :
-    Notation.DoubleColon Self "LABEL" := {
-    Notation.double_colon := LABEL;
-  }.
-  
-  Global Instance I `{State.Trait}
-    : ink.reflect.dispatch.DispatchableConstructorInfo.Trait Self := {
-    ink.reflect.dispatch.DispatchableConstructorInfo.Input := Input;
-    ink.reflect.dispatch.DispatchableConstructorInfo.Output := Output;
-    ink.reflect.dispatch.DispatchableConstructorInfo.Storage := Storage;
-    ink.reflect.dispatch.DispatchableConstructorInfo.Error := Error;
-    ink.reflect.dispatch.DispatchableConstructorInfo.IS_RESULT := IS_RESULT;
-    ink.reflect.dispatch.DispatchableConstructorInfo.CALLABLE := CALLABLE;
-    ink.reflect.dispatch.DispatchableConstructorInfo.PAYABLE := PAYABLE;
-    ink.reflect.dispatch.DispatchableConstructorInfo.SELECTOR := SELECTOR;
-    ink.reflect.dispatch.DispatchableConstructorInfo.LABEL := LABEL;
-  }.
-  Global Hint Resolve I : core.
-End Impl_ink_reflect_dispatch_DispatchableConstructorInfo_for_erc20_erc20_Erc20.
-
-Module Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
-  Definition Self `{State.Trait} := erc20.erc20.Erc20.
-  
-  Definition Input : Set := unit.
-  
-  Definition Output : Set := erc20.erc20.Balance.
-  
-  Definition Storage : Set := erc20.erc20.Erc20.
-  
-  Definition
-    CALLABLE
-    `{State.Trait} := Pure
-      (fun storage _ => erc20.erc20.Erc20::["total_supply"] storage).
-  
-  Global Instance AssociatedFunction_CALLABLE `{State.Trait} :
-    Notation.DoubleColon Self "CALLABLE" := {
-    Notation.double_colon := CALLABLE;
-  }.
-  
-  Definition
-    SELECTOR
-    `{State.Trait} := let* α0 := M.alloc 219 in
-    let* α1 := M.alloc 99 in
-    let* α2 := M.alloc 117 in
-    let* α3 := M.alloc 168 in
-    Pure [ α0; α1; α2; α3 ].
-  
-  Global Instance AssociatedFunction_SELECTOR `{State.Trait} :
-    Notation.DoubleColon Self "SELECTOR" := {
-    Notation.double_colon := SELECTOR;
-  }.
-  
-  Definition PAYABLE `{State.Trait} := false.
-  
-  Global Instance AssociatedFunction_PAYABLE `{State.Trait} :
-    Notation.DoubleColon Self "PAYABLE" := {
-    Notation.double_colon := PAYABLE;
-  }.
-  
-  Definition MUTATES `{State.Trait} := false.
-  
-  Global Instance AssociatedFunction_MUTATES `{State.Trait} :
-    Notation.DoubleColon Self "MUTATES" := {
-    Notation.double_colon := MUTATES;
-  }.
-  
-  Definition LABEL `{State.Trait} := Pure (mk_str "total_supply").
-  
-  Global Instance AssociatedFunction_LABEL `{State.Trait} :
-    Notation.DoubleColon Self "LABEL" := {
-    Notation.double_colon := LABEL;
-  }.
-  
-  Global Instance I `{State.Trait}
-    : ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
-    ink.reflect.dispatch.DispatchableMessageInfo.Input := Input;
-    ink.reflect.dispatch.DispatchableMessageInfo.Output := Output;
-    ink.reflect.dispatch.DispatchableMessageInfo.Storage := Storage;
-    ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE := CALLABLE;
-    ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR := SELECTOR;
-    ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE := PAYABLE;
-    ink.reflect.dispatch.DispatchableMessageInfo.MUTATES := MUTATES;
-    ink.reflect.dispatch.DispatchableMessageInfo.LABEL := LABEL;
-  }.
-  Global Hint Resolve I : core.
-End Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
-
-Module Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
-  Definition Self `{State.Trait} := erc20.erc20.Erc20.
-  
-  Definition Input : Set := erc20.erc20.AccountId.
-  
-  Definition Output : Set := erc20.erc20.Balance.
-  
-  Definition Storage : Set := erc20.erc20.Erc20.
-  
-  Definition
-    CALLABLE
-    `{State.Trait} := Pure
-      (fun storage __ink_binding_0 =>
-        erc20.erc20.Erc20::["balance_of"] storage __ink_binding_0).
-  
-  Global Instance AssociatedFunction_CALLABLE `{State.Trait} :
-    Notation.DoubleColon Self "CALLABLE" := {
-    Notation.double_colon := CALLABLE;
-  }.
-  
-  Definition
-    SELECTOR
-    `{State.Trait} := let* α0 := M.alloc 15 in
-    let* α1 := M.alloc 117 in
-    let* α2 := M.alloc 90 in
-    let* α3 := M.alloc 86 in
-    Pure [ α0; α1; α2; α3 ].
-  
-  Global Instance AssociatedFunction_SELECTOR `{State.Trait} :
-    Notation.DoubleColon Self "SELECTOR" := {
-    Notation.double_colon := SELECTOR;
-  }.
-  
-  Definition PAYABLE `{State.Trait} := false.
-  
-  Global Instance AssociatedFunction_PAYABLE `{State.Trait} :
-    Notation.DoubleColon Self "PAYABLE" := {
-    Notation.double_colon := PAYABLE;
-  }.
-  
-  Definition MUTATES `{State.Trait} := false.
-  
-  Global Instance AssociatedFunction_MUTATES `{State.Trait} :
-    Notation.DoubleColon Self "MUTATES" := {
-    Notation.double_colon := MUTATES;
-  }.
-  
-  Definition LABEL `{State.Trait} := Pure (mk_str "balance_of").
-  
-  Global Instance AssociatedFunction_LABEL `{State.Trait} :
-    Notation.DoubleColon Self "LABEL" := {
-    Notation.double_colon := LABEL;
-  }.
-  
-  Global Instance I `{State.Trait}
-    : ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
-    ink.reflect.dispatch.DispatchableMessageInfo.Input := Input;
-    ink.reflect.dispatch.DispatchableMessageInfo.Output := Output;
-    ink.reflect.dispatch.DispatchableMessageInfo.Storage := Storage;
-    ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE := CALLABLE;
-    ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR := SELECTOR;
-    ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE := PAYABLE;
-    ink.reflect.dispatch.DispatchableMessageInfo.MUTATES := MUTATES;
-    ink.reflect.dispatch.DispatchableMessageInfo.LABEL := LABEL;
-  }.
-  Global Hint Resolve I : core.
-End Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
-
-Module Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
-  Definition Self `{State.Trait} := erc20.erc20.Erc20.
-  
-  Definition Input : Set := erc20.erc20.AccountId * erc20.erc20.AccountId.
-  
-  Definition Output : Set := erc20.erc20.Balance.
-  
-  Definition Storage : Set := erc20.erc20.Erc20.
-  
-  Definition
-    CALLABLE
-    `{State.Trait} := Pure
-      (fun storage (__ink_binding_0, __ink_binding_1) =>
-        erc20.erc20.Erc20::["allowance"]
-          storage
-          __ink_binding_0
-          __ink_binding_1).
-  
-  Global Instance AssociatedFunction_CALLABLE `{State.Trait} :
-    Notation.DoubleColon Self "CALLABLE" := {
-    Notation.double_colon := CALLABLE;
-  }.
-  
-  Definition
-    SELECTOR
-    `{State.Trait} := let* α0 := M.alloc 106 in
-    let* α1 := M.alloc 0 in
-    let* α2 := M.alloc 22 in
-    let* α3 := M.alloc 94 in
-    Pure [ α0; α1; α2; α3 ].
-  
-  Global Instance AssociatedFunction_SELECTOR `{State.Trait} :
-    Notation.DoubleColon Self "SELECTOR" := {
-    Notation.double_colon := SELECTOR;
-  }.
-  
-  Definition PAYABLE `{State.Trait} := false.
-  
-  Global Instance AssociatedFunction_PAYABLE `{State.Trait} :
-    Notation.DoubleColon Self "PAYABLE" := {
-    Notation.double_colon := PAYABLE;
-  }.
-  
-  Definition MUTATES `{State.Trait} := false.
-  
-  Global Instance AssociatedFunction_MUTATES `{State.Trait} :
-    Notation.DoubleColon Self "MUTATES" := {
-    Notation.double_colon := MUTATES;
-  }.
-  
-  Definition LABEL `{State.Trait} := Pure (mk_str "allowance").
-  
-  Global Instance AssociatedFunction_LABEL `{State.Trait} :
-    Notation.DoubleColon Self "LABEL" := {
-    Notation.double_colon := LABEL;
-  }.
-  
-  Global Instance I `{State.Trait}
-    : ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
-    ink.reflect.dispatch.DispatchableMessageInfo.Input := Input;
-    ink.reflect.dispatch.DispatchableMessageInfo.Output := Output;
-    ink.reflect.dispatch.DispatchableMessageInfo.Storage := Storage;
-    ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE := CALLABLE;
-    ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR := SELECTOR;
-    ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE := PAYABLE;
-    ink.reflect.dispatch.DispatchableMessageInfo.MUTATES := MUTATES;
-    ink.reflect.dispatch.DispatchableMessageInfo.LABEL := LABEL;
-  }.
-  Global Hint Resolve I : core.
-End Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
-
-Module Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
-  Definition Self `{State.Trait} := erc20.erc20.Erc20.
-  
-  Definition Input : Set := erc20.erc20.AccountId * erc20.erc20.Balance.
-  
-  Definition Output : Set := erc20.erc20.Result unit.
-  
-  Definition Storage : Set := erc20.erc20.Erc20.
-  
-  Definition
-    CALLABLE
-    `{State.Trait} := Pure
-      (fun storage (__ink_binding_0, __ink_binding_1) =>
-        erc20.erc20.Erc20::["transfer"]
-          storage
-          __ink_binding_0
-          __ink_binding_1).
-  
-  Global Instance AssociatedFunction_CALLABLE `{State.Trait} :
-    Notation.DoubleColon Self "CALLABLE" := {
-    Notation.double_colon := CALLABLE;
-  }.
-  
-  Definition
-    SELECTOR
-    `{State.Trait} := let* α0 := M.alloc 132 in
-    let* α1 := M.alloc 161 in
-    let* α2 := M.alloc 93 in
-    let* α3 := M.alloc 161 in
-    Pure [ α0; α1; α2; α3 ].
-  
-  Global Instance AssociatedFunction_SELECTOR `{State.Trait} :
-    Notation.DoubleColon Self "SELECTOR" := {
-    Notation.double_colon := SELECTOR;
-  }.
-  
-  Definition PAYABLE `{State.Trait} := false.
-  
-  Global Instance AssociatedFunction_PAYABLE `{State.Trait} :
-    Notation.DoubleColon Self "PAYABLE" := {
-    Notation.double_colon := PAYABLE;
-  }.
-  
-  Definition MUTATES `{State.Trait} := true.
-  
-  Global Instance AssociatedFunction_MUTATES `{State.Trait} :
-    Notation.DoubleColon Self "MUTATES" := {
-    Notation.double_colon := MUTATES;
-  }.
-  
-  Definition LABEL `{State.Trait} := Pure (mk_str "transfer").
-  
-  Global Instance AssociatedFunction_LABEL `{State.Trait} :
-    Notation.DoubleColon Self "LABEL" := {
-    Notation.double_colon := LABEL;
-  }.
-  
-  Global Instance I `{State.Trait}
-    : ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
-    ink.reflect.dispatch.DispatchableMessageInfo.Input := Input;
-    ink.reflect.dispatch.DispatchableMessageInfo.Output := Output;
-    ink.reflect.dispatch.DispatchableMessageInfo.Storage := Storage;
-    ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE := CALLABLE;
-    ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR := SELECTOR;
-    ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE := PAYABLE;
-    ink.reflect.dispatch.DispatchableMessageInfo.MUTATES := MUTATES;
-    ink.reflect.dispatch.DispatchableMessageInfo.LABEL := LABEL;
-  }.
-  Global Hint Resolve I : core.
-End Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
-
-Module Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
-  Definition Self `{State.Trait} := erc20.erc20.Erc20.
-  
-  Definition Input : Set := erc20.erc20.AccountId * erc20.erc20.Balance.
-  
-  Definition Output : Set := erc20.erc20.Result unit.
-  
-  Definition Storage : Set := erc20.erc20.Erc20.
-  
-  Definition
-    CALLABLE
-    `{State.Trait} := Pure
-      (fun storage (__ink_binding_0, __ink_binding_1) =>
-        erc20.erc20.Erc20::["approve"] storage __ink_binding_0 __ink_binding_1).
-  
-  Global Instance AssociatedFunction_CALLABLE `{State.Trait} :
-    Notation.DoubleColon Self "CALLABLE" := {
-    Notation.double_colon := CALLABLE;
-  }.
-  
-  Definition
-    SELECTOR
-    `{State.Trait} := let* α0 := M.alloc 104 in
-    let* α1 := M.alloc 18 in
-    let* α2 := M.alloc 102 in
-    let* α3 := M.alloc 160 in
-    Pure [ α0; α1; α2; α3 ].
-  
-  Global Instance AssociatedFunction_SELECTOR `{State.Trait} :
-    Notation.DoubleColon Self "SELECTOR" := {
-    Notation.double_colon := SELECTOR;
-  }.
-  
-  Definition PAYABLE `{State.Trait} := false.
-  
-  Global Instance AssociatedFunction_PAYABLE `{State.Trait} :
-    Notation.DoubleColon Self "PAYABLE" := {
-    Notation.double_colon := PAYABLE;
-  }.
-  
-  Definition MUTATES `{State.Trait} := true.
-  
-  Global Instance AssociatedFunction_MUTATES `{State.Trait} :
-    Notation.DoubleColon Self "MUTATES" := {
-    Notation.double_colon := MUTATES;
-  }.
-  
-  Definition LABEL `{State.Trait} := Pure (mk_str "approve").
-  
-  Global Instance AssociatedFunction_LABEL `{State.Trait} :
-    Notation.DoubleColon Self "LABEL" := {
-    Notation.double_colon := LABEL;
-  }.
-  
-  Global Instance I `{State.Trait}
-    : ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
-    ink.reflect.dispatch.DispatchableMessageInfo.Input := Input;
-    ink.reflect.dispatch.DispatchableMessageInfo.Output := Output;
-    ink.reflect.dispatch.DispatchableMessageInfo.Storage := Storage;
-    ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE := CALLABLE;
-    ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR := SELECTOR;
-    ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE := PAYABLE;
-    ink.reflect.dispatch.DispatchableMessageInfo.MUTATES := MUTATES;
-    ink.reflect.dispatch.DispatchableMessageInfo.LABEL := LABEL;
-  }.
-  Global Hint Resolve I : core.
-End Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
-
-Module Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
-  Definition Self `{State.Trait} := erc20.erc20.Erc20.
-  
-  Definition Input : Set :=
-    erc20.erc20.AccountId * erc20.erc20.AccountId * erc20.erc20.Balance.
-  
-  Definition Output : Set := erc20.erc20.Result unit.
-  
-  Definition Storage : Set := erc20.erc20.Erc20.
-  
-  Definition
-    CALLABLE
-    `{State.Trait} := Pure
-      (fun storage (__ink_binding_0, __ink_binding_1, __ink_binding_2) =>
-        erc20.erc20.Erc20::["transfer_from"]
-          storage
-          __ink_binding_0
-          __ink_binding_1
-          __ink_binding_2).
-  
-  Global Instance AssociatedFunction_CALLABLE `{State.Trait} :
-    Notation.DoubleColon Self "CALLABLE" := {
-    Notation.double_colon := CALLABLE;
-  }.
-  
-  Definition
-    SELECTOR
-    `{State.Trait} := let* α0 := M.alloc 11 in
-    let* α1 := M.alloc 57 in
-    let* α2 := M.alloc 111 in
-    let* α3 := M.alloc 24 in
-    Pure [ α0; α1; α2; α3 ].
-  
-  Global Instance AssociatedFunction_SELECTOR `{State.Trait} :
-    Notation.DoubleColon Self "SELECTOR" := {
-    Notation.double_colon := SELECTOR;
-  }.
-  
-  Definition PAYABLE `{State.Trait} := false.
-  
-  Global Instance AssociatedFunction_PAYABLE `{State.Trait} :
-    Notation.DoubleColon Self "PAYABLE" := {
-    Notation.double_colon := PAYABLE;
-  }.
-  
-  Definition MUTATES `{State.Trait} := true.
-  
-  Global Instance AssociatedFunction_MUTATES `{State.Trait} :
-    Notation.DoubleColon Self "MUTATES" := {
-    Notation.double_colon := MUTATES;
-  }.
-  
-  Definition LABEL `{State.Trait} := Pure (mk_str "transfer_from").
-  
-  Global Instance AssociatedFunction_LABEL `{State.Trait} :
-    Notation.DoubleColon Self "LABEL" := {
-    Notation.double_colon := LABEL;
-  }.
-  
-  Global Instance I `{State.Trait}
-    : ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
-    ink.reflect.dispatch.DispatchableMessageInfo.Input := Input;
-    ink.reflect.dispatch.DispatchableMessageInfo.Output := Output;
-    ink.reflect.dispatch.DispatchableMessageInfo.Storage := Storage;
-    ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE := CALLABLE;
-    ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR := SELECTOR;
-    ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE := PAYABLE;
-    ink.reflect.dispatch.DispatchableMessageInfo.MUTATES := MUTATES;
-    ink.reflect.dispatch.DispatchableMessageInfo.LABEL := LABEL;
-  }.
-  Global Hint Resolve I : core.
-End Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
-
-Module __ink_ConstructorDecoder.
-  Inductive t `{State.Trait} : Set :=
-  |
-    Constructor0
-    (_
-      :
-      ink.reflect.dispatch.DispatchableConstructorInfo.Input
-        (Self := erc20.erc20.Erc20)).
-End __ink_ConstructorDecoder.
-Definition __ink_ConstructorDecoder `{State.Trait} : Set :=
-  __ink_ConstructorDecoder.t.
-
-Module
-  Impl_ink_reflect_dispatch_DecodeDispatch_for_erc20_erc20_____ink_ConstructorDecoder.
-  Definition Self `{State.Trait} := erc20.erc20._.__ink_ConstructorDecoder.
-  
-  Definition decode_dispatch
-      `{State.Trait}
-      {I : Set}
-      `{parity_scale_codec.codec.Input.Trait I}
-      (input : mut_ref I)
-      : M (core.result.Result Self ink.reflect.dispatch.DispatchError) :=
-    let* α0 := deref input _ in
-    let* α1 := borrow_mut α0 _ in
-    let* α2 := parity_scale_codec.codec.Decode.decode α1 in
-    let* α3 :=
-      (core.result.Result _ _)::["map_err"]
-        α2
-        Pure (ink.reflect.dispatch.DispatchError.InvalidSelector tt) in
-    let* α4 := core.ops.try_trait.Try.branch α3 in
-    let* α5 :=
-      match α4 with
-      | core.ops.control_flow.ControlFlow residual =>
-        let* α0 := core.ops.try_trait.FromResidual.from_residual residual in
-        let* α1 := Return α0 in
-        never_to_any α1
-      | core.ops.control_flow.ControlFlow val => Pure val
-      end in
-    match α5 with
-    | [_; _; _; _] =>
-      let* α0 := deref input _ in
-      let* α1 := borrow_mut α0 _ in
-      let* α2 := parity_scale_codec.codec.Decode.decode α1 in
-      let* α3 :=
-        (core.result.Result _ _)::["map_err"]
-          α2
-          Pure (ink.reflect.dispatch.DispatchError.InvalidParameters tt) in
-      let* α4 := core.ops.try_trait.Try.branch α3 in
-      let* α5 :=
-        match α4 with
-        | core.ops.control_flow.ControlFlow residual =>
-          let* α0 := core.ops.try_trait.FromResidual.from_residual residual in
-          let* α1 := Return α0 in
-          never_to_any α1
-        | core.ops.control_flow.ControlFlow val => Pure val
-        end in
-      let* α6 := "unimplemented parent_kind" α5 in
-      Pure (core.result.Result.Ok α6)
-    | _invalid =>
-      Pure
-        (core.result.Result.Err
-          (ink.reflect.dispatch.DispatchError.UnknownSelector tt))
-    end.
-  
-  Global Instance AssociatedFunction_decode_dispatch
-      `{State.Trait}
-      {I : Set}
-      `{parity_scale_codec.codec.Input.Trait I} :
-    Notation.DoubleColon Self "decode_dispatch" := {
-    Notation.double_colon := decode_dispatch (I := I);
-  }.
-  
-  Global Instance I `{State.Trait}
-    : ink.reflect.dispatch.DecodeDispatch.Trait Self := {
-    ink.reflect.dispatch.DecodeDispatch.decode_dispatch
-      {I : Set}
-      `{parity_scale_codec.codec.Input.Trait I}
-      :=
-      decode_dispatch (I := I);
-  }.
-  Global Hint Resolve I : core.
-End
-  Impl_ink_reflect_dispatch_DecodeDispatch_for_erc20_erc20_____ink_ConstructorDecoder.
-
-Definition CONSTRUCTOR_0 `{State.Trait} : array CoqOfRust.core.primitive.u8 :=
-  run
-    (Pure
-      (ink.reflect.dispatch.DispatchableConstructorInfo.SELECTOR
-        (Self := erc20.erc20.Erc20))).
-
-Module
-  Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_____ink_ConstructorDecoder.
-  Definition Self `{State.Trait} := erc20.erc20._.__ink_ConstructorDecoder.
-  
-  Definition decode
-      `{State.Trait}
-      {I : Set}
-      `{parity_scale_codec.codec.Input.Trait I}
-      (input : mut_ref I)
-      : M (core.result.Result Self parity_scale_codec.error.Error) :=
-    let* α0 := deref input _ in
-    let* α1 := borrow_mut α0 _ in
-    let* α2 := ink.reflect.dispatch.DecodeDispatch.decode_dispatch α1 in
-    (core.result.Result _ _)::["map_err"] α2 core.convert.Into.into.
-  
-  Global Instance AssociatedFunction_decode
-      `{State.Trait}
-      {I : Set}
-      `{parity_scale_codec.codec.Input.Trait I} :
-    Notation.DoubleColon Self "decode" := {
-    Notation.double_colon := decode (I := I);
-  }.
-  
-  Global Instance I `{State.Trait}
-    : parity_scale_codec.codec.Decode.Trait Self := {
-    parity_scale_codec.codec.Decode.decode
-      {I : Set}
-      `{parity_scale_codec.codec.Input.Trait I}
-      :=
-      decode (I := I);
-  }.
-  Global Hint Resolve I : core.
-End
-  Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_____ink_ConstructorDecoder.
-
-Module
-  Impl_ink_reflect_dispatch_ExecuteDispatchable_for_erc20_erc20_____ink_ConstructorDecoder.
-  Definition Self `{State.Trait} := erc20.erc20._.__ink_ConstructorDecoder.
-  
-  Definition execute_dispatchable
-      `{State.Trait}
-      (self : Self)
-      : M (core.result.Result unit ink.reflect.dispatch.DispatchError) :=
-    match self with
-    | erc20.erc20._.__ink_ConstructorDecoder input =>
-      let* _ :=
-        let* α0 := false in
-        let* constructor_0 := false in
-        let constructor_0 :=
-          ink.reflect.dispatch.DispatchableConstructorInfo.PAYABLE in
-        let* α0 := or α0 constructor_0 in
-        let* α1 :=
-          not ink.reflect.dispatch.DispatchableConstructorInfo.PAYABLE in
-        let* α2 := and α0 α1 in
-        let* α3 := use α2 in
-        if (α3 : bool) then
-          let* _ :=
-            let* α0 := ink.codegen.dispatch.execution.deny_payment in
-            let* α1 := core.ops.try_trait.Try.branch α0 in
-            match α1 with
-            | core.ops.control_flow.ControlFlow residual =>
-              let* α0 :=
-                core.ops.try_trait.FromResidual.from_residual residual in
-              let* α1 := Return α0 in
-              never_to_any α1
-            | core.ops.control_flow.ControlFlow val => Pure val
-            end in
-          Pure tt
-        else
-          Pure tt in
-      let* result :=
-        ink.reflect.dispatch.DispatchableConstructorInfo.CALLABLE input in
-      let* output_value :=
-        (ink.reflect.dispatch.ConstructorOutputValue _)::["new"] result in
-      let* output_result :=
-        let* α0 :=
-          borrow
-            output_value
-            (ink.reflect.dispatch.ConstructorOutputValue erc20.erc20.Erc20) in
-        let* α1 :=
-          deref
-            α0
-            (ink.reflect.dispatch.ConstructorOutputValue erc20.erc20.Erc20) in
-        let* α2 :=
-          borrow
-            α1
-            (ink.reflect.dispatch.ConstructorOutputValue erc20.erc20.Erc20) in
-        ink.reflect.dispatch.ConstructorOutput.as_result α2 in
-      let* _ :=
-        let* α0 :=
-          borrow
-            output_result
-            (core.result.Result (ref erc20.erc20.Erc20) (ref (ref unit))) in
-        let* α1 := (core.result.Result _ _)::["as_ref"] α0 in
-        let* α2 := let_if core.result.Result contract := α1 in
-        if (α2 : bool) then
-          let* _ :=
-            let* α0 := borrow ink_storage_traits.storage.StorageKey.KEY u32 in
-            let* α1 := deref α0 u32 in
-            let* α2 := borrow α1 u32 in
-            let* α3 := deref contract (ref erc20.erc20.Erc20) in
-            let* α4 := deref α3 erc20.erc20.Erc20 in
-            let* α5 := borrow α4 erc20.erc20.Erc20 in
-            ink_env.api.set_contract_storage α2 α5 in
-          Pure tt
-        else
-          Pure tt in
-      let* _ :=
-        let* α0 :=
-          borrow
-            output_result
-            (core.result.Result (ref erc20.erc20.Erc20) (ref (ref unit))) in
-        let* α1 := (core.result.Result _ _)::["is_err"] α0 in
-        let* α2 :=
-          ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.ReturnFlags::["new_with_reverted"]
-            α1 in
-        let* α3 := (core.result.Result _ _)::["map"] output_result Pure tt in
-        let* α4 := "unimplemented parent_kind" α3 in
-        let* α5 :=
-          borrow
-            α4
-            (core.result.Result
-              (core.result.Result unit (ref (ref unit)))
-              ink_primitives.LangError) in
-        let* α6 :=
-          deref
-            α5
-            (core.result.Result
-              (core.result.Result unit (ref (ref unit)))
-              ink_primitives.LangError) in
-        let* α7 :=
-          borrow
-            α6
-            (core.result.Result
-              (core.result.Result unit (ref (ref unit)))
-              ink_primitives.LangError) in
-        ink_env.api.return_value α2 α7 in
-      never_to_any tt
-    end.
-  
-  Global Instance Method_execute_dispatchable `{State.Trait} :
-    Notation.Dot "execute_dispatchable" := {
-    Notation.dot := execute_dispatchable;
-  }.
-  
-  Global Instance I `{State.Trait}
-    : ink.reflect.dispatch.ExecuteDispatchable.Trait Self := {
-    ink.reflect.dispatch.ExecuteDispatchable.execute_dispatchable
-      :=
-      execute_dispatchable;
-  }.
-  Global Hint Resolve I : core.
-End
-  Impl_ink_reflect_dispatch_ExecuteDispatchable_for_erc20_erc20_____ink_ConstructorDecoder.
-
-Module
-  Impl_ink_reflect_dispatch_ContractConstructorDecoder_for_erc20_erc20_Erc20.
-  Definition Self `{State.Trait} := erc20.erc20.Erc20.
-  
-  Definition Type : Set := erc20.erc20._.__ink_ConstructorDecoder.
-  
-  Global Instance I `{State.Trait}
-    : ink.reflect.dispatch.ContractConstructorDecoder.Trait Self := {
-    ink.reflect.dispatch.ContractConstructorDecoder.Type := Type;
-  }.
-  Global Hint Resolve I : core.
-End Impl_ink_reflect_dispatch_ContractConstructorDecoder_for_erc20_erc20_Erc20.
-
-Module __ink_MessageDecoder.
-  Inductive t `{State.Trait} : Set :=
-  |
-    Message0
-    (_
-      :
-      ink.reflect.dispatch.DispatchableMessageInfo.Input
-        (Self := erc20.erc20.Erc20))
-  |
-    Message1
-    (_
-      :
-      ink.reflect.dispatch.DispatchableMessageInfo.Input
-        (Self := erc20.erc20.Erc20))
-  |
-    Message2
-    (_
-      :
-      ink.reflect.dispatch.DispatchableMessageInfo.Input
-        (Self := erc20.erc20.Erc20))
-  |
-    Message3
-    (_
-      :
-      ink.reflect.dispatch.DispatchableMessageInfo.Input
-        (Self := erc20.erc20.Erc20))
-  |
-    Message4
-    (_
-      :
-      ink.reflect.dispatch.DispatchableMessageInfo.Input
-        (Self := erc20.erc20.Erc20))
-  |
-    Message5
-    (_
-      :
-      ink.reflect.dispatch.DispatchableMessageInfo.Input
-        (Self := erc20.erc20.Erc20)).
-End __ink_MessageDecoder.
-Definition __ink_MessageDecoder `{State.Trait} : Set := __ink_MessageDecoder.t.
-
-Module
-  Impl_ink_reflect_dispatch_DecodeDispatch_for_erc20_erc20_____ink_MessageDecoder.
-  Definition Self `{State.Trait} := erc20.erc20._.__ink_MessageDecoder.
-  
-  Definition decode_dispatch
-      `{State.Trait}
-      {I : Set}
-      `{parity_scale_codec.codec.Input.Trait I}
-      (input : mut_ref I)
-      : M (core.result.Result Self ink.reflect.dispatch.DispatchError) :=
-    let* α0 := deref input _ in
-    let* α1 := borrow_mut α0 _ in
-    let* α2 := parity_scale_codec.codec.Decode.decode α1 in
-    let* α3 :=
-      (core.result.Result _ _)::["map_err"]
-        α2
-        Pure (ink.reflect.dispatch.DispatchError.InvalidSelector tt) in
-    let* α4 := core.ops.try_trait.Try.branch α3 in
-    let* α5 :=
-      match α4 with
-      | core.ops.control_flow.ControlFlow residual =>
-        let* α0 := core.ops.try_trait.FromResidual.from_residual residual in
-        let* α1 := Return α0 in
-        never_to_any α1
-      | core.ops.control_flow.ControlFlow val => Pure val
-      end in
-    match α5 with
-    | [_; _; _; _] =>
-      let* α0 := deref input _ in
-      let* α1 := borrow_mut α0 _ in
-      let* α2 := parity_scale_codec.codec.Decode.decode α1 in
-      let* α3 :=
-        (core.result.Result _ _)::["map_err"]
-          α2
-          Pure (ink.reflect.dispatch.DispatchError.InvalidParameters tt) in
-      let* α4 := core.ops.try_trait.Try.branch α3 in
-      let* α5 :=
-        match α4 with
-        | core.ops.control_flow.ControlFlow residual =>
-          let* α0 := core.ops.try_trait.FromResidual.from_residual residual in
-          let* α1 := Return α0 in
-          never_to_any α1
-        | core.ops.control_flow.ControlFlow val => Pure val
-        end in
-      let* α6 := "unimplemented parent_kind" α5 in
-      Pure (core.result.Result.Ok α6)
-    | [_; _; _; _] =>
-      let* α0 := deref input _ in
-      let* α1 := borrow_mut α0 _ in
-      let* α2 := parity_scale_codec.codec.Decode.decode α1 in
-      let* α3 :=
-        (core.result.Result _ _)::["map_err"]
-          α2
-          Pure (ink.reflect.dispatch.DispatchError.InvalidParameters tt) in
-      let* α4 := core.ops.try_trait.Try.branch α3 in
-      let* α5 :=
-        match α4 with
-        | core.ops.control_flow.ControlFlow residual =>
-          let* α0 := core.ops.try_trait.FromResidual.from_residual residual in
-          let* α1 := Return α0 in
-          never_to_any α1
-        | core.ops.control_flow.ControlFlow val => Pure val
-        end in
-      let* α6 := "unimplemented parent_kind" α5 in
-      Pure (core.result.Result.Ok α6)
-    | [_; _; _; _] =>
-      let* α0 := deref input _ in
-      let* α1 := borrow_mut α0 _ in
-      let* α2 := parity_scale_codec.codec.Decode.decode α1 in
-      let* α3 :=
-        (core.result.Result _ _)::["map_err"]
-          α2
-          Pure (ink.reflect.dispatch.DispatchError.InvalidParameters tt) in
-      let* α4 := core.ops.try_trait.Try.branch α3 in
-      let* α5 :=
-        match α4 with
-        | core.ops.control_flow.ControlFlow residual =>
-          let* α0 := core.ops.try_trait.FromResidual.from_residual residual in
-          let* α1 := Return α0 in
-          never_to_any α1
-        | core.ops.control_flow.ControlFlow val => Pure val
-        end in
-      let* α6 := "unimplemented parent_kind" α5 in
-      Pure (core.result.Result.Ok α6)
-    | [_; _; _; _] =>
-      let* α0 := deref input _ in
-      let* α1 := borrow_mut α0 _ in
-      let* α2 := parity_scale_codec.codec.Decode.decode α1 in
-      let* α3 :=
-        (core.result.Result _ _)::["map_err"]
-          α2
-          Pure (ink.reflect.dispatch.DispatchError.InvalidParameters tt) in
-      let* α4 := core.ops.try_trait.Try.branch α3 in
-      let* α5 :=
-        match α4 with
-        | core.ops.control_flow.ControlFlow residual =>
-          let* α0 := core.ops.try_trait.FromResidual.from_residual residual in
-          let* α1 := Return α0 in
-          never_to_any α1
-        | core.ops.control_flow.ControlFlow val => Pure val
-        end in
-      let* α6 := "unimplemented parent_kind" α5 in
-      Pure (core.result.Result.Ok α6)
-    | [_; _; _; _] =>
-      let* α0 := deref input _ in
-      let* α1 := borrow_mut α0 _ in
-      let* α2 := parity_scale_codec.codec.Decode.decode α1 in
-      let* α3 :=
-        (core.result.Result _ _)::["map_err"]
-          α2
-          Pure (ink.reflect.dispatch.DispatchError.InvalidParameters tt) in
-      let* α4 := core.ops.try_trait.Try.branch α3 in
-      let* α5 :=
-        match α4 with
-        | core.ops.control_flow.ControlFlow residual =>
-          let* α0 := core.ops.try_trait.FromResidual.from_residual residual in
-          let* α1 := Return α0 in
-          never_to_any α1
-        | core.ops.control_flow.ControlFlow val => Pure val
-        end in
-      let* α6 := "unimplemented parent_kind" α5 in
-      Pure (core.result.Result.Ok α6)
-    | [_; _; _; _] =>
-      let* α0 := deref input _ in
-      let* α1 := borrow_mut α0 _ in
-      let* α2 := parity_scale_codec.codec.Decode.decode α1 in
-      let* α3 :=
-        (core.result.Result _ _)::["map_err"]
-          α2
-          Pure (ink.reflect.dispatch.DispatchError.InvalidParameters tt) in
-      let* α4 := core.ops.try_trait.Try.branch α3 in
-      let* α5 :=
-        match α4 with
-        | core.ops.control_flow.ControlFlow residual =>
-          let* α0 := core.ops.try_trait.FromResidual.from_residual residual in
-          let* α1 := Return α0 in
-          never_to_any α1
-        | core.ops.control_flow.ControlFlow val => Pure val
-        end in
-      let* α6 := "unimplemented parent_kind" α5 in
-      Pure (core.result.Result.Ok α6)
-    | _invalid =>
-      Pure
-        (core.result.Result.Err
-          (ink.reflect.dispatch.DispatchError.UnknownSelector tt))
-    end.
-  
-  Global Instance AssociatedFunction_decode_dispatch
-      `{State.Trait}
-      {I : Set}
-      `{parity_scale_codec.codec.Input.Trait I} :
-    Notation.DoubleColon Self "decode_dispatch" := {
-    Notation.double_colon := decode_dispatch (I := I);
-  }.
-  
-  Global Instance I `{State.Trait}
-    : ink.reflect.dispatch.DecodeDispatch.Trait Self := {
-    ink.reflect.dispatch.DecodeDispatch.decode_dispatch
-      {I : Set}
-      `{parity_scale_codec.codec.Input.Trait I}
-      :=
-      decode_dispatch (I := I);
-  }.
-  Global Hint Resolve I : core.
-End
-  Impl_ink_reflect_dispatch_DecodeDispatch_for_erc20_erc20_____ink_MessageDecoder.
-
-Definition MESSAGE_0 `{State.Trait} : array CoqOfRust.core.primitive.u8 :=
-  run
-    (Pure
-      (ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR
-        (Self := erc20.erc20.Erc20))).
-
-Definition MESSAGE_1 `{State.Trait} : array CoqOfRust.core.primitive.u8 :=
-  run
-    (Pure
-      (ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR
-        (Self := erc20.erc20.Erc20))).
-
-Definition MESSAGE_2 `{State.Trait} : array CoqOfRust.core.primitive.u8 :=
-  run
-    (Pure
-      (ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR
-        (Self := erc20.erc20.Erc20))).
-
-Definition MESSAGE_3 `{State.Trait} : array CoqOfRust.core.primitive.u8 :=
-  run
-    (Pure
-      (ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR
-        (Self := erc20.erc20.Erc20))).
-
-Definition MESSAGE_4 `{State.Trait} : array CoqOfRust.core.primitive.u8 :=
-  run
-    (Pure
-      (ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR
-        (Self := erc20.erc20.Erc20))).
-
-Definition MESSAGE_5 `{State.Trait} : array CoqOfRust.core.primitive.u8 :=
-  run
-    (Pure
-      (ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR
-        (Self := erc20.erc20.Erc20))).
-
-Module
-  Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_____ink_MessageDecoder.
-  Definition Self `{State.Trait} := erc20.erc20._.__ink_MessageDecoder.
-  
-  Definition decode
-      `{State.Trait}
-      {I : Set}
-      `{parity_scale_codec.codec.Input.Trait I}
-      (input : mut_ref I)
-      : M (core.result.Result Self parity_scale_codec.error.Error) :=
-    let* α0 := deref input _ in
-    let* α1 := borrow_mut α0 _ in
-    let* α2 := ink.reflect.dispatch.DecodeDispatch.decode_dispatch α1 in
-    (core.result.Result _ _)::["map_err"] α2 core.convert.Into.into.
-  
-  Global Instance AssociatedFunction_decode
-      `{State.Trait}
-      {I : Set}
-      `{parity_scale_codec.codec.Input.Trait I} :
-    Notation.DoubleColon Self "decode" := {
-    Notation.double_colon := decode (I := I);
-  }.
-  
-  Global Instance I `{State.Trait}
-    : parity_scale_codec.codec.Decode.Trait Self := {
-    parity_scale_codec.codec.Decode.decode
-      {I : Set}
-      `{parity_scale_codec.codec.Input.Trait I}
-      :=
-      decode (I := I);
-  }.
-  Global Hint Resolve I : core.
-End Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_____ink_MessageDecoder.
-
-Definition push_contract
-    `{State.Trait}
-    (contract : core.mem.manually_drop.ManuallyDrop erc20.erc20.Erc20)
-    (mutates : bool)
-    : M unit :=
-  let* α0 := use mutates in
-  if (α0 : bool) then
-    let* _ :=
-      let* α0 := borrow ink_storage_traits.storage.StorageKey.KEY u32 in
-      let* α1 := deref α0 u32 in
-      let* α2 := borrow α1 u32 in
-      let* α3 :=
-        borrow
-          contract
-          (core.mem.manually_drop.ManuallyDrop erc20.erc20.Erc20) in
-      let* α4 :=
-        deref α3 (core.mem.manually_drop.ManuallyDrop erc20.erc20.Erc20) in
-      let* α5 :=
-        borrow α4 (core.mem.manually_drop.ManuallyDrop erc20.erc20.Erc20) in
-      let* α6 := core.ops.deref.Deref.deref α5 in
-      let* α7 := deref α6 erc20.erc20.Erc20 in
-      let* α8 := borrow α7 erc20.erc20.Erc20 in
-      ink_env.api.set_contract_storage α2 α8 in
-    Pure tt
-  else
-    Pure tt.
-
-Module
-  Impl_ink_reflect_dispatch_ExecuteDispatchable_for_erc20_erc20_____ink_MessageDecoder.
-  Definition Self `{State.Trait} := erc20.erc20._.__ink_MessageDecoder.
-  
-  Definition execute_dispatchable
-      `{State.Trait}
-      (self : Self)
-      : M (core.result.Result unit ink.reflect.dispatch.DispatchError) :=
-    let key := ink_storage_traits.storage.StorageKey.KEY in
-    let* contract :=
-      let* α0 := borrow key u32 in
-      let* α1 := deref α0 u32 in
-      let* α2 := borrow α1 u32 in
-      let* α3 := ink_env.api.get_contract_storage α2 in
-      let* α4 :=
-        match α3 with
-        | core.result.Result core.option.Option value => Pure value
-        | core.result.Result core.option.Option  =>
-          let* α0 :=
-            borrow [ mk_str "storage entry was empty" ] (list (ref str)) in
-          let* α1 := deref α0 (list (ref str)) in
-          let* α2 := borrow α1 (list (ref str)) in
-          let* α3 := pointer_coercion "Unsize" α2 in
-          let* α4 := core.fmt.Arguments::["new_const"] α3 in
-          let* α5 := core.panicking.panic_fmt α4 in
-          never_to_any α5
-        | core.result.Result _ =>
-          let* α0 :=
-            borrow
-              [ mk_str "could not properly decode storage entry" ]
-              (list (ref str)) in
-          let* α1 := deref α0 (list (ref str)) in
-          let* α2 := borrow α1 (list (ref str)) in
-          let* α3 := pointer_coercion "Unsize" α2 in
-          let* α4 := core.fmt.Arguments::["new_const"] α3 in
-          let* α5 := core.panicking.panic_fmt α4 in
-          never_to_any α5
-        end in
-      (core.mem.manually_drop.ManuallyDrop _)::["new"] α4 in
-    let* _ :=
-      match self with
-      | erc20.erc20._.__ink_MessageDecoder input =>
-        let* _ :=
-          let* α0 := false in
-          let* message_0 := false in
-          let message_0 :=
-            ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
-          let* α1 := or α0 message_0 in
-          let* message_1 := false in
-          let message_1 :=
-            ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
-          let* α2 := or α1 message_1 in
-          let* message_2 := false in
-          let message_2 :=
-            ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
-          let* α3 := or α2 message_2 in
-          let* message_3 := false in
-          let message_3 :=
-            ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
-          let* α4 := or α3 message_3 in
-          let* message_4 := false in
-          let message_4 :=
-            ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
-          let* α5 := or α4 message_4 in
-          let* message_5 := false in
-          let message_5 :=
-            ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
-          let* α0 := or α5 message_5 in
-          let* α1 := not ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
-          let* α2 := and α0 α1 in
-          let* α3 := use α2 in
-          if (α3 : bool) then
-            let* _ :=
-              let* α0 := ink.codegen.dispatch.execution.deny_payment in
-              let* α1 := core.ops.try_trait.Try.branch α0 in
-              match α1 with
-              | core.ops.control_flow.ControlFlow residual =>
-                let* α0 :=
-                  core.ops.try_trait.FromResidual.from_residual residual in
-                let* α1 := Return α0 in
-                never_to_any α1
-              | core.ops.control_flow.ControlFlow val => Pure val
-              end in
-            Pure tt
-          else
-            Pure tt in
-        let* result :=
-          let* α0 :=
-            borrow_mut
-              contract
-              (core.mem.manually_drop.ManuallyDrop erc20.erc20.Erc20) in
-          let* α1 :=
-            deref α0 (core.mem.manually_drop.ManuallyDrop erc20.erc20.Erc20) in
-          let* α2 :=
-            borrow_mut
-              α1
-              (core.mem.manually_drop.ManuallyDrop erc20.erc20.Erc20) in
-          let* α3 := core.ops.deref.DerefMut.deref_mut α2 in
-          let* α4 := deref α3 erc20.erc20.Erc20 in
-          let* α5 := borrow_mut α4 erc20.erc20.Erc20 in
-          ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE α5 input in
-        let* is_reverted :=
-          let* α0 := borrow result u128 in
-          let* α1 := deref α0 u128 in
-          let* α2 := borrow α1 u128 in
-          let* α3 :=
-            borrow
-              (ink.result_info.IsResultErr.Build_t α2)
-              (ink.result_info.IsResultErr u128) in
-          let* α0 := ink.result_info.IsResultErrFallback.value α3 in
-          and ink.result_info.IsResultTypeFallback.VALUE α0 in
-        let* _ :=
-          let* α0 := not is_reverted in
-          let* α1 := use α0 in
-          if (α1 : bool) then
-            let* _ :=
-              "unimplemented parent_kind"
-                contract
-                ink.reflect.dispatch.DispatchableMessageInfo.MUTATES in
-            Pure tt
-          else
-            Pure tt in
-        let* α0 :=
-          ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.ReturnFlags::["new_with_reverted"]
-            is_reverted in
-        let* α1 := "unimplemented parent_kind" result in
-        let* α2 :=
-          borrow α1 (core.result.Result u128 ink_primitives.LangError) in
-        let* α3 :=
-          deref α2 (core.result.Result u128 ink_primitives.LangError) in
-        let* α4 :=
-          borrow α3 (core.result.Result u128 ink_primitives.LangError) in
-        let* α5 := ink_env.api.return_value α0 α4 in
-        never_to_any α5
-      | erc20.erc20._.__ink_MessageDecoder input =>
-        let* _ :=
-          let* α0 := false in
-          let* message_0 := false in
-          let message_0 :=
-            ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
-          let* α1 := or α0 message_0 in
-          let* message_1 := false in
-          let message_1 :=
-            ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
-          let* α2 := or α1 message_1 in
-          let* message_2 := false in
-          let message_2 :=
-            ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
-          let* α3 := or α2 message_2 in
-          let* message_3 := false in
-          let message_3 :=
-            ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
-          let* α4 := or α3 message_3 in
-          let* message_4 := false in
-          let message_4 :=
-            ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
-          let* α5 := or α4 message_4 in
-          let* message_5 := false in
-          let message_5 :=
-            ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
-          let* α0 := or α5 message_5 in
-          let* α1 := not ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
-          let* α2 := and α0 α1 in
-          let* α3 := use α2 in
-          if (α3 : bool) then
-            let* _ :=
-              let* α0 := ink.codegen.dispatch.execution.deny_payment in
-              let* α1 := core.ops.try_trait.Try.branch α0 in
-              match α1 with
-              | core.ops.control_flow.ControlFlow residual =>
-                let* α0 :=
-                  core.ops.try_trait.FromResidual.from_residual residual in
-                let* α1 := Return α0 in
-                never_to_any α1
-              | core.ops.control_flow.ControlFlow val => Pure val
-              end in
-            Pure tt
-          else
-            Pure tt in
-        let* result :=
-          let* α0 :=
-            borrow_mut
-              contract
-              (core.mem.manually_drop.ManuallyDrop erc20.erc20.Erc20) in
-          let* α1 :=
-            deref α0 (core.mem.manually_drop.ManuallyDrop erc20.erc20.Erc20) in
-          let* α2 :=
-            borrow_mut
-              α1
-              (core.mem.manually_drop.ManuallyDrop erc20.erc20.Erc20) in
-          let* α3 := core.ops.deref.DerefMut.deref_mut α2 in
-          let* α4 := deref α3 erc20.erc20.Erc20 in
-          let* α5 := borrow_mut α4 erc20.erc20.Erc20 in
-          ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE α5 input in
-        let* is_reverted :=
-          let* α0 := borrow result u128 in
-          let* α1 := deref α0 u128 in
-          let* α2 := borrow α1 u128 in
-          let* α3 :=
-            borrow
-              (ink.result_info.IsResultErr.Build_t α2)
-              (ink.result_info.IsResultErr u128) in
-          let* α0 := ink.result_info.IsResultErrFallback.value α3 in
-          and ink.result_info.IsResultTypeFallback.VALUE α0 in
-        let* _ :=
-          let* α0 := not is_reverted in
-          let* α1 := use α0 in
-          if (α1 : bool) then
-            let* _ :=
-              "unimplemented parent_kind"
-                contract
-                ink.reflect.dispatch.DispatchableMessageInfo.MUTATES in
-            Pure tt
-          else
-            Pure tt in
-        let* α0 :=
-          ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.ReturnFlags::["new_with_reverted"]
-            is_reverted in
-        let* α1 := "unimplemented parent_kind" result in
-        let* α2 :=
-          borrow α1 (core.result.Result u128 ink_primitives.LangError) in
-        let* α3 :=
-          deref α2 (core.result.Result u128 ink_primitives.LangError) in
-        let* α4 :=
-          borrow α3 (core.result.Result u128 ink_primitives.LangError) in
-        let* α5 := ink_env.api.return_value α0 α4 in
-        never_to_any α5
-      | erc20.erc20._.__ink_MessageDecoder input =>
-        let* _ :=
-          let* α0 := false in
-          let* message_0 := false in
-          let message_0 :=
-            ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
-          let* α1 := or α0 message_0 in
-          let* message_1 := false in
-          let message_1 :=
-            ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
-          let* α2 := or α1 message_1 in
-          let* message_2 := false in
-          let message_2 :=
-            ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
-          let* α3 := or α2 message_2 in
-          let* message_3 := false in
-          let message_3 :=
-            ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
-          let* α4 := or α3 message_3 in
-          let* message_4 := false in
-          let message_4 :=
-            ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
-          let* α5 := or α4 message_4 in
-          let* message_5 := false in
-          let message_5 :=
-            ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
-          let* α0 := or α5 message_5 in
-          let* α1 := not ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
-          let* α2 := and α0 α1 in
-          let* α3 := use α2 in
-          if (α3 : bool) then
-            let* _ :=
-              let* α0 := ink.codegen.dispatch.execution.deny_payment in
-              let* α1 := core.ops.try_trait.Try.branch α0 in
-              match α1 with
-              | core.ops.control_flow.ControlFlow residual =>
-                let* α0 :=
-                  core.ops.try_trait.FromResidual.from_residual residual in
-                let* α1 := Return α0 in
-                never_to_any α1
-              | core.ops.control_flow.ControlFlow val => Pure val
-              end in
-            Pure tt
-          else
-            Pure tt in
-        let* result :=
-          let* α0 :=
-            borrow_mut
-              contract
-              (core.mem.manually_drop.ManuallyDrop erc20.erc20.Erc20) in
-          let* α1 :=
-            deref α0 (core.mem.manually_drop.ManuallyDrop erc20.erc20.Erc20) in
-          let* α2 :=
-            borrow_mut
-              α1
-              (core.mem.manually_drop.ManuallyDrop erc20.erc20.Erc20) in
-          let* α3 := core.ops.deref.DerefMut.deref_mut α2 in
-          let* α4 := deref α3 erc20.erc20.Erc20 in
-          let* α5 := borrow_mut α4 erc20.erc20.Erc20 in
-          ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE α5 input in
-        let* is_reverted :=
-          let* α0 := borrow result u128 in
-          let* α1 := deref α0 u128 in
-          let* α2 := borrow α1 u128 in
-          let* α3 :=
-            borrow
-              (ink.result_info.IsResultErr.Build_t α2)
-              (ink.result_info.IsResultErr u128) in
-          let* α0 := ink.result_info.IsResultErrFallback.value α3 in
-          and ink.result_info.IsResultTypeFallback.VALUE α0 in
-        let* _ :=
-          let* α0 := not is_reverted in
-          let* α1 := use α0 in
-          if (α1 : bool) then
-            let* _ :=
-              "unimplemented parent_kind"
-                contract
-                ink.reflect.dispatch.DispatchableMessageInfo.MUTATES in
-            Pure tt
-          else
-            Pure tt in
-        let* α0 :=
-          ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.ReturnFlags::["new_with_reverted"]
-            is_reverted in
-        let* α1 := "unimplemented parent_kind" result in
-        let* α2 :=
-          borrow α1 (core.result.Result u128 ink_primitives.LangError) in
-        let* α3 :=
-          deref α2 (core.result.Result u128 ink_primitives.LangError) in
-        let* α4 :=
-          borrow α3 (core.result.Result u128 ink_primitives.LangError) in
-        let* α5 := ink_env.api.return_value α0 α4 in
-        never_to_any α5
-      | erc20.erc20._.__ink_MessageDecoder input =>
-        let* _ :=
-          let* α0 := false in
-          let* message_0 := false in
-          let message_0 :=
-            ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
-          let* α1 := or α0 message_0 in
-          let* message_1 := false in
-          let message_1 :=
-            ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
-          let* α2 := or α1 message_1 in
-          let* message_2 := false in
-          let message_2 :=
-            ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
-          let* α3 := or α2 message_2 in
-          let* message_3 := false in
-          let message_3 :=
-            ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
-          let* α4 := or α3 message_3 in
-          let* message_4 := false in
-          let message_4 :=
-            ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
-          let* α5 := or α4 message_4 in
-          let* message_5 := false in
-          let message_5 :=
-            ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
-          let* α0 := or α5 message_5 in
-          let* α1 := not ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
-          let* α2 := and α0 α1 in
-          let* α3 := use α2 in
-          if (α3 : bool) then
-            let* _ :=
-              let* α0 := ink.codegen.dispatch.execution.deny_payment in
-              let* α1 := core.ops.try_trait.Try.branch α0 in
-              match α1 with
-              | core.ops.control_flow.ControlFlow residual =>
-                let* α0 :=
-                  core.ops.try_trait.FromResidual.from_residual residual in
-                let* α1 := Return α0 in
-                never_to_any α1
-              | core.ops.control_flow.ControlFlow val => Pure val
-              end in
-            Pure tt
-          else
-            Pure tt in
-        let* result :=
-          let* α0 :=
-            borrow_mut
-              contract
-              (core.mem.manually_drop.ManuallyDrop erc20.erc20.Erc20) in
-          let* α1 :=
-            deref α0 (core.mem.manually_drop.ManuallyDrop erc20.erc20.Erc20) in
-          let* α2 :=
-            borrow_mut
-              α1
-              (core.mem.manually_drop.ManuallyDrop erc20.erc20.Erc20) in
-          let* α3 := core.ops.deref.DerefMut.deref_mut α2 in
-          let* α4 := deref α3 erc20.erc20.Erc20 in
-          let* α5 := borrow_mut α4 erc20.erc20.Erc20 in
-          ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE α5 input in
-        let* is_reverted :=
-          let* α0 :=
-            borrow result (core.result.Result unit erc20.erc20.Error) in
-          let* α1 := deref α0 (core.result.Result unit erc20.erc20.Error) in
-          let* α2 := borrow α1 (core.result.Result unit erc20.erc20.Error) in
-          let* α3 :=
-            borrow
-              (ink.result_info.IsResultErr.Build_t α2)
-              (ink.result_info.IsResultErr
-                (core.result.Result unit erc20.erc20.Error)) in
-          let* α0 :=
-            (ink.result_info.IsResultErr (core.result.Result _ _))::["value"]
-              α3 in
-          and ink.result_info.VALUE α0 in
-        let* _ :=
-          let* α0 := not is_reverted in
-          let* α1 := use α0 in
-          if (α1 : bool) then
-            let* _ :=
-              "unimplemented parent_kind"
-                contract
-                ink.reflect.dispatch.DispatchableMessageInfo.MUTATES in
-            Pure tt
-          else
-            Pure tt in
-        let* α0 :=
-          ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.ReturnFlags::["new_with_reverted"]
-            is_reverted in
-        let* α1 := "unimplemented parent_kind" result in
-        let* α2 :=
-          borrow
-            α1
-            (core.result.Result
-              (core.result.Result unit erc20.erc20.Error)
-              ink_primitives.LangError) in
-        let* α3 :=
-          deref
-            α2
-            (core.result.Result
-              (core.result.Result unit erc20.erc20.Error)
-              ink_primitives.LangError) in
-        let* α4 :=
-          borrow
-            α3
-            (core.result.Result
-              (core.result.Result unit erc20.erc20.Error)
-              ink_primitives.LangError) in
-        let* α5 := ink_env.api.return_value α0 α4 in
-        never_to_any α5
-      | erc20.erc20._.__ink_MessageDecoder input =>
-        let* _ :=
-          let* α0 := false in
-          let* message_0 := false in
-          let message_0 :=
-            ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
-          let* α1 := or α0 message_0 in
-          let* message_1 := false in
-          let message_1 :=
-            ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
-          let* α2 := or α1 message_1 in
-          let* message_2 := false in
-          let message_2 :=
-            ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
-          let* α3 := or α2 message_2 in
-          let* message_3 := false in
-          let message_3 :=
-            ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
-          let* α4 := or α3 message_3 in
-          let* message_4 := false in
-          let message_4 :=
-            ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
-          let* α5 := or α4 message_4 in
-          let* message_5 := false in
-          let message_5 :=
-            ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
-          let* α0 := or α5 message_5 in
-          let* α1 := not ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
-          let* α2 := and α0 α1 in
-          let* α3 := use α2 in
-          if (α3 : bool) then
-            let* _ :=
-              let* α0 := ink.codegen.dispatch.execution.deny_payment in
-              let* α1 := core.ops.try_trait.Try.branch α0 in
-              match α1 with
-              | core.ops.control_flow.ControlFlow residual =>
-                let* α0 :=
-                  core.ops.try_trait.FromResidual.from_residual residual in
-                let* α1 := Return α0 in
-                never_to_any α1
-              | core.ops.control_flow.ControlFlow val => Pure val
-              end in
-            Pure tt
-          else
-            Pure tt in
-        let* result :=
-          let* α0 :=
-            borrow_mut
-              contract
-              (core.mem.manually_drop.ManuallyDrop erc20.erc20.Erc20) in
-          let* α1 :=
-            deref α0 (core.mem.manually_drop.ManuallyDrop erc20.erc20.Erc20) in
-          let* α2 :=
-            borrow_mut
-              α1
-              (core.mem.manually_drop.ManuallyDrop erc20.erc20.Erc20) in
-          let* α3 := core.ops.deref.DerefMut.deref_mut α2 in
-          let* α4 := deref α3 erc20.erc20.Erc20 in
-          let* α5 := borrow_mut α4 erc20.erc20.Erc20 in
-          ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE α5 input in
-        let* is_reverted :=
-          let* α0 :=
-            borrow result (core.result.Result unit erc20.erc20.Error) in
-          let* α1 := deref α0 (core.result.Result unit erc20.erc20.Error) in
-          let* α2 := borrow α1 (core.result.Result unit erc20.erc20.Error) in
-          let* α3 :=
-            borrow
-              (ink.result_info.IsResultErr.Build_t α2)
-              (ink.result_info.IsResultErr
-                (core.result.Result unit erc20.erc20.Error)) in
-          let* α0 :=
-            (ink.result_info.IsResultErr (core.result.Result _ _))::["value"]
-              α3 in
-          and ink.result_info.VALUE α0 in
-        let* _ :=
-          let* α0 := not is_reverted in
-          let* α1 := use α0 in
-          if (α1 : bool) then
-            let* _ :=
-              "unimplemented parent_kind"
-                contract
-                ink.reflect.dispatch.DispatchableMessageInfo.MUTATES in
-            Pure tt
-          else
-            Pure tt in
-        let* α0 :=
-          ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.ReturnFlags::["new_with_reverted"]
-            is_reverted in
-        let* α1 := "unimplemented parent_kind" result in
-        let* α2 :=
-          borrow
-            α1
-            (core.result.Result
-              (core.result.Result unit erc20.erc20.Error)
-              ink_primitives.LangError) in
-        let* α3 :=
-          deref
-            α2
-            (core.result.Result
-              (core.result.Result unit erc20.erc20.Error)
-              ink_primitives.LangError) in
-        let* α4 :=
-          borrow
-            α3
-            (core.result.Result
-              (core.result.Result unit erc20.erc20.Error)
-              ink_primitives.LangError) in
-        let* α5 := ink_env.api.return_value α0 α4 in
-        never_to_any α5
-      | erc20.erc20._.__ink_MessageDecoder input =>
-        let* _ :=
-          let* α0 := false in
-          let* message_0 := false in
-          let message_0 :=
-            ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
-          let* α1 := or α0 message_0 in
-          let* message_1 := false in
-          let message_1 :=
-            ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
-          let* α2 := or α1 message_1 in
-          let* message_2 := false in
-          let message_2 :=
-            ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
-          let* α3 := or α2 message_2 in
-          let* message_3 := false in
-          let message_3 :=
-            ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
-          let* α4 := or α3 message_3 in
-          let* message_4 := false in
-          let message_4 :=
-            ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
-          let* α5 := or α4 message_4 in
-          let* message_5 := false in
-          let message_5 :=
-            ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
-          let* α0 := or α5 message_5 in
-          let* α1 := not ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
-          let* α2 := and α0 α1 in
-          let* α3 := use α2 in
-          if (α3 : bool) then
-            let* _ :=
-              let* α0 := ink.codegen.dispatch.execution.deny_payment in
-              let* α1 := core.ops.try_trait.Try.branch α0 in
-              match α1 with
-              | core.ops.control_flow.ControlFlow residual =>
-                let* α0 :=
-                  core.ops.try_trait.FromResidual.from_residual residual in
-                let* α1 := Return α0 in
-                never_to_any α1
-              | core.ops.control_flow.ControlFlow val => Pure val
-              end in
-            Pure tt
-          else
-            Pure tt in
-        let* result :=
-          let* α0 :=
-            borrow_mut
-              contract
-              (core.mem.manually_drop.ManuallyDrop erc20.erc20.Erc20) in
-          let* α1 :=
-            deref α0 (core.mem.manually_drop.ManuallyDrop erc20.erc20.Erc20) in
-          let* α2 :=
-            borrow_mut
-              α1
-              (core.mem.manually_drop.ManuallyDrop erc20.erc20.Erc20) in
-          let* α3 := core.ops.deref.DerefMut.deref_mut α2 in
-          let* α4 := deref α3 erc20.erc20.Erc20 in
-          let* α5 := borrow_mut α4 erc20.erc20.Erc20 in
-          ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE α5 input in
-        let* is_reverted :=
-          let* α0 :=
-            borrow result (core.result.Result unit erc20.erc20.Error) in
-          let* α1 := deref α0 (core.result.Result unit erc20.erc20.Error) in
-          let* α2 := borrow α1 (core.result.Result unit erc20.erc20.Error) in
-          let* α3 :=
-            borrow
-              (ink.result_info.IsResultErr.Build_t α2)
-              (ink.result_info.IsResultErr
-                (core.result.Result unit erc20.erc20.Error)) in
-          let* α0 :=
-            (ink.result_info.IsResultErr (core.result.Result _ _))::["value"]
-              α3 in
-          and ink.result_info.VALUE α0 in
-        let* _ :=
-          let* α0 := not is_reverted in
-          let* α1 := use α0 in
-          if (α1 : bool) then
-            let* _ :=
-              "unimplemented parent_kind"
-                contract
-                ink.reflect.dispatch.DispatchableMessageInfo.MUTATES in
-            Pure tt
-          else
-            Pure tt in
-        let* α0 :=
-          ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.ReturnFlags::["new_with_reverted"]
-            is_reverted in
-        let* α1 := "unimplemented parent_kind" result in
-        let* α2 :=
-          borrow
-            α1
-            (core.result.Result
-              (core.result.Result unit erc20.erc20.Error)
-              ink_primitives.LangError) in
-        let* α3 :=
-          deref
-            α2
-            (core.result.Result
-              (core.result.Result unit erc20.erc20.Error)
-              ink_primitives.LangError) in
-        let* α4 :=
-          borrow
-            α3
-            (core.result.Result
-              (core.result.Result unit erc20.erc20.Error)
-              ink_primitives.LangError) in
-        let* α5 := ink_env.api.return_value α0 α4 in
-        never_to_any α5
-      end in
-    never_to_any tt.
-  
-  Global Instance Method_execute_dispatchable `{State.Trait} :
-    Notation.Dot "execute_dispatchable" := {
-    Notation.dot := execute_dispatchable;
-  }.
-  
-  Global Instance I `{State.Trait}
-    : ink.reflect.dispatch.ExecuteDispatchable.Trait Self := {
-    ink.reflect.dispatch.ExecuteDispatchable.execute_dispatchable
-      :=
-      execute_dispatchable;
-  }.
-  Global Hint Resolve I : core.
-End
-  Impl_ink_reflect_dispatch_ExecuteDispatchable_for_erc20_erc20_____ink_MessageDecoder.
-
-Module Impl_ink_reflect_dispatch_ContractMessageDecoder_for_erc20_erc20_Erc20.
-  Definition Self `{State.Trait} := erc20.erc20.Erc20.
-  
-  Definition Type : Set := erc20.erc20._.__ink_MessageDecoder.
-  
-  Global Instance I `{State.Trait}
-    : ink.reflect.dispatch.ContractMessageDecoder.Trait Self := {
-    ink.reflect.dispatch.ContractMessageDecoder.Type := Type;
-  }.
-  Global Hint Resolve I : core.
-End Impl_ink_reflect_dispatch_ContractMessageDecoder_for_erc20_erc20_Erc20.
-
-Definition _
-    `{State.Trait}
-    : ink.codegen.utils.same_type.IsSameType erc20.erc20.Erc20 :=
-  run ((ink.codegen.utils.same_type.IsSameType erc20.erc20.Erc20)::["new"]).
-
-Module Impl_erc20_erc20_Erc20_29.
-  Definition Self `{State.Trait} : Set := erc20.erc20.Erc20.
-  
-  Definition new `{State.Trait} (total_supply : erc20.erc20.Balance) : M Self :=
-    let* balances := core.default.Default.default in
-    let* caller :=
-      let* α0 := ink.codegen.env.StaticEnv.env in
-      (ink.env_access.EnvAccess _)::["caller"] α0 in
-    let* _ :=
-      let* α0 :=
-        borrow_mut
-          balances
-          (ink_storage.lazy.mapping.Mapping
-            ink_primitives.types.AccountId
-            u128
-            (ink_storage_traits.impls.ResolverKey
-              ink_storage_traits.impls.AutoKey
-              (ink_storage_traits.impls.ManualKey unit))) in
-      let* α1 := borrow total_supply u128 in
-      let* α2 := deref α1 u128 in
-      let* α3 := borrow α2 u128 in
-      (ink_storage.lazy.mapping.Mapping _ _ _)::["insert"] α0 caller α3 in
-    let* _ :=
-      let* α0 := ink.codegen.env.StaticEnv.env in
-      let* α1 :=
-        M.alloc
-          {|
-            erc20.erc20.Transfer.from := core.option.Option.None tt;
-            erc20.erc20.Transfer.to := core.option.Option.Some caller;
-            erc20.erc20.Transfer.value := total_supply;
-          |} in
-      ink.codegen.event.emit.EmitEvent.emit_event α0 α1 in
-    let* α0 := core.default.Default.default in
-    M.alloc
-      {|
-        erc20.erc20.Erc20.total_supply := total_supply;
-        erc20.erc20.Erc20.balances := balances;
-        erc20.erc20.Erc20.allowances := α0;
-      |}.
-  
-  Global Instance AssociatedFunction_new `{State.Trait} :
-    Notation.DoubleColon Self "new" := {
-    Notation.double_colon := new;
-  }.
-  
-  Definition total_supply
-      `{State.Trait}
-      (self : ref Self)
-      : M erc20.erc20.Balance :=
-    let* α0 := deref self erc20.erc20.Erc20 in
-    α0.["total_supply"].
-  
-  Global Instance Method_total_supply `{State.Trait} :
-    Notation.Dot "total_supply" := {
-    Notation.dot := total_supply;
-  }.
-  
-  Definition balance_of
-      `{State.Trait}
-      (self : ref Self)
-      (owner : erc20.erc20.AccountId)
-      : M erc20.erc20.Balance :=
-    let* α0 := deref self erc20.erc20.Erc20 in
-    let* α1 := borrow α0 erc20.erc20.Erc20 in
-    let* α2 := borrow owner ink_primitives.types.AccountId in
-    let* α3 := deref α2 ink_primitives.types.AccountId in
-    let* α4 := borrow α3 ink_primitives.types.AccountId in
-    erc20.erc20.Erc20::["balance_of_impl"] α1 α4.
-  
-  Global Instance Method_balance_of `{State.Trait} :
-    Notation.Dot "balance_of" := {
-    Notation.dot := balance_of;
-  }.
-  
-  Definition allowance
-      `{State.Trait}
-      (self : ref Self)
-      (owner : erc20.erc20.AccountId)
-      (spender : erc20.erc20.AccountId)
-      : M erc20.erc20.Balance :=
-    let* α0 := deref self erc20.erc20.Erc20 in
-    let* α1 := borrow α0 erc20.erc20.Erc20 in
-    let* α2 := borrow owner ink_primitives.types.AccountId in
-    let* α3 := deref α2 ink_primitives.types.AccountId in
-    let* α4 := borrow α3 ink_primitives.types.AccountId in
-    let* α5 := borrow spender ink_primitives.types.AccountId in
-    let* α6 := deref α5 ink_primitives.types.AccountId in
-    let* α7 := borrow α6 ink_primitives.types.AccountId in
-    erc20.erc20.Erc20::["allowance_impl"] α1 α4 α7.
-  
-  Global Instance Method_allowance `{State.Trait} :
-    Notation.Dot "allowance" := {
-    Notation.dot := allowance;
-  }.
-  
-  Definition transfer
-      `{State.Trait}
-      (self : mut_ref Self)
-      (to : erc20.erc20.AccountId)
-      (value : erc20.erc20.Balance)
-      : M (erc20.erc20.Result unit) :=
-    let* from :=
-      let* α0 := deref self erc20.erc20.Erc20 in
-      let* α1 := borrow α0 erc20.erc20.Erc20 in
-      let* α2 := ink.codegen.env.Env.env α1 in
-      (ink.env_access.EnvAccess _)::["caller"] α2 in
-    let* α0 := deref self erc20.erc20.Erc20 in
-    let* α1 := borrow_mut α0 erc20.erc20.Erc20 in
-    let* α2 := borrow from ink_primitives.types.AccountId in
-    let* α3 := deref α2 ink_primitives.types.AccountId in
-    let* α4 := borrow α3 ink_primitives.types.AccountId in
-    let* α5 := borrow to ink_primitives.types.AccountId in
-    let* α6 := deref α5 ink_primitives.types.AccountId in
-    let* α7 := borrow α6 ink_primitives.types.AccountId in
-    erc20.erc20.Erc20::["transfer_from_to"] α1 α4 α7 value.
-  
-  Global Instance Method_transfer `{State.Trait} : Notation.Dot "transfer" := {
-    Notation.dot := transfer;
-  }.
-  
-  Definition approve
-      `{State.Trait}
-      (self : mut_ref Self)
-      (spender : erc20.erc20.AccountId)
-      (value : erc20.erc20.Balance)
-      : M (erc20.erc20.Result unit) :=
-    let* owner :=
-      let* α0 := deref self erc20.erc20.Erc20 in
-      let* α1 := borrow α0 erc20.erc20.Erc20 in
-      let* α2 := ink.codegen.env.Env.env α1 in
-      (ink.env_access.EnvAccess _)::["caller"] α2 in
-    let* _ :=
-      let* α0 := deref self erc20.erc20.Erc20 in
-      let* α1 := α0.["allowances"] in
-      let* α2 :=
-        borrow_mut
-          α1
-          (ink_storage.lazy.mapping.Mapping
-            (ink_primitives.types.AccountId * ink_primitives.types.AccountId)
-            u128
-            (ink_storage_traits.impls.ResolverKey
-              ink_storage_traits.impls.AutoKey
-              (ink_storage_traits.impls.ManualKey unit))) in
-      let* α3 := borrow owner ink_primitives.types.AccountId in
-      let* α4 := borrow spender ink_primitives.types.AccountId in
-      let* α5 := borrow value u128 in
-      let* α6 := deref α5 u128 in
-      let* α7 := borrow α6 u128 in
-      (ink_storage.lazy.mapping.Mapping _ _ _)::["insert"] α2 (α3, α4) α7 in
-    let* _ :=
-      let* α0 := deref self erc20.erc20.Erc20 in
-      let* α1 := borrow α0 erc20.erc20.Erc20 in
-      let* α2 := ink.codegen.env.Env.env α1 in
-      let* α3 :=
-        M.alloc
-          {|
-            erc20.erc20.Approval.owner := owner;
-            erc20.erc20.Approval.spender := spender;
-            erc20.erc20.Approval.value := value;
-          |} in
-      ink.codegen.event.emit.EmitEvent.emit_event α2 α3 in
-    Pure (core.result.Result.Ok tt).
-  
-  Global Instance Method_approve `{State.Trait} : Notation.Dot "approve" := {
-    Notation.dot := approve;
-  }.
-  
-  Definition transfer_from
-      `{State.Trait}
-      (self : mut_ref Self)
-      (from : erc20.erc20.AccountId)
-      (to : erc20.erc20.AccountId)
-      (value : erc20.erc20.Balance)
-      : M (erc20.erc20.Result unit) :=
-    let* caller :=
-      let* α0 := deref self erc20.erc20.Erc20 in
-      let* α1 := borrow α0 erc20.erc20.Erc20 in
-      let* α2 := ink.codegen.env.Env.env α1 in
-      (ink.env_access.EnvAccess _)::["caller"] α2 in
-    let* allowance :=
-      let* α0 := deref self erc20.erc20.Erc20 in
-      let* α1 := borrow α0 erc20.erc20.Erc20 in
-      let* α2 := borrow from ink_primitives.types.AccountId in
-      let* α3 := deref α2 ink_primitives.types.AccountId in
-      let* α4 := borrow α3 ink_primitives.types.AccountId in
-      let* α5 := borrow caller ink_primitives.types.AccountId in
-      let* α6 := deref α5 ink_primitives.types.AccountId in
-      let* α7 := borrow α6 ink_primitives.types.AccountId in
-      erc20.erc20.Erc20::["allowance_impl"] α1 α4 α7 in
-    let* _ :=
-      let* α0 := lt allowance value in
-      let* α1 := use α0 in
-      if (α1 : bool) then
-        let* α0 :=
-          Return
-            (core.result.Result.Err
-              (erc20.erc20.Error.InsufficientAllowance tt)) in
-        never_to_any α0
-      else
-        Pure tt in
-    let* _ :=
-      let* α0 := deref self erc20.erc20.Erc20 in
-      let* α1 := borrow_mut α0 erc20.erc20.Erc20 in
-      let* α2 := borrow from ink_primitives.types.AccountId in
-      let* α3 := deref α2 ink_primitives.types.AccountId in
-      let* α4 := borrow α3 ink_primitives.types.AccountId in
-      let* α5 := borrow to ink_primitives.types.AccountId in
-      let* α6 := deref α5 ink_primitives.types.AccountId in
-      let* α7 := borrow α6 ink_primitives.types.AccountId in
-      let* α8 := erc20.erc20.Erc20::["transfer_from_to"] α1 α4 α7 value in
-      let* α9 := core.ops.try_trait.Try.branch α8 in
-      match α9 with
-      | core.ops.control_flow.ControlFlow residual =>
-        let* α0 := core.ops.try_trait.FromResidual.from_residual residual in
-        let* α1 := Return α0 in
-        never_to_any α1
-      | core.ops.control_flow.ControlFlow val => Pure val
-      end in
-    let* _ :=
-      let* α0 := deref self erc20.erc20.Erc20 in
-      let* α1 := α0.["allowances"] in
-      let* α2 :=
-        borrow_mut
-          α1
-          (ink_storage.lazy.mapping.Mapping
-            (ink_primitives.types.AccountId * ink_primitives.types.AccountId)
-            u128
-            (ink_storage_traits.impls.ResolverKey
-              ink_storage_traits.impls.AutoKey
-              (ink_storage_traits.impls.ManualKey unit))) in
-      let* α3 := borrow from ink_primitives.types.AccountId in
-      let* α4 := borrow caller ink_primitives.types.AccountId in
-      let* α5 := sub allowance value in
-      let* α6 := borrow α5 u128 in
-      let* α7 := deref α6 u128 in
-      let* α8 := borrow α7 u128 in
-      (ink_storage.lazy.mapping.Mapping _ _ _)::["insert"] α2 (α3, α4) α8 in
-    Pure (core.result.Result.Ok tt).
-  
-  Global Instance Method_transfer_from `{State.Trait} :
-    Notation.Dot "transfer_from" := {
-    Notation.dot := transfer_from;
-  }.
-  
-  Definition balance_of_impl
-      `{State.Trait}
-      (self : ref Self)
-      (owner : ref erc20.erc20.AccountId)
-      : M erc20.erc20.Balance :=
-    let* α0 := deref self erc20.erc20.Erc20 in
-    let* α1 := α0.["balances"] in
-    let* α2 :=
-      borrow
-        α1
-        (ink_storage.lazy.mapping.Mapping
-          ink_primitives.types.AccountId
-          u128
-          (ink_storage_traits.impls.ResolverKey
-            ink_storage_traits.impls.AutoKey
-            (ink_storage_traits.impls.ManualKey unit))) in
-    let* α3 := (ink_storage.lazy.mapping.Mapping _ _ _)::["get"] α2 owner in
-    (core.option.Option _)::["unwrap_or_default"] α3.
-  
-  Global Instance Method_balance_of_impl `{State.Trait} :
-    Notation.Dot "balance_of_impl" := {
-    Notation.dot := balance_of_impl;
-  }.
-  
-  Definition allowance_impl
-      `{State.Trait}
-      (self : ref Self)
-      (owner : ref erc20.erc20.AccountId)
-      (spender : ref erc20.erc20.AccountId)
-      : M erc20.erc20.Balance :=
-    let* α0 := deref self erc20.erc20.Erc20 in
-    let* α1 := α0.["allowances"] in
-    let* α2 :=
-      borrow
-        α1
-        (ink_storage.lazy.mapping.Mapping
-          (ink_primitives.types.AccountId * ink_primitives.types.AccountId)
-          u128
-          (ink_storage_traits.impls.ResolverKey
-            ink_storage_traits.impls.AutoKey
-            (ink_storage_traits.impls.ManualKey unit))) in
-    let* α3 :=
-      (ink_storage.lazy.mapping.Mapping _ _ _)::["get"] α2 (owner, spender) in
-    (core.option.Option _)::["unwrap_or_default"] α3.
-  
-  Global Instance Method_allowance_impl `{State.Trait} :
-    Notation.Dot "allowance_impl" := {
-    Notation.dot := allowance_impl;
-  }.
-  
-  Definition transfer_from_to
-      `{State.Trait}
-      (self : mut_ref Self)
-      (from : ref erc20.erc20.AccountId)
-      (to : ref erc20.erc20.AccountId)
-      (value : erc20.erc20.Balance)
-      : M (erc20.erc20.Result unit) :=
-    let* from_balance :=
-      let* α0 := deref self erc20.erc20.Erc20 in
-      let* α1 := borrow α0 erc20.erc20.Erc20 in
-      let* α2 := deref from ink_primitives.types.AccountId in
-      let* α3 := borrow α2 ink_primitives.types.AccountId in
-      erc20.erc20.Erc20::["balance_of_impl"] α1 α3 in
-    let* _ :=
-      let* α0 := lt from_balance value in
-      let* α1 := use α0 in
-      if (α1 : bool) then
-        let* α0 :=
-          Return
-            (core.result.Result.Err
-              (erc20.erc20.Error.InsufficientBalance tt)) in
-        never_to_any α0
-      else
-        Pure tt in
-    let* _ :=
-      let* α0 := deref self erc20.erc20.Erc20 in
-      let* α1 := α0.["balances"] in
-      let* α2 :=
-        borrow_mut
-          α1
-          (ink_storage.lazy.mapping.Mapping
-            ink_primitives.types.AccountId
-            u128
-            (ink_storage_traits.impls.ResolverKey
-              ink_storage_traits.impls.AutoKey
-              (ink_storage_traits.impls.ManualKey unit))) in
-      let* α3 := sub from_balance value in
-      let* α4 := borrow α3 u128 in
-      let* α5 := deref α4 u128 in
-      let* α6 := borrow α5 u128 in
-      (ink_storage.lazy.mapping.Mapping _ _ _)::["insert"] α2 from α6 in
-    let* to_balance :=
-      let* α0 := deref self erc20.erc20.Erc20 in
-      let* α1 := borrow α0 erc20.erc20.Erc20 in
-      let* α2 := deref to ink_primitives.types.AccountId in
-      let* α3 := borrow α2 ink_primitives.types.AccountId in
-      erc20.erc20.Erc20::["balance_of_impl"] α1 α3 in
-    let* _ :=
-      let* α0 := deref self erc20.erc20.Erc20 in
-      let* α1 := α0.["balances"] in
-      let* α2 :=
-        borrow_mut
-          α1
-          (ink_storage.lazy.mapping.Mapping
-            ink_primitives.types.AccountId
-            u128
-            (ink_storage_traits.impls.ResolverKey
-              ink_storage_traits.impls.AutoKey
-              (ink_storage_traits.impls.ManualKey unit))) in
-      let* α3 := add to_balance value in
-      let* α4 := borrow α3 u128 in
-      let* α5 := deref α4 u128 in
-      let* α6 := borrow α5 u128 in
-      (ink_storage.lazy.mapping.Mapping _ _ _)::["insert"] α2 to α6 in
-    let* _ :=
-      let* α0 := deref self erc20.erc20.Erc20 in
-      let* α1 := borrow α0 erc20.erc20.Erc20 in
-      let* α2 := ink.codegen.env.Env.env α1 in
-      let* α3 := deref from ink_primitives.types.AccountId in
-      let* α4 := deref to ink_primitives.types.AccountId in
-      let* α5 :=
-        M.alloc
-          {|
-            erc20.erc20.Transfer.from := core.option.Option.Some α3;
-            erc20.erc20.Transfer.to := core.option.Option.Some α4;
-            erc20.erc20.Transfer.value := value;
-          |} in
-      ink.codegen.event.emit.EmitEvent.emit_event α2 α5 in
-    Pure (core.result.Result.Ok tt).
-  
-  Global Instance Method_transfer_from_to `{State.Trait} :
-    Notation.Dot "transfer_from_to" := {
-    Notation.dot := transfer_from_to;
-  }.
-End Impl_erc20_erc20_Erc20_29.
-
-Module CallBuilder.
-  Unset Primitive Projections.
-  Record t `{State.Trait} : Set := {
-    account_id : erc20.erc20.AccountId;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_account_id `{State.Trait} : Notation.Dot "account_id" := {
-    Notation.dot x := let* x := M.read x in Pure x.(account_id) : M _;
-  }.
-  Global Instance Get_AF_account_id `{State.Trait}
-    : Notation.DoubleColon t "account_id" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(account_id) : M _;
-  }.
-End CallBuilder.
-Definition CallBuilder `{State.Trait} : Set := M.val (CallBuilder.t).
-
-Module Impl_core_fmt_Debug_for_erc20_erc20___CallBuilder.
-  Definition Self `{State.Trait} := erc20.erc20._.CallBuilder.
-  
-  Parameter struct_parameter_for_fmt :
-      core.fmt.Formatter ->
-        string -> string -> erc20_erc20_AccountId -> M core.fmt.Result.
-  
-  Global Instance Deb_struct_parameter_for_fmt : Notation.DoubleColon
-    core.fmt.Formatter "struct_parameter_for_fmt" := {
-    Notation.double_colon := struct_parameter_for_fmt; }.
-  
-  Definition fmt
-      `{State.Trait}
-      (self : ref Self)
-      (f : mut_ref core.fmt.Formatter)
-      : M core.fmt.Result :=
-    let* α0 := deref f core.fmt.Formatter in
-    let* α1 := borrow_mut α0 core.fmt.Formatter in
-    let* α2 := deref (mk_str "CallBuilder") str in
-    let* α3 := borrow α2 str in
-    let* α4 := deref (mk_str "account_id") str in
-    let* α5 := borrow α4 str in
-    let* α6 := deref self erc20.erc20._.CallBuilder in
-    let* α7 := α6.["account_id"] in
-    let* α8 := borrow α7 ink_primitives.types.AccountId in
-    let* α9 := borrow α8 (ref ink_primitives.types.AccountId) in
-    let* α10 := deref α9 (ref ink_primitives.types.AccountId) in
-    let* α11 := borrow α10 (ref ink_primitives.types.AccountId) in
-    let* α12 := pointer_coercion "Unsize" α11 in
-    core.fmt.Formatter::["debug_struct_field1_finish"] α1 α3 α5 α12.
-  
-  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
-    Notation.dot := fmt;
-  }.
-  
-  Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt := fmt;
-  }.
-  Global Hint Resolve I : core.
-End Impl_core_fmt_Debug_for_erc20_erc20___CallBuilder.
-
-Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20___CallBuilder.
-  Definition Self `{State.Trait} := erc20.erc20._.CallBuilder.
-  
-  Definition encode_to
-      `{State.Trait}
-      {__CodecOutputEdqy : Set}
-      `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
-      `{core.marker.Sized.Trait __CodecOutputEdqy}
-      (self : ref Self)
-      (__codec_dest_edqy : mut_ref __CodecOutputEdqy)
-      : M unit :=
-    let* α0 := deref self erc20.erc20._.CallBuilder in
-    let* α1 := α0.["account_id"] in
-    let* α2 := borrow α1 ink_primitives.types.AccountId in
-    let* α3 := borrow α2 (ref ink_primitives.types.AccountId) in
-    let* α4 := deref α3 (ref ink_primitives.types.AccountId) in
-    let* α5 := borrow α4 (ref ink_primitives.types.AccountId) in
-    let* α6 := deref __codec_dest_edqy _ in
-    let* α7 := borrow_mut α6 _ in
-    parity_scale_codec.codec.Encode.encode_to α5 α7.
-  
-  Global Instance Method_encode_to
-      `{State.Trait}
-      {__CodecOutputEdqy : Set}
-      `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
-      `{core.marker.Sized.Trait __CodecOutputEdqy} :
-    Notation.Dot "encode_to" := {
-    Notation.dot := encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
-  }.
-  
-  Definition encode
-      `{State.Trait}
-      (self : ref Self)
-      : M (alloc.vec.Vec CoqOfRust.core.primitive.u8 alloc.vec.Vec.Default.A) :=
-    let* α0 := deref self erc20.erc20._.CallBuilder in
-    let* α1 := α0.["account_id"] in
-    let* α2 := borrow α1 ink_primitives.types.AccountId in
-    let* α3 := borrow α2 (ref ink_primitives.types.AccountId) in
-    let* α4 := deref α3 (ref ink_primitives.types.AccountId) in
-    let* α5 := borrow α4 (ref ink_primitives.types.AccountId) in
-    parity_scale_codec.codec.Encode.encode α5.
-  
-  Global Instance Method_encode `{State.Trait} : Notation.Dot "encode" := {
-    Notation.dot := encode;
-  }.
-  
-  Definition using_encoded
-      `{State.Trait}
-      {R F : Set}
-      `{core.ops.function.FnOnce.Trait F
-          (Args := ref (Slice CoqOfRust.core.primitive.u8))}
-      (self : ref Self)
-      (f : F)
-      : M R :=
-    let* α0 := deref self erc20.erc20._.CallBuilder in
-    let* α1 := α0.["account_id"] in
-    let* α2 := borrow α1 ink_primitives.types.AccountId in
-    let* α3 := borrow α2 (ref ink_primitives.types.AccountId) in
-    let* α4 := deref α3 (ref ink_primitives.types.AccountId) in
-    let* α5 := borrow α4 (ref ink_primitives.types.AccountId) in
-    parity_scale_codec.codec.Encode.using_encoded α5 f.
-  
-  Global Instance Method_using_encoded
-      `{State.Trait}
-      {R F : Set}
-      `{core.ops.function.FnOnce.Trait F
-          (Args := ref (Slice CoqOfRust.core.primitive.u8))} :
-    Notation.Dot "using_encoded" := {
-    Notation.dot := using_encoded (R := R) (F := F);
-  }.
-  
-  Global Instance I `{State.Trait}
-    : parity_scale_codec.codec.Encode.Trait Self := {
-  }.
-  Global Hint Resolve I : core.
-End Impl_parity_scale_codec_codec_Encode_for_erc20_erc20___CallBuilder.
-
-Module
-  Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20___CallBuilder.
-  Definition Self `{State.Trait} := erc20.erc20._.CallBuilder.
-  
-  Global Instance I `{State.Trait}
-    : parity_scale_codec.encode_like.EncodeLike.Trait Self
-        (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self)
-      := {
-  }.
-  Global Hint Resolve I : core.
-End
-  Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20___CallBuilder.
-
-Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___CallBuilder.
-  Definition Self `{State.Trait} := erc20.erc20._.CallBuilder.
-  
-  Definition decode
-      `{State.Trait}
-      {__CodecInputEdqy : Set}
-      `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
-      (__codec_input_edqy : mut_ref __CodecInputEdqy)
-      : M (core.result.Result Self parity_scale_codec.error.Error) :=
-    let* __codec_res_edqy :=
-      let* α0 := deref __codec_input_edqy _ in
-      let* α1 := borrow_mut α0 _ in
-      parity_scale_codec.codec.Decode.decode α1 in
-    let* α0 :=
-      match __codec_res_edqy with
-      | core.result.Result e =>
-        let* α0 :=
-          parity_scale_codec.error.Error::["chain"]
-            e
-            (mk_str "Could not decode `CallBuilder::account_id`") in
-        let* α1 := Return (core.result.Result.Err α0) in
-        never_to_any α1
-      | core.result.Result __codec_res_edqy => Pure __codec_res_edqy
-      end in
-    let* α1 := M.alloc {| erc20.erc20._.CallBuilder.account_id := α0; |} in
-    Pure (core.result.Result.Ok α1).
-  
-  Global Instance AssociatedFunction_decode
-      `{State.Trait}
-      {__CodecInputEdqy : Set}
-      `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :
-    Notation.DoubleColon Self "decode" := {
-    Notation.double_colon := decode (__CodecInputEdqy := __CodecInputEdqy);
-  }.
-  
-  Definition decode_into
-      `{State.Trait}
-      {__CodecInputEdqy : Set}
-      `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
-      (__codec_input_edqy : mut_ref __CodecInputEdqy)
-      (dst_ : mut_ref (core.mem.maybe_uninit.MaybeUninit Self))
-      :
-        M
-          (core.result.Result
-            parity_scale_codec.decode_finished.DecodeFinished
-            parity_scale_codec.error.Error) :=
-    let* _ :=
-      let* α0 := core.mem.size_of in
-      let* α1 := borrow α0 usize in
-      let* α2 := core.mem.size_of in
-      let* α3 := borrow α2 usize in
-      match (α1, α3) with
-      | (left_val, right_val) =>
-        let* α0 := deref left_val usize in
-        let* α1 := deref right_val usize in
-        let* α2 := eq α0 α1 in
-        let* α3 := not α2 in
-        let* α4 := use α3 in
-        if (α4 : bool) then
-          let kind := core.panicking.AssertKind.Eq tt in
-          let* _ :=
-            let* α0 := deref left_val usize in
-            let* α1 := borrow α0 usize in
-            let* α2 := deref α1 usize in
-            let* α3 := borrow α2 usize in
-            let* α4 := deref right_val usize in
-            let* α5 := borrow α4 usize in
-            let* α6 := deref α5 usize in
-            let* α7 := borrow α6 usize in
-            core.panicking.assert_failed
-              kind
-              α3
-              α7
-              (core.option.Option.None tt) in
-          never_to_any tt
-        else
-          Pure tt
-      end in
-    let* _ :=
-      let* α0 := core.mem.size_of in
-      let* α1 := M.alloc 0 in
-      let* α2 := gt α0 α1 in
-      let* α3 := use α2 in
-      let* α4 :=
-        if (α3 : bool) then
-          M.alloc 1
-        else
-          M.alloc 0 in
-      let* α5 := M.alloc 1 in
-      let* α6 := le α4 α5 in
-      let* α7 := not α6 in
-      let* α8 := use α7 in
-      if (α8 : bool) then
-        let* α0 :=
-          core.panicking.panic
-            (mk_str
-              "assertion failed: if ::core::mem::size_of::<AccountId>() > 0 { 1 } else { 0 } <= 1") in
-        never_to_any α0
-      else
-        Pure tt in
-    let* _ :=
-      let* dst_ :=
-        let* α0 :=
-          deref
-            dst_
-            (core.mem.maybe_uninit.MaybeUninit erc20.erc20._.CallBuilder) in
-        borrow_mut
-          α0
-          (core.mem.maybe_uninit.MaybeUninit erc20.erc20._.CallBuilder) in
-      let* dst_ :=
-        let* α0 :=
-          deref
-            dst_
-            (core.mem.maybe_uninit.MaybeUninit erc20.erc20._.CallBuilder) in
-        let* α1 :=
-          borrow_mut
-            α0
-            (core.mem.maybe_uninit.MaybeUninit erc20.erc20._.CallBuilder) in
-        let* α2 := (core.mem.maybe_uninit.MaybeUninit _)::["as_mut_ptr"] α1 in
-        let* α3 := type not implemented::["cast"] α2 in
-        let* α4 :=
-          deref
-            α3
-            (core.mem.maybe_uninit.MaybeUninit
-              ink_primitives.types.AccountId) in
-        let* α5 :=
-          borrow_mut
-            α4
-            (core.mem.maybe_uninit.MaybeUninit
-              ink_primitives.types.AccountId) in
-        let* α6 :=
-          deref
-            α5
-            (core.mem.maybe_uninit.MaybeUninit
-              ink_primitives.types.AccountId) in
-        let* α0 :=
-          borrow_mut
-            α6
-            (core.mem.maybe_uninit.MaybeUninit
-              ink_primitives.types.AccountId) in
-        let* α1 :=
-          deref
-            α0
-            (core.mem.maybe_uninit.MaybeUninit
-              ink_primitives.types.AccountId) in
-        borrow_mut
-          α1
-          (core.mem.maybe_uninit.MaybeUninit ink_primitives.types.AccountId) in
-      let* _ :=
-        let* α0 := deref __codec_input_edqy _ in
-        let* α1 := borrow_mut α0 _ in
-        let* α2 :=
-          deref
-            dst_
-            (core.mem.maybe_uninit.MaybeUninit
-              ink_primitives.types.AccountId) in
-        let* α3 :=
-          borrow_mut
-            α2
-            (core.mem.maybe_uninit.MaybeUninit
-              ink_primitives.types.AccountId) in
-        let* α4 := parity_scale_codec.codec.Decode.decode_into α1 α3 in
-        let* α5 := core.ops.try_trait.Try.branch α4 in
-        match α5 with
-        | core.ops.control_flow.ControlFlow residual =>
-          let* α0 := core.ops.try_trait.FromResidual.from_residual residual in
-          let* α1 := Return α0 in
-          never_to_any α1
-        | core.ops.control_flow.ControlFlow val => Pure val
-        end in
-      Pure tt in
-    let* α0 :=
-      parity_scale_codec.decode_finished.DecodeFinished::["assert_decoding_finished"] in
-    Pure (core.result.Result.Ok α0).
-  
-  Global Instance AssociatedFunction_decode_into
-      `{State.Trait}
-      {__CodecInputEdqy : Set}
-      `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :
-    Notation.DoubleColon Self "decode_into" := {
-    Notation.double_colon := decode_into (__CodecInputEdqy := __CodecInputEdqy);
-  }.
-  
-  Global Instance I `{State.Trait}
-    : parity_scale_codec.codec.Decode.Trait Self := {
-    parity_scale_codec.codec.Decode.decode
-      {__CodecInputEdqy : Set}
-      `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
-      :=
-      decode (__CodecInputEdqy := __CodecInputEdqy);
-  }.
-  Global Hint Resolve I : core.
-End Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___CallBuilder.
-
-Module Impl_core_hash_Hash_for_erc20_erc20___CallBuilder.
-  Definition Self `{State.Trait} := erc20.erc20._.CallBuilder.
-  
-  Definition hash
-      `{State.Trait}
-      {__H : Set}
-      `{core.hash.Hasher.Trait __H}
-      (self : ref Self)
-      (state : mut_ref __H)
-      : M unit :=
-    let* α0 := deref self erc20.erc20._.CallBuilder in
-    let* α1 := α0.["account_id"] in
-    let* α2 := borrow α1 ink_primitives.types.AccountId in
-    let* α3 := deref α2 ink_primitives.types.AccountId in
-    let* α4 := borrow α3 ink_primitives.types.AccountId in
-    let* α5 := deref state _ in
-    let* α6 := borrow_mut α5 _ in
-    core.hash.Hash.hash α4 α6.
-  
-  Global Instance Method_hash
-      `{State.Trait}
-      {__H : Set}
-      `{core.hash.Hasher.Trait __H} :
-    Notation.Dot "hash" := {
-    Notation.dot := hash (__H := __H);
-  }.
-  
-  Global Instance I `{State.Trait} : core.hash.Hash.Trait Self := {
-    core.hash.Hash.hash {__H : Set} `{core.hash.Hasher.Trait __H}
-      :=
-      hash (__H := __H);
-  }.
-  Global Hint Resolve I : core.
-End Impl_core_hash_Hash_for_erc20_erc20___CallBuilder.
-
-Module Impl_core_marker_StructuralPartialEq_for_erc20_erc20___CallBuilder.
-  Definition Self `{State.Trait} := erc20.erc20._.CallBuilder.
-  
-  Global Instance I `{State.Trait}
-    : core.marker.StructuralPartialEq.Trait Self := {
-  }.
-  Global Hint Resolve I : core.
-End Impl_core_marker_StructuralPartialEq_for_erc20_erc20___CallBuilder.
-
-Module Impl_core_cmp_PartialEq_for_erc20_erc20___CallBuilder.
-  Definition Self `{State.Trait} := erc20.erc20._.CallBuilder.
-  
-  Definition eq
-      `{State.Trait}
-      (self : ref Self)
-      (other : ref erc20.erc20._.CallBuilder)
-      : M bool :=
-    let* α0 := deref self erc20.erc20._.CallBuilder in
-    let* α1 := α0.["account_id"] in
-    let* α2 := borrow α1 ink_primitives.types.AccountId in
-    let* α3 := deref other erc20.erc20._.CallBuilder in
-    let* α4 := α3.["account_id"] in
-    let* α5 := borrow α4 ink_primitives.types.AccountId in
-    core.cmp.PartialEq.eq α2 α5.
-  
-  Global Instance Method_eq `{State.Trait} : Notation.Dot "eq" := {
-    Notation.dot := eq;
-  }.
-  
-  Global Instance I `{State.Trait}
-    : core.cmp.PartialEq.Trait Self (Rhs := core.cmp.PartialEq.Default.Rhs Self)
-      := {
-    core.cmp.PartialEq.eq := eq;
-  }.
-  Global Hint Resolve I : core.
-End Impl_core_cmp_PartialEq_for_erc20_erc20___CallBuilder.
-
-Module Impl_core_marker_StructuralEq_for_erc20_erc20___CallBuilder.
-  Definition Self `{State.Trait} := erc20.erc20._.CallBuilder.
-  
-  Global Instance I `{State.Trait} : core.marker.StructuralEq.Trait Self := {
-  }.
-  Global Hint Resolve I : core.
-End Impl_core_marker_StructuralEq_for_erc20_erc20___CallBuilder.
-
-Module Impl_core_cmp_Eq_for_erc20_erc20___CallBuilder.
-  Definition Self `{State.Trait} := erc20.erc20._.CallBuilder.
-  
-  Definition assert_receiver_is_total_eq
-      `{State.Trait}
-      (self : ref Self)
-      : M unit :=
-    let _ := tt in
-    Pure tt.
-  
-  Global Instance Method_assert_receiver_is_total_eq `{State.Trait} :
-    Notation.Dot "assert_receiver_is_total_eq" := {
-    Notation.dot := assert_receiver_is_total_eq;
-  }.
-  
-  Global Instance I `{State.Trait} : core.cmp.Eq.Trait Self := {
-  }.
-  Global Hint Resolve I : core.
-End Impl_core_cmp_Eq_for_erc20_erc20___CallBuilder.
-
-Module Impl_core_clone_Clone_for_erc20_erc20___CallBuilder.
-  Definition Self `{State.Trait} := erc20.erc20._.CallBuilder.
-  
-  Definition clone
-      `{State.Trait}
-      (self : ref Self)
-      : M erc20.erc20._.CallBuilder :=
-    let* α0 := deref self erc20.erc20._.CallBuilder in
-    let* α1 := α0.["account_id"] in
-    let* α2 := borrow α1 ink_primitives.types.AccountId in
-    let* α3 := deref α2 ink_primitives.types.AccountId in
-    let* α4 := borrow α3 ink_primitives.types.AccountId in
-    let* α5 := core.clone.Clone.clone α4 in
-    M.alloc {| erc20.erc20._.CallBuilder.account_id := α5; |}.
-  
-  Global Instance Method_clone `{State.Trait} : Notation.Dot "clone" := {
-    Notation.dot := clone;
-  }.
-  
-  Global Instance I `{State.Trait} : core.clone.Clone.Trait Self := {
-    core.clone.Clone.clone := clone;
-  }.
-  Global Hint Resolve I : core.
-End Impl_core_clone_Clone_for_erc20_erc20___CallBuilder.
-
-Module Impl_scale_info_TypeInfo_for_erc20_erc20___CallBuilder.
-  Definition Self `{State.Trait} := erc20.erc20._.CallBuilder.
-  
-  Definition Identity : Set := Self.
-  
-  Definition type_info
-      `{State.Trait}
-      : M (scale_info.ty.Type_ scale_info.ty.Type_.Default.T) :=
-    let* α0 := (scale_info.ty.Type_ scale_info.form.MetaForm)::["builder"] in
-    let* α1 :=
-      (scale_info.ty.path.Path scale_info.form.MetaForm)::["new"]
-        (mk_str "CallBuilder")
-        (mk_str "erc20::erc20") in
-    let* α2 :=
-      (scale_info.build.TypeBuilder
-            _
-            scale_info.build.state.PathNotAssigned)::["path"]
-        α0
-        α1 in
-    let* α3 := (alloc.vec.Vec _ alloc.alloc.Global)::["new"] in
-    let* α4 := (scale_info.build.TypeBuilder _ _)::["type_params"] α2 α3 in
-    let* α5 :=
-      borrow
-        [
-          mk_str "The ink! smart contract's call builder.";
-          mk_str "";
-          mk_str
-            "Implements the underlying on-chain calling of the ink! smart contract";
-          mk_str "messages and trait implementations in a type safe way."
-        ]
-        (list (ref str)) in
-    let* α6 := deref α5 (list (ref str)) in
-    let* α7 := borrow α6 (list (ref str)) in
-    let* α8 := pointer_coercion "Unsize" α7 in
-    let* α9 :=
-      (scale_info.build.TypeBuilder scale_info.form.MetaForm _)::["docs"]
-        α4
-        α8 in
-    let* α10 := (scale_info.build.Fields _)::["named"] in
-    let* α11 :=
-      (scale_info.build.FieldsBuilder
-            scale_info.form.MetaForm
-            scale_info.build.NamedFields)::["field"]
-        α10
-        let* α0 :=
-          (scale_info.build.FieldBuilder
-                scale_info.form.MetaForm
-                _
-                scale_info.build.field_state.TypeNotAssigned)::["ty"]
-            f in
-        let* α1 :=
-          (scale_info.build.FieldBuilder
-                _
-                scale_info.build.field_state.NameNotAssigned
-                _)::["name"]
-            α0
-            (mk_str "account_id") in
-        (scale_info.build.FieldBuilder _ _ _)::["type_name"]
-          α1
-          (mk_str "AccountId") in
-    (scale_info.build.TypeBuilder
-          _
-          scale_info.build.state.PathAssigned)::["composite"]
-      α9
-      α11.
-  
-  Global Instance AssociatedFunction_type_info `{State.Trait} :
-    Notation.DoubleColon Self "type_info" := {
-    Notation.double_colon := type_info;
-  }.
-  
-  Global Instance I `{State.Trait} : scale_info.TypeInfo.Trait Self := {
-    scale_info.TypeInfo.Identity := Identity;
-    scale_info.TypeInfo.type_info := type_info;
-  }.
-  Global Hint Resolve I : core.
-End Impl_scale_info_TypeInfo_for_erc20_erc20___CallBuilder.
-
-Module
-  Impl_ink_storage_traits_layout_StorageLayout_for_erc20_erc20___CallBuilder.
-  Definition Self `{State.Trait} := erc20.erc20._.CallBuilder.
-  
-  Definition layout
-      `{State.Trait}
-      (__key : ref ink_primitives.key.Key)
-      : M (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F) :=
-    let* α0 := deref __key u32 in
-    let* α1 := borrow α0 u32 in
-    let* α2 := ink_storage_traits.layout.StorageLayout.layout α1 in
-    let* α3 :=
-      (ink_metadata.layout.FieldLayout _)::["new"] (mk_str "account_id") α2 in
-    let* α4 :=
-      (ink_metadata.layout.StructLayout _)::["new"]
-        (mk_str "CallBuilder")
-        [ α3 ] in
-    Pure (ink_metadata.layout.Layout.Struct α4).
-  
-  Global Instance AssociatedFunction_layout `{State.Trait} :
-    Notation.DoubleColon Self "layout" := {
-    Notation.double_colon := layout;
-  }.
-  
-  Global Instance I `{State.Trait}
-    : ink_storage_traits.layout.StorageLayout.Trait Self := {
-    ink_storage_traits.layout.StorageLayout.layout := layout;
-  }.
-  Global Hint Resolve I : core.
-End Impl_ink_storage_traits_layout_StorageLayout_for_erc20_erc20___CallBuilder.
-
-Module Impl_ink_codegen_dispatch_info_ContractCallBuilder_for_erc20_erc20_Erc20.
-  Definition Self `{State.Trait} := erc20.erc20.Erc20.
-  
-  Definition Type : Set := erc20.erc20._.CallBuilder.
-  
-  Global Instance I `{State.Trait}
-    : ink.codegen.dispatch.info.ContractCallBuilder.Trait Self := {
-    ink.codegen.dispatch.info.ContractCallBuilder.Type := Type;
-  }.
-  Global Hint Resolve I : core.
-End Impl_ink_codegen_dispatch_info_ContractCallBuilder_for_erc20_erc20_Erc20.
-
-Module Impl_ink_env_contract_ContractEnv_for_erc20_erc20___CallBuilder.
-  Definition Self `{State.Trait} := erc20.erc20._.CallBuilder.
-  
-  Definition Env : Set :=
-    ink_env.types.DefaultEnvironment.
-  
-  Global Instance I `{State.Trait}
-    : ink_env.contract.ContractEnv.Trait Self := {
-    ink_env.contract.ContractEnv.Env := Env;
-  }.
-  Global Hint Resolve I : core.
-End Impl_ink_env_contract_ContractEnv_for_erc20_erc20___CallBuilder.
-
-Module
-  Impl_ink_env_call_create_builder_FromAccountId_for_erc20_erc20___CallBuilder.
-  Definition Self `{State.Trait} := erc20.erc20._.CallBuilder.
-  
-  Definition from_account_id
-      `{State.Trait}
-      (account_id : erc20.erc20.AccountId)
-      : M Self :=
-    M.alloc {| erc20.erc20._.CallBuilder.account_id := account_id; |}.
-  
-  Global Instance AssociatedFunction_from_account_id `{State.Trait} :
-    Notation.DoubleColon Self "from_account_id" := {
-    Notation.double_colon := from_account_id;
-  }.
-  
-  Global Instance I `{State.Trait}
-    : ink_env.call.create_builder.FromAccountId.Trait Self
-        (T := erc20.erc20.Environment)
-      := {
-    ink_env.call.create_builder.FromAccountId.from_account_id
-      :=
-      from_account_id;
-  }.
-  Global Hint Resolve I : core.
-End
-  Impl_ink_env_call_create_builder_FromAccountId_for_erc20_erc20___CallBuilder.
-
-Module Impl_ink_contract_ref_ToAccountId_for_erc20_erc20___CallBuilder.
-  Definition Self `{State.Trait} := erc20.erc20._.CallBuilder.
-  
-  Definition to_account_id
-      `{State.Trait}
-      (self : ref Self)
-      : M erc20.erc20.AccountId :=
-    let* α0 := deref self erc20.erc20._.CallBuilder in
-    let* α1 := α0.["account_id"] in
-    let* α2 := borrow α1 ink_primitives.types.AccountId in
-    let* α3 := deref α2 ink_primitives.types.AccountId in
-    let* α4 := borrow α3 ink_primitives.types.AccountId in
-    core.clone.Clone.clone α4.
-  
-  Global Instance Method_to_account_id `{State.Trait} :
-    Notation.Dot "to_account_id" := {
-    Notation.dot := to_account_id;
-  }.
-  
-  Global Instance I `{State.Trait}
-    : ink.contract_ref.ToAccountId.Trait Self (T := erc20.erc20.Environment)
-      := {
-    ink.contract_ref.ToAccountId.to_account_id := to_account_id;
-  }.
-  Global Hint Resolve I : core.
-End Impl_ink_contract_ref_ToAccountId_for_erc20_erc20___CallBuilder.
-
-Module Impl_core_convert_AsRef_for_erc20_erc20___CallBuilder.
-  Definition Self `{State.Trait} := erc20.erc20._.CallBuilder.
-  
-  Definition as_ref
-      `{State.Trait}
-      (self : ref Self)
-      : M (ref erc20.erc20.AccountId) :=
-    let* α0 := deref self erc20.erc20._.CallBuilder in
-    let* α1 := α0.["account_id"] in
-    let* α2 := borrow α1 ink_primitives.types.AccountId in
-    let* α3 := deref α2 ink_primitives.types.AccountId in
-    borrow α3 ink_primitives.types.AccountId.
-  
-  Global Instance Method_as_ref `{State.Trait} : Notation.Dot "as_ref" := {
-    Notation.dot := as_ref;
-  }.
-  
-  Global Instance I `{State.Trait}
-    : core.convert.AsRef.Trait Self (T := erc20.erc20.AccountId) := {
-    core.convert.AsRef.as_ref := as_ref;
-  }.
-  Global Hint Resolve I : core.
-End Impl_core_convert_AsRef_for_erc20_erc20___CallBuilder.
-
-Module Impl_core_convert_AsMut_for_erc20_erc20___CallBuilder.
-  Definition Self `{State.Trait} := erc20.erc20._.CallBuilder.
-  
-  Definition as_mut
-      `{State.Trait}
-      (self : mut_ref Self)
-      : M (mut_ref erc20.erc20.AccountId) :=
-    let* α0 := deref self erc20.erc20._.CallBuilder in
-    let* α1 := α0.["account_id"] in
-    let* α2 := borrow_mut α1 ink_primitives.types.AccountId in
-    let* α3 := deref α2 ink_primitives.types.AccountId in
-    let* α0 := borrow_mut α3 ink_primitives.types.AccountId in
-    let* α1 := deref α0 ink_primitives.types.AccountId in
-    borrow_mut α1 ink_primitives.types.AccountId.
-  
-  Global Instance Method_as_mut `{State.Trait} : Notation.Dot "as_mut" := {
-    Notation.dot := as_mut;
-  }.
-  
-  Global Instance I `{State.Trait}
-    : core.convert.AsMut.Trait Self (T := erc20.erc20.AccountId) := {
-    core.convert.AsMut.as_mut := as_mut;
-  }.
-  Global Hint Resolve I : core.
-End Impl_core_convert_AsMut_for_erc20_erc20___CallBuilder.
-
-Module Impl_erc20_erc20___CallBuilder_18.
-  Definition Self `{State.Trait} : Set := erc20.erc20._.CallBuilder.
-  
-  Definition total_supply
-      `{State.Trait}
-      (self : ref Self)
-      :
-        M
-          (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallBuilder
-            erc20.erc20.Environment
-            (ink_env.call.common.Set_
-              (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Call
-                erc20.erc20.Environment))
-            (ink_env.call.common.Set_
-              (ink_env.call.execution_input.ExecutionInput
-                ink_env.call.execution_input.EmptyArgumentList))
-            (ink_env.call.common.Set_
-              (ink_env.call.common.ReturnType erc20.erc20.Balance))) :=
-    let* α0 :=
-      ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.build_call in
-    let* α1 := deref self erc20.erc20._.CallBuilder in
-    let* α2 := borrow α1 erc20.erc20._.CallBuilder in
-    let* α3 := ink.contract_ref.ToAccountId.to_account_id α2 in
-    let* α4 :=
-      (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallBuilder
-            _
-            (ink_env.call.common.Unset_ _)
-            _
-            _)::["call"]
-        α0
-        α3 in
-    let* α5 := M.alloc 219 in
-    let* α6 := M.alloc 99 in
-    let* α7 := M.alloc 117 in
-    let* α8 := M.alloc 168 in
-    let* α9 := ink_env.call.selector.Selector::["new"] [ α5; α6; α7; α8 ] in
-    let* α10 :=
-      (ink_env.call.execution_input.ExecutionInput
-            (ink_env.call.execution_input.ArgumentList
-              ink_env.call.execution_input.ArgumentListEnd
-              ink_env.call.execution_input.ArgumentListEnd))::["new"]
-        α9 in
-    let* α11 :=
-      (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallBuilder
-            _
-            _
-            (ink_env.call.common.Unset_
-              (ink_env.call.execution_input.ExecutionInput
-                (ink_env.call.execution_input.ArgumentList
-                  ink_env.call.execution_input.ArgumentListEnd
-                  ink_env.call.execution_input.ArgumentListEnd)))
-            _)::["exec_input"]
-        α4
-        α10 in
-    (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallBuilder
-          _
-          _
-          _
-          (ink_env.call.common.Unset_
-            (ink_env.call.common.ReturnType unit)))::["returns"]
-      α11.
-  
-  Global Instance Method_total_supply `{State.Trait} :
-    Notation.Dot "total_supply" := {
-    Notation.dot := total_supply;
-  }.
-  
-  Definition balance_of
-      `{State.Trait}
-      (self : ref Self)
-      (__ink_binding_0 : erc20.erc20.AccountId)
-      :
-        M
-          (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallBuilder
-            erc20.erc20.Environment
-            (ink_env.call.common.Set_
-              (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Call
-                erc20.erc20.Environment))
-            (ink_env.call.common.Set_
-              (ink_env.call.execution_input.ExecutionInput
-                (ink_env.call.execution_input.ArgumentList
-                  (ink_env.call.execution_input.Argument erc20.erc20.AccountId)
-                  ink_env.call.execution_input.EmptyArgumentList)))
-            (ink_env.call.common.Set_
-              (ink_env.call.common.ReturnType erc20.erc20.Balance))) :=
-    let* α0 :=
-      ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.build_call in
-    let* α1 := deref self erc20.erc20._.CallBuilder in
-    let* α2 := borrow α1 erc20.erc20._.CallBuilder in
-    let* α3 := ink.contract_ref.ToAccountId.to_account_id α2 in
-    let* α4 :=
-      (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallBuilder
-            _
-            (ink_env.call.common.Unset_ _)
-            _
-            _)::["call"]
-        α0
-        α3 in
-    let* α5 := M.alloc 15 in
-    let* α6 := M.alloc 117 in
-    let* α7 := M.alloc 90 in
-    let* α8 := M.alloc 86 in
-    let* α9 := ink_env.call.selector.Selector::["new"] [ α5; α6; α7; α8 ] in
-    let* α10 :=
-      (ink_env.call.execution_input.ExecutionInput
-            (ink_env.call.execution_input.ArgumentList
-              ink_env.call.execution_input.ArgumentListEnd
-              ink_env.call.execution_input.ArgumentListEnd))::["new"]
-        α9 in
-    let* α11 :=
-      (ink_env.call.execution_input.ExecutionInput
-            (ink_env.call.execution_input.ArgumentList
-              ink_env.call.execution_input.ArgumentListEnd
-              ink_env.call.execution_input.ArgumentListEnd))::["push_arg"]
-        α10
-        __ink_binding_0 in
-    let* α12 :=
-      (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallBuilder
-            _
-            _
-            (ink_env.call.common.Unset_
-              (ink_env.call.execution_input.ExecutionInput
-                (ink_env.call.execution_input.ArgumentList
-                  ink_env.call.execution_input.ArgumentListEnd
-                  ink_env.call.execution_input.ArgumentListEnd)))
-            _)::["exec_input"]
-        α4
-        α11 in
-    (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallBuilder
-          _
-          _
-          _
-          (ink_env.call.common.Unset_
-            (ink_env.call.common.ReturnType unit)))::["returns"]
-      α12.
-  
-  Global Instance Method_balance_of `{State.Trait} :
-    Notation.Dot "balance_of" := {
-    Notation.dot := balance_of;
-  }.
-  
-  Definition allowance
-      `{State.Trait}
-      (self : ref Self)
-      (__ink_binding_0 : erc20.erc20.AccountId)
-      (__ink_binding_1 : erc20.erc20.AccountId)
-      :
-        M
-          (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallBuilder
-            erc20.erc20.Environment
-            (ink_env.call.common.Set_
-              (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Call
-                erc20.erc20.Environment))
-            (ink_env.call.common.Set_
-              (ink_env.call.execution_input.ExecutionInput
-                (ink_env.call.execution_input.ArgumentList
-                  (ink_env.call.execution_input.Argument erc20.erc20.AccountId)
-                  (ink_env.call.execution_input.ArgumentList
-                    (ink_env.call.execution_input.Argument
-                      erc20.erc20.AccountId)
-                    ink_env.call.execution_input.EmptyArgumentList))))
-            (ink_env.call.common.Set_
-              (ink_env.call.common.ReturnType erc20.erc20.Balance))) :=
-    let* α0 :=
-      ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.build_call in
-    let* α1 := deref self erc20.erc20._.CallBuilder in
-    let* α2 := borrow α1 erc20.erc20._.CallBuilder in
-    let* α3 := ink.contract_ref.ToAccountId.to_account_id α2 in
-    let* α4 :=
-      (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallBuilder
-            _
-            (ink_env.call.common.Unset_ _)
-            _
-            _)::["call"]
-        α0
-        α3 in
-    let* α5 := M.alloc 106 in
-    let* α6 := M.alloc 0 in
-    let* α7 := M.alloc 22 in
-    let* α8 := M.alloc 94 in
-    let* α9 := ink_env.call.selector.Selector::["new"] [ α5; α6; α7; α8 ] in
-    let* α10 :=
-      (ink_env.call.execution_input.ExecutionInput
-            (ink_env.call.execution_input.ArgumentList
-              ink_env.call.execution_input.ArgumentListEnd
-              ink_env.call.execution_input.ArgumentListEnd))::["new"]
-        α9 in
-    let* α11 :=
-      (ink_env.call.execution_input.ExecutionInput
-            (ink_env.call.execution_input.ArgumentList
-              ink_env.call.execution_input.ArgumentListEnd
-              ink_env.call.execution_input.ArgumentListEnd))::["push_arg"]
-        α10
-        __ink_binding_0 in
-    let* α12 :=
-      (ink_env.call.execution_input.ExecutionInput
-            (ink_env.call.execution_input.ArgumentList
-              (ink_env.call.execution_input.Argument _)
-              _))::["push_arg"]
-        α11
-        __ink_binding_1 in
-    let* α13 :=
-      (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallBuilder
-            _
-            _
-            (ink_env.call.common.Unset_
-              (ink_env.call.execution_input.ExecutionInput
-                (ink_env.call.execution_input.ArgumentList
-                  ink_env.call.execution_input.ArgumentListEnd
-                  ink_env.call.execution_input.ArgumentListEnd)))
-            _)::["exec_input"]
-        α4
-        α12 in
-    (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallBuilder
-          _
-          _
-          _
-          (ink_env.call.common.Unset_
-            (ink_env.call.common.ReturnType unit)))::["returns"]
-      α13.
-  
-  Global Instance Method_allowance `{State.Trait} :
-    Notation.Dot "allowance" := {
-    Notation.dot := allowance;
-  }.
-  
-  Definition transfer
-      `{State.Trait}
-      (self : mut_ref Self)
-      (__ink_binding_0 : erc20.erc20.AccountId)
-      (__ink_binding_1 : erc20.erc20.Balance)
-      :
-        M
-          (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallBuilder
-            erc20.erc20.Environment
-            (ink_env.call.common.Set_
-              (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Call
-                erc20.erc20.Environment))
-            (ink_env.call.common.Set_
-              (ink_env.call.execution_input.ExecutionInput
-                (ink_env.call.execution_input.ArgumentList
-                  (ink_env.call.execution_input.Argument erc20.erc20.Balance)
-                  (ink_env.call.execution_input.ArgumentList
-                    (ink_env.call.execution_input.Argument
-                      erc20.erc20.AccountId)
-                    ink_env.call.execution_input.EmptyArgumentList))))
-            (ink_env.call.common.Set_
-              (ink_env.call.common.ReturnType (erc20.erc20.Result unit)))) :=
-    let* α0 :=
-      ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.build_call in
-    let* α1 := deref self erc20.erc20._.CallBuilder in
-    let* α2 := borrow α1 erc20.erc20._.CallBuilder in
-    let* α3 := ink.contract_ref.ToAccountId.to_account_id α2 in
-    let* α4 :=
-      (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallBuilder
-            _
-            (ink_env.call.common.Unset_ _)
-            _
-            _)::["call"]
-        α0
-        α3 in
-    let* α5 := M.alloc 132 in
-    let* α6 := M.alloc 161 in
-    let* α7 := M.alloc 93 in
-    let* α8 := M.alloc 161 in
-    let* α9 := ink_env.call.selector.Selector::["new"] [ α5; α6; α7; α8 ] in
-    let* α10 :=
-      (ink_env.call.execution_input.ExecutionInput
-            (ink_env.call.execution_input.ArgumentList
-              ink_env.call.execution_input.ArgumentListEnd
-              ink_env.call.execution_input.ArgumentListEnd))::["new"]
-        α9 in
-    let* α11 :=
-      (ink_env.call.execution_input.ExecutionInput
-            (ink_env.call.execution_input.ArgumentList
-              ink_env.call.execution_input.ArgumentListEnd
-              ink_env.call.execution_input.ArgumentListEnd))::["push_arg"]
-        α10
-        __ink_binding_0 in
-    let* α12 :=
-      (ink_env.call.execution_input.ExecutionInput
-            (ink_env.call.execution_input.ArgumentList
-              (ink_env.call.execution_input.Argument _)
-              _))::["push_arg"]
-        α11
-        __ink_binding_1 in
-    let* α13 :=
-      (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallBuilder
-            _
-            _
-            (ink_env.call.common.Unset_
-              (ink_env.call.execution_input.ExecutionInput
-                (ink_env.call.execution_input.ArgumentList
-                  ink_env.call.execution_input.ArgumentListEnd
-                  ink_env.call.execution_input.ArgumentListEnd)))
-            _)::["exec_input"]
-        α4
-        α12 in
-    (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallBuilder
-          _
-          _
-          _
-          (ink_env.call.common.Unset_
-            (ink_env.call.common.ReturnType unit)))::["returns"]
-      α13.
-  
-  Global Instance Method_transfer `{State.Trait} : Notation.Dot "transfer" := {
-    Notation.dot := transfer;
-  }.
-  
-  Definition approve
-      `{State.Trait}
-      (self : mut_ref Self)
-      (__ink_binding_0 : erc20.erc20.AccountId)
-      (__ink_binding_1 : erc20.erc20.Balance)
-      :
-        M
-          (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallBuilder
-            erc20.erc20.Environment
-            (ink_env.call.common.Set_
-              (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Call
-                erc20.erc20.Environment))
-            (ink_env.call.common.Set_
-              (ink_env.call.execution_input.ExecutionInput
-                (ink_env.call.execution_input.ArgumentList
-                  (ink_env.call.execution_input.Argument erc20.erc20.Balance)
-                  (ink_env.call.execution_input.ArgumentList
-                    (ink_env.call.execution_input.Argument
-                      erc20.erc20.AccountId)
-                    ink_env.call.execution_input.EmptyArgumentList))))
-            (ink_env.call.common.Set_
-              (ink_env.call.common.ReturnType (erc20.erc20.Result unit)))) :=
-    let* α0 :=
-      ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.build_call in
-    let* α1 := deref self erc20.erc20._.CallBuilder in
-    let* α2 := borrow α1 erc20.erc20._.CallBuilder in
-    let* α3 := ink.contract_ref.ToAccountId.to_account_id α2 in
-    let* α4 :=
-      (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallBuilder
-            _
-            (ink_env.call.common.Unset_ _)
-            _
-            _)::["call"]
-        α0
-        α3 in
-    let* α5 := M.alloc 104 in
-    let* α6 := M.alloc 18 in
-    let* α7 := M.alloc 102 in
-    let* α8 := M.alloc 160 in
-    let* α9 := ink_env.call.selector.Selector::["new"] [ α5; α6; α7; α8 ] in
-    let* α10 :=
-      (ink_env.call.execution_input.ExecutionInput
-            (ink_env.call.execution_input.ArgumentList
-              ink_env.call.execution_input.ArgumentListEnd
-              ink_env.call.execution_input.ArgumentListEnd))::["new"]
-        α9 in
-    let* α11 :=
-      (ink_env.call.execution_input.ExecutionInput
-            (ink_env.call.execution_input.ArgumentList
-              ink_env.call.execution_input.ArgumentListEnd
-              ink_env.call.execution_input.ArgumentListEnd))::["push_arg"]
-        α10
-        __ink_binding_0 in
-    let* α12 :=
-      (ink_env.call.execution_input.ExecutionInput
-            (ink_env.call.execution_input.ArgumentList
-              (ink_env.call.execution_input.Argument _)
-              _))::["push_arg"]
-        α11
-        __ink_binding_1 in
-    let* α13 :=
-      (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallBuilder
-            _
-            _
-            (ink_env.call.common.Unset_
-              (ink_env.call.execution_input.ExecutionInput
-                (ink_env.call.execution_input.ArgumentList
-                  ink_env.call.execution_input.ArgumentListEnd
-                  ink_env.call.execution_input.ArgumentListEnd)))
-            _)::["exec_input"]
-        α4
-        α12 in
-    (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallBuilder
-          _
-          _
-          _
-          (ink_env.call.common.Unset_
-            (ink_env.call.common.ReturnType unit)))::["returns"]
-      α13.
-  
-  Global Instance Method_approve `{State.Trait} : Notation.Dot "approve" := {
-    Notation.dot := approve;
-  }.
-  
-  Definition transfer_from
-      `{State.Trait}
-      (self : mut_ref Self)
-      (__ink_binding_0 : erc20.erc20.AccountId)
-      (__ink_binding_1 : erc20.erc20.AccountId)
-      (__ink_binding_2 : erc20.erc20.Balance)
-      :
-        M
-          (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallBuilder
-            erc20.erc20.Environment
-            (ink_env.call.common.Set_
-              (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Call
-                erc20.erc20.Environment))
-            (ink_env.call.common.Set_
-              (ink_env.call.execution_input.ExecutionInput
-                (ink_env.call.execution_input.ArgumentList
-                  (ink_env.call.execution_input.Argument erc20.erc20.Balance)
-                  (ink_env.call.execution_input.ArgumentList
-                    (ink_env.call.execution_input.Argument
-                      erc20.erc20.AccountId)
-                    (ink_env.call.execution_input.ArgumentList
-                      (ink_env.call.execution_input.Argument
-                        erc20.erc20.AccountId)
-                      ink_env.call.execution_input.EmptyArgumentList)))))
-            (ink_env.call.common.Set_
-              (ink_env.call.common.ReturnType (erc20.erc20.Result unit)))) :=
-    let* α0 :=
-      ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.build_call in
-    let* α1 := deref self erc20.erc20._.CallBuilder in
-    let* α2 := borrow α1 erc20.erc20._.CallBuilder in
-    let* α3 := ink.contract_ref.ToAccountId.to_account_id α2 in
-    let* α4 :=
-      (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallBuilder
-            _
-            (ink_env.call.common.Unset_ _)
-            _
-            _)::["call"]
-        α0
-        α3 in
-    let* α5 := M.alloc 11 in
-    let* α6 := M.alloc 57 in
-    let* α7 := M.alloc 111 in
-    let* α8 := M.alloc 24 in
-    let* α9 := ink_env.call.selector.Selector::["new"] [ α5; α6; α7; α8 ] in
-    let* α10 :=
-      (ink_env.call.execution_input.ExecutionInput
-            (ink_env.call.execution_input.ArgumentList
-              ink_env.call.execution_input.ArgumentListEnd
-              ink_env.call.execution_input.ArgumentListEnd))::["new"]
-        α9 in
-    let* α11 :=
-      (ink_env.call.execution_input.ExecutionInput
-            (ink_env.call.execution_input.ArgumentList
-              ink_env.call.execution_input.ArgumentListEnd
-              ink_env.call.execution_input.ArgumentListEnd))::["push_arg"]
-        α10
-        __ink_binding_0 in
-    let* α12 :=
-      (ink_env.call.execution_input.ExecutionInput
-            (ink_env.call.execution_input.ArgumentList
-              (ink_env.call.execution_input.Argument _)
-              _))::["push_arg"]
-        α11
-        __ink_binding_1 in
-    let* α13 :=
-      (ink_env.call.execution_input.ExecutionInput
-            (ink_env.call.execution_input.ArgumentList
-              (ink_env.call.execution_input.Argument _)
-              _))::["push_arg"]
-        α12
-        __ink_binding_2 in
-    let* α14 :=
-      (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallBuilder
-            _
-            _
-            (ink_env.call.common.Unset_
-              (ink_env.call.execution_input.ExecutionInput
-                (ink_env.call.execution_input.ArgumentList
-                  ink_env.call.execution_input.ArgumentListEnd
-                  ink_env.call.execution_input.ArgumentListEnd)))
-            _)::["exec_input"]
-        α4
-        α13 in
-    (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallBuilder
-          _
-          _
-          _
-          (ink_env.call.common.Unset_
-            (ink_env.call.common.ReturnType unit)))::["returns"]
-      α14.
-  
-  Global Instance Method_transfer_from `{State.Trait} :
-    Notation.Dot "transfer_from" := {
-    Notation.dot := transfer_from;
-  }.
-End Impl_erc20_erc20___CallBuilder_18.
-
-Module Erc20Ref.
-  Unset Primitive Projections.
-  Record t `{State.Trait} : Set := {
-    inner
-      :
-      ink.codegen.dispatch.info.ContractCallBuilder.Type_
-        (Self := erc20.erc20.Erc20);
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_inner `{State.Trait} : Notation.Dot "inner" := {
-    Notation.dot x := let* x := M.read x in Pure x.(inner) : M _;
-  }.
-  Global Instance Get_AF_inner `{State.Trait}
-    : Notation.DoubleColon t "inner" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(inner) : M _;
-  }.
-End Erc20Ref.
-Definition Erc20Ref `{State.Trait} : Set := M.val (Erc20Ref.t).
-
-Module Impl_core_fmt_Debug_for_erc20_erc20_Erc20Ref.
-  Definition Self `{State.Trait} := erc20.erc20.Erc20Ref.
-  
-  Parameter struct_parameter_for_fmt :
-      core.fmt.Formatter ->
-        string ->
-          string ->
-          erc20_erc20_Erc20_ink_codegen_dispatch_info_ContractCallBuilder_Type_
-          ->
-          M core.fmt.Result.
-  
-  Global Instance Deb_struct_parameter_for_fmt : Notation.DoubleColon
-    core.fmt.Formatter "struct_parameter_for_fmt" := {
-    Notation.double_colon := struct_parameter_for_fmt; }.
-  
-  Definition fmt
-      `{State.Trait}
-      (self : ref Self)
-      (f : mut_ref core.fmt.Formatter)
-      : M core.fmt.Result :=
-    let* α0 := deref f core.fmt.Formatter in
-    let* α1 := borrow_mut α0 core.fmt.Formatter in
-    let* α2 := deref (mk_str "Erc20Ref") str in
-    let* α3 := borrow α2 str in
-    let* α4 := deref (mk_str "inner") str in
-    let* α5 := borrow α4 str in
-    let* α6 := deref self erc20.erc20.Erc20Ref in
-    let* α7 := α6.["inner"] in
-    let* α8 := borrow α7 erc20.erc20._.CallBuilder in
-    let* α9 := borrow α8 (ref erc20.erc20._.CallBuilder) in
-    let* α10 := deref α9 (ref erc20.erc20._.CallBuilder) in
-    let* α11 := borrow α10 (ref erc20.erc20._.CallBuilder) in
-    let* α12 := pointer_coercion "Unsize" α11 in
-    core.fmt.Formatter::["debug_struct_field1_finish"] α1 α3 α5 α12.
-  
-  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
-    Notation.dot := fmt;
-  }.
-  
-  Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt := fmt;
-  }.
-  Global Hint Resolve I : core.
-End Impl_core_fmt_Debug_for_erc20_erc20_Erc20Ref.
-
-Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Erc20Ref.
-  Definition Self `{State.Trait} := erc20.erc20.Erc20Ref.
-  
-  Definition encode_to
-      `{State.Trait}
-      {__CodecOutputEdqy : Set}
-      `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
-      `{core.marker.Sized.Trait __CodecOutputEdqy}
-      (self : ref Self)
-      (__codec_dest_edqy : mut_ref __CodecOutputEdqy)
-      : M unit :=
-    let* α0 := deref self erc20.erc20.Erc20Ref in
-    let* α1 := α0.["inner"] in
-    let* α2 := borrow α1 erc20.erc20._.CallBuilder in
-    let* α3 := borrow α2 (ref erc20.erc20._.CallBuilder) in
-    let* α4 := deref α3 (ref erc20.erc20._.CallBuilder) in
-    let* α5 := borrow α4 (ref erc20.erc20._.CallBuilder) in
-    let* α6 := deref __codec_dest_edqy _ in
-    let* α7 := borrow_mut α6 _ in
-    parity_scale_codec.codec.Encode.encode_to α5 α7.
-  
-  Global Instance Method_encode_to
-      `{State.Trait}
-      {__CodecOutputEdqy : Set}
-      `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
-      `{core.marker.Sized.Trait __CodecOutputEdqy} :
-    Notation.Dot "encode_to" := {
-    Notation.dot := encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
-  }.
-  
-  Definition encode
-      `{State.Trait}
-      (self : ref Self)
-      : M (alloc.vec.Vec CoqOfRust.core.primitive.u8 alloc.vec.Vec.Default.A) :=
-    let* α0 := deref self erc20.erc20.Erc20Ref in
-    let* α1 := α0.["inner"] in
-    let* α2 := borrow α1 erc20.erc20._.CallBuilder in
-    let* α3 := borrow α2 (ref erc20.erc20._.CallBuilder) in
-    let* α4 := deref α3 (ref erc20.erc20._.CallBuilder) in
-    let* α5 := borrow α4 (ref erc20.erc20._.CallBuilder) in
-    parity_scale_codec.codec.Encode.encode α5.
-  
-  Global Instance Method_encode `{State.Trait} : Notation.Dot "encode" := {
-    Notation.dot := encode;
-  }.
-  
-  Definition using_encoded
-      `{State.Trait}
-      {R F : Set}
-      `{core.ops.function.FnOnce.Trait F
-          (Args := ref (Slice CoqOfRust.core.primitive.u8))}
-      (self : ref Self)
-      (f : F)
-      : M R :=
-    let* α0 := deref self erc20.erc20.Erc20Ref in
-    let* α1 := α0.["inner"] in
-    let* α2 := borrow α1 erc20.erc20._.CallBuilder in
-    let* α3 := borrow α2 (ref erc20.erc20._.CallBuilder) in
-    let* α4 := deref α3 (ref erc20.erc20._.CallBuilder) in
-    let* α5 := borrow α4 (ref erc20.erc20._.CallBuilder) in
-    parity_scale_codec.codec.Encode.using_encoded α5 f.
-  
-  Global Instance Method_using_encoded
-      `{State.Trait}
-      {R F : Set}
-      `{core.ops.function.FnOnce.Trait F
-          (Args := ref (Slice CoqOfRust.core.primitive.u8))} :
-    Notation.Dot "using_encoded" := {
-    Notation.dot := using_encoded (R := R) (F := F);
-  }.
-  
-  Global Instance I `{State.Trait}
-    : parity_scale_codec.codec.Encode.Trait Self := {
-  }.
-  Global Hint Resolve I : core.
-End Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Erc20Ref.
-
-Module Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20_Erc20Ref.
-  Definition Self `{State.Trait} := erc20.erc20.Erc20Ref.
-  
-  Global Instance I `{State.Trait}
-    : parity_scale_codec.encode_like.EncodeLike.Trait Self
-        (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self)
-      := {
-  }.
-  Global Hint Resolve I : core.
-End Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20_Erc20Ref.
-
-Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Erc20Ref.
-  Definition Self `{State.Trait} := erc20.erc20.Erc20Ref.
-  
-  Definition decode
-      `{State.Trait}
-      {__CodecInputEdqy : Set}
-      `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
-      (__codec_input_edqy : mut_ref __CodecInputEdqy)
-      : M (core.result.Result Self parity_scale_codec.error.Error) :=
-    let* __codec_res_edqy :=
-      let* α0 := deref __codec_input_edqy _ in
-      let* α1 := borrow_mut α0 _ in
-      parity_scale_codec.codec.Decode.decode α1 in
-    let* α0 :=
-      match __codec_res_edqy with
-      | core.result.Result e =>
-        let* α0 :=
-          parity_scale_codec.error.Error::["chain"]
-            e
-            (mk_str "Could not decode `Erc20Ref::inner`") in
-        let* α1 := Return (core.result.Result.Err α0) in
-        never_to_any α1
-      | core.result.Result __codec_res_edqy => Pure __codec_res_edqy
-      end in
-    let* α1 := M.alloc {| erc20.erc20.Erc20Ref.inner := α0; |} in
-    Pure (core.result.Result.Ok α1).
-  
-  Global Instance AssociatedFunction_decode
-      `{State.Trait}
-      {__CodecInputEdqy : Set}
-      `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :
-    Notation.DoubleColon Self "decode" := {
-    Notation.double_colon := decode (__CodecInputEdqy := __CodecInputEdqy);
-  }.
-  
-  Global Instance I `{State.Trait}
-    : parity_scale_codec.codec.Decode.Trait Self := {
-    parity_scale_codec.codec.Decode.decode
-      {__CodecInputEdqy : Set}
-      `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
-      :=
-      decode (__CodecInputEdqy := __CodecInputEdqy);
-  }.
-  Global Hint Resolve I : core.
-End Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Erc20Ref.
-
-Module Impl_core_hash_Hash_for_erc20_erc20_Erc20Ref.
-  Definition Self `{State.Trait} := erc20.erc20.Erc20Ref.
-  
-  Definition hash
-      `{State.Trait}
-      {__H : Set}
-      `{core.hash.Hasher.Trait __H}
-      (self : ref Self)
-      (state : mut_ref __H)
-      : M unit :=
-    let* α0 := deref self erc20.erc20.Erc20Ref in
-    let* α1 := α0.["inner"] in
-    let* α2 := borrow α1 erc20.erc20._.CallBuilder in
-    let* α3 := deref α2 erc20.erc20._.CallBuilder in
-    let* α4 := borrow α3 erc20.erc20._.CallBuilder in
-    let* α5 := deref state _ in
-    let* α6 := borrow_mut α5 _ in
-    core.hash.Hash.hash α4 α6.
-  
-  Global Instance Method_hash
-      `{State.Trait}
-      {__H : Set}
-      `{core.hash.Hasher.Trait __H} :
-    Notation.Dot "hash" := {
-    Notation.dot := hash (__H := __H);
-  }.
-  
-  Global Instance I `{State.Trait} : core.hash.Hash.Trait Self := {
-    core.hash.Hash.hash {__H : Set} `{core.hash.Hasher.Trait __H}
-      :=
-      hash (__H := __H);
-  }.
-  Global Hint Resolve I : core.
-End Impl_core_hash_Hash_for_erc20_erc20_Erc20Ref.
-
-Module Impl_core_marker_StructuralPartialEq_for_erc20_erc20_Erc20Ref.
-  Definition Self `{State.Trait} := erc20.erc20.Erc20Ref.
-  
-  Global Instance I `{State.Trait}
-    : core.marker.StructuralPartialEq.Trait Self := {
-  }.
-  Global Hint Resolve I : core.
-End Impl_core_marker_StructuralPartialEq_for_erc20_erc20_Erc20Ref.
-
-Module Impl_core_cmp_PartialEq_for_erc20_erc20_Erc20Ref.
-  Definition Self `{State.Trait} := erc20.erc20.Erc20Ref.
-  
-  Definition eq
-      `{State.Trait}
-      (self : ref Self)
-      (other : ref erc20.erc20.Erc20Ref)
-      : M bool :=
-    let* α0 := deref self erc20.erc20.Erc20Ref in
-    let* α1 := α0.["inner"] in
-    let* α2 := borrow α1 erc20.erc20._.CallBuilder in
-    let* α3 := deref other erc20.erc20.Erc20Ref in
-    let* α4 := α3.["inner"] in
-    let* α5 := borrow α4 erc20.erc20._.CallBuilder in
-    core.cmp.PartialEq.eq α2 α5.
-  
-  Global Instance Method_eq `{State.Trait} : Notation.Dot "eq" := {
-    Notation.dot := eq;
-  }.
-  
-  Global Instance I `{State.Trait}
-    : core.cmp.PartialEq.Trait Self (Rhs := core.cmp.PartialEq.Default.Rhs Self)
-      := {
-    core.cmp.PartialEq.eq := eq;
-  }.
-  Global Hint Resolve I : core.
-End Impl_core_cmp_PartialEq_for_erc20_erc20_Erc20Ref.
-
-Module Impl_core_marker_StructuralEq_for_erc20_erc20_Erc20Ref.
-  Definition Self `{State.Trait} := erc20.erc20.Erc20Ref.
-  
-  Global Instance I `{State.Trait} : core.marker.StructuralEq.Trait Self := {
-  }.
-  Global Hint Resolve I : core.
-End Impl_core_marker_StructuralEq_for_erc20_erc20_Erc20Ref.
-
-Module Impl_core_cmp_Eq_for_erc20_erc20_Erc20Ref.
-  Definition Self `{State.Trait} := erc20.erc20.Erc20Ref.
-  
-  Definition assert_receiver_is_total_eq
-      `{State.Trait}
-      (self : ref Self)
-      : M unit :=
-    let _ := tt in
-    Pure tt.
-  
-  Global Instance Method_assert_receiver_is_total_eq `{State.Trait} :
-    Notation.Dot "assert_receiver_is_total_eq" := {
-    Notation.dot := assert_receiver_is_total_eq;
-  }.
-  
-  Global Instance I `{State.Trait} : core.cmp.Eq.Trait Self := {
-  }.
-  Global Hint Resolve I : core.
-End Impl_core_cmp_Eq_for_erc20_erc20_Erc20Ref.
-
-Module Impl_core_clone_Clone_for_erc20_erc20_Erc20Ref.
-  Definition Self `{State.Trait} := erc20.erc20.Erc20Ref.
-  
-  Definition clone `{State.Trait} (self : ref Self) : M erc20.erc20.Erc20Ref :=
-    let* α0 := deref self erc20.erc20.Erc20Ref in
-    let* α1 := α0.["inner"] in
-    let* α2 := borrow α1 erc20.erc20._.CallBuilder in
-    let* α3 := deref α2 erc20.erc20._.CallBuilder in
-    let* α4 := borrow α3 erc20.erc20._.CallBuilder in
-    let* α5 := core.clone.Clone.clone α4 in
-    M.alloc {| erc20.erc20.Erc20Ref.inner := α5; |}.
-  
-  Global Instance Method_clone `{State.Trait} : Notation.Dot "clone" := {
-    Notation.dot := clone;
-  }.
-  
-  Global Instance I `{State.Trait} : core.clone.Clone.Trait Self := {
-    core.clone.Clone.clone := clone;
-  }.
-  Global Hint Resolve I : core.
-End Impl_core_clone_Clone_for_erc20_erc20_Erc20Ref.
-
-Module Impl_scale_info_TypeInfo_for_erc20_erc20_Erc20Ref.
-  Definition Self `{State.Trait} := erc20.erc20.Erc20Ref.
-  
-  Definition Identity : Set := Self.
-  
-  Definition type_info
-      `{State.Trait}
-      : M (scale_info.ty.Type_ scale_info.ty.Type_.Default.T) :=
-    let* α0 := (scale_info.ty.Type_ scale_info.form.MetaForm)::["builder"] in
-    let* α1 :=
-      (scale_info.ty.path.Path scale_info.form.MetaForm)::["new"]
-        (mk_str "Erc20Ref")
-        (mk_str "erc20::erc20") in
-    let* α2 :=
-      (scale_info.build.TypeBuilder
-            _
-            scale_info.build.state.PathNotAssigned)::["path"]
-        α0
-        α1 in
-    let* α3 := (alloc.vec.Vec _ alloc.alloc.Global)::["new"] in
-    let* α4 := (scale_info.build.TypeBuilder _ _)::["type_params"] α2 α3 in
-    let* α5 := borrow [ mk_str "A simple ERC-20 contract." ] (list (ref str)) in
-    let* α6 := deref α5 (list (ref str)) in
-    let* α7 := borrow α6 (list (ref str)) in
-    let* α8 := pointer_coercion "Unsize" α7 in
-    let* α9 :=
-      (scale_info.build.TypeBuilder scale_info.form.MetaForm _)::["docs"]
-        α4
-        α8 in
-    let* α10 := (scale_info.build.Fields _)::["named"] in
-    let* α11 :=
-      (scale_info.build.FieldsBuilder
-            scale_info.form.MetaForm
-            scale_info.build.NamedFields)::["field"]
-        α10
-        let* α0 :=
-          (scale_info.build.FieldBuilder
-                scale_info.form.MetaForm
-                _
-                scale_info.build.field_state.TypeNotAssigned)::["ty"]
-            f in
-        let* α1 :=
-          (scale_info.build.FieldBuilder
-                _
-                scale_info.build.field_state.NameNotAssigned
-                _)::["name"]
-            α0
-            (mk_str "inner") in
-        (scale_info.build.FieldBuilder _ _ _)::["type_name"]
-          α1
-          (mk_str "<Erc20 as::ink::codegen::ContractCallBuilder>::Type") in
-    (scale_info.build.TypeBuilder
-          _
-          scale_info.build.state.PathAssigned)::["composite"]
-      α9
-      α11.
-  
-  Global Instance AssociatedFunction_type_info `{State.Trait} :
-    Notation.DoubleColon Self "type_info" := {
-    Notation.double_colon := type_info;
-  }.
-  
-  Global Instance I `{State.Trait} : scale_info.TypeInfo.Trait Self := {
-    scale_info.TypeInfo.Identity := Identity;
-    scale_info.TypeInfo.type_info := type_info;
-  }.
-  Global Hint Resolve I : core.
-End Impl_scale_info_TypeInfo_for_erc20_erc20_Erc20Ref.
-
-Module Impl_ink_storage_traits_layout_StorageLayout_for_erc20_erc20_Erc20Ref.
-  Definition Self `{State.Trait} := erc20.erc20.Erc20Ref.
-  
-  Definition layout
-      `{State.Trait}
-      (__key : ref ink_primitives.key.Key)
-      : M (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F) :=
-    let* α0 := deref __key u32 in
-    let* α1 := borrow α0 u32 in
-    let* α2 := ink_storage_traits.layout.StorageLayout.layout α1 in
-    let* α3 :=
-      (ink_metadata.layout.FieldLayout _)::["new"] (mk_str "inner") α2 in
-    let* α4 :=
-      (ink_metadata.layout.StructLayout _)::["new"]
-        (mk_str "Erc20Ref")
-        [ α3 ] in
-    Pure (ink_metadata.layout.Layout.Struct α4).
-  
-  Global Instance AssociatedFunction_layout `{State.Trait} :
-    Notation.DoubleColon Self "layout" := {
-    Notation.double_colon := layout;
-  }.
-  
-  Global Instance I `{State.Trait}
-    : ink_storage_traits.layout.StorageLayout.Trait Self := {
-    ink_storage_traits.layout.StorageLayout.layout := layout;
-  }.
-  Global Hint Resolve I : core.
-End Impl_ink_storage_traits_layout_StorageLayout_for_erc20_erc20_Erc20Ref.
-
-Module Impl_ink_env_contract_ContractReference_for_erc20_erc20_Erc20.
-  Definition Self `{State.Trait} := erc20.erc20.Erc20.
-  
-  Definition Type : Set := erc20.erc20.Erc20Ref.
-  
-  Global Instance I `{State.Trait}
-    : ink_env.contract.ContractReference.Trait Self := {
-    ink_env.contract.ContractReference.Type := Type;
-  }.
-  Global Hint Resolve I : core.
-End Impl_ink_env_contract_ContractReference_for_erc20_erc20_Erc20.
-
-Module
-  Impl_ink_env_call_create_builder_ConstructorReturnType_for_erc20_erc20_Erc20.
-  Definition Self `{State.Trait} := erc20.erc20.Erc20.
-  
-  Definition Output : Set := erc20.erc20.Erc20Ref.
-  
-  Definition Error : Set := unit.
-  
-  Definition ok `{State.Trait} (value : erc20.erc20.Erc20Ref) : M Output :=
-    Pure value.
-  
-  Global Instance AssociatedFunction_ok `{State.Trait} :
-    Notation.DoubleColon Self "ok" := {
-    Notation.double_colon := ok;
-  }.
-  
-  Global Instance I `{State.Trait}
-    : ink_env.call.create_builder.ConstructorReturnType.Trait Self
-        (C := erc20.erc20.Erc20Ref)
-      := {
-    ink_env.call.create_builder.ConstructorReturnType.Output := Output;
-    ink_env.call.create_builder.ConstructorReturnType.Error := Error;
-    ink_env.call.create_builder.ConstructorReturnType.ok := ok;
-  }.
-  Global Hint Resolve I : core.
-End
-  Impl_ink_env_call_create_builder_ConstructorReturnType_for_erc20_erc20_Erc20.
-
-Module
-  Impl_ink_env_call_create_builder_ConstructorReturnType_for_core_result_Result_erc20_erc20_Erc20_E.
-  Section
-    Impl_ink_env_call_create_builder_ConstructorReturnType_for_core_result_Result_erc20_erc20_Erc20_E.
-    Context {E : Set}.
-    Context `{parity_scale_codec.codec.Decode.Trait E}.
-    Definition Self `{State.Trait} := core.result.Result erc20.erc20.Erc20 E.
-    
-    Definition IS_RESULT `{State.Trait} := true.
-    
-    Global Instance AssociatedFunction_IS_RESULT `{State.Trait} :
-      Notation.DoubleColon Self "IS_RESULT" := {
-      Notation.double_colon := IS_RESULT;
-    }.
-    
-    Definition Output : Set := core.result.Result erc20.erc20.Erc20Ref E.
-    
-    Definition Error : Set := E.
-    
-    Definition ok `{State.Trait} (value : erc20.erc20.Erc20Ref) : M Output :=
-      Pure (core.result.Result.Ok value).
-    
-    Global Instance AssociatedFunction_ok `{State.Trait} :
-      Notation.DoubleColon Self "ok" := {
-      Notation.double_colon := ok;
-    }.
-    
-    Definition err
-        `{State.Trait}
-        (err : Error)
-        : M (core.option.Option Output) :=
-      Pure (core.option.Option.Some (core.result.Result.Err err)).
-    
-    Global Instance AssociatedFunction_err `{State.Trait} :
-      Notation.DoubleColon Self "err" := {
-      Notation.double_colon := err;
-    }.
-    
-    Global Instance I `{State.Trait}
-      : ink_env.call.create_builder.ConstructorReturnType.Trait Self
-          (C := erc20.erc20.Erc20Ref)
-        := {
-      ink_env.call.create_builder.ConstructorReturnType.Output := Output;
-      ink_env.call.create_builder.ConstructorReturnType.Error := Error;
-      ink_env.call.create_builder.ConstructorReturnType.ok := ok;
-    }.
-  End
-    Impl_ink_env_call_create_builder_ConstructorReturnType_for_core_result_Result_erc20_erc20_Erc20_E.
-  Global Hint Resolve I : core.
-End
-  Impl_ink_env_call_create_builder_ConstructorReturnType_for_core_result_Result_erc20_erc20_Erc20_E.
-
-Module Impl_ink_env_contract_ContractEnv_for_erc20_erc20_Erc20Ref.
-  Definition Self `{State.Trait} := erc20.erc20.Erc20Ref.
-  
-  Definition Env : Set :=
-    ink_env.types.DefaultEnvironment.
-  
-  Global Instance I `{State.Trait}
-    : ink_env.contract.ContractEnv.Trait Self := {
-    ink_env.contract.ContractEnv.Env := Env;
-  }.
-  Global Hint Resolve I : core.
-End Impl_ink_env_contract_ContractEnv_for_erc20_erc20_Erc20Ref.
-
-Module Impl_erc20_erc20_Erc20Ref_26.
-  Definition Self `{State.Trait} : Set := erc20.erc20.Erc20Ref.
-  
-  Definition new
-      `{State.Trait}
-      (__ink_binding_0 : erc20.erc20.Balance)
-      :
-        M
-          (ink_env.call.create_builder.CreateBuilder
-            erc20.erc20.Environment
-            Self
-            (ink_env.call.common.Unset_ erc20.erc20.Hash)
-            (ink_env.call.common.Unset_ u64)
-            (ink_env.call.common.Unset_ erc20.erc20.Balance)
-            (ink_env.call.common.Set_
-              (ink_env.call.execution_input.ExecutionInput
-                (ink_env.call.execution_input.ArgumentList
-                  (ink_env.call.execution_input.Argument erc20.erc20.Balance)
-                  ink_env.call.execution_input.EmptyArgumentList)))
-            (ink_env.call.common.Unset_ ink_env.call.create_builder.state.Salt)
-            (ink_env.call.common.Set_ (ink_env.call.common.ReturnType Self))) :=
-    let* α0 := ink_env.call.create_builder.build_create in
-    let* α1 := M.alloc 155 in
-    let* α2 := M.alloc 174 in
-    let* α3 := M.alloc 157 in
-    let* α4 := M.alloc 94 in
-    let* α5 := ink_env.call.selector.Selector::["new"] [ α1; α2; α3; α4 ] in
-    let* α6 :=
-      (ink_env.call.execution_input.ExecutionInput
-            (ink_env.call.execution_input.ArgumentList
-              ink_env.call.execution_input.ArgumentListEnd
-              ink_env.call.execution_input.ArgumentListEnd))::["new"]
-        α5 in
-    let* α7 :=
-      (ink_env.call.execution_input.ExecutionInput
-            (ink_env.call.execution_input.ArgumentList
-              ink_env.call.execution_input.ArgumentListEnd
-              ink_env.call.execution_input.ArgumentListEnd))::["push_arg"]
-        α6
-        __ink_binding_0 in
-    let* α8 :=
-      (ink_env.call.create_builder.CreateBuilder
-            _
-            _
-            _
-            _
-            _
-            (ink_env.call.common.Unset_
-              (ink_env.call.execution_input.ExecutionInput
-                (ink_env.call.execution_input.ArgumentList
-                  ink_env.call.execution_input.ArgumentListEnd
-                  ink_env.call.execution_input.ArgumentListEnd)))
-            _
-            _)::["exec_input"]
-        α0
-        α7 in
-    (ink_env.call.create_builder.CreateBuilder
-          _
-          _
-          _
-          _
-          _
-          _
-          _
-          (ink_env.call.common.Unset_
-            (ink_env.call.common.ReturnType unit)))::["returns"]
-      α8.
-  
-  Global Instance AssociatedFunction_new `{State.Trait} :
-    Notation.DoubleColon Self "new" := {
-    Notation.double_colon := new;
-  }.
-  
-  Definition total_supply
-      `{State.Trait}
-      (self : ref Self)
-      : M erc20.erc20.Balance :=
-    let* α0 := deref self erc20.erc20.Erc20Ref in
-    let* α1 := borrow α0 erc20.erc20.Erc20Ref in
-    let* α2 := erc20.erc20.Erc20Ref::["try_total_supply"] α1 in
-    (core.result.Result _ _)::["unwrap_or_else"]
-      α2
-      let* α0 :=
-        borrow
-          [ mk_str "encountered error while calling Erc20::total_supply: " ]
-          (list (ref str)) in
-      let* α1 := deref α0 (list (ref str)) in
-      let* α2 := borrow α1 (list (ref str)) in
-      let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := borrow error ink_primitives.LangError in
-      let* α5 := deref α4 ink_primitives.LangError in
-      let* α6 := borrow α5 ink_primitives.LangError in
-      let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
-      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
-      let* α9 := deref α8 (list core.fmt.rt.Argument) in
-      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
-      let* α11 := pointer_coercion "Unsize" α10 in
-      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
-      let* α13 := core.panicking.panic_fmt α12 in
-      never_to_any α13.
-  
-  Global Instance Method_total_supply `{State.Trait} :
-    Notation.Dot "total_supply" := {
-    Notation.dot := total_supply;
-  }.
-  
-  Definition try_total_supply
-      `{State.Trait}
-      (self : ref Self)
-      : M (ink_primitives.MessageResult erc20.erc20.Balance) :=
-    let* α0 := deref self erc20.erc20.Erc20Ref in
-    let* α1 := borrow α0 erc20.erc20.Erc20Ref in
-    let* α2 := ink.codegen.trait_def.call_builder.TraitCallBuilder.call α1 in
-    let* α3 := deref α2 erc20.erc20._.CallBuilder in
-    let* α4 := borrow α3 erc20.erc20._.CallBuilder in
-    let* α5 := erc20.erc20._.CallBuilder::["total_supply"] α4 in
-    let* α6 :=
-      (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallBuilder
-            _
-            (ink_env.call.common.Set_
-              (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Call
-                _))
-            (ink_env.call.common.Set_
-              (ink_env.call.execution_input.ExecutionInput _))
-            (ink_env.call.common.Set_
-              (ink_env.call.common.ReturnType _)))::["try_invoke"]
-        α5 in
-    (core.result.Result _ _)::["unwrap_or_else"]
-      α6
-      let* α0 :=
-        borrow
-          [ mk_str "encountered error while calling Erc20::total_supply: " ]
-          (list (ref str)) in
-      let* α1 := deref α0 (list (ref str)) in
-      let* α2 := borrow α1 (list (ref str)) in
-      let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 :=
-        borrow
-          error
-          ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Error in
-      let* α5 :=
-        deref
-          α4
-          ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Error in
-      let* α6 :=
-        borrow
-          α5
-          ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Error in
-      let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
-      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
-      let* α9 := deref α8 (list core.fmt.rt.Argument) in
-      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
-      let* α11 := pointer_coercion "Unsize" α10 in
-      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
-      let* α13 := core.panicking.panic_fmt α12 in
-      never_to_any α13.
-  
-  Global Instance Method_try_total_supply `{State.Trait} :
-    Notation.Dot "try_total_supply" := {
-    Notation.dot := try_total_supply;
-  }.
-  
-  Definition balance_of
-      `{State.Trait}
-      (self : ref Self)
-      (owner : erc20.erc20.AccountId)
-      : M erc20.erc20.Balance :=
-    let* α0 := deref self erc20.erc20.Erc20Ref in
-    let* α1 := borrow α0 erc20.erc20.Erc20Ref in
-    let* α2 := erc20.erc20.Erc20Ref::["try_balance_of"] α1 owner in
-    (core.result.Result _ _)::["unwrap_or_else"]
-      α2
-      let* α0 :=
-        borrow
-          [ mk_str "encountered error while calling Erc20::balance_of: " ]
-          (list (ref str)) in
-      let* α1 := deref α0 (list (ref str)) in
-      let* α2 := borrow α1 (list (ref str)) in
-      let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := borrow error ink_primitives.LangError in
-      let* α5 := deref α4 ink_primitives.LangError in
-      let* α6 := borrow α5 ink_primitives.LangError in
-      let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
-      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
-      let* α9 := deref α8 (list core.fmt.rt.Argument) in
-      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
-      let* α11 := pointer_coercion "Unsize" α10 in
-      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
-      let* α13 := core.panicking.panic_fmt α12 in
-      never_to_any α13.
-  
-  Global Instance Method_balance_of `{State.Trait} :
-    Notation.Dot "balance_of" := {
-    Notation.dot := balance_of;
-  }.
-  
-  Definition try_balance_of
-      `{State.Trait}
-      (self : ref Self)
-      (owner : erc20.erc20.AccountId)
-      : M (ink_primitives.MessageResult erc20.erc20.Balance) :=
-    let* α0 := deref self erc20.erc20.Erc20Ref in
-    let* α1 := borrow α0 erc20.erc20.Erc20Ref in
-    let* α2 := ink.codegen.trait_def.call_builder.TraitCallBuilder.call α1 in
-    let* α3 := deref α2 erc20.erc20._.CallBuilder in
-    let* α4 := borrow α3 erc20.erc20._.CallBuilder in
-    let* α5 := erc20.erc20._.CallBuilder::["balance_of"] α4 owner in
-    let* α6 :=
-      (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallBuilder
-            _
-            (ink_env.call.common.Set_
-              (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Call
-                _))
-            (ink_env.call.common.Set_
-              (ink_env.call.execution_input.ExecutionInput _))
-            (ink_env.call.common.Set_
-              (ink_env.call.common.ReturnType _)))::["try_invoke"]
-        α5 in
-    (core.result.Result _ _)::["unwrap_or_else"]
-      α6
-      let* α0 :=
-        borrow
-          [ mk_str "encountered error while calling Erc20::balance_of: " ]
-          (list (ref str)) in
-      let* α1 := deref α0 (list (ref str)) in
-      let* α2 := borrow α1 (list (ref str)) in
-      let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 :=
-        borrow
-          error
-          ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Error in
-      let* α5 :=
-        deref
-          α4
-          ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Error in
-      let* α6 :=
-        borrow
-          α5
-          ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Error in
-      let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
-      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
-      let* α9 := deref α8 (list core.fmt.rt.Argument) in
-      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
-      let* α11 := pointer_coercion "Unsize" α10 in
-      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
-      let* α13 := core.panicking.panic_fmt α12 in
-      never_to_any α13.
-  
-  Global Instance Method_try_balance_of `{State.Trait} :
-    Notation.Dot "try_balance_of" := {
-    Notation.dot := try_balance_of;
-  }.
-  
-  Definition allowance
-      `{State.Trait}
-      (self : ref Self)
-      (owner : erc20.erc20.AccountId)
-      (spender : erc20.erc20.AccountId)
-      : M erc20.erc20.Balance :=
-    let* α0 := deref self erc20.erc20.Erc20Ref in
-    let* α1 := borrow α0 erc20.erc20.Erc20Ref in
-    let* α2 := erc20.erc20.Erc20Ref::["try_allowance"] α1 owner spender in
-    (core.result.Result _ _)::["unwrap_or_else"]
-      α2
-      let* α0 :=
-        borrow
-          [ mk_str "encountered error while calling Erc20::allowance: " ]
-          (list (ref str)) in
-      let* α1 := deref α0 (list (ref str)) in
-      let* α2 := borrow α1 (list (ref str)) in
-      let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := borrow error ink_primitives.LangError in
-      let* α5 := deref α4 ink_primitives.LangError in
-      let* α6 := borrow α5 ink_primitives.LangError in
-      let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
-      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
-      let* α9 := deref α8 (list core.fmt.rt.Argument) in
-      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
-      let* α11 := pointer_coercion "Unsize" α10 in
-      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
-      let* α13 := core.panicking.panic_fmt α12 in
-      never_to_any α13.
-  
-  Global Instance Method_allowance `{State.Trait} :
-    Notation.Dot "allowance" := {
-    Notation.dot := allowance;
-  }.
-  
-  Definition try_allowance
-      `{State.Trait}
-      (self : ref Self)
-      (owner : erc20.erc20.AccountId)
-      (spender : erc20.erc20.AccountId)
-      : M (ink_primitives.MessageResult erc20.erc20.Balance) :=
-    let* α0 := deref self erc20.erc20.Erc20Ref in
-    let* α1 := borrow α0 erc20.erc20.Erc20Ref in
-    let* α2 := ink.codegen.trait_def.call_builder.TraitCallBuilder.call α1 in
-    let* α3 := deref α2 erc20.erc20._.CallBuilder in
-    let* α4 := borrow α3 erc20.erc20._.CallBuilder in
-    let* α5 := erc20.erc20._.CallBuilder::["allowance"] α4 owner spender in
-    let* α6 :=
-      (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallBuilder
-            _
-            (ink_env.call.common.Set_
-              (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Call
-                _))
-            (ink_env.call.common.Set_
-              (ink_env.call.execution_input.ExecutionInput _))
-            (ink_env.call.common.Set_
-              (ink_env.call.common.ReturnType _)))::["try_invoke"]
-        α5 in
-    (core.result.Result _ _)::["unwrap_or_else"]
-      α6
-      let* α0 :=
-        borrow
-          [ mk_str "encountered error while calling Erc20::allowance: " ]
-          (list (ref str)) in
-      let* α1 := deref α0 (list (ref str)) in
-      let* α2 := borrow α1 (list (ref str)) in
-      let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 :=
-        borrow
-          error
-          ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Error in
-      let* α5 :=
-        deref
-          α4
-          ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Error in
-      let* α6 :=
-        borrow
-          α5
-          ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Error in
-      let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
-      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
-      let* α9 := deref α8 (list core.fmt.rt.Argument) in
-      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
-      let* α11 := pointer_coercion "Unsize" α10 in
-      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
-      let* α13 := core.panicking.panic_fmt α12 in
-      never_to_any α13.
-  
-  Global Instance Method_try_allowance `{State.Trait} :
-    Notation.Dot "try_allowance" := {
-    Notation.dot := try_allowance;
-  }.
-  
-  Definition transfer
-      `{State.Trait}
-      (self : mut_ref Self)
-      (to : erc20.erc20.AccountId)
-      (value : erc20.erc20.Balance)
-      : M (erc20.erc20.Result unit) :=
-    let* α0 := deref self erc20.erc20.Erc20Ref in
-    let* α1 := borrow_mut α0 erc20.erc20.Erc20Ref in
-    let* α2 := erc20.erc20.Erc20Ref::["try_transfer"] α1 to value in
-    (core.result.Result _ _)::["unwrap_or_else"]
-      α2
-      let* α0 :=
-        borrow
-          [ mk_str "encountered error while calling Erc20::transfer: " ]
-          (list (ref str)) in
-      let* α1 := deref α0 (list (ref str)) in
-      let* α2 := borrow α1 (list (ref str)) in
-      let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := borrow error ink_primitives.LangError in
-      let* α5 := deref α4 ink_primitives.LangError in
-      let* α6 := borrow α5 ink_primitives.LangError in
-      let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
-      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
-      let* α9 := deref α8 (list core.fmt.rt.Argument) in
-      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
-      let* α11 := pointer_coercion "Unsize" α10 in
-      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
-      let* α13 := core.panicking.panic_fmt α12 in
-      never_to_any α13.
-  
-  Global Instance Method_transfer `{State.Trait} : Notation.Dot "transfer" := {
-    Notation.dot := transfer;
-  }.
-  
-  Definition try_transfer
-      `{State.Trait}
-      (self : mut_ref Self)
-      (to : erc20.erc20.AccountId)
-      (value : erc20.erc20.Balance)
-      : M (ink_primitives.MessageResult (erc20.erc20.Result unit)) :=
-    let* α0 := deref self erc20.erc20.Erc20Ref in
-    let* α1 := borrow_mut α0 erc20.erc20.Erc20Ref in
-    let* α2 :=
-      ink.codegen.trait_def.call_builder.TraitCallBuilder.call_mut α1 in
-    let* α3 := deref α2 erc20.erc20._.CallBuilder in
-    let* α4 := borrow_mut α3 erc20.erc20._.CallBuilder in
-    let* α5 := erc20.erc20._.CallBuilder::["transfer"] α4 to value in
-    let* α6 :=
-      (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallBuilder
-            _
-            (ink_env.call.common.Set_
-              (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Call
-                _))
-            (ink_env.call.common.Set_
-              (ink_env.call.execution_input.ExecutionInput _))
-            (ink_env.call.common.Set_
-              (ink_env.call.common.ReturnType _)))::["try_invoke"]
-        α5 in
-    (core.result.Result _ _)::["unwrap_or_else"]
-      α6
-      let* α0 :=
-        borrow
-          [ mk_str "encountered error while calling Erc20::transfer: " ]
-          (list (ref str)) in
-      let* α1 := deref α0 (list (ref str)) in
-      let* α2 := borrow α1 (list (ref str)) in
-      let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 :=
-        borrow
-          error
-          ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Error in
-      let* α5 :=
-        deref
-          α4
-          ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Error in
-      let* α6 :=
-        borrow
-          α5
-          ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Error in
-      let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
-      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
-      let* α9 := deref α8 (list core.fmt.rt.Argument) in
-      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
-      let* α11 := pointer_coercion "Unsize" α10 in
-      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
-      let* α13 := core.panicking.panic_fmt α12 in
-      never_to_any α13.
-  
-  Global Instance Method_try_transfer `{State.Trait} :
-    Notation.Dot "try_transfer" := {
-    Notation.dot := try_transfer;
-  }.
-  
-  Definition approve
-      `{State.Trait}
-      (self : mut_ref Self)
-      (spender : erc20.erc20.AccountId)
-      (value : erc20.erc20.Balance)
-      : M (erc20.erc20.Result unit) :=
-    let* α0 := deref self erc20.erc20.Erc20Ref in
-    let* α1 := borrow_mut α0 erc20.erc20.Erc20Ref in
-    let* α2 := erc20.erc20.Erc20Ref::["try_approve"] α1 spender value in
-    (core.result.Result _ _)::["unwrap_or_else"]
-      α2
-      let* α0 :=
-        borrow
-          [ mk_str "encountered error while calling Erc20::approve: " ]
-          (list (ref str)) in
-      let* α1 := deref α0 (list (ref str)) in
-      let* α2 := borrow α1 (list (ref str)) in
-      let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := borrow error ink_primitives.LangError in
-      let* α5 := deref α4 ink_primitives.LangError in
-      let* α6 := borrow α5 ink_primitives.LangError in
-      let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
-      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
-      let* α9 := deref α8 (list core.fmt.rt.Argument) in
-      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
-      let* α11 := pointer_coercion "Unsize" α10 in
-      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
-      let* α13 := core.panicking.panic_fmt α12 in
-      never_to_any α13.
-  
-  Global Instance Method_approve `{State.Trait} : Notation.Dot "approve" := {
-    Notation.dot := approve;
-  }.
-  
-  Definition try_approve
-      `{State.Trait}
-      (self : mut_ref Self)
-      (spender : erc20.erc20.AccountId)
-      (value : erc20.erc20.Balance)
-      : M (ink_primitives.MessageResult (erc20.erc20.Result unit)) :=
-    let* α0 := deref self erc20.erc20.Erc20Ref in
-    let* α1 := borrow_mut α0 erc20.erc20.Erc20Ref in
-    let* α2 :=
-      ink.codegen.trait_def.call_builder.TraitCallBuilder.call_mut α1 in
-    let* α3 := deref α2 erc20.erc20._.CallBuilder in
-    let* α4 := borrow_mut α3 erc20.erc20._.CallBuilder in
-    let* α5 := erc20.erc20._.CallBuilder::["approve"] α4 spender value in
-    let* α6 :=
-      (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallBuilder
-            _
-            (ink_env.call.common.Set_
-              (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Call
-                _))
-            (ink_env.call.common.Set_
-              (ink_env.call.execution_input.ExecutionInput _))
-            (ink_env.call.common.Set_
-              (ink_env.call.common.ReturnType _)))::["try_invoke"]
-        α5 in
-    (core.result.Result _ _)::["unwrap_or_else"]
-      α6
-      let* α0 :=
-        borrow
-          [ mk_str "encountered error while calling Erc20::approve: " ]
-          (list (ref str)) in
-      let* α1 := deref α0 (list (ref str)) in
-      let* α2 := borrow α1 (list (ref str)) in
-      let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 :=
-        borrow
-          error
-          ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Error in
-      let* α5 :=
-        deref
-          α4
-          ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Error in
-      let* α6 :=
-        borrow
-          α5
-          ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Error in
-      let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
-      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
-      let* α9 := deref α8 (list core.fmt.rt.Argument) in
-      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
-      let* α11 := pointer_coercion "Unsize" α10 in
-      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
-      let* α13 := core.panicking.panic_fmt α12 in
-      never_to_any α13.
-  
-  Global Instance Method_try_approve `{State.Trait} :
-    Notation.Dot "try_approve" := {
-    Notation.dot := try_approve;
-  }.
-  
-  Definition transfer_from
-      `{State.Trait}
-      (self : mut_ref Self)
-      (from : erc20.erc20.AccountId)
-      (to : erc20.erc20.AccountId)
-      (value : erc20.erc20.Balance)
-      : M (erc20.erc20.Result unit) :=
-    let* α0 := deref self erc20.erc20.Erc20Ref in
-    let* α1 := borrow_mut α0 erc20.erc20.Erc20Ref in
-    let* α2 := erc20.erc20.Erc20Ref::["try_transfer_from"] α1 from to value in
-    (core.result.Result _ _)::["unwrap_or_else"]
-      α2
-      let* α0 :=
-        borrow
-          [ mk_str "encountered error while calling Erc20::transfer_from: " ]
-          (list (ref str)) in
-      let* α1 := deref α0 (list (ref str)) in
-      let* α2 := borrow α1 (list (ref str)) in
-      let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := borrow error ink_primitives.LangError in
-      let* α5 := deref α4 ink_primitives.LangError in
-      let* α6 := borrow α5 ink_primitives.LangError in
-      let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
-      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
-      let* α9 := deref α8 (list core.fmt.rt.Argument) in
-      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
-      let* α11 := pointer_coercion "Unsize" α10 in
-      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
-      let* α13 := core.panicking.panic_fmt α12 in
-      never_to_any α13.
-  
-  Global Instance Method_transfer_from `{State.Trait} :
-    Notation.Dot "transfer_from" := {
-    Notation.dot := transfer_from;
-  }.
-  
-  Definition try_transfer_from
-      `{State.Trait}
-      (self : mut_ref Self)
-      (from : erc20.erc20.AccountId)
-      (to : erc20.erc20.AccountId)
-      (value : erc20.erc20.Balance)
-      : M (ink_primitives.MessageResult (erc20.erc20.Result unit)) :=
-    let* α0 := deref self erc20.erc20.Erc20Ref in
-    let* α1 := borrow_mut α0 erc20.erc20.Erc20Ref in
-    let* α2 :=
-      ink.codegen.trait_def.call_builder.TraitCallBuilder.call_mut α1 in
-    let* α3 := deref α2 erc20.erc20._.CallBuilder in
-    let* α4 := borrow_mut α3 erc20.erc20._.CallBuilder in
-    let* α5 := erc20.erc20._.CallBuilder::["transfer_from"] α4 from to value in
-    let* α6 :=
-      (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallBuilder
-            _
-            (ink_env.call.common.Set_
-              (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Call
-                _))
-            (ink_env.call.common.Set_
-              (ink_env.call.execution_input.ExecutionInput _))
-            (ink_env.call.common.Set_
-              (ink_env.call.common.ReturnType _)))::["try_invoke"]
-        α5 in
-    (core.result.Result _ _)::["unwrap_or_else"]
-      α6
-      let* α0 :=
-        borrow
-          [ mk_str "encountered error while calling Erc20::transfer_from: " ]
-          (list (ref str)) in
-      let* α1 := deref α0 (list (ref str)) in
-      let* α2 := borrow α1 (list (ref str)) in
-      let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 :=
-        borrow
-          error
-          ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Error in
-      let* α5 :=
-        deref
-          α4
-          ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Error in
-      let* α6 :=
-        borrow
-          α5
-          ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Error in
-      let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
-      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
-      let* α9 := deref α8 (list core.fmt.rt.Argument) in
-      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
-      let* α11 := pointer_coercion "Unsize" α10 in
-      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
-      let* α13 := core.panicking.panic_fmt α12 in
-      never_to_any α13.
-  
-  Global Instance Method_try_transfer_from `{State.Trait} :
-    Notation.Dot "try_transfer_from" := {
-    Notation.dot := try_transfer_from;
-  }.
-End Impl_erc20_erc20_Erc20Ref_26.
-
-Module
-  Impl_ink_codegen_trait_def_call_builder_TraitCallBuilder_for_erc20_erc20_Erc20Ref.
-  Definition Self `{State.Trait} := erc20.erc20.Erc20Ref.
-  
-  Definition Builder : Set :=
-    ink.codegen.dispatch.info.ContractCallBuilder.Type_
-      (Self := erc20.erc20.Erc20).
-  
-  Definition call `{State.Trait} (self : ref Self) : M (ref Builder) :=
-    let* α0 := deref self erc20.erc20.Erc20Ref in
-    let* α1 := α0.["inner"] in
-    let* α2 := borrow α1 erc20.erc20._.CallBuilder in
-    let* α3 := deref α2 erc20.erc20._.CallBuilder in
-    borrow α3 erc20.erc20._.CallBuilder.
-  
-  Global Instance Method_call `{State.Trait} : Notation.Dot "call" := {
-    Notation.dot := call;
-  }.
-  
-  Definition call_mut
-      `{State.Trait}
-      (self : mut_ref Self)
-      : M (mut_ref Builder) :=
-    let* α0 := deref self erc20.erc20.Erc20Ref in
-    let* α1 := α0.["inner"] in
-    let* α2 := borrow_mut α1 erc20.erc20._.CallBuilder in
-    let* α3 := deref α2 erc20.erc20._.CallBuilder in
-    let* α0 := borrow_mut α3 erc20.erc20._.CallBuilder in
-    let* α1 := deref α0 erc20.erc20._.CallBuilder in
-    borrow_mut α1 erc20.erc20._.CallBuilder.
-  
-  Global Instance Method_call_mut `{State.Trait} : Notation.Dot "call_mut" := {
-    Notation.dot := call_mut;
-  }.
-  
-  Global Instance I `{State.Trait}
-    : ink.codegen.trait_def.call_builder.TraitCallBuilder.Trait Self := {
-    ink.codegen.trait_def.call_builder.TraitCallBuilder.Builder := Builder;
-    ink.codegen.trait_def.call_builder.TraitCallBuilder.call := call;
-    ink.codegen.trait_def.call_builder.TraitCallBuilder.call_mut := call_mut;
-  }.
-  Global Hint Resolve I : core.
-End
-  Impl_ink_codegen_trait_def_call_builder_TraitCallBuilder_for_erc20_erc20_Erc20Ref.
-
-Module Impl_ink_env_call_create_builder_FromAccountId_for_erc20_erc20_Erc20Ref.
-  Definition Self `{State.Trait} := erc20.erc20.Erc20Ref.
-  
-  Definition from_account_id
-      `{State.Trait}
-      (account_id : erc20.erc20.AccountId)
-      : M Self :=
-    let* α0 :=
-      ink_env.call.create_builder.FromAccountId.from_account_id account_id in
-    M.alloc {| erc20.erc20.Erc20Ref.inner := α0; |}.
-  
-  Global Instance AssociatedFunction_from_account_id `{State.Trait} :
-    Notation.DoubleColon Self "from_account_id" := {
-    Notation.double_colon := from_account_id;
-  }.
-  
-  Global Instance I `{State.Trait}
-    : ink_env.call.create_builder.FromAccountId.Trait Self
-        (T := erc20.erc20.Environment)
-      := {
-    ink_env.call.create_builder.FromAccountId.from_account_id
-      :=
-      from_account_id;
-  }.
-  Global Hint Resolve I : core.
-End Impl_ink_env_call_create_builder_FromAccountId_for_erc20_erc20_Erc20Ref.
-
-Module Impl_ink_contract_ref_ToAccountId_for_erc20_erc20_Erc20Ref.
-  Definition Self `{State.Trait} := erc20.erc20.Erc20Ref.
-  
-  Definition to_account_id
-      `{State.Trait}
-      (self : ref Self)
-      : M erc20.erc20.AccountId :=
-    let* α0 := deref self erc20.erc20.Erc20Ref in
-    let* α1 := α0.["inner"] in
-    let* α2 := borrow α1 erc20.erc20._.CallBuilder in
-    let* α3 := deref α2 erc20.erc20._.CallBuilder in
-    let* α4 := borrow α3 erc20.erc20._.CallBuilder in
-    ink.contract_ref.ToAccountId.to_account_id α4.
-  
-  Global Instance Method_to_account_id `{State.Trait} :
-    Notation.Dot "to_account_id" := {
-    Notation.dot := to_account_id;
-  }.
-  
-  Global Instance I `{State.Trait}
-    : ink.contract_ref.ToAccountId.Trait Self (T := erc20.erc20.Environment)
-      := {
-    ink.contract_ref.ToAccountId.to_account_id := to_account_id;
-  }.
-  Global Hint Resolve I : core.
-End Impl_ink_contract_ref_ToAccountId_for_erc20_erc20_Erc20Ref.
-
-Module Impl_core_convert_AsRef_for_erc20_erc20_Erc20Ref.
-  Definition Self `{State.Trait} := erc20.erc20.Erc20Ref.
-  
-  Definition as_ref
-      `{State.Trait}
-      (self : ref Self)
-      : M (ref erc20.erc20.AccountId) :=
-    let* α0 := deref self erc20.erc20.Erc20Ref in
-    let* α1 := α0.["inner"] in
-    let* α2 := borrow α1 erc20.erc20._.CallBuilder in
-    let* α3 := deref α2 erc20.erc20._.CallBuilder in
-    let* α4 := borrow α3 erc20.erc20._.CallBuilder in
-    let* α5 := core.convert.AsRef.as_ref α4 in
-    let* α6 := deref α5 ink_primitives.types.AccountId in
-    borrow α6 ink_primitives.types.AccountId.
-  
-  Global Instance Method_as_ref `{State.Trait} : Notation.Dot "as_ref" := {
-    Notation.dot := as_ref;
-  }.
-  
-  Global Instance I `{State.Trait}
-    : core.convert.AsRef.Trait Self (T := erc20.erc20.AccountId) := {
-    core.convert.AsRef.as_ref := as_ref;
-  }.
-  Global Hint Resolve I : core.
-End Impl_core_convert_AsRef_for_erc20_erc20_Erc20Ref.
-
-Module Impl_core_convert_AsMut_for_erc20_erc20_Erc20Ref.
-  Definition Self `{State.Trait} := erc20.erc20.Erc20Ref.
-  
-  Definition as_mut
-      `{State.Trait}
-      (self : mut_ref Self)
-      : M (mut_ref erc20.erc20.AccountId) :=
-    let* α0 := deref self erc20.erc20.Erc20Ref in
-    let* α1 := α0.["inner"] in
-    let* α2 := borrow_mut α1 erc20.erc20._.CallBuilder in
-    let* α3 := deref α2 erc20.erc20._.CallBuilder in
-    let* α4 := borrow_mut α3 erc20.erc20._.CallBuilder in
-    let* α5 := core.convert.AsMut.as_mut α4 in
-    let* α6 := deref α5 ink_primitives.types.AccountId in
-    let* α0 := borrow_mut α6 ink_primitives.types.AccountId in
-    let* α1 := deref α0 ink_primitives.types.AccountId in
-    borrow_mut α1 ink_primitives.types.AccountId.
-  
-  Global Instance Method_as_mut `{State.Trait} : Notation.Dot "as_mut" := {
-    Notation.dot := as_mut;
-  }.
-  
-  Global Instance I `{State.Trait}
-    : core.convert.AsMut.Trait Self (T := erc20.erc20.AccountId) := {
-    core.convert.AsMut.as_mut := as_mut;
-  }.
   Global Hint Resolve I : core.
 End Impl_core_convert_AsMut_for_erc20_erc20_Erc20Ref.
 
@@ -8145,7 +8558,7 @@ Definition __ink_generate_metadata `{State.Trait} : M ink_metadata.InkProject :=
   let* α12 := (ink_metadata.specs.MessageParamSpecBuilder _)::["done"] α11 in
   let* α13 :=
     (ink_metadata.specs.ConstructorSpecBuilder _ _ _ _)::["args"] α6 [ α12 ] in
-  let* α14 := false in
+  let* α14 := M.alloc false in
   let* α15 :=
     (ink_metadata.specs.ConstructorSpecBuilder
           _
@@ -8154,7 +8567,7 @@ Definition __ink_generate_metadata `{State.Trait} : M ink_metadata.InkProject :=
           _)::["payable"]
       α13
       α14 in
-  let* α16 := false in
+  let* α16 := M.alloc false in
   let* α17 :=
     (ink_metadata.specs.ConstructorSpecBuilder _ _ _ _)::["default"] α15 α16 in
   let* α18 := use ink.reflect.dispatch.DispatchableConstructorInfo.IS_RESULT in
@@ -8239,7 +8652,7 @@ Definition __ink_generate_metadata `{State.Trait} : M ink_metadata.InkProject :=
             ink_metadata.specs.state.Returns))::["returns"]
       α31
       α37 in
-  let* α39 := false in
+  let* α39 := M.alloc false in
   let* α40 :=
     (ink_metadata.specs.MessageSpecBuilder
           _
@@ -8249,7 +8662,7 @@ Definition __ink_generate_metadata `{State.Trait} : M ink_metadata.InkProject :=
           _)::["mutates"]
       α38
       α39 in
-  let* α41 := false in
+  let* α41 := M.alloc false in
   let* α42 :=
     (ink_metadata.specs.MessageSpecBuilder
           _
@@ -8259,7 +8672,7 @@ Definition __ink_generate_metadata `{State.Trait} : M ink_metadata.InkProject :=
           _)::["payable"]
       α40
       α41 in
-  let* α43 := false in
+  let* α43 := M.alloc false in
   let* α44 :=
     (ink_metadata.specs.MessageSpecBuilder _ _ _ _ _)::["default"] α42 α43 in
   let* α45 :=
@@ -8323,7 +8736,7 @@ Definition __ink_generate_metadata `{State.Trait} : M ink_metadata.InkProject :=
             ink_metadata.specs.state.Returns))::["returns"]
       α59
       α65 in
-  let* α67 := false in
+  let* α67 := M.alloc false in
   let* α68 :=
     (ink_metadata.specs.MessageSpecBuilder
           _
@@ -8333,7 +8746,7 @@ Definition __ink_generate_metadata `{State.Trait} : M ink_metadata.InkProject :=
           _)::["mutates"]
       α66
       α67 in
-  let* α69 := false in
+  let* α69 := M.alloc false in
   let* α70 :=
     (ink_metadata.specs.MessageSpecBuilder
           _
@@ -8343,7 +8756,7 @@ Definition __ink_generate_metadata `{State.Trait} : M ink_metadata.InkProject :=
           _)::["payable"]
       α68
       α69 in
-  let* α71 := false in
+  let* α71 := M.alloc false in
   let* α72 :=
     (ink_metadata.specs.MessageSpecBuilder _ _ _ _ _)::["default"] α70 α71 in
   let* α73 := deref (mk_str "") str in
@@ -8430,7 +8843,7 @@ Definition __ink_generate_metadata `{State.Trait} : M ink_metadata.InkProject :=
             ink_metadata.specs.state.Returns))::["returns"]
       α97
       α103 in
-  let* α105 := false in
+  let* α105 := M.alloc false in
   let* α106 :=
     (ink_metadata.specs.MessageSpecBuilder
           _
@@ -8440,7 +8853,7 @@ Definition __ink_generate_metadata `{State.Trait} : M ink_metadata.InkProject :=
           _)::["mutates"]
       α104
       α105 in
-  let* α107 := false in
+  let* α107 := M.alloc false in
   let* α108 :=
     (ink_metadata.specs.MessageSpecBuilder
           _
@@ -8450,7 +8863,7 @@ Definition __ink_generate_metadata `{State.Trait} : M ink_metadata.InkProject :=
           _)::["payable"]
       α106
       α107 in
-  let* α109 := false in
+  let* α109 := M.alloc false in
   let* α110 :=
     (ink_metadata.specs.MessageSpecBuilder _ _ _ _ _)::["default"] α108 α109 in
   let* α111 := deref (mk_str "") str in
@@ -8537,7 +8950,7 @@ Definition __ink_generate_metadata `{State.Trait} : M ink_metadata.InkProject :=
             ink_metadata.specs.state.Returns))::["returns"]
       α135
       α141 in
-  let* α143 := true in
+  let* α143 := M.alloc true in
   let* α144 :=
     (ink_metadata.specs.MessageSpecBuilder
           _
@@ -8547,7 +8960,7 @@ Definition __ink_generate_metadata `{State.Trait} : M ink_metadata.InkProject :=
           _)::["mutates"]
       α142
       α143 in
-  let* α145 := false in
+  let* α145 := M.alloc false in
   let* α146 :=
     (ink_metadata.specs.MessageSpecBuilder
           _
@@ -8557,7 +8970,7 @@ Definition __ink_generate_metadata `{State.Trait} : M ink_metadata.InkProject :=
           _)::["payable"]
       α144
       α145 in
-  let* α147 := false in
+  let* α147 := M.alloc false in
   let* α148 :=
     (ink_metadata.specs.MessageSpecBuilder _ _ _ _ _)::["default"] α146 α147 in
   let* α149 := deref (mk_str "") str in
@@ -8664,7 +9077,7 @@ Definition __ink_generate_metadata `{State.Trait} : M ink_metadata.InkProject :=
             ink_metadata.specs.state.Returns))::["returns"]
       α183
       α189 in
-  let* α191 := true in
+  let* α191 := M.alloc true in
   let* α192 :=
     (ink_metadata.specs.MessageSpecBuilder
           _
@@ -8674,7 +9087,7 @@ Definition __ink_generate_metadata `{State.Trait} : M ink_metadata.InkProject :=
           _)::["mutates"]
       α190
       α191 in
-  let* α193 := false in
+  let* α193 := M.alloc false in
   let* α194 :=
     (ink_metadata.specs.MessageSpecBuilder
           _
@@ -8684,7 +9097,7 @@ Definition __ink_generate_metadata `{State.Trait} : M ink_metadata.InkProject :=
           _)::["payable"]
       α192
       α193 in
-  let* α195 := false in
+  let* α195 := M.alloc false in
   let* α196 :=
     (ink_metadata.specs.MessageSpecBuilder _ _ _ _ _)::["default"] α194 α195 in
   let* α197 := deref (mk_str " the `value` amount.") str in
@@ -8799,7 +9212,7 @@ Definition __ink_generate_metadata `{State.Trait} : M ink_metadata.InkProject :=
             ink_metadata.specs.state.Returns))::["returns"]
       α235
       α241 in
-  let* α243 := true in
+  let* α243 := M.alloc true in
   let* α244 :=
     (ink_metadata.specs.MessageSpecBuilder
           _
@@ -8809,7 +9222,7 @@ Definition __ink_generate_metadata `{State.Trait} : M ink_metadata.InkProject :=
           _)::["mutates"]
       α242
       α243 in
-  let* α245 := false in
+  let* α245 := M.alloc false in
   let* α246 :=
     (ink_metadata.specs.MessageSpecBuilder
           _
@@ -8819,7 +9232,7 @@ Definition __ink_generate_metadata `{State.Trait} : M ink_metadata.InkProject :=
           _)::["payable"]
       α244
       α245 in
-  let* α247 := false in
+  let* α247 := M.alloc false in
   let* α248 :=
     (ink_metadata.specs.MessageSpecBuilder _ _ _ _ _)::["default"] α246 α247 in
   let* α249 := deref (mk_str "") str in
@@ -8905,7 +9318,7 @@ Definition __ink_generate_metadata `{State.Trait} : M ink_metadata.InkProject :=
       α281 in
   let* α283 :=
     (ink_metadata.specs.EventParamSpecBuilder _)::["of_type"] α279 α282 in
-  let* α284 := true in
+  let* α284 := M.alloc true in
   let* α285 :=
     (ink_metadata.specs.EventParamSpecBuilder _)::["indexed"] α283 α284 in
   let* α286 :=
@@ -8921,7 +9334,7 @@ Definition __ink_generate_metadata `{State.Trait} : M ink_metadata.InkProject :=
       α290 in
   let* α292 :=
     (ink_metadata.specs.EventParamSpecBuilder _)::["of_type"] α288 α291 in
-  let* α293 := true in
+  let* α293 := M.alloc true in
   let* α294 :=
     (ink_metadata.specs.EventParamSpecBuilder _)::["indexed"] α292 α293 in
   let* α295 :=
@@ -8938,7 +9351,7 @@ Definition __ink_generate_metadata `{State.Trait} : M ink_metadata.InkProject :=
       α299 in
   let* α301 :=
     (ink_metadata.specs.EventParamSpecBuilder _)::["of_type"] α297 α300 in
-  let* α302 := false in
+  let* α302 := M.alloc false in
   let* α303 :=
     (ink_metadata.specs.EventParamSpecBuilder _)::["indexed"] α301 α302 in
   let* α304 :=
@@ -8965,7 +9378,7 @@ Definition __ink_generate_metadata `{State.Trait} : M ink_metadata.InkProject :=
       α312 in
   let* α314 :=
     (ink_metadata.specs.EventParamSpecBuilder _)::["of_type"] α310 α313 in
-  let* α315 := true in
+  let* α315 := M.alloc true in
   let* α316 :=
     (ink_metadata.specs.EventParamSpecBuilder _)::["indexed"] α314 α315 in
   let* α317 :=
@@ -8982,7 +9395,7 @@ Definition __ink_generate_metadata `{State.Trait} : M ink_metadata.InkProject :=
       α321 in
   let* α323 :=
     (ink_metadata.specs.EventParamSpecBuilder _)::["of_type"] α319 α322 in
-  let* α324 := true in
+  let* α324 := M.alloc true in
   let* α325 :=
     (ink_metadata.specs.EventParamSpecBuilder _)::["indexed"] α323 α324 in
   let* α326 :=
@@ -8999,7 +9412,7 @@ Definition __ink_generate_metadata `{State.Trait} : M ink_metadata.InkProject :=
       α330 in
   let* α332 :=
     (ink_metadata.specs.EventParamSpecBuilder _)::["of_type"] α328 α331 in
-  let* α333 := false in
+  let* α333 := M.alloc false in
   let* α334 :=
     (ink_metadata.specs.EventParamSpecBuilder _)::["indexed"] α332 α333 in
   let* α335 :=
@@ -9195,337 +9608,368 @@ End Error.
 Definition Error `{State.Trait} : Set := Error.t.
 
 Module Impl_scale_info_TypeInfo_for_erc20_erc20_Error.
-  Definition Self `{State.Trait} := erc20.erc20.Error.
-  
-  Definition Identity : Set := Self.
-  
-  Definition type_info
-      `{State.Trait}
-      : M (scale_info.ty.Type_ scale_info.ty.Type_.Default.T) :=
-    let* α0 := (scale_info.ty.Type_ scale_info.form.MetaForm)::["builder"] in
-    let* α1 :=
-      (scale_info.ty.path.Path scale_info.form.MetaForm)::["new"]
-        (mk_str "Error")
-        (mk_str "erc20::erc20") in
-    let* α2 :=
+  Section Impl_scale_info_TypeInfo_for_erc20_erc20_Error.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := erc20.erc20.Error.
+    
+    Definition Identity : Set := Self.
+    
+    Definition type_info
+        : M (scale_info.ty.Type_ scale_info.ty.Type_.Default.T) :=
+      let* α0 := (scale_info.ty.Type_ scale_info.form.MetaForm)::["builder"] in
+      let* α1 :=
+        (scale_info.ty.path.Path scale_info.form.MetaForm)::["new"]
+          (mk_str "Error")
+          (mk_str "erc20::erc20") in
+      let* α2 :=
+        (scale_info.build.TypeBuilder
+              _
+              scale_info.build.state.PathNotAssigned)::["path"]
+          α0
+          α1 in
+      let* α3 := (alloc.vec.Vec _ alloc.alloc.Global)::["new"] in
+      let* α4 := (scale_info.build.TypeBuilder _ _)::["type_params"] α2 α3 in
+      let* α5 := borrow [ mk_str "The ERC-20 error types." ] (list (ref str)) in
+      let* α6 := deref α5 (list (ref str)) in
+      let* α7 := borrow α6 (list (ref str)) in
+      let* α8 := pointer_coercion "Unsize" α7 in
+      let* α9 :=
+        (scale_info.build.TypeBuilder scale_info.form.MetaForm _)::["docs"]
+          α4
+          α8 in
+      let* α10 := (scale_info.build.Variants _)::["new"] in
+      let* α11 :=
+        (scale_info.build.Variants _)::["variant"]
+          α10
+          (mk_str "InsufficientBalance")
+          let* α0 := M.alloc 0 in
+          let* α1 := cast α0 in
+          let* α2 :=
+            (scale_info.build.VariantBuilder
+                  _
+                  scale_info.build.variant_state.IndexNotAssigned)::["index"]
+              v
+              α1 in
+          let* α3 :=
+            borrow
+              [
+                mk_str
+                  "Returned if not enough balance to fulfill a request is available."
+              ]
+              (list (ref str)) in
+          let* α4 := deref α3 (list (ref str)) in
+          let* α5 := borrow α4 (list (ref str)) in
+          let* α6 := pointer_coercion "Unsize" α5 in
+          (scale_info.build.VariantBuilder scale_info.form.MetaForm _)::["docs"]
+            α2
+            α6 in
+      let* α12 :=
+        (scale_info.build.Variants _)::["variant"]
+          α11
+          (mk_str "InsufficientAllowance")
+          let* α0 := M.alloc 1 in
+          let* α1 := cast α0 in
+          let* α2 :=
+            (scale_info.build.VariantBuilder
+                  _
+                  scale_info.build.variant_state.IndexNotAssigned)::["index"]
+              v
+              α1 in
+          let* α3 :=
+            borrow
+              [
+                mk_str
+                  "Returned if not enough allowance to fulfill a request is available."
+              ]
+              (list (ref str)) in
+          let* α4 := deref α3 (list (ref str)) in
+          let* α5 := borrow α4 (list (ref str)) in
+          let* α6 := pointer_coercion "Unsize" α5 in
+          (scale_info.build.VariantBuilder scale_info.form.MetaForm _)::["docs"]
+            α2
+            α6 in
       (scale_info.build.TypeBuilder
             _
-            scale_info.build.state.PathNotAssigned)::["path"]
-        α0
-        α1 in
-    let* α3 := (alloc.vec.Vec _ alloc.alloc.Global)::["new"] in
-    let* α4 := (scale_info.build.TypeBuilder _ _)::["type_params"] α2 α3 in
-    let* α5 := borrow [ mk_str "The ERC-20 error types." ] (list (ref str)) in
-    let* α6 := deref α5 (list (ref str)) in
-    let* α7 := borrow α6 (list (ref str)) in
-    let* α8 := pointer_coercion "Unsize" α7 in
-    let* α9 :=
-      (scale_info.build.TypeBuilder scale_info.form.MetaForm _)::["docs"]
-        α4
-        α8 in
-    let* α10 := (scale_info.build.Variants _)::["new"] in
-    let* α11 :=
-      (scale_info.build.Variants _)::["variant"]
-        α10
-        (mk_str "InsufficientBalance")
-        let* α0 := M.alloc 0 in
-        let* α1 := cast α0 in
-        let* α2 :=
-          (scale_info.build.VariantBuilder
-                _
-                scale_info.build.variant_state.IndexNotAssigned)::["index"]
-            v
-            α1 in
-        let* α3 :=
-          borrow
-            [
-              mk_str
-                "Returned if not enough balance to fulfill a request is available."
-            ]
-            (list (ref str)) in
-        let* α4 := deref α3 (list (ref str)) in
-        let* α5 := borrow α4 (list (ref str)) in
-        let* α6 := pointer_coercion "Unsize" α5 in
-        (scale_info.build.VariantBuilder scale_info.form.MetaForm _)::["docs"]
-          α2
-          α6 in
-    let* α12 :=
-      (scale_info.build.Variants _)::["variant"]
-        α11
-        (mk_str "InsufficientAllowance")
-        let* α0 := M.alloc 1 in
-        let* α1 := cast α0 in
-        let* α2 :=
-          (scale_info.build.VariantBuilder
-                _
-                scale_info.build.variant_state.IndexNotAssigned)::["index"]
-            v
-            α1 in
-        let* α3 :=
-          borrow
-            [
-              mk_str
-                "Returned if not enough allowance to fulfill a request is available."
-            ]
-            (list (ref str)) in
-        let* α4 := deref α3 (list (ref str)) in
-        let* α5 := borrow α4 (list (ref str)) in
-        let* α6 := pointer_coercion "Unsize" α5 in
-        (scale_info.build.VariantBuilder scale_info.form.MetaForm _)::["docs"]
-          α2
-          α6 in
-    (scale_info.build.TypeBuilder
-          _
-          scale_info.build.state.PathAssigned)::["variant"]
-      α9
-      α12.
-  
-  Global Instance AssociatedFunction_type_info `{State.Trait} :
-    Notation.DoubleColon Self "type_info" := {
-    Notation.double_colon := type_info;
-  }.
-  
-  Global Instance I `{State.Trait} : scale_info.TypeInfo.Trait Self := {
-    scale_info.TypeInfo.Identity := Identity;
-    scale_info.TypeInfo.type_info := type_info;
-  }.
+            scale_info.build.state.PathAssigned)::["variant"]
+        α9
+        α12.
+    
+    Global Instance AssociatedFunction_type_info :
+      Notation.DoubleColon Self "type_info" := {
+      Notation.double_colon := type_info;
+    }.
+    
+    Global Instance I : scale_info.TypeInfo.Trait Self := {
+      scale_info.TypeInfo.Identity := Identity;
+      scale_info.TypeInfo.type_info := type_info;
+    }.
+  End Impl_scale_info_TypeInfo_for_erc20_erc20_Error.
   Global Hint Resolve I : core.
 End Impl_scale_info_TypeInfo_for_erc20_erc20_Error.
 
 Module Impl_core_fmt_Debug_for_erc20_erc20_Error.
-  Definition Self `{State.Trait} := erc20.erc20.Error.
-  
-  Definition fmt
-      `{State.Trait}
-      (self : ref Self)
-      (f : mut_ref core.fmt.Formatter)
-      : M core.fmt.Result :=
-    let* α0 := deref f core.fmt.Formatter in
-    let* α1 := borrow_mut α0 core.fmt.Formatter in
-    let* α2 :=
-      match self with
-      | erc20.erc20.Error  =>
-        let* α0 := deref (mk_str "InsufficientBalance") str in
-        borrow α0 str
-      | erc20.erc20.Error  =>
-        let* α0 := deref (mk_str "InsufficientAllowance") str in
-        borrow α0 str
-      end in
-    core.fmt.Formatter::["write_str"] α1 α2.
-  
-  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
-    Notation.dot := fmt;
-  }.
-  
-  Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt := fmt;
-  }.
+  Section Impl_core_fmt_Debug_for_erc20_erc20_Error.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := erc20.erc20.Error.
+    
+    Definition fmt
+        (self : ref Self)
+        (f : mut_ref core.fmt.Formatter)
+        : M core.fmt.Result :=
+      let* α0 := deref f core.fmt.Formatter in
+      let* α1 := borrow_mut α0 core.fmt.Formatter in
+      let* α2 :=
+        match self with
+        | erc20.erc20.Error  =>
+          let* α0 := deref (mk_str "InsufficientBalance") str in
+          borrow α0 str
+        | erc20.erc20.Error  =>
+          let* α0 := deref (mk_str "InsufficientAllowance") str in
+          borrow α0 str
+        end in
+      core.fmt.Formatter::["write_str"] α1 α2.
+    
+    Global Instance AssociatedFunction_fmt :
+      Notation.DoubleColon Self "fmt" := {
+      Notation.double_colon := fmt;
+    }.
+    
+    Global Instance I : core.fmt.Debug.Trait Self := {
+      core.fmt.Debug.fmt := fmt;
+    }.
+  End Impl_core_fmt_Debug_for_erc20_erc20_Error.
   Global Hint Resolve I : core.
 End Impl_core_fmt_Debug_for_erc20_erc20_Error.
 
 Module Impl_core_marker_StructuralPartialEq_for_erc20_erc20_Error.
-  Definition Self `{State.Trait} := erc20.erc20.Error.
-  
-  Global Instance I `{State.Trait}
-    : core.marker.StructuralPartialEq.Trait Self := {
-  }.
+  Section Impl_core_marker_StructuralPartialEq_for_erc20_erc20_Error.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := erc20.erc20.Error.
+    
+    Global Instance I : core.marker.StructuralPartialEq.Trait Self := {
+    }.
+  End Impl_core_marker_StructuralPartialEq_for_erc20_erc20_Error.
   Global Hint Resolve I : core.
 End Impl_core_marker_StructuralPartialEq_for_erc20_erc20_Error.
 
 Module Impl_core_cmp_PartialEq_for_erc20_erc20_Error.
-  Definition Self `{State.Trait} := erc20.erc20.Error.
-  
-  Definition eq
-      `{State.Trait}
-      (self : ref Self)
-      (other : ref erc20.erc20.Error)
-      : M bool :=
-    let* __self_tag :=
-      let* α0 := deref self erc20.erc20.Error in
-      let* α1 := borrow α0 erc20.erc20.Error in
-      "unimplemented parent_kind" α1 in
-    let* __arg1_tag :=
-      let* α0 := deref other erc20.erc20.Error in
-      let* α1 := borrow α0 erc20.erc20.Error in
-      "unimplemented parent_kind" α1 in
-    eq __self_tag __arg1_tag.
-  
-  Global Instance Method_eq `{State.Trait} : Notation.Dot "eq" := {
-    Notation.dot := eq;
-  }.
-  
-  Global Instance I `{State.Trait}
-    : core.cmp.PartialEq.Trait Self (Rhs := core.cmp.PartialEq.Default.Rhs Self)
-      := {
-    core.cmp.PartialEq.eq := eq;
-  }.
+  Section Impl_core_cmp_PartialEq_for_erc20_erc20_Error.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := erc20.erc20.Error.
+    
+    Definition eq (self : ref Self) (other : ref erc20.erc20.Error) : M bool :=
+      let* __self_tag :=
+        let* α0 := deref self erc20.erc20.Error in
+        let* α1 := borrow α0 erc20.erc20.Error in
+        "unimplemented parent_kind" α1 in
+      let* __arg1_tag :=
+        let* α0 := deref other erc20.erc20.Error in
+        let* α1 := borrow α0 erc20.erc20.Error in
+        "unimplemented parent_kind" α1 in
+      eq __self_tag __arg1_tag.
+    
+    Global Instance AssociatedFunction_eq : Notation.DoubleColon Self "eq" := {
+      Notation.double_colon := eq;
+    }.
+    
+    Global Instance I
+      : core.cmp.PartialEq.Trait Self
+          (Rhs := core.cmp.PartialEq.Default.Rhs Self)
+        := {
+      core.cmp.PartialEq.eq := eq;
+    }.
+  End Impl_core_cmp_PartialEq_for_erc20_erc20_Error.
   Global Hint Resolve I : core.
 End Impl_core_cmp_PartialEq_for_erc20_erc20_Error.
 
 Module Impl_core_marker_StructuralEq_for_erc20_erc20_Error.
-  Definition Self `{State.Trait} := erc20.erc20.Error.
-  
-  Global Instance I `{State.Trait} : core.marker.StructuralEq.Trait Self := {
-  }.
+  Section Impl_core_marker_StructuralEq_for_erc20_erc20_Error.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := erc20.erc20.Error.
+    
+    Global Instance I : core.marker.StructuralEq.Trait Self := {
+    }.
+  End Impl_core_marker_StructuralEq_for_erc20_erc20_Error.
   Global Hint Resolve I : core.
 End Impl_core_marker_StructuralEq_for_erc20_erc20_Error.
 
 Module Impl_core_cmp_Eq_for_erc20_erc20_Error.
-  Definition Self `{State.Trait} := erc20.erc20.Error.
-  
-  Definition assert_receiver_is_total_eq
-      `{State.Trait}
-      (self : ref Self)
-      : M unit :=
-    Pure tt.
-  
-  Global Instance Method_assert_receiver_is_total_eq `{State.Trait} :
-    Notation.Dot "assert_receiver_is_total_eq" := {
-    Notation.dot := assert_receiver_is_total_eq;
-  }.
-  
-  Global Instance I `{State.Trait} : core.cmp.Eq.Trait Self := {
-  }.
+  Section Impl_core_cmp_Eq_for_erc20_erc20_Error.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := erc20.erc20.Error.
+    
+    Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
+      M.alloc tt.
+    
+    Global Instance AssociatedFunction_assert_receiver_is_total_eq :
+      Notation.DoubleColon Self "assert_receiver_is_total_eq" := {
+      Notation.double_colon := assert_receiver_is_total_eq;
+    }.
+    
+    Global Instance I : core.cmp.Eq.Trait Self := {
+    }.
+  End Impl_core_cmp_Eq_for_erc20_erc20_Error.
   Global Hint Resolve I : core.
 End Impl_core_cmp_Eq_for_erc20_erc20_Error.
 
 Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Error.
-  Definition Self `{State.Trait} := erc20.erc20.Error.
-  
-  Definition encode_to
-      `{State.Trait}
-      {__CodecOutputEdqy : Set}
-      `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
-      `{core.marker.Sized.Trait __CodecOutputEdqy}
-      (self : ref Self)
-      (__codec_dest_edqy : mut_ref __CodecOutputEdqy)
-      : M unit :=
-    let* α0 := deref self erc20.erc20.Error in
-    match α0 with
-    | erc20.erc20.Error  =>
-      let* _ :=
-        let* α0 := deref __codec_dest_edqy _ in
-        let* α1 := borrow_mut α0 _ in
-        let* α2 := M.alloc 0 in
-        let* α3 := cast α2 in
-        parity_scale_codec.codec.Output.push_byte α1 α3 in
-      Pure tt
-    | erc20.erc20.Error  =>
-      let* _ :=
-        let* α0 := deref __codec_dest_edqy _ in
-        let* α1 := borrow_mut α0 _ in
-        let* α2 := M.alloc 1 in
-        let* α3 := cast α2 in
-        parity_scale_codec.codec.Output.push_byte α1 α3 in
-      Pure tt
-    | _ => Pure tt
-    end.
-  
-  Global Instance Method_encode_to
-      `{State.Trait}
-      {__CodecOutputEdqy : Set}
-      `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
-      `{core.marker.Sized.Trait __CodecOutputEdqy} :
-    Notation.Dot "encode_to" := {
-    Notation.dot := encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
-  }.
-  
-  Global Instance I `{State.Trait}
-    : parity_scale_codec.codec.Encode.Trait Self := {
-  }.
+  Section Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Error.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := erc20.erc20.Error.
+    
+    Definition encode_to
+        {__CodecOutputEdqy : Set}
+        {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+        {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy}
+        (self : ref Self)
+        (__codec_dest_edqy : mut_ref __CodecOutputEdqy)
+        : M unit :=
+      let* α0 := deref self erc20.erc20.Error in
+      match α0 with
+      | erc20.erc20.Error  =>
+        let* _ :=
+          let* α0 := deref __codec_dest_edqy _ in
+          let* α1 := borrow_mut α0 _ in
+          let* α2 := M.alloc 0 in
+          let* α3 := cast α2 in
+          parity_scale_codec.codec.Output.push_byte α1 α3 in
+        M.alloc tt
+      | erc20.erc20.Error  =>
+        let* _ :=
+          let* α0 := deref __codec_dest_edqy _ in
+          let* α1 := borrow_mut α0 _ in
+          let* α2 := M.alloc 1 in
+          let* α3 := cast α2 in
+          parity_scale_codec.codec.Output.push_byte α1 α3 in
+        M.alloc tt
+      | _ => M.alloc tt
+      end.
+    
+    Global Instance AssociatedFunction_encode_to
+        {__CodecOutputEdqy : Set}
+        {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+        {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy} :
+      Notation.DoubleColon Self "encode_to" := {
+      Notation.double_colon
+        :=
+        encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
+    }.
+    
+    Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
+    }.
+  End Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Error.
   Global Hint Resolve I : core.
 End Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Error.
 
 Module Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20_Error.
-  Definition Self `{State.Trait} := erc20.erc20.Error.
-  
-  Global Instance I `{State.Trait}
-    : parity_scale_codec.encode_like.EncodeLike.Trait Self
-        (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self)
-      := {
-  }.
+  Section Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20_Error.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := erc20.erc20.Error.
+    
+    Global Instance I
+      : parity_scale_codec.encode_like.EncodeLike.Trait Self
+          (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self)
+        := {
+    }.
+  End Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20_Error.
   Global Hint Resolve I : core.
 End Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20_Error.
 
 Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Error.
-  Definition Self `{State.Trait} := erc20.erc20.Error.
-  
-  Definition decode
-      `{State.Trait}
-      {__CodecInputEdqy : Set}
-      `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
-      (__codec_input_edqy : mut_ref __CodecInputEdqy)
-      : M (core.result.Result Self parity_scale_codec.error.Error) :=
-    let* α0 := deref __codec_input_edqy _ in
-    let* α1 := borrow_mut α0 _ in
-    let* α2 := parity_scale_codec.codec.Input.read_byte α1 in
-    let* α3 :=
-      (core.result.Result _ _)::["map_err"]
-        α2
-        parity_scale_codec.error.Error::["chain"]
-          e
-          (mk_str "Could not decode `Error`, failed to read variant byte") in
-    let* α4 := core.ops.try_trait.Try.branch α3 in
-    let* α5 :=
-      match α4 with
-      | core.ops.control_flow.ControlFlow residual =>
-        let* α0 := core.ops.try_trait.FromResidual.from_residual residual in
-        let* α1 := Return α0 in
-        never_to_any α1
-      | core.ops.control_flow.ControlFlow val => Pure val
-      end in
-    match α5 with
-    | __codec_x_edqy =>
-      let* _ :=
-        let* α0 :=
-          borrow
-            Pure
-              (core.result.Result.Ok (erc20.erc20.Error.InsufficientBalance tt))
-            type not implemented in
-        let* α1 := core.ops.function.Fn.call α0 tt in
-        Return α1 in
-      never_to_any tt
-    | __codec_x_edqy =>
-      let* _ :=
-        let* α0 :=
-          borrow
-            Pure
-              (core.result.Result.Ok
-                (erc20.erc20.Error.InsufficientAllowance tt))
-            type not implemented in
-        let* α1 := core.ops.function.Fn.call α0 tt in
-        Return α1 in
-      never_to_any tt
-    | _ =>
-      let* _ :=
-        let* α0 :=
-          borrow
-            let* α0 :=
-              core.convert.Into.into
-                (mk_str "Could not decode `Error`, variant doesn't exist") in
-            Pure (core.result.Result.Err α0)
-            type not implemented in
-        let* α1 := core.ops.function.Fn.call α0 tt in
-        Return α1 in
-      never_to_any tt
-    end.
-  
-  Global Instance AssociatedFunction_decode
-      `{State.Trait}
-      {__CodecInputEdqy : Set}
-      `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :
-    Notation.DoubleColon Self "decode" := {
-    Notation.double_colon := decode (__CodecInputEdqy := __CodecInputEdqy);
-  }.
-  
-  Global Instance I `{State.Trait}
-    : parity_scale_codec.codec.Decode.Trait Self := {
-    parity_scale_codec.codec.Decode.decode
-      {__CodecInputEdqy : Set}
-      `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
-      :=
-      decode (__CodecInputEdqy := __CodecInputEdqy);
-  }.
+  Section Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Error.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := erc20.erc20.Error.
+    
+    Definition decode
+        {__CodecInputEdqy : Set}
+        {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
+        (__codec_input_edqy : mut_ref __CodecInputEdqy)
+        : M (core.result.Result Self parity_scale_codec.error.Error) :=
+      let* α0 := deref __codec_input_edqy _ in
+      let* α1 := borrow_mut α0 _ in
+      let* α2 := parity_scale_codec.codec.Input.read_byte α1 in
+      let* α3 :=
+        (core.result.Result _ _)::["map_err"]
+          α2
+          parity_scale_codec.error.Error::["chain"]
+            e
+            (mk_str "Could not decode `Error`, failed to read variant byte") in
+      let* α4 := core.ops.try_trait.Try.branch α3 in
+      let* α5 :=
+        match α4 with
+        | core.ops.control_flow.ControlFlow residual =>
+          let* α0 := core.ops.try_trait.FromResidual.from_residual residual in
+          let* α1 := Return α0 in
+          never_to_any α1
+        | core.ops.control_flow.ControlFlow val => Pure val
+        end in
+      match α5 with
+      | __codec_x_edqy =>
+        let* _ :=
+          let* α0 :=
+            borrow
+              Pure
+                (core.result.Result.Ok
+                  (erc20.erc20.Error.InsufficientBalance tt))
+              type not implemented in
+          let* α1 := M.alloc tt in
+          let* α2 := core.ops.function.Fn.call α0 α1 in
+          Return α2 in
+        let* α0 := M.alloc tt in
+        never_to_any α0
+      | __codec_x_edqy =>
+        let* _ :=
+          let* α0 :=
+            borrow
+              Pure
+                (core.result.Result.Ok
+                  (erc20.erc20.Error.InsufficientAllowance tt))
+              type not implemented in
+          let* α1 := M.alloc tt in
+          let* α2 := core.ops.function.Fn.call α0 α1 in
+          Return α2 in
+        let* α0 := M.alloc tt in
+        never_to_any α0
+      | _ =>
+        let* _ :=
+          let* α0 :=
+            borrow
+              let* α0 :=
+                core.convert.Into.into
+                  (mk_str "Could not decode `Error`, variant doesn't exist") in
+              Pure (core.result.Result.Err α0)
+              type not implemented in
+          let* α1 := M.alloc tt in
+          let* α2 := core.ops.function.Fn.call α0 α1 in
+          Return α2 in
+        let* α0 := M.alloc tt in
+        never_to_any α0
+      end.
+    
+    Global Instance AssociatedFunction_decode
+        {__CodecInputEdqy : Set}
+        {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :
+      Notation.DoubleColon Self "decode" := {
+      Notation.double_colon := decode (__CodecInputEdqy := __CodecInputEdqy);
+    }.
+    
+    Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
+      parity_scale_codec.codec.Decode.decode
+        {__CodecInputEdqy : Set}
+        {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
+        :=
+        decode (__CodecInputEdqy := __CodecInputEdqy);
+    }.
+  End Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Error.
   Global Hint Resolve I : core.
 End Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Error.
 

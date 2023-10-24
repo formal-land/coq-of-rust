@@ -15,7 +15,7 @@ Definition main `{State.Trait} : M unit :=
           let* α3 := pointer_coercion "Unsize" α2 in
           let* α4 := core.fmt.Arguments::["new_const"] α3 in
           std.io.stdio._print α4 in
-        Pure tt in
+        M.alloc tt in
       let* _ :=
         let* α0 :=
           loop
@@ -31,9 +31,9 @@ Definition main `{State.Trait} : M unit :=
                 let* α3 := pointer_coercion "Unsize" α2 in
                 let* α4 := core.fmt.Arguments::["new_const"] α3 in
                 std.io.stdio._print α4 in
-              Pure tt in
+              M.alloc tt in
             let* _ := Break in
-            Pure tt) in
+            M.alloc tt) in
         never_to_any α0 in
       let* _ :=
         let* _ :=
@@ -47,8 +47,8 @@ Definition main `{State.Trait} : M unit :=
           let* α3 := pointer_coercion "Unsize" α2 in
           let* α4 := core.fmt.Arguments::["new_const"] α3 in
           std.io.stdio._print α4 in
-        Pure tt in
-      Pure tt) in
+        M.alloc tt in
+      M.alloc tt) in
   let* _ :=
     let* _ :=
       let* α0 := borrow [ mk_str "Exited the outer loop
@@ -58,5 +58,5 @@ Definition main `{State.Trait} : M unit :=
       let* α3 := pointer_coercion "Unsize" α2 in
       let* α4 := core.fmt.Arguments::["new_const"] α3 in
       std.io.stdio._print α4 in
-    Pure tt in
-  Pure tt.
+    M.alloc tt in
+  M.alloc tt.

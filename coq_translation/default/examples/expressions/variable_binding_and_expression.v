@@ -9,4 +9,4 @@ Definition main `{State.Trait} : M unit :=
     let* α0 := M.alloc 1 in
     add x α0 in
   let* _ := M.alloc 15 in
-  Pure tt.
+  M.alloc tt.

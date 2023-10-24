@@ -19,5 +19,5 @@ Definition main `{State.Trait} : M unit :=
         core.panicking.panic (mk_str "assertion failed: *raw_p == 10") in
       never_to_any α0
     else
-      Pure tt in
-  Pure tt.
+      M.alloc tt in
+  M.alloc tt.

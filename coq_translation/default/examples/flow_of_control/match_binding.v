@@ -17,7 +17,7 @@ Definition main `{State.Trait} : M unit :=
       let* α3 := pointer_coercion "Unsize" α2 in
       let* α4 := core.fmt.Arguments::["new_const"] α3 in
       std.io.stdio._print α4 in
-    Pure tt in
+    M.alloc tt in
   let* α0 := match_binding.age in
   match α0 with
   | _ =>
@@ -32,7 +32,7 @@ Definition main `{State.Trait} : M unit :=
       let* α3 := pointer_coercion "Unsize" α2 in
       let* α4 := core.fmt.Arguments::["new_const"] α3 in
       std.io.stdio._print α4 in
-    Pure tt
+    M.alloc tt
   | (_ as n) =>
     let* _ :=
       let* α0 :=
@@ -51,7 +51,7 @@ Definition main `{State.Trait} : M unit :=
       let* α11 := pointer_coercion "Unsize" α10 in
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
-    Pure tt
+    M.alloc tt
   | (_ as n) =>
     let* _ :=
       let* α0 :=
@@ -70,7 +70,7 @@ Definition main `{State.Trait} : M unit :=
       let* α11 := pointer_coercion "Unsize" α10 in
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
-    Pure tt
+    M.alloc tt
   | n =>
     let* _ :=
       let* α0 :=
@@ -91,5 +91,5 @@ Definition main `{State.Trait} : M unit :=
       let* α11 := pointer_coercion "Unsize" α10 in
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
-    Pure tt
+    M.alloc tt
   end.

@@ -31,7 +31,7 @@ Definition main `{State.Trait} : M unit :=
         let* α3 := pointer_coercion "Unsize" α2 in
         let* α4 := core.fmt.Arguments::["new_const"] α3 in
         std.io.stdio._print α4 in
-      Pure tt
+      M.alloc tt
     | enums_use.Status  =>
       let* _ :=
         let* α0 :=
@@ -42,7 +42,7 @@ Definition main `{State.Trait} : M unit :=
         let* α3 := pointer_coercion "Unsize" α2 in
         let* α4 := core.fmt.Arguments::["new_const"] α3 in
         std.io.stdio._print α4 in
-      Pure tt
+      M.alloc tt
     end in
   match work with
   | enums_use.Work  =>
@@ -54,7 +54,7 @@ Definition main `{State.Trait} : M unit :=
       let* α3 := pointer_coercion "Unsize" α2 in
       let* α4 := core.fmt.Arguments::["new_const"] α3 in
       std.io.stdio._print α4 in
-    Pure tt
+    M.alloc tt
   | enums_use.Work  =>
     let* _ :=
       let* α0 := borrow [ mk_str "Soldiers fight!
@@ -64,5 +64,5 @@ Definition main `{State.Trait} : M unit :=
       let* α3 := pointer_coercion "Unsize" α2 in
       let* α4 := core.fmt.Arguments::["new_const"] α3 in
       std.io.stdio._print α4 in
-    Pure tt
+    M.alloc tt
   end.

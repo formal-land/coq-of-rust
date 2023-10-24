@@ -2,56 +2,63 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module Circle.
-  Unset Primitive Projections.
-  Record t `{State.Trait} : Set := {
-    radius : i32;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_radius `{State.Trait} : Notation.Dot "radius" := {
-    Notation.dot x := let* x := M.read x in Pure x.(radius) : M _;
-  }.
-  Global Instance Get_AF_radius `{State.Trait}
-    : Notation.DoubleColon t "radius" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(radius) : M _;
-  }.
+  Section Circle.
+    Context `{State.Trait}.
+    
+    Unset Primitive Projections.
+    Record t : Set := {
+      radius : i32;
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_radius : Notation.Dot "radius" := {
+      Notation.dot x := let* x := M.read x in Pure x.(radius) : M _;
+    }.
+    Global Instance Get_AF_radius : Notation.DoubleColon t "radius" := {
+      Notation.double_colon x := let* x := M.read x in Pure x.(radius) : M _;
+    }.
+  End Circle.
 End Circle.
-Definition Circle `{State.Trait} : Set := M.val (Circle.t).
+Definition Circle `{State.Trait} : Set := M.val Circle.t.
 
 Module Impl_core_fmt_Display_for_converting_to_string_Circle.
-  Definition Self `{State.Trait} := converting_to_string.Circle.
-  
-  Definition fmt
-      `{State.Trait}
-      (self : ref Self)
-      (f : mut_ref core.fmt.Formatter)
-      : M core.fmt.Result :=
-    let* α0 := deref f core.fmt.Formatter in
-    let* α1 := borrow_mut α0 core.fmt.Formatter in
-    let* α2 := borrow [ mk_str "Circle of radius " ] (list (ref str)) in
-    let* α3 := deref α2 (list (ref str)) in
-    let* α4 := borrow α3 (list (ref str)) in
-    let* α5 := pointer_coercion "Unsize" α4 in
-    let* α6 := deref self converting_to_string.Circle in
-    let* α7 := α6.["radius"] in
-    let* α8 := borrow α7 i32 in
-    let* α9 := deref α8 i32 in
-    let* α10 := borrow α9 i32 in
-    let* α11 := core.fmt.rt.Argument::["new_display"] α10 in
-    let* α12 := borrow [ α11 ] (list core.fmt.rt.Argument) in
-    let* α13 := deref α12 (list core.fmt.rt.Argument) in
-    let* α14 := borrow α13 (list core.fmt.rt.Argument) in
-    let* α15 := pointer_coercion "Unsize" α14 in
-    let* α16 := core.fmt.Arguments::["new_v1"] α5 α15 in
-    core.fmt.Formatter::["write_fmt"] α1 α16.
-  
-  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
-    Notation.dot := fmt;
-  }.
-  
-  Global Instance I `{State.Trait} : core.fmt.Display.Trait Self := {
-    core.fmt.Display.fmt := fmt;
-  }.
+  Section Impl_core_fmt_Display_for_converting_to_string_Circle.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := converting_to_string.Circle.
+    
+    Definition fmt
+        (self : ref Self)
+        (f : mut_ref core.fmt.Formatter)
+        : M core.fmt.Result :=
+      let* α0 := deref f core.fmt.Formatter in
+      let* α1 := borrow_mut α0 core.fmt.Formatter in
+      let* α2 := borrow [ mk_str "Circle of radius " ] (list (ref str)) in
+      let* α3 := deref α2 (list (ref str)) in
+      let* α4 := borrow α3 (list (ref str)) in
+      let* α5 := pointer_coercion "Unsize" α4 in
+      let* α6 := deref self converting_to_string.Circle in
+      let* α7 := α6.["radius"] in
+      let* α8 := borrow α7 i32 in
+      let* α9 := deref α8 i32 in
+      let* α10 := borrow α9 i32 in
+      let* α11 := core.fmt.rt.Argument::["new_display"] α10 in
+      let* α12 := borrow [ α11 ] (list core.fmt.rt.Argument) in
+      let* α13 := deref α12 (list core.fmt.rt.Argument) in
+      let* α14 := borrow α13 (list core.fmt.rt.Argument) in
+      let* α15 := pointer_coercion "Unsize" α14 in
+      let* α16 := core.fmt.Arguments::["new_v1"] α5 α15 in
+      core.fmt.Formatter::["write_fmt"] α1 α16.
+    
+    Global Instance AssociatedFunction_fmt :
+      Notation.DoubleColon Self "fmt" := {
+      Notation.double_colon := fmt;
+    }.
+    
+    Global Instance I : core.fmt.Display.Trait Self := {
+      core.fmt.Display.fmt := fmt;
+    }.
+  End Impl_core_fmt_Display_for_converting_to_string_Circle.
   Global Hint Resolve I : core.
 End Impl_core_fmt_Display_for_converting_to_string_Circle.
 
@@ -63,4 +70,4 @@ Definition main `{State.Trait} : M unit :=
   let* _ :=
     let* α0 := borrow circle converting_to_string.Circle in
     alloc.string.ToString.to_string α0 in
-  Pure tt.
+  M.alloc tt.

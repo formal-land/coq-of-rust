@@ -12,20 +12,24 @@ End Fruit.
 Definition Fruit `{State.Trait} : Set := Fruit.t.
 
 Module Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_else_Fruit.
-  Definition Self `{State.Trait} :=
-    unpacking_options_and_defaults_via_or_else.Fruit.
-  
-  Parameter fmt :
-      forall `{State.Trait},
-      (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
-  
-  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
-    Notation.dot := fmt;
-  }.
-  
-  Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt := fmt;
-  }.
+  Section
+    Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_else_Fruit.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := unpacking_options_and_defaults_via_or_else.Fruit.
+    
+    Parameter fmt :
+        (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+    
+    Global Instance AssociatedFunction_fmt :
+      Notation.DoubleColon Self "fmt" := {
+      Notation.double_colon := fmt;
+    }.
+    
+    Global Instance I : core.fmt.Debug.Trait Self := {
+      core.fmt.Debug.fmt := fmt;
+    }.
+  End Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_else_Fruit.
   Global Hint Resolve I : core.
 End Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_else_Fruit.
 

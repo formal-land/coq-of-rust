@@ -21,14 +21,16 @@ Definition main `{State.Trait} : M unit :=
       let* α11 := pointer_coercion "Unsize" α10 in
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* α0 := borrow print type not implemented in
-    core.ops.function.Fn.call α0 tt in
+    let* α1 := M.alloc tt in
+    core.ops.function.Fn.call α0 α1 in
   let* _reborrow := borrow color alloc.string.String in
   let* _ :=
     let* α0 := borrow print type not implemented in
-    core.ops.function.Fn.call α0 tt in
+    let* α1 := M.alloc tt in
+    core.ops.function.Fn.call α0 α1 in
   let _color_moved := color in
   let* count := M.alloc 0 in
   let inc :=
@@ -52,14 +54,16 @@ Definition main `{State.Trait} : M unit :=
         let* α11 := pointer_coercion "Unsize" α10 in
         let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
         std.io.stdio._print α12 in
-      Pure tt in
-    Pure tt in
+      M.alloc tt in
+    M.alloc tt in
   let* _ :=
     let* α0 := borrow_mut inc type not implemented in
-    core.ops.function.FnMut.call_mut α0 tt in
+    let* α1 := M.alloc tt in
+    core.ops.function.FnMut.call_mut α0 α1 in
   let* _ :=
     let* α0 := borrow_mut inc type not implemented in
-    core.ops.function.FnMut.call_mut α0 tt in
+    let* α1 := M.alloc tt in
+    core.ops.function.FnMut.call_mut α0 α1 in
   let* _count_reborrowed := borrow_mut count i32 in
   let* movable :=
     let* α0 := M.alloc 3 in
@@ -83,8 +87,10 @@ Definition main `{State.Trait} : M unit :=
         let* α11 := pointer_coercion "Unsize" α10 in
         let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
         std.io.stdio._print α12 in
-      Pure tt in
+      M.alloc tt in
     let* _ := core.mem.drop movable in
-    Pure tt in
-  let* _ := core.ops.function.FnOnce.call_once consume tt in
-  Pure tt.
+    M.alloc tt in
+  let* _ :=
+    let* α0 := M.alloc tt in
+    core.ops.function.FnOnce.call_once consume α0 in
+  M.alloc tt.

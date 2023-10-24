@@ -5,7 +5,7 @@ Parameter apply :
     forall
       `{State.Trait}
       {F : Set}
-      `{core.ops.function.Fn.Trait F (Args := unit)},
+      {ℋ_0 : core.ops.function.Fn.Trait F (Args := unit)},
     F -> M unit.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)

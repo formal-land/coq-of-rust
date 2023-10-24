@@ -21,8 +21,8 @@ Definition increase `{State.Trait} (number : i32) : M unit :=
       let* α13 := pointer_coercion "Unsize" α12 in
       let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
       std.io.stdio._print α14 in
-    Pure tt in
-  Pure tt.
+    M.alloc tt in
+  M.alloc tt.
 
 Definition decrease `{State.Trait} (number : i32) : M unit :=
   let* _ :=
@@ -44,8 +44,8 @@ Definition decrease `{State.Trait} (number : i32) : M unit :=
       let* α13 := pointer_coercion "Unsize" α12 in
       let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
       std.io.stdio._print α14 in
-    Pure tt in
-  Pure tt.
+    M.alloc tt in
+  M.alloc tt.
 
 Definition help `{State.Trait} : M unit :=
   let* _ :=
@@ -67,8 +67,8 @@ match_args {increase|decrease} <integer>
       let* α3 := pointer_coercion "Unsize" α2 in
       let* α4 := core.fmt.Arguments::["new_const"] α3 in
       std.io.stdio._print α4 in
-    Pure tt in
-  Pure tt.
+    M.alloc tt in
+  M.alloc tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{State.Trait} : M unit :=
@@ -92,8 +92,8 @@ Definition main `{State.Trait} : M unit :=
         let* α3 := pointer_coercion "Unsize" α2 in
         let* α4 := core.fmt.Arguments::["new_const"] α3 in
         std.io.stdio._print α4 in
-      Pure tt in
-    Pure tt
+      M.alloc tt in
+    M.alloc tt
   | _ =>
     let* α0 :=
       borrow args (alloc.vec.Vec alloc.string.String alloc.alloc.Global) in
@@ -115,7 +115,7 @@ Definition main `{State.Trait} : M unit :=
         let* α3 := pointer_coercion "Unsize" α2 in
         let* α4 := core.fmt.Arguments::["new_const"] α3 in
         std.io.stdio._print α4 in
-      Pure tt
+      M.alloc tt
     | _ =>
       let* _ :=
         let* α0 :=
@@ -126,7 +126,7 @@ Definition main `{State.Trait} : M unit :=
         let* α3 := pointer_coercion "Unsize" α2 in
         let* α4 := core.fmt.Arguments::["new_const"] α3 in
         std.io.stdio._print α4 in
-      Pure tt
+      M.alloc tt
     end
   | _ =>
     let* cmd :=
@@ -165,10 +165,13 @@ Definition main `{State.Trait} : M unit :=
             let* α3 := pointer_coercion "Unsize" α2 in
             let* α4 := core.fmt.Arguments::["new_const"] α3 in
             std.io.stdio._eprint α4 in
-          Pure tt in
+          M.alloc tt in
         let* _ := program_arguments_parsing.help in
-        let* _ := Return tt in
-        never_to_any tt
+        let* _ :=
+          let* α0 := M.alloc tt in
+          Return α0 in
+        let* α0 := M.alloc tt in
+        never_to_any α0
       end in
     let* α0 := deref cmd alloc.string.String in
     let* α1 := borrow α0 alloc.string.String in
@@ -190,11 +193,11 @@ Definition main `{State.Trait} : M unit :=
           let* α3 := pointer_coercion "Unsize" α2 in
           let* α4 := core.fmt.Arguments::["new_const"] α3 in
           std.io.stdio._eprint α4 in
-        Pure tt in
+        M.alloc tt in
       let* _ := program_arguments_parsing.help in
-      Pure tt
+      M.alloc tt
     end
   | _ =>
     let* _ := program_arguments_parsing.help in
-    Pure tt
+    M.alloc tt
   end.

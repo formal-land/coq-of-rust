@@ -11,8 +11,8 @@ Definition function `{State.Trait} : M unit :=
       let* α3 := pointer_coercion "Unsize" α2 in
       let* α4 := core.fmt.Arguments::["new_const"] α3 in
       std.io.stdio._print α4 in
-    Pure tt in
-  Pure tt.
+    M.alloc tt in
+  M.alloc tt.
 
 Module deeply.
   Module nested.
@@ -29,8 +29,8 @@ Module deeply.
           let* α3 := pointer_coercion "Unsize" α2 in
           let* α4 := core.fmt.Arguments::["new_const"] α3 in
           std.io.stdio._print α4 in
-        Pure tt in
-      Pure tt.
+        M.alloc tt in
+      M.alloc tt.
   End nested.
 End deeply.
 
@@ -48,8 +48,8 @@ Module nested.
         let* α3 := pointer_coercion "Unsize" α2 in
         let* α4 := core.fmt.Arguments::["new_const"] α3 in
         std.io.stdio._print α4 in
-      Pure tt in
-    Pure tt.
+      M.alloc tt in
+    M.alloc tt.
 End nested.
 
 Definition function `{State.Trait} : M unit :=
@@ -65,8 +65,8 @@ Definition function `{State.Trait} : M unit :=
       let* α3 := pointer_coercion "Unsize" α2 in
       let* α4 := core.fmt.Arguments::["new_const"] α3 in
       std.io.stdio._print α4 in
-    Pure tt in
-  Pure tt.
+    M.alloc tt in
+  M.alloc tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{State.Trait} : M unit :=
@@ -80,7 +80,7 @@ Definition main `{State.Trait} : M unit :=
       let* α3 := pointer_coercion "Unsize" α2 in
       let* α4 := core.fmt.Arguments::["new_const"] α3 in
       std.io.stdio._print α4 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* _ := the_use_as_declaration.deeply.nested.function in
     let* _ :=
@@ -92,7 +92,7 @@ Definition main `{State.Trait} : M unit :=
         let* α3 := pointer_coercion "Unsize" α2 in
         let* α4 := core.fmt.Arguments::["new_const"] α3 in
         std.io.stdio._print α4 in
-      Pure tt in
-    Pure tt in
+      M.alloc tt in
+    M.alloc tt in
   let* _ := the_use_as_declaration.function in
-  Pure tt.
+  M.alloc tt.

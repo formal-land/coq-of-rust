@@ -8,7 +8,7 @@ Parameter read_lines :
     forall
       `{State.Trait}
       {P : Set}
-      `{core.convert.AsRef.Trait P (T := std.path.Path)},
+      {ℋ_0 : core.convert.AsRef.Trait P (T := std.path.Path)},
     P ->
       M
         (std.io.error.Result

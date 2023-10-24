@@ -21,7 +21,7 @@ Definition main `{State.Trait} : M unit :=
         let* α3 := pointer_coercion "Unsize" α2 in
         let* α4 := core.fmt.Arguments::["new_const"] α3 in
         std.io.stdio._print α4 in
-      Pure tt in
-    Pure tt
+      M.alloc tt in
+    M.alloc tt
   else
-    Pure tt.
+    M.alloc tt.

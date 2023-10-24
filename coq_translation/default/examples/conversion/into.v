@@ -2,37 +2,43 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module Number.
-  Unset Primitive Projections.
-  Record t `{State.Trait} : Set := {
-    value : i32;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_value `{State.Trait} : Notation.Dot "value" := {
-    Notation.dot x := let* x := M.read x in Pure x.(value) : M _;
-  }.
-  Global Instance Get_AF_value `{State.Trait}
-    : Notation.DoubleColon t "value" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(value) : M _;
-  }.
+  Section Number.
+    Context `{State.Trait}.
+    
+    Unset Primitive Projections.
+    Record t : Set := {
+      value : i32;
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_value : Notation.Dot "value" := {
+      Notation.dot x := let* x := M.read x in Pure x.(value) : M _;
+    }.
+    Global Instance Get_AF_value : Notation.DoubleColon t "value" := {
+      Notation.double_colon x := let* x := M.read x in Pure x.(value) : M _;
+    }.
+  End Number.
 End Number.
-Definition Number `{State.Trait} : Set := M.val (Number.t).
+Definition Number `{State.Trait} : Set := M.val Number.t.
 
 Module Impl_core_convert_From_for_into_Number.
-  Definition Self `{State.Trait} := into.Number.
-  
-  Definition from `{State.Trait} (item : i32) : M Self :=
-    M.alloc {| into.Number.value := item; |}.
-  
-  Global Instance AssociatedFunction_from `{State.Trait} :
-    Notation.DoubleColon Self "from" := {
-    Notation.double_colon := from;
-  }.
-  
-  Global Instance I `{State.Trait}
-    : core.convert.From.Trait Self (T := i32) := {
-    core.convert.From.from := from;
-  }.
+  Section Impl_core_convert_From_for_into_Number.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := into.Number.
+    
+    Definition from (item : i32) : M Self :=
+      M.alloc {| into.Number.value := item; |}.
+    
+    Global Instance AssociatedFunction_from :
+      Notation.DoubleColon Self "from" := {
+      Notation.double_colon := from;
+    }.
+    
+    Global Instance I : core.convert.From.Trait Self (T := i32) := {
+      core.convert.From.from := from;
+    }.
+  End Impl_core_convert_From_for_into_Number.
   Global Hint Resolve I : core.
 End Impl_core_convert_From_for_into_Number.
 
@@ -41,4 +47,4 @@ Definition main `{State.Trait} : M unit :=
   let* _ :=
     let* α0 := M.alloc 5 in
     core.convert.Into.into α0 in
-  Pure tt.
+  M.alloc tt.

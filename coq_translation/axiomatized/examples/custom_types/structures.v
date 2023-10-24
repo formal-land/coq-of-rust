@@ -2,118 +2,139 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module Person.
-  Unset Primitive Projections.
-  Record t `{State.Trait} : Set := {
-    name : alloc.string.String;
-    age : u8;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_name `{State.Trait} : Notation.Dot "name" := {
-    Notation.dot x := let* x := M.read x in Pure x.(name) : M _;
-  }.
-  Global Instance Get_AF_name `{State.Trait}
-    : Notation.DoubleColon t "name" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(name) : M _;
-  }.
-  Global Instance Get_age `{State.Trait} : Notation.Dot "age" := {
-    Notation.dot x := let* x := M.read x in Pure x.(age) : M _;
-  }.
-  Global Instance Get_AF_age `{State.Trait} : Notation.DoubleColon t "age" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(age) : M _;
-  }.
+  Section Person.
+    Context `{State.Trait}.
+    
+    Unset Primitive Projections.
+    Record t : Set := {
+      name : alloc.string.String;
+      age : u8;
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_name : Notation.Dot "name" := {
+      Notation.dot x := let* x := M.read x in Pure x.(name) : M _;
+    }.
+    Global Instance Get_AF_name : Notation.DoubleColon t "name" := {
+      Notation.double_colon x := let* x := M.read x in Pure x.(name) : M _;
+    }.
+    Global Instance Get_age : Notation.Dot "age" := {
+      Notation.dot x := let* x := M.read x in Pure x.(age) : M _;
+    }.
+    Global Instance Get_AF_age : Notation.DoubleColon t "age" := {
+      Notation.double_colon x := let* x := M.read x in Pure x.(age) : M _;
+    }.
+  End Person.
 End Person.
-Definition Person `{State.Trait} : Set := M.val (Person.t).
+Definition Person `{State.Trait} : Set := M.val Person.t.
 
 Module Impl_core_fmt_Debug_for_structures_Person.
-  Definition Self `{State.Trait} := structures.Person.
-  
-  Parameter fmt :
-      forall `{State.Trait},
-      (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
-  
-  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
-    Notation.dot := fmt;
-  }.
-  
-  Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt := fmt;
-  }.
+  Section Impl_core_fmt_Debug_for_structures_Person.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := structures.Person.
+    
+    Parameter fmt :
+        (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+    
+    Global Instance AssociatedFunction_fmt :
+      Notation.DoubleColon Self "fmt" := {
+      Notation.double_colon := fmt;
+    }.
+    
+    Global Instance I : core.fmt.Debug.Trait Self := {
+      core.fmt.Debug.fmt := fmt;
+    }.
+  End Impl_core_fmt_Debug_for_structures_Person.
   Global Hint Resolve I : core.
 End Impl_core_fmt_Debug_for_structures_Person.
 
 Module Unit.
-  Inductive t : Set := Build.
+  Section Unit.
+    Context `{State.Trait}.
+    
+    Inductive t : Set := Build.
+  End Unit.
 End Unit.
 Definition Unit := @Unit.t.
 
 Module Pair.
-  Unset Primitive Projections.
-  Record t `{State.Trait} : Set := {
-    x0 : i32;
-    x1 : f32;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
-  }.
-  Global Instance Get_1 `{State.Trait} : Notation.Dot "1" := {
-    Notation.dot x := let* x := M.read x in Pure x.(x1) : M _;
-  }.
+  Section Pair.
+    Context `{State.Trait}.
+    
+    Unset Primitive Projections.
+    Record t : Set := {
+      x0 : i32;
+      x1 : f32;
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_0 : Notation.Dot "0" := {
+      Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
+    }.
+    Global Instance Get_1 : Notation.Dot "1" := {
+      Notation.dot x := let* x := M.read x in Pure x.(x1) : M _;
+    }.
+  End Pair.
 End Pair.
 Definition Pair `{State.Trait} : Set := M.val Pair.t.
 
 Module Point.
-  Unset Primitive Projections.
-  Record t `{State.Trait} : Set := {
-    x : f32;
-    y : f32;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_x `{State.Trait} : Notation.Dot "x" := {
-    Notation.dot x' := let* x' := M.read x' in Pure x'.(x) : M _;
-  }.
-  Global Instance Get_AF_x `{State.Trait} : Notation.DoubleColon t "x" := {
-    Notation.double_colon x' := let* x' := M.read x' in Pure x'.(x) : M _;
-  }.
-  Global Instance Get_y `{State.Trait} : Notation.Dot "y" := {
-    Notation.dot x := let* x := M.read x in Pure x.(y) : M _;
-  }.
-  Global Instance Get_AF_y `{State.Trait} : Notation.DoubleColon t "y" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(y) : M _;
-  }.
+  Section Point.
+    Context `{State.Trait}.
+    
+    Unset Primitive Projections.
+    Record t : Set := {
+      x : f32;
+      y : f32;
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_x : Notation.Dot "x" := {
+      Notation.dot x' := let* x' := M.read x' in Pure x'.(x) : M _;
+    }.
+    Global Instance Get_AF_x : Notation.DoubleColon t "x" := {
+      Notation.double_colon x' := let* x' := M.read x' in Pure x'.(x) : M _;
+    }.
+    Global Instance Get_y : Notation.Dot "y" := {
+      Notation.dot x := let* x := M.read x in Pure x.(y) : M _;
+    }.
+    Global Instance Get_AF_y : Notation.DoubleColon t "y" := {
+      Notation.double_colon x := let* x := M.read x in Pure x.(y) : M _;
+    }.
+  End Point.
 End Point.
-Definition Point `{State.Trait} : Set := M.val (Point.t).
+Definition Point `{State.Trait} : Set := M.val Point.t.
 
 Module Rectangle.
-  Unset Primitive Projections.
-  Record t `{State.Trait} : Set := {
-    top_left : structures.Point;
-    bottom_right : structures.Point;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_top_left `{State.Trait} : Notation.Dot "top_left" := {
-    Notation.dot x := let* x := M.read x in Pure x.(top_left) : M _;
-  }.
-  Global Instance Get_AF_top_left `{State.Trait}
-    : Notation.DoubleColon t "top_left" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(top_left) : M _;
-  }.
-  Global Instance Get_bottom_right `{State.Trait}
-    : Notation.Dot "bottom_right" := {
-    Notation.dot x := let* x := M.read x in Pure x.(bottom_right) : M _;
-  }.
-  Global Instance Get_AF_bottom_right `{State.Trait}
-    : Notation.DoubleColon t "bottom_right" := {
-    Notation.double_colon x
-      :=
-      let* x := M.read x in Pure x.(bottom_right) : M _;
-  }.
+  Section Rectangle.
+    Context `{State.Trait}.
+    
+    Unset Primitive Projections.
+    Record t : Set := {
+      top_left : structures.Point;
+      bottom_right : structures.Point;
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_top_left : Notation.Dot "top_left" := {
+      Notation.dot x := let* x := M.read x in Pure x.(top_left) : M _;
+    }.
+    Global Instance Get_AF_top_left : Notation.DoubleColon t "top_left" := {
+      Notation.double_colon x := let* x := M.read x in Pure x.(top_left) : M _;
+    }.
+    Global Instance Get_bottom_right : Notation.Dot "bottom_right" := {
+      Notation.dot x := let* x := M.read x in Pure x.(bottom_right) : M _;
+    }.
+    Global Instance Get_AF_bottom_right
+      : Notation.DoubleColon t "bottom_right" := {
+      Notation.double_colon x
+        :=
+        let* x := M.read x in Pure x.(bottom_right) : M _;
+    }.
+  End Rectangle.
 End Rectangle.
-Definition Rectangle `{State.Trait} : Set := M.val (Rectangle.t).
+Definition Rectangle `{State.Trait} : Set := M.val Rectangle.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : forall `{State.Trait}, M unit.

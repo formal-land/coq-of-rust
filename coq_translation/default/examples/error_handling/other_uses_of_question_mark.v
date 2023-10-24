@@ -7,67 +7,83 @@ Definition Result (T : Set) `{State.Trait} : Set :=
     (alloc.boxed.Box _ (* OpaqueTy *) alloc.boxed.Box.Default.A).
 
 Module EmptyVec.
-  Inductive t : Set := Build.
+  Section EmptyVec.
+    Context `{State.Trait}.
+    
+    Inductive t : Set := Build.
+  End EmptyVec.
 End EmptyVec.
 Definition EmptyVec := @EmptyVec.t.
 
 Module Impl_core_fmt_Debug_for_other_uses_of_question_mark_EmptyVec.
-  Definition Self `{State.Trait} := other_uses_of_question_mark.EmptyVec.
-  
-  Definition fmt
-      `{State.Trait}
-      (self : ref Self)
-      (f : mut_ref core.fmt.Formatter)
-      : M core.fmt.Result :=
-    let* α0 := deref f core.fmt.Formatter in
-    let* α1 := borrow_mut α0 core.fmt.Formatter in
-    let* α2 := deref (mk_str "EmptyVec") str in
-    let* α3 := borrow α2 str in
-    core.fmt.Formatter::["write_str"] α1 α3.
-  
-  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
-    Notation.dot := fmt;
-  }.
-  
-  Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt := fmt;
-  }.
+  Section Impl_core_fmt_Debug_for_other_uses_of_question_mark_EmptyVec.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := other_uses_of_question_mark.EmptyVec.
+    
+    Definition fmt
+        (self : ref Self)
+        (f : mut_ref core.fmt.Formatter)
+        : M core.fmt.Result :=
+      let* α0 := deref f core.fmt.Formatter in
+      let* α1 := borrow_mut α0 core.fmt.Formatter in
+      let* α2 := deref (mk_str "EmptyVec") str in
+      let* α3 := borrow α2 str in
+      core.fmt.Formatter::["write_str"] α1 α3.
+    
+    Global Instance AssociatedFunction_fmt :
+      Notation.DoubleColon Self "fmt" := {
+      Notation.double_colon := fmt;
+    }.
+    
+    Global Instance I : core.fmt.Debug.Trait Self := {
+      core.fmt.Debug.fmt := fmt;
+    }.
+  End Impl_core_fmt_Debug_for_other_uses_of_question_mark_EmptyVec.
   Global Hint Resolve I : core.
 End Impl_core_fmt_Debug_for_other_uses_of_question_mark_EmptyVec.
 
 Module Impl_core_fmt_Display_for_other_uses_of_question_mark_EmptyVec.
-  Definition Self `{State.Trait} := other_uses_of_question_mark.EmptyVec.
-  
-  Definition fmt
-      `{State.Trait}
-      (self : ref Self)
-      (f : mut_ref core.fmt.Formatter)
-      : M core.fmt.Result :=
-    let* α0 := deref f core.fmt.Formatter in
-    let* α1 := borrow_mut α0 core.fmt.Formatter in
-    let* α2 :=
-      borrow [ mk_str "invalid first item to double" ] (list (ref str)) in
-    let* α3 := deref α2 (list (ref str)) in
-    let* α4 := borrow α3 (list (ref str)) in
-    let* α5 := pointer_coercion "Unsize" α4 in
-    let* α6 := core.fmt.Arguments::["new_const"] α5 in
-    core.fmt.Formatter::["write_fmt"] α1 α6.
-  
-  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
-    Notation.dot := fmt;
-  }.
-  
-  Global Instance I `{State.Trait} : core.fmt.Display.Trait Self := {
-    core.fmt.Display.fmt := fmt;
-  }.
+  Section Impl_core_fmt_Display_for_other_uses_of_question_mark_EmptyVec.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := other_uses_of_question_mark.EmptyVec.
+    
+    Definition fmt
+        (self : ref Self)
+        (f : mut_ref core.fmt.Formatter)
+        : M core.fmt.Result :=
+      let* α0 := deref f core.fmt.Formatter in
+      let* α1 := borrow_mut α0 core.fmt.Formatter in
+      let* α2 :=
+        borrow [ mk_str "invalid first item to double" ] (list (ref str)) in
+      let* α3 := deref α2 (list (ref str)) in
+      let* α4 := borrow α3 (list (ref str)) in
+      let* α5 := pointer_coercion "Unsize" α4 in
+      let* α6 := core.fmt.Arguments::["new_const"] α5 in
+      core.fmt.Formatter::["write_fmt"] α1 α6.
+    
+    Global Instance AssociatedFunction_fmt :
+      Notation.DoubleColon Self "fmt" := {
+      Notation.double_colon := fmt;
+    }.
+    
+    Global Instance I : core.fmt.Display.Trait Self := {
+      core.fmt.Display.fmt := fmt;
+    }.
+  End Impl_core_fmt_Display_for_other_uses_of_question_mark_EmptyVec.
   Global Hint Resolve I : core.
 End Impl_core_fmt_Display_for_other_uses_of_question_mark_EmptyVec.
 
 Module Impl_core_error_Error_for_other_uses_of_question_mark_EmptyVec.
-  Definition Self `{State.Trait} := other_uses_of_question_mark.EmptyVec.
-  
-  Global Instance I `{State.Trait} : core.error.Error.Trait Self := {
-  }.
+  Section Impl_core_error_Error_for_other_uses_of_question_mark_EmptyVec.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := other_uses_of_question_mark.EmptyVec.
+    
+    Global Instance I : core.error.Error.Trait Self := {
+    }.
+  End Impl_core_error_Error_for_other_uses_of_question_mark_EmptyVec.
   Global Hint Resolve I : core.
 End Impl_core_error_Error_for_other_uses_of_question_mark_EmptyVec.
 
@@ -135,7 +151,7 @@ Definition print
       let* α11 := pointer_coercion "Unsize" α10 in
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
-    Pure tt
+    M.alloc tt
   | core.result.Result e =>
     let* _ :=
       let* α0 := borrow [ mk_str "Error: "; mk_str "
@@ -156,7 +172,7 @@ Definition print
       let* α11 := pointer_coercion "Unsize" α10 in
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
-    Pure tt
+    M.alloc tt
   end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
@@ -191,4 +207,4 @@ Definition main `{State.Trait} : M unit :=
   let* _ :=
     let* α0 := other_uses_of_question_mark.double_first strings in
     other_uses_of_question_mark.print α0 in
-  Pure tt.
+  M.alloc tt.

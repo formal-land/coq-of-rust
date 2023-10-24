@@ -4,8 +4,8 @@ Require Import CoqOfRust.CoqOfRust.
 Definition compare_prints
     `{State.Trait}
     {T : Set}
-    `{core.fmt.Debug.Trait T}
-    `{core.fmt.Display.Trait T}
+    {ℋ_0 : core.fmt.Debug.Trait T}
+    {ℋ_1 : core.fmt.Display.Trait T}
     (t : ref T)
     : M unit :=
   let* _ :=
@@ -25,7 +25,7 @@ Definition compare_prints
       let* α11 := pointer_coercion "Unsize" α10 in
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* _ :=
       let* α0 := borrow [ mk_str "Display: `"; mk_str "`
@@ -43,14 +43,14 @@ Definition compare_prints
       let* α11 := pointer_coercion "Unsize" α10 in
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
-    Pure tt in
-  Pure tt.
+    M.alloc tt in
+  M.alloc tt.
 
 Definition compare_types
     `{State.Trait}
     {T U : Set}
-    `{core.fmt.Debug.Trait T}
-    `{core.fmt.Debug.Trait U}
+    {ℋ_0 : core.fmt.Debug.Trait T}
+    {ℋ_1 : core.fmt.Debug.Trait U}
     (t : ref T)
     (u : ref U)
     : M unit :=
@@ -71,7 +71,7 @@ Definition compare_types
       let* α11 := pointer_coercion "Unsize" α10 in
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* _ :=
       let* α0 := borrow [ mk_str "u: `"; mk_str "`
@@ -89,8 +89,8 @@ Definition compare_types
       let* α11 := pointer_coercion "Unsize" α10 in
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
-    Pure tt in
-  Pure tt.
+    M.alloc tt in
+  M.alloc tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{State.Trait} : M unit :=
@@ -121,4 +121,4 @@ Definition main `{State.Trait} : M unit :=
     let* α4 := deref α3 (alloc.vec.Vec i32 alloc.alloc.Global) in
     let* α5 := borrow α4 (alloc.vec.Vec i32 alloc.alloc.Global) in
     generics_multiple_bounds.compare_types α2 α5 in
-  Pure tt.
+  M.alloc tt.

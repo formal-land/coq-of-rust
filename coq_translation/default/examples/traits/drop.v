@@ -2,56 +2,64 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module Droppable.
-  Unset Primitive Projections.
-  Record t `{State.Trait} : Set := {
-    name : ref str;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_name `{State.Trait} : Notation.Dot "name" := {
-    Notation.dot x := let* x := M.read x in Pure x.(name) : M _;
-  }.
-  Global Instance Get_AF_name `{State.Trait}
-    : Notation.DoubleColon t "name" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(name) : M _;
-  }.
+  Section Droppable.
+    Context `{State.Trait}.
+    
+    Unset Primitive Projections.
+    Record t : Set := {
+      name : ref str;
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_name : Notation.Dot "name" := {
+      Notation.dot x := let* x := M.read x in Pure x.(name) : M _;
+    }.
+    Global Instance Get_AF_name : Notation.DoubleColon t "name" := {
+      Notation.double_colon x := let* x := M.read x in Pure x.(name) : M _;
+    }.
+  End Droppable.
 End Droppable.
-Definition Droppable `{State.Trait} : Set := M.val (Droppable.t).
+Definition Droppable `{State.Trait} : Set := M.val Droppable.t.
 
 Module Impl_core_ops_drop_Drop_for_drop_Droppable.
-  Definition Self `{State.Trait} := drop.Droppable.
-  
-  Definition drop `{State.Trait} (self : mut_ref Self) : M unit :=
-    let* _ :=
+  Section Impl_core_ops_drop_Drop_for_drop_Droppable.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := drop.Droppable.
+    
+    Definition drop (self : mut_ref Self) : M unit :=
       let* _ :=
-        let* α0 :=
-          borrow [ mk_str "> Dropping "; mk_str "
+        let* _ :=
+          let* α0 :=
+            borrow [ mk_str "> Dropping "; mk_str "
 " ] (list (ref str)) in
-        let* α1 := deref α0 (list (ref str)) in
-        let* α2 := borrow α1 (list (ref str)) in
-        let* α3 := pointer_coercion "Unsize" α2 in
-        let* α4 := deref self drop.Droppable in
-        let* α5 := α4.["name"] in
-        let* α6 := borrow α5 (ref str) in
-        let* α7 := deref α6 (ref str) in
-        let* α8 := borrow α7 (ref str) in
-        let* α9 := core.fmt.rt.Argument::["new_display"] α8 in
-        let* α10 := borrow [ α9 ] (list core.fmt.rt.Argument) in
-        let* α11 := deref α10 (list core.fmt.rt.Argument) in
-        let* α12 := borrow α11 (list core.fmt.rt.Argument) in
-        let* α13 := pointer_coercion "Unsize" α12 in
-        let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
-        std.io.stdio._print α14 in
-      Pure tt in
-    Pure tt.
-  
-  Global Instance Method_drop `{State.Trait} : Notation.Dot "drop" := {
-    Notation.dot := drop;
-  }.
-  
-  Global Instance I `{State.Trait} : core.ops.drop.Drop.Trait Self := {
-    core.ops.drop.Drop.drop := drop;
-  }.
+          let* α1 := deref α0 (list (ref str)) in
+          let* α2 := borrow α1 (list (ref str)) in
+          let* α3 := pointer_coercion "Unsize" α2 in
+          let* α4 := deref self drop.Droppable in
+          let* α5 := α4.["name"] in
+          let* α6 := borrow α5 (ref str) in
+          let* α7 := deref α6 (ref str) in
+          let* α8 := borrow α7 (ref str) in
+          let* α9 := core.fmt.rt.Argument::["new_display"] α8 in
+          let* α10 := borrow [ α9 ] (list core.fmt.rt.Argument) in
+          let* α11 := deref α10 (list core.fmt.rt.Argument) in
+          let* α12 := borrow α11 (list core.fmt.rt.Argument) in
+          let* α13 := pointer_coercion "Unsize" α12 in
+          let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
+          std.io.stdio._print α14 in
+        M.alloc tt in
+      M.alloc tt.
+    
+    Global Instance AssociatedFunction_drop :
+      Notation.DoubleColon Self "drop" := {
+      Notation.double_colon := drop;
+    }.
+    
+    Global Instance I : core.ops.drop.Drop.Trait Self := {
+      core.ops.drop.Drop.drop := drop;
+    }.
+  End Impl_core_ops_drop_Drop_for_drop_Droppable.
   Global Hint Resolve I : core.
 End Impl_core_ops_drop_Drop_for_drop_Droppable.
 
@@ -72,8 +80,8 @@ Definition main `{State.Trait} : M unit :=
           let* α3 := pointer_coercion "Unsize" α2 in
           let* α4 := core.fmt.Arguments::["new_const"] α3 in
           std.io.stdio._print α4 in
-        Pure tt in
-      Pure tt in
+        M.alloc tt in
+      M.alloc tt in
     let* _ :=
       let* _ :=
         let* α0 := borrow [ mk_str "Just exited block B
@@ -83,7 +91,7 @@ Definition main `{State.Trait} : M unit :=
         let* α3 := pointer_coercion "Unsize" α2 in
         let* α4 := core.fmt.Arguments::["new_const"] α3 in
         std.io.stdio._print α4 in
-      Pure tt in
+      M.alloc tt in
     let* _ :=
       let* _ :=
         let* α0 := borrow [ mk_str "Exiting block A
@@ -93,8 +101,8 @@ Definition main `{State.Trait} : M unit :=
         let* α3 := pointer_coercion "Unsize" α2 in
         let* α4 := core.fmt.Arguments::["new_const"] α3 in
         std.io.stdio._print α4 in
-      Pure tt in
-    Pure tt in
+      M.alloc tt in
+    M.alloc tt in
   let* _ :=
     let* _ :=
       let* α0 := borrow [ mk_str "Just exited block A
@@ -104,7 +112,7 @@ Definition main `{State.Trait} : M unit :=
       let* α3 := pointer_coercion "Unsize" α2 in
       let* α4 := core.fmt.Arguments::["new_const"] α3 in
       std.io.stdio._print α4 in
-    Pure tt in
+    M.alloc tt in
   let* _ := core.mem.drop _a in
   let* _ :=
     let* _ :=
@@ -116,5 +124,5 @@ Definition main `{State.Trait} : M unit :=
       let* α3 := pointer_coercion "Unsize" α2 in
       let* α4 := core.fmt.Arguments::["new_const"] α3 in
       std.io.stdio._print α4 in
-    Pure tt in
-  Pure tt.
+    M.alloc tt in
+  M.alloc tt.

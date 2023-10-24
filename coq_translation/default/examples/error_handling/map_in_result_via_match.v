@@ -45,7 +45,7 @@ Definition print
       let* α11 := pointer_coercion "Unsize" α10 in
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
-    Pure tt
+    M.alloc tt
   | core.result.Result e =>
     let* _ :=
       let* α0 := borrow [ mk_str "Error: "; mk_str "
@@ -63,7 +63,7 @@ Definition print
       let* α11 := pointer_coercion "Unsize" α10 in
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
-    Pure tt
+    M.alloc tt
   end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
@@ -82,4 +82,4 @@ Definition main `{State.Trait} : M unit :=
     let* α3 := borrow α2 str in
     map_in_result_via_match.multiply α1 α3 in
   let* _ := map_in_result_via_match.print tt in
-  Pure tt.
+  M.alloc tt.

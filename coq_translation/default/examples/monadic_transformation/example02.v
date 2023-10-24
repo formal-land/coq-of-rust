@@ -6,31 +6,31 @@ Definition main `{State.Trait} : M unit :=
   let* _ :=
     let* α0 := M.alloc 1 in
     match α0 with
-    | _ => false
-    | _ => true
+    | _ => M.alloc false
+    | _ => M.alloc true
     end in
   let* _ :=
-    let* α0 := true in
+    let* α0 := M.alloc true in
     let* α1 := use α0 in
     if (α1 : bool) then
       M.alloc 0
     else
       M.alloc 1 in
   let* _ :=
-    let* α0 := false in
+    let* α0 := M.alloc false in
     let* α1 := use α0 in
     if (α1 : bool) then
       M.alloc 2
     else
-      let* α0 := false in
+      let* α0 := M.alloc false in
       let* α1 := use α0 in
       if (α1 : bool) then
         M.alloc 3
       else
-        let* α0 := false in
+        let* α0 := M.alloc false in
         let* α1 := use α0 in
         if (α1 : bool) then
           M.alloc 4
         else
           M.alloc 5 in
-  Pure tt.
+  M.alloc tt.

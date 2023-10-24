@@ -10,19 +10,23 @@ End Food.
 Definition Food `{State.Trait} : Set := Food.t.
 
 Module Impl_core_fmt_Debug_for_combinators_and_then_Food.
-  Definition Self `{State.Trait} := combinators_and_then.Food.
-  
-  Parameter fmt :
-      forall `{State.Trait},
-      (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
-  
-  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
-    Notation.dot := fmt;
-  }.
-  
-  Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt := fmt;
-  }.
+  Section Impl_core_fmt_Debug_for_combinators_and_then_Food.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := combinators_and_then.Food.
+    
+    Parameter fmt :
+        (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+    
+    Global Instance AssociatedFunction_fmt :
+      Notation.DoubleColon Self "fmt" := {
+      Notation.double_colon := fmt;
+    }.
+    
+    Global Instance I : core.fmt.Debug.Trait Self := {
+      core.fmt.Debug.fmt := fmt;
+    }.
+  End Impl_core_fmt_Debug_for_combinators_and_then_Food.
   Global Hint Resolve I : core.
 End Impl_core_fmt_Debug_for_combinators_and_then_Food.
 
@@ -35,19 +39,23 @@ End Day.
 Definition Day `{State.Trait} : Set := Day.t.
 
 Module Impl_core_fmt_Debug_for_combinators_and_then_Day.
-  Definition Self `{State.Trait} := combinators_and_then.Day.
-  
-  Parameter fmt :
-      forall `{State.Trait},
-      (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
-  
-  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
-    Notation.dot := fmt;
-  }.
-  
-  Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt := fmt;
-  }.
+  Section Impl_core_fmt_Debug_for_combinators_and_then_Day.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := combinators_and_then.Day.
+    
+    Parameter fmt :
+        (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+    
+    Global Instance AssociatedFunction_fmt :
+      Notation.DoubleColon Self "fmt" := {
+      Notation.double_colon := fmt;
+    }.
+    
+    Global Instance I : core.fmt.Debug.Trait Self := {
+      core.fmt.Debug.fmt := fmt;
+    }.
+  End Impl_core_fmt_Debug_for_combinators_and_then_Day.
   Global Hint Resolve I : core.
 End Impl_core_fmt_Debug_for_combinators_and_then_Day.
 

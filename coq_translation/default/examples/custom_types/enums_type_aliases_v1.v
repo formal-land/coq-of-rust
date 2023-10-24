@@ -16,4 +16,4 @@ Definition Operations `{State.Trait} : Set :=
 Definition main `{State.Trait} : M unit :=
   let x :=
     enums_type_aliases_v1.VeryVerboseEnumOfThingsToDoWithNumbers.Add tt in
-  Pure tt.
+  M.alloc tt.

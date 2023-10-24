@@ -26,7 +26,7 @@ Definition main `{State.Trait} : M unit :=
       let* α11 := pointer_coercion "Unsize" α10 in
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
-    Pure tt in
+    M.alloc tt in
   let* escaped :=
     [82, 117, 115, 116, 32, 97, 115, 32, 98, 121, 116, 101, 115] in
   let* _ :=
@@ -47,7 +47,7 @@ Definition main `{State.Trait} : M unit :=
       let* α11 := pointer_coercion "Unsize" α10 in
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
-    Pure tt in
+    M.alloc tt in
   let* raw_bytestring :=
     [92, 117, 123, 50, 49, 49, 68, 125, 32, 105, 115, 32, 110, 111, 116, 32, 101, 115, 99, 97, 112, 101, 100, 32, 104, 101, 114, 101] in
   let* _ :=
@@ -67,7 +67,7 @@ Definition main `{State.Trait} : M unit :=
       let* α11 := pointer_coercion "Unsize" α10 in
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* α0 := deref raw_bytestring (list u8) in
     let* α1 := borrow α0 (list u8) in
@@ -95,10 +95,10 @@ Definition main `{State.Trait} : M unit :=
           let* α11 := pointer_coercion "Unsize" α10 in
           let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
           std.io.stdio._print α12 in
-        Pure tt in
-      Pure tt
+        M.alloc tt in
+      M.alloc tt
     else
-      Pure tt in
+      M.alloc tt in
   let* _quotes :=
     [89, 111, 117, 32, 99, 97, 110, 32, 97, 108, 115, 111, 32, 117, 115, 101, 32, 34, 102, 97, 110, 99, 105, 101, 114, 34, 32, 102, 111, 114, 109, 97, 116, 116, 105, 110, 103, 44, 32, 92, 10, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 108, 105, 107, 101, 32, 119, 105, 116, 104, 32, 110, 111, 114, 109, 97, 108, 32, 114, 97, 119, 32, 115, 116, 114, 105, 110, 103, 115] in
   let* shift_jis := [130, 230, 130, 168, 130, 177, 130, 187] in
@@ -128,7 +128,7 @@ Definition main `{State.Trait} : M unit :=
         let* α11 := pointer_coercion "Unsize" α10 in
         let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
         std.io.stdio._print α12 in
-      Pure tt
+      M.alloc tt
     | core.result.Result e =>
       let* _ :=
         let* α0 :=
@@ -149,6 +149,6 @@ Definition main `{State.Trait} : M unit :=
         let* α11 := pointer_coercion "Unsize" α10 in
         let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
         std.io.stdio._print α12 in
-      Pure tt
+      M.alloc tt
     end in
-  Pure tt.
+  M.alloc tt.

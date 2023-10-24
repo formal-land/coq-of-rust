@@ -25,8 +25,8 @@ Definition destroy_box
       let* α11 := pointer_coercion "Unsize" α10 in
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
-    Pure tt in
-  Pure tt.
+    M.alloc tt in
+  M.alloc tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{State.Trait} : M unit :=
@@ -56,7 +56,7 @@ Definition main `{State.Trait} : M unit :=
       let* α15 := pointer_coercion "Unsize" α14 in
       let* α16 := core.fmt.Arguments::["new_v1"] α3 α15 in
       std.io.stdio._print α16 in
-    Pure tt in
+    M.alloc tt in
   let* a :=
     let* α0 := M.alloc 5 in
     (alloc.boxed.Box _ alloc.alloc.Global)::["new"] α0 in
@@ -78,7 +78,7 @@ Definition main `{State.Trait} : M unit :=
       let* α11 := pointer_coercion "Unsize" α10 in
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
-    Pure tt in
+    M.alloc tt in
   let b := a in
   let* _ := scoping_rules_ownership_and_rules.destroy_box b in
-  Pure tt.
+  M.alloc tt.

@@ -2,31 +2,33 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module PrintInOption.
-  Class Trait (Self : Set) `{State.Trait} : Type := {
-    print_in_option : Self -> M unit;
-  }.
-  
-  Global Instance Method_print_in_option `{State.Trait} `(Trait)
-    : Notation.Dot "print_in_option" := {
-    Notation.dot := print_in_option;
-  }.
+  Section PrintInOption.
+    Context `{State.Trait}.
+    
+    Class Trait (Self : Set) : Type := {
+      print_in_option : Self -> M unit;
+    }.
+    
+  End PrintInOption.
 End PrintInOption.
 
 Module Impl_generics_where_clauses_PrintInOption_for_T.
   Section Impl_generics_where_clauses_PrintInOption_for_T.
+    Context `{State.Trait}.
+    
     Context {T : Set}.
-    Context `{core.fmt.Debug.Trait (core.option.Option T)}.
-    Definition Self `{State.Trait} := T.
     
-    Parameter print_in_option : forall `{State.Trait}, Self -> M unit.
+    Context {ℋ_0 : core.fmt.Debug.Trait (core.option.Option T)}.
+    Definition Self : Set := T.
     
-    Global Instance Method_print_in_option `{State.Trait} :
-      Notation.Dot "print_in_option" := {
-      Notation.dot := print_in_option;
+    Parameter print_in_option : Self -> M unit.
+    
+    Global Instance AssociatedFunction_print_in_option :
+      Notation.DoubleColon Self "print_in_option" := {
+      Notation.double_colon := print_in_option;
     }.
     
-    Global Instance I `{State.Trait}
-      : generics_where_clauses.PrintInOption.Trait Self := {
+    Global Instance I : generics_where_clauses.PrintInOption.Trait Self := {
       generics_where_clauses.PrintInOption.print_in_option := print_in_option;
     }.
   End Impl_generics_where_clauses_PrintInOption_for_T.

@@ -15,8 +15,8 @@ Module my_mod.
         let* α3 := pointer_coercion "Unsize" α2 in
         let* α4 := core.fmt.Arguments::["new_const"] α3 in
         std.io.stdio._print α4 in
-      Pure tt in
-    Pure tt.
+      M.alloc tt in
+    M.alloc tt.
   
   Definition function `{State.Trait} : M unit :=
     let* _ :=
@@ -29,8 +29,8 @@ Module my_mod.
         let* α3 := pointer_coercion "Unsize" α2 in
         let* α4 := core.fmt.Arguments::["new_const"] α3 in
         std.io.stdio._print α4 in
-      Pure tt in
-    Pure tt.
+      M.alloc tt in
+    M.alloc tt.
   
   Definition indirect_access `{State.Trait} : M unit :=
     let* _ :=
@@ -45,9 +45,9 @@ Module my_mod.
         let* α3 := pointer_coercion "Unsize" α2 in
         let* α4 := core.fmt.Arguments::["new_const"] α3 in
         std.io.stdio._print α4 in
-      Pure tt in
+      M.alloc tt in
     let* _ := visibility.my_mod.private_function in
-    Pure tt.
+    M.alloc tt.
   
   Module nested.
     Definition function `{State.Trait} : M unit :=
@@ -63,8 +63,8 @@ Module my_mod.
           let* α3 := pointer_coercion "Unsize" α2 in
           let* α4 := core.fmt.Arguments::["new_const"] α3 in
           std.io.stdio._print α4 in
-        Pure tt in
-      Pure tt.
+        M.alloc tt in
+      M.alloc tt.
     
     (* #[allow(dead_code)] - function was ignored by the compiler *)
     Definition private_function `{State.Trait} : M unit :=
@@ -80,8 +80,8 @@ Module my_mod.
           let* α3 := pointer_coercion "Unsize" α2 in
           let* α4 := core.fmt.Arguments::["new_const"] α3 in
           std.io.stdio._print α4 in
-        Pure tt in
-      Pure tt.
+        M.alloc tt in
+      M.alloc tt.
     
     Definition public_function_in_my_mod `{State.Trait} : M unit :=
       let* _ :=
@@ -99,9 +99,9 @@ Module my_mod.
           let* α3 := pointer_coercion "Unsize" α2 in
           let* α4 := core.fmt.Arguments::["new_const"] α3 in
           std.io.stdio._print α4 in
-        Pure tt in
+        M.alloc tt in
       let* _ := visibility.my_mod.nested.public_function_in_nested in
-      Pure tt.
+      M.alloc tt.
     
     Definition public_function_in_nested `{State.Trait} : M unit :=
       let* _ :=
@@ -116,8 +116,8 @@ Module my_mod.
           let* α3 := pointer_coercion "Unsize" α2 in
           let* α4 := core.fmt.Arguments::["new_const"] α3 in
           std.io.stdio._print α4 in
-        Pure tt in
-      Pure tt.
+        M.alloc tt in
+      M.alloc tt.
     
     Definition public_function_in_super_mod `{State.Trait} : M unit :=
       let* _ :=
@@ -135,8 +135,8 @@ Module my_mod.
           let* α3 := pointer_coercion "Unsize" α2 in
           let* α4 := core.fmt.Arguments::["new_const"] α3 in
           std.io.stdio._print α4 in
-        Pure tt in
-      Pure tt.
+        M.alloc tt in
+      M.alloc tt.
   End nested.
   
   Definition call_public_function_in_my_mod `{State.Trait} : M unit :=
@@ -155,7 +155,7 @@ Module my_mod.
         let* α3 := pointer_coercion "Unsize" α2 in
         let* α4 := core.fmt.Arguments::["new_const"] α3 in
         std.io.stdio._print α4 in
-      Pure tt in
+      M.alloc tt in
     let* _ := visibility.my_mod.nested.public_function_in_my_mod in
     let* _ :=
       let* _ :=
@@ -165,9 +165,9 @@ Module my_mod.
         let* α3 := pointer_coercion "Unsize" α2 in
         let* α4 := core.fmt.Arguments::["new_const"] α3 in
         std.io.stdio._print α4 in
-      Pure tt in
+      M.alloc tt in
     let* _ := visibility.my_mod.nested.public_function_in_super_mod in
-    Pure tt.
+    M.alloc tt.
   
   Definition public_function_in_crate `{State.Trait} : M unit :=
     let* _ :=
@@ -182,8 +182,8 @@ Module my_mod.
         let* α3 := pointer_coercion "Unsize" α2 in
         let* α4 := core.fmt.Arguments::["new_const"] α3 in
         std.io.stdio._print α4 in
-      Pure tt in
-    Pure tt.
+      M.alloc tt in
+    M.alloc tt.
   
   Module private_nested.
     (* #[allow(dead_code)] - function was ignored by the compiler *)
@@ -200,8 +200,8 @@ Module my_mod.
           let* α3 := pointer_coercion "Unsize" α2 in
           let* α4 := core.fmt.Arguments::["new_const"] α3 in
           std.io.stdio._print α4 in
-        Pure tt in
-      Pure tt.
+        M.alloc tt in
+      M.alloc tt.
     
     (* #[allow(dead_code)] - function was ignored by the compiler *)
     Definition restricted_function `{State.Trait} : M unit :=
@@ -218,8 +218,8 @@ Module my_mod.
           let* α3 := pointer_coercion "Unsize" α2 in
           let* α4 := core.fmt.Arguments::["new_const"] α3 in
           std.io.stdio._print α4 in
-        Pure tt in
-      Pure tt.
+        M.alloc tt in
+      M.alloc tt.
   End private_nested.
 End my_mod.
 
@@ -236,8 +236,8 @@ Definition private_function `{State.Trait} : M unit :=
       let* α3 := pointer_coercion "Unsize" α2 in
       let* α4 := core.fmt.Arguments::["new_const"] α3 in
       std.io.stdio._print α4 in
-    Pure tt in
-  Pure tt.
+    M.alloc tt in
+  M.alloc tt.
 
 Definition function `{State.Trait} : M unit :=
   let* _ :=
@@ -250,8 +250,8 @@ Definition function `{State.Trait} : M unit :=
       let* α3 := pointer_coercion "Unsize" α2 in
       let* α4 := core.fmt.Arguments::["new_const"] α3 in
       std.io.stdio._print α4 in
-    Pure tt in
-  Pure tt.
+    M.alloc tt in
+  M.alloc tt.
 
 Definition indirect_access `{State.Trait} : M unit :=
   let* _ :=
@@ -266,9 +266,9 @@ Definition indirect_access `{State.Trait} : M unit :=
       let* α3 := pointer_coercion "Unsize" α2 in
       let* α4 := core.fmt.Arguments::["new_const"] α3 in
       std.io.stdio._print α4 in
-    Pure tt in
+    M.alloc tt in
   let* _ := visibility.my_mod.private_function in
-  Pure tt.
+  M.alloc tt.
 
 Module nested.
   Definition function `{State.Trait} : M unit :=
@@ -284,8 +284,8 @@ Module nested.
         let* α3 := pointer_coercion "Unsize" α2 in
         let* α4 := core.fmt.Arguments::["new_const"] α3 in
         std.io.stdio._print α4 in
-      Pure tt in
-    Pure tt.
+      M.alloc tt in
+    M.alloc tt.
   
   (* #[allow(dead_code)] - function was ignored by the compiler *)
   Definition private_function `{State.Trait} : M unit :=
@@ -301,8 +301,8 @@ Module nested.
         let* α3 := pointer_coercion "Unsize" α2 in
         let* α4 := core.fmt.Arguments::["new_const"] α3 in
         std.io.stdio._print α4 in
-      Pure tt in
-    Pure tt.
+      M.alloc tt in
+    M.alloc tt.
   
   Definition public_function_in_my_mod `{State.Trait} : M unit :=
     let* _ :=
@@ -320,9 +320,9 @@ Module nested.
         let* α3 := pointer_coercion "Unsize" α2 in
         let* α4 := core.fmt.Arguments::["new_const"] α3 in
         std.io.stdio._print α4 in
-      Pure tt in
+      M.alloc tt in
     let* _ := visibility.my_mod.nested.public_function_in_nested in
-    Pure tt.
+    M.alloc tt.
   
   Definition public_function_in_nested `{State.Trait} : M unit :=
     let* _ :=
@@ -337,8 +337,8 @@ Module nested.
         let* α3 := pointer_coercion "Unsize" α2 in
         let* α4 := core.fmt.Arguments::["new_const"] α3 in
         std.io.stdio._print α4 in
-      Pure tt in
-    Pure tt.
+      M.alloc tt in
+    M.alloc tt.
   
   Definition public_function_in_super_mod `{State.Trait} : M unit :=
     let* _ :=
@@ -354,8 +354,8 @@ Module nested.
         let* α3 := pointer_coercion "Unsize" α2 in
         let* α4 := core.fmt.Arguments::["new_const"] α3 in
         std.io.stdio._print α4 in
-      Pure tt in
-    Pure tt.
+      M.alloc tt in
+    M.alloc tt.
 End nested.
 
 Definition function `{State.Trait} : M unit :=
@@ -371,8 +371,8 @@ Definition function `{State.Trait} : M unit :=
       let* α3 := pointer_coercion "Unsize" α2 in
       let* α4 := core.fmt.Arguments::["new_const"] α3 in
       std.io.stdio._print α4 in
-    Pure tt in
-  Pure tt.
+    M.alloc tt in
+  M.alloc tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition private_function `{State.Trait} : M unit :=
@@ -388,8 +388,8 @@ Definition private_function `{State.Trait} : M unit :=
       let* α3 := pointer_coercion "Unsize" α2 in
       let* α4 := core.fmt.Arguments::["new_const"] α3 in
       std.io.stdio._print α4 in
-    Pure tt in
-  Pure tt.
+    M.alloc tt in
+  M.alloc tt.
 
 Definition public_function_in_my_mod `{State.Trait} : M unit :=
   let* _ :=
@@ -407,9 +407,9 @@ Definition public_function_in_my_mod `{State.Trait} : M unit :=
       let* α3 := pointer_coercion "Unsize" α2 in
       let* α4 := core.fmt.Arguments::["new_const"] α3 in
       std.io.stdio._print α4 in
-    Pure tt in
+    M.alloc tt in
   let* _ := visibility.my_mod.nested.public_function_in_nested in
-  Pure tt.
+  M.alloc tt.
 
 Definition public_function_in_nested `{State.Trait} : M unit :=
   let* _ :=
@@ -424,8 +424,8 @@ Definition public_function_in_nested `{State.Trait} : M unit :=
       let* α3 := pointer_coercion "Unsize" α2 in
       let* α4 := core.fmt.Arguments::["new_const"] α3 in
       std.io.stdio._print α4 in
-    Pure tt in
-  Pure tt.
+    M.alloc tt in
+  M.alloc tt.
 
 Definition public_function_in_super_mod `{State.Trait} : M unit :=
   let* _ :=
@@ -440,8 +440,8 @@ Definition public_function_in_super_mod `{State.Trait} : M unit :=
       let* α3 := pointer_coercion "Unsize" α2 in
       let* α4 := core.fmt.Arguments::["new_const"] α3 in
       std.io.stdio._print α4 in
-    Pure tt in
-  Pure tt.
+    M.alloc tt in
+  M.alloc tt.
 
 Definition call_public_function_in_my_mod `{State.Trait} : M unit :=
   let* _ :=
@@ -457,7 +457,7 @@ Definition call_public_function_in_my_mod `{State.Trait} : M unit :=
       let* α3 := pointer_coercion "Unsize" α2 in
       let* α4 := core.fmt.Arguments::["new_const"] α3 in
       std.io.stdio._print α4 in
-    Pure tt in
+    M.alloc tt in
   let* _ := visibility.my_mod.nested.public_function_in_my_mod in
   let* _ :=
     let* _ :=
@@ -467,9 +467,9 @@ Definition call_public_function_in_my_mod `{State.Trait} : M unit :=
       let* α3 := pointer_coercion "Unsize" α2 in
       let* α4 := core.fmt.Arguments::["new_const"] α3 in
       std.io.stdio._print α4 in
-    Pure tt in
+    M.alloc tt in
   let* _ := visibility.my_mod.nested.public_function_in_super_mod in
-  Pure tt.
+  M.alloc tt.
 
 Definition public_function_in_crate `{State.Trait} : M unit :=
   let* _ :=
@@ -484,8 +484,8 @@ Definition public_function_in_crate `{State.Trait} : M unit :=
       let* α3 := pointer_coercion "Unsize" α2 in
       let* α4 := core.fmt.Arguments::["new_const"] α3 in
       std.io.stdio._print α4 in
-    Pure tt in
-  Pure tt.
+    M.alloc tt in
+  M.alloc tt.
 
 Module private_nested.
   (* #[allow(dead_code)] - function was ignored by the compiler *)
@@ -502,8 +502,8 @@ Module private_nested.
         let* α3 := pointer_coercion "Unsize" α2 in
         let* α4 := core.fmt.Arguments::["new_const"] α3 in
         std.io.stdio._print α4 in
-      Pure tt in
-    Pure tt.
+      M.alloc tt in
+    M.alloc tt.
   
   (* #[allow(dead_code)] - function was ignored by the compiler *)
   Definition restricted_function `{State.Trait} : M unit :=
@@ -519,8 +519,8 @@ Module private_nested.
         let* α3 := pointer_coercion "Unsize" α2 in
         let* α4 := core.fmt.Arguments::["new_const"] α3 in
         std.io.stdio._print α4 in
-      Pure tt in
-    Pure tt.
+      M.alloc tt in
+    M.alloc tt.
 End private_nested.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
@@ -537,8 +537,8 @@ Definition function `{State.Trait} : M unit :=
       let* α3 := pointer_coercion "Unsize" α2 in
       let* α4 := core.fmt.Arguments::["new_const"] α3 in
       std.io.stdio._print α4 in
-    Pure tt in
-  Pure tt.
+    M.alloc tt in
+  M.alloc tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition restricted_function `{State.Trait} : M unit :=
@@ -554,8 +554,8 @@ Definition restricted_function `{State.Trait} : M unit :=
       let* α3 := pointer_coercion "Unsize" α2 in
       let* α4 := core.fmt.Arguments::["new_const"] α3 in
       std.io.stdio._print α4 in
-    Pure tt in
-  Pure tt.
+    M.alloc tt in
+  M.alloc tt.
 
 Definition function `{State.Trait} : M unit :=
   let* _ :=
@@ -567,8 +567,8 @@ Definition function `{State.Trait} : M unit :=
       let* α3 := pointer_coercion "Unsize" α2 in
       let* α4 := core.fmt.Arguments::["new_const"] α3 in
       std.io.stdio._print α4 in
-    Pure tt in
-  Pure tt.
+    M.alloc tt in
+  M.alloc tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{State.Trait} : M unit :=
@@ -578,4 +578,4 @@ Definition main `{State.Trait} : M unit :=
   let* _ := visibility.my_mod.nested.function in
   let* _ := visibility.my_mod.call_public_function_in_my_mod in
   let* _ := visibility.my_mod.public_function_in_crate in
-  Pure tt.
+  M.alloc tt.

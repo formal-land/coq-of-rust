@@ -33,5 +33,6 @@ Definition main
       let* α11 := pointer_coercion "Unsize" α10 in
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
-    Pure tt in
-  Pure (core.result.Result.Ok tt).
+    M.alloc tt in
+  let* α0 := M.alloc tt in
+  Pure (core.result.Result.Ok α0).

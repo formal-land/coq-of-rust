@@ -2,14 +2,14 @@ use pretty::RcDoc;
 use rustc_ast::LitKind;
 use rustc_span::symbol::Symbol;
 
-use crate::coq;
+// use crate::coq;
 
 /// provides the instance of the Struct.Trait typeclass
 /// for definitions of functions and constants
 /// which types utilize the M monad constructor
-pub(crate) fn monadic_typeclass_parameter<'a>() -> Doc<'a> {
-    coq::ArgDecl::monadic_typeclass_parameter().to_doc()
-}
+// pub(crate) fn monadic_typeclass_parameter<'a>() -> Doc<'a> {
+//     coq::ArgDecl::monadic_typeclass_parameter().to_doc()
+// }
 
 /// encloses an expression in curly brackets
 pub(crate) fn curly_brackets(doc: RcDoc<()>) -> RcDoc<()> {
@@ -116,26 +116,17 @@ fn apply_neg_to_literal(literal: RcDoc<()>, neg: bool) -> RcDoc<()> {
 }
 
 pub(crate) fn literal_to_doc(with_paren: bool, literal: &LitKind, neg: bool) -> RcDoc<()> {
+    let wrap_in_alloc = |doc| paren(with_paren, nest([text("M.alloc"), line(), doc]));
+
     match literal {
         LitKind::Str(s, _) => string_to_doc(with_paren, s.as_str()),
-        LitKind::Int(i, _) => paren(
-            with_paren,
-            nest([
-                text("M.alloc"),
-                line(),
-                apply_neg_to_literal(RcDoc::text(format!("{i}")), neg),
-            ]),
-        ),
-        LitKind::Float(f, _) => paren(
-            with_paren,
-            nest([
-                text("M.alloc"),
-                line(),
-                apply_neg_to_literal(RcDoc::text(format!("{} (* {f} *)", round_symbol(f))), neg),
-            ]),
-        ),
-        LitKind::Bool(b) => RcDoc::text(format!("{b}")),
-        LitKind::Char(c) => RcDoc::text(format!("\"{c}\"%char")),
+        LitKind::Int(i, _) => wrap_in_alloc(apply_neg_to_literal(RcDoc::text(format!("{i}")), neg)),
+        LitKind::Float(f, _) => wrap_in_alloc(apply_neg_to_literal(
+            RcDoc::text(format!("{} (* {f} *)", round_symbol(f))),
+            neg,
+        )),
+        LitKind::Bool(b) => wrap_in_alloc(RcDoc::text(format!("{b}"))),
+        LitKind::Char(c) => wrap_in_alloc(RcDoc::text(format!("\"{c}\"%char"))),
         LitKind::Byte(b) => RcDoc::text(format!("{b}")),
         LitKind::ByteStr(b, _) => RcDoc::text(format!("{b:?}")),
         LitKind::Err => RcDoc::text("Err"),

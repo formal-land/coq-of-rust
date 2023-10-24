@@ -20,15 +20,15 @@ Definition print_one `{State.Trait} (x : ref i32) : M unit :=
       let* α11 := pointer_coercion "Unsize" α10 in
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
-    Pure tt in
-  Pure tt.
+    M.alloc tt in
+  M.alloc tt.
 
 Definition add_one `{State.Trait} (x : mut_ref i32) : M unit :=
   let* _ :=
     let* α0 := deref x i32 in
     let* α1 := M.alloc 1 in
     assign_op add α0 α1 in
-  Pure tt.
+  M.alloc tt.
 
 Definition print_multi `{State.Trait} (x : ref i32) (y : ref i32) : M unit :=
   let* _ :=
@@ -55,8 +55,8 @@ Definition print_multi `{State.Trait} (x : ref i32) (y : ref i32) : M unit :=
       let* α15 := pointer_coercion "Unsize" α14 in
       let* α16 := core.fmt.Arguments::["new_v1"] α3 α15 in
       std.io.stdio._print α16 in
-    Pure tt in
-  Pure tt.
+    M.alloc tt in
+  M.alloc tt.
 
 Definition pass_x `{State.Trait} (x : ref i32) (arg : ref i32) : M (ref i32) :=
   Pure x.
@@ -101,4 +101,4 @@ Definition main `{State.Trait} : M unit :=
     let* α1 := deref α0 i32 in
     let* α2 := borrow α1 i32 in
     scoping_rules_lifetimes_functions.print_one α2 in
-  Pure tt.
+  M.alloc tt.

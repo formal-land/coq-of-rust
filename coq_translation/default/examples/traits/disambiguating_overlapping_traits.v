@@ -2,87 +2,106 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module UsernameWidget.
-  Class Trait (Self : Set) `{State.Trait} : Type := {
-    get : (ref Self) -> M alloc.string.String;
-  }.
-  
-  Global Instance Method_get `{State.Trait} `(Trait) : Notation.Dot "get" := {
-    Notation.dot := get;
-  }.
+  Section UsernameWidget.
+    Context `{State.Trait}.
+    
+    Class Trait (Self : Set) : Type := {
+      get : (ref Self) -> M alloc.string.String;
+    }.
+    
+  End UsernameWidget.
 End UsernameWidget.
 
 Module AgeWidget.
-  Class Trait (Self : Set) `{State.Trait} : Type := {
-    get : (ref Self) -> M u8;
-  }.
-  
-  Global Instance Method_get `{State.Trait} `(Trait) : Notation.Dot "get" := {
-    Notation.dot := get;
-  }.
+  Section AgeWidget.
+    Context `{State.Trait}.
+    
+    Class Trait (Self : Set) : Type := {
+      get : (ref Self) -> M u8;
+    }.
+    
+  End AgeWidget.
 End AgeWidget.
 
 Module Form.
-  Unset Primitive Projections.
-  Record t `{State.Trait} : Set := {
-    username : alloc.string.String;
-    age : u8;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_username `{State.Trait} : Notation.Dot "username" := {
-    Notation.dot x := let* x := M.read x in Pure x.(username) : M _;
-  }.
-  Global Instance Get_AF_username `{State.Trait}
-    : Notation.DoubleColon t "username" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(username) : M _;
-  }.
-  Global Instance Get_age `{State.Trait} : Notation.Dot "age" := {
-    Notation.dot x := let* x := M.read x in Pure x.(age) : M _;
-  }.
-  Global Instance Get_AF_age `{State.Trait} : Notation.DoubleColon t "age" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(age) : M _;
-  }.
+  Section Form.
+    Context `{State.Trait}.
+    
+    Unset Primitive Projections.
+    Record t : Set := {
+      username : alloc.string.String;
+      age : u8;
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_username : Notation.Dot "username" := {
+      Notation.dot x := let* x := M.read x in Pure x.(username) : M _;
+    }.
+    Global Instance Get_AF_username : Notation.DoubleColon t "username" := {
+      Notation.double_colon x := let* x := M.read x in Pure x.(username) : M _;
+    }.
+    Global Instance Get_age : Notation.Dot "age" := {
+      Notation.dot x := let* x := M.read x in Pure x.(age) : M _;
+    }.
+    Global Instance Get_AF_age : Notation.DoubleColon t "age" := {
+      Notation.double_colon x := let* x := M.read x in Pure x.(age) : M _;
+    }.
+  End Form.
 End Form.
-Definition Form `{State.Trait} : Set := M.val (Form.t).
+Definition Form `{State.Trait} : Set := M.val Form.t.
 
 Module
   Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_overlapping_traits_Form.
-  Definition Self `{State.Trait} := disambiguating_overlapping_traits.Form.
-  
-  Definition get `{State.Trait} (self : ref Self) : M alloc.string.String :=
-    let* α0 := deref self disambiguating_overlapping_traits.Form in
-    let* α1 := α0.["username"] in
-    let* α2 := borrow α1 alloc.string.String in
-    core.clone.Clone.clone α2.
-  
-  Global Instance Method_get `{State.Trait} : Notation.Dot "get" := {
-    Notation.dot := get;
-  }.
-  
-  Global Instance I `{State.Trait}
-    : disambiguating_overlapping_traits.UsernameWidget.Trait Self := {
-    disambiguating_overlapping_traits.UsernameWidget.get := get;
-  }.
+  Section
+    Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_overlapping_traits_Form.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := disambiguating_overlapping_traits.Form.
+    
+    Definition get (self : ref Self) : M alloc.string.String :=
+      let* α0 := deref self disambiguating_overlapping_traits.Form in
+      let* α1 := α0.["username"] in
+      let* α2 := borrow α1 alloc.string.String in
+      core.clone.Clone.clone α2.
+    
+    Global Instance AssociatedFunction_get :
+      Notation.DoubleColon Self "get" := {
+      Notation.double_colon := get;
+    }.
+    
+    Global Instance I
+      : disambiguating_overlapping_traits.UsernameWidget.Trait Self := {
+      disambiguating_overlapping_traits.UsernameWidget.get := get;
+    }.
+  End
+    Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_overlapping_traits_Form.
   Global Hint Resolve I : core.
 End
   Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_overlapping_traits_Form.
 
 Module
   Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overlapping_traits_Form.
-  Definition Self `{State.Trait} := disambiguating_overlapping_traits.Form.
-  
-  Definition get `{State.Trait} (self : ref Self) : M u8 :=
-    let* α0 := deref self disambiguating_overlapping_traits.Form in
-    α0.["age"].
-  
-  Global Instance Method_get `{State.Trait} : Notation.Dot "get" := {
-    Notation.dot := get;
-  }.
-  
-  Global Instance I `{State.Trait}
-    : disambiguating_overlapping_traits.AgeWidget.Trait Self := {
-    disambiguating_overlapping_traits.AgeWidget.get := get;
-  }.
+  Section
+    Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overlapping_traits_Form.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := disambiguating_overlapping_traits.Form.
+    
+    Definition get (self : ref Self) : M u8 :=
+      let* α0 := deref self disambiguating_overlapping_traits.Form in
+      α0.["age"].
+    
+    Global Instance AssociatedFunction_get :
+      Notation.DoubleColon Self "get" := {
+      Notation.double_colon := get;
+    }.
+    
+    Global Instance I
+      : disambiguating_overlapping_traits.AgeWidget.Trait Self := {
+      disambiguating_overlapping_traits.AgeWidget.get := get;
+    }.
+  End
+    Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overlapping_traits_Form.
   Global Hint Resolve I : core.
 End
   Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overlapping_traits_Form.
@@ -135,9 +154,10 @@ Definition main `{State.Trait} : M unit :=
             α3
             α7
             (core.option.Option.None tt) in
-        never_to_any tt
+        let* α0 := M.alloc tt in
+        never_to_any α0
       else
-        Pure tt
+        M.alloc tt
     end in
   let* age :=
     let* α0 := borrow form disambiguating_overlapping_traits.Form in
@@ -171,8 +191,9 @@ Definition main `{State.Trait} : M unit :=
             α3
             α7
             (core.option.Option.None tt) in
-        never_to_any tt
+        let* α0 := M.alloc tt in
+        never_to_any α0
       else
-        Pure tt
+        M.alloc tt
     end in
-  Pure tt.
+  M.alloc tt.

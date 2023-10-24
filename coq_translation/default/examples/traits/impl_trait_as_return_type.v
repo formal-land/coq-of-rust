@@ -81,9 +81,10 @@ Definition main `{State.Trait} : M unit :=
             α3
             α7
             (core.option.Option.None tt) in
-        never_to_any tt
+        let* α0 := M.alloc tt in
+        never_to_any α0
       else
-        Pure tt
+        M.alloc tt
     end in
   let* _ :=
     let* α0 := M.alloc 2 in
@@ -116,9 +117,10 @@ Definition main `{State.Trait} : M unit :=
             α3
             α7
             (core.option.Option.None tt) in
-        never_to_any tt
+        let* α0 := M.alloc tt in
+        never_to_any α0
       else
-        Pure tt
+        M.alloc tt
     end in
   let* _ :=
     let* α0 := M.alloc 3 in
@@ -151,9 +153,10 @@ Definition main `{State.Trait} : M unit :=
             α3
             α7
             (core.option.Option.None tt) in
-        never_to_any tt
+        let* α0 := M.alloc tt in
+        never_to_any α0
       else
-        Pure tt
+        M.alloc tt
     end in
   let* _ :=
     let* α0 := M.alloc 4 in
@@ -186,9 +189,10 @@ Definition main `{State.Trait} : M unit :=
             α3
             α7
             (core.option.Option.None tt) in
-        never_to_any tt
+        let* α0 := M.alloc tt in
+        never_to_any α0
       else
-        Pure tt
+        M.alloc tt
     end in
   let* _ :=
     let* α0 := M.alloc 5 in
@@ -221,9 +225,10 @@ Definition main `{State.Trait} : M unit :=
             α3
             α7
             (core.option.Option.None tt) in
-        never_to_any tt
+        let* α0 := M.alloc tt in
+        never_to_any α0
       else
-        Pure tt
+        M.alloc tt
     end in
   let* _ :=
     let* _ :=
@@ -234,5 +239,5 @@ Definition main `{State.Trait} : M unit :=
       let* α3 := pointer_coercion "Unsize" α2 in
       let* α4 := core.fmt.Arguments::["new_const"] α3 in
       std.io.stdio._print α4 in
-    Pure tt in
-  Pure tt.
+    M.alloc tt in
+  M.alloc tt.

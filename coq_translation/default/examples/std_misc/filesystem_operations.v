@@ -55,17 +55,19 @@ Definition touch
     : M (std.io.error.Result unit) :=
   let* α0 := std.fs.OpenOptions::["new"] in
   let* α1 := borrow_mut α0 std.fs.OpenOptions in
-  let* α2 := true in
+  let* α2 := M.alloc true in
   let* α3 := std.fs.OpenOptions::["create"] α1 α2 in
   let* α4 := deref α3 std.fs.OpenOptions in
   let* α5 := borrow_mut α4 std.fs.OpenOptions in
-  let* α6 := true in
+  let* α6 := M.alloc true in
   let* α7 := std.fs.OpenOptions::["write"] α5 α6 in
   let* α8 := deref α7 std.fs.OpenOptions in
   let* α9 := borrow α8 std.fs.OpenOptions in
   let* α10 := std.fs.OpenOptions::["open"] α9 path in
   match α10 with
-  | core.result.Result _ => Pure (core.result.Result.Ok tt)
+  | core.result.Result _ =>
+    let* α0 := M.alloc tt in
+    Pure (core.result.Result.Ok α0)
   | core.result.Result e => Pure (core.result.Result.Err e)
   end.
 
@@ -80,7 +82,7 @@ Definition main `{State.Trait} : M unit :=
       let* α3 := pointer_coercion "Unsize" α2 in
       let* α4 := core.fmt.Arguments::["new_const"] α3 in
       std.io.stdio._print α4 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* α0 := std.fs.create_dir (mk_str "a") in
     match α0 with
@@ -103,8 +105,8 @@ Definition main `{State.Trait} : M unit :=
         let* α13 := pointer_coercion "Unsize" α12 in
         let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
         std.io.stdio._print α14 in
-      Pure tt
-    | core.result.Result _ => Pure tt
+      M.alloc tt
+    | core.result.Result _ => M.alloc tt
     end in
   let* _ :=
     let* _ :=
@@ -115,7 +117,7 @@ Definition main `{State.Trait} : M unit :=
       let* α3 := pointer_coercion "Unsize" α2 in
       let* α4 := core.fmt.Arguments::["new_const"] α3 in
       std.io.stdio._print α4 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* α0 := deref (mk_str "hello") str in
     let* α1 := borrow α0 str in
@@ -148,8 +150,8 @@ Definition main `{State.Trait} : M unit :=
           let* α13 := pointer_coercion "Unsize" α12 in
           let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
           std.io.stdio._print α14 in
-        Pure tt in
-      Pure tt in
+        M.alloc tt in
+      M.alloc tt in
   let* _ :=
     let* _ :=
       let* α0 := borrow [ mk_str "`mkdir -p a/c/d`
@@ -159,7 +161,7 @@ Definition main `{State.Trait} : M unit :=
       let* α3 := pointer_coercion "Unsize" α2 in
       let* α4 := core.fmt.Arguments::["new_const"] α3 in
       std.io.stdio._print α4 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* α0 := std.fs.create_dir_all (mk_str "a/c/d") in
     (core.result.Result _ _)::["unwrap_or_else"]
@@ -183,8 +185,8 @@ Definition main `{State.Trait} : M unit :=
           let* α13 := pointer_coercion "Unsize" α12 in
           let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
           std.io.stdio._print α14 in
-        Pure tt in
-      Pure tt in
+        M.alloc tt in
+      M.alloc tt in
   let* _ :=
     let* _ :=
       let* α0 := borrow [ mk_str "`touch a/c/e.txt`
@@ -194,7 +196,7 @@ Definition main `{State.Trait} : M unit :=
       let* α3 := pointer_coercion "Unsize" α2 in
       let* α4 := core.fmt.Arguments::["new_const"] α3 in
       std.io.stdio._print α4 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* α0 := deref (mk_str "a/c/e.txt") str in
     let* α1 := borrow α0 str in
@@ -225,8 +227,8 @@ Definition main `{State.Trait} : M unit :=
           let* α13 := pointer_coercion "Unsize" α12 in
           let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
           std.io.stdio._print α14 in
-        Pure tt in
-      Pure tt in
+        M.alloc tt in
+      M.alloc tt in
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -237,9 +239,9 @@ Definition main `{State.Trait} : M unit :=
       let* α3 := pointer_coercion "Unsize" α2 in
       let* α4 := core.fmt.Arguments::["new_const"] α3 in
       std.io.stdio._print α4 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
-    let* α0 := true in
+    let* α0 := M.alloc true in
     let* α1 := use α0 in
     if (α1 : bool) then
       let* _ :=
@@ -266,11 +268,11 @@ Definition main `{State.Trait} : M unit :=
               let* α13 := pointer_coercion "Unsize" α12 in
               let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
               std.io.stdio._print α14 in
-            Pure tt in
-          Pure tt in
-      Pure tt
+            M.alloc tt in
+          M.alloc tt in
+      M.alloc tt
     else
-      Pure tt in
+      M.alloc tt in
   let* _ :=
     let* _ :=
       let* α0 := borrow [ mk_str "`cat a/c/b.txt`
@@ -280,7 +282,7 @@ Definition main `{State.Trait} : M unit :=
       let* α3 := pointer_coercion "Unsize" α2 in
       let* α4 := core.fmt.Arguments::["new_const"] α3 in
       std.io.stdio._print α4 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* α0 := deref (mk_str "a/c/b.txt") str in
     let* α1 := borrow α0 str in
@@ -310,7 +312,7 @@ Definition main `{State.Trait} : M unit :=
         let* α13 := pointer_coercion "Unsize" α12 in
         let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
         std.io.stdio._print α14 in
-      Pure tt
+      M.alloc tt
     | core.result.Result s =>
       let* _ :=
         let* α0 := borrow [ mk_str "> "; mk_str "
@@ -328,7 +330,7 @@ Definition main `{State.Trait} : M unit :=
         let* α11 := pointer_coercion "Unsize" α10 in
         let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
         std.io.stdio._print α12 in
-      Pure tt
+      M.alloc tt
     end in
   let* _ :=
     let* _ :=
@@ -339,7 +341,7 @@ Definition main `{State.Trait} : M unit :=
       let* α3 := pointer_coercion "Unsize" α2 in
       let* α4 := core.fmt.Arguments::["new_const"] α3 in
       std.io.stdio._print α4 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* α0 := std.fs.read_dir (mk_str "a") in
     match α0 with
@@ -362,7 +364,7 @@ Definition main `{State.Trait} : M unit :=
         let* α13 := pointer_coercion "Unsize" α12 in
         let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
         std.io.stdio._print α14 in
-      Pure tt
+      M.alloc tt
     | core.result.Result paths =>
       let* α0 := core.iter.traits.collect.IntoIterator.into_iter paths in
       let* α1 :=
@@ -400,10 +402,10 @@ Definition main `{State.Trait} : M unit :=
                     let* α14 := pointer_coercion "Unsize" α13 in
                     let* α15 := core.fmt.Arguments::["new_v1"] α3 α14 in
                     std.io.stdio._print α15 in
-                  Pure tt in
-                Pure tt
+                  M.alloc tt in
+                M.alloc tt
               end in
-            Pure tt)
+            M.alloc tt)
         end in
       use α1
     end in
@@ -416,7 +418,7 @@ Definition main `{State.Trait} : M unit :=
       let* α3 := pointer_coercion "Unsize" α2 in
       let* α4 := core.fmt.Arguments::["new_const"] α3 in
       std.io.stdio._print α4 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* α0 := std.fs.remove_file (mk_str "a/c/e.txt") in
     (core.result.Result _ _)::["unwrap_or_else"]
@@ -440,8 +442,8 @@ Definition main `{State.Trait} : M unit :=
           let* α13 := pointer_coercion "Unsize" α12 in
           let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
           std.io.stdio._print α14 in
-        Pure tt in
-      Pure tt in
+        M.alloc tt in
+      M.alloc tt in
   let* _ :=
     let* _ :=
       let* α0 := borrow [ mk_str "`rmdir a/c/d`
@@ -451,7 +453,7 @@ Definition main `{State.Trait} : M unit :=
       let* α3 := pointer_coercion "Unsize" α2 in
       let* α4 := core.fmt.Arguments::["new_const"] α3 in
       std.io.stdio._print α4 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* α0 := std.fs.remove_dir (mk_str "a/c/d") in
     (core.result.Result _ _)::["unwrap_or_else"]
@@ -475,6 +477,6 @@ Definition main `{State.Trait} : M unit :=
           let* α13 := pointer_coercion "Unsize" α12 in
           let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
           std.io.stdio._print α14 in
-        Pure tt in
-      Pure tt in
-  Pure tt.
+        M.alloc tt in
+      M.alloc tt in
+  M.alloc tt.

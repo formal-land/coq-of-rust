@@ -47,7 +47,7 @@ Definition main `{State.Trait} : M unit :=
                   let* α3 := pointer_coercion "Unsize" α2 in
                   let* α4 := core.fmt.Arguments::["new_const"] α3 in
                   std.io.stdio._print α4 in
-                Pure tt
+                M.alloc tt
               | _ =>
                 let* _ :=
                   let* α0 :=
@@ -66,10 +66,10 @@ Definition main `{State.Trait} : M unit :=
                   let* α11 := pointer_coercion "Unsize" α10 in
                   let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
                   std.io.stdio._print α12 in
-                Pure tt
+                M.alloc tt
               end
             end in
-          Pure tt)
+          M.alloc tt)
       end in
     use α6 in
   let* _ :=
@@ -89,5 +89,5 @@ Definition main `{State.Trait} : M unit :=
       let* α11 := pointer_coercion "Unsize" α10 in
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
-    Pure tt in
-  Pure tt.
+    M.alloc tt in
+  M.alloc tt.

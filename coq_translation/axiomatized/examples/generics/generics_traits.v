@@ -2,40 +2,50 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module Empty.
-  Inductive t : Set := Build.
+  Section Empty.
+    Context `{State.Trait}.
+    
+    Inductive t : Set := Build.
+  End Empty.
 End Empty.
 Definition Empty := @Empty.t.
 
 Module Null.
-  Inductive t : Set := Build.
+  Section Null.
+    Context `{State.Trait}.
+    
+    Inductive t : Set := Build.
+  End Null.
 End Null.
 Definition Null := @Null.t.
 
 Module DoubleDrop.
-  Class Trait (Self : Set) {T : Set} `{State.Trait} : Type := {
-    double_drop : Self -> T -> M unit;
-  }.
-  
-  Global Instance Method_double_drop `{State.Trait} `(Trait)
-    : Notation.Dot "double_drop" := {
-    Notation.dot := double_drop;
-  }.
+  Section DoubleDrop.
+    Context `{State.Trait}.
+    
+    Class Trait (Self : Set) {T : Set} : Type := {
+      double_drop : Self -> T -> M unit;
+    }.
+    
+  End DoubleDrop.
 End DoubleDrop.
 
 Module Impl_generics_traits_DoubleDrop_for_U.
   Section Impl_generics_traits_DoubleDrop_for_U.
+    Context `{State.Trait}.
+    
     Context {T U : Set}.
-    Definition Self `{State.Trait} := U.
     
-    Parameter double_drop : forall `{State.Trait}, Self -> T -> M unit.
+    Definition Self : Set := U.
     
-    Global Instance Method_double_drop `{State.Trait} :
-      Notation.Dot "double_drop" := {
-      Notation.dot := double_drop;
+    Parameter double_drop : Self -> T -> M unit.
+    
+    Global Instance AssociatedFunction_double_drop :
+      Notation.DoubleColon Self "double_drop" := {
+      Notation.double_colon := double_drop;
     }.
     
-    Global Instance I `{State.Trait}
-      : generics_traits.DoubleDrop.Trait Self (T := T) := {
+    Global Instance I : generics_traits.DoubleDrop.Trait Self (T := T) := {
       generics_traits.DoubleDrop.double_drop := double_drop;
     }.
   End Impl_generics_traits_DoubleDrop_for_U.

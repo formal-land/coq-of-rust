@@ -10,36 +10,40 @@ End Food.
 Definition Food `{State.Trait} : Set := Food.t.
 
 Module Impl_core_fmt_Debug_for_combinators_and_then_Food.
-  Definition Self `{State.Trait} := combinators_and_then.Food.
-  
-  Definition fmt
-      `{State.Trait}
-      (self : ref Self)
-      (f : mut_ref core.fmt.Formatter)
-      : M core.fmt.Result :=
-    let* α0 := deref f core.fmt.Formatter in
-    let* α1 := borrow_mut α0 core.fmt.Formatter in
-    let* α2 :=
-      match self with
-      | combinators_and_then.Food  =>
-        let* α0 := deref (mk_str "CordonBleu") str in
-        borrow α0 str
-      | combinators_and_then.Food  =>
-        let* α0 := deref (mk_str "Steak") str in
-        borrow α0 str
-      | combinators_and_then.Food  =>
-        let* α0 := deref (mk_str "Sushi") str in
-        borrow α0 str
-      end in
-    core.fmt.Formatter::["write_str"] α1 α2.
-  
-  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
-    Notation.dot := fmt;
-  }.
-  
-  Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt := fmt;
-  }.
+  Section Impl_core_fmt_Debug_for_combinators_and_then_Food.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := combinators_and_then.Food.
+    
+    Definition fmt
+        (self : ref Self)
+        (f : mut_ref core.fmt.Formatter)
+        : M core.fmt.Result :=
+      let* α0 := deref f core.fmt.Formatter in
+      let* α1 := borrow_mut α0 core.fmt.Formatter in
+      let* α2 :=
+        match self with
+        | combinators_and_then.Food  =>
+          let* α0 := deref (mk_str "CordonBleu") str in
+          borrow α0 str
+        | combinators_and_then.Food  =>
+          let* α0 := deref (mk_str "Steak") str in
+          borrow α0 str
+        | combinators_and_then.Food  =>
+          let* α0 := deref (mk_str "Sushi") str in
+          borrow α0 str
+        end in
+      core.fmt.Formatter::["write_str"] α1 α2.
+    
+    Global Instance AssociatedFunction_fmt :
+      Notation.DoubleColon Self "fmt" := {
+      Notation.double_colon := fmt;
+    }.
+    
+    Global Instance I : core.fmt.Debug.Trait Self := {
+      core.fmt.Debug.fmt := fmt;
+    }.
+  End Impl_core_fmt_Debug_for_combinators_and_then_Food.
   Global Hint Resolve I : core.
 End Impl_core_fmt_Debug_for_combinators_and_then_Food.
 
@@ -52,36 +56,40 @@ End Day.
 Definition Day `{State.Trait} : Set := Day.t.
 
 Module Impl_core_fmt_Debug_for_combinators_and_then_Day.
-  Definition Self `{State.Trait} := combinators_and_then.Day.
-  
-  Definition fmt
-      `{State.Trait}
-      (self : ref Self)
-      (f : mut_ref core.fmt.Formatter)
-      : M core.fmt.Result :=
-    let* α0 := deref f core.fmt.Formatter in
-    let* α1 := borrow_mut α0 core.fmt.Formatter in
-    let* α2 :=
-      match self with
-      | combinators_and_then.Day  =>
-        let* α0 := deref (mk_str "Monday") str in
-        borrow α0 str
-      | combinators_and_then.Day  =>
-        let* α0 := deref (mk_str "Tuesday") str in
-        borrow α0 str
-      | combinators_and_then.Day  =>
-        let* α0 := deref (mk_str "Wednesday") str in
-        borrow α0 str
-      end in
-    core.fmt.Formatter::["write_str"] α1 α2.
-  
-  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
-    Notation.dot := fmt;
-  }.
-  
-  Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt := fmt;
-  }.
+  Section Impl_core_fmt_Debug_for_combinators_and_then_Day.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := combinators_and_then.Day.
+    
+    Definition fmt
+        (self : ref Self)
+        (f : mut_ref core.fmt.Formatter)
+        : M core.fmt.Result :=
+      let* α0 := deref f core.fmt.Formatter in
+      let* α1 := borrow_mut α0 core.fmt.Formatter in
+      let* α2 :=
+        match self with
+        | combinators_and_then.Day  =>
+          let* α0 := deref (mk_str "Monday") str in
+          borrow α0 str
+        | combinators_and_then.Day  =>
+          let* α0 := deref (mk_str "Tuesday") str in
+          borrow α0 str
+        | combinators_and_then.Day  =>
+          let* α0 := deref (mk_str "Wednesday") str in
+          borrow α0 str
+        end in
+      core.fmt.Formatter::["write_str"] α1 α2.
+    
+    Global Instance AssociatedFunction_fmt :
+      Notation.DoubleColon Self "fmt" := {
+      Notation.double_colon := fmt;
+    }.
+    
+    Global Instance I : core.fmt.Debug.Trait Self := {
+      core.fmt.Debug.fmt := fmt;
+    }.
+  End Impl_core_fmt_Debug_for_combinators_and_then_Day.
   Global Hint Resolve I : core.
 End Impl_core_fmt_Debug_for_combinators_and_then_Day.
 
@@ -156,7 +164,7 @@ Definition eat
       let* α15 := pointer_coercion "Unsize" α14 in
       let* α16 := core.fmt.Arguments::["new_v1"] α3 α15 in
       std.io.stdio._print α16 in
-    Pure tt
+    M.alloc tt
   | core.option.Option  =>
     let* _ :=
       let* α0 :=
@@ -177,7 +185,7 @@ Definition eat
       let* α11 := pointer_coercion "Unsize" α10 in
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
-    Pure tt
+    M.alloc tt
   end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
@@ -192,4 +200,4 @@ Definition main `{State.Trait} : M unit :=
     combinators_and_then.eat steak (combinators_and_then.Day.Tuesday tt) in
   let* _ :=
     combinators_and_then.eat sushi (combinators_and_then.Day.Wednesday tt) in
-  Pure tt.
+  M.alloc tt.

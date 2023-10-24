@@ -3,13 +3,13 @@ Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{State.Trait} : M unit :=
-  let a_binding := tt in
+  let* a_binding := M.alloc tt in
   let* _ :=
     let* x := M.alloc 2 in
     let* _ :=
       let* α0 := mul x x in
       assign a_binding α0 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* _ :=
       let* α0 := borrow [ mk_str "a binding: "; mk_str "
@@ -27,8 +27,8 @@ Definition main `{State.Trait} : M unit :=
       let* α11 := pointer_coercion "Unsize" α10 in
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
-    Pure tt in
-  let another_binding := tt in
+    M.alloc tt in
+  let* another_binding := M.alloc tt in
   let* _ :=
     let* α0 := M.alloc 1 in
     assign another_binding α0 in
@@ -50,5 +50,5 @@ Definition main `{State.Trait} : M unit :=
       let* α11 := pointer_coercion "Unsize" α10 in
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
-    Pure tt in
-  Pure tt.
+    M.alloc tt in
+  M.alloc tt.

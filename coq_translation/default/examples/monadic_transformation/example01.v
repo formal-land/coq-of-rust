@@ -3,7 +3,8 @@ Require Import CoqOfRust.CoqOfRust.
 
 Definition id `{State.Trait} (x : u64) : M u64 := Pure x.
 
-Definition tri `{State.Trait} (a : u64) (b : u64) (c : u64) : M unit := Pure tt.
+Definition tri `{State.Trait} (a : u64) (b : u64) (c : u64) : M unit :=
+  M.alloc tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{State.Trait} : M unit :=
@@ -32,4 +33,4 @@ Definition main `{State.Trait} : M unit :=
     let* α3 := example01.id α2 in
     let* α4 := M.alloc 3 in
     example01.tri α1 α3 α4 in
-  Pure tt.
+  M.alloc tt.

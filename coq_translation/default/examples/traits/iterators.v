@@ -2,66 +2,69 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module Fibonacci.
-  Unset Primitive Projections.
-  Record t `{State.Trait} : Set := {
-    curr : u32;
-    next : u32;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_curr `{State.Trait} : Notation.Dot "curr" := {
-    Notation.dot x := let* x := M.read x in Pure x.(curr) : M _;
-  }.
-  Global Instance Get_AF_curr `{State.Trait}
-    : Notation.DoubleColon t "curr" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(curr) : M _;
-  }.
-  Global Instance Get_next `{State.Trait} : Notation.Dot "next" := {
-    Notation.dot x := let* x := M.read x in Pure x.(next) : M _;
-  }.
-  Global Instance Get_AF_next `{State.Trait}
-    : Notation.DoubleColon t "next" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(next) : M _;
-  }.
+  Section Fibonacci.
+    Context `{State.Trait}.
+    
+    Unset Primitive Projections.
+    Record t : Set := {
+      curr : u32;
+      next : u32;
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_curr : Notation.Dot "curr" := {
+      Notation.dot x := let* x := M.read x in Pure x.(curr) : M _;
+    }.
+    Global Instance Get_AF_curr : Notation.DoubleColon t "curr" := {
+      Notation.double_colon x := let* x := M.read x in Pure x.(curr) : M _;
+    }.
+    Global Instance Get_next : Notation.Dot "next" := {
+      Notation.dot x := let* x := M.read x in Pure x.(next) : M _;
+    }.
+    Global Instance Get_AF_next : Notation.DoubleColon t "next" := {
+      Notation.double_colon x := let* x := M.read x in Pure x.(next) : M _;
+    }.
+  End Fibonacci.
 End Fibonacci.
-Definition Fibonacci `{State.Trait} : Set := M.val (Fibonacci.t).
+Definition Fibonacci `{State.Trait} : Set := M.val Fibonacci.t.
 
 Module Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
-  Definition Self `{State.Trait} := iterators.Fibonacci.
-  
-  Definition Item : Set := u32.
-  
-  Definition next
-      `{State.Trait}
-      (self : mut_ref Self)
-      : M (core.option.Option Item) :=
-    let* current :=
-      let* α0 := deref self iterators.Fibonacci in
-      α0.["curr"] in
-    let* _ :=
-      let* α0 := deref self iterators.Fibonacci in
-      let* α1 := α0.["curr"] in
-      let* α2 := deref self iterators.Fibonacci in
-      let* α3 := α2.["next"] in
-      assign α1 α3 in
-    let* _ :=
-      let* α0 := deref self iterators.Fibonacci in
-      let* α1 := α0.["next"] in
-      let* α2 := deref self iterators.Fibonacci in
-      let* α3 := α2.["next"] in
-      let* α4 := add current α3 in
-      assign α1 α4 in
-    Pure (core.option.Option.Some current).
-  
-  Global Instance Method_next `{State.Trait} : Notation.Dot "next" := {
-    Notation.dot := next;
-  }.
-  
-  Global Instance I `{State.Trait}
-    : core.iter.traits.iterator.Iterator.Trait Self := {
-    core.iter.traits.iterator.Iterator.Item := Item;
-    core.iter.traits.iterator.Iterator.next := next;
-  }.
+  Section Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := iterators.Fibonacci.
+    
+    Definition Item : Set := u32.
+    
+    Definition next (self : mut_ref Self) : M (core.option.Option Item) :=
+      let* current :=
+        let* α0 := deref self iterators.Fibonacci in
+        α0.["curr"] in
+      let* _ :=
+        let* α0 := deref self iterators.Fibonacci in
+        let* α1 := α0.["curr"] in
+        let* α2 := deref self iterators.Fibonacci in
+        let* α3 := α2.["next"] in
+        assign α1 α3 in
+      let* _ :=
+        let* α0 := deref self iterators.Fibonacci in
+        let* α1 := α0.["next"] in
+        let* α2 := deref self iterators.Fibonacci in
+        let* α3 := α2.["next"] in
+        let* α4 := add current α3 in
+        assign α1 α4 in
+      Pure (core.option.Option.Some current).
+    
+    Global Instance AssociatedFunction_next :
+      Notation.DoubleColon Self "next" := {
+      Notation.double_colon := next;
+    }.
+    
+    Global Instance I : core.iter.traits.iterator.Iterator.Trait Self := {
+      core.iter.traits.iterator.Iterator.Item := Item;
+      core.iter.traits.iterator.Iterator.next := next;
+    }.
+  End Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
   Global Hint Resolve I : core.
 End Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
 
@@ -89,7 +92,7 @@ Definition main `{State.Trait} : M unit :=
       let* α3 := pointer_coercion "Unsize" α2 in
       let* α4 := core.fmt.Arguments::["new_const"] α3 in
       std.io.stdio._print α4 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* _ :=
       let* α0 := borrow [ mk_str "> "; mk_str "
@@ -109,7 +112,7 @@ Definition main `{State.Trait} : M unit :=
       let* α13 := pointer_coercion "Unsize" α12 in
       let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
       std.io.stdio._print α14 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* _ :=
       let* α0 := borrow [ mk_str "> "; mk_str "
@@ -129,7 +132,7 @@ Definition main `{State.Trait} : M unit :=
       let* α13 := pointer_coercion "Unsize" α12 in
       let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
       std.io.stdio._print α14 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* _ :=
       let* α0 := borrow [ mk_str "> "; mk_str "
@@ -149,7 +152,7 @@ Definition main `{State.Trait} : M unit :=
       let* α13 := pointer_coercion "Unsize" α12 in
       let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
       std.io.stdio._print α14 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* _ :=
       let* α0 := borrow [ mk_str "> "; mk_str "
@@ -169,7 +172,7 @@ Definition main `{State.Trait} : M unit :=
       let* α13 := pointer_coercion "Unsize" α12 in
       let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
       std.io.stdio._print α14 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -182,7 +185,7 @@ Definition main `{State.Trait} : M unit :=
       let* α3 := pointer_coercion "Unsize" α2 in
       let* α4 := core.fmt.Arguments::["new_const"] α3 in
       std.io.stdio._print α4 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* α0 := M.alloc 0 in
     let* α1 := M.alloc 3 in
@@ -223,10 +226,10 @@ Definition main `{State.Trait} : M unit :=
                   let* α11 := pointer_coercion "Unsize" α10 in
                   let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
                   std.io.stdio._print α12 in
-                Pure tt in
-              Pure tt
+                M.alloc tt in
+              M.alloc tt
             end in
-          Pure tt)
+          M.alloc tt)
       end in
     use α4 in
   let* _ :=
@@ -241,7 +244,7 @@ Definition main `{State.Trait} : M unit :=
       let* α3 := pointer_coercion "Unsize" α2 in
       let* α4 := core.fmt.Arguments::["new_const"] α3 in
       std.io.stdio._print α4 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* α0 := iterators.fibonacci in
     let* α1 := M.alloc 4 in
@@ -286,10 +289,10 @@ Definition main `{State.Trait} : M unit :=
                   let* α11 := pointer_coercion "Unsize" α10 in
                   let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
                   std.io.stdio._print α12 in
-                Pure tt in
-              Pure tt
+                M.alloc tt in
+              M.alloc tt
             end in
-          Pure tt)
+          M.alloc tt)
       end in
     use α4 in
   let* _ :=
@@ -304,7 +307,7 @@ Definition main `{State.Trait} : M unit :=
       let* α3 := pointer_coercion "Unsize" α2 in
       let* α4 := core.fmt.Arguments::["new_const"] α3 in
       std.io.stdio._print α4 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* α0 := iterators.fibonacci in
     let* α1 := M.alloc 4 in
@@ -356,10 +359,10 @@ Definition main `{State.Trait} : M unit :=
                   let* α11 := pointer_coercion "Unsize" α10 in
                   let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
                   std.io.stdio._print α12 in
-                Pure tt in
-              Pure tt
+                M.alloc tt in
+              M.alloc tt
             end in
-          Pure tt)
+          M.alloc tt)
       end in
     use α6 in
   let* array :=
@@ -389,7 +392,7 @@ Definition main `{State.Trait} : M unit :=
       let* α12 := pointer_coercion "Unsize" α11 in
       let* α13 := core.fmt.Arguments::["new_v1"] α3 α12 in
       std.io.stdio._print α13 in
-    Pure tt in
+    M.alloc tt in
   let* α0 := borrow array (list u32) in
   let* α1 := pointer_coercion "Unsize" α0 in
   let* α2 := (Slice _)::["iter"] α1 in
@@ -426,9 +429,9 @@ Definition main `{State.Trait} : M unit :=
                 let* α11 := pointer_coercion "Unsize" α10 in
                 let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
                 std.io.stdio._print α12 in
-              Pure tt in
-            Pure tt
+              M.alloc tt in
+            M.alloc tt
           end in
-        Pure tt)
+        M.alloc tt)
     end in
   use α4.

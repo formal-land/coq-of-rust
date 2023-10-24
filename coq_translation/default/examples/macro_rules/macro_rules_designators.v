@@ -20,8 +20,8 @@ Definition foo `{State.Trait} : M unit :=
       let* α11 := pointer_coercion "Unsize" α10 in
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
-    Pure tt in
-  Pure tt.
+    M.alloc tt in
+  M.alloc tt.
 
 Definition bar `{State.Trait} : M unit :=
   let* _ :=
@@ -42,8 +42,8 @@ Definition bar `{State.Trait} : M unit :=
       let* α11 := pointer_coercion "Unsize" α10 in
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
-    Pure tt in
-  Pure tt.
+    M.alloc tt in
+  M.alloc tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{State.Trait} : M unit :=
@@ -74,7 +74,7 @@ Definition main `{State.Trait} : M unit :=
       let* α18 := pointer_coercion "Unsize" α17 in
       let* α19 := core.fmt.Arguments::["new_v1"] α3 α18 in
       std.io.stdio._print α19 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -105,5 +105,5 @@ Definition main `{State.Trait} : M unit :=
       let* α16 := pointer_coercion "Unsize" α15 in
       let* α17 := core.fmt.Arguments::["new_v1"] α3 α16 in
       std.io.stdio._print α17 in
-    Pure tt in
-  Pure tt.
+    M.alloc tt in
+  M.alloc tt.

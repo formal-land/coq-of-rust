@@ -25,8 +25,8 @@ Definition main `{State.Trait} : M unit :=
       let* α13 := pointer_coercion "Unsize" α12 in
       let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
       std.io.stdio._print α14 in
-    Pure tt in
-  Pure tt.
+    M.alloc tt in
+  M.alloc tt.
 
 Definition sum_odd_numbers `{State.Trait} (up_to : u32) : M u32 :=
   let* acc := M.alloc 0 in
@@ -63,9 +63,9 @@ Definition sum_odd_numbers `{State.Trait} (up_to : u32) : M u32 :=
                   never_to_any α0
                 end in
               let* _ := assign_op add acc addition in
-              Pure tt
+              M.alloc tt
             end in
-          Pure tt)
+          M.alloc tt)
       end in
     use α3 in
   Pure acc.

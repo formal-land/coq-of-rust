@@ -2,54 +2,84 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module Cardinal.
-  Inductive t : Set := Build.
+  Section Cardinal.
+    Context `{State.Trait}.
+    
+    Inductive t : Set := Build.
+  End Cardinal.
 End Cardinal.
 Definition Cardinal := @Cardinal.t.
 
 Module BlueJay.
-  Inductive t : Set := Build.
+  Section BlueJay.
+    Context `{State.Trait}.
+    
+    Inductive t : Set := Build.
+  End BlueJay.
 End BlueJay.
 Definition BlueJay := @BlueJay.t.
 
 Module Turkey.
-  Inductive t : Set := Build.
+  Section Turkey.
+    Context `{State.Trait}.
+    
+    Inductive t : Set := Build.
+  End Turkey.
 End Turkey.
 Definition Turkey := @Turkey.t.
 
 Module Red.
-  Unset Primitive Projections.
-  Class Trait (Self : Set) `{State.Trait} : Type := {
-  }.
-  Global Set Primitive Projections.
+  Section Red.
+    Context `{State.Trait}.
+    
+    Unset Primitive Projections.
+    Class Trait (Self : Set) : Type := {
+    }.
+    Global Set Primitive Projections.
+  End Red.
 End Red.
 
 Module Blue.
-  Unset Primitive Projections.
-  Class Trait (Self : Set) `{State.Trait} : Type := {
-  }.
-  Global Set Primitive Projections.
+  Section Blue.
+    Context `{State.Trait}.
+    
+    Unset Primitive Projections.
+    Class Trait (Self : Set) : Type := {
+    }.
+    Global Set Primitive Projections.
+  End Blue.
 End Blue.
 
 Module
   Impl_generics_bounds_test_case_empty_bounds_Red_for_generics_bounds_test_case_empty_bounds_Cardinal.
-  Definition Self `{State.Trait} :=
-    generics_bounds_test_case_empty_bounds.Cardinal.
-  
-  Global Instance I `{State.Trait}
-    : generics_bounds_test_case_empty_bounds.Red.Trait Self := {
-  }.
+  Section
+    Impl_generics_bounds_test_case_empty_bounds_Red_for_generics_bounds_test_case_empty_bounds_Cardinal.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := generics_bounds_test_case_empty_bounds.Cardinal.
+    
+    Global Instance I
+      : generics_bounds_test_case_empty_bounds.Red.Trait Self := {
+    }.
+  End
+    Impl_generics_bounds_test_case_empty_bounds_Red_for_generics_bounds_test_case_empty_bounds_Cardinal.
   Global Hint Resolve I : core.
 End
   Impl_generics_bounds_test_case_empty_bounds_Red_for_generics_bounds_test_case_empty_bounds_Cardinal.
 
 Module
   Impl_generics_bounds_test_case_empty_bounds_Blue_for_generics_bounds_test_case_empty_bounds_BlueJay.
-  Definition Self `{State.Trait} :=
-    generics_bounds_test_case_empty_bounds.BlueJay.
-  
-  Global Instance I `{State.Trait}
-    : generics_bounds_test_case_empty_bounds.Blue.Trait Self := {
-  }.
+  Section
+    Impl_generics_bounds_test_case_empty_bounds_Blue_for_generics_bounds_test_case_empty_bounds_BlueJay.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := generics_bounds_test_case_empty_bounds.BlueJay.
+    
+    Global Instance I
+      : generics_bounds_test_case_empty_bounds.Blue.Trait Self := {
+    }.
+  End
+    Impl_generics_bounds_test_case_empty_bounds_Blue_for_generics_bounds_test_case_empty_bounds_BlueJay.
   Global Hint Resolve I : core.
 End
   Impl_generics_bounds_test_case_empty_bounds_Blue_for_generics_bounds_test_case_empty_bounds_BlueJay.
@@ -57,7 +87,7 @@ End
 Definition red
     `{State.Trait}
     {T : Set}
-    `{generics_bounds_test_case_empty_bounds.Red.Trait T}
+    {ℋ_0 : generics_bounds_test_case_empty_bounds.Red.Trait T}
     (arg : ref T)
     : M (ref str) :=
   Pure (mk_str "red").
@@ -65,7 +95,7 @@ Definition red
 Definition blue
     `{State.Trait}
     {T : Set}
-    `{generics_bounds_test_case_empty_bounds.Blue.Trait T}
+    {ℋ_0 : generics_bounds_test_case_empty_bounds.Blue.Trait T}
     (arg : ref T)
     : M (ref str) :=
   Pure (mk_str "blue").
@@ -98,7 +128,7 @@ Definition main `{State.Trait} : M unit :=
       let* α15 := pointer_coercion "Unsize" α14 in
       let* α16 := core.fmt.Arguments::["new_v1"] α3 α15 in
       std.io.stdio._print α16 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -122,5 +152,5 @@ Definition main `{State.Trait} : M unit :=
       let* α15 := pointer_coercion "Unsize" α14 in
       let* α16 := core.fmt.Arguments::["new_v1"] α3 α15 in
       std.io.stdio._print α16 in
-    Pure tt in
-  Pure tt.
+    M.alloc tt in
+  M.alloc tt.

@@ -32,7 +32,7 @@ Definition main `{State.Trait} : M unit :=
       let* α11 := pointer_coercion "Unsize" α10 in
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
-    Pure tt in
+    M.alloc tt in
   let* xs :=
     let* α0 := M.alloc 1 in
     let* α1 := M.alloc 2 in
@@ -59,7 +59,7 @@ Definition main `{State.Trait} : M unit :=
       let* α11 := pointer_coercion "Unsize" α10 in
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* _ :=
       let* α0 := borrow [ mk_str "Push 4 into the vector
@@ -69,7 +69,7 @@ Definition main `{State.Trait} : M unit :=
       let* α3 := pointer_coercion "Unsize" α2 in
       let* α4 := core.fmt.Arguments::["new_const"] α3 in
       std.io.stdio._print α4 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* α0 := borrow_mut xs (alloc.vec.Vec i32 alloc.alloc.Global) in
     let* α1 := M.alloc 4 in
@@ -91,7 +91,7 @@ Definition main `{State.Trait} : M unit :=
       let* α11 := pointer_coercion "Unsize" α10 in
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -112,7 +112,7 @@ Definition main `{State.Trait} : M unit :=
       let* α13 := pointer_coercion "Unsize" α12 in
       let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
       std.io.stdio._print α14 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -135,7 +135,7 @@ Definition main `{State.Trait} : M unit :=
       let* α15 := pointer_coercion "Unsize" α14 in
       let* α16 := core.fmt.Arguments::["new_v1"] α3 α15 in
       std.io.stdio._print α16 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -156,7 +156,7 @@ Definition main `{State.Trait} : M unit :=
       let* α13 := pointer_coercion "Unsize" α12 in
       let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
       std.io.stdio._print α14 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* _ :=
       let* α0 := borrow [ mk_str "Contents of xs:
@@ -166,7 +166,7 @@ Definition main `{State.Trait} : M unit :=
       let* α3 := pointer_coercion "Unsize" α2 in
       let* α4 := core.fmt.Arguments::["new_const"] α3 in
       std.io.stdio._print α4 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* α0 := borrow xs (alloc.vec.Vec i32 alloc.alloc.Global) in
     let* α1 := core.ops.deref.Deref.deref α0 in
@@ -206,10 +206,10 @@ Definition main `{State.Trait} : M unit :=
                   let* α11 := pointer_coercion "Unsize" α10 in
                   let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
                   std.io.stdio._print α12 in
-                Pure tt in
-              Pure tt
+                M.alloc tt in
+              M.alloc tt
             end in
-          Pure tt)
+          M.alloc tt)
       end in
     use α6 in
   let* _ :=
@@ -274,10 +274,10 @@ Definition main `{State.Trait} : M unit :=
                   let* α15 := pointer_coercion "Unsize" α14 in
                   let* α16 := core.fmt.Arguments::["new_v1"] α3 α15 in
                   std.io.stdio._print α16 in
-                Pure tt in
-              Pure tt
+                M.alloc tt in
+              M.alloc tt
             end in
-          Pure tt)
+          M.alloc tt)
       end in
     use α7 in
   let* _ :=
@@ -305,9 +305,9 @@ Definition main `{State.Trait} : M unit :=
                 let* α0 := deref x i32 in
                 let* α1 := M.alloc 3 in
                 assign_op mul α0 α1 in
-              Pure tt
+              M.alloc tt
             end in
-          Pure tt)
+          M.alloc tt)
       end in
     use α6 in
   let* _ :=
@@ -328,5 +328,5 @@ Definition main `{State.Trait} : M unit :=
       let* α11 := pointer_coercion "Unsize" α10 in
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
-    Pure tt in
-  Pure tt.
+    M.alloc tt in
+  M.alloc tt.

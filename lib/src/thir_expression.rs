@@ -240,12 +240,17 @@ pub(crate) fn compile_expr(
                 .map(|field| compile_expr(env, thir, field))
                 .collect(),
         },
-        ExprKind::Tuple { fields } => Expr::Tuple {
-            elements: fields
+        ExprKind::Tuple { fields } => {
+            let elements: Vec<_> = fields
                 .iter()
                 .map(|field| compile_expr(env, thir, field))
-                .collect(),
-        },
+                .collect();
+            if elements.is_empty() {
+                tt()
+            } else {
+                Expr::Tuple { elements }
+            }
+        }
         ExprKind::Adt(adt_expr) => {
             let AdtExpr {
                 adt_def,

@@ -58,8 +58,8 @@ Definition main `{State.Trait} : M unit :=
                       let* α11 := pointer_coercion "Unsize" α10 in
                       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
                       std.io.stdio._print α12 in
-                    Pure tt in
-                  Pure tt in
+                    M.alloc tt in
+                  M.alloc tt in
               let* _ :=
                 let* α0 :=
                   borrow_mut
@@ -68,9 +68,9 @@ Definition main `{State.Trait} : M unit :=
                       (std.thread.JoinHandle unit)
                       alloc.alloc.Global) in
                 (alloc.vec.Vec _ _)::["push"] α0 child in
-              Pure tt
+              M.alloc tt
             end in
-          Pure tt)
+          M.alloc tt)
       end in
     use α4 in
   let* ids :=
@@ -109,9 +109,9 @@ Definition main `{State.Trait} : M unit :=
                 let* α1 := borrow rx (std.sync.mpsc.Receiver i32) in
                 let* α2 := (std.sync.mpsc.Receiver _)::["recv"] α1 in
                 (alloc.vec.Vec _ _)::["push"] α0 α2 in
-              Pure tt
+              M.alloc tt
             end in
-          Pure tt)
+          M.alloc tt)
       end in
     use α4 in
   let* _ :=
@@ -151,9 +151,9 @@ Definition main `{State.Trait} : M unit :=
                   deref (mk_str "oops! the child thread panicked") str in
                 let* α2 := borrow α1 str in
                 (core.result.Result _ _)::["expect"] α0 α2 in
-              Pure tt
+              M.alloc tt
             end in
-          Pure tt)
+          M.alloc tt)
       end in
     use α1 in
   let* _ :=
@@ -188,5 +188,5 @@ Definition main `{State.Trait} : M unit :=
       let* α11 := pointer_coercion "Unsize" α10 in
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
-    Pure tt in
-  Pure tt.
+    M.alloc tt in
+  M.alloc tt.

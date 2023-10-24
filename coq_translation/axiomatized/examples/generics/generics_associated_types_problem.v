@@ -2,75 +2,79 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module Container.
-  Unset Primitive Projections.
-  Record t `{State.Trait} : Set := {
-    x0 : i32;
-    x1 : i32;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
-  }.
-  Global Instance Get_1 `{State.Trait} : Notation.Dot "1" := {
-    Notation.dot x := let* x := M.read x in Pure x.(x1) : M _;
-  }.
+  Section Container.
+    Context `{State.Trait}.
+    
+    Unset Primitive Projections.
+    Record t : Set := {
+      x0 : i32;
+      x1 : i32;
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_0 : Notation.Dot "0" := {
+      Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
+    }.
+    Global Instance Get_1 : Notation.Dot "1" := {
+      Notation.dot x := let* x := M.read x in Pure x.(x1) : M _;
+    }.
+  End Container.
 End Container.
 Definition Container `{State.Trait} : Set := M.val Container.t.
 
 Module Contains.
-  Class Trait (Self : Set) {A B : Set} `{State.Trait} : Type := {
-    contains : (ref Self) -> (ref A) -> (ref B) -> M bool;
-    first : (ref Self) -> M i32;
-    last : (ref Self) -> M i32;
-  }.
-  
-  Global Instance Method_contains `{State.Trait} `(Trait)
-    : Notation.Dot "contains" := {
-    Notation.dot := contains;
-  }.
-  Global Instance Method_first `{State.Trait} `(Trait)
-    : Notation.Dot "first" := {
-    Notation.dot := first;
-  }.
-  Global Instance Method_last `{State.Trait} `(Trait) : Notation.Dot "last" := {
-    Notation.dot := last;
-  }.
+  Section Contains.
+    Context `{State.Trait}.
+    
+    Class Trait (Self : Set) {A B : Set} : Type := {
+      contains : (ref Self) -> (ref A) -> (ref B) -> M bool;
+      first : (ref Self) -> M i32;
+      last : (ref Self) -> M i32;
+    }.
+    
+  End Contains.
 End Contains.
 
 Module
   Impl_generics_associated_types_problem_Contains_for_generics_associated_types_problem_Container.
-  Definition Self `{State.Trait} := generics_associated_types_problem.Container.
-  
-  Parameter contains :
-      forall `{State.Trait},
-      (ref Self) -> (ref i32) -> (ref i32) -> M bool.
-  
-  Global Instance Method_contains `{State.Trait} : Notation.Dot "contains" := {
-    Notation.dot := contains;
-  }.
-  
-  Parameter first : forall `{State.Trait}, (ref Self) -> M i32.
-  
-  Global Instance Method_first `{State.Trait} : Notation.Dot "first" := {
-    Notation.dot := first;
-  }.
-  
-  Parameter last : forall `{State.Trait}, (ref Self) -> M i32.
-  
-  Global Instance Method_last `{State.Trait} : Notation.Dot "last" := {
-    Notation.dot := last;
-  }.
-  
-  Global Instance I `{State.Trait}
-    : generics_associated_types_problem.Contains.Trait Self
-        (A := i32)
-        (B := i32)
-      := {
-    generics_associated_types_problem.Contains.contains := contains;
-    generics_associated_types_problem.Contains.first := first;
-    generics_associated_types_problem.Contains.last := last;
-  }.
+  Section
+    Impl_generics_associated_types_problem_Contains_for_generics_associated_types_problem_Container.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := generics_associated_types_problem.Container.
+    
+    Parameter contains : (ref Self) -> (ref i32) -> (ref i32) -> M bool.
+    
+    Global Instance AssociatedFunction_contains :
+      Notation.DoubleColon Self "contains" := {
+      Notation.double_colon := contains;
+    }.
+    
+    Parameter first : (ref Self) -> M i32.
+    
+    Global Instance AssociatedFunction_first :
+      Notation.DoubleColon Self "first" := {
+      Notation.double_colon := first;
+    }.
+    
+    Parameter last : (ref Self) -> M i32.
+    
+    Global Instance AssociatedFunction_last :
+      Notation.DoubleColon Self "last" := {
+      Notation.double_colon := last;
+    }.
+    
+    Global Instance I
+      : generics_associated_types_problem.Contains.Trait Self
+          (A := i32)
+          (B := i32)
+        := {
+      generics_associated_types_problem.Contains.contains := contains;
+      generics_associated_types_problem.Contains.first := first;
+      generics_associated_types_problem.Contains.last := last;
+    }.
+  End
+    Impl_generics_associated_types_problem_Contains_for_generics_associated_types_problem_Container.
   Global Hint Resolve I : core.
 End
   Impl_generics_associated_types_problem_Contains_for_generics_associated_types_problem_Container.
@@ -79,7 +83,8 @@ Parameter difference :
     forall
       `{State.Trait}
       {A B C : Set}
-      `{generics_associated_types_problem.Contains.Trait C (A := A) (B := B)},
+      {ℋ_0 :
+        generics_associated_types_problem.Contains.Trait C (A := A) (B := B)},
     (ref C) -> M i32.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)

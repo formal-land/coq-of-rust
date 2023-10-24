@@ -5,7 +5,7 @@ Definition create_box `{State.Trait} : M unit :=
   let* _box1 :=
     let* α0 := M.alloc 3 in
     (alloc.boxed.Box _ alloc.alloc.Global)::["new"] α0 in
-  Pure tt.
+  M.alloc tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{State.Trait} : M unit :=
@@ -16,7 +16,7 @@ Definition main `{State.Trait} : M unit :=
     let* _box3 :=
       let* α0 := M.alloc 4 in
       (alloc.boxed.Box _ alloc.alloc.Global)::["new"] α0 in
-    Pure tt in
+    M.alloc tt in
   let* α0 := M.alloc 0 in
   let* α1 := M.alloc 1000 in
   let* α2 :=
@@ -38,8 +38,8 @@ Definition main `{State.Trait} : M unit :=
             never_to_any α0
           | core.option.Option _ =>
             let* _ := scoping_rules_raii.create_box in
-            Pure tt
+            M.alloc tt
           end in
-        Pure tt)
+        M.alloc tt)
     end in
   use α4.

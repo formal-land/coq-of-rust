@@ -11,36 +11,40 @@ Module checked.
   Definition MathError `{State.Trait} : Set := MathError.t.
   
   Module Impl_core_fmt_Debug_for_result_checked_MathError.
-    Definition Self `{State.Trait} := result.checked.MathError.
-    
-    Definition fmt
-        `{State.Trait}
-        (self : ref Self)
-        (f : mut_ref core.fmt.Formatter)
-        : M core.fmt.Result :=
-      let* α0 := deref f core.fmt.Formatter in
-      let* α1 := borrow_mut α0 core.fmt.Formatter in
-      let* α2 :=
-        match self with
-        | result.checked.MathError  =>
-          let* α0 := deref (mk_str "DivisionByZero") str in
-          borrow α0 str
-        | result.checked.MathError  =>
-          let* α0 := deref (mk_str "NonPositiveLogarithm") str in
-          borrow α0 str
-        | result.checked.MathError  =>
-          let* α0 := deref (mk_str "NegativeSquareRoot") str in
-          borrow α0 str
-        end in
-      core.fmt.Formatter::["write_str"] α1 α2.
-    
-    Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
-      Notation.dot := fmt;
-    }.
-    
-    Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
-      core.fmt.Debug.fmt := fmt;
-    }.
+    Section Impl_core_fmt_Debug_for_result_checked_MathError.
+      Context `{State.Trait}.
+      
+      Definition Self : Set := result.checked.MathError.
+      
+      Definition fmt
+          (self : ref Self)
+          (f : mut_ref core.fmt.Formatter)
+          : M core.fmt.Result :=
+        let* α0 := deref f core.fmt.Formatter in
+        let* α1 := borrow_mut α0 core.fmt.Formatter in
+        let* α2 :=
+          match self with
+          | result.checked.MathError  =>
+            let* α0 := deref (mk_str "DivisionByZero") str in
+            borrow α0 str
+          | result.checked.MathError  =>
+            let* α0 := deref (mk_str "NonPositiveLogarithm") str in
+            borrow α0 str
+          | result.checked.MathError  =>
+            let* α0 := deref (mk_str "NegativeSquareRoot") str in
+            borrow α0 str
+          end in
+        core.fmt.Formatter::["write_str"] α1 α2.
+      
+      Global Instance AssociatedFunction_fmt :
+        Notation.DoubleColon Self "fmt" := {
+        Notation.double_colon := fmt;
+      }.
+      
+      Global Instance I : core.fmt.Debug.Trait Self := {
+        core.fmt.Debug.fmt := fmt;
+      }.
+    End Impl_core_fmt_Debug_for_result_checked_MathError.
     Global Hint Resolve I : core.
   End Impl_core_fmt_Debug_for_result_checked_MathError.
   
@@ -95,36 +99,40 @@ End MathError.
 Definition MathError `{State.Trait} : Set := MathError.t.
 
 Module Impl_core_fmt_Debug_for_result_checked_MathError.
-  Definition Self `{State.Trait} := result.checked.MathError.
-  
-  Definition fmt
-      `{State.Trait}
-      (self : ref Self)
-      (f : mut_ref core.fmt.Formatter)
-      : M core.fmt.Result :=
-    let* α0 := deref f core.fmt.Formatter in
-    let* α1 := borrow_mut α0 core.fmt.Formatter in
-    let* α2 :=
-      match self with
-      | result.checked.MathError  =>
-        let* α0 := deref (mk_str "DivisionByZero") str in
-        borrow α0 str
-      | result.checked.MathError  =>
-        let* α0 := deref (mk_str "NonPositiveLogarithm") str in
-        borrow α0 str
-      | result.checked.MathError  =>
-        let* α0 := deref (mk_str "NegativeSquareRoot") str in
-        borrow α0 str
-      end in
-    core.fmt.Formatter::["write_str"] α1 α2.
-  
-  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
-    Notation.dot := fmt;
-  }.
-  
-  Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt := fmt;
-  }.
+  Section Impl_core_fmt_Debug_for_result_checked_MathError.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := result.checked.MathError.
+    
+    Definition fmt
+        (self : ref Self)
+        (f : mut_ref core.fmt.Formatter)
+        : M core.fmt.Result :=
+      let* α0 := deref f core.fmt.Formatter in
+      let* α1 := borrow_mut α0 core.fmt.Formatter in
+      let* α2 :=
+        match self with
+        | result.checked.MathError  =>
+          let* α0 := deref (mk_str "DivisionByZero") str in
+          borrow α0 str
+        | result.checked.MathError  =>
+          let* α0 := deref (mk_str "NonPositiveLogarithm") str in
+          borrow α0 str
+        | result.checked.MathError  =>
+          let* α0 := deref (mk_str "NegativeSquareRoot") str in
+          borrow α0 str
+        end in
+      core.fmt.Formatter::["write_str"] α1 α2.
+    
+    Global Instance AssociatedFunction_fmt :
+      Notation.DoubleColon Self "fmt" := {
+      Notation.double_colon := fmt;
+    }.
+    
+    Global Instance I : core.fmt.Debug.Trait Self := {
+      core.fmt.Debug.fmt := fmt;
+    }.
+  End Impl_core_fmt_Debug_for_result_checked_MathError.
   Global Hint Resolve I : core.
 End Impl_core_fmt_Debug_for_result_checked_MathError.
 
@@ -252,5 +260,5 @@ Definition main `{State.Trait} : M unit :=
       let* α14 := pointer_coercion "Unsize" α13 in
       let* α15 := core.fmt.Arguments::["new_v1"] α3 α14 in
       std.io.stdio._print α15 in
-    Pure tt in
-  Pure tt.
+    M.alloc tt in
+  M.alloc tt.

@@ -1,18 +1,6 @@
 # blacklisting for the change to THIR
 examples/
-examples_axiomatized/generics/generics_associated_types_solution.v
-examples_axiomatized/generics/generics_functions.v
-examples_axiomatized/generics/generics_phantom_type_test_case_unit_clarification.v
-examples_axiomatized/generics/generics_phantom_type.v
-examples_axiomatized/generics/generics.v
-examples_axiomatized/scoping_rules/scoping_rules_lifetimes_bounds.v
-examples_axiomatized/scoping_rules/scoping_rules_lifetimes_traits.v
-examples_axiomatized/std_library_types/hash_map_alternate_or_custom_key_types.v
-examples_axiomatized/traits/derive.v
-examples_axiomatized/traits/hash.v
-examples_axiomatized/traits/operator_overloading.v
-examples_axiomatized/traits/traits_parms.v
-ink/
+num_traits.v
 ######
 examples/cargo/concurrent_tests.v
 examples/custom_types/enums_c_like.v
@@ -167,6 +155,12 @@ examples_axiomatized/traits/impl_trait_as_return_type.v
 examples_axiomatized/traits/iterators.v
 examples_axiomatized/traits/returning_traits_with_dyn.v
 examples_axiomatized/traits/supertraits.v
+ink/ink.v
+ink/ink_e2e.v
+ink/ink_engine.v
+ink/ink_env.v
+ink/ink_storage.v
+ink/ink_storage_traits.v
 ink/erc20.v
 _std/iter_type.v
 _std/iter.v

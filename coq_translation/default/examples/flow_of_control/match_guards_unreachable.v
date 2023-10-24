@@ -14,7 +14,7 @@ Definition main `{State.Trait} : M unit :=
       let* α3 := pointer_coercion "Unsize" α2 in
       let* α4 := core.fmt.Arguments::["new_const"] α3 in
       std.io.stdio._print α4 in
-    Pure tt
+    M.alloc tt
   | i =>
     let* _ :=
       let* α0 := borrow [ mk_str "Greater than zero
@@ -24,7 +24,7 @@ Definition main `{State.Trait} : M unit :=
       let* α3 := pointer_coercion "Unsize" α2 in
       let* α4 := core.fmt.Arguments::["new_const"] α3 in
       std.io.stdio._print α4 in
-    Pure tt
+    M.alloc tt
   | _ =>
     let* α0 := borrow (mk_str "Should never happen.") (ref str) in
     let* α1 := deref α0 (ref str) in
