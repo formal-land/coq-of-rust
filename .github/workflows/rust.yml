@@ -19,7 +19,12 @@ jobs:
     - name: Download Git submodules
       run: git submodule update --init --recursive
     - name: Install Coq
-      run: sudo apt-get install coq
+      run: |
+        sudo apt-get install opam
+        opam init -y
+        opam switch create 4.14.1
+        eval $(opam env)
+        opam install -y coq.8.18.0
     - name: Format check
       run: cargo fmt --check
     - name: Build
