@@ -66,10 +66,9 @@ Module Impl_core_cmp_PartialEq_for_try_from_and_try_into_EvenNumber.
       Notation.double_colon := eq;
     }.
     
-    Global Instance ℐ
-      : core.cmp.PartialEq.Trait Self
-          (Rhs := core.cmp.PartialEq.Default.Rhs Self)
-        := {
+    Global Instance ℐ :
+      core.cmp.PartialEq.Trait Self
+        (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
       core.cmp.PartialEq.eq := eq;
     }.
   End Impl_core_cmp_PartialEq_for_try_from_and_try_into_EvenNumber.

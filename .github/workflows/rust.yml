@@ -22,11 +22,12 @@ jobs:
       with:
         custom_image: coqorg/coq:8.18-ocaml-4.14-flambda
         custom_script: |
-          startGroup "Install Rust"
+          startGroup "Install dependencies"
             curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
             source "$HOME/.cargo/env"
             cargo --version
             sudo ln -s `which python3` /usr/bin/python
+            opam install -y coq-hammer
           endGroup
           startGroup "Build"
             sudo chown -R $(whoami) .

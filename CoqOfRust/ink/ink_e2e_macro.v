@@ -12,44 +12,38 @@ Module config.
       Unset Primitive Projections.
       Record t : Set := {
         whitelisted_attributes : ink_ir.ir.utils.WhitelistedAttributes;
-        additional_contracts
-          :
+        additional_contracts :
           alloc.vec.Vec alloc.string.String alloc.vec.Vec.Default.A;
         environment : core.option.Option syn.path.Path;
       }.
       Global Set Primitive Projections.
       
-      Global Instance Get_whitelisted_attributes
-        : Notation.Dot "whitelisted_attributes" := {
-        Notation.dot x
-          :=
+      Global Instance Get_whitelisted_attributes :
+        Notation.Dot "whitelisted_attributes" := {
+        Notation.dot x :=
           let* x := M.read x in Pure x.(whitelisted_attributes) : M _;
       }.
-      Global Instance Get_AF_whitelisted_attributes
-        : Notation.DoubleColon t "whitelisted_attributes" := {
-        Notation.double_colon x
-          :=
+      Global Instance Get_AF_whitelisted_attributes :
+        Notation.DoubleColon t "whitelisted_attributes" := {
+        Notation.double_colon x :=
           let* x := M.read x in Pure x.(whitelisted_attributes) : M _;
       }.
-      Global Instance Get_additional_contracts
-        : Notation.Dot "additional_contracts" := {
-        Notation.dot x
-          :=
+      Global Instance Get_additional_contracts :
+        Notation.Dot "additional_contracts" := {
+        Notation.dot x :=
           let* x := M.read x in Pure x.(additional_contracts) : M _;
       }.
-      Global Instance Get_AF_additional_contracts
-        : Notation.DoubleColon t "additional_contracts" := {
-        Notation.double_colon x
-          :=
+      Global Instance Get_AF_additional_contracts :
+        Notation.DoubleColon t "additional_contracts" := {
+        Notation.double_colon x :=
           let* x := M.read x in Pure x.(additional_contracts) : M _;
       }.
       Global Instance Get_environment : Notation.Dot "environment" := {
         Notation.dot x := let* x := M.read x in Pure x.(environment) : M _;
       }.
-      Global Instance Get_AF_environment
-        : Notation.DoubleColon t "environment" := {
-        Notation.double_colon x
-          :=
+      Global Instance Get_AF_environment :
+        Notation.DoubleColon t "environment" := {
+        Notation.double_colon x :=
           let* x := M.read x in Pure x.(environment) : M _;
       }.
     End E2EConfig.
@@ -125,10 +119,9 @@ Module config.
         Notation.double_colon := eq;
       }.
       
-      Global Instance ℐ
-        : core.cmp.PartialEq.Trait Self
-            (Rhs := core.cmp.PartialEq.Default.Rhs Self)
-          := {
+      Global Instance ℐ :
+        core.cmp.PartialEq.Trait Self
+          (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
         core.cmp.PartialEq.eq := eq;
       }.
     End Impl_core_cmp_PartialEq_for_ink_e2e_macro_config_E2EConfig.
@@ -183,10 +176,9 @@ Module config.
         Notation.double_colon := try_from;
       }.
       
-      Global Instance ℐ
-        : core.convert.TryFrom.Trait Self
-            (T := ink_ir.ast.attr_args.AttributeArgs)
-          := {
+      Global Instance ℐ :
+        core.convert.TryFrom.Trait Self
+          (T := ink_ir.ast.attr_args.AttributeArgs) := {
         core.convert.TryFrom.Error := Error;
         core.convert.TryFrom.try_from := try_from;
       }.
@@ -256,8 +248,8 @@ Module ir.
         Notation.double_colon := from;
       }.
       
-      Global Instance ℐ
-        : core.convert.From.Trait Self (T := syn.item.ItemFn) := {
+      Global Instance ℐ :
+        core.convert.From.Trait Self (T := syn.item.ItemFn) := {
         core.convert.From.from := from;
       }.
     End Impl_core_convert_From_for_ink_e2e_macro_ir_E2EFn.
@@ -326,8 +318,8 @@ Module codegen.
         Notation.double_colon := from;
       }.
       
-      Global Instance ℐ
-        : core.convert.From.Trait Self (T := ink_e2e_macro.ir.InkE2ETest) := {
+      Global Instance ℐ :
+        core.convert.From.Trait Self (T := ink_e2e_macro.ir.InkE2ETest) := {
         core.convert.From.from := from;
       }.
     End Impl_core_convert_From_for_ink_e2e_macro_codegen_InkE2ETest.
@@ -416,8 +408,8 @@ Module Impl_core_convert_From_for_ink_e2e_macro_codegen_InkE2ETest.
       Notation.double_colon := from;
     }.
     
-    Global Instance ℐ
-      : core.convert.From.Trait Self (T := ink_e2e_macro.ir.InkE2ETest) := {
+    Global Instance ℐ :
+      core.convert.From.Trait Self (T := ink_e2e_macro.ir.InkE2ETest) := {
       core.convert.From.from := from;
     }.
   End Impl_core_convert_From_for_ink_e2e_macro_codegen_InkE2ETest.
@@ -452,44 +444,38 @@ Module E2EConfig.
     Unset Primitive Projections.
     Record t : Set := {
       whitelisted_attributes : ink_ir.ir.utils.WhitelistedAttributes;
-      additional_contracts
-        :
+      additional_contracts :
         alloc.vec.Vec alloc.string.String alloc.vec.Vec.Default.A;
       environment : core.option.Option syn.path.Path;
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_whitelisted_attributes
-      : Notation.Dot "whitelisted_attributes" := {
-      Notation.dot x
-        :=
+    Global Instance Get_whitelisted_attributes :
+      Notation.Dot "whitelisted_attributes" := {
+      Notation.dot x :=
         let* x := M.read x in Pure x.(whitelisted_attributes) : M _;
     }.
-    Global Instance Get_AF_whitelisted_attributes
-      : Notation.DoubleColon t "whitelisted_attributes" := {
-      Notation.double_colon x
-        :=
+    Global Instance Get_AF_whitelisted_attributes :
+      Notation.DoubleColon t "whitelisted_attributes" := {
+      Notation.double_colon x :=
         let* x := M.read x in Pure x.(whitelisted_attributes) : M _;
     }.
-    Global Instance Get_additional_contracts
-      : Notation.Dot "additional_contracts" := {
-      Notation.dot x
-        :=
+    Global Instance Get_additional_contracts :
+      Notation.Dot "additional_contracts" := {
+      Notation.dot x :=
         let* x := M.read x in Pure x.(additional_contracts) : M _;
     }.
-    Global Instance Get_AF_additional_contracts
-      : Notation.DoubleColon t "additional_contracts" := {
-      Notation.double_colon x
-        :=
+    Global Instance Get_AF_additional_contracts :
+      Notation.DoubleColon t "additional_contracts" := {
+      Notation.double_colon x :=
         let* x := M.read x in Pure x.(additional_contracts) : M _;
     }.
     Global Instance Get_environment : Notation.Dot "environment" := {
       Notation.dot x := let* x := M.read x in Pure x.(environment) : M _;
     }.
-    Global Instance Get_AF_environment
-      : Notation.DoubleColon t "environment" := {
-      Notation.double_colon x
-        :=
+    Global Instance Get_AF_environment :
+      Notation.DoubleColon t "environment" := {
+      Notation.double_colon x :=
         let* x := M.read x in Pure x.(environment) : M _;
     }.
   End E2EConfig.
@@ -562,10 +548,9 @@ Module Impl_core_cmp_PartialEq_for_ink_e2e_macro_config_E2EConfig.
       Notation.double_colon := eq;
     }.
     
-    Global Instance ℐ
-      : core.cmp.PartialEq.Trait Self
-          (Rhs := core.cmp.PartialEq.Default.Rhs Self)
-        := {
+    Global Instance ℐ :
+      core.cmp.PartialEq.Trait Self
+        (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
       core.cmp.PartialEq.eq := eq;
     }.
   End Impl_core_cmp_PartialEq_for_ink_e2e_macro_config_E2EConfig.
@@ -619,10 +604,9 @@ Module Impl_core_convert_TryFrom_for_ink_e2e_macro_config_E2EConfig.
       Notation.double_colon := try_from;
     }.
     
-    Global Instance ℐ
-      : core.convert.TryFrom.Trait Self
-          (T := ink_ir.ast.attr_args.AttributeArgs)
-        := {
+    Global Instance ℐ :
+      core.convert.TryFrom.Trait Self
+        (T := ink_ir.ast.attr_args.AttributeArgs) := {
       core.convert.TryFrom.Error := Error;
       core.convert.TryFrom.try_from := try_from;
     }.

@@ -24,8 +24,7 @@ Module lazy.
           Notation.dot x := let* x := M.read x in Pure x.(_marker) : M _;
         }.
         Global Instance Get_AF__marker : Notation.DoubleColon t "_marker" := {
-          Notation.double_colon x
-            :=
+          Notation.double_colon x :=
             let* x := M.read x in Pure x.(_marker) : M _;
         }.
       End Mapping.

@@ -126,10 +126,9 @@ Module Rectangle.
     Global Instance Get_bottom_right : Notation.Dot "bottom_right" := {
       Notation.dot x := let* x := M.read x in Pure x.(bottom_right) : M _;
     }.
-    Global Instance Get_AF_bottom_right
-      : Notation.DoubleColon t "bottom_right" := {
-      Notation.double_colon x
-        :=
+    Global Instance Get_AF_bottom_right :
+      Notation.DoubleColon t "bottom_right" := {
+      Notation.double_colon x :=
         let* x := M.read x in Pure x.(bottom_right) : M _;
     }.
   End Rectangle.

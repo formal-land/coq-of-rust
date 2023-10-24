@@ -65,8 +65,8 @@ Module
       Notation.double_colon := get;
     }.
     
-    Global Instance ℐ
-      : disambiguating_overlapping_traits.UsernameWidget.Trait Self := {
+    Global Instance ℐ :
+      disambiguating_overlapping_traits.UsernameWidget.Trait Self := {
       disambiguating_overlapping_traits.UsernameWidget.get := get;
     }.
   End
@@ -90,8 +90,8 @@ Module
       Notation.double_colon := get;
     }.
     
-    Global Instance ℐ
-      : disambiguating_overlapping_traits.AgeWidget.Trait Self := {
+    Global Instance ℐ :
+      disambiguating_overlapping_traits.AgeWidget.Trait Self := {
       disambiguating_overlapping_traits.AgeWidget.get := get;
     }.
   End

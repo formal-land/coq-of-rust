@@ -59,51 +59,48 @@ Module erc20.
       
       Unset Primitive Projections.
       Record t : Set := {
-        total_supply
-          :
+        total_supply :
           ink_storage_traits.storage.AutoStorableHint.Type_
-            (Self := erc20.erc20.Balance);
-        balances
-          :
+            (Self := erc20.erc20.Balance)
+            (Trait := ltac:(try clear Trait; hauto l: on));
+        balances :
           ink_storage_traits.storage.AutoStorableHint.Type_
             (Self := ink_storage.lazy.mapping.Mapping
               erc20.erc20.AccountId
               erc20.erc20.Balance
-              ink_storage.lazy.mapping.Mapping.Default.KeyType);
-        allowances
-          :
+              ink_storage.lazy.mapping.Mapping.Default.KeyType)
+            (Trait := ltac:(try clear Trait; hauto l: on));
+        allowances :
           ink_storage_traits.storage.AutoStorableHint.Type_
             (Self := ink_storage.lazy.mapping.Mapping
               (erc20.erc20.AccountId * erc20.erc20.AccountId)
               erc20.erc20.Balance
-              ink_storage.lazy.mapping.Mapping.Default.KeyType);
+              ink_storage.lazy.mapping.Mapping.Default.KeyType)
+            (Trait := ltac:(try clear Trait; hauto l: on));
       }.
       Global Set Primitive Projections.
       
       Global Instance Get_total_supply : Notation.Dot "total_supply" := {
         Notation.dot x := let* x := M.read x in Pure x.(total_supply) : M _;
       }.
-      Global Instance Get_AF_total_supply
-        : Notation.DoubleColon t "total_supply" := {
-        Notation.double_colon x
-          :=
+      Global Instance Get_AF_total_supply :
+        Notation.DoubleColon t "total_supply" := {
+        Notation.double_colon x :=
           let* x := M.read x in Pure x.(total_supply) : M _;
       }.
       Global Instance Get_balances : Notation.Dot "balances" := {
         Notation.dot x := let* x := M.read x in Pure x.(balances) : M _;
       }.
       Global Instance Get_AF_balances : Notation.DoubleColon t "balances" := {
-        Notation.double_colon x
-          :=
+        Notation.double_colon x :=
           let* x := M.read x in Pure x.(balances) : M _;
       }.
       Global Instance Get_allowances : Notation.Dot "allowances" := {
         Notation.dot x := let* x := M.read x in Pure x.(allowances) : M _;
       }.
-      Global Instance Get_AF_allowances
-        : Notation.DoubleColon t "allowances" := {
-        Notation.double_colon x
-          :=
+      Global Instance Get_AF_allowances :
+        Notation.DoubleColon t "allowances" := {
+        Notation.double_colon x :=
           let* x := M.read x in Pure x.(allowances) : M _;
       }.
     End Erc20.
@@ -264,8 +261,8 @@ Module erc20.
       
       Definition LenTopics : Set := ink.codegen.event.topics.EventTopics.
       
-      Global Instance ℐ
-        : ink.codegen.event.topics.EventLenTopics.Trait Self := {
+      Global Instance ℐ :
+        ink.codegen.event.topics.EventLenTopics.Trait Self := {
         ink.codegen.event.topics.EventLenTopics.LenTopics := LenTopics;
       }.
     End Impl_ink_codegen_event_topics_EventLenTopics_for_erc20_erc20_Transfer.
@@ -281,8 +278,8 @@ Module erc20.
       
       Definition LenTopics : Set := ink.codegen.event.topics.EventTopics.
       
-      Global Instance ℐ
-        : ink.codegen.event.topics.EventLenTopics.Trait Self := {
+      Global Instance ℐ :
+        ink.codegen.event.topics.EventLenTopics.Trait Self := {
         ink.codegen.event.topics.EventLenTopics.LenTopics := LenTopics;
       }.
     End Impl_ink_codegen_event_topics_EventLenTopics_for_erc20_erc20_Approval.
@@ -355,8 +352,8 @@ Module erc20.
         Notation.double_colon := LABEL;
       }.
       
-      Global Instance ℐ
-        : ink.reflect.dispatch.DispatchableConstructorInfo.Trait Self := {
+      Global Instance ℐ :
+        ink.reflect.dispatch.DispatchableConstructorInfo.Trait Self := {
         ink.reflect.dispatch.DispatchableConstructorInfo.Input := Input;
         ink.reflect.dispatch.DispatchableConstructorInfo.Output := Output;
         ink.reflect.dispatch.DispatchableConstructorInfo.Storage := Storage;
@@ -430,8 +427,8 @@ Module erc20.
         Notation.double_colon := LABEL;
       }.
       
-      Global Instance ℐ
-        : ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
+      Global Instance ℐ :
+        ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
         ink.reflect.dispatch.DispatchableMessageInfo.Input := Input;
         ink.reflect.dispatch.DispatchableMessageInfo.Output := Output;
         ink.reflect.dispatch.DispatchableMessageInfo.Storage := Storage;
@@ -504,8 +501,8 @@ Module erc20.
         Notation.double_colon := LABEL;
       }.
       
-      Global Instance ℐ
-        : ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
+      Global Instance ℐ :
+        ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
         ink.reflect.dispatch.DispatchableMessageInfo.Input := Input;
         ink.reflect.dispatch.DispatchableMessageInfo.Output := Output;
         ink.reflect.dispatch.DispatchableMessageInfo.Storage := Storage;
@@ -581,8 +578,8 @@ Module erc20.
         Notation.double_colon := LABEL;
       }.
       
-      Global Instance ℐ
-        : ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
+      Global Instance ℐ :
+        ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
         ink.reflect.dispatch.DispatchableMessageInfo.Input := Input;
         ink.reflect.dispatch.DispatchableMessageInfo.Output := Output;
         ink.reflect.dispatch.DispatchableMessageInfo.Storage := Storage;
@@ -658,8 +655,8 @@ Module erc20.
         Notation.double_colon := LABEL;
       }.
       
-      Global Instance ℐ
-        : ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
+      Global Instance ℐ :
+        ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
         ink.reflect.dispatch.DispatchableMessageInfo.Input := Input;
         ink.reflect.dispatch.DispatchableMessageInfo.Output := Output;
         ink.reflect.dispatch.DispatchableMessageInfo.Storage := Storage;
@@ -735,8 +732,8 @@ Module erc20.
         Notation.double_colon := LABEL;
       }.
       
-      Global Instance ℐ
-        : ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
+      Global Instance ℐ :
+        ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
         ink.reflect.dispatch.DispatchableMessageInfo.Input := Input;
         ink.reflect.dispatch.DispatchableMessageInfo.Output := Output;
         ink.reflect.dispatch.DispatchableMessageInfo.Storage := Storage;
@@ -814,8 +811,8 @@ Module erc20.
         Notation.double_colon := LABEL;
       }.
       
-      Global Instance ℐ
-        : ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
+      Global Instance ℐ :
+        ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
         ink.reflect.dispatch.DispatchableMessageInfo.Input := Input;
         ink.reflect.dispatch.DispatchableMessageInfo.Output := Output;
         ink.reflect.dispatch.DispatchableMessageInfo.Storage := Storage;
@@ -835,10 +832,10 @@ Module erc20.
       
       Unset Primitive Projections.
       Record t : Set := {
-        inner
-          :
+        inner :
           ink.codegen.dispatch.info.ContractCallBuilder.Type_
-            (Self := erc20.erc20.Erc20);
+            (Self := erc20.erc20.Erc20)
+            (Trait := ltac:(try clear Trait; hauto l: on));
       }.
       Global Set Primitive Projections.
       
@@ -918,8 +915,7 @@ Module erc20.
       }.
       
       Global Instance ℐ : core.hash.Hash.Trait Self := {
-        core.hash.Hash.hash {__H : Set} {ℋ_0 : core.hash.Hasher.Trait __H}
-          :=
+        core.hash.Hash.hash {__H : Set} {ℋ_0 : core.hash.Hasher.Trait __H} :=
           hash (__H := __H);
       }.
     End Impl_core_hash_Hash_for_erc20_erc20_Erc20Ref.
@@ -961,10 +957,9 @@ Module erc20.
         Notation.double_colon := eq;
       }.
       
-      Global Instance ℐ
-        : core.cmp.PartialEq.Trait Self
-            (Rhs := core.cmp.PartialEq.Default.Rhs Self)
-          := {
+      Global Instance ℐ :
+        core.cmp.PartialEq.Trait Self
+          (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
         core.cmp.PartialEq.eq := eq;
       }.
     End Impl_core_cmp_PartialEq_for_erc20_erc20_Erc20Ref.
@@ -1682,12 +1677,10 @@ Module erc20.
         Notation.double_colon := from_account_id;
       }.
       
-      Global Instance ℐ
-        : ink_env.call.create_builder.FromAccountId.Trait Self
-            (T := erc20.erc20.Environment)
-          := {
-        ink_env.call.create_builder.FromAccountId.from_account_id
-          :=
+      Global Instance ℐ :
+        ink_env.call.create_builder.FromAccountId.Trait Self
+          (T := erc20.erc20.Environment) := {
+        ink_env.call.create_builder.FromAccountId.from_account_id :=
           from_account_id;
       }.
     End Impl_ink_env_call_create_builder_FromAccountId_for_erc20_erc20_Erc20Ref.
@@ -1713,9 +1706,9 @@ Module erc20.
         Notation.double_colon := to_account_id;
       }.
       
-      Global Instance ℐ
-        : ink.contract_ref.ToAccountId.Trait Self (T := erc20.erc20.Environment)
-          := {
+      Global Instance ℐ :
+        ink.contract_ref.ToAccountId.Trait Self
+          (T := erc20.erc20.Environment) := {
         ink.contract_ref.ToAccountId.to_account_id := to_account_id;
       }.
     End Impl_ink_contract_ref_ToAccountId_for_erc20_erc20_Erc20Ref.
@@ -1743,8 +1736,8 @@ Module erc20.
         Notation.double_colon := as_ref;
       }.
       
-      Global Instance ℐ
-        : core.convert.AsRef.Trait Self (T := erc20.erc20.AccountId) := {
+      Global Instance ℐ :
+        core.convert.AsRef.Trait Self (T := erc20.erc20.AccountId) := {
         core.convert.AsRef.as_ref := as_ref;
       }.
     End Impl_core_convert_AsRef_for_erc20_erc20_Erc20Ref.
@@ -1776,8 +1769,8 @@ Module erc20.
         Notation.double_colon := as_mut;
       }.
       
-      Global Instance ℐ
-        : core.convert.AsMut.Trait Self (T := erc20.erc20.AccountId) := {
+      Global Instance ℐ :
+        core.convert.AsMut.Trait Self (T := erc20.erc20.AccountId) := {
         core.convert.AsMut.as_mut := as_mut;
       }.
     End Impl_core_convert_AsMut_for_erc20_erc20_Erc20Ref.
@@ -1863,10 +1856,9 @@ Module erc20.
         Notation.double_colon := eq;
       }.
       
-      Global Instance ℐ
-        : core.cmp.PartialEq.Trait Self
-            (Rhs := core.cmp.PartialEq.Default.Rhs Self)
-          := {
+      Global Instance ℐ :
+        core.cmp.PartialEq.Trait Self
+          (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
         core.cmp.PartialEq.eq := eq;
       }.
     End Impl_core_cmp_PartialEq_for_erc20_erc20_Error.
@@ -1966,14 +1958,12 @@ Module Check.
     Record t : Set := {
       salt : unit;
       field_0 : erc20.erc20.Balance;
-      field_1
-        :
+      field_1 :
         ink_storage.lazy.mapping.Mapping
           erc20.erc20.AccountId
           erc20.erc20.Balance
           ink_storage.lazy.mapping.Mapping.Default.KeyType;
-      field_2
-        :
+      field_2 :
         ink_storage.lazy.mapping.Mapping
           (erc20.erc20.AccountId * erc20.erc20.AccountId)
           erc20.erc20.Balance
@@ -2015,34 +2005,33 @@ Module Erc20.
     
     Unset Primitive Projections.
     Record t : Set := {
-      total_supply
-        :
+      total_supply :
         ink_storage_traits.storage.AutoStorableHint.Type_
-          (Self := erc20.erc20.Balance);
-      balances
-        :
+          (Self := erc20.erc20.Balance)
+          (Trait := ltac:(try clear Trait; hauto l: on));
+      balances :
         ink_storage_traits.storage.AutoStorableHint.Type_
           (Self := ink_storage.lazy.mapping.Mapping
             erc20.erc20.AccountId
             erc20.erc20.Balance
-            ink_storage.lazy.mapping.Mapping.Default.KeyType);
-      allowances
-        :
+            ink_storage.lazy.mapping.Mapping.Default.KeyType)
+          (Trait := ltac:(try clear Trait; hauto l: on));
+      allowances :
         ink_storage_traits.storage.AutoStorableHint.Type_
           (Self := ink_storage.lazy.mapping.Mapping
             (erc20.erc20.AccountId * erc20.erc20.AccountId)
             erc20.erc20.Balance
-            ink_storage.lazy.mapping.Mapping.Default.KeyType);
+            ink_storage.lazy.mapping.Mapping.Default.KeyType)
+          (Trait := ltac:(try clear Trait; hauto l: on));
     }.
     Global Set Primitive Projections.
     
     Global Instance Get_total_supply : Notation.Dot "total_supply" := {
       Notation.dot x := let* x := M.read x in Pure x.(total_supply) : M _;
     }.
-    Global Instance Get_AF_total_supply
-      : Notation.DoubleColon t "total_supply" := {
-      Notation.double_colon x
-        :=
+    Global Instance Get_AF_total_supply :
+      Notation.DoubleColon t "total_supply" := {
+      Notation.double_colon x :=
         let* x := M.read x in Pure x.(total_supply) : M _;
     }.
     Global Instance Get_balances : Notation.Dot "balances" := {
@@ -2055,8 +2044,7 @@ Module Erc20.
       Notation.dot x := let* x := M.read x in Pure x.(allowances) : M _;
     }.
     Global Instance Get_AF_allowances : Notation.DoubleColon t "allowances" := {
-      Notation.double_colon x
-        :=
+      Notation.double_colon x :=
         let* x := M.read x in Pure x.(allowances) : M _;
     }.
   End Erc20.
@@ -2077,10 +2065,9 @@ Module Impl_ink_storage_traits_storage_StorableHint_for_erc20_erc20_Erc20.
     
     Definition PreferredKey : Set := ink_storage_traits.impls.AutoKey.
     
-    Global Instance ℐ
-      : ink_storage_traits.storage.StorableHint.Trait Self
-          (Key := __ink_generic_salt)
-        := {
+    Global Instance ℐ :
+      ink_storage_traits.storage.StorableHint.Trait Self
+        (Key := __ink_generic_salt) := {
       ink_storage_traits.storage.StorableHint.Type := Type;
       ink_storage_traits.storage.StorableHint.PreferredKey := PreferredKey;
     }.
@@ -2258,14 +2245,12 @@ Module Impl_ink_storage_traits_storage_Storable_for_erc20_erc20_Erc20.
     Global Instance ℐ : ink_storage_traits.storage.Storable.Trait Self := {
       ink_storage_traits.storage.Storable.decode
         {__ink_I : Set}
-        {ℋ_0 : parity_scale_codec.codec.Input.Trait __ink_I}
-        :=
+        {ℋ_0 : parity_scale_codec.codec.Input.Trait __ink_I} :=
         decode (__ink_I := __ink_I);
       ink_storage_traits.storage.Storable.encode
         {__ink_O : Set}
         {ℋ_0 : parity_scale_codec.codec.Output.Trait __ink_O}
-        {ℋ_1 : core.marker.Sized.Trait __ink_O}
-        :=
+        {ℋ_1 : core.marker.Sized.Trait __ink_O} :=
         encode (__ink_O := __ink_O);
     }.
   End Impl_ink_storage_traits_storage_Storable_for_erc20_erc20_Erc20.
@@ -2587,7 +2572,8 @@ Module
         {ℋ_0 :
           core.convert.Into.Trait E
             (T := ink.reflect.event.ContractEventBase.Type_
-              (Self := erc20.erc20.Erc20))}
+              (Self := erc20.erc20.Erc20)
+              (Trait := ltac:(try clear Trait; hauto l: on)))}
         (self : Self)
         (event : E)
         : M unit :=
@@ -2601,21 +2587,21 @@ Module
         {ℋ_0 :
           core.convert.Into.Trait E
             (T := ink.reflect.event.ContractEventBase.Type_
-              (Self := erc20.erc20.Erc20))} :
+              (Self := erc20.erc20.Erc20)
+              (Trait := ltac:(try clear Trait; hauto l: on)))} :
       Notation.DoubleColon Self "emit_event" := {
       Notation.double_colon := emit_event (E := E);
     }.
     
-    Global Instance ℐ
-      : ink.codegen.event.emit.EmitEvent.Trait Self (C := erc20.erc20.Erc20)
-        := {
+    Global Instance ℐ :
+      ink.codegen.event.emit.EmitEvent.Trait Self (C := erc20.erc20.Erc20) := {
       ink.codegen.event.emit.EmitEvent.emit_event
         {E : Set}
         {ℋ_0 :
           core.convert.Into.Trait E
             (T := ink.reflect.event.ContractEventBase.Type_
-              (Self := erc20.erc20.Erc20))}
-        :=
+              (Self := erc20.erc20.Erc20)
+              (Trait := ltac:(try clear Trait; hauto l: on)))} :=
         emit_event (E := E);
     }.
   End
@@ -2701,10 +2687,9 @@ Module
     
     Definition Self : Set := erc20.erc20.__ink_EventBase.
     
-    Global Instance ℐ
-      : parity_scale_codec.encode_like.EncodeLike.Trait Self
-          (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self)
-        := {
+    Global Instance ℐ :
+      parity_scale_codec.encode_like.EncodeLike.Trait Self
+        (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self) := {
     }.
   End
     Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20___ink_EventBase.
@@ -2828,8 +2813,7 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___ink_EventBase.
     Global Instance ℐ : parity_scale_codec.codec.Decode.Trait Self := {
       parity_scale_codec.codec.Decode.decode
         {__CodecInputEdqy : Set}
-        {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
-        :=
+        {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :=
         decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
   End Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___ink_EventBase.
@@ -2865,8 +2849,8 @@ Module Impl_core_convert_From_for_erc20_erc20___ink_EventBase.
       Notation.double_colon := from;
     }.
     
-    Global Instance ℐ
-      : core.convert.From.Trait Self (T := erc20.erc20.Transfer) := {
+    Global Instance ℐ :
+      core.convert.From.Trait Self (T := erc20.erc20.Transfer) := {
       core.convert.From.from := from;
     }.
   End Impl_core_convert_From_for_erc20_erc20___ink_EventBase.
@@ -2887,8 +2871,8 @@ Module Impl_core_convert_From_for_erc20_erc20___ink_EventBase.
       Notation.double_colon := from;
     }.
     
-    Global Instance ℐ
-      : core.convert.From.Trait Self (T := erc20.erc20.Approval) := {
+    Global Instance ℐ :
+      core.convert.From.Trait Self (T := erc20.erc20.Approval) := {
       core.convert.From.from := from;
     }.
   End Impl_core_convert_From_for_erc20_erc20___ink_EventBase.
@@ -2941,7 +2925,11 @@ Module Impl_ink_env_topics_Topics_for_erc20_erc20___ink_EventBase.
         {ℋ_1 : ink_env.topics.TopicsBuilderBackend.Trait B (E := E)}
         (self : ref Self)
         (builder : ink_env.topics.TopicsBuilder ink_env.topics.state.Uninit E B)
-        : M (ink_env.topics.TopicsBuilderBackend.Output (Self := B)) :=
+        :
+          M
+            (ink_env.topics.TopicsBuilderBackend.Output
+              (Self := B)
+              (Trait := ltac:(try clear Trait; hauto l: on))) :=
       match self with
       | erc20.erc20.__ink_EventBase event =>
         let* α0 := deref event erc20.erc20.Transfer in
@@ -2974,8 +2962,7 @@ Module Impl_ink_env_topics_Topics_for_erc20_erc20___ink_EventBase.
       ink_env.topics.Topics.topics
         {E B : Set}
         {ℋ_0 : ink_env.types.Environment.Trait E}
-        {ℋ_1 : ink_env.topics.TopicsBuilderBackend.Trait B (E := E)}
-        :=
+        {ℋ_1 : ink_env.topics.TopicsBuilderBackend.Trait B (E := E)} :=
         topics (E := E) (B := B);
     }.
   End Impl_ink_env_topics_Topics_for_erc20_erc20___ink_EventBase.
@@ -3117,10 +3104,9 @@ Module Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20_Transfer.
     
     Definition Self : Set := erc20.erc20.Transfer.
     
-    Global Instance ℐ
-      : parity_scale_codec.encode_like.EncodeLike.Trait Self
-          (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self)
-        := {
+    Global Instance ℐ :
+      parity_scale_codec.encode_like.EncodeLike.Trait Self
+        (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self) := {
     }.
   End Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20_Transfer.
   Global Hint Resolve ℐ : core.
@@ -3201,8 +3187,7 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Transfer.
     Global Instance ℐ : parity_scale_codec.codec.Decode.Trait Self := {
       parity_scale_codec.codec.Decode.decode
         {__CodecInputEdqy : Set}
-        {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
-        :=
+        {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :=
         decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
   End Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Transfer.
@@ -3308,10 +3293,9 @@ Module Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20_Approval.
     
     Definition Self : Set := erc20.erc20.Approval.
     
-    Global Instance ℐ
-      : parity_scale_codec.encode_like.EncodeLike.Trait Self
-          (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self)
-        := {
+    Global Instance ℐ :
+      parity_scale_codec.encode_like.EncodeLike.Trait Self
+        (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self) := {
     }.
   End Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20_Approval.
   Global Hint Resolve ℐ : core.
@@ -3392,8 +3376,7 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Approval.
     Global Instance ℐ : parity_scale_codec.codec.Decode.Trait Self := {
       parity_scale_codec.codec.Decode.decode
         {__CodecInputEdqy : Set}
-        {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
-        :=
+        {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :=
         decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
   End Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Approval.
@@ -3415,7 +3398,11 @@ Module Impl_ink_env_topics_Topics_for_erc20_erc20_Transfer.
         {ℋ_1 : ink_env.topics.TopicsBuilderBackend.Trait B (E := E)}
         (self : ref Self)
         (builder : ink_env.topics.TopicsBuilder ink_env.topics.state.Uninit E B)
-        : M (ink_env.topics.TopicsBuilderBackend.Output (Self := B)) :=
+        :
+          M
+            (ink_env.topics.TopicsBuilderBackend.Output
+              (Self := B)
+              (Trait := ltac:(try clear Trait; hauto l: on))) :=
       let* α0 :=
         (ink_env.topics.TopicsBuilder
               ink_env.topics.state.Uninit
@@ -3531,8 +3518,7 @@ Module Impl_ink_env_topics_Topics_for_erc20_erc20_Transfer.
       ink_env.topics.Topics.topics
         {E B : Set}
         {ℋ_0 : ink_env.types.Environment.Trait E}
-        {ℋ_1 : ink_env.topics.TopicsBuilderBackend.Trait B (E := E)}
-        :=
+        {ℋ_1 : ink_env.topics.TopicsBuilderBackend.Trait B (E := E)} :=
         topics (E := E) (B := B);
     }.
   End Impl_ink_env_topics_Topics_for_erc20_erc20_Transfer.
@@ -3554,7 +3540,11 @@ Module Impl_ink_env_topics_Topics_for_erc20_erc20_Approval.
         {ℋ_1 : ink_env.topics.TopicsBuilderBackend.Trait B (E := E)}
         (self : ref Self)
         (builder : ink_env.topics.TopicsBuilder ink_env.topics.state.Uninit E B)
-        : M (ink_env.topics.TopicsBuilderBackend.Output (Self := B)) :=
+        :
+          M
+            (ink_env.topics.TopicsBuilderBackend.Output
+              (Self := B)
+              (Trait := ltac:(try clear Trait; hauto l: on))) :=
       let* α0 :=
         (ink_env.topics.TopicsBuilder
               ink_env.topics.state.Uninit
@@ -3658,8 +3648,7 @@ Module Impl_ink_env_topics_Topics_for_erc20_erc20_Approval.
       ink_env.topics.Topics.topics
         {E B : Set}
         {ℋ_0 : ink_env.types.Environment.Trait E}
-        {ℋ_1 : ink_env.topics.TopicsBuilderBackend.Trait B (E := E)}
-        :=
+        {ℋ_1 : ink_env.topics.TopicsBuilderBackend.Trait B (E := E)} :=
         topics (E := E) (B := B);
     }.
   End Impl_ink_env_topics_Topics_for_erc20_erc20_Approval.
@@ -3732,8 +3721,8 @@ Module
       Notation.double_colon := LABEL;
     }.
     
-    Global Instance ℐ
-      : ink.reflect.dispatch.DispatchableConstructorInfo.Trait Self := {
+    Global Instance ℐ :
+      ink.reflect.dispatch.DispatchableConstructorInfo.Trait Self := {
       ink.reflect.dispatch.DispatchableConstructorInfo.Input := Input;
       ink.reflect.dispatch.DispatchableConstructorInfo.Output := Output;
       ink.reflect.dispatch.DispatchableConstructorInfo.Storage := Storage;
@@ -3805,8 +3794,8 @@ Module Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
       Notation.double_colon := LABEL;
     }.
     
-    Global Instance ℐ
-      : ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
+    Global Instance ℐ :
+      ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
       ink.reflect.dispatch.DispatchableMessageInfo.Input := Input;
       ink.reflect.dispatch.DispatchableMessageInfo.Output := Output;
       ink.reflect.dispatch.DispatchableMessageInfo.Storage := Storage;
@@ -3878,8 +3867,8 @@ Module Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
       Notation.double_colon := LABEL;
     }.
     
-    Global Instance ℐ
-      : ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
+    Global Instance ℐ :
+      ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
       ink.reflect.dispatch.DispatchableMessageInfo.Input := Input;
       ink.reflect.dispatch.DispatchableMessageInfo.Output := Output;
       ink.reflect.dispatch.DispatchableMessageInfo.Storage := Storage;
@@ -3954,8 +3943,8 @@ Module Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
       Notation.double_colon := LABEL;
     }.
     
-    Global Instance ℐ
-      : ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
+    Global Instance ℐ :
+      ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
       ink.reflect.dispatch.DispatchableMessageInfo.Input := Input;
       ink.reflect.dispatch.DispatchableMessageInfo.Output := Output;
       ink.reflect.dispatch.DispatchableMessageInfo.Storage := Storage;
@@ -4030,8 +4019,8 @@ Module Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
       Notation.double_colon := LABEL;
     }.
     
-    Global Instance ℐ
-      : ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
+    Global Instance ℐ :
+      ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
       ink.reflect.dispatch.DispatchableMessageInfo.Input := Input;
       ink.reflect.dispatch.DispatchableMessageInfo.Output := Output;
       ink.reflect.dispatch.DispatchableMessageInfo.Storage := Storage;
@@ -4106,8 +4095,8 @@ Module Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
       Notation.double_colon := LABEL;
     }.
     
-    Global Instance ℐ
-      : ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
+    Global Instance ℐ :
+      ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
       ink.reflect.dispatch.DispatchableMessageInfo.Input := Input;
       ink.reflect.dispatch.DispatchableMessageInfo.Output := Output;
       ink.reflect.dispatch.DispatchableMessageInfo.Storage := Storage;
@@ -4184,8 +4173,8 @@ Module Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
       Notation.double_colon := LABEL;
     }.
     
-    Global Instance ℐ
-      : ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
+    Global Instance ℐ :
+      ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
       ink.reflect.dispatch.DispatchableMessageInfo.Input := Input;
       ink.reflect.dispatch.DispatchableMessageInfo.Output := Output;
       ink.reflect.dispatch.DispatchableMessageInfo.Storage := Storage;
@@ -4276,8 +4265,7 @@ Module
     Global Instance ℐ : ink.reflect.dispatch.DecodeDispatch.Trait Self := {
       ink.reflect.dispatch.DecodeDispatch.decode_dispatch
         {I : Set}
-        {ℋ_0 : parity_scale_codec.codec.Input.Trait I}
-        :=
+        {ℋ_0 : parity_scale_codec.codec.Input.Trait I} :=
         decode_dispatch (I := I);
     }.
   End
@@ -4322,8 +4310,7 @@ Module
     Global Instance ℐ : parity_scale_codec.codec.Decode.Trait Self := {
       parity_scale_codec.codec.Decode.decode
         {I : Set}
-        {ℋ_0 : parity_scale_codec.codec.Input.Trait I}
-        :=
+        {ℋ_0 : parity_scale_codec.codec.Input.Trait I} :=
         decode (I := I);
     }.
   End
@@ -4448,8 +4435,7 @@ Module
     }.
     
     Global Instance ℐ : ink.reflect.dispatch.ExecuteDispatchable.Trait Self := {
-      ink.reflect.dispatch.ExecuteDispatchable.execute_dispatchable
-        :=
+      ink.reflect.dispatch.ExecuteDispatchable.execute_dispatchable :=
         execute_dispatchable;
     }.
   End
@@ -4468,8 +4454,8 @@ Module
     
     Definition Type : Set := erc20.erc20._.__ink_ConstructorDecoder.
     
-    Global Instance ℐ
-      : ink.reflect.dispatch.ContractConstructorDecoder.Trait Self := {
+    Global Instance ℐ :
+      ink.reflect.dispatch.ContractConstructorDecoder.Trait Self := {
       ink.reflect.dispatch.ContractConstructorDecoder.Type := Type;
     }.
   End
@@ -4679,8 +4665,7 @@ Module
     Global Instance ℐ : ink.reflect.dispatch.DecodeDispatch.Trait Self := {
       ink.reflect.dispatch.DecodeDispatch.decode_dispatch
         {I : Set}
-        {ℋ_0 : parity_scale_codec.codec.Input.Trait I}
-        :=
+        {ℋ_0 : parity_scale_codec.codec.Input.Trait I} :=
         decode_dispatch (I := I);
     }.
   End
@@ -4753,8 +4738,7 @@ Module
     Global Instance ℐ : parity_scale_codec.codec.Decode.Trait Self := {
       parity_scale_codec.codec.Decode.decode
         {I : Set}
-        {ℋ_0 : parity_scale_codec.codec.Input.Trait I}
-        :=
+        {ℋ_0 : parity_scale_codec.codec.Input.Trait I} :=
         decode (I := I);
     }.
   End
@@ -5467,8 +5451,7 @@ Module
     }.
     
     Global Instance ℐ : ink.reflect.dispatch.ExecuteDispatchable.Trait Self := {
-      ink.reflect.dispatch.ExecuteDispatchable.execute_dispatchable
-        :=
+      ink.reflect.dispatch.ExecuteDispatchable.execute_dispatchable :=
         execute_dispatchable;
     }.
   End
@@ -5486,8 +5469,8 @@ Module Impl_ink_reflect_dispatch_ContractMessageDecoder_for_erc20_erc20_Erc20.
     
     Definition Type : Set := erc20.erc20._.__ink_MessageDecoder.
     
-    Global Instance ℐ
-      : ink.reflect.dispatch.ContractMessageDecoder.Trait Self := {
+    Global Instance ℐ :
+      ink.reflect.dispatch.ContractMessageDecoder.Trait Self := {
       ink.reflect.dispatch.ContractMessageDecoder.Type := Type;
     }.
   End Impl_ink_reflect_dispatch_ContractMessageDecoder_for_erc20_erc20_Erc20.
@@ -5891,8 +5874,7 @@ Module CallBuilder.
       Notation.dot x := let* x := M.read x in Pure x.(account_id) : M _;
     }.
     Global Instance Get_AF_account_id : Notation.DoubleColon t "account_id" := {
-      Notation.double_colon x
-        :=
+      Notation.double_colon x :=
         let* x := M.read x in Pure x.(account_id) : M _;
     }.
   End CallBuilder.
@@ -6028,10 +6010,9 @@ Module
     
     Definition Self : Set := erc20.erc20._.CallBuilder.
     
-    Global Instance ℐ
-      : parity_scale_codec.encode_like.EncodeLike.Trait Self
-          (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self)
-        := {
+    Global Instance ℐ :
+      parity_scale_codec.encode_like.EncodeLike.Trait Self
+        (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self) := {
     }.
   End
     Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20___CallBuilder.
@@ -6228,8 +6209,7 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___CallBuilder.
     Global Instance ℐ : parity_scale_codec.codec.Decode.Trait Self := {
       parity_scale_codec.codec.Decode.decode
         {__CodecInputEdqy : Set}
-        {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
-        :=
+        {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :=
         decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
   End Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___CallBuilder.
@@ -6265,8 +6245,7 @@ Module Impl_core_hash_Hash_for_erc20_erc20___CallBuilder.
     }.
     
     Global Instance ℐ : core.hash.Hash.Trait Self := {
-      core.hash.Hash.hash {__H : Set} {ℋ_0 : core.hash.Hasher.Trait __H}
-        :=
+      core.hash.Hash.hash {__H : Set} {ℋ_0 : core.hash.Hasher.Trait __H} :=
         hash (__H := __H);
     }.
   End Impl_core_hash_Hash_for_erc20_erc20___CallBuilder.
@@ -6307,10 +6286,9 @@ Module Impl_core_cmp_PartialEq_for_erc20_erc20___CallBuilder.
       Notation.double_colon := eq;
     }.
     
-    Global Instance ℐ
-      : core.cmp.PartialEq.Trait Self
-          (Rhs := core.cmp.PartialEq.Default.Rhs Self)
-        := {
+    Global Instance ℐ :
+      core.cmp.PartialEq.Trait Self
+        (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
       core.cmp.PartialEq.eq := eq;
     }.
   End Impl_core_cmp_PartialEq_for_erc20_erc20___CallBuilder.
@@ -6502,8 +6480,8 @@ Module Impl_ink_codegen_dispatch_info_ContractCallBuilder_for_erc20_erc20_Erc20.
     
     Definition Type : Set := erc20.erc20._.CallBuilder.
     
-    Global Instance ℐ
-      : ink.codegen.dispatch.info.ContractCallBuilder.Trait Self := {
+    Global Instance ℐ :
+      ink.codegen.dispatch.info.ContractCallBuilder.Trait Self := {
       ink.codegen.dispatch.info.ContractCallBuilder.Type := Type;
     }.
   End Impl_ink_codegen_dispatch_info_ContractCallBuilder_for_erc20_erc20_Erc20.
@@ -6542,12 +6520,10 @@ Module
       Notation.double_colon := from_account_id;
     }.
     
-    Global Instance ℐ
-      : ink_env.call.create_builder.FromAccountId.Trait Self
-          (T := erc20.erc20.Environment)
-        := {
-      ink_env.call.create_builder.FromAccountId.from_account_id
-        :=
+    Global Instance ℐ :
+      ink_env.call.create_builder.FromAccountId.Trait Self
+        (T := erc20.erc20.Environment) := {
+      ink_env.call.create_builder.FromAccountId.from_account_id :=
         from_account_id;
     }.
   End
@@ -6575,9 +6551,9 @@ Module Impl_ink_contract_ref_ToAccountId_for_erc20_erc20___CallBuilder.
       Notation.double_colon := to_account_id;
     }.
     
-    Global Instance ℐ
-      : ink.contract_ref.ToAccountId.Trait Self (T := erc20.erc20.Environment)
-        := {
+    Global Instance ℐ :
+      ink.contract_ref.ToAccountId.Trait Self
+        (T := erc20.erc20.Environment) := {
       ink.contract_ref.ToAccountId.to_account_id := to_account_id;
     }.
   End Impl_ink_contract_ref_ToAccountId_for_erc20_erc20___CallBuilder.
@@ -6602,8 +6578,8 @@ Module Impl_core_convert_AsRef_for_erc20_erc20___CallBuilder.
       Notation.double_colon := as_ref;
     }.
     
-    Global Instance ℐ
-      : core.convert.AsRef.Trait Self (T := erc20.erc20.AccountId) := {
+    Global Instance ℐ :
+      core.convert.AsRef.Trait Self (T := erc20.erc20.AccountId) := {
       core.convert.AsRef.as_ref := as_ref;
     }.
   End Impl_core_convert_AsRef_for_erc20_erc20___CallBuilder.
@@ -6632,8 +6608,8 @@ Module Impl_core_convert_AsMut_for_erc20_erc20___CallBuilder.
       Notation.double_colon := as_mut;
     }.
     
-    Global Instance ℐ
-      : core.convert.AsMut.Trait Self (T := erc20.erc20.AccountId) := {
+    Global Instance ℐ :
+      core.convert.AsMut.Trait Self (T := erc20.erc20.AccountId) := {
       core.convert.AsMut.as_mut := as_mut;
     }.
   End Impl_core_convert_AsMut_for_erc20_erc20___CallBuilder.
@@ -7139,10 +7115,10 @@ Module Erc20Ref.
     
     Unset Primitive Projections.
     Record t : Set := {
-      inner
-        :
+      inner :
         ink.codegen.dispatch.info.ContractCallBuilder.Type_
-          (Self := erc20.erc20.Erc20);
+          (Self := erc20.erc20.Erc20)
+          (Trait := ltac:(try clear Trait; hauto l: on));
     }.
     Global Set Primitive Projections.
     
@@ -7284,10 +7260,9 @@ Module Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20_Erc20Ref.
     
     Definition Self : Set := erc20.erc20.Erc20Ref.
     
-    Global Instance ℐ
-      : parity_scale_codec.encode_like.EncodeLike.Trait Self
-          (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self)
-        := {
+    Global Instance ℐ :
+      parity_scale_codec.encode_like.EncodeLike.Trait Self
+        (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self) := {
     }.
   End Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20_Erc20Ref.
   Global Hint Resolve ℐ : core.
@@ -7332,8 +7307,7 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Erc20Ref.
     Global Instance ℐ : parity_scale_codec.codec.Decode.Trait Self := {
       parity_scale_codec.codec.Decode.decode
         {__CodecInputEdqy : Set}
-        {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
-        :=
+        {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :=
         decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
   End Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Erc20Ref.
@@ -7369,8 +7343,7 @@ Module Impl_core_hash_Hash_for_erc20_erc20_Erc20Ref.
     }.
     
     Global Instance ℐ : core.hash.Hash.Trait Self := {
-      core.hash.Hash.hash {__H : Set} {ℋ_0 : core.hash.Hasher.Trait __H}
-        :=
+      core.hash.Hash.hash {__H : Set} {ℋ_0 : core.hash.Hasher.Trait __H} :=
         hash (__H := __H);
     }.
   End Impl_core_hash_Hash_for_erc20_erc20_Erc20Ref.
@@ -7411,10 +7384,9 @@ Module Impl_core_cmp_PartialEq_for_erc20_erc20_Erc20Ref.
       Notation.double_colon := eq;
     }.
     
-    Global Instance ℐ
-      : core.cmp.PartialEq.Trait Self
-          (Rhs := core.cmp.PartialEq.Default.Rhs Self)
-        := {
+    Global Instance ℐ :
+      core.cmp.PartialEq.Trait Self
+        (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
       core.cmp.PartialEq.eq := eq;
     }.
   End Impl_core_cmp_PartialEq_for_erc20_erc20_Erc20Ref.
@@ -7619,10 +7591,9 @@ Module
       Notation.double_colon := ok;
     }.
     
-    Global Instance ℐ
-      : ink_env.call.create_builder.ConstructorReturnType.Trait Self
-          (C := erc20.erc20.Erc20Ref)
-        := {
+    Global Instance ℐ :
+      ink_env.call.create_builder.ConstructorReturnType.Trait Self
+        (C := erc20.erc20.Erc20Ref) := {
       ink_env.call.create_builder.ConstructorReturnType.Output := Output;
       ink_env.call.create_builder.ConstructorReturnType.Error := Error;
       ink_env.call.create_builder.ConstructorReturnType.ok := ok;
@@ -7670,10 +7641,9 @@ Module
       Notation.double_colon := err;
     }.
     
-    Global Instance ℐ
-      : ink_env.call.create_builder.ConstructorReturnType.Trait Self
-          (C := erc20.erc20.Erc20Ref)
-        := {
+    Global Instance ℐ :
+      ink_env.call.create_builder.ConstructorReturnType.Trait Self
+        (C := erc20.erc20.Erc20Ref) := {
       ink_env.call.create_builder.ConstructorReturnType.Output := Output;
       ink_env.call.create_builder.ConstructorReturnType.Error := Error;
       ink_env.call.create_builder.ConstructorReturnType.ok := ok;
@@ -8361,8 +8331,8 @@ Module
       Notation.double_colon := call_mut;
     }.
     
-    Global Instance ℐ
-      : ink.codegen.trait_def.call_builder.TraitCallBuilder.Trait Self := {
+    Global Instance ℐ :
+      ink.codegen.trait_def.call_builder.TraitCallBuilder.Trait Self := {
       ink.codegen.trait_def.call_builder.TraitCallBuilder.Builder := Builder;
       ink.codegen.trait_def.call_builder.TraitCallBuilder.call := call;
       ink.codegen.trait_def.call_builder.TraitCallBuilder.call_mut := call_mut;
@@ -8390,12 +8360,10 @@ Module Impl_ink_env_call_create_builder_FromAccountId_for_erc20_erc20_Erc20Ref.
       Notation.double_colon := from_account_id;
     }.
     
-    Global Instance ℐ
-      : ink_env.call.create_builder.FromAccountId.Trait Self
-          (T := erc20.erc20.Environment)
-        := {
-      ink_env.call.create_builder.FromAccountId.from_account_id
-        :=
+    Global Instance ℐ :
+      ink_env.call.create_builder.FromAccountId.Trait Self
+        (T := erc20.erc20.Environment) := {
+      ink_env.call.create_builder.FromAccountId.from_account_id :=
         from_account_id;
     }.
   End Impl_ink_env_call_create_builder_FromAccountId_for_erc20_erc20_Erc20Ref.
@@ -8421,9 +8389,9 @@ Module Impl_ink_contract_ref_ToAccountId_for_erc20_erc20_Erc20Ref.
       Notation.double_colon := to_account_id;
     }.
     
-    Global Instance ℐ
-      : ink.contract_ref.ToAccountId.Trait Self (T := erc20.erc20.Environment)
-        := {
+    Global Instance ℐ :
+      ink.contract_ref.ToAccountId.Trait Self
+        (T := erc20.erc20.Environment) := {
       ink.contract_ref.ToAccountId.to_account_id := to_account_id;
     }.
   End Impl_ink_contract_ref_ToAccountId_for_erc20_erc20_Erc20Ref.
@@ -8451,8 +8419,8 @@ Module Impl_core_convert_AsRef_for_erc20_erc20_Erc20Ref.
       Notation.double_colon := as_ref;
     }.
     
-    Global Instance ℐ
-      : core.convert.AsRef.Trait Self (T := erc20.erc20.AccountId) := {
+    Global Instance ℐ :
+      core.convert.AsRef.Trait Self (T := erc20.erc20.AccountId) := {
       core.convert.AsRef.as_ref := as_ref;
     }.
   End Impl_core_convert_AsRef_for_erc20_erc20_Erc20Ref.
@@ -8484,8 +8452,8 @@ Module Impl_core_convert_AsMut_for_erc20_erc20_Erc20Ref.
       Notation.double_colon := as_mut;
     }.
     
-    Global Instance ℐ
-      : core.convert.AsMut.Trait Self (T := erc20.erc20.AccountId) := {
+    Global Instance ℐ :
+      core.convert.AsMut.Trait Self (T := erc20.erc20.AccountId) := {
       core.convert.AsMut.as_mut := as_mut;
     }.
   End Impl_core_convert_AsMut_for_erc20_erc20_Erc20Ref.
@@ -9781,10 +9749,9 @@ Module Impl_core_cmp_PartialEq_for_erc20_erc20_Error.
       Notation.double_colon := eq;
     }.
     
-    Global Instance ℐ
-      : core.cmp.PartialEq.Trait Self
-          (Rhs := core.cmp.PartialEq.Default.Rhs Self)
-        := {
+    Global Instance ℐ :
+      core.cmp.PartialEq.Trait Self
+        (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
       core.cmp.PartialEq.eq := eq;
     }.
   End Impl_core_cmp_PartialEq_for_erc20_erc20_Error.
@@ -9879,10 +9846,9 @@ Module Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20_Error.
     
     Definition Self : Set := erc20.erc20.Error.
     
-    Global Instance ℐ
-      : parity_scale_codec.encode_like.EncodeLike.Trait Self
-          (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self)
-        := {
+    Global Instance ℐ :
+      parity_scale_codec.encode_like.EncodeLike.Trait Self
+        (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self) := {
     }.
   End Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20_Error.
   Global Hint Resolve ℐ : core.
@@ -9970,8 +9936,7 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Error.
     Global Instance ℐ : parity_scale_codec.codec.Decode.Trait Self := {
       parity_scale_codec.codec.Decode.decode
         {__CodecInputEdqy : Set}
-        {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
-        :=
+        {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :=
         decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
   End Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Error.

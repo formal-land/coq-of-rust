@@ -69,10 +69,9 @@ Module key.
         Notation.double_colon := eq;
       }.
       
-      Global Instance ℐ
-        : core.cmp.PartialEq.Trait Self
-            (Rhs := core.cmp.PartialEq.Default.Rhs Self)
-          := {
+      Global Instance ℐ :
+        core.cmp.PartialEq.Trait Self
+          (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
         core.cmp.PartialEq.eq := eq;
       }.
     End Impl_core_cmp_PartialEq_for_ink_primitives_key_Error.
@@ -174,10 +173,9 @@ Module Impl_core_cmp_PartialEq_for_ink_primitives_key_Error.
       Notation.double_colon := eq;
     }.
     
-    Global Instance ℐ
-      : core.cmp.PartialEq.Trait Self
-          (Rhs := core.cmp.PartialEq.Default.Rhs Self)
-        := {
+    Global Instance ℐ :
+      core.cmp.PartialEq.Trait Self
+        (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
       core.cmp.PartialEq.eq := eq;
     }.
   End Impl_core_cmp_PartialEq_for_ink_primitives_key_Error.
@@ -364,10 +362,9 @@ Module types.
         Notation.double_colon := eq;
       }.
       
-      Global Instance ℐ
-        : core.cmp.PartialEq.Trait Self
-            (Rhs := core.cmp.PartialEq.Default.Rhs Self)
-          := {
+      Global Instance ℐ :
+        core.cmp.PartialEq.Trait Self
+          (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
         core.cmp.PartialEq.eq := eq;
       }.
     End Impl_core_cmp_PartialEq_for_ink_primitives_types_AccountId.
@@ -421,10 +418,9 @@ Module types.
         Notation.double_colon := partial_cmp;
       }.
       
-      Global Instance ℐ
-        : core.cmp.PartialOrd.Trait Self
-            (Rhs := core.cmp.PartialOrd.Default.Rhs Self)
-          := {
+      Global Instance ℐ :
+        core.cmp.PartialOrd.Trait Self
+          (Rhs := core.cmp.PartialOrd.Default.Rhs Self) := {
         core.cmp.PartialOrd.partial_cmp := partial_cmp;
       }.
     End Impl_core_cmp_PartialOrd_for_ink_primitives_types_AccountId.
@@ -472,8 +468,7 @@ Module types.
       }.
       
       Global Instance ℐ : core.hash.Hash.Trait Self := {
-        core.hash.Hash.hash {__H : Set} {ℋ_0 : core.hash.Hasher.Trait __H}
-          :=
+        core.hash.Hash.hash {__H : Set} {ℋ_0 : core.hash.Hasher.Trait __H} :=
           hash (__H := __H);
       }.
     End Impl_core_hash_Hash_for_ink_primitives_types_AccountId.
@@ -597,8 +592,8 @@ Module types.
         Notation.double_colon := try_from;
       }.
       
-      Global Instance ℐ
-        : core.convert.TryFrom.Trait Self (T := ref (Slice u8)) := {
+      Global Instance ℐ :
+        core.convert.TryFrom.Trait Self (T := ref (Slice u8)) := {
         core.convert.TryFrom.Error := Error;
         core.convert.TryFrom.try_from := try_from;
       }.
@@ -751,10 +746,9 @@ Module types.
         Notation.double_colon := eq;
       }.
       
-      Global Instance ℐ
-        : core.cmp.PartialEq.Trait Self
-            (Rhs := core.cmp.PartialEq.Default.Rhs Self)
-          := {
+      Global Instance ℐ :
+        core.cmp.PartialEq.Trait Self
+          (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
         core.cmp.PartialEq.eq := eq;
       }.
     End Impl_core_cmp_PartialEq_for_ink_primitives_types_Hash.
@@ -808,10 +802,9 @@ Module types.
         Notation.double_colon := partial_cmp;
       }.
       
-      Global Instance ℐ
-        : core.cmp.PartialOrd.Trait Self
-            (Rhs := core.cmp.PartialOrd.Default.Rhs Self)
-          := {
+      Global Instance ℐ :
+        core.cmp.PartialOrd.Trait Self
+          (Rhs := core.cmp.PartialOrd.Default.Rhs Self) := {
         core.cmp.PartialOrd.partial_cmp := partial_cmp;
       }.
     End Impl_core_cmp_PartialOrd_for_ink_primitives_types_Hash.
@@ -857,8 +850,7 @@ Module types.
       }.
       
       Global Instance ℐ : core.hash.Hash.Trait Self := {
-        core.hash.Hash.hash {__H : Set} {ℋ_0 : core.hash.Hasher.Trait __H}
-          :=
+        core.hash.Hash.hash {__H : Set} {ℋ_0 : core.hash.Hasher.Trait __H} :=
           hash (__H := __H);
       }.
     End Impl_core_hash_Hash_for_ink_primitives_types_Hash.
@@ -922,8 +914,8 @@ Module types.
         Notation.double_colon := try_from;
       }.
       
-      Global Instance ℐ
-        : core.convert.TryFrom.Trait Self (T := ref (Slice u8)) := {
+      Global Instance ℐ :
+        core.convert.TryFrom.Trait Self (T := ref (Slice u8)) := {
         core.convert.TryFrom.Error := Error;
         core.convert.TryFrom.try_from := try_from;
       }.
@@ -984,8 +976,8 @@ Module types.
         Notation.double_colon := from;
       }.
       
-      Global Instance ℐ
-        : core.convert.From.Trait Self (T := ink_primitives.types.Hash) := {
+      Global Instance ℐ :
+        core.convert.From.Trait Self (T := ink_primitives.types.Hash) := {
         core.convert.From.from := from;
       }.
     End Impl_core_convert_From_for_Array_u8.
@@ -1338,10 +1330,9 @@ Module Impl_core_cmp_PartialEq_for_ink_primitives_types_AccountId.
       Notation.double_colon := eq;
     }.
     
-    Global Instance ℐ
-      : core.cmp.PartialEq.Trait Self
-          (Rhs := core.cmp.PartialEq.Default.Rhs Self)
-        := {
+    Global Instance ℐ :
+      core.cmp.PartialEq.Trait Self
+        (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
       core.cmp.PartialEq.eq := eq;
     }.
   End Impl_core_cmp_PartialEq_for_ink_primitives_types_AccountId.
@@ -1418,10 +1409,9 @@ Module Impl_core_cmp_PartialOrd_for_ink_primitives_types_AccountId.
       Notation.double_colon := partial_cmp;
     }.
     
-    Global Instance ℐ
-      : core.cmp.PartialOrd.Trait Self
-          (Rhs := core.cmp.PartialOrd.Default.Rhs Self)
-        := {
+    Global Instance ℐ :
+      core.cmp.PartialOrd.Trait Self
+        (Rhs := core.cmp.PartialOrd.Default.Rhs Self) := {
       core.cmp.PartialOrd.partial_cmp := partial_cmp;
     }.
   End Impl_core_cmp_PartialOrd_for_ink_primitives_types_AccountId.
@@ -1446,8 +1436,7 @@ Module Impl_core_hash_Hash_for_ink_primitives_types_AccountId.
     }.
     
     Global Instance ℐ : core.hash.Hash.Trait Self := {
-      core.hash.Hash.hash {__H : Set} {ℋ_0 : core.hash.Hasher.Trait __H}
-        :=
+      core.hash.Hash.hash {__H : Set} {ℋ_0 : core.hash.Hasher.Trait __H} :=
         hash (__H := __H);
     }.
   End Impl_core_hash_Hash_for_ink_primitives_types_AccountId.
@@ -1477,8 +1466,7 @@ End Impl_core_hash_Hash_for_ink_primitives_types_AccountId.
     Global Instance ℐ : parity_scale_codec.codec.Decode.Trait Self := {
       parity_scale_codec.codec.Decode.decode
         {__CodecInputEdqy : Set}
-        {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
-        :=
+        {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :=
         decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
   End Impl_parity_scale_codec_codec_Decode_for_ink_primitives_types_AccountId. *)
@@ -1546,10 +1534,9 @@ End Impl_parity_scale_codec_codec_Encode_for_ink_primitives_types_AccountId. *)
     
     Definition Self : Set := ink_primitives.types.AccountId.
     
-    Global Instance ℐ
-      : parity_scale_codec.encode_like.EncodeLike.Trait Self
-          (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self)
-        := {
+    Global Instance ℐ :
+      parity_scale_codec.encode_like.EncodeLike.Trait Self
+        (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self) := {
     }.
   End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_primitives_types_AccountId. *)
   Global Hint Resolve ℐ : core.
@@ -1672,8 +1659,8 @@ Module Impl_core_convert_TryFrom_for_ink_primitives_types_AccountId.
       Notation.double_colon := try_from;
     }.
     
-    Global Instance ℐ
-      : core.convert.TryFrom.Trait Self (T := ref (Slice u8)) := {
+    Global Instance ℐ :
+      core.convert.TryFrom.Trait Self (T := ref (Slice u8)) := {
       core.convert.TryFrom.Error := Error;
       core.convert.TryFrom.try_from := try_from;
     }.
@@ -1935,10 +1922,9 @@ Module Impl_core_cmp_PartialEq_for_ink_primitives_types_Hash.
       Notation.double_colon := eq;
     }.
     
-    Global Instance ℐ
-      : core.cmp.PartialEq.Trait Self
-          (Rhs := core.cmp.PartialEq.Default.Rhs Self)
-        := {
+    Global Instance ℐ :
+      core.cmp.PartialEq.Trait Self
+        (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
       core.cmp.PartialEq.eq := eq;
     }.
   End Impl_core_cmp_PartialEq_for_ink_primitives_types_Hash.
@@ -2013,10 +1999,9 @@ Module Impl_core_cmp_PartialOrd_for_ink_primitives_types_Hash.
       Notation.double_colon := partial_cmp;
     }.
     
-    Global Instance ℐ
-      : core.cmp.PartialOrd.Trait Self
-          (Rhs := core.cmp.PartialOrd.Default.Rhs Self)
-        := {
+    Global Instance ℐ :
+      core.cmp.PartialOrd.Trait Self
+        (Rhs := core.cmp.PartialOrd.Default.Rhs Self) := {
       core.cmp.PartialOrd.partial_cmp := partial_cmp;
     }.
   End Impl_core_cmp_PartialOrd_for_ink_primitives_types_Hash.
@@ -2041,8 +2026,7 @@ Module Impl_core_hash_Hash_for_ink_primitives_types_Hash.
     }.
     
     Global Instance ℐ : core.hash.Hash.Trait Self := {
-      core.hash.Hash.hash {__H : Set} {ℋ_0 : core.hash.Hasher.Trait __H}
-        :=
+      core.hash.Hash.hash {__H : Set} {ℋ_0 : core.hash.Hasher.Trait __H} :=
         hash (__H := __H);
     }.
   End Impl_core_hash_Hash_for_ink_primitives_types_Hash.
@@ -2072,8 +2056,7 @@ End Impl_core_hash_Hash_for_ink_primitives_types_Hash.
     Global Instance ℐ : parity_scale_codec.codec.Decode.Trait Self := {
       parity_scale_codec.codec.Decode.decode
         {__CodecInputEdqy : Set}
-        {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
-        :=
+        {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :=
         decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
   End Impl_parity_scale_codec_codec_Decode_for_ink_primitives_types_Hash. *)
@@ -2141,10 +2124,9 @@ End Impl_parity_scale_codec_codec_Encode_for_ink_primitives_types_Hash. *)
     
     Definition Self : Set := ink_primitives.types.Hash.
     
-    Global Instance ℐ
-      : parity_scale_codec.encode_like.EncodeLike.Trait Self
-          (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self)
-        := {
+    Global Instance ℐ :
+      parity_scale_codec.encode_like.EncodeLike.Trait Self
+        (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self) := {
     }.
   End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_primitives_types_Hash. *)
   Global Hint Resolve ℐ : core.
@@ -2207,8 +2189,8 @@ Module Impl_core_convert_TryFrom_for_ink_primitives_types_Hash.
       Notation.double_colon := try_from;
     }.
     
-    Global Instance ℐ
-      : core.convert.TryFrom.Trait Self (T := ref (Slice u8)) := {
+    Global Instance ℐ :
+      core.convert.TryFrom.Trait Self (T := ref (Slice u8)) := {
       core.convert.TryFrom.Error := Error;
       core.convert.TryFrom.try_from := try_from;
     }.
@@ -2269,8 +2251,8 @@ Module Impl_core_convert_From_for_Array_u8.
       Notation.double_colon := from;
     }.
     
-    Global Instance ℐ
-      : core.convert.From.Trait Self (T := ink_primitives.types.Hash) := {
+    Global Instance ℐ :
+      core.convert.From.Trait Self (T := ink_primitives.types.Hash) := {
       core.convert.From.from := from;
     }.
   End Impl_core_convert_From_for_Array_u8.
@@ -2456,10 +2438,9 @@ Module Impl_core_cmp_PartialEq_for_ink_primitives_LangError.
       Notation.double_colon := eq;
     }.
     
-    Global Instance ℐ
-      : core.cmp.PartialEq.Trait Self
-          (Rhs := core.cmp.PartialEq.Default.Rhs Self)
-        := {
+    Global Instance ℐ :
+      core.cmp.PartialEq.Trait Self
+        (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
       core.cmp.PartialEq.eq := eq;
     }.
   End Impl_core_cmp_PartialEq_for_ink_primitives_LangError.
@@ -2532,10 +2513,9 @@ End Impl_parity_scale_codec_codec_Encode_for_ink_primitives_LangError. *)
     
     Definition Self : Set := ink_primitives.LangError.
     
-    Global Instance ℐ
-      : parity_scale_codec.encode_like.EncodeLike.Trait Self
-          (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self)
-        := {
+    Global Instance ℐ :
+      parity_scale_codec.encode_like.EncodeLike.Trait Self
+        (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self) := {
     }.
   End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_primitives_LangError. *)
   Global Hint Resolve ℐ : core.
@@ -2564,8 +2544,7 @@ End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_primitives_LangError.
     Global Instance ℐ : parity_scale_codec.codec.Decode.Trait Self := {
       parity_scale_codec.codec.Decode.decode
         {__CodecInputEdqy : Set}
-        {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
-        :=
+        {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :=
         decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
   End Impl_parity_scale_codec_codec_Decode_for_ink_primitives_LangError. *)

@@ -76,10 +76,9 @@ Module
       Notation.double_colon := eq;
     }.
     
-    Global Instance ℐ
-      : core.cmp.PartialEq.Trait Self
-          (Rhs := core.cmp.PartialEq.Default.Rhs Self)
-        := {
+    Global Instance ℐ :
+      core.cmp.PartialEq.Trait Self
+        (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
       core.cmp.PartialEq.eq := eq;
     }.
   End
@@ -164,8 +163,7 @@ Module Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account.
     }.
     
     Global Instance ℐ : core.hash.Hash.Trait Self := {
-      core.hash.Hash.hash {__H : Set} {ℋ_0 : core.hash.Hasher.Trait __H}
-        :=
+      core.hash.Hash.hash {__H : Set} {ℋ_0 : core.hash.Hasher.Trait __H} :=
         hash (__H := __H);
     }.
   End Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account.

@@ -64,11 +64,10 @@ Module
       Notation.double_colon := last;
     }.
     
-    Global Instance ℐ
-      : generics_associated_types_problem.Contains.Trait Self
-          (A := i32)
-          (B := i32)
-        := {
+    Global Instance ℐ :
+      generics_associated_types_problem.Contains.Trait Self
+        (A := i32)
+        (B := i32) := {
       generics_associated_types_problem.Contains.contains := contains;
       generics_associated_types_problem.Contains.first := first;
       generics_associated_types_problem.Contains.last := last;

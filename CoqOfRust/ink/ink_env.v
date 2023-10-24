@@ -28,40 +28,37 @@ Module arithmetic.
     Section BaseArithmetic.
       Context `{ℋ : State.Trait}.
       
-      Unset Primitive Projections.
-      Class Trait
-          (Self : Set)
-          {ℋ_0 : core.marker.Sized.Trait Self}
-          {ℋ_1 : core.convert.From.Trait Self (T := u8)}
-          {ℋ_2 : num_traits.bounds.Bounded.Trait Self}
-          {ℋ_3 : core.cmp.Ord.Trait Self}
-          {ℋ_4 : core.cmp.PartialOrd.Trait Self (Rhs := Self)}
-          {ℋ_5 : num_traits.identities.Zero.Trait Self}
-          {ℋ_6 : num_traits.identities.One.Trait Self}
-          {ℋ_7 : num_traits.bounds.Bounded.Trait Self}
-          {ℋ_8 : core.ops.arith.Add.Trait Self (Rhs := Self)}
-          {ℋ_9 : core.ops.arith.AddAssign.Trait Self (Rhs := Self)}
-          {ℋ_10 : core.ops.arith.Sub.Trait Self (Rhs := Self)}
-          {ℋ_11 : core.ops.arith.SubAssign.Trait Self (Rhs := Self)}
-          {ℋ_12 : core.ops.arith.Mul.Trait Self (Rhs := Self)}
-          {ℋ_13 : core.ops.arith.MulAssign.Trait Self (Rhs := Self)}
-          {ℋ_14 : core.ops.arith.Div.Trait Self (Rhs := Self)}
-          {ℋ_15 : core.ops.arith.DivAssign.Trait Self (Rhs := Self)}
-          {ℋ_16 : num_traits.ops.checked.CheckedMul.Trait Self}
-          {ℋ_17 : ink_env.arithmetic.Saturating.Trait Self}
-          {ℋ_18 : core.convert.TryFrom.Trait Self (T := u16)}
-          {ℋ_19 : core.convert.TryFrom.Trait Self (T := u32)}
-          {ℋ_20 : core.convert.TryFrom.Trait Self (T := u64)}
-          {ℋ_21 : core.convert.TryFrom.Trait Self (T := u128)}
-          {ℋ_22 : core.convert.TryFrom.Trait Self (T := usize)}
-          {ℋ_23 : core.convert.TryInto.Trait Self (T := u16)}
-          {ℋ_24 : core.convert.TryInto.Trait Self (T := u32)}
-          {ℋ_25 : core.convert.TryInto.Trait Self (T := u64)}
-          {ℋ_26 : core.convert.TryInto.Trait Self (T := u128)}
-          {ℋ_27 : core.convert.TryInto.Trait Self (T := usize)} :
-          Type := {
+      Class Trait (Self : Set) : Type := {
+        ℒ_0 :: core.marker.Sized.Trait Self;
+        ℒ_1 :: core.convert.From.Trait Self (T := u8);
+        ℒ_2 :: num_traits.bounds.Bounded.Trait Self;
+        ℒ_3 :: core.cmp.Ord.Trait Self;
+        ℒ_4 :: core.cmp.PartialOrd.Trait Self (Rhs := Self);
+        ℒ_5 :: num_traits.identities.Zero.Trait Self;
+        ℒ_6 :: num_traits.identities.One.Trait Self;
+        ℒ_7 :: num_traits.bounds.Bounded.Trait Self;
+        ℒ_8 :: core.ops.arith.Add.Trait Self (Rhs := Self);
+        ℒ_9 :: core.ops.arith.AddAssign.Trait Self (Rhs := Self);
+        ℒ_10 :: core.ops.arith.Sub.Trait Self (Rhs := Self);
+        ℒ_11 :: core.ops.arith.SubAssign.Trait Self (Rhs := Self);
+        ℒ_12 :: core.ops.arith.Mul.Trait Self (Rhs := Self);
+        ℒ_13 :: core.ops.arith.MulAssign.Trait Self (Rhs := Self);
+        ℒ_14 :: core.ops.arith.Div.Trait Self (Rhs := Self);
+        ℒ_15 :: core.ops.arith.DivAssign.Trait Self (Rhs := Self);
+        ℒ_16 :: num_traits.ops.checked.CheckedMul.Trait Self;
+        ℒ_17 :: ink_env.arithmetic.Saturating.Trait Self;
+        ℒ_18 :: core.convert.TryFrom.Trait Self (T := u16);
+        ℒ_19 :: core.convert.TryFrom.Trait Self (T := u32);
+        ℒ_20 :: core.convert.TryFrom.Trait Self (T := u64);
+        ℒ_21 :: core.convert.TryFrom.Trait Self (T := u128);
+        ℒ_22 :: core.convert.TryFrom.Trait Self (T := usize);
+        ℒ_23 :: core.convert.TryInto.Trait Self (T := u16);
+        ℒ_24 :: core.convert.TryInto.Trait Self (T := u32);
+        ℒ_25 :: core.convert.TryInto.Trait Self (T := u64);
+        ℒ_26 :: core.convert.TryInto.Trait Self (T := u128);
+        ℒ_27 :: core.convert.TryInto.Trait Self (T := usize);
       }.
-      Global Set Primitive Projections.
+      
     End BaseArithmetic.
   End BaseArithmetic.
   
@@ -69,15 +66,12 @@ Module arithmetic.
     Section AtLeast32Bit.
       Context `{ℋ : State.Trait}.
       
-      Unset Primitive Projections.
-      Class Trait
-          (Self : Set)
-          {ℋ_0 : ink_env.arithmetic.BaseArithmetic.Trait Self}
-          {ℋ_1 : core.convert.From.Trait Self (T := u16)}
-          {ℋ_2 : core.convert.From.Trait Self (T := u32)} :
-          Type := {
+      Class Trait (Self : Set) : Type := {
+        ℒ_0 :: ink_env.arithmetic.BaseArithmetic.Trait Self;
+        ℒ_1 :: core.convert.From.Trait Self (T := u16);
+        ℒ_2 :: core.convert.From.Trait Self (T := u32);
       }.
-      Global Set Primitive Projections.
+      
     End AtLeast32Bit.
   End AtLeast32Bit.
   
@@ -85,14 +79,11 @@ Module arithmetic.
     Section AtLeast32BitUnsigned.
       Context `{ℋ : State.Trait}.
       
-      Unset Primitive Projections.
-      Class Trait
-          (Self : Set)
-          {ℋ_0 : ink_env.arithmetic.AtLeast32Bit.Trait Self}
-          {ℋ_1 : num_traits.sign.Unsigned.Trait Self} :
-          Type := {
+      Class Trait (Self : Set) : Type := {
+        ℒ_0 :: ink_env.arithmetic.AtLeast32Bit.Trait Self;
+        ℒ_1 :: num_traits.sign.Unsigned.Trait Self;
       }.
-      Global Set Primitive Projections.
+      
     End AtLeast32BitUnsigned.
   End AtLeast32BitUnsigned.
 End arithmetic.
@@ -104,11 +95,14 @@ Module types.
       
       Class Trait (Self : Set) : Type := {
         Bytes : Set;
+        ℒ_0 :: core.default.Default.Trait Bytes;
+        ℒ_1 :: core.convert.AsRef.Trait Bytes (T := Slice u8);
+        ℒ_2 :: core.convert.AsMut.Trait Bytes (T := Slice u8);
         from_le_bytes : Bytes -> M Self;
       }.
       
-      Global Instance Method_Bytes `(Trait)
-        : Notation.DoubleColonType Self "Bytes" := {
+      Global Instance Method_Bytes `(Trait) :
+        Notation.DoubleColonType Self "Bytes" := {
         Notation.double_colon_type := Bytes;
       }.
     End FromLittleEndian.
@@ -129,14 +123,11 @@ Module types.
     Section CodecAsType.
       Context `{ℋ : State.Trait}.
       
-      Unset Primitive Projections.
-      Class Trait
-          (Self : Set)
-          {ℋ_0 : scale_decode.DecodeAsType.Trait Self}
-          {ℋ_1 : scale_encode.EncodeAsType.Trait Self} :
-          Type := {
+      Class Trait (Self : Set) : Type := {
+        ℒ_0 :: scale_decode.DecodeAsType.Trait Self;
+        ℒ_1 :: scale_encode.EncodeAsType.Trait Self;
       }.
-      Global Set Primitive Projections.
+      
     End CodecAsType.
   End CodecAsType.
   
@@ -147,35 +138,87 @@ Module types.
       Class Trait (Self : Set) : Type := {
         MAX_EVENT_TOPICS : usize;
         AccountId : Set;
+        ℒ_0 :: parity_scale_codec.codec.Codec.Trait AccountId;
+        ℒ_1 :: ink_env.types.CodecAsType.Trait AccountId;
+        ℒ_2 :: core.clone.Clone.Trait AccountId;
+        ℒ_3 ::
+          core.cmp.PartialEq.Trait AccountId
+            (Rhs := core.cmp.PartialEq.Default.Rhs AccountId);
+        ℒ_4 :: core.cmp.Eq.Trait AccountId;
+        ℒ_5 :: core.cmp.Ord.Trait AccountId;
+        ℒ_6 :: core.convert.AsRef.Trait AccountId (T := Slice u8);
+        ℒ_7 :: core.convert.AsMut.Trait AccountId (T := Slice u8);
         Balance : Set;
+        ℒ_8 :: parity_scale_codec.codec.Codec.Trait Balance;
+        ℒ_9 :: ink_env.types.CodecAsType.Trait Balance;
+        ℒ_10 :: core.marker.Copy.Trait Balance;
+        ℒ_11 :: core.clone.Clone.Trait Balance;
+        ℒ_12 ::
+          core.cmp.PartialEq.Trait Balance
+            (Rhs := core.cmp.PartialEq.Default.Rhs Balance);
+        ℒ_13 :: core.cmp.Eq.Trait Balance;
+        ℒ_14 :: ink_env.arithmetic.AtLeast32BitUnsigned.Trait Balance;
+        ℒ_15 :: ink_env.types.FromLittleEndian.Trait Balance;
         Hash : Set;
+        ℒ_16 :: parity_scale_codec.codec.Codec.Trait Hash;
+        ℒ_17 :: ink_env.types.CodecAsType.Trait Hash;
+        ℒ_18 :: core.marker.Copy.Trait Hash;
+        ℒ_19 :: core.clone.Clone.Trait Hash;
+        ℒ_20 :: ink_primitives.types.Clear.Trait Hash;
+        ℒ_21 ::
+          core.cmp.PartialEq.Trait Hash
+            (Rhs := core.cmp.PartialEq.Default.Rhs Hash);
+        ℒ_22 :: core.cmp.Eq.Trait Hash;
+        ℒ_23 :: core.cmp.Ord.Trait Hash;
+        ℒ_24 :: core.convert.AsRef.Trait Hash (T := Slice u8);
+        ℒ_25 :: core.convert.AsMut.Trait Hash (T := Slice u8);
         Timestamp : Set;
+        ℒ_26 :: parity_scale_codec.codec.Codec.Trait Timestamp;
+        ℒ_27 :: ink_env.types.CodecAsType.Trait Timestamp;
+        ℒ_28 :: core.marker.Copy.Trait Timestamp;
+        ℒ_29 :: core.clone.Clone.Trait Timestamp;
+        ℒ_30 ::
+          core.cmp.PartialEq.Trait Timestamp
+            (Rhs := core.cmp.PartialEq.Default.Rhs Timestamp);
+        ℒ_31 :: core.cmp.Eq.Trait Timestamp;
+        ℒ_32 :: ink_env.arithmetic.AtLeast32BitUnsigned.Trait Timestamp;
+        ℒ_33 :: ink_env.types.FromLittleEndian.Trait Timestamp;
         BlockNumber : Set;
+        ℒ_34 :: parity_scale_codec.codec.Codec.Trait BlockNumber;
+        ℒ_35 :: ink_env.types.CodecAsType.Trait BlockNumber;
+        ℒ_36 :: core.marker.Copy.Trait BlockNumber;
+        ℒ_37 :: core.clone.Clone.Trait BlockNumber;
+        ℒ_38 ::
+          core.cmp.PartialEq.Trait BlockNumber
+            (Rhs := core.cmp.PartialEq.Default.Rhs BlockNumber);
+        ℒ_39 :: core.cmp.Eq.Trait BlockNumber;
+        ℒ_40 :: ink_env.arithmetic.AtLeast32BitUnsigned.Trait BlockNumber;
+        ℒ_41 :: ink_env.types.FromLittleEndian.Trait BlockNumber;
         ChainExtension : Set;
       }.
       
-      Global Instance Method_AccountId `(Trait)
-        : Notation.DoubleColonType Self "AccountId" := {
+      Global Instance Method_AccountId `(Trait) :
+        Notation.DoubleColonType Self "AccountId" := {
         Notation.double_colon_type := AccountId;
       }.
-      Global Instance Method_Balance `(Trait)
-        : Notation.DoubleColonType Self "Balance" := {
+      Global Instance Method_Balance `(Trait) :
+        Notation.DoubleColonType Self "Balance" := {
         Notation.double_colon_type := Balance;
       }.
-      Global Instance Method_Hash `(Trait)
-        : Notation.DoubleColonType Self "Hash" := {
+      Global Instance Method_Hash `(Trait) :
+        Notation.DoubleColonType Self "Hash" := {
         Notation.double_colon_type := Hash;
       }.
-      Global Instance Method_Timestamp `(Trait)
-        : Notation.DoubleColonType Self "Timestamp" := {
+      Global Instance Method_Timestamp `(Trait) :
+        Notation.DoubleColonType Self "Timestamp" := {
         Notation.double_colon_type := Timestamp;
       }.
-      Global Instance Method_BlockNumber `(Trait)
-        : Notation.DoubleColonType Self "BlockNumber" := {
+      Global Instance Method_BlockNumber `(Trait) :
+        Notation.DoubleColonType Self "BlockNumber" := {
         Notation.double_colon_type := BlockNumber;
       }.
-      Global Instance Method_ChainExtension `(Trait)
-        : Notation.DoubleColonType Self "ChainExtension" := {
+      Global Instance Method_ChainExtension `(Trait) :
+        Notation.DoubleColonType Self "ChainExtension" := {
         Notation.double_colon_type := ChainExtension;
       }.
     End Environment.
@@ -209,11 +252,14 @@ Module FromLittleEndian.
     
     Class Trait (Self : Set) : Type := {
       Bytes : Set;
+      ℒ_0 :: core.default.Default.Trait Bytes;
+      ℒ_1 :: core.convert.AsRef.Trait Bytes (T := Slice u8);
+      ℒ_2 :: core.convert.AsMut.Trait Bytes (T := Slice u8);
       from_le_bytes : Bytes -> M Self;
     }.
     
-    Global Instance Method_Bytes `(Trait)
-      : Notation.DoubleColonType Self "Bytes" := {
+    Global Instance Method_Bytes `(Trait) :
+      Notation.DoubleColonType Self "Bytes" := {
       Notation.double_colon_type := Bytes;
     }.
   End FromLittleEndian.
@@ -234,14 +280,11 @@ Module CodecAsType.
   Section CodecAsType.
     Context `{ℋ : State.Trait}.
     
-    Unset Primitive Projections.
-    Class Trait
-        (Self : Set)
-        {ℋ_0 : scale_decode.DecodeAsType.Trait Self}
-        {ℋ_1 : scale_encode.EncodeAsType.Trait Self} :
-        Type := {
+    Class Trait (Self : Set) : Type := {
+      ℒ_0 :: scale_decode.DecodeAsType.Trait Self;
+      ℒ_1 :: scale_encode.EncodeAsType.Trait Self;
     }.
-    Global Set Primitive Projections.
+    
   End CodecAsType.
 End CodecAsType.
 
@@ -252,35 +295,87 @@ Module Environment.
     Class Trait (Self : Set) : Type := {
       MAX_EVENT_TOPICS : usize;
       AccountId : Set;
+      ℒ_0 :: parity_scale_codec.codec.Codec.Trait AccountId;
+      ℒ_1 :: ink_env.types.CodecAsType.Trait AccountId;
+      ℒ_2 :: core.clone.Clone.Trait AccountId;
+      ℒ_3 ::
+        core.cmp.PartialEq.Trait AccountId
+          (Rhs := core.cmp.PartialEq.Default.Rhs AccountId);
+      ℒ_4 :: core.cmp.Eq.Trait AccountId;
+      ℒ_5 :: core.cmp.Ord.Trait AccountId;
+      ℒ_6 :: core.convert.AsRef.Trait AccountId (T := Slice u8);
+      ℒ_7 :: core.convert.AsMut.Trait AccountId (T := Slice u8);
       Balance : Set;
+      ℒ_8 :: parity_scale_codec.codec.Codec.Trait Balance;
+      ℒ_9 :: ink_env.types.CodecAsType.Trait Balance;
+      ℒ_10 :: core.marker.Copy.Trait Balance;
+      ℒ_11 :: core.clone.Clone.Trait Balance;
+      ℒ_12 ::
+        core.cmp.PartialEq.Trait Balance
+          (Rhs := core.cmp.PartialEq.Default.Rhs Balance);
+      ℒ_13 :: core.cmp.Eq.Trait Balance;
+      ℒ_14 :: ink_env.arithmetic.AtLeast32BitUnsigned.Trait Balance;
+      ℒ_15 :: ink_env.types.FromLittleEndian.Trait Balance;
       Hash : Set;
+      ℒ_16 :: parity_scale_codec.codec.Codec.Trait Hash;
+      ℒ_17 :: ink_env.types.CodecAsType.Trait Hash;
+      ℒ_18 :: core.marker.Copy.Trait Hash;
+      ℒ_19 :: core.clone.Clone.Trait Hash;
+      ℒ_20 :: ink_primitives.types.Clear.Trait Hash;
+      ℒ_21 ::
+        core.cmp.PartialEq.Trait Hash
+          (Rhs := core.cmp.PartialEq.Default.Rhs Hash);
+      ℒ_22 :: core.cmp.Eq.Trait Hash;
+      ℒ_23 :: core.cmp.Ord.Trait Hash;
+      ℒ_24 :: core.convert.AsRef.Trait Hash (T := Slice u8);
+      ℒ_25 :: core.convert.AsMut.Trait Hash (T := Slice u8);
       Timestamp : Set;
+      ℒ_26 :: parity_scale_codec.codec.Codec.Trait Timestamp;
+      ℒ_27 :: ink_env.types.CodecAsType.Trait Timestamp;
+      ℒ_28 :: core.marker.Copy.Trait Timestamp;
+      ℒ_29 :: core.clone.Clone.Trait Timestamp;
+      ℒ_30 ::
+        core.cmp.PartialEq.Trait Timestamp
+          (Rhs := core.cmp.PartialEq.Default.Rhs Timestamp);
+      ℒ_31 :: core.cmp.Eq.Trait Timestamp;
+      ℒ_32 :: ink_env.arithmetic.AtLeast32BitUnsigned.Trait Timestamp;
+      ℒ_33 :: ink_env.types.FromLittleEndian.Trait Timestamp;
       BlockNumber : Set;
+      ℒ_34 :: parity_scale_codec.codec.Codec.Trait BlockNumber;
+      ℒ_35 :: ink_env.types.CodecAsType.Trait BlockNumber;
+      ℒ_36 :: core.marker.Copy.Trait BlockNumber;
+      ℒ_37 :: core.clone.Clone.Trait BlockNumber;
+      ℒ_38 ::
+        core.cmp.PartialEq.Trait BlockNumber
+          (Rhs := core.cmp.PartialEq.Default.Rhs BlockNumber);
+      ℒ_39 :: core.cmp.Eq.Trait BlockNumber;
+      ℒ_40 :: ink_env.arithmetic.AtLeast32BitUnsigned.Trait BlockNumber;
+      ℒ_41 :: ink_env.types.FromLittleEndian.Trait BlockNumber;
       ChainExtension : Set;
     }.
     
-    Global Instance Method_AccountId `(Trait)
-      : Notation.DoubleColonType Self "AccountId" := {
+    Global Instance Method_AccountId `(Trait) :
+      Notation.DoubleColonType Self "AccountId" := {
       Notation.double_colon_type := AccountId;
     }.
-    Global Instance Method_Balance `(Trait)
-      : Notation.DoubleColonType Self "Balance" := {
+    Global Instance Method_Balance `(Trait) :
+      Notation.DoubleColonType Self "Balance" := {
       Notation.double_colon_type := Balance;
     }.
-    Global Instance Method_Hash `(Trait)
-      : Notation.DoubleColonType Self "Hash" := {
+    Global Instance Method_Hash `(Trait) :
+      Notation.DoubleColonType Self "Hash" := {
       Notation.double_colon_type := Hash;
     }.
-    Global Instance Method_Timestamp `(Trait)
-      : Notation.DoubleColonType Self "Timestamp" := {
+    Global Instance Method_Timestamp `(Trait) :
+      Notation.DoubleColonType Self "Timestamp" := {
       Notation.double_colon_type := Timestamp;
     }.
-    Global Instance Method_BlockNumber `(Trait)
-      : Notation.DoubleColonType Self "BlockNumber" := {
+    Global Instance Method_BlockNumber `(Trait) :
+      Notation.DoubleColonType Self "BlockNumber" := {
       Notation.double_colon_type := BlockNumber;
     }.
-    Global Instance Method_ChainExtension `(Trait)
-      : Notation.DoubleColonType Self "ChainExtension" := {
+    Global Instance Method_ChainExtension `(Trait) :
+      Notation.DoubleColonType Self "ChainExtension" := {
       Notation.double_colon_type := ChainExtension;
     }.
   End Environment.
@@ -313,10 +408,11 @@ Module contract.
       
       Class Trait (Self : Set) : Type := {
         Env : Set;
+        ℒ_0 :: ink_env.types.Environment.Trait Env;
       }.
       
-      Global Instance Method_Env `(Trait)
-        : Notation.DoubleColonType Self "Env" := {
+      Global Instance Method_Env `(Trait) :
+        Notation.DoubleColonType Self "Env" := {
         Notation.double_colon_type := Env;
       }.
     End ContractEnv.
@@ -330,8 +426,8 @@ Module contract.
         Type_ : Set;
       }.
       
-      Global Instance Method_Type_ `(Trait)
-        : Notation.DoubleColonType Self "Type_" := {
+      Global Instance Method_Type_ `(Trait) :
+        Notation.DoubleColonType Self "Type_" := {
         Notation.double_colon_type := Type_;
       }.
     End ContractReference.
@@ -408,13 +504,12 @@ Module call.
           Output : Set;
           unwrap_or_else
             {F : Set}
-            {ℋ_0 : core.ops.function.FnOnce.Trait F (Args := unit)}
-            :
+            {ℋ_0 : core.ops.function.FnOnce.Trait F (Args := unit)} :
             Self -> F -> M Output;
         }.
         
-        Global Instance Method_Output `(Trait)
-          : Notation.DoubleColonType Self "Output" := {
+        Global Instance Method_Output `(Trait) :
+          Notation.DoubleColonType Self "Output" := {
           Notation.double_colon_type := Output;
         }.
       End Unwrap.
@@ -461,8 +556,7 @@ Module call.
           Notation.dot x := let* x := M.read x in Pure x.(selector) : M _;
         }.
         Global Instance Get_AF_selector : Notation.DoubleColon t "selector" := {
-          Notation.double_colon x
-            :=
+          Notation.double_colon x :=
             let* x := M.read x in Pure x.(selector) : M _;
         }.
         Global Instance Get_args : Notation.Dot "args" := {
@@ -562,14 +656,14 @@ Module call.
       Section FromAccountId.
         Context `{ℋ : State.Trait}.
         
-        Class Trait
-            (Self : Set)
-            {T : Set}
-            {ℋ_0 : ink_env.types.Environment.Trait T} :
-            Type := {
-          from_account_id
-            :
-            (ink_env.types.Environment.AccountId (Self := T)) -> M Self;
+        Class Trait (Self : Set) {T : Set} : Type := {
+          ℒ_0 :: ink_env.types.Environment.Trait T;
+          from_account_id :
+            (ink_env.types.Environment.AccountId
+                (Self := T)
+                (Trait := ltac:(try clear Trait; hauto l: on)))
+              ->
+              M Self;
         }.
         
       End FromAccountId.
@@ -583,15 +677,16 @@ Module call.
           IS_RESULT : bool;
           Output : Set;
           Error : Set;
+          ℒ_0 :: parity_scale_codec.codec.Decode.Trait Error;
           ok : C -> M Output;
         }.
         
-        Global Instance Method_Output `(Trait)
-          : Notation.DoubleColonType Self "Output" := {
+        Global Instance Method_Output `(Trait) :
+          Notation.DoubleColonType Self "Output" := {
           Notation.double_colon_type := Output;
         }.
-        Global Instance Method_Error `(Trait)
-          : Notation.DoubleColonType Self "Error" := {
+        Global Instance Method_Error `(Trait) :
+          Notation.DoubleColonType Self "Error" := {
           Notation.double_colon_type := Error;
         }.
       End ConstructorReturnType.
@@ -619,63 +714,56 @@ Module call.
         Global Instance Get_code_hash : Notation.Dot "code_hash" := {
           Notation.dot x := let* x := M.read x in Pure x.(code_hash) : M _;
         }.
-        Global Instance Get_AF_code_hash
-          : Notation.DoubleColon t "code_hash" := {
-          Notation.double_colon x
-            :=
+        Global Instance Get_AF_code_hash :
+          Notation.DoubleColon t "code_hash" := {
+          Notation.double_colon x :=
             let* x := M.read x in Pure x.(code_hash) : M _;
         }.
         Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
           Notation.dot x := let* x := M.read x in Pure x.(gas_limit) : M _;
         }.
-        Global Instance Get_AF_gas_limit
-          : Notation.DoubleColon t "gas_limit" := {
-          Notation.double_colon x
-            :=
+        Global Instance Get_AF_gas_limit :
+          Notation.DoubleColon t "gas_limit" := {
+          Notation.double_colon x :=
             let* x := M.read x in Pure x.(gas_limit) : M _;
         }.
         Global Instance Get_endowment : Notation.Dot "endowment" := {
           Notation.dot x := let* x := M.read x in Pure x.(endowment) : M _;
         }.
-        Global Instance Get_AF_endowment
-          : Notation.DoubleColon t "endowment" := {
-          Notation.double_colon x
-            :=
+        Global Instance Get_AF_endowment :
+          Notation.DoubleColon t "endowment" := {
+          Notation.double_colon x :=
             let* x := M.read x in Pure x.(endowment) : M _;
         }.
         Global Instance Get_exec_input : Notation.Dot "exec_input" := {
           Notation.dot x := let* x := M.read x in Pure x.(exec_input) : M _;
         }.
-        Global Instance Get_AF_exec_input
-          : Notation.DoubleColon t "exec_input" := {
-          Notation.double_colon x
-            :=
+        Global Instance Get_AF_exec_input :
+          Notation.DoubleColon t "exec_input" := {
+          Notation.double_colon x :=
             let* x := M.read x in Pure x.(exec_input) : M _;
         }.
         Global Instance Get_salt_bytes : Notation.Dot "salt_bytes" := {
           Notation.dot x := let* x := M.read x in Pure x.(salt_bytes) : M _;
         }.
-        Global Instance Get_AF_salt_bytes
-          : Notation.DoubleColon t "salt_bytes" := {
-          Notation.double_colon x
-            :=
+        Global Instance Get_AF_salt_bytes :
+          Notation.DoubleColon t "salt_bytes" := {
+          Notation.double_colon x :=
             let* x := M.read x in Pure x.(salt_bytes) : M _;
         }.
         Global Instance Get__return_type : Notation.Dot "_return_type" := {
           Notation.dot x := let* x := M.read x in Pure x.(_return_type) : M _;
         }.
-        Global Instance Get_AF__return_type
-          : Notation.DoubleColon t "_return_type" := {
-          Notation.double_colon x
-            :=
+        Global Instance Get_AF__return_type :
+          Notation.DoubleColon t "_return_type" := {
+          Notation.double_colon x :=
             let* x := M.read x in Pure x.(_return_type) : M _;
         }.
         Global Instance Get__phantom : Notation.Dot "_phantom" := {
           Notation.dot x := let* x := M.read x in Pure x.(_phantom) : M _;
         }.
         Global Instance Get_AF__phantom : Notation.DoubleColon t "_phantom" := {
-          Notation.double_colon x
-            :=
+          Notation.double_colon x :=
             let* x := M.read x in Pure x.(_phantom) : M _;
         }.
       End CreateParams.
@@ -716,37 +804,33 @@ Module call.
         Global Instance Get_code_hash : Notation.Dot "code_hash" := {
           Notation.dot x := let* x := M.read x in Pure x.(code_hash) : M _;
         }.
-        Global Instance Get_AF_code_hash
-          : Notation.DoubleColon t "code_hash" := {
-          Notation.double_colon x
-            :=
+        Global Instance Get_AF_code_hash :
+          Notation.DoubleColon t "code_hash" := {
+          Notation.double_colon x :=
             let* x := M.read x in Pure x.(code_hash) : M _;
         }.
         Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
           Notation.dot x := let* x := M.read x in Pure x.(gas_limit) : M _;
         }.
-        Global Instance Get_AF_gas_limit
-          : Notation.DoubleColon t "gas_limit" := {
-          Notation.double_colon x
-            :=
+        Global Instance Get_AF_gas_limit :
+          Notation.DoubleColon t "gas_limit" := {
+          Notation.double_colon x :=
             let* x := M.read x in Pure x.(gas_limit) : M _;
         }.
         Global Instance Get_endowment : Notation.Dot "endowment" := {
           Notation.dot x := let* x := M.read x in Pure x.(endowment) : M _;
         }.
-        Global Instance Get_AF_endowment
-          : Notation.DoubleColon t "endowment" := {
-          Notation.double_colon x
-            :=
+        Global Instance Get_AF_endowment :
+          Notation.DoubleColon t "endowment" := {
+          Notation.double_colon x :=
             let* x := M.read x in Pure x.(endowment) : M _;
         }.
         Global Instance Get_exec_input : Notation.Dot "exec_input" := {
           Notation.dot x := let* x := M.read x in Pure x.(exec_input) : M _;
         }.
-        Global Instance Get_AF_exec_input
-          : Notation.DoubleColon t "exec_input" := {
-          Notation.double_colon x
-            :=
+        Global Instance Get_AF_exec_input :
+          Notation.DoubleColon t "exec_input" := {
+          Notation.double_colon x :=
             let* x := M.read x in Pure x.(exec_input) : M _;
         }.
         Global Instance Get_salt : Notation.Dot "salt" := {
@@ -758,18 +842,16 @@ Module call.
         Global Instance Get_return_type : Notation.Dot "return_type" := {
           Notation.dot x := let* x := M.read x in Pure x.(return_type) : M _;
         }.
-        Global Instance Get_AF_return_type
-          : Notation.DoubleColon t "return_type" := {
-          Notation.double_colon x
-            :=
+        Global Instance Get_AF_return_type :
+          Notation.DoubleColon t "return_type" := {
+          Notation.double_colon x :=
             let* x := M.read x in Pure x.(return_type) : M _;
         }.
         Global Instance Get__phantom : Notation.Dot "_phantom" := {
           Notation.dot x := let* x := M.read x in Pure x.(_phantom) : M _;
         }.
         Global Instance Get_AF__phantom : Notation.DoubleColon t "_phantom" := {
-          Notation.double_colon x
-            :=
+          Notation.double_colon x :=
             let* x := M.read x in Pure x.(_phantom) : M _;
         }.
       End CreateBuilder.
@@ -809,8 +891,7 @@ Module engine.
             Notation.dot x := let* x := M.read x in Pure x.(bytes) : M _;
           }.
           Global Instance Get_AF_bytes : Notation.DoubleColon t "bytes" := {
-            Notation.double_colon x
-              :=
+            Notation.double_colon x :=
               let* x := M.read x in Pure x.(bytes) : M _;
           }.
         End CallData.
@@ -825,8 +906,7 @@ Module engine.
           
           Unset Primitive Projections.
           Record t : Set := {
-            topics
-              :
+            topics :
               alloc.vec.Vec
                 (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)
                 alloc.vec.Vec.Default.A;
@@ -837,8 +917,7 @@ Module engine.
             Notation.dot x := let* x := M.read x in Pure x.(topics) : M _;
           }.
           Global Instance Get_AF_topics : Notation.DoubleColon t "topics" := {
-            Notation.double_colon x
-              :=
+            Notation.double_colon x :=
               let* x := M.read x in Pure x.(topics) : M _;
           }.
         End TopicsBuilder.
@@ -861,8 +940,7 @@ Module engine.
           Notation.dot x := let* x := M.read x in Pure x.(engine) : M _;
         }.
         Global Instance Get_AF_engine : Notation.DoubleColon t "engine" := {
-          Notation.double_colon x
-            :=
+          Notation.double_colon x :=
             let* x := M.read x in Pure x.(engine) : M _;
         }.
       End EnvInstance.
@@ -906,13 +984,14 @@ Module hash.
     Section HashOutput.
       Context `{ℋ : State.Trait}.
       
-      Class Trait (Self : Set) {ℋ_0 : ink_env.hash.private.Sealed.Trait Self} :
-          Type := {
+      Class Trait (Self : Set) : Type := {
+        ℒ_0 :: ink_env.hash.private.Sealed.Trait Self;
         Type_ : Set;
+        ℒ_1 :: core.default.Default.Trait Type_;
       }.
       
-      Global Instance Method_Type_ `(Trait)
-        : Notation.DoubleColonType Self "Type_" := {
+      Global Instance Method_Type_ `(Trait) :
+        Notation.DoubleColonType Self "Type_" := {
         Notation.double_colon_type := Type_;
       }.
     End HashOutput.
@@ -922,12 +1001,15 @@ Module hash.
     Section CryptoHash.
       Context `{ℋ : State.Trait}.
       
-      Class Trait (Self : Set) {ℋ_0 : ink_env.hash.HashOutput.Trait Self} :
-          Type := {
-        hash
-          :
+      Class Trait (Self : Set) : Type := {
+        ℒ_0 :: ink_env.hash.HashOutput.Trait Self;
+        hash :
           (ref (Slice u8)) ->
-            (mut_ref (ink_env.hash.HashOutput.Type_ (Self := Self))) ->
+            (mut_ref
+              (ink_env.hash.HashOutput.Type_
+                (Self := Self)
+                (Trait := ltac:(try clear Trait; hauto l: on))))
+            ->
             M unit;
       }.
       
@@ -964,21 +1046,17 @@ Module topics.
     Section TopicsBuilderBackend.
       Context `{ℋ : State.Trait}.
       
-      Class Trait
-          (Self : Set)
-          {E : Set}
-          {ℋ_0 : ink_env.types.Environment.Trait E} :
-          Type := {
+      Class Trait (Self : Set) {E : Set} : Type := {
+        ℒ_0 :: ink_env.types.Environment.Trait E;
         Output : Set;
         expect : (mut_ref Self) -> usize -> M unit;
-        push_topic {T : Set} {ℋ_0 : parity_scale_codec.codec.Encode.Trait T}
-          :
+        push_topic {T : Set} {ℋ_0 : parity_scale_codec.codec.Encode.Trait T} :
           (mut_ref Self) -> (ref T) -> M unit;
         output : Self -> M Output;
       }.
       
-      Global Instance Method_Output `(Trait)
-        : Notation.DoubleColonType Self "Output" := {
+      Global Instance Method_Output `(Trait) :
+        Notation.DoubleColonType Self "Output" := {
         Notation.double_colon_type := Output;
       }.
     End TopicsBuilderBackend.
@@ -1044,8 +1122,8 @@ Module topics.
         Next : Set;
       }.
       
-      Global Instance Method_Next `(Trait)
-        : Notation.DoubleColonType Self "Next" := {
+      Global Instance Method_Next `(Trait) :
+        Notation.DoubleColonType Self "Next" := {
         Notation.double_colon_type := Next;
       }.
     End SomeRemainingTopics.
@@ -1068,18 +1146,21 @@ Module topics.
       
       Class Trait (Self : Set) : Type := {
         RemainingTopics : Set;
+        ℒ_0 :: ink_env.topics.EventTopicsAmount.Trait RemainingTopics;
         topics
           {E B : Set}
           {ℋ_0 : ink_env.types.Environment.Trait E}
-          {ℋ_1 : ink_env.topics.TopicsBuilderBackend.Trait B (E := E)}
-          :
+          {ℋ_1 : ink_env.topics.TopicsBuilderBackend.Trait B (E := E)} :
           (ref Self) ->
             (ink_env.topics.TopicsBuilder ink_env.topics.state.Uninit E B) ->
-            M (ink_env.topics.TopicsBuilderBackend.Output (Self := B));
+            M
+              (ink_env.topics.TopicsBuilderBackend.Output
+                (Self := B)
+                (Trait := ltac:(try clear Trait; hauto l: on)));
       }.
       
-      Global Instance Method_RemainingTopics `(Trait)
-        : Notation.DoubleColonType Self "RemainingTopics" := {
+      Global Instance Method_RemainingTopics `(Trait) :
+        Notation.DoubleColonType Self "RemainingTopics" := {
         Notation.double_colon_type := RemainingTopics;
       }.
     End Topics.
@@ -1147,8 +1228,7 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
       
       Unset Primitive Projections.
       Record t : Set := {
-        topics
-          :
+        topics :
           alloc.vec.Vec
             (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)
             alloc.vec.Vec.Default.A;
@@ -1218,7 +1298,9 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
         {ℋ_0 : ink_env.types.Environment.Trait T}
         {ℋ_1 :
           core.convert.From.Trait
-              (ink_env.types.Environment.AccountId (Self := T))
+              (ink_env.types.Environment.AccountId
+                (Self := T)
+                (Trait := ltac:(try clear Trait; hauto l: on)))
             (T := array u8)},
       T::type["AccountId"] -> M unit.
   
@@ -1229,7 +1311,9 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
         {ℋ_0 : ink_env.types.Environment.Trait T}
         {ℋ_1 :
           core.convert.From.Trait
-              (ink_env.types.Environment.AccountId (Self := T))
+              (ink_env.types.Environment.AccountId
+                (Self := T)
+                (Trait := ltac:(try clear Trait; hauto l: on)))
             (T := array u8)},
       T::type["AccountId"] -> M unit.
   
@@ -1240,7 +1324,9 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
         {ℋ_0 : ink_env.types.Environment.Trait T}
         {ℋ_1 :
           core.convert.From.Trait
-              (ink_env.types.Environment.AccountId (Self := T))
+              (ink_env.types.Environment.AccountId
+                (Self := T)
+                (Trait := ltac:(try clear Trait; hauto l: on)))
             (T := array u8)},
       T::type["AccountId"] -> M unit.
   
@@ -1251,7 +1337,9 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
         {ℋ_0 : ink_env.types.Environment.Trait T}
         {ℋ_1 :
           core.convert.From.Trait
-              (ink_env.types.Environment.AccountId (Self := T))
+              (ink_env.types.Environment.AccountId
+                (Self := T)
+                (Trait := ltac:(try clear Trait; hauto l: on)))
             (T := array u8)},
       T::type["AccountId"] -> M bool.
   
@@ -1381,7 +1469,9 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
               T)}
         {ℋ_2 :
           core.convert.From.Trait
-              (ink_env.types.Environment.AccountId (Self := T))
+              (ink_env.types.Environment.AccountId
+                (Self := T)
+                (Trait := ltac:(try clear Trait; hauto l: on)))
             (T := array u8)},
       F ->
         M
@@ -1395,18 +1485,20 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
         {ℋ_0 : ink_env.types.Environment.Trait T}
         {ℋ_1 :
           core.convert.From.Trait
-              (ink_env.types.Environment.AccountId (Self := T))
+              (ink_env.types.Environment.AccountId
+                (Self := T)
+                (Trait := ltac:(try clear Trait; hauto l: on)))
             (T := array u8)},
       M
           (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.DefaultAccounts
             T).
   
-  Parameter recorded_events_ret_ty :
+  (* Parameter recorded_events_ret_ty :
       Sigma (Ty : Set) `(core.iter.traits.iterator.Iterator.Trait Ty),
       unit.
   Parameter recorded_events :
       forall `{ℋ : State.Trait},
-      M (projT1 recorded_events_ret_ty).
+      M (projT1 recorded_events_ret_ty). *)
   
   Parameter assert_contract_termination :
       forall
@@ -1417,9 +1509,14 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
         {ℋ_2 : core.panic.unwind_safe.UnwindSafe.Trait F}
         {ℋ_3 :
           core.fmt.Debug.Trait
-              (ink_env.types.Environment.AccountId (Self := T))}
+              (ink_env.types.Environment.AccountId
+                (Self := T)
+                (Trait := ltac:(try clear Trait; hauto l: on)))}
         {ℋ_4 :
-          core.fmt.Debug.Trait (ink_env.types.Environment.Balance (Self := T))},
+          core.fmt.Debug.Trait
+              (ink_env.types.Environment.Balance
+                (Self := T)
+                (Trait := ltac:(try clear Trait; hauto l: on)))},
       F -> T::type["AccountId"] -> T::type["Balance"] -> M unit.
   
   Module CallFlags.
@@ -1438,36 +1535,32 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
       Global Instance Get_forward_input : Notation.Dot "forward_input" := {
         Notation.dot x := let* x := M.read x in Pure x.(forward_input) : M _;
       }.
-      Global Instance Get_AF_forward_input
-        : Notation.DoubleColon t "forward_input" := {
-        Notation.double_colon x
-          :=
+      Global Instance Get_AF_forward_input :
+        Notation.DoubleColon t "forward_input" := {
+        Notation.double_colon x :=
           let* x := M.read x in Pure x.(forward_input) : M _;
       }.
       Global Instance Get_clone_input : Notation.Dot "clone_input" := {
         Notation.dot x := let* x := M.read x in Pure x.(clone_input) : M _;
       }.
-      Global Instance Get_AF_clone_input
-        : Notation.DoubleColon t "clone_input" := {
-        Notation.double_colon x
-          :=
+      Global Instance Get_AF_clone_input :
+        Notation.DoubleColon t "clone_input" := {
+        Notation.double_colon x :=
           let* x := M.read x in Pure x.(clone_input) : M _;
       }.
       Global Instance Get_tail_call : Notation.Dot "tail_call" := {
         Notation.dot x := let* x := M.read x in Pure x.(tail_call) : M _;
       }.
       Global Instance Get_AF_tail_call : Notation.DoubleColon t "tail_call" := {
-        Notation.double_colon x
-          :=
+        Notation.double_colon x :=
           let* x := M.read x in Pure x.(tail_call) : M _;
       }.
       Global Instance Get_allow_reentry : Notation.Dot "allow_reentry" := {
         Notation.dot x := let* x := M.read x in Pure x.(allow_reentry) : M _;
       }.
-      Global Instance Get_AF_allow_reentry
-        : Notation.DoubleColon t "allow_reentry" := {
-        Notation.double_colon x
-          :=
+      Global Instance Get_AF_allow_reentry :
+        Notation.DoubleColon t "allow_reentry" := {
+        Notation.double_colon x :=
           let* x := M.read x in Pure x.(allow_reentry) : M _;
       }.
     End CallFlags.
@@ -1484,8 +1577,7 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
       Unset Primitive Projections.
       Record t : Set := {
         call_type : CallType;
-        call_flags
-          :
+        call_flags :
           ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallFlags;
         _return_type : ink_env.call.common.ReturnType R;
         exec_input : ink_env.call.execution_input.ExecutionInput Args;
@@ -1497,43 +1589,38 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
         Notation.dot x := let* x := M.read x in Pure x.(call_type) : M _;
       }.
       Global Instance Get_AF_call_type : Notation.DoubleColon t "call_type" := {
-        Notation.double_colon x
-          :=
+        Notation.double_colon x :=
           let* x := M.read x in Pure x.(call_type) : M _;
       }.
       Global Instance Get_call_flags : Notation.Dot "call_flags" := {
         Notation.dot x := let* x := M.read x in Pure x.(call_flags) : M _;
       }.
-      Global Instance Get_AF_call_flags
-        : Notation.DoubleColon t "call_flags" := {
-        Notation.double_colon x
-          :=
+      Global Instance Get_AF_call_flags :
+        Notation.DoubleColon t "call_flags" := {
+        Notation.double_colon x :=
           let* x := M.read x in Pure x.(call_flags) : M _;
       }.
       Global Instance Get__return_type : Notation.Dot "_return_type" := {
         Notation.dot x := let* x := M.read x in Pure x.(_return_type) : M _;
       }.
-      Global Instance Get_AF__return_type
-        : Notation.DoubleColon t "_return_type" := {
-        Notation.double_colon x
-          :=
+      Global Instance Get_AF__return_type :
+        Notation.DoubleColon t "_return_type" := {
+        Notation.double_colon x :=
           let* x := M.read x in Pure x.(_return_type) : M _;
       }.
       Global Instance Get_exec_input : Notation.Dot "exec_input" := {
         Notation.dot x := let* x := M.read x in Pure x.(exec_input) : M _;
       }.
-      Global Instance Get_AF_exec_input
-        : Notation.DoubleColon t "exec_input" := {
-        Notation.double_colon x
-          :=
+      Global Instance Get_AF_exec_input :
+        Notation.DoubleColon t "exec_input" := {
+        Notation.double_colon x :=
           let* x := M.read x in Pure x.(exec_input) : M _;
       }.
       Global Instance Get__phantom : Notation.Dot "_phantom" := {
         Notation.dot x := let* x := M.read x in Pure x.(_phantom) : M _;
       }.
       Global Instance Get_AF__phantom : Notation.DoubleColon t "_phantom" := {
-        Notation.double_colon x
-          :=
+        Notation.double_colon x :=
           let* x := M.read x in Pure x.(_phantom) : M _;
       }.
     End CallParams.
@@ -1571,20 +1658,17 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
         Notation.dot x := let* x := M.read x in Pure x.(gas_limit) : M _;
       }.
       Global Instance Get_AF_gas_limit : Notation.DoubleColon t "gas_limit" := {
-        Notation.double_colon x
-          :=
+        Notation.double_colon x :=
           let* x := M.read x in Pure x.(gas_limit) : M _;
       }.
-      Global Instance Get_transferred_value
-        : Notation.Dot "transferred_value" := {
-        Notation.dot x
-          :=
+      Global Instance Get_transferred_value :
+        Notation.Dot "transferred_value" := {
+        Notation.dot x :=
           let* x := M.read x in Pure x.(transferred_value) : M _;
       }.
-      Global Instance Get_AF_transferred_value
-        : Notation.DoubleColon t "transferred_value" := {
-        Notation.double_colon x
-          :=
+      Global Instance Get_AF_transferred_value :
+        Notation.DoubleColon t "transferred_value" := {
+        Notation.double_colon x :=
           let* x := M.read x in Pure x.(transferred_value) : M _;
       }.
     End Call.
@@ -1613,8 +1697,7 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
         Notation.dot x := let* x := M.read x in Pure x.(code_hash) : M _;
       }.
       Global Instance Get_AF_code_hash : Notation.DoubleColon t "code_hash" := {
-        Notation.double_colon x
-          :=
+        Notation.double_colon x :=
           let* x := M.read x in Pure x.(code_hash) : M _;
       }.
     End DelegateCall.
@@ -1654,14 +1737,12 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
         set_contract_storage
           {K V : Set}
           {ℋ_0 : parity_scale_codec.codec.Encode.Trait K}
-          {ℋ_1 : ink_storage_traits.storage.Storable.Trait V}
-          :
+          {ℋ_1 : ink_storage_traits.storage.Storable.Trait V} :
           (mut_ref Self) -> (ref K) -> (ref V) -> M (core.option.Option u32);
         get_contract_storage
           {K R : Set}
           {ℋ_0 : parity_scale_codec.codec.Encode.Trait K}
-          {ℋ_1 : ink_storage_traits.storage.Storable.Trait R}
-          :
+          {ℋ_1 : ink_storage_traits.storage.Storable.Trait R} :
           (mut_ref Self) ->
             (ref K) ->
             M
@@ -1670,8 +1751,7 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
         take_contract_storage
           {K R : Set}
           {ℋ_0 : parity_scale_codec.codec.Encode.Trait K}
-          {ℋ_1 : ink_storage_traits.storage.Storable.Trait R}
-          :
+          {ℋ_1 : ink_storage_traits.storage.Storable.Trait R} :
           (mut_ref Self) ->
             (ref K) ->
             M
@@ -1679,45 +1759,46 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
                 (core.option.Option R));
         contains_contract_storage
           {K : Set}
-          {ℋ_0 : parity_scale_codec.codec.Encode.Trait K}
-          :
+          {ℋ_0 : parity_scale_codec.codec.Encode.Trait K} :
           (mut_ref Self) -> (ref K) -> M (core.option.Option u32);
         clear_contract_storage
           {K : Set}
-          {ℋ_0 : parity_scale_codec.codec.Encode.Trait K}
-          :
+          {ℋ_0 : parity_scale_codec.codec.Encode.Trait K} :
           (mut_ref Self) -> (ref K) -> M (core.option.Option u32);
-        decode_input {T : Set} {ℋ_0 : parity_scale_codec.codec.Decode.Trait T}
-          :
+        decode_input {T : Set} {ℋ_0 : parity_scale_codec.codec.Decode.Trait T} :
           (mut_ref Self) ->
             M
               (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
                 T);
-        return_value {R : Set} {ℋ_0 : parity_scale_codec.codec.Encode.Trait R}
-          :
+        return_value {R : Set} {ℋ_0 : parity_scale_codec.codec.Encode.Trait R} :
           (mut_ref Self) ->
             ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.ReturnFlags
             ->
             (ref R) ->
             M Empty_set;
         debug_message : (mut_ref Self) -> (ref str) -> M unit;
-        hash_bytes {H : Set} {ℋ_0 : ink_env.hash.CryptoHash.Trait H}
-          :
+        hash_bytes {H : Set} {ℋ_0 : ink_env.hash.CryptoHash.Trait H} :
           (mut_ref Self) ->
             (ref (Slice u8)) ->
-            (mut_ref (ink_env.hash.HashOutput.Type_ (Self := H))) ->
+            (mut_ref
+              (ink_env.hash.HashOutput.Type_
+                (Self := H)
+                (Trait := ltac:(try clear Trait; hauto l: on))))
+            ->
             M unit;
         hash_encoded
           {H T : Set}
           {ℋ_0 : ink_env.hash.CryptoHash.Trait H}
-          {ℋ_1 : parity_scale_codec.codec.Encode.Trait T}
-          :
+          {ℋ_1 : parity_scale_codec.codec.Encode.Trait T} :
           (mut_ref Self) ->
             (ref T) ->
-            (mut_ref (ink_env.hash.HashOutput.Type_ (Self := H))) ->
+            (mut_ref
+              (ink_env.hash.HashOutput.Type_
+                (Self := H)
+                (Trait := ltac:(try clear Trait; hauto l: on))))
+            ->
             M unit;
-        ecdsa_recover
-          :
+        ecdsa_recover :
           (mut_ref Self) ->
             (ref (array u8)) ->
             (ref (array u8)) ->
@@ -1725,8 +1806,7 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
             M
               (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
                 unit);
-        ecdsa_to_eth_address
-          :
+        ecdsa_to_eth_address :
           (mut_ref Self) ->
             (ref (array u8)) ->
             (mut_ref (array u8)) ->
@@ -1739,16 +1819,14 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
           {ℋ_1 : parity_scale_codec.codec.Decode.Trait T}
           {ℋ_2 : core.convert.From.Trait E (T := ErrorCode)}
           {ℋ_3 : core.ops.function.FnOnce.Trait F (Args := u32)}
-          {ℋ_4 : core.ops.function.FnOnce.Trait D (Args := ref (Slice u8))}
-          :
+          {ℋ_4 : core.ops.function.FnOnce.Trait D (Args := ref (Slice u8))} :
           (mut_ref Self) ->
             u32 ->
             (ref I) ->
             F ->
             D ->
             M (core.result.Result T E);
-        set_code_hash
-          :
+        set_code_hash :
           (mut_ref Self) ->
             (ref (Slice u8)) ->
             M
@@ -1763,52 +1841,39 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
     Section TypedEnvBackend.
       Context `{ℋ : State.Trait}.
       
-      Class Trait
-          (Self : Set)
-          {ℋ_0 :
-            ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.EnvBackend.Trait
-                Self} :
-          Type := {
-        caller {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E}
-          :
+      Class Trait (Self : Set) : Type := {
+        ℒ_0 ::
+          ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.EnvBackend.Trait
+              Self;
+        caller {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E} :
           (mut_ref Self) -> M E::type["AccountId"];
-        transferred_value {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E}
-          :
+        transferred_value {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E} :
           (mut_ref Self) -> M E::type["Balance"];
-        weight_to_fee {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E}
-          :
+        weight_to_fee {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E} :
           (mut_ref Self) -> u64 -> M E::type["Balance"];
-        gas_left {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E}
-          :
+        gas_left {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E} :
           (mut_ref Self) -> M u64;
-        block_timestamp {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E}
-          :
+        block_timestamp {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E} :
           (mut_ref Self) -> M E::type["Timestamp"];
-        account_id {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E}
-          :
+        account_id {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E} :
           (mut_ref Self) -> M E::type["AccountId"];
-        balance {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E}
-          :
+        balance {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E} :
           (mut_ref Self) -> M E::type["Balance"];
-        block_number {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E}
-          :
+        block_number {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E} :
           (mut_ref Self) -> M E::type["BlockNumber"];
-        minimum_balance {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E}
-          :
+        minimum_balance {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E} :
           (mut_ref Self) -> M E::type["Balance"];
         emit_event
           {E Event : Set}
           {ℋ_0 : ink_env.types.Environment.Trait E}
           {ℋ_1 : ink_env.topics.Topics.Trait Event}
-          {ℋ_2 : parity_scale_codec.codec.Encode.Trait Event}
-          :
+          {ℋ_2 : parity_scale_codec.codec.Encode.Trait Event} :
           (mut_ref Self) -> Event -> M unit;
         invoke_contract
           {E Args R : Set}
           {ℋ_0 : ink_env.types.Environment.Trait E}
           {ℋ_1 : parity_scale_codec.codec.Encode.Trait Args}
-          {ℋ_2 : parity_scale_codec.codec.Decode.Trait R}
-          :
+          {ℋ_2 : parity_scale_codec.codec.Decode.Trait R} :
           (mut_ref Self) ->
             (ref
               (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallParams
@@ -1825,8 +1890,7 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
           {E Args R : Set}
           {ℋ_0 : ink_env.types.Environment.Trait E}
           {ℋ_1 : parity_scale_codec.codec.Encode.Trait Args}
-          {ℋ_2 : parity_scale_codec.codec.Decode.Trait R}
-          :
+          {ℋ_2 : parity_scale_codec.codec.Decode.Trait R} :
           (mut_ref Self) ->
             (ref
               (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallParams
@@ -1849,8 +1913,7 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
           {ℋ_3 : core.convert.AsRef.Trait Salt (T := Slice u8)}
           {ℋ_4 :
             ink_env.call.create_builder.ConstructorReturnType.Trait R
-              (C := ContractRef)}
-          :
+              (C := ContractRef)} :
           (mut_ref Self) ->
             (ref
               (ink_env.call.create_builder.CreateParams
@@ -1864,33 +1927,28 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
               (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
                 (ink_primitives.ConstructorResult
                   (ink_env.call.create_builder.ConstructorReturnType.Output
-                    (Self := R))));
-        terminate_contract {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E}
-          :
+                    (Self := R)
+                    (Trait := ltac:(try clear Trait; hauto l: on)))));
+        terminate_contract {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E} :
           (mut_ref Self) -> E::type["AccountId"] -> M Empty_set;
-        transfer {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E}
-          :
+        transfer {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E} :
           (mut_ref Self) ->
             E::type["AccountId"] ->
             E::type["Balance"] ->
             M
               (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
                 unit);
-        is_contract {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E}
-          :
+        is_contract {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E} :
           (mut_ref Self) -> (ref E::type["AccountId"]) -> M bool;
-        caller_is_origin {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E}
-          :
+        caller_is_origin {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E} :
           (mut_ref Self) -> M bool;
-        code_hash {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E}
-          :
+        code_hash {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E} :
           (mut_ref Self) ->
             (ref E::type["AccountId"]) ->
             M
               (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
                 E::type["Hash"]);
-        own_code_hash {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E}
-          :
+        own_code_hash {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E} :
           (mut_ref Self) ->
             M
               (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
@@ -1898,8 +1956,7 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
         call_runtime
           {E Call : Set}
           {ℋ_0 : ink_env.types.Environment.Trait E}
-          {ℋ_1 : parity_scale_codec.codec.Encode.Trait Call}
-          :
+          {ℋ_1 : parity_scale_codec.codec.Encode.Trait Call} :
           (mut_ref Self) ->
             (ref Call) ->
             M
@@ -1914,19 +1971,16 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
     Section OnInstance.
       Context `{ℋ : State.Trait}.
       
-      Class Trait
-          (Self : Set)
-          {ℋ_0 :
-            ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.EnvBackend.Trait
-                Self}
-          {ℋ_1 :
-            ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.TypedEnvBackend.Trait
-                Self} :
-          Type := {
+      Class Trait (Self : Set) : Type := {
+        ℒ_0 ::
+          ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.EnvBackend.Trait
+              Self;
+        ℒ_1 ::
+          ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.TypedEnvBackend.Trait
+              Self;
         on_instance
           {F R : Set}
-          {ℋ_0 : core.ops.function.FnOnce.Trait F (Args := mut_ref Self)}
-          :
+          {ℋ_0 : core.ops.function.FnOnce.Trait F (Args := mut_ref Self)} :
           F -> M R;
       }.
       
@@ -1943,8 +1997,7 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
       Unset Primitive Projections.
       Record t : Set := {
         call_type : CallType;
-        call_flags
-          :
+        call_flags :
           ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallFlags;
         exec_input : Args;
         return_type : RetType;
@@ -1956,43 +2009,38 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
         Notation.dot x := let* x := M.read x in Pure x.(call_type) : M _;
       }.
       Global Instance Get_AF_call_type : Notation.DoubleColon t "call_type" := {
-        Notation.double_colon x
-          :=
+        Notation.double_colon x :=
           let* x := M.read x in Pure x.(call_type) : M _;
       }.
       Global Instance Get_call_flags : Notation.Dot "call_flags" := {
         Notation.dot x := let* x := M.read x in Pure x.(call_flags) : M _;
       }.
-      Global Instance Get_AF_call_flags
-        : Notation.DoubleColon t "call_flags" := {
-        Notation.double_colon x
-          :=
+      Global Instance Get_AF_call_flags :
+        Notation.DoubleColon t "call_flags" := {
+        Notation.double_colon x :=
           let* x := M.read x in Pure x.(call_flags) : M _;
       }.
       Global Instance Get_exec_input : Notation.Dot "exec_input" := {
         Notation.dot x := let* x := M.read x in Pure x.(exec_input) : M _;
       }.
-      Global Instance Get_AF_exec_input
-        : Notation.DoubleColon t "exec_input" := {
-        Notation.double_colon x
-          :=
+      Global Instance Get_AF_exec_input :
+        Notation.DoubleColon t "exec_input" := {
+        Notation.double_colon x :=
           let* x := M.read x in Pure x.(exec_input) : M _;
       }.
       Global Instance Get_return_type : Notation.Dot "return_type" := {
         Notation.dot x := let* x := M.read x in Pure x.(return_type) : M _;
       }.
-      Global Instance Get_AF_return_type
-        : Notation.DoubleColon t "return_type" := {
-        Notation.double_colon x
-          :=
+      Global Instance Get_AF_return_type :
+        Notation.DoubleColon t "return_type" := {
+        Notation.double_colon x :=
           let* x := M.read x in Pure x.(return_type) : M _;
       }.
       Global Instance Get__phantom : Notation.Dot "_phantom" := {
         Notation.dot x := let* x := M.read x in Pure x.(_phantom) : M _;
       }.
       Global Instance Get_AF__phantom : Notation.DoubleColon t "_phantom" := {
-        Notation.double_colon x
-          :=
+        Notation.double_colon x :=
           let* x := M.read x in Pure x.(_phantom) : M _;
       }.
     End CallBuilder.
@@ -2199,7 +2247,8 @@ Module api.
           (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
             (ink_primitives.ConstructorResult
               (ink_env.call.create_builder.ConstructorReturnType.Output
-                (Self := R)))).
+                (Self := R)
+                (Trait := ltac:(try clear Trait; hauto l: on))))).
   
   Parameter terminate_contract :
       forall
@@ -2246,7 +2295,11 @@ Module api.
         {H : Set}
         {ℋ_0 : ink_env.hash.CryptoHash.Trait H},
       (ref (Slice u8)) ->
-        (mut_ref (ink_env.hash.HashOutput.Type_ (Self := H))) ->
+        (mut_ref
+          (ink_env.hash.HashOutput.Type_
+            (Self := H)
+            (Trait := ltac:(try clear Trait; hauto l: on))))
+        ->
         M unit.
   
   Parameter hash_encoded :
@@ -2256,7 +2309,11 @@ Module api.
         {ℋ_0 : ink_env.hash.CryptoHash.Trait H}
         {ℋ_1 : parity_scale_codec.codec.Encode.Trait T},
       (ref T) ->
-        (mut_ref (ink_env.hash.HashOutput.Type_ (Self := H))) ->
+        (mut_ref
+          (ink_env.hash.HashOutput.Type_
+            (Self := H)
+            (Trait := ltac:(try clear Trait; hauto l: on))))
+        ->
         M unit.
   
   Parameter ecdsa_recover :
@@ -2510,7 +2567,8 @@ Parameter instantiate_contract :
         (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
           (ink_primitives.ConstructorResult
             (ink_env.call.create_builder.ConstructorReturnType.Output
-              (Self := R)))).
+              (Self := R)
+              (Trait := ltac:(try clear Trait; hauto l: on))))).
 
 Parameter terminate_contract :
     forall
@@ -2554,7 +2612,11 @@ Parameter debug_message : forall `{ℋ : State.Trait}, (ref str) -> M unit.
 Parameter hash_bytes :
     forall `{ℋ : State.Trait} {H : Set} {ℋ_0 : ink_env.hash.CryptoHash.Trait H},
     (ref (Slice u8)) ->
-      (mut_ref (ink_env.hash.HashOutput.Type_ (Self := H))) ->
+      (mut_ref
+        (ink_env.hash.HashOutput.Type_
+          (Self := H)
+          (Trait := ltac:(try clear Trait; hauto l: on))))
+      ->
       M unit.
 
 Parameter hash_encoded :
@@ -2563,7 +2625,13 @@ Parameter hash_encoded :
       {H T : Set}
       {ℋ_0 : ink_env.hash.CryptoHash.Trait H}
       {ℋ_1 : parity_scale_codec.codec.Encode.Trait T},
-    (ref T) -> (mut_ref (ink_env.hash.HashOutput.Type_ (Self := H))) -> M unit.
+    (ref T) ->
+      (mut_ref
+        (ink_env.hash.HashOutput.Type_
+          (Self := H)
+          (Trait := ltac:(try clear Trait; hauto l: on))))
+      ->
+      M unit.
 
 Parameter ecdsa_recover :
     forall `{ℋ : State.Trait},
@@ -2582,12 +2650,12 @@ Parameter ecdsa_to_eth_address :
         (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
           unit).
 
-Parameter is_contract :
+(* Parameter is_contract :
     forall
       `{ℋ : State.Trait}
       {E : Set}
       {ℋ_0 : ink_env.types.Environment.Trait E},
-    (ref E::type["AccountId"]) -> M bool.
+    (ref E::type["AccountId"]) -> M bool. *)
 
 Parameter code_hash :
     forall
@@ -2647,40 +2715,37 @@ Module BaseArithmetic.
   Section BaseArithmetic.
     Context `{ℋ : State.Trait}.
     
-    Unset Primitive Projections.
-    Class Trait
-        (Self : Set)
-        {ℋ_0 : core.marker.Sized.Trait Self}
-        {ℋ_1 : core.convert.From.Trait Self (T := u8)}
-        {ℋ_2 : num_traits.bounds.Bounded.Trait Self}
-        {ℋ_3 : core.cmp.Ord.Trait Self}
-        {ℋ_4 : core.cmp.PartialOrd.Trait Self (Rhs := Self)}
-        {ℋ_5 : num_traits.identities.Zero.Trait Self}
-        {ℋ_6 : num_traits.identities.One.Trait Self}
-        {ℋ_7 : num_traits.bounds.Bounded.Trait Self}
-        {ℋ_8 : core.ops.arith.Add.Trait Self (Rhs := Self)}
-        {ℋ_9 : core.ops.arith.AddAssign.Trait Self (Rhs := Self)}
-        {ℋ_10 : core.ops.arith.Sub.Trait Self (Rhs := Self)}
-        {ℋ_11 : core.ops.arith.SubAssign.Trait Self (Rhs := Self)}
-        {ℋ_12 : core.ops.arith.Mul.Trait Self (Rhs := Self)}
-        {ℋ_13 : core.ops.arith.MulAssign.Trait Self (Rhs := Self)}
-        {ℋ_14 : core.ops.arith.Div.Trait Self (Rhs := Self)}
-        {ℋ_15 : core.ops.arith.DivAssign.Trait Self (Rhs := Self)}
-        {ℋ_16 : num_traits.ops.checked.CheckedMul.Trait Self}
-        {ℋ_17 : ink_env.arithmetic.Saturating.Trait Self}
-        {ℋ_18 : core.convert.TryFrom.Trait Self (T := u16)}
-        {ℋ_19 : core.convert.TryFrom.Trait Self (T := u32)}
-        {ℋ_20 : core.convert.TryFrom.Trait Self (T := u64)}
-        {ℋ_21 : core.convert.TryFrom.Trait Self (T := u128)}
-        {ℋ_22 : core.convert.TryFrom.Trait Self (T := usize)}
-        {ℋ_23 : core.convert.TryInto.Trait Self (T := u16)}
-        {ℋ_24 : core.convert.TryInto.Trait Self (T := u32)}
-        {ℋ_25 : core.convert.TryInto.Trait Self (T := u64)}
-        {ℋ_26 : core.convert.TryInto.Trait Self (T := u128)}
-        {ℋ_27 : core.convert.TryInto.Trait Self (T := usize)} :
-        Type := {
+    Class Trait (Self : Set) : Type := {
+      ℒ_0 :: core.marker.Sized.Trait Self;
+      ℒ_1 :: core.convert.From.Trait Self (T := u8);
+      ℒ_2 :: num_traits.bounds.Bounded.Trait Self;
+      ℒ_3 :: core.cmp.Ord.Trait Self;
+      ℒ_4 :: core.cmp.PartialOrd.Trait Self (Rhs := Self);
+      ℒ_5 :: num_traits.identities.Zero.Trait Self;
+      ℒ_6 :: num_traits.identities.One.Trait Self;
+      ℒ_7 :: num_traits.bounds.Bounded.Trait Self;
+      ℒ_8 :: core.ops.arith.Add.Trait Self (Rhs := Self);
+      ℒ_9 :: core.ops.arith.AddAssign.Trait Self (Rhs := Self);
+      ℒ_10 :: core.ops.arith.Sub.Trait Self (Rhs := Self);
+      ℒ_11 :: core.ops.arith.SubAssign.Trait Self (Rhs := Self);
+      ℒ_12 :: core.ops.arith.Mul.Trait Self (Rhs := Self);
+      ℒ_13 :: core.ops.arith.MulAssign.Trait Self (Rhs := Self);
+      ℒ_14 :: core.ops.arith.Div.Trait Self (Rhs := Self);
+      ℒ_15 :: core.ops.arith.DivAssign.Trait Self (Rhs := Self);
+      ℒ_16 :: num_traits.ops.checked.CheckedMul.Trait Self;
+      ℒ_17 :: ink_env.arithmetic.Saturating.Trait Self;
+      ℒ_18 :: core.convert.TryFrom.Trait Self (T := u16);
+      ℒ_19 :: core.convert.TryFrom.Trait Self (T := u32);
+      ℒ_20 :: core.convert.TryFrom.Trait Self (T := u64);
+      ℒ_21 :: core.convert.TryFrom.Trait Self (T := u128);
+      ℒ_22 :: core.convert.TryFrom.Trait Self (T := usize);
+      ℒ_23 :: core.convert.TryInto.Trait Self (T := u16);
+      ℒ_24 :: core.convert.TryInto.Trait Self (T := u32);
+      ℒ_25 :: core.convert.TryInto.Trait Self (T := u64);
+      ℒ_26 :: core.convert.TryInto.Trait Self (T := u128);
+      ℒ_27 :: core.convert.TryInto.Trait Self (T := usize);
     }.
-    Global Set Primitive Projections.
+    
   End BaseArithmetic.
 End BaseArithmetic.
 
@@ -2688,15 +2753,12 @@ Module AtLeast32Bit.
   Section AtLeast32Bit.
     Context `{ℋ : State.Trait}.
     
-    Unset Primitive Projections.
-    Class Trait
-        (Self : Set)
-        {ℋ_0 : ink_env.arithmetic.BaseArithmetic.Trait Self}
-        {ℋ_1 : core.convert.From.Trait Self (T := u16)}
-        {ℋ_2 : core.convert.From.Trait Self (T := u32)} :
-        Type := {
+    Class Trait (Self : Set) : Type := {
+      ℒ_0 :: ink_env.arithmetic.BaseArithmetic.Trait Self;
+      ℒ_1 :: core.convert.From.Trait Self (T := u16);
+      ℒ_2 :: core.convert.From.Trait Self (T := u32);
     }.
-    Global Set Primitive Projections.
+    
   End AtLeast32Bit.
 End AtLeast32Bit.
 
@@ -2704,14 +2766,11 @@ Module AtLeast32BitUnsigned.
   Section AtLeast32BitUnsigned.
     Context `{ℋ : State.Trait}.
     
-    Unset Primitive Projections.
-    Class Trait
-        (Self : Set)
-        {ℋ_0 : ink_env.arithmetic.AtLeast32Bit.Trait Self}
-        {ℋ_1 : num_traits.sign.Unsigned.Trait Self} :
-        Type := {
+    Class Trait (Self : Set) : Type := {
+      ℒ_0 :: ink_env.arithmetic.AtLeast32Bit.Trait Self;
+      ℒ_1 :: num_traits.sign.Unsigned.Trait Self;
     }.
-    Global Set Primitive Projections.
+    
   End AtLeast32BitUnsigned.
 End AtLeast32BitUnsigned.
 
@@ -2759,8 +2818,7 @@ Module EmittedEvent.
     
     Unset Primitive Projections.
     Record t : Set := {
-      topics
-        :
+      topics :
         alloc.vec.Vec
           (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)
           alloc.vec.Vec.Default.A;
@@ -2830,7 +2888,9 @@ Parameter set_caller :
       {ℋ_0 : ink_env.types.Environment.Trait T}
       {ℋ_1 :
         core.convert.From.Trait
-            (ink_env.types.Environment.AccountId (Self := T))
+            (ink_env.types.Environment.AccountId
+              (Self := T)
+              (Trait := ltac:(try clear Trait; hauto l: on)))
           (T := array u8)},
     T::type["AccountId"] -> M unit.
 
@@ -2841,7 +2901,9 @@ Parameter set_callee :
       {ℋ_0 : ink_env.types.Environment.Trait T}
       {ℋ_1 :
         core.convert.From.Trait
-            (ink_env.types.Environment.AccountId (Self := T))
+            (ink_env.types.Environment.AccountId
+              (Self := T)
+              (Trait := ltac:(try clear Trait; hauto l: on)))
           (T := array u8)},
     T::type["AccountId"] -> M unit.
 
@@ -2852,7 +2914,9 @@ Parameter set_contract :
       {ℋ_0 : ink_env.types.Environment.Trait T}
       {ℋ_1 :
         core.convert.From.Trait
-            (ink_env.types.Environment.AccountId (Self := T))
+            (ink_env.types.Environment.AccountId
+              (Self := T)
+              (Trait := ltac:(try clear Trait; hauto l: on)))
           (T := array u8)},
     T::type["AccountId"] -> M unit.
 
@@ -2863,7 +2927,9 @@ Parameter is_contract :
       {ℋ_0 : ink_env.types.Environment.Trait T}
       {ℋ_1 :
         core.convert.From.Trait
-            (ink_env.types.Environment.AccountId (Self := T))
+            (ink_env.types.Environment.AccountId
+              (Self := T)
+              (Trait := ltac:(try clear Trait; hauto l: on)))
           (T := array u8)},
     T::type["AccountId"] -> M bool.
 
@@ -2930,7 +2996,9 @@ Parameter run_test :
             T)}
       {ℋ_2 :
         core.convert.From.Trait
-            (ink_env.types.Environment.AccountId (Self := T))
+            (ink_env.types.Environment.AccountId
+              (Self := T)
+              (Trait := ltac:(try clear Trait; hauto l: on)))
           (T := array u8)},
     F ->
       M
@@ -2944,7 +3012,9 @@ Parameter default_accounts :
       {ℋ_0 : ink_env.types.Environment.Trait T}
       {ℋ_1 :
         core.convert.From.Trait
-            (ink_env.types.Environment.AccountId (Self := T))
+            (ink_env.types.Environment.AccountId
+              (Self := T)
+              (Trait := ltac:(try clear Trait; hauto l: on)))
           (T := array u8)},
     M
         (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.DefaultAccounts
@@ -3013,12 +3083,12 @@ Definition DefaultAccounts
     : Set :=
   M.val (DefaultAccounts.t (T := T)).
 
-Parameter recorded_events_ret_ty :
+(* Parameter recorded_events_ret_ty :
     Sigma (Ty : Set) `(core.iter.traits.iterator.Iterator.Trait Ty),
     unit.
 Parameter recorded_events :
     forall `{ℋ : State.Trait},
-    M (projT1 recorded_events_ret_ty).
+    M (projT1 recorded_events_ret_ty). *)
 
 Parameter assert_contract_termination :
     forall
@@ -3028,28 +3098,31 @@ Parameter assert_contract_termination :
       {ℋ_1 : core.ops.function.FnMut.Trait F (Args := unit)}
       {ℋ_2 : core.panic.unwind_safe.UnwindSafe.Trait F}
       {ℋ_3 :
-        core.fmt.Debug.Trait (ink_env.types.Environment.AccountId (Self := T))}
+        core.fmt.Debug.Trait
+            (ink_env.types.Environment.AccountId
+              (Self := T)
+              (Trait := ltac:(try clear Trait; hauto l: on)))}
       {ℋ_4 :
-        core.fmt.Debug.Trait (ink_env.types.Environment.Balance (Self := T))},
+        core.fmt.Debug.Trait
+            (ink_env.types.Environment.Balance
+              (Self := T)
+              (Trait := ltac:(try clear Trait; hauto l: on)))},
     F -> T::type["AccountId"] -> T::type["Balance"] -> M unit.
 
 Module OnInstance.
   Section OnInstance.
     Context `{ℋ : State.Trait}.
     
-    Class Trait
-        (Self : Set)
-        {ℋ_0 :
-          ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.EnvBackend.Trait
-              Self}
-        {ℋ_1 :
-          ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.TypedEnvBackend.Trait
-              Self} :
-        Type := {
+    Class Trait (Self : Set) : Type := {
+      ℒ_0 ::
+        ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.EnvBackend.Trait
+            Self;
+      ℒ_1 ::
+        ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.TypedEnvBackend.Trait
+            Self;
       on_instance
         {F R : Set}
-        {ℋ_0 : core.ops.function.FnOnce.Trait F (Args := mut_ref Self)}
-        :
+        {ℋ_0 : core.ops.function.FnOnce.Trait F (Args := mut_ref Self)} :
         F -> M R;
     }.
     
@@ -3066,8 +3139,7 @@ Module CallParams.
     Unset Primitive Projections.
     Record t : Set := {
       call_type : CallType;
-      call_flags
-        :
+      call_flags :
         ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallFlags;
       _return_type : ink_env.call.common.ReturnType R;
       exec_input : ink_env.call.execution_input.ExecutionInput Args;
@@ -3085,25 +3157,22 @@ Module CallParams.
       Notation.dot x := let* x := M.read x in Pure x.(call_flags) : M _;
     }.
     Global Instance Get_AF_call_flags : Notation.DoubleColon t "call_flags" := {
-      Notation.double_colon x
-        :=
+      Notation.double_colon x :=
         let* x := M.read x in Pure x.(call_flags) : M _;
     }.
     Global Instance Get__return_type : Notation.Dot "_return_type" := {
       Notation.dot x := let* x := M.read x in Pure x.(_return_type) : M _;
     }.
-    Global Instance Get_AF__return_type
-      : Notation.DoubleColon t "_return_type" := {
-      Notation.double_colon x
-        :=
+    Global Instance Get_AF__return_type :
+      Notation.DoubleColon t "_return_type" := {
+      Notation.double_colon x :=
         let* x := M.read x in Pure x.(_return_type) : M _;
     }.
     Global Instance Get_exec_input : Notation.Dot "exec_input" := {
       Notation.dot x := let* x := M.read x in Pure x.(exec_input) : M _;
     }.
     Global Instance Get_AF_exec_input : Notation.DoubleColon t "exec_input" := {
-      Notation.double_colon x
-        :=
+      Notation.double_colon x :=
         let* x := M.read x in Pure x.(exec_input) : M _;
     }.
     Global Instance Get__phantom : Notation.Dot "_phantom" := {
@@ -3164,14 +3233,13 @@ Module Call.
     Global Instance Get_AF_gas_limit : Notation.DoubleColon t "gas_limit" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(gas_limit) : M _;
     }.
-    Global Instance Get_transferred_value
-      : Notation.Dot "transferred_value" := {
+    Global Instance Get_transferred_value :
+      Notation.Dot "transferred_value" := {
       Notation.dot x := let* x := M.read x in Pure x.(transferred_value) : M _;
     }.
-    Global Instance Get_AF_transferred_value
-      : Notation.DoubleColon t "transferred_value" := {
-      Notation.double_colon x
-        :=
+    Global Instance Get_AF_transferred_value :
+      Notation.DoubleColon t "transferred_value" := {
+      Notation.double_colon x :=
         let* x := M.read x in Pure x.(transferred_value) : M _;
     }.
   End Call.
@@ -3221,8 +3289,7 @@ Module CallBuilder.
     Unset Primitive Projections.
     Record t : Set := {
       call_type : CallType;
-      call_flags
-        :
+      call_flags :
         ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallFlags;
       exec_input : Args;
       return_type : RetType;
@@ -3240,25 +3307,22 @@ Module CallBuilder.
       Notation.dot x := let* x := M.read x in Pure x.(call_flags) : M _;
     }.
     Global Instance Get_AF_call_flags : Notation.DoubleColon t "call_flags" := {
-      Notation.double_colon x
-        :=
+      Notation.double_colon x :=
         let* x := M.read x in Pure x.(call_flags) : M _;
     }.
     Global Instance Get_exec_input : Notation.Dot "exec_input" := {
       Notation.dot x := let* x := M.read x in Pure x.(exec_input) : M _;
     }.
     Global Instance Get_AF_exec_input : Notation.DoubleColon t "exec_input" := {
-      Notation.double_colon x
-        :=
+      Notation.double_colon x :=
         let* x := M.read x in Pure x.(exec_input) : M _;
     }.
     Global Instance Get_return_type : Notation.Dot "return_type" := {
       Notation.dot x := let* x := M.read x in Pure x.(return_type) : M _;
     }.
-    Global Instance Get_AF_return_type
-      : Notation.DoubleColon t "return_type" := {
-      Notation.double_colon x
-        :=
+    Global Instance Get_AF_return_type :
+      Notation.DoubleColon t "return_type" := {
+      Notation.double_colon x :=
         let* x := M.read x in Pure x.(return_type) : M _;
     }.
     Global Instance Get__phantom : Notation.Dot "_phantom" := {
@@ -3317,19 +3381,17 @@ Module CallFlags.
     Global Instance Get_forward_input : Notation.Dot "forward_input" := {
       Notation.dot x := let* x := M.read x in Pure x.(forward_input) : M _;
     }.
-    Global Instance Get_AF_forward_input
-      : Notation.DoubleColon t "forward_input" := {
-      Notation.double_colon x
-        :=
+    Global Instance Get_AF_forward_input :
+      Notation.DoubleColon t "forward_input" := {
+      Notation.double_colon x :=
         let* x := M.read x in Pure x.(forward_input) : M _;
     }.
     Global Instance Get_clone_input : Notation.Dot "clone_input" := {
       Notation.dot x := let* x := M.read x in Pure x.(clone_input) : M _;
     }.
-    Global Instance Get_AF_clone_input
-      : Notation.DoubleColon t "clone_input" := {
-      Notation.double_colon x
-        :=
+    Global Instance Get_AF_clone_input :
+      Notation.DoubleColon t "clone_input" := {
+      Notation.double_colon x :=
         let* x := M.read x in Pure x.(clone_input) : M _;
     }.
     Global Instance Get_tail_call : Notation.Dot "tail_call" := {
@@ -3341,10 +3403,9 @@ Module CallFlags.
     Global Instance Get_allow_reentry : Notation.Dot "allow_reentry" := {
       Notation.dot x := let* x := M.read x in Pure x.(allow_reentry) : M _;
     }.
-    Global Instance Get_AF_allow_reentry
-      : Notation.DoubleColon t "allow_reentry" := {
-      Notation.double_colon x
-        :=
+    Global Instance Get_AF_allow_reentry :
+      Notation.DoubleColon t "allow_reentry" := {
+      Notation.double_colon x :=
         let* x := M.read x in Pure x.(allow_reentry) : M _;
     }.
   End CallFlags.
@@ -3359,14 +3420,12 @@ Module EnvBackend.
       set_contract_storage
         {K V : Set}
         {ℋ_0 : parity_scale_codec.codec.Encode.Trait K}
-        {ℋ_1 : ink_storage_traits.storage.Storable.Trait V}
-        :
+        {ℋ_1 : ink_storage_traits.storage.Storable.Trait V} :
         (mut_ref Self) -> (ref K) -> (ref V) -> M (core.option.Option u32);
       get_contract_storage
         {K R : Set}
         {ℋ_0 : parity_scale_codec.codec.Encode.Trait K}
-        {ℋ_1 : ink_storage_traits.storage.Storable.Trait R}
-        :
+        {ℋ_1 : ink_storage_traits.storage.Storable.Trait R} :
         (mut_ref Self) ->
           (ref K) ->
           M
@@ -3375,8 +3434,7 @@ Module EnvBackend.
       take_contract_storage
         {K R : Set}
         {ℋ_0 : parity_scale_codec.codec.Encode.Trait K}
-        {ℋ_1 : ink_storage_traits.storage.Storable.Trait R}
-        :
+        {ℋ_1 : ink_storage_traits.storage.Storable.Trait R} :
         (mut_ref Self) ->
           (ref K) ->
           M
@@ -3384,45 +3442,46 @@ Module EnvBackend.
               (core.option.Option R));
       contains_contract_storage
         {K : Set}
-        {ℋ_0 : parity_scale_codec.codec.Encode.Trait K}
-        :
+        {ℋ_0 : parity_scale_codec.codec.Encode.Trait K} :
         (mut_ref Self) -> (ref K) -> M (core.option.Option u32);
       clear_contract_storage
         {K : Set}
-        {ℋ_0 : parity_scale_codec.codec.Encode.Trait K}
-        :
+        {ℋ_0 : parity_scale_codec.codec.Encode.Trait K} :
         (mut_ref Self) -> (ref K) -> M (core.option.Option u32);
-      decode_input {T : Set} {ℋ_0 : parity_scale_codec.codec.Decode.Trait T}
-        :
+      decode_input {T : Set} {ℋ_0 : parity_scale_codec.codec.Decode.Trait T} :
         (mut_ref Self) ->
           M
             (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
               T);
-      return_value {R : Set} {ℋ_0 : parity_scale_codec.codec.Encode.Trait R}
-        :
+      return_value {R : Set} {ℋ_0 : parity_scale_codec.codec.Encode.Trait R} :
         (mut_ref Self) ->
           ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.ReturnFlags
           ->
           (ref R) ->
           M Empty_set;
       debug_message : (mut_ref Self) -> (ref str) -> M unit;
-      hash_bytes {H : Set} {ℋ_0 : ink_env.hash.CryptoHash.Trait H}
-        :
+      hash_bytes {H : Set} {ℋ_0 : ink_env.hash.CryptoHash.Trait H} :
         (mut_ref Self) ->
           (ref (Slice u8)) ->
-          (mut_ref (ink_env.hash.HashOutput.Type_ (Self := H))) ->
+          (mut_ref
+            (ink_env.hash.HashOutput.Type_
+              (Self := H)
+              (Trait := ltac:(try clear Trait; hauto l: on))))
+          ->
           M unit;
       hash_encoded
         {H T : Set}
         {ℋ_0 : ink_env.hash.CryptoHash.Trait H}
-        {ℋ_1 : parity_scale_codec.codec.Encode.Trait T}
-        :
+        {ℋ_1 : parity_scale_codec.codec.Encode.Trait T} :
         (mut_ref Self) ->
           (ref T) ->
-          (mut_ref (ink_env.hash.HashOutput.Type_ (Self := H))) ->
+          (mut_ref
+            (ink_env.hash.HashOutput.Type_
+              (Self := H)
+              (Trait := ltac:(try clear Trait; hauto l: on))))
+          ->
           M unit;
-      ecdsa_recover
-        :
+      ecdsa_recover :
         (mut_ref Self) ->
           (ref (array u8)) ->
           (ref (array u8)) ->
@@ -3430,8 +3489,7 @@ Module EnvBackend.
           M
             (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
               unit);
-      ecdsa_to_eth_address
-        :
+      ecdsa_to_eth_address :
         (mut_ref Self) ->
           (ref (array u8)) ->
           (mut_ref (array u8)) ->
@@ -3444,16 +3502,14 @@ Module EnvBackend.
         {ℋ_1 : parity_scale_codec.codec.Decode.Trait T}
         {ℋ_2 : core.convert.From.Trait E (T := ErrorCode)}
         {ℋ_3 : core.ops.function.FnOnce.Trait F (Args := u32)}
-        {ℋ_4 : core.ops.function.FnOnce.Trait D (Args := ref (Slice u8))}
-        :
+        {ℋ_4 : core.ops.function.FnOnce.Trait D (Args := ref (Slice u8))} :
         (mut_ref Self) ->
           u32 ->
           (ref I) ->
           F ->
           D ->
           M (core.result.Result T E);
-      set_code_hash
-        :
+      set_code_hash :
         (mut_ref Self) ->
           (ref (Slice u8)) ->
           M
@@ -3468,52 +3524,39 @@ Module TypedEnvBackend.
   Section TypedEnvBackend.
     Context `{ℋ : State.Trait}.
     
-    Class Trait
-        (Self : Set)
-        {ℋ_0 :
-          ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.EnvBackend.Trait
-              Self} :
-        Type := {
-      caller {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E}
-        :
+    Class Trait (Self : Set) : Type := {
+      ℒ_0 ::
+        ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.EnvBackend.Trait
+            Self;
+      caller {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E} :
         (mut_ref Self) -> M E::type["AccountId"];
-      transferred_value {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E}
-        :
+      transferred_value {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E} :
         (mut_ref Self) -> M E::type["Balance"];
-      weight_to_fee {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E}
-        :
+      weight_to_fee {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E} :
         (mut_ref Self) -> u64 -> M E::type["Balance"];
-      gas_left {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E}
-        :
+      gas_left {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E} :
         (mut_ref Self) -> M u64;
-      block_timestamp {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E}
-        :
+      block_timestamp {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E} :
         (mut_ref Self) -> M E::type["Timestamp"];
-      account_id {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E}
-        :
+      account_id {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E} :
         (mut_ref Self) -> M E::type["AccountId"];
-      balance {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E}
-        :
+      balance {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E} :
         (mut_ref Self) -> M E::type["Balance"];
-      block_number {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E}
-        :
+      block_number {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E} :
         (mut_ref Self) -> M E::type["BlockNumber"];
-      minimum_balance {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E}
-        :
+      minimum_balance {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E} :
         (mut_ref Self) -> M E::type["Balance"];
       emit_event
         {E Event : Set}
         {ℋ_0 : ink_env.types.Environment.Trait E}
         {ℋ_1 : ink_env.topics.Topics.Trait Event}
-        {ℋ_2 : parity_scale_codec.codec.Encode.Trait Event}
-        :
+        {ℋ_2 : parity_scale_codec.codec.Encode.Trait Event} :
         (mut_ref Self) -> Event -> M unit;
       invoke_contract
         {E Args R : Set}
         {ℋ_0 : ink_env.types.Environment.Trait E}
         {ℋ_1 : parity_scale_codec.codec.Encode.Trait Args}
-        {ℋ_2 : parity_scale_codec.codec.Decode.Trait R}
-        :
+        {ℋ_2 : parity_scale_codec.codec.Decode.Trait R} :
         (mut_ref Self) ->
           (ref
             (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallParams
@@ -3530,8 +3573,7 @@ Module TypedEnvBackend.
         {E Args R : Set}
         {ℋ_0 : ink_env.types.Environment.Trait E}
         {ℋ_1 : parity_scale_codec.codec.Encode.Trait Args}
-        {ℋ_2 : parity_scale_codec.codec.Decode.Trait R}
-        :
+        {ℋ_2 : parity_scale_codec.codec.Decode.Trait R} :
         (mut_ref Self) ->
           (ref
             (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallParams
@@ -3553,8 +3595,7 @@ Module TypedEnvBackend.
         {ℋ_3 : core.convert.AsRef.Trait Salt (T := Slice u8)}
         {ℋ_4 :
           ink_env.call.create_builder.ConstructorReturnType.Trait R
-            (C := ContractRef)}
-        :
+            (C := ContractRef)} :
         (mut_ref Self) ->
           (ref
             (ink_env.call.create_builder.CreateParams
@@ -3568,33 +3609,28 @@ Module TypedEnvBackend.
             (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
               (ink_primitives.ConstructorResult
                 (ink_env.call.create_builder.ConstructorReturnType.Output
-                  (Self := R))));
-      terminate_contract {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E}
-        :
+                  (Self := R)
+                  (Trait := ltac:(try clear Trait; hauto l: on)))));
+      terminate_contract {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E} :
         (mut_ref Self) -> E::type["AccountId"] -> M Empty_set;
-      transfer {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E}
-        :
+      transfer {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E} :
         (mut_ref Self) ->
           E::type["AccountId"] ->
           E::type["Balance"] ->
           M
             (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
               unit);
-      is_contract {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E}
-        :
+      is_contract {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E} :
         (mut_ref Self) -> (ref E::type["AccountId"]) -> M bool;
-      caller_is_origin {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E}
-        :
+      caller_is_origin {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E} :
         (mut_ref Self) -> M bool;
-      code_hash {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E}
-        :
+      code_hash {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E} :
         (mut_ref Self) ->
           (ref E::type["AccountId"]) ->
           M
             (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
               E::type["Hash"]);
-      own_code_hash {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E}
-        :
+      own_code_hash {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E} :
         (mut_ref Self) ->
           M
             (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
@@ -3602,8 +3638,7 @@ Module TypedEnvBackend.
       call_runtime
         {E Call : Set}
         {ℋ_0 : ink_env.types.Environment.Trait E}
-        {ℋ_1 : parity_scale_codec.codec.Encode.Trait Call}
-        :
+        {ℋ_1 : parity_scale_codec.codec.Encode.Trait Call} :
         (mut_ref Self) ->
           (ref Call) ->
           M
@@ -3682,13 +3717,12 @@ Module common.
         Output : Set;
         unwrap_or_else
           {F : Set}
-          {ℋ_0 : core.ops.function.FnOnce.Trait F (Args := unit)}
-          :
+          {ℋ_0 : core.ops.function.FnOnce.Trait F (Args := unit)} :
           Self -> F -> M Output;
       }.
       
-      Global Instance Method_Output `(Trait)
-        : Notation.DoubleColonType Self "Output" := {
+      Global Instance Method_Output `(Trait) :
+        Notation.DoubleColonType Self "Output" := {
         Notation.double_colon_type := Output;
       }.
     End Unwrap.
@@ -3762,13 +3796,12 @@ Module Unwrap.
       Output : Set;
       unwrap_or_else
         {F : Set}
-        {ℋ_0 : core.ops.function.FnOnce.Trait F (Args := unit)}
-        :
+        {ℋ_0 : core.ops.function.FnOnce.Trait F (Args := unit)} :
         Self -> F -> M Output;
     }.
     
-    Global Instance Method_Output `(Trait)
-      : Notation.DoubleColonType Self "Output" := {
+    Global Instance Method_Output `(Trait) :
+      Notation.DoubleColonType Self "Output" := {
       Notation.double_colon_type := Output;
     }.
   End Unwrap.
@@ -3787,14 +3820,14 @@ Module create_builder.
     Section FromAccountId.
       Context `{ℋ : State.Trait}.
       
-      Class Trait
-          (Self : Set)
-          {T : Set}
-          {ℋ_0 : ink_env.types.Environment.Trait T} :
-          Type := {
-        from_account_id
-          :
-          (ink_env.types.Environment.AccountId (Self := T)) -> M Self;
+      Class Trait (Self : Set) {T : Set} : Type := {
+        ℒ_0 :: ink_env.types.Environment.Trait T;
+        from_account_id :
+          (ink_env.types.Environment.AccountId
+              (Self := T)
+              (Trait := ltac:(try clear Trait; hauto l: on)))
+            ->
+            M Self;
       }.
       
     End FromAccountId.
@@ -3808,15 +3841,16 @@ Module create_builder.
         IS_RESULT : bool;
         Output : Set;
         Error : Set;
+        ℒ_0 :: parity_scale_codec.codec.Decode.Trait Error;
         ok : C -> M Output;
       }.
       
-      Global Instance Method_Output `(Trait)
-        : Notation.DoubleColonType Self "Output" := {
+      Global Instance Method_Output `(Trait) :
+        Notation.DoubleColonType Self "Output" := {
         Notation.double_colon_type := Output;
       }.
-      Global Instance Method_Error `(Trait)
-        : Notation.DoubleColonType Self "Error" := {
+      Global Instance Method_Error `(Trait) :
+        Notation.DoubleColonType Self "Error" := {
         Notation.double_colon_type := Error;
       }.
     End ConstructorReturnType.
@@ -3845,59 +3879,52 @@ Module create_builder.
         Notation.dot x := let* x := M.read x in Pure x.(code_hash) : M _;
       }.
       Global Instance Get_AF_code_hash : Notation.DoubleColon t "code_hash" := {
-        Notation.double_colon x
-          :=
+        Notation.double_colon x :=
           let* x := M.read x in Pure x.(code_hash) : M _;
       }.
       Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
         Notation.dot x := let* x := M.read x in Pure x.(gas_limit) : M _;
       }.
       Global Instance Get_AF_gas_limit : Notation.DoubleColon t "gas_limit" := {
-        Notation.double_colon x
-          :=
+        Notation.double_colon x :=
           let* x := M.read x in Pure x.(gas_limit) : M _;
       }.
       Global Instance Get_endowment : Notation.Dot "endowment" := {
         Notation.dot x := let* x := M.read x in Pure x.(endowment) : M _;
       }.
       Global Instance Get_AF_endowment : Notation.DoubleColon t "endowment" := {
-        Notation.double_colon x
-          :=
+        Notation.double_colon x :=
           let* x := M.read x in Pure x.(endowment) : M _;
       }.
       Global Instance Get_exec_input : Notation.Dot "exec_input" := {
         Notation.dot x := let* x := M.read x in Pure x.(exec_input) : M _;
       }.
-      Global Instance Get_AF_exec_input
-        : Notation.DoubleColon t "exec_input" := {
-        Notation.double_colon x
-          :=
+      Global Instance Get_AF_exec_input :
+        Notation.DoubleColon t "exec_input" := {
+        Notation.double_colon x :=
           let* x := M.read x in Pure x.(exec_input) : M _;
       }.
       Global Instance Get_salt_bytes : Notation.Dot "salt_bytes" := {
         Notation.dot x := let* x := M.read x in Pure x.(salt_bytes) : M _;
       }.
-      Global Instance Get_AF_salt_bytes
-        : Notation.DoubleColon t "salt_bytes" := {
-        Notation.double_colon x
-          :=
+      Global Instance Get_AF_salt_bytes :
+        Notation.DoubleColon t "salt_bytes" := {
+        Notation.double_colon x :=
           let* x := M.read x in Pure x.(salt_bytes) : M _;
       }.
       Global Instance Get__return_type : Notation.Dot "_return_type" := {
         Notation.dot x := let* x := M.read x in Pure x.(_return_type) : M _;
       }.
-      Global Instance Get_AF__return_type
-        : Notation.DoubleColon t "_return_type" := {
-        Notation.double_colon x
-          :=
+      Global Instance Get_AF__return_type :
+        Notation.DoubleColon t "_return_type" := {
+        Notation.double_colon x :=
           let* x := M.read x in Pure x.(_return_type) : M _;
       }.
       Global Instance Get__phantom : Notation.Dot "_phantom" := {
         Notation.dot x := let* x := M.read x in Pure x.(_phantom) : M _;
       }.
       Global Instance Get_AF__phantom : Notation.DoubleColon t "_phantom" := {
-        Notation.double_colon x
-          :=
+        Notation.double_colon x :=
           let* x := M.read x in Pure x.(_phantom) : M _;
       }.
     End CreateParams.
@@ -3939,33 +3966,29 @@ Module create_builder.
         Notation.dot x := let* x := M.read x in Pure x.(code_hash) : M _;
       }.
       Global Instance Get_AF_code_hash : Notation.DoubleColon t "code_hash" := {
-        Notation.double_colon x
-          :=
+        Notation.double_colon x :=
           let* x := M.read x in Pure x.(code_hash) : M _;
       }.
       Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
         Notation.dot x := let* x := M.read x in Pure x.(gas_limit) : M _;
       }.
       Global Instance Get_AF_gas_limit : Notation.DoubleColon t "gas_limit" := {
-        Notation.double_colon x
-          :=
+        Notation.double_colon x :=
           let* x := M.read x in Pure x.(gas_limit) : M _;
       }.
       Global Instance Get_endowment : Notation.Dot "endowment" := {
         Notation.dot x := let* x := M.read x in Pure x.(endowment) : M _;
       }.
       Global Instance Get_AF_endowment : Notation.DoubleColon t "endowment" := {
-        Notation.double_colon x
-          :=
+        Notation.double_colon x :=
           let* x := M.read x in Pure x.(endowment) : M _;
       }.
       Global Instance Get_exec_input : Notation.Dot "exec_input" := {
         Notation.dot x := let* x := M.read x in Pure x.(exec_input) : M _;
       }.
-      Global Instance Get_AF_exec_input
-        : Notation.DoubleColon t "exec_input" := {
-        Notation.double_colon x
-          :=
+      Global Instance Get_AF_exec_input :
+        Notation.DoubleColon t "exec_input" := {
+        Notation.double_colon x :=
           let* x := M.read x in Pure x.(exec_input) : M _;
       }.
       Global Instance Get_salt : Notation.Dot "salt" := {
@@ -3977,18 +4000,16 @@ Module create_builder.
       Global Instance Get_return_type : Notation.Dot "return_type" := {
         Notation.dot x := let* x := M.read x in Pure x.(return_type) : M _;
       }.
-      Global Instance Get_AF_return_type
-        : Notation.DoubleColon t "return_type" := {
-        Notation.double_colon x
-          :=
+      Global Instance Get_AF_return_type :
+        Notation.DoubleColon t "return_type" := {
+        Notation.double_colon x :=
           let* x := M.read x in Pure x.(return_type) : M _;
       }.
       Global Instance Get__phantom : Notation.Dot "_phantom" := {
         Notation.dot x := let* x := M.read x in Pure x.(_phantom) : M _;
       }.
       Global Instance Get_AF__phantom : Notation.DoubleColon t "_phantom" := {
-        Notation.double_colon x
-          :=
+        Notation.double_colon x :=
           let* x := M.read x in Pure x.(_phantom) : M _;
       }.
     End CreateBuilder.
@@ -4028,14 +4049,14 @@ Module FromAccountId.
   Section FromAccountId.
     Context `{ℋ : State.Trait}.
     
-    Class Trait
-        (Self : Set)
-        {T : Set}
-        {ℋ_0 : ink_env.types.Environment.Trait T} :
-        Type := {
-      from_account_id
-        :
-        (ink_env.types.Environment.AccountId (Self := T)) -> M Self;
+    Class Trait (Self : Set) {T : Set} : Type := {
+      ℒ_0 :: ink_env.types.Environment.Trait T;
+      from_account_id :
+        (ink_env.types.Environment.AccountId
+            (Self := T)
+            (Trait := ltac:(try clear Trait; hauto l: on)))
+          ->
+          M Self;
     }.
     
   End FromAccountId.
@@ -4049,15 +4070,16 @@ Module ConstructorReturnType.
       IS_RESULT : bool;
       Output : Set;
       Error : Set;
+      ℒ_0 :: parity_scale_codec.codec.Decode.Trait Error;
       ok : C -> M Output;
     }.
     
-    Global Instance Method_Output `(Trait)
-      : Notation.DoubleColonType Self "Output" := {
+    Global Instance Method_Output `(Trait) :
+      Notation.DoubleColonType Self "Output" := {
       Notation.double_colon_type := Output;
     }.
-    Global Instance Method_Error `(Trait)
-      : Notation.DoubleColonType Self "Error" := {
+    Global Instance Method_Error `(Trait) :
+      Notation.DoubleColonType Self "Error" := {
       Notation.double_colon_type := Error;
     }.
   End ConstructorReturnType.
@@ -4104,25 +4126,22 @@ Module CreateParams.
       Notation.dot x := let* x := M.read x in Pure x.(exec_input) : M _;
     }.
     Global Instance Get_AF_exec_input : Notation.DoubleColon t "exec_input" := {
-      Notation.double_colon x
-        :=
+      Notation.double_colon x :=
         let* x := M.read x in Pure x.(exec_input) : M _;
     }.
     Global Instance Get_salt_bytes : Notation.Dot "salt_bytes" := {
       Notation.dot x := let* x := M.read x in Pure x.(salt_bytes) : M _;
     }.
     Global Instance Get_AF_salt_bytes : Notation.DoubleColon t "salt_bytes" := {
-      Notation.double_colon x
-        :=
+      Notation.double_colon x :=
         let* x := M.read x in Pure x.(salt_bytes) : M _;
     }.
     Global Instance Get__return_type : Notation.Dot "_return_type" := {
       Notation.dot x := let* x := M.read x in Pure x.(_return_type) : M _;
     }.
-    Global Instance Get_AF__return_type
-      : Notation.DoubleColon t "_return_type" := {
-      Notation.double_colon x
-        :=
+    Global Instance Get_AF__return_type :
+      Notation.DoubleColon t "_return_type" := {
+      Notation.double_colon x :=
         let* x := M.read x in Pure x.(_return_type) : M _;
     }.
     Global Instance Get__phantom : Notation.Dot "_phantom" := {
@@ -4187,8 +4206,7 @@ Module CreateBuilder.
       Notation.dot x := let* x := M.read x in Pure x.(exec_input) : M _;
     }.
     Global Instance Get_AF_exec_input : Notation.DoubleColon t "exec_input" := {
-      Notation.double_colon x
-        :=
+      Notation.double_colon x :=
         let* x := M.read x in Pure x.(exec_input) : M _;
     }.
     Global Instance Get_salt : Notation.Dot "salt" := {
@@ -4200,10 +4218,9 @@ Module CreateBuilder.
     Global Instance Get_return_type : Notation.Dot "return_type" := {
       Notation.dot x := let* x := M.read x in Pure x.(return_type) : M _;
     }.
-    Global Instance Get_AF_return_type
-      : Notation.DoubleColon t "return_type" := {
-      Notation.double_colon x
-        :=
+    Global Instance Get_AF_return_type :
+      Notation.DoubleColon t "return_type" := {
+      Notation.double_colon x :=
         let* x := M.read x in Pure x.(return_type) : M _;
     }.
     Global Instance Get__phantom : Notation.Dot "_phantom" := {
@@ -4236,16 +4253,24 @@ Parameter build_create :
       {ContractRef : Set}
       {ℋ_0 : ink_env.contract.ContractEnv.Trait ContractRef},
     M
-        (ink_env.call.create_builder.CreateBuilder
-          (ink_env.contract.ContractEnv.Env (Self := ContractRef))
+        (ink_env.call.create_builder.CreateBuilder (ℋ_0 := ltac:(sauto lq: on))
+          (ink_env.contract.ContractEnv.Env
+            (Self := ContractRef)
+            (Trait := ltac:(try clear Trait; hauto l: on)))
           ContractRef
           (ink_env.call.common.Unset_
             (ink_env.types.Environment.Hash
-              (Self := ink_env.contract.ContractEnv.Env (Self := ContractRef))))
+              (Self := ink_env.contract.ContractEnv.Env
+                (Self := ContractRef)
+                (Trait := ltac:(try clear Trait; hauto l: on)))
+              (Trait := ltac:(try clear Trait; hauto l: on))))
           (ink_env.call.common.Unset_ u64)
           (ink_env.call.common.Unset_
             (ink_env.types.Environment.Balance
-              (Self := ink_env.contract.ContractEnv.Env (Self := ContractRef))))
+              (Self := ink_env.contract.ContractEnv.Env
+                (Self := ContractRef)
+                (Trait := ltac:(try clear Trait; hauto l: on)))
+              (Trait := ltac:(try clear Trait; hauto l: on))))
           (ink_env.call.common.Unset_
             (ink_env.call.execution_input.ExecutionInput
               ink_env.call.execution_input.EmptyArgumentList))
@@ -4270,8 +4295,7 @@ Module execution_input.
         Notation.dot x := let* x := M.read x in Pure x.(selector) : M _;
       }.
       Global Instance Get_AF_selector : Notation.DoubleColon t "selector" := {
-        Notation.double_colon x
-          :=
+        Notation.double_colon x :=
           let* x := M.read x in Pure x.(selector) : M _;
       }.
       Global Instance Get_args : Notation.Dot "args" := {
@@ -4507,7 +4531,8 @@ Module chain_extension.
     Section FromStatusCode.
       Context `{ℋ : State.Trait}.
       
-      Class Trait (Self : Set) {ℋ_0 : core.marker.Sized.Trait Self} : Type := {
+      Class Trait (Self : Set) : Type := {
+        ℒ_0 :: core.marker.Sized.Trait Self;
         from_status_code : u32 -> M (core.result.Result unit Self);
       }.
       
@@ -4569,10 +4594,9 @@ Module chain_extension.
         Global Instance Get_error_code : Notation.Dot "error_code" := {
           Notation.dot x := let* x := M.read x in Pure x.(error_code) : M _;
         }.
-        Global Instance Get_AF_error_code
-          : Notation.DoubleColon t "error_code" := {
-          Notation.double_colon x
-            :=
+        Global Instance Get_AF_error_code :
+          Notation.DoubleColon t "error_code" := {
+          Notation.double_colon x :=
             let* x := M.read x in Pure x.(error_code) : M _;
         }.
       End HandleErrorCode.
@@ -4598,21 +4622,18 @@ Module chain_extension.
     Section IsResultType.
       Context `{ℋ : State.Trait}.
       
-      Class Trait
-          (Self : Set)
-          {ℋ_0 :
-            ink_env.chain_extension.private.IsResultTypeSealed.Trait Self} :
-          Type := {
+      Class Trait (Self : Set) : Type := {
+        ℒ_0 :: ink_env.chain_extension.private.IsResultTypeSealed.Trait Self;
         Ok : Set;
         Err : Set;
       }.
       
-      Global Instance Method_Ok `(Trait)
-        : Notation.DoubleColonType Self "Ok" := {
+      Global Instance Method_Ok `(Trait) :
+        Notation.DoubleColonType Self "Ok" := {
         Notation.double_colon_type := Ok;
       }.
-      Global Instance Method_Err `(Trait)
-        : Notation.DoubleColonType Self "Err" := {
+      Global Instance Method_Err `(Trait) :
+        Notation.DoubleColonType Self "Err" := {
         Notation.double_colon_type := Err;
       }.
     End IsResultType.
@@ -4623,7 +4644,8 @@ Module FromStatusCode.
   Section FromStatusCode.
     Context `{ℋ : State.Trait}.
     
-    Class Trait (Self : Set) {ℋ_0 : core.marker.Sized.Trait Self} : Type := {
+    Class Trait (Self : Set) : Type := {
+      ℒ_0 :: core.marker.Sized.Trait Self;
       from_status_code : u32 -> M (core.result.Result unit Self);
     }.
     
@@ -4686,10 +4708,9 @@ Module Wrap_state_1.
         Global Instance Get_error_code : Notation.Dot "error_code" := {
           Notation.dot x := let* x := M.read x in Pure x.(error_code) : M _;
         }.
-        Global Instance Get_AF_error_code
-          : Notation.DoubleColon t "error_code" := {
-          Notation.double_colon x
-            :=
+        Global Instance Get_AF_error_code :
+          Notation.DoubleColon t "error_code" := {
+          Notation.double_colon x :=
             let* x := M.read x in Pure x.(error_code) : M _;
         }.
       End HandleErrorCode.
@@ -4722,8 +4743,7 @@ Module HandleErrorCode.
       Notation.dot x := let* x := M.read x in Pure x.(error_code) : M _;
     }.
     Global Instance Get_AF_error_code : Notation.DoubleColon t "error_code" := {
-      Notation.double_colon x
-        :=
+      Notation.double_colon x :=
         let* x := M.read x in Pure x.(error_code) : M _;
     }.
   End HandleErrorCode.
@@ -4735,10 +4755,8 @@ Module IsResultType.
   Section IsResultType.
     Context `{ℋ : State.Trait}.
     
-    Class Trait
-        (Self : Set)
-        {ℋ_0 : ink_env.chain_extension.private.IsResultTypeSealed.Trait Self} :
-        Type := {
+    Class Trait (Self : Set) : Type := {
+      ℒ_0 :: ink_env.chain_extension.private.IsResultTypeSealed.Trait Self;
       Ok : Set;
       Err : Set;
     }.
@@ -4746,8 +4764,8 @@ Module IsResultType.
     Global Instance Method_Ok `(Trait) : Notation.DoubleColonType Self "Ok" := {
       Notation.double_colon_type := Ok;
     }.
-    Global Instance Method_Err `(Trait)
-      : Notation.DoubleColonType Self "Err" := {
+    Global Instance Method_Err `(Trait) :
+      Notation.DoubleColonType Self "Err" := {
       Notation.double_colon_type := Err;
     }.
   End IsResultType.
@@ -4783,10 +4801,11 @@ Module ContractEnv.
     
     Class Trait (Self : Set) : Type := {
       Env : Set;
+      ℒ_0 :: ink_env.types.Environment.Trait Env;
     }.
     
-    Global Instance Method_Env `(Trait)
-      : Notation.DoubleColonType Self "Env" := {
+    Global Instance Method_Env `(Trait) :
+      Notation.DoubleColonType Self "Env" := {
       Notation.double_colon_type := Env;
     }.
   End ContractEnv.
@@ -4800,8 +4819,8 @@ Module ContractReference.
       Type_ : Set;
     }.
     
-    Global Instance Method_Type_ `(Trait)
-      : Notation.DoubleColonType Self "Type_" := {
+    Global Instance Method_Type_ `(Trait) :
+      Notation.DoubleColonType Self "Type_" := {
       Notation.double_colon_type := Type_;
     }.
   End ContractReference.
@@ -4837,8 +4856,7 @@ Module off_chain.
         
         Unset Primitive Projections.
         Record t : Set := {
-          topics
-            :
+          topics :
             alloc.vec.Vec
               (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)
               alloc.vec.Vec.Default.A;
@@ -4849,8 +4867,7 @@ Module off_chain.
           Notation.dot x := let* x := M.read x in Pure x.(topics) : M _;
         }.
         Global Instance Get_AF_topics : Notation.DoubleColon t "topics" := {
-          Notation.double_colon x
-            :=
+          Notation.double_colon x :=
             let* x := M.read x in Pure x.(topics) : M _;
         }.
       End TopicsBuilder.
@@ -4945,8 +4962,7 @@ Module impls.
       
       Unset Primitive Projections.
       Record t : Set := {
-        topics
-          :
+        topics :
           alloc.vec.Vec
             (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)
             alloc.vec.Vec.Default.A;
@@ -4964,14 +4980,13 @@ Module impls.
   Definition TopicsBuilder `{ℋ : State.Trait} : Set := M.val TopicsBuilder.t.
 End impls.
 
-Module TopicsBuilder.
+(* Module TopicsBuilder.
   Section TopicsBuilder.
     Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Record t : Set := {
-      topics
-        :
+      topics :
         alloc.vec.Vec
           (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)
           alloc.vec.Vec.Default.A;
@@ -4986,7 +5001,7 @@ Module TopicsBuilder.
     }.
   End TopicsBuilder.
 End TopicsBuilder.
-Definition TopicsBuilder `{ℋ : State.Trait} : Set := M.val TopicsBuilder.t.
+Definition TopicsBuilder `{ℋ : State.Trait} : Set := M.val TopicsBuilder.t. *)
 
 Module EnvInstance.
   Section EnvInstance.
@@ -5029,13 +5044,14 @@ Module HashOutput.
   Section HashOutput.
     Context `{ℋ : State.Trait}.
     
-    Class Trait (Self : Set) {ℋ_0 : ink_env.hash.private.Sealed.Trait Self} :
-        Type := {
+    Class Trait (Self : Set) : Type := {
+      ℒ_0 :: ink_env.hash.private.Sealed.Trait Self;
       Type_ : Set;
+      ℒ_1 :: core.default.Default.Trait Type_;
     }.
     
-    Global Instance Method_Type_ `(Trait)
-      : Notation.DoubleColonType Self "Type_" := {
+    Global Instance Method_Type_ `(Trait) :
+      Notation.DoubleColonType Self "Type_" := {
       Notation.double_colon_type := Type_;
     }.
   End HashOutput.
@@ -5045,12 +5061,15 @@ Module CryptoHash.
   Section CryptoHash.
     Context `{ℋ : State.Trait}.
     
-    Class Trait (Self : Set) {ℋ_0 : ink_env.hash.HashOutput.Trait Self} :
-        Type := {
-      hash
-        :
+    Class Trait (Self : Set) : Type := {
+      ℒ_0 :: ink_env.hash.HashOutput.Trait Self;
+      hash :
         (ref (Slice u8)) ->
-          (mut_ref (ink_env.hash.HashOutput.Type_ (Self := Self))) ->
+          (mut_ref
+            (ink_env.hash.HashOutput.Type_
+              (Self := Self)
+              (Trait := ltac:(try clear Trait; hauto l: on))))
+          ->
           M unit;
     }.
     
@@ -5112,21 +5131,17 @@ Module TopicsBuilderBackend.
   Section TopicsBuilderBackend.
     Context `{ℋ : State.Trait}.
     
-    Class Trait
-        (Self : Set)
-        {E : Set}
-        {ℋ_0 : ink_env.types.Environment.Trait E} :
-        Type := {
+    Class Trait (Self : Set) {E : Set} : Type := {
+      ℒ_0 :: ink_env.types.Environment.Trait E;
       Output : Set;
       expect : (mut_ref Self) -> usize -> M unit;
-      push_topic {T : Set} {ℋ_0 : parity_scale_codec.codec.Encode.Trait T}
-        :
+      push_topic {T : Set} {ℋ_0 : parity_scale_codec.codec.Encode.Trait T} :
         (mut_ref Self) -> (ref T) -> M unit;
       output : Self -> M Output;
     }.
     
-    Global Instance Method_Output `(Trait)
-      : Notation.DoubleColonType Self "Output" := {
+    Global Instance Method_Output `(Trait) :
+      Notation.DoubleColonType Self "Output" := {
       Notation.double_colon_type := Output;
     }.
   End TopicsBuilderBackend.
@@ -5213,8 +5228,8 @@ Module SomeRemainingTopics.
       Next : Set;
     }.
     
-    Global Instance Method_Next `(Trait)
-      : Notation.DoubleColonType Self "Next" := {
+    Global Instance Method_Next `(Trait) :
+      Notation.DoubleColonType Self "Next" := {
       Notation.double_colon_type := Next;
     }.
   End SomeRemainingTopics.
@@ -5237,18 +5252,21 @@ Module Topics.
     
     Class Trait (Self : Set) : Type := {
       RemainingTopics : Set;
+      ℒ_0 :: ink_env.topics.EventTopicsAmount.Trait RemainingTopics;
       topics
         {E B : Set}
         {ℋ_0 : ink_env.types.Environment.Trait E}
-        {ℋ_1 : ink_env.topics.TopicsBuilderBackend.Trait B (E := E)}
-        :
+        {ℋ_1 : ink_env.topics.TopicsBuilderBackend.Trait B (E := E)} :
         (ref Self) ->
           (ink_env.topics.TopicsBuilder ink_env.topics.state.Uninit E B) ->
-          M (ink_env.topics.TopicsBuilderBackend.Output (Self := B));
+          M
+            (ink_env.topics.TopicsBuilderBackend.Output
+              (Self := B)
+              (Trait := ltac:(try clear Trait; hauto l: on)));
     }.
     
-    Global Instance Method_RemainingTopics `(Trait)
-      : Notation.DoubleColonType Self "RemainingTopics" := {
+    Global Instance Method_RemainingTopics `(Trait) :
+      Notation.DoubleColonType Self "RemainingTopics" := {
       Notation.double_colon_type := RemainingTopics;
     }.
   End Topics.

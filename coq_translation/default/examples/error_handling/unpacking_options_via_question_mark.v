@@ -27,8 +27,7 @@ Module Job.
     
     Unset Primitive Projections.
     Record t : Set := {
-      phone_number
-        :
+      phone_number :
         core.option.Option unpacking_options_via_question_mark.PhoneNumber;
     }.
     Global Set Primitive Projections.
@@ -36,10 +35,9 @@ Module Job.
     Global Instance Get_phone_number : Notation.Dot "phone_number" := {
       Notation.dot x := let* x := M.read x in Pure x.(phone_number) : M _;
     }.
-    Global Instance Get_AF_phone_number
-      : Notation.DoubleColon t "phone_number" := {
-      Notation.double_colon x
-        :=
+    Global Instance Get_AF_phone_number :
+      Notation.DoubleColon t "phone_number" := {
+      Notation.double_colon x :=
         let* x := M.read x in Pure x.(phone_number) : M _;
     }.
   End Job.

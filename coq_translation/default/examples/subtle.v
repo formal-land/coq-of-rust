@@ -171,10 +171,9 @@ Module Impl_core_ops_bit_BitAnd_for_subtle_Choice.
       Notation.double_colon := bitand;
     }.
     
-    Global Instance ℐ
-      : core.ops.bit.BitAnd.Trait Self
-          (Rhs := core.ops.bit.BitAnd.Default.Rhs Self)
-        := {
+    Global Instance ℐ :
+      core.ops.bit.BitAnd.Trait Self
+        (Rhs := core.ops.bit.BitAnd.Default.Rhs Self) := {
       core.ops.bit.BitAnd.Output := Output;
       core.ops.bit.BitAnd.bitand := bitand;
     }.
@@ -204,10 +203,9 @@ Module Impl_core_ops_bit_BitAndAssign_for_subtle_Choice.
       Notation.double_colon := bitand_assign;
     }.
     
-    Global Instance ℐ
-      : core.ops.bit.BitAndAssign.Trait Self
-          (Rhs := core.ops.bit.BitAndAssign.Default.Rhs Self)
-        := {
+    Global Instance ℐ :
+      core.ops.bit.BitAndAssign.Trait Self
+        (Rhs := core.ops.bit.BitAndAssign.Default.Rhs Self) := {
       core.ops.bit.BitAndAssign.bitand_assign := bitand_assign;
     }.
   End Impl_core_ops_bit_BitAndAssign_for_subtle_Choice.
@@ -233,10 +231,9 @@ Module Impl_core_ops_bit_BitOr_for_subtle_Choice.
       Notation.double_colon := bitor;
     }.
     
-    Global Instance ℐ
-      : core.ops.bit.BitOr.Trait Self
-          (Rhs := core.ops.bit.BitOr.Default.Rhs Self)
-        := {
+    Global Instance ℐ :
+      core.ops.bit.BitOr.Trait Self
+        (Rhs := core.ops.bit.BitOr.Default.Rhs Self) := {
       core.ops.bit.BitOr.Output := Output;
       core.ops.bit.BitOr.bitor := bitor;
     }.
@@ -266,10 +263,9 @@ Module Impl_core_ops_bit_BitOrAssign_for_subtle_Choice.
       Notation.double_colon := bitor_assign;
     }.
     
-    Global Instance ℐ
-      : core.ops.bit.BitOrAssign.Trait Self
-          (Rhs := core.ops.bit.BitOrAssign.Default.Rhs Self)
-        := {
+    Global Instance ℐ :
+      core.ops.bit.BitOrAssign.Trait Self
+        (Rhs := core.ops.bit.BitOrAssign.Default.Rhs Self) := {
       core.ops.bit.BitOrAssign.bitor_assign := bitor_assign;
     }.
   End Impl_core_ops_bit_BitOrAssign_for_subtle_Choice.
@@ -295,10 +291,9 @@ Module Impl_core_ops_bit_BitXor_for_subtle_Choice.
       Notation.double_colon := bitxor;
     }.
     
-    Global Instance ℐ
-      : core.ops.bit.BitXor.Trait Self
-          (Rhs := core.ops.bit.BitXor.Default.Rhs Self)
-        := {
+    Global Instance ℐ :
+      core.ops.bit.BitXor.Trait Self
+        (Rhs := core.ops.bit.BitXor.Default.Rhs Self) := {
       core.ops.bit.BitXor.Output := Output;
       core.ops.bit.BitXor.bitxor := bitxor;
     }.
@@ -328,10 +323,9 @@ Module Impl_core_ops_bit_BitXorAssign_for_subtle_Choice.
       Notation.double_colon := bitxor_assign;
     }.
     
-    Global Instance ℐ
-      : core.ops.bit.BitXorAssign.Trait Self
-          (Rhs := core.ops.bit.BitXorAssign.Default.Rhs Self)
-        := {
+    Global Instance ℐ :
+      core.ops.bit.BitXorAssign.Trait Self
+        (Rhs := core.ops.bit.BitXorAssign.Default.Rhs Self) := {
       core.ops.bit.BitXorAssign.bitxor_assign := bitxor_assign;
     }.
   End Impl_core_ops_bit_BitXorAssign_for_subtle_Choice.
@@ -870,7 +864,8 @@ Module ConditionallySelectable.
   Section ConditionallySelectable.
     Context `{ℋ : State.Trait}.
     
-    Class Trait (Self : Set) {ℋ_0 : core.marker.Copy.Trait Self} : Type := {
+    Class Trait (Self : Set) : Type := {
+      ℒ_0 :: core.marker.Copy.Trait Self;
       conditional_select : (ref Self) -> (ref Self) -> subtle.Choice -> M Self;
     }.
     
@@ -1819,8 +1814,8 @@ Module Impl_core_convert_From_for_core_option_Option_T.
       Notation.double_colon := from;
     }.
     
-    Global Instance ℐ
-      : core.convert.From.Trait Self (T := subtle.CtOption T) := {
+    Global Instance ℐ :
+      core.convert.From.Trait Self (T := subtle.CtOption T) := {
       core.convert.From.from := from;
     }.
   End Impl_core_convert_From_for_core_option_Option_T.
@@ -2502,14 +2497,11 @@ Module ConstantTimeLess.
   Section ConstantTimeLess.
     Context `{ℋ : State.Trait}.
     
-    Unset Primitive Projections.
-    Class Trait
-        (Self : Set)
-        {ℋ_0 : subtle.ConstantTimeEq.Trait Self}
-        {ℋ_1 : subtle.ConstantTimeGreater.Trait Self} :
-        Type := {
+    Class Trait (Self : Set) : Type := {
+      ℒ_0 :: subtle.ConstantTimeEq.Trait Self;
+      ℒ_1 :: subtle.ConstantTimeGreater.Trait Self;
     }.
-    Global Set Primitive Projections.
+    
   End ConstantTimeLess.
 End ConstantTimeLess.
 

@@ -74,17 +74,15 @@ Module xts.
         Notation.dot x := let* x := M.read x in Pure x.(ref_time) : M _;
       }.
       Global Instance Get_AF_ref_time : Notation.DoubleColon t "ref_time" := {
-        Notation.double_colon x
-          :=
+        Notation.double_colon x :=
           let* x := M.read x in Pure x.(ref_time) : M _;
       }.
       Global Instance Get_proof_size : Notation.Dot "proof_size" := {
         Notation.dot x := let* x := M.read x in Pure x.(proof_size) : M _;
       }.
-      Global Instance Get_AF_proof_size
-        : Notation.DoubleColon t "proof_size" := {
-        Notation.double_colon x
-          :=
+      Global Instance Get_AF_proof_size :
+        Notation.DoubleColon t "proof_size" := {
+        Notation.double_colon x :=
           let* x := M.read x in Pure x.(proof_size) : M _;
       }.
     End Weight.
@@ -148,10 +146,9 @@ Module xts.
         Notation.double_colon := eq;
       }.
       
-      Global Instance ℐ
-        : core.cmp.PartialEq.Trait Self
-            (Rhs := core.cmp.PartialEq.Default.Rhs Self)
-          := {
+      Global Instance ℐ :
+        core.cmp.PartialEq.Trait Self
+          (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
         core.cmp.PartialEq.eq := eq;
       }.
     End Impl_core_cmp_PartialEq_for_ink_e2e_xts_Weight.
@@ -293,8 +290,8 @@ Module xts.
         Notation.double_colon := from;
       }.
       
-      Global Instance ℐ
-        : core.convert.From.Trait Self (T := sp_weights.weight_v2.Weight) := {
+      Global Instance ℐ :
+        core.convert.From.Trait Self (T := sp_weights.weight_v2.Weight) := {
         core.convert.From.from := from;
       }.
     End Impl_core_convert_From_for_ink_e2e_xts_Weight.
@@ -314,8 +311,8 @@ Module xts.
         Notation.double_colon := from;
       }.
       
-      Global Instance ℐ
-        : core.convert.From.Trait Self (T := ink_e2e.xts.Weight) := {
+      Global Instance ℐ :
+        core.convert.From.Trait Self (T := ink_e2e.xts.Weight) := {
         core.convert.From.from := from;
       }.
     End Impl_core_convert_From_for_sp_weights_weight_v2_Weight.
@@ -350,20 +347,17 @@ Module xts.
         Notation.dot x := let* x := M.read x in Pure x.(gas_limit) : M _;
       }.
       Global Instance Get_AF_gas_limit : Notation.DoubleColon t "gas_limit" := {
-        Notation.double_colon x
-          :=
+        Notation.double_colon x :=
           let* x := M.read x in Pure x.(gas_limit) : M _;
       }.
-      Global Instance Get_storage_deposit_limit
-        : Notation.Dot "storage_deposit_limit" := {
-        Notation.dot x
-          :=
+      Global Instance Get_storage_deposit_limit :
+        Notation.Dot "storage_deposit_limit" := {
+        Notation.dot x :=
           let* x := M.read x in Pure x.(storage_deposit_limit) : M _;
       }.
-      Global Instance Get_AF_storage_deposit_limit
-        : Notation.DoubleColon t "storage_deposit_limit" := {
-        Notation.double_colon x
-          :=
+      Global Instance Get_AF_storage_deposit_limit :
+        Notation.DoubleColon t "storage_deposit_limit" := {
+        Notation.double_colon x :=
           let* x := M.read x in Pure x.(storage_deposit_limit) : M _;
       }.
       Global Instance Get_code : Notation.Dot "code" := {
@@ -512,20 +506,17 @@ Module xts.
         Notation.dot x := let* x := M.read x in Pure x.(gas_limit) : M _;
       }.
       Global Instance Get_AF_gas_limit : Notation.DoubleColon t "gas_limit" := {
-        Notation.double_colon x
-          :=
+        Notation.double_colon x :=
           let* x := M.read x in Pure x.(gas_limit) : M _;
       }.
-      Global Instance Get_storage_deposit_limit
-        : Notation.Dot "storage_deposit_limit" := {
-        Notation.dot x
-          :=
+      Global Instance Get_storage_deposit_limit :
+        Notation.Dot "storage_deposit_limit" := {
+        Notation.dot x :=
           let* x := M.read x in Pure x.(storage_deposit_limit) : M _;
       }.
-      Global Instance Get_AF_storage_deposit_limit
-        : Notation.DoubleColon t "storage_deposit_limit" := {
-        Notation.double_colon x
-          :=
+      Global Instance Get_AF_storage_deposit_limit :
+        Notation.DoubleColon t "storage_deposit_limit" := {
+        Notation.double_colon x :=
           let* x := M.read x in Pure x.(storage_deposit_limit) : M _;
       }.
       Global Instance Get_data : Notation.Dot "data" := {
@@ -841,10 +832,9 @@ Module xts.
         Notation.double_colon := eq;
       }.
       
-      Global Instance ℐ
-        : core.cmp.PartialEq.Trait Self
-            (Rhs := core.cmp.PartialEq.Default.Rhs Self)
-          := {
+      Global Instance ℐ :
+        core.cmp.PartialEq.Trait Self
+          (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
         core.cmp.PartialEq.eq := eq;
       }.
     End Impl_core_cmp_PartialEq_for_ink_e2e_xts_Determinism.
@@ -928,25 +918,22 @@ Module xts.
       Global Instance Get_AF_code : Notation.DoubleColon t "code" := {
         Notation.double_colon x := let* x := M.read x in Pure x.(code) : M _;
       }.
-      Global Instance Get_storage_deposit_limit
-        : Notation.Dot "storage_deposit_limit" := {
-        Notation.dot x
-          :=
+      Global Instance Get_storage_deposit_limit :
+        Notation.Dot "storage_deposit_limit" := {
+        Notation.dot x :=
           let* x := M.read x in Pure x.(storage_deposit_limit) : M _;
       }.
-      Global Instance Get_AF_storage_deposit_limit
-        : Notation.DoubleColon t "storage_deposit_limit" := {
-        Notation.double_colon x
-          :=
+      Global Instance Get_AF_storage_deposit_limit :
+        Notation.DoubleColon t "storage_deposit_limit" := {
+        Notation.double_colon x :=
           let* x := M.read x in Pure x.(storage_deposit_limit) : M _;
       }.
       Global Instance Get_determinism : Notation.Dot "determinism" := {
         Notation.dot x := let* x := M.read x in Pure x.(determinism) : M _;
       }.
-      Global Instance Get_AF_determinism
-        : Notation.DoubleColon t "determinism" := {
-        Notation.double_colon x
-          :=
+      Global Instance Get_AF_determinism :
+        Notation.DoubleColon t "determinism" := {
+        Notation.double_colon x :=
           let* x := M.read x in Pure x.(determinism) : M _;
       }.
     End UploadCode.
@@ -1067,8 +1054,7 @@ Module xts.
         Notation.dot x := let* x := M.read x in Pure x.(_phantom) : M _;
       }.
       Global Instance Get_AF__phantom : Notation.DoubleColon t "_phantom" := {
-        Notation.double_colon x
-          :=
+        Notation.double_colon x :=
           let* x := M.read x in Pure x.(_phantom) : M _;
       }.
     End ContractsApi.
@@ -1105,8 +1091,7 @@ Module client.
       Unset Primitive Projections.
       Record t : Set := {
         account_id : E::type["AccountId"];
-        dry_run
-          :
+        dry_run :
           pallet_contracts_primitives.ContractInstantiateResult
             C::type["AccountId"]
             E::type["Balance"];
@@ -1117,10 +1102,9 @@ Module client.
       Global Instance Get_account_id : Notation.Dot "account_id" := {
         Notation.dot x := let* x := M.read x in Pure x.(account_id) : M _;
       }.
-      Global Instance Get_AF_account_id
-        : Notation.DoubleColon t "account_id" := {
-        Notation.double_colon x
-          :=
+      Global Instance Get_AF_account_id :
+        Notation.DoubleColon t "account_id" := {
+        Notation.double_colon x :=
           let* x := M.read x in Pure x.(account_id) : M _;
       }.
       Global Instance Get_dry_run : Notation.Dot "dry_run" := {
@@ -1157,8 +1141,7 @@ Module client.
       Unset Primitive Projections.
       Record t : Set := {
         code_hash : E::type["Hash"];
-        dry_run
-          :
+        dry_run :
           pallet_contracts_primitives.CodeUploadResult
             E::type["Hash"]
             E::type["Balance"];
@@ -1170,8 +1153,7 @@ Module client.
         Notation.dot x := let* x := M.read x in Pure x.(code_hash) : M _;
       }.
       Global Instance Get_AF_code_hash : Notation.DoubleColon t "code_hash" := {
-        Notation.double_colon x
-          :=
+        Notation.double_colon x :=
           let* x := M.read x in Pure x.(code_hash) : M _;
       }.
       Global Instance Get_dry_run : Notation.Dot "dry_run" := {
@@ -1206,9 +1188,15 @@ Module client.
         {ℋ_0 : subxt.config.Config.Trait C}
         {ℋ_1 : ink_env.types.Environment.Trait E}
         {ℋ_2 :
-          core.fmt.Debug.Trait (ink_env.types.Environment.Balance (Self := E))}
+          core.fmt.Debug.Trait
+              (ink_env.types.Environment.Balance
+                (Self := E)
+                (Trait := ltac:(try clear Trait; hauto l: on)))}
         {ℋ_3 :
-          core.fmt.Debug.Trait (ink_env.types.Environment.Hash (Self := E))}.
+          core.fmt.Debug.Trait
+              (ink_env.types.Environment.Hash
+                (Self := E)
+                (Trait := ltac:(try clear Trait; hauto l: on)))}.
       Definition Self : Set := ink_e2e.client.UploadResult C E.
       
       Parameter fmt :
@@ -1238,9 +1226,14 @@ Module client.
         {ℋ_2 : ink_env.types.Environment.Trait E}
         {ℋ_3 :
           core.fmt.Debug.Trait
-              (ink_env.types.Environment.AccountId (Self := E))}
+              (ink_env.types.Environment.AccountId
+                (Self := E)
+                (Trait := ltac:(try clear Trait; hauto l: on)))}
         {ℋ_4 :
-          core.fmt.Debug.Trait (ink_env.types.Environment.Balance (Self := E))}.
+          core.fmt.Debug.Trait
+              (ink_env.types.Environment.Balance
+                (Self := E)
+                (Trait := ltac:(try clear Trait; hauto l: on)))}.
       Definition Self : Set := ink_e2e.client.InstantiationResult C E.
       
       Parameter fmt :
@@ -1267,8 +1260,7 @@ Module client.
       Context {ℋ_0 : ink_env.types.Environment.Trait E}.
       Unset Primitive Projections.
       Record t : Set := {
-        exec_result
-          :
+        exec_result :
           pallet_contracts_primitives.ContractExecResult E::type["Balance"];
         _marker : core.marker.PhantomData V;
       }.
@@ -1277,10 +1269,9 @@ Module client.
       Global Instance Get_exec_result : Notation.Dot "exec_result" := {
         Notation.dot x := let* x := M.read x in Pure x.(exec_result) : M _;
       }.
-      Global Instance Get_AF_exec_result
-        : Notation.DoubleColon t "exec_result" := {
-        Notation.double_colon x
-          :=
+      Global Instance Get_AF_exec_result :
+        Notation.DoubleColon t "exec_result" := {
+        Notation.double_colon x :=
           let* x := M.read x in Pure x.(exec_result) : M _;
       }.
       Global Instance Get__marker : Notation.Dot "_marker" := {
@@ -1348,7 +1339,10 @@ Module client.
         {ℋ_2 : ink_env.types.Environment.Trait E}
         {ℋ_3 : core.fmt.Debug.Trait E}
         {ℋ_4 :
-          core.fmt.Debug.Trait (ink_env.types.Environment.Balance (Self := E))}
+          core.fmt.Debug.Trait
+              (ink_env.types.Environment.Balance
+                (Self := E)
+                (Trait := ltac:(try clear Trait; hauto l: on)))}
         {ℋ_5 : core.fmt.Debug.Trait V}.
       Definition Self : Set := ink_e2e.client.CallResult C E V.
       
@@ -1427,7 +1421,10 @@ Module client.
       {ℋ_0 : subxt.config.Config.Trait C}
       {ℋ_1 : ink_env.types.Environment.Trait E}
       {ℋ_2 :
-        core.fmt.Debug.Trait (ink_env.types.Environment.Balance (Self := E))}
+        core.fmt.Debug.Trait
+            (ink_env.types.Environment.Balance
+              (Self := E)
+              (Trait := ltac:(try clear Trait; hauto l: on)))}
       : Set :=
     Error.t (C := C) (E := E).
   
@@ -1441,7 +1438,10 @@ Module client.
         {ℋ_0 : subxt.config.Config.Trait C}
         {ℋ_1 : ink_env.types.Environment.Trait E}
         {ℋ_2 :
-          core.fmt.Debug.Trait (ink_env.types.Environment.Balance (Self := E))}.
+          core.fmt.Debug.Trait
+              (ink_env.types.Environment.Balance
+                (Self := E)
+                (Trait := ltac:(try clear Trait; hauto l: on)))}.
       Definition Self : Set := ink_e2e.client.Error C E.
       
       Parameter fmt :
@@ -1708,8 +1708,7 @@ Module client.
       Unset Primitive Projections.
       Record t : Set := {
         api : ink_e2e.xts.ContractsApi C E;
-        contracts
-          :
+        contracts :
           alloc.collections.btree.map.BTreeMap
             alloc.string.String
             std.path.PathBuf
@@ -1727,8 +1726,7 @@ Module client.
         Notation.dot x := let* x := M.read x in Pure x.(contracts) : M _;
       }.
       Global Instance Get_AF_contracts : Notation.DoubleColon t "contracts" := {
-        Notation.double_colon x
-          :=
+        Notation.double_colon x :=
           let* x := M.read x in Pure x.(contracts) : M _;
       }.
     End Client.
@@ -1764,8 +1762,7 @@ Module InstantiationResult.
     Unset Primitive Projections.
     Record t : Set := {
       account_id : E::type["AccountId"];
-      dry_run
-        :
+      dry_run :
         pallet_contracts_primitives.ContractInstantiateResult
           C::type["AccountId"]
           E::type["Balance"];
@@ -1777,8 +1774,7 @@ Module InstantiationResult.
       Notation.dot x := let* x := M.read x in Pure x.(account_id) : M _;
     }.
     Global Instance Get_AF_account_id : Notation.DoubleColon t "account_id" := {
-      Notation.double_colon x
-        :=
+      Notation.double_colon x :=
         let* x := M.read x in Pure x.(account_id) : M _;
     }.
     Global Instance Get_dry_run : Notation.Dot "dry_run" := {
@@ -1815,8 +1811,7 @@ Module UploadResult.
     Unset Primitive Projections.
     Record t : Set := {
       code_hash : E::type["Hash"];
-      dry_run
-        :
+      dry_run :
         pallet_contracts_primitives.CodeUploadResult
           E::type["Hash"]
           E::type["Balance"];
@@ -1862,8 +1857,15 @@ Module Impl_core_fmt_Debug_for_ink_e2e_client_UploadResult_C_E.
       {ℋ_0 : subxt.config.Config.Trait C}
       {ℋ_1 : ink_env.types.Environment.Trait E}
       {ℋ_2 :
-        core.fmt.Debug.Trait (ink_env.types.Environment.Balance (Self := E))}
-      {ℋ_3 : core.fmt.Debug.Trait (ink_env.types.Environment.Hash (Self := E))}.
+        core.fmt.Debug.Trait
+            (ink_env.types.Environment.Balance
+              (Self := E)
+              (Trait := ltac:(try clear Trait; hauto l: on)))}
+      {ℋ_3 :
+        core.fmt.Debug.Trait
+            (ink_env.types.Environment.Hash
+              (Self := E)
+              (Trait := ltac:(try clear Trait; hauto l: on)))}.
     Definition Self : Set := ink_e2e.client.UploadResult C E.
     
     Parameter fmt :
@@ -1892,9 +1894,15 @@ Module Impl_core_fmt_Debug_for_ink_e2e_client_InstantiationResult_C_E.
       {ℋ_1 : core.fmt.Debug.Trait C::type["AccountId"]}
       {ℋ_2 : ink_env.types.Environment.Trait E}
       {ℋ_3 :
-        core.fmt.Debug.Trait (ink_env.types.Environment.AccountId (Self := E))}
+        core.fmt.Debug.Trait
+            (ink_env.types.Environment.AccountId
+              (Self := E)
+              (Trait := ltac:(try clear Trait; hauto l: on)))}
       {ℋ_4 :
-        core.fmt.Debug.Trait (ink_env.types.Environment.Balance (Self := E))}.
+        core.fmt.Debug.Trait
+            (ink_env.types.Environment.Balance
+              (Self := E)
+              (Trait := ltac:(try clear Trait; hauto l: on)))}.
     Definition Self : Set := ink_e2e.client.InstantiationResult C E.
     
     Parameter fmt :
@@ -1962,7 +1970,10 @@ Module Impl_core_fmt_Debug_for_ink_e2e_client_CallResult_C_E_V.
       {ℋ_2 : ink_env.types.Environment.Trait E}
       {ℋ_3 : core.fmt.Debug.Trait E}
       {ℋ_4 :
-        core.fmt.Debug.Trait (ink_env.types.Environment.Balance (Self := E))}
+        core.fmt.Debug.Trait
+            (ink_env.types.Environment.Balance
+              (Self := E)
+              (Trait := ltac:(try clear Trait; hauto l: on)))}
       {ℋ_5 : core.fmt.Debug.Trait V}.
     Definition Self : Set := ink_e2e.client.CallResult C E V.
     
@@ -1990,8 +2001,7 @@ Module CallDryRunResult.
     Context {ℋ_0 : ink_env.types.Environment.Trait E}.
     Unset Primitive Projections.
     Record t : Set := {
-      exec_result
-        :
+      exec_result :
         pallet_contracts_primitives.ContractExecResult E::type["Balance"];
       _marker : core.marker.PhantomData V;
     }.
@@ -2000,10 +2010,9 @@ Module CallDryRunResult.
     Global Instance Get_exec_result : Notation.Dot "exec_result" := {
       Notation.dot x := let* x := M.read x in Pure x.(exec_result) : M _;
     }.
-    Global Instance Get_AF_exec_result
-      : Notation.DoubleColon t "exec_result" := {
-      Notation.double_colon x
-        :=
+    Global Instance Get_AF_exec_result :
+      Notation.DoubleColon t "exec_result" := {
+      Notation.double_colon x :=
         let* x := M.read x in Pure x.(exec_result) : M _;
     }.
     Global Instance Get__marker : Notation.Dot "_marker" := {
@@ -2080,7 +2089,11 @@ Definition Error
     `{ℋ : State.Trait}
     {ℋ_0 : subxt.config.Config.Trait C}
     {ℋ_1 : ink_env.types.Environment.Trait E}
-    {ℋ_2 : core.fmt.Debug.Trait (ink_env.types.Environment.Balance (Self := E))}
+    {ℋ_2 :
+      core.fmt.Debug.Trait
+          (ink_env.types.Environment.Balance
+            (Self := E)
+            (Trait := ltac:(try clear Trait; hauto l: on)))}
     : Set :=
   Error.t (C := C) (E := E).
 
@@ -2094,7 +2107,10 @@ Module Impl_core_fmt_Debug_for_ink_e2e_client_Error_C_E.
       {ℋ_0 : subxt.config.Config.Trait C}
       {ℋ_1 : ink_env.types.Environment.Trait E}
       {ℋ_2 :
-        core.fmt.Debug.Trait (ink_env.types.Environment.Balance (Self := E))}.
+        core.fmt.Debug.Trait
+            (ink_env.types.Environment.Balance
+              (Self := E)
+              (Trait := ltac:(try clear Trait; hauto l: on)))}.
     Definition Self : Set := ink_e2e.client.Error C E.
     
     Parameter fmt :
@@ -2171,8 +2187,7 @@ End Impl_core_fmt_Debug_for_ink_e2e_client_ContractInstantiatedEvent_E. *)
     Global Instance ℐ : parity_scale_codec.codec.Decode.Trait Self := {
       parity_scale_codec.codec.Decode.decode
         {__CodecInputEdqy : Set}
-        {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
-        :=
+        {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :=
         decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
   End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_client_ContractInstantiatedEvent_E. *)
@@ -2230,10 +2245,9 @@ End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_client_ContractInstantiated
       {ℋ_4 : parity_scale_codec.codec.Encode.Trait E::type["AccountId"]}.
     Definition Self : Set := ink_e2e.client.ContractInstantiatedEvent E.
     
-    Global Instance ℐ
-      : parity_scale_codec.encode_like.EncodeLike.Trait Self
-          (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self)
-        := {
+    Global Instance ℐ :
+      parity_scale_codec.encode_like.EncodeLike.Trait Self
+        (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self) := {
     }.
   End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_client_ContractInstantiatedEvent_E. *)
   Global Hint Resolve ℐ : core.
@@ -2482,8 +2496,7 @@ End Impl_core_fmt_Debug_for_ink_e2e_client_CodeStoredEvent_E. *)
     Global Instance ℐ : parity_scale_codec.codec.Decode.Trait Self := {
       parity_scale_codec.codec.Decode.decode
         {__CodecInputEdqy : Set}
-        {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
-        :=
+        {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :=
         decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
   End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_client_CodeStoredEvent_E. *)
@@ -2563,10 +2576,9 @@ End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_client_CodeStoredEvent_E. *
       {ℋ_2 : parity_scale_codec.codec.Encode.Trait E::type["Hash"]}.
     Definition Self : Set := ink_e2e.client.CodeStoredEvent E.
     
-    Global Instance ℐ
-      : parity_scale_codec.encode_like.EncodeLike.Trait Self
-          (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self)
-        := {
+    Global Instance ℐ :
+      parity_scale_codec.encode_like.EncodeLike.Trait Self
+        (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self) := {
     }.
   End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_client_CodeStoredEvent_E. *)
   Global Hint Resolve ℐ : core.
@@ -2771,8 +2783,7 @@ Module Client.
     Unset Primitive Projections.
     Record t : Set := {
       api : ink_e2e.xts.ContractsApi C E;
-      contracts
-        :
+      contracts :
         alloc.collections.btree.map.BTreeMap
           alloc.string.String
           std.path.PathBuf
@@ -3096,16 +3107,14 @@ Module node_proc.
         Notation.dot x := let* x := M.read x in Pure x.(node_path) : M _;
       }.
       Global Instance Get_AF_node_path : Notation.DoubleColon t "node_path" := {
-        Notation.double_colon x
-          :=
+        Notation.double_colon x :=
           let* x := M.read x in Pure x.(node_path) : M _;
       }.
       Global Instance Get_authority : Notation.Dot "authority" := {
         Notation.dot x := let* x := M.read x in Pure x.(authority) : M _;
       }.
       Global Instance Get_AF_authority : Notation.DoubleColon t "authority" := {
-        Notation.double_colon x
-          :=
+        Notation.double_colon x :=
           let* x := M.read x in Pure x.(authority) : M _;
       }.
       Global Instance Get_marker : Notation.Dot "marker" := {
@@ -3243,8 +3252,7 @@ Module Weight.
       Notation.dot x := let* x := M.read x in Pure x.(proof_size) : M _;
     }.
     Global Instance Get_AF_proof_size : Notation.DoubleColon t "proof_size" := {
-      Notation.double_colon x
-        :=
+      Notation.double_colon x :=
         let* x := M.read x in Pure x.(proof_size) : M _;
     }.
   End Weight.
@@ -3338,10 +3346,9 @@ Module Impl_core_cmp_PartialEq_for_ink_e2e_xts_Weight.
       Notation.double_colon := eq;
     }.
     
-    Global Instance ℐ
-      : core.cmp.PartialEq.Trait Self
-          (Rhs := core.cmp.PartialEq.Default.Rhs Self)
-        := {
+    Global Instance ℐ :
+      core.cmp.PartialEq.Trait Self
+        (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
       core.cmp.PartialEq.eq := eq;
     }.
   End Impl_core_cmp_PartialEq_for_ink_e2e_xts_Weight.
@@ -3424,10 +3431,9 @@ Module Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Weight.
     
     Definition Self : Set := ink_e2e.xts.Weight.
     
-    Global Instance ℐ
-      : parity_scale_codec.encode_like.EncodeLike.Trait Self
-          (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self)
-        := {
+    Global Instance ℐ :
+      parity_scale_codec.encode_like.EncodeLike.Trait Self
+        (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self) := {
     }.
   End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Weight.
   Global Hint Resolve ℐ : core.
@@ -3456,8 +3462,7 @@ Module Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Weight.
     Global Instance ℐ : parity_scale_codec.codec.Decode.Trait Self := {
       parity_scale_codec.codec.Decode.decode
         {__CodecInputEdqy : Set}
-        {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
-        :=
+        {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :=
         decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
   End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Weight.
@@ -3477,10 +3482,9 @@ End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Weight.
       Notation.double_colon := max_encoded_len;
     }.
     
-    Global Instance ℐ
-      : parity_scale_codec.max_encoded_len.MaxEncodedLen.Trait Self := {
-      parity_scale_codec.max_encoded_len.MaxEncodedLen.max_encoded_len
-        :=
+    Global Instance ℐ :
+      parity_scale_codec.max_encoded_len.MaxEncodedLen.Trait Self := {
+      parity_scale_codec.max_encoded_len.MaxEncodedLen.max_encoded_len :=
         max_encoded_len;
     }.
   End Impl_parity_scale_codec_max_encoded_len_MaxEncodedLen_for_ink_e2e_xts_Weight. *)
@@ -3559,8 +3563,7 @@ Module Impl_serde_ser_Serialize_for_ink_e2e_xts_Weight.
     Global Instance ℐ : serde.ser.Serialize.Trait Self := {
       serde.ser.Serialize.serialize
         {__S : Set}
-        {ℋ_0 : serde.ser.Serializer.Trait __S}
-        :=
+        {ℋ_0 : serde.ser.Serializer.Trait __S} :=
         serialize (__S := __S);
     }.
   End Impl_serde_ser_Serialize_for_ink_e2e_xts_Weight.
@@ -3587,8 +3590,7 @@ Module Impl_serde_de_Deserialize_for_ink_e2e_xts_Weight.
     Global Instance ℐ : serde.de.Deserialize.Trait Self := {
       serde.de.Deserialize.deserialize
         {__D : Set}
-        {ℋ_0 : serde.de.Deserializer.Trait __D}
-        :=
+        {ℋ_0 : serde.de.Deserializer.Trait __D} :=
         deserialize (__D := __D);
     }.
   End Impl_serde_de_Deserialize_for_ink_e2e_xts_Weight.
@@ -3672,8 +3674,7 @@ End Impl_serde_de_Visitor_for_ink_e2e_xts___deserialize___FieldVisitor. *)
     Global Instance ℐ : serde.de.Deserialize.Trait Self := {
       serde.de.Deserialize.deserialize
         {__D : Set}
-        {ℋ_0 : serde.de.Deserializer.Trait __D}
-        :=
+        {ℋ_0 : serde.de.Deserializer.Trait __D} :=
         deserialize (__D := __D);
     }.
   End Impl_serde_de_Deserialize_for_ink_e2e_xts___deserialize___Field. *)
@@ -3739,8 +3740,8 @@ Module Impl_core_convert_From_for_ink_e2e_xts_Weight.
       Notation.double_colon := from;
     }.
     
-    Global Instance ℐ
-      : core.convert.From.Trait Self (T := sp_weights.weight_v2.Weight) := {
+    Global Instance ℐ :
+      core.convert.From.Trait Self (T := sp_weights.weight_v2.Weight) := {
       core.convert.From.from := from;
     }.
   End Impl_core_convert_From_for_ink_e2e_xts_Weight.
@@ -3760,8 +3761,8 @@ Module Impl_core_convert_From_for_sp_weights_weight_v2_Weight.
       Notation.double_colon := from;
     }.
     
-    Global Instance ℐ
-      : core.convert.From.Trait Self (T := ink_e2e.xts.Weight) := {
+    Global Instance ℐ :
+      core.convert.From.Trait Self (T := ink_e2e.xts.Weight) := {
       core.convert.From.from := from;
     }.
   End Impl_core_convert_From_for_sp_weights_weight_v2_Weight.
@@ -3798,16 +3799,14 @@ Module InstantiateWithCode.
     Global Instance Get_AF_gas_limit : Notation.DoubleColon t "gas_limit" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(gas_limit) : M _;
     }.
-    Global Instance Get_storage_deposit_limit
-      : Notation.Dot "storage_deposit_limit" := {
-      Notation.dot x
-        :=
+    Global Instance Get_storage_deposit_limit :
+      Notation.Dot "storage_deposit_limit" := {
+      Notation.dot x :=
         let* x := M.read x in Pure x.(storage_deposit_limit) : M _;
     }.
-    Global Instance Get_AF_storage_deposit_limit
-      : Notation.DoubleColon t "storage_deposit_limit" := {
-      Notation.double_colon x
-        :=
+    Global Instance Get_AF_storage_deposit_limit :
+      Notation.DoubleColon t "storage_deposit_limit" := {
+      Notation.double_colon x :=
         let* x := M.read x in Pure x.(storage_deposit_limit) : M _;
     }.
     Global Instance Get_code : Notation.Dot "code" := {
@@ -3927,10 +3926,9 @@ Module
       {ℋ_3 : parity_scale_codec.compact.HasCompact.Trait E::type["Balance"]}.
     Definition Self : Set := ink_e2e.xts.InstantiateWithCode E.
     
-    Global Instance ℐ
-      : parity_scale_codec.encode_like.EncodeLike.Trait Self
-          (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self)
-        := {
+    Global Instance ℐ :
+      parity_scale_codec.encode_like.EncodeLike.Trait Self
+        (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self) := {
     }.
   End
     Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_InstantiateWithCode_E.
@@ -3974,8 +3972,7 @@ Module
     Global Instance ℐ : parity_scale_codec.codec.Decode.Trait Self := {
       parity_scale_codec.codec.Decode.decode
         {__CodecInputEdqy : Set}
-        {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
-        :=
+        {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :=
         decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
   End
@@ -4075,16 +4072,14 @@ Module Call.
     Global Instance Get_AF_gas_limit : Notation.DoubleColon t "gas_limit" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(gas_limit) : M _;
     }.
-    Global Instance Get_storage_deposit_limit
-      : Notation.Dot "storage_deposit_limit" := {
-      Notation.dot x
-        :=
+    Global Instance Get_storage_deposit_limit :
+      Notation.Dot "storage_deposit_limit" := {
+      Notation.dot x :=
         let* x := M.read x in Pure x.(storage_deposit_limit) : M _;
     }.
-    Global Instance Get_AF_storage_deposit_limit
-      : Notation.DoubleColon t "storage_deposit_limit" := {
-      Notation.double_colon x
-        :=
+    Global Instance Get_AF_storage_deposit_limit :
+      Notation.DoubleColon t "storage_deposit_limit" := {
+      Notation.double_colon x :=
         let* x := M.read x in Pure x.(storage_deposit_limit) : M _;
     }.
     Global Instance Get_data : Notation.Dot "data" := {
@@ -4171,8 +4166,7 @@ Module Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Call_E.
     Global Instance ℐ : parity_scale_codec.codec.Decode.Trait Self := {
       parity_scale_codec.codec.Decode.decode
         {__CodecInputEdqy : Set}
-        {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
-        :=
+        {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :=
         decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
   End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Call_E.
@@ -4248,10 +4242,9 @@ Module Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Call_E.
       {ℋ_5 : parity_scale_codec.compact.HasCompact.Trait E::type["Balance"]}.
     Definition Self : Set := ink_e2e.xts.Call E.
     
-    Global Instance ℐ
-      : parity_scale_codec.encode_like.EncodeLike.Trait Self
-          (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self)
-        := {
+    Global Instance ℐ :
+      parity_scale_codec.encode_like.EncodeLike.Trait Self
+        (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self) := {
     }.
   End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Call_E.
   Global Hint Resolve ℐ : core.
@@ -4416,8 +4409,7 @@ Module Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Transfer_E_C.
     Global Instance ℐ : parity_scale_codec.codec.Decode.Trait Self := {
       parity_scale_codec.codec.Decode.decode
         {__CodecInputEdqy : Set}
-        {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
-        :=
+        {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :=
         decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
   End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Transfer_E_C.
@@ -4485,10 +4477,9 @@ Module
       {ℋ_4 : parity_scale_codec.compact.HasCompact.Trait E::type["Balance"]}.
     Definition Self : Set := ink_e2e.xts.Transfer E C.
     
-    Global Instance ℐ
-      : parity_scale_codec.encode_like.EncodeLike.Trait Self
-          (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self)
-        := {
+    Global Instance ℐ :
+      parity_scale_codec.encode_like.EncodeLike.Trait Self
+        (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self) := {
     }.
   End
     Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Transfer_E_C.
@@ -4639,10 +4630,9 @@ Module Impl_core_cmp_PartialEq_for_ink_e2e_xts_Determinism.
       Notation.double_colon := eq;
     }.
     
-    Global Instance ℐ
-      : core.cmp.PartialEq.Trait Self
-          (Rhs := core.cmp.PartialEq.Default.Rhs Self)
-        := {
+    Global Instance ℐ :
+      core.cmp.PartialEq.Trait Self
+        (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
       core.cmp.PartialEq.eq := eq;
     }.
   End Impl_core_cmp_PartialEq_for_ink_e2e_xts_Determinism.
@@ -4702,8 +4692,7 @@ Module Impl_serde_ser_Serialize_for_ink_e2e_xts_Determinism.
     Global Instance ℐ : serde.ser.Serialize.Trait Self := {
       serde.ser.Serialize.serialize
         {__S : Set}
-        {ℋ_0 : serde.ser.Serializer.Trait __S}
-        :=
+        {ℋ_0 : serde.ser.Serializer.Trait __S} :=
         serialize (__S := __S);
     }.
   End Impl_serde_ser_Serialize_for_ink_e2e_xts_Determinism.
@@ -4733,8 +4722,7 @@ Module Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Determinism.
     Global Instance ℐ : parity_scale_codec.codec.Decode.Trait Self := {
       parity_scale_codec.codec.Decode.decode
         {__CodecInputEdqy : Set}
-        {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
-        :=
+        {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :=
         decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
   End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Determinism.
@@ -4778,10 +4766,9 @@ Module
     
     Definition Self : Set := ink_e2e.xts.Determinism.
     
-    Global Instance ℐ
-      : parity_scale_codec.encode_like.EncodeLike.Trait Self
-          (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self)
-        := {
+    Global Instance ℐ :
+      parity_scale_codec.encode_like.EncodeLike.Trait Self
+        (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self) := {
     }.
   End
     Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Determinism.
@@ -4834,25 +4821,22 @@ Module UploadCode.
     Global Instance Get_AF_code : Notation.DoubleColon t "code" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(code) : M _;
     }.
-    Global Instance Get_storage_deposit_limit
-      : Notation.Dot "storage_deposit_limit" := {
-      Notation.dot x
-        :=
+    Global Instance Get_storage_deposit_limit :
+      Notation.Dot "storage_deposit_limit" := {
+      Notation.dot x :=
         let* x := M.read x in Pure x.(storage_deposit_limit) : M _;
     }.
-    Global Instance Get_AF_storage_deposit_limit
-      : Notation.DoubleColon t "storage_deposit_limit" := {
-      Notation.double_colon x
-        :=
+    Global Instance Get_AF_storage_deposit_limit :
+      Notation.DoubleColon t "storage_deposit_limit" := {
+      Notation.double_colon x :=
         let* x := M.read x in Pure x.(storage_deposit_limit) : M _;
     }.
     Global Instance Get_determinism : Notation.Dot "determinism" := {
       Notation.dot x := let* x := M.read x in Pure x.(determinism) : M _;
     }.
-    Global Instance Get_AF_determinism
-      : Notation.DoubleColon t "determinism" := {
-      Notation.double_colon x
-        :=
+    Global Instance Get_AF_determinism :
+      Notation.DoubleColon t "determinism" := {
+      Notation.double_colon x :=
         let* x := M.read x in Pure x.(determinism) : M _;
     }.
   End UploadCode.
@@ -4948,10 +4932,9 @@ Module
             (core.option.Option E::type["Balance"])}.
     Definition Self : Set := ink_e2e.xts.UploadCode E.
     
-    Global Instance ℐ
-      : parity_scale_codec.encode_like.EncodeLike.Trait Self
-          (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self)
-        := {
+    Global Instance ℐ :
+      parity_scale_codec.encode_like.EncodeLike.Trait Self
+        (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self) := {
     }.
   End
     Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_UploadCode_E.
@@ -4991,8 +4974,7 @@ Module Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_UploadCode_E.
     Global Instance ℐ : parity_scale_codec.codec.Decode.Trait Self := {
       parity_scale_codec.codec.Decode.decode
         {__CodecInputEdqy : Set}
-        {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
-        :=
+        {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :=
         decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
   End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_UploadCode_E.
@@ -5084,8 +5066,7 @@ End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_UploadCode_E.
     Global Instance ℐ : serde.ser.Serialize.Trait Self := {
       serde.ser.Serialize.serialize
         {__S : Set}
-        {ℋ_0 : serde.ser.Serializer.Trait __S}
-        :=
+        {ℋ_0 : serde.ser.Serializer.Trait __S} :=
         serialize (__S := __S);
     }.
   End Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcInstantiateRequest_C_E. *)
@@ -5157,10 +5138,9 @@ End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_RpcInstantiateRequest_C
             (core.option.Option E::type["Balance"])}.
     Definition Self : Set := ink_e2e.xts.RpcInstantiateRequest C E.
     
-    Global Instance ℐ
-      : parity_scale_codec.encode_like.EncodeLike.Trait Self
-          (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self)
-        := {
+    Global Instance ℐ :
+      parity_scale_codec.encode_like.EncodeLike.Trait Self
+        (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self) := {
     }.
   End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_RpcInstantiateRequest_C_E. *)
   Global Hint Resolve ℐ : core.
@@ -5195,8 +5175,7 @@ End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_RpcInstantiat
     Global Instance ℐ : serde.ser.Serialize.Trait Self := {
       serde.ser.Serialize.serialize
         {__S : Set}
-        {ℋ_0 : serde.ser.Serializer.Trait __S}
-        :=
+        {ℋ_0 : serde.ser.Serializer.Trait __S} :=
         serialize (__S := __S);
     }.
   End Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcCodeUploadRequest_C_E. *)
@@ -5266,10 +5245,9 @@ End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_RpcCodeUploadRequest_C_
             (core.option.Option E::type["Balance"])}.
     Definition Self : Set := ink_e2e.xts.RpcCodeUploadRequest C E.
     
-    Global Instance ℐ
-      : parity_scale_codec.encode_like.EncodeLike.Trait Self
-          (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self)
-        := {
+    Global Instance ℐ :
+      parity_scale_codec.encode_like.EncodeLike.Trait Self
+        (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self) := {
     }.
   End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_RpcCodeUploadRequest_C_E. *)
   Global Hint Resolve ℐ : core.
@@ -5305,8 +5283,7 @@ End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_RpcCodeUpload
     Global Instance ℐ : serde.ser.Serialize.Trait Self := {
       serde.ser.Serialize.serialize
         {__S : Set}
-        {ℋ_0 : serde.ser.Serializer.Trait __S}
-        :=
+        {ℋ_0 : serde.ser.Serializer.Trait __S} :=
         serialize (__S := __S);
     }.
   End Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcCallRequest_C_E. *)
@@ -5382,10 +5359,9 @@ End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_RpcCallRequest_C_E. *)
             (core.option.Option E::type["Balance"])}.
     Definition Self : Set := ink_e2e.xts.RpcCallRequest C E.
     
-    Global Instance ℐ
-      : parity_scale_codec.encode_like.EncodeLike.Trait Self
-          (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self)
-        := {
+    Global Instance ℐ :
+      parity_scale_codec.encode_like.EncodeLike.Trait Self
+        (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self) := {
     }.
   End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_RpcCallRequest_C_E. *)
   Global Hint Resolve ℐ : core.
@@ -5413,8 +5389,7 @@ End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_RpcCallReques
     Global Instance ℐ : serde.ser.Serialize.Trait Self := {
       serde.ser.Serialize.serialize
         {__S : Set}
-        {ℋ_0 : serde.ser.Serializer.Trait __S}
-        :=
+        {ℋ_0 : serde.ser.Serializer.Trait __S} :=
         serialize (__S := __S);
     }.
   End Impl_serde_ser_Serialize_for_ink_e2e_xts_Code. *)
@@ -5456,10 +5431,9 @@ End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Code. *)
     
     Definition Self : Set := ink_e2e.xts.Code.
     
-    Global Instance ℐ
-      : parity_scale_codec.encode_like.EncodeLike.Trait Self
-          (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self)
-        := {
+    Global Instance ℐ :
+      parity_scale_codec.encode_like.EncodeLike.Trait Self
+        (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self) := {
     }.
   End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Code. *)
   Global Hint Resolve ℐ : core.

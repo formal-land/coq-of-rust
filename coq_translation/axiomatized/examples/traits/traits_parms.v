@@ -40,11 +40,14 @@ Module SomeTrait.
     
     Class Trait (Self : Set) : Type := {
       SomeType : Set;
+      ℒ_0 :: traits_parms.Foo.Trait SomeType;
+      ℒ_1 :: traits_parms.Bar.Trait SomeType;
+      ℒ_2 :: traits_parms.Tar.Trait SomeType;
       some_fn : M unit;
     }.
     
-    Global Instance Method_SomeType `(Trait)
-      : Notation.DoubleColonType Self "SomeType" := {
+    Global Instance Method_SomeType `(Trait) :
+      Notation.DoubleColonType Self "SomeType" := {
       Notation.double_colon_type := SomeType;
     }.
   End SomeTrait.

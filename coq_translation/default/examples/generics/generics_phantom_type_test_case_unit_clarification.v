@@ -345,10 +345,9 @@ Module
       Notation.double_colon := add;
     }.
     
-    Global Instance ℐ
-      : core.ops.arith.Add.Trait Self
-          (Rhs := core.ops.arith.Add.Default.Rhs Self)
-        := {
+    Global Instance ℐ :
+      core.ops.arith.Add.Trait Self
+        (Rhs := core.ops.arith.Add.Default.Rhs Self) := {
       core.ops.arith.Add.Output := Output;
       core.ops.arith.Add.add := add;
     }.

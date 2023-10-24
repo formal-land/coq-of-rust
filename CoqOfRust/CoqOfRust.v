@@ -26,6 +26,7 @@ SOFTWARE.
 Require Export Coq.Strings.Ascii.
 Require Export Coq.Strings.String.
 Require Export Coq.ZArith.ZArith.
+From Hammer Require Export Tactics.
 
 (* Global settings for files importing this file *)
 Global Set Primitive Projections.

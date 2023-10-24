@@ -18,8 +18,7 @@ Module my.
         Notation.dot x := let* x := M.read x in Pure x.(contents) : M _;
       }.
       Global Instance Get_AF_contents : Notation.DoubleColon t "contents" := {
-        Notation.double_colon x
-          :=
+        Notation.double_colon x :=
           let* x := M.read x in Pure x.(contents) : M _;
       }.
     End OpenBox.
@@ -43,8 +42,7 @@ Module my.
         Notation.dot x := let* x := M.read x in Pure x.(contents) : M _;
       }.
       Global Instance Get_AF_contents : Notation.DoubleColon t "contents" := {
-        Notation.double_colon x
-          :=
+        Notation.double_colon x :=
           let* x := M.read x in Pure x.(contents) : M _;
       }.
     End ClosedBox.

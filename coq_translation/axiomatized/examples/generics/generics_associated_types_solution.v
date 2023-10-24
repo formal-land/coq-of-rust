@@ -83,8 +83,8 @@ Module
       Notation.double_colon := a;
     }.
     
-    Global Instance ℐ
-      : generics_associated_types_solution.Contains.Trait Self := {
+    Global Instance ℐ :
+      generics_associated_types_solution.Contains.Trait Self := {
       generics_associated_types_solution.Contains.A := A;
       generics_associated_types_solution.Contains.B := B;
       generics_associated_types_solution.Contains.contains := contains;

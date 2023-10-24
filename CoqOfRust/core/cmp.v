@@ -126,9 +126,9 @@ pub trait Ord: Eq + PartialOrd<Self> {
 }
 *)
 Module Ord.
-  Class Trait `{State.Trait} (Self : Set)
-    {H1 : Eq.Trait Self}
-    {H2 : PartialOrd.Trait Self (Rhs := Self)} := {
+  Class Trait `{State.Trait} (Self : Set) := {
+    _ :: Eq.Trait Self;
+    _ :: PartialOrd.Trait Self (Rhs := Self);
     cmp : ref Self -> ref Self -> M (H := H) Ordering;
   }.
 

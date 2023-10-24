@@ -16,7 +16,8 @@ Module Student.
   Section Student.
     Context `{ℋ : State.Trait}.
     
-    Class Trait (Self : Set) {ℋ_0 : supertraits.Person.Trait Self} : Type := {
+    Class Trait (Self : Set) : Type := {
+      ℒ_0 :: supertraits.Person.Trait Self;
       university : (ref Self) -> M alloc.string.String;
     }.
     
@@ -38,11 +39,9 @@ Module CompSciStudent.
   Section CompSciStudent.
     Context `{ℋ : State.Trait}.
     
-    Class Trait
-        (Self : Set)
-        {ℋ_0 : supertraits.Programmer.Trait Self}
-        {ℋ_1 : supertraits.Student.Trait Self} :
-        Type := {
+    Class Trait (Self : Set) : Type := {
+      ℒ_0 :: supertraits.Programmer.Trait Self;
+      ℒ_1 :: supertraits.Student.Trait Self;
       git_username : (ref Self) -> M alloc.string.String;
     }.
     

@@ -42,10 +42,9 @@ Module Impl_core_cmp_PartialEq_for_derive_Centimeters.
       Notation.double_colon := eq;
     }.
     
-    Global Instance ℐ
-      : core.cmp.PartialEq.Trait Self
-          (Rhs := core.cmp.PartialEq.Default.Rhs Self)
-        := {
+    Global Instance ℐ :
+      core.cmp.PartialEq.Trait Self
+        (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
       core.cmp.PartialEq.eq := eq;
     }.
   End Impl_core_cmp_PartialEq_for_derive_Centimeters.
@@ -68,10 +67,9 @@ Module Impl_core_cmp_PartialOrd_for_derive_Centimeters.
       Notation.double_colon := partial_cmp;
     }.
     
-    Global Instance ℐ
-      : core.cmp.PartialOrd.Trait Self
-          (Rhs := core.cmp.PartialOrd.Default.Rhs Self)
-        := {
+    Global Instance ℐ :
+      core.cmp.PartialOrd.Trait Self
+        (Rhs := core.cmp.PartialOrd.Default.Rhs Self) := {
       core.cmp.PartialOrd.partial_cmp := partial_cmp;
     }.
   End Impl_core_cmp_PartialOrd_for_derive_Centimeters.

@@ -1585,7 +1585,7 @@ impl WherePredicate {
             &coq::ArgDeclVar::Traits {
                 traits: predicates
                     .iter()
-                    .map(|predicate| predicate.bound.to_coq_expression(predicate.ty.to_coq()))
+                    .map(|predicate| predicate.bound.to_coq(predicate.ty.to_coq()))
                     .collect(),
             },
             coq::ArgSpecKind::Implicit,
@@ -1606,7 +1606,7 @@ impl TraitBound {
         }
     }
 
-    fn to_coq_expression<'a>(&self, self_ty: coq::Expression<'a>) -> coq::Expression<'a> {
+    fn to_coq<'a>(&self, self_ty: coq::Expression<'a>) -> coq::Expression<'a> {
         coq::Expression::Application {
             func: Box::new(
                 coq::Expression::Variable {
@@ -2104,11 +2104,6 @@ impl TopLevelItem {
                 predicates,
                 body,
             } => {
-                let coq_predicates = if predicates.is_empty() {
-                    vec![]
-                } else {
-                    vec![WherePredicate::vec_to_coq(predicates)]
-                };
                 coq::TopLevelItem::trait_module(
                     name,
                     &ty_params
@@ -2120,70 +2115,69 @@ impl TopLevelItem {
                             )
                         })
                         .collect::<Vec<_>>(),
-                    &coq_predicates,
-                    &[],
-                    &body
-                        .iter()
-                        .map(|(name, item)| match item {
-                            TraitItem::Definition {
-                                ty_params,
-                                where_predicates,
-                                ty,
-                            } => vec![coq::ClassFieldDef::new(
-                                &Some(name.to_owned()),
-                                &[
-                                    if ty_params.is_empty() {
-                                        vec![]
-                                    } else {
-                                        vec![coq::ArgDecl::new(
-                                            &coq::ArgDeclVar::Simple {
-                                                idents: ty_params.to_owned(),
-                                                ty: Some(coq::Expression::Set),
-                                            },
-                                            coq::ArgSpecKind::Implicit,
-                                        )]
-                                    },
-                                    if where_predicates.is_empty() {
-                                        vec![]
-                                    } else {
-                                        vec![WherePredicate::vec_to_coq(where_predicates)]
-                                    },
+                    &vec![
+                        predicates
+                            .iter()
+                            .map(|predicate| {
+                                coq::ClassFieldDef::new(
+                                    &None,
+                                    &[],
+                                    &predicate.bound.to_coq(predicate.ty.to_coq()),
+                                )
+                            })
+                            .collect(),
+                        body.iter()
+                            .map(|(name, item)| match item {
+                                TraitItem::Definition {
+                                    ty_params,
+                                    where_predicates,
+                                    ty,
+                                } => vec![coq::ClassFieldDef::new(
+                                    &Some(name.to_owned()),
+                                    &[
+                                        if ty_params.is_empty() {
+                                            vec![]
+                                        } else {
+                                            vec![coq::ArgDecl::new(
+                                                &coq::ArgDeclVar::Simple {
+                                                    idents: ty_params.to_owned(),
+                                                    ty: Some(coq::Expression::Set),
+                                                },
+                                                coq::ArgSpecKind::Implicit,
+                                            )]
+                                        },
+                                        if where_predicates.is_empty() {
+                                            vec![]
+                                        } else {
+                                            vec![WherePredicate::vec_to_coq(where_predicates)]
+                                        },
+                                    ]
+                                    .concat(),
+                                    &ty.to_coq(),
+                                )],
+                                TraitItem::DefinitionWithDefault { .. } => vec![],
+                                TraitItem::Type(bounds) => [
+                                    vec![coq::ClassFieldDef::new(
+                                        &Some(name.to_owned()),
+                                        &[],
+                                        &coq::Expression::Set,
+                                    )],
+                                    bounds
+                                        .iter()
+                                        .map(|bound| {
+                                            coq::ClassFieldDef::new(
+                                                &None,
+                                                &[],
+                                                &bound.to_coq(coq::Expression::just_name(name)),
+                                            )
+                                        })
+                                        .collect::<Vec<_>>(),
                                 ]
                                 .concat(),
-                                &ty.to_coq(),
-                            )],
-                            TraitItem::DefinitionWithDefault { .. } => vec![],
-                            TraitItem::Type(_bounds) => [
-                                vec![coq::ClassFieldDef::new(
-                                    &Some(name.to_owned()),
-                                    &[],
-                                    &coq::Expression::Set,
-                                )],
-                                // @TODO: using sub-classes
-                                // if bounds.is_empty() {
-                                //     vec![]
-                                // } else {
-                                //     vec![coq::ClassFieldDef::new(
-                                //         &None,
-                                //         &[],
-                                //         &coq::Expression::SigmaType {
-                                //             args: bounds
-                                //                 .iter()
-                                //                 .map(|bound| {
-                                //                     bound.to_coq(
-                                //                         coq::Expression::just_name(name),
-                                //                         coq::ArgSpecKind::Explicit,
-                                //                     )
-                                //                 })
-                                //                 .collect::<Vec<_>>(),
-                                //             image: Box::new(coq::Expression::Unit),
-                                //         },
-                                //     )]
-                                // },
-                            ]
+                            })
                             .concat(),
-                        })
-                        .concat(),
+                    ]
+                    .concat(),
                     &body
                         .iter()
                         .filter_map(|(name, item)| match item {
