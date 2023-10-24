@@ -30,7 +30,7 @@ Module Impl_scoping_rules_lifetimes_methods_Owner.
         let* α1 := α0.["0"] in
         let* α2 := M.alloc 1 in
         assign_op add α1 α2 in
-      Pure tt.
+      M.alloc tt.
     
     Global Instance AssociatedFunction_add_one :
       Notation.DoubleColon Self "add_one" := {
@@ -58,8 +58,8 @@ Module Impl_scoping_rules_lifetimes_methods_Owner.
           let* α13 := pointer_coercion "Unsize" α12 in
           let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
           std.io.stdio._print α14 in
-        Pure tt in
-      Pure tt.
+        M.alloc tt in
+      M.alloc tt.
     
     Global Instance AssociatedFunction_print :
       Notation.DoubleColon Self "print" := {
@@ -69,7 +69,7 @@ Module Impl_scoping_rules_lifetimes_methods_Owner.
 End Impl_scoping_rules_lifetimes_methods_Owner.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
+Definition main `{State.Trait} : M unit :=
   let* owner :=
     let* α0 := M.alloc 18 in
     Pure (scoping_rules_lifetimes_methods.Owner.Build_t α0) in
@@ -79,4 +79,4 @@ Definition main : M unit :=
   let* _ :=
     let* α0 := borrow owner scoping_rules_lifetimes_methods.Owner in
     scoping_rules_lifetimes_methods.Owner::["print"] α0 in
-  Pure tt.
+  M.alloc tt.

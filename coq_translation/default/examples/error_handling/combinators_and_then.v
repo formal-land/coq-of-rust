@@ -94,6 +94,7 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Day.
 End Impl_core_fmt_Debug_for_combinators_and_then_Day.
 
 Definition have_ingredients
+    `{State.Trait}
     (food : combinators_and_then.Food)
     : M (core.option.Option combinators_and_then.Food) :=
   match food with
@@ -102,6 +103,7 @@ Definition have_ingredients
   end.
 
 Definition have_recipe
+    `{State.Trait}
     (food : combinators_and_then.Food)
     : M (core.option.Option combinators_and_then.Food) :=
   match food with
@@ -110,6 +112,7 @@ Definition have_recipe
   end.
 
 Definition cookable_v1
+    `{State.Trait}
     (food : combinators_and_then.Food)
     : M (core.option.Option combinators_and_then.Food) :=
   let* α0 := combinators_and_then.have_recipe food in
@@ -124,12 +127,14 @@ Definition cookable_v1
   end.
 
 Definition cookable_v2
+    `{State.Trait}
     (food : combinators_and_then.Food)
     : M (core.option.Option combinators_and_then.Food) :=
   let* α0 := combinators_and_then.have_recipe food in
   (core.option.Option _)::["and_then"] α0 combinators_and_then.have_ingredients.
 
 Definition eat
+    `{State.Trait}
     (food : combinators_and_then.Food)
     (day : combinators_and_then.Day)
     : M unit :=
@@ -159,7 +164,7 @@ Definition eat
       let* α15 := pointer_coercion "Unsize" α14 in
       let* α16 := core.fmt.Arguments::["new_v1"] α3 α15 in
       std.io.stdio._print α16 in
-    Pure tt
+    M.alloc tt
   | core.option.Option  =>
     let* _ :=
       let* α0 :=
@@ -180,11 +185,11 @@ Definition eat
       let* α11 := pointer_coercion "Unsize" α10 in
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
-    Pure tt
+    M.alloc tt
   end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
+Definition main `{State.Trait} : M unit :=
   let '(cordon_bleu, steak, sushi) :=
     (combinators_and_then.Food.CordonBleu tt,
       combinators_and_then.Food.Steak tt,
@@ -195,4 +200,4 @@ Definition main : M unit :=
     combinators_and_then.eat steak (combinators_and_then.Day.Tuesday tt) in
   let* _ :=
     combinators_and_then.eat sushi (combinators_and_then.Day.Wednesday tt) in
-  Pure tt.
+  M.alloc tt.

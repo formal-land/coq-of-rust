@@ -186,21 +186,21 @@ Module Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
 End Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
+Definition main `{State.Trait} : M unit :=
   let* _tuple1 :=
-    let* α0 := "Q"%char in
+    let* α0 := M.alloc "Q"%char in
     Pure
       (generics_phantom_type.PhantomTuple.Build_t
         α0
         (core.marker.PhantomData.Build_t tt)) in
   let* _tuple2 :=
-    let* α0 := "Q"%char in
+    let* α0 := M.alloc "Q"%char in
     Pure
       (generics_phantom_type.PhantomTuple.Build_t
         α0
         (core.marker.PhantomData.Build_t tt)) in
   let* _struct1 :=
-    let* α0 := "Q"%char in
+    let* α0 := M.alloc "Q"%char in
     M.alloc
       {|
         generics_phantom_type.PhantomStruct.first := α0;
@@ -208,11 +208,11 @@ Definition main : M unit :=
           core.marker.PhantomData.Build_t tt;
       |} in
   let* _struct2 :=
-    let* α0 := "Q"%char in
+    let* α0 := M.alloc "Q"%char in
     M.alloc
       {|
         generics_phantom_type.PhantomStruct.first := α0;
         generics_phantom_type.PhantomStruct.phantom :=
           core.marker.PhantomData.Build_t tt;
       |} in
-  Pure tt.
+  M.alloc tt.

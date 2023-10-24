@@ -83,7 +83,7 @@ Module Impl_core_clone_Clone_for_box_stack_heap_Point.
     
     (* #[allow(dead_code)] - function was ignored by the compiler *)
     Definition clone (self : ref Self) : M box_stack_heap.Point :=
-      let _ := tt in
+      let* _ := M.alloc tt in
       deref self box_stack_heap.Point.
     
     Global Instance AssociatedFunction_clone :
@@ -141,12 +141,13 @@ Module Rectangle.
 End Rectangle.
 Definition Rectangle `{State.Trait} : Set := M.val Rectangle.t.
 
-Definition origin : M box_stack_heap.Point :=
+Definition origin `{State.Trait} : M box_stack_heap.Point :=
   let* α0 := M.alloc 0 (* 0.0 *) in
   let* α1 := M.alloc 0 (* 0.0 *) in
   M.alloc {| box_stack_heap.Point.x := α0; box_stack_heap.Point.y := α1; |}.
 
 Definition boxed_origin
+    `{State.Trait}
     : M (alloc.boxed.Box box_stack_heap.Point alloc.boxed.Box.Default.A) :=
   let* α0 := M.alloc 0 (* 0.0 *) in
   let* α1 := M.alloc 0 (* 0.0 *) in
@@ -155,7 +156,7 @@ Definition boxed_origin
   (alloc.boxed.Box _ alloc.alloc.Global)::["new"] α2.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
+Definition main `{State.Trait} : M unit :=
   let* point := box_stack_heap.origin in
   let* rectangle :=
     let* α0 := box_stack_heap.origin in
@@ -213,7 +214,7 @@ Definition main : M unit :=
       let* α15 := pointer_coercion "Unsize" α14 in
       let* α16 := core.fmt.Arguments::["new_v1"] α3 α15 in
       std.io.stdio._print α16 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -238,7 +239,7 @@ Definition main : M unit :=
       let* α15 := pointer_coercion "Unsize" α14 in
       let* α16 := core.fmt.Arguments::["new_v1"] α3 α15 in
       std.io.stdio._print α16 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -268,7 +269,7 @@ Definition main : M unit :=
       let* α15 := pointer_coercion "Unsize" α14 in
       let* α16 := core.fmt.Arguments::["new_v1"] α3 α15 in
       std.io.stdio._print α16 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -302,7 +303,7 @@ Definition main : M unit :=
       let* α15 := pointer_coercion "Unsize" α14 in
       let* α16 := core.fmt.Arguments::["new_v1"] α3 α15 in
       std.io.stdio._print α16 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -342,7 +343,7 @@ Definition main : M unit :=
       let* α15 := pointer_coercion "Unsize" α14 in
       let* α16 := core.fmt.Arguments::["new_v1"] α3 α15 in
       std.io.stdio._print α16 in
-    Pure tt in
+    M.alloc tt in
   let* unboxed_point := deref boxed_point box_stack_heap.Point in
   let* _ :=
     let* _ :=
@@ -368,5 +369,5 @@ Definition main : M unit :=
       let* α15 := pointer_coercion "Unsize" α14 in
       let* α16 := core.fmt.Arguments::["new_v1"] α3 α15 in
       std.io.stdio._print α16 in
-    Pure tt in
-  Pure tt.
+    M.alloc tt in
+  M.alloc tt.

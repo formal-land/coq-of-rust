@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
+Definition main `{State.Trait} : M unit :=
   let* _ :=
     let* _ :=
       let* α0 := borrow [ mk_str "1 + 2 = "; mk_str "
@@ -23,7 +23,7 @@ Definition main : M unit :=
       let* α14 := pointer_coercion "Unsize" α13 in
       let* α15 := core.fmt.Arguments::["new_v1"] α3 α14 in
       std.io.stdio._print α15 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* _ :=
       let* α0 := borrow [ mk_str "1 - 2 = "; mk_str "
@@ -44,7 +44,7 @@ Definition main : M unit :=
       let* α14 := pointer_coercion "Unsize" α13 in
       let* α15 := core.fmt.Arguments::["new_v1"] α3 α14 in
       std.io.stdio._print α15 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -53,8 +53,8 @@ Definition main : M unit :=
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
       let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := true in
-      let* α5 := false in
+      let* α4 := M.alloc true in
+      let* α5 := M.alloc false in
       let* α6 := and α4 α5 in
       let* α7 := borrow α6 bool in
       let* α8 := deref α7 bool in
@@ -66,7 +66,7 @@ Definition main : M unit :=
       let* α14 := pointer_coercion "Unsize" α13 in
       let* α15 := core.fmt.Arguments::["new_v1"] α3 α14 in
       std.io.stdio._print α15 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -75,8 +75,8 @@ Definition main : M unit :=
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
       let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := true in
-      let* α5 := false in
+      let* α4 := M.alloc true in
+      let* α5 := M.alloc false in
       let* α6 := or α4 α5 in
       let* α7 := borrow α6 bool in
       let* α8 := deref α7 bool in
@@ -88,7 +88,7 @@ Definition main : M unit :=
       let* α14 := pointer_coercion "Unsize" α13 in
       let* α15 := core.fmt.Arguments::["new_v1"] α3 α14 in
       std.io.stdio._print α15 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -97,7 +97,7 @@ Definition main : M unit :=
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
       let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := true in
+      let* α4 := M.alloc true in
       let* α5 := not α4 in
       let* α6 := borrow α5 bool in
       let* α7 := deref α6 bool in
@@ -109,7 +109,7 @@ Definition main : M unit :=
       let* α13 := pointer_coercion "Unsize" α12 in
       let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
       std.io.stdio._print α14 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -130,7 +130,7 @@ Definition main : M unit :=
       let* α13 := borrow α12 (list core.fmt.rt.Argument) in
       let* α14 := pointer_coercion "Unsize" α13 in
       let* α15 := M.alloc 0 in
-      let* α16 := " "%char in
+      let* α16 := M.alloc " "%char in
       let* α17 := M.alloc 8 in
       let* α18 := M.alloc 4 in
       let* α19 := "unimplemented parent_kind" α18 in
@@ -149,7 +149,7 @@ Definition main : M unit :=
       let* α25 := core.fmt.rt.UnsafeArg::["new"] in
       let* α26 := core.fmt.Arguments::["new_v1_formatted"] α3 α14 α24 α25 in
       std.io.stdio._print α26 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -170,7 +170,7 @@ Definition main : M unit :=
       let* α13 := borrow α12 (list core.fmt.rt.Argument) in
       let* α14 := pointer_coercion "Unsize" α13 in
       let* α15 := M.alloc 0 in
-      let* α16 := " "%char in
+      let* α16 := M.alloc " "%char in
       let* α17 := M.alloc 8 in
       let* α18 := M.alloc 4 in
       let* α19 := "unimplemented parent_kind" α18 in
@@ -189,7 +189,7 @@ Definition main : M unit :=
       let* α25 := core.fmt.rt.UnsafeArg::["new"] in
       let* α26 := core.fmt.Arguments::["new_v1_formatted"] α3 α14 α24 α25 in
       std.io.stdio._print α26 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -210,7 +210,7 @@ Definition main : M unit :=
       let* α13 := borrow α12 (list core.fmt.rt.Argument) in
       let* α14 := pointer_coercion "Unsize" α13 in
       let* α15 := M.alloc 0 in
-      let* α16 := " "%char in
+      let* α16 := M.alloc " "%char in
       let* α17 := M.alloc 8 in
       let* α18 := M.alloc 4 in
       let* α19 := "unimplemented parent_kind" α18 in
@@ -229,7 +229,7 @@ Definition main : M unit :=
       let* α25 := core.fmt.rt.UnsafeArg::["new"] in
       let* α26 := core.fmt.Arguments::["new_v1_formatted"] α3 α14 α24 α25 in
       std.io.stdio._print α26 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* _ :=
       let* α0 := borrow [ mk_str "1 << 5 is "; mk_str "
@@ -250,7 +250,7 @@ Definition main : M unit :=
       let* α14 := pointer_coercion "Unsize" α13 in
       let* α15 := core.fmt.Arguments::["new_v1"] α3 α14 in
       std.io.stdio._print α15 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -272,7 +272,7 @@ Definition main : M unit :=
       let* α14 := pointer_coercion "Unsize" α13 in
       let* α15 := core.fmt.Arguments::["new_v1"] α3 α14 in
       std.io.stdio._print α15 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -289,5 +289,5 @@ Definition main : M unit :=
       let* α7 := pointer_coercion "Unsize" α6 in
       let* α8 := core.fmt.Arguments::["new_v1"] α3 α7 in
       std.io.stdio._print α8 in
-    Pure tt in
-  Pure tt.
+    M.alloc tt in
+  M.alloc tt.

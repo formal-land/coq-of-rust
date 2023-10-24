@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
+Definition main `{State.Trait} : M unit :=
   let* raw_p :=
     let* α0 := M.alloc 10 in
     let* α1 := borrow α0 u32 in
@@ -19,5 +19,5 @@ Definition main : M unit :=
         core.panicking.panic (mk_str "assertion failed: *raw_p == 10") in
       never_to_any α0
     else
-      Pure tt in
-  Pure tt.
+      M.alloc tt in
+  M.alloc tt.

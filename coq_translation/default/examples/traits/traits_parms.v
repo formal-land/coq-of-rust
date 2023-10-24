@@ -111,7 +111,7 @@ Module Impl_traits_parms_SomeTrait_for_traits_parms_SomeOtherType.
     
     Definition SomeType : Set := traits_parms.SomeOtherType.
     
-    Definition some_fn : M unit := Pure tt.
+    Definition some_fn : M unit := M.alloc tt.
     
     Global Instance AssociatedFunction_some_fn :
       Notation.DoubleColon Self "some_fn" := {

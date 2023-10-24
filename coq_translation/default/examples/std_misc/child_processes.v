@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
+Definition main `{State.Trait} : M unit :=
   let* output :=
     let* α0 := std.process.Command::["new"] (mk_str "rustc") in
     let* α1 := borrow_mut α0 std.process.Command in
@@ -62,8 +62,8 @@ Definition main : M unit :=
         let* α11 := pointer_coercion "Unsize" α10 in
         let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
         std.io.stdio._print α12 in
-      Pure tt in
-    Pure tt
+      M.alloc tt in
+    M.alloc tt
   else
     let* s :=
       let* α0 := output.["stderr"] in
@@ -92,5 +92,5 @@ Definition main : M unit :=
         let* α11 := pointer_coercion "Unsize" α10 in
         let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
         std.io.stdio._print α12 in
-      Pure tt in
-    Pure tt.
+      M.alloc tt in
+    M.alloc tt.

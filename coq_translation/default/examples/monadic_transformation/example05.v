@@ -37,9 +37,9 @@ Module Impl_example05_Foo.
 End Impl_example05_Foo.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
+Definition main `{State.Trait} : M unit :=
   let* foo :=
     let* α0 := M.alloc 0 in
     Pure (example05.Foo.Build_t α0) in
   let* _ := example05.Foo::["plus1"] foo in
-  Pure tt.
+  M.alloc tt.

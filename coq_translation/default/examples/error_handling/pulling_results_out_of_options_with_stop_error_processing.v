@@ -2,6 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition double_first
+    `{State.Trait}
     (vec : alloc.vec.Vec (ref str) alloc.vec.Vec.Default.A)
     :
       M
@@ -30,7 +31,7 @@ Definition double_first
     (core.result.Result _ _)::["map"] r "unimplemented parent_kind".
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
+Definition main `{State.Trait} : M unit :=
   let* numbers :=
     let* α0 := deref (mk_str "93") str in
     let* α1 := borrow α0 str in
@@ -90,7 +91,7 @@ Definition main : M unit :=
       let* α12 := pointer_coercion "Unsize" α11 in
       let* α13 := core.fmt.Arguments::["new_v1"] α3 α12 in
       std.io.stdio._print α13 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -129,7 +130,7 @@ Definition main : M unit :=
       let* α12 := pointer_coercion "Unsize" α11 in
       let* α13 := core.fmt.Arguments::["new_v1"] α3 α12 in
       std.io.stdio._print α13 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -168,5 +169,5 @@ Definition main : M unit :=
       let* α12 := pointer_coercion "Unsize" α11 in
       let* α13 := core.fmt.Arguments::["new_v1"] α3 α12 in
       std.io.stdio._print α13 in
-    Pure tt in
-  Pure tt.
+    M.alloc tt in
+  M.alloc tt.

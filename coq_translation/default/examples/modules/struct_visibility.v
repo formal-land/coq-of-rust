@@ -131,7 +131,7 @@ Module Impl_struct_visibility_my_ClosedBox_T_2.
 End Impl_struct_visibility_my_ClosedBox_T_2.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
+Definition main `{State.Trait} : M unit :=
   let* open_box :=
     M.alloc
       {| struct_visibility.my.OpenBox.contents := mk_str "public information";
@@ -157,8 +157,8 @@ Definition main : M unit :=
       let* α12 := pointer_coercion "Unsize" α11 in
       let* α13 := core.fmt.Arguments::["new_v1"] α3 α12 in
       std.io.stdio._print α13 in
-    Pure tt in
+    M.alloc tt in
   let* _closed_box :=
     (struct_visibility.my.ClosedBox _)::["new"]
       (mk_str "classified information") in
-  Pure tt.
+  M.alloc tt.

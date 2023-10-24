@@ -15,7 +15,7 @@ End Color.
 Definition Color `{State.Trait} : Set := Color.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
+Definition main `{State.Trait} : M unit :=
   let* color :=
     let* α0 := M.alloc 122 in
     let* α1 := M.alloc 17 in
@@ -30,7 +30,7 @@ Definition main : M unit :=
       let* α3 := pointer_coercion "Unsize" α2 in
       let* α4 := core.fmt.Arguments::["new_const"] α3 in
       std.io.stdio._print α4 in
-    Pure tt in
+    M.alloc tt in
   match color with
   | match_destructuring_enums.Color  =>
     let* _ :=
@@ -41,7 +41,7 @@ Definition main : M unit :=
       let* α3 := pointer_coercion "Unsize" α2 in
       let* α4 := core.fmt.Arguments::["new_const"] α3 in
       std.io.stdio._print α4 in
-    Pure tt
+    M.alloc tt
   | match_destructuring_enums.Color  =>
     let* _ :=
       let* α0 := borrow [ mk_str "The color is Blue!
@@ -51,7 +51,7 @@ Definition main : M unit :=
       let* α3 := pointer_coercion "Unsize" α2 in
       let* α4 := core.fmt.Arguments::["new_const"] α3 in
       std.io.stdio._print α4 in
-    Pure tt
+    M.alloc tt
   | match_destructuring_enums.Color  =>
     let* _ :=
       let* α0 := borrow [ mk_str "The color is Green!
@@ -61,7 +61,7 @@ Definition main : M unit :=
       let* α3 := pointer_coercion "Unsize" α2 in
       let* α4 := core.fmt.Arguments::["new_const"] α3 in
       std.io.stdio._print α4 in
-    Pure tt
+    M.alloc tt
   | match_destructuring_enums.Color r g b =>
     let* _ :=
       let* α0 :=
@@ -95,7 +95,7 @@ Definition main : M unit :=
       let* α19 := pointer_coercion "Unsize" α18 in
       let* α20 := core.fmt.Arguments::["new_v1"] α3 α19 in
       std.io.stdio._print α20 in
-    Pure tt
+    M.alloc tt
   | match_destructuring_enums.Color h s v =>
     let* _ :=
       let* α0 :=
@@ -129,7 +129,7 @@ Definition main : M unit :=
       let* α19 := pointer_coercion "Unsize" α18 in
       let* α20 := core.fmt.Arguments::["new_v1"] α3 α19 in
       std.io.stdio._print α20 in
-    Pure tt
+    M.alloc tt
   | match_destructuring_enums.Color h s l =>
     let* _ :=
       let* α0 :=
@@ -163,7 +163,7 @@ Definition main : M unit :=
       let* α19 := pointer_coercion "Unsize" α18 in
       let* α20 := core.fmt.Arguments::["new_v1"] α3 α19 in
       std.io.stdio._print α20 in
-    Pure tt
+    M.alloc tt
   | match_destructuring_enums.Color c m y =>
     let* _ :=
       let* α0 :=
@@ -197,7 +197,7 @@ Definition main : M unit :=
       let* α19 := pointer_coercion "Unsize" α18 in
       let* α20 := core.fmt.Arguments::["new_v1"] α3 α19 in
       std.io.stdio._print α20 in
-    Pure tt
+    M.alloc tt
   | match_destructuring_enums.Color c m y k =>
     let* _ :=
       let* α0 :=
@@ -236,5 +236,5 @@ Definition main : M unit :=
       let* α23 := pointer_coercion "Unsize" α22 in
       let* α24 := core.fmt.Arguments::["new_v1"] α3 α23 in
       std.io.stdio._print α24 in
-    Pure tt
+    M.alloc tt
   end.

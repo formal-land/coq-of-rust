@@ -16,7 +16,7 @@ End Work.
 Definition Work `{State.Trait} : Set := Work.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
+Definition main `{State.Trait} : M unit :=
   let status := enums_use.Status.Poor tt in
   let work := enums_use.Work.Civilian tt in
   let* _ :=
@@ -31,7 +31,7 @@ Definition main : M unit :=
         let* α3 := pointer_coercion "Unsize" α2 in
         let* α4 := core.fmt.Arguments::["new_const"] α3 in
         std.io.stdio._print α4 in
-      Pure tt
+      M.alloc tt
     | enums_use.Status  =>
       let* _ :=
         let* α0 :=
@@ -42,7 +42,7 @@ Definition main : M unit :=
         let* α3 := pointer_coercion "Unsize" α2 in
         let* α4 := core.fmt.Arguments::["new_const"] α3 in
         std.io.stdio._print α4 in
-      Pure tt
+      M.alloc tt
     end in
   match work with
   | enums_use.Work  =>
@@ -54,7 +54,7 @@ Definition main : M unit :=
       let* α3 := pointer_coercion "Unsize" α2 in
       let* α4 := core.fmt.Arguments::["new_const"] α3 in
       std.io.stdio._print α4 in
-    Pure tt
+    M.alloc tt
   | enums_use.Work  =>
     let* _ :=
       let* α0 := borrow [ mk_str "Soldiers fight!
@@ -64,5 +64,5 @@ Definition main : M unit :=
       let* α3 := pointer_coercion "Unsize" α2 in
       let* α4 := core.fmt.Arguments::["new_const"] α3 in
       std.io.stdio._print α4 in
-    Pure tt
+    M.alloc tt
   end.

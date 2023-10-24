@@ -2,6 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition multiply
+    `{State.Trait}
     (first_number_str : ref str)
     (second_number_str : ref str)
     : M (core.result.Result i32 core.num.error.ParseIntError) :=
@@ -33,6 +34,7 @@ Definition multiply
   Pure (core.result.Result.Ok α0).
 
 Definition print
+    `{State.Trait}
     (result : core.result.Result i32 core.num.error.ParseIntError)
     : M unit :=
   match result with
@@ -53,7 +55,7 @@ Definition print
       let* α11 := pointer_coercion "Unsize" α10 in
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
-    Pure tt
+    M.alloc tt
   | core.result.Result e =>
     let* _ :=
       let* α0 := borrow [ mk_str "Error: "; mk_str "
@@ -71,11 +73,11 @@ Definition print
       let* α11 := pointer_coercion "Unsize" α10 in
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
-    Pure tt
+    M.alloc tt
   end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
+Definition main `{State.Trait} : M unit :=
   let* _ :=
     let* α0 := deref (mk_str "10") str in
     let* α1 := borrow α0 str in
@@ -90,4 +92,4 @@ Definition main : M unit :=
     let* α3 := borrow α2 str in
     let* α4 := introducing_question_mark.multiply α1 α3 in
     introducing_question_mark.print α4 in
-  Pure tt.
+  M.alloc tt.

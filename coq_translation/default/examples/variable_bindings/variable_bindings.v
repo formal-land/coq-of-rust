@@ -2,10 +2,10 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
+Definition main `{State.Trait} : M unit :=
   let* an_integer := M.alloc 1 in
-  let* a_boolean := true in
-  let unit := tt in
+  let* a_boolean := M.alloc true in
+  let* unit_ := M.alloc tt in
   let copied_integer := an_integer in
   let* _ :=
     let* _ :=
@@ -25,7 +25,7 @@ Definition main : M unit :=
       let* α11 := pointer_coercion "Unsize" α10 in
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* _ :=
       let* α0 := borrow [ mk_str "A boolean: "; mk_str "
@@ -43,7 +43,7 @@ Definition main : M unit :=
       let* α11 := pointer_coercion "Unsize" α10 in
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -54,7 +54,7 @@ Definition main : M unit :=
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
       let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := borrow unit unit in
+      let* α4 := borrow unit_ unit in
       let* α5 := deref α4 unit in
       let* α6 := borrow α5 unit in
       let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
@@ -64,7 +64,7 @@ Definition main : M unit :=
       let* α11 := pointer_coercion "Unsize" α10 in
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
-    Pure tt in
+    M.alloc tt in
   let* _unused_variable := M.alloc 3 in
   let* _noisy_unused_variable := M.alloc 2 in
-  Pure tt.
+  M.alloc tt.

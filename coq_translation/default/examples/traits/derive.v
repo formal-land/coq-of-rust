@@ -184,7 +184,7 @@ End Seconds.
 Definition Seconds `{State.Trait} : Set := M.val Seconds.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
+Definition main `{State.Trait} : M unit :=
   let* _one_second :=
     let* α0 := M.alloc 1 in
     Pure (derive.Seconds.Build_t α0) in
@@ -209,7 +209,7 @@ Definition main : M unit :=
       let* α11 := pointer_coercion "Unsize" α10 in
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
-    Pure tt in
+    M.alloc tt in
   let* meter :=
     let* α0 := M.alloc 100 (* 100.0 *) in
     Pure (derive.Centimeters.Build_t α0) in
@@ -245,5 +245,5 @@ Definition main : M unit :=
       let* α11 := pointer_coercion "Unsize" α10 in
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
-    Pure tt in
-  Pure tt.
+    M.alloc tt in
+  M.alloc tt.

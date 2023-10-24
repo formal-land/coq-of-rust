@@ -41,7 +41,7 @@ Module Impl_functions_order_SomeType.
     
     Definition Self : Set := functions_order.SomeType.
     
-    Definition meth2 (self : Self) : M unit := Pure tt.
+    Definition meth2 (self : Self) : M unit := M.alloc tt.
     
     Global Instance AssociatedFunction_meth2 :
       Notation.DoubleColon Self "meth2" := {
@@ -50,7 +50,7 @@ Module Impl_functions_order_SomeType.
     
     Definition meth1 (self : Self) : M unit :=
       let* _ := functions_order.SomeType::["meth2"] self in
-      Pure tt.
+      M.alloc tt.
     
     Global Instance AssociatedFunction_meth1 :
       Notation.DoubleColon Self "meth1" := {
@@ -77,7 +77,7 @@ Module Impl_functions_order_SomeTrait_for_functions_order_SomeType.
     
     Definition Self : Set := functions_order.SomeType.
     
-    Definition some_trait_bar (self : ref Self) : M unit := Pure tt.
+    Definition some_trait_bar (self : ref Self) : M unit := M.alloc tt.
     
     Global Instance AssociatedFunction_some_trait_bar :
       Notation.DoubleColon Self "some_trait_bar" := {
@@ -108,14 +108,14 @@ Module Impl_functions_order_SomeTrait_for_functions_order_OtherType.
     
     Definition Self : Set := functions_order.OtherType.
     
-    Definition some_trait_foo (self : ref Self) : M unit := Pure tt.
+    Definition some_trait_foo (self : ref Self) : M unit := M.alloc tt.
     
     Global Instance AssociatedFunction_some_trait_foo :
       Notation.DoubleColon Self "some_trait_foo" := {
       Notation.double_colon := some_trait_foo;
     }.
     
-    Definition some_trait_bar (self : ref Self) : M unit := Pure tt.
+    Definition some_trait_bar (self : ref Self) : M unit := M.alloc tt.
     
     Global Instance AssociatedFunction_some_trait_bar :
       Notation.DoubleColon Self "some_trait_bar" := {
@@ -130,7 +130,7 @@ Module Impl_functions_order_SomeTrait_for_functions_order_OtherType.
   Global Hint Resolve I : core.
 End Impl_functions_order_SomeTrait_for_functions_order_OtherType.
 
-Definition depends_on_trait_impl (u : u32) (b : bool) : M unit :=
+Definition depends_on_trait_impl `{State.Trait} (u : u32) (b : bool) : M unit :=
   let* _ :=
     let* α0 :=
       borrow (functions_order.OtherType.Build_t b) functions_order.OtherType in
@@ -139,51 +139,51 @@ Definition depends_on_trait_impl (u : u32) (b : bool) : M unit :=
     let* α0 :=
       borrow (functions_order.SomeType.Build_t u) functions_order.SomeType in
     functions_order.SomeTrait.some_trait_foo α0 in
-  Pure tt.
+  M.alloc tt.
 
 Module inner_mod.
-  Definition tar : M unit := Pure tt.
+  Definition tar `{State.Trait} : M unit := M.alloc tt.
   
-  Definition bar : M unit :=
+  Definition bar `{State.Trait} : M unit :=
     let* _ := functions_order.inner_mod.tar in
-    Pure tt.
+    M.alloc tt.
   
   Module nested_mod.
-    Definition tack : M unit := Pure tt.
+    Definition tack `{State.Trait} : M unit := M.alloc tt.
     
-    Definition tick : M unit :=
+    Definition tick `{State.Trait} : M unit :=
       let* _ := functions_order.inner_mod.nested_mod.tack in
-      Pure tt.
+      M.alloc tt.
   End nested_mod.
 End inner_mod.
 
-Definition bar : M unit :=
+Definition bar `{State.Trait} : M unit :=
   let* _ := functions_order.inner_mod.tar in
-  Pure tt.
+  M.alloc tt.
 
-Definition tar : M unit := Pure tt.
+Definition tar `{State.Trait} : M unit := M.alloc tt.
 
 Module nested_mod.
-  Definition tack : M unit := Pure tt.
+  Definition tack `{State.Trait} : M unit := M.alloc tt.
   
-  Definition tick : M unit :=
+  Definition tick `{State.Trait} : M unit :=
     let* _ := functions_order.inner_mod.nested_mod.tack in
-    Pure tt.
+    M.alloc tt.
 End nested_mod.
 
-Definition tick : M unit :=
+Definition tick `{State.Trait} : M unit :=
   let* _ := functions_order.inner_mod.nested_mod.tack in
-  Pure tt.
+  M.alloc tt.
 
-Definition tack : M unit := Pure tt.
+Definition tack `{State.Trait} : M unit := M.alloc tt.
 
-Definition foo : M unit := Pure tt.
+Definition foo `{State.Trait} : M unit := M.alloc tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
+Definition main `{State.Trait} : M unit :=
   let* _ := functions_order.foo in
   let* _ := functions_order.inner_mod.bar in
   let* _ :=
     let* α0 := M.alloc 0 in
     functions_order.SomeType::["meth1"] (functions_order.SomeType.Build_t α0) in
-  Pure tt.
+  M.alloc tt.

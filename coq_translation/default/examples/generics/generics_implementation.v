@@ -84,7 +84,7 @@ Module Impl_generics_implementation_GenVal_T.
 End Impl_generics_implementation_GenVal_T.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
+Definition main `{State.Trait} : M unit :=
   let* x :=
     let* α0 := M.alloc 3 (* 3.0 *) in
     M.alloc {| generics_implementation.Val.val := α0; |} in
@@ -117,5 +117,5 @@ Definition main : M unit :=
       let* α19 := pointer_coercion "Unsize" α18 in
       let* α20 := core.fmt.Arguments::["new_v1"] α3 α19 in
       std.io.stdio._print α20 in
-    Pure tt in
-  Pure tt.
+    M.alloc tt in
+  M.alloc tt.

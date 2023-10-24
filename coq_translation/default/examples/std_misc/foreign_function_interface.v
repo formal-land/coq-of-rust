@@ -4,12 +4,13 @@ Require Import CoqOfRust.CoqOfRust.
 Error ForeignMod.
 
 Definition cos
+    `{State.Trait}
     (z : foreign_function_interface.Complex)
     : M foreign_function_interface.Complex :=
   "unimplemented parent_kind" z.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
+Definition main `{State.Trait} : M unit :=
   let* z :=
     let* α0 := M.alloc (- 1 (* 1. *)) in
     let* α1 := M.alloc 0 (* 0. *) in
@@ -43,7 +44,7 @@ Definition main : M unit :=
       let* α15 := pointer_coercion "Unsize" α14 in
       let* α16 := core.fmt.Arguments::["new_v1"] α3 α15 in
       std.io.stdio._print α16 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -67,8 +68,8 @@ Definition main : M unit :=
       let* α16 := pointer_coercion "Unsize" α15 in
       let* α17 := core.fmt.Arguments::["new_v1"] α3 α16 in
       std.io.stdio._print α17 in
-    Pure tt in
-  Pure tt.
+    M.alloc tt in
+  M.alloc tt.
 
 Module Complex.
   Section Complex.
@@ -104,7 +105,7 @@ Module Impl_core_clone_Clone_for_foreign_function_interface_Complex.
     Definition Self : Set := foreign_function_interface.Complex.
     
     Definition clone (self : ref Self) : M foreign_function_interface.Complex :=
-      let _ := tt in
+      let* _ := M.alloc tt in
       deref self foreign_function_interface.Complex.
     
     Global Instance AssociatedFunction_clone :

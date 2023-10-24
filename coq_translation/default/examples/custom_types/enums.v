@@ -20,7 +20,7 @@ Module WebEvent.
 End WebEvent.
 Definition WebEvent `{State.Trait} : Set := WebEvent.t.
 
-Definition inspect (event : enums.WebEvent) : M unit :=
+Definition inspect `{State.Trait} (event : enums.WebEvent) : M unit :=
   match event with
   | enums.WebEvent  =>
     let* _ :=
@@ -38,7 +38,7 @@ Definition inspect (event : enums.WebEvent) : M unit :=
       let* α3 := pointer_coercion "Unsize" α2 in
       let* α4 := core.fmt.Arguments::["new_const"] α3 in
       std.io.stdio._print α4 in
-    Pure tt
+    M.alloc tt
   | enums.WebEvent  =>
     let* _ :=
       let* α0 := borrow [ mk_str "page unloaded
@@ -48,7 +48,7 @@ Definition inspect (event : enums.WebEvent) : M unit :=
       let* α3 := pointer_coercion "Unsize" α2 in
       let* α4 := core.fmt.Arguments::["new_const"] α3 in
       std.io.stdio._print α4 in
-    Pure tt
+    M.alloc tt
   | enums.WebEvent c =>
     let* _ :=
       let* α0 := borrow [ mk_str "pressed '"; mk_str "'.
@@ -66,7 +66,7 @@ Definition inspect (event : enums.WebEvent) : M unit :=
       let* α11 := pointer_coercion "Unsize" α10 in
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
-    Pure tt
+    M.alloc tt
   | enums.WebEvent s =>
     let* _ :=
       let* α0 := borrow [ mk_str "pasted ""; mk_str "".
@@ -84,7 +84,7 @@ Definition inspect (event : enums.WebEvent) : M unit :=
       let* α11 := pointer_coercion "Unsize" α10 in
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
-    Pure tt
+    M.alloc tt
   | enums.WebEvent {| enums.WebEvent.x := x; enums.WebEvent.y := y; |} =>
     let* _ :=
       let* _ :=
@@ -110,14 +110,14 @@ Definition inspect (event : enums.WebEvent) : M unit :=
         let* α15 := pointer_coercion "Unsize" α14 in
         let* α16 := core.fmt.Arguments::["new_v1"] α3 α15 in
         std.io.stdio._print α16 in
-      Pure tt in
-    Pure tt
+      M.alloc tt in
+    M.alloc tt
   end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
+Definition main `{State.Trait} : M unit :=
   let* pressed :=
-    let* α0 := "x"%char in
+    let* α0 := M.alloc "x"%char in
     Pure (enums.WebEvent.KeyPress α0) in
   let* pasted :=
     let* α0 := deref (mk_str "my text") str in
@@ -140,4 +140,4 @@ Definition main : M unit :=
   let* _ := enums.inspect click in
   let* _ := enums.inspect load in
   let* _ := enums.inspect unload in
-  Pure tt.
+  M.alloc tt.

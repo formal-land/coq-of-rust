@@ -115,7 +115,7 @@ Module Impl_core_ops_arith_Add_for_operator_overloading_Foo.
           let* α3 := pointer_coercion "Unsize" α2 in
           let* α4 := core.fmt.Arguments::["new_const"] α3 in
           std.io.stdio._print α4 in
-        Pure tt in
+        M.alloc tt in
       Pure (operator_overloading.FooBar.Build_t tt).
     
     Global Instance AssociatedFunction_add :
@@ -154,7 +154,7 @@ Module Impl_core_ops_arith_Add_for_operator_overloading_Bar.
           let* α3 := pointer_coercion "Unsize" α2 in
           let* α4 := core.fmt.Arguments::["new_const"] α3 in
           std.io.stdio._print α4 in
-        Pure tt in
+        M.alloc tt in
       Pure (operator_overloading.BarFoo.Build_t tt).
     
     Global Instance AssociatedFunction_add :
@@ -172,7 +172,7 @@ Module Impl_core_ops_arith_Add_for_operator_overloading_Bar.
 End Impl_core_ops_arith_Add_for_operator_overloading_Bar.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
+Definition main `{State.Trait} : M unit :=
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -195,7 +195,7 @@ Definition main : M unit :=
       let* α12 := pointer_coercion "Unsize" α11 in
       let* α13 := core.fmt.Arguments::["new_v1"] α3 α12 in
       std.io.stdio._print α13 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -218,5 +218,5 @@ Definition main : M unit :=
       let* α12 := pointer_coercion "Unsize" α11 in
       let* α13 := core.fmt.Arguments::["new_v1"] α3 α12 in
       std.io.stdio._print α13 in
-    Pure tt in
-  Pure tt.
+    M.alloc tt in
+  M.alloc tt.

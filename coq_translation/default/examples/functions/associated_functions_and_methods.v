@@ -183,7 +183,7 @@ Module Impl_associated_functions_and_methods_Rectangle.
         let* α1 := α0.["p2"] in
         let* α2 := α1.["y"] in
         assign_op add α2 y in
-      Pure tt.
+      M.alloc tt.
     
     Global Instance AssociatedFunction_translate :
       Notation.DoubleColon Self "translate" := {
@@ -245,8 +245,8 @@ Module Impl_associated_functions_and_methods_Pair.
           let* α15 := pointer_coercion "Unsize" α14 in
           let* α16 := core.fmt.Arguments::["new_v1"] α3 α15 in
           std.io.stdio._print α16 in
-        Pure tt in
-      Pure tt.
+        M.alloc tt in
+      M.alloc tt.
     
     Global Instance AssociatedFunction_destroy :
       Notation.DoubleColon Self "destroy" := {
@@ -256,7 +256,7 @@ Module Impl_associated_functions_and_methods_Pair.
 End Impl_associated_functions_and_methods_Pair.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
+Definition main `{State.Trait} : M unit :=
   let* rectangle :=
     let* α0 := associated_functions_and_methods.Point::["origin"] in
     let* α1 := M.alloc 3 (* 3.0 *) in
@@ -289,7 +289,7 @@ Definition main : M unit :=
       let* α13 := pointer_coercion "Unsize" α12 in
       let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
       std.io.stdio._print α14 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -310,7 +310,7 @@ Definition main : M unit :=
       let* α13 := pointer_coercion "Unsize" α12 in
       let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
       std.io.stdio._print α14 in
-    Pure tt in
+    M.alloc tt in
   let* square :=
     let* α0 := associated_functions_and_methods.Point::["origin"] in
     let* α1 := M.alloc 1 (* 1.0 *) in
@@ -333,4 +333,4 @@ Definition main : M unit :=
     let* α3 := (alloc.boxed.Box _ alloc.alloc.Global)::["new"] α2 in
     Pure (associated_functions_and_methods.Pair.Build_t α1 α3) in
   let* _ := associated_functions_and_methods.Pair::["destroy"] pair in
-  Pure tt.
+  M.alloc tt.

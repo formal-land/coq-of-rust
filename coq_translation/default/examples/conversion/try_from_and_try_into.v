@@ -116,7 +116,8 @@ Module Impl_core_convert_TryFrom_for_try_from_and_try_into_EvenNumber.
           (core.result.Result.Ok
             (try_from_and_try_into.EvenNumber.Build_t value))
       else
-        Pure (core.result.Result.Err tt).
+        let* α0 := M.alloc tt in
+        Pure (core.result.Result.Err α0).
     
     Global Instance AssociatedFunction_try_from :
       Notation.DoubleColon Self "try_from" := {
@@ -132,7 +133,7 @@ Module Impl_core_convert_TryFrom_for_try_from_and_try_into_EvenNumber.
 End Impl_core_convert_TryFrom_for_try_from_and_try_into_EvenNumber.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
+Definition main `{State.Trait} : M unit :=
   let* _ :=
     let* α0 := M.alloc 8 in
     let* α1 := core.convert.TryFrom.try_from α0 in
@@ -200,20 +201,22 @@ Definition main : M unit :=
             α3
             α7
             (core.option.Option.None tt) in
-        never_to_any tt
+        let* α0 := M.alloc tt in
+        never_to_any α0
       else
-        Pure tt
+        M.alloc tt
     end in
   let* _ :=
     let* α0 := M.alloc 5 in
     let* α1 := core.convert.TryFrom.try_from α0 in
     let* α2 :=
       borrow α1 (core.result.Result try_from_and_try_into.EvenNumber unit) in
-    let* α3 :=
+    let* α3 := M.alloc tt in
+    let* α4 :=
       borrow
-        (core.result.Result.Err tt)
+        (core.result.Result.Err α3)
         (core.result.Result try_from_and_try_into.EvenNumber unit) in
-    match (α2, α3) with
+    match (α2, α4) with
     | (left_val, right_val) =>
       let* α0 :=
         deref
@@ -270,9 +273,10 @@ Definition main : M unit :=
             α3
             α7
             (core.option.Option.None tt) in
-        never_to_any tt
+        let* α0 := M.alloc tt in
+        never_to_any α0
       else
-        Pure tt
+        M.alloc tt
     end in
   let* result :=
     let* α0 := M.alloc 8 in
@@ -344,9 +348,10 @@ Definition main : M unit :=
             α3
             α7
             (core.option.Option.None tt) in
-        never_to_any tt
+        let* α0 := M.alloc tt in
+        never_to_any α0
       else
-        Pure tt
+        M.alloc tt
     end in
   let* result :=
     let* α0 := M.alloc 5 in
@@ -356,11 +361,12 @@ Definition main : M unit :=
       borrow
         result
         (core.result.Result try_from_and_try_into.EvenNumber unit) in
-    let* α1 :=
+    let* α1 := M.alloc tt in
+    let* α2 :=
       borrow
-        (core.result.Result.Err tt)
+        (core.result.Result.Err α1)
         (core.result.Result try_from_and_try_into.EvenNumber unit) in
-    match (α0, α1) with
+    match (α0, α2) with
     | (left_val, right_val) =>
       let* α0 :=
         deref
@@ -417,8 +423,9 @@ Definition main : M unit :=
             α3
             α7
             (core.option.Option.None tt) in
-        never_to_any tt
+        let* α0 := M.alloc tt in
+        never_to_any α0
       else
-        Pure tt
+        M.alloc tt
     end in
-  Pure tt.
+  M.alloc tt.

@@ -19,7 +19,7 @@ End Years.
 Definition Years `{State.Trait} : Set := M.val Years.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
+Definition main `{State.Trait} : M unit :=
   let* years :=
     let* α0 := M.alloc 42 in
     Pure (generics_new_type_idiom_as_base_type.Years.Build_t α0) in
@@ -28,4 +28,4 @@ Definition main : M unit :=
       'generics_new_type_idiom_as_base_type.Years.Build_t
         years_as_primitive_2 :=
     years in
-  Pure tt.
+  M.alloc tt.

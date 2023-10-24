@@ -63,11 +63,11 @@ Module Impl_core_fmt_Display_for_converting_to_string_Circle.
 End Impl_core_fmt_Display_for_converting_to_string_Circle.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
+Definition main `{State.Trait} : M unit :=
   let* circle :=
     let* α0 := M.alloc 6 in
     M.alloc {| converting_to_string.Circle.radius := α0; |} in
   let* _ :=
     let* α0 := borrow circle converting_to_string.Circle in
     alloc.string.ToString.to_string α0 in
-  Pure tt.
+  M.alloc tt.

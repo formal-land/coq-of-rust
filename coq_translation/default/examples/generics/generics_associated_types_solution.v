@@ -122,6 +122,7 @@ End
   Impl_generics_associated_types_solution_Contains_for_generics_associated_types_solution_Container.
 
 Definition difference
+    `{State.Trait}
     {C : Set}
     {ℋ_0 : generics_associated_types_solution.Contains.Trait C}
     (container : ref C)
@@ -135,6 +136,7 @@ Definition difference
   sub α2 α5.
 
 Definition get_a
+    `{State.Trait}
     {C : Set}
     {ℋ_0 : generics_associated_types_solution.Contains.Trait C}
     (container : ref C)
@@ -144,7 +146,7 @@ Definition get_a
   generics_associated_types_solution.Contains.a α1.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
+Definition main `{State.Trait} : M unit :=
   let* number_1 := M.alloc 3 in
   let* number_2 := M.alloc 10 in
   let container :=
@@ -194,7 +196,7 @@ Definition main : M unit :=
       let* α29 := pointer_coercion "Unsize" α28 in
       let* α30 := core.fmt.Arguments::["new_v1"] α3 α29 in
       std.io.stdio._print α30 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -216,7 +218,7 @@ Definition main : M unit :=
       let* α13 := pointer_coercion "Unsize" α12 in
       let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
       std.io.stdio._print α14 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -238,7 +240,7 @@ Definition main : M unit :=
       let* α13 := pointer_coercion "Unsize" α12 in
       let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
       std.io.stdio._print α14 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -262,5 +264,5 @@ Definition main : M unit :=
       let* α15 := pointer_coercion "Unsize" α14 in
       let* α16 := core.fmt.Arguments::["new_v1"] α3 α15 in
       std.io.stdio._print α16 in
-    Pure tt in
-  Pure tt.
+    M.alloc tt in
+  M.alloc tt.

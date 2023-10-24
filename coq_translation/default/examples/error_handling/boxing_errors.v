@@ -109,6 +109,7 @@ Module Impl_core_error_Error_for_boxing_errors_EmptyVec.
 End Impl_core_error_Error_for_boxing_errors_EmptyVec.
 
 Definition double_first
+    `{State.Trait}
     (vec : alloc.vec.Vec (ref str) alloc.vec.Vec.Default.A)
     : M (boxing_errors.Result i32) :=
   let* α0 := borrow vec (alloc.vec.Vec (ref str) alloc.alloc.Global) in
@@ -133,7 +134,7 @@ Definition double_first
       let* α0 := M.alloc 2 in
       mul α0 i.
 
-Definition print (result : boxing_errors.Result i32) : M unit :=
+Definition print `{State.Trait} (result : boxing_errors.Result i32) : M unit :=
   match result with
   | core.result.Result n =>
     let* _ :=
@@ -155,7 +156,7 @@ Definition print (result : boxing_errors.Result i32) : M unit :=
       let* α11 := pointer_coercion "Unsize" α10 in
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
-    Pure tt
+    M.alloc tt
   | core.result.Result e =>
     let* _ :=
       let* α0 := borrow [ mk_str "Error: "; mk_str "
@@ -176,11 +177,11 @@ Definition print (result : boxing_errors.Result i32) : M unit :=
       let* α11 := pointer_coercion "Unsize" α10 in
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
-    Pure tt
+    M.alloc tt
   end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
+Definition main `{State.Trait} : M unit :=
   let* numbers :=
     let* α0 := deref (mk_str "93") str in
     let* α1 := borrow α0 str in
@@ -211,4 +212,4 @@ Definition main : M unit :=
   let* _ :=
     let* α0 := boxing_errors.double_first strings in
     boxing_errors.print α0 in
-  Pure tt.
+  M.alloc tt.

@@ -38,7 +38,7 @@ Module Impl_core_clone_Clone_for_scoping_rules_borrowing_the_ref_pattern_Point.
     Definition clone
         (self : ref Self)
         : M scoping_rules_borrowing_the_ref_pattern.Point :=
-      let _ := tt in
+      let* _ := M.alloc tt in
       deref self scoping_rules_borrowing_the_ref_pattern.Point.
     
     Global Instance AssociatedFunction_clone :
@@ -67,8 +67,8 @@ Module Impl_core_marker_Copy_for_scoping_rules_borrowing_the_ref_pattern_Point.
 End Impl_core_marker_Copy_for_scoping_rules_borrowing_the_ref_pattern_Point.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
-  let* c := "Q"%char in
+Definition main `{State.Trait} : M unit :=
+  let* c := M.alloc "Q"%char in
   let ref_c1 := c in
   let* ref_c2 := borrow c char in
   let* _ :=
@@ -94,7 +94,7 @@ Definition main : M unit :=
       let* α14 := pointer_coercion "Unsize" α13 in
       let* α15 := core.fmt.Arguments::["new_v1"] α3 α14 in
       std.io.stdio._print α15 in
-    Pure tt in
+    M.alloc tt in
   let* point :=
     let* α0 := M.alloc 0 in
     let* α1 := M.alloc 0 in
@@ -123,7 +123,7 @@ Definition main : M unit :=
       let* α0 := deref mut_ref_to_y i32 in
       let* α1 := M.alloc 1 in
       assign α0 α1 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -150,7 +150,7 @@ Definition main : M unit :=
       let* α17 := pointer_coercion "Unsize" α16 in
       let* α18 := core.fmt.Arguments::["new_v1"] α3 α17 in
       std.io.stdio._print α18 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -177,7 +177,7 @@ Definition main : M unit :=
       let* α17 := pointer_coercion "Unsize" α16 in
       let* α18 := core.fmt.Arguments::["new_v1"] α3 α17 in
       std.io.stdio._print α18 in
-    Pure tt in
+    M.alloc tt in
   let* mutable_tuple :=
     let* α0 := M.alloc 5 in
     let* α1 := (alloc.boxed.Box _ alloc.alloc.Global)::["new"] α0 in
@@ -189,7 +189,7 @@ Definition main : M unit :=
       let* α0 := deref last u32 in
       let* α1 := M.alloc 2 in
       assign α0 α1 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* _ :=
       let* α0 := borrow [ mk_str "tuple is "; mk_str "
@@ -208,5 +208,5 @@ Definition main : M unit :=
       let* α11 := pointer_coercion "Unsize" α10 in
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
-    Pure tt in
-  Pure tt.
+    M.alloc tt in
+  M.alloc tt.

@@ -71,6 +71,9 @@ Notation "e1 ;; e2" := (sequence e1 e2)
 
 Parameter assign : forall {A : Set}, A -> A -> unit.
 
+Definition unit `{State.Trait} : Set := val Datatypes.unit.
+Definition bool `{State.Trait} : Set := val Datatypes.bool.
+
 Definition u8 `{State.Trait} : Set := val Z.
 Definition u16 `{State.Trait} : Set := val Z.
 Definition u32 `{State.Trait} : Set := val Z.
@@ -95,8 +98,6 @@ Parameter String : forall `{State.Trait}, Set.
 
 Definition ref `{State.Trait} (A : Set) : Set := val A.
 Definition mut_ref `{State.Trait} (A : Set) : Set := val A.
-
-Parameter eqb : forall {A : Set}, A -> A -> bool.
 
 Definition slice (A : Set) : Set := list A.
 Definition array (A : Set) : Set := list A.

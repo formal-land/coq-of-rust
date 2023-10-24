@@ -46,20 +46,30 @@ Module SGen.
 End SGen.
 Definition SGen `{State.Trait} (T : Set) : Set := M.val (SGen.t (T := T)).
 
-Definition reg_fn (_s : generics_functions.S) : M unit := Pure tt.
+Definition reg_fn `{State.Trait} (_s : generics_functions.S) : M unit :=
+  M.alloc tt.
 
 Definition gen_spec_t
+    `{State.Trait}
     (_s : generics_functions.SGen generics_functions.A)
     : M unit :=
-  Pure tt.
+  M.alloc tt.
 
-Definition gen_spec_i32 (_s : generics_functions.SGen i32) : M unit := Pure tt.
+Definition gen_spec_i32
+    `{State.Trait}
+    (_s : generics_functions.SGen i32)
+    : M unit :=
+  M.alloc tt.
 
-Definition generic {T : Set} (_s : generics_functions.SGen T) : M unit :=
-  Pure tt.
+Definition generic
+    `{State.Trait}
+    {T : Set}
+    (_s : generics_functions.SGen T)
+    : M unit :=
+  M.alloc tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
+Definition main `{State.Trait} : M unit :=
   let* _ :=
     generics_functions.reg_fn
       (generics_functions.S.Build_t (generics_functions.A.Build_t tt)) in
@@ -70,9 +80,9 @@ Definition main : M unit :=
     let* α0 := M.alloc 6 in
     generics_functions.gen_spec_i32 (generics_functions.SGen.Build_t α0) in
   let* _ :=
-    let* α0 := "a"%char in
+    let* α0 := M.alloc "a"%char in
     generics_functions.generic (generics_functions.SGen.Build_t α0) in
   let* _ :=
-    let* α0 := "c"%char in
+    let* α0 := M.alloc "c"%char in
     generics_functions.generic (generics_functions.SGen.Build_t α0) in
-  Pure tt.
+  M.alloc tt.

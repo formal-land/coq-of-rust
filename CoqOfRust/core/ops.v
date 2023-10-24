@@ -534,7 +534,9 @@ End Impl_Neg_for_Z. *)
 Module Impl_Not_for_bool. Section Impl_Not_for_bool.
   Context `{State.Trait}.
 
-  Definition not (b : bool) : M bool := Pure (negb b).
+  Definition not `{State.Trait} (b : bool) : M bool :=
+    let* b := M.read b in
+    M.alloc (negb b).
 
   Global Instance Method_not : Notation.Dot "not" := {
     Notation.dot := not;

@@ -94,7 +94,7 @@ Definition pointer_coercion `{State.Trait} {T : Set} (cast : string) (x : T) :
   Pure x.
 
 (** We replace assembly blocks by a value of type unit. *)
-Parameter InlineAssembly : unit.
+Parameter InlineAssembly : forall `{State.Trait}, unit.
 
 (** The functions on [Z] should eventually be replaced by functions on the
     corresponding integer types. *)
@@ -124,7 +124,10 @@ Global Instance Method_Z_eq `{State.Trait} : Notation.Dot "eq" := {
 
 (* TODO: find a better place for this instance *)
 Global Instance Method_bool_andb `{State.Trait} : Notation.Dot "andb" := {
-  Notation.dot (x y : bool) := (Pure (andb x y) : M _);
+  Notation.dot (x y : bool) :=
+    let* x := M.read x in
+    let* y := M.read y in
+    M.alloc (andb x y) : M _;
 }.
 
 Global Instance Method_destroy `{State.Trait} (A : Set) :

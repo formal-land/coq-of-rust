@@ -3,14 +3,14 @@ Require Import CoqOfRust.CoqOfRust.
 
 Definition NUM `{State.Trait} : i32 := run (M.alloc 18).
 
-Definition coerce_static (arg : ref i32) : M (ref i32) :=
+Definition coerce_static `{State.Trait} (arg : ref i32) : M (ref i32) :=
   let* α0 := deref scoping_rules_lifetimes_reference_lifetime_static.NUM i32 in
   let* α1 := borrow α0 i32 in
   let* α2 := deref α1 i32 in
   borrow α2 i32.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
+Definition main `{State.Trait} : M unit :=
   let* _ :=
     let static_string := mk_str "I'm in read-only memory" in
     let* _ :=
@@ -31,8 +31,8 @@ Definition main : M unit :=
         let* α11 := pointer_coercion "Unsize" α10 in
         let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
         std.io.stdio._print α12 in
-      Pure tt in
-    Pure tt in
+      M.alloc tt in
+    M.alloc tt in
   let* _ :=
     let* lifetime_num := M.alloc 9 in
     let* coerced_static :=
@@ -58,8 +58,8 @@ Definition main : M unit :=
         let* α11 := pointer_coercion "Unsize" α10 in
         let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
         std.io.stdio._print α12 in
-      Pure tt in
-    Pure tt in
+      M.alloc tt in
+    M.alloc tt in
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -82,5 +82,5 @@ Definition main : M unit :=
       let* α12 := pointer_coercion "Unsize" α11 in
       let* α13 := core.fmt.Arguments::["new_v1"] α3 α12 in
       std.io.stdio._print α13 in
-    Pure tt in
-  Pure tt.
+    M.alloc tt in
+  M.alloc tt.

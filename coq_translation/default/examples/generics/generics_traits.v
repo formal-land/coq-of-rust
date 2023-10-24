@@ -38,7 +38,7 @@ Module Impl_generics_traits_DoubleDrop_for_U.
     
     Definition Self : Set := U.
     
-    Definition double_drop (self : Self) (Pattern : T) : M unit := Pure tt.
+    Definition double_drop (self : Self) (Pattern : T) : M unit := M.alloc tt.
     
     Global Instance AssociatedFunction_double_drop :
       Notation.DoubleColon Self "double_drop" := {
@@ -53,8 +53,8 @@ Module Impl_generics_traits_DoubleDrop_for_U.
 End Impl_generics_traits_DoubleDrop_for_U.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
+Definition main `{State.Trait} : M unit :=
   let empty := generics_traits.Empty.Build_t tt in
   let null := generics_traits.Null.Build_t tt in
   let* _ := generics_traits.DoubleDrop.double_drop empty null in
-  Pure tt.
+  M.alloc tt.

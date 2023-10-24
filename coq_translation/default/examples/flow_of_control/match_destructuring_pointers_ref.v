@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
+Definition main `{State.Trait} : M unit :=
   let* reference :=
     let* α0 := M.alloc 4 in
     borrow α0 i32 in
@@ -28,7 +28,7 @@ Definition main : M unit :=
         let* α11 := pointer_coercion "Unsize" α10 in
         let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
         std.io.stdio._print α12 in
-      Pure tt
+      M.alloc tt
     end in
   let* _ :=
     let* α0 := deref reference i32 in
@@ -53,7 +53,7 @@ Definition main : M unit :=
         let* α11 := pointer_coercion "Unsize" α10 in
         let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
         std.io.stdio._print α12 in
-      Pure tt
+      M.alloc tt
     end in
   let* _not_a_reference := M.alloc 3 in
   let* _is_a_reference := M.alloc 3 in
@@ -81,7 +81,7 @@ Definition main : M unit :=
         let* α11 := pointer_coercion "Unsize" α10 in
         let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
         std.io.stdio._print α12 in
-      Pure tt
+      M.alloc tt
     end in
   match mut_value with
   | m =>
@@ -109,6 +109,6 @@ Definition main : M unit :=
         let* α11 := pointer_coercion "Unsize" α10 in
         let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
         std.io.stdio._print α12 in
-      Pure tt in
-    Pure tt
+      M.alloc tt in
+    M.alloc tt
   end.

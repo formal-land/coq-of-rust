@@ -204,6 +204,7 @@ Module Impl_core_fmt_Debug_for_combinators_map_Cooked.
 End Impl_core_fmt_Debug_for_combinators_map_Cooked.
 
 Definition peel
+    `{State.Trait}
     (food : core.option.Option combinators_map.Food)
     : M (core.option.Option combinators_map.Peeled) :=
   match food with
@@ -213,6 +214,7 @@ Definition peel
   end.
 
 Definition chop
+    `{State.Trait}
     (peeled : core.option.Option combinators_map.Peeled)
     : M (core.option.Option combinators_map.Chopped) :=
   match peeled with
@@ -222,6 +224,7 @@ Definition chop
   end.
 
 Definition cook
+    `{State.Trait}
     (chopped : core.option.Option combinators_map.Chopped)
     : M (core.option.Option combinators_map.Cooked) :=
   (core.option.Option _)::["map"]
@@ -229,6 +232,7 @@ Definition cook
     Pure (combinators_map.Cooked.Build_t food).
 
 Definition process
+    `{State.Trait}
     (food : core.option.Option combinators_map.Food)
     : M (core.option.Option combinators_map.Cooked) :=
   let* α0 :=
@@ -241,7 +245,10 @@ Definition process
       Pure (combinators_map.Chopped.Build_t f) in
   (core.option.Option _)::["map"] α1 Pure (combinators_map.Cooked.Build_t f).
 
-Definition eat (food : core.option.Option combinators_map.Cooked) : M unit :=
+Definition eat
+    `{State.Trait}
+    (food : core.option.Option combinators_map.Cooked)
+    : M unit :=
   match food with
   | core.option.Option food =>
     let* _ :=
@@ -261,7 +268,7 @@ Definition eat (food : core.option.Option combinators_map.Cooked) : M unit :=
       let* α11 := pointer_coercion "Unsize" α10 in
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
-    Pure tt
+    M.alloc tt
   | core.option.Option  =>
     let* _ :=
       let* α0 :=
@@ -272,11 +279,11 @@ Definition eat (food : core.option.Option combinators_map.Cooked) : M unit :=
       let* α3 := pointer_coercion "Unsize" α2 in
       let* α4 := core.fmt.Arguments::["new_const"] α3 in
       std.io.stdio._print α4 in
-    Pure tt
+    M.alloc tt
   end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
+Definition main `{State.Trait} : M unit :=
   let apple := core.option.Option.Some (combinators_map.Food.Apple tt) in
   let carrot := core.option.Option.Some (combinators_map.Food.Carrot tt) in
   let potato := core.option.Option.None tt in
@@ -292,4 +299,4 @@ Definition main : M unit :=
   let* _ := combinators_map.eat cooked_apple in
   let* _ := combinators_map.eat cooked_carrot in
   let* _ := combinators_map.eat cooked_potato in
-  Pure tt.
+  M.alloc tt.

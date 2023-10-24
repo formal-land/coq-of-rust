@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
+Definition main `{State.Trait} : M unit :=
   let* number :=
     let* α0 := M.alloc 7 in
     Pure (core.option.Option.Some α0) in
@@ -29,10 +29,10 @@ Definition main : M unit :=
           let* α11 := pointer_coercion "Unsize" α10 in
           let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
           std.io.stdio._print α12 in
-        Pure tt in
-      Pure tt
+        M.alloc tt in
+      M.alloc tt
     else
-      Pure tt in
+      M.alloc tt in
   let* _ :=
     let* α0 := let_if core.option.Option i := letter in
     if (α0 : bool) then
@@ -54,8 +54,8 @@ Definition main : M unit :=
           let* α11 := pointer_coercion "Unsize" α10 in
           let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
           std.io.stdio._print α12 in
-        Pure tt in
-      Pure tt
+        M.alloc tt in
+      M.alloc tt
     else
       let* _ :=
         let* _ :=
@@ -69,9 +69,9 @@ Definition main : M unit :=
           let* α3 := pointer_coercion "Unsize" α2 in
           let* α4 := core.fmt.Arguments::["new_const"] α3 in
           std.io.stdio._print α4 in
-        Pure tt in
-      Pure tt in
-  let* i_like_letters := false in
+        M.alloc tt in
+      M.alloc tt in
+  let* i_like_letters := M.alloc false in
   let* α0 := let_if core.option.Option i := emoticon in
   if (α0 : bool) then
     let* _ :=
@@ -91,8 +91,8 @@ Definition main : M unit :=
         let* α11 := pointer_coercion "Unsize" α10 in
         let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
         std.io.stdio._print α12 in
-      Pure tt in
-    Pure tt
+      M.alloc tt in
+    M.alloc tt
   else
     let* α0 := use i_like_letters in
     if (α0 : bool) then
@@ -108,8 +108,8 @@ Definition main : M unit :=
           let* α3 := pointer_coercion "Unsize" α2 in
           let* α4 := core.fmt.Arguments::["new_const"] α3 in
           std.io.stdio._print α4 in
-        Pure tt in
-      Pure tt
+        M.alloc tt in
+      M.alloc tt
     else
       let* _ :=
         let* _ :=
@@ -123,5 +123,5 @@ Definition main : M unit :=
           let* α3 := pointer_coercion "Unsize" α2 in
           let* α4 := core.fmt.Arguments::["new_const"] α3 in
           std.io.stdio._print α4 in
-        Pure tt in
-      Pure tt.
+        M.alloc tt in
+      M.alloc tt.

@@ -65,7 +65,7 @@ Module Impl_traits_Animal_for_traits_Sheep.
     Definition Self : Set := traits.Sheep.
     
     Definition new (name : ref str) : M traits.Sheep :=
-      let* α0 := false in
+      let* α0 := M.alloc false in
       M.alloc {| traits.Sheep.name := name; traits.Sheep.naked := α0; |}.
     
     Global Instance AssociatedFunction_new :
@@ -127,8 +127,8 @@ Module Impl_traits_Animal_for_traits_Sheep.
           let* α20 := pointer_coercion "Unsize" α19 in
           let* α21 := core.fmt.Arguments::["new_v1"] α3 α20 in
           std.io.stdio._print α21 in
-        Pure tt in
-      Pure tt.
+        M.alloc tt in
+      M.alloc tt.
     
     Global Instance AssociatedFunction_talk :
       Notation.DoubleColon Self "talk" := {
@@ -179,8 +179,8 @@ Module Impl_traits_Sheep_3.
             let* α14 := pointer_coercion "Unsize" α13 in
             let* α15 := core.fmt.Arguments::["new_v1"] α3 α14 in
             std.io.stdio._print α15 in
-          Pure tt in
-        Pure tt
+          M.alloc tt in
+        M.alloc tt
       else
         let* _ :=
           let* _ :=
@@ -204,13 +204,13 @@ Module Impl_traits_Sheep_3.
             let* α13 := pointer_coercion "Unsize" α12 in
             let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
             std.io.stdio._print α14 in
-          Pure tt in
+          M.alloc tt in
         let* _ :=
           let* α0 := deref self traits.Sheep in
           let* α1 := α0.["naked"] in
-          let* α2 := true in
+          let* α2 := M.alloc true in
           assign α1 α2 in
-        Pure tt.
+        M.alloc tt.
     
     Global Instance AssociatedFunction_shear :
       Notation.DoubleColon Self "shear" := {
@@ -220,7 +220,7 @@ Module Impl_traits_Sheep_3.
 End Impl_traits_Sheep_3.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
+Definition main `{State.Trait} : M unit :=
   let* dolly := traits.Animal.new (mk_str "Dolly") in
   let* _ :=
     let* α0 := borrow dolly traits.Sheep in
@@ -231,4 +231,4 @@ Definition main : M unit :=
   let* _ :=
     let* α0 := borrow dolly traits.Sheep in
     traits.Animal.talk α0 in
-  Pure tt.
+  M.alloc tt.

@@ -40,8 +40,8 @@ Module Impl_generics_where_clauses_PrintInOption_for_T.
           let* α11 := pointer_coercion "Unsize" α10 in
           let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
           std.io.stdio._print α12 in
-        Pure tt in
-      Pure tt.
+        M.alloc tt in
+      M.alloc tt.
     
     Global Instance AssociatedFunction_print_in_option :
       Notation.DoubleColon Self "print_in_option" := {
@@ -56,7 +56,7 @@ Module Impl_generics_where_clauses_PrintInOption_for_T.
 End Impl_generics_where_clauses_PrintInOption_for_T.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
+Definition main `{State.Trait} : M unit :=
   let* vec :=
     let* α0 := M.alloc 1 in
     let* α1 := M.alloc 2 in
@@ -66,4 +66,4 @@ Definition main : M unit :=
     let* α4 := pointer_coercion "Unsize" α3 in
     (Slice _)::["into_vec"] α4 in
   let* _ := generics_where_clauses.PrintInOption.print_in_option vec in
-  Pure tt.
+  M.alloc tt.

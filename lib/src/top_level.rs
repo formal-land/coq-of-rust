@@ -1385,6 +1385,11 @@ impl FunDefinition {
                         &self.name,
                         &coq::DefinitionKind::Alias {
                             args: [
+                                if with_state_trait {
+                                    vec![coq::ArgDecl::monadic_typeclass_parameter()]
+                                } else {
+                                    vec![]
+                                },
                                 // Type parameters a, b, c... compiles to forall {a b c ... : Set},
                                 if self.ty_params.is_empty() {
                                     vec![]

@@ -2,9 +2,9 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit := Pure tt.
+Definition main `{State.Trait} : M unit := M.alloc tt.
 
-Definition foo (arg : i32) : M i32 :=
+Definition foo `{State.Trait} (arg : i32) : M i32 :=
   let* _ :=
     let* _ :=
       let* α0 := borrow [ mk_str "arg = "; mk_str "
@@ -22,11 +22,11 @@ Definition foo (arg : i32) : M i32 :=
       let* α11 := pointer_coercion "Unsize" α10 in
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
-    Pure tt in
+    M.alloc tt in
   let* α0 := M.alloc 2 in
   mul arg α0.
 
-Definition call_foo (arg : i32) : M i32 :=
-  let result := tt in
+Definition call_foo `{State.Trait} (arg : i32) : M i32 :=
+  let* result := M.alloc tt in
   let _ := InlineAssembly in
   Pure result.

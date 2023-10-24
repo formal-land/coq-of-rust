@@ -68,13 +68,13 @@ Module Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
   Global Hint Resolve I : core.
 End Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
 
-Definition fibonacci : M iterators.Fibonacci :=
+Definition fibonacci `{State.Trait} : M iterators.Fibonacci :=
   let* α0 := M.alloc 0 in
   let* α1 := M.alloc 1 in
   M.alloc {| iterators.Fibonacci.curr := α0; iterators.Fibonacci.next := α1; |}.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
+Definition main `{State.Trait} : M unit :=
   let* sequence :=
     let* α0 := M.alloc 0 in
     let* α1 := M.alloc 3 in
@@ -92,7 +92,7 @@ Definition main : M unit :=
       let* α3 := pointer_coercion "Unsize" α2 in
       let* α4 := core.fmt.Arguments::["new_const"] α3 in
       std.io.stdio._print α4 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* _ :=
       let* α0 := borrow [ mk_str "> "; mk_str "
@@ -112,7 +112,7 @@ Definition main : M unit :=
       let* α13 := pointer_coercion "Unsize" α12 in
       let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
       std.io.stdio._print α14 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* _ :=
       let* α0 := borrow [ mk_str "> "; mk_str "
@@ -132,7 +132,7 @@ Definition main : M unit :=
       let* α13 := pointer_coercion "Unsize" α12 in
       let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
       std.io.stdio._print α14 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* _ :=
       let* α0 := borrow [ mk_str "> "; mk_str "
@@ -152,7 +152,7 @@ Definition main : M unit :=
       let* α13 := pointer_coercion "Unsize" α12 in
       let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
       std.io.stdio._print α14 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* _ :=
       let* α0 := borrow [ mk_str "> "; mk_str "
@@ -172,7 +172,7 @@ Definition main : M unit :=
       let* α13 := pointer_coercion "Unsize" α12 in
       let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
       std.io.stdio._print α14 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -185,7 +185,7 @@ Definition main : M unit :=
       let* α3 := pointer_coercion "Unsize" α2 in
       let* α4 := core.fmt.Arguments::["new_const"] α3 in
       std.io.stdio._print α4 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* α0 := M.alloc 0 in
     let* α1 := M.alloc 3 in
@@ -226,10 +226,10 @@ Definition main : M unit :=
                   let* α11 := pointer_coercion "Unsize" α10 in
                   let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
                   std.io.stdio._print α12 in
-                Pure tt in
-              Pure tt
+                M.alloc tt in
+              M.alloc tt
             end in
-          Pure tt)
+          M.alloc tt)
       end in
     use α4 in
   let* _ :=
@@ -244,7 +244,7 @@ Definition main : M unit :=
       let* α3 := pointer_coercion "Unsize" α2 in
       let* α4 := core.fmt.Arguments::["new_const"] α3 in
       std.io.stdio._print α4 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* α0 := iterators.fibonacci in
     let* α1 := M.alloc 4 in
@@ -289,10 +289,10 @@ Definition main : M unit :=
                   let* α11 := pointer_coercion "Unsize" α10 in
                   let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
                   std.io.stdio._print α12 in
-                Pure tt in
-              Pure tt
+                M.alloc tt in
+              M.alloc tt
             end in
-          Pure tt)
+          M.alloc tt)
       end in
     use α4 in
   let* _ :=
@@ -307,7 +307,7 @@ Definition main : M unit :=
       let* α3 := pointer_coercion "Unsize" α2 in
       let* α4 := core.fmt.Arguments::["new_const"] α3 in
       std.io.stdio._print α4 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* α0 := iterators.fibonacci in
     let* α1 := M.alloc 4 in
@@ -359,10 +359,10 @@ Definition main : M unit :=
                   let* α11 := pointer_coercion "Unsize" α10 in
                   let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
                   std.io.stdio._print α12 in
-                Pure tt in
-              Pure tt
+                M.alloc tt in
+              M.alloc tt
             end in
-          Pure tt)
+          M.alloc tt)
       end in
     use α6 in
   let* array :=
@@ -392,7 +392,7 @@ Definition main : M unit :=
       let* α12 := pointer_coercion "Unsize" α11 in
       let* α13 := core.fmt.Arguments::["new_v1"] α3 α12 in
       std.io.stdio._print α13 in
-    Pure tt in
+    M.alloc tt in
   let* α0 := borrow array (list u32) in
   let* α1 := pointer_coercion "Unsize" α0 in
   let* α2 := (Slice _)::["iter"] α1 in
@@ -429,9 +429,9 @@ Definition main : M unit :=
                 let* α11 := pointer_coercion "Unsize" α10 in
                 let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
                 std.io.stdio._print α12 in
-              Pure tt in
-            Pure tt
+              M.alloc tt in
+            M.alloc tt
           end in
-        Pure tt)
+        M.alloc tt)
     end in
   use α4.

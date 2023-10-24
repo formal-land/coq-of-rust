@@ -55,7 +55,7 @@ Module Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job.
     Definition clone
         (self : ref Self)
         : M unpacking_options_via_question_mark.Job :=
-      let _ := tt in
+      let* _ := M.alloc tt in
       deref self unpacking_options_via_question_mark.Job.
     
     Global Instance AssociatedFunction_clone :
@@ -120,8 +120,8 @@ Module
     Definition clone
         (self : ref Self)
         : M unpacking_options_via_question_mark.PhoneNumber :=
-      let _ := tt in
-      let _ := tt in
+      let* _ := M.alloc tt in
+      let* _ := M.alloc tt in
       deref self unpacking_options_via_question_mark.PhoneNumber.
     
     Global Instance AssociatedFunction_clone :
@@ -190,7 +190,7 @@ Module Impl_unpacking_options_via_question_mark_Person.
 End Impl_unpacking_options_via_question_mark_Person.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
+Definition main `{State.Trait} : M unit :=
   let* p :=
     let* α0 := M.alloc 61 in
     let* α1 := M.alloc 439222222 in
@@ -244,8 +244,9 @@ Definition main : M unit :=
             α3
             α7
             (core.option.Option.None tt) in
-        never_to_any tt
+        let* α0 := M.alloc tt in
+        never_to_any α0
       else
-        Pure tt
+        M.alloc tt
     end in
-  Pure tt.
+  M.alloc tt.

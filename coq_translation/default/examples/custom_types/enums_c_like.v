@@ -18,7 +18,7 @@ End Color.
 Definition Color `{State.Trait} : Set := Color.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
+Definition main `{State.Trait} : M unit :=
   let* _ :=
     let* _ :=
       let* α0 := borrow [ mk_str "zero is "; mk_str "
@@ -37,7 +37,7 @@ Definition main : M unit :=
       let* α12 := pointer_coercion "Unsize" α11 in
       let* α13 := core.fmt.Arguments::["new_v1"] α3 α12 in
       std.io.stdio._print α13 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* _ :=
       let* α0 := borrow [ mk_str "one is "; mk_str "
@@ -56,7 +56,7 @@ Definition main : M unit :=
       let* α12 := pointer_coercion "Unsize" α11 in
       let* α13 := core.fmt.Arguments::["new_v1"] α3 α12 in
       std.io.stdio._print α13 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* _ :=
       let* α0 := borrow [ mk_str "roses are #"; mk_str "
@@ -75,7 +75,7 @@ Definition main : M unit :=
       let* α12 := borrow α11 (list core.fmt.rt.Argument) in
       let* α13 := pointer_coercion "Unsize" α12 in
       let* α14 := M.alloc 0 in
-      let* α15 := " "%char in
+      let* α15 := M.alloc " "%char in
       let* α16 := M.alloc 8 in
       let* α17 := M.alloc 6 in
       let* α18 := "unimplemented parent_kind" α17 in
@@ -94,7 +94,7 @@ Definition main : M unit :=
       let* α24 := core.fmt.rt.UnsafeArg::["new"] in
       let* α25 := core.fmt.Arguments::["new_v1_formatted"] α3 α13 α23 α24 in
       std.io.stdio._print α25 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -114,7 +114,7 @@ Definition main : M unit :=
       let* α12 := borrow α11 (list core.fmt.rt.Argument) in
       let* α13 := pointer_coercion "Unsize" α12 in
       let* α14 := M.alloc 0 in
-      let* α15 := " "%char in
+      let* α15 := M.alloc " "%char in
       let* α16 := M.alloc 8 in
       let* α17 := M.alloc 6 in
       let* α18 := "unimplemented parent_kind" α17 in
@@ -133,5 +133,5 @@ Definition main : M unit :=
       let* α24 := core.fmt.rt.UnsafeArg::["new"] in
       let* α25 := core.fmt.Arguments::["new_v1_formatted"] α3 α13 α23 α24 in
       std.io.stdio._print α25 in
-    Pure tt in
-  Pure tt.
+    M.alloc tt in
+  M.alloc tt.

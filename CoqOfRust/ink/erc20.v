@@ -328,7 +328,7 @@ Module erc20.
         Notation.double_colon := CALLABLE;
       }.
       
-      Definition PAYABLE  := false.
+      Definition PAYABLE  := M.alloc false.
       
       Global Instance AssociatedFunction_PAYABLE :
         Notation.DoubleColon Self "PAYABLE" := {
@@ -409,14 +409,14 @@ Module erc20.
         Notation.double_colon := SELECTOR;
       }.
       
-      Definition PAYABLE  := false.
+      Definition PAYABLE  := M.alloc false.
       
       Global Instance AssociatedFunction_PAYABLE :
         Notation.DoubleColon Self "PAYABLE" := {
         Notation.double_colon := PAYABLE;
       }.
       
-      Definition MUTATES  := false.
+      Definition MUTATES  := M.alloc false.
       
       Global Instance AssociatedFunction_MUTATES :
         Notation.DoubleColon Self "MUTATES" := {
@@ -483,14 +483,14 @@ Module erc20.
         Notation.double_colon := SELECTOR;
       }.
       
-      Definition PAYABLE  := false.
+      Definition PAYABLE  := M.alloc false.
       
       Global Instance AssociatedFunction_PAYABLE :
         Notation.DoubleColon Self "PAYABLE" := {
         Notation.double_colon := PAYABLE;
       }.
       
-      Definition MUTATES  := false.
+      Definition MUTATES  := M.alloc false.
       
       Global Instance AssociatedFunction_MUTATES :
         Notation.DoubleColon Self "MUTATES" := {
@@ -560,14 +560,14 @@ Module erc20.
         Notation.double_colon := SELECTOR;
       }.
       
-      Definition PAYABLE  := false.
+      Definition PAYABLE  := M.alloc false.
       
       Global Instance AssociatedFunction_PAYABLE :
         Notation.DoubleColon Self "PAYABLE" := {
         Notation.double_colon := PAYABLE;
       }.
       
-      Definition MUTATES  := false.
+      Definition MUTATES  := M.alloc false.
       
       Global Instance AssociatedFunction_MUTATES :
         Notation.DoubleColon Self "MUTATES" := {
@@ -637,14 +637,14 @@ Module erc20.
         Notation.double_colon := SELECTOR;
       }.
       
-      Definition PAYABLE  := false.
+      Definition PAYABLE  := M.alloc false.
       
       Global Instance AssociatedFunction_PAYABLE :
         Notation.DoubleColon Self "PAYABLE" := {
         Notation.double_colon := PAYABLE;
       }.
       
-      Definition MUTATES  := true.
+      Definition MUTATES  := M.alloc true.
       
       Global Instance AssociatedFunction_MUTATES :
         Notation.DoubleColon Self "MUTATES" := {
@@ -714,14 +714,14 @@ Module erc20.
         Notation.double_colon := SELECTOR;
       }.
       
-      Definition PAYABLE  := false.
+      Definition PAYABLE  := M.alloc false.
       
       Global Instance AssociatedFunction_PAYABLE :
         Notation.DoubleColon Self "PAYABLE" := {
         Notation.double_colon := PAYABLE;
       }.
       
-      Definition MUTATES  := true.
+      Definition MUTATES  := M.alloc true.
       
       Global Instance AssociatedFunction_MUTATES :
         Notation.DoubleColon Self "MUTATES" := {
@@ -793,14 +793,14 @@ Module erc20.
         Notation.double_colon := SELECTOR;
       }.
       
-      Definition PAYABLE  := false.
+      Definition PAYABLE  := M.alloc false.
       
       Global Instance AssociatedFunction_PAYABLE :
         Notation.DoubleColon Self "PAYABLE" := {
         Notation.double_colon := PAYABLE;
       }.
       
-      Definition MUTATES  := true.
+      Definition MUTATES  := M.alloc true.
       
       Global Instance AssociatedFunction_MUTATES :
         Notation.DoubleColon Self "MUTATES" := {
@@ -990,8 +990,8 @@ Module erc20.
       Definition Self : Set := erc20.erc20.Erc20Ref.
       
       Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
-        let _ := tt in
-        Pure tt.
+        let* _ := M.alloc tt in
+        M.alloc tt.
       
       Global Instance AssociatedFunction_assert_receiver_is_total_eq :
         Notation.DoubleColon Self "assert_receiver_is_total_eq" := {
@@ -1892,7 +1892,7 @@ Module erc20.
       Definition Self : Set := erc20.erc20.Error.
       
       Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
-        Pure tt.
+        M.alloc tt.
       
       Global Instance AssociatedFunction_assert_receiver_is_total_eq :
         Notation.DoubleColon Self "assert_receiver_is_total_eq" := {
@@ -2195,7 +2195,7 @@ Module Impl_ink_storage_traits_storage_Storable_for_erc20_erc20_Erc20.
             let* α2 := deref __dest _ in
             let* α3 := borrow_mut α2 _ in
             ink_storage_traits.storage.Storable.encode α1 α3 in
-          Pure tt in
+          M.alloc tt in
         let* _ :=
           let* _ :=
             let* α0 :=
@@ -2219,7 +2219,7 @@ Module Impl_ink_storage_traits_storage_Storable_for_erc20_erc20_Erc20.
             let* α2 := deref __dest _ in
             let* α3 := borrow_mut α2 _ in
             ink_storage_traits.storage.Storable.encode α1 α3 in
-          Pure tt in
+          M.alloc tt in
         let* _ :=
           let* α0 :=
             deref
@@ -2244,7 +2244,7 @@ Module Impl_ink_storage_traits_storage_Storable_for_erc20_erc20_Erc20.
           let* α2 := deref __dest _ in
           let* α3 := borrow_mut α2 _ in
           ink_storage_traits.storage.Storable.encode α1 α3 in
-        Pure tt
+        M.alloc tt
       end.
     
     Global Instance AssociatedFunction_encode
@@ -2594,7 +2594,7 @@ Module
       let* _ :=
         let* α0 := core.convert.Into.into event in
         ink_env.api.emit_event α0 in
-      Pure tt.
+      M.alloc tt.
     
     Global Instance AssociatedFunction_emit_event
         {E : Set}
@@ -2659,7 +2659,7 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20___ink_EventBase.
           let* α2 := deref __codec_dest_edqy _ in
           let* α3 := borrow_mut α2 _ in
           parity_scale_codec.codec.Encode.encode_to α1 α3 in
-        Pure tt
+        M.alloc tt
       | erc20.erc20.__ink_EventBase aa =>
         let* _ :=
           let* α0 := deref __codec_dest_edqy _ in
@@ -2673,8 +2673,8 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20___ink_EventBase.
           let* α2 := deref __codec_dest_edqy _ in
           let* α3 := borrow_mut α2 _ in
           parity_scale_codec.codec.Encode.encode_to α1 α3 in
-        Pure tt
-      | _ => Pure tt
+        M.alloc tt
+      | _ => M.alloc tt
       end.
     
     Global Instance AssociatedFunction_encode_to
@@ -2767,9 +2767,11 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___ink_EventBase.
                 (core.result.Result.Ok
                   (erc20.erc20.__ink_EventBase.Transfer α0))
               type not implemented in
-          let* α1 := core.ops.function.FnMut.call_mut α0 tt in
-          Return α1 in
-        never_to_any tt
+          let* α1 := M.alloc tt in
+          let* α2 := core.ops.function.FnMut.call_mut α0 α1 in
+          Return α2 in
+        let* α0 := M.alloc tt in
+        never_to_any α0
       | __codec_x_edqy =>
         let* _ :=
           let* α0 :=
@@ -2794,9 +2796,11 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___ink_EventBase.
                 (core.result.Result.Ok
                   (erc20.erc20.__ink_EventBase.Approval α0))
               type not implemented in
-          let* α1 := core.ops.function.FnMut.call_mut α0 tt in
-          Return α1 in
-        never_to_any tt
+          let* α1 := M.alloc tt in
+          let* α2 := core.ops.function.FnMut.call_mut α0 α1 in
+          Return α2 in
+        let* α0 := M.alloc tt in
+        never_to_any α0
       | _ =>
         let* _ :=
           let* α0 :=
@@ -2807,9 +2811,11 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___ink_EventBase.
                     "Could not decode `__ink_EventBase`, variant doesn't exist") in
               Pure (core.result.Result.Err α0)
               type not implemented in
-          let* α1 := core.ops.function.Fn.call α0 tt in
-          Return α1 in
-        never_to_any tt
+          let* α1 := M.alloc tt in
+          let* α2 := core.ops.function.Fn.call α0 α1 in
+          Return α2 in
+        let* α0 := M.alloc tt in
+        never_to_any α0
       end.
     
     Global Instance AssociatedFunction_decode
@@ -3086,7 +3092,7 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Transfer.
         let* α5 := deref __codec_dest_edqy _ in
         let* α6 := borrow_mut α5 _ in
         parity_scale_codec.codec.Encode.encode_to α4 α6 in
-      Pure tt.
+      M.alloc tt.
     
     Global Instance AssociatedFunction_encode_to
         {__CodecOutputEdqy : Set}
@@ -3277,7 +3283,7 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Approval.
         let* α5 := deref __codec_dest_edqy _ in
         let* α6 := borrow_mut α5 _ in
         parity_scale_codec.codec.Encode.encode_to α4 α6 in
-      Pure tt.
+      M.alloc tt.
     
     Global Instance AssociatedFunction_encode_to
         {__CodecOutputEdqy : Set}
@@ -3699,7 +3705,7 @@ Module
       Notation.double_colon := CALLABLE;
     }.
     
-    Definition PAYABLE  := false.
+    Definition PAYABLE  := M.alloc false.
     
     Global Instance AssociatedFunction_PAYABLE :
       Notation.DoubleColon Self "PAYABLE" := {
@@ -3778,14 +3784,14 @@ Module Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
       Notation.double_colon := SELECTOR;
     }.
     
-    Definition PAYABLE  := false.
+    Definition PAYABLE  := M.alloc false.
     
     Global Instance AssociatedFunction_PAYABLE :
       Notation.DoubleColon Self "PAYABLE" := {
       Notation.double_colon := PAYABLE;
     }.
     
-    Definition MUTATES  := false.
+    Definition MUTATES  := M.alloc false.
     
     Global Instance AssociatedFunction_MUTATES :
       Notation.DoubleColon Self "MUTATES" := {
@@ -3851,14 +3857,14 @@ Module Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
       Notation.double_colon := SELECTOR;
     }.
     
-    Definition PAYABLE  := false.
+    Definition PAYABLE  := M.alloc false.
     
     Global Instance AssociatedFunction_PAYABLE :
       Notation.DoubleColon Self "PAYABLE" := {
       Notation.double_colon := PAYABLE;
     }.
     
-    Definition MUTATES  := false.
+    Definition MUTATES  := M.alloc false.
     
     Global Instance AssociatedFunction_MUTATES :
       Notation.DoubleColon Self "MUTATES" := {
@@ -3927,14 +3933,14 @@ Module Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
       Notation.double_colon := SELECTOR;
     }.
     
-    Definition PAYABLE  := false.
+    Definition PAYABLE  := M.alloc false.
     
     Global Instance AssociatedFunction_PAYABLE :
       Notation.DoubleColon Self "PAYABLE" := {
       Notation.double_colon := PAYABLE;
     }.
     
-    Definition MUTATES  := false.
+    Definition MUTATES  := M.alloc false.
     
     Global Instance AssociatedFunction_MUTATES :
       Notation.DoubleColon Self "MUTATES" := {
@@ -4003,14 +4009,14 @@ Module Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
       Notation.double_colon := SELECTOR;
     }.
     
-    Definition PAYABLE  := false.
+    Definition PAYABLE  := M.alloc false.
     
     Global Instance AssociatedFunction_PAYABLE :
       Notation.DoubleColon Self "PAYABLE" := {
       Notation.double_colon := PAYABLE;
     }.
     
-    Definition MUTATES  := true.
+    Definition MUTATES  := M.alloc true.
     
     Global Instance AssociatedFunction_MUTATES :
       Notation.DoubleColon Self "MUTATES" := {
@@ -4079,14 +4085,14 @@ Module Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
       Notation.double_colon := SELECTOR;
     }.
     
-    Definition PAYABLE  := false.
+    Definition PAYABLE  := M.alloc false.
     
     Global Instance AssociatedFunction_PAYABLE :
       Notation.DoubleColon Self "PAYABLE" := {
       Notation.double_colon := PAYABLE;
     }.
     
-    Definition MUTATES  := true.
+    Definition MUTATES  := M.alloc true.
     
     Global Instance AssociatedFunction_MUTATES :
       Notation.DoubleColon Self "MUTATES" := {
@@ -4157,14 +4163,14 @@ Module Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
       Notation.double_colon := SELECTOR;
     }.
     
-    Definition PAYABLE  := false.
+    Definition PAYABLE  := M.alloc false.
     
     Global Instance AssociatedFunction_PAYABLE :
       Notation.DoubleColon Self "PAYABLE" := {
       Notation.double_colon := PAYABLE;
     }.
     
-    Definition MUTATES  := true.
+    Definition MUTATES  := M.alloc true.
     
     Global Instance AssociatedFunction_MUTATES :
       Notation.DoubleColon Self "MUTATES" := {
@@ -4338,8 +4344,8 @@ Module
       match self with
       | erc20.erc20._.__ink_ConstructorDecoder input =>
         let* _ :=
-          let* α0 := false in
-          let* constructor_0 := false in
+          let* α0 := M.alloc false in
+          let* constructor_0 := M.alloc false in
           let constructor_0 :=
             ink.reflect.dispatch.DispatchableConstructorInfo.PAYABLE in
           let* α0 := or α0 constructor_0 in
@@ -4359,9 +4365,9 @@ Module
                 never_to_any α1
               | core.ops.control_flow.ControlFlow val => Pure val
               end in
-            Pure tt
+            M.alloc tt
           else
-            Pure tt in
+            M.alloc tt in
         let* result :=
           ink.reflect.dispatch.DispatchableConstructorInfo.CALLABLE input in
         let* output_value :=
@@ -4396,9 +4402,9 @@ Module
               let* α4 := deref α3 erc20.erc20.Erc20 in
               let* α5 := borrow α4 erc20.erc20.Erc20 in
               ink_env.api.set_contract_storage α2 α5 in
-            Pure tt
+            M.alloc tt
           else
-            Pure tt in
+            M.alloc tt in
         let* _ :=
           let* α0 :=
             borrow
@@ -4408,7 +4414,8 @@ Module
           let* α2 :=
             ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.ReturnFlags::["new_with_reverted"]
               α1 in
-          let* α3 := (core.result.Result _ _)::["map"] output_result Pure tt in
+          let* α3 :=
+            (core.result.Result _ _)::["map"] output_result M.alloc tt in
           let* α4 := "unimplemented parent_kind" α3 in
           let* α5 :=
             borrow
@@ -4429,7 +4436,8 @@ Module
                 (core.result.Result unit (ref (ref unit)))
                 ink_primitives.LangError) in
           ink_env.api.return_value α2 α7 in
-        never_to_any tt
+        let* α0 := M.alloc tt in
+        never_to_any α0
       end.
     
     Global Instance AssociatedFunction_execute_dispatchable :
@@ -4752,6 +4760,7 @@ Module
 End Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_____ink_MessageDecoder.
 
 Definition push_contract
+    `{State.Trait}
     (contract : core.mem.manually_drop.ManuallyDrop erc20.erc20.Erc20)
     (mutates : bool)
     : M unit :=
@@ -4773,9 +4782,9 @@ Definition push_contract
       let* α7 := deref α6 erc20.erc20.Erc20 in
       let* α8 := borrow α7 erc20.erc20.Erc20 in
       ink_env.api.set_contract_storage α2 α8 in
-    Pure tt
+    M.alloc tt
   else
-    Pure tt.
+    M.alloc tt.
 
 Module
   Impl_ink_reflect_dispatch_ExecuteDispatchable_for_erc20_erc20_____ink_MessageDecoder.
@@ -4823,28 +4832,28 @@ Module
         match self with
         | erc20.erc20._.__ink_MessageDecoder input =>
           let* _ :=
-            let* α0 := false in
-            let* message_0 := false in
+            let* α0 := M.alloc false in
+            let* message_0 := M.alloc false in
             let message_0 :=
               ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
             let* α1 := or α0 message_0 in
-            let* message_1 := false in
+            let* message_1 := M.alloc false in
             let message_1 :=
               ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
             let* α2 := or α1 message_1 in
-            let* message_2 := false in
+            let* message_2 := M.alloc false in
             let message_2 :=
               ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
             let* α3 := or α2 message_2 in
-            let* message_3 := false in
+            let* message_3 := M.alloc false in
             let message_3 :=
               ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
             let* α4 := or α3 message_3 in
-            let* message_4 := false in
+            let* message_4 := M.alloc false in
             let message_4 :=
               ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
             let* α5 := or α4 message_4 in
-            let* message_5 := false in
+            let* message_5 := M.alloc false in
             let message_5 :=
               ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
             let* α0 := or α5 message_5 in
@@ -4864,9 +4873,9 @@ Module
                   never_to_any α1
                 | core.ops.control_flow.ControlFlow val => Pure val
                 end in
-              Pure tt
+              M.alloc tt
             else
-              Pure tt in
+              M.alloc tt in
           let* result :=
             let* α0 :=
               borrow_mut
@@ -4902,9 +4911,9 @@ Module
                 "unimplemented parent_kind"
                   contract
                   ink.reflect.dispatch.DispatchableMessageInfo.MUTATES in
-              Pure tt
+              M.alloc tt
             else
-              Pure tt in
+              M.alloc tt in
           let* α0 :=
             ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.ReturnFlags::["new_with_reverted"]
               is_reverted in
@@ -4919,28 +4928,28 @@ Module
           never_to_any α5
         | erc20.erc20._.__ink_MessageDecoder input =>
           let* _ :=
-            let* α0 := false in
-            let* message_0 := false in
+            let* α0 := M.alloc false in
+            let* message_0 := M.alloc false in
             let message_0 :=
               ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
             let* α1 := or α0 message_0 in
-            let* message_1 := false in
+            let* message_1 := M.alloc false in
             let message_1 :=
               ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
             let* α2 := or α1 message_1 in
-            let* message_2 := false in
+            let* message_2 := M.alloc false in
             let message_2 :=
               ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
             let* α3 := or α2 message_2 in
-            let* message_3 := false in
+            let* message_3 := M.alloc false in
             let message_3 :=
               ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
             let* α4 := or α3 message_3 in
-            let* message_4 := false in
+            let* message_4 := M.alloc false in
             let message_4 :=
               ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
             let* α5 := or α4 message_4 in
-            let* message_5 := false in
+            let* message_5 := M.alloc false in
             let message_5 :=
               ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
             let* α0 := or α5 message_5 in
@@ -4960,9 +4969,9 @@ Module
                   never_to_any α1
                 | core.ops.control_flow.ControlFlow val => Pure val
                 end in
-              Pure tt
+              M.alloc tt
             else
-              Pure tt in
+              M.alloc tt in
           let* result :=
             let* α0 :=
               borrow_mut
@@ -4998,9 +5007,9 @@ Module
                 "unimplemented parent_kind"
                   contract
                   ink.reflect.dispatch.DispatchableMessageInfo.MUTATES in
-              Pure tt
+              M.alloc tt
             else
-              Pure tt in
+              M.alloc tt in
           let* α0 :=
             ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.ReturnFlags::["new_with_reverted"]
               is_reverted in
@@ -5015,28 +5024,28 @@ Module
           never_to_any α5
         | erc20.erc20._.__ink_MessageDecoder input =>
           let* _ :=
-            let* α0 := false in
-            let* message_0 := false in
+            let* α0 := M.alloc false in
+            let* message_0 := M.alloc false in
             let message_0 :=
               ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
             let* α1 := or α0 message_0 in
-            let* message_1 := false in
+            let* message_1 := M.alloc false in
             let message_1 :=
               ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
             let* α2 := or α1 message_1 in
-            let* message_2 := false in
+            let* message_2 := M.alloc false in
             let message_2 :=
               ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
             let* α3 := or α2 message_2 in
-            let* message_3 := false in
+            let* message_3 := M.alloc false in
             let message_3 :=
               ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
             let* α4 := or α3 message_3 in
-            let* message_4 := false in
+            let* message_4 := M.alloc false in
             let message_4 :=
               ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
             let* α5 := or α4 message_4 in
-            let* message_5 := false in
+            let* message_5 := M.alloc false in
             let message_5 :=
               ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
             let* α0 := or α5 message_5 in
@@ -5056,9 +5065,9 @@ Module
                   never_to_any α1
                 | core.ops.control_flow.ControlFlow val => Pure val
                 end in
-              Pure tt
+              M.alloc tt
             else
-              Pure tt in
+              M.alloc tt in
           let* result :=
             let* α0 :=
               borrow_mut
@@ -5094,9 +5103,9 @@ Module
                 "unimplemented parent_kind"
                   contract
                   ink.reflect.dispatch.DispatchableMessageInfo.MUTATES in
-              Pure tt
+              M.alloc tt
             else
-              Pure tt in
+              M.alloc tt in
           let* α0 :=
             ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.ReturnFlags::["new_with_reverted"]
               is_reverted in
@@ -5111,28 +5120,28 @@ Module
           never_to_any α5
         | erc20.erc20._.__ink_MessageDecoder input =>
           let* _ :=
-            let* α0 := false in
-            let* message_0 := false in
+            let* α0 := M.alloc false in
+            let* message_0 := M.alloc false in
             let message_0 :=
               ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
             let* α1 := or α0 message_0 in
-            let* message_1 := false in
+            let* message_1 := M.alloc false in
             let message_1 :=
               ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
             let* α2 := or α1 message_1 in
-            let* message_2 := false in
+            let* message_2 := M.alloc false in
             let message_2 :=
               ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
             let* α3 := or α2 message_2 in
-            let* message_3 := false in
+            let* message_3 := M.alloc false in
             let message_3 :=
               ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
             let* α4 := or α3 message_3 in
-            let* message_4 := false in
+            let* message_4 := M.alloc false in
             let message_4 :=
               ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
             let* α5 := or α4 message_4 in
-            let* message_5 := false in
+            let* message_5 := M.alloc false in
             let message_5 :=
               ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
             let* α0 := or α5 message_5 in
@@ -5152,9 +5161,9 @@ Module
                   never_to_any α1
                 | core.ops.control_flow.ControlFlow val => Pure val
                 end in
-              Pure tt
+              M.alloc tt
             else
-              Pure tt in
+              M.alloc tt in
           let* result :=
             let* α0 :=
               borrow_mut
@@ -5194,9 +5203,9 @@ Module
                 "unimplemented parent_kind"
                   contract
                   ink.reflect.dispatch.DispatchableMessageInfo.MUTATES in
-              Pure tt
+              M.alloc tt
             else
-              Pure tt in
+              M.alloc tt in
           let* α0 :=
             ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.ReturnFlags::["new_with_reverted"]
               is_reverted in
@@ -5223,28 +5232,28 @@ Module
           never_to_any α5
         | erc20.erc20._.__ink_MessageDecoder input =>
           let* _ :=
-            let* α0 := false in
-            let* message_0 := false in
+            let* α0 := M.alloc false in
+            let* message_0 := M.alloc false in
             let message_0 :=
               ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
             let* α1 := or α0 message_0 in
-            let* message_1 := false in
+            let* message_1 := M.alloc false in
             let message_1 :=
               ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
             let* α2 := or α1 message_1 in
-            let* message_2 := false in
+            let* message_2 := M.alloc false in
             let message_2 :=
               ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
             let* α3 := or α2 message_2 in
-            let* message_3 := false in
+            let* message_3 := M.alloc false in
             let message_3 :=
               ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
             let* α4 := or α3 message_3 in
-            let* message_4 := false in
+            let* message_4 := M.alloc false in
             let message_4 :=
               ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
             let* α5 := or α4 message_4 in
-            let* message_5 := false in
+            let* message_5 := M.alloc false in
             let message_5 :=
               ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
             let* α0 := or α5 message_5 in
@@ -5264,9 +5273,9 @@ Module
                   never_to_any α1
                 | core.ops.control_flow.ControlFlow val => Pure val
                 end in
-              Pure tt
+              M.alloc tt
             else
-              Pure tt in
+              M.alloc tt in
           let* result :=
             let* α0 :=
               borrow_mut
@@ -5306,9 +5315,9 @@ Module
                 "unimplemented parent_kind"
                   contract
                   ink.reflect.dispatch.DispatchableMessageInfo.MUTATES in
-              Pure tt
+              M.alloc tt
             else
-              Pure tt in
+              M.alloc tt in
           let* α0 :=
             ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.ReturnFlags::["new_with_reverted"]
               is_reverted in
@@ -5335,28 +5344,28 @@ Module
           never_to_any α5
         | erc20.erc20._.__ink_MessageDecoder input =>
           let* _ :=
-            let* α0 := false in
-            let* message_0 := false in
+            let* α0 := M.alloc false in
+            let* message_0 := M.alloc false in
             let message_0 :=
               ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
             let* α1 := or α0 message_0 in
-            let* message_1 := false in
+            let* message_1 := M.alloc false in
             let message_1 :=
               ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
             let* α2 := or α1 message_1 in
-            let* message_2 := false in
+            let* message_2 := M.alloc false in
             let message_2 :=
               ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
             let* α3 := or α2 message_2 in
-            let* message_3 := false in
+            let* message_3 := M.alloc false in
             let message_3 :=
               ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
             let* α4 := or α3 message_3 in
-            let* message_4 := false in
+            let* message_4 := M.alloc false in
             let message_4 :=
               ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
             let* α5 := or α4 message_4 in
-            let* message_5 := false in
+            let* message_5 := M.alloc false in
             let message_5 :=
               ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE in
             let* α0 := or α5 message_5 in
@@ -5376,9 +5385,9 @@ Module
                   never_to_any α1
                 | core.ops.control_flow.ControlFlow val => Pure val
                 end in
-              Pure tt
+              M.alloc tt
             else
-              Pure tt in
+              M.alloc tt in
           let* result :=
             let* α0 :=
               borrow_mut
@@ -5418,9 +5427,9 @@ Module
                 "unimplemented parent_kind"
                   contract
                   ink.reflect.dispatch.DispatchableMessageInfo.MUTATES in
-              Pure tt
+              M.alloc tt
             else
-              Pure tt in
+              M.alloc tt in
           let* α0 :=
             ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.ReturnFlags::["new_with_reverted"]
               is_reverted in
@@ -5446,7 +5455,8 @@ Module
           let* α5 := ink_env.api.return_value α0 α4 in
           never_to_any α5
         end in
-      never_to_any tt.
+      let* α0 := M.alloc tt in
+      never_to_any α0.
     
     Global Instance AssociatedFunction_execute_dispatchable :
       Notation.DoubleColon Self "execute_dispatchable" := {
@@ -5644,7 +5654,8 @@ Module Impl_erc20_erc20_Erc20_29.
               erc20.erc20.Approval.value := value;
             |} in
         ink.codegen.event.emit.EmitEvent.emit_event α2 α3 in
-      Pure (core.result.Result.Ok tt).
+      let* α0 := M.alloc tt in
+      Pure (core.result.Result.Ok α0).
     
     Global Instance AssociatedFunction_approve :
       Notation.DoubleColon Self "approve" := {
@@ -5682,7 +5693,7 @@ Module Impl_erc20_erc20_Erc20_29.
                 (erc20.erc20.Error.InsufficientAllowance tt)) in
           never_to_any α0
         else
-          Pure tt in
+          M.alloc tt in
       let* _ :=
         let* α0 := deref self erc20.erc20.Erc20 in
         let* α1 := borrow_mut α0 erc20.erc20.Erc20 in
@@ -5720,7 +5731,8 @@ Module Impl_erc20_erc20_Erc20_29.
         let* α7 := deref α6 u128 in
         let* α8 := borrow α7 u128 in
         (ink_storage.lazy.mapping.Mapping _ _ _)::["insert"] α2 (α3, α4) α8 in
-      Pure (core.result.Result.Ok tt).
+      let* α0 := M.alloc tt in
+      Pure (core.result.Result.Ok α0).
     
     Global Instance AssociatedFunction_transfer_from :
       Notation.DoubleColon Self "transfer_from" := {
@@ -5797,7 +5809,7 @@ Module Impl_erc20_erc20_Erc20_29.
                 (erc20.erc20.Error.InsufficientBalance tt)) in
           never_to_any α0
         else
-          Pure tt in
+          M.alloc tt in
       let* _ :=
         let* α0 := deref self erc20.erc20.Erc20 in
         let* α1 := α0.["balances"] in
@@ -5852,7 +5864,8 @@ Module Impl_erc20_erc20_Erc20_29.
               erc20.erc20.Transfer.value := value;
             |} in
         ink.codegen.event.emit.EmitEvent.emit_event α2 α5 in
-      Pure (core.result.Result.Ok tt).
+      let* α0 := M.alloc tt in
+      Pure (core.result.Result.Ok α0).
     
     Global Instance AssociatedFunction_transfer_from_to :
       Notation.DoubleColon Self "transfer_from_to" := {
@@ -6097,9 +6110,10 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___CallBuilder.
                 α3
                 α7
                 (core.option.Option.None tt) in
-            never_to_any tt
+            let* α0 := M.alloc tt in
+            never_to_any α0
           else
-            Pure tt
+            M.alloc tt
         end in
       let* _ :=
         let* α0 := core.mem.size_of in
@@ -6122,7 +6136,7 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___CallBuilder.
                 "assertion failed: if ::core::mem::size_of::<AccountId>() > 0 { 1 } else { 0 } <= 1") in
           never_to_any α0
         else
-          Pure tt in
+          M.alloc tt in
       let* _ :=
         let* dst_ :=
           let* α0 :=
@@ -6194,7 +6208,7 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___CallBuilder.
             never_to_any α1
           | core.ops.control_flow.ControlFlow val => Pure val
           end in
-        Pure tt in
+        M.alloc tt in
       let* α0 :=
         parity_scale_codec.decode_finished.DecodeFinished::["assert_decoding_finished"] in
       Pure (core.result.Result.Ok α0).
@@ -6319,8 +6333,8 @@ Module Impl_core_cmp_Eq_for_erc20_erc20___CallBuilder.
     Definition Self : Set := erc20.erc20._.CallBuilder.
     
     Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
-      let _ := tt in
-      Pure tt.
+      let* _ := M.alloc tt in
+      M.alloc tt.
     
     Global Instance AssociatedFunction_assert_receiver_is_total_eq :
       Notation.DoubleColon Self "assert_receiver_is_total_eq" := {
@@ -7423,8 +7437,8 @@ Module Impl_core_cmp_Eq_for_erc20_erc20_Erc20Ref.
     Definition Self : Set := erc20.erc20.Erc20Ref.
     
     Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
-      let _ := tt in
-      Pure tt.
+      let* _ := M.alloc tt in
+      M.alloc tt.
     
     Global Instance AssociatedFunction_assert_receiver_is_total_eq :
       Notation.DoubleColon Self "assert_receiver_is_total_eq" := {
@@ -7627,7 +7641,7 @@ Module
     Context {ℋ_0 : parity_scale_codec.codec.Decode.Trait E}.
     Definition Self : Set := core.result.Result erc20.erc20.Erc20 E.
     
-    Definition IS_RESULT  := true.
+    Definition IS_RESULT  := M.alloc true.
     
     Global Instance AssociatedFunction_IS_RESULT :
       Notation.DoubleColon Self "IS_RESULT" := {
@@ -8475,7 +8489,7 @@ Module Impl_core_convert_AsMut_for_erc20_erc20_Erc20Ref.
   Global Hint Resolve I : core.
 End Impl_core_convert_AsMut_for_erc20_erc20_Erc20Ref.
 
-Definition __ink_generate_metadata : M ink_metadata.InkProject :=
+Definition __ink_generate_metadata `{State.Trait} : M ink_metadata.InkProject :=
   let* layout :=
     let* α0 :=
       core.convert.From.from ink_storage_traits.storage.StorageKey.KEY in
@@ -8544,7 +8558,7 @@ Definition __ink_generate_metadata : M ink_metadata.InkProject :=
   let* α12 := (ink_metadata.specs.MessageParamSpecBuilder _)::["done"] α11 in
   let* α13 :=
     (ink_metadata.specs.ConstructorSpecBuilder _ _ _ _)::["args"] α6 [ α12 ] in
-  let* α14 := false in
+  let* α14 := M.alloc false in
   let* α15 :=
     (ink_metadata.specs.ConstructorSpecBuilder
           _
@@ -8553,7 +8567,7 @@ Definition __ink_generate_metadata : M ink_metadata.InkProject :=
           _)::["payable"]
       α13
       α14 in
-  let* α16 := false in
+  let* α16 := M.alloc false in
   let* α17 :=
     (ink_metadata.specs.ConstructorSpecBuilder _ _ _ _)::["default"] α15 α16 in
   let* α18 := use ink.reflect.dispatch.DispatchableConstructorInfo.IS_RESULT in
@@ -8638,7 +8652,7 @@ Definition __ink_generate_metadata : M ink_metadata.InkProject :=
             ink_metadata.specs.state.Returns))::["returns"]
       α31
       α37 in
-  let* α39 := false in
+  let* α39 := M.alloc false in
   let* α40 :=
     (ink_metadata.specs.MessageSpecBuilder
           _
@@ -8648,7 +8662,7 @@ Definition __ink_generate_metadata : M ink_metadata.InkProject :=
           _)::["mutates"]
       α38
       α39 in
-  let* α41 := false in
+  let* α41 := M.alloc false in
   let* α42 :=
     (ink_metadata.specs.MessageSpecBuilder
           _
@@ -8658,7 +8672,7 @@ Definition __ink_generate_metadata : M ink_metadata.InkProject :=
           _)::["payable"]
       α40
       α41 in
-  let* α43 := false in
+  let* α43 := M.alloc false in
   let* α44 :=
     (ink_metadata.specs.MessageSpecBuilder _ _ _ _ _)::["default"] α42 α43 in
   let* α45 :=
@@ -8722,7 +8736,7 @@ Definition __ink_generate_metadata : M ink_metadata.InkProject :=
             ink_metadata.specs.state.Returns))::["returns"]
       α59
       α65 in
-  let* α67 := false in
+  let* α67 := M.alloc false in
   let* α68 :=
     (ink_metadata.specs.MessageSpecBuilder
           _
@@ -8732,7 +8746,7 @@ Definition __ink_generate_metadata : M ink_metadata.InkProject :=
           _)::["mutates"]
       α66
       α67 in
-  let* α69 := false in
+  let* α69 := M.alloc false in
   let* α70 :=
     (ink_metadata.specs.MessageSpecBuilder
           _
@@ -8742,7 +8756,7 @@ Definition __ink_generate_metadata : M ink_metadata.InkProject :=
           _)::["payable"]
       α68
       α69 in
-  let* α71 := false in
+  let* α71 := M.alloc false in
   let* α72 :=
     (ink_metadata.specs.MessageSpecBuilder _ _ _ _ _)::["default"] α70 α71 in
   let* α73 := deref (mk_str "") str in
@@ -8829,7 +8843,7 @@ Definition __ink_generate_metadata : M ink_metadata.InkProject :=
             ink_metadata.specs.state.Returns))::["returns"]
       α97
       α103 in
-  let* α105 := false in
+  let* α105 := M.alloc false in
   let* α106 :=
     (ink_metadata.specs.MessageSpecBuilder
           _
@@ -8839,7 +8853,7 @@ Definition __ink_generate_metadata : M ink_metadata.InkProject :=
           _)::["mutates"]
       α104
       α105 in
-  let* α107 := false in
+  let* α107 := M.alloc false in
   let* α108 :=
     (ink_metadata.specs.MessageSpecBuilder
           _
@@ -8849,7 +8863,7 @@ Definition __ink_generate_metadata : M ink_metadata.InkProject :=
           _)::["payable"]
       α106
       α107 in
-  let* α109 := false in
+  let* α109 := M.alloc false in
   let* α110 :=
     (ink_metadata.specs.MessageSpecBuilder _ _ _ _ _)::["default"] α108 α109 in
   let* α111 := deref (mk_str "") str in
@@ -8936,7 +8950,7 @@ Definition __ink_generate_metadata : M ink_metadata.InkProject :=
             ink_metadata.specs.state.Returns))::["returns"]
       α135
       α141 in
-  let* α143 := true in
+  let* α143 := M.alloc true in
   let* α144 :=
     (ink_metadata.specs.MessageSpecBuilder
           _
@@ -8946,7 +8960,7 @@ Definition __ink_generate_metadata : M ink_metadata.InkProject :=
           _)::["mutates"]
       α142
       α143 in
-  let* α145 := false in
+  let* α145 := M.alloc false in
   let* α146 :=
     (ink_metadata.specs.MessageSpecBuilder
           _
@@ -8956,7 +8970,7 @@ Definition __ink_generate_metadata : M ink_metadata.InkProject :=
           _)::["payable"]
       α144
       α145 in
-  let* α147 := false in
+  let* α147 := M.alloc false in
   let* α148 :=
     (ink_metadata.specs.MessageSpecBuilder _ _ _ _ _)::["default"] α146 α147 in
   let* α149 := deref (mk_str "") str in
@@ -9063,7 +9077,7 @@ Definition __ink_generate_metadata : M ink_metadata.InkProject :=
             ink_metadata.specs.state.Returns))::["returns"]
       α183
       α189 in
-  let* α191 := true in
+  let* α191 := M.alloc true in
   let* α192 :=
     (ink_metadata.specs.MessageSpecBuilder
           _
@@ -9073,7 +9087,7 @@ Definition __ink_generate_metadata : M ink_metadata.InkProject :=
           _)::["mutates"]
       α190
       α191 in
-  let* α193 := false in
+  let* α193 := M.alloc false in
   let* α194 :=
     (ink_metadata.specs.MessageSpecBuilder
           _
@@ -9083,7 +9097,7 @@ Definition __ink_generate_metadata : M ink_metadata.InkProject :=
           _)::["payable"]
       α192
       α193 in
-  let* α195 := false in
+  let* α195 := M.alloc false in
   let* α196 :=
     (ink_metadata.specs.MessageSpecBuilder _ _ _ _ _)::["default"] α194 α195 in
   let* α197 := deref (mk_str " the `value` amount.") str in
@@ -9198,7 +9212,7 @@ Definition __ink_generate_metadata : M ink_metadata.InkProject :=
             ink_metadata.specs.state.Returns))::["returns"]
       α235
       α241 in
-  let* α243 := true in
+  let* α243 := M.alloc true in
   let* α244 :=
     (ink_metadata.specs.MessageSpecBuilder
           _
@@ -9208,7 +9222,7 @@ Definition __ink_generate_metadata : M ink_metadata.InkProject :=
           _)::["mutates"]
       α242
       α243 in
-  let* α245 := false in
+  let* α245 := M.alloc false in
   let* α246 :=
     (ink_metadata.specs.MessageSpecBuilder
           _
@@ -9218,7 +9232,7 @@ Definition __ink_generate_metadata : M ink_metadata.InkProject :=
           _)::["payable"]
       α244
       α245 in
-  let* α247 := false in
+  let* α247 := M.alloc false in
   let* α248 :=
     (ink_metadata.specs.MessageSpecBuilder _ _ _ _ _)::["default"] α246 α247 in
   let* α249 := deref (mk_str "") str in
@@ -9304,7 +9318,7 @@ Definition __ink_generate_metadata : M ink_metadata.InkProject :=
       α281 in
   let* α283 :=
     (ink_metadata.specs.EventParamSpecBuilder _)::["of_type"] α279 α282 in
-  let* α284 := true in
+  let* α284 := M.alloc true in
   let* α285 :=
     (ink_metadata.specs.EventParamSpecBuilder _)::["indexed"] α283 α284 in
   let* α286 :=
@@ -9320,7 +9334,7 @@ Definition __ink_generate_metadata : M ink_metadata.InkProject :=
       α290 in
   let* α292 :=
     (ink_metadata.specs.EventParamSpecBuilder _)::["of_type"] α288 α291 in
-  let* α293 := true in
+  let* α293 := M.alloc true in
   let* α294 :=
     (ink_metadata.specs.EventParamSpecBuilder _)::["indexed"] α292 α293 in
   let* α295 :=
@@ -9337,7 +9351,7 @@ Definition __ink_generate_metadata : M ink_metadata.InkProject :=
       α299 in
   let* α301 :=
     (ink_metadata.specs.EventParamSpecBuilder _)::["of_type"] α297 α300 in
-  let* α302 := false in
+  let* α302 := M.alloc false in
   let* α303 :=
     (ink_metadata.specs.EventParamSpecBuilder _)::["indexed"] α301 α302 in
   let* α304 :=
@@ -9364,7 +9378,7 @@ Definition __ink_generate_metadata : M ink_metadata.InkProject :=
       α312 in
   let* α314 :=
     (ink_metadata.specs.EventParamSpecBuilder _)::["of_type"] α310 α313 in
-  let* α315 := true in
+  let* α315 := M.alloc true in
   let* α316 :=
     (ink_metadata.specs.EventParamSpecBuilder _)::["indexed"] α314 α315 in
   let* α317 :=
@@ -9381,7 +9395,7 @@ Definition __ink_generate_metadata : M ink_metadata.InkProject :=
       α321 in
   let* α323 :=
     (ink_metadata.specs.EventParamSpecBuilder _)::["of_type"] α319 α322 in
-  let* α324 := true in
+  let* α324 := M.alloc true in
   let* α325 :=
     (ink_metadata.specs.EventParamSpecBuilder _)::["indexed"] α323 α324 in
   let* α326 :=
@@ -9398,7 +9412,7 @@ Definition __ink_generate_metadata : M ink_metadata.InkProject :=
       α330 in
   let* α332 :=
     (ink_metadata.specs.EventParamSpecBuilder _)::["of_type"] α328 α331 in
-  let* α333 := false in
+  let* α333 := M.alloc false in
   let* α334 :=
     (ink_metadata.specs.EventParamSpecBuilder _)::["indexed"] α332 α333 in
   let* α335 :=
@@ -9791,7 +9805,7 @@ Module Impl_core_cmp_Eq_for_erc20_erc20_Error.
     Definition Self : Set := erc20.erc20.Error.
     
     Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
-      Pure tt.
+      M.alloc tt.
     
     Global Instance AssociatedFunction_assert_receiver_is_total_eq :
       Notation.DoubleColon Self "assert_receiver_is_total_eq" := {
@@ -9826,7 +9840,7 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Error.
           let* α2 := M.alloc 0 in
           let* α3 := cast α2 in
           parity_scale_codec.codec.Output.push_byte α1 α3 in
-        Pure tt
+        M.alloc tt
       | erc20.erc20.Error  =>
         let* _ :=
           let* α0 := deref __codec_dest_edqy _ in
@@ -9834,8 +9848,8 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Error.
           let* α2 := M.alloc 1 in
           let* α3 := cast α2 in
           parity_scale_codec.codec.Output.push_byte α1 α3 in
-        Pure tt
-      | _ => Pure tt
+        M.alloc tt
+      | _ => M.alloc tt
       end.
     
     Global Instance AssociatedFunction_encode_to
@@ -9907,9 +9921,11 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Error.
                 (core.result.Result.Ok
                   (erc20.erc20.Error.InsufficientBalance tt))
               type not implemented in
-          let* α1 := core.ops.function.Fn.call α0 tt in
-          Return α1 in
-        never_to_any tt
+          let* α1 := M.alloc tt in
+          let* α2 := core.ops.function.Fn.call α0 α1 in
+          Return α2 in
+        let* α0 := M.alloc tt in
+        never_to_any α0
       | __codec_x_edqy =>
         let* _ :=
           let* α0 :=
@@ -9918,9 +9934,11 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Error.
                 (core.result.Result.Ok
                   (erc20.erc20.Error.InsufficientAllowance tt))
               type not implemented in
-          let* α1 := core.ops.function.Fn.call α0 tt in
-          Return α1 in
-        never_to_any tt
+          let* α1 := M.alloc tt in
+          let* α2 := core.ops.function.Fn.call α0 α1 in
+          Return α2 in
+        let* α0 := M.alloc tt in
+        never_to_any α0
       | _ =>
         let* _ :=
           let* α0 :=
@@ -9930,9 +9948,11 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Error.
                   (mk_str "Could not decode `Error`, variant doesn't exist") in
               Pure (core.result.Result.Err α0)
               type not implemented in
-          let* α1 := core.ops.function.Fn.call α0 tt in
-          Return α1 in
-        never_to_any tt
+          let* α1 := M.alloc tt in
+          let* α2 := core.ops.function.Fn.call α0 α1 in
+          Return α2 in
+        let* α0 := M.alloc tt in
+        never_to_any α0
       end.
     
     Global Instance AssociatedFunction_decode

@@ -2,29 +2,30 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
+Definition main `{State.Trait} : M unit :=
   let* _ :=
     let* α0 := M.alloc 100 in
     functions.fizzbuzz_to α0 in
-  Pure tt.
+  M.alloc tt.
 
-Definition is_divisible_by (lhs : u32) (rhs : u32) : M bool :=
+Definition is_divisible_by `{State.Trait} (lhs : u32) (rhs : u32) : M bool :=
   let* _ :=
     let* α0 := M.alloc 0 in
     let* α1 := eq rhs α0 in
     let* α2 := use α1 in
     if (α2 : bool) then
       let* _ :=
-        let* α0 := false in
+        let* α0 := M.alloc false in
         Return α0 in
-      never_to_any tt
+      let* α0 := M.alloc tt in
+      never_to_any α0
     else
-      Pure tt in
+      M.alloc tt in
   let* α0 := rem lhs rhs in
   let* α1 := M.alloc 0 in
   eq α0 α1.
 
-Definition fizzbuzz (n : u32) : M unit :=
+Definition fizzbuzz `{State.Trait} (n : u32) : M unit :=
   let* α0 := M.alloc 15 in
   let* α1 := functions.is_divisible_by n α0 in
   let* α2 := use α1 in
@@ -38,8 +39,8 @@ Definition fizzbuzz (n : u32) : M unit :=
         let* α3 := pointer_coercion "Unsize" α2 in
         let* α4 := core.fmt.Arguments::["new_const"] α3 in
         std.io.stdio._print α4 in
-      Pure tt in
-    Pure tt
+      M.alloc tt in
+    M.alloc tt
   else
     let* α0 := M.alloc 3 in
     let* α1 := functions.is_divisible_by n α0 in
@@ -54,8 +55,8 @@ Definition fizzbuzz (n : u32) : M unit :=
           let* α3 := pointer_coercion "Unsize" α2 in
           let* α4 := core.fmt.Arguments::["new_const"] α3 in
           std.io.stdio._print α4 in
-        Pure tt in
-      Pure tt
+        M.alloc tt in
+      M.alloc tt
     else
       let* α0 := M.alloc 5 in
       let* α1 := functions.is_divisible_by n α0 in
@@ -70,8 +71,8 @@ Definition fizzbuzz (n : u32) : M unit :=
             let* α3 := pointer_coercion "Unsize" α2 in
             let* α4 := core.fmt.Arguments::["new_const"] α3 in
             std.io.stdio._print α4 in
-          Pure tt in
-        Pure tt
+          M.alloc tt in
+        M.alloc tt
       else
         let* _ :=
           let* _ :=
@@ -90,10 +91,10 @@ Definition fizzbuzz (n : u32) : M unit :=
             let* α11 := pointer_coercion "Unsize" α10 in
             let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
             std.io.stdio._print α12 in
-          Pure tt in
-        Pure tt.
+          M.alloc tt in
+        M.alloc tt.
 
-Definition fizzbuzz_to (n : u32) : M unit :=
+Definition fizzbuzz_to `{State.Trait} (n : u32) : M unit :=
   let* α0 := M.alloc 1 in
   let* α1 := (core.ops.range.RangeInclusive _)::["new"] α0 n in
   let* α2 := core.iter.traits.collect.IntoIterator.into_iter α1 in
@@ -112,8 +113,8 @@ Definition fizzbuzz_to (n : u32) : M unit :=
             never_to_any α0
           | core.option.Option n =>
             let* _ := functions.fizzbuzz n in
-            Pure tt
+            M.alloc tt
           end in
-        Pure tt)
+        M.alloc tt)
     end in
   use α3.

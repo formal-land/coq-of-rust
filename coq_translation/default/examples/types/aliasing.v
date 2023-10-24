@@ -8,7 +8,7 @@ Definition Inch `{State.Trait} : Set := u64.
 Definition U64 `{State.Trait} : Set := u64.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
+Definition main `{State.Trait} : M unit :=
   let* nanoseconds :=
     let* α0 := M.alloc 5 in
     use α0 in
@@ -49,5 +49,5 @@ Definition main : M unit :=
       let* α20 := pointer_coercion "Unsize" α19 in
       let* α21 := core.fmt.Arguments::["new_v1"] α3 α20 in
       std.io.stdio._print α21 in
-    Pure tt in
-  Pure tt.
+    M.alloc tt in
+  M.alloc tt.

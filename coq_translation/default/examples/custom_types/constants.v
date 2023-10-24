@@ -5,10 +5,10 @@ Definition LANGUAGE `{State.Trait} : ref str := run (Pure (mk_str "Rust")).
 
 Definition THRESHOLD `{State.Trait} : i32 := run (M.alloc 10).
 
-Definition is_big (n : i32) : M bool := gt n constants.THRESHOLD.
+Definition is_big `{State.Trait} (n : i32) : M bool := gt n constants.THRESHOLD.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
+Definition main `{State.Trait} : M unit :=
   let* n := M.alloc 16 in
   let* _ :=
     let* _ :=
@@ -28,7 +28,7 @@ Definition main : M unit :=
       let* α12 := pointer_coercion "Unsize" α11 in
       let* α13 := core.fmt.Arguments::["new_v1"] α3 α12 in
       std.io.stdio._print α13 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -47,7 +47,7 @@ Definition main : M unit :=
       let* α11 := pointer_coercion "Unsize" α10 in
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -78,5 +78,5 @@ Definition main : M unit :=
       let* α18 := pointer_coercion "Unsize" α17 in
       let* α19 := core.fmt.Arguments::["new_v1"] α3 α18 in
       std.io.stdio._print α19 in
-    Pure tt in
-  Pure tt.
+    M.alloc tt in
+  M.alloc tt.

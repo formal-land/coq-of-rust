@@ -75,14 +75,17 @@ Module Impl_generics_new_type_idiom_Days.
   End Impl_generics_new_type_idiom_Days.
 End Impl_generics_new_type_idiom_Days.
 
-Definition old_enough (age : ref generics_new_type_idiom.Years) : M bool :=
+Definition old_enough
+    `{State.Trait}
+    (age : ref generics_new_type_idiom.Years)
+    : M bool :=
   let* α0 := deref age generics_new_type_idiom.Years in
   let* α1 := α0.["0"] in
   let* α2 := M.alloc 18 in
   ge α1 α2.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
+Definition main `{State.Trait} : M unit :=
   let* age :=
     let* α0 := M.alloc 5 in
     Pure (generics_new_type_idiom.Years.Build_t α0) in
@@ -110,7 +113,7 @@ Definition main : M unit :=
       let* α15 := pointer_coercion "Unsize" α14 in
       let* α16 := core.fmt.Arguments::["new_v1"] α3 α15 in
       std.io.stdio._print α16 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* _ :=
       let* α0 := borrow [ mk_str "Old enough "; mk_str "
@@ -134,5 +137,5 @@ Definition main : M unit :=
       let* α17 := pointer_coercion "Unsize" α16 in
       let* α18 := core.fmt.Arguments::["new_v1"] α3 α17 in
       std.io.stdio._print α18 in
-    Pure tt in
-  Pure tt.
+    M.alloc tt in
+  M.alloc tt.

@@ -80,6 +80,7 @@ Module Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
 End Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
 
 Definition random_animal
+    `{State.Trait}
     (random_number : f64)
     : M (alloc.boxed.Box _ (* dyn *) alloc.boxed.Box.Default.A) :=
   let* α0 := M.alloc 1 (* 0.5 *) in
@@ -101,7 +102,7 @@ Definition random_animal
   pointer_coercion "Unsize" α0.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
+Definition main `{State.Trait} : M unit :=
   let* random_number := M.alloc 0 (* 0.234 *) in
   let* animal := returning_traits_with_dyn.random_animal random_number in
   let* _ :=
@@ -128,5 +129,5 @@ Definition main : M unit :=
       let* α14 := pointer_coercion "Unsize" α13 in
       let* α15 := core.fmt.Arguments::["new_v1"] α3 α14 in
       std.io.stdio._print α15 in
-    Pure tt in
-  Pure tt.
+    M.alloc tt in
+  M.alloc tt.

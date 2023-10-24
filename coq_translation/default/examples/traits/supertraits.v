@@ -50,6 +50,7 @@ Module CompSciStudent.
 End CompSciStudent.
 
 Definition comp_sci_student_greeting
+    `{State.Trait}
     {DynT : Set}
     {ℋ_0 : supertraits.CompSciStudent.Trait DynT}
     (student : ref DynT)
@@ -104,4 +105,4 @@ Definition comp_sci_student_greeting
   Pure res.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit := Pure tt.
+Definition main `{State.Trait} : M unit := M.alloc tt.

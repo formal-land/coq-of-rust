@@ -58,7 +58,12 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
   Global Hint Resolve I : core.
 End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
 
-Definition print {T : Set} {ℋ_0 : core.fmt.Debug.Trait T} (t : T) : M unit :=
+Definition print
+    `{State.Trait}
+    {T : Set}
+    {ℋ_0 : core.fmt.Debug.Trait T}
+    (t : T)
+    : M unit :=
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -77,10 +82,11 @@ Definition print {T : Set} {ℋ_0 : core.fmt.Debug.Trait T} (t : T) : M unit :=
       let* α11 := pointer_coercion "Unsize" α10 in
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
-    Pure tt in
-  Pure tt.
+    M.alloc tt in
+  M.alloc tt.
 
 Definition print_ref
+    `{State.Trait}
     {T : Set}
     {ℋ_0 : core.fmt.Debug.Trait T}
     (t : ref T)
@@ -103,11 +109,11 @@ Definition print_ref
       let* α11 := pointer_coercion "Unsize" α10 in
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
-    Pure tt in
-  Pure tt.
+    M.alloc tt in
+  M.alloc tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
+Definition main `{State.Trait} : M unit :=
   let* x := M.alloc 7 in
   let* ref_x :=
     let* α0 := borrow x i32 in
@@ -120,4 +126,4 @@ Definition main : M unit :=
     let* α2 := borrow α1 (scoping_rules_lifetimes_bounds.Ref i32) in
     scoping_rules_lifetimes_bounds.print_ref α2 in
   let* _ := scoping_rules_lifetimes_bounds.print ref_x in
-  Pure tt.
+  M.alloc tt.

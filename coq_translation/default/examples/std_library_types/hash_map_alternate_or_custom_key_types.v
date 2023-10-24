@@ -110,9 +110,9 @@ Module Impl_core_cmp_Eq_for_hash_map_alternate_or_custom_key_types_Account.
     Definition Self : Set := hash_map_alternate_or_custom_key_types.Account.
     
     Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
-      let _ := tt in
-      let _ := tt in
-      Pure tt.
+      let* _ := M.alloc tt in
+      let* _ := M.alloc tt in
+      M.alloc tt.
     
     Global Instance AssociatedFunction_assert_receiver_is_total_eq :
       Notation.DoubleColon Self "assert_receiver_is_total_eq" := {
@@ -206,6 +206,7 @@ Definition Accounts `{State.Trait} : Set :=
     std.collections.hash.map.HashMap.Default.S.
 
 Definition try_logon
+    `{State.Trait}
     (accounts : ref hash_map_alternate_or_custom_key_types.Accounts)
     (username : ref str)
     (password : ref str)
@@ -227,7 +228,7 @@ Definition try_logon
       let* α11 := pointer_coercion "Unsize" α10 in
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* _ :=
       let* α0 := borrow [ mk_str "Password: "; mk_str "
@@ -245,7 +246,7 @@ Definition try_logon
       let* α11 := pointer_coercion "Unsize" α10 in
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* _ :=
       let* α0 := borrow [ mk_str "Attempting logon...
@@ -255,7 +256,7 @@ Definition try_logon
       let* α3 := pointer_coercion "Unsize" α2 in
       let* α4 := core.fmt.Arguments::["new_const"] α3 in
       std.io.stdio._print α4 in
-    Pure tt in
+    M.alloc tt in
   let* logon :=
     let* α0 := deref username str in
     let* α1 := borrow α0 str in
@@ -295,7 +296,7 @@ Definition try_logon
         let* α3 := pointer_coercion "Unsize" α2 in
         let* α4 := core.fmt.Arguments::["new_const"] α3 in
         std.io.stdio._print α4 in
-      Pure tt in
+      M.alloc tt in
     let* _ :=
       let* _ :=
         let* α0 := borrow [ mk_str "Name: "; mk_str "
@@ -318,7 +319,7 @@ Definition try_logon
         let* α13 := pointer_coercion "Unsize" α12 in
         let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
         std.io.stdio._print α14 in
-      Pure tt in
+      M.alloc tt in
     let* _ :=
       let* _ :=
         let* α0 := borrow [ mk_str "Email: "; mk_str "
@@ -341,8 +342,8 @@ Definition try_logon
         let* α13 := pointer_coercion "Unsize" α12 in
         let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
         std.io.stdio._print α14 in
-      Pure tt in
-    Pure tt
+      M.alloc tt in
+    M.alloc tt
   | _ =>
     let* _ :=
       let* α0 := borrow [ mk_str "Login failed!
@@ -352,11 +353,11 @@ Definition try_logon
       let* α3 := pointer_coercion "Unsize" α2 in
       let* α4 := core.fmt.Arguments::["new_const"] α3 in
       std.io.stdio._print α4 in
-    Pure tt
+    M.alloc tt
   end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
+Definition main `{State.Trait} : M unit :=
   let* accounts :=
     (std.collections.hash.map.HashMap
           _
@@ -448,4 +449,4 @@ Definition main : M unit :=
     let* α5 := deref (mk_str "password123") str in
     let* α6 := borrow α5 str in
     hash_map_alternate_or_custom_key_types.try_logon α2 α4 α6 in
-  Pure tt.
+  M.alloc tt.

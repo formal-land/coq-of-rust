@@ -53,8 +53,8 @@ Module ControlFlow.
   | Break : B -> t B C
   .
 End ControlFlow.
-Definition ControlFlow (B : Set) (C : option Set) := 
-  ControlFlow.t B (defaultType C unit).
+Definition ControlFlow `{State.Trait} (B : Set) (C : Set) : Set :=
+  M.val (ControlFlow.t B C).
 
 (* ********STRUCTS******** *)
 (* 

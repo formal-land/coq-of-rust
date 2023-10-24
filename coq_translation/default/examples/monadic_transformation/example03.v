@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
+Definition main `{State.Trait} : M unit :=
   let* _ :=
     let* α0 := M.alloc 1 in
     let* α1 := M.alloc 2 in
@@ -19,4 +19,4 @@ Definition main : M unit :=
         [ α0; α1; α2; α3 ] in
     let* α5 := pointer_coercion "Unsize" α4 in
     (Slice _)::["into_vec"] α5 in
-  Pure tt.
+  M.alloc tt.

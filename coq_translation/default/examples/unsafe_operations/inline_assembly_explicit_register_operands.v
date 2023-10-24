@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
+Definition main `{State.Trait} : M unit :=
   let* cmd := M.alloc 209 in
   let _ := InlineAssembly in
-  Pure tt.
+  M.alloc tt.

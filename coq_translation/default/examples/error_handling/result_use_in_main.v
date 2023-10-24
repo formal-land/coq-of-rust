@@ -2,7 +2,9 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M (core.result.Result unit core.num.error.ParseIntError) :=
+Definition main
+    `{State.Trait}
+    : M (core.result.Result unit core.num.error.ParseIntError) :=
   let number_str := mk_str "10" in
   let* number :=
     let* α0 := deref number_str str in
@@ -31,5 +33,6 @@ Definition main : M (core.result.Result unit core.num.error.ParseIntError) :=
       let* α11 := pointer_coercion "Unsize" α10 in
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
-    Pure tt in
-  Pure (core.result.Result.Ok tt).
+    M.alloc tt in
+  let* α0 := M.alloc tt in
+  Pure (core.result.Result.Ok α0).

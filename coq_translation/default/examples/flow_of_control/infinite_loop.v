@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
+Definition main `{State.Trait} : M unit :=
   let* count := M.alloc 0 in
   let* _ :=
     let* _ :=
@@ -14,7 +14,7 @@ Definition main : M unit :=
       let* α3 := pointer_coercion "Unsize" α2 in
       let* α4 := core.fmt.Arguments::["new_const"] α3 in
       std.io.stdio._print α4 in
-    Pure tt in
+    M.alloc tt in
   loop
     (let* _ :=
       let* α0 := M.alloc 1 in
@@ -33,11 +33,12 @@ Definition main : M unit :=
             let* α3 := pointer_coercion "Unsize" α2 in
             let* α4 := core.fmt.Arguments::["new_const"] α3 in
             std.io.stdio._print α4 in
-          Pure tt in
+          M.alloc tt in
         let* _ := Continue in
-        never_to_any tt
+        let* α0 := M.alloc tt in
+        never_to_any α0
       else
-        Pure tt in
+        M.alloc tt in
     let* _ :=
       let* _ :=
         let* α0 := borrow [ mk_str ""; mk_str "
@@ -55,7 +56,7 @@ Definition main : M unit :=
         let* α11 := pointer_coercion "Unsize" α10 in
         let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
         std.io.stdio._print α12 in
-      Pure tt in
+      M.alloc tt in
     let* α0 := M.alloc 5 in
     let* α1 := eq count α0 in
     let* α2 := use α1 in
@@ -69,8 +70,9 @@ Definition main : M unit :=
           let* α3 := pointer_coercion "Unsize" α2 in
           let* α4 := core.fmt.Arguments::["new_const"] α3 in
           std.io.stdio._print α4 in
-        Pure tt in
+        M.alloc tt in
       let* _ := Break in
-      never_to_any tt
+      let* α0 := M.alloc tt in
+      never_to_any α0
     else
-      Pure tt).
+      M.alloc tt).

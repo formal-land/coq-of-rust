@@ -43,8 +43,8 @@ Module Impl_core_convert_From_for_from_Number.
 End Impl_core_convert_From_for_from_Number.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
+Definition main `{State.Trait} : M unit :=
   let* _ :=
     let* α0 := M.alloc 30 in
     core.convert.From.from α0 in
-  Pure tt.
+  M.alloc tt.

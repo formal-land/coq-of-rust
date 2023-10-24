@@ -48,6 +48,7 @@ Module PartialEq.
   Global Instance Method_ne `(Trait) : Notation.Dot "ne" := {
     Notation.dot x y :=
       let* is_eq := eq x y in
+      let* is_eq := M.read is_eq in
       Pure (negb is_eq);
   }.
 
@@ -164,7 +165,9 @@ Module Impls.
   }
   *)
   Module Impl_PartialEq_for_unit.
-    Definition eq `{State.Trait} (x y : ref unit) : M bool := Pure true.
+    Definition eq `{State.Trait} (x y : ref unit) : M bool :=
+      let* result := M.alloc true in
+      Pure result.
 
     Global Instance I `{State.Trait} :
       PartialEq.Trait unit (Rhs := PartialEq.Default.Rhs unit) := {

@@ -4,7 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Definition NTHREADS `{State.Trait} : u32 := run (M.alloc 10).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
+Definition main `{State.Trait} : M unit :=
   let* children := (alloc.vec.Vec _ alloc.alloc.Global)::["new"] in
   let* _ :=
     let* α0 := M.alloc 0 in
@@ -58,12 +58,12 @@ Definition main : M unit :=
                         let* α11 := pointer_coercion "Unsize" α10 in
                         let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
                         std.io.stdio._print α12 in
-                      Pure tt in
-                    Pure tt in
+                      M.alloc tt in
+                    M.alloc tt in
                 (alloc.vec.Vec _ _)::["push"] α0 α1 in
-              Pure tt
+              M.alloc tt
             end in
-          Pure tt)
+          M.alloc tt)
       end in
     use α3 in
   let* α0 := core.iter.traits.collect.IntoIterator.into_iter children in
@@ -97,8 +97,8 @@ Definition main : M unit :=
             never_to_any α0
           | core.option.Option child =>
             let* _ := (std.thread.JoinHandle _)::["join"] child in
-            Pure tt
+            M.alloc tt
           end in
-        Pure tt)
+        M.alloc tt)
     end in
   use α1.

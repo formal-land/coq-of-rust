@@ -2,6 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition read_lines
+    `{State.Trait}
     (filename : alloc.string.String)
     : M (std.io.Lines (std.io.buffered.bufreader.BufReader std.fs.File)) :=
   let* file :=
@@ -11,10 +12,11 @@ Definition read_lines
     let* α0 := (std.io.buffered.bufreader.BufReader _)::["new"] file in
     let* α1 := std.io.BufRead.lines α0 in
     Return α1 in
-  never_to_any tt.
+  let* α0 := M.alloc tt in
+  never_to_any α0.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
+Definition main `{State.Trait} : M unit :=
   let* lines :=
     let* α0 := deref (mk_str "./hosts") str in
     let* α1 := borrow α0 str in
@@ -65,9 +67,9 @@ Definition main : M unit :=
                 let* α12 := pointer_coercion "Unsize" α11 in
                 let* α13 := core.fmt.Arguments::["new_v1"] α3 α12 in
                 std.io.stdio._print α13 in
-              Pure tt in
-            Pure tt
+              M.alloc tt in
+            M.alloc tt
           end in
-        Pure tt)
+        M.alloc tt)
     end in
   use α1.

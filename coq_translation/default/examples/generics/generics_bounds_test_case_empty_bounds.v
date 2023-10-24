@@ -85,6 +85,7 @@ End
   Impl_generics_bounds_test_case_empty_bounds_Blue_for_generics_bounds_test_case_empty_bounds_BlueJay.
 
 Definition red
+    `{State.Trait}
     {T : Set}
     {ℋ_0 : generics_bounds_test_case_empty_bounds.Red.Trait T}
     (arg : ref T)
@@ -92,6 +93,7 @@ Definition red
   Pure (mk_str "red").
 
 Definition blue
+    `{State.Trait}
     {T : Set}
     {ℋ_0 : generics_bounds_test_case_empty_bounds.Blue.Trait T}
     (arg : ref T)
@@ -99,7 +101,7 @@ Definition blue
   Pure (mk_str "blue").
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
+Definition main `{State.Trait} : M unit :=
   let cardinal := generics_bounds_test_case_empty_bounds.Cardinal.Build_t tt in
   let blue_jay := generics_bounds_test_case_empty_bounds.BlueJay.Build_t tt in
   let _turkey := generics_bounds_test_case_empty_bounds.Turkey.Build_t tt in
@@ -126,7 +128,7 @@ Definition main : M unit :=
       let* α15 := pointer_coercion "Unsize" α14 in
       let* α16 := core.fmt.Arguments::["new_v1"] α3 α15 in
       std.io.stdio._print α16 in
-    Pure tt in
+    M.alloc tt in
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -150,5 +152,5 @@ Definition main : M unit :=
       let* α15 := pointer_coercion "Unsize" α14 in
       let* α16 := core.fmt.Arguments::["new_v1"] α3 α15 in
       std.io.stdio._print α16 in
-    Pure tt in
-  Pure tt.
+    M.alloc tt in
+  M.alloc tt.

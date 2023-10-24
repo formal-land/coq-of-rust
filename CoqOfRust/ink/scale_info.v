@@ -734,7 +734,7 @@ Module form.
   Module Impl_PartialEq_for_PortableForm.
     Global Instance I `{State.Trait} :
       core.cmp.PartialEq.Trait PortableForm (Rhs := PortableForm) := {|
-      core.cmp.PartialEq.eq _ _ := Pure true;
+      core.cmp.PartialEq.eq _ _ := M.alloc true;
     |}.
   End Impl_PartialEq_for_PortableForm.
 

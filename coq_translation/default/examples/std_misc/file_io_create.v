@@ -14,7 +14,7 @@ proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 ")).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
+Definition main `{State.Trait} : M unit :=
   let* path :=
     let* α0 := deref (mk_str "lorem_ipsum.txt") str in
     let* α1 := borrow α0 str in
@@ -100,5 +100,5 @@ Definition main : M unit :=
       let* α11 := pointer_coercion "Unsize" α10 in
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
-    Pure tt
+    M.alloc tt
   end.

@@ -2,14 +2,18 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition apply
+    `{State.Trait}
     {F : Set}
     {ℋ_0 : core.ops.function.FnOnce.Trait F (Args := unit)}
     (f : F)
     : M unit :=
-  let* _ := core.ops.function.FnOnce.call_once f tt in
-  Pure tt.
+  let* _ :=
+    let* α0 := M.alloc tt in
+    core.ops.function.FnOnce.call_once f α0 in
+  M.alloc tt.
 
 Definition apply_to_3
+    `{State.Trait}
     {F : Set}
     {ℋ_0 : core.ops.function.Fn.Trait F (Args := i32)}
     (f : F)
@@ -19,7 +23,7 @@ Definition apply_to_3
   core.ops.function.Fn.call α0 (α1).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
+Definition main `{State.Trait} : M unit :=
   let greeting := mk_str "hello" in
   let* farewell :=
     let* α0 := deref (mk_str "goodbye") str in
@@ -43,7 +47,7 @@ Definition main : M unit :=
         let* α11 := pointer_coercion "Unsize" α10 in
         let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
         std.io.stdio._print α12 in
-      Pure tt in
+      M.alloc tt in
     let* _ :=
       let* α0 := borrow_mut farewell alloc.string.String in
       let* α1 := deref (mk_str "!!!") str in
@@ -67,7 +71,7 @@ Definition main : M unit :=
         let* α11 := pointer_coercion "Unsize" α10 in
         let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
         std.io.stdio._print α12 in
-      Pure tt in
+      M.alloc tt in
     let* _ :=
       let* _ :=
         let* α0 :=
@@ -78,9 +82,9 @@ Definition main : M unit :=
         let* α3 := pointer_coercion "Unsize" α2 in
         let* α4 := core.fmt.Arguments::["new_const"] α3 in
         std.io.stdio._print α4 in
-      Pure tt in
+      M.alloc tt in
     let* _ := core.mem.drop farewell in
-    Pure tt in
+    M.alloc tt in
   let* _ := functions_closures_as_input_parameters.apply diary in
   let double :=
     let* α0 := M.alloc 2 in
@@ -103,5 +107,5 @@ Definition main : M unit :=
       let* α12 := pointer_coercion "Unsize" α11 in
       let* α13 := core.fmt.Arguments::["new_v1"] α3 α12 in
       std.io.stdio._print α13 in
-    Pure tt in
-  Pure tt.
+    M.alloc tt in
+  M.alloc tt.

@@ -161,7 +161,7 @@ End Rectangle.
 Definition Rectangle `{State.Trait} : Set := M.val Rectangle.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
+Definition main `{State.Trait} : M unit :=
   let* name := core.convert.From.from (mk_str "Peter") in
   let* age := M.alloc 27 in
   let* peter :=
@@ -184,7 +184,7 @@ Definition main : M unit :=
       let* α11 := pointer_coercion "Unsize" α10 in
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
-    Pure tt in
+    M.alloc tt in
   let* point :=
     let* α0 := M.alloc 10 (* 10.3 *) in
     let* α1 := M.alloc 0 (* 0.4 *) in
@@ -215,7 +215,7 @@ Definition main : M unit :=
       let* α17 := pointer_coercion "Unsize" α16 in
       let* α18 := core.fmt.Arguments::["new_v1"] α3 α17 in
       std.io.stdio._print α18 in
-    Pure tt in
+    M.alloc tt in
   let* bottom_right :=
     let* α0 := M.alloc 5 (* 5.2 *) in
     M.alloc {| structures.Point.x := α0; |} in
@@ -245,7 +245,7 @@ Definition main : M unit :=
       let* α17 := pointer_coercion "Unsize" α16 in
       let* α18 := core.fmt.Arguments::["new_v1"] α3 α17 in
       std.io.stdio._print α18 in
-    Pure tt in
+    M.alloc tt in
   let '{| structures.Point.x := left_edge; structures.Point.y := top_edge; |} :=
     point in
   let* _rectangle :=
@@ -289,7 +289,7 @@ Definition main : M unit :=
       let* α17 := pointer_coercion "Unsize" α16 in
       let* α18 := core.fmt.Arguments::["new_v1"] α3 α17 in
       std.io.stdio._print α18 in
-    Pure tt in
+    M.alloc tt in
   let 'structures.Pair.Build_t integer decimal := pair in
   let* _ :=
     let* _ :=
@@ -315,5 +315,5 @@ Definition main : M unit :=
       let* α15 := pointer_coercion "Unsize" α14 in
       let* α16 := core.fmt.Arguments::["new_v1"] α3 α15 in
       std.io.stdio._print α16 in
-    Pure tt in
-  Pure tt.
+    M.alloc tt in
+  M.alloc tt.

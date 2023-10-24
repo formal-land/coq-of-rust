@@ -91,6 +91,7 @@ Module Impl_core_hash_Hash_for_hash_Person.
 End Impl_core_hash_Hash_for_hash_Person.
 
 Definition calculate_hash
+    `{State.Trait}
     {T : Set}
     {ℋ_0 : core.hash.Hash.Trait T}
     (t : ref T)
@@ -107,7 +108,7 @@ Definition calculate_hash
   core.hash.Hasher.finish α0.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
+Definition main `{State.Trait} : M unit :=
   let* person1 :=
     let* α0 := M.alloc 5 in
     let* α1 := deref (mk_str "Janet") str in
@@ -145,5 +146,5 @@ Definition main : M unit :=
             "assertion failed: calculate_hash(&person1) != calculate_hash(&person2)") in
       never_to_any α0
     else
-      Pure tt in
-  Pure tt.
+      M.alloc tt in
+  M.alloc tt.

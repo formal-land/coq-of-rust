@@ -6,7 +6,7 @@ Definition PANGRAM `{State.Trait} : ref str :=
 ")).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
+Definition main `{State.Trait} : M unit :=
   let* process :=
     let* α0 := std.process.Command::["new"] (mk_str "wc") in
     let* α1 := borrow_mut α0 std.process.Command in
@@ -76,7 +76,7 @@ Definition main : M unit :=
         let* α3 := pointer_coercion "Unsize" α2 in
         let* α4 := core.fmt.Arguments::["new_const"] α3 in
         std.io.stdio._print α4 in
-      Pure tt
+      M.alloc tt
     end in
   let* s := alloc.string.String::["new"] in
   let* α0 := process.["stdout"] in
@@ -120,5 +120,5 @@ Definition main : M unit :=
       let* α11 := pointer_coercion "Unsize" α10 in
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
-    Pure tt
+    M.alloc tt
   end.

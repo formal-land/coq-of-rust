@@ -48,8 +48,8 @@ Module Impl_core_ops_drop_Drop_for_drop_Droppable.
           let* α13 := pointer_coercion "Unsize" α12 in
           let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
           std.io.stdio._print α14 in
-        Pure tt in
-      Pure tt.
+        M.alloc tt in
+      M.alloc tt.
     
     Global Instance AssociatedFunction_drop :
       Notation.DoubleColon Self "drop" := {
@@ -64,7 +64,7 @@ Module Impl_core_ops_drop_Drop_for_drop_Droppable.
 End Impl_core_ops_drop_Drop_for_drop_Droppable.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
+Definition main `{State.Trait} : M unit :=
   let* _a := M.alloc {| drop.Droppable.name := mk_str "a"; |} in
   let* _ :=
     let* _b := M.alloc {| drop.Droppable.name := mk_str "b"; |} in
@@ -80,8 +80,8 @@ Definition main : M unit :=
           let* α3 := pointer_coercion "Unsize" α2 in
           let* α4 := core.fmt.Arguments::["new_const"] α3 in
           std.io.stdio._print α4 in
-        Pure tt in
-      Pure tt in
+        M.alloc tt in
+      M.alloc tt in
     let* _ :=
       let* _ :=
         let* α0 := borrow [ mk_str "Just exited block B
@@ -91,7 +91,7 @@ Definition main : M unit :=
         let* α3 := pointer_coercion "Unsize" α2 in
         let* α4 := core.fmt.Arguments::["new_const"] α3 in
         std.io.stdio._print α4 in
-      Pure tt in
+      M.alloc tt in
     let* _ :=
       let* _ :=
         let* α0 := borrow [ mk_str "Exiting block A
@@ -101,8 +101,8 @@ Definition main : M unit :=
         let* α3 := pointer_coercion "Unsize" α2 in
         let* α4 := core.fmt.Arguments::["new_const"] α3 in
         std.io.stdio._print α4 in
-      Pure tt in
-    Pure tt in
+      M.alloc tt in
+    M.alloc tt in
   let* _ :=
     let* _ :=
       let* α0 := borrow [ mk_str "Just exited block A
@@ -112,7 +112,7 @@ Definition main : M unit :=
       let* α3 := pointer_coercion "Unsize" α2 in
       let* α4 := core.fmt.Arguments::["new_const"] α3 in
       std.io.stdio._print α4 in
-    Pure tt in
+    M.alloc tt in
   let* _ := core.mem.drop _a in
   let* _ :=
     let* _ :=
@@ -124,5 +124,5 @@ Definition main : M unit :=
       let* α3 := pointer_coercion "Unsize" α2 in
       let* α4 := core.fmt.Arguments::["new_const"] α3 in
       std.io.stdio._print α4 in
-    Pure tt in
-  Pure tt.
+    M.alloc tt in
+  M.alloc tt.

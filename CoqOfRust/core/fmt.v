@@ -19,7 +19,7 @@ Definition Alignment : Set := Alignment.t.
 
 Parameter Error : Set.
 
-Definition Result : Set := result.Result unit Error.
+Definition Result `{State.Trait} : Set := result.Result unit Error.
 
 Module Arguments.
   Parameter t : Set.

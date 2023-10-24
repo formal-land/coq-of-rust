@@ -57,6 +57,7 @@ Module checked.
     core.result.Result f64 result_chaining_with_question_mark.checked.MathError.
   
   Definition div
+      `{State.Trait}
       (x : f64)
       (y : f64)
       : M result_chaining_with_question_mark.checked.MathResult :=
@@ -73,6 +74,7 @@ Module checked.
       Pure (core.result.Result.Ok α0).
   
   Definition sqrt
+      `{State.Trait}
       (x : f64)
       : M result_chaining_with_question_mark.checked.MathResult :=
     let* α0 := M.alloc 0 (* 0.0 *) in
@@ -88,6 +90,7 @@ Module checked.
       Pure (core.result.Result.Ok α0).
   
   Definition ln
+      `{State.Trait}
       (x : f64)
       : M result_chaining_with_question_mark.checked.MathResult :=
     let* α0 := M.alloc 0 (* 0.0 *) in
@@ -103,6 +106,7 @@ Module checked.
       Pure (core.result.Result.Ok α0).
   
   Definition op_
+      `{State.Trait}
       (x : f64)
       (y : f64)
       : M result_chaining_with_question_mark.checked.MathResult :=
@@ -128,7 +132,7 @@ Module checked.
       end in
     result_chaining_with_question_mark.checked.sqrt ln.
   
-  Definition op (x : f64) (y : f64) : M unit :=
+  Definition op `{State.Trait} (x : f64) (y : f64) : M unit :=
     let* α0 := result_chaining_with_question_mark.checked.op_ x y in
     match α0 with
     | core.result.Result why =>
@@ -165,7 +169,7 @@ Module checked.
         let* α11 := pointer_coercion "Unsize" α10 in
         let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
         std.io.stdio._print α12 in
-      Pure tt
+      M.alloc tt
     end.
 End checked.
 
@@ -224,6 +228,7 @@ Definition MathResult `{State.Trait} : Set :=
   core.result.Result f64 result_chaining_with_question_mark.checked.MathError.
 
 Definition div
+    `{State.Trait}
     (x : f64)
     (y : f64)
     : M result_chaining_with_question_mark.checked.MathResult :=
@@ -240,6 +245,7 @@ Definition div
     Pure (core.result.Result.Ok α0).
 
 Definition sqrt
+    `{State.Trait}
     (x : f64)
     : M result_chaining_with_question_mark.checked.MathResult :=
   let* α0 := M.alloc 0 (* 0.0 *) in
@@ -255,6 +261,7 @@ Definition sqrt
     Pure (core.result.Result.Ok α0).
 
 Definition ln
+    `{State.Trait}
     (x : f64)
     : M result_chaining_with_question_mark.checked.MathResult :=
   let* α0 := M.alloc 0 (* 0.0 *) in
@@ -270,6 +277,7 @@ Definition ln
     Pure (core.result.Result.Ok α0).
 
 Definition op_
+    `{State.Trait}
     (x : f64)
     (y : f64)
     : M result_chaining_with_question_mark.checked.MathResult :=
@@ -295,7 +303,7 @@ Definition op_
     end in
   result_chaining_with_question_mark.checked.sqrt ln.
 
-Definition op (x : f64) (y : f64) : M unit :=
+Definition op `{State.Trait} (x : f64) (y : f64) : M unit :=
   let* α0 := result_chaining_with_question_mark.checked.op_ x y in
   match α0 with
   | core.result.Result why =>
@@ -332,13 +340,13 @@ Definition op (x : f64) (y : f64) : M unit :=
       let* α11 := pointer_coercion "Unsize" α10 in
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
-    Pure tt
+    M.alloc tt
   end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
+Definition main `{State.Trait} : M unit :=
   let* _ :=
     let* α0 := M.alloc 1 (* 1.0 *) in
     let* α1 := M.alloc 10 (* 10.0 *) in
     result_chaining_with_question_mark.checked.op α0 α1 in
-  Pure tt.
+  M.alloc tt.

@@ -2,8 +2,8 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
-  let* logical := true in
+Definition main `{State.Trait} : M unit :=
+  let* logical := M.alloc true in
   let* a_float := M.alloc 1 (* 1.0 *) in
   let* an_integer := M.alloc 5 in
   let* default_float := M.alloc 3 (* 3.0 *) in
@@ -16,5 +16,5 @@ Definition main : M unit :=
   let* _ :=
     let* α0 := M.alloc 21 in
     assign mutable α0 in
-  let* mutable := true in
-  Pure tt.
+  let* mutable := M.alloc true in
+  M.alloc tt.

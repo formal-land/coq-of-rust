@@ -107,7 +107,7 @@ End
   Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overlapping_traits_Form.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
+Definition main `{State.Trait} : M unit :=
   let* form :=
     let* α0 := deref (mk_str "rustacean") str in
     let* α1 := borrow α0 str in
@@ -154,9 +154,10 @@ Definition main : M unit :=
             α3
             α7
             (core.option.Option.None tt) in
-        never_to_any tt
+        let* α0 := M.alloc tt in
+        never_to_any α0
       else
-        Pure tt
+        M.alloc tt
     end in
   let* age :=
     let* α0 := borrow form disambiguating_overlapping_traits.Form in
@@ -190,8 +191,9 @@ Definition main : M unit :=
             α3
             α7
             (core.option.Option.None tt) in
-        never_to_any tt
+        let* α0 := M.alloc tt in
+        never_to_any α0
       else
-        Pure tt
+        M.alloc tt
     end in
-  Pure tt.
+  M.alloc tt.

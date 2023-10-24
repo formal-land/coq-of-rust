@@ -46,9 +46,9 @@ Module Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book.
     Definition clone
         (self : ref Self)
         : M scoping_rules_borrowing_mutablity.Book :=
-      let _ := tt in
-      let _ := tt in
-      let _ := tt in
+      let* _ := M.alloc tt in
+      let* _ := M.alloc tt in
+      let* _ := M.alloc tt in
       deref self scoping_rules_borrowing_mutablity.Book.
     
     Global Instance AssociatedFunction_clone :
@@ -76,6 +76,7 @@ Module Impl_core_marker_Copy_for_scoping_rules_borrowing_mutablity_Book.
 End Impl_core_marker_Copy_for_scoping_rules_borrowing_mutablity_Book.
 
 Definition borrow_book
+    `{State.Trait}
     (book : ref scoping_rules_borrowing_mutablity.Book)
     : M unit :=
   let* _ :=
@@ -106,10 +107,11 @@ Definition borrow_book
       let* α19 := pointer_coercion "Unsize" α18 in
       let* α20 := core.fmt.Arguments::["new_v1"] α3 α19 in
       std.io.stdio._print α20 in
-    Pure tt in
-  Pure tt.
+    M.alloc tt in
+  M.alloc tt.
 
 Definition new_edition
+    `{State.Trait}
     (book : mut_ref scoping_rules_borrowing_mutablity.Book)
     : M unit :=
   let* _ :=
@@ -145,11 +147,11 @@ Definition new_edition
       let* α19 := pointer_coercion "Unsize" α18 in
       let* α20 := core.fmt.Arguments::["new_v1"] α3 α19 in
       std.io.stdio._print α20 in
-    Pure tt in
-  Pure tt.
+    M.alloc tt in
+  M.alloc tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
+Definition main `{State.Trait} : M unit :=
   let* immutabook :=
     let* α0 := M.alloc 1979 in
     M.alloc
@@ -176,4 +178,4 @@ Definition main : M unit :=
     let* α1 := deref α0 scoping_rules_borrowing_mutablity.Book in
     let* α2 := borrow_mut α1 scoping_rules_borrowing_mutablity.Book in
     scoping_rules_borrowing_mutablity.new_edition α2 in
-  Pure tt.
+  M.alloc tt.

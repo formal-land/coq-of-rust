@@ -5,6 +5,7 @@ Definition AliasedResult (T : Set) `{State.Trait} : Set :=
   core.result.Result T core.num.error.ParseIntError.
 
 Definition multiply
+    `{State.Trait}
     (first_number_str : ref str)
     (second_number_str : ref str)
     : M (aliases_for_result.AliasedResult i32) :=
@@ -18,7 +19,10 @@ Definition multiply
     let* α2 := str::["parse"] α1 in
     (core.result.Result _ _)::["map"] α2 mul first_number second_number.
 
-Definition print (result : aliases_for_result.AliasedResult i32) : M unit :=
+Definition print
+    `{State.Trait}
+    (result : aliases_for_result.AliasedResult i32)
+    : M unit :=
   match result with
   | core.result.Result n =>
     let* _ :=
@@ -37,7 +41,7 @@ Definition print (result : aliases_for_result.AliasedResult i32) : M unit :=
       let* α11 := pointer_coercion "Unsize" α10 in
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
-    Pure tt
+    M.alloc tt
   | core.result.Result e =>
     let* _ :=
       let* α0 := borrow [ mk_str "Error: "; mk_str "
@@ -55,11 +59,11 @@ Definition print (result : aliases_for_result.AliasedResult i32) : M unit :=
       let* α11 := pointer_coercion "Unsize" α10 in
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
-    Pure tt
+    M.alloc tt
   end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
+Definition main `{State.Trait} : M unit :=
   let* _ :=
     let* α0 := deref (mk_str "10") str in
     let* α1 := borrow α0 str in
@@ -74,4 +78,4 @@ Definition main : M unit :=
     let* α3 := borrow α2 str in
     let* α4 := aliases_for_result.multiply α1 α3 in
     aliases_for_result.print α4 in
-  Pure tt.
+  M.alloc tt.

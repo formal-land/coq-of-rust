@@ -51,7 +51,11 @@ Module checked.
   Definition MathResult `{State.Trait} : Set :=
     core.result.Result f64 result.checked.MathError.
   
-  Definition div (x : f64) (y : f64) : M result.checked.MathResult :=
+  Definition div
+      `{State.Trait}
+      (x : f64)
+      (y : f64)
+      : M result.checked.MathResult :=
     let* α0 := M.alloc 0 (* 0.0 *) in
     let* α1 := eq y α0 in
     let* α2 := use α1 in
@@ -61,7 +65,7 @@ Module checked.
       let* α0 := div x y in
       Pure (core.result.Result.Ok α0).
   
-  Definition sqrt (x : f64) : M result.checked.MathResult :=
+  Definition sqrt `{State.Trait} (x : f64) : M result.checked.MathResult :=
     let* α0 := M.alloc 0 (* 0.0 *) in
     let* α1 := lt x α0 in
     let* α2 := use α1 in
@@ -73,7 +77,7 @@ Module checked.
       let* α0 := f64::["sqrt"] x in
       Pure (core.result.Result.Ok α0).
   
-  Definition ln (x : f64) : M result.checked.MathResult :=
+  Definition ln `{State.Trait} (x : f64) : M result.checked.MathResult :=
     let* α0 := M.alloc 0 (* 0.0 *) in
     let* α1 := le x α0 in
     let* α2 := use α1 in
@@ -135,7 +139,11 @@ End Impl_core_fmt_Debug_for_result_checked_MathError.
 Definition MathResult `{State.Trait} : Set :=
   core.result.Result f64 result.checked.MathError.
 
-Definition div (x : f64) (y : f64) : M result.checked.MathResult :=
+Definition div
+    `{State.Trait}
+    (x : f64)
+    (y : f64)
+    : M result.checked.MathResult :=
   let* α0 := M.alloc 0 (* 0.0 *) in
   let* α1 := eq y α0 in
   let* α2 := use α1 in
@@ -145,7 +153,7 @@ Definition div (x : f64) (y : f64) : M result.checked.MathResult :=
     let* α0 := div x y in
     Pure (core.result.Result.Ok α0).
 
-Definition sqrt (x : f64) : M result.checked.MathResult :=
+Definition sqrt `{State.Trait} (x : f64) : M result.checked.MathResult :=
   let* α0 := M.alloc 0 (* 0.0 *) in
   let* α1 := lt x α0 in
   let* α2 := use α1 in
@@ -156,7 +164,7 @@ Definition sqrt (x : f64) : M result.checked.MathResult :=
     let* α0 := f64::["sqrt"] x in
     Pure (core.result.Result.Ok α0).
 
-Definition ln (x : f64) : M result.checked.MathResult :=
+Definition ln `{State.Trait} (x : f64) : M result.checked.MathResult :=
   let* α0 := M.alloc 0 (* 0.0 *) in
   let* α1 := le x α0 in
   let* α2 := use α1 in
@@ -168,7 +176,7 @@ Definition ln (x : f64) : M result.checked.MathResult :=
     let* α0 := f64::["ln"] x in
     Pure (core.result.Result.Ok α0).
 
-Definition op (x : f64) (y : f64) : M f64 :=
+Definition op `{State.Trait} (x : f64) (y : f64) : M f64 :=
   let* α0 := result.checked.div x y in
   match α0 with
   | core.result.Result why =>
@@ -231,7 +239,7 @@ Definition op (x : f64) (y : f64) : M f64 :=
   end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
+Definition main `{State.Trait} : M unit :=
   let* _ :=
     let* _ :=
       let* α0 := borrow [ mk_str ""; mk_str "
@@ -252,5 +260,5 @@ Definition main : M unit :=
       let* α14 := pointer_coercion "Unsize" α13 in
       let* α15 := core.fmt.Arguments::["new_v1"] α3 α14 in
       std.io.stdio._print α15 in
-    Pure tt in
-  Pure tt.
+    M.alloc tt in
+  M.alloc tt.

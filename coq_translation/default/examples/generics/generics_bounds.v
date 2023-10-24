@@ -138,6 +138,7 @@ End Triangle.
 Definition Triangle `{State.Trait} : Set := M.val Triangle.t.
 
 Definition print_debug
+    `{State.Trait}
     {T : Set}
     {ℋ_0 : core.fmt.Debug.Trait T}
     (t : ref T)
@@ -159,10 +160,11 @@ Definition print_debug
       let* α11 := pointer_coercion "Unsize" α10 in
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
-    Pure tt in
-  Pure tt.
+    M.alloc tt in
+  M.alloc tt.
 
 Definition area
+    `{State.Trait}
     {T : Set}
     {ℋ_0 : generics_bounds.HasArea.Trait T}
     (t : ref T)
@@ -172,7 +174,7 @@ Definition area
   generics_bounds.HasArea.area α1.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
+Definition main `{State.Trait} : M unit :=
   let* rectangle :=
     let* α0 := M.alloc 3 (* 3.0 *) in
     let* α1 := M.alloc 4 (* 4.0 *) in
@@ -213,5 +215,5 @@ Definition main : M unit :=
       let* α13 := pointer_coercion "Unsize" α12 in
       let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
       std.io.stdio._print α14 in
-    Pure tt in
-  Pure tt.
+    M.alloc tt in
+  M.alloc tt.
