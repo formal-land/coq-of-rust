@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module List.
-  Inductive t `{State.Trait} : Set :=
+  Inductive t `{ℋ : State.Trait} : Set :=
   |
     Cons
     (_ : u32)
@@ -11,11 +11,11 @@ Module List.
       alloc.boxed.Box enums_testcase_linked_list.List alloc.boxed.Box.Default.A)
   | Nil.
 End List.
-Definition List `{State.Trait} : Set := List.t.
+Definition List `{ℋ : State.Trait} : Set := List.t.
 
 Module Impl_enums_testcase_linked_list_List.
   Section Impl_enums_testcase_linked_list_List.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := enums_testcase_linked_list.List.
     
@@ -114,7 +114,7 @@ Module Impl_enums_testcase_linked_list_List.
 End Impl_enums_testcase_linked_list_List.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main `{ℋ : State.Trait} : M unit :=
   let* list := enums_testcase_linked_list.List::["new"] in
   let* _ :=
     let* α0 := M.alloc 1 in

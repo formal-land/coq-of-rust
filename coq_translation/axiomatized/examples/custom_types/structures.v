@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module Person.
   Section Person.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Record t : Set := {
@@ -26,11 +26,11 @@ Module Person.
     }.
   End Person.
 End Person.
-Definition Person `{State.Trait} : Set := M.val Person.t.
+Definition Person `{ℋ : State.Trait} : Set := M.val Person.t.
 
 Module Impl_core_fmt_Debug_for_structures_Person.
   Section Impl_core_fmt_Debug_for_structures_Person.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := structures.Person.
     
@@ -42,16 +42,16 @@ Module Impl_core_fmt_Debug_for_structures_Person.
       Notation.double_colon := fmt;
     }.
     
-    Global Instance I : core.fmt.Debug.Trait Self := {
+    Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
   End Impl_core_fmt_Debug_for_structures_Person.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_structures_Person.
 
 Module Unit.
   Section Unit.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Inductive t : Set := Build.
   End Unit.
@@ -60,7 +60,7 @@ Definition Unit := @Unit.t.
 
 Module Pair.
   Section Pair.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Record t : Set := {
@@ -77,11 +77,11 @@ Module Pair.
     }.
   End Pair.
 End Pair.
-Definition Pair `{State.Trait} : Set := M.val Pair.t.
+Definition Pair `{ℋ : State.Trait} : Set := M.val Pair.t.
 
 Module Point.
   Section Point.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Record t : Set := {
@@ -104,11 +104,11 @@ Module Point.
     }.
   End Point.
 End Point.
-Definition Point `{State.Trait} : Set := M.val Point.t.
+Definition Point `{ℋ : State.Trait} : Set := M.val Point.t.
 
 Module Rectangle.
   Section Rectangle.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Record t : Set := {
@@ -134,7 +134,7 @@ Module Rectangle.
     }.
   End Rectangle.
 End Rectangle.
-Definition Rectangle `{State.Trait} : Set := M.val Rectangle.t.
+Definition Rectangle `{ℋ : State.Trait} : Set := M.val Rectangle.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{State.Trait}, M unit.
+Parameter main : forall `{ℋ : State.Trait}, M unit.

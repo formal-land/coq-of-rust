@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module Years.
   Section Years.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Record t : Set := {
@@ -16,11 +16,11 @@ Module Years.
     }.
   End Years.
 End Years.
-Definition Years `{State.Trait} : Set := M.val Years.t.
+Definition Years `{ℋ : State.Trait} : Set := M.val Years.t.
 
 Module Days.
   Section Days.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Record t : Set := {
@@ -33,11 +33,11 @@ Module Days.
     }.
   End Days.
 End Days.
-Definition Days `{State.Trait} : Set := M.val Days.t.
+Definition Days `{ℋ : State.Trait} : Set := M.val Days.t.
 
 Module Impl_generics_new_type_idiom_Years.
   Section Impl_generics_new_type_idiom_Years.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := generics_new_type_idiom.Years.
     
@@ -57,7 +57,7 @@ End Impl_generics_new_type_idiom_Years.
 
 Module Impl_generics_new_type_idiom_Days.
   Section Impl_generics_new_type_idiom_Days.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := generics_new_type_idiom.Days.
     
@@ -76,7 +76,7 @@ Module Impl_generics_new_type_idiom_Days.
 End Impl_generics_new_type_idiom_Days.
 
 Definition old_enough
-    `{State.Trait}
+    `{ℋ : State.Trait}
     (age : ref generics_new_type_idiom.Years)
     : M bool :=
   let* α0 := deref age generics_new_type_idiom.Years in
@@ -85,7 +85,7 @@ Definition old_enough
   ge α1 α2.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main `{ℋ : State.Trait} : M unit :=
   let* age :=
     let* α0 := M.alloc 5 in
     Pure (generics_new_type_idiom.Years.Build_t α0) in

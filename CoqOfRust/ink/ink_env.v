@@ -12,7 +12,7 @@ Require CoqOfRust.ink.ink_engine.
 Module arithmetic.
   Module Saturating.
     Section Saturating.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Class Trait (Self : Set) : Type := {
         saturating_add : Self -> Self -> M Self;
@@ -26,7 +26,7 @@ Module arithmetic.
   
   Module BaseArithmetic.
     Section BaseArithmetic.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Unset Primitive Projections.
       Class Trait
@@ -67,7 +67,7 @@ Module arithmetic.
   
   Module AtLeast32Bit.
     Section AtLeast32Bit.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Unset Primitive Projections.
       Class Trait
@@ -83,7 +83,7 @@ Module arithmetic.
   
   Module AtLeast32BitUnsigned.
     Section AtLeast32BitUnsigned.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Unset Primitive Projections.
       Class Trait
@@ -100,7 +100,7 @@ End arithmetic.
 Module types.
   Module FromLittleEndian.
     Section FromLittleEndian.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Class Trait (Self : Set) : Type := {
         Bytes : Set;
@@ -116,7 +116,7 @@ Module types.
   
   Module AccountIdGuard.
     Section AccountIdGuard.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Unset Primitive Projections.
       Class Trait (Self : Set) : Type := {
@@ -127,7 +127,7 @@ Module types.
   
   Module CodecAsType.
     Section CodecAsType.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Unset Primitive Projections.
       Class Trait
@@ -142,7 +142,7 @@ Module types.
   
   Module Environment.
     Section Environment.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Class Trait (Self : Set) : Type := {
         MAX_EVENT_TOPICS : usize;
@@ -182,29 +182,30 @@ Module types.
   End Environment.
   
   Module NoChainExtension.
-    Inductive t `{State.Trait} : Set :=
+    Inductive t `{ℋ : State.Trait} : Set :=
     .
   End NoChainExtension.
-  Definition NoChainExtension `{State.Trait} : Set := NoChainExtension.t.
+  Definition NoChainExtension `{ℋ : State.Trait} : Set := NoChainExtension.t.
   
   Module DefaultEnvironment.
-    Inductive t `{State.Trait} : Set :=
+    Inductive t `{ℋ : State.Trait} : Set :=
     .
   End DefaultEnvironment.
-  Definition DefaultEnvironment `{State.Trait} : Set := DefaultEnvironment.t.
+  Definition DefaultEnvironment `{ℋ : State.Trait} : Set :=
+    DefaultEnvironment.t.
   
-  Definition Balance `{State.Trait} : Set := u128.
+  Definition Balance `{ℋ : State.Trait} : Set := u128.
   
-  Definition Timestamp `{State.Trait} : Set := u64.
+  Definition Timestamp `{ℋ : State.Trait} : Set := u64.
   
-  Definition Gas `{State.Trait} : Set := u64.
+  Definition Gas `{ℋ : State.Trait} : Set := u64.
   
-  Definition BlockNumber `{State.Trait} : Set := u32.
+  Definition BlockNumber `{ℋ : State.Trait} : Set := u32.
 End types.
 
 Module FromLittleEndian.
   Section FromLittleEndian.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Class Trait (Self : Set) : Type := {
       Bytes : Set;
@@ -220,7 +221,7 @@ End FromLittleEndian.
 
 Module AccountIdGuard.
   Section AccountIdGuard.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Class Trait (Self : Set) : Type := {
@@ -231,7 +232,7 @@ End AccountIdGuard.
 
 Module CodecAsType.
   Section CodecAsType.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Class Trait
@@ -246,7 +247,7 @@ End CodecAsType.
 
 Module Environment.
   Section Environment.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Class Trait (Self : Set) : Type := {
       MAX_EVENT_TOPICS : usize;
@@ -286,29 +287,29 @@ Module Environment.
 End Environment.
 
 Module NoChainExtension.
-  Inductive t `{State.Trait} : Set :=
+  Inductive t `{ℋ : State.Trait} : Set :=
   .
 End NoChainExtension.
-Definition NoChainExtension `{State.Trait} : Set := NoChainExtension.t.
+Definition NoChainExtension `{ℋ : State.Trait} : Set := NoChainExtension.t.
 
 Module DefaultEnvironment.
-  Inductive t `{State.Trait} : Set :=
+  Inductive t `{ℋ : State.Trait} : Set :=
   .
 End DefaultEnvironment.
-Definition DefaultEnvironment `{State.Trait} : Set := DefaultEnvironment.t.
+Definition DefaultEnvironment `{ℋ : State.Trait} : Set := DefaultEnvironment.t.
 
-Definition Balance `{State.Trait} : Set := u128.
+Definition Balance `{ℋ : State.Trait} : Set := u128.
 
-Definition Timestamp `{State.Trait} : Set := u64.
+Definition Timestamp `{ℋ : State.Trait} : Set := u64.
 
-Definition Gas `{State.Trait} : Set := u64.
+Definition Gas `{ℋ : State.Trait} : Set := u64.
 
-Definition BlockNumber `{State.Trait} : Set := u32.
+Definition BlockNumber `{ℋ : State.Trait} : Set := u32.
 
 Module contract.
   Module ContractEnv.
     Section ContractEnv.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Class Trait (Self : Set) : Type := {
         Env : Set;
@@ -323,7 +324,7 @@ Module contract.
   
   Module ContractReference.
     Section ContractReference.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Class Trait (Self : Set) : Type := {
         Type_ : Set;
@@ -341,7 +342,7 @@ Module call.
   Module common.
     Module ReturnType.
       Section ReturnType.
-        Context `{State.Trait}.
+        Context `{ℋ : State.Trait}.
         
         Context {T : Set}.
         
@@ -356,12 +357,12 @@ Module call.
         }.
       End ReturnType.
     End ReturnType.
-    Definition ReturnType `{State.Trait} (T : Set) : Set :=
+    Definition ReturnType `{ℋ : State.Trait} (T : Set) : Set :=
       M.val (ReturnType.t (T := T)).
     
     Module Set_.
       Section Set_.
-        Context `{State.Trait}.
+        Context `{ℋ : State.Trait}.
         
         Context {T : Set}.
         
@@ -376,11 +377,12 @@ Module call.
         }.
       End Set_.
     End Set_.
-    Definition Set_ `{State.Trait} (T : Set) : Set := M.val (Set_.t (T := T)).
+    Definition Set_ `{ℋ : State.Trait} (T : Set) : Set :=
+      M.val (Set_.t (T := T)).
     
     Module Unset_.
       Section Unset_.
-        Context `{State.Trait}.
+        Context `{ℋ : State.Trait}.
         
         Context {T : Set}.
         
@@ -395,12 +397,12 @@ Module call.
         }.
       End Unset_.
     End Unset_.
-    Definition Unset_ `{State.Trait} (T : Set) : Set :=
+    Definition Unset_ `{ℋ : State.Trait} (T : Set) : Set :=
       M.val (Unset_.t (T := T)).
     
     Module Unwrap.
       Section Unwrap.
-        Context `{State.Trait}.
+        Context `{ℋ : State.Trait}.
         
         Class Trait (Self : Set) : Type := {
           Output : Set;
@@ -422,7 +424,7 @@ Module call.
   Module selector.
     Module Selector.
       Section Selector.
-        Context `{State.Trait}.
+        Context `{ℋ : State.Trait}.
         
         Unset Primitive Projections.
         Record t : Set := {
@@ -438,13 +440,13 @@ Module call.
         }.
       End Selector.
     End Selector.
-    Definition Selector `{State.Trait} : Set := M.val Selector.t.
+    Definition Selector `{ℋ : State.Trait} : Set := M.val Selector.t.
   End selector.
   
   Module execution_input.
     Module ExecutionInput.
       Section ExecutionInput.
-        Context `{State.Trait}.
+        Context `{ℋ : State.Trait}.
         
         Context {Args : Set}.
         
@@ -471,12 +473,12 @@ Module call.
         }.
       End ExecutionInput.
     End ExecutionInput.
-    Definition ExecutionInput (Args : Set) `{State.Trait} : Set :=
+    Definition ExecutionInput (Args : Set) `{ℋ : State.Trait} : Set :=
       M.val (ExecutionInput.t (Args := Args)).
     
     Module ArgumentList.
       Section ArgumentList.
-        Context `{State.Trait}.
+        Context `{ℋ : State.Trait}.
         
         Context {Head Rest : Set}.
         
@@ -501,12 +503,12 @@ Module call.
         }.
       End ArgumentList.
     End ArgumentList.
-    Definition ArgumentList (Head Rest : Set) `{State.Trait} : Set :=
+    Definition ArgumentList (Head Rest : Set) `{ℋ : State.Trait} : Set :=
       M.val (ArgumentList.t (Head := Head) (Rest := Rest)).
     
     Module Argument.
       Section Argument.
-        Context `{State.Trait}.
+        Context `{ℋ : State.Trait}.
         
         Context {T : Set}.
         
@@ -524,24 +526,24 @@ Module call.
         }.
       End Argument.
     End Argument.
-    Definition Argument (T : Set) `{State.Trait} : Set :=
+    Definition Argument (T : Set) `{ℋ : State.Trait} : Set :=
       M.val (Argument.t (T := T)).
     
-    Definition ArgsList (Head Rest : Set) `{State.Trait} : Set :=
+    Definition ArgsList `{ℋ : State.Trait} (Head Rest : Set) : Set :=
       ink_env.call.execution_input.ArgumentList
         (ink_env.call.execution_input.Argument Head)
         Rest.
     
     Module ArgumentListEnd.
       Section ArgumentListEnd.
-        Context `{State.Trait}.
+        Context `{ℋ : State.Trait}.
         
         Inductive t : Set := Build.
       End ArgumentListEnd.
     End ArgumentListEnd.
     Definition ArgumentListEnd := @ArgumentListEnd.t.
     
-    Definition EmptyArgumentList `{State.Trait} : Set :=
+    Definition EmptyArgumentList `{ℋ : State.Trait} : Set :=
       ink_env.call.execution_input.ArgumentList
         ink_env.call.execution_input.ArgumentListEnd
         ink_env.call.execution_input.ArgumentListEnd.
@@ -550,15 +552,15 @@ Module call.
   Module create_builder.
     Module state.
       Module Salt.
-        Inductive t `{State.Trait} : Set :=
+        Inductive t `{ℋ : State.Trait} : Set :=
         .
       End Salt.
-      Definition Salt `{State.Trait} : Set := Salt.t.
+      Definition Salt `{ℋ : State.Trait} : Set := Salt.t.
     End state.
     
     Module FromAccountId.
       Section FromAccountId.
-        Context `{State.Trait}.
+        Context `{ℋ : State.Trait}.
         
         Class Trait
             (Self : Set)
@@ -575,7 +577,7 @@ Module call.
     
     Module ConstructorReturnType.
       Section ConstructorReturnType.
-        Context `{State.Trait}.
+        Context `{ℋ : State.Trait}.
         
         Class Trait (Self : Set) {C : Set} : Type := {
           IS_RESULT : bool;
@@ -597,7 +599,7 @@ Module call.
     
     Module CreateParams.
       Section CreateParams.
-        Context `{State.Trait}.
+        Context `{ℋ : State.Trait}.
         
         Context {E ContractRef Args Salt R : Set}.
         
@@ -680,7 +682,7 @@ Module call.
     End CreateParams.
     Definition CreateParams
         (E ContractRef Args Salt R : Set)
-        `{State.Trait}
+        `{ℋ : State.Trait}
         {ℋ_0 : ink_env.types.Environment.Trait E}
         : Set :=
       M.val
@@ -693,7 +695,7 @@ Module call.
     
     Module CreateBuilder.
       Section CreateBuilder.
-        Context `{State.Trait}.
+        Context `{ℋ : State.Trait}.
         
         Context
           {E ContractRef CodeHash GasLimit Endowment Args Salt RetType : Set}.
@@ -774,7 +776,7 @@ Module call.
     End CreateBuilder.
     Definition CreateBuilder
         (E ContractRef CodeHash GasLimit Endowment Args Salt RetType : Set)
-        `{State.Trait}
+        `{ℋ : State.Trait}
         {ℋ_0 : ink_env.types.Environment.Trait E}
         : Set :=
       M.val
@@ -795,7 +797,7 @@ Module engine.
     Module call_data.
       Module CallData.
         Section CallData.
-          Context `{State.Trait}.
+          Context `{ℋ : State.Trait}.
           
           Unset Primitive Projections.
           Record t : Set := {
@@ -813,13 +815,13 @@ Module engine.
           }.
         End CallData.
       End CallData.
-      Definition CallData `{State.Trait} : Set := M.val CallData.t.
+      Definition CallData `{ℋ : State.Trait} : Set := M.val CallData.t.
     End call_data.
     
     Module impls.
       Module TopicsBuilder.
         Section TopicsBuilder.
-          Context `{State.Trait}.
+          Context `{ℋ : State.Trait}.
           
           Unset Primitive Projections.
           Record t : Set := {
@@ -841,12 +843,13 @@ Module engine.
           }.
         End TopicsBuilder.
       End TopicsBuilder.
-      Definition TopicsBuilder `{State.Trait} : Set := M.val TopicsBuilder.t.
+      Definition TopicsBuilder `{ℋ : State.Trait} : Set :=
+        M.val TopicsBuilder.t.
     End impls.
     
     Module EnvInstance.
       Section EnvInstance.
-        Context `{State.Trait}.
+        Context `{ℋ : State.Trait}.
         
         Unset Primitive Projections.
         Record t : Set := {
@@ -864,24 +867,24 @@ Module engine.
         }.
       End EnvInstance.
     End EnvInstance.
-    Definition EnvInstance `{State.Trait} : Set := M.val EnvInstance.t.
+    Definition EnvInstance `{ℋ : State.Trait} : Set := M.val EnvInstance.t.
     
     Module AccountError.
-      Inductive t `{State.Trait} : Set :=
+      Inductive t `{ℋ : State.Trait} : Set :=
       | Decoding (_ : parity_scale_codec.error.Error)
       | UnexpectedUserAccount
       | NoAccountForId (_ : alloc.vec.Vec u8 alloc.vec.Vec.Default.A).
     End AccountError.
-    Definition AccountError `{State.Trait} : Set := AccountError.t.
+    Definition AccountError `{ℋ : State.Trait} : Set := AccountError.t.
     
     Module OffChainError.
-      Inductive t `{State.Trait} : Set :=
+      Inductive t `{ℋ : State.Trait} : Set :=
       | Account (_ : ink_env.engine.off_chain.AccountError)
       | UninitializedBlocks
       | UninitializedExecutionContext
       | UnregisteredChainExtension.
     End OffChainError.
-    Definition OffChainError `{State.Trait} : Set := OffChainError.t.
+    Definition OffChainError `{ℋ : State.Trait} : Set := OffChainError.t.
   End off_chain.
 End engine.
 
@@ -889,7 +892,7 @@ Module hash.
   Module private.
     Module Sealed.
       Section Sealed.
-        Context `{State.Trait}.
+        Context `{ℋ : State.Trait}.
         
         Unset Primitive Projections.
         Class Trait (Self : Set) : Type := {
@@ -901,7 +904,7 @@ Module hash.
   
   Module HashOutput.
     Section HashOutput.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Class Trait (Self : Set) {ℋ_0 : ink_env.hash.private.Sealed.Trait Self} :
           Type := {
@@ -917,7 +920,7 @@ Module hash.
   
   Module CryptoHash.
     Section CryptoHash.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Class Trait (Self : Set) {ℋ_0 : ink_env.hash.HashOutput.Trait Self} :
           Type := {
@@ -932,34 +935,34 @@ Module hash.
   End CryptoHash.
   
   Module Sha2x256.
-    Inductive t `{State.Trait} : Set :=
+    Inductive t `{ℋ : State.Trait} : Set :=
     .
   End Sha2x256.
-  Definition Sha2x256 `{State.Trait} : Set := Sha2x256.t.
+  Definition Sha2x256 `{ℋ : State.Trait} : Set := Sha2x256.t.
   
   Module Keccak256.
-    Inductive t `{State.Trait} : Set :=
+    Inductive t `{ℋ : State.Trait} : Set :=
     .
   End Keccak256.
-  Definition Keccak256 `{State.Trait} : Set := Keccak256.t.
+  Definition Keccak256 `{ℋ : State.Trait} : Set := Keccak256.t.
   
   Module Blake2x256.
-    Inductive t `{State.Trait} : Set :=
+    Inductive t `{ℋ : State.Trait} : Set :=
     .
   End Blake2x256.
-  Definition Blake2x256 `{State.Trait} : Set := Blake2x256.t.
+  Definition Blake2x256 `{ℋ : State.Trait} : Set := Blake2x256.t.
   
   Module Blake2x128.
-    Inductive t `{State.Trait} : Set :=
+    Inductive t `{ℋ : State.Trait} : Set :=
     .
   End Blake2x128.
-  Definition Blake2x128 `{State.Trait} : Set := Blake2x128.t.
+  Definition Blake2x128 `{ℋ : State.Trait} : Set := Blake2x128.t.
 End hash.
 
 Module topics.
   Module TopicsBuilderBackend.
     Section TopicsBuilderBackend.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Class Trait
           (Self : Set)
@@ -983,7 +986,7 @@ Module topics.
   
   Module TopicsBuilder.
     Section TopicsBuilder.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Context {S E B : Set}.
       
@@ -1008,32 +1011,34 @@ Module topics.
       }.
     End TopicsBuilder.
   End TopicsBuilder.
-  Definition TopicsBuilder (S E B : Set) `{State.Trait} : Set :=
+  Definition TopicsBuilder (S E B : Set) `{ℋ : State.Trait} : Set :=
     M.val (TopicsBuilder.t (S := S) (E := E) (B := B)).
   
   Module state.
     Module Uninit.
-      Inductive t `{State.Trait} : Set :=
+      Inductive t `{ℋ : State.Trait} : Set :=
       .
     End Uninit.
-    Definition Uninit `{State.Trait} : Set := Uninit.t.
+    Definition Uninit `{ℋ : State.Trait} : Set := Uninit.t.
     
     Module HasRemainingTopics.
-      Inductive t `{State.Trait} : Set :=
+      Inductive t `{ℋ : State.Trait} : Set :=
       .
     End HasRemainingTopics.
-    Definition HasRemainingTopics `{State.Trait} : Set := HasRemainingTopics.t.
+    Definition HasRemainingTopics `{ℋ : State.Trait} : Set :=
+      HasRemainingTopics.t.
     
     Module NoRemainingTopics.
-      Inductive t `{State.Trait} : Set :=
+      Inductive t `{ℋ : State.Trait} : Set :=
       .
     End NoRemainingTopics.
-    Definition NoRemainingTopics `{State.Trait} : Set := NoRemainingTopics.t.
+    Definition NoRemainingTopics `{ℋ : State.Trait} : Set :=
+      NoRemainingTopics.t.
   End state.
   
   Module SomeRemainingTopics.
     Section SomeRemainingTopics.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Class Trait (Self : Set) : Type := {
         Next : Set;
@@ -1048,7 +1053,7 @@ Module topics.
   
   Module EventTopicsAmount.
     Section EventTopicsAmount.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Class Trait (Self : Set) : Type := {
         AMOUNT : usize;
@@ -1059,7 +1064,7 @@ Module topics.
   
   Module Topics.
     Section Topics.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Class Trait (Self : Set) : Type := {
         RemainingTopics : Set;
@@ -1082,7 +1087,7 @@ Module topics.
   
   Module PrefixedValue.
     Section PrefixedValue.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Context {T : Set}.
       
@@ -1107,13 +1112,13 @@ Module topics.
       }.
     End PrefixedValue.
   End PrefixedValue.
-  Definition PrefixedValue (T : Set) `{State.Trait} : Set :=
+  Definition PrefixedValue (T : Set) `{ℋ : State.Trait} : Set :=
     M.val (PrefixedValue.t (T := T)).
 End topics.
 
 Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
   Module Error.
-    Inductive t `{State.Trait} : Set :=
+    Inductive t `{ℋ : State.Trait} : Set :=
     | Decode (_ : parity_scale_codec.error.Error)
     | OffChain (_ : ink_env.engine.off_chain.OffChainError)
     | CalleeTrapped
@@ -1129,16 +1134,16 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
     | CallRuntimeFailed
     | EcdsaRecoveryFailed.
   End Error.
-  Definition Error `{State.Trait} : Set := Error.t.
+  Definition Error `{ℋ : State.Trait} : Set := Error.t.
   
-  Definition Result (T : Set) `{State.Trait} : Set :=
+  Definition Result `{ℋ : State.Trait} (T : Set) : Set :=
     core.result.Result
       T
       ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Error.
   
   Module EmittedEvent.
     Section EmittedEvent.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Unset Primitive Projections.
       Record t : Set := {
@@ -1165,14 +1170,20 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
       }.
     End EmittedEvent.
   End EmittedEvent.
-  Definition EmittedEvent `{State.Trait} : Set := M.val EmittedEvent.t.
+  Definition EmittedEvent `{ℋ : State.Trait} : Set := M.val EmittedEvent.t.
   
   Parameter set_account_balance :
-      forall `{State.Trait} {T : Set} {ℋ_0 : ink_env.types.Environment.Trait T},
+      forall
+        `{ℋ : State.Trait}
+        {T : Set}
+        {ℋ_0 : ink_env.types.Environment.Trait T},
       T::type["AccountId"] -> T::type["Balance"] -> M unit.
   
   Parameter get_account_balance :
-      forall `{State.Trait} {T : Set} {ℋ_0 : ink_env.types.Environment.Trait T},
+      forall
+        `{ℋ : State.Trait}
+        {T : Set}
+        {ℋ_0 : ink_env.types.Environment.Trait T},
       T::type["AccountId"] ->
         M
           (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
@@ -1180,24 +1191,29 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
   
   Parameter register_chain_extension :
       forall
-        `{State.Trait}
+        `{ℋ : State.Trait}
         {E : Set}
         {ℋ_0 : ink_engine.chain_extension.ChainExtension.Trait E},
       E -> M unit.
   
   Parameter recorded_debug_messages :
-      forall `{State.Trait},
+      forall `{ℋ : State.Trait},
       M ink_engine.test_api.RecordedDebugMessages.
   
-  Parameter set_clear_storage_disabled : forall `{State.Trait}, bool -> M unit.
+  Parameter set_clear_storage_disabled :
+      forall `{ℋ : State.Trait},
+      bool -> M unit.
   
   Parameter advance_block :
-      forall `{State.Trait} {T : Set} {ℋ_0 : ink_env.types.Environment.Trait T},
+      forall
+        `{ℋ : State.Trait}
+        {T : Set}
+        {ℋ_0 : ink_env.types.Environment.Trait T},
       M unit.
   
   Parameter set_caller :
       forall
-        `{State.Trait}
+        `{ℋ : State.Trait}
         {T : Set}
         {ℋ_0 : ink_env.types.Environment.Trait T}
         {ℋ_1 :
@@ -1208,7 +1224,7 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
   
   Parameter set_callee :
       forall
-        `{State.Trait}
+        `{ℋ : State.Trait}
         {T : Set}
         {ℋ_0 : ink_env.types.Environment.Trait T}
         {ℋ_1 :
@@ -1219,7 +1235,7 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
   
   Parameter set_contract :
       forall
-        `{State.Trait}
+        `{ℋ : State.Trait}
         {T : Set}
         {ℋ_0 : ink_env.types.Environment.Trait T}
         {ℋ_1 :
@@ -1230,7 +1246,7 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
   
   Parameter is_contract :
       forall
-        `{State.Trait}
+        `{ℋ : State.Trait}
         {T : Set}
         {ℋ_0 : ink_env.types.Environment.Trait T}
         {ℋ_1 :
@@ -1240,39 +1256,60 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
       T::type["AccountId"] -> M bool.
   
   Parameter callee :
-      forall `{State.Trait} {T : Set} {ℋ_0 : ink_env.types.Environment.Trait T},
+      forall
+        `{ℋ : State.Trait}
+        {T : Set}
+        {ℋ_0 : ink_env.types.Environment.Trait T},
       M T::type["AccountId"].
   
   Parameter get_contract_storage_rw :
-      forall `{State.Trait} {T : Set} {ℋ_0 : ink_env.types.Environment.Trait T},
+      forall
+        `{ℋ : State.Trait}
+        {T : Set}
+        {ℋ_0 : ink_env.types.Environment.Trait T},
       (ref T::type["AccountId"]) -> M (usize * usize).
   
   Parameter set_value_transferred :
-      forall `{State.Trait} {T : Set} {ℋ_0 : ink_env.types.Environment.Trait T},
+      forall
+        `{ℋ : State.Trait}
+        {T : Set}
+        {ℋ_0 : ink_env.types.Environment.Trait T},
       T::type["Balance"] -> M unit.
   
   Parameter transfer_in :
-      forall `{State.Trait} {T : Set} {ℋ_0 : ink_env.types.Environment.Trait T},
+      forall
+        `{ℋ : State.Trait}
+        {T : Set}
+        {ℋ_0 : ink_env.types.Environment.Trait T},
       T::type["Balance"] -> M unit.
   
   Parameter count_used_storage_cells :
-      forall `{State.Trait} {T : Set} {ℋ_0 : ink_env.types.Environment.Trait T},
+      forall
+        `{ℋ : State.Trait}
+        {T : Set}
+        {ℋ_0 : ink_env.types.Environment.Trait T},
       (ref T::type["AccountId"]) ->
         M
           (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
             usize).
   
   Parameter set_block_timestamp :
-      forall `{State.Trait} {T : Set} {ℋ_0 : ink_env.types.Environment.Trait T},
+      forall
+        `{ℋ : State.Trait}
+        {T : Set}
+        {ℋ_0 : ink_env.types.Environment.Trait T},
       T::type["Timestamp"] -> M unit.
   
   Parameter set_block_number :
-      forall `{State.Trait} {T : Set} {ℋ_0 : ink_env.types.Environment.Trait T},
+      forall
+        `{ℋ : State.Trait}
+        {T : Set}
+        {ℋ_0 : ink_env.types.Environment.Trait T},
       T::type["BlockNumber"] -> M unit.
   
   Module DefaultAccounts.
     Section DefaultAccounts.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Context {T : Set}.
       
@@ -1328,14 +1365,14 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
   End DefaultAccounts.
   Definition DefaultAccounts
       (T : Set)
-      `{State.Trait}
+      `{ℋ : State.Trait}
       {ℋ_0 : ink_env.types.Environment.Trait T}
       : Set :=
     M.val (DefaultAccounts.t (T := T)).
   
   Parameter run_test :
       forall
-        `{State.Trait}
+        `{ℋ : State.Trait}
         {T F : Set}
         {ℋ_0 : ink_env.types.Environment.Trait T}
         {ℋ_1 :
@@ -1353,7 +1390,7 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
   
   Parameter default_accounts :
       forall
-        `{State.Trait}
+        `{ℋ : State.Trait}
         {T : Set}
         {ℋ_0 : ink_env.types.Environment.Trait T}
         {ℋ_1 :
@@ -1368,12 +1405,12 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
       Sigma (Ty : Set) `(core.iter.traits.iterator.Iterator.Trait Ty),
       unit.
   Parameter recorded_events :
-      forall `{State.Trait},
+      forall `{ℋ : State.Trait},
       M (projT1 recorded_events_ret_ty).
   
   Parameter assert_contract_termination :
       forall
-        `{State.Trait}
+        `{ℋ : State.Trait}
         {T F : Set}
         {ℋ_0 : ink_env.types.Environment.Trait T}
         {ℋ_1 : core.ops.function.FnMut.Trait F (Args := unit)}
@@ -1387,7 +1424,7 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
   
   Module CallFlags.
     Section CallFlags.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Unset Primitive Projections.
       Record t : Set := {
@@ -1435,11 +1472,11 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
       }.
     End CallFlags.
   End CallFlags.
-  Definition CallFlags `{State.Trait} : Set := M.val CallFlags.t.
+  Definition CallFlags `{ℋ : State.Trait} : Set := M.val CallFlags.t.
   
   Module CallParams.
     Section CallParams.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Context {E CallType Args R : Set}.
       
@@ -1503,7 +1540,7 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
   End CallParams.
   Definition CallParams
       (E CallType Args R : Set)
-      `{State.Trait}
+      `{ℋ : State.Trait}
       {ℋ_0 : ink_env.types.Environment.Trait E}
       : Set :=
     M.val
@@ -1511,7 +1548,7 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
   
   Module Call.
     Section Call.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Context {E : Set}.
       
@@ -1554,14 +1591,14 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
   End Call.
   Definition Call
       (E : Set)
-      `{State.Trait}
+      `{ℋ : State.Trait}
       {ℋ_0 : ink_env.types.Environment.Trait E}
       : Set :=
     M.val (Call.t (E := E)).
   
   Module DelegateCall.
     Section DelegateCall.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Context {E : Set}.
       
@@ -1584,14 +1621,14 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
   End DelegateCall.
   Definition DelegateCall
       (E : Set)
-      `{State.Trait}
+      `{ℋ : State.Trait}
       {ℋ_0 : ink_env.types.Environment.Trait E}
       : Set :=
     M.val (DelegateCall.t (E := E)).
   
   Module ReturnFlags.
     Section ReturnFlags.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Unset Primitive Projections.
       Record t : Set := {
@@ -1607,11 +1644,11 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
       }.
     End ReturnFlags.
   End ReturnFlags.
-  Definition ReturnFlags `{State.Trait} : Set := M.val ReturnFlags.t.
+  Definition ReturnFlags `{ℋ : State.Trait} : Set := M.val ReturnFlags.t.
   
   Module EnvBackend.
     Section EnvBackend.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Class Trait (Self : Set) : Type := {
         set_contract_storage
@@ -1724,7 +1761,7 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
   
   Module TypedEnvBackend.
     Section TypedEnvBackend.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Class Trait
           (Self : Set)
@@ -1875,7 +1912,7 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
   
   Module OnInstance.
     Section OnInstance.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Class Trait
           (Self : Set)
@@ -1898,7 +1935,7 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
   
   Module CallBuilder.
     Section CallBuilder.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Context {E CallType Args RetType : Set}.
       
@@ -1962,7 +1999,7 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
   End CallBuilder.
   Definition CallBuilder
       (E CallType Args RetType : Set)
-      `{State.Trait}
+      `{ℋ : State.Trait}
       {ℋ_0 : ink_env.types.Environment.Trait E}
       : Set :=
     M.val
@@ -1973,7 +2010,10 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
         (RetType := RetType)).
   
   Parameter build_call :
-      forall `{State.Trait} {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E},
+      forall
+        `{ℋ : State.Trait}
+        {E : Set}
+        {ℋ_0 : ink_env.types.Environment.Trait E},
       M
           (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallBuilder
             E
@@ -1988,44 +2028,71 @@ End backend_and_call_builder_and_engine_and_engine_test_api_and_error.
 
 Module api.
   Parameter caller :
-      forall `{State.Trait} {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E},
+      forall
+        `{ℋ : State.Trait}
+        {E : Set}
+        {ℋ_0 : ink_env.types.Environment.Trait E},
       M E::type["AccountId"].
   
   Parameter transferred_value :
-      forall `{State.Trait} {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E},
+      forall
+        `{ℋ : State.Trait}
+        {E : Set}
+        {ℋ_0 : ink_env.types.Environment.Trait E},
       M E::type["Balance"].
   
   Parameter weight_to_fee :
-      forall `{State.Trait} {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E},
+      forall
+        `{ℋ : State.Trait}
+        {E : Set}
+        {ℋ_0 : ink_env.types.Environment.Trait E},
       ink_env.types.Gas -> M E::type["Balance"].
   
   Parameter gas_left :
-      forall `{State.Trait} {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E},
+      forall
+        `{ℋ : State.Trait}
+        {E : Set}
+        {ℋ_0 : ink_env.types.Environment.Trait E},
       M ink_env.types.Gas.
   
   Parameter block_timestamp :
-      forall `{State.Trait} {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E},
+      forall
+        `{ℋ : State.Trait}
+        {E : Set}
+        {ℋ_0 : ink_env.types.Environment.Trait E},
       M E::type["Timestamp"].
   
   Parameter account_id :
-      forall `{State.Trait} {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E},
+      forall
+        `{ℋ : State.Trait}
+        {E : Set}
+        {ℋ_0 : ink_env.types.Environment.Trait E},
       M E::type["AccountId"].
   
   Parameter balance :
-      forall `{State.Trait} {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E},
+      forall
+        `{ℋ : State.Trait}
+        {E : Set}
+        {ℋ_0 : ink_env.types.Environment.Trait E},
       M E::type["Balance"].
   
   Parameter block_number :
-      forall `{State.Trait} {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E},
+      forall
+        `{ℋ : State.Trait}
+        {E : Set}
+        {ℋ_0 : ink_env.types.Environment.Trait E},
       M E::type["BlockNumber"].
   
   Parameter minimum_balance :
-      forall `{State.Trait} {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E},
+      forall
+        `{ℋ : State.Trait}
+        {E : Set}
+        {ℋ_0 : ink_env.types.Environment.Trait E},
       M E::type["Balance"].
   
   Parameter emit_event :
       forall
-        `{State.Trait}
+        `{ℋ : State.Trait}
         {E Event : Set}
         {ℋ_0 : ink_env.types.Environment.Trait E}
         {ℋ_1 : ink_env.topics.Topics.Trait Event}
@@ -2034,7 +2101,7 @@ Module api.
   
   Parameter set_contract_storage :
       forall
-        `{State.Trait}
+        `{ℋ : State.Trait}
         {K V : Set}
         {ℋ_0 : parity_scale_codec.codec.Encode.Trait K}
         {ℋ_1 : ink_storage_traits.storage.Storable.Trait V},
@@ -2042,7 +2109,7 @@ Module api.
   
   Parameter get_contract_storage :
       forall
-        `{State.Trait}
+        `{ℋ : State.Trait}
         {K R : Set}
         {ℋ_0 : parity_scale_codec.codec.Encode.Trait K}
         {ℋ_1 : ink_storage_traits.storage.Storable.Trait R},
@@ -2053,7 +2120,7 @@ Module api.
   
   Parameter take_contract_storage :
       forall
-        `{State.Trait}
+        `{ℋ : State.Trait}
         {K R : Set}
         {ℋ_0 : parity_scale_codec.codec.Encode.Trait K}
         {ℋ_1 : ink_storage_traits.storage.Storable.Trait R},
@@ -2064,21 +2131,21 @@ Module api.
   
   Parameter contains_contract_storage :
       forall
-        `{State.Trait}
+        `{ℋ : State.Trait}
         {K : Set}
         {ℋ_0 : parity_scale_codec.codec.Encode.Trait K},
       (ref K) -> M (core.option.Option u32).
   
   Parameter clear_contract_storage :
       forall
-        `{State.Trait}
+        `{ℋ : State.Trait}
         {K : Set}
         {ℋ_0 : parity_scale_codec.codec.Encode.Trait K},
       (ref K) -> M (core.option.Option u32).
   
   Parameter invoke_contract :
       forall
-        `{State.Trait}
+        `{ℋ : State.Trait}
         {E Args R : Set}
         {ℋ_0 : ink_env.types.Environment.Trait E}
         {ℋ_1 : parity_scale_codec.codec.Encode.Trait Args}
@@ -2097,7 +2164,7 @@ Module api.
   
   Parameter invoke_contract_delegate :
       forall
-        `{State.Trait}
+        `{ℋ : State.Trait}
         {E Args R : Set}
         {ℋ_0 : ink_env.types.Environment.Trait E}
         {ℋ_1 : parity_scale_codec.codec.Encode.Trait Args}
@@ -2116,7 +2183,7 @@ Module api.
   
   Parameter instantiate_contract :
       forall
-        `{State.Trait}
+        `{ℋ : State.Trait}
         {E ContractRef Args Salt R : Set}
         {ℋ_0 : ink_env.types.Environment.Trait E}
         {ℋ_1 :
@@ -2135,11 +2202,17 @@ Module api.
                 (Self := R)))).
   
   Parameter terminate_contract :
-      forall `{State.Trait} {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E},
+      forall
+        `{ℋ : State.Trait}
+        {E : Set}
+        {ℋ_0 : ink_env.types.Environment.Trait E},
       E::type["AccountId"] -> M Empty_set.
   
   Parameter transfer :
-      forall `{State.Trait} {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E},
+      forall
+        `{ℋ : State.Trait}
+        {E : Set}
+        {ℋ_0 : ink_env.types.Environment.Trait E},
       E::type["AccountId"] ->
         E::type["Balance"] ->
         M
@@ -2148,7 +2221,7 @@ Module api.
   
   Parameter decode_input :
       forall
-        `{State.Trait}
+        `{ℋ : State.Trait}
         {T : Set}
         {ℋ_0 : parity_scale_codec.codec.Decode.Trait T},
       M
@@ -2157,7 +2230,7 @@ Module api.
   
   Parameter return_value :
       forall
-        `{State.Trait}
+        `{ℋ : State.Trait}
         {R : Set}
         {ℋ_0 : parity_scale_codec.codec.Encode.Trait R},
       ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.ReturnFlags
@@ -2165,17 +2238,20 @@ Module api.
         (ref R) ->
         M Empty_set.
   
-  Parameter debug_message : forall `{State.Trait}, (ref str) -> M unit.
+  Parameter debug_message : forall `{ℋ : State.Trait}, (ref str) -> M unit.
   
   Parameter hash_bytes :
-      forall `{State.Trait} {H : Set} {ℋ_0 : ink_env.hash.CryptoHash.Trait H},
+      forall
+        `{ℋ : State.Trait}
+        {H : Set}
+        {ℋ_0 : ink_env.hash.CryptoHash.Trait H},
       (ref (Slice u8)) ->
         (mut_ref (ink_env.hash.HashOutput.Type_ (Self := H))) ->
         M unit.
   
   Parameter hash_encoded :
       forall
-        `{State.Trait}
+        `{ℋ : State.Trait}
         {H T : Set}
         {ℋ_0 : ink_env.hash.CryptoHash.Trait H}
         {ℋ_1 : parity_scale_codec.codec.Encode.Trait T},
@@ -2184,7 +2260,7 @@ Module api.
         M unit.
   
   Parameter ecdsa_recover :
-      forall `{State.Trait},
+      forall `{ℋ : State.Trait},
       (ref (array u8)) ->
         (ref (array u8)) ->
         (mut_ref (array u8)) ->
@@ -2193,7 +2269,7 @@ Module api.
             unit).
   
   Parameter ecdsa_to_eth_address :
-      forall `{State.Trait},
+      forall `{ℋ : State.Trait},
       (ref (array u8)) ->
         (mut_ref (array u8)) ->
         M
@@ -2201,35 +2277,50 @@ Module api.
             unit).
   
   Parameter is_contract :
-      forall `{State.Trait} {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E},
+      forall
+        `{ℋ : State.Trait}
+        {E : Set}
+        {ℋ_0 : ink_env.types.Environment.Trait E},
       (ref E::type["AccountId"]) -> M bool.
   
   Parameter code_hash :
-      forall `{State.Trait} {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E},
+      forall
+        `{ℋ : State.Trait}
+        {E : Set}
+        {ℋ_0 : ink_env.types.Environment.Trait E},
       (ref E::type["AccountId"]) ->
         M
           (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
             E::type["Hash"]).
   
   Parameter own_code_hash :
-      forall `{State.Trait} {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E},
+      forall
+        `{ℋ : State.Trait}
+        {E : Set}
+        {ℋ_0 : ink_env.types.Environment.Trait E},
       M
           (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
             E::type["Hash"]).
   
   Parameter caller_is_origin :
-      forall `{State.Trait} {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E},
+      forall
+        `{ℋ : State.Trait}
+        {E : Set}
+        {ℋ_0 : ink_env.types.Environment.Trait E},
       M bool.
   
   Parameter set_code_hash :
-      forall `{State.Trait},
+      forall `{ℋ : State.Trait},
       (ref (array u8)) ->
         M
           (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
             unit).
   
   Parameter set_code_hash2 :
-      forall `{State.Trait} {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E},
+      forall
+        `{ℋ : State.Trait}
+        {E : Set}
+        {ℋ_0 : ink_env.types.Environment.Trait E},
       (ref E::type["Hash"]) ->
         M
           (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
@@ -2237,7 +2328,7 @@ Module api.
   
   Parameter call_runtime :
       forall
-        `{State.Trait}
+        `{ℋ : State.Trait}
         {E Call : Set}
         {ℋ_0 : ink_env.types.Environment.Trait E}
         {ℋ_1 : parity_scale_codec.codec.Encode.Trait Call},
@@ -2248,44 +2339,71 @@ Module api.
 End api.
 
 Parameter caller :
-    forall `{State.Trait} {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E},
+    forall
+      `{ℋ : State.Trait}
+      {E : Set}
+      {ℋ_0 : ink_env.types.Environment.Trait E},
     M E::type["AccountId"].
 
 Parameter transferred_value :
-    forall `{State.Trait} {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E},
+    forall
+      `{ℋ : State.Trait}
+      {E : Set}
+      {ℋ_0 : ink_env.types.Environment.Trait E},
     M E::type["Balance"].
 
 Parameter weight_to_fee :
-    forall `{State.Trait} {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E},
+    forall
+      `{ℋ : State.Trait}
+      {E : Set}
+      {ℋ_0 : ink_env.types.Environment.Trait E},
     ink_env.types.Gas -> M E::type["Balance"].
 
 Parameter gas_left :
-    forall `{State.Trait} {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E},
+    forall
+      `{ℋ : State.Trait}
+      {E : Set}
+      {ℋ_0 : ink_env.types.Environment.Trait E},
     M ink_env.types.Gas.
 
 Parameter block_timestamp :
-    forall `{State.Trait} {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E},
+    forall
+      `{ℋ : State.Trait}
+      {E : Set}
+      {ℋ_0 : ink_env.types.Environment.Trait E},
     M E::type["Timestamp"].
 
 Parameter account_id :
-    forall `{State.Trait} {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E},
+    forall
+      `{ℋ : State.Trait}
+      {E : Set}
+      {ℋ_0 : ink_env.types.Environment.Trait E},
     M E::type["AccountId"].
 
 Parameter balance :
-    forall `{State.Trait} {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E},
+    forall
+      `{ℋ : State.Trait}
+      {E : Set}
+      {ℋ_0 : ink_env.types.Environment.Trait E},
     M E::type["Balance"].
 
 Parameter block_number :
-    forall `{State.Trait} {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E},
+    forall
+      `{ℋ : State.Trait}
+      {E : Set}
+      {ℋ_0 : ink_env.types.Environment.Trait E},
     M E::type["BlockNumber"].
 
 Parameter minimum_balance :
-    forall `{State.Trait} {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E},
+    forall
+      `{ℋ : State.Trait}
+      {E : Set}
+      {ℋ_0 : ink_env.types.Environment.Trait E},
     M E::type["Balance"].
 
 Parameter emit_event :
     forall
-      `{State.Trait}
+      `{ℋ : State.Trait}
       {E Event : Set}
       {ℋ_0 : ink_env.types.Environment.Trait E}
       {ℋ_1 : ink_env.topics.Topics.Trait Event}
@@ -2294,7 +2412,7 @@ Parameter emit_event :
 
 Parameter set_contract_storage :
     forall
-      `{State.Trait}
+      `{ℋ : State.Trait}
       {K V : Set}
       {ℋ_0 : parity_scale_codec.codec.Encode.Trait K}
       {ℋ_1 : ink_storage_traits.storage.Storable.Trait V},
@@ -2302,7 +2420,7 @@ Parameter set_contract_storage :
 
 Parameter get_contract_storage :
     forall
-      `{State.Trait}
+      `{ℋ : State.Trait}
       {K R : Set}
       {ℋ_0 : parity_scale_codec.codec.Encode.Trait K}
       {ℋ_1 : ink_storage_traits.storage.Storable.Trait R},
@@ -2313,7 +2431,7 @@ Parameter get_contract_storage :
 
 Parameter take_contract_storage :
     forall
-      `{State.Trait}
+      `{ℋ : State.Trait}
       {K R : Set}
       {ℋ_0 : parity_scale_codec.codec.Encode.Trait K}
       {ℋ_1 : ink_storage_traits.storage.Storable.Trait R},
@@ -2324,21 +2442,21 @@ Parameter take_contract_storage :
 
 Parameter contains_contract_storage :
     forall
-      `{State.Trait}
+      `{ℋ : State.Trait}
       {K : Set}
       {ℋ_0 : parity_scale_codec.codec.Encode.Trait K},
     (ref K) -> M (core.option.Option u32).
 
 Parameter clear_contract_storage :
     forall
-      `{State.Trait}
+      `{ℋ : State.Trait}
       {K : Set}
       {ℋ_0 : parity_scale_codec.codec.Encode.Trait K},
     (ref K) -> M (core.option.Option u32).
 
 Parameter invoke_contract :
     forall
-      `{State.Trait}
+      `{ℋ : State.Trait}
       {E Args R : Set}
       {ℋ_0 : ink_env.types.Environment.Trait E}
       {ℋ_1 : parity_scale_codec.codec.Encode.Trait Args}
@@ -2357,7 +2475,7 @@ Parameter invoke_contract :
 
 Parameter invoke_contract_delegate :
     forall
-      `{State.Trait}
+      `{ℋ : State.Trait}
       {E Args R : Set}
       {ℋ_0 : ink_env.types.Environment.Trait E}
       {ℋ_1 : parity_scale_codec.codec.Encode.Trait Args}
@@ -2376,7 +2494,7 @@ Parameter invoke_contract_delegate :
 
 Parameter instantiate_contract :
     forall
-      `{State.Trait}
+      `{ℋ : State.Trait}
       {E ContractRef Args Salt R : Set}
       {ℋ_0 : ink_env.types.Environment.Trait E}
       {ℋ_1 :
@@ -2395,11 +2513,17 @@ Parameter instantiate_contract :
               (Self := R)))).
 
 Parameter terminate_contract :
-    forall `{State.Trait} {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E},
+    forall
+      `{ℋ : State.Trait}
+      {E : Set}
+      {ℋ_0 : ink_env.types.Environment.Trait E},
     E::type["AccountId"] -> M Empty_set.
 
 Parameter transfer :
-    forall `{State.Trait} {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E},
+    forall
+      `{ℋ : State.Trait}
+      {E : Set}
+      {ℋ_0 : ink_env.types.Environment.Trait E},
     E::type["AccountId"] ->
       E::type["Balance"] ->
       M
@@ -2408,7 +2532,7 @@ Parameter transfer :
 
 Parameter decode_input :
     forall
-      `{State.Trait}
+      `{ℋ : State.Trait}
       {T : Set}
       {ℋ_0 : parity_scale_codec.codec.Decode.Trait T},
     M
@@ -2417,7 +2541,7 @@ Parameter decode_input :
 
 Parameter return_value :
     forall
-      `{State.Trait}
+      `{ℋ : State.Trait}
       {R : Set}
       {ℋ_0 : parity_scale_codec.codec.Encode.Trait R},
     ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.ReturnFlags
@@ -2425,24 +2549,24 @@ Parameter return_value :
       (ref R) ->
       M Empty_set.
 
-Parameter debug_message : forall `{State.Trait}, (ref str) -> M unit.
+Parameter debug_message : forall `{ℋ : State.Trait}, (ref str) -> M unit.
 
 Parameter hash_bytes :
-    forall `{State.Trait} {H : Set} {ℋ_0 : ink_env.hash.CryptoHash.Trait H},
+    forall `{ℋ : State.Trait} {H : Set} {ℋ_0 : ink_env.hash.CryptoHash.Trait H},
     (ref (Slice u8)) ->
       (mut_ref (ink_env.hash.HashOutput.Type_ (Self := H))) ->
       M unit.
 
 Parameter hash_encoded :
     forall
-      `{State.Trait}
+      `{ℋ : State.Trait}
       {H T : Set}
       {ℋ_0 : ink_env.hash.CryptoHash.Trait H}
       {ℋ_1 : parity_scale_codec.codec.Encode.Trait T},
     (ref T) -> (mut_ref (ink_env.hash.HashOutput.Type_ (Self := H))) -> M unit.
 
 Parameter ecdsa_recover :
-    forall `{State.Trait},
+    forall `{ℋ : State.Trait},
     (ref (array u8)) ->
       (ref (array u8)) ->
       (mut_ref (array u8)) ->
@@ -2451,7 +2575,7 @@ Parameter ecdsa_recover :
           unit).
 
 Parameter ecdsa_to_eth_address :
-    forall `{State.Trait},
+    forall `{ℋ : State.Trait},
     (ref (array u8)) ->
       (mut_ref (array u8)) ->
       M
@@ -2459,35 +2583,50 @@ Parameter ecdsa_to_eth_address :
           unit).
 
 Parameter is_contract :
-    forall `{State.Trait} {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E},
+    forall
+      `{ℋ : State.Trait}
+      {E : Set}
+      {ℋ_0 : ink_env.types.Environment.Trait E},
     (ref E::type["AccountId"]) -> M bool.
 
 Parameter code_hash :
-    forall `{State.Trait} {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E},
+    forall
+      `{ℋ : State.Trait}
+      {E : Set}
+      {ℋ_0 : ink_env.types.Environment.Trait E},
     (ref E::type["AccountId"]) ->
       M
         (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
           E::type["Hash"]).
 
 Parameter own_code_hash :
-    forall `{State.Trait} {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E},
+    forall
+      `{ℋ : State.Trait}
+      {E : Set}
+      {ℋ_0 : ink_env.types.Environment.Trait E},
     M
         (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
           E::type["Hash"]).
 
 Parameter caller_is_origin :
-    forall `{State.Trait} {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E},
+    forall
+      `{ℋ : State.Trait}
+      {E : Set}
+      {ℋ_0 : ink_env.types.Environment.Trait E},
     M bool.
 
 Parameter set_code_hash :
-    forall `{State.Trait},
+    forall `{ℋ : State.Trait},
     (ref (array u8)) ->
       M
         (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
           unit).
 
 Parameter set_code_hash2 :
-    forall `{State.Trait} {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E},
+    forall
+      `{ℋ : State.Trait}
+      {E : Set}
+      {ℋ_0 : ink_env.types.Environment.Trait E},
     (ref E::type["Hash"]) ->
       M
         (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
@@ -2495,7 +2634,7 @@ Parameter set_code_hash2 :
 
 Parameter call_runtime :
     forall
-      `{State.Trait}
+      `{ℋ : State.Trait}
       {E Call : Set}
       {ℋ_0 : ink_env.types.Environment.Trait E}
       {ℋ_1 : parity_scale_codec.codec.Encode.Trait Call},
@@ -2506,7 +2645,7 @@ Parameter call_runtime :
 
 Module BaseArithmetic.
   Section BaseArithmetic.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Class Trait
@@ -2547,7 +2686,7 @@ End BaseArithmetic.
 
 Module AtLeast32Bit.
   Section AtLeast32Bit.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Class Trait
@@ -2563,7 +2702,7 @@ End AtLeast32Bit.
 
 Module AtLeast32BitUnsigned.
   Section AtLeast32BitUnsigned.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Class Trait
@@ -2578,7 +2717,7 @@ End AtLeast32BitUnsigned.
 
 Module Saturating.
   Section Saturating.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Class Trait (Self : Set) : Type := {
       saturating_add : Self -> Self -> M Self;
@@ -2591,7 +2730,7 @@ Module Saturating.
 End Saturating.
 
 Module Error.
-  Inductive t `{State.Trait} : Set :=
+  Inductive t `{ℋ : State.Trait} : Set :=
   | Decode (_ : parity_scale_codec.error.Error)
   | OffChain (_ : ink_env.engine.off_chain.OffChainError)
   | CalleeTrapped
@@ -2607,16 +2746,16 @@ Module Error.
   | CallRuntimeFailed
   | EcdsaRecoveryFailed.
 End Error.
-Definition Error `{State.Trait} : Set := Error.t.
+Definition Error `{ℋ : State.Trait} : Set := Error.t.
 
-Definition Result (T : Set) `{State.Trait} : Set :=
+Definition Result `{ℋ : State.Trait} (T : Set) : Set :=
   core.result.Result
     T
     ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Error.
 
 Module EmittedEvent.
   Section EmittedEvent.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Record t : Set := {
@@ -2643,14 +2782,20 @@ Module EmittedEvent.
     }.
   End EmittedEvent.
 End EmittedEvent.
-Definition EmittedEvent `{State.Trait} : Set := M.val EmittedEvent.t.
+Definition EmittedEvent `{ℋ : State.Trait} : Set := M.val EmittedEvent.t.
 
 Parameter set_account_balance :
-    forall `{State.Trait} {T : Set} {ℋ_0 : ink_env.types.Environment.Trait T},
+    forall
+      `{ℋ : State.Trait}
+      {T : Set}
+      {ℋ_0 : ink_env.types.Environment.Trait T},
     T::type["AccountId"] -> T::type["Balance"] -> M unit.
 
 Parameter get_account_balance :
-    forall `{State.Trait} {T : Set} {ℋ_0 : ink_env.types.Environment.Trait T},
+    forall
+      `{ℋ : State.Trait}
+      {T : Set}
+      {ℋ_0 : ink_env.types.Environment.Trait T},
     T::type["AccountId"] ->
       M
         (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
@@ -2658,24 +2803,29 @@ Parameter get_account_balance :
 
 Parameter register_chain_extension :
     forall
-      `{State.Trait}
+      `{ℋ : State.Trait}
       {E : Set}
       {ℋ_0 : ink_engine.chain_extension.ChainExtension.Trait E},
     E -> M unit.
 
 Parameter recorded_debug_messages :
-    forall `{State.Trait},
+    forall `{ℋ : State.Trait},
     M ink_engine.test_api.RecordedDebugMessages.
 
-Parameter set_clear_storage_disabled : forall `{State.Trait}, bool -> M unit.
+Parameter set_clear_storage_disabled :
+    forall `{ℋ : State.Trait},
+    bool -> M unit.
 
 Parameter advance_block :
-    forall `{State.Trait} {T : Set} {ℋ_0 : ink_env.types.Environment.Trait T},
+    forall
+      `{ℋ : State.Trait}
+      {T : Set}
+      {ℋ_0 : ink_env.types.Environment.Trait T},
     M unit.
 
 Parameter set_caller :
     forall
-      `{State.Trait}
+      `{ℋ : State.Trait}
       {T : Set}
       {ℋ_0 : ink_env.types.Environment.Trait T}
       {ℋ_1 :
@@ -2686,7 +2836,7 @@ Parameter set_caller :
 
 Parameter set_callee :
     forall
-      `{State.Trait}
+      `{ℋ : State.Trait}
       {T : Set}
       {ℋ_0 : ink_env.types.Environment.Trait T}
       {ℋ_1 :
@@ -2697,7 +2847,7 @@ Parameter set_callee :
 
 Parameter set_contract :
     forall
-      `{State.Trait}
+      `{ℋ : State.Trait}
       {T : Set}
       {ℋ_0 : ink_env.types.Environment.Trait T}
       {ℋ_1 :
@@ -2708,7 +2858,7 @@ Parameter set_contract :
 
 Parameter is_contract :
     forall
-      `{State.Trait}
+      `{ℋ : State.Trait}
       {T : Set}
       {ℋ_0 : ink_env.types.Environment.Trait T}
       {ℋ_1 :
@@ -2718,39 +2868,60 @@ Parameter is_contract :
     T::type["AccountId"] -> M bool.
 
 Parameter callee :
-    forall `{State.Trait} {T : Set} {ℋ_0 : ink_env.types.Environment.Trait T},
+    forall
+      `{ℋ : State.Trait}
+      {T : Set}
+      {ℋ_0 : ink_env.types.Environment.Trait T},
     M T::type["AccountId"].
 
 Parameter get_contract_storage_rw :
-    forall `{State.Trait} {T : Set} {ℋ_0 : ink_env.types.Environment.Trait T},
+    forall
+      `{ℋ : State.Trait}
+      {T : Set}
+      {ℋ_0 : ink_env.types.Environment.Trait T},
     (ref T::type["AccountId"]) -> M (usize * usize).
 
 Parameter set_value_transferred :
-    forall `{State.Trait} {T : Set} {ℋ_0 : ink_env.types.Environment.Trait T},
+    forall
+      `{ℋ : State.Trait}
+      {T : Set}
+      {ℋ_0 : ink_env.types.Environment.Trait T},
     T::type["Balance"] -> M unit.
 
 Parameter transfer_in :
-    forall `{State.Trait} {T : Set} {ℋ_0 : ink_env.types.Environment.Trait T},
+    forall
+      `{ℋ : State.Trait}
+      {T : Set}
+      {ℋ_0 : ink_env.types.Environment.Trait T},
     T::type["Balance"] -> M unit.
 
 Parameter count_used_storage_cells :
-    forall `{State.Trait} {T : Set} {ℋ_0 : ink_env.types.Environment.Trait T},
+    forall
+      `{ℋ : State.Trait}
+      {T : Set}
+      {ℋ_0 : ink_env.types.Environment.Trait T},
     (ref T::type["AccountId"]) ->
       M
         (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
           usize).
 
 Parameter set_block_timestamp :
-    forall `{State.Trait} {T : Set} {ℋ_0 : ink_env.types.Environment.Trait T},
+    forall
+      `{ℋ : State.Trait}
+      {T : Set}
+      {ℋ_0 : ink_env.types.Environment.Trait T},
     T::type["Timestamp"] -> M unit.
 
 Parameter set_block_number :
-    forall `{State.Trait} {T : Set} {ℋ_0 : ink_env.types.Environment.Trait T},
+    forall
+      `{ℋ : State.Trait}
+      {T : Set}
+      {ℋ_0 : ink_env.types.Environment.Trait T},
     T::type["BlockNumber"] -> M unit.
 
 Parameter run_test :
     forall
-      `{State.Trait}
+      `{ℋ : State.Trait}
       {T F : Set}
       {ℋ_0 : ink_env.types.Environment.Trait T}
       {ℋ_1 :
@@ -2768,7 +2939,7 @@ Parameter run_test :
 
 Parameter default_accounts :
     forall
-      `{State.Trait}
+      `{ℋ : State.Trait}
       {T : Set}
       {ℋ_0 : ink_env.types.Environment.Trait T}
       {ℋ_1 :
@@ -2781,7 +2952,7 @@ Parameter default_accounts :
 
 Module DefaultAccounts.
   Section DefaultAccounts.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {T : Set}.
     
@@ -2837,7 +3008,7 @@ Module DefaultAccounts.
 End DefaultAccounts.
 Definition DefaultAccounts
     (T : Set)
-    `{State.Trait}
+    `{ℋ : State.Trait}
     {ℋ_0 : ink_env.types.Environment.Trait T}
     : Set :=
   M.val (DefaultAccounts.t (T := T)).
@@ -2846,12 +3017,12 @@ Parameter recorded_events_ret_ty :
     Sigma (Ty : Set) `(core.iter.traits.iterator.Iterator.Trait Ty),
     unit.
 Parameter recorded_events :
-    forall `{State.Trait},
+    forall `{ℋ : State.Trait},
     M (projT1 recorded_events_ret_ty).
 
 Parameter assert_contract_termination :
     forall
-      `{State.Trait}
+      `{ℋ : State.Trait}
       {T F : Set}
       {ℋ_0 : ink_env.types.Environment.Trait T}
       {ℋ_1 : core.ops.function.FnMut.Trait F (Args := unit)}
@@ -2864,7 +3035,7 @@ Parameter assert_contract_termination :
 
 Module OnInstance.
   Section OnInstance.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Class Trait
         (Self : Set)
@@ -2887,7 +3058,7 @@ End OnInstance.
 
 Module CallParams.
   Section CallParams.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {E CallType Args R : Set}.
     
@@ -2945,13 +3116,16 @@ Module CallParams.
 End CallParams.
 Definition CallParams
     (E CallType Args R : Set)
-    `{State.Trait}
+    `{ℋ : State.Trait}
     {ℋ_0 : ink_env.types.Environment.Trait E}
     : Set :=
   M.val (CallParams.t (E := E) (CallType := CallType) (Args := Args) (R := R)).
 
 Parameter build_call :
-    forall `{State.Trait} {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E},
+    forall
+      `{ℋ : State.Trait}
+      {E : Set}
+      {ℋ_0 : ink_env.types.Environment.Trait E},
     M
         (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallBuilder
           E
@@ -2965,7 +3139,7 @@ Parameter build_call :
 
 Module Call.
   Section Call.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {E : Set}.
     
@@ -3004,14 +3178,14 @@ Module Call.
 End Call.
 Definition Call
     (E : Set)
-    `{State.Trait}
+    `{ℋ : State.Trait}
     {ℋ_0 : ink_env.types.Environment.Trait E}
     : Set :=
   M.val (Call.t (E := E)).
 
 Module DelegateCall.
   Section DelegateCall.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {E : Set}.
     
@@ -3032,14 +3206,14 @@ Module DelegateCall.
 End DelegateCall.
 Definition DelegateCall
     (E : Set)
-    `{State.Trait}
+    `{ℋ : State.Trait}
     {ℋ_0 : ink_env.types.Environment.Trait E}
     : Set :=
   M.val (DelegateCall.t (E := E)).
 
 Module CallBuilder.
   Section CallBuilder.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {E CallType Args RetType : Set}.
     
@@ -3097,7 +3271,7 @@ Module CallBuilder.
 End CallBuilder.
 Definition CallBuilder
     (E CallType Args RetType : Set)
-    `{State.Trait}
+    `{ℋ : State.Trait}
     {ℋ_0 : ink_env.types.Environment.Trait E}
     : Set :=
   M.val
@@ -3109,7 +3283,7 @@ Definition CallBuilder
 
 Module ReturnFlags.
   Section ReturnFlags.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Record t : Set := {
@@ -3125,11 +3299,11 @@ Module ReturnFlags.
     }.
   End ReturnFlags.
 End ReturnFlags.
-Definition ReturnFlags `{State.Trait} : Set := M.val ReturnFlags.t.
+Definition ReturnFlags `{ℋ : State.Trait} : Set := M.val ReturnFlags.t.
 
 Module CallFlags.
   Section CallFlags.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Record t : Set := {
@@ -3175,11 +3349,11 @@ Module CallFlags.
     }.
   End CallFlags.
 End CallFlags.
-Definition CallFlags `{State.Trait} : Set := M.val CallFlags.t.
+Definition CallFlags `{ℋ : State.Trait} : Set := M.val CallFlags.t.
 
 Module EnvBackend.
   Section EnvBackend.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Class Trait (Self : Set) : Type := {
       set_contract_storage
@@ -3292,7 +3466,7 @@ End EnvBackend.
 
 Module TypedEnvBackend.
   Section TypedEnvBackend.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Class Trait
         (Self : Set)
@@ -3443,7 +3617,7 @@ End TypedEnvBackend.
 Module common.
   Module ReturnType.
     Section ReturnType.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Context {T : Set}.
       
@@ -3458,12 +3632,12 @@ Module common.
       }.
     End ReturnType.
   End ReturnType.
-  Definition ReturnType `{State.Trait} (T : Set) : Set :=
+  Definition ReturnType `{ℋ : State.Trait} (T : Set) : Set :=
     M.val (ReturnType.t (T := T)).
   
   Module Set_.
     Section Set_.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Context {T : Set}.
       
@@ -3478,11 +3652,11 @@ Module common.
       }.
     End Set_.
   End Set_.
-  Definition Set_ `{State.Trait} (T : Set) : Set := M.val (Set_.t (T := T)).
+  Definition Set_ `{ℋ : State.Trait} (T : Set) : Set := M.val (Set_.t (T := T)).
   
   Module Unset_.
     Section Unset_.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Context {T : Set}.
       
@@ -3497,11 +3671,12 @@ Module common.
       }.
     End Unset_.
   End Unset_.
-  Definition Unset_ `{State.Trait} (T : Set) : Set := M.val (Unset_.t (T := T)).
+  Definition Unset_ `{ℋ : State.Trait} (T : Set) : Set :=
+    M.val (Unset_.t (T := T)).
   
   Module Unwrap.
     Section Unwrap.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Class Trait (Self : Set) : Type := {
         Output : Set;
@@ -3522,7 +3697,7 @@ End common.
 
 Module ReturnType.
   Section ReturnType.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {T : Set}.
     
@@ -3537,12 +3712,12 @@ Module ReturnType.
     }.
   End ReturnType.
 End ReturnType.
-Definition ReturnType `{State.Trait} (T : Set) : Set :=
+Definition ReturnType `{ℋ : State.Trait} (T : Set) : Set :=
   M.val (ReturnType.t (T := T)).
 
 Module Set_.
   Section Set_.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {T : Set}.
     
@@ -3557,11 +3732,11 @@ Module Set_.
     }.
   End Set_.
 End Set_.
-Definition Set_ `{State.Trait} (T : Set) : Set := M.val (Set_.t (T := T)).
+Definition Set_ `{ℋ : State.Trait} (T : Set) : Set := M.val (Set_.t (T := T)).
 
 Module Unset_.
   Section Unset_.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {T : Set}.
     
@@ -3576,11 +3751,12 @@ Module Unset_.
     }.
   End Unset_.
 End Unset_.
-Definition Unset_ `{State.Trait} (T : Set) : Set := M.val (Unset_.t (T := T)).
+Definition Unset_ `{ℋ : State.Trait} (T : Set) : Set :=
+  M.val (Unset_.t (T := T)).
 
 Module Unwrap.
   Section Unwrap.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Class Trait (Self : Set) : Type := {
       Output : Set;
@@ -3601,15 +3777,15 @@ End Unwrap.
 Module create_builder.
   Module state.
     Module Salt.
-      Inductive t `{State.Trait} : Set :=
+      Inductive t `{ℋ : State.Trait} : Set :=
       .
     End Salt.
-    Definition Salt `{State.Trait} : Set := Salt.t.
+    Definition Salt `{ℋ : State.Trait} : Set := Salt.t.
   End state.
   
   Module FromAccountId.
     Section FromAccountId.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Class Trait
           (Self : Set)
@@ -3626,7 +3802,7 @@ Module create_builder.
   
   Module ConstructorReturnType.
     Section ConstructorReturnType.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Class Trait (Self : Set) {C : Set} : Type := {
         IS_RESULT : bool;
@@ -3648,7 +3824,7 @@ Module create_builder.
   
   Module CreateParams.
     Section CreateParams.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Context {E ContractRef Args Salt R : Set}.
       
@@ -3728,7 +3904,7 @@ Module create_builder.
   End CreateParams.
   Definition CreateParams
       (E ContractRef Args Salt R : Set)
-      `{State.Trait}
+      `{ℋ : State.Trait}
       {ℋ_0 : ink_env.types.Environment.Trait E}
       : Set :=
     M.val
@@ -3741,7 +3917,7 @@ Module create_builder.
   
   Module CreateBuilder.
     Section CreateBuilder.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Context
         {E ContractRef CodeHash GasLimit Endowment Args Salt RetType : Set}.
@@ -3819,7 +3995,7 @@ Module create_builder.
   End CreateBuilder.
   Definition CreateBuilder
       (E ContractRef CodeHash GasLimit Endowment Args Salt RetType : Set)
-      `{State.Trait}
+      `{ℋ : State.Trait}
       {ℋ_0 : ink_env.types.Environment.Trait E}
       : Set :=
     M.val
@@ -3836,21 +4012,21 @@ End create_builder.
 
 Module state.
   Module Salt.
-    Inductive t `{State.Trait} : Set :=
+    Inductive t `{ℋ : State.Trait} : Set :=
     .
   End Salt.
-  Definition Salt `{State.Trait} : Set := Salt.t.
+  Definition Salt `{ℋ : State.Trait} : Set := Salt.t.
 End state.
 
 Module Salt.
-  Inductive t `{State.Trait} : Set :=
+  Inductive t `{ℋ : State.Trait} : Set :=
   .
 End Salt.
-Definition Salt `{State.Trait} : Set := Salt.t.
+Definition Salt `{ℋ : State.Trait} : Set := Salt.t.
 
 Module FromAccountId.
   Section FromAccountId.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Class Trait
         (Self : Set)
@@ -3867,7 +4043,7 @@ End FromAccountId.
 
 Module ConstructorReturnType.
   Section ConstructorReturnType.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Class Trait (Self : Set) {C : Set} : Type := {
       IS_RESULT : bool;
@@ -3889,7 +4065,7 @@ End ConstructorReturnType.
 
 Module CreateParams.
   Section CreateParams.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {E ContractRef Args Salt R : Set}.
     
@@ -3959,7 +4135,7 @@ Module CreateParams.
 End CreateParams.
 Definition CreateParams
     (E ContractRef Args Salt R : Set)
-    `{State.Trait}
+    `{ℋ : State.Trait}
     {ℋ_0 : ink_env.types.Environment.Trait E}
     : Set :=
   M.val
@@ -3972,7 +4148,7 @@ Definition CreateParams
 
 Module CreateBuilder.
   Section CreateBuilder.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {E ContractRef CodeHash GasLimit Endowment Args Salt RetType : Set}.
     
@@ -4040,7 +4216,7 @@ Module CreateBuilder.
 End CreateBuilder.
 Definition CreateBuilder
     (E ContractRef CodeHash GasLimit Endowment Args Salt RetType : Set)
-    `{State.Trait}
+    `{ℋ : State.Trait}
     {ℋ_0 : ink_env.types.Environment.Trait E}
     : Set :=
   M.val
@@ -4056,7 +4232,7 @@ Definition CreateBuilder
 
 Parameter build_create :
     forall
-      `{State.Trait}
+      `{ℋ : State.Trait}
       {ContractRef : Set}
       {ℋ_0 : ink_env.contract.ContractEnv.Trait ContractRef},
     M
@@ -4079,7 +4255,7 @@ Parameter build_create :
 Module execution_input.
   Module ExecutionInput.
     Section ExecutionInput.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Context {Args : Set}.
       
@@ -4106,12 +4282,12 @@ Module execution_input.
       }.
     End ExecutionInput.
   End ExecutionInput.
-  Definition ExecutionInput (Args : Set) `{State.Trait} : Set :=
+  Definition ExecutionInput (Args : Set) `{ℋ : State.Trait} : Set :=
     M.val (ExecutionInput.t (Args := Args)).
   
   Module ArgumentList.
     Section ArgumentList.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Context {Head Rest : Set}.
       
@@ -4136,12 +4312,12 @@ Module execution_input.
       }.
     End ArgumentList.
   End ArgumentList.
-  Definition ArgumentList (Head Rest : Set) `{State.Trait} : Set :=
+  Definition ArgumentList (Head Rest : Set) `{ℋ : State.Trait} : Set :=
     M.val (ArgumentList.t (Head := Head) (Rest := Rest)).
   
   Module Argument.
     Section Argument.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Context {T : Set}.
       
@@ -4159,24 +4335,24 @@ Module execution_input.
       }.
     End Argument.
   End Argument.
-  Definition Argument (T : Set) `{State.Trait} : Set :=
+  Definition Argument (T : Set) `{ℋ : State.Trait} : Set :=
     M.val (Argument.t (T := T)).
   
-  Definition ArgsList (Head Rest : Set) `{State.Trait} : Set :=
+  Definition ArgsList `{ℋ : State.Trait} (Head Rest : Set) : Set :=
     ink_env.call.execution_input.ArgumentList
       (ink_env.call.execution_input.Argument Head)
       Rest.
   
   Module ArgumentListEnd.
     Section ArgumentListEnd.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Inductive t : Set := Build.
     End ArgumentListEnd.
   End ArgumentListEnd.
   Definition ArgumentListEnd := @ArgumentListEnd.t.
   
-  Definition EmptyArgumentList `{State.Trait} : Set :=
+  Definition EmptyArgumentList `{ℋ : State.Trait} : Set :=
     ink_env.call.execution_input.ArgumentList
       ink_env.call.execution_input.ArgumentListEnd
       ink_env.call.execution_input.ArgumentListEnd.
@@ -4184,7 +4360,7 @@ End execution_input.
 
 Module ExecutionInput.
   Section ExecutionInput.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {Args : Set}.
     
@@ -4209,12 +4385,12 @@ Module ExecutionInput.
     }.
   End ExecutionInput.
 End ExecutionInput.
-Definition ExecutionInput (Args : Set) `{State.Trait} : Set :=
+Definition ExecutionInput (Args : Set) `{ℋ : State.Trait} : Set :=
   M.val (ExecutionInput.t (Args := Args)).
 
 Module ArgumentList.
   Section ArgumentList.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {Head Rest : Set}.
     
@@ -4239,17 +4415,17 @@ Module ArgumentList.
     }.
   End ArgumentList.
 End ArgumentList.
-Definition ArgumentList (Head Rest : Set) `{State.Trait} : Set :=
+Definition ArgumentList (Head Rest : Set) `{ℋ : State.Trait} : Set :=
   M.val (ArgumentList.t (Head := Head) (Rest := Rest)).
 
-Definition ArgsList (Head Rest : Set) `{State.Trait} : Set :=
+Definition ArgsList `{ℋ : State.Trait} (Head Rest : Set) : Set :=
   ink_env.call.execution_input.ArgumentList
     (ink_env.call.execution_input.Argument Head)
     Rest.
 
 Module Argument.
   Section Argument.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {T : Set}.
     
@@ -4267,19 +4443,19 @@ Module Argument.
     }.
   End Argument.
 End Argument.
-Definition Argument (T : Set) `{State.Trait} : Set :=
+Definition Argument (T : Set) `{ℋ : State.Trait} : Set :=
   M.val (Argument.t (T := T)).
 
 Module ArgumentListEnd.
   Section ArgumentListEnd.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Inductive t : Set := Build.
   End ArgumentListEnd.
 End ArgumentListEnd.
 Definition ArgumentListEnd := @ArgumentListEnd.t.
 
-Definition EmptyArgumentList `{State.Trait} : Set :=
+Definition EmptyArgumentList `{ℋ : State.Trait} : Set :=
   ink_env.call.execution_input.ArgumentList
     ink_env.call.execution_input.ArgumentListEnd
     ink_env.call.execution_input.ArgumentListEnd.
@@ -4287,7 +4463,7 @@ Definition EmptyArgumentList `{State.Trait} : Set :=
 Module selector.
   Module Selector.
     Section Selector.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Unset Primitive Projections.
       Record t : Set := {
@@ -4303,12 +4479,12 @@ Module selector.
       }.
     End Selector.
   End Selector.
-  Definition Selector `{State.Trait} : Set := M.val Selector.t.
+  Definition Selector `{ℋ : State.Trait} : Set := M.val Selector.t.
 End selector.
 
 Module Selector.
   Section Selector.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Record t : Set := {
@@ -4324,12 +4500,12 @@ Module Selector.
     }.
   End Selector.
 End Selector.
-Definition Selector `{State.Trait} : Set := M.val Selector.t.
+Definition Selector `{ℋ : State.Trait} : Set := M.val Selector.t.
 
 Module chain_extension.
   Module FromStatusCode.
     Section FromStatusCode.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Class Trait (Self : Set) {ℋ_0 : core.marker.Sized.Trait Self} : Type := {
         from_status_code : u32 -> M (core.result.Result unit Self);
@@ -4340,7 +4516,7 @@ Module chain_extension.
   
   Module ChainExtensionMethod.
     Section ChainExtensionMethod.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Context {I O ErrorCode : Set}.
       
@@ -4365,19 +4541,22 @@ Module chain_extension.
       }.
     End ChainExtensionMethod.
   End ChainExtensionMethod.
-  Definition ChainExtensionMethod (I O ErrorCode : Set) `{State.Trait} : Set :=
+  Definition ChainExtensionMethod
+      (I O ErrorCode : Set)
+      `{ℋ : State.Trait}
+      : Set :=
     M.val (ChainExtensionMethod.t (I := I) (O := O) (ErrorCode := ErrorCode)).
   
   Module state.
     Module IgnoreErrorCode.
-      Inductive t `{State.Trait} : Set :=
+      Inductive t `{ℋ : State.Trait} : Set :=
       .
     End IgnoreErrorCode.
-    Definition IgnoreErrorCode `{State.Trait} : Set := IgnoreErrorCode.t.
+    Definition IgnoreErrorCode `{ℋ : State.Trait} : Set := IgnoreErrorCode.t.
     
     Module HandleErrorCode.
       Section HandleErrorCode.
-        Context `{State.Trait}.
+        Context `{ℋ : State.Trait}.
         
         Context {T : Set}.
         
@@ -4398,14 +4577,14 @@ Module chain_extension.
         }.
       End HandleErrorCode.
     End HandleErrorCode.
-    Definition HandleErrorCode (T : Set) `{State.Trait} : Set :=
+    Definition HandleErrorCode (T : Set) `{ℋ : State.Trait} : Set :=
       M.val (HandleErrorCode.t (T := T)).
   End state.
   
   Module private.
     Module IsResultTypeSealed.
       Section IsResultTypeSealed.
-        Context `{State.Trait}.
+        Context `{ℋ : State.Trait}.
         
         Unset Primitive Projections.
         Class Trait (Self : Set) : Type := {
@@ -4417,7 +4596,7 @@ Module chain_extension.
   
   Module IsResultType.
     Section IsResultType.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Class Trait
           (Self : Set)
@@ -4442,7 +4621,7 @@ End chain_extension.
 
 Module FromStatusCode.
   Section FromStatusCode.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Class Trait (Self : Set) {ℋ_0 : core.marker.Sized.Trait Self} : Type := {
       from_status_code : u32 -> M (core.result.Result unit Self);
@@ -4453,7 +4632,7 @@ End FromStatusCode.
 
 Module ChainExtensionMethod.
   Section ChainExtensionMethod.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {I O ErrorCode : Set}.
     
@@ -4478,20 +4657,23 @@ Module ChainExtensionMethod.
     }.
   End ChainExtensionMethod.
 End ChainExtensionMethod.
-Definition ChainExtensionMethod (I O ErrorCode : Set) `{State.Trait} : Set :=
+Definition ChainExtensionMethod
+    (I O ErrorCode : Set)
+    `{ℋ : State.Trait}
+    : Set :=
   M.val (ChainExtensionMethod.t (I := I) (O := O) (ErrorCode := ErrorCode)).
 
 Module Wrap_state_1.
   Module state.
     Module IgnoreErrorCode.
-      Inductive t `{State.Trait} : Set :=
+      Inductive t `{ℋ : State.Trait} : Set :=
       .
     End IgnoreErrorCode.
-    Definition IgnoreErrorCode `{State.Trait} : Set := IgnoreErrorCode.t.
+    Definition IgnoreErrorCode `{ℋ : State.Trait} : Set := IgnoreErrorCode.t.
     
     Module HandleErrorCode.
       Section HandleErrorCode.
-        Context `{State.Trait}.
+        Context `{ℋ : State.Trait}.
         
         Context {T : Set}.
         
@@ -4512,21 +4694,21 @@ Module Wrap_state_1.
         }.
       End HandleErrorCode.
     End HandleErrorCode.
-    Definition HandleErrorCode (T : Set) `{State.Trait} : Set :=
+    Definition HandleErrorCode (T : Set) `{ℋ : State.Trait} : Set :=
       M.val (HandleErrorCode.t (T := T)).
   End state.
 End Wrap_state_1.
 Import Wrap_state_1.
 
 Module IgnoreErrorCode.
-  Inductive t `{State.Trait} : Set :=
+  Inductive t `{ℋ : State.Trait} : Set :=
   .
 End IgnoreErrorCode.
-Definition IgnoreErrorCode `{State.Trait} : Set := IgnoreErrorCode.t.
+Definition IgnoreErrorCode `{ℋ : State.Trait} : Set := IgnoreErrorCode.t.
 
 Module HandleErrorCode.
   Section HandleErrorCode.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {T : Set}.
     
@@ -4546,12 +4728,12 @@ Module HandleErrorCode.
     }.
   End HandleErrorCode.
 End HandleErrorCode.
-Definition HandleErrorCode (T : Set) `{State.Trait} : Set :=
+Definition HandleErrorCode (T : Set) `{ℋ : State.Trait} : Set :=
   M.val (HandleErrorCode.t (T := T)).
 
 Module IsResultType.
   Section IsResultType.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Class Trait
         (Self : Set)
@@ -4574,7 +4756,7 @@ End IsResultType.
 Module private.
   Module IsResultTypeSealed.
     Section IsResultTypeSealed.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Unset Primitive Projections.
       Class Trait (Self : Set) : Type := {
@@ -4586,7 +4768,7 @@ End private.
 
 Module IsResultTypeSealed.
   Section IsResultTypeSealed.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Class Trait (Self : Set) : Type := {
@@ -4597,7 +4779,7 @@ End IsResultTypeSealed.
 
 Module ContractEnv.
   Section ContractEnv.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Class Trait (Self : Set) : Type := {
       Env : Set;
@@ -4612,7 +4794,7 @@ End ContractEnv.
 
 Module ContractReference.
   Section ContractReference.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Class Trait (Self : Set) : Type := {
       Type_ : Set;
@@ -4629,7 +4811,7 @@ Module off_chain.
   Module call_data.
     Module CallData.
       Section CallData.
-        Context `{State.Trait}.
+        Context `{ℋ : State.Trait}.
         
         Unset Primitive Projections.
         Record t : Set := {
@@ -4645,13 +4827,13 @@ Module off_chain.
         }.
       End CallData.
     End CallData.
-    Definition CallData `{State.Trait} : Set := M.val CallData.t.
+    Definition CallData `{ℋ : State.Trait} : Set := M.val CallData.t.
   End call_data.
   
   Module impls.
     Module TopicsBuilder.
       Section TopicsBuilder.
-        Context `{State.Trait}.
+        Context `{ℋ : State.Trait}.
         
         Unset Primitive Projections.
         Record t : Set := {
@@ -4673,12 +4855,12 @@ Module off_chain.
         }.
       End TopicsBuilder.
     End TopicsBuilder.
-    Definition TopicsBuilder `{State.Trait} : Set := M.val TopicsBuilder.t.
+    Definition TopicsBuilder `{ℋ : State.Trait} : Set := M.val TopicsBuilder.t.
   End impls.
   
   Module EnvInstance.
     Section EnvInstance.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Unset Primitive Projections.
       Record t : Set := {
@@ -4694,30 +4876,30 @@ Module off_chain.
       }.
     End EnvInstance.
   End EnvInstance.
-  Definition EnvInstance `{State.Trait} : Set := M.val EnvInstance.t.
+  Definition EnvInstance `{ℋ : State.Trait} : Set := M.val EnvInstance.t.
   
   Module AccountError.
-    Inductive t `{State.Trait} : Set :=
+    Inductive t `{ℋ : State.Trait} : Set :=
     | Decoding (_ : parity_scale_codec.error.Error)
     | UnexpectedUserAccount
     | NoAccountForId (_ : alloc.vec.Vec u8 alloc.vec.Vec.Default.A).
   End AccountError.
-  Definition AccountError `{State.Trait} : Set := AccountError.t.
+  Definition AccountError `{ℋ : State.Trait} : Set := AccountError.t.
   
   Module OffChainError.
-    Inductive t `{State.Trait} : Set :=
+    Inductive t `{ℋ : State.Trait} : Set :=
     | Account (_ : ink_env.engine.off_chain.AccountError)
     | UninitializedBlocks
     | UninitializedExecutionContext
     | UnregisteredChainExtension.
   End OffChainError.
-  Definition OffChainError `{State.Trait} : Set := OffChainError.t.
+  Definition OffChainError `{ℋ : State.Trait} : Set := OffChainError.t.
 End off_chain.
 
 Module call_data.
   Module CallData.
     Section CallData.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Unset Primitive Projections.
       Record t : Set := {
@@ -4733,12 +4915,12 @@ Module call_data.
       }.
     End CallData.
   End CallData.
-  Definition CallData `{State.Trait} : Set := M.val CallData.t.
+  Definition CallData `{ℋ : State.Trait} : Set := M.val CallData.t.
 End call_data.
 
 Module CallData.
   Section CallData.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Record t : Set := {
@@ -4754,12 +4936,12 @@ Module CallData.
     }.
   End CallData.
 End CallData.
-Definition CallData `{State.Trait} : Set := M.val CallData.t.
+Definition CallData `{ℋ : State.Trait} : Set := M.val CallData.t.
 
 Module impls.
   Module TopicsBuilder.
     Section TopicsBuilder.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Unset Primitive Projections.
       Record t : Set := {
@@ -4779,12 +4961,12 @@ Module impls.
       }.
     End TopicsBuilder.
   End TopicsBuilder.
-  Definition TopicsBuilder `{State.Trait} : Set := M.val TopicsBuilder.t.
+  Definition TopicsBuilder `{ℋ : State.Trait} : Set := M.val TopicsBuilder.t.
 End impls.
 
 Module TopicsBuilder.
   Section TopicsBuilder.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Record t : Set := {
@@ -4804,11 +4986,11 @@ Module TopicsBuilder.
     }.
   End TopicsBuilder.
 End TopicsBuilder.
-Definition TopicsBuilder `{State.Trait} : Set := M.val TopicsBuilder.t.
+Definition TopicsBuilder `{ℋ : State.Trait} : Set := M.val TopicsBuilder.t.
 
 Module EnvInstance.
   Section EnvInstance.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Record t : Set := {
@@ -4824,28 +5006,28 @@ Module EnvInstance.
     }.
   End EnvInstance.
 End EnvInstance.
-Definition EnvInstance `{State.Trait} : Set := M.val EnvInstance.t.
+Definition EnvInstance `{ℋ : State.Trait} : Set := M.val EnvInstance.t.
 
 Module OffChainError.
-  Inductive t `{State.Trait} : Set :=
+  Inductive t `{ℋ : State.Trait} : Set :=
   | Account (_ : ink_env.engine.off_chain.AccountError)
   | UninitializedBlocks
   | UninitializedExecutionContext
   | UnregisteredChainExtension.
 End OffChainError.
-Definition OffChainError `{State.Trait} : Set := OffChainError.t.
+Definition OffChainError `{ℋ : State.Trait} : Set := OffChainError.t.
 
 Module AccountError.
-  Inductive t `{State.Trait} : Set :=
+  Inductive t `{ℋ : State.Trait} : Set :=
   | Decoding (_ : parity_scale_codec.error.Error)
   | UnexpectedUserAccount
   | NoAccountForId (_ : alloc.vec.Vec u8 alloc.vec.Vec.Default.A).
 End AccountError.
-Definition AccountError `{State.Trait} : Set := AccountError.t.
+Definition AccountError `{ℋ : State.Trait} : Set := AccountError.t.
 
 Module HashOutput.
   Section HashOutput.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Class Trait (Self : Set) {ℋ_0 : ink_env.hash.private.Sealed.Trait Self} :
         Type := {
@@ -4861,7 +5043,7 @@ End HashOutput.
 
 Module CryptoHash.
   Section CryptoHash.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Class Trait (Self : Set) {ℋ_0 : ink_env.hash.HashOutput.Trait Self} :
         Type := {
@@ -4876,34 +5058,34 @@ Module CryptoHash.
 End CryptoHash.
 
 Module Sha2x256.
-  Inductive t `{State.Trait} : Set :=
+  Inductive t `{ℋ : State.Trait} : Set :=
   .
 End Sha2x256.
-Definition Sha2x256 `{State.Trait} : Set := Sha2x256.t.
+Definition Sha2x256 `{ℋ : State.Trait} : Set := Sha2x256.t.
 
 Module Keccak256.
-  Inductive t `{State.Trait} : Set :=
+  Inductive t `{ℋ : State.Trait} : Set :=
   .
 End Keccak256.
-Definition Keccak256 `{State.Trait} : Set := Keccak256.t.
+Definition Keccak256 `{ℋ : State.Trait} : Set := Keccak256.t.
 
 Module Blake2x256.
-  Inductive t `{State.Trait} : Set :=
+  Inductive t `{ℋ : State.Trait} : Set :=
   .
 End Blake2x256.
-Definition Blake2x256 `{State.Trait} : Set := Blake2x256.t.
+Definition Blake2x256 `{ℋ : State.Trait} : Set := Blake2x256.t.
 
 Module Blake2x128.
-  Inductive t `{State.Trait} : Set :=
+  Inductive t `{ℋ : State.Trait} : Set :=
   .
 End Blake2x128.
-Definition Blake2x128 `{State.Trait} : Set := Blake2x128.t.
+Definition Blake2x128 `{ℋ : State.Trait} : Set := Blake2x128.t.
 
 Module Wrap_private_1.
   Module private.
     Module Sealed.
       Section Sealed.
-        Context `{State.Trait}.
+        Context `{ℋ : State.Trait}.
         
         Unset Primitive Projections.
         Class Trait (Self : Set) : Type := {
@@ -4917,7 +5099,7 @@ Import Wrap_private_1.
 
 Module Sealed.
   Section Sealed.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Class Trait (Self : Set) : Type := {
@@ -4928,7 +5110,7 @@ End Sealed.
 
 Module TopicsBuilderBackend.
   Section TopicsBuilderBackend.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Class Trait
         (Self : Set)
@@ -4952,7 +5134,7 @@ End TopicsBuilderBackend.
 
 Module TopicsBuilder.
   Section TopicsBuilder.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {S E B : Set}.
     
@@ -4977,53 +5159,55 @@ Module TopicsBuilder.
     }.
   End TopicsBuilder.
 End TopicsBuilder.
-Definition TopicsBuilder (S E B : Set) `{State.Trait} : Set :=
+Definition TopicsBuilder (S E B : Set) `{ℋ : State.Trait} : Set :=
   M.val (TopicsBuilder.t (S := S) (E := E) (B := B)).
 
 Module Wrap_state_2.
   Module state.
     Module Uninit.
-      Inductive t `{State.Trait} : Set :=
+      Inductive t `{ℋ : State.Trait} : Set :=
       .
     End Uninit.
-    Definition Uninit `{State.Trait} : Set := Uninit.t.
+    Definition Uninit `{ℋ : State.Trait} : Set := Uninit.t.
     
     Module HasRemainingTopics.
-      Inductive t `{State.Trait} : Set :=
+      Inductive t `{ℋ : State.Trait} : Set :=
       .
     End HasRemainingTopics.
-    Definition HasRemainingTopics `{State.Trait} : Set := HasRemainingTopics.t.
+    Definition HasRemainingTopics `{ℋ : State.Trait} : Set :=
+      HasRemainingTopics.t.
     
     Module NoRemainingTopics.
-      Inductive t `{State.Trait} : Set :=
+      Inductive t `{ℋ : State.Trait} : Set :=
       .
     End NoRemainingTopics.
-    Definition NoRemainingTopics `{State.Trait} : Set := NoRemainingTopics.t.
+    Definition NoRemainingTopics `{ℋ : State.Trait} : Set :=
+      NoRemainingTopics.t.
   End state.
 End Wrap_state_2.
 Import Wrap_state_2.
 
 Module Uninit.
-  Inductive t `{State.Trait} : Set :=
+  Inductive t `{ℋ : State.Trait} : Set :=
   .
 End Uninit.
-Definition Uninit `{State.Trait} : Set := Uninit.t.
+Definition Uninit `{ℋ : State.Trait} : Set := Uninit.t.
 
 Module HasRemainingTopics.
-  Inductive t `{State.Trait} : Set :=
+  Inductive t `{ℋ : State.Trait} : Set :=
   .
 End HasRemainingTopics.
-Definition HasRemainingTopics `{State.Trait} : Set := HasRemainingTopics.t.
+Definition HasRemainingTopics `{ℋ : State.Trait} : Set := HasRemainingTopics.t.
 
 Module NoRemainingTopics.
-  Inductive t `{State.Trait} : Set :=
+  Inductive t `{ℋ : State.Trait} : Set :=
   .
 End NoRemainingTopics.
-Definition NoRemainingTopics `{State.Trait} : Set := NoRemainingTopics.t.
+Definition NoRemainingTopics `{ℋ : State.Trait} : Set := NoRemainingTopics.t.
 
 Module SomeRemainingTopics.
   Section SomeRemainingTopics.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Class Trait (Self : Set) : Type := {
       Next : Set;
@@ -5038,7 +5222,7 @@ End SomeRemainingTopics.
 
 Module EventTopicsAmount.
   Section EventTopicsAmount.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Class Trait (Self : Set) : Type := {
       AMOUNT : usize;
@@ -5049,7 +5233,7 @@ End EventTopicsAmount.
 
 Module Topics.
   Section Topics.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Class Trait (Self : Set) : Type := {
       RemainingTopics : Set;
@@ -5072,7 +5256,7 @@ End Topics.
 
 Module PrefixedValue.
   Section PrefixedValue.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {T : Set}.
     
@@ -5097,5 +5281,5 @@ Module PrefixedValue.
     }.
   End PrefixedValue.
 End PrefixedValue.
-Definition PrefixedValue (T : Set) `{State.Trait} : Set :=
+Definition PrefixedValue (T : Set) `{ℋ : State.Trait} : Set :=
   M.val (PrefixedValue.t (T := T)).

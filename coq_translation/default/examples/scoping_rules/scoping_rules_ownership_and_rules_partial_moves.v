@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main `{ℋ : State.Trait} : M unit :=
   let* person :=
     let* α0 := core.convert.From.from (mk_str "Alice") in
     let* α1 := M.alloc 20 in
@@ -86,7 +86,7 @@ Definition main `{State.Trait} : M unit :=
 
 Module Person.
   Section Person.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Record t : Set := {
@@ -109,13 +109,13 @@ Module Person.
     }.
   End Person.
 End Person.
-Definition Person `{State.Trait} : Set := M.val Person.t.
+Definition Person `{ℋ : State.Trait} : Set := M.val Person.t.
 
 Module
   Impl_core_fmt_Debug_for_scoping_rules_ownership_and_rules_partial_moves_main_Person.
   Section
     Impl_core_fmt_Debug_for_scoping_rules_ownership_and_rules_partial_moves_main_Person.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set :=
       scoping_rules_ownership_and_rules_partial_moves.main.Person.
@@ -158,11 +158,11 @@ Module
       Notation.double_colon := fmt;
     }.
     
-    Global Instance I : core.fmt.Debug.Trait Self := {
+    Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
   End
     Impl_core_fmt_Debug_for_scoping_rules_ownership_and_rules_partial_moves_main_Person.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End
   Impl_core_fmt_Debug_for_scoping_rules_ownership_and_rules_partial_moves_main_Person.

@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module Droppable.
   Section Droppable.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Record t : Set := {
@@ -19,11 +19,11 @@ Module Droppable.
     }.
   End Droppable.
 End Droppable.
-Definition Droppable `{State.Trait} : Set := M.val Droppable.t.
+Definition Droppable `{ℋ : State.Trait} : Set := M.val Droppable.t.
 
 Module Impl_core_ops_drop_Drop_for_drop_Droppable.
   Section Impl_core_ops_drop_Drop_for_drop_Droppable.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := drop.Droppable.
     
@@ -56,15 +56,15 @@ Module Impl_core_ops_drop_Drop_for_drop_Droppable.
       Notation.double_colon := drop;
     }.
     
-    Global Instance I : core.ops.drop.Drop.Trait Self := {
+    Global Instance ℐ : core.ops.drop.Drop.Trait Self := {
       core.ops.drop.Drop.drop := drop;
     }.
   End Impl_core_ops_drop_Drop_for_drop_Droppable.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_ops_drop_Drop_for_drop_Droppable.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main `{ℋ : State.Trait} : M unit :=
   let* _a := M.alloc {| drop.Droppable.name := mk_str "a"; |} in
   let* _ :=
     let* _b := M.alloc {| drop.Droppable.name := mk_str "b"; |} in

@@ -3,29 +3,29 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module Sheep.
   Section Sheep.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Record t : Set := { }.
     Global Set Primitive Projections.
   End Sheep.
 End Sheep.
-Definition Sheep `{State.Trait} : Set := M.val Sheep.t.
+Definition Sheep `{ℋ : State.Trait} : Set := M.val Sheep.t.
 
 Module Cow.
   Section Cow.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Record t : Set := { }.
     Global Set Primitive Projections.
   End Cow.
 End Cow.
-Definition Cow `{State.Trait} : Set := M.val Cow.t.
+Definition Cow `{ℋ : State.Trait} : Set := M.val Cow.t.
 
 Module Animal.
   Section Animal.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Class Trait (Self : Set) : Type := {
       noise : (ref Self) -> M (ref str);
@@ -38,7 +38,7 @@ Module
   Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep.
   Section
     Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := returning_traits_with_dyn.Sheep.
     
@@ -49,17 +49,17 @@ Module
       Notation.double_colon := noise;
     }.
     
-    Global Instance I : returning_traits_with_dyn.Animal.Trait Self := {
+    Global Instance ℐ : returning_traits_with_dyn.Animal.Trait Self := {
       returning_traits_with_dyn.Animal.noise := noise;
     }.
   End Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep.
 
 Module Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
   Section
     Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := returning_traits_with_dyn.Cow.
     
@@ -70,16 +70,16 @@ Module Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
       Notation.double_colon := noise;
     }.
     
-    Global Instance I : returning_traits_with_dyn.Animal.Trait Self := {
+    Global Instance ℐ : returning_traits_with_dyn.Animal.Trait Self := {
       returning_traits_with_dyn.Animal.noise := noise;
     }.
   End Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
 
 Parameter random_animal :
-    forall `{State.Trait},
+    forall `{ℋ : State.Trait},
     f64 -> M (alloc.boxed.Box _ (* dyn *) alloc.boxed.Box.Default.A).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{State.Trait}, M unit.
+Parameter main : forall `{ℋ : State.Trait}, M unit.

@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module Account.
   Section Account.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Record t : Set := {
@@ -26,21 +26,21 @@ Module Account.
     }.
   End Account.
 End Account.
-Definition Account `{State.Trait} : Set := M.val Account.t.
+Definition Account `{ℋ : State.Trait} : Set := M.val Account.t.
 
 Module
   Impl_core_marker_StructuralPartialEq_for_hash_map_alternate_or_custom_key_types_Account.
   Section
     Impl_core_marker_StructuralPartialEq_for_hash_map_alternate_or_custom_key_types_Account.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := hash_map_alternate_or_custom_key_types.Account.
     
-    Global Instance I : core.marker.StructuralPartialEq.Trait Self := {
+    Global Instance ℐ : core.marker.StructuralPartialEq.Trait Self := {
     }.
   End
     Impl_core_marker_StructuralPartialEq_for_hash_map_alternate_or_custom_key_types_Account.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End
   Impl_core_marker_StructuralPartialEq_for_hash_map_alternate_or_custom_key_types_Account.
 
@@ -48,7 +48,7 @@ Module
   Impl_core_cmp_PartialEq_for_hash_map_alternate_or_custom_key_types_Account.
   Section
     Impl_core_cmp_PartialEq_for_hash_map_alternate_or_custom_key_types_Account.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := hash_map_alternate_or_custom_key_types.Account.
     
@@ -76,7 +76,7 @@ Module
       Notation.double_colon := eq;
     }.
     
-    Global Instance I
+    Global Instance ℐ
       : core.cmp.PartialEq.Trait Self
           (Rhs := core.cmp.PartialEq.Default.Rhs Self)
         := {
@@ -84,28 +84,28 @@ Module
     }.
   End
     Impl_core_cmp_PartialEq_for_hash_map_alternate_or_custom_key_types_Account.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_cmp_PartialEq_for_hash_map_alternate_or_custom_key_types_Account.
 
 Module
   Impl_core_marker_StructuralEq_for_hash_map_alternate_or_custom_key_types_Account.
   Section
     Impl_core_marker_StructuralEq_for_hash_map_alternate_or_custom_key_types_Account.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := hash_map_alternate_or_custom_key_types.Account.
     
-    Global Instance I : core.marker.StructuralEq.Trait Self := {
+    Global Instance ℐ : core.marker.StructuralEq.Trait Self := {
     }.
   End
     Impl_core_marker_StructuralEq_for_hash_map_alternate_or_custom_key_types_Account.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End
   Impl_core_marker_StructuralEq_for_hash_map_alternate_or_custom_key_types_Account.
 
 Module Impl_core_cmp_Eq_for_hash_map_alternate_or_custom_key_types_Account.
   Section Impl_core_cmp_Eq_for_hash_map_alternate_or_custom_key_types_Account.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := hash_map_alternate_or_custom_key_types.Account.
     
@@ -119,16 +119,16 @@ Module Impl_core_cmp_Eq_for_hash_map_alternate_or_custom_key_types_Account.
       Notation.double_colon := assert_receiver_is_total_eq;
     }.
     
-    Global Instance I : core.cmp.Eq.Trait Self := {
+    Global Instance ℐ : core.cmp.Eq.Trait Self := {
     }.
   End Impl_core_cmp_Eq_for_hash_map_alternate_or_custom_key_types_Account.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_cmp_Eq_for_hash_map_alternate_or_custom_key_types_Account.
 
 Module Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account.
   Section
     Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := hash_map_alternate_or_custom_key_types.Account.
     
@@ -163,18 +163,18 @@ Module Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account.
       Notation.double_colon := hash (__H := __H);
     }.
     
-    Global Instance I : core.hash.Hash.Trait Self := {
+    Global Instance ℐ : core.hash.Hash.Trait Self := {
       core.hash.Hash.hash {__H : Set} {ℋ_0 : core.hash.Hasher.Trait __H}
         :=
         hash (__H := __H);
     }.
   End Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account.
 
 Module AccountInfo.
   Section AccountInfo.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Record t : Set := {
@@ -197,16 +197,16 @@ Module AccountInfo.
     }.
   End AccountInfo.
 End AccountInfo.
-Definition AccountInfo `{State.Trait} : Set := M.val AccountInfo.t.
+Definition AccountInfo `{ℋ : State.Trait} : Set := M.val AccountInfo.t.
 
-Definition Accounts `{State.Trait} : Set :=
+Definition Accounts `{ℋ : State.Trait} : Set :=
   std.collections.hash.map.HashMap
     hash_map_alternate_or_custom_key_types.Account
     hash_map_alternate_or_custom_key_types.AccountInfo
     std.collections.hash.map.HashMap.Default.S.
 
 Definition try_logon
-    `{State.Trait}
+    `{ℋ : State.Trait}
     (accounts : ref hash_map_alternate_or_custom_key_types.Accounts)
     (username : ref str)
     (password : ref str)
@@ -357,7 +357,7 @@ Definition try_logon
   end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main `{ℋ : State.Trait} : M unit :=
   let* accounts :=
     (std.collections.hash.map.HashMap
           _

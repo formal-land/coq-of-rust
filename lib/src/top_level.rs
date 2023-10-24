@@ -1734,6 +1734,8 @@ impl TopLevelItem {
             } => nest([
                 nest([
                     nest([text("Definition"), line(), text(name)]),
+                    line(),
+                    text("`{ℋ : State.Trait}"),
                     if ty_params.is_empty() {
                         nil()
                     } else {
@@ -1746,8 +1748,6 @@ impl TopLevelItem {
                             text("Set)"),
                         ])
                     },
-                    line(),
-                    text("`{State.Trait}"),
                     text(" :"),
                     line(),
                     text("Set"),
@@ -1780,7 +1780,7 @@ impl TopLevelItem {
                                                         line(),
                                                         text("t"),
                                                         line(),
-                                                        text("`{State.Trait}"),
+                                                        text("`{ℋ : State.Trait}"),
                                                         line(),
                                                         text(":"),
                                                         line(),
@@ -1830,7 +1830,7 @@ impl TopLevelItem {
                                 line(),
                                 text("t"),
                                 line(),
-                                text("`{State.Trait}"),
+                                text("`{ℋ : State.Trait}"),
                                 line(),
                                 text(":"),
                                 line(),
@@ -2263,7 +2263,7 @@ impl TopLevelItem {
                                     })
                                     .concat(),
                                 vec![coq::TopLevelItem::Instance(coq::Instance::new(
-                                    "I",
+                                    "ℐ",
                                     &[],
                                     coq::Expression::Variable {
                                         ident: Path::concat(&[

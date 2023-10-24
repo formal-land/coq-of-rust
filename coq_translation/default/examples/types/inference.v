@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main `{ℋ : State.Trait} : M unit :=
   let* elem := M.alloc 5 in
   let* vec := (alloc.vec.Vec _ alloc.alloc.Global)::["new"] in
   let* _ :=

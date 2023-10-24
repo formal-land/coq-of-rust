@@ -4,7 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module my.
   Module OpenBox.
     Section OpenBox.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Context {T : Set}.
       
@@ -24,12 +24,12 @@ Module my.
       }.
     End OpenBox.
   End OpenBox.
-  Definition OpenBox (T : Set) `{State.Trait} : Set :=
+  Definition OpenBox (T : Set) `{ℋ : State.Trait} : Set :=
     M.val (OpenBox.t (T := T)).
   
   Module ClosedBox.
     Section ClosedBox.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Context {T : Set}.
       
@@ -49,12 +49,12 @@ Module my.
       }.
     End ClosedBox.
   End ClosedBox.
-  Definition ClosedBox (T : Set) `{State.Trait} : Set :=
+  Definition ClosedBox (T : Set) `{ℋ : State.Trait} : Set :=
     M.val (ClosedBox.t (T := T)).
   
   Module Impl_struct_visibility_my_ClosedBox_T.
     Section Impl_struct_visibility_my_ClosedBox_T.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Definition Self : Set := struct_visibility.my.ClosedBox T.
       
@@ -71,7 +71,7 @@ End my.
 
 Module OpenBox.
   Section OpenBox.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {T : Set}.
     
@@ -89,11 +89,12 @@ Module OpenBox.
     }.
   End OpenBox.
 End OpenBox.
-Definition OpenBox (T : Set) `{State.Trait} : Set := M.val (OpenBox.t (T := T)).
+Definition OpenBox (T : Set) `{ℋ : State.Trait} : Set :=
+  M.val (OpenBox.t (T := T)).
 
 Module ClosedBox.
   Section ClosedBox.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {T : Set}.
     
@@ -111,12 +112,12 @@ Module ClosedBox.
     }.
   End ClosedBox.
 End ClosedBox.
-Definition ClosedBox (T : Set) `{State.Trait} : Set :=
+Definition ClosedBox (T : Set) `{ℋ : State.Trait} : Set :=
   M.val (ClosedBox.t (T := T)).
 
 Module Impl_struct_visibility_my_ClosedBox_T_2.
   Section Impl_struct_visibility_my_ClosedBox_T_2.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := struct_visibility.my.ClosedBox T.
     
@@ -131,7 +132,7 @@ Module Impl_struct_visibility_my_ClosedBox_T_2.
 End Impl_struct_visibility_my_ClosedBox_T_2.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main `{ℋ : State.Trait} : M unit :=
   let* open_box :=
     M.alloc
       {| struct_visibility.my.OpenBox.contents := mk_str "public information";

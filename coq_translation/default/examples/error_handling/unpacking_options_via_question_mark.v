@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module Person.
   Section Person.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Record t : Set := {
@@ -19,11 +19,11 @@ Module Person.
     }.
   End Person.
 End Person.
-Definition Person `{State.Trait} : Set := M.val Person.t.
+Definition Person `{ℋ : State.Trait} : Set := M.val Person.t.
 
 Module Job.
   Section Job.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Record t : Set := {
@@ -44,11 +44,11 @@ Module Job.
     }.
   End Job.
 End Job.
-Definition Job `{State.Trait} : Set := M.val Job.t.
+Definition Job `{ℋ : State.Trait} : Set := M.val Job.t.
 
 Module Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job.
   Section Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := unpacking_options_via_question_mark.Job.
     
@@ -63,28 +63,28 @@ Module Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job.
       Notation.double_colon := clone;
     }.
     
-    Global Instance I : core.clone.Clone.Trait Self := {
+    Global Instance ℐ : core.clone.Clone.Trait Self := {
       core.clone.Clone.clone := clone;
     }.
   End Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job.
 
 Module Impl_core_marker_Copy_for_unpacking_options_via_question_mark_Job.
   Section Impl_core_marker_Copy_for_unpacking_options_via_question_mark_Job.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := unpacking_options_via_question_mark.Job.
     
-    Global Instance I : core.marker.Copy.Trait Self := {
+    Global Instance ℐ : core.marker.Copy.Trait Self := {
     }.
   End Impl_core_marker_Copy_for_unpacking_options_via_question_mark_Job.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_marker_Copy_for_unpacking_options_via_question_mark_Job.
 
 Module PhoneNumber.
   Section PhoneNumber.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Record t : Set := {
@@ -107,13 +107,13 @@ Module PhoneNumber.
     }.
   End PhoneNumber.
 End PhoneNumber.
-Definition PhoneNumber `{State.Trait} : Set := M.val PhoneNumber.t.
+Definition PhoneNumber `{ℋ : State.Trait} : Set := M.val PhoneNumber.t.
 
 Module
   Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumber.
   Section
     Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumber.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := unpacking_options_via_question_mark.PhoneNumber.
     
@@ -129,30 +129,30 @@ Module
       Notation.double_colon := clone;
     }.
     
-    Global Instance I : core.clone.Clone.Trait Self := {
+    Global Instance ℐ : core.clone.Clone.Trait Self := {
       core.clone.Clone.clone := clone;
     }.
   End Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumber.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumber.
 
 Module
   Impl_core_marker_Copy_for_unpacking_options_via_question_mark_PhoneNumber.
   Section
     Impl_core_marker_Copy_for_unpacking_options_via_question_mark_PhoneNumber.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := unpacking_options_via_question_mark.PhoneNumber.
     
-    Global Instance I : core.marker.Copy.Trait Self := {
+    Global Instance ℐ : core.marker.Copy.Trait Self := {
     }.
   End Impl_core_marker_Copy_for_unpacking_options_via_question_mark_PhoneNumber.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_marker_Copy_for_unpacking_options_via_question_mark_PhoneNumber.
 
 Module Impl_unpacking_options_via_question_mark_Person.
   Section Impl_unpacking_options_via_question_mark_Person.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := unpacking_options_via_question_mark.Person.
     
@@ -190,7 +190,7 @@ Module Impl_unpacking_options_via_question_mark_Person.
 End Impl_unpacking_options_via_question_mark_Person.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main `{ℋ : State.Trait} : M unit :=
   let* p :=
     let* α0 := M.alloc 61 in
     let* α1 := M.alloc 439222222 in

@@ -2,11 +2,11 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{State.Trait}, M unit.
+Parameter main : forall `{ℋ : State.Trait}, M unit.
 
 Module Structure.
   Section Structure.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Record t : Set := {
@@ -19,4 +19,4 @@ Module Structure.
     }.
   End Structure.
 End Structure.
-Definition Structure `{State.Trait} : Set := M.val Structure.t.
+Definition Structure `{ℋ : State.Trait} : Set := M.val Structure.t.

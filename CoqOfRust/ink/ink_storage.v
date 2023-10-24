@@ -7,7 +7,7 @@ Module lazy.
   Module mapping.
     Module Mapping.
       Section Mapping.
-        Context `{State.Trait}.
+        Context `{ℋ : State.Trait}.
         
         Context {K V KeyType : Set}.
         
@@ -35,7 +35,7 @@ Module lazy.
     End Mapping.
     Definition Mapping
         (K V KeyType : Set)
-        `{State.Trait}
+        `{ℋ : State.Trait}
         {ℋ_0 : ink_storage_traits.storage.Packed.Trait V}
         {ℋ_1 : ink_storage_traits.storage.StorageKey.Trait KeyType}
         : Set :=
@@ -44,7 +44,7 @@ Module lazy.
   
   Module Lazy.
     Section Lazy.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Context {V KeyType : Set}.
       
@@ -68,7 +68,7 @@ Module lazy.
   End Lazy.
   Definition Lazy
       (V KeyType : Set)
-      `{State.Trait}
+      `{ℋ : State.Trait}
       {ℋ_0 : ink_storage_traits.storage.StorageKey.Trait KeyType}
       : Set :=
     M.val (Lazy.t (V := V) (KeyType := KeyType)).
@@ -77,7 +77,7 @@ End lazy.
 Module mapping.
   Module Mapping.
     Section Mapping.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Context {K V KeyType : Set}.
       
@@ -103,7 +103,7 @@ Module mapping.
   End Mapping.
   Definition Mapping
       (K V KeyType : Set)
-      `{State.Trait}
+      `{ℋ : State.Trait}
       {ℋ_0 : ink_storage_traits.storage.Packed.Trait V}
       {ℋ_1 : ink_storage_traits.storage.StorageKey.Trait KeyType}
       : Set :=
@@ -112,7 +112,7 @@ End mapping.
 
 Module Mapping.
   Section Mapping.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {K V KeyType : Set}.
     
@@ -138,7 +138,7 @@ Module Mapping.
 End Mapping.
 Definition Mapping
     (K V KeyType : Set)
-    `{State.Trait}
+    `{ℋ : State.Trait}
     {ℋ_0 : ink_storage_traits.storage.Packed.Trait V}
     {ℋ_1 : ink_storage_traits.storage.StorageKey.Trait KeyType}
     : Set :=
@@ -146,7 +146,7 @@ Definition Mapping
 
 Module Lazy.
   Section Lazy.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {V KeyType : Set}.
     
@@ -170,7 +170,7 @@ Module Lazy.
 End Lazy.
 Definition Lazy
     (V KeyType : Set)
-    `{State.Trait}
+    `{ℋ : State.Trait}
     {ℋ_0 : ink_storage_traits.storage.StorageKey.Trait KeyType}
     : Set :=
   M.val (Lazy.t (V := V) (KeyType := KeyType)).

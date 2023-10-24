@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module PhantomTuple.
   Section PhantomTuple.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {A B : Set}.
     
@@ -22,30 +22,30 @@ Module PhantomTuple.
     }.
   End PhantomTuple.
 End PhantomTuple.
-Definition PhantomTuple `{State.Trait} (A B : Set) : Set :=
+Definition PhantomTuple `{ℋ : State.Trait} (A B : Set) : Set :=
   M.val (PhantomTuple.t (A := A) (B := B)).
 
 Module
   Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomTuple_A_B.
   Section
     Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomTuple_A_B.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {A B : Set}.
     
     Definition Self : Set := generics_phantom_type.PhantomTuple A B.
     
-    Global Instance I : core.marker.StructuralPartialEq.Trait Self := {
+    Global Instance ℐ : core.marker.StructuralPartialEq.Trait Self := {
     }.
   End
     Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomTuple_A_B.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End
   Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomTuple_A_B.
 
 Module Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_A_B.
   Section Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_A_B.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {A B : Set}.
     
@@ -63,19 +63,19 @@ Module Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_A_B.
       Notation.double_colon := eq;
     }.
     
-    Global Instance I
+    Global Instance ℐ
       : core.cmp.PartialEq.Trait Self
           (Rhs := core.cmp.PartialEq.Default.Rhs Self)
         := {
       core.cmp.PartialEq.eq := eq;
     }.
   End Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_A_B.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_A_B.
 
 Module PhantomStruct.
   Section PhantomStruct.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {A B : Set}.
     
@@ -100,30 +100,30 @@ Module PhantomStruct.
     }.
   End PhantomStruct.
 End PhantomStruct.
-Definition PhantomStruct (A B : Set) `{State.Trait} : Set :=
+Definition PhantomStruct (A B : Set) `{ℋ : State.Trait} : Set :=
   M.val (PhantomStruct.t (A := A) (B := B)).
 
 Module
   Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomStruct_A_B.
   Section
     Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomStruct_A_B.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {A B : Set}.
     
     Definition Self : Set := generics_phantom_type.PhantomStruct A B.
     
-    Global Instance I : core.marker.StructuralPartialEq.Trait Self := {
+    Global Instance ℐ : core.marker.StructuralPartialEq.Trait Self := {
     }.
   End
     Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomStruct_A_B.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End
   Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomStruct_A_B.
 
 Module Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
   Section Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {A B : Set}.
     
@@ -141,15 +141,15 @@ Module Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
       Notation.double_colon := eq;
     }.
     
-    Global Instance I
+    Global Instance ℐ
       : core.cmp.PartialEq.Trait Self
           (Rhs := core.cmp.PartialEq.Default.Rhs Self)
         := {
       core.cmp.PartialEq.eq := eq;
     }.
   End Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{State.Trait}, M unit.
+Parameter main : forall `{ℋ : State.Trait}, M unit.

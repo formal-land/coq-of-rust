@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module Centimeters.
   Section Centimeters.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Record t : Set := {
@@ -16,23 +16,23 @@ Module Centimeters.
     }.
   End Centimeters.
 End Centimeters.
-Definition Centimeters `{State.Trait} : Set := M.val Centimeters.t.
+Definition Centimeters `{ℋ : State.Trait} : Set := M.val Centimeters.t.
 
 Module Impl_core_marker_StructuralPartialEq_for_derive_Centimeters.
   Section Impl_core_marker_StructuralPartialEq_for_derive_Centimeters.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := derive.Centimeters.
     
-    Global Instance I : core.marker.StructuralPartialEq.Trait Self := {
+    Global Instance ℐ : core.marker.StructuralPartialEq.Trait Self := {
     }.
   End Impl_core_marker_StructuralPartialEq_for_derive_Centimeters.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_marker_StructuralPartialEq_for_derive_Centimeters.
 
 Module Impl_core_cmp_PartialEq_for_derive_Centimeters.
   Section Impl_core_cmp_PartialEq_for_derive_Centimeters.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := derive.Centimeters.
     
@@ -47,19 +47,19 @@ Module Impl_core_cmp_PartialEq_for_derive_Centimeters.
       Notation.double_colon := eq;
     }.
     
-    Global Instance I
+    Global Instance ℐ
       : core.cmp.PartialEq.Trait Self
           (Rhs := core.cmp.PartialEq.Default.Rhs Self)
         := {
       core.cmp.PartialEq.eq := eq;
     }.
   End Impl_core_cmp_PartialEq_for_derive_Centimeters.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_cmp_PartialEq_for_derive_Centimeters.
 
 Module Impl_core_cmp_PartialOrd_for_derive_Centimeters.
   Section Impl_core_cmp_PartialOrd_for_derive_Centimeters.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := derive.Centimeters.
     
@@ -84,19 +84,19 @@ Module Impl_core_cmp_PartialOrd_for_derive_Centimeters.
       Notation.double_colon := partial_cmp;
     }.
     
-    Global Instance I
+    Global Instance ℐ
       : core.cmp.PartialOrd.Trait Self
           (Rhs := core.cmp.PartialOrd.Default.Rhs Self)
         := {
       core.cmp.PartialOrd.partial_cmp := partial_cmp;
     }.
   End Impl_core_cmp_PartialOrd_for_derive_Centimeters.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_cmp_PartialOrd_for_derive_Centimeters.
 
 Module Inches.
   Section Inches.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Record t : Set := {
@@ -109,11 +109,11 @@ Module Inches.
     }.
   End Inches.
 End Inches.
-Definition Inches `{State.Trait} : Set := M.val Inches.t.
+Definition Inches `{ℋ : State.Trait} : Set := M.val Inches.t.
 
 Module Impl_core_fmt_Debug_for_derive_Inches.
   Section Impl_core_fmt_Debug_for_derive_Inches.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := derive.Inches.
     
@@ -139,16 +139,16 @@ Module Impl_core_fmt_Debug_for_derive_Inches.
       Notation.double_colon := fmt;
     }.
     
-    Global Instance I : core.fmt.Debug.Trait Self := {
+    Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
   End Impl_core_fmt_Debug_for_derive_Inches.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_derive_Inches.
 
 Module Impl_derive_Inches_2.
   Section Impl_derive_Inches_2.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := derive.Inches.
     
@@ -168,7 +168,7 @@ End Impl_derive_Inches_2.
 
 Module Seconds.
   Section Seconds.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Record t : Set := {
@@ -181,10 +181,10 @@ Module Seconds.
     }.
   End Seconds.
 End Seconds.
-Definition Seconds `{State.Trait} : Set := M.val Seconds.t.
+Definition Seconds `{ℋ : State.Trait} : Set := M.val Seconds.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main `{ℋ : State.Trait} : M unit :=
   let* _one_second :=
     let* α0 := M.alloc 1 in
     Pure (derive.Seconds.Build_t α0) in

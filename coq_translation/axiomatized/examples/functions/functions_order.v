@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module SomeType.
   Section SomeType.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Record t : Set := {
@@ -16,11 +16,11 @@ Module SomeType.
     }.
   End SomeType.
 End SomeType.
-Definition SomeType `{State.Trait} : Set := M.val SomeType.t.
+Definition SomeType `{ℋ : State.Trait} : Set := M.val SomeType.t.
 
 Module OtherType.
   Section OtherType.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Record t : Set := {
@@ -33,11 +33,11 @@ Module OtherType.
     }.
   End OtherType.
 End OtherType.
-Definition OtherType `{State.Trait} : Set := M.val OtherType.t.
+Definition OtherType `{ℋ : State.Trait} : Set := M.val OtherType.t.
 
 Module Impl_functions_order_SomeType.
   Section Impl_functions_order_SomeType.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := functions_order.SomeType.
     
@@ -59,7 +59,7 @@ End Impl_functions_order_SomeType.
 
 Module SomeTrait.
   Section SomeTrait.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Class Trait (Self : Set) : Type := {
       some_trait_foo : (ref Self) -> M unit;
@@ -71,7 +71,7 @@ End SomeTrait.
 
 Module Impl_functions_order_SomeTrait_for_functions_order_SomeType.
   Section Impl_functions_order_SomeTrait_for_functions_order_SomeType.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := functions_order.SomeType.
     
@@ -89,17 +89,17 @@ Module Impl_functions_order_SomeTrait_for_functions_order_SomeType.
       Notation.double_colon := some_trait_foo;
     }.
     
-    Global Instance I : functions_order.SomeTrait.Trait Self := {
+    Global Instance ℐ : functions_order.SomeTrait.Trait Self := {
       functions_order.SomeTrait.some_trait_bar := some_trait_bar;
       functions_order.SomeTrait.some_trait_foo := some_trait_foo;
     }.
   End Impl_functions_order_SomeTrait_for_functions_order_SomeType.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_functions_order_SomeTrait_for_functions_order_SomeType.
 
 Module Impl_functions_order_SomeTrait_for_functions_order_OtherType.
   Section Impl_functions_order_SomeTrait_for_functions_order_OtherType.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := functions_order.OtherType.
     
@@ -117,43 +117,45 @@ Module Impl_functions_order_SomeTrait_for_functions_order_OtherType.
       Notation.double_colon := some_trait_bar;
     }.
     
-    Global Instance I : functions_order.SomeTrait.Trait Self := {
+    Global Instance ℐ : functions_order.SomeTrait.Trait Self := {
       functions_order.SomeTrait.some_trait_foo := some_trait_foo;
       functions_order.SomeTrait.some_trait_bar := some_trait_bar;
     }.
   End Impl_functions_order_SomeTrait_for_functions_order_OtherType.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_functions_order_SomeTrait_for_functions_order_OtherType.
 
-Parameter depends_on_trait_impl : forall `{State.Trait}, u32 -> bool -> M unit.
+Parameter depends_on_trait_impl :
+    forall `{ℋ : State.Trait},
+    u32 -> bool -> M unit.
 
 Module inner_mod.
-  Parameter tar : forall `{State.Trait}, M unit.
+  Parameter tar : forall `{ℋ : State.Trait}, M unit.
   
-  Parameter bar : forall `{State.Trait}, M unit.
+  Parameter bar : forall `{ℋ : State.Trait}, M unit.
   
   Module nested_mod.
-    Parameter tack : forall `{State.Trait}, M unit.
+    Parameter tack : forall `{ℋ : State.Trait}, M unit.
     
-    Parameter tick : forall `{State.Trait}, M unit.
+    Parameter tick : forall `{ℋ : State.Trait}, M unit.
   End nested_mod.
 End inner_mod.
 
-Parameter bar : forall `{State.Trait}, M unit.
+Parameter bar : forall `{ℋ : State.Trait}, M unit.
 
-Parameter tar : forall `{State.Trait}, M unit.
+Parameter tar : forall `{ℋ : State.Trait}, M unit.
 
 Module nested_mod.
-  Parameter tack : forall `{State.Trait}, M unit.
+  Parameter tack : forall `{ℋ : State.Trait}, M unit.
   
-  Parameter tick : forall `{State.Trait}, M unit.
+  Parameter tick : forall `{ℋ : State.Trait}, M unit.
 End nested_mod.
 
-Parameter tick : forall `{State.Trait}, M unit.
+Parameter tick : forall `{ℋ : State.Trait}, M unit.
 
-Parameter tack : forall `{State.Trait}, M unit.
+Parameter tack : forall `{ℋ : State.Trait}, M unit.
 
-Parameter foo : forall `{State.Trait}, M unit.
+Parameter foo : forall `{ℋ : State.Trait}, M unit.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{State.Trait}, M unit.
+Parameter main : forall `{ℋ : State.Trait}, M unit.

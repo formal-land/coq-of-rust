@@ -4,7 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* #[allow(dead_code)] - struct was ignored by the compiler *)
 Module Book.
   Section Book.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Record t : Set := {
@@ -34,11 +34,11 @@ Module Book.
     }.
   End Book.
 End Book.
-Definition Book `{State.Trait} : Set := M.val Book.t.
+Definition Book `{ℋ : State.Trait} : Set := M.val Book.t.
 
 Module Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book.
   Section Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := scoping_rules_borrowing_mutablity.Book.
     
@@ -56,27 +56,27 @@ Module Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book.
       Notation.double_colon := clone;
     }.
     
-    Global Instance I : core.clone.Clone.Trait Self := {
+    Global Instance ℐ : core.clone.Clone.Trait Self := {
       core.clone.Clone.clone := clone;
     }.
   End Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book.
 
 Module Impl_core_marker_Copy_for_scoping_rules_borrowing_mutablity_Book.
   Section Impl_core_marker_Copy_for_scoping_rules_borrowing_mutablity_Book.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := scoping_rules_borrowing_mutablity.Book.
     
-    Global Instance I : core.marker.Copy.Trait Self := {
+    Global Instance ℐ : core.marker.Copy.Trait Self := {
     }.
   End Impl_core_marker_Copy_for_scoping_rules_borrowing_mutablity_Book.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_marker_Copy_for_scoping_rules_borrowing_mutablity_Book.
 
 Definition borrow_book
-    `{State.Trait}
+    `{ℋ : State.Trait}
     (book : ref scoping_rules_borrowing_mutablity.Book)
     : M unit :=
   let* _ :=
@@ -111,7 +111,7 @@ Definition borrow_book
   M.alloc tt.
 
 Definition new_edition
-    `{State.Trait}
+    `{ℋ : State.Trait}
     (book : mut_ref scoping_rules_borrowing_mutablity.Book)
     : M unit :=
   let* _ :=
@@ -151,7 +151,7 @@ Definition new_edition
   M.alloc tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main `{ℋ : State.Trait} : M unit :=
   let* immutabook :=
     let* α0 := M.alloc 1979 in
     M.alloc

@@ -3,18 +3,18 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module checked.
   Module MathError.
-    Inductive t `{State.Trait} : Set :=
+    Inductive t `{ℋ : State.Trait} : Set :=
     | DivisionByZero
     | NonPositiveLogarithm
     | NegativeSquareRoot.
   End MathError.
-  Definition MathError `{State.Trait} : Set := MathError.t.
+  Definition MathError `{ℋ : State.Trait} : Set := MathError.t.
   
   Module
     Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
     Section
       Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Definition Self : Set :=
         result_chaining_with_question_mark.checked.MathError.
@@ -27,50 +27,50 @@ Module checked.
         Notation.double_colon := fmt;
       }.
       
-      Global Instance I : core.fmt.Debug.Trait Self := {
+      Global Instance ℐ : core.fmt.Debug.Trait Self := {
         core.fmt.Debug.fmt := fmt;
       }.
     End
       Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
-    Global Hint Resolve I : core.
+    Global Hint Resolve ℐ : core.
   End
     Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
   
-  Definition MathResult `{State.Trait} : Set :=
+  Definition MathResult `{ℋ : State.Trait} : Set :=
     core.result.Result f64 result_chaining_with_question_mark.checked.MathError.
   
   Parameter div :
-      forall `{State.Trait},
+      forall `{ℋ : State.Trait},
       f64 -> f64 -> M result_chaining_with_question_mark.checked.MathResult.
   
   Parameter sqrt :
-      forall `{State.Trait},
+      forall `{ℋ : State.Trait},
       f64 -> M result_chaining_with_question_mark.checked.MathResult.
   
   Parameter ln :
-      forall `{State.Trait},
+      forall `{ℋ : State.Trait},
       f64 -> M result_chaining_with_question_mark.checked.MathResult.
   
   Parameter op_ :
-      forall `{State.Trait},
+      forall `{ℋ : State.Trait},
       f64 -> f64 -> M result_chaining_with_question_mark.checked.MathResult.
   
-  Parameter op : forall `{State.Trait}, f64 -> f64 -> M unit.
+  Parameter op : forall `{ℋ : State.Trait}, f64 -> f64 -> M unit.
 End checked.
 
 Module MathError.
-  Inductive t `{State.Trait} : Set :=
+  Inductive t `{ℋ : State.Trait} : Set :=
   | DivisionByZero
   | NonPositiveLogarithm
   | NegativeSquareRoot.
 End MathError.
-Definition MathError `{State.Trait} : Set := MathError.t.
+Definition MathError `{ℋ : State.Trait} : Set := MathError.t.
 
 Module
   Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
   Section
     Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set :=
       result_chaining_with_question_mark.checked.MathError.
@@ -83,35 +83,35 @@ Module
       Notation.double_colon := fmt;
     }.
     
-    Global Instance I : core.fmt.Debug.Trait Self := {
+    Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
   End
     Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End
   Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
 
-Definition MathResult `{State.Trait} : Set :=
+Definition MathResult `{ℋ : State.Trait} : Set :=
   core.result.Result f64 result_chaining_with_question_mark.checked.MathError.
 
 Parameter div :
-    forall `{State.Trait},
+    forall `{ℋ : State.Trait},
     f64 -> f64 -> M result_chaining_with_question_mark.checked.MathResult.
 
 Parameter sqrt :
-    forall `{State.Trait},
+    forall `{ℋ : State.Trait},
     f64 -> M result_chaining_with_question_mark.checked.MathResult.
 
 Parameter ln :
-    forall `{State.Trait},
+    forall `{ℋ : State.Trait},
     f64 -> M result_chaining_with_question_mark.checked.MathResult.
 
 Parameter op_ :
-    forall `{State.Trait},
+    forall `{ℋ : State.Trait},
     f64 -> f64 -> M result_chaining_with_question_mark.checked.MathResult.
 
-Parameter op : forall `{State.Trait}, f64 -> f64 -> M unit.
+Parameter op : forall `{ℋ : State.Trait}, f64 -> f64 -> M unit.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{State.Trait}, M unit.
+Parameter main : forall `{ℋ : State.Trait}, M unit.

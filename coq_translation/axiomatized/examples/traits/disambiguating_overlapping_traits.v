@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module UsernameWidget.
   Section UsernameWidget.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Class Trait (Self : Set) : Type := {
       get : (ref Self) -> M alloc.string.String;
@@ -14,7 +14,7 @@ End UsernameWidget.
 
 Module AgeWidget.
   Section AgeWidget.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Class Trait (Self : Set) : Type := {
       get : (ref Self) -> M u8;
@@ -25,7 +25,7 @@ End AgeWidget.
 
 Module Form.
   Section Form.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Record t : Set := {
@@ -48,13 +48,13 @@ Module Form.
     }.
   End Form.
 End Form.
-Definition Form `{State.Trait} : Set := M.val Form.t.
+Definition Form `{ℋ : State.Trait} : Set := M.val Form.t.
 
 Module
   Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_overlapping_traits_Form.
   Section
     Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_overlapping_traits_Form.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := disambiguating_overlapping_traits.Form.
     
@@ -65,13 +65,13 @@ Module
       Notation.double_colon := get;
     }.
     
-    Global Instance I
+    Global Instance ℐ
       : disambiguating_overlapping_traits.UsernameWidget.Trait Self := {
       disambiguating_overlapping_traits.UsernameWidget.get := get;
     }.
   End
     Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_overlapping_traits_Form.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End
   Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_overlapping_traits_Form.
 
@@ -79,7 +79,7 @@ Module
   Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overlapping_traits_Form.
   Section
     Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overlapping_traits_Form.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := disambiguating_overlapping_traits.Form.
     
@@ -90,15 +90,15 @@ Module
       Notation.double_colon := get;
     }.
     
-    Global Instance I
+    Global Instance ℐ
       : disambiguating_overlapping_traits.AgeWidget.Trait Self := {
       disambiguating_overlapping_traits.AgeWidget.get := get;
     }.
   End
     Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overlapping_traits_Form.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End
   Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overlapping_traits_Form.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{State.Trait}, M unit.
+Parameter main : forall `{ℋ : State.Trait}, M unit.

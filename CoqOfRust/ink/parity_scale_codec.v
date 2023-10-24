@@ -41,8 +41,9 @@ Module codec.
   (* pub trait Codec: Decode + Encode {} *)
   Module Codec.
     Unset Primitive Projections.
-    Class Trait (Self : Set)
-      `{Encode.Trait Self} `{Decode.Trait Self} : Set := {
+    Class Trait (Self : Set) : Set := {
+      _ :: Encode.Trait Self;
+      _ :: Decode.Trait Self;
     }.
     Global Set Primitive Projections.
   End Codec.

@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition call_me
-    `{State.Trait}
+    `{ℋ : State.Trait}
     {F : Set}
     {ℋ_0 : core.ops.function.Fn.Trait F (Args := unit)}
     (f : F)
@@ -13,7 +13,7 @@ Definition call_me
     core.ops.function.Fn.call α0 α1 in
   M.alloc tt.
 
-Definition function `{State.Trait} : M unit :=
+Definition function `{ℋ : State.Trait} : M unit :=
   let* _ :=
     let* _ :=
       let* α0 := borrow [ mk_str "I'm a function!
@@ -27,7 +27,7 @@ Definition function `{State.Trait} : M unit :=
   M.alloc tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main `{ℋ : State.Trait} : M unit :=
   let closure :=
     let* _ :=
       let* α0 := borrow [ mk_str "I'm a closure!

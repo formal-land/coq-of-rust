@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module Years.
   Section Years.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Record t : Set := {
@@ -16,7 +16,7 @@ Module Years.
     }.
   End Years.
 End Years.
-Definition Years `{State.Trait} : Set := M.val Years.t.
+Definition Years `{ℋ : State.Trait} : Set := M.val Years.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{State.Trait}, M unit.
+Parameter main : forall `{ℋ : State.Trait}, M unit.

@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module A.
   Section A.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Inductive t : Set := Build.
   End A.
@@ -12,7 +12,7 @@ Definition A := @A.t.
 
 Module Single.
   Section Single.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Record t : Set := {
@@ -25,11 +25,11 @@ Module Single.
     }.
   End Single.
 End Single.
-Definition Single `{State.Trait} : Set := M.val Single.t.
+Definition Single `{ℋ : State.Trait} : Set := M.val Single.t.
 
 Module SingleGen.
   Section SingleGen.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {T : Set}.
     
@@ -44,8 +44,8 @@ Module SingleGen.
     }.
   End SingleGen.
 End SingleGen.
-Definition SingleGen `{State.Trait} (T : Set) : Set :=
+Definition SingleGen `{ℋ : State.Trait} (T : Set) : Set :=
   M.val (SingleGen.t (T := T)).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{State.Trait}, M unit.
+Parameter main : forall `{ℋ : State.Trait}, M unit.

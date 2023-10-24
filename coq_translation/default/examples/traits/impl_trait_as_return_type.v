@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition combine_vecs_explicit_return_type
-    `{State.Trait}
+    `{ℋ : State.Trait}
     (v : alloc.vec.Vec i32 alloc.vec.Vec.Default.A)
     (u : alloc.vec.Vec i32 alloc.vec.Vec.Default.A)
     :
@@ -21,7 +21,7 @@ Definition combine_vecs_explicit_return_type
   core.iter.traits.iterator.Iterator.cycle α2.
 
 Definition combine_vecs
-    `{State.Trait}
+    `{ℋ : State.Trait}
     (v : alloc.vec.Vec i32 alloc.vec.Vec.Default.A)
     (u : alloc.vec.Vec i32 alloc.vec.Vec.Default.A)
     : M _ (* OpaqueTy *) :=
@@ -33,7 +33,7 @@ Definition combine_vecs
 Error OpaqueTy.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main `{ℋ : State.Trait} : M unit :=
   let* v1 :=
     let* α0 := M.alloc 1 in
     let* α1 := M.alloc 2 in

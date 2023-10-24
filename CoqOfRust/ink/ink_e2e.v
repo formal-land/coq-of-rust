@@ -9,8 +9,9 @@ Require CoqOfRust.ink.sp_keyring.
 Require CoqOfRust.ink.subxt.
 
 Module builders.
-  Definition CreateBuilderPartial (E ContractRef Args R : Set)
-      `{State.Trait} `{ink_env.types.Environment.Trait E} :
+  Definition CreateBuilderPartial
+      `{ℋ : State.Trait} (E ContractRef Args R : Set)
+      `{ink_env.types.Environment.Trait E} :
       Set :=
     ink_env.call.create_builder.CreateBuilder
       E
@@ -26,7 +27,7 @@ Module builders.
   
   Parameter constructor_exec_input :
       forall
-        `{State.Trait}
+        `{ℋ : State.Trait}
         {E ContractRef Args R : Set}
         {ℋ_0 : parity_scale_codec.codec.Encode.Trait Args}
         {ℋ_1 : ink_env.types.Environment.Trait E},
@@ -34,8 +35,8 @@ Module builders.
         M (alloc.vec.Vec u8 alloc.vec.Vec.Default.A).
 End builders.
 
-Definition CreateBuilderPartial (E ContractRef Args R : Set)
-    `{State.Trait} :
+Definition CreateBuilderPartial
+    `{ℋ : State.Trait} (E ContractRef Args R : Set) :
     Set :=
   ink_env.call.create_builder.CreateBuilder
     E
@@ -50,7 +51,7 @@ Definition CreateBuilderPartial (E ContractRef Args R : Set)
 
 Parameter constructor_exec_input :
     forall
-      `{State.Trait}
+      `{ℋ : State.Trait}
       {E ContractRef Args R : Set}
       {ℋ_0 : parity_scale_codec.codec.Encode.Trait Args}
       {ℋ_1 : ink_env.types.Environment.Trait E},
@@ -60,7 +61,7 @@ Parameter constructor_exec_input :
 Module xts.
   Module Weight.
     Section Weight.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Unset Primitive Projections.
       Record t : Set := {
@@ -88,11 +89,11 @@ Module xts.
       }.
     End Weight.
   End Weight.
-  Definition Weight `{State.Trait} : Set := M.val Weight.t.
+  Definition Weight `{ℋ : State.Trait} : Set := M.val Weight.t.
   
   Module Impl_core_clone_Clone_for_ink_e2e_xts_Weight.
     Section Impl_core_clone_Clone_for_ink_e2e_xts_Weight.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Definition Self : Set := ink_e2e.xts.Weight.
       
@@ -103,40 +104,40 @@ Module xts.
         Notation.double_colon := clone;
       }.
       
-      Global Instance I : core.clone.Clone.Trait Self := {
+      Global Instance ℐ : core.clone.Clone.Trait Self := {
         core.clone.Clone.clone := clone;
       }.
     End Impl_core_clone_Clone_for_ink_e2e_xts_Weight.
-    Global Hint Resolve I : core.
+    Global Hint Resolve ℐ : core.
   End Impl_core_clone_Clone_for_ink_e2e_xts_Weight.
   
   Module Impl_core_marker_Copy_for_ink_e2e_xts_Weight.
     Section Impl_core_marker_Copy_for_ink_e2e_xts_Weight.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Definition Self : Set := ink_e2e.xts.Weight.
       
-      Global Instance I : core.marker.Copy.Trait Self := {
+      Global Instance ℐ : core.marker.Copy.Trait Self := {
       }.
     End Impl_core_marker_Copy_for_ink_e2e_xts_Weight.
-    Global Hint Resolve I : core.
+    Global Hint Resolve ℐ : core.
   End Impl_core_marker_Copy_for_ink_e2e_xts_Weight.
   
   Module Impl_core_marker_StructuralEq_for_ink_e2e_xts_Weight.
     Section Impl_core_marker_StructuralEq_for_ink_e2e_xts_Weight.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Definition Self : Set := ink_e2e.xts.Weight.
       
-      Global Instance I : core.marker.StructuralEq.Trait Self := {
+      Global Instance ℐ : core.marker.StructuralEq.Trait Self := {
       }.
     End Impl_core_marker_StructuralEq_for_ink_e2e_xts_Weight.
-    Global Hint Resolve I : core.
+    Global Hint Resolve ℐ : core.
   End Impl_core_marker_StructuralEq_for_ink_e2e_xts_Weight.
   
   Module Impl_core_cmp_PartialEq_for_ink_e2e_xts_Weight.
     Section Impl_core_cmp_PartialEq_for_ink_e2e_xts_Weight.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Definition Self : Set := ink_e2e.xts.Weight.
       
@@ -147,19 +148,19 @@ Module xts.
         Notation.double_colon := eq;
       }.
       
-      Global Instance I
+      Global Instance ℐ
         : core.cmp.PartialEq.Trait Self
             (Rhs := core.cmp.PartialEq.Default.Rhs Self)
           := {
         core.cmp.PartialEq.eq := eq;
       }.
     End Impl_core_cmp_PartialEq_for_ink_e2e_xts_Weight.
-    Global Hint Resolve I : core.
+    Global Hint Resolve ℐ : core.
   End Impl_core_cmp_PartialEq_for_ink_e2e_xts_Weight.
   
   Module Impl_core_cmp_Eq_for_ink_e2e_xts_Weight.
     Section Impl_core_cmp_Eq_for_ink_e2e_xts_Weight.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Definition Self : Set := ink_e2e.xts.Weight.
       
@@ -170,27 +171,27 @@ Module xts.
         Notation.double_colon := assert_receiver_is_total_eq;
       }.
       
-      Global Instance I : core.cmp.Eq.Trait Self := {
+      Global Instance ℐ : core.cmp.Eq.Trait Self := {
       }.
     End Impl_core_cmp_Eq_for_ink_e2e_xts_Weight.
-    Global Hint Resolve I : core.
+    Global Hint Resolve ℐ : core.
   End Impl_core_cmp_Eq_for_ink_e2e_xts_Weight.
   
   Module Impl_core_marker_StructuralPartialEq_for_ink_e2e_xts_Weight.
     Section Impl_core_marker_StructuralPartialEq_for_ink_e2e_xts_Weight.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Definition Self : Set := ink_e2e.xts.Weight.
       
-      Global Instance I : core.marker.StructuralPartialEq.Trait Self := {
+      Global Instance ℐ : core.marker.StructuralPartialEq.Trait Self := {
       }.
     End Impl_core_marker_StructuralPartialEq_for_ink_e2e_xts_Weight.
-    Global Hint Resolve I : core.
+    Global Hint Resolve ℐ : core.
   End Impl_core_marker_StructuralPartialEq_for_ink_e2e_xts_Weight.
   
   Module Impl_core_fmt_Debug_for_ink_e2e_xts_Weight.
     Section Impl_core_fmt_Debug_for_ink_e2e_xts_Weight.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Definition Self : Set := ink_e2e.xts.Weight.
       
@@ -202,16 +203,16 @@ Module xts.
         Notation.double_colon := fmt;
       }.
       
-      Global Instance I : core.fmt.Debug.Trait Self := {
+      Global Instance ℐ : core.fmt.Debug.Trait Self := {
         core.fmt.Debug.fmt := fmt;
       }.
     End Impl_core_fmt_Debug_for_ink_e2e_xts_Weight.
-    Global Hint Resolve I : core.
+    Global Hint Resolve ℐ : core.
   End Impl_core_fmt_Debug_for_ink_e2e_xts_Weight.
   
   Module Impl_core_default_Default_for_ink_e2e_xts_Weight.
     Section Impl_core_default_Default_for_ink_e2e_xts_Weight.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Definition Self : Set := ink_e2e.xts.Weight.
       
@@ -222,16 +223,16 @@ Module xts.
         Notation.double_colon := default;
       }.
       
-      Global Instance I : core.default.Default.Trait Self := {
+      Global Instance ℐ : core.default.Default.Trait Self := {
         core.default.Default.default := default;
       }.
     End Impl_core_default_Default_for_ink_e2e_xts_Weight.
-    Global Hint Resolve I : core.
+    Global Hint Resolve ℐ : core.
   End Impl_core_default_Default_for_ink_e2e_xts_Weight.
   
   Module Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Weight.
     Section Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Weight.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Definition Self : Set := ink_e2e.xts.Weight.
       
@@ -247,16 +248,16 @@ Module xts.
         Notation.double_colon := encode_as_type_to;
       }.
       
-      Global Instance I : scale_encode.EncodeAsType.Trait Self := {
+      Global Instance ℐ : scale_encode.EncodeAsType.Trait Self := {
         scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
       }.
     End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Weight.
-    Global Hint Resolve I : core.
+    Global Hint Resolve ℐ : core.
   End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Weight.
   
   Module Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Weight.
     Section Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Weight.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Definition Self : Set := ink_e2e.xts.Weight.
       
@@ -272,16 +273,16 @@ Module xts.
         Notation.double_colon := encode_as_fields_to;
       }.
       
-      Global Instance I : scale_encode.EncodeAsFields.Trait Self := {
+      Global Instance ℐ : scale_encode.EncodeAsFields.Trait Self := {
         scale_encode.EncodeAsFields.encode_as_fields_to := encode_as_fields_to;
       }.
     End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Weight.
-    Global Hint Resolve I : core.
+    Global Hint Resolve ℐ : core.
   End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Weight.
   
   Module Impl_core_convert_From_for_ink_e2e_xts_Weight.
     Section Impl_core_convert_From_for_ink_e2e_xts_Weight.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Definition Self : Set := ink_e2e.xts.Weight.
       
@@ -292,17 +293,17 @@ Module xts.
         Notation.double_colon := from;
       }.
       
-      Global Instance I
+      Global Instance ℐ
         : core.convert.From.Trait Self (T := sp_weights.weight_v2.Weight) := {
         core.convert.From.from := from;
       }.
     End Impl_core_convert_From_for_ink_e2e_xts_Weight.
-    Global Hint Resolve I : core.
+    Global Hint Resolve ℐ : core.
   End Impl_core_convert_From_for_ink_e2e_xts_Weight.
   
   Module Impl_core_convert_From_for_sp_weights_weight_v2_Weight.
     Section Impl_core_convert_From_for_sp_weights_weight_v2_Weight.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Definition Self : Set := sp_weights.weight_v2.Weight.
       
@@ -313,17 +314,17 @@ Module xts.
         Notation.double_colon := from;
       }.
       
-      Global Instance I
+      Global Instance ℐ
         : core.convert.From.Trait Self (T := ink_e2e.xts.Weight) := {
         core.convert.From.from := from;
       }.
     End Impl_core_convert_From_for_sp_weights_weight_v2_Weight.
-    Global Hint Resolve I : core.
+    Global Hint Resolve ℐ : core.
   End Impl_core_convert_From_for_sp_weights_weight_v2_Weight.
   
   Module InstantiateWithCode.
     Section InstantiateWithCode.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Context {E : Set}.
       
@@ -387,14 +388,14 @@ Module xts.
   End InstantiateWithCode.
   Definition InstantiateWithCode
       (E : Set)
-      `{State.Trait}
+      `{ℋ : State.Trait}
       {ℋ_0 : ink_env.types.Environment.Trait E}
       : Set :=
     M.val (InstantiateWithCode.t (E := E)).
   
   Module Impl_core_fmt_Debug_for_ink_e2e_xts_InstantiateWithCode_E.
     Section Impl_core_fmt_Debug_for_ink_e2e_xts_InstantiateWithCode_E.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Context {E : Set}.
       
@@ -413,17 +414,17 @@ Module xts.
         Notation.double_colon := fmt;
       }.
       
-      Global Instance I : core.fmt.Debug.Trait Self := {
+      Global Instance ℐ : core.fmt.Debug.Trait Self := {
         core.fmt.Debug.fmt := fmt;
       }.
     End Impl_core_fmt_Debug_for_ink_e2e_xts_InstantiateWithCode_E.
-    Global Hint Resolve I : core.
+    Global Hint Resolve ℐ : core.
   End Impl_core_fmt_Debug_for_ink_e2e_xts_InstantiateWithCode_E.
   
   Module Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_InstantiateWithCode_E.
     Section
       Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_InstantiateWithCode_E.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Context {E : Set}.
       
@@ -442,17 +443,17 @@ Module xts.
         Notation.double_colon := encode_as_type_to;
       }.
       
-      Global Instance I : scale_encode.EncodeAsType.Trait Self := {
+      Global Instance ℐ : scale_encode.EncodeAsType.Trait Self := {
         scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
       }.
     End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_InstantiateWithCode_E.
-    Global Hint Resolve I : core.
+    Global Hint Resolve ℐ : core.
   End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_InstantiateWithCode_E.
   
   Module Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_InstantiateWithCode_E.
     Section
       Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_InstantiateWithCode_E.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Context {E : Set}.
       
@@ -471,16 +472,16 @@ Module xts.
         Notation.double_colon := encode_as_fields_to;
       }.
       
-      Global Instance I : scale_encode.EncodeAsFields.Trait Self := {
+      Global Instance ℐ : scale_encode.EncodeAsFields.Trait Self := {
         scale_encode.EncodeAsFields.encode_as_fields_to := encode_as_fields_to;
       }.
     End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_InstantiateWithCode_E.
-    Global Hint Resolve I : core.
+    Global Hint Resolve ℐ : core.
   End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_InstantiateWithCode_E.
   
   Module Call.
     Section Call.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Context {E : Set}.
       
@@ -537,14 +538,14 @@ Module xts.
   End Call.
   Definition Call
       (E : Set)
-      `{State.Trait}
+      `{ℋ : State.Trait}
       {ℋ_0 : ink_env.types.Environment.Trait E}
       : Set :=
     M.val (Call.t (E := E)).
   
   Module Impl_core_fmt_Debug_for_ink_e2e_xts_Call_E.
     Section Impl_core_fmt_Debug_for_ink_e2e_xts_Call_E.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Context {E : Set}.
       
@@ -564,16 +565,16 @@ Module xts.
         Notation.double_colon := fmt;
       }.
       
-      Global Instance I : core.fmt.Debug.Trait Self := {
+      Global Instance ℐ : core.fmt.Debug.Trait Self := {
         core.fmt.Debug.fmt := fmt;
       }.
     End Impl_core_fmt_Debug_for_ink_e2e_xts_Call_E.
-    Global Hint Resolve I : core.
+    Global Hint Resolve ℐ : core.
   End Impl_core_fmt_Debug_for_ink_e2e_xts_Call_E.
   
   Module Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Call_E.
     Section Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Call_E.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Context {E : Set}.
       
@@ -592,16 +593,16 @@ Module xts.
         Notation.double_colon := encode_as_type_to;
       }.
       
-      Global Instance I : scale_encode.EncodeAsType.Trait Self := {
+      Global Instance ℐ : scale_encode.EncodeAsType.Trait Self := {
         scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
       }.
     End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Call_E.
-    Global Hint Resolve I : core.
+    Global Hint Resolve ℐ : core.
   End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Call_E.
   
   Module Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Call_E.
     Section Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Call_E.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Context {E : Set}.
       
@@ -620,16 +621,16 @@ Module xts.
         Notation.double_colon := encode_as_fields_to;
       }.
       
-      Global Instance I : scale_encode.EncodeAsFields.Trait Self := {
+      Global Instance ℐ : scale_encode.EncodeAsFields.Trait Self := {
         scale_encode.EncodeAsFields.encode_as_fields_to := encode_as_fields_to;
       }.
     End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Call_E.
-    Global Hint Resolve I : core.
+    Global Hint Resolve ℐ : core.
   End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Call_E.
   
   Module Transfer.
     Section Transfer.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Context {E C : Set}.
       
@@ -659,7 +660,7 @@ Module xts.
   End Transfer.
   Definition Transfer
       (E C : Set)
-      `{State.Trait}
+      `{ℋ : State.Trait}
       {ℋ_0 : ink_env.types.Environment.Trait E}
       {ℋ_1 : subxt.config.Config.Trait C}
       : Set :=
@@ -667,7 +668,7 @@ Module xts.
   
   Module Impl_core_fmt_Debug_for_ink_e2e_xts_Transfer_E_C.
     Section Impl_core_fmt_Debug_for_ink_e2e_xts_Transfer_E_C.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Context {E C : Set}.
       
@@ -688,16 +689,16 @@ Module xts.
         Notation.double_colon := fmt;
       }.
       
-      Global Instance I : core.fmt.Debug.Trait Self := {
+      Global Instance ℐ : core.fmt.Debug.Trait Self := {
         core.fmt.Debug.fmt := fmt;
       }.
     End Impl_core_fmt_Debug_for_ink_e2e_xts_Transfer_E_C.
-    Global Hint Resolve I : core.
+    Global Hint Resolve ℐ : core.
   End Impl_core_fmt_Debug_for_ink_e2e_xts_Transfer_E_C.
   
   Module Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Transfer_E_C.
     Section Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Transfer_E_C.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Context {E C : Set}.
       
@@ -718,16 +719,16 @@ Module xts.
         Notation.double_colon := encode_as_type_to;
       }.
       
-      Global Instance I : scale_encode.EncodeAsType.Trait Self := {
+      Global Instance ℐ : scale_encode.EncodeAsType.Trait Self := {
         scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
       }.
     End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Transfer_E_C.
-    Global Hint Resolve I : core.
+    Global Hint Resolve ℐ : core.
   End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Transfer_E_C.
   
   Module Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Transfer_E_C.
     Section Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Transfer_E_C.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Context {E C : Set}.
       
@@ -748,23 +749,23 @@ Module xts.
         Notation.double_colon := encode_as_fields_to;
       }.
       
-      Global Instance I : scale_encode.EncodeAsFields.Trait Self := {
+      Global Instance ℐ : scale_encode.EncodeAsFields.Trait Self := {
         scale_encode.EncodeAsFields.encode_as_fields_to := encode_as_fields_to;
       }.
     End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Transfer_E_C.
-    Global Hint Resolve I : core.
+    Global Hint Resolve ℐ : core.
   End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Transfer_E_C.
   
   Module Determinism.
-    Inductive t `{State.Trait} : Set :=
+    Inductive t `{ℋ : State.Trait} : Set :=
     | Enforced
     | Relaxed.
   End Determinism.
-  Definition Determinism `{State.Trait} : Set := Determinism.t.
+  Definition Determinism `{ℋ : State.Trait} : Set := Determinism.t.
   
   Module Impl_core_fmt_Debug_for_ink_e2e_xts_Determinism.
     Section Impl_core_fmt_Debug_for_ink_e2e_xts_Determinism.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Definition Self : Set := ink_e2e.xts.Determinism.
       
@@ -776,16 +777,16 @@ Module xts.
         Notation.double_colon := fmt;
       }.
       
-      Global Instance I : core.fmt.Debug.Trait Self := {
+      Global Instance ℐ : core.fmt.Debug.Trait Self := {
         core.fmt.Debug.fmt := fmt;
       }.
     End Impl_core_fmt_Debug_for_ink_e2e_xts_Determinism.
-    Global Hint Resolve I : core.
+    Global Hint Resolve ℐ : core.
   End Impl_core_fmt_Debug_for_ink_e2e_xts_Determinism.
   
   Module Impl_core_clone_Clone_for_ink_e2e_xts_Determinism.
     Section Impl_core_clone_Clone_for_ink_e2e_xts_Determinism.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Definition Self : Set := ink_e2e.xts.Determinism.
       
@@ -796,40 +797,40 @@ Module xts.
         Notation.double_colon := clone;
       }.
       
-      Global Instance I : core.clone.Clone.Trait Self := {
+      Global Instance ℐ : core.clone.Clone.Trait Self := {
         core.clone.Clone.clone := clone;
       }.
     End Impl_core_clone_Clone_for_ink_e2e_xts_Determinism.
-    Global Hint Resolve I : core.
+    Global Hint Resolve ℐ : core.
   End Impl_core_clone_Clone_for_ink_e2e_xts_Determinism.
   
   Module Impl_core_marker_Copy_for_ink_e2e_xts_Determinism.
     Section Impl_core_marker_Copy_for_ink_e2e_xts_Determinism.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Definition Self : Set := ink_e2e.xts.Determinism.
       
-      Global Instance I : core.marker.Copy.Trait Self := {
+      Global Instance ℐ : core.marker.Copy.Trait Self := {
       }.
     End Impl_core_marker_Copy_for_ink_e2e_xts_Determinism.
-    Global Hint Resolve I : core.
+    Global Hint Resolve ℐ : core.
   End Impl_core_marker_Copy_for_ink_e2e_xts_Determinism.
   
   Module Impl_core_marker_StructuralPartialEq_for_ink_e2e_xts_Determinism.
     Section Impl_core_marker_StructuralPartialEq_for_ink_e2e_xts_Determinism.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Definition Self : Set := ink_e2e.xts.Determinism.
       
-      Global Instance I : core.marker.StructuralPartialEq.Trait Self := {
+      Global Instance ℐ : core.marker.StructuralPartialEq.Trait Self := {
       }.
     End Impl_core_marker_StructuralPartialEq_for_ink_e2e_xts_Determinism.
-    Global Hint Resolve I : core.
+    Global Hint Resolve ℐ : core.
   End Impl_core_marker_StructuralPartialEq_for_ink_e2e_xts_Determinism.
   
   Module Impl_core_cmp_PartialEq_for_ink_e2e_xts_Determinism.
     Section Impl_core_cmp_PartialEq_for_ink_e2e_xts_Determinism.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Definition Self : Set := ink_e2e.xts.Determinism.
       
@@ -840,31 +841,31 @@ Module xts.
         Notation.double_colon := eq;
       }.
       
-      Global Instance I
+      Global Instance ℐ
         : core.cmp.PartialEq.Trait Self
             (Rhs := core.cmp.PartialEq.Default.Rhs Self)
           := {
         core.cmp.PartialEq.eq := eq;
       }.
     End Impl_core_cmp_PartialEq_for_ink_e2e_xts_Determinism.
-    Global Hint Resolve I : core.
+    Global Hint Resolve ℐ : core.
   End Impl_core_cmp_PartialEq_for_ink_e2e_xts_Determinism.
   
   Module Impl_core_marker_StructuralEq_for_ink_e2e_xts_Determinism.
     Section Impl_core_marker_StructuralEq_for_ink_e2e_xts_Determinism.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Definition Self : Set := ink_e2e.xts.Determinism.
       
-      Global Instance I : core.marker.StructuralEq.Trait Self := {
+      Global Instance ℐ : core.marker.StructuralEq.Trait Self := {
       }.
     End Impl_core_marker_StructuralEq_for_ink_e2e_xts_Determinism.
-    Global Hint Resolve I : core.
+    Global Hint Resolve ℐ : core.
   End Impl_core_marker_StructuralEq_for_ink_e2e_xts_Determinism.
   
   Module Impl_core_cmp_Eq_for_ink_e2e_xts_Determinism.
     Section Impl_core_cmp_Eq_for_ink_e2e_xts_Determinism.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Definition Self : Set := ink_e2e.xts.Determinism.
       
@@ -875,15 +876,15 @@ Module xts.
         Notation.double_colon := assert_receiver_is_total_eq;
       }.
       
-      Global Instance I : core.cmp.Eq.Trait Self := {
+      Global Instance ℐ : core.cmp.Eq.Trait Self := {
       }.
     End Impl_core_cmp_Eq_for_ink_e2e_xts_Determinism.
-    Global Hint Resolve I : core.
+    Global Hint Resolve ℐ : core.
   End Impl_core_cmp_Eq_for_ink_e2e_xts_Determinism.
   
   Module Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Determinism.
     Section Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Determinism.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Definition Self : Set := ink_e2e.xts.Determinism.
       
@@ -899,16 +900,16 @@ Module xts.
         Notation.double_colon := encode_as_type_to;
       }.
       
-      Global Instance I : scale_encode.EncodeAsType.Trait Self := {
+      Global Instance ℐ : scale_encode.EncodeAsType.Trait Self := {
         scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
       }.
     End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Determinism.
-    Global Hint Resolve I : core.
+    Global Hint Resolve ℐ : core.
   End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Determinism.
   
   Module UploadCode.
     Section UploadCode.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Context {E : Set}.
       
@@ -952,14 +953,14 @@ Module xts.
   End UploadCode.
   Definition UploadCode
       (E : Set)
-      `{State.Trait}
+      `{ℋ : State.Trait}
       {ℋ_0 : ink_env.types.Environment.Trait E}
       : Set :=
     M.val (UploadCode.t (E := E)).
   
   Module Impl_core_fmt_Debug_for_ink_e2e_xts_UploadCode_E.
     Section Impl_core_fmt_Debug_for_ink_e2e_xts_UploadCode_E.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Context {E : Set}.
       
@@ -977,16 +978,16 @@ Module xts.
         Notation.double_colon := fmt;
       }.
       
-      Global Instance I : core.fmt.Debug.Trait Self := {
+      Global Instance ℐ : core.fmt.Debug.Trait Self := {
         core.fmt.Debug.fmt := fmt;
       }.
     End Impl_core_fmt_Debug_for_ink_e2e_xts_UploadCode_E.
-    Global Hint Resolve I : core.
+    Global Hint Resolve ℐ : core.
   End Impl_core_fmt_Debug_for_ink_e2e_xts_UploadCode_E.
   
   Module Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_UploadCode_E.
     Section Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_UploadCode_E.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Context {E : Set}.
       
@@ -1005,16 +1006,16 @@ Module xts.
         Notation.double_colon := encode_as_type_to;
       }.
       
-      Global Instance I : scale_encode.EncodeAsType.Trait Self := {
+      Global Instance ℐ : scale_encode.EncodeAsType.Trait Self := {
         scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
       }.
     End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_UploadCode_E.
-    Global Hint Resolve I : core.
+    Global Hint Resolve ℐ : core.
   End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_UploadCode_E.
   
   Module Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_UploadCode_E.
     Section Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_UploadCode_E.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Context {E : Set}.
       
@@ -1033,16 +1034,16 @@ Module xts.
         Notation.double_colon := encode_as_fields_to;
       }.
       
-      Global Instance I : scale_encode.EncodeAsFields.Trait Self := {
+      Global Instance ℐ : scale_encode.EncodeAsFields.Trait Self := {
         scale_encode.EncodeAsFields.encode_as_fields_to := encode_as_fields_to;
       }.
     End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_UploadCode_E.
-    Global Hint Resolve I : core.
+    Global Hint Resolve ℐ : core.
   End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_UploadCode_E.
   
   Module ContractsApi.
     Section ContractsApi.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Context {C E : Set}.
       
@@ -1074,7 +1075,7 @@ Module xts.
   End ContractsApi.
   Definition ContractsApi
       (C E : Set)
-      `{State.Trait}
+      `{ℋ : State.Trait}
       {ℋ_0 : subxt.config.Config.Trait C}
       {ℋ_1 : ink_env.types.Environment.Trait E}
       : Set :=
@@ -1082,7 +1083,7 @@ Module xts.
 End xts.
 
 Module client.
-  Definition CallBuilderFinal (E Args RetType : Set) `{State.Trait} `{ink_env.types.Environment.Trait E} : Set :=
+  Definition CallBuilderFinal `{ℋ : State.Trait} (E Args RetType : Set) `{ink_env.types.Environment.Trait E} : Set :=
     ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallBuilder
       E
       (ink_env.call.common.Set_
@@ -1094,7 +1095,7 @@ Module client.
   
   Module InstantiationResult.
     Section InstantiationResult.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Context {C E : Set}.
       
@@ -1138,7 +1139,7 @@ Module client.
   End InstantiationResult.
   Definition InstantiationResult
       (C E : Set)
-      `{State.Trait}
+      `{ℋ : State.Trait}
       {ℋ_0 : subxt.config.Config.Trait C}
       {ℋ_1 : ink_env.types.Environment.Trait E}
       : Set :=
@@ -1146,7 +1147,7 @@ Module client.
   
   Module UploadResult.
     Section UploadResult.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Context {C E : Set}.
       
@@ -1189,7 +1190,7 @@ Module client.
   End UploadResult.
   Definition UploadResult
       (C E : Set)
-      `{State.Trait}
+      `{ℋ : State.Trait}
       {ℋ_0 : subxt.config.Config.Trait C}
       {ℋ_1 : ink_env.types.Environment.Trait E}
       : Set :=
@@ -1197,7 +1198,7 @@ Module client.
   
   Module Impl_core_fmt_Debug_for_ink_e2e_client_UploadResult_C_E.
     Section Impl_core_fmt_Debug_for_ink_e2e_client_UploadResult_C_E.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Context {C E : Set}.
       
@@ -1218,16 +1219,16 @@ Module client.
         Notation.double_colon := fmt;
       }.
       
-      Global Instance I : core.fmt.Debug.Trait Self := {
+      Global Instance ℐ : core.fmt.Debug.Trait Self := {
         core.fmt.Debug.fmt := fmt;
       }.
     End Impl_core_fmt_Debug_for_ink_e2e_client_UploadResult_C_E.
-    Global Hint Resolve I : core.
+    Global Hint Resolve ℐ : core.
   End Impl_core_fmt_Debug_for_ink_e2e_client_UploadResult_C_E.
   
   Module Impl_core_fmt_Debug_for_ink_e2e_client_InstantiationResult_C_E.
     Section Impl_core_fmt_Debug_for_ink_e2e_client_InstantiationResult_C_E.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Context {C E : Set}.
       
@@ -1250,16 +1251,16 @@ Module client.
         Notation.double_colon := fmt;
       }.
       
-      Global Instance I : core.fmt.Debug.Trait Self := {
+      Global Instance ℐ : core.fmt.Debug.Trait Self := {
         core.fmt.Debug.fmt := fmt;
       }.
     End Impl_core_fmt_Debug_for_ink_e2e_client_InstantiationResult_C_E.
-    Global Hint Resolve I : core.
+    Global Hint Resolve ℐ : core.
   End Impl_core_fmt_Debug_for_ink_e2e_client_InstantiationResult_C_E.
   
   Module CallDryRunResult.
     Section CallDryRunResult.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Context {E V : Set}.
       
@@ -1292,14 +1293,14 @@ Module client.
   End CallDryRunResult.
   Definition CallDryRunResult
       (E V : Set)
-      `{State.Trait}
+      `{ℋ : State.Trait}
       {ℋ_0 : ink_env.types.Environment.Trait E}
       : Set :=
     M.val (CallDryRunResult.t (E := E) (V := V)).
   
   Module CallResult.
     Section CallResult.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Context {C E V : Set}.
       
@@ -1329,7 +1330,7 @@ Module client.
   End CallResult.
   Definition CallResult
       (C E V : Set)
-      `{State.Trait}
+      `{ℋ : State.Trait}
       {ℋ_0 : subxt.config.Config.Trait C}
       {ℋ_1 : ink_env.types.Environment.Trait E}
       : Set :=
@@ -1337,7 +1338,7 @@ Module client.
   
   Module Impl_core_fmt_Debug_for_ink_e2e_client_CallResult_C_E_V.
     Section Impl_core_fmt_Debug_for_ink_e2e_client_CallResult_C_E_V.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Context {C E V : Set}.
       
@@ -1359,16 +1360,16 @@ Module client.
         Notation.double_colon := fmt;
       }.
       
-      Global Instance I : core.fmt.Debug.Trait Self := {
+      Global Instance ℐ : core.fmt.Debug.Trait Self := {
         core.fmt.Debug.fmt := fmt;
       }.
     End Impl_core_fmt_Debug_for_ink_e2e_client_CallResult_C_E_V.
-    Global Hint Resolve I : core.
+    Global Hint Resolve ℐ : core.
   End Impl_core_fmt_Debug_for_ink_e2e_client_CallResult_C_E_V.
   
   Module Impl_core_fmt_Debug_for_ink_e2e_client_CallDryRunResult_E_V.
     Section Impl_core_fmt_Debug_for_ink_e2e_client_CallDryRunResult_E_V.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Context {E V : Set}.
       
@@ -1387,15 +1388,15 @@ Module client.
         Notation.double_colon := fmt;
       }.
       
-      Global Instance I : core.fmt.Debug.Trait Self := {
+      Global Instance ℐ : core.fmt.Debug.Trait Self := {
         core.fmt.Debug.fmt := fmt;
       }.
     End Impl_core_fmt_Debug_for_ink_e2e_client_CallDryRunResult_E_V.
-    Global Hint Resolve I : core.
+    Global Hint Resolve ℐ : core.
   End Impl_core_fmt_Debug_for_ink_e2e_client_CallDryRunResult_E_V.
   
   Module Error.
-    Inductive t `{State.Trait} : Set :=
+    Inductive t `{ℋ : State.Trait} : Set :=
     | ContractNotFound (_ : alloc.string.String)
     |
       InstantiateDryRun
@@ -1422,7 +1423,7 @@ Module client.
   End Error.
   Definition Error
       (C E : Set)
-      `{State.Trait}
+      `{ℋ : State.Trait}
       {ℋ_0 : subxt.config.Config.Trait C}
       {ℋ_1 : ink_env.types.Environment.Trait E}
       {ℋ_2 :
@@ -1432,7 +1433,7 @@ Module client.
   
   Module Impl_core_fmt_Debug_for_ink_e2e_client_Error_C_E.
     Section Impl_core_fmt_Debug_for_ink_e2e_client_Error_C_E.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Context {C E : Set}.
       
@@ -1451,16 +1452,16 @@ Module client.
         Notation.double_colon := fmt;
       }.
       
-      Global Instance I : core.fmt.Debug.Trait Self := {
+      Global Instance ℐ : core.fmt.Debug.Trait Self := {
         core.fmt.Debug.fmt := fmt;
       }.
     End Impl_core_fmt_Debug_for_ink_e2e_client_Error_C_E.
-    Global Hint Resolve I : core.
+    Global Hint Resolve ℐ : core.
   End Impl_core_fmt_Debug_for_ink_e2e_client_Error_C_E.
   
   (* Module Impl_core_fmt_Debug_for_ink_e2e_client_ContractInstantiatedEvent_E.
     (* Section Impl_core_fmt_Debug_for_ink_e2e_client_ContractInstantiatedEvent_E.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Context {E : Set}.
       
@@ -1479,16 +1480,16 @@ Module client.
         Notation.double_colon := fmt;
       }.
       
-      Global Instance I : core.fmt.Debug.Trait Self := {
+      Global Instance ℐ : core.fmt.Debug.Trait Self := {
         core.fmt.Debug.fmt := fmt;
       }.
     End Impl_core_fmt_Debug_for_ink_e2e_client_ContractInstantiatedEvent_E. *)
-    Global Hint Resolve I : core.
+    Global Hint Resolve ℐ : core.
   End Impl_core_fmt_Debug_for_ink_e2e_client_ContractInstantiatedEvent_E. *)
   
   (* Module Impl_scale_encode_EncodeAsType_for_ink_e2e_client_ContractInstantiatedEvent_E.
     (* Section Impl_scale_encode_EncodeAsType_for_ink_e2e_client_ContractInstantiatedEvent_E.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Context {E : Set}.
       
@@ -1509,16 +1510,16 @@ Module client.
         Notation.double_colon := encode_as_type_to;
       }.
       
-      Global Instance I : scale_encode.EncodeAsType.Trait Self := {
+      Global Instance ℐ : scale_encode.EncodeAsType.Trait Self := {
         scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
       }.
     End Impl_scale_encode_EncodeAsType_for_ink_e2e_client_ContractInstantiatedEvent_E. *)
-    Global Hint Resolve I : core.
+    Global Hint Resolve ℐ : core.
   End Impl_scale_encode_EncodeAsType_for_ink_e2e_client_ContractInstantiatedEvent_E. *)
   
   (* Module Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_ContractInstantiatedEvent_E.
     (* Section Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_ContractInstantiatedEvent_E.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Context {E : Set}.
       
@@ -1539,16 +1540,16 @@ Module client.
         Notation.double_colon := encode_as_fields_to;
       }.
       
-      Global Instance I : scale_encode.EncodeAsFields.Trait Self := {
+      Global Instance ℐ : scale_encode.EncodeAsFields.Trait Self := {
         scale_encode.EncodeAsFields.encode_as_fields_to := encode_as_fields_to;
       }.
     End Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_ContractInstantiatedEvent_E. *)
-    Global Hint Resolve I : core.
+    Global Hint Resolve ℐ : core.
   End Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_ContractInstantiatedEvent_E. *)
   
   (* Module Impl_subxt_events_StaticEvent_for_ink_e2e_client_ContractInstantiatedEvent_E.
     (* Section Impl_subxt_events_StaticEvent_for_ink_e2e_client_ContractInstantiatedEvent_E.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Context {E : Set}.
       
@@ -1569,17 +1570,17 @@ Module client.
         Notation.double_colon := EVENT;
       }.
       
-      Global Instance I : subxt.events.StaticEvent.Trait Self := {
+      Global Instance ℐ : subxt.events.StaticEvent.Trait Self := {
         subxt.events.StaticEvent.PALLET := PALLET;
         subxt.events.StaticEvent.EVENT := EVENT;
       }.
     End Impl_subxt_events_StaticEvent_for_ink_e2e_client_ContractInstantiatedEvent_E. *)
-    Global Hint Resolve I : core.
+    Global Hint Resolve ℐ : core.
   End Impl_subxt_events_StaticEvent_for_ink_e2e_client_ContractInstantiatedEvent_E. *)
   
   (* Module Impl_core_fmt_Debug_for_ink_e2e_client_CodeStoredEvent_E.
     (* Section Impl_core_fmt_Debug_for_ink_e2e_client_CodeStoredEvent_E.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Context {E : Set}.
       
@@ -1597,16 +1598,16 @@ Module client.
         Notation.double_colon := fmt;
       }.
       
-      Global Instance I : core.fmt.Debug.Trait Self := {
+      Global Instance ℐ : core.fmt.Debug.Trait Self := {
         core.fmt.Debug.fmt := fmt;
       }.
     End Impl_core_fmt_Debug_for_ink_e2e_client_CodeStoredEvent_E. *)
-    Global Hint Resolve I : core.
+    Global Hint Resolve ℐ : core.
   End Impl_core_fmt_Debug_for_ink_e2e_client_CodeStoredEvent_E. *)
   
   (* Module Impl_scale_encode_EncodeAsType_for_ink_e2e_client_CodeStoredEvent_E.
     (* Section Impl_scale_encode_EncodeAsType_for_ink_e2e_client_CodeStoredEvent_E.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Context {E : Set}.
       
@@ -1627,16 +1628,16 @@ Module client.
         Notation.double_colon := encode_as_type_to;
       }.
       
-      Global Instance I : scale_encode.EncodeAsType.Trait Self := {
+      Global Instance ℐ : scale_encode.EncodeAsType.Trait Self := {
         scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
       }.
     End Impl_scale_encode_EncodeAsType_for_ink_e2e_client_CodeStoredEvent_E. *)
-    Global Hint Resolve I : core.
+    Global Hint Resolve ℐ : core.
   End Impl_scale_encode_EncodeAsType_for_ink_e2e_client_CodeStoredEvent_E. *)
   
   (* Module Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_CodeStoredEvent_E.
     (* Section Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_CodeStoredEvent_E.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Context {E : Set}.
       
@@ -1657,16 +1658,16 @@ Module client.
         Notation.double_colon := encode_as_fields_to;
       }.
       
-      Global Instance I : scale_encode.EncodeAsFields.Trait Self := {
+      Global Instance ℐ : scale_encode.EncodeAsFields.Trait Self := {
         scale_encode.EncodeAsFields.encode_as_fields_to := encode_as_fields_to;
       }.
     End Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_CodeStoredEvent_E. *)
-    Global Hint Resolve I : core.
+    Global Hint Resolve ℐ : core.
   End Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_CodeStoredEvent_E. *)
   
   (* Module Impl_subxt_events_StaticEvent_for_ink_e2e_client_CodeStoredEvent_E.
     (* Section Impl_subxt_events_StaticEvent_for_ink_e2e_client_CodeStoredEvent_E.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Context {E : Set}.
       
@@ -1687,17 +1688,17 @@ Module client.
         Notation.double_colon := EVENT;
       }.
       
-      Global Instance I : subxt.events.StaticEvent.Trait Self := {
+      Global Instance ℐ : subxt.events.StaticEvent.Trait Self := {
         subxt.events.StaticEvent.PALLET := PALLET;
         subxt.events.StaticEvent.EVENT := EVENT;
       }.
     End Impl_subxt_events_StaticEvent_for_ink_e2e_client_CodeStoredEvent_E. *)
-    Global Hint Resolve I : core.
+    Global Hint Resolve ℐ : core.
   End Impl_subxt_events_StaticEvent_for_ink_e2e_client_CodeStoredEvent_E. *)
   
   Module Client.
     Section Client.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Context {C E : Set}.
       
@@ -1734,14 +1735,14 @@ Module client.
   End Client.
   Definition Client
       (C E : Set)
-      `{State.Trait}
+      `{ℋ : State.Trait}
       {ℋ_0 : subxt.config.Config.Trait C}
       {ℋ_1 : ink_env.types.Environment.Trait E}
       : Set :=
     M.val (Client.t (C := C) (E := E)).
 End client.
 
-Definition CallBuilderFinal (E Args RetType : Set) `{State.Trait} `{ink_env.types.Environment.Trait E} : Set :=
+Definition CallBuilderFinal `{ℋ : State.Trait} (E Args RetType : Set) `{ink_env.types.Environment.Trait E} : Set :=
   ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallBuilder
     E
     (ink_env.call.common.Set_
@@ -1753,7 +1754,7 @@ Definition CallBuilderFinal (E Args RetType : Set) `{State.Trait} `{ink_env.type
 
 Module InstantiationResult.
   Section InstantiationResult.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {C E : Set}.
     
@@ -1796,7 +1797,7 @@ Module InstantiationResult.
 End InstantiationResult.
 Definition InstantiationResult
     (C E : Set)
-    `{State.Trait}
+    `{ℋ : State.Trait}
     {ℋ_0 : subxt.config.Config.Trait C}
     {ℋ_1 : ink_env.types.Environment.Trait E}
     : Set :=
@@ -1804,7 +1805,7 @@ Definition InstantiationResult
 
 Module UploadResult.
   Section UploadResult.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {C E : Set}.
     
@@ -1845,7 +1846,7 @@ Module UploadResult.
 End UploadResult.
 Definition UploadResult
     (C E : Set)
-    `{State.Trait}
+    `{ℋ : State.Trait}
     {ℋ_0 : subxt.config.Config.Trait C}
     {ℋ_1 : ink_env.types.Environment.Trait E}
     : Set :=
@@ -1853,7 +1854,7 @@ Definition UploadResult
 
 Module Impl_core_fmt_Debug_for_ink_e2e_client_UploadResult_C_E.
   Section Impl_core_fmt_Debug_for_ink_e2e_client_UploadResult_C_E.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {C E : Set}.
     
@@ -1873,16 +1874,16 @@ Module Impl_core_fmt_Debug_for_ink_e2e_client_UploadResult_C_E.
       Notation.double_colon := fmt;
     }.
     
-    Global Instance I : core.fmt.Debug.Trait Self := {
+    Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
   End Impl_core_fmt_Debug_for_ink_e2e_client_UploadResult_C_E.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_ink_e2e_client_UploadResult_C_E.
 
 Module Impl_core_fmt_Debug_for_ink_e2e_client_InstantiationResult_C_E.
   Section Impl_core_fmt_Debug_for_ink_e2e_client_InstantiationResult_C_E.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {C E : Set}.
     
@@ -1904,16 +1905,16 @@ Module Impl_core_fmt_Debug_for_ink_e2e_client_InstantiationResult_C_E.
       Notation.double_colon := fmt;
     }.
     
-    Global Instance I : core.fmt.Debug.Trait Self := {
+    Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
   End Impl_core_fmt_Debug_for_ink_e2e_client_InstantiationResult_C_E.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_ink_e2e_client_InstantiationResult_C_E.
 
 Module CallResult.
   Section CallResult.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {C E V : Set}.
     
@@ -1943,7 +1944,7 @@ Module CallResult.
 End CallResult.
 Definition CallResult
     (C E V : Set)
-    `{State.Trait}
+    `{ℋ : State.Trait}
     {ℋ_0 : subxt.config.Config.Trait C}
     {ℋ_1 : ink_env.types.Environment.Trait E}
     : Set :=
@@ -1951,7 +1952,7 @@ Definition CallResult
 
 Module Impl_core_fmt_Debug_for_ink_e2e_client_CallResult_C_E_V.
   Section Impl_core_fmt_Debug_for_ink_e2e_client_CallResult_C_E_V.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {C E V : Set}.
     
@@ -1973,16 +1974,16 @@ Module Impl_core_fmt_Debug_for_ink_e2e_client_CallResult_C_E_V.
       Notation.double_colon := fmt;
     }.
     
-    Global Instance I : core.fmt.Debug.Trait Self := {
+    Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
   End Impl_core_fmt_Debug_for_ink_e2e_client_CallResult_C_E_V.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_ink_e2e_client_CallResult_C_E_V.
 
 Module CallDryRunResult.
   Section CallDryRunResult.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {E V : Set}.
     
@@ -2015,14 +2016,14 @@ Module CallDryRunResult.
 End CallDryRunResult.
 Definition CallDryRunResult
     (E V : Set)
-    `{State.Trait}
+    `{ℋ : State.Trait}
     {ℋ_0 : ink_env.types.Environment.Trait E}
     : Set :=
   M.val (CallDryRunResult.t (E := E) (V := V)).
 
 Module Impl_core_fmt_Debug_for_ink_e2e_client_CallDryRunResult_E_V.
   Section Impl_core_fmt_Debug_for_ink_e2e_client_CallDryRunResult_E_V.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {E V : Set}.
     
@@ -2041,15 +2042,15 @@ Module Impl_core_fmt_Debug_for_ink_e2e_client_CallDryRunResult_E_V.
       Notation.double_colon := fmt;
     }.
     
-    Global Instance I : core.fmt.Debug.Trait Self := {
+    Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
   End Impl_core_fmt_Debug_for_ink_e2e_client_CallDryRunResult_E_V.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_ink_e2e_client_CallDryRunResult_E_V.
 
 Module Error.
-  Inductive t `{State.Trait} : Set :=
+  Inductive t `{ℋ : State.Trait} : Set :=
   | ContractNotFound (_ : alloc.string.String)
   |
     InstantiateDryRun
@@ -2076,7 +2077,7 @@ Module Error.
 End Error.
 Definition Error
     (C E : Set)
-    `{State.Trait}
+    `{ℋ : State.Trait}
     {ℋ_0 : subxt.config.Config.Trait C}
     {ℋ_1 : ink_env.types.Environment.Trait E}
     {ℋ_2 : core.fmt.Debug.Trait (ink_env.types.Environment.Balance (Self := E))}
@@ -2085,7 +2086,7 @@ Definition Error
 
 Module Impl_core_fmt_Debug_for_ink_e2e_client_Error_C_E.
   Section Impl_core_fmt_Debug_for_ink_e2e_client_Error_C_E.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {C E : Set}.
     
@@ -2104,16 +2105,16 @@ Module Impl_core_fmt_Debug_for_ink_e2e_client_Error_C_E.
       Notation.double_colon := fmt;
     }.
     
-    Global Instance I : core.fmt.Debug.Trait Self := {
+    Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
   End Impl_core_fmt_Debug_for_ink_e2e_client_Error_C_E.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_ink_e2e_client_Error_C_E.
 
 (* Module Impl_core_fmt_Debug_for_ink_e2e_client_ContractInstantiatedEvent_E.
   (* Section Impl_core_fmt_Debug_for_ink_e2e_client_ContractInstantiatedEvent_E.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {E : Set}.
     
@@ -2132,16 +2133,16 @@ End Impl_core_fmt_Debug_for_ink_e2e_client_Error_C_E.
       Notation.double_colon := fmt;
     }.
     
-    Global Instance I : core.fmt.Debug.Trait Self := {
+    Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
   End Impl_core_fmt_Debug_for_ink_e2e_client_ContractInstantiatedEvent_E. *)
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_ink_e2e_client_ContractInstantiatedEvent_E. *)
 
 (* Module Impl_parity_scale_codec_codec_Decode_for_ink_e2e_client_ContractInstantiatedEvent_E.
   (* Section Impl_parity_scale_codec_codec_Decode_for_ink_e2e_client_ContractInstantiatedEvent_E.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {E : Set}.
     
@@ -2167,7 +2168,7 @@ End Impl_core_fmt_Debug_for_ink_e2e_client_ContractInstantiatedEvent_E. *)
       Notation.double_colon := decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
     
-    Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
+    Global Instance ℐ : parity_scale_codec.codec.Decode.Trait Self := {
       parity_scale_codec.codec.Decode.decode
         {__CodecInputEdqy : Set}
         {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
@@ -2175,12 +2176,12 @@ End Impl_core_fmt_Debug_for_ink_e2e_client_ContractInstantiatedEvent_E. *)
         decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
   End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_client_ContractInstantiatedEvent_E. *)
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_client_ContractInstantiatedEvent_E. *)
 
 (* Module Impl_parity_scale_codec_codec_Encode_for_ink_e2e_client_ContractInstantiatedEvent_E.
   (* Section Impl_parity_scale_codec_codec_Encode_for_ink_e2e_client_ContractInstantiatedEvent_E.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {E : Set}.
     
@@ -2209,15 +2210,15 @@ End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_client_ContractInstantiated
         encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
     }.
     
-    Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
+    Global Instance ℐ : parity_scale_codec.codec.Encode.Trait Self := {
     }.
   End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_client_ContractInstantiatedEvent_E. *)
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_client_ContractInstantiatedEvent_E. *)
 
 (* Module Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_client_ContractInstantiatedEvent_E.
   (* Section Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_client_ContractInstantiatedEvent_E.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {E : Set}.
     
@@ -2229,18 +2230,18 @@ End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_client_ContractInstantiated
       {ℋ_4 : parity_scale_codec.codec.Encode.Trait E::type["AccountId"]}.
     Definition Self : Set := ink_e2e.client.ContractInstantiatedEvent E.
     
-    Global Instance I
+    Global Instance ℐ
       : parity_scale_codec.encode_like.EncodeLike.Trait Self
           (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self)
         := {
     }.
   End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_client_ContractInstantiatedEvent_E. *)
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_client_ContractInstantiatedEvent_E. *)
 
 (* Module Impl_scale_decode_IntoVisitor_for_ink_e2e_client_ContractInstantiatedEvent_E.
   (* Section Impl_scale_decode_IntoVisitor_for_ink_e2e_client_ContractInstantiatedEvent_E.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {E : Set}.
     
@@ -2256,17 +2257,17 @@ End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_client_ContractIn
       Notation.double_colon := into_visitor;
     }.
     
-    Global Instance I : scale_decode.IntoVisitor.Trait Self := {
+    Global Instance ℐ : scale_decode.IntoVisitor.Trait Self := {
       scale_decode.IntoVisitor.Visitor := Visitor;
       scale_decode.IntoVisitor.into_visitor := into_visitor;
     }.
   End Impl_scale_decode_IntoVisitor_for_ink_e2e_client_ContractInstantiatedEvent_E. *)
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_scale_decode_IntoVisitor_for_ink_e2e_client_ContractInstantiatedEvent_E. *)
 
 (* Module Impl_scale_decode_visitor_Visitor_for_ink_e2e_client___Visitor_E.
   (* Section Impl_scale_decode_visitor_Visitor_for_ink_e2e_client___Visitor_E.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {E : Set}.
     
@@ -2299,17 +2300,17 @@ End Impl_scale_decode_IntoVisitor_for_ink_e2e_client_ContractInstantiatedEvent_E
       Notation.double_colon := visit_tuple;
     }.
     
-    Global Instance I : scale_decode.visitor.Visitor.Trait Self := {
+    Global Instance ℐ : scale_decode.visitor.Visitor.Trait Self := {
       scale_decode.visitor.Visitor.Error := Error;
       scale_decode.visitor.Visitor.Value := Value;
     }.
   End Impl_scale_decode_visitor_Visitor_for_ink_e2e_client___Visitor_E. *)
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_scale_decode_visitor_Visitor_for_ink_e2e_client___Visitor_E. *)
 
 (* Module Impl_scale_decode_DecodeAsFields_for_ink_e2e_client_ContractInstantiatedEvent_E.
   (* Section Impl_scale_decode_DecodeAsFields_for_ink_e2e_client_ContractInstantiatedEvent_E.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {E : Set}.
     
@@ -2327,16 +2328,16 @@ End Impl_scale_decode_visitor_Visitor_for_ink_e2e_client___Visitor_E. *)
       Notation.double_colon := decode_as_fields;
     }.
     
-    Global Instance I : scale_decode.DecodeAsFields.Trait Self := {
+    Global Instance ℐ : scale_decode.DecodeAsFields.Trait Self := {
       scale_decode.DecodeAsFields.decode_as_fields := decode_as_fields;
     }.
   End Impl_scale_decode_DecodeAsFields_for_ink_e2e_client_ContractInstantiatedEvent_E. *)
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_scale_decode_DecodeAsFields_for_ink_e2e_client_ContractInstantiatedEvent_E. *)
 
 (* Module Impl_scale_encode_EncodeAsType_for_ink_e2e_client_ContractInstantiatedEvent_E.
   (* Section Impl_scale_encode_EncodeAsType_for_ink_e2e_client_ContractInstantiatedEvent_E.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {E : Set}.
     
@@ -2357,16 +2358,16 @@ End Impl_scale_decode_DecodeAsFields_for_ink_e2e_client_ContractInstantiatedEven
       Notation.double_colon := encode_as_type_to;
     }.
     
-    Global Instance I : scale_encode.EncodeAsType.Trait Self := {
+    Global Instance ℐ : scale_encode.EncodeAsType.Trait Self := {
       scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
     }.
   End Impl_scale_encode_EncodeAsType_for_ink_e2e_client_ContractInstantiatedEvent_E. *)
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_scale_encode_EncodeAsType_for_ink_e2e_client_ContractInstantiatedEvent_E. *)
 
 (* Module Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_ContractInstantiatedEvent_E.
   (* Section Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_ContractInstantiatedEvent_E.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {E : Set}.
     
@@ -2387,16 +2388,16 @@ End Impl_scale_encode_EncodeAsType_for_ink_e2e_client_ContractInstantiatedEvent_
       Notation.double_colon := encode_as_fields_to;
     }.
     
-    Global Instance I : scale_encode.EncodeAsFields.Trait Self := {
+    Global Instance ℐ : scale_encode.EncodeAsFields.Trait Self := {
       scale_encode.EncodeAsFields.encode_as_fields_to := encode_as_fields_to;
     }.
   End Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_ContractInstantiatedEvent_E. *)
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_ContractInstantiatedEvent_E. *)
 
 (* Module Impl_subxt_events_StaticEvent_for_ink_e2e_client_ContractInstantiatedEvent_E.
   (* Section Impl_subxt_events_StaticEvent_for_ink_e2e_client_ContractInstantiatedEvent_E.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {E : Set}.
     
@@ -2417,17 +2418,17 @@ End Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_ContractInstantiatedEven
       Notation.double_colon := EVENT;
     }.
     
-    Global Instance I : subxt.events.StaticEvent.Trait Self := {
+    Global Instance ℐ : subxt.events.StaticEvent.Trait Self := {
       subxt.events.StaticEvent.PALLET := PALLET;
       subxt.events.StaticEvent.EVENT := EVENT;
     }.
   End Impl_subxt_events_StaticEvent_for_ink_e2e_client_ContractInstantiatedEvent_E. *)
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_subxt_events_StaticEvent_for_ink_e2e_client_ContractInstantiatedEvent_E. *)
 
 (* Module Impl_core_fmt_Debug_for_ink_e2e_client_CodeStoredEvent_E.
   (* Section Impl_core_fmt_Debug_for_ink_e2e_client_CodeStoredEvent_E.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {E : Set}.
     
@@ -2445,16 +2446,16 @@ End Impl_subxt_events_StaticEvent_for_ink_e2e_client_ContractInstantiatedEvent_E
       Notation.double_colon := fmt;
     }.
     
-    Global Instance I : core.fmt.Debug.Trait Self := {
+    Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
   End Impl_core_fmt_Debug_for_ink_e2e_client_CodeStoredEvent_E. *)
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_ink_e2e_client_CodeStoredEvent_E. *)
 
 (* Module Impl_parity_scale_codec_codec_Decode_for_ink_e2e_client_CodeStoredEvent_E.
   (* Section Impl_parity_scale_codec_codec_Decode_for_ink_e2e_client_CodeStoredEvent_E.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {E : Set}.
     
@@ -2478,7 +2479,7 @@ End Impl_core_fmt_Debug_for_ink_e2e_client_CodeStoredEvent_E. *)
       Notation.double_colon := decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
     
-    Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
+    Global Instance ℐ : parity_scale_codec.codec.Decode.Trait Self := {
       parity_scale_codec.codec.Decode.decode
         {__CodecInputEdqy : Set}
         {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
@@ -2486,12 +2487,12 @@ End Impl_core_fmt_Debug_for_ink_e2e_client_CodeStoredEvent_E. *)
         decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
   End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_client_CodeStoredEvent_E. *)
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_client_CodeStoredEvent_E. *)
 
 (* Module Impl_parity_scale_codec_codec_Encode_for_ink_e2e_client_CodeStoredEvent_E.
   (* Section Impl_parity_scale_codec_codec_Encode_for_ink_e2e_client_CodeStoredEvent_E.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {E : Set}.
     
@@ -2544,15 +2545,15 @@ End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_client_CodeStoredEvent_E. *
       Notation.double_colon := using_encoded (R := R) (F := F);
     }.
     
-    Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
+    Global Instance ℐ : parity_scale_codec.codec.Encode.Trait Self := {
     }.
   End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_client_CodeStoredEvent_E. *)
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_client_CodeStoredEvent_E. *)
 
 (* Module Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_client_CodeStoredEvent_E.
   (* Section Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_client_CodeStoredEvent_E.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {E : Set}.
     
@@ -2562,18 +2563,18 @@ End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_client_CodeStoredEvent_E. *
       {ℋ_2 : parity_scale_codec.codec.Encode.Trait E::type["Hash"]}.
     Definition Self : Set := ink_e2e.client.CodeStoredEvent E.
     
-    Global Instance I
+    Global Instance ℐ
       : parity_scale_codec.encode_like.EncodeLike.Trait Self
           (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self)
         := {
     }.
   End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_client_CodeStoredEvent_E. *)
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_client_CodeStoredEvent_E. *)
 
 (* Module Impl_scale_decode_IntoVisitor_for_ink_e2e_client_CodeStoredEvent_E.
   (* Section Impl_scale_decode_IntoVisitor_for_ink_e2e_client_CodeStoredEvent_E.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {E : Set}.
     
@@ -2589,17 +2590,17 @@ End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_client_CodeStored
       Notation.double_colon := into_visitor;
     }.
     
-    Global Instance I : scale_decode.IntoVisitor.Trait Self := {
+    Global Instance ℐ : scale_decode.IntoVisitor.Trait Self := {
       scale_decode.IntoVisitor.Visitor := Visitor;
       scale_decode.IntoVisitor.into_visitor := into_visitor;
     }.
   End Impl_scale_decode_IntoVisitor_for_ink_e2e_client_CodeStoredEvent_E. *)
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_scale_decode_IntoVisitor_for_ink_e2e_client_CodeStoredEvent_E. *)
 
 (* Module Impl_scale_decode_visitor_Visitor_for_ink_e2e_client___Visitor_E.
   (* Section Impl_scale_decode_visitor_Visitor_for_ink_e2e_client___Visitor_E.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {E : Set}.
     
@@ -2632,17 +2633,17 @@ End Impl_scale_decode_IntoVisitor_for_ink_e2e_client_CodeStoredEvent_E. *)
       Notation.double_colon := visit_tuple;
     }.
     
-    Global Instance I : scale_decode.visitor.Visitor.Trait Self := {
+    Global Instance ℐ : scale_decode.visitor.Visitor.Trait Self := {
       scale_decode.visitor.Visitor.Error := Error;
       scale_decode.visitor.Visitor.Value := Value;
     }.
   End Impl_scale_decode_visitor_Visitor_for_ink_e2e_client___Visitor_E. *)
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_scale_decode_visitor_Visitor_for_ink_e2e_client___Visitor_E. *)
 
 (* Module Impl_scale_decode_DecodeAsFields_for_ink_e2e_client_CodeStoredEvent_E.
   (* Section Impl_scale_decode_DecodeAsFields_for_ink_e2e_client_CodeStoredEvent_E.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {E : Set}.
     
@@ -2660,16 +2661,16 @@ End Impl_scale_decode_visitor_Visitor_for_ink_e2e_client___Visitor_E. *)
       Notation.double_colon := decode_as_fields;
     }.
     
-    Global Instance I : scale_decode.DecodeAsFields.Trait Self := {
+    Global Instance ℐ : scale_decode.DecodeAsFields.Trait Self := {
       scale_decode.DecodeAsFields.decode_as_fields := decode_as_fields;
     }.
   End Impl_scale_decode_DecodeAsFields_for_ink_e2e_client_CodeStoredEvent_E. *)
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_scale_decode_DecodeAsFields_for_ink_e2e_client_CodeStoredEvent_E. *)
 
 (* Module Impl_scale_encode_EncodeAsType_for_ink_e2e_client_CodeStoredEvent_E.
   (* Section Impl_scale_encode_EncodeAsType_for_ink_e2e_client_CodeStoredEvent_E.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {E : Set}.
     
@@ -2690,16 +2691,16 @@ End Impl_scale_decode_DecodeAsFields_for_ink_e2e_client_CodeStoredEvent_E. *)
       Notation.double_colon := encode_as_type_to;
     }.
     
-    Global Instance I : scale_encode.EncodeAsType.Trait Self := {
+    Global Instance ℐ : scale_encode.EncodeAsType.Trait Self := {
       scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
     }.
   End Impl_scale_encode_EncodeAsType_for_ink_e2e_client_CodeStoredEvent_E. *)
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_scale_encode_EncodeAsType_for_ink_e2e_client_CodeStoredEvent_E. *)
 
 (* Module Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_CodeStoredEvent_E.
   (* Section Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_CodeStoredEvent_E.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {E : Set}.
     
@@ -2720,16 +2721,16 @@ End Impl_scale_encode_EncodeAsType_for_ink_e2e_client_CodeStoredEvent_E. *)
       Notation.double_colon := encode_as_fields_to;
     }.
     
-    Global Instance I : scale_encode.EncodeAsFields.Trait Self := {
+    Global Instance ℐ : scale_encode.EncodeAsFields.Trait Self := {
       scale_encode.EncodeAsFields.encode_as_fields_to := encode_as_fields_to;
     }.
   End Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_CodeStoredEvent_E. *)
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_CodeStoredEvent_E. *)
 
 (* Module Impl_subxt_events_StaticEvent_for_ink_e2e_client_CodeStoredEvent_E.
   (* Section Impl_subxt_events_StaticEvent_for_ink_e2e_client_CodeStoredEvent_E.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {E : Set}.
     
@@ -2750,17 +2751,17 @@ End Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_CodeStoredEvent_E. *)
       Notation.double_colon := EVENT;
     }.
     
-    Global Instance I : subxt.events.StaticEvent.Trait Self := {
+    Global Instance ℐ : subxt.events.StaticEvent.Trait Self := {
       subxt.events.StaticEvent.PALLET := PALLET;
       subxt.events.StaticEvent.EVENT := EVENT;
     }.
   End Impl_subxt_events_StaticEvent_for_ink_e2e_client_CodeStoredEvent_E. *)
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_subxt_events_StaticEvent_for_ink_e2e_client_CodeStoredEvent_E. *)
 
 Module Client.
   Section Client.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {C E : Set}.
     
@@ -2795,7 +2796,7 @@ Module Client.
 End Client.
 Definition Client
     (C E : Set)
-    `{State.Trait}
+    `{ℋ : State.Trait}
     {ℋ_0 : subxt.config.Config.Trait C}
     {ℋ_1 : ink_env.types.Environment.Trait E}
     : Set :=
@@ -2804,7 +2805,7 @@ Definition Client
 Module default_accounts.
   Parameter alice :
       forall
-        `{State.Trait}
+        `{ℋ : State.Trait}
         {C : Set}
         {ℋ_0 : subxt.config.Config.Trait C}
         {ℋ_1 :
@@ -2817,7 +2818,7 @@ Module default_accounts.
   
   Parameter bob :
       forall
-        `{State.Trait}
+        `{ℋ : State.Trait}
         {C : Set}
         {ℋ_0 : subxt.config.Config.Trait C}
         {ℋ_1 :
@@ -2830,7 +2831,7 @@ Module default_accounts.
   
   Parameter charlie :
       forall
-        `{State.Trait}
+        `{ℋ : State.Trait}
         {C : Set}
         {ℋ_0 : subxt.config.Config.Trait C}
         {ℋ_1 :
@@ -2843,7 +2844,7 @@ Module default_accounts.
   
   Parameter dave :
       forall
-        `{State.Trait}
+        `{ℋ : State.Trait}
         {C : Set}
         {ℋ_0 : subxt.config.Config.Trait C}
         {ℋ_1 :
@@ -2856,7 +2857,7 @@ Module default_accounts.
   
   Parameter eve :
       forall
-        `{State.Trait}
+        `{ℋ : State.Trait}
         {C : Set}
         {ℋ_0 : subxt.config.Config.Trait C}
         {ℋ_1 :
@@ -2869,7 +2870,7 @@ Module default_accounts.
   
   Parameter ferdie :
       forall
-        `{State.Trait}
+        `{ℋ : State.Trait}
         {C : Set}
         {ℋ_0 : subxt.config.Config.Trait C}
         {ℋ_1 :
@@ -2882,7 +2883,7 @@ Module default_accounts.
   
   Parameter one :
       forall
-        `{State.Trait}
+        `{ℋ : State.Trait}
         {C : Set}
         {ℋ_0 : subxt.config.Config.Trait C}
         {ℋ_1 :
@@ -2895,7 +2896,7 @@ Module default_accounts.
   
   Parameter two :
       forall
-        `{State.Trait}
+        `{ℋ : State.Trait}
         {C : Set}
         {ℋ_0 : subxt.config.Config.Trait C}
         {ℋ_1 :
@@ -2909,7 +2910,7 @@ End default_accounts.
 
 Parameter alice :
     forall
-      `{State.Trait}
+      `{ℋ : State.Trait}
       {C : Set}
       {ℋ_0 : subxt.config.Config.Trait C}
       {ℋ_1 :
@@ -2922,7 +2923,7 @@ Parameter alice :
 
 Parameter bob :
     forall
-      `{State.Trait}
+      `{ℋ : State.Trait}
       {C : Set}
       {ℋ_0 : subxt.config.Config.Trait C}
       {ℋ_1 :
@@ -2935,7 +2936,7 @@ Parameter bob :
 
 Parameter charlie :
     forall
-      `{State.Trait}
+      `{ℋ : State.Trait}
       {C : Set}
       {ℋ_0 : subxt.config.Config.Trait C}
       {ℋ_1 :
@@ -2948,7 +2949,7 @@ Parameter charlie :
 
 Parameter dave :
     forall
-      `{State.Trait}
+      `{ℋ : State.Trait}
       {C : Set}
       {ℋ_0 : subxt.config.Config.Trait C}
       {ℋ_1 :
@@ -2961,7 +2962,7 @@ Parameter dave :
 
 Parameter eve :
     forall
-      `{State.Trait}
+      `{ℋ : State.Trait}
       {C : Set}
       {ℋ_0 : subxt.config.Config.Trait C}
       {ℋ_1 :
@@ -2974,7 +2975,7 @@ Parameter eve :
 
 Parameter ferdie :
     forall
-      `{State.Trait}
+      `{ℋ : State.Trait}
       {C : Set}
       {ℋ_0 : subxt.config.Config.Trait C}
       {ℋ_1 :
@@ -2987,7 +2988,7 @@ Parameter ferdie :
 
 Parameter one :
     forall
-      `{State.Trait}
+      `{ℋ : State.Trait}
       {C : Set}
       {ℋ_0 : subxt.config.Config.Trait C}
       {ℋ_1 :
@@ -3000,7 +3001,7 @@ Parameter one :
 
 Parameter two :
     forall
-      `{State.Trait}
+      `{ℋ : State.Trait}
       {C : Set}
       {ℋ_0 : subxt.config.Config.Trait C}
       {ℋ_1 :
@@ -3014,7 +3015,7 @@ Parameter two :
 Module node_proc.
   Module TestNodeProcess.
     Section TestNodeProcess.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Context {R : Set}.
       
@@ -3049,14 +3050,14 @@ Module node_proc.
   End TestNodeProcess.
   Definition TestNodeProcess
       (R : Set)
-      `{State.Trait}
+      `{ℋ : State.Trait}
       {ℋ_0 : subxt.config.Config.Trait R}
       : Set :=
     M.val (TestNodeProcess.t (R := R)).
   
   (* Module Impl_core_ops_drop_Drop_for_ink_e2e_node_proc_TestNodeProcess_R.
     (* Section Impl_core_ops_drop_Drop_for_ink_e2e_node_proc_TestNodeProcess_R.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Context {R : Set}.
       
@@ -3070,16 +3071,16 @@ Module node_proc.
         Notation.double_colon := drop;
       }.
       
-      Global Instance I : core.ops.drop.Drop.Trait Self := {
+      Global Instance ℐ : core.ops.drop.Drop.Trait Self := {
         core.ops.drop.Drop.drop := drop;
       }.
     End Impl_core_ops_drop_Drop_for_ink_e2e_node_proc_TestNodeProcess_R. *)
-    Global Hint Resolve I : core.
+    Global Hint Resolve ℐ : core.
   End Impl_core_ops_drop_Drop_for_ink_e2e_node_proc_TestNodeProcess_R. *)
   
   Module TestNodeProcessBuilder.
     Section TestNodeProcessBuilder.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Context {R : Set}.
       
@@ -3115,13 +3116,13 @@ Module node_proc.
       }.
     End TestNodeProcessBuilder.
   End TestNodeProcessBuilder.
-  Definition TestNodeProcessBuilder (R : Set) `{State.Trait} : Set :=
+  Definition TestNodeProcessBuilder (R : Set) `{ℋ : State.Trait} : Set :=
     M.val (TestNodeProcessBuilder.t (R := R)).
 End node_proc.
 
 Module TestNodeProcess.
   Section TestNodeProcess.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {R : Set}.
     
@@ -3156,14 +3157,14 @@ Module TestNodeProcess.
 End TestNodeProcess.
 Definition TestNodeProcess
     (R : Set)
-    `{State.Trait}
+    `{ℋ : State.Trait}
     {ℋ_0 : subxt.config.Config.Trait R}
     : Set :=
   M.val (TestNodeProcess.t (R := R)).
 
 (* Module Impl_core_ops_drop_Drop_for_ink_e2e_node_proc_TestNodeProcess_R.
   (* Section Impl_core_ops_drop_Drop_for_ink_e2e_node_proc_TestNodeProcess_R.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {R : Set}.
     
@@ -3177,16 +3178,16 @@ Definition TestNodeProcess
       Notation.double_colon := drop;
     }.
     
-    Global Instance I : core.ops.drop.Drop.Trait Self := {
+    Global Instance ℐ : core.ops.drop.Drop.Trait Self := {
       core.ops.drop.Drop.drop := drop;
     }.
   End Impl_core_ops_drop_Drop_for_ink_e2e_node_proc_TestNodeProcess_R. *)
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_ops_drop_Drop_for_ink_e2e_node_proc_TestNodeProcess_R. *)
 
 Module TestNodeProcessBuilder.
   Section TestNodeProcessBuilder.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {R : Set}.
     
@@ -3218,12 +3219,12 @@ Module TestNodeProcessBuilder.
     }.
   End TestNodeProcessBuilder.
 End TestNodeProcessBuilder.
-Definition TestNodeProcessBuilder (R : Set) `{State.Trait} : Set :=
+Definition TestNodeProcessBuilder (R : Set) `{ℋ : State.Trait} : Set :=
   M.val (TestNodeProcessBuilder.t (R := R)).
 
 Module Weight.
   Section Weight.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Record t : Set := {
@@ -3248,23 +3249,23 @@ Module Weight.
     }.
   End Weight.
 End Weight.
-Definition Weight `{State.Trait} : Set := M.val Weight.t.
+Definition Weight `{ℋ : State.Trait} : Set := M.val Weight.t.
 
 Module Impl_core_marker_Copy_for_ink_e2e_xts_Weight.
   Section Impl_core_marker_Copy_for_ink_e2e_xts_Weight.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := ink_e2e.xts.Weight.
     
-    Global Instance I : core.marker.Copy.Trait Self := {
+    Global Instance ℐ : core.marker.Copy.Trait Self := {
     }.
   End Impl_core_marker_Copy_for_ink_e2e_xts_Weight.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_marker_Copy_for_ink_e2e_xts_Weight.
 
 Module Impl_core_clone_Clone_for_ink_e2e_xts_Weight.
   Section Impl_core_clone_Clone_for_ink_e2e_xts_Weight.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := ink_e2e.xts.Weight.
     
@@ -3275,28 +3276,28 @@ Module Impl_core_clone_Clone_for_ink_e2e_xts_Weight.
       Notation.double_colon := clone;
     }.
     
-    Global Instance I : core.clone.Clone.Trait Self := {
+    Global Instance ℐ : core.clone.Clone.Trait Self := {
       core.clone.Clone.clone := clone;
     }.
   End Impl_core_clone_Clone_for_ink_e2e_xts_Weight.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_clone_Clone_for_ink_e2e_xts_Weight.
 
 Module Impl_core_marker_StructuralEq_for_ink_e2e_xts_Weight.
   Section Impl_core_marker_StructuralEq_for_ink_e2e_xts_Weight.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := ink_e2e.xts.Weight.
     
-    Global Instance I : core.marker.StructuralEq.Trait Self := {
+    Global Instance ℐ : core.marker.StructuralEq.Trait Self := {
     }.
   End Impl_core_marker_StructuralEq_for_ink_e2e_xts_Weight.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_marker_StructuralEq_for_ink_e2e_xts_Weight.
 
 Module Impl_core_cmp_Eq_for_ink_e2e_xts_Weight.
   Section Impl_core_cmp_Eq_for_ink_e2e_xts_Weight.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := ink_e2e.xts.Weight.
     
@@ -3307,27 +3308,27 @@ Module Impl_core_cmp_Eq_for_ink_e2e_xts_Weight.
       Notation.double_colon := assert_receiver_is_total_eq;
     }.
     
-    Global Instance I : core.cmp.Eq.Trait Self := {
+    Global Instance ℐ : core.cmp.Eq.Trait Self := {
     }.
   End Impl_core_cmp_Eq_for_ink_e2e_xts_Weight.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_cmp_Eq_for_ink_e2e_xts_Weight.
 
 Module Impl_core_marker_StructuralPartialEq_for_ink_e2e_xts_Weight.
   Section Impl_core_marker_StructuralPartialEq_for_ink_e2e_xts_Weight.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := ink_e2e.xts.Weight.
     
-    Global Instance I : core.marker.StructuralPartialEq.Trait Self := {
+    Global Instance ℐ : core.marker.StructuralPartialEq.Trait Self := {
     }.
   End Impl_core_marker_StructuralPartialEq_for_ink_e2e_xts_Weight.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_marker_StructuralPartialEq_for_ink_e2e_xts_Weight.
 
 Module Impl_core_cmp_PartialEq_for_ink_e2e_xts_Weight.
   Section Impl_core_cmp_PartialEq_for_ink_e2e_xts_Weight.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := ink_e2e.xts.Weight.
     
@@ -3337,19 +3338,19 @@ Module Impl_core_cmp_PartialEq_for_ink_e2e_xts_Weight.
       Notation.double_colon := eq;
     }.
     
-    Global Instance I
+    Global Instance ℐ
       : core.cmp.PartialEq.Trait Self
           (Rhs := core.cmp.PartialEq.Default.Rhs Self)
         := {
       core.cmp.PartialEq.eq := eq;
     }.
   End Impl_core_cmp_PartialEq_for_ink_e2e_xts_Weight.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_cmp_PartialEq_for_ink_e2e_xts_Weight.
 
 Module Impl_core_fmt_Debug_for_ink_e2e_xts_Weight.
   Section Impl_core_fmt_Debug_for_ink_e2e_xts_Weight.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := ink_e2e.xts.Weight.
     
@@ -3361,16 +3362,16 @@ Module Impl_core_fmt_Debug_for_ink_e2e_xts_Weight.
       Notation.double_colon := fmt;
     }.
     
-    Global Instance I : core.fmt.Debug.Trait Self := {
+    Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
   End Impl_core_fmt_Debug_for_ink_e2e_xts_Weight.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_ink_e2e_xts_Weight.
 
 Module Impl_core_default_Default_for_ink_e2e_xts_Weight.
   Section Impl_core_default_Default_for_ink_e2e_xts_Weight.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := ink_e2e.xts.Weight.
     
@@ -3381,16 +3382,16 @@ Module Impl_core_default_Default_for_ink_e2e_xts_Weight.
       Notation.double_colon := default;
     }.
     
-    Global Instance I : core.default.Default.Trait Self := {
+    Global Instance ℐ : core.default.Default.Trait Self := {
       core.default.Default.default := default;
     }.
   End Impl_core_default_Default_for_ink_e2e_xts_Weight.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_default_Default_for_ink_e2e_xts_Weight.
 
 Module Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Weight.
   Section Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Weight.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := ink_e2e.xts.Weight.
     
@@ -3411,30 +3412,30 @@ Module Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Weight.
         encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
     }.
     
-    Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
+    Global Instance ℐ : parity_scale_codec.codec.Encode.Trait Self := {
     }.
   End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Weight.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Weight.
 
 Module Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Weight.
   Section Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Weight.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := ink_e2e.xts.Weight.
     
-    Global Instance I
+    Global Instance ℐ
       : parity_scale_codec.encode_like.EncodeLike.Trait Self
           (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self)
         := {
     }.
   End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Weight.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Weight.
 
 Module Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Weight.
   Section Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Weight.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := ink_e2e.xts.Weight.
     
@@ -3452,7 +3453,7 @@ Module Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Weight.
       Notation.double_colon := decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
     
-    Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
+    Global Instance ℐ : parity_scale_codec.codec.Decode.Trait Self := {
       parity_scale_codec.codec.Decode.decode
         {__CodecInputEdqy : Set}
         {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
@@ -3460,12 +3461,12 @@ Module Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Weight.
         decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
   End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Weight.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Weight.
 
 (* Module Impl_parity_scale_codec_max_encoded_len_MaxEncodedLen_for_ink_e2e_xts_Weight.
   (* Section Impl_parity_scale_codec_max_encoded_len_MaxEncodedLen_for_ink_e2e_xts_Weight.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := ink_e2e.xts.Weight.
     
@@ -3476,19 +3477,19 @@ End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Weight.
       Notation.double_colon := max_encoded_len;
     }.
     
-    Global Instance I
+    Global Instance ℐ
       : parity_scale_codec.max_encoded_len.MaxEncodedLen.Trait Self := {
       parity_scale_codec.max_encoded_len.MaxEncodedLen.max_encoded_len
         :=
         max_encoded_len;
     }.
   End Impl_parity_scale_codec_max_encoded_len_MaxEncodedLen_for_ink_e2e_xts_Weight. *)
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_parity_scale_codec_max_encoded_len_MaxEncodedLen_for_ink_e2e_xts_Weight. *)
 
 Module Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Weight.
   Section Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Weight.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := ink_e2e.xts.Weight.
     
@@ -3504,16 +3505,16 @@ Module Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Weight.
       Notation.double_colon := encode_as_type_to;
     }.
     
-    Global Instance I : scale_encode.EncodeAsType.Trait Self := {
+    Global Instance ℐ : scale_encode.EncodeAsType.Trait Self := {
       scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
     }.
   End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Weight.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Weight.
 
 Module Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Weight.
   Section Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Weight.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := ink_e2e.xts.Weight.
     
@@ -3529,16 +3530,16 @@ Module Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Weight.
       Notation.double_colon := encode_as_fields_to;
     }.
     
-    Global Instance I : scale_encode.EncodeAsFields.Trait Self := {
+    Global Instance ℐ : scale_encode.EncodeAsFields.Trait Self := {
       scale_encode.EncodeAsFields.encode_as_fields_to := encode_as_fields_to;
     }.
   End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Weight.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Weight.
 
 Module Impl_serde_ser_Serialize_for_ink_e2e_xts_Weight.
   Section Impl_serde_ser_Serialize_for_ink_e2e_xts_Weight.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := ink_e2e.xts.Weight.
     
@@ -3555,7 +3556,7 @@ Module Impl_serde_ser_Serialize_for_ink_e2e_xts_Weight.
       Notation.double_colon := serialize (__S := __S);
     }.
     
-    Global Instance I : serde.ser.Serialize.Trait Self := {
+    Global Instance ℐ : serde.ser.Serialize.Trait Self := {
       serde.ser.Serialize.serialize
         {__S : Set}
         {ℋ_0 : serde.ser.Serializer.Trait __S}
@@ -3563,12 +3564,12 @@ Module Impl_serde_ser_Serialize_for_ink_e2e_xts_Weight.
         serialize (__S := __S);
     }.
   End Impl_serde_ser_Serialize_for_ink_e2e_xts_Weight.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_serde_ser_Serialize_for_ink_e2e_xts_Weight.
 
 Module Impl_serde_de_Deserialize_for_ink_e2e_xts_Weight.
   Section Impl_serde_de_Deserialize_for_ink_e2e_xts_Weight.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := ink_e2e.xts.Weight.
     
@@ -3583,7 +3584,7 @@ Module Impl_serde_de_Deserialize_for_ink_e2e_xts_Weight.
       Notation.double_colon := deserialize (__D := __D);
     }.
     
-    Global Instance I : serde.de.Deserialize.Trait Self := {
+    Global Instance ℐ : serde.de.Deserialize.Trait Self := {
       serde.de.Deserialize.deserialize
         {__D : Set}
         {ℋ_0 : serde.de.Deserializer.Trait __D}
@@ -3591,12 +3592,12 @@ Module Impl_serde_de_Deserialize_for_ink_e2e_xts_Weight.
         deserialize (__D := __D);
     }.
   End Impl_serde_de_Deserialize_for_ink_e2e_xts_Weight.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_serde_de_Deserialize_for_ink_e2e_xts_Weight.
 
 (* Module Impl_serde_de_Visitor_for_ink_e2e_xts___deserialize___FieldVisitor.
   (* Section Impl_serde_de_Visitor_for_ink_e2e_xts___deserialize___FieldVisitor.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := ink_e2e.xts._.deserialize.__FieldVisitor.
     
@@ -3643,17 +3644,17 @@ End Impl_serde_de_Deserialize_for_ink_e2e_xts_Weight.
       Notation.double_colon := visit_bytes (__E := __E);
     }.
     
-    Global Instance I : serde.de.Visitor.Trait Self := {
+    Global Instance ℐ : serde.de.Visitor.Trait Self := {
       serde.de.Visitor.Value := Value;
       serde.de.Visitor.expecting := expecting;
     }.
   End Impl_serde_de_Visitor_for_ink_e2e_xts___deserialize___FieldVisitor. *)
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_serde_de_Visitor_for_ink_e2e_xts___deserialize___FieldVisitor. *)
 
 (* Module Impl_serde_de_Deserialize_for_ink_e2e_xts___deserialize___Field.
   (* Section Impl_serde_de_Deserialize_for_ink_e2e_xts___deserialize___Field.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := ink_e2e.xts._.deserialize.__Field.
     
@@ -3668,7 +3669,7 @@ End Impl_serde_de_Visitor_for_ink_e2e_xts___deserialize___FieldVisitor. *)
       Notation.double_colon := deserialize (__D := __D);
     }.
     
-    Global Instance I : serde.de.Deserialize.Trait Self := {
+    Global Instance ℐ : serde.de.Deserialize.Trait Self := {
       serde.de.Deserialize.deserialize
         {__D : Set}
         {ℋ_0 : serde.de.Deserializer.Trait __D}
@@ -3676,12 +3677,12 @@ End Impl_serde_de_Visitor_for_ink_e2e_xts___deserialize___FieldVisitor. *)
         deserialize (__D := __D);
     }.
   End Impl_serde_de_Deserialize_for_ink_e2e_xts___deserialize___Field. *)
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_serde_de_Deserialize_for_ink_e2e_xts___deserialize___Field. *)
 
 (* Module Impl_serde_de_Visitor_for_ink_e2e_xts___deserialize___Visitor.
   (* Section Impl_serde_de_Visitor_for_ink_e2e_xts___deserialize___Visitor.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := ink_e2e.xts._.deserialize.__Visitor.
     
@@ -3717,17 +3718,17 @@ End Impl_serde_de_Deserialize_for_ink_e2e_xts___deserialize___Field. *)
       Notation.double_colon := visit_map (__A := __A);
     }.
     
-    Global Instance I : serde.de.Visitor.Trait Self := {
+    Global Instance ℐ : serde.de.Visitor.Trait Self := {
       serde.de.Visitor.Value := Value;
       serde.de.Visitor.expecting := expecting;
     }.
   End Impl_serde_de_Visitor_for_ink_e2e_xts___deserialize___Visitor. *)
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_serde_de_Visitor_for_ink_e2e_xts___deserialize___Visitor. *)
 
 Module Impl_core_convert_From_for_ink_e2e_xts_Weight.
   Section Impl_core_convert_From_for_ink_e2e_xts_Weight.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := ink_e2e.xts.Weight.
     
@@ -3738,17 +3739,17 @@ Module Impl_core_convert_From_for_ink_e2e_xts_Weight.
       Notation.double_colon := from;
     }.
     
-    Global Instance I
+    Global Instance ℐ
       : core.convert.From.Trait Self (T := sp_weights.weight_v2.Weight) := {
       core.convert.From.from := from;
     }.
   End Impl_core_convert_From_for_ink_e2e_xts_Weight.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_convert_From_for_ink_e2e_xts_Weight.
 
 Module Impl_core_convert_From_for_sp_weights_weight_v2_Weight.
   Section Impl_core_convert_From_for_sp_weights_weight_v2_Weight.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := sp_weights.weight_v2.Weight.
     
@@ -3759,17 +3760,17 @@ Module Impl_core_convert_From_for_sp_weights_weight_v2_Weight.
       Notation.double_colon := from;
     }.
     
-    Global Instance I
+    Global Instance ℐ
       : core.convert.From.Trait Self (T := ink_e2e.xts.Weight) := {
       core.convert.From.from := from;
     }.
   End Impl_core_convert_From_for_sp_weights_weight_v2_Weight.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_convert_From_for_sp_weights_weight_v2_Weight.
 
 Module InstantiateWithCode.
   Section InstantiateWithCode.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {E : Set}.
     
@@ -3831,14 +3832,14 @@ Module InstantiateWithCode.
 End InstantiateWithCode.
 Definition InstantiateWithCode
     (E : Set)
-    `{State.Trait}
+    `{ℋ : State.Trait}
     {ℋ_0 : ink_env.types.Environment.Trait E}
     : Set :=
   M.val (InstantiateWithCode.t (E := E)).
 
 Module Impl_core_fmt_Debug_for_ink_e2e_xts_InstantiateWithCode_E.
   Section Impl_core_fmt_Debug_for_ink_e2e_xts_InstantiateWithCode_E.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {E : Set}.
     
@@ -3857,18 +3858,18 @@ Module Impl_core_fmt_Debug_for_ink_e2e_xts_InstantiateWithCode_E.
       Notation.double_colon := fmt;
     }.
     
-    Global Instance I : core.fmt.Debug.Trait Self := {
+    Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
   End Impl_core_fmt_Debug_for_ink_e2e_xts_InstantiateWithCode_E.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_ink_e2e_xts_InstantiateWithCode_E.
 
 Module
   Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_InstantiateWithCode_E.
   Section
     Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_InstantiateWithCode_E.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {E : Set}.
     
@@ -3900,18 +3901,18 @@ Module
         encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
     }.
     
-    Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
+    Global Instance ℐ : parity_scale_codec.codec.Encode.Trait Self := {
     }.
   End
     Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_InstantiateWithCode_E.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_InstantiateWithCode_E.
 
 Module
   Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_InstantiateWithCode_E.
   Section
     Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_InstantiateWithCode_E.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {E : Set}.
     
@@ -3926,14 +3927,14 @@ Module
       {ℋ_3 : parity_scale_codec.compact.HasCompact.Trait E::type["Balance"]}.
     Definition Self : Set := ink_e2e.xts.InstantiateWithCode E.
     
-    Global Instance I
+    Global Instance ℐ
       : parity_scale_codec.encode_like.EncodeLike.Trait Self
           (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self)
         := {
     }.
   End
     Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_InstantiateWithCode_E.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End
   Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_InstantiateWithCode_E.
 
@@ -3941,7 +3942,7 @@ Module
   Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_InstantiateWithCode_E.
   Section
     Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_InstantiateWithCode_E.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {E : Set}.
     
@@ -3970,7 +3971,7 @@ Module
       Notation.double_colon := decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
     
-    Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
+    Global Instance ℐ : parity_scale_codec.codec.Decode.Trait Self := {
       parity_scale_codec.codec.Decode.decode
         {__CodecInputEdqy : Set}
         {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
@@ -3979,12 +3980,12 @@ Module
     }.
   End
     Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_InstantiateWithCode_E.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_InstantiateWithCode_E.
 
 Module Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_InstantiateWithCode_E.
   Section Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_InstantiateWithCode_E.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {E : Set}.
     
@@ -4003,17 +4004,17 @@ Module Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_InstantiateWithCode_E.
       Notation.double_colon := encode_as_type_to;
     }.
     
-    Global Instance I : scale_encode.EncodeAsType.Trait Self := {
+    Global Instance ℐ : scale_encode.EncodeAsType.Trait Self := {
       scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
     }.
   End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_InstantiateWithCode_E.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_InstantiateWithCode_E.
 
 Module Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_InstantiateWithCode_E.
   Section
     Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_InstantiateWithCode_E.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {E : Set}.
     
@@ -4032,16 +4033,16 @@ Module Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_InstantiateWithCode_E.
       Notation.double_colon := encode_as_fields_to;
     }.
     
-    Global Instance I : scale_encode.EncodeAsFields.Trait Self := {
+    Global Instance ℐ : scale_encode.EncodeAsFields.Trait Self := {
       scale_encode.EncodeAsFields.encode_as_fields_to := encode_as_fields_to;
     }.
   End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_InstantiateWithCode_E.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_InstantiateWithCode_E.
 
 Module Call.
   Section Call.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {E : Set}.
     
@@ -4096,14 +4097,14 @@ Module Call.
 End Call.
 Definition Call
     (E : Set)
-    `{State.Trait}
+    `{ℋ : State.Trait}
     {ℋ_0 : ink_env.types.Environment.Trait E}
     : Set :=
   M.val (Call.t (E := E)).
 
 Module Impl_core_fmt_Debug_for_ink_e2e_xts_Call_E.
   Section Impl_core_fmt_Debug_for_ink_e2e_xts_Call_E.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {E : Set}.
     
@@ -4123,16 +4124,16 @@ Module Impl_core_fmt_Debug_for_ink_e2e_xts_Call_E.
       Notation.double_colon := fmt;
     }.
     
-    Global Instance I : core.fmt.Debug.Trait Self := {
+    Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
   End Impl_core_fmt_Debug_for_ink_e2e_xts_Call_E.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_ink_e2e_xts_Call_E.
 
 Module Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Call_E.
   Section Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Call_E.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {E : Set}.
     
@@ -4167,7 +4168,7 @@ Module Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Call_E.
       Notation.double_colon := decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
     
-    Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
+    Global Instance ℐ : parity_scale_codec.codec.Decode.Trait Self := {
       parity_scale_codec.codec.Decode.decode
         {__CodecInputEdqy : Set}
         {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
@@ -4175,12 +4176,12 @@ Module Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Call_E.
         decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
   End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Call_E.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Call_E.
 
 Module Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Call_E.
   Section Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Call_E.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {E : Set}.
     
@@ -4218,15 +4219,15 @@ Module Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Call_E.
         encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
     }.
     
-    Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
+    Global Instance ℐ : parity_scale_codec.codec.Encode.Trait Self := {
     }.
   End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Call_E.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Call_E.
 
 Module Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Call_E.
   Section Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Call_E.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {E : Set}.
     
@@ -4247,18 +4248,18 @@ Module Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Call_E.
       {ℋ_5 : parity_scale_codec.compact.HasCompact.Trait E::type["Balance"]}.
     Definition Self : Set := ink_e2e.xts.Call E.
     
-    Global Instance I
+    Global Instance ℐ
       : parity_scale_codec.encode_like.EncodeLike.Trait Self
           (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self)
         := {
     }.
   End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Call_E.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Call_E.
 
 Module Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Call_E.
   Section Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Call_E.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {E : Set}.
     
@@ -4277,16 +4278,16 @@ Module Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Call_E.
       Notation.double_colon := encode_as_type_to;
     }.
     
-    Global Instance I : scale_encode.EncodeAsType.Trait Self := {
+    Global Instance ℐ : scale_encode.EncodeAsType.Trait Self := {
       scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
     }.
   End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Call_E.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Call_E.
 
 Module Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Call_E.
   Section Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Call_E.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {E : Set}.
     
@@ -4305,16 +4306,16 @@ Module Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Call_E.
       Notation.double_colon := encode_as_fields_to;
     }.
     
-    Global Instance I : scale_encode.EncodeAsFields.Trait Self := {
+    Global Instance ℐ : scale_encode.EncodeAsFields.Trait Self := {
       scale_encode.EncodeAsFields.encode_as_fields_to := encode_as_fields_to;
     }.
   End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Call_E.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Call_E.
 
 Module Transfer.
   Section Transfer.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {E C : Set}.
     
@@ -4344,7 +4345,7 @@ Module Transfer.
 End Transfer.
 Definition Transfer
     (E C : Set)
-    `{State.Trait}
+    `{ℋ : State.Trait}
     {ℋ_0 : ink_env.types.Environment.Trait E}
     {ℋ_1 : subxt.config.Config.Trait C}
     : Set :=
@@ -4352,7 +4353,7 @@ Definition Transfer
 
 Module Impl_core_fmt_Debug_for_ink_e2e_xts_Transfer_E_C.
   Section Impl_core_fmt_Debug_for_ink_e2e_xts_Transfer_E_C.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {E C : Set}.
     
@@ -4373,16 +4374,16 @@ Module Impl_core_fmt_Debug_for_ink_e2e_xts_Transfer_E_C.
       Notation.double_colon := fmt;
     }.
     
-    Global Instance I : core.fmt.Debug.Trait Self := {
+    Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
   End Impl_core_fmt_Debug_for_ink_e2e_xts_Transfer_E_C.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_ink_e2e_xts_Transfer_E_C.
 
 Module Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Transfer_E_C.
   Section Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Transfer_E_C.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {E C : Set}.
     
@@ -4412,7 +4413,7 @@ Module Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Transfer_E_C.
       Notation.double_colon := decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
     
-    Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
+    Global Instance ℐ : parity_scale_codec.codec.Decode.Trait Self := {
       parity_scale_codec.codec.Decode.decode
         {__CodecInputEdqy : Set}
         {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
@@ -4420,12 +4421,12 @@ Module Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Transfer_E_C.
         decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
   End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Transfer_E_C.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Transfer_E_C.
 
 Module Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Transfer_E_C.
   Section Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Transfer_E_C.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {E C : Set}.
     
@@ -4458,17 +4459,17 @@ Module Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Transfer_E_C.
         encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
     }.
     
-    Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
+    Global Instance ℐ : parity_scale_codec.codec.Encode.Trait Self := {
     }.
   End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Transfer_E_C.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Transfer_E_C.
 
 Module
   Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Transfer_E_C.
   Section
     Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Transfer_E_C.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {E C : Set}.
     
@@ -4484,19 +4485,19 @@ Module
       {ℋ_4 : parity_scale_codec.compact.HasCompact.Trait E::type["Balance"]}.
     Definition Self : Set := ink_e2e.xts.Transfer E C.
     
-    Global Instance I
+    Global Instance ℐ
       : parity_scale_codec.encode_like.EncodeLike.Trait Self
           (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self)
         := {
     }.
   End
     Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Transfer_E_C.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Transfer_E_C.
 
 Module Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Transfer_E_C.
   Section Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Transfer_E_C.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {E C : Set}.
     
@@ -4517,16 +4518,16 @@ Module Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Transfer_E_C.
       Notation.double_colon := encode_as_type_to;
     }.
     
-    Global Instance I : scale_encode.EncodeAsType.Trait Self := {
+    Global Instance ℐ : scale_encode.EncodeAsType.Trait Self := {
       scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
     }.
   End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Transfer_E_C.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Transfer_E_C.
 
 Module Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Transfer_E_C.
   Section Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Transfer_E_C.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {E C : Set}.
     
@@ -4547,23 +4548,23 @@ Module Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Transfer_E_C.
       Notation.double_colon := encode_as_fields_to;
     }.
     
-    Global Instance I : scale_encode.EncodeAsFields.Trait Self := {
+    Global Instance ℐ : scale_encode.EncodeAsFields.Trait Self := {
       scale_encode.EncodeAsFields.encode_as_fields_to := encode_as_fields_to;
     }.
   End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Transfer_E_C.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Transfer_E_C.
 
 Module Determinism.
-  Inductive t `{State.Trait} : Set :=
+  Inductive t `{ℋ : State.Trait} : Set :=
   | Enforced
   | Relaxed.
 End Determinism.
-Definition Determinism `{State.Trait} : Set := Determinism.t.
+Definition Determinism `{ℋ : State.Trait} : Set := Determinism.t.
 
 Module Impl_core_fmt_Debug_for_ink_e2e_xts_Determinism.
   Section Impl_core_fmt_Debug_for_ink_e2e_xts_Determinism.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := ink_e2e.xts.Determinism.
     
@@ -4575,16 +4576,16 @@ Module Impl_core_fmt_Debug_for_ink_e2e_xts_Determinism.
       Notation.double_colon := fmt;
     }.
     
-    Global Instance I : core.fmt.Debug.Trait Self := {
+    Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
   End Impl_core_fmt_Debug_for_ink_e2e_xts_Determinism.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_ink_e2e_xts_Determinism.
 
 Module Impl_core_clone_Clone_for_ink_e2e_xts_Determinism.
   Section Impl_core_clone_Clone_for_ink_e2e_xts_Determinism.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := ink_e2e.xts.Determinism.
     
@@ -4595,40 +4596,40 @@ Module Impl_core_clone_Clone_for_ink_e2e_xts_Determinism.
       Notation.double_colon := clone;
     }.
     
-    Global Instance I : core.clone.Clone.Trait Self := {
+    Global Instance ℐ : core.clone.Clone.Trait Self := {
       core.clone.Clone.clone := clone;
     }.
   End Impl_core_clone_Clone_for_ink_e2e_xts_Determinism.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_clone_Clone_for_ink_e2e_xts_Determinism.
 
 Module Impl_core_marker_Copy_for_ink_e2e_xts_Determinism.
   Section Impl_core_marker_Copy_for_ink_e2e_xts_Determinism.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := ink_e2e.xts.Determinism.
     
-    Global Instance I : core.marker.Copy.Trait Self := {
+    Global Instance ℐ : core.marker.Copy.Trait Self := {
     }.
   End Impl_core_marker_Copy_for_ink_e2e_xts_Determinism.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_marker_Copy_for_ink_e2e_xts_Determinism.
 
 Module Impl_core_marker_StructuralPartialEq_for_ink_e2e_xts_Determinism.
   Section Impl_core_marker_StructuralPartialEq_for_ink_e2e_xts_Determinism.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := ink_e2e.xts.Determinism.
     
-    Global Instance I : core.marker.StructuralPartialEq.Trait Self := {
+    Global Instance ℐ : core.marker.StructuralPartialEq.Trait Self := {
     }.
   End Impl_core_marker_StructuralPartialEq_for_ink_e2e_xts_Determinism.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_marker_StructuralPartialEq_for_ink_e2e_xts_Determinism.
 
 Module Impl_core_cmp_PartialEq_for_ink_e2e_xts_Determinism.
   Section Impl_core_cmp_PartialEq_for_ink_e2e_xts_Determinism.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := ink_e2e.xts.Determinism.
     
@@ -4638,31 +4639,31 @@ Module Impl_core_cmp_PartialEq_for_ink_e2e_xts_Determinism.
       Notation.double_colon := eq;
     }.
     
-    Global Instance I
+    Global Instance ℐ
       : core.cmp.PartialEq.Trait Self
           (Rhs := core.cmp.PartialEq.Default.Rhs Self)
         := {
       core.cmp.PartialEq.eq := eq;
     }.
   End Impl_core_cmp_PartialEq_for_ink_e2e_xts_Determinism.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_cmp_PartialEq_for_ink_e2e_xts_Determinism.
 
 Module Impl_core_marker_StructuralEq_for_ink_e2e_xts_Determinism.
   Section Impl_core_marker_StructuralEq_for_ink_e2e_xts_Determinism.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := ink_e2e.xts.Determinism.
     
-    Global Instance I : core.marker.StructuralEq.Trait Self := {
+    Global Instance ℐ : core.marker.StructuralEq.Trait Self := {
     }.
   End Impl_core_marker_StructuralEq_for_ink_e2e_xts_Determinism.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_marker_StructuralEq_for_ink_e2e_xts_Determinism.
 
 Module Impl_core_cmp_Eq_for_ink_e2e_xts_Determinism.
   Section Impl_core_cmp_Eq_for_ink_e2e_xts_Determinism.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := ink_e2e.xts.Determinism.
     
@@ -4673,15 +4674,15 @@ Module Impl_core_cmp_Eq_for_ink_e2e_xts_Determinism.
       Notation.double_colon := assert_receiver_is_total_eq;
     }.
     
-    Global Instance I : core.cmp.Eq.Trait Self := {
+    Global Instance ℐ : core.cmp.Eq.Trait Self := {
     }.
   End Impl_core_cmp_Eq_for_ink_e2e_xts_Determinism.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_cmp_Eq_for_ink_e2e_xts_Determinism.
 
 Module Impl_serde_ser_Serialize_for_ink_e2e_xts_Determinism.
   Section Impl_serde_ser_Serialize_for_ink_e2e_xts_Determinism.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := ink_e2e.xts.Determinism.
     
@@ -4698,7 +4699,7 @@ Module Impl_serde_ser_Serialize_for_ink_e2e_xts_Determinism.
       Notation.double_colon := serialize (__S := __S);
     }.
     
-    Global Instance I : serde.ser.Serialize.Trait Self := {
+    Global Instance ℐ : serde.ser.Serialize.Trait Self := {
       serde.ser.Serialize.serialize
         {__S : Set}
         {ℋ_0 : serde.ser.Serializer.Trait __S}
@@ -4706,12 +4707,12 @@ Module Impl_serde_ser_Serialize_for_ink_e2e_xts_Determinism.
         serialize (__S := __S);
     }.
   End Impl_serde_ser_Serialize_for_ink_e2e_xts_Determinism.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_serde_ser_Serialize_for_ink_e2e_xts_Determinism.
 
 Module Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Determinism.
   Section Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Determinism.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := ink_e2e.xts.Determinism.
     
@@ -4729,7 +4730,7 @@ Module Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Determinism.
       Notation.double_colon := decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
     
-    Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
+    Global Instance ℐ : parity_scale_codec.codec.Decode.Trait Self := {
       parity_scale_codec.codec.Decode.decode
         {__CodecInputEdqy : Set}
         {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
@@ -4737,12 +4738,12 @@ Module Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Determinism.
         decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
   End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Determinism.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Determinism.
 
 Module Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Determinism.
   Section Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Determinism.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := ink_e2e.xts.Determinism.
     
@@ -4763,33 +4764,33 @@ Module Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Determinism.
         encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
     }.
     
-    Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
+    Global Instance ℐ : parity_scale_codec.codec.Encode.Trait Self := {
     }.
   End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Determinism.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Determinism.
 
 Module
   Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Determinism.
   Section
     Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Determinism.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := ink_e2e.xts.Determinism.
     
-    Global Instance I
+    Global Instance ℐ
       : parity_scale_codec.encode_like.EncodeLike.Trait Self
           (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self)
         := {
     }.
   End
     Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Determinism.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Determinism.
 
 Module Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Determinism.
   Section Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Determinism.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := ink_e2e.xts.Determinism.
     
@@ -4805,16 +4806,16 @@ Module Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Determinism.
       Notation.double_colon := encode_as_type_to;
     }.
     
-    Global Instance I : scale_encode.EncodeAsType.Trait Self := {
+    Global Instance ℐ : scale_encode.EncodeAsType.Trait Self := {
       scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
     }.
   End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Determinism.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Determinism.
 
 Module UploadCode.
   Section UploadCode.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {E : Set}.
     
@@ -4858,14 +4859,14 @@ Module UploadCode.
 End UploadCode.
 Definition UploadCode
     (E : Set)
-    `{State.Trait}
+    `{ℋ : State.Trait}
     {ℋ_0 : ink_env.types.Environment.Trait E}
     : Set :=
   M.val (UploadCode.t (E := E)).
 
 Module Impl_core_fmt_Debug_for_ink_e2e_xts_UploadCode_E.
   Section Impl_core_fmt_Debug_for_ink_e2e_xts_UploadCode_E.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {E : Set}.
     
@@ -4883,16 +4884,16 @@ Module Impl_core_fmt_Debug_for_ink_e2e_xts_UploadCode_E.
       Notation.double_colon := fmt;
     }.
     
-    Global Instance I : core.fmt.Debug.Trait Self := {
+    Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
   End Impl_core_fmt_Debug_for_ink_e2e_xts_UploadCode_E.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_ink_e2e_xts_UploadCode_E.
 
 Module Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_UploadCode_E.
   Section Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_UploadCode_E.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {E : Set}.
     
@@ -4923,17 +4924,17 @@ Module Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_UploadCode_E.
         encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
     }.
     
-    Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
+    Global Instance ℐ : parity_scale_codec.codec.Encode.Trait Self := {
     }.
   End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_UploadCode_E.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_UploadCode_E.
 
 Module
   Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_UploadCode_E.
   Section
     Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_UploadCode_E.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {E : Set}.
     
@@ -4947,19 +4948,19 @@ Module
             (core.option.Option E::type["Balance"])}.
     Definition Self : Set := ink_e2e.xts.UploadCode E.
     
-    Global Instance I
+    Global Instance ℐ
       : parity_scale_codec.encode_like.EncodeLike.Trait Self
           (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self)
         := {
     }.
   End
     Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_UploadCode_E.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_UploadCode_E.
 
 Module Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_UploadCode_E.
   Section Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_UploadCode_E.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {E : Set}.
     
@@ -4987,7 +4988,7 @@ Module Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_UploadCode_E.
       Notation.double_colon := decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
     
-    Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
+    Global Instance ℐ : parity_scale_codec.codec.Decode.Trait Self := {
       parity_scale_codec.codec.Decode.decode
         {__CodecInputEdqy : Set}
         {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
@@ -4995,12 +4996,12 @@ Module Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_UploadCode_E.
         decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
   End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_UploadCode_E.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_UploadCode_E.
 
 Module Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_UploadCode_E.
   Section Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_UploadCode_E.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {E : Set}.
     
@@ -5019,16 +5020,16 @@ Module Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_UploadCode_E.
       Notation.double_colon := encode_as_type_to;
     }.
     
-    Global Instance I : scale_encode.EncodeAsType.Trait Self := {
+    Global Instance ℐ : scale_encode.EncodeAsType.Trait Self := {
       scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
     }.
   End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_UploadCode_E.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_UploadCode_E.
 
 Module Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_UploadCode_E.
   Section Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_UploadCode_E.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {E : Set}.
     
@@ -5047,16 +5048,16 @@ Module Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_UploadCode_E.
       Notation.double_colon := encode_as_fields_to;
     }.
     
-    Global Instance I : scale_encode.EncodeAsFields.Trait Self := {
+    Global Instance ℐ : scale_encode.EncodeAsFields.Trait Self := {
       scale_encode.EncodeAsFields.encode_as_fields_to := encode_as_fields_to;
     }.
   End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_UploadCode_E.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_UploadCode_E.
 
 (* Module Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcInstantiateRequest_C_E.
   (* Section Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcInstantiateRequest_C_E.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {C E : Set}.
     
@@ -5080,7 +5081,7 @@ End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_UploadCode_E.
       Notation.double_colon := serialize (__S := __S);
     }.
     
-    Global Instance I : serde.ser.Serialize.Trait Self := {
+    Global Instance ℐ : serde.ser.Serialize.Trait Self := {
       serde.ser.Serialize.serialize
         {__S : Set}
         {ℋ_0 : serde.ser.Serializer.Trait __S}
@@ -5088,12 +5089,12 @@ End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_UploadCode_E.
         serialize (__S := __S);
     }.
   End Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcInstantiateRequest_C_E. *)
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcInstantiateRequest_C_E. *)
 
 (* Module Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_RpcInstantiateRequest_C_E.
   (* Section Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_RpcInstantiateRequest_C_E.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {C E : Set}.
     
@@ -5129,15 +5130,15 @@ End Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcInstantiateRequest_C_E. *)
         encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
     }.
     
-    Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
+    Global Instance ℐ : parity_scale_codec.codec.Encode.Trait Self := {
     }.
   End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_RpcInstantiateRequest_C_E. *)
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_RpcInstantiateRequest_C_E. *)
 
 (* Module Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_RpcInstantiateRequest_C_E.
   (* Section Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_RpcInstantiateRequest_C_E.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {C E : Set}.
     
@@ -5156,18 +5157,18 @@ End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_RpcInstantiateRequest_C
             (core.option.Option E::type["Balance"])}.
     Definition Self : Set := ink_e2e.xts.RpcInstantiateRequest C E.
     
-    Global Instance I
+    Global Instance ℐ
       : parity_scale_codec.encode_like.EncodeLike.Trait Self
           (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self)
         := {
     }.
   End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_RpcInstantiateRequest_C_E. *)
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_RpcInstantiateRequest_C_E. *)
 
 (* Module Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcCodeUploadRequest_C_E.
   (* Section Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcCodeUploadRequest_C_E.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {C E : Set}.
     
@@ -5191,7 +5192,7 @@ End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_RpcInstantiat
       Notation.double_colon := serialize (__S := __S);
     }.
     
-    Global Instance I : serde.ser.Serialize.Trait Self := {
+    Global Instance ℐ : serde.ser.Serialize.Trait Self := {
       serde.ser.Serialize.serialize
         {__S : Set}
         {ℋ_0 : serde.ser.Serializer.Trait __S}
@@ -5199,12 +5200,12 @@ End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_RpcInstantiat
         serialize (__S := __S);
     }.
   End Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcCodeUploadRequest_C_E. *)
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcCodeUploadRequest_C_E. *)
 
 (* Module Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_RpcCodeUploadRequest_C_E.
   (* Section Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_RpcCodeUploadRequest_C_E.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {C E : Set}.
     
@@ -5239,15 +5240,15 @@ End Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcCodeUploadRequest_C_E. *)
         encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
     }.
     
-    Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
+    Global Instance ℐ : parity_scale_codec.codec.Encode.Trait Self := {
     }.
   End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_RpcCodeUploadRequest_C_E. *)
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_RpcCodeUploadRequest_C_E. *)
 
 (* Module Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_RpcCodeUploadRequest_C_E.
   (* Section Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_RpcCodeUploadRequest_C_E.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {C E : Set}.
     
@@ -5265,18 +5266,18 @@ End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_RpcCodeUploadRequest_C_
             (core.option.Option E::type["Balance"])}.
     Definition Self : Set := ink_e2e.xts.RpcCodeUploadRequest C E.
     
-    Global Instance I
+    Global Instance ℐ
       : parity_scale_codec.encode_like.EncodeLike.Trait Self
           (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self)
         := {
     }.
   End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_RpcCodeUploadRequest_C_E. *)
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_RpcCodeUploadRequest_C_E. *)
 
 (* Module Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcCallRequest_C_E.
   (* Section Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcCallRequest_C_E.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {C E : Set}.
     
@@ -5301,7 +5302,7 @@ End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_RpcCodeUpload
       Notation.double_colon := serialize (__S := __S);
     }.
     
-    Global Instance I : serde.ser.Serialize.Trait Self := {
+    Global Instance ℐ : serde.ser.Serialize.Trait Self := {
       serde.ser.Serialize.serialize
         {__S : Set}
         {ℋ_0 : serde.ser.Serializer.Trait __S}
@@ -5309,12 +5310,12 @@ End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_RpcCodeUpload
         serialize (__S := __S);
     }.
   End Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcCallRequest_C_E. *)
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcCallRequest_C_E. *)
 
 (* Module Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_RpcCallRequest_C_E.
   (* Section Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_RpcCallRequest_C_E.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {C E : Set}.
     
@@ -5352,15 +5353,15 @@ End Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcCallRequest_C_E. *)
         encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
     }.
     
-    Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
+    Global Instance ℐ : parity_scale_codec.codec.Encode.Trait Self := {
     }.
   End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_RpcCallRequest_C_E. *)
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_RpcCallRequest_C_E. *)
 
 (* Module Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_RpcCallRequest_C_E.
   (* Section Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_RpcCallRequest_C_E.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {C E : Set}.
     
@@ -5381,18 +5382,18 @@ End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_RpcCallRequest_C_E. *)
             (core.option.Option E::type["Balance"])}.
     Definition Self : Set := ink_e2e.xts.RpcCallRequest C E.
     
-    Global Instance I
+    Global Instance ℐ
       : parity_scale_codec.encode_like.EncodeLike.Trait Self
           (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self)
         := {
     }.
   End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_RpcCallRequest_C_E. *)
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_RpcCallRequest_C_E. *)
 
 (* Module Impl_serde_ser_Serialize_for_ink_e2e_xts_Code.
   (* Section Impl_serde_ser_Serialize_for_ink_e2e_xts_Code.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := ink_e2e.xts.Code.
     
@@ -5409,7 +5410,7 @@ End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_RpcCallReques
       Notation.double_colon := serialize (__S := __S);
     }.
     
-    Global Instance I : serde.ser.Serialize.Trait Self := {
+    Global Instance ℐ : serde.ser.Serialize.Trait Self := {
       serde.ser.Serialize.serialize
         {__S : Set}
         {ℋ_0 : serde.ser.Serializer.Trait __S}
@@ -5417,12 +5418,12 @@ End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_RpcCallReques
         serialize (__S := __S);
     }.
   End Impl_serde_ser_Serialize_for_ink_e2e_xts_Code. *)
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_serde_ser_Serialize_for_ink_e2e_xts_Code. *)
 
 (* Module Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Code.
   (* Section Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Code.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := ink_e2e.xts.Code.
     
@@ -5443,30 +5444,30 @@ End Impl_serde_ser_Serialize_for_ink_e2e_xts_Code. *)
         encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
     }.
     
-    Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
+    Global Instance ℐ : parity_scale_codec.codec.Encode.Trait Self := {
     }.
   End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Code. *)
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Code. *)
 
 (* Module Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Code.
   (* Section Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Code.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := ink_e2e.xts.Code.
     
-    Global Instance I
+    Global Instance ℐ
       : parity_scale_codec.encode_like.EncodeLike.Trait Self
           (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self)
         := {
     }.
   End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Code. *)
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Code. *)
 
 Module ContractsApi.
   Section ContractsApi.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {C E : Set}.
     
@@ -5496,21 +5497,21 @@ Module ContractsApi.
 End ContractsApi.
 Definition ContractsApi
     (C E : Set)
-    `{State.Trait}
+    `{ℋ : State.Trait}
     {ℋ_0 : subxt.config.Config.Trait C}
     {ℋ_1 : ink_env.types.Environment.Trait E}
     : Set :=
   M.val (ContractsApi.t (C := C) (E := E)).
 
 Module SubstrateConfig.
-  Inductive t `{State.Trait} : Set :=
+  Inductive t `{ℋ : State.Trait} : Set :=
   .
 End SubstrateConfig.
-Definition SubstrateConfig `{State.Trait} : Set := SubstrateConfig.t.
+Definition SubstrateConfig `{ℋ : State.Trait} : Set := SubstrateConfig.t.
 
 Module Impl_subxt_config_Config_for_ink_e2e_SubstrateConfig.
   Section Impl_subxt_config_Config_for_ink_e2e_SubstrateConfig.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := ink_e2e.SubstrateConfig.
     
@@ -5535,7 +5536,7 @@ Module Impl_subxt_config_Config_for_ink_e2e_SubstrateConfig.
     Definition ExtrinsicParams : Set :=
       subxt.config.substrate.SubstrateExtrinsicParams Self.
     
-    Global Instance I : subxt.config.Config.Trait Self := {
+    Global Instance ℐ : subxt.config.Config.Trait Self := {
       subxt.config.Config.Index := Index;
       subxt.config.Config.Hash := Hash;
       subxt.config.Config.Hasher := Hasher;
@@ -5546,29 +5547,29 @@ Module Impl_subxt_config_Config_for_ink_e2e_SubstrateConfig.
       subxt.config.Config.ExtrinsicParams := ExtrinsicParams;
     }.
   End Impl_subxt_config_Config_for_ink_e2e_SubstrateConfig.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_subxt_config_Config_for_ink_e2e_SubstrateConfig.
 
-Definition PolkadotConfig `{State.Trait} : Set :=
+Definition PolkadotConfig `{ℋ : State.Trait} : Set :=
   subxt.config.WithExtrinsicParams
     ink_e2e.SubstrateConfig
     (subxt.config.polkadot.PolkadotExtrinsicParams ink_e2e.SubstrateConfig).
 
-Definition Signer (C : Set) `{State.Trait} : Set :=
+Definition Signer `{ℋ : State.Trait} (C : Set) : Set :=
   subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair.
 
-Parameter INIT : forall `{State.Trait}, std.sync.once.Once.
+Parameter INIT : forall `{ℋ : State.Trait}, std.sync.once.Once.
 
 Parameter LOG_PREFIX :
-    forall `{State.Trait},
+    forall `{ℋ : State.Trait},
     std.thread.local.LocalKey (core.cell.RefCell alloc.string.String).
 
-Parameter log_prefix : forall `{State.Trait}, M alloc.string.String.
+Parameter log_prefix : forall `{ℋ : State.Trait}, M alloc.string.String.
 
-Parameter log_info : forall `{State.Trait}, (ref str) -> M unit.
+Parameter log_info : forall `{ℋ : State.Trait}, (ref str) -> M unit.
 
-Parameter log_error : forall `{State.Trait}, (ref str) -> M unit.
+Parameter log_error : forall `{ℋ : State.Trait}, (ref str) -> M unit.
 
 Parameter account_id :
-    forall `{State.Trait},
+    forall `{ℋ : State.Trait},
     sp_keyring.sr25519.Keyring -> M ink_primitives.types.AccountId.

@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module Container.
   Section Container.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Record t : Set := {
@@ -20,11 +20,11 @@ Module Container.
     }.
   End Container.
 End Container.
-Definition Container `{State.Trait} : Set := M.val Container.t.
+Definition Container `{ℋ : State.Trait} : Set := M.val Container.t.
 
 Module Contains.
   Section Contains.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Class Trait (Self : Set) : Type := {
       A : Set;
@@ -48,7 +48,7 @@ Module
   Impl_generics_associated_types_solution_Contains_for_generics_associated_types_solution_Container.
   Section
     Impl_generics_associated_types_solution_Contains_for_generics_associated_types_solution_Container.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := generics_associated_types_solution.Container.
     
@@ -83,7 +83,7 @@ Module
       Notation.double_colon := a;
     }.
     
-    Global Instance I
+    Global Instance ℐ
       : generics_associated_types_solution.Contains.Trait Self := {
       generics_associated_types_solution.Contains.A := A;
       generics_associated_types_solution.Contains.B := B;
@@ -94,23 +94,23 @@ Module
     }.
   End
     Impl_generics_associated_types_solution_Contains_for_generics_associated_types_solution_Container.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End
   Impl_generics_associated_types_solution_Contains_for_generics_associated_types_solution_Container.
 
 Parameter difference :
     forall
-      `{State.Trait}
+      `{ℋ : State.Trait}
       {C : Set}
       {ℋ_0 : generics_associated_types_solution.Contains.Trait C},
     (ref C) -> M i32.
 
 Parameter get_a :
     forall
-      `{State.Trait}
+      `{ℋ : State.Trait}
       {C : Set}
       {ℋ_0 : generics_associated_types_solution.Contains.Trait C},
     (ref C) -> M C::type["A"].
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{State.Trait}, M unit.
+Parameter main : forall `{ℋ : State.Trait}, M unit.

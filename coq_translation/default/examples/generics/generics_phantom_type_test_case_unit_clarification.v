@@ -2,16 +2,16 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module Inch.
-  Inductive t `{State.Trait} : Set :=
+  Inductive t `{ℋ : State.Trait} : Set :=
   .
 End Inch.
-Definition Inch `{State.Trait} : Set := Inch.t.
+Definition Inch `{ℋ : State.Trait} : Set := Inch.t.
 
 Module
   Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Inch.
   Section
     Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Inch.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set :=
       generics_phantom_type_test_case_unit_clarification.Inch.
@@ -28,12 +28,12 @@ Module
       Notation.double_colon := fmt;
     }.
     
-    Global Instance I : core.fmt.Debug.Trait Self := {
+    Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
   End
     Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Inch.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End
   Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Inch.
 
@@ -41,7 +41,7 @@ Module
   Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Inch.
   Section
     Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Inch.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set :=
       generics_phantom_type_test_case_unit_clarification.Inch.
@@ -56,12 +56,12 @@ Module
       Notation.double_colon := clone;
     }.
     
-    Global Instance I : core.clone.Clone.Trait Self := {
+    Global Instance ℐ : core.clone.Clone.Trait Self := {
       core.clone.Clone.clone := clone;
     }.
   End
     Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Inch.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End
   Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Inch.
 
@@ -69,30 +69,30 @@ Module
   Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Inch.
   Section
     Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Inch.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set :=
       generics_phantom_type_test_case_unit_clarification.Inch.
     
-    Global Instance I : core.marker.Copy.Trait Self := {
+    Global Instance ℐ : core.marker.Copy.Trait Self := {
     }.
   End
     Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Inch.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End
   Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Inch.
 
 Module Mm.
-  Inductive t `{State.Trait} : Set :=
+  Inductive t `{ℋ : State.Trait} : Set :=
   .
 End Mm.
-Definition Mm `{State.Trait} : Set := Mm.t.
+Definition Mm `{ℋ : State.Trait} : Set := Mm.t.
 
 Module
   Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Mm.
   Section
     Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Mm.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set :=
       generics_phantom_type_test_case_unit_clarification.Mm.
@@ -109,12 +109,12 @@ Module
       Notation.double_colon := fmt;
     }.
     
-    Global Instance I : core.fmt.Debug.Trait Self := {
+    Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
   End
     Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Mm.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End
   Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Mm.
 
@@ -122,7 +122,7 @@ Module
   Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Mm.
   Section
     Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Mm.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set :=
       generics_phantom_type_test_case_unit_clarification.Mm.
@@ -137,12 +137,12 @@ Module
       Notation.double_colon := clone;
     }.
     
-    Global Instance I : core.clone.Clone.Trait Self := {
+    Global Instance ℐ : core.clone.Clone.Trait Self := {
       core.clone.Clone.clone := clone;
     }.
   End
     Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Mm.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End
   Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Mm.
 
@@ -150,22 +150,22 @@ Module
   Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Mm.
   Section
     Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Mm.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set :=
       generics_phantom_type_test_case_unit_clarification.Mm.
     
-    Global Instance I : core.marker.Copy.Trait Self := {
+    Global Instance ℐ : core.marker.Copy.Trait Self := {
     }.
   End
     Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Mm.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End
   Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Mm.
 
 Module Length.
   Section Length.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {Unit : Set}.
     
@@ -184,14 +184,14 @@ Module Length.
     }.
   End Length.
 End Length.
-Definition Length `{State.Trait} (Unit : Set) : Set :=
+Definition Length `{ℋ : State.Trait} (Unit : Set) : Set :=
   M.val (Length.t (Unit := Unit)).
 
 Module
   Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
   Section
     Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {Unit : Set}.
     
@@ -233,12 +233,12 @@ Module
       Notation.double_colon := fmt;
     }.
     
-    Global Instance I : core.fmt.Debug.Trait Self := {
+    Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
   End
     Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End
   Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
 
@@ -246,7 +246,7 @@ Module
   Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
   Section
     Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {Unit : Set}.
     
@@ -285,12 +285,12 @@ Module
       Notation.double_colon := clone;
     }.
     
-    Global Instance I : core.clone.Clone.Trait Self := {
+    Global Instance ℐ : core.clone.Clone.Trait Self := {
       core.clone.Clone.clone := clone;
     }.
   End
     Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End
   Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
 
@@ -298,7 +298,7 @@ Module
   Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
   Section
     Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {Unit : Set}.
     
@@ -306,11 +306,11 @@ Module
     Definition Self : Set :=
       generics_phantom_type_test_case_unit_clarification.Length Unit.
     
-    Global Instance I : core.marker.Copy.Trait Self := {
+    Global Instance ℐ : core.marker.Copy.Trait Self := {
     }.
   End
     Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End
   Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
 
@@ -318,7 +318,7 @@ Module
   Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
   Section
     Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {Unit : Set}.
     
@@ -345,7 +345,7 @@ Module
       Notation.double_colon := add;
     }.
     
-    Global Instance I
+    Global Instance ℐ
       : core.ops.arith.Add.Trait Self
           (Rhs := core.ops.arith.Add.Default.Rhs Self)
         := {
@@ -354,12 +354,12 @@ Module
     }.
   End
     Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End
   Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main `{ℋ : State.Trait} : M unit :=
   let* one_foot :=
     let* α0 := M.alloc 12 (* 12.0 *) in
     Pure

@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition double_first
-    `{State.Trait}
+    `{ℋ : State.Trait}
     (vec : alloc.vec.Vec (ref str) alloc.vec.Vec.Default.A)
     : M i32 :=
   let* first :=
@@ -21,7 +21,7 @@ Definition double_first
   mul α0 α5.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main `{ℋ : State.Trait} : M unit :=
   let* numbers :=
     let* α0 := deref (mk_str "93") str in
     let* α1 := borrow α0 str in

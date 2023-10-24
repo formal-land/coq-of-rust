@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module Unit.
   Section Unit.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Inductive t : Set := Build.
   End Unit.
@@ -12,7 +12,7 @@ Definition Unit := @Unit.t.
 
 Module Impl_core_fmt_Debug_for_clone_Unit.
   Section Impl_core_fmt_Debug_for_clone_Unit.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := clone.Unit.
     
@@ -24,16 +24,16 @@ Module Impl_core_fmt_Debug_for_clone_Unit.
       Notation.double_colon := fmt;
     }.
     
-    Global Instance I : core.fmt.Debug.Trait Self := {
+    Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
   End Impl_core_fmt_Debug_for_clone_Unit.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_clone_Unit.
 
 Module Impl_core_clone_Clone_for_clone_Unit.
   Section Impl_core_clone_Clone_for_clone_Unit.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := clone.Unit.
     
@@ -44,28 +44,28 @@ Module Impl_core_clone_Clone_for_clone_Unit.
       Notation.double_colon := clone;
     }.
     
-    Global Instance I : core.clone.Clone.Trait Self := {
+    Global Instance ℐ : core.clone.Clone.Trait Self := {
       core.clone.Clone.clone := clone;
     }.
   End Impl_core_clone_Clone_for_clone_Unit.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_clone_Clone_for_clone_Unit.
 
 Module Impl_core_marker_Copy_for_clone_Unit.
   Section Impl_core_marker_Copy_for_clone_Unit.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := clone.Unit.
     
-    Global Instance I : core.marker.Copy.Trait Self := {
+    Global Instance ℐ : core.marker.Copy.Trait Self := {
     }.
   End Impl_core_marker_Copy_for_clone_Unit.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_marker_Copy_for_clone_Unit.
 
 Module Pair.
   Section Pair.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Record t : Set := {
@@ -82,11 +82,11 @@ Module Pair.
     }.
   End Pair.
 End Pair.
-Definition Pair `{State.Trait} : Set := M.val Pair.t.
+Definition Pair `{ℋ : State.Trait} : Set := M.val Pair.t.
 
 Module Impl_core_clone_Clone_for_clone_Pair.
   Section Impl_core_clone_Clone_for_clone_Pair.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := clone.Pair.
     
@@ -97,16 +97,16 @@ Module Impl_core_clone_Clone_for_clone_Pair.
       Notation.double_colon := clone;
     }.
     
-    Global Instance I : core.clone.Clone.Trait Self := {
+    Global Instance ℐ : core.clone.Clone.Trait Self := {
       core.clone.Clone.clone := clone;
     }.
   End Impl_core_clone_Clone_for_clone_Pair.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_clone_Clone_for_clone_Pair.
 
 Module Impl_core_fmt_Debug_for_clone_Pair.
   Section Impl_core_fmt_Debug_for_clone_Pair.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := clone.Pair.
     
@@ -118,12 +118,12 @@ Module Impl_core_fmt_Debug_for_clone_Pair.
       Notation.double_colon := fmt;
     }.
     
-    Global Instance I : core.fmt.Debug.Trait Self := {
+    Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
   End Impl_core_fmt_Debug_for_clone_Pair.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_clone_Pair.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{State.Trait}, M unit.
+Parameter main : forall `{ℋ : State.Trait}, M unit.

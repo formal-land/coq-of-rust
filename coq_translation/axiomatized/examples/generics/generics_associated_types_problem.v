@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module Container.
   Section Container.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Record t : Set := {
@@ -20,11 +20,11 @@ Module Container.
     }.
   End Container.
 End Container.
-Definition Container `{State.Trait} : Set := M.val Container.t.
+Definition Container `{ℋ : State.Trait} : Set := M.val Container.t.
 
 Module Contains.
   Section Contains.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Class Trait (Self : Set) {A B : Set} : Type := {
       contains : (ref Self) -> (ref A) -> (ref B) -> M bool;
@@ -39,7 +39,7 @@ Module
   Impl_generics_associated_types_problem_Contains_for_generics_associated_types_problem_Container.
   Section
     Impl_generics_associated_types_problem_Contains_for_generics_associated_types_problem_Container.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := generics_associated_types_problem.Container.
     
@@ -64,7 +64,7 @@ Module
       Notation.double_colon := last;
     }.
     
-    Global Instance I
+    Global Instance ℐ
       : generics_associated_types_problem.Contains.Trait Self
           (A := i32)
           (B := i32)
@@ -75,17 +75,17 @@ Module
     }.
   End
     Impl_generics_associated_types_problem_Contains_for_generics_associated_types_problem_Container.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End
   Impl_generics_associated_types_problem_Contains_for_generics_associated_types_problem_Container.
 
 Parameter difference :
     forall
-      `{State.Trait}
+      `{ℋ : State.Trait}
       {A B C : Set}
       {ℋ_0 :
         generics_associated_types_problem.Contains.Trait C (A := A) (B := B)},
     (ref C) -> M i32.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{State.Trait}, M unit.
+Parameter main : forall `{ℋ : State.Trait}, M unit.

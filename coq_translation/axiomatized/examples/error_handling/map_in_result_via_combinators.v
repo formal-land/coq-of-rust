@@ -2,14 +2,14 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Parameter multiply :
-    forall `{State.Trait},
+    forall `{ℋ : State.Trait},
     (ref str) ->
       (ref str) ->
       M (core.result.Result i32 core.num.error.ParseIntError).
 
 Parameter print :
-    forall `{State.Trait},
+    forall `{ℋ : State.Trait},
     (core.result.Result i32 core.num.error.ParseIntError) -> M unit.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{State.Trait}, M unit.
+Parameter main : forall `{ℋ : State.Trait}, M unit.

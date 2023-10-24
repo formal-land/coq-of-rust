@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module Circle.
   Section Circle.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Record t : Set := {
@@ -19,11 +19,11 @@ Module Circle.
     }.
   End Circle.
 End Circle.
-Definition Circle `{State.Trait} : Set := M.val Circle.t.
+Definition Circle `{ℋ : State.Trait} : Set := M.val Circle.t.
 
 Module Impl_core_fmt_Display_for_converting_to_string_Circle.
   Section Impl_core_fmt_Display_for_converting_to_string_Circle.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := converting_to_string.Circle.
     
@@ -35,12 +35,12 @@ Module Impl_core_fmt_Display_for_converting_to_string_Circle.
       Notation.double_colon := fmt;
     }.
     
-    Global Instance I : core.fmt.Display.Trait Self := {
+    Global Instance ℐ : core.fmt.Display.Trait Self := {
       core.fmt.Display.fmt := fmt;
     }.
   End Impl_core_fmt_Display_for_converting_to_string_Circle.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Display_for_converting_to_string_Circle.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{State.Trait}, M unit.
+Parameter main : forall `{ℋ : State.Trait}, M unit.

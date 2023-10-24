@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition apply
-    `{State.Trait}
+    `{ℋ : State.Trait}
     {F : Set}
     {ℋ_0 : core.ops.function.FnOnce.Trait F (Args := unit)}
     (f : F)
@@ -13,7 +13,7 @@ Definition apply
   M.alloc tt.
 
 Definition apply_to_3
-    `{State.Trait}
+    `{ℋ : State.Trait}
     {F : Set}
     {ℋ_0 : core.ops.function.Fn.Trait F (Args := i32)}
     (f : F)
@@ -23,7 +23,7 @@ Definition apply_to_3
   core.ops.function.Fn.call α0 (α1).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main `{ℋ : State.Trait} : M unit :=
   let greeting := mk_str "hello" in
   let* farewell :=
     let* α0 := deref (mk_str "goodbye") str in

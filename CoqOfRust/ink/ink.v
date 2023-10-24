@@ -5,7 +5,7 @@ Require CoqOfRust.ink.ink_env.
 Module result_info.
   (* Module IsResultType.
     (* Section IsResultType.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Context {T : Set}.
       
@@ -27,7 +27,7 @@ Module result_info.
   
   Module IsResultTypeFallback.
     Section IsResultTypeFallback.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Class Trait (Self : Set) : Type := {
         VALUE : bool;
@@ -38,7 +38,7 @@ Module result_info.
   
   Module IsResultErr.
     Section IsResultErr.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Context {T : Set}.
       
@@ -53,12 +53,12 @@ Module result_info.
       }.
     End IsResultErr.
   End IsResultErr.
-  Definition IsResultErr `{State.Trait} (T : Set) : Set :=
+  Definition IsResultErr `{ℋ : State.Trait} (T : Set) : Set :=
     M.val (IsResultErr.t (T := T)).
   
   Module IsResultErrFallback.
     Section IsResultErrFallback.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Unset Primitive Projections.
       Class Trait (Self : Set) : Type := {
@@ -70,7 +70,7 @@ End result_info.
 
 (* Module IsResultType.
   (* Section IsResultType.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {T : Set}.
     
@@ -88,12 +88,12 @@ End result_info.
     }.
   End IsResultType. *)
 End IsResultType. *)
-Definition IsResultType (T : Set) `{State.Trait} : Set :=
+Definition IsResultType (T : Set) `{ℋ : State.Trait} : Set :=
   M.val (IsResultType.t (T := T)).
 
 Module IsResultTypeFallback.
   Section IsResultTypeFallback.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Class Trait (Self : Set) : Type := {
       VALUE : bool;
@@ -104,7 +104,7 @@ End IsResultTypeFallback.
 
 Module IsResultErr.
   Section IsResultErr.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {T : Set}.
     
@@ -119,12 +119,12 @@ Module IsResultErr.
     }.
   End IsResultErr.
 End IsResultErr.
-Definition IsResultErr `{State.Trait} (T : Set) : Set :=
+Definition IsResultErr `{ℋ : State.Trait} (T : Set) : Set :=
   M.val (IsResultErr.t (T := T)).
 
 Module IsResultErrFallback.
   Section IsResultErrFallback.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Class Trait (Self : Set) : Type := {
@@ -137,7 +137,7 @@ Module reflect.
   Module contract.
     Module ContractName.
       Section ContractName.
-        Context `{State.Trait}.
+        Context `{ℋ : State.Trait}.
         
         Class Trait (Self : Set) : Type := {
           NAME : ref str;
@@ -150,7 +150,7 @@ Module reflect.
   Module dispatch.
     Module DispatchableMessageInfo.
       Section DispatchableMessageInfo.
-        Context `{State.Trait}.
+        Context `{ℋ : State.Trait}.
         
         Class Trait (Self : Set) : Type := {
           Input : Set;
@@ -180,7 +180,7 @@ Module reflect.
     
     Module DispatchableConstructorInfo.
       Section DispatchableConstructorInfo.
-        Context `{State.Trait}.
+        Context `{ℋ : State.Trait}.
         
         Class Trait (Self : Set) : Type := {
           Input : Set;
@@ -216,7 +216,7 @@ Module reflect.
     Module private.
       Module Sealed.
         Section Sealed.
-          Context `{State.Trait}.
+          Context `{ℋ : State.Trait}.
           
           Unset Primitive Projections.
           Class Trait (Self : Set) : Type := {
@@ -228,7 +228,7 @@ Module reflect.
     
     Module ConstructorOutput.
       Section ConstructorOutput.
-        Context `{State.Trait}.
+        Context `{ℋ : State.Trait}.
         
         Class Trait
             (Self : Set)
@@ -249,7 +249,7 @@ Module reflect.
     
     Module ConstructorOutputValue.
       Section ConstructorOutputValue.
-        Context `{State.Trait}.
+        Context `{ℋ : State.Trait}.
         
         Context {T : Set}.
         
@@ -264,22 +264,22 @@ Module reflect.
         }.
       End ConstructorOutputValue.
     End ConstructorOutputValue.
-    Definition ConstructorOutputValue `{State.Trait} (T : Set) : Set :=
+    Definition ConstructorOutputValue `{ℋ : State.Trait} (T : Set) : Set :=
       M.val (ConstructorOutputValue.t (T := T)).
     
     Module DispatchError.
-      Inductive t `{State.Trait} : Set :=
+      Inductive t `{ℋ : State.Trait} : Set :=
       | InvalidSelector
       | UnknownSelector
       | InvalidParameters
       | CouldNotReadInput
       | PaidUnpayableMessage.
     End DispatchError.
-    Definition DispatchError `{State.Trait} : Set := DispatchError.t.
+    Definition DispatchError `{ℋ : State.Trait} : Set := DispatchError.t.
     
     Module ExecuteDispatchable.
       Section ExecuteDispatchable.
-        Context `{State.Trait}.
+        Context `{ℋ : State.Trait}.
         
         Class Trait (Self : Set) : Type := {
           execute_dispatchable
@@ -293,7 +293,7 @@ Module reflect.
     
     Module ContractMessageDecoder.
       Section ContractMessageDecoder.
-        Context `{State.Trait}.
+        Context `{ℋ : State.Trait}.
         
         Class Trait (Self : Set) : Type := {
           Type_ : Set;
@@ -308,7 +308,7 @@ Module reflect.
     
     Module DecodeDispatch.
       Section DecodeDispatch.
-        Context `{State.Trait}.
+        Context `{ℋ : State.Trait}.
         
         Class Trait
             (Self : Set)
@@ -327,7 +327,7 @@ Module reflect.
     
     Module ContractConstructorDecoder.
       Section ContractConstructorDecoder.
-        Context `{State.Trait}.
+        Context `{ℋ : State.Trait}.
         
         Class Trait (Self : Set) : Type := {
           Type_ : Set;
@@ -344,7 +344,7 @@ Module reflect.
   Module event.
     Module ContractEventBase.
       Section ContractEventBase.
-        Context `{State.Trait}.
+        Context `{ℋ : State.Trait}.
         
         Class Trait (Self : Set) : Type := {
           Type_ : Set;
@@ -362,7 +362,7 @@ Module reflect.
     Module info.
       Module TraitMessageInfo.
         Section TraitMessageInfo.
-          Context `{State.Trait}.
+          Context `{ℋ : State.Trait}.
           
           Class Trait (Self : Set) : Type := {
             PAYABLE : bool;
@@ -374,7 +374,7 @@ Module reflect.
       
       Module TraitInfo.
         Section TraitInfo.
-          Context `{State.Trait}.
+          Context `{ℋ : State.Trait}.
           
           Class Trait (Self : Set) : Type := {
             ID : u32;
@@ -389,7 +389,7 @@ Module reflect.
     Module registry.
       Module TraitDefinitionRegistry.
         Section TraitDefinitionRegistry.
-          Context `{State.Trait}.
+          Context `{ℋ : State.Trait}.
           
           Context {E : Set}.
           
@@ -409,7 +409,7 @@ Module reflect.
           }.
         End TraitDefinitionRegistry.
       End TraitDefinitionRegistry.
-      Definition TraitDefinitionRegistry (E : Set) `{State.Trait} : Set :=
+      Definition TraitDefinitionRegistry (E : Set) `{ℋ : State.Trait} : Set :=
         M.val (TraitDefinitionRegistry.t (E := E)).
     End registry.
   End trait_def.
@@ -420,7 +420,7 @@ Module codegen.
     Module execution.
       Parameter deny_payment :
           forall
-            `{State.Trait}
+            `{ℋ : State.Trait}
             {E : Set}
             {ℋ_0 : ink_env.types.Environment.Trait E},
           M (core.result.Result unit ink.reflect.dispatch.DispatchError).
@@ -429,7 +429,7 @@ Module codegen.
     Module info.
       Module ContractCallBuilder.
         Section ContractCallBuilder.
-          Context `{State.Trait}.
+          Context `{ℋ : State.Trait}.
           
           Class Trait (Self : Set) : Type := {
             Type_ : Set;
@@ -446,7 +446,7 @@ Module codegen.
     Module type_check.
       Module DispatchInput.
         Section DispatchInput.
-          Context `{State.Trait}.
+          Context `{ℋ : State.Trait}.
           
           Context {T : Set}.
           
@@ -461,12 +461,12 @@ Module codegen.
           }.
         End DispatchInput.
       End DispatchInput.
-      Definition DispatchInput `{State.Trait} (T : Set) : Set :=
+      Definition DispatchInput `{ℋ : State.Trait} (T : Set) : Set :=
         M.val (DispatchInput.t (T := T)).
       
       Module DispatchOutput.
         Section DispatchOutput.
-          Context `{State.Trait}.
+          Context `{ℋ : State.Trait}.
           
           Context {T : Set}.
           
@@ -481,7 +481,7 @@ Module codegen.
           }.
         End DispatchOutput.
       End DispatchOutput.
-      Definition DispatchOutput `{State.Trait} (T : Set) : Set :=
+      Definition DispatchOutput `{ℋ : State.Trait} (T : Set) : Set :=
         M.val (DispatchOutput.t (T := T)).
     End type_check.
   End dispatch.
@@ -489,7 +489,7 @@ Module codegen.
   Module env.
     Module Env.
       Section Env.
-        Context `{State.Trait}.
+        Context `{ℋ : State.Trait}.
         
         Class Trait (Self : Set) : Type := {
           EnvAccess : Set;
@@ -505,7 +505,7 @@ Module codegen.
     
     Module StaticEnv.
       Section StaticEnv.
-        Context `{State.Trait}.
+        Context `{ℋ : State.Trait}.
         
         Class Trait (Self : Set) : Type := {
           EnvAccess : Set;
@@ -524,7 +524,7 @@ Module codegen.
     Module emit.
       Module EmitEvent.
         Section EmitEvent.
-          Context `{State.Trait}.
+          Context `{ℋ : State.Trait}.
           
           Class Trait
               (Self : Set)
@@ -547,7 +547,7 @@ Module codegen.
     Module topics.
       Module RespectTopicLimit.
         Section RespectTopicLimit.
-          Context `{State.Trait}.
+          Context `{ℋ : State.Trait}.
           
           Unset Primitive Projections.
           Class Trait (Self : Set) : Type := {
@@ -558,7 +558,7 @@ Module codegen.
       
       Module EventLenTopics.
         Section EventLenTopics.
-          Context `{State.Trait}.
+          Context `{ℋ : State.Trait}.
           
           Class Trait (Self : Set) : Type := {
             LenTopics : Set;
@@ -573,7 +573,7 @@ Module codegen.
       
       Module EventRespectsTopicLimit.
         Section EventRespectsTopicLimit.
-          Context `{State.Trait}.
+          Context `{ℋ : State.Trait}.
           
           Context {Event : Set}.
           
@@ -601,7 +601,7 @@ Module codegen.
       End EventRespectsTopicLimit.
       Definition EventRespectsTopicLimit
           (Event : Set)
-          `{State.Trait}
+          `{ℋ : State.Trait}
           {ℋ_0 : ink.codegen.event.topics.EventLenTopics.Trait Event}
           {ℋ_1 :
             ink.codegen.event.topics.RespectTopicLimit.Trait
@@ -612,7 +612,7 @@ Module codegen.
       
       Module EventTopics.
         Section EventTopics.
-          Context `{State.Trait}.
+          Context `{ℋ : State.Trait}.
           
           Inductive t : Set := Build.
         End EventTopics.
@@ -624,7 +624,7 @@ Module codegen.
   Module implies_return.
     Module ImpliesReturn.
       Section ImpliesReturn.
-        Context `{State.Trait}.
+        Context `{ℋ : State.Trait}.
         
         Unset Primitive Projections.
         Class Trait (Self : Set) {T : Set} : Type := {
@@ -638,7 +638,7 @@ Module codegen.
     Module call_builder.
       Module TraitCallBuilder.
         Section TraitCallBuilder.
-          Context `{State.Trait}.
+          Context `{ℋ : State.Trait}.
           
           Class Trait (Self : Set) : Type := {
             Builder : Set;
@@ -655,7 +655,7 @@ Module codegen.
       
       Module TraitCallForwarder.
         Section TraitCallForwarder.
-          Context `{State.Trait}.
+          Context `{ℋ : State.Trait}.
           
           Class Trait (Self : Set) : Type := {
             Forwarder : Set;
@@ -670,7 +670,7 @@ Module codegen.
       
       (* Module TraitCallForwarderFor.
         (* Section TraitCallForwarderFor.
-          Context `{State.Trait}.
+          Context `{ℋ : State.Trait}.
           
           Class Trait (Self : Set) : Type := {
             Forwarder : Set;
@@ -703,7 +703,7 @@ Module codegen.
     Module trait_message.
       Module TraitMessagePayable.
         Section TraitMessagePayable.
-          Context `{State.Trait}.
+          Context `{ℋ : State.Trait}.
           
           Inductive t : Set := Build.
         End TraitMessagePayable.
@@ -712,7 +712,7 @@ Module codegen.
       
       Module TraitMessageSelector.
         Section TraitMessageSelector.
-          Context `{State.Trait}.
+          Context `{ℋ : State.Trait}.
           
           Inductive t : Set := Build.
         End TraitMessageSelector.
@@ -723,13 +723,13 @@ Module codegen.
   
   Module utils.
     Module identity_type.
-      Parameter consume_type : forall `{State.Trait} {T : Set}, M unit.
+      Parameter consume_type : forall `{ℋ : State.Trait} {T : Set}, M unit.
     End identity_type.
     
     Module same_type.
       Module IsSameType.
         Section IsSameType.
-          Context `{State.Trait}.
+          Context `{ℋ : State.Trait}.
           
           Context {T : Set}.
           
@@ -749,7 +749,7 @@ Module codegen.
           }.
         End IsSameType.
       End IsSameType.
-      Definition IsSameType (T : Set) `{State.Trait} : Set :=
+      Definition IsSameType (T : Set) `{ℋ : State.Trait} : Set :=
         M.val (IsSameType.t (T := T)).
     End same_type.
   End utils.
@@ -759,7 +759,7 @@ Module dispatch.
   Module execution.
     Parameter deny_payment :
         forall
-          `{State.Trait}
+          `{ℋ : State.Trait}
           {E : Set}
           {ℋ_0 : ink_env.types.Environment.Trait E},
         M (core.result.Result unit ink.reflect.dispatch.DispatchError).
@@ -768,7 +768,7 @@ Module dispatch.
   Module info.
     Module ContractCallBuilder.
       Section ContractCallBuilder.
-        Context `{State.Trait}.
+        Context `{ℋ : State.Trait}.
         
         Class Trait (Self : Set) : Type := {
           Type_ : Set;
@@ -785,7 +785,7 @@ Module dispatch.
   Module type_check.
     Module DispatchInput.
       Section DispatchInput.
-        Context `{State.Trait}.
+        Context `{ℋ : State.Trait}.
         
         Context {T : Set}.
         
@@ -800,12 +800,12 @@ Module dispatch.
         }.
       End DispatchInput.
     End DispatchInput.
-    Definition DispatchInput `{State.Trait} (T : Set) : Set :=
+    Definition DispatchInput `{ℋ : State.Trait} (T : Set) : Set :=
       M.val (DispatchInput.t (T := T)).
     
     Module DispatchOutput.
       Section DispatchOutput.
-        Context `{State.Trait}.
+        Context `{ℋ : State.Trait}.
         
         Context {T : Set}.
         
@@ -820,25 +820,31 @@ Module dispatch.
         }.
       End DispatchOutput.
     End DispatchOutput.
-    Definition DispatchOutput `{State.Trait} (T : Set) : Set :=
+    Definition DispatchOutput `{ℋ : State.Trait} (T : Set) : Set :=
       M.val (DispatchOutput.t (T := T)).
   End type_check.
 End dispatch.
 
 Module execution.
   Parameter deny_payment :
-      forall `{State.Trait} {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E},
+      forall
+        `{ℋ : State.Trait}
+        {E : Set}
+        {ℋ_0 : ink_env.types.Environment.Trait E},
       M (core.result.Result unit ink.reflect.dispatch.DispatchError).
 End execution.
 
 Parameter deny_payment :
-    forall `{State.Trait} {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E},
+    forall
+      `{ℋ : State.Trait}
+      {E : Set}
+      {ℋ_0 : ink_env.types.Environment.Trait E},
     M (core.result.Result unit ink.reflect.dispatch.DispatchError).
 
 Module info.
   Module ContractCallBuilder.
     Section ContractCallBuilder.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Class Trait (Self : Set) : Type := {
         Type_ : Set;
@@ -854,7 +860,7 @@ End info.
 
 Module ContractCallBuilder.
   Section ContractCallBuilder.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Class Trait (Self : Set) : Type := {
       Type_ : Set;
@@ -870,7 +876,7 @@ End ContractCallBuilder.
 Module type_check.
   Module DispatchInput.
     Section DispatchInput.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Context {T : Set}.
       
@@ -885,12 +891,12 @@ Module type_check.
       }.
     End DispatchInput.
   End DispatchInput.
-  Definition DispatchInput `{State.Trait} (T : Set) : Set :=
+  Definition DispatchInput `{ℋ : State.Trait} (T : Set) : Set :=
     M.val (DispatchInput.t (T := T)).
   
   Module DispatchOutput.
     Section DispatchOutput.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Context {T : Set}.
       
@@ -905,13 +911,13 @@ Module type_check.
       }.
     End DispatchOutput.
   End DispatchOutput.
-  Definition DispatchOutput `{State.Trait} (T : Set) : Set :=
+  Definition DispatchOutput `{ℋ : State.Trait} (T : Set) : Set :=
     M.val (DispatchOutput.t (T := T)).
 End type_check.
 
 Module DispatchInput.
   Section DispatchInput.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {T : Set}.
     
@@ -926,12 +932,12 @@ Module DispatchInput.
     }.
   End DispatchInput.
 End DispatchInput.
-Definition DispatchInput `{State.Trait} (T : Set) : Set :=
+Definition DispatchInput `{ℋ : State.Trait} (T : Set) : Set :=
   M.val (DispatchInput.t (T := T)).
 
 Module DispatchOutput.
   Section DispatchOutput.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {T : Set}.
     
@@ -946,13 +952,13 @@ Module DispatchOutput.
     }.
   End DispatchOutput.
 End DispatchOutput.
-Definition DispatchOutput `{State.Trait} (T : Set) : Set :=
+Definition DispatchOutput `{ℋ : State.Trait} (T : Set) : Set :=
   M.val (DispatchOutput.t (T := T)).
 
 Module env.
   Module Env.
     Section Env.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Class Trait (Self : Set) : Type := {
         EnvAccess : Set;
@@ -968,7 +974,7 @@ Module env.
   
   Module StaticEnv.
     Section StaticEnv.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Class Trait (Self : Set) : Type := {
         EnvAccess : Set;
@@ -985,7 +991,7 @@ End env.
 
 Module Env.
   Section Env.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Class Trait (Self : Set) : Type := {
       EnvAccess : Set;
@@ -1001,7 +1007,7 @@ End Env.
 
 Module StaticEnv.
   Section StaticEnv.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Class Trait (Self : Set) : Type := {
       EnvAccess : Set;
@@ -1019,7 +1025,7 @@ Module event.
   Module emit.
     Module EmitEvent.
       Section EmitEvent.
-        Context `{State.Trait}.
+        Context `{ℋ : State.Trait}.
         
         Class Trait
             (Self : Set)
@@ -1042,7 +1048,7 @@ Module event.
   Module topics.
     Module RespectTopicLimit.
       Section RespectTopicLimit.
-        Context `{State.Trait}.
+        Context `{ℋ : State.Trait}.
         
         Unset Primitive Projections.
         Class Trait (Self : Set) : Type := {
@@ -1053,7 +1059,7 @@ Module event.
     
     Module EventLenTopics.
       Section EventLenTopics.
-        Context `{State.Trait}.
+        Context `{ℋ : State.Trait}.
         
         Class Trait (Self : Set) : Type := {
           LenTopics : Set;
@@ -1068,7 +1074,7 @@ Module event.
     
     Module EventRespectsTopicLimit.
       Section EventRespectsTopicLimit.
-        Context `{State.Trait}.
+        Context `{ℋ : State.Trait}.
         
         Context {Event : Set}.
         
@@ -1096,7 +1102,7 @@ Module event.
     End EventRespectsTopicLimit.
     Definition EventRespectsTopicLimit
         (Event : Set)
-        `{State.Trait}
+        `{ℋ : State.Trait}
         {ℋ_0 : ink.codegen.event.topics.EventLenTopics.Trait Event}
         {ℋ_1 :
           ink.codegen.event.topics.RespectTopicLimit.Trait
@@ -1107,7 +1113,7 @@ Module event.
     
     Module EventTopics.
       Section EventTopics.
-        Context `{State.Trait}.
+        Context `{ℋ : State.Trait}.
         
         Inductive t : Set := Build.
       End EventTopics.
@@ -1119,7 +1125,7 @@ End event.
 Module emit.
   Module EmitEvent.
     Section EmitEvent.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Class Trait
           (Self : Set)
@@ -1141,7 +1147,7 @@ End emit.
 
 Module EmitEvent.
   Section EmitEvent.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Class Trait
         (Self : Set)
@@ -1163,7 +1169,7 @@ End EmitEvent.
 Module topics.
   Module RespectTopicLimit.
     Section RespectTopicLimit.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Unset Primitive Projections.
       Class Trait (Self : Set) : Type := {
@@ -1174,7 +1180,7 @@ Module topics.
   
   Module EventLenTopics.
     Section EventLenTopics.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Class Trait (Self : Set) : Type := {
         LenTopics : Set;
@@ -1189,7 +1195,7 @@ Module topics.
   
   Module EventRespectsTopicLimit.
     Section EventRespectsTopicLimit.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Context {Event : Set}.
       
@@ -1215,7 +1221,7 @@ Module topics.
   End EventRespectsTopicLimit.
   Definition EventRespectsTopicLimit
       (Event : Set)
-      `{State.Trait}
+      `{ℋ : State.Trait}
       {ℋ_0 : ink.codegen.event.topics.EventLenTopics.Trait Event}
       {ℋ_1 :
         ink.codegen.event.topics.RespectTopicLimit.Trait
@@ -1225,7 +1231,7 @@ Module topics.
   
   Module EventTopics.
     Section EventTopics.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Inductive t : Set := Build.
     End EventTopics.
@@ -1235,7 +1241,7 @@ End topics.
 
 Module EventRespectsTopicLimit.
   Section EventRespectsTopicLimit.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {Event : Set}.
     
@@ -1261,7 +1267,7 @@ Module EventRespectsTopicLimit.
 End EventRespectsTopicLimit.
 Definition EventRespectsTopicLimit
     (Event : Set)
-    `{State.Trait}
+    `{ℋ : State.Trait}
     {ℋ_0 : ink.codegen.event.topics.EventLenTopics.Trait Event}
     {ℋ_1 :
       ink.codegen.event.topics.RespectTopicLimit.Trait
@@ -1271,7 +1277,7 @@ Definition EventRespectsTopicLimit
 
 Module RespectTopicLimit.
   Section RespectTopicLimit.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Class Trait (Self : Set) : Type := {
@@ -1282,7 +1288,7 @@ End RespectTopicLimit.
 
 Module EventTopics.
   Section EventTopics.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Inductive t : Set := Build.
   End EventTopics.
@@ -1291,7 +1297,7 @@ Definition EventTopics := @EventTopics.t.
 
 Module EventLenTopics.
   Section EventLenTopics.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Class Trait (Self : Set) : Type := {
       LenTopics : Set;
@@ -1307,7 +1313,7 @@ End EventLenTopics.
 Module implies_return.
   Module ImpliesReturn.
     Section ImpliesReturn.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Unset Primitive Projections.
       Class Trait (Self : Set) {T : Set} : Type := {
@@ -1319,7 +1325,7 @@ End implies_return.
 
 Module ImpliesReturn.
   Section ImpliesReturn.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Class Trait (Self : Set) {T : Set} : Type := {
@@ -1332,7 +1338,7 @@ Module trait_def.
   Module call_builder.
     Module TraitCallBuilder.
       Section TraitCallBuilder.
-        Context `{State.Trait}.
+        Context `{ℋ : State.Trait}.
         
         Class Trait (Self : Set) : Type := {
           Builder : Set;
@@ -1349,7 +1355,7 @@ Module trait_def.
     
     Module TraitCallForwarder.
       Section TraitCallForwarder.
-        Context `{State.Trait}.
+        Context `{ℋ : State.Trait}.
         
         Class Trait (Self : Set) : Type := {
           Forwarder : Set;
@@ -1364,7 +1370,7 @@ Module trait_def.
     
     (* Module TraitCallForwarderFor.
       (* Section TraitCallForwarderFor.
-        Context `{State.Trait}.
+        Context `{ℋ : State.Trait}.
         
         Class Trait (Self : Set) : Type := {
           Forwarder : Set;
@@ -1397,7 +1403,7 @@ Module trait_def.
   Module trait_message.
     Module TraitMessagePayable.
       Section TraitMessagePayable.
-        Context `{State.Trait}.
+        Context `{ℋ : State.Trait}.
         
         Inductive t : Set := Build.
       End TraitMessagePayable.
@@ -1406,7 +1412,7 @@ Module trait_def.
     
     Module TraitMessageSelector.
       Section TraitMessageSelector.
-        Context `{State.Trait}.
+        Context `{ℋ : State.Trait}.
         
         Inductive t : Set := Build.
       End TraitMessageSelector.
@@ -1418,7 +1424,7 @@ End trait_def.
 Module call_builder.
   Module TraitCallBuilder.
     Section TraitCallBuilder.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Class Trait (Self : Set) : Type := {
         Builder : Set;
@@ -1435,7 +1441,7 @@ Module call_builder.
   
   Module TraitCallForwarder.
     Section TraitCallForwarder.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Class Trait (Self : Set) : Type := {
         Forwarder : Set;
@@ -1450,7 +1456,7 @@ Module call_builder.
   
   (* Module TraitCallForwarderFor.
     (* Section TraitCallForwarderFor.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Class Trait (Self : Set) : Type := {
         Forwarder : Set;
@@ -1482,7 +1488,7 @@ End call_builder.
 
 Module TraitCallBuilder.
   Section TraitCallBuilder.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Class Trait (Self : Set) : Type := {
       Builder : Set;
@@ -1499,7 +1505,7 @@ End TraitCallBuilder.
 
 Module TraitCallForwarder.
   Section TraitCallForwarder.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Class Trait (Self : Set) : Type := {
       Forwarder : Set;
@@ -1514,7 +1520,7 @@ End TraitCallForwarder.
 
 (* Module TraitCallForwarderFor.
   (* Section TraitCallForwarderFor.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Class Trait (Self : Set) : Type := {
       Forwarder : Set;
@@ -1546,7 +1552,7 @@ End TraitCallForwarderFor. *)
 Module trait_message.
   Module TraitMessagePayable.
     Section TraitMessagePayable.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Inductive t : Set := Build.
     End TraitMessagePayable.
@@ -1555,7 +1561,7 @@ Module trait_message.
   
   Module TraitMessageSelector.
     Section TraitMessageSelector.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Inductive t : Set := Build.
     End TraitMessageSelector.
@@ -1565,7 +1571,7 @@ End trait_message.
 
 Module TraitMessagePayable.
   Section TraitMessagePayable.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Inductive t : Set := Build.
   End TraitMessagePayable.
@@ -1574,7 +1580,7 @@ Definition TraitMessagePayable := @TraitMessagePayable.t.
 
 Module TraitMessageSelector.
   Section TraitMessageSelector.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Inductive t : Set := Build.
   End TraitMessageSelector.
@@ -1583,13 +1589,13 @@ Definition TraitMessageSelector := @TraitMessageSelector.t.
 
 Module utils.
   Module identity_type.
-    Parameter consume_type : forall `{State.Trait} {T : Set}, M unit.
+    Parameter consume_type : forall `{ℋ : State.Trait} {T : Set}, M unit.
   End identity_type.
   
   Module same_type.
     Module IsSameType.
       Section IsSameType.
-        Context `{State.Trait}.
+        Context `{ℋ : State.Trait}.
         
         Context {T : Set}.
         
@@ -1609,21 +1615,21 @@ Module utils.
         }.
       End IsSameType.
     End IsSameType.
-    Definition IsSameType (T : Set) `{State.Trait} : Set :=
+    Definition IsSameType (T : Set) `{ℋ : State.Trait} : Set :=
       M.val (IsSameType.t (T := T)).
   End same_type.
 End utils.
 
 Module identity_type.
-  Parameter consume_type : forall `{State.Trait} {T : Set}, M unit.
+  Parameter consume_type : forall `{ℋ : State.Trait} {T : Set}, M unit.
 End identity_type.
 
-Parameter consume_type : forall `{State.Trait} {T : Set}, M unit.
+Parameter consume_type : forall `{ℋ : State.Trait} {T : Set}, M unit.
 
 Module same_type.
   Module IsSameType.
     Section IsSameType.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Context {T : Set}.
       
@@ -1641,13 +1647,13 @@ Module same_type.
       }.
     End IsSameType.
   End IsSameType.
-  Definition IsSameType (T : Set) `{State.Trait} : Set :=
+  Definition IsSameType (T : Set) `{ℋ : State.Trait} : Set :=
     M.val (IsSameType.t (T := T)).
 End same_type.
 
 Module IsSameType.
   Section IsSameType.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {T : Set}.
     
@@ -1665,13 +1671,13 @@ Module IsSameType.
     }.
   End IsSameType.
 End IsSameType.
-Definition IsSameType (T : Set) `{State.Trait} : Set :=
+Definition IsSameType (T : Set) `{ℋ : State.Trait} : Set :=
   M.val (IsSameType.t (T := T)).
 
 Module contract.
   Module ContractName.
     Section ContractName.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Class Trait (Self : Set) : Type := {
         NAME : ref str;
@@ -1683,7 +1689,7 @@ End contract.
 
 Module ContractName.
   Section ContractName.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Class Trait (Self : Set) : Type := {
       NAME : ref str;
@@ -1696,7 +1702,7 @@ Module Wrap_dispatch_1.
   Module dispatch.
     Module DispatchableMessageInfo.
       Section DispatchableMessageInfo.
-        Context `{State.Trait}.
+        Context `{ℋ : State.Trait}.
         
         Class Trait (Self : Set) : Type := {
           Input : Set;
@@ -1726,7 +1732,7 @@ Module Wrap_dispatch_1.
     
     Module DispatchableConstructorInfo.
       Section DispatchableConstructorInfo.
-        Context `{State.Trait}.
+        Context `{ℋ : State.Trait}.
         
         Class Trait (Self : Set) : Type := {
           Input : Set;
@@ -1762,7 +1768,7 @@ Module Wrap_dispatch_1.
     Module private.
       Module Sealed.
         Section Sealed.
-          Context `{State.Trait}.
+          Context `{ℋ : State.Trait}.
           
           Unset Primitive Projections.
           Class Trait (Self : Set) : Type := {
@@ -1774,7 +1780,7 @@ Module Wrap_dispatch_1.
     
     Module ConstructorOutput.
       Section ConstructorOutput.
-        Context `{State.Trait}.
+        Context `{ℋ : State.Trait}.
         
         Class Trait
             (Self : Set)
@@ -1795,7 +1801,7 @@ Module Wrap_dispatch_1.
     
     Module ConstructorOutputValue.
       Section ConstructorOutputValue.
-        Context `{State.Trait}.
+        Context `{ℋ : State.Trait}.
         
         Context {T : Set}.
         
@@ -1810,22 +1816,22 @@ Module Wrap_dispatch_1.
         }.
       End ConstructorOutputValue.
     End ConstructorOutputValue.
-    Definition ConstructorOutputValue `{State.Trait} (T : Set) : Set :=
+    Definition ConstructorOutputValue `{ℋ : State.Trait} (T : Set) : Set :=
       M.val (ConstructorOutputValue.t (T := T)).
     
     Module DispatchError.
-      Inductive t `{State.Trait} : Set :=
+      Inductive t `{ℋ : State.Trait} : Set :=
       | InvalidSelector
       | UnknownSelector
       | InvalidParameters
       | CouldNotReadInput
       | PaidUnpayableMessage.
     End DispatchError.
-    Definition DispatchError `{State.Trait} : Set := DispatchError.t.
+    Definition DispatchError `{ℋ : State.Trait} : Set := DispatchError.t.
     
     Module ExecuteDispatchable.
       Section ExecuteDispatchable.
-        Context `{State.Trait}.
+        Context `{ℋ : State.Trait}.
         
         Class Trait (Self : Set) : Type := {
           execute_dispatchable
@@ -1839,7 +1845,7 @@ Module Wrap_dispatch_1.
     
     Module ContractMessageDecoder.
       Section ContractMessageDecoder.
-        Context `{State.Trait}.
+        Context `{ℋ : State.Trait}.
         
         Class Trait (Self : Set) : Type := {
           Type_ : Set;
@@ -1854,7 +1860,7 @@ Module Wrap_dispatch_1.
     
     Module DecodeDispatch.
       Section DecodeDispatch.
-        Context `{State.Trait}.
+        Context `{ℋ : State.Trait}.
         
         Class Trait
             (Self : Set)
@@ -1873,7 +1879,7 @@ Module Wrap_dispatch_1.
     
     Module ContractConstructorDecoder.
       Section ContractConstructorDecoder.
-        Context `{State.Trait}.
+        Context `{ℋ : State.Trait}.
         
         Class Trait (Self : Set) : Type := {
           Type_ : Set;
@@ -1891,7 +1897,7 @@ Import Wrap_dispatch_1.
 
 Module DispatchableMessageInfo.
   Section DispatchableMessageInfo.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Class Trait (Self : Set) : Type := {
       Input : Set;
@@ -1921,7 +1927,7 @@ End DispatchableMessageInfo.
 
 Module DispatchableConstructorInfo.
   Section DispatchableConstructorInfo.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Class Trait (Self : Set) : Type := {
       Input : Set;
@@ -1957,7 +1963,7 @@ End DispatchableConstructorInfo.
 Module private.
   Module Sealed.
     Section Sealed.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Unset Primitive Projections.
       Class Trait (Self : Set) : Type := {
@@ -1969,7 +1975,7 @@ End private.
 
 Module Sealed.
   Section Sealed.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Class Trait (Self : Set) : Type := {
@@ -1980,7 +1986,7 @@ End Sealed.
 
 Module ConstructorOutput.
   Section ConstructorOutput.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Class Trait
         (Self : Set)
@@ -2001,7 +2007,7 @@ End ConstructorOutput.
 
 Module ConstructorOutputValue.
   Section ConstructorOutputValue.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {T : Set}.
     
@@ -2016,12 +2022,12 @@ Module ConstructorOutputValue.
     }.
   End ConstructorOutputValue.
 End ConstructorOutputValue.
-Definition ConstructorOutputValue `{State.Trait} (T : Set) : Set :=
+Definition ConstructorOutputValue `{ℋ : State.Trait} (T : Set) : Set :=
   M.val (ConstructorOutputValue.t (T := T)).
 
 Module ContractMessageDecoder.
   Section ContractMessageDecoder.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Class Trait (Self : Set) : Type := {
       Type_ : Set;
@@ -2036,7 +2042,7 @@ End ContractMessageDecoder.
 
 Module ContractConstructorDecoder.
   Section ContractConstructorDecoder.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Class Trait (Self : Set) : Type := {
       Type_ : Set;
@@ -2051,7 +2057,7 @@ End ContractConstructorDecoder.
 
 Module ExecuteDispatchable.
   Section ExecuteDispatchable.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Class Trait (Self : Set) : Type := {
       execute_dispatchable
@@ -2063,18 +2069,18 @@ Module ExecuteDispatchable.
 End ExecuteDispatchable.
 
 Module DispatchError.
-  Inductive t `{State.Trait} : Set :=
+  Inductive t `{ℋ : State.Trait} : Set :=
   | InvalidSelector
   | UnknownSelector
   | InvalidParameters
   | CouldNotReadInput
   | PaidUnpayableMessage.
 End DispatchError.
-Definition DispatchError `{State.Trait} : Set := DispatchError.t.
+Definition DispatchError `{ℋ : State.Trait} : Set := DispatchError.t.
 
 Module DecodeDispatch.
   Section DecodeDispatch.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Class Trait
         (Self : Set)
@@ -2093,7 +2099,7 @@ Module Wrap_event_1.
   Module event.
     Module ContractEventBase.
       Section ContractEventBase.
-        Context `{State.Trait}.
+        Context `{ℋ : State.Trait}.
         
         Class Trait (Self : Set) : Type := {
           Type_ : Set;
@@ -2111,7 +2117,7 @@ Import Wrap_event_1.
 
 Module ContractEventBase.
   Section ContractEventBase.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Class Trait (Self : Set) : Type := {
       Type_ : Set;
@@ -2129,7 +2135,7 @@ Module Wrap_trait_def_1.
     Module info.
       Module TraitMessageInfo.
         Section TraitMessageInfo.
-          Context `{State.Trait}.
+          Context `{ℋ : State.Trait}.
           
           Class Trait (Self : Set) : Type := {
             PAYABLE : bool;
@@ -2141,7 +2147,7 @@ Module Wrap_trait_def_1.
       
       Module TraitInfo.
         Section TraitInfo.
-          Context `{State.Trait}.
+          Context `{ℋ : State.Trait}.
           
           Class Trait (Self : Set) : Type := {
             ID : u32;
@@ -2156,7 +2162,7 @@ Module Wrap_trait_def_1.
     Module registry.
       Module TraitDefinitionRegistry.
         Section TraitDefinitionRegistry.
-          Context `{State.Trait}.
+          Context `{ℋ : State.Trait}.
           
           Context {E : Set}.
           
@@ -2176,7 +2182,7 @@ Module Wrap_trait_def_1.
           }.
         End TraitDefinitionRegistry.
       End TraitDefinitionRegistry.
-      Definition TraitDefinitionRegistry (E : Set) `{State.Trait} : Set :=
+      Definition TraitDefinitionRegistry (E : Set) `{ℋ : State.Trait} : Set :=
         M.val (TraitDefinitionRegistry.t (E := E)).
     End registry.
   End trait_def.
@@ -2187,7 +2193,7 @@ Module Wrap_info_1.
   Module info.
     Module TraitMessageInfo.
       Section TraitMessageInfo.
-        Context `{State.Trait}.
+        Context `{ℋ : State.Trait}.
         
         Class Trait (Self : Set) : Type := {
           PAYABLE : bool;
@@ -2199,7 +2205,7 @@ Module Wrap_info_1.
     
     Module TraitInfo.
       Section TraitInfo.
-        Context `{State.Trait}.
+        Context `{ℋ : State.Trait}.
         
         Class Trait (Self : Set) : Type := {
           ID : u32;
@@ -2215,7 +2221,7 @@ Import Wrap_info_1.
 
 Module TraitMessageInfo.
   Section TraitMessageInfo.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Class Trait (Self : Set) : Type := {
       PAYABLE : bool;
@@ -2227,7 +2233,7 @@ End TraitMessageInfo.
 
 Module TraitInfo.
   Section TraitInfo.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Class Trait (Self : Set) : Type := {
       ID : u32;
@@ -2241,7 +2247,7 @@ End TraitInfo.
 Module registry.
   Module TraitDefinitionRegistry.
     Section TraitDefinitionRegistry.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Context {E : Set}.
       
@@ -2259,13 +2265,13 @@ Module registry.
       }.
     End TraitDefinitionRegistry.
   End TraitDefinitionRegistry.
-  Definition TraitDefinitionRegistry (E : Set) `{State.Trait} : Set :=
+  Definition TraitDefinitionRegistry (E : Set) `{ℋ : State.Trait} : Set :=
     M.val (TraitDefinitionRegistry.t (E := E)).
 End registry.
 
 Module TraitDefinitionRegistry.
   Section TraitDefinitionRegistry.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {E : Set}.
     
@@ -2283,13 +2289,13 @@ Module TraitDefinitionRegistry.
     }.
   End TraitDefinitionRegistry.
 End TraitDefinitionRegistry.
-Definition TraitDefinitionRegistry (E : Set) `{State.Trait} : Set :=
+Definition TraitDefinitionRegistry (E : Set) `{ℋ : State.Trait} : Set :=
   M.val (TraitDefinitionRegistry.t (E := E)).
 
 Module chain_extension.
   Module ChainExtensionInstance.
     Section ChainExtensionInstance.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Class Trait (Self : Set) : Type := {
         Instance : Set;
@@ -2305,7 +2311,7 @@ Module chain_extension.
   
   Module ChainExtension.
     Section ChainExtension.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Class Trait (Self : Set) : Type := {
         ErrorCode : Set;
@@ -2321,7 +2327,7 @@ Module chain_extension.
   Module private.
     Module IsResultSealed.
       Section IsResultSealed.
-        Context `{State.Trait}.
+        Context `{ℋ : State.Trait}.
         
         Unset Primitive Projections.
         Class Trait (Self : Set) : Type := {
@@ -2332,7 +2338,7 @@ Module chain_extension.
     
     Module OutputSealed.
       Section OutputSealed.
-        Context `{State.Trait}.
+        Context `{ℋ : State.Trait}.
         
         Unset Primitive Projections.
         Class Trait (Self : Set) : Type := {
@@ -2344,7 +2350,7 @@ Module chain_extension.
   
   (* Module IsResultType.
     (* Section IsResultType.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Class Trait
           (Self : Set)
@@ -2367,7 +2373,7 @@ Module chain_extension.
   
   Module Output.
     Section Output.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Class Trait
           (Self : Set)
@@ -2386,7 +2392,7 @@ Module chain_extension.
   
   Module ValueReturned.
     Section ValueReturned.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Inductive t : Set := Build.
     End ValueReturned.
@@ -2396,7 +2402,7 @@ End chain_extension.
 
 Module ChainExtensionInstance.
   Section ChainExtensionInstance.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Class Trait (Self : Set) : Type := {
       Instance : Set;
@@ -2412,7 +2418,7 @@ End ChainExtensionInstance.
 
 Module ChainExtension.
   Section ChainExtension.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Class Trait (Self : Set) : Type := {
       ErrorCode : Set;
@@ -2427,7 +2433,7 @@ End ChainExtension.
 
 (* Module IsResultType.
   (* Section IsResultType.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Class Trait
         (Self : Set)
@@ -2449,7 +2455,7 @@ End IsResultType. *)
 
 Module Output.
   Section Output.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Class Trait
         (Self : Set)
@@ -2468,7 +2474,7 @@ End Output.
 
 Module ValueReturned.
   Section ValueReturned.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Inductive t : Set := Build.
   End ValueReturned.
@@ -2479,7 +2485,7 @@ Module Wrap_private_1.
   Module private.
     Module IsResultSealed.
       Section IsResultSealed.
-        Context `{State.Trait}.
+        Context `{ℋ : State.Trait}.
         
         Unset Primitive Projections.
         Class Trait (Self : Set) : Type := {
@@ -2490,7 +2496,7 @@ Module Wrap_private_1.
     
     Module OutputSealed.
       Section OutputSealed.
-        Context `{State.Trait}.
+        Context `{ℋ : State.Trait}.
         
         Unset Primitive Projections.
         Class Trait (Self : Set) : Type := {
@@ -2504,7 +2510,7 @@ Import Wrap_private_1.
 
 Module IsResultSealed.
   Section IsResultSealed.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Class Trait (Self : Set) : Type := {
@@ -2515,7 +2521,7 @@ End IsResultSealed.
 
 Module OutputSealed.
   Section OutputSealed.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Class Trait (Self : Set) : Type := {
@@ -2527,7 +2533,7 @@ End OutputSealed.
 Module contract_ref.
   Module ToAccountId.
     Section ToAccountId.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Class Trait
           (Self : Set)
@@ -2545,7 +2551,7 @@ End contract_ref.
 
 Module ToAccountId.
   Section ToAccountId.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Class Trait
         (Self : Set)
@@ -2563,7 +2569,7 @@ End ToAccountId.
 Module env_access.
   Module EnvAccess.
     Section EnvAccess.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Context {E : Set}.
       
@@ -2581,13 +2587,13 @@ Module env_access.
       }.
     End EnvAccess.
   End EnvAccess.
-  Definition EnvAccess (E : Set) `{State.Trait} : Set :=
+  Definition EnvAccess (E : Set) `{ℋ : State.Trait} : Set :=
     M.val (EnvAccess.t (E := E)).
 End env_access.
 
 Module EnvAccess.
   Section EnvAccess.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {E : Set}.
     
@@ -2605,5 +2611,5 @@ Module EnvAccess.
     }.
   End EnvAccess.
 End EnvAccess.
-Definition EnvAccess (E : Set) `{State.Trait} : Set :=
+Definition EnvAccess (E : Set) `{ℋ : State.Trait} : Set :=
   M.val (EnvAccess.t (E := E)).

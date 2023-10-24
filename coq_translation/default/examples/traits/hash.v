@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module Person.
   Section Person.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Record t : Set := {
@@ -33,11 +33,11 @@ Module Person.
     }.
   End Person.
 End Person.
-Definition Person `{State.Trait} : Set := M.val Person.t.
+Definition Person `{ℋ : State.Trait} : Set := M.val Person.t.
 
 Module Impl_core_hash_Hash_for_hash_Person.
   Section Impl_core_hash_Hash_for_hash_Person.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := hash.Person.
     
@@ -81,17 +81,17 @@ Module Impl_core_hash_Hash_for_hash_Person.
       Notation.double_colon := hash (__H := __H);
     }.
     
-    Global Instance I : core.hash.Hash.Trait Self := {
+    Global Instance ℐ : core.hash.Hash.Trait Self := {
       core.hash.Hash.hash {__H : Set} {ℋ_0 : core.hash.Hasher.Trait __H}
         :=
         hash (__H := __H);
     }.
   End Impl_core_hash_Hash_for_hash_Person.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_hash_Hash_for_hash_Person.
 
 Definition calculate_hash
-    `{State.Trait}
+    `{ℋ : State.Trait}
     {T : Set}
     {ℋ_0 : core.hash.Hash.Trait T}
     (t : ref T)
@@ -108,7 +108,7 @@ Definition calculate_hash
   core.hash.Hasher.finish α0.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main `{ℋ : State.Trait} : M unit :=
   let* person1 :=
     let* α0 := M.alloc 5 in
     let* α1 := deref (mk_str "Janet") str in

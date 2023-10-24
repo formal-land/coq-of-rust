@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module Choice.
   Section Choice.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Record t : Set := {
@@ -16,23 +16,23 @@ Module Choice.
     }.
   End Choice.
 End Choice.
-Definition Choice `{State.Trait} : Set := M.val Choice.t.
+Definition Choice `{ℋ : State.Trait} : Set := M.val Choice.t.
 
 Module Impl_core_marker_Copy_for_subtle_Choice.
   Section Impl_core_marker_Copy_for_subtle_Choice.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := subtle.Choice.
     
-    Global Instance I : core.marker.Copy.Trait Self := {
+    Global Instance ℐ : core.marker.Copy.Trait Self := {
     }.
   End Impl_core_marker_Copy_for_subtle_Choice.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_marker_Copy_for_subtle_Choice.
 
 Module Impl_core_clone_Clone_for_subtle_Choice.
   Section Impl_core_clone_Clone_for_subtle_Choice.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := subtle.Choice.
     
@@ -43,16 +43,16 @@ Module Impl_core_clone_Clone_for_subtle_Choice.
       Notation.double_colon := clone;
     }.
     
-    Global Instance I : core.clone.Clone.Trait Self := {
+    Global Instance ℐ : core.clone.Clone.Trait Self := {
       core.clone.Clone.clone := clone;
     }.
   End Impl_core_clone_Clone_for_subtle_Choice.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_clone_Clone_for_subtle_Choice.
 
 Module Impl_core_fmt_Debug_for_subtle_Choice.
   Section Impl_core_fmt_Debug_for_subtle_Choice.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := subtle.Choice.
     
@@ -64,16 +64,16 @@ Module Impl_core_fmt_Debug_for_subtle_Choice.
       Notation.double_colon := fmt;
     }.
     
-    Global Instance I : core.fmt.Debug.Trait Self := {
+    Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
   End Impl_core_fmt_Debug_for_subtle_Choice.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_subtle_Choice.
 
 Module Impl_subtle_Choice_4.
   Section Impl_subtle_Choice_4.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := subtle.Choice.
     
@@ -88,7 +88,7 @@ End Impl_subtle_Choice_4.
 
 Module Impl_core_convert_From_for_bool.
   Section Impl_core_convert_From_for_bool.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := bool.
     
@@ -99,16 +99,16 @@ Module Impl_core_convert_From_for_bool.
       Notation.double_colon := from;
     }.
     
-    Global Instance I : core.convert.From.Trait Self (T := subtle.Choice) := {
+    Global Instance ℐ : core.convert.From.Trait Self (T := subtle.Choice) := {
       core.convert.From.from := from;
     }.
   End Impl_core_convert_From_for_bool.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_convert_From_for_bool.
 
 Module Impl_core_ops_bit_BitAnd_for_subtle_Choice.
   Section Impl_core_ops_bit_BitAnd_for_subtle_Choice.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := subtle.Choice.
     
@@ -121,7 +121,7 @@ Module Impl_core_ops_bit_BitAnd_for_subtle_Choice.
       Notation.double_colon := bitand;
     }.
     
-    Global Instance I
+    Global Instance ℐ
       : core.ops.bit.BitAnd.Trait Self
           (Rhs := core.ops.bit.BitAnd.Default.Rhs Self)
         := {
@@ -129,12 +129,12 @@ Module Impl_core_ops_bit_BitAnd_for_subtle_Choice.
       core.ops.bit.BitAnd.bitand := bitand;
     }.
   End Impl_core_ops_bit_BitAnd_for_subtle_Choice.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_ops_bit_BitAnd_for_subtle_Choice.
 
 Module Impl_core_ops_bit_BitAndAssign_for_subtle_Choice.
   Section Impl_core_ops_bit_BitAndAssign_for_subtle_Choice.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := subtle.Choice.
     
@@ -145,19 +145,19 @@ Module Impl_core_ops_bit_BitAndAssign_for_subtle_Choice.
       Notation.double_colon := bitand_assign;
     }.
     
-    Global Instance I
+    Global Instance ℐ
       : core.ops.bit.BitAndAssign.Trait Self
           (Rhs := core.ops.bit.BitAndAssign.Default.Rhs Self)
         := {
       core.ops.bit.BitAndAssign.bitand_assign := bitand_assign;
     }.
   End Impl_core_ops_bit_BitAndAssign_for_subtle_Choice.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_ops_bit_BitAndAssign_for_subtle_Choice.
 
 Module Impl_core_ops_bit_BitOr_for_subtle_Choice.
   Section Impl_core_ops_bit_BitOr_for_subtle_Choice.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := subtle.Choice.
     
@@ -170,7 +170,7 @@ Module Impl_core_ops_bit_BitOr_for_subtle_Choice.
       Notation.double_colon := bitor;
     }.
     
-    Global Instance I
+    Global Instance ℐ
       : core.ops.bit.BitOr.Trait Self
           (Rhs := core.ops.bit.BitOr.Default.Rhs Self)
         := {
@@ -178,12 +178,12 @@ Module Impl_core_ops_bit_BitOr_for_subtle_Choice.
       core.ops.bit.BitOr.bitor := bitor;
     }.
   End Impl_core_ops_bit_BitOr_for_subtle_Choice.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_ops_bit_BitOr_for_subtle_Choice.
 
 Module Impl_core_ops_bit_BitOrAssign_for_subtle_Choice.
   Section Impl_core_ops_bit_BitOrAssign_for_subtle_Choice.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := subtle.Choice.
     
@@ -194,19 +194,19 @@ Module Impl_core_ops_bit_BitOrAssign_for_subtle_Choice.
       Notation.double_colon := bitor_assign;
     }.
     
-    Global Instance I
+    Global Instance ℐ
       : core.ops.bit.BitOrAssign.Trait Self
           (Rhs := core.ops.bit.BitOrAssign.Default.Rhs Self)
         := {
       core.ops.bit.BitOrAssign.bitor_assign := bitor_assign;
     }.
   End Impl_core_ops_bit_BitOrAssign_for_subtle_Choice.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_ops_bit_BitOrAssign_for_subtle_Choice.
 
 Module Impl_core_ops_bit_BitXor_for_subtle_Choice.
   Section Impl_core_ops_bit_BitXor_for_subtle_Choice.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := subtle.Choice.
     
@@ -219,7 +219,7 @@ Module Impl_core_ops_bit_BitXor_for_subtle_Choice.
       Notation.double_colon := bitxor;
     }.
     
-    Global Instance I
+    Global Instance ℐ
       : core.ops.bit.BitXor.Trait Self
           (Rhs := core.ops.bit.BitXor.Default.Rhs Self)
         := {
@@ -227,12 +227,12 @@ Module Impl_core_ops_bit_BitXor_for_subtle_Choice.
       core.ops.bit.BitXor.bitxor := bitxor;
     }.
   End Impl_core_ops_bit_BitXor_for_subtle_Choice.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_ops_bit_BitXor_for_subtle_Choice.
 
 Module Impl_core_ops_bit_BitXorAssign_for_subtle_Choice.
   Section Impl_core_ops_bit_BitXorAssign_for_subtle_Choice.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := subtle.Choice.
     
@@ -243,19 +243,19 @@ Module Impl_core_ops_bit_BitXorAssign_for_subtle_Choice.
       Notation.double_colon := bitxor_assign;
     }.
     
-    Global Instance I
+    Global Instance ℐ
       : core.ops.bit.BitXorAssign.Trait Self
           (Rhs := core.ops.bit.BitXorAssign.Default.Rhs Self)
         := {
       core.ops.bit.BitXorAssign.bitxor_assign := bitxor_assign;
     }.
   End Impl_core_ops_bit_BitXorAssign_for_subtle_Choice.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_ops_bit_BitXorAssign_for_subtle_Choice.
 
 Module Impl_core_ops_bit_Not_for_subtle_Choice.
   Section Impl_core_ops_bit_Not_for_subtle_Choice.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := subtle.Choice.
     
@@ -268,19 +268,19 @@ Module Impl_core_ops_bit_Not_for_subtle_Choice.
       Notation.double_colon := not;
     }.
     
-    Global Instance I : core.ops.bit.Not.Trait Self := {
+    Global Instance ℐ : core.ops.bit.Not.Trait Self := {
       core.ops.bit.Not.Output := Output;
       core.ops.bit.Not.not := not;
     }.
   End Impl_core_ops_bit_Not_for_subtle_Choice.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_ops_bit_Not_for_subtle_Choice.
 
-Parameter black_box : forall `{State.Trait}, u8 -> M u8.
+Parameter black_box : forall `{ℋ : State.Trait}, u8 -> M u8.
 
 Module Impl_core_convert_From_for_subtle_Choice.
   Section Impl_core_convert_From_for_subtle_Choice.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := subtle.Choice.
     
@@ -291,16 +291,16 @@ Module Impl_core_convert_From_for_subtle_Choice.
       Notation.double_colon := from;
     }.
     
-    Global Instance I : core.convert.From.Trait Self (T := u8) := {
+    Global Instance ℐ : core.convert.From.Trait Self (T := u8) := {
       core.convert.From.from := from;
     }.
   End Impl_core_convert_From_for_subtle_Choice.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_convert_From_for_subtle_Choice.
 
 Module ConstantTimeEq.
   Section ConstantTimeEq.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Class Trait (Self : Set) : Type := {
       ct_eq : (ref Self) -> (ref Self) -> M subtle.Choice;
@@ -311,7 +311,7 @@ End ConstantTimeEq.
 
 Module Impl_subtle_ConstantTimeEq_for_Slice_T.
   Section Impl_subtle_ConstantTimeEq_for_Slice_T.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {T : Set}.
     
@@ -325,16 +325,16 @@ Module Impl_subtle_ConstantTimeEq_for_Slice_T.
       Notation.double_colon := ct_eq;
     }.
     
-    Global Instance I : subtle.ConstantTimeEq.Trait Self := {
+    Global Instance ℐ : subtle.ConstantTimeEq.Trait Self := {
       subtle.ConstantTimeEq.ct_eq := ct_eq;
     }.
   End Impl_subtle_ConstantTimeEq_for_Slice_T.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_subtle_ConstantTimeEq_for_Slice_T.
 
 Module Impl_subtle_ConstantTimeEq_for_subtle_Choice.
   Section Impl_subtle_ConstantTimeEq_for_subtle_Choice.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := subtle.Choice.
     
@@ -345,16 +345,16 @@ Module Impl_subtle_ConstantTimeEq_for_subtle_Choice.
       Notation.double_colon := ct_eq;
     }.
     
-    Global Instance I : subtle.ConstantTimeEq.Trait Self := {
+    Global Instance ℐ : subtle.ConstantTimeEq.Trait Self := {
       subtle.ConstantTimeEq.ct_eq := ct_eq;
     }.
   End Impl_subtle_ConstantTimeEq_for_subtle_Choice.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_subtle_ConstantTimeEq_for_subtle_Choice.
 
 Module Impl_subtle_ConstantTimeEq_for_u8.
   Section Impl_subtle_ConstantTimeEq_for_u8.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := u8.
     
@@ -365,16 +365,16 @@ Module Impl_subtle_ConstantTimeEq_for_u8.
       Notation.double_colon := ct_eq;
     }.
     
-    Global Instance I : subtle.ConstantTimeEq.Trait Self := {
+    Global Instance ℐ : subtle.ConstantTimeEq.Trait Self := {
       subtle.ConstantTimeEq.ct_eq := ct_eq;
     }.
   End Impl_subtle_ConstantTimeEq_for_u8.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_subtle_ConstantTimeEq_for_u8.
 
 Module Impl_subtle_ConstantTimeEq_for_i8.
   Section Impl_subtle_ConstantTimeEq_for_i8.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := i8.
     
@@ -385,16 +385,16 @@ Module Impl_subtle_ConstantTimeEq_for_i8.
       Notation.double_colon := ct_eq;
     }.
     
-    Global Instance I : subtle.ConstantTimeEq.Trait Self := {
+    Global Instance ℐ : subtle.ConstantTimeEq.Trait Self := {
       subtle.ConstantTimeEq.ct_eq := ct_eq;
     }.
   End Impl_subtle_ConstantTimeEq_for_i8.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_subtle_ConstantTimeEq_for_i8.
 
 Module Impl_subtle_ConstantTimeEq_for_u16.
   Section Impl_subtle_ConstantTimeEq_for_u16.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := u16.
     
@@ -405,16 +405,16 @@ Module Impl_subtle_ConstantTimeEq_for_u16.
       Notation.double_colon := ct_eq;
     }.
     
-    Global Instance I : subtle.ConstantTimeEq.Trait Self := {
+    Global Instance ℐ : subtle.ConstantTimeEq.Trait Self := {
       subtle.ConstantTimeEq.ct_eq := ct_eq;
     }.
   End Impl_subtle_ConstantTimeEq_for_u16.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_subtle_ConstantTimeEq_for_u16.
 
 Module Impl_subtle_ConstantTimeEq_for_i16.
   Section Impl_subtle_ConstantTimeEq_for_i16.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := i16.
     
@@ -425,16 +425,16 @@ Module Impl_subtle_ConstantTimeEq_for_i16.
       Notation.double_colon := ct_eq;
     }.
     
-    Global Instance I : subtle.ConstantTimeEq.Trait Self := {
+    Global Instance ℐ : subtle.ConstantTimeEq.Trait Self := {
       subtle.ConstantTimeEq.ct_eq := ct_eq;
     }.
   End Impl_subtle_ConstantTimeEq_for_i16.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_subtle_ConstantTimeEq_for_i16.
 
 Module Impl_subtle_ConstantTimeEq_for_u32.
   Section Impl_subtle_ConstantTimeEq_for_u32.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := u32.
     
@@ -445,16 +445,16 @@ Module Impl_subtle_ConstantTimeEq_for_u32.
       Notation.double_colon := ct_eq;
     }.
     
-    Global Instance I : subtle.ConstantTimeEq.Trait Self := {
+    Global Instance ℐ : subtle.ConstantTimeEq.Trait Self := {
       subtle.ConstantTimeEq.ct_eq := ct_eq;
     }.
   End Impl_subtle_ConstantTimeEq_for_u32.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_subtle_ConstantTimeEq_for_u32.
 
 Module Impl_subtle_ConstantTimeEq_for_i32.
   Section Impl_subtle_ConstantTimeEq_for_i32.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := i32.
     
@@ -465,16 +465,16 @@ Module Impl_subtle_ConstantTimeEq_for_i32.
       Notation.double_colon := ct_eq;
     }.
     
-    Global Instance I : subtle.ConstantTimeEq.Trait Self := {
+    Global Instance ℐ : subtle.ConstantTimeEq.Trait Self := {
       subtle.ConstantTimeEq.ct_eq := ct_eq;
     }.
   End Impl_subtle_ConstantTimeEq_for_i32.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_subtle_ConstantTimeEq_for_i32.
 
 Module Impl_subtle_ConstantTimeEq_for_u64.
   Section Impl_subtle_ConstantTimeEq_for_u64.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := u64.
     
@@ -485,16 +485,16 @@ Module Impl_subtle_ConstantTimeEq_for_u64.
       Notation.double_colon := ct_eq;
     }.
     
-    Global Instance I : subtle.ConstantTimeEq.Trait Self := {
+    Global Instance ℐ : subtle.ConstantTimeEq.Trait Self := {
       subtle.ConstantTimeEq.ct_eq := ct_eq;
     }.
   End Impl_subtle_ConstantTimeEq_for_u64.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_subtle_ConstantTimeEq_for_u64.
 
 Module Impl_subtle_ConstantTimeEq_for_i64.
   Section Impl_subtle_ConstantTimeEq_for_i64.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := i64.
     
@@ -505,16 +505,16 @@ Module Impl_subtle_ConstantTimeEq_for_i64.
       Notation.double_colon := ct_eq;
     }.
     
-    Global Instance I : subtle.ConstantTimeEq.Trait Self := {
+    Global Instance ℐ : subtle.ConstantTimeEq.Trait Self := {
       subtle.ConstantTimeEq.ct_eq := ct_eq;
     }.
   End Impl_subtle_ConstantTimeEq_for_i64.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_subtle_ConstantTimeEq_for_i64.
 
 Module Impl_subtle_ConstantTimeEq_for_usize.
   Section Impl_subtle_ConstantTimeEq_for_usize.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := usize.
     
@@ -525,16 +525,16 @@ Module Impl_subtle_ConstantTimeEq_for_usize.
       Notation.double_colon := ct_eq;
     }.
     
-    Global Instance I : subtle.ConstantTimeEq.Trait Self := {
+    Global Instance ℐ : subtle.ConstantTimeEq.Trait Self := {
       subtle.ConstantTimeEq.ct_eq := ct_eq;
     }.
   End Impl_subtle_ConstantTimeEq_for_usize.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_subtle_ConstantTimeEq_for_usize.
 
 Module Impl_subtle_ConstantTimeEq_for_isize.
   Section Impl_subtle_ConstantTimeEq_for_isize.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := isize.
     
@@ -545,16 +545,16 @@ Module Impl_subtle_ConstantTimeEq_for_isize.
       Notation.double_colon := ct_eq;
     }.
     
-    Global Instance I : subtle.ConstantTimeEq.Trait Self := {
+    Global Instance ℐ : subtle.ConstantTimeEq.Trait Self := {
       subtle.ConstantTimeEq.ct_eq := ct_eq;
     }.
   End Impl_subtle_ConstantTimeEq_for_isize.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_subtle_ConstantTimeEq_for_isize.
 
 Module ConditionallySelectable.
   Section ConditionallySelectable.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Class Trait (Self : Set) {ℋ_0 : core.marker.Copy.Trait Self} : Type := {
       conditional_select : (ref Self) -> (ref Self) -> subtle.Choice -> M Self;
@@ -565,7 +565,7 @@ End ConditionallySelectable.
 
 Module Impl_subtle_ConditionallySelectable_for_u8.
   Section Impl_subtle_ConditionallySelectable_for_u8.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := u8.
     
@@ -593,16 +593,16 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
       Notation.double_colon := conditional_swap;
     }.
     
-    Global Instance I : subtle.ConditionallySelectable.Trait Self := {
+    Global Instance ℐ : subtle.ConditionallySelectable.Trait Self := {
       subtle.ConditionallySelectable.conditional_select := conditional_select;
     }.
   End Impl_subtle_ConditionallySelectable_for_u8.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_subtle_ConditionallySelectable_for_u8.
 
 Module Impl_subtle_ConditionallySelectable_for_i8.
   Section Impl_subtle_ConditionallySelectable_for_i8.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := i8.
     
@@ -630,16 +630,16 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
       Notation.double_colon := conditional_swap;
     }.
     
-    Global Instance I : subtle.ConditionallySelectable.Trait Self := {
+    Global Instance ℐ : subtle.ConditionallySelectable.Trait Self := {
       subtle.ConditionallySelectable.conditional_select := conditional_select;
     }.
   End Impl_subtle_ConditionallySelectable_for_i8.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_subtle_ConditionallySelectable_for_i8.
 
 Module Impl_subtle_ConditionallySelectable_for_u16.
   Section Impl_subtle_ConditionallySelectable_for_u16.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := u16.
     
@@ -667,16 +667,16 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
       Notation.double_colon := conditional_swap;
     }.
     
-    Global Instance I : subtle.ConditionallySelectable.Trait Self := {
+    Global Instance ℐ : subtle.ConditionallySelectable.Trait Self := {
       subtle.ConditionallySelectable.conditional_select := conditional_select;
     }.
   End Impl_subtle_ConditionallySelectable_for_u16.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_subtle_ConditionallySelectable_for_u16.
 
 Module Impl_subtle_ConditionallySelectable_for_i16.
   Section Impl_subtle_ConditionallySelectable_for_i16.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := i16.
     
@@ -704,16 +704,16 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
       Notation.double_colon := conditional_swap;
     }.
     
-    Global Instance I : subtle.ConditionallySelectable.Trait Self := {
+    Global Instance ℐ : subtle.ConditionallySelectable.Trait Self := {
       subtle.ConditionallySelectable.conditional_select := conditional_select;
     }.
   End Impl_subtle_ConditionallySelectable_for_i16.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_subtle_ConditionallySelectable_for_i16.
 
 Module Impl_subtle_ConditionallySelectable_for_u32.
   Section Impl_subtle_ConditionallySelectable_for_u32.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := u32.
     
@@ -741,16 +741,16 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
       Notation.double_colon := conditional_swap;
     }.
     
-    Global Instance I : subtle.ConditionallySelectable.Trait Self := {
+    Global Instance ℐ : subtle.ConditionallySelectable.Trait Self := {
       subtle.ConditionallySelectable.conditional_select := conditional_select;
     }.
   End Impl_subtle_ConditionallySelectable_for_u32.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_subtle_ConditionallySelectable_for_u32.
 
 Module Impl_subtle_ConditionallySelectable_for_i32.
   Section Impl_subtle_ConditionallySelectable_for_i32.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := i32.
     
@@ -778,16 +778,16 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
       Notation.double_colon := conditional_swap;
     }.
     
-    Global Instance I : subtle.ConditionallySelectable.Trait Self := {
+    Global Instance ℐ : subtle.ConditionallySelectable.Trait Self := {
       subtle.ConditionallySelectable.conditional_select := conditional_select;
     }.
   End Impl_subtle_ConditionallySelectable_for_i32.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_subtle_ConditionallySelectable_for_i32.
 
 Module Impl_subtle_ConditionallySelectable_for_u64.
   Section Impl_subtle_ConditionallySelectable_for_u64.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := u64.
     
@@ -815,16 +815,16 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
       Notation.double_colon := conditional_swap;
     }.
     
-    Global Instance I : subtle.ConditionallySelectable.Trait Self := {
+    Global Instance ℐ : subtle.ConditionallySelectable.Trait Self := {
       subtle.ConditionallySelectable.conditional_select := conditional_select;
     }.
   End Impl_subtle_ConditionallySelectable_for_u64.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_subtle_ConditionallySelectable_for_u64.
 
 Module Impl_subtle_ConditionallySelectable_for_i64.
   Section Impl_subtle_ConditionallySelectable_for_i64.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := i64.
     
@@ -852,16 +852,16 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
       Notation.double_colon := conditional_swap;
     }.
     
-    Global Instance I : subtle.ConditionallySelectable.Trait Self := {
+    Global Instance ℐ : subtle.ConditionallySelectable.Trait Self := {
       subtle.ConditionallySelectable.conditional_select := conditional_select;
     }.
   End Impl_subtle_ConditionallySelectable_for_i64.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_subtle_ConditionallySelectable_for_i64.
 
 Module Impl_subtle_ConditionallySelectable_for_subtle_Choice.
   Section Impl_subtle_ConditionallySelectable_for_subtle_Choice.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := subtle.Choice.
     
@@ -873,16 +873,16 @@ Module Impl_subtle_ConditionallySelectable_for_subtle_Choice.
       Notation.double_colon := conditional_select;
     }.
     
-    Global Instance I : subtle.ConditionallySelectable.Trait Self := {
+    Global Instance ℐ : subtle.ConditionallySelectable.Trait Self := {
       subtle.ConditionallySelectable.conditional_select := conditional_select;
     }.
   End Impl_subtle_ConditionallySelectable_for_subtle_Choice.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_subtle_ConditionallySelectable_for_subtle_Choice.
 
 Module ConditionallyNegatable.
   Section ConditionallyNegatable.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Class Trait (Self : Set) : Type := {
       conditional_negate : (mut_ref Self) -> subtle.Choice -> M unit;
@@ -893,7 +893,7 @@ End ConditionallyNegatable.
 
 Module Impl_subtle_ConditionallyNegatable_for_T.
   Section Impl_subtle_ConditionallyNegatable_for_T.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {T : Set}.
     
@@ -909,16 +909,16 @@ Module Impl_subtle_ConditionallyNegatable_for_T.
       Notation.double_colon := conditional_negate;
     }.
     
-    Global Instance I : subtle.ConditionallyNegatable.Trait Self := {
+    Global Instance ℐ : subtle.ConditionallyNegatable.Trait Self := {
       subtle.ConditionallyNegatable.conditional_negate := conditional_negate;
     }.
   End Impl_subtle_ConditionallyNegatable_for_T.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_subtle_ConditionallyNegatable_for_T.
 
 Module CtOption.
   Section CtOption.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {T : Set}.
     
@@ -943,12 +943,12 @@ Module CtOption.
     }.
   End CtOption.
 End CtOption.
-Definition CtOption (T : Set) `{State.Trait} : Set :=
+Definition CtOption (T : Set) `{ℋ : State.Trait} : Set :=
   M.val (CtOption.t (T := T)).
 
 Module Impl_core_clone_Clone_for_subtle_CtOption_T.
   Section Impl_core_clone_Clone_for_subtle_CtOption_T.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {T : Set}.
     
@@ -962,31 +962,31 @@ Module Impl_core_clone_Clone_for_subtle_CtOption_T.
       Notation.double_colon := clone;
     }.
     
-    Global Instance I : core.clone.Clone.Trait Self := {
+    Global Instance ℐ : core.clone.Clone.Trait Self := {
       core.clone.Clone.clone := clone;
     }.
   End Impl_core_clone_Clone_for_subtle_CtOption_T.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_clone_Clone_for_subtle_CtOption_T.
 
 Module Impl_core_marker_Copy_for_subtle_CtOption_T.
   Section Impl_core_marker_Copy_for_subtle_CtOption_T.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {T : Set}.
     
     Context {ℋ_0 : core.marker.Copy.Trait T}.
     Definition Self : Set := subtle.CtOption T.
     
-    Global Instance I : core.marker.Copy.Trait Self := {
+    Global Instance ℐ : core.marker.Copy.Trait Self := {
     }.
   End Impl_core_marker_Copy_for_subtle_CtOption_T.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_marker_Copy_for_subtle_CtOption_T.
 
 Module Impl_core_fmt_Debug_for_subtle_CtOption_T.
   Section Impl_core_fmt_Debug_for_subtle_CtOption_T.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {T : Set}.
     
@@ -1001,16 +1001,16 @@ Module Impl_core_fmt_Debug_for_subtle_CtOption_T.
       Notation.double_colon := fmt;
     }.
     
-    Global Instance I : core.fmt.Debug.Trait Self := {
+    Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
   End Impl_core_fmt_Debug_for_subtle_CtOption_T.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_subtle_CtOption_T.
 
 Module Impl_core_convert_From_for_core_option_Option_T.
   Section Impl_core_convert_From_for_core_option_Option_T.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {T : Set}.
     
@@ -1023,17 +1023,17 @@ Module Impl_core_convert_From_for_core_option_Option_T.
       Notation.double_colon := from;
     }.
     
-    Global Instance I
+    Global Instance ℐ
       : core.convert.From.Trait Self (T := subtle.CtOption T) := {
       core.convert.From.from := from;
     }.
   End Impl_core_convert_From_for_core_option_Option_T.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_convert_From_for_core_option_Option_T.
 
 Module Impl_subtle_CtOption_T_4.
   Section Impl_subtle_CtOption_T_4.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := subtle.CtOption T.
     
@@ -1150,7 +1150,7 @@ End Impl_subtle_CtOption_T_4.
 
 Module Impl_subtle_ConditionallySelectable_for_subtle_CtOption_T.
   Section Impl_subtle_ConditionallySelectable_for_subtle_CtOption_T.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {T : Set}.
     
@@ -1165,16 +1165,16 @@ Module Impl_subtle_ConditionallySelectable_for_subtle_CtOption_T.
       Notation.double_colon := conditional_select;
     }.
     
-    Global Instance I : subtle.ConditionallySelectable.Trait Self := {
+    Global Instance ℐ : subtle.ConditionallySelectable.Trait Self := {
       subtle.ConditionallySelectable.conditional_select := conditional_select;
     }.
   End Impl_subtle_ConditionallySelectable_for_subtle_CtOption_T.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_subtle_ConditionallySelectable_for_subtle_CtOption_T.
 
 Module Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
   Section Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {T : Set}.
     
@@ -1189,16 +1189,16 @@ Module Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
       Notation.double_colon := ct_eq;
     }.
     
-    Global Instance I : subtle.ConstantTimeEq.Trait Self := {
+    Global Instance ℐ : subtle.ConstantTimeEq.Trait Self := {
       subtle.ConstantTimeEq.ct_eq := ct_eq;
     }.
   End Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
 
 Module ConstantTimeGreater.
   Section ConstantTimeGreater.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Class Trait (Self : Set) : Type := {
       ct_gt : (ref Self) -> (ref Self) -> M subtle.Choice;
@@ -1209,7 +1209,7 @@ End ConstantTimeGreater.
 
 Module Impl_subtle_ConstantTimeGreater_for_u8.
   Section Impl_subtle_ConstantTimeGreater_for_u8.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := u8.
     
@@ -1220,16 +1220,16 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
       Notation.double_colon := ct_gt;
     }.
     
-    Global Instance I : subtle.ConstantTimeGreater.Trait Self := {
+    Global Instance ℐ : subtle.ConstantTimeGreater.Trait Self := {
       subtle.ConstantTimeGreater.ct_gt := ct_gt;
     }.
   End Impl_subtle_ConstantTimeGreater_for_u8.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_subtle_ConstantTimeGreater_for_u8.
 
 Module Impl_subtle_ConstantTimeGreater_for_u16.
   Section Impl_subtle_ConstantTimeGreater_for_u16.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := u16.
     
@@ -1240,16 +1240,16 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
       Notation.double_colon := ct_gt;
     }.
     
-    Global Instance I : subtle.ConstantTimeGreater.Trait Self := {
+    Global Instance ℐ : subtle.ConstantTimeGreater.Trait Self := {
       subtle.ConstantTimeGreater.ct_gt := ct_gt;
     }.
   End Impl_subtle_ConstantTimeGreater_for_u16.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_subtle_ConstantTimeGreater_for_u16.
 
 Module Impl_subtle_ConstantTimeGreater_for_u32.
   Section Impl_subtle_ConstantTimeGreater_for_u32.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := u32.
     
@@ -1260,16 +1260,16 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
       Notation.double_colon := ct_gt;
     }.
     
-    Global Instance I : subtle.ConstantTimeGreater.Trait Self := {
+    Global Instance ℐ : subtle.ConstantTimeGreater.Trait Self := {
       subtle.ConstantTimeGreater.ct_gt := ct_gt;
     }.
   End Impl_subtle_ConstantTimeGreater_for_u32.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_subtle_ConstantTimeGreater_for_u32.
 
 Module Impl_subtle_ConstantTimeGreater_for_u64.
   Section Impl_subtle_ConstantTimeGreater_for_u64.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := u64.
     
@@ -1280,16 +1280,16 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
       Notation.double_colon := ct_gt;
     }.
     
-    Global Instance I : subtle.ConstantTimeGreater.Trait Self := {
+    Global Instance ℐ : subtle.ConstantTimeGreater.Trait Self := {
       subtle.ConstantTimeGreater.ct_gt := ct_gt;
     }.
   End Impl_subtle_ConstantTimeGreater_for_u64.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_subtle_ConstantTimeGreater_for_u64.
 
 Module ConstantTimeLess.
   Section ConstantTimeLess.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Class Trait
@@ -1304,48 +1304,48 @@ End ConstantTimeLess.
 
 Module Impl_subtle_ConstantTimeLess_for_u8.
   Section Impl_subtle_ConstantTimeLess_for_u8.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := u8.
     
-    Global Instance I : subtle.ConstantTimeLess.Trait Self := {
+    Global Instance ℐ : subtle.ConstantTimeLess.Trait Self := {
     }.
   End Impl_subtle_ConstantTimeLess_for_u8.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_subtle_ConstantTimeLess_for_u8.
 
 Module Impl_subtle_ConstantTimeLess_for_u16.
   Section Impl_subtle_ConstantTimeLess_for_u16.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := u16.
     
-    Global Instance I : subtle.ConstantTimeLess.Trait Self := {
+    Global Instance ℐ : subtle.ConstantTimeLess.Trait Self := {
     }.
   End Impl_subtle_ConstantTimeLess_for_u16.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_subtle_ConstantTimeLess_for_u16.
 
 Module Impl_subtle_ConstantTimeLess_for_u32.
   Section Impl_subtle_ConstantTimeLess_for_u32.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := u32.
     
-    Global Instance I : subtle.ConstantTimeLess.Trait Self := {
+    Global Instance ℐ : subtle.ConstantTimeLess.Trait Self := {
     }.
   End Impl_subtle_ConstantTimeLess_for_u32.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_subtle_ConstantTimeLess_for_u32.
 
 Module Impl_subtle_ConstantTimeLess_for_u64.
   Section Impl_subtle_ConstantTimeLess_for_u64.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := u64.
     
-    Global Instance I : subtle.ConstantTimeLess.Trait Self := {
+    Global Instance ℐ : subtle.ConstantTimeLess.Trait Self := {
     }.
   End Impl_subtle_ConstantTimeLess_for_u64.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_subtle_ConstantTimeLess_for_u64.

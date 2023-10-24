@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module A.
   Section A.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Inductive t : Set := Build.
   End A.
@@ -12,7 +12,7 @@ Definition A := @A.t.
 
 Module S.
   Section S.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Record t : Set := {
@@ -25,11 +25,11 @@ Module S.
     }.
   End S.
 End S.
-Definition S `{State.Trait} : Set := M.val S.t.
+Definition S `{ℋ : State.Trait} : Set := M.val S.t.
 
 Module SGen.
   Section SGen.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {T : Set}.
     
@@ -44,21 +44,21 @@ Module SGen.
     }.
   End SGen.
 End SGen.
-Definition SGen `{State.Trait} (T : Set) : Set := M.val (SGen.t (T := T)).
+Definition SGen `{ℋ : State.Trait} (T : Set) : Set := M.val (SGen.t (T := T)).
 
-Parameter reg_fn : forall `{State.Trait}, generics_functions.S -> M unit.
+Parameter reg_fn : forall `{ℋ : State.Trait}, generics_functions.S -> M unit.
 
 Parameter gen_spec_t :
-    forall `{State.Trait},
+    forall `{ℋ : State.Trait},
     (generics_functions.SGen generics_functions.A) -> M unit.
 
 Parameter gen_spec_i32 :
-    forall `{State.Trait},
+    forall `{ℋ : State.Trait},
     (generics_functions.SGen i32) -> M unit.
 
 Parameter generic :
-    forall `{State.Trait} {T : Set},
+    forall `{ℋ : State.Trait} {T : Set},
     (generics_functions.SGen T) -> M unit.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{State.Trait}, M unit.
+Parameter main : forall `{ℋ : State.Trait}, M unit.

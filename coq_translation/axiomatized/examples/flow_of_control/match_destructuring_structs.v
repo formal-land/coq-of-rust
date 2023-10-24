@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module Foo.
   Section Foo.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Record t : Set := {
@@ -26,7 +26,7 @@ Module Foo.
     }.
   End Foo.
 End Foo.
-Definition Foo `{State.Trait} : Set := M.val Foo.t.
+Definition Foo `{ℋ : State.Trait} : Set := M.val Foo.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{State.Trait}, M unit.
+Parameter main : forall `{ℋ : State.Trait}, M unit.

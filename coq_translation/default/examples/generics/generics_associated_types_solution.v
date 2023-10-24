@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module Container.
   Section Container.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Record t : Set := {
@@ -20,11 +20,11 @@ Module Container.
     }.
   End Container.
 End Container.
-Definition Container `{State.Trait} : Set := M.val Container.t.
+Definition Container `{ℋ : State.Trait} : Set := M.val Container.t.
 
 Module Contains.
   Section Contains.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Class Trait (Self : Set) : Type := {
       A : Set;
@@ -48,7 +48,7 @@ Module
   Impl_generics_associated_types_solution_Contains_for_generics_associated_types_solution_Container.
   Section
     Impl_generics_associated_types_solution_Contains_for_generics_associated_types_solution_Container.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := generics_associated_types_solution.Container.
     
@@ -106,7 +106,7 @@ Module
       Notation.double_colon := a;
     }.
     
-    Global Instance I
+    Global Instance ℐ
       : generics_associated_types_solution.Contains.Trait Self := {
       generics_associated_types_solution.Contains.A := A;
       generics_associated_types_solution.Contains.B := B;
@@ -117,12 +117,12 @@ Module
     }.
   End
     Impl_generics_associated_types_solution_Contains_for_generics_associated_types_solution_Container.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End
   Impl_generics_associated_types_solution_Contains_for_generics_associated_types_solution_Container.
 
 Definition difference
-    `{State.Trait}
+    `{ℋ : State.Trait}
     {C : Set}
     {ℋ_0 : generics_associated_types_solution.Contains.Trait C}
     (container : ref C)
@@ -136,7 +136,7 @@ Definition difference
   sub α2 α5.
 
 Definition get_a
-    `{State.Trait}
+    `{ℋ : State.Trait}
     {C : Set}
     {ℋ_0 : generics_associated_types_solution.Contains.Trait C}
     (container : ref C)
@@ -146,7 +146,7 @@ Definition get_a
   generics_associated_types_solution.Contains.a α1.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main `{ℋ : State.Trait} : M unit :=
   let* number_1 := M.alloc 3 in
   let* number_2 := M.alloc 10 in
   let container :=

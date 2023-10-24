@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module Number.
   Section Number.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Record t : Set := {
@@ -19,11 +19,11 @@ Module Number.
     }.
   End Number.
 End Number.
-Definition Number `{State.Trait} : Set := M.val Number.t.
+Definition Number `{ℋ : State.Trait} : Set := M.val Number.t.
 
 Module Impl_core_convert_From_for_from_Number.
   Section Impl_core_convert_From_for_from_Number.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := from.Number.
     
@@ -35,15 +35,15 @@ Module Impl_core_convert_From_for_from_Number.
       Notation.double_colon := from;
     }.
     
-    Global Instance I : core.convert.From.Trait Self (T := i32) := {
+    Global Instance ℐ : core.convert.From.Trait Self (T := i32) := {
       core.convert.From.from := from;
     }.
   End Impl_core_convert_From_for_from_Number.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_convert_From_for_from_Number.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main `{ℋ : State.Trait} : M unit :=
   let* _ :=
     let* α0 := M.alloc 30 in
     core.convert.From.from α0 in

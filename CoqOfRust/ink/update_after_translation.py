@@ -64,7 +64,7 @@ Require CoqOfRust.ink.ink_env.""",
     )
     content = sub_at_least_once(
         re.escape(
-            """Definition IsResultType (T : Set) `{State.Trait} : Set :=
+            """Definition IsResultType (T : Set) `{ℋ : State.Trait} : Set :=
     M.val (IsResultType.t (T := T))."""
         ),
         "",
@@ -109,7 +109,7 @@ Require CoqOfRust.ink.parity_scale_codec.""",
     content = sub_at_least_once(
         re.escape("""
 Module Error.
-  Inductive t `{State.Trait} : Set :=
+  Inductive t `{ℋ : State.Trait} : Set :=
   | CalleeTrapped
   | CalleeReverted
   | KeyNotFound
@@ -122,7 +122,7 @@ Module Error.
   | EcdsaRecoveryFailed
   | Unknown.
 End Error.
-Definition Error `{State.Trait} : Set := Error.t.
+Definition Error `{ℋ : State.Trait} : Set := Error.t.
 """),
         "",
         content,
@@ -319,19 +319,20 @@ Require CoqOfRust.ink.subxt.""",
 
     content = sub_at_least_once(
         re.escape(
-            """Definition CreateBuilderPartial (E ContractRef Args R : Set)
-      `{State.Trait} :
+            """Definition CreateBuilderPartial
+      `{ℋ : State.Trait} (E ContractRef Args R : Set) :
       Set :="""),
-        """Definition CreateBuilderPartial (E ContractRef Args R : Set)
-      `{State.Trait} `{ink_env.types.Environment.Trait E} :
+        """Definition CreateBuilderPartial
+      `{ℋ : State.Trait} (E ContractRef Args R : Set)
+      `{ink_env.types.Environment.Trait E} :
       Set :=""",
         content,
     )
     content = sub_at_least_once(
         re.escape(
-            """Definition CallBuilderFinal (E Args RetType : Set) `{State.Trait} : Set :="""
+            """Definition CallBuilderFinal `{ℋ : State.Trait} (E Args RetType : Set) : Set :="""
         ),
-        """Definition CallBuilderFinal (E Args RetType : Set) `{State.Trait} `{ink_env.types.Environment.Trait E} : Set :=""",
+        """Definition CallBuilderFinal `{ℋ : State.Trait} (E Args RetType : Set) `{ink_env.types.Environment.Trait E} : Set :=""",
         content,
     )
 
@@ -413,10 +414,10 @@ Module InkE2ETest."""),
         content,
     )
     content = sub_at_least_once(
-        re.escape("""Definition InkE2ETest `{State.Trait} : Set := M.val InkE2ETest.t.
+        re.escape("""Definition InkE2ETest `{ℋ : State.Trait} : Set := M.val InkE2ETest.t.
 
 Module Impl_core_convert_From_for_ink_e2e_macro_codegen_InkE2ETest."""),
-        """Definition InkE2ETest `{State.Trait} : Set := M.val InkE2ETest.t. *)
+        """Definition InkE2ETest `{ℋ : State.Trait} : Set := M.val InkE2ETest.t. *)
 
 Module Impl_core_convert_From_for_ink_e2e_macro_codegen_InkE2ETest.""",
         content,
@@ -557,16 +558,6 @@ Require CoqOfRust.ink.ink_primitives.
 Require CoqOfRust.ink.parity_scale_codec.""",
         content,
     )
-    content = sub_at_least_once(
-        "Global Instance I",
-        "Global Instance I'",
-        content,
-    )
-    content = sub_at_least_once(
-        "Global Hint Resolve I : core.",
-        "Global Hint Resolve I' : core.",
-        content,
-    )
 
     content = ignore_module_names(
         [
@@ -607,9 +598,9 @@ Require CoqOfRust.ink.ink.""",
 
 #     content = sub_at_least_once(
 #         r"""Module Impl_core_default_Default_for_erc20_erc20_Erc20.
-#     Definition Self `{State.Trait} := erc20.erc20.Erc20.""",
+#     Definition Self `{ℋ : State.Trait} := erc20.erc20.Erc20.""",
 #         """Module Impl_core_default_Default_for_erc20_erc20_Erc20.
-#     Definition Self `{State.Trait} := erc20.erc20.Erc20.
+#     Definition Self `{ℋ : State.Trait} := erc20.erc20.Erc20.
 
 #     Global Instance Default_for_AutoStorableHint_Type_ : default.Default.Trait
 #      (forall (Self Key : Set) (H : ink_storage_traits.storage.StorageKey.Trait Key)
@@ -621,12 +612,12 @@ Require CoqOfRust.ink.ink.""",
 
 #     content = sub_at_least_once(
 #         re.escape("""  End Erc20.
-#   Definition Erc20 `{State.Trait} : Set := M.val (Erc20.t).
+#   Definition Erc20 `{ℋ : State.Trait} : Set := M.val (Erc20.t).
 # """),
-#         """    Global Instance Erc20_New `{State.Trait} : Notation.DoubleColon t "new" (T := unit -> M t).
+#         """    Global Instance Erc20_New `{ℋ : State.Trait} : Notation.DoubleColon t "new" (T := unit -> M t).
 #     Admitted.
 #   End Erc20.
-#   Definition Erc20 `{State.Trait} : Set := M.val (Erc20.t).
+#   Definition Erc20 `{ℋ : State.Trait} : Set := M.val (Erc20.t).
 # """,
 #         content,
 #     )

@@ -435,7 +435,7 @@ impl<'a> TopLevelItem<'a> {
                     TopLevel {
                         items: instances
                             .iter()
-                            .map(|i| TopLevelItem::Instance(i.to_owned()))
+                            .map(|instance| TopLevelItem::Instance(instance.to_owned()))
                             .collect(),
                     },
                 ]),
@@ -722,7 +722,7 @@ impl Hint {
     }
 
     pub(crate) fn standard_resolve() -> Self {
-        Hint::new("I", "core")
+        Hint::new("ℐ", "core")
     }
 }
 
@@ -996,7 +996,7 @@ impl<'a> ArgDecl<'a> {
     pub(crate) fn monadic_typeclass_parameter() -> Self {
         ArgDecl {
             decl: ArgDeclVar::Generalized {
-                idents: vec![],
+                idents: vec!["ℋ".to_string()],
                 ty: Expression::Variable {
                     ident: Path::new(&["State", "Trait"]),
                     no_implicit: false,

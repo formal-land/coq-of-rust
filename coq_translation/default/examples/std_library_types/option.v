@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition checked_division
-    `{State.Trait}
+    `{ℋ : State.Trait}
     (dividend : i32)
     (divisor : i32)
     : M (core.option.Option i32) :=
@@ -16,7 +16,7 @@ Definition checked_division
     Pure (core.option.Option.Some α0).
 
 Definition try_division
-    `{State.Trait}
+    `{ℋ : State.Trait}
     (dividend : i32)
     (divisor : i32)
     : M unit :=
@@ -79,7 +79,7 @@ Definition try_division
   end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main `{ℋ : State.Trait} : M unit :=
   let* _ :=
     let* α0 := M.alloc 4 in
     let* α1 := M.alloc 2 in

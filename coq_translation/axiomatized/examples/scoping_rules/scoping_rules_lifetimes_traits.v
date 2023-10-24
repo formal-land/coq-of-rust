@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module Borrowed.
   Section Borrowed.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Record t : Set := {
@@ -19,11 +19,11 @@ Module Borrowed.
     }.
   End Borrowed.
 End Borrowed.
-Definition Borrowed `{State.Trait} : Set := M.val Borrowed.t.
+Definition Borrowed `{ℋ : State.Trait} : Set := M.val Borrowed.t.
 
 Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed.
   Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := scoping_rules_lifetimes_traits.Borrowed.
     
@@ -35,16 +35,16 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed.
       Notation.double_colon := fmt;
     }.
     
-    Global Instance I : core.fmt.Debug.Trait Self := {
+    Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
   End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed.
 
 Module Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed.
   Section Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := scoping_rules_lifetimes_traits.Borrowed.
     
@@ -55,12 +55,12 @@ Module Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed.
       Notation.double_colon := default;
     }.
     
-    Global Instance I : core.default.Default.Trait Self := {
+    Global Instance ℐ : core.default.Default.Trait Self := {
       core.default.Default.default := default;
     }.
   End Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{State.Trait}, M unit.
+Parameter main : forall `{ℋ : State.Trait}, M unit.

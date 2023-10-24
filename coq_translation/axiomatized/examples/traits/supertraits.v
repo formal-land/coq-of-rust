@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module Person.
   Section Person.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Class Trait (Self : Set) : Type := {
       name : (ref Self) -> M alloc.string.String;
@@ -14,7 +14,7 @@ End Person.
 
 Module Student.
   Section Student.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Class Trait (Self : Set) {ℋ_0 : supertraits.Person.Trait Self} : Type := {
       university : (ref Self) -> M alloc.string.String;
@@ -25,7 +25,7 @@ End Student.
 
 Module Programmer.
   Section Programmer.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Class Trait (Self : Set) : Type := {
       fav_language : (ref Self) -> M alloc.string.String;
@@ -36,7 +36,7 @@ End Programmer.
 
 Module CompSciStudent.
   Section CompSciStudent.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Class Trait
         (Self : Set)
@@ -51,10 +51,10 @@ End CompSciStudent.
 
 Parameter comp_sci_student_greeting :
     forall
-      `{State.Trait}
+      `{ℋ : State.Trait}
       {DynT : Set}
       {ℋ_0 : supertraits.CompSciStudent.Trait DynT},
     (ref DynT) -> M alloc.string.String.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{State.Trait}, M unit.
+Parameter main : forall `{ℋ : State.Trait}, M unit.

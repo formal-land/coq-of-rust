@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition apply
-    `{State.Trait}
+    `{ℋ : State.Trait}
     {F : Set}
     {ℋ_0 : core.ops.function.Fn.Trait F (Args := unit)}
     (f : F)
@@ -14,7 +14,7 @@ Definition apply
   M.alloc tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main `{ℋ : State.Trait} : M unit :=
   let* x := M.alloc 7 in
   let print :=
     let* _ :=

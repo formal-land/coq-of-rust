@@ -2,16 +2,16 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module Food.
-  Inductive t `{State.Trait} : Set :=
+  Inductive t `{ℋ : State.Trait} : Set :=
   | CordonBleu
   | Steak
   | Sushi.
 End Food.
-Definition Food `{State.Trait} : Set := Food.t.
+Definition Food `{ℋ : State.Trait} : Set := Food.t.
 
 Module Impl_core_fmt_Debug_for_combinators_and_then_Food.
   Section Impl_core_fmt_Debug_for_combinators_and_then_Food.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := combinators_and_then.Food.
     
@@ -23,24 +23,24 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Food.
       Notation.double_colon := fmt;
     }.
     
-    Global Instance I : core.fmt.Debug.Trait Self := {
+    Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
   End Impl_core_fmt_Debug_for_combinators_and_then_Food.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_combinators_and_then_Food.
 
 Module Day.
-  Inductive t `{State.Trait} : Set :=
+  Inductive t `{ℋ : State.Trait} : Set :=
   | Monday
   | Tuesday
   | Wednesday.
 End Day.
-Definition Day `{State.Trait} : Set := Day.t.
+Definition Day `{ℋ : State.Trait} : Set := Day.t.
 
 Module Impl_core_fmt_Debug_for_combinators_and_then_Day.
   Section Impl_core_fmt_Debug_for_combinators_and_then_Day.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := combinators_and_then.Day.
     
@@ -52,36 +52,36 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Day.
       Notation.double_colon := fmt;
     }.
     
-    Global Instance I : core.fmt.Debug.Trait Self := {
+    Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
   End Impl_core_fmt_Debug_for_combinators_and_then_Day.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_combinators_and_then_Day.
 
 Parameter have_ingredients :
-    forall `{State.Trait},
+    forall `{ℋ : State.Trait},
     combinators_and_then.Food ->
       M (core.option.Option combinators_and_then.Food).
 
 Parameter have_recipe :
-    forall `{State.Trait},
+    forall `{ℋ : State.Trait},
     combinators_and_then.Food ->
       M (core.option.Option combinators_and_then.Food).
 
 Parameter cookable_v1 :
-    forall `{State.Trait},
+    forall `{ℋ : State.Trait},
     combinators_and_then.Food ->
       M (core.option.Option combinators_and_then.Food).
 
 Parameter cookable_v2 :
-    forall `{State.Trait},
+    forall `{ℋ : State.Trait},
     combinators_and_then.Food ->
       M (core.option.Option combinators_and_then.Food).
 
 Parameter eat :
-    forall `{State.Trait},
+    forall `{ℋ : State.Trait},
     combinators_and_then.Food -> combinators_and_then.Day -> M unit.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{State.Trait}, M unit.
+Parameter main : forall `{ℋ : State.Trait}, M unit.

@@ -2,14 +2,14 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition multiply
-    `{State.Trait}
+    `{ℋ : State.Trait}
     (first : ref i32)
     (second : ref i32)
     : M i32 :=
   core.ops.arith.Mul.mul first second.
 
 Definition choose_first
-    `{State.Trait}
+    `{ℋ : State.Trait}
     (first : ref i32)
     (arg : ref i32)
     : M (ref i32) :=
@@ -17,7 +17,7 @@ Definition choose_first
   borrow α0 i32.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main `{ℋ : State.Trait} : M unit :=
   let* first := M.alloc 2 in
   let* _ :=
     let* second := M.alloc 3 in

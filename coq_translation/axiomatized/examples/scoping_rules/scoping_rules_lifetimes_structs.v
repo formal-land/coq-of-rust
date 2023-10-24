@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module Borrowed.
   Section Borrowed.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Record t : Set := {
@@ -16,11 +16,11 @@ Module Borrowed.
     }.
   End Borrowed.
 End Borrowed.
-Definition Borrowed `{State.Trait} : Set := M.val Borrowed.t.
+Definition Borrowed `{ℋ : State.Trait} : Set := M.val Borrowed.t.
 
 Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Borrowed.
   Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Borrowed.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := scoping_rules_lifetimes_structs.Borrowed.
     
@@ -32,16 +32,16 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Borrowed.
       Notation.double_colon := fmt;
     }.
     
-    Global Instance I : core.fmt.Debug.Trait Self := {
+    Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
   End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Borrowed.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Borrowed.
 
 Module NamedBorrowed.
   Section NamedBorrowed.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Record t : Set := {
@@ -64,11 +64,11 @@ Module NamedBorrowed.
     }.
   End NamedBorrowed.
 End NamedBorrowed.
-Definition NamedBorrowed `{State.Trait} : Set := M.val NamedBorrowed.t.
+Definition NamedBorrowed `{ℋ : State.Trait} : Set := M.val NamedBorrowed.t.
 
 Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_NamedBorrowed.
   Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_NamedBorrowed.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := scoping_rules_lifetimes_structs.NamedBorrowed.
     
@@ -80,23 +80,23 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_NamedBorrowed.
       Notation.double_colon := fmt;
     }.
     
-    Global Instance I : core.fmt.Debug.Trait Self := {
+    Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
   End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_NamedBorrowed.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_NamedBorrowed.
 
 Module Either.
-  Inductive t `{State.Trait} : Set :=
+  Inductive t `{ℋ : State.Trait} : Set :=
   | Num (_ : i32)
   | Ref (_ : ref i32).
 End Either.
-Definition Either `{State.Trait} : Set := Either.t.
+Definition Either `{ℋ : State.Trait} : Set := Either.t.
 
 Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
   Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := scoping_rules_lifetimes_structs.Either.
     
@@ -108,12 +108,12 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
       Notation.double_colon := fmt;
     }.
     
-    Global Instance I : core.fmt.Debug.Trait Self := {
+    Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
   End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{State.Trait}, M unit.
+Parameter main : forall `{ℋ : State.Trait}, M unit.

@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module Fibonacci.
   Section Fibonacci.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Record t : Set := {
@@ -26,11 +26,11 @@ Module Fibonacci.
     }.
   End Fibonacci.
 End Fibonacci.
-Definition Fibonacci `{State.Trait} : Set := M.val Fibonacci.t.
+Definition Fibonacci `{ℋ : State.Trait} : Set := M.val Fibonacci.t.
 
 Module Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
   Section Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := iterators.Fibonacci.
     
@@ -43,15 +43,15 @@ Module Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
       Notation.double_colon := next;
     }.
     
-    Global Instance I : core.iter.traits.iterator.Iterator.Trait Self := {
+    Global Instance ℐ : core.iter.traits.iterator.Iterator.Trait Self := {
       core.iter.traits.iterator.Iterator.Item := Item;
       core.iter.traits.iterator.Iterator.next := next;
     }.
   End Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
 
-Parameter fibonacci : forall `{State.Trait}, M iterators.Fibonacci.
+Parameter fibonacci : forall `{ℋ : State.Trait}, M iterators.Fibonacci.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{State.Trait}, M unit.
+Parameter main : forall `{ℋ : State.Trait}, M unit.

@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main `{ℋ : State.Trait} : M unit :=
   let* child :=
     let* α0 := std.process.Command::["new"] (mk_str "sleep") in
     let* α1 := borrow_mut α0 std.process.Command in

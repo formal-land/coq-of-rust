@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module Ref.
   Section Ref.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {T : Set}.
     
@@ -18,11 +18,11 @@ Module Ref.
     }.
   End Ref.
 End Ref.
-Definition Ref `{State.Trait} (T : Set) : Set := M.val (Ref.t (T := T)).
+Definition Ref `{ℋ : State.Trait} (T : Set) : Set := M.val (Ref.t (T := T)).
 
 Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
   Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {T : Set}.
     
@@ -51,15 +51,15 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
       Notation.double_colon := fmt;
     }.
     
-    Global Instance I : core.fmt.Debug.Trait Self := {
+    Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
   End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
 
 Definition print
-    `{State.Trait}
+    `{ℋ : State.Trait}
     {T : Set}
     {ℋ_0 : core.fmt.Debug.Trait T}
     (t : T)
@@ -86,7 +86,7 @@ Definition print
   M.alloc tt.
 
 Definition print_ref
-    `{State.Trait}
+    `{ℋ : State.Trait}
     {T : Set}
     {ℋ_0 : core.fmt.Debug.Trait T}
     (t : ref T)
@@ -113,7 +113,7 @@ Definition print_ref
   M.alloc tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main `{ℋ : State.Trait} : M unit :=
   let* x := M.alloc 7 in
   let* ref_x :=
     let* α0 := borrow x i32 in

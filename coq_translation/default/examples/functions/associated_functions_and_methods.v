@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module Point.
   Section Point.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Record t : Set := {
@@ -26,11 +26,11 @@ Module Point.
     }.
   End Point.
 End Point.
-Definition Point `{State.Trait} : Set := M.val Point.t.
+Definition Point `{ℋ : State.Trait} : Set := M.val Point.t.
 
 Module Impl_associated_functions_and_methods_Point.
   Section Impl_associated_functions_and_methods_Point.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := associated_functions_and_methods.Point.
     
@@ -67,7 +67,7 @@ End Impl_associated_functions_and_methods_Point.
 
 Module Rectangle.
   Section Rectangle.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Record t : Set := {
@@ -90,11 +90,11 @@ Module Rectangle.
     }.
   End Rectangle.
 End Rectangle.
-Definition Rectangle `{State.Trait} : Set := M.val Rectangle.t.
+Definition Rectangle `{ℋ : State.Trait} : Set := M.val Rectangle.t.
 
 Module Impl_associated_functions_and_methods_Rectangle.
   Section Impl_associated_functions_and_methods_Rectangle.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := associated_functions_and_methods.Rectangle.
     
@@ -194,7 +194,7 @@ End Impl_associated_functions_and_methods_Rectangle.
 
 Module Pair.
   Section Pair.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Record t : Set := {
@@ -211,11 +211,11 @@ Module Pair.
     }.
   End Pair.
 End Pair.
-Definition Pair `{State.Trait} : Set := M.val Pair.t.
+Definition Pair `{ℋ : State.Trait} : Set := M.val Pair.t.
 
 Module Impl_associated_functions_and_methods_Pair.
   Section Impl_associated_functions_and_methods_Pair.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := associated_functions_and_methods.Pair.
     
@@ -256,7 +256,7 @@ Module Impl_associated_functions_and_methods_Pair.
 End Impl_associated_functions_and_methods_Pair.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main `{ℋ : State.Trait} : M unit :=
   let* rectangle :=
     let* α0 := associated_functions_and_methods.Point::["origin"] in
     let* α1 := M.alloc 3 (* 3.0 *) in

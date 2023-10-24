@@ -7,7 +7,7 @@ Require CoqOfRust.ink.syn.
 Module config.
   Module E2EConfig.
     Section E2EConfig.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Unset Primitive Projections.
       Record t : Set := {
@@ -54,11 +54,11 @@ Module config.
       }.
     End E2EConfig.
   End E2EConfig.
-  Definition E2EConfig `{State.Trait} : Set := M.val E2EConfig.t.
+  Definition E2EConfig `{ℋ : State.Trait} : Set := M.val E2EConfig.t.
   
   Module Impl_core_fmt_Debug_for_ink_e2e_macro_config_E2EConfig.
     Section Impl_core_fmt_Debug_for_ink_e2e_macro_config_E2EConfig.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Definition Self : Set := ink_e2e_macro.config.E2EConfig.
       
@@ -70,16 +70,16 @@ Module config.
         Notation.double_colon := fmt;
       }.
       
-      Global Instance I : core.fmt.Debug.Trait Self := {
+      Global Instance ℐ : core.fmt.Debug.Trait Self := {
         core.fmt.Debug.fmt := fmt;
       }.
     End Impl_core_fmt_Debug_for_ink_e2e_macro_config_E2EConfig.
-    Global Hint Resolve I : core.
+    Global Hint Resolve ℐ : core.
   End Impl_core_fmt_Debug_for_ink_e2e_macro_config_E2EConfig.
   
   Module Impl_core_default_Default_for_ink_e2e_macro_config_E2EConfig.
     Section Impl_core_default_Default_for_ink_e2e_macro_config_E2EConfig.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Definition Self : Set := ink_e2e_macro.config.E2EConfig.
       
@@ -90,30 +90,30 @@ Module config.
         Notation.double_colon := default;
       }.
       
-      Global Instance I : core.default.Default.Trait Self := {
+      Global Instance ℐ : core.default.Default.Trait Self := {
         core.default.Default.default := default;
       }.
     End Impl_core_default_Default_for_ink_e2e_macro_config_E2EConfig.
-    Global Hint Resolve I : core.
+    Global Hint Resolve ℐ : core.
   End Impl_core_default_Default_for_ink_e2e_macro_config_E2EConfig.
   
   Module
     Impl_core_marker_StructuralPartialEq_for_ink_e2e_macro_config_E2EConfig.
     Section
       Impl_core_marker_StructuralPartialEq_for_ink_e2e_macro_config_E2EConfig.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Definition Self : Set := ink_e2e_macro.config.E2EConfig.
       
-      Global Instance I : core.marker.StructuralPartialEq.Trait Self := {
+      Global Instance ℐ : core.marker.StructuralPartialEq.Trait Self := {
       }.
     End Impl_core_marker_StructuralPartialEq_for_ink_e2e_macro_config_E2EConfig.
-    Global Hint Resolve I : core.
+    Global Hint Resolve ℐ : core.
   End Impl_core_marker_StructuralPartialEq_for_ink_e2e_macro_config_E2EConfig.
   
   Module Impl_core_cmp_PartialEq_for_ink_e2e_macro_config_E2EConfig.
     Section Impl_core_cmp_PartialEq_for_ink_e2e_macro_config_E2EConfig.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Definition Self : Set := ink_e2e_macro.config.E2EConfig.
       
@@ -125,31 +125,31 @@ Module config.
         Notation.double_colon := eq;
       }.
       
-      Global Instance I
+      Global Instance ℐ
         : core.cmp.PartialEq.Trait Self
             (Rhs := core.cmp.PartialEq.Default.Rhs Self)
           := {
         core.cmp.PartialEq.eq := eq;
       }.
     End Impl_core_cmp_PartialEq_for_ink_e2e_macro_config_E2EConfig.
-    Global Hint Resolve I : core.
+    Global Hint Resolve ℐ : core.
   End Impl_core_cmp_PartialEq_for_ink_e2e_macro_config_E2EConfig.
   
   Module Impl_core_marker_StructuralEq_for_ink_e2e_macro_config_E2EConfig.
     Section Impl_core_marker_StructuralEq_for_ink_e2e_macro_config_E2EConfig.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Definition Self : Set := ink_e2e_macro.config.E2EConfig.
       
-      Global Instance I : core.marker.StructuralEq.Trait Self := {
+      Global Instance ℐ : core.marker.StructuralEq.Trait Self := {
       }.
     End Impl_core_marker_StructuralEq_for_ink_e2e_macro_config_E2EConfig.
-    Global Hint Resolve I : core.
+    Global Hint Resolve ℐ : core.
   End Impl_core_marker_StructuralEq_for_ink_e2e_macro_config_E2EConfig.
   
   Module Impl_core_cmp_Eq_for_ink_e2e_macro_config_E2EConfig.
     Section Impl_core_cmp_Eq_for_ink_e2e_macro_config_E2EConfig.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Definition Self : Set := ink_e2e_macro.config.E2EConfig.
       
@@ -160,15 +160,15 @@ Module config.
         Notation.double_colon := assert_receiver_is_total_eq;
       }.
       
-      Global Instance I : core.cmp.Eq.Trait Self := {
+      Global Instance ℐ : core.cmp.Eq.Trait Self := {
       }.
     End Impl_core_cmp_Eq_for_ink_e2e_macro_config_E2EConfig.
-    Global Hint Resolve I : core.
+    Global Hint Resolve ℐ : core.
   End Impl_core_cmp_Eq_for_ink_e2e_macro_config_E2EConfig.
   
   Module Impl_core_convert_TryFrom_for_ink_e2e_macro_config_E2EConfig.
     Section Impl_core_convert_TryFrom_for_ink_e2e_macro_config_E2EConfig.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Definition Self : Set := ink_e2e_macro.config.E2EConfig.
       
@@ -183,7 +183,7 @@ Module config.
         Notation.double_colon := try_from;
       }.
       
-      Global Instance I
+      Global Instance ℐ
         : core.convert.TryFrom.Trait Self
             (T := ink_ir.ast.attr_args.AttributeArgs)
           := {
@@ -191,14 +191,14 @@ Module config.
         core.convert.TryFrom.try_from := try_from;
       }.
     End Impl_core_convert_TryFrom_for_ink_e2e_macro_config_E2EConfig.
-    Global Hint Resolve I : core.
+    Global Hint Resolve ℐ : core.
   End Impl_core_convert_TryFrom_for_ink_e2e_macro_config_E2EConfig.
 End config.
 
 Module ir.
   Module E2EFn.
     Section E2EFn.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Unset Primitive Projections.
       Record t : Set := {
@@ -214,11 +214,11 @@ Module ir.
       }.
     End E2EFn.
   End E2EFn.
-  Definition E2EFn `{State.Trait} : Set := M.val E2EFn.t.
+  Definition E2EFn `{ℋ : State.Trait} : Set := M.val E2EFn.t.
   
   Module InkE2ETest.
     Section InkE2ETest.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Unset Primitive Projections.
       Record t : Set := {
@@ -241,11 +241,11 @@ Module ir.
       }.
     End InkE2ETest.
   End InkE2ETest.
-  Definition InkE2ETest `{State.Trait} : Set := M.val InkE2ETest.t.
+  Definition InkE2ETest `{ℋ : State.Trait} : Set := M.val InkE2ETest.t.
   
   Module Impl_core_convert_From_for_ink_e2e_macro_ir_E2EFn.
     Section Impl_core_convert_From_for_ink_e2e_macro_ir_E2EFn.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Definition Self : Set := ink_e2e_macro.ir.E2EFn.
       
@@ -256,18 +256,18 @@ Module ir.
         Notation.double_colon := from;
       }.
       
-      Global Instance I
+      Global Instance ℐ
         : core.convert.From.Trait Self (T := syn.item.ItemFn) := {
         core.convert.From.from := from;
       }.
     End Impl_core_convert_From_for_ink_e2e_macro_ir_E2EFn.
-    Global Hint Resolve I : core.
+    Global Hint Resolve ℐ : core.
   End Impl_core_convert_From_for_ink_e2e_macro_ir_E2EFn.
 End ir.
 
 Module codegen.
   Parameter ALREADY_BUILT_CONTRACTS :
-      forall `{State.Trait},
+      forall `{ℋ : State.Trait},
       std.thread.local.LocalKey
         (core.cell.RefCell
           (std.collections.hash.map.HashMap
@@ -276,7 +276,7 @@ Module codegen.
             std.collections.hash.map.HashMap.Default.S)).
   
   Parameter already_built_contracts :
-      forall `{State.Trait},
+      forall `{ℋ : State.Trait},
       M
           (std.collections.hash.map.HashMap
             alloc.string.String
@@ -284,7 +284,7 @@ Module codegen.
             std.collections.hash.map.HashMap.Default.S).
   
   Parameter set_already_built_contracts :
-      forall `{State.Trait},
+      forall `{ℋ : State.Trait},
       (std.collections.hash.map.HashMap
           alloc.string.String
           alloc.string.String
@@ -294,7 +294,7 @@ Module codegen.
   
   Module InkE2ETest.
     Section InkE2ETest.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Unset Primitive Projections.
       Record t : Set := {
@@ -310,11 +310,11 @@ Module codegen.
       }.
     End InkE2ETest.
   End InkE2ETest.
-  Definition InkE2ETest `{State.Trait} : Set := M.val InkE2ETest.t.
+  Definition InkE2ETest `{ℋ : State.Trait} : Set := M.val InkE2ETest.t.
   
   Module Impl_core_convert_From_for_ink_e2e_macro_codegen_InkE2ETest.
     Section Impl_core_convert_From_for_ink_e2e_macro_codegen_InkE2ETest.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Definition Self : Set := ink_e2e_macro.codegen.InkE2ETest.
       
@@ -326,17 +326,17 @@ Module codegen.
         Notation.double_colon := from;
       }.
       
-      Global Instance I
+      Global Instance ℐ
         : core.convert.From.Trait Self (T := ink_e2e_macro.ir.InkE2ETest) := {
         core.convert.From.from := from;
       }.
     End Impl_core_convert_From_for_ink_e2e_macro_codegen_InkE2ETest.
-    Global Hint Resolve I : core.
+    Global Hint Resolve ℐ : core.
   End Impl_core_convert_From_for_ink_e2e_macro_codegen_InkE2ETest.
   
   (* Module Impl_core_fmt_Debug_for_ink_e2e_macro_codegen_ContractManifests.
     (* Section Impl_core_fmt_Debug_for_ink_e2e_macro_codegen_ContractManifests.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Definition Self : Set := ink_e2e_macro.codegen.ContractManifests.
       
@@ -348,16 +348,16 @@ Module codegen.
         Notation.double_colon := fmt;
       }.
       
-      Global Instance I : core.fmt.Debug.Trait Self := {
+      Global Instance ℐ : core.fmt.Debug.Trait Self := {
         core.fmt.Debug.fmt := fmt;
       }.
     End Impl_core_fmt_Debug_for_ink_e2e_macro_codegen_ContractManifests. *)
-    Global Hint Resolve I : core.
+    Global Hint Resolve ℐ : core.
   End Impl_core_fmt_Debug_for_ink_e2e_macro_codegen_ContractManifests. *)
 End codegen.
 
 Parameter ALREADY_BUILT_CONTRACTS :
-    forall `{State.Trait},
+    forall `{ℋ : State.Trait},
     std.thread.local.LocalKey
       (core.cell.RefCell
         (std.collections.hash.map.HashMap
@@ -366,7 +366,7 @@ Parameter ALREADY_BUILT_CONTRACTS :
           std.collections.hash.map.HashMap.Default.S)).
 
 Parameter already_built_contracts :
-    forall `{State.Trait},
+    forall `{ℋ : State.Trait},
     M
         (std.collections.hash.map.HashMap
           alloc.string.String
@@ -374,7 +374,7 @@ Parameter already_built_contracts :
           std.collections.hash.map.HashMap.Default.S).
 
 Parameter set_already_built_contracts :
-    forall `{State.Trait},
+    forall `{ℋ : State.Trait},
     (std.collections.hash.map.HashMap
         alloc.string.String
         alloc.string.String
@@ -384,7 +384,7 @@ Parameter set_already_built_contracts :
 
 (* Module InkE2ETest.
   Section InkE2ETest.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Record t : Set := {
@@ -400,11 +400,11 @@ Parameter set_already_built_contracts :
     }.
   End InkE2ETest.
 End InkE2ETest.
-Definition InkE2ETest `{State.Trait} : Set := M.val InkE2ETest.t. *)
+Definition InkE2ETest `{ℋ : State.Trait} : Set := M.val InkE2ETest.t. *)
 
 Module Impl_core_convert_From_for_ink_e2e_macro_codegen_InkE2ETest.
   Section Impl_core_convert_From_for_ink_e2e_macro_codegen_InkE2ETest.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := ink_e2e_macro.codegen.InkE2ETest.
     
@@ -416,17 +416,17 @@ Module Impl_core_convert_From_for_ink_e2e_macro_codegen_InkE2ETest.
       Notation.double_colon := from;
     }.
     
-    Global Instance I
+    Global Instance ℐ
       : core.convert.From.Trait Self (T := ink_e2e_macro.ir.InkE2ETest) := {
       core.convert.From.from := from;
     }.
   End Impl_core_convert_From_for_ink_e2e_macro_codegen_InkE2ETest.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_convert_From_for_ink_e2e_macro_codegen_InkE2ETest.
 
 (* Module Impl_core_fmt_Debug_for_ink_e2e_macro_codegen_ContractManifests.
   (* Section Impl_core_fmt_Debug_for_ink_e2e_macro_codegen_ContractManifests.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := ink_e2e_macro.codegen.ContractManifests.
     
@@ -438,16 +438,16 @@ End Impl_core_convert_From_for_ink_e2e_macro_codegen_InkE2ETest.
       Notation.double_colon := fmt;
     }.
     
-    Global Instance I : core.fmt.Debug.Trait Self := {
+    Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
   End Impl_core_fmt_Debug_for_ink_e2e_macro_codegen_ContractManifests. *)
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_ink_e2e_macro_codegen_ContractManifests. *)
 
 Module E2EConfig.
   Section E2EConfig.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Record t : Set := {
@@ -494,11 +494,11 @@ Module E2EConfig.
     }.
   End E2EConfig.
 End E2EConfig.
-Definition E2EConfig `{State.Trait} : Set := M.val E2EConfig.t.
+Definition E2EConfig `{ℋ : State.Trait} : Set := M.val E2EConfig.t.
 
 Module Impl_core_fmt_Debug_for_ink_e2e_macro_config_E2EConfig.
   Section Impl_core_fmt_Debug_for_ink_e2e_macro_config_E2EConfig.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := ink_e2e_macro.config.E2EConfig.
     
@@ -510,16 +510,16 @@ Module Impl_core_fmt_Debug_for_ink_e2e_macro_config_E2EConfig.
       Notation.double_colon := fmt;
     }.
     
-    Global Instance I : core.fmt.Debug.Trait Self := {
+    Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
   End Impl_core_fmt_Debug_for_ink_e2e_macro_config_E2EConfig.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_ink_e2e_macro_config_E2EConfig.
 
 Module Impl_core_default_Default_for_ink_e2e_macro_config_E2EConfig.
   Section Impl_core_default_Default_for_ink_e2e_macro_config_E2EConfig.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := ink_e2e_macro.config.E2EConfig.
     
@@ -530,29 +530,29 @@ Module Impl_core_default_Default_for_ink_e2e_macro_config_E2EConfig.
       Notation.double_colon := default;
     }.
     
-    Global Instance I : core.default.Default.Trait Self := {
+    Global Instance ℐ : core.default.Default.Trait Self := {
       core.default.Default.default := default;
     }.
   End Impl_core_default_Default_for_ink_e2e_macro_config_E2EConfig.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_default_Default_for_ink_e2e_macro_config_E2EConfig.
 
 Module Impl_core_marker_StructuralPartialEq_for_ink_e2e_macro_config_E2EConfig.
   Section
     Impl_core_marker_StructuralPartialEq_for_ink_e2e_macro_config_E2EConfig.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := ink_e2e_macro.config.E2EConfig.
     
-    Global Instance I : core.marker.StructuralPartialEq.Trait Self := {
+    Global Instance ℐ : core.marker.StructuralPartialEq.Trait Self := {
     }.
   End Impl_core_marker_StructuralPartialEq_for_ink_e2e_macro_config_E2EConfig.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_marker_StructuralPartialEq_for_ink_e2e_macro_config_E2EConfig.
 
 Module Impl_core_cmp_PartialEq_for_ink_e2e_macro_config_E2EConfig.
   Section Impl_core_cmp_PartialEq_for_ink_e2e_macro_config_E2EConfig.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := ink_e2e_macro.config.E2EConfig.
     
@@ -562,31 +562,31 @@ Module Impl_core_cmp_PartialEq_for_ink_e2e_macro_config_E2EConfig.
       Notation.double_colon := eq;
     }.
     
-    Global Instance I
+    Global Instance ℐ
       : core.cmp.PartialEq.Trait Self
           (Rhs := core.cmp.PartialEq.Default.Rhs Self)
         := {
       core.cmp.PartialEq.eq := eq;
     }.
   End Impl_core_cmp_PartialEq_for_ink_e2e_macro_config_E2EConfig.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_cmp_PartialEq_for_ink_e2e_macro_config_E2EConfig.
 
 Module Impl_core_marker_StructuralEq_for_ink_e2e_macro_config_E2EConfig.
   Section Impl_core_marker_StructuralEq_for_ink_e2e_macro_config_E2EConfig.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := ink_e2e_macro.config.E2EConfig.
     
-    Global Instance I : core.marker.StructuralEq.Trait Self := {
+    Global Instance ℐ : core.marker.StructuralEq.Trait Self := {
     }.
   End Impl_core_marker_StructuralEq_for_ink_e2e_macro_config_E2EConfig.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_marker_StructuralEq_for_ink_e2e_macro_config_E2EConfig.
 
 Module Impl_core_cmp_Eq_for_ink_e2e_macro_config_E2EConfig.
   Section Impl_core_cmp_Eq_for_ink_e2e_macro_config_E2EConfig.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := ink_e2e_macro.config.E2EConfig.
     
@@ -597,15 +597,15 @@ Module Impl_core_cmp_Eq_for_ink_e2e_macro_config_E2EConfig.
       Notation.double_colon := assert_receiver_is_total_eq;
     }.
     
-    Global Instance I : core.cmp.Eq.Trait Self := {
+    Global Instance ℐ : core.cmp.Eq.Trait Self := {
     }.
   End Impl_core_cmp_Eq_for_ink_e2e_macro_config_E2EConfig.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_cmp_Eq_for_ink_e2e_macro_config_E2EConfig.
 
 Module Impl_core_convert_TryFrom_for_ink_e2e_macro_config_E2EConfig.
   Section Impl_core_convert_TryFrom_for_ink_e2e_macro_config_E2EConfig.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := ink_e2e_macro.config.E2EConfig.
     
@@ -619,7 +619,7 @@ Module Impl_core_convert_TryFrom_for_ink_e2e_macro_config_E2EConfig.
       Notation.double_colon := try_from;
     }.
     
-    Global Instance I
+    Global Instance ℐ
       : core.convert.TryFrom.Trait Self
           (T := ink_ir.ast.attr_args.AttributeArgs)
         := {
@@ -627,12 +627,12 @@ Module Impl_core_convert_TryFrom_for_ink_e2e_macro_config_E2EConfig.
       core.convert.TryFrom.try_from := try_from;
     }.
   End Impl_core_convert_TryFrom_for_ink_e2e_macro_config_E2EConfig.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_convert_TryFrom_for_ink_e2e_macro_config_E2EConfig.
 
 Module InkE2ETest.
   Section InkE2ETest.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Record t : Set := {
@@ -655,11 +655,11 @@ Module InkE2ETest.
     }.
   End InkE2ETest.
 End InkE2ETest.
-Definition InkE2ETest `{State.Trait} : Set := M.val InkE2ETest.t.
+Definition InkE2ETest `{ℋ : State.Trait} : Set := M.val InkE2ETest.t.
 
 Module E2EFn.
   Section E2EFn.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Record t : Set := {
@@ -675,11 +675,11 @@ Module E2EFn.
     }.
   End E2EFn.
 End E2EFn.
-Definition E2EFn `{State.Trait} : Set := M.val E2EFn.t.
+Definition E2EFn `{ℋ : State.Trait} : Set := M.val E2EFn.t.
 
 Module Impl_core_convert_From_for_ink_e2e_macro_ir_E2EFn.
   Section Impl_core_convert_From_for_ink_e2e_macro_ir_E2EFn.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := ink_e2e_macro.ir.E2EFn.
     
@@ -690,15 +690,15 @@ Module Impl_core_convert_From_for_ink_e2e_macro_ir_E2EFn.
       Notation.double_colon := from;
     }.
     
-    Global Instance I : core.convert.From.Trait Self (T := syn.item.ItemFn) := {
+    Global Instance ℐ : core.convert.From.Trait Self (T := syn.item.ItemFn) := {
       core.convert.From.from := from;
     }.
   End Impl_core_convert_From_for_ink_e2e_macro_ir_E2EFn.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_convert_From_for_ink_e2e_macro_ir_E2EFn.
 
 Parameter test :
-    forall `{State.Trait},
+    forall `{ℋ : State.Trait},
     proc_macro.TokenStream ->
       proc_macro.TokenStream ->
       M proc_macro.TokenStream.

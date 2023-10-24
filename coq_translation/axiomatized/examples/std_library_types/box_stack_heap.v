@@ -4,7 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* #[allow(dead_code)] - struct was ignored by the compiler *)
 Module Point.
   Section Point.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Record t : Set := {
@@ -27,11 +27,11 @@ Module Point.
     }.
   End Point.
 End Point.
-Definition Point `{State.Trait} : Set := M.val Point.t.
+Definition Point `{ℋ : State.Trait} : Set := M.val Point.t.
 
 Module Impl_core_fmt_Debug_for_box_stack_heap_Point.
   Section Impl_core_fmt_Debug_for_box_stack_heap_Point.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := box_stack_heap.Point.
     
@@ -44,16 +44,16 @@ Module Impl_core_fmt_Debug_for_box_stack_heap_Point.
       Notation.double_colon := fmt;
     }.
     
-    Global Instance I : core.fmt.Debug.Trait Self := {
+    Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
   End Impl_core_fmt_Debug_for_box_stack_heap_Point.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_box_stack_heap_Point.
 
 Module Impl_core_clone_Clone_for_box_stack_heap_Point.
   Section Impl_core_clone_Clone_for_box_stack_heap_Point.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := box_stack_heap.Point.
     
@@ -65,29 +65,29 @@ Module Impl_core_clone_Clone_for_box_stack_heap_Point.
       Notation.double_colon := clone;
     }.
     
-    Global Instance I : core.clone.Clone.Trait Self := {
+    Global Instance ℐ : core.clone.Clone.Trait Self := {
       core.clone.Clone.clone := clone;
     }.
   End Impl_core_clone_Clone_for_box_stack_heap_Point.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_clone_Clone_for_box_stack_heap_Point.
 
 Module Impl_core_marker_Copy_for_box_stack_heap_Point.
   Section Impl_core_marker_Copy_for_box_stack_heap_Point.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := box_stack_heap.Point.
     
-    Global Instance I : core.marker.Copy.Trait Self := {
+    Global Instance ℐ : core.marker.Copy.Trait Self := {
     }.
   End Impl_core_marker_Copy_for_box_stack_heap_Point.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_marker_Copy_for_box_stack_heap_Point.
 
 (* #[allow(dead_code)] - struct was ignored by the compiler *)
 Module Rectangle.
   Section Rectangle.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Record t : Set := {
@@ -113,13 +113,13 @@ Module Rectangle.
     }.
   End Rectangle.
 End Rectangle.
-Definition Rectangle `{State.Trait} : Set := M.val Rectangle.t.
+Definition Rectangle `{ℋ : State.Trait} : Set := M.val Rectangle.t.
 
-Parameter origin : forall `{State.Trait}, M box_stack_heap.Point.
+Parameter origin : forall `{ℋ : State.Trait}, M box_stack_heap.Point.
 
 Parameter boxed_origin :
-    forall `{State.Trait},
+    forall `{ℋ : State.Trait},
     M (alloc.boxed.Box box_stack_heap.Point alloc.boxed.Box.Default.A).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{State.Trait}, M unit.
+Parameter main : forall `{ℋ : State.Trait}, M unit.

@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module Point.
   Section Point.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Record t : Set := {
@@ -26,12 +26,12 @@ Module Point.
     }.
   End Point.
 End Point.
-Definition Point `{State.Trait} : Set := M.val Point.t.
+Definition Point `{ℋ : State.Trait} : Set := M.val Point.t.
 
 Module Impl_core_clone_Clone_for_scoping_rules_borrowing_the_ref_pattern_Point.
   Section
     Impl_core_clone_Clone_for_scoping_rules_borrowing_the_ref_pattern_Point.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := scoping_rules_borrowing_the_ref_pattern.Point.
     
@@ -46,28 +46,28 @@ Module Impl_core_clone_Clone_for_scoping_rules_borrowing_the_ref_pattern_Point.
       Notation.double_colon := clone;
     }.
     
-    Global Instance I : core.clone.Clone.Trait Self := {
+    Global Instance ℐ : core.clone.Clone.Trait Self := {
       core.clone.Clone.clone := clone;
     }.
   End Impl_core_clone_Clone_for_scoping_rules_borrowing_the_ref_pattern_Point.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_clone_Clone_for_scoping_rules_borrowing_the_ref_pattern_Point.
 
 Module Impl_core_marker_Copy_for_scoping_rules_borrowing_the_ref_pattern_Point.
   Section
     Impl_core_marker_Copy_for_scoping_rules_borrowing_the_ref_pattern_Point.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := scoping_rules_borrowing_the_ref_pattern.Point.
     
-    Global Instance I : core.marker.Copy.Trait Self := {
+    Global Instance ℐ : core.marker.Copy.Trait Self := {
     }.
   End Impl_core_marker_Copy_for_scoping_rules_borrowing_the_ref_pattern_Point.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_marker_Copy_for_scoping_rules_borrowing_the_ref_pattern_Point.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main `{ℋ : State.Trait} : M unit :=
   let* c := M.alloc "Q"%char in
   let ref_c1 := c in
   let* ref_c2 := borrow c char in

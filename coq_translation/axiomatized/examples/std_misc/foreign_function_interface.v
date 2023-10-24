@@ -4,15 +4,15 @@ Require Import CoqOfRust.CoqOfRust.
 Error ForeignMod.
 
 Parameter cos :
-    forall `{State.Trait},
+    forall `{ℋ : State.Trait},
     foreign_function_interface.Complex -> M foreign_function_interface.Complex.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{State.Trait}, M unit.
+Parameter main : forall `{ℋ : State.Trait}, M unit.
 
 Module Complex.
   Section Complex.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Record t : Set := {
@@ -35,11 +35,11 @@ Module Complex.
     }.
   End Complex.
 End Complex.
-Definition Complex `{State.Trait} : Set := M.val Complex.t.
+Definition Complex `{ℋ : State.Trait} : Set := M.val Complex.t.
 
 Module Impl_core_clone_Clone_for_foreign_function_interface_Complex.
   Section Impl_core_clone_Clone_for_foreign_function_interface_Complex.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := foreign_function_interface.Complex.
     
@@ -50,28 +50,28 @@ Module Impl_core_clone_Clone_for_foreign_function_interface_Complex.
       Notation.double_colon := clone;
     }.
     
-    Global Instance I : core.clone.Clone.Trait Self := {
+    Global Instance ℐ : core.clone.Clone.Trait Self := {
       core.clone.Clone.clone := clone;
     }.
   End Impl_core_clone_Clone_for_foreign_function_interface_Complex.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_clone_Clone_for_foreign_function_interface_Complex.
 
 Module Impl_core_marker_Copy_for_foreign_function_interface_Complex.
   Section Impl_core_marker_Copy_for_foreign_function_interface_Complex.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := foreign_function_interface.Complex.
     
-    Global Instance I : core.marker.Copy.Trait Self := {
+    Global Instance ℐ : core.marker.Copy.Trait Self := {
     }.
   End Impl_core_marker_Copy_for_foreign_function_interface_Complex.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_marker_Copy_for_foreign_function_interface_Complex.
 
 Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
   Section Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := foreign_function_interface.Complex.
     
@@ -83,9 +83,9 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
       Notation.double_colon := fmt;
     }.
     
-    Global Instance I : core.fmt.Debug.Trait Self := {
+    Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
   End Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_foreign_function_interface_Complex.

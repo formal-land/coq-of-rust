@@ -2,10 +2,10 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit := M.alloc tt.
+Definition main `{ℋ : State.Trait} : M unit := M.alloc tt.
 
 Definition apply
-    `{State.Trait}
+    `{ℋ : State.Trait}
     {F : Set}
     {ℋ_0 : core.ops.function.FnOnce.Trait F (Args := unit)}
     (f : F)

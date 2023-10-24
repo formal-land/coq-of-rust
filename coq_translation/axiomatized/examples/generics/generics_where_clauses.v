@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module PrintInOption.
   Section PrintInOption.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Class Trait (Self : Set) : Type := {
       print_in_option : Self -> M unit;
@@ -14,7 +14,7 @@ End PrintInOption.
 
 Module Impl_generics_where_clauses_PrintInOption_for_T.
   Section Impl_generics_where_clauses_PrintInOption_for_T.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {T : Set}.
     
@@ -28,12 +28,12 @@ Module Impl_generics_where_clauses_PrintInOption_for_T.
       Notation.double_colon := print_in_option;
     }.
     
-    Global Instance I : generics_where_clauses.PrintInOption.Trait Self := {
+    Global Instance ℐ : generics_where_clauses.PrintInOption.Trait Self := {
       generics_where_clauses.PrintInOption.print_in_option := print_in_option;
     }.
   End Impl_generics_where_clauses_PrintInOption_for_T.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_generics_where_clauses_PrintInOption_for_T.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{State.Trait}, M unit.
+Parameter main : forall `{ℋ : State.Trait}, M unit.
