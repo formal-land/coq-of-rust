@@ -1313,6 +1313,7 @@ impl FunDefinition {
                                         .concat(),
                                         image: Box::new(coq::Expression::Unit),
                                     },
+                                    with_monad_parm: true,
                                 },
                             ))
                         };
@@ -1376,6 +1377,7 @@ impl FunDefinition {
                                                 ),
                                         ),
                                     },
+                                    with_monad_parm: false,
                                 },
                             ))],
                         ]
@@ -1674,6 +1676,7 @@ impl TopLevelItem {
                             args: vec![coq::ArgDecl::monadic_typeclass_parameter()],
                             image: Box::new(ty.to_coq()),
                         },
+                        with_monad_parm: false,
                     },
                 ))])
                 .to_doc(),
@@ -2471,6 +2474,7 @@ impl TypeStructStruct {
                                                                   "t",
                                                                   &coq::DefinitionKind::Assumption {
                                                                       ty: coq::Expression::Set,
+                                                                      with_monad_parm: false
                                                                   },
                                                               ),
                                                           )],
@@ -2539,6 +2543,7 @@ impl TypeStructStruct {
                                                                               ]),
                                                                       ),
                                                                   },
+                                                                  with_monad_parm: false
                                                               },
                                                           ))],
                                                       ].concat()),

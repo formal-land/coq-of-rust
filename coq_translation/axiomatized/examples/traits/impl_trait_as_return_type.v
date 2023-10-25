@@ -16,6 +16,8 @@ Parameter combine_vecs_explicit_return_type :
               alloc.vec.into_iter.IntoIter.Default.A))).
 
 Parameter combine_vecs_ret_ty :
+    forall
+    `{State.Trait},
     Sigma (Ty : Set) `(core.iter.traits.iterator.Iterator.Trait Ty),
     unit.
 Parameter combine_vecs :
