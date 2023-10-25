@@ -887,7 +887,7 @@ Module chain_extension.
       Context `{State.Trait}.
       
       Module Dyn_ink_engine_chain_extension_ChainExtension.
-        Parameter t : forall `{State.Trait}, Set.
+        Parameter t : Set.
         Global Instance I_ink_engine_chain_extension_ChainExtension
           : ink_engine.chain_extension.ChainExtension.Trait t := axiom.
         Parameter conv_Dyn :
@@ -1982,7 +1982,7 @@ Module ChainExtensionHandler.
     Context `{State.Trait}.
     
     Module Dyn_ink_engine_chain_extension_ChainExtension.
-      Parameter t : forall `{State.Trait}, Set.
+      Parameter t : Set.
       Global Instance I_ink_engine_chain_extension_ChainExtension
         : ink_engine.chain_extension.ChainExtension.Trait t := axiom.
       Parameter conv_Dyn :
