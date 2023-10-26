@@ -2,15 +2,15 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module Foo.
-  Inductive t `{State.Trait} : Set :=
+  Inductive t `{ℋ : State.Trait} : Set :=
   | Bar
   | Baz
   | Qux (_ : u32).
 End Foo.
-Definition Foo `{State.Trait} : Set := Foo.t.
+Definition Foo `{ℋ : State.Trait} : Set := Foo.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main `{ℋ : State.Trait} : M unit :=
   let a := if_let_match_enum_values.Foo.Bar tt in
   let b := if_let_match_enum_values.Foo.Baz tt in
   let* c :=

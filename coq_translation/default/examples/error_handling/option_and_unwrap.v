@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition give_adult
-    `{State.Trait}
+    `{ℋ : State.Trait}
     (drink : core.option.Option (ref str))
     : M unit :=
   match drink with
@@ -47,14 +47,14 @@ Definition give_adult
   end.
 
 Definition drink
-    `{State.Trait}
+    `{ℋ : State.Trait}
     (drink : core.option.Option (ref str))
     : M unit :=
-  let* inside := (core.option.Option _)::["unwrap"] drink in
+  let* inside := (core.option.Option T)::["unwrap"] drink in
   let* _ :=
     let* α0 := borrow inside (ref str) in
     let* α1 := borrow (mk_str "lemonade") (ref str) in
-    let* α2 := core.cmp.PartialEq.eq α0 α1 in
+    let* α2 := (core.cmp.PartialEq.eq (Self := (ref str))) α0 α1 in
     let* α3 := use α2 in
     if (α3 : bool) then
       let* _ :=
@@ -86,7 +86,7 @@ Definition drink
   M.alloc tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main `{ℋ : State.Trait} : M unit :=
   let water := core.option.Option.Some (mk_str "water") in
   let lemonade := core.option.Option.Some (mk_str "lemonade") in
   let void := core.option.Option.None tt in

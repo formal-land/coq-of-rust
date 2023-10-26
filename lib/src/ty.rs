@@ -275,7 +275,13 @@ impl CoqType {
                 ident: *path.clone(),
                 no_implicit: false,
             }
-            .apply_arg(&Some("Self".to_string()), &self_ty.to_coq()),
+            .apply_many_args(&[
+                (Some("Self".to_string()), self_ty.to_coq()),
+                (
+                    Some("Trait".to_string()),
+                    coq::Expression::Code(text("ltac:(try clear Trait; hauto l: on)")),
+                ),
+            ]),
             CoqType::Application { func, args } => func
                 .to_coq()
                 .apply_many(&args.iter().map(|arg| arg.to_coq()).collect::<Vec<_>>()),

@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module Years.
   Section Years.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Record t : Set := {
@@ -11,15 +11,16 @@ Module Years.
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_0 : Notation.Dot "0" := {
+    #[refine] Global Instance Get_0 : Notation.Dot "0" := {
       Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
+    Admitted.
   End Years.
 End Years.
-Definition Years `{State.Trait} : Set := M.val Years.t.
+Definition Years `{ℋ : State.Trait} : Set := M.val Years.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main `{ℋ : State.Trait} : M unit :=
   let* years :=
     let* α0 := M.alloc 42 in
     Pure (generics_new_type_idiom_as_base_type.Years.Build_t α0) in

@@ -2,15 +2,22 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition cat
-    `{State.Trait}
+    `{ℋ : State.Trait}
     (path : ref std.path.Path)
     : M (std.io.error.Result alloc.string.String) :=
   let* f :=
     let* α0 := std.fs.File::["open"] path in
-    let* α1 := core.ops.try_trait.Try.branch α0 in
+    let* α1 :=
+      (core.ops.try_trait.Try.branch
+          (Self := (core.result.Result std.fs.File std.io.error.Error)))
+        α0 in
     match α1 with
     | core.ops.control_flow.ControlFlow residual =>
-      let* α0 := core.ops.try_trait.FromResidual.from_residual residual in
+      let* α0 :=
+        (core.ops.try_trait.FromResidual.from_residual
+            (Self :=
+              (core.result.Result alloc.string.String std.io.error.Error)))
+          residual in
       let* α1 := Return α0 in
       never_to_any α1
     | core.ops.control_flow.ControlFlow val => Pure val
@@ -20,23 +27,29 @@ Definition cat
   let* α1 := borrow_mut s alloc.string.String in
   let* α2 := deref α1 alloc.string.String in
   let* α3 := borrow_mut α2 alloc.string.String in
-  let* α4 := std.io.Read.read_to_string α0 α3 in
+  let* α4 := (std.io.Read.read_to_string (Self := std.fs.File)) α0 α3 in
   match α4 with
   | core.result.Result _ => Pure (core.result.Result.Ok s)
   | core.result.Result e => Pure (core.result.Result.Err e)
   end.
 
 Definition echo
-    `{State.Trait}
+    `{ℋ : State.Trait}
     (s : ref str)
     (path : ref std.path.Path)
     : M (std.io.error.Result unit) :=
   let* f :=
     let* α0 := std.fs.File::["create"] path in
-    let* α1 := core.ops.try_trait.Try.branch α0 in
+    let* α1 :=
+      (core.ops.try_trait.Try.branch
+          (Self := (core.result.Result std.fs.File std.io.error.Error)))
+        α0 in
     match α1 with
     | core.ops.control_flow.ControlFlow residual =>
-      let* α0 := core.ops.try_trait.FromResidual.from_residual residual in
+      let* α0 :=
+        (core.ops.try_trait.FromResidual.from_residual
+            (Self := (core.result.Result unit std.io.error.Error)))
+          residual in
       let* α1 := Return α0 in
       never_to_any α1
     | core.ops.control_flow.ControlFlow val => Pure val
@@ -47,10 +60,10 @@ Definition echo
   let* α3 := str::["as_bytes"] α2 in
   let* α4 := deref α3 (Slice u8) in
   let* α5 := borrow α4 (Slice u8) in
-  std.io.Write.write_all α0 α5.
+  (std.io.Write.write_all (Self := std.fs.File)) α0 α5.
 
 Definition touch
-    `{State.Trait}
+    `{ℋ : State.Trait}
     (path : ref std.path.Path)
     : M (std.io.error.Result unit) :=
   let* α0 := std.fs.OpenOptions::["new"] in
@@ -72,7 +85,7 @@ Definition touch
   end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main `{ℋ : State.Trait} : M unit :=
   let* _ :=
     let* _ :=
       let* α0 := borrow [ mk_str "`mkdir a`
@@ -129,9 +142,9 @@ Definition main `{State.Trait} : M unit :=
     let* α7 := deref α6 std.path.Path in
     let* α8 := borrow α7 std.path.Path in
     let* α9 := filesystem_operations.echo α1 α8 in
-    (core.result.Result _ _)::["unwrap_or_else"]
+    (core.result.Result T E)::["unwrap_or_else"]
       α9
-      let* _ :=
+      (let* _ :=
         let* _ :=
           let* α0 := borrow [ mk_str "! "; mk_str "
 " ] (list (ref str)) in
@@ -151,7 +164,7 @@ Definition main `{State.Trait} : M unit :=
           let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
           std.io.stdio._print α14 in
         M.alloc tt in
-      M.alloc tt in
+      M.alloc tt) in
   let* _ :=
     let* _ :=
       let* α0 := borrow [ mk_str "`mkdir -p a/c/d`
@@ -164,9 +177,9 @@ Definition main `{State.Trait} : M unit :=
     M.alloc tt in
   let* _ :=
     let* α0 := std.fs.create_dir_all (mk_str "a/c/d") in
-    (core.result.Result _ _)::["unwrap_or_else"]
+    (core.result.Result T E)::["unwrap_or_else"]
       α0
-      let* _ :=
+      (let* _ :=
         let* _ :=
           let* α0 := borrow [ mk_str "! "; mk_str "
 " ] (list (ref str)) in
@@ -186,7 +199,7 @@ Definition main `{State.Trait} : M unit :=
           let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
           std.io.stdio._print α14 in
         M.alloc tt in
-      M.alloc tt in
+      M.alloc tt) in
   let* _ :=
     let* _ :=
       let* α0 := borrow [ mk_str "`touch a/c/e.txt`
@@ -206,9 +219,9 @@ Definition main `{State.Trait} : M unit :=
     let* α5 := deref α4 std.path.Path in
     let* α6 := borrow α5 std.path.Path in
     let* α7 := filesystem_operations.touch α6 in
-    (core.result.Result _ _)::["unwrap_or_else"]
+    (core.result.Result T E)::["unwrap_or_else"]
       α7
-      let* _ :=
+      (let* _ :=
         let* _ :=
           let* α0 := borrow [ mk_str "! "; mk_str "
 " ] (list (ref str)) in
@@ -228,7 +241,7 @@ Definition main `{State.Trait} : M unit :=
           let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
           std.io.stdio._print α14 in
         M.alloc tt in
-      M.alloc tt in
+      M.alloc tt) in
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -247,9 +260,9 @@ Definition main `{State.Trait} : M unit :=
       let* _ :=
         let* α0 :=
           std.os.unix.fs.symlink (mk_str "../b.txt") (mk_str "a/c/b.txt") in
-        (core.result.Result _ _)::["unwrap_or_else"]
+        (core.result.Result T E)::["unwrap_or_else"]
           α0
-          let* _ :=
+          (let* _ :=
             let* _ :=
               let* α0 := borrow [ mk_str "! "; mk_str "
 " ] (list (ref str)) in
@@ -269,7 +282,7 @@ Definition main `{State.Trait} : M unit :=
               let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
               std.io.stdio._print α14 in
             M.alloc tt in
-          M.alloc tt in
+          M.alloc tt) in
       M.alloc tt
     else
       M.alloc tt in
@@ -366,7 +379,10 @@ Definition main `{State.Trait} : M unit :=
         std.io.stdio._print α14 in
       M.alloc tt
     | core.result.Result paths =>
-      let* α0 := core.iter.traits.collect.IntoIterator.into_iter paths in
+      let* α0 :=
+        (core.iter.traits.collect.IntoIterator.into_iter
+            (Self := std.fs.ReadDir))
+          paths in
       let* α1 :=
         match α0 with
         | iter =>
@@ -375,7 +391,10 @@ Definition main `{State.Trait} : M unit :=
               let* α0 := borrow_mut iter std.fs.ReadDir in
               let* α1 := deref α0 std.fs.ReadDir in
               let* α2 := borrow_mut α1 std.fs.ReadDir in
-              let* α3 := core.iter.traits.iterator.Iterator.next α2 in
+              let* α3 :=
+                (core.iter.traits.iterator.Iterator.next
+                    (Self := std.fs.ReadDir))
+                  α2 in
               match α3 with
               | core.option.Option  =>
                 let* α0 := Break in
@@ -389,7 +408,7 @@ Definition main `{State.Trait} : M unit :=
                     let* α1 := deref α0 (list (ref str)) in
                     let* α2 := borrow α1 (list (ref str)) in
                     let* α3 := pointer_coercion "Unsize" α2 in
-                    let* α4 := (core.result.Result _ _)::["unwrap"] path in
+                    let* α4 := (core.result.Result T E)::["unwrap"] path in
                     let* α5 := borrow α4 std.fs.DirEntry in
                     let* α6 := std.fs.DirEntry::["path"] α5 in
                     let* α7 := borrow α6 std.path.PathBuf in
@@ -421,9 +440,9 @@ Definition main `{State.Trait} : M unit :=
     M.alloc tt in
   let* _ :=
     let* α0 := std.fs.remove_file (mk_str "a/c/e.txt") in
-    (core.result.Result _ _)::["unwrap_or_else"]
+    (core.result.Result T E)::["unwrap_or_else"]
       α0
-      let* _ :=
+      (let* _ :=
         let* _ :=
           let* α0 := borrow [ mk_str "! "; mk_str "
 " ] (list (ref str)) in
@@ -443,7 +462,7 @@ Definition main `{State.Trait} : M unit :=
           let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
           std.io.stdio._print α14 in
         M.alloc tt in
-      M.alloc tt in
+      M.alloc tt) in
   let* _ :=
     let* _ :=
       let* α0 := borrow [ mk_str "`rmdir a/c/d`
@@ -456,9 +475,9 @@ Definition main `{State.Trait} : M unit :=
     M.alloc tt in
   let* _ :=
     let* α0 := std.fs.remove_dir (mk_str "a/c/d") in
-    (core.result.Result _ _)::["unwrap_or_else"]
+    (core.result.Result T E)::["unwrap_or_else"]
       α0
-      let* _ :=
+      (let* _ :=
         let* _ :=
           let* α0 := borrow [ mk_str "! "; mk_str "
 " ] (list (ref str)) in
@@ -478,5 +497,5 @@ Definition main `{State.Trait} : M unit :=
           let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
           std.io.stdio._print α14 in
         M.alloc tt in
-      M.alloc tt in
+      M.alloc tt) in
   M.alloc tt.

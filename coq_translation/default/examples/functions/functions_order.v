@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module SomeType.
   Section SomeType.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Record t : Set := {
@@ -11,16 +11,17 @@ Module SomeType.
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_0 : Notation.Dot "0" := {
+    #[refine] Global Instance Get_0 : Notation.Dot "0" := {
       Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
+    Admitted.
   End SomeType.
 End SomeType.
-Definition SomeType `{State.Trait} : Set := M.val SomeType.t.
+Definition SomeType `{ℋ : State.Trait} : Set := M.val SomeType.t.
 
 Module OtherType.
   Section OtherType.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Record t : Set := {
@@ -28,16 +29,17 @@ Module OtherType.
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_0 : Notation.Dot "0" := {
+    #[refine] Global Instance Get_0 : Notation.Dot "0" := {
       Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
+    Admitted.
   End OtherType.
 End OtherType.
-Definition OtherType `{State.Trait} : Set := M.val OtherType.t.
+Definition OtherType `{ℋ : State.Trait} : Set := M.val OtherType.t.
 
 Module Impl_functions_order_SomeType.
   Section Impl_functions_order_SomeType.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := functions_order.SomeType.
     
@@ -61,7 +63,7 @@ End Impl_functions_order_SomeType.
 
 Module SomeTrait.
   Section SomeTrait.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Class Trait (Self : Set) : Type := {
       some_trait_foo : (ref Self) -> M unit;
@@ -73,7 +75,7 @@ End SomeTrait.
 
 Module Impl_functions_order_SomeTrait_for_functions_order_SomeType.
   Section Impl_functions_order_SomeTrait_for_functions_order_SomeType.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := functions_order.SomeType.
     
@@ -87,24 +89,27 @@ Module Impl_functions_order_SomeTrait_for_functions_order_SomeType.
     Definition some_trait_foo (self : ref Self) : M unit :=
       let* α0 := deref self functions_order.SomeType in
       let* α1 := borrow α0 functions_order.SomeType in
-      functions_order.SomeTrait.some_trait_bar α1.
+      (functions_order.SomeTrait.some_trait_bar
+          (Self := functions_order.SomeType))
+        α1.
     
     Global Instance AssociatedFunction_some_trait_foo :
       Notation.DoubleColon Self "some_trait_foo" := {
       Notation.double_colon := some_trait_foo;
     }.
     
-    Global Instance I : functions_order.SomeTrait.Trait Self := {
+    #[refine] Global Instance ℐ : functions_order.SomeTrait.Trait Self := {
       functions_order.SomeTrait.some_trait_bar := some_trait_bar;
       functions_order.SomeTrait.some_trait_foo := some_trait_foo;
     }.
+    Admitted.
   End Impl_functions_order_SomeTrait_for_functions_order_SomeType.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_functions_order_SomeTrait_for_functions_order_SomeType.
 
 Module Impl_functions_order_SomeTrait_for_functions_order_OtherType.
   Section Impl_functions_order_SomeTrait_for_functions_order_OtherType.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := functions_order.OtherType.
     
@@ -122,65 +127,74 @@ Module Impl_functions_order_SomeTrait_for_functions_order_OtherType.
       Notation.double_colon := some_trait_bar;
     }.
     
-    Global Instance I : functions_order.SomeTrait.Trait Self := {
+    #[refine] Global Instance ℐ : functions_order.SomeTrait.Trait Self := {
       functions_order.SomeTrait.some_trait_foo := some_trait_foo;
       functions_order.SomeTrait.some_trait_bar := some_trait_bar;
     }.
+    Admitted.
   End Impl_functions_order_SomeTrait_for_functions_order_OtherType.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_functions_order_SomeTrait_for_functions_order_OtherType.
 
-Definition depends_on_trait_impl `{State.Trait} (u : u32) (b : bool) : M unit :=
+Definition depends_on_trait_impl
+    `{ℋ : State.Trait}
+    (u : u32)
+    (b : bool)
+    : M unit :=
   let* _ :=
     let* α0 :=
       borrow (functions_order.OtherType.Build_t b) functions_order.OtherType in
-    functions_order.SomeTrait.some_trait_foo α0 in
+    (functions_order.SomeTrait.some_trait_foo
+        (Self := functions_order.OtherType))
+      α0 in
   let* _ :=
     let* α0 :=
       borrow (functions_order.SomeType.Build_t u) functions_order.SomeType in
-    functions_order.SomeTrait.some_trait_foo α0 in
+    (functions_order.SomeTrait.some_trait_foo
+        (Self := functions_order.SomeType))
+      α0 in
   M.alloc tt.
 
 Module inner_mod.
-  Definition tar `{State.Trait} : M unit := M.alloc tt.
+  Definition tar `{ℋ : State.Trait} : M unit := M.alloc tt.
   
-  Definition bar `{State.Trait} : M unit :=
+  Definition bar `{ℋ : State.Trait} : M unit :=
     let* _ := functions_order.inner_mod.tar in
     M.alloc tt.
   
   Module nested_mod.
-    Definition tack `{State.Trait} : M unit := M.alloc tt.
+    Definition tack `{ℋ : State.Trait} : M unit := M.alloc tt.
     
-    Definition tick `{State.Trait} : M unit :=
+    Definition tick `{ℋ : State.Trait} : M unit :=
       let* _ := functions_order.inner_mod.nested_mod.tack in
       M.alloc tt.
   End nested_mod.
 End inner_mod.
 
-Definition bar `{State.Trait} : M unit :=
+Definition bar `{ℋ : State.Trait} : M unit :=
   let* _ := functions_order.inner_mod.tar in
   M.alloc tt.
 
-Definition tar `{State.Trait} : M unit := M.alloc tt.
+Definition tar `{ℋ : State.Trait} : M unit := M.alloc tt.
 
 Module nested_mod.
-  Definition tack `{State.Trait} : M unit := M.alloc tt.
+  Definition tack `{ℋ : State.Trait} : M unit := M.alloc tt.
   
-  Definition tick `{State.Trait} : M unit :=
+  Definition tick `{ℋ : State.Trait} : M unit :=
     let* _ := functions_order.inner_mod.nested_mod.tack in
     M.alloc tt.
 End nested_mod.
 
-Definition tick `{State.Trait} : M unit :=
+Definition tick `{ℋ : State.Trait} : M unit :=
   let* _ := functions_order.inner_mod.nested_mod.tack in
   M.alloc tt.
 
-Definition tack `{State.Trait} : M unit := M.alloc tt.
+Definition tack `{ℋ : State.Trait} : M unit := M.alloc tt.
 
-Definition foo `{State.Trait} : M unit := M.alloc tt.
+Definition foo `{ℋ : State.Trait} : M unit := M.alloc tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main `{ℋ : State.Trait} : M unit :=
   let* _ := functions_order.foo in
   let* _ := functions_order.inner_mod.bar in
   let* _ :=

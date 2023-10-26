@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module Ref.
   Section Ref.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {T : Set}.
     
@@ -13,16 +13,17 @@ Module Ref.
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_0 : Notation.Dot "0" := {
+    #[refine] Global Instance Get_0 : Notation.Dot "0" := {
       Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
+    Admitted.
   End Ref.
 End Ref.
-Definition Ref `{State.Trait} (T : Set) : Set := M.val (Ref.t (T := T)).
+Definition Ref `{ℋ : State.Trait} (T : Set) : Set := M.val (Ref.t (T := T)).
 
 Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
   Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {T : Set}.
     
@@ -37,20 +38,21 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
       Notation.double_colon := fmt;
     }.
     
-    Global Instance I : core.fmt.Debug.Trait Self := {
+    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
+    Admitted.
   End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
 
 Parameter print :
-    forall `{State.Trait} {T : Set} {ℋ_0 : core.fmt.Debug.Trait T},
+    forall `{ℋ : State.Trait} {T : Set} {ℋ_0 : core.fmt.Debug.Trait T},
     T -> M unit.
 
 Parameter print_ref :
-    forall `{State.Trait} {T : Set} {ℋ_0 : core.fmt.Debug.Trait T},
+    forall `{ℋ : State.Trait} {T : Set} {ℋ_0 : core.fmt.Debug.Trait T},
     (ref T) -> M unit.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{State.Trait}, M unit.
+Parameter main : forall `{ℋ : State.Trait}, M unit.

@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module Fibonacci.
   Section Fibonacci.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Record t : Set := {
@@ -12,25 +12,29 @@ Module Fibonacci.
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_curr : Notation.Dot "curr" := {
+    #[refine] Global Instance Get_curr : Notation.Dot "curr" := {
       Notation.dot x := let* x := M.read x in Pure x.(curr) : M _;
     }.
-    Global Instance Get_AF_curr : Notation.DoubleColon t "curr" := {
+    Admitted.
+    #[refine] Global Instance Get_AF_curr : Notation.DoubleColon t "curr" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(curr) : M _;
     }.
-    Global Instance Get_next : Notation.Dot "next" := {
+    Admitted.
+    #[refine] Global Instance Get_next : Notation.Dot "next" := {
       Notation.dot x := let* x := M.read x in Pure x.(next) : M _;
     }.
-    Global Instance Get_AF_next : Notation.DoubleColon t "next" := {
+    Admitted.
+    #[refine] Global Instance Get_AF_next : Notation.DoubleColon t "next" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(next) : M _;
     }.
+    Admitted.
   End Fibonacci.
 End Fibonacci.
-Definition Fibonacci `{State.Trait} : Set := M.val Fibonacci.t.
+Definition Fibonacci `{ℋ : State.Trait} : Set := M.val Fibonacci.t.
 
 Module Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
   Section Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := iterators.Fibonacci.
     
@@ -60,21 +64,23 @@ Module Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
       Notation.double_colon := next;
     }.
     
-    Global Instance I : core.iter.traits.iterator.Iterator.Trait Self := {
+    #[refine] Global Instance ℐ :
+      core.iter.traits.iterator.Iterator.Trait Self := {
       core.iter.traits.iterator.Iterator.Item := Item;
       core.iter.traits.iterator.Iterator.next := next;
     }.
+    Admitted.
   End Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
 
-Definition fibonacci `{State.Trait} : M iterators.Fibonacci :=
+Definition fibonacci `{ℋ : State.Trait} : M iterators.Fibonacci :=
   let* α0 := M.alloc 0 in
   let* α1 := M.alloc 1 in
   M.alloc {| iterators.Fibonacci.curr := α0; iterators.Fibonacci.next := α1; |}.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main `{ℋ : State.Trait} : M unit :=
   let* sequence :=
     let* α0 := M.alloc 0 in
     let* α1 := M.alloc 3 in
@@ -101,7 +107,10 @@ Definition main `{State.Trait} : M unit :=
       let* α2 := borrow α1 (list (ref str)) in
       let* α3 := pointer_coercion "Unsize" α2 in
       let* α4 := borrow_mut sequence (core.ops.range.Range i32) in
-      let* α5 := core.iter.traits.iterator.Iterator.next α4 in
+      let* α5 :=
+        (core.iter.traits.iterator.Iterator.next
+            (Self := (core.ops.range.Range i32)))
+          α4 in
       let* α6 := borrow α5 (core.option.Option i32) in
       let* α7 := deref α6 (core.option.Option i32) in
       let* α8 := borrow α7 (core.option.Option i32) in
@@ -121,7 +130,10 @@ Definition main `{State.Trait} : M unit :=
       let* α2 := borrow α1 (list (ref str)) in
       let* α3 := pointer_coercion "Unsize" α2 in
       let* α4 := borrow_mut sequence (core.ops.range.Range i32) in
-      let* α5 := core.iter.traits.iterator.Iterator.next α4 in
+      let* α5 :=
+        (core.iter.traits.iterator.Iterator.next
+            (Self := (core.ops.range.Range i32)))
+          α4 in
       let* α6 := borrow α5 (core.option.Option i32) in
       let* α7 := deref α6 (core.option.Option i32) in
       let* α8 := borrow α7 (core.option.Option i32) in
@@ -141,7 +153,10 @@ Definition main `{State.Trait} : M unit :=
       let* α2 := borrow α1 (list (ref str)) in
       let* α3 := pointer_coercion "Unsize" α2 in
       let* α4 := borrow_mut sequence (core.ops.range.Range i32) in
-      let* α5 := core.iter.traits.iterator.Iterator.next α4 in
+      let* α5 :=
+        (core.iter.traits.iterator.Iterator.next
+            (Self := (core.ops.range.Range i32)))
+          α4 in
       let* α6 := borrow α5 (core.option.Option i32) in
       let* α7 := deref α6 (core.option.Option i32) in
       let* α8 := borrow α7 (core.option.Option i32) in
@@ -161,7 +176,10 @@ Definition main `{State.Trait} : M unit :=
       let* α2 := borrow α1 (list (ref str)) in
       let* α3 := pointer_coercion "Unsize" α2 in
       let* α4 := borrow_mut sequence (core.ops.range.Range i32) in
-      let* α5 := core.iter.traits.iterator.Iterator.next α4 in
+      let* α5 :=
+        (core.iter.traits.iterator.Iterator.next
+            (Self := (core.ops.range.Range i32)))
+          α4 in
       let* α6 := borrow α5 (core.option.Option i32) in
       let* α7 := deref α6 (core.option.Option i32) in
       let* α8 := borrow α7 (core.option.Option i32) in
@@ -193,7 +211,10 @@ Definition main `{State.Trait} : M unit :=
       M.alloc
         {| core.ops.range.Range.start := α0; core.ops.range.Range.end := α1;
         |} in
-    let* α3 := core.iter.traits.collect.IntoIterator.into_iter α2 in
+    let* α3 :=
+      (core.iter.traits.collect.IntoIterator.into_iter
+          (Self := (core.ops.range.Range i32)))
+        α2 in
     let* α4 :=
       match α3 with
       | iter =>
@@ -202,7 +223,10 @@ Definition main `{State.Trait} : M unit :=
             let* α0 := borrow_mut iter (core.ops.range.Range i32) in
             let* α1 := deref α0 (core.ops.range.Range i32) in
             let* α2 := borrow_mut α1 (core.ops.range.Range i32) in
-            let* α3 := core.iter.traits.iterator.Iterator.next α2 in
+            let* α3 :=
+              (core.iter.traits.iterator.Iterator.next
+                  (Self := (core.ops.range.Range i32)))
+                α2 in
             match α3 with
             | core.option.Option  =>
               let* α0 := Break in
@@ -248,8 +272,14 @@ Definition main `{State.Trait} : M unit :=
   let* _ :=
     let* α0 := iterators.fibonacci in
     let* α1 := M.alloc 4 in
-    let* α2 := core.iter.traits.iterator.Iterator.take α0 α1 in
-    let* α3 := core.iter.traits.collect.IntoIterator.into_iter α2 in
+    let* α2 :=
+      (core.iter.traits.iterator.Iterator.take (Self := iterators.Fibonacci))
+        α0
+        α1 in
+    let* α3 :=
+      (core.iter.traits.collect.IntoIterator.into_iter
+          (Self := (core.iter.adapters.take.Take iterators.Fibonacci)))
+        α2 in
     let* α4 :=
       match α3 with
       | iter =>
@@ -265,7 +295,10 @@ Definition main `{State.Trait} : M unit :=
               borrow_mut
                 α1
                 (core.iter.adapters.take.Take iterators.Fibonacci) in
-            let* α3 := core.iter.traits.iterator.Iterator.next α2 in
+            let* α3 :=
+              (core.iter.traits.iterator.Iterator.next
+                  (Self := (core.iter.adapters.take.Take iterators.Fibonacci)))
+                α2 in
             match α3 with
             | core.option.Option  =>
               let* α0 := Break in
@@ -311,10 +344,22 @@ Definition main `{State.Trait} : M unit :=
   let* _ :=
     let* α0 := iterators.fibonacci in
     let* α1 := M.alloc 4 in
-    let* α2 := core.iter.traits.iterator.Iterator.skip α0 α1 in
+    let* α2 :=
+      (core.iter.traits.iterator.Iterator.skip (Self := iterators.Fibonacci))
+        α0
+        α1 in
     let* α3 := M.alloc 4 in
-    let* α4 := core.iter.traits.iterator.Iterator.take α2 α3 in
-    let* α5 := core.iter.traits.collect.IntoIterator.into_iter α4 in
+    let* α4 :=
+      (core.iter.traits.iterator.Iterator.take
+          (Self := (core.iter.adapters.skip.Skip iterators.Fibonacci)))
+        α2
+        α3 in
+    let* α5 :=
+      (core.iter.traits.collect.IntoIterator.into_iter
+          (Self :=
+            (core.iter.adapters.take.Take
+              (core.iter.adapters.skip.Skip iterators.Fibonacci))))
+        α4 in
     let* α6 :=
       match α5 with
       | iter =>
@@ -335,7 +380,12 @@ Definition main `{State.Trait} : M unit :=
                 α1
                 (core.iter.adapters.take.Take
                   (core.iter.adapters.skip.Skip iterators.Fibonacci)) in
-            let* α3 := core.iter.traits.iterator.Iterator.next α2 in
+            let* α3 :=
+              (core.iter.traits.iterator.Iterator.next
+                  (Self :=
+                    (core.iter.adapters.take.Take
+                      (core.iter.adapters.skip.Skip iterators.Fibonacci))))
+                α2 in
             match α3 with
             | core.option.Option  =>
               let* α0 := Break in
@@ -395,8 +445,11 @@ Definition main `{State.Trait} : M unit :=
     M.alloc tt in
   let* α0 := borrow array (list u32) in
   let* α1 := pointer_coercion "Unsize" α0 in
-  let* α2 := (Slice _)::["iter"] α1 in
-  let* α3 := core.iter.traits.collect.IntoIterator.into_iter α2 in
+  let* α2 := (Slice T)::["iter"] α1 in
+  let* α3 :=
+    (core.iter.traits.collect.IntoIterator.into_iter
+        (Self := (core.slice.iter.Iter u32)))
+      α2 in
   let* α4 :=
     match α3 with
     | iter =>
@@ -405,7 +458,10 @@ Definition main `{State.Trait} : M unit :=
           let* α0 := borrow_mut iter (core.slice.iter.Iter u32) in
           let* α1 := deref α0 (core.slice.iter.Iter u32) in
           let* α2 := borrow_mut α1 (core.slice.iter.Iter u32) in
-          let* α3 := core.iter.traits.iterator.Iterator.next α2 in
+          let* α3 :=
+            (core.iter.traits.iterator.Iterator.next
+                (Self := (core.slice.iter.Iter u32)))
+              α2 in
           match α3 with
           | core.option.Option  =>
             let* α0 := Break in

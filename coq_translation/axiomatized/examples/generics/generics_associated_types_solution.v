@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module Container.
   Section Container.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Record t : Set := {
@@ -12,19 +12,21 @@ Module Container.
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_0 : Notation.Dot "0" := {
+    #[refine] Global Instance Get_0 : Notation.Dot "0" := {
       Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
-    Global Instance Get_1 : Notation.Dot "1" := {
+    Admitted.
+    #[refine] Global Instance Get_1 : Notation.Dot "1" := {
       Notation.dot x := let* x := M.read x in Pure x.(x1) : M _;
     }.
+    Admitted.
   End Container.
 End Container.
-Definition Container `{State.Trait} : Set := M.val Container.t.
+Definition Container `{ℋ : State.Trait} : Set := M.val Container.t.
 
 Module Contains.
   Section Contains.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Class Trait (Self : Set) : Type := {
       A : Set;
@@ -35,12 +37,16 @@ Module Contains.
       a : (ref Self) -> M A;
     }.
     
-    Global Instance Method_A `(Trait) : Notation.DoubleColonType Self "A" := {
+    #[refine] Global Instance Method_A `(Trait) :
+      Notation.DoubleColonType Self "A" := {
       Notation.double_colon_type := A;
     }.
-    Global Instance Method_B `(Trait) : Notation.DoubleColonType Self "B" := {
+    Admitted.
+    #[refine] Global Instance Method_B `(Trait) :
+      Notation.DoubleColonType Self "B" := {
       Notation.double_colon_type := B;
     }.
+    Admitted.
   End Contains.
 End Contains.
 
@@ -48,7 +54,7 @@ Module
   Impl_generics_associated_types_solution_Contains_for_generics_associated_types_solution_Container.
   Section
     Impl_generics_associated_types_solution_Contains_for_generics_associated_types_solution_Container.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := generics_associated_types_solution.Container.
     
@@ -83,8 +89,8 @@ Module
       Notation.double_colon := a;
     }.
     
-    Global Instance I
-      : generics_associated_types_solution.Contains.Trait Self := {
+    #[refine] Global Instance ℐ :
+      generics_associated_types_solution.Contains.Trait Self := {
       generics_associated_types_solution.Contains.A := A;
       generics_associated_types_solution.Contains.B := B;
       generics_associated_types_solution.Contains.contains := contains;
@@ -92,25 +98,26 @@ Module
       generics_associated_types_solution.Contains.last := last;
       generics_associated_types_solution.Contains.a := a;
     }.
+    Admitted.
   End
     Impl_generics_associated_types_solution_Contains_for_generics_associated_types_solution_Container.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End
   Impl_generics_associated_types_solution_Contains_for_generics_associated_types_solution_Container.
 
 Parameter difference :
     forall
-      `{State.Trait}
+      `{ℋ : State.Trait}
       {C : Set}
       {ℋ_0 : generics_associated_types_solution.Contains.Trait C},
     (ref C) -> M i32.
 
 Parameter get_a :
     forall
-      `{State.Trait}
+      `{ℋ : State.Trait}
       {C : Set}
       {ℋ_0 : generics_associated_types_solution.Contains.Trait C},
     (ref C) -> M C::type["A"].
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{State.Trait}, M unit.
+Parameter main : forall `{ℋ : State.Trait}, M unit.

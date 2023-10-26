@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main `{ℋ : State.Trait} : M unit :=
   let* some_vector :=
     let* α0 := M.alloc 1 in
     let* α1 := M.alloc 2 in
@@ -12,20 +12,20 @@ Definition main `{State.Trait} : M unit :=
       (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"]
         [ α0; α1; α2; α3 ] in
     let* α5 := pointer_coercion "Unsize" α4 in
-    (Slice _)::["into_vec"] α5 in
+    (Slice T)::["into_vec"] α5 in
   let* pointer :=
     let* α0 := borrow some_vector (alloc.vec.Vec u32 alloc.alloc.Global) in
-    (alloc.vec.Vec _ _)::["as_ptr"] α0 in
+    (alloc.vec.Vec T A)::["as_ptr"] α0 in
   let* length :=
     let* α0 := borrow some_vector (alloc.vec.Vec u32 alloc.alloc.Global) in
-    (alloc.vec.Vec _ _)::["len"] α0 in
+    (alloc.vec.Vec T A)::["len"] α0 in
   let* my_slice :=
     let* α0 := core.slice.raw.from_raw_parts pointer length in
     let* α1 := deref α0 (Slice u32) in
     borrow α1 (Slice u32) in
   let* _ :=
     let* α0 := borrow some_vector (alloc.vec.Vec u32 alloc.alloc.Global) in
-    let* α1 := (alloc.vec.Vec _ _)::["as_slice"] α0 in
+    let* α1 := (alloc.vec.Vec T A)::["as_slice"] α0 in
     let* α2 := borrow α1 (ref (Slice u32)) in
     let* α3 := borrow my_slice (ref (Slice u32)) in
     match (α2, α3) with
@@ -34,7 +34,7 @@ Definition main `{State.Trait} : M unit :=
       let* α1 := borrow α0 (ref (Slice u32)) in
       let* α2 := deref right_val (ref (Slice u32)) in
       let* α3 := borrow α2 (ref (Slice u32)) in
-      let* α4 := core.cmp.PartialEq.eq α1 α3 in
+      let* α4 := (core.cmp.PartialEq.eq (Self := (ref (Slice u32)))) α1 α3 in
       let* α5 := not α4 in
       let* α6 := use α5 in
       if (α6 : bool) then

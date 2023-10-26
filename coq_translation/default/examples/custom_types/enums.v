@@ -4,23 +4,23 @@ Require Import CoqOfRust.CoqOfRust.
 Module WebEvent.
   Module Click.
     Unset Primitive Projections.
-    Record t `{State.Trait} : Set := {
+    Record t `{ℋ : State.Trait} : Set := {
       x : i64;
       y : i64;
     }.
     Global Set Primitive Projections.
   End Click.
   
-  Inductive t `{State.Trait} : Set :=
+  Inductive t `{ℋ : State.Trait} : Set :=
   | PageLoad
   | PageUnload
   | KeyPress (_ : char)
   | Paste (_ : alloc.string.String)
   | Click (_ : Click.t).
 End WebEvent.
-Definition WebEvent `{State.Trait} : Set := WebEvent.t.
+Definition WebEvent `{ℋ : State.Trait} : Set := WebEvent.t.
 
-Definition inspect `{State.Trait} (event : enums.WebEvent) : M unit :=
+Definition inspect `{ℋ : State.Trait} (event : enums.WebEvent) : M unit :=
   match event with
   | enums.WebEvent  =>
     let* _ :=
@@ -115,14 +115,14 @@ Definition inspect `{State.Trait} (event : enums.WebEvent) : M unit :=
   end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main `{ℋ : State.Trait} : M unit :=
   let* pressed :=
     let* α0 := M.alloc "x"%char in
     Pure (enums.WebEvent.KeyPress α0) in
   let* pasted :=
     let* α0 := deref (mk_str "my text") str in
     let* α1 := borrow α0 str in
-    let* α2 := alloc.borrow.ToOwned.to_owned α1 in
+    let* α2 := (alloc.borrow.ToOwned.to_owned (Self := str)) α1 in
     Pure (enums.WebEvent.Paste α2) in
   let* click :=
     let* α0 := M.alloc 20 in

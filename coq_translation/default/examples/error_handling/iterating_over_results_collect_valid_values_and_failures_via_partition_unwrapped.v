@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main `{ℋ : State.Trait} : M unit :=
   let* strings :=
     let* α0 := deref (mk_str "93") str in
     let* α1 := borrow α0 str in
@@ -12,32 +12,74 @@ Definition main `{State.Trait} : M unit :=
       (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"]
         [ mk_str "tofu"; α1; α3 ] in
     let* α5 := pointer_coercion "Unsize" α4 in
-    (Slice _)::["into_vec"] α5 in
+    (Slice T)::["into_vec"] α5 in
   let* '(numbers, errors) :=
-    let* α0 := core.iter.traits.collect.IntoIterator.into_iter strings in
+    let* α0 :=
+      (core.iter.traits.collect.IntoIterator.into_iter
+          (Self := (alloc.vec.Vec (ref str) alloc.alloc.Global)))
+        strings in
     let* α1 :=
-      core.iter.traits.iterator.Iterator.map
+      (core.iter.traits.iterator.Iterator.map
+          (Self := (alloc.vec.into_iter.IntoIter (ref str) alloc.alloc.Global)))
         α0
-        let* α0 := deref s str in
+        (let* α0 := deref s str in
         let* α1 := borrow α0 str in
-        str::["parse"] α1 in
-    core.iter.traits.iterator.Iterator.partition
+        str::["parse"] α1) in
+    (core.iter.traits.iterator.Iterator.partition
+        (Self :=
+          (core.iter.adapters.map.Map
+            (alloc.vec.into_iter.IntoIter (ref str) alloc.alloc.Global)
+            type not implemented)))
       α1
-      (core.result.Result _ _)::["is_ok"] in
+      (core.result.Result T E)::["is_ok"] in
   let* numbers :=
-    let* α0 := core.iter.traits.collect.IntoIterator.into_iter numbers in
+    let* α0 :=
+      (core.iter.traits.collect.IntoIterator.into_iter
+          (Self :=
+            (alloc.vec.Vec
+              (core.result.Result i32 core.num.error.ParseIntError)
+              alloc.alloc.Global)))
+        numbers in
     let* α1 :=
-      core.iter.traits.iterator.Iterator.map
+      (core.iter.traits.iterator.Iterator.map
+          (Self :=
+            (alloc.vec.into_iter.IntoIter
+              (core.result.Result i32 core.num.error.ParseIntError)
+              alloc.alloc.Global)))
         α0
-        (core.result.Result _ _)::["unwrap"] in
-    core.iter.traits.iterator.Iterator.collect α1 in
+        (core.result.Result T E)::["unwrap"] in
+    (core.iter.traits.iterator.Iterator.collect
+        (Self :=
+          (core.iter.adapters.map.Map
+            (alloc.vec.into_iter.IntoIter
+              (core.result.Result i32 core.num.error.ParseIntError)
+              alloc.alloc.Global)
+            type not implemented)))
+      α1 in
   let* errors :=
-    let* α0 := core.iter.traits.collect.IntoIterator.into_iter errors in
+    let* α0 :=
+      (core.iter.traits.collect.IntoIterator.into_iter
+          (Self :=
+            (alloc.vec.Vec
+              (core.result.Result i32 core.num.error.ParseIntError)
+              alloc.alloc.Global)))
+        errors in
     let* α1 :=
-      core.iter.traits.iterator.Iterator.map
+      (core.iter.traits.iterator.Iterator.map
+          (Self :=
+            (alloc.vec.into_iter.IntoIter
+              (core.result.Result i32 core.num.error.ParseIntError)
+              alloc.alloc.Global)))
         α0
-        (core.result.Result _ _)::["unwrap_err"] in
-    core.iter.traits.iterator.Iterator.collect α1 in
+        (core.result.Result T E)::["unwrap_err"] in
+    (core.iter.traits.iterator.Iterator.collect
+        (Self :=
+          (core.iter.adapters.map.Map
+            (alloc.vec.into_iter.IntoIter
+              (core.result.Result i32 core.num.error.ParseIntError)
+              alloc.alloc.Global)
+            type not implemented)))
+      α1 in
   let* _ :=
     let* _ :=
       let* α0 := borrow [ mk_str "Numbers: "; mk_str "

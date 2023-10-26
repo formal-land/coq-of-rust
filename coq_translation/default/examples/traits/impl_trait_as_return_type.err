@@ -33,3 +33,38 @@ type Alias(
         def_id: DefId(0:10 ~ impl_trait_as_return_type[5fc1]::combine_vecs::{opaque#0}),
     },
 ) not yet handled
+type Alias(
+    Opaque,
+    AliasTy {
+        substs: [],
+        def_id: DefId(0:10 ~ impl_trait_as_return_type[5fc1]::combine_vecs::{opaque#0}),
+    },
+) not yet handled
+type Alias(
+    Opaque,
+    AliasTy {
+        substs: [],
+        def_id: DefId(0:10 ~ impl_trait_as_return_type[5fc1]::combine_vecs::{opaque#0}),
+    },
+) not yet handled
+type Alias(
+    Opaque,
+    AliasTy {
+        substs: [],
+        def_id: DefId(0:10 ~ impl_trait_as_return_type[5fc1]::combine_vecs::{opaque#0}),
+    },
+) not yet handled
+type Alias(
+    Opaque,
+    AliasTy {
+        substs: [],
+        def_id: DefId(0:10 ~ impl_trait_as_return_type[5fc1]::combine_vecs::{opaque#0}),
+    },
+) not yet handled
+type Alias(
+    Opaque,
+    AliasTy {
+        substs: [],
+        def_id: DefId(0:10 ~ impl_trait_as_return_type[5fc1]::combine_vecs::{opaque#0}),
+    },
+) not yet handled

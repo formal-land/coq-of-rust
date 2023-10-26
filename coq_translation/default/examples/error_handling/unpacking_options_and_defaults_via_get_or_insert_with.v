@@ -2,20 +2,20 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module Fruit.
-  Inductive t `{State.Trait} : Set :=
+  Inductive t `{ℋ : State.Trait} : Set :=
   | Apple
   | Orange
   | Banana
   | Kiwi
   | Lemon.
 End Fruit.
-Definition Fruit `{State.Trait} : Set := Fruit.t.
+Definition Fruit `{ℋ : State.Trait} : Set := Fruit.t.
 
 Module
   Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_with_Fruit.
   Section
     Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_with_Fruit.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set :=
       unpacking_options_and_defaults_via_get_or_insert_with.Fruit.
@@ -51,17 +51,18 @@ Module
       Notation.double_colon := fmt;
     }.
     
-    Global Instance I : core.fmt.Debug.Trait Self := {
+    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
+    Admitted.
   End
     Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_with_Fruit.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End
   Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_with_Fruit.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main `{ℋ : State.Trait} : M unit :=
   let my_fruit := core.option.Option.None tt in
   let get_lemon_as_fallback :=
     let* _ :=
@@ -83,7 +84,7 @@ Definition main `{State.Trait} : M unit :=
         my_fruit
         (core.option.Option
           unpacking_options_and_defaults_via_get_or_insert_with.Fruit) in
-    (core.option.Option _)::["get_or_insert_with"] α0 get_lemon_as_fallback in
+    (core.option.Option T)::["get_or_insert_with"] α0 get_lemon_as_fallback in
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -157,7 +158,7 @@ Definition main `{State.Trait} : M unit :=
         my_apple
         (core.option.Option
           unpacking_options_and_defaults_via_get_or_insert_with.Fruit) in
-    (core.option.Option _)::["get_or_insert_with"] α0 get_lemon_as_fallback in
+    (core.option.Option T)::["get_or_insert_with"] α0 get_lemon_as_fallback in
   let* _ :=
     let* _ :=
       let* α0 :=

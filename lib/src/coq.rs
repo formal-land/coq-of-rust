@@ -83,7 +83,7 @@ pub(crate) struct Instance<'a> {
     name: String,
     parameters: Vec<ArgDecl<'a>>,
     class: Expression<'a>,
-    bulid_expr: Expression<'a>,
+    build_expr: Expression<'a>,
     proof_lines: Vec<Doc<'a>>,
 }
 
@@ -374,8 +374,6 @@ impl<'a> TopLevelItem<'a> {
     pub(crate) fn trait_module(
         name: &'a str,
         ty_params: &[(String, Option<Expression<'a>>)],
-        predicates: &[ArgDecl<'a>],
-        bounds: &[ArgDecl<'a>],
         items: &[ClassFieldDef<'a>],
         instances: &[Instance<'a>],
     ) -> Self {
@@ -403,7 +401,6 @@ impl<'a> TopLevelItem<'a> {
                                     },
                                     ArgSpecKind::Explicit,
                                 )],
-                                bounds.to_vec(),
                                 if ty_params.is_empty() {
                                     vec![]
                                 } else {
@@ -426,7 +423,6 @@ impl<'a> TopLevelItem<'a> {
                                         ArgSpecKind::Implicit,
                                     )]
                                 },
-                                predicates.to_vec(),
                             ]
                             .concat(),
                             items.to_vec(),
@@ -435,7 +431,7 @@ impl<'a> TopLevelItem<'a> {
                     TopLevel {
                         items: instances
                             .iter()
-                            .map(|i| TopLevelItem::Instance(i.to_owned()))
+                            .map(|instance| TopLevelItem::Instance(instance.to_owned()))
                             .collect(),
                     },
                 ]),
@@ -556,12 +552,10 @@ impl<'a> Record<'a> {
                 text("Record"),
                 line(),
                 text(self.name.to_owned()),
-                line(),
-                text(":"),
+                text(" :"),
                 line(),
                 self.ty.to_doc(false),
-                line(),
-                text(":="),
+                text(" :="),
                 line(),
                 text("{"),
             ]),
@@ -634,10 +628,19 @@ impl<'a> Class<'a> {
                     hardline()
                 },
                 intersperse(
-                    self.items
-                        .iter()
-                        .map(|item| item.to_doc())
-                        .collect::<Vec<_>>(),
+                    {
+                        let mut anonymous_item_counter = 0;
+                        self.items
+                            .iter()
+                            .map(|item| {
+                                let result = item.to_doc(anonymous_item_counter);
+                                if let ClassFieldDef { ident: None, .. } = item {
+                                    anonymous_item_counter += 1;
+                                }
+                                result
+                            })
+                            .collect::<Vec<_>>()
+                    },
                     [hardline()],
                 ),
             ]),
@@ -653,14 +656,14 @@ impl<'a> Instance<'a> {
         name: &str,
         parameters: &[ArgDecl<'a>],
         class: Expression<'a>,
-        bulid_expr: &Expression<'a>,
+        build_expr: &Expression<'a>,
         proof_lines: Vec<Doc<'a>>,
     ) -> Self {
         Instance {
             name: name.to_owned(),
             parameters: parameters.to_vec(),
             class,
-            bulid_expr: bulid_expr.to_owned(),
+            build_expr: build_expr.to_owned(),
             proof_lines,
         }
     }
@@ -669,7 +672,7 @@ impl<'a> Instance<'a> {
         concat([
             nest([
                 nest([
-                    text("Global Instance"),
+                    text("#[refine] Global Instance"),
                     line(),
                     text(self.name.to_owned()),
                     if self.parameters.is_empty() {
@@ -681,11 +684,15 @@ impl<'a> Instance<'a> {
                         ])
                     },
                 ]),
+                text(" :"),
                 line(),
-                nest([text(": "), self.class.to_doc(false), line(), text(":= ")]),
+                self.class.to_doc(false),
+                text(" := "),
             ]),
-            self.bulid_expr.to_doc(false),
+            self.build_expr.to_doc(false),
             text("."),
+            hardline(),
+            text("Admitted."),
             if self.proof_lines.is_empty() {
                 nil()
             } else {
@@ -722,7 +729,7 @@ impl Hint {
     }
 
     pub(crate) fn standard_resolve() -> Self {
-        Hint::new("I", "core")
+        Hint::new("ℐ", "core")
     }
 }
 
@@ -740,8 +747,7 @@ impl<'a> FieldDef<'a> {
                 Some(name) => text(name),
                 None => text("_"),
             },
-            line(),
-            text(":"),
+            text(" :"),
             line(),
             self.ty.to_doc(false),
             text(";"),
@@ -758,11 +764,11 @@ impl<'a> ClassFieldDef<'a> {
         }
     }
 
-    pub(crate) fn to_doc(&self) -> Doc<'a> {
+    pub(crate) fn to_doc(&self, anonymous_counter: usize) -> Doc<'a> {
         nest([
             match self.ident.to_owned() {
                 Some(name) => text(name),
-                None => text("_"),
+                None => text(format!("ℒ_{anonymous_counter}")),
             },
             if self.args.is_empty() {
                 nil()
@@ -772,8 +778,10 @@ impl<'a> ClassFieldDef<'a> {
                     intersperse(self.args.iter().map(|param| param.to_doc()), [line()]),
                 ])
             },
-            line(),
-            text(":"),
+            match self.ident {
+                Some(_) => text(" :"),
+                None => text(" ::"),
+            },
             line(),
             self.ty.to_doc(false),
             text(";"),
@@ -972,8 +980,7 @@ impl<'a> Field<'a> {
                     ])
                 },
             ]),
-            line(),
-            text(":="),
+            text(" :="),
             line(),
             self.body.to_doc(false),
             text(";"),
@@ -996,7 +1003,7 @@ impl<'a> ArgDecl<'a> {
     pub(crate) fn monadic_typeclass_parameter() -> Self {
         ArgDecl {
             decl: ArgDeclVar::Generalized {
-                idents: vec![],
+                idents: vec!["ℋ".to_string()],
                 ty: Expression::Variable {
                     ident: Path::new(&["State", "Trait"]),
                     no_implicit: false,

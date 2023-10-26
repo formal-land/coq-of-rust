@@ -7,57 +7,57 @@ Require CoqOfRust.ink.synstructure.
 
 Module blake2b.
   Parameter generate_blake2x256_hash :
-      forall `{State.Trait},
+      forall `{ℋ : State.Trait},
       proc_macro2.TokenStream -> M proc_macro2.TokenStream.
   
   Parameter generate_blake2x256_hash_or_err :
-      forall `{State.Trait},
+      forall `{ℋ : State.Trait},
       proc_macro2.TokenStream -> M (syn.error.Result proc_macro2.TokenStream).
 End blake2b.
 
 Parameter generate_blake2x256_hash :
-    forall `{State.Trait},
+    forall `{ℋ : State.Trait},
     proc_macro2.TokenStream -> M proc_macro2.TokenStream.
 
 Parameter generate_blake2x256_hash_or_err :
-    forall `{State.Trait},
+    forall `{ℋ : State.Trait},
     proc_macro2.TokenStream -> M (syn.error.Result proc_macro2.TokenStream).
 
 Module chain_extension.
   Parameter generate :
-      forall `{State.Trait},
+      forall `{ℋ : State.Trait},
       proc_macro2.TokenStream ->
         proc_macro2.TokenStream ->
         M proc_macro2.TokenStream.
   
   Parameter generate_or_err :
-      forall `{State.Trait},
+      forall `{ℋ : State.Trait},
       proc_macro2.TokenStream ->
         proc_macro2.TokenStream ->
         M (syn.error.Result proc_macro2.TokenStream).
 End chain_extension.
 
 Parameter generate :
-    forall `{State.Trait},
+    forall `{ℋ : State.Trait},
     proc_macro2.TokenStream ->
       proc_macro2.TokenStream ->
       M proc_macro2.TokenStream.
 
 Parameter generate_or_err :
-    forall `{State.Trait},
+    forall `{ℋ : State.Trait},
     proc_macro2.TokenStream ->
       proc_macro2.TokenStream ->
       M (syn.error.Result proc_macro2.TokenStream).
 
 Module contract.
   Parameter generate :
-      forall `{State.Trait},
+      forall `{ℋ : State.Trait},
       proc_macro2.TokenStream ->
         proc_macro2.TokenStream ->
         M proc_macro2.TokenStream.
   
   Parameter generate_or_err :
-      forall `{State.Trait},
+      forall `{ℋ : State.Trait},
       proc_macro2.TokenStream ->
         proc_macro2.TokenStream ->
         M (syn.error.Result proc_macro2.TokenStream).
@@ -65,13 +65,13 @@ End contract.
 
 Module ink_test.
   Parameter generate :
-      forall `{State.Trait},
+      forall `{ℋ : State.Trait},
       proc_macro2.TokenStream ->
         proc_macro2.TokenStream ->
         M proc_macro2.TokenStream.
   
   Parameter generate_or_err :
-      forall `{State.Trait},
+      forall `{ℋ : State.Trait},
       proc_macro2.TokenStream ->
         proc_macro2.TokenStream ->
         M (syn.error.Result proc_macro2.TokenStream).
@@ -79,210 +79,210 @@ End ink_test.
 
 Module selector.
   Parameter generate_selector_id :
-      forall `{State.Trait},
+      forall `{ℋ : State.Trait},
       proc_macro2.TokenStream -> M proc_macro2.TokenStream.
   
   Parameter generate_selector_id_or_err :
-      forall `{State.Trait},
+      forall `{ℋ : State.Trait},
       proc_macro2.TokenStream -> M (syn.error.Result proc_macro2.TokenStream).
   
   Parameter generate_selector_bytes :
-      forall `{State.Trait},
+      forall `{ℋ : State.Trait},
       proc_macro2.TokenStream -> M proc_macro2.TokenStream.
   
   Parameter generate_selector_bytes_or_err :
-      forall `{State.Trait},
+      forall `{ℋ : State.Trait},
       proc_macro2.TokenStream -> M (syn.error.Result proc_macro2.TokenStream).
 End selector.
 
 Parameter generate_selector_id :
-    forall `{State.Trait},
+    forall `{ℋ : State.Trait},
     proc_macro2.TokenStream -> M proc_macro2.TokenStream.
 
 Parameter generate_selector_id_or_err :
-    forall `{State.Trait},
+    forall `{ℋ : State.Trait},
     proc_macro2.TokenStream -> M (syn.error.Result proc_macro2.TokenStream).
 
 Parameter generate_selector_bytes :
-    forall `{State.Trait},
+    forall `{ℋ : State.Trait},
     proc_macro2.TokenStream -> M proc_macro2.TokenStream.
 
 Parameter generate_selector_bytes_or_err :
-    forall `{State.Trait},
+    forall `{ℋ : State.Trait},
     proc_macro2.TokenStream -> M (syn.error.Result proc_macro2.TokenStream).
 
 Module storage.
   Module storable.
     Parameter storable_derive :
-        forall `{State.Trait},
+        forall `{ℋ : State.Trait},
         synstructure.Structure -> M proc_macro2.TokenStream.
   End storable.
   
   Module storable_hint.
     Parameter storable_hint_derive :
-        forall `{State.Trait},
+        forall `{ℋ : State.Trait},
         synstructure.Structure -> M proc_macro2.TokenStream.
   End storable_hint.
   
   Module storage_key.
     Parameter storage_key_derive :
-        forall `{State.Trait},
+        forall `{ℋ : State.Trait},
         synstructure.Structure -> M proc_macro2.TokenStream.
   End storage_key.
   
   Module storage_layout.
     Parameter storage_layout_derive :
-        forall `{State.Trait},
+        forall `{ℋ : State.Trait},
         synstructure.Structure -> M proc_macro2.TokenStream.
   End storage_layout.
 End storage.
 
 Module storable.
   Parameter storable_derive :
-      forall `{State.Trait},
+      forall `{ℋ : State.Trait},
       synstructure.Structure -> M proc_macro2.TokenStream.
 End storable.
 
 Parameter storable_derive :
-    forall `{State.Trait},
+    forall `{ℋ : State.Trait},
     synstructure.Structure -> M proc_macro2.TokenStream.
 
 Module storable_hint.
   Parameter storable_hint_derive :
-      forall `{State.Trait},
+      forall `{ℋ : State.Trait},
       synstructure.Structure -> M proc_macro2.TokenStream.
 End storable_hint.
 
 Parameter storable_hint_derive :
-    forall `{State.Trait},
+    forall `{ℋ : State.Trait},
     synstructure.Structure -> M proc_macro2.TokenStream.
 
 Module storage_key.
   Parameter storage_key_derive :
-      forall `{State.Trait},
+      forall `{ℋ : State.Trait},
       synstructure.Structure -> M proc_macro2.TokenStream.
 End storage_key.
 
 Parameter storage_key_derive :
-    forall `{State.Trait},
+    forall `{ℋ : State.Trait},
     synstructure.Structure -> M proc_macro2.TokenStream.
 
 Module storage_layout.
   Parameter storage_layout_derive :
-      forall `{State.Trait},
+      forall `{ℋ : State.Trait},
       synstructure.Structure -> M proc_macro2.TokenStream.
 End storage_layout.
 
 Parameter storage_layout_derive :
-    forall `{State.Trait},
+    forall `{ℋ : State.Trait},
     synstructure.Structure -> M proc_macro2.TokenStream.
 
 Module storage_item.
   Parameter generate :
-      forall `{State.Trait},
+      forall `{ℋ : State.Trait},
       proc_macro2.TokenStream ->
         proc_macro2.TokenStream ->
         M proc_macro2.TokenStream.
   
   Parameter generate_or_err :
-      forall `{State.Trait},
+      forall `{ℋ : State.Trait},
       proc_macro2.TokenStream ->
         proc_macro2.TokenStream ->
         M (syn.error.Result proc_macro2.TokenStream).
 End storage_item.
 
 (* Parameter generate :
-    forall `{State.Trait},
+    forall `{ℋ : State.Trait},
     proc_macro2.TokenStream ->
       proc_macro2.TokenStream ->
       M proc_macro2.TokenStream.
 
 Parameter generate_or_err :
-    forall `{State.Trait},
+    forall `{ℋ : State.Trait},
     proc_macro2.TokenStream ->
       proc_macro2.TokenStream ->
       M (syn.error.Result proc_macro2.TokenStream). *)
 
 Module trait_def.
   Parameter analyze :
-      forall `{State.Trait},
+      forall `{ℋ : State.Trait},
       proc_macro2.TokenStream ->
         proc_macro2.TokenStream ->
         M proc_macro2.TokenStream.
   
   Parameter analyze_or_err :
-      forall `{State.Trait},
+      forall `{ℋ : State.Trait},
       proc_macro2.TokenStream ->
         proc_macro2.TokenStream ->
         M (syn.error.Result proc_macro2.TokenStream).
 End trait_def.
 
 Parameter analyze :
-    forall `{State.Trait},
+    forall `{ℋ : State.Trait},
     proc_macro2.TokenStream ->
       proc_macro2.TokenStream ->
       M proc_macro2.TokenStream.
 
 Parameter analyze_or_err :
-    forall `{State.Trait},
+    forall `{ℋ : State.Trait},
     proc_macro2.TokenStream ->
       proc_macro2.TokenStream ->
       M (syn.error.Result proc_macro2.TokenStream).
 
 Parameter blake2x256 :
-    forall `{State.Trait},
+    forall `{ℋ : State.Trait},
     proc_macro.TokenStream -> M proc_macro.TokenStream.
 
 Parameter selector_id :
-    forall `{State.Trait},
+    forall `{ℋ : State.Trait},
     proc_macro.TokenStream -> M proc_macro.TokenStream.
 
 Parameter selector_bytes :
-    forall `{State.Trait},
+    forall `{ℋ : State.Trait},
     proc_macro.TokenStream -> M proc_macro.TokenStream.
 
 Parameter contract :
-    forall `{State.Trait},
+    forall `{ℋ : State.Trait},
     proc_macro.TokenStream ->
       proc_macro.TokenStream ->
       M proc_macro.TokenStream.
 
 Parameter trait_definition :
-    forall `{State.Trait},
+    forall `{ℋ : State.Trait},
     proc_macro.TokenStream ->
       proc_macro.TokenStream ->
       M proc_macro.TokenStream.
 
 Parameter storage_item :
-    forall `{State.Trait},
+    forall `{ℋ : State.Trait},
     proc_macro.TokenStream ->
       proc_macro.TokenStream ->
       M proc_macro.TokenStream.
 
 Parameter test :
-    forall `{State.Trait},
+    forall `{ℋ : State.Trait},
     proc_macro.TokenStream ->
       proc_macro.TokenStream ->
       M proc_macro.TokenStream.
 
 Parameter chain_extension :
-    forall `{State.Trait},
+    forall `{ℋ : State.Trait},
     proc_macro.TokenStream ->
       proc_macro.TokenStream ->
       M proc_macro.TokenStream.
 
 Parameter Storable :
-    forall `{State.Trait},
+    forall `{ℋ : State.Trait},
     proc_macro.TokenStream -> M proc_macro.TokenStream.
 
 Parameter StorableHint :
-    forall `{State.Trait},
+    forall `{ℋ : State.Trait},
     proc_macro.TokenStream -> M proc_macro.TokenStream.
 
 Parameter StorageKey :
-    forall `{State.Trait},
+    forall `{ℋ : State.Trait},
     proc_macro.TokenStream -> M proc_macro.TokenStream.
 
 Parameter StorageLayout :
-    forall `{State.Trait},
+    forall `{ℋ : State.Trait},
     proc_macro.TokenStream -> M proc_macro.TokenStream.

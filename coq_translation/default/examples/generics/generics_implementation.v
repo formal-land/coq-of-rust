@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module Val.
   Section Val.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Record t : Set := {
@@ -11,19 +11,21 @@ Module Val.
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_val : Notation.Dot "val" := {
+    #[refine] Global Instance Get_val : Notation.Dot "val" := {
       Notation.dot x := let* x := M.read x in Pure x.(val) : M _;
     }.
-    Global Instance Get_AF_val : Notation.DoubleColon t "val" := {
+    Admitted.
+    #[refine] Global Instance Get_AF_val : Notation.DoubleColon t "val" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(val) : M _;
     }.
+    Admitted.
   End Val.
 End Val.
-Definition Val `{State.Trait} : Set := M.val Val.t.
+Definition Val `{ℋ : State.Trait} : Set := M.val Val.t.
 
 Module GenVal.
   Section GenVal.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {T : Set}.
     
@@ -33,19 +35,23 @@ Module GenVal.
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_gen_val : Notation.Dot "gen_val" := {
+    #[refine] Global Instance Get_gen_val : Notation.Dot "gen_val" := {
       Notation.dot x := let* x := M.read x in Pure x.(gen_val) : M _;
     }.
-    Global Instance Get_AF_gen_val : Notation.DoubleColon t "gen_val" := {
+    Admitted.
+    #[refine] Global Instance Get_AF_gen_val :
+      Notation.DoubleColon t "gen_val" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(gen_val) : M _;
     }.
+    Admitted.
   End GenVal.
 End GenVal.
-Definition GenVal (T : Set) `{State.Trait} : Set := M.val (GenVal.t (T := T)).
+Definition GenVal (T : Set) `{ℋ : State.Trait} : Set :=
+  M.val (GenVal.t (T := T)).
 
 Module Impl_generics_implementation_Val.
   Section Impl_generics_implementation_Val.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := generics_implementation.Val.
     
@@ -65,16 +71,16 @@ End Impl_generics_implementation_Val.
 
 Module Impl_generics_implementation_GenVal_T.
   Section Impl_generics_implementation_GenVal_T.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := generics_implementation.GenVal T.
     
     Definition value (self : ref Self) : M (ref T) :=
-      let* α0 := deref self (generics_implementation.GenVal _) in
+      let* α0 := deref self (generics_implementation.GenVal T) in
       let* α1 := α0.["gen_val"] in
-      let* α2 := borrow α1 _ in
-      let* α3 := deref α2 _ in
-      borrow α3 _.
+      let* α2 := borrow α1 T in
+      let* α3 := deref α2 T in
+      borrow α3 T.
     
     Global Instance AssociatedFunction_value :
       Notation.DoubleColon Self "value" := {
@@ -84,7 +90,7 @@ Module Impl_generics_implementation_GenVal_T.
 End Impl_generics_implementation_GenVal_T.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main `{ℋ : State.Trait} : M unit :=
   let* x :=
     let* α0 := M.alloc 3 (* 3.0 *) in
     M.alloc {| generics_implementation.Val.val := α0; |} in
@@ -106,7 +112,7 @@ Definition main `{State.Trait} : M unit :=
       let* α8 := borrow α7 (ref f64) in
       let* α9 := core.fmt.rt.Argument::["new_display"] α8 in
       let* α10 := borrow y (generics_implementation.GenVal i32) in
-      let* α11 := (generics_implementation.GenVal _)::["value"] α10 in
+      let* α11 := (generics_implementation.GenVal T)::["value"] α10 in
       let* α12 := borrow α11 (ref i32) in
       let* α13 := deref α12 (ref i32) in
       let* α14 := borrow α13 (ref i32) in

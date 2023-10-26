@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module Circle.
   Section Circle.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Record t : Set := {
@@ -11,19 +11,22 @@ Module Circle.
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_radius : Notation.Dot "radius" := {
+    #[refine] Global Instance Get_radius : Notation.Dot "radius" := {
       Notation.dot x := let* x := M.read x in Pure x.(radius) : M _;
     }.
-    Global Instance Get_AF_radius : Notation.DoubleColon t "radius" := {
+    Admitted.
+    #[refine] Global Instance Get_AF_radius :
+      Notation.DoubleColon t "radius" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(radius) : M _;
     }.
+    Admitted.
   End Circle.
 End Circle.
-Definition Circle `{State.Trait} : Set := M.val Circle.t.
+Definition Circle `{ℋ : State.Trait} : Set := M.val Circle.t.
 
 Module Impl_core_fmt_Display_for_converting_to_string_Circle.
   Section Impl_core_fmt_Display_for_converting_to_string_Circle.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := converting_to_string.Circle.
     
@@ -55,19 +58,21 @@ Module Impl_core_fmt_Display_for_converting_to_string_Circle.
       Notation.double_colon := fmt;
     }.
     
-    Global Instance I : core.fmt.Display.Trait Self := {
+    #[refine] Global Instance ℐ : core.fmt.Display.Trait Self := {
       core.fmt.Display.fmt := fmt;
     }.
+    Admitted.
   End Impl_core_fmt_Display_for_converting_to_string_Circle.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Display_for_converting_to_string_Circle.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main `{ℋ : State.Trait} : M unit :=
   let* circle :=
     let* α0 := M.alloc 6 in
     M.alloc {| converting_to_string.Circle.radius := α0; |} in
   let* _ :=
     let* α0 := borrow circle converting_to_string.Circle in
-    alloc.string.ToString.to_string α0 in
+    (alloc.string.ToString.to_string (Self := converting_to_string.Circle))
+      α0 in
   M.alloc tt.

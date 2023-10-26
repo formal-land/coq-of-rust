@@ -2,33 +2,33 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition apply
-    `{State.Trait}
+    `{ℋ : State.Trait}
     {F : Set}
     {ℋ_0 : core.ops.function.FnOnce.Trait F (Args := unit)}
     (f : F)
     : M unit :=
   let* _ :=
     let* α0 := M.alloc tt in
-    core.ops.function.FnOnce.call_once f α0 in
+    (core.ops.function.FnOnce.call_once (Self := F)) f α0 in
   M.alloc tt.
 
 Definition apply_to_3
-    `{State.Trait}
+    `{ℋ : State.Trait}
     {F : Set}
     {ℋ_0 : core.ops.function.Fn.Trait F (Args := i32)}
     (f : F)
     : M i32 :=
-  let* α0 := borrow f _ in
+  let* α0 := borrow f F in
   let* α1 := M.alloc 3 in
-  core.ops.function.Fn.call α0 (α1).
+  (core.ops.function.Fn.call (Self := F)) α0 (α1).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main `{ℋ : State.Trait} : M unit :=
   let greeting := mk_str "hello" in
   let* farewell :=
     let* α0 := deref (mk_str "goodbye") str in
     let* α1 := borrow α0 str in
-    alloc.borrow.ToOwned.to_owned α1 in
+    (alloc.borrow.ToOwned.to_owned (Self := str)) α1 in
   let diary :=
     let* _ :=
       let* _ :=

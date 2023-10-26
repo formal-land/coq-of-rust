@@ -2,13 +2,13 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module Foo.
-  Inductive t `{State.Trait} : Set :=
+  Inductive t `{ℋ : State.Trait} : Set :=
   | Bar.
 End Foo.
-Definition Foo `{State.Trait} : Set := Foo.t.
+Definition Foo `{ℋ : State.Trait} : Set := Foo.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main `{ℋ : State.Trait} : M unit :=
   let a := if_let_challenge.Foo.Bar tt in
   let* α0 := let_if if_let_challenge.Foo  := a in
   if (α0 : bool) then

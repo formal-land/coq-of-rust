@@ -2,11 +2,11 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main `{ℋ : State.Trait} : M unit :=
   let* rc_examples :=
     let* α0 := deref (mk_str "Rc examples") str in
     let* α1 := borrow α0 str in
-    alloc.string.ToString.to_string α1 in
+    (alloc.string.ToString.to_string (Self := str)) α1 in
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -18,7 +18,7 @@ Definition main `{State.Trait} : M unit :=
       let* α4 := core.fmt.Arguments::["new_const"] α3 in
       std.io.stdio._print α4 in
     M.alloc tt in
-  let* rc_a := (alloc.rc.Rc _)::["new"] rc_examples in
+  let* rc_a := (alloc.rc.Rc T)::["new"] rc_examples in
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -32,7 +32,7 @@ Definition main `{State.Trait} : M unit :=
       let* α4 := borrow rc_a (alloc.rc.Rc alloc.string.String) in
       let* α5 := deref α4 (alloc.rc.Rc alloc.string.String) in
       let* α6 := borrow α5 (alloc.rc.Rc alloc.string.String) in
-      let* α7 := (alloc.rc.Rc _)::["strong_count"] α6 in
+      let* α7 := (alloc.rc.Rc T)::["strong_count"] α6 in
       let* α8 := borrow α7 usize in
       let* α9 := deref α8 usize in
       let* α10 := borrow α9 usize in
@@ -62,7 +62,7 @@ Definition main `{State.Trait} : M unit :=
       let* α0 := borrow rc_a (alloc.rc.Rc alloc.string.String) in
       let* α1 := deref α0 (alloc.rc.Rc alloc.string.String) in
       let* α2 := borrow α1 (alloc.rc.Rc alloc.string.String) in
-      core.clone.Clone.clone α2 in
+      (core.clone.Clone.clone (Self := (alloc.rc.Rc alloc.string.String))) α2 in
     let* _ :=
       let* _ :=
         let* α0 :=
@@ -76,7 +76,7 @@ Definition main `{State.Trait} : M unit :=
         let* α4 := borrow rc_b (alloc.rc.Rc alloc.string.String) in
         let* α5 := deref α4 (alloc.rc.Rc alloc.string.String) in
         let* α6 := borrow α5 (alloc.rc.Rc alloc.string.String) in
-        let* α7 := (alloc.rc.Rc _)::["strong_count"] α6 in
+        let* α7 := (alloc.rc.Rc T)::["strong_count"] α6 in
         let* α8 := borrow α7 usize in
         let* α9 := deref α8 usize in
         let* α10 := borrow α9 usize in
@@ -101,7 +101,7 @@ Definition main `{State.Trait} : M unit :=
         let* α4 := borrow rc_a (alloc.rc.Rc alloc.string.String) in
         let* α5 := deref α4 (alloc.rc.Rc alloc.string.String) in
         let* α6 := borrow α5 (alloc.rc.Rc alloc.string.String) in
-        let* α7 := (alloc.rc.Rc _)::["strong_count"] α6 in
+        let* α7 := (alloc.rc.Rc T)::["strong_count"] α6 in
         let* α8 := borrow α7 usize in
         let* α9 := deref α8 usize in
         let* α10 := borrow α9 usize in
@@ -127,7 +127,10 @@ Definition main `{State.Trait} : M unit :=
         let* α5 := borrow rc_b (alloc.rc.Rc alloc.string.String) in
         let* α6 := deref α5 (alloc.rc.Rc alloc.string.String) in
         let* α7 := borrow α6 (alloc.rc.Rc alloc.string.String) in
-        let* α8 := core.cmp.PartialEq.eq α4 α7 in
+        let* α8 :=
+          (core.cmp.PartialEq.eq (Self := (alloc.rc.Rc alloc.string.String)))
+            α4
+            α7 in
         let* α9 := borrow α8 bool in
         let* α10 := deref α9 bool in
         let* α11 := borrow α10 bool in
@@ -150,7 +153,10 @@ Definition main `{State.Trait} : M unit :=
         let* α2 := borrow α1 (list (ref str)) in
         let* α3 := pointer_coercion "Unsize" α2 in
         let* α4 := borrow rc_a (alloc.rc.Rc alloc.string.String) in
-        let* α5 := core.ops.deref.Deref.deref α4 in
+        let* α5 :=
+          (core.ops.deref.Deref.deref
+              (Self := (alloc.rc.Rc alloc.string.String)))
+            α4 in
         let* α6 := deref α5 alloc.string.String in
         let* α7 := borrow α6 alloc.string.String in
         let* α8 := alloc.string.String::["len"] α7 in
@@ -211,7 +217,7 @@ Definition main `{State.Trait} : M unit :=
       let* α4 := borrow rc_a (alloc.rc.Rc alloc.string.String) in
       let* α5 := deref α4 (alloc.rc.Rc alloc.string.String) in
       let* α6 := borrow α5 (alloc.rc.Rc alloc.string.String) in
-      let* α7 := (alloc.rc.Rc _)::["strong_count"] α6 in
+      let* α7 := (alloc.rc.Rc T)::["strong_count"] α6 in
       let* α8 := borrow α7 usize in
       let* α9 := deref α8 usize in
       let* α10 := borrow α9 usize in

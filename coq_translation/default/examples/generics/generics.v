@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module A.
   Section A.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Inductive t : Set := Build.
   End A.
@@ -12,7 +12,7 @@ Definition A := @A.t.
 
 Module Single.
   Section Single.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Record t : Set := {
@@ -20,16 +20,17 @@ Module Single.
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_0 : Notation.Dot "0" := {
+    #[refine] Global Instance Get_0 : Notation.Dot "0" := {
       Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
+    Admitted.
   End Single.
 End Single.
-Definition Single `{State.Trait} : Set := M.val Single.t.
+Definition Single `{ℋ : State.Trait} : Set := M.val Single.t.
 
 Module SingleGen.
   Section SingleGen.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {T : Set}.
     
@@ -39,16 +40,17 @@ Module SingleGen.
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_0 : Notation.Dot "0" := {
+    #[refine] Global Instance Get_0 : Notation.Dot "0" := {
       Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
+    Admitted.
   End SingleGen.
 End SingleGen.
-Definition SingleGen `{State.Trait} (T : Set) : Set :=
+Definition SingleGen `{ℋ : State.Trait} (T : Set) : Set :=
   M.val (SingleGen.t (T := T)).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main `{ℋ : State.Trait} : M unit :=
   let _s := generics.Single.Build_t (generics.A.Build_t tt) in
   let* _char :=
     let* α0 := M.alloc "a"%char in

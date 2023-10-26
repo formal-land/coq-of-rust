@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module Person.
   Section Person.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Record t : Set := {
@@ -13,31 +13,37 @@ Module Person.
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_id : Notation.Dot "id" := {
+    #[refine] Global Instance Get_id : Notation.Dot "id" := {
       Notation.dot x := let* x := M.read x in Pure x.(id) : M _;
     }.
-    Global Instance Get_AF_id : Notation.DoubleColon t "id" := {
+    Admitted.
+    #[refine] Global Instance Get_AF_id : Notation.DoubleColon t "id" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(id) : M _;
     }.
-    Global Instance Get_name : Notation.Dot "name" := {
+    Admitted.
+    #[refine] Global Instance Get_name : Notation.Dot "name" := {
       Notation.dot x := let* x := M.read x in Pure x.(name) : M _;
     }.
-    Global Instance Get_AF_name : Notation.DoubleColon t "name" := {
+    Admitted.
+    #[refine] Global Instance Get_AF_name : Notation.DoubleColon t "name" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(name) : M _;
     }.
-    Global Instance Get_phone : Notation.Dot "phone" := {
+    Admitted.
+    #[refine] Global Instance Get_phone : Notation.Dot "phone" := {
       Notation.dot x := let* x := M.read x in Pure x.(phone) : M _;
     }.
-    Global Instance Get_AF_phone : Notation.DoubleColon t "phone" := {
+    Admitted.
+    #[refine] Global Instance Get_AF_phone : Notation.DoubleColon t "phone" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(phone) : M _;
     }.
+    Admitted.
   End Person.
 End Person.
-Definition Person `{State.Trait} : Set := M.val Person.t.
+Definition Person `{ℋ : State.Trait} : Set := M.val Person.t.
 
 Module Impl_core_hash_Hash_for_hash_Person.
   Section Impl_core_hash_Hash_for_hash_Person.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := hash.Person.
     
@@ -52,18 +58,18 @@ Module Impl_core_hash_Hash_for_hash_Person.
       Notation.double_colon := hash (__H := __H);
     }.
     
-    Global Instance I : core.hash.Hash.Trait Self := {
-      core.hash.Hash.hash {__H : Set} {ℋ_0 : core.hash.Hasher.Trait __H}
-        :=
+    #[refine] Global Instance ℐ : core.hash.Hash.Trait Self := {
+      core.hash.Hash.hash {__H : Set} {ℋ_0 : core.hash.Hasher.Trait __H} :=
         hash (__H := __H);
     }.
+    Admitted.
   End Impl_core_hash_Hash_for_hash_Person.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_hash_Hash_for_hash_Person.
 
 Parameter calculate_hash :
-    forall `{State.Trait} {T : Set} {ℋ_0 : core.hash.Hash.Trait T},
+    forall `{ℋ : State.Trait} {T : Set} {ℋ_0 : core.hash.Hash.Trait T},
     (ref T) -> M u64.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{State.Trait}, M unit.
+Parameter main : forall `{ℋ : State.Trait}, M unit.

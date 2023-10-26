@@ -3,18 +3,18 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module checked.
   Module MathError.
-    Inductive t `{State.Trait} : Set :=
+    Inductive t `{ℋ : State.Trait} : Set :=
     | DivisionByZero
     | NonPositiveLogarithm
     | NegativeSquareRoot.
   End MathError.
-  Definition MathError `{State.Trait} : Set := MathError.t.
+  Definition MathError `{ℋ : State.Trait} : Set := MathError.t.
   
   Module
     Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
     Section
       Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Definition Self : Set :=
         result_chaining_with_question_mark.checked.MathError.
@@ -44,20 +44,21 @@ Module checked.
         Notation.double_colon := fmt;
       }.
       
-      Global Instance I : core.fmt.Debug.Trait Self := {
+      #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
         core.fmt.Debug.fmt := fmt;
       }.
+      Admitted.
     End
       Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
-    Global Hint Resolve I : core.
+    Global Hint Resolve ℐ : core.
   End
     Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
   
-  Definition MathResult `{State.Trait} : Set :=
+  Definition MathResult `{ℋ : State.Trait} : Set :=
     core.result.Result f64 result_chaining_with_question_mark.checked.MathError.
   
   Definition div
-      `{State.Trait}
+      `{ℋ : State.Trait}
       (x : f64)
       (y : f64)
       : M result_chaining_with_question_mark.checked.MathResult :=
@@ -74,7 +75,7 @@ Module checked.
       Pure (core.result.Result.Ok α0).
   
   Definition sqrt
-      `{State.Trait}
+      `{ℋ : State.Trait}
       (x : f64)
       : M result_chaining_with_question_mark.checked.MathResult :=
     let* α0 := M.alloc 0 (* 0.0 *) in
@@ -90,7 +91,7 @@ Module checked.
       Pure (core.result.Result.Ok α0).
   
   Definition ln
-      `{State.Trait}
+      `{ℋ : State.Trait}
       (x : f64)
       : M result_chaining_with_question_mark.checked.MathResult :=
     let* α0 := M.alloc 0 (* 0.0 *) in
@@ -106,33 +107,57 @@ Module checked.
       Pure (core.result.Result.Ok α0).
   
   Definition op_
-      `{State.Trait}
+      `{ℋ : State.Trait}
       (x : f64)
       (y : f64)
       : M result_chaining_with_question_mark.checked.MathResult :=
     let* ratio :=
       let* α0 := result_chaining_with_question_mark.checked.div x y in
-      let* α1 := core.ops.try_trait.Try.branch α0 in
+      let* α1 :=
+        (core.ops.try_trait.Try.branch
+            (Self :=
+              (core.result.Result
+                f64
+                result_chaining_with_question_mark.checked.MathError)))
+          α0 in
       match α1 with
       | core.ops.control_flow.ControlFlow residual =>
-        let* α0 := core.ops.try_trait.FromResidual.from_residual residual in
+        let* α0 :=
+          (core.ops.try_trait.FromResidual.from_residual
+              (Self :=
+                (core.result.Result
+                  f64
+                  result_chaining_with_question_mark.checked.MathError)))
+            residual in
         let* α1 := Return α0 in
         never_to_any α1
       | core.ops.control_flow.ControlFlow val => Pure val
       end in
     let* ln :=
       let* α0 := result_chaining_with_question_mark.checked.ln ratio in
-      let* α1 := core.ops.try_trait.Try.branch α0 in
+      let* α1 :=
+        (core.ops.try_trait.Try.branch
+            (Self :=
+              (core.result.Result
+                f64
+                result_chaining_with_question_mark.checked.MathError)))
+          α0 in
       match α1 with
       | core.ops.control_flow.ControlFlow residual =>
-        let* α0 := core.ops.try_trait.FromResidual.from_residual residual in
+        let* α0 :=
+          (core.ops.try_trait.FromResidual.from_residual
+              (Self :=
+                (core.result.Result
+                  f64
+                  result_chaining_with_question_mark.checked.MathError)))
+            residual in
         let* α1 := Return α0 in
         never_to_any α1
       | core.ops.control_flow.ControlFlow val => Pure val
       end in
     result_chaining_with_question_mark.checked.sqrt ln.
   
-  Definition op `{State.Trait} (x : f64) (y : f64) : M unit :=
+  Definition op `{ℋ : State.Trait} (x : f64) (y : f64) : M unit :=
     let* α0 := result_chaining_with_question_mark.checked.op_ x y in
     match α0 with
     | core.result.Result why =>
@@ -174,18 +199,18 @@ Module checked.
 End checked.
 
 Module MathError.
-  Inductive t `{State.Trait} : Set :=
+  Inductive t `{ℋ : State.Trait} : Set :=
   | DivisionByZero
   | NonPositiveLogarithm
   | NegativeSquareRoot.
 End MathError.
-Definition MathError `{State.Trait} : Set := MathError.t.
+Definition MathError `{ℋ : State.Trait} : Set := MathError.t.
 
 Module
   Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
   Section
     Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set :=
       result_chaining_with_question_mark.checked.MathError.
@@ -215,20 +240,21 @@ Module
       Notation.double_colon := fmt;
     }.
     
-    Global Instance I : core.fmt.Debug.Trait Self := {
+    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
+    Admitted.
   End
     Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End
   Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
 
-Definition MathResult `{State.Trait} : Set :=
+Definition MathResult `{ℋ : State.Trait} : Set :=
   core.result.Result f64 result_chaining_with_question_mark.checked.MathError.
 
 Definition div
-    `{State.Trait}
+    `{ℋ : State.Trait}
     (x : f64)
     (y : f64)
     : M result_chaining_with_question_mark.checked.MathResult :=
@@ -245,7 +271,7 @@ Definition div
     Pure (core.result.Result.Ok α0).
 
 Definition sqrt
-    `{State.Trait}
+    `{ℋ : State.Trait}
     (x : f64)
     : M result_chaining_with_question_mark.checked.MathResult :=
   let* α0 := M.alloc 0 (* 0.0 *) in
@@ -261,7 +287,7 @@ Definition sqrt
     Pure (core.result.Result.Ok α0).
 
 Definition ln
-    `{State.Trait}
+    `{ℋ : State.Trait}
     (x : f64)
     : M result_chaining_with_question_mark.checked.MathResult :=
   let* α0 := M.alloc 0 (* 0.0 *) in
@@ -277,33 +303,57 @@ Definition ln
     Pure (core.result.Result.Ok α0).
 
 Definition op_
-    `{State.Trait}
+    `{ℋ : State.Trait}
     (x : f64)
     (y : f64)
     : M result_chaining_with_question_mark.checked.MathResult :=
   let* ratio :=
     let* α0 := result_chaining_with_question_mark.checked.div x y in
-    let* α1 := core.ops.try_trait.Try.branch α0 in
+    let* α1 :=
+      (core.ops.try_trait.Try.branch
+          (Self :=
+            (core.result.Result
+              f64
+              result_chaining_with_question_mark.checked.MathError)))
+        α0 in
     match α1 with
     | core.ops.control_flow.ControlFlow residual =>
-      let* α0 := core.ops.try_trait.FromResidual.from_residual residual in
+      let* α0 :=
+        (core.ops.try_trait.FromResidual.from_residual
+            (Self :=
+              (core.result.Result
+                f64
+                result_chaining_with_question_mark.checked.MathError)))
+          residual in
       let* α1 := Return α0 in
       never_to_any α1
     | core.ops.control_flow.ControlFlow val => Pure val
     end in
   let* ln :=
     let* α0 := result_chaining_with_question_mark.checked.ln ratio in
-    let* α1 := core.ops.try_trait.Try.branch α0 in
+    let* α1 :=
+      (core.ops.try_trait.Try.branch
+          (Self :=
+            (core.result.Result
+              f64
+              result_chaining_with_question_mark.checked.MathError)))
+        α0 in
     match α1 with
     | core.ops.control_flow.ControlFlow residual =>
-      let* α0 := core.ops.try_trait.FromResidual.from_residual residual in
+      let* α0 :=
+        (core.ops.try_trait.FromResidual.from_residual
+            (Self :=
+              (core.result.Result
+                f64
+                result_chaining_with_question_mark.checked.MathError)))
+          residual in
       let* α1 := Return α0 in
       never_to_any α1
     | core.ops.control_flow.ControlFlow val => Pure val
     end in
   result_chaining_with_question_mark.checked.sqrt ln.
 
-Definition op `{State.Trait} (x : f64) (y : f64) : M unit :=
+Definition op `{ℋ : State.Trait} (x : f64) (y : f64) : M unit :=
   let* α0 := result_chaining_with_question_mark.checked.op_ x y in
   match α0 with
   | core.result.Result why =>
@@ -344,7 +394,7 @@ Definition op `{State.Trait} (x : f64) (y : f64) : M unit :=
   end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main `{ℋ : State.Trait} : M unit :=
   let* _ :=
     let* α0 := M.alloc 1 (* 1.0 *) in
     let* α1 := M.alloc 10 (* 10.0 *) in

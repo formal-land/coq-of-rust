@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module HasArea.
   Section HasArea.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Class Trait (Self : Set) : Type := {
       area : (ref Self) -> M f64;
@@ -14,7 +14,7 @@ End HasArea.
 
 Module Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle.
   Section Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := generics_bounds.Rectangle.
     
@@ -30,16 +30,17 @@ Module Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle.
       Notation.double_colon := area;
     }.
     
-    Global Instance I : generics_bounds.HasArea.Trait Self := {
+    #[refine] Global Instance ℐ : generics_bounds.HasArea.Trait Self := {
       generics_bounds.HasArea.area := area;
     }.
+    Admitted.
   End Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle.
 
 Module Rectangle.
   Section Rectangle.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Record t : Set := {
@@ -48,25 +49,31 @@ Module Rectangle.
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_length : Notation.Dot "length" := {
+    #[refine] Global Instance Get_length : Notation.Dot "length" := {
       Notation.dot x := let* x := M.read x in Pure x.(length) : M _;
     }.
-    Global Instance Get_AF_length : Notation.DoubleColon t "length" := {
+    Admitted.
+    #[refine] Global Instance Get_AF_length :
+      Notation.DoubleColon t "length" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(length) : M _;
     }.
-    Global Instance Get_height : Notation.Dot "height" := {
+    Admitted.
+    #[refine] Global Instance Get_height : Notation.Dot "height" := {
       Notation.dot x := let* x := M.read x in Pure x.(height) : M _;
     }.
-    Global Instance Get_AF_height : Notation.DoubleColon t "height" := {
+    Admitted.
+    #[refine] Global Instance Get_AF_height :
+      Notation.DoubleColon t "height" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(height) : M _;
     }.
+    Admitted.
   End Rectangle.
 End Rectangle.
-Definition Rectangle `{State.Trait} : Set := M.val Rectangle.t.
+Definition Rectangle `{ℋ : State.Trait} : Set := M.val Rectangle.t.
 
 Module Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
   Section Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := generics_bounds.Rectangle.
     
@@ -102,17 +109,18 @@ Module Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
       Notation.double_colon := fmt;
     }.
     
-    Global Instance I : core.fmt.Debug.Trait Self := {
+    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
+    Admitted.
   End Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
 
 (* #[allow(dead_code)] - struct was ignored by the compiler *)
 Module Triangle.
   Section Triangle.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Record t : Set := {
@@ -121,24 +129,30 @@ Module Triangle.
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_length : Notation.Dot "length" := {
+    #[refine] Global Instance Get_length : Notation.Dot "length" := {
       Notation.dot x := let* x := M.read x in Pure x.(length) : M _;
     }.
-    Global Instance Get_AF_length : Notation.DoubleColon t "length" := {
+    Admitted.
+    #[refine] Global Instance Get_AF_length :
+      Notation.DoubleColon t "length" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(length) : M _;
     }.
-    Global Instance Get_height : Notation.Dot "height" := {
+    Admitted.
+    #[refine] Global Instance Get_height : Notation.Dot "height" := {
       Notation.dot x := let* x := M.read x in Pure x.(height) : M _;
     }.
-    Global Instance Get_AF_height : Notation.DoubleColon t "height" := {
+    Admitted.
+    #[refine] Global Instance Get_AF_height :
+      Notation.DoubleColon t "height" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(height) : M _;
     }.
+    Admitted.
   End Triangle.
 End Triangle.
-Definition Triangle `{State.Trait} : Set := M.val Triangle.t.
+Definition Triangle `{ℋ : State.Trait} : Set := M.val Triangle.t.
 
 Definition print_debug
-    `{State.Trait}
+    `{ℋ : State.Trait}
     {T : Set}
     {ℋ_0 : core.fmt.Debug.Trait T}
     (t : ref T)
@@ -150,9 +164,9 @@ Definition print_debug
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
       let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := borrow t (ref _) in
-      let* α5 := deref α4 (ref _) in
-      let* α6 := borrow α5 (ref _) in
+      let* α4 := borrow t (ref T) in
+      let* α5 := deref α4 (ref T) in
+      let* α6 := borrow α5 (ref T) in
       let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
       let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
       let* α9 := deref α8 (list core.fmt.rt.Argument) in
@@ -164,17 +178,17 @@ Definition print_debug
   M.alloc tt.
 
 Definition area
-    `{State.Trait}
+    `{ℋ : State.Trait}
     {T : Set}
     {ℋ_0 : generics_bounds.HasArea.Trait T}
     (t : ref T)
     : M f64 :=
-  let* α0 := deref t _ in
-  let* α1 := borrow α0 _ in
-  generics_bounds.HasArea.area α1.
+  let* α0 := deref t T in
+  let* α1 := borrow α0 T in
+  (generics_bounds.HasArea.area (Self := T)) α1.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main `{ℋ : State.Trait} : M unit :=
   let* rectangle :=
     let* α0 := M.alloc 3 (* 3.0 *) in
     let* α1 := M.alloc 4 (* 4.0 *) in
@@ -204,7 +218,8 @@ Definition main `{State.Trait} : M unit :=
       let* α2 := borrow α1 (list (ref str)) in
       let* α3 := pointer_coercion "Unsize" α2 in
       let* α4 := borrow rectangle generics_bounds.Rectangle in
-      let* α5 := generics_bounds.HasArea.area α4 in
+      let* α5 :=
+        (generics_bounds.HasArea.area (Self := generics_bounds.Rectangle)) α4 in
       let* α6 := borrow α5 f64 in
       let* α7 := deref α6 f64 in
       let* α8 := borrow α7 f64 in

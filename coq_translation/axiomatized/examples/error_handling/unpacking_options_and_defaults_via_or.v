@@ -2,18 +2,18 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module Fruit.
-  Inductive t `{State.Trait} : Set :=
+  Inductive t `{ℋ : State.Trait} : Set :=
   | Apple
   | Orange
   | Banana
   | Kiwi
   | Lemon.
 End Fruit.
-Definition Fruit `{State.Trait} : Set := Fruit.t.
+Definition Fruit `{ℋ : State.Trait} : Set := Fruit.t.
 
 Module Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_Fruit.
   Section Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_Fruit.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := unpacking_options_and_defaults_via_or.Fruit.
     
@@ -25,12 +25,13 @@ Module Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_Fruit.
       Notation.double_colon := fmt;
     }.
     
-    Global Instance I : core.fmt.Debug.Trait Self := {
+    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
+    Admitted.
   End Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_Fruit.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_Fruit.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{State.Trait}, M unit.
+Parameter main : forall `{ℋ : State.Trait}, M unit.

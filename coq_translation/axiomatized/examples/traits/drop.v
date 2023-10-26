@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module Droppable.
   Section Droppable.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Record t : Set := {
@@ -11,19 +11,21 @@ Module Droppable.
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_name : Notation.Dot "name" := {
+    #[refine] Global Instance Get_name : Notation.Dot "name" := {
       Notation.dot x := let* x := M.read x in Pure x.(name) : M _;
     }.
-    Global Instance Get_AF_name : Notation.DoubleColon t "name" := {
+    Admitted.
+    #[refine] Global Instance Get_AF_name : Notation.DoubleColon t "name" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(name) : M _;
     }.
+    Admitted.
   End Droppable.
 End Droppable.
-Definition Droppable `{State.Trait} : Set := M.val Droppable.t.
+Definition Droppable `{ℋ : State.Trait} : Set := M.val Droppable.t.
 
 Module Impl_core_ops_drop_Drop_for_drop_Droppable.
   Section Impl_core_ops_drop_Drop_for_drop_Droppable.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := drop.Droppable.
     
@@ -34,12 +36,13 @@ Module Impl_core_ops_drop_Drop_for_drop_Droppable.
       Notation.double_colon := drop;
     }.
     
-    Global Instance I : core.ops.drop.Drop.Trait Self := {
+    #[refine] Global Instance ℐ : core.ops.drop.Drop.Trait Self := {
       core.ops.drop.Drop.drop := drop;
     }.
+    Admitted.
   End Impl_core_ops_drop_Drop_for_drop_Droppable.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_ops_drop_Drop_for_drop_Droppable.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{State.Trait}, M unit.
+Parameter main : forall `{ℋ : State.Trait}, M unit.

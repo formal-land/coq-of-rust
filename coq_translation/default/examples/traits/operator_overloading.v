@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module Foo.
   Section Foo.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Inductive t : Set := Build.
   End Foo.
@@ -12,7 +12,7 @@ Definition Foo := @Foo.t.
 
 Module Bar.
   Section Bar.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Inductive t : Set := Build.
   End Bar.
@@ -21,7 +21,7 @@ Definition Bar := @Bar.t.
 
 Module FooBar.
   Section FooBar.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Inductive t : Set := Build.
   End FooBar.
@@ -30,7 +30,7 @@ Definition FooBar := @FooBar.t.
 
 Module Impl_core_fmt_Debug_for_operator_overloading_FooBar.
   Section Impl_core_fmt_Debug_for_operator_overloading_FooBar.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := operator_overloading.FooBar.
     
@@ -49,16 +49,17 @@ Module Impl_core_fmt_Debug_for_operator_overloading_FooBar.
       Notation.double_colon := fmt;
     }.
     
-    Global Instance I : core.fmt.Debug.Trait Self := {
+    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
+    Admitted.
   End Impl_core_fmt_Debug_for_operator_overloading_FooBar.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_operator_overloading_FooBar.
 
 Module BarFoo.
   Section BarFoo.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Inductive t : Set := Build.
   End BarFoo.
@@ -67,7 +68,7 @@ Definition BarFoo := @BarFoo.t.
 
 Module Impl_core_fmt_Debug_for_operator_overloading_BarFoo.
   Section Impl_core_fmt_Debug_for_operator_overloading_BarFoo.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := operator_overloading.BarFoo.
     
@@ -86,16 +87,17 @@ Module Impl_core_fmt_Debug_for_operator_overloading_BarFoo.
       Notation.double_colon := fmt;
     }.
     
-    Global Instance I : core.fmt.Debug.Trait Self := {
+    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
+    Admitted.
   End Impl_core_fmt_Debug_for_operator_overloading_BarFoo.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_operator_overloading_BarFoo.
 
 Module Impl_core_ops_arith_Add_for_operator_overloading_Foo.
   Section Impl_core_ops_arith_Add_for_operator_overloading_Foo.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := operator_overloading.Foo.
     
@@ -123,18 +125,19 @@ Module Impl_core_ops_arith_Add_for_operator_overloading_Foo.
       Notation.double_colon := add;
     }.
     
-    Global Instance I
-      : core.ops.arith.Add.Trait Self (Rhs := operator_overloading.Bar) := {
+    #[refine] Global Instance ℐ :
+      core.ops.arith.Add.Trait Self (Rhs := operator_overloading.Bar) := {
       core.ops.arith.Add.Output := Output;
       core.ops.arith.Add.add := add;
     }.
+    Admitted.
   End Impl_core_ops_arith_Add_for_operator_overloading_Foo.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_ops_arith_Add_for_operator_overloading_Foo.
 
 Module Impl_core_ops_arith_Add_for_operator_overloading_Bar.
   Section Impl_core_ops_arith_Add_for_operator_overloading_Bar.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := operator_overloading.Bar.
     
@@ -162,17 +165,18 @@ Module Impl_core_ops_arith_Add_for_operator_overloading_Bar.
       Notation.double_colon := add;
     }.
     
-    Global Instance I
-      : core.ops.arith.Add.Trait Self (Rhs := operator_overloading.Foo) := {
+    #[refine] Global Instance ℐ :
+      core.ops.arith.Add.Trait Self (Rhs := operator_overloading.Foo) := {
       core.ops.arith.Add.Output := Output;
       core.ops.arith.Add.add := add;
     }.
+    Admitted.
   End Impl_core_ops_arith_Add_for_operator_overloading_Bar.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_ops_arith_Add_for_operator_overloading_Bar.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main `{ℋ : State.Trait} : M unit :=
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -182,7 +186,7 @@ Definition main `{State.Trait} : M unit :=
       let* α2 := borrow α1 (list (ref str)) in
       let* α3 := pointer_coercion "Unsize" α2 in
       let* α4 :=
-        core.ops.arith.Add.add
+        (core.ops.arith.Add.add (Self := operator_overloading.Foo))
           (operator_overloading.Foo.Build_t tt)
           (operator_overloading.Bar.Build_t tt) in
       let* α5 := borrow α4 operator_overloading.FooBar in
@@ -205,7 +209,7 @@ Definition main `{State.Trait} : M unit :=
       let* α2 := borrow α1 (list (ref str)) in
       let* α3 := pointer_coercion "Unsize" α2 in
       let* α4 :=
-        core.ops.arith.Add.add
+        (core.ops.arith.Add.add (Self := operator_overloading.Bar))
           (operator_overloading.Bar.Build_t tt)
           (operator_overloading.Foo.Build_t tt) in
       let* α5 := borrow α4 operator_overloading.BarFoo in

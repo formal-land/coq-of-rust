@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module Foo.
   Section Foo.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Record t : Set := {
@@ -11,19 +11,21 @@ Module Foo.
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_test : Notation.Dot "test" := {
+    #[refine] Global Instance Get_test : Notation.Dot "test" := {
       Notation.dot x := let* x := M.read x in Pure x.(test) : M _;
     }.
-    Global Instance Get_AF_test : Notation.DoubleColon t "test" := {
+    Admitted.
+    #[refine] Global Instance Get_AF_test : Notation.DoubleColon t "test" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(test) : M _;
     }.
+    Admitted.
   End Foo.
 End Foo.
-Definition Foo `{State.Trait} : Set := M.val Foo.t.
+Definition Foo `{ℋ : State.Trait} : Set := M.val Foo.t.
 
 Module Bar.
   Section Bar.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Record t : Set := {
@@ -31,19 +33,21 @@ Module Bar.
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_test : Notation.Dot "test" := {
+    #[refine] Global Instance Get_test : Notation.Dot "test" := {
       Notation.dot x := let* x := M.read x in Pure x.(test) : M _;
     }.
-    Global Instance Get_AF_test : Notation.DoubleColon t "test" := {
+    Admitted.
+    #[refine] Global Instance Get_AF_test : Notation.DoubleColon t "test" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(test) : M _;
     }.
+    Admitted.
   End Bar.
 End Bar.
-Definition Bar `{State.Trait} : Set := M.val Bar.t.
+Definition Bar `{ℋ : State.Trait} : Set := M.val Bar.t.
 
 Module BarTrait.
   Section BarTrait.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Class Trait (Self : Set) : Type := {
       show : Self -> M alloc.string.String;
@@ -56,7 +60,7 @@ Module
   Impl_const_underscore_expression_BarTrait_for_const_underscore_expression_Bar.
   Section
     Impl_const_underscore_expression_BarTrait_for_const_underscore_expression_Bar.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := const_underscore_expression.Bar.
     
@@ -67,11 +71,13 @@ Module
       Notation.double_colon := show;
     }.
     
-    Global Instance I : const_underscore_expression.BarTrait.Trait Self := {
+    #[refine] Global Instance ℐ :
+      const_underscore_expression.BarTrait.Trait Self := {
       const_underscore_expression.BarTrait.show := show;
     }.
+    Admitted.
   End
     Impl_const_underscore_expression_BarTrait_for_const_underscore_expression_Bar.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End
   Impl_const_underscore_expression_BarTrait_for_const_underscore_expression_Bar.

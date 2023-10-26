@@ -64,10 +64,17 @@ Require CoqOfRust.ink.ink_env.""",
     )
     content = sub_at_least_once(
         re.escape(
-            """Definition IsResultType (T : Set) `{State.Trait} : Set :=
+            """Definition IsResultType (T : Set) `{ℋ : State.Trait} : Set :=
     M.val (IsResultType.t (T := T))."""
         ),
         "",
+        content,
+    )
+    content = sub_at_least_once(
+        re.escape("""Definition IsResultType (T : Set) `{ℋ : State.Trait} : Set :=
+  M.val (IsResultType.t (T := T))."""),
+        """(* Definition IsResultType (T : Set) `{ℋ : State.Trait} : Set :=
+  M.val (IsResultType.t (T := T)). *)""",
         content,
     )
 
@@ -109,7 +116,7 @@ Require CoqOfRust.ink.parity_scale_codec.""",
     content = sub_at_least_once(
         re.escape("""
 Module Error.
-  Inductive t `{State.Trait} : Set :=
+  Inductive t `{ℋ : State.Trait} : Set :=
   | CalleeTrapped
   | CalleeReverted
   | KeyNotFound
@@ -122,8 +129,20 @@ Module Error.
   | EcdsaRecoveryFailed
   | Unknown.
 End Error.
-Definition Error `{State.Trait} : Set := Error.t.
+Definition Error `{ℋ : State.Trait} : Set := Error.t.
 """),
+        "",
+        content,
+    )
+
+    content = sub_at_least_once(
+        re.escape(
+            "Definition Dyn_ink_engine_chain_extension_ChainExtension : Set :="),
+        "Parameter Dyn_ink_engine_chain_extension_ChainExtension : Set.",
+        content,
+    )
+    content = sub_at_least_once(
+        re.escape("Dyn_ink_engine_chain_extension_ChainExtension.t."),
         "",
         content,
     )
@@ -135,6 +154,7 @@ Definition Error `{State.Trait} : Set := Error.t.
             "Impl_parity_scale_codec_codec_Encode_for_ink_engine_chain_extension_ExtensionId",
             "Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_engine_chain_extension_ExtensionId",
             "Impl_parity_scale_codec_codec_Decode_for_ink_engine_chain_extension_ExtensionId",
+            "Dyn_ink_engine_chain_extension_ChainExtension",
         ],
         content,
     )
@@ -162,138 +182,58 @@ Require CoqOfRust.ink.scale_encode.
 Require CoqOfRust.ink.ink_engine.""",
         content,
     )
-    content = content.replace(
-        """
-Parameter build_create :
+
+    content = sub_at_least_once(
+        re.escape("Parameter recorded_events_ret_ty :"),
+        "(* Parameter recorded_events_ret_ty :",
+        content,
+    )
+    content = sub_at_least_once(
+        re.escape("M (projT1 recorded_events_ret_ty)."),
+        "M (projT1 recorded_events_ret_ty). *)",
+        content,
+    )
+
+    content = sub_at_least_once(
+        re.escape("ink_env.call.create_builder.CreateBuilder"),
+        "ink_env.call.create_builder.CreateBuilder (ℋ_0 := ltac:(sauto lq: on))",
+        content,
+    )
+
+#     content = sub_at_least_once(
+#         re.escape("""End impls.
+
+# Module TopicsBuilder."""),
+#         """End impls.
+
+# (* Module TopicsBuilder.""",
+#         content,
+#     )
+#     content = sub_at_least_once(
+#         re.escape("""Definition TopicsBuilder `{ℋ : State.Trait} : Set := M.val TopicsBuilder.t.
+
+# Module EnvInstance."""),
+#         """Definition TopicsBuilder `{ℋ : State.Trait} : Set := M.val TopicsBuilder.t. *)
+
+# Module EnvInstance.""",
+#         content,
+#     )
+
+    content = sub_at_least_once(
+        re.escape("""Parameter is_contract :
     forall
-      `{H' : State.Trait}
-      {ContractRef : Set}
-      `{ink_env.contract.ContractEnv.Trait ContractRef},
-    M (H := H')
-        (ink_env.call.create_builder.CreateBuilder
-          (ink_env.contract.ContractEnv.Env (Self := ContractRef))
-          ContractRef
-          (ink_env.call.common.Unset_
-            (ink_env.types.Environment.Hash
-              (Self := ink_env.contract.ContractEnv.Env (Self := ContractRef))))
-          (ink_env.call.common.Unset_ u64)
-          (ink_env.call.common.Unset_
-            (ink_env.types.Environment.Balance
-              (Self := ink_env.contract.ContractEnv.Env (Self := ContractRef))))
-          (ink_env.call.common.Unset_
-            (ink_env.call.execution_input.ExecutionInput
-              ink_env.call.execution_input.EmptyArgumentList))
-          (ink_env.call.common.Unset_ ink_env.call.create_builder.state.Salt)
-          (ink_env.call.common.Unset_ (ink_env.call.common.ReturnType unit))).
-""",
-        "",
-    )
-    content = content.replace(
-        """
-Module state.
-  Module IgnoreErrorCode.
-""",
-        """
-Module state_.
-  Module IgnoreErrorCode.
-""",
-    )
-    content = \
-        content.replace(
-            """HandleErrorCode.t (T := T).
-End state.
-""",
-            """HandleErrorCode.t (T := T).
-End state_.
-""",
-        )
-    content = content.replace(
-        """Parameter is_contract :
+      `{ℋ : State.Trait}
+      {E : Set}
+      {ℋ_0 : ink_env.types.Environment.Trait E},
+    (ref E::type["AccountId"]) -> M bool."""),
+        """(* Parameter is_contract :
     forall
-      `{H' : State.Trait}
-      {T : Set}
-      `{ink_env.types.Environment.Trait T}
-      `{core.convert.From.Trait
-            (ink_env.types.Environment.AccountId (Self := T))
-          (T := list u8)},
-    T::type["AccountId"] -> M (H := H') bool.""",
-        "",
-    )
-    content = content.replace(
-        """Module TopicsBuilder.
-  Section TopicsBuilder.
-    Context {S E B : Set}.
-    Unset Primitive Projections.
-    Record t : Set := {
-      backend : B;
-      state : core.marker.PhantomData (S * E);
-    }.
-    Global Set Primitive Projections.
-    
-    Global Instance Get_backend : Notation.Dot "backend" := {
-      Notation.dot '(Build_t x0 _) := x0;
-    }.
-    Global Instance Get_AF_backend : Notation.DoubleColon t "backend" := {
-      Notation.double_colon '(Build_t x0 _) := x0;
-    }.
-    Global Instance Get_state : Notation.Dot "state" := {
-      Notation.dot '(Build_t _ x1) := x1;
-    }.
-    Global Instance Get_AF_state : Notation.DoubleColon t "state" := {
-      Notation.double_colon '(Build_t _ x1) := x1;
-    }.
-  End TopicsBuilder.
-End TopicsBuilder.
-Definition TopicsBuilder""",
-        "Definition TopicsBuilder_",
-    )
-    content = content.replace(
-        """Module state.
-  Module Uninit.
-    Inductive t : Set :=
-    .
-  End Uninit.
-  Definition Uninit := Uninit.t.
-  
-  Module HasRemainingTopics.
-    Inductive t : Set :=
-    .
-  End HasRemainingTopics.
-  Definition HasRemainingTopics := HasRemainingTopics.t.
-  
-  Module NoRemainingTopics.
-    Inductive t : Set :=
-    .
-  End NoRemainingTopics.
-  Definition NoRemainingTopics := NoRemainingTopics.t.
-End state.""",
-        """Module state__.
-  Module Uninit.
-    Inductive t : Set :=
-    .
-  End Uninit.
-  Definition Uninit := Uninit.t.
-  
-  Module HasRemainingTopics.
-    Inductive t : Set :=
-    .
-  End HasRemainingTopics.
-  Definition HasRemainingTopics := HasRemainingTopics.t.
-  
-  Module NoRemainingTopics.
-    Inductive t : Set :=
-    .
-  End NoRemainingTopics.
-  Definition NoRemainingTopics := NoRemainingTopics.t.
-End state__.""",
-    )
-    content = \
-        content.replace(
-            """Definition TopicsBuilder_ (S E B : Set) : Set :=
-  TopicsBuilder.t (S := S) (E := E) (B := B).
-""",
-            "",
-        )
+      `{ℋ : State.Trait}
+      {E : Set}
+      {ℋ_0 : ink_env.types.Environment.Trait E},
+    (ref E::type["AccountId"]) -> M bool. *)""",
+        content)
+
     with open(file_name, "w") as f:
         f.write(content)
 
@@ -319,19 +259,20 @@ Require CoqOfRust.ink.subxt.""",
 
     content = sub_at_least_once(
         re.escape(
-            """Definition CreateBuilderPartial (E ContractRef Args R : Set)
-      `{State.Trait} :
+            """Definition CreateBuilderPartial
+      `{ℋ : State.Trait} (E ContractRef Args R : Set) :
       Set :="""),
-        """Definition CreateBuilderPartial (E ContractRef Args R : Set)
-      `{State.Trait} `{ink_env.types.Environment.Trait E} :
+        """Definition CreateBuilderPartial
+      `{ℋ : State.Trait} (E ContractRef Args R : Set)
+      `{ink_env.types.Environment.Trait E} :
       Set :=""",
         content,
     )
     content = sub_at_least_once(
         re.escape(
-            """Definition CallBuilderFinal (E Args RetType : Set) `{State.Trait} : Set :="""
+            """Definition CallBuilderFinal `{ℋ : State.Trait} (E Args RetType : Set) : Set :="""
         ),
-        """Definition CallBuilderFinal (E Args RetType : Set) `{State.Trait} `{ink_env.types.Environment.Trait E} : Set :=""",
+        """Definition CallBuilderFinal `{ℋ : State.Trait} (E Args RetType : Set) `{ink_env.types.Environment.Trait E} : Set :=""",
         content,
     )
 
@@ -413,10 +354,10 @@ Module InkE2ETest."""),
         content,
     )
     content = sub_at_least_once(
-        re.escape("""Definition InkE2ETest `{State.Trait} : Set := M.val InkE2ETest.t.
+        re.escape("""Definition InkE2ETest `{ℋ : State.Trait} : Set := M.val InkE2ETest.t.
 
 Module Impl_core_convert_From_for_ink_e2e_macro_codegen_InkE2ETest."""),
-        """Definition InkE2ETest `{State.Trait} : Set := M.val InkE2ETest.t. *)
+        """Definition InkE2ETest `{ℋ : State.Trait} : Set := M.val InkE2ETest.t. *)
 
 Module Impl_core_convert_From_for_ink_e2e_macro_codegen_InkE2ETest.""",
         content,
@@ -557,14 +498,10 @@ Require CoqOfRust.ink.ink_primitives.
 Require CoqOfRust.ink.parity_scale_codec.""",
         content,
     )
+
     content = sub_at_least_once(
-        "Global Instance I",
-        "Global Instance I'",
-        content,
-    )
-    content = sub_at_least_once(
-        "Global Hint Resolve I : core.",
-        "Global Hint Resolve I' : core.",
+        r"\w+ :: core.marker.Sized.Trait Self;",
+        "(* _ :: core.marker.Sized.Trait Self; *)",
         content,
     )
 
@@ -607,9 +544,9 @@ Require CoqOfRust.ink.ink.""",
 
 #     content = sub_at_least_once(
 #         r"""Module Impl_core_default_Default_for_erc20_erc20_Erc20.
-#     Definition Self `{State.Trait} := erc20.erc20.Erc20.""",
+#     Definition Self `{ℋ : State.Trait} := erc20.erc20.Erc20.""",
 #         """Module Impl_core_default_Default_for_erc20_erc20_Erc20.
-#     Definition Self `{State.Trait} := erc20.erc20.Erc20.
+#     Definition Self `{ℋ : State.Trait} := erc20.erc20.Erc20.
 
 #     Global Instance Default_for_AutoStorableHint_Type_ : default.Default.Trait
 #      (forall (Self Key : Set) (H : ink_storage_traits.storage.StorageKey.Trait Key)
@@ -621,12 +558,12 @@ Require CoqOfRust.ink.ink.""",
 
 #     content = sub_at_least_once(
 #         re.escape("""  End Erc20.
-#   Definition Erc20 `{State.Trait} : Set := M.val (Erc20.t).
+#   Definition Erc20 `{ℋ : State.Trait} : Set := M.val (Erc20.t).
 # """),
-#         """    Global Instance Erc20_New `{State.Trait} : Notation.DoubleColon t "new" (T := unit -> M t).
+#         """    Global Instance Erc20_New `{ℋ : State.Trait} : Notation.DoubleColon t "new" (T := unit -> M t).
 #     Admitted.
 #   End Erc20.
-#   Definition Erc20 `{State.Trait} : Set := M.val (Erc20.t).
+#   Definition Erc20 `{ℋ : State.Trait} : Set := M.val (Erc20.t).
 # """,
 #         content,
 #     )

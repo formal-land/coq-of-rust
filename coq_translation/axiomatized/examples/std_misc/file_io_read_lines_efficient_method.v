@@ -2,11 +2,11 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{State.Trait}, M unit.
+Parameter main : forall `{ℋ : State.Trait}, M unit.
 
 Parameter read_lines :
     forall
-      `{State.Trait}
+      `{ℋ : State.Trait}
       {P : Set}
       {ℋ_0 : core.convert.AsRef.Trait P (T := std.path.Path)},
     P ->

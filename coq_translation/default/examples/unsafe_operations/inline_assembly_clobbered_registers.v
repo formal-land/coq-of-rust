@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main `{ℋ : State.Trait} : M unit :=
   let* name_buf :=
     let* α0 := M.alloc 0 in
     repeat α0 12 in
@@ -15,7 +15,7 @@ Definition main `{State.Trait} : M unit :=
     let* α2 := borrow α1 (list u8) in
     let* α3 := pointer_coercion "Unsize" α2 in
     let* α4 := core.str.converts.from_utf8 α3 in
-    (core.result.Result _ _)::["unwrap"] α4 in
+    (core.result.Result T E)::["unwrap"] α4 in
   let* _ :=
     let* _ :=
       let* α0 :=

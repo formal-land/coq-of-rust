@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module EvenNumber.
   Section EvenNumber.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Record t : Set := {
@@ -11,16 +11,17 @@ Module EvenNumber.
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_0 : Notation.Dot "0" := {
+    #[refine] Global Instance Get_0 : Notation.Dot "0" := {
       Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
+    Admitted.
   End EvenNumber.
 End EvenNumber.
-Definition EvenNumber `{State.Trait} : Set := M.val EvenNumber.t.
+Definition EvenNumber `{ℋ : State.Trait} : Set := M.val EvenNumber.t.
 
 Module Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber.
   Section Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := try_from_and_try_into.EvenNumber.
     
@@ -32,30 +33,33 @@ Module Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber.
       Notation.double_colon := fmt;
     }.
     
-    Global Instance I : core.fmt.Debug.Trait Self := {
+    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
+    Admitted.
   End Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber.
 
 Module
   Impl_core_marker_StructuralPartialEq_for_try_from_and_try_into_EvenNumber.
   Section
     Impl_core_marker_StructuralPartialEq_for_try_from_and_try_into_EvenNumber.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := try_from_and_try_into.EvenNumber.
     
-    Global Instance I : core.marker.StructuralPartialEq.Trait Self := {
+    #[refine] Global Instance ℐ :
+      core.marker.StructuralPartialEq.Trait Self := {
     }.
+    Admitted.
   End Impl_core_marker_StructuralPartialEq_for_try_from_and_try_into_EvenNumber.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_marker_StructuralPartialEq_for_try_from_and_try_into_EvenNumber.
 
 Module Impl_core_cmp_PartialEq_for_try_from_and_try_into_EvenNumber.
   Section Impl_core_cmp_PartialEq_for_try_from_and_try_into_EvenNumber.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := try_from_and_try_into.EvenNumber.
     
@@ -66,19 +70,19 @@ Module Impl_core_cmp_PartialEq_for_try_from_and_try_into_EvenNumber.
       Notation.double_colon := eq;
     }.
     
-    Global Instance I
-      : core.cmp.PartialEq.Trait Self
-          (Rhs := core.cmp.PartialEq.Default.Rhs Self)
-        := {
+    #[refine] Global Instance ℐ :
+      core.cmp.PartialEq.Trait Self
+        (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
       core.cmp.PartialEq.eq := eq;
     }.
+    Admitted.
   End Impl_core_cmp_PartialEq_for_try_from_and_try_into_EvenNumber.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_cmp_PartialEq_for_try_from_and_try_into_EvenNumber.
 
 Module Impl_core_convert_TryFrom_for_try_from_and_try_into_EvenNumber.
   Section Impl_core_convert_TryFrom_for_try_from_and_try_into_EvenNumber.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := try_from_and_try_into.EvenNumber.
     
@@ -91,13 +95,15 @@ Module Impl_core_convert_TryFrom_for_try_from_and_try_into_EvenNumber.
       Notation.double_colon := try_from;
     }.
     
-    Global Instance I : core.convert.TryFrom.Trait Self (T := i32) := {
+    #[refine] Global Instance ℐ :
+      core.convert.TryFrom.Trait Self (T := i32) := {
       core.convert.TryFrom.Error := Error;
       core.convert.TryFrom.try_from := try_from;
     }.
+    Admitted.
   End Impl_core_convert_TryFrom_for_try_from_and_try_into_EvenNumber.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_convert_TryFrom_for_try_from_and_try_into_EvenNumber.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{State.Trait}, M unit.
+Parameter main : forall `{ℋ : State.Trait}, M unit.

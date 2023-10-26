@@ -377,8 +377,8 @@ Module function.
   End FnOnce.
 
   Module FnMut.
-    Class Trait `{State.Trait} (Self : Set) {Args : Set}
-      {H1 : FnOnce.Trait Self (Args := Args)} : Set := {
+    Class Trait `{State.Trait} (Self : Set) {Args : Set} : Type := {
+      L0 :: FnOnce.Trait Self (Args := Args);
       call_mut : mut_ref Self -> Args -> M FnOnce.Output;
     }.
   End FnMut.
