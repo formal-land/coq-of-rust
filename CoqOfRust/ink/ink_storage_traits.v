@@ -10,7 +10,7 @@ Module storage.
       Context `{ℋ : State.Trait}.
       
       Class Trait (Self : Set) : Type := {
-        ℒ_0 :: core.marker.Sized.Trait Self;
+        (* _ :: core.marker.Sized.Trait Self; *)
         encode
           {T : Set}
           {ℋ_0 : parity_scale_codec.codec.Output.Trait T}
@@ -60,7 +60,8 @@ Module storage.
         Notation.double_colon := decode (I := I);
       }.
       
-      Global Instance ℐ : ink_storage_traits.storage.Storable.Trait Self := {
+      #[refine] Global Instance ℐ :
+        ink_storage_traits.storage.Storable.Trait Self := {
         ink_storage_traits.storage.Storable.encode
           {T : Set}
           {ℋ_0 : parity_scale_codec.codec.Output.Trait T}
@@ -71,6 +72,7 @@ Module storage.
           {ℋ_0 : parity_scale_codec.codec.Input.Trait I} :=
           decode (I := I);
       }.
+      Admitted.
     End Impl_ink_storage_traits_storage_Storable_for_P. *)
     Global Hint Resolve ℐ : core.
   End Impl_ink_storage_traits_storage_Storable_for_P. *)
@@ -124,14 +126,16 @@ Module storage.
         ℒ_2 :: ink_storage_traits.storage.StorageKey.Trait PreferredKey;
       }.
       
-      Global Instance Method_Type_ `(Trait) :
+      #[refine] Global Instance Method_Type_ `(Trait) :
         Notation.DoubleColonType Self "Type_" := {
         Notation.double_colon_type := Type_;
       }.
-      Global Instance Method_PreferredKey `(Trait) :
+      Admitted.
+      #[refine] Global Instance Method_PreferredKey `(Trait) :
         Notation.DoubleColonType Self "PreferredKey" := {
         Notation.double_colon_type := PreferredKey;
       }.
+      Admitted.
     End StorableHint.
   End StorableHint.
   
@@ -145,10 +149,11 @@ Module storage.
         ℒ_1 :: ink_storage_traits.storage.Storable.Trait Type_;
       }.
       
-      Global Instance Method_Type_ `(Trait) :
+      #[refine] Global Instance Method_Type_ `(Trait) :
         Notation.DoubleColonType Self "Type_" := {
         Notation.double_colon_type := Type_;
       }.
+      Admitted.
     End AutoStorableHint.
   End AutoStorableHint.
 End storage.
@@ -176,9 +181,10 @@ Module impls.
         Notation.double_colon := default;
       }.
       
-      Global Instance ℐ : core.default.Default.Trait Self := {
+      #[refine] Global Instance ℐ : core.default.Default.Trait Self := {
         core.default.Default.default := default;
       }.
+      Admitted.
     End Impl_core_default_Default_for_ink_storage_traits_impls_AutoKey.
     Global Hint Resolve ℐ : core.
   End Impl_core_default_Default_for_ink_storage_traits_impls_AutoKey.
@@ -196,9 +202,10 @@ Module impls.
         Notation.double_colon := clone;
       }.
       
-      Global Instance ℐ : core.clone.Clone.Trait Self := {
+      #[refine] Global Instance ℐ : core.clone.Clone.Trait Self := {
         core.clone.Clone.clone := clone;
       }.
+      Admitted.
     End Impl_core_clone_Clone_for_ink_storage_traits_impls_AutoKey.
     Global Hint Resolve ℐ : core.
   End Impl_core_clone_Clone_for_ink_storage_traits_impls_AutoKey.
@@ -209,8 +216,9 @@ Module impls.
       
       Definition Self : Set := ink_storage_traits.impls.AutoKey.
       
-      Global Instance ℐ : core.marker.Copy.Trait Self := {
+      #[refine] Global Instance ℐ : core.marker.Copy.Trait Self := {
       }.
+      Admitted.
     End Impl_core_marker_Copy_for_ink_storage_traits_impls_AutoKey.
     Global Hint Resolve ℐ : core.
   End Impl_core_marker_Copy_for_ink_storage_traits_impls_AutoKey.
@@ -223,8 +231,10 @@ Module impls.
       
       Definition Self : Set := ink_storage_traits.impls.AutoKey.
       
-      Global Instance ℐ : core.marker.StructuralPartialEq.Trait Self := {
+      #[refine] Global Instance ℐ :
+        core.marker.StructuralPartialEq.Trait Self := {
       }.
+      Admitted.
     End
       Impl_core_marker_StructuralPartialEq_for_ink_storage_traits_impls_AutoKey.
     Global Hint Resolve ℐ : core.
@@ -244,11 +254,12 @@ Module impls.
         Notation.double_colon := eq;
       }.
       
-      Global Instance ℐ :
+      #[refine] Global Instance ℐ :
         core.cmp.PartialEq.Trait Self
           (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
         core.cmp.PartialEq.eq := eq;
       }.
+      Admitted.
     End Impl_core_cmp_PartialEq_for_ink_storage_traits_impls_AutoKey.
     Global Hint Resolve ℐ : core.
   End Impl_core_cmp_PartialEq_for_ink_storage_traits_impls_AutoKey.
@@ -259,8 +270,9 @@ Module impls.
       
       Definition Self : Set := ink_storage_traits.impls.AutoKey.
       
-      Global Instance ℐ : core.marker.StructuralEq.Trait Self := {
+      #[refine] Global Instance ℐ : core.marker.StructuralEq.Trait Self := {
       }.
+      Admitted.
     End Impl_core_marker_StructuralEq_for_ink_storage_traits_impls_AutoKey.
     Global Hint Resolve ℐ : core.
   End Impl_core_marker_StructuralEq_for_ink_storage_traits_impls_AutoKey.
@@ -278,8 +290,9 @@ Module impls.
         Notation.double_colon := assert_receiver_is_total_eq;
       }.
       
-      Global Instance ℐ : core.cmp.Eq.Trait Self := {
+      #[refine] Global Instance ℐ : core.cmp.Eq.Trait Self := {
       }.
+      Admitted.
     End Impl_core_cmp_Eq_for_ink_storage_traits_impls_AutoKey.
     Global Hint Resolve ℐ : core.
   End Impl_core_cmp_Eq_for_ink_storage_traits_impls_AutoKey.
@@ -300,11 +313,12 @@ Module impls.
         Notation.double_colon := partial_cmp;
       }.
       
-      Global Instance ℐ :
+      #[refine] Global Instance ℐ :
         core.cmp.PartialOrd.Trait Self
           (Rhs := core.cmp.PartialOrd.Default.Rhs Self) := {
         core.cmp.PartialOrd.partial_cmp := partial_cmp;
       }.
+      Admitted.
     End Impl_core_cmp_PartialOrd_for_ink_storage_traits_impls_AutoKey.
     Global Hint Resolve ℐ : core.
   End Impl_core_cmp_PartialOrd_for_ink_storage_traits_impls_AutoKey.
@@ -315,16 +329,18 @@ Module impls.
       
       Definition Self : Set := ink_storage_traits.impls.AutoKey.
       
-      Definition KEY  := M.alloc 0.
+      Definition KEY : ink_primitives.key.Key := M.run (M.alloc 0).
       
       Global Instance AssociatedFunction_KEY :
         Notation.DoubleColon Self "KEY" := {
         Notation.double_colon := KEY;
       }.
       
-      Global Instance ℐ : ink_storage_traits.storage.StorageKey.Trait Self := {
+      #[refine] Global Instance ℐ :
+        ink_storage_traits.storage.StorageKey.Trait Self := {
         ink_storage_traits.storage.StorageKey.KEY := KEY;
       }.
+      Admitted.
     End Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_AutoKey. *)
     Global Hint Resolve ℐ : core.
   End Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_AutoKey. *)
@@ -343,9 +359,10 @@ Module impls.
         Notation.double_colon := fmt;
       }.
       
-      Global Instance ℐ : core.fmt.Debug.Trait Self := {
+      #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
         core.fmt.Debug.fmt := fmt;
       }.
+      Admitted.
     End Impl_core_fmt_Debug_for_ink_storage_traits_impls_AutoKey.
     Global Hint Resolve ℐ : core.
   End Impl_core_fmt_Debug_for_ink_storage_traits_impls_AutoKey.
@@ -362,9 +379,10 @@ Module impls.
       }.
       Global Set Primitive Projections.
       
-      Global Instance Get_0 : Notation.Dot "0" := {
+      #[refine] Global Instance Get_0 : Notation.Dot "0" := {
         Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
       }.
+      Admitted.
     End ManualKey.
   End ManualKey.
   Definition ManualKey `{ℋ : State.Trait} (ParentKey : Set) : Set :=
@@ -390,9 +408,10 @@ Module impls.
         Notation.double_colon := default;
       }.
       
-      Global Instance ℐ : core.default.Default.Trait Self := {
+      #[refine] Global Instance ℐ : core.default.Default.Trait Self := {
         core.default.Default.default := default;
       }.
+      Admitted.
     End
       Impl_core_default_Default_for_ink_storage_traits_impls_ManualKey_ParentKey.
     Global Hint Resolve ℐ : core.
@@ -419,9 +438,10 @@ Module impls.
         Notation.double_colon := clone;
       }.
       
-      Global Instance ℐ : core.clone.Clone.Trait Self := {
+      #[refine] Global Instance ℐ : core.clone.Clone.Trait Self := {
         core.clone.Clone.clone := clone;
       }.
+      Admitted.
     End Impl_core_clone_Clone_for_ink_storage_traits_impls_ManualKey_ParentKey.
     Global Hint Resolve ℐ : core.
   End Impl_core_clone_Clone_for_ink_storage_traits_impls_ManualKey_ParentKey.
@@ -438,8 +458,9 @@ Module impls.
         {ℋ_1 : ink_storage_traits.storage.StorageKey.Trait ParentKey}.
       Definition Self : Set := ink_storage_traits.impls.ManualKey ParentKey.
       
-      Global Instance ℐ : core.marker.Copy.Trait Self := {
+      #[refine] Global Instance ℐ : core.marker.Copy.Trait Self := {
       }.
+      Admitted.
     End Impl_core_marker_Copy_for_ink_storage_traits_impls_ManualKey_ParentKey.
     Global Hint Resolve ℐ : core.
   End Impl_core_marker_Copy_for_ink_storage_traits_impls_ManualKey_ParentKey.
@@ -455,8 +476,9 @@ Module impls.
       Context {ℋ_0 : ink_storage_traits.storage.StorageKey.Trait ParentKey}.
       Definition Self : Set := ink_storage_traits.impls.ManualKey ParentKey.
       
-      Global Instance ℐ : core.marker.StructuralEq.Trait Self := {
+      #[refine] Global Instance ℐ : core.marker.StructuralEq.Trait Self := {
       }.
+      Admitted.
     End
       Impl_core_marker_StructuralEq_for_ink_storage_traits_impls_ManualKey_ParentKey.
     Global Hint Resolve ℐ : core.
@@ -488,11 +510,12 @@ Module impls.
         Notation.double_colon := eq;
       }.
       
-      Global Instance ℐ :
+      #[refine] Global Instance ℐ :
         core.cmp.PartialEq.Trait Self
           (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
         core.cmp.PartialEq.eq := eq;
       }.
+      Admitted.
     End
       Impl_core_cmp_PartialEq_for_ink_storage_traits_impls_ManualKey_ParentKey.
     Global Hint Resolve ℐ : core.
@@ -516,8 +539,9 @@ Module impls.
         Notation.double_colon := assert_receiver_is_total_eq;
       }.
       
-      Global Instance ℐ : core.cmp.Eq.Trait Self := {
+      #[refine] Global Instance ℐ : core.cmp.Eq.Trait Self := {
       }.
+      Admitted.
     End Impl_core_cmp_Eq_for_ink_storage_traits_impls_ManualKey_ParentKey.
     Global Hint Resolve ℐ : core.
   End Impl_core_cmp_Eq_for_ink_storage_traits_impls_ManualKey_ParentKey.
@@ -533,8 +557,10 @@ Module impls.
       Context {ℋ_0 : ink_storage_traits.storage.StorageKey.Trait ParentKey}.
       Definition Self : Set := ink_storage_traits.impls.ManualKey ParentKey.
       
-      Global Instance ℐ : core.marker.StructuralPartialEq.Trait Self := {
+      #[refine] Global Instance ℐ :
+        core.marker.StructuralPartialEq.Trait Self := {
       }.
+      Admitted.
     End
       Impl_core_marker_StructuralPartialEq_for_ink_storage_traits_impls_ManualKey_ParentKey.
     Global Hint Resolve ℐ : core.
@@ -566,11 +592,12 @@ Module impls.
         Notation.double_colon := partial_cmp;
       }.
       
-      Global Instance ℐ :
+      #[refine] Global Instance ℐ :
         core.cmp.PartialOrd.Trait Self
           (Rhs := core.cmp.PartialOrd.Default.Rhs Self) := {
         core.cmp.PartialOrd.partial_cmp := partial_cmp;
       }.
+      Admitted.
     End
       Impl_core_cmp_PartialOrd_for_ink_storage_traits_impls_ManualKey_ParentKey.
     Global Hint Resolve ℐ : core.
@@ -585,20 +612,22 @@ Module impls.
       Context {ℋ_0 : ink_storage_traits.storage.StorageKey.Trait ParentKey}.
       Definition Self : Set := ink_storage_traits.impls.ManualKey ParentKey.
       
-      Definition
-        KEY
-         := ink_primitives.key.KeyComposer::["concat"]
-          ink_storage_traits.impls.KEY
-          ParentKey::["KEY"].
+      Definition KEY : ink_primitives.key.Key :=
+        M.run
+          (ink_primitives.key.KeyComposer::["concat"]
+            ink_storage_traits.impls.KEY
+            (ink_storage_traits.storage.StorageKey.KEY (Self := ParentKey))).
       
       Global Instance AssociatedFunction_KEY :
         Notation.DoubleColon Self "KEY" := {
         Notation.double_colon := KEY;
       }.
       
-      Global Instance ℐ : ink_storage_traits.storage.StorageKey.Trait Self := {
+      #[refine] Global Instance ℐ :
+        ink_storage_traits.storage.StorageKey.Trait Self := {
         ink_storage_traits.storage.StorageKey.KEY := KEY;
       }.
+      Admitted.
     End Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ManualKey_ParentKey. *)
     Global Hint Resolve ℐ : core.
   End Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ManualKey_ParentKey. *)
@@ -621,9 +650,10 @@ Module impls.
         Notation.double_colon := fmt;
       }.
       
-      Global Instance ℐ : core.fmt.Debug.Trait Self := {
+      #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
         core.fmt.Debug.fmt := fmt;
       }.
+      Admitted.
     End Impl_core_fmt_Debug_for_ink_storage_traits_impls_ManualKey_ParentKey.
     Global Hint Resolve ℐ : core.
   End Impl_core_fmt_Debug_for_ink_storage_traits_impls_ManualKey_ParentKey.
@@ -640,9 +670,10 @@ Module impls.
       }.
       Global Set Primitive Projections.
       
-      Global Instance Get_0 : Notation.Dot "0" := {
+      #[refine] Global Instance Get_0 : Notation.Dot "0" := {
         Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
       }.
+      Admitted.
     End ResolverKey.
   End ResolverKey.
   Definition ResolverKey `{ℋ : State.Trait} (L R : Set) : Set :=
@@ -667,9 +698,10 @@ Module impls.
         Notation.double_colon := default;
       }.
       
-      Global Instance ℐ : core.default.Default.Trait Self := {
+      #[refine] Global Instance ℐ : core.default.Default.Trait Self := {
         core.default.Default.default := default;
       }.
+      Admitted.
     End Impl_core_default_Default_for_ink_storage_traits_impls_ResolverKey_L_R.
     Global Hint Resolve ℐ : core.
   End Impl_core_default_Default_for_ink_storage_traits_impls_ResolverKey_L_R.
@@ -691,9 +723,10 @@ Module impls.
         Notation.double_colon := clone;
       }.
       
-      Global Instance ℐ : core.clone.Clone.Trait Self := {
+      #[refine] Global Instance ℐ : core.clone.Clone.Trait Self := {
         core.clone.Clone.clone := clone;
       }.
+      Admitted.
     End Impl_core_clone_Clone_for_ink_storage_traits_impls_ResolverKey_L_R.
     Global Hint Resolve ℐ : core.
   End Impl_core_clone_Clone_for_ink_storage_traits_impls_ResolverKey_L_R.
@@ -707,8 +740,9 @@ Module impls.
       Context {ℋ_0 : core.marker.Copy.Trait L} {ℋ_1 : core.marker.Copy.Trait R}.
       Definition Self : Set := ink_storage_traits.impls.ResolverKey L R.
       
-      Global Instance ℐ : core.marker.Copy.Trait Self := {
+      #[refine] Global Instance ℐ : core.marker.Copy.Trait Self := {
       }.
+      Admitted.
     End Impl_core_marker_Copy_for_ink_storage_traits_impls_ResolverKey_L_R.
     Global Hint Resolve ℐ : core.
   End Impl_core_marker_Copy_for_ink_storage_traits_impls_ResolverKey_L_R.
@@ -723,8 +757,10 @@ Module impls.
       
       Definition Self : Set := ink_storage_traits.impls.ResolverKey L R.
       
-      Global Instance ℐ : core.marker.StructuralPartialEq.Trait Self := {
+      #[refine] Global Instance ℐ :
+        core.marker.StructuralPartialEq.Trait Self := {
       }.
+      Admitted.
     End
       Impl_core_marker_StructuralPartialEq_for_ink_storage_traits_impls_ResolverKey_L_R.
     Global Hint Resolve ℐ : core.
@@ -755,11 +791,12 @@ Module impls.
         Notation.double_colon := eq;
       }.
       
-      Global Instance ℐ :
+      #[refine] Global Instance ℐ :
         core.cmp.PartialEq.Trait Self
           (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
         core.cmp.PartialEq.eq := eq;
       }.
+      Admitted.
     End Impl_core_cmp_PartialEq_for_ink_storage_traits_impls_ResolverKey_L_R.
     Global Hint Resolve ℐ : core.
   End Impl_core_cmp_PartialEq_for_ink_storage_traits_impls_ResolverKey_L_R.
@@ -774,8 +811,9 @@ Module impls.
       
       Definition Self : Set := ink_storage_traits.impls.ResolverKey L R.
       
-      Global Instance ℐ : core.marker.StructuralEq.Trait Self := {
+      #[refine] Global Instance ℐ : core.marker.StructuralEq.Trait Self := {
       }.
+      Admitted.
     End
       Impl_core_marker_StructuralEq_for_ink_storage_traits_impls_ResolverKey_L_R.
     Global Hint Resolve ℐ : core.
@@ -798,8 +836,9 @@ Module impls.
         Notation.double_colon := assert_receiver_is_total_eq;
       }.
       
-      Global Instance ℐ : core.cmp.Eq.Trait Self := {
+      #[refine] Global Instance ℐ : core.cmp.Eq.Trait Self := {
       }.
+      Admitted.
     End Impl_core_cmp_Eq_for_ink_storage_traits_impls_ResolverKey_L_R.
     Global Hint Resolve ℐ : core.
   End Impl_core_cmp_Eq_for_ink_storage_traits_impls_ResolverKey_L_R.
@@ -830,11 +869,12 @@ Module impls.
         Notation.double_colon := partial_cmp;
       }.
       
-      Global Instance ℐ :
+      #[refine] Global Instance ℐ :
         core.cmp.PartialOrd.Trait Self
           (Rhs := core.cmp.PartialOrd.Default.Rhs Self) := {
         core.cmp.PartialOrd.partial_cmp := partial_cmp;
       }.
+      Admitted.
     End Impl_core_cmp_PartialOrd_for_ink_storage_traits_impls_ResolverKey_L_R.
     Global Hint Resolve ℐ : core.
   End Impl_core_cmp_PartialOrd_for_ink_storage_traits_impls_ResolverKey_L_R.
@@ -856,9 +896,10 @@ Module impls.
         Notation.double_colon := fmt;
       }.
       
-      Global Instance ℐ : core.fmt.Debug.Trait Self := {
+      #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
         core.fmt.Debug.fmt := fmt;
       }.
+      Admitted.
     End Impl_core_fmt_Debug_for_ink_storage_traits_impls_ResolverKey_L_R.
     Global Hint Resolve ℐ : core.
   End Impl_core_fmt_Debug_for_ink_storage_traits_impls_ResolverKey_L_R.
@@ -876,21 +917,25 @@ Module impls.
         {ℋ_3 : ink_storage_traits.impls.KeyType.Trait R}.
       Definition Self : Set := ink_storage_traits.impls.ResolverKey L R.
       
-      Definition
-        KEY
-         := if (L::["IS_AUTO_KEY"] : bool) then
-          Pure R::["KEY"]
-        else
-          Pure L::["KEY"].
+      Definition KEY : ink_primitives.key.Key :=
+        M.run
+          (let* α0 :=
+            use (ink_storage_traits.impls.KeyType.IS_AUTO_KEY (Self := L)) in
+          if (α0 : bool) then
+            Pure (ink_storage_traits.storage.StorageKey.KEY (Self := R))
+          else
+            Pure (ink_storage_traits.storage.StorageKey.KEY (Self := L))).
       
       Global Instance AssociatedFunction_KEY :
         Notation.DoubleColon Self "KEY" := {
         Notation.double_colon := KEY;
       }.
       
-      Global Instance ℐ : ink_storage_traits.storage.StorageKey.Trait Self := {
+      #[refine] Global Instance ℐ :
+        ink_storage_traits.storage.StorageKey.Trait Self := {
         ink_storage_traits.storage.StorageKey.KEY := KEY;
       }.
+      Admitted.
     End Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ResolverKey_L_R. *)
     Global Hint Resolve ℐ : core.
   End Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ResolverKey_L_R. *)
@@ -915,14 +960,15 @@ Module impls.
         {ℋ_3 : ink_storage_traits.storage.StorageKey.Trait ParentKey}.
       Definition Self : Set := T.
       
-      Definition Type : Set :=
+      Definition Type_ : Set :=
         ink_storage_traits.storage.StorableHint.Type_ (Self := T).
       
-      Global Instance ℐ :
+      #[refine] Global Instance ℐ :
         ink_storage_traits.storage.AutoStorableHint.Trait Self
           (Key := ink_storage_traits.impls.ManualKey ParentKey) := {
-        ink_storage_traits.storage.AutoStorableHint.Type := Type;
+        ink_storage_traits.storage.AutoStorableHint.Type_ := Type_;
       }.
+      Admitted.
     End Impl_ink_storage_traits_storage_AutoStorableHint_for_T. *)
     Global Hint Resolve ℐ : core.
   End Impl_ink_storage_traits_storage_AutoStorableHint_for_T. *)
@@ -938,9 +984,10 @@ Module impls.
         {ℋ_1 : parity_scale_codec.codec.Encode.Trait P}.
       Definition Self : Set := P.
       
-      Global Instance ℐ :
+      #[refine] Global Instance ℐ :
         ink_storage_traits.storage.private.Sealed.Trait Self := {
       }.
+      Admitted.
     End Impl_ink_storage_traits_storage_private_Sealed_for_P.
     Global Hint Resolve ℐ : core.
   End Impl_ink_storage_traits_storage_private_Sealed_for_P.
@@ -956,8 +1003,10 @@ Module impls.
         {ℋ_1 : parity_scale_codec.codec.Encode.Trait P}.
       Definition Self : Set := P.
       
-      Global Instance ℐ : ink_storage_traits.storage.Packed.Trait Self := {
+      #[refine] Global Instance ℐ :
+        ink_storage_traits.storage.Packed.Trait Self := {
       }.
+      Admitted.
     End Impl_ink_storage_traits_storage_Packed_for_P. *)
     Global Hint Resolve ℐ : core.
   End Impl_ink_storage_traits_storage_Packed_for_P. *)
@@ -971,16 +1020,18 @@ Module impls.
       Context {ℋ_0 : ink_storage_traits.storage.Packed.Trait P}.
       Definition Self : Set := P.
       
-      Definition KEY  := M.alloc 0.
+      Definition KEY : ink_primitives.key.Key := M.run (M.alloc 0).
       
       Global Instance AssociatedFunction_KEY :
         Notation.DoubleColon Self "KEY" := {
         Notation.double_colon := KEY;
       }.
       
-      Global Instance ℐ : ink_storage_traits.storage.StorageKey.Trait Self := {
+      #[refine] Global Instance ℐ :
+        ink_storage_traits.storage.StorageKey.Trait Self := {
         ink_storage_traits.storage.StorageKey.KEY := KEY;
       }.
+      Admitted.
     End Impl_ink_storage_traits_storage_StorageKey_for_P. *)
     Global Hint Resolve ℐ : core.
   End Impl_ink_storage_traits_storage_StorageKey_for_P. *)
@@ -996,15 +1047,16 @@ Module impls.
         {ℋ_1 : ink_storage_traits.storage.StorageKey.Trait Key}.
       Definition Self : Set := P.
       
-      Definition Type : Set := P.
+      Definition Type_ : Set := P.
       
       Definition PreferredKey : Set := ink_storage_traits.impls.AutoKey.
       
-      Global Instance ℐ :
+      #[refine] Global Instance ℐ :
         ink_storage_traits.storage.StorableHint.Trait Self (Key := Key) := {
-        ink_storage_traits.storage.StorableHint.Type := Type;
+        ink_storage_traits.storage.StorableHint.Type_ := Type_;
         ink_storage_traits.storage.StorableHint.PreferredKey := PreferredKey;
       }.
+      Admitted.
     End Impl_ink_storage_traits_storage_StorableHint_for_P. *)
     Global Hint Resolve ℐ : core.
   End Impl_ink_storage_traits_storage_StorableHint_for_P. *)
@@ -1034,10 +1086,11 @@ Module Impl_scale_info_TypeInfo_for_ink_storage_traits_impls_AutoKey.
       Notation.double_colon := type_info;
     }.
     
-    Global Instance ℐ : scale_info.TypeInfo.Trait Self := {
+    #[refine] Global Instance ℐ : scale_info.TypeInfo.Trait Self := {
       scale_info.TypeInfo.Identity := Identity;
       scale_info.TypeInfo.type_info := type_info;
     }.
+    Admitted.
   End Impl_scale_info_TypeInfo_for_ink_storage_traits_impls_AutoKey.
   Global Hint Resolve ℐ : core.
 End Impl_scale_info_TypeInfo_for_ink_storage_traits_impls_AutoKey.
@@ -1055,9 +1108,10 @@ Module Impl_core_default_Default_for_ink_storage_traits_impls_AutoKey.
       Notation.double_colon := default;
     }.
     
-    Global Instance ℐ : core.default.Default.Trait Self := {
+    #[refine] Global Instance ℐ : core.default.Default.Trait Self := {
       core.default.Default.default := default;
     }.
+    Admitted.
   End Impl_core_default_Default_for_ink_storage_traits_impls_AutoKey.
   Global Hint Resolve ℐ : core.
 End Impl_core_default_Default_for_ink_storage_traits_impls_AutoKey.
@@ -1068,8 +1122,9 @@ Module Impl_core_marker_Copy_for_ink_storage_traits_impls_AutoKey.
     
     Definition Self : Set := ink_storage_traits.impls.AutoKey.
     
-    Global Instance ℐ : core.marker.Copy.Trait Self := {
+    #[refine] Global Instance ℐ : core.marker.Copy.Trait Self := {
     }.
+    Admitted.
   End Impl_core_marker_Copy_for_ink_storage_traits_impls_AutoKey.
   Global Hint Resolve ℐ : core.
 End Impl_core_marker_Copy_for_ink_storage_traits_impls_AutoKey.
@@ -1087,9 +1142,10 @@ Module Impl_core_clone_Clone_for_ink_storage_traits_impls_AutoKey.
       Notation.double_colon := clone;
     }.
     
-    Global Instance ℐ : core.clone.Clone.Trait Self := {
+    #[refine] Global Instance ℐ : core.clone.Clone.Trait Self := {
       core.clone.Clone.clone := clone;
     }.
+    Admitted.
   End Impl_core_clone_Clone_for_ink_storage_traits_impls_AutoKey.
   Global Hint Resolve ℐ : core.
 End Impl_core_clone_Clone_for_ink_storage_traits_impls_AutoKey.
@@ -1102,8 +1158,10 @@ Module
     
     Definition Self : Set := ink_storage_traits.impls.AutoKey.
     
-    Global Instance ℐ : core.marker.StructuralPartialEq.Trait Self := {
+    #[refine] Global Instance ℐ :
+      core.marker.StructuralPartialEq.Trait Self := {
     }.
+    Admitted.
   End Impl_core_marker_StructuralPartialEq_for_ink_storage_traits_impls_AutoKey.
   Global Hint Resolve ℐ : core.
 End Impl_core_marker_StructuralPartialEq_for_ink_storage_traits_impls_AutoKey.
@@ -1121,11 +1179,12 @@ Module Impl_core_cmp_PartialEq_for_ink_storage_traits_impls_AutoKey.
       Notation.double_colon := eq;
     }.
     
-    Global Instance ℐ :
+    #[refine] Global Instance ℐ :
       core.cmp.PartialEq.Trait Self
         (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
       core.cmp.PartialEq.eq := eq;
     }.
+    Admitted.
   End Impl_core_cmp_PartialEq_for_ink_storage_traits_impls_AutoKey.
   Global Hint Resolve ℐ : core.
 End Impl_core_cmp_PartialEq_for_ink_storage_traits_impls_AutoKey.
@@ -1136,8 +1195,9 @@ Module Impl_core_marker_StructuralEq_for_ink_storage_traits_impls_AutoKey.
     
     Definition Self : Set := ink_storage_traits.impls.AutoKey.
     
-    Global Instance ℐ : core.marker.StructuralEq.Trait Self := {
+    #[refine] Global Instance ℐ : core.marker.StructuralEq.Trait Self := {
     }.
+    Admitted.
   End Impl_core_marker_StructuralEq_for_ink_storage_traits_impls_AutoKey.
   Global Hint Resolve ℐ : core.
 End Impl_core_marker_StructuralEq_for_ink_storage_traits_impls_AutoKey.
@@ -1155,8 +1215,9 @@ Module Impl_core_cmp_Eq_for_ink_storage_traits_impls_AutoKey.
       Notation.double_colon := assert_receiver_is_total_eq;
     }.
     
-    Global Instance ℐ : core.cmp.Eq.Trait Self := {
+    #[refine] Global Instance ℐ : core.cmp.Eq.Trait Self := {
     }.
+    Admitted.
   End Impl_core_cmp_Eq_for_ink_storage_traits_impls_AutoKey.
   Global Hint Resolve ℐ : core.
 End Impl_core_cmp_Eq_for_ink_storage_traits_impls_AutoKey.
@@ -1177,11 +1238,12 @@ Module Impl_core_cmp_PartialOrd_for_ink_storage_traits_impls_AutoKey.
       Notation.double_colon := partial_cmp;
     }.
     
-    Global Instance ℐ :
+    #[refine] Global Instance ℐ :
       core.cmp.PartialOrd.Trait Self
         (Rhs := core.cmp.PartialOrd.Default.Rhs Self) := {
       core.cmp.PartialOrd.partial_cmp := partial_cmp;
     }.
+    Admitted.
   End Impl_core_cmp_PartialOrd_for_ink_storage_traits_impls_AutoKey.
   Global Hint Resolve ℐ : core.
 End Impl_core_cmp_PartialOrd_for_ink_storage_traits_impls_AutoKey.
@@ -1192,16 +1254,18 @@ End Impl_core_cmp_PartialOrd_for_ink_storage_traits_impls_AutoKey.
     
     Definition Self : Set := ink_storage_traits.impls.AutoKey.
     
-    Definition KEY  := M.alloc 0.
+    Definition KEY : ink_primitives.key.Key := M.run (M.alloc 0).
     
     Global Instance AssociatedFunction_KEY :
       Notation.DoubleColon Self "KEY" := {
       Notation.double_colon := KEY;
     }.
     
-    Global Instance ℐ : ink_storage_traits.storage.StorageKey.Trait Self := {
+    #[refine] Global Instance ℐ :
+      ink_storage_traits.storage.StorageKey.Trait Self := {
       ink_storage_traits.storage.StorageKey.KEY := KEY;
     }.
+    Admitted.
   End Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_AutoKey. *)
   Global Hint Resolve ℐ : core.
 End Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_AutoKey. *)
@@ -1220,9 +1284,10 @@ Module Impl_core_fmt_Debug_for_ink_storage_traits_impls_AutoKey.
       Notation.double_colon := fmt;
     }.
     
-    Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
+    Admitted.
   End Impl_core_fmt_Debug_for_ink_storage_traits_impls_AutoKey.
   Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_ink_storage_traits_impls_AutoKey.
@@ -1239,9 +1304,10 @@ Module ManualKey.
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_0 : Notation.Dot "0" := {
+    #[refine] Global Instance Get_0 : Notation.Dot "0" := {
       Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
+    Admitted.
   End ManualKey.
 End ManualKey.
 Definition ManualKey `{ℋ : State.Trait} (ParentKey : Set) : Set :=
@@ -1271,10 +1337,11 @@ Module
       Notation.double_colon := type_info;
     }.
     
-    Global Instance ℐ : scale_info.TypeInfo.Trait Self := {
+    #[refine] Global Instance ℐ : scale_info.TypeInfo.Trait Self := {
       scale_info.TypeInfo.Identity := Identity;
       scale_info.TypeInfo.type_info := type_info;
     }.
+    Admitted.
   End Impl_scale_info_TypeInfo_for_ink_storage_traits_impls_ManualKey_ParentKey.
   Global Hint Resolve ℐ : core.
 End Impl_scale_info_TypeInfo_for_ink_storage_traits_impls_ManualKey_ParentKey.
@@ -1299,9 +1366,10 @@ Module
       Notation.double_colon := default;
     }.
     
-    Global Instance ℐ : core.default.Default.Trait Self := {
+    #[refine] Global Instance ℐ : core.default.Default.Trait Self := {
       core.default.Default.default := default;
     }.
+    Admitted.
   End
     Impl_core_default_Default_for_ink_storage_traits_impls_ManualKey_ParentKey.
   Global Hint Resolve ℐ : core.
@@ -1319,8 +1387,9 @@ Module Impl_core_marker_Copy_for_ink_storage_traits_impls_ManualKey_ParentKey.
       {ℋ_1 : ink_storage_traits.storage.StorageKey.Trait ParentKey}.
     Definition Self : Set := ink_storage_traits.impls.ManualKey ParentKey.
     
-    Global Instance ℐ : core.marker.Copy.Trait Self := {
+    #[refine] Global Instance ℐ : core.marker.Copy.Trait Self := {
     }.
+    Admitted.
   End Impl_core_marker_Copy_for_ink_storage_traits_impls_ManualKey_ParentKey.
   Global Hint Resolve ℐ : core.
 End Impl_core_marker_Copy_for_ink_storage_traits_impls_ManualKey_ParentKey.
@@ -1345,9 +1414,10 @@ Module Impl_core_clone_Clone_for_ink_storage_traits_impls_ManualKey_ParentKey.
       Notation.double_colon := clone;
     }.
     
-    Global Instance ℐ : core.clone.Clone.Trait Self := {
+    #[refine] Global Instance ℐ : core.clone.Clone.Trait Self := {
       core.clone.Clone.clone := clone;
     }.
+    Admitted.
   End Impl_core_clone_Clone_for_ink_storage_traits_impls_ManualKey_ParentKey.
   Global Hint Resolve ℐ : core.
 End Impl_core_clone_Clone_for_ink_storage_traits_impls_ManualKey_ParentKey.
@@ -1363,8 +1433,9 @@ Module
     Context {ℋ_0 : ink_storage_traits.storage.StorageKey.Trait ParentKey}.
     Definition Self : Set := ink_storage_traits.impls.ManualKey ParentKey.
     
-    Global Instance ℐ : core.marker.StructuralEq.Trait Self := {
+    #[refine] Global Instance ℐ : core.marker.StructuralEq.Trait Self := {
     }.
+    Admitted.
   End
     Impl_core_marker_StructuralEq_for_ink_storage_traits_impls_ManualKey_ParentKey.
   Global Hint Resolve ℐ : core.
@@ -1389,8 +1460,9 @@ Module Impl_core_cmp_Eq_for_ink_storage_traits_impls_ManualKey_ParentKey.
       Notation.double_colon := assert_receiver_is_total_eq;
     }.
     
-    Global Instance ℐ : core.cmp.Eq.Trait Self := {
+    #[refine] Global Instance ℐ : core.cmp.Eq.Trait Self := {
     }.
+    Admitted.
   End Impl_core_cmp_Eq_for_ink_storage_traits_impls_ManualKey_ParentKey.
   Global Hint Resolve ℐ : core.
 End Impl_core_cmp_Eq_for_ink_storage_traits_impls_ManualKey_ParentKey.
@@ -1406,8 +1478,10 @@ Module
     Context {ℋ_0 : ink_storage_traits.storage.StorageKey.Trait ParentKey}.
     Definition Self : Set := ink_storage_traits.impls.ManualKey ParentKey.
     
-    Global Instance ℐ : core.marker.StructuralPartialEq.Trait Self := {
+    #[refine] Global Instance ℐ :
+      core.marker.StructuralPartialEq.Trait Self := {
     }.
+    Admitted.
   End
     Impl_core_marker_StructuralPartialEq_for_ink_storage_traits_impls_ManualKey_ParentKey.
   Global Hint Resolve ℐ : core.
@@ -1437,11 +1511,12 @@ Module Impl_core_cmp_PartialEq_for_ink_storage_traits_impls_ManualKey_ParentKey.
       Notation.double_colon := eq;
     }.
     
-    Global Instance ℐ :
+    #[refine] Global Instance ℐ :
       core.cmp.PartialEq.Trait Self
         (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
       core.cmp.PartialEq.eq := eq;
     }.
+    Admitted.
   End Impl_core_cmp_PartialEq_for_ink_storage_traits_impls_ManualKey_ParentKey.
   Global Hint Resolve ℐ : core.
 End Impl_core_cmp_PartialEq_for_ink_storage_traits_impls_ManualKey_ParentKey.
@@ -1471,11 +1546,12 @@ Module
       Notation.double_colon := partial_cmp;
     }.
     
-    Global Instance ℐ :
+    #[refine] Global Instance ℐ :
       core.cmp.PartialOrd.Trait Self
         (Rhs := core.cmp.PartialOrd.Default.Rhs Self) := {
       core.cmp.PartialOrd.partial_cmp := partial_cmp;
     }.
+    Admitted.
   End Impl_core_cmp_PartialOrd_for_ink_storage_traits_impls_ManualKey_ParentKey.
   Global Hint Resolve ℐ : core.
 End Impl_core_cmp_PartialOrd_for_ink_storage_traits_impls_ManualKey_ParentKey.
@@ -1489,20 +1565,22 @@ End Impl_core_cmp_PartialOrd_for_ink_storage_traits_impls_ManualKey_ParentKey.
     Context {ℋ_0 : ink_storage_traits.storage.StorageKey.Trait ParentKey}.
     Definition Self : Set := ink_storage_traits.impls.ManualKey ParentKey.
     
-    Definition
-      KEY
-       := ink_primitives.key.KeyComposer::["concat"]
-        ink_storage_traits.impls.KEY
-        ParentKey::["KEY"].
+    Definition KEY : ink_primitives.key.Key :=
+      M.run
+        (ink_primitives.key.KeyComposer::["concat"]
+          ink_storage_traits.impls.KEY
+          (ink_storage_traits.storage.StorageKey.KEY (Self := ParentKey))).
     
     Global Instance AssociatedFunction_KEY :
       Notation.DoubleColon Self "KEY" := {
       Notation.double_colon := KEY;
     }.
     
-    Global Instance ℐ : ink_storage_traits.storage.StorageKey.Trait Self := {
+    #[refine] Global Instance ℐ :
+      ink_storage_traits.storage.StorageKey.Trait Self := {
       ink_storage_traits.storage.StorageKey.KEY := KEY;
     }.
+    Admitted.
   End Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ManualKey_ParentKey. *)
   Global Hint Resolve ℐ : core.
 End Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ManualKey_ParentKey. *)
@@ -1524,9 +1602,10 @@ Module Impl_core_fmt_Debug_for_ink_storage_traits_impls_ManualKey_ParentKey.
       Notation.double_colon := fmt;
     }.
     
-    Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
+    Admitted.
   End Impl_core_fmt_Debug_for_ink_storage_traits_impls_ManualKey_ParentKey.
   Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_ink_storage_traits_impls_ManualKey_ParentKey.
@@ -1543,9 +1622,10 @@ Module ResolverKey.
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_0 : Notation.Dot "0" := {
+    #[refine] Global Instance Get_0 : Notation.Dot "0" := {
       Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
+    Admitted.
   End ResolverKey.
 End ResolverKey.
 Definition ResolverKey `{ℋ : State.Trait} (L R : Set) : Set :=
@@ -1572,10 +1652,11 @@ Module Impl_scale_info_TypeInfo_for_ink_storage_traits_impls_ResolverKey_L_R.
       Notation.double_colon := type_info;
     }.
     
-    Global Instance ℐ : scale_info.TypeInfo.Trait Self := {
+    #[refine] Global Instance ℐ : scale_info.TypeInfo.Trait Self := {
       scale_info.TypeInfo.Identity := Identity;
       scale_info.TypeInfo.type_info := type_info;
     }.
+    Admitted.
   End Impl_scale_info_TypeInfo_for_ink_storage_traits_impls_ResolverKey_L_R.
   Global Hint Resolve ℐ : core.
 End Impl_scale_info_TypeInfo_for_ink_storage_traits_impls_ResolverKey_L_R.
@@ -1599,9 +1680,10 @@ Module Impl_core_default_Default_for_ink_storage_traits_impls_ResolverKey_L_R.
       Notation.double_colon := default;
     }.
     
-    Global Instance ℐ : core.default.Default.Trait Self := {
+    #[refine] Global Instance ℐ : core.default.Default.Trait Self := {
       core.default.Default.default := default;
     }.
+    Admitted.
   End Impl_core_default_Default_for_ink_storage_traits_impls_ResolverKey_L_R.
   Global Hint Resolve ℐ : core.
 End Impl_core_default_Default_for_ink_storage_traits_impls_ResolverKey_L_R.
@@ -1615,8 +1697,9 @@ Module Impl_core_marker_Copy_for_ink_storage_traits_impls_ResolverKey_L_R.
     Context {ℋ_0 : core.marker.Copy.Trait L} {ℋ_1 : core.marker.Copy.Trait R}.
     Definition Self : Set := ink_storage_traits.impls.ResolverKey L R.
     
-    Global Instance ℐ : core.marker.Copy.Trait Self := {
+    #[refine] Global Instance ℐ : core.marker.Copy.Trait Self := {
     }.
+    Admitted.
   End Impl_core_marker_Copy_for_ink_storage_traits_impls_ResolverKey_L_R.
   Global Hint Resolve ℐ : core.
 End Impl_core_marker_Copy_for_ink_storage_traits_impls_ResolverKey_L_R.
@@ -1638,9 +1721,10 @@ Module Impl_core_clone_Clone_for_ink_storage_traits_impls_ResolverKey_L_R.
       Notation.double_colon := clone;
     }.
     
-    Global Instance ℐ : core.clone.Clone.Trait Self := {
+    #[refine] Global Instance ℐ : core.clone.Clone.Trait Self := {
       core.clone.Clone.clone := clone;
     }.
+    Admitted.
   End Impl_core_clone_Clone_for_ink_storage_traits_impls_ResolverKey_L_R.
   Global Hint Resolve ℐ : core.
 End Impl_core_clone_Clone_for_ink_storage_traits_impls_ResolverKey_L_R.
@@ -1655,8 +1739,10 @@ Module
     
     Definition Self : Set := ink_storage_traits.impls.ResolverKey L R.
     
-    Global Instance ℐ : core.marker.StructuralPartialEq.Trait Self := {
+    #[refine] Global Instance ℐ :
+      core.marker.StructuralPartialEq.Trait Self := {
     }.
+    Admitted.
   End
     Impl_core_marker_StructuralPartialEq_for_ink_storage_traits_impls_ResolverKey_L_R.
   Global Hint Resolve ℐ : core.
@@ -1685,11 +1771,12 @@ Module Impl_core_cmp_PartialEq_for_ink_storage_traits_impls_ResolverKey_L_R.
       Notation.double_colon := eq;
     }.
     
-    Global Instance ℐ :
+    #[refine] Global Instance ℐ :
       core.cmp.PartialEq.Trait Self
         (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
       core.cmp.PartialEq.eq := eq;
     }.
+    Admitted.
   End Impl_core_cmp_PartialEq_for_ink_storage_traits_impls_ResolverKey_L_R.
   Global Hint Resolve ℐ : core.
 End Impl_core_cmp_PartialEq_for_ink_storage_traits_impls_ResolverKey_L_R.
@@ -1704,8 +1791,9 @@ Module
     
     Definition Self : Set := ink_storage_traits.impls.ResolverKey L R.
     
-    Global Instance ℐ : core.marker.StructuralEq.Trait Self := {
+    #[refine] Global Instance ℐ : core.marker.StructuralEq.Trait Self := {
     }.
+    Admitted.
   End
     Impl_core_marker_StructuralEq_for_ink_storage_traits_impls_ResolverKey_L_R.
   Global Hint Resolve ℐ : core.
@@ -1727,8 +1815,9 @@ Module Impl_core_cmp_Eq_for_ink_storage_traits_impls_ResolverKey_L_R.
       Notation.double_colon := assert_receiver_is_total_eq;
     }.
     
-    Global Instance ℐ : core.cmp.Eq.Trait Self := {
+    #[refine] Global Instance ℐ : core.cmp.Eq.Trait Self := {
     }.
+    Admitted.
   End Impl_core_cmp_Eq_for_ink_storage_traits_impls_ResolverKey_L_R.
   Global Hint Resolve ℐ : core.
 End Impl_core_cmp_Eq_for_ink_storage_traits_impls_ResolverKey_L_R.
@@ -1756,11 +1845,12 @@ Module Impl_core_cmp_PartialOrd_for_ink_storage_traits_impls_ResolverKey_L_R.
       Notation.double_colon := partial_cmp;
     }.
     
-    Global Instance ℐ :
+    #[refine] Global Instance ℐ :
       core.cmp.PartialOrd.Trait Self
         (Rhs := core.cmp.PartialOrd.Default.Rhs Self) := {
       core.cmp.PartialOrd.partial_cmp := partial_cmp;
     }.
+    Admitted.
   End Impl_core_cmp_PartialOrd_for_ink_storage_traits_impls_ResolverKey_L_R.
   Global Hint Resolve ℐ : core.
 End Impl_core_cmp_PartialOrd_for_ink_storage_traits_impls_ResolverKey_L_R.
@@ -1782,9 +1872,10 @@ Module Impl_core_fmt_Debug_for_ink_storage_traits_impls_ResolverKey_L_R.
       Notation.double_colon := fmt;
     }.
     
-    Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
+    Admitted.
   End Impl_core_fmt_Debug_for_ink_storage_traits_impls_ResolverKey_L_R.
   Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_ink_storage_traits_impls_ResolverKey_L_R.
@@ -1802,21 +1893,25 @@ End Impl_core_fmt_Debug_for_ink_storage_traits_impls_ResolverKey_L_R.
       {ℋ_3 : ink_storage_traits.impls.KeyType.Trait R}.
     Definition Self : Set := ink_storage_traits.impls.ResolverKey L R.
     
-    Definition
-      KEY
-       := if (L::["IS_AUTO_KEY"] : bool) then
-        Pure R::["KEY"]
-      else
-        Pure L::["KEY"].
+    Definition KEY : ink_primitives.key.Key :=
+      M.run
+        (let* α0 :=
+          use (ink_storage_traits.impls.KeyType.IS_AUTO_KEY (Self := L)) in
+        if (α0 : bool) then
+          Pure (ink_storage_traits.storage.StorageKey.KEY (Self := R))
+        else
+          Pure (ink_storage_traits.storage.StorageKey.KEY (Self := L))).
     
     Global Instance AssociatedFunction_KEY :
       Notation.DoubleColon Self "KEY" := {
       Notation.double_colon := KEY;
     }.
     
-    Global Instance ℐ : ink_storage_traits.storage.StorageKey.Trait Self := {
+    #[refine] Global Instance ℐ :
+      ink_storage_traits.storage.StorageKey.Trait Self := {
       ink_storage_traits.storage.StorageKey.KEY := KEY;
     }.
+    Admitted.
   End Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ResolverKey_L_R. *)
   Global Hint Resolve ℐ : core.
 End Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ResolverKey_L_R. *)
@@ -1840,14 +1935,15 @@ End Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_Reso
       {ℋ_3 : ink_storage_traits.storage.StorageKey.Trait ParentKey}.
     Definition Self : Set := T.
     
-    Definition Type : Set :=
+    Definition Type_ : Set :=
       ink_storage_traits.storage.StorableHint.Type_ (Self := T).
     
-    Global Instance ℐ :
+    #[refine] Global Instance ℐ :
       ink_storage_traits.storage.AutoStorableHint.Trait Self
         (Key := ink_storage_traits.impls.ManualKey ParentKey) := {
-      ink_storage_traits.storage.AutoStorableHint.Type := Type;
+      ink_storage_traits.storage.AutoStorableHint.Type_ := Type_;
     }.
+    Admitted.
   End Impl_ink_storage_traits_storage_AutoStorableHint_for_T. *)
   Global Hint Resolve ℐ : core.
 End Impl_ink_storage_traits_storage_AutoStorableHint_for_T. *)
@@ -1863,9 +1959,10 @@ Module Impl_ink_storage_traits_storage_private_Sealed_for_P.
       {ℋ_1 : parity_scale_codec.codec.Encode.Trait P}.
     Definition Self : Set := P.
     
-    Global Instance ℐ :
+    #[refine] Global Instance ℐ :
       ink_storage_traits.storage.private.Sealed.Trait Self := {
     }.
+    Admitted.
   End Impl_ink_storage_traits_storage_private_Sealed_for_P.
   Global Hint Resolve ℐ : core.
 End Impl_ink_storage_traits_storage_private_Sealed_for_P.
@@ -1881,8 +1978,10 @@ End Impl_ink_storage_traits_storage_private_Sealed_for_P.
       {ℋ_1 : parity_scale_codec.codec.Encode.Trait P}.
     Definition Self : Set := P.
     
-    Global Instance ℐ : ink_storage_traits.storage.Packed.Trait Self := {
+    #[refine] Global Instance ℐ :
+      ink_storage_traits.storage.Packed.Trait Self := {
     }.
+    Admitted.
   End Impl_ink_storage_traits_storage_Packed_for_P. *)
   Global Hint Resolve ℐ : core.
 End Impl_ink_storage_traits_storage_Packed_for_P. *)
@@ -1896,16 +1995,18 @@ End Impl_ink_storage_traits_storage_Packed_for_P. *)
     Context {ℋ_0 : ink_storage_traits.storage.Packed.Trait P}.
     Definition Self : Set := P.
     
-    Definition KEY  := M.alloc 0.
+    Definition KEY : ink_primitives.key.Key := M.run (M.alloc 0).
     
     Global Instance AssociatedFunction_KEY :
       Notation.DoubleColon Self "KEY" := {
       Notation.double_colon := KEY;
     }.
     
-    Global Instance ℐ : ink_storage_traits.storage.StorageKey.Trait Self := {
+    #[refine] Global Instance ℐ :
+      ink_storage_traits.storage.StorageKey.Trait Self := {
       ink_storage_traits.storage.StorageKey.KEY := KEY;
     }.
+    Admitted.
   End Impl_ink_storage_traits_storage_StorageKey_for_P. *)
   Global Hint Resolve ℐ : core.
 End Impl_ink_storage_traits_storage_StorageKey_for_P. *)
@@ -1921,15 +2022,16 @@ End Impl_ink_storage_traits_storage_StorageKey_for_P. *)
       {ℋ_1 : ink_storage_traits.storage.StorageKey.Trait Key}.
     Definition Self : Set := P.
     
-    Definition Type : Set := P.
+    Definition Type_ : Set := P.
     
     Definition PreferredKey : Set := ink_storage_traits.impls.AutoKey.
     
-    Global Instance ℐ :
+    #[refine] Global Instance ℐ :
       ink_storage_traits.storage.StorableHint.Trait Self (Key := Key) := {
-      ink_storage_traits.storage.StorableHint.Type := Type;
+      ink_storage_traits.storage.StorableHint.Type_ := Type_;
       ink_storage_traits.storage.StorableHint.PreferredKey := PreferredKey;
     }.
+    Admitted.
   End Impl_ink_storage_traits_storage_StorableHint_for_P. *)
   Global Hint Resolve ℐ : core.
 End Impl_ink_storage_traits_storage_StorableHint_for_P. *)
@@ -1939,7 +2041,7 @@ Module Storable.
     Context `{ℋ : State.Trait}.
     
     Class Trait (Self : Set) : Type := {
-      ℒ_0 :: core.marker.Sized.Trait Self;
+      (* _ :: core.marker.Sized.Trait Self; *)
       encode
         {T : Set}
         {ℋ_0 : parity_scale_codec.codec.Output.Trait T}
@@ -1989,7 +2091,8 @@ End Storable.
       Notation.double_colon := decode (I := I);
     }.
     
-    Global Instance ℐ : ink_storage_traits.storage.Storable.Trait Self := {
+    #[refine] Global Instance ℐ :
+      ink_storage_traits.storage.Storable.Trait Self := {
       ink_storage_traits.storage.Storable.encode
         {T : Set}
         {ℋ_0 : parity_scale_codec.codec.Output.Trait T}
@@ -2000,6 +2103,7 @@ End Storable.
         {ℋ_0 : parity_scale_codec.codec.Input.Trait I} :=
         decode (I := I);
     }.
+    Admitted.
   End Impl_ink_storage_traits_storage_Storable_for_P. *)
   Global Hint Resolve ℐ : core.
 End Impl_ink_storage_traits_storage_Storable_for_P. *)
@@ -2064,14 +2168,16 @@ Module StorableHint.
       ℒ_2 :: ink_storage_traits.storage.StorageKey.Trait PreferredKey;
     }.
     
-    Global Instance Method_Type_ `(Trait) :
+    #[refine] Global Instance Method_Type_ `(Trait) :
       Notation.DoubleColonType Self "Type_" := {
       Notation.double_colon_type := Type_;
     }.
-    Global Instance Method_PreferredKey `(Trait) :
+    Admitted.
+    #[refine] Global Instance Method_PreferredKey `(Trait) :
       Notation.DoubleColonType Self "PreferredKey" := {
       Notation.double_colon_type := PreferredKey;
     }.
+    Admitted.
   End StorableHint.
 End StorableHint.
 
@@ -2085,10 +2191,11 @@ Module AutoStorableHint.
       ℒ_1 :: ink_storage_traits.storage.Storable.Trait Type_;
     }.
     
-    Global Instance Method_Type_ `(Trait) :
+    #[refine] Global Instance Method_Type_ `(Trait) :
       Notation.DoubleColonType Self "Type_" := {
       Notation.double_colon_type := Type_;
     }.
+    Admitted.
   End AutoStorableHint.
 End AutoStorableHint.
 
@@ -2126,10 +2233,11 @@ Module layout.
           Notation.double_colon := layout;
         }.
         
-        Global Instance ℐ :
+        #[refine] Global Instance ℐ :
           ink_storage_traits.layout.StorageLayout.Trait Self := {
           ink_storage_traits.layout.StorageLayout.layout := layout;
         }.
+        Admitted.
       End
         Impl_ink_storage_traits_layout_StorageLayout_for_ink_primitives_types_AccountId.
       Global Hint Resolve ℐ : core.
@@ -2155,10 +2263,11 @@ Module layout.
           Notation.double_colon := layout;
         }.
         
-        Global Instance ℐ :
+        #[refine] Global Instance ℐ :
           ink_storage_traits.layout.StorageLayout.Trait Self := {
           ink_storage_traits.layout.StorageLayout.layout := layout;
         }.
+        Admitted.
       End
         Impl_ink_storage_traits_layout_StorageLayout_for_ink_primitives_types_Hash.
       Global Hint Resolve ℐ : core.
@@ -2183,10 +2292,11 @@ Module layout.
           Notation.double_colon := layout;
         }.
         
-        Global Instance ℐ :
+        #[refine] Global Instance ℐ :
           ink_storage_traits.layout.StorageLayout.Trait Self := {
           ink_storage_traits.layout.StorageLayout.layout := layout;
         }.
+        Admitted.
       End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_string_String.
       Global Hint Resolve ℐ : core.
     End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_string_String.
@@ -2208,10 +2318,11 @@ Module layout.
           Notation.double_colon := layout;
         }.
         
-        Global Instance ℐ :
+        #[refine] Global Instance ℐ :
           ink_storage_traits.layout.StorageLayout.Trait Self := {
           ink_storage_traits.layout.StorageLayout.layout := layout;
         }.
+        Admitted.
       End Impl_ink_storage_traits_layout_StorageLayout_for_bool.
       Global Hint Resolve ℐ : core.
     End Impl_ink_storage_traits_layout_StorageLayout_for_bool.
@@ -2233,10 +2344,11 @@ Module layout.
           Notation.double_colon := layout;
         }.
         
-        Global Instance ℐ :
+        #[refine] Global Instance ℐ :
           ink_storage_traits.layout.StorageLayout.Trait Self := {
           ink_storage_traits.layout.StorageLayout.layout := layout;
         }.
+        Admitted.
       End Impl_ink_storage_traits_layout_StorageLayout_for_char.
       Global Hint Resolve ℐ : core.
     End Impl_ink_storage_traits_layout_StorageLayout_for_char.
@@ -2258,10 +2370,11 @@ Module layout.
           Notation.double_colon := layout;
         }.
         
-        Global Instance ℐ :
+        #[refine] Global Instance ℐ :
           ink_storage_traits.layout.StorageLayout.Trait Self := {
           ink_storage_traits.layout.StorageLayout.layout := layout;
         }.
+        Admitted.
       End Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_.
       Global Hint Resolve ℐ : core.
     End Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_.
@@ -2283,10 +2396,11 @@ Module layout.
           Notation.double_colon := layout;
         }.
         
-        Global Instance ℐ :
+        #[refine] Global Instance ℐ :
           ink_storage_traits.layout.StorageLayout.Trait Self := {
           ink_storage_traits.layout.StorageLayout.layout := layout;
         }.
+        Admitted.
       End Impl_ink_storage_traits_layout_StorageLayout_for_u8.
       Global Hint Resolve ℐ : core.
     End Impl_ink_storage_traits_layout_StorageLayout_for_u8.
@@ -2308,10 +2422,11 @@ Module layout.
           Notation.double_colon := layout;
         }.
         
-        Global Instance ℐ :
+        #[refine] Global Instance ℐ :
           ink_storage_traits.layout.StorageLayout.Trait Self := {
           ink_storage_traits.layout.StorageLayout.layout := layout;
         }.
+        Admitted.
       End Impl_ink_storage_traits_layout_StorageLayout_for_u16.
       Global Hint Resolve ℐ : core.
     End Impl_ink_storage_traits_layout_StorageLayout_for_u16.
@@ -2333,10 +2448,11 @@ Module layout.
           Notation.double_colon := layout;
         }.
         
-        Global Instance ℐ :
+        #[refine] Global Instance ℐ :
           ink_storage_traits.layout.StorageLayout.Trait Self := {
           ink_storage_traits.layout.StorageLayout.layout := layout;
         }.
+        Admitted.
       End Impl_ink_storage_traits_layout_StorageLayout_for_u32.
       Global Hint Resolve ℐ : core.
     End Impl_ink_storage_traits_layout_StorageLayout_for_u32.
@@ -2358,10 +2474,11 @@ Module layout.
           Notation.double_colon := layout;
         }.
         
-        Global Instance ℐ :
+        #[refine] Global Instance ℐ :
           ink_storage_traits.layout.StorageLayout.Trait Self := {
           ink_storage_traits.layout.StorageLayout.layout := layout;
         }.
+        Admitted.
       End Impl_ink_storage_traits_layout_StorageLayout_for_u64.
       Global Hint Resolve ℐ : core.
     End Impl_ink_storage_traits_layout_StorageLayout_for_u64.
@@ -2383,10 +2500,11 @@ Module layout.
           Notation.double_colon := layout;
         }.
         
-        Global Instance ℐ :
+        #[refine] Global Instance ℐ :
           ink_storage_traits.layout.StorageLayout.Trait Self := {
           ink_storage_traits.layout.StorageLayout.layout := layout;
         }.
+        Admitted.
       End Impl_ink_storage_traits_layout_StorageLayout_for_u128.
       Global Hint Resolve ℐ : core.
     End Impl_ink_storage_traits_layout_StorageLayout_for_u128.
@@ -2408,10 +2526,11 @@ Module layout.
           Notation.double_colon := layout;
         }.
         
-        Global Instance ℐ :
+        #[refine] Global Instance ℐ :
           ink_storage_traits.layout.StorageLayout.Trait Self := {
           ink_storage_traits.layout.StorageLayout.layout := layout;
         }.
+        Admitted.
       End Impl_ink_storage_traits_layout_StorageLayout_for_i8.
       Global Hint Resolve ℐ : core.
     End Impl_ink_storage_traits_layout_StorageLayout_for_i8.
@@ -2433,10 +2552,11 @@ Module layout.
           Notation.double_colon := layout;
         }.
         
-        Global Instance ℐ :
+        #[refine] Global Instance ℐ :
           ink_storage_traits.layout.StorageLayout.Trait Self := {
           ink_storage_traits.layout.StorageLayout.layout := layout;
         }.
+        Admitted.
       End Impl_ink_storage_traits_layout_StorageLayout_for_i16.
       Global Hint Resolve ℐ : core.
     End Impl_ink_storage_traits_layout_StorageLayout_for_i16.
@@ -2458,10 +2578,11 @@ Module layout.
           Notation.double_colon := layout;
         }.
         
-        Global Instance ℐ :
+        #[refine] Global Instance ℐ :
           ink_storage_traits.layout.StorageLayout.Trait Self := {
           ink_storage_traits.layout.StorageLayout.layout := layout;
         }.
+        Admitted.
       End Impl_ink_storage_traits_layout_StorageLayout_for_i32.
       Global Hint Resolve ℐ : core.
     End Impl_ink_storage_traits_layout_StorageLayout_for_i32.
@@ -2483,10 +2604,11 @@ Module layout.
           Notation.double_colon := layout;
         }.
         
-        Global Instance ℐ :
+        #[refine] Global Instance ℐ :
           ink_storage_traits.layout.StorageLayout.Trait Self := {
           ink_storage_traits.layout.StorageLayout.layout := layout;
         }.
+        Admitted.
       End Impl_ink_storage_traits_layout_StorageLayout_for_i64.
       Global Hint Resolve ℐ : core.
     End Impl_ink_storage_traits_layout_StorageLayout_for_i64.
@@ -2508,10 +2630,11 @@ Module layout.
           Notation.double_colon := layout;
         }.
         
-        Global Instance ℐ :
+        #[refine] Global Instance ℐ :
           ink_storage_traits.layout.StorageLayout.Trait Self := {
           ink_storage_traits.layout.StorageLayout.layout := layout;
         }.
+        Admitted.
       End Impl_ink_storage_traits_layout_StorageLayout_for_i128.
       Global Hint Resolve ℐ : core.
     End Impl_ink_storage_traits_layout_StorageLayout_for_i128.
@@ -2538,10 +2661,11 @@ Module layout.
           Notation.double_colon := layout;
         }.
         
-        Global Instance ℐ :
+        #[refine] Global Instance ℐ :
           ink_storage_traits.layout.StorageLayout.Trait Self := {
           ink_storage_traits.layout.StorageLayout.layout := layout;
         }.
+        Admitted.
       End Impl_ink_storage_traits_layout_StorageLayout_for_Array_T.
       Global Hint Resolve ℐ : core.
     End Impl_ink_storage_traits_layout_StorageLayout_for_Array_T.
@@ -2568,10 +2692,11 @@ Module layout.
           Notation.double_colon := layout;
         }.
         
-        Global Instance ℐ :
+        #[refine] Global Instance ℐ :
           ink_storage_traits.layout.StorageLayout.Trait Self := {
           ink_storage_traits.layout.StorageLayout.layout := layout;
         }.
+        Admitted.
       End
         Impl_ink_storage_traits_layout_StorageLayout_for_alloc_boxed_Box_T_alloc_boxed_Box_Default_A.
       Global Hint Resolve ℐ : core.
@@ -2600,10 +2725,11 @@ Module layout.
           Notation.double_colon := layout;
         }.
         
-        Global Instance ℐ :
+        #[refine] Global Instance ℐ :
           ink_storage_traits.layout.StorageLayout.Trait Self := {
           ink_storage_traits.layout.StorageLayout.layout := layout;
         }.
+        Admitted.
       End Impl_ink_storage_traits_layout_StorageLayout_for_core_option_Option_T.
       Global Hint Resolve ℐ : core.
     End Impl_ink_storage_traits_layout_StorageLayout_for_core_option_Option_T.
@@ -2632,10 +2758,11 @@ Module layout.
           Notation.double_colon := layout;
         }.
         
-        Global Instance ℐ :
+        #[refine] Global Instance ℐ :
           ink_storage_traits.layout.StorageLayout.Trait Self := {
           ink_storage_traits.layout.StorageLayout.layout := layout;
         }.
+        Admitted.
       End
         Impl_ink_storage_traits_layout_StorageLayout_for_core_result_Result_T_E.
       Global Hint Resolve ℐ : core.
@@ -2665,10 +2792,11 @@ Module layout.
           Notation.double_colon := layout;
         }.
         
-        Global Instance ℐ :
+        #[refine] Global Instance ℐ :
           ink_storage_traits.layout.StorageLayout.Trait Self := {
           ink_storage_traits.layout.StorageLayout.layout := layout;
         }.
+        Admitted.
       End
         Impl_ink_storage_traits_layout_StorageLayout_for_alloc_vec_Vec_T_alloc_vec_Vec_Default_A.
       Global Hint Resolve ℐ : core.
@@ -2703,10 +2831,11 @@ Module layout.
           Notation.double_colon := layout;
         }.
         
-        Global Instance ℐ :
+        #[refine] Global Instance ℐ :
           ink_storage_traits.layout.StorageLayout.Trait Self := {
           ink_storage_traits.layout.StorageLayout.layout := layout;
         }.
+        Admitted.
       End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map_BTreeMap_K_V_alloc_collections_btree_map_BTreeMap_Default_A. *)
       Global Hint Resolve ℐ : core.
     End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map_BTreeMap_K_V_alloc_collections_btree_map_BTreeMap_Default_A. *)
@@ -2736,10 +2865,11 @@ Module layout.
           Notation.double_colon := layout;
         }.
         
-        Global Instance ℐ :
+        #[refine] Global Instance ℐ :
           ink_storage_traits.layout.StorageLayout.Trait Self := {
           ink_storage_traits.layout.StorageLayout.layout := layout;
         }.
+        Admitted.
       End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set_BTreeSet_T_alloc_collections_btree_set_BTreeSet_Default_A. *)
       Global Hint Resolve ℐ : core.
     End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set_BTreeSet_T_alloc_collections_btree_set_BTreeSet_Default_A. *)
@@ -2769,10 +2899,11 @@ Module layout.
           Notation.double_colon := layout;
         }.
         
-        Global Instance ℐ :
+        #[refine] Global Instance ℐ :
           ink_storage_traits.layout.StorageLayout.Trait Self := {
           ink_storage_traits.layout.StorageLayout.layout := layout;
         }.
+        Admitted.
       End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_vec_deque_VecDeque_T_alloc_collections_vec_deque_VecDeque_Default_A. *)
       Global Hint Resolve ℐ : core.
     End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_vec_deque_VecDeque_T_alloc_collections_vec_deque_VecDeque_Default_A. *)
@@ -2800,10 +2931,11 @@ Module Wrap_impls_1.
           Notation.double_colon := layout;
         }.
         
-        Global Instance ℐ :
+        #[refine] Global Instance ℐ :
           ink_storage_traits.layout.StorageLayout.Trait Self := {
           ink_storage_traits.layout.StorageLayout.layout := layout;
         }.
+        Admitted.
       End
         Impl_ink_storage_traits_layout_StorageLayout_for_ink_primitives_types_AccountId.
       Global Hint Resolve ℐ : core.
@@ -2829,10 +2961,11 @@ Module Wrap_impls_1.
           Notation.double_colon := layout;
         }.
         
-        Global Instance ℐ :
+        #[refine] Global Instance ℐ :
           ink_storage_traits.layout.StorageLayout.Trait Self := {
           ink_storage_traits.layout.StorageLayout.layout := layout;
         }.
+        Admitted.
       End
         Impl_ink_storage_traits_layout_StorageLayout_for_ink_primitives_types_Hash.
       Global Hint Resolve ℐ : core.
@@ -2857,10 +2990,11 @@ Module Wrap_impls_1.
           Notation.double_colon := layout;
         }.
         
-        Global Instance ℐ :
+        #[refine] Global Instance ℐ :
           ink_storage_traits.layout.StorageLayout.Trait Self := {
           ink_storage_traits.layout.StorageLayout.layout := layout;
         }.
+        Admitted.
       End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_string_String.
       Global Hint Resolve ℐ : core.
     End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_string_String.
@@ -2882,10 +3016,11 @@ Module Wrap_impls_1.
           Notation.double_colon := layout;
         }.
         
-        Global Instance ℐ :
+        #[refine] Global Instance ℐ :
           ink_storage_traits.layout.StorageLayout.Trait Self := {
           ink_storage_traits.layout.StorageLayout.layout := layout;
         }.
+        Admitted.
       End Impl_ink_storage_traits_layout_StorageLayout_for_bool.
       Global Hint Resolve ℐ : core.
     End Impl_ink_storage_traits_layout_StorageLayout_for_bool.
@@ -2907,10 +3042,11 @@ Module Wrap_impls_1.
           Notation.double_colon := layout;
         }.
         
-        Global Instance ℐ :
+        #[refine] Global Instance ℐ :
           ink_storage_traits.layout.StorageLayout.Trait Self := {
           ink_storage_traits.layout.StorageLayout.layout := layout;
         }.
+        Admitted.
       End Impl_ink_storage_traits_layout_StorageLayout_for_char.
       Global Hint Resolve ℐ : core.
     End Impl_ink_storage_traits_layout_StorageLayout_for_char.
@@ -2932,10 +3068,11 @@ Module Wrap_impls_1.
           Notation.double_colon := layout;
         }.
         
-        Global Instance ℐ :
+        #[refine] Global Instance ℐ :
           ink_storage_traits.layout.StorageLayout.Trait Self := {
           ink_storage_traits.layout.StorageLayout.layout := layout;
         }.
+        Admitted.
       End Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_.
       Global Hint Resolve ℐ : core.
     End Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_.
@@ -2957,10 +3094,11 @@ Module Wrap_impls_1.
           Notation.double_colon := layout;
         }.
         
-        Global Instance ℐ :
+        #[refine] Global Instance ℐ :
           ink_storage_traits.layout.StorageLayout.Trait Self := {
           ink_storage_traits.layout.StorageLayout.layout := layout;
         }.
+        Admitted.
       End Impl_ink_storage_traits_layout_StorageLayout_for_u8.
       Global Hint Resolve ℐ : core.
     End Impl_ink_storage_traits_layout_StorageLayout_for_u8.
@@ -2982,10 +3120,11 @@ Module Wrap_impls_1.
           Notation.double_colon := layout;
         }.
         
-        Global Instance ℐ :
+        #[refine] Global Instance ℐ :
           ink_storage_traits.layout.StorageLayout.Trait Self := {
           ink_storage_traits.layout.StorageLayout.layout := layout;
         }.
+        Admitted.
       End Impl_ink_storage_traits_layout_StorageLayout_for_u16.
       Global Hint Resolve ℐ : core.
     End Impl_ink_storage_traits_layout_StorageLayout_for_u16.
@@ -3007,10 +3146,11 @@ Module Wrap_impls_1.
           Notation.double_colon := layout;
         }.
         
-        Global Instance ℐ :
+        #[refine] Global Instance ℐ :
           ink_storage_traits.layout.StorageLayout.Trait Self := {
           ink_storage_traits.layout.StorageLayout.layout := layout;
         }.
+        Admitted.
       End Impl_ink_storage_traits_layout_StorageLayout_for_u32.
       Global Hint Resolve ℐ : core.
     End Impl_ink_storage_traits_layout_StorageLayout_for_u32.
@@ -3032,10 +3172,11 @@ Module Wrap_impls_1.
           Notation.double_colon := layout;
         }.
         
-        Global Instance ℐ :
+        #[refine] Global Instance ℐ :
           ink_storage_traits.layout.StorageLayout.Trait Self := {
           ink_storage_traits.layout.StorageLayout.layout := layout;
         }.
+        Admitted.
       End Impl_ink_storage_traits_layout_StorageLayout_for_u64.
       Global Hint Resolve ℐ : core.
     End Impl_ink_storage_traits_layout_StorageLayout_for_u64.
@@ -3057,10 +3198,11 @@ Module Wrap_impls_1.
           Notation.double_colon := layout;
         }.
         
-        Global Instance ℐ :
+        #[refine] Global Instance ℐ :
           ink_storage_traits.layout.StorageLayout.Trait Self := {
           ink_storage_traits.layout.StorageLayout.layout := layout;
         }.
+        Admitted.
       End Impl_ink_storage_traits_layout_StorageLayout_for_u128.
       Global Hint Resolve ℐ : core.
     End Impl_ink_storage_traits_layout_StorageLayout_for_u128.
@@ -3082,10 +3224,11 @@ Module Wrap_impls_1.
           Notation.double_colon := layout;
         }.
         
-        Global Instance ℐ :
+        #[refine] Global Instance ℐ :
           ink_storage_traits.layout.StorageLayout.Trait Self := {
           ink_storage_traits.layout.StorageLayout.layout := layout;
         }.
+        Admitted.
       End Impl_ink_storage_traits_layout_StorageLayout_for_i8.
       Global Hint Resolve ℐ : core.
     End Impl_ink_storage_traits_layout_StorageLayout_for_i8.
@@ -3107,10 +3250,11 @@ Module Wrap_impls_1.
           Notation.double_colon := layout;
         }.
         
-        Global Instance ℐ :
+        #[refine] Global Instance ℐ :
           ink_storage_traits.layout.StorageLayout.Trait Self := {
           ink_storage_traits.layout.StorageLayout.layout := layout;
         }.
+        Admitted.
       End Impl_ink_storage_traits_layout_StorageLayout_for_i16.
       Global Hint Resolve ℐ : core.
     End Impl_ink_storage_traits_layout_StorageLayout_for_i16.
@@ -3132,10 +3276,11 @@ Module Wrap_impls_1.
           Notation.double_colon := layout;
         }.
         
-        Global Instance ℐ :
+        #[refine] Global Instance ℐ :
           ink_storage_traits.layout.StorageLayout.Trait Self := {
           ink_storage_traits.layout.StorageLayout.layout := layout;
         }.
+        Admitted.
       End Impl_ink_storage_traits_layout_StorageLayout_for_i32.
       Global Hint Resolve ℐ : core.
     End Impl_ink_storage_traits_layout_StorageLayout_for_i32.
@@ -3157,10 +3302,11 @@ Module Wrap_impls_1.
           Notation.double_colon := layout;
         }.
         
-        Global Instance ℐ :
+        #[refine] Global Instance ℐ :
           ink_storage_traits.layout.StorageLayout.Trait Self := {
           ink_storage_traits.layout.StorageLayout.layout := layout;
         }.
+        Admitted.
       End Impl_ink_storage_traits_layout_StorageLayout_for_i64.
       Global Hint Resolve ℐ : core.
     End Impl_ink_storage_traits_layout_StorageLayout_for_i64.
@@ -3182,10 +3328,11 @@ Module Wrap_impls_1.
           Notation.double_colon := layout;
         }.
         
-        Global Instance ℐ :
+        #[refine] Global Instance ℐ :
           ink_storage_traits.layout.StorageLayout.Trait Self := {
           ink_storage_traits.layout.StorageLayout.layout := layout;
         }.
+        Admitted.
       End Impl_ink_storage_traits_layout_StorageLayout_for_i128.
       Global Hint Resolve ℐ : core.
     End Impl_ink_storage_traits_layout_StorageLayout_for_i128.
@@ -3212,10 +3359,11 @@ Module Wrap_impls_1.
           Notation.double_colon := layout;
         }.
         
-        Global Instance ℐ :
+        #[refine] Global Instance ℐ :
           ink_storage_traits.layout.StorageLayout.Trait Self := {
           ink_storage_traits.layout.StorageLayout.layout := layout;
         }.
+        Admitted.
       End Impl_ink_storage_traits_layout_StorageLayout_for_Array_T.
       Global Hint Resolve ℐ : core.
     End Impl_ink_storage_traits_layout_StorageLayout_for_Array_T.
@@ -3242,10 +3390,11 @@ Module Wrap_impls_1.
           Notation.double_colon := layout;
         }.
         
-        Global Instance ℐ :
+        #[refine] Global Instance ℐ :
           ink_storage_traits.layout.StorageLayout.Trait Self := {
           ink_storage_traits.layout.StorageLayout.layout := layout;
         }.
+        Admitted.
       End
         Impl_ink_storage_traits_layout_StorageLayout_for_alloc_boxed_Box_T_alloc_boxed_Box_Default_A.
       Global Hint Resolve ℐ : core.
@@ -3274,10 +3423,11 @@ Module Wrap_impls_1.
           Notation.double_colon := layout;
         }.
         
-        Global Instance ℐ :
+        #[refine] Global Instance ℐ :
           ink_storage_traits.layout.StorageLayout.Trait Self := {
           ink_storage_traits.layout.StorageLayout.layout := layout;
         }.
+        Admitted.
       End Impl_ink_storage_traits_layout_StorageLayout_for_core_option_Option_T.
       Global Hint Resolve ℐ : core.
     End Impl_ink_storage_traits_layout_StorageLayout_for_core_option_Option_T.
@@ -3306,10 +3456,11 @@ Module Wrap_impls_1.
           Notation.double_colon := layout;
         }.
         
-        Global Instance ℐ :
+        #[refine] Global Instance ℐ :
           ink_storage_traits.layout.StorageLayout.Trait Self := {
           ink_storage_traits.layout.StorageLayout.layout := layout;
         }.
+        Admitted.
       End
         Impl_ink_storage_traits_layout_StorageLayout_for_core_result_Result_T_E.
       Global Hint Resolve ℐ : core.
@@ -3339,10 +3490,11 @@ Module Wrap_impls_1.
           Notation.double_colon := layout;
         }.
         
-        Global Instance ℐ :
+        #[refine] Global Instance ℐ :
           ink_storage_traits.layout.StorageLayout.Trait Self := {
           ink_storage_traits.layout.StorageLayout.layout := layout;
         }.
+        Admitted.
       End
         Impl_ink_storage_traits_layout_StorageLayout_for_alloc_vec_Vec_T_alloc_vec_Vec_Default_A.
       Global Hint Resolve ℐ : core.
@@ -3377,10 +3529,11 @@ Module Wrap_impls_1.
           Notation.double_colon := layout;
         }.
         
-        Global Instance ℐ :
+        #[refine] Global Instance ℐ :
           ink_storage_traits.layout.StorageLayout.Trait Self := {
           ink_storage_traits.layout.StorageLayout.layout := layout;
         }.
+        Admitted.
       End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map_BTreeMap_K_V_alloc_collections_btree_map_BTreeMap_Default_A. *)
       Global Hint Resolve ℐ : core.
     End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map_BTreeMap_K_V_alloc_collections_btree_map_BTreeMap_Default_A. *)
@@ -3410,10 +3563,11 @@ Module Wrap_impls_1.
           Notation.double_colon := layout;
         }.
         
-        Global Instance ℐ :
+        #[refine] Global Instance ℐ :
           ink_storage_traits.layout.StorageLayout.Trait Self := {
           ink_storage_traits.layout.StorageLayout.layout := layout;
         }.
+        Admitted.
       End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set_BTreeSet_T_alloc_collections_btree_set_BTreeSet_Default_A. *)
       Global Hint Resolve ℐ : core.
     End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set_BTreeSet_T_alloc_collections_btree_set_BTreeSet_Default_A. *)
@@ -3443,10 +3597,11 @@ Module Wrap_impls_1.
           Notation.double_colon := layout;
         }.
         
-        Global Instance ℐ :
+        #[refine] Global Instance ℐ :
           ink_storage_traits.layout.StorageLayout.Trait Self := {
           ink_storage_traits.layout.StorageLayout.layout := layout;
         }.
+        Admitted.
       End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_vec_deque_VecDeque_T_alloc_collections_vec_deque_VecDeque_Default_A. *)
       Global Hint Resolve ℐ : core.
     End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_vec_deque_VecDeque_T_alloc_collections_vec_deque_VecDeque_Default_A. *)
@@ -3471,9 +3626,11 @@ Module
       Notation.double_colon := layout;
     }.
     
-    Global Instance ℐ : ink_storage_traits.layout.StorageLayout.Trait Self := {
+    #[refine] Global Instance ℐ :
+      ink_storage_traits.layout.StorageLayout.Trait Self := {
       ink_storage_traits.layout.StorageLayout.layout := layout;
     }.
+    Admitted.
   End
     Impl_ink_storage_traits_layout_StorageLayout_for_ink_primitives_types_AccountId.
   Global Hint Resolve ℐ : core.
@@ -3497,9 +3654,11 @@ Module
       Notation.double_colon := layout;
     }.
     
-    Global Instance ℐ : ink_storage_traits.layout.StorageLayout.Trait Self := {
+    #[refine] Global Instance ℐ :
+      ink_storage_traits.layout.StorageLayout.Trait Self := {
       ink_storage_traits.layout.StorageLayout.layout := layout;
     }.
+    Admitted.
   End
     Impl_ink_storage_traits_layout_StorageLayout_for_ink_primitives_types_Hash.
   Global Hint Resolve ℐ : core.
@@ -3520,9 +3679,11 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_alloc_string_String.
       Notation.double_colon := layout;
     }.
     
-    Global Instance ℐ : ink_storage_traits.layout.StorageLayout.Trait Self := {
+    #[refine] Global Instance ℐ :
+      ink_storage_traits.layout.StorageLayout.Trait Self := {
       ink_storage_traits.layout.StorageLayout.layout := layout;
     }.
+    Admitted.
   End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_string_String.
   Global Hint Resolve ℐ : core.
 End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_string_String.
@@ -3542,9 +3703,11 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_bool.
       Notation.double_colon := layout;
     }.
     
-    Global Instance ℐ : ink_storage_traits.layout.StorageLayout.Trait Self := {
+    #[refine] Global Instance ℐ :
+      ink_storage_traits.layout.StorageLayout.Trait Self := {
       ink_storage_traits.layout.StorageLayout.layout := layout;
     }.
+    Admitted.
   End Impl_ink_storage_traits_layout_StorageLayout_for_bool.
   Global Hint Resolve ℐ : core.
 End Impl_ink_storage_traits_layout_StorageLayout_for_bool.
@@ -3564,9 +3727,11 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_char.
       Notation.double_colon := layout;
     }.
     
-    Global Instance ℐ : ink_storage_traits.layout.StorageLayout.Trait Self := {
+    #[refine] Global Instance ℐ :
+      ink_storage_traits.layout.StorageLayout.Trait Self := {
       ink_storage_traits.layout.StorageLayout.layout := layout;
     }.
+    Admitted.
   End Impl_ink_storage_traits_layout_StorageLayout_for_char.
   Global Hint Resolve ℐ : core.
 End Impl_ink_storage_traits_layout_StorageLayout_for_char.
@@ -3586,9 +3751,11 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_.
       Notation.double_colon := layout;
     }.
     
-    Global Instance ℐ : ink_storage_traits.layout.StorageLayout.Trait Self := {
+    #[refine] Global Instance ℐ :
+      ink_storage_traits.layout.StorageLayout.Trait Self := {
       ink_storage_traits.layout.StorageLayout.layout := layout;
     }.
+    Admitted.
   End Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_.
   Global Hint Resolve ℐ : core.
 End Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_.
@@ -3608,9 +3775,11 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_u8.
       Notation.double_colon := layout;
     }.
     
-    Global Instance ℐ : ink_storage_traits.layout.StorageLayout.Trait Self := {
+    #[refine] Global Instance ℐ :
+      ink_storage_traits.layout.StorageLayout.Trait Self := {
       ink_storage_traits.layout.StorageLayout.layout := layout;
     }.
+    Admitted.
   End Impl_ink_storage_traits_layout_StorageLayout_for_u8.
   Global Hint Resolve ℐ : core.
 End Impl_ink_storage_traits_layout_StorageLayout_for_u8.
@@ -3630,9 +3799,11 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_u16.
       Notation.double_colon := layout;
     }.
     
-    Global Instance ℐ : ink_storage_traits.layout.StorageLayout.Trait Self := {
+    #[refine] Global Instance ℐ :
+      ink_storage_traits.layout.StorageLayout.Trait Self := {
       ink_storage_traits.layout.StorageLayout.layout := layout;
     }.
+    Admitted.
   End Impl_ink_storage_traits_layout_StorageLayout_for_u16.
   Global Hint Resolve ℐ : core.
 End Impl_ink_storage_traits_layout_StorageLayout_for_u16.
@@ -3652,9 +3823,11 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_u32.
       Notation.double_colon := layout;
     }.
     
-    Global Instance ℐ : ink_storage_traits.layout.StorageLayout.Trait Self := {
+    #[refine] Global Instance ℐ :
+      ink_storage_traits.layout.StorageLayout.Trait Self := {
       ink_storage_traits.layout.StorageLayout.layout := layout;
     }.
+    Admitted.
   End Impl_ink_storage_traits_layout_StorageLayout_for_u32.
   Global Hint Resolve ℐ : core.
 End Impl_ink_storage_traits_layout_StorageLayout_for_u32.
@@ -3674,9 +3847,11 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_u64.
       Notation.double_colon := layout;
     }.
     
-    Global Instance ℐ : ink_storage_traits.layout.StorageLayout.Trait Self := {
+    #[refine] Global Instance ℐ :
+      ink_storage_traits.layout.StorageLayout.Trait Self := {
       ink_storage_traits.layout.StorageLayout.layout := layout;
     }.
+    Admitted.
   End Impl_ink_storage_traits_layout_StorageLayout_for_u64.
   Global Hint Resolve ℐ : core.
 End Impl_ink_storage_traits_layout_StorageLayout_for_u64.
@@ -3696,9 +3871,11 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_u128.
       Notation.double_colon := layout;
     }.
     
-    Global Instance ℐ : ink_storage_traits.layout.StorageLayout.Trait Self := {
+    #[refine] Global Instance ℐ :
+      ink_storage_traits.layout.StorageLayout.Trait Self := {
       ink_storage_traits.layout.StorageLayout.layout := layout;
     }.
+    Admitted.
   End Impl_ink_storage_traits_layout_StorageLayout_for_u128.
   Global Hint Resolve ℐ : core.
 End Impl_ink_storage_traits_layout_StorageLayout_for_u128.
@@ -3718,9 +3895,11 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_i8.
       Notation.double_colon := layout;
     }.
     
-    Global Instance ℐ : ink_storage_traits.layout.StorageLayout.Trait Self := {
+    #[refine] Global Instance ℐ :
+      ink_storage_traits.layout.StorageLayout.Trait Self := {
       ink_storage_traits.layout.StorageLayout.layout := layout;
     }.
+    Admitted.
   End Impl_ink_storage_traits_layout_StorageLayout_for_i8.
   Global Hint Resolve ℐ : core.
 End Impl_ink_storage_traits_layout_StorageLayout_for_i8.
@@ -3740,9 +3919,11 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_i16.
       Notation.double_colon := layout;
     }.
     
-    Global Instance ℐ : ink_storage_traits.layout.StorageLayout.Trait Self := {
+    #[refine] Global Instance ℐ :
+      ink_storage_traits.layout.StorageLayout.Trait Self := {
       ink_storage_traits.layout.StorageLayout.layout := layout;
     }.
+    Admitted.
   End Impl_ink_storage_traits_layout_StorageLayout_for_i16.
   Global Hint Resolve ℐ : core.
 End Impl_ink_storage_traits_layout_StorageLayout_for_i16.
@@ -3762,9 +3943,11 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_i32.
       Notation.double_colon := layout;
     }.
     
-    Global Instance ℐ : ink_storage_traits.layout.StorageLayout.Trait Self := {
+    #[refine] Global Instance ℐ :
+      ink_storage_traits.layout.StorageLayout.Trait Self := {
       ink_storage_traits.layout.StorageLayout.layout := layout;
     }.
+    Admitted.
   End Impl_ink_storage_traits_layout_StorageLayout_for_i32.
   Global Hint Resolve ℐ : core.
 End Impl_ink_storage_traits_layout_StorageLayout_for_i32.
@@ -3784,9 +3967,11 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_i64.
       Notation.double_colon := layout;
     }.
     
-    Global Instance ℐ : ink_storage_traits.layout.StorageLayout.Trait Self := {
+    #[refine] Global Instance ℐ :
+      ink_storage_traits.layout.StorageLayout.Trait Self := {
       ink_storage_traits.layout.StorageLayout.layout := layout;
     }.
+    Admitted.
   End Impl_ink_storage_traits_layout_StorageLayout_for_i64.
   Global Hint Resolve ℐ : core.
 End Impl_ink_storage_traits_layout_StorageLayout_for_i64.
@@ -3806,9 +3991,11 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_i128.
       Notation.double_colon := layout;
     }.
     
-    Global Instance ℐ : ink_storage_traits.layout.StorageLayout.Trait Self := {
+    #[refine] Global Instance ℐ :
+      ink_storage_traits.layout.StorageLayout.Trait Self := {
       ink_storage_traits.layout.StorageLayout.layout := layout;
     }.
+    Admitted.
   End Impl_ink_storage_traits_layout_StorageLayout_for_i128.
   Global Hint Resolve ℐ : core.
 End Impl_ink_storage_traits_layout_StorageLayout_for_i128.
@@ -3831,9 +4018,11 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_.
       Notation.double_colon := layout;
     }.
     
-    Global Instance ℐ : ink_storage_traits.layout.StorageLayout.Trait Self := {
+    #[refine] Global Instance ℐ :
+      ink_storage_traits.layout.StorageLayout.Trait Self := {
       ink_storage_traits.layout.StorageLayout.layout := layout;
     }.
+    Admitted.
   End Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_.
   Global Hint Resolve ℐ : core.
 End Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_.
@@ -3858,9 +4047,11 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_.
       Notation.double_colon := layout;
     }.
     
-    Global Instance ℐ : ink_storage_traits.layout.StorageLayout.Trait Self := {
+    #[refine] Global Instance ℐ :
+      ink_storage_traits.layout.StorageLayout.Trait Self := {
       ink_storage_traits.layout.StorageLayout.layout := layout;
     }.
+    Admitted.
   End Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_.
   Global Hint Resolve ℐ : core.
 End Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_.
@@ -3886,9 +4077,11 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_.
       Notation.double_colon := layout;
     }.
     
-    Global Instance ℐ : ink_storage_traits.layout.StorageLayout.Trait Self := {
+    #[refine] Global Instance ℐ :
+      ink_storage_traits.layout.StorageLayout.Trait Self := {
       ink_storage_traits.layout.StorageLayout.layout := layout;
     }.
+    Admitted.
   End Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_.
   Global Hint Resolve ℐ : core.
 End Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_.
@@ -3915,9 +4108,11 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_.
       Notation.double_colon := layout;
     }.
     
-    Global Instance ℐ : ink_storage_traits.layout.StorageLayout.Trait Self := {
+    #[refine] Global Instance ℐ :
+      ink_storage_traits.layout.StorageLayout.Trait Self := {
       ink_storage_traits.layout.StorageLayout.layout := layout;
     }.
+    Admitted.
   End Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_.
   Global Hint Resolve ℐ : core.
 End Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_.
@@ -3945,9 +4140,11 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_E_.
       Notation.double_colon := layout;
     }.
     
-    Global Instance ℐ : ink_storage_traits.layout.StorageLayout.Trait Self := {
+    #[refine] Global Instance ℐ :
+      ink_storage_traits.layout.StorageLayout.Trait Self := {
       ink_storage_traits.layout.StorageLayout.layout := layout;
     }.
+    Admitted.
   End Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_E_.
   Global Hint Resolve ℐ : core.
 End Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_E_.
@@ -3976,9 +4173,11 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_E_F_.
       Notation.double_colon := layout;
     }.
     
-    Global Instance ℐ : ink_storage_traits.layout.StorageLayout.Trait Self := {
+    #[refine] Global Instance ℐ :
+      ink_storage_traits.layout.StorageLayout.Trait Self := {
       ink_storage_traits.layout.StorageLayout.layout := layout;
     }.
+    Admitted.
   End Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_E_F_.
   Global Hint Resolve ℐ : core.
 End Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_E_F_.
@@ -4008,9 +4207,11 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_E_F_G_.
       Notation.double_colon := layout;
     }.
     
-    Global Instance ℐ : ink_storage_traits.layout.StorageLayout.Trait Self := {
+    #[refine] Global Instance ℐ :
+      ink_storage_traits.layout.StorageLayout.Trait Self := {
       ink_storage_traits.layout.StorageLayout.layout := layout;
     }.
+    Admitted.
   End Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_E_F_G_.
   Global Hint Resolve ℐ : core.
 End Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_E_F_G_.
@@ -4042,9 +4243,11 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_E_F_G_H_.
       Notation.double_colon := layout;
     }.
     
-    Global Instance ℐ : ink_storage_traits.layout.StorageLayout.Trait Self := {
+    #[refine] Global Instance ℐ :
+      ink_storage_traits.layout.StorageLayout.Trait Self := {
       ink_storage_traits.layout.StorageLayout.layout := layout;
     }.
+    Admitted.
   End Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_E_F_G_H_.
   Global Hint Resolve ℐ : core.
 End Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_E_F_G_H_.
@@ -4078,9 +4281,11 @@ Module
       Notation.double_colon := layout;
     }.
     
-    Global Instance ℐ : ink_storage_traits.layout.StorageLayout.Trait Self := {
+    #[refine] Global Instance ℐ :
+      ink_storage_traits.layout.StorageLayout.Trait Self := {
       ink_storage_traits.layout.StorageLayout.layout := layout;
     }.
+    Admitted.
   End Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_E_F_G_H_I_.
   Global Hint Resolve ℐ : core.
 End Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_E_F_G_H_I_.
@@ -4116,9 +4321,11 @@ Module
       Notation.double_colon := layout;
     }.
     
-    Global Instance ℐ : ink_storage_traits.layout.StorageLayout.Trait Self := {
+    #[refine] Global Instance ℐ :
+      ink_storage_traits.layout.StorageLayout.Trait Self := {
       ink_storage_traits.layout.StorageLayout.layout := layout;
     }.
+    Admitted.
   End
     Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_E_F_G_H_I_J_.
   Global Hint Resolve ℐ : core.
@@ -4144,9 +4351,11 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_Array_T.
       Notation.double_colon := layout;
     }.
     
-    Global Instance ℐ : ink_storage_traits.layout.StorageLayout.Trait Self := {
+    #[refine] Global Instance ℐ :
+      ink_storage_traits.layout.StorageLayout.Trait Self := {
       ink_storage_traits.layout.StorageLayout.layout := layout;
     }.
+    Admitted.
   End Impl_ink_storage_traits_layout_StorageLayout_for_Array_T.
   Global Hint Resolve ℐ : core.
 End Impl_ink_storage_traits_layout_StorageLayout_for_Array_T.
@@ -4171,9 +4380,11 @@ Module
       Notation.double_colon := layout;
     }.
     
-    Global Instance ℐ : ink_storage_traits.layout.StorageLayout.Trait Self := {
+    #[refine] Global Instance ℐ :
+      ink_storage_traits.layout.StorageLayout.Trait Self := {
       ink_storage_traits.layout.StorageLayout.layout := layout;
     }.
+    Admitted.
   End
     Impl_ink_storage_traits_layout_StorageLayout_for_alloc_boxed_Box_T_alloc_boxed_Box_Default_A.
   Global Hint Resolve ℐ : core.
@@ -4198,9 +4409,11 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_core_option_Option_T.
       Notation.double_colon := layout;
     }.
     
-    Global Instance ℐ : ink_storage_traits.layout.StorageLayout.Trait Self := {
+    #[refine] Global Instance ℐ :
+      ink_storage_traits.layout.StorageLayout.Trait Self := {
       ink_storage_traits.layout.StorageLayout.layout := layout;
     }.
+    Admitted.
   End Impl_ink_storage_traits_layout_StorageLayout_for_core_option_Option_T.
   Global Hint Resolve ℐ : core.
 End Impl_ink_storage_traits_layout_StorageLayout_for_core_option_Option_T.
@@ -4226,9 +4439,11 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_core_result_Result_T_E.
       Notation.double_colon := layout;
     }.
     
-    Global Instance ℐ : ink_storage_traits.layout.StorageLayout.Trait Self := {
+    #[refine] Global Instance ℐ :
+      ink_storage_traits.layout.StorageLayout.Trait Self := {
       ink_storage_traits.layout.StorageLayout.layout := layout;
     }.
+    Admitted.
   End Impl_ink_storage_traits_layout_StorageLayout_for_core_result_Result_T_E.
   Global Hint Resolve ℐ : core.
 End Impl_ink_storage_traits_layout_StorageLayout_for_core_result_Result_T_E.
@@ -4255,9 +4470,11 @@ Module
       Notation.double_colon := layout;
     }.
     
-    Global Instance ℐ : ink_storage_traits.layout.StorageLayout.Trait Self := {
+    #[refine] Global Instance ℐ :
+      ink_storage_traits.layout.StorageLayout.Trait Self := {
       ink_storage_traits.layout.StorageLayout.layout := layout;
     }.
+    Admitted.
   End
     Impl_ink_storage_traits_layout_StorageLayout_for_alloc_vec_Vec_T_alloc_vec_Vec_Default_A.
   Global Hint Resolve ℐ : core.
@@ -4290,9 +4507,11 @@ End
       Notation.double_colon := layout;
     }.
     
-    Global Instance ℐ : ink_storage_traits.layout.StorageLayout.Trait Self := {
+    #[refine] Global Instance ℐ :
+      ink_storage_traits.layout.StorageLayout.Trait Self := {
       ink_storage_traits.layout.StorageLayout.layout := layout;
     }.
+    Admitted.
   End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map_BTreeMap_K_V_alloc_collections_btree_map_BTreeMap_Default_A. *)
   Global Hint Resolve ℐ : core.
 End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map_BTreeMap_K_V_alloc_collections_btree_map_BTreeMap_Default_A. *)
@@ -4320,9 +4539,11 @@ End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map
       Notation.double_colon := layout;
     }.
     
-    Global Instance ℐ : ink_storage_traits.layout.StorageLayout.Trait Self := {
+    #[refine] Global Instance ℐ :
+      ink_storage_traits.layout.StorageLayout.Trait Self := {
       ink_storage_traits.layout.StorageLayout.layout := layout;
     }.
+    Admitted.
   End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set_BTreeSet_T_alloc_collections_btree_set_BTreeSet_Default_A. *)
   Global Hint Resolve ℐ : core.
 End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set_BTreeSet_T_alloc_collections_btree_set_BTreeSet_Default_A. *)
@@ -4350,9 +4571,11 @@ End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set
       Notation.double_colon := layout;
     }.
     
-    Global Instance ℐ : ink_storage_traits.layout.StorageLayout.Trait Self := {
+    #[refine] Global Instance ℐ :
+      ink_storage_traits.layout.StorageLayout.Trait Self := {
       ink_storage_traits.layout.StorageLayout.layout := layout;
     }.
+    Admitted.
   End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_vec_deque_VecDeque_T_alloc_collections_vec_deque_VecDeque_Default_A. *)
   Global Hint Resolve ℐ : core.
 End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_vec_deque_VecDeque_T_alloc_collections_vec_deque_VecDeque_Default_A. *)

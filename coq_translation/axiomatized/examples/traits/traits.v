@@ -12,18 +12,22 @@ Module Sheep.
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_naked : Notation.Dot "naked" := {
+    #[refine] Global Instance Get_naked : Notation.Dot "naked" := {
       Notation.dot x := let* x := M.read x in Pure x.(naked) : M _;
     }.
-    Global Instance Get_AF_naked : Notation.DoubleColon t "naked" := {
+    Admitted.
+    #[refine] Global Instance Get_AF_naked : Notation.DoubleColon t "naked" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(naked) : M _;
     }.
-    Global Instance Get_name : Notation.Dot "name" := {
+    Admitted.
+    #[refine] Global Instance Get_name : Notation.Dot "name" := {
       Notation.dot x := let* x := M.read x in Pure x.(name) : M _;
     }.
-    Global Instance Get_AF_name : Notation.DoubleColon t "name" := {
+    Admitted.
+    #[refine] Global Instance Get_AF_name : Notation.DoubleColon t "name" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(name) : M _;
     }.
+    Admitted.
   End Sheep.
 End Sheep.
 Definition Sheep `{ℋ : State.Trait} : Set := M.val Sheep.t.
@@ -90,11 +94,12 @@ Module Impl_traits_Animal_for_traits_Sheep.
       Notation.double_colon := talk;
     }.
     
-    Global Instance ℐ : traits.Animal.Trait Self := {
+    #[refine] Global Instance ℐ : traits.Animal.Trait Self := {
       traits.Animal.new := new;
       traits.Animal.name := name;
       traits.Animal.noise := noise;
     }.
+    Admitted.
   End Impl_traits_Animal_for_traits_Sheep.
   Global Hint Resolve ℐ : core.
 End Impl_traits_Animal_for_traits_Sheep.

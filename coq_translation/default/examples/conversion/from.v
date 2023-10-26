@@ -11,12 +11,14 @@ Module Number.
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_value : Notation.Dot "value" := {
+    #[refine] Global Instance Get_value : Notation.Dot "value" := {
       Notation.dot x := let* x := M.read x in Pure x.(value) : M _;
     }.
-    Global Instance Get_AF_value : Notation.DoubleColon t "value" := {
+    Admitted.
+    #[refine] Global Instance Get_AF_value : Notation.DoubleColon t "value" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(value) : M _;
     }.
+    Admitted.
   End Number.
 End Number.
 Definition Number `{ℋ : State.Trait} : Set := M.val Number.t.
@@ -35,9 +37,10 @@ Module Impl_core_convert_From_for_from_Number.
       Notation.double_colon := from;
     }.
     
-    Global Instance ℐ : core.convert.From.Trait Self (T := i32) := {
+    #[refine] Global Instance ℐ : core.convert.From.Trait Self (T := i32) := {
       core.convert.From.from := from;
     }.
+    Admitted.
   End Impl_core_convert_From_for_from_Number.
   Global Hint Resolve ℐ : core.
 End Impl_core_convert_From_for_from_Number.
@@ -46,5 +49,5 @@ End Impl_core_convert_From_for_from_Number.
 Definition main `{ℋ : State.Trait} : M unit :=
   let* _ :=
     let* α0 := M.alloc 30 in
-    core.convert.From.from α0 in
+    (core.convert.From.from (Self := from.Number)) α0 in
   M.alloc tt.

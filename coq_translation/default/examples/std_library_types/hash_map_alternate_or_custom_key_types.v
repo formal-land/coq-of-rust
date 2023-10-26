@@ -12,18 +12,24 @@ Module Account.
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_username : Notation.Dot "username" := {
+    #[refine] Global Instance Get_username : Notation.Dot "username" := {
       Notation.dot x := let* x := M.read x in Pure x.(username) : M _;
     }.
-    Global Instance Get_AF_username : Notation.DoubleColon t "username" := {
+    Admitted.
+    #[refine] Global Instance Get_AF_username :
+      Notation.DoubleColon t "username" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(username) : M _;
     }.
-    Global Instance Get_password : Notation.Dot "password" := {
+    Admitted.
+    #[refine] Global Instance Get_password : Notation.Dot "password" := {
       Notation.dot x := let* x := M.read x in Pure x.(password) : M _;
     }.
-    Global Instance Get_AF_password : Notation.DoubleColon t "password" := {
+    Admitted.
+    #[refine] Global Instance Get_AF_password :
+      Notation.DoubleColon t "password" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(password) : M _;
     }.
+    Admitted.
   End Account.
 End Account.
 Definition Account `{ℋ : State.Trait} : Set := M.val Account.t.
@@ -36,8 +42,10 @@ Module
     
     Definition Self : Set := hash_map_alternate_or_custom_key_types.Account.
     
-    Global Instance ℐ : core.marker.StructuralPartialEq.Trait Self := {
+    #[refine] Global Instance ℐ :
+      core.marker.StructuralPartialEq.Trait Self := {
     }.
+    Admitted.
   End
     Impl_core_marker_StructuralPartialEq_for_hash_map_alternate_or_custom_key_types_Account.
   Global Hint Resolve ℐ : core.
@@ -62,25 +70,26 @@ Module
       let* α3 := deref other hash_map_alternate_or_custom_key_types.Account in
       let* α4 := α3.["username"] in
       let* α5 := borrow α4 (ref str) in
-      let* α6 := core.cmp.PartialEq.eq α2 α5 in
+      let* α6 := (core.cmp.PartialEq.eq (Self := (ref str))) α2 α5 in
       let* α7 := deref self hash_map_alternate_or_custom_key_types.Account in
       let* α8 := α7.["password"] in
       let* α9 := borrow α8 (ref str) in
       let* α10 := deref other hash_map_alternate_or_custom_key_types.Account in
       let* α11 := α10.["password"] in
       let* α12 := borrow α11 (ref str) in
-      let* α13 := core.cmp.PartialEq.eq α9 α12 in
+      let* α13 := (core.cmp.PartialEq.eq (Self := (ref str))) α9 α12 in
       and α6 α13.
     
     Global Instance AssociatedFunction_eq : Notation.DoubleColon Self "eq" := {
       Notation.double_colon := eq;
     }.
     
-    Global Instance ℐ :
+    #[refine] Global Instance ℐ :
       core.cmp.PartialEq.Trait Self
         (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
       core.cmp.PartialEq.eq := eq;
     }.
+    Admitted.
   End
     Impl_core_cmp_PartialEq_for_hash_map_alternate_or_custom_key_types_Account.
   Global Hint Resolve ℐ : core.
@@ -94,8 +103,9 @@ Module
     
     Definition Self : Set := hash_map_alternate_or_custom_key_types.Account.
     
-    Global Instance ℐ : core.marker.StructuralEq.Trait Self := {
+    #[refine] Global Instance ℐ : core.marker.StructuralEq.Trait Self := {
     }.
+    Admitted.
   End
     Impl_core_marker_StructuralEq_for_hash_map_alternate_or_custom_key_types_Account.
   Global Hint Resolve ℐ : core.
@@ -118,8 +128,9 @@ Module Impl_core_cmp_Eq_for_hash_map_alternate_or_custom_key_types_Account.
       Notation.double_colon := assert_receiver_is_total_eq;
     }.
     
-    Global Instance ℐ : core.cmp.Eq.Trait Self := {
+    #[refine] Global Instance ℐ : core.cmp.Eq.Trait Self := {
     }.
+    Admitted.
   End Impl_core_cmp_Eq_for_hash_map_alternate_or_custom_key_types_Account.
   Global Hint Resolve ℐ : core.
 End Impl_core_cmp_Eq_for_hash_map_alternate_or_custom_key_types_Account.
@@ -143,17 +154,17 @@ Module Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account.
         let* α2 := borrow α1 (ref str) in
         let* α3 := deref α2 (ref str) in
         let* α4 := borrow α3 (ref str) in
-        let* α5 := deref state _ in
-        let* α6 := borrow_mut α5 _ in
-        core.hash.Hash.hash α4 α6 in
+        let* α5 := deref state __H in
+        let* α6 := borrow_mut α5 __H in
+        (core.hash.Hash.hash (Self := (ref str))) α4 α6 in
       let* α0 := deref self hash_map_alternate_or_custom_key_types.Account in
       let* α1 := α0.["password"] in
       let* α2 := borrow α1 (ref str) in
       let* α3 := deref α2 (ref str) in
       let* α4 := borrow α3 (ref str) in
-      let* α5 := deref state _ in
-      let* α6 := borrow_mut α5 _ in
-      core.hash.Hash.hash α4 α6.
+      let* α5 := deref state __H in
+      let* α6 := borrow_mut α5 __H in
+      (core.hash.Hash.hash (Self := (ref str))) α4 α6.
     
     Global Instance AssociatedFunction_hash
         {__H : Set}
@@ -162,10 +173,11 @@ Module Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account.
       Notation.double_colon := hash (__H := __H);
     }.
     
-    Global Instance ℐ : core.hash.Hash.Trait Self := {
+    #[refine] Global Instance ℐ : core.hash.Hash.Trait Self := {
       core.hash.Hash.hash {__H : Set} {ℋ_0 : core.hash.Hasher.Trait __H} :=
         hash (__H := __H);
     }.
+    Admitted.
   End Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account.
   Global Hint Resolve ℐ : core.
 End Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account.
@@ -181,18 +193,22 @@ Module AccountInfo.
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_name : Notation.Dot "name" := {
+    #[refine] Global Instance Get_name : Notation.Dot "name" := {
       Notation.dot x := let* x := M.read x in Pure x.(name) : M _;
     }.
-    Global Instance Get_AF_name : Notation.DoubleColon t "name" := {
+    Admitted.
+    #[refine] Global Instance Get_AF_name : Notation.DoubleColon t "name" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(name) : M _;
     }.
-    Global Instance Get_email : Notation.Dot "email" := {
+    Admitted.
+    #[refine] Global Instance Get_email : Notation.Dot "email" := {
       Notation.dot x := let* x := M.read x in Pure x.(email) : M _;
     }.
-    Global Instance Get_AF_email : Notation.DoubleColon t "email" := {
+    Admitted.
+    #[refine] Global Instance Get_AF_email : Notation.DoubleColon t "email" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(email) : M _;
     }.
+    Admitted.
   End AccountInfo.
 End AccountInfo.
 Definition AccountInfo `{ℋ : State.Trait} : Set := M.val AccountInfo.t.
@@ -282,7 +298,7 @@ Definition try_logon
   let* α2 := borrow logon hash_map_alternate_or_custom_key_types.Account in
   let* α3 := deref α2 hash_map_alternate_or_custom_key_types.Account in
   let* α4 := borrow α3 hash_map_alternate_or_custom_key_types.Account in
-  let* α5 := (std.collections.hash.map.HashMap _ _ _)::["get"] α1 α4 in
+  let* α5 := (std.collections.hash.map.HashMap K V S)::["get"] α1 α4 in
   match α5 with
   | core.option.Option account_info =>
     let* _ :=
@@ -358,9 +374,9 @@ Definition try_logon
 Definition main `{ℋ : State.Trait} : M unit :=
   let* accounts :=
     (std.collections.hash.map.HashMap
-          _
-          _
-          std.collections.hash.map.RandomState)::["new"] in
+        K
+        V
+        std.collections.hash.map.RandomState)::["new"] in
   let* account :=
     let* α0 := deref (mk_str "j.everyman") str in
     let* α1 := borrow α0 str in
@@ -389,7 +405,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
           hash_map_alternate_or_custom_key_types.Account
           hash_map_alternate_or_custom_key_types.AccountInfo
           std.collections.hash.map.RandomState) in
-    (std.collections.hash.map.HashMap _ _ _)::["insert"]
+    (std.collections.hash.map.HashMap K V S)::["insert"]
       α0
       account
       account_info in

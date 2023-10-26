@@ -8,9 +8,9 @@ Definition call_me
     (f : F)
     : M unit :=
   let* _ :=
-    let* α0 := borrow f _ in
+    let* α0 := borrow f F in
     let* α1 := M.alloc tt in
-    core.ops.function.Fn.call α0 α1 in
+    (core.ops.function.Fn.call (Self := F)) α0 α1 in
   M.alloc tt.
 
 Definition function `{ℋ : State.Trait} : M unit :=

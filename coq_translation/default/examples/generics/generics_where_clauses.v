@@ -30,9 +30,9 @@ Module Impl_generics_where_clauses_PrintInOption_for_T.
           let* α2 := borrow α1 (list (ref str)) in
           let* α3 := pointer_coercion "Unsize" α2 in
           let* α4 :=
-            borrow (core.option.Option.Some self) (core.option.Option _) in
-          let* α5 := deref α4 (core.option.Option _) in
-          let* α6 := borrow α5 (core.option.Option _) in
+            borrow (core.option.Option.Some self) (core.option.Option T) in
+          let* α5 := deref α4 (core.option.Option T) in
+          let* α6 := borrow α5 (core.option.Option T) in
           let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
           let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
           let* α9 := deref α8 (list core.fmt.rt.Argument) in
@@ -48,9 +48,11 @@ Module Impl_generics_where_clauses_PrintInOption_for_T.
       Notation.double_colon := print_in_option;
     }.
     
-    Global Instance ℐ : generics_where_clauses.PrintInOption.Trait Self := {
+    #[refine] Global Instance ℐ :
+      generics_where_clauses.PrintInOption.Trait Self := {
       generics_where_clauses.PrintInOption.print_in_option := print_in_option;
     }.
+    Admitted.
   End Impl_generics_where_clauses_PrintInOption_for_T.
   Global Hint Resolve ℐ : core.
 End Impl_generics_where_clauses_PrintInOption_for_T.
@@ -64,6 +66,9 @@ Definition main `{ℋ : State.Trait} : M unit :=
     let* α3 :=
       (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] [ α0; α1; α2 ] in
     let* α4 := pointer_coercion "Unsize" α3 in
-    (Slice _)::["into_vec"] α4 in
-  let* _ := generics_where_clauses.PrintInOption.print_in_option vec in
+    (Slice T)::["into_vec"] α4 in
+  let* _ :=
+    (generics_where_clauses.PrintInOption.print_in_option
+        (Self := (alloc.vec.Vec i32 alloc.alloc.Global)))
+      vec in
   M.alloc tt.

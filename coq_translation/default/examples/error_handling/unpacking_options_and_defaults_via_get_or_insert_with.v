@@ -51,9 +51,10 @@ Module
       Notation.double_colon := fmt;
     }.
     
-    Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
+    Admitted.
   End
     Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_with_Fruit.
   Global Hint Resolve ℐ : core.
@@ -83,7 +84,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
         my_fruit
         (core.option.Option
           unpacking_options_and_defaults_via_get_or_insert_with.Fruit) in
-    (core.option.Option _)::["get_or_insert_with"] α0 get_lemon_as_fallback in
+    (core.option.Option T)::["get_or_insert_with"] α0 get_lemon_as_fallback in
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -157,7 +158,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
         my_apple
         (core.option.Option
           unpacking_options_and_defaults_via_get_or_insert_with.Fruit) in
-    (core.option.Option _)::["get_or_insert_with"] α0 get_lemon_as_fallback in
+    (core.option.Option T)::["get_or_insert_with"] α0 get_lemon_as_fallback in
   let* _ :=
     let* _ :=
       let* α0 :=

@@ -25,9 +25,10 @@ Module Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle.
       Notation.double_colon := area;
     }.
     
-    Global Instance ℐ : generics_bounds.HasArea.Trait Self := {
+    #[refine] Global Instance ℐ : generics_bounds.HasArea.Trait Self := {
       generics_bounds.HasArea.area := area;
     }.
+    Admitted.
   End Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle.
   Global Hint Resolve ℐ : core.
 End Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle.
@@ -43,18 +44,24 @@ Module Rectangle.
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_length : Notation.Dot "length" := {
+    #[refine] Global Instance Get_length : Notation.Dot "length" := {
       Notation.dot x := let* x := M.read x in Pure x.(length) : M _;
     }.
-    Global Instance Get_AF_length : Notation.DoubleColon t "length" := {
+    Admitted.
+    #[refine] Global Instance Get_AF_length :
+      Notation.DoubleColon t "length" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(length) : M _;
     }.
-    Global Instance Get_height : Notation.Dot "height" := {
+    Admitted.
+    #[refine] Global Instance Get_height : Notation.Dot "height" := {
       Notation.dot x := let* x := M.read x in Pure x.(height) : M _;
     }.
-    Global Instance Get_AF_height : Notation.DoubleColon t "height" := {
+    Admitted.
+    #[refine] Global Instance Get_AF_height :
+      Notation.DoubleColon t "height" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(height) : M _;
     }.
+    Admitted.
   End Rectangle.
 End Rectangle.
 Definition Rectangle `{ℋ : State.Trait} : Set := M.val Rectangle.t.
@@ -73,9 +80,10 @@ Module Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
       Notation.double_colon := fmt;
     }.
     
-    Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
+    Admitted.
   End Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
   Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
@@ -92,18 +100,24 @@ Module Triangle.
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_length : Notation.Dot "length" := {
+    #[refine] Global Instance Get_length : Notation.Dot "length" := {
       Notation.dot x := let* x := M.read x in Pure x.(length) : M _;
     }.
-    Global Instance Get_AF_length : Notation.DoubleColon t "length" := {
+    Admitted.
+    #[refine] Global Instance Get_AF_length :
+      Notation.DoubleColon t "length" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(length) : M _;
     }.
-    Global Instance Get_height : Notation.Dot "height" := {
+    Admitted.
+    #[refine] Global Instance Get_height : Notation.Dot "height" := {
       Notation.dot x := let* x := M.read x in Pure x.(height) : M _;
     }.
-    Global Instance Get_AF_height : Notation.DoubleColon t "height" := {
+    Admitted.
+    #[refine] Global Instance Get_AF_height :
+      Notation.DoubleColon t "height" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(height) : M _;
     }.
+    Admitted.
   End Triangle.
 End Triangle.
 Definition Triangle `{ℋ : State.Trait} : Set := M.val Triangle.t.

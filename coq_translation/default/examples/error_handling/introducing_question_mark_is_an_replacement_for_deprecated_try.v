@@ -14,7 +14,8 @@ Definition multiply
     | core.result.Result val => Pure val
     | core.result.Result err =>
       let* _ :=
-        let* α0 := core.convert.From.from err in
+        let* α0 :=
+          (core.convert.From.from (Self := core.num.error.ParseIntError)) err in
         Return (core.result.Result.Err α0) in
       let* α0 := M.alloc tt in
       never_to_any α0
@@ -27,7 +28,8 @@ Definition multiply
     | core.result.Result val => Pure val
     | core.result.Result err =>
       let* _ :=
-        let* α0 := core.convert.From.from err in
+        let* α0 :=
+          (core.convert.From.from (Self := core.num.error.ParseIntError)) err in
         Return (core.result.Result.Err α0) in
       let* α0 := M.alloc tt in
       never_to_any α0

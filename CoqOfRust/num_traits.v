@@ -106,6 +106,14 @@ Module ops.
       }.
     End CheckedNeg.
   End checked.
+
+  Module saturating.
+    Module Saturating.
+      Class Trait `{State.Trait} (Self : Set) : Set := {
+        (* TODO *)
+      }.
+    End Saturating.
+  End saturating.
 End ops.
 
 (* moved *)

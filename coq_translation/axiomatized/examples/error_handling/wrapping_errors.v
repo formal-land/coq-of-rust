@@ -25,9 +25,10 @@ Module Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
       Notation.double_colon := fmt;
     }.
     
-    Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
+    Admitted.
   End Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
   Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
@@ -46,9 +47,10 @@ Module Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
       Notation.double_colon := fmt;
     }.
     
-    Global Instance ℐ : core.fmt.Display.Trait Self := {
+    #[refine] Global Instance ℐ : core.fmt.Display.Trait Self := {
       core.fmt.Display.fmt := fmt;
     }.
+    Admitted.
   End Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
   Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
@@ -66,8 +68,9 @@ Module Impl_core_error_Error_for_wrapping_errors_DoubleError.
       Notation.double_colon := source;
     }.
     
-    Global Instance ℐ : core.error.Error.Trait Self := {
+    #[refine] Global Instance ℐ : core.error.Error.Trait Self := {
     }.
+    Admitted.
   End Impl_core_error_Error_for_wrapping_errors_DoubleError.
   Global Hint Resolve ℐ : core.
 End Impl_core_error_Error_for_wrapping_errors_DoubleError.
@@ -86,10 +89,11 @@ Module Impl_core_convert_From_for_wrapping_errors_DoubleError.
       Notation.double_colon := from;
     }.
     
-    Global Instance ℐ :
+    #[refine] Global Instance ℐ :
       core.convert.From.Trait Self (T := core.num.error.ParseIntError) := {
       core.convert.From.from := from;
     }.
+    Admitted.
   End Impl_core_convert_From_for_wrapping_errors_DoubleError.
   Global Hint Resolve ℐ : core.
 End Impl_core_convert_From_for_wrapping_errors_DoubleError.

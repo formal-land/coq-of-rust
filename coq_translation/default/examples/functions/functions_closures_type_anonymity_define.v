@@ -12,5 +12,5 @@ Definition apply
     : M unit :=
   let* _ :=
     let* α0 := M.alloc tt in
-    core.ops.function.FnOnce.call_once f α0 in
+    (core.ops.function.FnOnce.call_once (Self := F)) f α0 in
   M.alloc tt.

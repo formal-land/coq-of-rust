@@ -13,24 +13,30 @@ Module Person.
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_id : Notation.Dot "id" := {
+    #[refine] Global Instance Get_id : Notation.Dot "id" := {
       Notation.dot x := let* x := M.read x in Pure x.(id) : M _;
     }.
-    Global Instance Get_AF_id : Notation.DoubleColon t "id" := {
+    Admitted.
+    #[refine] Global Instance Get_AF_id : Notation.DoubleColon t "id" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(id) : M _;
     }.
-    Global Instance Get_name : Notation.Dot "name" := {
+    Admitted.
+    #[refine] Global Instance Get_name : Notation.Dot "name" := {
       Notation.dot x := let* x := M.read x in Pure x.(name) : M _;
     }.
-    Global Instance Get_AF_name : Notation.DoubleColon t "name" := {
+    Admitted.
+    #[refine] Global Instance Get_AF_name : Notation.DoubleColon t "name" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(name) : M _;
     }.
-    Global Instance Get_phone : Notation.Dot "phone" := {
+    Admitted.
+    #[refine] Global Instance Get_phone : Notation.Dot "phone" := {
       Notation.dot x := let* x := M.read x in Pure x.(phone) : M _;
     }.
-    Global Instance Get_AF_phone : Notation.DoubleColon t "phone" := {
+    Admitted.
+    #[refine] Global Instance Get_AF_phone : Notation.DoubleColon t "phone" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(phone) : M _;
     }.
+    Admitted.
   End Person.
 End Person.
 Definition Person `{ℋ : State.Trait} : Set := M.val Person.t.
@@ -52,10 +58,11 @@ Module Impl_core_hash_Hash_for_hash_Person.
       Notation.double_colon := hash (__H := __H);
     }.
     
-    Global Instance ℐ : core.hash.Hash.Trait Self := {
+    #[refine] Global Instance ℐ : core.hash.Hash.Trait Self := {
       core.hash.Hash.hash {__H : Set} {ℋ_0 : core.hash.Hasher.Trait __H} :=
         hash (__H := __H);
     }.
+    Admitted.
   End Impl_core_hash_Hash_for_hash_Person.
   Global Hint Resolve ℐ : core.
 End Impl_core_hash_Hash_for_hash_Person.

@@ -14,24 +14,31 @@ Module Book.
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_author : Notation.Dot "author" := {
+    #[refine] Global Instance Get_author : Notation.Dot "author" := {
       Notation.dot x := let* x := M.read x in Pure x.(author) : M _;
     }.
-    Global Instance Get_AF_author : Notation.DoubleColon t "author" := {
+    Admitted.
+    #[refine] Global Instance Get_AF_author :
+      Notation.DoubleColon t "author" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(author) : M _;
     }.
-    Global Instance Get_title : Notation.Dot "title" := {
+    Admitted.
+    #[refine] Global Instance Get_title : Notation.Dot "title" := {
       Notation.dot x := let* x := M.read x in Pure x.(title) : M _;
     }.
-    Global Instance Get_AF_title : Notation.DoubleColon t "title" := {
+    Admitted.
+    #[refine] Global Instance Get_AF_title : Notation.DoubleColon t "title" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(title) : M _;
     }.
-    Global Instance Get_year : Notation.Dot "year" := {
+    Admitted.
+    #[refine] Global Instance Get_year : Notation.Dot "year" := {
       Notation.dot x := let* x := M.read x in Pure x.(year) : M _;
     }.
-    Global Instance Get_AF_year : Notation.DoubleColon t "year" := {
+    Admitted.
+    #[refine] Global Instance Get_AF_year : Notation.DoubleColon t "year" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(year) : M _;
     }.
+    Admitted.
   End Book.
 End Book.
 Definition Book `{ℋ : State.Trait} : Set := M.val Book.t.
@@ -50,9 +57,10 @@ Module Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book.
       Notation.double_colon := clone;
     }.
     
-    Global Instance ℐ : core.clone.Clone.Trait Self := {
+    #[refine] Global Instance ℐ : core.clone.Clone.Trait Self := {
       core.clone.Clone.clone := clone;
     }.
+    Admitted.
   End Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book.
   Global Hint Resolve ℐ : core.
 End Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book.
@@ -63,8 +71,9 @@ Module Impl_core_marker_Copy_for_scoping_rules_borrowing_mutablity_Book.
     
     Definition Self : Set := scoping_rules_borrowing_mutablity.Book.
     
-    Global Instance ℐ : core.marker.Copy.Trait Self := {
+    #[refine] Global Instance ℐ : core.marker.Copy.Trait Self := {
     }.
+    Admitted.
   End Impl_core_marker_Copy_for_scoping_rules_borrowing_mutablity_Book.
   Global Hint Resolve ℐ : core.
 End Impl_core_marker_Copy_for_scoping_rules_borrowing_mutablity_Book.

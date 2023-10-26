@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition message `{ℋ : State.Trait} : ref str :=
-  run (Pure (mk_str "Hello, World!")).
+  M.run (Pure (mk_str "Hello, World!")).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=

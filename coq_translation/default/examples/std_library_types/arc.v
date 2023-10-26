@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
-  let* apple := (alloc.sync.Arc _)::["new"] (mk_str "the same apple") in
+  let* apple := (alloc.sync.Arc T)::["new"] (mk_str "the same apple") in
   let* _ :=
     let* α0 := M.alloc 0 in
     let* α1 := M.alloc 10 in
@@ -11,7 +11,10 @@ Definition main `{ℋ : State.Trait} : M unit :=
       M.alloc
         {| core.ops.range.Range.start := α0; core.ops.range.Range.end := α1;
         |} in
-    let* α3 := core.iter.traits.collect.IntoIterator.into_iter α2 in
+    let* α3 :=
+      (core.iter.traits.collect.IntoIterator.into_iter
+          (Self := (core.ops.range.Range i32)))
+        α2 in
     let* α4 :=
       match α3 with
       | iter =>
@@ -20,7 +23,10 @@ Definition main `{ℋ : State.Trait} : M unit :=
             let* α0 := borrow_mut iter (core.ops.range.Range i32) in
             let* α1 := deref α0 (core.ops.range.Range i32) in
             let* α2 := borrow_mut α1 (core.ops.range.Range i32) in
-            let* α3 := core.iter.traits.iterator.Iterator.next α2 in
+            let* α3 :=
+              (core.iter.traits.iterator.Iterator.next
+                  (Self := (core.ops.range.Range i32)))
+                α2 in
             match α3 with
             | core.option.Option  =>
               let* α0 := Break in
@@ -30,10 +36,11 @@ Definition main `{ℋ : State.Trait} : M unit :=
                 let* α0 := borrow apple (alloc.sync.Arc (ref str)) in
                 let* α1 := deref α0 (alloc.sync.Arc (ref str)) in
                 let* α2 := borrow α1 (alloc.sync.Arc (ref str)) in
-                core.clone.Clone.clone α2 in
+                (core.clone.Clone.clone (Self := (alloc.sync.Arc (ref str))))
+                  α2 in
               let* _ :=
                 std.thread.spawn
-                  let* _ :=
+                  (let* _ :=
                     let* _ :=
                       let* α0 :=
                         borrow [ mk_str ""; mk_str "
@@ -52,7 +59,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
                       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
                       std.io.stdio._print α12 in
                     M.alloc tt in
-                  M.alloc tt in
+                  M.alloc tt) in
               M.alloc tt
             end in
           M.alloc tt)

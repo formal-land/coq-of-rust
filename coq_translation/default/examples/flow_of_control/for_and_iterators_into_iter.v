@@ -12,9 +12,15 @@ Definition main `{ℋ : State.Trait} : M unit :=
       (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"]
         [ mk_str "Bob"; α1; α3 ] in
     let* α5 := pointer_coercion "Unsize" α4 in
-    (Slice _)::["into_vec"] α5 in
-  let* α0 := core.iter.traits.collect.IntoIterator.into_iter names in
-  let* α1 := core.iter.traits.collect.IntoIterator.into_iter α0 in
+    (Slice T)::["into_vec"] α5 in
+  let* α0 :=
+    (core.iter.traits.collect.IntoIterator.into_iter
+        (Self := (alloc.vec.Vec (ref str) alloc.alloc.Global)))
+      names in
+  let* α1 :=
+    (core.iter.traits.collect.IntoIterator.into_iter
+        (Self := (alloc.vec.into_iter.IntoIter (ref str) alloc.alloc.Global)))
+      α0 in
   let* α2 :=
     match α1 with
     | iter =>
@@ -32,7 +38,11 @@ Definition main `{ℋ : State.Trait} : M unit :=
             borrow_mut
               α1
               (alloc.vec.into_iter.IntoIter (ref str) alloc.alloc.Global) in
-          let* α3 := core.iter.traits.iterator.Iterator.next α2 in
+          let* α3 :=
+            (core.iter.traits.iterator.Iterator.next
+                (Self :=
+                  (alloc.vec.into_iter.IntoIter (ref str) alloc.alloc.Global)))
+              α2 in
           match α3 with
           | core.option.Option  =>
             let* α0 := Break in

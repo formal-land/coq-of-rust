@@ -35,9 +35,10 @@ Module Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop.
       Notation.double_colon := drop;
     }.
     
-    Global Instance ℐ : core.ops.drop.Drop.Trait Self := {
+    #[refine] Global Instance ℐ : core.ops.drop.Drop.Trait Self := {
       core.ops.drop.Drop.drop := drop;
     }.
+    Admitted.
   End Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop.
   Global Hint Resolve ℐ : core.
 End Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop.

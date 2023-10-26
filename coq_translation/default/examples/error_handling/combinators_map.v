@@ -40,9 +40,10 @@ Module Impl_core_fmt_Debug_for_combinators_map_Food.
       Notation.double_colon := fmt;
     }.
     
-    Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
+    Admitted.
   End Impl_core_fmt_Debug_for_combinators_map_Food.
   Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_combinators_map_Food.
@@ -57,9 +58,10 @@ Module Peeled.
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_0 : Notation.Dot "0" := {
+    #[refine] Global Instance Get_0 : Notation.Dot "0" := {
       Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
+    Admitted.
   End Peeled.
 End Peeled.
 Definition Peeled `{ℋ : State.Trait} : Set := M.val Peeled.t.
@@ -92,9 +94,10 @@ Module Impl_core_fmt_Debug_for_combinators_map_Peeled.
       Notation.double_colon := fmt;
     }.
     
-    Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
+    Admitted.
   End Impl_core_fmt_Debug_for_combinators_map_Peeled.
   Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_combinators_map_Peeled.
@@ -109,9 +112,10 @@ Module Chopped.
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_0 : Notation.Dot "0" := {
+    #[refine] Global Instance Get_0 : Notation.Dot "0" := {
       Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
+    Admitted.
   End Chopped.
 End Chopped.
 Definition Chopped `{ℋ : State.Trait} : Set := M.val Chopped.t.
@@ -144,9 +148,10 @@ Module Impl_core_fmt_Debug_for_combinators_map_Chopped.
       Notation.double_colon := fmt;
     }.
     
-    Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
+    Admitted.
   End Impl_core_fmt_Debug_for_combinators_map_Chopped.
   Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_combinators_map_Chopped.
@@ -161,9 +166,10 @@ Module Cooked.
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_0 : Notation.Dot "0" := {
+    #[refine] Global Instance Get_0 : Notation.Dot "0" := {
       Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
+    Admitted.
   End Cooked.
 End Cooked.
 Definition Cooked `{ℋ : State.Trait} : Set := M.val Cooked.t.
@@ -196,9 +202,10 @@ Module Impl_core_fmt_Debug_for_combinators_map_Cooked.
       Notation.double_colon := fmt;
     }.
     
-    Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
+    Admitted.
   End Impl_core_fmt_Debug_for_combinators_map_Cooked.
   Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_combinators_map_Cooked.
@@ -227,23 +234,23 @@ Definition cook
     `{ℋ : State.Trait}
     (chopped : core.option.Option combinators_map.Chopped)
     : M (core.option.Option combinators_map.Cooked) :=
-  (core.option.Option _)::["map"]
+  (core.option.Option T)::["map"]
     chopped
-    Pure (combinators_map.Cooked.Build_t food).
+    (Pure (combinators_map.Cooked.Build_t food)).
 
 Definition process
     `{ℋ : State.Trait}
     (food : core.option.Option combinators_map.Food)
     : M (core.option.Option combinators_map.Cooked) :=
   let* α0 :=
-    (core.option.Option _)::["map"]
+    (core.option.Option T)::["map"]
       food
-      Pure (combinators_map.Peeled.Build_t f) in
+      (Pure (combinators_map.Peeled.Build_t f)) in
   let* α1 :=
-    (core.option.Option _)::["map"]
+    (core.option.Option T)::["map"]
       α0
-      Pure (combinators_map.Chopped.Build_t f) in
-  (core.option.Option _)::["map"] α1 Pure (combinators_map.Cooked.Build_t f).
+      (Pure (combinators_map.Chopped.Build_t f)) in
+  (core.option.Option T)::["map"] α1 (Pure (combinators_map.Cooked.Build_t f)).
 
 Definition eat
     `{ℋ : State.Trait}

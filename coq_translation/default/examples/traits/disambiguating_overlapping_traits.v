@@ -34,18 +34,23 @@ Module Form.
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_username : Notation.Dot "username" := {
+    #[refine] Global Instance Get_username : Notation.Dot "username" := {
       Notation.dot x := let* x := M.read x in Pure x.(username) : M _;
     }.
-    Global Instance Get_AF_username : Notation.DoubleColon t "username" := {
+    Admitted.
+    #[refine] Global Instance Get_AF_username :
+      Notation.DoubleColon t "username" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(username) : M _;
     }.
-    Global Instance Get_age : Notation.Dot "age" := {
+    Admitted.
+    #[refine] Global Instance Get_age : Notation.Dot "age" := {
       Notation.dot x := let* x := M.read x in Pure x.(age) : M _;
     }.
-    Global Instance Get_AF_age : Notation.DoubleColon t "age" := {
+    Admitted.
+    #[refine] Global Instance Get_AF_age : Notation.DoubleColon t "age" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(age) : M _;
     }.
+    Admitted.
   End Form.
 End Form.
 Definition Form `{ℋ : State.Trait} : Set := M.val Form.t.
@@ -62,17 +67,18 @@ Module
       let* α0 := deref self disambiguating_overlapping_traits.Form in
       let* α1 := α0.["username"] in
       let* α2 := borrow α1 alloc.string.String in
-      core.clone.Clone.clone α2.
+      (core.clone.Clone.clone (Self := alloc.string.String)) α2.
     
     Global Instance AssociatedFunction_get :
       Notation.DoubleColon Self "get" := {
       Notation.double_colon := get;
     }.
     
-    Global Instance ℐ :
+    #[refine] Global Instance ℐ :
       disambiguating_overlapping_traits.UsernameWidget.Trait Self := {
       disambiguating_overlapping_traits.UsernameWidget.get := get;
     }.
+    Admitted.
   End
     Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_overlapping_traits_Form.
   Global Hint Resolve ℐ : core.
@@ -96,10 +102,11 @@ Module
       Notation.double_colon := get;
     }.
     
-    Global Instance ℐ :
+    #[refine] Global Instance ℐ :
       disambiguating_overlapping_traits.AgeWidget.Trait Self := {
       disambiguating_overlapping_traits.AgeWidget.get := get;
     }.
+    Admitted.
   End
     Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overlapping_traits_Form.
   Global Hint Resolve ℐ : core.
@@ -111,7 +118,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
   let* form :=
     let* α0 := deref (mk_str "rustacean") str in
     let* α1 := borrow α0 str in
-    let* α2 := alloc.borrow.ToOwned.to_owned α1 in
+    let* α2 := (alloc.borrow.ToOwned.to_owned (Self := str)) α1 in
     let* α3 := M.alloc 28 in
     M.alloc
       {|
@@ -122,11 +129,13 @@ Definition main `{ℋ : State.Trait} : M unit :=
     let* α0 := borrow form disambiguating_overlapping_traits.Form in
     let* α1 := deref α0 disambiguating_overlapping_traits.Form in
     let* α2 := borrow α1 disambiguating_overlapping_traits.Form in
-    disambiguating_overlapping_traits.UsernameWidget.get α2 in
+    (disambiguating_overlapping_traits.UsernameWidget.get
+        (Self := disambiguating_overlapping_traits.Form))
+      α2 in
   let* _ :=
     let* α0 := deref (mk_str "rustacean") str in
     let* α1 := borrow α0 str in
-    let* α2 := alloc.string.ToString.to_string α1 in
+    let* α2 := (alloc.string.ToString.to_string (Self := str)) α1 in
     let* α3 := borrow α2 alloc.string.String in
     let* α4 := borrow username alloc.string.String in
     match (α3, α4) with
@@ -135,7 +144,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α1 := borrow α0 alloc.string.String in
       let* α2 := deref right_val alloc.string.String in
       let* α3 := borrow α2 alloc.string.String in
-      let* α4 := core.cmp.PartialEq.eq α1 α3 in
+      let* α4 := (core.cmp.PartialEq.eq (Self := alloc.string.String)) α1 α3 in
       let* α5 := not α4 in
       let* α6 := use α5 in
       if (α6 : bool) then
@@ -163,7 +172,9 @@ Definition main `{ℋ : State.Trait} : M unit :=
     let* α0 := borrow form disambiguating_overlapping_traits.Form in
     let* α1 := deref α0 disambiguating_overlapping_traits.Form in
     let* α2 := borrow α1 disambiguating_overlapping_traits.Form in
-    disambiguating_overlapping_traits.AgeWidget.get α2 in
+    (disambiguating_overlapping_traits.AgeWidget.get
+        (Self := disambiguating_overlapping_traits.Form))
+      α2 in
   let* _ :=
     let* α0 := M.alloc 28 in
     let* α1 := borrow α0 u8 in

@@ -13,18 +13,22 @@ Module Point.
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_x : Notation.Dot "x" := {
+    #[refine] Global Instance Get_x : Notation.Dot "x" := {
       Notation.dot x' := let* x' := M.read x' in Pure x'.(x) : M _;
     }.
-    Global Instance Get_AF_x : Notation.DoubleColon t "x" := {
+    Admitted.
+    #[refine] Global Instance Get_AF_x : Notation.DoubleColon t "x" := {
       Notation.double_colon x' := let* x' := M.read x' in Pure x'.(x) : M _;
     }.
-    Global Instance Get_y : Notation.Dot "y" := {
+    Admitted.
+    #[refine] Global Instance Get_y : Notation.Dot "y" := {
       Notation.dot x := let* x := M.read x in Pure x.(y) : M _;
     }.
-    Global Instance Get_AF_y : Notation.DoubleColon t "y" := {
+    Admitted.
+    #[refine] Global Instance Get_AF_y : Notation.DoubleColon t "y" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(y) : M _;
     }.
+    Admitted.
   End Point.
 End Point.
 Definition Point `{ℋ : State.Trait} : Set := M.val Point.t.
@@ -68,9 +72,10 @@ Module Impl_core_fmt_Debug_for_box_stack_heap_Point.
       Notation.double_colon := fmt;
     }.
     
-    Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
+    Admitted.
   End Impl_core_fmt_Debug_for_box_stack_heap_Point.
   Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_box_stack_heap_Point.
@@ -91,9 +96,10 @@ Module Impl_core_clone_Clone_for_box_stack_heap_Point.
       Notation.double_colon := clone;
     }.
     
-    Global Instance ℐ : core.clone.Clone.Trait Self := {
+    #[refine] Global Instance ℐ : core.clone.Clone.Trait Self := {
       core.clone.Clone.clone := clone;
     }.
+    Admitted.
   End Impl_core_clone_Clone_for_box_stack_heap_Point.
   Global Hint Resolve ℐ : core.
 End Impl_core_clone_Clone_for_box_stack_heap_Point.
@@ -104,8 +110,9 @@ Module Impl_core_marker_Copy_for_box_stack_heap_Point.
     
     Definition Self : Set := box_stack_heap.Point.
     
-    Global Instance ℐ : core.marker.Copy.Trait Self := {
+    #[refine] Global Instance ℐ : core.marker.Copy.Trait Self := {
     }.
+    Admitted.
   End Impl_core_marker_Copy_for_box_stack_heap_Point.
   Global Hint Resolve ℐ : core.
 End Impl_core_marker_Copy_for_box_stack_heap_Point.
@@ -122,20 +129,26 @@ Module Rectangle.
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_top_left : Notation.Dot "top_left" := {
+    #[refine] Global Instance Get_top_left : Notation.Dot "top_left" := {
       Notation.dot x := let* x := M.read x in Pure x.(top_left) : M _;
     }.
-    Global Instance Get_AF_top_left : Notation.DoubleColon t "top_left" := {
+    Admitted.
+    #[refine] Global Instance Get_AF_top_left :
+      Notation.DoubleColon t "top_left" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(top_left) : M _;
     }.
-    Global Instance Get_bottom_right : Notation.Dot "bottom_right" := {
+    Admitted.
+    #[refine] Global Instance Get_bottom_right :
+      Notation.Dot "bottom_right" := {
       Notation.dot x := let* x := M.read x in Pure x.(bottom_right) : M _;
     }.
-    Global Instance Get_AF_bottom_right :
+    Admitted.
+    #[refine] Global Instance Get_AF_bottom_right :
       Notation.DoubleColon t "bottom_right" := {
       Notation.double_colon x :=
         let* x := M.read x in Pure x.(bottom_right) : M _;
     }.
+    Admitted.
   End Rectangle.
 End Rectangle.
 Definition Rectangle `{ℋ : State.Trait} : Set := M.val Rectangle.t.
@@ -152,7 +165,7 @@ Definition boxed_origin
   let* α1 := M.alloc 0 (* 0.0 *) in
   let* α2 :=
     M.alloc {| box_stack_heap.Point.x := α0; box_stack_heap.Point.y := α1; |} in
-  (alloc.boxed.Box _ alloc.alloc.Global)::["new"] α2.
+  (alloc.boxed.Box T alloc.alloc.Global)::["new"] α2.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
@@ -182,13 +195,13 @@ Definition main `{ℋ : State.Trait} : M unit :=
           box_stack_heap.Rectangle.top_left := α0;
           box_stack_heap.Rectangle.bottom_right := α3;
         |} in
-    (alloc.boxed.Box _ alloc.alloc.Global)::["new"] α4 in
+    (alloc.boxed.Box T alloc.alloc.Global)::["new"] α4 in
   let* boxed_point :=
     let* α0 := box_stack_heap.origin in
-    (alloc.boxed.Box _ alloc.alloc.Global)::["new"] α0 in
+    (alloc.boxed.Box T alloc.alloc.Global)::["new"] α0 in
   let* box_in_a_box :=
     let* α0 := box_stack_heap.boxed_origin in
-    (alloc.boxed.Box _ alloc.alloc.Global)::["new"] α0 in
+    (alloc.boxed.Box T alloc.alloc.Global)::["new"] α0 in
   let* _ :=
     let* _ :=
       let* α0 :=

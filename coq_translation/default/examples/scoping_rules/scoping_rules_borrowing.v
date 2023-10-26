@@ -54,7 +54,7 @@ Definition borrow_i32 `{ℋ : State.Trait} (borrowed_i32 : ref i32) : M unit :=
 Definition main `{ℋ : State.Trait} : M unit :=
   let* boxed_i32 :=
     let* α0 := M.alloc 5 in
-    (alloc.boxed.Box _ alloc.alloc.Global)::["new"] α0 in
+    (alloc.boxed.Box T alloc.alloc.Global)::["new"] α0 in
   let* stacked_i32 := M.alloc 6 in
   let* _ :=
     let* α0 := borrow boxed_i32 (alloc.boxed.Box i32 alloc.alloc.Global) in

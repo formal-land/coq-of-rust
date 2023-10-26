@@ -49,9 +49,10 @@ Module Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_else_Fruit.
       Notation.double_colon := fmt;
     }.
     
-    Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
+    Admitted.
   End Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_else_Fruit.
   Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_else_Fruit.
@@ -94,8 +95,8 @@ Definition main `{ℋ : State.Trait} : M unit :=
         (unpacking_options_and_defaults_via_or_else.Fruit.Lemon tt)) in
   let* first_available_fruit :=
     let* α0 :=
-      (core.option.Option _)::["or_else"] no_fruit get_kiwi_as_fallback in
-    (core.option.Option _)::["or_else"] α0 get_lemon_as_fallback in
+      (core.option.Option T)::["or_else"] no_fruit get_kiwi_as_fallback in
+    (core.option.Option T)::["or_else"] α0 get_lemon_as_fallback in
   let* _ :=
     let* _ :=
       let* α0 :=

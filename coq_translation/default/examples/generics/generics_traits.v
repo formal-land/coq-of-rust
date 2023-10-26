@@ -45,9 +45,11 @@ Module Impl_generics_traits_DoubleDrop_for_U.
       Notation.double_colon := double_drop;
     }.
     
-    Global Instance ℐ : generics_traits.DoubleDrop.Trait Self (T := T) := {
+    #[refine] Global Instance ℐ :
+      generics_traits.DoubleDrop.Trait Self (T := T) := {
       generics_traits.DoubleDrop.double_drop := double_drop;
     }.
+    Admitted.
   End Impl_generics_traits_DoubleDrop_for_U.
   Global Hint Resolve ℐ : core.
 End Impl_generics_traits_DoubleDrop_for_U.
@@ -56,5 +58,8 @@ End Impl_generics_traits_DoubleDrop_for_U.
 Definition main `{ℋ : State.Trait} : M unit :=
   let empty := generics_traits.Empty.Build_t tt in
   let null := generics_traits.Null.Build_t tt in
-  let* _ := generics_traits.DoubleDrop.double_drop empty null in
+  let* _ :=
+    (generics_traits.DoubleDrop.double_drop (Self := generics_traits.Empty))
+      empty
+      null in
   M.alloc tt.

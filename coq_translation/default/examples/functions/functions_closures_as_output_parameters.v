@@ -5,9 +5,9 @@ Definition create_fn `{ℋ : State.Trait} : M _ (* OpaqueTy *) :=
   let* text :=
     let* α0 := deref (mk_str "Fn") str in
     let* α1 := borrow α0 str in
-    alloc.borrow.ToOwned.to_owned α1 in
+    (alloc.borrow.ToOwned.to_owned (Self := str)) α1 in
   Pure
-    let* _ :=
+    (let* _ :=
       let* α0 := borrow [ mk_str "This is a: "; mk_str "
 " ] (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
@@ -23,7 +23,7 @@ Definition create_fn `{ℋ : State.Trait} : M _ (* OpaqueTy *) :=
       let* α11 := pointer_coercion "Unsize" α10 in
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
-    M.alloc tt.
+    M.alloc tt).
 
 Error OpaqueTy.
 
@@ -31,9 +31,9 @@ Definition create_fnmut `{ℋ : State.Trait} : M _ (* OpaqueTy *) :=
   let* text :=
     let* α0 := deref (mk_str "FnMut") str in
     let* α1 := borrow α0 str in
-    alloc.borrow.ToOwned.to_owned α1 in
+    (alloc.borrow.ToOwned.to_owned (Self := str)) α1 in
   Pure
-    let* _ :=
+    (let* _ :=
       let* α0 := borrow [ mk_str "This is a: "; mk_str "
 " ] (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
@@ -49,15 +49,15 @@ Definition create_fnmut `{ℋ : State.Trait} : M _ (* OpaqueTy *) :=
       let* α11 := pointer_coercion "Unsize" α10 in
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
-    M.alloc tt.
+    M.alloc tt).
 
 Definition create_fnonce `{ℋ : State.Trait} : M _ (* OpaqueTy *) :=
   let* text :=
     let* α0 := deref (mk_str "FnOnce") str in
     let* α1 := borrow α0 str in
-    alloc.borrow.ToOwned.to_owned α1 in
+    (alloc.borrow.ToOwned.to_owned (Self := str)) α1 in
   Pure
-    let* _ :=
+    (let* _ :=
       let* α0 := borrow [ mk_str "This is a: "; mk_str "
 " ] (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
@@ -73,7 +73,7 @@ Definition create_fnonce `{ℋ : State.Trait} : M _ (* OpaqueTy *) :=
       let* α11 := pointer_coercion "Unsize" α10 in
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
-    M.alloc tt.
+    M.alloc tt).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
@@ -83,12 +83,14 @@ Definition main `{ℋ : State.Trait} : M unit :=
   let* _ :=
     let* α0 := borrow fn_plain type not implemented in
     let* α1 := M.alloc tt in
-    core.ops.function.Fn.call α0 α1 in
+    (core.ops.function.Fn.call (Self := type not implemented)) α0 α1 in
   let* _ :=
     let* α0 := borrow_mut fn_mut type not implemented in
     let* α1 := M.alloc tt in
-    core.ops.function.FnMut.call_mut α0 α1 in
+    (core.ops.function.FnMut.call_mut (Self := type not implemented)) α0 α1 in
   let* _ :=
     let* α0 := M.alloc tt in
-    core.ops.function.FnOnce.call_once fn_once α0 in
+    (core.ops.function.FnOnce.call_once (Self := type not implemented))
+      fn_once
+      α0 in
   M.alloc tt.

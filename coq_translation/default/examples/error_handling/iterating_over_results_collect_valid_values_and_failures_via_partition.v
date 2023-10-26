@@ -12,18 +12,26 @@ Definition main `{ℋ : State.Trait} : M unit :=
       (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"]
         [ mk_str "tofu"; α1; α3 ] in
     let* α5 := pointer_coercion "Unsize" α4 in
-    (Slice _)::["into_vec"] α5 in
+    (Slice T)::["into_vec"] α5 in
   let* '(numbers, errors) :=
-    let* α0 := core.iter.traits.collect.IntoIterator.into_iter strings in
+    let* α0 :=
+      (core.iter.traits.collect.IntoIterator.into_iter
+          (Self := (alloc.vec.Vec (ref str) alloc.alloc.Global)))
+        strings in
     let* α1 :=
-      core.iter.traits.iterator.Iterator.map
+      (core.iter.traits.iterator.Iterator.map
+          (Self := (alloc.vec.into_iter.IntoIter (ref str) alloc.alloc.Global)))
         α0
-        let* α0 := deref s str in
+        (let* α0 := deref s str in
         let* α1 := borrow α0 str in
-        str::["parse"] α1 in
-    core.iter.traits.iterator.Iterator.partition
+        str::["parse"] α1) in
+    (core.iter.traits.iterator.Iterator.partition
+        (Self :=
+          (core.iter.adapters.map.Map
+            (alloc.vec.into_iter.IntoIter (ref str) alloc.alloc.Global)
+            type not implemented)))
       α1
-      (core.result.Result _ _)::["is_ok"] in
+      (core.result.Result T E)::["is_ok"] in
   let* _ :=
     let* _ :=
       let* α0 := borrow [ mk_str "Numbers: "; mk_str "

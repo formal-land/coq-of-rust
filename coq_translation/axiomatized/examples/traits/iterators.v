@@ -12,18 +12,22 @@ Module Fibonacci.
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_curr : Notation.Dot "curr" := {
+    #[refine] Global Instance Get_curr : Notation.Dot "curr" := {
       Notation.dot x := let* x := M.read x in Pure x.(curr) : M _;
     }.
-    Global Instance Get_AF_curr : Notation.DoubleColon t "curr" := {
+    Admitted.
+    #[refine] Global Instance Get_AF_curr : Notation.DoubleColon t "curr" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(curr) : M _;
     }.
-    Global Instance Get_next : Notation.Dot "next" := {
+    Admitted.
+    #[refine] Global Instance Get_next : Notation.Dot "next" := {
       Notation.dot x := let* x := M.read x in Pure x.(next) : M _;
     }.
-    Global Instance Get_AF_next : Notation.DoubleColon t "next" := {
+    Admitted.
+    #[refine] Global Instance Get_AF_next : Notation.DoubleColon t "next" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(next) : M _;
     }.
+    Admitted.
   End Fibonacci.
 End Fibonacci.
 Definition Fibonacci `{ℋ : State.Trait} : Set := M.val Fibonacci.t.
@@ -43,10 +47,12 @@ Module Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
       Notation.double_colon := next;
     }.
     
-    Global Instance ℐ : core.iter.traits.iterator.Iterator.Trait Self := {
+    #[refine] Global Instance ℐ :
+      core.iter.traits.iterator.Iterator.Trait Self := {
       core.iter.traits.iterator.Iterator.Item := Item;
       core.iter.traits.iterator.Iterator.next := next;
     }.
+    Admitted.
   End Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
   Global Hint Resolve ℐ : core.
 End Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.

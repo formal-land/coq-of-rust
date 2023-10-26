@@ -6,7 +6,7 @@ Definition multiply
     (first : ref i32)
     (second : ref i32)
     : M i32 :=
-  core.ops.arith.Mul.mul first second.
+  (core.ops.arith.Mul.mul (Self := (ref i32))) first second.
 
 Definition choose_first
     `{ℋ : State.Trait}

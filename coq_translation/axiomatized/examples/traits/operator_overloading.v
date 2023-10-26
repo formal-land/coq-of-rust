@@ -42,9 +42,10 @@ Module Impl_core_fmt_Debug_for_operator_overloading_FooBar.
       Notation.double_colon := fmt;
     }.
     
-    Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
+    Admitted.
   End Impl_core_fmt_Debug_for_operator_overloading_FooBar.
   Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_operator_overloading_FooBar.
@@ -72,9 +73,10 @@ Module Impl_core_fmt_Debug_for_operator_overloading_BarFoo.
       Notation.double_colon := fmt;
     }.
     
-    Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
+    Admitted.
   End Impl_core_fmt_Debug_for_operator_overloading_BarFoo.
   Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_operator_overloading_BarFoo.
@@ -95,11 +97,12 @@ Module Impl_core_ops_arith_Add_for_operator_overloading_Foo.
       Notation.double_colon := add;
     }.
     
-    Global Instance ℐ :
+    #[refine] Global Instance ℐ :
       core.ops.arith.Add.Trait Self (Rhs := operator_overloading.Bar) := {
       core.ops.arith.Add.Output := Output;
       core.ops.arith.Add.add := add;
     }.
+    Admitted.
   End Impl_core_ops_arith_Add_for_operator_overloading_Foo.
   Global Hint Resolve ℐ : core.
 End Impl_core_ops_arith_Add_for_operator_overloading_Foo.
@@ -120,11 +123,12 @@ Module Impl_core_ops_arith_Add_for_operator_overloading_Bar.
       Notation.double_colon := add;
     }.
     
-    Global Instance ℐ :
+    #[refine] Global Instance ℐ :
       core.ops.arith.Add.Trait Self (Rhs := operator_overloading.Foo) := {
       core.ops.arith.Add.Output := Output;
       core.ops.arith.Add.add := add;
     }.
+    Admitted.
   End Impl_core_ops_arith_Add_for_operator_overloading_Bar.
   Global Hint Resolve ℐ : core.
 End Impl_core_ops_arith_Add_for_operator_overloading_Bar.

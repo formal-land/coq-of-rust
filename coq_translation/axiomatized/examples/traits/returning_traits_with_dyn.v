@@ -49,9 +49,11 @@ Module
       Notation.double_colon := noise;
     }.
     
-    Global Instance ℐ : returning_traits_with_dyn.Animal.Trait Self := {
+    #[refine] Global Instance ℐ :
+      returning_traits_with_dyn.Animal.Trait Self := {
       returning_traits_with_dyn.Animal.noise := noise;
     }.
+    Admitted.
   End Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep.
   Global Hint Resolve ℐ : core.
 End Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep.
@@ -70,9 +72,11 @@ Module Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
       Notation.double_colon := noise;
     }.
     
-    Global Instance ℐ : returning_traits_with_dyn.Animal.Trait Self := {
+    #[refine] Global Instance ℐ :
+      returning_traits_with_dyn.Animal.Trait Self := {
       returning_traits_with_dyn.Animal.noise := noise;
     }.
+    Admitted.
   End Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
   Global Hint Resolve ℐ : core.
 End Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.

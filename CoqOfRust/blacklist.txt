@@ -155,7 +155,9 @@ examples_axiomatized/traits/iterators.v
 examples_axiomatized/traits/returning_traits_with_dyn.v
 examples_axiomatized/traits/supertraits.v
 ink/erc20.v
+ink/ink.v
 ink/ink_e2e.v
+ink/ink_env.v
 _std/iter_type.v
 _std/iter.v
 _std/net.v

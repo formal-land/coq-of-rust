@@ -100,8 +100,11 @@ Definition fizzbuzz `{ℋ : State.Trait} (n : u32) : M unit :=
 
 Definition fizzbuzz_to `{ℋ : State.Trait} (n : u32) : M unit :=
   let* α0 := M.alloc 1 in
-  let* α1 := (core.ops.range.RangeInclusive _)::["new"] α0 n in
-  let* α2 := core.iter.traits.collect.IntoIterator.into_iter α1 in
+  let* α1 := (core.ops.range.RangeInclusive Idx)::["new"] α0 n in
+  let* α2 :=
+    (core.iter.traits.collect.IntoIterator.into_iter
+        (Self := (core.ops.range.RangeInclusive u32)))
+      α1 in
   let* α3 :=
     match α2 with
     | iter =>
@@ -110,7 +113,10 @@ Definition fizzbuzz_to `{ℋ : State.Trait} (n : u32) : M unit :=
           let* α0 := borrow_mut iter (core.ops.range.RangeInclusive u32) in
           let* α1 := deref α0 (core.ops.range.RangeInclusive u32) in
           let* α2 := borrow_mut α1 (core.ops.range.RangeInclusive u32) in
-          let* α3 := core.iter.traits.iterator.Iterator.next α2 in
+          let* α3 :=
+            (core.iter.traits.iterator.Iterator.next
+                (Self := (core.ops.range.RangeInclusive u32)))
+              α2 in
           match α3 with
           | core.option.Option  =>
             let* α0 := Break in

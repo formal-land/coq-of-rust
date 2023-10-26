@@ -45,14 +45,17 @@ Module tests.
       let* α10 := std.fs.OpenOptions::["open"] α9 (mk_str "ferris.txt") in
       let* α11 := deref (mk_str "Failed to open ferris.txt") str in
       let* α12 := borrow α11 str in
-      (core.result.Result _ _)::["expect"] α10 α12 in
+      (core.result.Result T E)::["expect"] α10 α12 in
     let* α0 := M.alloc 0 in
     let* α1 := M.alloc 5 in
     let* α2 :=
       M.alloc
         {| core.ops.range.Range.start := α0; core.ops.range.Range.end := α1;
         |} in
-    let* α3 := core.iter.traits.collect.IntoIterator.into_iter α2 in
+    let* α3 :=
+      (core.iter.traits.collect.IntoIterator.into_iter
+          (Self := (core.ops.range.Range i32)))
+        α2 in
     let* α4 :=
       match α3 with
       | iter =>
@@ -61,7 +64,10 @@ Module tests.
             let* α0 := borrow_mut iter (core.ops.range.Range i32) in
             let* α1 := deref α0 (core.ops.range.Range i32) in
             let* α2 := borrow_mut α1 (core.ops.range.Range i32) in
-            let* α3 := core.iter.traits.iterator.Iterator.next α2 in
+            let* α3 :=
+              (core.iter.traits.iterator.Iterator.next
+                  (Self := (core.ops.range.Range i32)))
+                α2 in
             match α3 with
             | core.option.Option  =>
               let* α0 := Break in
@@ -75,10 +81,11 @@ Module tests.
                 let* α3 := str::["as_bytes"] α2 in
                 let* α4 := deref α3 (Slice u8) in
                 let* α5 := borrow α4 (Slice u8) in
-                let* α6 := std.io.Write.write_all α0 α5 in
+                let* α6 :=
+                  (std.io.Write.write_all (Self := std.fs.File)) α0 α5 in
                 let* α7 := deref (mk_str "Could not write to ferris.txt") str in
                 let* α8 := borrow α7 str in
-                (core.result.Result _ _)::["expect"] α6 α8 in
+                (core.result.Result T E)::["expect"] α6 α8 in
               M.alloc tt
             end in
           M.alloc tt)
@@ -100,14 +107,17 @@ Module tests.
       let* α10 := std.fs.OpenOptions::["open"] α9 (mk_str "ferris.txt") in
       let* α11 := deref (mk_str "Failed to open ferris.txt") str in
       let* α12 := borrow α11 str in
-      (core.result.Result _ _)::["expect"] α10 α12 in
+      (core.result.Result T E)::["expect"] α10 α12 in
     let* α0 := M.alloc 0 in
     let* α1 := M.alloc 5 in
     let* α2 :=
       M.alloc
         {| core.ops.range.Range.start := α0; core.ops.range.Range.end := α1;
         |} in
-    let* α3 := core.iter.traits.collect.IntoIterator.into_iter α2 in
+    let* α3 :=
+      (core.iter.traits.collect.IntoIterator.into_iter
+          (Self := (core.ops.range.Range i32)))
+        α2 in
     let* α4 :=
       match α3 with
       | iter =>
@@ -116,7 +126,10 @@ Module tests.
             let* α0 := borrow_mut iter (core.ops.range.Range i32) in
             let* α1 := deref α0 (core.ops.range.Range i32) in
             let* α2 := borrow_mut α1 (core.ops.range.Range i32) in
-            let* α3 := core.iter.traits.iterator.Iterator.next α2 in
+            let* α3 :=
+              (core.iter.traits.iterator.Iterator.next
+                  (Self := (core.ops.range.Range i32)))
+                α2 in
             match α3 with
             | core.option.Option  =>
               let* α0 := Break in
@@ -130,10 +143,11 @@ Module tests.
                 let* α3 := str::["as_bytes"] α2 in
                 let* α4 := deref α3 (Slice u8) in
                 let* α5 := borrow α4 (Slice u8) in
-                let* α6 := std.io.Write.write_all α0 α5 in
+                let* α6 :=
+                  (std.io.Write.write_all (Self := std.fs.File)) α0 α5 in
                 let* α7 := deref (mk_str "Could not write to ferris.txt") str in
                 let* α8 := borrow α7 str in
-                (core.result.Result _ _)::["expect"] α6 α8 in
+                (core.result.Result T E)::["expect"] α6 α8 in
               M.alloc tt
             end in
           M.alloc tt)
@@ -156,13 +170,16 @@ Definition test_file `{ℋ : State.Trait} : M unit :=
     let* α10 := std.fs.OpenOptions::["open"] α9 (mk_str "ferris.txt") in
     let* α11 := deref (mk_str "Failed to open ferris.txt") str in
     let* α12 := borrow α11 str in
-    (core.result.Result _ _)::["expect"] α10 α12 in
+    (core.result.Result T E)::["expect"] α10 α12 in
   let* α0 := M.alloc 0 in
   let* α1 := M.alloc 5 in
   let* α2 :=
     M.alloc
       {| core.ops.range.Range.start := α0; core.ops.range.Range.end := α1; |} in
-  let* α3 := core.iter.traits.collect.IntoIterator.into_iter α2 in
+  let* α3 :=
+    (core.iter.traits.collect.IntoIterator.into_iter
+        (Self := (core.ops.range.Range i32)))
+      α2 in
   let* α4 :=
     match α3 with
     | iter =>
@@ -171,7 +188,10 @@ Definition test_file `{ℋ : State.Trait} : M unit :=
           let* α0 := borrow_mut iter (core.ops.range.Range i32) in
           let* α1 := deref α0 (core.ops.range.Range i32) in
           let* α2 := borrow_mut α1 (core.ops.range.Range i32) in
-          let* α3 := core.iter.traits.iterator.Iterator.next α2 in
+          let* α3 :=
+            (core.iter.traits.iterator.Iterator.next
+                (Self := (core.ops.range.Range i32)))
+              α2 in
           match α3 with
           | core.option.Option  =>
             let* α0 := Break in
@@ -185,10 +205,10 @@ Definition test_file `{ℋ : State.Trait} : M unit :=
               let* α3 := str::["as_bytes"] α2 in
               let* α4 := deref α3 (Slice u8) in
               let* α5 := borrow α4 (Slice u8) in
-              let* α6 := std.io.Write.write_all α0 α5 in
+              let* α6 := (std.io.Write.write_all (Self := std.fs.File)) α0 α5 in
               let* α7 := deref (mk_str "Could not write to ferris.txt") str in
               let* α8 := borrow α7 str in
-              (core.result.Result _ _)::["expect"] α6 α8 in
+              (core.result.Result T E)::["expect"] α6 α8 in
             M.alloc tt
           end in
         M.alloc tt)
@@ -210,13 +230,16 @@ Definition test_file_also `{ℋ : State.Trait} : M unit :=
     let* α10 := std.fs.OpenOptions::["open"] α9 (mk_str "ferris.txt") in
     let* α11 := deref (mk_str "Failed to open ferris.txt") str in
     let* α12 := borrow α11 str in
-    (core.result.Result _ _)::["expect"] α10 α12 in
+    (core.result.Result T E)::["expect"] α10 α12 in
   let* α0 := M.alloc 0 in
   let* α1 := M.alloc 5 in
   let* α2 :=
     M.alloc
       {| core.ops.range.Range.start := α0; core.ops.range.Range.end := α1; |} in
-  let* α3 := core.iter.traits.collect.IntoIterator.into_iter α2 in
+  let* α3 :=
+    (core.iter.traits.collect.IntoIterator.into_iter
+        (Self := (core.ops.range.Range i32)))
+      α2 in
   let* α4 :=
     match α3 with
     | iter =>
@@ -225,7 +248,10 @@ Definition test_file_also `{ℋ : State.Trait} : M unit :=
           let* α0 := borrow_mut iter (core.ops.range.Range i32) in
           let* α1 := deref α0 (core.ops.range.Range i32) in
           let* α2 := borrow_mut α1 (core.ops.range.Range i32) in
-          let* α3 := core.iter.traits.iterator.Iterator.next α2 in
+          let* α3 :=
+            (core.iter.traits.iterator.Iterator.next
+                (Self := (core.ops.range.Range i32)))
+              α2 in
           match α3 with
           | core.option.Option  =>
             let* α0 := Break in
@@ -239,10 +265,10 @@ Definition test_file_also `{ℋ : State.Trait} : M unit :=
               let* α3 := str::["as_bytes"] α2 in
               let* α4 := deref α3 (Slice u8) in
               let* α5 := borrow α4 (Slice u8) in
-              let* α6 := std.io.Write.write_all α0 α5 in
+              let* α6 := (std.io.Write.write_all (Self := std.fs.File)) α0 α5 in
               let* α7 := deref (mk_str "Could not write to ferris.txt") str in
               let* α8 := borrow α7 str in
-              (core.result.Result _ _)::["expect"] α6 α8 in
+              (core.result.Result T E)::["expect"] α6 α8 in
             M.alloc tt
           end in
         M.alloc tt)

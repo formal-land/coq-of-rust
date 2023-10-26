@@ -44,9 +44,10 @@ Module checked.
         Notation.double_colon := fmt;
       }.
       
-      Global Instance ℐ : core.fmt.Debug.Trait Self := {
+      #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
         core.fmt.Debug.fmt := fmt;
       }.
+      Admitted.
     End
       Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
     Global Hint Resolve ℐ : core.
@@ -112,20 +113,44 @@ Module checked.
       : M result_chaining_with_question_mark.checked.MathResult :=
     let* ratio :=
       let* α0 := result_chaining_with_question_mark.checked.div x y in
-      let* α1 := core.ops.try_trait.Try.branch α0 in
+      let* α1 :=
+        (core.ops.try_trait.Try.branch
+            (Self :=
+              (core.result.Result
+                f64
+                result_chaining_with_question_mark.checked.MathError)))
+          α0 in
       match α1 with
       | core.ops.control_flow.ControlFlow residual =>
-        let* α0 := core.ops.try_trait.FromResidual.from_residual residual in
+        let* α0 :=
+          (core.ops.try_trait.FromResidual.from_residual
+              (Self :=
+                (core.result.Result
+                  f64
+                  result_chaining_with_question_mark.checked.MathError)))
+            residual in
         let* α1 := Return α0 in
         never_to_any α1
       | core.ops.control_flow.ControlFlow val => Pure val
       end in
     let* ln :=
       let* α0 := result_chaining_with_question_mark.checked.ln ratio in
-      let* α1 := core.ops.try_trait.Try.branch α0 in
+      let* α1 :=
+        (core.ops.try_trait.Try.branch
+            (Self :=
+              (core.result.Result
+                f64
+                result_chaining_with_question_mark.checked.MathError)))
+          α0 in
       match α1 with
       | core.ops.control_flow.ControlFlow residual =>
-        let* α0 := core.ops.try_trait.FromResidual.from_residual residual in
+        let* α0 :=
+          (core.ops.try_trait.FromResidual.from_residual
+              (Self :=
+                (core.result.Result
+                  f64
+                  result_chaining_with_question_mark.checked.MathError)))
+            residual in
         let* α1 := Return α0 in
         never_to_any α1
       | core.ops.control_flow.ControlFlow val => Pure val
@@ -215,9 +240,10 @@ Module
       Notation.double_colon := fmt;
     }.
     
-    Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
+    Admitted.
   End
     Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
   Global Hint Resolve ℐ : core.
@@ -283,20 +309,44 @@ Definition op_
     : M result_chaining_with_question_mark.checked.MathResult :=
   let* ratio :=
     let* α0 := result_chaining_with_question_mark.checked.div x y in
-    let* α1 := core.ops.try_trait.Try.branch α0 in
+    let* α1 :=
+      (core.ops.try_trait.Try.branch
+          (Self :=
+            (core.result.Result
+              f64
+              result_chaining_with_question_mark.checked.MathError)))
+        α0 in
     match α1 with
     | core.ops.control_flow.ControlFlow residual =>
-      let* α0 := core.ops.try_trait.FromResidual.from_residual residual in
+      let* α0 :=
+        (core.ops.try_trait.FromResidual.from_residual
+            (Self :=
+              (core.result.Result
+                f64
+                result_chaining_with_question_mark.checked.MathError)))
+          residual in
       let* α1 := Return α0 in
       never_to_any α1
     | core.ops.control_flow.ControlFlow val => Pure val
     end in
   let* ln :=
     let* α0 := result_chaining_with_question_mark.checked.ln ratio in
-    let* α1 := core.ops.try_trait.Try.branch α0 in
+    let* α1 :=
+      (core.ops.try_trait.Try.branch
+          (Self :=
+            (core.result.Result
+              f64
+              result_chaining_with_question_mark.checked.MathError)))
+        α0 in
     match α1 with
     | core.ops.control_flow.ControlFlow residual =>
-      let* α0 := core.ops.try_trait.FromResidual.from_residual residual in
+      let* α0 :=
+        (core.ops.try_trait.FromResidual.from_residual
+            (Self :=
+              (core.result.Result
+                f64
+                result_chaining_with_question_mark.checked.MathError)))
+          residual in
       let* α1 := Return α0 in
       never_to_any α1
     | core.ops.control_flow.ControlFlow val => Pure val

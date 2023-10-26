@@ -34,18 +34,23 @@ Module Form.
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_username : Notation.Dot "username" := {
+    #[refine] Global Instance Get_username : Notation.Dot "username" := {
       Notation.dot x := let* x := M.read x in Pure x.(username) : M _;
     }.
-    Global Instance Get_AF_username : Notation.DoubleColon t "username" := {
+    Admitted.
+    #[refine] Global Instance Get_AF_username :
+      Notation.DoubleColon t "username" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(username) : M _;
     }.
-    Global Instance Get_age : Notation.Dot "age" := {
+    Admitted.
+    #[refine] Global Instance Get_age : Notation.Dot "age" := {
       Notation.dot x := let* x := M.read x in Pure x.(age) : M _;
     }.
-    Global Instance Get_AF_age : Notation.DoubleColon t "age" := {
+    Admitted.
+    #[refine] Global Instance Get_AF_age : Notation.DoubleColon t "age" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(age) : M _;
     }.
+    Admitted.
   End Form.
 End Form.
 Definition Form `{ℋ : State.Trait} : Set := M.val Form.t.
@@ -65,10 +70,11 @@ Module
       Notation.double_colon := get;
     }.
     
-    Global Instance ℐ :
+    #[refine] Global Instance ℐ :
       disambiguating_overlapping_traits.UsernameWidget.Trait Self := {
       disambiguating_overlapping_traits.UsernameWidget.get := get;
     }.
+    Admitted.
   End
     Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_overlapping_traits_Form.
   Global Hint Resolve ℐ : core.
@@ -90,10 +96,11 @@ Module
       Notation.double_colon := get;
     }.
     
-    Global Instance ℐ :
+    #[refine] Global Instance ℐ :
       disambiguating_overlapping_traits.AgeWidget.Trait Self := {
       disambiguating_overlapping_traits.AgeWidget.get := get;
     }.
+    Admitted.
   End
     Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overlapping_traits_Form.
   Global Hint Resolve ℐ : core.

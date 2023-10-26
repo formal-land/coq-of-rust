@@ -45,9 +45,10 @@ Module Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
       Notation.double_colon := fmt;
     }.
     
-    Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
+    Admitted.
   End Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
   Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
@@ -95,9 +96,10 @@ Module Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
       Notation.double_colon := fmt;
     }.
     
-    Global Instance ℐ : core.fmt.Display.Trait Self := {
+    #[refine] Global Instance ℐ : core.fmt.Display.Trait Self := {
       core.fmt.Display.fmt := fmt;
     }.
+    Admitted.
   End Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
   Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
@@ -126,8 +128,9 @@ Module Impl_core_error_Error_for_wrapping_errors_DoubleError.
       Notation.double_colon := source;
     }.
     
-    Global Instance ℐ : core.error.Error.Trait Self := {
+    #[refine] Global Instance ℐ : core.error.Error.Trait Self := {
     }.
+    Admitted.
   End Impl_core_error_Error_for_wrapping_errors_DoubleError.
   Global Hint Resolve ℐ : core.
 End Impl_core_error_Error_for_wrapping_errors_DoubleError.
@@ -148,10 +151,11 @@ Module Impl_core_convert_From_for_wrapping_errors_DoubleError.
       Notation.double_colon := from;
     }.
     
-    Global Instance ℐ :
+    #[refine] Global Instance ℐ :
       core.convert.From.Trait Self (T := core.num.error.ParseIntError) := {
       core.convert.From.from := from;
     }.
+    Admitted.
   End Impl_core_convert_From_for_wrapping_errors_DoubleError.
   Global Hint Resolve ℐ : core.
 End Impl_core_convert_From_for_wrapping_errors_DoubleError.
@@ -162,18 +166,28 @@ Definition double_first
     : M (wrapping_errors.Result i32) :=
   let* first :=
     let* α0 := borrow vec (alloc.vec.Vec (ref str) alloc.alloc.Global) in
-    let* α1 := core.ops.deref.Deref.deref α0 in
+    let* α1 :=
+      (core.ops.deref.Deref.deref
+          (Self := (alloc.vec.Vec (ref str) alloc.alloc.Global)))
+        α0 in
     let* α2 := deref α1 (Slice (ref str)) in
     let* α3 := borrow α2 (Slice (ref str)) in
-    let* α4 := (Slice _)::["first"] α3 in
+    let* α4 := (Slice T)::["first"] α3 in
     let* α5 :=
-      (core.option.Option _)::["ok_or"]
+      (core.option.Option T)::["ok_or"]
         α4
         (wrapping_errors.DoubleError.EmptyVec tt) in
-    let* α6 := core.ops.try_trait.Try.branch α5 in
+    let* α6 :=
+      (core.ops.try_trait.Try.branch
+          (Self :=
+            (core.result.Result (ref (ref str)) wrapping_errors.DoubleError)))
+        α5 in
     match α6 with
     | core.ops.control_flow.ControlFlow residual =>
-      let* α0 := core.ops.try_trait.FromResidual.from_residual residual in
+      let* α0 :=
+        (core.ops.try_trait.FromResidual.from_residual
+            (Self := (core.result.Result i32 wrapping_errors.DoubleError)))
+          residual in
       let* α1 := Return α0 in
       never_to_any α1
     | core.ops.control_flow.ControlFlow val => Pure val
@@ -183,10 +197,16 @@ Definition double_first
     let* α1 := deref α0 str in
     let* α2 := borrow α1 str in
     let* α3 := str::["parse"] α2 in
-    let* α4 := core.ops.try_trait.Try.branch α3 in
+    let* α4 :=
+      (core.ops.try_trait.Try.branch
+          (Self := (core.result.Result i32 core.num.error.ParseIntError)))
+        α3 in
     match α4 with
     | core.ops.control_flow.ControlFlow residual =>
-      let* α0 := core.ops.try_trait.FromResidual.from_residual residual in
+      let* α0 :=
+        (core.ops.try_trait.FromResidual.from_residual
+            (Self := (core.result.Result i32 wrapping_errors.DoubleError)))
+          residual in
       let* α1 := Return α0 in
       never_to_any α1
     | core.ops.control_flow.ControlFlow val => Pure val
@@ -241,7 +261,8 @@ Definition print
         std.io.stdio._print α12 in
       M.alloc tt in
     let* α0 := borrow e wrapping_errors.DoubleError in
-    let* α1 := core.error.Error.source α0 in
+    let* α1 :=
+      (core.error.Error.source (Self := wrapping_errors.DoubleError)) α0 in
     let* α2 := let_if core.option.Option source := α1 in
     if (α2 : bool) then
       let* _ :=
@@ -279,8 +300,8 @@ Definition main `{ℋ : State.Trait} : M unit :=
       (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"]
         [ mk_str "42"; α1; α3 ] in
     let* α5 := pointer_coercion "Unsize" α4 in
-    (Slice _)::["into_vec"] α5 in
-  let* empty := (alloc.vec.Vec _ alloc.alloc.Global)::["new"] in
+    (Slice T)::["into_vec"] α5 in
+  let* empty := (alloc.vec.Vec T alloc.alloc.Global)::["new"] in
   let* strings :=
     let* α0 := deref (mk_str "93") str in
     let* α1 := borrow α0 str in
@@ -290,7 +311,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
       (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"]
         [ mk_str "tofu"; α1; α3 ] in
     let* α5 := pointer_coercion "Unsize" α4 in
-    (Slice _)::["into_vec"] α5 in
+    (Slice T)::["into_vec"] α5 in
   let* _ :=
     let* α0 := wrapping_errors.double_first numbers in
     wrapping_errors.print α0 in

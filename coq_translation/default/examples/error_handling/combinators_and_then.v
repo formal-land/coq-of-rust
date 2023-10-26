@@ -40,9 +40,10 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Food.
       Notation.double_colon := fmt;
     }.
     
-    Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
+    Admitted.
   End Impl_core_fmt_Debug_for_combinators_and_then_Food.
   Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_combinators_and_then_Food.
@@ -86,9 +87,10 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Day.
       Notation.double_colon := fmt;
     }.
     
-    Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
+    Admitted.
   End Impl_core_fmt_Debug_for_combinators_and_then_Day.
   Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_combinators_and_then_Day.
@@ -131,7 +133,7 @@ Definition cookable_v2
     (food : combinators_and_then.Food)
     : M (core.option.Option combinators_and_then.Food) :=
   let* α0 := combinators_and_then.have_recipe food in
-  (core.option.Option _)::["and_then"] α0 combinators_and_then.have_ingredients.
+  (core.option.Option T)::["and_then"] α0 combinators_and_then.have_ingredients.
 
 Definition eat
     `{ℋ : State.Trait}

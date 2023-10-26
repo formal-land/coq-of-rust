@@ -59,7 +59,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
     M.alloc tt in
   let* a :=
     let* α0 := M.alloc 5 in
-    (alloc.boxed.Box _ alloc.alloc.Global)::["new"] α0 in
+    (alloc.boxed.Box T alloc.alloc.Global)::["new"] α0 in
   let* _ :=
     let* _ :=
       let* α0 :=

@@ -15,20 +15,50 @@ Definition combine_vecs_explicit_return_type
             (alloc.vec.into_iter.IntoIter
               i32
               alloc.vec.into_iter.IntoIter.Default.A))) :=
-  let* α0 := core.iter.traits.collect.IntoIterator.into_iter v in
-  let* α1 := core.iter.traits.collect.IntoIterator.into_iter u in
-  let* α2 := core.iter.traits.iterator.Iterator.chain α0 α1 in
-  core.iter.traits.iterator.Iterator.cycle α2.
+  let* α0 :=
+    (core.iter.traits.collect.IntoIterator.into_iter
+        (Self := (alloc.vec.Vec i32 alloc.alloc.Global)))
+      v in
+  let* α1 :=
+    (core.iter.traits.collect.IntoIterator.into_iter
+        (Self := (alloc.vec.Vec i32 alloc.alloc.Global)))
+      u in
+  let* α2 :=
+    (core.iter.traits.iterator.Iterator.chain
+        (Self := (alloc.vec.into_iter.IntoIter i32 alloc.alloc.Global)))
+      α0
+      α1 in
+  (core.iter.traits.iterator.Iterator.cycle
+      (Self :=
+        (core.iter.adapters.chain.Chain
+          (alloc.vec.into_iter.IntoIter i32 alloc.alloc.Global)
+          (alloc.vec.into_iter.IntoIter i32 alloc.alloc.Global))))
+    α2.
 
 Definition combine_vecs
     `{ℋ : State.Trait}
     (v : alloc.vec.Vec i32 alloc.vec.Vec.Default.A)
     (u : alloc.vec.Vec i32 alloc.vec.Vec.Default.A)
     : M _ (* OpaqueTy *) :=
-  let* α0 := core.iter.traits.collect.IntoIterator.into_iter v in
-  let* α1 := core.iter.traits.collect.IntoIterator.into_iter u in
-  let* α2 := core.iter.traits.iterator.Iterator.chain α0 α1 in
-  core.iter.traits.iterator.Iterator.cycle α2.
+  let* α0 :=
+    (core.iter.traits.collect.IntoIterator.into_iter
+        (Self := (alloc.vec.Vec i32 alloc.alloc.Global)))
+      v in
+  let* α1 :=
+    (core.iter.traits.collect.IntoIterator.into_iter
+        (Self := (alloc.vec.Vec i32 alloc.alloc.Global)))
+      u in
+  let* α2 :=
+    (core.iter.traits.iterator.Iterator.chain
+        (Self := (alloc.vec.into_iter.IntoIter i32 alloc.alloc.Global)))
+      α0
+      α1 in
+  (core.iter.traits.iterator.Iterator.cycle
+      (Self :=
+        (core.iter.adapters.chain.Chain
+          (alloc.vec.into_iter.IntoIter i32 alloc.alloc.Global)
+          (alloc.vec.into_iter.IntoIter i32 alloc.alloc.Global))))
+    α2.
 
 Error OpaqueTy.
 
@@ -41,20 +71,22 @@ Definition main `{ℋ : State.Trait} : M unit :=
     let* α3 :=
       (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] [ α0; α1; α2 ] in
     let* α4 := pointer_coercion "Unsize" α3 in
-    (Slice _)::["into_vec"] α4 in
+    (Slice T)::["into_vec"] α4 in
   let* v2 :=
     let* α0 := M.alloc 4 in
     let* α1 := M.alloc 5 in
     let* α2 :=
       (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] [ α0; α1 ] in
     let* α3 := pointer_coercion "Unsize" α2 in
-    (Slice _)::["into_vec"] α3 in
+    (Slice T)::["into_vec"] α3 in
   let* v3 := impl_trait_as_return_type.combine_vecs v1 v2 in
   let* _ :=
     let* α0 := M.alloc 1 in
     let* α1 := borrow (core.option.Option.Some α0) (core.option.Option i32) in
     let* α2 := borrow_mut v3 type not implemented in
-    let* α3 := core.iter.traits.iterator.Iterator.next α2 in
+    let* α3 :=
+      (core.iter.traits.iterator.Iterator.next (Self := type not implemented))
+        α2 in
     let* α4 := borrow α3 (core.option.Option i32) in
     match (α1, α4) with
     | (left_val, right_val) =>
@@ -62,7 +94,8 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α1 := borrow α0 (core.option.Option i32) in
       let* α2 := deref right_val (core.option.Option i32) in
       let* α3 := borrow α2 (core.option.Option i32) in
-      let* α4 := core.cmp.PartialEq.eq α1 α3 in
+      let* α4 :=
+        (core.cmp.PartialEq.eq (Self := (core.option.Option i32))) α1 α3 in
       let* α5 := not α4 in
       let* α6 := use α5 in
       if (α6 : bool) then
@@ -90,7 +123,9 @@ Definition main `{ℋ : State.Trait} : M unit :=
     let* α0 := M.alloc 2 in
     let* α1 := borrow (core.option.Option.Some α0) (core.option.Option i32) in
     let* α2 := borrow_mut v3 type not implemented in
-    let* α3 := core.iter.traits.iterator.Iterator.next α2 in
+    let* α3 :=
+      (core.iter.traits.iterator.Iterator.next (Self := type not implemented))
+        α2 in
     let* α4 := borrow α3 (core.option.Option i32) in
     match (α1, α4) with
     | (left_val, right_val) =>
@@ -98,7 +133,8 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α1 := borrow α0 (core.option.Option i32) in
       let* α2 := deref right_val (core.option.Option i32) in
       let* α3 := borrow α2 (core.option.Option i32) in
-      let* α4 := core.cmp.PartialEq.eq α1 α3 in
+      let* α4 :=
+        (core.cmp.PartialEq.eq (Self := (core.option.Option i32))) α1 α3 in
       let* α5 := not α4 in
       let* α6 := use α5 in
       if (α6 : bool) then
@@ -126,7 +162,9 @@ Definition main `{ℋ : State.Trait} : M unit :=
     let* α0 := M.alloc 3 in
     let* α1 := borrow (core.option.Option.Some α0) (core.option.Option i32) in
     let* α2 := borrow_mut v3 type not implemented in
-    let* α3 := core.iter.traits.iterator.Iterator.next α2 in
+    let* α3 :=
+      (core.iter.traits.iterator.Iterator.next (Self := type not implemented))
+        α2 in
     let* α4 := borrow α3 (core.option.Option i32) in
     match (α1, α4) with
     | (left_val, right_val) =>
@@ -134,7 +172,8 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α1 := borrow α0 (core.option.Option i32) in
       let* α2 := deref right_val (core.option.Option i32) in
       let* α3 := borrow α2 (core.option.Option i32) in
-      let* α4 := core.cmp.PartialEq.eq α1 α3 in
+      let* α4 :=
+        (core.cmp.PartialEq.eq (Self := (core.option.Option i32))) α1 α3 in
       let* α5 := not α4 in
       let* α6 := use α5 in
       if (α6 : bool) then
@@ -162,7 +201,9 @@ Definition main `{ℋ : State.Trait} : M unit :=
     let* α0 := M.alloc 4 in
     let* α1 := borrow (core.option.Option.Some α0) (core.option.Option i32) in
     let* α2 := borrow_mut v3 type not implemented in
-    let* α3 := core.iter.traits.iterator.Iterator.next α2 in
+    let* α3 :=
+      (core.iter.traits.iterator.Iterator.next (Self := type not implemented))
+        α2 in
     let* α4 := borrow α3 (core.option.Option i32) in
     match (α1, α4) with
     | (left_val, right_val) =>
@@ -170,7 +211,8 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α1 := borrow α0 (core.option.Option i32) in
       let* α2 := deref right_val (core.option.Option i32) in
       let* α3 := borrow α2 (core.option.Option i32) in
-      let* α4 := core.cmp.PartialEq.eq α1 α3 in
+      let* α4 :=
+        (core.cmp.PartialEq.eq (Self := (core.option.Option i32))) α1 α3 in
       let* α5 := not α4 in
       let* α6 := use α5 in
       if (α6 : bool) then
@@ -198,7 +240,9 @@ Definition main `{ℋ : State.Trait} : M unit :=
     let* α0 := M.alloc 5 in
     let* α1 := borrow (core.option.Option.Some α0) (core.option.Option i32) in
     let* α2 := borrow_mut v3 type not implemented in
-    let* α3 := core.iter.traits.iterator.Iterator.next α2 in
+    let* α3 :=
+      (core.iter.traits.iterator.Iterator.next (Self := type not implemented))
+        α2 in
     let* α4 := borrow α3 (core.option.Option i32) in
     match (α1, α4) with
     | (left_val, right_val) =>
@@ -206,7 +250,8 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α1 := borrow α0 (core.option.Option i32) in
       let* α2 := deref right_val (core.option.Option i32) in
       let* α3 := borrow α2 (core.option.Option i32) in
-      let* α4 := core.cmp.PartialEq.eq α1 α3 in
+      let* α4 :=
+        (core.cmp.PartialEq.eq (Self := (core.option.Option i32))) α1 α3 in
       let* α5 := not α4 in
       let* α6 := use α5 in
       if (α6 : bool) then

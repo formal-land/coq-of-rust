@@ -15,9 +15,9 @@ Definition compare_prints
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
       let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := borrow t (ref _) in
-      let* α5 := deref α4 (ref _) in
-      let* α6 := borrow α5 (ref _) in
+      let* α4 := borrow t (ref T) in
+      let* α5 := deref α4 (ref T) in
+      let* α6 := borrow α5 (ref T) in
       let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
       let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
       let* α9 := deref α8 (list core.fmt.rt.Argument) in
@@ -33,9 +33,9 @@ Definition compare_prints
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
       let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := borrow t (ref _) in
-      let* α5 := deref α4 (ref _) in
-      let* α6 := borrow α5 (ref _) in
+      let* α4 := borrow t (ref T) in
+      let* α5 := deref α4 (ref T) in
+      let* α6 := borrow α5 (ref T) in
       let* α7 := core.fmt.rt.Argument::["new_display"] α6 in
       let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
       let* α9 := deref α8 (list core.fmt.rt.Argument) in
@@ -61,9 +61,9 @@ Definition compare_types
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
       let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := borrow t (ref _) in
-      let* α5 := deref α4 (ref _) in
-      let* α6 := borrow α5 (ref _) in
+      let* α4 := borrow t (ref T) in
+      let* α5 := deref α4 (ref T) in
+      let* α6 := borrow α5 (ref T) in
       let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
       let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
       let* α9 := deref α8 (list core.fmt.rt.Argument) in
@@ -79,9 +79,9 @@ Definition compare_types
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
       let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := borrow u (ref _) in
-      let* α5 := deref α4 (ref _) in
-      let* α6 := borrow α5 (ref _) in
+      let* α4 := borrow u (ref U) in
+      let* α5 := deref α4 (ref U) in
+      let* α6 := borrow α5 (ref U) in
       let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
       let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
       let* α9 := deref α8 (list core.fmt.rt.Argument) in
@@ -107,7 +107,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
     let* α3 :=
       (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] [ α0; α1; α2 ] in
     let* α4 := pointer_coercion "Unsize" α3 in
-    (Slice _)::["into_vec"] α4 in
+    (Slice T)::["into_vec"] α4 in
   let* _ :=
     let* α0 := borrow string (ref str) in
     let* α1 := deref α0 (ref str) in

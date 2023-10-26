@@ -16,7 +16,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
     let* α1 := borrow α0 std.path.Path in
     let* α2 := std.path.Path::["join"] α1 (mk_str "a") in
     let* α3 := borrow α2 std.path.PathBuf in
-    let* α4 := core.ops.deref.Deref.deref α3 in
+    let* α4 := (core.ops.deref.Deref.deref (Self := std.path.PathBuf)) α3 in
     let* α5 := deref α4 std.path.Path in
     let* α6 := borrow α5 std.path.Path in
     std.path.Path::["join"] α6 (mk_str "b") in
@@ -30,7 +30,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
     let* α0 := borrow_mut new_path std.path.PathBuf in
     std.path.PathBuf::["set_file_name"] α0 (mk_str "package.tgz") in
   let* α0 := borrow new_path std.path.PathBuf in
-  let* α1 := core.ops.deref.Deref.deref α0 in
+  let* α1 := (core.ops.deref.Deref.deref (Self := std.path.PathBuf)) α0 in
   let* α2 := deref α1 std.path.Path in
   let* α3 := borrow α2 std.path.Path in
   let* α4 := std.path.Path::["to_str"] α3 in

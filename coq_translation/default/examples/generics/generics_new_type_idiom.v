@@ -11,9 +11,10 @@ Module Years.
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_0 : Notation.Dot "0" := {
+    #[refine] Global Instance Get_0 : Notation.Dot "0" := {
       Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
+    Admitted.
   End Years.
 End Years.
 Definition Years `{ℋ : State.Trait} : Set := M.val Years.t.
@@ -28,9 +29,10 @@ Module Days.
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_0 : Notation.Dot "0" := {
+    #[refine] Global Instance Get_0 : Notation.Dot "0" := {
       Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
+    Admitted.
   End Days.
 End Days.
 Definition Days `{ℋ : State.Trait} : Set := M.val Days.t.

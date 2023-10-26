@@ -22,7 +22,7 @@ Definition division
 Definition main `{ℋ : State.Trait} : M unit :=
   let* _x :=
     let* α0 := M.alloc 0 in
-    (alloc.boxed.Box _ alloc.alloc.Global)::["new"] α0 in
+    (alloc.boxed.Box T alloc.alloc.Global)::["new"] α0 in
   let* _ :=
     let* α0 := M.alloc 3 in
     let* α1 := M.alloc 0 in

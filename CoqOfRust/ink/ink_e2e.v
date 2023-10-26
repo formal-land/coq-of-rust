@@ -70,21 +70,26 @@ Module xts.
       }.
       Global Set Primitive Projections.
       
-      Global Instance Get_ref_time : Notation.Dot "ref_time" := {
+      #[refine] Global Instance Get_ref_time : Notation.Dot "ref_time" := {
         Notation.dot x := let* x := M.read x in Pure x.(ref_time) : M _;
       }.
-      Global Instance Get_AF_ref_time : Notation.DoubleColon t "ref_time" := {
+      Admitted.
+      #[refine] Global Instance Get_AF_ref_time :
+        Notation.DoubleColon t "ref_time" := {
         Notation.double_colon x :=
           let* x := M.read x in Pure x.(ref_time) : M _;
       }.
-      Global Instance Get_proof_size : Notation.Dot "proof_size" := {
+      Admitted.
+      #[refine] Global Instance Get_proof_size : Notation.Dot "proof_size" := {
         Notation.dot x := let* x := M.read x in Pure x.(proof_size) : M _;
       }.
-      Global Instance Get_AF_proof_size :
+      Admitted.
+      #[refine] Global Instance Get_AF_proof_size :
         Notation.DoubleColon t "proof_size" := {
         Notation.double_colon x :=
           let* x := M.read x in Pure x.(proof_size) : M _;
       }.
+      Admitted.
     End Weight.
   End Weight.
   Definition Weight `{ℋ : State.Trait} : Set := M.val Weight.t.
@@ -102,9 +107,10 @@ Module xts.
         Notation.double_colon := clone;
       }.
       
-      Global Instance ℐ : core.clone.Clone.Trait Self := {
+      #[refine] Global Instance ℐ : core.clone.Clone.Trait Self := {
         core.clone.Clone.clone := clone;
       }.
+      Admitted.
     End Impl_core_clone_Clone_for_ink_e2e_xts_Weight.
     Global Hint Resolve ℐ : core.
   End Impl_core_clone_Clone_for_ink_e2e_xts_Weight.
@@ -115,8 +121,9 @@ Module xts.
       
       Definition Self : Set := ink_e2e.xts.Weight.
       
-      Global Instance ℐ : core.marker.Copy.Trait Self := {
+      #[refine] Global Instance ℐ : core.marker.Copy.Trait Self := {
       }.
+      Admitted.
     End Impl_core_marker_Copy_for_ink_e2e_xts_Weight.
     Global Hint Resolve ℐ : core.
   End Impl_core_marker_Copy_for_ink_e2e_xts_Weight.
@@ -127,8 +134,9 @@ Module xts.
       
       Definition Self : Set := ink_e2e.xts.Weight.
       
-      Global Instance ℐ : core.marker.StructuralEq.Trait Self := {
+      #[refine] Global Instance ℐ : core.marker.StructuralEq.Trait Self := {
       }.
+      Admitted.
     End Impl_core_marker_StructuralEq_for_ink_e2e_xts_Weight.
     Global Hint Resolve ℐ : core.
   End Impl_core_marker_StructuralEq_for_ink_e2e_xts_Weight.
@@ -146,11 +154,12 @@ Module xts.
         Notation.double_colon := eq;
       }.
       
-      Global Instance ℐ :
+      #[refine] Global Instance ℐ :
         core.cmp.PartialEq.Trait Self
           (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
         core.cmp.PartialEq.eq := eq;
       }.
+      Admitted.
     End Impl_core_cmp_PartialEq_for_ink_e2e_xts_Weight.
     Global Hint Resolve ℐ : core.
   End Impl_core_cmp_PartialEq_for_ink_e2e_xts_Weight.
@@ -168,8 +177,9 @@ Module xts.
         Notation.double_colon := assert_receiver_is_total_eq;
       }.
       
-      Global Instance ℐ : core.cmp.Eq.Trait Self := {
+      #[refine] Global Instance ℐ : core.cmp.Eq.Trait Self := {
       }.
+      Admitted.
     End Impl_core_cmp_Eq_for_ink_e2e_xts_Weight.
     Global Hint Resolve ℐ : core.
   End Impl_core_cmp_Eq_for_ink_e2e_xts_Weight.
@@ -180,8 +190,10 @@ Module xts.
       
       Definition Self : Set := ink_e2e.xts.Weight.
       
-      Global Instance ℐ : core.marker.StructuralPartialEq.Trait Self := {
+      #[refine] Global Instance ℐ :
+        core.marker.StructuralPartialEq.Trait Self := {
       }.
+      Admitted.
     End Impl_core_marker_StructuralPartialEq_for_ink_e2e_xts_Weight.
     Global Hint Resolve ℐ : core.
   End Impl_core_marker_StructuralPartialEq_for_ink_e2e_xts_Weight.
@@ -200,9 +212,10 @@ Module xts.
         Notation.double_colon := fmt;
       }.
       
-      Global Instance ℐ : core.fmt.Debug.Trait Self := {
+      #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
         core.fmt.Debug.fmt := fmt;
       }.
+      Admitted.
     End Impl_core_fmt_Debug_for_ink_e2e_xts_Weight.
     Global Hint Resolve ℐ : core.
   End Impl_core_fmt_Debug_for_ink_e2e_xts_Weight.
@@ -220,9 +233,10 @@ Module xts.
         Notation.double_colon := default;
       }.
       
-      Global Instance ℐ : core.default.Default.Trait Self := {
+      #[refine] Global Instance ℐ : core.default.Default.Trait Self := {
         core.default.Default.default := default;
       }.
+      Admitted.
     End Impl_core_default_Default_for_ink_e2e_xts_Weight.
     Global Hint Resolve ℐ : core.
   End Impl_core_default_Default_for_ink_e2e_xts_Weight.
@@ -245,9 +259,10 @@ Module xts.
         Notation.double_colon := encode_as_type_to;
       }.
       
-      Global Instance ℐ : scale_encode.EncodeAsType.Trait Self := {
+      #[refine] Global Instance ℐ : scale_encode.EncodeAsType.Trait Self := {
         scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
       }.
+      Admitted.
     End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Weight.
     Global Hint Resolve ℐ : core.
   End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Weight.
@@ -270,9 +285,10 @@ Module xts.
         Notation.double_colon := encode_as_fields_to;
       }.
       
-      Global Instance ℐ : scale_encode.EncodeAsFields.Trait Self := {
+      #[refine] Global Instance ℐ : scale_encode.EncodeAsFields.Trait Self := {
         scale_encode.EncodeAsFields.encode_as_fields_to := encode_as_fields_to;
       }.
+      Admitted.
     End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Weight.
     Global Hint Resolve ℐ : core.
   End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Weight.
@@ -290,10 +306,11 @@ Module xts.
         Notation.double_colon := from;
       }.
       
-      Global Instance ℐ :
+      #[refine] Global Instance ℐ :
         core.convert.From.Trait Self (T := sp_weights.weight_v2.Weight) := {
         core.convert.From.from := from;
       }.
+      Admitted.
     End Impl_core_convert_From_for_ink_e2e_xts_Weight.
     Global Hint Resolve ℐ : core.
   End Impl_core_convert_From_for_ink_e2e_xts_Weight.
@@ -311,10 +328,11 @@ Module xts.
         Notation.double_colon := from;
       }.
       
-      Global Instance ℐ :
+      #[refine] Global Instance ℐ :
         core.convert.From.Trait Self (T := ink_e2e.xts.Weight) := {
         core.convert.From.from := from;
       }.
+      Admitted.
     End Impl_core_convert_From_for_sp_weights_weight_v2_Weight.
     Global Hint Resolve ℐ : core.
   End Impl_core_convert_From_for_sp_weights_weight_v2_Weight.
@@ -337,47 +355,61 @@ Module xts.
       }.
       Global Set Primitive Projections.
       
-      Global Instance Get_value : Notation.Dot "value" := {
+      #[refine] Global Instance Get_value : Notation.Dot "value" := {
         Notation.dot x := let* x := M.read x in Pure x.(value) : M _;
       }.
-      Global Instance Get_AF_value : Notation.DoubleColon t "value" := {
+      Admitted.
+      #[refine] Global Instance Get_AF_value :
+        Notation.DoubleColon t "value" := {
         Notation.double_colon x := let* x := M.read x in Pure x.(value) : M _;
       }.
-      Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
+      Admitted.
+      #[refine] Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
         Notation.dot x := let* x := M.read x in Pure x.(gas_limit) : M _;
       }.
-      Global Instance Get_AF_gas_limit : Notation.DoubleColon t "gas_limit" := {
+      Admitted.
+      #[refine] Global Instance Get_AF_gas_limit :
+        Notation.DoubleColon t "gas_limit" := {
         Notation.double_colon x :=
           let* x := M.read x in Pure x.(gas_limit) : M _;
       }.
-      Global Instance Get_storage_deposit_limit :
+      Admitted.
+      #[refine] Global Instance Get_storage_deposit_limit :
         Notation.Dot "storage_deposit_limit" := {
         Notation.dot x :=
           let* x := M.read x in Pure x.(storage_deposit_limit) : M _;
       }.
-      Global Instance Get_AF_storage_deposit_limit :
+      Admitted.
+      #[refine] Global Instance Get_AF_storage_deposit_limit :
         Notation.DoubleColon t "storage_deposit_limit" := {
         Notation.double_colon x :=
           let* x := M.read x in Pure x.(storage_deposit_limit) : M _;
       }.
-      Global Instance Get_code : Notation.Dot "code" := {
+      Admitted.
+      #[refine] Global Instance Get_code : Notation.Dot "code" := {
         Notation.dot x := let* x := M.read x in Pure x.(code) : M _;
       }.
-      Global Instance Get_AF_code : Notation.DoubleColon t "code" := {
+      Admitted.
+      #[refine] Global Instance Get_AF_code : Notation.DoubleColon t "code" := {
         Notation.double_colon x := let* x := M.read x in Pure x.(code) : M _;
       }.
-      Global Instance Get_data : Notation.Dot "data" := {
+      Admitted.
+      #[refine] Global Instance Get_data : Notation.Dot "data" := {
         Notation.dot x := let* x := M.read x in Pure x.(data) : M _;
       }.
-      Global Instance Get_AF_data : Notation.DoubleColon t "data" := {
+      Admitted.
+      #[refine] Global Instance Get_AF_data : Notation.DoubleColon t "data" := {
         Notation.double_colon x := let* x := M.read x in Pure x.(data) : M _;
       }.
-      Global Instance Get_salt : Notation.Dot "salt" := {
+      Admitted.
+      #[refine] Global Instance Get_salt : Notation.Dot "salt" := {
         Notation.dot x := let* x := M.read x in Pure x.(salt) : M _;
       }.
-      Global Instance Get_AF_salt : Notation.DoubleColon t "salt" := {
+      Admitted.
+      #[refine] Global Instance Get_AF_salt : Notation.DoubleColon t "salt" := {
         Notation.double_colon x := let* x := M.read x in Pure x.(salt) : M _;
       }.
+      Admitted.
     End InstantiateWithCode.
   End InstantiateWithCode.
   Definition InstantiateWithCode
@@ -408,9 +440,10 @@ Module xts.
         Notation.double_colon := fmt;
       }.
       
-      Global Instance ℐ : core.fmt.Debug.Trait Self := {
+      #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
         core.fmt.Debug.fmt := fmt;
       }.
+      Admitted.
     End Impl_core_fmt_Debug_for_ink_e2e_xts_InstantiateWithCode_E.
     Global Hint Resolve ℐ : core.
   End Impl_core_fmt_Debug_for_ink_e2e_xts_InstantiateWithCode_E.
@@ -437,9 +470,10 @@ Module xts.
         Notation.double_colon := encode_as_type_to;
       }.
       
-      Global Instance ℐ : scale_encode.EncodeAsType.Trait Self := {
+      #[refine] Global Instance ℐ : scale_encode.EncodeAsType.Trait Self := {
         scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
       }.
+      Admitted.
     End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_InstantiateWithCode_E.
     Global Hint Resolve ℐ : core.
   End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_InstantiateWithCode_E.
@@ -466,9 +500,10 @@ Module xts.
         Notation.double_colon := encode_as_fields_to;
       }.
       
-      Global Instance ℐ : scale_encode.EncodeAsFields.Trait Self := {
+      #[refine] Global Instance ℐ : scale_encode.EncodeAsFields.Trait Self := {
         scale_encode.EncodeAsFields.encode_as_fields_to := encode_as_fields_to;
       }.
+      Admitted.
     End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_InstantiateWithCode_E.
     Global Hint Resolve ℐ : core.
   End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_InstantiateWithCode_E.
@@ -490,41 +525,53 @@ Module xts.
       }.
       Global Set Primitive Projections.
       
-      Global Instance Get_dest : Notation.Dot "dest" := {
+      #[refine] Global Instance Get_dest : Notation.Dot "dest" := {
         Notation.dot x := let* x := M.read x in Pure x.(dest) : M _;
       }.
-      Global Instance Get_AF_dest : Notation.DoubleColon t "dest" := {
+      Admitted.
+      #[refine] Global Instance Get_AF_dest : Notation.DoubleColon t "dest" := {
         Notation.double_colon x := let* x := M.read x in Pure x.(dest) : M _;
       }.
-      Global Instance Get_value : Notation.Dot "value" := {
+      Admitted.
+      #[refine] Global Instance Get_value : Notation.Dot "value" := {
         Notation.dot x := let* x := M.read x in Pure x.(value) : M _;
       }.
-      Global Instance Get_AF_value : Notation.DoubleColon t "value" := {
+      Admitted.
+      #[refine] Global Instance Get_AF_value :
+        Notation.DoubleColon t "value" := {
         Notation.double_colon x := let* x := M.read x in Pure x.(value) : M _;
       }.
-      Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
+      Admitted.
+      #[refine] Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
         Notation.dot x := let* x := M.read x in Pure x.(gas_limit) : M _;
       }.
-      Global Instance Get_AF_gas_limit : Notation.DoubleColon t "gas_limit" := {
+      Admitted.
+      #[refine] Global Instance Get_AF_gas_limit :
+        Notation.DoubleColon t "gas_limit" := {
         Notation.double_colon x :=
           let* x := M.read x in Pure x.(gas_limit) : M _;
       }.
-      Global Instance Get_storage_deposit_limit :
+      Admitted.
+      #[refine] Global Instance Get_storage_deposit_limit :
         Notation.Dot "storage_deposit_limit" := {
         Notation.dot x :=
           let* x := M.read x in Pure x.(storage_deposit_limit) : M _;
       }.
-      Global Instance Get_AF_storage_deposit_limit :
+      Admitted.
+      #[refine] Global Instance Get_AF_storage_deposit_limit :
         Notation.DoubleColon t "storage_deposit_limit" := {
         Notation.double_colon x :=
           let* x := M.read x in Pure x.(storage_deposit_limit) : M _;
       }.
-      Global Instance Get_data : Notation.Dot "data" := {
+      Admitted.
+      #[refine] Global Instance Get_data : Notation.Dot "data" := {
         Notation.dot x := let* x := M.read x in Pure x.(data) : M _;
       }.
-      Global Instance Get_AF_data : Notation.DoubleColon t "data" := {
+      Admitted.
+      #[refine] Global Instance Get_AF_data : Notation.DoubleColon t "data" := {
         Notation.double_colon x := let* x := M.read x in Pure x.(data) : M _;
       }.
+      Admitted.
     End Call.
   End Call.
   Definition Call
@@ -556,9 +603,10 @@ Module xts.
         Notation.double_colon := fmt;
       }.
       
-      Global Instance ℐ : core.fmt.Debug.Trait Self := {
+      #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
         core.fmt.Debug.fmt := fmt;
       }.
+      Admitted.
     End Impl_core_fmt_Debug_for_ink_e2e_xts_Call_E.
     Global Hint Resolve ℐ : core.
   End Impl_core_fmt_Debug_for_ink_e2e_xts_Call_E.
@@ -584,9 +632,10 @@ Module xts.
         Notation.double_colon := encode_as_type_to;
       }.
       
-      Global Instance ℐ : scale_encode.EncodeAsType.Trait Self := {
+      #[refine] Global Instance ℐ : scale_encode.EncodeAsType.Trait Self := {
         scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
       }.
+      Admitted.
     End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Call_E.
     Global Hint Resolve ℐ : core.
   End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Call_E.
@@ -612,9 +661,10 @@ Module xts.
         Notation.double_colon := encode_as_fields_to;
       }.
       
-      Global Instance ℐ : scale_encode.EncodeAsFields.Trait Self := {
+      #[refine] Global Instance ℐ : scale_encode.EncodeAsFields.Trait Self := {
         scale_encode.EncodeAsFields.encode_as_fields_to := encode_as_fields_to;
       }.
+      Admitted.
     End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Call_E.
     Global Hint Resolve ℐ : core.
   End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Call_E.
@@ -635,18 +685,23 @@ Module xts.
       }.
       Global Set Primitive Projections.
       
-      Global Instance Get_dest : Notation.Dot "dest" := {
+      #[refine] Global Instance Get_dest : Notation.Dot "dest" := {
         Notation.dot x := let* x := M.read x in Pure x.(dest) : M _;
       }.
-      Global Instance Get_AF_dest : Notation.DoubleColon t "dest" := {
+      Admitted.
+      #[refine] Global Instance Get_AF_dest : Notation.DoubleColon t "dest" := {
         Notation.double_colon x := let* x := M.read x in Pure x.(dest) : M _;
       }.
-      Global Instance Get_value : Notation.Dot "value" := {
+      Admitted.
+      #[refine] Global Instance Get_value : Notation.Dot "value" := {
         Notation.dot x := let* x := M.read x in Pure x.(value) : M _;
       }.
-      Global Instance Get_AF_value : Notation.DoubleColon t "value" := {
+      Admitted.
+      #[refine] Global Instance Get_AF_value :
+        Notation.DoubleColon t "value" := {
         Notation.double_colon x := let* x := M.read x in Pure x.(value) : M _;
       }.
+      Admitted.
     End Transfer.
   End Transfer.
   Definition Transfer
@@ -680,9 +735,10 @@ Module xts.
         Notation.double_colon := fmt;
       }.
       
-      Global Instance ℐ : core.fmt.Debug.Trait Self := {
+      #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
         core.fmt.Debug.fmt := fmt;
       }.
+      Admitted.
     End Impl_core_fmt_Debug_for_ink_e2e_xts_Transfer_E_C.
     Global Hint Resolve ℐ : core.
   End Impl_core_fmt_Debug_for_ink_e2e_xts_Transfer_E_C.
@@ -710,9 +766,10 @@ Module xts.
         Notation.double_colon := encode_as_type_to;
       }.
       
-      Global Instance ℐ : scale_encode.EncodeAsType.Trait Self := {
+      #[refine] Global Instance ℐ : scale_encode.EncodeAsType.Trait Self := {
         scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
       }.
+      Admitted.
     End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Transfer_E_C.
     Global Hint Resolve ℐ : core.
   End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Transfer_E_C.
@@ -740,9 +797,10 @@ Module xts.
         Notation.double_colon := encode_as_fields_to;
       }.
       
-      Global Instance ℐ : scale_encode.EncodeAsFields.Trait Self := {
+      #[refine] Global Instance ℐ : scale_encode.EncodeAsFields.Trait Self := {
         scale_encode.EncodeAsFields.encode_as_fields_to := encode_as_fields_to;
       }.
+      Admitted.
     End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Transfer_E_C.
     Global Hint Resolve ℐ : core.
   End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Transfer_E_C.
@@ -768,9 +826,10 @@ Module xts.
         Notation.double_colon := fmt;
       }.
       
-      Global Instance ℐ : core.fmt.Debug.Trait Self := {
+      #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
         core.fmt.Debug.fmt := fmt;
       }.
+      Admitted.
     End Impl_core_fmt_Debug_for_ink_e2e_xts_Determinism.
     Global Hint Resolve ℐ : core.
   End Impl_core_fmt_Debug_for_ink_e2e_xts_Determinism.
@@ -788,9 +847,10 @@ Module xts.
         Notation.double_colon := clone;
       }.
       
-      Global Instance ℐ : core.clone.Clone.Trait Self := {
+      #[refine] Global Instance ℐ : core.clone.Clone.Trait Self := {
         core.clone.Clone.clone := clone;
       }.
+      Admitted.
     End Impl_core_clone_Clone_for_ink_e2e_xts_Determinism.
     Global Hint Resolve ℐ : core.
   End Impl_core_clone_Clone_for_ink_e2e_xts_Determinism.
@@ -801,8 +861,9 @@ Module xts.
       
       Definition Self : Set := ink_e2e.xts.Determinism.
       
-      Global Instance ℐ : core.marker.Copy.Trait Self := {
+      #[refine] Global Instance ℐ : core.marker.Copy.Trait Self := {
       }.
+      Admitted.
     End Impl_core_marker_Copy_for_ink_e2e_xts_Determinism.
     Global Hint Resolve ℐ : core.
   End Impl_core_marker_Copy_for_ink_e2e_xts_Determinism.
@@ -813,8 +874,10 @@ Module xts.
       
       Definition Self : Set := ink_e2e.xts.Determinism.
       
-      Global Instance ℐ : core.marker.StructuralPartialEq.Trait Self := {
+      #[refine] Global Instance ℐ :
+        core.marker.StructuralPartialEq.Trait Self := {
       }.
+      Admitted.
     End Impl_core_marker_StructuralPartialEq_for_ink_e2e_xts_Determinism.
     Global Hint Resolve ℐ : core.
   End Impl_core_marker_StructuralPartialEq_for_ink_e2e_xts_Determinism.
@@ -832,11 +895,12 @@ Module xts.
         Notation.double_colon := eq;
       }.
       
-      Global Instance ℐ :
+      #[refine] Global Instance ℐ :
         core.cmp.PartialEq.Trait Self
           (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
         core.cmp.PartialEq.eq := eq;
       }.
+      Admitted.
     End Impl_core_cmp_PartialEq_for_ink_e2e_xts_Determinism.
     Global Hint Resolve ℐ : core.
   End Impl_core_cmp_PartialEq_for_ink_e2e_xts_Determinism.
@@ -847,8 +911,9 @@ Module xts.
       
       Definition Self : Set := ink_e2e.xts.Determinism.
       
-      Global Instance ℐ : core.marker.StructuralEq.Trait Self := {
+      #[refine] Global Instance ℐ : core.marker.StructuralEq.Trait Self := {
       }.
+      Admitted.
     End Impl_core_marker_StructuralEq_for_ink_e2e_xts_Determinism.
     Global Hint Resolve ℐ : core.
   End Impl_core_marker_StructuralEq_for_ink_e2e_xts_Determinism.
@@ -866,8 +931,9 @@ Module xts.
         Notation.double_colon := assert_receiver_is_total_eq;
       }.
       
-      Global Instance ℐ : core.cmp.Eq.Trait Self := {
+      #[refine] Global Instance ℐ : core.cmp.Eq.Trait Self := {
       }.
+      Admitted.
     End Impl_core_cmp_Eq_for_ink_e2e_xts_Determinism.
     Global Hint Resolve ℐ : core.
   End Impl_core_cmp_Eq_for_ink_e2e_xts_Determinism.
@@ -890,9 +956,10 @@ Module xts.
         Notation.double_colon := encode_as_type_to;
       }.
       
-      Global Instance ℐ : scale_encode.EncodeAsType.Trait Self := {
+      #[refine] Global Instance ℐ : scale_encode.EncodeAsType.Trait Self := {
         scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
       }.
+      Admitted.
     End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Determinism.
     Global Hint Resolve ℐ : core.
   End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Determinism.
@@ -912,30 +979,37 @@ Module xts.
       }.
       Global Set Primitive Projections.
       
-      Global Instance Get_code : Notation.Dot "code" := {
+      #[refine] Global Instance Get_code : Notation.Dot "code" := {
         Notation.dot x := let* x := M.read x in Pure x.(code) : M _;
       }.
-      Global Instance Get_AF_code : Notation.DoubleColon t "code" := {
+      Admitted.
+      #[refine] Global Instance Get_AF_code : Notation.DoubleColon t "code" := {
         Notation.double_colon x := let* x := M.read x in Pure x.(code) : M _;
       }.
-      Global Instance Get_storage_deposit_limit :
+      Admitted.
+      #[refine] Global Instance Get_storage_deposit_limit :
         Notation.Dot "storage_deposit_limit" := {
         Notation.dot x :=
           let* x := M.read x in Pure x.(storage_deposit_limit) : M _;
       }.
-      Global Instance Get_AF_storage_deposit_limit :
+      Admitted.
+      #[refine] Global Instance Get_AF_storage_deposit_limit :
         Notation.DoubleColon t "storage_deposit_limit" := {
         Notation.double_colon x :=
           let* x := M.read x in Pure x.(storage_deposit_limit) : M _;
       }.
-      Global Instance Get_determinism : Notation.Dot "determinism" := {
+      Admitted.
+      #[refine] Global Instance Get_determinism :
+        Notation.Dot "determinism" := {
         Notation.dot x := let* x := M.read x in Pure x.(determinism) : M _;
       }.
-      Global Instance Get_AF_determinism :
+      Admitted.
+      #[refine] Global Instance Get_AF_determinism :
         Notation.DoubleColon t "determinism" := {
         Notation.double_colon x :=
           let* x := M.read x in Pure x.(determinism) : M _;
       }.
+      Admitted.
     End UploadCode.
   End UploadCode.
   Definition UploadCode
@@ -965,9 +1039,10 @@ Module xts.
         Notation.double_colon := fmt;
       }.
       
-      Global Instance ℐ : core.fmt.Debug.Trait Self := {
+      #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
         core.fmt.Debug.fmt := fmt;
       }.
+      Admitted.
     End Impl_core_fmt_Debug_for_ink_e2e_xts_UploadCode_E.
     Global Hint Resolve ℐ : core.
   End Impl_core_fmt_Debug_for_ink_e2e_xts_UploadCode_E.
@@ -993,9 +1068,10 @@ Module xts.
         Notation.double_colon := encode_as_type_to;
       }.
       
-      Global Instance ℐ : scale_encode.EncodeAsType.Trait Self := {
+      #[refine] Global Instance ℐ : scale_encode.EncodeAsType.Trait Self := {
         scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
       }.
+      Admitted.
     End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_UploadCode_E.
     Global Hint Resolve ℐ : core.
   End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_UploadCode_E.
@@ -1021,9 +1097,10 @@ Module xts.
         Notation.double_colon := encode_as_fields_to;
       }.
       
-      Global Instance ℐ : scale_encode.EncodeAsFields.Trait Self := {
+      #[refine] Global Instance ℐ : scale_encode.EncodeAsFields.Trait Self := {
         scale_encode.EncodeAsFields.encode_as_fields_to := encode_as_fields_to;
       }.
+      Admitted.
     End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_UploadCode_E.
     Global Hint Resolve ℐ : core.
   End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_UploadCode_E.
@@ -1044,19 +1121,25 @@ Module xts.
       }.
       Global Set Primitive Projections.
       
-      Global Instance Get_client : Notation.Dot "client" := {
+      #[refine] Global Instance Get_client : Notation.Dot "client" := {
         Notation.dot x := let* x := M.read x in Pure x.(client) : M _;
       }.
-      Global Instance Get_AF_client : Notation.DoubleColon t "client" := {
+      Admitted.
+      #[refine] Global Instance Get_AF_client :
+        Notation.DoubleColon t "client" := {
         Notation.double_colon x := let* x := M.read x in Pure x.(client) : M _;
       }.
-      Global Instance Get__phantom : Notation.Dot "_phantom" := {
+      Admitted.
+      #[refine] Global Instance Get__phantom : Notation.Dot "_phantom" := {
         Notation.dot x := let* x := M.read x in Pure x.(_phantom) : M _;
       }.
-      Global Instance Get_AF__phantom : Notation.DoubleColon t "_phantom" := {
+      Admitted.
+      #[refine] Global Instance Get_AF__phantom :
+        Notation.DoubleColon t "_phantom" := {
         Notation.double_colon x :=
           let* x := M.read x in Pure x.(_phantom) : M _;
       }.
+      Admitted.
     End ContractsApi.
   End ContractsApi.
   Definition ContractsApi
@@ -1099,26 +1182,34 @@ Module client.
       }.
       Global Set Primitive Projections.
       
-      Global Instance Get_account_id : Notation.Dot "account_id" := {
+      #[refine] Global Instance Get_account_id : Notation.Dot "account_id" := {
         Notation.dot x := let* x := M.read x in Pure x.(account_id) : M _;
       }.
-      Global Instance Get_AF_account_id :
+      Admitted.
+      #[refine] Global Instance Get_AF_account_id :
         Notation.DoubleColon t "account_id" := {
         Notation.double_colon x :=
           let* x := M.read x in Pure x.(account_id) : M _;
       }.
-      Global Instance Get_dry_run : Notation.Dot "dry_run" := {
+      Admitted.
+      #[refine] Global Instance Get_dry_run : Notation.Dot "dry_run" := {
         Notation.dot x := let* x := M.read x in Pure x.(dry_run) : M _;
       }.
-      Global Instance Get_AF_dry_run : Notation.DoubleColon t "dry_run" := {
+      Admitted.
+      #[refine] Global Instance Get_AF_dry_run :
+        Notation.DoubleColon t "dry_run" := {
         Notation.double_colon x := let* x := M.read x in Pure x.(dry_run) : M _;
       }.
-      Global Instance Get_events : Notation.Dot "events" := {
+      Admitted.
+      #[refine] Global Instance Get_events : Notation.Dot "events" := {
         Notation.dot x := let* x := M.read x in Pure x.(events) : M _;
       }.
-      Global Instance Get_AF_events : Notation.DoubleColon t "events" := {
+      Admitted.
+      #[refine] Global Instance Get_AF_events :
+        Notation.DoubleColon t "events" := {
         Notation.double_colon x := let* x := M.read x in Pure x.(events) : M _;
       }.
+      Admitted.
     End InstantiationResult.
   End InstantiationResult.
   Definition InstantiationResult
@@ -1149,25 +1240,34 @@ Module client.
       }.
       Global Set Primitive Projections.
       
-      Global Instance Get_code_hash : Notation.Dot "code_hash" := {
+      #[refine] Global Instance Get_code_hash : Notation.Dot "code_hash" := {
         Notation.dot x := let* x := M.read x in Pure x.(code_hash) : M _;
       }.
-      Global Instance Get_AF_code_hash : Notation.DoubleColon t "code_hash" := {
+      Admitted.
+      #[refine] Global Instance Get_AF_code_hash :
+        Notation.DoubleColon t "code_hash" := {
         Notation.double_colon x :=
           let* x := M.read x in Pure x.(code_hash) : M _;
       }.
-      Global Instance Get_dry_run : Notation.Dot "dry_run" := {
+      Admitted.
+      #[refine] Global Instance Get_dry_run : Notation.Dot "dry_run" := {
         Notation.dot x := let* x := M.read x in Pure x.(dry_run) : M _;
       }.
-      Global Instance Get_AF_dry_run : Notation.DoubleColon t "dry_run" := {
+      Admitted.
+      #[refine] Global Instance Get_AF_dry_run :
+        Notation.DoubleColon t "dry_run" := {
         Notation.double_colon x := let* x := M.read x in Pure x.(dry_run) : M _;
       }.
-      Global Instance Get_events : Notation.Dot "events" := {
+      Admitted.
+      #[refine] Global Instance Get_events : Notation.Dot "events" := {
         Notation.dot x := let* x := M.read x in Pure x.(events) : M _;
       }.
-      Global Instance Get_AF_events : Notation.DoubleColon t "events" := {
+      Admitted.
+      #[refine] Global Instance Get_AF_events :
+        Notation.DoubleColon t "events" := {
         Notation.double_colon x := let* x := M.read x in Pure x.(events) : M _;
       }.
+      Admitted.
     End UploadResult.
   End UploadResult.
   Definition UploadResult
@@ -1207,9 +1307,10 @@ Module client.
         Notation.double_colon := fmt;
       }.
       
-      Global Instance ℐ : core.fmt.Debug.Trait Self := {
+      #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
         core.fmt.Debug.fmt := fmt;
       }.
+      Admitted.
     End Impl_core_fmt_Debug_for_ink_e2e_client_UploadResult_C_E.
     Global Hint Resolve ℐ : core.
   End Impl_core_fmt_Debug_for_ink_e2e_client_UploadResult_C_E.
@@ -1244,9 +1345,10 @@ Module client.
         Notation.double_colon := fmt;
       }.
       
-      Global Instance ℐ : core.fmt.Debug.Trait Self := {
+      #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
         core.fmt.Debug.fmt := fmt;
       }.
+      Admitted.
     End Impl_core_fmt_Debug_for_ink_e2e_client_InstantiationResult_C_E.
     Global Hint Resolve ℐ : core.
   End Impl_core_fmt_Debug_for_ink_e2e_client_InstantiationResult_C_E.
@@ -1266,20 +1368,26 @@ Module client.
       }.
       Global Set Primitive Projections.
       
-      Global Instance Get_exec_result : Notation.Dot "exec_result" := {
+      #[refine] Global Instance Get_exec_result :
+        Notation.Dot "exec_result" := {
         Notation.dot x := let* x := M.read x in Pure x.(exec_result) : M _;
       }.
-      Global Instance Get_AF_exec_result :
+      Admitted.
+      #[refine] Global Instance Get_AF_exec_result :
         Notation.DoubleColon t "exec_result" := {
         Notation.double_colon x :=
           let* x := M.read x in Pure x.(exec_result) : M _;
       }.
-      Global Instance Get__marker : Notation.Dot "_marker" := {
+      Admitted.
+      #[refine] Global Instance Get__marker : Notation.Dot "_marker" := {
         Notation.dot x := let* x := M.read x in Pure x.(_marker) : M _;
       }.
-      Global Instance Get_AF__marker : Notation.DoubleColon t "_marker" := {
+      Admitted.
+      #[refine] Global Instance Get_AF__marker :
+        Notation.DoubleColon t "_marker" := {
         Notation.double_colon x := let* x := M.read x in Pure x.(_marker) : M _;
       }.
+      Admitted.
     End CallDryRunResult.
   End CallDryRunResult.
   Definition CallDryRunResult
@@ -1305,18 +1413,24 @@ Module client.
       }.
       Global Set Primitive Projections.
       
-      Global Instance Get_dry_run : Notation.Dot "dry_run" := {
+      #[refine] Global Instance Get_dry_run : Notation.Dot "dry_run" := {
         Notation.dot x := let* x := M.read x in Pure x.(dry_run) : M _;
       }.
-      Global Instance Get_AF_dry_run : Notation.DoubleColon t "dry_run" := {
+      Admitted.
+      #[refine] Global Instance Get_AF_dry_run :
+        Notation.DoubleColon t "dry_run" := {
         Notation.double_colon x := let* x := M.read x in Pure x.(dry_run) : M _;
       }.
-      Global Instance Get_events : Notation.Dot "events" := {
+      Admitted.
+      #[refine] Global Instance Get_events : Notation.Dot "events" := {
         Notation.dot x := let* x := M.read x in Pure x.(events) : M _;
       }.
-      Global Instance Get_AF_events : Notation.DoubleColon t "events" := {
+      Admitted.
+      #[refine] Global Instance Get_AF_events :
+        Notation.DoubleColon t "events" := {
         Notation.double_colon x := let* x := M.read x in Pure x.(events) : M _;
       }.
+      Admitted.
     End CallResult.
   End CallResult.
   Definition CallResult
@@ -1354,9 +1468,10 @@ Module client.
         Notation.double_colon := fmt;
       }.
       
-      Global Instance ℐ : core.fmt.Debug.Trait Self := {
+      #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
         core.fmt.Debug.fmt := fmt;
       }.
+      Admitted.
     End Impl_core_fmt_Debug_for_ink_e2e_client_CallResult_C_E_V.
     Global Hint Resolve ℐ : core.
   End Impl_core_fmt_Debug_for_ink_e2e_client_CallResult_C_E_V.
@@ -1382,9 +1497,10 @@ Module client.
         Notation.double_colon := fmt;
       }.
       
-      Global Instance ℐ : core.fmt.Debug.Trait Self := {
+      #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
         core.fmt.Debug.fmt := fmt;
       }.
+      Admitted.
     End Impl_core_fmt_Debug_for_ink_e2e_client_CallDryRunResult_E_V.
     Global Hint Resolve ℐ : core.
   End Impl_core_fmt_Debug_for_ink_e2e_client_CallDryRunResult_E_V.
@@ -1452,9 +1568,10 @@ Module client.
         Notation.double_colon := fmt;
       }.
       
-      Global Instance ℐ : core.fmt.Debug.Trait Self := {
+      #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
         core.fmt.Debug.fmt := fmt;
       }.
+      Admitted.
     End Impl_core_fmt_Debug_for_ink_e2e_client_Error_C_E.
     Global Hint Resolve ℐ : core.
   End Impl_core_fmt_Debug_for_ink_e2e_client_Error_C_E.
@@ -1480,9 +1597,10 @@ Module client.
         Notation.double_colon := fmt;
       }.
       
-      Global Instance ℐ : core.fmt.Debug.Trait Self := {
+      #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
         core.fmt.Debug.fmt := fmt;
       }.
+      Admitted.
     End Impl_core_fmt_Debug_for_ink_e2e_client_ContractInstantiatedEvent_E. *)
     Global Hint Resolve ℐ : core.
   End Impl_core_fmt_Debug_for_ink_e2e_client_ContractInstantiatedEvent_E. *)
@@ -1510,9 +1628,10 @@ Module client.
         Notation.double_colon := encode_as_type_to;
       }.
       
-      Global Instance ℐ : scale_encode.EncodeAsType.Trait Self := {
+      #[refine] Global Instance ℐ : scale_encode.EncodeAsType.Trait Self := {
         scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
       }.
+      Admitted.
     End Impl_scale_encode_EncodeAsType_for_ink_e2e_client_ContractInstantiatedEvent_E. *)
     Global Hint Resolve ℐ : core.
   End Impl_scale_encode_EncodeAsType_for_ink_e2e_client_ContractInstantiatedEvent_E. *)
@@ -1540,9 +1659,10 @@ Module client.
         Notation.double_colon := encode_as_fields_to;
       }.
       
-      Global Instance ℐ : scale_encode.EncodeAsFields.Trait Self := {
+      #[refine] Global Instance ℐ : scale_encode.EncodeAsFields.Trait Self := {
         scale_encode.EncodeAsFields.encode_as_fields_to := encode_as_fields_to;
       }.
+      Admitted.
     End Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_ContractInstantiatedEvent_E. *)
     Global Hint Resolve ℐ : core.
   End Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_ContractInstantiatedEvent_E. *)
@@ -1556,24 +1676,25 @@ Module client.
       Context {ℋ_0 : ink_env.types.Environment.Trait E}.
       Definition Self : Set := ink_e2e.client.ContractInstantiatedEvent E.
       
-      Definition PALLET  := Pure (mk_str "Contracts").
+      Definition PALLET : ref str := M.run (Pure (mk_str "Contracts")).
       
       Global Instance AssociatedFunction_PALLET :
         Notation.DoubleColon Self "PALLET" := {
         Notation.double_colon := PALLET;
       }.
       
-      Definition EVENT  := Pure (mk_str "Instantiated").
+      Definition EVENT : ref str := M.run (Pure (mk_str "Instantiated")).
       
       Global Instance AssociatedFunction_EVENT :
         Notation.DoubleColon Self "EVENT" := {
         Notation.double_colon := EVENT;
       }.
       
-      Global Instance ℐ : subxt.events.StaticEvent.Trait Self := {
+      #[refine] Global Instance ℐ : subxt.events.StaticEvent.Trait Self := {
         subxt.events.StaticEvent.PALLET := PALLET;
         subxt.events.StaticEvent.EVENT := EVENT;
       }.
+      Admitted.
     End Impl_subxt_events_StaticEvent_for_ink_e2e_client_ContractInstantiatedEvent_E. *)
     Global Hint Resolve ℐ : core.
   End Impl_subxt_events_StaticEvent_for_ink_e2e_client_ContractInstantiatedEvent_E. *)
@@ -1598,9 +1719,10 @@ Module client.
         Notation.double_colon := fmt;
       }.
       
-      Global Instance ℐ : core.fmt.Debug.Trait Self := {
+      #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
         core.fmt.Debug.fmt := fmt;
       }.
+      Admitted.
     End Impl_core_fmt_Debug_for_ink_e2e_client_CodeStoredEvent_E. *)
     Global Hint Resolve ℐ : core.
   End Impl_core_fmt_Debug_for_ink_e2e_client_CodeStoredEvent_E. *)
@@ -1628,9 +1750,10 @@ Module client.
         Notation.double_colon := encode_as_type_to;
       }.
       
-      Global Instance ℐ : scale_encode.EncodeAsType.Trait Self := {
+      #[refine] Global Instance ℐ : scale_encode.EncodeAsType.Trait Self := {
         scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
       }.
+      Admitted.
     End Impl_scale_encode_EncodeAsType_for_ink_e2e_client_CodeStoredEvent_E. *)
     Global Hint Resolve ℐ : core.
   End Impl_scale_encode_EncodeAsType_for_ink_e2e_client_CodeStoredEvent_E. *)
@@ -1658,9 +1781,10 @@ Module client.
         Notation.double_colon := encode_as_fields_to;
       }.
       
-      Global Instance ℐ : scale_encode.EncodeAsFields.Trait Self := {
+      #[refine] Global Instance ℐ : scale_encode.EncodeAsFields.Trait Self := {
         scale_encode.EncodeAsFields.encode_as_fields_to := encode_as_fields_to;
       }.
+      Admitted.
     End Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_CodeStoredEvent_E. *)
     Global Hint Resolve ℐ : core.
   End Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_CodeStoredEvent_E. *)
@@ -1674,24 +1798,25 @@ Module client.
       Context {ℋ_0 : ink_env.types.Environment.Trait E}.
       Definition Self : Set := ink_e2e.client.CodeStoredEvent E.
       
-      Definition PALLET  := Pure (mk_str "Contracts").
+      Definition PALLET : ref str := M.run (Pure (mk_str "Contracts")).
       
       Global Instance AssociatedFunction_PALLET :
         Notation.DoubleColon Self "PALLET" := {
         Notation.double_colon := PALLET;
       }.
       
-      Definition EVENT  := Pure (mk_str "CodeStored").
+      Definition EVENT : ref str := M.run (Pure (mk_str "CodeStored")).
       
       Global Instance AssociatedFunction_EVENT :
         Notation.DoubleColon Self "EVENT" := {
         Notation.double_colon := EVENT;
       }.
       
-      Global Instance ℐ : subxt.events.StaticEvent.Trait Self := {
+      #[refine] Global Instance ℐ : subxt.events.StaticEvent.Trait Self := {
         subxt.events.StaticEvent.PALLET := PALLET;
         subxt.events.StaticEvent.EVENT := EVENT;
       }.
+      Admitted.
     End Impl_subxt_events_StaticEvent_for_ink_e2e_client_CodeStoredEvent_E. *)
     Global Hint Resolve ℐ : core.
   End Impl_subxt_events_StaticEvent_for_ink_e2e_client_CodeStoredEvent_E. *)
@@ -1716,19 +1841,24 @@ Module client.
       }.
       Global Set Primitive Projections.
       
-      Global Instance Get_api : Notation.Dot "api" := {
+      #[refine] Global Instance Get_api : Notation.Dot "api" := {
         Notation.dot x := let* x := M.read x in Pure x.(api) : M _;
       }.
-      Global Instance Get_AF_api : Notation.DoubleColon t "api" := {
+      Admitted.
+      #[refine] Global Instance Get_AF_api : Notation.DoubleColon t "api" := {
         Notation.double_colon x := let* x := M.read x in Pure x.(api) : M _;
       }.
-      Global Instance Get_contracts : Notation.Dot "contracts" := {
+      Admitted.
+      #[refine] Global Instance Get_contracts : Notation.Dot "contracts" := {
         Notation.dot x := let* x := M.read x in Pure x.(contracts) : M _;
       }.
-      Global Instance Get_AF_contracts : Notation.DoubleColon t "contracts" := {
+      Admitted.
+      #[refine] Global Instance Get_AF_contracts :
+        Notation.DoubleColon t "contracts" := {
         Notation.double_colon x :=
           let* x := M.read x in Pure x.(contracts) : M _;
       }.
+      Admitted.
     End Client.
   End Client.
   Definition Client
@@ -1770,25 +1900,34 @@ Module InstantiationResult.
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_account_id : Notation.Dot "account_id" := {
+    #[refine] Global Instance Get_account_id : Notation.Dot "account_id" := {
       Notation.dot x := let* x := M.read x in Pure x.(account_id) : M _;
     }.
-    Global Instance Get_AF_account_id : Notation.DoubleColon t "account_id" := {
+    Admitted.
+    #[refine] Global Instance Get_AF_account_id :
+      Notation.DoubleColon t "account_id" := {
       Notation.double_colon x :=
         let* x := M.read x in Pure x.(account_id) : M _;
     }.
-    Global Instance Get_dry_run : Notation.Dot "dry_run" := {
+    Admitted.
+    #[refine] Global Instance Get_dry_run : Notation.Dot "dry_run" := {
       Notation.dot x := let* x := M.read x in Pure x.(dry_run) : M _;
     }.
-    Global Instance Get_AF_dry_run : Notation.DoubleColon t "dry_run" := {
+    Admitted.
+    #[refine] Global Instance Get_AF_dry_run :
+      Notation.DoubleColon t "dry_run" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(dry_run) : M _;
     }.
-    Global Instance Get_events : Notation.Dot "events" := {
+    Admitted.
+    #[refine] Global Instance Get_events : Notation.Dot "events" := {
       Notation.dot x := let* x := M.read x in Pure x.(events) : M _;
     }.
-    Global Instance Get_AF_events : Notation.DoubleColon t "events" := {
+    Admitted.
+    #[refine] Global Instance Get_AF_events :
+      Notation.DoubleColon t "events" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(events) : M _;
     }.
+    Admitted.
   End InstantiationResult.
 End InstantiationResult.
 Definition InstantiationResult
@@ -1819,24 +1958,33 @@ Module UploadResult.
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_code_hash : Notation.Dot "code_hash" := {
+    #[refine] Global Instance Get_code_hash : Notation.Dot "code_hash" := {
       Notation.dot x := let* x := M.read x in Pure x.(code_hash) : M _;
     }.
-    Global Instance Get_AF_code_hash : Notation.DoubleColon t "code_hash" := {
+    Admitted.
+    #[refine] Global Instance Get_AF_code_hash :
+      Notation.DoubleColon t "code_hash" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(code_hash) : M _;
     }.
-    Global Instance Get_dry_run : Notation.Dot "dry_run" := {
+    Admitted.
+    #[refine] Global Instance Get_dry_run : Notation.Dot "dry_run" := {
       Notation.dot x := let* x := M.read x in Pure x.(dry_run) : M _;
     }.
-    Global Instance Get_AF_dry_run : Notation.DoubleColon t "dry_run" := {
+    Admitted.
+    #[refine] Global Instance Get_AF_dry_run :
+      Notation.DoubleColon t "dry_run" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(dry_run) : M _;
     }.
-    Global Instance Get_events : Notation.Dot "events" := {
+    Admitted.
+    #[refine] Global Instance Get_events : Notation.Dot "events" := {
       Notation.dot x := let* x := M.read x in Pure x.(events) : M _;
     }.
-    Global Instance Get_AF_events : Notation.DoubleColon t "events" := {
+    Admitted.
+    #[refine] Global Instance Get_AF_events :
+      Notation.DoubleColon t "events" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(events) : M _;
     }.
+    Admitted.
   End UploadResult.
 End UploadResult.
 Definition UploadResult
@@ -1876,9 +2024,10 @@ Module Impl_core_fmt_Debug_for_ink_e2e_client_UploadResult_C_E.
       Notation.double_colon := fmt;
     }.
     
-    Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
+    Admitted.
   End Impl_core_fmt_Debug_for_ink_e2e_client_UploadResult_C_E.
   Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_ink_e2e_client_UploadResult_C_E.
@@ -1913,9 +2062,10 @@ Module Impl_core_fmt_Debug_for_ink_e2e_client_InstantiationResult_C_E.
       Notation.double_colon := fmt;
     }.
     
-    Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
+    Admitted.
   End Impl_core_fmt_Debug_for_ink_e2e_client_InstantiationResult_C_E.
   Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_ink_e2e_client_InstantiationResult_C_E.
@@ -1936,18 +2086,24 @@ Module CallResult.
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_dry_run : Notation.Dot "dry_run" := {
+    #[refine] Global Instance Get_dry_run : Notation.Dot "dry_run" := {
       Notation.dot x := let* x := M.read x in Pure x.(dry_run) : M _;
     }.
-    Global Instance Get_AF_dry_run : Notation.DoubleColon t "dry_run" := {
+    Admitted.
+    #[refine] Global Instance Get_AF_dry_run :
+      Notation.DoubleColon t "dry_run" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(dry_run) : M _;
     }.
-    Global Instance Get_events : Notation.Dot "events" := {
+    Admitted.
+    #[refine] Global Instance Get_events : Notation.Dot "events" := {
       Notation.dot x := let* x := M.read x in Pure x.(events) : M _;
     }.
-    Global Instance Get_AF_events : Notation.DoubleColon t "events" := {
+    Admitted.
+    #[refine] Global Instance Get_AF_events :
+      Notation.DoubleColon t "events" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(events) : M _;
     }.
+    Admitted.
   End CallResult.
 End CallResult.
 Definition CallResult
@@ -1985,9 +2141,10 @@ Module Impl_core_fmt_Debug_for_ink_e2e_client_CallResult_C_E_V.
       Notation.double_colon := fmt;
     }.
     
-    Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
+    Admitted.
   End Impl_core_fmt_Debug_for_ink_e2e_client_CallResult_C_E_V.
   Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_ink_e2e_client_CallResult_C_E_V.
@@ -2007,20 +2164,25 @@ Module CallDryRunResult.
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_exec_result : Notation.Dot "exec_result" := {
+    #[refine] Global Instance Get_exec_result : Notation.Dot "exec_result" := {
       Notation.dot x := let* x := M.read x in Pure x.(exec_result) : M _;
     }.
-    Global Instance Get_AF_exec_result :
+    Admitted.
+    #[refine] Global Instance Get_AF_exec_result :
       Notation.DoubleColon t "exec_result" := {
       Notation.double_colon x :=
         let* x := M.read x in Pure x.(exec_result) : M _;
     }.
-    Global Instance Get__marker : Notation.Dot "_marker" := {
+    Admitted.
+    #[refine] Global Instance Get__marker : Notation.Dot "_marker" := {
       Notation.dot x := let* x := M.read x in Pure x.(_marker) : M _;
     }.
-    Global Instance Get_AF__marker : Notation.DoubleColon t "_marker" := {
+    Admitted.
+    #[refine] Global Instance Get_AF__marker :
+      Notation.DoubleColon t "_marker" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(_marker) : M _;
     }.
+    Admitted.
   End CallDryRunResult.
 End CallDryRunResult.
 Definition CallDryRunResult
@@ -2051,9 +2213,10 @@ Module Impl_core_fmt_Debug_for_ink_e2e_client_CallDryRunResult_E_V.
       Notation.double_colon := fmt;
     }.
     
-    Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
+    Admitted.
   End Impl_core_fmt_Debug_for_ink_e2e_client_CallDryRunResult_E_V.
   Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_ink_e2e_client_CallDryRunResult_E_V.
@@ -2121,9 +2284,10 @@ Module Impl_core_fmt_Debug_for_ink_e2e_client_Error_C_E.
       Notation.double_colon := fmt;
     }.
     
-    Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
+    Admitted.
   End Impl_core_fmt_Debug_for_ink_e2e_client_Error_C_E.
   Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_ink_e2e_client_Error_C_E.
@@ -2149,9 +2313,10 @@ End Impl_core_fmt_Debug_for_ink_e2e_client_Error_C_E.
       Notation.double_colon := fmt;
     }.
     
-    Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
+    Admitted.
   End Impl_core_fmt_Debug_for_ink_e2e_client_ContractInstantiatedEvent_E. *)
   Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_ink_e2e_client_ContractInstantiatedEvent_E. *)
@@ -2184,12 +2349,14 @@ End Impl_core_fmt_Debug_for_ink_e2e_client_ContractInstantiatedEvent_E. *)
       Notation.double_colon := decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
     
-    Global Instance ℐ : parity_scale_codec.codec.Decode.Trait Self := {
+    #[refine] Global Instance ℐ :
+      parity_scale_codec.codec.Decode.Trait Self := {
       parity_scale_codec.codec.Decode.decode
         {__CodecInputEdqy : Set}
         {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :=
         decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
+    Admitted.
   End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_client_ContractInstantiatedEvent_E. *)
   Global Hint Resolve ℐ : core.
 End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_client_ContractInstantiatedEvent_E. *)
@@ -2225,8 +2392,10 @@ End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_client_ContractInstantiated
         encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
     }.
     
-    Global Instance ℐ : parity_scale_codec.codec.Encode.Trait Self := {
+    #[refine] Global Instance ℐ :
+      parity_scale_codec.codec.Encode.Trait Self := {
     }.
+    Admitted.
   End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_client_ContractInstantiatedEvent_E. *)
   Global Hint Resolve ℐ : core.
 End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_client_ContractInstantiatedEvent_E. *)
@@ -2245,10 +2414,11 @@ End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_client_ContractInstantiated
       {ℋ_4 : parity_scale_codec.codec.Encode.Trait E::type["AccountId"]}.
     Definition Self : Set := ink_e2e.client.ContractInstantiatedEvent E.
     
-    Global Instance ℐ :
+    #[refine] Global Instance ℐ :
       parity_scale_codec.encode_like.EncodeLike.Trait Self
         (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self) := {
     }.
+    Admitted.
   End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_client_ContractInstantiatedEvent_E. *)
   Global Hint Resolve ℐ : core.
 End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_client_ContractInstantiatedEvent_E. *)
@@ -2271,10 +2441,11 @@ End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_client_ContractIn
       Notation.double_colon := into_visitor;
     }.
     
-    Global Instance ℐ : scale_decode.IntoVisitor.Trait Self := {
+    #[refine] Global Instance ℐ : scale_decode.IntoVisitor.Trait Self := {
       scale_decode.IntoVisitor.Visitor := Visitor;
       scale_decode.IntoVisitor.into_visitor := into_visitor;
     }.
+    Admitted.
   End Impl_scale_decode_IntoVisitor_for_ink_e2e_client_ContractInstantiatedEvent_E. *)
   Global Hint Resolve ℐ : core.
 End Impl_scale_decode_IntoVisitor_for_ink_e2e_client_ContractInstantiatedEvent_E. *)
@@ -2314,10 +2485,11 @@ End Impl_scale_decode_IntoVisitor_for_ink_e2e_client_ContractInstantiatedEvent_E
       Notation.double_colon := visit_tuple;
     }.
     
-    Global Instance ℐ : scale_decode.visitor.Visitor.Trait Self := {
+    #[refine] Global Instance ℐ : scale_decode.visitor.Visitor.Trait Self := {
       scale_decode.visitor.Visitor.Error := Error;
       scale_decode.visitor.Visitor.Value := Value;
     }.
+    Admitted.
   End Impl_scale_decode_visitor_Visitor_for_ink_e2e_client___Visitor_E. *)
   Global Hint Resolve ℐ : core.
 End Impl_scale_decode_visitor_Visitor_for_ink_e2e_client___Visitor_E. *)
@@ -2342,9 +2514,10 @@ End Impl_scale_decode_visitor_Visitor_for_ink_e2e_client___Visitor_E. *)
       Notation.double_colon := decode_as_fields;
     }.
     
-    Global Instance ℐ : scale_decode.DecodeAsFields.Trait Self := {
+    #[refine] Global Instance ℐ : scale_decode.DecodeAsFields.Trait Self := {
       scale_decode.DecodeAsFields.decode_as_fields := decode_as_fields;
     }.
+    Admitted.
   End Impl_scale_decode_DecodeAsFields_for_ink_e2e_client_ContractInstantiatedEvent_E. *)
   Global Hint Resolve ℐ : core.
 End Impl_scale_decode_DecodeAsFields_for_ink_e2e_client_ContractInstantiatedEvent_E. *)
@@ -2372,9 +2545,10 @@ End Impl_scale_decode_DecodeAsFields_for_ink_e2e_client_ContractInstantiatedEven
       Notation.double_colon := encode_as_type_to;
     }.
     
-    Global Instance ℐ : scale_encode.EncodeAsType.Trait Self := {
+    #[refine] Global Instance ℐ : scale_encode.EncodeAsType.Trait Self := {
       scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
     }.
+    Admitted.
   End Impl_scale_encode_EncodeAsType_for_ink_e2e_client_ContractInstantiatedEvent_E. *)
   Global Hint Resolve ℐ : core.
 End Impl_scale_encode_EncodeAsType_for_ink_e2e_client_ContractInstantiatedEvent_E. *)
@@ -2402,9 +2576,10 @@ End Impl_scale_encode_EncodeAsType_for_ink_e2e_client_ContractInstantiatedEvent_
       Notation.double_colon := encode_as_fields_to;
     }.
     
-    Global Instance ℐ : scale_encode.EncodeAsFields.Trait Self := {
+    #[refine] Global Instance ℐ : scale_encode.EncodeAsFields.Trait Self := {
       scale_encode.EncodeAsFields.encode_as_fields_to := encode_as_fields_to;
     }.
+    Admitted.
   End Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_ContractInstantiatedEvent_E. *)
   Global Hint Resolve ℐ : core.
 End Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_ContractInstantiatedEvent_E. *)
@@ -2418,24 +2593,25 @@ End Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_ContractInstantiatedEven
     Context {ℋ_0 : ink_env.types.Environment.Trait E}.
     Definition Self : Set := ink_e2e.client.ContractInstantiatedEvent E.
     
-    Definition PALLET  := Pure (mk_str "Contracts").
+    Definition PALLET : ref str := M.run (Pure (mk_str "Contracts")).
     
     Global Instance AssociatedFunction_PALLET :
       Notation.DoubleColon Self "PALLET" := {
       Notation.double_colon := PALLET;
     }.
     
-    Definition EVENT  := Pure (mk_str "Instantiated").
+    Definition EVENT : ref str := M.run (Pure (mk_str "Instantiated")).
     
     Global Instance AssociatedFunction_EVENT :
       Notation.DoubleColon Self "EVENT" := {
       Notation.double_colon := EVENT;
     }.
     
-    Global Instance ℐ : subxt.events.StaticEvent.Trait Self := {
+    #[refine] Global Instance ℐ : subxt.events.StaticEvent.Trait Self := {
       subxt.events.StaticEvent.PALLET := PALLET;
       subxt.events.StaticEvent.EVENT := EVENT;
     }.
+    Admitted.
   End Impl_subxt_events_StaticEvent_for_ink_e2e_client_ContractInstantiatedEvent_E. *)
   Global Hint Resolve ℐ : core.
 End Impl_subxt_events_StaticEvent_for_ink_e2e_client_ContractInstantiatedEvent_E. *)
@@ -2460,9 +2636,10 @@ End Impl_subxt_events_StaticEvent_for_ink_e2e_client_ContractInstantiatedEvent_E
       Notation.double_colon := fmt;
     }.
     
-    Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
+    Admitted.
   End Impl_core_fmt_Debug_for_ink_e2e_client_CodeStoredEvent_E. *)
   Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_ink_e2e_client_CodeStoredEvent_E. *)
@@ -2493,12 +2670,14 @@ End Impl_core_fmt_Debug_for_ink_e2e_client_CodeStoredEvent_E. *)
       Notation.double_colon := decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
     
-    Global Instance ℐ : parity_scale_codec.codec.Decode.Trait Self := {
+    #[refine] Global Instance ℐ :
+      parity_scale_codec.codec.Decode.Trait Self := {
       parity_scale_codec.codec.Decode.decode
         {__CodecInputEdqy : Set}
         {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :=
         decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
+    Admitted.
   End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_client_CodeStoredEvent_E. *)
   Global Hint Resolve ℐ : core.
 End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_client_CodeStoredEvent_E. *)
@@ -2558,8 +2737,10 @@ End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_client_CodeStoredEvent_E. *
       Notation.double_colon := using_encoded (R := R) (F := F);
     }.
     
-    Global Instance ℐ : parity_scale_codec.codec.Encode.Trait Self := {
+    #[refine] Global Instance ℐ :
+      parity_scale_codec.codec.Encode.Trait Self := {
     }.
+    Admitted.
   End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_client_CodeStoredEvent_E. *)
   Global Hint Resolve ℐ : core.
 End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_client_CodeStoredEvent_E. *)
@@ -2576,10 +2757,11 @@ End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_client_CodeStoredEvent_E. *
       {ℋ_2 : parity_scale_codec.codec.Encode.Trait E::type["Hash"]}.
     Definition Self : Set := ink_e2e.client.CodeStoredEvent E.
     
-    Global Instance ℐ :
+    #[refine] Global Instance ℐ :
       parity_scale_codec.encode_like.EncodeLike.Trait Self
         (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self) := {
     }.
+    Admitted.
   End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_client_CodeStoredEvent_E. *)
   Global Hint Resolve ℐ : core.
 End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_client_CodeStoredEvent_E. *)
@@ -2602,10 +2784,11 @@ End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_client_CodeStored
       Notation.double_colon := into_visitor;
     }.
     
-    Global Instance ℐ : scale_decode.IntoVisitor.Trait Self := {
+    #[refine] Global Instance ℐ : scale_decode.IntoVisitor.Trait Self := {
       scale_decode.IntoVisitor.Visitor := Visitor;
       scale_decode.IntoVisitor.into_visitor := into_visitor;
     }.
+    Admitted.
   End Impl_scale_decode_IntoVisitor_for_ink_e2e_client_CodeStoredEvent_E. *)
   Global Hint Resolve ℐ : core.
 End Impl_scale_decode_IntoVisitor_for_ink_e2e_client_CodeStoredEvent_E. *)
@@ -2645,10 +2828,11 @@ End Impl_scale_decode_IntoVisitor_for_ink_e2e_client_CodeStoredEvent_E. *)
       Notation.double_colon := visit_tuple;
     }.
     
-    Global Instance ℐ : scale_decode.visitor.Visitor.Trait Self := {
+    #[refine] Global Instance ℐ : scale_decode.visitor.Visitor.Trait Self := {
       scale_decode.visitor.Visitor.Error := Error;
       scale_decode.visitor.Visitor.Value := Value;
     }.
+    Admitted.
   End Impl_scale_decode_visitor_Visitor_for_ink_e2e_client___Visitor_E. *)
   Global Hint Resolve ℐ : core.
 End Impl_scale_decode_visitor_Visitor_for_ink_e2e_client___Visitor_E. *)
@@ -2673,9 +2857,10 @@ End Impl_scale_decode_visitor_Visitor_for_ink_e2e_client___Visitor_E. *)
       Notation.double_colon := decode_as_fields;
     }.
     
-    Global Instance ℐ : scale_decode.DecodeAsFields.Trait Self := {
+    #[refine] Global Instance ℐ : scale_decode.DecodeAsFields.Trait Self := {
       scale_decode.DecodeAsFields.decode_as_fields := decode_as_fields;
     }.
+    Admitted.
   End Impl_scale_decode_DecodeAsFields_for_ink_e2e_client_CodeStoredEvent_E. *)
   Global Hint Resolve ℐ : core.
 End Impl_scale_decode_DecodeAsFields_for_ink_e2e_client_CodeStoredEvent_E. *)
@@ -2703,9 +2888,10 @@ End Impl_scale_decode_DecodeAsFields_for_ink_e2e_client_CodeStoredEvent_E. *)
       Notation.double_colon := encode_as_type_to;
     }.
     
-    Global Instance ℐ : scale_encode.EncodeAsType.Trait Self := {
+    #[refine] Global Instance ℐ : scale_encode.EncodeAsType.Trait Self := {
       scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
     }.
+    Admitted.
   End Impl_scale_encode_EncodeAsType_for_ink_e2e_client_CodeStoredEvent_E. *)
   Global Hint Resolve ℐ : core.
 End Impl_scale_encode_EncodeAsType_for_ink_e2e_client_CodeStoredEvent_E. *)
@@ -2733,9 +2919,10 @@ End Impl_scale_encode_EncodeAsType_for_ink_e2e_client_CodeStoredEvent_E. *)
       Notation.double_colon := encode_as_fields_to;
     }.
     
-    Global Instance ℐ : scale_encode.EncodeAsFields.Trait Self := {
+    #[refine] Global Instance ℐ : scale_encode.EncodeAsFields.Trait Self := {
       scale_encode.EncodeAsFields.encode_as_fields_to := encode_as_fields_to;
     }.
+    Admitted.
   End Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_CodeStoredEvent_E. *)
   Global Hint Resolve ℐ : core.
 End Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_CodeStoredEvent_E. *)
@@ -2749,24 +2936,25 @@ End Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_CodeStoredEvent_E. *)
     Context {ℋ_0 : ink_env.types.Environment.Trait E}.
     Definition Self : Set := ink_e2e.client.CodeStoredEvent E.
     
-    Definition PALLET  := Pure (mk_str "Contracts").
+    Definition PALLET : ref str := M.run (Pure (mk_str "Contracts")).
     
     Global Instance AssociatedFunction_PALLET :
       Notation.DoubleColon Self "PALLET" := {
       Notation.double_colon := PALLET;
     }.
     
-    Definition EVENT  := Pure (mk_str "CodeStored").
+    Definition EVENT : ref str := M.run (Pure (mk_str "CodeStored")).
     
     Global Instance AssociatedFunction_EVENT :
       Notation.DoubleColon Self "EVENT" := {
       Notation.double_colon := EVENT;
     }.
     
-    Global Instance ℐ : subxt.events.StaticEvent.Trait Self := {
+    #[refine] Global Instance ℐ : subxt.events.StaticEvent.Trait Self := {
       subxt.events.StaticEvent.PALLET := PALLET;
       subxt.events.StaticEvent.EVENT := EVENT;
     }.
+    Admitted.
   End Impl_subxt_events_StaticEvent_for_ink_e2e_client_CodeStoredEvent_E. *)
   Global Hint Resolve ℐ : core.
 End Impl_subxt_events_StaticEvent_for_ink_e2e_client_CodeStoredEvent_E. *)
@@ -2791,18 +2979,23 @@ Module Client.
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_api : Notation.Dot "api" := {
+    #[refine] Global Instance Get_api : Notation.Dot "api" := {
       Notation.dot x := let* x := M.read x in Pure x.(api) : M _;
     }.
-    Global Instance Get_AF_api : Notation.DoubleColon t "api" := {
+    Admitted.
+    #[refine] Global Instance Get_AF_api : Notation.DoubleColon t "api" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(api) : M _;
     }.
-    Global Instance Get_contracts : Notation.Dot "contracts" := {
+    Admitted.
+    #[refine] Global Instance Get_contracts : Notation.Dot "contracts" := {
       Notation.dot x := let* x := M.read x in Pure x.(contracts) : M _;
     }.
-    Global Instance Get_AF_contracts : Notation.DoubleColon t "contracts" := {
+    Admitted.
+    #[refine] Global Instance Get_AF_contracts :
+      Notation.DoubleColon t "contracts" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(contracts) : M _;
     }.
+    Admitted.
   End Client.
 End Client.
 Definition Client
@@ -3039,24 +3232,31 @@ Module node_proc.
       }.
       Global Set Primitive Projections.
       
-      Global Instance Get_proc : Notation.Dot "proc" := {
+      #[refine] Global Instance Get_proc : Notation.Dot "proc" := {
         Notation.dot x := let* x := M.read x in Pure x.(proc) : M _;
       }.
-      Global Instance Get_AF_proc : Notation.DoubleColon t "proc" := {
+      Admitted.
+      #[refine] Global Instance Get_AF_proc : Notation.DoubleColon t "proc" := {
         Notation.double_colon x := let* x := M.read x in Pure x.(proc) : M _;
       }.
-      Global Instance Get_client : Notation.Dot "client" := {
+      Admitted.
+      #[refine] Global Instance Get_client : Notation.Dot "client" := {
         Notation.dot x := let* x := M.read x in Pure x.(client) : M _;
       }.
-      Global Instance Get_AF_client : Notation.DoubleColon t "client" := {
+      Admitted.
+      #[refine] Global Instance Get_AF_client :
+        Notation.DoubleColon t "client" := {
         Notation.double_colon x := let* x := M.read x in Pure x.(client) : M _;
       }.
-      Global Instance Get_url : Notation.Dot "url" := {
+      Admitted.
+      #[refine] Global Instance Get_url : Notation.Dot "url" := {
         Notation.dot x := let* x := M.read x in Pure x.(url) : M _;
       }.
-      Global Instance Get_AF_url : Notation.DoubleColon t "url" := {
+      Admitted.
+      #[refine] Global Instance Get_AF_url : Notation.DoubleColon t "url" := {
         Notation.double_colon x := let* x := M.read x in Pure x.(url) : M _;
       }.
+      Admitted.
     End TestNodeProcess.
   End TestNodeProcess.
   Definition TestNodeProcess
@@ -3082,9 +3282,10 @@ Module node_proc.
         Notation.double_colon := drop;
       }.
       
-      Global Instance ℐ : core.ops.drop.Drop.Trait Self := {
+      #[refine] Global Instance ℐ : core.ops.drop.Drop.Trait Self := {
         core.ops.drop.Drop.drop := drop;
       }.
+      Admitted.
     End Impl_core_ops_drop_Drop_for_ink_e2e_node_proc_TestNodeProcess_R. *)
     Global Hint Resolve ℐ : core.
   End Impl_core_ops_drop_Drop_for_ink_e2e_node_proc_TestNodeProcess_R. *)
@@ -3103,26 +3304,35 @@ Module node_proc.
       }.
       Global Set Primitive Projections.
       
-      Global Instance Get_node_path : Notation.Dot "node_path" := {
+      #[refine] Global Instance Get_node_path : Notation.Dot "node_path" := {
         Notation.dot x := let* x := M.read x in Pure x.(node_path) : M _;
       }.
-      Global Instance Get_AF_node_path : Notation.DoubleColon t "node_path" := {
+      Admitted.
+      #[refine] Global Instance Get_AF_node_path :
+        Notation.DoubleColon t "node_path" := {
         Notation.double_colon x :=
           let* x := M.read x in Pure x.(node_path) : M _;
       }.
-      Global Instance Get_authority : Notation.Dot "authority" := {
+      Admitted.
+      #[refine] Global Instance Get_authority : Notation.Dot "authority" := {
         Notation.dot x := let* x := M.read x in Pure x.(authority) : M _;
       }.
-      Global Instance Get_AF_authority : Notation.DoubleColon t "authority" := {
+      Admitted.
+      #[refine] Global Instance Get_AF_authority :
+        Notation.DoubleColon t "authority" := {
         Notation.double_colon x :=
           let* x := M.read x in Pure x.(authority) : M _;
       }.
-      Global Instance Get_marker : Notation.Dot "marker" := {
+      Admitted.
+      #[refine] Global Instance Get_marker : Notation.Dot "marker" := {
         Notation.dot x := let* x := M.read x in Pure x.(marker) : M _;
       }.
-      Global Instance Get_AF_marker : Notation.DoubleColon t "marker" := {
+      Admitted.
+      #[refine] Global Instance Get_AF_marker :
+        Notation.DoubleColon t "marker" := {
         Notation.double_colon x := let* x := M.read x in Pure x.(marker) : M _;
       }.
+      Admitted.
     End TestNodeProcessBuilder.
   End TestNodeProcessBuilder.
   Definition TestNodeProcessBuilder (R : Set) `{ℋ : State.Trait} : Set :=
@@ -3144,24 +3354,31 @@ Module TestNodeProcess.
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_proc : Notation.Dot "proc" := {
+    #[refine] Global Instance Get_proc : Notation.Dot "proc" := {
       Notation.dot x := let* x := M.read x in Pure x.(proc) : M _;
     }.
-    Global Instance Get_AF_proc : Notation.DoubleColon t "proc" := {
+    Admitted.
+    #[refine] Global Instance Get_AF_proc : Notation.DoubleColon t "proc" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(proc) : M _;
     }.
-    Global Instance Get_client : Notation.Dot "client" := {
+    Admitted.
+    #[refine] Global Instance Get_client : Notation.Dot "client" := {
       Notation.dot x := let* x := M.read x in Pure x.(client) : M _;
     }.
-    Global Instance Get_AF_client : Notation.DoubleColon t "client" := {
+    Admitted.
+    #[refine] Global Instance Get_AF_client :
+      Notation.DoubleColon t "client" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(client) : M _;
     }.
-    Global Instance Get_url : Notation.Dot "url" := {
+    Admitted.
+    #[refine] Global Instance Get_url : Notation.Dot "url" := {
       Notation.dot x := let* x := M.read x in Pure x.(url) : M _;
     }.
-    Global Instance Get_AF_url : Notation.DoubleColon t "url" := {
+    Admitted.
+    #[refine] Global Instance Get_AF_url : Notation.DoubleColon t "url" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(url) : M _;
     }.
+    Admitted.
   End TestNodeProcess.
 End TestNodeProcess.
 Definition TestNodeProcess
@@ -3187,9 +3404,10 @@ Definition TestNodeProcess
       Notation.double_colon := drop;
     }.
     
-    Global Instance ℐ : core.ops.drop.Drop.Trait Self := {
+    #[refine] Global Instance ℐ : core.ops.drop.Drop.Trait Self := {
       core.ops.drop.Drop.drop := drop;
     }.
+    Admitted.
   End Impl_core_ops_drop_Drop_for_ink_e2e_node_proc_TestNodeProcess_R. *)
   Global Hint Resolve ℐ : core.
 End Impl_core_ops_drop_Drop_for_ink_e2e_node_proc_TestNodeProcess_R. *)
@@ -3208,24 +3426,33 @@ Module TestNodeProcessBuilder.
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_node_path : Notation.Dot "node_path" := {
+    #[refine] Global Instance Get_node_path : Notation.Dot "node_path" := {
       Notation.dot x := let* x := M.read x in Pure x.(node_path) : M _;
     }.
-    Global Instance Get_AF_node_path : Notation.DoubleColon t "node_path" := {
+    Admitted.
+    #[refine] Global Instance Get_AF_node_path :
+      Notation.DoubleColon t "node_path" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(node_path) : M _;
     }.
-    Global Instance Get_authority : Notation.Dot "authority" := {
+    Admitted.
+    #[refine] Global Instance Get_authority : Notation.Dot "authority" := {
       Notation.dot x := let* x := M.read x in Pure x.(authority) : M _;
     }.
-    Global Instance Get_AF_authority : Notation.DoubleColon t "authority" := {
+    Admitted.
+    #[refine] Global Instance Get_AF_authority :
+      Notation.DoubleColon t "authority" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(authority) : M _;
     }.
-    Global Instance Get_marker : Notation.Dot "marker" := {
+    Admitted.
+    #[refine] Global Instance Get_marker : Notation.Dot "marker" := {
       Notation.dot x := let* x := M.read x in Pure x.(marker) : M _;
     }.
-    Global Instance Get_AF_marker : Notation.DoubleColon t "marker" := {
+    Admitted.
+    #[refine] Global Instance Get_AF_marker :
+      Notation.DoubleColon t "marker" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(marker) : M _;
     }.
+    Admitted.
   End TestNodeProcessBuilder.
 End TestNodeProcessBuilder.
 Definition TestNodeProcessBuilder (R : Set) `{ℋ : State.Trait} : Set :=
@@ -3242,19 +3469,25 @@ Module Weight.
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_ref_time : Notation.Dot "ref_time" := {
+    #[refine] Global Instance Get_ref_time : Notation.Dot "ref_time" := {
       Notation.dot x := let* x := M.read x in Pure x.(ref_time) : M _;
     }.
-    Global Instance Get_AF_ref_time : Notation.DoubleColon t "ref_time" := {
+    Admitted.
+    #[refine] Global Instance Get_AF_ref_time :
+      Notation.DoubleColon t "ref_time" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(ref_time) : M _;
     }.
-    Global Instance Get_proof_size : Notation.Dot "proof_size" := {
+    Admitted.
+    #[refine] Global Instance Get_proof_size : Notation.Dot "proof_size" := {
       Notation.dot x := let* x := M.read x in Pure x.(proof_size) : M _;
     }.
-    Global Instance Get_AF_proof_size : Notation.DoubleColon t "proof_size" := {
+    Admitted.
+    #[refine] Global Instance Get_AF_proof_size :
+      Notation.DoubleColon t "proof_size" := {
       Notation.double_colon x :=
         let* x := M.read x in Pure x.(proof_size) : M _;
     }.
+    Admitted.
   End Weight.
 End Weight.
 Definition Weight `{ℋ : State.Trait} : Set := M.val Weight.t.
@@ -3265,8 +3498,9 @@ Module Impl_core_marker_Copy_for_ink_e2e_xts_Weight.
     
     Definition Self : Set := ink_e2e.xts.Weight.
     
-    Global Instance ℐ : core.marker.Copy.Trait Self := {
+    #[refine] Global Instance ℐ : core.marker.Copy.Trait Self := {
     }.
+    Admitted.
   End Impl_core_marker_Copy_for_ink_e2e_xts_Weight.
   Global Hint Resolve ℐ : core.
 End Impl_core_marker_Copy_for_ink_e2e_xts_Weight.
@@ -3284,9 +3518,10 @@ Module Impl_core_clone_Clone_for_ink_e2e_xts_Weight.
       Notation.double_colon := clone;
     }.
     
-    Global Instance ℐ : core.clone.Clone.Trait Self := {
+    #[refine] Global Instance ℐ : core.clone.Clone.Trait Self := {
       core.clone.Clone.clone := clone;
     }.
+    Admitted.
   End Impl_core_clone_Clone_for_ink_e2e_xts_Weight.
   Global Hint Resolve ℐ : core.
 End Impl_core_clone_Clone_for_ink_e2e_xts_Weight.
@@ -3297,8 +3532,9 @@ Module Impl_core_marker_StructuralEq_for_ink_e2e_xts_Weight.
     
     Definition Self : Set := ink_e2e.xts.Weight.
     
-    Global Instance ℐ : core.marker.StructuralEq.Trait Self := {
+    #[refine] Global Instance ℐ : core.marker.StructuralEq.Trait Self := {
     }.
+    Admitted.
   End Impl_core_marker_StructuralEq_for_ink_e2e_xts_Weight.
   Global Hint Resolve ℐ : core.
 End Impl_core_marker_StructuralEq_for_ink_e2e_xts_Weight.
@@ -3316,8 +3552,9 @@ Module Impl_core_cmp_Eq_for_ink_e2e_xts_Weight.
       Notation.double_colon := assert_receiver_is_total_eq;
     }.
     
-    Global Instance ℐ : core.cmp.Eq.Trait Self := {
+    #[refine] Global Instance ℐ : core.cmp.Eq.Trait Self := {
     }.
+    Admitted.
   End Impl_core_cmp_Eq_for_ink_e2e_xts_Weight.
   Global Hint Resolve ℐ : core.
 End Impl_core_cmp_Eq_for_ink_e2e_xts_Weight.
@@ -3328,8 +3565,10 @@ Module Impl_core_marker_StructuralPartialEq_for_ink_e2e_xts_Weight.
     
     Definition Self : Set := ink_e2e.xts.Weight.
     
-    Global Instance ℐ : core.marker.StructuralPartialEq.Trait Self := {
+    #[refine] Global Instance ℐ :
+      core.marker.StructuralPartialEq.Trait Self := {
     }.
+    Admitted.
   End Impl_core_marker_StructuralPartialEq_for_ink_e2e_xts_Weight.
   Global Hint Resolve ℐ : core.
 End Impl_core_marker_StructuralPartialEq_for_ink_e2e_xts_Weight.
@@ -3346,11 +3585,12 @@ Module Impl_core_cmp_PartialEq_for_ink_e2e_xts_Weight.
       Notation.double_colon := eq;
     }.
     
-    Global Instance ℐ :
+    #[refine] Global Instance ℐ :
       core.cmp.PartialEq.Trait Self
         (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
       core.cmp.PartialEq.eq := eq;
     }.
+    Admitted.
   End Impl_core_cmp_PartialEq_for_ink_e2e_xts_Weight.
   Global Hint Resolve ℐ : core.
 End Impl_core_cmp_PartialEq_for_ink_e2e_xts_Weight.
@@ -3369,9 +3609,10 @@ Module Impl_core_fmt_Debug_for_ink_e2e_xts_Weight.
       Notation.double_colon := fmt;
     }.
     
-    Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
+    Admitted.
   End Impl_core_fmt_Debug_for_ink_e2e_xts_Weight.
   Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_ink_e2e_xts_Weight.
@@ -3389,9 +3630,10 @@ Module Impl_core_default_Default_for_ink_e2e_xts_Weight.
       Notation.double_colon := default;
     }.
     
-    Global Instance ℐ : core.default.Default.Trait Self := {
+    #[refine] Global Instance ℐ : core.default.Default.Trait Self := {
       core.default.Default.default := default;
     }.
+    Admitted.
   End Impl_core_default_Default_for_ink_e2e_xts_Weight.
   Global Hint Resolve ℐ : core.
 End Impl_core_default_Default_for_ink_e2e_xts_Weight.
@@ -3419,8 +3661,10 @@ Module Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Weight.
         encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
     }.
     
-    Global Instance ℐ : parity_scale_codec.codec.Encode.Trait Self := {
+    #[refine] Global Instance ℐ :
+      parity_scale_codec.codec.Encode.Trait Self := {
     }.
+    Admitted.
   End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Weight.
   Global Hint Resolve ℐ : core.
 End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Weight.
@@ -3431,10 +3675,11 @@ Module Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Weight.
     
     Definition Self : Set := ink_e2e.xts.Weight.
     
-    Global Instance ℐ :
+    #[refine] Global Instance ℐ :
       parity_scale_codec.encode_like.EncodeLike.Trait Self
         (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self) := {
     }.
+    Admitted.
   End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Weight.
   Global Hint Resolve ℐ : core.
 End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Weight.
@@ -3459,12 +3704,14 @@ Module Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Weight.
       Notation.double_colon := decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
     
-    Global Instance ℐ : parity_scale_codec.codec.Decode.Trait Self := {
+    #[refine] Global Instance ℐ :
+      parity_scale_codec.codec.Decode.Trait Self := {
       parity_scale_codec.codec.Decode.decode
         {__CodecInputEdqy : Set}
         {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :=
         decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
+    Admitted.
   End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Weight.
   Global Hint Resolve ℐ : core.
 End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Weight.
@@ -3482,11 +3729,12 @@ End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Weight.
       Notation.double_colon := max_encoded_len;
     }.
     
-    Global Instance ℐ :
+    #[refine] Global Instance ℐ :
       parity_scale_codec.max_encoded_len.MaxEncodedLen.Trait Self := {
       parity_scale_codec.max_encoded_len.MaxEncodedLen.max_encoded_len :=
         max_encoded_len;
     }.
+    Admitted.
   End Impl_parity_scale_codec_max_encoded_len_MaxEncodedLen_for_ink_e2e_xts_Weight. *)
   Global Hint Resolve ℐ : core.
 End Impl_parity_scale_codec_max_encoded_len_MaxEncodedLen_for_ink_e2e_xts_Weight. *)
@@ -3509,9 +3757,10 @@ Module Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Weight.
       Notation.double_colon := encode_as_type_to;
     }.
     
-    Global Instance ℐ : scale_encode.EncodeAsType.Trait Self := {
+    #[refine] Global Instance ℐ : scale_encode.EncodeAsType.Trait Self := {
       scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
     }.
+    Admitted.
   End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Weight.
   Global Hint Resolve ℐ : core.
 End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Weight.
@@ -3534,9 +3783,10 @@ Module Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Weight.
       Notation.double_colon := encode_as_fields_to;
     }.
     
-    Global Instance ℐ : scale_encode.EncodeAsFields.Trait Self := {
+    #[refine] Global Instance ℐ : scale_encode.EncodeAsFields.Trait Self := {
       scale_encode.EncodeAsFields.encode_as_fields_to := encode_as_fields_to;
     }.
+    Admitted.
   End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Weight.
   Global Hint Resolve ℐ : core.
 End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Weight.
@@ -3560,12 +3810,13 @@ Module Impl_serde_ser_Serialize_for_ink_e2e_xts_Weight.
       Notation.double_colon := serialize (__S := __S);
     }.
     
-    Global Instance ℐ : serde.ser.Serialize.Trait Self := {
+    #[refine] Global Instance ℐ : serde.ser.Serialize.Trait Self := {
       serde.ser.Serialize.serialize
         {__S : Set}
         {ℋ_0 : serde.ser.Serializer.Trait __S} :=
         serialize (__S := __S);
     }.
+    Admitted.
   End Impl_serde_ser_Serialize_for_ink_e2e_xts_Weight.
   Global Hint Resolve ℐ : core.
 End Impl_serde_ser_Serialize_for_ink_e2e_xts_Weight.
@@ -3587,12 +3838,13 @@ Module Impl_serde_de_Deserialize_for_ink_e2e_xts_Weight.
       Notation.double_colon := deserialize (__D := __D);
     }.
     
-    Global Instance ℐ : serde.de.Deserialize.Trait Self := {
+    #[refine] Global Instance ℐ : serde.de.Deserialize.Trait Self := {
       serde.de.Deserialize.deserialize
         {__D : Set}
         {ℋ_0 : serde.de.Deserializer.Trait __D} :=
         deserialize (__D := __D);
     }.
+    Admitted.
   End Impl_serde_de_Deserialize_for_ink_e2e_xts_Weight.
   Global Hint Resolve ℐ : core.
 End Impl_serde_de_Deserialize_for_ink_e2e_xts_Weight.
@@ -3646,10 +3898,11 @@ End Impl_serde_de_Deserialize_for_ink_e2e_xts_Weight.
       Notation.double_colon := visit_bytes (__E := __E);
     }.
     
-    Global Instance ℐ : serde.de.Visitor.Trait Self := {
+    #[refine] Global Instance ℐ : serde.de.Visitor.Trait Self := {
       serde.de.Visitor.Value := Value;
       serde.de.Visitor.expecting := expecting;
     }.
+    Admitted.
   End Impl_serde_de_Visitor_for_ink_e2e_xts___deserialize___FieldVisitor. *)
   Global Hint Resolve ℐ : core.
 End Impl_serde_de_Visitor_for_ink_e2e_xts___deserialize___FieldVisitor. *)
@@ -3671,12 +3924,13 @@ End Impl_serde_de_Visitor_for_ink_e2e_xts___deserialize___FieldVisitor. *)
       Notation.double_colon := deserialize (__D := __D);
     }.
     
-    Global Instance ℐ : serde.de.Deserialize.Trait Self := {
+    #[refine] Global Instance ℐ : serde.de.Deserialize.Trait Self := {
       serde.de.Deserialize.deserialize
         {__D : Set}
         {ℋ_0 : serde.de.Deserializer.Trait __D} :=
         deserialize (__D := __D);
     }.
+    Admitted.
   End Impl_serde_de_Deserialize_for_ink_e2e_xts___deserialize___Field. *)
   Global Hint Resolve ℐ : core.
 End Impl_serde_de_Deserialize_for_ink_e2e_xts___deserialize___Field. *)
@@ -3719,10 +3973,11 @@ End Impl_serde_de_Deserialize_for_ink_e2e_xts___deserialize___Field. *)
       Notation.double_colon := visit_map (__A := __A);
     }.
     
-    Global Instance ℐ : serde.de.Visitor.Trait Self := {
+    #[refine] Global Instance ℐ : serde.de.Visitor.Trait Self := {
       serde.de.Visitor.Value := Value;
       serde.de.Visitor.expecting := expecting;
     }.
+    Admitted.
   End Impl_serde_de_Visitor_for_ink_e2e_xts___deserialize___Visitor. *)
   Global Hint Resolve ℐ : core.
 End Impl_serde_de_Visitor_for_ink_e2e_xts___deserialize___Visitor. *)
@@ -3740,10 +3995,11 @@ Module Impl_core_convert_From_for_ink_e2e_xts_Weight.
       Notation.double_colon := from;
     }.
     
-    Global Instance ℐ :
+    #[refine] Global Instance ℐ :
       core.convert.From.Trait Self (T := sp_weights.weight_v2.Weight) := {
       core.convert.From.from := from;
     }.
+    Admitted.
   End Impl_core_convert_From_for_ink_e2e_xts_Weight.
   Global Hint Resolve ℐ : core.
 End Impl_core_convert_From_for_ink_e2e_xts_Weight.
@@ -3761,10 +4017,11 @@ Module Impl_core_convert_From_for_sp_weights_weight_v2_Weight.
       Notation.double_colon := from;
     }.
     
-    Global Instance ℐ :
+    #[refine] Global Instance ℐ :
       core.convert.From.Trait Self (T := ink_e2e.xts.Weight) := {
       core.convert.From.from := from;
     }.
+    Admitted.
   End Impl_core_convert_From_for_sp_weights_weight_v2_Weight.
   Global Hint Resolve ℐ : core.
 End Impl_core_convert_From_for_sp_weights_weight_v2_Weight.
@@ -3787,46 +4044,59 @@ Module InstantiateWithCode.
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_value : Notation.Dot "value" := {
+    #[refine] Global Instance Get_value : Notation.Dot "value" := {
       Notation.dot x := let* x := M.read x in Pure x.(value) : M _;
     }.
-    Global Instance Get_AF_value : Notation.DoubleColon t "value" := {
+    Admitted.
+    #[refine] Global Instance Get_AF_value : Notation.DoubleColon t "value" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(value) : M _;
     }.
-    Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
+    Admitted.
+    #[refine] Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
       Notation.dot x := let* x := M.read x in Pure x.(gas_limit) : M _;
     }.
-    Global Instance Get_AF_gas_limit : Notation.DoubleColon t "gas_limit" := {
+    Admitted.
+    #[refine] Global Instance Get_AF_gas_limit :
+      Notation.DoubleColon t "gas_limit" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(gas_limit) : M _;
     }.
-    Global Instance Get_storage_deposit_limit :
+    Admitted.
+    #[refine] Global Instance Get_storage_deposit_limit :
       Notation.Dot "storage_deposit_limit" := {
       Notation.dot x :=
         let* x := M.read x in Pure x.(storage_deposit_limit) : M _;
     }.
-    Global Instance Get_AF_storage_deposit_limit :
+    Admitted.
+    #[refine] Global Instance Get_AF_storage_deposit_limit :
       Notation.DoubleColon t "storage_deposit_limit" := {
       Notation.double_colon x :=
         let* x := M.read x in Pure x.(storage_deposit_limit) : M _;
     }.
-    Global Instance Get_code : Notation.Dot "code" := {
+    Admitted.
+    #[refine] Global Instance Get_code : Notation.Dot "code" := {
       Notation.dot x := let* x := M.read x in Pure x.(code) : M _;
     }.
-    Global Instance Get_AF_code : Notation.DoubleColon t "code" := {
+    Admitted.
+    #[refine] Global Instance Get_AF_code : Notation.DoubleColon t "code" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(code) : M _;
     }.
-    Global Instance Get_data : Notation.Dot "data" := {
+    Admitted.
+    #[refine] Global Instance Get_data : Notation.Dot "data" := {
       Notation.dot x := let* x := M.read x in Pure x.(data) : M _;
     }.
-    Global Instance Get_AF_data : Notation.DoubleColon t "data" := {
+    Admitted.
+    #[refine] Global Instance Get_AF_data : Notation.DoubleColon t "data" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(data) : M _;
     }.
-    Global Instance Get_salt : Notation.Dot "salt" := {
+    Admitted.
+    #[refine] Global Instance Get_salt : Notation.Dot "salt" := {
       Notation.dot x := let* x := M.read x in Pure x.(salt) : M _;
     }.
-    Global Instance Get_AF_salt : Notation.DoubleColon t "salt" := {
+    Admitted.
+    #[refine] Global Instance Get_AF_salt : Notation.DoubleColon t "salt" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(salt) : M _;
     }.
+    Admitted.
   End InstantiateWithCode.
 End InstantiateWithCode.
 Definition InstantiateWithCode
@@ -3857,9 +4127,10 @@ Module Impl_core_fmt_Debug_for_ink_e2e_xts_InstantiateWithCode_E.
       Notation.double_colon := fmt;
     }.
     
-    Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
+    Admitted.
   End Impl_core_fmt_Debug_for_ink_e2e_xts_InstantiateWithCode_E.
   Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_ink_e2e_xts_InstantiateWithCode_E.
@@ -3900,8 +4171,10 @@ Module
         encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
     }.
     
-    Global Instance ℐ : parity_scale_codec.codec.Encode.Trait Self := {
+    #[refine] Global Instance ℐ :
+      parity_scale_codec.codec.Encode.Trait Self := {
     }.
+    Admitted.
   End
     Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_InstantiateWithCode_E.
   Global Hint Resolve ℐ : core.
@@ -3926,10 +4199,11 @@ Module
       {ℋ_3 : parity_scale_codec.compact.HasCompact.Trait E::type["Balance"]}.
     Definition Self : Set := ink_e2e.xts.InstantiateWithCode E.
     
-    Global Instance ℐ :
+    #[refine] Global Instance ℐ :
       parity_scale_codec.encode_like.EncodeLike.Trait Self
         (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self) := {
     }.
+    Admitted.
   End
     Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_InstantiateWithCode_E.
   Global Hint Resolve ℐ : core.
@@ -3969,12 +4243,14 @@ Module
       Notation.double_colon := decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
     
-    Global Instance ℐ : parity_scale_codec.codec.Decode.Trait Self := {
+    #[refine] Global Instance ℐ :
+      parity_scale_codec.codec.Decode.Trait Self := {
       parity_scale_codec.codec.Decode.decode
         {__CodecInputEdqy : Set}
         {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :=
         decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
+    Admitted.
   End
     Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_InstantiateWithCode_E.
   Global Hint Resolve ℐ : core.
@@ -4001,9 +4277,10 @@ Module Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_InstantiateWithCode_E.
       Notation.double_colon := encode_as_type_to;
     }.
     
-    Global Instance ℐ : scale_encode.EncodeAsType.Trait Self := {
+    #[refine] Global Instance ℐ : scale_encode.EncodeAsType.Trait Self := {
       scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
     }.
+    Admitted.
   End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_InstantiateWithCode_E.
   Global Hint Resolve ℐ : core.
 End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_InstantiateWithCode_E.
@@ -4030,9 +4307,10 @@ Module Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_InstantiateWithCode_E.
       Notation.double_colon := encode_as_fields_to;
     }.
     
-    Global Instance ℐ : scale_encode.EncodeAsFields.Trait Self := {
+    #[refine] Global Instance ℐ : scale_encode.EncodeAsFields.Trait Self := {
       scale_encode.EncodeAsFields.encode_as_fields_to := encode_as_fields_to;
     }.
+    Admitted.
   End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_InstantiateWithCode_E.
   Global Hint Resolve ℐ : core.
 End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_InstantiateWithCode_E.
@@ -4054,40 +4332,51 @@ Module Call.
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_dest : Notation.Dot "dest" := {
+    #[refine] Global Instance Get_dest : Notation.Dot "dest" := {
       Notation.dot x := let* x := M.read x in Pure x.(dest) : M _;
     }.
-    Global Instance Get_AF_dest : Notation.DoubleColon t "dest" := {
+    Admitted.
+    #[refine] Global Instance Get_AF_dest : Notation.DoubleColon t "dest" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(dest) : M _;
     }.
-    Global Instance Get_value : Notation.Dot "value" := {
+    Admitted.
+    #[refine] Global Instance Get_value : Notation.Dot "value" := {
       Notation.dot x := let* x := M.read x in Pure x.(value) : M _;
     }.
-    Global Instance Get_AF_value : Notation.DoubleColon t "value" := {
+    Admitted.
+    #[refine] Global Instance Get_AF_value : Notation.DoubleColon t "value" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(value) : M _;
     }.
-    Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
+    Admitted.
+    #[refine] Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
       Notation.dot x := let* x := M.read x in Pure x.(gas_limit) : M _;
     }.
-    Global Instance Get_AF_gas_limit : Notation.DoubleColon t "gas_limit" := {
+    Admitted.
+    #[refine] Global Instance Get_AF_gas_limit :
+      Notation.DoubleColon t "gas_limit" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(gas_limit) : M _;
     }.
-    Global Instance Get_storage_deposit_limit :
+    Admitted.
+    #[refine] Global Instance Get_storage_deposit_limit :
       Notation.Dot "storage_deposit_limit" := {
       Notation.dot x :=
         let* x := M.read x in Pure x.(storage_deposit_limit) : M _;
     }.
-    Global Instance Get_AF_storage_deposit_limit :
+    Admitted.
+    #[refine] Global Instance Get_AF_storage_deposit_limit :
       Notation.DoubleColon t "storage_deposit_limit" := {
       Notation.double_colon x :=
         let* x := M.read x in Pure x.(storage_deposit_limit) : M _;
     }.
-    Global Instance Get_data : Notation.Dot "data" := {
+    Admitted.
+    #[refine] Global Instance Get_data : Notation.Dot "data" := {
       Notation.dot x := let* x := M.read x in Pure x.(data) : M _;
     }.
-    Global Instance Get_AF_data : Notation.DoubleColon t "data" := {
+    Admitted.
+    #[refine] Global Instance Get_AF_data : Notation.DoubleColon t "data" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(data) : M _;
     }.
+    Admitted.
   End Call.
 End Call.
 Definition Call
@@ -4119,9 +4408,10 @@ Module Impl_core_fmt_Debug_for_ink_e2e_xts_Call_E.
       Notation.double_colon := fmt;
     }.
     
-    Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
+    Admitted.
   End Impl_core_fmt_Debug_for_ink_e2e_xts_Call_E.
   Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_ink_e2e_xts_Call_E.
@@ -4163,12 +4453,14 @@ Module Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Call_E.
       Notation.double_colon := decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
     
-    Global Instance ℐ : parity_scale_codec.codec.Decode.Trait Self := {
+    #[refine] Global Instance ℐ :
+      parity_scale_codec.codec.Decode.Trait Self := {
       parity_scale_codec.codec.Decode.decode
         {__CodecInputEdqy : Set}
         {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :=
         decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
+    Admitted.
   End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Call_E.
   Global Hint Resolve ℐ : core.
 End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Call_E.
@@ -4213,8 +4505,10 @@ Module Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Call_E.
         encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
     }.
     
-    Global Instance ℐ : parity_scale_codec.codec.Encode.Trait Self := {
+    #[refine] Global Instance ℐ :
+      parity_scale_codec.codec.Encode.Trait Self := {
     }.
+    Admitted.
   End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Call_E.
   Global Hint Resolve ℐ : core.
 End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Call_E.
@@ -4242,10 +4536,11 @@ Module Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Call_E.
       {ℋ_5 : parity_scale_codec.compact.HasCompact.Trait E::type["Balance"]}.
     Definition Self : Set := ink_e2e.xts.Call E.
     
-    Global Instance ℐ :
+    #[refine] Global Instance ℐ :
       parity_scale_codec.encode_like.EncodeLike.Trait Self
         (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self) := {
     }.
+    Admitted.
   End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Call_E.
   Global Hint Resolve ℐ : core.
 End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Call_E.
@@ -4271,9 +4566,10 @@ Module Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Call_E.
       Notation.double_colon := encode_as_type_to;
     }.
     
-    Global Instance ℐ : scale_encode.EncodeAsType.Trait Self := {
+    #[refine] Global Instance ℐ : scale_encode.EncodeAsType.Trait Self := {
       scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
     }.
+    Admitted.
   End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Call_E.
   Global Hint Resolve ℐ : core.
 End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Call_E.
@@ -4299,9 +4595,10 @@ Module Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Call_E.
       Notation.double_colon := encode_as_fields_to;
     }.
     
-    Global Instance ℐ : scale_encode.EncodeAsFields.Trait Self := {
+    #[refine] Global Instance ℐ : scale_encode.EncodeAsFields.Trait Self := {
       scale_encode.EncodeAsFields.encode_as_fields_to := encode_as_fields_to;
     }.
+    Admitted.
   End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Call_E.
   Global Hint Resolve ℐ : core.
 End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Call_E.
@@ -4322,18 +4619,22 @@ Module Transfer.
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_dest : Notation.Dot "dest" := {
+    #[refine] Global Instance Get_dest : Notation.Dot "dest" := {
       Notation.dot x := let* x := M.read x in Pure x.(dest) : M _;
     }.
-    Global Instance Get_AF_dest : Notation.DoubleColon t "dest" := {
+    Admitted.
+    #[refine] Global Instance Get_AF_dest : Notation.DoubleColon t "dest" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(dest) : M _;
     }.
-    Global Instance Get_value : Notation.Dot "value" := {
+    Admitted.
+    #[refine] Global Instance Get_value : Notation.Dot "value" := {
       Notation.dot x := let* x := M.read x in Pure x.(value) : M _;
     }.
-    Global Instance Get_AF_value : Notation.DoubleColon t "value" := {
+    Admitted.
+    #[refine] Global Instance Get_AF_value : Notation.DoubleColon t "value" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(value) : M _;
     }.
+    Admitted.
   End Transfer.
 End Transfer.
 Definition Transfer
@@ -4367,9 +4668,10 @@ Module Impl_core_fmt_Debug_for_ink_e2e_xts_Transfer_E_C.
       Notation.double_colon := fmt;
     }.
     
-    Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
+    Admitted.
   End Impl_core_fmt_Debug_for_ink_e2e_xts_Transfer_E_C.
   Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_ink_e2e_xts_Transfer_E_C.
@@ -4406,12 +4708,14 @@ Module Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Transfer_E_C.
       Notation.double_colon := decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
     
-    Global Instance ℐ : parity_scale_codec.codec.Decode.Trait Self := {
+    #[refine] Global Instance ℐ :
+      parity_scale_codec.codec.Decode.Trait Self := {
       parity_scale_codec.codec.Decode.decode
         {__CodecInputEdqy : Set}
         {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :=
         decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
+    Admitted.
   End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Transfer_E_C.
   Global Hint Resolve ℐ : core.
 End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Transfer_E_C.
@@ -4451,8 +4755,10 @@ Module Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Transfer_E_C.
         encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
     }.
     
-    Global Instance ℐ : parity_scale_codec.codec.Encode.Trait Self := {
+    #[refine] Global Instance ℐ :
+      parity_scale_codec.codec.Encode.Trait Self := {
     }.
+    Admitted.
   End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Transfer_E_C.
   Global Hint Resolve ℐ : core.
 End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Transfer_E_C.
@@ -4477,10 +4783,11 @@ Module
       {ℋ_4 : parity_scale_codec.compact.HasCompact.Trait E::type["Balance"]}.
     Definition Self : Set := ink_e2e.xts.Transfer E C.
     
-    Global Instance ℐ :
+    #[refine] Global Instance ℐ :
       parity_scale_codec.encode_like.EncodeLike.Trait Self
         (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self) := {
     }.
+    Admitted.
   End
     Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Transfer_E_C.
   Global Hint Resolve ℐ : core.
@@ -4509,9 +4816,10 @@ Module Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Transfer_E_C.
       Notation.double_colon := encode_as_type_to;
     }.
     
-    Global Instance ℐ : scale_encode.EncodeAsType.Trait Self := {
+    #[refine] Global Instance ℐ : scale_encode.EncodeAsType.Trait Self := {
       scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
     }.
+    Admitted.
   End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Transfer_E_C.
   Global Hint Resolve ℐ : core.
 End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Transfer_E_C.
@@ -4539,9 +4847,10 @@ Module Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Transfer_E_C.
       Notation.double_colon := encode_as_fields_to;
     }.
     
-    Global Instance ℐ : scale_encode.EncodeAsFields.Trait Self := {
+    #[refine] Global Instance ℐ : scale_encode.EncodeAsFields.Trait Self := {
       scale_encode.EncodeAsFields.encode_as_fields_to := encode_as_fields_to;
     }.
+    Admitted.
   End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Transfer_E_C.
   Global Hint Resolve ℐ : core.
 End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Transfer_E_C.
@@ -4567,9 +4876,10 @@ Module Impl_core_fmt_Debug_for_ink_e2e_xts_Determinism.
       Notation.double_colon := fmt;
     }.
     
-    Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
+    Admitted.
   End Impl_core_fmt_Debug_for_ink_e2e_xts_Determinism.
   Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_ink_e2e_xts_Determinism.
@@ -4587,9 +4897,10 @@ Module Impl_core_clone_Clone_for_ink_e2e_xts_Determinism.
       Notation.double_colon := clone;
     }.
     
-    Global Instance ℐ : core.clone.Clone.Trait Self := {
+    #[refine] Global Instance ℐ : core.clone.Clone.Trait Self := {
       core.clone.Clone.clone := clone;
     }.
+    Admitted.
   End Impl_core_clone_Clone_for_ink_e2e_xts_Determinism.
   Global Hint Resolve ℐ : core.
 End Impl_core_clone_Clone_for_ink_e2e_xts_Determinism.
@@ -4600,8 +4911,9 @@ Module Impl_core_marker_Copy_for_ink_e2e_xts_Determinism.
     
     Definition Self : Set := ink_e2e.xts.Determinism.
     
-    Global Instance ℐ : core.marker.Copy.Trait Self := {
+    #[refine] Global Instance ℐ : core.marker.Copy.Trait Self := {
     }.
+    Admitted.
   End Impl_core_marker_Copy_for_ink_e2e_xts_Determinism.
   Global Hint Resolve ℐ : core.
 End Impl_core_marker_Copy_for_ink_e2e_xts_Determinism.
@@ -4612,8 +4924,10 @@ Module Impl_core_marker_StructuralPartialEq_for_ink_e2e_xts_Determinism.
     
     Definition Self : Set := ink_e2e.xts.Determinism.
     
-    Global Instance ℐ : core.marker.StructuralPartialEq.Trait Self := {
+    #[refine] Global Instance ℐ :
+      core.marker.StructuralPartialEq.Trait Self := {
     }.
+    Admitted.
   End Impl_core_marker_StructuralPartialEq_for_ink_e2e_xts_Determinism.
   Global Hint Resolve ℐ : core.
 End Impl_core_marker_StructuralPartialEq_for_ink_e2e_xts_Determinism.
@@ -4630,11 +4944,12 @@ Module Impl_core_cmp_PartialEq_for_ink_e2e_xts_Determinism.
       Notation.double_colon := eq;
     }.
     
-    Global Instance ℐ :
+    #[refine] Global Instance ℐ :
       core.cmp.PartialEq.Trait Self
         (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
       core.cmp.PartialEq.eq := eq;
     }.
+    Admitted.
   End Impl_core_cmp_PartialEq_for_ink_e2e_xts_Determinism.
   Global Hint Resolve ℐ : core.
 End Impl_core_cmp_PartialEq_for_ink_e2e_xts_Determinism.
@@ -4645,8 +4960,9 @@ Module Impl_core_marker_StructuralEq_for_ink_e2e_xts_Determinism.
     
     Definition Self : Set := ink_e2e.xts.Determinism.
     
-    Global Instance ℐ : core.marker.StructuralEq.Trait Self := {
+    #[refine] Global Instance ℐ : core.marker.StructuralEq.Trait Self := {
     }.
+    Admitted.
   End Impl_core_marker_StructuralEq_for_ink_e2e_xts_Determinism.
   Global Hint Resolve ℐ : core.
 End Impl_core_marker_StructuralEq_for_ink_e2e_xts_Determinism.
@@ -4664,8 +4980,9 @@ Module Impl_core_cmp_Eq_for_ink_e2e_xts_Determinism.
       Notation.double_colon := assert_receiver_is_total_eq;
     }.
     
-    Global Instance ℐ : core.cmp.Eq.Trait Self := {
+    #[refine] Global Instance ℐ : core.cmp.Eq.Trait Self := {
     }.
+    Admitted.
   End Impl_core_cmp_Eq_for_ink_e2e_xts_Determinism.
   Global Hint Resolve ℐ : core.
 End Impl_core_cmp_Eq_for_ink_e2e_xts_Determinism.
@@ -4689,12 +5006,13 @@ Module Impl_serde_ser_Serialize_for_ink_e2e_xts_Determinism.
       Notation.double_colon := serialize (__S := __S);
     }.
     
-    Global Instance ℐ : serde.ser.Serialize.Trait Self := {
+    #[refine] Global Instance ℐ : serde.ser.Serialize.Trait Self := {
       serde.ser.Serialize.serialize
         {__S : Set}
         {ℋ_0 : serde.ser.Serializer.Trait __S} :=
         serialize (__S := __S);
     }.
+    Admitted.
   End Impl_serde_ser_Serialize_for_ink_e2e_xts_Determinism.
   Global Hint Resolve ℐ : core.
 End Impl_serde_ser_Serialize_for_ink_e2e_xts_Determinism.
@@ -4719,12 +5037,14 @@ Module Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Determinism.
       Notation.double_colon := decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
     
-    Global Instance ℐ : parity_scale_codec.codec.Decode.Trait Self := {
+    #[refine] Global Instance ℐ :
+      parity_scale_codec.codec.Decode.Trait Self := {
       parity_scale_codec.codec.Decode.decode
         {__CodecInputEdqy : Set}
         {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :=
         decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
+    Admitted.
   End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Determinism.
   Global Hint Resolve ℐ : core.
 End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Determinism.
@@ -4752,8 +5072,10 @@ Module Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Determinism.
         encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
     }.
     
-    Global Instance ℐ : parity_scale_codec.codec.Encode.Trait Self := {
+    #[refine] Global Instance ℐ :
+      parity_scale_codec.codec.Encode.Trait Self := {
     }.
+    Admitted.
   End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Determinism.
   Global Hint Resolve ℐ : core.
 End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Determinism.
@@ -4766,10 +5088,11 @@ Module
     
     Definition Self : Set := ink_e2e.xts.Determinism.
     
-    Global Instance ℐ :
+    #[refine] Global Instance ℐ :
       parity_scale_codec.encode_like.EncodeLike.Trait Self
         (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self) := {
     }.
+    Admitted.
   End
     Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Determinism.
   Global Hint Resolve ℐ : core.
@@ -4793,9 +5116,10 @@ Module Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Determinism.
       Notation.double_colon := encode_as_type_to;
     }.
     
-    Global Instance ℐ : scale_encode.EncodeAsType.Trait Self := {
+    #[refine] Global Instance ℐ : scale_encode.EncodeAsType.Trait Self := {
       scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
     }.
+    Admitted.
   End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Determinism.
   Global Hint Resolve ℐ : core.
 End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Determinism.
@@ -4815,30 +5139,36 @@ Module UploadCode.
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_code : Notation.Dot "code" := {
+    #[refine] Global Instance Get_code : Notation.Dot "code" := {
       Notation.dot x := let* x := M.read x in Pure x.(code) : M _;
     }.
-    Global Instance Get_AF_code : Notation.DoubleColon t "code" := {
+    Admitted.
+    #[refine] Global Instance Get_AF_code : Notation.DoubleColon t "code" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(code) : M _;
     }.
-    Global Instance Get_storage_deposit_limit :
+    Admitted.
+    #[refine] Global Instance Get_storage_deposit_limit :
       Notation.Dot "storage_deposit_limit" := {
       Notation.dot x :=
         let* x := M.read x in Pure x.(storage_deposit_limit) : M _;
     }.
-    Global Instance Get_AF_storage_deposit_limit :
+    Admitted.
+    #[refine] Global Instance Get_AF_storage_deposit_limit :
       Notation.DoubleColon t "storage_deposit_limit" := {
       Notation.double_colon x :=
         let* x := M.read x in Pure x.(storage_deposit_limit) : M _;
     }.
-    Global Instance Get_determinism : Notation.Dot "determinism" := {
+    Admitted.
+    #[refine] Global Instance Get_determinism : Notation.Dot "determinism" := {
       Notation.dot x := let* x := M.read x in Pure x.(determinism) : M _;
     }.
-    Global Instance Get_AF_determinism :
+    Admitted.
+    #[refine] Global Instance Get_AF_determinism :
       Notation.DoubleColon t "determinism" := {
       Notation.double_colon x :=
         let* x := M.read x in Pure x.(determinism) : M _;
     }.
+    Admitted.
   End UploadCode.
 End UploadCode.
 Definition UploadCode
@@ -4868,9 +5198,10 @@ Module Impl_core_fmt_Debug_for_ink_e2e_xts_UploadCode_E.
       Notation.double_colon := fmt;
     }.
     
-    Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
+    Admitted.
   End Impl_core_fmt_Debug_for_ink_e2e_xts_UploadCode_E.
   Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_ink_e2e_xts_UploadCode_E.
@@ -4908,8 +5239,10 @@ Module Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_UploadCode_E.
         encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
     }.
     
-    Global Instance ℐ : parity_scale_codec.codec.Encode.Trait Self := {
+    #[refine] Global Instance ℐ :
+      parity_scale_codec.codec.Encode.Trait Self := {
     }.
+    Admitted.
   End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_UploadCode_E.
   Global Hint Resolve ℐ : core.
 End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_UploadCode_E.
@@ -4932,10 +5265,11 @@ Module
             (core.option.Option E::type["Balance"])}.
     Definition Self : Set := ink_e2e.xts.UploadCode E.
     
-    Global Instance ℐ :
+    #[refine] Global Instance ℐ :
       parity_scale_codec.encode_like.EncodeLike.Trait Self
         (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self) := {
     }.
+    Admitted.
   End
     Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_UploadCode_E.
   Global Hint Resolve ℐ : core.
@@ -4971,12 +5305,14 @@ Module Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_UploadCode_E.
       Notation.double_colon := decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
     
-    Global Instance ℐ : parity_scale_codec.codec.Decode.Trait Self := {
+    #[refine] Global Instance ℐ :
+      parity_scale_codec.codec.Decode.Trait Self := {
       parity_scale_codec.codec.Decode.decode
         {__CodecInputEdqy : Set}
         {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :=
         decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
+    Admitted.
   End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_UploadCode_E.
   Global Hint Resolve ℐ : core.
 End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_UploadCode_E.
@@ -5002,9 +5338,10 @@ Module Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_UploadCode_E.
       Notation.double_colon := encode_as_type_to;
     }.
     
-    Global Instance ℐ : scale_encode.EncodeAsType.Trait Self := {
+    #[refine] Global Instance ℐ : scale_encode.EncodeAsType.Trait Self := {
       scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
     }.
+    Admitted.
   End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_UploadCode_E.
   Global Hint Resolve ℐ : core.
 End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_UploadCode_E.
@@ -5030,9 +5367,10 @@ Module Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_UploadCode_E.
       Notation.double_colon := encode_as_fields_to;
     }.
     
-    Global Instance ℐ : scale_encode.EncodeAsFields.Trait Self := {
+    #[refine] Global Instance ℐ : scale_encode.EncodeAsFields.Trait Self := {
       scale_encode.EncodeAsFields.encode_as_fields_to := encode_as_fields_to;
     }.
+    Admitted.
   End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_UploadCode_E.
   Global Hint Resolve ℐ : core.
 End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_UploadCode_E.
@@ -5063,12 +5401,13 @@ End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_UploadCode_E.
       Notation.double_colon := serialize (__S := __S);
     }.
     
-    Global Instance ℐ : serde.ser.Serialize.Trait Self := {
+    #[refine] Global Instance ℐ : serde.ser.Serialize.Trait Self := {
       serde.ser.Serialize.serialize
         {__S : Set}
         {ℋ_0 : serde.ser.Serializer.Trait __S} :=
         serialize (__S := __S);
     }.
+    Admitted.
   End Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcInstantiateRequest_C_E. *)
   Global Hint Resolve ℐ : core.
 End Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcInstantiateRequest_C_E. *)
@@ -5111,8 +5450,10 @@ End Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcInstantiateRequest_C_E. *)
         encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
     }.
     
-    Global Instance ℐ : parity_scale_codec.codec.Encode.Trait Self := {
+    #[refine] Global Instance ℐ :
+      parity_scale_codec.codec.Encode.Trait Self := {
     }.
+    Admitted.
   End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_RpcInstantiateRequest_C_E. *)
   Global Hint Resolve ℐ : core.
 End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_RpcInstantiateRequest_C_E. *)
@@ -5138,10 +5479,11 @@ End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_RpcInstantiateRequest_C
             (core.option.Option E::type["Balance"])}.
     Definition Self : Set := ink_e2e.xts.RpcInstantiateRequest C E.
     
-    Global Instance ℐ :
+    #[refine] Global Instance ℐ :
       parity_scale_codec.encode_like.EncodeLike.Trait Self
         (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self) := {
     }.
+    Admitted.
   End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_RpcInstantiateRequest_C_E. *)
   Global Hint Resolve ℐ : core.
 End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_RpcInstantiateRequest_C_E. *)
@@ -5172,12 +5514,13 @@ End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_RpcInstantiat
       Notation.double_colon := serialize (__S := __S);
     }.
     
-    Global Instance ℐ : serde.ser.Serialize.Trait Self := {
+    #[refine] Global Instance ℐ : serde.ser.Serialize.Trait Self := {
       serde.ser.Serialize.serialize
         {__S : Set}
         {ℋ_0 : serde.ser.Serializer.Trait __S} :=
         serialize (__S := __S);
     }.
+    Admitted.
   End Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcCodeUploadRequest_C_E. *)
   Global Hint Resolve ℐ : core.
 End Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcCodeUploadRequest_C_E. *)
@@ -5219,8 +5562,10 @@ End Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcCodeUploadRequest_C_E. *)
         encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
     }.
     
-    Global Instance ℐ : parity_scale_codec.codec.Encode.Trait Self := {
+    #[refine] Global Instance ℐ :
+      parity_scale_codec.codec.Encode.Trait Self := {
     }.
+    Admitted.
   End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_RpcCodeUploadRequest_C_E. *)
   Global Hint Resolve ℐ : core.
 End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_RpcCodeUploadRequest_C_E. *)
@@ -5245,10 +5590,11 @@ End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_RpcCodeUploadRequest_C_
             (core.option.Option E::type["Balance"])}.
     Definition Self : Set := ink_e2e.xts.RpcCodeUploadRequest C E.
     
-    Global Instance ℐ :
+    #[refine] Global Instance ℐ :
       parity_scale_codec.encode_like.EncodeLike.Trait Self
         (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self) := {
     }.
+    Admitted.
   End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_RpcCodeUploadRequest_C_E. *)
   Global Hint Resolve ℐ : core.
 End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_RpcCodeUploadRequest_C_E. *)
@@ -5280,12 +5626,13 @@ End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_RpcCodeUpload
       Notation.double_colon := serialize (__S := __S);
     }.
     
-    Global Instance ℐ : serde.ser.Serialize.Trait Self := {
+    #[refine] Global Instance ℐ : serde.ser.Serialize.Trait Self := {
       serde.ser.Serialize.serialize
         {__S : Set}
         {ℋ_0 : serde.ser.Serializer.Trait __S} :=
         serialize (__S := __S);
     }.
+    Admitted.
   End Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcCallRequest_C_E. *)
   Global Hint Resolve ℐ : core.
 End Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcCallRequest_C_E. *)
@@ -5330,8 +5677,10 @@ End Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcCallRequest_C_E. *)
         encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
     }.
     
-    Global Instance ℐ : parity_scale_codec.codec.Encode.Trait Self := {
+    #[refine] Global Instance ℐ :
+      parity_scale_codec.codec.Encode.Trait Self := {
     }.
+    Admitted.
   End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_RpcCallRequest_C_E. *)
   Global Hint Resolve ℐ : core.
 End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_RpcCallRequest_C_E. *)
@@ -5359,10 +5708,11 @@ End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_RpcCallRequest_C_E. *)
             (core.option.Option E::type["Balance"])}.
     Definition Self : Set := ink_e2e.xts.RpcCallRequest C E.
     
-    Global Instance ℐ :
+    #[refine] Global Instance ℐ :
       parity_scale_codec.encode_like.EncodeLike.Trait Self
         (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self) := {
     }.
+    Admitted.
   End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_RpcCallRequest_C_E. *)
   Global Hint Resolve ℐ : core.
 End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_RpcCallRequest_C_E. *)
@@ -5386,12 +5736,13 @@ End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_RpcCallReques
       Notation.double_colon := serialize (__S := __S);
     }.
     
-    Global Instance ℐ : serde.ser.Serialize.Trait Self := {
+    #[refine] Global Instance ℐ : serde.ser.Serialize.Trait Self := {
       serde.ser.Serialize.serialize
         {__S : Set}
         {ℋ_0 : serde.ser.Serializer.Trait __S} :=
         serialize (__S := __S);
     }.
+    Admitted.
   End Impl_serde_ser_Serialize_for_ink_e2e_xts_Code. *)
   Global Hint Resolve ℐ : core.
 End Impl_serde_ser_Serialize_for_ink_e2e_xts_Code. *)
@@ -5419,8 +5770,10 @@ End Impl_serde_ser_Serialize_for_ink_e2e_xts_Code. *)
         encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
     }.
     
-    Global Instance ℐ : parity_scale_codec.codec.Encode.Trait Self := {
+    #[refine] Global Instance ℐ :
+      parity_scale_codec.codec.Encode.Trait Self := {
     }.
+    Admitted.
   End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Code. *)
   Global Hint Resolve ℐ : core.
 End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Code. *)
@@ -5431,10 +5784,11 @@ End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Code. *)
     
     Definition Self : Set := ink_e2e.xts.Code.
     
-    Global Instance ℐ :
+    #[refine] Global Instance ℐ :
       parity_scale_codec.encode_like.EncodeLike.Trait Self
         (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self) := {
     }.
+    Admitted.
   End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Code. *)
   Global Hint Resolve ℐ : core.
 End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Code. *)
@@ -5455,18 +5809,24 @@ Module ContractsApi.
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_client : Notation.Dot "client" := {
+    #[refine] Global Instance Get_client : Notation.Dot "client" := {
       Notation.dot x := let* x := M.read x in Pure x.(client) : M _;
     }.
-    Global Instance Get_AF_client : Notation.DoubleColon t "client" := {
+    Admitted.
+    #[refine] Global Instance Get_AF_client :
+      Notation.DoubleColon t "client" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(client) : M _;
     }.
-    Global Instance Get__phantom : Notation.Dot "_phantom" := {
+    Admitted.
+    #[refine] Global Instance Get__phantom : Notation.Dot "_phantom" := {
       Notation.dot x := let* x := M.read x in Pure x.(_phantom) : M _;
     }.
-    Global Instance Get_AF__phantom : Notation.DoubleColon t "_phantom" := {
+    Admitted.
+    #[refine] Global Instance Get_AF__phantom :
+      Notation.DoubleColon t "_phantom" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(_phantom) : M _;
     }.
+    Admitted.
   End ContractsApi.
 End ContractsApi.
 Definition ContractsApi
@@ -5510,7 +5870,7 @@ Module Impl_subxt_config_Config_for_ink_e2e_SubstrateConfig.
     Definition ExtrinsicParams : Set :=
       subxt.config.substrate.SubstrateExtrinsicParams Self.
     
-    Global Instance ℐ : subxt.config.Config.Trait Self := {
+    #[refine] Global Instance ℐ : subxt.config.Config.Trait Self := {
       subxt.config.Config.Index := Index;
       subxt.config.Config.Hash := Hash;
       subxt.config.Config.Hasher := Hasher;
@@ -5520,6 +5880,7 @@ Module Impl_subxt_config_Config_for_ink_e2e_SubstrateConfig.
       subxt.config.Config.Signature := Signature;
       subxt.config.Config.ExtrinsicParams := ExtrinsicParams;
     }.
+    Admitted.
   End Impl_subxt_config_Config_for_ink_e2e_SubstrateConfig.
   Global Hint Resolve ℐ : core.
 End Impl_subxt_config_Config_for_ink_e2e_SubstrateConfig.

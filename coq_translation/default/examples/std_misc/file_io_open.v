@@ -43,7 +43,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
   let* α1 := borrow_mut s alloc.string.String in
   let* α2 := deref α1 alloc.string.String in
   let* α3 := borrow_mut α2 alloc.string.String in
-  let* α4 := std.io.Read.read_to_string α0 α3 in
+  let* α4 := (std.io.Read.read_to_string (Self := std.fs.File)) α0 α3 in
   match α4 with
   | core.result.Result why =>
     let* α0 :=

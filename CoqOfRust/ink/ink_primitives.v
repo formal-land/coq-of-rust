@@ -37,9 +37,10 @@ Module key.
         Notation.double_colon := fmt;
       }.
       
-      Global Instance ℐ : core.fmt.Debug.Trait Self := {
+      #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
         core.fmt.Debug.fmt := fmt;
       }.
+      Admitted.
     End Impl_core_fmt_Debug_for_ink_primitives_key_Error.
     Global Hint Resolve ℐ : core.
   End Impl_core_fmt_Debug_for_ink_primitives_key_Error.
@@ -50,8 +51,10 @@ Module key.
       
       Definition Self : Set := ink_primitives.key.Error.
       
-      Global Instance ℐ : core.marker.StructuralPartialEq.Trait Self := {
+      #[refine] Global Instance ℐ :
+        core.marker.StructuralPartialEq.Trait Self := {
       }.
+      Admitted.
     End Impl_core_marker_StructuralPartialEq_for_ink_primitives_key_Error.
     Global Hint Resolve ℐ : core.
   End Impl_core_marker_StructuralPartialEq_for_ink_primitives_key_Error.
@@ -69,11 +72,12 @@ Module key.
         Notation.double_colon := eq;
       }.
       
-      Global Instance ℐ :
+      #[refine] Global Instance ℐ :
         core.cmp.PartialEq.Trait Self
           (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
         core.cmp.PartialEq.eq := eq;
       }.
+      Admitted.
     End Impl_core_cmp_PartialEq_for_ink_primitives_key_Error.
     Global Hint Resolve ℐ : core.
   End Impl_core_cmp_PartialEq_for_ink_primitives_key_Error.
@@ -84,8 +88,9 @@ Module key.
       
       Definition Self : Set := ink_primitives.key.Error.
       
-      Global Instance ℐ : core.marker.StructuralEq.Trait Self := {
+      #[refine] Global Instance ℐ : core.marker.StructuralEq.Trait Self := {
       }.
+      Admitted.
     End Impl_core_marker_StructuralEq_for_ink_primitives_key_Error.
     Global Hint Resolve ℐ : core.
   End Impl_core_marker_StructuralEq_for_ink_primitives_key_Error.
@@ -103,8 +108,9 @@ Module key.
         Notation.double_colon := assert_receiver_is_total_eq;
       }.
       
-      Global Instance ℐ : core.cmp.Eq.Trait Self := {
+      #[refine] Global Instance ℐ : core.cmp.Eq.Trait Self := {
       }.
+      Admitted.
     End Impl_core_cmp_Eq_for_ink_primitives_key_Error.
     Global Hint Resolve ℐ : core.
   End Impl_core_cmp_Eq_for_ink_primitives_key_Error.
@@ -142,9 +148,10 @@ Module Impl_core_fmt_Debug_for_ink_primitives_key_Error.
       Notation.double_colon := fmt;
     }.
     
-    Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
+    Admitted.
   End Impl_core_fmt_Debug_for_ink_primitives_key_Error.
   Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_ink_primitives_key_Error.
@@ -155,8 +162,10 @@ Module Impl_core_marker_StructuralPartialEq_for_ink_primitives_key_Error.
     
     Definition Self : Set := ink_primitives.key.Error.
     
-    Global Instance ℐ : core.marker.StructuralPartialEq.Trait Self := {
+    #[refine] Global Instance ℐ :
+      core.marker.StructuralPartialEq.Trait Self := {
     }.
+    Admitted.
   End Impl_core_marker_StructuralPartialEq_for_ink_primitives_key_Error.
   Global Hint Resolve ℐ : core.
 End Impl_core_marker_StructuralPartialEq_for_ink_primitives_key_Error.
@@ -173,11 +182,12 @@ Module Impl_core_cmp_PartialEq_for_ink_primitives_key_Error.
       Notation.double_colon := eq;
     }.
     
-    Global Instance ℐ :
+    #[refine] Global Instance ℐ :
       core.cmp.PartialEq.Trait Self
         (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
       core.cmp.PartialEq.eq := eq;
     }.
+    Admitted.
   End Impl_core_cmp_PartialEq_for_ink_primitives_key_Error.
   Global Hint Resolve ℐ : core.
 End Impl_core_cmp_PartialEq_for_ink_primitives_key_Error.
@@ -188,8 +198,9 @@ Module Impl_core_marker_StructuralEq_for_ink_primitives_key_Error.
     
     Definition Self : Set := ink_primitives.key.Error.
     
-    Global Instance ℐ : core.marker.StructuralEq.Trait Self := {
+    #[refine] Global Instance ℐ : core.marker.StructuralEq.Trait Self := {
     }.
+    Admitted.
   End Impl_core_marker_StructuralEq_for_ink_primitives_key_Error.
   Global Hint Resolve ℐ : core.
 End Impl_core_marker_StructuralEq_for_ink_primitives_key_Error.
@@ -207,8 +218,9 @@ Module Impl_core_cmp_Eq_for_ink_primitives_key_Error.
       Notation.double_colon := assert_receiver_is_total_eq;
     }.
     
-    Global Instance ℐ : core.cmp.Eq.Trait Self := {
+    #[refine] Global Instance ℐ : core.cmp.Eq.Trait Self := {
     }.
+    Admitted.
   End Impl_core_cmp_Eq_for_ink_primitives_key_Error.
   Global Hint Resolve ℐ : core.
 End Impl_core_cmp_Eq_for_ink_primitives_key_Error.
@@ -224,9 +236,10 @@ Module types.
       }.
       Global Set Primitive Projections.
       
-      Global Instance Get_0 : Notation.Dot "0" := {
+      #[refine] Global Instance Get_0 : Notation.Dot "0" := {
         Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
       }.
+      Admitted.
     End AccountId.
   End AccountId.
   Definition AccountId `{ℋ : State.Trait} : Set := M.val AccountId.t.
@@ -249,9 +262,10 @@ Module types.
         Notation.double_colon := encode_as_type_to;
       }.
       
-      Global Instance ℐ : scale_encode.EncodeAsType.Trait Self := {
+      #[refine] Global Instance ℐ : scale_encode.EncodeAsType.Trait Self := {
         scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
       }.
+      Admitted.
     End Impl_scale_encode_EncodeAsType_for_ink_primitives_types_AccountId.
     Global Hint Resolve ℐ : core.
   End Impl_scale_encode_EncodeAsType_for_ink_primitives_types_AccountId.
@@ -274,9 +288,10 @@ Module types.
         Notation.double_colon := encode_as_fields_to;
       }.
       
-      Global Instance ℐ : scale_encode.EncodeAsFields.Trait Self := {
+      #[refine] Global Instance ℐ : scale_encode.EncodeAsFields.Trait Self := {
         scale_encode.EncodeAsFields.encode_as_fields_to := encode_as_fields_to;
       }.
+      Admitted.
     End Impl_scale_encode_EncodeAsFields_for_ink_primitives_types_AccountId.
     Global Hint Resolve ℐ : core.
   End Impl_scale_encode_EncodeAsFields_for_ink_primitives_types_AccountId.
@@ -295,9 +310,10 @@ Module types.
         Notation.double_colon := fmt;
       }.
       
-      Global Instance ℐ : core.fmt.Debug.Trait Self := {
+      #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
         core.fmt.Debug.fmt := fmt;
       }.
+      Admitted.
     End Impl_core_fmt_Debug_for_ink_primitives_types_AccountId.
     Global Hint Resolve ℐ : core.
   End Impl_core_fmt_Debug_for_ink_primitives_types_AccountId.
@@ -315,9 +331,10 @@ Module types.
         Notation.double_colon := clone;
       }.
       
-      Global Instance ℐ : core.clone.Clone.Trait Self := {
+      #[refine] Global Instance ℐ : core.clone.Clone.Trait Self := {
         core.clone.Clone.clone := clone;
       }.
+      Admitted.
     End Impl_core_clone_Clone_for_ink_primitives_types_AccountId.
     Global Hint Resolve ℐ : core.
   End Impl_core_clone_Clone_for_ink_primitives_types_AccountId.
@@ -328,8 +345,9 @@ Module types.
       
       Definition Self : Set := ink_primitives.types.AccountId.
       
-      Global Instance ℐ : core.marker.Copy.Trait Self := {
+      #[refine] Global Instance ℐ : core.marker.Copy.Trait Self := {
       }.
+      Admitted.
     End Impl_core_marker_Copy_for_ink_primitives_types_AccountId.
     Global Hint Resolve ℐ : core.
   End Impl_core_marker_Copy_for_ink_primitives_types_AccountId.
@@ -342,8 +360,10 @@ Module types.
       
       Definition Self : Set := ink_primitives.types.AccountId.
       
-      Global Instance ℐ : core.marker.StructuralPartialEq.Trait Self := {
+      #[refine] Global Instance ℐ :
+        core.marker.StructuralPartialEq.Trait Self := {
       }.
+      Admitted.
     End Impl_core_marker_StructuralPartialEq_for_ink_primitives_types_AccountId.
     Global Hint Resolve ℐ : core.
   End Impl_core_marker_StructuralPartialEq_for_ink_primitives_types_AccountId.
@@ -362,11 +382,12 @@ Module types.
         Notation.double_colon := eq;
       }.
       
-      Global Instance ℐ :
+      #[refine] Global Instance ℐ :
         core.cmp.PartialEq.Trait Self
           (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
         core.cmp.PartialEq.eq := eq;
       }.
+      Admitted.
     End Impl_core_cmp_PartialEq_for_ink_primitives_types_AccountId.
     Global Hint Resolve ℐ : core.
   End Impl_core_cmp_PartialEq_for_ink_primitives_types_AccountId.
@@ -377,8 +398,9 @@ Module types.
       
       Definition Self : Set := ink_primitives.types.AccountId.
       
-      Global Instance ℐ : core.marker.StructuralEq.Trait Self := {
+      #[refine] Global Instance ℐ : core.marker.StructuralEq.Trait Self := {
       }.
+      Admitted.
     End Impl_core_marker_StructuralEq_for_ink_primitives_types_AccountId.
     Global Hint Resolve ℐ : core.
   End Impl_core_marker_StructuralEq_for_ink_primitives_types_AccountId.
@@ -396,8 +418,9 @@ Module types.
         Notation.double_colon := assert_receiver_is_total_eq;
       }.
       
-      Global Instance ℐ : core.cmp.Eq.Trait Self := {
+      #[refine] Global Instance ℐ : core.cmp.Eq.Trait Self := {
       }.
+      Admitted.
     End Impl_core_cmp_Eq_for_ink_primitives_types_AccountId.
     Global Hint Resolve ℐ : core.
   End Impl_core_cmp_Eq_for_ink_primitives_types_AccountId.
@@ -418,11 +441,12 @@ Module types.
         Notation.double_colon := partial_cmp;
       }.
       
-      Global Instance ℐ :
+      #[refine] Global Instance ℐ :
         core.cmp.PartialOrd.Trait Self
           (Rhs := core.cmp.PartialOrd.Default.Rhs Self) := {
         core.cmp.PartialOrd.partial_cmp := partial_cmp;
       }.
+      Admitted.
     End Impl_core_cmp_PartialOrd_for_ink_primitives_types_AccountId.
     Global Hint Resolve ℐ : core.
   End Impl_core_cmp_PartialOrd_for_ink_primitives_types_AccountId.
@@ -443,9 +467,10 @@ Module types.
         Notation.double_colon := cmp;
       }.
       
-      Global Instance ℐ : core.cmp.Ord.Trait Self := {
+      #[refine] Global Instance ℐ : core.cmp.Ord.Trait Self := {
         core.cmp.Ord.cmp := cmp;
       }.
+      Admitted.
     End Impl_core_cmp_Ord_for_ink_primitives_types_AccountId.
     Global Hint Resolve ℐ : core.
   End Impl_core_cmp_Ord_for_ink_primitives_types_AccountId.
@@ -467,10 +492,11 @@ Module types.
         Notation.double_colon := hash (__H := __H);
       }.
       
-      Global Instance ℐ : core.hash.Hash.Trait Self := {
+      #[refine] Global Instance ℐ : core.hash.Hash.Trait Self := {
         core.hash.Hash.hash {__H : Set} {ℋ_0 : core.hash.Hasher.Trait __H} :=
           hash (__H := __H);
       }.
+      Admitted.
     End Impl_core_hash_Hash_for_ink_primitives_types_AccountId.
     Global Hint Resolve ℐ : core.
   End Impl_core_hash_Hash_for_ink_primitives_types_AccountId.
@@ -488,9 +514,11 @@ Module types.
         Notation.double_colon := from;
       }.
       
-      Global Instance ℐ : core.convert.From.Trait Self (T := array u8) := {
+      #[refine] Global Instance ℐ :
+        core.convert.From.Trait Self (T := array u8) := {
         core.convert.From.from := from;
       }.
+      Admitted.
     End Impl_core_convert_From_for_ink_primitives_types_AccountId.
     Global Hint Resolve ℐ : core.
   End Impl_core_convert_From_for_ink_primitives_types_AccountId.
@@ -508,9 +536,11 @@ Module types.
         Notation.double_colon := as_ref;
       }.
       
-      Global Instance ℐ : core.convert.AsRef.Trait Self (T := array u8) := {
+      #[refine] Global Instance ℐ :
+        core.convert.AsRef.Trait Self (T := array u8) := {
         core.convert.AsRef.as_ref := as_ref;
       }.
+      Admitted.
     End Impl_core_convert_AsRef_for_ink_primitives_types_AccountId. *)
     Global Hint Resolve ℐ : core.
   End Impl_core_convert_AsRef_for_ink_primitives_types_AccountId. *)
@@ -528,9 +558,11 @@ Module types.
         Notation.double_colon := as_mut;
       }.
       
-      Global Instance ℐ : core.convert.AsMut.Trait Self (T := array u8) := {
+      #[refine] Global Instance ℐ :
+        core.convert.AsMut.Trait Self (T := array u8) := {
         core.convert.AsMut.as_mut := as_mut;
       }.
+      Admitted.
     End Impl_core_convert_AsMut_for_ink_primitives_types_AccountId. *)
     Global Hint Resolve ℐ : core.
   End Impl_core_convert_AsMut_for_ink_primitives_types_AccountId. *)
@@ -548,9 +580,11 @@ Module types.
         Notation.double_colon := as_ref;
       }.
       
-      Global Instance ℐ : core.convert.AsRef.Trait Self (T := Slice u8) := {
+      #[refine] Global Instance ℐ :
+        core.convert.AsRef.Trait Self (T := Slice u8) := {
         core.convert.AsRef.as_ref := as_ref;
       }.
+      Admitted.
     End Impl_core_convert_AsRef_for_ink_primitives_types_AccountId. *)
     Global Hint Resolve ℐ : core.
   End Impl_core_convert_AsRef_for_ink_primitives_types_AccountId. *)
@@ -568,9 +602,11 @@ Module types.
         Notation.double_colon := as_mut;
       }.
       
-      Global Instance ℐ : core.convert.AsMut.Trait Self (T := Slice u8) := {
+      #[refine] Global Instance ℐ :
+        core.convert.AsMut.Trait Self (T := Slice u8) := {
         core.convert.AsMut.as_mut := as_mut;
       }.
+      Admitted.
     End Impl_core_convert_AsMut_for_ink_primitives_types_AccountId. *)
     Global Hint Resolve ℐ : core.
   End Impl_core_convert_AsMut_for_ink_primitives_types_AccountId. *) *)
@@ -592,11 +628,12 @@ Module types.
         Notation.double_colon := try_from;
       }.
       
-      Global Instance ℐ :
+      #[refine] Global Instance ℐ :
         core.convert.TryFrom.Trait Self (T := ref (Slice u8)) := {
         core.convert.TryFrom.Error := Error;
         core.convert.TryFrom.try_from := try_from;
       }.
+      Admitted.
     End Impl_core_convert_TryFrom_for_ink_primitives_types_AccountId.
     Global Hint Resolve ℐ : core.
   End Impl_core_convert_TryFrom_for_ink_primitives_types_AccountId.
@@ -611,9 +648,10 @@ Module types.
       }.
       Global Set Primitive Projections.
       
-      Global Instance Get_0 : Notation.Dot "0" := {
+      #[refine] Global Instance Get_0 : Notation.Dot "0" := {
         Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
       }.
+      Admitted.
     End Hash.
   End Hash.
   Definition Hash `{ℋ : State.Trait} : Set := M.val Hash.t.
@@ -636,9 +674,10 @@ Module types.
         Notation.double_colon := encode_as_type_to;
       }.
       
-      Global Instance ℐ : scale_encode.EncodeAsType.Trait Self := {
+      #[refine] Global Instance ℐ : scale_encode.EncodeAsType.Trait Self := {
         scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
       }.
+      Admitted.
     End Impl_scale_encode_EncodeAsType_for_ink_primitives_types_Hash.
     Global Hint Resolve ℐ : core.
   End Impl_scale_encode_EncodeAsType_for_ink_primitives_types_Hash.
@@ -661,9 +700,10 @@ Module types.
         Notation.double_colon := encode_as_fields_to;
       }.
       
-      Global Instance ℐ : scale_encode.EncodeAsFields.Trait Self := {
+      #[refine] Global Instance ℐ : scale_encode.EncodeAsFields.Trait Self := {
         scale_encode.EncodeAsFields.encode_as_fields_to := encode_as_fields_to;
       }.
+      Admitted.
     End Impl_scale_encode_EncodeAsFields_for_ink_primitives_types_Hash.
     Global Hint Resolve ℐ : core.
   End Impl_scale_encode_EncodeAsFields_for_ink_primitives_types_Hash.
@@ -682,9 +722,10 @@ Module types.
         Notation.double_colon := fmt;
       }.
       
-      Global Instance ℐ : core.fmt.Debug.Trait Self := {
+      #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
         core.fmt.Debug.fmt := fmt;
       }.
+      Admitted.
     End Impl_core_fmt_Debug_for_ink_primitives_types_Hash.
     Global Hint Resolve ℐ : core.
   End Impl_core_fmt_Debug_for_ink_primitives_types_Hash.
@@ -702,9 +743,10 @@ Module types.
         Notation.double_colon := clone;
       }.
       
-      Global Instance ℐ : core.clone.Clone.Trait Self := {
+      #[refine] Global Instance ℐ : core.clone.Clone.Trait Self := {
         core.clone.Clone.clone := clone;
       }.
+      Admitted.
     End Impl_core_clone_Clone_for_ink_primitives_types_Hash.
     Global Hint Resolve ℐ : core.
   End Impl_core_clone_Clone_for_ink_primitives_types_Hash.
@@ -715,8 +757,9 @@ Module types.
       
       Definition Self : Set := ink_primitives.types.Hash.
       
-      Global Instance ℐ : core.marker.Copy.Trait Self := {
+      #[refine] Global Instance ℐ : core.marker.Copy.Trait Self := {
       }.
+      Admitted.
     End Impl_core_marker_Copy_for_ink_primitives_types_Hash.
     Global Hint Resolve ℐ : core.
   End Impl_core_marker_Copy_for_ink_primitives_types_Hash.
@@ -727,8 +770,10 @@ Module types.
       
       Definition Self : Set := ink_primitives.types.Hash.
       
-      Global Instance ℐ : core.marker.StructuralPartialEq.Trait Self := {
+      #[refine] Global Instance ℐ :
+        core.marker.StructuralPartialEq.Trait Self := {
       }.
+      Admitted.
     End Impl_core_marker_StructuralPartialEq_for_ink_primitives_types_Hash.
     Global Hint Resolve ℐ : core.
   End Impl_core_marker_StructuralPartialEq_for_ink_primitives_types_Hash.
@@ -746,11 +791,12 @@ Module types.
         Notation.double_colon := eq;
       }.
       
-      Global Instance ℐ :
+      #[refine] Global Instance ℐ :
         core.cmp.PartialEq.Trait Self
           (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
         core.cmp.PartialEq.eq := eq;
       }.
+      Admitted.
     End Impl_core_cmp_PartialEq_for_ink_primitives_types_Hash.
     Global Hint Resolve ℐ : core.
   End Impl_core_cmp_PartialEq_for_ink_primitives_types_Hash.
@@ -761,8 +807,9 @@ Module types.
       
       Definition Self : Set := ink_primitives.types.Hash.
       
-      Global Instance ℐ : core.marker.StructuralEq.Trait Self := {
+      #[refine] Global Instance ℐ : core.marker.StructuralEq.Trait Self := {
       }.
+      Admitted.
     End Impl_core_marker_StructuralEq_for_ink_primitives_types_Hash.
     Global Hint Resolve ℐ : core.
   End Impl_core_marker_StructuralEq_for_ink_primitives_types_Hash.
@@ -780,8 +827,9 @@ Module types.
         Notation.double_colon := assert_receiver_is_total_eq;
       }.
       
-      Global Instance ℐ : core.cmp.Eq.Trait Self := {
+      #[refine] Global Instance ℐ : core.cmp.Eq.Trait Self := {
       }.
+      Admitted.
     End Impl_core_cmp_Eq_for_ink_primitives_types_Hash.
     Global Hint Resolve ℐ : core.
   End Impl_core_cmp_Eq_for_ink_primitives_types_Hash.
@@ -802,11 +850,12 @@ Module types.
         Notation.double_colon := partial_cmp;
       }.
       
-      Global Instance ℐ :
+      #[refine] Global Instance ℐ :
         core.cmp.PartialOrd.Trait Self
           (Rhs := core.cmp.PartialOrd.Default.Rhs Self) := {
         core.cmp.PartialOrd.partial_cmp := partial_cmp;
       }.
+      Admitted.
     End Impl_core_cmp_PartialOrd_for_ink_primitives_types_Hash.
     Global Hint Resolve ℐ : core.
   End Impl_core_cmp_PartialOrd_for_ink_primitives_types_Hash.
@@ -825,9 +874,10 @@ Module types.
         Notation.double_colon := cmp;
       }.
       
-      Global Instance ℐ : core.cmp.Ord.Trait Self := {
+      #[refine] Global Instance ℐ : core.cmp.Ord.Trait Self := {
         core.cmp.Ord.cmp := cmp;
       }.
+      Admitted.
     End Impl_core_cmp_Ord_for_ink_primitives_types_Hash.
     Global Hint Resolve ℐ : core.
   End Impl_core_cmp_Ord_for_ink_primitives_types_Hash.
@@ -849,10 +899,11 @@ Module types.
         Notation.double_colon := hash (__H := __H);
       }.
       
-      Global Instance ℐ : core.hash.Hash.Trait Self := {
+      #[refine] Global Instance ℐ : core.hash.Hash.Trait Self := {
         core.hash.Hash.hash {__H : Set} {ℋ_0 : core.hash.Hasher.Trait __H} :=
           hash (__H := __H);
       }.
+      Admitted.
     End Impl_core_hash_Hash_for_ink_primitives_types_Hash.
     Global Hint Resolve ℐ : core.
   End Impl_core_hash_Hash_for_ink_primitives_types_Hash.
@@ -870,9 +921,11 @@ Module types.
         Notation.double_colon := from;
       }.
       
-      Global Instance ℐ : core.convert.From.Trait Self (T := array u8) := {
+      #[refine] Global Instance ℐ :
+        core.convert.From.Trait Self (T := array u8) := {
         core.convert.From.from := from;
       }.
+      Admitted.
     End Impl_core_convert_From_for_ink_primitives_types_Hash.
     Global Hint Resolve ℐ : core.
   End Impl_core_convert_From_for_ink_primitives_types_Hash.
@@ -890,9 +943,10 @@ Module types.
         Notation.double_colon := default;
       }.
       
-      Global Instance ℐ : core.default.Default.Trait Self := {
+      #[refine] Global Instance ℐ : core.default.Default.Trait Self := {
         core.default.Default.default := default;
       }.
+      Admitted.
     End Impl_core_default_Default_for_ink_primitives_types_Hash.
     Global Hint Resolve ℐ : core.
   End Impl_core_default_Default_for_ink_primitives_types_Hash.
@@ -914,11 +968,12 @@ Module types.
         Notation.double_colon := try_from;
       }.
       
-      Global Instance ℐ :
+      #[refine] Global Instance ℐ :
         core.convert.TryFrom.Trait Self (T := ref (Slice u8)) := {
         core.convert.TryFrom.Error := Error;
         core.convert.TryFrom.try_from := try_from;
       }.
+      Admitted.
     End Impl_core_convert_TryFrom_for_ink_primitives_types_Hash.
     Global Hint Resolve ℐ : core.
   End Impl_core_convert_TryFrom_for_ink_primitives_types_Hash.
@@ -936,9 +991,11 @@ Module types.
         Notation.double_colon := as_ref;
       }.
       
-      Global Instance ℐ : core.convert.AsRef.Trait Self (T := Slice u8) := {
+      #[refine] Global Instance ℐ :
+        core.convert.AsRef.Trait Self (T := Slice u8) := {
         core.convert.AsRef.as_ref := as_ref;
       }.
+      Admitted.
     End Impl_core_convert_AsRef_for_ink_primitives_types_Hash.
     Global Hint Resolve ℐ : core.
   End Impl_core_convert_AsRef_for_ink_primitives_types_Hash.
@@ -956,9 +1013,11 @@ Module types.
         Notation.double_colon := as_mut;
       }.
       
-      Global Instance ℐ : core.convert.AsMut.Trait Self (T := Slice u8) := {
+      #[refine] Global Instance ℐ :
+        core.convert.AsMut.Trait Self (T := Slice u8) := {
         core.convert.AsMut.as_mut := as_mut;
       }.
+      Admitted.
     End Impl_core_convert_AsMut_for_ink_primitives_types_Hash.
     Global Hint Resolve ℐ : core.
   End Impl_core_convert_AsMut_for_ink_primitives_types_Hash.
@@ -976,10 +1035,11 @@ Module types.
         Notation.double_colon := from;
       }.
       
-      Global Instance ℐ :
+      #[refine] Global Instance ℐ :
         core.convert.From.Trait Self (T := ink_primitives.types.Hash) := {
         core.convert.From.from := from;
       }.
+      Admitted.
     End Impl_core_convert_From_for_Array_u8.
     Global Hint Resolve ℐ : core.
   End Impl_core_convert_From_for_Array_u8.
@@ -1002,10 +1062,10 @@ Module types.
       
       Definition Self : Set := array u8.
       
-      Definition
-        CLEAR_HASH
-         := let* α0 := M.alloc 0 in
-        repeat α0.
+      Definition CLEAR_HASH : Self :=
+        M.run
+          (let* α0 := M.alloc 0 in
+          repeat α0 32).
       
       Global Instance AssociatedFunction_CLEAR_HASH :
         Notation.DoubleColon Self "CLEAR_HASH" := {
@@ -1019,10 +1079,11 @@ Module types.
         Notation.double_colon := is_clear;
       }.
       
-      Global Instance ℐ : ink_primitives.types.Clear.Trait Self := {
+      #[refine] Global Instance ℐ : ink_primitives.types.Clear.Trait Self := {
         ink_primitives.types.Clear.CLEAR_HASH := CLEAR_HASH;
         ink_primitives.types.Clear.is_clear := is_clear;
       }.
+      Admitted.
     End Impl_ink_primitives_types_Clear_for_Array_u8. *)
     Global Hint Resolve ℐ : core.
   End Impl_ink_primitives_types_Clear_for_Array_u8. *)
@@ -1033,9 +1094,11 @@ Module types.
       
       Definition Self : Set := ink_primitives.types.Hash.
       
-      Definition
-        CLEAR_HASH
-         := Self (ink_primitives.types.Clear.CLEAR_HASH (Self := (list u8))).
+      Definition CLEAR_HASH : Self :=
+        M.run
+          (Pure
+            (ink_primitives.types.Hash.Build_t
+              (ink_primitives.types.Clear.CLEAR_HASH (Self := (list u8))))).
       
       Global Instance AssociatedFunction_CLEAR_HASH :
         Notation.DoubleColon Self "CLEAR_HASH" := {
@@ -1049,10 +1112,11 @@ Module types.
         Notation.double_colon := is_clear;
       }.
       
-      Global Instance ℐ : ink_primitives.types.Clear.Trait Self := {
+      #[refine] Global Instance ℐ : ink_primitives.types.Clear.Trait Self := {
         ink_primitives.types.Clear.CLEAR_HASH := CLEAR_HASH;
         ink_primitives.types.Clear.is_clear := is_clear;
       }.
+      Admitted.
     End Impl_ink_primitives_types_Clear_for_ink_primitives_types_Hash. *)
     Global Hint Resolve ℐ : core.
   End Impl_ink_primitives_types_Clear_for_ink_primitives_types_Hash. *)
@@ -1068,9 +1132,10 @@ Module AccountId.
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_0 : Notation.Dot "0" := {
+    #[refine] Global Instance Get_0 : Notation.Dot "0" := {
       Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
+    Admitted.
   End AccountId.
 End AccountId.
 Definition AccountId `{ℋ : State.Trait} : Set := M.val AccountId.t.
@@ -1090,10 +1155,11 @@ Module Impl_scale_info_TypeInfo_for_ink_primitives_types_AccountId.
       Notation.double_colon := type_info;
     }.
     
-    Global Instance ℐ : scale_info.TypeInfo.Trait Self := {
+    #[refine] Global Instance ℐ : scale_info.TypeInfo.Trait Self := {
       scale_info.TypeInfo.Identity := Identity;
       scale_info.TypeInfo.type_info := type_info;
     }.
+    Admitted.
   End Impl_scale_info_TypeInfo_for_ink_primitives_types_AccountId.
   Global Hint Resolve ℐ : core.
 End Impl_scale_info_TypeInfo_for_ink_primitives_types_AccountId.
@@ -1108,9 +1174,10 @@ Module Visitor.
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_0 : Notation.Dot "0" := {
+    #[refine] Global Instance Get_0 : Notation.Dot "0" := {
       Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
+    Admitted.
   End Visitor.
 End Visitor.
 Definition Visitor `{ℋ : State.Trait} : Set := M.val Visitor.t.
@@ -1130,10 +1197,11 @@ Definition Visitor `{ℋ : State.Trait} : Set := M.val Visitor.t.
       Notation.double_colon := into_visitor;
     }.
     
-    Global Instance ℐ : scale_decode.IntoVisitor.Trait Self := {
+    #[refine] Global Instance ℐ : scale_decode.IntoVisitor.Trait Self := {
       scale_decode.IntoVisitor.Visitor := Visitor;
       scale_decode.IntoVisitor.into_visitor := into_visitor;
     }.
+    Admitted.
   End Impl_scale_decode_IntoVisitor_for_ink_primitives_types_AccountId. *)
   Global Hint Resolve ℐ : core.
 End Impl_scale_decode_IntoVisitor_for_ink_primitives_types_AccountId. *)
@@ -1170,10 +1238,11 @@ End Impl_scale_decode_IntoVisitor_for_ink_primitives_types_AccountId. *)
       Notation.double_colon := visit_tuple;
     }.
     
-    Global Instance ℐ : scale_decode.visitor.Visitor.Trait Self := {
+    #[refine] Global Instance ℐ : scale_decode.visitor.Visitor.Trait Self := {
       scale_decode.visitor.Visitor.Error := Error;
       scale_decode.visitor.Visitor.Value := Value;
     }.
+    Admitted.
   End Impl_scale_decode_visitor_Visitor_for_ink_primitives_types___Visitor. *) *)
   Global Hint Resolve ℐ : core.
 End Impl_scale_decode_visitor_Visitor_for_ink_primitives_types___Visitor. *) *)
@@ -1195,9 +1264,10 @@ End Impl_scale_decode_visitor_Visitor_for_ink_primitives_types___Visitor. *) *)
       Notation.double_colon := decode_as_fields;
     }.
     
-    Global Instance ℐ : scale_decode.DecodeAsFields.Trait Self := {
+    #[refine] Global Instance ℐ : scale_decode.DecodeAsFields.Trait Self := {
       scale_decode.DecodeAsFields.decode_as_fields := decode_as_fields;
     }.
+    Admitted.
   End Impl_scale_decode_DecodeAsFields_for_ink_primitives_types_AccountId. *)
   Global Hint Resolve ℐ : core.
 End Impl_scale_decode_DecodeAsFields_for_ink_primitives_types_AccountId. *)
@@ -1220,9 +1290,10 @@ Module Impl_scale_encode_EncodeAsType_for_ink_primitives_types_AccountId.
       Notation.double_colon := encode_as_type_to;
     }.
     
-    Global Instance ℐ : scale_encode.EncodeAsType.Trait Self := {
+    #[refine] Global Instance ℐ : scale_encode.EncodeAsType.Trait Self := {
       scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
     }.
+    Admitted.
   End Impl_scale_encode_EncodeAsType_for_ink_primitives_types_AccountId.
   Global Hint Resolve ℐ : core.
 End Impl_scale_encode_EncodeAsType_for_ink_primitives_types_AccountId.
@@ -1245,9 +1316,10 @@ Module Impl_scale_encode_EncodeAsFields_for_ink_primitives_types_AccountId.
       Notation.double_colon := encode_as_fields_to;
     }.
     
-    Global Instance ℐ : scale_encode.EncodeAsFields.Trait Self := {
+    #[refine] Global Instance ℐ : scale_encode.EncodeAsFields.Trait Self := {
       scale_encode.EncodeAsFields.encode_as_fields_to := encode_as_fields_to;
     }.
+    Admitted.
   End Impl_scale_encode_EncodeAsFields_for_ink_primitives_types_AccountId.
   Global Hint Resolve ℐ : core.
 End Impl_scale_encode_EncodeAsFields_for_ink_primitives_types_AccountId.
@@ -1266,9 +1338,10 @@ Module Impl_core_fmt_Debug_for_ink_primitives_types_AccountId.
       Notation.double_colon := fmt;
     }.
     
-    Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
+    Admitted.
   End Impl_core_fmt_Debug_for_ink_primitives_types_AccountId.
   Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_ink_primitives_types_AccountId.
@@ -1279,8 +1352,9 @@ Module Impl_core_marker_Copy_for_ink_primitives_types_AccountId.
     
     Definition Self : Set := ink_primitives.types.AccountId.
     
-    Global Instance ℐ : core.marker.Copy.Trait Self := {
+    #[refine] Global Instance ℐ : core.marker.Copy.Trait Self := {
     }.
+    Admitted.
   End Impl_core_marker_Copy_for_ink_primitives_types_AccountId.
   Global Hint Resolve ℐ : core.
 End Impl_core_marker_Copy_for_ink_primitives_types_AccountId.
@@ -1298,9 +1372,10 @@ Module Impl_core_clone_Clone_for_ink_primitives_types_AccountId.
       Notation.double_colon := clone;
     }.
     
-    Global Instance ℐ : core.clone.Clone.Trait Self := {
+    #[refine] Global Instance ℐ : core.clone.Clone.Trait Self := {
       core.clone.Clone.clone := clone;
     }.
+    Admitted.
   End Impl_core_clone_Clone_for_ink_primitives_types_AccountId.
   Global Hint Resolve ℐ : core.
 End Impl_core_clone_Clone_for_ink_primitives_types_AccountId.
@@ -1312,8 +1387,10 @@ Module Impl_core_marker_StructuralPartialEq_for_ink_primitives_types_AccountId.
     
     Definition Self : Set := ink_primitives.types.AccountId.
     
-    Global Instance ℐ : core.marker.StructuralPartialEq.Trait Self := {
+    #[refine] Global Instance ℐ :
+      core.marker.StructuralPartialEq.Trait Self := {
     }.
+    Admitted.
   End Impl_core_marker_StructuralPartialEq_for_ink_primitives_types_AccountId.
   Global Hint Resolve ℐ : core.
 End Impl_core_marker_StructuralPartialEq_for_ink_primitives_types_AccountId.
@@ -1330,11 +1407,12 @@ Module Impl_core_cmp_PartialEq_for_ink_primitives_types_AccountId.
       Notation.double_colon := eq;
     }.
     
-    Global Instance ℐ :
+    #[refine] Global Instance ℐ :
       core.cmp.PartialEq.Trait Self
         (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
       core.cmp.PartialEq.eq := eq;
     }.
+    Admitted.
   End Impl_core_cmp_PartialEq_for_ink_primitives_types_AccountId.
   Global Hint Resolve ℐ : core.
 End Impl_core_cmp_PartialEq_for_ink_primitives_types_AccountId.
@@ -1345,8 +1423,9 @@ Module Impl_core_marker_StructuralEq_for_ink_primitives_types_AccountId.
     
     Definition Self : Set := ink_primitives.types.AccountId.
     
-    Global Instance ℐ : core.marker.StructuralEq.Trait Self := {
+    #[refine] Global Instance ℐ : core.marker.StructuralEq.Trait Self := {
     }.
+    Admitted.
   End Impl_core_marker_StructuralEq_for_ink_primitives_types_AccountId.
   Global Hint Resolve ℐ : core.
 End Impl_core_marker_StructuralEq_for_ink_primitives_types_AccountId.
@@ -1364,8 +1443,9 @@ Module Impl_core_cmp_Eq_for_ink_primitives_types_AccountId.
       Notation.double_colon := assert_receiver_is_total_eq;
     }.
     
-    Global Instance ℐ : core.cmp.Eq.Trait Self := {
+    #[refine] Global Instance ℐ : core.cmp.Eq.Trait Self := {
     }.
+    Admitted.
   End Impl_core_cmp_Eq_for_ink_primitives_types_AccountId.
   Global Hint Resolve ℐ : core.
 End Impl_core_cmp_Eq_for_ink_primitives_types_AccountId.
@@ -1386,9 +1466,10 @@ Module Impl_core_cmp_Ord_for_ink_primitives_types_AccountId.
       Notation.double_colon := cmp;
     }.
     
-    Global Instance ℐ : core.cmp.Ord.Trait Self := {
+    #[refine] Global Instance ℐ : core.cmp.Ord.Trait Self := {
       core.cmp.Ord.cmp := cmp;
     }.
+    Admitted.
   End Impl_core_cmp_Ord_for_ink_primitives_types_AccountId.
   Global Hint Resolve ℐ : core.
 End Impl_core_cmp_Ord_for_ink_primitives_types_AccountId.
@@ -1409,11 +1490,12 @@ Module Impl_core_cmp_PartialOrd_for_ink_primitives_types_AccountId.
       Notation.double_colon := partial_cmp;
     }.
     
-    Global Instance ℐ :
+    #[refine] Global Instance ℐ :
       core.cmp.PartialOrd.Trait Self
         (Rhs := core.cmp.PartialOrd.Default.Rhs Self) := {
       core.cmp.PartialOrd.partial_cmp := partial_cmp;
     }.
+    Admitted.
   End Impl_core_cmp_PartialOrd_for_ink_primitives_types_AccountId.
   Global Hint Resolve ℐ : core.
 End Impl_core_cmp_PartialOrd_for_ink_primitives_types_AccountId.
@@ -1435,10 +1517,11 @@ Module Impl_core_hash_Hash_for_ink_primitives_types_AccountId.
       Notation.double_colon := hash (__H := __H);
     }.
     
-    Global Instance ℐ : core.hash.Hash.Trait Self := {
+    #[refine] Global Instance ℐ : core.hash.Hash.Trait Self := {
       core.hash.Hash.hash {__H : Set} {ℋ_0 : core.hash.Hasher.Trait __H} :=
         hash (__H := __H);
     }.
+    Admitted.
   End Impl_core_hash_Hash_for_ink_primitives_types_AccountId.
   Global Hint Resolve ℐ : core.
 End Impl_core_hash_Hash_for_ink_primitives_types_AccountId.
@@ -1463,12 +1546,14 @@ End Impl_core_hash_Hash_for_ink_primitives_types_AccountId.
       Notation.double_colon := decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
     
-    Global Instance ℐ : parity_scale_codec.codec.Decode.Trait Self := {
+    #[refine] Global Instance ℐ :
+      parity_scale_codec.codec.Decode.Trait Self := {
       parity_scale_codec.codec.Decode.decode
         {__CodecInputEdqy : Set}
         {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :=
         decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
+    Admitted.
   End Impl_parity_scale_codec_codec_Decode_for_ink_primitives_types_AccountId. *)
   Global Hint Resolve ℐ : core.
 End Impl_parity_scale_codec_codec_Decode_for_ink_primitives_types_AccountId. *)
@@ -1522,8 +1607,10 @@ End Impl_parity_scale_codec_codec_Decode_for_ink_primitives_types_AccountId. *)
       Notation.double_colon := using_encoded (R := R) (F := F);
     }.
     
-    Global Instance ℐ : parity_scale_codec.codec.Encode.Trait Self := {
+    #[refine] Global Instance ℐ :
+      parity_scale_codec.codec.Encode.Trait Self := {
     }.
+    Admitted.
   End Impl_parity_scale_codec_codec_Encode_for_ink_primitives_types_AccountId. *)
   Global Hint Resolve ℐ : core.
 End Impl_parity_scale_codec_codec_Encode_for_ink_primitives_types_AccountId. *)
@@ -1534,10 +1621,11 @@ End Impl_parity_scale_codec_codec_Encode_for_ink_primitives_types_AccountId. *)
     
     Definition Self : Set := ink_primitives.types.AccountId.
     
-    Global Instance ℐ :
+    #[refine] Global Instance ℐ :
       parity_scale_codec.encode_like.EncodeLike.Trait Self
         (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self) := {
     }.
+    Admitted.
   End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_primitives_types_AccountId. *)
   Global Hint Resolve ℐ : core.
 End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_primitives_types_AccountId. *)
@@ -1555,9 +1643,11 @@ Module Impl_core_convert_From_for_ink_primitives_types_AccountId.
       Notation.double_colon := from;
     }.
     
-    Global Instance ℐ : core.convert.From.Trait Self (T := array u8) := {
+    #[refine] Global Instance ℐ :
+      core.convert.From.Trait Self (T := array u8) := {
       core.convert.From.from := from;
     }.
+    Admitted.
   End Impl_core_convert_From_for_ink_primitives_types_AccountId.
   Global Hint Resolve ℐ : core.
 End Impl_core_convert_From_for_ink_primitives_types_AccountId.
@@ -1575,9 +1665,11 @@ End Impl_core_convert_From_for_ink_primitives_types_AccountId.
       Notation.double_colon := as_ref;
     }.
     
-    Global Instance ℐ : core.convert.AsRef.Trait Self (T := array u8) := {
+    #[refine] Global Instance ℐ :
+      core.convert.AsRef.Trait Self (T := array u8) := {
       core.convert.AsRef.as_ref := as_ref;
     }.
+    Admitted.
   End Impl_core_convert_AsRef_for_ink_primitives_types_AccountId. *)
   Global Hint Resolve ℐ : core.
 End Impl_core_convert_AsRef_for_ink_primitives_types_AccountId. *)
@@ -1595,9 +1687,11 @@ End Impl_core_convert_AsRef_for_ink_primitives_types_AccountId. *)
       Notation.double_colon := as_mut;
     }.
     
-    Global Instance ℐ : core.convert.AsMut.Trait Self (T := array u8) := {
+    #[refine] Global Instance ℐ :
+      core.convert.AsMut.Trait Self (T := array u8) := {
       core.convert.AsMut.as_mut := as_mut;
     }.
+    Admitted.
   End Impl_core_convert_AsMut_for_ink_primitives_types_AccountId. *)
   Global Hint Resolve ℐ : core.
 End Impl_core_convert_AsMut_for_ink_primitives_types_AccountId. *)
@@ -1615,9 +1709,11 @@ End Impl_core_convert_AsMut_for_ink_primitives_types_AccountId. *)
       Notation.double_colon := as_ref;
     }.
     
-    Global Instance ℐ : core.convert.AsRef.Trait Self (T := Slice u8) := {
+    #[refine] Global Instance ℐ :
+      core.convert.AsRef.Trait Self (T := Slice u8) := {
       core.convert.AsRef.as_ref := as_ref;
     }.
+    Admitted.
   End Impl_core_convert_AsRef_for_ink_primitives_types_AccountId. *)
   Global Hint Resolve ℐ : core.
 End Impl_core_convert_AsRef_for_ink_primitives_types_AccountId. *)
@@ -1635,9 +1731,11 @@ End Impl_core_convert_AsRef_for_ink_primitives_types_AccountId. *)
       Notation.double_colon := as_mut;
     }.
     
-    Global Instance ℐ : core.convert.AsMut.Trait Self (T := Slice u8) := {
+    #[refine] Global Instance ℐ :
+      core.convert.AsMut.Trait Self (T := Slice u8) := {
       core.convert.AsMut.as_mut := as_mut;
     }.
+    Admitted.
   End Impl_core_convert_AsMut_for_ink_primitives_types_AccountId. *)
   Global Hint Resolve ℐ : core.
 End Impl_core_convert_AsMut_for_ink_primitives_types_AccountId. *)
@@ -1659,11 +1757,12 @@ Module Impl_core_convert_TryFrom_for_ink_primitives_types_AccountId.
       Notation.double_colon := try_from;
     }.
     
-    Global Instance ℐ :
+    #[refine] Global Instance ℐ :
       core.convert.TryFrom.Trait Self (T := ref (Slice u8)) := {
       core.convert.TryFrom.Error := Error;
       core.convert.TryFrom.try_from := try_from;
     }.
+    Admitted.
   End Impl_core_convert_TryFrom_for_ink_primitives_types_AccountId.
   Global Hint Resolve ℐ : core.
 End Impl_core_convert_TryFrom_for_ink_primitives_types_AccountId.
@@ -1678,9 +1777,10 @@ Module Hash.
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_0 : Notation.Dot "0" := {
+    #[refine] Global Instance Get_0 : Notation.Dot "0" := {
       Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
+    Admitted.
   End Hash.
 End Hash.
 Definition Hash `{ℋ : State.Trait} : Set := M.val Hash.t.
@@ -1700,10 +1800,11 @@ Module Impl_scale_info_TypeInfo_for_ink_primitives_types_Hash.
       Notation.double_colon := type_info;
     }.
     
-    Global Instance ℐ : scale_info.TypeInfo.Trait Self := {
+    #[refine] Global Instance ℐ : scale_info.TypeInfo.Trait Self := {
       scale_info.TypeInfo.Identity := Identity;
       scale_info.TypeInfo.type_info := type_info;
     }.
+    Admitted.
   End Impl_scale_info_TypeInfo_for_ink_primitives_types_Hash.
   Global Hint Resolve ℐ : core.
 End Impl_scale_info_TypeInfo_for_ink_primitives_types_Hash.
@@ -1723,10 +1824,11 @@ End Impl_scale_info_TypeInfo_for_ink_primitives_types_Hash.
       Notation.double_colon := into_visitor;
     }.
     
-    Global Instance ℐ : scale_decode.IntoVisitor.Trait Self := {
+    #[refine] Global Instance ℐ : scale_decode.IntoVisitor.Trait Self := {
       scale_decode.IntoVisitor.Visitor := Visitor;
       scale_decode.IntoVisitor.into_visitor := into_visitor;
     }.
+    Admitted.
   End Impl_scale_decode_IntoVisitor_for_ink_primitives_types_Hash. *)
   Global Hint Resolve ℐ : core.
 End Impl_scale_decode_IntoVisitor_for_ink_primitives_types_Hash. *)
@@ -1763,10 +1865,11 @@ End Impl_scale_decode_IntoVisitor_for_ink_primitives_types_Hash. *)
       Notation.double_colon := visit_tuple;
     }.
     
-    Global Instance ℐ : scale_decode.visitor.Visitor.Trait Self := {
+    #[refine] Global Instance ℐ : scale_decode.visitor.Visitor.Trait Self := {
       scale_decode.visitor.Visitor.Error := Error;
       scale_decode.visitor.Visitor.Value := Value;
     }.
+    Admitted.
   End Impl_scale_decode_visitor_Visitor_for_ink_primitives_types___Visitor. *) *)
   Global Hint Resolve ℐ : core.
 End Impl_scale_decode_visitor_Visitor_for_ink_primitives_types___Visitor. *) *)
@@ -1788,9 +1891,10 @@ End Impl_scale_decode_visitor_Visitor_for_ink_primitives_types___Visitor. *) *)
       Notation.double_colon := decode_as_fields;
     }.
     
-    Global Instance ℐ : scale_decode.DecodeAsFields.Trait Self := {
+    #[refine] Global Instance ℐ : scale_decode.DecodeAsFields.Trait Self := {
       scale_decode.DecodeAsFields.decode_as_fields := decode_as_fields;
     }.
+    Admitted.
   End Impl_scale_decode_DecodeAsFields_for_ink_primitives_types_Hash. *)
   Global Hint Resolve ℐ : core.
 End Impl_scale_decode_DecodeAsFields_for_ink_primitives_types_Hash. *)
@@ -1813,9 +1917,10 @@ Module Impl_scale_encode_EncodeAsType_for_ink_primitives_types_Hash.
       Notation.double_colon := encode_as_type_to;
     }.
     
-    Global Instance ℐ : scale_encode.EncodeAsType.Trait Self := {
+    #[refine] Global Instance ℐ : scale_encode.EncodeAsType.Trait Self := {
       scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
     }.
+    Admitted.
   End Impl_scale_encode_EncodeAsType_for_ink_primitives_types_Hash.
   Global Hint Resolve ℐ : core.
 End Impl_scale_encode_EncodeAsType_for_ink_primitives_types_Hash.
@@ -1838,9 +1943,10 @@ Module Impl_scale_encode_EncodeAsFields_for_ink_primitives_types_Hash.
       Notation.double_colon := encode_as_fields_to;
     }.
     
-    Global Instance ℐ : scale_encode.EncodeAsFields.Trait Self := {
+    #[refine] Global Instance ℐ : scale_encode.EncodeAsFields.Trait Self := {
       scale_encode.EncodeAsFields.encode_as_fields_to := encode_as_fields_to;
     }.
+    Admitted.
   End Impl_scale_encode_EncodeAsFields_for_ink_primitives_types_Hash.
   Global Hint Resolve ℐ : core.
 End Impl_scale_encode_EncodeAsFields_for_ink_primitives_types_Hash.
@@ -1859,9 +1965,10 @@ Module Impl_core_fmt_Debug_for_ink_primitives_types_Hash.
       Notation.double_colon := fmt;
     }.
     
-    Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
+    Admitted.
   End Impl_core_fmt_Debug_for_ink_primitives_types_Hash.
   Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_ink_primitives_types_Hash.
@@ -1872,8 +1979,9 @@ Module Impl_core_marker_Copy_for_ink_primitives_types_Hash.
     
     Definition Self : Set := ink_primitives.types.Hash.
     
-    Global Instance ℐ : core.marker.Copy.Trait Self := {
+    #[refine] Global Instance ℐ : core.marker.Copy.Trait Self := {
     }.
+    Admitted.
   End Impl_core_marker_Copy_for_ink_primitives_types_Hash.
   Global Hint Resolve ℐ : core.
 End Impl_core_marker_Copy_for_ink_primitives_types_Hash.
@@ -1891,9 +1999,10 @@ Module Impl_core_clone_Clone_for_ink_primitives_types_Hash.
       Notation.double_colon := clone;
     }.
     
-    Global Instance ℐ : core.clone.Clone.Trait Self := {
+    #[refine] Global Instance ℐ : core.clone.Clone.Trait Self := {
       core.clone.Clone.clone := clone;
     }.
+    Admitted.
   End Impl_core_clone_Clone_for_ink_primitives_types_Hash.
   Global Hint Resolve ℐ : core.
 End Impl_core_clone_Clone_for_ink_primitives_types_Hash.
@@ -1904,8 +2013,10 @@ Module Impl_core_marker_StructuralPartialEq_for_ink_primitives_types_Hash.
     
     Definition Self : Set := ink_primitives.types.Hash.
     
-    Global Instance ℐ : core.marker.StructuralPartialEq.Trait Self := {
+    #[refine] Global Instance ℐ :
+      core.marker.StructuralPartialEq.Trait Self := {
     }.
+    Admitted.
   End Impl_core_marker_StructuralPartialEq_for_ink_primitives_types_Hash.
   Global Hint Resolve ℐ : core.
 End Impl_core_marker_StructuralPartialEq_for_ink_primitives_types_Hash.
@@ -1922,11 +2033,12 @@ Module Impl_core_cmp_PartialEq_for_ink_primitives_types_Hash.
       Notation.double_colon := eq;
     }.
     
-    Global Instance ℐ :
+    #[refine] Global Instance ℐ :
       core.cmp.PartialEq.Trait Self
         (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
       core.cmp.PartialEq.eq := eq;
     }.
+    Admitted.
   End Impl_core_cmp_PartialEq_for_ink_primitives_types_Hash.
   Global Hint Resolve ℐ : core.
 End Impl_core_cmp_PartialEq_for_ink_primitives_types_Hash.
@@ -1937,8 +2049,9 @@ Module Impl_core_marker_StructuralEq_for_ink_primitives_types_Hash.
     
     Definition Self : Set := ink_primitives.types.Hash.
     
-    Global Instance ℐ : core.marker.StructuralEq.Trait Self := {
+    #[refine] Global Instance ℐ : core.marker.StructuralEq.Trait Self := {
     }.
+    Admitted.
   End Impl_core_marker_StructuralEq_for_ink_primitives_types_Hash.
   Global Hint Resolve ℐ : core.
 End Impl_core_marker_StructuralEq_for_ink_primitives_types_Hash.
@@ -1956,8 +2069,9 @@ Module Impl_core_cmp_Eq_for_ink_primitives_types_Hash.
       Notation.double_colon := assert_receiver_is_total_eq;
     }.
     
-    Global Instance ℐ : core.cmp.Eq.Trait Self := {
+    #[refine] Global Instance ℐ : core.cmp.Eq.Trait Self := {
     }.
+    Admitted.
   End Impl_core_cmp_Eq_for_ink_primitives_types_Hash.
   Global Hint Resolve ℐ : core.
 End Impl_core_cmp_Eq_for_ink_primitives_types_Hash.
@@ -1976,9 +2090,10 @@ Module Impl_core_cmp_Ord_for_ink_primitives_types_Hash.
       Notation.double_colon := cmp;
     }.
     
-    Global Instance ℐ : core.cmp.Ord.Trait Self := {
+    #[refine] Global Instance ℐ : core.cmp.Ord.Trait Self := {
       core.cmp.Ord.cmp := cmp;
     }.
+    Admitted.
   End Impl_core_cmp_Ord_for_ink_primitives_types_Hash.
   Global Hint Resolve ℐ : core.
 End Impl_core_cmp_Ord_for_ink_primitives_types_Hash.
@@ -1999,11 +2114,12 @@ Module Impl_core_cmp_PartialOrd_for_ink_primitives_types_Hash.
       Notation.double_colon := partial_cmp;
     }.
     
-    Global Instance ℐ :
+    #[refine] Global Instance ℐ :
       core.cmp.PartialOrd.Trait Self
         (Rhs := core.cmp.PartialOrd.Default.Rhs Self) := {
       core.cmp.PartialOrd.partial_cmp := partial_cmp;
     }.
+    Admitted.
   End Impl_core_cmp_PartialOrd_for_ink_primitives_types_Hash.
   Global Hint Resolve ℐ : core.
 End Impl_core_cmp_PartialOrd_for_ink_primitives_types_Hash.
@@ -2025,10 +2141,11 @@ Module Impl_core_hash_Hash_for_ink_primitives_types_Hash.
       Notation.double_colon := hash (__H := __H);
     }.
     
-    Global Instance ℐ : core.hash.Hash.Trait Self := {
+    #[refine] Global Instance ℐ : core.hash.Hash.Trait Self := {
       core.hash.Hash.hash {__H : Set} {ℋ_0 : core.hash.Hasher.Trait __H} :=
         hash (__H := __H);
     }.
+    Admitted.
   End Impl_core_hash_Hash_for_ink_primitives_types_Hash.
   Global Hint Resolve ℐ : core.
 End Impl_core_hash_Hash_for_ink_primitives_types_Hash.
@@ -2053,12 +2170,14 @@ End Impl_core_hash_Hash_for_ink_primitives_types_Hash.
       Notation.double_colon := decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
     
-    Global Instance ℐ : parity_scale_codec.codec.Decode.Trait Self := {
+    #[refine] Global Instance ℐ :
+      parity_scale_codec.codec.Decode.Trait Self := {
       parity_scale_codec.codec.Decode.decode
         {__CodecInputEdqy : Set}
         {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :=
         decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
+    Admitted.
   End Impl_parity_scale_codec_codec_Decode_for_ink_primitives_types_Hash. *)
   Global Hint Resolve ℐ : core.
 End Impl_parity_scale_codec_codec_Decode_for_ink_primitives_types_Hash. *)
@@ -2112,8 +2231,10 @@ End Impl_parity_scale_codec_codec_Decode_for_ink_primitives_types_Hash. *)
       Notation.double_colon := using_encoded (R := R) (F := F);
     }.
     
-    Global Instance ℐ : parity_scale_codec.codec.Encode.Trait Self := {
+    #[refine] Global Instance ℐ :
+      parity_scale_codec.codec.Encode.Trait Self := {
     }.
+    Admitted.
   End Impl_parity_scale_codec_codec_Encode_for_ink_primitives_types_Hash. *)
   Global Hint Resolve ℐ : core.
 End Impl_parity_scale_codec_codec_Encode_for_ink_primitives_types_Hash. *)
@@ -2124,10 +2245,11 @@ End Impl_parity_scale_codec_codec_Encode_for_ink_primitives_types_Hash. *)
     
     Definition Self : Set := ink_primitives.types.Hash.
     
-    Global Instance ℐ :
+    #[refine] Global Instance ℐ :
       parity_scale_codec.encode_like.EncodeLike.Trait Self
         (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self) := {
     }.
+    Admitted.
   End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_primitives_types_Hash. *)
   Global Hint Resolve ℐ : core.
 End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_primitives_types_Hash. *)
@@ -2145,9 +2267,11 @@ Module Impl_core_convert_From_for_ink_primitives_types_Hash.
       Notation.double_colon := from;
     }.
     
-    Global Instance ℐ : core.convert.From.Trait Self (T := array u8) := {
+    #[refine] Global Instance ℐ :
+      core.convert.From.Trait Self (T := array u8) := {
       core.convert.From.from := from;
     }.
+    Admitted.
   End Impl_core_convert_From_for_ink_primitives_types_Hash.
   Global Hint Resolve ℐ : core.
 End Impl_core_convert_From_for_ink_primitives_types_Hash.
@@ -2165,9 +2289,10 @@ Module Impl_core_default_Default_for_ink_primitives_types_Hash.
       Notation.double_colon := default;
     }.
     
-    Global Instance ℐ : core.default.Default.Trait Self := {
+    #[refine] Global Instance ℐ : core.default.Default.Trait Self := {
       core.default.Default.default := default;
     }.
+    Admitted.
   End Impl_core_default_Default_for_ink_primitives_types_Hash.
   Global Hint Resolve ℐ : core.
 End Impl_core_default_Default_for_ink_primitives_types_Hash.
@@ -2189,11 +2314,12 @@ Module Impl_core_convert_TryFrom_for_ink_primitives_types_Hash.
       Notation.double_colon := try_from;
     }.
     
-    Global Instance ℐ :
+    #[refine] Global Instance ℐ :
       core.convert.TryFrom.Trait Self (T := ref (Slice u8)) := {
       core.convert.TryFrom.Error := Error;
       core.convert.TryFrom.try_from := try_from;
     }.
+    Admitted.
   End Impl_core_convert_TryFrom_for_ink_primitives_types_Hash.
   Global Hint Resolve ℐ : core.
 End Impl_core_convert_TryFrom_for_ink_primitives_types_Hash.
@@ -2211,9 +2337,11 @@ Module Impl_core_convert_AsRef_for_ink_primitives_types_Hash.
       Notation.double_colon := as_ref;
     }.
     
-    Global Instance ℐ : core.convert.AsRef.Trait Self (T := Slice u8) := {
+    #[refine] Global Instance ℐ :
+      core.convert.AsRef.Trait Self (T := Slice u8) := {
       core.convert.AsRef.as_ref := as_ref;
     }.
+    Admitted.
   End Impl_core_convert_AsRef_for_ink_primitives_types_Hash.
   Global Hint Resolve ℐ : core.
 End Impl_core_convert_AsRef_for_ink_primitives_types_Hash.
@@ -2231,9 +2359,11 @@ Module Impl_core_convert_AsMut_for_ink_primitives_types_Hash.
       Notation.double_colon := as_mut;
     }.
     
-    Global Instance ℐ : core.convert.AsMut.Trait Self (T := Slice u8) := {
+    #[refine] Global Instance ℐ :
+      core.convert.AsMut.Trait Self (T := Slice u8) := {
       core.convert.AsMut.as_mut := as_mut;
     }.
+    Admitted.
   End Impl_core_convert_AsMut_for_ink_primitives_types_Hash.
   Global Hint Resolve ℐ : core.
 End Impl_core_convert_AsMut_for_ink_primitives_types_Hash.
@@ -2251,10 +2381,11 @@ Module Impl_core_convert_From_for_Array_u8.
       Notation.double_colon := from;
     }.
     
-    Global Instance ℐ :
+    #[refine] Global Instance ℐ :
       core.convert.From.Trait Self (T := ink_primitives.types.Hash) := {
       core.convert.From.from := from;
     }.
+    Admitted.
   End Impl_core_convert_From_for_Array_u8.
   Global Hint Resolve ℐ : core.
 End Impl_core_convert_From_for_Array_u8.
@@ -2277,10 +2408,10 @@ End Clear.
     
     Definition Self : Set := array u8.
     
-    Definition
-      CLEAR_HASH
-       := let* α0 := M.alloc 0 in
-      repeat α0.
+    Definition CLEAR_HASH : Self :=
+      M.run
+        (let* α0 := M.alloc 0 in
+        repeat α0 32).
     
     Global Instance AssociatedFunction_CLEAR_HASH :
       Notation.DoubleColon Self "CLEAR_HASH" := {
@@ -2294,10 +2425,11 @@ End Clear.
       Notation.double_colon := is_clear;
     }.
     
-    Global Instance ℐ : ink_primitives.types.Clear.Trait Self := {
+    #[refine] Global Instance ℐ : ink_primitives.types.Clear.Trait Self := {
       ink_primitives.types.Clear.CLEAR_HASH := CLEAR_HASH;
       ink_primitives.types.Clear.is_clear := is_clear;
     }.
+    Admitted.
   End Impl_ink_primitives_types_Clear_for_Array_u8. *)
   Global Hint Resolve ℐ : core.
 End Impl_ink_primitives_types_Clear_for_Array_u8. *)
@@ -2308,9 +2440,11 @@ End Impl_ink_primitives_types_Clear_for_Array_u8. *)
     
     Definition Self : Set := ink_primitives.types.Hash.
     
-    Definition
-      CLEAR_HASH
-       := Self (ink_primitives.types.Clear.CLEAR_HASH (Self := (list u8))).
+    Definition CLEAR_HASH : Self :=
+      M.run
+        (Pure
+          (ink_primitives.types.Hash.Build_t
+            (ink_primitives.types.Clear.CLEAR_HASH (Self := (list u8))))).
     
     Global Instance AssociatedFunction_CLEAR_HASH :
       Notation.DoubleColon Self "CLEAR_HASH" := {
@@ -2324,10 +2458,11 @@ End Impl_ink_primitives_types_Clear_for_Array_u8. *)
       Notation.double_colon := is_clear;
     }.
     
-    Global Instance ℐ : ink_primitives.types.Clear.Trait Self := {
+    #[refine] Global Instance ℐ : ink_primitives.types.Clear.Trait Self := {
       ink_primitives.types.Clear.CLEAR_HASH := CLEAR_HASH;
       ink_primitives.types.Clear.is_clear := is_clear;
     }.
+    Admitted.
   End Impl_ink_primitives_types_Clear_for_ink_primitives_types_Hash. *)
   Global Hint Resolve ℐ : core.
 End Impl_ink_primitives_types_Clear_for_ink_primitives_types_Hash. *)
@@ -2353,10 +2488,11 @@ Module Impl_scale_info_TypeInfo_for_ink_primitives_LangError.
       Notation.double_colon := type_info;
     }.
     
-    Global Instance ℐ : scale_info.TypeInfo.Trait Self := {
+    #[refine] Global Instance ℐ : scale_info.TypeInfo.Trait Self := {
       scale_info.TypeInfo.Identity := Identity;
       scale_info.TypeInfo.type_info := type_info;
     }.
+    Admitted.
   End Impl_scale_info_TypeInfo_for_ink_primitives_LangError.
   Global Hint Resolve ℐ : core.
 End Impl_scale_info_TypeInfo_for_ink_primitives_LangError.
@@ -2375,9 +2511,10 @@ Module Impl_core_fmt_Debug_for_ink_primitives_LangError.
       Notation.double_colon := fmt;
     }.
     
-    Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
+    Admitted.
   End Impl_core_fmt_Debug_for_ink_primitives_LangError.
   Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_ink_primitives_LangError.
@@ -2395,9 +2532,10 @@ Module Impl_core_clone_Clone_for_ink_primitives_LangError.
       Notation.double_colon := clone;
     }.
     
-    Global Instance ℐ : core.clone.Clone.Trait Self := {
+    #[refine] Global Instance ℐ : core.clone.Clone.Trait Self := {
       core.clone.Clone.clone := clone;
     }.
+    Admitted.
   End Impl_core_clone_Clone_for_ink_primitives_LangError.
   Global Hint Resolve ℐ : core.
 End Impl_core_clone_Clone_for_ink_primitives_LangError.
@@ -2408,8 +2546,9 @@ Module Impl_core_marker_Copy_for_ink_primitives_LangError.
     
     Definition Self : Set := ink_primitives.LangError.
     
-    Global Instance ℐ : core.marker.Copy.Trait Self := {
+    #[refine] Global Instance ℐ : core.marker.Copy.Trait Self := {
     }.
+    Admitted.
   End Impl_core_marker_Copy_for_ink_primitives_LangError.
   Global Hint Resolve ℐ : core.
 End Impl_core_marker_Copy_for_ink_primitives_LangError.
@@ -2420,8 +2559,10 @@ Module Impl_core_marker_StructuralPartialEq_for_ink_primitives_LangError.
     
     Definition Self : Set := ink_primitives.LangError.
     
-    Global Instance ℐ : core.marker.StructuralPartialEq.Trait Self := {
+    #[refine] Global Instance ℐ :
+      core.marker.StructuralPartialEq.Trait Self := {
     }.
+    Admitted.
   End Impl_core_marker_StructuralPartialEq_for_ink_primitives_LangError.
   Global Hint Resolve ℐ : core.
 End Impl_core_marker_StructuralPartialEq_for_ink_primitives_LangError.
@@ -2438,11 +2579,12 @@ Module Impl_core_cmp_PartialEq_for_ink_primitives_LangError.
       Notation.double_colon := eq;
     }.
     
-    Global Instance ℐ :
+    #[refine] Global Instance ℐ :
       core.cmp.PartialEq.Trait Self
         (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
       core.cmp.PartialEq.eq := eq;
     }.
+    Admitted.
   End Impl_core_cmp_PartialEq_for_ink_primitives_LangError.
   Global Hint Resolve ℐ : core.
 End Impl_core_cmp_PartialEq_for_ink_primitives_LangError.
@@ -2453,8 +2595,9 @@ Module Impl_core_marker_StructuralEq_for_ink_primitives_LangError.
     
     Definition Self : Set := ink_primitives.LangError.
     
-    Global Instance ℐ : core.marker.StructuralEq.Trait Self := {
+    #[refine] Global Instance ℐ : core.marker.StructuralEq.Trait Self := {
     }.
+    Admitted.
   End Impl_core_marker_StructuralEq_for_ink_primitives_LangError.
   Global Hint Resolve ℐ : core.
 End Impl_core_marker_StructuralEq_for_ink_primitives_LangError.
@@ -2472,8 +2615,9 @@ Module Impl_core_cmp_Eq_for_ink_primitives_LangError.
       Notation.double_colon := assert_receiver_is_total_eq;
     }.
     
-    Global Instance ℐ : core.cmp.Eq.Trait Self := {
+    #[refine] Global Instance ℐ : core.cmp.Eq.Trait Self := {
     }.
+    Admitted.
   End Impl_core_cmp_Eq_for_ink_primitives_LangError.
   Global Hint Resolve ℐ : core.
 End Impl_core_cmp_Eq_for_ink_primitives_LangError.
@@ -2501,8 +2645,10 @@ End Impl_core_cmp_Eq_for_ink_primitives_LangError.
         encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
     }.
     
-    Global Instance ℐ : parity_scale_codec.codec.Encode.Trait Self := {
+    #[refine] Global Instance ℐ :
+      parity_scale_codec.codec.Encode.Trait Self := {
     }.
+    Admitted.
   End Impl_parity_scale_codec_codec_Encode_for_ink_primitives_LangError. *)
   Global Hint Resolve ℐ : core.
 End Impl_parity_scale_codec_codec_Encode_for_ink_primitives_LangError. *)
@@ -2513,10 +2659,11 @@ End Impl_parity_scale_codec_codec_Encode_for_ink_primitives_LangError. *)
     
     Definition Self : Set := ink_primitives.LangError.
     
-    Global Instance ℐ :
+    #[refine] Global Instance ℐ :
       parity_scale_codec.encode_like.EncodeLike.Trait Self
         (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self) := {
     }.
+    Admitted.
   End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_primitives_LangError. *)
   Global Hint Resolve ℐ : core.
 End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_primitives_LangError. *)
@@ -2541,12 +2688,14 @@ End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_primitives_LangError.
       Notation.double_colon := decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
     
-    Global Instance ℐ : parity_scale_codec.codec.Decode.Trait Self := {
+    #[refine] Global Instance ℐ :
+      parity_scale_codec.codec.Decode.Trait Self := {
       parity_scale_codec.codec.Decode.decode
         {__CodecInputEdqy : Set}
         {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :=
         decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
+    Admitted.
   End Impl_parity_scale_codec_codec_Decode_for_ink_primitives_LangError. *)
   Global Hint Resolve ℐ : core.
 End Impl_parity_scale_codec_codec_Decode_for_ink_primitives_LangError. *)

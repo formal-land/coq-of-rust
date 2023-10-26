@@ -16,31 +16,46 @@ Definition main `{ℋ : State.Trait} : M unit :=
       (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"]
         [ mk_str "42"; α1; α3; α5; α7 ] in
     let* α9 := pointer_coercion "Unsize" α8 in
-    (Slice _)::["into_vec"] α9 in
-  let* errors := (alloc.vec.Vec _ alloc.alloc.Global)::["new"] in
+    (Slice T)::["into_vec"] α9 in
+  let* errors := (alloc.vec.Vec T alloc.alloc.Global)::["new"] in
   let* numbers :=
-    let* α0 := core.iter.traits.collect.IntoIterator.into_iter strings in
+    let* α0 :=
+      (core.iter.traits.collect.IntoIterator.into_iter
+          (Self := (alloc.vec.Vec (ref str) alloc.alloc.Global)))
+        strings in
     let* α1 :=
-      core.iter.traits.iterator.Iterator.map
+      (core.iter.traits.iterator.Iterator.map
+          (Self := (alloc.vec.into_iter.IntoIter (ref str) alloc.alloc.Global)))
         α0
-        let* α0 := deref s str in
+        (let* α0 := deref s str in
         let* α1 := borrow α0 str in
-        str::["parse"] α1 in
+        str::["parse"] α1) in
     let* α2 :=
-      core.iter.traits.iterator.Iterator.filter_map
+      (core.iter.traits.iterator.Iterator.filter_map
+          (Self :=
+            (core.iter.adapters.map.Map
+              (alloc.vec.into_iter.IntoIter (ref str) alloc.alloc.Global)
+              type not implemented)))
         α1
-        let* α0 :=
-          (core.result.Result _ _)::["map_err"]
+        (let* α0 :=
+          (core.result.Result T E)::["map_err"]
             r
-            let* α0 :=
+            (let* α0 :=
               borrow_mut
                 errors
                 (alloc.vec.Vec
                   core.num.error.ParseIntError
                   alloc.alloc.Global) in
-            (alloc.vec.Vec _ _)::["push"] α0 e in
-        (core.result.Result _ _)::["ok"] α0 in
-    core.iter.traits.iterator.Iterator.collect α2 in
+            (alloc.vec.Vec T A)::["push"] α0 e) in
+        (core.result.Result T E)::["ok"] α0) in
+    (core.iter.traits.iterator.Iterator.collect
+        (Self :=
+          (core.iter.adapters.filter_map.FilterMap
+            (core.iter.adapters.map.Map
+              (alloc.vec.into_iter.IntoIter (ref str) alloc.alloc.Global)
+              type not implemented)
+            type not implemented)))
+      α2 in
   let* _ :=
     let* _ :=
       let* α0 := borrow [ mk_str "Numbers: "; mk_str "

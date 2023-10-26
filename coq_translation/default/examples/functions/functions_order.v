@@ -11,9 +11,10 @@ Module SomeType.
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_0 : Notation.Dot "0" := {
+    #[refine] Global Instance Get_0 : Notation.Dot "0" := {
       Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
+    Admitted.
   End SomeType.
 End SomeType.
 Definition SomeType `{ℋ : State.Trait} : Set := M.val SomeType.t.
@@ -28,9 +29,10 @@ Module OtherType.
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_0 : Notation.Dot "0" := {
+    #[refine] Global Instance Get_0 : Notation.Dot "0" := {
       Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
+    Admitted.
   End OtherType.
 End OtherType.
 Definition OtherType `{ℋ : State.Trait} : Set := M.val OtherType.t.
@@ -87,17 +89,20 @@ Module Impl_functions_order_SomeTrait_for_functions_order_SomeType.
     Definition some_trait_foo (self : ref Self) : M unit :=
       let* α0 := deref self functions_order.SomeType in
       let* α1 := borrow α0 functions_order.SomeType in
-      functions_order.SomeTrait.some_trait_bar α1.
+      (functions_order.SomeTrait.some_trait_bar
+          (Self := functions_order.SomeType))
+        α1.
     
     Global Instance AssociatedFunction_some_trait_foo :
       Notation.DoubleColon Self "some_trait_foo" := {
       Notation.double_colon := some_trait_foo;
     }.
     
-    Global Instance ℐ : functions_order.SomeTrait.Trait Self := {
+    #[refine] Global Instance ℐ : functions_order.SomeTrait.Trait Self := {
       functions_order.SomeTrait.some_trait_bar := some_trait_bar;
       functions_order.SomeTrait.some_trait_foo := some_trait_foo;
     }.
+    Admitted.
   End Impl_functions_order_SomeTrait_for_functions_order_SomeType.
   Global Hint Resolve ℐ : core.
 End Impl_functions_order_SomeTrait_for_functions_order_SomeType.
@@ -122,10 +127,11 @@ Module Impl_functions_order_SomeTrait_for_functions_order_OtherType.
       Notation.double_colon := some_trait_bar;
     }.
     
-    Global Instance ℐ : functions_order.SomeTrait.Trait Self := {
+    #[refine] Global Instance ℐ : functions_order.SomeTrait.Trait Self := {
       functions_order.SomeTrait.some_trait_foo := some_trait_foo;
       functions_order.SomeTrait.some_trait_bar := some_trait_bar;
     }.
+    Admitted.
   End Impl_functions_order_SomeTrait_for_functions_order_OtherType.
   Global Hint Resolve ℐ : core.
 End Impl_functions_order_SomeTrait_for_functions_order_OtherType.
@@ -138,11 +144,15 @@ Definition depends_on_trait_impl
   let* _ :=
     let* α0 :=
       borrow (functions_order.OtherType.Build_t b) functions_order.OtherType in
-    functions_order.SomeTrait.some_trait_foo α0 in
+    (functions_order.SomeTrait.some_trait_foo
+        (Self := functions_order.OtherType))
+      α0 in
   let* _ :=
     let* α0 :=
       borrow (functions_order.SomeType.Build_t u) functions_order.SomeType in
-    functions_order.SomeTrait.some_trait_foo α0 in
+    (functions_order.SomeTrait.some_trait_foo
+        (Self := functions_order.SomeType))
+      α0 in
   M.alloc tt.
 
 Module inner_mod.

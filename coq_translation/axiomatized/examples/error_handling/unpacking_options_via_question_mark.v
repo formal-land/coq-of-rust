@@ -11,12 +11,14 @@ Module Person.
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_job : Notation.Dot "job" := {
+    #[refine] Global Instance Get_job : Notation.Dot "job" := {
       Notation.dot x := let* x := M.read x in Pure x.(job) : M _;
     }.
-    Global Instance Get_AF_job : Notation.DoubleColon t "job" := {
+    Admitted.
+    #[refine] Global Instance Get_AF_job : Notation.DoubleColon t "job" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(job) : M _;
     }.
+    Admitted.
   End Person.
 End Person.
 Definition Person `{ℋ : State.Trait} : Set := M.val Person.t.
@@ -32,14 +34,17 @@ Module Job.
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_phone_number : Notation.Dot "phone_number" := {
+    #[refine] Global Instance Get_phone_number :
+      Notation.Dot "phone_number" := {
       Notation.dot x := let* x := M.read x in Pure x.(phone_number) : M _;
     }.
-    Global Instance Get_AF_phone_number :
+    Admitted.
+    #[refine] Global Instance Get_AF_phone_number :
       Notation.DoubleColon t "phone_number" := {
       Notation.double_colon x :=
         let* x := M.read x in Pure x.(phone_number) : M _;
     }.
+    Admitted.
   End Job.
 End Job.
 Definition Job `{ℋ : State.Trait} : Set := M.val Job.t.
@@ -57,9 +62,10 @@ Module Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job.
       Notation.double_colon := clone;
     }.
     
-    Global Instance ℐ : core.clone.Clone.Trait Self := {
+    #[refine] Global Instance ℐ : core.clone.Clone.Trait Self := {
       core.clone.Clone.clone := clone;
     }.
+    Admitted.
   End Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job.
   Global Hint Resolve ℐ : core.
 End Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job.
@@ -70,8 +76,9 @@ Module Impl_core_marker_Copy_for_unpacking_options_via_question_mark_Job.
     
     Definition Self : Set := unpacking_options_via_question_mark.Job.
     
-    Global Instance ℐ : core.marker.Copy.Trait Self := {
+    #[refine] Global Instance ℐ : core.marker.Copy.Trait Self := {
     }.
+    Admitted.
   End Impl_core_marker_Copy_for_unpacking_options_via_question_mark_Job.
   Global Hint Resolve ℐ : core.
 End Impl_core_marker_Copy_for_unpacking_options_via_question_mark_Job.
@@ -87,18 +94,24 @@ Module PhoneNumber.
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_area_code : Notation.Dot "area_code" := {
+    #[refine] Global Instance Get_area_code : Notation.Dot "area_code" := {
       Notation.dot x := let* x := M.read x in Pure x.(area_code) : M _;
     }.
-    Global Instance Get_AF_area_code : Notation.DoubleColon t "area_code" := {
+    Admitted.
+    #[refine] Global Instance Get_AF_area_code :
+      Notation.DoubleColon t "area_code" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(area_code) : M _;
     }.
-    Global Instance Get_number : Notation.Dot "number" := {
+    Admitted.
+    #[refine] Global Instance Get_number : Notation.Dot "number" := {
       Notation.dot x := let* x := M.read x in Pure x.(number) : M _;
     }.
-    Global Instance Get_AF_number : Notation.DoubleColon t "number" := {
+    Admitted.
+    #[refine] Global Instance Get_AF_number :
+      Notation.DoubleColon t "number" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(number) : M _;
     }.
+    Admitted.
   End PhoneNumber.
 End PhoneNumber.
 Definition PhoneNumber `{ℋ : State.Trait} : Set := M.val PhoneNumber.t.
@@ -119,9 +132,10 @@ Module
       Notation.double_colon := clone;
     }.
     
-    Global Instance ℐ : core.clone.Clone.Trait Self := {
+    #[refine] Global Instance ℐ : core.clone.Clone.Trait Self := {
       core.clone.Clone.clone := clone;
     }.
+    Admitted.
   End Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumber.
   Global Hint Resolve ℐ : core.
 End Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumber.
@@ -134,8 +148,9 @@ Module
     
     Definition Self : Set := unpacking_options_via_question_mark.PhoneNumber.
     
-    Global Instance ℐ : core.marker.Copy.Trait Self := {
+    #[refine] Global Instance ℐ : core.marker.Copy.Trait Self := {
     }.
+    Admitted.
   End Impl_core_marker_Copy_for_unpacking_options_via_question_mark_PhoneNumber.
   Global Hint Resolve ℐ : core.
 End Impl_core_marker_Copy_for_unpacking_options_via_question_mark_PhoneNumber.

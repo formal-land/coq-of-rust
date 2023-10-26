@@ -672,7 +672,7 @@ impl<'a> Instance<'a> {
         concat([
             nest([
                 nest([
-                    text("Global Instance"),
+                    text("#[refine] Global Instance"),
                     line(),
                     text(self.name.to_owned()),
                     if self.parameters.is_empty() {
@@ -691,6 +691,8 @@ impl<'a> Instance<'a> {
             ]),
             self.build_expr.to_doc(false),
             text("."),
+            hardline(),
+            text("Admitted."),
             if self.proof_lines.is_empty() {
                 nil()
             } else {

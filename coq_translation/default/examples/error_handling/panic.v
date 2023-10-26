@@ -5,7 +5,7 @@ Definition drink `{ℋ : State.Trait} (beverage : ref str) : M unit :=
   let* _ :=
     let* α0 := borrow beverage (ref str) in
     let* α1 := borrow (mk_str "lemonade") (ref str) in
-    let* α2 := core.cmp.PartialEq.eq α0 α1 in
+    let* α2 := (core.cmp.PartialEq.eq (Self := (ref str))) α0 α1 in
     let* α3 := use α2 in
     if (α3 : bool) then
       let* _ :=

@@ -16,18 +16,22 @@ Module Matrix.
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_0 : Notation.Dot "0" := {
+    #[refine] Global Instance Get_0 : Notation.Dot "0" := {
       Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
-    Global Instance Get_1 : Notation.Dot "1" := {
+    Admitted.
+    #[refine] Global Instance Get_1 : Notation.Dot "1" := {
       Notation.dot x := let* x := M.read x in Pure x.(x1) : M _;
     }.
-    Global Instance Get_2 : Notation.Dot "2" := {
+    Admitted.
+    #[refine] Global Instance Get_2 : Notation.Dot "2" := {
       Notation.dot x := let* x := M.read x in Pure x.(x2) : M _;
     }.
-    Global Instance Get_3 : Notation.Dot "3" := {
+    Admitted.
+    #[refine] Global Instance Get_3 : Notation.Dot "3" := {
       Notation.dot x := let* x := M.read x in Pure x.(x3) : M _;
     }.
+    Admitted.
   End Matrix.
 End Matrix.
 Definition Matrix `{ℋ : State.Trait} : Set := M.val Matrix.t.
@@ -46,9 +50,10 @@ Module Impl_core_fmt_Debug_for_tuples_Matrix.
       Notation.double_colon := fmt;
     }.
     
-    Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
+    Admitted.
   End Impl_core_fmt_Debug_for_tuples_Matrix.
   Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_tuples_Matrix.

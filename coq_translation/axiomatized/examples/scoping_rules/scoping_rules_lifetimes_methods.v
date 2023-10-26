@@ -11,9 +11,10 @@ Module Owner.
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_0 : Notation.Dot "0" := {
+    #[refine] Global Instance Get_0 : Notation.Dot "0" := {
       Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
+    Admitted.
   End Owner.
 End Owner.
 Definition Owner `{ℋ : State.Trait} : Set := M.val Owner.t.

@@ -200,24 +200,24 @@ Require CoqOfRust.ink.ink_engine.""",
         content,
     )
 
-    content = sub_at_least_once(
-        re.escape("""End impls.
+#     content = sub_at_least_once(
+#         re.escape("""End impls.
 
-Module TopicsBuilder."""),
-        """End impls.
+# Module TopicsBuilder."""),
+#         """End impls.
 
-(* Module TopicsBuilder.""",
-        content,
-    )
-    content = sub_at_least_once(
-        re.escape("""Definition TopicsBuilder `{ℋ : State.Trait} : Set := M.val TopicsBuilder.t.
+# (* Module TopicsBuilder.""",
+#         content,
+#     )
+#     content = sub_at_least_once(
+#         re.escape("""Definition TopicsBuilder `{ℋ : State.Trait} : Set := M.val TopicsBuilder.t.
 
-Module EnvInstance."""),
-        """Definition TopicsBuilder `{ℋ : State.Trait} : Set := M.val TopicsBuilder.t. *)
+# Module EnvInstance."""),
+#         """Definition TopicsBuilder `{ℋ : State.Trait} : Set := M.val TopicsBuilder.t. *)
 
-Module EnvInstance.""",
-        content,
-    )
+# Module EnvInstance.""",
+#         content,
+#     )
 
     content = sub_at_least_once(
         re.escape("""Parameter is_contract :
@@ -496,6 +496,12 @@ def update_storage_traits():
 Require CoqOfRust.ink.ink_metadata.
 Require CoqOfRust.ink.ink_primitives.
 Require CoqOfRust.ink.parity_scale_codec.""",
+        content,
+    )
+
+    content = sub_at_least_once(
+        r"\w+ :: core.marker.Sized.Trait Self;",
+        "(* _ :: core.marker.Sized.Trait Self; *)",
         content,
     )
 

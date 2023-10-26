@@ -2,9 +2,6 @@
   "axiomatize": false,
   "debug_reorder": false,
   "impl_ignore_axioms": [
-    "ink",
-    "ink_env",
-    "ink_storage"
   ],
   "reorder": {
     "examples/functions/functions_order.rs": {

@@ -31,9 +31,10 @@ Module Impl_core_fmt_Debug_for_defining_an_error_type_DoubleError.
       Notation.double_colon := fmt;
     }.
     
-    Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
+    Admitted.
   End Impl_core_fmt_Debug_for_defining_an_error_type_DoubleError.
   Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_defining_an_error_type_DoubleError.
@@ -52,9 +53,10 @@ Module Impl_core_clone_Clone_for_defining_an_error_type_DoubleError.
       Notation.double_colon := clone;
     }.
     
-    Global Instance ℐ : core.clone.Clone.Trait Self := {
+    #[refine] Global Instance ℐ : core.clone.Clone.Trait Self := {
       core.clone.Clone.clone := clone;
     }.
+    Admitted.
   End Impl_core_clone_Clone_for_defining_an_error_type_DoubleError.
   Global Hint Resolve ℐ : core.
 End Impl_core_clone_Clone_for_defining_an_error_type_DoubleError.
@@ -87,9 +89,10 @@ Module Impl_core_fmt_Display_for_defining_an_error_type_DoubleError.
       Notation.double_colon := fmt;
     }.
     
-    Global Instance ℐ : core.fmt.Display.Trait Self := {
+    #[refine] Global Instance ℐ : core.fmt.Display.Trait Self := {
       core.fmt.Display.fmt := fmt;
     }.
+    Admitted.
   End Impl_core_fmt_Display_for_defining_an_error_type_DoubleError.
   Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Display_for_defining_an_error_type_DoubleError.
@@ -99,28 +102,31 @@ Definition double_first
     (vec : alloc.vec.Vec (ref str) alloc.vec.Vec.Default.A)
     : M (defining_an_error_type.Result i32) :=
   let* α0 := borrow vec (alloc.vec.Vec (ref str) alloc.alloc.Global) in
-  let* α1 := core.ops.deref.Deref.deref α0 in
+  let* α1 :=
+    (core.ops.deref.Deref.deref
+        (Self := (alloc.vec.Vec (ref str) alloc.alloc.Global)))
+      α0 in
   let* α2 := deref α1 (Slice (ref str)) in
   let* α3 := borrow α2 (Slice (ref str)) in
-  let* α4 := (Slice _)::["first"] α3 in
+  let* α4 := (Slice T)::["first"] α3 in
   let* α5 :=
-    (core.option.Option _)::["ok_or"]
+    (core.option.Option T)::["ok_or"]
       α4
       (defining_an_error_type.DoubleError.Build_t tt) in
-  (core.result.Result _ _)::["and_then"]
+  (core.result.Result T E)::["and_then"]
     α5
-    let* α0 := deref s (ref str) in
+    (let* α0 := deref s (ref str) in
     let* α1 := deref α0 str in
     let* α2 := borrow α1 str in
     let* α3 := str::["parse"] α2 in
     let* α4 :=
-      (core.result.Result _ _)::["map_err"]
+      (core.result.Result T E)::["map_err"]
         α3
-        Pure (defining_an_error_type.DoubleError.Build_t tt) in
-    (core.result.Result _ _)::["map"]
+        (Pure (defining_an_error_type.DoubleError.Build_t tt)) in
+    (core.result.Result T E)::["map"]
       α4
-      let* α0 := M.alloc 2 in
-      mul α0 i.
+      (let* α0 := M.alloc 2 in
+      mul α0 i)).
 
 Definition print
     `{ℋ : State.Trait}
@@ -179,8 +185,8 @@ Definition main `{ℋ : State.Trait} : M unit :=
       (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"]
         [ mk_str "42"; α1; α3 ] in
     let* α5 := pointer_coercion "Unsize" α4 in
-    (Slice _)::["into_vec"] α5 in
-  let* empty := (alloc.vec.Vec _ alloc.alloc.Global)::["new"] in
+    (Slice T)::["into_vec"] α5 in
+  let* empty := (alloc.vec.Vec T alloc.alloc.Global)::["new"] in
   let* strings :=
     let* α0 := deref (mk_str "93") str in
     let* α1 := borrow α0 str in
@@ -190,7 +196,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
       (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"]
         [ mk_str "tofu"; α1; α3 ] in
     let* α5 := pointer_coercion "Unsize" α4 in
-    (Slice _)::["into_vec"] α5 in
+    (Slice T)::["into_vec"] α5 in
   let* _ :=
     let* α0 := defining_an_error_type.double_first numbers in
     defining_an_error_type.print α0 in

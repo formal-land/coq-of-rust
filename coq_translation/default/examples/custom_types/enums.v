@@ -122,7 +122,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
   let* pasted :=
     let* α0 := deref (mk_str "my text") str in
     let* α1 := borrow α0 str in
-    let* α2 := alloc.borrow.ToOwned.to_owned α1 in
+    let* α2 := (alloc.borrow.ToOwned.to_owned (Self := str)) α1 in
     Pure (enums.WebEvent.Paste α2) in
   let* click :=
     let* α0 := M.alloc 20 in

@@ -12,18 +12,22 @@ Module Sheep.
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_naked : Notation.Dot "naked" := {
+    #[refine] Global Instance Get_naked : Notation.Dot "naked" := {
       Notation.dot x := let* x := M.read x in Pure x.(naked) : M _;
     }.
-    Global Instance Get_AF_naked : Notation.DoubleColon t "naked" := {
+    Admitted.
+    #[refine] Global Instance Get_AF_naked : Notation.DoubleColon t "naked" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(naked) : M _;
     }.
-    Global Instance Get_name : Notation.Dot "name" := {
+    Admitted.
+    #[refine] Global Instance Get_name : Notation.Dot "name" := {
       Notation.dot x := let* x := M.read x in Pure x.(name) : M _;
     }.
-    Global Instance Get_AF_name : Notation.DoubleColon t "name" := {
+    Admitted.
+    #[refine] Global Instance Get_AF_name : Notation.DoubleColon t "name" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(name) : M _;
     }.
+    Admitted.
   End Sheep.
 End Sheep.
 Definition Sheep `{ℋ : State.Trait} : Set := M.val Sheep.t.
@@ -116,7 +120,7 @@ Module Impl_traits_Animal_for_traits_Sheep.
           let* α9 := core.fmt.rt.Argument::["new_display"] α8 in
           let* α10 := deref self traits.Sheep in
           let* α11 := borrow α10 traits.Sheep in
-          let* α12 := traits.Animal.noise α11 in
+          let* α12 := (traits.Animal.noise (Self := traits.Sheep)) α11 in
           let* α13 := borrow α12 (ref str) in
           let* α14 := deref α13 (ref str) in
           let* α15 := borrow α14 (ref str) in
@@ -135,11 +139,12 @@ Module Impl_traits_Animal_for_traits_Sheep.
       Notation.double_colon := talk;
     }.
     
-    Global Instance ℐ : traits.Animal.Trait Self := {
+    #[refine] Global Instance ℐ : traits.Animal.Trait Self := {
       traits.Animal.new := new;
       traits.Animal.name := name;
       traits.Animal.noise := noise;
     }.
+    Admitted.
   End Impl_traits_Animal_for_traits_Sheep.
   Global Hint Resolve ℐ : core.
 End Impl_traits_Animal_for_traits_Sheep.
@@ -168,7 +173,7 @@ Module Impl_traits_Sheep_3.
             let* α3 := pointer_coercion "Unsize" α2 in
             let* α4 := deref self traits.Sheep in
             let* α5 := borrow α4 traits.Sheep in
-            let* α6 := traits.Animal.name α5 in
+            let* α6 := (traits.Animal.name (Self := traits.Sheep)) α5 in
             let* α7 := borrow α6 (ref str) in
             let* α8 := deref α7 (ref str) in
             let* α9 := borrow α8 (ref str) in
@@ -221,14 +226,14 @@ End Impl_traits_Sheep_3.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
-  let* dolly := traits.Animal.new (mk_str "Dolly") in
+  let* dolly := (traits.Animal.new (Self := traits.Sheep)) (mk_str "Dolly") in
   let* _ :=
     let* α0 := borrow dolly traits.Sheep in
-    traits.Animal.talk α0 in
+    (traits.Animal.talk (Self := traits.Sheep)) α0 in
   let* _ :=
     let* α0 := borrow_mut dolly traits.Sheep in
     traits.Sheep::["shear"] α0 in
   let* _ :=
     let* α0 := borrow dolly traits.Sheep in
-    traits.Animal.talk α0 in
+    (traits.Animal.talk (Self := traits.Sheep)) α0 in
   M.alloc tt.

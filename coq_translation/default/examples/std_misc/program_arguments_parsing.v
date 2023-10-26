@@ -74,10 +74,10 @@ match_args {increase|decrease} <integer>
 Definition main `{ℋ : State.Trait} : M unit :=
   let* args :=
     let* α0 := std.env.args in
-    core.iter.traits.iterator.Iterator.collect α0 in
+    (core.iter.traits.iterator.Iterator.collect (Self := std.env.Args)) α0 in
   let* α0 :=
     borrow args (alloc.vec.Vec alloc.string.String alloc.alloc.Global) in
-  let* α1 := (alloc.vec.Vec _ _)::["len"] α0 in
+  let* α1 := (alloc.vec.Vec T A)::["len"] α0 in
   match α1 with
   | _ =>
     let* _ :=
@@ -98,10 +98,14 @@ Definition main `{ℋ : State.Trait} : M unit :=
     let* α0 :=
       borrow args (alloc.vec.Vec alloc.string.String alloc.alloc.Global) in
     let* α1 := M.alloc 1 in
-    let* α2 := core.ops.index.Index.index α0 α1 in
+    let* α2 :=
+      (core.ops.index.Index.index
+          (Self := (alloc.vec.Vec alloc.string.String alloc.alloc.Global)))
+        α0
+        α1 in
     let* α3 := deref α2 alloc.string.String in
     let* α4 := borrow α3 alloc.string.String in
-    let* α5 := core.ops.deref.Deref.deref α4 in
+    let* α5 := (core.ops.deref.Deref.deref (Self := alloc.string.String)) α4 in
     let* α6 := deref α5 str in
     let* α7 := borrow α6 str in
     let* α8 := str::["parse"] α7 in
@@ -133,20 +137,29 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α0 :=
         borrow args (alloc.vec.Vec alloc.string.String alloc.alloc.Global) in
       let* α1 := M.alloc 1 in
-      let* α2 := core.ops.index.Index.index α0 α1 in
+      let* α2 :=
+        (core.ops.index.Index.index
+            (Self := (alloc.vec.Vec alloc.string.String alloc.alloc.Global)))
+          α0
+          α1 in
       let* α3 := deref α2 alloc.string.String in
       borrow α3 alloc.string.String in
     let* num :=
       let* α0 :=
         borrow args (alloc.vec.Vec alloc.string.String alloc.alloc.Global) in
       let* α1 := M.alloc 2 in
-      let* α2 := core.ops.index.Index.index α0 α1 in
+      let* α2 :=
+        (core.ops.index.Index.index
+            (Self := (alloc.vec.Vec alloc.string.String alloc.alloc.Global)))
+          α0
+          α1 in
       let* α3 := deref α2 alloc.string.String in
       borrow α3 alloc.string.String in
     let* number :=
       let* α0 := deref num alloc.string.String in
       let* α1 := borrow α0 alloc.string.String in
-      let* α2 := core.ops.deref.Deref.deref α1 in
+      let* α2 :=
+        (core.ops.deref.Deref.deref (Self := alloc.string.String)) α1 in
       let* α3 := deref α2 str in
       let* α4 := borrow α3 str in
       let* α5 := str::["parse"] α4 in
@@ -176,7 +189,9 @@ Definition main `{ℋ : State.Trait} : M unit :=
     let* α0 := deref cmd alloc.string.String in
     let* α1 := borrow α0 alloc.string.String in
     let* α2 :=
-      core.ops.index.Index.index α1 (core.ops.range.RangeFull.Build_t tt) in
+      (core.ops.index.Index.index (Self := alloc.string.String))
+        α1
+        (core.ops.range.RangeFull.Build_t tt) in
     let* α3 := deref α2 str in
     let* α4 := borrow α3 str in
     match α4 with

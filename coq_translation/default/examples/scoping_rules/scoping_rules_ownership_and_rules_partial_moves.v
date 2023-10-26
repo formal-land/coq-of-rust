@@ -4,9 +4,10 @@ Require Import CoqOfRust.CoqOfRust.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
   let* person :=
-    let* α0 := core.convert.From.from (mk_str "Alice") in
+    let* α0 :=
+      (core.convert.From.from (Self := alloc.string.String)) (mk_str "Alice") in
     let* α1 := M.alloc 20 in
-    let* α2 := (alloc.boxed.Box _ alloc.alloc.Global)::["new"] α1 in
+    let* α2 := (alloc.boxed.Box T alloc.alloc.Global)::["new"] α1 in
     M.alloc
       {|
         scoping_rules_ownership_and_rules_partial_moves.main.Person.name := α0;
@@ -95,18 +96,22 @@ Module Person.
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_name : Notation.Dot "name" := {
+    #[refine] Global Instance Get_name : Notation.Dot "name" := {
       Notation.dot x := let* x := M.read x in Pure x.(name) : M _;
     }.
-    Global Instance Get_AF_name : Notation.DoubleColon t "name" := {
+    Admitted.
+    #[refine] Global Instance Get_AF_name : Notation.DoubleColon t "name" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(name) : M _;
     }.
-    Global Instance Get_age : Notation.Dot "age" := {
+    Admitted.
+    #[refine] Global Instance Get_age : Notation.Dot "age" := {
       Notation.dot x := let* x := M.read x in Pure x.(age) : M _;
     }.
-    Global Instance Get_AF_age : Notation.DoubleColon t "age" := {
+    Admitted.
+    #[refine] Global Instance Get_AF_age : Notation.DoubleColon t "age" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(age) : M _;
     }.
+    Admitted.
   End Person.
 End Person.
 Definition Person `{ℋ : State.Trait} : Set := M.val Person.t.
@@ -158,9 +163,10 @@ Module
       Notation.double_colon := fmt;
     }.
     
-    Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
+    Admitted.
   End
     Impl_core_fmt_Debug_for_scoping_rules_ownership_and_rules_partial_moves_main_Person.
   Global Hint Resolve ℐ : core.
