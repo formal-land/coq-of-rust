@@ -106,12 +106,7 @@ pub(crate) enum DefinitionKind<'a> {
     },
     /// an opaque constant
     /// (using `Parameter`)
-    Assumption {
-        ty: Expression<'a>,
-        // NOTE: this item is actually redundant in desgin. The coq::Expression cannot be composed together,
-        // so I put it here
-        with_monad_parm: bool,
-    },
+    Assumption { ty: Expression<'a> },
 }
 
 #[derive(Clone)]
@@ -532,32 +527,14 @@ impl<'a> Definition<'a> {
                 body.to_doc(false),
                 text("."),
             ]),
-            DefinitionKind::Assumption {
-                ty,
-                with_monad_parm,
-            } => nest([
+            DefinitionKind::Assumption { ty } => nest([
                 nest([
                     text("Parameter"),
                     line(),
                     text(self.name.to_owned()),
                     line(),
                 ]),
-                nest([
-                    text(":"),
-                    line(),
-                    if with_monad_parm {
-                        concat([
-                            text("forall"),
-                            line(),
-                            ArgDecl::monadic_typeclass_parameter().to_doc(),
-                            text(","),
-                            line(),
-                        ])
-                    } else {
-                        nil()
-                    },
-                    ty.to_doc(false),
-                ]),
+                nest([text(":"), line(), ty.to_doc(false)]),
                 text("."),
             ]),
         }

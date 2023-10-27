@@ -1279,41 +1279,43 @@ impl FunDefinition {
                             coq::TopLevelItem::Definition(coq::Definition::new(
                                 &ret_ty_name,
                                 &coq::DefinitionKind::Assumption {
-                                    ty: coq::Expression::SigmaType {
-                                        args: [
-                                            vec![coq::ArgDecl::new(
-                                                &coq::ArgDeclVar::Simple {
-                                                    idents: vec!["Ty".to_string()],
-                                                    ty: Some(coq::Expression::Set),
-                                                },
-                                                coq::ArgSpecKind::Explicit,
-                                            )],
-                                            bounds
-                                                .iter()
-                                                .map(|bound| {
-                                                    coq::ArgDecl::new(
-                                                        &coq::ArgDeclVar::Generalized {
-                                                            idents: vec![],
-                                                            ty: coq::Expression::Variable {
-                                                                ident: Path::concat(&[
-                                                                    bound.to_owned(),
-                                                                    Path::new(&["Trait"]),
-                                                                ]),
-                                                                no_implicit: false,
-                                                            }
-                                                            .apply(&coq::Expression::just_name(
-                                                                "Ty",
-                                                            )),
-                                                        },
-                                                        coq::ArgSpecKind::Explicit,
-                                                    )
-                                                })
-                                                .collect::<Vec<_>>(),
-                                        ]
-                                        .concat(),
-                                        image: Box::new(coq::Expression::Unit),
+                                    ty: coq::Expression::PiType {
+                                        args: vec![coq::ArgDecl::monadic_typeclass_parameter()],
+                                        image: Box::new(coq::Expression::SigmaType {
+                                            args: [
+                                                vec![coq::ArgDecl::new(
+                                                    &coq::ArgDeclVar::Simple {
+                                                        idents: vec!["Ty".to_string()],
+                                                        ty: Some(coq::Expression::Set),
+                                                    },
+                                                    coq::ArgSpecKind::Explicit,
+                                                )],
+                                                bounds
+                                                    .iter()
+                                                    .map(|bound| {
+                                                        coq::ArgDecl::new(
+                                                            &coq::ArgDeclVar::Generalized {
+                                                                idents: vec![],
+                                                                ty: coq::Expression::Variable {
+                                                                    ident: Path::concat(&[
+                                                                        bound.to_owned(),
+                                                                        Path::new(&["Trait"]),
+                                                                    ]),
+                                                                    no_implicit: false,
+                                                                }
+                                                                .apply(&coq::Expression::just_name(
+                                                                    "Ty",
+                                                                )),
+                                                            },
+                                                            coq::ArgSpecKind::Explicit,
+                                                        )
+                                                    })
+                                                    .collect::<Vec<_>>(),
+                                            ]
+                                            .concat(),
+                                            image: Box::new(coq::Expression::Unit),
+                                        }),
                                     },
-                                    with_monad_parm: true,
                                 },
                             ))
                         };
@@ -1377,7 +1379,6 @@ impl FunDefinition {
                                                 ),
                                         ),
                                     },
-                                    with_monad_parm: false,
                                 },
                             ))],
                         ]
@@ -1676,7 +1677,6 @@ impl TopLevelItem {
                             args: vec![coq::ArgDecl::monadic_typeclass_parameter()],
                             image: Box::new(ty.to_coq()),
                         },
-                        with_monad_parm: false,
                     },
                 ))])
                 .to_doc(),
@@ -2473,8 +2473,7 @@ impl TypeStructStruct {
                                                               coq::Definition::new(
                                                                   "t",
                                                                   &coq::DefinitionKind::Assumption {
-                                                                      ty: coq::Expression::Set,
-                                                                      with_monad_parm: false
+                                                                      ty: coq::Expression::Set
                                                                   },
                                                               ),
                                                           )],
@@ -2542,8 +2541,7 @@ impl TypeStructStruct {
                                                                                   coq::Expression::just_name("A"),
                                                                               ]),
                                                                       ),
-                                                                  },
-                                                                  with_monad_parm: false
+                                                                  }
                                                               },
                                                           ))],
                                                       ].concat()),
