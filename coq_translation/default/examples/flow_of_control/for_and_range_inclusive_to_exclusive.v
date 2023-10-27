@@ -2,13 +2,16 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main `{ℋ : State.Trait} : M unit :=
   let* α0 := M.alloc 1 in
   let* α1 := M.alloc 101 in
   let* α2 :=
     M.alloc
       {| core.ops.range.Range.start := α0; core.ops.range.Range.end := α1; |} in
-  let* α3 := core.iter.traits.collect.IntoIterator.into_iter α2 in
+  let* α3 :=
+    (core.iter.traits.collect.IntoIterator.into_iter
+        (Self := (core.ops.range.Range i32)))
+      α2 in
   let* α4 :=
     match α3 with
     | iter =>
@@ -17,7 +20,10 @@ Definition main `{State.Trait} : M unit :=
           let* α0 := borrow_mut iter (core.ops.range.Range i32) in
           let* α1 := deref α0 (core.ops.range.Range i32) in
           let* α2 := borrow_mut α1 (core.ops.range.Range i32) in
-          let* α3 := core.iter.traits.iterator.Iterator.next α2 in
+          let* α3 :=
+            (core.iter.traits.iterator.Iterator.next
+                (Self := (core.ops.range.Range i32)))
+              α2 in
           match α3 with
           | core.option.Option  =>
             let* α0 := Break in

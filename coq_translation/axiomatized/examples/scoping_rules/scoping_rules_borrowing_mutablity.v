@@ -4,7 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* #[allow(dead_code)] - struct was ignored by the compiler *)
 Module Book.
   Section Book.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Record t : Set := {
@@ -14,31 +14,38 @@ Module Book.
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_author : Notation.Dot "author" := {
+    #[refine] Global Instance Get_author : Notation.Dot "author" := {
       Notation.dot x := let* x := M.read x in Pure x.(author) : M _;
     }.
-    Global Instance Get_AF_author : Notation.DoubleColon t "author" := {
+    Admitted.
+    #[refine] Global Instance Get_AF_author :
+      Notation.DoubleColon t "author" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(author) : M _;
     }.
-    Global Instance Get_title : Notation.Dot "title" := {
+    Admitted.
+    #[refine] Global Instance Get_title : Notation.Dot "title" := {
       Notation.dot x := let* x := M.read x in Pure x.(title) : M _;
     }.
-    Global Instance Get_AF_title : Notation.DoubleColon t "title" := {
+    Admitted.
+    #[refine] Global Instance Get_AF_title : Notation.DoubleColon t "title" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(title) : M _;
     }.
-    Global Instance Get_year : Notation.Dot "year" := {
+    Admitted.
+    #[refine] Global Instance Get_year : Notation.Dot "year" := {
       Notation.dot x := let* x := M.read x in Pure x.(year) : M _;
     }.
-    Global Instance Get_AF_year : Notation.DoubleColon t "year" := {
+    Admitted.
+    #[refine] Global Instance Get_AF_year : Notation.DoubleColon t "year" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(year) : M _;
     }.
+    Admitted.
   End Book.
 End Book.
-Definition Book `{State.Trait} : Set := M.val Book.t.
+Definition Book `{ℋ : State.Trait} : Set := M.val Book.t.
 
 Module Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book.
   Section Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := scoping_rules_borrowing_mutablity.Book.
     
@@ -50,32 +57,34 @@ Module Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book.
       Notation.double_colon := clone;
     }.
     
-    Global Instance I : core.clone.Clone.Trait Self := {
+    #[refine] Global Instance ℐ : core.clone.Clone.Trait Self := {
       core.clone.Clone.clone := clone;
     }.
+    Admitted.
   End Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book.
 
 Module Impl_core_marker_Copy_for_scoping_rules_borrowing_mutablity_Book.
   Section Impl_core_marker_Copy_for_scoping_rules_borrowing_mutablity_Book.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := scoping_rules_borrowing_mutablity.Book.
     
-    Global Instance I : core.marker.Copy.Trait Self := {
+    #[refine] Global Instance ℐ : core.marker.Copy.Trait Self := {
     }.
+    Admitted.
   End Impl_core_marker_Copy_for_scoping_rules_borrowing_mutablity_Book.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_marker_Copy_for_scoping_rules_borrowing_mutablity_Book.
 
 Parameter borrow_book :
-    forall `{State.Trait},
+    forall `{ℋ : State.Trait},
     (ref scoping_rules_borrowing_mutablity.Book) -> M unit.
 
 Parameter new_edition :
-    forall `{State.Trait},
+    forall `{ℋ : State.Trait},
     (mut_ref scoping_rules_borrowing_mutablity.Book) -> M unit.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{State.Trait}, M unit.
+Parameter main : forall `{ℋ : State.Trait}, M unit.

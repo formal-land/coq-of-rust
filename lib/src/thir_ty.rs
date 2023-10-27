@@ -48,9 +48,8 @@ pub(crate) fn compile_type(env: &Env, ty: &rustc_middle::ty::Ty) -> Box<CoqType>
             tys.iter().map(|ty| compile_type(env, &ty)).collect(),
         )),
         // Alias(AliasKind, AliasTy<'tcx>),
-        TyKind::Param(_) => {
-            // Box::new(CoqType::Var(Box::new(Path::local(param.name.to_string()))))
-            Box::new(CoqType::Infer)
+        TyKind::Param(param) => {
+            Box::new(CoqType::Var(Box::new(Path::local(param.name.to_string()))))
         }
         // Bound(DebruijnIndex, BoundTy),
         // Placeholder(Placeholder<BoundTy>),

@@ -2,6 +2,6 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{State.Trait}, M unit.
+Parameter main : forall `{ℋ : State.Trait}, M unit.
 
-Parameter foo : forall `{State.Trait}, M Empty_set.
+Parameter foo : forall `{ℋ : State.Trait}, M Empty_set.

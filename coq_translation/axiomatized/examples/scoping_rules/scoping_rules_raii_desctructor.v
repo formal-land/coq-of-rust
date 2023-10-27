@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module ToDrop.
   Section ToDrop.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Inductive t : Set := Build.
   End ToDrop.
@@ -12,7 +12,7 @@ Definition ToDrop := @ToDrop.t.
 
 Module Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop.
   Section Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := scoping_rules_raii_desctructor.ToDrop.
     
@@ -23,12 +23,13 @@ Module Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop.
       Notation.double_colon := drop;
     }.
     
-    Global Instance I : core.ops.drop.Drop.Trait Self := {
+    #[refine] Global Instance ℐ : core.ops.drop.Drop.Trait Self := {
       core.ops.drop.Drop.drop := drop;
     }.
+    Admitted.
   End Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{State.Trait}, M unit.
+Parameter main : forall `{ℋ : State.Trait}, M unit.

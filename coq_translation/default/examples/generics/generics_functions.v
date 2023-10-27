@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module A.
   Section A.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Inductive t : Set := Build.
   End A.
@@ -12,7 +12,7 @@ Definition A := @A.t.
 
 Module S.
   Section S.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Record t : Set := {
@@ -20,16 +20,17 @@ Module S.
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_0 : Notation.Dot "0" := {
+    #[refine] Global Instance Get_0 : Notation.Dot "0" := {
       Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
+    Admitted.
   End S.
 End S.
-Definition S `{State.Trait} : Set := M.val S.t.
+Definition S `{ℋ : State.Trait} : Set := M.val S.t.
 
 Module SGen.
   Section SGen.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {T : Set}.
     
@@ -39,37 +40,38 @@ Module SGen.
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_0 : Notation.Dot "0" := {
+    #[refine] Global Instance Get_0 : Notation.Dot "0" := {
       Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
+    Admitted.
   End SGen.
 End SGen.
-Definition SGen `{State.Trait} (T : Set) : Set := M.val (SGen.t (T := T)).
+Definition SGen `{ℋ : State.Trait} (T : Set) : Set := M.val (SGen.t (T := T)).
 
-Definition reg_fn `{State.Trait} (_s : generics_functions.S) : M unit :=
+Definition reg_fn `{ℋ : State.Trait} (_s : generics_functions.S) : M unit :=
   M.alloc tt.
 
 Definition gen_spec_t
-    `{State.Trait}
+    `{ℋ : State.Trait}
     (_s : generics_functions.SGen generics_functions.A)
     : M unit :=
   M.alloc tt.
 
 Definition gen_spec_i32
-    `{State.Trait}
+    `{ℋ : State.Trait}
     (_s : generics_functions.SGen i32)
     : M unit :=
   M.alloc tt.
 
 Definition generic
-    `{State.Trait}
+    `{ℋ : State.Trait}
     {T : Set}
     (_s : generics_functions.SGen T)
     : M unit :=
   M.alloc tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main `{ℋ : State.Trait} : M unit :=
   let* _ :=
     generics_functions.reg_fn
       (generics_functions.S.Build_t (generics_functions.A.Build_t tt)) in

@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main `{ℋ : State.Trait} : M unit :=
   let* path :=
     let* α0 := deref (mk_str "hello.txt") str in
     let* α1 := borrow α0 str in
@@ -43,7 +43,7 @@ Definition main `{State.Trait} : M unit :=
   let* α1 := borrow_mut s alloc.string.String in
   let* α2 := deref α1 alloc.string.String in
   let* α3 := borrow_mut α2 alloc.string.String in
-  let* α4 := std.io.Read.read_to_string α0 α3 in
+  let* α4 := (std.io.Read.read_to_string (Self := std.fs.File)) α0 α3 in
   match α4 with
   | core.result.Result why =>
     let* α0 :=

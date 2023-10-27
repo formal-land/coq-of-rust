@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module Empty.
   Section Empty.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Inductive t : Set := Build.
   End Empty.
@@ -12,7 +12,7 @@ Definition Empty := @Empty.t.
 
 Module Null.
   Section Null.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Inductive t : Set := Build.
   End Null.
@@ -21,7 +21,7 @@ Definition Null := @Null.t.
 
 Module DoubleDrop.
   Section DoubleDrop.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Class Trait (Self : Set) {T : Set} : Type := {
       double_drop : Self -> T -> M unit;
@@ -32,7 +32,7 @@ End DoubleDrop.
 
 Module Impl_generics_traits_DoubleDrop_for_U.
   Section Impl_generics_traits_DoubleDrop_for_U.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {T U : Set}.
     
@@ -45,16 +45,21 @@ Module Impl_generics_traits_DoubleDrop_for_U.
       Notation.double_colon := double_drop;
     }.
     
-    Global Instance I : generics_traits.DoubleDrop.Trait Self (T := T) := {
+    #[refine] Global Instance ℐ :
+      generics_traits.DoubleDrop.Trait Self (T := T) := {
       generics_traits.DoubleDrop.double_drop := double_drop;
     }.
+    Admitted.
   End Impl_generics_traits_DoubleDrop_for_U.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_generics_traits_DoubleDrop_for_U.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main `{ℋ : State.Trait} : M unit :=
   let empty := generics_traits.Empty.Build_t tt in
   let null := generics_traits.Null.Build_t tt in
-  let* _ := generics_traits.DoubleDrop.double_drop empty null in
+  let* _ :=
+    (generics_traits.DoubleDrop.double_drop (Self := generics_traits.Empty))
+      empty
+      null in
   M.alloc tt.

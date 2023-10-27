@@ -335,7 +335,7 @@ pub(crate) fn compile_expr(
         },
         ExprKind::NonHirLiteral { lit, .. } => Expr::NonHirLiteral(*lit),
         ExprKind::ZstLiteral { .. } => match &expr.ty.kind() {
-            TyKind::FnDef(def_id, _) => {
+            TyKind::FnDef(def_id, generic_args) => {
                 let key = env.tcx.def_key(def_id);
                 let symbol = key.get_opt_name();
                 let parent = env.tcx.opt_parent(*def_id).unwrap();
@@ -352,11 +352,16 @@ pub(crate) fn compile_expr(
                             }
                         }
                     }
-                    DefKind::Trait { .. } => Expr::Var(Path::concat(&[
-                        compile_def_id(env, parent),
-                        Path::local(symbol.unwrap().to_string()),
-                    ])),
-                    DefKind::Mod { .. } => Expr::Var(compile_def_id(env, *def_id)),
+                    DefKind::Trait => {
+                        let path = Path::concat(&[
+                            compile_def_id(env, parent),
+                            Path::local(symbol.unwrap().to_string()),
+                        ]);
+                        let self_ty = generic_args.type_at(0);
+                        let self_ty = crate::thir_ty::compile_type(env, &self_ty);
+                        Expr::VarWithSelfTy { path, self_ty }
+                    }
+                    DefKind::Mod => Expr::Var(compile_def_id(env, *def_id)),
                     _ => {
                         println!("unimplemented parent_kind: {:#?}", parent_kind);
                         Expr::Message("unimplemented parent_kind".to_string())
@@ -372,7 +377,15 @@ pub(crate) fn compile_expr(
                 Expr::Message(error_message.to_string())
             }
         },
-        ExprKind::NamedConst { def_id, .. } => Expr::Var(compile_def_id(env, *def_id)),
+        ExprKind::NamedConst { def_id, substs, .. } => {
+            let path = compile_def_id(env, *def_id);
+            if substs.is_empty() {
+                return Expr::Var(path);
+            }
+            let self_ty = substs.type_at(0);
+            let self_ty = crate::thir_ty::compile_type(env, &self_ty);
+            Expr::VarWithSelfTy { path, self_ty }
+        }
         ExprKind::ConstParam { def_id, .. } => Expr::Var(compile_def_id(env, *def_id)),
         ExprKind::StaticRef { def_id, .. } => Expr::Var(compile_def_id(env, *def_id)),
         ExprKind::InlineAsm(_) => Expr::LocalVar("InlineAssembly".to_string()),

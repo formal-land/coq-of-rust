@@ -2,22 +2,22 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition multiply
-    `{State.Trait}
+    `{ℋ : State.Trait}
     (first_number_str : ref str)
     (second_number_str : ref str)
     : M (core.result.Result i32 core.num.error.ParseIntError) :=
   let* α0 := deref first_number_str str in
   let* α1 := borrow α0 str in
   let* α2 := str::["parse"] α1 in
-  (core.result.Result _ _)::["and_then"]
+  (core.result.Result T E)::["and_then"]
     α2
-    let* α0 := deref second_number_str str in
+    (let* α0 := deref second_number_str str in
     let* α1 := borrow α0 str in
     let* α2 := str::["parse"] α1 in
-    (core.result.Result _ _)::["map"] α2 mul first_number second_number.
+    (core.result.Result T E)::["map"] α2 (mul first_number second_number)).
 
 Definition print
-    `{State.Trait}
+    `{ℋ : State.Trait}
     (result : core.result.Result i32 core.num.error.ParseIntError)
     : M unit :=
   match result with
@@ -60,7 +60,7 @@ Definition print
   end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main `{ℋ : State.Trait} : M unit :=
   let* twenty :=
     let* α0 := deref (mk_str "10") str in
     let* α1 := borrow α0 str in

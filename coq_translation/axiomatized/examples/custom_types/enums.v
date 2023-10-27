@@ -4,23 +4,23 @@ Require Import CoqOfRust.CoqOfRust.
 Module WebEvent.
   Module Click.
     Unset Primitive Projections.
-    Record t `{State.Trait} : Set := {
+    Record t `{ℋ : State.Trait} : Set := {
       x : i64;
       y : i64;
     }.
     Global Set Primitive Projections.
   End Click.
   
-  Inductive t `{State.Trait} : Set :=
+  Inductive t `{ℋ : State.Trait} : Set :=
   | PageLoad
   | PageUnload
   | KeyPress (_ : char)
   | Paste (_ : alloc.string.String)
   | Click (_ : Click.t).
 End WebEvent.
-Definition WebEvent `{State.Trait} : Set := WebEvent.t.
+Definition WebEvent `{ℋ : State.Trait} : Set := WebEvent.t.
 
-Parameter inspect : forall `{State.Trait}, enums.WebEvent -> M unit.
+Parameter inspect : forall `{ℋ : State.Trait}, enums.WebEvent -> M unit.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{State.Trait}, M unit.
+Parameter main : forall `{ℋ : State.Trait}, M unit.

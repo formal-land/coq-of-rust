@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main `{ℋ : State.Trait} : M unit :=
   let* collected_iterator :=
     let* α0 := M.alloc 0 in
     let* α1 := M.alloc 10 in
@@ -10,7 +10,9 @@ Definition main `{State.Trait} : M unit :=
       M.alloc
         {| core.ops.range.Range.start := α0; core.ops.range.Range.end := α1;
         |} in
-    core.iter.traits.iterator.Iterator.collect α2 in
+    (core.iter.traits.iterator.Iterator.collect
+        (Self := (core.ops.range.Range i32)))
+      α2 in
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -40,7 +42,7 @@ Definition main `{State.Trait} : M unit :=
     let* α3 :=
       (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] [ α0; α1; α2 ] in
     let* α4 := pointer_coercion "Unsize" α3 in
-    (Slice _)::["into_vec"] α4 in
+    (Slice T)::["into_vec"] α4 in
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -73,7 +75,7 @@ Definition main `{State.Trait} : M unit :=
   let* _ :=
     let* α0 := borrow_mut xs (alloc.vec.Vec i32 alloc.alloc.Global) in
     let* α1 := M.alloc 4 in
-    (alloc.vec.Vec _ _)::["push"] α0 α1 in
+    (alloc.vec.Vec T A)::["push"] α0 α1 in
   let* _ :=
     let* _ :=
       let* α0 := borrow [ mk_str "Vector: "; mk_str "
@@ -101,7 +103,7 @@ Definition main `{State.Trait} : M unit :=
       let* α2 := borrow α1 (list (ref str)) in
       let* α3 := pointer_coercion "Unsize" α2 in
       let* α4 := borrow xs (alloc.vec.Vec i32 alloc.alloc.Global) in
-      let* α5 := (alloc.vec.Vec _ _)::["len"] α4 in
+      let* α5 := (alloc.vec.Vec T A)::["len"] α4 in
       let* α6 := borrow α5 usize in
       let* α7 := deref α6 usize in
       let* α8 := borrow α7 usize in
@@ -123,7 +125,11 @@ Definition main `{State.Trait} : M unit :=
       let* α3 := pointer_coercion "Unsize" α2 in
       let* α4 := borrow xs (alloc.vec.Vec i32 alloc.alloc.Global) in
       let* α5 := M.alloc 1 in
-      let* α6 := core.ops.index.Index.index α4 α5 in
+      let* α6 :=
+        (core.ops.index.Index.index
+            (Self := (alloc.vec.Vec i32 alloc.alloc.Global)))
+          α4
+          α5 in
       let* α7 := deref α6 i32 in
       let* α8 := borrow α7 i32 in
       let* α9 := deref α8 i32 in
@@ -145,7 +151,7 @@ Definition main `{State.Trait} : M unit :=
       let* α2 := borrow α1 (list (ref str)) in
       let* α3 := pointer_coercion "Unsize" α2 in
       let* α4 := borrow_mut xs (alloc.vec.Vec i32 alloc.alloc.Global) in
-      let* α5 := (alloc.vec.Vec _ _)::["pop"] α4 in
+      let* α5 := (alloc.vec.Vec T A)::["pop"] α4 in
       let* α6 := borrow α5 (core.option.Option i32) in
       let* α7 := deref α6 (core.option.Option i32) in
       let* α8 := borrow α7 (core.option.Option i32) in
@@ -169,11 +175,17 @@ Definition main `{State.Trait} : M unit :=
     M.alloc tt in
   let* _ :=
     let* α0 := borrow xs (alloc.vec.Vec i32 alloc.alloc.Global) in
-    let* α1 := core.ops.deref.Deref.deref α0 in
+    let* α1 :=
+      (core.ops.deref.Deref.deref
+          (Self := (alloc.vec.Vec i32 alloc.alloc.Global)))
+        α0 in
     let* α2 := deref α1 (Slice i32) in
     let* α3 := borrow α2 (Slice i32) in
-    let* α4 := (Slice _)::["iter"] α3 in
-    let* α5 := core.iter.traits.collect.IntoIterator.into_iter α4 in
+    let* α4 := (Slice T)::["iter"] α3 in
+    let* α5 :=
+      (core.iter.traits.collect.IntoIterator.into_iter
+          (Self := (core.slice.iter.Iter i32)))
+        α4 in
     let* α6 :=
       match α5 with
       | iter =>
@@ -182,7 +194,10 @@ Definition main `{State.Trait} : M unit :=
             let* α0 := borrow_mut iter (core.slice.iter.Iter i32) in
             let* α1 := deref α0 (core.slice.iter.Iter i32) in
             let* α2 := borrow_mut α1 (core.slice.iter.Iter i32) in
-            let* α3 := core.iter.traits.iterator.Iterator.next α2 in
+            let* α3 :=
+              (core.iter.traits.iterator.Iterator.next
+                  (Self := (core.slice.iter.Iter i32)))
+                α2 in
             match α3 with
             | core.option.Option  =>
               let* α0 := Break in
@@ -214,12 +229,23 @@ Definition main `{State.Trait} : M unit :=
     use α6 in
   let* _ :=
     let* α0 := borrow xs (alloc.vec.Vec i32 alloc.alloc.Global) in
-    let* α1 := core.ops.deref.Deref.deref α0 in
+    let* α1 :=
+      (core.ops.deref.Deref.deref
+          (Self := (alloc.vec.Vec i32 alloc.alloc.Global)))
+        α0 in
     let* α2 := deref α1 (Slice i32) in
     let* α3 := borrow α2 (Slice i32) in
-    let* α4 := (Slice _)::["iter"] α3 in
-    let* α5 := core.iter.traits.iterator.Iterator.enumerate α4 in
-    let* α6 := core.iter.traits.collect.IntoIterator.into_iter α5 in
+    let* α4 := (Slice T)::["iter"] α3 in
+    let* α5 :=
+      (core.iter.traits.iterator.Iterator.enumerate
+          (Self := (core.slice.iter.Iter i32)))
+        α4 in
+    let* α6 :=
+      (core.iter.traits.collect.IntoIterator.into_iter
+          (Self :=
+            (core.iter.adapters.enumerate.Enumerate
+              (core.slice.iter.Iter i32))))
+        α5 in
     let* α7 :=
       match α6 with
       | iter =>
@@ -240,7 +266,12 @@ Definition main `{State.Trait} : M unit :=
                 α1
                 (core.iter.adapters.enumerate.Enumerate
                   (core.slice.iter.Iter i32)) in
-            let* α3 := core.iter.traits.iterator.Iterator.next α2 in
+            let* α3 :=
+              (core.iter.traits.iterator.Iterator.next
+                  (Self :=
+                    (core.iter.adapters.enumerate.Enumerate
+                      (core.slice.iter.Iter i32))))
+                α2 in
             match α3 with
             | core.option.Option  =>
               let* α0 := Break in
@@ -282,11 +313,17 @@ Definition main `{State.Trait} : M unit :=
     use α7 in
   let* _ :=
     let* α0 := borrow_mut xs (alloc.vec.Vec i32 alloc.alloc.Global) in
-    let* α1 := core.ops.deref.DerefMut.deref_mut α0 in
+    let* α1 :=
+      (core.ops.deref.DerefMut.deref_mut
+          (Self := (alloc.vec.Vec i32 alloc.alloc.Global)))
+        α0 in
     let* α2 := deref α1 (Slice i32) in
     let* α3 := borrow_mut α2 (Slice i32) in
-    let* α4 := (Slice _)::["iter_mut"] α3 in
-    let* α5 := core.iter.traits.collect.IntoIterator.into_iter α4 in
+    let* α4 := (Slice T)::["iter_mut"] α3 in
+    let* α5 :=
+      (core.iter.traits.collect.IntoIterator.into_iter
+          (Self := (core.slice.iter.IterMut i32)))
+        α4 in
     let* α6 :=
       match α5 with
       | iter =>
@@ -295,7 +332,10 @@ Definition main `{State.Trait} : M unit :=
             let* α0 := borrow_mut iter (core.slice.iter.IterMut i32) in
             let* α1 := deref α0 (core.slice.iter.IterMut i32) in
             let* α2 := borrow_mut α1 (core.slice.iter.IterMut i32) in
-            let* α3 := core.iter.traits.iterator.Iterator.next α2 in
+            let* α3 :=
+              (core.iter.traits.iterator.Iterator.next
+                  (Self := (core.slice.iter.IterMut i32)))
+                α2 in
             match α3 with
             | core.option.Option  =>
               let* α0 := Break in

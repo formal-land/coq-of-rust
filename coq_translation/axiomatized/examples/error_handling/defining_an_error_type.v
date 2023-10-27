@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module DoubleError.
   Section DoubleError.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Inductive t : Set := Build.
   End DoubleError.
@@ -12,7 +12,7 @@ Definition DoubleError := @DoubleError.t.
 
 Module Impl_core_fmt_Debug_for_defining_an_error_type_DoubleError.
   Section Impl_core_fmt_Debug_for_defining_an_error_type_DoubleError.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := defining_an_error_type.DoubleError.
     
@@ -24,16 +24,17 @@ Module Impl_core_fmt_Debug_for_defining_an_error_type_DoubleError.
       Notation.double_colon := fmt;
     }.
     
-    Global Instance I : core.fmt.Debug.Trait Self := {
+    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
+    Admitted.
   End Impl_core_fmt_Debug_for_defining_an_error_type_DoubleError.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_defining_an_error_type_DoubleError.
 
 Module Impl_core_clone_Clone_for_defining_an_error_type_DoubleError.
   Section Impl_core_clone_Clone_for_defining_an_error_type_DoubleError.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := defining_an_error_type.DoubleError.
     
@@ -44,19 +45,20 @@ Module Impl_core_clone_Clone_for_defining_an_error_type_DoubleError.
       Notation.double_colon := clone;
     }.
     
-    Global Instance I : core.clone.Clone.Trait Self := {
+    #[refine] Global Instance ℐ : core.clone.Clone.Trait Self := {
       core.clone.Clone.clone := clone;
     }.
+    Admitted.
   End Impl_core_clone_Clone_for_defining_an_error_type_DoubleError.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_clone_Clone_for_defining_an_error_type_DoubleError.
 
-Definition Result (T : Set) `{State.Trait} : Set :=
+Definition Result `{ℋ : State.Trait} (T : Set) : Set :=
   core.result.Result T defining_an_error_type.DoubleError.
 
 Module Impl_core_fmt_Display_for_defining_an_error_type_DoubleError.
   Section Impl_core_fmt_Display_for_defining_an_error_type_DoubleError.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := defining_an_error_type.DoubleError.
     
@@ -68,21 +70,22 @@ Module Impl_core_fmt_Display_for_defining_an_error_type_DoubleError.
       Notation.double_colon := fmt;
     }.
     
-    Global Instance I : core.fmt.Display.Trait Self := {
+    #[refine] Global Instance ℐ : core.fmt.Display.Trait Self := {
       core.fmt.Display.fmt := fmt;
     }.
+    Admitted.
   End Impl_core_fmt_Display_for_defining_an_error_type_DoubleError.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Display_for_defining_an_error_type_DoubleError.
 
 Parameter double_first :
-    forall `{State.Trait},
+    forall `{ℋ : State.Trait},
     (alloc.vec.Vec (ref str) alloc.vec.Vec.Default.A) ->
       M (defining_an_error_type.Result i32).
 
 Parameter print :
-    forall `{State.Trait},
+    forall `{ℋ : State.Trait},
     (defining_an_error_type.Result i32) -> M unit.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{State.Trait}, M unit.
+Parameter main : forall `{ℋ : State.Trait}, M unit.

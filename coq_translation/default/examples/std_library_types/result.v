@@ -3,16 +3,16 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module checked.
   Module MathError.
-    Inductive t `{State.Trait} : Set :=
+    Inductive t `{ℋ : State.Trait} : Set :=
     | DivisionByZero
     | NonPositiveLogarithm
     | NegativeSquareRoot.
   End MathError.
-  Definition MathError `{State.Trait} : Set := MathError.t.
+  Definition MathError `{ℋ : State.Trait} : Set := MathError.t.
   
   Module Impl_core_fmt_Debug_for_result_checked_MathError.
     Section Impl_core_fmt_Debug_for_result_checked_MathError.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Definition Self : Set := result.checked.MathError.
       
@@ -41,18 +41,19 @@ Module checked.
         Notation.double_colon := fmt;
       }.
       
-      Global Instance I : core.fmt.Debug.Trait Self := {
+      #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
         core.fmt.Debug.fmt := fmt;
       }.
+      Admitted.
     End Impl_core_fmt_Debug_for_result_checked_MathError.
-    Global Hint Resolve I : core.
+    Global Hint Resolve ℐ : core.
   End Impl_core_fmt_Debug_for_result_checked_MathError.
   
-  Definition MathResult `{State.Trait} : Set :=
+  Definition MathResult `{ℋ : State.Trait} : Set :=
     core.result.Result f64 result.checked.MathError.
   
   Definition div
-      `{State.Trait}
+      `{ℋ : State.Trait}
       (x : f64)
       (y : f64)
       : M result.checked.MathResult :=
@@ -65,7 +66,7 @@ Module checked.
       let* α0 := div x y in
       Pure (core.result.Result.Ok α0).
   
-  Definition sqrt `{State.Trait} (x : f64) : M result.checked.MathResult :=
+  Definition sqrt `{ℋ : State.Trait} (x : f64) : M result.checked.MathResult :=
     let* α0 := M.alloc 0 (* 0.0 *) in
     let* α1 := lt x α0 in
     let* α2 := use α1 in
@@ -77,7 +78,7 @@ Module checked.
       let* α0 := f64::["sqrt"] x in
       Pure (core.result.Result.Ok α0).
   
-  Definition ln `{State.Trait} (x : f64) : M result.checked.MathResult :=
+  Definition ln `{ℋ : State.Trait} (x : f64) : M result.checked.MathResult :=
     let* α0 := M.alloc 0 (* 0.0 *) in
     let* α1 := le x α0 in
     let* α2 := use α1 in
@@ -91,16 +92,16 @@ Module checked.
 End checked.
 
 Module MathError.
-  Inductive t `{State.Trait} : Set :=
+  Inductive t `{ℋ : State.Trait} : Set :=
   | DivisionByZero
   | NonPositiveLogarithm
   | NegativeSquareRoot.
 End MathError.
-Definition MathError `{State.Trait} : Set := MathError.t.
+Definition MathError `{ℋ : State.Trait} : Set := MathError.t.
 
 Module Impl_core_fmt_Debug_for_result_checked_MathError.
   Section Impl_core_fmt_Debug_for_result_checked_MathError.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := result.checked.MathError.
     
@@ -129,18 +130,19 @@ Module Impl_core_fmt_Debug_for_result_checked_MathError.
       Notation.double_colon := fmt;
     }.
     
-    Global Instance I : core.fmt.Debug.Trait Self := {
+    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
+    Admitted.
   End Impl_core_fmt_Debug_for_result_checked_MathError.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_result_checked_MathError.
 
-Definition MathResult `{State.Trait} : Set :=
+Definition MathResult `{ℋ : State.Trait} : Set :=
   core.result.Result f64 result.checked.MathError.
 
 Definition div
-    `{State.Trait}
+    `{ℋ : State.Trait}
     (x : f64)
     (y : f64)
     : M result.checked.MathResult :=
@@ -153,7 +155,7 @@ Definition div
     let* α0 := div x y in
     Pure (core.result.Result.Ok α0).
 
-Definition sqrt `{State.Trait} (x : f64) : M result.checked.MathResult :=
+Definition sqrt `{ℋ : State.Trait} (x : f64) : M result.checked.MathResult :=
   let* α0 := M.alloc 0 (* 0.0 *) in
   let* α1 := lt x α0 in
   let* α2 := use α1 in
@@ -164,7 +166,7 @@ Definition sqrt `{State.Trait} (x : f64) : M result.checked.MathResult :=
     let* α0 := f64::["sqrt"] x in
     Pure (core.result.Result.Ok α0).
 
-Definition ln `{State.Trait} (x : f64) : M result.checked.MathResult :=
+Definition ln `{ℋ : State.Trait} (x : f64) : M result.checked.MathResult :=
   let* α0 := M.alloc 0 (* 0.0 *) in
   let* α1 := le x α0 in
   let* α2 := use α1 in
@@ -176,7 +178,7 @@ Definition ln `{State.Trait} (x : f64) : M result.checked.MathResult :=
     let* α0 := f64::["ln"] x in
     Pure (core.result.Result.Ok α0).
 
-Definition op `{State.Trait} (x : f64) (y : f64) : M f64 :=
+Definition op `{ℋ : State.Trait} (x : f64) (y : f64) : M f64 :=
   let* α0 := result.checked.div x y in
   match α0 with
   | core.result.Result why =>
@@ -239,7 +241,7 @@ Definition op `{State.Trait} (x : f64) (y : f64) : M f64 :=
   end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main `{ℋ : State.Trait} : M unit :=
   let* _ :=
     let* _ :=
       let* α0 := borrow [ mk_str ""; mk_str "

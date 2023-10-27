@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module Years.
   Section Years.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Record t : Set := {
@@ -11,16 +11,17 @@ Module Years.
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_0 : Notation.Dot "0" := {
+    #[refine] Global Instance Get_0 : Notation.Dot "0" := {
       Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
+    Admitted.
   End Years.
 End Years.
-Definition Years `{State.Trait} : Set := M.val Years.t.
+Definition Years `{ℋ : State.Trait} : Set := M.val Years.t.
 
 Module Days.
   Section Days.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Record t : Set := {
@@ -28,16 +29,17 @@ Module Days.
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_0 : Notation.Dot "0" := {
+    #[refine] Global Instance Get_0 : Notation.Dot "0" := {
       Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
+    Admitted.
   End Days.
 End Days.
-Definition Days `{State.Trait} : Set := M.val Days.t.
+Definition Days `{ℋ : State.Trait} : Set := M.val Days.t.
 
 Module Impl_generics_new_type_idiom_Years.
   Section Impl_generics_new_type_idiom_Years.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := generics_new_type_idiom.Years.
     
@@ -52,7 +54,7 @@ End Impl_generics_new_type_idiom_Years.
 
 Module Impl_generics_new_type_idiom_Days.
   Section Impl_generics_new_type_idiom_Days.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := generics_new_type_idiom.Days.
     
@@ -66,8 +68,8 @@ Module Impl_generics_new_type_idiom_Days.
 End Impl_generics_new_type_idiom_Days.
 
 Parameter old_enough :
-    forall `{State.Trait},
+    forall `{ℋ : State.Trait},
     (ref generics_new_type_idiom.Years) -> M bool.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{State.Trait}, M unit.
+Parameter main : forall `{ℋ : State.Trait}, M unit.

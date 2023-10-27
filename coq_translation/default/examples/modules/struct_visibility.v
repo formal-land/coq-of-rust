@@ -4,7 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module my.
   Module OpenBox.
     Section OpenBox.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Context {T : Set}.
       
@@ -14,22 +14,24 @@ Module my.
       }.
       Global Set Primitive Projections.
       
-      Global Instance Get_contents : Notation.Dot "contents" := {
+      #[refine] Global Instance Get_contents : Notation.Dot "contents" := {
         Notation.dot x := let* x := M.read x in Pure x.(contents) : M _;
       }.
-      Global Instance Get_AF_contents : Notation.DoubleColon t "contents" := {
-        Notation.double_colon x
-          :=
+      Admitted.
+      #[refine] Global Instance Get_AF_contents :
+        Notation.DoubleColon t "contents" := {
+        Notation.double_colon x :=
           let* x := M.read x in Pure x.(contents) : M _;
       }.
+      Admitted.
     End OpenBox.
   End OpenBox.
-  Definition OpenBox (T : Set) `{State.Trait} : Set :=
+  Definition OpenBox (T : Set) `{ℋ : State.Trait} : Set :=
     M.val (OpenBox.t (T := T)).
   
   Module ClosedBox.
     Section ClosedBox.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Context {T : Set}.
       
@@ -39,22 +41,24 @@ Module my.
       }.
       Global Set Primitive Projections.
       
-      Global Instance Get_contents : Notation.Dot "contents" := {
+      #[refine] Global Instance Get_contents : Notation.Dot "contents" := {
         Notation.dot x := let* x := M.read x in Pure x.(contents) : M _;
       }.
-      Global Instance Get_AF_contents : Notation.DoubleColon t "contents" := {
-        Notation.double_colon x
-          :=
+      Admitted.
+      #[refine] Global Instance Get_AF_contents :
+        Notation.DoubleColon t "contents" := {
+        Notation.double_colon x :=
           let* x := M.read x in Pure x.(contents) : M _;
       }.
+      Admitted.
     End ClosedBox.
   End ClosedBox.
-  Definition ClosedBox (T : Set) `{State.Trait} : Set :=
+  Definition ClosedBox (T : Set) `{ℋ : State.Trait} : Set :=
     M.val (ClosedBox.t (T := T)).
   
   Module Impl_struct_visibility_my_ClosedBox_T.
     Section Impl_struct_visibility_my_ClosedBox_T.
-      Context `{State.Trait}.
+      Context `{ℋ : State.Trait}.
       
       Definition Self : Set := struct_visibility.my.ClosedBox T.
       
@@ -71,7 +75,7 @@ End my.
 
 Module OpenBox.
   Section OpenBox.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {T : Set}.
     
@@ -81,19 +85,23 @@ Module OpenBox.
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_contents : Notation.Dot "contents" := {
+    #[refine] Global Instance Get_contents : Notation.Dot "contents" := {
       Notation.dot x := let* x := M.read x in Pure x.(contents) : M _;
     }.
-    Global Instance Get_AF_contents : Notation.DoubleColon t "contents" := {
+    Admitted.
+    #[refine] Global Instance Get_AF_contents :
+      Notation.DoubleColon t "contents" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(contents) : M _;
     }.
+    Admitted.
   End OpenBox.
 End OpenBox.
-Definition OpenBox (T : Set) `{State.Trait} : Set := M.val (OpenBox.t (T := T)).
+Definition OpenBox (T : Set) `{ℋ : State.Trait} : Set :=
+  M.val (OpenBox.t (T := T)).
 
 Module ClosedBox.
   Section ClosedBox.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Context {T : Set}.
     
@@ -103,20 +111,23 @@ Module ClosedBox.
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_contents : Notation.Dot "contents" := {
+    #[refine] Global Instance Get_contents : Notation.Dot "contents" := {
       Notation.dot x := let* x := M.read x in Pure x.(contents) : M _;
     }.
-    Global Instance Get_AF_contents : Notation.DoubleColon t "contents" := {
+    Admitted.
+    #[refine] Global Instance Get_AF_contents :
+      Notation.DoubleColon t "contents" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(contents) : M _;
     }.
+    Admitted.
   End ClosedBox.
 End ClosedBox.
-Definition ClosedBox (T : Set) `{State.Trait} : Set :=
+Definition ClosedBox (T : Set) `{ℋ : State.Trait} : Set :=
   M.val (ClosedBox.t (T := T)).
 
 Module Impl_struct_visibility_my_ClosedBox_T_2.
   Section Impl_struct_visibility_my_ClosedBox_T_2.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := struct_visibility.my.ClosedBox T.
     
@@ -131,7 +142,7 @@ Module Impl_struct_visibility_my_ClosedBox_T_2.
 End Impl_struct_visibility_my_ClosedBox_T_2.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main `{ℋ : State.Trait} : M unit :=
   let* open_box :=
     M.alloc
       {| struct_visibility.my.OpenBox.contents := mk_str "public information";
@@ -159,6 +170,6 @@ Definition main `{State.Trait} : M unit :=
       std.io.stdio._print α13 in
     M.alloc tt in
   let* _closed_box :=
-    (struct_visibility.my.ClosedBox _)::["new"]
+    (struct_visibility.my.ClosedBox T)::["new"]
       (mk_str "classified information") in
   M.alloc tt.

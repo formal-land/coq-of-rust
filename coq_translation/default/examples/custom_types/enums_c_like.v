@@ -2,23 +2,23 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module Number.
-  Inductive t `{State.Trait} : Set :=
+  Inductive t `{ℋ : State.Trait} : Set :=
   | Zero
   | One
   | Two.
 End Number.
-Definition Number `{State.Trait} : Set := Number.t.
+Definition Number `{ℋ : State.Trait} : Set := Number.t.
 
 Module Color.
-  Inductive t `{State.Trait} : Set :=
+  Inductive t `{ℋ : State.Trait} : Set :=
   | Red
   | Green
   | Blue.
 End Color.
-Definition Color `{State.Trait} : Set := Color.t.
+Definition Color `{ℋ : State.Trait} : Set := Color.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main `{ℋ : State.Trait} : M unit :=
   let* _ :=
     let* _ :=
       let* α0 := borrow [ mk_str "zero is "; mk_str "

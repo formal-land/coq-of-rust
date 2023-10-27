@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module EvenNumber.
   Section EvenNumber.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Record t : Set := {
@@ -11,16 +11,17 @@ Module EvenNumber.
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_0 : Notation.Dot "0" := {
+    #[refine] Global Instance Get_0 : Notation.Dot "0" := {
       Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
+    Admitted.
   End EvenNumber.
 End EvenNumber.
-Definition EvenNumber `{State.Trait} : Set := M.val EvenNumber.t.
+Definition EvenNumber `{ℋ : State.Trait} : Set := M.val EvenNumber.t.
 
 Module Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber.
   Section Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := try_from_and_try_into.EvenNumber.
     
@@ -46,30 +47,33 @@ Module Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber.
       Notation.double_colon := fmt;
     }.
     
-    Global Instance I : core.fmt.Debug.Trait Self := {
+    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
+    Admitted.
   End Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber.
 
 Module
   Impl_core_marker_StructuralPartialEq_for_try_from_and_try_into_EvenNumber.
   Section
     Impl_core_marker_StructuralPartialEq_for_try_from_and_try_into_EvenNumber.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := try_from_and_try_into.EvenNumber.
     
-    Global Instance I : core.marker.StructuralPartialEq.Trait Self := {
+    #[refine] Global Instance ℐ :
+      core.marker.StructuralPartialEq.Trait Self := {
     }.
+    Admitted.
   End Impl_core_marker_StructuralPartialEq_for_try_from_and_try_into_EvenNumber.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_marker_StructuralPartialEq_for_try_from_and_try_into_EvenNumber.
 
 Module Impl_core_cmp_PartialEq_for_try_from_and_try_into_EvenNumber.
   Section Impl_core_cmp_PartialEq_for_try_from_and_try_into_EvenNumber.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := try_from_and_try_into.EvenNumber.
     
@@ -87,19 +91,19 @@ Module Impl_core_cmp_PartialEq_for_try_from_and_try_into_EvenNumber.
       Notation.double_colon := eq;
     }.
     
-    Global Instance I
-      : core.cmp.PartialEq.Trait Self
-          (Rhs := core.cmp.PartialEq.Default.Rhs Self)
-        := {
+    #[refine] Global Instance ℐ :
+      core.cmp.PartialEq.Trait Self
+        (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
       core.cmp.PartialEq.eq := eq;
     }.
+    Admitted.
   End Impl_core_cmp_PartialEq_for_try_from_and_try_into_EvenNumber.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_cmp_PartialEq_for_try_from_and_try_into_EvenNumber.
 
 Module Impl_core_convert_TryFrom_for_try_from_and_try_into_EvenNumber.
   Section Impl_core_convert_TryFrom_for_try_from_and_try_into_EvenNumber.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := try_from_and_try_into.EvenNumber.
     
@@ -124,19 +128,23 @@ Module Impl_core_convert_TryFrom_for_try_from_and_try_into_EvenNumber.
       Notation.double_colon := try_from;
     }.
     
-    Global Instance I : core.convert.TryFrom.Trait Self (T := i32) := {
+    #[refine] Global Instance ℐ :
+      core.convert.TryFrom.Trait Self (T := i32) := {
       core.convert.TryFrom.Error := Error;
       core.convert.TryFrom.try_from := try_from;
     }.
+    Admitted.
   End Impl_core_convert_TryFrom_for_try_from_and_try_into_EvenNumber.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_convert_TryFrom_for_try_from_and_try_into_EvenNumber.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main `{ℋ : State.Trait} : M unit :=
   let* _ :=
     let* α0 := M.alloc 8 in
-    let* α1 := core.convert.TryFrom.try_from α0 in
+    let* α1 :=
+      (core.convert.TryFrom.try_from (Self := try_from_and_try_into.EvenNumber))
+        α0 in
     let* α2 :=
       borrow α1 (core.result.Result try_from_and_try_into.EvenNumber unit) in
     let* α3 := M.alloc 8 in
@@ -158,7 +166,12 @@ Definition main `{State.Trait} : M unit :=
           (core.result.Result try_from_and_try_into.EvenNumber unit) in
       let* α3 :=
         borrow α2 (core.result.Result try_from_and_try_into.EvenNumber unit) in
-      let* α4 := core.cmp.PartialEq.eq α1 α3 in
+      let* α4 :=
+        (core.cmp.PartialEq.eq
+            (Self :=
+              (core.result.Result try_from_and_try_into.EvenNumber unit)))
+          α1
+          α3 in
       let* α5 := not α4 in
       let* α6 := use α5 in
       if (α6 : bool) then
@@ -208,7 +221,9 @@ Definition main `{State.Trait} : M unit :=
     end in
   let* _ :=
     let* α0 := M.alloc 5 in
-    let* α1 := core.convert.TryFrom.try_from α0 in
+    let* α1 :=
+      (core.convert.TryFrom.try_from (Self := try_from_and_try_into.EvenNumber))
+        α0 in
     let* α2 :=
       borrow α1 (core.result.Result try_from_and_try_into.EvenNumber unit) in
     let* α3 := M.alloc tt in
@@ -230,7 +245,12 @@ Definition main `{State.Trait} : M unit :=
           (core.result.Result try_from_and_try_into.EvenNumber unit) in
       let* α3 :=
         borrow α2 (core.result.Result try_from_and_try_into.EvenNumber unit) in
-      let* α4 := core.cmp.PartialEq.eq α1 α3 in
+      let* α4 :=
+        (core.cmp.PartialEq.eq
+            (Self :=
+              (core.result.Result try_from_and_try_into.EvenNumber unit)))
+          α1
+          α3 in
       let* α5 := not α4 in
       let* α6 := use α5 in
       if (α6 : bool) then
@@ -280,7 +300,7 @@ Definition main `{State.Trait} : M unit :=
     end in
   let* result :=
     let* α0 := M.alloc 8 in
-    core.convert.TryInto.try_into α0 in
+    (core.convert.TryInto.try_into (Self := i32)) α0 in
   let* _ :=
     let* α0 :=
       borrow
@@ -305,7 +325,12 @@ Definition main `{State.Trait} : M unit :=
           (core.result.Result try_from_and_try_into.EvenNumber unit) in
       let* α3 :=
         borrow α2 (core.result.Result try_from_and_try_into.EvenNumber unit) in
-      let* α4 := core.cmp.PartialEq.eq α1 α3 in
+      let* α4 :=
+        (core.cmp.PartialEq.eq
+            (Self :=
+              (core.result.Result try_from_and_try_into.EvenNumber unit)))
+          α1
+          α3 in
       let* α5 := not α4 in
       let* α6 := use α5 in
       if (α6 : bool) then
@@ -355,7 +380,7 @@ Definition main `{State.Trait} : M unit :=
     end in
   let* result :=
     let* α0 := M.alloc 5 in
-    core.convert.TryInto.try_into α0 in
+    (core.convert.TryInto.try_into (Self := i32)) α0 in
   let* _ :=
     let* α0 :=
       borrow
@@ -380,7 +405,12 @@ Definition main `{State.Trait} : M unit :=
           (core.result.Result try_from_and_try_into.EvenNumber unit) in
       let* α3 :=
         borrow α2 (core.result.Result try_from_and_try_into.EvenNumber unit) in
-      let* α4 := core.cmp.PartialEq.eq α1 α3 in
+      let* α4 :=
+        (core.cmp.PartialEq.eq
+            (Self :=
+              (core.result.Result try_from_and_try_into.EvenNumber unit)))
+          α1
+          α3 in
       let* α5 := not α4 in
       let* α6 := use α5 in
       if (α6 : bool) then

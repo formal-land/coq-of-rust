@@ -2,18 +2,18 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module VeryVerboseEnumOfThingsToDoWithNumbers.
-  Inductive t `{State.Trait} : Set :=
+  Inductive t `{ℋ : State.Trait} : Set :=
   | Add
   | Subtract.
 End VeryVerboseEnumOfThingsToDoWithNumbers.
-Definition VeryVerboseEnumOfThingsToDoWithNumbers `{State.Trait} : Set :=
+Definition VeryVerboseEnumOfThingsToDoWithNumbers `{ℋ : State.Trait} : Set :=
   VeryVerboseEnumOfThingsToDoWithNumbers.t.
 
-Definition Operations `{State.Trait} : Set :=
+Definition Operations `{ℋ : State.Trait} : Set :=
   enums_type_aliases_v1.VeryVerboseEnumOfThingsToDoWithNumbers.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main `{ℋ : State.Trait} : M unit :=
   let x :=
     enums_type_aliases_v1.VeryVerboseEnumOfThingsToDoWithNumbers.Add tt in
   M.alloc tt.

@@ -2,12 +2,12 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Parameter give_adult :
-    forall `{State.Trait},
+    forall `{ℋ : State.Trait},
     (core.option.Option (ref str)) -> M unit.
 
 Parameter drink :
-    forall `{State.Trait},
+    forall `{ℋ : State.Trait},
     (core.option.Option (ref str)) -> M unit.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{State.Trait}, M unit.
+Parameter main : forall `{ℋ : State.Trait}, M unit.

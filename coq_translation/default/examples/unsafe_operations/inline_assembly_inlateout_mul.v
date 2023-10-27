@@ -2,9 +2,9 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit := M.alloc tt.
+Definition main `{ℋ : State.Trait} : M unit := M.alloc tt.
 
-Definition mul `{State.Trait} (a : u64) (b : u64) : M u128 :=
+Definition mul `{ℋ : State.Trait} (a : u64) (b : u64) : M u128 :=
   let* lo := M.alloc tt in
   let* hi := M.alloc tt in
   let* _ :=

@@ -2,19 +2,19 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition apply
-    `{State.Trait}
+    `{ℋ : State.Trait}
     {F : Set}
     {ℋ_0 : core.ops.function.Fn.Trait F (Args := unit)}
     (f : F)
     : M unit :=
   let* _ :=
-    let* α0 := borrow f _ in
+    let* α0 := borrow f F in
     let* α1 := M.alloc tt in
-    core.ops.function.Fn.call α0 α1 in
+    (core.ops.function.Fn.call (Self := F)) α0 α1 in
   M.alloc tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main `{ℋ : State.Trait} : M unit :=
   let* x := M.alloc 7 in
   let print :=
     let* _ :=

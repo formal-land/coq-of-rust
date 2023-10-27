@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition checked_division
-    `{State.Trait}
+    `{ℋ : State.Trait}
     (dividend : i32)
     (divisor : i32)
     : M (core.option.Option i32) :=
@@ -16,7 +16,7 @@ Definition checked_division
     Pure (core.option.Option.Some α0).
 
 Definition try_division
-    `{State.Trait}
+    `{ℋ : State.Trait}
     (dividend : i32)
     (divisor : i32)
     : M unit :=
@@ -79,7 +79,7 @@ Definition try_division
   end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main `{ℋ : State.Trait} : M unit :=
   let* _ :=
     let* α0 := M.alloc 4 in
     let* α1 := M.alloc 2 in
@@ -107,7 +107,7 @@ Definition main `{State.Trait} : M unit :=
       let* α5 := deref α4 (core.option.Option f32) in
       let* α6 := borrow α5 (core.option.Option f32) in
       let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
-      let* α8 := (core.option.Option _)::["unwrap"] optional_float in
+      let* α8 := (core.option.Option T)::["unwrap"] optional_float in
       let* α9 := borrow α8 f32 in
       let* α10 := deref α9 f32 in
       let* α11 := borrow α10 f32 in
@@ -133,7 +133,7 @@ Definition main `{State.Trait} : M unit :=
       let* α5 := deref α4 (core.option.Option i32) in
       let* α6 := borrow α5 (core.option.Option i32) in
       let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
-      let* α8 := (core.option.Option _)::["unwrap"] none in
+      let* α8 := (core.option.Option T)::["unwrap"] none in
       let* α9 := borrow α8 i32 in
       let* α10 := deref α9 i32 in
       let* α11 := borrow α10 i32 in

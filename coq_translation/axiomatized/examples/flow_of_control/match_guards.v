@@ -2,11 +2,11 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module Temperature.
-  Inductive t `{State.Trait} : Set :=
+  Inductive t `{ℋ : State.Trait} : Set :=
   | Celsius (_ : i32)
   | Fahrenheit (_ : i32).
 End Temperature.
-Definition Temperature `{State.Trait} : Set := Temperature.t.
+Definition Temperature `{ℋ : State.Trait} : Set := Temperature.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{State.Trait}, M unit.
+Parameter main : forall `{ℋ : State.Trait}, M unit.

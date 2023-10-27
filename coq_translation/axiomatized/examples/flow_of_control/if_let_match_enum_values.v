@@ -2,12 +2,12 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module Foo.
-  Inductive t `{State.Trait} : Set :=
+  Inductive t `{ℋ : State.Trait} : Set :=
   | Bar
   | Baz
   | Qux (_ : u32).
 End Foo.
-Definition Foo `{State.Trait} : Set := Foo.t.
+Definition Foo `{ℋ : State.Trait} : Set := Foo.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{State.Trait}, M unit.
+Parameter main : forall `{ℋ : State.Trait}, M unit.

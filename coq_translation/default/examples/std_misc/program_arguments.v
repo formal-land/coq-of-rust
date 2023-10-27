@@ -2,10 +2,10 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main `{ℋ : State.Trait} : M unit :=
   let* args :=
     let* α0 := std.env.args in
-    core.iter.traits.iterator.Iterator.collect α0 in
+    (core.iter.traits.iterator.Iterator.collect (Self := std.env.Args)) α0 in
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -17,7 +17,11 @@ Definition main `{State.Trait} : M unit :=
       let* α4 :=
         borrow args (alloc.vec.Vec alloc.string.String alloc.alloc.Global) in
       let* α5 := M.alloc 0 in
-      let* α6 := core.ops.index.Index.index α4 α5 in
+      let* α6 :=
+        (core.ops.index.Index.index
+            (Self := (alloc.vec.Vec alloc.string.String alloc.alloc.Global)))
+          α4
+          α5 in
       let* α7 := deref α6 alloc.string.String in
       let* α8 := borrow α7 alloc.string.String in
       let* α9 := deref α8 alloc.string.String in
@@ -42,7 +46,7 @@ Definition main `{State.Trait} : M unit :=
       let* α3 := pointer_coercion "Unsize" α2 in
       let* α4 :=
         borrow args (alloc.vec.Vec alloc.string.String alloc.alloc.Global) in
-      let* α5 := (alloc.vec.Vec _ _)::["len"] α4 in
+      let* α5 := (alloc.vec.Vec T A)::["len"] α4 in
       let* α6 := M.alloc 1 in
       let* α7 := sub α5 α6 in
       let* α8 := borrow α7 usize in
@@ -53,7 +57,11 @@ Definition main `{State.Trait} : M unit :=
         borrow args (alloc.vec.Vec alloc.string.String alloc.alloc.Global) in
       let* α13 := M.alloc 1 in
       let* α14 := M.alloc {| core.ops.range.RangeFrom.start := α13; |} in
-      let* α15 := core.ops.index.Index.index α12 α14 in
+      let* α15 :=
+        (core.ops.index.Index.index
+            (Self := (alloc.vec.Vec alloc.string.String alloc.alloc.Global)))
+          α12
+          α14 in
       let* α16 := deref α15 (Slice alloc.string.String) in
       let* α17 := borrow α16 (Slice alloc.string.String) in
       let* α18 := borrow α17 (ref (Slice alloc.string.String)) in

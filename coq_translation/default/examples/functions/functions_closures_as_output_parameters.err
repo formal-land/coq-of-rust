@@ -2,7 +2,28 @@ type Alias(
     Opaque,
     AliasTy {
         substs: [],
+        def_id: DefId(0:14 ~ functions_closures_as_output_parameters[5480]::create_fnonce::{opaque#0}),
+    },
+) not yet handled
+type Alias(
+    Opaque,
+    AliasTy {
+        substs: [],
         def_id: DefId(0:13 ~ functions_closures_as_output_parameters[5480]::create_fnmut::{opaque#0}),
+    },
+) not yet handled
+type Alias(
+    Opaque,
+    AliasTy {
+        substs: [],
+        def_id: DefId(0:13 ~ functions_closures_as_output_parameters[5480]::create_fnmut::{opaque#0}),
+    },
+) not yet handled
+type Alias(
+    Opaque,
+    AliasTy {
+        substs: [],
+        def_id: DefId(0:12 ~ functions_closures_as_output_parameters[5480]::create_fn::{opaque#0}),
     },
 ) not yet handled
 type Alias(

@@ -2,11 +2,11 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{State.Trait}, M unit.
+Parameter main : forall `{ℋ : State.Trait}, M unit.
 
 Module Person.
   Section Person.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Record t : Set := {
@@ -15,27 +15,31 @@ Module Person.
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_name : Notation.Dot "name" := {
+    #[refine] Global Instance Get_name : Notation.Dot "name" := {
       Notation.dot x := let* x := M.read x in Pure x.(name) : M _;
     }.
-    Global Instance Get_AF_name : Notation.DoubleColon t "name" := {
+    Admitted.
+    #[refine] Global Instance Get_AF_name : Notation.DoubleColon t "name" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(name) : M _;
     }.
-    Global Instance Get_age : Notation.Dot "age" := {
+    Admitted.
+    #[refine] Global Instance Get_age : Notation.Dot "age" := {
       Notation.dot x := let* x := M.read x in Pure x.(age) : M _;
     }.
-    Global Instance Get_AF_age : Notation.DoubleColon t "age" := {
+    Admitted.
+    #[refine] Global Instance Get_AF_age : Notation.DoubleColon t "age" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(age) : M _;
     }.
+    Admitted.
   End Person.
 End Person.
-Definition Person `{State.Trait} : Set := M.val Person.t.
+Definition Person `{ℋ : State.Trait} : Set := M.val Person.t.
 
 Module
   Impl_core_fmt_Debug_for_scoping_rules_ownership_and_rules_partial_moves_main_Person.
   Section
     Impl_core_fmt_Debug_for_scoping_rules_ownership_and_rules_partial_moves_main_Person.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set :=
       scoping_rules_ownership_and_rules_partial_moves.main.Person.
@@ -48,11 +52,12 @@ Module
       Notation.double_colon := fmt;
     }.
     
-    Global Instance I : core.fmt.Debug.Trait Self := {
+    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
+    Admitted.
   End
     Impl_core_fmt_Debug_for_scoping_rules_ownership_and_rules_partial_moves_main_Person.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End
   Impl_core_fmt_Debug_for_scoping_rules_ownership_and_rules_partial_moves_main_Person.

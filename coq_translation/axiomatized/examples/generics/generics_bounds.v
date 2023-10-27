@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module HasArea.
   Section HasArea.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Class Trait (Self : Set) : Type := {
       area : (ref Self) -> M f64;
@@ -14,7 +14,7 @@ End HasArea.
 
 Module Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle.
   Section Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := generics_bounds.Rectangle.
     
@@ -25,16 +25,17 @@ Module Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle.
       Notation.double_colon := area;
     }.
     
-    Global Instance I : generics_bounds.HasArea.Trait Self := {
+    #[refine] Global Instance ℐ : generics_bounds.HasArea.Trait Self := {
       generics_bounds.HasArea.area := area;
     }.
+    Admitted.
   End Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle.
 
 Module Rectangle.
   Section Rectangle.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Record t : Set := {
@@ -43,25 +44,31 @@ Module Rectangle.
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_length : Notation.Dot "length" := {
+    #[refine] Global Instance Get_length : Notation.Dot "length" := {
       Notation.dot x := let* x := M.read x in Pure x.(length) : M _;
     }.
-    Global Instance Get_AF_length : Notation.DoubleColon t "length" := {
+    Admitted.
+    #[refine] Global Instance Get_AF_length :
+      Notation.DoubleColon t "length" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(length) : M _;
     }.
-    Global Instance Get_height : Notation.Dot "height" := {
+    Admitted.
+    #[refine] Global Instance Get_height : Notation.Dot "height" := {
       Notation.dot x := let* x := M.read x in Pure x.(height) : M _;
     }.
-    Global Instance Get_AF_height : Notation.DoubleColon t "height" := {
+    Admitted.
+    #[refine] Global Instance Get_AF_height :
+      Notation.DoubleColon t "height" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(height) : M _;
     }.
+    Admitted.
   End Rectangle.
 End Rectangle.
-Definition Rectangle `{State.Trait} : Set := M.val Rectangle.t.
+Definition Rectangle `{ℋ : State.Trait} : Set := M.val Rectangle.t.
 
 Module Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
   Section Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := generics_bounds.Rectangle.
     
@@ -73,17 +80,18 @@ Module Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
       Notation.double_colon := fmt;
     }.
     
-    Global Instance I : core.fmt.Debug.Trait Self := {
+    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
+    Admitted.
   End Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
 
 (* #[allow(dead_code)] - struct was ignored by the compiler *)
 Module Triangle.
   Section Triangle.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Record t : Set := {
@@ -92,29 +100,35 @@ Module Triangle.
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_length : Notation.Dot "length" := {
+    #[refine] Global Instance Get_length : Notation.Dot "length" := {
       Notation.dot x := let* x := M.read x in Pure x.(length) : M _;
     }.
-    Global Instance Get_AF_length : Notation.DoubleColon t "length" := {
+    Admitted.
+    #[refine] Global Instance Get_AF_length :
+      Notation.DoubleColon t "length" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(length) : M _;
     }.
-    Global Instance Get_height : Notation.Dot "height" := {
+    Admitted.
+    #[refine] Global Instance Get_height : Notation.Dot "height" := {
       Notation.dot x := let* x := M.read x in Pure x.(height) : M _;
     }.
-    Global Instance Get_AF_height : Notation.DoubleColon t "height" := {
+    Admitted.
+    #[refine] Global Instance Get_AF_height :
+      Notation.DoubleColon t "height" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(height) : M _;
     }.
+    Admitted.
   End Triangle.
 End Triangle.
-Definition Triangle `{State.Trait} : Set := M.val Triangle.t.
+Definition Triangle `{ℋ : State.Trait} : Set := M.val Triangle.t.
 
 Parameter print_debug :
-    forall `{State.Trait} {T : Set} {ℋ_0 : core.fmt.Debug.Trait T},
+    forall `{ℋ : State.Trait} {T : Set} {ℋ_0 : core.fmt.Debug.Trait T},
     (ref T) -> M unit.
 
 Parameter area :
-    forall `{State.Trait} {T : Set} {ℋ_0 : generics_bounds.HasArea.Trait T},
+    forall `{ℋ : State.Trait} {T : Set} {ℋ_0 : generics_bounds.HasArea.Trait T},
     (ref T) -> M f64.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{State.Trait}, M unit.
+Parameter main : forall `{ℋ : State.Trait}, M unit.

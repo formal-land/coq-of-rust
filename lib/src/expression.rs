@@ -685,6 +685,16 @@ fn compile_lang_item_in_a_call(lang_item: rustc_hir::LangItem, args: &[Expr]) ->
     }
 }
 
+pub(crate) fn compile_hir_id(env: &mut Env, hir_id: rustc_hir::hir_id::HirId) -> Expr {
+    let local_def_id = hir_id.owner.def_id;
+    let thir = env.tcx.thir_body(local_def_id);
+    let Ok((thir, expr_id)) = thir else {
+        panic!("thir failed to compile");
+    };
+    let thir = thir.borrow();
+    crate::thir_expression::compile_expr(env, &thir, &expr_id)
+}
+
 pub(crate) fn compile_expr(env: &mut Env, expr: &rustc_hir::Expr) -> Expr {
     match &expr.kind {
         ExprKind::ConstBlock(_anon_const) => Expr::LocalVar("ConstBlock".to_string()),
@@ -1111,13 +1121,19 @@ impl Expr {
                 with_paren,
                 nest([text("addr_of"), line(), expr.to_doc(true)]),
             ),
-            Expr::Call { func, args } => paren(
-                with_paren,
-                nest([
-                    func.to_doc(true),
-                    concat(args.iter().map(|arg| concat([line(), arg.to_doc(true)]))),
-                ]),
-            ),
+            Expr::Call { func, args } => {
+                if args.is_empty() {
+                    func.to_doc(with_paren)
+                } else {
+                    paren(
+                        with_paren,
+                        nest([
+                            func.to_doc(true),
+                            concat(args.iter().map(|arg| concat([line(), arg.to_doc(true)]))),
+                        ]),
+                    )
+                }
+            }
             Expr::MethodCall {
                 object,
                 func,
@@ -1237,7 +1253,7 @@ impl Expr {
                 ..
             } => paren(
                 with_paren,
-                nest([text("loop"), line(), paren(true, body.to_doc())]),
+                nest([text("loop"), line(), paren(true, body.to_doc(with_paren))]),
             ),
             Expr::Match { scrutinee, arms } => group([
                 group([
@@ -1250,7 +1266,7 @@ impl Expr {
                 hardline(),
                 text("end"),
             ]),
-            Expr::Block(stmt) => stmt.to_doc(),
+            Expr::Block(stmt) => stmt.to_doc(with_paren),
             Expr::Assign { left, right } => paren(
                 with_paren,
                 nest([
@@ -1345,40 +1361,43 @@ impl Expr {
 }
 
 impl Stmt {
-    fn to_doc(&self) -> Doc {
+    fn to_doc(&self, with_paren: bool) -> Doc {
         match self {
-            Stmt::Expr(expr) => expr.to_doc(false),
+            Stmt::Expr(expr) => expr.to_doc(with_paren),
             Stmt::Let {
                 is_monadic,
                 pattern,
                 ty,
                 init,
                 body,
-            } => group([
-                nest([
+            } => paren(
+                with_paren,
+                group([
                     nest([
-                        text("let"),
-                        if *is_monadic { text("*") } else { nil() },
+                        nest([
+                            text("let"),
+                            if *is_monadic { text("*") } else { nil() },
+                            line(),
+                            (if !pattern.is_single_binding() {
+                                text("'")
+                            } else {
+                                nil()
+                            }),
+                            pattern.to_doc(),
+                            match ty {
+                                Some(ty) => concat([text(" :"), line(), ty.to_doc(false)]),
+                                None => nil(),
+                            },
+                            text(" :="),
+                        ]),
                         line(),
-                        (if !pattern.is_single_binding() {
-                            text("'")
-                        } else {
-                            nil()
-                        }),
-                        pattern.to_doc(),
-                        match ty {
-                            Some(ty) => concat([text(" :"), line(), ty.to_doc(false)]),
-                            None => nil(),
-                        },
-                        text(" :="),
+                        init.to_doc(false),
+                        text(" in"),
                     ]),
-                    line(),
-                    init.to_doc(false),
-                    text(" in"),
+                    hardline(),
+                    body.to_doc(false),
                 ]),
-                hardline(),
-                body.to_doc(),
-            ]),
+            ),
         }
     }
 }

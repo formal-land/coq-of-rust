@@ -29,11 +29,11 @@ Module codec.
 
   Module Decode.
     Unset Primitive Projections.
-    Class Trait (Self : Set) : Set := {
-      decode `{H' : State.Trait} {__CodecInputEdqy : Set}
-        `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :
+    Class Trait `{State.Trait} (Self : Set) : Set := {
+      decode {__CodecInputEdqy : Set}
+        {H0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :
         mut_ref __CodecInputEdqy ->
-        M (H := H') (core.result.Result Self parity_scale_codec.error.Error);
+        M (core.result.Result Self parity_scale_codec.error.Error);
     }.
     Global Set Primitive Projections.
   End Decode.
@@ -41,8 +41,9 @@ Module codec.
   (* pub trait Codec: Decode + Encode {} *)
   Module Codec.
     Unset Primitive Projections.
-    Class Trait (Self : Set)
-      `{Encode.Trait Self} `{Decode.Trait Self} : Set := {
+    Class Trait `{State.Trait} (Self : Set) : Set := {
+      _ :: Encode.Trait Self;
+      _ :: Decode.Trait Self;
     }.
     Global Set Primitive Projections.
   End Codec.
@@ -51,9 +52,10 @@ Module codec.
   Module _Impl.
     Module Codec.
       Section Codec.
+        Context `{State.Trait}.
         Context {S : Set}.
-        Context `{Encode.Trait S}.
-        Context `{Decode.Trait S}.
+        Context {H0 : Encode.Trait S}.
+        Context {H1 : Decode.Trait S}.
 
         Global Instance I : Codec.Trait S := {}.
       End Codec.

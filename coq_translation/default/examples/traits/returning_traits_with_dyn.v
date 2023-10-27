@@ -3,29 +3,29 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module Sheep.
   Section Sheep.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Record t : Set := { }.
     Global Set Primitive Projections.
   End Sheep.
 End Sheep.
-Definition Sheep `{State.Trait} : Set := M.val Sheep.t.
+Definition Sheep `{ℋ : State.Trait} : Set := M.val Sheep.t.
 
 Module Cow.
   Section Cow.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Record t : Set := { }.
     Global Set Primitive Projections.
   End Cow.
 End Cow.
-Definition Cow `{State.Trait} : Set := M.val Cow.t.
+Definition Cow `{ℋ : State.Trait} : Set := M.val Cow.t.
 
 Module Animal.
   Section Animal.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Class Trait (Self : Set) : Type := {
       noise : (ref Self) -> M (ref str);
@@ -38,7 +38,7 @@ Module
   Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep.
   Section
     Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := returning_traits_with_dyn.Sheep.
     
@@ -50,17 +50,19 @@ Module
       Notation.double_colon := noise;
     }.
     
-    Global Instance I : returning_traits_with_dyn.Animal.Trait Self := {
+    #[refine] Global Instance ℐ :
+      returning_traits_with_dyn.Animal.Trait Self := {
       returning_traits_with_dyn.Animal.noise := noise;
     }.
+    Admitted.
   End Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep.
 
 Module Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
   Section
     Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := returning_traits_with_dyn.Cow.
     
@@ -72,15 +74,17 @@ Module Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
       Notation.double_colon := noise;
     }.
     
-    Global Instance I : returning_traits_with_dyn.Animal.Trait Self := {
+    #[refine] Global Instance ℐ :
+      returning_traits_with_dyn.Animal.Trait Self := {
       returning_traits_with_dyn.Animal.noise := noise;
     }.
+    Admitted.
   End Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
 
 Definition random_animal
-    `{State.Trait}
+    `{ℋ : State.Trait}
     (random_number : f64)
     : M (alloc.boxed.Box _ (* dyn *) alloc.boxed.Box.Default.A) :=
   let* α0 := M.alloc 1 (* 0.5 *) in
@@ -89,20 +93,20 @@ Definition random_animal
   let* α3 :=
     if (α2 : bool) then
       let* α0 :=
-        (alloc.boxed.Box _ alloc.alloc.Global)::["new"]
+        (alloc.boxed.Box T alloc.alloc.Global)::["new"]
           (returning_traits_with_dyn.Sheep.Build_t tt) in
       let* α0 := pointer_coercion "Unsize" α0 in
       pointer_coercion "Unsize" α0
     else
       let* α0 :=
-        (alloc.boxed.Box _ alloc.alloc.Global)::["new"]
+        (alloc.boxed.Box T alloc.alloc.Global)::["new"]
           (returning_traits_with_dyn.Cow.Build_t tt) in
       pointer_coercion "Unsize" α0 in
   let* α0 := pointer_coercion "Unsize" α3 in
   pointer_coercion "Unsize" α0.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main `{ℋ : State.Trait} : M unit :=
   let* random_number := M.alloc 0 (* 0.234 *) in
   let* animal := returning_traits_with_dyn.random_animal random_number in
   let* _ :=
@@ -118,7 +122,9 @@ Definition main `{State.Trait} : M unit :=
       let* α3 := pointer_coercion "Unsize" α2 in
       let* α4 := deref animal type not implemented in
       let* α5 := borrow α4 type not implemented in
-      let* α6 := returning_traits_with_dyn.Animal.noise α5 in
+      let* α6 :=
+        (returning_traits_with_dyn.Animal.noise (Self := type not implemented))
+          α5 in
       let* α7 := borrow α6 (ref str) in
       let* α8 := deref α7 (ref str) in
       let* α9 := borrow α8 (ref str) in

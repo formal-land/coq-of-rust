@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module Point.
   Section Point.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Record t : Set := {
@@ -12,25 +12,29 @@ Module Point.
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_x : Notation.Dot "x" := {
+    #[refine] Global Instance Get_x : Notation.Dot "x" := {
       Notation.dot x' := let* x' := M.read x' in Pure x'.(x) : M _;
     }.
-    Global Instance Get_AF_x : Notation.DoubleColon t "x" := {
+    Admitted.
+    #[refine] Global Instance Get_AF_x : Notation.DoubleColon t "x" := {
       Notation.double_colon x' := let* x' := M.read x' in Pure x'.(x) : M _;
     }.
-    Global Instance Get_y : Notation.Dot "y" := {
+    Admitted.
+    #[refine] Global Instance Get_y : Notation.Dot "y" := {
       Notation.dot x := let* x := M.read x in Pure x.(y) : M _;
     }.
-    Global Instance Get_AF_y : Notation.DoubleColon t "y" := {
+    Admitted.
+    #[refine] Global Instance Get_AF_y : Notation.DoubleColon t "y" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(y) : M _;
     }.
+    Admitted.
   End Point.
 End Point.
-Definition Point `{State.Trait} : Set := M.val Point.t.
+Definition Point `{ℋ : State.Trait} : Set := M.val Point.t.
 
 Module Impl_associated_functions_and_methods_Point.
   Section Impl_associated_functions_and_methods_Point.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := associated_functions_and_methods.Point.
     
@@ -67,7 +71,7 @@ End Impl_associated_functions_and_methods_Point.
 
 Module Rectangle.
   Section Rectangle.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Record t : Set := {
@@ -76,25 +80,29 @@ Module Rectangle.
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_p1 : Notation.Dot "p1" := {
+    #[refine] Global Instance Get_p1 : Notation.Dot "p1" := {
       Notation.dot x := let* x := M.read x in Pure x.(p1) : M _;
     }.
-    Global Instance Get_AF_p1 : Notation.DoubleColon t "p1" := {
+    Admitted.
+    #[refine] Global Instance Get_AF_p1 : Notation.DoubleColon t "p1" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(p1) : M _;
     }.
-    Global Instance Get_p2 : Notation.Dot "p2" := {
+    Admitted.
+    #[refine] Global Instance Get_p2 : Notation.Dot "p2" := {
       Notation.dot x := let* x := M.read x in Pure x.(p2) : M _;
     }.
-    Global Instance Get_AF_p2 : Notation.DoubleColon t "p2" := {
+    Admitted.
+    #[refine] Global Instance Get_AF_p2 : Notation.DoubleColon t "p2" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(p2) : M _;
     }.
+    Admitted.
   End Rectangle.
 End Rectangle.
-Definition Rectangle `{State.Trait} : Set := M.val Rectangle.t.
+Definition Rectangle `{ℋ : State.Trait} : Set := M.val Rectangle.t.
 
 Module Impl_associated_functions_and_methods_Rectangle.
   Section Impl_associated_functions_and_methods_Rectangle.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := associated_functions_and_methods.Rectangle.
     
@@ -194,7 +202,7 @@ End Impl_associated_functions_and_methods_Rectangle.
 
 Module Pair.
   Section Pair.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Unset Primitive Projections.
     Record t : Set := {
@@ -203,19 +211,21 @@ Module Pair.
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_0 : Notation.Dot "0" := {
+    #[refine] Global Instance Get_0 : Notation.Dot "0" := {
       Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
-    Global Instance Get_1 : Notation.Dot "1" := {
+    Admitted.
+    #[refine] Global Instance Get_1 : Notation.Dot "1" := {
       Notation.dot x := let* x := M.read x in Pure x.(x1) : M _;
     }.
+    Admitted.
   End Pair.
 End Pair.
-Definition Pair `{State.Trait} : Set := M.val Pair.t.
+Definition Pair `{ℋ : State.Trait} : Set := M.val Pair.t.
 
 Module Impl_associated_functions_and_methods_Pair.
   Section Impl_associated_functions_and_methods_Pair.
-    Context `{State.Trait}.
+    Context `{ℋ : State.Trait}.
     
     Definition Self : Set := associated_functions_and_methods.Pair.
     
@@ -256,7 +266,7 @@ Module Impl_associated_functions_and_methods_Pair.
 End Impl_associated_functions_and_methods_Pair.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main `{ℋ : State.Trait} : M unit :=
   let* rectangle :=
     let* α0 := associated_functions_and_methods.Point::["origin"] in
     let* α1 := M.alloc 3 (* 3.0 *) in
@@ -328,9 +338,9 @@ Definition main `{State.Trait} : M unit :=
     associated_functions_and_methods.Rectangle::["translate"] α0 α1 α2 in
   let* pair :=
     let* α0 := M.alloc 1 in
-    let* α1 := (alloc.boxed.Box _ alloc.alloc.Global)::["new"] α0 in
+    let* α1 := (alloc.boxed.Box T alloc.alloc.Global)::["new"] α0 in
     let* α2 := M.alloc 2 in
-    let* α3 := (alloc.boxed.Box _ alloc.alloc.Global)::["new"] α2 in
+    let* α3 := (alloc.boxed.Box T alloc.alloc.Global)::["new"] α2 in
     Pure (associated_functions_and_methods.Pair.Build_t α1 α3) in
   let* _ := associated_functions_and_methods.Pair::["destroy"] pair in
   M.alloc tt.

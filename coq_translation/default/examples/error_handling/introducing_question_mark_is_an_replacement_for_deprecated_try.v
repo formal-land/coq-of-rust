@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition multiply
-    `{State.Trait}
+    `{ℋ : State.Trait}
     (first_number_str : ref str)
     (second_number_str : ref str)
     : M (core.result.Result i32 core.num.error.ParseIntError) :=
@@ -14,7 +14,8 @@ Definition multiply
     | core.result.Result val => Pure val
     | core.result.Result err =>
       let* _ :=
-        let* α0 := core.convert.From.from err in
+        let* α0 :=
+          (core.convert.From.from (Self := core.num.error.ParseIntError)) err in
         Return (core.result.Result.Err α0) in
       let* α0 := M.alloc tt in
       never_to_any α0
@@ -27,7 +28,8 @@ Definition multiply
     | core.result.Result val => Pure val
     | core.result.Result err =>
       let* _ :=
-        let* α0 := core.convert.From.from err in
+        let* α0 :=
+          (core.convert.From.from (Self := core.num.error.ParseIntError)) err in
         Return (core.result.Result.Err α0) in
       let* α0 := M.alloc tt in
       never_to_any α0
@@ -36,7 +38,7 @@ Definition multiply
   Pure (core.result.Result.Ok α0).
 
 Definition print
-    `{State.Trait}
+    `{ℋ : State.Trait}
     (result : core.result.Result i32 core.num.error.ParseIntError)
     : M unit :=
   match result with
@@ -79,7 +81,7 @@ Definition print
   end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main `{ℋ : State.Trait} : M unit :=
   let* _ :=
     let* α0 := deref (mk_str "10") str in
     let* α1 := borrow α0 str in
