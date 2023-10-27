@@ -5337,13 +5337,21 @@ Module topics.
       NoRemainingTopics.t.
   End state.
   
-  Parameter recorded_events_ret_ty :
-      forall `{State.Trait},
-      Sigma (Ty : Set) `(core.iter.traits.iterator.Iterator.Trait Ty),
-      unit.
-  Parameter recorded_events :
-      forall `{State.Trait},
-      M (projT1 recorded_events_ret_ty).
+  Module SomeRemainingTopics.
+    Section SomeRemainingTopics.
+      Context `{ℋ : State.Trait}.
+      
+      Class Trait (Self : Set) : Type := {
+        Next : Set;
+      }.
+      
+      #[refine] Global Instance Method_Next `(Trait) :
+        Notation.DoubleColonType Self "Next" := {
+        Notation.double_colon_type := Next;
+      }.
+      Admitted.
+    End SomeRemainingTopics.
+  End SomeRemainingTopics.
   
   Module EventTopicsAmount.
     Section EventTopicsAmount.
@@ -6891,6 +6899,7 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
             T).
   
   (* Parameter recorded_events_ret_ty :
+      forall `{ℋ : State.Trait},
       Sigma (Ty : Set) `(core.iter.traits.iterator.Iterator.Trait Ty),
       unit.
   Parameter recorded_events :
@@ -9154,6 +9163,7 @@ Definition DefaultAccounts
   M.val (DefaultAccounts.t (T := T)).
 
 (* Parameter recorded_events_ret_ty :
+    forall `{ℋ : State.Trait},
     Sigma (Ty : Set) `(core.iter.traits.iterator.Iterator.Trait Ty),
     unit.
 Parameter recorded_events :
@@ -17323,39 +17333,6 @@ Module
       Notation.DoubleColon Self "contains_contract_storage" := {
       Notation.double_colon := contains_contract_storage (K := K);
     }.
-  End DefaultAccounts.
-End DefaultAccounts.
-Definition DefaultAccounts
-    (T : Set)
-    `{State.Trait}
-    {ℋ_0 : ink_env.types.Environment.Trait T}
-    : Set :=
-  M.val (DefaultAccounts.t (T := T)).
-
-Parameter recorded_events_ret_ty :
-    forall `{State.Trait},
-    Sigma (Ty : Set) `(core.iter.traits.iterator.Iterator.Trait Ty),
-    unit.
-Parameter recorded_events :
-    forall `{State.Trait},
-    M (projT1 recorded_events_ret_ty).
-
-Parameter assert_contract_termination :
-    forall
-      `{State.Trait}
-      {T F : Set}
-      {ℋ_0 : ink_env.types.Environment.Trait T}
-      {ℋ_1 : core.ops.function.FnMut.Trait F (Args := unit)}
-      {ℋ_2 : core.panic.unwind_safe.UnwindSafe.Trait F}
-      {ℋ_3 :
-        core.fmt.Debug.Trait (ink_env.types.Environment.AccountId (Self := T))}
-      {ℋ_4 :
-        core.fmt.Debug.Trait (ink_env.types.Environment.Balance (Self := T))},
-    F -> T::type["AccountId"] -> T::type["Balance"] -> M unit.
-
-Module OnInstance.
-  Section OnInstance.
-    Context `{State.Trait}.
     
     Parameter clear_contract_storage :
         forall {K : Set} {ℋ_0 : parity_scale_codec.codec.Encode.Trait K},
