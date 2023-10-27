@@ -83,12 +83,13 @@
     "ink_env": {
       "top_level": {
         "arithmetic": { "move": "up", "before": "types" },
+        "hash": { "move": "up", "before": "arithmetic" },
         "topics": { "move": "up", "before": "backend_and_call_builder_and_engine_and_engine_test_api_and_error" },
         "engine": { "move": "up", "before": "backend_and_call_builder_and_engine_and_engine_test_api_and_error" },
-        "hash": { "move": "up", "before": "backend_and_call_builder_and_engine_and_engine_test_api_and_error" },
         "contract": { "move": "up", "before": "call" },
         "call": { "move": "up", "before": "backend_and_call_builder_and_engine_and_engine_test_api_and_error" },
-        "backend_and_call_builder_and_engine_and_engine_test_api_and_error": { "move": "up", "before": "api" }
+        "backend_and_call_builder_and_engine_and_engine_test_api_and_error": { "move": "up", "before": "api" },
+        "build_create": { "move": "up" }
       },
       "top_level::backend_and_call_builder_and_engine_and_engine_test_api_and_error": {
         "CallFlags": { "move": "up", "before": "CallParams" },
@@ -127,6 +128,11 @@
       },
       "top_level::chain_extension": {
         "private": { "move": "up", "before": "IsResultType" }
+      },
+      "top_level::types": {
+        "Balance": { "move": "up", "before": "Impl_Environment_for_DefaultEnvironment" },
+        "Timestamp": { "move": "up", "before": "Impl_Environment_for_DefaultEnvironment" },
+        "BlockNumber": { "move": "up", "before": "Impl_Environment_for_DefaultEnvironment" }
       }
     },
     "ink_primitives": {

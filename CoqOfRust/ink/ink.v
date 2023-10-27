@@ -3,8 +3,8 @@ Require Import CoqOfRust.CoqOfRust.
 Require CoqOfRust.ink.ink_env.
 
 Module result_info.
-  (* Module IsResultType.
-    (* Section IsResultType.
+  Module IsResultType.
+    Section IsResultType.
       Context `{ℋ : State.Trait}.
       
       Context {T : Set}.
@@ -24,9 +24,10 @@ Module result_info.
         Notation.double_colon x := let* x := M.read x in Pure x.(marker) : M _;
       }.
       Admitted.
-    End IsResultType. *)
-  End IsResultType. *)
-  
+    End IsResultType.
+  End IsResultType.
+  Definition IsResultType (T : Set) `{ℋ : State.Trait} : Set :=
+    M.val (IsResultType.t (T := T)).
   
   Module IsResultTypeFallback.
     Section IsResultTypeFallback.
@@ -112,8 +113,8 @@ Module result_info.
     Impl_ink_result_info_IsResultErrFallback_for_ink_result_info_IsResultErr_T.
 End result_info.
 
-(* Module IsResultType.
-  (* Section IsResultType.
+Module IsResultType.
+  Section IsResultType.
     Context `{ℋ : State.Trait}.
     
     Context {T : Set}.
@@ -133,10 +134,10 @@ End result_info.
       Notation.double_colon x := let* x := M.read x in Pure x.(marker) : M _;
     }.
     Admitted.
-  End IsResultType. *)
-End IsResultType. *)
-(* Definition IsResultType (T : Set) `{ℋ : State.Trait} : Set :=
-  M.val (IsResultType.t (T := T)). *)
+  End IsResultType.
+End IsResultType.
+Definition IsResultType (T : Set) `{ℋ : State.Trait} : Set :=
+  M.val (IsResultType.t (T := T)).
 
 Module IsResultTypeFallback.
   Section IsResultTypeFallback.
@@ -3733,8 +3734,8 @@ Module chain_extension.
     End OutputSealed.
   End private.
   
-  (* Module IsResultType.
-    (* Section IsResultType.
+  Module IsResultType.
+    Section IsResultType.
       Context `{ℋ : State.Trait}.
       
       Class Trait (Self : Set) : Type := {
@@ -3753,8 +3754,8 @@ Module chain_extension.
         Notation.double_colon_type := Err;
       }.
       Admitted.
-    End IsResultType. *)
-  End IsResultType. *)
+    End IsResultType.
+  End IsResultType.
   
   Module
     Impl_ink_chain_extension_private_IsResultSealed_for_core_result_Result_T_E.
@@ -3842,9 +3843,8 @@ Module chain_extension.
   End
     Impl_ink_chain_extension_private_OutputSealed_for_ink_chain_extension_ValueReturned.
   
-  Module Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
-    Section
-      Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
+  (* Module Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
+    (* Section Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
       Context `{ℋ : State.Trait}.
       
       Context {T E : Set}.
@@ -3858,13 +3858,12 @@ Module chain_extension.
         ink.chain_extension.Output.ReturnType := ReturnType;
       }.
       Admitted.
-    End Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
+    End Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned. *)
     Global Hint Resolve ℐ : core.
-  End Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
+  End Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned. *)
   
-  Module Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
-    Section
-      Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
+  (* Module Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
+    (* Section Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
       Context `{ℋ : State.Trait}.
       
       Context {T E : Set}.
@@ -3878,9 +3877,9 @@ Module chain_extension.
         ink.chain_extension.Output.ReturnType := ReturnType;
       }.
       Admitted.
-    End Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
+    End Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned. *)
     Global Hint Resolve ℐ : core.
-  End Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
+  End Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned. *)
 End chain_extension.
 
 Module ChainExtensionInstance.
@@ -3917,8 +3916,8 @@ Module ChainExtension.
   End ChainExtension.
 End ChainExtension.
 
-(* Module IsResultType.
-  (* Section IsResultType.
+Module IsResultType.
+  Section IsResultType.
     Context `{ℋ : State.Trait}.
     
     Class Trait (Self : Set) : Type := {
@@ -3937,8 +3936,8 @@ End ChainExtension.
       Notation.double_colon_type := Err;
     }.
     Admitted.
-  End IsResultType. *)
-End IsResultType. *)
+  End IsResultType.
+End IsResultType.
 
 Module
   Impl_ink_chain_extension_private_IsResultSealed_for_core_result_Result_T_E.
@@ -4025,8 +4024,8 @@ Module
 End
   Impl_ink_chain_extension_private_OutputSealed_for_ink_chain_extension_ValueReturned.
 
-Module Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
-  Section Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
+(* Module Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
+  (* Section Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
     Context `{ℋ : State.Trait}.
     
     Context {T E : Set}.
@@ -4040,12 +4039,12 @@ Module Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
       ink.chain_extension.Output.ReturnType := ReturnType;
     }.
     Admitted.
-  End Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
+  End Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned. *)
   Global Hint Resolve ℐ : core.
-End Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
+End Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned. *)
 
-Module Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
-  Section Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
+(* Module Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
+  (* Section Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
     Context `{ℋ : State.Trait}.
     
     Context {T E : Set}.
@@ -4059,9 +4058,9 @@ Module Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
       ink.chain_extension.Output.ReturnType := ReturnType;
     }.
     Admitted.
-  End Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
+  End Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned. *)
   Global Hint Resolve ℐ : core.
-End Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
+End Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned. *)
 
 Module Wrap_private_1.
   Module private.

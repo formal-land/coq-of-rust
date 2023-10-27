@@ -9,6 +9,702 @@ Require CoqOfRust.ink.scale_decode.
 Require CoqOfRust.ink.scale_encode.
 Require CoqOfRust.ink.ink_engine.
 
+Module hash.
+  Module private.
+    Module Sealed.
+      Section Sealed.
+        Context `{ℋ : State.Trait}.
+        
+        Unset Primitive Projections.
+        Class Trait (Self : Set) : Type := {
+        }.
+        Global Set Primitive Projections.
+      End Sealed.
+    End Sealed.
+  End private.
+  
+  Module HashOutput.
+    Section HashOutput.
+      Context `{ℋ : State.Trait}.
+      
+      Class Trait (Self : Set) : Type := {
+        ℒ_0 :: ink_env.hash.private.Sealed.Trait Self;
+        Type_ : Set;
+        ℒ_1 :: core.default.Default.Trait Type_;
+      }.
+      
+      #[refine] Global Instance Method_Type_ `(Trait) :
+        Notation.DoubleColonType Self "Type_" := {
+        Notation.double_colon_type := Type_;
+      }.
+      Admitted.
+    End HashOutput.
+  End HashOutput.
+  
+  Module CryptoHash.
+    Section CryptoHash.
+      Context `{ℋ : State.Trait}.
+      
+      Class Trait (Self : Set) : Type := {
+        ℒ_0 :: ink_env.hash.HashOutput.Trait Self;
+        hash :
+          (ref (Slice u8)) ->
+            (mut_ref
+              (ink_env.hash.HashOutput.Type_
+                (Self := Self)
+                (Trait := ltac:(try clear Trait; hauto l: on))))
+            ->
+            M unit;
+      }.
+      
+    End CryptoHash.
+  End CryptoHash.
+  
+  Module Sha2x256.
+    Inductive t `{ℋ : State.Trait} : Set :=
+    .
+  End Sha2x256.
+  Definition Sha2x256 `{ℋ : State.Trait} : Set := Sha2x256.t.
+  
+  Module Impl_core_fmt_Debug_for_ink_env_hash_Sha2x256.
+    Section Impl_core_fmt_Debug_for_ink_env_hash_Sha2x256.
+      Context `{ℋ : State.Trait}.
+      
+      Definition Self : Set := ink_env.hash.Sha2x256.
+      
+      Parameter fmt :
+          (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+      
+      Global Instance AssociatedFunction_fmt :
+        Notation.DoubleColon Self "fmt" := {
+        Notation.double_colon := fmt;
+      }.
+      
+      #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
+        core.fmt.Debug.fmt := fmt;
+      }.
+      Admitted.
+    End Impl_core_fmt_Debug_for_ink_env_hash_Sha2x256.
+    Global Hint Resolve ℐ : core.
+  End Impl_core_fmt_Debug_for_ink_env_hash_Sha2x256.
+  
+  Module Impl_core_marker_Copy_for_ink_env_hash_Sha2x256.
+    Section Impl_core_marker_Copy_for_ink_env_hash_Sha2x256.
+      Context `{ℋ : State.Trait}.
+      
+      Definition Self : Set := ink_env.hash.Sha2x256.
+      
+      #[refine] Global Instance ℐ : core.marker.Copy.Trait Self := {
+      }.
+      Admitted.
+    End Impl_core_marker_Copy_for_ink_env_hash_Sha2x256.
+    Global Hint Resolve ℐ : core.
+  End Impl_core_marker_Copy_for_ink_env_hash_Sha2x256.
+  
+  Module Impl_core_clone_Clone_for_ink_env_hash_Sha2x256.
+    Section Impl_core_clone_Clone_for_ink_env_hash_Sha2x256.
+      Context `{ℋ : State.Trait}.
+      
+      Definition Self : Set := ink_env.hash.Sha2x256.
+      
+      Parameter clone : (ref Self) -> M ink_env.hash.Sha2x256.
+      
+      Global Instance AssociatedFunction_clone :
+        Notation.DoubleColon Self "clone" := {
+        Notation.double_colon := clone;
+      }.
+      
+      #[refine] Global Instance ℐ : core.clone.Clone.Trait Self := {
+        core.clone.Clone.clone := clone;
+      }.
+      Admitted.
+    End Impl_core_clone_Clone_for_ink_env_hash_Sha2x256.
+    Global Hint Resolve ℐ : core.
+  End Impl_core_clone_Clone_for_ink_env_hash_Sha2x256.
+  
+  Module Impl_core_marker_StructuralPartialEq_for_ink_env_hash_Sha2x256.
+    Section Impl_core_marker_StructuralPartialEq_for_ink_env_hash_Sha2x256.
+      Context `{ℋ : State.Trait}.
+      
+      Definition Self : Set := ink_env.hash.Sha2x256.
+      
+      #[refine] Global Instance ℐ :
+        core.marker.StructuralPartialEq.Trait Self := {
+      }.
+      Admitted.
+    End Impl_core_marker_StructuralPartialEq_for_ink_env_hash_Sha2x256.
+    Global Hint Resolve ℐ : core.
+  End Impl_core_marker_StructuralPartialEq_for_ink_env_hash_Sha2x256.
+  
+  Module Impl_core_cmp_PartialEq_for_ink_env_hash_Sha2x256.
+    Section Impl_core_cmp_PartialEq_for_ink_env_hash_Sha2x256.
+      Context `{ℋ : State.Trait}.
+      
+      Definition Self : Set := ink_env.hash.Sha2x256.
+      
+      Parameter eq : (ref Self) -> (ref ink_env.hash.Sha2x256) -> M bool.
+      
+      Global Instance AssociatedFunction_eq :
+        Notation.DoubleColon Self "eq" := {
+        Notation.double_colon := eq;
+      }.
+      
+      #[refine] Global Instance ℐ :
+        core.cmp.PartialEq.Trait Self
+          (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
+        core.cmp.PartialEq.eq := eq;
+      }.
+      Admitted.
+    End Impl_core_cmp_PartialEq_for_ink_env_hash_Sha2x256.
+    Global Hint Resolve ℐ : core.
+  End Impl_core_cmp_PartialEq_for_ink_env_hash_Sha2x256.
+  
+  Module Impl_core_marker_StructuralEq_for_ink_env_hash_Sha2x256.
+    Section Impl_core_marker_StructuralEq_for_ink_env_hash_Sha2x256.
+      Context `{ℋ : State.Trait}.
+      
+      Definition Self : Set := ink_env.hash.Sha2x256.
+      
+      #[refine] Global Instance ℐ : core.marker.StructuralEq.Trait Self := {
+      }.
+      Admitted.
+    End Impl_core_marker_StructuralEq_for_ink_env_hash_Sha2x256.
+    Global Hint Resolve ℐ : core.
+  End Impl_core_marker_StructuralEq_for_ink_env_hash_Sha2x256.
+  
+  Module Impl_core_cmp_Eq_for_ink_env_hash_Sha2x256.
+    Section Impl_core_cmp_Eq_for_ink_env_hash_Sha2x256.
+      Context `{ℋ : State.Trait}.
+      
+      Definition Self : Set := ink_env.hash.Sha2x256.
+      
+      Parameter assert_receiver_is_total_eq : (ref Self) -> M unit.
+      
+      Global Instance AssociatedFunction_assert_receiver_is_total_eq :
+        Notation.DoubleColon Self "assert_receiver_is_total_eq" := {
+        Notation.double_colon := assert_receiver_is_total_eq;
+      }.
+      
+      #[refine] Global Instance ℐ : core.cmp.Eq.Trait Self := {
+      }.
+      Admitted.
+    End Impl_core_cmp_Eq_for_ink_env_hash_Sha2x256.
+    Global Hint Resolve ℐ : core.
+  End Impl_core_cmp_Eq_for_ink_env_hash_Sha2x256.
+  
+  Module Keccak256.
+    Inductive t `{ℋ : State.Trait} : Set :=
+    .
+  End Keccak256.
+  Definition Keccak256 `{ℋ : State.Trait} : Set := Keccak256.t.
+  
+  Module Impl_core_fmt_Debug_for_ink_env_hash_Keccak256.
+    Section Impl_core_fmt_Debug_for_ink_env_hash_Keccak256.
+      Context `{ℋ : State.Trait}.
+      
+      Definition Self : Set := ink_env.hash.Keccak256.
+      
+      Parameter fmt :
+          (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+      
+      Global Instance AssociatedFunction_fmt :
+        Notation.DoubleColon Self "fmt" := {
+        Notation.double_colon := fmt;
+      }.
+      
+      #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
+        core.fmt.Debug.fmt := fmt;
+      }.
+      Admitted.
+    End Impl_core_fmt_Debug_for_ink_env_hash_Keccak256.
+    Global Hint Resolve ℐ : core.
+  End Impl_core_fmt_Debug_for_ink_env_hash_Keccak256.
+  
+  Module Impl_core_marker_Copy_for_ink_env_hash_Keccak256.
+    Section Impl_core_marker_Copy_for_ink_env_hash_Keccak256.
+      Context `{ℋ : State.Trait}.
+      
+      Definition Self : Set := ink_env.hash.Keccak256.
+      
+      #[refine] Global Instance ℐ : core.marker.Copy.Trait Self := {
+      }.
+      Admitted.
+    End Impl_core_marker_Copy_for_ink_env_hash_Keccak256.
+    Global Hint Resolve ℐ : core.
+  End Impl_core_marker_Copy_for_ink_env_hash_Keccak256.
+  
+  Module Impl_core_clone_Clone_for_ink_env_hash_Keccak256.
+    Section Impl_core_clone_Clone_for_ink_env_hash_Keccak256.
+      Context `{ℋ : State.Trait}.
+      
+      Definition Self : Set := ink_env.hash.Keccak256.
+      
+      Parameter clone : (ref Self) -> M ink_env.hash.Keccak256.
+      
+      Global Instance AssociatedFunction_clone :
+        Notation.DoubleColon Self "clone" := {
+        Notation.double_colon := clone;
+      }.
+      
+      #[refine] Global Instance ℐ : core.clone.Clone.Trait Self := {
+        core.clone.Clone.clone := clone;
+      }.
+      Admitted.
+    End Impl_core_clone_Clone_for_ink_env_hash_Keccak256.
+    Global Hint Resolve ℐ : core.
+  End Impl_core_clone_Clone_for_ink_env_hash_Keccak256.
+  
+  Module Impl_core_marker_StructuralPartialEq_for_ink_env_hash_Keccak256.
+    Section Impl_core_marker_StructuralPartialEq_for_ink_env_hash_Keccak256.
+      Context `{ℋ : State.Trait}.
+      
+      Definition Self : Set := ink_env.hash.Keccak256.
+      
+      #[refine] Global Instance ℐ :
+        core.marker.StructuralPartialEq.Trait Self := {
+      }.
+      Admitted.
+    End Impl_core_marker_StructuralPartialEq_for_ink_env_hash_Keccak256.
+    Global Hint Resolve ℐ : core.
+  End Impl_core_marker_StructuralPartialEq_for_ink_env_hash_Keccak256.
+  
+  Module Impl_core_cmp_PartialEq_for_ink_env_hash_Keccak256.
+    Section Impl_core_cmp_PartialEq_for_ink_env_hash_Keccak256.
+      Context `{ℋ : State.Trait}.
+      
+      Definition Self : Set := ink_env.hash.Keccak256.
+      
+      Parameter eq : (ref Self) -> (ref ink_env.hash.Keccak256) -> M bool.
+      
+      Global Instance AssociatedFunction_eq :
+        Notation.DoubleColon Self "eq" := {
+        Notation.double_colon := eq;
+      }.
+      
+      #[refine] Global Instance ℐ :
+        core.cmp.PartialEq.Trait Self
+          (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
+        core.cmp.PartialEq.eq := eq;
+      }.
+      Admitted.
+    End Impl_core_cmp_PartialEq_for_ink_env_hash_Keccak256.
+    Global Hint Resolve ℐ : core.
+  End Impl_core_cmp_PartialEq_for_ink_env_hash_Keccak256.
+  
+  Module Impl_core_marker_StructuralEq_for_ink_env_hash_Keccak256.
+    Section Impl_core_marker_StructuralEq_for_ink_env_hash_Keccak256.
+      Context `{ℋ : State.Trait}.
+      
+      Definition Self : Set := ink_env.hash.Keccak256.
+      
+      #[refine] Global Instance ℐ : core.marker.StructuralEq.Trait Self := {
+      }.
+      Admitted.
+    End Impl_core_marker_StructuralEq_for_ink_env_hash_Keccak256.
+    Global Hint Resolve ℐ : core.
+  End Impl_core_marker_StructuralEq_for_ink_env_hash_Keccak256.
+  
+  Module Impl_core_cmp_Eq_for_ink_env_hash_Keccak256.
+    Section Impl_core_cmp_Eq_for_ink_env_hash_Keccak256.
+      Context `{ℋ : State.Trait}.
+      
+      Definition Self : Set := ink_env.hash.Keccak256.
+      
+      Parameter assert_receiver_is_total_eq : (ref Self) -> M unit.
+      
+      Global Instance AssociatedFunction_assert_receiver_is_total_eq :
+        Notation.DoubleColon Self "assert_receiver_is_total_eq" := {
+        Notation.double_colon := assert_receiver_is_total_eq;
+      }.
+      
+      #[refine] Global Instance ℐ : core.cmp.Eq.Trait Self := {
+      }.
+      Admitted.
+    End Impl_core_cmp_Eq_for_ink_env_hash_Keccak256.
+    Global Hint Resolve ℐ : core.
+  End Impl_core_cmp_Eq_for_ink_env_hash_Keccak256.
+  
+  Module Blake2x256.
+    Inductive t `{ℋ : State.Trait} : Set :=
+    .
+  End Blake2x256.
+  Definition Blake2x256 `{ℋ : State.Trait} : Set := Blake2x256.t.
+  
+  Module Impl_core_fmt_Debug_for_ink_env_hash_Blake2x256.
+    Section Impl_core_fmt_Debug_for_ink_env_hash_Blake2x256.
+      Context `{ℋ : State.Trait}.
+      
+      Definition Self : Set := ink_env.hash.Blake2x256.
+      
+      Parameter fmt :
+          (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+      
+      Global Instance AssociatedFunction_fmt :
+        Notation.DoubleColon Self "fmt" := {
+        Notation.double_colon := fmt;
+      }.
+      
+      #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
+        core.fmt.Debug.fmt := fmt;
+      }.
+      Admitted.
+    End Impl_core_fmt_Debug_for_ink_env_hash_Blake2x256.
+    Global Hint Resolve ℐ : core.
+  End Impl_core_fmt_Debug_for_ink_env_hash_Blake2x256.
+  
+  Module Impl_core_marker_Copy_for_ink_env_hash_Blake2x256.
+    Section Impl_core_marker_Copy_for_ink_env_hash_Blake2x256.
+      Context `{ℋ : State.Trait}.
+      
+      Definition Self : Set := ink_env.hash.Blake2x256.
+      
+      #[refine] Global Instance ℐ : core.marker.Copy.Trait Self := {
+      }.
+      Admitted.
+    End Impl_core_marker_Copy_for_ink_env_hash_Blake2x256.
+    Global Hint Resolve ℐ : core.
+  End Impl_core_marker_Copy_for_ink_env_hash_Blake2x256.
+  
+  Module Impl_core_clone_Clone_for_ink_env_hash_Blake2x256.
+    Section Impl_core_clone_Clone_for_ink_env_hash_Blake2x256.
+      Context `{ℋ : State.Trait}.
+      
+      Definition Self : Set := ink_env.hash.Blake2x256.
+      
+      Parameter clone : (ref Self) -> M ink_env.hash.Blake2x256.
+      
+      Global Instance AssociatedFunction_clone :
+        Notation.DoubleColon Self "clone" := {
+        Notation.double_colon := clone;
+      }.
+      
+      #[refine] Global Instance ℐ : core.clone.Clone.Trait Self := {
+        core.clone.Clone.clone := clone;
+      }.
+      Admitted.
+    End Impl_core_clone_Clone_for_ink_env_hash_Blake2x256.
+    Global Hint Resolve ℐ : core.
+  End Impl_core_clone_Clone_for_ink_env_hash_Blake2x256.
+  
+  Module Impl_core_marker_StructuralPartialEq_for_ink_env_hash_Blake2x256.
+    Section Impl_core_marker_StructuralPartialEq_for_ink_env_hash_Blake2x256.
+      Context `{ℋ : State.Trait}.
+      
+      Definition Self : Set := ink_env.hash.Blake2x256.
+      
+      #[refine] Global Instance ℐ :
+        core.marker.StructuralPartialEq.Trait Self := {
+      }.
+      Admitted.
+    End Impl_core_marker_StructuralPartialEq_for_ink_env_hash_Blake2x256.
+    Global Hint Resolve ℐ : core.
+  End Impl_core_marker_StructuralPartialEq_for_ink_env_hash_Blake2x256.
+  
+  Module Impl_core_cmp_PartialEq_for_ink_env_hash_Blake2x256.
+    Section Impl_core_cmp_PartialEq_for_ink_env_hash_Blake2x256.
+      Context `{ℋ : State.Trait}.
+      
+      Definition Self : Set := ink_env.hash.Blake2x256.
+      
+      Parameter eq : (ref Self) -> (ref ink_env.hash.Blake2x256) -> M bool.
+      
+      Global Instance AssociatedFunction_eq :
+        Notation.DoubleColon Self "eq" := {
+        Notation.double_colon := eq;
+      }.
+      
+      #[refine] Global Instance ℐ :
+        core.cmp.PartialEq.Trait Self
+          (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
+        core.cmp.PartialEq.eq := eq;
+      }.
+      Admitted.
+    End Impl_core_cmp_PartialEq_for_ink_env_hash_Blake2x256.
+    Global Hint Resolve ℐ : core.
+  End Impl_core_cmp_PartialEq_for_ink_env_hash_Blake2x256.
+  
+  Module Impl_core_marker_StructuralEq_for_ink_env_hash_Blake2x256.
+    Section Impl_core_marker_StructuralEq_for_ink_env_hash_Blake2x256.
+      Context `{ℋ : State.Trait}.
+      
+      Definition Self : Set := ink_env.hash.Blake2x256.
+      
+      #[refine] Global Instance ℐ : core.marker.StructuralEq.Trait Self := {
+      }.
+      Admitted.
+    End Impl_core_marker_StructuralEq_for_ink_env_hash_Blake2x256.
+    Global Hint Resolve ℐ : core.
+  End Impl_core_marker_StructuralEq_for_ink_env_hash_Blake2x256.
+  
+  Module Impl_core_cmp_Eq_for_ink_env_hash_Blake2x256.
+    Section Impl_core_cmp_Eq_for_ink_env_hash_Blake2x256.
+      Context `{ℋ : State.Trait}.
+      
+      Definition Self : Set := ink_env.hash.Blake2x256.
+      
+      Parameter assert_receiver_is_total_eq : (ref Self) -> M unit.
+      
+      Global Instance AssociatedFunction_assert_receiver_is_total_eq :
+        Notation.DoubleColon Self "assert_receiver_is_total_eq" := {
+        Notation.double_colon := assert_receiver_is_total_eq;
+      }.
+      
+      #[refine] Global Instance ℐ : core.cmp.Eq.Trait Self := {
+      }.
+      Admitted.
+    End Impl_core_cmp_Eq_for_ink_env_hash_Blake2x256.
+    Global Hint Resolve ℐ : core.
+  End Impl_core_cmp_Eq_for_ink_env_hash_Blake2x256.
+  
+  Module Blake2x128.
+    Inductive t `{ℋ : State.Trait} : Set :=
+    .
+  End Blake2x128.
+  Definition Blake2x128 `{ℋ : State.Trait} : Set := Blake2x128.t.
+  
+  Module Impl_core_fmt_Debug_for_ink_env_hash_Blake2x128.
+    Section Impl_core_fmt_Debug_for_ink_env_hash_Blake2x128.
+      Context `{ℋ : State.Trait}.
+      
+      Definition Self : Set := ink_env.hash.Blake2x128.
+      
+      Parameter fmt :
+          (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+      
+      Global Instance AssociatedFunction_fmt :
+        Notation.DoubleColon Self "fmt" := {
+        Notation.double_colon := fmt;
+      }.
+      
+      #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
+        core.fmt.Debug.fmt := fmt;
+      }.
+      Admitted.
+    End Impl_core_fmt_Debug_for_ink_env_hash_Blake2x128.
+    Global Hint Resolve ℐ : core.
+  End Impl_core_fmt_Debug_for_ink_env_hash_Blake2x128.
+  
+  Module Impl_core_marker_Copy_for_ink_env_hash_Blake2x128.
+    Section Impl_core_marker_Copy_for_ink_env_hash_Blake2x128.
+      Context `{ℋ : State.Trait}.
+      
+      Definition Self : Set := ink_env.hash.Blake2x128.
+      
+      #[refine] Global Instance ℐ : core.marker.Copy.Trait Self := {
+      }.
+      Admitted.
+    End Impl_core_marker_Copy_for_ink_env_hash_Blake2x128.
+    Global Hint Resolve ℐ : core.
+  End Impl_core_marker_Copy_for_ink_env_hash_Blake2x128.
+  
+  Module Impl_core_clone_Clone_for_ink_env_hash_Blake2x128.
+    Section Impl_core_clone_Clone_for_ink_env_hash_Blake2x128.
+      Context `{ℋ : State.Trait}.
+      
+      Definition Self : Set := ink_env.hash.Blake2x128.
+      
+      Parameter clone : (ref Self) -> M ink_env.hash.Blake2x128.
+      
+      Global Instance AssociatedFunction_clone :
+        Notation.DoubleColon Self "clone" := {
+        Notation.double_colon := clone;
+      }.
+      
+      #[refine] Global Instance ℐ : core.clone.Clone.Trait Self := {
+        core.clone.Clone.clone := clone;
+      }.
+      Admitted.
+    End Impl_core_clone_Clone_for_ink_env_hash_Blake2x128.
+    Global Hint Resolve ℐ : core.
+  End Impl_core_clone_Clone_for_ink_env_hash_Blake2x128.
+  
+  Module Impl_core_marker_StructuralPartialEq_for_ink_env_hash_Blake2x128.
+    Section Impl_core_marker_StructuralPartialEq_for_ink_env_hash_Blake2x128.
+      Context `{ℋ : State.Trait}.
+      
+      Definition Self : Set := ink_env.hash.Blake2x128.
+      
+      #[refine] Global Instance ℐ :
+        core.marker.StructuralPartialEq.Trait Self := {
+      }.
+      Admitted.
+    End Impl_core_marker_StructuralPartialEq_for_ink_env_hash_Blake2x128.
+    Global Hint Resolve ℐ : core.
+  End Impl_core_marker_StructuralPartialEq_for_ink_env_hash_Blake2x128.
+  
+  Module Impl_core_cmp_PartialEq_for_ink_env_hash_Blake2x128.
+    Section Impl_core_cmp_PartialEq_for_ink_env_hash_Blake2x128.
+      Context `{ℋ : State.Trait}.
+      
+      Definition Self : Set := ink_env.hash.Blake2x128.
+      
+      Parameter eq : (ref Self) -> (ref ink_env.hash.Blake2x128) -> M bool.
+      
+      Global Instance AssociatedFunction_eq :
+        Notation.DoubleColon Self "eq" := {
+        Notation.double_colon := eq;
+      }.
+      
+      #[refine] Global Instance ℐ :
+        core.cmp.PartialEq.Trait Self
+          (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
+        core.cmp.PartialEq.eq := eq;
+      }.
+      Admitted.
+    End Impl_core_cmp_PartialEq_for_ink_env_hash_Blake2x128.
+    Global Hint Resolve ℐ : core.
+  End Impl_core_cmp_PartialEq_for_ink_env_hash_Blake2x128.
+  
+  Module Impl_core_marker_StructuralEq_for_ink_env_hash_Blake2x128.
+    Section Impl_core_marker_StructuralEq_for_ink_env_hash_Blake2x128.
+      Context `{ℋ : State.Trait}.
+      
+      Definition Self : Set := ink_env.hash.Blake2x128.
+      
+      #[refine] Global Instance ℐ : core.marker.StructuralEq.Trait Self := {
+      }.
+      Admitted.
+    End Impl_core_marker_StructuralEq_for_ink_env_hash_Blake2x128.
+    Global Hint Resolve ℐ : core.
+  End Impl_core_marker_StructuralEq_for_ink_env_hash_Blake2x128.
+  
+  Module Impl_core_cmp_Eq_for_ink_env_hash_Blake2x128.
+    Section Impl_core_cmp_Eq_for_ink_env_hash_Blake2x128.
+      Context `{ℋ : State.Trait}.
+      
+      Definition Self : Set := ink_env.hash.Blake2x128.
+      
+      Parameter assert_receiver_is_total_eq : (ref Self) -> M unit.
+      
+      Global Instance AssociatedFunction_assert_receiver_is_total_eq :
+        Notation.DoubleColon Self "assert_receiver_is_total_eq" := {
+        Notation.double_colon := assert_receiver_is_total_eq;
+      }.
+      
+      #[refine] Global Instance ℐ : core.cmp.Eq.Trait Self := {
+      }.
+      Admitted.
+    End Impl_core_cmp_Eq_for_ink_env_hash_Blake2x128.
+    Global Hint Resolve ℐ : core.
+  End Impl_core_cmp_Eq_for_ink_env_hash_Blake2x128.
+  
+  Module Impl_ink_env_hash_private_Sealed_for_ink_env_hash_Sha2x256.
+    Section Impl_ink_env_hash_private_Sealed_for_ink_env_hash_Sha2x256.
+      Context `{ℋ : State.Trait}.
+      
+      Definition Self : Set := ink_env.hash.Sha2x256.
+      
+      #[refine] Global Instance ℐ : ink_env.hash.private.Sealed.Trait Self := {
+      }.
+      Admitted.
+    End Impl_ink_env_hash_private_Sealed_for_ink_env_hash_Sha2x256.
+    Global Hint Resolve ℐ : core.
+  End Impl_ink_env_hash_private_Sealed_for_ink_env_hash_Sha2x256.
+  
+  Module Impl_ink_env_hash_private_Sealed_for_ink_env_hash_Keccak256.
+    Section Impl_ink_env_hash_private_Sealed_for_ink_env_hash_Keccak256.
+      Context `{ℋ : State.Trait}.
+      
+      Definition Self : Set := ink_env.hash.Keccak256.
+      
+      #[refine] Global Instance ℐ : ink_env.hash.private.Sealed.Trait Self := {
+      }.
+      Admitted.
+    End Impl_ink_env_hash_private_Sealed_for_ink_env_hash_Keccak256.
+    Global Hint Resolve ℐ : core.
+  End Impl_ink_env_hash_private_Sealed_for_ink_env_hash_Keccak256.
+  
+  Module Impl_ink_env_hash_private_Sealed_for_ink_env_hash_Blake2x256.
+    Section Impl_ink_env_hash_private_Sealed_for_ink_env_hash_Blake2x256.
+      Context `{ℋ : State.Trait}.
+      
+      Definition Self : Set := ink_env.hash.Blake2x256.
+      
+      #[refine] Global Instance ℐ : ink_env.hash.private.Sealed.Trait Self := {
+      }.
+      Admitted.
+    End Impl_ink_env_hash_private_Sealed_for_ink_env_hash_Blake2x256.
+    Global Hint Resolve ℐ : core.
+  End Impl_ink_env_hash_private_Sealed_for_ink_env_hash_Blake2x256.
+  
+  Module Impl_ink_env_hash_private_Sealed_for_ink_env_hash_Blake2x128.
+    Section Impl_ink_env_hash_private_Sealed_for_ink_env_hash_Blake2x128.
+      Context `{ℋ : State.Trait}.
+      
+      Definition Self : Set := ink_env.hash.Blake2x128.
+      
+      #[refine] Global Instance ℐ : ink_env.hash.private.Sealed.Trait Self := {
+      }.
+      Admitted.
+    End Impl_ink_env_hash_private_Sealed_for_ink_env_hash_Blake2x128.
+    Global Hint Resolve ℐ : core.
+  End Impl_ink_env_hash_private_Sealed_for_ink_env_hash_Blake2x128.
+  
+  Module Impl_ink_env_hash_HashOutput_for_ink_env_hash_Sha2x256.
+    Section Impl_ink_env_hash_HashOutput_for_ink_env_hash_Sha2x256.
+      Context `{ℋ : State.Trait}.
+      
+      Definition Self : Set := ink_env.hash.Sha2x256.
+      
+      Definition Type_ : Set := list u8.
+      
+      #[refine] Global Instance ℐ : ink_env.hash.HashOutput.Trait Self := {
+        ink_env.hash.HashOutput.Type_ := Type_;
+      }.
+      Admitted.
+    End Impl_ink_env_hash_HashOutput_for_ink_env_hash_Sha2x256.
+    Global Hint Resolve ℐ : core.
+  End Impl_ink_env_hash_HashOutput_for_ink_env_hash_Sha2x256.
+  
+  Module Impl_ink_env_hash_HashOutput_for_ink_env_hash_Keccak256.
+    Section Impl_ink_env_hash_HashOutput_for_ink_env_hash_Keccak256.
+      Context `{ℋ : State.Trait}.
+      
+      Definition Self : Set := ink_env.hash.Keccak256.
+      
+      Definition Type_ : Set := list u8.
+      
+      #[refine] Global Instance ℐ : ink_env.hash.HashOutput.Trait Self := {
+        ink_env.hash.HashOutput.Type_ := Type_;
+      }.
+      Admitted.
+    End Impl_ink_env_hash_HashOutput_for_ink_env_hash_Keccak256.
+    Global Hint Resolve ℐ : core.
+  End Impl_ink_env_hash_HashOutput_for_ink_env_hash_Keccak256.
+  
+  Module Impl_ink_env_hash_HashOutput_for_ink_env_hash_Blake2x256.
+    Section Impl_ink_env_hash_HashOutput_for_ink_env_hash_Blake2x256.
+      Context `{ℋ : State.Trait}.
+      
+      Definition Self : Set := ink_env.hash.Blake2x256.
+      
+      Definition Type_ : Set := list u8.
+      
+      #[refine] Global Instance ℐ : ink_env.hash.HashOutput.Trait Self := {
+        ink_env.hash.HashOutput.Type_ := Type_;
+      }.
+      Admitted.
+    End Impl_ink_env_hash_HashOutput_for_ink_env_hash_Blake2x256.
+    Global Hint Resolve ℐ : core.
+  End Impl_ink_env_hash_HashOutput_for_ink_env_hash_Blake2x256.
+  
+  Module Impl_ink_env_hash_HashOutput_for_ink_env_hash_Blake2x128.
+    Section Impl_ink_env_hash_HashOutput_for_ink_env_hash_Blake2x128.
+      Context `{ℋ : State.Trait}.
+      
+      Definition Self : Set := ink_env.hash.Blake2x128.
+      
+      Definition Type_ : Set := list u8.
+      
+      #[refine] Global Instance ℐ : ink_env.hash.HashOutput.Trait Self := {
+        ink_env.hash.HashOutput.Type_ := Type_;
+      }.
+      Admitted.
+    End Impl_ink_env_hash_HashOutput_for_ink_env_hash_Blake2x128.
+    Global Hint Resolve ℐ : core.
+  End Impl_ink_env_hash_HashOutput_for_ink_env_hash_Blake2x128.
+End hash.
+
 Module arithmetic.
   Module Saturating.
     Section Saturating.
@@ -73,17 +769,17 @@ Module arithmetic.
         {ℋ_1 : core.convert.From.Trait T (T := u8)}
         {ℋ_2 : num_traits.bounds.Bounded.Trait T}
         {ℋ_3 : core.cmp.Ord.Trait T}
-        {ℋ_4 : core.cmp.PartialOrd.Trait T (Rhs := Self)}
+        {ℋ_4 : core.cmp.PartialOrd.Trait T (Rhs := T)}
         {ℋ_5 : num_traits.identities.Zero.Trait T}
         {ℋ_6 : num_traits.identities.One.Trait T}
-        {ℋ_7 : core.ops.arith.Add.Trait T (Rhs := Self)}
-        {ℋ_8 : core.ops.arith.AddAssign.Trait T (Rhs := Self)}
-        {ℋ_9 : core.ops.arith.Sub.Trait T (Rhs := Self)}
-        {ℋ_10 : core.ops.arith.SubAssign.Trait T (Rhs := Self)}
-        {ℋ_11 : core.ops.arith.Mul.Trait T (Rhs := Self)}
-        {ℋ_12 : core.ops.arith.MulAssign.Trait T (Rhs := Self)}
-        {ℋ_13 : core.ops.arith.Div.Trait T (Rhs := Self)}
-        {ℋ_14 : core.ops.arith.DivAssign.Trait T (Rhs := Self)}
+        {ℋ_7 : core.ops.arith.Add.Trait T (Rhs := T)}
+        {ℋ_8 : core.ops.arith.AddAssign.Trait T (Rhs := T)}
+        {ℋ_9 : core.ops.arith.Sub.Trait T (Rhs := T)}
+        {ℋ_10 : core.ops.arith.SubAssign.Trait T (Rhs := T)}
+        {ℋ_11 : core.ops.arith.Mul.Trait T (Rhs := T)}
+        {ℋ_12 : core.ops.arith.MulAssign.Trait T (Rhs := T)}
+        {ℋ_13 : core.ops.arith.Div.Trait T (Rhs := T)}
+        {ℋ_14 : core.ops.arith.DivAssign.Trait T (Rhs := T)}
         {ℋ_15 : num_traits.ops.checked.CheckedMul.Trait T}
         {ℋ_16 : ink_env.arithmetic.Saturating.Trait T}
         {ℋ_17 : core.convert.TryFrom.Trait T (T := u16)}
@@ -659,6 +1355,12 @@ Module types.
     Global Hint Resolve ℐ : core.
   End Impl_core_cmp_Eq_for_ink_env_types_DefaultEnvironment.
   
+  Definition Balance `{ℋ : State.Trait} : Set := u128.
+  
+  Definition Timestamp `{ℋ : State.Trait} : Set := u64.
+  
+  Definition BlockNumber `{ℋ : State.Trait} : Set := u32.
+  
   Module Impl_ink_env_types_Environment_for_ink_env_types_DefaultEnvironment.
     Section Impl_ink_env_types_Environment_for_ink_env_types_DefaultEnvironment.
       Context `{ℋ : State.Trait}.
@@ -698,13 +1400,7 @@ Module types.
     Global Hint Resolve ℐ : core.
   End Impl_ink_env_types_Environment_for_ink_env_types_DefaultEnvironment.
   
-  Definition Balance `{ℋ : State.Trait} : Set := u128.
-  
-  Definition Timestamp `{ℋ : State.Trait} : Set := u64.
-  
   Definition Gas `{ℋ : State.Trait} : Set := u64.
-  
-  Definition BlockNumber `{ℋ : State.Trait} : Set := u32.
 End types.
 
 Module FromLittleEndian.
@@ -3103,7 +3799,7 @@ Module engine.
                 (mut_ref
                   (ink_env.hash.HashOutput.Type_
                     (Self := Self)
-                    (Trait := ltac:(try clear Trait; hauto l: on))))
+                    (Trait := _)))
                 ->
                 M unit.
           
@@ -3131,7 +3827,7 @@ Module engine.
                 (mut_ref
                   (ink_env.hash.HashOutput.Type_
                     (Self := Self)
-                    (Trait := ltac:(try clear Trait; hauto l: on))))
+                    (Trait := _)))
                 ->
                 M unit.
           
@@ -3159,7 +3855,7 @@ Module engine.
                 (mut_ref
                   (ink_env.hash.HashOutput.Type_
                     (Self := Self)
-                    (Trait := ltac:(try clear Trait; hauto l: on))))
+                    (Trait := _)))
                 ->
                 M unit.
           
@@ -3187,7 +3883,7 @@ Module engine.
                 (mut_ref
                   (ink_env.hash.HashOutput.Type_
                     (Self := Self)
-                    (Trait := ltac:(try clear Trait; hauto l: on))))
+                    (Trait := _)))
                 ->
                 M unit.
           
@@ -3204,10 +3900,8 @@ Module engine.
         Global Hint Resolve ℐ : core.
       End Impl_ink_env_hash_CryptoHash_for_ink_env_hash_Keccak256.
       
-      Module
-        Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
-        Section
-          Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
+      (* Module Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
+        (* Section Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
           Context `{ℋ : State.Trait}.
           
           Definition Self : Set :=
@@ -3225,11 +3919,9 @@ Module engine.
             core.convert.From.from := from;
           }.
           Admitted.
-        End
-          Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
+        End Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error. *)
         Global Hint Resolve ℐ : core.
-      End
-        Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
+      End Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error. *)
       
       Module TopicsBuilder.
         Section TopicsBuilder.
@@ -3284,10 +3976,8 @@ Module engine.
       End
         Impl_core_default_Default_for_ink_env_engine_off_chain_impls_TopicsBuilder.
       
-      Module
-        Impl_ink_env_topics_TopicsBuilderBackend_for_ink_env_engine_off_chain_impls_TopicsBuilder.
-        Section
-          Impl_ink_env_topics_TopicsBuilderBackend_for_ink_env_engine_off_chain_impls_TopicsBuilder.
+      (* Module Impl_ink_env_topics_TopicsBuilderBackend_for_ink_env_engine_off_chain_impls_TopicsBuilder.
+        (* Section Impl_ink_env_topics_TopicsBuilderBackend_for_ink_env_engine_off_chain_impls_TopicsBuilder.
           Context `{ℋ : State.Trait}.
           
           Context {E : Set}.
@@ -3333,16 +4023,12 @@ Module engine.
             ink_env.topics.TopicsBuilderBackend.output := output;
           }.
           Admitted.
-        End
-          Impl_ink_env_topics_TopicsBuilderBackend_for_ink_env_engine_off_chain_impls_TopicsBuilder.
+        End Impl_ink_env_topics_TopicsBuilderBackend_for_ink_env_engine_off_chain_impls_TopicsBuilder. *)
         Global Hint Resolve ℐ : core.
-      End
-        Impl_ink_env_topics_TopicsBuilderBackend_for_ink_env_engine_off_chain_impls_TopicsBuilder.
+      End Impl_ink_env_topics_TopicsBuilderBackend_for_ink_env_engine_off_chain_impls_TopicsBuilder. *)
       
-      Module
-        Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
-        Section
-          Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
+      (* Module Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
+        (* Section Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
           Context `{ℋ : State.Trait}.
           
           Definition Self : Set := ink_env.engine.off_chain.EnvInstance.
@@ -3644,16 +4330,12 @@ Module engine.
               set_code_hash;
           }.
           Admitted.
-        End
-          Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
+        End Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_EnvBackend_for_ink_env_engine_off_chain_EnvInstance. *)
         Global Hint Resolve ℐ : core.
-      End
-        Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
+      End Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_EnvBackend_for_ink_env_engine_off_chain_EnvInstance. *)
       
-      Module
-        Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_TypedEnvBackend_for_ink_env_engine_off_chain_EnvInstance.
-        Section
-          Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_TypedEnvBackend_for_ink_env_engine_off_chain_EnvInstance.
+      (* Module Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_TypedEnvBackend_for_ink_env_engine_off_chain_EnvInstance.
+        (* Section Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_TypedEnvBackend_for_ink_env_engine_off_chain_EnvInstance.
           Context `{ℋ : State.Trait}.
           
           Definition Self : Set := ink_env.engine.off_chain.EnvInstance.
@@ -4081,18 +4763,14 @@ Module engine.
               call_runtime (E := E) (Call := Call);
           }.
           Admitted.
-        End
-          Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_TypedEnvBackend_for_ink_env_engine_off_chain_EnvInstance.
+        End Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_TypedEnvBackend_for_ink_env_engine_off_chain_EnvInstance. *)
         Global Hint Resolve ℐ : core.
-      End
-        Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_TypedEnvBackend_for_ink_env_engine_off_chain_EnvInstance.
+      End Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_TypedEnvBackend_for_ink_env_engine_off_chain_EnvInstance. *)
     End impls.
     
     Module types.
-      Module
-        Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_EmittedEvent.
-        Section
-          Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_EmittedEvent.
+      (* Module Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_EmittedEvent.
+        (* Section Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_EmittedEvent.
           Context `{ℋ : State.Trait}.
           
           Definition Self : Set :=
@@ -4111,16 +4789,12 @@ Module engine.
             core.convert.From.from := from;
           }.
           Admitted.
-        End
-          Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_EmittedEvent.
+        End Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_EmittedEvent. *)
         Global Hint Resolve ℐ : core.
-      End
-        Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_EmittedEvent.
+      End Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_EmittedEvent. *)
       
-      Module
-        Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
-        Section
-          Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
+      (* Module Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
+        (* Section Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
           Context `{ℋ : State.Trait}.
           
           Definition Self : Set :=
@@ -4138,15 +4812,12 @@ Module engine.
             core.convert.From.from := from;
           }.
           Admitted.
-        End
-          Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
+        End Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error. *)
         Global Hint Resolve ℐ : core.
-      End
-        Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
+      End Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error. *)
       
-      Module Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError.
-        Section
-          Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError.
+      (* Module Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError.
+        (* Section Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError.
           Context `{ℋ : State.Trait}.
           
           Definition Self : Set := ink_env.engine.off_chain.AccountError.
@@ -4164,14 +4835,12 @@ Module engine.
             core.convert.From.from := from;
           }.
           Admitted.
-        End Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError.
+        End Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError. *)
         Global Hint Resolve ℐ : core.
-      End Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError.
+      End Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError. *)
       
-      Module
-        Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
-        Section
-          Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
+      (* Module Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
+        (* Section Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
           Context `{ℋ : State.Trait}.
           
           Definition Self : Set :=
@@ -4190,11 +4859,9 @@ Module engine.
             core.convert.From.from := from;
           }.
           Admitted.
-        End
-          Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
+        End Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error. *)
         Global Hint Resolve ℐ : core.
-      End
-        Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
+      End Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error. *)
     End types.
     
     Module EnvInstance.
@@ -4221,10 +4888,8 @@ Module engine.
     End EnvInstance.
     Definition EnvInstance `{ℋ : State.Trait} : Set := M.val EnvInstance.t.
     
-    Module
-      Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_OnInstance_for_ink_env_engine_off_chain_EnvInstance.
-      Section
-        Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_OnInstance_for_ink_env_engine_off_chain_EnvInstance.
+    (* Module Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_OnInstance_for_ink_env_engine_off_chain_EnvInstance.
+      (* Section Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_OnInstance_for_ink_env_engine_off_chain_EnvInstance.
         Context `{ℋ : State.Trait}.
         
         Definition Self : Set := ink_env.engine.off_chain.EnvInstance.
@@ -4251,11 +4916,9 @@ Module engine.
             on_instance (F := F) (R := R);
         }.
         Admitted.
-      End
-        Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_OnInstance_for_ink_env_engine_off_chain_EnvInstance.
+      End Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_OnInstance_for_ink_env_engine_off_chain_EnvInstance. *)
       Global Hint Resolve ℐ : core.
-    End
-      Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_OnInstance_for_ink_env_engine_off_chain_EnvInstance.
+    End Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_OnInstance_for_ink_env_engine_off_chain_EnvInstance. *)
     
     Module AccountError.
       Inductive t `{ℋ : State.Trait} : Set :=
@@ -4425,8 +5088,8 @@ Module engine.
       Global Hint Resolve ℐ : core.
     End Impl_core_fmt_Debug_for_ink_env_engine_off_chain_AccountError.
     
-    Module Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError.
-      Section Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError.
+    (* Module Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError.
+      (* Section Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError.
         Context `{ℋ : State.Trait}.
         
         Definition Self : Set := ink_env.engine.off_chain.AccountError.
@@ -4446,9 +5109,9 @@ Module engine.
           core.convert.From.from := from;
         }.
         Admitted.
-      End Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError.
+      End Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError. *)
       Global Hint Resolve ℐ : core.
-    End Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError.
+    End Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError. *)
     
     Module
       Impl_core_marker_StructuralPartialEq_for_ink_env_engine_off_chain_AccountError.
@@ -4530,702 +5193,6 @@ Module engine.
   End off_chain.
 End engine.
 
-Module hash.
-  Module private.
-    Module Sealed.
-      Section Sealed.
-        Context `{ℋ : State.Trait}.
-        
-        Unset Primitive Projections.
-        Class Trait (Self : Set) : Type := {
-        }.
-        Global Set Primitive Projections.
-      End Sealed.
-    End Sealed.
-  End private.
-  
-  Module HashOutput.
-    Section HashOutput.
-      Context `{ℋ : State.Trait}.
-      
-      Class Trait (Self : Set) : Type := {
-        ℒ_0 :: ink_env.hash.private.Sealed.Trait Self;
-        Type_ : Set;
-        ℒ_1 :: core.default.Default.Trait Type_;
-      }.
-      
-      #[refine] Global Instance Method_Type_ `(Trait) :
-        Notation.DoubleColonType Self "Type_" := {
-        Notation.double_colon_type := Type_;
-      }.
-      Admitted.
-    End HashOutput.
-  End HashOutput.
-  
-  Module CryptoHash.
-    Section CryptoHash.
-      Context `{ℋ : State.Trait}.
-      
-      Class Trait (Self : Set) : Type := {
-        ℒ_0 :: ink_env.hash.HashOutput.Trait Self;
-        hash :
-          (ref (Slice u8)) ->
-            (mut_ref
-              (ink_env.hash.HashOutput.Type_
-                (Self := Self)
-                (Trait := ltac:(try clear Trait; hauto l: on))))
-            ->
-            M unit;
-      }.
-      
-    End CryptoHash.
-  End CryptoHash.
-  
-  Module Sha2x256.
-    Inductive t `{ℋ : State.Trait} : Set :=
-    .
-  End Sha2x256.
-  Definition Sha2x256 `{ℋ : State.Trait} : Set := Sha2x256.t.
-  
-  Module Impl_core_fmt_Debug_for_ink_env_hash_Sha2x256.
-    Section Impl_core_fmt_Debug_for_ink_env_hash_Sha2x256.
-      Context `{ℋ : State.Trait}.
-      
-      Definition Self : Set := ink_env.hash.Sha2x256.
-      
-      Parameter fmt :
-          (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
-      
-      Global Instance AssociatedFunction_fmt :
-        Notation.DoubleColon Self "fmt" := {
-        Notation.double_colon := fmt;
-      }.
-      
-      #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
-        core.fmt.Debug.fmt := fmt;
-      }.
-      Admitted.
-    End Impl_core_fmt_Debug_for_ink_env_hash_Sha2x256.
-    Global Hint Resolve ℐ : core.
-  End Impl_core_fmt_Debug_for_ink_env_hash_Sha2x256.
-  
-  Module Impl_core_marker_Copy_for_ink_env_hash_Sha2x256.
-    Section Impl_core_marker_Copy_for_ink_env_hash_Sha2x256.
-      Context `{ℋ : State.Trait}.
-      
-      Definition Self : Set := ink_env.hash.Sha2x256.
-      
-      #[refine] Global Instance ℐ : core.marker.Copy.Trait Self := {
-      }.
-      Admitted.
-    End Impl_core_marker_Copy_for_ink_env_hash_Sha2x256.
-    Global Hint Resolve ℐ : core.
-  End Impl_core_marker_Copy_for_ink_env_hash_Sha2x256.
-  
-  Module Impl_core_clone_Clone_for_ink_env_hash_Sha2x256.
-    Section Impl_core_clone_Clone_for_ink_env_hash_Sha2x256.
-      Context `{ℋ : State.Trait}.
-      
-      Definition Self : Set := ink_env.hash.Sha2x256.
-      
-      Parameter clone : (ref Self) -> M ink_env.hash.Sha2x256.
-      
-      Global Instance AssociatedFunction_clone :
-        Notation.DoubleColon Self "clone" := {
-        Notation.double_colon := clone;
-      }.
-      
-      #[refine] Global Instance ℐ : core.clone.Clone.Trait Self := {
-        core.clone.Clone.clone := clone;
-      }.
-      Admitted.
-    End Impl_core_clone_Clone_for_ink_env_hash_Sha2x256.
-    Global Hint Resolve ℐ : core.
-  End Impl_core_clone_Clone_for_ink_env_hash_Sha2x256.
-  
-  Module Impl_core_marker_StructuralPartialEq_for_ink_env_hash_Sha2x256.
-    Section Impl_core_marker_StructuralPartialEq_for_ink_env_hash_Sha2x256.
-      Context `{ℋ : State.Trait}.
-      
-      Definition Self : Set := ink_env.hash.Sha2x256.
-      
-      #[refine] Global Instance ℐ :
-        core.marker.StructuralPartialEq.Trait Self := {
-      }.
-      Admitted.
-    End Impl_core_marker_StructuralPartialEq_for_ink_env_hash_Sha2x256.
-    Global Hint Resolve ℐ : core.
-  End Impl_core_marker_StructuralPartialEq_for_ink_env_hash_Sha2x256.
-  
-  Module Impl_core_cmp_PartialEq_for_ink_env_hash_Sha2x256.
-    Section Impl_core_cmp_PartialEq_for_ink_env_hash_Sha2x256.
-      Context `{ℋ : State.Trait}.
-      
-      Definition Self : Set := ink_env.hash.Sha2x256.
-      
-      Parameter eq : (ref Self) -> (ref ink_env.hash.Sha2x256) -> M bool.
-      
-      Global Instance AssociatedFunction_eq :
-        Notation.DoubleColon Self "eq" := {
-        Notation.double_colon := eq;
-      }.
-      
-      #[refine] Global Instance ℐ :
-        core.cmp.PartialEq.Trait Self
-          (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
-        core.cmp.PartialEq.eq := eq;
-      }.
-      Admitted.
-    End Impl_core_cmp_PartialEq_for_ink_env_hash_Sha2x256.
-    Global Hint Resolve ℐ : core.
-  End Impl_core_cmp_PartialEq_for_ink_env_hash_Sha2x256.
-  
-  Module Impl_core_marker_StructuralEq_for_ink_env_hash_Sha2x256.
-    Section Impl_core_marker_StructuralEq_for_ink_env_hash_Sha2x256.
-      Context `{ℋ : State.Trait}.
-      
-      Definition Self : Set := ink_env.hash.Sha2x256.
-      
-      #[refine] Global Instance ℐ : core.marker.StructuralEq.Trait Self := {
-      }.
-      Admitted.
-    End Impl_core_marker_StructuralEq_for_ink_env_hash_Sha2x256.
-    Global Hint Resolve ℐ : core.
-  End Impl_core_marker_StructuralEq_for_ink_env_hash_Sha2x256.
-  
-  Module Impl_core_cmp_Eq_for_ink_env_hash_Sha2x256.
-    Section Impl_core_cmp_Eq_for_ink_env_hash_Sha2x256.
-      Context `{ℋ : State.Trait}.
-      
-      Definition Self : Set := ink_env.hash.Sha2x256.
-      
-      Parameter assert_receiver_is_total_eq : (ref Self) -> M unit.
-      
-      Global Instance AssociatedFunction_assert_receiver_is_total_eq :
-        Notation.DoubleColon Self "assert_receiver_is_total_eq" := {
-        Notation.double_colon := assert_receiver_is_total_eq;
-      }.
-      
-      #[refine] Global Instance ℐ : core.cmp.Eq.Trait Self := {
-      }.
-      Admitted.
-    End Impl_core_cmp_Eq_for_ink_env_hash_Sha2x256.
-    Global Hint Resolve ℐ : core.
-  End Impl_core_cmp_Eq_for_ink_env_hash_Sha2x256.
-  
-  Module Keccak256.
-    Inductive t `{ℋ : State.Trait} : Set :=
-    .
-  End Keccak256.
-  Definition Keccak256 `{ℋ : State.Trait} : Set := Keccak256.t.
-  
-  Module Impl_core_fmt_Debug_for_ink_env_hash_Keccak256.
-    Section Impl_core_fmt_Debug_for_ink_env_hash_Keccak256.
-      Context `{ℋ : State.Trait}.
-      
-      Definition Self : Set := ink_env.hash.Keccak256.
-      
-      Parameter fmt :
-          (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
-      
-      Global Instance AssociatedFunction_fmt :
-        Notation.DoubleColon Self "fmt" := {
-        Notation.double_colon := fmt;
-      }.
-      
-      #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
-        core.fmt.Debug.fmt := fmt;
-      }.
-      Admitted.
-    End Impl_core_fmt_Debug_for_ink_env_hash_Keccak256.
-    Global Hint Resolve ℐ : core.
-  End Impl_core_fmt_Debug_for_ink_env_hash_Keccak256.
-  
-  Module Impl_core_marker_Copy_for_ink_env_hash_Keccak256.
-    Section Impl_core_marker_Copy_for_ink_env_hash_Keccak256.
-      Context `{ℋ : State.Trait}.
-      
-      Definition Self : Set := ink_env.hash.Keccak256.
-      
-      #[refine] Global Instance ℐ : core.marker.Copy.Trait Self := {
-      }.
-      Admitted.
-    End Impl_core_marker_Copy_for_ink_env_hash_Keccak256.
-    Global Hint Resolve ℐ : core.
-  End Impl_core_marker_Copy_for_ink_env_hash_Keccak256.
-  
-  Module Impl_core_clone_Clone_for_ink_env_hash_Keccak256.
-    Section Impl_core_clone_Clone_for_ink_env_hash_Keccak256.
-      Context `{ℋ : State.Trait}.
-      
-      Definition Self : Set := ink_env.hash.Keccak256.
-      
-      Parameter clone : (ref Self) -> M ink_env.hash.Keccak256.
-      
-      Global Instance AssociatedFunction_clone :
-        Notation.DoubleColon Self "clone" := {
-        Notation.double_colon := clone;
-      }.
-      
-      #[refine] Global Instance ℐ : core.clone.Clone.Trait Self := {
-        core.clone.Clone.clone := clone;
-      }.
-      Admitted.
-    End Impl_core_clone_Clone_for_ink_env_hash_Keccak256.
-    Global Hint Resolve ℐ : core.
-  End Impl_core_clone_Clone_for_ink_env_hash_Keccak256.
-  
-  Module Impl_core_marker_StructuralPartialEq_for_ink_env_hash_Keccak256.
-    Section Impl_core_marker_StructuralPartialEq_for_ink_env_hash_Keccak256.
-      Context `{ℋ : State.Trait}.
-      
-      Definition Self : Set := ink_env.hash.Keccak256.
-      
-      #[refine] Global Instance ℐ :
-        core.marker.StructuralPartialEq.Trait Self := {
-      }.
-      Admitted.
-    End Impl_core_marker_StructuralPartialEq_for_ink_env_hash_Keccak256.
-    Global Hint Resolve ℐ : core.
-  End Impl_core_marker_StructuralPartialEq_for_ink_env_hash_Keccak256.
-  
-  Module Impl_core_cmp_PartialEq_for_ink_env_hash_Keccak256.
-    Section Impl_core_cmp_PartialEq_for_ink_env_hash_Keccak256.
-      Context `{ℋ : State.Trait}.
-      
-      Definition Self : Set := ink_env.hash.Keccak256.
-      
-      Parameter eq : (ref Self) -> (ref ink_env.hash.Keccak256) -> M bool.
-      
-      Global Instance AssociatedFunction_eq :
-        Notation.DoubleColon Self "eq" := {
-        Notation.double_colon := eq;
-      }.
-      
-      #[refine] Global Instance ℐ :
-        core.cmp.PartialEq.Trait Self
-          (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
-        core.cmp.PartialEq.eq := eq;
-      }.
-      Admitted.
-    End Impl_core_cmp_PartialEq_for_ink_env_hash_Keccak256.
-    Global Hint Resolve ℐ : core.
-  End Impl_core_cmp_PartialEq_for_ink_env_hash_Keccak256.
-  
-  Module Impl_core_marker_StructuralEq_for_ink_env_hash_Keccak256.
-    Section Impl_core_marker_StructuralEq_for_ink_env_hash_Keccak256.
-      Context `{ℋ : State.Trait}.
-      
-      Definition Self : Set := ink_env.hash.Keccak256.
-      
-      #[refine] Global Instance ℐ : core.marker.StructuralEq.Trait Self := {
-      }.
-      Admitted.
-    End Impl_core_marker_StructuralEq_for_ink_env_hash_Keccak256.
-    Global Hint Resolve ℐ : core.
-  End Impl_core_marker_StructuralEq_for_ink_env_hash_Keccak256.
-  
-  Module Impl_core_cmp_Eq_for_ink_env_hash_Keccak256.
-    Section Impl_core_cmp_Eq_for_ink_env_hash_Keccak256.
-      Context `{ℋ : State.Trait}.
-      
-      Definition Self : Set := ink_env.hash.Keccak256.
-      
-      Parameter assert_receiver_is_total_eq : (ref Self) -> M unit.
-      
-      Global Instance AssociatedFunction_assert_receiver_is_total_eq :
-        Notation.DoubleColon Self "assert_receiver_is_total_eq" := {
-        Notation.double_colon := assert_receiver_is_total_eq;
-      }.
-      
-      #[refine] Global Instance ℐ : core.cmp.Eq.Trait Self := {
-      }.
-      Admitted.
-    End Impl_core_cmp_Eq_for_ink_env_hash_Keccak256.
-    Global Hint Resolve ℐ : core.
-  End Impl_core_cmp_Eq_for_ink_env_hash_Keccak256.
-  
-  Module Blake2x256.
-    Inductive t `{ℋ : State.Trait} : Set :=
-    .
-  End Blake2x256.
-  Definition Blake2x256 `{ℋ : State.Trait} : Set := Blake2x256.t.
-  
-  Module Impl_core_fmt_Debug_for_ink_env_hash_Blake2x256.
-    Section Impl_core_fmt_Debug_for_ink_env_hash_Blake2x256.
-      Context `{ℋ : State.Trait}.
-      
-      Definition Self : Set := ink_env.hash.Blake2x256.
-      
-      Parameter fmt :
-          (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
-      
-      Global Instance AssociatedFunction_fmt :
-        Notation.DoubleColon Self "fmt" := {
-        Notation.double_colon := fmt;
-      }.
-      
-      #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
-        core.fmt.Debug.fmt := fmt;
-      }.
-      Admitted.
-    End Impl_core_fmt_Debug_for_ink_env_hash_Blake2x256.
-    Global Hint Resolve ℐ : core.
-  End Impl_core_fmt_Debug_for_ink_env_hash_Blake2x256.
-  
-  Module Impl_core_marker_Copy_for_ink_env_hash_Blake2x256.
-    Section Impl_core_marker_Copy_for_ink_env_hash_Blake2x256.
-      Context `{ℋ : State.Trait}.
-      
-      Definition Self : Set := ink_env.hash.Blake2x256.
-      
-      #[refine] Global Instance ℐ : core.marker.Copy.Trait Self := {
-      }.
-      Admitted.
-    End Impl_core_marker_Copy_for_ink_env_hash_Blake2x256.
-    Global Hint Resolve ℐ : core.
-  End Impl_core_marker_Copy_for_ink_env_hash_Blake2x256.
-  
-  Module Impl_core_clone_Clone_for_ink_env_hash_Blake2x256.
-    Section Impl_core_clone_Clone_for_ink_env_hash_Blake2x256.
-      Context `{ℋ : State.Trait}.
-      
-      Definition Self : Set := ink_env.hash.Blake2x256.
-      
-      Parameter clone : (ref Self) -> M ink_env.hash.Blake2x256.
-      
-      Global Instance AssociatedFunction_clone :
-        Notation.DoubleColon Self "clone" := {
-        Notation.double_colon := clone;
-      }.
-      
-      #[refine] Global Instance ℐ : core.clone.Clone.Trait Self := {
-        core.clone.Clone.clone := clone;
-      }.
-      Admitted.
-    End Impl_core_clone_Clone_for_ink_env_hash_Blake2x256.
-    Global Hint Resolve ℐ : core.
-  End Impl_core_clone_Clone_for_ink_env_hash_Blake2x256.
-  
-  Module Impl_core_marker_StructuralPartialEq_for_ink_env_hash_Blake2x256.
-    Section Impl_core_marker_StructuralPartialEq_for_ink_env_hash_Blake2x256.
-      Context `{ℋ : State.Trait}.
-      
-      Definition Self : Set := ink_env.hash.Blake2x256.
-      
-      #[refine] Global Instance ℐ :
-        core.marker.StructuralPartialEq.Trait Self := {
-      }.
-      Admitted.
-    End Impl_core_marker_StructuralPartialEq_for_ink_env_hash_Blake2x256.
-    Global Hint Resolve ℐ : core.
-  End Impl_core_marker_StructuralPartialEq_for_ink_env_hash_Blake2x256.
-  
-  Module Impl_core_cmp_PartialEq_for_ink_env_hash_Blake2x256.
-    Section Impl_core_cmp_PartialEq_for_ink_env_hash_Blake2x256.
-      Context `{ℋ : State.Trait}.
-      
-      Definition Self : Set := ink_env.hash.Blake2x256.
-      
-      Parameter eq : (ref Self) -> (ref ink_env.hash.Blake2x256) -> M bool.
-      
-      Global Instance AssociatedFunction_eq :
-        Notation.DoubleColon Self "eq" := {
-        Notation.double_colon := eq;
-      }.
-      
-      #[refine] Global Instance ℐ :
-        core.cmp.PartialEq.Trait Self
-          (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
-        core.cmp.PartialEq.eq := eq;
-      }.
-      Admitted.
-    End Impl_core_cmp_PartialEq_for_ink_env_hash_Blake2x256.
-    Global Hint Resolve ℐ : core.
-  End Impl_core_cmp_PartialEq_for_ink_env_hash_Blake2x256.
-  
-  Module Impl_core_marker_StructuralEq_for_ink_env_hash_Blake2x256.
-    Section Impl_core_marker_StructuralEq_for_ink_env_hash_Blake2x256.
-      Context `{ℋ : State.Trait}.
-      
-      Definition Self : Set := ink_env.hash.Blake2x256.
-      
-      #[refine] Global Instance ℐ : core.marker.StructuralEq.Trait Self := {
-      }.
-      Admitted.
-    End Impl_core_marker_StructuralEq_for_ink_env_hash_Blake2x256.
-    Global Hint Resolve ℐ : core.
-  End Impl_core_marker_StructuralEq_for_ink_env_hash_Blake2x256.
-  
-  Module Impl_core_cmp_Eq_for_ink_env_hash_Blake2x256.
-    Section Impl_core_cmp_Eq_for_ink_env_hash_Blake2x256.
-      Context `{ℋ : State.Trait}.
-      
-      Definition Self : Set := ink_env.hash.Blake2x256.
-      
-      Parameter assert_receiver_is_total_eq : (ref Self) -> M unit.
-      
-      Global Instance AssociatedFunction_assert_receiver_is_total_eq :
-        Notation.DoubleColon Self "assert_receiver_is_total_eq" := {
-        Notation.double_colon := assert_receiver_is_total_eq;
-      }.
-      
-      #[refine] Global Instance ℐ : core.cmp.Eq.Trait Self := {
-      }.
-      Admitted.
-    End Impl_core_cmp_Eq_for_ink_env_hash_Blake2x256.
-    Global Hint Resolve ℐ : core.
-  End Impl_core_cmp_Eq_for_ink_env_hash_Blake2x256.
-  
-  Module Blake2x128.
-    Inductive t `{ℋ : State.Trait} : Set :=
-    .
-  End Blake2x128.
-  Definition Blake2x128 `{ℋ : State.Trait} : Set := Blake2x128.t.
-  
-  Module Impl_core_fmt_Debug_for_ink_env_hash_Blake2x128.
-    Section Impl_core_fmt_Debug_for_ink_env_hash_Blake2x128.
-      Context `{ℋ : State.Trait}.
-      
-      Definition Self : Set := ink_env.hash.Blake2x128.
-      
-      Parameter fmt :
-          (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
-      
-      Global Instance AssociatedFunction_fmt :
-        Notation.DoubleColon Self "fmt" := {
-        Notation.double_colon := fmt;
-      }.
-      
-      #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
-        core.fmt.Debug.fmt := fmt;
-      }.
-      Admitted.
-    End Impl_core_fmt_Debug_for_ink_env_hash_Blake2x128.
-    Global Hint Resolve ℐ : core.
-  End Impl_core_fmt_Debug_for_ink_env_hash_Blake2x128.
-  
-  Module Impl_core_marker_Copy_for_ink_env_hash_Blake2x128.
-    Section Impl_core_marker_Copy_for_ink_env_hash_Blake2x128.
-      Context `{ℋ : State.Trait}.
-      
-      Definition Self : Set := ink_env.hash.Blake2x128.
-      
-      #[refine] Global Instance ℐ : core.marker.Copy.Trait Self := {
-      }.
-      Admitted.
-    End Impl_core_marker_Copy_for_ink_env_hash_Blake2x128.
-    Global Hint Resolve ℐ : core.
-  End Impl_core_marker_Copy_for_ink_env_hash_Blake2x128.
-  
-  Module Impl_core_clone_Clone_for_ink_env_hash_Blake2x128.
-    Section Impl_core_clone_Clone_for_ink_env_hash_Blake2x128.
-      Context `{ℋ : State.Trait}.
-      
-      Definition Self : Set := ink_env.hash.Blake2x128.
-      
-      Parameter clone : (ref Self) -> M ink_env.hash.Blake2x128.
-      
-      Global Instance AssociatedFunction_clone :
-        Notation.DoubleColon Self "clone" := {
-        Notation.double_colon := clone;
-      }.
-      
-      #[refine] Global Instance ℐ : core.clone.Clone.Trait Self := {
-        core.clone.Clone.clone := clone;
-      }.
-      Admitted.
-    End Impl_core_clone_Clone_for_ink_env_hash_Blake2x128.
-    Global Hint Resolve ℐ : core.
-  End Impl_core_clone_Clone_for_ink_env_hash_Blake2x128.
-  
-  Module Impl_core_marker_StructuralPartialEq_for_ink_env_hash_Blake2x128.
-    Section Impl_core_marker_StructuralPartialEq_for_ink_env_hash_Blake2x128.
-      Context `{ℋ : State.Trait}.
-      
-      Definition Self : Set := ink_env.hash.Blake2x128.
-      
-      #[refine] Global Instance ℐ :
-        core.marker.StructuralPartialEq.Trait Self := {
-      }.
-      Admitted.
-    End Impl_core_marker_StructuralPartialEq_for_ink_env_hash_Blake2x128.
-    Global Hint Resolve ℐ : core.
-  End Impl_core_marker_StructuralPartialEq_for_ink_env_hash_Blake2x128.
-  
-  Module Impl_core_cmp_PartialEq_for_ink_env_hash_Blake2x128.
-    Section Impl_core_cmp_PartialEq_for_ink_env_hash_Blake2x128.
-      Context `{ℋ : State.Trait}.
-      
-      Definition Self : Set := ink_env.hash.Blake2x128.
-      
-      Parameter eq : (ref Self) -> (ref ink_env.hash.Blake2x128) -> M bool.
-      
-      Global Instance AssociatedFunction_eq :
-        Notation.DoubleColon Self "eq" := {
-        Notation.double_colon := eq;
-      }.
-      
-      #[refine] Global Instance ℐ :
-        core.cmp.PartialEq.Trait Self
-          (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
-        core.cmp.PartialEq.eq := eq;
-      }.
-      Admitted.
-    End Impl_core_cmp_PartialEq_for_ink_env_hash_Blake2x128.
-    Global Hint Resolve ℐ : core.
-  End Impl_core_cmp_PartialEq_for_ink_env_hash_Blake2x128.
-  
-  Module Impl_core_marker_StructuralEq_for_ink_env_hash_Blake2x128.
-    Section Impl_core_marker_StructuralEq_for_ink_env_hash_Blake2x128.
-      Context `{ℋ : State.Trait}.
-      
-      Definition Self : Set := ink_env.hash.Blake2x128.
-      
-      #[refine] Global Instance ℐ : core.marker.StructuralEq.Trait Self := {
-      }.
-      Admitted.
-    End Impl_core_marker_StructuralEq_for_ink_env_hash_Blake2x128.
-    Global Hint Resolve ℐ : core.
-  End Impl_core_marker_StructuralEq_for_ink_env_hash_Blake2x128.
-  
-  Module Impl_core_cmp_Eq_for_ink_env_hash_Blake2x128.
-    Section Impl_core_cmp_Eq_for_ink_env_hash_Blake2x128.
-      Context `{ℋ : State.Trait}.
-      
-      Definition Self : Set := ink_env.hash.Blake2x128.
-      
-      Parameter assert_receiver_is_total_eq : (ref Self) -> M unit.
-      
-      Global Instance AssociatedFunction_assert_receiver_is_total_eq :
-        Notation.DoubleColon Self "assert_receiver_is_total_eq" := {
-        Notation.double_colon := assert_receiver_is_total_eq;
-      }.
-      
-      #[refine] Global Instance ℐ : core.cmp.Eq.Trait Self := {
-      }.
-      Admitted.
-    End Impl_core_cmp_Eq_for_ink_env_hash_Blake2x128.
-    Global Hint Resolve ℐ : core.
-  End Impl_core_cmp_Eq_for_ink_env_hash_Blake2x128.
-  
-  Module Impl_ink_env_hash_private_Sealed_for_ink_env_hash_Sha2x256.
-    Section Impl_ink_env_hash_private_Sealed_for_ink_env_hash_Sha2x256.
-      Context `{ℋ : State.Trait}.
-      
-      Definition Self : Set := ink_env.hash.Sha2x256.
-      
-      #[refine] Global Instance ℐ : ink_env.hash.private.Sealed.Trait Self := {
-      }.
-      Admitted.
-    End Impl_ink_env_hash_private_Sealed_for_ink_env_hash_Sha2x256.
-    Global Hint Resolve ℐ : core.
-  End Impl_ink_env_hash_private_Sealed_for_ink_env_hash_Sha2x256.
-  
-  Module Impl_ink_env_hash_private_Sealed_for_ink_env_hash_Keccak256.
-    Section Impl_ink_env_hash_private_Sealed_for_ink_env_hash_Keccak256.
-      Context `{ℋ : State.Trait}.
-      
-      Definition Self : Set := ink_env.hash.Keccak256.
-      
-      #[refine] Global Instance ℐ : ink_env.hash.private.Sealed.Trait Self := {
-      }.
-      Admitted.
-    End Impl_ink_env_hash_private_Sealed_for_ink_env_hash_Keccak256.
-    Global Hint Resolve ℐ : core.
-  End Impl_ink_env_hash_private_Sealed_for_ink_env_hash_Keccak256.
-  
-  Module Impl_ink_env_hash_private_Sealed_for_ink_env_hash_Blake2x256.
-    Section Impl_ink_env_hash_private_Sealed_for_ink_env_hash_Blake2x256.
-      Context `{ℋ : State.Trait}.
-      
-      Definition Self : Set := ink_env.hash.Blake2x256.
-      
-      #[refine] Global Instance ℐ : ink_env.hash.private.Sealed.Trait Self := {
-      }.
-      Admitted.
-    End Impl_ink_env_hash_private_Sealed_for_ink_env_hash_Blake2x256.
-    Global Hint Resolve ℐ : core.
-  End Impl_ink_env_hash_private_Sealed_for_ink_env_hash_Blake2x256.
-  
-  Module Impl_ink_env_hash_private_Sealed_for_ink_env_hash_Blake2x128.
-    Section Impl_ink_env_hash_private_Sealed_for_ink_env_hash_Blake2x128.
-      Context `{ℋ : State.Trait}.
-      
-      Definition Self : Set := ink_env.hash.Blake2x128.
-      
-      #[refine] Global Instance ℐ : ink_env.hash.private.Sealed.Trait Self := {
-      }.
-      Admitted.
-    End Impl_ink_env_hash_private_Sealed_for_ink_env_hash_Blake2x128.
-    Global Hint Resolve ℐ : core.
-  End Impl_ink_env_hash_private_Sealed_for_ink_env_hash_Blake2x128.
-  
-  Module Impl_ink_env_hash_HashOutput_for_ink_env_hash_Sha2x256.
-    Section Impl_ink_env_hash_HashOutput_for_ink_env_hash_Sha2x256.
-      Context `{ℋ : State.Trait}.
-      
-      Definition Self : Set := ink_env.hash.Sha2x256.
-      
-      Definition Type_ : Set := list u8.
-      
-      #[refine] Global Instance ℐ : ink_env.hash.HashOutput.Trait Self := {
-        ink_env.hash.HashOutput.Type_ := Type_;
-      }.
-      Admitted.
-    End Impl_ink_env_hash_HashOutput_for_ink_env_hash_Sha2x256.
-    Global Hint Resolve ℐ : core.
-  End Impl_ink_env_hash_HashOutput_for_ink_env_hash_Sha2x256.
-  
-  Module Impl_ink_env_hash_HashOutput_for_ink_env_hash_Keccak256.
-    Section Impl_ink_env_hash_HashOutput_for_ink_env_hash_Keccak256.
-      Context `{ℋ : State.Trait}.
-      
-      Definition Self : Set := ink_env.hash.Keccak256.
-      
-      Definition Type_ : Set := list u8.
-      
-      #[refine] Global Instance ℐ : ink_env.hash.HashOutput.Trait Self := {
-        ink_env.hash.HashOutput.Type_ := Type_;
-      }.
-      Admitted.
-    End Impl_ink_env_hash_HashOutput_for_ink_env_hash_Keccak256.
-    Global Hint Resolve ℐ : core.
-  End Impl_ink_env_hash_HashOutput_for_ink_env_hash_Keccak256.
-  
-  Module Impl_ink_env_hash_HashOutput_for_ink_env_hash_Blake2x256.
-    Section Impl_ink_env_hash_HashOutput_for_ink_env_hash_Blake2x256.
-      Context `{ℋ : State.Trait}.
-      
-      Definition Self : Set := ink_env.hash.Blake2x256.
-      
-      Definition Type_ : Set := list u8.
-      
-      #[refine] Global Instance ℐ : ink_env.hash.HashOutput.Trait Self := {
-        ink_env.hash.HashOutput.Type_ := Type_;
-      }.
-      Admitted.
-    End Impl_ink_env_hash_HashOutput_for_ink_env_hash_Blake2x256.
-    Global Hint Resolve ℐ : core.
-  End Impl_ink_env_hash_HashOutput_for_ink_env_hash_Blake2x256.
-  
-  Module Impl_ink_env_hash_HashOutput_for_ink_env_hash_Blake2x128.
-    Section Impl_ink_env_hash_HashOutput_for_ink_env_hash_Blake2x128.
-      Context `{ℋ : State.Trait}.
-      
-      Definition Self : Set := ink_env.hash.Blake2x128.
-      
-      Definition Type_ : Set := list u8.
-      
-      #[refine] Global Instance ℐ : ink_env.hash.HashOutput.Trait Self := {
-        ink_env.hash.HashOutput.Type_ := Type_;
-      }.
-      Admitted.
-    End Impl_ink_env_hash_HashOutput_for_ink_env_hash_Blake2x128.
-    Global Hint Resolve ℐ : core.
-  End Impl_ink_env_hash_HashOutput_for_ink_env_hash_Blake2x128.
-End hash.
-
 Module topics.
   Module TopicsBuilderBackend.
     Section TopicsBuilderBackend.
@@ -5284,10 +5251,8 @@ Module topics.
   Definition TopicsBuilder (S E B : Set) `{ℋ : State.Trait} : Set :=
     M.val (TopicsBuilder.t (S := S) (E := E) (B := B)).
   
-  Module
-    Impl_core_convert_From_for_ink_env_topics_TopicsBuilder_ink_env_topics_state_Uninit_E_B.
-    Section
-      Impl_core_convert_From_for_ink_env_topics_TopicsBuilder_ink_env_topics_state_Uninit_E_B.
+  (* Module Impl_core_convert_From_for_ink_env_topics_TopicsBuilder_ink_env_topics_state_Uninit_E_B.
+    (* Section Impl_core_convert_From_for_ink_env_topics_TopicsBuilder_ink_env_topics_state_Uninit_E_B.
       Context `{ℋ : State.Trait}.
       
       Context {E B : Set}.
@@ -5309,11 +5274,9 @@ Module topics.
         core.convert.From.from := from;
       }.
       Admitted.
-    End
-      Impl_core_convert_From_for_ink_env_topics_TopicsBuilder_ink_env_topics_state_Uninit_E_B.
+    End Impl_core_convert_From_for_ink_env_topics_TopicsBuilder_ink_env_topics_state_Uninit_E_B. *)
     Global Hint Resolve ℐ : core.
-  End
-    Impl_core_convert_From_for_ink_env_topics_TopicsBuilder_ink_env_topics_state_Uninit_E_B.
+  End Impl_core_convert_From_for_ink_env_topics_TopicsBuilder_ink_env_topics_state_Uninit_E_B. *)
   
   Module state.
     Module Uninit.
@@ -5364,10 +5327,8 @@ Module topics.
     End EventTopicsAmount.
   End EventTopicsAmount.
   
-  Module
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Section
-      Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
+  (* Module Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
+    (* Section Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
       Context `{ℋ : State.Trait}.
       
       Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
@@ -5379,16 +5340,12 @@ Module topics.
         ink_env.topics.SomeRemainingTopics.Next := Next;
       }.
       Admitted.
-    End
-      Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
+    End Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics. *)
     Global Hint Resolve ℐ : core.
-  End
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
+  End Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics. *)
   
-  Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Section
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  (* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
       Context `{ℋ : State.Trait}.
       
       Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
@@ -5405,16 +5362,12 @@ Module topics.
         ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
       }.
       Admitted.
-    End
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
     Global Hint Resolve ℐ : core.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
   
-  Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Section
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  (* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
       Context `{ℋ : State.Trait}.
       
       Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
@@ -5431,16 +5384,12 @@ Module topics.
         ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
       }.
       Admitted.
-    End
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
     Global Hint Resolve ℐ : core.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
   
-  Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Section
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  (* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
       Context `{ℋ : State.Trait}.
       
       Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
@@ -5457,16 +5406,12 @@ Module topics.
         ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
       }.
       Admitted.
-    End
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
     Global Hint Resolve ℐ : core.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
   
-  Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Section
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  (* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
       Context `{ℋ : State.Trait}.
       
       Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
@@ -5483,16 +5428,12 @@ Module topics.
         ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
       }.
       Admitted.
-    End
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
     Global Hint Resolve ℐ : core.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
   
-  Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Section
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  (* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
       Context `{ℋ : State.Trait}.
       
       Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
@@ -5509,16 +5450,12 @@ Module topics.
         ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
       }.
       Admitted.
-    End
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
     Global Hint Resolve ℐ : core.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
   
-  Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Section
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  (* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
       Context `{ℋ : State.Trait}.
       
       Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
@@ -5535,16 +5472,12 @@ Module topics.
         ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
       }.
       Admitted.
-    End
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
     Global Hint Resolve ℐ : core.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
   
-  Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Section
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  (* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
       Context `{ℋ : State.Trait}.
       
       Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
@@ -5561,16 +5494,12 @@ Module topics.
         ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
       }.
       Admitted.
-    End
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
     Global Hint Resolve ℐ : core.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
   
-  Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Section
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  (* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
       Context `{ℋ : State.Trait}.
       
       Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
@@ -5587,16 +5516,12 @@ Module topics.
         ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
       }.
       Admitted.
-    End
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
     Global Hint Resolve ℐ : core.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
   
-  Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Section
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  (* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
       Context `{ℋ : State.Trait}.
       
       Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
@@ -5613,16 +5538,12 @@ Module topics.
         ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
       }.
       Admitted.
-    End
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
     Global Hint Resolve ℐ : core.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
   
-  Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Section
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  (* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
       Context `{ℋ : State.Trait}.
       
       Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
@@ -5639,16 +5560,12 @@ Module topics.
         ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
       }.
       Admitted.
-    End
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
     Global Hint Resolve ℐ : core.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
   
-  Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Section
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  (* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
       Context `{ℋ : State.Trait}.
       
       Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
@@ -5665,16 +5582,12 @@ Module topics.
         ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
       }.
       Admitted.
-    End
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
     Global Hint Resolve ℐ : core.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
   
-  Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Section
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  (* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
       Context `{ℋ : State.Trait}.
       
       Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
@@ -5691,16 +5604,12 @@ Module topics.
         ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
       }.
       Admitted.
-    End
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
     Global Hint Resolve ℐ : core.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
   
-  Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Section
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  (* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
       Context `{ℋ : State.Trait}.
       
       Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
@@ -5717,16 +5626,12 @@ Module topics.
         ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
       }.
       Admitted.
-    End
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
     Global Hint Resolve ℐ : core.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
   
-  Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Section
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  (* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
       Context `{ℋ : State.Trait}.
       
       Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
@@ -5743,16 +5648,12 @@ Module topics.
         ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
       }.
       Admitted.
-    End
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
     Global Hint Resolve ℐ : core.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
   
-  Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Section
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  (* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
       Context `{ℋ : State.Trait}.
       
       Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
@@ -5769,16 +5670,12 @@ Module topics.
         ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
       }.
       Admitted.
-    End
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
     Global Hint Resolve ℐ : core.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
   
-  Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Section
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  (* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
       Context `{ℋ : State.Trait}.
       
       Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
@@ -5795,16 +5692,12 @@ Module topics.
         ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
       }.
       Admitted.
-    End
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
     Global Hint Resolve ℐ : core.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
   
-  Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Section
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  (* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
       Context `{ℋ : State.Trait}.
       
       Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
@@ -5821,16 +5714,12 @@ Module topics.
         ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
       }.
       Admitted.
-    End
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
     Global Hint Resolve ℐ : core.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
   
-  Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Section
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  (* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
       Context `{ℋ : State.Trait}.
       
       Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
@@ -5847,16 +5736,12 @@ Module topics.
         ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
       }.
       Admitted.
-    End
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
     Global Hint Resolve ℐ : core.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
   
-  Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Section
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  (* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
       Context `{ℋ : State.Trait}.
       
       Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
@@ -5873,16 +5758,12 @@ Module topics.
         ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
       }.
       Admitted.
-    End
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
     Global Hint Resolve ℐ : core.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
   
-  Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Section
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  (* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
       Context `{ℋ : State.Trait}.
       
       Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
@@ -5899,16 +5780,12 @@ Module topics.
         ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
       }.
       Admitted.
-    End
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
     Global Hint Resolve ℐ : core.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
   
-  Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Section
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  (* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
       Context `{ℋ : State.Trait}.
       
       Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
@@ -5925,16 +5802,12 @@ Module topics.
         ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
       }.
       Admitted.
-    End
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
     Global Hint Resolve ℐ : core.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
   
-  Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Section
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  (* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
       Context `{ℋ : State.Trait}.
       
       Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
@@ -5951,16 +5824,12 @@ Module topics.
         ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
       }.
       Admitted.
-    End
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
     Global Hint Resolve ℐ : core.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
   
-  Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Section
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  (* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
       Context `{ℋ : State.Trait}.
       
       Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
@@ -5977,16 +5846,12 @@ Module topics.
         ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
       }.
       Admitted.
-    End
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
     Global Hint Resolve ℐ : core.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
   
-  Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Section
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  (* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
       Context `{ℋ : State.Trait}.
       
       Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
@@ -6003,16 +5868,12 @@ Module topics.
         ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
       }.
       Admitted.
-    End
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
     Global Hint Resolve ℐ : core.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
   
-  Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Section
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  (* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
       Context `{ℋ : State.Trait}.
       
       Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
@@ -6029,16 +5890,12 @@ Module topics.
         ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
       }.
       Admitted.
-    End
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
     Global Hint Resolve ℐ : core.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
   
-  Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Section
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  (* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
       Context `{ℋ : State.Trait}.
       
       Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
@@ -6055,16 +5912,12 @@ Module topics.
         ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
       }.
       Admitted.
-    End
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
     Global Hint Resolve ℐ : core.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
   
-  Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Section
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  (* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
       Context `{ℋ : State.Trait}.
       
       Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
@@ -6081,16 +5934,12 @@ Module topics.
         ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
       }.
       Admitted.
-    End
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
     Global Hint Resolve ℐ : core.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
   
-  Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Section
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  (* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
       Context `{ℋ : State.Trait}.
       
       Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
@@ -6107,16 +5956,12 @@ Module topics.
         ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
       }.
       Admitted.
-    End
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
     Global Hint Resolve ℐ : core.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
   
-  Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Section
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  (* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
       Context `{ℋ : State.Trait}.
       
       Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
@@ -6133,16 +5978,12 @@ Module topics.
         ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
       }.
       Admitted.
-    End
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
     Global Hint Resolve ℐ : core.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
   
-  Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Section
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  (* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
       Context `{ℋ : State.Trait}.
       
       Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
@@ -6159,16 +6000,12 @@ Module topics.
         ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
       }.
       Admitted.
-    End
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
     Global Hint Resolve ℐ : core.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
   
-  Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Section
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  (* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
       Context `{ℋ : State.Trait}.
       
       Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
@@ -6185,16 +6022,12 @@ Module topics.
         ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
       }.
       Admitted.
-    End
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
     Global Hint Resolve ℐ : core.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
   
-  Module
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Section
-      Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
+  (* Module Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
+    (* Section Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
       Context `{ℋ : State.Trait}.
       
       Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
@@ -6206,16 +6039,12 @@ Module topics.
         ink_env.topics.SomeRemainingTopics.Next := Next;
       }.
       Admitted.
-    End
-      Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
+    End Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics. *)
     Global Hint Resolve ℐ : core.
-  End
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
+  End Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics. *)
   
-  Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Section
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  (* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
       Context `{ℋ : State.Trait}.
       
       Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
@@ -6232,11 +6061,9 @@ Module topics.
         ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
       }.
       Admitted.
-    End
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
     Global Hint Resolve ℐ : core.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
   
   Module
     Impl_ink_env_topics_EventTopicsAmount_for_ink_env_topics_state_NoRemainingTopics.
@@ -6416,10 +6243,8 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
   End
     Impl_core_fmt_Debug_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
   
-  Module
-    Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
-    Section
-      Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
+  (* Module Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
+    (* Section Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
       Context `{ℋ : State.Trait}.
       
       Definition Self : Set :=
@@ -6440,16 +6265,12 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
         core.convert.From.from := from;
       }.
       Admitted.
-    End
-      Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
+    End Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error. *)
     Global Hint Resolve ℐ : core.
-  End
-    Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
+  End Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error. *)
   
-  Module
-    Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
-    Section
-      Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
+  (* Module Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
+    (* Section Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
       Context `{ℋ : State.Trait}.
       
       Definition Self : Set :=
@@ -6471,11 +6292,9 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
         core.convert.From.from := from;
       }.
       Admitted.
-    End
-      Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
+    End Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error. *)
     Global Hint Resolve ℐ : core.
-  End
-    Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
+  End Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error. *)
   
   Module
     Impl_core_marker_StructuralPartialEq_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
@@ -8469,17 +8288,17 @@ Module Impl_ink_env_arithmetic_BaseArithmetic_for_T.
       {ℋ_1 : core.convert.From.Trait T (T := u8)}
       {ℋ_2 : num_traits.bounds.Bounded.Trait T}
       {ℋ_3 : core.cmp.Ord.Trait T}
-      {ℋ_4 : core.cmp.PartialOrd.Trait T (Rhs := Self)}
+      {ℋ_4 : core.cmp.PartialOrd.Trait T (Rhs := T)}
       {ℋ_5 : num_traits.identities.Zero.Trait T}
       {ℋ_6 : num_traits.identities.One.Trait T}
-      {ℋ_7 : core.ops.arith.Add.Trait T (Rhs := Self)}
-      {ℋ_8 : core.ops.arith.AddAssign.Trait T (Rhs := Self)}
-      {ℋ_9 : core.ops.arith.Sub.Trait T (Rhs := Self)}
-      {ℋ_10 : core.ops.arith.SubAssign.Trait T (Rhs := Self)}
-      {ℋ_11 : core.ops.arith.Mul.Trait T (Rhs := Self)}
-      {ℋ_12 : core.ops.arith.MulAssign.Trait T (Rhs := Self)}
-      {ℋ_13 : core.ops.arith.Div.Trait T (Rhs := Self)}
-      {ℋ_14 : core.ops.arith.DivAssign.Trait T (Rhs := Self)}
+      {ℋ_7 : core.ops.arith.Add.Trait T (Rhs := T)}
+      {ℋ_8 : core.ops.arith.AddAssign.Trait T (Rhs := T)}
+      {ℋ_9 : core.ops.arith.Sub.Trait T (Rhs := T)}
+      {ℋ_10 : core.ops.arith.SubAssign.Trait T (Rhs := T)}
+      {ℋ_11 : core.ops.arith.Mul.Trait T (Rhs := T)}
+      {ℋ_12 : core.ops.arith.MulAssign.Trait T (Rhs := T)}
+      {ℋ_13 : core.ops.arith.Div.Trait T (Rhs := T)}
+      {ℋ_14 : core.ops.arith.DivAssign.Trait T (Rhs := T)}
       {ℋ_15 : num_traits.ops.checked.CheckedMul.Trait T}
       {ℋ_16 : ink_env.arithmetic.Saturating.Trait T}
       {ℋ_17 : core.convert.TryFrom.Trait T (T := u16)}
@@ -8682,10 +8501,8 @@ Module
 End
   Impl_core_fmt_Debug_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
 
-Module
-  Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
-  Section
-    Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
+(* Module Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
+  (* Section Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set :=
@@ -8706,16 +8523,12 @@ Module
       core.convert.From.from := from;
     }.
     Admitted.
-  End
-    Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
+  End Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error. *)
   Global Hint Resolve ℐ : core.
-End
-  Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
+End Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error. *)
 
-Module
-  Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
-  Section
-    Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
+(* Module Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
+  (* Section Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set :=
@@ -8737,11 +8550,9 @@ Module
       core.convert.From.from := from;
     }.
     Admitted.
-  End
-    Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
+  End Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error. *)
   Global Hint Resolve ℐ : core.
-End
-  Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
+End Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error. *)
 
 Module
   Impl_core_marker_StructuralPartialEq_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
@@ -11596,35 +11407,7 @@ Definition CreateBuilder
       (Salt := Salt)
       (RetType := RetType)).
 
-Parameter build_create :
-    forall
-      `{ℋ : State.Trait}
-      {ContractRef : Set}
-      {ℋ_0 : ink_env.contract.ContractEnv.Trait ContractRef},
-    M
-        (ink_env.call.create_builder.CreateBuilder (ℋ_0 := ltac:(sauto lq: on))
-          (ink_env.contract.ContractEnv.Env
-            (Self := ContractRef)
-            (Trait := ltac:(try clear Trait; hauto l: on)))
-          ContractRef
-          (ink_env.call.common.Unset_
-            (ink_env.types.Environment.Hash
-              (Self := ink_env.contract.ContractEnv.Env
-                (Self := ContractRef)
-                (Trait := ltac:(try clear Trait; hauto l: on)))
-              (Trait := ltac:(try clear Trait; hauto l: on))))
-          (ink_env.call.common.Unset_ u64)
-          (ink_env.call.common.Unset_
-            (ink_env.types.Environment.Balance
-              (Self := ink_env.contract.ContractEnv.Env
-                (Self := ContractRef)
-                (Trait := ltac:(try clear Trait; hauto l: on)))
-              (Trait := ltac:(try clear Trait; hauto l: on))))
-          (ink_env.call.common.Unset_
-            (ink_env.call.execution_input.ExecutionInput
-              ink_env.call.execution_input.EmptyArgumentList))
-          (ink_env.call.common.Unset_ ink_env.call.create_builder.state.Salt)
-          (ink_env.call.common.Unset_ (ink_env.call.common.ReturnType unit))).
+
 
 Module execution_input.
   Module ExecutionInput.
@@ -14170,7 +13953,7 @@ Module off_chain.
               (mut_ref
                 (ink_env.hash.HashOutput.Type_
                   (Self := Self)
-                  (Trait := ltac:(try clear Trait; hauto l: on))))
+                  (Trait := _)))
               ->
               M unit.
         
@@ -14198,7 +13981,7 @@ Module off_chain.
               (mut_ref
                 (ink_env.hash.HashOutput.Type_
                   (Self := Self)
-                  (Trait := ltac:(try clear Trait; hauto l: on))))
+                  (Trait := _)))
               ->
               M unit.
         
@@ -14226,7 +14009,7 @@ Module off_chain.
               (mut_ref
                 (ink_env.hash.HashOutput.Type_
                   (Self := Self)
-                  (Trait := ltac:(try clear Trait; hauto l: on))))
+                  (Trait := _)))
               ->
               M unit.
         
@@ -14254,7 +14037,7 @@ Module off_chain.
               (mut_ref
                 (ink_env.hash.HashOutput.Type_
                   (Self := Self)
-                  (Trait := ltac:(try clear Trait; hauto l: on))))
+                  (Trait := _)))
               ->
               M unit.
         
@@ -14271,10 +14054,8 @@ Module off_chain.
       Global Hint Resolve ℐ : core.
     End Impl_ink_env_hash_CryptoHash_for_ink_env_hash_Keccak256.
     
-    Module
-      Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
-      Section
-        Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
+    (* Module Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
+      (* Section Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
         Context `{ℋ : State.Trait}.
         
         Definition Self : Set :=
@@ -14292,11 +14073,9 @@ Module off_chain.
           core.convert.From.from := from;
         }.
         Admitted.
-      End
-        Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
+      End Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error. *)
       Global Hint Resolve ℐ : core.
-    End
-      Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
+    End Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error. *)
     
     Module TopicsBuilder.
       Section TopicsBuilder.
@@ -14350,10 +14129,8 @@ Module off_chain.
     End
       Impl_core_default_Default_for_ink_env_engine_off_chain_impls_TopicsBuilder.
     
-    Module
-      Impl_ink_env_topics_TopicsBuilderBackend_for_ink_env_engine_off_chain_impls_TopicsBuilder.
-      Section
-        Impl_ink_env_topics_TopicsBuilderBackend_for_ink_env_engine_off_chain_impls_TopicsBuilder.
+    (* Module Impl_ink_env_topics_TopicsBuilderBackend_for_ink_env_engine_off_chain_impls_TopicsBuilder.
+      (* Section Impl_ink_env_topics_TopicsBuilderBackend_for_ink_env_engine_off_chain_impls_TopicsBuilder.
         Context `{ℋ : State.Trait}.
         
         Context {E : Set}.
@@ -14399,16 +14176,12 @@ Module off_chain.
           ink_env.topics.TopicsBuilderBackend.output := output;
         }.
         Admitted.
-      End
-        Impl_ink_env_topics_TopicsBuilderBackend_for_ink_env_engine_off_chain_impls_TopicsBuilder.
+      End Impl_ink_env_topics_TopicsBuilderBackend_for_ink_env_engine_off_chain_impls_TopicsBuilder. *)
       Global Hint Resolve ℐ : core.
-    End
-      Impl_ink_env_topics_TopicsBuilderBackend_for_ink_env_engine_off_chain_impls_TopicsBuilder.
+    End Impl_ink_env_topics_TopicsBuilderBackend_for_ink_env_engine_off_chain_impls_TopicsBuilder. *)
     
-    Module
-      Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
-      Section
-        Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
+    (* Module Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
+      (* Section Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
         Context `{ℋ : State.Trait}.
         
         Definition Self : Set := ink_env.engine.off_chain.EnvInstance.
@@ -14704,16 +14477,12 @@ Module off_chain.
             set_code_hash;
         }.
         Admitted.
-      End
-        Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
+      End Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_EnvBackend_for_ink_env_engine_off_chain_EnvInstance. *)
       Global Hint Resolve ℐ : core.
-    End
-      Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
+    End Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_EnvBackend_for_ink_env_engine_off_chain_EnvInstance. *)
     
-    Module
-      Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_TypedEnvBackend_for_ink_env_engine_off_chain_EnvInstance.
-      Section
-        Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_TypedEnvBackend_for_ink_env_engine_off_chain_EnvInstance.
+    (* Module Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_TypedEnvBackend_for_ink_env_engine_off_chain_EnvInstance.
+      (* Section Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_TypedEnvBackend_for_ink_env_engine_off_chain_EnvInstance.
         Context `{ℋ : State.Trait}.
         
         Definition Self : Set := ink_env.engine.off_chain.EnvInstance.
@@ -15141,18 +14910,14 @@ Module off_chain.
             call_runtime (E := E) (Call := Call);
         }.
         Admitted.
-      End
-        Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_TypedEnvBackend_for_ink_env_engine_off_chain_EnvInstance.
+      End Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_TypedEnvBackend_for_ink_env_engine_off_chain_EnvInstance. *)
       Global Hint Resolve ℐ : core.
-    End
-      Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_TypedEnvBackend_for_ink_env_engine_off_chain_EnvInstance.
+    End Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_TypedEnvBackend_for_ink_env_engine_off_chain_EnvInstance. *)
   End impls.
   
   Module types.
-    Module
-      Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_EmittedEvent.
-      Section
-        Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_EmittedEvent.
+    (* Module Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_EmittedEvent.
+      (* Section Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_EmittedEvent.
         Context `{ℋ : State.Trait}.
         
         Definition Self : Set :=
@@ -15171,16 +14936,12 @@ Module off_chain.
           core.convert.From.from := from;
         }.
         Admitted.
-      End
-        Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_EmittedEvent.
+      End Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_EmittedEvent. *)
       Global Hint Resolve ℐ : core.
-    End
-      Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_EmittedEvent.
+    End Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_EmittedEvent. *)
     
-    Module
-      Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
-      Section
-        Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
+    (* Module Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
+      (* Section Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
         Context `{ℋ : State.Trait}.
         
         Definition Self : Set :=
@@ -15198,14 +14959,12 @@ Module off_chain.
           core.convert.From.from := from;
         }.
         Admitted.
-      End
-        Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
+      End Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error. *)
       Global Hint Resolve ℐ : core.
-    End
-      Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
+    End Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error. *)
     
-    Module Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError.
-      Section Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError.
+    (* Module Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError.
+      (* Section Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError.
         Context `{ℋ : State.Trait}.
         
         Definition Self : Set := ink_env.engine.off_chain.AccountError.
@@ -15222,14 +14981,12 @@ Module off_chain.
           core.convert.From.from := from;
         }.
         Admitted.
-      End Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError.
+      End Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError. *)
       Global Hint Resolve ℐ : core.
-    End Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError.
+    End Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError. *)
     
-    Module
-      Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
-      Section
-        Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
+    (* Module Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
+      (* Section Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
         Context `{ℋ : State.Trait}.
         
         Definition Self : Set :=
@@ -15247,11 +15004,9 @@ Module off_chain.
           core.convert.From.from := from;
         }.
         Admitted.
-      End
-        Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
+      End Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error. *)
       Global Hint Resolve ℐ : core.
-    End
-      Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
+    End Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error. *)
   End types.
   
   Module EnvInstance.
@@ -15277,10 +15032,8 @@ Module off_chain.
   End EnvInstance.
   Definition EnvInstance `{ℋ : State.Trait} : Set := M.val EnvInstance.t.
   
-  Module
-    Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_OnInstance_for_ink_env_engine_off_chain_EnvInstance.
-    Section
-      Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_OnInstance_for_ink_env_engine_off_chain_EnvInstance.
+  (* Module Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_OnInstance_for_ink_env_engine_off_chain_EnvInstance.
+    (* Section Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_OnInstance_for_ink_env_engine_off_chain_EnvInstance.
       Context `{ℋ : State.Trait}.
       
       Definition Self : Set := ink_env.engine.off_chain.EnvInstance.
@@ -15307,11 +15060,9 @@ Module off_chain.
           on_instance (F := F) (R := R);
       }.
       Admitted.
-    End
-      Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_OnInstance_for_ink_env_engine_off_chain_EnvInstance.
+    End Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_OnInstance_for_ink_env_engine_off_chain_EnvInstance. *)
     Global Hint Resolve ℐ : core.
-  End
-    Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_OnInstance_for_ink_env_engine_off_chain_EnvInstance.
+  End Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_OnInstance_for_ink_env_engine_off_chain_EnvInstance. *)
   
   Module AccountError.
     Inductive t `{ℋ : State.Trait} : Set :=
@@ -15477,8 +15228,8 @@ Module off_chain.
     Global Hint Resolve ℐ : core.
   End Impl_core_fmt_Debug_for_ink_env_engine_off_chain_AccountError.
   
-  Module Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError.
-    Section Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError.
+  (* Module Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError.
+    (* Section Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError.
       Context `{ℋ : State.Trait}.
       
       Definition Self : Set := ink_env.engine.off_chain.AccountError.
@@ -15497,9 +15248,9 @@ Module off_chain.
         core.convert.From.from := from;
       }.
       Admitted.
-    End Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError.
+    End Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError. *)
     Global Hint Resolve ℐ : core.
-  End Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError.
+  End Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError. *)
   
   Module
     Impl_core_marker_StructuralPartialEq_for_ink_env_engine_off_chain_AccountError.
@@ -16039,7 +15790,7 @@ Module impls.
             (mut_ref
               (ink_env.hash.HashOutput.Type_
                 (Self := Self)
-                (Trait := ltac:(try clear Trait; hauto l: on))))
+                (Trait := _)))
             ->
             M unit.
       
@@ -16067,7 +15818,7 @@ Module impls.
             (mut_ref
               (ink_env.hash.HashOutput.Type_
                 (Self := Self)
-                (Trait := ltac:(try clear Trait; hauto l: on))))
+                (Trait := _)))
             ->
             M unit.
       
@@ -16095,7 +15846,7 @@ Module impls.
             (mut_ref
               (ink_env.hash.HashOutput.Type_
                 (Self := Self)
-                (Trait := ltac:(try clear Trait; hauto l: on))))
+                (Trait := _)))
             ->
             M unit.
       
@@ -16123,7 +15874,7 @@ Module impls.
             (mut_ref
               (ink_env.hash.HashOutput.Type_
                 (Self := Self)
-                (Trait := ltac:(try clear Trait; hauto l: on))))
+                (Trait := _)))
             ->
             M unit.
       
@@ -16140,10 +15891,8 @@ Module impls.
     Global Hint Resolve ℐ : core.
   End Impl_ink_env_hash_CryptoHash_for_ink_env_hash_Keccak256.
   
-  Module
-    Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
-    Section
-      Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
+  (* Module Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
+    (* Section Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
       Context `{ℋ : State.Trait}.
       
       Definition Self : Set :=
@@ -16161,11 +15910,9 @@ Module impls.
         core.convert.From.from := from;
       }.
       Admitted.
-    End
-      Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
+    End Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error. *)
     Global Hint Resolve ℐ : core.
-  End
-    Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
+  End Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error. *)
   
   Module TopicsBuilder.
     Section TopicsBuilder.
@@ -16218,10 +15965,8 @@ Module impls.
   End
     Impl_core_default_Default_for_ink_env_engine_off_chain_impls_TopicsBuilder.
   
-  Module
-    Impl_ink_env_topics_TopicsBuilderBackend_for_ink_env_engine_off_chain_impls_TopicsBuilder.
-    Section
-      Impl_ink_env_topics_TopicsBuilderBackend_for_ink_env_engine_off_chain_impls_TopicsBuilder.
+  (* Module Impl_ink_env_topics_TopicsBuilderBackend_for_ink_env_engine_off_chain_impls_TopicsBuilder.
+    (* Section Impl_ink_env_topics_TopicsBuilderBackend_for_ink_env_engine_off_chain_impls_TopicsBuilder.
       Context `{ℋ : State.Trait}.
       
       Context {E : Set}.
@@ -16267,16 +16012,12 @@ Module impls.
         ink_env.topics.TopicsBuilderBackend.output := output;
       }.
       Admitted.
-    End
-      Impl_ink_env_topics_TopicsBuilderBackend_for_ink_env_engine_off_chain_impls_TopicsBuilder.
+    End Impl_ink_env_topics_TopicsBuilderBackend_for_ink_env_engine_off_chain_impls_TopicsBuilder. *)
     Global Hint Resolve ℐ : core.
-  End
-    Impl_ink_env_topics_TopicsBuilderBackend_for_ink_env_engine_off_chain_impls_TopicsBuilder.
+  End Impl_ink_env_topics_TopicsBuilderBackend_for_ink_env_engine_off_chain_impls_TopicsBuilder. *)
   
-  Module
-    Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
-    Section
-      Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
+  (* Module Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
+    (* Section Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
       Context `{ℋ : State.Trait}.
       
       Definition Self : Set := ink_env.engine.off_chain.EnvInstance.
@@ -16572,16 +16313,12 @@ Module impls.
           set_code_hash;
       }.
       Admitted.
-    End
-      Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
+    End Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_EnvBackend_for_ink_env_engine_off_chain_EnvInstance. *)
     Global Hint Resolve ℐ : core.
-  End
-    Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
+  End Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_EnvBackend_for_ink_env_engine_off_chain_EnvInstance. *)
   
-  Module
-    Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_TypedEnvBackend_for_ink_env_engine_off_chain_EnvInstance.
-    Section
-      Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_TypedEnvBackend_for_ink_env_engine_off_chain_EnvInstance.
+  (* Module Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_TypedEnvBackend_for_ink_env_engine_off_chain_EnvInstance.
+    (* Section Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_TypedEnvBackend_for_ink_env_engine_off_chain_EnvInstance.
       Context `{ℋ : State.Trait}.
       
       Definition Self : Set := ink_env.engine.off_chain.EnvInstance.
@@ -17009,11 +16746,9 @@ Module impls.
           call_runtime (E := E) (Call := Call);
       }.
       Admitted.
-    End
-      Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_TypedEnvBackend_for_ink_env_engine_off_chain_EnvInstance.
+    End Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_TypedEnvBackend_for_ink_env_engine_off_chain_EnvInstance. *)
     Global Hint Resolve ℐ : core.
-  End
-    Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_TypedEnvBackend_for_ink_env_engine_off_chain_EnvInstance.
+  End Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_TypedEnvBackend_for_ink_env_engine_off_chain_EnvInstance. *)
 End impls.
 
 Module Impl_ink_env_hash_CryptoHash_for_ink_env_hash_Blake2x128.
@@ -17027,7 +16762,7 @@ Module Impl_ink_env_hash_CryptoHash_for_ink_env_hash_Blake2x128.
           (mut_ref
             (ink_env.hash.HashOutput.Type_
               (Self := Self)
-              (Trait := ltac:(try clear Trait; hauto l: on))))
+              (Trait := _)))
           ->
           M unit.
     
@@ -17055,7 +16790,7 @@ Module Impl_ink_env_hash_CryptoHash_for_ink_env_hash_Blake2x256.
           (mut_ref
             (ink_env.hash.HashOutput.Type_
               (Self := Self)
-              (Trait := ltac:(try clear Trait; hauto l: on))))
+              (Trait := _)))
           ->
           M unit.
     
@@ -17083,7 +16818,7 @@ Module Impl_ink_env_hash_CryptoHash_for_ink_env_hash_Sha2x256.
           (mut_ref
             (ink_env.hash.HashOutput.Type_
               (Self := Self)
-              (Trait := ltac:(try clear Trait; hauto l: on))))
+              (Trait := _)))
           ->
           M unit.
     
@@ -17111,7 +16846,7 @@ Module Impl_ink_env_hash_CryptoHash_for_ink_env_hash_Keccak256.
           (mut_ref
             (ink_env.hash.HashOutput.Type_
               (Self := Self)
-              (Trait := ltac:(try clear Trait; hauto l: on))))
+              (Trait := _)))
           ->
           M unit.
     
@@ -17128,10 +16863,8 @@ Module Impl_ink_env_hash_CryptoHash_for_ink_env_hash_Keccak256.
   Global Hint Resolve ℐ : core.
 End Impl_ink_env_hash_CryptoHash_for_ink_env_hash_Keccak256.
 
-Module
-  Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
-  Section
-    Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
+(* Module Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
+  (* Section Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set :=
@@ -17149,11 +16882,9 @@ Module
       core.convert.From.from := from;
     }.
     Admitted.
-  End
-    Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
+  End Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error. *)
   Global Hint Resolve ℐ : core.
-End
-  Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
+End Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error. *)
 
 Module TopicsBuilder.
   Section TopicsBuilder.
@@ -17205,10 +16936,8 @@ Module
   Global Hint Resolve ℐ : core.
 End Impl_core_default_Default_for_ink_env_engine_off_chain_impls_TopicsBuilder.
 
-Module
-  Impl_ink_env_topics_TopicsBuilderBackend_for_ink_env_engine_off_chain_impls_TopicsBuilder.
-  Section
-    Impl_ink_env_topics_TopicsBuilderBackend_for_ink_env_engine_off_chain_impls_TopicsBuilder.
+(* Module Impl_ink_env_topics_TopicsBuilderBackend_for_ink_env_engine_off_chain_impls_TopicsBuilder.
+  (* Section Impl_ink_env_topics_TopicsBuilderBackend_for_ink_env_engine_off_chain_impls_TopicsBuilder.
     Context `{ℋ : State.Trait}.
     
     Context {E : Set}.
@@ -17254,16 +16983,12 @@ Module
       ink_env.topics.TopicsBuilderBackend.output := output;
     }.
     Admitted.
-  End
-    Impl_ink_env_topics_TopicsBuilderBackend_for_ink_env_engine_off_chain_impls_TopicsBuilder.
+  End Impl_ink_env_topics_TopicsBuilderBackend_for_ink_env_engine_off_chain_impls_TopicsBuilder. *)
   Global Hint Resolve ℐ : core.
-End
-  Impl_ink_env_topics_TopicsBuilderBackend_for_ink_env_engine_off_chain_impls_TopicsBuilder.
+End Impl_ink_env_topics_TopicsBuilderBackend_for_ink_env_engine_off_chain_impls_TopicsBuilder. *)
 
-Module
-  Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
-  Section
-    Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
+(* Module Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
+  (* Section Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := ink_env.engine.off_chain.EnvInstance.
@@ -17559,16 +17284,12 @@ Module
         set_code_hash;
     }.
     Admitted.
-  End
-    Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
+  End Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_EnvBackend_for_ink_env_engine_off_chain_EnvInstance. *)
   Global Hint Resolve ℐ : core.
-End
-  Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
+End Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_EnvBackend_for_ink_env_engine_off_chain_EnvInstance. *)
 
-Module
-  Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_TypedEnvBackend_for_ink_env_engine_off_chain_EnvInstance.
-  Section
-    Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_TypedEnvBackend_for_ink_env_engine_off_chain_EnvInstance.
+(* Module Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_TypedEnvBackend_for_ink_env_engine_off_chain_EnvInstance.
+  (* Section Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_TypedEnvBackend_for_ink_env_engine_off_chain_EnvInstance.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := ink_env.engine.off_chain.EnvInstance.
@@ -17992,18 +17713,14 @@ Module
         call_runtime (E := E) (Call := Call);
     }.
     Admitted.
-  End
-    Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_TypedEnvBackend_for_ink_env_engine_off_chain_EnvInstance.
+  End Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_TypedEnvBackend_for_ink_env_engine_off_chain_EnvInstance. *)
   Global Hint Resolve ℐ : core.
-End
-  Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_TypedEnvBackend_for_ink_env_engine_off_chain_EnvInstance.
+End Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_TypedEnvBackend_for_ink_env_engine_off_chain_EnvInstance. *)
 
 Module Wrap_types_1.
   Module types.
-    Module
-      Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_EmittedEvent.
-      Section
-        Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_EmittedEvent.
+    (* Module Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_EmittedEvent.
+      (* Section Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_EmittedEvent.
         Context `{ℋ : State.Trait}.
         
         Definition Self : Set :=
@@ -18022,16 +17739,12 @@ Module Wrap_types_1.
           core.convert.From.from := from;
         }.
         Admitted.
-      End
-        Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_EmittedEvent.
+      End Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_EmittedEvent. *)
       Global Hint Resolve ℐ : core.
-    End
-      Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_EmittedEvent.
+    End Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_EmittedEvent. *)
     
-    Module
-      Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
-      Section
-        Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
+    (* Module Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
+      (* Section Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
         Context `{ℋ : State.Trait}.
         
         Definition Self : Set :=
@@ -18049,14 +17762,12 @@ Module Wrap_types_1.
           core.convert.From.from := from;
         }.
         Admitted.
-      End
-        Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
+      End Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error. *)
       Global Hint Resolve ℐ : core.
-    End
-      Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
+    End Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error. *)
     
-    Module Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError.
-      Section Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError.
+    (* Module Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError.
+      (* Section Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError.
         Context `{ℋ : State.Trait}.
         
         Definition Self : Set := ink_env.engine.off_chain.AccountError.
@@ -18073,14 +17784,12 @@ Module Wrap_types_1.
           core.convert.From.from := from;
         }.
         Admitted.
-      End Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError.
+      End Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError. *)
       Global Hint Resolve ℐ : core.
-    End Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError.
+    End Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError. *)
     
-    Module
-      Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
-      Section
-        Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
+    (* Module Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
+      (* Section Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
         Context `{ℋ : State.Trait}.
         
         Definition Self : Set :=
@@ -18098,19 +17807,15 @@ Module Wrap_types_1.
           core.convert.From.from := from;
         }.
         Admitted.
-      End
-        Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
+      End Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error. *)
       Global Hint Resolve ℐ : core.
-    End
-      Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
+    End Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error. *)
   End types.
 End Wrap_types_1.
 Import Wrap_types_1.
 
-Module
-  Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_EmittedEvent.
-  Section
-    Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_EmittedEvent.
+(* Module Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_EmittedEvent.
+  (* Section Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_EmittedEvent.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set :=
@@ -18128,16 +17833,12 @@ Module
       core.convert.From.from := from;
     }.
     Admitted.
-  End
-    Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_EmittedEvent.
+  End Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_EmittedEvent. *)
   Global Hint Resolve ℐ : core.
-End
-  Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_EmittedEvent.
+End Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_EmittedEvent. *)
 
-Module
-  Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
-  Section
-    Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
+(* Module Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
+  (* Section Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set :=
@@ -18155,14 +17856,12 @@ Module
       core.convert.From.from := from;
     }.
     Admitted.
-  End
-    Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
+  End Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error. *)
   Global Hint Resolve ℐ : core.
-End
-  Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
+End Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error. *)
 
-Module Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError.
-  Section Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError.
+(* Module Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError.
+  (* Section Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := ink_env.engine.off_chain.AccountError.
@@ -18179,14 +17878,12 @@ Module Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError.
       core.convert.From.from := from;
     }.
     Admitted.
-  End Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError.
+  End Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError. *)
   Global Hint Resolve ℐ : core.
-End Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError.
+End Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError. *)
 
-Module
-  Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
-  Section
-    Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
+(* Module Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
+  (* Section Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set :=
@@ -18204,11 +17901,9 @@ Module
       core.convert.From.from := from;
     }.
     Admitted.
-  End
-    Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
+  End Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error. *)
   Global Hint Resolve ℐ : core.
-End
-  Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
+End Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error. *)
 
 Module EnvInstance.
   Section EnvInstance.
@@ -18233,10 +17928,8 @@ Module EnvInstance.
 End EnvInstance.
 Definition EnvInstance `{ℋ : State.Trait} : Set := M.val EnvInstance.t.
 
-Module
-  Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_OnInstance_for_ink_env_engine_off_chain_EnvInstance.
-  Section
-    Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_OnInstance_for_ink_env_engine_off_chain_EnvInstance.
+(* Module Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_OnInstance_for_ink_env_engine_off_chain_EnvInstance.
+  (* Section Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_OnInstance_for_ink_env_engine_off_chain_EnvInstance.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := ink_env.engine.off_chain.EnvInstance.
@@ -18263,11 +17956,9 @@ Module
         on_instance (F := F) (R := R);
     }.
     Admitted.
-  End
-    Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_OnInstance_for_ink_env_engine_off_chain_EnvInstance.
+  End Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_OnInstance_for_ink_env_engine_off_chain_EnvInstance. *)
   Global Hint Resolve ℐ : core.
-End
-  Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_OnInstance_for_ink_env_engine_off_chain_EnvInstance.
+End Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_OnInstance_for_ink_env_engine_off_chain_EnvInstance. *)
 
 Module OffChainError.
   Inductive t `{ℋ : State.Trait} : Set :=
@@ -18430,8 +18121,8 @@ Module Impl_core_fmt_Debug_for_ink_env_engine_off_chain_AccountError.
   Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_ink_env_engine_off_chain_AccountError.
 
-Module Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError.
-  Section Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError.
+(* Module Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError.
+  (* Section Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := ink_env.engine.off_chain.AccountError.
@@ -18450,9 +18141,9 @@ Module Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError.
       core.convert.From.from := from;
     }.
     Admitted.
-  End Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError.
+  End Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError. *)
   Global Hint Resolve ℐ : core.
-End Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError.
+End Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError. *)
 
 Module
   Impl_core_marker_StructuralPartialEq_for_ink_env_engine_off_chain_AccountError.
@@ -19254,7 +18945,7 @@ Module TopicsBuilderBackend.
   End TopicsBuilderBackend.
 End TopicsBuilderBackend.
 
-Module TopicsBuilder.
+(* Module TopicsBuilder.
   Section TopicsBuilder.
     Context `{ℋ : State.Trait}.
     
@@ -19287,12 +18978,10 @@ Module TopicsBuilder.
   End TopicsBuilder.
 End TopicsBuilder.
 Definition TopicsBuilder (S E B : Set) `{ℋ : State.Trait} : Set :=
-  M.val (TopicsBuilder.t (S := S) (E := E) (B := B)).
+  M.val (TopicsBuilder.t (S := S) (E := E) (B := B)). *)
 
-Module
-  Impl_core_convert_From_for_ink_env_topics_TopicsBuilder_ink_env_topics_state_Uninit_E_B.
-  Section
-    Impl_core_convert_From_for_ink_env_topics_TopicsBuilder_ink_env_topics_state_Uninit_E_B.
+(* Module Impl_core_convert_From_for_ink_env_topics_TopicsBuilder_ink_env_topics_state_Uninit_E_B.
+  (* Section Impl_core_convert_From_for_ink_env_topics_TopicsBuilder_ink_env_topics_state_Uninit_E_B.
     Context `{ℋ : State.Trait}.
     
     Context {E B : Set}.
@@ -19314,11 +19003,9 @@ Module
       core.convert.From.from := from;
     }.
     Admitted.
-  End
-    Impl_core_convert_From_for_ink_env_topics_TopicsBuilder_ink_env_topics_state_Uninit_E_B.
+  End Impl_core_convert_From_for_ink_env_topics_TopicsBuilder_ink_env_topics_state_Uninit_E_B. *)
   Global Hint Resolve ℐ : core.
-End
-  Impl_core_convert_From_for_ink_env_topics_TopicsBuilder_ink_env_topics_state_Uninit_E_B.
+End Impl_core_convert_From_for_ink_env_topics_TopicsBuilder_ink_env_topics_state_Uninit_E_B. *)
 
 Module Wrap_state_2.
   Module state.
@@ -19390,10 +19077,8 @@ Module EventTopicsAmount.
   End EventTopicsAmount.
 End EventTopicsAmount.
 
-Module
-  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Section
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
+(* Module Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
+  (* Section Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
@@ -19405,16 +19090,12 @@ Module
       ink_env.topics.SomeRemainingTopics.Next := Next;
     }.
     Admitted.
-  End
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
+  End Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics. *)
   Global Hint Resolve ℐ : core.
-End
-  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
+End Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics. *)
 
-Module
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Section
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+(* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
@@ -19431,16 +19112,12 @@ Module
       ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
     }.
     Admitted.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
   Global Hint Resolve ℐ : core.
-End
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
 
-Module
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Section
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+(* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
@@ -19457,16 +19134,12 @@ Module
       ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
     }.
     Admitted.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
   Global Hint Resolve ℐ : core.
-End
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
 
-Module
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Section
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+(* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
@@ -19483,16 +19156,12 @@ Module
       ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
     }.
     Admitted.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
   Global Hint Resolve ℐ : core.
-End
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
 
-Module
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Section
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+(* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
@@ -19509,16 +19178,12 @@ Module
       ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
     }.
     Admitted.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
   Global Hint Resolve ℐ : core.
-End
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
 
-Module
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Section
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+(* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
@@ -19535,16 +19200,12 @@ Module
       ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
     }.
     Admitted.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
   Global Hint Resolve ℐ : core.
-End
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
 
-Module
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Section
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+(* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
@@ -19561,16 +19222,12 @@ Module
       ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
     }.
     Admitted.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
   Global Hint Resolve ℐ : core.
-End
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
 
-Module
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Section
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+(* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
@@ -19587,16 +19244,12 @@ Module
       ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
     }.
     Admitted.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
   Global Hint Resolve ℐ : core.
-End
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
 
-Module
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Section
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+(* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
@@ -19613,16 +19266,12 @@ Module
       ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
     }.
     Admitted.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
   Global Hint Resolve ℐ : core.
-End
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
 
-Module
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Section
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+(* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
@@ -19639,16 +19288,12 @@ Module
       ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
     }.
     Admitted.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
   Global Hint Resolve ℐ : core.
-End
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
 
-Module
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Section
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+(* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
@@ -19665,16 +19310,12 @@ Module
       ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
     }.
     Admitted.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
   Global Hint Resolve ℐ : core.
-End
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
 
-Module
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Section
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+(* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
@@ -19691,16 +19332,12 @@ Module
       ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
     }.
     Admitted.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
   Global Hint Resolve ℐ : core.
-End
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
 
-Module
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Section
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+(* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
@@ -19717,16 +19354,12 @@ Module
       ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
     }.
     Admitted.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
   Global Hint Resolve ℐ : core.
-End
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
 
-Module
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Section
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+(* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
@@ -19743,16 +19376,12 @@ Module
       ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
     }.
     Admitted.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
   Global Hint Resolve ℐ : core.
-End
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
 
-Module
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Section
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+(* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
@@ -19769,16 +19398,12 @@ Module
       ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
     }.
     Admitted.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
   Global Hint Resolve ℐ : core.
-End
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
 
-Module
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Section
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+(* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
@@ -19795,16 +19420,12 @@ Module
       ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
     }.
     Admitted.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
   Global Hint Resolve ℐ : core.
-End
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
 
-Module
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Section
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+(* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
@@ -19821,16 +19442,12 @@ Module
       ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
     }.
     Admitted.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
   Global Hint Resolve ℐ : core.
-End
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
 
-Module
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Section
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+(* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
@@ -19847,16 +19464,12 @@ Module
       ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
     }.
     Admitted.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
   Global Hint Resolve ℐ : core.
-End
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
 
-Module
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Section
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+(* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
@@ -19873,16 +19486,12 @@ Module
       ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
     }.
     Admitted.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
   Global Hint Resolve ℐ : core.
-End
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
 
-Module
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Section
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+(* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
@@ -19899,16 +19508,12 @@ Module
       ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
     }.
     Admitted.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
   Global Hint Resolve ℐ : core.
-End
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
 
-Module
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Section
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+(* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
@@ -19925,16 +19530,12 @@ Module
       ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
     }.
     Admitted.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
   Global Hint Resolve ℐ : core.
-End
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
 
-Module
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Section
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+(* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
@@ -19951,16 +19552,12 @@ Module
       ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
     }.
     Admitted.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
   Global Hint Resolve ℐ : core.
-End
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
 
-Module
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Section
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+(* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
@@ -19977,16 +19574,12 @@ Module
       ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
     }.
     Admitted.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
   Global Hint Resolve ℐ : core.
-End
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
 
-Module
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Section
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+(* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
@@ -20003,16 +19596,12 @@ Module
       ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
     }.
     Admitted.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
   Global Hint Resolve ℐ : core.
-End
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
 
-Module
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Section
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+(* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
@@ -20029,16 +19618,12 @@ Module
       ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
     }.
     Admitted.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
   Global Hint Resolve ℐ : core.
-End
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
 
-Module
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Section
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+(* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
@@ -20055,16 +19640,12 @@ Module
       ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
     }.
     Admitted.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
   Global Hint Resolve ℐ : core.
-End
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
 
-Module
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Section
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+(* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
@@ -20081,16 +19662,12 @@ Module
       ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
     }.
     Admitted.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
   Global Hint Resolve ℐ : core.
-End
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
 
-Module
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Section
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+(* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
@@ -20107,16 +19684,12 @@ Module
       ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
     }.
     Admitted.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
   Global Hint Resolve ℐ : core.
-End
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
 
-Module
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Section
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+(* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
@@ -20133,16 +19706,12 @@ Module
       ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
     }.
     Admitted.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
   Global Hint Resolve ℐ : core.
-End
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
 
-Module
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Section
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+(* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
@@ -20159,16 +19728,12 @@ Module
       ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
     }.
     Admitted.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
   Global Hint Resolve ℐ : core.
-End
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
 
-Module
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Section
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+(* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
@@ -20185,16 +19750,12 @@ Module
       ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
     }.
     Admitted.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
   Global Hint Resolve ℐ : core.
-End
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
 
-Module
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Section
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+(* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
@@ -20211,16 +19772,12 @@ Module
       ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
     }.
     Admitted.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
   Global Hint Resolve ℐ : core.
-End
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
 
-Module
-  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Section
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
+(* Module Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
+  (* Section Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
@@ -20232,16 +19789,12 @@ Module
       ink_env.topics.SomeRemainingTopics.Next := Next;
     }.
     Admitted.
-  End
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
+  End Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics. *)
   Global Hint Resolve ℐ : core.
-End
-  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
+End Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics. *)
 
-Module
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Section
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+(* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
@@ -20258,11 +19811,9 @@ Module
       ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
     }.
     Admitted.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
   Global Hint Resolve ℐ : core.
-End
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
 
 Module
   Impl_ink_env_topics_EventTopicsAmount_for_ink_env_topics_state_NoRemainingTopics.

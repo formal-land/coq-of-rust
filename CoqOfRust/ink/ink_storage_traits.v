@@ -159,6 +159,17 @@ Module storage.
 End storage.
 
 Module impls.
+  Module KeyType.
+    Section KeyType.
+      Context `{ℋ : State.Trait}.
+      
+      Class Trait (Self : Set) : Type := {
+        IS_AUTO_KEY : bool;
+      }.
+      
+    End KeyType.
+  End KeyType.
+  
   Module AutoKey.
     Section AutoKey.
       Context `{ℋ : State.Trait}.
@@ -344,6 +355,32 @@ Module impls.
     End Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_AutoKey. *)
     Global Hint Resolve ℐ : core.
   End Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_AutoKey. *)
+  
+  Module
+    Impl_ink_storage_traits_impls_KeyType_for_ink_storage_traits_impls_AutoKey.
+    Section
+      Impl_ink_storage_traits_impls_KeyType_for_ink_storage_traits_impls_AutoKey.
+      Context `{ℋ : State.Trait}.
+      
+      Definition Self : Set := ink_storage_traits.impls.AutoKey.
+      
+      Definition IS_AUTO_KEY : bool := M.run (M.alloc true).
+      
+      Global Instance AssociatedFunction_IS_AUTO_KEY :
+        Notation.DoubleColon Self "IS_AUTO_KEY" := {
+        Notation.double_colon := IS_AUTO_KEY;
+      }.
+      
+      #[refine] Global Instance ℐ :
+        ink_storage_traits.impls.KeyType.Trait Self := {
+        ink_storage_traits.impls.KeyType.IS_AUTO_KEY := IS_AUTO_KEY;
+      }.
+      Admitted.
+    End
+      Impl_ink_storage_traits_impls_KeyType_for_ink_storage_traits_impls_AutoKey.
+    Global Hint Resolve ℐ : core.
+  End
+    Impl_ink_storage_traits_impls_KeyType_for_ink_storage_traits_impls_AutoKey.
   
   Module Impl_core_fmt_Debug_for_ink_storage_traits_impls_AutoKey.
     Section Impl_core_fmt_Debug_for_ink_storage_traits_impls_AutoKey.
@@ -631,6 +668,35 @@ Module impls.
     End Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ManualKey_ParentKey. *)
     Global Hint Resolve ℐ : core.
   End Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ManualKey_ParentKey. *)
+  
+  Module
+    Impl_ink_storage_traits_impls_KeyType_for_ink_storage_traits_impls_ManualKey_ParentKey.
+    Section
+      Impl_ink_storage_traits_impls_KeyType_for_ink_storage_traits_impls_ManualKey_ParentKey.
+      Context `{ℋ : State.Trait}.
+      
+      Context {ParentKey : Set}.
+      
+      Context {ℋ_0 : ink_storage_traits.storage.StorageKey.Trait ParentKey}.
+      Definition Self : Set := ink_storage_traits.impls.ManualKey ParentKey.
+      
+      Definition IS_AUTO_KEY : bool := M.run (M.alloc false).
+      
+      Global Instance AssociatedFunction_IS_AUTO_KEY :
+        Notation.DoubleColon Self "IS_AUTO_KEY" := {
+        Notation.double_colon := IS_AUTO_KEY;
+      }.
+      
+      #[refine] Global Instance ℐ :
+        ink_storage_traits.impls.KeyType.Trait Self := {
+        ink_storage_traits.impls.KeyType.IS_AUTO_KEY := IS_AUTO_KEY;
+      }.
+      Admitted.
+    End
+      Impl_ink_storage_traits_impls_KeyType_for_ink_storage_traits_impls_ManualKey_ParentKey.
+    Global Hint Resolve ℐ : core.
+  End
+    Impl_ink_storage_traits_impls_KeyType_for_ink_storage_traits_impls_ManualKey_ParentKey.
   
   Module Impl_core_fmt_Debug_for_ink_storage_traits_impls_ManualKey_ParentKey.
     Section
@@ -940,8 +1006,52 @@ Module impls.
     Global Hint Resolve ℐ : core.
   End Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ResolverKey_L_R. *)
   
-  (* Module Impl_ink_storage_traits_storage_AutoStorableHint_for_T.
-    (* Section Impl_ink_storage_traits_storage_AutoStorableHint_for_T.
+  Module
+    Impl_ink_storage_traits_impls_KeyType_for_ink_storage_traits_impls_ResolverKey_L_R.
+    Section
+      Impl_ink_storage_traits_impls_KeyType_for_ink_storage_traits_impls_ResolverKey_L_R.
+      Context `{ℋ : State.Trait}.
+      
+      Context {L R : Set}.
+      
+      Context
+        {ℋ_0 : ink_storage_traits.impls.KeyType.Trait L}
+        {ℋ_1 : ink_storage_traits.impls.KeyType.Trait R}.
+      Definition Self : Set := ink_storage_traits.impls.ResolverKey L R.
+      
+      Definition IS_AUTO_KEY : bool :=
+        M.run (Pure (ink_storage_traits.impls.KeyType.IS_AUTO_KEY (Self := L))).
+      
+      Global Instance AssociatedFunction_IS_AUTO_KEY :
+        Notation.DoubleColon Self "IS_AUTO_KEY" := {
+        Notation.double_colon := IS_AUTO_KEY;
+      }.
+      
+      #[refine] Global Instance ℐ :
+        ink_storage_traits.impls.KeyType.Trait Self := {
+        ink_storage_traits.impls.KeyType.IS_AUTO_KEY := IS_AUTO_KEY;
+      }.
+      Admitted.
+    End
+      Impl_ink_storage_traits_impls_KeyType_for_ink_storage_traits_impls_ResolverKey_L_R.
+    Global Hint Resolve ℐ : core.
+  End
+    Impl_ink_storage_traits_impls_KeyType_for_ink_storage_traits_impls_ResolverKey_L_R.
+  
+  Ltac FinalKey T ParentKey :=
+    refine (
+      ink_storage_traits.impls.ResolverKey
+        (ink_storage_traits.storage.StorableHint.PreferredKey (Self := T))
+        (ink_storage_traits.impls.ManualKey ParentKey)
+    ).
+  
+  (* Definition FinalKey `{ℋ : State.Trait} (T ParentKey : Set) : Set :=
+    ink_storage_traits.impls.ResolverKey
+      (ink_storage_traits.storage.StorableHint.PreferredKey (Self := T))
+      (ink_storage_traits.impls.ManualKey ParentKey). *)
+  
+  Module Impl_ink_storage_traits_storage_AutoStorableHint_for_T.
+    Section Impl_ink_storage_traits_storage_AutoStorableHint_for_T.
       Context `{ℋ : State.Trait}.
       
       Context {T ParentKey : Set}.
@@ -956,8 +1066,11 @@ Module impls.
                 (Trait := ltac:(try clear Trait; hauto l: on)))}
         {ℋ_2 :
           ink_storage_traits.storage.StorableHint.Trait T
-            (Key := ink_storage_traits.impls.FinalKey T ParentKey)}
+            (Key := ltac:(ink_storage_traits.impls.FinalKey T ParentKey))}
+            (* (Key := ltac:(ink_storage_traits.impls.FinalKey) T ParentKey)} *)
+            (* (Key := ink_storage_traits.impls.FinalKey T ParentKey)} *)
         {ℋ_3 : ink_storage_traits.storage.StorageKey.Trait ParentKey}.
+
       Definition Self : Set := T.
       
       Definition Type_ : Set :=
@@ -969,9 +1082,9 @@ Module impls.
         ink_storage_traits.storage.AutoStorableHint.Type_ := Type_;
       }.
       Admitted.
-    End Impl_ink_storage_traits_storage_AutoStorableHint_for_T. *)
+    End Impl_ink_storage_traits_storage_AutoStorableHint_for_T.
     Global Hint Resolve ℐ : core.
-  End Impl_ink_storage_traits_storage_AutoStorableHint_for_T. *)
+  End Impl_ink_storage_traits_storage_AutoStorableHint_for_T.
   
   Module Impl_ink_storage_traits_storage_private_Sealed_for_P.
     Section Impl_ink_storage_traits_storage_private_Sealed_for_P.
@@ -1061,6 +1174,17 @@ Module impls.
     Global Hint Resolve ℐ : core.
   End Impl_ink_storage_traits_storage_StorableHint_for_P. *)
 End impls.
+
+Module KeyType.
+  Section KeyType.
+    Context `{ℋ : State.Trait}.
+    
+    Class Trait (Self : Set) : Type := {
+      IS_AUTO_KEY : bool;
+    }.
+    
+  End KeyType.
+End KeyType.
 
 Module AutoKey.
   Section AutoKey.
@@ -1269,6 +1393,31 @@ End Impl_core_cmp_PartialOrd_for_ink_storage_traits_impls_AutoKey.
   End Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_AutoKey. *)
   Global Hint Resolve ℐ : core.
 End Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_AutoKey. *)
+
+Module
+  Impl_ink_storage_traits_impls_KeyType_for_ink_storage_traits_impls_AutoKey.
+  Section
+    Impl_ink_storage_traits_impls_KeyType_for_ink_storage_traits_impls_AutoKey.
+    Context `{ℋ : State.Trait}.
+    
+    Definition Self : Set := ink_storage_traits.impls.AutoKey.
+    
+    Definition IS_AUTO_KEY : bool := M.run (M.alloc true).
+    
+    Global Instance AssociatedFunction_IS_AUTO_KEY :
+      Notation.DoubleColon Self "IS_AUTO_KEY" := {
+      Notation.double_colon := IS_AUTO_KEY;
+    }.
+    
+    #[refine] Global Instance ℐ :
+      ink_storage_traits.impls.KeyType.Trait Self := {
+      ink_storage_traits.impls.KeyType.IS_AUTO_KEY := IS_AUTO_KEY;
+    }.
+    Admitted.
+  End
+    Impl_ink_storage_traits_impls_KeyType_for_ink_storage_traits_impls_AutoKey.
+  Global Hint Resolve ℐ : core.
+End Impl_ink_storage_traits_impls_KeyType_for_ink_storage_traits_impls_AutoKey.
 
 Module Impl_core_fmt_Debug_for_ink_storage_traits_impls_AutoKey.
   Section Impl_core_fmt_Debug_for_ink_storage_traits_impls_AutoKey.
@@ -1584,6 +1733,35 @@ End Impl_core_cmp_PartialOrd_for_ink_storage_traits_impls_ManualKey_ParentKey.
   End Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ManualKey_ParentKey. *)
   Global Hint Resolve ℐ : core.
 End Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ManualKey_ParentKey. *)
+
+Module
+  Impl_ink_storage_traits_impls_KeyType_for_ink_storage_traits_impls_ManualKey_ParentKey.
+  Section
+    Impl_ink_storage_traits_impls_KeyType_for_ink_storage_traits_impls_ManualKey_ParentKey.
+    Context `{ℋ : State.Trait}.
+    
+    Context {ParentKey : Set}.
+    
+    Context {ℋ_0 : ink_storage_traits.storage.StorageKey.Trait ParentKey}.
+    Definition Self : Set := ink_storage_traits.impls.ManualKey ParentKey.
+    
+    Definition IS_AUTO_KEY : bool := M.run (M.alloc false).
+    
+    Global Instance AssociatedFunction_IS_AUTO_KEY :
+      Notation.DoubleColon Self "IS_AUTO_KEY" := {
+      Notation.double_colon := IS_AUTO_KEY;
+    }.
+    
+    #[refine] Global Instance ℐ :
+      ink_storage_traits.impls.KeyType.Trait Self := {
+      ink_storage_traits.impls.KeyType.IS_AUTO_KEY := IS_AUTO_KEY;
+    }.
+    Admitted.
+  End
+    Impl_ink_storage_traits_impls_KeyType_for_ink_storage_traits_impls_ManualKey_ParentKey.
+  Global Hint Resolve ℐ : core.
+End
+  Impl_ink_storage_traits_impls_KeyType_for_ink_storage_traits_impls_ManualKey_ParentKey.
 
 Module Impl_core_fmt_Debug_for_ink_storage_traits_impls_ManualKey_ParentKey.
   Section Impl_core_fmt_Debug_for_ink_storage_traits_impls_ManualKey_ParentKey.
@@ -1916,8 +2094,45 @@ End Impl_core_fmt_Debug_for_ink_storage_traits_impls_ResolverKey_L_R.
   Global Hint Resolve ℐ : core.
 End Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ResolverKey_L_R. *)
 
-(* Module Impl_ink_storage_traits_storage_AutoStorableHint_for_T.
-  (* Section Impl_ink_storage_traits_storage_AutoStorableHint_for_T.
+Module
+  Impl_ink_storage_traits_impls_KeyType_for_ink_storage_traits_impls_ResolverKey_L_R.
+  Section
+    Impl_ink_storage_traits_impls_KeyType_for_ink_storage_traits_impls_ResolverKey_L_R.
+    Context `{ℋ : State.Trait}.
+    
+    Context {L R : Set}.
+    
+    Context
+      {ℋ_0 : ink_storage_traits.impls.KeyType.Trait L}
+      {ℋ_1 : ink_storage_traits.impls.KeyType.Trait R}.
+    Definition Self : Set := ink_storage_traits.impls.ResolverKey L R.
+    
+    Definition IS_AUTO_KEY : bool :=
+      M.run (Pure (ink_storage_traits.impls.KeyType.IS_AUTO_KEY (Self := L))).
+    
+    Global Instance AssociatedFunction_IS_AUTO_KEY :
+      Notation.DoubleColon Self "IS_AUTO_KEY" := {
+      Notation.double_colon := IS_AUTO_KEY;
+    }.
+    
+    #[refine] Global Instance ℐ :
+      ink_storage_traits.impls.KeyType.Trait Self := {
+      ink_storage_traits.impls.KeyType.IS_AUTO_KEY := IS_AUTO_KEY;
+    }.
+    Admitted.
+  End
+    Impl_ink_storage_traits_impls_KeyType_for_ink_storage_traits_impls_ResolverKey_L_R.
+  Global Hint Resolve ℐ : core.
+End
+  Impl_ink_storage_traits_impls_KeyType_for_ink_storage_traits_impls_ResolverKey_L_R.
+
+Definition FinalKey `{ℋ : State.Trait} (T ParentKey : Set) : Set :=
+  ink_storage_traits.impls.ResolverKey
+    (ink_storage_traits.storage.StorableHint.PreferredKey (Self := T))
+    (ink_storage_traits.impls.ManualKey ParentKey).
+
+Module Impl_ink_storage_traits_storage_AutoStorableHint_for_T.
+  Section Impl_ink_storage_traits_storage_AutoStorableHint_for_T.
     Context `{ℋ : State.Trait}.
     
     Context {T ParentKey : Set}.
@@ -1944,9 +2159,9 @@ End Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_Reso
       ink_storage_traits.storage.AutoStorableHint.Type_ := Type_;
     }.
     Admitted.
-  End Impl_ink_storage_traits_storage_AutoStorableHint_for_T. *)
+  End Impl_ink_storage_traits_storage_AutoStorableHint_for_T.
   Global Hint Resolve ℐ : core.
-End Impl_ink_storage_traits_storage_AutoStorableHint_for_T. *)
+End Impl_ink_storage_traits_storage_AutoStorableHint_for_T.
 
 Module Impl_ink_storage_traits_storage_private_Sealed_for_P.
   Section Impl_ink_storage_traits_storage_private_Sealed_for_P.
