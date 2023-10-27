@@ -110,16 +110,12 @@ Module lazy.
         Definition Self : Set := ink_storage.lazy.mapping.Mapping K V KeyType.
         
         Parameter encode :
-            forall
-              {T : Set}
-              {ℋ_0 : parity_scale_codec.codec.Output.Trait T}
-              {ℋ_1 : core.marker.Sized.Trait T},
+            forall {T : Set} {ℋ_0 : parity_scale_codec.codec.Output.Trait T},
             (ref Self) -> (mut_ref T) -> M unit.
         
         Global Instance AssociatedFunction_encode
             {T : Set}
-            {ℋ_0 : parity_scale_codec.codec.Output.Trait T}
-            {ℋ_1 : core.marker.Sized.Trait T} :
+            {ℋ_0 : parity_scale_codec.codec.Output.Trait T} :
           Notation.DoubleColon Self "encode" := {
           Notation.double_colon := encode (T := T);
         }.
@@ -139,8 +135,7 @@ Module lazy.
         Global Instance ℐ : ink_storage_traits.storage.Storable.Trait Self := {
           ink_storage_traits.storage.Storable.encode
             {T : Set}
-            {ℋ_0 : parity_scale_codec.codec.Output.Trait T}
-            {ℋ_1 : core.marker.Sized.Trait T} :=
+            {ℋ_0 : parity_scale_codec.codec.Output.Trait T} :=
             encode (T := T);
           ink_storage_traits.storage.Storable.decode
             {I : Set}
@@ -301,16 +296,12 @@ Module lazy.
       Definition Self : Set := ink_storage.lazy.Lazy V KeyType.
       
       Parameter encode :
-          forall
-            {T : Set}
-            {ℋ_0 : parity_scale_codec.codec.Output.Trait T}
-            {ℋ_1 : core.marker.Sized.Trait T},
+          forall {T : Set} {ℋ_0 : parity_scale_codec.codec.Output.Trait T},
           (ref Self) -> (mut_ref T) -> M unit.
       
       Global Instance AssociatedFunction_encode
           {T : Set}
-          {ℋ_0 : parity_scale_codec.codec.Output.Trait T}
-          {ℋ_1 : core.marker.Sized.Trait T} :
+          {ℋ_0 : parity_scale_codec.codec.Output.Trait T} :
         Notation.DoubleColon Self "encode" := {
         Notation.double_colon := encode (T := T);
       }.
@@ -330,8 +321,7 @@ Module lazy.
       Global Instance ℐ : ink_storage_traits.storage.Storable.Trait Self := {
         ink_storage_traits.storage.Storable.encode
           {T : Set}
-          {ℋ_0 : parity_scale_codec.codec.Output.Trait T}
-          {ℋ_1 : core.marker.Sized.Trait T} :=
+          {ℋ_0 : parity_scale_codec.codec.Output.Trait T} :=
           encode (T := T);
         ink_storage_traits.storage.Storable.decode
           {I : Set}
@@ -505,16 +495,12 @@ Module mapping.
       Definition Self : Set := ink_storage.lazy.mapping.Mapping K V KeyType.
       
       Parameter encode :
-          forall
-            {T : Set}
-            {ℋ_0 : parity_scale_codec.codec.Output.Trait T}
-            {ℋ_1 : core.marker.Sized.Trait T},
+          forall {T : Set} {ℋ_0 : parity_scale_codec.codec.Output.Trait T},
           (ref Self) -> (mut_ref T) -> M unit.
       
       Global Instance AssociatedFunction_encode
           {T : Set}
-          {ℋ_0 : parity_scale_codec.codec.Output.Trait T}
-          {ℋ_1 : core.marker.Sized.Trait T} :
+          {ℋ_0 : parity_scale_codec.codec.Output.Trait T} :
         Notation.DoubleColon Self "encode" := {
         Notation.double_colon := encode (T := T);
       }.
@@ -534,8 +520,7 @@ Module mapping.
       Global Instance ℐ : ink_storage_traits.storage.Storable.Trait Self := {
         ink_storage_traits.storage.Storable.encode
           {T : Set}
-          {ℋ_0 : parity_scale_codec.codec.Output.Trait T}
-          {ℋ_1 : core.marker.Sized.Trait T} :=
+          {ℋ_0 : parity_scale_codec.codec.Output.Trait T} :=
           encode (T := T);
         ink_storage_traits.storage.Storable.decode
           {I : Set}
@@ -742,16 +727,12 @@ Module
     Definition Self : Set := ink_storage.lazy.mapping.Mapping K V KeyType.
     
     Parameter encode :
-        forall
-          {T : Set}
-          {ℋ_0 : parity_scale_codec.codec.Output.Trait T}
-          {ℋ_1 : core.marker.Sized.Trait T},
+        forall {T : Set} {ℋ_0 : parity_scale_codec.codec.Output.Trait T},
         (ref Self) -> (mut_ref T) -> M unit.
     
     Global Instance AssociatedFunction_encode
         {T : Set}
-        {ℋ_0 : parity_scale_codec.codec.Output.Trait T}
-        {ℋ_1 : core.marker.Sized.Trait T} :
+        {ℋ_0 : parity_scale_codec.codec.Output.Trait T} :
       Notation.DoubleColon Self "encode" := {
       Notation.double_colon := encode (T := T);
     }.
@@ -771,8 +752,7 @@ Module
     Global Instance ℐ : ink_storage_traits.storage.Storable.Trait Self := {
       ink_storage_traits.storage.Storable.encode
         {T : Set}
-        {ℋ_0 : parity_scale_codec.codec.Output.Trait T}
-        {ℋ_1 : core.marker.Sized.Trait T} :=
+        {ℋ_0 : parity_scale_codec.codec.Output.Trait T} :=
         encode (T := T);
       ink_storage_traits.storage.Storable.decode
         {I : Set}
@@ -994,16 +974,12 @@ Module
     Definition Self : Set := ink_storage.lazy.Lazy V KeyType.
     
     Parameter encode :
-        forall
-          {T : Set}
-          {ℋ_0 : parity_scale_codec.codec.Output.Trait T}
-          {ℋ_1 : core.marker.Sized.Trait T},
+        forall {T : Set} {ℋ_0 : parity_scale_codec.codec.Output.Trait T},
         (ref Self) -> (mut_ref T) -> M unit.
     
     Global Instance AssociatedFunction_encode
         {T : Set}
-        {ℋ_0 : parity_scale_codec.codec.Output.Trait T}
-        {ℋ_1 : core.marker.Sized.Trait T} :
+        {ℋ_0 : parity_scale_codec.codec.Output.Trait T} :
       Notation.DoubleColon Self "encode" := {
       Notation.double_colon := encode (T := T);
     }.
@@ -1023,8 +999,7 @@ Module
     Global Instance ℐ : ink_storage_traits.storage.Storable.Trait Self := {
       ink_storage_traits.storage.Storable.encode
         {T : Set}
-        {ℋ_0 : parity_scale_codec.codec.Output.Trait T}
-        {ℋ_1 : core.marker.Sized.Trait T} :=
+        {ℋ_0 : parity_scale_codec.codec.Output.Trait T} :=
         encode (T := T);
       ink_storage_traits.storage.Storable.decode
         {I : Set}

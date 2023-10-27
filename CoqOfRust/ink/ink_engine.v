@@ -2036,14 +2036,12 @@ End Impl_core_convert_From_u32_for_ink_engine_chain_extension_ExtensionId.
     Parameter encode_to :
         forall
           {__CodecOutputEdqy : Set}
-          {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
-          {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy},
+          {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy},
         (ref Self) -> (mut_ref __CodecOutputEdqy) -> M unit.
     
     Global Instance AssociatedFunction_encode_to
         {__CodecOutputEdqy : Set}
-        {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
-        {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy} :
+        {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy} :
       Notation.DoubleColon Self "encode_to" := {
       Notation.double_colon
         :=
@@ -2079,8 +2077,7 @@ End Impl_core_convert_From_u32_for_ink_engine_chain_extension_ExtensionId.
     Global Instance ℐ : parity_scale_codec.codec.Encode.Required.Trait Self := {
       parity_scale_codec.codec.Encode.encode_to
         {__CodecOutputEdqy : Set}
-        {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
-        {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy} :=
+        {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy} :=
         Datatypes.Some (encode_to (__CodecOutputEdqy := __CodecOutputEdqy));
       parity_scale_codec.codec.Encode.encode := Datatypes.Some encode;
       parity_scale_codec.codec.Encode.using_encoded

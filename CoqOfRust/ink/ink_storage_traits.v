@@ -10,11 +10,7 @@ Module storage.
       Context `{ℋ : State.Trait}.
       
       Class Trait (Self : Set) : Type := {
-        (* _ :: core.marker.Sized.Trait Self; *)
-        encode
-          {T : Set}
-          {ℋ_0 : parity_scale_codec.codec.Output.Trait T}
-          {ℋ_1 : core.marker.Sized.Trait T} :
+        encode {T : Set} {ℋ_0 : parity_scale_codec.codec.Output.Trait T} :
           (ref Self) -> (mut_ref T) -> M unit;
         decode {I : Set} {ℋ_0 : parity_scale_codec.codec.Input.Trait I} :
           (mut_ref I) ->
@@ -34,16 +30,12 @@ Module storage.
       Definition Self : Set := P.
       
       Parameter encode :
-          forall
-            {T : Set}
-            {ℋ_0 : parity_scale_codec.codec.Output.Trait T}
-            {ℋ_1 : core.marker.Sized.Trait T},
+          forall {T : Set} {ℋ_0 : parity_scale_codec.codec.Output.Trait T},
           (ref Self) -> (mut_ref T) -> M unit.
       
       Global Instance AssociatedFunction_encode
           {T : Set}
-          {ℋ_0 : parity_scale_codec.codec.Output.Trait T}
-          {ℋ_1 : core.marker.Sized.Trait T} :
+          {ℋ_0 : parity_scale_codec.codec.Output.Trait T} :
         Notation.DoubleColon Self "encode" := {
         Notation.double_colon := encode (T := T);
       }.
@@ -63,8 +55,7 @@ Module storage.
       Global Instance ℐ : ink_storage_traits.storage.Storable.Trait Self := {
         ink_storage_traits.storage.Storable.encode
           {T : Set}
-          {ℋ_0 : parity_scale_codec.codec.Output.Trait T}
-          {ℋ_1 : core.marker.Sized.Trait T} :=
+          {ℋ_0 : parity_scale_codec.codec.Output.Trait T} :=
           encode (T := T);
         ink_storage_traits.storage.Storable.decode
           {I : Set}
@@ -2140,11 +2131,7 @@ Module Storable.
     Context `{ℋ : State.Trait}.
     
     Class Trait (Self : Set) : Type := {
-      (* _ :: core.marker.Sized.Trait Self; *)
-      encode
-        {T : Set}
-        {ℋ_0 : parity_scale_codec.codec.Output.Trait T}
-        {ℋ_1 : core.marker.Sized.Trait T} :
+      encode {T : Set} {ℋ_0 : parity_scale_codec.codec.Output.Trait T} :
         (ref Self) -> (mut_ref T) -> M unit;
       decode {I : Set} {ℋ_0 : parity_scale_codec.codec.Input.Trait I} :
         (mut_ref I) ->
@@ -2164,16 +2151,12 @@ Module Impl_ink_storage_traits_storage_Storable_for_P.
     Definition Self : Set := P.
     
     Parameter encode :
-        forall
-          {T : Set}
-          {ℋ_0 : parity_scale_codec.codec.Output.Trait T}
-          {ℋ_1 : core.marker.Sized.Trait T},
+        forall {T : Set} {ℋ_0 : parity_scale_codec.codec.Output.Trait T},
         (ref Self) -> (mut_ref T) -> M unit.
     
     Global Instance AssociatedFunction_encode
         {T : Set}
-        {ℋ_0 : parity_scale_codec.codec.Output.Trait T}
-        {ℋ_1 : core.marker.Sized.Trait T} :
+        {ℋ_0 : parity_scale_codec.codec.Output.Trait T} :
       Notation.DoubleColon Self "encode" := {
       Notation.double_colon := encode (T := T);
     }.
@@ -2193,8 +2176,7 @@ Module Impl_ink_storage_traits_storage_Storable_for_P.
     Global Instance ℐ : ink_storage_traits.storage.Storable.Trait Self := {
       ink_storage_traits.storage.Storable.encode
         {T : Set}
-        {ℋ_0 : parity_scale_codec.codec.Output.Trait T}
-        {ℋ_1 : core.marker.Sized.Trait T} :=
+        {ℋ_0 : parity_scale_codec.codec.Output.Trait T} :=
         encode (T := T);
       ink_storage_traits.storage.Storable.decode
         {I : Set}

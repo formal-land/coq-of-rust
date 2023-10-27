@@ -567,12 +567,6 @@ Require CoqOfRust.ink.parity_scale_codec.""",
         content,
     )
 
-    content = sub_at_least_once(
-        r"\w+ :: core.marker.Sized.Trait Self;",
-        "(* _ :: core.marker.Sized.Trait Self; *)",
-        content,
-    )
-
     content = ignore_module_names(
         [
         ],

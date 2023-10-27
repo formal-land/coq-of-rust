@@ -316,6 +316,27 @@ fn is_top_level_item_public(tcx: &TyCtxt, env: &Env, item: &Item) -> bool {
     tcx.visibility(id_to_check).is_public()
 }
 
+// gy@NOTE: This function might be able to generalize to more empty traits in general
+fn is_sized_trait(segments: Vec<String>) -> bool {
+    let sized_trait = vec![
+        "core".to_string(),
+        "marker".to_string(),
+        "Sized".to_string(),
+    ];
+    segments == sized_trait
+}
+
+fn is_not_empty_trait(predicate: &WherePredicate) -> bool {
+    let WherePredicate {
+        bound: TraitBound {
+            name: Path { segments },
+            ..
+        },
+        ..
+    } = predicate;
+    !is_sized_trait(segments.to_owned())
+}
+
 /// [compile_top_level_item] compiles hir [Item]s into coq-of-rust (optional)
 /// items.
 /// - See https://doc.rust-lang.org/stable/nightly-rustc/rustc_hir/struct.Item.html
@@ -498,6 +519,7 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
                         bound,
                         ty: CoqType::var("Self".to_string()),
                     })
+                    .filter(is_not_empty_trait)
                     .collect(),
             ]
             .concat();
@@ -762,6 +784,7 @@ fn get_where_predicates(
             }
             _ => vec![],
         })
+        .filter(is_not_empty_trait)
         .collect()
 }
 
@@ -900,7 +923,7 @@ fn compile_trait_item_body(
                 let note_msg = "It may change in future versions.";
                 emit_warning_with_note(env, span, warning_msg, note_msg);
             }
-            let generic_bounds = compile_generic_bounds(tcx, env, generic_bounds);
+            let generic_bounds: Vec<TraitBound> = compile_generic_bounds(tcx, env, generic_bounds);
             TraitItem::Type(generic_bounds)
         }
     }
@@ -1201,6 +1224,7 @@ impl FunDefinition {
             dyn_name_gen.get_type_parm_list(),
         ]
         .concat();
+
         let where_predicates = vec![
             get_where_predicates(&tcx, env, generics),
             dyn_name_gen.get_predicates(),
