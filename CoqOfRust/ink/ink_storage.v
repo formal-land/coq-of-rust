@@ -86,7 +86,9 @@ Module lazy.
         Definition Self : Set := ink_storage.lazy.mapping.Mapping K V KeyType.
         
         Parameter fmt :
-            (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+            (ref Self) ->
+              (mut_ref core.fmt.Formatter) ->
+              M ltac:(core.fmt.Result).
         
         Global Instance AssociatedFunction_fmt :
           Notation.DoubleColon Self "fmt" := {
@@ -203,10 +205,7 @@ Module lazy.
           {ℋ_1 : ink_storage_traits.storage.StorageKey.Trait KeyType}.
         Definition Self : Set := ink_storage.lazy.mapping.Mapping K V KeyType.
         
-        Definition KEY : ink_primitives.key.Key :=
-          M.run
-            (Pure
-              (ink_storage_traits.storage.StorageKey.KEY (Self := KeyType))).
+        Parameter KEY : ltac:(ink_primitives.key.Key).
         
         Global Instance AssociatedFunction_KEY :
           Notation.DoubleColon Self "KEY" := {
@@ -293,7 +292,9 @@ Module lazy.
       Definition Self : Set := ink_storage.lazy.Lazy V KeyType.
       
       Parameter fmt :
-          (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+          (ref Self) ->
+            (mut_ref core.fmt.Formatter) ->
+            M ltac:(core.fmt.Result).
       
       Global Instance AssociatedFunction_fmt :
         Notation.DoubleColon Self "fmt" := {
@@ -406,9 +407,7 @@ Module lazy.
       Context {ℋ_0 : ink_storage_traits.storage.StorageKey.Trait KeyType}.
       Definition Self : Set := ink_storage.lazy.Lazy V KeyType.
       
-      Definition KEY : ink_primitives.key.Key :=
-        M.run
-          (Pure (ink_storage_traits.storage.StorageKey.KEY (Self := KeyType))).
+      Parameter KEY : ltac:(ink_primitives.key.Key).
       
       Global Instance AssociatedFunction_KEY :
         Notation.DoubleColon Self "KEY" := {
@@ -508,7 +507,9 @@ Module mapping.
       Definition Self : Set := ink_storage.lazy.mapping.Mapping K V KeyType.
       
       Parameter fmt :
-          (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+          (ref Self) ->
+            (mut_ref core.fmt.Formatter) ->
+            M ltac:(core.fmt.Result).
       
       Global Instance AssociatedFunction_fmt :
         Notation.DoubleColon Self "fmt" := {
@@ -625,9 +626,7 @@ Module mapping.
         {ℋ_1 : ink_storage_traits.storage.StorageKey.Trait KeyType}.
       Definition Self : Set := ink_storage.lazy.mapping.Mapping K V KeyType.
       
-      Definition KEY : ink_primitives.key.Key :=
-        M.run
-          (Pure (ink_storage_traits.storage.StorageKey.KEY (Self := KeyType))).
+      Parameter KEY : ltac:(ink_primitives.key.Key).
       
       Global Instance AssociatedFunction_KEY :
         Notation.DoubleColon Self "KEY" := {
@@ -762,7 +761,7 @@ Module Impl_core_fmt_Debug_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
     Definition Self : Set := ink_storage.lazy.mapping.Mapping K V KeyType.
     
     Parameter fmt :
-        (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+        (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
     
     Global Instance AssociatedFunction_fmt :
       Notation.DoubleColon Self "fmt" := {
@@ -879,9 +878,7 @@ Module
       {ℋ_1 : ink_storage_traits.storage.StorageKey.Trait KeyType}.
     Definition Self : Set := ink_storage.lazy.mapping.Mapping K V KeyType.
     
-    Definition KEY : ink_primitives.key.Key :=
-      M.run
-        (Pure (ink_storage_traits.storage.StorageKey.KEY (Self := KeyType))).
+    Parameter KEY : ltac:(ink_primitives.key.Key).
     
     Global Instance AssociatedFunction_KEY :
       Notation.DoubleColon Self "KEY" := {
@@ -917,7 +914,7 @@ Module
     Definition Self : Set := ink_storage.lazy.mapping.Mapping K V KeyType.
     
     Parameter layout :
-        (ref ink_primitives.key.Key) ->
+        (ref ltac:(ink_primitives.key.Key)) ->
           M (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
     
     Global Instance AssociatedFunction_layout :
@@ -1036,7 +1033,7 @@ Module Impl_core_fmt_Debug_for_ink_storage_lazy_Lazy_V_KeyType.
     Definition Self : Set := ink_storage.lazy.Lazy V KeyType.
     
     Parameter fmt :
-        (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+        (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
     
     Global Instance AssociatedFunction_fmt :
       Notation.DoubleColon Self "fmt" := {
@@ -1149,9 +1146,7 @@ Module
     Context {ℋ_0 : ink_storage_traits.storage.StorageKey.Trait KeyType}.
     Definition Self : Set := ink_storage.lazy.Lazy V KeyType.
     
-    Definition KEY : ink_primitives.key.Key :=
-      M.run
-        (Pure (ink_storage_traits.storage.StorageKey.KEY (Self := KeyType))).
+    Parameter KEY : ltac:(ink_primitives.key.Key).
     
     Global Instance AssociatedFunction_KEY :
       Notation.DoubleColon Self "KEY" := {
@@ -1185,7 +1180,7 @@ Module
     Definition Self : Set := ink_storage.lazy.Lazy V KeyType.
     
     Parameter layout :
-        (ref ink_primitives.key.Key) ->
+        (ref ltac:(ink_primitives.key.Key)) ->
           M (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
     
     Global Instance AssociatedFunction_layout :

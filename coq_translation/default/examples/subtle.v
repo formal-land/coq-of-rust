@@ -64,7 +64,7 @@ Module Impl_core_fmt_Debug_for_subtle_Choice.
     Definition fmt
         (self : ref Self)
         (f : mut_ref core.fmt.Formatter)
-        : M core.fmt.Result :=
+        : M ltac:(core.fmt.Result) :=
       let* α0 := deref f core.fmt.Formatter in
       let* α1 := borrow_mut α0 core.fmt.Formatter in
       let* α2 := deref (mk_str "Choice") str in
@@ -1819,7 +1819,7 @@ Module Impl_core_fmt_Debug_for_subtle_CtOption_T.
     Definition fmt
         (self : ref Self)
         (f : mut_ref core.fmt.Formatter)
-        : M core.fmt.Result :=
+        : M ltac:(core.fmt.Result) :=
       let* α0 := deref f core.fmt.Formatter in
       let* α1 := borrow_mut α0 core.fmt.Formatter in
       let* α2 := deref (mk_str "CtOption") str in

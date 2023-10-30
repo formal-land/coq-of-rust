@@ -19,7 +19,7 @@ Module Impl_core_fmt_Debug_for_defining_an_error_type_DoubleError.
     Definition fmt
         (self : ref Self)
         (f : mut_ref core.fmt.Formatter)
-        : M core.fmt.Result :=
+        : M ltac:(core.fmt.Result) :=
       let* α0 := deref f core.fmt.Formatter in
       let* α1 := borrow_mut α0 core.fmt.Formatter in
       let* α2 := deref (mk_str "DoubleError") str in
@@ -61,8 +61,8 @@ Module Impl_core_clone_Clone_for_defining_an_error_type_DoubleError.
   Global Hint Resolve ℐ : core.
 End Impl_core_clone_Clone_for_defining_an_error_type_DoubleError.
 
-Definition Result `{ℋ : State.Trait} (T : Set) : Set :=
-  core.result.Result T defining_an_error_type.DoubleError.
+Ltac Result T :=
+  refine (core.result.Result T defining_an_error_type.DoubleError).
 
 Module Impl_core_fmt_Display_for_defining_an_error_type_DoubleError.
   Section Impl_core_fmt_Display_for_defining_an_error_type_DoubleError.
@@ -73,7 +73,7 @@ Module Impl_core_fmt_Display_for_defining_an_error_type_DoubleError.
     Definition fmt
         (self : ref Self)
         (f : mut_ref core.fmt.Formatter)
-        : M core.fmt.Result :=
+        : M ltac:(core.fmt.Result) :=
       let* α0 := deref f core.fmt.Formatter in
       let* α1 := borrow_mut α0 core.fmt.Formatter in
       let* α2 :=
@@ -100,7 +100,7 @@ End Impl_core_fmt_Display_for_defining_an_error_type_DoubleError.
 Definition double_first
     `{ℋ : State.Trait}
     (vec : alloc.vec.Vec (ref str) alloc.vec.Vec.Default.A)
-    : M (defining_an_error_type.Result i32) :=
+    : M ltac:(defining_an_error_type.Result constr:(i32)) :=
   let* α0 := borrow vec (alloc.vec.Vec (ref str) alloc.alloc.Global) in
   let* α1 :=
     (core.ops.deref.Deref.deref
@@ -130,7 +130,7 @@ Definition double_first
 
 Definition print
     `{ℋ : State.Trait}
-    (result : defining_an_error_type.Result i32)
+    (result : ltac:(defining_an_error_type.Result constr:(i32)))
     : M unit :=
   match result with
   | core.result.Result n =>

@@ -11,5 +11,6 @@ Parameter read_lines :
       {ℋ_0 : core.convert.AsRef.Trait P (T := std.path.Path)},
     P ->
       M
-        (std.io.error.Result
-          (std.io.Lines (std.io.buffered.bufreader.BufReader std.fs.File))).
+        ltac:(std.io.error.Result
+          constr:(std.io.Lines
+            (std.io.buffered.bufreader.BufReader std.fs.File))).

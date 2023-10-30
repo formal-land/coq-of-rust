@@ -147,7 +147,7 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
     Definition fmt
         (self : ref Self)
         (f : mut_ref core.fmt.Formatter)
-        : M core.fmt.Result :=
+        : M ltac:(core.fmt.Result) :=
       let* α0 := deref self foreign_function_interface.Complex in
       let* α1 := α0.["im"] in
       let* α2 := M.alloc 0 (* 0. *) in

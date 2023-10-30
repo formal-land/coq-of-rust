@@ -4,6 +4,7 @@ use crate::path::*;
 use crate::render::*;
 use crate::top_level::*;
 use itertools::Itertools;
+use rustc_hir::def::{DefKind, Res};
 use rustc_hir::{BareFnTy, FnDecl, FnRetTy, GenericBound, ItemKind, OpaqueTyOrigin, Ty, TyKind};
 
 #[derive(Debug, PartialEq, Eq, Hash, Clone)]
@@ -13,6 +14,7 @@ pub(crate) enum CoqType {
     Application {
         func: Box<CoqType>,
         args: Vec<Box<CoqType>>,
+        is_alias: bool,
     },
     Function {
         /// We group together the arguments that are called together, as this
@@ -41,6 +43,7 @@ impl CoqType {
         Box::new(CoqType::Application {
             func: CoqType::var("M".to_string()),
             args: vec![ty],
+            is_alias: false,
         })
     }
 
@@ -54,9 +57,14 @@ impl CoqType {
 
 pub(crate) fn mt_ty_unboxed(ty: CoqType) -> CoqType {
     match ty {
-        CoqType::Application { func, args } => CoqType::Application {
+        CoqType::Application {
+            func,
+            args,
+            is_alias,
+        } => CoqType::Application {
             func,
             args: args.into_iter().map(mt_ty).collect(),
+            is_alias,
         },
         CoqType::Var(..) => ty,
         CoqType::VarWithSelfTy(path, self_ty) => CoqType::VarWithSelfTy(path, mt_ty(self_ty)),
@@ -83,7 +91,11 @@ pub(crate) fn compile_type(env: &Env, ty: &Ty) -> Box<CoqType> {
         TyKind::Slice(ty) => {
             let func = Box::new(CoqType::Var(Box::new(Path::local("Slice".to_string()))));
             let args = vec![compile_type(env, ty)];
-            Box::new(CoqType::Application { func, args })
+            Box::new(CoqType::Application {
+                func,
+                args,
+                is_alias: false,
+            })
         }
         TyKind::Array(ty, _) => Box::new(CoqType::Array(compile_type(env, ty))),
         TyKind::Ptr(mut_ty) => Box::new(CoqType::Ref(compile_type(env, mut_ty.ty), mut_ty.mutbl)),
@@ -96,6 +108,12 @@ pub(crate) fn compile_type(env: &Env, ty: &Ty) -> Box<CoqType> {
             tys.iter().map(|ty| compile_type(env, ty)).collect(),
         )),
         TyKind::Path(qpath) => {
+            let is_alias = match qpath {
+                rustc_hir::QPath::Resolved(_, path) => {
+                    matches!(path.res, Res::Def(DefKind::TyAlias, _))
+                }
+                _ => false,
+            };
             let self_ty = match qpath {
                 rustc_hir::QPath::Resolved(Some(self_ty), _) => Some(compile_type(env, self_ty)),
                 _ => None,
@@ -136,11 +154,11 @@ pub(crate) fn compile_type(env: &Env, ty: &Ty) -> Box<CoqType> {
                 }
                 _ => vec![],
             };
-            if params.is_empty() {
-                func
-            } else {
-                Box::new(CoqType::Application { func, args: params })
-            }
+            Box::new(CoqType::Application {
+                func,
+                args: params,
+                is_alias,
+            })
         }
         TyKind::OpaqueDef(item_id, _, _) => {
             let item = env.tcx.hir().item(*item_id);
@@ -282,9 +300,36 @@ impl CoqType {
                     coq::Expression::Code(text("ltac:(try clear Trait; hauto l: on)")),
                 ),
             ]),
-            CoqType::Application { func, args } => func
-                .to_coq()
-                .apply_many(&args.iter().map(|arg| arg.to_coq()).collect::<Vec<_>>()),
+            CoqType::Application {
+                func,
+                args,
+                is_alias,
+            } => {
+                let application = func.to_coq().apply_many(
+                    &args
+                        .iter()
+                        .map(|arg| {
+                            let arg = arg.to_coq();
+                            if *is_alias {
+                                coq::Expression::ModeWrapper {
+                                    mode: "constr".to_string(),
+                                    expr: Box::new(arg),
+                                }
+                            } else {
+                                arg
+                            }
+                        })
+                        .collect::<Vec<_>>(),
+                );
+                if *is_alias {
+                    coq::Expression::ModeWrapper {
+                        mode: "ltac".to_string(),
+                        expr: Box::new(application),
+                    }
+                } else {
+                    application
+                }
+            }
             CoqType::Function { args, ret } => ret
                 .to_coq()
                 .arrows_from(&args.iter().map(|arg| arg.to_coq()).collect::<Vec<_>>()),
@@ -327,18 +372,39 @@ impl CoqType {
                     nest([text("(Self :="), line(), self_ty.to_doc(false), text(")")]),
                 ]),
             ),
-            CoqType::Application { func, args } => {
-                if args.is_empty() {
-                    func.to_doc(with_paren)
+            CoqType::Application {
+                func,
+                args,
+                is_alias,
+            } => {
+                let application = {
+                    let with_paren = with_paren && !is_alias;
+                    if args.is_empty() {
+                        func.to_doc(with_paren)
+                    } else {
+                        paren(
+                            with_paren,
+                            nest([
+                                func.to_doc(true),
+                                line(),
+                                intersperse(
+                                    args.iter().map(|arg| {
+                                        if *is_alias {
+                                            concat([text("constr:("), arg.to_doc(false), text(")")])
+                                        } else {
+                                            arg.to_doc(true)
+                                        }
+                                    }),
+                                    [line()],
+                                ),
+                            ]),
+                        )
+                    }
+                };
+                if *is_alias {
+                    concat([text("ltac:("), application, text(")")])
                 } else {
-                    paren(
-                        with_paren,
-                        nest([
-                            func.to_doc(true),
-                            line(),
-                            intersperse(args.iter().map(|arg| arg.to_doc(true)), [line()]),
-                        ]),
-                    )
+                    application
                 }
             }
             CoqType::Function { args, ret } => paren(
@@ -385,7 +451,11 @@ impl CoqType {
             CoqType::VarWithSelfTy(path, self_ty) => {
                 format!("{}_{}", self_ty.to_name(), path.to_name())
             }
-            CoqType::Application { func, args } => {
+            CoqType::Application {
+                func,
+                args,
+                is_alias: _,
+            } => {
                 let mut name = func.to_name();
                 for arg in args {
                     name.push('_');

@@ -57,26 +57,32 @@ Require CoqOfRust.ink.ink_env.""",
 
     content = ignore_module_names(
         [
-            "TraitCallForwarderFor",
             "Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned",
         ],
         content,
     )
-#     content = sub_at_least_once(
-#         re.escape(
-#             """Definition IsResultType (T : Set) `{ℋ : State.Trait} : Set :=
-#     M.val (IsResultType.t (T := T))."""
-#         ),
-#         "",
-#         content,
-#     )
-#     content = sub_at_least_once(
-#         re.escape("""Definition IsResultType (T : Set) `{ℋ : State.Trait} : Set :=
-#   M.val (IsResultType.t (T := T))."""),
-#         """(* Definition IsResultType (T : Set) `{ℋ : State.Trait} : Set :=
-#   M.val (IsResultType.t (T := T)). *)""",
-#         content,
-#     )
+
+    content = sub_at_least_once(
+        re.escape("""End ChainExtension.
+
+Module IsResultType."""),
+        """End ChainExtension.
+
+(* Module IsResultType.""",
+        content,
+    )
+
+    content = sub_at_least_once(
+        re.escape("""End IsResultType.
+
+Module
+  Impl_ink_chain_extension_private_IsResultSealed_for_core_result_Result_T_E."""),
+        """End IsResultType. *)
+
+Module
+  Impl_ink_chain_extension_private_IsResultSealed_for_core_result_Result_T_E.""",
+        content
+    )
 
     with open(file_name, "w") as f:
         f.write(content)
@@ -237,36 +243,17 @@ Module TopicsBuilder."""),
         content)
 
     content = sub_at_least_once(
-        re.escape("""Parameter build_create :
-    forall
-      `{ℋ : State.Trait}
-      {ContractRef : Set}
-      {ℋ_0 : ink_env.contract.ContractEnv.Trait ContractRef},
-    M
-        (ink_env.call.create_builder.CreateBuilder (ℋ_0 := ltac:(sauto lq: on))
-          (ink_env.contract.ContractEnv.Env
-            (Self := ContractRef)
-            (Trait := ltac:(try clear Trait; hauto l: on)))
-          ContractRef
-          (ink_env.call.common.Unset_
-            (ink_env.types.Environment.Hash
-              (Self := ink_env.contract.ContractEnv.Env
-                (Self := ContractRef)
-                (Trait := ltac:(try clear Trait; hauto l: on)))
-              (Trait := ltac:(try clear Trait; hauto l: on))))
-          (ink_env.call.common.Unset_ u64)
-          (ink_env.call.common.Unset_
-            (ink_env.types.Environment.Balance
-              (Self := ink_env.contract.ContractEnv.Env
-                (Self := ContractRef)
-                (Trait := ltac:(try clear Trait; hauto l: on)))
-              (Trait := ltac:(try clear Trait; hauto l: on))))
-          (ink_env.call.common.Unset_
-            (ink_env.call.execution_input.ExecutionInput
-              ink_env.call.execution_input.EmptyArgumentList))
-          (ink_env.call.common.Unset_ ink_env.call.create_builder.state.Salt)
-          (ink_env.call.common.Unset_ (ink_env.call.common.ReturnType unit)))."""),
-        "",
+        re.escape("Parameter build_create :"),
+        "(* Parameter build_create :",
+        content,
+    )
+    content = sub_at_least_once(
+        re.escape(""".
+
+Module execution_input."""),
+        """. *)
+
+Module execution_input.""",
         content,
     )
 
@@ -389,25 +376,6 @@ Require CoqOfRust.ink.subxt.""",
         content,
     )
 
-    content = sub_at_least_once(
-        re.escape(
-            """Definition CreateBuilderPartial
-      `{ℋ : State.Trait} (E ContractRef Args R : Set) :
-      Set :="""),
-        """Definition CreateBuilderPartial
-      `{ℋ : State.Trait} (E ContractRef Args R : Set)
-      `{ink_env.types.Environment.Trait E} :
-      Set :=""",
-        content,
-    )
-    content = sub_at_least_once(
-        re.escape(
-            """Definition CallBuilderFinal `{ℋ : State.Trait} (E Args RetType : Set) : Set :="""
-        ),
-        """Definition CallBuilderFinal `{ℋ : State.Trait} (E Args RetType : Set) `{ink_env.types.Environment.Trait E} : Set :=""",
-        content,
-    )
-
     content = ignore_module_names(
         [
             "Impl_core_fmt_Debug_for_ink_e2e_client_ContractInstantiatedEvent_E",
@@ -524,10 +492,10 @@ Parameter generate""",
         content,
     )
     content = sub_at_least_once(
-        re.escape("""M (syn.error.Result proc_macro2.TokenStream).
+        re.escape("""M ltac:(syn.error.Result constr:(proc_macro2.TokenStream)).
 
 Module trait_def."""),
-        """M (syn.error.Result proc_macro2.TokenStream). *)
+        """M ltac:(syn.error.Result constr:(proc_macro2.TokenStream)). *)
 
 Module trait_def.""",
         content,
@@ -639,16 +607,6 @@ Require CoqOfRust.ink.parity_scale_codec.""",
 
     content = ignore_module_names(
         [
-            "Impl_ink_storage_traits_storage_Storable_for_P",
-            "Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_AutoKey",
-            "Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ManualKey_ParentKey",
-            "Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ResolverKey_L_R",
-            "Impl_ink_storage_traits_storage_Packed_for_P",
-            "Impl_ink_storage_traits_storage_StorageKey_for_P",
-            "Impl_ink_storage_traits_storage_StorableHint_for_P",
-            "Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map_BTreeMap_K_V_alloc_collections_btree_map_BTreeMap_Default_A",
-            "Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set_BTreeSet_T_alloc_collections_btree_set_BTreeSet_Default_A",
-            "Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_vec_deque_VecDeque_T_alloc_collections_vec_deque_VecDeque_Default_A",
         ],
         content,
     )
@@ -758,7 +716,8 @@ Require CoqOfRust.ink.ink.""",
 
 update_ink()
 update_ink_allocator()
-update_ink_e2e()
+# Commenting as this file does not seem to be actually used
+# update_ink_e2e()
 update_ink_e2e_macro()
 update_ink_engine()
 update_ink_env()

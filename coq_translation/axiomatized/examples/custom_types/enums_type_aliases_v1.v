@@ -9,8 +9,8 @@ End VeryVerboseEnumOfThingsToDoWithNumbers.
 Definition VeryVerboseEnumOfThingsToDoWithNumbers `{ℋ : State.Trait} : Set :=
   VeryVerboseEnumOfThingsToDoWithNumbers.t.
 
-Definition Operations `{ℋ : State.Trait} : Set :=
-  enums_type_aliases_v1.VeryVerboseEnumOfThingsToDoWithNumbers.
+Ltac Operations :=
+  refine enums_type_aliases_v1.VeryVerboseEnumOfThingsToDoWithNumbers.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : forall `{ℋ : State.Trait}, M unit.

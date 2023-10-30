@@ -31,7 +31,7 @@ Module Impl_core_fmt_Display_for_converting_to_string_Circle.
     Definition Self : Set := converting_to_string.Circle.
     
     Parameter fmt :
-        (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+        (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
     
     Global Instance AssociatedFunction_fmt :
       Notation.DoubleColon Self "fmt" := {

@@ -213,15 +213,16 @@ Module AccountInfo.
 End AccountInfo.
 Definition AccountInfo `{ℋ : State.Trait} : Set := M.val AccountInfo.t.
 
-Definition Accounts `{ℋ : State.Trait} : Set :=
-  std.collections.hash.map.HashMap
-    hash_map_alternate_or_custom_key_types.Account
-    hash_map_alternate_or_custom_key_types.AccountInfo
-    std.collections.hash.map.HashMap.Default.S.
+Ltac Accounts :=
+  refine
+    (std.collections.hash.map.HashMap
+      hash_map_alternate_or_custom_key_types.Account
+      hash_map_alternate_or_custom_key_types.AccountInfo
+      std.collections.hash.map.HashMap.Default.S).
 
 Definition try_logon
     `{ℋ : State.Trait}
-    (accounts : ref hash_map_alternate_or_custom_key_types.Accounts)
+    (accounts : ref ltac:(hash_map_alternate_or_custom_key_types.Accounts))
     (username : ref str)
     (password : ref str)
     : M unit :=

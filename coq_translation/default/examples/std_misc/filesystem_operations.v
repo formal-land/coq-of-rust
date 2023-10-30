@@ -4,7 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Definition cat
     `{ℋ : State.Trait}
     (path : ref std.path.Path)
-    : M (std.io.error.Result alloc.string.String) :=
+    : M ltac:(std.io.error.Result constr:(alloc.string.String)) :=
   let* f :=
     let* α0 := std.fs.File::["open"] path in
     let* α1 :=
@@ -37,7 +37,7 @@ Definition echo
     `{ℋ : State.Trait}
     (s : ref str)
     (path : ref std.path.Path)
-    : M (std.io.error.Result unit) :=
+    : M ltac:(std.io.error.Result constr:(unit)) :=
   let* f :=
     let* α0 := std.fs.File::["create"] path in
     let* α1 :=
@@ -65,7 +65,7 @@ Definition echo
 Definition touch
     `{ℋ : State.Trait}
     (path : ref std.path.Path)
-    : M (std.io.error.Result unit) :=
+    : M ltac:(std.io.error.Result constr:(unit)) :=
   let* α0 := std.fs.OpenOptions::["new"] in
   let* α1 := borrow_mut α0 std.fs.OpenOptions in
   let* α2 := M.alloc true in

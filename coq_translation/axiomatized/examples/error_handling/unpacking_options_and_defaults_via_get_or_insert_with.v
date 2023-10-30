@@ -21,7 +21,7 @@ Module
       unpacking_options_and_defaults_via_get_or_insert_with.Fruit.
     
     Parameter fmt :
-        (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+        (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
     
     Global Instance AssociatedFunction_fmt :
       Notation.DoubleColon Self "fmt" := {

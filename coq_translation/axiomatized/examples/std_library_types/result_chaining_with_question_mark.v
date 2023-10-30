@@ -20,7 +20,9 @@ Module checked.
         result_chaining_with_question_mark.checked.MathError.
       
       Parameter fmt :
-          (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+          (ref Self) ->
+            (mut_ref core.fmt.Formatter) ->
+            M ltac:(core.fmt.Result).
       
       Global Instance AssociatedFunction_fmt :
         Notation.DoubleColon Self "fmt" := {
@@ -37,24 +39,31 @@ Module checked.
   End
     Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
   
-  Definition MathResult `{ℋ : State.Trait} : Set :=
-    core.result.Result f64 result_chaining_with_question_mark.checked.MathError.
+  Ltac MathResult :=
+    refine
+      (core.result.Result
+        f64
+        result_chaining_with_question_mark.checked.MathError).
   
   Parameter div :
       forall `{ℋ : State.Trait},
-      f64 -> f64 -> M result_chaining_with_question_mark.checked.MathResult.
+      f64 ->
+        f64 ->
+        M ltac:(result_chaining_with_question_mark.checked.MathResult).
   
   Parameter sqrt :
       forall `{ℋ : State.Trait},
-      f64 -> M result_chaining_with_question_mark.checked.MathResult.
+      f64 -> M ltac:(result_chaining_with_question_mark.checked.MathResult).
   
   Parameter ln :
       forall `{ℋ : State.Trait},
-      f64 -> M result_chaining_with_question_mark.checked.MathResult.
+      f64 -> M ltac:(result_chaining_with_question_mark.checked.MathResult).
   
   Parameter op_ :
       forall `{ℋ : State.Trait},
-      f64 -> f64 -> M result_chaining_with_question_mark.checked.MathResult.
+      f64 ->
+        f64 ->
+        M ltac:(result_chaining_with_question_mark.checked.MathResult).
   
   Parameter op : forall `{ℋ : State.Trait}, f64 -> f64 -> M unit.
 End checked.
@@ -77,7 +86,7 @@ Module
       result_chaining_with_question_mark.checked.MathError.
     
     Parameter fmt :
-        (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+        (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
     
     Global Instance AssociatedFunction_fmt :
       Notation.DoubleColon Self "fmt" := {
@@ -94,24 +103,31 @@ Module
 End
   Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
 
-Definition MathResult `{ℋ : State.Trait} : Set :=
-  core.result.Result f64 result_chaining_with_question_mark.checked.MathError.
+Ltac MathResult :=
+  refine
+    (core.result.Result
+      f64
+      result_chaining_with_question_mark.checked.MathError).
 
 Parameter div :
     forall `{ℋ : State.Trait},
-    f64 -> f64 -> M result_chaining_with_question_mark.checked.MathResult.
+    f64 ->
+      f64 ->
+      M ltac:(result_chaining_with_question_mark.checked.MathResult).
 
 Parameter sqrt :
     forall `{ℋ : State.Trait},
-    f64 -> M result_chaining_with_question_mark.checked.MathResult.
+    f64 -> M ltac:(result_chaining_with_question_mark.checked.MathResult).
 
 Parameter ln :
     forall `{ℋ : State.Trait},
-    f64 -> M result_chaining_with_question_mark.checked.MathResult.
+    f64 -> M ltac:(result_chaining_with_question_mark.checked.MathResult).
 
 Parameter op_ :
     forall `{ℋ : State.Trait},
-    f64 -> f64 -> M result_chaining_with_question_mark.checked.MathResult.
+    f64 ->
+      f64 ->
+      M ltac:(result_chaining_with_question_mark.checked.MathResult).
 
 Parameter op : forall `{ℋ : State.Trait}, f64 -> f64 -> M unit.
 

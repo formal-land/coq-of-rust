@@ -4,11 +4,11 @@ Require Import CoqOfRust.CoqOfRust.
 Require CoqOfRust.ink.parity_scale_codec.
 
 Module types.
-  Definition BlockNumber `{ℋ : State.Trait} : Set := u32.
+  Ltac BlockNumber := refine u32.
   
-  Definition BlockTimestamp `{ℋ : State.Trait} : Set := u64.
+  Ltac BlockTimestamp := refine u64.
   
-  Definition Balance `{ℋ : State.Trait} : Set := u128.
+  Ltac Balance := refine u128.
   
   Module AccountId.
     Section AccountId.
@@ -35,7 +35,9 @@ Module types.
       Definition Self : Set := ink_engine.types.AccountId.
       
       Parameter fmt :
-          (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+          (ref Self) ->
+            (mut_ref core.fmt.Formatter) ->
+            M ltac:(core.fmt.Result).
       
       Global Instance AssociatedFunction_fmt :
         Notation.DoubleColon Self "fmt" := {
@@ -504,7 +506,9 @@ Module types.
       Definition Self : Set := ink_engine.types.AccountError.
       
       Parameter fmt :
-          (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+          (ref Self) ->
+            (mut_ref core.fmt.Formatter) ->
+            M ltac:(core.fmt.Result).
       
       Global Instance AssociatedFunction_fmt :
         Notation.DoubleColon Self "fmt" := {
@@ -658,7 +662,9 @@ Module test_api.
       Definition Self : Set := ink_engine.test_api.EmittedEvent.
       
       Parameter fmt :
-          (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+          (ref Self) ->
+            (mut_ref core.fmt.Formatter) ->
+            M ltac:(core.fmt.Result).
       
       Global Instance AssociatedFunction_fmt :
         Notation.DoubleColon Self "fmt" := {
@@ -978,7 +984,9 @@ Module chain_extension.
       Definition Self : Set := ink_engine.chain_extension.ExtensionId.
       
       Parameter fmt :
-          (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+          (ref Self) ->
+            (mut_ref core.fmt.Formatter) ->
+            M ltac:(core.fmt.Result).
       
       Global Instance AssociatedFunction_fmt :
         Notation.DoubleColon Self "fmt" := {
@@ -1260,9 +1268,9 @@ Module exec_context.
       Record t : Set := {
         caller : core.option.Option ink_engine.types.AccountId;
         callee : core.option.Option ink_engine.types.AccountId;
-        value_transferred : ink_engine.types.Balance;
-        block_number : ink_engine.types.BlockNumber;
-        block_timestamp : ink_engine.types.BlockTimestamp;
+        value_transferred : ltac:(ink_engine.types.Balance);
+        block_number : ltac:(ink_engine.types.BlockNumber);
+        block_timestamp : ltac:(ink_engine.types.BlockTimestamp);
         contracts :
           alloc.vec.Vec
             (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)
@@ -1382,7 +1390,9 @@ Module ext.
       Definition Self : Set := ink_engine.ext.Error.
       
       Parameter fmt :
-          (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+          (ref Self) ->
+            (mut_ref core.fmt.Formatter) ->
+            M ltac:(core.fmt.Result).
       
       Global Instance AssociatedFunction_fmt :
         Notation.DoubleColon Self "fmt" := {
@@ -1421,9 +1431,9 @@ Module ext.
       
       Unset Primitive Projections.
       Record t : Set := {
-        gas_price : ink_engine.types.Balance;
-        minimum_balance : ink_engine.types.Balance;
-        block_time : ink_engine.types.BlockTimestamp;
+        gas_price : ltac:(ink_engine.types.Balance);
+        minimum_balance : ltac:(ink_engine.types.Balance);
+        block_time : ltac:(ink_engine.types.BlockTimestamp);
       }.
       Global Set Primitive Projections.
       
@@ -1584,7 +1594,7 @@ Module Impl_core_fmt_Debug_for_ink_engine_ext_Error.
     Definition Self : Set := ink_engine.ext.Error.
     
     Parameter fmt :
-        (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+        (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
     
     Global Instance AssociatedFunction_fmt :
       Notation.DoubleColon Self "fmt" := {
@@ -1603,7 +1613,7 @@ End Impl_core_fmt_Debug_for_ink_engine_ext_Error.
   (* Section Impl_core_convert_From_for_ink_engine_ext_Result.
     Context `{ℋ : State.Trait}.
     
-    Definition Self : Set := ink_engine.ext.Result.
+    Definition Self : Set := ltac:(ink_engine.ext.Result).
     
     Parameter from : ink_engine.ext.ReturnCode -> M Self.
     
@@ -1716,9 +1726,9 @@ Module ChainSpec.
     
     Unset Primitive Projections.
     Record t : Set := {
-      gas_price : ink_engine.types.Balance;
-      minimum_balance : ink_engine.types.Balance;
-      block_time : ink_engine.types.BlockTimestamp;
+      gas_price : ltac:(ink_engine.types.Balance);
+      minimum_balance : ltac:(ink_engine.types.Balance);
+      block_time : ltac:(ink_engine.types.BlockTimestamp);
     }.
     Global Set Primitive Projections.
     
@@ -1840,7 +1850,7 @@ Module Impl_core_fmt_Debug_for_ink_engine_test_api_EmittedEvent.
     Definition Self : Set := ink_engine.test_api.EmittedEvent.
     
     Parameter fmt :
-        (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+        (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
     
     Global Instance AssociatedFunction_fmt :
       Notation.DoubleColon Self "fmt" := {
@@ -2163,7 +2173,7 @@ Module Impl_core_fmt_Debug_for_ink_engine_chain_extension_ExtensionId.
     Definition Self : Set := ink_engine.chain_extension.ExtensionId.
     
     Parameter fmt :
-        (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+        (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
     
     Global Instance AssociatedFunction_fmt :
       Notation.DoubleColon Self "fmt" := {
@@ -2558,9 +2568,9 @@ Module ExecContext.
     Record t : Set := {
       caller : core.option.Option ink_engine.types.AccountId;
       callee : core.option.Option ink_engine.types.AccountId;
-      value_transferred : ink_engine.types.Balance;
-      block_number : ink_engine.types.BlockNumber;
-      block_timestamp : ink_engine.types.BlockTimestamp;
+      value_transferred : ltac:(ink_engine.types.Balance);
+      block_number : ltac:(ink_engine.types.BlockNumber);
+      block_timestamp : ltac:(ink_engine.types.BlockTimestamp);
       contracts :
         alloc.vec.Vec
           (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)
@@ -2687,11 +2697,11 @@ Parameter sha2_256 :
     forall `{ℋ : State.Trait},
     (ref (Slice u8)) -> (mut_ref (array u8)) -> M unit.
 
-Definition BlockNumber `{ℋ : State.Trait} : Set := u32.
+Ltac BlockNumber := refine u32.
 
-Definition BlockTimestamp `{ℋ : State.Trait} : Set := u64.
+Ltac BlockTimestamp := refine u64.
 
-Definition Balance `{ℋ : State.Trait} : Set := u128.
+Ltac Balance := refine u128.
 
 Module AccountId.
   Section AccountId.
@@ -2718,7 +2728,7 @@ Module Impl_core_fmt_Debug_for_ink_engine_types_AccountId.
     Definition Self : Set := ink_engine.types.AccountId.
     
     Parameter fmt :
-        (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+        (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
     
     Global Instance AssociatedFunction_fmt :
       Notation.DoubleColon Self "fmt" := {
@@ -3185,7 +3195,7 @@ Module Impl_core_fmt_Debug_for_ink_engine_types_AccountError.
     Definition Self : Set := ink_engine.types.AccountError.
     
     Parameter fmt :
-        (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+        (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
     
     Global Instance AssociatedFunction_fmt :
       Notation.DoubleColon Self "fmt" := {
@@ -3309,7 +3319,7 @@ Module Impl_core_fmt_Debug_for_ink_engine_Error.
     Definition Self : Set := ink_engine.Error.
     
     Parameter fmt :
-        (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+        (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
     
     Global Instance AssociatedFunction_fmt :
       Notation.DoubleColon Self "fmt" := {

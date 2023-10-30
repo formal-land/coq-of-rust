@@ -6,13 +6,15 @@ Require CoqOfRust.ink.ink_env.
 Require CoqOfRust.ink.ink.
 
 Module erc20.
-  Definition AccountId `{ℋ : State.Trait} : Set :=
-    ink_env.types.Environment.AccountId
-      (Self := ink_env.types.DefaultEnvironment).
+  Ltac AccountId :=
+    refine
+      (ink_env.types.Environment.AccountId
+        (Self := ink_env.types.DefaultEnvironment)).
   
-  Definition Balance `{ℋ : State.Trait} : Set :=
-    ink_env.types.Environment.Balance
-      (Self := ink_env.types.DefaultEnvironment).
+  Ltac Balance :=
+    refine
+      (ink_env.types.Environment.Balance
+        (Self := ink_env.types.DefaultEnvironment)).
   
   Module Erc20.
     Section Erc20.
@@ -22,20 +24,20 @@ Module erc20.
       Record t : Set := {
         total_supply :
           ink_storage_traits.storage.AutoStorableHint.Type_
-            (Self := erc20.erc20.Balance)
+            (Self := ltac:(erc20.erc20.Balance))
             (Trait := ltac:(try clear Trait; hauto l: on));
         balances :
           ink_storage_traits.storage.AutoStorableHint.Type_
             (Self := ink_storage.lazy.mapping.Mapping
-              erc20.erc20.AccountId
-              erc20.erc20.Balance
+              ltac:(erc20.erc20.AccountId)
+              ltac:(erc20.erc20.Balance)
               ink_storage.lazy.mapping.Mapping.Default.KeyType)
             (Trait := ltac:(try clear Trait; hauto l: on));
         allowances :
           ink_storage_traits.storage.AutoStorableHint.Type_
             (Self := ink_storage.lazy.mapping.Mapping
-              (erc20.erc20.AccountId * erc20.erc20.AccountId)
-              erc20.erc20.Balance
+              (ltac:(erc20.erc20.AccountId) * ltac:(erc20.erc20.AccountId))
+              ltac:(erc20.erc20.Balance)
               ink_storage.lazy.mapping.Mapping.Default.KeyType)
             (Trait := ltac:(try clear Trait; hauto l: on));
       }.
@@ -92,24 +94,28 @@ Module erc20.
     Global Hint Resolve ℐ : core.
   End Impl_ink_env_contract_ContractEnv_for_erc20_erc20_Erc20.
   
-  Definition Environment `{ℋ : State.Trait} : Set :=
-    ink_env.types.DefaultEnvironment.
+  Ltac Environment :=
+    refine (ink_env.types.DefaultEnvironment).
   
-  Definition Hash `{ℋ : State.Trait} : Set :=
-    ink_env.types.Environment.Hash
-      (Self := ink_env.types.DefaultEnvironment).
+  Ltac Hash :=
+    refine
+      (ink_env.types.Environment.Hash
+        (Self := ink_env.types.DefaultEnvironment)).
   
-  Definition Timestamp `{ℋ : State.Trait} : Set :=
-    ink_env.types.Environment.Timestamp
-      (Self := ink_env.types.DefaultEnvironment).
+  Ltac Timestamp :=
+    refine
+      (ink_env.types.Environment.Timestamp
+        (Self := ink_env.types.DefaultEnvironment)).
   
-  Definition BlockNumber `{ℋ : State.Trait} : Set :=
-    ink_env.types.Environment.BlockNumber
-      (Self := ink_env.types.DefaultEnvironment).
+  Ltac BlockNumber :=
+    refine
+      (ink_env.types.Environment.BlockNumber
+        (Self := ink_env.types.DefaultEnvironment)).
   
-  Definition ChainExtension `{ℋ : State.Trait} : Set :=
-    ink_env.types.Environment.ChainExtension
-      (Self := ink_env.types.DefaultEnvironment).
+  Ltac ChainExtension :=
+    refine
+      (ink_env.types.Environment.ChainExtension
+        (Self := ink_env.types.DefaultEnvironment)).
   
   Definition MAX_EVENT_TOPICS `{ℋ : State.Trait} : usize :=
     M.run
@@ -171,9 +177,9 @@ Module erc20.
       
       Unset Primitive Projections.
       Record t : Set := {
-        from : core.option.Option erc20.erc20.AccountId;
-        to : core.option.Option erc20.erc20.AccountId;
-        value : erc20.erc20.Balance;
+        from : core.option.Option ltac:(erc20.erc20.AccountId);
+        to : core.option.Option ltac:(erc20.erc20.AccountId);
+        value : ltac:(erc20.erc20.Balance);
       }.
       Global Set Primitive Projections.
       
@@ -212,9 +218,9 @@ Module erc20.
       
       Unset Primitive Projections.
       Record t : Set := {
-        owner : erc20.erc20.AccountId;
-        spender : erc20.erc20.AccountId;
-        value : erc20.erc20.Balance;
+        owner : ltac:(erc20.erc20.AccountId);
+        spender : ltac:(erc20.erc20.AccountId);
+        value : ltac:(erc20.erc20.Balance);
       }.
       Global Set Primitive Projections.
       
@@ -300,7 +306,7 @@ Module erc20.
       
       Definition Self : Set := erc20.erc20.Erc20.
       
-      Definition Input : Set := erc20.erc20.Balance.
+      Definition Input : Set := ltac:(erc20.erc20.Balance).
       
       Definition Output : Set := Self.
       
@@ -392,7 +398,7 @@ Module erc20.
       
       Definition Input : Set := unit.
       
-      Definition Output : Set := erc20.erc20.Balance.
+      Definition Output : Set := ltac:(erc20.erc20.Balance).
       
       Definition Storage : Set := erc20.erc20.Erc20.
       
@@ -470,9 +476,9 @@ Module erc20.
       
       Definition Self : Set := erc20.erc20.Erc20.
       
-      Definition Input : Set := erc20.erc20.AccountId.
+      Definition Input : Set := ltac:(erc20.erc20.AccountId).
       
-      Definition Output : Set := erc20.erc20.Balance.
+      Definition Output : Set := ltac:(erc20.erc20.Balance).
       
       Definition Storage : Set := erc20.erc20.Erc20.
       
@@ -550,9 +556,10 @@ Module erc20.
       
       Definition Self : Set := erc20.erc20.Erc20.
       
-      Definition Input : Set := erc20.erc20.AccountId * erc20.erc20.AccountId.
+      Definition Input : Set :=
+        ltac:(erc20.erc20.AccountId) * ltac:(erc20.erc20.AccountId).
       
-      Definition Output : Set := erc20.erc20.Balance.
+      Definition Output : Set := ltac:(erc20.erc20.Balance).
       
       Definition Storage : Set := erc20.erc20.Erc20.
       
@@ -633,9 +640,10 @@ Module erc20.
       
       Definition Self : Set := erc20.erc20.Erc20.
       
-      Definition Input : Set := erc20.erc20.AccountId * erc20.erc20.Balance.
+      Definition Input : Set :=
+        ltac:(erc20.erc20.AccountId) * ltac:(erc20.erc20.Balance).
       
-      Definition Output : Set := erc20.erc20.Result unit.
+      Definition Output : Set := ltac:(erc20.erc20.Result constr:(unit)).
       
       Definition Storage : Set := erc20.erc20.Erc20.
       
@@ -716,9 +724,10 @@ Module erc20.
       
       Definition Self : Set := erc20.erc20.Erc20.
       
-      Definition Input : Set := erc20.erc20.AccountId * erc20.erc20.Balance.
+      Definition Input : Set :=
+        ltac:(erc20.erc20.AccountId) * ltac:(erc20.erc20.Balance).
       
-      Definition Output : Set := erc20.erc20.Result unit.
+      Definition Output : Set := ltac:(erc20.erc20.Result constr:(unit)).
       
       Definition Storage : Set := erc20.erc20.Erc20.
       
@@ -797,9 +806,11 @@ Module erc20.
       Definition Self : Set := erc20.erc20.Erc20.
       
       Definition Input : Set :=
-        erc20.erc20.AccountId * erc20.erc20.AccountId * erc20.erc20.Balance.
+        ltac:(erc20.erc20.AccountId) *
+          ltac:(erc20.erc20.AccountId) *
+          ltac:(erc20.erc20.Balance).
       
-      Definition Output : Set := erc20.erc20.Result unit.
+      Definition Output : Set := ltac:(erc20.erc20.Result constr:(unit)).
       
       Definition Storage : Set := erc20.erc20.Erc20.
       
@@ -908,7 +919,7 @@ Module erc20.
       Definition fmt
           (self : ref Self)
           (f : mut_ref core.fmt.Formatter)
-          : M core.fmt.Result :=
+          : M ltac:(core.fmt.Result) :=
         let* α0 := deref f core.fmt.Formatter in
         let* α1 := borrow_mut α0 core.fmt.Formatter in
         let* α2 := deref (mk_str "Erc20Ref") str in
@@ -1092,21 +1103,21 @@ Module erc20.
       Definition Self : Set := erc20.erc20.Erc20Ref.
       
       Definition new
-          (__ink_binding_0 : erc20.erc20.Balance)
+          (__ink_binding_0 : ltac:(erc20.erc20.Balance))
           :
             M
               (ink_env.call.create_builder.CreateBuilder
-                erc20.erc20.Environment
+                ltac:(erc20.erc20.Environment)
                 Self
-                (ink_env.call.common.Unset_ erc20.erc20.Hash)
+                (ink_env.call.common.Unset_ ltac:(erc20.erc20.Hash))
                 (ink_env.call.common.Unset_ u64)
-                (ink_env.call.common.Unset_ erc20.erc20.Balance)
+                (ink_env.call.common.Unset_ ltac:(erc20.erc20.Balance))
                 (ink_env.call.common.Set_
                   (ink_env.call.execution_input.ExecutionInput
                     (ink_env.call.execution_input.ArgumentList
                       (ink_env.call.execution_input.Argument
-                        erc20.erc20.Balance)
-                      ink_env.call.execution_input.EmptyArgumentList)))
+                        ltac:(erc20.erc20.Balance))
+                      ltac:(ink_env.call.execution_input.EmptyArgumentList))))
                 (ink_env.call.common.Unset_
                   ink_env.call.create_builder.state.Salt)
                 (ink_env.call.common.Set_
@@ -1163,7 +1174,9 @@ Module erc20.
         Notation.double_colon := new;
       }.
       
-      Definition total_supply (self : ref Self) : M erc20.erc20.Balance :=
+      Definition total_supply
+          (self : ref Self)
+          : M ltac:(erc20.erc20.Balance) :=
         let* α0 := deref self erc20.erc20.Erc20Ref in
         let* α1 := borrow α0 erc20.erc20.Erc20Ref in
         let* α2 := erc20.erc20.Erc20Ref::["try_total_supply"] α1 in
@@ -1195,7 +1208,10 @@ Module erc20.
       
       Definition try_total_supply
           (self : ref Self)
-          : M (ink_primitives.MessageResult erc20.erc20.Balance) :=
+          :
+            M
+              ltac:(ink_primitives.MessageResult
+                constr:(ltac:(erc20.erc20.Balance))) :=
         let* α0 := deref self erc20.erc20.Erc20Ref in
         let* α1 := borrow α0 erc20.erc20.Erc20Ref in
         let* α2 :=
@@ -1253,8 +1269,8 @@ Module erc20.
       
       Definition balance_of
           (self : ref Self)
-          (owner : erc20.erc20.AccountId)
-          : M erc20.erc20.Balance :=
+          (owner : ltac:(erc20.erc20.AccountId))
+          : M ltac:(erc20.erc20.Balance) :=
         let* α0 := deref self erc20.erc20.Erc20Ref in
         let* α1 := borrow α0 erc20.erc20.Erc20Ref in
         let* α2 := erc20.erc20.Erc20Ref::["try_balance_of"] α1 owner in
@@ -1286,8 +1302,11 @@ Module erc20.
       
       Definition try_balance_of
           (self : ref Self)
-          (owner : erc20.erc20.AccountId)
-          : M (ink_primitives.MessageResult erc20.erc20.Balance) :=
+          (owner : ltac:(erc20.erc20.AccountId))
+          :
+            M
+              ltac:(ink_primitives.MessageResult
+                constr:(ltac:(erc20.erc20.Balance))) :=
         let* α0 := deref self erc20.erc20.Erc20Ref in
         let* α1 := borrow α0 erc20.erc20.Erc20Ref in
         let* α2 :=
@@ -1345,9 +1364,9 @@ Module erc20.
       
       Definition allowance
           (self : ref Self)
-          (owner : erc20.erc20.AccountId)
-          (spender : erc20.erc20.AccountId)
-          : M erc20.erc20.Balance :=
+          (owner : ltac:(erc20.erc20.AccountId))
+          (spender : ltac:(erc20.erc20.AccountId))
+          : M ltac:(erc20.erc20.Balance) :=
         let* α0 := deref self erc20.erc20.Erc20Ref in
         let* α1 := borrow α0 erc20.erc20.Erc20Ref in
         let* α2 := erc20.erc20.Erc20Ref::["try_allowance"] α1 owner spender in
@@ -1379,9 +1398,12 @@ Module erc20.
       
       Definition try_allowance
           (self : ref Self)
-          (owner : erc20.erc20.AccountId)
-          (spender : erc20.erc20.AccountId)
-          : M (ink_primitives.MessageResult erc20.erc20.Balance) :=
+          (owner : ltac:(erc20.erc20.AccountId))
+          (spender : ltac:(erc20.erc20.AccountId))
+          :
+            M
+              ltac:(ink_primitives.MessageResult
+                constr:(ltac:(erc20.erc20.Balance))) :=
         let* α0 := deref self erc20.erc20.Erc20Ref in
         let* α1 := borrow α0 erc20.erc20.Erc20Ref in
         let* α2 :=
@@ -1439,9 +1461,9 @@ Module erc20.
       
       Definition transfer
           (self : mut_ref Self)
-          (to : erc20.erc20.AccountId)
-          (value : erc20.erc20.Balance)
-          : M (erc20.erc20.Result unit) :=
+          (to : ltac:(erc20.erc20.AccountId))
+          (value : ltac:(erc20.erc20.Balance))
+          : M ltac:(erc20.erc20.Result constr:(unit)) :=
         let* α0 := deref self erc20.erc20.Erc20Ref in
         let* α1 := borrow_mut α0 erc20.erc20.Erc20Ref in
         let* α2 := erc20.erc20.Erc20Ref::["try_transfer"] α1 to value in
@@ -1473,9 +1495,12 @@ Module erc20.
       
       Definition try_transfer
           (self : mut_ref Self)
-          (to : erc20.erc20.AccountId)
-          (value : erc20.erc20.Balance)
-          : M (ink_primitives.MessageResult (erc20.erc20.Result unit)) :=
+          (to : ltac:(erc20.erc20.AccountId))
+          (value : ltac:(erc20.erc20.Balance))
+          :
+            M
+              ltac:(ink_primitives.MessageResult
+                constr:(ltac:(erc20.erc20.Result constr:(unit)))) :=
         let* α0 := deref self erc20.erc20.Erc20Ref in
         let* α1 := borrow_mut α0 erc20.erc20.Erc20Ref in
         let* α2 :=
@@ -1533,9 +1558,9 @@ Module erc20.
       
       Definition approve
           (self : mut_ref Self)
-          (spender : erc20.erc20.AccountId)
-          (value : erc20.erc20.Balance)
-          : M (erc20.erc20.Result unit) :=
+          (spender : ltac:(erc20.erc20.AccountId))
+          (value : ltac:(erc20.erc20.Balance))
+          : M ltac:(erc20.erc20.Result constr:(unit)) :=
         let* α0 := deref self erc20.erc20.Erc20Ref in
         let* α1 := borrow_mut α0 erc20.erc20.Erc20Ref in
         let* α2 := erc20.erc20.Erc20Ref::["try_approve"] α1 spender value in
@@ -1567,9 +1592,12 @@ Module erc20.
       
       Definition try_approve
           (self : mut_ref Self)
-          (spender : erc20.erc20.AccountId)
-          (value : erc20.erc20.Balance)
-          : M (ink_primitives.MessageResult (erc20.erc20.Result unit)) :=
+          (spender : ltac:(erc20.erc20.AccountId))
+          (value : ltac:(erc20.erc20.Balance))
+          :
+            M
+              ltac:(ink_primitives.MessageResult
+                constr:(ltac:(erc20.erc20.Result constr:(unit)))) :=
         let* α0 := deref self erc20.erc20.Erc20Ref in
         let* α1 := borrow_mut α0 erc20.erc20.Erc20Ref in
         let* α2 :=
@@ -1627,10 +1655,10 @@ Module erc20.
       
       Definition transfer_from
           (self : mut_ref Self)
-          (from : erc20.erc20.AccountId)
-          (to : erc20.erc20.AccountId)
-          (value : erc20.erc20.Balance)
-          : M (erc20.erc20.Result unit) :=
+          (from : ltac:(erc20.erc20.AccountId))
+          (to : ltac:(erc20.erc20.AccountId))
+          (value : ltac:(erc20.erc20.Balance))
+          : M ltac:(erc20.erc20.Result constr:(unit)) :=
         let* α0 := deref self erc20.erc20.Erc20Ref in
         let* α1 := borrow_mut α0 erc20.erc20.Erc20Ref in
         let* α2 :=
@@ -1664,10 +1692,13 @@ Module erc20.
       
       Definition try_transfer_from
           (self : mut_ref Self)
-          (from : erc20.erc20.AccountId)
-          (to : erc20.erc20.AccountId)
-          (value : erc20.erc20.Balance)
-          : M (ink_primitives.MessageResult (erc20.erc20.Result unit)) :=
+          (from : ltac:(erc20.erc20.AccountId))
+          (to : ltac:(erc20.erc20.AccountId))
+          (value : ltac:(erc20.erc20.Balance))
+          :
+            M
+              ltac:(ink_primitives.MessageResult
+                constr:(ltac:(erc20.erc20.Result constr:(unit)))) :=
         let* α0 := deref self erc20.erc20.Erc20Ref in
         let* α1 := borrow_mut α0 erc20.erc20.Erc20Ref in
         let* α2 :=
@@ -1736,7 +1767,7 @@ Module erc20.
       Definition Self : Set := erc20.erc20.Erc20Ref.
       
       Definition from_account_id
-          (account_id : erc20.erc20.AccountId)
+          (account_id : ltac:(erc20.erc20.AccountId))
           : M Self :=
         let* α0 :=
           (ink_env.call.create_builder.FromAccountId.from_account_id
@@ -1751,7 +1782,7 @@ Module erc20.
       
       #[refine] Global Instance ℐ :
         ink_env.call.create_builder.FromAccountId.Trait Self
-          (T := erc20.erc20.Environment) := {
+          (T := ltac:(erc20.erc20.Environment)) := {
         ink_env.call.create_builder.FromAccountId.from_account_id :=
           from_account_id;
       }.
@@ -1766,7 +1797,9 @@ Module erc20.
       
       Definition Self : Set := erc20.erc20.Erc20Ref.
       
-      Definition to_account_id (self : ref Self) : M erc20.erc20.AccountId :=
+      Definition to_account_id
+          (self : ref Self)
+          : M ltac:(erc20.erc20.AccountId) :=
         let* α0 := deref self erc20.erc20.Erc20Ref in
         let* α1 := α0.["inner"] in
         let* α2 := borrow α1 erc20.erc20._.CallBuilder in
@@ -1783,7 +1816,7 @@ Module erc20.
       
       #[refine] Global Instance ℐ :
         ink.contract_ref.ToAccountId.Trait Self
-          (T := erc20.erc20.Environment) := {
+          (T := ltac:(erc20.erc20.Environment)) := {
         ink.contract_ref.ToAccountId.to_account_id := to_account_id;
       }.
       Admitted.
@@ -1797,7 +1830,9 @@ Module erc20.
       
       Definition Self : Set := erc20.erc20.Erc20Ref.
       
-      Definition as_ref (self : ref Self) : M (ref erc20.erc20.AccountId) :=
+      Definition as_ref
+          (self : ref Self)
+          : M (ref ltac:(erc20.erc20.AccountId)) :=
         let* α0 := deref self erc20.erc20.Erc20Ref in
         let* α1 := α0.["inner"] in
         let* α2 := borrow α1 erc20.erc20._.CallBuilder in
@@ -1814,7 +1849,7 @@ Module erc20.
       }.
       
       #[refine] Global Instance ℐ :
-        core.convert.AsRef.Trait Self (T := erc20.erc20.AccountId) := {
+        core.convert.AsRef.Trait Self (T := ltac:(erc20.erc20.AccountId)) := {
         core.convert.AsRef.as_ref := as_ref;
       }.
       Admitted.
@@ -1830,7 +1865,7 @@ Module erc20.
       
       Definition as_mut
           (self : mut_ref Self)
-          : M (mut_ref erc20.erc20.AccountId) :=
+          : M (mut_ref ltac:(erc20.erc20.AccountId)) :=
         let* α0 := deref self erc20.erc20.Erc20Ref in
         let* α1 := α0.["inner"] in
         let* α2 := borrow_mut α1 erc20.erc20._.CallBuilder in
@@ -1849,7 +1884,7 @@ Module erc20.
       }.
       
       #[refine] Global Instance ℐ :
-        core.convert.AsMut.Trait Self (T := erc20.erc20.AccountId) := {
+        core.convert.AsMut.Trait Self (T := ltac:(erc20.erc20.AccountId)) := {
         core.convert.AsMut.as_mut := as_mut;
       }.
       Admitted.
@@ -1873,7 +1908,7 @@ Module erc20.
       Definition fmt
           (self : ref Self)
           (f : mut_ref core.fmt.Formatter)
-          : M core.fmt.Result :=
+          : M ltac:(core.fmt.Result) :=
         let* α0 := deref f core.fmt.Formatter in
         let* α1 := borrow_mut α0 core.fmt.Formatter in
         let* α2 :=
@@ -1983,8 +2018,7 @@ Module erc20.
     Global Hint Resolve ℐ : core.
   End Impl_core_cmp_Eq_for_erc20_erc20_Error.
   
-  Definition Result `{ℋ : State.Trait} (T : Set) : Set :=
-    core.result.Result T erc20.erc20.Error.
+  Ltac Result T := refine (core.result.Result T erc20.erc20.Error).
 End erc20.
 
 Module Impl_ink_env_contract_ContractEnv_for_erc20_erc20_Erc20.
@@ -2003,32 +2037,38 @@ Module Impl_ink_env_contract_ContractEnv_for_erc20_erc20_Erc20.
   Global Hint Resolve ℐ : core.
 End Impl_ink_env_contract_ContractEnv_for_erc20_erc20_Erc20.
 
-Definition Environment `{ℋ : State.Trait} : Set :=
-  ink_env.types.DefaultEnvironment.
+Ltac Environment :=
+  refine (ink_env.types.DefaultEnvironment).
 
-Definition AccountId `{ℋ : State.Trait} : Set :=
-  ink_env.types.Environment.AccountId
-    (Self := ink_env.types.DefaultEnvironment).
+Ltac AccountId :=
+  refine
+    (ink_env.types.Environment.AccountId
+      (Self := ink_env.types.DefaultEnvironment)).
 
-Definition Balance `{ℋ : State.Trait} : Set :=
-  ink_env.types.Environment.Balance
-    (Self := ink_env.types.DefaultEnvironment).
+Ltac Balance :=
+  refine
+    (ink_env.types.Environment.Balance
+      (Self := ink_env.types.DefaultEnvironment)).
 
-Definition Hash `{ℋ : State.Trait} : Set :=
-  ink_env.types.Environment.Hash
-    (Self := ink_env.types.DefaultEnvironment).
+Ltac Hash :=
+  refine
+    (ink_env.types.Environment.Hash
+      (Self := ink_env.types.DefaultEnvironment)).
 
-Definition Timestamp `{ℋ : State.Trait} : Set :=
-  ink_env.types.Environment.Timestamp
-    (Self := ink_env.types.DefaultEnvironment).
+Ltac Timestamp :=
+  refine
+    (ink_env.types.Environment.Timestamp
+      (Self := ink_env.types.DefaultEnvironment)).
 
-Definition BlockNumber `{ℋ : State.Trait} : Set :=
-  ink_env.types.Environment.BlockNumber
-    (Self := ink_env.types.DefaultEnvironment).
+Ltac BlockNumber :=
+  refine
+    (ink_env.types.Environment.BlockNumber
+      (Self := ink_env.types.DefaultEnvironment)).
 
-Definition ChainExtension `{ℋ : State.Trait} : Set :=
-  ink_env.types.Environment.ChainExtension
-    (Self := ink_env.types.DefaultEnvironment).
+Ltac ChainExtension :=
+  refine
+    (ink_env.types.Environment.ChainExtension
+      (Self := ink_env.types.DefaultEnvironment)).
 
 Definition MAX_EVENT_TOPICS `{ℋ : State.Trait} : usize :=
   M.run
@@ -2044,16 +2084,16 @@ Module Check.
     Unset Primitive Projections.
     Record t : Set := {
       salt : unit;
-      field_0 : erc20.erc20.Balance;
+      field_0 : ltac:(erc20.erc20.Balance);
       field_1 :
         ink_storage.lazy.mapping.Mapping
-          erc20.erc20.AccountId
-          erc20.erc20.Balance
+          ltac:(erc20.erc20.AccountId)
+          ltac:(erc20.erc20.Balance)
           ink_storage.lazy.mapping.Mapping.Default.KeyType;
       field_2 :
         ink_storage.lazy.mapping.Mapping
-          (erc20.erc20.AccountId * erc20.erc20.AccountId)
-          erc20.erc20.Balance
+          (ltac:(erc20.erc20.AccountId) * ltac:(erc20.erc20.AccountId))
+          ltac:(erc20.erc20.Balance)
           ink_storage.lazy.mapping.Mapping.Default.KeyType;
     }.
     Global Set Primitive Projections.
@@ -2105,20 +2145,20 @@ Module Erc20.
     Record t : Set := {
       total_supply :
         ink_storage_traits.storage.AutoStorableHint.Type_
-          (Self := erc20.erc20.Balance)
+          (Self := ltac:(erc20.erc20.Balance))
           (Trait := ltac:(try clear Trait; hauto l: on));
       balances :
         ink_storage_traits.storage.AutoStorableHint.Type_
           (Self := ink_storage.lazy.mapping.Mapping
-            erc20.erc20.AccountId
-            erc20.erc20.Balance
+            ltac:(erc20.erc20.AccountId)
+            ltac:(erc20.erc20.Balance)
             ink_storage.lazy.mapping.Mapping.Default.KeyType)
           (Trait := ltac:(try clear Trait; hauto l: on));
       allowances :
         ink_storage_traits.storage.AutoStorableHint.Type_
           (Self := ink_storage.lazy.mapping.Mapping
-            (erc20.erc20.AccountId * erc20.erc20.AccountId)
-            erc20.erc20.Balance
+            (ltac:(erc20.erc20.AccountId) * ltac:(erc20.erc20.AccountId))
+            ltac:(erc20.erc20.Balance)
             ink_storage.lazy.mapping.Mapping.Default.KeyType)
           (Trait := ltac:(try clear Trait; hauto l: on));
     }.
@@ -2189,7 +2229,7 @@ Module Impl_ink_storage_traits_storage_StorageKey_for_erc20_erc20_Erc20.
     
     Definition Self : Set := erc20.erc20.Erc20.
     
-    Definition KEY : ink_primitives.key.Key :=
+    Definition KEY : ltac:(ink_primitives.key.Key) :=
       M.run (Pure (ink_storage_traits.storage.StorageKey.KEY (Self := unit))).
     
     Global Instance AssociatedFunction_KEY :
@@ -2616,7 +2656,7 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_erc20_erc20_Erc20.
     Definition Self : Set := erc20.erc20.Erc20.
     
     Definition layout
-        (__key : ref ink_primitives.key.Key)
+        (__key : ref ltac:(ink_primitives.key.Key))
         : M (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F) :=
       let* α0 := deref __key u32 in
       let* α1 := borrow α0 u32 in
@@ -2807,7 +2847,8 @@ Module
     Impl_ink_codegen_event_emit_EmitEvent_for_ink_env_access_EnvAccess_erc20_erc20_Environment.
     Context `{ℋ : State.Trait}.
     
-    Definition Self : Set := ink.env_access.EnvAccess erc20.erc20.Environment.
+    Definition Self : Set :=
+      ink.env_access.EnvAccess ltac:(erc20.erc20.Environment).
     
     Definition emit_event
         {E : Set}
@@ -3298,9 +3339,9 @@ Module Transfer.
     
     Unset Primitive Projections.
     Record t : Set := {
-      from : core.option.Option erc20.erc20.AccountId;
-      to : core.option.Option erc20.erc20.AccountId;
-      value : erc20.erc20.Balance;
+      from : core.option.Option ltac:(erc20.erc20.AccountId);
+      to : core.option.Option ltac:(erc20.erc20.AccountId);
+      value : ltac:(erc20.erc20.Balance);
     }.
     Global Set Primitive Projections.
     
@@ -3514,9 +3555,9 @@ Module Approval.
     
     Unset Primitive Projections.
     Record t : Set := {
-      owner : erc20.erc20.AccountId;
-      spender : erc20.erc20.AccountId;
-      value : erc20.erc20.Balance;
+      owner : ltac:(erc20.erc20.AccountId);
+      spender : ltac:(erc20.erc20.AccountId);
+      value : ltac:(erc20.erc20.Balance);
     }.
     Global Set Primitive Projections.
     
@@ -4001,7 +4042,7 @@ Module
     
     Definition Self : Set := erc20.erc20.Erc20.
     
-    Definition Input : Set := erc20.erc20.Balance.
+    Definition Input : Set := ltac:(erc20.erc20.Balance).
     
     Definition Output : Set := Self.
     
@@ -4090,7 +4131,7 @@ Module Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
     
     Definition Input : Set := unit.
     
-    Definition Output : Set := erc20.erc20.Balance.
+    Definition Output : Set := ltac:(erc20.erc20.Balance).
     
     Definition Storage : Set := erc20.erc20.Erc20.
     
@@ -4165,9 +4206,9 @@ Module Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
     
     Definition Self : Set := erc20.erc20.Erc20.
     
-    Definition Input : Set := erc20.erc20.AccountId.
+    Definition Input : Set := ltac:(erc20.erc20.AccountId).
     
-    Definition Output : Set := erc20.erc20.Balance.
+    Definition Output : Set := ltac:(erc20.erc20.Balance).
     
     Definition Storage : Set := erc20.erc20.Erc20.
     
@@ -4242,9 +4283,10 @@ Module Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
     
     Definition Self : Set := erc20.erc20.Erc20.
     
-    Definition Input : Set := erc20.erc20.AccountId * erc20.erc20.AccountId.
+    Definition Input : Set :=
+      ltac:(erc20.erc20.AccountId) * ltac:(erc20.erc20.AccountId).
     
-    Definition Output : Set := erc20.erc20.Balance.
+    Definition Output : Set := ltac:(erc20.erc20.Balance).
     
     Definition Storage : Set := erc20.erc20.Erc20.
     
@@ -4319,9 +4361,10 @@ Module Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
     
     Definition Self : Set := erc20.erc20.Erc20.
     
-    Definition Input : Set := erc20.erc20.AccountId * erc20.erc20.Balance.
+    Definition Input : Set :=
+      ltac:(erc20.erc20.AccountId) * ltac:(erc20.erc20.Balance).
     
-    Definition Output : Set := erc20.erc20.Result unit.
+    Definition Output : Set := ltac:(erc20.erc20.Result constr:(unit)).
     
     Definition Storage : Set := erc20.erc20.Erc20.
     
@@ -4396,9 +4439,10 @@ Module Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
     
     Definition Self : Set := erc20.erc20.Erc20.
     
-    Definition Input : Set := erc20.erc20.AccountId * erc20.erc20.Balance.
+    Definition Input : Set :=
+      ltac:(erc20.erc20.AccountId) * ltac:(erc20.erc20.Balance).
     
-    Definition Output : Set := erc20.erc20.Result unit.
+    Definition Output : Set := ltac:(erc20.erc20.Result constr:(unit)).
     
     Definition Storage : Set := erc20.erc20.Erc20.
     
@@ -4474,9 +4518,11 @@ Module Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
     Definition Self : Set := erc20.erc20.Erc20.
     
     Definition Input : Set :=
-      erc20.erc20.AccountId * erc20.erc20.AccountId * erc20.erc20.Balance.
+      ltac:(erc20.erc20.AccountId) *
+        ltac:(erc20.erc20.AccountId) *
+        ltac:(erc20.erc20.Balance).
     
-    Definition Output : Set := erc20.erc20.Result unit.
+    Definition Output : Set := ltac:(erc20.erc20.Result constr:(unit)).
     
     Definition Storage : Set := erc20.erc20.Erc20.
     
@@ -6213,7 +6259,7 @@ Module Impl_erc20_erc20_Erc20_29.
     
     Definition Self : Set := erc20.erc20.Erc20.
     
-    Definition new (total_supply : erc20.erc20.Balance) : M Self :=
+    Definition new (total_supply : ltac:(erc20.erc20.Balance)) : M Self :=
       let* balances :=
         core.default.Default.default
           (Self :=
@@ -6278,7 +6324,7 @@ Module Impl_erc20_erc20_Erc20_29.
       Notation.double_colon := new;
     }.
     
-    Definition total_supply (self : ref Self) : M erc20.erc20.Balance :=
+    Definition total_supply (self : ref Self) : M ltac:(erc20.erc20.Balance) :=
       let* α0 := deref self erc20.erc20.Erc20 in
       α0.["total_supply"].
     
@@ -6289,8 +6335,8 @@ Module Impl_erc20_erc20_Erc20_29.
     
     Definition balance_of
         (self : ref Self)
-        (owner : erc20.erc20.AccountId)
-        : M erc20.erc20.Balance :=
+        (owner : ltac:(erc20.erc20.AccountId))
+        : M ltac:(erc20.erc20.Balance) :=
       let* α0 := deref self erc20.erc20.Erc20 in
       let* α1 := borrow α0 erc20.erc20.Erc20 in
       let* α2 := borrow owner ink_primitives.types.AccountId in
@@ -6305,9 +6351,9 @@ Module Impl_erc20_erc20_Erc20_29.
     
     Definition allowance
         (self : ref Self)
-        (owner : erc20.erc20.AccountId)
-        (spender : erc20.erc20.AccountId)
-        : M erc20.erc20.Balance :=
+        (owner : ltac:(erc20.erc20.AccountId))
+        (spender : ltac:(erc20.erc20.AccountId))
+        : M ltac:(erc20.erc20.Balance) :=
       let* α0 := deref self erc20.erc20.Erc20 in
       let* α1 := borrow α0 erc20.erc20.Erc20 in
       let* α2 := borrow owner ink_primitives.types.AccountId in
@@ -6325,9 +6371,9 @@ Module Impl_erc20_erc20_Erc20_29.
     
     Definition transfer
         (self : mut_ref Self)
-        (to : erc20.erc20.AccountId)
-        (value : erc20.erc20.Balance)
-        : M (erc20.erc20.Result unit) :=
+        (to : ltac:(erc20.erc20.AccountId))
+        (value : ltac:(erc20.erc20.Balance))
+        : M ltac:(erc20.erc20.Result constr:(unit)) :=
       let* from :=
         let* α0 := deref self erc20.erc20.Erc20 in
         let* α1 := borrow α0 erc20.erc20.Erc20 in
@@ -6351,9 +6397,9 @@ Module Impl_erc20_erc20_Erc20_29.
     
     Definition approve
         (self : mut_ref Self)
-        (spender : erc20.erc20.AccountId)
-        (value : erc20.erc20.Balance)
-        : M (erc20.erc20.Result unit) :=
+        (spender : ltac:(erc20.erc20.AccountId))
+        (value : ltac:(erc20.erc20.Balance))
+        : M ltac:(erc20.erc20.Result constr:(unit)) :=
       let* owner :=
         let* α0 := deref self erc20.erc20.Erc20 in
         let* α1 := borrow α0 erc20.erc20.Erc20 in
@@ -6408,10 +6454,10 @@ Module Impl_erc20_erc20_Erc20_29.
     
     Definition transfer_from
         (self : mut_ref Self)
-        (from : erc20.erc20.AccountId)
-        (to : erc20.erc20.AccountId)
-        (value : erc20.erc20.Balance)
-        : M (erc20.erc20.Result unit) :=
+        (from : ltac:(erc20.erc20.AccountId))
+        (to : ltac:(erc20.erc20.AccountId))
+        (value : ltac:(erc20.erc20.Balance))
+        : M ltac:(erc20.erc20.Result constr:(unit)) :=
       let* caller :=
         let* α0 := deref self erc20.erc20.Erc20 in
         let* α1 := borrow α0 erc20.erc20.Erc20 in
@@ -6495,8 +6541,8 @@ Module Impl_erc20_erc20_Erc20_29.
     
     Definition balance_of_impl
         (self : ref Self)
-        (owner : ref erc20.erc20.AccountId)
-        : M erc20.erc20.Balance :=
+        (owner : ref ltac:(erc20.erc20.AccountId))
+        : M ltac:(erc20.erc20.Balance) :=
       let* α0 := deref self erc20.erc20.Erc20 in
       let* α1 := α0.["balances"] in
       let* α2 :=
@@ -6519,9 +6565,9 @@ Module Impl_erc20_erc20_Erc20_29.
     
     Definition allowance_impl
         (self : ref Self)
-        (owner : ref erc20.erc20.AccountId)
-        (spender : ref erc20.erc20.AccountId)
-        : M erc20.erc20.Balance :=
+        (owner : ref ltac:(erc20.erc20.AccountId))
+        (spender : ref ltac:(erc20.erc20.AccountId))
+        : M ltac:(erc20.erc20.Balance) :=
       let* α0 := deref self erc20.erc20.Erc20 in
       let* α1 := α0.["allowances"] in
       let* α2 :=
@@ -6546,10 +6592,10 @@ Module Impl_erc20_erc20_Erc20_29.
     
     Definition transfer_from_to
         (self : mut_ref Self)
-        (from : ref erc20.erc20.AccountId)
-        (to : ref erc20.erc20.AccountId)
-        (value : erc20.erc20.Balance)
-        : M (erc20.erc20.Result unit) :=
+        (from : ref ltac:(erc20.erc20.AccountId))
+        (to : ref ltac:(erc20.erc20.AccountId))
+        (value : ltac:(erc20.erc20.Balance))
+        : M ltac:(erc20.erc20.Result constr:(unit)) :=
       let* from_balance :=
         let* α0 := deref self erc20.erc20.Erc20 in
         let* α1 := borrow α0 erc20.erc20.Erc20 in
@@ -6642,7 +6688,7 @@ Module CallBuilder.
     
     Unset Primitive Projections.
     Record t : Set := {
-      account_id : erc20.erc20.AccountId;
+      account_id : ltac:(erc20.erc20.AccountId);
     }.
     Global Set Primitive Projections.
     
@@ -6669,7 +6715,7 @@ Module Impl_core_fmt_Debug_for_erc20_erc20___CallBuilder.
     Definition fmt
         (self : ref Self)
         (f : mut_ref core.fmt.Formatter)
-        : M core.fmt.Result :=
+        : M ltac:(core.fmt.Result) :=
       let* α0 := deref f core.fmt.Formatter in
       let* α1 := borrow_mut α0 core.fmt.Formatter in
       let* α2 := deref (mk_str "CallBuilder") str in
@@ -7265,7 +7311,7 @@ Module
     Definition Self : Set := erc20.erc20._.CallBuilder.
     
     Definition layout
-        (__key : ref ink_primitives.key.Key)
+        (__key : ref ltac:(ink_primitives.key.Key))
         : M (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F) :=
       let* α0 := deref __key u32 in
       let* α1 := borrow α0 u32 in
@@ -7339,7 +7385,9 @@ Module
     
     Definition Self : Set := erc20.erc20._.CallBuilder.
     
-    Definition from_account_id (account_id : erc20.erc20.AccountId) : M Self :=
+    Definition from_account_id
+        (account_id : ltac:(erc20.erc20.AccountId))
+        : M Self :=
       M.alloc {| erc20.erc20._.CallBuilder.account_id := account_id; |}.
     
     Global Instance AssociatedFunction_from_account_id :
@@ -7349,7 +7397,7 @@ Module
     
     #[refine] Global Instance ℐ :
       ink_env.call.create_builder.FromAccountId.Trait Self
-        (T := erc20.erc20.Environment) := {
+        (T := ltac:(erc20.erc20.Environment)) := {
       ink_env.call.create_builder.FromAccountId.from_account_id :=
         from_account_id;
     }.
@@ -7366,7 +7414,9 @@ Module Impl_ink_contract_ref_ToAccountId_for_erc20_erc20___CallBuilder.
     
     Definition Self : Set := erc20.erc20._.CallBuilder.
     
-    Definition to_account_id (self : ref Self) : M erc20.erc20.AccountId :=
+    Definition to_account_id
+        (self : ref Self)
+        : M ltac:(erc20.erc20.AccountId) :=
       let* α0 := deref self erc20.erc20._.CallBuilder in
       let* α1 := α0.["account_id"] in
       let* α2 := borrow α1 ink_primitives.types.AccountId in
@@ -7381,7 +7431,7 @@ Module Impl_ink_contract_ref_ToAccountId_for_erc20_erc20___CallBuilder.
     
     #[refine] Global Instance ℐ :
       ink.contract_ref.ToAccountId.Trait Self
-        (T := erc20.erc20.Environment) := {
+        (T := ltac:(erc20.erc20.Environment)) := {
       ink.contract_ref.ToAccountId.to_account_id := to_account_id;
     }.
     Admitted.
@@ -7395,7 +7445,9 @@ Module Impl_core_convert_AsRef_for_erc20_erc20___CallBuilder.
     
     Definition Self : Set := erc20.erc20._.CallBuilder.
     
-    Definition as_ref (self : ref Self) : M (ref erc20.erc20.AccountId) :=
+    Definition as_ref
+        (self : ref Self)
+        : M (ref ltac:(erc20.erc20.AccountId)) :=
       let* α0 := deref self erc20.erc20._.CallBuilder in
       let* α1 := α0.["account_id"] in
       let* α2 := borrow α1 ink_primitives.types.AccountId in
@@ -7408,7 +7460,7 @@ Module Impl_core_convert_AsRef_for_erc20_erc20___CallBuilder.
     }.
     
     #[refine] Global Instance ℐ :
-      core.convert.AsRef.Trait Self (T := erc20.erc20.AccountId) := {
+      core.convert.AsRef.Trait Self (T := ltac:(erc20.erc20.AccountId)) := {
       core.convert.AsRef.as_ref := as_ref;
     }.
     Admitted.
@@ -7424,7 +7476,7 @@ Module Impl_core_convert_AsMut_for_erc20_erc20___CallBuilder.
     
     Definition as_mut
         (self : mut_ref Self)
-        : M (mut_ref erc20.erc20.AccountId) :=
+        : M (mut_ref ltac:(erc20.erc20.AccountId)) :=
       let* α0 := deref self erc20.erc20._.CallBuilder in
       let* α1 := α0.["account_id"] in
       let* α2 := borrow_mut α1 ink_primitives.types.AccountId in
@@ -7439,7 +7491,7 @@ Module Impl_core_convert_AsMut_for_erc20_erc20___CallBuilder.
     }.
     
     #[refine] Global Instance ℐ :
-      core.convert.AsMut.Trait Self (T := erc20.erc20.AccountId) := {
+      core.convert.AsMut.Trait Self (T := ltac:(erc20.erc20.AccountId)) := {
       core.convert.AsMut.as_mut := as_mut;
     }.
     Admitted.
@@ -7458,15 +7510,15 @@ Module Impl_erc20_erc20___CallBuilder_18.
         :
           M
             (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallBuilder
-              erc20.erc20.Environment
+              ltac:(erc20.erc20.Environment)
               (ink_env.call.common.Set_
                 (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Call
-                  erc20.erc20.Environment))
+                  ltac:(erc20.erc20.Environment)))
               (ink_env.call.common.Set_
                 (ink_env.call.execution_input.ExecutionInput
-                  ink_env.call.execution_input.EmptyArgumentList))
+                  ltac:(ink_env.call.execution_input.EmptyArgumentList)))
               (ink_env.call.common.Set_
-                (ink_env.call.common.ReturnType erc20.erc20.Balance))) :=
+                (ink_env.call.common.ReturnType ltac:(erc20.erc20.Balance)))) :=
       let* α0 :=
         ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.build_call in
       let* α1 := deref self erc20.erc20._.CallBuilder in
@@ -7521,22 +7573,22 @@ Module Impl_erc20_erc20___CallBuilder_18.
     
     Definition balance_of
         (self : ref Self)
-        (__ink_binding_0 : erc20.erc20.AccountId)
+        (__ink_binding_0 : ltac:(erc20.erc20.AccountId))
         :
           M
             (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallBuilder
-              erc20.erc20.Environment
+              ltac:(erc20.erc20.Environment)
               (ink_env.call.common.Set_
                 (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Call
-                  erc20.erc20.Environment))
+                  ltac:(erc20.erc20.Environment)))
               (ink_env.call.common.Set_
                 (ink_env.call.execution_input.ExecutionInput
                   (ink_env.call.execution_input.ArgumentList
                     (ink_env.call.execution_input.Argument
-                      erc20.erc20.AccountId)
-                    ink_env.call.execution_input.EmptyArgumentList)))
+                      ltac:(erc20.erc20.AccountId))
+                    ltac:(ink_env.call.execution_input.EmptyArgumentList))))
               (ink_env.call.common.Set_
-                (ink_env.call.common.ReturnType erc20.erc20.Balance))) :=
+                (ink_env.call.common.ReturnType ltac:(erc20.erc20.Balance)))) :=
       let* α0 :=
         ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.build_call in
       let* α1 := deref self erc20.erc20._.CallBuilder in
@@ -7598,26 +7650,26 @@ Module Impl_erc20_erc20___CallBuilder_18.
     
     Definition allowance
         (self : ref Self)
-        (__ink_binding_0 : erc20.erc20.AccountId)
-        (__ink_binding_1 : erc20.erc20.AccountId)
+        (__ink_binding_0 : ltac:(erc20.erc20.AccountId))
+        (__ink_binding_1 : ltac:(erc20.erc20.AccountId))
         :
           M
             (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallBuilder
-              erc20.erc20.Environment
+              ltac:(erc20.erc20.Environment)
               (ink_env.call.common.Set_
                 (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Call
-                  erc20.erc20.Environment))
+                  ltac:(erc20.erc20.Environment)))
               (ink_env.call.common.Set_
                 (ink_env.call.execution_input.ExecutionInput
                   (ink_env.call.execution_input.ArgumentList
                     (ink_env.call.execution_input.Argument
-                      erc20.erc20.AccountId)
+                      ltac:(erc20.erc20.AccountId))
                     (ink_env.call.execution_input.ArgumentList
                       (ink_env.call.execution_input.Argument
-                        erc20.erc20.AccountId)
-                      ink_env.call.execution_input.EmptyArgumentList))))
+                        ltac:(erc20.erc20.AccountId))
+                      ltac:(ink_env.call.execution_input.EmptyArgumentList)))))
               (ink_env.call.common.Set_
-                (ink_env.call.common.ReturnType erc20.erc20.Balance))) :=
+                (ink_env.call.common.ReturnType ltac:(erc20.erc20.Balance)))) :=
       let* α0 :=
         ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.build_call in
       let* α1 := deref self erc20.erc20._.CallBuilder in
@@ -7686,25 +7738,27 @@ Module Impl_erc20_erc20___CallBuilder_18.
     
     Definition transfer
         (self : mut_ref Self)
-        (__ink_binding_0 : erc20.erc20.AccountId)
-        (__ink_binding_1 : erc20.erc20.Balance)
+        (__ink_binding_0 : ltac:(erc20.erc20.AccountId))
+        (__ink_binding_1 : ltac:(erc20.erc20.Balance))
         :
           M
             (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallBuilder
-              erc20.erc20.Environment
+              ltac:(erc20.erc20.Environment)
               (ink_env.call.common.Set_
                 (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Call
-                  erc20.erc20.Environment))
+                  ltac:(erc20.erc20.Environment)))
               (ink_env.call.common.Set_
                 (ink_env.call.execution_input.ExecutionInput
                   (ink_env.call.execution_input.ArgumentList
-                    (ink_env.call.execution_input.Argument erc20.erc20.Balance)
+                    (ink_env.call.execution_input.Argument
+                      ltac:(erc20.erc20.Balance))
                     (ink_env.call.execution_input.ArgumentList
                       (ink_env.call.execution_input.Argument
-                        erc20.erc20.AccountId)
-                      ink_env.call.execution_input.EmptyArgumentList))))
+                        ltac:(erc20.erc20.AccountId))
+                      ltac:(ink_env.call.execution_input.EmptyArgumentList)))))
               (ink_env.call.common.Set_
-                (ink_env.call.common.ReturnType (erc20.erc20.Result unit)))) :=
+                (ink_env.call.common.ReturnType
+                  ltac:(erc20.erc20.Result constr:(unit))))) :=
       let* α0 :=
         ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.build_call in
       let* α1 := deref self erc20.erc20._.CallBuilder in
@@ -7773,25 +7827,27 @@ Module Impl_erc20_erc20___CallBuilder_18.
     
     Definition approve
         (self : mut_ref Self)
-        (__ink_binding_0 : erc20.erc20.AccountId)
-        (__ink_binding_1 : erc20.erc20.Balance)
+        (__ink_binding_0 : ltac:(erc20.erc20.AccountId))
+        (__ink_binding_1 : ltac:(erc20.erc20.Balance))
         :
           M
             (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallBuilder
-              erc20.erc20.Environment
+              ltac:(erc20.erc20.Environment)
               (ink_env.call.common.Set_
                 (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Call
-                  erc20.erc20.Environment))
+                  ltac:(erc20.erc20.Environment)))
               (ink_env.call.common.Set_
                 (ink_env.call.execution_input.ExecutionInput
                   (ink_env.call.execution_input.ArgumentList
-                    (ink_env.call.execution_input.Argument erc20.erc20.Balance)
+                    (ink_env.call.execution_input.Argument
+                      ltac:(erc20.erc20.Balance))
                     (ink_env.call.execution_input.ArgumentList
                       (ink_env.call.execution_input.Argument
-                        erc20.erc20.AccountId)
-                      ink_env.call.execution_input.EmptyArgumentList))))
+                        ltac:(erc20.erc20.AccountId))
+                      ltac:(ink_env.call.execution_input.EmptyArgumentList)))))
               (ink_env.call.common.Set_
-                (ink_env.call.common.ReturnType (erc20.erc20.Result unit)))) :=
+                (ink_env.call.common.ReturnType
+                  ltac:(erc20.erc20.Result constr:(unit))))) :=
       let* α0 :=
         ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.build_call in
       let* α1 := deref self erc20.erc20._.CallBuilder in
@@ -7860,29 +7916,31 @@ Module Impl_erc20_erc20___CallBuilder_18.
     
     Definition transfer_from
         (self : mut_ref Self)
-        (__ink_binding_0 : erc20.erc20.AccountId)
-        (__ink_binding_1 : erc20.erc20.AccountId)
-        (__ink_binding_2 : erc20.erc20.Balance)
+        (__ink_binding_0 : ltac:(erc20.erc20.AccountId))
+        (__ink_binding_1 : ltac:(erc20.erc20.AccountId))
+        (__ink_binding_2 : ltac:(erc20.erc20.Balance))
         :
           M
             (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallBuilder
-              erc20.erc20.Environment
+              ltac:(erc20.erc20.Environment)
               (ink_env.call.common.Set_
                 (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Call
-                  erc20.erc20.Environment))
+                  ltac:(erc20.erc20.Environment)))
               (ink_env.call.common.Set_
                 (ink_env.call.execution_input.ExecutionInput
                   (ink_env.call.execution_input.ArgumentList
-                    (ink_env.call.execution_input.Argument erc20.erc20.Balance)
+                    (ink_env.call.execution_input.Argument
+                      ltac:(erc20.erc20.Balance))
                     (ink_env.call.execution_input.ArgumentList
                       (ink_env.call.execution_input.Argument
-                        erc20.erc20.AccountId)
+                        ltac:(erc20.erc20.AccountId))
                       (ink_env.call.execution_input.ArgumentList
                         (ink_env.call.execution_input.Argument
-                          erc20.erc20.AccountId)
-                        ink_env.call.execution_input.EmptyArgumentList)))))
+                          ltac:(erc20.erc20.AccountId))
+                        ltac:(ink_env.call.execution_input.EmptyArgumentList))))))
               (ink_env.call.common.Set_
-                (ink_env.call.common.ReturnType (erc20.erc20.Result unit)))) :=
+                (ink_env.call.common.ReturnType
+                  ltac:(erc20.erc20.Result constr:(unit))))) :=
       let* α0 :=
         ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.build_call in
       let* α1 := deref self erc20.erc20._.CallBuilder in
@@ -7992,7 +8050,7 @@ Module Impl_core_fmt_Debug_for_erc20_erc20_Erc20Ref.
     Definition fmt
         (self : ref Self)
         (f : mut_ref core.fmt.Formatter)
-        : M core.fmt.Result :=
+        : M ltac:(core.fmt.Result) :=
       let* α0 := deref f core.fmt.Formatter in
       let* α1 := borrow_mut α0 core.fmt.Formatter in
       let* α2 := deref (mk_str "Erc20Ref") str in
@@ -8409,7 +8467,7 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_erc20_erc20_Erc20Ref.
     Definition Self : Set := erc20.erc20.Erc20Ref.
     
     Definition layout
-        (__key : ref ink_primitives.key.Key)
+        (__key : ref ltac:(ink_primitives.key.Key))
         : M (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F) :=
       let* α0 := deref __key u32 in
       let* α1 := borrow α0 u32 in
@@ -8563,20 +8621,21 @@ Module Impl_erc20_erc20_Erc20Ref_26.
     Definition Self : Set := erc20.erc20.Erc20Ref.
     
     Definition new
-        (__ink_binding_0 : erc20.erc20.Balance)
+        (__ink_binding_0 : ltac:(erc20.erc20.Balance))
         :
           M
             (ink_env.call.create_builder.CreateBuilder
-              erc20.erc20.Environment
+              ltac:(erc20.erc20.Environment)
               Self
-              (ink_env.call.common.Unset_ erc20.erc20.Hash)
+              (ink_env.call.common.Unset_ ltac:(erc20.erc20.Hash))
               (ink_env.call.common.Unset_ u64)
-              (ink_env.call.common.Unset_ erc20.erc20.Balance)
+              (ink_env.call.common.Unset_ ltac:(erc20.erc20.Balance))
               (ink_env.call.common.Set_
                 (ink_env.call.execution_input.ExecutionInput
                   (ink_env.call.execution_input.ArgumentList
-                    (ink_env.call.execution_input.Argument erc20.erc20.Balance)
-                    ink_env.call.execution_input.EmptyArgumentList)))
+                    (ink_env.call.execution_input.Argument
+                      ltac:(erc20.erc20.Balance))
+                    ltac:(ink_env.call.execution_input.EmptyArgumentList))))
               (ink_env.call.common.Unset_
                 ink_env.call.create_builder.state.Salt)
               (ink_env.call.common.Set_
@@ -8633,7 +8692,7 @@ Module Impl_erc20_erc20_Erc20Ref_26.
       Notation.double_colon := new;
     }.
     
-    Definition total_supply (self : ref Self) : M erc20.erc20.Balance :=
+    Definition total_supply (self : ref Self) : M ltac:(erc20.erc20.Balance) :=
       let* α0 := deref self erc20.erc20.Erc20Ref in
       let* α1 := borrow α0 erc20.erc20.Erc20Ref in
       let* α2 := erc20.erc20.Erc20Ref::["try_total_supply"] α1 in
@@ -8665,7 +8724,10 @@ Module Impl_erc20_erc20_Erc20Ref_26.
     
     Definition try_total_supply
         (self : ref Self)
-        : M (ink_primitives.MessageResult erc20.erc20.Balance) :=
+        :
+          M
+            ltac:(ink_primitives.MessageResult
+              constr:(ltac:(erc20.erc20.Balance))) :=
       let* α0 := deref self erc20.erc20.Erc20Ref in
       let* α1 := borrow α0 erc20.erc20.Erc20Ref in
       let* α2 :=
@@ -8723,8 +8785,8 @@ Module Impl_erc20_erc20_Erc20Ref_26.
     
     Definition balance_of
         (self : ref Self)
-        (owner : erc20.erc20.AccountId)
-        : M erc20.erc20.Balance :=
+        (owner : ltac:(erc20.erc20.AccountId))
+        : M ltac:(erc20.erc20.Balance) :=
       let* α0 := deref self erc20.erc20.Erc20Ref in
       let* α1 := borrow α0 erc20.erc20.Erc20Ref in
       let* α2 := erc20.erc20.Erc20Ref::["try_balance_of"] α1 owner in
@@ -8756,8 +8818,11 @@ Module Impl_erc20_erc20_Erc20Ref_26.
     
     Definition try_balance_of
         (self : ref Self)
-        (owner : erc20.erc20.AccountId)
-        : M (ink_primitives.MessageResult erc20.erc20.Balance) :=
+        (owner : ltac:(erc20.erc20.AccountId))
+        :
+          M
+            ltac:(ink_primitives.MessageResult
+              constr:(ltac:(erc20.erc20.Balance))) :=
       let* α0 := deref self erc20.erc20.Erc20Ref in
       let* α1 := borrow α0 erc20.erc20.Erc20Ref in
       let* α2 :=
@@ -8815,9 +8880,9 @@ Module Impl_erc20_erc20_Erc20Ref_26.
     
     Definition allowance
         (self : ref Self)
-        (owner : erc20.erc20.AccountId)
-        (spender : erc20.erc20.AccountId)
-        : M erc20.erc20.Balance :=
+        (owner : ltac:(erc20.erc20.AccountId))
+        (spender : ltac:(erc20.erc20.AccountId))
+        : M ltac:(erc20.erc20.Balance) :=
       let* α0 := deref self erc20.erc20.Erc20Ref in
       let* α1 := borrow α0 erc20.erc20.Erc20Ref in
       let* α2 := erc20.erc20.Erc20Ref::["try_allowance"] α1 owner spender in
@@ -8849,9 +8914,12 @@ Module Impl_erc20_erc20_Erc20Ref_26.
     
     Definition try_allowance
         (self : ref Self)
-        (owner : erc20.erc20.AccountId)
-        (spender : erc20.erc20.AccountId)
-        : M (ink_primitives.MessageResult erc20.erc20.Balance) :=
+        (owner : ltac:(erc20.erc20.AccountId))
+        (spender : ltac:(erc20.erc20.AccountId))
+        :
+          M
+            ltac:(ink_primitives.MessageResult
+              constr:(ltac:(erc20.erc20.Balance))) :=
       let* α0 := deref self erc20.erc20.Erc20Ref in
       let* α1 := borrow α0 erc20.erc20.Erc20Ref in
       let* α2 :=
@@ -8909,9 +8977,9 @@ Module Impl_erc20_erc20_Erc20Ref_26.
     
     Definition transfer
         (self : mut_ref Self)
-        (to : erc20.erc20.AccountId)
-        (value : erc20.erc20.Balance)
-        : M (erc20.erc20.Result unit) :=
+        (to : ltac:(erc20.erc20.AccountId))
+        (value : ltac:(erc20.erc20.Balance))
+        : M ltac:(erc20.erc20.Result constr:(unit)) :=
       let* α0 := deref self erc20.erc20.Erc20Ref in
       let* α1 := borrow_mut α0 erc20.erc20.Erc20Ref in
       let* α2 := erc20.erc20.Erc20Ref::["try_transfer"] α1 to value in
@@ -8943,9 +9011,12 @@ Module Impl_erc20_erc20_Erc20Ref_26.
     
     Definition try_transfer
         (self : mut_ref Self)
-        (to : erc20.erc20.AccountId)
-        (value : erc20.erc20.Balance)
-        : M (ink_primitives.MessageResult (erc20.erc20.Result unit)) :=
+        (to : ltac:(erc20.erc20.AccountId))
+        (value : ltac:(erc20.erc20.Balance))
+        :
+          M
+            ltac:(ink_primitives.MessageResult
+              constr:(ltac:(erc20.erc20.Result constr:(unit)))) :=
       let* α0 := deref self erc20.erc20.Erc20Ref in
       let* α1 := borrow_mut α0 erc20.erc20.Erc20Ref in
       let* α2 :=
@@ -9003,9 +9074,9 @@ Module Impl_erc20_erc20_Erc20Ref_26.
     
     Definition approve
         (self : mut_ref Self)
-        (spender : erc20.erc20.AccountId)
-        (value : erc20.erc20.Balance)
-        : M (erc20.erc20.Result unit) :=
+        (spender : ltac:(erc20.erc20.AccountId))
+        (value : ltac:(erc20.erc20.Balance))
+        : M ltac:(erc20.erc20.Result constr:(unit)) :=
       let* α0 := deref self erc20.erc20.Erc20Ref in
       let* α1 := borrow_mut α0 erc20.erc20.Erc20Ref in
       let* α2 := erc20.erc20.Erc20Ref::["try_approve"] α1 spender value in
@@ -9037,9 +9108,12 @@ Module Impl_erc20_erc20_Erc20Ref_26.
     
     Definition try_approve
         (self : mut_ref Self)
-        (spender : erc20.erc20.AccountId)
-        (value : erc20.erc20.Balance)
-        : M (ink_primitives.MessageResult (erc20.erc20.Result unit)) :=
+        (spender : ltac:(erc20.erc20.AccountId))
+        (value : ltac:(erc20.erc20.Balance))
+        :
+          M
+            ltac:(ink_primitives.MessageResult
+              constr:(ltac:(erc20.erc20.Result constr:(unit)))) :=
       let* α0 := deref self erc20.erc20.Erc20Ref in
       let* α1 := borrow_mut α0 erc20.erc20.Erc20Ref in
       let* α2 :=
@@ -9097,10 +9171,10 @@ Module Impl_erc20_erc20_Erc20Ref_26.
     
     Definition transfer_from
         (self : mut_ref Self)
-        (from : erc20.erc20.AccountId)
-        (to : erc20.erc20.AccountId)
-        (value : erc20.erc20.Balance)
-        : M (erc20.erc20.Result unit) :=
+        (from : ltac:(erc20.erc20.AccountId))
+        (to : ltac:(erc20.erc20.AccountId))
+        (value : ltac:(erc20.erc20.Balance))
+        : M ltac:(erc20.erc20.Result constr:(unit)) :=
       let* α0 := deref self erc20.erc20.Erc20Ref in
       let* α1 := borrow_mut α0 erc20.erc20.Erc20Ref in
       let* α2 := erc20.erc20.Erc20Ref::["try_transfer_from"] α1 from to value in
@@ -9132,10 +9206,13 @@ Module Impl_erc20_erc20_Erc20Ref_26.
     
     Definition try_transfer_from
         (self : mut_ref Self)
-        (from : erc20.erc20.AccountId)
-        (to : erc20.erc20.AccountId)
-        (value : erc20.erc20.Balance)
-        : M (ink_primitives.MessageResult (erc20.erc20.Result unit)) :=
+        (from : ltac:(erc20.erc20.AccountId))
+        (to : ltac:(erc20.erc20.AccountId))
+        (value : ltac:(erc20.erc20.Balance))
+        :
+          M
+            ltac:(ink_primitives.MessageResult
+              constr:(ltac:(erc20.erc20.Result constr:(unit)))) :=
       let* α0 := deref self erc20.erc20.Erc20Ref in
       let* α1 := borrow_mut α0 erc20.erc20.Erc20Ref in
       let* α2 :=
@@ -9252,7 +9329,9 @@ Module Impl_ink_env_call_create_builder_FromAccountId_for_erc20_erc20_Erc20Ref.
     
     Definition Self : Set := erc20.erc20.Erc20Ref.
     
-    Definition from_account_id (account_id : erc20.erc20.AccountId) : M Self :=
+    Definition from_account_id
+        (account_id : ltac:(erc20.erc20.AccountId))
+        : M Self :=
       let* α0 :=
         (ink_env.call.create_builder.FromAccountId.from_account_id
             (Self := erc20.erc20._.CallBuilder))
@@ -9266,7 +9345,7 @@ Module Impl_ink_env_call_create_builder_FromAccountId_for_erc20_erc20_Erc20Ref.
     
     #[refine] Global Instance ℐ :
       ink_env.call.create_builder.FromAccountId.Trait Self
-        (T := erc20.erc20.Environment) := {
+        (T := ltac:(erc20.erc20.Environment)) := {
       ink_env.call.create_builder.FromAccountId.from_account_id :=
         from_account_id;
     }.
@@ -9281,7 +9360,9 @@ Module Impl_ink_contract_ref_ToAccountId_for_erc20_erc20_Erc20Ref.
     
     Definition Self : Set := erc20.erc20.Erc20Ref.
     
-    Definition to_account_id (self : ref Self) : M erc20.erc20.AccountId :=
+    Definition to_account_id
+        (self : ref Self)
+        : M ltac:(erc20.erc20.AccountId) :=
       let* α0 := deref self erc20.erc20.Erc20Ref in
       let* α1 := α0.["inner"] in
       let* α2 := borrow α1 erc20.erc20._.CallBuilder in
@@ -9298,7 +9379,7 @@ Module Impl_ink_contract_ref_ToAccountId_for_erc20_erc20_Erc20Ref.
     
     #[refine] Global Instance ℐ :
       ink.contract_ref.ToAccountId.Trait Self
-        (T := erc20.erc20.Environment) := {
+        (T := ltac:(erc20.erc20.Environment)) := {
       ink.contract_ref.ToAccountId.to_account_id := to_account_id;
     }.
     Admitted.
@@ -9312,7 +9393,9 @@ Module Impl_core_convert_AsRef_for_erc20_erc20_Erc20Ref.
     
     Definition Self : Set := erc20.erc20.Erc20Ref.
     
-    Definition as_ref (self : ref Self) : M (ref erc20.erc20.AccountId) :=
+    Definition as_ref
+        (self : ref Self)
+        : M (ref ltac:(erc20.erc20.AccountId)) :=
       let* α0 := deref self erc20.erc20.Erc20Ref in
       let* α1 := α0.["inner"] in
       let* α2 := borrow α1 erc20.erc20._.CallBuilder in
@@ -9329,7 +9412,7 @@ Module Impl_core_convert_AsRef_for_erc20_erc20_Erc20Ref.
     }.
     
     #[refine] Global Instance ℐ :
-      core.convert.AsRef.Trait Self (T := erc20.erc20.AccountId) := {
+      core.convert.AsRef.Trait Self (T := ltac:(erc20.erc20.AccountId)) := {
       core.convert.AsRef.as_ref := as_ref;
     }.
     Admitted.
@@ -9345,7 +9428,7 @@ Module Impl_core_convert_AsMut_for_erc20_erc20_Erc20Ref.
     
     Definition as_mut
         (self : mut_ref Self)
-        : M (mut_ref erc20.erc20.AccountId) :=
+        : M (mut_ref ltac:(erc20.erc20.AccountId)) :=
       let* α0 := deref self erc20.erc20.Erc20Ref in
       let* α1 := α0.["inner"] in
       let* α2 := borrow_mut α1 erc20.erc20._.CallBuilder in
@@ -9364,7 +9447,7 @@ Module Impl_core_convert_AsMut_for_erc20_erc20_Erc20Ref.
     }.
     
     #[refine] Global Instance ℐ :
-      core.convert.AsMut.Trait Self (T := erc20.erc20.AccountId) := {
+      core.convert.AsMut.Trait Self (T := ltac:(erc20.erc20.AccountId)) := {
       core.convert.AsMut.as_mut := as_mut;
     }.
     Admitted.
@@ -10733,7 +10816,7 @@ Module Impl_core_fmt_Debug_for_erc20_erc20_Error.
     Definition fmt
         (self : ref Self)
         (f : mut_ref core.fmt.Formatter)
-        : M core.fmt.Result :=
+        : M ltac:(core.fmt.Result) :=
       let* α0 := deref f core.fmt.Formatter in
       let* α1 := borrow_mut α0 core.fmt.Formatter in
       let* α2 :=
@@ -11017,5 +11100,4 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Error.
   Global Hint Resolve ℐ : core.
 End Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Error.
 
-Definition Result `{ℋ : State.Trait} (T : Set) : Set :=
-  core.result.Result T erc20.erc20.Error.
+Ltac Result T := refine (core.result.Result T erc20.erc20.Error).

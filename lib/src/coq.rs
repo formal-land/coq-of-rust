@@ -168,6 +168,11 @@ pub(crate) enum Expression<'a> {
     Record {
         fields: Vec<Field<'a>>,
     },
+    // For example ltac:(...) or constr:(...)
+    ModeWrapper {
+        mode: String,
+        expr: Box<Expression<'a>>,
+    },
     /// Set constant (the type of our types)
     Set,
     /// a dependent sum of types
@@ -865,6 +870,12 @@ impl<'a> Expression<'a> {
                 },
                 hardline(),
                 text("}"),
+            ]),
+            Self::ModeWrapper { mode, expr } => concat([
+                text(mode.to_owned()),
+                text(":("),
+                expr.to_doc(false),
+                text(")"),
             ]),
             Self::Set => text("Set"),
             Self::SigmaType { args, image } => paren(

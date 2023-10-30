@@ -64,7 +64,9 @@ Module config.
       Definition Self : Set := ink_e2e_macro.config.E2EConfig.
       
       Parameter fmt :
-          (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+          (ref Self) ->
+            (mut_ref core.fmt.Formatter) ->
+            M ltac:(core.fmt.Result).
       
       Global Instance AssociatedFunction_fmt :
         Notation.DoubleColon Self "fmt" := {
@@ -361,7 +363,9 @@ Module codegen.
       Definition Self : Set := ink_e2e_macro.codegen.ContractManifests.
       
       Parameter fmt :
-          (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+          (ref Self) ->
+            (mut_ref core.fmt.Formatter) ->
+            M ltac:(core.fmt.Result).
       
       Global Instance AssociatedFunction_fmt :
         Notation.DoubleColon Self "fmt" := {
@@ -455,7 +459,7 @@ End Impl_core_convert_From_for_ink_e2e_macro_codegen_InkE2ETest.
     Definition Self : Set := ink_e2e_macro.codegen.ContractManifests.
     
     Parameter fmt :
-        (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+        (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
     
     Global Instance AssociatedFunction_fmt :
       Notation.DoubleColon Self "fmt" := {
@@ -528,7 +532,7 @@ Module Impl_core_fmt_Debug_for_ink_e2e_macro_config_E2EConfig.
     Definition Self : Set := ink_e2e_macro.config.E2EConfig.
     
     Parameter fmt :
-        (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+        (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
     
     Global Instance AssociatedFunction_fmt :
       Notation.DoubleColon Self "fmt" := {

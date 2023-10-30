@@ -73,7 +73,9 @@ Module hash.
       Definition Self : Set := ink_env.hash.Sha2x256.
       
       Parameter fmt :
-          (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+          (ref Self) ->
+            (mut_ref core.fmt.Formatter) ->
+            M ltac:(core.fmt.Result).
       
       Global Instance AssociatedFunction_fmt :
         Notation.DoubleColon Self "fmt" := {
@@ -205,7 +207,9 @@ Module hash.
       Definition Self : Set := ink_env.hash.Keccak256.
       
       Parameter fmt :
-          (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+          (ref Self) ->
+            (mut_ref core.fmt.Formatter) ->
+            M ltac:(core.fmt.Result).
       
       Global Instance AssociatedFunction_fmt :
         Notation.DoubleColon Self "fmt" := {
@@ -337,7 +341,9 @@ Module hash.
       Definition Self : Set := ink_env.hash.Blake2x256.
       
       Parameter fmt :
-          (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+          (ref Self) ->
+            (mut_ref core.fmt.Formatter) ->
+            M ltac:(core.fmt.Result).
       
       Global Instance AssociatedFunction_fmt :
         Notation.DoubleColon Self "fmt" := {
@@ -469,7 +475,9 @@ Module hash.
       Definition Self : Set := ink_env.hash.Blake2x128.
       
       Parameter fmt :
-          (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+          (ref Self) ->
+            (mut_ref core.fmt.Formatter) ->
+            M ltac:(core.fmt.Result).
       
       Global Instance AssociatedFunction_fmt :
         Notation.DoubleColon Self "fmt" := {
@@ -1245,7 +1253,9 @@ Module types.
       Definition Self : Set := ink_env.types.DefaultEnvironment.
       
       Parameter fmt :
-          (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+          (ref Self) ->
+            (mut_ref core.fmt.Formatter) ->
+            M ltac:(core.fmt.Result).
       
       Global Instance AssociatedFunction_fmt :
         Notation.DoubleColon Self "fmt" := {
@@ -1355,11 +1365,11 @@ Module types.
     Global Hint Resolve ℐ : core.
   End Impl_core_cmp_Eq_for_ink_env_types_DefaultEnvironment.
   
-  Definition Balance `{ℋ : State.Trait} : Set := u128.
+  Ltac Balance := refine u128.
   
-  Definition Timestamp `{ℋ : State.Trait} : Set := u64.
+  Ltac Timestamp := refine u64.
   
-  Definition BlockNumber `{ℋ : State.Trait} : Set := u32.
+  Ltac BlockNumber := refine u32.
   
   Module Impl_ink_env_types_Environment_for_ink_env_types_DefaultEnvironment.
     Section Impl_ink_env_types_Environment_for_ink_env_types_DefaultEnvironment.
@@ -1367,7 +1377,7 @@ Module types.
       
       Definition Self : Set := ink_env.types.DefaultEnvironment.
       
-      Definition MAX_EVENT_TOPICS : usize := M.run (M.alloc 4).
+      Parameter MAX_EVENT_TOPICS : usize.
       
       Global Instance AssociatedFunction_MAX_EVENT_TOPICS :
         Notation.DoubleColon Self "MAX_EVENT_TOPICS" := {
@@ -1376,13 +1386,13 @@ Module types.
       
       Definition AccountId : Set := ink_primitives.types.AccountId.
       
-      Definition Balance : Set := ink_env.types.Balance.
+      Definition Balance : Set := ltac:(ink_env.types.Balance).
       
       Definition Hash : Set := ink_primitives.types.Hash.
       
-      Definition Timestamp : Set := ink_env.types.Timestamp.
+      Definition Timestamp : Set := ltac:(ink_env.types.Timestamp).
       
-      Definition BlockNumber : Set := ink_env.types.BlockNumber.
+      Definition BlockNumber : Set := ltac:(ink_env.types.BlockNumber).
       
       Definition ChainExtension : Set := ink_env.types.NoChainExtension.
       
@@ -1400,7 +1410,7 @@ Module types.
     Global Hint Resolve ℐ : core.
   End Impl_ink_env_types_Environment_for_ink_env_types_DefaultEnvironment.
   
-  Definition Gas `{ℋ : State.Trait} : Set := u64.
+  Ltac Gas := refine u64.
 End types.
 
 Module FromLittleEndian.
@@ -1763,7 +1773,7 @@ Module Impl_core_fmt_Debug_for_ink_env_types_DefaultEnvironment.
     Definition Self : Set := ink_env.types.DefaultEnvironment.
     
     Parameter fmt :
-        (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+        (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
     
     Global Instance AssociatedFunction_fmt :
       Notation.DoubleColon Self "fmt" := {
@@ -1877,7 +1887,7 @@ Module Impl_ink_env_types_Environment_for_ink_env_types_DefaultEnvironment.
     
     Definition Self : Set := ink_env.types.DefaultEnvironment.
     
-    Definition MAX_EVENT_TOPICS : usize := M.run (M.alloc 4).
+    Parameter MAX_EVENT_TOPICS : usize.
     
     Global Instance AssociatedFunction_MAX_EVENT_TOPICS :
       Notation.DoubleColon Self "MAX_EVENT_TOPICS" := {
@@ -1886,13 +1896,13 @@ Module Impl_ink_env_types_Environment_for_ink_env_types_DefaultEnvironment.
     
     Definition AccountId : Set := ink_primitives.types.AccountId.
     
-    Definition Balance : Set := ink_env.types.Balance.
+    Definition Balance : Set := ltac:(ink_env.types.Balance).
     
     Definition Hash : Set := ink_primitives.types.Hash.
     
-    Definition Timestamp : Set := ink_env.types.Timestamp.
+    Definition Timestamp : Set := ltac:(ink_env.types.Timestamp).
     
-    Definition BlockNumber : Set := ink_env.types.BlockNumber.
+    Definition BlockNumber : Set := ltac:(ink_env.types.BlockNumber).
     
     Definition ChainExtension : Set := ink_env.types.NoChainExtension.
     
@@ -1910,13 +1920,13 @@ Module Impl_ink_env_types_Environment_for_ink_env_types_DefaultEnvironment.
   Global Hint Resolve ℐ : core.
 End Impl_ink_env_types_Environment_for_ink_env_types_DefaultEnvironment.
 
-Definition Balance `{ℋ : State.Trait} : Set := u128.
+Ltac Balance := refine u128.
 
-Definition Timestamp `{ℋ : State.Trait} : Set := u64.
+Ltac Timestamp := refine u64.
 
-Definition Gas `{ℋ : State.Trait} : Set := u64.
+Ltac Gas := refine u64.
 
-Definition BlockNumber `{ℋ : State.Trait} : Set := u32.
+Ltac BlockNumber := refine u32.
 
 Module contract.
   Module ContractEnv.
@@ -1986,7 +1996,9 @@ Module call.
         Definition Self : Set := ink_env.call.common.ReturnType T.
         
         Parameter fmt :
-            (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+            (ref Self) ->
+              (mut_ref core.fmt.Formatter) ->
+              M ltac:(core.fmt.Result).
         
         Global Instance AssociatedFunction_fmt :
           Notation.DoubleColon Self "fmt" := {
@@ -2093,7 +2105,9 @@ Module call.
         Definition Self : Set := ink_env.call.common.Set_ T.
         
         Parameter fmt :
-            (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+            (ref Self) ->
+              (mut_ref core.fmt.Formatter) ->
+              M ltac:(core.fmt.Result).
         
         Global Instance AssociatedFunction_fmt :
           Notation.DoubleColon Self "fmt" := {
@@ -2179,7 +2193,9 @@ Module call.
         Definition Self : Set := ink_env.call.common.Unset_ T.
         
         Parameter fmt :
-            (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+            (ref Self) ->
+              (mut_ref core.fmt.Formatter) ->
+              M ltac:(core.fmt.Result).
         
         Global Instance AssociatedFunction_fmt :
           Notation.DoubleColon Self "fmt" := {
@@ -2398,7 +2414,9 @@ Module call.
         Definition Self : Set := ink_env.call.selector.Selector.
         
         Parameter fmt :
-            (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+            (ref Self) ->
+              (mut_ref core.fmt.Formatter) ->
+              M ltac:(core.fmt.Result).
         
         Global Instance AssociatedFunction_fmt :
           Notation.DoubleColon Self "fmt" := {
@@ -2655,7 +2673,9 @@ Module call.
           ink_env.call.execution_input.ExecutionInput Args.
         
         Parameter fmt :
-            (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+            (ref Self) ->
+              (mut_ref core.fmt.Formatter) ->
+              M ltac:(core.fmt.Result).
         
         Global Instance AssociatedFunction_fmt :
           Notation.DoubleColon Self "fmt" := {
@@ -2788,7 +2808,9 @@ Module call.
           ink_env.call.execution_input.ArgumentList Head Rest.
         
         Parameter fmt :
-            (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+            (ref Self) ->
+              (mut_ref core.fmt.Formatter) ->
+              M ltac:(core.fmt.Result).
         
         Global Instance AssociatedFunction_fmt :
           Notation.DoubleColon Self "fmt" := {
@@ -2830,10 +2852,11 @@ Module call.
     Definition Argument (T : Set) `{ℋ : State.Trait} : Set :=
       M.val (Argument.t (T := T)).
     
-    Definition ArgsList `{ℋ : State.Trait} (Head Rest : Set) : Set :=
-      ink_env.call.execution_input.ArgumentList
-        (ink_env.call.execution_input.Argument Head)
-        Rest.
+    Ltac ArgsList Head Rest :=
+      refine
+        (ink_env.call.execution_input.ArgumentList
+          (ink_env.call.execution_input.Argument Head)
+          Rest).
     
     Module Impl_core_clone_Clone_for_ink_env_call_execution_input_Argument_T.
       Section Impl_core_clone_Clone_for_ink_env_call_execution_input_Argument_T.
@@ -2870,7 +2893,9 @@ Module call.
         Definition Self : Set := ink_env.call.execution_input.Argument T.
         
         Parameter fmt :
-            (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+            (ref Self) ->
+              (mut_ref core.fmt.Formatter) ->
+              M ltac:(core.fmt.Result).
         
         Global Instance AssociatedFunction_fmt :
           Notation.DoubleColon Self "fmt" := {
@@ -2952,7 +2977,9 @@ Module call.
         Definition Self : Set := ink_env.call.execution_input.ArgumentListEnd.
         
         Parameter fmt :
-            (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+            (ref Self) ->
+              (mut_ref core.fmt.Formatter) ->
+              M ltac:(core.fmt.Result).
         
         Global Instance AssociatedFunction_fmt :
           Notation.DoubleColon Self "fmt" := {
@@ -2967,10 +2994,11 @@ Module call.
       Global Hint Resolve ℐ : core.
     End Impl_core_fmt_Debug_for_ink_env_call_execution_input_ArgumentListEnd.
     
-    Definition EmptyArgumentList `{ℋ : State.Trait} : Set :=
-      ink_env.call.execution_input.ArgumentList
-        ink_env.call.execution_input.ArgumentListEnd
-        ink_env.call.execution_input.ArgumentListEnd.
+    Ltac EmptyArgumentList :=
+      refine
+        (ink_env.call.execution_input.ArgumentList
+          ink_env.call.execution_input.ArgumentListEnd
+          ink_env.call.execution_input.ArgumentListEnd).
     
     Module
       Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_Argument_T.
@@ -3021,7 +3049,8 @@ Module call.
         Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_EmptyArgumentList.
         Context `{ℋ : State.Trait}.
         
-        Definition Self : Set := ink_env.call.execution_input.EmptyArgumentList.
+        Definition Self : Set :=
+          ltac:(ink_env.call.execution_input.EmptyArgumentList).
         
         Parameter size_hint : (ref Self) -> M usize.
         
@@ -3255,7 +3284,7 @@ Module call.
           {ℋ_2 : parity_scale_codec.codec.Decode.Trait E}.
         Definition Self : Set := core.result.Result C E.
         
-        Definition IS_RESULT : bool := M.run (M.alloc true).
+        Parameter IS_RESULT : bool.
         
         Global Instance AssociatedFunction_IS_RESULT :
           Notation.DoubleColon Self "IS_RESULT" := {
@@ -3422,7 +3451,9 @@ Module call.
           ink_env.call.create_builder.CreateParams E ContractRef Args Salt R.
         
         Parameter fmt :
-            (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+            (ref Self) ->
+              (mut_ref core.fmt.Formatter) ->
+              M ltac:(core.fmt.Result).
         
         Global Instance AssociatedFunction_fmt :
           Notation.DoubleColon Self "fmt" := {
@@ -3586,7 +3617,9 @@ Module engine.
           Definition Self : Set := ink_env.engine.off_chain.call_data.CallData.
           
           Parameter fmt :
-              (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+              (ref Self) ->
+                (mut_ref core.fmt.Formatter) ->
+                M ltac:(core.fmt.Result).
           
           Global Instance AssociatedFunction_fmt :
             Notation.DoubleColon Self "fmt" := {
@@ -4059,8 +4092,8 @@ Module engine.
               (mut_ref Self) ->
                 (ref K) ->
                 M
-                  (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-                    (core.option.Option R)).
+                  ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+                    constr:(core.option.Option R)).
           
           Global Instance AssociatedFunction_get_contract_storage
               {K R : Set}
@@ -4078,8 +4111,8 @@ Module engine.
               (mut_ref Self) ->
                 (ref K) ->
                 M
-                  (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-                    (core.option.Option R)).
+                  ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+                    constr:(core.option.Option R)).
           
           Global Instance AssociatedFunction_take_contract_storage
               {K R : Set}
@@ -4115,8 +4148,8 @@ Module engine.
               forall {T : Set} {ℋ_0 : parity_scale_codec.codec.Decode.Trait T},
               (mut_ref Self) ->
                 M
-                  (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-                    T).
+                  ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+                    constr:(T)).
           
           Global Instance AssociatedFunction_decode_input
               {T : Set}
@@ -4193,8 +4226,8 @@ Module engine.
                 (ref (array u8)) ->
                 (mut_ref (array u8)) ->
                 M
-                  (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-                    unit).
+                  ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+                    constr:(unit)).
           
           Global Instance AssociatedFunction_ecdsa_recover :
             Notation.DoubleColon Self "ecdsa_recover" := {
@@ -4206,8 +4239,8 @@ Module engine.
                 (ref (array u8)) ->
                 (mut_ref (array u8)) ->
                 M
-                  (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-                    unit).
+                  ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+                    constr:(unit)).
           
           Global Instance AssociatedFunction_ecdsa_to_eth_address :
             Notation.DoubleColon Self "ecdsa_to_eth_address" := {
@@ -4254,8 +4287,8 @@ Module engine.
               (mut_ref Self) ->
                 (ref (Slice u8)) ->
                 M
-                  (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-                    unit).
+                  ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+                    constr:(unit)).
           
           Global Instance AssociatedFunction_set_code_hash :
             Notation.DoubleColon Self "set_code_hash" := {
@@ -4461,8 +4494,8 @@ Module engine.
                     R))
                 ->
                 M
-                  (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-                    (ink_primitives.MessageResult R)).
+                  ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+                    constr:(ltac:(ink_primitives.MessageResult constr:(R)))).
           
           Global Instance AssociatedFunction_invoke_contract
               {E Args R : Set}
@@ -4491,8 +4524,8 @@ Module engine.
                     R))
                 ->
                 M
-                  (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-                    (ink_primitives.MessageResult R)).
+                  ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+                    constr:(ltac:(ink_primitives.MessageResult constr:(R)))).
           
           Global Instance AssociatedFunction_invoke_contract_delegate
               {E Args R : Set}
@@ -4527,11 +4560,11 @@ Module engine.
                     R))
                 ->
                 M
-                  (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-                    (ink_primitives.ConstructorResult
-                      (ink_env.call.create_builder.ConstructorReturnType.Output
+                  ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+                    constr:(ltac:(ink_primitives.ConstructorResult
+                      constr:(ink_env.call.create_builder.ConstructorReturnType.Output
                         (Self := R)
-                        (Trait := ltac:(try clear Trait; hauto l: on))))).
+                        (Trait := ltac:(try clear Trait; hauto l: on)))))).
           
           Global Instance AssociatedFunction_instantiate_contract
               {E ContractRef Args Salt R : Set}
@@ -4572,8 +4605,8 @@ Module engine.
                 E::type["AccountId"] ->
                 E::type["Balance"] ->
                 M
-                  (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-                    unit).
+                  ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+                    constr:(unit)).
           
           Global Instance AssociatedFunction_transfer
               {E : Set}
@@ -4620,8 +4653,8 @@ Module engine.
               (mut_ref Self) ->
                 (ref E::type["AccountId"]) ->
                 M
-                  (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-                    E::type["Hash"]).
+                  ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+                    constr:(E::type["Hash"])).
           
           Global Instance AssociatedFunction_code_hash
               {E : Set}
@@ -4634,8 +4667,8 @@ Module engine.
               forall {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E},
               (mut_ref Self) ->
                 M
-                  (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-                    E::type["Hash"]).
+                  ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+                    constr:(E::type["Hash"])).
           
           Global Instance AssociatedFunction_own_code_hash
               {E : Set}
@@ -4649,8 +4682,8 @@ Module engine.
               (mut_ref Self) ->
                 (ref Call) ->
                 M
-                  (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-                    unit).
+                  ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+                    constr:(unit)).
           
           Global Instance AssociatedFunction_call_runtime
               {E Call : Set}
@@ -4944,7 +4977,9 @@ Module engine.
         Definition Self : Set := ink_env.engine.off_chain.OffChainError.
         
         Parameter fmt :
-            (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+            (ref Self) ->
+              (mut_ref core.fmt.Formatter) ->
+              M ltac:(core.fmt.Result).
         
         Global Instance AssociatedFunction_fmt :
           Notation.DoubleColon Self "fmt" := {
@@ -5073,7 +5108,9 @@ Module engine.
         Definition Self : Set := ink_env.engine.off_chain.AccountError.
         
         Parameter fmt :
-            (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+            (ref Self) ->
+              (mut_ref core.fmt.Formatter) ->
+              M ltac:(core.fmt.Result).
         
         Global Instance AssociatedFunction_fmt :
           Notation.DoubleColon Self "fmt" := {
@@ -5350,667 +5387,7 @@ Module topics.
       
       Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
       
-      Definition AMOUNT : usize := M.run (M.alloc 2).
-      
-      Global Instance AssociatedFunction_AMOUNT :
-        Notation.DoubleColon Self "AMOUNT" := {
-        Notation.double_colon := AMOUNT;
-      }.
-      
-      #[refine] Global Instance ℐ :
-        ink_env.topics.EventTopicsAmount.Trait Self := {
-        ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
-      }.
-      Admitted.
-    End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-    Global Hint Resolve ℐ : core.
-  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-  
-  (* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-      Context `{ℋ : State.Trait}.
-      
-      Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
-      
-      Definition AMOUNT : usize := M.run (M.alloc 3).
-      
-      Global Instance AssociatedFunction_AMOUNT :
-        Notation.DoubleColon Self "AMOUNT" := {
-        Notation.double_colon := AMOUNT;
-      }.
-      
-      #[refine] Global Instance ℐ :
-        ink_env.topics.EventTopicsAmount.Trait Self := {
-        ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
-      }.
-      Admitted.
-    End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-    Global Hint Resolve ℐ : core.
-  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-  
-  (* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-      Context `{ℋ : State.Trait}.
-      
-      Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
-      
-      Definition AMOUNT : usize := M.run (M.alloc 4).
-      
-      Global Instance AssociatedFunction_AMOUNT :
-        Notation.DoubleColon Self "AMOUNT" := {
-        Notation.double_colon := AMOUNT;
-      }.
-      
-      #[refine] Global Instance ℐ :
-        ink_env.topics.EventTopicsAmount.Trait Self := {
-        ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
-      }.
-      Admitted.
-    End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-    Global Hint Resolve ℐ : core.
-  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-  
-  (* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-      Context `{ℋ : State.Trait}.
-      
-      Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
-      
-      Definition AMOUNT : usize := M.run (M.alloc 5).
-      
-      Global Instance AssociatedFunction_AMOUNT :
-        Notation.DoubleColon Self "AMOUNT" := {
-        Notation.double_colon := AMOUNT;
-      }.
-      
-      #[refine] Global Instance ℐ :
-        ink_env.topics.EventTopicsAmount.Trait Self := {
-        ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
-      }.
-      Admitted.
-    End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-    Global Hint Resolve ℐ : core.
-  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-  
-  (* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-      Context `{ℋ : State.Trait}.
-      
-      Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
-      
-      Definition AMOUNT : usize := M.run (M.alloc 6).
-      
-      Global Instance AssociatedFunction_AMOUNT :
-        Notation.DoubleColon Self "AMOUNT" := {
-        Notation.double_colon := AMOUNT;
-      }.
-      
-      #[refine] Global Instance ℐ :
-        ink_env.topics.EventTopicsAmount.Trait Self := {
-        ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
-      }.
-      Admitted.
-    End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-    Global Hint Resolve ℐ : core.
-  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-  
-  (* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-      Context `{ℋ : State.Trait}.
-      
-      Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
-      
-      Definition AMOUNT : usize := M.run (M.alloc 7).
-      
-      Global Instance AssociatedFunction_AMOUNT :
-        Notation.DoubleColon Self "AMOUNT" := {
-        Notation.double_colon := AMOUNT;
-      }.
-      
-      #[refine] Global Instance ℐ :
-        ink_env.topics.EventTopicsAmount.Trait Self := {
-        ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
-      }.
-      Admitted.
-    End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-    Global Hint Resolve ℐ : core.
-  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-  
-  (* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-      Context `{ℋ : State.Trait}.
-      
-      Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
-      
-      Definition AMOUNT : usize := M.run (M.alloc 8).
-      
-      Global Instance AssociatedFunction_AMOUNT :
-        Notation.DoubleColon Self "AMOUNT" := {
-        Notation.double_colon := AMOUNT;
-      }.
-      
-      #[refine] Global Instance ℐ :
-        ink_env.topics.EventTopicsAmount.Trait Self := {
-        ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
-      }.
-      Admitted.
-    End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-    Global Hint Resolve ℐ : core.
-  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-  
-  (* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-      Context `{ℋ : State.Trait}.
-      
-      Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
-      
-      Definition AMOUNT : usize := M.run (M.alloc 9).
-      
-      Global Instance AssociatedFunction_AMOUNT :
-        Notation.DoubleColon Self "AMOUNT" := {
-        Notation.double_colon := AMOUNT;
-      }.
-      
-      #[refine] Global Instance ℐ :
-        ink_env.topics.EventTopicsAmount.Trait Self := {
-        ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
-      }.
-      Admitted.
-    End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-    Global Hint Resolve ℐ : core.
-  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-  
-  (* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-      Context `{ℋ : State.Trait}.
-      
-      Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
-      
-      Definition AMOUNT : usize := M.run (M.alloc 10).
-      
-      Global Instance AssociatedFunction_AMOUNT :
-        Notation.DoubleColon Self "AMOUNT" := {
-        Notation.double_colon := AMOUNT;
-      }.
-      
-      #[refine] Global Instance ℐ :
-        ink_env.topics.EventTopicsAmount.Trait Self := {
-        ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
-      }.
-      Admitted.
-    End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-    Global Hint Resolve ℐ : core.
-  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-  
-  (* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-      Context `{ℋ : State.Trait}.
-      
-      Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
-      
-      Definition AMOUNT : usize := M.run (M.alloc 11).
-      
-      Global Instance AssociatedFunction_AMOUNT :
-        Notation.DoubleColon Self "AMOUNT" := {
-        Notation.double_colon := AMOUNT;
-      }.
-      
-      #[refine] Global Instance ℐ :
-        ink_env.topics.EventTopicsAmount.Trait Self := {
-        ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
-      }.
-      Admitted.
-    End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-    Global Hint Resolve ℐ : core.
-  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-  
-  (* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-      Context `{ℋ : State.Trait}.
-      
-      Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
-      
-      Definition AMOUNT : usize := M.run (M.alloc 12).
-      
-      Global Instance AssociatedFunction_AMOUNT :
-        Notation.DoubleColon Self "AMOUNT" := {
-        Notation.double_colon := AMOUNT;
-      }.
-      
-      #[refine] Global Instance ℐ :
-        ink_env.topics.EventTopicsAmount.Trait Self := {
-        ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
-      }.
-      Admitted.
-    End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-    Global Hint Resolve ℐ : core.
-  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-  
-  (* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-      Context `{ℋ : State.Trait}.
-      
-      Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
-      
-      Definition AMOUNT : usize := M.run (M.alloc 13).
-      
-      Global Instance AssociatedFunction_AMOUNT :
-        Notation.DoubleColon Self "AMOUNT" := {
-        Notation.double_colon := AMOUNT;
-      }.
-      
-      #[refine] Global Instance ℐ :
-        ink_env.topics.EventTopicsAmount.Trait Self := {
-        ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
-      }.
-      Admitted.
-    End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-    Global Hint Resolve ℐ : core.
-  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-  
-  (* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-      Context `{ℋ : State.Trait}.
-      
-      Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
-      
-      Definition AMOUNT : usize := M.run (M.alloc 14).
-      
-      Global Instance AssociatedFunction_AMOUNT :
-        Notation.DoubleColon Self "AMOUNT" := {
-        Notation.double_colon := AMOUNT;
-      }.
-      
-      #[refine] Global Instance ℐ :
-        ink_env.topics.EventTopicsAmount.Trait Self := {
-        ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
-      }.
-      Admitted.
-    End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-    Global Hint Resolve ℐ : core.
-  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-  
-  (* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-      Context `{ℋ : State.Trait}.
-      
-      Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
-      
-      Definition AMOUNT : usize := M.run (M.alloc 15).
-      
-      Global Instance AssociatedFunction_AMOUNT :
-        Notation.DoubleColon Self "AMOUNT" := {
-        Notation.double_colon := AMOUNT;
-      }.
-      
-      #[refine] Global Instance ℐ :
-        ink_env.topics.EventTopicsAmount.Trait Self := {
-        ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
-      }.
-      Admitted.
-    End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-    Global Hint Resolve ℐ : core.
-  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-  
-  (* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-      Context `{ℋ : State.Trait}.
-      
-      Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
-      
-      Definition AMOUNT : usize := M.run (M.alloc 16).
-      
-      Global Instance AssociatedFunction_AMOUNT :
-        Notation.DoubleColon Self "AMOUNT" := {
-        Notation.double_colon := AMOUNT;
-      }.
-      
-      #[refine] Global Instance ℐ :
-        ink_env.topics.EventTopicsAmount.Trait Self := {
-        ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
-      }.
-      Admitted.
-    End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-    Global Hint Resolve ℐ : core.
-  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-  
-  (* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-      Context `{ℋ : State.Trait}.
-      
-      Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
-      
-      Definition AMOUNT : usize := M.run (M.alloc 17).
-      
-      Global Instance AssociatedFunction_AMOUNT :
-        Notation.DoubleColon Self "AMOUNT" := {
-        Notation.double_colon := AMOUNT;
-      }.
-      
-      #[refine] Global Instance ℐ :
-        ink_env.topics.EventTopicsAmount.Trait Self := {
-        ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
-      }.
-      Admitted.
-    End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-    Global Hint Resolve ℐ : core.
-  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-  
-  (* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-      Context `{ℋ : State.Trait}.
-      
-      Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
-      
-      Definition AMOUNT : usize := M.run (M.alloc 18).
-      
-      Global Instance AssociatedFunction_AMOUNT :
-        Notation.DoubleColon Self "AMOUNT" := {
-        Notation.double_colon := AMOUNT;
-      }.
-      
-      #[refine] Global Instance ℐ :
-        ink_env.topics.EventTopicsAmount.Trait Self := {
-        ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
-      }.
-      Admitted.
-    End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-    Global Hint Resolve ℐ : core.
-  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-  
-  (* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-      Context `{ℋ : State.Trait}.
-      
-      Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
-      
-      Definition AMOUNT : usize := M.run (M.alloc 19).
-      
-      Global Instance AssociatedFunction_AMOUNT :
-        Notation.DoubleColon Self "AMOUNT" := {
-        Notation.double_colon := AMOUNT;
-      }.
-      
-      #[refine] Global Instance ℐ :
-        ink_env.topics.EventTopicsAmount.Trait Self := {
-        ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
-      }.
-      Admitted.
-    End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-    Global Hint Resolve ℐ : core.
-  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-  
-  (* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-      Context `{ℋ : State.Trait}.
-      
-      Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
-      
-      Definition AMOUNT : usize := M.run (M.alloc 20).
-      
-      Global Instance AssociatedFunction_AMOUNT :
-        Notation.DoubleColon Self "AMOUNT" := {
-        Notation.double_colon := AMOUNT;
-      }.
-      
-      #[refine] Global Instance ℐ :
-        ink_env.topics.EventTopicsAmount.Trait Self := {
-        ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
-      }.
-      Admitted.
-    End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-    Global Hint Resolve ℐ : core.
-  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-  
-  (* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-      Context `{ℋ : State.Trait}.
-      
-      Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
-      
-      Definition AMOUNT : usize := M.run (M.alloc 21).
-      
-      Global Instance AssociatedFunction_AMOUNT :
-        Notation.DoubleColon Self "AMOUNT" := {
-        Notation.double_colon := AMOUNT;
-      }.
-      
-      #[refine] Global Instance ℐ :
-        ink_env.topics.EventTopicsAmount.Trait Self := {
-        ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
-      }.
-      Admitted.
-    End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-    Global Hint Resolve ℐ : core.
-  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-  
-  (* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-      Context `{ℋ : State.Trait}.
-      
-      Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
-      
-      Definition AMOUNT : usize := M.run (M.alloc 22).
-      
-      Global Instance AssociatedFunction_AMOUNT :
-        Notation.DoubleColon Self "AMOUNT" := {
-        Notation.double_colon := AMOUNT;
-      }.
-      
-      #[refine] Global Instance ℐ :
-        ink_env.topics.EventTopicsAmount.Trait Self := {
-        ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
-      }.
-      Admitted.
-    End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-    Global Hint Resolve ℐ : core.
-  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-  
-  (* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-      Context `{ℋ : State.Trait}.
-      
-      Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
-      
-      Definition AMOUNT : usize := M.run (M.alloc 23).
-      
-      Global Instance AssociatedFunction_AMOUNT :
-        Notation.DoubleColon Self "AMOUNT" := {
-        Notation.double_colon := AMOUNT;
-      }.
-      
-      #[refine] Global Instance ℐ :
-        ink_env.topics.EventTopicsAmount.Trait Self := {
-        ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
-      }.
-      Admitted.
-    End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-    Global Hint Resolve ℐ : core.
-  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-  
-  (* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-      Context `{ℋ : State.Trait}.
-      
-      Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
-      
-      Definition AMOUNT : usize := M.run (M.alloc 24).
-      
-      Global Instance AssociatedFunction_AMOUNT :
-        Notation.DoubleColon Self "AMOUNT" := {
-        Notation.double_colon := AMOUNT;
-      }.
-      
-      #[refine] Global Instance ℐ :
-        ink_env.topics.EventTopicsAmount.Trait Self := {
-        ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
-      }.
-      Admitted.
-    End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-    Global Hint Resolve ℐ : core.
-  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-  
-  (* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-      Context `{ℋ : State.Trait}.
-      
-      Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
-      
-      Definition AMOUNT : usize := M.run (M.alloc 25).
-      
-      Global Instance AssociatedFunction_AMOUNT :
-        Notation.DoubleColon Self "AMOUNT" := {
-        Notation.double_colon := AMOUNT;
-      }.
-      
-      #[refine] Global Instance ℐ :
-        ink_env.topics.EventTopicsAmount.Trait Self := {
-        ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
-      }.
-      Admitted.
-    End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-    Global Hint Resolve ℐ : core.
-  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-  
-  (* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-      Context `{ℋ : State.Trait}.
-      
-      Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
-      
-      Definition AMOUNT : usize := M.run (M.alloc 26).
-      
-      Global Instance AssociatedFunction_AMOUNT :
-        Notation.DoubleColon Self "AMOUNT" := {
-        Notation.double_colon := AMOUNT;
-      }.
-      
-      #[refine] Global Instance ℐ :
-        ink_env.topics.EventTopicsAmount.Trait Self := {
-        ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
-      }.
-      Admitted.
-    End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-    Global Hint Resolve ℐ : core.
-  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-  
-  (* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-      Context `{ℋ : State.Trait}.
-      
-      Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
-      
-      Definition AMOUNT : usize := M.run (M.alloc 27).
-      
-      Global Instance AssociatedFunction_AMOUNT :
-        Notation.DoubleColon Self "AMOUNT" := {
-        Notation.double_colon := AMOUNT;
-      }.
-      
-      #[refine] Global Instance ℐ :
-        ink_env.topics.EventTopicsAmount.Trait Self := {
-        ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
-      }.
-      Admitted.
-    End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-    Global Hint Resolve ℐ : core.
-  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-  
-  (* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-      Context `{ℋ : State.Trait}.
-      
-      Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
-      
-      Definition AMOUNT : usize := M.run (M.alloc 28).
-      
-      Global Instance AssociatedFunction_AMOUNT :
-        Notation.DoubleColon Self "AMOUNT" := {
-        Notation.double_colon := AMOUNT;
-      }.
-      
-      #[refine] Global Instance ℐ :
-        ink_env.topics.EventTopicsAmount.Trait Self := {
-        ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
-      }.
-      Admitted.
-    End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-    Global Hint Resolve ℐ : core.
-  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-  
-  (* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-      Context `{ℋ : State.Trait}.
-      
-      Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
-      
-      Definition AMOUNT : usize := M.run (M.alloc 29).
-      
-      Global Instance AssociatedFunction_AMOUNT :
-        Notation.DoubleColon Self "AMOUNT" := {
-        Notation.double_colon := AMOUNT;
-      }.
-      
-      #[refine] Global Instance ℐ :
-        ink_env.topics.EventTopicsAmount.Trait Self := {
-        ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
-      }.
-      Admitted.
-    End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-    Global Hint Resolve ℐ : core.
-  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-  
-  (* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-      Context `{ℋ : State.Trait}.
-      
-      Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
-      
-      Definition AMOUNT : usize := M.run (M.alloc 30).
-      
-      Global Instance AssociatedFunction_AMOUNT :
-        Notation.DoubleColon Self "AMOUNT" := {
-        Notation.double_colon := AMOUNT;
-      }.
-      
-      #[refine] Global Instance ℐ :
-        ink_env.topics.EventTopicsAmount.Trait Self := {
-        ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
-      }.
-      Admitted.
-    End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-    Global Hint Resolve ℐ : core.
-  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-  
-  (* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-      Context `{ℋ : State.Trait}.
-      
-      Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
-      
-      Definition AMOUNT : usize := M.run (M.alloc 31).
-      
-      Global Instance AssociatedFunction_AMOUNT :
-        Notation.DoubleColon Self "AMOUNT" := {
-        Notation.double_colon := AMOUNT;
-      }.
-      
-      #[refine] Global Instance ℐ :
-        ink_env.topics.EventTopicsAmount.Trait Self := {
-        ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
-      }.
-      Admitted.
-    End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-    Global Hint Resolve ℐ : core.
-  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-  
-  (* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-      Context `{ℋ : State.Trait}.
-      
-      Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
-      
-      Definition AMOUNT : usize := M.run (M.alloc 32).
+      Parameter AMOUNT : usize.
       
       Global Instance AssociatedFunction_AMOUNT :
         Notation.DoubleColon Self "AMOUNT" := {
@@ -6043,28 +5420,6 @@ Module topics.
     Global Hint Resolve ℐ : core.
   End Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics. *)
   
-  (* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-      Context `{ℋ : State.Trait}.
-      
-      Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
-      
-      Definition AMOUNT : usize := M.run (M.alloc 1).
-      
-      Global Instance AssociatedFunction_AMOUNT :
-        Notation.DoubleColon Self "AMOUNT" := {
-        Notation.double_colon := AMOUNT;
-      }.
-      
-      #[refine] Global Instance ℐ :
-        ink_env.topics.EventTopicsAmount.Trait Self := {
-        ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
-      }.
-      Admitted.
-    End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-    Global Hint Resolve ℐ : core.
-  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-  
   Module
     Impl_ink_env_topics_EventTopicsAmount_for_ink_env_topics_state_NoRemainingTopics.
     Section
@@ -6073,7 +5428,7 @@ Module topics.
       
       Definition Self : Set := ink_env.topics.state.NoRemainingTopics.
       
-      Definition AMOUNT : usize := M.run (M.alloc 0).
+      Parameter AMOUNT : usize.
       
       Global Instance AssociatedFunction_AMOUNT :
         Notation.DoubleColon Self "AMOUNT" := {
@@ -6226,7 +5581,9 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
         ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Error.
       
       Parameter fmt :
-          (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+          (ref Self) ->
+            (mut_ref core.fmt.Formatter) ->
+            M ltac:(core.fmt.Result).
       
       Global Instance AssociatedFunction_fmt :
         Notation.DoubleColon Self "fmt" := {
@@ -6391,10 +5748,11 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
   End
     Impl_core_cmp_Eq_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
   
-  Definition Result `{ℋ : State.Trait} (T : Set) : Set :=
-    core.result.Result
-      T
-      ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Error.
+  Ltac Result T :=
+    refine
+      (core.result.Result
+        T
+        ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Error).
   
   Module EmittedEvent.
     Section EmittedEvent.
@@ -6474,8 +5832,8 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
         {ℋ_0 : ink_env.types.Environment.Trait T},
       T::type["AccountId"] ->
         M
-          (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-            T::type["Balance"]).
+          ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+            constr:(T::type["Balance"])).
   
   Parameter register_chain_extension :
       forall
@@ -6586,8 +5944,8 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
         {ℋ_0 : ink_env.types.Environment.Trait T},
       (ref T::type["AccountId"]) ->
         M
-          (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-            usize).
+          ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+            constr:(usize)).
   
   Parameter set_block_timestamp :
       forall
@@ -6699,8 +6057,8 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
             (T := array u8)},
       F ->
         M
-          (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-            unit).
+          ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+            constr:(unit)).
   
   Parameter default_accounts :
       forall
@@ -6892,7 +6250,7 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
       Unset Primitive Projections.
       Record t : Set := {
         callee : E::type["AccountId"];
-        gas_limit : ink_env.types.Gas;
+        gas_limit : ltac:(ink_env.types.Gas);
         transferred_value : E::type["Balance"];
       }.
       Global Set Primitive Projections.
@@ -7009,8 +6367,8 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
           (mut_ref Self) ->
             (ref K) ->
             M
-              (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-                (core.option.Option R));
+              ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+                constr:(core.option.Option R));
         take_contract_storage
           {K R : Set}
           {ℋ_0 : parity_scale_codec.codec.Encode.Trait K}
@@ -7018,8 +6376,8 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
           (mut_ref Self) ->
             (ref K) ->
             M
-              (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-                (core.option.Option R));
+              ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+                constr:(core.option.Option R));
         contains_contract_storage
           {K : Set}
           {ℋ_0 : parity_scale_codec.codec.Encode.Trait K} :
@@ -7031,8 +6389,8 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
         decode_input {T : Set} {ℋ_0 : parity_scale_codec.codec.Decode.Trait T} :
           (mut_ref Self) ->
             M
-              (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-                T);
+              ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+                constr:(T));
         return_value {R : Set} {ℋ_0 : parity_scale_codec.codec.Encode.Trait R} :
           (mut_ref Self) ->
             ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.ReturnFlags
@@ -7067,15 +6425,15 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
             (ref (array u8)) ->
             (mut_ref (array u8)) ->
             M
-              (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-                unit);
+              ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+                constr:(unit));
         ecdsa_to_eth_address :
           (mut_ref Self) ->
             (ref (array u8)) ->
             (mut_ref (array u8)) ->
             M
-              (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-                unit);
+              ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+                constr:(unit));
         call_chain_extension
           {I T E ErrorCode F D : Set}
           {ℋ_0 : parity_scale_codec.codec.Encode.Trait I}
@@ -7093,8 +6451,8 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
           (mut_ref Self) ->
             (ref (Slice u8)) ->
             M
-              (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-                unit);
+              ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+                constr:(unit));
       }.
       
     End EnvBackend.
@@ -7147,8 +6505,8 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
                 R))
             ->
             M
-              (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-                (ink_primitives.MessageResult R));
+              ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+                constr:(ltac:(ink_primitives.MessageResult constr:(R))));
         invoke_contract_delegate
           {E Args R : Set}
           {ℋ_0 : ink_env.types.Environment.Trait E}
@@ -7164,8 +6522,8 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
                 R))
             ->
             M
-              (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-                (ink_primitives.MessageResult R));
+              ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+                constr:(ltac:(ink_primitives.MessageResult constr:(R))));
         instantiate_contract
           {E ContractRef Args Salt R : Set}
           {ℋ_0 : ink_env.types.Environment.Trait E}
@@ -7187,11 +6545,11 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
                 R))
             ->
             M
-              (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-                (ink_primitives.ConstructorResult
-                  (ink_env.call.create_builder.ConstructorReturnType.Output
+              ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+                constr:(ltac:(ink_primitives.ConstructorResult
+                  constr:(ink_env.call.create_builder.ConstructorReturnType.Output
                     (Self := R)
-                    (Trait := ltac:(try clear Trait; hauto l: on)))));
+                    (Trait := ltac:(try clear Trait; hauto l: on))))));
         terminate_contract {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E} :
           (mut_ref Self) -> E::type["AccountId"] -> M Empty_set;
         transfer {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E} :
@@ -7199,8 +6557,8 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
             E::type["AccountId"] ->
             E::type["Balance"] ->
             M
-              (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-                unit);
+              ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+                constr:(unit));
         is_contract {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E} :
           (mut_ref Self) -> (ref E::type["AccountId"]) -> M bool;
         caller_is_origin {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E} :
@@ -7209,13 +6567,13 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
           (mut_ref Self) ->
             (ref E::type["AccountId"]) ->
             M
-              (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-                E::type["Hash"]);
+              ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+                constr:(E::type["Hash"]));
         own_code_hash {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E} :
           (mut_ref Self) ->
             M
-              (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-                E::type["Hash"]);
+              ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+                constr:(E::type["Hash"]));
         call_runtime
           {E Call : Set}
           {ℋ_0 : ink_env.types.Environment.Trait E}
@@ -7223,8 +6581,8 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
           (mut_ref Self) ->
             (ref Call) ->
             M
-              (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-                unit);
+              ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+                constr:(unit));
       }.
       
     End TypedEnvBackend.
@@ -7272,7 +6630,9 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
           R.
       
       Parameter fmt :
-          (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+          (ref Self) ->
+            (mut_ref core.fmt.Formatter) ->
+            M ltac:(core.fmt.Result).
       
       Global Instance AssociatedFunction_fmt :
         Notation.DoubleColon Self "fmt" := {
@@ -7385,7 +6745,7 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
                 E))
             (ink_env.call.common.Unset_
               (ink_env.call.execution_input.ExecutionInput
-                ink_env.call.execution_input.EmptyArgumentList))
+                ltac:(ink_env.call.execution_input.EmptyArgumentList)))
             (ink_env.call.common.Unset_ (ink_env.call.common.ReturnType unit))).
   
   Module
@@ -7556,7 +6916,9 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
         ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallFlags.
       
       Parameter fmt :
-          (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+          (ref Self) ->
+            (mut_ref core.fmt.Formatter) ->
+            M ltac:(core.fmt.Result).
       
       Global Instance AssociatedFunction_fmt :
         Notation.DoubleColon Self "fmt" := {
@@ -7622,14 +6984,14 @@ Module api.
         `{ℋ : State.Trait}
         {E : Set}
         {ℋ_0 : ink_env.types.Environment.Trait E},
-      ink_env.types.Gas -> M E::type["Balance"].
+      ltac:(ink_env.types.Gas) -> M E::type["Balance"].
   
   Parameter gas_left :
       forall
         `{ℋ : State.Trait}
         {E : Set}
         {ℋ_0 : ink_env.types.Environment.Trait E},
-      M ink_env.types.Gas.
+      M ltac:(ink_env.types.Gas).
   
   Parameter block_timestamp :
       forall
@@ -7691,8 +7053,8 @@ Module api.
         {ℋ_1 : ink_storage_traits.storage.Storable.Trait R},
       (ref K) ->
         M
-          (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-            (core.option.Option R)).
+          ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+            constr:(core.option.Option R)).
   
   Parameter take_contract_storage :
       forall
@@ -7702,8 +7064,8 @@ Module api.
         {ℋ_1 : ink_storage_traits.storage.Storable.Trait R},
       (ref K) ->
         M
-          (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-            (core.option.Option R)).
+          ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+            constr:(core.option.Option R)).
   
   Parameter contains_contract_storage :
       forall
@@ -7735,8 +7097,8 @@ Module api.
             R))
         ->
         M
-          (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-            (ink_primitives.MessageResult R)).
+          ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+            constr:(ltac:(ink_primitives.MessageResult constr:(R)))).
   
   Parameter invoke_contract_delegate :
       forall
@@ -7754,8 +7116,8 @@ Module api.
             R))
         ->
         M
-          (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-            (ink_primitives.MessageResult R)).
+          ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+            constr:(ltac:(ink_primitives.MessageResult constr:(R)))).
   
   Parameter instantiate_contract :
       forall
@@ -7772,11 +7134,11 @@ Module api.
       (ref (ink_env.call.create_builder.CreateParams E ContractRef Args Salt R))
         ->
         M
-          (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-            (ink_primitives.ConstructorResult
-              (ink_env.call.create_builder.ConstructorReturnType.Output
+          ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+            constr:(ltac:(ink_primitives.ConstructorResult
+              constr:(ink_env.call.create_builder.ConstructorReturnType.Output
                 (Self := R)
-                (Trait := ltac:(try clear Trait; hauto l: on))))).
+                (Trait := ltac:(try clear Trait; hauto l: on)))))).
   
   Parameter terminate_contract :
       forall
@@ -7793,8 +7155,8 @@ Module api.
       E::type["AccountId"] ->
         E::type["Balance"] ->
         M
-          (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-            unit).
+          ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+            constr:(unit)).
   
   Parameter decode_input :
       forall
@@ -7802,8 +7164,8 @@ Module api.
         {T : Set}
         {ℋ_0 : parity_scale_codec.codec.Decode.Trait T},
       M
-          (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-            T).
+          ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+            constr:(T)).
   
   Parameter return_value :
       forall
@@ -7850,16 +7212,16 @@ Module api.
         (ref (array u8)) ->
         (mut_ref (array u8)) ->
         M
-          (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-            unit).
+          ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+            constr:(unit)).
   
   Parameter ecdsa_to_eth_address :
       forall `{ℋ : State.Trait},
       (ref (array u8)) ->
         (mut_ref (array u8)) ->
         M
-          (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-            unit).
+          ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+            constr:(unit)).
   
   Parameter is_contract :
       forall
@@ -7875,8 +7237,8 @@ Module api.
         {ℋ_0 : ink_env.types.Environment.Trait E},
       (ref E::type["AccountId"]) ->
         M
-          (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-            E::type["Hash"]).
+          ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+            constr:(E::type["Hash"])).
   
   Parameter own_code_hash :
       forall
@@ -7884,8 +7246,8 @@ Module api.
         {E : Set}
         {ℋ_0 : ink_env.types.Environment.Trait E},
       M
-          (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-            E::type["Hash"]).
+          ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+            constr:(E::type["Hash"])).
   
   Parameter caller_is_origin :
       forall
@@ -7898,8 +7260,8 @@ Module api.
       forall `{ℋ : State.Trait},
       (ref (array u8)) ->
         M
-          (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-            unit).
+          ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+            constr:(unit)).
   
   Parameter set_code_hash2 :
       forall
@@ -7908,8 +7270,8 @@ Module api.
         {ℋ_0 : ink_env.types.Environment.Trait E},
       (ref E::type["Hash"]) ->
         M
-          (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-            unit).
+          ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+            constr:(unit)).
   
   Parameter call_runtime :
       forall
@@ -7919,8 +7281,8 @@ Module api.
         {ℋ_1 : parity_scale_codec.codec.Encode.Trait Call},
       (ref Call) ->
         M
-          (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-            unit).
+          ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+            constr:(unit)).
 End api.
 
 Parameter caller :
@@ -7942,14 +7304,14 @@ Parameter weight_to_fee :
       `{ℋ : State.Trait}
       {E : Set}
       {ℋ_0 : ink_env.types.Environment.Trait E},
-    ink_env.types.Gas -> M E::type["Balance"].
+    ltac:(ink_env.types.Gas) -> M E::type["Balance"].
 
 Parameter gas_left :
     forall
       `{ℋ : State.Trait}
       {E : Set}
       {ℋ_0 : ink_env.types.Environment.Trait E},
-    M ink_env.types.Gas.
+    M ltac:(ink_env.types.Gas).
 
 Parameter block_timestamp :
     forall
@@ -8011,8 +7373,8 @@ Parameter get_contract_storage :
       {ℋ_1 : ink_storage_traits.storage.Storable.Trait R},
     (ref K) ->
       M
-        (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-          (core.option.Option R)).
+        ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+          constr:(core.option.Option R)).
 
 Parameter take_contract_storage :
     forall
@@ -8022,8 +7384,8 @@ Parameter take_contract_storage :
       {ℋ_1 : ink_storage_traits.storage.Storable.Trait R},
     (ref K) ->
       M
-        (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-          (core.option.Option R)).
+        ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+          constr:(core.option.Option R)).
 
 Parameter contains_contract_storage :
     forall
@@ -8055,8 +7417,8 @@ Parameter invoke_contract :
           R))
       ->
       M
-        (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-          (ink_primitives.MessageResult R)).
+        ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+          constr:(ltac:(ink_primitives.MessageResult constr:(R)))).
 
 Parameter invoke_contract_delegate :
     forall
@@ -8074,8 +7436,8 @@ Parameter invoke_contract_delegate :
           R))
       ->
       M
-        (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-          (ink_primitives.MessageResult R)).
+        ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+          constr:(ltac:(ink_primitives.MessageResult constr:(R)))).
 
 Parameter instantiate_contract :
     forall
@@ -8092,11 +7454,11 @@ Parameter instantiate_contract :
     (ref (ink_env.call.create_builder.CreateParams E ContractRef Args Salt R))
       ->
       M
-        (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-          (ink_primitives.ConstructorResult
-            (ink_env.call.create_builder.ConstructorReturnType.Output
+        ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+          constr:(ltac:(ink_primitives.ConstructorResult
+            constr:(ink_env.call.create_builder.ConstructorReturnType.Output
               (Self := R)
-              (Trait := ltac:(try clear Trait; hauto l: on))))).
+              (Trait := ltac:(try clear Trait; hauto l: on)))))).
 
 Parameter terminate_contract :
     forall
@@ -8113,8 +7475,8 @@ Parameter transfer :
     E::type["AccountId"] ->
       E::type["Balance"] ->
       M
-        (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-          unit).
+        ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+          constr:(unit)).
 
 Parameter decode_input :
     forall
@@ -8122,8 +7484,8 @@ Parameter decode_input :
       {T : Set}
       {ℋ_0 : parity_scale_codec.codec.Decode.Trait T},
     M
-        (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-          T).
+        ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+          constr:(T)).
 
 Parameter return_value :
     forall
@@ -8167,16 +7529,16 @@ Parameter ecdsa_recover :
       (ref (array u8)) ->
       (mut_ref (array u8)) ->
       M
-        (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-          unit).
+        ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+          constr:(unit)).
 
 Parameter ecdsa_to_eth_address :
     forall `{ℋ : State.Trait},
     (ref (array u8)) ->
       (mut_ref (array u8)) ->
       M
-        (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-          unit).
+        ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+          constr:(unit)).
 
 (* Parameter is_contract :
     forall
@@ -8192,8 +7554,8 @@ Parameter code_hash :
       {ℋ_0 : ink_env.types.Environment.Trait E},
     (ref E::type["AccountId"]) ->
       M
-        (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-          E::type["Hash"]).
+        ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+          constr:(E::type["Hash"])).
 
 Parameter own_code_hash :
     forall
@@ -8201,8 +7563,8 @@ Parameter own_code_hash :
       {E : Set}
       {ℋ_0 : ink_env.types.Environment.Trait E},
     M
-        (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-          E::type["Hash"]).
+        ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+          constr:(E::type["Hash"])).
 
 Parameter caller_is_origin :
     forall
@@ -8215,8 +7577,8 @@ Parameter set_code_hash :
     forall `{ℋ : State.Trait},
     (ref (array u8)) ->
       M
-        (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-          unit).
+        ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+          constr:(unit)).
 
 Parameter set_code_hash2 :
     forall
@@ -8225,8 +7587,8 @@ Parameter set_code_hash2 :
       {ℋ_0 : ink_env.types.Environment.Trait E},
     (ref E::type["Hash"]) ->
       M
-        (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-          unit).
+        ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+          constr:(unit)).
 
 Parameter call_runtime :
     forall
@@ -8236,8 +7598,8 @@ Parameter call_runtime :
       {ℋ_1 : parity_scale_codec.codec.Encode.Trait Call},
     (ref Call) ->
       M
-        (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-          unit).
+        ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+          constr:(unit)).
 
 Module BaseArithmetic.
   Section BaseArithmetic.
@@ -8484,7 +7846,7 @@ Module
       ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Error.
     
     Parameter fmt :
-        (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+        (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
     
     Global Instance AssociatedFunction_fmt :
       Notation.DoubleColon Self "fmt" := {
@@ -8648,10 +8010,11 @@ Module
 End
   Impl_core_cmp_Eq_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
 
-Definition Result `{ℋ : State.Trait} (T : Set) : Set :=
-  core.result.Result
-    T
-    ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Error.
+Ltac Result T :=
+  refine
+    (core.result.Result
+      T
+      ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Error).
 
 Module EmittedEvent.
   Section EmittedEvent.
@@ -8731,8 +8094,8 @@ Parameter get_account_balance :
       {ℋ_0 : ink_env.types.Environment.Trait T},
     T::type["AccountId"] ->
       M
-        (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-          T::type["Balance"]).
+        ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+          constr:(T::type["Balance"])).
 
 Parameter register_chain_extension :
     forall
@@ -8843,8 +8206,8 @@ Parameter count_used_storage_cells :
       {ℋ_0 : ink_env.types.Environment.Trait T},
     (ref T::type["AccountId"]) ->
       M
-        (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-          usize).
+        ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+          constr:(usize)).
 
 Parameter set_block_timestamp :
     forall
@@ -8877,8 +8240,8 @@ Parameter run_test :
           (T := array u8)},
     F ->
       M
-        (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-          unit).
+        ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+          constr:(unit)).
 
 Parameter default_accounts :
     forall
@@ -9116,7 +8479,7 @@ Module
         R.
     
     Parameter fmt :
-        (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+        (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
     
     Global Instance AssociatedFunction_fmt :
       Notation.DoubleColon Self "fmt" := {
@@ -9146,7 +8509,7 @@ Parameter build_call :
               E))
           (ink_env.call.common.Unset_
             (ink_env.call.execution_input.ExecutionInput
-              ink_env.call.execution_input.EmptyArgumentList))
+              ltac:(ink_env.call.execution_input.EmptyArgumentList)))
           (ink_env.call.common.Unset_ (ink_env.call.common.ReturnType unit))).
 
 Module Call.
@@ -9159,7 +8522,7 @@ Module Call.
     Unset Primitive Projections.
     Record t : Set := {
       callee : E::type["AccountId"];
-      gas_limit : ink_env.types.Gas;
+      gas_limit : ltac:(ink_env.types.Gas);
       transferred_value : E::type["Balance"];
     }.
     Global Set Primitive Projections.
@@ -9561,7 +8924,7 @@ Module
       ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallFlags.
     
     Parameter fmt :
-        (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+        (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
     
     Global Instance AssociatedFunction_fmt :
       Notation.DoubleColon Self "fmt" := {
@@ -9623,8 +8986,8 @@ Module EnvBackend.
         (mut_ref Self) ->
           (ref K) ->
           M
-            (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-              (core.option.Option R));
+            ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+              constr:(core.option.Option R));
       take_contract_storage
         {K R : Set}
         {ℋ_0 : parity_scale_codec.codec.Encode.Trait K}
@@ -9632,8 +8995,8 @@ Module EnvBackend.
         (mut_ref Self) ->
           (ref K) ->
           M
-            (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-              (core.option.Option R));
+            ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+              constr:(core.option.Option R));
       contains_contract_storage
         {K : Set}
         {ℋ_0 : parity_scale_codec.codec.Encode.Trait K} :
@@ -9645,8 +9008,8 @@ Module EnvBackend.
       decode_input {T : Set} {ℋ_0 : parity_scale_codec.codec.Decode.Trait T} :
         (mut_ref Self) ->
           M
-            (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-              T);
+            ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+              constr:(T));
       return_value {R : Set} {ℋ_0 : parity_scale_codec.codec.Encode.Trait R} :
         (mut_ref Self) ->
           ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.ReturnFlags
@@ -9681,15 +9044,15 @@ Module EnvBackend.
           (ref (array u8)) ->
           (mut_ref (array u8)) ->
           M
-            (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-              unit);
+            ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+              constr:(unit));
       ecdsa_to_eth_address :
         (mut_ref Self) ->
           (ref (array u8)) ->
           (mut_ref (array u8)) ->
           M
-            (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-              unit);
+            ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+              constr:(unit));
       call_chain_extension
         {I T E ErrorCode F D : Set}
         {ℋ_0 : parity_scale_codec.codec.Encode.Trait I}
@@ -9707,8 +9070,8 @@ Module EnvBackend.
         (mut_ref Self) ->
           (ref (Slice u8)) ->
           M
-            (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-              unit);
+            ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+              constr:(unit));
     }.
     
   End EnvBackend.
@@ -9761,8 +9124,8 @@ Module TypedEnvBackend.
               R))
           ->
           M
-            (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-              (ink_primitives.MessageResult R));
+            ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+              constr:(ltac:(ink_primitives.MessageResult constr:(R))));
       invoke_contract_delegate
         {E Args R : Set}
         {ℋ_0 : ink_env.types.Environment.Trait E}
@@ -9778,8 +9141,8 @@ Module TypedEnvBackend.
               R))
           ->
           M
-            (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-              (ink_primitives.MessageResult R));
+            ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+              constr:(ltac:(ink_primitives.MessageResult constr:(R))));
       instantiate_contract
         {E ContractRef Args Salt R : Set}
         {ℋ_0 : ink_env.types.Environment.Trait E}
@@ -9800,11 +9163,11 @@ Module TypedEnvBackend.
               R))
           ->
           M
-            (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-              (ink_primitives.ConstructorResult
-                (ink_env.call.create_builder.ConstructorReturnType.Output
+            ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+              constr:(ltac:(ink_primitives.ConstructorResult
+                constr:(ink_env.call.create_builder.ConstructorReturnType.Output
                   (Self := R)
-                  (Trait := ltac:(try clear Trait; hauto l: on)))));
+                  (Trait := ltac:(try clear Trait; hauto l: on))))));
       terminate_contract {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E} :
         (mut_ref Self) -> E::type["AccountId"] -> M Empty_set;
       transfer {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E} :
@@ -9812,8 +9175,8 @@ Module TypedEnvBackend.
           E::type["AccountId"] ->
           E::type["Balance"] ->
           M
-            (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-              unit);
+            ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+              constr:(unit));
       is_contract {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E} :
         (mut_ref Self) -> (ref E::type["AccountId"]) -> M bool;
       caller_is_origin {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E} :
@@ -9822,13 +9185,13 @@ Module TypedEnvBackend.
         (mut_ref Self) ->
           (ref E::type["AccountId"]) ->
           M
-            (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-              E::type["Hash"]);
+            ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+              constr:(E::type["Hash"]));
       own_code_hash {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E} :
         (mut_ref Self) ->
           M
-            (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-              E::type["Hash"]);
+            ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+              constr:(E::type["Hash"]));
       call_runtime
         {E Call : Set}
         {ℋ_0 : ink_env.types.Environment.Trait E}
@@ -9836,8 +9199,8 @@ Module TypedEnvBackend.
         (mut_ref Self) ->
           (ref Call) ->
           M
-            (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-              unit);
+            ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+              constr:(unit));
     }.
     
   End TypedEnvBackend.
@@ -9875,7 +9238,9 @@ Module common.
       Definition Self : Set := ink_env.call.common.ReturnType T.
       
       Parameter fmt :
-          (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+          (ref Self) ->
+            (mut_ref core.fmt.Formatter) ->
+            M ltac:(core.fmt.Result).
       
       Global Instance AssociatedFunction_fmt :
         Notation.DoubleColon Self "fmt" := {
@@ -9981,7 +9346,9 @@ Module common.
       Definition Self : Set := ink_env.call.common.Set_ T.
       
       Parameter fmt :
-          (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+          (ref Self) ->
+            (mut_ref core.fmt.Formatter) ->
+            M ltac:(core.fmt.Result).
       
       Global Instance AssociatedFunction_fmt :
         Notation.DoubleColon Self "fmt" := {
@@ -10067,7 +9434,9 @@ Module common.
       Definition Self : Set := ink_env.call.common.Unset_ T.
       
       Parameter fmt :
-          (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+          (ref Self) ->
+            (mut_ref core.fmt.Formatter) ->
+            M ltac:(core.fmt.Result).
       
       Global Instance AssociatedFunction_fmt :
         Notation.DoubleColon Self "fmt" := {
@@ -10265,7 +9634,7 @@ Module Impl_core_fmt_Debug_for_ink_env_call_common_ReturnType_T.
     Definition Self : Set := ink_env.call.common.ReturnType T.
     
     Parameter fmt :
-        (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+        (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
     
     Global Instance AssociatedFunction_fmt :
       Notation.DoubleColon Self "fmt" := {
@@ -10371,7 +9740,7 @@ Module Impl_core_fmt_Debug_for_ink_env_call_common_Set__T.
     Definition Self : Set := ink_env.call.common.Set_ T.
     
     Parameter fmt :
-        (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+        (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
     
     Global Instance AssociatedFunction_fmt :
       Notation.DoubleColon Self "fmt" := {
@@ -10457,7 +9826,7 @@ Module Impl_core_fmt_Debug_for_ink_env_call_common_Unset__T.
     Definition Self : Set := ink_env.call.common.Unset_ T.
     
     Parameter fmt :
-        (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+        (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
     
     Global Instance AssociatedFunction_fmt :
       Notation.DoubleColon Self "fmt" := {
@@ -10730,7 +10099,7 @@ Module create_builder.
         {ℋ_2 : parity_scale_codec.codec.Decode.Trait E}.
       Definition Self : Set := core.result.Result C E.
       
-      Definition IS_RESULT : bool := M.run (M.alloc true).
+      Parameter IS_RESULT : bool.
       
       Global Instance AssociatedFunction_IS_RESULT :
         Notation.DoubleColon Self "IS_RESULT" := {
@@ -10895,7 +10264,9 @@ Module create_builder.
         ink_env.call.create_builder.CreateParams E ContractRef Args Salt R.
       
       Parameter fmt :
-          (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+          (ref Self) ->
+            (mut_ref core.fmt.Formatter) ->
+            M ltac:(core.fmt.Result).
       
       Global Instance AssociatedFunction_fmt :
         Notation.DoubleColon Self "fmt" := {
@@ -11130,7 +10501,7 @@ Module
       {ℋ_2 : parity_scale_codec.codec.Decode.Trait E}.
     Definition Self : Set := core.result.Result C E.
     
-    Definition IS_RESULT : bool := M.run (M.alloc true).
+    Parameter IS_RESULT : bool.
     
     Global Instance AssociatedFunction_IS_RESULT :
       Notation.DoubleColon Self "IS_RESULT" := {
@@ -11289,7 +10660,7 @@ Module
       ink_env.call.create_builder.CreateParams E ContractRef Args Salt R.
     
     Parameter fmt :
-        (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+        (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
     
     Global Instance AssociatedFunction_fmt :
       Notation.DoubleColon Self "fmt" := {
@@ -11407,7 +10778,35 @@ Definition CreateBuilder
       (Salt := Salt)
       (RetType := RetType)).
 
-
+(* Parameter build_create :
+    forall
+      `{ℋ : State.Trait}
+      {ContractRef : Set}
+      {ℋ_0 : ink_env.contract.ContractEnv.Trait ContractRef},
+    M
+        (ink_env.call.create_builder.CreateBuilder (ℋ_0 := ltac:(sauto lq: on))
+          (ink_env.contract.ContractEnv.Env
+            (Self := ContractRef)
+            (Trait := ltac:(try clear Trait; hauto l: on)))
+          ContractRef
+          (ink_env.call.common.Unset_
+            (ink_env.types.Environment.Hash
+              (Self := ink_env.contract.ContractEnv.Env
+                (Self := ContractRef)
+                (Trait := ltac:(try clear Trait; hauto l: on)))
+              (Trait := ltac:(try clear Trait; hauto l: on))))
+          (ink_env.call.common.Unset_ u64)
+          (ink_env.call.common.Unset_
+            (ink_env.types.Environment.Balance
+              (Self := ink_env.contract.ContractEnv.Env
+                (Self := ContractRef)
+                (Trait := ltac:(try clear Trait; hauto l: on)))
+              (Trait := ltac:(try clear Trait; hauto l: on))))
+          (ink_env.call.common.Unset_
+            (ink_env.call.execution_input.ExecutionInput
+              ltac:(ink_env.call.execution_input.EmptyArgumentList)))
+          (ink_env.call.common.Unset_ ink_env.call.create_builder.state.Salt)
+          (ink_env.call.common.Unset_ (ink_env.call.common.ReturnType unit))). *)
 
 Module execution_input.
   Module ExecutionInput.
@@ -11515,7 +10914,9 @@ Module execution_input.
       Definition Self : Set := ink_env.call.execution_input.ExecutionInput Args.
       
       Parameter fmt :
-          (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+          (ref Self) ->
+            (mut_ref core.fmt.Formatter) ->
+            M ltac:(core.fmt.Result).
       
       Global Instance AssociatedFunction_fmt :
         Notation.DoubleColon Self "fmt" := {
@@ -11644,7 +11045,9 @@ Module execution_input.
         ink_env.call.execution_input.ArgumentList Head Rest.
       
       Parameter fmt :
-          (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+          (ref Self) ->
+            (mut_ref core.fmt.Formatter) ->
+            M ltac:(core.fmt.Result).
       
       Global Instance AssociatedFunction_fmt :
         Notation.DoubleColon Self "fmt" := {
@@ -11686,10 +11089,11 @@ Module execution_input.
   Definition Argument (T : Set) `{ℋ : State.Trait} : Set :=
     M.val (Argument.t (T := T)).
   
-  Definition ArgsList `{ℋ : State.Trait} (Head Rest : Set) : Set :=
-    ink_env.call.execution_input.ArgumentList
-      (ink_env.call.execution_input.Argument Head)
-      Rest.
+  Ltac ArgsList Head Rest :=
+    refine
+      (ink_env.call.execution_input.ArgumentList
+        (ink_env.call.execution_input.Argument Head)
+        Rest).
   
   Module Impl_core_clone_Clone_for_ink_env_call_execution_input_Argument_T.
     Section Impl_core_clone_Clone_for_ink_env_call_execution_input_Argument_T.
@@ -11726,7 +11130,9 @@ Module execution_input.
       Definition Self : Set := ink_env.call.execution_input.Argument T.
       
       Parameter fmt :
-          (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+          (ref Self) ->
+            (mut_ref core.fmt.Formatter) ->
+            M ltac:(core.fmt.Result).
       
       Global Instance AssociatedFunction_fmt :
         Notation.DoubleColon Self "fmt" := {
@@ -11806,7 +11212,9 @@ Module execution_input.
       Definition Self : Set := ink_env.call.execution_input.ArgumentListEnd.
       
       Parameter fmt :
-          (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+          (ref Self) ->
+            (mut_ref core.fmt.Formatter) ->
+            M ltac:(core.fmt.Result).
       
       Global Instance AssociatedFunction_fmt :
         Notation.DoubleColon Self "fmt" := {
@@ -11821,10 +11229,11 @@ Module execution_input.
     Global Hint Resolve ℐ : core.
   End Impl_core_fmt_Debug_for_ink_env_call_execution_input_ArgumentListEnd.
   
-  Definition EmptyArgumentList `{ℋ : State.Trait} : Set :=
-    ink_env.call.execution_input.ArgumentList
-      ink_env.call.execution_input.ArgumentListEnd
-      ink_env.call.execution_input.ArgumentListEnd.
+  Ltac EmptyArgumentList :=
+    refine
+      (ink_env.call.execution_input.ArgumentList
+        ink_env.call.execution_input.ArgumentListEnd
+        ink_env.call.execution_input.ArgumentListEnd).
   
   Module
     Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_Argument_T.
@@ -11875,7 +11284,8 @@ Module execution_input.
       Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_EmptyArgumentList.
       Context `{ℋ : State.Trait}.
       
-      Definition Self : Set := ink_env.call.execution_input.EmptyArgumentList.
+      Definition Self : Set :=
+        ltac:(ink_env.call.execution_input.EmptyArgumentList).
       
       Parameter size_hint : (ref Self) -> M usize.
       
@@ -12103,7 +11513,7 @@ Module Impl_core_fmt_Debug_for_ink_env_call_execution_input_ExecutionInput_Args.
     Definition Self : Set := ink_env.call.execution_input.ExecutionInput Args.
     
     Parameter fmt :
-        (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+        (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
     
     Global Instance AssociatedFunction_fmt :
       Notation.DoubleColon Self "fmt" := {
@@ -12228,7 +11638,7 @@ Module
       ink_env.call.execution_input.ArgumentList Head Rest.
     
     Parameter fmt :
-        (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+        (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
     
     Global Instance AssociatedFunction_fmt :
       Notation.DoubleColon Self "fmt" := {
@@ -12244,10 +11654,11 @@ Module
   Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
 
-Definition ArgsList `{ℋ : State.Trait} (Head Rest : Set) : Set :=
-  ink_env.call.execution_input.ArgumentList
-    (ink_env.call.execution_input.Argument Head)
-    Rest.
+Ltac ArgsList Head Rest :=
+  refine
+    (ink_env.call.execution_input.ArgumentList
+      (ink_env.call.execution_input.Argument Head)
+      Rest).
 
 Module Argument.
   Section Argument.
@@ -12308,7 +11719,7 @@ Module Impl_core_fmt_Debug_for_ink_env_call_execution_input_Argument_T.
     Definition Self : Set := ink_env.call.execution_input.Argument T.
     
     Parameter fmt :
-        (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+        (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
     
     Global Instance AssociatedFunction_fmt :
       Notation.DoubleColon Self "fmt" := {
@@ -12386,7 +11797,7 @@ Module Impl_core_fmt_Debug_for_ink_env_call_execution_input_ArgumentListEnd.
     Definition Self : Set := ink_env.call.execution_input.ArgumentListEnd.
     
     Parameter fmt :
-        (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+        (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
     
     Global Instance AssociatedFunction_fmt :
       Notation.DoubleColon Self "fmt" := {
@@ -12401,10 +11812,11 @@ Module Impl_core_fmt_Debug_for_ink_env_call_execution_input_ArgumentListEnd.
   Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_ink_env_call_execution_input_ArgumentListEnd.
 
-Definition EmptyArgumentList `{ℋ : State.Trait} : Set :=
-  ink_env.call.execution_input.ArgumentList
-    ink_env.call.execution_input.ArgumentListEnd
-    ink_env.call.execution_input.ArgumentListEnd.
+Ltac EmptyArgumentList :=
+  refine
+    (ink_env.call.execution_input.ArgumentList
+      ink_env.call.execution_input.ArgumentListEnd
+      ink_env.call.execution_input.ArgumentListEnd).
 
 Module
   Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_Argument_T.
@@ -12455,7 +11867,8 @@ Module
     Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_EmptyArgumentList.
     Context `{ℋ : State.Trait}.
     
-    Definition Self : Set := ink_env.call.execution_input.EmptyArgumentList.
+    Definition Self : Set :=
+      ltac:(ink_env.call.execution_input.EmptyArgumentList).
     
     Parameter size_hint : (ref Self) -> M usize.
     
@@ -12632,7 +12045,9 @@ Module selector.
       Definition Self : Set := ink_env.call.selector.Selector.
       
       Parameter fmt :
-          (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+          (ref Self) ->
+            (mut_ref core.fmt.Formatter) ->
+            M ltac:(core.fmt.Result).
       
       Global Instance AssociatedFunction_fmt :
         Notation.DoubleColon Self "fmt" := {
@@ -12827,7 +12242,7 @@ Module Impl_core_fmt_Debug_for_ink_env_call_selector_Selector.
     Definition Self : Set := ink_env.call.selector.Selector.
     
     Parameter fmt :
-        (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+        (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
     
     Global Instance AssociatedFunction_fmt :
       Notation.DoubleColon Self "fmt" := {
@@ -13146,7 +12561,9 @@ Module chain_extension.
         ink_env.chain_extension.ChainExtensionMethod I O ErrorCode.
       
       Parameter fmt :
-          (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+          (ref Self) ->
+            (mut_ref core.fmt.Formatter) ->
+            M ltac:(core.fmt.Result).
       
       Global Instance AssociatedFunction_fmt :
         Notation.DoubleColon Self "fmt" := {
@@ -13179,7 +12596,9 @@ Module chain_extension.
         Definition Self : Set := ink_env.chain_extension.state.IgnoreErrorCode.
         
         Parameter fmt :
-            (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+            (ref Self) ->
+              (mut_ref core.fmt.Formatter) ->
+              M ltac:(core.fmt.Result).
         
         Global Instance AssociatedFunction_fmt :
           Notation.DoubleColon Self "fmt" := {
@@ -13235,7 +12654,9 @@ Module chain_extension.
           ink_env.chain_extension.state.HandleErrorCode T.
         
         Parameter fmt :
-            (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+            (ref Self) ->
+              (mut_ref core.fmt.Formatter) ->
+              M ltac:(core.fmt.Result).
         
         Global Instance AssociatedFunction_fmt :
           Notation.DoubleColon Self "fmt" := {
@@ -13398,7 +12819,7 @@ Module
       ink_env.chain_extension.ChainExtensionMethod I O ErrorCode.
     
     Parameter fmt :
-        (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+        (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
     
     Global Instance AssociatedFunction_fmt :
       Notation.DoubleColon Self "fmt" := {
@@ -13432,7 +12853,9 @@ Module Wrap_state_1.
         Definition Self : Set := ink_env.chain_extension.state.IgnoreErrorCode.
         
         Parameter fmt :
-            (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+            (ref Self) ->
+              (mut_ref core.fmt.Formatter) ->
+              M ltac:(core.fmt.Result).
         
         Global Instance AssociatedFunction_fmt :
           Notation.DoubleColon Self "fmt" := {
@@ -13488,7 +12911,9 @@ Module Wrap_state_1.
           ink_env.chain_extension.state.HandleErrorCode T.
         
         Parameter fmt :
-            (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+            (ref Self) ->
+              (mut_ref core.fmt.Formatter) ->
+              M ltac:(core.fmt.Result).
         
         Global Instance AssociatedFunction_fmt :
           Notation.DoubleColon Self "fmt" := {
@@ -13520,7 +12945,7 @@ Module Impl_core_fmt_Debug_for_ink_env_chain_extension_state_IgnoreErrorCode.
     Definition Self : Set := ink_env.chain_extension.state.IgnoreErrorCode.
     
     Parameter fmt :
-        (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+        (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
     
     Global Instance AssociatedFunction_fmt :
       Notation.DoubleColon Self "fmt" := {
@@ -13573,7 +12998,7 @@ Module Impl_core_fmt_Debug_for_ink_env_chain_extension_state_HandleErrorCode_T.
     Definition Self : Set := ink_env.chain_extension.state.HandleErrorCode T.
     
     Parameter fmt :
-        (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+        (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
     
     Global Instance AssociatedFunction_fmt :
       Notation.DoubleColon Self "fmt" := {
@@ -13743,7 +13168,9 @@ Module off_chain.
         Definition Self : Set := ink_env.engine.off_chain.call_data.CallData.
         
         Parameter fmt :
-            (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+            (ref Self) ->
+              (mut_ref core.fmt.Formatter) ->
+              M ltac:(core.fmt.Result).
         
         Global Instance AssociatedFunction_fmt :
           Notation.DoubleColon Self "fmt" := {
@@ -14209,8 +13636,8 @@ Module off_chain.
             (mut_ref Self) ->
               (ref K) ->
               M
-                (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-                  (core.option.Option R)).
+                ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+                  constr:(core.option.Option R)).
         
         Global Instance AssociatedFunction_get_contract_storage
             {K R : Set}
@@ -14228,8 +13655,8 @@ Module off_chain.
             (mut_ref Self) ->
               (ref K) ->
               M
-                (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-                  (core.option.Option R)).
+                ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+                  constr:(core.option.Option R)).
         
         Global Instance AssociatedFunction_take_contract_storage
             {K R : Set}
@@ -14265,8 +13692,8 @@ Module off_chain.
             forall {T : Set} {ℋ_0 : parity_scale_codec.codec.Decode.Trait T},
             (mut_ref Self) ->
               M
-                (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-                  T).
+                ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+                  constr:(T)).
         
         Global Instance AssociatedFunction_decode_input
             {T : Set}
@@ -14343,8 +13770,8 @@ Module off_chain.
               (ref (array u8)) ->
               (mut_ref (array u8)) ->
               M
-                (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-                  unit).
+                ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+                  constr:(unit)).
         
         Global Instance AssociatedFunction_ecdsa_recover :
           Notation.DoubleColon Self "ecdsa_recover" := {
@@ -14356,8 +13783,8 @@ Module off_chain.
               (ref (array u8)) ->
               (mut_ref (array u8)) ->
               M
-                (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-                  unit).
+                ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+                  constr:(unit)).
         
         Global Instance AssociatedFunction_ecdsa_to_eth_address :
           Notation.DoubleColon Self "ecdsa_to_eth_address" := {
@@ -14402,8 +13829,8 @@ Module off_chain.
             (mut_ref Self) ->
               (ref (Slice u8)) ->
               M
-                (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-                  unit).
+                ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+                  constr:(unit)).
         
         Global Instance AssociatedFunction_set_code_hash :
           Notation.DoubleColon Self "set_code_hash" := {
@@ -14608,8 +14035,8 @@ Module off_chain.
                   R))
               ->
               M
-                (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-                  (ink_primitives.MessageResult R)).
+                ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+                  constr:(ltac:(ink_primitives.MessageResult constr:(R)))).
         
         Global Instance AssociatedFunction_invoke_contract
             {E Args R : Set}
@@ -14638,8 +14065,8 @@ Module off_chain.
                   R))
               ->
               M
-                (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-                  (ink_primitives.MessageResult R)).
+                ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+                  constr:(ltac:(ink_primitives.MessageResult constr:(R)))).
         
         Global Instance AssociatedFunction_invoke_contract_delegate
             {E Args R : Set}
@@ -14674,11 +14101,11 @@ Module off_chain.
                   R))
               ->
               M
-                (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-                  (ink_primitives.ConstructorResult
-                    (ink_env.call.create_builder.ConstructorReturnType.Output
+                ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+                  constr:(ltac:(ink_primitives.ConstructorResult
+                    constr:(ink_env.call.create_builder.ConstructorReturnType.Output
                       (Self := R)
-                      (Trait := ltac:(try clear Trait; hauto l: on))))).
+                      (Trait := ltac:(try clear Trait; hauto l: on)))))).
         
         Global Instance AssociatedFunction_instantiate_contract
             {E ContractRef Args Salt R : Set}
@@ -14719,8 +14146,8 @@ Module off_chain.
               E::type["AccountId"] ->
               E::type["Balance"] ->
               M
-                (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-                  unit).
+                ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+                  constr:(unit)).
         
         Global Instance AssociatedFunction_transfer
             {E : Set}
@@ -14767,8 +14194,8 @@ Module off_chain.
             (mut_ref Self) ->
               (ref E::type["AccountId"]) ->
               M
-                (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-                  E::type["Hash"]).
+                ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+                  constr:(E::type["Hash"])).
         
         Global Instance AssociatedFunction_code_hash
             {E : Set}
@@ -14781,8 +14208,8 @@ Module off_chain.
             forall {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E},
             (mut_ref Self) ->
               M
-                (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-                  E::type["Hash"]).
+                ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+                  constr:(E::type["Hash"])).
         
         Global Instance AssociatedFunction_own_code_hash
             {E : Set}
@@ -14796,8 +14223,8 @@ Module off_chain.
             (mut_ref Self) ->
               (ref Call) ->
               M
-                (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-                  unit).
+                ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+                  constr:(unit)).
         
         Global Instance AssociatedFunction_call_runtime
             {E Call : Set}
@@ -15088,7 +14515,9 @@ Module off_chain.
       Definition Self : Set := ink_env.engine.off_chain.OffChainError.
       
       Parameter fmt :
-          (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+          (ref Self) ->
+            (mut_ref core.fmt.Formatter) ->
+            M ltac:(core.fmt.Result).
       
       Global Instance AssociatedFunction_fmt :
         Notation.DoubleColon Self "fmt" := {
@@ -15213,7 +14642,9 @@ Module off_chain.
       Definition Self : Set := ink_env.engine.off_chain.AccountError.
       
       Parameter fmt :
-          (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+          (ref Self) ->
+            (mut_ref core.fmt.Formatter) ->
+            M ltac:(core.fmt.Result).
       
       Global Instance AssociatedFunction_fmt :
         Notation.DoubleColon Self "fmt" := {
@@ -15361,7 +14792,9 @@ Module call_data.
       Definition Self : Set := ink_env.engine.off_chain.call_data.CallData.
       
       Parameter fmt :
-          (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+          (ref Self) ->
+            (mut_ref core.fmt.Formatter) ->
+            M ltac:(core.fmt.Result).
       
       Global Instance AssociatedFunction_fmt :
         Notation.DoubleColon Self "fmt" := {
@@ -15586,7 +15019,7 @@ Module Impl_core_fmt_Debug_for_ink_env_engine_off_chain_call_data_CallData.
     Definition Self : Set := ink_env.engine.off_chain.call_data.CallData.
     
     Parameter fmt :
-        (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+        (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
     
     Global Instance AssociatedFunction_fmt :
       Notation.DoubleColon Self "fmt" := {
@@ -16045,8 +15478,8 @@ Module impls.
           (mut_ref Self) ->
             (ref K) ->
             M
-              (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-                (core.option.Option R)).
+              ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+                constr:(core.option.Option R)).
       
       Global Instance AssociatedFunction_get_contract_storage
           {K R : Set}
@@ -16064,8 +15497,8 @@ Module impls.
           (mut_ref Self) ->
             (ref K) ->
             M
-              (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-                (core.option.Option R)).
+              ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+                constr:(core.option.Option R)).
       
       Global Instance AssociatedFunction_take_contract_storage
           {K R : Set}
@@ -16101,8 +15534,8 @@ Module impls.
           forall {T : Set} {ℋ_0 : parity_scale_codec.codec.Decode.Trait T},
           (mut_ref Self) ->
             M
-              (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-                T).
+              ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+                constr:(T)).
       
       Global Instance AssociatedFunction_decode_input
           {T : Set}
@@ -16179,8 +15612,8 @@ Module impls.
             (ref (array u8)) ->
             (mut_ref (array u8)) ->
             M
-              (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-                unit).
+              ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+                constr:(unit)).
       
       Global Instance AssociatedFunction_ecdsa_recover :
         Notation.DoubleColon Self "ecdsa_recover" := {
@@ -16192,8 +15625,8 @@ Module impls.
             (ref (array u8)) ->
             (mut_ref (array u8)) ->
             M
-              (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-                unit).
+              ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+                constr:(unit)).
       
       Global Instance AssociatedFunction_ecdsa_to_eth_address :
         Notation.DoubleColon Self "ecdsa_to_eth_address" := {
@@ -16238,8 +15671,8 @@ Module impls.
           (mut_ref Self) ->
             (ref (Slice u8)) ->
             M
-              (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-                unit).
+              ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+                constr:(unit)).
       
       Global Instance AssociatedFunction_set_code_hash :
         Notation.DoubleColon Self "set_code_hash" := {
@@ -16444,8 +15877,8 @@ Module impls.
                 R))
             ->
             M
-              (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-                (ink_primitives.MessageResult R)).
+              ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+                constr:(ltac:(ink_primitives.MessageResult constr:(R)))).
       
       Global Instance AssociatedFunction_invoke_contract
           {E Args R : Set}
@@ -16474,8 +15907,8 @@ Module impls.
                 R))
             ->
             M
-              (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-                (ink_primitives.MessageResult R)).
+              ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+                constr:(ltac:(ink_primitives.MessageResult constr:(R)))).
       
       Global Instance AssociatedFunction_invoke_contract_delegate
           {E Args R : Set}
@@ -16510,11 +15943,11 @@ Module impls.
                 R))
             ->
             M
-              (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-                (ink_primitives.ConstructorResult
-                  (ink_env.call.create_builder.ConstructorReturnType.Output
+              ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+                constr:(ltac:(ink_primitives.ConstructorResult
+                  constr:(ink_env.call.create_builder.ConstructorReturnType.Output
                     (Self := R)
-                    (Trait := ltac:(try clear Trait; hauto l: on))))).
+                    (Trait := ltac:(try clear Trait; hauto l: on)))))).
       
       Global Instance AssociatedFunction_instantiate_contract
           {E ContractRef Args Salt R : Set}
@@ -16555,8 +15988,8 @@ Module impls.
             E::type["AccountId"] ->
             E::type["Balance"] ->
             M
-              (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-                unit).
+              ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+                constr:(unit)).
       
       Global Instance AssociatedFunction_transfer
           {E : Set}
@@ -16603,8 +16036,8 @@ Module impls.
           (mut_ref Self) ->
             (ref E::type["AccountId"]) ->
             M
-              (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-                E::type["Hash"]).
+              ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+                constr:(E::type["Hash"])).
       
       Global Instance AssociatedFunction_code_hash
           {E : Set}
@@ -16617,8 +16050,8 @@ Module impls.
           forall {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E},
           (mut_ref Self) ->
             M
-              (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-                E::type["Hash"]).
+              ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+                constr:(E::type["Hash"])).
       
       Global Instance AssociatedFunction_own_code_hash
           {E : Set}
@@ -16632,8 +16065,8 @@ Module impls.
           (mut_ref Self) ->
             (ref Call) ->
             M
-              (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-                unit).
+              ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+                constr:(unit)).
       
       Global Instance AssociatedFunction_call_runtime
           {E Call : Set}
@@ -17016,8 +16449,8 @@ End Impl_ink_env_topics_TopicsBuilderBackend_for_ink_env_engine_off_chain_impls_
         (mut_ref Self) ->
           (ref K) ->
           M
-            (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-              (core.option.Option R)).
+            ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+              constr:(core.option.Option R)).
     
     Global Instance AssociatedFunction_get_contract_storage
         {K R : Set}
@@ -17035,8 +16468,8 @@ End Impl_ink_env_topics_TopicsBuilderBackend_for_ink_env_engine_off_chain_impls_
         (mut_ref Self) ->
           (ref K) ->
           M
-            (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-              (core.option.Option R)).
+            ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+              constr:(core.option.Option R)).
     
     Global Instance AssociatedFunction_take_contract_storage
         {K R : Set}
@@ -17072,8 +16505,8 @@ End Impl_ink_env_topics_TopicsBuilderBackend_for_ink_env_engine_off_chain_impls_
         forall {T : Set} {ℋ_0 : parity_scale_codec.codec.Decode.Trait T},
         (mut_ref Self) ->
           M
-            (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-              T).
+            ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+              constr:(T)).
     
     Global Instance AssociatedFunction_decode_input
         {T : Set}
@@ -17150,8 +16583,8 @@ End Impl_ink_env_topics_TopicsBuilderBackend_for_ink_env_engine_off_chain_impls_
           (ref (array u8)) ->
           (mut_ref (array u8)) ->
           M
-            (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-              unit).
+            ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+              constr:(unit)).
     
     Global Instance AssociatedFunction_ecdsa_recover :
       Notation.DoubleColon Self "ecdsa_recover" := {
@@ -17163,8 +16596,8 @@ End Impl_ink_env_topics_TopicsBuilderBackend_for_ink_env_engine_off_chain_impls_
           (ref (array u8)) ->
           (mut_ref (array u8)) ->
           M
-            (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-              unit).
+            ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+              constr:(unit)).
     
     Global Instance AssociatedFunction_ecdsa_to_eth_address :
       Notation.DoubleColon Self "ecdsa_to_eth_address" := {
@@ -17209,8 +16642,8 @@ End Impl_ink_env_topics_TopicsBuilderBackend_for_ink_env_engine_off_chain_impls_
         (mut_ref Self) ->
           (ref (Slice u8)) ->
           M
-            (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-              unit).
+            ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+              constr:(unit)).
     
     Global Instance AssociatedFunction_set_code_hash :
       Notation.DoubleColon Self "set_code_hash" := {
@@ -17415,8 +16848,8 @@ End Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_err
               R))
           ->
           M
-            (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-              (ink_primitives.MessageResult R)).
+            ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+              constr:(ltac:(ink_primitives.MessageResult constr:(R)))).
     
     Global Instance AssociatedFunction_invoke_contract
         {E Args R : Set}
@@ -17443,8 +16876,8 @@ End Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_err
               R))
           ->
           M
-            (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-              (ink_primitives.MessageResult R)).
+            ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+              constr:(ltac:(ink_primitives.MessageResult constr:(R)))).
     
     Global Instance AssociatedFunction_invoke_contract_delegate
         {E Args R : Set}
@@ -17479,11 +16912,11 @@ End Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_err
               R))
           ->
           M
-            (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-              (ink_primitives.ConstructorResult
-                (ink_env.call.create_builder.ConstructorReturnType.Output
+            ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+              constr:(ltac:(ink_primitives.ConstructorResult
+                constr:(ink_env.call.create_builder.ConstructorReturnType.Output
                   (Self := R)
-                  (Trait := ltac:(try clear Trait; hauto l: on))))).
+                  (Trait := ltac:(try clear Trait; hauto l: on)))))).
     
     Global Instance AssociatedFunction_instantiate_contract
         {E ContractRef Args Salt R : Set}
@@ -17523,8 +16956,8 @@ End Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_err
           E::type["AccountId"] ->
           E::type["Balance"] ->
           M
-            (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-              unit).
+            ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+              constr:(unit)).
     
     Global Instance AssociatedFunction_transfer
         {E : Set}
@@ -17571,8 +17004,8 @@ End Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_err
         (mut_ref Self) ->
           (ref E::type["AccountId"]) ->
           M
-            (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-              E::type["Hash"]).
+            ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+              constr:(E::type["Hash"])).
     
     Global Instance AssociatedFunction_code_hash
         {E : Set}
@@ -17585,8 +17018,8 @@ End Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_err
         forall {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E},
         (mut_ref Self) ->
           M
-            (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-              E::type["Hash"]).
+            ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+              constr:(E::type["Hash"])).
     
     Global Instance AssociatedFunction_own_code_hash
         {E : Set}
@@ -17600,8 +17033,8 @@ End Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_err
         (mut_ref Self) ->
           (ref Call) ->
           M
-            (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
-              unit).
+            ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+              constr:(unit)).
     
     Global Instance AssociatedFunction_call_runtime
         {E Call : Set}
@@ -17976,7 +17409,7 @@ Module Impl_core_fmt_Debug_for_ink_env_engine_off_chain_OffChainError.
     Definition Self : Set := ink_env.engine.off_chain.OffChainError.
     
     Parameter fmt :
-        (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+        (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
     
     Global Instance AssociatedFunction_fmt :
       Notation.DoubleColon Self "fmt" := {
@@ -18106,7 +17539,7 @@ Module Impl_core_fmt_Debug_for_ink_env_engine_off_chain_AccountError.
     Definition Self : Set := ink_env.engine.off_chain.AccountError.
     
     Parameter fmt :
-        (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+        (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
     
     Global Instance AssociatedFunction_fmt :
       Notation.DoubleColon Self "fmt" := {
@@ -18270,7 +17703,7 @@ Module Impl_core_fmt_Debug_for_ink_env_hash_Sha2x256.
     Definition Self : Set := ink_env.hash.Sha2x256.
     
     Parameter fmt :
-        (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+        (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
     
     Global Instance AssociatedFunction_fmt :
       Notation.DoubleColon Self "fmt" := {
@@ -18401,7 +17834,7 @@ Module Impl_core_fmt_Debug_for_ink_env_hash_Keccak256.
     Definition Self : Set := ink_env.hash.Keccak256.
     
     Parameter fmt :
-        (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+        (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
     
     Global Instance AssociatedFunction_fmt :
       Notation.DoubleColon Self "fmt" := {
@@ -18532,7 +17965,7 @@ Module Impl_core_fmt_Debug_for_ink_env_hash_Blake2x256.
     Definition Self : Set := ink_env.hash.Blake2x256.
     
     Parameter fmt :
-        (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+        (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
     
     Global Instance AssociatedFunction_fmt :
       Notation.DoubleColon Self "fmt" := {
@@ -18663,7 +18096,7 @@ Module Impl_core_fmt_Debug_for_ink_env_hash_Blake2x128.
     Definition Self : Set := ink_env.hash.Blake2x128.
     
     Parameter fmt :
-        (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+        (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
     
     Global Instance AssociatedFunction_fmt :
       Notation.DoubleColon Self "fmt" := {
@@ -19100,667 +18533,7 @@ End Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRe
     
     Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
     
-    Definition AMOUNT : usize := M.run (M.alloc 2).
-    
-    Global Instance AssociatedFunction_AMOUNT :
-      Notation.DoubleColon Self "AMOUNT" := {
-      Notation.double_colon := AMOUNT;
-    }.
-    
-    #[refine] Global Instance ℐ :
-      ink_env.topics.EventTopicsAmount.Trait Self := {
-      ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
-    }.
-    Admitted.
-  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-  Global Hint Resolve ℐ : core.
-End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-
-(* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Context `{ℋ : State.Trait}.
-    
-    Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
-    
-    Definition AMOUNT : usize := M.run (M.alloc 3).
-    
-    Global Instance AssociatedFunction_AMOUNT :
-      Notation.DoubleColon Self "AMOUNT" := {
-      Notation.double_colon := AMOUNT;
-    }.
-    
-    #[refine] Global Instance ℐ :
-      ink_env.topics.EventTopicsAmount.Trait Self := {
-      ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
-    }.
-    Admitted.
-  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-  Global Hint Resolve ℐ : core.
-End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-
-(* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Context `{ℋ : State.Trait}.
-    
-    Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
-    
-    Definition AMOUNT : usize := M.run (M.alloc 4).
-    
-    Global Instance AssociatedFunction_AMOUNT :
-      Notation.DoubleColon Self "AMOUNT" := {
-      Notation.double_colon := AMOUNT;
-    }.
-    
-    #[refine] Global Instance ℐ :
-      ink_env.topics.EventTopicsAmount.Trait Self := {
-      ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
-    }.
-    Admitted.
-  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-  Global Hint Resolve ℐ : core.
-End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-
-(* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Context `{ℋ : State.Trait}.
-    
-    Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
-    
-    Definition AMOUNT : usize := M.run (M.alloc 5).
-    
-    Global Instance AssociatedFunction_AMOUNT :
-      Notation.DoubleColon Self "AMOUNT" := {
-      Notation.double_colon := AMOUNT;
-    }.
-    
-    #[refine] Global Instance ℐ :
-      ink_env.topics.EventTopicsAmount.Trait Self := {
-      ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
-    }.
-    Admitted.
-  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-  Global Hint Resolve ℐ : core.
-End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-
-(* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Context `{ℋ : State.Trait}.
-    
-    Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
-    
-    Definition AMOUNT : usize := M.run (M.alloc 6).
-    
-    Global Instance AssociatedFunction_AMOUNT :
-      Notation.DoubleColon Self "AMOUNT" := {
-      Notation.double_colon := AMOUNT;
-    }.
-    
-    #[refine] Global Instance ℐ :
-      ink_env.topics.EventTopicsAmount.Trait Self := {
-      ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
-    }.
-    Admitted.
-  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-  Global Hint Resolve ℐ : core.
-End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-
-(* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Context `{ℋ : State.Trait}.
-    
-    Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
-    
-    Definition AMOUNT : usize := M.run (M.alloc 7).
-    
-    Global Instance AssociatedFunction_AMOUNT :
-      Notation.DoubleColon Self "AMOUNT" := {
-      Notation.double_colon := AMOUNT;
-    }.
-    
-    #[refine] Global Instance ℐ :
-      ink_env.topics.EventTopicsAmount.Trait Self := {
-      ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
-    }.
-    Admitted.
-  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-  Global Hint Resolve ℐ : core.
-End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-
-(* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Context `{ℋ : State.Trait}.
-    
-    Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
-    
-    Definition AMOUNT : usize := M.run (M.alloc 8).
-    
-    Global Instance AssociatedFunction_AMOUNT :
-      Notation.DoubleColon Self "AMOUNT" := {
-      Notation.double_colon := AMOUNT;
-    }.
-    
-    #[refine] Global Instance ℐ :
-      ink_env.topics.EventTopicsAmount.Trait Self := {
-      ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
-    }.
-    Admitted.
-  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-  Global Hint Resolve ℐ : core.
-End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-
-(* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Context `{ℋ : State.Trait}.
-    
-    Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
-    
-    Definition AMOUNT : usize := M.run (M.alloc 9).
-    
-    Global Instance AssociatedFunction_AMOUNT :
-      Notation.DoubleColon Self "AMOUNT" := {
-      Notation.double_colon := AMOUNT;
-    }.
-    
-    #[refine] Global Instance ℐ :
-      ink_env.topics.EventTopicsAmount.Trait Self := {
-      ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
-    }.
-    Admitted.
-  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-  Global Hint Resolve ℐ : core.
-End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-
-(* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Context `{ℋ : State.Trait}.
-    
-    Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
-    
-    Definition AMOUNT : usize := M.run (M.alloc 10).
-    
-    Global Instance AssociatedFunction_AMOUNT :
-      Notation.DoubleColon Self "AMOUNT" := {
-      Notation.double_colon := AMOUNT;
-    }.
-    
-    #[refine] Global Instance ℐ :
-      ink_env.topics.EventTopicsAmount.Trait Self := {
-      ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
-    }.
-    Admitted.
-  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-  Global Hint Resolve ℐ : core.
-End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-
-(* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Context `{ℋ : State.Trait}.
-    
-    Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
-    
-    Definition AMOUNT : usize := M.run (M.alloc 11).
-    
-    Global Instance AssociatedFunction_AMOUNT :
-      Notation.DoubleColon Self "AMOUNT" := {
-      Notation.double_colon := AMOUNT;
-    }.
-    
-    #[refine] Global Instance ℐ :
-      ink_env.topics.EventTopicsAmount.Trait Self := {
-      ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
-    }.
-    Admitted.
-  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-  Global Hint Resolve ℐ : core.
-End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-
-(* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Context `{ℋ : State.Trait}.
-    
-    Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
-    
-    Definition AMOUNT : usize := M.run (M.alloc 12).
-    
-    Global Instance AssociatedFunction_AMOUNT :
-      Notation.DoubleColon Self "AMOUNT" := {
-      Notation.double_colon := AMOUNT;
-    }.
-    
-    #[refine] Global Instance ℐ :
-      ink_env.topics.EventTopicsAmount.Trait Self := {
-      ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
-    }.
-    Admitted.
-  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-  Global Hint Resolve ℐ : core.
-End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-
-(* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Context `{ℋ : State.Trait}.
-    
-    Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
-    
-    Definition AMOUNT : usize := M.run (M.alloc 13).
-    
-    Global Instance AssociatedFunction_AMOUNT :
-      Notation.DoubleColon Self "AMOUNT" := {
-      Notation.double_colon := AMOUNT;
-    }.
-    
-    #[refine] Global Instance ℐ :
-      ink_env.topics.EventTopicsAmount.Trait Self := {
-      ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
-    }.
-    Admitted.
-  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-  Global Hint Resolve ℐ : core.
-End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-
-(* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Context `{ℋ : State.Trait}.
-    
-    Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
-    
-    Definition AMOUNT : usize := M.run (M.alloc 14).
-    
-    Global Instance AssociatedFunction_AMOUNT :
-      Notation.DoubleColon Self "AMOUNT" := {
-      Notation.double_colon := AMOUNT;
-    }.
-    
-    #[refine] Global Instance ℐ :
-      ink_env.topics.EventTopicsAmount.Trait Self := {
-      ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
-    }.
-    Admitted.
-  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-  Global Hint Resolve ℐ : core.
-End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-
-(* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Context `{ℋ : State.Trait}.
-    
-    Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
-    
-    Definition AMOUNT : usize := M.run (M.alloc 15).
-    
-    Global Instance AssociatedFunction_AMOUNT :
-      Notation.DoubleColon Self "AMOUNT" := {
-      Notation.double_colon := AMOUNT;
-    }.
-    
-    #[refine] Global Instance ℐ :
-      ink_env.topics.EventTopicsAmount.Trait Self := {
-      ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
-    }.
-    Admitted.
-  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-  Global Hint Resolve ℐ : core.
-End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-
-(* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Context `{ℋ : State.Trait}.
-    
-    Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
-    
-    Definition AMOUNT : usize := M.run (M.alloc 16).
-    
-    Global Instance AssociatedFunction_AMOUNT :
-      Notation.DoubleColon Self "AMOUNT" := {
-      Notation.double_colon := AMOUNT;
-    }.
-    
-    #[refine] Global Instance ℐ :
-      ink_env.topics.EventTopicsAmount.Trait Self := {
-      ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
-    }.
-    Admitted.
-  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-  Global Hint Resolve ℐ : core.
-End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-
-(* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Context `{ℋ : State.Trait}.
-    
-    Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
-    
-    Definition AMOUNT : usize := M.run (M.alloc 17).
-    
-    Global Instance AssociatedFunction_AMOUNT :
-      Notation.DoubleColon Self "AMOUNT" := {
-      Notation.double_colon := AMOUNT;
-    }.
-    
-    #[refine] Global Instance ℐ :
-      ink_env.topics.EventTopicsAmount.Trait Self := {
-      ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
-    }.
-    Admitted.
-  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-  Global Hint Resolve ℐ : core.
-End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-
-(* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Context `{ℋ : State.Trait}.
-    
-    Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
-    
-    Definition AMOUNT : usize := M.run (M.alloc 18).
-    
-    Global Instance AssociatedFunction_AMOUNT :
-      Notation.DoubleColon Self "AMOUNT" := {
-      Notation.double_colon := AMOUNT;
-    }.
-    
-    #[refine] Global Instance ℐ :
-      ink_env.topics.EventTopicsAmount.Trait Self := {
-      ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
-    }.
-    Admitted.
-  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-  Global Hint Resolve ℐ : core.
-End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-
-(* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Context `{ℋ : State.Trait}.
-    
-    Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
-    
-    Definition AMOUNT : usize := M.run (M.alloc 19).
-    
-    Global Instance AssociatedFunction_AMOUNT :
-      Notation.DoubleColon Self "AMOUNT" := {
-      Notation.double_colon := AMOUNT;
-    }.
-    
-    #[refine] Global Instance ℐ :
-      ink_env.topics.EventTopicsAmount.Trait Self := {
-      ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
-    }.
-    Admitted.
-  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-  Global Hint Resolve ℐ : core.
-End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-
-(* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Context `{ℋ : State.Trait}.
-    
-    Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
-    
-    Definition AMOUNT : usize := M.run (M.alloc 20).
-    
-    Global Instance AssociatedFunction_AMOUNT :
-      Notation.DoubleColon Self "AMOUNT" := {
-      Notation.double_colon := AMOUNT;
-    }.
-    
-    #[refine] Global Instance ℐ :
-      ink_env.topics.EventTopicsAmount.Trait Self := {
-      ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
-    }.
-    Admitted.
-  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-  Global Hint Resolve ℐ : core.
-End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-
-(* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Context `{ℋ : State.Trait}.
-    
-    Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
-    
-    Definition AMOUNT : usize := M.run (M.alloc 21).
-    
-    Global Instance AssociatedFunction_AMOUNT :
-      Notation.DoubleColon Self "AMOUNT" := {
-      Notation.double_colon := AMOUNT;
-    }.
-    
-    #[refine] Global Instance ℐ :
-      ink_env.topics.EventTopicsAmount.Trait Self := {
-      ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
-    }.
-    Admitted.
-  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-  Global Hint Resolve ℐ : core.
-End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-
-(* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Context `{ℋ : State.Trait}.
-    
-    Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
-    
-    Definition AMOUNT : usize := M.run (M.alloc 22).
-    
-    Global Instance AssociatedFunction_AMOUNT :
-      Notation.DoubleColon Self "AMOUNT" := {
-      Notation.double_colon := AMOUNT;
-    }.
-    
-    #[refine] Global Instance ℐ :
-      ink_env.topics.EventTopicsAmount.Trait Self := {
-      ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
-    }.
-    Admitted.
-  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-  Global Hint Resolve ℐ : core.
-End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-
-(* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Context `{ℋ : State.Trait}.
-    
-    Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
-    
-    Definition AMOUNT : usize := M.run (M.alloc 23).
-    
-    Global Instance AssociatedFunction_AMOUNT :
-      Notation.DoubleColon Self "AMOUNT" := {
-      Notation.double_colon := AMOUNT;
-    }.
-    
-    #[refine] Global Instance ℐ :
-      ink_env.topics.EventTopicsAmount.Trait Self := {
-      ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
-    }.
-    Admitted.
-  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-  Global Hint Resolve ℐ : core.
-End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-
-(* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Context `{ℋ : State.Trait}.
-    
-    Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
-    
-    Definition AMOUNT : usize := M.run (M.alloc 24).
-    
-    Global Instance AssociatedFunction_AMOUNT :
-      Notation.DoubleColon Self "AMOUNT" := {
-      Notation.double_colon := AMOUNT;
-    }.
-    
-    #[refine] Global Instance ℐ :
-      ink_env.topics.EventTopicsAmount.Trait Self := {
-      ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
-    }.
-    Admitted.
-  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-  Global Hint Resolve ℐ : core.
-End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-
-(* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Context `{ℋ : State.Trait}.
-    
-    Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
-    
-    Definition AMOUNT : usize := M.run (M.alloc 25).
-    
-    Global Instance AssociatedFunction_AMOUNT :
-      Notation.DoubleColon Self "AMOUNT" := {
-      Notation.double_colon := AMOUNT;
-    }.
-    
-    #[refine] Global Instance ℐ :
-      ink_env.topics.EventTopicsAmount.Trait Self := {
-      ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
-    }.
-    Admitted.
-  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-  Global Hint Resolve ℐ : core.
-End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-
-(* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Context `{ℋ : State.Trait}.
-    
-    Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
-    
-    Definition AMOUNT : usize := M.run (M.alloc 26).
-    
-    Global Instance AssociatedFunction_AMOUNT :
-      Notation.DoubleColon Self "AMOUNT" := {
-      Notation.double_colon := AMOUNT;
-    }.
-    
-    #[refine] Global Instance ℐ :
-      ink_env.topics.EventTopicsAmount.Trait Self := {
-      ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
-    }.
-    Admitted.
-  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-  Global Hint Resolve ℐ : core.
-End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-
-(* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Context `{ℋ : State.Trait}.
-    
-    Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
-    
-    Definition AMOUNT : usize := M.run (M.alloc 27).
-    
-    Global Instance AssociatedFunction_AMOUNT :
-      Notation.DoubleColon Self "AMOUNT" := {
-      Notation.double_colon := AMOUNT;
-    }.
-    
-    #[refine] Global Instance ℐ :
-      ink_env.topics.EventTopicsAmount.Trait Self := {
-      ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
-    }.
-    Admitted.
-  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-  Global Hint Resolve ℐ : core.
-End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-
-(* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Context `{ℋ : State.Trait}.
-    
-    Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
-    
-    Definition AMOUNT : usize := M.run (M.alloc 28).
-    
-    Global Instance AssociatedFunction_AMOUNT :
-      Notation.DoubleColon Self "AMOUNT" := {
-      Notation.double_colon := AMOUNT;
-    }.
-    
-    #[refine] Global Instance ℐ :
-      ink_env.topics.EventTopicsAmount.Trait Self := {
-      ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
-    }.
-    Admitted.
-  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-  Global Hint Resolve ℐ : core.
-End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-
-(* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Context `{ℋ : State.Trait}.
-    
-    Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
-    
-    Definition AMOUNT : usize := M.run (M.alloc 29).
-    
-    Global Instance AssociatedFunction_AMOUNT :
-      Notation.DoubleColon Self "AMOUNT" := {
-      Notation.double_colon := AMOUNT;
-    }.
-    
-    #[refine] Global Instance ℐ :
-      ink_env.topics.EventTopicsAmount.Trait Self := {
-      ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
-    }.
-    Admitted.
-  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-  Global Hint Resolve ℐ : core.
-End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-
-(* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Context `{ℋ : State.Trait}.
-    
-    Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
-    
-    Definition AMOUNT : usize := M.run (M.alloc 30).
-    
-    Global Instance AssociatedFunction_AMOUNT :
-      Notation.DoubleColon Self "AMOUNT" := {
-      Notation.double_colon := AMOUNT;
-    }.
-    
-    #[refine] Global Instance ℐ :
-      ink_env.topics.EventTopicsAmount.Trait Self := {
-      ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
-    }.
-    Admitted.
-  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-  Global Hint Resolve ℐ : core.
-End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-
-(* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Context `{ℋ : State.Trait}.
-    
-    Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
-    
-    Definition AMOUNT : usize := M.run (M.alloc 31).
-    
-    Global Instance AssociatedFunction_AMOUNT :
-      Notation.DoubleColon Self "AMOUNT" := {
-      Notation.double_colon := AMOUNT;
-    }.
-    
-    #[refine] Global Instance ℐ :
-      ink_env.topics.EventTopicsAmount.Trait Self := {
-      ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
-    }.
-    Admitted.
-  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-  Global Hint Resolve ℐ : core.
-End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-
-(* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Context `{ℋ : State.Trait}.
-    
-    Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
-    
-    Definition AMOUNT : usize := M.run (M.alloc 32).
+    Parameter AMOUNT : usize.
     
     Global Instance AssociatedFunction_AMOUNT :
       Notation.DoubleColon Self "AMOUNT" := {
@@ -19793,28 +18566,6 @@ End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRema
   Global Hint Resolve ℐ : core.
 End Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics. *)
 
-(* Module Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  (* Section Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Context `{ℋ : State.Trait}.
-    
-    Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
-    
-    Definition AMOUNT : usize := M.run (M.alloc 1).
-    
-    Global Instance AssociatedFunction_AMOUNT :
-      Notation.DoubleColon Self "AMOUNT" := {
-      Notation.double_colon := AMOUNT;
-    }.
-    
-    #[refine] Global Instance ℐ :
-      ink_env.topics.EventTopicsAmount.Trait Self := {
-      ink_env.topics.EventTopicsAmount.AMOUNT := AMOUNT;
-    }.
-    Admitted.
-  End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-  Global Hint Resolve ℐ : core.
-End Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics. *)
-
 Module
   Impl_ink_env_topics_EventTopicsAmount_for_ink_env_topics_state_NoRemainingTopics.
   Section
@@ -19823,7 +18574,7 @@ Module
     
     Definition Self : Set := ink_env.topics.state.NoRemainingTopics.
     
-    Definition AMOUNT : usize := M.run (M.alloc 0).
+    Parameter AMOUNT : usize.
     
     Global Instance AssociatedFunction_AMOUNT :
       Notation.DoubleColon Self "AMOUNT" := {

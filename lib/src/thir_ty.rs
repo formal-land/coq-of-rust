@@ -21,6 +21,7 @@ pub(crate) fn compile_type(env: &Env, ty: &rustc_middle::ty::Ty) -> Box<CoqType>
             Box::new(CoqType::Application {
                 func: Box::new(CoqType::Var(Box::new(path))),
                 args,
+                is_alias: false,
             })
         }
         // Foreign(DefId),
@@ -29,7 +30,11 @@ pub(crate) fn compile_type(env: &Env, ty: &rustc_middle::ty::Ty) -> Box<CoqType>
         TyKind::Slice(ty) => {
             let func = Box::new(CoqType::Var(Box::new(Path::local("Slice".to_string()))));
             let args = vec![compile_type(env, ty)];
-            Box::new(CoqType::Application { func, args })
+            Box::new(CoqType::Application {
+                func,
+                args,
+                is_alias: false,
+            })
         }
         // RawPtr(TypeAndMut<'tcx>),
         TyKind::Ref(_, ty, mutability) => {
@@ -53,8 +58,8 @@ pub(crate) fn compile_type(env: &Env, ty: &rustc_middle::ty::Ty) -> Box<CoqType>
         }
         // Bound(DebruijnIndex, BoundTy),
         // Placeholder(Placeholder<BoundTy>),
-        // Infer(InferTy),
-        // Error(ErrorGuaranteed),
+        TyKind::Infer(_) => Box::new(CoqType::Infer),
+        TyKind::Error(error) => CoqType::var(format!("error: {error:#?}")),
         _ => {
             eprintln!("type {:#?} not yet handled", ty.kind());
             CoqType::var("type not implemented".to_string())

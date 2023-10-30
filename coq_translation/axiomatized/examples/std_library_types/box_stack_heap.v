@@ -41,7 +41,7 @@ Module Impl_core_fmt_Debug_for_box_stack_heap_Point.
     
     (* #[allow(dead_code)] - function was ignored by the compiler *)
     Parameter fmt :
-        (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+        (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
     
     Global Instance AssociatedFunction_fmt :
       Notation.DoubleColon Self "fmt" := {
