@@ -72,7 +72,7 @@ enum ImplItem {
     Const {
         name: String,
         ty: Box<CoqType>,
-        body: Box<Expr>,
+        body: Option<Box<Expr>>,
         is_dead_code: bool,
     },
     Definition {
@@ -623,11 +623,15 @@ fn compile_impl_item(
     match &item.kind {
         ImplItemKind::Const(ty, body_id) => {
             let ty = compile_type(env, ty);
-            let expr = compile_hir_id(env, body_id.hir_id);
+            let body = if env.axiomatize {
+                None
+            } else {
+                Some(Box::new(compile_hir_id(env, body_id.hir_id)))
+            };
             ImplItem::Const {
                 name,
                 ty,
-                body: Box::new(expr),
+                body,
                 is_dead_code,
             }
         }
@@ -973,11 +977,17 @@ fn mt_impl_item(item: ImplItem) -> ImplItem {
             body,
             is_dead_code,
         } => {
-            let (body, _fresh_vars) = mt_expression(FreshVars::new(), *body);
+            let body = match body {
+                None => body,
+                Some(body) => {
+                    let stmt = mt_expression(FreshVars::new(), *body).0;
+                    Some(Box::new(Expr::Block(Box::new(stmt))))
+                }
+            };
             ImplItem::Const {
                 name,
                 ty: mt_ty(ty),
-                body: Box::new(Expr::Block(Box::new(body))),
+                body,
                 is_dead_code,
             }
         }
@@ -1272,6 +1282,7 @@ impl FunDefinition {
                         let ret_opaque_ty = CoqType::Application {
                             func: CoqType::var("projT1".to_string()),
                             args: vec![CoqType::var(ret_ty_name.clone())],
+                            is_alias: false,
                         };
                         let opaque_return_tys_bounds =
                             self.signature_and_body.ret_ty.opaque_types_bounds();
@@ -1530,17 +1541,25 @@ impl ImplItem {
                 } else {
                     nil()
                 },
-                nest([
-                    nest([
-                        nest([text("Definition"), line(), text(name), text(" :")]),
+                match body {
+                    None => nest([
+                        nest([text("Parameter"), line(), text(name), text(" :")]),
                         line(),
                         ty.to_doc(false),
-                        text(" :="),
+                        text("."),
                     ]),
-                    line(),
-                    nest([text("M.run"), line(), body.to_doc(true)]),
-                    text("."),
-                ]),
+                    Some(body) => nest([
+                        nest([
+                            nest([text("Definition"), line(), text(name), text(" :")]),
+                            line(),
+                            ty.to_doc(false),
+                            text(" :="),
+                        ]),
+                        line(),
+                        nest([text("M.run"), line(), body.to_doc(true)]),
+                        text("."),
+                    ]),
+                },
                 hardline(),
                 hardline(),
                 Self::class_instance_to_doc(
@@ -1735,28 +1754,21 @@ impl TopLevelItem {
                 ty_params,
             } => nest([
                 nest([
-                    nest([text("Definition"), line(), text(name)]),
-                    line(),
-                    text("`{ℋ : State.Trait}"),
-                    if ty_params.is_empty() {
-                        nil()
-                    } else {
-                        nest([
-                            line(),
-                            text("("),
-                            concat(ty_params.iter().map(|ty| concat([text(ty), line()]))),
-                            text(":"),
-                            line(),
-                            text("Set)"),
-                        ])
-                    },
-                    text(" :"),
-                    line(),
-                    text("Set"),
+                    nest([text("Ltac"), line(), text(name)]),
+                    concat(
+                        ty_params
+                            .iter()
+                            .map(|ty_param| concat([line(), text(ty_param)])),
+                    ),
                     text(" :="),
                 ]),
                 line(),
-                ty.to_doc(false),
+                (CoqType::Application {
+                    func: CoqType::var("refine".to_string()),
+                    args: vec![ty.clone()],
+                    is_alias: false,
+                })
+                .to_doc(false),
                 text("."),
             ]),
             TopLevelItem::TypeEnum {

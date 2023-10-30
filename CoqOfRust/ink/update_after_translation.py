@@ -57,25 +57,31 @@ Require CoqOfRust.ink.ink_env.""",
 
     content = ignore_module_names(
         [
-            "IsResultType",
-            "TraitCallForwarderFor",
+            "Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned",
         ],
         content,
     )
+
     content = sub_at_least_once(
-        re.escape(
-            """Definition IsResultType (T : Set) `{ℋ : State.Trait} : Set :=
-    M.val (IsResultType.t (T := T))."""
-        ),
-        "",
+        re.escape("""End ChainExtension.
+
+Module IsResultType."""),
+        """End ChainExtension.
+
+(* Module IsResultType.""",
         content,
     )
+
     content = sub_at_least_once(
-        re.escape("""Definition IsResultType (T : Set) `{ℋ : State.Trait} : Set :=
-  M.val (IsResultType.t (T := T))."""),
-        """(* Definition IsResultType (T : Set) `{ℋ : State.Trait} : Set :=
-  M.val (IsResultType.t (T := T)). *)""",
-        content,
+        re.escape("""End IsResultType.
+
+Module
+  Impl_ink_chain_extension_private_IsResultSealed_for_core_result_Result_T_E."""),
+        """End IsResultType. *)
+
+Module
+  Impl_ink_chain_extension_private_IsResultSealed_for_core_result_Result_T_E.""",
+        content
     )
 
     with open(file_name, "w") as f:
@@ -200,24 +206,26 @@ Require CoqOfRust.ink.ink_engine.""",
         content,
     )
 
-#     content = sub_at_least_once(
-#         re.escape("""End impls.
+    content = sub_at_least_once(
+        re.escape("Trait T (Rhs := Self)"),
+        "Trait T (Rhs := T)",
+        content,
+    )
 
-# Module TopicsBuilder."""),
-#         """End impls.
+    content = sub_at_least_once(
+        re.escape("""End TopicsBuilderBackend.
 
-# (* Module TopicsBuilder.""",
-#         content,
-#     )
-#     content = sub_at_least_once(
-#         re.escape("""Definition TopicsBuilder `{ℋ : State.Trait} : Set := M.val TopicsBuilder.t.
+Module TopicsBuilder."""),
+        """End TopicsBuilderBackend.
 
-# Module EnvInstance."""),
-#         """Definition TopicsBuilder `{ℋ : State.Trait} : Set := M.val TopicsBuilder.t. *)
-
-# Module EnvInstance.""",
-#         content,
-#     )
+(* Module TopicsBuilder.""",
+        content,
+    )
+    content = sub_at_least_once(
+        re.escape("""\n  M.val (TopicsBuilder.t (S := S) (E := E) (B := B))."""),
+        """\n  M.val (TopicsBuilder.t (S := S) (E := E) (B := B)). *)""",
+        content,
+    )
 
     content = sub_at_least_once(
         re.escape("""Parameter is_contract :
@@ -233,6 +241,117 @@ Require CoqOfRust.ink.ink_engine.""",
       {ℋ_0 : ink_env.types.Environment.Trait E},
     (ref E::type["AccountId"]) -> M bool. *)""",
         content)
+
+    content = sub_at_least_once(
+        re.escape("Parameter build_create :"),
+        "(* Parameter build_create :",
+        content,
+    )
+    content = sub_at_least_once(
+        re.escape(""".
+
+Module execution_input."""),
+        """. *)
+
+Module execution_input.""",
+        content,
+    )
+
+    content = sub_at_least_once(
+        re.escape("""Parameter hash :
+              (ref (Slice u8)) ->
+                (mut_ref
+                  (ink_env.hash.HashOutput.Type_
+                    (Self := Self)
+                    (Trait := ltac:(try clear Trait; hauto l: on))))
+                ->
+                M unit."""),
+        """Parameter hash :
+              (ref (Slice u8)) ->
+                (mut_ref
+                  (ink_env.hash.HashOutput.Type_
+                    (Self := Self)
+                    (Trait := _)))
+                ->
+                M unit.""",
+        content,
+    )
+
+    content = sub_at_least_once(
+        re.escape("""Parameter hash :
+            (ref (Slice u8)) ->
+              (mut_ref
+                (ink_env.hash.HashOutput.Type_
+                  (Self := Self)
+                  (Trait := ltac:(try clear Trait; hauto l: on))))
+              ->
+              M unit."""),
+        """Parameter hash :
+            (ref (Slice u8)) ->
+              (mut_ref
+                (ink_env.hash.HashOutput.Type_
+                  (Self := Self)
+                  (Trait := _)))
+              ->
+              M unit.""",
+        content,
+    )
+
+    content = sub_at_least_once(
+        re.escape("""Parameter hash :
+          (ref (Slice u8)) ->
+            (mut_ref
+              (ink_env.hash.HashOutput.Type_
+                (Self := Self)
+                (Trait := ltac:(try clear Trait; hauto l: on))))
+            ->
+            M unit."""),
+        """Parameter hash :
+          (ref (Slice u8)) ->
+            (mut_ref
+              (ink_env.hash.HashOutput.Type_
+                (Self := Self)
+                (Trait := _)))
+            ->
+            M unit.""",
+        content,
+    )
+
+    content = sub_at_least_once(
+        re.escape("""Parameter hash :
+        (ref (Slice u8)) ->
+          (mut_ref
+            (ink_env.hash.HashOutput.Type_
+              (Self := Self)
+              (Trait := ltac:(try clear Trait; hauto l: on))))
+          ->
+          M unit."""),
+        """Parameter hash :
+        (ref (Slice u8)) ->
+          (mut_ref
+            (ink_env.hash.HashOutput.Type_
+              (Self := Self)
+              (Trait := _)))
+          ->
+          M unit.""",
+        content
+    )
+
+    content = ignore_module_names(
+        [
+            "Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error",
+            "Impl_ink_env_topics_TopicsBuilderBackend_for_ink_env_engine_off_chain_impls_TopicsBuilder",
+            "Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_EnvBackend_for_ink_env_engine_off_chain_EnvInstance",
+            "Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_TypedEnvBackend_for_ink_env_engine_off_chain_EnvInstance",
+            "Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_EmittedEvent",
+            "Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError",
+            "Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_OnInstance_for_ink_env_engine_off_chain_EnvInstance",
+            "Impl_core_convert_From_for_ink_env_topics_TopicsBuilder_ink_env_topics_state_Uninit_E_B",
+            "Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics",
+            "Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics",
+        ],
+        content,
+    )
 
     with open(file_name, "w") as f:
         f.write(content)
@@ -254,25 +373,6 @@ Require CoqOfRust.ink.serde.
 Require CoqOfRust.ink.sp_core.
 Require CoqOfRust.ink.sp_keyring.
 Require CoqOfRust.ink.subxt.""",
-        content,
-    )
-
-    content = sub_at_least_once(
-        re.escape(
-            """Definition CreateBuilderPartial
-      `{ℋ : State.Trait} (E ContractRef Args R : Set) :
-      Set :="""),
-        """Definition CreateBuilderPartial
-      `{ℋ : State.Trait} (E ContractRef Args R : Set)
-      `{ink_env.types.Environment.Trait E} :
-      Set :=""",
-        content,
-    )
-    content = sub_at_least_once(
-        re.escape(
-            """Definition CallBuilderFinal `{ℋ : State.Trait} (E Args RetType : Set) : Set :="""
-        ),
-        """Definition CallBuilderFinal `{ℋ : State.Trait} (E Args RetType : Set) `{ink_env.types.Environment.Trait E} : Set :=""",
         content,
     )
 
@@ -392,10 +492,10 @@ Parameter generate""",
         content,
     )
     content = sub_at_least_once(
-        re.escape("""M (syn.error.Result proc_macro2.TokenStream).
+        re.escape("""M ltac:(syn.error.Result constr:(proc_macro2.TokenStream)).
 
 Module trait_def."""),
-        """M (syn.error.Result proc_macro2.TokenStream). *)
+        """M ltac:(syn.error.Result constr:(proc_macro2.TokenStream)). *)
 
 Module trait_def.""",
         content,
@@ -507,17 +607,6 @@ Require CoqOfRust.ink.parity_scale_codec.""",
 
     content = ignore_module_names(
         [
-            "Impl_ink_storage_traits_storage_Storable_for_P",
-            "Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_AutoKey",
-            "Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ManualKey_ParentKey",
-            "Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ResolverKey_L_R",
-            "Impl_ink_storage_traits_storage_AutoStorableHint_for_T",
-            "Impl_ink_storage_traits_storage_Packed_for_P",
-            "Impl_ink_storage_traits_storage_StorageKey_for_P",
-            "Impl_ink_storage_traits_storage_StorableHint_for_P",
-            "Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map_BTreeMap_K_V_alloc_collections_btree_map_BTreeMap_Default_A",
-            "Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set_BTreeSet_T_alloc_collections_btree_set_BTreeSet_Default_A",
-            "Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_vec_deque_VecDeque_T_alloc_collections_vec_deque_VecDeque_Default_A",
         ],
         content,
     )
@@ -568,50 +657,50 @@ Require CoqOfRust.ink.ink.""",
 #         content,
 #     )
 
-    content = sub_at_least_once(
-        """Module erc20.""",
-        """Module erc20.
-  Module Impl_ink_env_types_Environment_for_ink_env_types_DefaultEnvironment.
-    Definition Self := ink_env.types.DefaultEnvironment.
-    
-    Definition MAX_EVENT_TOPICS := 4.
-    
-    Global Instance AssociatedFunction_MAX_EVENT_TOPICS `{H' : State.Trait} :
-      Notation.DoubleColon Self "MAX_EVENT_TOPICS" := {
-      Notation.double_colon := MAX_EVENT_TOPICS;
-    }.
-    
-    Definition AccountId : Set := ink_primitives.types.AccountId.
-    
-    Definition Balance : Set := ink_env.types.Balance.
-    
-    Definition Hash : Set := ink_primitives.types.Hash.
-    
-    Definition Timestamp : Set := ink_env.types.Timestamp.
-    
-    Definition BlockNumber : Set := ink_env.types.BlockNumber.
-    
-    Definition ChainExtension : Set := ink_env.types.NoChainExtension.
-    
-    #[refine]
-    Global Instance I : ink_env.types.Environment.Trait Self := {
-      ink_env.types.Environment.MAX_EVENT_TOPICS `{H' : State.Trait}
-        :=
-        MAX_EVENT_TOPICS;
-      ink_env.types.Environment.AccountId := AccountId;
-      ink_env.types.Environment.Balance := Balance;
-      ink_env.types.Environment.Hash := Hash;
-      ink_env.types.Environment.Timestamp := Timestamp;
-      ink_env.types.Environment.BlockNumber := BlockNumber;
-      ink_env.types.Environment.ChainExtension := ChainExtension;
-    }.
-    eauto.
-    Defined.
-    Global Hint Resolve I : core.
-  End Impl_ink_env_types_Environment_for_ink_env_types_DefaultEnvironment.
-""",
-        content,
-    )
+#     content = sub_at_least_once(
+#         """Module erc20.""",
+#         """Module erc20.
+#   Module Impl_ink_env_types_Environment_for_ink_env_types_DefaultEnvironment.
+#     Definition Self := ink_env.types.DefaultEnvironment.
+
+#     Definition MAX_EVENT_TOPICS := 4.
+
+#     Global Instance AssociatedFunction_MAX_EVENT_TOPICS `{H' : State.Trait} :
+#       Notation.DoubleColon Self "MAX_EVENT_TOPICS" := {
+#       Notation.double_colon := MAX_EVENT_TOPICS;
+#     }.
+
+#     Definition AccountId : Set := ink_primitives.types.AccountId.
+
+#     Definition Balance : Set := ink_env.types.Balance.
+
+#     Definition Hash : Set := ink_primitives.types.Hash.
+
+#     Definition Timestamp : Set := ink_env.types.Timestamp.
+
+#     Definition BlockNumber : Set := ink_env.types.BlockNumber.
+
+#     Definition ChainExtension : Set := ink_env.types.NoChainExtension.
+
+#     #[refine]
+#     Global Instance I : ink_env.types.Environment.Trait Self := {
+#       ink_env.types.Environment.MAX_EVENT_TOPICS `{H' : State.Trait}
+#         :=
+#         MAX_EVENT_TOPICS;
+#       ink_env.types.Environment.AccountId := AccountId;
+#       ink_env.types.Environment.Balance := Balance;
+#       ink_env.types.Environment.Hash := Hash;
+#       ink_env.types.Environment.Timestamp := Timestamp;
+#       ink_env.types.Environment.BlockNumber := BlockNumber;
+#       ink_env.types.Environment.ChainExtension := ChainExtension;
+#     }.
+#     eauto.
+#     Defined.
+#     Global Hint Resolve I : core.
+#   End Impl_ink_env_types_Environment_for_ink_env_types_DefaultEnvironment.
+# """,
+#         content,
+#     )
 
     content = sub_at_least_once(
         re.escape(
@@ -627,7 +716,8 @@ Require CoqOfRust.ink.ink.""",
 
 update_ink()
 update_ink_allocator()
-update_ink_e2e()
+# Commenting as this file does not seem to be actually used
+# update_ink_e2e()
 update_ink_e2e_macro()
 update_ink_engine()
 update_ink_env()

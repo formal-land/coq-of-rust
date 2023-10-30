@@ -80,7 +80,7 @@ Module Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
     Definition fmt
         (self : ref Self)
         (f : mut_ref core.fmt.Formatter)
-        : M core.fmt.Result :=
+        : M ltac:(core.fmt.Result) :=
       let* α0 := deref f core.fmt.Formatter in
       let* α1 := borrow_mut α0 core.fmt.Formatter in
       let* α2 := deref (mk_str "Rectangle") str in

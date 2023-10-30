@@ -3,6 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.ink.scale_info.
 
 Parameter PortableField : Set.
+Ltac PortableField := refine PortableField.
 
 Definition PortableRegistry `{State.Trait} := scale_info.PortableRegistry.
 

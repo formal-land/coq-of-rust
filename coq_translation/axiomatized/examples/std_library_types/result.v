@@ -17,7 +17,9 @@ Module checked.
       Definition Self : Set := result.checked.MathError.
       
       Parameter fmt :
-          (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+          (ref Self) ->
+            (mut_ref core.fmt.Formatter) ->
+            M ltac:(core.fmt.Result).
       
       Global Instance AssociatedFunction_fmt :
         Notation.DoubleColon Self "fmt" := {
@@ -32,18 +34,19 @@ Module checked.
     Global Hint Resolve ℐ : core.
   End Impl_core_fmt_Debug_for_result_checked_MathError.
   
-  Definition MathResult `{ℋ : State.Trait} : Set :=
-    core.result.Result f64 result.checked.MathError.
+  Ltac MathResult := refine (core.result.Result f64 result.checked.MathError).
   
   Parameter div :
       forall `{ℋ : State.Trait},
-      f64 -> f64 -> M result.checked.MathResult.
+      f64 -> f64 -> M ltac:(result.checked.MathResult).
   
   Parameter sqrt :
       forall `{ℋ : State.Trait},
-      f64 -> M result.checked.MathResult.
+      f64 -> M ltac:(result.checked.MathResult).
   
-  Parameter ln : forall `{ℋ : State.Trait}, f64 -> M result.checked.MathResult.
+  Parameter ln :
+      forall `{ℋ : State.Trait},
+      f64 -> M ltac:(result.checked.MathResult).
 End checked.
 
 Module MathError.
@@ -61,7 +64,7 @@ Module Impl_core_fmt_Debug_for_result_checked_MathError.
     Definition Self : Set := result.checked.MathError.
     
     Parameter fmt :
-        (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+        (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
     
     Global Instance AssociatedFunction_fmt :
       Notation.DoubleColon Self "fmt" := {
@@ -76,16 +79,19 @@ Module Impl_core_fmt_Debug_for_result_checked_MathError.
   Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_result_checked_MathError.
 
-Definition MathResult `{ℋ : State.Trait} : Set :=
-  core.result.Result f64 result.checked.MathError.
+Ltac MathResult := refine (core.result.Result f64 result.checked.MathError).
 
 Parameter div :
     forall `{ℋ : State.Trait},
-    f64 -> f64 -> M result.checked.MathResult.
+    f64 -> f64 -> M ltac:(result.checked.MathResult).
 
-Parameter sqrt : forall `{ℋ : State.Trait}, f64 -> M result.checked.MathResult.
+Parameter sqrt :
+    forall `{ℋ : State.Trait},
+    f64 -> M ltac:(result.checked.MathResult).
 
-Parameter ln : forall `{ℋ : State.Trait}, f64 -> M result.checked.MathResult.
+Parameter ln :
+    forall `{ℋ : State.Trait},
+    f64 -> M ltac:(result.checked.MathResult).
 
 Parameter op : forall `{ℋ : State.Trait}, f64 -> f64 -> M f64.
 

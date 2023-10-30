@@ -18,7 +18,7 @@ Module Impl_core_fmt_Debug_for_combinators_map_Food.
     Definition fmt
         (self : ref Self)
         (f : mut_ref core.fmt.Formatter)
-        : M core.fmt.Result :=
+        : M ltac:(core.fmt.Result) :=
       let* α0 := deref f core.fmt.Formatter in
       let* α1 := borrow_mut α0 core.fmt.Formatter in
       let* α2 :=
@@ -75,7 +75,7 @@ Module Impl_core_fmt_Debug_for_combinators_map_Peeled.
     Definition fmt
         (self : ref Self)
         (f : mut_ref core.fmt.Formatter)
-        : M core.fmt.Result :=
+        : M ltac:(core.fmt.Result) :=
       let* α0 := deref f core.fmt.Formatter in
       let* α1 := borrow_mut α0 core.fmt.Formatter in
       let* α2 := deref (mk_str "Peeled") str in
@@ -129,7 +129,7 @@ Module Impl_core_fmt_Debug_for_combinators_map_Chopped.
     Definition fmt
         (self : ref Self)
         (f : mut_ref core.fmt.Formatter)
-        : M core.fmt.Result :=
+        : M ltac:(core.fmt.Result) :=
       let* α0 := deref f core.fmt.Formatter in
       let* α1 := borrow_mut α0 core.fmt.Formatter in
       let* α2 := deref (mk_str "Chopped") str in
@@ -183,7 +183,7 @@ Module Impl_core_fmt_Debug_for_combinators_map_Cooked.
     Definition fmt
         (self : ref Self)
         (f : mut_ref core.fmt.Formatter)
-        : M core.fmt.Result :=
+        : M ltac:(core.fmt.Result) :=
       let* α0 := deref f core.fmt.Formatter in
       let* α1 := borrow_mut α0 core.fmt.Formatter in
       let* α2 := deref (mk_str "Cooked") str in

@@ -5,7 +5,7 @@ Require CoqOfRust.ink.scale_encode.
 Require CoqOfRust.ink.scale_info.
 
 Module key.
-  Definition Key `{ℋ : State.Trait} : Set := u32.
+  Ltac Key := refine u32.
   
   Module KeyComposer.
     Section KeyComposer.
@@ -30,7 +30,9 @@ Module key.
       Definition Self : Set := ink_primitives.key.Error.
       
       Parameter fmt :
-          (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+          (ref Self) ->
+            (mut_ref core.fmt.Formatter) ->
+            M ltac:(core.fmt.Result).
       
       Global Instance AssociatedFunction_fmt :
         Notation.DoubleColon Self "fmt" := {
@@ -116,7 +118,7 @@ Module key.
   End Impl_core_cmp_Eq_for_ink_primitives_key_Error.
 End key.
 
-Definition Key `{ℋ : State.Trait} : Set := u32.
+Ltac Key := refine u32.
 
 Module KeyComposer.
   Section KeyComposer.
@@ -141,7 +143,7 @@ Module Impl_core_fmt_Debug_for_ink_primitives_key_Error.
     Definition Self : Set := ink_primitives.key.Error.
     
     Parameter fmt :
-        (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+        (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
     
     Global Instance AssociatedFunction_fmt :
       Notation.DoubleColon Self "fmt" := {
@@ -278,7 +280,7 @@ Module types.
       
       Parameter encode_as_fields_to :
           (ref Self) ->
-            (ref (Slice scale_encode.PortableField)) ->
+            (ref (Slice ltac:(scale_encode.PortableField))) ->
             (ref scale_info.portable.PortableRegistry) ->
             (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
             M (core.result.Result unit scale_encode.error.Error).
@@ -303,7 +305,9 @@ Module types.
       Definition Self : Set := ink_primitives.types.AccountId.
       
       Parameter fmt :
-          (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+          (ref Self) ->
+            (mut_ref core.fmt.Formatter) ->
+            M ltac:(core.fmt.Result).
       
       Global Instance AssociatedFunction_fmt :
         Notation.DoubleColon Self "fmt" := {
@@ -690,7 +694,7 @@ Module types.
       
       Parameter encode_as_fields_to :
           (ref Self) ->
-            (ref (Slice scale_encode.PortableField)) ->
+            (ref (Slice ltac:(scale_encode.PortableField))) ->
             (ref scale_info.portable.PortableRegistry) ->
             (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
             M (core.result.Result unit scale_encode.error.Error).
@@ -715,7 +719,9 @@ Module types.
       Definition Self : Set := ink_primitives.types.Hash.
       
       Parameter fmt :
-          (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+          (ref Self) ->
+            (mut_ref core.fmt.Formatter) ->
+            M ltac:(core.fmt.Result).
       
       Global Instance AssociatedFunction_fmt :
         Notation.DoubleColon Self "fmt" := {
@@ -1062,10 +1068,7 @@ Module types.
       
       Definition Self : Set := array u8.
       
-      Definition CLEAR_HASH : Self :=
-        M.run
-          (let* α0 := M.alloc 0 in
-          repeat α0 32).
+      Parameter CLEAR_HASH : Self.
       
       Global Instance AssociatedFunction_CLEAR_HASH :
         Notation.DoubleColon Self "CLEAR_HASH" := {
@@ -1094,11 +1097,7 @@ Module types.
       
       Definition Self : Set := ink_primitives.types.Hash.
       
-      Definition CLEAR_HASH : Self :=
-        M.run
-          (Pure
-            (ink_primitives.types.Hash.Build_t
-              (ink_primitives.types.Clear.CLEAR_HASH (Self := (list u8))))).
+      Parameter CLEAR_HASH : Self.
       
       Global Instance AssociatedFunction_CLEAR_HASH :
         Notation.DoubleColon Self "CLEAR_HASH" := {
@@ -1255,7 +1254,7 @@ End Impl_scale_decode_visitor_Visitor_for_ink_primitives_types___Visitor. *) *)
     
     Parameter decode_as_fields :
         (mut_ref (ref (Slice u8))) ->
-          (ref (Slice scale_decode.PortableField)) ->
+          (ref (Slice ltac:(scale_decode.PortableField))) ->
           (ref scale_info.portable.PortableRegistry) ->
           M (core.result.Result Self scale_decode.error.Error).
     
@@ -1306,7 +1305,7 @@ Module Impl_scale_encode_EncodeAsFields_for_ink_primitives_types_AccountId.
     
     Parameter encode_as_fields_to :
         (ref Self) ->
-          (ref (Slice scale_encode.PortableField)) ->
+          (ref (Slice ltac:(scale_encode.PortableField))) ->
           (ref scale_info.portable.PortableRegistry) ->
           (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
           M (core.result.Result unit scale_encode.error.Error).
@@ -1331,7 +1330,7 @@ Module Impl_core_fmt_Debug_for_ink_primitives_types_AccountId.
     Definition Self : Set := ink_primitives.types.AccountId.
     
     Parameter fmt :
-        (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+        (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
     
     Global Instance AssociatedFunction_fmt :
       Notation.DoubleColon Self "fmt" := {
@@ -1882,7 +1881,7 @@ End Impl_scale_decode_visitor_Visitor_for_ink_primitives_types___Visitor. *) *)
     
     Parameter decode_as_fields :
         (mut_ref (ref (Slice u8))) ->
-          (ref (Slice scale_decode.PortableField)) ->
+          (ref (Slice ltac:(scale_decode.PortableField))) ->
           (ref scale_info.portable.PortableRegistry) ->
           M (core.result.Result Self scale_decode.error.Error).
     
@@ -1933,7 +1932,7 @@ Module Impl_scale_encode_EncodeAsFields_for_ink_primitives_types_Hash.
     
     Parameter encode_as_fields_to :
         (ref Self) ->
-          (ref (Slice scale_encode.PortableField)) ->
+          (ref (Slice ltac:(scale_encode.PortableField))) ->
           (ref scale_info.portable.PortableRegistry) ->
           (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
           M (core.result.Result unit scale_encode.error.Error).
@@ -1958,7 +1957,7 @@ Module Impl_core_fmt_Debug_for_ink_primitives_types_Hash.
     Definition Self : Set := ink_primitives.types.Hash.
     
     Parameter fmt :
-        (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+        (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
     
     Global Instance AssociatedFunction_fmt :
       Notation.DoubleColon Self "fmt" := {
@@ -2408,10 +2407,7 @@ End Clear.
     
     Definition Self : Set := array u8.
     
-    Definition CLEAR_HASH : Self :=
-      M.run
-        (let* α0 := M.alloc 0 in
-        repeat α0 32).
+    Parameter CLEAR_HASH : Self.
     
     Global Instance AssociatedFunction_CLEAR_HASH :
       Notation.DoubleColon Self "CLEAR_HASH" := {
@@ -2440,11 +2436,7 @@ End Impl_ink_primitives_types_Clear_for_Array_u8. *)
     
     Definition Self : Set := ink_primitives.types.Hash.
     
-    Definition CLEAR_HASH : Self :=
-      M.run
-        (Pure
-          (ink_primitives.types.Hash.Build_t
-            (ink_primitives.types.Clear.CLEAR_HASH (Self := (list u8))))).
+    Parameter CLEAR_HASH : Self.
     
     Global Instance AssociatedFunction_CLEAR_HASH :
       Notation.DoubleColon Self "CLEAR_HASH" := {
@@ -2504,7 +2496,7 @@ Module Impl_core_fmt_Debug_for_ink_primitives_LangError.
     Definition Self : Set := ink_primitives.LangError.
     
     Parameter fmt :
-        (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+        (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
     
     Global Instance AssociatedFunction_fmt :
       Notation.DoubleColon Self "fmt" := {
@@ -2700,8 +2692,7 @@ End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_primitives_LangError.
   Global Hint Resolve ℐ : core.
 End Impl_parity_scale_codec_codec_Decode_for_ink_primitives_LangError. *)
 
-Definition MessageResult `{ℋ : State.Trait} (T : Set) : Set :=
-  core.result.Result T ink_primitives.LangError.
+Ltac MessageResult T := refine (core.result.Result T ink_primitives.LangError).
 
-Definition ConstructorResult `{ℋ : State.Trait} (T : Set) : Set :=
-  core.result.Result T ink_primitives.LangError.
+Ltac ConstructorResult T :=
+  refine (core.result.Result T ink_primitives.LangError).

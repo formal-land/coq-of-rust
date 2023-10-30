@@ -560,7 +560,7 @@ Module Impl_Debug_for_Result.
     Parameter fmt :
       forall `{State.Trait}, ref (core.result.Result T E) ->
       mut_ref core.fmt.Formatter ->
-      M core.fmt.Result.
+      M ltac:(core.fmt.Result).
 
     Global Instance I `{State.Trait} :
         core.fmt.Debug.Trait (core.result.Result T E) := {

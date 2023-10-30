@@ -4,6 +4,7 @@ Module error.
   Parameter Error : Set.
 
   Parameter Result : Set -> Set.
+  Ltac Result T := refine (Result T).
 End error.
 
 Module item.

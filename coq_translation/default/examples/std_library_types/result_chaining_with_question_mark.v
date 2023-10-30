@@ -22,7 +22,7 @@ Module checked.
       Definition fmt
           (self : ref Self)
           (f : mut_ref core.fmt.Formatter)
-          : M core.fmt.Result :=
+          : M ltac:(core.fmt.Result) :=
         let* α0 := deref f core.fmt.Formatter in
         let* α1 := borrow_mut α0 core.fmt.Formatter in
         let* α2 :=
@@ -54,14 +54,17 @@ Module checked.
   End
     Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
   
-  Definition MathResult `{ℋ : State.Trait} : Set :=
-    core.result.Result f64 result_chaining_with_question_mark.checked.MathError.
+  Ltac MathResult :=
+    refine
+      (core.result.Result
+        f64
+        result_chaining_with_question_mark.checked.MathError).
   
   Definition div
       `{ℋ : State.Trait}
       (x : f64)
       (y : f64)
-      : M result_chaining_with_question_mark.checked.MathResult :=
+      : M ltac:(result_chaining_with_question_mark.checked.MathResult) :=
     let* α0 := M.alloc 0 (* 0.0 *) in
     let* α1 := eq y α0 in
     let* α2 := use α1 in
@@ -77,7 +80,7 @@ Module checked.
   Definition sqrt
       `{ℋ : State.Trait}
       (x : f64)
-      : M result_chaining_with_question_mark.checked.MathResult :=
+      : M ltac:(result_chaining_with_question_mark.checked.MathResult) :=
     let* α0 := M.alloc 0 (* 0.0 *) in
     let* α1 := lt x α0 in
     let* α2 := use α1 in
@@ -93,7 +96,7 @@ Module checked.
   Definition ln
       `{ℋ : State.Trait}
       (x : f64)
-      : M result_chaining_with_question_mark.checked.MathResult :=
+      : M ltac:(result_chaining_with_question_mark.checked.MathResult) :=
     let* α0 := M.alloc 0 (* 0.0 *) in
     let* α1 := le x α0 in
     let* α2 := use α1 in
@@ -110,7 +113,7 @@ Module checked.
       `{ℋ : State.Trait}
       (x : f64)
       (y : f64)
-      : M result_chaining_with_question_mark.checked.MathResult :=
+      : M ltac:(result_chaining_with_question_mark.checked.MathResult) :=
     let* ratio :=
       let* α0 := result_chaining_with_question_mark.checked.div x y in
       let* α1 :=
@@ -218,7 +221,7 @@ Module
     Definition fmt
         (self : ref Self)
         (f : mut_ref core.fmt.Formatter)
-        : M core.fmt.Result :=
+        : M ltac:(core.fmt.Result) :=
       let* α0 := deref f core.fmt.Formatter in
       let* α1 := borrow_mut α0 core.fmt.Formatter in
       let* α2 :=
@@ -250,14 +253,17 @@ Module
 End
   Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
 
-Definition MathResult `{ℋ : State.Trait} : Set :=
-  core.result.Result f64 result_chaining_with_question_mark.checked.MathError.
+Ltac MathResult :=
+  refine
+    (core.result.Result
+      f64
+      result_chaining_with_question_mark.checked.MathError).
 
 Definition div
     `{ℋ : State.Trait}
     (x : f64)
     (y : f64)
-    : M result_chaining_with_question_mark.checked.MathResult :=
+    : M ltac:(result_chaining_with_question_mark.checked.MathResult) :=
   let* α0 := M.alloc 0 (* 0.0 *) in
   let* α1 := eq y α0 in
   let* α2 := use α1 in
@@ -273,7 +279,7 @@ Definition div
 Definition sqrt
     `{ℋ : State.Trait}
     (x : f64)
-    : M result_chaining_with_question_mark.checked.MathResult :=
+    : M ltac:(result_chaining_with_question_mark.checked.MathResult) :=
   let* α0 := M.alloc 0 (* 0.0 *) in
   let* α1 := lt x α0 in
   let* α2 := use α1 in
@@ -289,7 +295,7 @@ Definition sqrt
 Definition ln
     `{ℋ : State.Trait}
     (x : f64)
-    : M result_chaining_with_question_mark.checked.MathResult :=
+    : M ltac:(result_chaining_with_question_mark.checked.MathResult) :=
   let* α0 := M.alloc 0 (* 0.0 *) in
   let* α1 := le x α0 in
   let* α2 := use α1 in
@@ -306,7 +312,7 @@ Definition op_
     `{ℋ : State.Trait}
     (x : f64)
     (y : f64)
-    : M result_chaining_with_question_mark.checked.MathResult :=
+    : M ltac:(result_chaining_with_question_mark.checked.MathResult) :=
   let* ratio :=
     let* α0 := result_chaining_with_question_mark.checked.div x y in
     let* α1 :=

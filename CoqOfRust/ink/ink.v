@@ -3,8 +3,8 @@ Require Import CoqOfRust.CoqOfRust.
 Require CoqOfRust.ink.ink_env.
 
 Module result_info.
-  (* Module IsResultType.
-    (* Section IsResultType.
+  Module IsResultType.
+    Section IsResultType.
       Context `{ℋ : State.Trait}.
       
       Context {T : Set}.
@@ -24,9 +24,10 @@ Module result_info.
         Notation.double_colon x := let* x := M.read x in Pure x.(marker) : M _;
       }.
       Admitted.
-    End IsResultType. *)
-  End IsResultType. *)
-  
+    End IsResultType.
+  End IsResultType.
+  Definition IsResultType (T : Set) `{ℋ : State.Trait} : Set :=
+    M.val (IsResultType.t (T := T)).
   
   Module IsResultTypeFallback.
     Section IsResultTypeFallback.
@@ -112,8 +113,8 @@ Module result_info.
     Impl_ink_result_info_IsResultErrFallback_for_ink_result_info_IsResultErr_T.
 End result_info.
 
-(* Module IsResultType.
-  (* Section IsResultType.
+Module IsResultType.
+  Section IsResultType.
     Context `{ℋ : State.Trait}.
     
     Context {T : Set}.
@@ -133,10 +134,10 @@ End result_info.
       Notation.double_colon x := let* x := M.read x in Pure x.(marker) : M _;
     }.
     Admitted.
-  End IsResultType. *)
-End IsResultType. *)
-(* Definition IsResultType (T : Set) `{ℋ : State.Trait} : Set :=
-  M.val (IsResultType.t (T := T)). *)
+  End IsResultType.
+End IsResultType.
+Definition IsResultType (T : Set) `{ℋ : State.Trait} : Set :=
+  M.val (IsResultType.t (T := T)).
 
 Module IsResultTypeFallback.
   Section IsResultTypeFallback.
@@ -423,7 +424,7 @@ Module reflect.
         Definition Self : Set :=
           ink.reflect.dispatch.ConstructorOutputValue (core.result.Result C E).
         
-        Definition IS_RESULT : bool := M.run (M.alloc true).
+        Parameter IS_RESULT : bool.
         
         Global Instance AssociatedFunction_IS_RESULT :
           Notation.DoubleColon Self "IS_RESULT" := {
@@ -534,7 +535,9 @@ Module reflect.
         Definition Self : Set := ink.reflect.dispatch.DispatchError.
         
         Parameter fmt :
-            (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+            (ref Self) ->
+              (mut_ref core.fmt.Formatter) ->
+              M ltac:(core.fmt.Result).
         
         Global Instance AssociatedFunction_fmt :
           Notation.DoubleColon Self "fmt" := {
@@ -666,7 +669,9 @@ Module reflect.
         Definition Self : Set := ink.reflect.dispatch.DispatchError.
         
         Parameter fmt :
-            (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+            (ref Self) ->
+              (mut_ref core.fmt.Formatter) ->
+              M ltac:(core.fmt.Result).
         
         Global Instance AssociatedFunction_fmt :
           Notation.DoubleColon Self "fmt" := {
@@ -1161,8 +1166,8 @@ Module codegen.
         End TraitCallForwarder.
       End TraitCallForwarder.
       
-      (* Module TraitCallForwarderFor.
-        (* Section TraitCallForwarderFor.
+      Module TraitCallForwarderFor.
+        Section TraitCallForwarderFor.
           Context `{ℋ : State.Trait}.
           
           Class Trait (Self : Set) : Type := {
@@ -1193,8 +1198,8 @@ Module codegen.
             Notation.double_colon_type := Forwarder;
           }.
           Admitted.
-        End TraitCallForwarderFor. *)
-      End TraitCallForwarderFor. *)
+        End TraitCallForwarderFor.
+      End TraitCallForwarderFor.
     End call_builder.
     
     Module trait_message.
@@ -2091,8 +2096,8 @@ Module trait_def.
       End TraitCallForwarder.
     End TraitCallForwarder.
     
-    (* Module TraitCallForwarderFor.
-      (* Section TraitCallForwarderFor.
+    Module TraitCallForwarderFor.
+      Section TraitCallForwarderFor.
         Context `{ℋ : State.Trait}.
         
         Class Trait (Self : Set) : Type := {
@@ -2122,8 +2127,8 @@ Module trait_def.
           Notation.double_colon_type := Forwarder;
         }.
         Admitted.
-      End TraitCallForwarderFor. *)
-    End TraitCallForwarderFor. *)
+      End TraitCallForwarderFor.
+    End TraitCallForwarderFor.
   End call_builder.
   
   Module trait_message.
@@ -2184,8 +2189,8 @@ Module call_builder.
     End TraitCallForwarder.
   End TraitCallForwarder.
   
-  (* Module TraitCallForwarderFor.
-    (* Section TraitCallForwarderFor.
+  Module TraitCallForwarderFor.
+    Section TraitCallForwarderFor.
       Context `{ℋ : State.Trait}.
       
       Class Trait (Self : Set) : Type := {
@@ -2215,8 +2220,8 @@ Module call_builder.
         Notation.double_colon_type := Forwarder;
       }.
       Admitted.
-    End TraitCallForwarderFor. *)
-  End TraitCallForwarderFor. *)
+    End TraitCallForwarderFor.
+  End TraitCallForwarderFor.
 End call_builder.
 
 Module TraitCallBuilder.
@@ -2255,8 +2260,8 @@ Module TraitCallForwarder.
   End TraitCallForwarder.
 End TraitCallForwarder.
 
-(* Module TraitCallForwarderFor.
-  (* Section TraitCallForwarderFor.
+Module TraitCallForwarderFor.
+  Section TraitCallForwarderFor.
     Context `{ℋ : State.Trait}.
     
     Class Trait (Self : Set) : Type := {
@@ -2286,8 +2291,8 @@ End TraitCallForwarder.
       Notation.double_colon_type := Forwarder;
     }.
     Admitted.
-  End TraitCallForwarderFor. *)
-End TraitCallForwarderFor. *)
+  End TraitCallForwarderFor.
+End TraitCallForwarderFor.
 
 Module trait_message.
   Module TraitMessagePayable.
@@ -2636,7 +2641,7 @@ Module Wrap_dispatch_1.
         Definition Self : Set :=
           ink.reflect.dispatch.ConstructorOutputValue (core.result.Result C E).
         
-        Definition IS_RESULT : bool := M.run (M.alloc true).
+        Parameter IS_RESULT : bool.
         
         Global Instance AssociatedFunction_IS_RESULT :
           Notation.DoubleColon Self "IS_RESULT" := {
@@ -2747,7 +2752,9 @@ Module Wrap_dispatch_1.
         Definition Self : Set := ink.reflect.dispatch.DispatchError.
         
         Parameter fmt :
-            (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+            (ref Self) ->
+              (mut_ref core.fmt.Formatter) ->
+              M ltac:(core.fmt.Result).
         
         Global Instance AssociatedFunction_fmt :
           Notation.DoubleColon Self "fmt" := {
@@ -2879,7 +2886,9 @@ Module Wrap_dispatch_1.
         Definition Self : Set := ink.reflect.dispatch.DispatchError.
         
         Parameter fmt :
-            (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+            (ref Self) ->
+              (mut_ref core.fmt.Formatter) ->
+              M ltac:(core.fmt.Result).
         
         Global Instance AssociatedFunction_fmt :
           Notation.DoubleColon Self "fmt" := {
@@ -3119,7 +3128,7 @@ Module
     Definition Self : Set :=
       ink.reflect.dispatch.ConstructorOutputValue (core.result.Result C E).
     
-    Definition IS_RESULT : bool := M.run (M.alloc true).
+    Parameter IS_RESULT : bool.
     
     Global Instance AssociatedFunction_IS_RESULT :
       Notation.DoubleColon Self "IS_RESULT" := {
@@ -3213,7 +3222,7 @@ Module Impl_core_fmt_Debug_for_ink_reflect_dispatch_DispatchError.
     Definition Self : Set := ink.reflect.dispatch.DispatchError.
     
     Parameter fmt :
-        (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+        (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
     
     Global Instance AssociatedFunction_fmt :
       Notation.DoubleColon Self "fmt" := {
@@ -3342,7 +3351,7 @@ Module Impl_core_fmt_Display_for_ink_reflect_dispatch_DispatchError.
     Definition Self : Set := ink.reflect.dispatch.DispatchError.
     
     Parameter fmt :
-        (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+        (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
     
     Global Instance AssociatedFunction_fmt :
       Notation.DoubleColon Self "fmt" := {
@@ -3733,8 +3742,8 @@ Module chain_extension.
     End OutputSealed.
   End private.
   
-  (* Module IsResultType.
-    (* Section IsResultType.
+  Module IsResultType.
+    Section IsResultType.
       Context `{ℋ : State.Trait}.
       
       Class Trait (Self : Set) : Type := {
@@ -3753,8 +3762,8 @@ Module chain_extension.
         Notation.double_colon_type := Err;
       }.
       Admitted.
-    End IsResultType. *)
-  End IsResultType. *)
+    End IsResultType.
+  End IsResultType.
   
   Module
     Impl_ink_chain_extension_private_IsResultSealed_for_core_result_Result_T_E.
@@ -3842,9 +3851,8 @@ Module chain_extension.
   End
     Impl_ink_chain_extension_private_OutputSealed_for_ink_chain_extension_ValueReturned.
   
-  Module Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
-    Section
-      Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
+  (* Module Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
+    (* Section Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
       Context `{ℋ : State.Trait}.
       
       Context {T E : Set}.
@@ -3858,13 +3866,12 @@ Module chain_extension.
         ink.chain_extension.Output.ReturnType := ReturnType;
       }.
       Admitted.
-    End Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
+    End Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned. *)
     Global Hint Resolve ℐ : core.
-  End Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
+  End Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned. *)
   
-  Module Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
-    Section
-      Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
+  (* Module Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
+    (* Section Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
       Context `{ℋ : State.Trait}.
       
       Context {T E : Set}.
@@ -3878,9 +3885,9 @@ Module chain_extension.
         ink.chain_extension.Output.ReturnType := ReturnType;
       }.
       Admitted.
-    End Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
+    End Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned. *)
     Global Hint Resolve ℐ : core.
-  End Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
+  End Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned. *)
 End chain_extension.
 
 Module ChainExtensionInstance.
@@ -3918,7 +3925,7 @@ Module ChainExtension.
 End ChainExtension.
 
 (* Module IsResultType.
-  (* Section IsResultType.
+  Section IsResultType.
     Context `{ℋ : State.Trait}.
     
     Class Trait (Self : Set) : Type := {
@@ -3937,7 +3944,7 @@ End ChainExtension.
       Notation.double_colon_type := Err;
     }.
     Admitted.
-  End IsResultType. *)
+  End IsResultType.
 End IsResultType. *)
 
 Module
@@ -4025,8 +4032,8 @@ Module
 End
   Impl_ink_chain_extension_private_OutputSealed_for_ink_chain_extension_ValueReturned.
 
-Module Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
-  Section Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
+(* Module Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
+  (* Section Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
     Context `{ℋ : State.Trait}.
     
     Context {T E : Set}.
@@ -4040,12 +4047,12 @@ Module Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
       ink.chain_extension.Output.ReturnType := ReturnType;
     }.
     Admitted.
-  End Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
+  End Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned. *)
   Global Hint Resolve ℐ : core.
-End Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
+End Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned. *)
 
-Module Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
-  Section Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
+(* Module Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
+  (* Section Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
     Context `{ℋ : State.Trait}.
     
     Context {T E : Set}.
@@ -4059,9 +4066,9 @@ Module Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
       ink.chain_extension.Output.ReturnType := ReturnType;
     }.
     Admitted.
-  End Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
+  End Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned. *)
   Global Hint Resolve ℐ : core.
-End Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
+End Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned. *)
 
 Module Wrap_private_1.
   Module private.
@@ -4247,7 +4254,9 @@ Module env_access.
       Definition Self : Set := ink.env_access.EnvAccess E.
       
       Parameter fmt :
-          (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+          (ref Self) ->
+            (mut_ref core.fmt.Formatter) ->
+            M ltac:(core.fmt.Result).
       
       Global Instance AssociatedFunction_fmt :
         Notation.DoubleColon Self "fmt" := {
@@ -4361,7 +4370,7 @@ Module Impl_core_fmt_Debug_for_ink_env_access_EnvAccess_E.
     Definition Self : Set := ink.env_access.EnvAccess E.
     
     Parameter fmt :
-        (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+        (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
     
     Global Instance AssociatedFunction_fmt :
       Notation.DoubleColon Self "fmt" := {

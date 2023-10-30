@@ -81,8 +81,9 @@ Definition read_lines
     (filename : P)
     :
       M
-        (std.io.error.Result
-          (std.io.Lines (std.io.buffered.bufreader.BufReader std.fs.File))) :=
+        ltac:(std.io.error.Result
+          constr:(std.io.Lines
+            (std.io.buffered.bufreader.BufReader std.fs.File))) :=
   let* file :=
     let* α0 := std.fs.File::["open"] filename in
     let* α1 :=

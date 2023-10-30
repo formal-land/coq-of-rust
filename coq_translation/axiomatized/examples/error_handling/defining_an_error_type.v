@@ -17,7 +17,7 @@ Module Impl_core_fmt_Debug_for_defining_an_error_type_DoubleError.
     Definition Self : Set := defining_an_error_type.DoubleError.
     
     Parameter fmt :
-        (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+        (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
     
     Global Instance AssociatedFunction_fmt :
       Notation.DoubleColon Self "fmt" := {
@@ -53,8 +53,8 @@ Module Impl_core_clone_Clone_for_defining_an_error_type_DoubleError.
   Global Hint Resolve ℐ : core.
 End Impl_core_clone_Clone_for_defining_an_error_type_DoubleError.
 
-Definition Result `{ℋ : State.Trait} (T : Set) : Set :=
-  core.result.Result T defining_an_error_type.DoubleError.
+Ltac Result T :=
+  refine (core.result.Result T defining_an_error_type.DoubleError).
 
 Module Impl_core_fmt_Display_for_defining_an_error_type_DoubleError.
   Section Impl_core_fmt_Display_for_defining_an_error_type_DoubleError.
@@ -63,7 +63,7 @@ Module Impl_core_fmt_Display_for_defining_an_error_type_DoubleError.
     Definition Self : Set := defining_an_error_type.DoubleError.
     
     Parameter fmt :
-        (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+        (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
     
     Global Instance AssociatedFunction_fmt :
       Notation.DoubleColon Self "fmt" := {
@@ -81,11 +81,11 @@ End Impl_core_fmt_Display_for_defining_an_error_type_DoubleError.
 Parameter double_first :
     forall `{ℋ : State.Trait},
     (alloc.vec.Vec (ref str) alloc.vec.Vec.Default.A) ->
-      M (defining_an_error_type.Result i32).
+      M ltac:(defining_an_error_type.Result constr:(i32)).
 
 Parameter print :
     forall `{ℋ : State.Trait},
-    (defining_an_error_type.Result i32) -> M unit.
+    ltac:(defining_an_error_type.Result constr:(i32)) -> M unit.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : forall `{ℋ : State.Trait}, M unit.

@@ -60,7 +60,9 @@ Module bump.
       Definition Self : Set := ink_allocator.bump.InnerAlloc.
       
       Parameter fmt :
-          (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+          (ref Self) ->
+            (mut_ref core.fmt.Formatter) ->
+            M ltac:(core.fmt.Result).
       
       Global Instance AssociatedFunction_fmt :
         Notation.DoubleColon Self "fmt" := {
@@ -165,7 +167,7 @@ End Impl_core_alloc_global_GlobalAlloc_for_ink_allocator_bump_BumpAllocator.
     Definition Self : Set := ink_allocator.bump.InnerAlloc.
     
     Parameter fmt :
-        (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+        (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
     
     Global Instance AssociatedFunction_fmt :
       Notation.DoubleColon Self "fmt" := {

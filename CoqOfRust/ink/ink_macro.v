@@ -12,7 +12,8 @@ Module blake2b.
   
   Parameter generate_blake2x256_hash_or_err :
       forall `{ℋ : State.Trait},
-      proc_macro2.TokenStream -> M (syn.error.Result proc_macro2.TokenStream).
+      proc_macro2.TokenStream ->
+        M ltac:(syn.error.Result constr:(proc_macro2.TokenStream)).
 End blake2b.
 
 Parameter generate_blake2x256_hash :
@@ -21,7 +22,8 @@ Parameter generate_blake2x256_hash :
 
 Parameter generate_blake2x256_hash_or_err :
     forall `{ℋ : State.Trait},
-    proc_macro2.TokenStream -> M (syn.error.Result proc_macro2.TokenStream).
+    proc_macro2.TokenStream ->
+      M ltac:(syn.error.Result constr:(proc_macro2.TokenStream)).
 
 Module chain_extension.
   Parameter generate :
@@ -34,7 +36,7 @@ Module chain_extension.
       forall `{ℋ : State.Trait},
       proc_macro2.TokenStream ->
         proc_macro2.TokenStream ->
-        M (syn.error.Result proc_macro2.TokenStream).
+        M ltac:(syn.error.Result constr:(proc_macro2.TokenStream)).
 End chain_extension.
 
 Parameter generate :
@@ -47,7 +49,7 @@ Parameter generate_or_err :
     forall `{ℋ : State.Trait},
     proc_macro2.TokenStream ->
       proc_macro2.TokenStream ->
-      M (syn.error.Result proc_macro2.TokenStream).
+      M ltac:(syn.error.Result constr:(proc_macro2.TokenStream)).
 
 Module contract.
   Parameter generate :
@@ -60,7 +62,7 @@ Module contract.
       forall `{ℋ : State.Trait},
       proc_macro2.TokenStream ->
         proc_macro2.TokenStream ->
-        M (syn.error.Result proc_macro2.TokenStream).
+        M ltac:(syn.error.Result constr:(proc_macro2.TokenStream)).
 End contract.
 
 Module ink_test.
@@ -74,7 +76,7 @@ Module ink_test.
       forall `{ℋ : State.Trait},
       proc_macro2.TokenStream ->
         proc_macro2.TokenStream ->
-        M (syn.error.Result proc_macro2.TokenStream).
+        M ltac:(syn.error.Result constr:(proc_macro2.TokenStream)).
 End ink_test.
 
 Module selector.
@@ -84,7 +86,8 @@ Module selector.
   
   Parameter generate_selector_id_or_err :
       forall `{ℋ : State.Trait},
-      proc_macro2.TokenStream -> M (syn.error.Result proc_macro2.TokenStream).
+      proc_macro2.TokenStream ->
+        M ltac:(syn.error.Result constr:(proc_macro2.TokenStream)).
   
   Parameter generate_selector_bytes :
       forall `{ℋ : State.Trait},
@@ -92,7 +95,8 @@ Module selector.
   
   Parameter generate_selector_bytes_or_err :
       forall `{ℋ : State.Trait},
-      proc_macro2.TokenStream -> M (syn.error.Result proc_macro2.TokenStream).
+      proc_macro2.TokenStream ->
+        M ltac:(syn.error.Result constr:(proc_macro2.TokenStream)).
 End selector.
 
 Parameter generate_selector_id :
@@ -101,7 +105,8 @@ Parameter generate_selector_id :
 
 Parameter generate_selector_id_or_err :
     forall `{ℋ : State.Trait},
-    proc_macro2.TokenStream -> M (syn.error.Result proc_macro2.TokenStream).
+    proc_macro2.TokenStream ->
+      M ltac:(syn.error.Result constr:(proc_macro2.TokenStream)).
 
 Parameter generate_selector_bytes :
     forall `{ℋ : State.Trait},
@@ -109,7 +114,8 @@ Parameter generate_selector_bytes :
 
 Parameter generate_selector_bytes_or_err :
     forall `{ℋ : State.Trait},
-    proc_macro2.TokenStream -> M (syn.error.Result proc_macro2.TokenStream).
+    proc_macro2.TokenStream ->
+      M ltac:(syn.error.Result constr:(proc_macro2.TokenStream)).
 
 Module storage.
   Module storable.
@@ -188,7 +194,7 @@ Module storage_item.
       forall `{ℋ : State.Trait},
       proc_macro2.TokenStream ->
         proc_macro2.TokenStream ->
-        M (syn.error.Result proc_macro2.TokenStream).
+        M ltac:(syn.error.Result constr:(proc_macro2.TokenStream)).
 End storage_item.
 
 (* Parameter generate :
@@ -201,7 +207,7 @@ Parameter generate_or_err :
     forall `{ℋ : State.Trait},
     proc_macro2.TokenStream ->
       proc_macro2.TokenStream ->
-      M (syn.error.Result proc_macro2.TokenStream). *)
+      M ltac:(syn.error.Result constr:(proc_macro2.TokenStream)). *)
 
 Module trait_def.
   Parameter analyze :
@@ -214,7 +220,7 @@ Module trait_def.
       forall `{ℋ : State.Trait},
       proc_macro2.TokenStream ->
         proc_macro2.TokenStream ->
-        M (syn.error.Result proc_macro2.TokenStream).
+        M ltac:(syn.error.Result constr:(proc_macro2.TokenStream)).
 End trait_def.
 
 Parameter analyze :
@@ -227,7 +233,7 @@ Parameter analyze_or_err :
     forall `{ℋ : State.Trait},
     proc_macro2.TokenStream ->
       proc_macro2.TokenStream ->
-      M (syn.error.Result proc_macro2.TokenStream).
+      M ltac:(syn.error.Result constr:(proc_macro2.TokenStream)).
 
 Parameter blake2x256 :
     forall `{ℋ : State.Trait},

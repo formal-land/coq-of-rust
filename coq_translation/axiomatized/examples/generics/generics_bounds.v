@@ -73,7 +73,7 @@ Module Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
     Definition Self : Set := generics_bounds.Rectangle.
     
     Parameter fmt :
-        (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+        (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
     
     Global Instance AssociatedFunction_fmt :
       Notation.DoubleColon Self "fmt" := {

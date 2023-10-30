@@ -24,8 +24,8 @@ Module storage.
     End Storable.
   End Storable.
   
-  (* Module Impl_ink_storage_traits_storage_Storable_for_P.
-    (* Section Impl_ink_storage_traits_storage_Storable_for_P.
+  Module Impl_ink_storage_traits_storage_Storable_for_P.
+    Section Impl_ink_storage_traits_storage_Storable_for_P.
       Context `{ℋ : State.Trait}.
       
       Context {P : Set}.
@@ -73,9 +73,9 @@ Module storage.
           decode (I := I);
       }.
       Admitted.
-    End Impl_ink_storage_traits_storage_Storable_for_P. *)
+    End Impl_ink_storage_traits_storage_Storable_for_P.
     Global Hint Resolve ℐ : core.
-  End Impl_ink_storage_traits_storage_Storable_for_P. *)
+  End Impl_ink_storage_traits_storage_Storable_for_P.
   
   Module private.
     Module Sealed.
@@ -108,7 +108,7 @@ Module storage.
       Context `{ℋ : State.Trait}.
       
       Class Trait (Self : Set) : Type := {
-        KEY : ink_primitives.key.Key;
+        KEY : ltac:(ink_primitives.key.Key);
       }.
       
     End StorageKey.
@@ -159,6 +159,17 @@ Module storage.
 End storage.
 
 Module impls.
+  Module KeyType.
+    Section KeyType.
+      Context `{ℋ : State.Trait}.
+      
+      Class Trait (Self : Set) : Type := {
+        IS_AUTO_KEY : bool;
+      }.
+      
+    End KeyType.
+  End KeyType.
+  
   Module AutoKey.
     Section AutoKey.
       Context `{ℋ : State.Trait}.
@@ -323,13 +334,15 @@ Module impls.
     Global Hint Resolve ℐ : core.
   End Impl_core_cmp_PartialOrd_for_ink_storage_traits_impls_AutoKey.
   
-  (* Module Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_AutoKey.
-    (* Section Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_AutoKey.
+  Module
+    Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_AutoKey.
+    Section
+      Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_AutoKey.
       Context `{ℋ : State.Trait}.
       
       Definition Self : Set := ink_storage_traits.impls.AutoKey.
       
-      Definition KEY : ink_primitives.key.Key := M.run (M.alloc 0).
+      Parameter KEY : ltac:(ink_primitives.key.Key).
       
       Global Instance AssociatedFunction_KEY :
         Notation.DoubleColon Self "KEY" := {
@@ -341,9 +354,37 @@ Module impls.
         ink_storage_traits.storage.StorageKey.KEY := KEY;
       }.
       Admitted.
-    End Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_AutoKey. *)
+    End
+      Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_AutoKey.
     Global Hint Resolve ℐ : core.
-  End Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_AutoKey. *)
+  End
+    Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_AutoKey.
+  
+  Module
+    Impl_ink_storage_traits_impls_KeyType_for_ink_storage_traits_impls_AutoKey.
+    Section
+      Impl_ink_storage_traits_impls_KeyType_for_ink_storage_traits_impls_AutoKey.
+      Context `{ℋ : State.Trait}.
+      
+      Definition Self : Set := ink_storage_traits.impls.AutoKey.
+      
+      Parameter IS_AUTO_KEY : bool.
+      
+      Global Instance AssociatedFunction_IS_AUTO_KEY :
+        Notation.DoubleColon Self "IS_AUTO_KEY" := {
+        Notation.double_colon := IS_AUTO_KEY;
+      }.
+      
+      #[refine] Global Instance ℐ :
+        ink_storage_traits.impls.KeyType.Trait Self := {
+        ink_storage_traits.impls.KeyType.IS_AUTO_KEY := IS_AUTO_KEY;
+      }.
+      Admitted.
+    End
+      Impl_ink_storage_traits_impls_KeyType_for_ink_storage_traits_impls_AutoKey.
+    Global Hint Resolve ℐ : core.
+  End
+    Impl_ink_storage_traits_impls_KeyType_for_ink_storage_traits_impls_AutoKey.
   
   Module Impl_core_fmt_Debug_for_ink_storage_traits_impls_AutoKey.
     Section Impl_core_fmt_Debug_for_ink_storage_traits_impls_AutoKey.
@@ -352,7 +393,9 @@ Module impls.
       Definition Self : Set := ink_storage_traits.impls.AutoKey.
       
       Parameter fmt :
-          (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+          (ref Self) ->
+            (mut_ref core.fmt.Formatter) ->
+            M ltac:(core.fmt.Result).
       
       Global Instance AssociatedFunction_fmt :
         Notation.DoubleColon Self "fmt" := {
@@ -603,8 +646,10 @@ Module impls.
     Global Hint Resolve ℐ : core.
   End Impl_core_cmp_PartialOrd_for_ink_storage_traits_impls_ManualKey_ParentKey.
   
-  (* Module Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ManualKey_ParentKey.
-    (* Section Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ManualKey_ParentKey.
+  Module
+    Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ManualKey_ParentKey.
+    Section
+      Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ManualKey_ParentKey.
       Context `{ℋ : State.Trait}.
       
       Context {ParentKey : Set}.
@@ -612,11 +657,7 @@ Module impls.
       Context {ℋ_0 : ink_storage_traits.storage.StorageKey.Trait ParentKey}.
       Definition Self : Set := ink_storage_traits.impls.ManualKey ParentKey.
       
-      Definition KEY : ink_primitives.key.Key :=
-        M.run
-          (ink_primitives.key.KeyComposer::["concat"]
-            ink_storage_traits.impls.KEY
-            (ink_storage_traits.storage.StorageKey.KEY (Self := ParentKey))).
+      Parameter KEY : ltac:(ink_primitives.key.Key).
       
       Global Instance AssociatedFunction_KEY :
         Notation.DoubleColon Self "KEY" := {
@@ -628,9 +669,40 @@ Module impls.
         ink_storage_traits.storage.StorageKey.KEY := KEY;
       }.
       Admitted.
-    End Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ManualKey_ParentKey. *)
+    End
+      Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ManualKey_ParentKey.
     Global Hint Resolve ℐ : core.
-  End Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ManualKey_ParentKey. *)
+  End
+    Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ManualKey_ParentKey.
+  
+  Module
+    Impl_ink_storage_traits_impls_KeyType_for_ink_storage_traits_impls_ManualKey_ParentKey.
+    Section
+      Impl_ink_storage_traits_impls_KeyType_for_ink_storage_traits_impls_ManualKey_ParentKey.
+      Context `{ℋ : State.Trait}.
+      
+      Context {ParentKey : Set}.
+      
+      Context {ℋ_0 : ink_storage_traits.storage.StorageKey.Trait ParentKey}.
+      Definition Self : Set := ink_storage_traits.impls.ManualKey ParentKey.
+      
+      Parameter IS_AUTO_KEY : bool.
+      
+      Global Instance AssociatedFunction_IS_AUTO_KEY :
+        Notation.DoubleColon Self "IS_AUTO_KEY" := {
+        Notation.double_colon := IS_AUTO_KEY;
+      }.
+      
+      #[refine] Global Instance ℐ :
+        ink_storage_traits.impls.KeyType.Trait Self := {
+        ink_storage_traits.impls.KeyType.IS_AUTO_KEY := IS_AUTO_KEY;
+      }.
+      Admitted.
+    End
+      Impl_ink_storage_traits_impls_KeyType_for_ink_storage_traits_impls_ManualKey_ParentKey.
+    Global Hint Resolve ℐ : core.
+  End
+    Impl_ink_storage_traits_impls_KeyType_for_ink_storage_traits_impls_ManualKey_ParentKey.
   
   Module Impl_core_fmt_Debug_for_ink_storage_traits_impls_ManualKey_ParentKey.
     Section
@@ -643,7 +715,9 @@ Module impls.
       Definition Self : Set := ink_storage_traits.impls.ManualKey ParentKey.
       
       Parameter fmt :
-          (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+          (ref Self) ->
+            (mut_ref core.fmt.Formatter) ->
+            M ltac:(core.fmt.Result).
       
       Global Instance AssociatedFunction_fmt :
         Notation.DoubleColon Self "fmt" := {
@@ -889,7 +963,9 @@ Module impls.
       Definition Self : Set := ink_storage_traits.impls.ResolverKey L R.
       
       Parameter fmt :
-          (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+          (ref Self) ->
+            (mut_ref core.fmt.Formatter) ->
+            M ltac:(core.fmt.Result).
       
       Global Instance AssociatedFunction_fmt :
         Notation.DoubleColon Self "fmt" := {
@@ -904,8 +980,10 @@ Module impls.
     Global Hint Resolve ℐ : core.
   End Impl_core_fmt_Debug_for_ink_storage_traits_impls_ResolverKey_L_R.
   
-  (* Module Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ResolverKey_L_R.
-    (* Section Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ResolverKey_L_R.
+  Module
+    Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ResolverKey_L_R.
+    Section
+      Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ResolverKey_L_R.
       Context `{ℋ : State.Trait}.
       
       Context {L R : Set}.
@@ -917,14 +995,7 @@ Module impls.
         {ℋ_3 : ink_storage_traits.impls.KeyType.Trait R}.
       Definition Self : Set := ink_storage_traits.impls.ResolverKey L R.
       
-      Definition KEY : ink_primitives.key.Key :=
-        M.run
-          (let* α0 :=
-            use (ink_storage_traits.impls.KeyType.IS_AUTO_KEY (Self := L)) in
-          if (α0 : bool) then
-            Pure (ink_storage_traits.storage.StorageKey.KEY (Self := R))
-          else
-            Pure (ink_storage_traits.storage.StorageKey.KEY (Self := L))).
+      Parameter KEY : ltac:(ink_primitives.key.Key).
       
       Global Instance AssociatedFunction_KEY :
         Notation.DoubleColon Self "KEY" := {
@@ -936,12 +1007,51 @@ Module impls.
         ink_storage_traits.storage.StorageKey.KEY := KEY;
       }.
       Admitted.
-    End Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ResolverKey_L_R. *)
+    End
+      Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ResolverKey_L_R.
     Global Hint Resolve ℐ : core.
-  End Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ResolverKey_L_R. *)
+  End
+    Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ResolverKey_L_R.
   
-  (* Module Impl_ink_storage_traits_storage_AutoStorableHint_for_T.
-    (* Section Impl_ink_storage_traits_storage_AutoStorableHint_for_T.
+  Module
+    Impl_ink_storage_traits_impls_KeyType_for_ink_storage_traits_impls_ResolverKey_L_R.
+    Section
+      Impl_ink_storage_traits_impls_KeyType_for_ink_storage_traits_impls_ResolverKey_L_R.
+      Context `{ℋ : State.Trait}.
+      
+      Context {L R : Set}.
+      
+      Context
+        {ℋ_0 : ink_storage_traits.impls.KeyType.Trait L}
+        {ℋ_1 : ink_storage_traits.impls.KeyType.Trait R}.
+      Definition Self : Set := ink_storage_traits.impls.ResolverKey L R.
+      
+      Parameter IS_AUTO_KEY : bool.
+      
+      Global Instance AssociatedFunction_IS_AUTO_KEY :
+        Notation.DoubleColon Self "IS_AUTO_KEY" := {
+        Notation.double_colon := IS_AUTO_KEY;
+      }.
+      
+      #[refine] Global Instance ℐ :
+        ink_storage_traits.impls.KeyType.Trait Self := {
+        ink_storage_traits.impls.KeyType.IS_AUTO_KEY := IS_AUTO_KEY;
+      }.
+      Admitted.
+    End
+      Impl_ink_storage_traits_impls_KeyType_for_ink_storage_traits_impls_ResolverKey_L_R.
+    Global Hint Resolve ℐ : core.
+  End
+    Impl_ink_storage_traits_impls_KeyType_for_ink_storage_traits_impls_ResolverKey_L_R.
+  
+  Ltac FinalKey T ParentKey :=
+    refine
+      (ink_storage_traits.impls.ResolverKey
+        (ink_storage_traits.storage.StorableHint.PreferredKey (Self := T))
+        (ink_storage_traits.impls.ManualKey ParentKey)).
+  
+  Module Impl_ink_storage_traits_storage_AutoStorableHint_for_T.
+    Section Impl_ink_storage_traits_storage_AutoStorableHint_for_T.
       Context `{ℋ : State.Trait}.
       
       Context {T ParentKey : Set}.
@@ -956,7 +1066,9 @@ Module impls.
                 (Trait := ltac:(try clear Trait; hauto l: on)))}
         {ℋ_2 :
           ink_storage_traits.storage.StorableHint.Trait T
-            (Key := ink_storage_traits.impls.FinalKey T ParentKey)}
+            (Key := ltac:(ink_storage_traits.impls.FinalKey
+              constr:(T)
+              constr:(ParentKey)))}
         {ℋ_3 : ink_storage_traits.storage.StorageKey.Trait ParentKey}.
       Definition Self : Set := T.
       
@@ -969,9 +1081,9 @@ Module impls.
         ink_storage_traits.storage.AutoStorableHint.Type_ := Type_;
       }.
       Admitted.
-    End Impl_ink_storage_traits_storage_AutoStorableHint_for_T. *)
+    End Impl_ink_storage_traits_storage_AutoStorableHint_for_T.
     Global Hint Resolve ℐ : core.
-  End Impl_ink_storage_traits_storage_AutoStorableHint_for_T. *)
+  End Impl_ink_storage_traits_storage_AutoStorableHint_for_T.
   
   Module Impl_ink_storage_traits_storage_private_Sealed_for_P.
     Section Impl_ink_storage_traits_storage_private_Sealed_for_P.
@@ -992,8 +1104,8 @@ Module impls.
     Global Hint Resolve ℐ : core.
   End Impl_ink_storage_traits_storage_private_Sealed_for_P.
   
-  (* Module Impl_ink_storage_traits_storage_Packed_for_P.
-    (* Section Impl_ink_storage_traits_storage_Packed_for_P.
+  Module Impl_ink_storage_traits_storage_Packed_for_P.
+    Section Impl_ink_storage_traits_storage_Packed_for_P.
       Context `{ℋ : State.Trait}.
       
       Context {P : Set}.
@@ -1007,12 +1119,12 @@ Module impls.
         ink_storage_traits.storage.Packed.Trait Self := {
       }.
       Admitted.
-    End Impl_ink_storage_traits_storage_Packed_for_P. *)
+    End Impl_ink_storage_traits_storage_Packed_for_P.
     Global Hint Resolve ℐ : core.
-  End Impl_ink_storage_traits_storage_Packed_for_P. *)
+  End Impl_ink_storage_traits_storage_Packed_for_P.
   
-  (* Module Impl_ink_storage_traits_storage_StorageKey_for_P.
-    (* Section Impl_ink_storage_traits_storage_StorageKey_for_P.
+  Module Impl_ink_storage_traits_storage_StorageKey_for_P.
+    Section Impl_ink_storage_traits_storage_StorageKey_for_P.
       Context `{ℋ : State.Trait}.
       
       Context {P : Set}.
@@ -1020,7 +1132,7 @@ Module impls.
       Context {ℋ_0 : ink_storage_traits.storage.Packed.Trait P}.
       Definition Self : Set := P.
       
-      Definition KEY : ink_primitives.key.Key := M.run (M.alloc 0).
+      Parameter KEY : ltac:(ink_primitives.key.Key).
       
       Global Instance AssociatedFunction_KEY :
         Notation.DoubleColon Self "KEY" := {
@@ -1032,12 +1144,12 @@ Module impls.
         ink_storage_traits.storage.StorageKey.KEY := KEY;
       }.
       Admitted.
-    End Impl_ink_storage_traits_storage_StorageKey_for_P. *)
+    End Impl_ink_storage_traits_storage_StorageKey_for_P.
     Global Hint Resolve ℐ : core.
-  End Impl_ink_storage_traits_storage_StorageKey_for_P. *)
+  End Impl_ink_storage_traits_storage_StorageKey_for_P.
   
-  (* Module Impl_ink_storage_traits_storage_StorableHint_for_P.
-    (* Section Impl_ink_storage_traits_storage_StorableHint_for_P.
+  Module Impl_ink_storage_traits_storage_StorableHint_for_P.
+    Section Impl_ink_storage_traits_storage_StorableHint_for_P.
       Context `{ℋ : State.Trait}.
       
       Context {P Key : Set}.
@@ -1057,10 +1169,21 @@ Module impls.
         ink_storage_traits.storage.StorableHint.PreferredKey := PreferredKey;
       }.
       Admitted.
-    End Impl_ink_storage_traits_storage_StorableHint_for_P. *)
+    End Impl_ink_storage_traits_storage_StorableHint_for_P.
     Global Hint Resolve ℐ : core.
-  End Impl_ink_storage_traits_storage_StorableHint_for_P. *)
+  End Impl_ink_storage_traits_storage_StorableHint_for_P.
 End impls.
+
+Module KeyType.
+  Section KeyType.
+    Context `{ℋ : State.Trait}.
+    
+    Class Trait (Self : Set) : Type := {
+      IS_AUTO_KEY : bool;
+    }.
+    
+  End KeyType.
+End KeyType.
 
 Module AutoKey.
   Section AutoKey.
@@ -1248,13 +1371,15 @@ Module Impl_core_cmp_PartialOrd_for_ink_storage_traits_impls_AutoKey.
   Global Hint Resolve ℐ : core.
 End Impl_core_cmp_PartialOrd_for_ink_storage_traits_impls_AutoKey.
 
-(* Module Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_AutoKey.
-  (* Section Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_AutoKey.
+Module
+  Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_AutoKey.
+  Section
+    Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_AutoKey.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := ink_storage_traits.impls.AutoKey.
     
-    Definition KEY : ink_primitives.key.Key := M.run (M.alloc 0).
+    Parameter KEY : ltac:(ink_primitives.key.Key).
     
     Global Instance AssociatedFunction_KEY :
       Notation.DoubleColon Self "KEY" := {
@@ -1266,9 +1391,36 @@ End Impl_core_cmp_PartialOrd_for_ink_storage_traits_impls_AutoKey.
       ink_storage_traits.storage.StorageKey.KEY := KEY;
     }.
     Admitted.
-  End Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_AutoKey. *)
+  End
+    Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_AutoKey.
   Global Hint Resolve ℐ : core.
-End Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_AutoKey. *)
+End
+  Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_AutoKey.
+
+Module
+  Impl_ink_storage_traits_impls_KeyType_for_ink_storage_traits_impls_AutoKey.
+  Section
+    Impl_ink_storage_traits_impls_KeyType_for_ink_storage_traits_impls_AutoKey.
+    Context `{ℋ : State.Trait}.
+    
+    Definition Self : Set := ink_storage_traits.impls.AutoKey.
+    
+    Parameter IS_AUTO_KEY : bool.
+    
+    Global Instance AssociatedFunction_IS_AUTO_KEY :
+      Notation.DoubleColon Self "IS_AUTO_KEY" := {
+      Notation.double_colon := IS_AUTO_KEY;
+    }.
+    
+    #[refine] Global Instance ℐ :
+      ink_storage_traits.impls.KeyType.Trait Self := {
+      ink_storage_traits.impls.KeyType.IS_AUTO_KEY := IS_AUTO_KEY;
+    }.
+    Admitted.
+  End
+    Impl_ink_storage_traits_impls_KeyType_for_ink_storage_traits_impls_AutoKey.
+  Global Hint Resolve ℐ : core.
+End Impl_ink_storage_traits_impls_KeyType_for_ink_storage_traits_impls_AutoKey.
 
 Module Impl_core_fmt_Debug_for_ink_storage_traits_impls_AutoKey.
   Section Impl_core_fmt_Debug_for_ink_storage_traits_impls_AutoKey.
@@ -1277,7 +1429,7 @@ Module Impl_core_fmt_Debug_for_ink_storage_traits_impls_AutoKey.
     Definition Self : Set := ink_storage_traits.impls.AutoKey.
     
     Parameter fmt :
-        (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+        (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
     
     Global Instance AssociatedFunction_fmt :
       Notation.DoubleColon Self "fmt" := {
@@ -1556,8 +1708,10 @@ Module
   Global Hint Resolve ℐ : core.
 End Impl_core_cmp_PartialOrd_for_ink_storage_traits_impls_ManualKey_ParentKey.
 
-(* Module Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ManualKey_ParentKey.
-  (* Section Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ManualKey_ParentKey.
+Module
+  Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ManualKey_ParentKey.
+  Section
+    Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ManualKey_ParentKey.
     Context `{ℋ : State.Trait}.
     
     Context {ParentKey : Set}.
@@ -1565,11 +1719,7 @@ End Impl_core_cmp_PartialOrd_for_ink_storage_traits_impls_ManualKey_ParentKey.
     Context {ℋ_0 : ink_storage_traits.storage.StorageKey.Trait ParentKey}.
     Definition Self : Set := ink_storage_traits.impls.ManualKey ParentKey.
     
-    Definition KEY : ink_primitives.key.Key :=
-      M.run
-        (ink_primitives.key.KeyComposer::["concat"]
-          ink_storage_traits.impls.KEY
-          (ink_storage_traits.storage.StorageKey.KEY (Self := ParentKey))).
+    Parameter KEY : ltac:(ink_primitives.key.Key).
     
     Global Instance AssociatedFunction_KEY :
       Notation.DoubleColon Self "KEY" := {
@@ -1581,9 +1731,40 @@ End Impl_core_cmp_PartialOrd_for_ink_storage_traits_impls_ManualKey_ParentKey.
       ink_storage_traits.storage.StorageKey.KEY := KEY;
     }.
     Admitted.
-  End Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ManualKey_ParentKey. *)
+  End
+    Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ManualKey_ParentKey.
   Global Hint Resolve ℐ : core.
-End Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ManualKey_ParentKey. *)
+End
+  Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ManualKey_ParentKey.
+
+Module
+  Impl_ink_storage_traits_impls_KeyType_for_ink_storage_traits_impls_ManualKey_ParentKey.
+  Section
+    Impl_ink_storage_traits_impls_KeyType_for_ink_storage_traits_impls_ManualKey_ParentKey.
+    Context `{ℋ : State.Trait}.
+    
+    Context {ParentKey : Set}.
+    
+    Context {ℋ_0 : ink_storage_traits.storage.StorageKey.Trait ParentKey}.
+    Definition Self : Set := ink_storage_traits.impls.ManualKey ParentKey.
+    
+    Parameter IS_AUTO_KEY : bool.
+    
+    Global Instance AssociatedFunction_IS_AUTO_KEY :
+      Notation.DoubleColon Self "IS_AUTO_KEY" := {
+      Notation.double_colon := IS_AUTO_KEY;
+    }.
+    
+    #[refine] Global Instance ℐ :
+      ink_storage_traits.impls.KeyType.Trait Self := {
+      ink_storage_traits.impls.KeyType.IS_AUTO_KEY := IS_AUTO_KEY;
+    }.
+    Admitted.
+  End
+    Impl_ink_storage_traits_impls_KeyType_for_ink_storage_traits_impls_ManualKey_ParentKey.
+  Global Hint Resolve ℐ : core.
+End
+  Impl_ink_storage_traits_impls_KeyType_for_ink_storage_traits_impls_ManualKey_ParentKey.
 
 Module Impl_core_fmt_Debug_for_ink_storage_traits_impls_ManualKey_ParentKey.
   Section Impl_core_fmt_Debug_for_ink_storage_traits_impls_ManualKey_ParentKey.
@@ -1595,7 +1776,7 @@ Module Impl_core_fmt_Debug_for_ink_storage_traits_impls_ManualKey_ParentKey.
     Definition Self : Set := ink_storage_traits.impls.ManualKey ParentKey.
     
     Parameter fmt :
-        (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+        (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
     
     Global Instance AssociatedFunction_fmt :
       Notation.DoubleColon Self "fmt" := {
@@ -1865,7 +2046,7 @@ Module Impl_core_fmt_Debug_for_ink_storage_traits_impls_ResolverKey_L_R.
     Definition Self : Set := ink_storage_traits.impls.ResolverKey L R.
     
     Parameter fmt :
-        (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+        (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
     
     Global Instance AssociatedFunction_fmt :
       Notation.DoubleColon Self "fmt" := {
@@ -1880,8 +2061,10 @@ Module Impl_core_fmt_Debug_for_ink_storage_traits_impls_ResolverKey_L_R.
   Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_ink_storage_traits_impls_ResolverKey_L_R.
 
-(* Module Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ResolverKey_L_R.
-  (* Section Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ResolverKey_L_R.
+Module
+  Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ResolverKey_L_R.
+  Section
+    Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ResolverKey_L_R.
     Context `{ℋ : State.Trait}.
     
     Context {L R : Set}.
@@ -1893,14 +2076,7 @@ End Impl_core_fmt_Debug_for_ink_storage_traits_impls_ResolverKey_L_R.
       {ℋ_3 : ink_storage_traits.impls.KeyType.Trait R}.
     Definition Self : Set := ink_storage_traits.impls.ResolverKey L R.
     
-    Definition KEY : ink_primitives.key.Key :=
-      M.run
-        (let* α0 :=
-          use (ink_storage_traits.impls.KeyType.IS_AUTO_KEY (Self := L)) in
-        if (α0 : bool) then
-          Pure (ink_storage_traits.storage.StorageKey.KEY (Self := R))
-        else
-          Pure (ink_storage_traits.storage.StorageKey.KEY (Self := L))).
+    Parameter KEY : ltac:(ink_primitives.key.Key).
     
     Global Instance AssociatedFunction_KEY :
       Notation.DoubleColon Self "KEY" := {
@@ -1912,12 +2088,51 @@ End Impl_core_fmt_Debug_for_ink_storage_traits_impls_ResolverKey_L_R.
       ink_storage_traits.storage.StorageKey.KEY := KEY;
     }.
     Admitted.
-  End Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ResolverKey_L_R. *)
+  End
+    Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ResolverKey_L_R.
   Global Hint Resolve ℐ : core.
-End Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ResolverKey_L_R. *)
+End
+  Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ResolverKey_L_R.
 
-(* Module Impl_ink_storage_traits_storage_AutoStorableHint_for_T.
-  (* Section Impl_ink_storage_traits_storage_AutoStorableHint_for_T.
+Module
+  Impl_ink_storage_traits_impls_KeyType_for_ink_storage_traits_impls_ResolverKey_L_R.
+  Section
+    Impl_ink_storage_traits_impls_KeyType_for_ink_storage_traits_impls_ResolverKey_L_R.
+    Context `{ℋ : State.Trait}.
+    
+    Context {L R : Set}.
+    
+    Context
+      {ℋ_0 : ink_storage_traits.impls.KeyType.Trait L}
+      {ℋ_1 : ink_storage_traits.impls.KeyType.Trait R}.
+    Definition Self : Set := ink_storage_traits.impls.ResolverKey L R.
+    
+    Parameter IS_AUTO_KEY : bool.
+    
+    Global Instance AssociatedFunction_IS_AUTO_KEY :
+      Notation.DoubleColon Self "IS_AUTO_KEY" := {
+      Notation.double_colon := IS_AUTO_KEY;
+    }.
+    
+    #[refine] Global Instance ℐ :
+      ink_storage_traits.impls.KeyType.Trait Self := {
+      ink_storage_traits.impls.KeyType.IS_AUTO_KEY := IS_AUTO_KEY;
+    }.
+    Admitted.
+  End
+    Impl_ink_storage_traits_impls_KeyType_for_ink_storage_traits_impls_ResolverKey_L_R.
+  Global Hint Resolve ℐ : core.
+End
+  Impl_ink_storage_traits_impls_KeyType_for_ink_storage_traits_impls_ResolverKey_L_R.
+
+Ltac FinalKey T ParentKey :=
+  refine
+    (ink_storage_traits.impls.ResolverKey
+      (ink_storage_traits.storage.StorableHint.PreferredKey (Self := T))
+      (ink_storage_traits.impls.ManualKey ParentKey)).
+
+Module Impl_ink_storage_traits_storage_AutoStorableHint_for_T.
+  Section Impl_ink_storage_traits_storage_AutoStorableHint_for_T.
     Context `{ℋ : State.Trait}.
     
     Context {T ParentKey : Set}.
@@ -1931,7 +2146,9 @@ End Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_Reso
               (Trait := ltac:(try clear Trait; hauto l: on)))}
       {ℋ_2 :
         ink_storage_traits.storage.StorableHint.Trait T
-          (Key := ink_storage_traits.impls.FinalKey T ParentKey)}
+          (Key := ltac:(ink_storage_traits.impls.FinalKey
+            constr:(T)
+            constr:(ParentKey)))}
       {ℋ_3 : ink_storage_traits.storage.StorageKey.Trait ParentKey}.
     Definition Self : Set := T.
     
@@ -1944,9 +2161,9 @@ End Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_Reso
       ink_storage_traits.storage.AutoStorableHint.Type_ := Type_;
     }.
     Admitted.
-  End Impl_ink_storage_traits_storage_AutoStorableHint_for_T. *)
+  End Impl_ink_storage_traits_storage_AutoStorableHint_for_T.
   Global Hint Resolve ℐ : core.
-End Impl_ink_storage_traits_storage_AutoStorableHint_for_T. *)
+End Impl_ink_storage_traits_storage_AutoStorableHint_for_T.
 
 Module Impl_ink_storage_traits_storage_private_Sealed_for_P.
   Section Impl_ink_storage_traits_storage_private_Sealed_for_P.
@@ -1967,8 +2184,8 @@ Module Impl_ink_storage_traits_storage_private_Sealed_for_P.
   Global Hint Resolve ℐ : core.
 End Impl_ink_storage_traits_storage_private_Sealed_for_P.
 
-(* Module Impl_ink_storage_traits_storage_Packed_for_P.
-  (* Section Impl_ink_storage_traits_storage_Packed_for_P.
+Module Impl_ink_storage_traits_storage_Packed_for_P.
+  Section Impl_ink_storage_traits_storage_Packed_for_P.
     Context `{ℋ : State.Trait}.
     
     Context {P : Set}.
@@ -1982,12 +2199,12 @@ End Impl_ink_storage_traits_storage_private_Sealed_for_P.
       ink_storage_traits.storage.Packed.Trait Self := {
     }.
     Admitted.
-  End Impl_ink_storage_traits_storage_Packed_for_P. *)
+  End Impl_ink_storage_traits_storage_Packed_for_P.
   Global Hint Resolve ℐ : core.
-End Impl_ink_storage_traits_storage_Packed_for_P. *)
+End Impl_ink_storage_traits_storage_Packed_for_P.
 
-(* Module Impl_ink_storage_traits_storage_StorageKey_for_P.
-  (* Section Impl_ink_storage_traits_storage_StorageKey_for_P.
+Module Impl_ink_storage_traits_storage_StorageKey_for_P.
+  Section Impl_ink_storage_traits_storage_StorageKey_for_P.
     Context `{ℋ : State.Trait}.
     
     Context {P : Set}.
@@ -1995,7 +2212,7 @@ End Impl_ink_storage_traits_storage_Packed_for_P. *)
     Context {ℋ_0 : ink_storage_traits.storage.Packed.Trait P}.
     Definition Self : Set := P.
     
-    Definition KEY : ink_primitives.key.Key := M.run (M.alloc 0).
+    Parameter KEY : ltac:(ink_primitives.key.Key).
     
     Global Instance AssociatedFunction_KEY :
       Notation.DoubleColon Self "KEY" := {
@@ -2007,12 +2224,12 @@ End Impl_ink_storage_traits_storage_Packed_for_P. *)
       ink_storage_traits.storage.StorageKey.KEY := KEY;
     }.
     Admitted.
-  End Impl_ink_storage_traits_storage_StorageKey_for_P. *)
+  End Impl_ink_storage_traits_storage_StorageKey_for_P.
   Global Hint Resolve ℐ : core.
-End Impl_ink_storage_traits_storage_StorageKey_for_P. *)
+End Impl_ink_storage_traits_storage_StorageKey_for_P.
 
-(* Module Impl_ink_storage_traits_storage_StorableHint_for_P.
-  (* Section Impl_ink_storage_traits_storage_StorableHint_for_P.
+Module Impl_ink_storage_traits_storage_StorableHint_for_P.
+  Section Impl_ink_storage_traits_storage_StorableHint_for_P.
     Context `{ℋ : State.Trait}.
     
     Context {P Key : Set}.
@@ -2032,9 +2249,9 @@ End Impl_ink_storage_traits_storage_StorageKey_for_P. *)
       ink_storage_traits.storage.StorableHint.PreferredKey := PreferredKey;
     }.
     Admitted.
-  End Impl_ink_storage_traits_storage_StorableHint_for_P. *)
+  End Impl_ink_storage_traits_storage_StorableHint_for_P.
   Global Hint Resolve ℐ : core.
-End Impl_ink_storage_traits_storage_StorableHint_for_P. *)
+End Impl_ink_storage_traits_storage_StorableHint_for_P.
 
 Module Storable.
   Section Storable.
@@ -2055,8 +2272,8 @@ Module Storable.
   End Storable.
 End Storable.
 
-(* Module Impl_ink_storage_traits_storage_Storable_for_P.
-  (* Section Impl_ink_storage_traits_storage_Storable_for_P.
+Module Impl_ink_storage_traits_storage_Storable_for_P.
+  Section Impl_ink_storage_traits_storage_Storable_for_P.
     Context `{ℋ : State.Trait}.
     
     Context {P : Set}.
@@ -2104,9 +2321,9 @@ End Storable.
         decode (I := I);
     }.
     Admitted.
-  End Impl_ink_storage_traits_storage_Storable_for_P. *)
+  End Impl_ink_storage_traits_storage_Storable_for_P.
   Global Hint Resolve ℐ : core.
-End Impl_ink_storage_traits_storage_Storable_for_P. *)
+End Impl_ink_storage_traits_storage_Storable_for_P.
 
 Module private.
   Module Sealed.
@@ -2150,7 +2367,7 @@ Module StorageKey.
     Context `{ℋ : State.Trait}.
     
     Class Trait (Self : Set) : Type := {
-      KEY : ink_primitives.key.Key;
+      KEY : ltac:(ink_primitives.key.Key);
     }.
     
   End StorageKey.
@@ -2206,7 +2423,7 @@ Module layout.
       
       Class Trait (Self : Set) : Type := {
         layout :
-          (ref ink_primitives.key.Key) ->
+          (ref ltac:(ink_primitives.key.Key)) ->
             M (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F);
       }.
       
@@ -2223,7 +2440,7 @@ Module layout.
         Definition Self : Set := ink_primitives.types.AccountId.
         
         Parameter layout :
-            (ref ink_primitives.key.Key) ->
+            (ref ltac:(ink_primitives.key.Key)) ->
               M
                 (ink_metadata.layout.Layout
                   ink_metadata.layout.Layout.Default.F).
@@ -2253,7 +2470,7 @@ Module layout.
         Definition Self : Set := ink_primitives.types.Hash.
         
         Parameter layout :
-            (ref ink_primitives.key.Key) ->
+            (ref ltac:(ink_primitives.key.Key)) ->
               M
                 (ink_metadata.layout.Layout
                   ink_metadata.layout.Layout.Default.F).
@@ -2282,7 +2499,7 @@ Module layout.
         Definition Self : Set := alloc.string.String.
         
         Parameter layout :
-            (ref ink_primitives.key.Key) ->
+            (ref ltac:(ink_primitives.key.Key)) ->
               M
                 (ink_metadata.layout.Layout
                   ink_metadata.layout.Layout.Default.F).
@@ -2308,7 +2525,7 @@ Module layout.
         Definition Self : Set := bool.
         
         Parameter layout :
-            (ref ink_primitives.key.Key) ->
+            (ref ltac:(ink_primitives.key.Key)) ->
               M
                 (ink_metadata.layout.Layout
                   ink_metadata.layout.Layout.Default.F).
@@ -2334,7 +2551,7 @@ Module layout.
         Definition Self : Set := char.
         
         Parameter layout :
-            (ref ink_primitives.key.Key) ->
+            (ref ltac:(ink_primitives.key.Key)) ->
               M
                 (ink_metadata.layout.Layout
                   ink_metadata.layout.Layout.Default.F).
@@ -2360,7 +2577,7 @@ Module layout.
         Definition Self : Set := unit.
         
         Parameter layout :
-            (ref ink_primitives.key.Key) ->
+            (ref ltac:(ink_primitives.key.Key)) ->
               M
                 (ink_metadata.layout.Layout
                   ink_metadata.layout.Layout.Default.F).
@@ -2386,7 +2603,7 @@ Module layout.
         Definition Self : Set := u8.
         
         Parameter layout :
-            (ref ink_primitives.key.Key) ->
+            (ref ltac:(ink_primitives.key.Key)) ->
               M
                 (ink_metadata.layout.Layout
                   ink_metadata.layout.Layout.Default.F).
@@ -2412,7 +2629,7 @@ Module layout.
         Definition Self : Set := u16.
         
         Parameter layout :
-            (ref ink_primitives.key.Key) ->
+            (ref ltac:(ink_primitives.key.Key)) ->
               M
                 (ink_metadata.layout.Layout
                   ink_metadata.layout.Layout.Default.F).
@@ -2438,7 +2655,7 @@ Module layout.
         Definition Self : Set := u32.
         
         Parameter layout :
-            (ref ink_primitives.key.Key) ->
+            (ref ltac:(ink_primitives.key.Key)) ->
               M
                 (ink_metadata.layout.Layout
                   ink_metadata.layout.Layout.Default.F).
@@ -2464,7 +2681,7 @@ Module layout.
         Definition Self : Set := u64.
         
         Parameter layout :
-            (ref ink_primitives.key.Key) ->
+            (ref ltac:(ink_primitives.key.Key)) ->
               M
                 (ink_metadata.layout.Layout
                   ink_metadata.layout.Layout.Default.F).
@@ -2490,7 +2707,7 @@ Module layout.
         Definition Self : Set := u128.
         
         Parameter layout :
-            (ref ink_primitives.key.Key) ->
+            (ref ltac:(ink_primitives.key.Key)) ->
               M
                 (ink_metadata.layout.Layout
                   ink_metadata.layout.Layout.Default.F).
@@ -2516,7 +2733,7 @@ Module layout.
         Definition Self : Set := i8.
         
         Parameter layout :
-            (ref ink_primitives.key.Key) ->
+            (ref ltac:(ink_primitives.key.Key)) ->
               M
                 (ink_metadata.layout.Layout
                   ink_metadata.layout.Layout.Default.F).
@@ -2542,7 +2759,7 @@ Module layout.
         Definition Self : Set := i16.
         
         Parameter layout :
-            (ref ink_primitives.key.Key) ->
+            (ref ltac:(ink_primitives.key.Key)) ->
               M
                 (ink_metadata.layout.Layout
                   ink_metadata.layout.Layout.Default.F).
@@ -2568,7 +2785,7 @@ Module layout.
         Definition Self : Set := i32.
         
         Parameter layout :
-            (ref ink_primitives.key.Key) ->
+            (ref ltac:(ink_primitives.key.Key)) ->
               M
                 (ink_metadata.layout.Layout
                   ink_metadata.layout.Layout.Default.F).
@@ -2594,7 +2811,7 @@ Module layout.
         Definition Self : Set := i64.
         
         Parameter layout :
-            (ref ink_primitives.key.Key) ->
+            (ref ltac:(ink_primitives.key.Key)) ->
               M
                 (ink_metadata.layout.Layout
                   ink_metadata.layout.Layout.Default.F).
@@ -2620,7 +2837,7 @@ Module layout.
         Definition Self : Set := i128.
         
         Parameter layout :
-            (ref ink_primitives.key.Key) ->
+            (ref ltac:(ink_primitives.key.Key)) ->
               M
                 (ink_metadata.layout.Layout
                   ink_metadata.layout.Layout.Default.F).
@@ -2651,7 +2868,7 @@ Module layout.
         Definition Self : Set := array T.
         
         Parameter layout :
-            (ref ink_primitives.key.Key) ->
+            (ref ltac:(ink_primitives.key.Key)) ->
               M
                 (ink_metadata.layout.Layout
                   ink_metadata.layout.Layout.Default.F).
@@ -2682,7 +2899,7 @@ Module layout.
         Definition Self : Set := alloc.boxed.Box T alloc.boxed.Box.Default.A.
         
         Parameter layout :
-            (ref ink_primitives.key.Key) ->
+            (ref ltac:(ink_primitives.key.Key)) ->
               M
                 (ink_metadata.layout.Layout
                   ink_metadata.layout.Layout.Default.F).
@@ -2715,7 +2932,7 @@ Module layout.
         Definition Self : Set := core.option.Option T.
         
         Parameter layout :
-            (ref ink_primitives.key.Key) ->
+            (ref ltac:(ink_primitives.key.Key)) ->
               M
                 (ink_metadata.layout.Layout
                   ink_metadata.layout.Layout.Default.F).
@@ -2748,7 +2965,7 @@ Module layout.
         Definition Self : Set := core.result.Result T E.
         
         Parameter layout :
-            (ref ink_primitives.key.Key) ->
+            (ref ltac:(ink_primitives.key.Key)) ->
               M
                 (ink_metadata.layout.Layout
                   ink_metadata.layout.Layout.Default.F).
@@ -2782,7 +2999,7 @@ Module layout.
         Definition Self : Set := alloc.vec.Vec T alloc.vec.Vec.Default.A.
         
         Parameter layout :
-            (ref ink_primitives.key.Key) ->
+            (ref ltac:(ink_primitives.key.Key)) ->
               M
                 (ink_metadata.layout.Layout
                   ink_metadata.layout.Layout.Default.F).
@@ -2803,8 +3020,10 @@ Module layout.
     End
       Impl_ink_storage_traits_layout_StorageLayout_for_alloc_vec_Vec_T_alloc_vec_Vec_Default_A.
     
-    (* Module Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map_BTreeMap_K_V_alloc_collections_btree_map_BTreeMap_Default_A.
-      (* Section Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map_BTreeMap_K_V_alloc_collections_btree_map_BTreeMap_Default_A.
+    Module
+      Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map_BTreeMap_K_V_alloc_collections_btree_map_BTreeMap_Default_A.
+      Section
+        Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map_BTreeMap_K_V_alloc_collections_btree_map_BTreeMap_Default_A.
         Context `{ℋ : State.Trait}.
         
         Context {K V : Set}.
@@ -2821,7 +3040,7 @@ Module layout.
             alloc.collections.btree.map.BTreeMap.Default.A.
         
         Parameter layout :
-            (ref ink_primitives.key.Key) ->
+            (ref ltac:(ink_primitives.key.Key)) ->
               M
                 (ink_metadata.layout.Layout
                   ink_metadata.layout.Layout.Default.F).
@@ -2836,12 +3055,16 @@ Module layout.
           ink_storage_traits.layout.StorageLayout.layout := layout;
         }.
         Admitted.
-      End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map_BTreeMap_K_V_alloc_collections_btree_map_BTreeMap_Default_A. *)
+      End
+        Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map_BTreeMap_K_V_alloc_collections_btree_map_BTreeMap_Default_A.
       Global Hint Resolve ℐ : core.
-    End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map_BTreeMap_K_V_alloc_collections_btree_map_BTreeMap_Default_A. *)
+    End
+      Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map_BTreeMap_K_V_alloc_collections_btree_map_BTreeMap_Default_A.
     
-    (* Module Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set_BTreeSet_T_alloc_collections_btree_set_BTreeSet_Default_A.
-      (* Section Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set_BTreeSet_T_alloc_collections_btree_set_BTreeSet_Default_A.
+    Module
+      Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set_BTreeSet_T_alloc_collections_btree_set_BTreeSet_Default_A.
+      Section
+        Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set_BTreeSet_T_alloc_collections_btree_set_BTreeSet_Default_A.
         Context `{ℋ : State.Trait}.
         
         Context {T : Set}.
@@ -2855,7 +3078,7 @@ Module layout.
             alloc.collections.btree.set.BTreeSet.Default.A.
         
         Parameter layout :
-            (ref ink_primitives.key.Key) ->
+            (ref ltac:(ink_primitives.key.Key)) ->
               M
                 (ink_metadata.layout.Layout
                   ink_metadata.layout.Layout.Default.F).
@@ -2870,12 +3093,16 @@ Module layout.
           ink_storage_traits.layout.StorageLayout.layout := layout;
         }.
         Admitted.
-      End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set_BTreeSet_T_alloc_collections_btree_set_BTreeSet_Default_A. *)
+      End
+        Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set_BTreeSet_T_alloc_collections_btree_set_BTreeSet_Default_A.
       Global Hint Resolve ℐ : core.
-    End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set_BTreeSet_T_alloc_collections_btree_set_BTreeSet_Default_A. *)
+    End
+      Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set_BTreeSet_T_alloc_collections_btree_set_BTreeSet_Default_A.
     
-    (* Module Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_vec_deque_VecDeque_T_alloc_collections_vec_deque_VecDeque_Default_A.
-      (* Section Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_vec_deque_VecDeque_T_alloc_collections_vec_deque_VecDeque_Default_A.
+    Module
+      Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_vec_deque_VecDeque_T_alloc_collections_vec_deque_VecDeque_Default_A.
+      Section
+        Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_vec_deque_VecDeque_T_alloc_collections_vec_deque_VecDeque_Default_A.
         Context `{ℋ : State.Trait}.
         
         Context {T : Set}.
@@ -2889,7 +3116,7 @@ Module layout.
             alloc.collections.vec_deque.VecDeque.Default.A.
         
         Parameter layout :
-            (ref ink_primitives.key.Key) ->
+            (ref ltac:(ink_primitives.key.Key)) ->
               M
                 (ink_metadata.layout.Layout
                   ink_metadata.layout.Layout.Default.F).
@@ -2904,9 +3131,11 @@ Module layout.
           ink_storage_traits.layout.StorageLayout.layout := layout;
         }.
         Admitted.
-      End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_vec_deque_VecDeque_T_alloc_collections_vec_deque_VecDeque_Default_A. *)
+      End
+        Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_vec_deque_VecDeque_T_alloc_collections_vec_deque_VecDeque_Default_A.
       Global Hint Resolve ℐ : core.
-    End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_vec_deque_VecDeque_T_alloc_collections_vec_deque_VecDeque_Default_A. *)
+    End
+      Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_vec_deque_VecDeque_T_alloc_collections_vec_deque_VecDeque_Default_A.
   End impls.
 End layout.
 
@@ -2921,7 +3150,7 @@ Module Wrap_impls_1.
         Definition Self : Set := ink_primitives.types.AccountId.
         
         Parameter layout :
-            (ref ink_primitives.key.Key) ->
+            (ref ltac:(ink_primitives.key.Key)) ->
               M
                 (ink_metadata.layout.Layout
                   ink_metadata.layout.Layout.Default.F).
@@ -2951,7 +3180,7 @@ Module Wrap_impls_1.
         Definition Self : Set := ink_primitives.types.Hash.
         
         Parameter layout :
-            (ref ink_primitives.key.Key) ->
+            (ref ltac:(ink_primitives.key.Key)) ->
               M
                 (ink_metadata.layout.Layout
                   ink_metadata.layout.Layout.Default.F).
@@ -2980,7 +3209,7 @@ Module Wrap_impls_1.
         Definition Self : Set := alloc.string.String.
         
         Parameter layout :
-            (ref ink_primitives.key.Key) ->
+            (ref ltac:(ink_primitives.key.Key)) ->
               M
                 (ink_metadata.layout.Layout
                   ink_metadata.layout.Layout.Default.F).
@@ -3006,7 +3235,7 @@ Module Wrap_impls_1.
         Definition Self : Set := bool.
         
         Parameter layout :
-            (ref ink_primitives.key.Key) ->
+            (ref ltac:(ink_primitives.key.Key)) ->
               M
                 (ink_metadata.layout.Layout
                   ink_metadata.layout.Layout.Default.F).
@@ -3032,7 +3261,7 @@ Module Wrap_impls_1.
         Definition Self : Set := char.
         
         Parameter layout :
-            (ref ink_primitives.key.Key) ->
+            (ref ltac:(ink_primitives.key.Key)) ->
               M
                 (ink_metadata.layout.Layout
                   ink_metadata.layout.Layout.Default.F).
@@ -3058,7 +3287,7 @@ Module Wrap_impls_1.
         Definition Self : Set := unit.
         
         Parameter layout :
-            (ref ink_primitives.key.Key) ->
+            (ref ltac:(ink_primitives.key.Key)) ->
               M
                 (ink_metadata.layout.Layout
                   ink_metadata.layout.Layout.Default.F).
@@ -3084,7 +3313,7 @@ Module Wrap_impls_1.
         Definition Self : Set := u8.
         
         Parameter layout :
-            (ref ink_primitives.key.Key) ->
+            (ref ltac:(ink_primitives.key.Key)) ->
               M
                 (ink_metadata.layout.Layout
                   ink_metadata.layout.Layout.Default.F).
@@ -3110,7 +3339,7 @@ Module Wrap_impls_1.
         Definition Self : Set := u16.
         
         Parameter layout :
-            (ref ink_primitives.key.Key) ->
+            (ref ltac:(ink_primitives.key.Key)) ->
               M
                 (ink_metadata.layout.Layout
                   ink_metadata.layout.Layout.Default.F).
@@ -3136,7 +3365,7 @@ Module Wrap_impls_1.
         Definition Self : Set := u32.
         
         Parameter layout :
-            (ref ink_primitives.key.Key) ->
+            (ref ltac:(ink_primitives.key.Key)) ->
               M
                 (ink_metadata.layout.Layout
                   ink_metadata.layout.Layout.Default.F).
@@ -3162,7 +3391,7 @@ Module Wrap_impls_1.
         Definition Self : Set := u64.
         
         Parameter layout :
-            (ref ink_primitives.key.Key) ->
+            (ref ltac:(ink_primitives.key.Key)) ->
               M
                 (ink_metadata.layout.Layout
                   ink_metadata.layout.Layout.Default.F).
@@ -3188,7 +3417,7 @@ Module Wrap_impls_1.
         Definition Self : Set := u128.
         
         Parameter layout :
-            (ref ink_primitives.key.Key) ->
+            (ref ltac:(ink_primitives.key.Key)) ->
               M
                 (ink_metadata.layout.Layout
                   ink_metadata.layout.Layout.Default.F).
@@ -3214,7 +3443,7 @@ Module Wrap_impls_1.
         Definition Self : Set := i8.
         
         Parameter layout :
-            (ref ink_primitives.key.Key) ->
+            (ref ltac:(ink_primitives.key.Key)) ->
               M
                 (ink_metadata.layout.Layout
                   ink_metadata.layout.Layout.Default.F).
@@ -3240,7 +3469,7 @@ Module Wrap_impls_1.
         Definition Self : Set := i16.
         
         Parameter layout :
-            (ref ink_primitives.key.Key) ->
+            (ref ltac:(ink_primitives.key.Key)) ->
               M
                 (ink_metadata.layout.Layout
                   ink_metadata.layout.Layout.Default.F).
@@ -3266,7 +3495,7 @@ Module Wrap_impls_1.
         Definition Self : Set := i32.
         
         Parameter layout :
-            (ref ink_primitives.key.Key) ->
+            (ref ltac:(ink_primitives.key.Key)) ->
               M
                 (ink_metadata.layout.Layout
                   ink_metadata.layout.Layout.Default.F).
@@ -3292,7 +3521,7 @@ Module Wrap_impls_1.
         Definition Self : Set := i64.
         
         Parameter layout :
-            (ref ink_primitives.key.Key) ->
+            (ref ltac:(ink_primitives.key.Key)) ->
               M
                 (ink_metadata.layout.Layout
                   ink_metadata.layout.Layout.Default.F).
@@ -3318,7 +3547,7 @@ Module Wrap_impls_1.
         Definition Self : Set := i128.
         
         Parameter layout :
-            (ref ink_primitives.key.Key) ->
+            (ref ltac:(ink_primitives.key.Key)) ->
               M
                 (ink_metadata.layout.Layout
                   ink_metadata.layout.Layout.Default.F).
@@ -3349,7 +3578,7 @@ Module Wrap_impls_1.
         Definition Self : Set := array T.
         
         Parameter layout :
-            (ref ink_primitives.key.Key) ->
+            (ref ltac:(ink_primitives.key.Key)) ->
               M
                 (ink_metadata.layout.Layout
                   ink_metadata.layout.Layout.Default.F).
@@ -3380,7 +3609,7 @@ Module Wrap_impls_1.
         Definition Self : Set := alloc.boxed.Box T alloc.boxed.Box.Default.A.
         
         Parameter layout :
-            (ref ink_primitives.key.Key) ->
+            (ref ltac:(ink_primitives.key.Key)) ->
               M
                 (ink_metadata.layout.Layout
                   ink_metadata.layout.Layout.Default.F).
@@ -3413,7 +3642,7 @@ Module Wrap_impls_1.
         Definition Self : Set := core.option.Option T.
         
         Parameter layout :
-            (ref ink_primitives.key.Key) ->
+            (ref ltac:(ink_primitives.key.Key)) ->
               M
                 (ink_metadata.layout.Layout
                   ink_metadata.layout.Layout.Default.F).
@@ -3446,7 +3675,7 @@ Module Wrap_impls_1.
         Definition Self : Set := core.result.Result T E.
         
         Parameter layout :
-            (ref ink_primitives.key.Key) ->
+            (ref ltac:(ink_primitives.key.Key)) ->
               M
                 (ink_metadata.layout.Layout
                   ink_metadata.layout.Layout.Default.F).
@@ -3480,7 +3709,7 @@ Module Wrap_impls_1.
         Definition Self : Set := alloc.vec.Vec T alloc.vec.Vec.Default.A.
         
         Parameter layout :
-            (ref ink_primitives.key.Key) ->
+            (ref ltac:(ink_primitives.key.Key)) ->
               M
                 (ink_metadata.layout.Layout
                   ink_metadata.layout.Layout.Default.F).
@@ -3501,8 +3730,10 @@ Module Wrap_impls_1.
     End
       Impl_ink_storage_traits_layout_StorageLayout_for_alloc_vec_Vec_T_alloc_vec_Vec_Default_A.
     
-    (* Module Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map_BTreeMap_K_V_alloc_collections_btree_map_BTreeMap_Default_A.
-      (* Section Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map_BTreeMap_K_V_alloc_collections_btree_map_BTreeMap_Default_A.
+    Module
+      Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map_BTreeMap_K_V_alloc_collections_btree_map_BTreeMap_Default_A.
+      Section
+        Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map_BTreeMap_K_V_alloc_collections_btree_map_BTreeMap_Default_A.
         Context `{ℋ : State.Trait}.
         
         Context {K V : Set}.
@@ -3519,7 +3750,7 @@ Module Wrap_impls_1.
             alloc.collections.btree.map.BTreeMap.Default.A.
         
         Parameter layout :
-            (ref ink_primitives.key.Key) ->
+            (ref ltac:(ink_primitives.key.Key)) ->
               M
                 (ink_metadata.layout.Layout
                   ink_metadata.layout.Layout.Default.F).
@@ -3534,12 +3765,16 @@ Module Wrap_impls_1.
           ink_storage_traits.layout.StorageLayout.layout := layout;
         }.
         Admitted.
-      End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map_BTreeMap_K_V_alloc_collections_btree_map_BTreeMap_Default_A. *)
+      End
+        Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map_BTreeMap_K_V_alloc_collections_btree_map_BTreeMap_Default_A.
       Global Hint Resolve ℐ : core.
-    End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map_BTreeMap_K_V_alloc_collections_btree_map_BTreeMap_Default_A. *)
+    End
+      Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map_BTreeMap_K_V_alloc_collections_btree_map_BTreeMap_Default_A.
     
-    (* Module Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set_BTreeSet_T_alloc_collections_btree_set_BTreeSet_Default_A.
-      (* Section Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set_BTreeSet_T_alloc_collections_btree_set_BTreeSet_Default_A.
+    Module
+      Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set_BTreeSet_T_alloc_collections_btree_set_BTreeSet_Default_A.
+      Section
+        Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set_BTreeSet_T_alloc_collections_btree_set_BTreeSet_Default_A.
         Context `{ℋ : State.Trait}.
         
         Context {T : Set}.
@@ -3553,7 +3788,7 @@ Module Wrap_impls_1.
             alloc.collections.btree.set.BTreeSet.Default.A.
         
         Parameter layout :
-            (ref ink_primitives.key.Key) ->
+            (ref ltac:(ink_primitives.key.Key)) ->
               M
                 (ink_metadata.layout.Layout
                   ink_metadata.layout.Layout.Default.F).
@@ -3568,12 +3803,16 @@ Module Wrap_impls_1.
           ink_storage_traits.layout.StorageLayout.layout := layout;
         }.
         Admitted.
-      End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set_BTreeSet_T_alloc_collections_btree_set_BTreeSet_Default_A. *)
+      End
+        Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set_BTreeSet_T_alloc_collections_btree_set_BTreeSet_Default_A.
       Global Hint Resolve ℐ : core.
-    End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set_BTreeSet_T_alloc_collections_btree_set_BTreeSet_Default_A. *)
+    End
+      Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set_BTreeSet_T_alloc_collections_btree_set_BTreeSet_Default_A.
     
-    (* Module Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_vec_deque_VecDeque_T_alloc_collections_vec_deque_VecDeque_Default_A.
-      (* Section Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_vec_deque_VecDeque_T_alloc_collections_vec_deque_VecDeque_Default_A.
+    Module
+      Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_vec_deque_VecDeque_T_alloc_collections_vec_deque_VecDeque_Default_A.
+      Section
+        Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_vec_deque_VecDeque_T_alloc_collections_vec_deque_VecDeque_Default_A.
         Context `{ℋ : State.Trait}.
         
         Context {T : Set}.
@@ -3587,7 +3826,7 @@ Module Wrap_impls_1.
             alloc.collections.vec_deque.VecDeque.Default.A.
         
         Parameter layout :
-            (ref ink_primitives.key.Key) ->
+            (ref ltac:(ink_primitives.key.Key)) ->
               M
                 (ink_metadata.layout.Layout
                   ink_metadata.layout.Layout.Default.F).
@@ -3602,9 +3841,11 @@ Module Wrap_impls_1.
           ink_storage_traits.layout.StorageLayout.layout := layout;
         }.
         Admitted.
-      End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_vec_deque_VecDeque_T_alloc_collections_vec_deque_VecDeque_Default_A. *)
+      End
+        Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_vec_deque_VecDeque_T_alloc_collections_vec_deque_VecDeque_Default_A.
       Global Hint Resolve ℐ : core.
-    End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_vec_deque_VecDeque_T_alloc_collections_vec_deque_VecDeque_Default_A. *)
+    End
+      Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_vec_deque_VecDeque_T_alloc_collections_vec_deque_VecDeque_Default_A.
   End impls.
 End Wrap_impls_1.
 Import Wrap_impls_1.
@@ -3618,7 +3859,7 @@ Module
     Definition Self : Set := ink_primitives.types.AccountId.
     
     Parameter layout :
-        (ref ink_primitives.key.Key) ->
+        (ref ltac:(ink_primitives.key.Key)) ->
           M (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
     
     Global Instance AssociatedFunction_layout :
@@ -3646,7 +3887,7 @@ Module
     Definition Self : Set := ink_primitives.types.Hash.
     
     Parameter layout :
-        (ref ink_primitives.key.Key) ->
+        (ref ltac:(ink_primitives.key.Key)) ->
           M (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
     
     Global Instance AssociatedFunction_layout :
@@ -3671,7 +3912,7 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_alloc_string_String.
     Definition Self : Set := alloc.string.String.
     
     Parameter layout :
-        (ref ink_primitives.key.Key) ->
+        (ref ltac:(ink_primitives.key.Key)) ->
           M (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
     
     Global Instance AssociatedFunction_layout :
@@ -3695,7 +3936,7 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_bool.
     Definition Self : Set := bool.
     
     Parameter layout :
-        (ref ink_primitives.key.Key) ->
+        (ref ltac:(ink_primitives.key.Key)) ->
           M (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
     
     Global Instance AssociatedFunction_layout :
@@ -3719,7 +3960,7 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_char.
     Definition Self : Set := char.
     
     Parameter layout :
-        (ref ink_primitives.key.Key) ->
+        (ref ltac:(ink_primitives.key.Key)) ->
           M (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
     
     Global Instance AssociatedFunction_layout :
@@ -3743,7 +3984,7 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_.
     Definition Self : Set := unit.
     
     Parameter layout :
-        (ref ink_primitives.key.Key) ->
+        (ref ltac:(ink_primitives.key.Key)) ->
           M (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
     
     Global Instance AssociatedFunction_layout :
@@ -3767,7 +4008,7 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_u8.
     Definition Self : Set := u8.
     
     Parameter layout :
-        (ref ink_primitives.key.Key) ->
+        (ref ltac:(ink_primitives.key.Key)) ->
           M (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
     
     Global Instance AssociatedFunction_layout :
@@ -3791,7 +4032,7 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_u16.
     Definition Self : Set := u16.
     
     Parameter layout :
-        (ref ink_primitives.key.Key) ->
+        (ref ltac:(ink_primitives.key.Key)) ->
           M (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
     
     Global Instance AssociatedFunction_layout :
@@ -3815,7 +4056,7 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_u32.
     Definition Self : Set := u32.
     
     Parameter layout :
-        (ref ink_primitives.key.Key) ->
+        (ref ltac:(ink_primitives.key.Key)) ->
           M (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
     
     Global Instance AssociatedFunction_layout :
@@ -3839,7 +4080,7 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_u64.
     Definition Self : Set := u64.
     
     Parameter layout :
-        (ref ink_primitives.key.Key) ->
+        (ref ltac:(ink_primitives.key.Key)) ->
           M (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
     
     Global Instance AssociatedFunction_layout :
@@ -3863,7 +4104,7 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_u128.
     Definition Self : Set := u128.
     
     Parameter layout :
-        (ref ink_primitives.key.Key) ->
+        (ref ltac:(ink_primitives.key.Key)) ->
           M (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
     
     Global Instance AssociatedFunction_layout :
@@ -3887,7 +4128,7 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_i8.
     Definition Self : Set := i8.
     
     Parameter layout :
-        (ref ink_primitives.key.Key) ->
+        (ref ltac:(ink_primitives.key.Key)) ->
           M (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
     
     Global Instance AssociatedFunction_layout :
@@ -3911,7 +4152,7 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_i16.
     Definition Self : Set := i16.
     
     Parameter layout :
-        (ref ink_primitives.key.Key) ->
+        (ref ltac:(ink_primitives.key.Key)) ->
           M (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
     
     Global Instance AssociatedFunction_layout :
@@ -3935,7 +4176,7 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_i32.
     Definition Self : Set := i32.
     
     Parameter layout :
-        (ref ink_primitives.key.Key) ->
+        (ref ltac:(ink_primitives.key.Key)) ->
           M (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
     
     Global Instance AssociatedFunction_layout :
@@ -3959,7 +4200,7 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_i64.
     Definition Self : Set := i64.
     
     Parameter layout :
-        (ref ink_primitives.key.Key) ->
+        (ref ltac:(ink_primitives.key.Key)) ->
           M (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
     
     Global Instance AssociatedFunction_layout :
@@ -3983,7 +4224,7 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_i128.
     Definition Self : Set := i128.
     
     Parameter layout :
-        (ref ink_primitives.key.Key) ->
+        (ref ltac:(ink_primitives.key.Key)) ->
           M (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
     
     Global Instance AssociatedFunction_layout :
@@ -4010,7 +4251,7 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_.
     Definition Self : Set := A.
     
     Parameter layout :
-        (ref ink_primitives.key.Key) ->
+        (ref ltac:(ink_primitives.key.Key)) ->
           M (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
     
     Global Instance AssociatedFunction_layout :
@@ -4039,7 +4280,7 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_.
     Definition Self : Set := A * B.
     
     Parameter layout :
-        (ref ink_primitives.key.Key) ->
+        (ref ltac:(ink_primitives.key.Key)) ->
           M (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
     
     Global Instance AssociatedFunction_layout :
@@ -4069,7 +4310,7 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_.
     Definition Self : Set := (A * B) * C.
     
     Parameter layout :
-        (ref ink_primitives.key.Key) ->
+        (ref ltac:(ink_primitives.key.Key)) ->
           M (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
     
     Global Instance AssociatedFunction_layout :
@@ -4100,7 +4341,7 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_.
     Definition Self : Set := ((A * B) * C) * D.
     
     Parameter layout :
-        (ref ink_primitives.key.Key) ->
+        (ref ltac:(ink_primitives.key.Key)) ->
           M (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
     
     Global Instance AssociatedFunction_layout :
@@ -4132,7 +4373,7 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_E_.
     Definition Self : Set := (((A * B) * C) * D) * E.
     
     Parameter layout :
-        (ref ink_primitives.key.Key) ->
+        (ref ltac:(ink_primitives.key.Key)) ->
           M (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
     
     Global Instance AssociatedFunction_layout :
@@ -4165,7 +4406,7 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_E_F_.
     Definition Self : Set := ((((A * B) * C) * D) * E) * F.
     
     Parameter layout :
-        (ref ink_primitives.key.Key) ->
+        (ref ltac:(ink_primitives.key.Key)) ->
           M (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
     
     Global Instance AssociatedFunction_layout :
@@ -4199,7 +4440,7 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_E_F_G_.
     Definition Self : Set := (((((A * B) * C) * D) * E) * F) * G.
     
     Parameter layout :
-        (ref ink_primitives.key.Key) ->
+        (ref ltac:(ink_primitives.key.Key)) ->
           M (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
     
     Global Instance AssociatedFunction_layout :
@@ -4235,7 +4476,7 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_E_F_G_H_.
     Definition Self : Set := ((((((A * B) * C) * D) * E) * F) * G) * H.
     
     Parameter layout :
-        (ref ink_primitives.key.Key) ->
+        (ref ltac:(ink_primitives.key.Key)) ->
           M (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
     
     Global Instance AssociatedFunction_layout :
@@ -4273,7 +4514,7 @@ Module
     Definition Self : Set := (((((((A * B) * C) * D) * E) * F) * G) * H) * I.
     
     Parameter layout :
-        (ref ink_primitives.key.Key) ->
+        (ref ltac:(ink_primitives.key.Key)) ->
           M (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
     
     Global Instance AssociatedFunction_layout :
@@ -4313,7 +4554,7 @@ Module
       ((((((((A * B) * C) * D) * E) * F) * G) * H) * I) * J.
     
     Parameter layout :
-        (ref ink_primitives.key.Key) ->
+        (ref ltac:(ink_primitives.key.Key)) ->
           M (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
     
     Global Instance AssociatedFunction_layout :
@@ -4343,7 +4584,7 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_Array_T.
     Definition Self : Set := array T.
     
     Parameter layout :
-        (ref ink_primitives.key.Key) ->
+        (ref ltac:(ink_primitives.key.Key)) ->
           M (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
     
     Global Instance AssociatedFunction_layout :
@@ -4372,7 +4613,7 @@ Module
     Definition Self : Set := alloc.boxed.Box T alloc.boxed.Box.Default.A.
     
     Parameter layout :
-        (ref ink_primitives.key.Key) ->
+        (ref ltac:(ink_primitives.key.Key)) ->
           M (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
     
     Global Instance AssociatedFunction_layout :
@@ -4401,7 +4642,7 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_core_option_Option_T.
     Definition Self : Set := core.option.Option T.
     
     Parameter layout :
-        (ref ink_primitives.key.Key) ->
+        (ref ltac:(ink_primitives.key.Key)) ->
           M (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
     
     Global Instance AssociatedFunction_layout :
@@ -4431,7 +4672,7 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_core_result_Result_T_E.
     Definition Self : Set := core.result.Result T E.
     
     Parameter layout :
-        (ref ink_primitives.key.Key) ->
+        (ref ltac:(ink_primitives.key.Key)) ->
           M (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
     
     Global Instance AssociatedFunction_layout :
@@ -4462,7 +4703,7 @@ Module
     Definition Self : Set := alloc.vec.Vec T alloc.vec.Vec.Default.A.
     
     Parameter layout :
-        (ref ink_primitives.key.Key) ->
+        (ref ltac:(ink_primitives.key.Key)) ->
           M (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
     
     Global Instance AssociatedFunction_layout :
@@ -4481,8 +4722,10 @@ Module
 End
   Impl_ink_storage_traits_layout_StorageLayout_for_alloc_vec_Vec_T_alloc_vec_Vec_Default_A.
 
-(* Module Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map_BTreeMap_K_V_alloc_collections_btree_map_BTreeMap_Default_A.
-  (* Section Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map_BTreeMap_K_V_alloc_collections_btree_map_BTreeMap_Default_A.
+Module
+  Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map_BTreeMap_K_V_alloc_collections_btree_map_BTreeMap_Default_A.
+  Section
+    Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map_BTreeMap_K_V_alloc_collections_btree_map_BTreeMap_Default_A.
     Context `{ℋ : State.Trait}.
     
     Context {K V : Set}.
@@ -4499,7 +4742,7 @@ End
         alloc.collections.btree.map.BTreeMap.Default.A.
     
     Parameter layout :
-        (ref ink_primitives.key.Key) ->
+        (ref ltac:(ink_primitives.key.Key)) ->
           M (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
     
     Global Instance AssociatedFunction_layout :
@@ -4512,12 +4755,16 @@ End
       ink_storage_traits.layout.StorageLayout.layout := layout;
     }.
     Admitted.
-  End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map_BTreeMap_K_V_alloc_collections_btree_map_BTreeMap_Default_A. *)
+  End
+    Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map_BTreeMap_K_V_alloc_collections_btree_map_BTreeMap_Default_A.
   Global Hint Resolve ℐ : core.
-End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map_BTreeMap_K_V_alloc_collections_btree_map_BTreeMap_Default_A. *)
+End
+  Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map_BTreeMap_K_V_alloc_collections_btree_map_BTreeMap_Default_A.
 
-(* Module Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set_BTreeSet_T_alloc_collections_btree_set_BTreeSet_Default_A.
-  (* Section Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set_BTreeSet_T_alloc_collections_btree_set_BTreeSet_Default_A.
+Module
+  Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set_BTreeSet_T_alloc_collections_btree_set_BTreeSet_Default_A.
+  Section
+    Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set_BTreeSet_T_alloc_collections_btree_set_BTreeSet_Default_A.
     Context `{ℋ : State.Trait}.
     
     Context {T : Set}.
@@ -4531,7 +4778,7 @@ End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map
         alloc.collections.btree.set.BTreeSet.Default.A.
     
     Parameter layout :
-        (ref ink_primitives.key.Key) ->
+        (ref ltac:(ink_primitives.key.Key)) ->
           M (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
     
     Global Instance AssociatedFunction_layout :
@@ -4544,12 +4791,16 @@ End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map
       ink_storage_traits.layout.StorageLayout.layout := layout;
     }.
     Admitted.
-  End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set_BTreeSet_T_alloc_collections_btree_set_BTreeSet_Default_A. *)
+  End
+    Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set_BTreeSet_T_alloc_collections_btree_set_BTreeSet_Default_A.
   Global Hint Resolve ℐ : core.
-End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set_BTreeSet_T_alloc_collections_btree_set_BTreeSet_Default_A. *)
+End
+  Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set_BTreeSet_T_alloc_collections_btree_set_BTreeSet_Default_A.
 
-(* Module Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_vec_deque_VecDeque_T_alloc_collections_vec_deque_VecDeque_Default_A.
-  (* Section Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_vec_deque_VecDeque_T_alloc_collections_vec_deque_VecDeque_Default_A.
+Module
+  Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_vec_deque_VecDeque_T_alloc_collections_vec_deque_VecDeque_Default_A.
+  Section
+    Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_vec_deque_VecDeque_T_alloc_collections_vec_deque_VecDeque_Default_A.
     Context `{ℋ : State.Trait}.
     
     Context {T : Set}.
@@ -4563,7 +4814,7 @@ End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set
         alloc.collections.vec_deque.VecDeque.Default.A.
     
     Parameter layout :
-        (ref ink_primitives.key.Key) ->
+        (ref ltac:(ink_primitives.key.Key)) ->
           M (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
     
     Global Instance AssociatedFunction_layout :
@@ -4576,9 +4827,11 @@ End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set
       ink_storage_traits.layout.StorageLayout.layout := layout;
     }.
     Admitted.
-  End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_vec_deque_VecDeque_T_alloc_collections_vec_deque_VecDeque_Default_A. *)
+  End
+    Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_vec_deque_VecDeque_T_alloc_collections_vec_deque_VecDeque_Default_A.
   Global Hint Resolve ℐ : core.
-End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_vec_deque_VecDeque_T_alloc_collections_vec_deque_VecDeque_Default_A. *)
+End
+  Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_vec_deque_VecDeque_T_alloc_collections_vec_deque_VecDeque_Default_A.
 
 Module StorageLayout.
   Section StorageLayout.
@@ -4586,7 +4839,7 @@ Module StorageLayout.
     
     Class Trait (Self : Set) : Type := {
       layout :
-        (ref ink_primitives.key.Key) ->
+        (ref ltac:(ink_primitives.key.Key)) ->
           M (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F);
     }.
     
