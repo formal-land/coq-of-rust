@@ -1206,27 +1206,6 @@ impl DynNameGen {
   
 }
 
-// fn make_dyn_parm(dy_gen: DynNameGen, arg: Box<CoqType>) -> (DynNameGen, Box<CoqType>) {
-//     if let CoqType::Ref(arg, mutability) = *arg {
-//         let (dy_gen, ct) = make_dyn_parm(dy_gen, arg);
-//         (dy_gen, Box::new(CoqType::Ref(ct, mutability)))
-//     } else if let CoqType::Dyn(path) = *arg {
-//         // We suppose `dyn` is only associated with one trait so we can directly extract the first element
-//         if let Some(path) = path.first() {
-//             let (dy_name, dy_gen) = dy_gen.next(path.clone());
-//             (
-//                 dy_gen,
-//                 Box::new(CoqType::Var(Box::new(Path::local(dy_name)))),
-//             )
-//         } else {
-//             // NOTE: cannot use `arg` directly because it is partially borrowed. Can it be fixed?
-//             (dy_gen, Box::new(CoqType::Dyn(path)))
-//         }
-//     } else {
-//         (dy_gen, arg)
-//     }
-// }
-
 impl FunDefinition {
     /// compiles a given function
     fn compile(
@@ -1241,18 +1220,6 @@ impl FunDefinition {
         let mut dyn_name_gen = DynNameGen::new("T".to_string());
         let FnSigAndBody { args, ret_ty, body } =
             &compile_fn_sig_and_body(env, fn_sig_and_body, default);
-
-        // The fold function will pass in and pass out the generator because I don't figure out
-        // another way to update the generator
-        // let (dyn_name_gen, args) =
-        //     args.iter()
-        //         .fold((dyn_name_gen, vec![]), |result, (string, ty)| {
-        //             let (gen, result) = result;
-        //             let (gen, ty) = make_dyn_parm(gen, ty.clone());
-        //             // Return the generator for next fold, along with
-        //             // the result concatenating with the new CoqType object
-        //             (gen, vec![result, vec![(string.to_owned(), ty)]].concat())
-        //         });
 
         let args =
         args.iter()
