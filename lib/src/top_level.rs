@@ -1142,7 +1142,8 @@ impl DynNameGen {
         }
     }
 
-    fn next(&self, path: Path) -> (String, Self) {
+    // fn next(&mut self, path: Path) -> (String, Self) {
+      fn next(&mut self, path: Path) -> String {
         // Get the next character
         let next_letter = self
             .name
@@ -1152,14 +1153,17 @@ impl DynNameGen {
         let full_name = format!("Dyn{}", self.name);
         // Collect the current path to be associated
         let predicates = vec![self.predicates.clone(), vec![(path, full_name.clone())]].concat();
+        self.predicates = predicates;
+        self.name = next_letter;
 
-        (
-            full_name,
-            DynNameGen {
-                name: next_letter,
-                predicates,
-            },
-        )
+        // (
+        //     full_name,
+        //     DynNameGen {
+        //         name: next_letter,
+        //         predicates,
+        //     },
+        // )
+        full_name
     }
 
     fn get_predicates(&self) -> Vec<WherePredicate> {
@@ -1181,28 +1185,47 @@ impl DynNameGen {
             .map(|(_, dyn_name)| dyn_name.clone())
             .collect()
     }
+
+    fn make_dyn_parm(&mut self, arg: Box<CoqType>) -> Box<CoqType> {
+      if let CoqType::Ref(arg, mutability) = *arg {
+          let ct = self.make_dyn_parm(arg);
+          Box::new(CoqType::Ref(ct, mutability))
+      } else if let CoqType::Dyn(path) = *arg {
+          // We suppose `dyn` is only associated with one trait so we can directly extract the first element
+          if let Some(path) = path.first() {
+              let dy_name = self.next(path.clone());
+              Box::new(CoqType::Var(Box::new(Path::local(dy_name))))
+          } else {
+              // NOTE: cannot use `arg` directly because it is partially borrowed. Can it be fixed?
+              Box::new(CoqType::Dyn(path))
+          }
+      } else {
+          arg
+      }
+  }
+  
 }
 
-fn make_dyn_parm(dy_gen: DynNameGen, arg: Box<CoqType>) -> (DynNameGen, Box<CoqType>) {
-    if let CoqType::Ref(arg, mutability) = *arg {
-        let (dy_gen, ct) = make_dyn_parm(dy_gen, arg);
-        (dy_gen, Box::new(CoqType::Ref(ct, mutability)))
-    } else if let CoqType::Dyn(path) = *arg {
-        // We suppose `dyn` is only associated with one trait so we can directly extract the first element
-        if let Some(path) = path.first() {
-            let (dy_name, dy_gen) = dy_gen.next(path.clone());
-            (
-                dy_gen,
-                Box::new(CoqType::Var(Box::new(Path::local(dy_name)))),
-            )
-        } else {
-            // NOTE: cannot use `arg` directly because it is partially borrowed. Can it be fixed?
-            (dy_gen, Box::new(CoqType::Dyn(path)))
-        }
-    } else {
-        (dy_gen, arg)
-    }
-}
+// fn make_dyn_parm(dy_gen: DynNameGen, arg: Box<CoqType>) -> (DynNameGen, Box<CoqType>) {
+//     if let CoqType::Ref(arg, mutability) = *arg {
+//         let (dy_gen, ct) = make_dyn_parm(dy_gen, arg);
+//         (dy_gen, Box::new(CoqType::Ref(ct, mutability)))
+//     } else if let CoqType::Dyn(path) = *arg {
+//         // We suppose `dyn` is only associated with one trait so we can directly extract the first element
+//         if let Some(path) = path.first() {
+//             let (dy_name, dy_gen) = dy_gen.next(path.clone());
+//             (
+//                 dy_gen,
+//                 Box::new(CoqType::Var(Box::new(Path::local(dy_name)))),
+//             )
+//         } else {
+//             // NOTE: cannot use `arg` directly because it is partially borrowed. Can it be fixed?
+//             (dy_gen, Box::new(CoqType::Dyn(path)))
+//         }
+//     } else {
+//         (dy_gen, arg)
+//     }
+// }
 
 impl FunDefinition {
     /// compiles a given function
@@ -1215,21 +1238,30 @@ impl FunDefinition {
         is_dead_code: bool,
     ) -> Self {
         let tcx = env.tcx;
-        let dyn_name_gen = DynNameGen::new("T".to_string());
+        let mut dyn_name_gen = DynNameGen::new("T".to_string());
         let FnSigAndBody { args, ret_ty, body } =
             &compile_fn_sig_and_body(env, fn_sig_and_body, default);
 
         // The fold function will pass in and pass out the generator because I don't figure out
         // another way to update the generator
-        let (dyn_name_gen, args) =
-            args.iter()
-                .fold((dyn_name_gen, vec![]), |result, (string, ty)| {
-                    let (gen, result) = result;
-                    let (gen, ty) = make_dyn_parm(gen, ty.clone());
-                    // Return the generator for next fold, along with
-                    // the result concatenating with the new CoqType object
-                    (gen, vec![result, vec![(string.to_owned(), ty)]].concat())
-                });
+        // let (dyn_name_gen, args) =
+        //     args.iter()
+        //         .fold((dyn_name_gen, vec![]), |result, (string, ty)| {
+        //             let (gen, result) = result;
+        //             let (gen, ty) = make_dyn_parm(gen, ty.clone());
+        //             // Return the generator for next fold, along with
+        //             // the result concatenating with the new CoqType object
+        //             (gen, vec![result, vec![(string.to_owned(), ty)]].concat())
+        //         });
+
+        let args =
+        args.iter()
+            .fold(vec![], |result, (string, ty)| {
+                let ty = dyn_name_gen.make_dyn_parm(ty.clone());
+                // Return the generator for next fold, along with
+                // the result concatenating with the new CoqType object
+                vec![result, vec![(string.to_owned(), ty)]].concat()
+            });
 
         let signature_and_body = FnSigAndBody {
             args,
