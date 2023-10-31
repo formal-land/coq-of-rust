@@ -2,35 +2,44 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition call_me
-    `{H' : State.Trait}
+    `{ℋ : State.Trait}
     {F : Set}
-    `{core.ops.function.Fn.Trait F (Args := unit)}
+    {ℋ_0 : core.ops.function.Fn.Trait F (Args := unit)}
     (f : F)
-    : M (H := H') unit :=
-  let* _ := f in
-  Pure tt.
+    : M unit :=
+  let* _ :=
+    let* α0 := borrow f F in
+    let* α1 := M.alloc tt in
+    (core.ops.function.Fn.call (Self := F)) α0 α1 in
+  M.alloc tt.
 
-Definition function `{H' : State.Trait} : M (H := H') unit :=
+Definition function `{ℋ : State.Trait} : M unit :=
   let* _ :=
     let* _ :=
-      let* α0 :=
-        format_arguments::["new_const"] (addr_of [ "I'm a function!
-" ]) in
-      std.io.stdio._print α0 in
-    Pure tt in
-  Pure tt.
+      let* α0 := borrow [ mk_str "I'm a function!
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := core.fmt.Arguments::["new_const"] α3 in
+      std.io.stdio._print α4 in
+    M.alloc tt in
+  M.alloc tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
+Definition main `{ℋ : State.Trait} : M unit :=
   let closure :=
     let* _ :=
-      let* α0 :=
-        format_arguments::["new_const"] (addr_of [ "I'm a closure!
-" ]) in
-      std.io.stdio._print α0 in
-    Pure tt in
+      let* α0 := borrow [ mk_str "I'm a closure!
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := core.fmt.Arguments::["new_const"] α3 in
+      std.io.stdio._print α4 in
+    M.alloc tt in
   let* _ := functions_closures_input_functions.call_me closure in
   let* _ :=
     functions_closures_input_functions.call_me
       functions_closures_input_functions.function in
-  Pure tt.
+  M.alloc tt.

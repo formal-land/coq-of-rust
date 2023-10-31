@@ -2,68 +2,103 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module Cardinal.
-  Inductive t : Set := Build.
+  Section Cardinal.
+    Context `{ℋ : State.Trait}.
+    
+    Inductive t : Set := Build.
+  End Cardinal.
 End Cardinal.
 Definition Cardinal := @Cardinal.t.
 
 Module BlueJay.
-  Inductive t : Set := Build.
+  Section BlueJay.
+    Context `{ℋ : State.Trait}.
+    
+    Inductive t : Set := Build.
+  End BlueJay.
 End BlueJay.
 Definition BlueJay := @BlueJay.t.
 
 Module Turkey.
-  Inductive t : Set := Build.
+  Section Turkey.
+    Context `{ℋ : State.Trait}.
+    
+    Inductive t : Set := Build.
+  End Turkey.
 End Turkey.
 Definition Turkey := @Turkey.t.
 
 Module Red.
-  Unset Primitive Projections.
-  Class Trait (Self : Set) : Type := {
-  }.
-  Global Set Primitive Projections.
+  Section Red.
+    Context `{ℋ : State.Trait}.
+    
+    Unset Primitive Projections.
+    Class Trait (Self : Set) : Type := {
+    }.
+    Global Set Primitive Projections.
+  End Red.
 End Red.
 
 Module Blue.
-  Unset Primitive Projections.
-  Class Trait (Self : Set) : Type := {
-  }.
-  Global Set Primitive Projections.
+  Section Blue.
+    Context `{ℋ : State.Trait}.
+    
+    Unset Primitive Projections.
+    Class Trait (Self : Set) : Type := {
+    }.
+    Global Set Primitive Projections.
+  End Blue.
 End Blue.
 
 Module
   Impl_generics_bounds_test_case_empty_bounds_Red_for_generics_bounds_test_case_empty_bounds_Cardinal.
-  Definition Self := generics_bounds_test_case_empty_bounds.Cardinal.
-  
-  Global Instance I : generics_bounds_test_case_empty_bounds.Red.Trait Self := {
-  }.
-  Global Hint Resolve I : core.
+  Section
+    Impl_generics_bounds_test_case_empty_bounds_Red_for_generics_bounds_test_case_empty_bounds_Cardinal.
+    Context `{ℋ : State.Trait}.
+    
+    Definition Self : Set := generics_bounds_test_case_empty_bounds.Cardinal.
+    
+    #[refine] Global Instance ℐ :
+      generics_bounds_test_case_empty_bounds.Red.Trait Self := {
+    }.
+    Admitted.
+  End
+    Impl_generics_bounds_test_case_empty_bounds_Red_for_generics_bounds_test_case_empty_bounds_Cardinal.
+  Global Hint Resolve ℐ : core.
 End
   Impl_generics_bounds_test_case_empty_bounds_Red_for_generics_bounds_test_case_empty_bounds_Cardinal.
 
 Module
   Impl_generics_bounds_test_case_empty_bounds_Blue_for_generics_bounds_test_case_empty_bounds_BlueJay.
-  Definition Self := generics_bounds_test_case_empty_bounds.BlueJay.
-  
-  Global Instance I
-    : generics_bounds_test_case_empty_bounds.Blue.Trait Self := {
-  }.
-  Global Hint Resolve I : core.
+  Section
+    Impl_generics_bounds_test_case_empty_bounds_Blue_for_generics_bounds_test_case_empty_bounds_BlueJay.
+    Context `{ℋ : State.Trait}.
+    
+    Definition Self : Set := generics_bounds_test_case_empty_bounds.BlueJay.
+    
+    #[refine] Global Instance ℐ :
+      generics_bounds_test_case_empty_bounds.Blue.Trait Self := {
+    }.
+    Admitted.
+  End
+    Impl_generics_bounds_test_case_empty_bounds_Blue_for_generics_bounds_test_case_empty_bounds_BlueJay.
+  Global Hint Resolve ℐ : core.
 End
   Impl_generics_bounds_test_case_empty_bounds_Blue_for_generics_bounds_test_case_empty_bounds_BlueJay.
 
 Parameter red :
     forall
-      `{H' : State.Trait}
+      `{ℋ : State.Trait}
       {T : Set}
-      `{generics_bounds_test_case_empty_bounds.Red.Trait T},
-    (ref T) -> M (H := H') (ref str).
+      {ℋ_0 : generics_bounds_test_case_empty_bounds.Red.Trait T},
+    (ref T) -> M (ref str).
 
 Parameter blue :
     forall
-      `{H' : State.Trait}
+      `{ℋ : State.Trait}
       {T : Set}
-      `{generics_bounds_test_case_empty_bounds.Blue.Trait T},
-    (ref T) -> M (H := H') (ref str).
+      {ℋ_0 : generics_bounds_test_case_empty_bounds.Blue.Trait T},
+    (ref T) -> M (ref str).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{H' : State.Trait}, M (H := H') unit.
+Parameter main : forall `{ℋ : State.Trait}, M unit.

@@ -1,3 +1,12 @@
+# blacklisting for the change to THIR
+examples/
+######
+examples/cargo/concurrent_tests.v
+examples/custom_types/enums_c_like.v
+examples/custom_types/enums_testcase_linked_list.v
+examples/custom_types/enums_type_aliases_v1.v
+examples/custom_types/enums_type_aliases_v2.v
+examples/custom_types/structures.v
 examples/error_handling/aliases_for_result.v
 examples/error_handling/boxing_errors.v
 examples/error_handling/combinators_and_then.v
@@ -41,6 +50,13 @@ examples/functions/functions_closures_type_anonymity_define_and_use.v
 examples/functions/functions_closures_type_anonymity_define.v
 examples/functions/functions.v
 examples/functions/higher_order_functions.v
+examples/generics/generics_bounds.v
+examples/generics/generics_implementation.v
+# examples/generics/generics_multiple_bounds.v
+examples/generics/generics_new_type_idiom.v
+examples/generics/generics_phantom_type_test_case_unit_clarification.v
+examples/generics/generics_phantom_type.v
+examples/generics/generics_where_clauses.v
 examples/guessing_game/guessing_game.v
 examples/hello_world/formatted_print.v
 examples/monadic_transformation/example05.v
@@ -96,6 +112,7 @@ examples_axiomatized/traits/iterators.v
 examples_axiomatized/traits/returning_traits_with_dyn.v
 examples_axiomatized/traits/supertraits.v
 ink/erc20.v
+ink/ink_e2e.v
 _std/iter_type.v
 _std/iter.v
 _std/net.v

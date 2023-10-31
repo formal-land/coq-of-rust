@@ -1,19 +1,19 @@
 Require Import CoqOfRust.lib.lib.
 
-Definition bool : Set := bool.
-Definition char : Set := char.
-Definition f32 : Set := f32.
-Definition f64 : Set := f64.
-Definition i128 : Set := i128.
-Definition i16 : Set := i16.
-Definition i32 : Set := i32.
-Definition i64 : Set := i64.
-Definition i8 : Set := i8.
-Definition isize : Set := isize.
-Definition str : Set := str.
-Definition u128 : Set := u128.
-Definition u16 : Set := u16.
-Definition u32 : Set := u32.
-Definition u64 : Set := u64.
-Definition u8 : Set := u8.
-Definition usize : Set := usize.
+Definition bool `{State.Trait} : Set := bool.
+Definition char `{State.Trait} : Set := char.
+Definition f32 `{State.Trait} : Set := f32.
+Definition f64 `{State.Trait} : Set := f64.
+Definition i128 `{State.Trait} : Set := i128.
+Definition i16 `{State.Trait} : Set := i16.
+Definition i32 `{State.Trait} : Set := i32.
+Definition i64 `{State.Trait} : Set := i64.
+Definition i8 `{State.Trait} : Set := i8.
+Definition isize `{State.Trait} : Set := isize.
+Definition str `{State.Trait} : Set := str.
+Definition u128 `{State.Trait} : Set := u128.
+Definition u16 `{State.Trait} : Set := u16.
+Definition u32 `{State.Trait} : Set := u32.
+Definition u64 `{State.Trait} : Set := u64.
+Definition u8 `{State.Trait} : Set := u8.
+Definition usize `{State.Trait} : Set := usize.

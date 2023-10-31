@@ -2,15 +2,19 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
-  let logical : bool := true in
-  let a_float : f64 := 1 (* 1.0 *) in
-  let an_integer := 5 in
-  let default_float := 3 (* 3.0 *) in
-  let default_integer := 7 in
-  let inferred_type := 12 in
-  let* _ := assign inferred_type 4294967296 in
-  let mutable := 12 in
-  let* _ := assign mutable 21 in
-  let mutable := true in
-  Pure tt.
+Definition main `{ℋ : State.Trait} : M unit :=
+  let* logical := M.alloc true in
+  let* a_float := M.alloc 1 (* 1.0 *) in
+  let* an_integer := M.alloc 5 in
+  let* default_float := M.alloc 3 (* 3.0 *) in
+  let* default_integer := M.alloc 7 in
+  let* inferred_type := M.alloc 12 in
+  let* _ :=
+    let* α0 := M.alloc 4294967296 in
+    assign inferred_type α0 in
+  let* mutable := M.alloc 12 in
+  let* _ :=
+    let* α0 := M.alloc 21 in
+    assign mutable α0 in
+  let* mutable := M.alloc true in
+  M.alloc tt.

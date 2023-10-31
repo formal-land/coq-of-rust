@@ -4,74 +4,95 @@ Require Import CoqOfRust.CoqOfRust.
 Error ForeignMod.
 
 Parameter cos :
-    forall `{H' : State.Trait},
-    foreign_function_interface.Complex ->
-      M (H := H') foreign_function_interface.Complex.
+    forall `{ℋ : State.Trait},
+    foreign_function_interface.Complex -> M foreign_function_interface.Complex.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{H' : State.Trait}, M (H := H') unit.
+Parameter main : forall `{ℋ : State.Trait}, M unit.
 
 Module Complex.
-  Unset Primitive Projections.
-  Record t : Set := {
-    re : f32;
-    im : f32;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_re : Notation.Dot "re" := {
-    Notation.dot '(Build_t x0 _) := x0;
-  }.
-  Global Instance Get_AF_re : Notation.DoubleColon t "re" := {
-    Notation.double_colon '(Build_t x0 _) := x0;
-  }.
-  Global Instance Get_im : Notation.Dot "im" := {
-    Notation.dot '(Build_t _ x1) := x1;
-  }.
-  Global Instance Get_AF_im : Notation.DoubleColon t "im" := {
-    Notation.double_colon '(Build_t _ x1) := x1;
-  }.
+  Section Complex.
+    Context `{ℋ : State.Trait}.
+    
+    Unset Primitive Projections.
+    Record t : Set := {
+      re : f32;
+      im : f32;
+    }.
+    Global Set Primitive Projections.
+    
+    #[refine] Global Instance Get_re : Notation.Dot "re" := {
+      Notation.dot x := let* x := M.read x in Pure x.(re) : M _;
+    }.
+    Admitted.
+    #[refine] Global Instance Get_AF_re : Notation.DoubleColon t "re" := {
+      Notation.double_colon x := let* x := M.read x in Pure x.(re) : M _;
+    }.
+    Admitted.
+    #[refine] Global Instance Get_im : Notation.Dot "im" := {
+      Notation.dot x := let* x := M.read x in Pure x.(im) : M _;
+    }.
+    Admitted.
+    #[refine] Global Instance Get_AF_im : Notation.DoubleColon t "im" := {
+      Notation.double_colon x := let* x := M.read x in Pure x.(im) : M _;
+    }.
+    Admitted.
+  End Complex.
 End Complex.
-Definition Complex : Set := Complex.t.
+Definition Complex `{ℋ : State.Trait} : Set := M.val Complex.t.
 
 Module Impl_core_clone_Clone_for_foreign_function_interface_Complex.
-  Definition Self := foreign_function_interface.Complex.
-  
-  Parameter clone :
-      forall `{H' : State.Trait},
-      (ref Self) -> M (H := H') foreign_function_interface.Complex.
-  
-  Global Instance Method_clone `{H' : State.Trait} : Notation.Dot "clone" := {
-    Notation.dot := clone;
-  }.
-  
-  Global Instance I : core.clone.Clone.Trait Self := {
-    core.clone.Clone.clone `{H' : State.Trait} := clone;
-  }.
-  Global Hint Resolve I : core.
+  Section Impl_core_clone_Clone_for_foreign_function_interface_Complex.
+    Context `{ℋ : State.Trait}.
+    
+    Definition Self : Set := foreign_function_interface.Complex.
+    
+    Parameter clone : (ref Self) -> M foreign_function_interface.Complex.
+    
+    Global Instance AssociatedFunction_clone :
+      Notation.DoubleColon Self "clone" := {
+      Notation.double_colon := clone;
+    }.
+    
+    #[refine] Global Instance ℐ : core.clone.Clone.Trait Self := {
+      core.clone.Clone.clone := clone;
+    }.
+    Admitted.
+  End Impl_core_clone_Clone_for_foreign_function_interface_Complex.
+  Global Hint Resolve ℐ : core.
 End Impl_core_clone_Clone_for_foreign_function_interface_Complex.
 
 Module Impl_core_marker_Copy_for_foreign_function_interface_Complex.
-  Definition Self := foreign_function_interface.Complex.
-  
-  Global Instance I : core.marker.Copy.Trait Self := {
-  }.
-  Global Hint Resolve I : core.
+  Section Impl_core_marker_Copy_for_foreign_function_interface_Complex.
+    Context `{ℋ : State.Trait}.
+    
+    Definition Self : Set := foreign_function_interface.Complex.
+    
+    #[refine] Global Instance ℐ : core.marker.Copy.Trait Self := {
+    }.
+    Admitted.
+  End Impl_core_marker_Copy_for_foreign_function_interface_Complex.
+  Global Hint Resolve ℐ : core.
 End Impl_core_marker_Copy_for_foreign_function_interface_Complex.
 
 Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
-  Definition Self := foreign_function_interface.Complex.
-  
-  Parameter fmt :
-      forall `{H' : State.Trait},
-      (ref Self) -> (mut_ref core.fmt.Formatter) -> M (H := H') core.fmt.Result.
-  
-  Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
-    Notation.dot := fmt;
-  }.
-  
-  Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
-  }.
-  Global Hint Resolve I : core.
+  Section Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
+    Context `{ℋ : State.Trait}.
+    
+    Definition Self : Set := foreign_function_interface.Complex.
+    
+    Parameter fmt :
+        (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
+    
+    Global Instance AssociatedFunction_fmt :
+      Notation.DoubleColon Self "fmt" := {
+      Notation.double_colon := fmt;
+    }.
+    
+    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
+      core.fmt.Debug.fmt := fmt;
+    }.
+    Admitted.
+  End Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
+  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_foreign_function_interface_Complex.

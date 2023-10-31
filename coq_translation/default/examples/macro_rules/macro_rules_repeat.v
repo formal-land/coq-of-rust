@@ -2,33 +2,67 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
+Definition main `{ℋ : State.Trait} : M unit :=
   let* _ :=
     let* _ :=
-      let* α0 :=
-        format_arguments::["new_v1"] (addr_of [ "1
-" ]) (addr_of [ ]) in
-      std.io.stdio._print α0 in
-    Pure tt in
+      let* α0 := borrow [ mk_str "1
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow [ ] (list core.fmt.rt.Argument) in
+      let* α5 := deref α4 (list core.fmt.rt.Argument) in
+      let* α6 := borrow α5 (list core.fmt.rt.Argument) in
+      let* α7 := pointer_coercion "Unsize" α6 in
+      let* α8 := core.fmt.Arguments::["new_v1"] α3 α7 in
+      std.io.stdio._print α8 in
+    M.alloc tt in
   let* _ :=
     let* _ :=
-      let* α0 := 1.["add"] 2 in
-      let* α1 := core.cmp.min α0 2 in
-      let* α2 := format_argument::["new_display"] (addr_of α1) in
-      let* α3 :=
-        format_arguments::["new_v1"] (addr_of [ ""; "
-" ]) (addr_of [ α2 ]) in
-      std.io.stdio._print α3 in
-    Pure tt in
+      let* α0 := borrow [ mk_str ""; mk_str "
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := M.alloc 1 in
+      let* α5 := M.alloc 2 in
+      let* α6 := add α4 α5 in
+      let* α7 := M.alloc 2 in
+      let* α8 := core.cmp.min α6 α7 in
+      let* α9 := borrow α8 i32 in
+      let* α10 := deref α9 i32 in
+      let* α11 := borrow α10 i32 in
+      let* α12 := core.fmt.rt.Argument::["new_display"] α11 in
+      let* α13 := borrow [ α12 ] (list core.fmt.rt.Argument) in
+      let* α14 := deref α13 (list core.fmt.rt.Argument) in
+      let* α15 := borrow α14 (list core.fmt.rt.Argument) in
+      let* α16 := pointer_coercion "Unsize" α15 in
+      let* α17 := core.fmt.Arguments::["new_v1"] α3 α16 in
+      std.io.stdio._print α17 in
+    M.alloc tt in
   let* _ :=
     let* _ :=
-      let* α0 := 2.["mul"] 3 in
-      let* α1 := core.cmp.min α0 4 in
-      let* α2 := core.cmp.min 5 α1 in
-      let* α3 := format_argument::["new_display"] (addr_of α2) in
-      let* α4 :=
-        format_arguments::["new_v1"] (addr_of [ ""; "
-" ]) (addr_of [ α3 ]) in
-      std.io.stdio._print α4 in
-    Pure tt in
-  Pure tt.
+      let* α0 := borrow [ mk_str ""; mk_str "
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := M.alloc 5 in
+      let* α5 := M.alloc 2 in
+      let* α6 := M.alloc 3 in
+      let* α7 := mul α5 α6 in
+      let* α8 := M.alloc 4 in
+      let* α9 := core.cmp.min α7 α8 in
+      let* α10 := core.cmp.min α4 α9 in
+      let* α11 := borrow α10 i32 in
+      let* α12 := deref α11 i32 in
+      let* α13 := borrow α12 i32 in
+      let* α14 := core.fmt.rt.Argument::["new_display"] α13 in
+      let* α15 := borrow [ α14 ] (list core.fmt.rt.Argument) in
+      let* α16 := deref α15 (list core.fmt.rt.Argument) in
+      let* α17 := borrow α16 (list core.fmt.rt.Argument) in
+      let* α18 := pointer_coercion "Unsize" α17 in
+      let* α19 := core.fmt.Arguments::["new_v1"] α3 α18 in
+      std.io.stdio._print α19 in
+    M.alloc tt in
+  M.alloc tt.

@@ -18,10 +18,14 @@ where
 }
 *)
 Module Borrow.
-  Class Trait (Self Borrowed : Set) : Set := { 
-    borrow : ref Self -> ref Borrowed;
+  Class Trait (Self Borrowed : Set) `{State.Trait} : Set := { 
+    borrow : ref Self -> M (ref Borrowed);
   }.
 End Borrow.
+
+Global Instance Borrow_Id `{State.Trait} (Self : Set) :
+  Borrow.Trait Self Self.
+Admitted.
 
 (* 
 pub trait BorrowMut<Borrowed>: Borrow<Borrowed>
@@ -33,12 +37,17 @@ where
 }
 *)
 Module BorrowMut.
-  Class Trait (Self Borrowed : Set) 
+  Class Trait (Self Borrowed : Set) `{State.Trait}
     `{Borrow.Trait Self Borrowed}
   : Set := { 
-    borrow_mut : mut_ref Self -> mut_ref Borrowed;
+    borrow_mut : mut_ref Self -> M (mut_ref Borrowed);
   }.
 End BorrowMut.
+
+Global Instance BorrowMut_Id `{State.Trait} (Self : Set) 
+    `{Borrow.Trait Self Self} :
+  BorrowMut.Trait Self Self.
+Admitted.
 
 (* 
 pub trait ToOwned {

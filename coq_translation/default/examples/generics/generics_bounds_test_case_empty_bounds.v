@@ -2,98 +2,157 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module Cardinal.
-  Inductive t : Set := Build.
+  Section Cardinal.
+    Context `{ℋ : State.Trait}.
+    
+    Inductive t : Set := Build.
+  End Cardinal.
 End Cardinal.
 Definition Cardinal := @Cardinal.t.
 
 Module BlueJay.
-  Inductive t : Set := Build.
+  Section BlueJay.
+    Context `{ℋ : State.Trait}.
+    
+    Inductive t : Set := Build.
+  End BlueJay.
 End BlueJay.
 Definition BlueJay := @BlueJay.t.
 
 Module Turkey.
-  Inductive t : Set := Build.
+  Section Turkey.
+    Context `{ℋ : State.Trait}.
+    
+    Inductive t : Set := Build.
+  End Turkey.
 End Turkey.
 Definition Turkey := @Turkey.t.
 
 Module Red.
-  Unset Primitive Projections.
-  Class Trait (Self : Set) : Type := {
-  }.
-  Global Set Primitive Projections.
+  Section Red.
+    Context `{ℋ : State.Trait}.
+    
+    Unset Primitive Projections.
+    Class Trait (Self : Set) : Type := {
+    }.
+    Global Set Primitive Projections.
+  End Red.
 End Red.
 
 Module Blue.
-  Unset Primitive Projections.
-  Class Trait (Self : Set) : Type := {
-  }.
-  Global Set Primitive Projections.
+  Section Blue.
+    Context `{ℋ : State.Trait}.
+    
+    Unset Primitive Projections.
+    Class Trait (Self : Set) : Type := {
+    }.
+    Global Set Primitive Projections.
+  End Blue.
 End Blue.
 
 Module
   Impl_generics_bounds_test_case_empty_bounds_Red_for_generics_bounds_test_case_empty_bounds_Cardinal.
-  Definition Self := generics_bounds_test_case_empty_bounds.Cardinal.
-  
-  Global Instance I : generics_bounds_test_case_empty_bounds.Red.Trait Self := {
-  }.
-  Global Hint Resolve I : core.
+  Section
+    Impl_generics_bounds_test_case_empty_bounds_Red_for_generics_bounds_test_case_empty_bounds_Cardinal.
+    Context `{ℋ : State.Trait}.
+    
+    Definition Self : Set := generics_bounds_test_case_empty_bounds.Cardinal.
+    
+    #[refine] Global Instance ℐ :
+      generics_bounds_test_case_empty_bounds.Red.Trait Self := {
+    }.
+    Admitted.
+  End
+    Impl_generics_bounds_test_case_empty_bounds_Red_for_generics_bounds_test_case_empty_bounds_Cardinal.
+  Global Hint Resolve ℐ : core.
 End
   Impl_generics_bounds_test_case_empty_bounds_Red_for_generics_bounds_test_case_empty_bounds_Cardinal.
 
 Module
   Impl_generics_bounds_test_case_empty_bounds_Blue_for_generics_bounds_test_case_empty_bounds_BlueJay.
-  Definition Self := generics_bounds_test_case_empty_bounds.BlueJay.
-  
-  Global Instance I
-    : generics_bounds_test_case_empty_bounds.Blue.Trait Self := {
-  }.
-  Global Hint Resolve I : core.
+  Section
+    Impl_generics_bounds_test_case_empty_bounds_Blue_for_generics_bounds_test_case_empty_bounds_BlueJay.
+    Context `{ℋ : State.Trait}.
+    
+    Definition Self : Set := generics_bounds_test_case_empty_bounds.BlueJay.
+    
+    #[refine] Global Instance ℐ :
+      generics_bounds_test_case_empty_bounds.Blue.Trait Self := {
+    }.
+    Admitted.
+  End
+    Impl_generics_bounds_test_case_empty_bounds_Blue_for_generics_bounds_test_case_empty_bounds_BlueJay.
+  Global Hint Resolve ℐ : core.
 End
   Impl_generics_bounds_test_case_empty_bounds_Blue_for_generics_bounds_test_case_empty_bounds_BlueJay.
 
 Definition red
-    `{H' : State.Trait}
+    `{ℋ : State.Trait}
     {T : Set}
-    `{generics_bounds_test_case_empty_bounds.Red.Trait T}
+    {ℋ_0 : generics_bounds_test_case_empty_bounds.Red.Trait T}
     (arg : ref T)
-    : M (H := H') (ref str) :=
-  Pure "red".
+    : M (ref str) :=
+  Pure (mk_str "red").
 
 Definition blue
-    `{H' : State.Trait}
+    `{ℋ : State.Trait}
     {T : Set}
-    `{generics_bounds_test_case_empty_bounds.Blue.Trait T}
+    {ℋ_0 : generics_bounds_test_case_empty_bounds.Blue.Trait T}
     (arg : ref T)
-    : M (H := H') (ref str) :=
-  Pure "blue".
+    : M (ref str) :=
+  Pure (mk_str "blue").
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
-  let cardinal := generics_bounds_test_case_empty_bounds.Cardinal.Build in
-  let blue_jay := generics_bounds_test_case_empty_bounds.BlueJay.Build in
-  let _turkey := generics_bounds_test_case_empty_bounds.Turkey.Build in
+Definition main `{ℋ : State.Trait} : M unit :=
+  let cardinal := generics_bounds_test_case_empty_bounds.Cardinal.Build_t tt in
+  let blue_jay := generics_bounds_test_case_empty_bounds.BlueJay.Build_t tt in
+  let _turkey := generics_bounds_test_case_empty_bounds.Turkey.Build_t tt in
   let* _ :=
     let* _ :=
       let* α0 :=
-        generics_bounds_test_case_empty_bounds.red (addr_of cardinal) in
-      let* α1 := format_argument::["new_display"] (addr_of α0) in
-      let* α2 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "A cardinal is "; "
-" ])
-          (addr_of [ α1 ]) in
-      std.io.stdio._print α2 in
-    Pure tt in
+        borrow [ mk_str "A cardinal is "; mk_str "
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 :=
+        borrow cardinal generics_bounds_test_case_empty_bounds.Cardinal in
+      let* α5 := deref α4 generics_bounds_test_case_empty_bounds.Cardinal in
+      let* α6 := borrow α5 generics_bounds_test_case_empty_bounds.Cardinal in
+      let* α7 := generics_bounds_test_case_empty_bounds.red α6 in
+      let* α8 := borrow α7 (ref str) in
+      let* α9 := deref α8 (ref str) in
+      let* α10 := borrow α9 (ref str) in
+      let* α11 := core.fmt.rt.Argument::["new_display"] α10 in
+      let* α12 := borrow [ α11 ] (list core.fmt.rt.Argument) in
+      let* α13 := deref α12 (list core.fmt.rt.Argument) in
+      let* α14 := borrow α13 (list core.fmt.rt.Argument) in
+      let* α15 := pointer_coercion "Unsize" α14 in
+      let* α16 := core.fmt.Arguments::["new_v1"] α3 α15 in
+      std.io.stdio._print α16 in
+    M.alloc tt in
   let* _ :=
     let* _ :=
       let* α0 :=
-        generics_bounds_test_case_empty_bounds.blue (addr_of blue_jay) in
-      let* α1 := format_argument::["new_display"] (addr_of α0) in
-      let* α2 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "A blue jay is "; "
-" ])
-          (addr_of [ α1 ]) in
-      std.io.stdio._print α2 in
-    Pure tt in
-  Pure tt.
+        borrow [ mk_str "A blue jay is "; mk_str "
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 :=
+        borrow blue_jay generics_bounds_test_case_empty_bounds.BlueJay in
+      let* α5 := deref α4 generics_bounds_test_case_empty_bounds.BlueJay in
+      let* α6 := borrow α5 generics_bounds_test_case_empty_bounds.BlueJay in
+      let* α7 := generics_bounds_test_case_empty_bounds.blue α6 in
+      let* α8 := borrow α7 (ref str) in
+      let* α9 := deref α8 (ref str) in
+      let* α10 := borrow α9 (ref str) in
+      let* α11 := core.fmt.rt.Argument::["new_display"] α10 in
+      let* α12 := borrow [ α11 ] (list core.fmt.rt.Argument) in
+      let* α13 := deref α12 (list core.fmt.rt.Argument) in
+      let* α14 := borrow α13 (list core.fmt.rt.Argument) in
+      let* α15 := pointer_coercion "Unsize" α14 in
+      let* α16 := core.fmt.Arguments::["new_v1"] α3 α15 in
+      std.io.stdio._print α16 in
+    M.alloc tt in
+  M.alloc tt.

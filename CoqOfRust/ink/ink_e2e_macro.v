@@ -6,221 +6,287 @@ Require CoqOfRust.ink.syn.
 
 Module config.
   Module E2EConfig.
-    Unset Primitive Projections.
-    Record t : Set := {
-      whitelisted_attributes : ink_ir.ir.utils.WhitelistedAttributes;
-      additional_contracts
-        :
-        alloc.vec.Vec alloc.string.String alloc.vec.Vec.Default.A;
-      environment : core.option.Option syn.path.Path;
-    }.
-    Global Set Primitive Projections.
-    
-    Global Instance Get_whitelisted_attributes
-      : Notation.Dot "whitelisted_attributes" := {
-      Notation.dot '(Build_t x0 _ _) := x0;
-    }.
-    Global Instance Get_AF_whitelisted_attributes
-      : Notation.DoubleColon t "whitelisted_attributes" := {
-      Notation.double_colon '(Build_t x0 _ _) := x0;
-    }.
-    Global Instance Get_additional_contracts
-      : Notation.Dot "additional_contracts" := {
-      Notation.dot '(Build_t _ x1 _) := x1;
-    }.
-    Global Instance Get_AF_additional_contracts
-      : Notation.DoubleColon t "additional_contracts" := {
-      Notation.double_colon '(Build_t _ x1 _) := x1;
-    }.
-    Global Instance Get_environment : Notation.Dot "environment" := {
-      Notation.dot '(Build_t _ _ x2) := x2;
-    }.
-    Global Instance Get_AF_environment
-      : Notation.DoubleColon t "environment" := {
-      Notation.double_colon '(Build_t _ _ x2) := x2;
-    }.
+    Section E2EConfig.
+      Context `{ℋ : State.Trait}.
+      
+      Unset Primitive Projections.
+      Record t : Set := {
+        whitelisted_attributes : ink_ir.ir.utils.WhitelistedAttributes;
+        additional_contracts :
+          alloc.vec.Vec alloc.string.String alloc.vec.Vec.Default.A;
+        environment : core.option.Option syn.path.Path;
+      }.
+      Global Set Primitive Projections.
+      
+      #[refine] Global Instance Get_whitelisted_attributes :
+        Notation.Dot "whitelisted_attributes" := {
+        Notation.dot x :=
+          let* x := M.read x in Pure x.(whitelisted_attributes) : M _;
+      }.
+      Admitted.
+      #[refine] Global Instance Get_AF_whitelisted_attributes :
+        Notation.DoubleColon t "whitelisted_attributes" := {
+        Notation.double_colon x :=
+          let* x := M.read x in Pure x.(whitelisted_attributes) : M _;
+      }.
+      Admitted.
+      #[refine] Global Instance Get_additional_contracts :
+        Notation.Dot "additional_contracts" := {
+        Notation.dot x :=
+          let* x := M.read x in Pure x.(additional_contracts) : M _;
+      }.
+      Admitted.
+      #[refine] Global Instance Get_AF_additional_contracts :
+        Notation.DoubleColon t "additional_contracts" := {
+        Notation.double_colon x :=
+          let* x := M.read x in Pure x.(additional_contracts) : M _;
+      }.
+      Admitted.
+      #[refine] Global Instance Get_environment :
+        Notation.Dot "environment" := {
+        Notation.dot x := let* x := M.read x in Pure x.(environment) : M _;
+      }.
+      Admitted.
+      #[refine] Global Instance Get_AF_environment :
+        Notation.DoubleColon t "environment" := {
+        Notation.double_colon x :=
+          let* x := M.read x in Pure x.(environment) : M _;
+      }.
+      Admitted.
+    End E2EConfig.
   End E2EConfig.
-  Definition E2EConfig : Set := E2EConfig.t.
+  Definition E2EConfig `{ℋ : State.Trait} : Set := M.val E2EConfig.t.
   
   Module Impl_core_fmt_Debug_for_ink_e2e_macro_config_E2EConfig.
-    Definition Self := ink_e2e_macro.config.E2EConfig.
-    
-    Parameter fmt :
-        forall `{H' : State.Trait},
-        (ref Self) ->
-          (mut_ref core.fmt.Formatter) ->
-          M (H := H') core.fmt.Result.
-    
-    Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
-      Notation.dot := fmt;
-    }.
-    
-    Global Instance I : core.fmt.Debug.Trait Self := {
-      core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
-    }.
-    Global Hint Resolve I : core.
+    Section Impl_core_fmt_Debug_for_ink_e2e_macro_config_E2EConfig.
+      Context `{ℋ : State.Trait}.
+      
+      Definition Self : Set := ink_e2e_macro.config.E2EConfig.
+      
+      Parameter fmt :
+          (ref Self) ->
+            (mut_ref core.fmt.Formatter) ->
+            M ltac:(core.fmt.Result).
+      
+      Global Instance AssociatedFunction_fmt :
+        Notation.DoubleColon Self "fmt" := {
+        Notation.double_colon := fmt;
+      }.
+      
+      #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
+        core.fmt.Debug.fmt := fmt;
+      }.
+      Admitted.
+    End Impl_core_fmt_Debug_for_ink_e2e_macro_config_E2EConfig.
+    Global Hint Resolve ℐ : core.
   End Impl_core_fmt_Debug_for_ink_e2e_macro_config_E2EConfig.
   
   Module Impl_core_default_Default_for_ink_e2e_macro_config_E2EConfig.
-    Definition Self := ink_e2e_macro.config.E2EConfig.
-    
-    Parameter default :
-        forall `{H' : State.Trait},
-        M (H := H') ink_e2e_macro.config.E2EConfig.
-    
-    Global Instance AssociatedFunction_default `{H' : State.Trait} :
-      Notation.DoubleColon Self "default" := {
-      Notation.double_colon := default;
-    }.
-    
-    Global Instance I : core.default.Default.Trait Self := {
-      core.default.Default.default `{H' : State.Trait} := default;
-    }.
-    Global Hint Resolve I : core.
+    Section Impl_core_default_Default_for_ink_e2e_macro_config_E2EConfig.
+      Context `{ℋ : State.Trait}.
+      
+      Definition Self : Set := ink_e2e_macro.config.E2EConfig.
+      
+      Parameter default : M ink_e2e_macro.config.E2EConfig.
+      
+      Global Instance AssociatedFunction_default :
+        Notation.DoubleColon Self "default" := {
+        Notation.double_colon := default;
+      }.
+      
+      #[refine] Global Instance ℐ : core.default.Default.Trait Self := {
+        core.default.Default.default := default;
+      }.
+      Admitted.
+    End Impl_core_default_Default_for_ink_e2e_macro_config_E2EConfig.
+    Global Hint Resolve ℐ : core.
   End Impl_core_default_Default_for_ink_e2e_macro_config_E2EConfig.
   
   Module
     Impl_core_marker_StructuralPartialEq_for_ink_e2e_macro_config_E2EConfig.
-    Definition Self := ink_e2e_macro.config.E2EConfig.
-    
-    Global Instance I : core.marker.StructuralPartialEq.Trait Self := {
-    }.
-    Global Hint Resolve I : core.
+    Section
+      Impl_core_marker_StructuralPartialEq_for_ink_e2e_macro_config_E2EConfig.
+      Context `{ℋ : State.Trait}.
+      
+      Definition Self : Set := ink_e2e_macro.config.E2EConfig.
+      
+      #[refine] Global Instance ℐ :
+        core.marker.StructuralPartialEq.Trait Self := {
+      }.
+      Admitted.
+    End Impl_core_marker_StructuralPartialEq_for_ink_e2e_macro_config_E2EConfig.
+    Global Hint Resolve ℐ : core.
   End Impl_core_marker_StructuralPartialEq_for_ink_e2e_macro_config_E2EConfig.
   
   Module Impl_core_cmp_PartialEq_for_ink_e2e_macro_config_E2EConfig.
-    Definition Self := ink_e2e_macro.config.E2EConfig.
-    
-    Parameter eq :
-        forall `{H' : State.Trait},
-        (ref Self) -> (ref ink_e2e_macro.config.E2EConfig) -> M (H := H') bool.
-    
-    Global Instance Method_eq `{H' : State.Trait} : Notation.Dot "eq" := {
-      Notation.dot := eq;
-    }.
-    
-    Global Instance I
-      : core.cmp.PartialEq.Trait Self
-          (Rhs := core.cmp.PartialEq.Default.Rhs Self)
-        := {
-      core.cmp.PartialEq.eq `{H' : State.Trait} := eq;
-    }.
-    Global Hint Resolve I : core.
+    Section Impl_core_cmp_PartialEq_for_ink_e2e_macro_config_E2EConfig.
+      Context `{ℋ : State.Trait}.
+      
+      Definition Self : Set := ink_e2e_macro.config.E2EConfig.
+      
+      Parameter eq :
+          (ref Self) -> (ref ink_e2e_macro.config.E2EConfig) -> M bool.
+      
+      Global Instance AssociatedFunction_eq :
+        Notation.DoubleColon Self "eq" := {
+        Notation.double_colon := eq;
+      }.
+      
+      #[refine] Global Instance ℐ :
+        core.cmp.PartialEq.Trait Self
+          (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
+        core.cmp.PartialEq.eq := eq;
+      }.
+      Admitted.
+    End Impl_core_cmp_PartialEq_for_ink_e2e_macro_config_E2EConfig.
+    Global Hint Resolve ℐ : core.
   End Impl_core_cmp_PartialEq_for_ink_e2e_macro_config_E2EConfig.
   
   Module Impl_core_marker_StructuralEq_for_ink_e2e_macro_config_E2EConfig.
-    Definition Self := ink_e2e_macro.config.E2EConfig.
-    
-    Global Instance I : core.marker.StructuralEq.Trait Self := {
-    }.
-    Global Hint Resolve I : core.
+    Section Impl_core_marker_StructuralEq_for_ink_e2e_macro_config_E2EConfig.
+      Context `{ℋ : State.Trait}.
+      
+      Definition Self : Set := ink_e2e_macro.config.E2EConfig.
+      
+      #[refine] Global Instance ℐ : core.marker.StructuralEq.Trait Self := {
+      }.
+      Admitted.
+    End Impl_core_marker_StructuralEq_for_ink_e2e_macro_config_E2EConfig.
+    Global Hint Resolve ℐ : core.
   End Impl_core_marker_StructuralEq_for_ink_e2e_macro_config_E2EConfig.
   
   Module Impl_core_cmp_Eq_for_ink_e2e_macro_config_E2EConfig.
-    Definition Self := ink_e2e_macro.config.E2EConfig.
-    
-    Parameter assert_receiver_is_total_eq :
-        forall `{H' : State.Trait},
-        (ref Self) -> M (H := H') unit.
-    
-    Global Instance Method_assert_receiver_is_total_eq `{H' : State.Trait} :
-      Notation.Dot "assert_receiver_is_total_eq" := {
-      Notation.dot := assert_receiver_is_total_eq;
-    }.
-    
-    Global Instance I : core.cmp.Eq.Trait Self := {
-    }.
-    Global Hint Resolve I : core.
+    Section Impl_core_cmp_Eq_for_ink_e2e_macro_config_E2EConfig.
+      Context `{ℋ : State.Trait}.
+      
+      Definition Self : Set := ink_e2e_macro.config.E2EConfig.
+      
+      Parameter assert_receiver_is_total_eq : (ref Self) -> M unit.
+      
+      Global Instance AssociatedFunction_assert_receiver_is_total_eq :
+        Notation.DoubleColon Self "assert_receiver_is_total_eq" := {
+        Notation.double_colon := assert_receiver_is_total_eq;
+      }.
+      
+      #[refine] Global Instance ℐ : core.cmp.Eq.Trait Self := {
+      }.
+      Admitted.
+    End Impl_core_cmp_Eq_for_ink_e2e_macro_config_E2EConfig.
+    Global Hint Resolve ℐ : core.
   End Impl_core_cmp_Eq_for_ink_e2e_macro_config_E2EConfig.
   
   Module Impl_core_convert_TryFrom_for_ink_e2e_macro_config_E2EConfig.
-    Definition Self := ink_e2e_macro.config.E2EConfig.
-    
-    Definition Error : Set := syn.error.Error.
-    
-    Parameter try_from :
-        forall `{H' : State.Trait},
-        ink_ir.ast.attr_args.AttributeArgs ->
-          M (H := H') (core.result.Result Self Error).
-    
-    Global Instance AssociatedFunction_try_from `{H' : State.Trait} :
-      Notation.DoubleColon Self "try_from" := {
-      Notation.double_colon := try_from;
-    }.
-    
-    Global Instance I
-      : core.convert.TryFrom.Trait Self
-          (T := ink_ir.ast.attr_args.AttributeArgs)
-        := {
-      core.convert.TryFrom.Error := Error;
-      core.convert.TryFrom.try_from `{H' : State.Trait} := try_from;
-    }.
-    Global Hint Resolve I : core.
+    Section Impl_core_convert_TryFrom_for_ink_e2e_macro_config_E2EConfig.
+      Context `{ℋ : State.Trait}.
+      
+      Definition Self : Set := ink_e2e_macro.config.E2EConfig.
+      
+      Definition Error : Set := syn.error.Error.
+      
+      Parameter try_from :
+          ink_ir.ast.attr_args.AttributeArgs ->
+            M (core.result.Result Self Error).
+      
+      Global Instance AssociatedFunction_try_from :
+        Notation.DoubleColon Self "try_from" := {
+        Notation.double_colon := try_from;
+      }.
+      
+      #[refine] Global Instance ℐ :
+        core.convert.TryFrom.Trait Self
+          (T := ink_ir.ast.attr_args.AttributeArgs) := {
+        core.convert.TryFrom.Error := Error;
+        core.convert.TryFrom.try_from := try_from;
+      }.
+      Admitted.
+    End Impl_core_convert_TryFrom_for_ink_e2e_macro_config_E2EConfig.
+    Global Hint Resolve ℐ : core.
   End Impl_core_convert_TryFrom_for_ink_e2e_macro_config_E2EConfig.
 End config.
 
 Module ir.
   Module E2EFn.
-    Unset Primitive Projections.
-    Record t : Set := {
-      item_fn : syn.item.ItemFn;
-    }.
-    Global Set Primitive Projections.
-    
-    Global Instance Get_item_fn : Notation.Dot "item_fn" := {
-      Notation.dot '(Build_t x0) := x0;
-    }.
-    Global Instance Get_AF_item_fn : Notation.DoubleColon t "item_fn" := {
-      Notation.double_colon '(Build_t x0) := x0;
-    }.
+    Section E2EFn.
+      Context `{ℋ : State.Trait}.
+      
+      Unset Primitive Projections.
+      Record t : Set := {
+        item_fn : syn.item.ItemFn;
+      }.
+      Global Set Primitive Projections.
+      
+      #[refine] Global Instance Get_item_fn : Notation.Dot "item_fn" := {
+        Notation.dot x := let* x := M.read x in Pure x.(item_fn) : M _;
+      }.
+      Admitted.
+      #[refine] Global Instance Get_AF_item_fn :
+        Notation.DoubleColon t "item_fn" := {
+        Notation.double_colon x := let* x := M.read x in Pure x.(item_fn) : M _;
+      }.
+      Admitted.
+    End E2EFn.
   End E2EFn.
-  Definition E2EFn : Set := E2EFn.t.
+  Definition E2EFn `{ℋ : State.Trait} : Set := M.val E2EFn.t.
   
   Module InkE2ETest.
-    Unset Primitive Projections.
-    Record t : Set := {
-      item_fn : ink_e2e_macro.ir.E2EFn;
-      config : ink_e2e_macro.config.E2EConfig;
-    }.
-    Global Set Primitive Projections.
-    
-    Global Instance Get_item_fn : Notation.Dot "item_fn" := {
-      Notation.dot '(Build_t x0 _) := x0;
-    }.
-    Global Instance Get_AF_item_fn : Notation.DoubleColon t "item_fn" := {
-      Notation.double_colon '(Build_t x0 _) := x0;
-    }.
-    Global Instance Get_config : Notation.Dot "config" := {
-      Notation.dot '(Build_t _ x1) := x1;
-    }.
-    Global Instance Get_AF_config : Notation.DoubleColon t "config" := {
-      Notation.double_colon '(Build_t _ x1) := x1;
-    }.
+    Section InkE2ETest.
+      Context `{ℋ : State.Trait}.
+      
+      Unset Primitive Projections.
+      Record t : Set := {
+        item_fn : ink_e2e_macro.ir.E2EFn;
+        config : ink_e2e_macro.config.E2EConfig;
+      }.
+      Global Set Primitive Projections.
+      
+      #[refine] Global Instance Get_item_fn : Notation.Dot "item_fn" := {
+        Notation.dot x := let* x := M.read x in Pure x.(item_fn) : M _;
+      }.
+      Admitted.
+      #[refine] Global Instance Get_AF_item_fn :
+        Notation.DoubleColon t "item_fn" := {
+        Notation.double_colon x := let* x := M.read x in Pure x.(item_fn) : M _;
+      }.
+      Admitted.
+      #[refine] Global Instance Get_config : Notation.Dot "config" := {
+        Notation.dot x := let* x := M.read x in Pure x.(config) : M _;
+      }.
+      Admitted.
+      #[refine] Global Instance Get_AF_config :
+        Notation.DoubleColon t "config" := {
+        Notation.double_colon x := let* x := M.read x in Pure x.(config) : M _;
+      }.
+      Admitted.
+    End InkE2ETest.
   End InkE2ETest.
-  Definition InkE2ETest : Set := InkE2ETest.t.
+  Definition InkE2ETest `{ℋ : State.Trait} : Set := M.val InkE2ETest.t.
   
   Module Impl_core_convert_From_for_ink_e2e_macro_ir_E2EFn.
-    Definition Self := ink_e2e_macro.ir.E2EFn.
-    
-    Parameter from :
-        forall `{H' : State.Trait},
-        syn.item.ItemFn -> M (H := H') ink_e2e_macro.ir.E2EFn.
-    
-    Global Instance AssociatedFunction_from `{H' : State.Trait} :
-      Notation.DoubleColon Self "from" := {
-      Notation.double_colon := from;
-    }.
-    
-    Global Instance I : core.convert.From.Trait Self (T := syn.item.ItemFn) := {
-      core.convert.From.from `{H' : State.Trait} := from;
-    }.
-    Global Hint Resolve I : core.
+    Section Impl_core_convert_From_for_ink_e2e_macro_ir_E2EFn.
+      Context `{ℋ : State.Trait}.
+      
+      Definition Self : Set := ink_e2e_macro.ir.E2EFn.
+      
+      Parameter from : syn.item.ItemFn -> M ink_e2e_macro.ir.E2EFn.
+      
+      Global Instance AssociatedFunction_from :
+        Notation.DoubleColon Self "from" := {
+        Notation.double_colon := from;
+      }.
+      
+      #[refine] Global Instance ℐ :
+        core.convert.From.Trait Self (T := syn.item.ItemFn) := {
+        core.convert.From.from := from;
+      }.
+      Admitted.
+    End Impl_core_convert_From_for_ink_e2e_macro_ir_E2EFn.
+    Global Hint Resolve ℐ : core.
   End Impl_core_convert_From_for_ink_e2e_macro_ir_E2EFn.
 End ir.
 
 Module codegen.
   Parameter ALREADY_BUILT_CONTRACTS :
-      forall `{H' : State.Trait},
+      forall `{ℋ : State.Trait},
       std.thread.local.LocalKey
         (core.cell.RefCell
           (std.collections.hash.map.HashMap
@@ -229,80 +295,94 @@ Module codegen.
             std.collections.hash.map.HashMap.Default.S)).
   
   Parameter already_built_contracts :
-      forall `{H' : State.Trait},
-      M (H := H')
+      forall `{ℋ : State.Trait},
+      M
           (std.collections.hash.map.HashMap
             alloc.string.String
             alloc.string.String
             std.collections.hash.map.HashMap.Default.S).
   
   Parameter set_already_built_contracts :
-      forall `{H' : State.Trait},
+      forall `{ℋ : State.Trait},
       (std.collections.hash.map.HashMap
           alloc.string.String
           alloc.string.String
           std.collections.hash.map.HashMap.Default.S)
         ->
-        M (H := H') unit.
+        M unit.
   
   Module InkE2ETest.
-    Unset Primitive Projections.
-    Record t : Set := {
-      test : ink_e2e_macro.ir.InkE2ETest;
-    }.
-    Global Set Primitive Projections.
-    
-    Global Instance Get_test : Notation.Dot "test" := {
-      Notation.dot '(Build_t x0) := x0;
-    }.
-    Global Instance Get_AF_test : Notation.DoubleColon t "test" := {
-      Notation.double_colon '(Build_t x0) := x0;
-    }.
+    Section InkE2ETest.
+      Context `{ℋ : State.Trait}.
+      
+      Unset Primitive Projections.
+      Record t : Set := {
+        test : ink_e2e_macro.ir.InkE2ETest;
+      }.
+      Global Set Primitive Projections.
+      
+      #[refine] Global Instance Get_test : Notation.Dot "test" := {
+        Notation.dot x := let* x := M.read x in Pure x.(test) : M _;
+      }.
+      Admitted.
+      #[refine] Global Instance Get_AF_test : Notation.DoubleColon t "test" := {
+        Notation.double_colon x := let* x := M.read x in Pure x.(test) : M _;
+      }.
+      Admitted.
+    End InkE2ETest.
   End InkE2ETest.
-  Definition InkE2ETest : Set := InkE2ETest.t.
+  Definition InkE2ETest `{ℋ : State.Trait} : Set := M.val InkE2ETest.t.
   
   Module Impl_core_convert_From_for_ink_e2e_macro_codegen_InkE2ETest.
-    Definition Self := ink_e2e_macro.codegen.InkE2ETest.
-    
-    Parameter from :
-        forall `{H' : State.Trait},
-        ink_e2e_macro.ir.InkE2ETest ->
-          M (H := H') ink_e2e_macro.codegen.InkE2ETest.
-    
-    Global Instance AssociatedFunction_from `{H' : State.Trait} :
-      Notation.DoubleColon Self "from" := {
-      Notation.double_colon := from;
-    }.
-    
-    Global Instance I
-      : core.convert.From.Trait Self (T := ink_e2e_macro.ir.InkE2ETest) := {
-      core.convert.From.from `{H' : State.Trait} := from;
-    }.
-    Global Hint Resolve I : core.
+    Section Impl_core_convert_From_for_ink_e2e_macro_codegen_InkE2ETest.
+      Context `{ℋ : State.Trait}.
+      
+      Definition Self : Set := ink_e2e_macro.codegen.InkE2ETest.
+      
+      Parameter from :
+          ink_e2e_macro.ir.InkE2ETest -> M ink_e2e_macro.codegen.InkE2ETest.
+      
+      Global Instance AssociatedFunction_from :
+        Notation.DoubleColon Self "from" := {
+        Notation.double_colon := from;
+      }.
+      
+      #[refine] Global Instance ℐ :
+        core.convert.From.Trait Self (T := ink_e2e_macro.ir.InkE2ETest) := {
+        core.convert.From.from := from;
+      }.
+      Admitted.
+    End Impl_core_convert_From_for_ink_e2e_macro_codegen_InkE2ETest.
+    Global Hint Resolve ℐ : core.
   End Impl_core_convert_From_for_ink_e2e_macro_codegen_InkE2ETest.
   
   (* Module Impl_core_fmt_Debug_for_ink_e2e_macro_codegen_ContractManifests.
-    Definition Self := ink_e2e_macro.codegen.ContractManifests.
-    
-    Parameter fmt :
-        forall `{H' : State.Trait},
-        (ref Self) ->
-          (mut_ref core.fmt.Formatter) ->
-          M (H := H') core.fmt.Result.
-    
-    Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
-      Notation.dot := fmt;
-    }.
-    
-    Global Instance I : core.fmt.Debug.Trait Self := {
-      core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
-    }.
-    Global Hint Resolve I : core.
+    (* Section Impl_core_fmt_Debug_for_ink_e2e_macro_codegen_ContractManifests.
+      Context `{ℋ : State.Trait}.
+      
+      Definition Self : Set := ink_e2e_macro.codegen.ContractManifests.
+      
+      Parameter fmt :
+          (ref Self) ->
+            (mut_ref core.fmt.Formatter) ->
+            M ltac:(core.fmt.Result).
+      
+      Global Instance AssociatedFunction_fmt :
+        Notation.DoubleColon Self "fmt" := {
+        Notation.double_colon := fmt;
+      }.
+      
+      #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
+        core.fmt.Debug.fmt := fmt;
+      }.
+      Admitted.
+    End Impl_core_fmt_Debug_for_ink_e2e_macro_codegen_ContractManifests. *)
+    Global Hint Resolve ℐ : core.
   End Impl_core_fmt_Debug_for_ink_e2e_macro_codegen_ContractManifests. *)
 End codegen.
 
 Parameter ALREADY_BUILT_CONTRACTS :
-    forall `{H' : State.Trait},
+    forall `{ℋ : State.Trait},
     std.thread.local.LocalKey
       (core.cell.RefCell
         (std.collections.hash.map.HashMap
@@ -311,281 +391,360 @@ Parameter ALREADY_BUILT_CONTRACTS :
           std.collections.hash.map.HashMap.Default.S)).
 
 Parameter already_built_contracts :
-    forall `{H' : State.Trait},
-    M (H := H')
+    forall `{ℋ : State.Trait},
+    M
         (std.collections.hash.map.HashMap
           alloc.string.String
           alloc.string.String
           std.collections.hash.map.HashMap.Default.S).
 
 Parameter set_already_built_contracts :
-    forall `{H' : State.Trait},
+    forall `{ℋ : State.Trait},
     (std.collections.hash.map.HashMap
         alloc.string.String
         alloc.string.String
         std.collections.hash.map.HashMap.Default.S)
       ->
-      M (H := H') unit.
+      M unit.
 
 (* Module InkE2ETest.
-  Unset Primitive Projections.
-  Record t : Set := {
-    test : ink_e2e_macro.ir.InkE2ETest;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_test : Notation.Dot "test" := {
-    Notation.dot '(Build_t x0) := x0;
-  }.
-  Global Instance Get_AF_test : Notation.DoubleColon t "test" := {
-    Notation.double_colon '(Build_t x0) := x0;
-  }.
+  Section InkE2ETest.
+    Context `{ℋ : State.Trait}.
+    
+    Unset Primitive Projections.
+    Record t : Set := {
+      test : ink_e2e_macro.ir.InkE2ETest;
+    }.
+    Global Set Primitive Projections.
+    
+    #[refine] Global Instance Get_test : Notation.Dot "test" := {
+      Notation.dot x := let* x := M.read x in Pure x.(test) : M _;
+    }.
+    Admitted.
+    #[refine] Global Instance Get_AF_test : Notation.DoubleColon t "test" := {
+      Notation.double_colon x := let* x := M.read x in Pure x.(test) : M _;
+    }.
+    Admitted.
+  End InkE2ETest.
 End InkE2ETest.
-Definition InkE2ETest : Set := InkE2ETest.t. *)
+Definition InkE2ETest `{ℋ : State.Trait} : Set := M.val InkE2ETest.t. *)
 
 Module Impl_core_convert_From_for_ink_e2e_macro_codegen_InkE2ETest.
-  Definition Self := ink_e2e_macro.codegen.InkE2ETest.
-  
-  Parameter from :
-      forall `{H' : State.Trait},
-      ink_e2e_macro.ir.InkE2ETest ->
-        M (H := H') ink_e2e_macro.codegen.InkE2ETest.
-  
-  Global Instance AssociatedFunction_from `{H' : State.Trait} :
-    Notation.DoubleColon Self "from" := {
-    Notation.double_colon := from;
-  }.
-  
-  Global Instance I
-    : core.convert.From.Trait Self (T := ink_e2e_macro.ir.InkE2ETest) := {
-    core.convert.From.from `{H' : State.Trait} := from;
-  }.
-  Global Hint Resolve I : core.
+  Section Impl_core_convert_From_for_ink_e2e_macro_codegen_InkE2ETest.
+    Context `{ℋ : State.Trait}.
+    
+    Definition Self : Set := ink_e2e_macro.codegen.InkE2ETest.
+    
+    Parameter from :
+        ink_e2e_macro.ir.InkE2ETest -> M ink_e2e_macro.codegen.InkE2ETest.
+    
+    Global Instance AssociatedFunction_from :
+      Notation.DoubleColon Self "from" := {
+      Notation.double_colon := from;
+    }.
+    
+    #[refine] Global Instance ℐ :
+      core.convert.From.Trait Self (T := ink_e2e_macro.ir.InkE2ETest) := {
+      core.convert.From.from := from;
+    }.
+    Admitted.
+  End Impl_core_convert_From_for_ink_e2e_macro_codegen_InkE2ETest.
+  Global Hint Resolve ℐ : core.
 End Impl_core_convert_From_for_ink_e2e_macro_codegen_InkE2ETest.
 
 (* Module Impl_core_fmt_Debug_for_ink_e2e_macro_codegen_ContractManifests.
-  Definition Self := ink_e2e_macro.codegen.ContractManifests.
-  
-  Parameter fmt :
-      forall `{H' : State.Trait},
-      (ref Self) -> (mut_ref core.fmt.Formatter) -> M (H := H') core.fmt.Result.
-  
-  Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
-    Notation.dot := fmt;
-  }.
-  
-  Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
-  }.
-  Global Hint Resolve I : core.
+  (* Section Impl_core_fmt_Debug_for_ink_e2e_macro_codegen_ContractManifests.
+    Context `{ℋ : State.Trait}.
+    
+    Definition Self : Set := ink_e2e_macro.codegen.ContractManifests.
+    
+    Parameter fmt :
+        (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
+    
+    Global Instance AssociatedFunction_fmt :
+      Notation.DoubleColon Self "fmt" := {
+      Notation.double_colon := fmt;
+    }.
+    
+    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
+      core.fmt.Debug.fmt := fmt;
+    }.
+    Admitted.
+  End Impl_core_fmt_Debug_for_ink_e2e_macro_codegen_ContractManifests. *)
+  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_ink_e2e_macro_codegen_ContractManifests. *)
 
 Module E2EConfig.
-  Unset Primitive Projections.
-  Record t : Set := {
-    whitelisted_attributes : ink_ir.ir.utils.WhitelistedAttributes;
-    additional_contracts
-      :
-      alloc.vec.Vec alloc.string.String alloc.vec.Vec.Default.A;
-    environment : core.option.Option syn.path.Path;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_whitelisted_attributes
-    : Notation.Dot "whitelisted_attributes" := {
-    Notation.dot '(Build_t x0 _ _) := x0;
-  }.
-  Global Instance Get_AF_whitelisted_attributes
-    : Notation.DoubleColon t "whitelisted_attributes" := {
-    Notation.double_colon '(Build_t x0 _ _) := x0;
-  }.
-  Global Instance Get_additional_contracts
-    : Notation.Dot "additional_contracts" := {
-    Notation.dot '(Build_t _ x1 _) := x1;
-  }.
-  Global Instance Get_AF_additional_contracts
-    : Notation.DoubleColon t "additional_contracts" := {
-    Notation.double_colon '(Build_t _ x1 _) := x1;
-  }.
-  Global Instance Get_environment : Notation.Dot "environment" := {
-    Notation.dot '(Build_t _ _ x2) := x2;
-  }.
-  Global Instance Get_AF_environment : Notation.DoubleColon t "environment" := {
-    Notation.double_colon '(Build_t _ _ x2) := x2;
-  }.
+  Section E2EConfig.
+    Context `{ℋ : State.Trait}.
+    
+    Unset Primitive Projections.
+    Record t : Set := {
+      whitelisted_attributes : ink_ir.ir.utils.WhitelistedAttributes;
+      additional_contracts :
+        alloc.vec.Vec alloc.string.String alloc.vec.Vec.Default.A;
+      environment : core.option.Option syn.path.Path;
+    }.
+    Global Set Primitive Projections.
+    
+    #[refine] Global Instance Get_whitelisted_attributes :
+      Notation.Dot "whitelisted_attributes" := {
+      Notation.dot x :=
+        let* x := M.read x in Pure x.(whitelisted_attributes) : M _;
+    }.
+    Admitted.
+    #[refine] Global Instance Get_AF_whitelisted_attributes :
+      Notation.DoubleColon t "whitelisted_attributes" := {
+      Notation.double_colon x :=
+        let* x := M.read x in Pure x.(whitelisted_attributes) : M _;
+    }.
+    Admitted.
+    #[refine] Global Instance Get_additional_contracts :
+      Notation.Dot "additional_contracts" := {
+      Notation.dot x :=
+        let* x := M.read x in Pure x.(additional_contracts) : M _;
+    }.
+    Admitted.
+    #[refine] Global Instance Get_AF_additional_contracts :
+      Notation.DoubleColon t "additional_contracts" := {
+      Notation.double_colon x :=
+        let* x := M.read x in Pure x.(additional_contracts) : M _;
+    }.
+    Admitted.
+    #[refine] Global Instance Get_environment : Notation.Dot "environment" := {
+      Notation.dot x := let* x := M.read x in Pure x.(environment) : M _;
+    }.
+    Admitted.
+    #[refine] Global Instance Get_AF_environment :
+      Notation.DoubleColon t "environment" := {
+      Notation.double_colon x :=
+        let* x := M.read x in Pure x.(environment) : M _;
+    }.
+    Admitted.
+  End E2EConfig.
 End E2EConfig.
-Definition E2EConfig : Set := E2EConfig.t.
+Definition E2EConfig `{ℋ : State.Trait} : Set := M.val E2EConfig.t.
 
 Module Impl_core_fmt_Debug_for_ink_e2e_macro_config_E2EConfig.
-  Definition Self := ink_e2e_macro.config.E2EConfig.
-  
-  Parameter fmt :
-      forall `{H' : State.Trait},
-      (ref Self) -> (mut_ref core.fmt.Formatter) -> M (H := H') core.fmt.Result.
-  
-  Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
-    Notation.dot := fmt;
-  }.
-  
-  Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
-  }.
-  Global Hint Resolve I : core.
+  Section Impl_core_fmt_Debug_for_ink_e2e_macro_config_E2EConfig.
+    Context `{ℋ : State.Trait}.
+    
+    Definition Self : Set := ink_e2e_macro.config.E2EConfig.
+    
+    Parameter fmt :
+        (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
+    
+    Global Instance AssociatedFunction_fmt :
+      Notation.DoubleColon Self "fmt" := {
+      Notation.double_colon := fmt;
+    }.
+    
+    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
+      core.fmt.Debug.fmt := fmt;
+    }.
+    Admitted.
+  End Impl_core_fmt_Debug_for_ink_e2e_macro_config_E2EConfig.
+  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_ink_e2e_macro_config_E2EConfig.
 
 Module Impl_core_default_Default_for_ink_e2e_macro_config_E2EConfig.
-  Definition Self := ink_e2e_macro.config.E2EConfig.
-  
-  Parameter default :
-      forall `{H' : State.Trait},
-      M (H := H') ink_e2e_macro.config.E2EConfig.
-  
-  Global Instance AssociatedFunction_default `{H' : State.Trait} :
-    Notation.DoubleColon Self "default" := {
-    Notation.double_colon := default;
-  }.
-  
-  Global Instance I : core.default.Default.Trait Self := {
-    core.default.Default.default `{H' : State.Trait} := default;
-  }.
-  Global Hint Resolve I : core.
+  Section Impl_core_default_Default_for_ink_e2e_macro_config_E2EConfig.
+    Context `{ℋ : State.Trait}.
+    
+    Definition Self : Set := ink_e2e_macro.config.E2EConfig.
+    
+    Parameter default : M ink_e2e_macro.config.E2EConfig.
+    
+    Global Instance AssociatedFunction_default :
+      Notation.DoubleColon Self "default" := {
+      Notation.double_colon := default;
+    }.
+    
+    #[refine] Global Instance ℐ : core.default.Default.Trait Self := {
+      core.default.Default.default := default;
+    }.
+    Admitted.
+  End Impl_core_default_Default_for_ink_e2e_macro_config_E2EConfig.
+  Global Hint Resolve ℐ : core.
 End Impl_core_default_Default_for_ink_e2e_macro_config_E2EConfig.
 
 Module Impl_core_marker_StructuralPartialEq_for_ink_e2e_macro_config_E2EConfig.
-  Definition Self := ink_e2e_macro.config.E2EConfig.
-  
-  Global Instance I : core.marker.StructuralPartialEq.Trait Self := {
-  }.
-  Global Hint Resolve I : core.
+  Section
+    Impl_core_marker_StructuralPartialEq_for_ink_e2e_macro_config_E2EConfig.
+    Context `{ℋ : State.Trait}.
+    
+    Definition Self : Set := ink_e2e_macro.config.E2EConfig.
+    
+    #[refine] Global Instance ℐ :
+      core.marker.StructuralPartialEq.Trait Self := {
+    }.
+    Admitted.
+  End Impl_core_marker_StructuralPartialEq_for_ink_e2e_macro_config_E2EConfig.
+  Global Hint Resolve ℐ : core.
 End Impl_core_marker_StructuralPartialEq_for_ink_e2e_macro_config_E2EConfig.
 
 Module Impl_core_cmp_PartialEq_for_ink_e2e_macro_config_E2EConfig.
-  Definition Self := ink_e2e_macro.config.E2EConfig.
-  
-  Parameter eq :
-      forall `{H' : State.Trait},
-      (ref Self) -> (ref ink_e2e_macro.config.E2EConfig) -> M (H := H') bool.
-  
-  Global Instance Method_eq `{H' : State.Trait} : Notation.Dot "eq" := {
-    Notation.dot := eq;
-  }.
-  
-  Global Instance I
-    : core.cmp.PartialEq.Trait Self (Rhs := core.cmp.PartialEq.Default.Rhs Self)
-      := {
-    core.cmp.PartialEq.eq `{H' : State.Trait} := eq;
-  }.
-  Global Hint Resolve I : core.
+  Section Impl_core_cmp_PartialEq_for_ink_e2e_macro_config_E2EConfig.
+    Context `{ℋ : State.Trait}.
+    
+    Definition Self : Set := ink_e2e_macro.config.E2EConfig.
+    
+    Parameter eq : (ref Self) -> (ref ink_e2e_macro.config.E2EConfig) -> M bool.
+    
+    Global Instance AssociatedFunction_eq : Notation.DoubleColon Self "eq" := {
+      Notation.double_colon := eq;
+    }.
+    
+    #[refine] Global Instance ℐ :
+      core.cmp.PartialEq.Trait Self
+        (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
+      core.cmp.PartialEq.eq := eq;
+    }.
+    Admitted.
+  End Impl_core_cmp_PartialEq_for_ink_e2e_macro_config_E2EConfig.
+  Global Hint Resolve ℐ : core.
 End Impl_core_cmp_PartialEq_for_ink_e2e_macro_config_E2EConfig.
 
 Module Impl_core_marker_StructuralEq_for_ink_e2e_macro_config_E2EConfig.
-  Definition Self := ink_e2e_macro.config.E2EConfig.
-  
-  Global Instance I : core.marker.StructuralEq.Trait Self := {
-  }.
-  Global Hint Resolve I : core.
+  Section Impl_core_marker_StructuralEq_for_ink_e2e_macro_config_E2EConfig.
+    Context `{ℋ : State.Trait}.
+    
+    Definition Self : Set := ink_e2e_macro.config.E2EConfig.
+    
+    #[refine] Global Instance ℐ : core.marker.StructuralEq.Trait Self := {
+    }.
+    Admitted.
+  End Impl_core_marker_StructuralEq_for_ink_e2e_macro_config_E2EConfig.
+  Global Hint Resolve ℐ : core.
 End Impl_core_marker_StructuralEq_for_ink_e2e_macro_config_E2EConfig.
 
 Module Impl_core_cmp_Eq_for_ink_e2e_macro_config_E2EConfig.
-  Definition Self := ink_e2e_macro.config.E2EConfig.
-  
-  Parameter assert_receiver_is_total_eq :
-      forall `{H' : State.Trait},
-      (ref Self) -> M (H := H') unit.
-  
-  Global Instance Method_assert_receiver_is_total_eq `{H' : State.Trait} :
-    Notation.Dot "assert_receiver_is_total_eq" := {
-    Notation.dot := assert_receiver_is_total_eq;
-  }.
-  
-  Global Instance I : core.cmp.Eq.Trait Self := {
-  }.
-  Global Hint Resolve I : core.
+  Section Impl_core_cmp_Eq_for_ink_e2e_macro_config_E2EConfig.
+    Context `{ℋ : State.Trait}.
+    
+    Definition Self : Set := ink_e2e_macro.config.E2EConfig.
+    
+    Parameter assert_receiver_is_total_eq : (ref Self) -> M unit.
+    
+    Global Instance AssociatedFunction_assert_receiver_is_total_eq :
+      Notation.DoubleColon Self "assert_receiver_is_total_eq" := {
+      Notation.double_colon := assert_receiver_is_total_eq;
+    }.
+    
+    #[refine] Global Instance ℐ : core.cmp.Eq.Trait Self := {
+    }.
+    Admitted.
+  End Impl_core_cmp_Eq_for_ink_e2e_macro_config_E2EConfig.
+  Global Hint Resolve ℐ : core.
 End Impl_core_cmp_Eq_for_ink_e2e_macro_config_E2EConfig.
 
 Module Impl_core_convert_TryFrom_for_ink_e2e_macro_config_E2EConfig.
-  Definition Self := ink_e2e_macro.config.E2EConfig.
-  
-  Definition Error : Set := syn.error.Error.
-  
-  Parameter try_from :
-      forall `{H' : State.Trait},
-      ink_ir.ast.attr_args.AttributeArgs ->
-        M (H := H') (core.result.Result Self Error).
-  
-  Global Instance AssociatedFunction_try_from `{H' : State.Trait} :
-    Notation.DoubleColon Self "try_from" := {
-    Notation.double_colon := try_from;
-  }.
-  
-  Global Instance I
-    : core.convert.TryFrom.Trait Self (T := ink_ir.ast.attr_args.AttributeArgs)
-      := {
-    core.convert.TryFrom.Error := Error;
-    core.convert.TryFrom.try_from `{H' : State.Trait} := try_from;
-  }.
-  Global Hint Resolve I : core.
+  Section Impl_core_convert_TryFrom_for_ink_e2e_macro_config_E2EConfig.
+    Context `{ℋ : State.Trait}.
+    
+    Definition Self : Set := ink_e2e_macro.config.E2EConfig.
+    
+    Definition Error : Set := syn.error.Error.
+    
+    Parameter try_from :
+        ink_ir.ast.attr_args.AttributeArgs -> M (core.result.Result Self Error).
+    
+    Global Instance AssociatedFunction_try_from :
+      Notation.DoubleColon Self "try_from" := {
+      Notation.double_colon := try_from;
+    }.
+    
+    #[refine] Global Instance ℐ :
+      core.convert.TryFrom.Trait Self
+        (T := ink_ir.ast.attr_args.AttributeArgs) := {
+      core.convert.TryFrom.Error := Error;
+      core.convert.TryFrom.try_from := try_from;
+    }.
+    Admitted.
+  End Impl_core_convert_TryFrom_for_ink_e2e_macro_config_E2EConfig.
+  Global Hint Resolve ℐ : core.
 End Impl_core_convert_TryFrom_for_ink_e2e_macro_config_E2EConfig.
 
 Module InkE2ETest.
-  Unset Primitive Projections.
-  Record t : Set := {
-    item_fn : ink_e2e_macro.ir.E2EFn;
-    config : ink_e2e_macro.config.E2EConfig;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_item_fn : Notation.Dot "item_fn" := {
-    Notation.dot '(Build_t x0 _) := x0;
-  }.
-  Global Instance Get_AF_item_fn : Notation.DoubleColon t "item_fn" := {
-    Notation.double_colon '(Build_t x0 _) := x0;
-  }.
-  Global Instance Get_config : Notation.Dot "config" := {
-    Notation.dot '(Build_t _ x1) := x1;
-  }.
-  Global Instance Get_AF_config : Notation.DoubleColon t "config" := {
-    Notation.double_colon '(Build_t _ x1) := x1;
-  }.
+  Section InkE2ETest.
+    Context `{ℋ : State.Trait}.
+    
+    Unset Primitive Projections.
+    Record t : Set := {
+      item_fn : ink_e2e_macro.ir.E2EFn;
+      config : ink_e2e_macro.config.E2EConfig;
+    }.
+    Global Set Primitive Projections.
+    
+    #[refine] Global Instance Get_item_fn : Notation.Dot "item_fn" := {
+      Notation.dot x := let* x := M.read x in Pure x.(item_fn) : M _;
+    }.
+    Admitted.
+    #[refine] Global Instance Get_AF_item_fn :
+      Notation.DoubleColon t "item_fn" := {
+      Notation.double_colon x := let* x := M.read x in Pure x.(item_fn) : M _;
+    }.
+    Admitted.
+    #[refine] Global Instance Get_config : Notation.Dot "config" := {
+      Notation.dot x := let* x := M.read x in Pure x.(config) : M _;
+    }.
+    Admitted.
+    #[refine] Global Instance Get_AF_config :
+      Notation.DoubleColon t "config" := {
+      Notation.double_colon x := let* x := M.read x in Pure x.(config) : M _;
+    }.
+    Admitted.
+  End InkE2ETest.
 End InkE2ETest.
-Definition InkE2ETest : Set := InkE2ETest.t.
+Definition InkE2ETest `{ℋ : State.Trait} : Set := M.val InkE2ETest.t.
 
 Module E2EFn.
-  Unset Primitive Projections.
-  Record t : Set := {
-    item_fn : syn.item.ItemFn;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_item_fn : Notation.Dot "item_fn" := {
-    Notation.dot '(Build_t x0) := x0;
-  }.
-  Global Instance Get_AF_item_fn : Notation.DoubleColon t "item_fn" := {
-    Notation.double_colon '(Build_t x0) := x0;
-  }.
+  Section E2EFn.
+    Context `{ℋ : State.Trait}.
+    
+    Unset Primitive Projections.
+    Record t : Set := {
+      item_fn : syn.item.ItemFn;
+    }.
+    Global Set Primitive Projections.
+    
+    #[refine] Global Instance Get_item_fn : Notation.Dot "item_fn" := {
+      Notation.dot x := let* x := M.read x in Pure x.(item_fn) : M _;
+    }.
+    Admitted.
+    #[refine] Global Instance Get_AF_item_fn :
+      Notation.DoubleColon t "item_fn" := {
+      Notation.double_colon x := let* x := M.read x in Pure x.(item_fn) : M _;
+    }.
+    Admitted.
+  End E2EFn.
 End E2EFn.
-Definition E2EFn : Set := E2EFn.t.
+Definition E2EFn `{ℋ : State.Trait} : Set := M.val E2EFn.t.
 
 Module Impl_core_convert_From_for_ink_e2e_macro_ir_E2EFn.
-  Definition Self := ink_e2e_macro.ir.E2EFn.
-  
-  Parameter from :
-      forall `{H' : State.Trait},
-      syn.item.ItemFn -> M (H := H') ink_e2e_macro.ir.E2EFn.
-  
-  Global Instance AssociatedFunction_from `{H' : State.Trait} :
-    Notation.DoubleColon Self "from" := {
-    Notation.double_colon := from;
-  }.
-  
-  Global Instance I : core.convert.From.Trait Self (T := syn.item.ItemFn) := {
-    core.convert.From.from `{H' : State.Trait} := from;
-  }.
-  Global Hint Resolve I : core.
+  Section Impl_core_convert_From_for_ink_e2e_macro_ir_E2EFn.
+    Context `{ℋ : State.Trait}.
+    
+    Definition Self : Set := ink_e2e_macro.ir.E2EFn.
+    
+    Parameter from : syn.item.ItemFn -> M ink_e2e_macro.ir.E2EFn.
+    
+    Global Instance AssociatedFunction_from :
+      Notation.DoubleColon Self "from" := {
+      Notation.double_colon := from;
+    }.
+    
+    #[refine] Global Instance ℐ :
+      core.convert.From.Trait Self (T := syn.item.ItemFn) := {
+      core.convert.From.from := from;
+    }.
+    Admitted.
+  End Impl_core_convert_From_for_ink_e2e_macro_ir_E2EFn.
+  Global Hint Resolve ℐ : core.
 End Impl_core_convert_From_for_ink_e2e_macro_ir_E2EFn.
 
 Parameter test :
-    forall `{H' : State.Trait},
+    forall `{ℋ : State.Trait},
     proc_macro.TokenStream ->
       proc_macro.TokenStream ->
-      M (H := H') proc_macro.TokenStream.
+      M proc_macro.TokenStream.

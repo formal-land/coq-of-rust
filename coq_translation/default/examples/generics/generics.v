@@ -2,44 +2,64 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module A.
-  Inductive t : Set := Build.
+  Section A.
+    Context `{ℋ : State.Trait}.
+    
+    Inductive t : Set := Build.
+  End A.
 End A.
 Definition A := @A.t.
 
 Module Single.
-  Unset Primitive Projections.
-  Record t : Set := {
-    _ : generics.A;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
-  }.
-End Single.
-Definition Single := @Single.t.
-
-Module SingleGen.
-  Section SingleGen.
-    Context {T : Set}.
+  Section Single.
+    Context `{ℋ : State.Trait}.
+    
     Unset Primitive Projections.
     Record t : Set := {
-      _ : T;
+      x0 : generics.A;
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_0 : Notation.Dot 0 := {
-      Notation.dot '(Build_t x0) := x0;
+    #[refine] Global Instance Get_0 : Notation.Dot "0" := {
+      Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
+    Admitted.
+  End Single.
+End Single.
+Definition Single `{ℋ : State.Trait} : Set := M.val Single.t.
+
+Module SingleGen.
+  Section SingleGen.
+    Context `{ℋ : State.Trait}.
+    
+    Context {T : Set}.
+    
+    Unset Primitive Projections.
+    Record t : Set := {
+      x0 : T;
+    }.
+    Global Set Primitive Projections.
+    
+    #[refine] Global Instance Get_0 : Notation.Dot "0" := {
+      Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
+    }.
+    Admitted.
   End SingleGen.
 End SingleGen.
-Definition SingleGen := @SingleGen.t.
+Definition SingleGen `{ℋ : State.Trait} (T : Set) : Set :=
+  M.val (SingleGen.t (T := T)).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
-  let _s := generics.Single.Build_t generics.A.Build in
-  let _char : generics.SingleGen char := generics.SingleGen.Build_t "a"%char in
-  let _t := generics.SingleGen.Build_t generics.A.Build in
-  let _i32 := generics.SingleGen.Build_t 6 in
-  let _char := generics.SingleGen.Build_t "a"%char in
-  Pure tt.
+Definition main `{ℋ : State.Trait} : M unit :=
+  let _s := generics.Single.Build_t (generics.A.Build_t tt) in
+  let* _char :=
+    let* α0 := M.alloc "a"%char in
+    Pure (generics.SingleGen.Build_t α0) in
+  let _t := generics.SingleGen.Build_t (generics.A.Build_t tt) in
+  let* _i32 :=
+    let* α0 := M.alloc 6 in
+    Pure (generics.SingleGen.Build_t α0) in
+  let* _char :=
+    let* α0 := M.alloc "a"%char in
+    Pure (generics.SingleGen.Build_t α0) in
+  M.alloc tt.

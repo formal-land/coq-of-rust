@@ -2,28 +2,37 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module Foo.
-  Unset Primitive Projections.
-  Record t : Set := {
-    _ : u32;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
-  }.
+  Section Foo.
+    Context `{ℋ : State.Trait}.
+    
+    Unset Primitive Projections.
+    Record t : Set := {
+      x0 : u32;
+    }.
+    Global Set Primitive Projections.
+    
+    #[refine] Global Instance Get_0 : Notation.Dot "0" := {
+      Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
+    }.
+    Admitted.
+  End Foo.
 End Foo.
-Definition Foo := @Foo.t.
+Definition Foo `{ℋ : State.Trait} : Set := M.val Foo.t.
 
 Module Impl_example05_Foo.
-  Definition Self := example05.Foo.
-  
-  Parameter plus1 : forall `{H' : State.Trait}, Self -> M (H := H') u32.
-  
-  Global Instance AssociatedFunction_plus1 `{H' : State.Trait} :
-    Notation.DoubleColon Self "plus1" := {
-    Notation.double_colon := plus1;
-  }.
+  Section Impl_example05_Foo.
+    Context `{ℋ : State.Trait}.
+    
+    Definition Self : Set := example05.Foo.
+    
+    Parameter plus1 : Self -> M u32.
+    
+    Global Instance AssociatedFunction_plus1 :
+      Notation.DoubleColon Self "plus1" := {
+      Notation.double_colon := plus1;
+    }.
+  End Impl_example05_Foo.
 End Impl_example05_Foo.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{H' : State.Trait}, M (H := H') unit.
+Parameter main : forall `{ℋ : State.Trait}, M unit.

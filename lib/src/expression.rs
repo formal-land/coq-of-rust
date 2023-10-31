@@ -27,9 +27,9 @@ impl FreshVars {
 /// Struct [MatchArm] represents a pattern-matching branch: [pat] is the
 /// matched pattern and [body] the expression on which it is mapped
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
-pub struct MatchArm {
-    pat: Pattern,
-    body: Expr,
+pub(crate) struct MatchArm {
+    pub(crate) pat: Pattern,
+    pub(crate) body: Expr,
 }
 
 /// [LoopControlFlow] represents the expressions responsible for
@@ -54,7 +54,11 @@ pub(crate) enum Expr {
         ty: Box<CoqType>,
         func: String,
     },
-    Literal(LitKind),
+    Literal {
+        literal: LitKind,
+        neg: bool,
+    },
+    NonHirLiteral(rustc_middle::ty::ScalarInt),
     AddrOf(Box<Expr>),
     Call {
         func: Box<Expr>,
@@ -74,7 +78,7 @@ pub(crate) enum Expr {
         expr: Box<Expr>,
         ty: Box<CoqType>,
     },
-    Type {
+    TypeAnnotation {
         expr: Box<Expr>,
         ty: Box<CoqType>,
     },
@@ -85,7 +89,7 @@ pub(crate) enum Expr {
         elements: Vec<Expr>,
     },
     LetIf {
-        pat: Pattern,
+        pat: Box<Pattern>,
         init: Box<Expr>,
     },
     If {
@@ -95,7 +99,6 @@ pub(crate) enum Expr {
     },
     Loop {
         body: Box<Stmt>,
-        loop_source: String,
     },
     Match {
         scrutinee: Box<Expr>,
@@ -133,6 +136,10 @@ pub(crate) enum Expr {
     StructUnit {
         path: Path,
     },
+    /// Sometimes type expressions appear as parameter to special operators
+    Type(Box<CoqType>),
+    /// Useful for error messages or annotations
+    Message(String),
 }
 
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
@@ -148,8 +155,8 @@ pub(crate) enum Stmt {
     },
 }
 
-fn compile_bin_op(bin_op: &BinOp) -> String {
-    match bin_op.node {
+pub(crate) fn compile_bin_op_kind(bin_op_kind: BinOpKind) -> String {
+    match bin_op_kind {
         BinOpKind::Add => "add".to_string(),
         BinOpKind::Sub => "sub".to_string(),
         BinOpKind::Mul => "mul".to_string(),
@@ -171,6 +178,10 @@ fn compile_bin_op(bin_op: &BinOp) -> String {
     }
 }
 
+fn compile_bin_op(bin_op: &BinOp) -> String {
+    compile_bin_op_kind(bin_op.node)
+}
+
 fn compile_assign_bin_op(bin_op: &BinOp) -> String {
     format!("{}_assign", compile_bin_op(bin_op))
 }
@@ -180,16 +191,6 @@ fn compile_un_op(un_op: &rustc_hir::UnOp) -> String {
         rustc_hir::UnOp::Deref => "deref".to_string(),
         rustc_hir::UnOp::Not => "not".to_string(),
         rustc_hir::UnOp::Neg => "neg".to_string(),
-    }
-}
-
-/// The function [compile_loop_source] converts a hir loop instruction to a
-/// string
-fn compile_loop_source(loop_source: &rustc_hir::LoopSource) -> String {
-    match loop_source {
-        rustc_hir::LoopSource::Loop => "loop".to_string(),
-        rustc_hir::LoopSource::While => "while".to_string(),
-        rustc_hir::LoopSource::ForLoop => "for".to_string(),
     }
 }
 
@@ -213,8 +214,11 @@ fn compile_qpath(env: &mut Env, qpath: &QPath) -> Expr {
 
 /// The Coq value [tt] (the inhabitant of the [unit] type) is used as default
 /// value
-fn tt() -> Expr {
-    Expr::LocalVar("tt".to_string())
+pub(crate) fn tt() -> Expr {
+    Expr::Call {
+        func: Box::new(Expr::LocalVar("M.alloc".to_string())),
+        args: vec![Expr::LocalVar("tt".to_string())],
+    }
 }
 
 fn pure(e: Expr) -> Stmt {
@@ -307,6 +311,10 @@ fn monadic_lets(
     }
 }
 
+fn is_literal_pure(literal: &LitKind) -> bool {
+    matches!(literal, LitKind::Str(_, _))
+}
+
 /// Monadic translation of an expression
 ///
 /// The convention is to do transformation in a deep first fashion, so
@@ -328,7 +336,15 @@ pub(crate) fn mt_expression(fresh_vars: FreshVars, expr: Expr) -> (Stmt, FreshVa
             fresh_vars,
         ),
         Expr::AssociatedFunction { .. } => (pure(expr), fresh_vars),
-        Expr::Literal(_) => (pure(expr), fresh_vars),
+        Expr::Literal { ref literal, .. } => (
+            if is_literal_pure(literal) {
+                pure(expr)
+            } else {
+                Stmt::Expr(Box::new(expr))
+            },
+            fresh_vars,
+        ),
+        Expr::NonHirLiteral { .. } => (pure(expr), fresh_vars),
         Expr::AddrOf(e) => monadic_let(fresh_vars, *e, |fresh_vars, e| {
             (pure(Expr::AddrOf(Box::new(e))), fresh_vars)
         }),
@@ -388,9 +404,9 @@ pub(crate) fn mt_expression(fresh_vars: FreshVars, expr: Expr) -> (Stmt, FreshVa
                 fresh_vars,
             )
         }),
-        Expr::Type { expr, ty } => monadic_let(fresh_vars, *expr, |fresh_vars, expr| {
+        Expr::TypeAnnotation { expr, ty } => monadic_let(fresh_vars, *expr, |fresh_vars, expr| {
             (
-                pure(Expr::Type {
+                pure(Expr::TypeAnnotation {
                     expr: Box::new(expr),
                     ty,
                 }),
@@ -432,12 +448,11 @@ pub(crate) fn mt_expression(fresh_vars: FreshVars, expr: Expr) -> (Stmt, FreshVa
                 fresh_vars,
             )
         }),
-        Expr::Loop { body, loop_source } => {
+        Expr::Loop { body, .. } => {
             let body = mt_stmt(*body);
             (
                 Stmt::Expr(Box::new(Expr::Loop {
                     body: Box::new(body),
-                    loop_source,
                 })),
                 fresh_vars,
             )
@@ -486,10 +501,10 @@ pub(crate) fn mt_expression(fresh_vars: FreshVars, expr: Expr) -> (Stmt, FreshVa
         }),
         Expr::NamedField { base, name } => monadic_let(fresh_vars, *base, |fresh_vars, base| {
             (
-                pure(Expr::NamedField {
+                Stmt::Expr(Box::new(Expr::NamedField {
                     base: Box::new(base),
                     name,
-                }),
+                })),
                 fresh_vars,
             )
         }),
@@ -557,6 +572,8 @@ pub(crate) fn mt_expression(fresh_vars: FreshVars, expr: Expr) -> (Stmt, FreshVa
             }),
         ),
         Expr::StructUnit { .. } => (pure(expr), fresh_vars),
+        Expr::Type(_) => (pure(expr), fresh_vars),
+        Expr::Message(_) => (pure(expr), fresh_vars),
     }
 }
 
@@ -668,6 +685,16 @@ fn compile_lang_item_in_a_call(lang_item: rustc_hir::LangItem, args: &[Expr]) ->
     }
 }
 
+pub(crate) fn compile_hir_id(env: &mut Env, hir_id: rustc_hir::hir_id::HirId) -> Expr {
+    let local_def_id = hir_id.owner.def_id;
+    let thir = env.tcx.thir_body(local_def_id);
+    let Ok((thir, expr_id)) = thir else {
+        panic!("thir failed to compile");
+    };
+    let thir = thir.borrow();
+    crate::thir_expression::compile_expr(env, &thir, &expr_id)
+}
+
 pub(crate) fn compile_expr(env: &mut Env, expr: &rustc_hir::Expr) -> Expr {
     match &expr.kind {
         ExprKind::ConstBlock(_anon_const) => Expr::LocalVar("ConstBlock".to_string()),
@@ -736,11 +763,15 @@ pub(crate) fn compile_expr(env: &mut Env, expr: &rustc_hir::Expr) -> Expr {
             }
         }
         ExprKind::Tup(elements) => {
-            let elements = elements
+            let elements: Vec<_> = elements
                 .iter()
                 .map(|expr| compile_expr(env, expr))
                 .collect();
-            Expr::Tuple { elements }
+            if elements.is_empty() {
+                tt()
+            } else {
+                Expr::Tuple { elements }
+            }
         }
         ExprKind::Binary(bin_op, expr_left, expr_right) => {
             let expr_left = compile_expr(env, expr_left);
@@ -763,18 +794,21 @@ pub(crate) fn compile_expr(env: &mut Env, expr: &rustc_hir::Expr) -> Expr {
                 generic_tys: vec![],
             }
         }
-        ExprKind::Lit(lit) => Expr::Literal(lit.node.clone()),
+        ExprKind::Lit(lit) => Expr::Literal {
+            literal: lit.node.clone(),
+            neg: false,
+        },
         ExprKind::Cast(expr, ty) => Expr::Cast {
             expr: Box::new(compile_expr(env, expr)),
             ty: compile_type(env, ty),
         },
-        ExprKind::Type(expr, ty) => Expr::Type {
+        ExprKind::Type(expr, ty) => Expr::TypeAnnotation {
             expr: Box::new(compile_expr(env, expr)),
             ty: compile_type(env, ty),
         },
         ExprKind::DropTemps(expr) => compile_expr(env, expr),
         ExprKind::Let(rustc_hir::Let { pat, init, .. }) => {
-            let pat = compile_pattern(env, pat);
+            let pat = Box::new(compile_pattern(env, pat));
             let init = Box::new(compile_expr(env, init));
             Expr::LetIf { pat, init }
         }
@@ -816,7 +850,7 @@ pub(crate) fn compile_expr(env: &mut Env, expr: &rustc_hir::Expr) -> Expr {
             // we need to handle the case of "let" in "if let" here
             if let Expr::LetIf { pat, init } = *condition {
                 let success = MatchArm {
-                    pat,
+                    pat: *pat,
                     body: *success,
                 };
                 let failure = MatchArm {
@@ -842,7 +876,7 @@ pub(crate) fn compile_expr(env: &mut Env, expr: &rustc_hir::Expr) -> Expr {
                 }
             }
         }
-        ExprKind::Loop(block, label, loop_source, _) => {
+        ExprKind::Loop(block, label, _, _) => {
             if let Some(label) = label {
                 env.tcx
                     .sess
@@ -850,8 +884,7 @@ pub(crate) fn compile_expr(env: &mut Env, expr: &rustc_hir::Expr) -> Expr {
                     .emit();
             }
             let body = Box::new(compile_block(env, block));
-            let loop_source = compile_loop_source(loop_source);
-            Expr::Loop { body, loop_source }
+            Expr::Loop { body }
         }
         ExprKind::Match(scrutinee, arms, _) => {
             let scrutinee = Box::new(compile_expr(env, scrutinee));
@@ -1082,18 +1115,25 @@ impl Expr {
                 text(format!("\"{func}\"")),
                 text("]"),
             ]),
-            Expr::Literal(literal) => literal_to_doc(with_paren, literal),
+            Expr::Literal { literal, neg } => literal_to_doc(with_paren, literal, *neg),
+            Expr::NonHirLiteral(literal) => text(literal.to_string()),
             Expr::AddrOf(expr) => paren(
                 with_paren,
                 nest([text("addr_of"), line(), expr.to_doc(true)]),
             ),
-            Expr::Call { func, args } => paren(
-                with_paren,
-                nest([
-                    func.to_doc(true),
-                    concat(args.iter().map(|arg| concat([line(), arg.to_doc(true)]))),
-                ]),
-            ),
+            Expr::Call { func, args } => {
+                if args.is_empty() {
+                    func.to_doc(with_paren)
+                } else {
+                    paren(
+                        with_paren,
+                        nest([
+                            func.to_doc(true),
+                            concat(args.iter().map(|arg| concat([line(), arg.to_doc(true)]))),
+                        ]),
+                    )
+                }
+            }
             Expr::MethodCall {
                 object,
                 func,
@@ -1148,7 +1188,7 @@ impl Expr {
                     ty.to_doc(true),
                 ]),
             ),
-            Expr::Type { expr, ty } => nest([
+            Expr::TypeAnnotation { expr, ty } => nest([
                 text("("),
                 expr.to_doc(true),
                 line(),
@@ -1168,19 +1208,13 @@ impl Expr {
                 line(),
                 text("]"),
             ]),
-            Expr::Tuple { elements } => {
-                if elements.is_empty() {
-                    text("tt")
-                } else {
-                    paren(
-                        true,
-                        nest([intersperse(
-                            elements.iter().map(|element| element.to_doc(false)),
-                            [text(","), line()],
-                        )]),
-                    )
-                }
-            }
+            Expr::Tuple { elements } => paren(
+                true,
+                nest([intersperse(
+                    elements.iter().map(|element| element.to_doc(false)),
+                    [text(","), line()],
+                )]),
+            ),
             Expr::LetIf { pat, init } => group([
                 text("let_if"),
                 line(),
@@ -1219,7 +1253,7 @@ impl Expr {
                 ..
             } => paren(
                 with_paren,
-                nest([text("loop"), line(), paren(true, body.to_doc())]),
+                nest([text("loop"), line(), paren(true, body.to_doc(with_paren))]),
             ),
             Expr::Match { scrutinee, arms } => group([
                 group([
@@ -1232,7 +1266,7 @@ impl Expr {
                 hardline(),
                 text("end"),
             ]),
-            Expr::Block(stmt) => stmt.to_doc(),
+            Expr::Block(stmt) => stmt.to_doc(with_paren),
             Expr::Assign { left, right } => paren(
                 with_paren,
                 nest([
@@ -1320,81 +1354,50 @@ impl Expr {
                 ]),
             ),
             Expr::StructUnit { path } => nest([path.to_doc(), text(".Build")]),
-        }
-    }
-
-    // All the functions starting from "parameter_for_fmt" are for
-    // printing Parameter and DoubleColon Instance for function,
-    // in fmt Definition (...crate_fmt_Debug...)
-    // get the name and arg_types of the associated function
-    // @TODO cover more cases instead of template text("struct_parameter_for_fmt"),
-    pub fn parameter_name_for_fmt(&self) -> String {
-        match self {
-            Expr::Block(bx) => bx.parameter_for_fmt(),
-            _ => "struct_parameter_for_fmt".to_string(),
-        }
-    }
-
-    fn parameter_for_fmt_print_name(&self) -> String {
-        match self {
-            Expr::AssociatedFunction { ty: _, func } => func.to_owned(),
-            _ => "struct_parameter_for_fmt".to_string(),
-        }
-    }
-
-    // get the name and the arg_types of the associated function match step2
-    fn parameter_for_fmt2(&self) -> String {
-        match self {
-            Expr::Call { func, args: _ } => func.parameter_for_fmt_print_name(),
-            // intersperse(args.iter().map(|arg| arg.to_type()), [line()]),
-            _ => "struct_parameter_for_fmt".to_string(),
+            Expr::Type(ty) => ty.to_doc(with_paren),
+            Expr::Message(message) => text(format!("\"{message}\"")),
         }
     }
 }
 
 impl Stmt {
-    fn to_doc(&self) -> Doc {
+    fn to_doc(&self, with_paren: bool) -> Doc {
         match self {
-            Stmt::Expr(expr) => expr.to_doc(false),
+            Stmt::Expr(expr) => expr.to_doc(with_paren),
             Stmt::Let {
                 is_monadic,
                 pattern,
                 ty,
                 init,
                 body,
-            } => group([
-                nest([
+            } => paren(
+                with_paren,
+                group([
                     nest([
-                        text("let"),
-                        if *is_monadic { text("*") } else { nil() },
+                        nest([
+                            text("let"),
+                            if *is_monadic { text("*") } else { nil() },
+                            line(),
+                            (if !pattern.is_single_binding() {
+                                text("'")
+                            } else {
+                                nil()
+                            }),
+                            pattern.to_doc(),
+                            match ty {
+                                Some(ty) => concat([text(" :"), line(), ty.to_doc(false)]),
+                                None => nil(),
+                            },
+                            text(" :="),
+                        ]),
                         line(),
-                        (if !pattern.is_single_binding() {
-                            text("'")
-                        } else {
-                            nil()
-                        }),
-                        pattern.to_doc(),
-                        match ty {
-                            Some(ty) => concat([text(" :"), line(), ty.to_doc(false)]),
-                            None => nil(),
-                        },
-                        text(" :="),
+                        init.to_doc(false),
+                        text(" in"),
                     ]),
-                    line(),
-                    init.to_doc(false),
-                    text(" in"),
+                    hardline(),
+                    body.to_doc(false),
                 ]),
-                hardline(),
-                body.to_doc(),
-            ]),
-        }
-    }
-
-    // @TODO cover more cases instead of template text("struct_parameter_for_fmt"),
-    pub fn parameter_for_fmt(&self) -> String {
-        match self {
-            Stmt::Expr(expr) => expr.parameter_for_fmt2(),
-            _ => "struct_parameter_for_fmt".to_string(),
+            ),
         }
     }
 }

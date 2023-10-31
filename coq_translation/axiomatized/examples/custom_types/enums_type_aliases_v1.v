@@ -2,15 +2,15 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module VeryVerboseEnumOfThingsToDoWithNumbers.
-  Inductive t : Set :=
+  Inductive t `{ℋ : State.Trait} : Set :=
   | Add
   | Subtract.
 End VeryVerboseEnumOfThingsToDoWithNumbers.
-Definition VeryVerboseEnumOfThingsToDoWithNumbers : Set :=
+Definition VeryVerboseEnumOfThingsToDoWithNumbers `{ℋ : State.Trait} : Set :=
   VeryVerboseEnumOfThingsToDoWithNumbers.t.
 
-Definition Operations : Set :=
-  enums_type_aliases_v1.VeryVerboseEnumOfThingsToDoWithNumbers.
+Ltac Operations :=
+  refine enums_type_aliases_v1.VeryVerboseEnumOfThingsToDoWithNumbers.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{H' : State.Trait}, M (H := H') unit.
+Parameter main : forall `{ℋ : State.Trait}, M unit.

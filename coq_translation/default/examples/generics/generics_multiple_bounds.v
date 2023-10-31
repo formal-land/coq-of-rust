@@ -2,73 +2,123 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition compare_prints
-    `{H' : State.Trait}
+    `{ℋ : State.Trait}
     {T : Set}
-    `{core.fmt.Debug.Trait T}
-    `{core.fmt.Display.Trait T}
+    {ℋ_0 : core.fmt.Debug.Trait T}
+    {ℋ_1 : core.fmt.Display.Trait T}
     (t : ref T)
-    : M (H := H') unit :=
+    : M unit :=
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_debug"] (addr_of t) in
-      let* α1 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "Debug: `"; "`
-" ])
-          (addr_of [ α0 ]) in
-      std.io.stdio._print α1 in
-    Pure tt in
+      let* α0 := borrow [ mk_str "Debug: `"; mk_str "`
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow t (ref T) in
+      let* α5 := deref α4 (ref T) in
+      let* α6 := borrow α5 (ref T) in
+      let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
+      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+      let* α9 := deref α8 (list core.fmt.rt.Argument) in
+      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+      let* α11 := pointer_coercion "Unsize" α10 in
+      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+      std.io.stdio._print α12 in
+    M.alloc tt in
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_display"] (addr_of t) in
-      let* α1 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "Display: `"; "`
-" ])
-          (addr_of [ α0 ]) in
-      std.io.stdio._print α1 in
-    Pure tt in
-  Pure tt.
+      let* α0 := borrow [ mk_str "Display: `"; mk_str "`
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow t (ref T) in
+      let* α5 := deref α4 (ref T) in
+      let* α6 := borrow α5 (ref T) in
+      let* α7 := core.fmt.rt.Argument::["new_display"] α6 in
+      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+      let* α9 := deref α8 (list core.fmt.rt.Argument) in
+      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+      let* α11 := pointer_coercion "Unsize" α10 in
+      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+      std.io.stdio._print α12 in
+    M.alloc tt in
+  M.alloc tt.
 
 Definition compare_types
-    `{H' : State.Trait}
+    `{ℋ : State.Trait}
     {T U : Set}
-    `{core.fmt.Debug.Trait T}
-    `{core.fmt.Debug.Trait U}
+    {ℋ_0 : core.fmt.Debug.Trait T}
+    {ℋ_1 : core.fmt.Debug.Trait U}
     (t : ref T)
     (u : ref U)
-    : M (H := H') unit :=
+    : M unit :=
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_debug"] (addr_of t) in
-      let* α1 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "t: `"; "`
-" ])
-          (addr_of [ α0 ]) in
-      std.io.stdio._print α1 in
-    Pure tt in
+      let* α0 := borrow [ mk_str "t: `"; mk_str "`
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow t (ref T) in
+      let* α5 := deref α4 (ref T) in
+      let* α6 := borrow α5 (ref T) in
+      let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
+      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+      let* α9 := deref α8 (list core.fmt.rt.Argument) in
+      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+      let* α11 := pointer_coercion "Unsize" α10 in
+      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+      std.io.stdio._print α12 in
+    M.alloc tt in
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_debug"] (addr_of u) in
-      let* α1 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "u: `"; "`
-" ])
-          (addr_of [ α0 ]) in
-      std.io.stdio._print α1 in
-    Pure tt in
-  Pure tt.
+      let* α0 := borrow [ mk_str "u: `"; mk_str "`
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow u (ref U) in
+      let* α5 := deref α4 (ref U) in
+      let* α6 := borrow α5 (ref U) in
+      let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
+      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+      let* α9 := deref α8 (list core.fmt.rt.Argument) in
+      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+      let* α11 := pointer_coercion "Unsize" α10 in
+      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+      std.io.stdio._print α12 in
+    M.alloc tt in
+  M.alloc tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
-  let string := "words" in
-  let array := [ 1; 2; 3 ] in
+Definition main `{ℋ : State.Trait} : M unit :=
+  let string := mk_str "words" in
+  let* array :=
+    let* α0 := M.alloc 1 in
+    let* α1 := M.alloc 2 in
+    let* α2 := M.alloc 3 in
+    Pure [ α0; α1; α2 ] in
   let* vec :=
-    let* α0 :=
-      (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] [ 1; 2; 3 ] in
-    (Slice _)::["into_vec"] α0 in
-  let* _ := generics_multiple_bounds.compare_prints (addr_of string) in
+    let* α0 := M.alloc 1 in
+    let* α1 := M.alloc 2 in
+    let* α2 := M.alloc 3 in
+    let* α3 :=
+      (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] [ α0; α1; α2 ] in
+    let* α4 := pointer_coercion "Unsize" α3 in
+    (Slice T)::["into_vec"] α4 in
   let* _ :=
-    generics_multiple_bounds.compare_types (addr_of array) (addr_of vec) in
-  Pure tt.
+    let* α0 := borrow string (ref str) in
+    let* α1 := deref α0 (ref str) in
+    let* α2 := borrow α1 (ref str) in
+    generics_multiple_bounds.compare_prints α2 in
+  let* _ :=
+    let* α0 := borrow array (list i32) in
+    let* α1 := deref α0 (list i32) in
+    let* α2 := borrow α1 (list i32) in
+    let* α3 := borrow vec (alloc.vec.Vec i32 alloc.alloc.Global) in
+    let* α4 := deref α3 (alloc.vec.Vec i32 alloc.alloc.Global) in
+    let* α5 := borrow α4 (alloc.vec.Vec i32 alloc.alloc.Global) in
+    generics_multiple_bounds.compare_types α2 α5 in
+  M.alloc tt.

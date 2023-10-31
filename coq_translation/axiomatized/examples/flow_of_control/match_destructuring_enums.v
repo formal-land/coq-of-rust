@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module Color.
-  Inductive t : Set :=
+  Inductive t `{ℋ : State.Trait} : Set :=
   | Red
   | Blue
   | Green
@@ -12,7 +12,7 @@ Module Color.
   | CMY (_ : u32) (_ : u32) (_ : u32)
   | CMYK (_ : u32) (_ : u32) (_ : u32) (_ : u32).
 End Color.
-Definition Color : Set := Color.t.
+Definition Color `{ℋ : State.Trait} : Set := Color.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{H' : State.Trait}, M (H := H') unit.
+Parameter main : forall `{ℋ : State.Trait}, M unit.

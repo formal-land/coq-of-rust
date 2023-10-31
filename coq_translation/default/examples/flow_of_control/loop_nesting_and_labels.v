@@ -2,44 +2,61 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
+Definition main `{ℋ : State.Trait} : M unit :=
   let* _ :=
     loop
       (let* _ :=
         let* _ :=
           let* α0 :=
-            format_arguments::["new_const"]
-              (addr_of [ "Entered the outer loop
-" ]) in
-          std.io.stdio._print α0 in
-        Pure tt in
+            borrow [ mk_str "Entered the outer loop
+" ] (list (ref str)) in
+          let* α1 := deref α0 (list (ref str)) in
+          let* α2 := borrow α1 (list (ref str)) in
+          let* α3 := pointer_coercion "Unsize" α2 in
+          let* α4 := core.fmt.Arguments::["new_const"] α3 in
+          std.io.stdio._print α4 in
+        M.alloc tt in
       let* _ :=
-        loop
-          (let* _ :=
-            let* _ :=
-              let* α0 :=
-                format_arguments::["new_const"]
-                  (addr_of [ "Entered the inner loop
-" ]) in
-              std.io.stdio._print α0 in
-            Pure tt in
-          let* _ := Break in
-          Pure tt) in
+        let* α0 :=
+          loop
+            (let* _ :=
+              let* _ :=
+                let* α0 :=
+                  borrow
+                    [ mk_str "Entered the inner loop
+" ]
+                    (list (ref str)) in
+                let* α1 := deref α0 (list (ref str)) in
+                let* α2 := borrow α1 (list (ref str)) in
+                let* α3 := pointer_coercion "Unsize" α2 in
+                let* α4 := core.fmt.Arguments::["new_const"] α3 in
+                std.io.stdio._print α4 in
+              M.alloc tt in
+            let* _ := Break in
+            M.alloc tt) in
+        never_to_any α0 in
       let* _ :=
         let* _ :=
           let* α0 :=
-            format_arguments::["new_const"]
-              (addr_of [ "This point will never be reached
-" ]) in
-          std.io.stdio._print α0 in
-        Pure tt in
-      Pure tt) in
+            borrow
+              [ mk_str "This point will never be reached
+" ]
+              (list (ref str)) in
+          let* α1 := deref α0 (list (ref str)) in
+          let* α2 := borrow α1 (list (ref str)) in
+          let* α3 := pointer_coercion "Unsize" α2 in
+          let* α4 := core.fmt.Arguments::["new_const"] α3 in
+          std.io.stdio._print α4 in
+        M.alloc tt in
+      M.alloc tt) in
   let* _ :=
     let* _ :=
-      let* α0 :=
-        format_arguments::["new_const"]
-          (addr_of [ "Exited the outer loop
-" ]) in
-      std.io.stdio._print α0 in
-    Pure tt in
-  Pure tt.
+      let* α0 := borrow [ mk_str "Exited the outer loop
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := core.fmt.Arguments::["new_const"] α3 in
+      std.io.stdio._print α4 in
+    M.alloc tt in
+  M.alloc tt.

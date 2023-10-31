@@ -2,36 +2,44 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module Owner.
-  Unset Primitive Projections.
-  Record t : Set := {
-    _ : i32;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
-  }.
+  Section Owner.
+    Context `{ℋ : State.Trait}.
+    
+    Unset Primitive Projections.
+    Record t : Set := {
+      x0 : i32;
+    }.
+    Global Set Primitive Projections.
+    
+    #[refine] Global Instance Get_0 : Notation.Dot "0" := {
+      Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
+    }.
+    Admitted.
+  End Owner.
 End Owner.
-Definition Owner := @Owner.t.
+Definition Owner `{ℋ : State.Trait} : Set := M.val Owner.t.
 
 Module Impl_scoping_rules_lifetimes_methods_Owner.
-  Definition Self := scoping_rules_lifetimes_methods.Owner.
-  
-  Parameter add_one :
-      forall `{H' : State.Trait},
-      (mut_ref Self) -> M (H := H') unit.
-  
-  Global Instance Method_add_one `{H' : State.Trait} :
-    Notation.Dot "add_one" := {
-    Notation.dot := add_one;
-  }.
-  
-  Parameter print : forall `{H' : State.Trait}, (ref Self) -> M (H := H') unit.
-  
-  Global Instance Method_print `{H' : State.Trait} : Notation.Dot "print" := {
-    Notation.dot := print;
-  }.
+  Section Impl_scoping_rules_lifetimes_methods_Owner.
+    Context `{ℋ : State.Trait}.
+    
+    Definition Self : Set := scoping_rules_lifetimes_methods.Owner.
+    
+    Parameter add_one : (mut_ref Self) -> M unit.
+    
+    Global Instance AssociatedFunction_add_one :
+      Notation.DoubleColon Self "add_one" := {
+      Notation.double_colon := add_one;
+    }.
+    
+    Parameter print : (ref Self) -> M unit.
+    
+    Global Instance AssociatedFunction_print :
+      Notation.DoubleColon Self "print" := {
+      Notation.double_colon := print;
+    }.
+  End Impl_scoping_rules_lifetimes_methods_Owner.
 End Impl_scoping_rules_lifetimes_methods_Owner.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{H' : State.Trait}, M (H := H') unit.
+Parameter main : forall `{ℋ : State.Trait}, M unit.

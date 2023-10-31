@@ -2,65 +2,58 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module Person.
-  Class Trait (Self : Set) : Type := {
-    name `{H' : State.Trait} : (ref Self) -> M (H := H') alloc.string.String;
-  }.
-  
-  Global Instance Method_name `{H' : State.Trait} `(Trait)
-    : Notation.Dot "name" := {
-    Notation.dot := name;
-  }.
+  Section Person.
+    Context `{ℋ : State.Trait}.
+    
+    Class Trait (Self : Set) : Type := {
+      name : (ref Self) -> M alloc.string.String;
+    }.
+    
+  End Person.
 End Person.
 
 Module Student.
-  Class Trait (Self : Set) `{supertraits.Person.Trait Self} : Type := {
-    university `{H' : State.Trait}
-      :
-      (ref Self) -> M (H := H') alloc.string.String;
-  }.
-  
-  Global Instance Method_university `{H' : State.Trait} `(Trait)
-    : Notation.Dot "university" := {
-    Notation.dot := university;
-  }.
+  Section Student.
+    Context `{ℋ : State.Trait}.
+    
+    Class Trait (Self : Set) : Type := {
+      ℒ_0 :: supertraits.Person.Trait Self;
+      university : (ref Self) -> M alloc.string.String;
+    }.
+    
+  End Student.
 End Student.
 
 Module Programmer.
-  Class Trait (Self : Set) : Type := {
-    fav_language `{H' : State.Trait}
-      :
-      (ref Self) -> M (H := H') alloc.string.String;
-  }.
-  
-  Global Instance Method_fav_language `{H' : State.Trait} `(Trait)
-    : Notation.Dot "fav_language" := {
-    Notation.dot := fav_language;
-  }.
+  Section Programmer.
+    Context `{ℋ : State.Trait}.
+    
+    Class Trait (Self : Set) : Type := {
+      fav_language : (ref Self) -> M alloc.string.String;
+    }.
+    
+  End Programmer.
 End Programmer.
 
 Module CompSciStudent.
-  Class Trait
-      (Self : Set)
-      `{supertraits.Programmer.Trait Self}
-      `{supertraits.Student.Trait Self} :
-      Type := {
-    git_username `{H' : State.Trait}
-      :
-      (ref Self) -> M (H := H') alloc.string.String;
-  }.
-  
-  Global Instance Method_git_username `{H' : State.Trait} `(Trait)
-    : Notation.Dot "git_username" := {
-    Notation.dot := git_username;
-  }.
+  Section CompSciStudent.
+    Context `{ℋ : State.Trait}.
+    
+    Class Trait (Self : Set) : Type := {
+      ℒ_0 :: supertraits.Programmer.Trait Self;
+      ℒ_1 :: supertraits.Student.Trait Self;
+      git_username : (ref Self) -> M alloc.string.String;
+    }.
+    
+  End CompSciStudent.
 End CompSciStudent.
 
 Parameter comp_sci_student_greeting :
     forall
-      `{H' : State.Trait}
+      `{ℋ : State.Trait}
       {DynT : Set}
-      `{supertraits.CompSciStudent.Trait DynT},
-    (ref DynT) -> M (H := H') alloc.string.String.
+      {ℋ_0 : supertraits.CompSciStudent.Trait DynT},
+    (ref DynT) -> M alloc.string.String.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{H' : State.Trait}, M (H := H') unit.
+Parameter main : forall `{ℋ : State.Trait}, M unit.

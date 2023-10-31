@@ -2,8 +2,8 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Parameter analyze_slice :
-    forall `{H' : State.Trait},
-    (ref (Slice i32)) -> M (H := H') unit.
+    forall `{ℋ : State.Trait},
+    (ref (Slice i32)) -> M unit.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{H' : State.Trait}, M (H := H') unit.
+Parameter main : forall `{ℋ : State.Trait}, M unit.

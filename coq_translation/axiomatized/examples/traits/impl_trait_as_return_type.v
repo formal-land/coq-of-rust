@@ -2,10 +2,10 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Parameter combine_vecs_explicit_return_type :
-    forall `{H' : State.Trait},
+    forall `{ℋ : State.Trait},
     (alloc.vec.Vec i32 alloc.vec.Vec.Default.A) ->
       (alloc.vec.Vec i32 alloc.vec.Vec.Default.A) ->
-      M (H := H')
+      M
         (core.iter.adapters.cycle.Cycle
           (core.iter.adapters.chain.Chain
             (alloc.vec.into_iter.IntoIter
@@ -16,15 +16,16 @@ Parameter combine_vecs_explicit_return_type :
               alloc.vec.into_iter.IntoIter.Default.A))).
 
 Parameter combine_vecs_ret_ty :
+    forall `{ℋ : State.Trait},
     Sigma (Ty : Set) `(core.iter.traits.iterator.Iterator.Trait Ty),
     unit.
 Parameter combine_vecs :
-    forall `{H' : State.Trait},
+    forall `{ℋ : State.Trait},
     (alloc.vec.Vec i32 alloc.vec.Vec.Default.A) ->
       (alloc.vec.Vec i32 alloc.vec.Vec.Default.A) ->
-      M (H := H') (projT1 combine_vecs_ret_ty).
+      M (projT1 combine_vecs_ret_ty).
 
 Error OpaqueTy.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{H' : State.Trait}, M (H := H') unit.
+Parameter main : forall `{ℋ : State.Trait}, M unit.

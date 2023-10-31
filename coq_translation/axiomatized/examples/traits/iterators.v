@@ -2,51 +2,62 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module Fibonacci.
-  Unset Primitive Projections.
-  Record t : Set := {
-    curr : u32;
-    next : u32;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_curr : Notation.Dot "curr" := {
-    Notation.dot '(Build_t x0 _) := x0;
-  }.
-  Global Instance Get_AF_curr : Notation.DoubleColon t "curr" := {
-    Notation.double_colon '(Build_t x0 _) := x0;
-  }.
-  Global Instance Get_next : Notation.Dot "next" := {
-    Notation.dot '(Build_t _ x1) := x1;
-  }.
-  Global Instance Get_AF_next : Notation.DoubleColon t "next" := {
-    Notation.double_colon '(Build_t _ x1) := x1;
-  }.
+  Section Fibonacci.
+    Context `{ℋ : State.Trait}.
+    
+    Unset Primitive Projections.
+    Record t : Set := {
+      curr : u32;
+      next : u32;
+    }.
+    Global Set Primitive Projections.
+    
+    #[refine] Global Instance Get_curr : Notation.Dot "curr" := {
+      Notation.dot x := let* x := M.read x in Pure x.(curr) : M _;
+    }.
+    Admitted.
+    #[refine] Global Instance Get_AF_curr : Notation.DoubleColon t "curr" := {
+      Notation.double_colon x := let* x := M.read x in Pure x.(curr) : M _;
+    }.
+    Admitted.
+    #[refine] Global Instance Get_next : Notation.Dot "next" := {
+      Notation.dot x := let* x := M.read x in Pure x.(next) : M _;
+    }.
+    Admitted.
+    #[refine] Global Instance Get_AF_next : Notation.DoubleColon t "next" := {
+      Notation.double_colon x := let* x := M.read x in Pure x.(next) : M _;
+    }.
+    Admitted.
+  End Fibonacci.
 End Fibonacci.
-Definition Fibonacci : Set := Fibonacci.t.
+Definition Fibonacci `{ℋ : State.Trait} : Set := M.val Fibonacci.t.
 
 Module Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
-  Definition Self := iterators.Fibonacci.
-  
-  Definition Item : Set := u32.
-  
-  Parameter next :
-      forall `{H' : State.Trait},
-      (mut_ref Self) -> M (H := H') (core.option.Option Item).
-  
-  Global Instance Method_next `{H' : State.Trait} : Notation.Dot "next" := {
-    Notation.dot := next;
-  }.
-  
-  Global Instance I : core.iter.traits.iterator.Iterator.Trait Self := {
-    core.iter.traits.iterator.Iterator.Item := Item;
-    core.iter.traits.iterator.Iterator.next `{H' : State.Trait} := next;
-  }.
-  Global Hint Resolve I : core.
+  Section Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
+    Context `{ℋ : State.Trait}.
+    
+    Definition Self : Set := iterators.Fibonacci.
+    
+    Definition Item : Set := u32.
+    
+    Parameter next : (mut_ref Self) -> M (core.option.Option Item).
+    
+    Global Instance AssociatedFunction_next :
+      Notation.DoubleColon Self "next" := {
+      Notation.double_colon := next;
+    }.
+    
+    #[refine] Global Instance ℐ :
+      core.iter.traits.iterator.Iterator.Trait Self := {
+      core.iter.traits.iterator.Iterator.Item := Item;
+      core.iter.traits.iterator.Iterator.next := next;
+    }.
+    Admitted.
+  End Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
+  Global Hint Resolve ℐ : core.
 End Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
 
-Parameter fibonacci :
-    forall `{H' : State.Trait},
-    M (H := H') iterators.Fibonacci.
+Parameter fibonacci : forall `{ℋ : State.Trait}, M iterators.Fibonacci.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{H' : State.Trait}, M (H := H') unit.
+Parameter main : forall `{ℋ : State.Trait}, M unit.

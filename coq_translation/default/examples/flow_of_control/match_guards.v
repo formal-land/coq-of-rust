@@ -2,54 +2,100 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module Temperature.
-  Inductive t : Set :=
+  Inductive t `{ℋ : State.Trait} : Set :=
   | Celsius (_ : i32)
   | Fahrenheit (_ : i32).
 End Temperature.
-Definition Temperature : Set := Temperature.t.
+Definition Temperature `{ℋ : State.Trait} : Set := Temperature.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
-  let temperature := match_guards.Temperature.Celsius 35 in
+Definition main `{ℋ : State.Trait} : M unit :=
+  let* temperature :=
+    let* α0 := M.alloc 35 in
+    Pure (match_guards.Temperature.Celsius α0) in
   match temperature with
-  | match_guards.Temperature.Celsius t =>
+  | match_guards.Temperature t =>
     let* _ :=
-      let* α0 := format_argument::["new_display"] (addr_of t) in
-      let* α1 :=
-        format_arguments::["new_v1"]
-          (addr_of [ ""; "C is above 30 Celsius
-" ])
-          (addr_of [ α0 ]) in
-      std.io.stdio._print α1 in
-    Pure tt
-  | match_guards.Temperature.Celsius t =>
+      let* α0 :=
+        borrow
+          [ mk_str ""; mk_str "C is above 30 Celsius
+" ]
+          (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow t i32 in
+      let* α5 := deref α4 i32 in
+      let* α6 := borrow α5 i32 in
+      let* α7 := core.fmt.rt.Argument::["new_display"] α6 in
+      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+      let* α9 := deref α8 (list core.fmt.rt.Argument) in
+      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+      let* α11 := pointer_coercion "Unsize" α10 in
+      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+      std.io.stdio._print α12 in
+    M.alloc tt
+  | match_guards.Temperature t =>
     let* _ :=
-      let* α0 := format_argument::["new_display"] (addr_of t) in
-      let* α1 :=
-        format_arguments::["new_v1"]
-          (addr_of [ ""; "C is below 30 Celsius
-" ])
-          (addr_of [ α0 ]) in
-      std.io.stdio._print α1 in
-    Pure tt
-  | match_guards.Temperature.Fahrenheit t =>
+      let* α0 :=
+        borrow
+          [ mk_str ""; mk_str "C is below 30 Celsius
+" ]
+          (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow t i32 in
+      let* α5 := deref α4 i32 in
+      let* α6 := borrow α5 i32 in
+      let* α7 := core.fmt.rt.Argument::["new_display"] α6 in
+      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+      let* α9 := deref α8 (list core.fmt.rt.Argument) in
+      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+      let* α11 := pointer_coercion "Unsize" α10 in
+      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+      std.io.stdio._print α12 in
+    M.alloc tt
+  | match_guards.Temperature t =>
     let* _ :=
-      let* α0 := format_argument::["new_display"] (addr_of t) in
-      let* α1 :=
-        format_arguments::["new_v1"]
-          (addr_of [ ""; "F is above 86 Fahrenheit
-" ])
-          (addr_of [ α0 ]) in
-      std.io.stdio._print α1 in
-    Pure tt
-  | match_guards.Temperature.Fahrenheit t =>
+      let* α0 :=
+        borrow
+          [ mk_str ""; mk_str "F is above 86 Fahrenheit
+" ]
+          (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow t i32 in
+      let* α5 := deref α4 i32 in
+      let* α6 := borrow α5 i32 in
+      let* α7 := core.fmt.rt.Argument::["new_display"] α6 in
+      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+      let* α9 := deref α8 (list core.fmt.rt.Argument) in
+      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+      let* α11 := pointer_coercion "Unsize" α10 in
+      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+      std.io.stdio._print α12 in
+    M.alloc tt
+  | match_guards.Temperature t =>
     let* _ :=
-      let* α0 := format_argument::["new_display"] (addr_of t) in
-      let* α1 :=
-        format_arguments::["new_v1"]
-          (addr_of [ ""; "F is below 86 Fahrenheit
-" ])
-          (addr_of [ α0 ]) in
-      std.io.stdio._print α1 in
-    Pure tt
+      let* α0 :=
+        borrow
+          [ mk_str ""; mk_str "F is below 86 Fahrenheit
+" ]
+          (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow t i32 in
+      let* α5 := deref α4 i32 in
+      let* α6 := borrow α5 i32 in
+      let* α7 := core.fmt.rt.Argument::["new_display"] α6 in
+      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+      let* α9 := deref α8 (list core.fmt.rt.Argument) in
+      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+      let* α11 := pointer_coercion "Unsize" α10 in
+      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+      std.io.stdio._print α12 in
+    M.alloc tt
   end.

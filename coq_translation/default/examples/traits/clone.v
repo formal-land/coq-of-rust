@@ -2,178 +2,285 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module Unit.
-  Inductive t : Set := Build.
+  Section Unit.
+    Context `{ℋ : State.Trait}.
+    
+    Inductive t : Set := Build.
+  End Unit.
 End Unit.
 Definition Unit := @Unit.t.
 
 Module Impl_core_fmt_Debug_for_clone_Unit.
-  Definition Self := clone.Unit.
-  
-  Definition fmt
-      `{H' : State.Trait}
-      (self : ref Self)
-      (f : mut_ref core.fmt.Formatter)
-      : M (H := H') core.fmt.Result :=
-    core.fmt.Formatter::["write_str"] f "Unit".
-  
-  Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
-    Notation.dot := fmt;
-  }.
-  
-  Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
-  }.
-  Global Hint Resolve I : core.
+  Section Impl_core_fmt_Debug_for_clone_Unit.
+    Context `{ℋ : State.Trait}.
+    
+    Definition Self : Set := clone.Unit.
+    
+    Definition fmt
+        (self : ref Self)
+        (f : mut_ref core.fmt.Formatter)
+        : M ltac:(core.fmt.Result) :=
+      let* α0 := deref f core.fmt.Formatter in
+      let* α1 := borrow_mut α0 core.fmt.Formatter in
+      let* α2 := deref (mk_str "Unit") str in
+      let* α3 := borrow α2 str in
+      core.fmt.Formatter::["write_str"] α1 α3.
+    
+    Global Instance AssociatedFunction_fmt :
+      Notation.DoubleColon Self "fmt" := {
+      Notation.double_colon := fmt;
+    }.
+    
+    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
+      core.fmt.Debug.fmt := fmt;
+    }.
+    Admitted.
+  End Impl_core_fmt_Debug_for_clone_Unit.
+  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_clone_Unit.
 
 Module Impl_core_clone_Clone_for_clone_Unit.
-  Definition Self := clone.Unit.
-  
-  Definition clone
-      `{H' : State.Trait}
-      (self : ref Self)
-      : M (H := H') clone.Unit :=
-    self.["deref"].
-  
-  Global Instance Method_clone `{H' : State.Trait} : Notation.Dot "clone" := {
-    Notation.dot := clone;
-  }.
-  
-  Global Instance I : core.clone.Clone.Trait Self := {
-    core.clone.Clone.clone `{H' : State.Trait} := clone;
-  }.
-  Global Hint Resolve I : core.
+  Section Impl_core_clone_Clone_for_clone_Unit.
+    Context `{ℋ : State.Trait}.
+    
+    Definition Self : Set := clone.Unit.
+    
+    Definition clone (self : ref Self) : M clone.Unit := deref self clone.Unit.
+    
+    Global Instance AssociatedFunction_clone :
+      Notation.DoubleColon Self "clone" := {
+      Notation.double_colon := clone;
+    }.
+    
+    #[refine] Global Instance ℐ : core.clone.Clone.Trait Self := {
+      core.clone.Clone.clone := clone;
+    }.
+    Admitted.
+  End Impl_core_clone_Clone_for_clone_Unit.
+  Global Hint Resolve ℐ : core.
 End Impl_core_clone_Clone_for_clone_Unit.
 
 Module Impl_core_marker_Copy_for_clone_Unit.
-  Definition Self := clone.Unit.
-  
-  Global Instance I : core.marker.Copy.Trait Self := {
-  }.
-  Global Hint Resolve I : core.
+  Section Impl_core_marker_Copy_for_clone_Unit.
+    Context `{ℋ : State.Trait}.
+    
+    Definition Self : Set := clone.Unit.
+    
+    #[refine] Global Instance ℐ : core.marker.Copy.Trait Self := {
+    }.
+    Admitted.
+  End Impl_core_marker_Copy_for_clone_Unit.
+  Global Hint Resolve ℐ : core.
 End Impl_core_marker_Copy_for_clone_Unit.
 
 Module Pair.
-  Unset Primitive Projections.
-  Record t : Set := {
-    _ : alloc.boxed.Box i32 alloc.boxed.Box.Default.A;
-    _ : alloc.boxed.Box i32 alloc.boxed.Box.Default.A;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0 _) := x0;
-  }.
-  Global Instance Get_1 : Notation.Dot 1 := {
-    Notation.dot '(Build_t _ x1) := x1;
-  }.
+  Section Pair.
+    Context `{ℋ : State.Trait}.
+    
+    Unset Primitive Projections.
+    Record t : Set := {
+      x0 : alloc.boxed.Box i32 alloc.boxed.Box.Default.A;
+      x1 : alloc.boxed.Box i32 alloc.boxed.Box.Default.A;
+    }.
+    Global Set Primitive Projections.
+    
+    #[refine] Global Instance Get_0 : Notation.Dot "0" := {
+      Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
+    }.
+    Admitted.
+    #[refine] Global Instance Get_1 : Notation.Dot "1" := {
+      Notation.dot x := let* x := M.read x in Pure x.(x1) : M _;
+    }.
+    Admitted.
+  End Pair.
 End Pair.
-Definition Pair := @Pair.t.
+Definition Pair `{ℋ : State.Trait} : Set := M.val Pair.t.
 
 Module Impl_core_clone_Clone_for_clone_Pair.
-  Definition Self := clone.Pair.
-  
-  Definition clone
-      `{H' : State.Trait}
-      (self : ref Self)
-      : M (H := H') clone.Pair :=
-    let* α0 := core.clone.Clone.clone (addr_of (self.[0])) in
-    let* α1 := core.clone.Clone.clone (addr_of (self.[1])) in
-    Pure (clone.Pair.Build_t α0 α1).
-  
-  Global Instance Method_clone `{H' : State.Trait} : Notation.Dot "clone" := {
-    Notation.dot := clone;
-  }.
-  
-  Global Instance I : core.clone.Clone.Trait Self := {
-    core.clone.Clone.clone `{H' : State.Trait} := clone;
-  }.
-  Global Hint Resolve I : core.
+  Section Impl_core_clone_Clone_for_clone_Pair.
+    Context `{ℋ : State.Trait}.
+    
+    Definition Self : Set := clone.Pair.
+    
+    Definition clone (self : ref Self) : M clone.Pair :=
+      let* α0 := deref self clone.Pair in
+      let* α1 := α0.["0"] in
+      let* α2 := borrow α1 (alloc.boxed.Box i32 alloc.alloc.Global) in
+      let* α3 := deref α2 (alloc.boxed.Box i32 alloc.alloc.Global) in
+      let* α4 := borrow α3 (alloc.boxed.Box i32 alloc.alloc.Global) in
+      let* α5 :=
+        (core.clone.Clone.clone
+            (Self := (alloc.boxed.Box i32 alloc.alloc.Global)))
+          α4 in
+      let* α6 := deref self clone.Pair in
+      let* α7 := α6.["1"] in
+      let* α8 := borrow α7 (alloc.boxed.Box i32 alloc.alloc.Global) in
+      let* α9 := deref α8 (alloc.boxed.Box i32 alloc.alloc.Global) in
+      let* α10 := borrow α9 (alloc.boxed.Box i32 alloc.alloc.Global) in
+      let* α11 :=
+        (core.clone.Clone.clone
+            (Self := (alloc.boxed.Box i32 alloc.alloc.Global)))
+          α10 in
+      Pure (clone.Pair.Build_t α5 α11).
+    
+    Global Instance AssociatedFunction_clone :
+      Notation.DoubleColon Self "clone" := {
+      Notation.double_colon := clone;
+    }.
+    
+    #[refine] Global Instance ℐ : core.clone.Clone.Trait Self := {
+      core.clone.Clone.clone := clone;
+    }.
+    Admitted.
+  End Impl_core_clone_Clone_for_clone_Pair.
+  Global Hint Resolve ℐ : core.
 End Impl_core_clone_Clone_for_clone_Pair.
 
 Module Impl_core_fmt_Debug_for_clone_Pair.
-  Definition Self := clone.Pair.
-  
-  Definition fmt
-      `{H' : State.Trait}
-      (self : ref Self)
-      (f : mut_ref core.fmt.Formatter)
-      : M (H := H') core.fmt.Result :=
-    core.fmt.Formatter::["debug_tuple_field2_finish"]
-      f
-      "Pair"
-      (addr_of (self.[0]))
-      (addr_of (addr_of (self.[1]))).
-  
-  Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
-    Notation.dot := fmt;
-  }.
-  
-  Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
-  }.
-  Global Hint Resolve I : core.
+  Section Impl_core_fmt_Debug_for_clone_Pair.
+    Context `{ℋ : State.Trait}.
+    
+    Definition Self : Set := clone.Pair.
+    
+    Definition fmt
+        (self : ref Self)
+        (f : mut_ref core.fmt.Formatter)
+        : M ltac:(core.fmt.Result) :=
+      let* α0 := deref f core.fmt.Formatter in
+      let* α1 := borrow_mut α0 core.fmt.Formatter in
+      let* α2 := deref (mk_str "Pair") str in
+      let* α3 := borrow α2 str in
+      let* α4 := deref self clone.Pair in
+      let* α5 := α4.["0"] in
+      let* α6 := borrow α5 (alloc.boxed.Box i32 alloc.alloc.Global) in
+      let* α7 := deref α6 (alloc.boxed.Box i32 alloc.alloc.Global) in
+      let* α8 := borrow α7 (alloc.boxed.Box i32 alloc.alloc.Global) in
+      let* α9 := pointer_coercion "Unsize" α8 in
+      let* α10 := deref self clone.Pair in
+      let* α11 := α10.["1"] in
+      let* α12 := borrow α11 (alloc.boxed.Box i32 alloc.alloc.Global) in
+      let* α13 := borrow α12 (ref (alloc.boxed.Box i32 alloc.alloc.Global)) in
+      let* α14 := deref α13 (ref (alloc.boxed.Box i32 alloc.alloc.Global)) in
+      let* α15 := borrow α14 (ref (alloc.boxed.Box i32 alloc.alloc.Global)) in
+      let* α16 := pointer_coercion "Unsize" α15 in
+      core.fmt.Formatter::["debug_tuple_field2_finish"] α1 α3 α9 α16.
+    
+    Global Instance AssociatedFunction_fmt :
+      Notation.DoubleColon Self "fmt" := {
+      Notation.double_colon := fmt;
+    }.
+    
+    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
+      core.fmt.Debug.fmt := fmt;
+    }.
+    Admitted.
+  End Impl_core_fmt_Debug_for_clone_Pair.
+  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_clone_Pair.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
-  let unit := clone.Unit.Build in
+Definition main `{ℋ : State.Trait} : M unit :=
+  let unit := clone.Unit.Build_t tt in
   let copied_unit := unit in
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_debug"] (addr_of unit) in
-      let* α1 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "original: "; "
-" ])
-          (addr_of [ α0 ]) in
-      std.io.stdio._print α1 in
-    Pure tt in
+      let* α0 := borrow [ mk_str "original: "; mk_str "
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow unit clone.Unit in
+      let* α5 := deref α4 clone.Unit in
+      let* α6 := borrow α5 clone.Unit in
+      let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
+      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+      let* α9 := deref α8 (list core.fmt.rt.Argument) in
+      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+      let* α11 := pointer_coercion "Unsize" α10 in
+      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+      std.io.stdio._print α12 in
+    M.alloc tt in
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_debug"] (addr_of copied_unit) in
-      let* α1 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "copy: "; "
-" ])
-          (addr_of [ α0 ]) in
-      std.io.stdio._print α1 in
-    Pure tt in
+      let* α0 := borrow [ mk_str "copy: "; mk_str "
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow copied_unit clone.Unit in
+      let* α5 := deref α4 clone.Unit in
+      let* α6 := borrow α5 clone.Unit in
+      let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
+      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+      let* α9 := deref α8 (list core.fmt.rt.Argument) in
+      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+      let* α11 := pointer_coercion "Unsize" α10 in
+      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+      std.io.stdio._print α12 in
+    M.alloc tt in
   let* pair :=
-    let* α0 := (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] 1 in
-    let* α1 := (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] 2 in
-    Pure (clone.Pair.Build_t α0 α1) in
+    let* α0 := M.alloc 1 in
+    let* α1 := (alloc.boxed.Box T alloc.alloc.Global)::["new"] α0 in
+    let* α2 := M.alloc 2 in
+    let* α3 := (alloc.boxed.Box T alloc.alloc.Global)::["new"] α2 in
+    Pure (clone.Pair.Build_t α1 α3) in
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_debug"] (addr_of pair) in
-      let* α1 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "original: "; "
-" ])
-          (addr_of [ α0 ]) in
-      std.io.stdio._print α1 in
-    Pure tt in
+      let* α0 := borrow [ mk_str "original: "; mk_str "
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow pair clone.Pair in
+      let* α5 := deref α4 clone.Pair in
+      let* α6 := borrow α5 clone.Pair in
+      let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
+      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+      let* α9 := deref α8 (list core.fmt.rt.Argument) in
+      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+      let* α11 := pointer_coercion "Unsize" α10 in
+      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+      std.io.stdio._print α12 in
+    M.alloc tt in
   let moved_pair := pair in
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_debug"] (addr_of moved_pair) in
-      let* α1 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "moved: "; "
-" ])
-          (addr_of [ α0 ]) in
-      std.io.stdio._print α1 in
-    Pure tt in
-  let* cloned_pair := moved_pair.["clone"] in
+      let* α0 := borrow [ mk_str "moved: "; mk_str "
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow moved_pair clone.Pair in
+      let* α5 := deref α4 clone.Pair in
+      let* α6 := borrow α5 clone.Pair in
+      let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
+      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+      let* α9 := deref α8 (list core.fmt.rt.Argument) in
+      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+      let* α11 := pointer_coercion "Unsize" α10 in
+      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+      std.io.stdio._print α12 in
+    M.alloc tt in
+  let* cloned_pair :=
+    let* α0 := borrow moved_pair clone.Pair in
+    (core.clone.Clone.clone (Self := clone.Pair)) α0 in
   let* _ := core.mem.drop moved_pair in
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_debug"] (addr_of cloned_pair) in
-      let* α1 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "clone: "; "
-" ])
-          (addr_of [ α0 ]) in
-      std.io.stdio._print α1 in
-    Pure tt in
-  Pure tt.
+      let* α0 := borrow [ mk_str "clone: "; mk_str "
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow cloned_pair clone.Pair in
+      let* α5 := deref α4 clone.Pair in
+      let* α6 := borrow α5 clone.Pair in
+      let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
+      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+      let* α9 := deref α8 (list core.fmt.rt.Argument) in
+      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+      let* α11 := pointer_coercion "Unsize" α10 in
+      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+      std.io.stdio._print α12 in
+    M.alloc tt in
+  M.alloc tt.

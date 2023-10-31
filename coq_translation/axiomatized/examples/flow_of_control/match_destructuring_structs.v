@@ -2,27 +2,35 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module Foo.
-  Unset Primitive Projections.
-  Record t : Set := {
-    x : u32 * u32;
-    y : u32;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_x : Notation.Dot "x" := {
-    Notation.dot '(Build_t x0 _) := x0;
-  }.
-  Global Instance Get_AF_x : Notation.DoubleColon t "x" := {
-    Notation.double_colon '(Build_t x0 _) := x0;
-  }.
-  Global Instance Get_y : Notation.Dot "y" := {
-    Notation.dot '(Build_t _ x1) := x1;
-  }.
-  Global Instance Get_AF_y : Notation.DoubleColon t "y" := {
-    Notation.double_colon '(Build_t _ x1) := x1;
-  }.
+  Section Foo.
+    Context `{ℋ : State.Trait}.
+    
+    Unset Primitive Projections.
+    Record t : Set := {
+      x : u32 * u32;
+      y : u32;
+    }.
+    Global Set Primitive Projections.
+    
+    #[refine] Global Instance Get_x : Notation.Dot "x" := {
+      Notation.dot x' := let* x' := M.read x' in Pure x'.(x) : M _;
+    }.
+    Admitted.
+    #[refine] Global Instance Get_AF_x : Notation.DoubleColon t "x" := {
+      Notation.double_colon x' := let* x' := M.read x' in Pure x'.(x) : M _;
+    }.
+    Admitted.
+    #[refine] Global Instance Get_y : Notation.Dot "y" := {
+      Notation.dot x := let* x := M.read x in Pure x.(y) : M _;
+    }.
+    Admitted.
+    #[refine] Global Instance Get_AF_y : Notation.DoubleColon t "y" := {
+      Notation.double_colon x := let* x := M.read x in Pure x.(y) : M _;
+    }.
+    Admitted.
+  End Foo.
 End Foo.
-Definition Foo : Set := Foo.t.
+Definition Foo `{ℋ : State.Trait} : Set := M.val Foo.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{H' : State.Trait}, M (H := H') unit.
+Parameter main : forall `{ℋ : State.Trait}, M unit.

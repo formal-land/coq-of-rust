@@ -2,105 +2,241 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
-  let pangram : ref str := "the quick brown fox jumps over the lazy dog" in
+Definition main `{ℋ : State.Trait} : M unit :=
+  let pangram := mk_str "the quick brown fox jumps over the lazy dog" in
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_display"] (addr_of pangram) in
-      let* α1 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "Pangram: "; "
-" ])
-          (addr_of [ α0 ]) in
-      std.io.stdio._print α1 in
-    Pure tt in
+      let* α0 := borrow [ mk_str "Pangram: "; mk_str "
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow pangram (ref str) in
+      let* α5 := deref α4 (ref str) in
+      let* α6 := borrow α5 (ref str) in
+      let* α7 := core.fmt.rt.Argument::["new_display"] α6 in
+      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+      let* α9 := deref α8 (list core.fmt.rt.Argument) in
+      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+      let* α11 := pointer_coercion "Unsize" α10 in
+      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+      std.io.stdio._print α12 in
+    M.alloc tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := borrow [ mk_str "Words in reverse
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := core.fmt.Arguments::["new_const"] α3 in
+      std.io.stdio._print α4 in
+    M.alloc tt in
+  let* _ :=
+    let* α0 := deref pangram str in
+    let* α1 := borrow α0 str in
+    let* α2 := str::["split_whitespace"] α1 in
+    let* α3 :=
+      (core.iter.traits.iterator.Iterator.rev
+          (Self := core.str.iter.SplitWhitespace))
+        α2 in
+    let* α4 :=
+      (core.iter.traits.collect.IntoIterator.into_iter
+          (Self := (core.iter.adapters.rev.Rev core.str.iter.SplitWhitespace)))
+        α3 in
+    let* α5 :=
+      match α4 with
+      | iter =>
+        loop
+          (let* _ :=
+            let* α0 :=
+              borrow_mut
+                iter
+                (core.iter.adapters.rev.Rev core.str.iter.SplitWhitespace) in
+            let* α1 :=
+              deref
+                α0
+                (core.iter.adapters.rev.Rev core.str.iter.SplitWhitespace) in
+            let* α2 :=
+              borrow_mut
+                α1
+                (core.iter.adapters.rev.Rev core.str.iter.SplitWhitespace) in
+            let* α3 :=
+              (core.iter.traits.iterator.Iterator.next
+                  (Self :=
+                    (core.iter.adapters.rev.Rev core.str.iter.SplitWhitespace)))
+                α2 in
+            match α3 with
+            | core.option.Option  =>
+              let* α0 := Break in
+              never_to_any α0
+            | core.option.Option word =>
+              let* _ :=
+                let* _ :=
+                  let* α0 :=
+                    borrow [ mk_str "> "; mk_str "
+" ] (list (ref str)) in
+                  let* α1 := deref α0 (list (ref str)) in
+                  let* α2 := borrow α1 (list (ref str)) in
+                  let* α3 := pointer_coercion "Unsize" α2 in
+                  let* α4 := borrow word (ref str) in
+                  let* α5 := deref α4 (ref str) in
+                  let* α6 := borrow α5 (ref str) in
+                  let* α7 := core.fmt.rt.Argument::["new_display"] α6 in
+                  let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+                  let* α9 := deref α8 (list core.fmt.rt.Argument) in
+                  let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+                  let* α11 := pointer_coercion "Unsize" α10 in
+                  let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+                  std.io.stdio._print α12 in
+                M.alloc tt in
+              M.alloc tt
+            end in
+          M.alloc tt)
+      end in
+    use α5 in
+  let* chars :=
+    let* α0 := deref pangram str in
+    let* α1 := borrow α0 str in
+    let* α2 := str::["chars"] α1 in
+    (core.iter.traits.iterator.Iterator.collect (Self := core.str.iter.Chars))
+      α2 in
+  let* _ :=
+    let* α0 := borrow_mut chars (alloc.vec.Vec char alloc.alloc.Global) in
+    let* α1 :=
+      (core.ops.deref.DerefMut.deref_mut
+          (Self := (alloc.vec.Vec char alloc.alloc.Global)))
+        α0 in
+    let* α2 := deref α1 (Slice char) in
+    let* α3 := borrow_mut α2 (Slice char) in
+    (Slice T)::["sort"] α3 in
+  let* _ :=
+    let* α0 := borrow_mut chars (alloc.vec.Vec char alloc.alloc.Global) in
+    (alloc.vec.Vec T A)::["dedup"] α0 in
+  let* string := alloc.string.String::["new"] in
+  let* _ :=
+    let* α0 :=
+      (core.iter.traits.collect.IntoIterator.into_iter
+          (Self := (alloc.vec.Vec char alloc.alloc.Global)))
+        chars in
+    let* α1 :=
+      match α0 with
+      | iter =>
+        loop
+          (let* _ :=
+            let* α0 :=
+              borrow_mut
+                iter
+                (alloc.vec.into_iter.IntoIter char alloc.alloc.Global) in
+            let* α1 :=
+              deref α0 (alloc.vec.into_iter.IntoIter char alloc.alloc.Global) in
+            let* α2 :=
+              borrow_mut
+                α1
+                (alloc.vec.into_iter.IntoIter char alloc.alloc.Global) in
+            let* α3 :=
+              (core.iter.traits.iterator.Iterator.next
+                  (Self :=
+                    (alloc.vec.into_iter.IntoIter char alloc.alloc.Global)))
+                α2 in
+            match α3 with
+            | core.option.Option  =>
+              let* α0 := Break in
+              never_to_any α0
+            | core.option.Option c =>
+              let* _ :=
+                let* α0 := borrow_mut string alloc.string.String in
+                alloc.string.String::["push"] α0 c in
+              let* _ :=
+                let* α0 := borrow_mut string alloc.string.String in
+                let* α1 := deref (mk_str ", ") str in
+                let* α2 := borrow α1 str in
+                alloc.string.String::["push_str"] α0 α2 in
+              M.alloc tt
+            end in
+          M.alloc tt)
+      end in
+    use α1 in
+  let* chars_to_trim :=
+    let* α0 := M.alloc " "%char in
+    let* α1 := M.alloc ","%char in
+    let* α2 := borrow [ α0; α1 ] (list char) in
+    let* α3 := deref α2 (list char) in
+    let* α4 := borrow α3 (list char) in
+    pointer_coercion "Unsize" α4 in
+  let* trimmed_str :=
+    let* α0 := borrow string alloc.string.String in
+    let* α1 := (core.ops.deref.Deref.deref (Self := alloc.string.String)) α0 in
+    let* α2 := deref α1 str in
+    let* α3 := borrow α2 str in
+    let* α4 := str::["trim_matches"] α3 chars_to_trim in
+    let* α5 := deref α4 str in
+    borrow α5 str in
   let* _ :=
     let* _ :=
       let* α0 :=
-        format_arguments::["new_const"] (addr_of [ "Words in reverse
-" ]) in
-      std.io.stdio._print α0 in
-    Pure tt in
-  let* _ :=
-    let* α0 := pangram.["split_whitespace"] in
-    let* α1 := α0.["rev"] in
-    let* α2 := α1.["into_iter"] in
-    match α2 with
-    | iter =>
-      loop
-        (let* _ :=
-          let* α0 := (addr_of iter).["next"] in
-          match α0 with
-          | core.option.Option.None  => Break
-          | core.option.Option.Some word =>
-            let* _ :=
-              let* _ :=
-                let* α0 := format_argument::["new_display"] (addr_of word) in
-                let* α1 :=
-                  format_arguments::["new_v1"]
-                    (addr_of [ "> "; "
-" ])
-                    (addr_of [ α0 ]) in
-                std.io.stdio._print α1 in
-              Pure tt in
-            Pure tt
-          end in
-        Pure tt)
-    end in
-  let* chars :=
-    let* α0 := pangram.["chars"] in
-    α0.["collect"] in
-  let* _ := chars.["sort"] in
-  let* _ := chars.["dedup"] in
-  let* string := alloc.string.String::["new"] in
-  let* _ :=
-    let* α0 := chars.["into_iter"] in
-    match α0 with
-    | iter =>
-      loop
-        (let* _ :=
-          let* α0 := (addr_of iter).["next"] in
-          match α0 with
-          | core.option.Option.None  => Break
-          | core.option.Option.Some c =>
-            let* _ := string.["push"] c in
-            let* _ := string.["push_str"] ", " in
-            Pure tt
-          end in
-        Pure tt)
-    end in
-  let chars_to_trim : ref (Slice char) := addr_of [ " "%char; ","%char ] in
-  let* trimmed_str := string.["trim_matches"] chars_to_trim in
+        borrow [ mk_str "Used characters: "; mk_str "
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow trimmed_str (ref str) in
+      let* α5 := deref α4 (ref str) in
+      let* α6 := borrow α5 (ref str) in
+      let* α7 := core.fmt.rt.Argument::["new_display"] α6 in
+      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+      let* α9 := deref α8 (list core.fmt.rt.Argument) in
+      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+      let* α11 := pointer_coercion "Unsize" α10 in
+      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+      std.io.stdio._print α12 in
+    M.alloc tt in
+  let* alice :=
+    (core.convert.From.from (Self := alloc.string.String))
+      (mk_str "I like dogs") in
+  let* bob :=
+    let* α0 := borrow alice alloc.string.String in
+    let* α1 := (core.ops.deref.Deref.deref (Self := alloc.string.String)) α0 in
+    let* α2 := deref α1 str in
+    let* α3 := borrow α2 str in
+    let* α4 := deref (mk_str "cat") str in
+    let* α5 := borrow α4 str in
+    str::["replace"] α3 (mk_str "dog") α5 in
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_display"] (addr_of trimmed_str) in
-      let* α1 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "Used characters: "; "
-" ])
-          (addr_of [ α0 ]) in
-      std.io.stdio._print α1 in
-    Pure tt in
-  let* alice := alloc.string.String::["from"] "I like dogs" in
-  let* bob := alice.["replace"] "dog" "cat" in
+      let* α0 :=
+        borrow [ mk_str "Alice says: "; mk_str "
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow alice alloc.string.String in
+      let* α5 := deref α4 alloc.string.String in
+      let* α6 := borrow α5 alloc.string.String in
+      let* α7 := core.fmt.rt.Argument::["new_display"] α6 in
+      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+      let* α9 := deref α8 (list core.fmt.rt.Argument) in
+      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+      let* α11 := pointer_coercion "Unsize" α10 in
+      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+      std.io.stdio._print α12 in
+    M.alloc tt in
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_display"] (addr_of alice) in
-      let* α1 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "Alice says: "; "
-" ])
-          (addr_of [ α0 ]) in
-      std.io.stdio._print α1 in
-    Pure tt in
-  let* _ :=
-    let* _ :=
-      let* α0 := format_argument::["new_display"] (addr_of bob) in
-      let* α1 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "Bob says: "; "
-" ])
-          (addr_of [ α0 ]) in
-      std.io.stdio._print α1 in
-    Pure tt in
-  Pure tt.
+      let* α0 := borrow [ mk_str "Bob says: "; mk_str "
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow bob alloc.string.String in
+      let* α5 := deref α4 alloc.string.String in
+      let* α6 := borrow α5 alloc.string.String in
+      let* α7 := core.fmt.rt.Argument::["new_display"] α6 in
+      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+      let* α9 := deref α8 (list core.fmt.rt.Argument) in
+      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+      let* α11 := pointer_coercion "Unsize" α10 in
+      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+      std.io.stdio._print α12 in
+    M.alloc tt in
+  M.alloc tt.

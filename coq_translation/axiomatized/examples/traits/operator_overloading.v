@@ -2,104 +2,136 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module Foo.
-  Inductive t : Set := Build.
+  Section Foo.
+    Context `{ℋ : State.Trait}.
+    
+    Inductive t : Set := Build.
+  End Foo.
 End Foo.
 Definition Foo := @Foo.t.
 
 Module Bar.
-  Inductive t : Set := Build.
+  Section Bar.
+    Context `{ℋ : State.Trait}.
+    
+    Inductive t : Set := Build.
+  End Bar.
 End Bar.
 Definition Bar := @Bar.t.
 
 Module FooBar.
-  Inductive t : Set := Build.
+  Section FooBar.
+    Context `{ℋ : State.Trait}.
+    
+    Inductive t : Set := Build.
+  End FooBar.
 End FooBar.
 Definition FooBar := @FooBar.t.
 
 Module Impl_core_fmt_Debug_for_operator_overloading_FooBar.
-  Definition Self := operator_overloading.FooBar.
-  
-  Parameter fmt :
-      forall `{H' : State.Trait},
-      (ref Self) -> (mut_ref core.fmt.Formatter) -> M (H := H') core.fmt.Result.
-  
-  Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
-    Notation.dot := fmt;
-  }.
-  
-  Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
-  }.
-  Global Hint Resolve I : core.
+  Section Impl_core_fmt_Debug_for_operator_overloading_FooBar.
+    Context `{ℋ : State.Trait}.
+    
+    Definition Self : Set := operator_overloading.FooBar.
+    
+    Parameter fmt :
+        (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
+    
+    Global Instance AssociatedFunction_fmt :
+      Notation.DoubleColon Self "fmt" := {
+      Notation.double_colon := fmt;
+    }.
+    
+    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
+      core.fmt.Debug.fmt := fmt;
+    }.
+    Admitted.
+  End Impl_core_fmt_Debug_for_operator_overloading_FooBar.
+  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_operator_overloading_FooBar.
 
 Module BarFoo.
-  Inductive t : Set := Build.
+  Section BarFoo.
+    Context `{ℋ : State.Trait}.
+    
+    Inductive t : Set := Build.
+  End BarFoo.
 End BarFoo.
 Definition BarFoo := @BarFoo.t.
 
 Module Impl_core_fmt_Debug_for_operator_overloading_BarFoo.
-  Definition Self := operator_overloading.BarFoo.
-  
-  Parameter fmt :
-      forall `{H' : State.Trait},
-      (ref Self) -> (mut_ref core.fmt.Formatter) -> M (H := H') core.fmt.Result.
-  
-  Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
-    Notation.dot := fmt;
-  }.
-  
-  Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
-  }.
-  Global Hint Resolve I : core.
+  Section Impl_core_fmt_Debug_for_operator_overloading_BarFoo.
+    Context `{ℋ : State.Trait}.
+    
+    Definition Self : Set := operator_overloading.BarFoo.
+    
+    Parameter fmt :
+        (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
+    
+    Global Instance AssociatedFunction_fmt :
+      Notation.DoubleColon Self "fmt" := {
+      Notation.double_colon := fmt;
+    }.
+    
+    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
+      core.fmt.Debug.fmt := fmt;
+    }.
+    Admitted.
+  End Impl_core_fmt_Debug_for_operator_overloading_BarFoo.
+  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_operator_overloading_BarFoo.
 
 Module Impl_core_ops_arith_Add_for_operator_overloading_Foo.
-  Definition Self := operator_overloading.Foo.
-  
-  Definition Output : Set := operator_overloading.FooBar.
-  
-  Parameter add :
-      forall `{H' : State.Trait},
-      Self ->
-        operator_overloading.Bar ->
-        M (H := H') operator_overloading.FooBar.
-  
-  Global Instance Method_add `{H' : State.Trait} : Notation.Dot "add" := {
-    Notation.dot := add;
-  }.
-  
-  Global Instance I
-    : core.ops.arith.Add.Trait Self (Rhs := operator_overloading.Bar) := {
-    core.ops.arith.Add.Output := Output;
-    core.ops.arith.Add.add `{H' : State.Trait} := add;
-  }.
-  Global Hint Resolve I : core.
+  Section Impl_core_ops_arith_Add_for_operator_overloading_Foo.
+    Context `{ℋ : State.Trait}.
+    
+    Definition Self : Set := operator_overloading.Foo.
+    
+    Definition Output : Set := operator_overloading.FooBar.
+    
+    Parameter add :
+        Self -> operator_overloading.Bar -> M operator_overloading.FooBar.
+    
+    Global Instance AssociatedFunction_add :
+      Notation.DoubleColon Self "add" := {
+      Notation.double_colon := add;
+    }.
+    
+    #[refine] Global Instance ℐ :
+      core.ops.arith.Add.Trait Self (Rhs := operator_overloading.Bar) := {
+      core.ops.arith.Add.Output := Output;
+      core.ops.arith.Add.add := add;
+    }.
+    Admitted.
+  End Impl_core_ops_arith_Add_for_operator_overloading_Foo.
+  Global Hint Resolve ℐ : core.
 End Impl_core_ops_arith_Add_for_operator_overloading_Foo.
 
 Module Impl_core_ops_arith_Add_for_operator_overloading_Bar.
-  Definition Self := operator_overloading.Bar.
-  
-  Definition Output : Set := operator_overloading.BarFoo.
-  
-  Parameter add :
-      forall `{H' : State.Trait},
-      Self ->
-        operator_overloading.Foo ->
-        M (H := H') operator_overloading.BarFoo.
-  
-  Global Instance Method_add `{H' : State.Trait} : Notation.Dot "add" := {
-    Notation.dot := add;
-  }.
-  
-  Global Instance I
-    : core.ops.arith.Add.Trait Self (Rhs := operator_overloading.Foo) := {
-    core.ops.arith.Add.Output := Output;
-    core.ops.arith.Add.add `{H' : State.Trait} := add;
-  }.
-  Global Hint Resolve I : core.
+  Section Impl_core_ops_arith_Add_for_operator_overloading_Bar.
+    Context `{ℋ : State.Trait}.
+    
+    Definition Self : Set := operator_overloading.Bar.
+    
+    Definition Output : Set := operator_overloading.BarFoo.
+    
+    Parameter add :
+        Self -> operator_overloading.Foo -> M operator_overloading.BarFoo.
+    
+    Global Instance AssociatedFunction_add :
+      Notation.DoubleColon Self "add" := {
+      Notation.double_colon := add;
+    }.
+    
+    #[refine] Global Instance ℐ :
+      core.ops.arith.Add.Trait Self (Rhs := operator_overloading.Foo) := {
+      core.ops.arith.Add.Output := Output;
+      core.ops.arith.Add.add := add;
+    }.
+    Admitted.
+  End Impl_core_ops_arith_Add_for_operator_overloading_Bar.
+  Global Hint Resolve ℐ : core.
 End Impl_core_ops_arith_Add_for_operator_overloading_Bar.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{H' : State.Trait}, M (H := H') unit.
+Parameter main : forall `{ℋ : State.Trait}, M unit.

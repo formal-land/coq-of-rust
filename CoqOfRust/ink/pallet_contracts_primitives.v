@@ -60,13 +60,13 @@ pub struct ExecReturnValue {
 *)
 Unset Primitive Projections.
 Module ExecReturnValue.
-  Record t : Set := {
+  Record t `{State.Trait} : Set := {
     flags: ReturnFlags;
     data: alloc.vec.Vec u8 alloc.vec.Vec.Default.A;
   }.
 End ExecReturnValue.
 Global Set Primitive Projections.
-Definition ExecReturnValue := ExecReturnValue.t.
+Definition ExecReturnValue `{State.Trait} := ExecReturnValue.t.
 
 (* 
 pub struct InstantiateReturnValue<AccountId> {
@@ -76,13 +76,13 @@ pub struct InstantiateReturnValue<AccountId> {
 *)
 Unset Primitive Projections.
 Module InstantiateReturnValue.
-  Record t (AccountId : Set) : Set := { 
+  Record t `{State.Trait} (AccountId : Set) : Set := { 
     result: ExecReturnValue;
     account_id: AccountId;
   }.
 End InstantiateReturnValue.
 Global Set Primitive Projections.
-Definition InstantiateReturnValue := InstantiateReturnValue.t.
+Definition InstantiateReturnValue `{State.Trait} := InstantiateReturnValue.t.
 
 
 (* 
@@ -96,7 +96,7 @@ pub struct ContractResult<R, Balance> {
 *)
 Unset Primitive Projections.
 Module ContractResult.
-  Record t (R Balance : Set) : Set := { 
+  Record t `{State.Trait} (R Balance : Set) : Set := {
     gas_consumed: Weight;
     gas_required: Weight;
     storage_deposit: StorageDeposit Balance;
@@ -105,7 +105,7 @@ Module ContractResult.
   }.
 End ContractResult.
 Global Set Primitive Projections.
-Definition ContractResult := ContractResult.t.
+Definition ContractResult `{State.Trait} := ContractResult.t.
 
 (* ********TYPEDEFS******** *)
 
@@ -113,7 +113,9 @@ Definition ContractResult := ContractResult.t.
 Definition CodeUploadResult (CodeHash Balance : Set) := (Result (CodeUploadReturnValue CodeHash Balance)) DispatchError.
 
 (* pub type ContractInstantiateResult<AccountId, Balance> = ContractResult<Result<InstantiateReturnValue<AccountId>, DispatchError>, Balance>; *)
-Definition ContractInstantiateResult (AccountId Balance: Set) := ContractResult (Result (InstantiateReturnValue AccountId) DispatchError) Balance.
+Definition ContractInstantiateResult `{State.Trait} (AccountId Balance: Set) :=
+  ContractResult (Result (InstantiateReturnValue AccountId) DispatchError) Balance.
 
 (* pub type ContractExecResult<Balance> = ContractResult<Result<ExecReturnValue, DispatchError>, Balance>; *)
-Definition ContractExecResult (Balance : Set) := ContractResult (Result ExecReturnValue DispatchError) Balance.
+Definition ContractExecResult `{State.Trait} (Balance : Set) :=
+  ContractResult (Result ExecReturnValue DispatchError) Balance.

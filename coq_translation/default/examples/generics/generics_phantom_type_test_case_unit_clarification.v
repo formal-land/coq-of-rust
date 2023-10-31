@@ -2,173 +2,252 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module Inch.
-  Inductive t : Set :=
+  Inductive t `{ℋ : State.Trait} : Set :=
   .
 End Inch.
-Definition Inch : Set := Inch.t.
+Definition Inch `{ℋ : State.Trait} : Set := Inch.t.
 
 Module
   Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Inch.
-  Definition Self := generics_phantom_type_test_case_unit_clarification.Inch.
-  
-  Definition fmt
-      `{H' : State.Trait}
-      (self : ref Self)
-      (f : mut_ref core.fmt.Formatter)
-      : M (H := H') core.fmt.Result :=
-    core.intrinsics.unreachable.
-  
-  Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
-    Notation.dot := fmt;
-  }.
-  
-  Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
-  }.
-  Global Hint Resolve I : core.
+  Section
+    Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Inch.
+    Context `{ℋ : State.Trait}.
+    
+    Definition Self : Set :=
+      generics_phantom_type_test_case_unit_clarification.Inch.
+    
+    Definition fmt
+        (self : ref Self)
+        (f : mut_ref core.fmt.Formatter)
+        : M ltac:(core.fmt.Result) :=
+      let* α0 := "unimplemented parent_kind" in
+      never_to_any α0.
+    
+    Global Instance AssociatedFunction_fmt :
+      Notation.DoubleColon Self "fmt" := {
+      Notation.double_colon := fmt;
+    }.
+    
+    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
+      core.fmt.Debug.fmt := fmt;
+    }.
+    Admitted.
+  End
+    Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Inch.
+  Global Hint Resolve ℐ : core.
 End
   Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Inch.
 
 Module
   Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Inch.
-  Definition Self := generics_phantom_type_test_case_unit_clarification.Inch.
-  
-  Definition clone
-      `{H' : State.Trait}
-      (self : ref Self)
-      : M (H := H') generics_phantom_type_test_case_unit_clarification.Inch :=
-    self.["deref"].
-  
-  Global Instance Method_clone `{H' : State.Trait} : Notation.Dot "clone" := {
-    Notation.dot := clone;
-  }.
-  
-  Global Instance I : core.clone.Clone.Trait Self := {
-    core.clone.Clone.clone `{H' : State.Trait} := clone;
-  }.
-  Global Hint Resolve I : core.
+  Section
+    Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Inch.
+    Context `{ℋ : State.Trait}.
+    
+    Definition Self : Set :=
+      generics_phantom_type_test_case_unit_clarification.Inch.
+    
+    Definition clone
+        (self : ref Self)
+        : M generics_phantom_type_test_case_unit_clarification.Inch :=
+      deref self generics_phantom_type_test_case_unit_clarification.Inch.
+    
+    Global Instance AssociatedFunction_clone :
+      Notation.DoubleColon Self "clone" := {
+      Notation.double_colon := clone;
+    }.
+    
+    #[refine] Global Instance ℐ : core.clone.Clone.Trait Self := {
+      core.clone.Clone.clone := clone;
+    }.
+    Admitted.
+  End
+    Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Inch.
+  Global Hint Resolve ℐ : core.
 End
   Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Inch.
 
 Module
   Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Inch.
-  Definition Self := generics_phantom_type_test_case_unit_clarification.Inch.
-  
-  Global Instance I : core.marker.Copy.Trait Self := {
-  }.
-  Global Hint Resolve I : core.
+  Section
+    Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Inch.
+    Context `{ℋ : State.Trait}.
+    
+    Definition Self : Set :=
+      generics_phantom_type_test_case_unit_clarification.Inch.
+    
+    #[refine] Global Instance ℐ : core.marker.Copy.Trait Self := {
+    }.
+    Admitted.
+  End
+    Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Inch.
+  Global Hint Resolve ℐ : core.
 End
   Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Inch.
 
 Module Mm.
-  Inductive t : Set :=
+  Inductive t `{ℋ : State.Trait} : Set :=
   .
 End Mm.
-Definition Mm : Set := Mm.t.
+Definition Mm `{ℋ : State.Trait} : Set := Mm.t.
 
 Module
   Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Mm.
-  Definition Self := generics_phantom_type_test_case_unit_clarification.Mm.
-  
-  Definition fmt
-      `{H' : State.Trait}
-      (self : ref Self)
-      (f : mut_ref core.fmt.Formatter)
-      : M (H := H') core.fmt.Result :=
-    core.intrinsics.unreachable.
-  
-  Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
-    Notation.dot := fmt;
-  }.
-  
-  Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
-  }.
-  Global Hint Resolve I : core.
+  Section
+    Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Mm.
+    Context `{ℋ : State.Trait}.
+    
+    Definition Self : Set :=
+      generics_phantom_type_test_case_unit_clarification.Mm.
+    
+    Definition fmt
+        (self : ref Self)
+        (f : mut_ref core.fmt.Formatter)
+        : M ltac:(core.fmt.Result) :=
+      let* α0 := "unimplemented parent_kind" in
+      never_to_any α0.
+    
+    Global Instance AssociatedFunction_fmt :
+      Notation.DoubleColon Self "fmt" := {
+      Notation.double_colon := fmt;
+    }.
+    
+    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
+      core.fmt.Debug.fmt := fmt;
+    }.
+    Admitted.
+  End
+    Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Mm.
+  Global Hint Resolve ℐ : core.
 End
   Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Mm.
 
 Module
   Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Mm.
-  Definition Self := generics_phantom_type_test_case_unit_clarification.Mm.
-  
-  Definition clone
-      `{H' : State.Trait}
-      (self : ref Self)
-      : M (H := H') generics_phantom_type_test_case_unit_clarification.Mm :=
-    self.["deref"].
-  
-  Global Instance Method_clone `{H' : State.Trait} : Notation.Dot "clone" := {
-    Notation.dot := clone;
-  }.
-  
-  Global Instance I : core.clone.Clone.Trait Self := {
-    core.clone.Clone.clone `{H' : State.Trait} := clone;
-  }.
-  Global Hint Resolve I : core.
+  Section
+    Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Mm.
+    Context `{ℋ : State.Trait}.
+    
+    Definition Self : Set :=
+      generics_phantom_type_test_case_unit_clarification.Mm.
+    
+    Definition clone
+        (self : ref Self)
+        : M generics_phantom_type_test_case_unit_clarification.Mm :=
+      deref self generics_phantom_type_test_case_unit_clarification.Mm.
+    
+    Global Instance AssociatedFunction_clone :
+      Notation.DoubleColon Self "clone" := {
+      Notation.double_colon := clone;
+    }.
+    
+    #[refine] Global Instance ℐ : core.clone.Clone.Trait Self := {
+      core.clone.Clone.clone := clone;
+    }.
+    Admitted.
+  End
+    Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Mm.
+  Global Hint Resolve ℐ : core.
 End
   Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Mm.
 
 Module
   Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Mm.
-  Definition Self := generics_phantom_type_test_case_unit_clarification.Mm.
-  
-  Global Instance I : core.marker.Copy.Trait Self := {
-  }.
-  Global Hint Resolve I : core.
+  Section
+    Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Mm.
+    Context `{ℋ : State.Trait}.
+    
+    Definition Self : Set :=
+      generics_phantom_type_test_case_unit_clarification.Mm.
+    
+    #[refine] Global Instance ℐ : core.marker.Copy.Trait Self := {
+    }.
+    Admitted.
+  End
+    Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Mm.
+  Global Hint Resolve ℐ : core.
 End
   Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Mm.
 
 Module Length.
   Section Length.
+    Context `{ℋ : State.Trait}.
+    
     Context {Unit : Set}.
+    
     Unset Primitive Projections.
     Record t : Set := {
-      _ : f64;
-      _ : core.marker.PhantomData Unit;
+      x0 : f64;
+      x1 : core.marker.PhantomData Unit;
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_0 : Notation.Dot 0 := {
-      Notation.dot '(Build_t x0 _) := x0;
+    #[refine] Global Instance Get_0 : Notation.Dot "0" := {
+      Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
-    Global Instance Get_1 : Notation.Dot 1 := {
-      Notation.dot '(Build_t _ x1) := x1;
+    Admitted.
+    #[refine] Global Instance Get_1 : Notation.Dot "1" := {
+      Notation.dot x := let* x := M.read x in Pure x.(x1) : M _;
     }.
+    Admitted.
   End Length.
 End Length.
-Definition Length := @Length.t.
+Definition Length `{ℋ : State.Trait} (Unit : Set) : Set :=
+  M.val (Length.t (Unit := Unit)).
 
 Module
   Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
   Section
     Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
+    Context `{ℋ : State.Trait}.
+    
     Context {Unit : Set}.
-    Context `{core.fmt.Debug.Trait Unit}.
-    Definition Self :=
+    
+    Context {ℋ_0 : core.fmt.Debug.Trait Unit}.
+    Definition Self : Set :=
       generics_phantom_type_test_case_unit_clarification.Length Unit.
     
     Definition fmt
-        `{H' : State.Trait}
         (self : ref Self)
         (f : mut_ref core.fmt.Formatter)
-        : M (H := H') core.fmt.Result :=
-      core.fmt.Formatter::["debug_tuple_field2_finish"]
-        f
-        "Length"
-        (addr_of (self.[0]))
-        (addr_of (addr_of (self.[1]))).
+        : M ltac:(core.fmt.Result) :=
+      let* α0 := deref f core.fmt.Formatter in
+      let* α1 := borrow_mut α0 core.fmt.Formatter in
+      let* α2 := deref (mk_str "Length") str in
+      let* α3 := borrow α2 str in
+      let* α4 :=
+        deref
+          self
+          (generics_phantom_type_test_case_unit_clarification.Length Unit) in
+      let* α5 := α4.["0"] in
+      let* α6 := borrow α5 f64 in
+      let* α7 := deref α6 f64 in
+      let* α8 := borrow α7 f64 in
+      let* α9 := pointer_coercion "Unsize" α8 in
+      let* α10 :=
+        deref
+          self
+          (generics_phantom_type_test_case_unit_clarification.Length Unit) in
+      let* α11 := α10.["1"] in
+      let* α12 := borrow α11 (core.marker.PhantomData Unit) in
+      let* α13 := borrow α12 (ref (core.marker.PhantomData Unit)) in
+      let* α14 := deref α13 (ref (core.marker.PhantomData Unit)) in
+      let* α15 := borrow α14 (ref (core.marker.PhantomData Unit)) in
+      let* α16 := pointer_coercion "Unsize" α15 in
+      core.fmt.Formatter::["debug_tuple_field2_finish"] α1 α3 α9 α16.
     
-    Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
-      Notation.dot := fmt;
+    Global Instance AssociatedFunction_fmt :
+      Notation.DoubleColon Self "fmt" := {
+      Notation.double_colon := fmt;
     }.
     
-    Global Instance I : core.fmt.Debug.Trait Self := {
-      core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
+    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
+      core.fmt.Debug.fmt := fmt;
     }.
+    Admitted.
   End
     Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End
   Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
 
@@ -176,34 +255,53 @@ Module
   Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
   Section
     Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
+    Context `{ℋ : State.Trait}.
+    
     Context {Unit : Set}.
-    Context `{core.clone.Clone.Trait Unit}.
-    Definition Self :=
+    
+    Context {ℋ_0 : core.clone.Clone.Trait Unit}.
+    Definition Self : Set :=
       generics_phantom_type_test_case_unit_clarification.Length Unit.
     
     Definition clone
-        `{H' : State.Trait}
         (self : ref Self)
-        :
-          M (H := H')
-            (generics_phantom_type_test_case_unit_clarification.Length Unit) :=
-      let* α0 := core.clone.Clone.clone (addr_of (self.[0])) in
-      let* α1 := core.clone.Clone.clone (addr_of (self.[1])) in
+        : M (generics_phantom_type_test_case_unit_clarification.Length Unit) :=
+      let* α0 :=
+        deref
+          self
+          (generics_phantom_type_test_case_unit_clarification.Length Unit) in
+      let* α1 := α0.["0"] in
+      let* α2 := borrow α1 f64 in
+      let* α3 := deref α2 f64 in
+      let* α4 := borrow α3 f64 in
+      let* α5 := (core.clone.Clone.clone (Self := f64)) α4 in
+      let* α6 :=
+        deref
+          self
+          (generics_phantom_type_test_case_unit_clarification.Length Unit) in
+      let* α7 := α6.["1"] in
+      let* α8 := borrow α7 (core.marker.PhantomData Unit) in
+      let* α9 := deref α8 (core.marker.PhantomData Unit) in
+      let* α10 := borrow α9 (core.marker.PhantomData Unit) in
+      let* α11 :=
+        (core.clone.Clone.clone (Self := (core.marker.PhantomData Unit))) α10 in
       Pure
         (generics_phantom_type_test_case_unit_clarification.Length.Build_t
-          α0
-          α1).
+          α5
+          α11).
     
-    Global Instance Method_clone `{H' : State.Trait} : Notation.Dot "clone" := {
-      Notation.dot := clone;
+    Global Instance AssociatedFunction_clone :
+      Notation.DoubleColon Self "clone" := {
+      Notation.double_colon := clone;
     }.
     
-    Global Instance I : core.clone.Clone.Trait Self := {
-      core.clone.Clone.clone `{H' : State.Trait} := clone;
+    #[refine] Global Instance ℐ : core.clone.Clone.Trait Self := {
+      core.clone.Clone.clone := clone;
     }.
+    Admitted.
   End
     Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End
   Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
 
@@ -211,16 +309,20 @@ Module
   Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
   Section
     Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
+    Context `{ℋ : State.Trait}.
+    
     Context {Unit : Set}.
-    Context `{core.marker.Copy.Trait Unit}.
-    Definition Self :=
+    
+    Context {ℋ_0 : core.marker.Copy.Trait Unit}.
+    Definition Self : Set :=
       generics_phantom_type_test_case_unit_clarification.Length Unit.
     
-    Global Instance I : core.marker.Copy.Trait Self := {
+    #[refine] Global Instance ℐ : core.marker.Copy.Trait Self := {
     }.
+    Admitted.
   End
     Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End
   Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
 
@@ -228,79 +330,116 @@ Module
   Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
   Section
     Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
+    Context `{ℋ : State.Trait}.
+    
     Context {Unit : Set}.
-    Definition Self :=
+    
+    Definition Self : Set :=
       generics_phantom_type_test_case_unit_clarification.Length Unit.
     
     Definition Output : Set :=
       generics_phantom_type_test_case_unit_clarification.Length Unit.
     
     Definition add
-        `{H' : State.Trait}
         (self : Self)
         (rhs : generics_phantom_type_test_case_unit_clarification.Length Unit)
-        :
-          M (H := H')
-            (generics_phantom_type_test_case_unit_clarification.Length Unit) :=
-      let* α0 := (self.[0]).["add"] (rhs.[0]) in
+        : M (generics_phantom_type_test_case_unit_clarification.Length Unit) :=
+      let* α0 := self.["0"] in
+      let* α1 := rhs.["0"] in
+      let* α2 := add α0 α1 in
       Pure
         (generics_phantom_type_test_case_unit_clarification.Length.Build_t
-          α0
-          core.marker.PhantomData.Build).
+          α2
+          (core.marker.PhantomData.Build_t tt)).
     
-    Global Instance Method_add `{H' : State.Trait} : Notation.Dot "add" := {
-      Notation.dot := add;
+    Global Instance AssociatedFunction_add :
+      Notation.DoubleColon Self "add" := {
+      Notation.double_colon := add;
     }.
     
-    Global Instance I
-      : core.ops.arith.Add.Trait Self
-          (Rhs := core.ops.arith.Add.Default.Rhs Self)
-        := {
+    #[refine] Global Instance ℐ :
+      core.ops.arith.Add.Trait Self
+        (Rhs := core.ops.arith.Add.Default.Rhs Self) := {
       core.ops.arith.Add.Output := Output;
-      core.ops.arith.Add.add `{H' : State.Trait} := add;
+      core.ops.arith.Add.add := add;
     }.
+    Admitted.
   End
     Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End
   Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
-  let
-      one_foot :
-      generics_phantom_type_test_case_unit_clarification.Length
-        generics_phantom_type_test_case_unit_clarification.Inch :=
-    generics_phantom_type_test_case_unit_clarification.Length.Build_t
-      12 (* 12.0 *)
-      core.marker.PhantomData.Build in
-  let
-      one_meter :
-      generics_phantom_type_test_case_unit_clarification.Length
-        generics_phantom_type_test_case_unit_clarification.Mm :=
-    generics_phantom_type_test_case_unit_clarification.Length.Build_t
-      1000 (* 1000.0 *)
-      core.marker.PhantomData.Build in
-  let* two_feet := one_foot.["add"] one_foot in
-  let* two_meters := one_meter.["add"] one_meter in
+Definition main `{ℋ : State.Trait} : M unit :=
+  let* one_foot :=
+    let* α0 := M.alloc 12 (* 12.0 *) in
+    Pure
+      (generics_phantom_type_test_case_unit_clarification.Length.Build_t
+        α0
+        (core.marker.PhantomData.Build_t tt)) in
+  let* one_meter :=
+    let* α0 := M.alloc 1000 (* 1000.0 *) in
+    Pure
+      (generics_phantom_type_test_case_unit_clarification.Length.Build_t
+        α0
+        (core.marker.PhantomData.Build_t tt)) in
+  let* two_feet :=
+    (core.ops.arith.Add.add
+        (Self :=
+          (generics_phantom_type_test_case_unit_clarification.Length
+            generics_phantom_type_test_case_unit_clarification.Inch)))
+      one_foot
+      one_foot in
+  let* two_meters :=
+    (core.ops.arith.Add.add
+        (Self :=
+          (generics_phantom_type_test_case_unit_clarification.Length
+            generics_phantom_type_test_case_unit_clarification.Mm)))
+      one_meter
+      one_meter in
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_debug"] (addr_of (two_feet.[0])) in
-      let* α1 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "one foot + one_foot = "; " in
-" ])
-          (addr_of [ α0 ]) in
-      std.io.stdio._print α1 in
-    Pure tt in
+      let* α0 :=
+        borrow
+          [ mk_str "one foot + one_foot = "; mk_str " in
+" ]
+          (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := two_feet.["0"] in
+      let* α5 := borrow α4 f64 in
+      let* α6 := deref α5 f64 in
+      let* α7 := borrow α6 f64 in
+      let* α8 := core.fmt.rt.Argument::["new_debug"] α7 in
+      let* α9 := borrow [ α8 ] (list core.fmt.rt.Argument) in
+      let* α10 := deref α9 (list core.fmt.rt.Argument) in
+      let* α11 := borrow α10 (list core.fmt.rt.Argument) in
+      let* α12 := pointer_coercion "Unsize" α11 in
+      let* α13 := core.fmt.Arguments::["new_v1"] α3 α12 in
+      std.io.stdio._print α13 in
+    M.alloc tt in
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_debug"] (addr_of (two_meters.[0])) in
-      let* α1 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "one meter + one_meter = "; " mm
-" ])
-          (addr_of [ α0 ]) in
-      std.io.stdio._print α1 in
-    Pure tt in
-  Pure tt.
+      let* α0 :=
+        borrow
+          [ mk_str "one meter + one_meter = "; mk_str " mm
+" ]
+          (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := two_meters.["0"] in
+      let* α5 := borrow α4 f64 in
+      let* α6 := deref α5 f64 in
+      let* α7 := borrow α6 f64 in
+      let* α8 := core.fmt.rt.Argument::["new_debug"] α7 in
+      let* α9 := borrow [ α8 ] (list core.fmt.rt.Argument) in
+      let* α10 := deref α9 (list core.fmt.rt.Argument) in
+      let* α11 := borrow α10 (list core.fmt.rt.Argument) in
+      let* α12 := pointer_coercion "Unsize" α11 in
+      let* α13 := core.fmt.Arguments::["new_v1"] α3 α12 in
+      std.io.stdio._print α13 in
+    M.alloc tt in
+  M.alloc tt.

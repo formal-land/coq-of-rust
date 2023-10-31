@@ -2,28 +2,72 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
+Definition main `{ℋ : State.Trait} : M unit :=
   let* haystack :=
-    let* α0 :=
-      (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] [ 1; 2; 3 ] in
-    (Slice _)::["into_vec"] α0 in
-  let contains := fun needle => haystack.["contains"] needle in
+    let* α0 := M.alloc 1 in
+    let* α1 := M.alloc 2 in
+    let* α2 := M.alloc 3 in
+    let* α3 :=
+      (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] [ α0; α1; α2 ] in
+    let* α4 := pointer_coercion "Unsize" α3 in
+    (Slice T)::["into_vec"] α4 in
+  let contains :=
+    let* α0 := borrow haystack (alloc.vec.Vec i32 alloc.alloc.Global) in
+    let* α1 :=
+      (core.ops.deref.Deref.deref
+          (Self := (alloc.vec.Vec i32 alloc.alloc.Global)))
+        α0 in
+    let* α2 := deref α1 (Slice i32) in
+    let* α3 := borrow α2 (Slice i32) in
+    (Slice T)::["contains"] α3 needle in
   let* _ :=
     let* _ :=
-      let* α0 := contains (addr_of 1) in
-      let* α1 := format_argument::["new_display"] (addr_of α0) in
-      let* α2 :=
-        format_arguments::["new_v1"] (addr_of [ ""; "
-" ]) (addr_of [ α1 ]) in
-      std.io.stdio._print α2 in
-    Pure tt in
+      let* α0 := borrow [ mk_str ""; mk_str "
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow contains type not implemented in
+      let* α5 := M.alloc 1 in
+      let* α6 := borrow α5 i32 in
+      let* α7 := deref α6 i32 in
+      let* α8 := borrow α7 i32 in
+      let* α9 :=
+        (core.ops.function.Fn.call (Self := type not implemented)) α4 (α8) in
+      let* α10 := borrow α9 bool in
+      let* α11 := deref α10 bool in
+      let* α12 := borrow α11 bool in
+      let* α13 := core.fmt.rt.Argument::["new_display"] α12 in
+      let* α14 := borrow [ α13 ] (list core.fmt.rt.Argument) in
+      let* α15 := deref α14 (list core.fmt.rt.Argument) in
+      let* α16 := borrow α15 (list core.fmt.rt.Argument) in
+      let* α17 := pointer_coercion "Unsize" α16 in
+      let* α18 := core.fmt.Arguments::["new_v1"] α3 α17 in
+      std.io.stdio._print α18 in
+    M.alloc tt in
   let* _ :=
     let* _ :=
-      let* α0 := contains (addr_of 4) in
-      let* α1 := format_argument::["new_display"] (addr_of α0) in
-      let* α2 :=
-        format_arguments::["new_v1"] (addr_of [ ""; "
-" ]) (addr_of [ α1 ]) in
-      std.io.stdio._print α2 in
-    Pure tt in
-  Pure tt.
+      let* α0 := borrow [ mk_str ""; mk_str "
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow contains type not implemented in
+      let* α5 := M.alloc 4 in
+      let* α6 := borrow α5 i32 in
+      let* α7 := deref α6 i32 in
+      let* α8 := borrow α7 i32 in
+      let* α9 :=
+        (core.ops.function.Fn.call (Self := type not implemented)) α4 (α8) in
+      let* α10 := borrow α9 bool in
+      let* α11 := deref α10 bool in
+      let* α12 := borrow α11 bool in
+      let* α13 := core.fmt.rt.Argument::["new_display"] α12 in
+      let* α14 := borrow [ α13 ] (list core.fmt.rt.Argument) in
+      let* α15 := deref α14 (list core.fmt.rt.Argument) in
+      let* α16 := borrow α15 (list core.fmt.rt.Argument) in
+      let* α17 := pointer_coercion "Unsize" α16 in
+      let* α18 := core.fmt.Arguments::["new_v1"] α3 α17 in
+      std.io.stdio._print α18 in
+    M.alloc tt in
+  M.alloc tt.

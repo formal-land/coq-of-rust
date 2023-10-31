@@ -2,68 +2,88 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module Sheep.
-  Unset Primitive Projections.
-  Record t : Set := { }.
-  Global Set Primitive Projections.
+  Section Sheep.
+    Context `{ℋ : State.Trait}.
+    
+    Unset Primitive Projections.
+    Record t : Set := { }.
+    Global Set Primitive Projections.
+  End Sheep.
 End Sheep.
-Definition Sheep : Set := Sheep.t.
+Definition Sheep `{ℋ : State.Trait} : Set := M.val Sheep.t.
 
 Module Cow.
-  Unset Primitive Projections.
-  Record t : Set := { }.
-  Global Set Primitive Projections.
+  Section Cow.
+    Context `{ℋ : State.Trait}.
+    
+    Unset Primitive Projections.
+    Record t : Set := { }.
+    Global Set Primitive Projections.
+  End Cow.
 End Cow.
-Definition Cow : Set := Cow.t.
+Definition Cow `{ℋ : State.Trait} : Set := M.val Cow.t.
 
 Module Animal.
-  Class Trait (Self : Set) : Type := {
-    noise `{H' : State.Trait} : (ref Self) -> M (H := H') (ref str);
-  }.
-  
-  Global Instance Method_noise `{H' : State.Trait} `(Trait)
-    : Notation.Dot "noise" := {
-    Notation.dot := noise;
-  }.
+  Section Animal.
+    Context `{ℋ : State.Trait}.
+    
+    Class Trait (Self : Set) : Type := {
+      noise : (ref Self) -> M (ref str);
+    }.
+    
+  End Animal.
 End Animal.
 
 Module
   Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep.
-  Definition Self := returning_traits_with_dyn.Sheep.
-  
-  Parameter noise :
-      forall `{H' : State.Trait},
-      (ref Self) -> M (H := H') (ref str).
-  
-  Global Instance Method_noise `{H' : State.Trait} : Notation.Dot "noise" := {
-    Notation.dot := noise;
-  }.
-  
-  Global Instance I : returning_traits_with_dyn.Animal.Trait Self := {
-    returning_traits_with_dyn.Animal.noise `{H' : State.Trait} := noise;
-  }.
-  Global Hint Resolve I : core.
+  Section
+    Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep.
+    Context `{ℋ : State.Trait}.
+    
+    Definition Self : Set := returning_traits_with_dyn.Sheep.
+    
+    Parameter noise : (ref Self) -> M (ref str).
+    
+    Global Instance AssociatedFunction_noise :
+      Notation.DoubleColon Self "noise" := {
+      Notation.double_colon := noise;
+    }.
+    
+    #[refine] Global Instance ℐ :
+      returning_traits_with_dyn.Animal.Trait Self := {
+      returning_traits_with_dyn.Animal.noise := noise;
+    }.
+    Admitted.
+  End Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep.
+  Global Hint Resolve ℐ : core.
 End Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep.
 
 Module Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
-  Definition Self := returning_traits_with_dyn.Cow.
-  
-  Parameter noise :
-      forall `{H' : State.Trait},
-      (ref Self) -> M (H := H') (ref str).
-  
-  Global Instance Method_noise `{H' : State.Trait} : Notation.Dot "noise" := {
-    Notation.dot := noise;
-  }.
-  
-  Global Instance I : returning_traits_with_dyn.Animal.Trait Self := {
-    returning_traits_with_dyn.Animal.noise `{H' : State.Trait} := noise;
-  }.
-  Global Hint Resolve I : core.
+  Section
+    Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
+    Context `{ℋ : State.Trait}.
+    
+    Definition Self : Set := returning_traits_with_dyn.Cow.
+    
+    Parameter noise : (ref Self) -> M (ref str).
+    
+    Global Instance AssociatedFunction_noise :
+      Notation.DoubleColon Self "noise" := {
+      Notation.double_colon := noise;
+    }.
+    
+    #[refine] Global Instance ℐ :
+      returning_traits_with_dyn.Animal.Trait Self := {
+      returning_traits_with_dyn.Animal.noise := noise;
+    }.
+    Admitted.
+  End Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
+  Global Hint Resolve ℐ : core.
 End Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
 
 Parameter random_animal :
-    forall `{H' : State.Trait},
-    f64 -> M (H := H') (alloc.boxed.Box _ (* dyn *) alloc.boxed.Box.Default.A).
+    forall `{ℋ : State.Trait},
+    f64 -> M (alloc.boxed.Box _ (* dyn *) alloc.boxed.Box.Default.A).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{H' : State.Trait}, M (H := H') unit.
+Parameter main : forall `{ℋ : State.Trait}, M unit.

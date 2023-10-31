@@ -3,50 +3,56 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module Ref.
   Section Ref.
+    Context `{ℋ : State.Trait}.
+    
     Context {T : Set}.
+    
     Unset Primitive Projections.
     Record t : Set := {
-      _ : ref T;
+      x0 : ref T;
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_0 : Notation.Dot 0 := {
-      Notation.dot '(Build_t x0) := x0;
+    #[refine] Global Instance Get_0 : Notation.Dot "0" := {
+      Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
+    Admitted.
   End Ref.
 End Ref.
-Definition Ref := @Ref.t.
+Definition Ref `{ℋ : State.Trait} (T : Set) : Set := M.val (Ref.t (T := T)).
 
 Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
   Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
+    Context `{ℋ : State.Trait}.
+    
     Context {T : Set}.
-    Context `{core.fmt.Debug.Trait T}.
-    Definition Self := scoping_rules_lifetimes_bounds.Ref T.
+    
+    Context {ℋ_0 : core.fmt.Debug.Trait T}.
+    Definition Self : Set := scoping_rules_lifetimes_bounds.Ref T.
     
     Parameter fmt :
-        forall `{H' : State.Trait},
-        (ref Self) ->
-          (mut_ref core.fmt.Formatter) ->
-          M (H := H') core.fmt.Result.
+        (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
     
-    Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
-      Notation.dot := fmt;
+    Global Instance AssociatedFunction_fmt :
+      Notation.DoubleColon Self "fmt" := {
+      Notation.double_colon := fmt;
     }.
     
-    Global Instance I : core.fmt.Debug.Trait Self := {
-      core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
+    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
+      core.fmt.Debug.fmt := fmt;
     }.
+    Admitted.
   End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
 
 Parameter print :
-    forall `{H' : State.Trait} {T : Set} `{core.fmt.Debug.Trait T},
-    T -> M (H := H') unit.
+    forall `{ℋ : State.Trait} {T : Set} {ℋ_0 : core.fmt.Debug.Trait T},
+    T -> M unit.
 
 Parameter print_ref :
-    forall `{H' : State.Trait} {T : Set} `{core.fmt.Debug.Trait T},
-    (ref T) -> M (H := H') unit.
+    forall `{ℋ : State.Trait} {T : Set} {ℋ_0 : core.fmt.Debug.Trait T},
+    (ref T) -> M unit.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{H' : State.Trait}, M (H := H') unit.
+Parameter main : forall `{ℋ : State.Trait}, M unit.

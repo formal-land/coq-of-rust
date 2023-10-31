@@ -2,253 +2,345 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module Point.
-  Unset Primitive Projections.
-  Record t : Set := {
-    x : f64;
-    y : f64;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_x : Notation.Dot "x" := {
-    Notation.dot '(Build_t x0 _) := x0;
-  }.
-  Global Instance Get_AF_x : Notation.DoubleColon t "x" := {
-    Notation.double_colon '(Build_t x0 _) := x0;
-  }.
-  Global Instance Get_y : Notation.Dot "y" := {
-    Notation.dot '(Build_t _ x1) := x1;
-  }.
-  Global Instance Get_AF_y : Notation.DoubleColon t "y" := {
-    Notation.double_colon '(Build_t _ x1) := x1;
-  }.
+  Section Point.
+    Context `{ℋ : State.Trait}.
+    
+    Unset Primitive Projections.
+    Record t : Set := {
+      x : f64;
+      y : f64;
+    }.
+    Global Set Primitive Projections.
+    
+    #[refine] Global Instance Get_x : Notation.Dot "x" := {
+      Notation.dot x' := let* x' := M.read x' in Pure x'.(x) : M _;
+    }.
+    Admitted.
+    #[refine] Global Instance Get_AF_x : Notation.DoubleColon t "x" := {
+      Notation.double_colon x' := let* x' := M.read x' in Pure x'.(x) : M _;
+    }.
+    Admitted.
+    #[refine] Global Instance Get_y : Notation.Dot "y" := {
+      Notation.dot x := let* x := M.read x in Pure x.(y) : M _;
+    }.
+    Admitted.
+    #[refine] Global Instance Get_AF_y : Notation.DoubleColon t "y" := {
+      Notation.double_colon x := let* x := M.read x in Pure x.(y) : M _;
+    }.
+    Admitted.
+  End Point.
 End Point.
-Definition Point : Set := Point.t.
+Definition Point `{ℋ : State.Trait} : Set := M.val Point.t.
 
 Module Impl_associated_functions_and_methods_Point.
-  Definition Self := associated_functions_and_methods.Point.
-  
-  Definition origin
-      `{H' : State.Trait}
-      : M (H := H') associated_functions_and_methods.Point :=
-    Pure
-      {|
-        associated_functions_and_methods.Point.y := 0 (* 0.0 *);
-        associated_functions_and_methods.Point.x := 1 (* 1.0 *);
-      |}.
-  
-  Global Instance AssociatedFunction_origin `{H' : State.Trait} :
-    Notation.DoubleColon Self "origin" := {
-    Notation.double_colon := origin;
-  }.
-  
-  Definition new
-      `{H' : State.Trait}
-      (x : f64)
-      (y : f64)
-      : M (H := H') associated_functions_and_methods.Point :=
-    Pure
-      {|
-        associated_functions_and_methods.Point.x := x;
-        associated_functions_and_methods.Point.y := y;
-      |}.
-  
-  Global Instance AssociatedFunction_new `{H' : State.Trait} :
-    Notation.DoubleColon Self "new" := {
-    Notation.double_colon := new;
-  }.
+  Section Impl_associated_functions_and_methods_Point.
+    Context `{ℋ : State.Trait}.
+    
+    Definition Self : Set := associated_functions_and_methods.Point.
+    
+    Definition origin : M associated_functions_and_methods.Point :=
+      let* α0 := M.alloc 0 (* 0.0 *) in
+      let* α1 := M.alloc 1 (* 1.0 *) in
+      M.alloc
+        {|
+          associated_functions_and_methods.Point.y := α0;
+          associated_functions_and_methods.Point.x := α1;
+        |}.
+    
+    Global Instance AssociatedFunction_origin :
+      Notation.DoubleColon Self "origin" := {
+      Notation.double_colon := origin;
+    }.
+    
+    Definition new
+        (x : f64)
+        (y : f64)
+        : M associated_functions_and_methods.Point :=
+      M.alloc
+        {|
+          associated_functions_and_methods.Point.x := x;
+          associated_functions_and_methods.Point.y := y;
+        |}.
+    
+    Global Instance AssociatedFunction_new :
+      Notation.DoubleColon Self "new" := {
+      Notation.double_colon := new;
+    }.
+  End Impl_associated_functions_and_methods_Point.
 End Impl_associated_functions_and_methods_Point.
 
 Module Rectangle.
-  Unset Primitive Projections.
-  Record t : Set := {
-    p1 : associated_functions_and_methods.Point;
-    p2 : associated_functions_and_methods.Point;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_p1 : Notation.Dot "p1" := {
-    Notation.dot '(Build_t x0 _) := x0;
-  }.
-  Global Instance Get_AF_p1 : Notation.DoubleColon t "p1" := {
-    Notation.double_colon '(Build_t x0 _) := x0;
-  }.
-  Global Instance Get_p2 : Notation.Dot "p2" := {
-    Notation.dot '(Build_t _ x1) := x1;
-  }.
-  Global Instance Get_AF_p2 : Notation.DoubleColon t "p2" := {
-    Notation.double_colon '(Build_t _ x1) := x1;
-  }.
+  Section Rectangle.
+    Context `{ℋ : State.Trait}.
+    
+    Unset Primitive Projections.
+    Record t : Set := {
+      p1 : associated_functions_and_methods.Point;
+      p2 : associated_functions_and_methods.Point;
+    }.
+    Global Set Primitive Projections.
+    
+    #[refine] Global Instance Get_p1 : Notation.Dot "p1" := {
+      Notation.dot x := let* x := M.read x in Pure x.(p1) : M _;
+    }.
+    Admitted.
+    #[refine] Global Instance Get_AF_p1 : Notation.DoubleColon t "p1" := {
+      Notation.double_colon x := let* x := M.read x in Pure x.(p1) : M _;
+    }.
+    Admitted.
+    #[refine] Global Instance Get_p2 : Notation.Dot "p2" := {
+      Notation.dot x := let* x := M.read x in Pure x.(p2) : M _;
+    }.
+    Admitted.
+    #[refine] Global Instance Get_AF_p2 : Notation.DoubleColon t "p2" := {
+      Notation.double_colon x := let* x := M.read x in Pure x.(p2) : M _;
+    }.
+    Admitted.
+  End Rectangle.
 End Rectangle.
-Definition Rectangle : Set := Rectangle.t.
+Definition Rectangle `{ℋ : State.Trait} : Set := M.val Rectangle.t.
 
 Module Impl_associated_functions_and_methods_Rectangle.
-  Definition Self := associated_functions_and_methods.Rectangle.
-  
-  Definition get_p1
-      `{H' : State.Trait}
-      (self : ref Self)
-      : M (H := H') associated_functions_and_methods.Point :=
-    Pure self.["p1"].
-  
-  Global Instance Method_get_p1 `{H' : State.Trait} : Notation.Dot "get_p1" := {
-    Notation.dot := get_p1;
-  }.
-  
-  Definition area `{H' : State.Trait} (self : ref Self) : M (H := H') f64 :=
-    let
-        '{|
-          associated_functions_and_methods.Point.x := x1;
-          associated_functions_and_methods.Point.y := y1;
-        |} :=
-      self.["p1"] in
-    let
-        '{|
-          associated_functions_and_methods.Point.x := x2;
-          associated_functions_and_methods.Point.y := y2;
-        |} :=
-      self.["p2"] in
-    let* α0 := x1.["sub"] x2 in
-    let* α1 := y1.["sub"] y2 in
-    let* α2 := α0.["mul"] α1 in
-    α2.["abs"].
-  
-  Global Instance Method_area `{H' : State.Trait} : Notation.Dot "area" := {
-    Notation.dot := area;
-  }.
-  
-  Definition perimeter
-      `{H' : State.Trait}
-      (self : ref Self)
-      : M (H := H') f64 :=
-    let
-        '{|
-          associated_functions_and_methods.Point.x := x1;
-          associated_functions_and_methods.Point.y := y1;
-        |} :=
-      self.["p1"] in
-    let
-        '{|
-          associated_functions_and_methods.Point.x := x2;
-          associated_functions_and_methods.Point.y := y2;
-        |} :=
-      self.["p2"] in
-    let* α0 := x1.["sub"] x2 in
-    let* α1 := α0.["abs"] in
-    let* α2 := y1.["sub"] y2 in
-    let* α3 := α2.["abs"] in
-    let* α4 := α1.["add"] α3 in
-    2 (* 2.0 *).["mul"] α4.
-  
-  Global Instance Method_perimeter `{H' : State.Trait} :
-    Notation.Dot "perimeter" := {
-    Notation.dot := perimeter;
-  }.
-  
-  Definition translate
-      `{H' : State.Trait}
-      (self : mut_ref Self)
-      (x : f64)
-      (y : f64)
-      : M (H := H') unit :=
-    let* _ := self.["p1"].["x"].["add_assign"] x in
-    let* _ := self.["p2"].["x"].["add_assign"] x in
-    let* _ := self.["p1"].["y"].["add_assign"] y in
-    let* _ := self.["p2"].["y"].["add_assign"] y in
-    Pure tt.
-  
-  Global Instance Method_translate `{H' : State.Trait} :
-    Notation.Dot "translate" := {
-    Notation.dot := translate;
-  }.
+  Section Impl_associated_functions_and_methods_Rectangle.
+    Context `{ℋ : State.Trait}.
+    
+    Definition Self : Set := associated_functions_and_methods.Rectangle.
+    
+    Definition get_p1
+        (self : ref Self)
+        : M associated_functions_and_methods.Point :=
+      let* α0 := deref self associated_functions_and_methods.Rectangle in
+      α0.["p1"].
+    
+    Global Instance AssociatedFunction_get_p1 :
+      Notation.DoubleColon Self "get_p1" := {
+      Notation.double_colon := get_p1;
+    }.
+    
+    Definition area (self : ref Self) : M f64 :=
+      let*
+          '{|
+            associated_functions_and_methods.Point.x := x1;
+            associated_functions_and_methods.Point.y := y1;
+          |} :=
+        let* α0 := deref self associated_functions_and_methods.Rectangle in
+        α0.["p1"] in
+      let*
+          '{|
+            associated_functions_and_methods.Point.x := x2;
+            associated_functions_and_methods.Point.y := y2;
+          |} :=
+        let* α0 := deref self associated_functions_and_methods.Rectangle in
+        α0.["p2"] in
+      let* α0 := sub x1 x2 in
+      let* α1 := sub y1 y2 in
+      let* α2 := mul α0 α1 in
+      f64::["abs"] α2.
+    
+    Global Instance AssociatedFunction_area :
+      Notation.DoubleColon Self "area" := {
+      Notation.double_colon := area;
+    }.
+    
+    Definition perimeter (self : ref Self) : M f64 :=
+      let*
+          '{|
+            associated_functions_and_methods.Point.x := x1;
+            associated_functions_and_methods.Point.y := y1;
+          |} :=
+        let* α0 := deref self associated_functions_and_methods.Rectangle in
+        α0.["p1"] in
+      let*
+          '{|
+            associated_functions_and_methods.Point.x := x2;
+            associated_functions_and_methods.Point.y := y2;
+          |} :=
+        let* α0 := deref self associated_functions_and_methods.Rectangle in
+        α0.["p2"] in
+      let* α0 := M.alloc 2 (* 2.0 *) in
+      let* α1 := sub x1 x2 in
+      let* α2 := f64::["abs"] α1 in
+      let* α3 := sub y1 y2 in
+      let* α4 := f64::["abs"] α3 in
+      let* α5 := add α2 α4 in
+      mul α0 α5.
+    
+    Global Instance AssociatedFunction_perimeter :
+      Notation.DoubleColon Self "perimeter" := {
+      Notation.double_colon := perimeter;
+    }.
+    
+    Definition translate (self : mut_ref Self) (x : f64) (y : f64) : M unit :=
+      let* _ :=
+        let* α0 := deref self associated_functions_and_methods.Rectangle in
+        let* α1 := α0.["p1"] in
+        let* α2 := α1.["x"] in
+        assign_op add α2 x in
+      let* _ :=
+        let* α0 := deref self associated_functions_and_methods.Rectangle in
+        let* α1 := α0.["p2"] in
+        let* α2 := α1.["x"] in
+        assign_op add α2 x in
+      let* _ :=
+        let* α0 := deref self associated_functions_and_methods.Rectangle in
+        let* α1 := α0.["p1"] in
+        let* α2 := α1.["y"] in
+        assign_op add α2 y in
+      let* _ :=
+        let* α0 := deref self associated_functions_and_methods.Rectangle in
+        let* α1 := α0.["p2"] in
+        let* α2 := α1.["y"] in
+        assign_op add α2 y in
+      M.alloc tt.
+    
+    Global Instance AssociatedFunction_translate :
+      Notation.DoubleColon Self "translate" := {
+      Notation.double_colon := translate;
+    }.
+  End Impl_associated_functions_and_methods_Rectangle.
 End Impl_associated_functions_and_methods_Rectangle.
 
 Module Pair.
-  Unset Primitive Projections.
-  Record t : Set := {
-    _ : alloc.boxed.Box i32 alloc.boxed.Box.Default.A;
-    _ : alloc.boxed.Box i32 alloc.boxed.Box.Default.A;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0 _) := x0;
-  }.
-  Global Instance Get_1 : Notation.Dot 1 := {
-    Notation.dot '(Build_t _ x1) := x1;
-  }.
+  Section Pair.
+    Context `{ℋ : State.Trait}.
+    
+    Unset Primitive Projections.
+    Record t : Set := {
+      x0 : alloc.boxed.Box i32 alloc.boxed.Box.Default.A;
+      x1 : alloc.boxed.Box i32 alloc.boxed.Box.Default.A;
+    }.
+    Global Set Primitive Projections.
+    
+    #[refine] Global Instance Get_0 : Notation.Dot "0" := {
+      Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
+    }.
+    Admitted.
+    #[refine] Global Instance Get_1 : Notation.Dot "1" := {
+      Notation.dot x := let* x := M.read x in Pure x.(x1) : M _;
+    }.
+    Admitted.
+  End Pair.
 End Pair.
-Definition Pair := @Pair.t.
+Definition Pair `{ℋ : State.Trait} : Set := M.val Pair.t.
 
 Module Impl_associated_functions_and_methods_Pair.
-  Definition Self := associated_functions_and_methods.Pair.
-  
-  Definition destroy `{H' : State.Trait} (self : Self) : M (H := H') unit :=
-    let 'associated_functions_and_methods.Pair.Build_t first second := self in
-    let* _ :=
+  Section Impl_associated_functions_and_methods_Pair.
+    Context `{ℋ : State.Trait}.
+    
+    Definition Self : Set := associated_functions_and_methods.Pair.
+    
+    Definition destroy (self : Self) : M unit :=
+      let 'associated_functions_and_methods.Pair.Build_t first second := self in
       let* _ :=
-        let* α0 := format_argument::["new_display"] (addr_of first) in
-        let* α1 := format_argument::["new_display"] (addr_of second) in
-        let* α2 :=
-          format_arguments::["new_v1"]
-            (addr_of [ "Destroying Pair("; ", "; ")
-" ])
-            (addr_of [ α0; α1 ]) in
-        std.io.stdio._print α2 in
-      Pure tt in
-    Pure tt.
-  
-  Global Instance Method_destroy `{H' : State.Trait} :
-    Notation.Dot "destroy" := {
-    Notation.dot := destroy;
-  }.
+        let* _ :=
+          let* α0 :=
+            borrow
+              [ mk_str "Destroying Pair("; mk_str ", "; mk_str ")
+" ]
+              (list (ref str)) in
+          let* α1 := deref α0 (list (ref str)) in
+          let* α2 := borrow α1 (list (ref str)) in
+          let* α3 := pointer_coercion "Unsize" α2 in
+          let* α4 := borrow first (alloc.boxed.Box i32 alloc.alloc.Global) in
+          let* α5 := deref α4 (alloc.boxed.Box i32 alloc.alloc.Global) in
+          let* α6 := borrow α5 (alloc.boxed.Box i32 alloc.alloc.Global) in
+          let* α7 := core.fmt.rt.Argument::["new_display"] α6 in
+          let* α8 := borrow second (alloc.boxed.Box i32 alloc.alloc.Global) in
+          let* α9 := deref α8 (alloc.boxed.Box i32 alloc.alloc.Global) in
+          let* α10 := borrow α9 (alloc.boxed.Box i32 alloc.alloc.Global) in
+          let* α11 := core.fmt.rt.Argument::["new_display"] α10 in
+          let* α12 := borrow [ α7; α11 ] (list core.fmt.rt.Argument) in
+          let* α13 := deref α12 (list core.fmt.rt.Argument) in
+          let* α14 := borrow α13 (list core.fmt.rt.Argument) in
+          let* α15 := pointer_coercion "Unsize" α14 in
+          let* α16 := core.fmt.Arguments::["new_v1"] α3 α15 in
+          std.io.stdio._print α16 in
+        M.alloc tt in
+      M.alloc tt.
+    
+    Global Instance AssociatedFunction_destroy :
+      Notation.DoubleColon Self "destroy" := {
+      Notation.double_colon := destroy;
+    }.
+  End Impl_associated_functions_and_methods_Pair.
 End Impl_associated_functions_and_methods_Pair.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
+Definition main `{ℋ : State.Trait} : M unit :=
   let* rectangle :=
     let* α0 := associated_functions_and_methods.Point::["origin"] in
-    let* α1 :=
-      associated_functions_and_methods.Point::["new"] 3 (* 3.0 *) 4 (* 4.0 *) in
-    Pure
+    let* α1 := M.alloc 3 (* 3.0 *) in
+    let* α2 := M.alloc 4 (* 4.0 *) in
+    let* α3 := associated_functions_and_methods.Point::["new"] α1 α2 in
+    M.alloc
       {|
         associated_functions_and_methods.Rectangle.p1 := α0;
-        associated_functions_and_methods.Rectangle.p2 := α1;
+        associated_functions_and_methods.Rectangle.p2 := α3;
       |} in
   let* _ :=
     let* _ :=
-      let* α0 := rectangle.["perimeter"] in
-      let* α1 := format_argument::["new_display"] (addr_of α0) in
-      let* α2 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "Rectangle perimeter: "; "
-" ])
-          (addr_of [ α1 ]) in
-      std.io.stdio._print α2 in
-    Pure tt in
+      let* α0 :=
+        borrow
+          [ mk_str "Rectangle perimeter: "; mk_str "
+" ]
+          (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow rectangle associated_functions_and_methods.Rectangle in
+      let* α5 := associated_functions_and_methods.Rectangle::["perimeter"] α4 in
+      let* α6 := borrow α5 f64 in
+      let* α7 := deref α6 f64 in
+      let* α8 := borrow α7 f64 in
+      let* α9 := core.fmt.rt.Argument::["new_display"] α8 in
+      let* α10 := borrow [ α9 ] (list core.fmt.rt.Argument) in
+      let* α11 := deref α10 (list core.fmt.rt.Argument) in
+      let* α12 := borrow α11 (list core.fmt.rt.Argument) in
+      let* α13 := pointer_coercion "Unsize" α12 in
+      let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
+      std.io.stdio._print α14 in
+    M.alloc tt in
   let* _ :=
     let* _ :=
-      let* α0 := rectangle.["area"] in
-      let* α1 := format_argument::["new_display"] (addr_of α0) in
-      let* α2 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "Rectangle area: "; "
-" ])
-          (addr_of [ α1 ]) in
-      std.io.stdio._print α2 in
-    Pure tt in
+      let* α0 :=
+        borrow [ mk_str "Rectangle area: "; mk_str "
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow rectangle associated_functions_and_methods.Rectangle in
+      let* α5 := associated_functions_and_methods.Rectangle::["area"] α4 in
+      let* α6 := borrow α5 f64 in
+      let* α7 := deref α6 f64 in
+      let* α8 := borrow α7 f64 in
+      let* α9 := core.fmt.rt.Argument::["new_display"] α8 in
+      let* α10 := borrow [ α9 ] (list core.fmt.rt.Argument) in
+      let* α11 := deref α10 (list core.fmt.rt.Argument) in
+      let* α12 := borrow α11 (list core.fmt.rt.Argument) in
+      let* α13 := pointer_coercion "Unsize" α12 in
+      let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
+      std.io.stdio._print α14 in
+    M.alloc tt in
   let* square :=
     let* α0 := associated_functions_and_methods.Point::["origin"] in
-    let* α1 :=
-      associated_functions_and_methods.Point::["new"] 1 (* 1.0 *) 1 (* 1.0 *) in
-    Pure
+    let* α1 := M.alloc 1 (* 1.0 *) in
+    let* α2 := M.alloc 1 (* 1.0 *) in
+    let* α3 := associated_functions_and_methods.Point::["new"] α1 α2 in
+    M.alloc
       {|
         associated_functions_and_methods.Rectangle.p1 := α0;
-        associated_functions_and_methods.Rectangle.p2 := α1;
+        associated_functions_and_methods.Rectangle.p2 := α3;
       |} in
-  let* _ := square.["translate"] 1 (* 1.0 *) 1 (* 1.0 *) in
+  let* _ :=
+    let* α0 := borrow_mut square associated_functions_and_methods.Rectangle in
+    let* α1 := M.alloc 1 (* 1.0 *) in
+    let* α2 := M.alloc 1 (* 1.0 *) in
+    associated_functions_and_methods.Rectangle::["translate"] α0 α1 α2 in
   let* pair :=
-    let* α0 := (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] 1 in
-    let* α1 := (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] 2 in
-    Pure (associated_functions_and_methods.Pair.Build_t α0 α1) in
-  let* _ := pair.["destroy"] in
-  Pure tt.
+    let* α0 := M.alloc 1 in
+    let* α1 := (alloc.boxed.Box T alloc.alloc.Global)::["new"] α0 in
+    let* α2 := M.alloc 2 in
+    let* α3 := (alloc.boxed.Box T alloc.alloc.Global)::["new"] α2 in
+    Pure (associated_functions_and_methods.Pair.Build_t α1 α3) in
+  let* _ := associated_functions_and_methods.Pair::["destroy"] pair in
+  M.alloc tt.

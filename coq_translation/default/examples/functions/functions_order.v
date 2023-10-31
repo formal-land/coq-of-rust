@@ -2,188 +2,202 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module SomeType.
-  Unset Primitive Projections.
-  Record t : Set := {
-    _ : u32;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
-  }.
+  Section SomeType.
+    Context `{ℋ : State.Trait}.
+    
+    Unset Primitive Projections.
+    Record t : Set := {
+      x0 : u32;
+    }.
+    Global Set Primitive Projections.
+    
+    #[refine] Global Instance Get_0 : Notation.Dot "0" := {
+      Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
+    }.
+    Admitted.
+  End SomeType.
 End SomeType.
-Definition SomeType := @SomeType.t.
+Definition SomeType `{ℋ : State.Trait} : Set := M.val SomeType.t.
 
 Module OtherType.
-  Unset Primitive Projections.
-  Record t : Set := {
-    _ : bool;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
-  }.
+  Section OtherType.
+    Context `{ℋ : State.Trait}.
+    
+    Unset Primitive Projections.
+    Record t : Set := {
+      x0 : bool;
+    }.
+    Global Set Primitive Projections.
+    
+    #[refine] Global Instance Get_0 : Notation.Dot "0" := {
+      Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
+    }.
+    Admitted.
+  End OtherType.
 End OtherType.
-Definition OtherType := @OtherType.t.
+Definition OtherType `{ℋ : State.Trait} : Set := M.val OtherType.t.
 
 Module Impl_functions_order_SomeType.
-  Definition Self := functions_order.SomeType.
-  
-  Definition meth2 `{H' : State.Trait} (self : Self) : M (H := H') unit :=
-    Pure tt.
-  
-  Global Instance Method_meth2 `{H' : State.Trait} : Notation.Dot "meth2" := {
-    Notation.dot := meth2;
-  }.
-  
-  Definition meth1 `{H' : State.Trait} (self : Self) : M (H := H') unit :=
-    let* _ := self.["meth2"] in
-    Pure tt.
-  
-  Global Instance Method_meth1 `{H' : State.Trait} : Notation.Dot "meth1" := {
-    Notation.dot := meth1;
-  }.
+  Section Impl_functions_order_SomeType.
+    Context `{ℋ : State.Trait}.
+    
+    Definition Self : Set := functions_order.SomeType.
+    
+    Definition meth2 (self : Self) : M unit := M.alloc tt.
+    
+    Global Instance AssociatedFunction_meth2 :
+      Notation.DoubleColon Self "meth2" := {
+      Notation.double_colon := meth2;
+    }.
+    
+    Definition meth1 (self : Self) : M unit :=
+      let* _ := functions_order.SomeType::["meth2"] self in
+      M.alloc tt.
+    
+    Global Instance AssociatedFunction_meth1 :
+      Notation.DoubleColon Self "meth1" := {
+      Notation.double_colon := meth1;
+    }.
+  End Impl_functions_order_SomeType.
 End Impl_functions_order_SomeType.
 
 Module SomeTrait.
-  Class Trait (Self : Set) : Type := {
-    some_trait_foo `{H' : State.Trait} : (ref Self) -> M (H := H') unit;
-    some_trait_bar `{H' : State.Trait} : (ref Self) -> M (H := H') unit;
-  }.
-  
-  Global Instance Method_some_trait_foo `{H' : State.Trait} `(Trait)
-    : Notation.Dot "some_trait_foo" := {
-    Notation.dot := some_trait_foo;
-  }.
-  Global Instance Method_some_trait_bar `{H' : State.Trait} `(Trait)
-    : Notation.Dot "some_trait_bar" := {
-    Notation.dot := some_trait_bar;
-  }.
+  Section SomeTrait.
+    Context `{ℋ : State.Trait}.
+    
+    Class Trait (Self : Set) : Type := {
+      some_trait_foo : (ref Self) -> M unit;
+      some_trait_bar : (ref Self) -> M unit;
+    }.
+    
+  End SomeTrait.
 End SomeTrait.
 
 Module Impl_functions_order_SomeTrait_for_functions_order_SomeType.
-  Definition Self := functions_order.SomeType.
-  
-  Definition some_trait_bar
-      `{H' : State.Trait}
-      (self : ref Self)
-      : M (H := H') unit :=
-    Pure tt.
-  
-  Global Instance Method_some_trait_bar `{H' : State.Trait} :
-    Notation.Dot "some_trait_bar" := {
-    Notation.dot := some_trait_bar;
-  }.
-  
-  Definition some_trait_foo
-      `{H' : State.Trait}
-      (self : ref Self)
-      : M (H := H') unit :=
-    self.["some_trait_bar"].
-  
-  Global Instance Method_some_trait_foo `{H' : State.Trait} :
-    Notation.Dot "some_trait_foo" := {
-    Notation.dot := some_trait_foo;
-  }.
-  
-  Global Instance I : functions_order.SomeTrait.Trait Self := {
-    functions_order.SomeTrait.some_trait_bar `{H' : State.Trait}
-      :=
-      some_trait_bar;
-    functions_order.SomeTrait.some_trait_foo `{H' : State.Trait}
-      :=
-      some_trait_foo;
-  }.
-  Global Hint Resolve I : core.
+  Section Impl_functions_order_SomeTrait_for_functions_order_SomeType.
+    Context `{ℋ : State.Trait}.
+    
+    Definition Self : Set := functions_order.SomeType.
+    
+    Definition some_trait_bar (self : ref Self) : M unit := M.alloc tt.
+    
+    Global Instance AssociatedFunction_some_trait_bar :
+      Notation.DoubleColon Self "some_trait_bar" := {
+      Notation.double_colon := some_trait_bar;
+    }.
+    
+    Definition some_trait_foo (self : ref Self) : M unit :=
+      let* α0 := deref self functions_order.SomeType in
+      let* α1 := borrow α0 functions_order.SomeType in
+      (functions_order.SomeTrait.some_trait_bar
+          (Self := functions_order.SomeType))
+        α1.
+    
+    Global Instance AssociatedFunction_some_trait_foo :
+      Notation.DoubleColon Self "some_trait_foo" := {
+      Notation.double_colon := some_trait_foo;
+    }.
+    
+    #[refine] Global Instance ℐ : functions_order.SomeTrait.Trait Self := {
+      functions_order.SomeTrait.some_trait_bar := some_trait_bar;
+      functions_order.SomeTrait.some_trait_foo := some_trait_foo;
+    }.
+    Admitted.
+  End Impl_functions_order_SomeTrait_for_functions_order_SomeType.
+  Global Hint Resolve ℐ : core.
 End Impl_functions_order_SomeTrait_for_functions_order_SomeType.
 
 Module Impl_functions_order_SomeTrait_for_functions_order_OtherType.
-  Definition Self := functions_order.OtherType.
-  
-  Definition some_trait_foo
-      `{H' : State.Trait}
-      (self : ref Self)
-      : M (H := H') unit :=
-    Pure tt.
-  
-  Global Instance Method_some_trait_foo `{H' : State.Trait} :
-    Notation.Dot "some_trait_foo" := {
-    Notation.dot := some_trait_foo;
-  }.
-  
-  Definition some_trait_bar
-      `{H' : State.Trait}
-      (self : ref Self)
-      : M (H := H') unit :=
-    Pure tt.
-  
-  Global Instance Method_some_trait_bar `{H' : State.Trait} :
-    Notation.Dot "some_trait_bar" := {
-    Notation.dot := some_trait_bar;
-  }.
-  
-  Global Instance I : functions_order.SomeTrait.Trait Self := {
-    functions_order.SomeTrait.some_trait_foo `{H' : State.Trait}
-      :=
-      some_trait_foo;
-    functions_order.SomeTrait.some_trait_bar `{H' : State.Trait}
-      :=
-      some_trait_bar;
-  }.
-  Global Hint Resolve I : core.
+  Section Impl_functions_order_SomeTrait_for_functions_order_OtherType.
+    Context `{ℋ : State.Trait}.
+    
+    Definition Self : Set := functions_order.OtherType.
+    
+    Definition some_trait_foo (self : ref Self) : M unit := M.alloc tt.
+    
+    Global Instance AssociatedFunction_some_trait_foo :
+      Notation.DoubleColon Self "some_trait_foo" := {
+      Notation.double_colon := some_trait_foo;
+    }.
+    
+    Definition some_trait_bar (self : ref Self) : M unit := M.alloc tt.
+    
+    Global Instance AssociatedFunction_some_trait_bar :
+      Notation.DoubleColon Self "some_trait_bar" := {
+      Notation.double_colon := some_trait_bar;
+    }.
+    
+    #[refine] Global Instance ℐ : functions_order.SomeTrait.Trait Self := {
+      functions_order.SomeTrait.some_trait_foo := some_trait_foo;
+      functions_order.SomeTrait.some_trait_bar := some_trait_bar;
+    }.
+    Admitted.
+  End Impl_functions_order_SomeTrait_for_functions_order_OtherType.
+  Global Hint Resolve ℐ : core.
 End Impl_functions_order_SomeTrait_for_functions_order_OtherType.
 
 Definition depends_on_trait_impl
-    `{H' : State.Trait}
+    `{ℋ : State.Trait}
     (u : u32)
     (b : bool)
-    : M (H := H') unit :=
-  let* _ := (functions_order.OtherType.Build_t b).["some_trait_foo"] in
-  let* _ := (functions_order.SomeType.Build_t u).["some_trait_foo"] in
-  Pure tt.
+    : M unit :=
+  let* _ :=
+    let* α0 :=
+      borrow (functions_order.OtherType.Build_t b) functions_order.OtherType in
+    (functions_order.SomeTrait.some_trait_foo
+        (Self := functions_order.OtherType))
+      α0 in
+  let* _ :=
+    let* α0 :=
+      borrow (functions_order.SomeType.Build_t u) functions_order.SomeType in
+    (functions_order.SomeTrait.some_trait_foo
+        (Self := functions_order.SomeType))
+      α0 in
+  M.alloc tt.
 
 Module inner_mod.
-  Definition tar `{H' : State.Trait} : M (H := H') unit := Pure tt.
+  Definition tar `{ℋ : State.Trait} : M unit := M.alloc tt.
   
-  Definition bar `{H' : State.Trait} : M (H := H') unit :=
+  Definition bar `{ℋ : State.Trait} : M unit :=
     let* _ := functions_order.inner_mod.tar in
-    Pure tt.
+    M.alloc tt.
   
   Module nested_mod.
-    Definition tack `{H' : State.Trait} : M (H := H') unit := Pure tt.
+    Definition tack `{ℋ : State.Trait} : M unit := M.alloc tt.
     
-    Definition tick `{H' : State.Trait} : M (H := H') unit :=
+    Definition tick `{ℋ : State.Trait} : M unit :=
       let* _ := functions_order.inner_mod.nested_mod.tack in
-      Pure tt.
+      M.alloc tt.
   End nested_mod.
 End inner_mod.
 
-Definition bar `{H' : State.Trait} : M (H := H') unit :=
+Definition bar `{ℋ : State.Trait} : M unit :=
   let* _ := functions_order.inner_mod.tar in
-  Pure tt.
+  M.alloc tt.
 
-Definition tar `{H' : State.Trait} : M (H := H') unit := Pure tt.
+Definition tar `{ℋ : State.Trait} : M unit := M.alloc tt.
 
 Module nested_mod.
-  Definition tack `{H' : State.Trait} : M (H := H') unit := Pure tt.
+  Definition tack `{ℋ : State.Trait} : M unit := M.alloc tt.
   
-  Definition tick `{H' : State.Trait} : M (H := H') unit :=
+  Definition tick `{ℋ : State.Trait} : M unit :=
     let* _ := functions_order.inner_mod.nested_mod.tack in
-    Pure tt.
+    M.alloc tt.
 End nested_mod.
 
-Definition tick `{H' : State.Trait} : M (H := H') unit :=
+Definition tick `{ℋ : State.Trait} : M unit :=
   let* _ := functions_order.inner_mod.nested_mod.tack in
-  Pure tt.
+  M.alloc tt.
 
-Definition tack `{H' : State.Trait} : M (H := H') unit := Pure tt.
+Definition tack `{ℋ : State.Trait} : M unit := M.alloc tt.
 
-Definition foo `{H' : State.Trait} : M (H := H') unit := Pure tt.
+Definition foo `{ℋ : State.Trait} : M unit := M.alloc tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
+Definition main `{ℋ : State.Trait} : M unit :=
   let* _ := functions_order.foo in
   let* _ := functions_order.inner_mod.bar in
-  let* _ := (functions_order.SomeType.Build_t 0).["meth1"] in
-  Pure tt.
+  let* _ :=
+    let* α0 := M.alloc 0 in
+    functions_order.SomeType::["meth1"] (functions_order.SomeType.Build_t α0) in
+  M.alloc tt.

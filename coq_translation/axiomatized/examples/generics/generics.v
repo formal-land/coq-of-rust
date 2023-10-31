@@ -2,38 +2,52 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module A.
-  Inductive t : Set := Build.
+  Section A.
+    Context `{ℋ : State.Trait}.
+    
+    Inductive t : Set := Build.
+  End A.
 End A.
 Definition A := @A.t.
 
 Module Single.
-  Unset Primitive Projections.
-  Record t : Set := {
-    _ : generics.A;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
-  }.
-End Single.
-Definition Single := @Single.t.
-
-Module SingleGen.
-  Section SingleGen.
-    Context {T : Set}.
+  Section Single.
+    Context `{ℋ : State.Trait}.
+    
     Unset Primitive Projections.
     Record t : Set := {
-      _ : T;
+      x0 : generics.A;
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_0 : Notation.Dot 0 := {
-      Notation.dot '(Build_t x0) := x0;
+    #[refine] Global Instance Get_0 : Notation.Dot "0" := {
+      Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
+    Admitted.
+  End Single.
+End Single.
+Definition Single `{ℋ : State.Trait} : Set := M.val Single.t.
+
+Module SingleGen.
+  Section SingleGen.
+    Context `{ℋ : State.Trait}.
+    
+    Context {T : Set}.
+    
+    Unset Primitive Projections.
+    Record t : Set := {
+      x0 : T;
+    }.
+    Global Set Primitive Projections.
+    
+    #[refine] Global Instance Get_0 : Notation.Dot "0" := {
+      Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
+    }.
+    Admitted.
   End SingleGen.
 End SingleGen.
-Definition SingleGen := @SingleGen.t.
+Definition SingleGen `{ℋ : State.Trait} (T : Set) : Set :=
+  M.val (SingleGen.t (T := T)).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{H' : State.Trait}, M (H := H') unit.
+Parameter main : forall `{ℋ : State.Trait}, M unit.

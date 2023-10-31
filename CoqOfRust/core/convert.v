@@ -40,8 +40,8 @@ where
 }
 *)
 Module AsMut.
-  Class Trait (Self : Set) {T : Set} : Set := {
-    as_mut `{H : State.Trait} : mut_ref Self -> M (H := H) (mut_ref T);
+  Class Trait `{State.Trait} (Self : Set) {T : Set} : Set := {
+    as_mut : mut_ref Self -> M (mut_ref T);
   }.
 End AsMut.
 
@@ -55,14 +55,14 @@ where
 }
 *)
 Module AsRef.
-  Class Trait (Self : Set) {T : Set} : Set := {
-    as_ref `{H : State.Trait} : ref Self -> M (H := H) (ref T);
+  Class Trait `{State.Trait} (Self : Set) {T : Set} : Set := {
+    as_ref : ref Self -> M (ref T);
   }.
 End AsRef.
 
 Module Impl_AsRef_for_string.
-  Global Instance I : convert.AsRef.Trait string (T := string) := {
-    as_ref `{State.Trait} self := Pure self;
+  Global Instance I `{State.Trait} : convert.AsRef.Trait string (T := string) := {
+    as_ref self := Pure self;
   }.
 End Impl_AsRef_for_string.
 
@@ -73,8 +73,8 @@ pub trait From<T>: Sized {
 }
 *)
 Module From.
-  Class Trait (Self : Set) {T : Set} : Set := {
-    from `{H : State.Trait} : T -> M Self;
+  Class Trait (Self : Set) {T : Set} `{State.Trait} : Set := {
+    from : T -> M Self;
   }.
 End From.
 
@@ -85,26 +85,27 @@ pub trait Into<T>: Sized {
 }
 *)
 Module Into.
-  Class Trait (Self : Set) {T : Set } : Set := {
-    into `{H : State.Trait} : Self -> M T;
+  Class Trait (Self : Set) {T : Set } `{State.Trait} : Set := {
+    into : Self -> M T;
   }.
 End Into.
 
 Module Impl_Into_for_T.
   Section Impl_Into_for_T.
     Context {T U : Set}.
+    Context `{State.Trait}.
     Context `{From.Trait U (T := T)}.
 
     Definition Self := T.
 
-    Definition into `{State.Trait} : Self -> M U := From.from.
+    Definition into : Self -> M U := From.from.
 
-    Global Instance Method_into `{State.Trait} : Notation.Dot "into" := {
+    Global Instance Method_into : Notation.Dot "into" := {
       Notation.dot := into;
     }.
 
     Global Instance Into_for_T : Into.Trait T := {
-      Into.into `{State.Trait} := into;
+      Into.into := into;
     }.
   End Impl_Into_for_T.
 End Impl_Into_for_T.
@@ -118,15 +119,16 @@ pub trait TryFrom<T>: Sized {
 }
 *)
 Module TryFrom.
-  Class Trait (Self : Set) {T : Set} : Type := {
+  Class Trait (Self : Set) {T : Set} `{State.Trait} : Type := {
     Error : Set;
 
-    try_from `{State.Trait} : T -> M (Result Self Error);
+    try_from : T -> M (Result Self Error);
   }.
 
-  Global Instance AssociatedFunction_try_from {Self : Set} `{Trait Self} :
+  Global Instance AssociatedFunction_try_from `{State.Trait}
+      (Self T : Set) {_ : Trait Self (T := T)} :
     Notation.DoubleColon Self "try_from" := {
-    Notation.double_colon `{State.Trait} := try_from;
+    Notation.double_colon := try_from;
   }.
 End TryFrom.
 
@@ -139,12 +141,13 @@ pub trait TryInto<T>: Sized {
 }
 *)
 Module TryInto.
-  Class Trait (Self T : Set) : Type := { 
+  Class Trait (Self : Set) {T : Set} `{State.Trait} : Type := { 
     Error : Set;
-    try_into `{State.Trait} : Self -> M (Result T Error);
+    try_into : Self -> M (Result T Error);
   }.
 
-  Global Instance Method_try_into {Self : Set} `{Trait Self} :
+  Global Instance Method_try_into (Self T : Set) `{State.Trait}
+      {_ : Trait Self (T := T)} :
     Notation.Dot "try_into" := {
     Notation.dot `{State.Trait} := try_into;
   }.
@@ -165,19 +168,21 @@ where
 *)
 Module Impl_TryInto_for_T.
   Section Impl_TryInto_for_T.
+    Context `{State.Trait}.
     Context {T U : Set}.
-    Context `{TryFrom.Trait U (T := T)}.
+    Context {H_TryFrom : TryFrom.Trait U (T := T)}.
 
     Definition Self := T.
 
-    Definition try_into `{State.Trait} : Self -> M (Result U TryFrom.Error) := TryFrom.try_from.
+    Definition try_into : Self -> M (Result U TryFrom.Error) :=
+      TryFrom.try_from.
 
-    Global Instance Method_try_into `{State.Trait} : Notation.Dot "try_into" := {
+    Global Instance Method_try_into : Notation.Dot "try_into" := {
       Notation.dot := try_into;
     }.
 
-    Global Instance TryInto_for_T : TryInto.Trait T U := {
-      TryInto.try_into `{State.Trait} := try_into;
+    Global Instance TryInto_for_T : TryInto.Trait T (T := U) := {
+      TryInto.try_into := try_into;
     }.
   End Impl_TryInto_for_T.
 End Impl_TryInto_for_T.

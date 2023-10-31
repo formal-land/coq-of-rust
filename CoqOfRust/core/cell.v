@@ -14,13 +14,12 @@ Require Import CoqOfRust.lib.lib.
 [x] UnsafeCell
 *)
 
-(* BUGGED: How to translate this one? *)
 (* pub struct LazyCell<T, F = fn() -> T> { /* private fields */ } *)
 Module LazyCell.
-  Parameter t : Set -> Set -> Set.
+  Parameter t : forall `{State.Trait}, Set -> Set -> Set.
 End LazyCell.
-Definition LazyCell (T : Set) (F : option Set) : Set :=
-  LazyCell.t T (defaultType F (unit -> T)).
+Definition LazyCell `{State.Trait} (T F : Set) : Set :=
+  M.val (LazyCell.t T F).
 
 (* 
 pub struct SyncUnsafeCell<T>

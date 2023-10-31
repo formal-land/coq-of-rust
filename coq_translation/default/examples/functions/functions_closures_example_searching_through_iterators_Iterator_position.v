@@ -2,65 +2,116 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
+Definition main `{ℋ : State.Trait} : M unit :=
   let* vec :=
-    let* α0 :=
+    let* α0 := M.alloc 1 in
+    let* α1 := M.alloc 9 in
+    let* α2 := M.alloc 3 in
+    let* α3 := M.alloc 3 in
+    let* α4 := M.alloc 13 in
+    let* α5 := M.alloc 2 in
+    let* α6 :=
       (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"]
-        [ 1; 9; 3; 3; 13; 2 ] in
-    (Slice _)::["into_vec"] α0 in
+        [ α0; α1; α2; α3; α4; α5 ] in
+    let* α7 := pointer_coercion "Unsize" α6 in
+    (Slice T)::["into_vec"] α7 in
   let* index_of_first_even_number :=
-    let* α0 := vec.["iter"] in
-    α0.["position"]
-      (fun x =>
-        let* α0 := x.["rem"] 2 in
-        α0.["eq"] 0) in
+    let* α0 := borrow vec (alloc.vec.Vec i32 alloc.alloc.Global) in
+    let* α1 :=
+      (core.ops.deref.Deref.deref
+          (Self := (alloc.vec.Vec i32 alloc.alloc.Global)))
+        α0 in
+    let* α2 := deref α1 (Slice i32) in
+    let* α3 := borrow α2 (Slice i32) in
+    let* α4 := (Slice T)::["iter"] α3 in
+    let* α5 := borrow_mut α4 (core.slice.iter.Iter i32) in
+    (core.iter.traits.iterator.Iterator.position
+        (Self := (core.slice.iter.Iter i32)))
+      α5
+      (let* α0 := M.alloc 2 in
+      let* α1 := rem x α0 in
+      let* α2 := M.alloc 0 in
+      eq α1 α2) in
   let* _ :=
-    match
-      (addr_of index_of_first_even_number, addr_of (core.option.Option.Some 5))
-    with
+    let* α0 := borrow index_of_first_even_number (core.option.Option usize) in
+    let* α1 := M.alloc 5 in
+    let* α2 := borrow (core.option.Option.Some α1) (core.option.Option usize) in
+    match (α0, α2) with
     | (left_val, right_val) =>
-      let* α0 := left_val.["deref"] in
-      let* α1 := right_val.["deref"] in
-      let* α2 := α0.["eq"] α1 in
-      let* α3 := α2.["not"] in
-      if (α3 : bool) then
-        let kind := core.panicking.AssertKind.Eq in
+      let* α0 := deref left_val (core.option.Option usize) in
+      let* α1 := borrow α0 (core.option.Option usize) in
+      let* α2 := deref right_val (core.option.Option usize) in
+      let* α3 := borrow α2 (core.option.Option usize) in
+      let* α4 :=
+        (core.cmp.PartialEq.eq (Self := (core.option.Option usize))) α1 α3 in
+      let* α5 := not α4 in
+      let* α6 := use α5 in
+      if (α6 : bool) then
+        let kind := core.panicking.AssertKind.Eq tt in
         let* _ :=
-          let* α0 := left_val.["deref"] in
-          let* α1 := right_val.["deref"] in
+          let* α0 := deref left_val (core.option.Option usize) in
+          let* α1 := borrow α0 (core.option.Option usize) in
+          let* α2 := deref α1 (core.option.Option usize) in
+          let* α3 := borrow α2 (core.option.Option usize) in
+          let* α4 := deref right_val (core.option.Option usize) in
+          let* α5 := borrow α4 (core.option.Option usize) in
+          let* α6 := deref α5 (core.option.Option usize) in
+          let* α7 := borrow α6 (core.option.Option usize) in
           core.panicking.assert_failed
             kind
-            (addr_of α0)
-            (addr_of α1)
-            core.option.Option.None in
-        Pure tt
+            α3
+            α7
+            (core.option.Option.None tt) in
+        let* α0 := M.alloc tt in
+        never_to_any α0
       else
-        Pure tt
+        M.alloc tt
     end in
   let* index_of_first_negative_number :=
-    let* α0 := vec.["into_iter"] in
-    α0.["position"] (fun x => x.["lt"] 0) in
+    let* α0 :=
+      (core.iter.traits.collect.IntoIterator.into_iter
+          (Self := (alloc.vec.Vec i32 alloc.alloc.Global)))
+        vec in
+    let* α1 :=
+      borrow_mut α0 (alloc.vec.into_iter.IntoIter i32 alloc.alloc.Global) in
+    (core.iter.traits.iterator.Iterator.position
+        (Self := (alloc.vec.into_iter.IntoIter i32 alloc.alloc.Global)))
+      α1
+      (let* α0 := M.alloc 0 in
+      lt x α0) in
   let* _ :=
-    match
-      (addr_of index_of_first_negative_number, addr_of core.option.Option.None)
-    with
+    let* α0 :=
+      borrow index_of_first_negative_number (core.option.Option usize) in
+    let* α1 := borrow (core.option.Option.None tt) (core.option.Option usize) in
+    match (α0, α1) with
     | (left_val, right_val) =>
-      let* α0 := left_val.["deref"] in
-      let* α1 := right_val.["deref"] in
-      let* α2 := α0.["eq"] α1 in
-      let* α3 := α2.["not"] in
-      if (α3 : bool) then
-        let kind := core.panicking.AssertKind.Eq in
+      let* α0 := deref left_val (core.option.Option usize) in
+      let* α1 := borrow α0 (core.option.Option usize) in
+      let* α2 := deref right_val (core.option.Option usize) in
+      let* α3 := borrow α2 (core.option.Option usize) in
+      let* α4 :=
+        (core.cmp.PartialEq.eq (Self := (core.option.Option usize))) α1 α3 in
+      let* α5 := not α4 in
+      let* α6 := use α5 in
+      if (α6 : bool) then
+        let kind := core.panicking.AssertKind.Eq tt in
         let* _ :=
-          let* α0 := left_val.["deref"] in
-          let* α1 := right_val.["deref"] in
+          let* α0 := deref left_val (core.option.Option usize) in
+          let* α1 := borrow α0 (core.option.Option usize) in
+          let* α2 := deref α1 (core.option.Option usize) in
+          let* α3 := borrow α2 (core.option.Option usize) in
+          let* α4 := deref right_val (core.option.Option usize) in
+          let* α5 := borrow α4 (core.option.Option usize) in
+          let* α6 := deref α5 (core.option.Option usize) in
+          let* α7 := borrow α6 (core.option.Option usize) in
           core.panicking.assert_failed
             kind
-            (addr_of α0)
-            (addr_of α1)
-            core.option.Option.None in
-        Pure tt
+            α3
+            α7
+            (core.option.Option.None tt) in
+        let* α0 := M.alloc tt in
+        never_to_any α0
       else
-        Pure tt
+        M.alloc tt
     end in
-  Pure tt.
+  M.alloc tt.

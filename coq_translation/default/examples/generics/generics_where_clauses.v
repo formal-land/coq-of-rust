@@ -2,59 +2,73 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module PrintInOption.
-  Class Trait (Self : Set) : Type := {
-    print_in_option `{H' : State.Trait} : Self -> M (H := H') unit;
-  }.
-  
-  Global Instance Method_print_in_option `{H' : State.Trait} `(Trait)
-    : Notation.Dot "print_in_option" := {
-    Notation.dot := print_in_option;
-  }.
+  Section PrintInOption.
+    Context `{ℋ : State.Trait}.
+    
+    Class Trait (Self : Set) : Type := {
+      print_in_option : Self -> M unit;
+    }.
+    
+  End PrintInOption.
 End PrintInOption.
 
 Module Impl_generics_where_clauses_PrintInOption_for_T.
   Section Impl_generics_where_clauses_PrintInOption_for_T.
-    Context {T : Set}.
-    Context `{core.fmt.Debug.Trait (core.option.Option T)}.
-    Definition Self := T.
+    Context `{ℋ : State.Trait}.
     
-    Definition print_in_option
-        `{H' : State.Trait}
-        (self : Self)
-        : M (H := H') unit :=
+    Context {T : Set}.
+    
+    Context {ℋ_0 : core.fmt.Debug.Trait (core.option.Option T)}.
+    Definition Self : Set := T.
+    
+    Definition print_in_option (self : Self) : M unit :=
       let* _ :=
         let* _ :=
-          let* α0 :=
-            format_argument::["new_debug"]
-              (addr_of (core.option.Option.Some self)) in
-          let* α1 :=
-            format_arguments::["new_v1"]
-              (addr_of [ ""; "
-" ])
-              (addr_of [ α0 ]) in
-          std.io.stdio._print α1 in
-        Pure tt in
-      Pure tt.
+          let* α0 := borrow [ mk_str ""; mk_str "
+" ] (list (ref str)) in
+          let* α1 := deref α0 (list (ref str)) in
+          let* α2 := borrow α1 (list (ref str)) in
+          let* α3 := pointer_coercion "Unsize" α2 in
+          let* α4 :=
+            borrow (core.option.Option.Some self) (core.option.Option T) in
+          let* α5 := deref α4 (core.option.Option T) in
+          let* α6 := borrow α5 (core.option.Option T) in
+          let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
+          let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+          let* α9 := deref α8 (list core.fmt.rt.Argument) in
+          let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+          let* α11 := pointer_coercion "Unsize" α10 in
+          let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+          std.io.stdio._print α12 in
+        M.alloc tt in
+      M.alloc tt.
     
-    Global Instance Method_print_in_option `{H' : State.Trait} :
-      Notation.Dot "print_in_option" := {
-      Notation.dot := print_in_option;
+    Global Instance AssociatedFunction_print_in_option :
+      Notation.DoubleColon Self "print_in_option" := {
+      Notation.double_colon := print_in_option;
     }.
     
-    Global Instance I : generics_where_clauses.PrintInOption.Trait Self := {
-      generics_where_clauses.PrintInOption.print_in_option `{H' : State.Trait}
-        :=
-        print_in_option;
+    #[refine] Global Instance ℐ :
+      generics_where_clauses.PrintInOption.Trait Self := {
+      generics_where_clauses.PrintInOption.print_in_option := print_in_option;
     }.
+    Admitted.
   End Impl_generics_where_clauses_PrintInOption_for_T.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_generics_where_clauses_PrintInOption_for_T.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
+Definition main `{ℋ : State.Trait} : M unit :=
   let* vec :=
-    let* α0 :=
-      (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] [ 1; 2; 3 ] in
-    (Slice _)::["into_vec"] α0 in
-  let* _ := vec.["print_in_option"] in
-  Pure tt.
+    let* α0 := M.alloc 1 in
+    let* α1 := M.alloc 2 in
+    let* α2 := M.alloc 3 in
+    let* α3 :=
+      (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] [ α0; α1; α2 ] in
+    let* α4 := pointer_coercion "Unsize" α3 in
+    (Slice T)::["into_vec"] α4 in
+  let* _ :=
+    (generics_where_clauses.PrintInOption.print_in_option
+        (Self := (alloc.vec.Vec i32 alloc.alloc.Global)))
+      vec in
+  M.alloc tt.

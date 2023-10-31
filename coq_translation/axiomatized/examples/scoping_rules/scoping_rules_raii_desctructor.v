@@ -2,26 +2,34 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module ToDrop.
-  Inductive t : Set := Build.
+  Section ToDrop.
+    Context `{ℋ : State.Trait}.
+    
+    Inductive t : Set := Build.
+  End ToDrop.
 End ToDrop.
 Definition ToDrop := @ToDrop.t.
 
 Module Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop.
-  Definition Self := scoping_rules_raii_desctructor.ToDrop.
-  
-  Parameter drop :
-      forall `{H' : State.Trait},
-      (mut_ref Self) -> M (H := H') unit.
-  
-  Global Instance Method_drop `{H' : State.Trait} : Notation.Dot "drop" := {
-    Notation.dot := drop;
-  }.
-  
-  Global Instance I : core.ops.drop.Drop.Trait Self := {
-    core.ops.drop.Drop.drop `{H' : State.Trait} := drop;
-  }.
-  Global Hint Resolve I : core.
+  Section Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop.
+    Context `{ℋ : State.Trait}.
+    
+    Definition Self : Set := scoping_rules_raii_desctructor.ToDrop.
+    
+    Parameter drop : (mut_ref Self) -> M unit.
+    
+    Global Instance AssociatedFunction_drop :
+      Notation.DoubleColon Self "drop" := {
+      Notation.double_colon := drop;
+    }.
+    
+    #[refine] Global Instance ℐ : core.ops.drop.Drop.Trait Self := {
+      core.ops.drop.Drop.drop := drop;
+    }.
+    Admitted.
+  End Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop.
+  Global Hint Resolve ℐ : core.
 End Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{H' : State.Trait}, M (H := H') unit.
+Parameter main : forall `{ℋ : State.Trait}, M unit.

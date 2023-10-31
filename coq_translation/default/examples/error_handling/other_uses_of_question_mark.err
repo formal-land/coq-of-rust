@@ -1,0 +1,60 @@
+type Dynamic(
+    [
+        Binder(
+            Trait(
+                std::error::Error,
+            ),
+            [],
+        ),
+    ],
+    ReErased,
+    Dyn,
+) not yet handled
+type Dynamic(
+    [
+        Binder(
+            Trait(
+                std::error::Error,
+            ),
+            [],
+        ),
+    ],
+    ReErased,
+    Dyn,
+) not yet handled
+type Dynamic(
+    [
+        Binder(
+            Trait(
+                std::error::Error,
+            ),
+            [],
+        ),
+    ],
+    ReErased,
+    Dyn,
+) not yet handled
+type Dynamic(
+    [
+        Binder(
+            Trait(
+                std::error::Error,
+            ),
+            [],
+        ),
+    ],
+    ReErased,
+    Dyn,
+) not yet handled
+type Dynamic(
+    [
+        Binder(
+            Trait(
+                std::error::Error,
+            ),
+            [],
+        ),
+    ],
+    ReErased,
+    Dyn,
+) not yet handled

@@ -2,27 +2,28 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Parameter create_fn_ret_ty :
+    forall `{ℋ : State.Trait},
     Sigma (Ty : Set) `(core.ops.function.Fn.Trait Ty),
     unit.
-Parameter create_fn :
-    forall `{H' : State.Trait},
-    M (H := H') (projT1 create_fn_ret_ty).
+Parameter create_fn : forall `{ℋ : State.Trait}, M (projT1 create_fn_ret_ty).
 
 Error OpaqueTy.
 
 Parameter create_fnmut_ret_ty :
+    forall `{ℋ : State.Trait},
     Sigma (Ty : Set) `(core.ops.function.FnMut.Trait Ty),
     unit.
 Parameter create_fnmut :
-    forall `{H' : State.Trait},
-    M (H := H') (projT1 create_fnmut_ret_ty).
+    forall `{ℋ : State.Trait},
+    M (projT1 create_fnmut_ret_ty).
 
 Parameter create_fnonce_ret_ty :
+    forall `{ℋ : State.Trait},
     Sigma (Ty : Set) `(core.ops.function.FnOnce.Trait Ty),
     unit.
 Parameter create_fnonce :
-    forall `{H' : State.Trait},
-    M (H := H') (projT1 create_fnonce_ret_ty).
+    forall `{ℋ : State.Trait},
+    M (projT1 create_fnonce_ret_ty).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{H' : State.Trait}, M (H := H') unit.
+Parameter main : forall `{ℋ : State.Trait}, M unit.

@@ -2,15 +2,15 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Parameter foo :
-    forall `{H' : State.Trait} {A : Set},
-    (core.option.Option A) -> M (H := H') unit.
+    forall `{ℋ : State.Trait} {A : Set},
+    (core.option.Option A) -> M unit.
 
 Module tests.
-  Parameter test_file : forall `{H' : State.Trait}, M (H := H') unit.
+  Parameter test_file : forall `{ℋ : State.Trait}, M unit.
   
-  Parameter test_file_also : forall `{H' : State.Trait}, M (H := H') unit.
+  Parameter test_file_also : forall `{ℋ : State.Trait}, M unit.
 End tests.
 
-Parameter test_file : forall `{H' : State.Trait}, M (H := H') unit.
+Parameter test_file : forall `{ℋ : State.Trait}, M unit.
 
-Parameter test_file_also : forall `{H' : State.Trait}, M (H := H') unit.
+Parameter test_file_also : forall `{ℋ : State.Trait}, M unit.

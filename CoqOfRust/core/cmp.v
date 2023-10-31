@@ -32,34 +32,37 @@ Traits
 [x] PartialOrd
 *)
 Module PartialEq.
-  Class Trait (Self : Set) {Rhs : Set} : Set := {
+  Class Trait (Self : Set) {Rhs : Set} `{State.Trait} : Set := {
     Rhs := Rhs;
 
-    eq `{State.Trait} : ref Self -> ref Rhs -> M bool;
+    eq : ref Self -> ref Rhs -> M bool;
   }.
 
   Module Default.
     Definition Rhs (Self : Set) : Set := Self.
   End Default.
 
-  Global Instance Method_eq `{State.Trait} `(Trait) : Notation.Dot "eq" := {
+  Global Instance Method_eq `(Trait) : Notation.Dot "eq" := {
     Notation.dot := eq;
   }.
-  Global Instance Method_ne `{State.Trait} `(Trait) : Notation.Dot "ne" := {
+  Global Instance Method_ne `(Trait) : Notation.Dot "ne" := {
     Notation.dot x y :=
       let* is_eq := eq x y in
+      let* is_eq := M.read is_eq in
       Pure (negb is_eq);
   }.
 
   Module Impl_PartialEq_for_str.
-    Global Instance I : Trait str (Rhs := Default.Rhs str). Admitted.
+    Global Instance I `{State.Trait} :
+      Trait str (Rhs := Default.Rhs str).
+    Admitted.
   End Impl_PartialEq_for_str.
 End PartialEq.
 
 Module PartialOrd.
-  Class Trait (Self : Set) {Rhs : Set} : Set := {
+  Class Trait `{State.Trait} (Self : Set) {Rhs : Set} : Set := {
     Rhs := Rhs;
-    partial_cmp `{State.Trait} :
+    partial_cmp :
       ref Self -> ref Self -> M (core.option.Option (Ordering.t));
 
     (* lt `{State.Trait} : ref Self -> ref Rhs -> M bool;
@@ -89,7 +92,7 @@ Module PartialOrd.
     Notation.dot := ge;
   }. *)
   Module Impl_PartialOrd_for_str.
-    Global Instance I : Trait str (Rhs := str). Admitted.
+    Global Instance I `{State.Trait} : Trait str (Rhs := str). Admitted.
   End Impl_PartialOrd_for_str.
 End PartialOrd.
 
@@ -98,12 +101,13 @@ pub trait Eq: PartialEq<Self> { }
  *)
 Module Eq.
   Unset Primitive Projections.
-  Class Trait (Self : Set)
-    `{PartialEq.Trait Self (Rhs := PartialEq.Default.Rhs Self)} : Set := { }.
+  Class Trait `{State.Trait} (Self : Set) : Set := {
+    _ :: PartialEq.Trait Self (Rhs := PartialEq.Default.Rhs Self);
+  }.
   Set Primitive Projections.
 
   Module Impl_Eq_for_str.
-    Global Instance I : Trait str := {}.
+    Global Instance I `{State.Trait} : Trait str := {}.
   End Impl_Eq_for_str.
 End Eq.
 
@@ -122,14 +126,14 @@ pub trait Ord: Eq + PartialOrd<Self> {
 }
 *)
 Module Ord.
-  Class Trait (Self : Set) 
-    `{Eq.Trait Self}
-    `{PartialOrd.Trait Self (Rhs := Self)} := {
-    cmp `{H : State.Trait} : ref Self -> ref Self -> M (H := H) Ordering;
+  Class Trait `{State.Trait} (Self : Set) := {
+    _ :: Eq.Trait Self;
+    _ :: PartialOrd.Trait Self (Rhs := Self);
+    cmp : ref Self -> ref Self -> M (H := H) Ordering;
   }.
 
   Module Impl_Ord_for_str.
-    Global Instance I : Trait str. Admitted.
+    Global Instance I `{State.Trait} : Trait str. Admitted.
   End Impl_Ord_for_str.
 End Ord.
 
@@ -161,11 +165,13 @@ Module Impls.
   }
   *)
   Module Impl_PartialEq_for_unit.
-    Definition eq `{State.Trait} (x y : unit) : M bool := Pure true.
+    Definition eq `{State.Trait} (x y : ref unit) : M bool :=
+      let* result := M.alloc true in
+      Pure result.
 
-    Global Instance I :
+    Global Instance I `{State.Trait} :
       PartialEq.Trait unit (Rhs := PartialEq.Default.Rhs unit) := {
-      eq `{State.Trait} := eq;
+      eq := eq;
     }.
   End Impl_PartialEq_for_unit.
 End Impls.

@@ -2,14 +2,14 @@ use pretty::RcDoc;
 use rustc_ast::LitKind;
 use rustc_span::symbol::Symbol;
 
-use crate::coq;
+// use crate::coq;
 
 /// provides the instance of the Struct.Trait typeclass
 /// for definitions of functions and constants
 /// which types utilize the M monad constructor
-pub(crate) fn monadic_typeclass_parameter<'a>() -> Doc<'a> {
-    coq::ArgDecl::monadic_typeclass_parameter().to_doc()
-}
+// pub(crate) fn monadic_typeclass_parameter<'a>() -> Doc<'a> {
+//     coq::ArgDecl::monadic_typeclass_parameter().to_doc()
+// }
 
 /// encloses an expression in curly brackets
 pub(crate) fn curly_brackets(doc: RcDoc<()>) -> RcDoc<()> {
@@ -99,18 +99,34 @@ fn string_pieces_to_doc<'a>(with_paren: bool, pieces: &[StringPiece]) -> RcDoc<'
     }
 }
 
-fn string_to_doc(with_paren: bool, text: &str) -> RcDoc<()> {
-    let pieces = cut_string_in_pieces_for_coq(text);
-    string_pieces_to_doc(with_paren, &pieces)
+fn string_to_doc(with_paren: bool, message: &str) -> RcDoc<()> {
+    let pieces = cut_string_in_pieces_for_coq(message);
+    paren(
+        with_paren,
+        nest([text("mk_str"), line(), string_pieces_to_doc(true, &pieces)]),
+    )
 }
 
-pub(crate) fn literal_to_doc(with_paren: bool, literal: &LitKind) -> RcDoc<()> {
+fn apply_neg_to_literal(literal: RcDoc<()>, neg: bool) -> RcDoc<()> {
+    if neg {
+        paren(true, nest([text("-"), line(), literal]))
+    } else {
+        literal
+    }
+}
+
+pub(crate) fn literal_to_doc(with_paren: bool, literal: &LitKind, neg: bool) -> RcDoc<()> {
+    let wrap_in_alloc = |doc| paren(with_paren, nest([text("M.alloc"), line(), doc]));
+
     match literal {
         LitKind::Str(s, _) => string_to_doc(with_paren, s.as_str()),
-        LitKind::Int(i, _) => RcDoc::text(format!("{i}")),
-        LitKind::Float(f, _) => RcDoc::text(format!("{} (* {f} *)", round_symbol(f))),
-        LitKind::Bool(b) => RcDoc::text(format!("{b}")),
-        LitKind::Char(c) => RcDoc::text(format!("\"{c}\"%char")),
+        LitKind::Int(i, _) => wrap_in_alloc(apply_neg_to_literal(RcDoc::text(format!("{i}")), neg)),
+        LitKind::Float(f, _) => wrap_in_alloc(apply_neg_to_literal(
+            RcDoc::text(format!("{} (* {f} *)", round_symbol(f))),
+            neg,
+        )),
+        LitKind::Bool(b) => wrap_in_alloc(RcDoc::text(format!("{b}"))),
+        LitKind::Char(c) => wrap_in_alloc(RcDoc::text(format!("\"{c}\"%char"))),
         LitKind::Byte(b) => RcDoc::text(format!("{b}")),
         LitKind::ByteStr(b, _) => RcDoc::text(format!("{b:?}")),
         LitKind::Err => RcDoc::text("Err"),

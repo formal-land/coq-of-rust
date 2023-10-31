@@ -4,7 +4,7 @@ Require Import CoqOfRust.
 Context (a b c : Set).
 Context (f : a -> a).
 Context (g : a -> b -> c -> a).
-Context (h : unit -> a).
+Context (h : Datatypes.unit -> a).
 Context (x : a) (y : b) (z : c).
 
 Goal f(|x|) = f x. Proof. reflexivity. Qed.

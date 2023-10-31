@@ -23,7 +23,7 @@ Module Global.
 End Global.
 Definition Global := Global.t.
 
-Global Instance Clone_for_Global : core.clone.Clone.Trait Global.
+Global Instance Clone_for_Global `{State.Trait} : core.clone.Clone.Trait Global.
 Admitted.
 
 Module layout.
@@ -55,7 +55,7 @@ pub unsafe trait Allocator {
 }
 *)
 Module Allocator.
-  Class Trait (Self : Set) : Set := { 
+  Class Trait `{State.Trait} (Self : Set) : Set := { 
     (* fn allocate(&self, layout: Layout) -> Result<NonNull<[u8]>, AllocError>; *)
     allocate : ref Self -> layout.Layout -> Result (NonNull (slice u8)) AllocError;
     
@@ -112,7 +112,7 @@ Module Allocator.
   }.
 End Allocator.
 
-Global Instance Allocator_for_Global : Allocator.Trait Global.
+Global Instance Allocator_for_Global `{State.Trait} : Allocator.Trait Global.
 Admitted.
 
 Module global.
@@ -133,17 +133,17 @@ Module global.
   }
   *)
   Module GlobalAlloc.
-    Class Trait (Self : Set) : Set := {
-      alloc `{H : State.Trait} :
-        ref Self -> layout.Layout -> M (H := H) (mut_ref u8);
-      dealloc `{H : State.Trait} :
-        ref Self -> mut_ref u8 -> layout.Layout -> M (H := H) unit;
+    Class Trait `{State.Trait} (Self : Set) : Set := {
+      alloc :
+        ref Self -> layout.Layout -> M (mut_ref u8);
+      dealloc :
+        ref Self -> mut_ref u8 -> layout.Layout -> M unit;
       (* Provided methods *)
-      (* alloc_zeroed `{H : State.Trait} :
-        ref Self -> layout.Layout -> M (H := H) (mut_ref u8);
-      realloc `{H : State.Trait} :
+      (* alloc_zeroed :
+        ref Self -> layout.Layout -> M (mut_ref u8);
+      realloc :
         ref Self -> mut_ref u8 -> layout.Layout -> usize ->
-        M (H := H) (mut_ref u8); *)
+        M (mut_ref u8); *)
     }.
   End GlobalAlloc.
 End global.

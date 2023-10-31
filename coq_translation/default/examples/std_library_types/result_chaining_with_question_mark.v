@@ -3,286 +3,406 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module checked.
   Module MathError.
-    Inductive t : Set :=
+    Inductive t `{ℋ : State.Trait} : Set :=
     | DivisionByZero
     | NonPositiveLogarithm
     | NegativeSquareRoot.
   End MathError.
-  Definition MathError : Set := MathError.t.
+  Definition MathError `{ℋ : State.Trait} : Set := MathError.t.
   
   Module
     Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
-    Definition Self := result_chaining_with_question_mark.checked.MathError.
-    
-    Definition fmt
-        `{H' : State.Trait}
-        (self : ref Self)
-        (f : mut_ref core.fmt.Formatter)
-        : M (H := H') core.fmt.Result :=
-      let* α0 :=
-        match self with
-        | result_chaining_with_question_mark.checked.MathError.DivisionByZero =>
-          Pure "DivisionByZero"
-        |
-            result_chaining_with_question_mark.checked.MathError.NonPositiveLogarithm
-            =>
-          Pure "NonPositiveLogarithm"
-        |
-            result_chaining_with_question_mark.checked.MathError.NegativeSquareRoot
-            =>
-          Pure "NegativeSquareRoot"
-        end in
-      core.fmt.Formatter::["write_str"] f α0.
-    
-    Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
-      Notation.dot := fmt;
-    }.
-    
-    Global Instance I : core.fmt.Debug.Trait Self := {
-      core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
-    }.
-    Global Hint Resolve I : core.
+    Section
+      Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
+      Context `{ℋ : State.Trait}.
+      
+      Definition Self : Set :=
+        result_chaining_with_question_mark.checked.MathError.
+      
+      Definition fmt
+          (self : ref Self)
+          (f : mut_ref core.fmt.Formatter)
+          : M ltac:(core.fmt.Result) :=
+        let* α0 := deref f core.fmt.Formatter in
+        let* α1 := borrow_mut α0 core.fmt.Formatter in
+        let* α2 :=
+          match self with
+          | result_chaining_with_question_mark.checked.MathError  =>
+            let* α0 := deref (mk_str "DivisionByZero") str in
+            borrow α0 str
+          | result_chaining_with_question_mark.checked.MathError  =>
+            let* α0 := deref (mk_str "NonPositiveLogarithm") str in
+            borrow α0 str
+          | result_chaining_with_question_mark.checked.MathError  =>
+            let* α0 := deref (mk_str "NegativeSquareRoot") str in
+            borrow α0 str
+          end in
+        core.fmt.Formatter::["write_str"] α1 α2.
+      
+      Global Instance AssociatedFunction_fmt :
+        Notation.DoubleColon Self "fmt" := {
+        Notation.double_colon := fmt;
+      }.
+      
+      #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
+        core.fmt.Debug.fmt := fmt;
+      }.
+      Admitted.
+    End
+      Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
+    Global Hint Resolve ℐ : core.
   End
     Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
   
-  Definition MathResult : Set :=
-    core.result.Result f64 result_chaining_with_question_mark.checked.MathError.
+  Ltac MathResult :=
+    refine
+      (core.result.Result
+        f64
+        result_chaining_with_question_mark.checked.MathError).
   
   Definition div
-      `{H' : State.Trait}
+      `{ℋ : State.Trait}
       (x : f64)
       (y : f64)
-      : M (H := H') result_chaining_with_question_mark.checked.MathResult :=
-    let* α0 := y.["eq"] 0 (* 0.0 *) in
-    if (α0 : bool) then
+      : M ltac:(result_chaining_with_question_mark.checked.MathResult) :=
+    let* α0 := M.alloc 0 (* 0.0 *) in
+    let* α1 := eq y α0 in
+    let* α2 := use α1 in
+    if (α2 : bool) then
       Pure
         (core.result.Result.Err
-          result_chaining_with_question_mark.checked.MathError.DivisionByZero)
+          (result_chaining_with_question_mark.checked.MathError.DivisionByZero
+            tt))
     else
-      let* α0 := x.["div"] y in
+      let* α0 := div x y in
       Pure (core.result.Result.Ok α0).
   
   Definition sqrt
-      `{H' : State.Trait}
+      `{ℋ : State.Trait}
       (x : f64)
-      : M (H := H') result_chaining_with_question_mark.checked.MathResult :=
-    let* α0 := x.["lt"] 0 (* 0.0 *) in
-    if (α0 : bool) then
+      : M ltac:(result_chaining_with_question_mark.checked.MathResult) :=
+    let* α0 := M.alloc 0 (* 0.0 *) in
+    let* α1 := lt x α0 in
+    let* α2 := use α1 in
+    if (α2 : bool) then
       Pure
         (core.result.Result.Err
-          result_chaining_with_question_mark.checked.MathError.NegativeSquareRoot)
+          (result_chaining_with_question_mark.checked.MathError.NegativeSquareRoot
+            tt))
     else
-      let* α0 := x.["sqrt"] in
+      let* α0 := f64::["sqrt"] x in
       Pure (core.result.Result.Ok α0).
   
   Definition ln
-      `{H' : State.Trait}
+      `{ℋ : State.Trait}
       (x : f64)
-      : M (H := H') result_chaining_with_question_mark.checked.MathResult :=
-    let* α0 := x.["le"] 0 (* 0.0 *) in
-    if (α0 : bool) then
+      : M ltac:(result_chaining_with_question_mark.checked.MathResult) :=
+    let* α0 := M.alloc 0 (* 0.0 *) in
+    let* α1 := le x α0 in
+    let* α2 := use α1 in
+    if (α2 : bool) then
       Pure
         (core.result.Result.Err
-          result_chaining_with_question_mark.checked.MathError.NonPositiveLogarithm)
+          (result_chaining_with_question_mark.checked.MathError.NonPositiveLogarithm
+            tt))
     else
-      let* α0 := x.["ln"] in
+      let* α0 := f64::["ln"] x in
       Pure (core.result.Result.Ok α0).
   
   Definition op_
-      `{H' : State.Trait}
+      `{ℋ : State.Trait}
       (x : f64)
       (y : f64)
-      : M (H := H') result_chaining_with_question_mark.checked.MathResult :=
+      : M ltac:(result_chaining_with_question_mark.checked.MathResult) :=
     let* ratio :=
       let* α0 := result_chaining_with_question_mark.checked.div x y in
-      let* α1 := α0.["branch"] in
+      let* α1 :=
+        (core.ops.try_trait.Try.branch
+            (Self :=
+              (core.result.Result
+                f64
+                result_chaining_with_question_mark.checked.MathError)))
+          α0 in
       match α1 with
-      | LanguageItem.Break residual =>
-        let* α0 := residual.["from_residual"] in
-        Return α0
-      | LanguageItem.Continue val => Pure val
+      | core.ops.control_flow.ControlFlow residual =>
+        let* α0 :=
+          (core.ops.try_trait.FromResidual.from_residual
+              (Self :=
+                (core.result.Result
+                  f64
+                  result_chaining_with_question_mark.checked.MathError)))
+            residual in
+        let* α1 := Return α0 in
+        never_to_any α1
+      | core.ops.control_flow.ControlFlow val => Pure val
       end in
     let* ln :=
       let* α0 := result_chaining_with_question_mark.checked.ln ratio in
-      let* α1 := α0.["branch"] in
+      let* α1 :=
+        (core.ops.try_trait.Try.branch
+            (Self :=
+              (core.result.Result
+                f64
+                result_chaining_with_question_mark.checked.MathError)))
+          α0 in
       match α1 with
-      | LanguageItem.Break residual =>
-        let* α0 := residual.["from_residual"] in
-        Return α0
-      | LanguageItem.Continue val => Pure val
+      | core.ops.control_flow.ControlFlow residual =>
+        let* α0 :=
+          (core.ops.try_trait.FromResidual.from_residual
+              (Self :=
+                (core.result.Result
+                  f64
+                  result_chaining_with_question_mark.checked.MathError)))
+            residual in
+        let* α1 := Return α0 in
+        never_to_any α1
+      | core.ops.control_flow.ControlFlow val => Pure val
       end in
     result_chaining_with_question_mark.checked.sqrt ln.
   
-  Definition op `{H' : State.Trait} (x : f64) (y : f64) : M (H := H') unit :=
+  Definition op `{ℋ : State.Trait} (x : f64) (y : f64) : M unit :=
     let* α0 := result_chaining_with_question_mark.checked.op_ x y in
     match α0 with
-    | core.result.Result.Err why =>
+    | core.result.Result why =>
       let* α0 :=
         match why with
-        |
-            result_chaining_with_question_mark.checked.MathError.NonPositiveLogarithm
-            =>
-          Pure "logarithm of non-positive number"
-        | result_chaining_with_question_mark.checked.MathError.DivisionByZero =>
-          Pure "division by zero"
-        |
-            result_chaining_with_question_mark.checked.MathError.NegativeSquareRoot
-            =>
-          Pure "square root of negative number"
+        | result_chaining_with_question_mark.checked.MathError  =>
+          Pure (mk_str "logarithm of non-positive number")
+        | result_chaining_with_question_mark.checked.MathError  =>
+          let* α0 := deref (mk_str "division by zero") str in
+          borrow α0 str
+        | result_chaining_with_question_mark.checked.MathError  =>
+          let* α0 := deref (mk_str "square root of negative number") str in
+          borrow α0 str
         end in
-      core.panicking.panic_display (addr_of α0)
-    | core.result.Result.Ok value =>
+      let* α1 := borrow α0 (ref str) in
+      let* α2 := deref α1 (ref str) in
+      let* α3 := borrow α2 (ref str) in
+      let* α4 := core.panicking.panic_display α3 in
+      never_to_any α4
+    | core.result.Result value =>
       let* _ :=
-        let* α0 := format_argument::["new_display"] (addr_of value) in
-        let* α1 :=
-          format_arguments::["new_v1"] (addr_of [ ""; "
-" ]) (addr_of [ α0 ]) in
-        std.io.stdio._print α1 in
-      Pure tt
+        let* α0 := borrow [ mk_str ""; mk_str "
+" ] (list (ref str)) in
+        let* α1 := deref α0 (list (ref str)) in
+        let* α2 := borrow α1 (list (ref str)) in
+        let* α3 := pointer_coercion "Unsize" α2 in
+        let* α4 := borrow value f64 in
+        let* α5 := deref α4 f64 in
+        let* α6 := borrow α5 f64 in
+        let* α7 := core.fmt.rt.Argument::["new_display"] α6 in
+        let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+        let* α9 := deref α8 (list core.fmt.rt.Argument) in
+        let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+        let* α11 := pointer_coercion "Unsize" α10 in
+        let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+        std.io.stdio._print α12 in
+      M.alloc tt
     end.
 End checked.
 
 Module MathError.
-  Inductive t : Set :=
+  Inductive t `{ℋ : State.Trait} : Set :=
   | DivisionByZero
   | NonPositiveLogarithm
   | NegativeSquareRoot.
 End MathError.
-Definition MathError : Set := MathError.t.
+Definition MathError `{ℋ : State.Trait} : Set := MathError.t.
 
 Module
   Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
-  Definition Self := result_chaining_with_question_mark.checked.MathError.
-  
-  Definition fmt
-      `{H' : State.Trait}
-      (self : ref Self)
-      (f : mut_ref core.fmt.Formatter)
-      : M (H := H') core.fmt.Result :=
-    let* α0 :=
-      match self with
-      | result_chaining_with_question_mark.checked.MathError.DivisionByZero =>
-        Pure "DivisionByZero"
-      |
-          result_chaining_with_question_mark.checked.MathError.NonPositiveLogarithm
-          =>
-        Pure "NonPositiveLogarithm"
-      |
-          result_chaining_with_question_mark.checked.MathError.NegativeSquareRoot
-          =>
-        Pure "NegativeSquareRoot"
-      end in
-    core.fmt.Formatter::["write_str"] f α0.
-  
-  Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
-    Notation.dot := fmt;
-  }.
-  
-  Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
-  }.
-  Global Hint Resolve I : core.
+  Section
+    Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
+    Context `{ℋ : State.Trait}.
+    
+    Definition Self : Set :=
+      result_chaining_with_question_mark.checked.MathError.
+    
+    Definition fmt
+        (self : ref Self)
+        (f : mut_ref core.fmt.Formatter)
+        : M ltac:(core.fmt.Result) :=
+      let* α0 := deref f core.fmt.Formatter in
+      let* α1 := borrow_mut α0 core.fmt.Formatter in
+      let* α2 :=
+        match self with
+        | result_chaining_with_question_mark.checked.MathError  =>
+          let* α0 := deref (mk_str "DivisionByZero") str in
+          borrow α0 str
+        | result_chaining_with_question_mark.checked.MathError  =>
+          let* α0 := deref (mk_str "NonPositiveLogarithm") str in
+          borrow α0 str
+        | result_chaining_with_question_mark.checked.MathError  =>
+          let* α0 := deref (mk_str "NegativeSquareRoot") str in
+          borrow α0 str
+        end in
+      core.fmt.Formatter::["write_str"] α1 α2.
+    
+    Global Instance AssociatedFunction_fmt :
+      Notation.DoubleColon Self "fmt" := {
+      Notation.double_colon := fmt;
+    }.
+    
+    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
+      core.fmt.Debug.fmt := fmt;
+    }.
+    Admitted.
+  End
+    Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
+  Global Hint Resolve ℐ : core.
 End
   Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
 
-Definition MathResult : Set :=
-  core.result.Result f64 result_chaining_with_question_mark.checked.MathError.
+Ltac MathResult :=
+  refine
+    (core.result.Result
+      f64
+      result_chaining_with_question_mark.checked.MathError).
 
 Definition div
-    `{H' : State.Trait}
+    `{ℋ : State.Trait}
     (x : f64)
     (y : f64)
-    : M (H := H') result_chaining_with_question_mark.checked.MathResult :=
-  let* α0 := y.["eq"] 0 (* 0.0 *) in
-  if (α0 : bool) then
+    : M ltac:(result_chaining_with_question_mark.checked.MathResult) :=
+  let* α0 := M.alloc 0 (* 0.0 *) in
+  let* α1 := eq y α0 in
+  let* α2 := use α1 in
+  if (α2 : bool) then
     Pure
       (core.result.Result.Err
-        result_chaining_with_question_mark.checked.MathError.DivisionByZero)
+        (result_chaining_with_question_mark.checked.MathError.DivisionByZero
+          tt))
   else
-    let* α0 := x.["div"] y in
+    let* α0 := div x y in
     Pure (core.result.Result.Ok α0).
 
 Definition sqrt
-    `{H' : State.Trait}
+    `{ℋ : State.Trait}
     (x : f64)
-    : M (H := H') result_chaining_with_question_mark.checked.MathResult :=
-  let* α0 := x.["lt"] 0 (* 0.0 *) in
-  if (α0 : bool) then
+    : M ltac:(result_chaining_with_question_mark.checked.MathResult) :=
+  let* α0 := M.alloc 0 (* 0.0 *) in
+  let* α1 := lt x α0 in
+  let* α2 := use α1 in
+  if (α2 : bool) then
     Pure
       (core.result.Result.Err
-        result_chaining_with_question_mark.checked.MathError.NegativeSquareRoot)
+        (result_chaining_with_question_mark.checked.MathError.NegativeSquareRoot
+          tt))
   else
-    let* α0 := x.["sqrt"] in
+    let* α0 := f64::["sqrt"] x in
     Pure (core.result.Result.Ok α0).
 
 Definition ln
-    `{H' : State.Trait}
+    `{ℋ : State.Trait}
     (x : f64)
-    : M (H := H') result_chaining_with_question_mark.checked.MathResult :=
-  let* α0 := x.["le"] 0 (* 0.0 *) in
-  if (α0 : bool) then
+    : M ltac:(result_chaining_with_question_mark.checked.MathResult) :=
+  let* α0 := M.alloc 0 (* 0.0 *) in
+  let* α1 := le x α0 in
+  let* α2 := use α1 in
+  if (α2 : bool) then
     Pure
       (core.result.Result.Err
-        result_chaining_with_question_mark.checked.MathError.NonPositiveLogarithm)
+        (result_chaining_with_question_mark.checked.MathError.NonPositiveLogarithm
+          tt))
   else
-    let* α0 := x.["ln"] in
+    let* α0 := f64::["ln"] x in
     Pure (core.result.Result.Ok α0).
 
 Definition op_
-    `{H' : State.Trait}
+    `{ℋ : State.Trait}
     (x : f64)
     (y : f64)
-    : M (H := H') result_chaining_with_question_mark.checked.MathResult :=
+    : M ltac:(result_chaining_with_question_mark.checked.MathResult) :=
   let* ratio :=
     let* α0 := result_chaining_with_question_mark.checked.div x y in
-    let* α1 := α0.["branch"] in
+    let* α1 :=
+      (core.ops.try_trait.Try.branch
+          (Self :=
+            (core.result.Result
+              f64
+              result_chaining_with_question_mark.checked.MathError)))
+        α0 in
     match α1 with
-    | LanguageItem.Break residual =>
-      let* α0 := residual.["from_residual"] in
-      Return α0
-    | LanguageItem.Continue val => Pure val
+    | core.ops.control_flow.ControlFlow residual =>
+      let* α0 :=
+        (core.ops.try_trait.FromResidual.from_residual
+            (Self :=
+              (core.result.Result
+                f64
+                result_chaining_with_question_mark.checked.MathError)))
+          residual in
+      let* α1 := Return α0 in
+      never_to_any α1
+    | core.ops.control_flow.ControlFlow val => Pure val
     end in
   let* ln :=
     let* α0 := result_chaining_with_question_mark.checked.ln ratio in
-    let* α1 := α0.["branch"] in
+    let* α1 :=
+      (core.ops.try_trait.Try.branch
+          (Self :=
+            (core.result.Result
+              f64
+              result_chaining_with_question_mark.checked.MathError)))
+        α0 in
     match α1 with
-    | LanguageItem.Break residual =>
-      let* α0 := residual.["from_residual"] in
-      Return α0
-    | LanguageItem.Continue val => Pure val
+    | core.ops.control_flow.ControlFlow residual =>
+      let* α0 :=
+        (core.ops.try_trait.FromResidual.from_residual
+            (Self :=
+              (core.result.Result
+                f64
+                result_chaining_with_question_mark.checked.MathError)))
+          residual in
+      let* α1 := Return α0 in
+      never_to_any α1
+    | core.ops.control_flow.ControlFlow val => Pure val
     end in
   result_chaining_with_question_mark.checked.sqrt ln.
 
-Definition op `{H' : State.Trait} (x : f64) (y : f64) : M (H := H') unit :=
+Definition op `{ℋ : State.Trait} (x : f64) (y : f64) : M unit :=
   let* α0 := result_chaining_with_question_mark.checked.op_ x y in
   match α0 with
-  | core.result.Result.Err why =>
+  | core.result.Result why =>
     let* α0 :=
       match why with
-      |
-          result_chaining_with_question_mark.checked.MathError.NonPositiveLogarithm
-          =>
-        Pure "logarithm of non-positive number"
-      | result_chaining_with_question_mark.checked.MathError.DivisionByZero =>
-        Pure "division by zero"
-      |
-          result_chaining_with_question_mark.checked.MathError.NegativeSquareRoot
-          =>
-        Pure "square root of negative number"
+      | result_chaining_with_question_mark.checked.MathError  =>
+        Pure (mk_str "logarithm of non-positive number")
+      | result_chaining_with_question_mark.checked.MathError  =>
+        let* α0 := deref (mk_str "division by zero") str in
+        borrow α0 str
+      | result_chaining_with_question_mark.checked.MathError  =>
+        let* α0 := deref (mk_str "square root of negative number") str in
+        borrow α0 str
       end in
-    core.panicking.panic_display (addr_of α0)
-  | core.result.Result.Ok value =>
+    let* α1 := borrow α0 (ref str) in
+    let* α2 := deref α1 (ref str) in
+    let* α3 := borrow α2 (ref str) in
+    let* α4 := core.panicking.panic_display α3 in
+    never_to_any α4
+  | core.result.Result value =>
     let* _ :=
-      let* α0 := format_argument::["new_display"] (addr_of value) in
-      let* α1 :=
-        format_arguments::["new_v1"] (addr_of [ ""; "
-" ]) (addr_of [ α0 ]) in
-      std.io.stdio._print α1 in
-    Pure tt
+      let* α0 := borrow [ mk_str ""; mk_str "
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow value f64 in
+      let* α5 := deref α4 f64 in
+      let* α6 := borrow α5 f64 in
+      let* α7 := core.fmt.rt.Argument::["new_display"] α6 in
+      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+      let* α9 := deref α8 (list core.fmt.rt.Argument) in
+      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+      let* α11 := pointer_coercion "Unsize" α10 in
+      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+      std.io.stdio._print α12 in
+    M.alloc tt
   end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
+Definition main `{ℋ : State.Trait} : M unit :=
   let* _ :=
-    result_chaining_with_question_mark.checked.op 1 (* 1.0 *) 10 (* 10.0 *) in
-  Pure tt.
+    let* α0 := M.alloc 1 (* 1.0 *) in
+    let* α1 := M.alloc 10 (* 10.0 *) in
+    result_chaining_with_question_mark.checked.op α0 α1 in
+  M.alloc tt.

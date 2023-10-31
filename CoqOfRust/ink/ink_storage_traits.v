@@ -6,440 +6,525 @@ Require CoqOfRust.ink.parity_scale_codec.
 
 Module storage.
   Module Storable.
-    Class Trait (Self : Set) `{core.marker.Sized.Trait Self} : Type := {
-      encode
-        `{H' : State.Trait}
-        {T : Set}
-        `{H'0 : parity_scale_codec.codec.Output.Trait T}
-        `{H'1 : core.marker.Sized.Trait T}
-        :
-        (ref Self) -> (mut_ref T) -> M (H := H') unit;
-      decode
-        `{H' : State.Trait}
-        {I : Set}
-        `{H'0 : parity_scale_codec.codec.Input.Trait I}
-        :
-        (mut_ref I) ->
-          M (H := H') (core.result.Result Self parity_scale_codec.error.Error);
-    }.
-    
-    Global Instance Method_encode `{H' : State.Trait} `(Trait)
-      : Notation.Dot "encode" := {
-      Notation.dot
-        {T : Set}
-        `{H'0 : parity_scale_codec.codec.Output.Trait T}
-        `{H'1 : core.marker.Sized.Trait T}
-        :=
-        encode (T := T) (H'0 := H'0) (H'1 := H'1);
-    }.
-    Global Instance Method_decode `{H' : State.Trait} `(Trait)
-      : Notation.Dot "decode" := {
-      Notation.dot {I : Set} `{H'0 : parity_scale_codec.codec.Input.Trait I}
-        :=
-        decode (I := I) (H'0 := H'0);
-    }.
+    Section Storable.
+      Context `{ℋ : State.Trait}.
+      
+      Class Trait (Self : Set) : Type := {
+        (* _ :: core.marker.Sized.Trait Self; *)
+        encode
+          {T : Set}
+          {ℋ_0 : parity_scale_codec.codec.Output.Trait T}
+          {ℋ_1 : core.marker.Sized.Trait T} :
+          (ref Self) -> (mut_ref T) -> M unit;
+        decode {I : Set} {ℋ_0 : parity_scale_codec.codec.Input.Trait I} :
+          (mut_ref I) ->
+            M (core.result.Result Self parity_scale_codec.error.Error);
+      }.
+      
+    End Storable.
   End Storable.
   
-  (* Module Impl_ink_storage_traits_storage_Storable_for_P.
-    (* Section Impl_ink_storage_traits_storage_Storable_for_P.
+  Module Impl_ink_storage_traits_storage_Storable_for_P.
+    Section Impl_ink_storage_traits_storage_Storable_for_P.
+      Context `{ℋ : State.Trait}.
+      
       Context {P : Set}.
-      Context `{parity_scale_codec.codec.Codec.Trait P}.
-      Definition Self := P.
+      
+      Context {ℋ_0 : parity_scale_codec.codec.Codec.Trait P}.
+      Definition Self : Set := P.
       
       Parameter encode :
           forall
-            `{H' : State.Trait}
             {T : Set}
-            `{parity_scale_codec.codec.Output.Trait T}
-            `{core.marker.Sized.Trait T},
-          (ref Self) -> (mut_ref T) -> M (H := H') unit.
+            {ℋ_0 : parity_scale_codec.codec.Output.Trait T}
+            {ℋ_1 : core.marker.Sized.Trait T},
+          (ref Self) -> (mut_ref T) -> M unit.
       
-      Global Instance Method_encode
-          `{H' : State.Trait}
+      Global Instance AssociatedFunction_encode
           {T : Set}
-          `{parity_scale_codec.codec.Output.Trait T}
-          `{core.marker.Sized.Trait T} :
-        Notation.Dot "encode" := {
-        Notation.dot := encode (T := T);
+          {ℋ_0 : parity_scale_codec.codec.Output.Trait T}
+          {ℋ_1 : core.marker.Sized.Trait T} :
+        Notation.DoubleColon Self "encode" := {
+        Notation.double_colon := encode (T := T);
       }.
       
       Parameter decode :
-          forall
-            `{H' : State.Trait}
-            {I : Set}
-            `{parity_scale_codec.codec.Input.Trait I},
+          forall {I : Set} {ℋ_0 : parity_scale_codec.codec.Input.Trait I},
           (mut_ref I) ->
-            M (H := H')
-              (core.result.Result Self parity_scale_codec.error.Error).
+            M (core.result.Result Self parity_scale_codec.error.Error).
       
       Global Instance AssociatedFunction_decode
-          `{H' : State.Trait}
           {I : Set}
-          `{parity_scale_codec.codec.Input.Trait I} :
+          {ℋ_0 : parity_scale_codec.codec.Input.Trait I} :
         Notation.DoubleColon Self "decode" := {
         Notation.double_colon := decode (I := I);
       }.
       
-      Global Instance I' : ink_storage_traits.storage.Storable.Trait Self := {
+      #[refine] Global Instance ℐ :
+        ink_storage_traits.storage.Storable.Trait Self := {
         ink_storage_traits.storage.Storable.encode
-          `{H' : State.Trait}
           {T : Set}
-          `{parity_scale_codec.codec.Output.Trait T}
-          `{core.marker.Sized.Trait T}
-          :=
+          {ℋ_0 : parity_scale_codec.codec.Output.Trait T}
+          {ℋ_1 : core.marker.Sized.Trait T} :=
           encode (T := T);
         ink_storage_traits.storage.Storable.decode
-          `{H' : State.Trait}
           {I : Set}
-          `{parity_scale_codec.codec.Input.Trait I}
-          :=
+          {ℋ_0 : parity_scale_codec.codec.Input.Trait I} :=
           decode (I := I);
       }.
-    End Impl_ink_storage_traits_storage_Storable_for_P. *)
-    Global Hint Resolve I' : core.
-  End Impl_ink_storage_traits_storage_Storable_for_P. *)
+      Admitted.
+    End Impl_ink_storage_traits_storage_Storable_for_P.
+    Global Hint Resolve ℐ : core.
+  End Impl_ink_storage_traits_storage_Storable_for_P.
   
   Module private.
     Module Sealed.
-      Unset Primitive Projections.
-      Class Trait (Self : Set) : Type := {
-      }.
-      Global Set Primitive Projections.
+      Section Sealed.
+        Context `{ℋ : State.Trait}.
+        
+        Unset Primitive Projections.
+        Class Trait (Self : Set) : Type := {
+        }.
+        Global Set Primitive Projections.
+      End Sealed.
     End Sealed.
   End private.
   
   Module Packed.
-    Unset Primitive Projections.
-    Class Trait
-        (Self : Set)
-        `{ink_storage_traits.storage.Storable.Trait Self}
-        `{parity_scale_codec.codec.Codec.Trait Self}
-        `{ink_storage_traits.storage.private.Sealed.Trait Self} :
-        Type := {
-    }.
-    Global Set Primitive Projections.
+    Section Packed.
+      Context `{ℋ : State.Trait}.
+      
+      Class Trait (Self : Set) : Type := {
+        ℒ_0 :: ink_storage_traits.storage.Storable.Trait Self;
+        ℒ_1 :: parity_scale_codec.codec.Codec.Trait Self;
+        ℒ_2 :: ink_storage_traits.storage.private.Sealed.Trait Self;
+      }.
+      
+    End Packed.
   End Packed.
   
   Module StorageKey.
-    Class Trait (Self : Set) : Type := {
-      KEY `{H' : State.Trait} : ink_primitives.key.Key;
-    }.
-    
-    Global Instance Method_KEY `{H' : State.Trait} `(Trait)
-      : Notation.Dot "KEY" := {
-      Notation.dot := KEY;
-    }.
-    (* Global Instance Method_key `{H' : State.Trait} `(Trait)
-      : Notation.Dot "key" := {
-      Notation.dot (self : ref Self)
-        :=
-        (axiom : M (H := H') ink_primitives.key.Key);
-    }.
-  *) End StorageKey.
+    Section StorageKey.
+      Context `{ℋ : State.Trait}.
+      
+      Class Trait (Self : Set) : Type := {
+        KEY : ltac:(ink_primitives.key.Key);
+      }.
+      
+    End StorageKey.
+  End StorageKey.
   
   Module StorableHint.
-    Class Trait
-        (Self : Set)
-        {Key : Set}
-        `{ink_storage_traits.storage.StorageKey.Trait Key} :
-        Type := {
-      Type_ : Set;
-      _ : Sigma `(ink_storage_traits.storage.Storable.Trait Type_), unit;
-      PreferredKey : Set;
-      _
-        :
-        Sigma `(ink_storage_traits.storage.StorageKey.Trait PreferredKey),
-        unit;
-    }.
-    
-    Global Instance Method_Type_ `(Trait)
-      : Notation.DoubleColonType Self "Type_" := {
-      Notation.double_colon_type := Type_;
-    }.
-    Global Instance Method_PreferredKey `(Trait)
-      : Notation.DoubleColonType Self "PreferredKey" := {
-      Notation.double_colon_type := PreferredKey;
-    }.
+    Section StorableHint.
+      Context `{ℋ : State.Trait}.
+      
+      Class Trait (Self : Set) {Key : Set} : Type := {
+        ℒ_0 :: ink_storage_traits.storage.StorageKey.Trait Key;
+        Type_ : Set;
+        ℒ_1 :: ink_storage_traits.storage.Storable.Trait Type_;
+        PreferredKey : Set;
+        ℒ_2 :: ink_storage_traits.storage.StorageKey.Trait PreferredKey;
+      }.
+      
+      #[refine] Global Instance Method_Type_ `(Trait) :
+        Notation.DoubleColonType Self "Type_" := {
+        Notation.double_colon_type := Type_;
+      }.
+      Admitted.
+      #[refine] Global Instance Method_PreferredKey `(Trait) :
+        Notation.DoubleColonType Self "PreferredKey" := {
+        Notation.double_colon_type := PreferredKey;
+      }.
+      Admitted.
+    End StorableHint.
   End StorableHint.
   
   Module AutoStorableHint.
-    Class Trait
-        (Self : Set)
-        {Key : Set}
-        `{ink_storage_traits.storage.StorageKey.Trait Key} :
-        Type := {
-      Type_ : Set;
-      _ : Sigma `(ink_storage_traits.storage.Storable.Trait Type_), unit;
-    }.
-    
-    Global Instance Method_Type_ `(Trait)
-      : Notation.DoubleColonType Self "Type_" := {
-      Notation.double_colon_type := Type_;
-    }.
+    Section AutoStorableHint.
+      Context `{ℋ : State.Trait}.
+      
+      Class Trait (Self : Set) {Key : Set} : Type := {
+        ℒ_0 :: ink_storage_traits.storage.StorageKey.Trait Key;
+        Type_ : Set;
+        ℒ_1 :: ink_storage_traits.storage.Storable.Trait Type_;
+      }.
+      
+      #[refine] Global Instance Method_Type_ `(Trait) :
+        Notation.DoubleColonType Self "Type_" := {
+        Notation.double_colon_type := Type_;
+      }.
+      Admitted.
+    End AutoStorableHint.
   End AutoStorableHint.
 End storage.
 
 Module impls.
+  Module KeyType.
+    Section KeyType.
+      Context `{ℋ : State.Trait}.
+      
+      Class Trait (Self : Set) : Type := {
+        IS_AUTO_KEY : bool;
+      }.
+      
+    End KeyType.
+  End KeyType.
+  
   Module AutoKey.
-    Inductive t : Set := Build.
+    Section AutoKey.
+      Context `{ℋ : State.Trait}.
+      
+      Inductive t : Set := Build.
+    End AutoKey.
   End AutoKey.
   Definition AutoKey := @AutoKey.t.
   
   Module Impl_core_default_Default_for_ink_storage_traits_impls_AutoKey.
-    Definition Self := ink_storage_traits.impls.AutoKey.
-    
-    Parameter default :
-        forall `{H' : State.Trait},
-        M (H := H') ink_storage_traits.impls.AutoKey.
-    
-    Global Instance AssociatedFunction_default `{H' : State.Trait} :
-      Notation.DoubleColon Self "default" := {
-      Notation.double_colon := default;
-    }.
-    
-    Global Instance I' : core.default.Default.Trait Self := {
-      core.default.Default.default `{H' : State.Trait} := default;
-    }.
-    Global Hint Resolve I' : core.
+    Section Impl_core_default_Default_for_ink_storage_traits_impls_AutoKey.
+      Context `{ℋ : State.Trait}.
+      
+      Definition Self : Set := ink_storage_traits.impls.AutoKey.
+      
+      Parameter default : M ink_storage_traits.impls.AutoKey.
+      
+      Global Instance AssociatedFunction_default :
+        Notation.DoubleColon Self "default" := {
+        Notation.double_colon := default;
+      }.
+      
+      #[refine] Global Instance ℐ : core.default.Default.Trait Self := {
+        core.default.Default.default := default;
+      }.
+      Admitted.
+    End Impl_core_default_Default_for_ink_storage_traits_impls_AutoKey.
+    Global Hint Resolve ℐ : core.
   End Impl_core_default_Default_for_ink_storage_traits_impls_AutoKey.
   
   Module Impl_core_clone_Clone_for_ink_storage_traits_impls_AutoKey.
-    Definition Self := ink_storage_traits.impls.AutoKey.
-    
-    Parameter clone :
-        forall `{H' : State.Trait},
-        (ref Self) -> M (H := H') ink_storage_traits.impls.AutoKey.
-    
-    Global Instance Method_clone `{H' : State.Trait} : Notation.Dot "clone" := {
-      Notation.dot := clone;
-    }.
-    
-    Global Instance I' : core.clone.Clone.Trait Self := {
-      core.clone.Clone.clone `{H' : State.Trait} := clone;
-    }.
-    Global Hint Resolve I' : core.
+    Section Impl_core_clone_Clone_for_ink_storage_traits_impls_AutoKey.
+      Context `{ℋ : State.Trait}.
+      
+      Definition Self : Set := ink_storage_traits.impls.AutoKey.
+      
+      Parameter clone : (ref Self) -> M ink_storage_traits.impls.AutoKey.
+      
+      Global Instance AssociatedFunction_clone :
+        Notation.DoubleColon Self "clone" := {
+        Notation.double_colon := clone;
+      }.
+      
+      #[refine] Global Instance ℐ : core.clone.Clone.Trait Self := {
+        core.clone.Clone.clone := clone;
+      }.
+      Admitted.
+    End Impl_core_clone_Clone_for_ink_storage_traits_impls_AutoKey.
+    Global Hint Resolve ℐ : core.
   End Impl_core_clone_Clone_for_ink_storage_traits_impls_AutoKey.
   
   Module Impl_core_marker_Copy_for_ink_storage_traits_impls_AutoKey.
-    Definition Self := ink_storage_traits.impls.AutoKey.
-    
-    Global Instance I' : core.marker.Copy.Trait Self := {
-    }.
-    Global Hint Resolve I' : core.
+    Section Impl_core_marker_Copy_for_ink_storage_traits_impls_AutoKey.
+      Context `{ℋ : State.Trait}.
+      
+      Definition Self : Set := ink_storage_traits.impls.AutoKey.
+      
+      #[refine] Global Instance ℐ : core.marker.Copy.Trait Self := {
+      }.
+      Admitted.
+    End Impl_core_marker_Copy_for_ink_storage_traits_impls_AutoKey.
+    Global Hint Resolve ℐ : core.
   End Impl_core_marker_Copy_for_ink_storage_traits_impls_AutoKey.
   
   Module
     Impl_core_marker_StructuralPartialEq_for_ink_storage_traits_impls_AutoKey.
-    Definition Self := ink_storage_traits.impls.AutoKey.
-    
-    Global Instance I' : core.marker.StructuralPartialEq.Trait Self := {
-    }.
-    Global Hint Resolve I' : core.
+    Section
+      Impl_core_marker_StructuralPartialEq_for_ink_storage_traits_impls_AutoKey.
+      Context `{ℋ : State.Trait}.
+      
+      Definition Self : Set := ink_storage_traits.impls.AutoKey.
+      
+      #[refine] Global Instance ℐ :
+        core.marker.StructuralPartialEq.Trait Self := {
+      }.
+      Admitted.
+    End
+      Impl_core_marker_StructuralPartialEq_for_ink_storage_traits_impls_AutoKey.
+    Global Hint Resolve ℐ : core.
   End Impl_core_marker_StructuralPartialEq_for_ink_storage_traits_impls_AutoKey.
   
   Module Impl_core_cmp_PartialEq_for_ink_storage_traits_impls_AutoKey.
-    Definition Self := ink_storage_traits.impls.AutoKey.
-    
-    Parameter eq :
-        forall `{H' : State.Trait},
-        (ref Self) ->
-          (ref ink_storage_traits.impls.AutoKey) ->
-          M (H := H') bool.
-    
-    Global Instance Method_eq `{H' : State.Trait} : Notation.Dot "eq" := {
-      Notation.dot := eq;
-    }.
-    
-    Global Instance I'
-      : core.cmp.PartialEq.Trait Self
-          (Rhs := core.cmp.PartialEq.Default.Rhs Self)
-        := {
-      core.cmp.PartialEq.eq `{H' : State.Trait} := eq;
-    }.
-    Global Hint Resolve I' : core.
+    Section Impl_core_cmp_PartialEq_for_ink_storage_traits_impls_AutoKey.
+      Context `{ℋ : State.Trait}.
+      
+      Definition Self : Set := ink_storage_traits.impls.AutoKey.
+      
+      Parameter eq :
+          (ref Self) -> (ref ink_storage_traits.impls.AutoKey) -> M bool.
+      
+      Global Instance AssociatedFunction_eq :
+        Notation.DoubleColon Self "eq" := {
+        Notation.double_colon := eq;
+      }.
+      
+      #[refine] Global Instance ℐ :
+        core.cmp.PartialEq.Trait Self
+          (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
+        core.cmp.PartialEq.eq := eq;
+      }.
+      Admitted.
+    End Impl_core_cmp_PartialEq_for_ink_storage_traits_impls_AutoKey.
+    Global Hint Resolve ℐ : core.
   End Impl_core_cmp_PartialEq_for_ink_storage_traits_impls_AutoKey.
   
   Module Impl_core_marker_StructuralEq_for_ink_storage_traits_impls_AutoKey.
-    Definition Self := ink_storage_traits.impls.AutoKey.
-    
-    Global Instance I' : core.marker.StructuralEq.Trait Self := {
-    }.
-    Global Hint Resolve I' : core.
+    Section Impl_core_marker_StructuralEq_for_ink_storage_traits_impls_AutoKey.
+      Context `{ℋ : State.Trait}.
+      
+      Definition Self : Set := ink_storage_traits.impls.AutoKey.
+      
+      #[refine] Global Instance ℐ : core.marker.StructuralEq.Trait Self := {
+      }.
+      Admitted.
+    End Impl_core_marker_StructuralEq_for_ink_storage_traits_impls_AutoKey.
+    Global Hint Resolve ℐ : core.
   End Impl_core_marker_StructuralEq_for_ink_storage_traits_impls_AutoKey.
   
   Module Impl_core_cmp_Eq_for_ink_storage_traits_impls_AutoKey.
-    Definition Self := ink_storage_traits.impls.AutoKey.
-    
-    Parameter assert_receiver_is_total_eq :
-        forall `{H' : State.Trait},
-        (ref Self) -> M (H := H') unit.
-    
-    Global Instance Method_assert_receiver_is_total_eq `{H' : State.Trait} :
-      Notation.Dot "assert_receiver_is_total_eq" := {
-      Notation.dot := assert_receiver_is_total_eq;
-    }.
-    
-    Global Instance I' : core.cmp.Eq.Trait Self := {
-    }.
-    Global Hint Resolve I' : core.
+    Section Impl_core_cmp_Eq_for_ink_storage_traits_impls_AutoKey.
+      Context `{ℋ : State.Trait}.
+      
+      Definition Self : Set := ink_storage_traits.impls.AutoKey.
+      
+      Parameter assert_receiver_is_total_eq : (ref Self) -> M unit.
+      
+      Global Instance AssociatedFunction_assert_receiver_is_total_eq :
+        Notation.DoubleColon Self "assert_receiver_is_total_eq" := {
+        Notation.double_colon := assert_receiver_is_total_eq;
+      }.
+      
+      #[refine] Global Instance ℐ : core.cmp.Eq.Trait Self := {
+      }.
+      Admitted.
+    End Impl_core_cmp_Eq_for_ink_storage_traits_impls_AutoKey.
+    Global Hint Resolve ℐ : core.
   End Impl_core_cmp_Eq_for_ink_storage_traits_impls_AutoKey.
   
   Module Impl_core_cmp_PartialOrd_for_ink_storage_traits_impls_AutoKey.
-    Definition Self := ink_storage_traits.impls.AutoKey.
-    
-    Parameter partial_cmp :
-        forall `{H' : State.Trait},
-        (ref Self) ->
-          (ref ink_storage_traits.impls.AutoKey) ->
-          M (H := H') (core.option.Option core.cmp.Ordering).
-    
-    Global Instance Method_partial_cmp `{H' : State.Trait} :
-      Notation.Dot "partial_cmp" := {
-      Notation.dot := partial_cmp;
-    }.
-    
-    Global Instance I'
-      : core.cmp.PartialOrd.Trait Self
-          (Rhs := core.cmp.PartialOrd.Default.Rhs Self)
-        := {
-      core.cmp.PartialOrd.partial_cmp `{H' : State.Trait} := partial_cmp;
-    }.
-    Global Hint Resolve I' : core.
+    Section Impl_core_cmp_PartialOrd_for_ink_storage_traits_impls_AutoKey.
+      Context `{ℋ : State.Trait}.
+      
+      Definition Self : Set := ink_storage_traits.impls.AutoKey.
+      
+      Parameter partial_cmp :
+          (ref Self) ->
+            (ref ink_storage_traits.impls.AutoKey) ->
+            M (core.option.Option core.cmp.Ordering).
+      
+      Global Instance AssociatedFunction_partial_cmp :
+        Notation.DoubleColon Self "partial_cmp" := {
+        Notation.double_colon := partial_cmp;
+      }.
+      
+      #[refine] Global Instance ℐ :
+        core.cmp.PartialOrd.Trait Self
+          (Rhs := core.cmp.PartialOrd.Default.Rhs Self) := {
+        core.cmp.PartialOrd.partial_cmp := partial_cmp;
+      }.
+      Admitted.
+    End Impl_core_cmp_PartialOrd_for_ink_storage_traits_impls_AutoKey.
+    Global Hint Resolve ℐ : core.
   End Impl_core_cmp_PartialOrd_for_ink_storage_traits_impls_AutoKey.
   
-  (* Module Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_AutoKey.
-    Definition Self := ink_storage_traits.impls.AutoKey.
-    
-    Definition KEY `{H' : State.Trait} := Pure 0.
-    
-    Global Instance AssociatedFunction_KEY `{H' : State.Trait} :
-      Notation.DoubleColon Self "KEY" := {
-      Notation.double_colon := KEY;
-    }.
-    
-    Global Instance I' : ink_storage_traits.storage.StorageKey.Trait Self := {
-      ink_storage_traits.storage.StorageKey.KEY `{H' : State.Trait} := KEY;
-    }.
-    Global Hint Resolve I' : core.
-  End Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_AutoKey. *)
+  Module
+    Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_AutoKey.
+    Section
+      Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_AutoKey.
+      Context `{ℋ : State.Trait}.
+      
+      Definition Self : Set := ink_storage_traits.impls.AutoKey.
+      
+      Parameter KEY : ltac:(ink_primitives.key.Key).
+      
+      Global Instance AssociatedFunction_KEY :
+        Notation.DoubleColon Self "KEY" := {
+        Notation.double_colon := KEY;
+      }.
+      
+      #[refine] Global Instance ℐ :
+        ink_storage_traits.storage.StorageKey.Trait Self := {
+        ink_storage_traits.storage.StorageKey.KEY := KEY;
+      }.
+      Admitted.
+    End
+      Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_AutoKey.
+    Global Hint Resolve ℐ : core.
+  End
+    Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_AutoKey.
+  
+  Module
+    Impl_ink_storage_traits_impls_KeyType_for_ink_storage_traits_impls_AutoKey.
+    Section
+      Impl_ink_storage_traits_impls_KeyType_for_ink_storage_traits_impls_AutoKey.
+      Context `{ℋ : State.Trait}.
+      
+      Definition Self : Set := ink_storage_traits.impls.AutoKey.
+      
+      Parameter IS_AUTO_KEY : bool.
+      
+      Global Instance AssociatedFunction_IS_AUTO_KEY :
+        Notation.DoubleColon Self "IS_AUTO_KEY" := {
+        Notation.double_colon := IS_AUTO_KEY;
+      }.
+      
+      #[refine] Global Instance ℐ :
+        ink_storage_traits.impls.KeyType.Trait Self := {
+        ink_storage_traits.impls.KeyType.IS_AUTO_KEY := IS_AUTO_KEY;
+      }.
+      Admitted.
+    End
+      Impl_ink_storage_traits_impls_KeyType_for_ink_storage_traits_impls_AutoKey.
+    Global Hint Resolve ℐ : core.
+  End
+    Impl_ink_storage_traits_impls_KeyType_for_ink_storage_traits_impls_AutoKey.
   
   Module Impl_core_fmt_Debug_for_ink_storage_traits_impls_AutoKey.
-    Definition Self := ink_storage_traits.impls.AutoKey.
-    
-    Parameter fmt :
-        forall `{H' : State.Trait},
-        (ref Self) ->
-          (mut_ref core.fmt.Formatter) ->
-          M (H := H') core.fmt.Result.
-    
-    Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
-      Notation.dot := fmt;
-    }.
-    
-    Global Instance I' : core.fmt.Debug.Trait Self := {
-      core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
-    }.
-    Global Hint Resolve I' : core.
+    Section Impl_core_fmt_Debug_for_ink_storage_traits_impls_AutoKey.
+      Context `{ℋ : State.Trait}.
+      
+      Definition Self : Set := ink_storage_traits.impls.AutoKey.
+      
+      Parameter fmt :
+          (ref Self) ->
+            (mut_ref core.fmt.Formatter) ->
+            M ltac:(core.fmt.Result).
+      
+      Global Instance AssociatedFunction_fmt :
+        Notation.DoubleColon Self "fmt" := {
+        Notation.double_colon := fmt;
+      }.
+      
+      #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
+        core.fmt.Debug.fmt := fmt;
+      }.
+      Admitted.
+    End Impl_core_fmt_Debug_for_ink_storage_traits_impls_AutoKey.
+    Global Hint Resolve ℐ : core.
   End Impl_core_fmt_Debug_for_ink_storage_traits_impls_AutoKey.
   
   Module ManualKey.
     Section ManualKey.
+      Context `{ℋ : State.Trait}.
+      
       Context {ParentKey : Set}.
+      
       Unset Primitive Projections.
       Record t : Set := {
-        _ : core.marker.PhantomData (ParentKey);
+        x0 : core.marker.PhantomData (ParentKey);
       }.
       Global Set Primitive Projections.
       
-      Global Instance Get_0 : Notation.Dot 0 := {
-        Notation.dot '(Build_t x0) := x0;
+      #[refine] Global Instance Get_0 : Notation.Dot "0" := {
+        Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
       }.
+      Admitted.
     End ManualKey.
   End ManualKey.
-  Definition ManualKey := @ManualKey.t.
+  Definition ManualKey `{ℋ : State.Trait} (ParentKey : Set) : Set :=
+    M.val (ManualKey.t (ParentKey := ParentKey)).
   
   Module
     Impl_core_default_Default_for_ink_storage_traits_impls_ManualKey_ParentKey.
     Section
       Impl_core_default_Default_for_ink_storage_traits_impls_ManualKey_ParentKey.
+      Context `{ℋ : State.Trait}.
+      
       Context {ParentKey : Set}.
+      
       Context
-        `{core.default.Default.Trait ParentKey}
-        `{ink_storage_traits.storage.StorageKey.Trait ParentKey}.
-      Definition Self := ink_storage_traits.impls.ManualKey ParentKey.
+        {ℋ_0 : core.default.Default.Trait ParentKey}
+        {ℋ_1 : ink_storage_traits.storage.StorageKey.Trait ParentKey}.
+      Definition Self : Set := ink_storage_traits.impls.ManualKey ParentKey.
       
-      Parameter default :
-          forall `{H' : State.Trait},
-          M (H := H') (ink_storage_traits.impls.ManualKey ParentKey).
+      Parameter default : M (ink_storage_traits.impls.ManualKey ParentKey).
       
-      Global Instance AssociatedFunction_default `{H' : State.Trait} :
+      Global Instance AssociatedFunction_default :
         Notation.DoubleColon Self "default" := {
         Notation.double_colon := default;
       }.
       
-      Global Instance I' : core.default.Default.Trait Self := {
-        core.default.Default.default `{H' : State.Trait} := default;
+      #[refine] Global Instance ℐ : core.default.Default.Trait Self := {
+        core.default.Default.default := default;
       }.
+      Admitted.
     End
       Impl_core_default_Default_for_ink_storage_traits_impls_ManualKey_ParentKey.
-    Global Hint Resolve I' : core.
+    Global Hint Resolve ℐ : core.
   End
     Impl_core_default_Default_for_ink_storage_traits_impls_ManualKey_ParentKey.
   
   Module Impl_core_clone_Clone_for_ink_storage_traits_impls_ManualKey_ParentKey.
     Section
       Impl_core_clone_Clone_for_ink_storage_traits_impls_ManualKey_ParentKey.
+      Context `{ℋ : State.Trait}.
+      
       Context {ParentKey : Set}.
+      
       Context
-        `{core.clone.Clone.Trait ParentKey}
-        `{ink_storage_traits.storage.StorageKey.Trait ParentKey}.
-      Definition Self := ink_storage_traits.impls.ManualKey ParentKey.
+        {ℋ_0 : core.clone.Clone.Trait ParentKey}
+        {ℋ_1 : ink_storage_traits.storage.StorageKey.Trait ParentKey}.
+      Definition Self : Set := ink_storage_traits.impls.ManualKey ParentKey.
       
       Parameter clone :
-          forall `{H' : State.Trait},
-          (ref Self) ->
-            M (H := H') (ink_storage_traits.impls.ManualKey ParentKey).
+          (ref Self) -> M (ink_storage_traits.impls.ManualKey ParentKey).
       
-      Global Instance Method_clone `{H' : State.Trait} :
-        Notation.Dot "clone" := {
-        Notation.dot := clone;
+      Global Instance AssociatedFunction_clone :
+        Notation.DoubleColon Self "clone" := {
+        Notation.double_colon := clone;
       }.
       
-      Global Instance I' : core.clone.Clone.Trait Self := {
-        core.clone.Clone.clone `{H' : State.Trait} := clone;
+      #[refine] Global Instance ℐ : core.clone.Clone.Trait Self := {
+        core.clone.Clone.clone := clone;
       }.
+      Admitted.
     End Impl_core_clone_Clone_for_ink_storage_traits_impls_ManualKey_ParentKey.
-    Global Hint Resolve I' : core.
+    Global Hint Resolve ℐ : core.
   End Impl_core_clone_Clone_for_ink_storage_traits_impls_ManualKey_ParentKey.
   
   Module Impl_core_marker_Copy_for_ink_storage_traits_impls_ManualKey_ParentKey.
     Section
       Impl_core_marker_Copy_for_ink_storage_traits_impls_ManualKey_ParentKey.
-      Context {ParentKey : Set}.
-      Context
-        `{core.marker.Copy.Trait ParentKey}
-        `{ink_storage_traits.storage.StorageKey.Trait ParentKey}.
-      Definition Self := ink_storage_traits.impls.ManualKey ParentKey.
+      Context `{ℋ : State.Trait}.
       
-      Global Instance I' : core.marker.Copy.Trait Self := {
+      Context {ParentKey : Set}.
+      
+      Context
+        {ℋ_0 : core.marker.Copy.Trait ParentKey}
+        {ℋ_1 : ink_storage_traits.storage.StorageKey.Trait ParentKey}.
+      Definition Self : Set := ink_storage_traits.impls.ManualKey ParentKey.
+      
+      #[refine] Global Instance ℐ : core.marker.Copy.Trait Self := {
       }.
+      Admitted.
     End Impl_core_marker_Copy_for_ink_storage_traits_impls_ManualKey_ParentKey.
-    Global Hint Resolve I' : core.
+    Global Hint Resolve ℐ : core.
   End Impl_core_marker_Copy_for_ink_storage_traits_impls_ManualKey_ParentKey.
   
   Module
     Impl_core_marker_StructuralEq_for_ink_storage_traits_impls_ManualKey_ParentKey.
     Section
       Impl_core_marker_StructuralEq_for_ink_storage_traits_impls_ManualKey_ParentKey.
-      Context {ParentKey : Set}.
-      Context `{ink_storage_traits.storage.StorageKey.Trait ParentKey}.
-      Definition Self := ink_storage_traits.impls.ManualKey ParentKey.
+      Context `{ℋ : State.Trait}.
       
-      Global Instance I' : core.marker.StructuralEq.Trait Self := {
+      Context {ParentKey : Set}.
+      
+      Context {ℋ_0 : ink_storage_traits.storage.StorageKey.Trait ParentKey}.
+      Definition Self : Set := ink_storage_traits.impls.ManualKey ParentKey.
+      
+      #[refine] Global Instance ℐ : core.marker.StructuralEq.Trait Self := {
       }.
+      Admitted.
     End
       Impl_core_marker_StructuralEq_for_ink_storage_traits_impls_ManualKey_ParentKey.
-    Global Hint Resolve I' : core.
+    Global Hint Resolve ℐ : core.
   End
     Impl_core_marker_StructuralEq_for_ink_storage_traits_impls_ManualKey_ParentKey.
   
@@ -447,70 +532,81 @@ Module impls.
     Impl_core_cmp_PartialEq_for_ink_storage_traits_impls_ManualKey_ParentKey.
     Section
       Impl_core_cmp_PartialEq_for_ink_storage_traits_impls_ManualKey_ParentKey.
+      Context `{ℋ : State.Trait}.
+      
       Context {ParentKey : Set}.
+      
       Context
-        `{core.cmp.PartialEq.Trait ParentKey
+        {ℋ_0 :
+          core.cmp.PartialEq.Trait ParentKey
             (Rhs := core.cmp.PartialEq.Default.Rhs ParentKey)}
-        `{ink_storage_traits.storage.StorageKey.Trait ParentKey}.
-      Definition Self := ink_storage_traits.impls.ManualKey ParentKey.
+        {ℋ_1 : ink_storage_traits.storage.StorageKey.Trait ParentKey}.
+      Definition Self : Set := ink_storage_traits.impls.ManualKey ParentKey.
       
       Parameter eq :
-          forall `{H' : State.Trait},
           (ref Self) ->
             (ref (ink_storage_traits.impls.ManualKey ParentKey)) ->
-            M (H := H') bool.
+            M bool.
       
-      Global Instance Method_eq `{H' : State.Trait} : Notation.Dot "eq" := {
-        Notation.dot := eq;
+      Global Instance AssociatedFunction_eq :
+        Notation.DoubleColon Self "eq" := {
+        Notation.double_colon := eq;
       }.
       
-      Global Instance I'
-        : core.cmp.PartialEq.Trait Self
-            (Rhs := core.cmp.PartialEq.Default.Rhs Self)
-          := {
-        core.cmp.PartialEq.eq `{H' : State.Trait} := eq;
+      #[refine] Global Instance ℐ :
+        core.cmp.PartialEq.Trait Self
+          (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
+        core.cmp.PartialEq.eq := eq;
       }.
+      Admitted.
     End
       Impl_core_cmp_PartialEq_for_ink_storage_traits_impls_ManualKey_ParentKey.
-    Global Hint Resolve I' : core.
+    Global Hint Resolve ℐ : core.
   End Impl_core_cmp_PartialEq_for_ink_storage_traits_impls_ManualKey_ParentKey.
   
   Module Impl_core_cmp_Eq_for_ink_storage_traits_impls_ManualKey_ParentKey.
     Section Impl_core_cmp_Eq_for_ink_storage_traits_impls_ManualKey_ParentKey.
+      Context `{ℋ : State.Trait}.
+      
       Context {ParentKey : Set}.
+      
       Context
-        `{core.cmp.Eq.Trait ParentKey}
-        `{ink_storage_traits.storage.StorageKey.Trait ParentKey}.
-      Definition Self := ink_storage_traits.impls.ManualKey ParentKey.
+        {ℋ_0 : core.cmp.Eq.Trait ParentKey}
+        {ℋ_1 : ink_storage_traits.storage.StorageKey.Trait ParentKey}.
+      Definition Self : Set := ink_storage_traits.impls.ManualKey ParentKey.
       
-      Parameter assert_receiver_is_total_eq :
-          forall `{H' : State.Trait},
-          (ref Self) -> M (H := H') unit.
+      Parameter assert_receiver_is_total_eq : (ref Self) -> M unit.
       
-      Global Instance Method_assert_receiver_is_total_eq `{H' : State.Trait} :
-        Notation.Dot "assert_receiver_is_total_eq" := {
-        Notation.dot := assert_receiver_is_total_eq;
+      Global Instance AssociatedFunction_assert_receiver_is_total_eq :
+        Notation.DoubleColon Self "assert_receiver_is_total_eq" := {
+        Notation.double_colon := assert_receiver_is_total_eq;
       }.
       
-      Global Instance I' : core.cmp.Eq.Trait Self := {
+      #[refine] Global Instance ℐ : core.cmp.Eq.Trait Self := {
       }.
+      Admitted.
     End Impl_core_cmp_Eq_for_ink_storage_traits_impls_ManualKey_ParentKey.
-    Global Hint Resolve I' : core.
+    Global Hint Resolve ℐ : core.
   End Impl_core_cmp_Eq_for_ink_storage_traits_impls_ManualKey_ParentKey.
   
   Module
     Impl_core_marker_StructuralPartialEq_for_ink_storage_traits_impls_ManualKey_ParentKey.
     Section
       Impl_core_marker_StructuralPartialEq_for_ink_storage_traits_impls_ManualKey_ParentKey.
-      Context {ParentKey : Set}.
-      Context `{ink_storage_traits.storage.StorageKey.Trait ParentKey}.
-      Definition Self := ink_storage_traits.impls.ManualKey ParentKey.
+      Context `{ℋ : State.Trait}.
       
-      Global Instance I' : core.marker.StructuralPartialEq.Trait Self := {
+      Context {ParentKey : Set}.
+      
+      Context {ℋ_0 : ink_storage_traits.storage.StorageKey.Trait ParentKey}.
+      Definition Self : Set := ink_storage_traits.impls.ManualKey ParentKey.
+      
+      #[refine] Global Instance ℐ :
+        core.marker.StructuralPartialEq.Trait Self := {
       }.
+      Admitted.
     End
       Impl_core_marker_StructuralPartialEq_for_ink_storage_traits_impls_ManualKey_ParentKey.
-    Global Hint Resolve I' : core.
+    Global Hint Resolve ℐ : core.
   End
     Impl_core_marker_StructuralPartialEq_for_ink_storage_traits_impls_ManualKey_ParentKey.
   
@@ -518,1863 +614,2309 @@ Module impls.
     Impl_core_cmp_PartialOrd_for_ink_storage_traits_impls_ManualKey_ParentKey.
     Section
       Impl_core_cmp_PartialOrd_for_ink_storage_traits_impls_ManualKey_ParentKey.
+      Context `{ℋ : State.Trait}.
+      
       Context {ParentKey : Set}.
+      
       Context
-        `{core.cmp.PartialOrd.Trait ParentKey
+        {ℋ_0 :
+          core.cmp.PartialOrd.Trait ParentKey
             (Rhs := core.cmp.PartialOrd.Default.Rhs ParentKey)}
-        `{ink_storage_traits.storage.StorageKey.Trait ParentKey}.
-      Definition Self := ink_storage_traits.impls.ManualKey ParentKey.
+        {ℋ_1 : ink_storage_traits.storage.StorageKey.Trait ParentKey}.
+      Definition Self : Set := ink_storage_traits.impls.ManualKey ParentKey.
       
       Parameter partial_cmp :
-          forall `{H' : State.Trait},
           (ref Self) ->
             (ref (ink_storage_traits.impls.ManualKey ParentKey)) ->
-            M (H := H') (core.option.Option core.cmp.Ordering).
+            M (core.option.Option core.cmp.Ordering).
       
-      Global Instance Method_partial_cmp `{H' : State.Trait} :
-        Notation.Dot "partial_cmp" := {
-        Notation.dot := partial_cmp;
+      Global Instance AssociatedFunction_partial_cmp :
+        Notation.DoubleColon Self "partial_cmp" := {
+        Notation.double_colon := partial_cmp;
       }.
       
-      Global Instance I'
-        : core.cmp.PartialOrd.Trait Self
-            (Rhs := core.cmp.PartialOrd.Default.Rhs Self)
-          := {
-        core.cmp.PartialOrd.partial_cmp `{H' : State.Trait} := partial_cmp;
+      #[refine] Global Instance ℐ :
+        core.cmp.PartialOrd.Trait Self
+          (Rhs := core.cmp.PartialOrd.Default.Rhs Self) := {
+        core.cmp.PartialOrd.partial_cmp := partial_cmp;
       }.
+      Admitted.
     End
       Impl_core_cmp_PartialOrd_for_ink_storage_traits_impls_ManualKey_ParentKey.
-    Global Hint Resolve I' : core.
+    Global Hint Resolve ℐ : core.
   End Impl_core_cmp_PartialOrd_for_ink_storage_traits_impls_ManualKey_ParentKey.
   
-  (* Module Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ManualKey_ParentKey.
-    (* Section Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ManualKey_ParentKey.
+  Module
+    Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ManualKey_ParentKey.
+    Section
+      Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ManualKey_ParentKey.
+      Context `{ℋ : State.Trait}.
+      
       Context {ParentKey : Set}.
-      Context `{ink_storage_traits.storage.StorageKey.Trait ParentKey}.
-      Definition Self := ink_storage_traits.impls.ManualKey ParentKey.
       
-      Definition
-        KEY
-        `{H' : State.Trait} := ink_primitives.key.KeyComposer::["concat"]
-          ink_storage_traits.impls.KEY
-          ParentKey::["KEY"].
+      Context {ℋ_0 : ink_storage_traits.storage.StorageKey.Trait ParentKey}.
+      Definition Self : Set := ink_storage_traits.impls.ManualKey ParentKey.
       
-      Global Instance AssociatedFunction_KEY `{H' : State.Trait} :
+      Parameter KEY : ltac:(ink_primitives.key.Key).
+      
+      Global Instance AssociatedFunction_KEY :
         Notation.DoubleColon Self "KEY" := {
         Notation.double_colon := KEY;
       }.
       
-      Global Instance I' : ink_storage_traits.storage.StorageKey.Trait Self := {
-        ink_storage_traits.storage.StorageKey.KEY `{H' : State.Trait} := KEY;
+      #[refine] Global Instance ℐ :
+        ink_storage_traits.storage.StorageKey.Trait Self := {
+        ink_storage_traits.storage.StorageKey.KEY := KEY;
       }.
-    End Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ManualKey_ParentKey. *)
-    Global Hint Resolve I' : core.
-  End Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ManualKey_ParentKey. *)
+      Admitted.
+    End
+      Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ManualKey_ParentKey.
+    Global Hint Resolve ℐ : core.
+  End
+    Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ManualKey_ParentKey.
+  
+  Module
+    Impl_ink_storage_traits_impls_KeyType_for_ink_storage_traits_impls_ManualKey_ParentKey.
+    Section
+      Impl_ink_storage_traits_impls_KeyType_for_ink_storage_traits_impls_ManualKey_ParentKey.
+      Context `{ℋ : State.Trait}.
+      
+      Context {ParentKey : Set}.
+      
+      Context {ℋ_0 : ink_storage_traits.storage.StorageKey.Trait ParentKey}.
+      Definition Self : Set := ink_storage_traits.impls.ManualKey ParentKey.
+      
+      Parameter IS_AUTO_KEY : bool.
+      
+      Global Instance AssociatedFunction_IS_AUTO_KEY :
+        Notation.DoubleColon Self "IS_AUTO_KEY" := {
+        Notation.double_colon := IS_AUTO_KEY;
+      }.
+      
+      #[refine] Global Instance ℐ :
+        ink_storage_traits.impls.KeyType.Trait Self := {
+        ink_storage_traits.impls.KeyType.IS_AUTO_KEY := IS_AUTO_KEY;
+      }.
+      Admitted.
+    End
+      Impl_ink_storage_traits_impls_KeyType_for_ink_storage_traits_impls_ManualKey_ParentKey.
+    Global Hint Resolve ℐ : core.
+  End
+    Impl_ink_storage_traits_impls_KeyType_for_ink_storage_traits_impls_ManualKey_ParentKey.
   
   Module Impl_core_fmt_Debug_for_ink_storage_traits_impls_ManualKey_ParentKey.
     Section
       Impl_core_fmt_Debug_for_ink_storage_traits_impls_ManualKey_ParentKey.
+      Context `{ℋ : State.Trait}.
+      
       Context {ParentKey : Set}.
-      Context `{ink_storage_traits.storage.StorageKey.Trait ParentKey}.
-      Definition Self := ink_storage_traits.impls.ManualKey ParentKey.
+      
+      Context {ℋ_0 : ink_storage_traits.storage.StorageKey.Trait ParentKey}.
+      Definition Self : Set := ink_storage_traits.impls.ManualKey ParentKey.
       
       Parameter fmt :
-          forall `{H' : State.Trait},
           (ref Self) ->
             (mut_ref core.fmt.Formatter) ->
-            M (H := H') core.fmt.Result.
+            M ltac:(core.fmt.Result).
       
-      Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
-        Notation.dot := fmt;
+      Global Instance AssociatedFunction_fmt :
+        Notation.DoubleColon Self "fmt" := {
+        Notation.double_colon := fmt;
       }.
       
-      Global Instance I' : core.fmt.Debug.Trait Self := {
-        core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
+      #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
+        core.fmt.Debug.fmt := fmt;
       }.
+      Admitted.
     End Impl_core_fmt_Debug_for_ink_storage_traits_impls_ManualKey_ParentKey.
-    Global Hint Resolve I' : core.
+    Global Hint Resolve ℐ : core.
   End Impl_core_fmt_Debug_for_ink_storage_traits_impls_ManualKey_ParentKey.
   
   Module ResolverKey.
     Section ResolverKey.
+      Context `{ℋ : State.Trait}.
+      
       Context {L R : Set}.
+      
       Unset Primitive Projections.
       Record t : Set := {
-        _ : core.marker.PhantomData (L * R);
+        x0 : core.marker.PhantomData (L * R);
       }.
       Global Set Primitive Projections.
       
-      Global Instance Get_0 : Notation.Dot 0 := {
-        Notation.dot '(Build_t x0) := x0;
+      #[refine] Global Instance Get_0 : Notation.Dot "0" := {
+        Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
       }.
+      Admitted.
     End ResolverKey.
   End ResolverKey.
-  Definition ResolverKey := @ResolverKey.t.
+  Definition ResolverKey `{ℋ : State.Trait} (L R : Set) : Set :=
+    M.val (ResolverKey.t (L := L) (R := R)).
   
   Module Impl_core_default_Default_for_ink_storage_traits_impls_ResolverKey_L_R.
     Section
       Impl_core_default_Default_for_ink_storage_traits_impls_ResolverKey_L_R.
+      Context `{ℋ : State.Trait}.
+      
       Context {L R : Set}.
-      Context `{core.default.Default.Trait L} `{core.default.Default.Trait R}.
-      Definition Self := ink_storage_traits.impls.ResolverKey L R.
       
-      Parameter default :
-          forall `{H' : State.Trait},
-          M (H := H') (ink_storage_traits.impls.ResolverKey L R).
+      Context
+        {ℋ_0 : core.default.Default.Trait L}
+        {ℋ_1 : core.default.Default.Trait R}.
+      Definition Self : Set := ink_storage_traits.impls.ResolverKey L R.
       
-      Global Instance AssociatedFunction_default `{H' : State.Trait} :
+      Parameter default : M (ink_storage_traits.impls.ResolverKey L R).
+      
+      Global Instance AssociatedFunction_default :
         Notation.DoubleColon Self "default" := {
         Notation.double_colon := default;
       }.
       
-      Global Instance I' : core.default.Default.Trait Self := {
-        core.default.Default.default `{H' : State.Trait} := default;
+      #[refine] Global Instance ℐ : core.default.Default.Trait Self := {
+        core.default.Default.default := default;
       }.
+      Admitted.
     End Impl_core_default_Default_for_ink_storage_traits_impls_ResolverKey_L_R.
-    Global Hint Resolve I' : core.
+    Global Hint Resolve ℐ : core.
   End Impl_core_default_Default_for_ink_storage_traits_impls_ResolverKey_L_R.
   
   Module Impl_core_clone_Clone_for_ink_storage_traits_impls_ResolverKey_L_R.
     Section Impl_core_clone_Clone_for_ink_storage_traits_impls_ResolverKey_L_R.
+      Context `{ℋ : State.Trait}.
+      
       Context {L R : Set}.
-      Context `{core.clone.Clone.Trait L} `{core.clone.Clone.Trait R}.
-      Definition Self := ink_storage_traits.impls.ResolverKey L R.
+      
+      Context {ℋ_0 : core.clone.Clone.Trait L} {ℋ_1 : core.clone.Clone.Trait R}.
+      Definition Self : Set := ink_storage_traits.impls.ResolverKey L R.
       
       Parameter clone :
-          forall `{H' : State.Trait},
-          (ref Self) -> M (H := H') (ink_storage_traits.impls.ResolverKey L R).
+          (ref Self) -> M (ink_storage_traits.impls.ResolverKey L R).
       
-      Global Instance Method_clone `{H' : State.Trait} :
-        Notation.Dot "clone" := {
-        Notation.dot := clone;
+      Global Instance AssociatedFunction_clone :
+        Notation.DoubleColon Self "clone" := {
+        Notation.double_colon := clone;
       }.
       
-      Global Instance I' : core.clone.Clone.Trait Self := {
-        core.clone.Clone.clone `{H' : State.Trait} := clone;
+      #[refine] Global Instance ℐ : core.clone.Clone.Trait Self := {
+        core.clone.Clone.clone := clone;
       }.
+      Admitted.
     End Impl_core_clone_Clone_for_ink_storage_traits_impls_ResolverKey_L_R.
-    Global Hint Resolve I' : core.
+    Global Hint Resolve ℐ : core.
   End Impl_core_clone_Clone_for_ink_storage_traits_impls_ResolverKey_L_R.
   
   Module Impl_core_marker_Copy_for_ink_storage_traits_impls_ResolverKey_L_R.
     Section Impl_core_marker_Copy_for_ink_storage_traits_impls_ResolverKey_L_R.
-      Context {L R : Set}.
-      Context `{core.marker.Copy.Trait L} `{core.marker.Copy.Trait R}.
-      Definition Self := ink_storage_traits.impls.ResolverKey L R.
+      Context `{ℋ : State.Trait}.
       
-      Global Instance I' : core.marker.Copy.Trait Self := {
+      Context {L R : Set}.
+      
+      Context {ℋ_0 : core.marker.Copy.Trait L} {ℋ_1 : core.marker.Copy.Trait R}.
+      Definition Self : Set := ink_storage_traits.impls.ResolverKey L R.
+      
+      #[refine] Global Instance ℐ : core.marker.Copy.Trait Self := {
       }.
+      Admitted.
     End Impl_core_marker_Copy_for_ink_storage_traits_impls_ResolverKey_L_R.
-    Global Hint Resolve I' : core.
+    Global Hint Resolve ℐ : core.
   End Impl_core_marker_Copy_for_ink_storage_traits_impls_ResolverKey_L_R.
   
   Module
     Impl_core_marker_StructuralPartialEq_for_ink_storage_traits_impls_ResolverKey_L_R.
     Section
       Impl_core_marker_StructuralPartialEq_for_ink_storage_traits_impls_ResolverKey_L_R.
-      Context {L R : Set}.
-      Definition Self := ink_storage_traits.impls.ResolverKey L R.
+      Context `{ℋ : State.Trait}.
       
-      Global Instance I' : core.marker.StructuralPartialEq.Trait Self := {
+      Context {L R : Set}.
+      
+      Definition Self : Set := ink_storage_traits.impls.ResolverKey L R.
+      
+      #[refine] Global Instance ℐ :
+        core.marker.StructuralPartialEq.Trait Self := {
       }.
+      Admitted.
     End
       Impl_core_marker_StructuralPartialEq_for_ink_storage_traits_impls_ResolverKey_L_R.
-    Global Hint Resolve I' : core.
+    Global Hint Resolve ℐ : core.
   End
     Impl_core_marker_StructuralPartialEq_for_ink_storage_traits_impls_ResolverKey_L_R.
   
   Module Impl_core_cmp_PartialEq_for_ink_storage_traits_impls_ResolverKey_L_R.
     Section
       Impl_core_cmp_PartialEq_for_ink_storage_traits_impls_ResolverKey_L_R.
+      Context `{ℋ : State.Trait}.
+      
       Context {L R : Set}.
+      
       Context
-        `{core.cmp.PartialEq.Trait L (Rhs := core.cmp.PartialEq.Default.Rhs L)}
-        `{core.cmp.PartialEq.Trait R (Rhs := core.cmp.PartialEq.Default.Rhs R)}.
-      Definition Self := ink_storage_traits.impls.ResolverKey L R.
+        {ℋ_0 :
+          core.cmp.PartialEq.Trait L (Rhs := core.cmp.PartialEq.Default.Rhs L)}
+        {ℋ_1 :
+          core.cmp.PartialEq.Trait R (Rhs := core.cmp.PartialEq.Default.Rhs R)}.
+      Definition Self : Set := ink_storage_traits.impls.ResolverKey L R.
       
       Parameter eq :
-          forall `{H' : State.Trait},
           (ref Self) ->
             (ref (ink_storage_traits.impls.ResolverKey L R)) ->
-            M (H := H') bool.
+            M bool.
       
-      Global Instance Method_eq `{H' : State.Trait} : Notation.Dot "eq" := {
-        Notation.dot := eq;
+      Global Instance AssociatedFunction_eq :
+        Notation.DoubleColon Self "eq" := {
+        Notation.double_colon := eq;
       }.
       
-      Global Instance I'
-        : core.cmp.PartialEq.Trait Self
-            (Rhs := core.cmp.PartialEq.Default.Rhs Self)
-          := {
-        core.cmp.PartialEq.eq `{H' : State.Trait} := eq;
+      #[refine] Global Instance ℐ :
+        core.cmp.PartialEq.Trait Self
+          (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
+        core.cmp.PartialEq.eq := eq;
       }.
+      Admitted.
     End Impl_core_cmp_PartialEq_for_ink_storage_traits_impls_ResolverKey_L_R.
-    Global Hint Resolve I' : core.
+    Global Hint Resolve ℐ : core.
   End Impl_core_cmp_PartialEq_for_ink_storage_traits_impls_ResolverKey_L_R.
   
   Module
     Impl_core_marker_StructuralEq_for_ink_storage_traits_impls_ResolverKey_L_R.
     Section
       Impl_core_marker_StructuralEq_for_ink_storage_traits_impls_ResolverKey_L_R.
-      Context {L R : Set}.
-      Definition Self := ink_storage_traits.impls.ResolverKey L R.
+      Context `{ℋ : State.Trait}.
       
-      Global Instance I' : core.marker.StructuralEq.Trait Self := {
+      Context {L R : Set}.
+      
+      Definition Self : Set := ink_storage_traits.impls.ResolverKey L R.
+      
+      #[refine] Global Instance ℐ : core.marker.StructuralEq.Trait Self := {
       }.
+      Admitted.
     End
       Impl_core_marker_StructuralEq_for_ink_storage_traits_impls_ResolverKey_L_R.
-    Global Hint Resolve I' : core.
+    Global Hint Resolve ℐ : core.
   End
     Impl_core_marker_StructuralEq_for_ink_storage_traits_impls_ResolverKey_L_R.
   
   Module Impl_core_cmp_Eq_for_ink_storage_traits_impls_ResolverKey_L_R.
     Section Impl_core_cmp_Eq_for_ink_storage_traits_impls_ResolverKey_L_R.
+      Context `{ℋ : State.Trait}.
+      
       Context {L R : Set}.
-      Context `{core.cmp.Eq.Trait L} `{core.cmp.Eq.Trait R}.
-      Definition Self := ink_storage_traits.impls.ResolverKey L R.
       
-      Parameter assert_receiver_is_total_eq :
-          forall `{H' : State.Trait},
-          (ref Self) -> M (H := H') unit.
+      Context {ℋ_0 : core.cmp.Eq.Trait L} {ℋ_1 : core.cmp.Eq.Trait R}.
+      Definition Self : Set := ink_storage_traits.impls.ResolverKey L R.
       
-      Global Instance Method_assert_receiver_is_total_eq `{H' : State.Trait} :
-        Notation.Dot "assert_receiver_is_total_eq" := {
-        Notation.dot := assert_receiver_is_total_eq;
+      Parameter assert_receiver_is_total_eq : (ref Self) -> M unit.
+      
+      Global Instance AssociatedFunction_assert_receiver_is_total_eq :
+        Notation.DoubleColon Self "assert_receiver_is_total_eq" := {
+        Notation.double_colon := assert_receiver_is_total_eq;
       }.
       
-      Global Instance I' : core.cmp.Eq.Trait Self := {
+      #[refine] Global Instance ℐ : core.cmp.Eq.Trait Self := {
       }.
+      Admitted.
     End Impl_core_cmp_Eq_for_ink_storage_traits_impls_ResolverKey_L_R.
-    Global Hint Resolve I' : core.
+    Global Hint Resolve ℐ : core.
   End Impl_core_cmp_Eq_for_ink_storage_traits_impls_ResolverKey_L_R.
   
   Module Impl_core_cmp_PartialOrd_for_ink_storage_traits_impls_ResolverKey_L_R.
     Section
       Impl_core_cmp_PartialOrd_for_ink_storage_traits_impls_ResolverKey_L_R.
+      Context `{ℋ : State.Trait}.
+      
       Context {L R : Set}.
+      
       Context
-        `{core.cmp.PartialOrd.Trait L
+        {ℋ_0 :
+          core.cmp.PartialOrd.Trait L
             (Rhs := core.cmp.PartialOrd.Default.Rhs L)}
-        `{core.cmp.PartialOrd.Trait R
+        {ℋ_1 :
+          core.cmp.PartialOrd.Trait R
             (Rhs := core.cmp.PartialOrd.Default.Rhs R)}.
-      Definition Self := ink_storage_traits.impls.ResolverKey L R.
+      Definition Self : Set := ink_storage_traits.impls.ResolverKey L R.
       
       Parameter partial_cmp :
-          forall `{H' : State.Trait},
           (ref Self) ->
             (ref (ink_storage_traits.impls.ResolverKey L R)) ->
-            M (H := H') (core.option.Option core.cmp.Ordering).
+            M (core.option.Option core.cmp.Ordering).
       
-      Global Instance Method_partial_cmp `{H' : State.Trait} :
-        Notation.Dot "partial_cmp" := {
-        Notation.dot := partial_cmp;
+      Global Instance AssociatedFunction_partial_cmp :
+        Notation.DoubleColon Self "partial_cmp" := {
+        Notation.double_colon := partial_cmp;
       }.
       
-      Global Instance I'
-        : core.cmp.PartialOrd.Trait Self
-            (Rhs := core.cmp.PartialOrd.Default.Rhs Self)
-          := {
-        core.cmp.PartialOrd.partial_cmp `{H' : State.Trait} := partial_cmp;
+      #[refine] Global Instance ℐ :
+        core.cmp.PartialOrd.Trait Self
+          (Rhs := core.cmp.PartialOrd.Default.Rhs Self) := {
+        core.cmp.PartialOrd.partial_cmp := partial_cmp;
       }.
+      Admitted.
     End Impl_core_cmp_PartialOrd_for_ink_storage_traits_impls_ResolverKey_L_R.
-    Global Hint Resolve I' : core.
+    Global Hint Resolve ℐ : core.
   End Impl_core_cmp_PartialOrd_for_ink_storage_traits_impls_ResolverKey_L_R.
   
   Module Impl_core_fmt_Debug_for_ink_storage_traits_impls_ResolverKey_L_R.
     Section Impl_core_fmt_Debug_for_ink_storage_traits_impls_ResolverKey_L_R.
+      Context `{ℋ : State.Trait}.
+      
       Context {L R : Set}.
-      Context `{core.fmt.Debug.Trait L} `{core.fmt.Debug.Trait R}.
-      Definition Self := ink_storage_traits.impls.ResolverKey L R.
+      
+      Context {ℋ_0 : core.fmt.Debug.Trait L} {ℋ_1 : core.fmt.Debug.Trait R}.
+      Definition Self : Set := ink_storage_traits.impls.ResolverKey L R.
       
       Parameter fmt :
-          forall `{H' : State.Trait},
           (ref Self) ->
             (mut_ref core.fmt.Formatter) ->
-            M (H := H') core.fmt.Result.
+            M ltac:(core.fmt.Result).
       
-      Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
-        Notation.dot := fmt;
+      Global Instance AssociatedFunction_fmt :
+        Notation.DoubleColon Self "fmt" := {
+        Notation.double_colon := fmt;
       }.
       
-      Global Instance I' : core.fmt.Debug.Trait Self := {
-        core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
+      #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
+        core.fmt.Debug.fmt := fmt;
       }.
+      Admitted.
     End Impl_core_fmt_Debug_for_ink_storage_traits_impls_ResolverKey_L_R.
-    Global Hint Resolve I' : core.
+    Global Hint Resolve ℐ : core.
   End Impl_core_fmt_Debug_for_ink_storage_traits_impls_ResolverKey_L_R.
   
-  (* Module Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ResolverKey_L_R.
-    (* Section Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ResolverKey_L_R.
+  Module
+    Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ResolverKey_L_R.
+    Section
+      Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ResolverKey_L_R.
+      Context `{ℋ : State.Trait}.
+      
       Context {L R : Set}.
+      
       Context
-        `{ink_storage_traits.storage.StorageKey.Trait L}
-        `{ink_storage_traits.impls.KeyType.Trait L}
-        `{ink_storage_traits.storage.StorageKey.Trait R}
-        `{ink_storage_traits.impls.KeyType.Trait R}.
-      Definition Self := ink_storage_traits.impls.ResolverKey L R.
+        {ℋ_0 : ink_storage_traits.storage.StorageKey.Trait L}
+        {ℋ_1 : ink_storage_traits.impls.KeyType.Trait L}
+        {ℋ_2 : ink_storage_traits.storage.StorageKey.Trait R}
+        {ℋ_3 : ink_storage_traits.impls.KeyType.Trait R}.
+      Definition Self : Set := ink_storage_traits.impls.ResolverKey L R.
       
-      Definition
-        KEY
-        `{H' : State.Trait} := if (L::["IS_AUTO_KEY"] : bool) then
-          Pure R::["KEY"]
-        else
-          Pure L::["KEY"].
+      Parameter KEY : ltac:(ink_primitives.key.Key).
       
-      Global Instance AssociatedFunction_KEY `{H' : State.Trait} :
+      Global Instance AssociatedFunction_KEY :
         Notation.DoubleColon Self "KEY" := {
         Notation.double_colon := KEY;
       }.
       
-      Global Instance I' : ink_storage_traits.storage.StorageKey.Trait Self := {
-        ink_storage_traits.storage.StorageKey.KEY `{H' : State.Trait} := KEY;
+      #[refine] Global Instance ℐ :
+        ink_storage_traits.storage.StorageKey.Trait Self := {
+        ink_storage_traits.storage.StorageKey.KEY := KEY;
       }.
-    End Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ResolverKey_L_R. *)
-    Global Hint Resolve I' : core.
-  End Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ResolverKey_L_R. *)
+      Admitted.
+    End
+      Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ResolverKey_L_R.
+    Global Hint Resolve ℐ : core.
+  End
+    Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ResolverKey_L_R.
   
-  (* Module Impl_ink_storage_traits_storage_AutoStorableHint_for_T.
-    (* Section Impl_ink_storage_traits_storage_AutoStorableHint_for_T.
-      Context {T ParentKey : Set}.
-      Context
-        `{ink_storage_traits.storage.StorableHint.Trait T (Key := ParentKey)}
-        `{ink_storage_traits.impls.KeyType.Trait
-              (ink_storage_traits.storage.StorableHint.PreferredKey
-                (Self := T))}
-        `{ink_storage_traits.storage.StorableHint.Trait T
-            (Key := ink_storage_traits.impls.FinalKey T ParentKey)}
-        `{ink_storage_traits.storage.StorageKey.Trait ParentKey}.
-      Definition Self := T.
+  Module
+    Impl_ink_storage_traits_impls_KeyType_for_ink_storage_traits_impls_ResolverKey_L_R.
+    Section
+      Impl_ink_storage_traits_impls_KeyType_for_ink_storage_traits_impls_ResolverKey_L_R.
+      Context `{ℋ : State.Trait}.
       
-      Definition Type : Set :=
+      Context {L R : Set}.
+      
+      Context
+        {ℋ_0 : ink_storage_traits.impls.KeyType.Trait L}
+        {ℋ_1 : ink_storage_traits.impls.KeyType.Trait R}.
+      Definition Self : Set := ink_storage_traits.impls.ResolverKey L R.
+      
+      Parameter IS_AUTO_KEY : bool.
+      
+      Global Instance AssociatedFunction_IS_AUTO_KEY :
+        Notation.DoubleColon Self "IS_AUTO_KEY" := {
+        Notation.double_colon := IS_AUTO_KEY;
+      }.
+      
+      #[refine] Global Instance ℐ :
+        ink_storage_traits.impls.KeyType.Trait Self := {
+        ink_storage_traits.impls.KeyType.IS_AUTO_KEY := IS_AUTO_KEY;
+      }.
+      Admitted.
+    End
+      Impl_ink_storage_traits_impls_KeyType_for_ink_storage_traits_impls_ResolverKey_L_R.
+    Global Hint Resolve ℐ : core.
+  End
+    Impl_ink_storage_traits_impls_KeyType_for_ink_storage_traits_impls_ResolverKey_L_R.
+  
+  Ltac FinalKey T ParentKey :=
+    refine
+      (ink_storage_traits.impls.ResolverKey
+        (ink_storage_traits.storage.StorableHint.PreferredKey (Self := T))
+        (ink_storage_traits.impls.ManualKey ParentKey)).
+  
+  Module Impl_ink_storage_traits_storage_AutoStorableHint_for_T.
+    Section Impl_ink_storage_traits_storage_AutoStorableHint_for_T.
+      Context `{ℋ : State.Trait}.
+      
+      Context {T ParentKey : Set}.
+      
+      Context
+        {ℋ_0 :
+          ink_storage_traits.storage.StorableHint.Trait T (Key := ParentKey)}
+        {ℋ_1 :
+          ink_storage_traits.impls.KeyType.Trait
+              (ink_storage_traits.storage.StorableHint.PreferredKey
+                (Self := T)
+                (Trait := ltac:(try clear Trait; hauto l: on)))}
+        {ℋ_2 :
+          ink_storage_traits.storage.StorableHint.Trait T
+            (Key := ltac:(ink_storage_traits.impls.FinalKey
+              constr:(T)
+              constr:(ParentKey)))}
+        {ℋ_3 : ink_storage_traits.storage.StorageKey.Trait ParentKey}.
+      Definition Self : Set := T.
+      
+      Definition Type_ : Set :=
         ink_storage_traits.storage.StorableHint.Type_ (Self := T).
       
-      #[refine]
-      Global Instance I'
-        : ink_storage_traits.storage.AutoStorableHint.Trait Self
-            (Key := ink_storage_traits.impls.ManualKey ParentKey)
-          := {
-        ink_storage_traits.storage.AutoStorableHint.Type := Type;
+      #[refine] Global Instance ℐ :
+        ink_storage_traits.storage.AutoStorableHint.Trait Self
+          (Key := ink_storage_traits.impls.ManualKey ParentKey) := {
+        ink_storage_traits.storage.AutoStorableHint.Type_ := Type_;
       }.
-      eauto.
-      Defined.
-    End Impl_ink_storage_traits_storage_AutoStorableHint_for_T. *)
-    Global Hint Resolve I' : core.
-  End Impl_ink_storage_traits_storage_AutoStorableHint_for_T. *)
+      Admitted.
+    End Impl_ink_storage_traits_storage_AutoStorableHint_for_T.
+    Global Hint Resolve ℐ : core.
+  End Impl_ink_storage_traits_storage_AutoStorableHint_for_T.
   
   Module Impl_ink_storage_traits_storage_private_Sealed_for_P.
     Section Impl_ink_storage_traits_storage_private_Sealed_for_P.
-      Context {P : Set}.
-      Context
-        `{parity_scale_codec.codec.Decode.Trait P}
-        `{parity_scale_codec.codec.Encode.Trait P}.
-      Definition Self := P.
+      Context `{ℋ : State.Trait}.
       
-      Global Instance I'
-        : ink_storage_traits.storage.private.Sealed.Trait Self := {
+      Context {P : Set}.
+      
+      Context
+        {ℋ_0 : parity_scale_codec.codec.Decode.Trait P}
+        {ℋ_1 : parity_scale_codec.codec.Encode.Trait P}.
+      Definition Self : Set := P.
+      
+      #[refine] Global Instance ℐ :
+        ink_storage_traits.storage.private.Sealed.Trait Self := {
       }.
+      Admitted.
     End Impl_ink_storage_traits_storage_private_Sealed_for_P.
-    Global Hint Resolve I' : core.
+    Global Hint Resolve ℐ : core.
   End Impl_ink_storage_traits_storage_private_Sealed_for_P.
   
-  (* Module Impl_ink_storage_traits_storage_Packed_for_P.
-    (* Section Impl_ink_storage_traits_storage_Packed_for_P.
+  Module Impl_ink_storage_traits_storage_Packed_for_P.
+    Section Impl_ink_storage_traits_storage_Packed_for_P.
+      Context `{ℋ : State.Trait}.
+      
       Context {P : Set}.
+      
       Context
-        `{parity_scale_codec.codec.Decode.Trait P}
-        `{parity_scale_codec.codec.Encode.Trait P}.
-      Definition Self := P.
+        {ℋ_0 : parity_scale_codec.codec.Decode.Trait P}
+        {ℋ_1 : parity_scale_codec.codec.Encode.Trait P}.
+      Definition Self : Set := P.
       
-      Global Instance I' : ink_storage_traits.storage.Packed.Trait Self := {
+      #[refine] Global Instance ℐ :
+        ink_storage_traits.storage.Packed.Trait Self := {
       }.
-    End Impl_ink_storage_traits_storage_Packed_for_P. *)
-    Global Hint Resolve I' : core.
-  End Impl_ink_storage_traits_storage_Packed_for_P. *)
+      Admitted.
+    End Impl_ink_storage_traits_storage_Packed_for_P.
+    Global Hint Resolve ℐ : core.
+  End Impl_ink_storage_traits_storage_Packed_for_P.
   
-  (* Module Impl_ink_storage_traits_storage_StorageKey_for_P.
-    (* Section Impl_ink_storage_traits_storage_StorageKey_for_P.
+  Module Impl_ink_storage_traits_storage_StorageKey_for_P.
+    Section Impl_ink_storage_traits_storage_StorageKey_for_P.
+      Context `{ℋ : State.Trait}.
+      
       Context {P : Set}.
-      Context `{ink_storage_traits.storage.Packed.Trait P}.
-      Definition Self := P.
       
-      Definition KEY `{H' : State.Trait} := Pure 0.
+      Context {ℋ_0 : ink_storage_traits.storage.Packed.Trait P}.
+      Definition Self : Set := P.
       
-      Global Instance AssociatedFunction_KEY `{H' : State.Trait} :
+      Parameter KEY : ltac:(ink_primitives.key.Key).
+      
+      Global Instance AssociatedFunction_KEY :
         Notation.DoubleColon Self "KEY" := {
         Notation.double_colon := KEY;
       }.
       
-      Global Instance I' : ink_storage_traits.storage.StorageKey.Trait Self := {
-        ink_storage_traits.storage.StorageKey.KEY `{H' : State.Trait} := KEY;
+      #[refine] Global Instance ℐ :
+        ink_storage_traits.storage.StorageKey.Trait Self := {
+        ink_storage_traits.storage.StorageKey.KEY := KEY;
       }.
-    End Impl_ink_storage_traits_storage_StorageKey_for_P. *)
-    Global Hint Resolve I' : core.
-  End Impl_ink_storage_traits_storage_StorageKey_for_P. *)
+      Admitted.
+    End Impl_ink_storage_traits_storage_StorageKey_for_P.
+    Global Hint Resolve ℐ : core.
+  End Impl_ink_storage_traits_storage_StorageKey_for_P.
   
-  (* Module Impl_ink_storage_traits_storage_StorableHint_for_P.
-    (* Section Impl_ink_storage_traits_storage_StorableHint_for_P.
-      Context {P Key : Set}.
-      Context
-        `{ink_storage_traits.storage.Packed.Trait P}
-        `{ink_storage_traits.storage.StorageKey.Trait Key}.
-      Definition Self := P.
+  Module Impl_ink_storage_traits_storage_StorableHint_for_P.
+    Section Impl_ink_storage_traits_storage_StorableHint_for_P.
+      Context `{ℋ : State.Trait}.
       
-      Definition Type : Set := P.
+      Context {P Key : Set}.
+      
+      Context
+        {ℋ_0 : ink_storage_traits.storage.Packed.Trait P}
+        {ℋ_1 : ink_storage_traits.storage.StorageKey.Trait Key}.
+      Definition Self : Set := P.
+      
+      Definition Type_ : Set := P.
       
       Definition PreferredKey : Set := ink_storage_traits.impls.AutoKey.
       
-      #[refine]
-      Global Instance I'
-        : ink_storage_traits.storage.StorableHint.Trait Self (Key := Key) := {
-        ink_storage_traits.storage.StorableHint.Type := Type;
+      #[refine] Global Instance ℐ :
+        ink_storage_traits.storage.StorableHint.Trait Self (Key := Key) := {
+        ink_storage_traits.storage.StorableHint.Type_ := Type_;
         ink_storage_traits.storage.StorableHint.PreferredKey := PreferredKey;
       }.
-      eauto.
-      Defined.
-    End Impl_ink_storage_traits_storage_StorableHint_for_P. *)
-    Global Hint Resolve I' : core.
-  End Impl_ink_storage_traits_storage_StorableHint_for_P. *)
+      Admitted.
+    End Impl_ink_storage_traits_storage_StorableHint_for_P.
+    Global Hint Resolve ℐ : core.
+  End Impl_ink_storage_traits_storage_StorableHint_for_P.
 End impls.
 
+Module KeyType.
+  Section KeyType.
+    Context `{ℋ : State.Trait}.
+    
+    Class Trait (Self : Set) : Type := {
+      IS_AUTO_KEY : bool;
+    }.
+    
+  End KeyType.
+End KeyType.
+
 Module AutoKey.
-  Inductive t : Set := Build.
+  Section AutoKey.
+    Context `{ℋ : State.Trait}.
+    
+    Inductive t : Set := Build.
+  End AutoKey.
 End AutoKey.
 Definition AutoKey := @AutoKey.t.
 
 Module Impl_scale_info_TypeInfo_for_ink_storage_traits_impls_AutoKey.
-  Definition Self := ink_storage_traits.impls.AutoKey.
-  
-  Definition Identity : Set := Self.
-  
-  Parameter type_info :
-      forall `{H' : State.Trait},
-      M (H := H') (scale_info.ty.Type_ scale_info.ty.Type_.Default.T).
-  
-  Global Instance AssociatedFunction_type_info `{H' : State.Trait} :
-    Notation.DoubleColon Self "type_info" := {
-    Notation.double_colon := type_info;
-  }.
-  
-  Global Instance I' : scale_info.TypeInfo.Trait Self := {
-    scale_info.TypeInfo.Identity := Identity;
-    scale_info.TypeInfo.type_info `{H' : State.Trait} := type_info;
-  }.
-  Global Hint Resolve I' : core.
+  Section Impl_scale_info_TypeInfo_for_ink_storage_traits_impls_AutoKey.
+    Context `{ℋ : State.Trait}.
+    
+    Definition Self : Set := ink_storage_traits.impls.AutoKey.
+    
+    Definition Identity : Set := Self.
+    
+    Parameter type_info : M (scale_info.ty.Type_ scale_info.ty.Type_.Default.T).
+    
+    Global Instance AssociatedFunction_type_info :
+      Notation.DoubleColon Self "type_info" := {
+      Notation.double_colon := type_info;
+    }.
+    
+    #[refine] Global Instance ℐ : scale_info.TypeInfo.Trait Self := {
+      scale_info.TypeInfo.Identity := Identity;
+      scale_info.TypeInfo.type_info := type_info;
+    }.
+    Admitted.
+  End Impl_scale_info_TypeInfo_for_ink_storage_traits_impls_AutoKey.
+  Global Hint Resolve ℐ : core.
 End Impl_scale_info_TypeInfo_for_ink_storage_traits_impls_AutoKey.
 
 Module Impl_core_default_Default_for_ink_storage_traits_impls_AutoKey.
-  Definition Self := ink_storage_traits.impls.AutoKey.
-  
-  Parameter default :
-      forall `{H' : State.Trait},
-      M (H := H') ink_storage_traits.impls.AutoKey.
-  
-  Global Instance AssociatedFunction_default `{H' : State.Trait} :
-    Notation.DoubleColon Self "default" := {
-    Notation.double_colon := default;
-  }.
-  
-  Global Instance I' : core.default.Default.Trait Self := {
-    core.default.Default.default `{H' : State.Trait} := default;
-  }.
-  Global Hint Resolve I' : core.
+  Section Impl_core_default_Default_for_ink_storage_traits_impls_AutoKey.
+    Context `{ℋ : State.Trait}.
+    
+    Definition Self : Set := ink_storage_traits.impls.AutoKey.
+    
+    Parameter default : M ink_storage_traits.impls.AutoKey.
+    
+    Global Instance AssociatedFunction_default :
+      Notation.DoubleColon Self "default" := {
+      Notation.double_colon := default;
+    }.
+    
+    #[refine] Global Instance ℐ : core.default.Default.Trait Self := {
+      core.default.Default.default := default;
+    }.
+    Admitted.
+  End Impl_core_default_Default_for_ink_storage_traits_impls_AutoKey.
+  Global Hint Resolve ℐ : core.
 End Impl_core_default_Default_for_ink_storage_traits_impls_AutoKey.
 
 Module Impl_core_marker_Copy_for_ink_storage_traits_impls_AutoKey.
-  Definition Self := ink_storage_traits.impls.AutoKey.
-  
-  Global Instance I' : core.marker.Copy.Trait Self := {
-  }.
-  Global Hint Resolve I' : core.
+  Section Impl_core_marker_Copy_for_ink_storage_traits_impls_AutoKey.
+    Context `{ℋ : State.Trait}.
+    
+    Definition Self : Set := ink_storage_traits.impls.AutoKey.
+    
+    #[refine] Global Instance ℐ : core.marker.Copy.Trait Self := {
+    }.
+    Admitted.
+  End Impl_core_marker_Copy_for_ink_storage_traits_impls_AutoKey.
+  Global Hint Resolve ℐ : core.
 End Impl_core_marker_Copy_for_ink_storage_traits_impls_AutoKey.
 
 Module Impl_core_clone_Clone_for_ink_storage_traits_impls_AutoKey.
-  Definition Self := ink_storage_traits.impls.AutoKey.
-  
-  Parameter clone :
-      forall `{H' : State.Trait},
-      (ref Self) -> M (H := H') ink_storage_traits.impls.AutoKey.
-  
-  Global Instance Method_clone `{H' : State.Trait} : Notation.Dot "clone" := {
-    Notation.dot := clone;
-  }.
-  
-  Global Instance I' : core.clone.Clone.Trait Self := {
-    core.clone.Clone.clone `{H' : State.Trait} := clone;
-  }.
-  Global Hint Resolve I' : core.
+  Section Impl_core_clone_Clone_for_ink_storage_traits_impls_AutoKey.
+    Context `{ℋ : State.Trait}.
+    
+    Definition Self : Set := ink_storage_traits.impls.AutoKey.
+    
+    Parameter clone : (ref Self) -> M ink_storage_traits.impls.AutoKey.
+    
+    Global Instance AssociatedFunction_clone :
+      Notation.DoubleColon Self "clone" := {
+      Notation.double_colon := clone;
+    }.
+    
+    #[refine] Global Instance ℐ : core.clone.Clone.Trait Self := {
+      core.clone.Clone.clone := clone;
+    }.
+    Admitted.
+  End Impl_core_clone_Clone_for_ink_storage_traits_impls_AutoKey.
+  Global Hint Resolve ℐ : core.
 End Impl_core_clone_Clone_for_ink_storage_traits_impls_AutoKey.
 
 Module
   Impl_core_marker_StructuralPartialEq_for_ink_storage_traits_impls_AutoKey.
-  Definition Self := ink_storage_traits.impls.AutoKey.
-  
-  Global Instance I' : core.marker.StructuralPartialEq.Trait Self := {
-  }.
-  Global Hint Resolve I' : core.
+  Section
+    Impl_core_marker_StructuralPartialEq_for_ink_storage_traits_impls_AutoKey.
+    Context `{ℋ : State.Trait}.
+    
+    Definition Self : Set := ink_storage_traits.impls.AutoKey.
+    
+    #[refine] Global Instance ℐ :
+      core.marker.StructuralPartialEq.Trait Self := {
+    }.
+    Admitted.
+  End Impl_core_marker_StructuralPartialEq_for_ink_storage_traits_impls_AutoKey.
+  Global Hint Resolve ℐ : core.
 End Impl_core_marker_StructuralPartialEq_for_ink_storage_traits_impls_AutoKey.
 
 Module Impl_core_cmp_PartialEq_for_ink_storage_traits_impls_AutoKey.
-  Definition Self := ink_storage_traits.impls.AutoKey.
-  
-  Parameter eq :
-      forall `{H' : State.Trait},
-      (ref Self) -> (ref ink_storage_traits.impls.AutoKey) -> M (H := H') bool.
-  
-  Global Instance Method_eq `{H' : State.Trait} : Notation.Dot "eq" := {
-    Notation.dot := eq;
-  }.
-  
-  Global Instance I'
-    : core.cmp.PartialEq.Trait Self (Rhs := core.cmp.PartialEq.Default.Rhs Self)
-      := {
-    core.cmp.PartialEq.eq `{H' : State.Trait} := eq;
-  }.
-  Global Hint Resolve I' : core.
+  Section Impl_core_cmp_PartialEq_for_ink_storage_traits_impls_AutoKey.
+    Context `{ℋ : State.Trait}.
+    
+    Definition Self : Set := ink_storage_traits.impls.AutoKey.
+    
+    Parameter eq :
+        (ref Self) -> (ref ink_storage_traits.impls.AutoKey) -> M bool.
+    
+    Global Instance AssociatedFunction_eq : Notation.DoubleColon Self "eq" := {
+      Notation.double_colon := eq;
+    }.
+    
+    #[refine] Global Instance ℐ :
+      core.cmp.PartialEq.Trait Self
+        (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
+      core.cmp.PartialEq.eq := eq;
+    }.
+    Admitted.
+  End Impl_core_cmp_PartialEq_for_ink_storage_traits_impls_AutoKey.
+  Global Hint Resolve ℐ : core.
 End Impl_core_cmp_PartialEq_for_ink_storage_traits_impls_AutoKey.
 
 Module Impl_core_marker_StructuralEq_for_ink_storage_traits_impls_AutoKey.
-  Definition Self := ink_storage_traits.impls.AutoKey.
-  
-  Global Instance I' : core.marker.StructuralEq.Trait Self := {
-  }.
-  Global Hint Resolve I' : core.
+  Section Impl_core_marker_StructuralEq_for_ink_storage_traits_impls_AutoKey.
+    Context `{ℋ : State.Trait}.
+    
+    Definition Self : Set := ink_storage_traits.impls.AutoKey.
+    
+    #[refine] Global Instance ℐ : core.marker.StructuralEq.Trait Self := {
+    }.
+    Admitted.
+  End Impl_core_marker_StructuralEq_for_ink_storage_traits_impls_AutoKey.
+  Global Hint Resolve ℐ : core.
 End Impl_core_marker_StructuralEq_for_ink_storage_traits_impls_AutoKey.
 
 Module Impl_core_cmp_Eq_for_ink_storage_traits_impls_AutoKey.
-  Definition Self := ink_storage_traits.impls.AutoKey.
-  
-  Parameter assert_receiver_is_total_eq :
-      forall `{H' : State.Trait},
-      (ref Self) -> M (H := H') unit.
-  
-  Global Instance Method_assert_receiver_is_total_eq `{H' : State.Trait} :
-    Notation.Dot "assert_receiver_is_total_eq" := {
-    Notation.dot := assert_receiver_is_total_eq;
-  }.
-  
-  Global Instance I' : core.cmp.Eq.Trait Self := {
-  }.
-  Global Hint Resolve I' : core.
+  Section Impl_core_cmp_Eq_for_ink_storage_traits_impls_AutoKey.
+    Context `{ℋ : State.Trait}.
+    
+    Definition Self : Set := ink_storage_traits.impls.AutoKey.
+    
+    Parameter assert_receiver_is_total_eq : (ref Self) -> M unit.
+    
+    Global Instance AssociatedFunction_assert_receiver_is_total_eq :
+      Notation.DoubleColon Self "assert_receiver_is_total_eq" := {
+      Notation.double_colon := assert_receiver_is_total_eq;
+    }.
+    
+    #[refine] Global Instance ℐ : core.cmp.Eq.Trait Self := {
+    }.
+    Admitted.
+  End Impl_core_cmp_Eq_for_ink_storage_traits_impls_AutoKey.
+  Global Hint Resolve ℐ : core.
 End Impl_core_cmp_Eq_for_ink_storage_traits_impls_AutoKey.
 
 Module Impl_core_cmp_PartialOrd_for_ink_storage_traits_impls_AutoKey.
-  Definition Self := ink_storage_traits.impls.AutoKey.
-  
-  Parameter partial_cmp :
-      forall `{H' : State.Trait},
-      (ref Self) ->
-        (ref ink_storage_traits.impls.AutoKey) ->
-        M (H := H') (core.option.Option core.cmp.Ordering).
-  
-  Global Instance Method_partial_cmp `{H' : State.Trait} :
-    Notation.Dot "partial_cmp" := {
-    Notation.dot := partial_cmp;
-  }.
-  
-  Global Instance I'
-    : core.cmp.PartialOrd.Trait Self
-        (Rhs := core.cmp.PartialOrd.Default.Rhs Self)
-      := {
-    core.cmp.PartialOrd.partial_cmp `{H' : State.Trait} := partial_cmp;
-  }.
-  Global Hint Resolve I' : core.
+  Section Impl_core_cmp_PartialOrd_for_ink_storage_traits_impls_AutoKey.
+    Context `{ℋ : State.Trait}.
+    
+    Definition Self : Set := ink_storage_traits.impls.AutoKey.
+    
+    Parameter partial_cmp :
+        (ref Self) ->
+          (ref ink_storage_traits.impls.AutoKey) ->
+          M (core.option.Option core.cmp.Ordering).
+    
+    Global Instance AssociatedFunction_partial_cmp :
+      Notation.DoubleColon Self "partial_cmp" := {
+      Notation.double_colon := partial_cmp;
+    }.
+    
+    #[refine] Global Instance ℐ :
+      core.cmp.PartialOrd.Trait Self
+        (Rhs := core.cmp.PartialOrd.Default.Rhs Self) := {
+      core.cmp.PartialOrd.partial_cmp := partial_cmp;
+    }.
+    Admitted.
+  End Impl_core_cmp_PartialOrd_for_ink_storage_traits_impls_AutoKey.
+  Global Hint Resolve ℐ : core.
 End Impl_core_cmp_PartialOrd_for_ink_storage_traits_impls_AutoKey.
 
-(* Module Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_AutoKey.
-  Definition Self := ink_storage_traits.impls.AutoKey.
-  
-  Definition KEY `{H' : State.Trait} := Pure 0.
-  
-  Global Instance AssociatedFunction_KEY `{H' : State.Trait} :
-    Notation.DoubleColon Self "KEY" := {
-    Notation.double_colon := KEY;
-  }.
-  
-  Global Instance I' : ink_storage_traits.storage.StorageKey.Trait Self := {
-    ink_storage_traits.storage.StorageKey.KEY `{H' : State.Trait} := KEY;
-  }.
-  Global Hint Resolve I' : core.
-End Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_AutoKey. *)
+Module
+  Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_AutoKey.
+  Section
+    Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_AutoKey.
+    Context `{ℋ : State.Trait}.
+    
+    Definition Self : Set := ink_storage_traits.impls.AutoKey.
+    
+    Parameter KEY : ltac:(ink_primitives.key.Key).
+    
+    Global Instance AssociatedFunction_KEY :
+      Notation.DoubleColon Self "KEY" := {
+      Notation.double_colon := KEY;
+    }.
+    
+    #[refine] Global Instance ℐ :
+      ink_storage_traits.storage.StorageKey.Trait Self := {
+      ink_storage_traits.storage.StorageKey.KEY := KEY;
+    }.
+    Admitted.
+  End
+    Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_AutoKey.
+  Global Hint Resolve ℐ : core.
+End
+  Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_AutoKey.
+
+Module
+  Impl_ink_storage_traits_impls_KeyType_for_ink_storage_traits_impls_AutoKey.
+  Section
+    Impl_ink_storage_traits_impls_KeyType_for_ink_storage_traits_impls_AutoKey.
+    Context `{ℋ : State.Trait}.
+    
+    Definition Self : Set := ink_storage_traits.impls.AutoKey.
+    
+    Parameter IS_AUTO_KEY : bool.
+    
+    Global Instance AssociatedFunction_IS_AUTO_KEY :
+      Notation.DoubleColon Self "IS_AUTO_KEY" := {
+      Notation.double_colon := IS_AUTO_KEY;
+    }.
+    
+    #[refine] Global Instance ℐ :
+      ink_storage_traits.impls.KeyType.Trait Self := {
+      ink_storage_traits.impls.KeyType.IS_AUTO_KEY := IS_AUTO_KEY;
+    }.
+    Admitted.
+  End
+    Impl_ink_storage_traits_impls_KeyType_for_ink_storage_traits_impls_AutoKey.
+  Global Hint Resolve ℐ : core.
+End Impl_ink_storage_traits_impls_KeyType_for_ink_storage_traits_impls_AutoKey.
 
 Module Impl_core_fmt_Debug_for_ink_storage_traits_impls_AutoKey.
-  Definition Self := ink_storage_traits.impls.AutoKey.
-  
-  Parameter fmt :
-      forall `{H' : State.Trait},
-      (ref Self) -> (mut_ref core.fmt.Formatter) -> M (H := H') core.fmt.Result.
-  
-  Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
-    Notation.dot := fmt;
-  }.
-  
-  Global Instance I' : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
-  }.
-  Global Hint Resolve I' : core.
+  Section Impl_core_fmt_Debug_for_ink_storage_traits_impls_AutoKey.
+    Context `{ℋ : State.Trait}.
+    
+    Definition Self : Set := ink_storage_traits.impls.AutoKey.
+    
+    Parameter fmt :
+        (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
+    
+    Global Instance AssociatedFunction_fmt :
+      Notation.DoubleColon Self "fmt" := {
+      Notation.double_colon := fmt;
+    }.
+    
+    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
+      core.fmt.Debug.fmt := fmt;
+    }.
+    Admitted.
+  End Impl_core_fmt_Debug_for_ink_storage_traits_impls_AutoKey.
+  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_ink_storage_traits_impls_AutoKey.
 
 Module ManualKey.
   Section ManualKey.
+    Context `{ℋ : State.Trait}.
+    
     Context {ParentKey : Set}.
+    
     Unset Primitive Projections.
     Record t : Set := {
-      _ : core.marker.PhantomData (ParentKey);
+      x0 : core.marker.PhantomData (ParentKey);
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_0 : Notation.Dot 0 := {
-      Notation.dot '(Build_t x0) := x0;
+    #[refine] Global Instance Get_0 : Notation.Dot "0" := {
+      Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
+    Admitted.
   End ManualKey.
 End ManualKey.
-Definition ManualKey := @ManualKey.t.
+Definition ManualKey `{ℋ : State.Trait} (ParentKey : Set) : Set :=
+  M.val (ManualKey.t (ParentKey := ParentKey)).
 
 Module
   Impl_scale_info_TypeInfo_for_ink_storage_traits_impls_ManualKey_ParentKey.
   Section
     Impl_scale_info_TypeInfo_for_ink_storage_traits_impls_ManualKey_ParentKey.
+    Context `{ℋ : State.Trait}.
+    
     Context {ParentKey : Set}.
+    
     Context
-      `{ink_storage_traits.storage.StorageKey.Trait ParentKey}
-      `{scale_info.TypeInfo.Trait (core.marker.PhantomData (ParentKey))}
-      `{ink_storage_traits.storage.StorageKey.Trait ParentKey}
-      `{scale_info.TypeInfo.Trait ParentKey}.
-    Definition Self := ink_storage_traits.impls.ManualKey ParentKey.
+      {ℋ_0 : ink_storage_traits.storage.StorageKey.Trait ParentKey}
+      {ℋ_1 : scale_info.TypeInfo.Trait (core.marker.PhantomData (ParentKey))}
+      {ℋ_2 : ink_storage_traits.storage.StorageKey.Trait ParentKey}
+      {ℋ_3 : scale_info.TypeInfo.Trait ParentKey}.
+    Definition Self : Set := ink_storage_traits.impls.ManualKey ParentKey.
     
     Definition Identity : Set := Self.
     
-    Parameter type_info :
-        forall `{H' : State.Trait},
-        M (H := H') (scale_info.ty.Type_ scale_info.ty.Type_.Default.T).
+    Parameter type_info : M (scale_info.ty.Type_ scale_info.ty.Type_.Default.T).
     
-    Global Instance AssociatedFunction_type_info `{H' : State.Trait} :
+    Global Instance AssociatedFunction_type_info :
       Notation.DoubleColon Self "type_info" := {
       Notation.double_colon := type_info;
     }.
     
-    Global Instance I' : scale_info.TypeInfo.Trait Self := {
+    #[refine] Global Instance ℐ : scale_info.TypeInfo.Trait Self := {
       scale_info.TypeInfo.Identity := Identity;
-      scale_info.TypeInfo.type_info `{H' : State.Trait} := type_info;
+      scale_info.TypeInfo.type_info := type_info;
     }.
+    Admitted.
   End Impl_scale_info_TypeInfo_for_ink_storage_traits_impls_ManualKey_ParentKey.
-  Global Hint Resolve I' : core.
+  Global Hint Resolve ℐ : core.
 End Impl_scale_info_TypeInfo_for_ink_storage_traits_impls_ManualKey_ParentKey.
 
 Module
   Impl_core_default_Default_for_ink_storage_traits_impls_ManualKey_ParentKey.
   Section
     Impl_core_default_Default_for_ink_storage_traits_impls_ManualKey_ParentKey.
+    Context `{ℋ : State.Trait}.
+    
     Context {ParentKey : Set}.
+    
     Context
-      `{core.default.Default.Trait ParentKey}
-      `{ink_storage_traits.storage.StorageKey.Trait ParentKey}.
-    Definition Self := ink_storage_traits.impls.ManualKey ParentKey.
+      {ℋ_0 : core.default.Default.Trait ParentKey}
+      {ℋ_1 : ink_storage_traits.storage.StorageKey.Trait ParentKey}.
+    Definition Self : Set := ink_storage_traits.impls.ManualKey ParentKey.
     
-    Parameter default :
-        forall `{H' : State.Trait},
-        M (H := H') (ink_storage_traits.impls.ManualKey ParentKey).
+    Parameter default : M (ink_storage_traits.impls.ManualKey ParentKey).
     
-    Global Instance AssociatedFunction_default `{H' : State.Trait} :
+    Global Instance AssociatedFunction_default :
       Notation.DoubleColon Self "default" := {
       Notation.double_colon := default;
     }.
     
-    Global Instance I' : core.default.Default.Trait Self := {
-      core.default.Default.default `{H' : State.Trait} := default;
+    #[refine] Global Instance ℐ : core.default.Default.Trait Self := {
+      core.default.Default.default := default;
     }.
+    Admitted.
   End
     Impl_core_default_Default_for_ink_storage_traits_impls_ManualKey_ParentKey.
-  Global Hint Resolve I' : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_default_Default_for_ink_storage_traits_impls_ManualKey_ParentKey.
 
 Module Impl_core_marker_Copy_for_ink_storage_traits_impls_ManualKey_ParentKey.
   Section
     Impl_core_marker_Copy_for_ink_storage_traits_impls_ManualKey_ParentKey.
-    Context {ParentKey : Set}.
-    Context
-      `{core.marker.Copy.Trait ParentKey}
-      `{ink_storage_traits.storage.StorageKey.Trait ParentKey}.
-    Definition Self := ink_storage_traits.impls.ManualKey ParentKey.
+    Context `{ℋ : State.Trait}.
     
-    Global Instance I' : core.marker.Copy.Trait Self := {
+    Context {ParentKey : Set}.
+    
+    Context
+      {ℋ_0 : core.marker.Copy.Trait ParentKey}
+      {ℋ_1 : ink_storage_traits.storage.StorageKey.Trait ParentKey}.
+    Definition Self : Set := ink_storage_traits.impls.ManualKey ParentKey.
+    
+    #[refine] Global Instance ℐ : core.marker.Copy.Trait Self := {
     }.
+    Admitted.
   End Impl_core_marker_Copy_for_ink_storage_traits_impls_ManualKey_ParentKey.
-  Global Hint Resolve I' : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_marker_Copy_for_ink_storage_traits_impls_ManualKey_ParentKey.
 
 Module Impl_core_clone_Clone_for_ink_storage_traits_impls_ManualKey_ParentKey.
   Section
     Impl_core_clone_Clone_for_ink_storage_traits_impls_ManualKey_ParentKey.
+    Context `{ℋ : State.Trait}.
+    
     Context {ParentKey : Set}.
+    
     Context
-      `{core.clone.Clone.Trait ParentKey}
-      `{ink_storage_traits.storage.StorageKey.Trait ParentKey}.
-    Definition Self := ink_storage_traits.impls.ManualKey ParentKey.
+      {ℋ_0 : core.clone.Clone.Trait ParentKey}
+      {ℋ_1 : ink_storage_traits.storage.StorageKey.Trait ParentKey}.
+    Definition Self : Set := ink_storage_traits.impls.ManualKey ParentKey.
     
     Parameter clone :
-        forall `{H' : State.Trait},
-        (ref Self) ->
-          M (H := H') (ink_storage_traits.impls.ManualKey ParentKey).
+        (ref Self) -> M (ink_storage_traits.impls.ManualKey ParentKey).
     
-    Global Instance Method_clone `{H' : State.Trait} : Notation.Dot "clone" := {
-      Notation.dot := clone;
+    Global Instance AssociatedFunction_clone :
+      Notation.DoubleColon Self "clone" := {
+      Notation.double_colon := clone;
     }.
     
-    Global Instance I' : core.clone.Clone.Trait Self := {
-      core.clone.Clone.clone `{H' : State.Trait} := clone;
+    #[refine] Global Instance ℐ : core.clone.Clone.Trait Self := {
+      core.clone.Clone.clone := clone;
     }.
+    Admitted.
   End Impl_core_clone_Clone_for_ink_storage_traits_impls_ManualKey_ParentKey.
-  Global Hint Resolve I' : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_clone_Clone_for_ink_storage_traits_impls_ManualKey_ParentKey.
 
 Module
   Impl_core_marker_StructuralEq_for_ink_storage_traits_impls_ManualKey_ParentKey.
   Section
     Impl_core_marker_StructuralEq_for_ink_storage_traits_impls_ManualKey_ParentKey.
-    Context {ParentKey : Set}.
-    Context `{ink_storage_traits.storage.StorageKey.Trait ParentKey}.
-    Definition Self := ink_storage_traits.impls.ManualKey ParentKey.
+    Context `{ℋ : State.Trait}.
     
-    Global Instance I' : core.marker.StructuralEq.Trait Self := {
+    Context {ParentKey : Set}.
+    
+    Context {ℋ_0 : ink_storage_traits.storage.StorageKey.Trait ParentKey}.
+    Definition Self : Set := ink_storage_traits.impls.ManualKey ParentKey.
+    
+    #[refine] Global Instance ℐ : core.marker.StructuralEq.Trait Self := {
     }.
+    Admitted.
   End
     Impl_core_marker_StructuralEq_for_ink_storage_traits_impls_ManualKey_ParentKey.
-  Global Hint Resolve I' : core.
+  Global Hint Resolve ℐ : core.
 End
   Impl_core_marker_StructuralEq_for_ink_storage_traits_impls_ManualKey_ParentKey.
 
 Module Impl_core_cmp_Eq_for_ink_storage_traits_impls_ManualKey_ParentKey.
   Section Impl_core_cmp_Eq_for_ink_storage_traits_impls_ManualKey_ParentKey.
+    Context `{ℋ : State.Trait}.
+    
     Context {ParentKey : Set}.
+    
     Context
-      `{core.cmp.Eq.Trait ParentKey}
-      `{ink_storage_traits.storage.StorageKey.Trait ParentKey}.
-    Definition Self := ink_storage_traits.impls.ManualKey ParentKey.
+      {ℋ_0 : core.cmp.Eq.Trait ParentKey}
+      {ℋ_1 : ink_storage_traits.storage.StorageKey.Trait ParentKey}.
+    Definition Self : Set := ink_storage_traits.impls.ManualKey ParentKey.
     
-    Parameter assert_receiver_is_total_eq :
-        forall `{H' : State.Trait},
-        (ref Self) -> M (H := H') unit.
+    Parameter assert_receiver_is_total_eq : (ref Self) -> M unit.
     
-    Global Instance Method_assert_receiver_is_total_eq `{H' : State.Trait} :
-      Notation.Dot "assert_receiver_is_total_eq" := {
-      Notation.dot := assert_receiver_is_total_eq;
+    Global Instance AssociatedFunction_assert_receiver_is_total_eq :
+      Notation.DoubleColon Self "assert_receiver_is_total_eq" := {
+      Notation.double_colon := assert_receiver_is_total_eq;
     }.
     
-    Global Instance I' : core.cmp.Eq.Trait Self := {
+    #[refine] Global Instance ℐ : core.cmp.Eq.Trait Self := {
     }.
+    Admitted.
   End Impl_core_cmp_Eq_for_ink_storage_traits_impls_ManualKey_ParentKey.
-  Global Hint Resolve I' : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_cmp_Eq_for_ink_storage_traits_impls_ManualKey_ParentKey.
 
 Module
   Impl_core_marker_StructuralPartialEq_for_ink_storage_traits_impls_ManualKey_ParentKey.
   Section
     Impl_core_marker_StructuralPartialEq_for_ink_storage_traits_impls_ManualKey_ParentKey.
-    Context {ParentKey : Set}.
-    Context `{ink_storage_traits.storage.StorageKey.Trait ParentKey}.
-    Definition Self := ink_storage_traits.impls.ManualKey ParentKey.
+    Context `{ℋ : State.Trait}.
     
-    Global Instance I' : core.marker.StructuralPartialEq.Trait Self := {
+    Context {ParentKey : Set}.
+    
+    Context {ℋ_0 : ink_storage_traits.storage.StorageKey.Trait ParentKey}.
+    Definition Self : Set := ink_storage_traits.impls.ManualKey ParentKey.
+    
+    #[refine] Global Instance ℐ :
+      core.marker.StructuralPartialEq.Trait Self := {
     }.
+    Admitted.
   End
     Impl_core_marker_StructuralPartialEq_for_ink_storage_traits_impls_ManualKey_ParentKey.
-  Global Hint Resolve I' : core.
+  Global Hint Resolve ℐ : core.
 End
   Impl_core_marker_StructuralPartialEq_for_ink_storage_traits_impls_ManualKey_ParentKey.
 
 Module Impl_core_cmp_PartialEq_for_ink_storage_traits_impls_ManualKey_ParentKey.
   Section
     Impl_core_cmp_PartialEq_for_ink_storage_traits_impls_ManualKey_ParentKey.
+    Context `{ℋ : State.Trait}.
+    
     Context {ParentKey : Set}.
+    
     Context
-      `{core.cmp.PartialEq.Trait ParentKey
+      {ℋ_0 :
+        core.cmp.PartialEq.Trait ParentKey
           (Rhs := core.cmp.PartialEq.Default.Rhs ParentKey)}
-      `{ink_storage_traits.storage.StorageKey.Trait ParentKey}.
-    Definition Self := ink_storage_traits.impls.ManualKey ParentKey.
+      {ℋ_1 : ink_storage_traits.storage.StorageKey.Trait ParentKey}.
+    Definition Self : Set := ink_storage_traits.impls.ManualKey ParentKey.
     
     Parameter eq :
-        forall `{H' : State.Trait},
         (ref Self) ->
           (ref (ink_storage_traits.impls.ManualKey ParentKey)) ->
-          M (H := H') bool.
+          M bool.
     
-    Global Instance Method_eq `{H' : State.Trait} : Notation.Dot "eq" := {
-      Notation.dot := eq;
+    Global Instance AssociatedFunction_eq : Notation.DoubleColon Self "eq" := {
+      Notation.double_colon := eq;
     }.
     
-    Global Instance I'
-      : core.cmp.PartialEq.Trait Self
-          (Rhs := core.cmp.PartialEq.Default.Rhs Self)
-        := {
-      core.cmp.PartialEq.eq `{H' : State.Trait} := eq;
+    #[refine] Global Instance ℐ :
+      core.cmp.PartialEq.Trait Self
+        (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
+      core.cmp.PartialEq.eq := eq;
     }.
+    Admitted.
   End Impl_core_cmp_PartialEq_for_ink_storage_traits_impls_ManualKey_ParentKey.
-  Global Hint Resolve I' : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_cmp_PartialEq_for_ink_storage_traits_impls_ManualKey_ParentKey.
 
 Module
   Impl_core_cmp_PartialOrd_for_ink_storage_traits_impls_ManualKey_ParentKey.
   Section
     Impl_core_cmp_PartialOrd_for_ink_storage_traits_impls_ManualKey_ParentKey.
+    Context `{ℋ : State.Trait}.
+    
     Context {ParentKey : Set}.
+    
     Context
-      `{core.cmp.PartialOrd.Trait ParentKey
+      {ℋ_0 :
+        core.cmp.PartialOrd.Trait ParentKey
           (Rhs := core.cmp.PartialOrd.Default.Rhs ParentKey)}
-      `{ink_storage_traits.storage.StorageKey.Trait ParentKey}.
-    Definition Self := ink_storage_traits.impls.ManualKey ParentKey.
+      {ℋ_1 : ink_storage_traits.storage.StorageKey.Trait ParentKey}.
+    Definition Self : Set := ink_storage_traits.impls.ManualKey ParentKey.
     
     Parameter partial_cmp :
-        forall `{H' : State.Trait},
         (ref Self) ->
           (ref (ink_storage_traits.impls.ManualKey ParentKey)) ->
-          M (H := H') (core.option.Option core.cmp.Ordering).
+          M (core.option.Option core.cmp.Ordering).
     
-    Global Instance Method_partial_cmp `{H' : State.Trait} :
-      Notation.Dot "partial_cmp" := {
-      Notation.dot := partial_cmp;
+    Global Instance AssociatedFunction_partial_cmp :
+      Notation.DoubleColon Self "partial_cmp" := {
+      Notation.double_colon := partial_cmp;
     }.
     
-    Global Instance I'
-      : core.cmp.PartialOrd.Trait Self
-          (Rhs := core.cmp.PartialOrd.Default.Rhs Self)
-        := {
-      core.cmp.PartialOrd.partial_cmp `{H' : State.Trait} := partial_cmp;
+    #[refine] Global Instance ℐ :
+      core.cmp.PartialOrd.Trait Self
+        (Rhs := core.cmp.PartialOrd.Default.Rhs Self) := {
+      core.cmp.PartialOrd.partial_cmp := partial_cmp;
     }.
+    Admitted.
   End Impl_core_cmp_PartialOrd_for_ink_storage_traits_impls_ManualKey_ParentKey.
-  Global Hint Resolve I' : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_cmp_PartialOrd_for_ink_storage_traits_impls_ManualKey_ParentKey.
 
-(* Module Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ManualKey_ParentKey.
-  (* Section Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ManualKey_ParentKey.
+Module
+  Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ManualKey_ParentKey.
+  Section
+    Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ManualKey_ParentKey.
+    Context `{ℋ : State.Trait}.
+    
     Context {ParentKey : Set}.
-    Context `{ink_storage_traits.storage.StorageKey.Trait ParentKey}.
-    Definition Self := ink_storage_traits.impls.ManualKey ParentKey.
     
-    Definition
-      KEY
-      `{H' : State.Trait} := ink_primitives.key.KeyComposer::["concat"]
-        ink_storage_traits.impls.KEY
-        ParentKey::["KEY"].
+    Context {ℋ_0 : ink_storage_traits.storage.StorageKey.Trait ParentKey}.
+    Definition Self : Set := ink_storage_traits.impls.ManualKey ParentKey.
     
-    Global Instance AssociatedFunction_KEY `{H' : State.Trait} :
+    Parameter KEY : ltac:(ink_primitives.key.Key).
+    
+    Global Instance AssociatedFunction_KEY :
       Notation.DoubleColon Self "KEY" := {
       Notation.double_colon := KEY;
     }.
     
-    Global Instance I' : ink_storage_traits.storage.StorageKey.Trait Self := {
-      ink_storage_traits.storage.StorageKey.KEY `{H' : State.Trait} := KEY;
+    #[refine] Global Instance ℐ :
+      ink_storage_traits.storage.StorageKey.Trait Self := {
+      ink_storage_traits.storage.StorageKey.KEY := KEY;
     }.
-  End Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ManualKey_ParentKey. *)
-  Global Hint Resolve I' : core.
-End Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ManualKey_ParentKey. *)
+    Admitted.
+  End
+    Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ManualKey_ParentKey.
+  Global Hint Resolve ℐ : core.
+End
+  Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ManualKey_ParentKey.
+
+Module
+  Impl_ink_storage_traits_impls_KeyType_for_ink_storage_traits_impls_ManualKey_ParentKey.
+  Section
+    Impl_ink_storage_traits_impls_KeyType_for_ink_storage_traits_impls_ManualKey_ParentKey.
+    Context `{ℋ : State.Trait}.
+    
+    Context {ParentKey : Set}.
+    
+    Context {ℋ_0 : ink_storage_traits.storage.StorageKey.Trait ParentKey}.
+    Definition Self : Set := ink_storage_traits.impls.ManualKey ParentKey.
+    
+    Parameter IS_AUTO_KEY : bool.
+    
+    Global Instance AssociatedFunction_IS_AUTO_KEY :
+      Notation.DoubleColon Self "IS_AUTO_KEY" := {
+      Notation.double_colon := IS_AUTO_KEY;
+    }.
+    
+    #[refine] Global Instance ℐ :
+      ink_storage_traits.impls.KeyType.Trait Self := {
+      ink_storage_traits.impls.KeyType.IS_AUTO_KEY := IS_AUTO_KEY;
+    }.
+    Admitted.
+  End
+    Impl_ink_storage_traits_impls_KeyType_for_ink_storage_traits_impls_ManualKey_ParentKey.
+  Global Hint Resolve ℐ : core.
+End
+  Impl_ink_storage_traits_impls_KeyType_for_ink_storage_traits_impls_ManualKey_ParentKey.
 
 Module Impl_core_fmt_Debug_for_ink_storage_traits_impls_ManualKey_ParentKey.
   Section Impl_core_fmt_Debug_for_ink_storage_traits_impls_ManualKey_ParentKey.
+    Context `{ℋ : State.Trait}.
+    
     Context {ParentKey : Set}.
-    Context `{ink_storage_traits.storage.StorageKey.Trait ParentKey}.
-    Definition Self := ink_storage_traits.impls.ManualKey ParentKey.
+    
+    Context {ℋ_0 : ink_storage_traits.storage.StorageKey.Trait ParentKey}.
+    Definition Self : Set := ink_storage_traits.impls.ManualKey ParentKey.
     
     Parameter fmt :
-        forall `{H' : State.Trait},
-        (ref Self) ->
-          (mut_ref core.fmt.Formatter) ->
-          M (H := H') core.fmt.Result.
+        (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
     
-    Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
-      Notation.dot := fmt;
+    Global Instance AssociatedFunction_fmt :
+      Notation.DoubleColon Self "fmt" := {
+      Notation.double_colon := fmt;
     }.
     
-    Global Instance I' : core.fmt.Debug.Trait Self := {
-      core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
+    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
+      core.fmt.Debug.fmt := fmt;
     }.
+    Admitted.
   End Impl_core_fmt_Debug_for_ink_storage_traits_impls_ManualKey_ParentKey.
-  Global Hint Resolve I' : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_ink_storage_traits_impls_ManualKey_ParentKey.
 
 Module ResolverKey.
   Section ResolverKey.
+    Context `{ℋ : State.Trait}.
+    
     Context {L R : Set}.
+    
     Unset Primitive Projections.
     Record t : Set := {
-      _ : core.marker.PhantomData (L * R);
+      x0 : core.marker.PhantomData (L * R);
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_0 : Notation.Dot 0 := {
-      Notation.dot '(Build_t x0) := x0;
+    #[refine] Global Instance Get_0 : Notation.Dot "0" := {
+      Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
+    Admitted.
   End ResolverKey.
 End ResolverKey.
-Definition ResolverKey := @ResolverKey.t.
+Definition ResolverKey `{ℋ : State.Trait} (L R : Set) : Set :=
+  M.val (ResolverKey.t (L := L) (R := R)).
 
 Module Impl_scale_info_TypeInfo_for_ink_storage_traits_impls_ResolverKey_L_R.
   Section Impl_scale_info_TypeInfo_for_ink_storage_traits_impls_ResolverKey_L_R.
+    Context `{ℋ : State.Trait}.
+    
     Context {L R : Set}.
+    
     Context
-      `{scale_info.TypeInfo.Trait (core.marker.PhantomData (L * R))}
-      `{scale_info.TypeInfo.Trait L}
-      `{scale_info.TypeInfo.Trait R}.
-    Definition Self := ink_storage_traits.impls.ResolverKey L R.
+      {ℋ_0 : scale_info.TypeInfo.Trait (core.marker.PhantomData (L * R))}
+      {ℋ_1 : scale_info.TypeInfo.Trait L}
+      {ℋ_2 : scale_info.TypeInfo.Trait R}.
+    Definition Self : Set := ink_storage_traits.impls.ResolverKey L R.
     
     Definition Identity : Set := Self.
     
-    Parameter type_info :
-        forall `{H' : State.Trait},
-        M (H := H') (scale_info.ty.Type_ scale_info.ty.Type_.Default.T).
+    Parameter type_info : M (scale_info.ty.Type_ scale_info.ty.Type_.Default.T).
     
-    Global Instance AssociatedFunction_type_info `{H' : State.Trait} :
+    Global Instance AssociatedFunction_type_info :
       Notation.DoubleColon Self "type_info" := {
       Notation.double_colon := type_info;
     }.
     
-    Global Instance I' : scale_info.TypeInfo.Trait Self := {
+    #[refine] Global Instance ℐ : scale_info.TypeInfo.Trait Self := {
       scale_info.TypeInfo.Identity := Identity;
-      scale_info.TypeInfo.type_info `{H' : State.Trait} := type_info;
+      scale_info.TypeInfo.type_info := type_info;
     }.
+    Admitted.
   End Impl_scale_info_TypeInfo_for_ink_storage_traits_impls_ResolverKey_L_R.
-  Global Hint Resolve I' : core.
+  Global Hint Resolve ℐ : core.
 End Impl_scale_info_TypeInfo_for_ink_storage_traits_impls_ResolverKey_L_R.
 
 Module Impl_core_default_Default_for_ink_storage_traits_impls_ResolverKey_L_R.
   Section
     Impl_core_default_Default_for_ink_storage_traits_impls_ResolverKey_L_R.
+    Context `{ℋ : State.Trait}.
+    
     Context {L R : Set}.
-    Context `{core.default.Default.Trait L} `{core.default.Default.Trait R}.
-    Definition Self := ink_storage_traits.impls.ResolverKey L R.
     
-    Parameter default :
-        forall `{H' : State.Trait},
-        M (H := H') (ink_storage_traits.impls.ResolverKey L R).
+    Context
+      {ℋ_0 : core.default.Default.Trait L}
+      {ℋ_1 : core.default.Default.Trait R}.
+    Definition Self : Set := ink_storage_traits.impls.ResolverKey L R.
     
-    Global Instance AssociatedFunction_default `{H' : State.Trait} :
+    Parameter default : M (ink_storage_traits.impls.ResolverKey L R).
+    
+    Global Instance AssociatedFunction_default :
       Notation.DoubleColon Self "default" := {
       Notation.double_colon := default;
     }.
     
-    Global Instance I' : core.default.Default.Trait Self := {
-      core.default.Default.default `{H' : State.Trait} := default;
+    #[refine] Global Instance ℐ : core.default.Default.Trait Self := {
+      core.default.Default.default := default;
     }.
+    Admitted.
   End Impl_core_default_Default_for_ink_storage_traits_impls_ResolverKey_L_R.
-  Global Hint Resolve I' : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_default_Default_for_ink_storage_traits_impls_ResolverKey_L_R.
 
 Module Impl_core_marker_Copy_for_ink_storage_traits_impls_ResolverKey_L_R.
   Section Impl_core_marker_Copy_for_ink_storage_traits_impls_ResolverKey_L_R.
-    Context {L R : Set}.
-    Context `{core.marker.Copy.Trait L} `{core.marker.Copy.Trait R}.
-    Definition Self := ink_storage_traits.impls.ResolverKey L R.
+    Context `{ℋ : State.Trait}.
     
-    Global Instance I' : core.marker.Copy.Trait Self := {
+    Context {L R : Set}.
+    
+    Context {ℋ_0 : core.marker.Copy.Trait L} {ℋ_1 : core.marker.Copy.Trait R}.
+    Definition Self : Set := ink_storage_traits.impls.ResolverKey L R.
+    
+    #[refine] Global Instance ℐ : core.marker.Copy.Trait Self := {
     }.
+    Admitted.
   End Impl_core_marker_Copy_for_ink_storage_traits_impls_ResolverKey_L_R.
-  Global Hint Resolve I' : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_marker_Copy_for_ink_storage_traits_impls_ResolverKey_L_R.
 
 Module Impl_core_clone_Clone_for_ink_storage_traits_impls_ResolverKey_L_R.
   Section Impl_core_clone_Clone_for_ink_storage_traits_impls_ResolverKey_L_R.
+    Context `{ℋ : State.Trait}.
+    
     Context {L R : Set}.
-    Context `{core.clone.Clone.Trait L} `{core.clone.Clone.Trait R}.
-    Definition Self := ink_storage_traits.impls.ResolverKey L R.
+    
+    Context {ℋ_0 : core.clone.Clone.Trait L} {ℋ_1 : core.clone.Clone.Trait R}.
+    Definition Self : Set := ink_storage_traits.impls.ResolverKey L R.
     
     Parameter clone :
-        forall `{H' : State.Trait},
-        (ref Self) -> M (H := H') (ink_storage_traits.impls.ResolverKey L R).
+        (ref Self) -> M (ink_storage_traits.impls.ResolverKey L R).
     
-    Global Instance Method_clone `{H' : State.Trait} : Notation.Dot "clone" := {
-      Notation.dot := clone;
+    Global Instance AssociatedFunction_clone :
+      Notation.DoubleColon Self "clone" := {
+      Notation.double_colon := clone;
     }.
     
-    Global Instance I' : core.clone.Clone.Trait Self := {
-      core.clone.Clone.clone `{H' : State.Trait} := clone;
+    #[refine] Global Instance ℐ : core.clone.Clone.Trait Self := {
+      core.clone.Clone.clone := clone;
     }.
+    Admitted.
   End Impl_core_clone_Clone_for_ink_storage_traits_impls_ResolverKey_L_R.
-  Global Hint Resolve I' : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_clone_Clone_for_ink_storage_traits_impls_ResolverKey_L_R.
 
 Module
   Impl_core_marker_StructuralPartialEq_for_ink_storage_traits_impls_ResolverKey_L_R.
   Section
     Impl_core_marker_StructuralPartialEq_for_ink_storage_traits_impls_ResolverKey_L_R.
-    Context {L R : Set}.
-    Definition Self := ink_storage_traits.impls.ResolverKey L R.
+    Context `{ℋ : State.Trait}.
     
-    Global Instance I' : core.marker.StructuralPartialEq.Trait Self := {
+    Context {L R : Set}.
+    
+    Definition Self : Set := ink_storage_traits.impls.ResolverKey L R.
+    
+    #[refine] Global Instance ℐ :
+      core.marker.StructuralPartialEq.Trait Self := {
     }.
+    Admitted.
   End
     Impl_core_marker_StructuralPartialEq_for_ink_storage_traits_impls_ResolverKey_L_R.
-  Global Hint Resolve I' : core.
+  Global Hint Resolve ℐ : core.
 End
   Impl_core_marker_StructuralPartialEq_for_ink_storage_traits_impls_ResolverKey_L_R.
 
 Module Impl_core_cmp_PartialEq_for_ink_storage_traits_impls_ResolverKey_L_R.
   Section Impl_core_cmp_PartialEq_for_ink_storage_traits_impls_ResolverKey_L_R.
+    Context `{ℋ : State.Trait}.
+    
     Context {L R : Set}.
+    
     Context
-      `{core.cmp.PartialEq.Trait L (Rhs := core.cmp.PartialEq.Default.Rhs L)}
-      `{core.cmp.PartialEq.Trait R (Rhs := core.cmp.PartialEq.Default.Rhs R)}.
-    Definition Self := ink_storage_traits.impls.ResolverKey L R.
+      {ℋ_0 :
+        core.cmp.PartialEq.Trait L (Rhs := core.cmp.PartialEq.Default.Rhs L)}
+      {ℋ_1 :
+        core.cmp.PartialEq.Trait R (Rhs := core.cmp.PartialEq.Default.Rhs R)}.
+    Definition Self : Set := ink_storage_traits.impls.ResolverKey L R.
     
     Parameter eq :
-        forall `{H' : State.Trait},
         (ref Self) ->
           (ref (ink_storage_traits.impls.ResolverKey L R)) ->
-          M (H := H') bool.
+          M bool.
     
-    Global Instance Method_eq `{H' : State.Trait} : Notation.Dot "eq" := {
-      Notation.dot := eq;
+    Global Instance AssociatedFunction_eq : Notation.DoubleColon Self "eq" := {
+      Notation.double_colon := eq;
     }.
     
-    Global Instance I'
-      : core.cmp.PartialEq.Trait Self
-          (Rhs := core.cmp.PartialEq.Default.Rhs Self)
-        := {
-      core.cmp.PartialEq.eq `{H' : State.Trait} := eq;
+    #[refine] Global Instance ℐ :
+      core.cmp.PartialEq.Trait Self
+        (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
+      core.cmp.PartialEq.eq := eq;
     }.
+    Admitted.
   End Impl_core_cmp_PartialEq_for_ink_storage_traits_impls_ResolverKey_L_R.
-  Global Hint Resolve I' : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_cmp_PartialEq_for_ink_storage_traits_impls_ResolverKey_L_R.
 
 Module
   Impl_core_marker_StructuralEq_for_ink_storage_traits_impls_ResolverKey_L_R.
   Section
     Impl_core_marker_StructuralEq_for_ink_storage_traits_impls_ResolverKey_L_R.
-    Context {L R : Set}.
-    Definition Self := ink_storage_traits.impls.ResolverKey L R.
+    Context `{ℋ : State.Trait}.
     
-    Global Instance I' : core.marker.StructuralEq.Trait Self := {
+    Context {L R : Set}.
+    
+    Definition Self : Set := ink_storage_traits.impls.ResolverKey L R.
+    
+    #[refine] Global Instance ℐ : core.marker.StructuralEq.Trait Self := {
     }.
+    Admitted.
   End
     Impl_core_marker_StructuralEq_for_ink_storage_traits_impls_ResolverKey_L_R.
-  Global Hint Resolve I' : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_marker_StructuralEq_for_ink_storage_traits_impls_ResolverKey_L_R.
 
 Module Impl_core_cmp_Eq_for_ink_storage_traits_impls_ResolverKey_L_R.
   Section Impl_core_cmp_Eq_for_ink_storage_traits_impls_ResolverKey_L_R.
+    Context `{ℋ : State.Trait}.
+    
     Context {L R : Set}.
-    Context `{core.cmp.Eq.Trait L} `{core.cmp.Eq.Trait R}.
-    Definition Self := ink_storage_traits.impls.ResolverKey L R.
     
-    Parameter assert_receiver_is_total_eq :
-        forall `{H' : State.Trait},
-        (ref Self) -> M (H := H') unit.
+    Context {ℋ_0 : core.cmp.Eq.Trait L} {ℋ_1 : core.cmp.Eq.Trait R}.
+    Definition Self : Set := ink_storage_traits.impls.ResolverKey L R.
     
-    Global Instance Method_assert_receiver_is_total_eq `{H' : State.Trait} :
-      Notation.Dot "assert_receiver_is_total_eq" := {
-      Notation.dot := assert_receiver_is_total_eq;
+    Parameter assert_receiver_is_total_eq : (ref Self) -> M unit.
+    
+    Global Instance AssociatedFunction_assert_receiver_is_total_eq :
+      Notation.DoubleColon Self "assert_receiver_is_total_eq" := {
+      Notation.double_colon := assert_receiver_is_total_eq;
     }.
     
-    Global Instance I' : core.cmp.Eq.Trait Self := {
+    #[refine] Global Instance ℐ : core.cmp.Eq.Trait Self := {
     }.
+    Admitted.
   End Impl_core_cmp_Eq_for_ink_storage_traits_impls_ResolverKey_L_R.
-  Global Hint Resolve I' : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_cmp_Eq_for_ink_storage_traits_impls_ResolverKey_L_R.
 
 Module Impl_core_cmp_PartialOrd_for_ink_storage_traits_impls_ResolverKey_L_R.
   Section Impl_core_cmp_PartialOrd_for_ink_storage_traits_impls_ResolverKey_L_R.
+    Context `{ℋ : State.Trait}.
+    
     Context {L R : Set}.
+    
     Context
-      `{core.cmp.PartialOrd.Trait L (Rhs := core.cmp.PartialOrd.Default.Rhs L)}
-      `{core.cmp.PartialOrd.Trait R (Rhs := core.cmp.PartialOrd.Default.Rhs R)}.
-    Definition Self := ink_storage_traits.impls.ResolverKey L R.
+      {ℋ_0 :
+        core.cmp.PartialOrd.Trait L (Rhs := core.cmp.PartialOrd.Default.Rhs L)}
+      {ℋ_1 :
+        core.cmp.PartialOrd.Trait R (Rhs := core.cmp.PartialOrd.Default.Rhs R)}.
+    Definition Self : Set := ink_storage_traits.impls.ResolverKey L R.
     
     Parameter partial_cmp :
-        forall `{H' : State.Trait},
         (ref Self) ->
           (ref (ink_storage_traits.impls.ResolverKey L R)) ->
-          M (H := H') (core.option.Option core.cmp.Ordering).
+          M (core.option.Option core.cmp.Ordering).
     
-    Global Instance Method_partial_cmp `{H' : State.Trait} :
-      Notation.Dot "partial_cmp" := {
-      Notation.dot := partial_cmp;
+    Global Instance AssociatedFunction_partial_cmp :
+      Notation.DoubleColon Self "partial_cmp" := {
+      Notation.double_colon := partial_cmp;
     }.
     
-    Global Instance I'
-      : core.cmp.PartialOrd.Trait Self
-          (Rhs := core.cmp.PartialOrd.Default.Rhs Self)
-        := {
-      core.cmp.PartialOrd.partial_cmp `{H' : State.Trait} := partial_cmp;
+    #[refine] Global Instance ℐ :
+      core.cmp.PartialOrd.Trait Self
+        (Rhs := core.cmp.PartialOrd.Default.Rhs Self) := {
+      core.cmp.PartialOrd.partial_cmp := partial_cmp;
     }.
+    Admitted.
   End Impl_core_cmp_PartialOrd_for_ink_storage_traits_impls_ResolverKey_L_R.
-  Global Hint Resolve I' : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_cmp_PartialOrd_for_ink_storage_traits_impls_ResolverKey_L_R.
 
 Module Impl_core_fmt_Debug_for_ink_storage_traits_impls_ResolverKey_L_R.
   Section Impl_core_fmt_Debug_for_ink_storage_traits_impls_ResolverKey_L_R.
+    Context `{ℋ : State.Trait}.
+    
     Context {L R : Set}.
-    Context `{core.fmt.Debug.Trait L} `{core.fmt.Debug.Trait R}.
-    Definition Self := ink_storage_traits.impls.ResolverKey L R.
+    
+    Context {ℋ_0 : core.fmt.Debug.Trait L} {ℋ_1 : core.fmt.Debug.Trait R}.
+    Definition Self : Set := ink_storage_traits.impls.ResolverKey L R.
     
     Parameter fmt :
-        forall `{H' : State.Trait},
-        (ref Self) ->
-          (mut_ref core.fmt.Formatter) ->
-          M (H := H') core.fmt.Result.
+        (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
     
-    Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
-      Notation.dot := fmt;
+    Global Instance AssociatedFunction_fmt :
+      Notation.DoubleColon Self "fmt" := {
+      Notation.double_colon := fmt;
     }.
     
-    Global Instance I' : core.fmt.Debug.Trait Self := {
-      core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
+    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
+      core.fmt.Debug.fmt := fmt;
     }.
+    Admitted.
   End Impl_core_fmt_Debug_for_ink_storage_traits_impls_ResolverKey_L_R.
-  Global Hint Resolve I' : core.
+  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_ink_storage_traits_impls_ResolverKey_L_R.
 
-(* Module Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ResolverKey_L_R.
-  (* Section Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ResolverKey_L_R.
+Module
+  Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ResolverKey_L_R.
+  Section
+    Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ResolverKey_L_R.
+    Context `{ℋ : State.Trait}.
+    
     Context {L R : Set}.
+    
     Context
-      `{ink_storage_traits.storage.StorageKey.Trait L}
-      `{ink_storage_traits.impls.KeyType.Trait L}
-      `{ink_storage_traits.storage.StorageKey.Trait R}
-      `{ink_storage_traits.impls.KeyType.Trait R}.
-    Definition Self := ink_storage_traits.impls.ResolverKey L R.
+      {ℋ_0 : ink_storage_traits.storage.StorageKey.Trait L}
+      {ℋ_1 : ink_storage_traits.impls.KeyType.Trait L}
+      {ℋ_2 : ink_storage_traits.storage.StorageKey.Trait R}
+      {ℋ_3 : ink_storage_traits.impls.KeyType.Trait R}.
+    Definition Self : Set := ink_storage_traits.impls.ResolverKey L R.
     
-    Definition
-      KEY
-      `{H' : State.Trait} := if (L::["IS_AUTO_KEY"] : bool) then
-        Pure R::["KEY"]
-      else
-        Pure L::["KEY"].
+    Parameter KEY : ltac:(ink_primitives.key.Key).
     
-    Global Instance AssociatedFunction_KEY `{H' : State.Trait} :
+    Global Instance AssociatedFunction_KEY :
       Notation.DoubleColon Self "KEY" := {
       Notation.double_colon := KEY;
     }.
     
-    Global Instance I' : ink_storage_traits.storage.StorageKey.Trait Self := {
-      ink_storage_traits.storage.StorageKey.KEY `{H' : State.Trait} := KEY;
+    #[refine] Global Instance ℐ :
+      ink_storage_traits.storage.StorageKey.Trait Self := {
+      ink_storage_traits.storage.StorageKey.KEY := KEY;
     }.
-  End Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ResolverKey_L_R. *)
-  Global Hint Resolve I' : core.
-End Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ResolverKey_L_R. *)
+    Admitted.
+  End
+    Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ResolverKey_L_R.
+  Global Hint Resolve ℐ : core.
+End
+  Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ResolverKey_L_R.
 
-(* Module Impl_ink_storage_traits_storage_AutoStorableHint_for_T.
-  (* Section Impl_ink_storage_traits_storage_AutoStorableHint_for_T.
-    Context {T ParentKey : Set}.
-    Context
-      `{ink_storage_traits.storage.StorableHint.Trait T (Key := ParentKey)}
-      `{ink_storage_traits.impls.KeyType.Trait
-            (ink_storage_traits.storage.StorableHint.PreferredKey (Self := T))}
-      `{ink_storage_traits.storage.StorableHint.Trait T
-          (Key := ink_storage_traits.impls.FinalKey T ParentKey)}
-      `{ink_storage_traits.storage.StorageKey.Trait ParentKey}.
-    Definition Self := T.
+Module
+  Impl_ink_storage_traits_impls_KeyType_for_ink_storage_traits_impls_ResolverKey_L_R.
+  Section
+    Impl_ink_storage_traits_impls_KeyType_for_ink_storage_traits_impls_ResolverKey_L_R.
+    Context `{ℋ : State.Trait}.
     
-    Definition Type : Set :=
+    Context {L R : Set}.
+    
+    Context
+      {ℋ_0 : ink_storage_traits.impls.KeyType.Trait L}
+      {ℋ_1 : ink_storage_traits.impls.KeyType.Trait R}.
+    Definition Self : Set := ink_storage_traits.impls.ResolverKey L R.
+    
+    Parameter IS_AUTO_KEY : bool.
+    
+    Global Instance AssociatedFunction_IS_AUTO_KEY :
+      Notation.DoubleColon Self "IS_AUTO_KEY" := {
+      Notation.double_colon := IS_AUTO_KEY;
+    }.
+    
+    #[refine] Global Instance ℐ :
+      ink_storage_traits.impls.KeyType.Trait Self := {
+      ink_storage_traits.impls.KeyType.IS_AUTO_KEY := IS_AUTO_KEY;
+    }.
+    Admitted.
+  End
+    Impl_ink_storage_traits_impls_KeyType_for_ink_storage_traits_impls_ResolverKey_L_R.
+  Global Hint Resolve ℐ : core.
+End
+  Impl_ink_storage_traits_impls_KeyType_for_ink_storage_traits_impls_ResolverKey_L_R.
+
+Ltac FinalKey T ParentKey :=
+  refine
+    (ink_storage_traits.impls.ResolverKey
+      (ink_storage_traits.storage.StorableHint.PreferredKey (Self := T))
+      (ink_storage_traits.impls.ManualKey ParentKey)).
+
+Module Impl_ink_storage_traits_storage_AutoStorableHint_for_T.
+  Section Impl_ink_storage_traits_storage_AutoStorableHint_for_T.
+    Context `{ℋ : State.Trait}.
+    
+    Context {T ParentKey : Set}.
+    
+    Context
+      {ℋ_0 : ink_storage_traits.storage.StorableHint.Trait T (Key := ParentKey)}
+      {ℋ_1 :
+        ink_storage_traits.impls.KeyType.Trait
+            (ink_storage_traits.storage.StorableHint.PreferredKey
+              (Self := T)
+              (Trait := ltac:(try clear Trait; hauto l: on)))}
+      {ℋ_2 :
+        ink_storage_traits.storage.StorableHint.Trait T
+          (Key := ltac:(ink_storage_traits.impls.FinalKey
+            constr:(T)
+            constr:(ParentKey)))}
+      {ℋ_3 : ink_storage_traits.storage.StorageKey.Trait ParentKey}.
+    Definition Self : Set := T.
+    
+    Definition Type_ : Set :=
       ink_storage_traits.storage.StorableHint.Type_ (Self := T).
     
-    #[refine]
-    Global Instance I'
-      : ink_storage_traits.storage.AutoStorableHint.Trait Self
-          (Key := ink_storage_traits.impls.ManualKey ParentKey)
-        := {
-      ink_storage_traits.storage.AutoStorableHint.Type := Type;
+    #[refine] Global Instance ℐ :
+      ink_storage_traits.storage.AutoStorableHint.Trait Self
+        (Key := ink_storage_traits.impls.ManualKey ParentKey) := {
+      ink_storage_traits.storage.AutoStorableHint.Type_ := Type_;
     }.
-    eauto.
-    Defined.
-  End Impl_ink_storage_traits_storage_AutoStorableHint_for_T. *)
-  Global Hint Resolve I' : core.
-End Impl_ink_storage_traits_storage_AutoStorableHint_for_T. *)
+    Admitted.
+  End Impl_ink_storage_traits_storage_AutoStorableHint_for_T.
+  Global Hint Resolve ℐ : core.
+End Impl_ink_storage_traits_storage_AutoStorableHint_for_T.
 
 Module Impl_ink_storage_traits_storage_private_Sealed_for_P.
   Section Impl_ink_storage_traits_storage_private_Sealed_for_P.
-    Context {P : Set}.
-    Context
-      `{parity_scale_codec.codec.Decode.Trait P}
-      `{parity_scale_codec.codec.Encode.Trait P}.
-    Definition Self := P.
+    Context `{ℋ : State.Trait}.
     
-    Global Instance I'
-      : ink_storage_traits.storage.private.Sealed.Trait Self := {
+    Context {P : Set}.
+    
+    Context
+      {ℋ_0 : parity_scale_codec.codec.Decode.Trait P}
+      {ℋ_1 : parity_scale_codec.codec.Encode.Trait P}.
+    Definition Self : Set := P.
+    
+    #[refine] Global Instance ℐ :
+      ink_storage_traits.storage.private.Sealed.Trait Self := {
     }.
+    Admitted.
   End Impl_ink_storage_traits_storage_private_Sealed_for_P.
-  Global Hint Resolve I' : core.
+  Global Hint Resolve ℐ : core.
 End Impl_ink_storage_traits_storage_private_Sealed_for_P.
 
-(* Module Impl_ink_storage_traits_storage_Packed_for_P.
-  (* Section Impl_ink_storage_traits_storage_Packed_for_P.
+Module Impl_ink_storage_traits_storage_Packed_for_P.
+  Section Impl_ink_storage_traits_storage_Packed_for_P.
+    Context `{ℋ : State.Trait}.
+    
     Context {P : Set}.
+    
     Context
-      `{parity_scale_codec.codec.Decode.Trait P}
-      `{parity_scale_codec.codec.Encode.Trait P}.
-    Definition Self := P.
+      {ℋ_0 : parity_scale_codec.codec.Decode.Trait P}
+      {ℋ_1 : parity_scale_codec.codec.Encode.Trait P}.
+    Definition Self : Set := P.
     
-    Global Instance I' : ink_storage_traits.storage.Packed.Trait Self := {
+    #[refine] Global Instance ℐ :
+      ink_storage_traits.storage.Packed.Trait Self := {
     }.
-  End Impl_ink_storage_traits_storage_Packed_for_P. *)
-  Global Hint Resolve I' : core.
-End Impl_ink_storage_traits_storage_Packed_for_P. *)
+    Admitted.
+  End Impl_ink_storage_traits_storage_Packed_for_P.
+  Global Hint Resolve ℐ : core.
+End Impl_ink_storage_traits_storage_Packed_for_P.
 
-(* Module Impl_ink_storage_traits_storage_StorageKey_for_P.
-  (* Section Impl_ink_storage_traits_storage_StorageKey_for_P.
+Module Impl_ink_storage_traits_storage_StorageKey_for_P.
+  Section Impl_ink_storage_traits_storage_StorageKey_for_P.
+    Context `{ℋ : State.Trait}.
+    
     Context {P : Set}.
-    Context `{ink_storage_traits.storage.Packed.Trait P}.
-    Definition Self := P.
     
-    Definition KEY `{H' : State.Trait} := Pure 0.
+    Context {ℋ_0 : ink_storage_traits.storage.Packed.Trait P}.
+    Definition Self : Set := P.
     
-    Global Instance AssociatedFunction_KEY `{H' : State.Trait} :
+    Parameter KEY : ltac:(ink_primitives.key.Key).
+    
+    Global Instance AssociatedFunction_KEY :
       Notation.DoubleColon Self "KEY" := {
       Notation.double_colon := KEY;
     }.
     
-    Global Instance I' : ink_storage_traits.storage.StorageKey.Trait Self := {
-      ink_storage_traits.storage.StorageKey.KEY `{H' : State.Trait} := KEY;
+    #[refine] Global Instance ℐ :
+      ink_storage_traits.storage.StorageKey.Trait Self := {
+      ink_storage_traits.storage.StorageKey.KEY := KEY;
     }.
-  End Impl_ink_storage_traits_storage_StorageKey_for_P. *)
-  Global Hint Resolve I' : core.
-End Impl_ink_storage_traits_storage_StorageKey_for_P. *)
+    Admitted.
+  End Impl_ink_storage_traits_storage_StorageKey_for_P.
+  Global Hint Resolve ℐ : core.
+End Impl_ink_storage_traits_storage_StorageKey_for_P.
 
-(* Module Impl_ink_storage_traits_storage_StorableHint_for_P.
-  (* Section Impl_ink_storage_traits_storage_StorableHint_for_P.
-    Context {P Key : Set}.
-    Context
-      `{ink_storage_traits.storage.Packed.Trait P}
-      `{ink_storage_traits.storage.StorageKey.Trait Key}.
-    Definition Self := P.
+Module Impl_ink_storage_traits_storage_StorableHint_for_P.
+  Section Impl_ink_storage_traits_storage_StorableHint_for_P.
+    Context `{ℋ : State.Trait}.
     
-    Definition Type : Set := P.
+    Context {P Key : Set}.
+    
+    Context
+      {ℋ_0 : ink_storage_traits.storage.Packed.Trait P}
+      {ℋ_1 : ink_storage_traits.storage.StorageKey.Trait Key}.
+    Definition Self : Set := P.
+    
+    Definition Type_ : Set := P.
     
     Definition PreferredKey : Set := ink_storage_traits.impls.AutoKey.
     
-    #[refine]
-    Global Instance I'
-      : ink_storage_traits.storage.StorableHint.Trait Self (Key := Key) := {
-      ink_storage_traits.storage.StorableHint.Type := Type;
+    #[refine] Global Instance ℐ :
+      ink_storage_traits.storage.StorableHint.Trait Self (Key := Key) := {
+      ink_storage_traits.storage.StorableHint.Type_ := Type_;
       ink_storage_traits.storage.StorableHint.PreferredKey := PreferredKey;
     }.
-    eauto.
-    Defined.
-  End Impl_ink_storage_traits_storage_StorableHint_for_P. *)
-  Global Hint Resolve I' : core.
-End Impl_ink_storage_traits_storage_StorableHint_for_P. *)
+    Admitted.
+  End Impl_ink_storage_traits_storage_StorableHint_for_P.
+  Global Hint Resolve ℐ : core.
+End Impl_ink_storage_traits_storage_StorableHint_for_P.
 
 Module Storable.
-  Class Trait (Self : Set) `{core.marker.Sized.Trait Self} : Type := {
-    encode
-      `{H' : State.Trait}
-      {T : Set}
-      `{H'0 : parity_scale_codec.codec.Output.Trait T}
-      `{H'1 : core.marker.Sized.Trait T}
-      :
-      (ref Self) -> (mut_ref T) -> M (H := H') unit;
-    decode
-      `{H' : State.Trait}
-      {I : Set}
-      `{H'0 : parity_scale_codec.codec.Input.Trait I}
-      :
-      (mut_ref I) ->
-        M (H := H') (core.result.Result Self parity_scale_codec.error.Error);
-  }.
-  
-  Global Instance Method_encode `{H' : State.Trait} `(Trait)
-    : Notation.Dot "encode" := {
-    Notation.dot
-      {T : Set}
-      `{H'0 : parity_scale_codec.codec.Output.Trait T}
-      `{H'1 : core.marker.Sized.Trait T}
-      :=
-      encode (T := T) (H'0 := H'0) (H'1 := H'1);
-  }.
-  Global Instance Method_decode `{H' : State.Trait} `(Trait)
-    : Notation.Dot "decode" := {
-    Notation.dot {I : Set} `{H'0 : parity_scale_codec.codec.Input.Trait I}
-      :=
-      decode (I := I) (H'0 := H'0);
-  }.
+  Section Storable.
+    Context `{ℋ : State.Trait}.
+    
+    Class Trait (Self : Set) : Type := {
+      (* _ :: core.marker.Sized.Trait Self; *)
+      encode
+        {T : Set}
+        {ℋ_0 : parity_scale_codec.codec.Output.Trait T}
+        {ℋ_1 : core.marker.Sized.Trait T} :
+        (ref Self) -> (mut_ref T) -> M unit;
+      decode {I : Set} {ℋ_0 : parity_scale_codec.codec.Input.Trait I} :
+        (mut_ref I) ->
+          M (core.result.Result Self parity_scale_codec.error.Error);
+    }.
+    
+  End Storable.
 End Storable.
 
-(* Module Impl_ink_storage_traits_storage_Storable_for_P.
-  (* Section Impl_ink_storage_traits_storage_Storable_for_P.
+Module Impl_ink_storage_traits_storage_Storable_for_P.
+  Section Impl_ink_storage_traits_storage_Storable_for_P.
+    Context `{ℋ : State.Trait}.
+    
     Context {P : Set}.
-    Context `{parity_scale_codec.codec.Codec.Trait P}.
-    Definition Self := P.
+    
+    Context {ℋ_0 : parity_scale_codec.codec.Codec.Trait P}.
+    Definition Self : Set := P.
     
     Parameter encode :
         forall
-          `{H' : State.Trait}
           {T : Set}
-          `{parity_scale_codec.codec.Output.Trait T}
-          `{core.marker.Sized.Trait T},
-        (ref Self) -> (mut_ref T) -> M (H := H') unit.
+          {ℋ_0 : parity_scale_codec.codec.Output.Trait T}
+          {ℋ_1 : core.marker.Sized.Trait T},
+        (ref Self) -> (mut_ref T) -> M unit.
     
-    Global Instance Method_encode
-        `{H' : State.Trait}
+    Global Instance AssociatedFunction_encode
         {T : Set}
-        `{parity_scale_codec.codec.Output.Trait T}
-        `{core.marker.Sized.Trait T} :
-      Notation.Dot "encode" := {
-      Notation.dot := encode (T := T);
+        {ℋ_0 : parity_scale_codec.codec.Output.Trait T}
+        {ℋ_1 : core.marker.Sized.Trait T} :
+      Notation.DoubleColon Self "encode" := {
+      Notation.double_colon := encode (T := T);
     }.
     
     Parameter decode :
-        forall
-          `{H' : State.Trait}
-          {I : Set}
-          `{parity_scale_codec.codec.Input.Trait I},
+        forall {I : Set} {ℋ_0 : parity_scale_codec.codec.Input.Trait I},
         (mut_ref I) ->
-          M (H := H') (core.result.Result Self parity_scale_codec.error.Error).
+          M (core.result.Result Self parity_scale_codec.error.Error).
     
     Global Instance AssociatedFunction_decode
-        `{H' : State.Trait}
         {I : Set}
-        `{parity_scale_codec.codec.Input.Trait I} :
+        {ℋ_0 : parity_scale_codec.codec.Input.Trait I} :
       Notation.DoubleColon Self "decode" := {
       Notation.double_colon := decode (I := I);
     }.
     
-    Global Instance I' : ink_storage_traits.storage.Storable.Trait Self := {
+    #[refine] Global Instance ℐ :
+      ink_storage_traits.storage.Storable.Trait Self := {
       ink_storage_traits.storage.Storable.encode
-        `{H' : State.Trait}
         {T : Set}
-        `{parity_scale_codec.codec.Output.Trait T}
-        `{core.marker.Sized.Trait T}
-        :=
+        {ℋ_0 : parity_scale_codec.codec.Output.Trait T}
+        {ℋ_1 : core.marker.Sized.Trait T} :=
         encode (T := T);
       ink_storage_traits.storage.Storable.decode
-        `{H' : State.Trait}
         {I : Set}
-        `{parity_scale_codec.codec.Input.Trait I}
-        :=
+        {ℋ_0 : parity_scale_codec.codec.Input.Trait I} :=
         decode (I := I);
     }.
-  End Impl_ink_storage_traits_storage_Storable_for_P. *)
-  Global Hint Resolve I' : core.
-End Impl_ink_storage_traits_storage_Storable_for_P. *)
+    Admitted.
+  End Impl_ink_storage_traits_storage_Storable_for_P.
+  Global Hint Resolve ℐ : core.
+End Impl_ink_storage_traits_storage_Storable_for_P.
 
 Module private.
   Module Sealed.
+    Section Sealed.
+      Context `{ℋ : State.Trait}.
+      
+      Unset Primitive Projections.
+      Class Trait (Self : Set) : Type := {
+      }.
+      Global Set Primitive Projections.
+    End Sealed.
+  End Sealed.
+End private.
+
+Module Sealed.
+  Section Sealed.
+    Context `{ℋ : State.Trait}.
+    
     Unset Primitive Projections.
     Class Trait (Self : Set) : Type := {
     }.
     Global Set Primitive Projections.
   End Sealed.
-End private.
-
-Module Sealed.
-  Unset Primitive Projections.
-  Class Trait (Self : Set) : Type := {
-  }.
-  Global Set Primitive Projections.
 End Sealed.
 
 Module Packed.
-  Unset Primitive Projections.
-  Class Trait
-      (Self : Set)
-      `{ink_storage_traits.storage.Storable.Trait Self}
-      `{parity_scale_codec.codec.Codec.Trait Self}
-      `{ink_storage_traits.storage.private.Sealed.Trait Self} :
-      Type := {
-  }.
-  Global Set Primitive Projections.
+  Section Packed.
+    Context `{ℋ : State.Trait}.
+    
+    Class Trait (Self : Set) : Type := {
+      ℒ_0 :: ink_storage_traits.storage.Storable.Trait Self;
+      ℒ_1 :: parity_scale_codec.codec.Codec.Trait Self;
+      ℒ_2 :: ink_storage_traits.storage.private.Sealed.Trait Self;
+    }.
+    
+  End Packed.
 End Packed.
 
 Module StorageKey.
-  Class Trait (Self : Set) : Type := {
-    KEY `{H' : State.Trait} : ink_primitives.key.Key;
-  }.
-  
-  Global Instance Method_KEY `{H' : State.Trait} `(Trait)
-    : Notation.Dot "KEY" := {
-    Notation.dot := KEY;
-  }.
-  (* Global Instance Method_key `{H' : State.Trait} `(Trait)
-    : Notation.Dot "key" := {
-    Notation.dot (self : ref Self)
-      :=
-      (axiom : M (H := H') ink_primitives.key.Key);
-  }.
-*) End StorageKey.
+  Section StorageKey.
+    Context `{ℋ : State.Trait}.
+    
+    Class Trait (Self : Set) : Type := {
+      KEY : ltac:(ink_primitives.key.Key);
+    }.
+    
+  End StorageKey.
+End StorageKey.
 
 Module StorableHint.
-  Class Trait
-      (Self : Set)
-      {Key : Set}
-      `{ink_storage_traits.storage.StorageKey.Trait Key} :
-      Type := {
-    Type_ : Set;
-    _ : Sigma `(ink_storage_traits.storage.Storable.Trait Type_), unit;
-    PreferredKey : Set;
-    _ : Sigma `(ink_storage_traits.storage.StorageKey.Trait PreferredKey), unit;
-  }.
-  
-  Global Instance Method_Type_ `(Trait)
-    : Notation.DoubleColonType Self "Type_" := {
-    Notation.double_colon_type := Type_;
-  }.
-  Global Instance Method_PreferredKey `(Trait)
-    : Notation.DoubleColonType Self "PreferredKey" := {
-    Notation.double_colon_type := PreferredKey;
-  }.
+  Section StorableHint.
+    Context `{ℋ : State.Trait}.
+    
+    Class Trait (Self : Set) {Key : Set} : Type := {
+      ℒ_0 :: ink_storage_traits.storage.StorageKey.Trait Key;
+      Type_ : Set;
+      ℒ_1 :: ink_storage_traits.storage.Storable.Trait Type_;
+      PreferredKey : Set;
+      ℒ_2 :: ink_storage_traits.storage.StorageKey.Trait PreferredKey;
+    }.
+    
+    #[refine] Global Instance Method_Type_ `(Trait) :
+      Notation.DoubleColonType Self "Type_" := {
+      Notation.double_colon_type := Type_;
+    }.
+    Admitted.
+    #[refine] Global Instance Method_PreferredKey `(Trait) :
+      Notation.DoubleColonType Self "PreferredKey" := {
+      Notation.double_colon_type := PreferredKey;
+    }.
+    Admitted.
+  End StorableHint.
 End StorableHint.
 
 Module AutoStorableHint.
-  Class Trait
-      (Self : Set)
-      {Key : Set}
-      `{ink_storage_traits.storage.StorageKey.Trait Key} :
-      Type := {
-    Type_ : Set;
-    _ : Sigma `(ink_storage_traits.storage.Storable.Trait Type_), unit;
-  }.
-  
-  Global Instance Method_Type_ `(Trait)
-    : Notation.DoubleColonType Self "Type_" := {
-    Notation.double_colon_type := Type_;
-  }.
+  Section AutoStorableHint.
+    Context `{ℋ : State.Trait}.
+    
+    Class Trait (Self : Set) {Key : Set} : Type := {
+      ℒ_0 :: ink_storage_traits.storage.StorageKey.Trait Key;
+      Type_ : Set;
+      ℒ_1 :: ink_storage_traits.storage.Storable.Trait Type_;
+    }.
+    
+    #[refine] Global Instance Method_Type_ `(Trait) :
+      Notation.DoubleColonType Self "Type_" := {
+      Notation.double_colon_type := Type_;
+    }.
+    Admitted.
+  End AutoStorableHint.
 End AutoStorableHint.
 
 Module layout.
   Module StorageLayout.
-    Class Trait (Self : Set) : Type := {
-      layout `{H' : State.Trait}
-        :
-        (ref ink_primitives.key.Key) ->
-          M (H := H')
-            (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F);
-    }.
-    
-    Global Instance Method_layout `{H' : State.Trait} `(Trait)
-      : Notation.Dot "layout" := {
-      Notation.dot := layout;
-    }.
+    Section StorageLayout.
+      Context `{ℋ : State.Trait}.
+      
+      Class Trait (Self : Set) : Type := {
+        layout :
+          (ref ltac:(ink_primitives.key.Key)) ->
+            M (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F);
+      }.
+      
+    End StorageLayout.
   End StorageLayout.
   
   Module impls.
     Module
       Impl_ink_storage_traits_layout_StorageLayout_for_ink_primitives_types_AccountId.
-      Definition Self := ink_primitives.types.AccountId.
-      
-      Parameter layout :
-          forall `{H' : State.Trait},
-          (ref ink_primitives.key.Key) ->
-            M (H := H')
-              (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
-      
-      Global Instance AssociatedFunction_layout `{H' : State.Trait} :
-        Notation.DoubleColon Self "layout" := {
-        Notation.double_colon := layout;
-      }.
-      
-      Global Instance I'
-        : ink_storage_traits.layout.StorageLayout.Trait Self := {
-        ink_storage_traits.layout.StorageLayout.layout `{H' : State.Trait}
-          :=
-          layout;
-      }.
-      Global Hint Resolve I' : core.
+      Section
+        Impl_ink_storage_traits_layout_StorageLayout_for_ink_primitives_types_AccountId.
+        Context `{ℋ : State.Trait}.
+        
+        Definition Self : Set := ink_primitives.types.AccountId.
+        
+        Parameter layout :
+            (ref ltac:(ink_primitives.key.Key)) ->
+              M
+                (ink_metadata.layout.Layout
+                  ink_metadata.layout.Layout.Default.F).
+        
+        Global Instance AssociatedFunction_layout :
+          Notation.DoubleColon Self "layout" := {
+          Notation.double_colon := layout;
+        }.
+        
+        #[refine] Global Instance ℐ :
+          ink_storage_traits.layout.StorageLayout.Trait Self := {
+          ink_storage_traits.layout.StorageLayout.layout := layout;
+        }.
+        Admitted.
+      End
+        Impl_ink_storage_traits_layout_StorageLayout_for_ink_primitives_types_AccountId.
+      Global Hint Resolve ℐ : core.
     End
       Impl_ink_storage_traits_layout_StorageLayout_for_ink_primitives_types_AccountId.
     
     Module
       Impl_ink_storage_traits_layout_StorageLayout_for_ink_primitives_types_Hash.
-      Definition Self := ink_primitives.types.Hash.
-      
-      Parameter layout :
-          forall `{H' : State.Trait},
-          (ref ink_primitives.key.Key) ->
-            M (H := H')
-              (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
-      
-      Global Instance AssociatedFunction_layout `{H' : State.Trait} :
-        Notation.DoubleColon Self "layout" := {
-        Notation.double_colon := layout;
-      }.
-      
-      Global Instance I'
-        : ink_storage_traits.layout.StorageLayout.Trait Self := {
-        ink_storage_traits.layout.StorageLayout.layout `{H' : State.Trait}
-          :=
-          layout;
-      }.
-      Global Hint Resolve I' : core.
-    End
-      Impl_ink_storage_traits_layout_StorageLayout_for_ink_primitives_types_Hash.
-    
-    Module Impl_ink_storage_traits_layout_StorageLayout_for_alloc_string_String.
-      Definition Self := alloc.string.String.
-      
-      Parameter layout :
-          forall `{H' : State.Trait},
-          (ref ink_primitives.key.Key) ->
-            M (H := H')
-              (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
-      
-      Global Instance AssociatedFunction_layout `{H' : State.Trait} :
-        Notation.DoubleColon Self "layout" := {
-        Notation.double_colon := layout;
-      }.
-      
-      Global Instance I'
-        : ink_storage_traits.layout.StorageLayout.Trait Self := {
-        ink_storage_traits.layout.StorageLayout.layout `{H' : State.Trait}
-          :=
-          layout;
-      }.
-      Global Hint Resolve I' : core.
-    End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_string_String.
-    
-    Module Impl_ink_storage_traits_layout_StorageLayout_for_bool.
-      Definition Self := bool.
-      
-      Parameter layout :
-          forall `{H' : State.Trait},
-          (ref ink_primitives.key.Key) ->
-            M (H := H')
-              (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
-      
-      Global Instance AssociatedFunction_layout `{H' : State.Trait} :
-        Notation.DoubleColon Self "layout" := {
-        Notation.double_colon := layout;
-      }.
-      
-      Global Instance I'
-        : ink_storage_traits.layout.StorageLayout.Trait Self := {
-        ink_storage_traits.layout.StorageLayout.layout `{H' : State.Trait}
-          :=
-          layout;
-      }.
-      Global Hint Resolve I' : core.
-    End Impl_ink_storage_traits_layout_StorageLayout_for_bool.
-    
-    Module Impl_ink_storage_traits_layout_StorageLayout_for_char.
-      Definition Self := char.
-      
-      Parameter layout :
-          forall `{H' : State.Trait},
-          (ref ink_primitives.key.Key) ->
-            M (H := H')
-              (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
-      
-      Global Instance AssociatedFunction_layout `{H' : State.Trait} :
-        Notation.DoubleColon Self "layout" := {
-        Notation.double_colon := layout;
-      }.
-      
-      Global Instance I'
-        : ink_storage_traits.layout.StorageLayout.Trait Self := {
-        ink_storage_traits.layout.StorageLayout.layout `{H' : State.Trait}
-          :=
-          layout;
-      }.
-      Global Hint Resolve I' : core.
-    End Impl_ink_storage_traits_layout_StorageLayout_for_char.
-    
-    Module Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_.
-      Definition Self := unit.
-      
-      Parameter layout :
-          forall `{H' : State.Trait},
-          (ref ink_primitives.key.Key) ->
-            M (H := H')
-              (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
-      
-      Global Instance AssociatedFunction_layout `{H' : State.Trait} :
-        Notation.DoubleColon Self "layout" := {
-        Notation.double_colon := layout;
-      }.
-      
-      Global Instance I'
-        : ink_storage_traits.layout.StorageLayout.Trait Self := {
-        ink_storage_traits.layout.StorageLayout.layout `{H' : State.Trait}
-          :=
-          layout;
-      }.
-      Global Hint Resolve I' : core.
-    End Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_.
-    
-    Module Impl_ink_storage_traits_layout_StorageLayout_for_u8.
-      Definition Self := u8.
-      
-      Parameter layout :
-          forall `{H' : State.Trait},
-          (ref ink_primitives.key.Key) ->
-            M (H := H')
-              (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
-      
-      Global Instance AssociatedFunction_layout `{H' : State.Trait} :
-        Notation.DoubleColon Self "layout" := {
-        Notation.double_colon := layout;
-      }.
-      
-      Global Instance I'
-        : ink_storage_traits.layout.StorageLayout.Trait Self := {
-        ink_storage_traits.layout.StorageLayout.layout `{H' : State.Trait}
-          :=
-          layout;
-      }.
-      Global Hint Resolve I' : core.
-    End Impl_ink_storage_traits_layout_StorageLayout_for_u8.
-    
-    Module Impl_ink_storage_traits_layout_StorageLayout_for_u16.
-      Definition Self := u16.
-      
-      Parameter layout :
-          forall `{H' : State.Trait},
-          (ref ink_primitives.key.Key) ->
-            M (H := H')
-              (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
-      
-      Global Instance AssociatedFunction_layout `{H' : State.Trait} :
-        Notation.DoubleColon Self "layout" := {
-        Notation.double_colon := layout;
-      }.
-      
-      Global Instance I'
-        : ink_storage_traits.layout.StorageLayout.Trait Self := {
-        ink_storage_traits.layout.StorageLayout.layout `{H' : State.Trait}
-          :=
-          layout;
-      }.
-      Global Hint Resolve I' : core.
-    End Impl_ink_storage_traits_layout_StorageLayout_for_u16.
-    
-    Module Impl_ink_storage_traits_layout_StorageLayout_for_u32.
-      Definition Self := u32.
-      
-      Parameter layout :
-          forall `{H' : State.Trait},
-          (ref ink_primitives.key.Key) ->
-            M (H := H')
-              (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
-      
-      Global Instance AssociatedFunction_layout `{H' : State.Trait} :
-        Notation.DoubleColon Self "layout" := {
-        Notation.double_colon := layout;
-      }.
-      
-      Global Instance I'
-        : ink_storage_traits.layout.StorageLayout.Trait Self := {
-        ink_storage_traits.layout.StorageLayout.layout `{H' : State.Trait}
-          :=
-          layout;
-      }.
-      Global Hint Resolve I' : core.
-    End Impl_ink_storage_traits_layout_StorageLayout_for_u32.
-    
-    Module Impl_ink_storage_traits_layout_StorageLayout_for_u64.
-      Definition Self := u64.
-      
-      Parameter layout :
-          forall `{H' : State.Trait},
-          (ref ink_primitives.key.Key) ->
-            M (H := H')
-              (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
-      
-      Global Instance AssociatedFunction_layout `{H' : State.Trait} :
-        Notation.DoubleColon Self "layout" := {
-        Notation.double_colon := layout;
-      }.
-      
-      Global Instance I'
-        : ink_storage_traits.layout.StorageLayout.Trait Self := {
-        ink_storage_traits.layout.StorageLayout.layout `{H' : State.Trait}
-          :=
-          layout;
-      }.
-      Global Hint Resolve I' : core.
-    End Impl_ink_storage_traits_layout_StorageLayout_for_u64.
-    
-    Module Impl_ink_storage_traits_layout_StorageLayout_for_u128.
-      Definition Self := u128.
-      
-      Parameter layout :
-          forall `{H' : State.Trait},
-          (ref ink_primitives.key.Key) ->
-            M (H := H')
-              (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
-      
-      Global Instance AssociatedFunction_layout `{H' : State.Trait} :
-        Notation.DoubleColon Self "layout" := {
-        Notation.double_colon := layout;
-      }.
-      
-      Global Instance I'
-        : ink_storage_traits.layout.StorageLayout.Trait Self := {
-        ink_storage_traits.layout.StorageLayout.layout `{H' : State.Trait}
-          :=
-          layout;
-      }.
-      Global Hint Resolve I' : core.
-    End Impl_ink_storage_traits_layout_StorageLayout_for_u128.
-    
-    Module Impl_ink_storage_traits_layout_StorageLayout_for_i8.
-      Definition Self := i8.
-      
-      Parameter layout :
-          forall `{H' : State.Trait},
-          (ref ink_primitives.key.Key) ->
-            M (H := H')
-              (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
-      
-      Global Instance AssociatedFunction_layout `{H' : State.Trait} :
-        Notation.DoubleColon Self "layout" := {
-        Notation.double_colon := layout;
-      }.
-      
-      Global Instance I'
-        : ink_storage_traits.layout.StorageLayout.Trait Self := {
-        ink_storage_traits.layout.StorageLayout.layout `{H' : State.Trait}
-          :=
-          layout;
-      }.
-      Global Hint Resolve I' : core.
-    End Impl_ink_storage_traits_layout_StorageLayout_for_i8.
-    
-    Module Impl_ink_storage_traits_layout_StorageLayout_for_i16.
-      Definition Self := i16.
-      
-      Parameter layout :
-          forall `{H' : State.Trait},
-          (ref ink_primitives.key.Key) ->
-            M (H := H')
-              (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
-      
-      Global Instance AssociatedFunction_layout `{H' : State.Trait} :
-        Notation.DoubleColon Self "layout" := {
-        Notation.double_colon := layout;
-      }.
-      
-      Global Instance I'
-        : ink_storage_traits.layout.StorageLayout.Trait Self := {
-        ink_storage_traits.layout.StorageLayout.layout `{H' : State.Trait}
-          :=
-          layout;
-      }.
-      Global Hint Resolve I' : core.
-    End Impl_ink_storage_traits_layout_StorageLayout_for_i16.
-    
-    Module Impl_ink_storage_traits_layout_StorageLayout_for_i32.
-      Definition Self := i32.
-      
-      Parameter layout :
-          forall `{H' : State.Trait},
-          (ref ink_primitives.key.Key) ->
-            M (H := H')
-              (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
-      
-      Global Instance AssociatedFunction_layout `{H' : State.Trait} :
-        Notation.DoubleColon Self "layout" := {
-        Notation.double_colon := layout;
-      }.
-      
-      Global Instance I'
-        : ink_storage_traits.layout.StorageLayout.Trait Self := {
-        ink_storage_traits.layout.StorageLayout.layout `{H' : State.Trait}
-          :=
-          layout;
-      }.
-      Global Hint Resolve I' : core.
-    End Impl_ink_storage_traits_layout_StorageLayout_for_i32.
-    
-    Module Impl_ink_storage_traits_layout_StorageLayout_for_i64.
-      Definition Self := i64.
-      
-      Parameter layout :
-          forall `{H' : State.Trait},
-          (ref ink_primitives.key.Key) ->
-            M (H := H')
-              (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
-      
-      Global Instance AssociatedFunction_layout `{H' : State.Trait} :
-        Notation.DoubleColon Self "layout" := {
-        Notation.double_colon := layout;
-      }.
-      
-      Global Instance I'
-        : ink_storage_traits.layout.StorageLayout.Trait Self := {
-        ink_storage_traits.layout.StorageLayout.layout `{H' : State.Trait}
-          :=
-          layout;
-      }.
-      Global Hint Resolve I' : core.
-    End Impl_ink_storage_traits_layout_StorageLayout_for_i64.
-    
-    Module Impl_ink_storage_traits_layout_StorageLayout_for_i128.
-      Definition Self := i128.
-      
-      Parameter layout :
-          forall `{H' : State.Trait},
-          (ref ink_primitives.key.Key) ->
-            M (H := H')
-              (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
-      
-      Global Instance AssociatedFunction_layout `{H' : State.Trait} :
-        Notation.DoubleColon Self "layout" := {
-        Notation.double_colon := layout;
-      }.
-      
-      Global Instance I'
-        : ink_storage_traits.layout.StorageLayout.Trait Self := {
-        ink_storage_traits.layout.StorageLayout.layout `{H' : State.Trait}
-          :=
-          layout;
-      }.
-      Global Hint Resolve I' : core.
-    End Impl_ink_storage_traits_layout_StorageLayout_for_i128.
-    
-    Module Impl_ink_storage_traits_layout_StorageLayout_for_Array_T.
-      Section Impl_ink_storage_traits_layout_StorageLayout_for_Array_T.
-        Context {T : Set}.
-        Context
-          `{ink_storage_traits.layout.StorageLayout.Trait T}
-          `{ink_storage_traits.storage.Packed.Trait T}.
-        Definition Self := list T.
+      Section
+        Impl_ink_storage_traits_layout_StorageLayout_for_ink_primitives_types_Hash.
+        Context `{ℋ : State.Trait}.
+        
+        Definition Self : Set := ink_primitives.types.Hash.
         
         Parameter layout :
-            forall `{H' : State.Trait},
-            (ref ink_primitives.key.Key) ->
-              M (H := H')
+            (ref ltac:(ink_primitives.key.Key)) ->
+              M
                 (ink_metadata.layout.Layout
                   ink_metadata.layout.Layout.Default.F).
         
-        Global Instance AssociatedFunction_layout `{H' : State.Trait} :
+        Global Instance AssociatedFunction_layout :
           Notation.DoubleColon Self "layout" := {
           Notation.double_colon := layout;
         }.
         
-        Global Instance I'
-          : ink_storage_traits.layout.StorageLayout.Trait Self := {
-          ink_storage_traits.layout.StorageLayout.layout `{H' : State.Trait}
-            :=
-            layout;
+        #[refine] Global Instance ℐ :
+          ink_storage_traits.layout.StorageLayout.Trait Self := {
+          ink_storage_traits.layout.StorageLayout.layout := layout;
         }.
+        Admitted.
+      End
+        Impl_ink_storage_traits_layout_StorageLayout_for_ink_primitives_types_Hash.
+      Global Hint Resolve ℐ : core.
+    End
+      Impl_ink_storage_traits_layout_StorageLayout_for_ink_primitives_types_Hash.
+    
+    Module Impl_ink_storage_traits_layout_StorageLayout_for_alloc_string_String.
+      Section
+        Impl_ink_storage_traits_layout_StorageLayout_for_alloc_string_String.
+        Context `{ℋ : State.Trait}.
+        
+        Definition Self : Set := alloc.string.String.
+        
+        Parameter layout :
+            (ref ltac:(ink_primitives.key.Key)) ->
+              M
+                (ink_metadata.layout.Layout
+                  ink_metadata.layout.Layout.Default.F).
+        
+        Global Instance AssociatedFunction_layout :
+          Notation.DoubleColon Self "layout" := {
+          Notation.double_colon := layout;
+        }.
+        
+        #[refine] Global Instance ℐ :
+          ink_storage_traits.layout.StorageLayout.Trait Self := {
+          ink_storage_traits.layout.StorageLayout.layout := layout;
+        }.
+        Admitted.
+      End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_string_String.
+      Global Hint Resolve ℐ : core.
+    End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_string_String.
+    
+    Module Impl_ink_storage_traits_layout_StorageLayout_for_bool.
+      Section Impl_ink_storage_traits_layout_StorageLayout_for_bool.
+        Context `{ℋ : State.Trait}.
+        
+        Definition Self : Set := bool.
+        
+        Parameter layout :
+            (ref ltac:(ink_primitives.key.Key)) ->
+              M
+                (ink_metadata.layout.Layout
+                  ink_metadata.layout.Layout.Default.F).
+        
+        Global Instance AssociatedFunction_layout :
+          Notation.DoubleColon Self "layout" := {
+          Notation.double_colon := layout;
+        }.
+        
+        #[refine] Global Instance ℐ :
+          ink_storage_traits.layout.StorageLayout.Trait Self := {
+          ink_storage_traits.layout.StorageLayout.layout := layout;
+        }.
+        Admitted.
+      End Impl_ink_storage_traits_layout_StorageLayout_for_bool.
+      Global Hint Resolve ℐ : core.
+    End Impl_ink_storage_traits_layout_StorageLayout_for_bool.
+    
+    Module Impl_ink_storage_traits_layout_StorageLayout_for_char.
+      Section Impl_ink_storage_traits_layout_StorageLayout_for_char.
+        Context `{ℋ : State.Trait}.
+        
+        Definition Self : Set := char.
+        
+        Parameter layout :
+            (ref ltac:(ink_primitives.key.Key)) ->
+              M
+                (ink_metadata.layout.Layout
+                  ink_metadata.layout.Layout.Default.F).
+        
+        Global Instance AssociatedFunction_layout :
+          Notation.DoubleColon Self "layout" := {
+          Notation.double_colon := layout;
+        }.
+        
+        #[refine] Global Instance ℐ :
+          ink_storage_traits.layout.StorageLayout.Trait Self := {
+          ink_storage_traits.layout.StorageLayout.layout := layout;
+        }.
+        Admitted.
+      End Impl_ink_storage_traits_layout_StorageLayout_for_char.
+      Global Hint Resolve ℐ : core.
+    End Impl_ink_storage_traits_layout_StorageLayout_for_char.
+    
+    Module Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_.
+      Section Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_.
+        Context `{ℋ : State.Trait}.
+        
+        Definition Self : Set := unit.
+        
+        Parameter layout :
+            (ref ltac:(ink_primitives.key.Key)) ->
+              M
+                (ink_metadata.layout.Layout
+                  ink_metadata.layout.Layout.Default.F).
+        
+        Global Instance AssociatedFunction_layout :
+          Notation.DoubleColon Self "layout" := {
+          Notation.double_colon := layout;
+        }.
+        
+        #[refine] Global Instance ℐ :
+          ink_storage_traits.layout.StorageLayout.Trait Self := {
+          ink_storage_traits.layout.StorageLayout.layout := layout;
+        }.
+        Admitted.
+      End Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_.
+      Global Hint Resolve ℐ : core.
+    End Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_.
+    
+    Module Impl_ink_storage_traits_layout_StorageLayout_for_u8.
+      Section Impl_ink_storage_traits_layout_StorageLayout_for_u8.
+        Context `{ℋ : State.Trait}.
+        
+        Definition Self : Set := u8.
+        
+        Parameter layout :
+            (ref ltac:(ink_primitives.key.Key)) ->
+              M
+                (ink_metadata.layout.Layout
+                  ink_metadata.layout.Layout.Default.F).
+        
+        Global Instance AssociatedFunction_layout :
+          Notation.DoubleColon Self "layout" := {
+          Notation.double_colon := layout;
+        }.
+        
+        #[refine] Global Instance ℐ :
+          ink_storage_traits.layout.StorageLayout.Trait Self := {
+          ink_storage_traits.layout.StorageLayout.layout := layout;
+        }.
+        Admitted.
+      End Impl_ink_storage_traits_layout_StorageLayout_for_u8.
+      Global Hint Resolve ℐ : core.
+    End Impl_ink_storage_traits_layout_StorageLayout_for_u8.
+    
+    Module Impl_ink_storage_traits_layout_StorageLayout_for_u16.
+      Section Impl_ink_storage_traits_layout_StorageLayout_for_u16.
+        Context `{ℋ : State.Trait}.
+        
+        Definition Self : Set := u16.
+        
+        Parameter layout :
+            (ref ltac:(ink_primitives.key.Key)) ->
+              M
+                (ink_metadata.layout.Layout
+                  ink_metadata.layout.Layout.Default.F).
+        
+        Global Instance AssociatedFunction_layout :
+          Notation.DoubleColon Self "layout" := {
+          Notation.double_colon := layout;
+        }.
+        
+        #[refine] Global Instance ℐ :
+          ink_storage_traits.layout.StorageLayout.Trait Self := {
+          ink_storage_traits.layout.StorageLayout.layout := layout;
+        }.
+        Admitted.
+      End Impl_ink_storage_traits_layout_StorageLayout_for_u16.
+      Global Hint Resolve ℐ : core.
+    End Impl_ink_storage_traits_layout_StorageLayout_for_u16.
+    
+    Module Impl_ink_storage_traits_layout_StorageLayout_for_u32.
+      Section Impl_ink_storage_traits_layout_StorageLayout_for_u32.
+        Context `{ℋ : State.Trait}.
+        
+        Definition Self : Set := u32.
+        
+        Parameter layout :
+            (ref ltac:(ink_primitives.key.Key)) ->
+              M
+                (ink_metadata.layout.Layout
+                  ink_metadata.layout.Layout.Default.F).
+        
+        Global Instance AssociatedFunction_layout :
+          Notation.DoubleColon Self "layout" := {
+          Notation.double_colon := layout;
+        }.
+        
+        #[refine] Global Instance ℐ :
+          ink_storage_traits.layout.StorageLayout.Trait Self := {
+          ink_storage_traits.layout.StorageLayout.layout := layout;
+        }.
+        Admitted.
+      End Impl_ink_storage_traits_layout_StorageLayout_for_u32.
+      Global Hint Resolve ℐ : core.
+    End Impl_ink_storage_traits_layout_StorageLayout_for_u32.
+    
+    Module Impl_ink_storage_traits_layout_StorageLayout_for_u64.
+      Section Impl_ink_storage_traits_layout_StorageLayout_for_u64.
+        Context `{ℋ : State.Trait}.
+        
+        Definition Self : Set := u64.
+        
+        Parameter layout :
+            (ref ltac:(ink_primitives.key.Key)) ->
+              M
+                (ink_metadata.layout.Layout
+                  ink_metadata.layout.Layout.Default.F).
+        
+        Global Instance AssociatedFunction_layout :
+          Notation.DoubleColon Self "layout" := {
+          Notation.double_colon := layout;
+        }.
+        
+        #[refine] Global Instance ℐ :
+          ink_storage_traits.layout.StorageLayout.Trait Self := {
+          ink_storage_traits.layout.StorageLayout.layout := layout;
+        }.
+        Admitted.
+      End Impl_ink_storage_traits_layout_StorageLayout_for_u64.
+      Global Hint Resolve ℐ : core.
+    End Impl_ink_storage_traits_layout_StorageLayout_for_u64.
+    
+    Module Impl_ink_storage_traits_layout_StorageLayout_for_u128.
+      Section Impl_ink_storage_traits_layout_StorageLayout_for_u128.
+        Context `{ℋ : State.Trait}.
+        
+        Definition Self : Set := u128.
+        
+        Parameter layout :
+            (ref ltac:(ink_primitives.key.Key)) ->
+              M
+                (ink_metadata.layout.Layout
+                  ink_metadata.layout.Layout.Default.F).
+        
+        Global Instance AssociatedFunction_layout :
+          Notation.DoubleColon Self "layout" := {
+          Notation.double_colon := layout;
+        }.
+        
+        #[refine] Global Instance ℐ :
+          ink_storage_traits.layout.StorageLayout.Trait Self := {
+          ink_storage_traits.layout.StorageLayout.layout := layout;
+        }.
+        Admitted.
+      End Impl_ink_storage_traits_layout_StorageLayout_for_u128.
+      Global Hint Resolve ℐ : core.
+    End Impl_ink_storage_traits_layout_StorageLayout_for_u128.
+    
+    Module Impl_ink_storage_traits_layout_StorageLayout_for_i8.
+      Section Impl_ink_storage_traits_layout_StorageLayout_for_i8.
+        Context `{ℋ : State.Trait}.
+        
+        Definition Self : Set := i8.
+        
+        Parameter layout :
+            (ref ltac:(ink_primitives.key.Key)) ->
+              M
+                (ink_metadata.layout.Layout
+                  ink_metadata.layout.Layout.Default.F).
+        
+        Global Instance AssociatedFunction_layout :
+          Notation.DoubleColon Self "layout" := {
+          Notation.double_colon := layout;
+        }.
+        
+        #[refine] Global Instance ℐ :
+          ink_storage_traits.layout.StorageLayout.Trait Self := {
+          ink_storage_traits.layout.StorageLayout.layout := layout;
+        }.
+        Admitted.
+      End Impl_ink_storage_traits_layout_StorageLayout_for_i8.
+      Global Hint Resolve ℐ : core.
+    End Impl_ink_storage_traits_layout_StorageLayout_for_i8.
+    
+    Module Impl_ink_storage_traits_layout_StorageLayout_for_i16.
+      Section Impl_ink_storage_traits_layout_StorageLayout_for_i16.
+        Context `{ℋ : State.Trait}.
+        
+        Definition Self : Set := i16.
+        
+        Parameter layout :
+            (ref ltac:(ink_primitives.key.Key)) ->
+              M
+                (ink_metadata.layout.Layout
+                  ink_metadata.layout.Layout.Default.F).
+        
+        Global Instance AssociatedFunction_layout :
+          Notation.DoubleColon Self "layout" := {
+          Notation.double_colon := layout;
+        }.
+        
+        #[refine] Global Instance ℐ :
+          ink_storage_traits.layout.StorageLayout.Trait Self := {
+          ink_storage_traits.layout.StorageLayout.layout := layout;
+        }.
+        Admitted.
+      End Impl_ink_storage_traits_layout_StorageLayout_for_i16.
+      Global Hint Resolve ℐ : core.
+    End Impl_ink_storage_traits_layout_StorageLayout_for_i16.
+    
+    Module Impl_ink_storage_traits_layout_StorageLayout_for_i32.
+      Section Impl_ink_storage_traits_layout_StorageLayout_for_i32.
+        Context `{ℋ : State.Trait}.
+        
+        Definition Self : Set := i32.
+        
+        Parameter layout :
+            (ref ltac:(ink_primitives.key.Key)) ->
+              M
+                (ink_metadata.layout.Layout
+                  ink_metadata.layout.Layout.Default.F).
+        
+        Global Instance AssociatedFunction_layout :
+          Notation.DoubleColon Self "layout" := {
+          Notation.double_colon := layout;
+        }.
+        
+        #[refine] Global Instance ℐ :
+          ink_storage_traits.layout.StorageLayout.Trait Self := {
+          ink_storage_traits.layout.StorageLayout.layout := layout;
+        }.
+        Admitted.
+      End Impl_ink_storage_traits_layout_StorageLayout_for_i32.
+      Global Hint Resolve ℐ : core.
+    End Impl_ink_storage_traits_layout_StorageLayout_for_i32.
+    
+    Module Impl_ink_storage_traits_layout_StorageLayout_for_i64.
+      Section Impl_ink_storage_traits_layout_StorageLayout_for_i64.
+        Context `{ℋ : State.Trait}.
+        
+        Definition Self : Set := i64.
+        
+        Parameter layout :
+            (ref ltac:(ink_primitives.key.Key)) ->
+              M
+                (ink_metadata.layout.Layout
+                  ink_metadata.layout.Layout.Default.F).
+        
+        Global Instance AssociatedFunction_layout :
+          Notation.DoubleColon Self "layout" := {
+          Notation.double_colon := layout;
+        }.
+        
+        #[refine] Global Instance ℐ :
+          ink_storage_traits.layout.StorageLayout.Trait Self := {
+          ink_storage_traits.layout.StorageLayout.layout := layout;
+        }.
+        Admitted.
+      End Impl_ink_storage_traits_layout_StorageLayout_for_i64.
+      Global Hint Resolve ℐ : core.
+    End Impl_ink_storage_traits_layout_StorageLayout_for_i64.
+    
+    Module Impl_ink_storage_traits_layout_StorageLayout_for_i128.
+      Section Impl_ink_storage_traits_layout_StorageLayout_for_i128.
+        Context `{ℋ : State.Trait}.
+        
+        Definition Self : Set := i128.
+        
+        Parameter layout :
+            (ref ltac:(ink_primitives.key.Key)) ->
+              M
+                (ink_metadata.layout.Layout
+                  ink_metadata.layout.Layout.Default.F).
+        
+        Global Instance AssociatedFunction_layout :
+          Notation.DoubleColon Self "layout" := {
+          Notation.double_colon := layout;
+        }.
+        
+        #[refine] Global Instance ℐ :
+          ink_storage_traits.layout.StorageLayout.Trait Self := {
+          ink_storage_traits.layout.StorageLayout.layout := layout;
+        }.
+        Admitted.
+      End Impl_ink_storage_traits_layout_StorageLayout_for_i128.
+      Global Hint Resolve ℐ : core.
+    End Impl_ink_storage_traits_layout_StorageLayout_for_i128.
+    
+    Module Impl_ink_storage_traits_layout_StorageLayout_for_Array_T.
+      Section Impl_ink_storage_traits_layout_StorageLayout_for_Array_T.
+        Context `{ℋ : State.Trait}.
+        
+        Context {T : Set}.
+        
+        Context
+          {ℋ_0 : ink_storage_traits.layout.StorageLayout.Trait T}
+          {ℋ_1 : ink_storage_traits.storage.Packed.Trait T}.
+        Definition Self : Set := array T.
+        
+        Parameter layout :
+            (ref ltac:(ink_primitives.key.Key)) ->
+              M
+                (ink_metadata.layout.Layout
+                  ink_metadata.layout.Layout.Default.F).
+        
+        Global Instance AssociatedFunction_layout :
+          Notation.DoubleColon Self "layout" := {
+          Notation.double_colon := layout;
+        }.
+        
+        #[refine] Global Instance ℐ :
+          ink_storage_traits.layout.StorageLayout.Trait Self := {
+          ink_storage_traits.layout.StorageLayout.layout := layout;
+        }.
+        Admitted.
       End Impl_ink_storage_traits_layout_StorageLayout_for_Array_T.
-      Global Hint Resolve I' : core.
+      Global Hint Resolve ℐ : core.
     End Impl_ink_storage_traits_layout_StorageLayout_for_Array_T.
     
     Module
       Impl_ink_storage_traits_layout_StorageLayout_for_alloc_boxed_Box_T_alloc_boxed_Box_Default_A.
       Section
         Impl_ink_storage_traits_layout_StorageLayout_for_alloc_boxed_Box_T_alloc_boxed_Box_Default_A.
+        Context `{ℋ : State.Trait}.
+        
         Context {T : Set}.
-        Context `{ink_storage_traits.layout.StorageLayout.Trait T}.
-        Definition Self := alloc.boxed.Box T alloc.boxed.Box.Default.A.
+        
+        Context {ℋ_0 : ink_storage_traits.layout.StorageLayout.Trait T}.
+        Definition Self : Set := alloc.boxed.Box T alloc.boxed.Box.Default.A.
         
         Parameter layout :
-            forall `{H' : State.Trait},
-            (ref ink_primitives.key.Key) ->
-              M (H := H')
+            (ref ltac:(ink_primitives.key.Key)) ->
+              M
                 (ink_metadata.layout.Layout
                   ink_metadata.layout.Layout.Default.F).
         
-        Global Instance AssociatedFunction_layout `{H' : State.Trait} :
+        Global Instance AssociatedFunction_layout :
           Notation.DoubleColon Self "layout" := {
           Notation.double_colon := layout;
         }.
         
-        Global Instance I'
-          : ink_storage_traits.layout.StorageLayout.Trait Self := {
-          ink_storage_traits.layout.StorageLayout.layout `{H' : State.Trait}
-            :=
-            layout;
+        #[refine] Global Instance ℐ :
+          ink_storage_traits.layout.StorageLayout.Trait Self := {
+          ink_storage_traits.layout.StorageLayout.layout := layout;
         }.
+        Admitted.
       End
         Impl_ink_storage_traits_layout_StorageLayout_for_alloc_boxed_Box_T_alloc_boxed_Box_Default_A.
-      Global Hint Resolve I' : core.
+      Global Hint Resolve ℐ : core.
     End
       Impl_ink_storage_traits_layout_StorageLayout_for_alloc_boxed_Box_T_alloc_boxed_Box_Default_A.
     
@@ -2382,200 +2924,218 @@ Module layout.
       Impl_ink_storage_traits_layout_StorageLayout_for_core_option_Option_T.
       Section
         Impl_ink_storage_traits_layout_StorageLayout_for_core_option_Option_T.
+        Context `{ℋ : State.Trait}.
+        
         Context {T : Set}.
-        Context `{ink_storage_traits.layout.StorageLayout.Trait T}.
-        Definition Self := core.option.Option T.
+        
+        Context {ℋ_0 : ink_storage_traits.layout.StorageLayout.Trait T}.
+        Definition Self : Set := core.option.Option T.
         
         Parameter layout :
-            forall `{H' : State.Trait},
-            (ref ink_primitives.key.Key) ->
-              M (H := H')
+            (ref ltac:(ink_primitives.key.Key)) ->
+              M
                 (ink_metadata.layout.Layout
                   ink_metadata.layout.Layout.Default.F).
         
-        Global Instance AssociatedFunction_layout `{H' : State.Trait} :
+        Global Instance AssociatedFunction_layout :
           Notation.DoubleColon Self "layout" := {
           Notation.double_colon := layout;
         }.
         
-        Global Instance I'
-          : ink_storage_traits.layout.StorageLayout.Trait Self := {
-          ink_storage_traits.layout.StorageLayout.layout `{H' : State.Trait}
-            :=
-            layout;
+        #[refine] Global Instance ℐ :
+          ink_storage_traits.layout.StorageLayout.Trait Self := {
+          ink_storage_traits.layout.StorageLayout.layout := layout;
         }.
+        Admitted.
       End Impl_ink_storage_traits_layout_StorageLayout_for_core_option_Option_T.
-      Global Hint Resolve I' : core.
+      Global Hint Resolve ℐ : core.
     End Impl_ink_storage_traits_layout_StorageLayout_for_core_option_Option_T.
     
     Module
       Impl_ink_storage_traits_layout_StorageLayout_for_core_result_Result_T_E.
       Section
         Impl_ink_storage_traits_layout_StorageLayout_for_core_result_Result_T_E.
+        Context `{ℋ : State.Trait}.
+        
         Context {T E : Set}.
+        
         Context
-          `{ink_storage_traits.layout.StorageLayout.Trait T}
-          `{ink_storage_traits.layout.StorageLayout.Trait E}.
-        Definition Self := core.result.Result T E.
+          {ℋ_0 : ink_storage_traits.layout.StorageLayout.Trait T}
+          {ℋ_1 : ink_storage_traits.layout.StorageLayout.Trait E}.
+        Definition Self : Set := core.result.Result T E.
         
         Parameter layout :
-            forall `{H' : State.Trait},
-            (ref ink_primitives.key.Key) ->
-              M (H := H')
+            (ref ltac:(ink_primitives.key.Key)) ->
+              M
                 (ink_metadata.layout.Layout
                   ink_metadata.layout.Layout.Default.F).
         
-        Global Instance AssociatedFunction_layout `{H' : State.Trait} :
+        Global Instance AssociatedFunction_layout :
           Notation.DoubleColon Self "layout" := {
           Notation.double_colon := layout;
         }.
         
-        Global Instance I'
-          : ink_storage_traits.layout.StorageLayout.Trait Self := {
-          ink_storage_traits.layout.StorageLayout.layout `{H' : State.Trait}
-            :=
-            layout;
+        #[refine] Global Instance ℐ :
+          ink_storage_traits.layout.StorageLayout.Trait Self := {
+          ink_storage_traits.layout.StorageLayout.layout := layout;
         }.
+        Admitted.
       End
         Impl_ink_storage_traits_layout_StorageLayout_for_core_result_Result_T_E.
-      Global Hint Resolve I' : core.
+      Global Hint Resolve ℐ : core.
     End Impl_ink_storage_traits_layout_StorageLayout_for_core_result_Result_T_E.
     
     Module
       Impl_ink_storage_traits_layout_StorageLayout_for_alloc_vec_Vec_T_alloc_vec_Vec_Default_A.
       Section
         Impl_ink_storage_traits_layout_StorageLayout_for_alloc_vec_Vec_T_alloc_vec_Vec_Default_A.
+        Context `{ℋ : State.Trait}.
+        
         Context {T : Set}.
+        
         Context
-          `{scale_info.TypeInfo.Trait T}
-          `{ink_storage_traits.storage.Packed.Trait T}.
-        Definition Self := alloc.vec.Vec T alloc.vec.Vec.Default.A.
+          {ℋ_0 : scale_info.TypeInfo.Trait T}
+          {ℋ_1 : ink_storage_traits.storage.Packed.Trait T}.
+        Definition Self : Set := alloc.vec.Vec T alloc.vec.Vec.Default.A.
         
         Parameter layout :
-            forall `{H' : State.Trait},
-            (ref ink_primitives.key.Key) ->
-              M (H := H')
+            (ref ltac:(ink_primitives.key.Key)) ->
+              M
                 (ink_metadata.layout.Layout
                   ink_metadata.layout.Layout.Default.F).
         
-        Global Instance AssociatedFunction_layout `{H' : State.Trait} :
+        Global Instance AssociatedFunction_layout :
           Notation.DoubleColon Self "layout" := {
           Notation.double_colon := layout;
         }.
         
-        Global Instance I'
-          : ink_storage_traits.layout.StorageLayout.Trait Self := {
-          ink_storage_traits.layout.StorageLayout.layout `{H' : State.Trait}
-            :=
-            layout;
+        #[refine] Global Instance ℐ :
+          ink_storage_traits.layout.StorageLayout.Trait Self := {
+          ink_storage_traits.layout.StorageLayout.layout := layout;
         }.
+        Admitted.
       End
         Impl_ink_storage_traits_layout_StorageLayout_for_alloc_vec_Vec_T_alloc_vec_Vec_Default_A.
-      Global Hint Resolve I' : core.
+      Global Hint Resolve ℐ : core.
     End
       Impl_ink_storage_traits_layout_StorageLayout_for_alloc_vec_Vec_T_alloc_vec_Vec_Default_A.
     
-    (* Module Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map_BTreeMap_K_V_alloc_collections_btree_map_BTreeMap_Default_A.
-      (* Section Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map_BTreeMap_K_V_alloc_collections_btree_map_BTreeMap_Default_A.
+    Module
+      Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map_BTreeMap_K_V_alloc_collections_btree_map_BTreeMap_Default_A.
+      Section
+        Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map_BTreeMap_K_V_alloc_collections_btree_map_BTreeMap_Default_A.
+        Context `{ℋ : State.Trait}.
+        
         Context {K V : Set}.
+        
         Context
-          `{scale_info.TypeInfo.Trait K}
-          `{ink_storage_traits.storage.Packed.Trait K}
-          `{scale_info.TypeInfo.Trait V}
-          `{ink_storage_traits.storage.Packed.Trait V}.
-        Definition Self :=
+          {ℋ_0 : scale_info.TypeInfo.Trait K}
+          {ℋ_1 : ink_storage_traits.storage.Packed.Trait K}
+          {ℋ_2 : scale_info.TypeInfo.Trait V}
+          {ℋ_3 : ink_storage_traits.storage.Packed.Trait V}.
+        Definition Self : Set :=
           alloc.collections.btree.map.BTreeMap
             K
             V
             alloc.collections.btree.map.BTreeMap.Default.A.
         
         Parameter layout :
-            forall `{H' : State.Trait},
-            (ref ink_primitives.key.Key) ->
-              M (H := H')
+            (ref ltac:(ink_primitives.key.Key)) ->
+              M
                 (ink_metadata.layout.Layout
                   ink_metadata.layout.Layout.Default.F).
         
-        Global Instance AssociatedFunction_layout `{H' : State.Trait} :
+        Global Instance AssociatedFunction_layout :
           Notation.DoubleColon Self "layout" := {
           Notation.double_colon := layout;
         }.
         
-        Global Instance I'
-          : ink_storage_traits.layout.StorageLayout.Trait Self := {
-          ink_storage_traits.layout.StorageLayout.layout `{H' : State.Trait}
-            :=
-            layout;
+        #[refine] Global Instance ℐ :
+          ink_storage_traits.layout.StorageLayout.Trait Self := {
+          ink_storage_traits.layout.StorageLayout.layout := layout;
         }.
-      End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map_BTreeMap_K_V_alloc_collections_btree_map_BTreeMap_Default_A. *)
-      Global Hint Resolve I' : core.
-    End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map_BTreeMap_K_V_alloc_collections_btree_map_BTreeMap_Default_A. *)
+        Admitted.
+      End
+        Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map_BTreeMap_K_V_alloc_collections_btree_map_BTreeMap_Default_A.
+      Global Hint Resolve ℐ : core.
+    End
+      Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map_BTreeMap_K_V_alloc_collections_btree_map_BTreeMap_Default_A.
     
-    (* Module Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set_BTreeSet_T_alloc_collections_btree_set_BTreeSet_Default_A.
-      (* Section Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set_BTreeSet_T_alloc_collections_btree_set_BTreeSet_Default_A.
+    Module
+      Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set_BTreeSet_T_alloc_collections_btree_set_BTreeSet_Default_A.
+      Section
+        Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set_BTreeSet_T_alloc_collections_btree_set_BTreeSet_Default_A.
+        Context `{ℋ : State.Trait}.
+        
         Context {T : Set}.
+        
         Context
-          `{scale_info.TypeInfo.Trait T}
-          `{ink_storage_traits.storage.Packed.Trait T}.
-        Definition Self :=
+          {ℋ_0 : scale_info.TypeInfo.Trait T}
+          {ℋ_1 : ink_storage_traits.storage.Packed.Trait T}.
+        Definition Self : Set :=
           alloc.collections.btree.set.BTreeSet
             T
             alloc.collections.btree.set.BTreeSet.Default.A.
         
         Parameter layout :
-            forall `{H' : State.Trait},
-            (ref ink_primitives.key.Key) ->
-              M (H := H')
+            (ref ltac:(ink_primitives.key.Key)) ->
+              M
                 (ink_metadata.layout.Layout
                   ink_metadata.layout.Layout.Default.F).
         
-        Global Instance AssociatedFunction_layout `{H' : State.Trait} :
+        Global Instance AssociatedFunction_layout :
           Notation.DoubleColon Self "layout" := {
           Notation.double_colon := layout;
         }.
         
-        Global Instance I'
-          : ink_storage_traits.layout.StorageLayout.Trait Self := {
-          ink_storage_traits.layout.StorageLayout.layout `{H' : State.Trait}
-            :=
-            layout;
+        #[refine] Global Instance ℐ :
+          ink_storage_traits.layout.StorageLayout.Trait Self := {
+          ink_storage_traits.layout.StorageLayout.layout := layout;
         }.
-      End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set_BTreeSet_T_alloc_collections_btree_set_BTreeSet_Default_A. *)
-      Global Hint Resolve I' : core.
-    End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set_BTreeSet_T_alloc_collections_btree_set_BTreeSet_Default_A. *)
+        Admitted.
+      End
+        Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set_BTreeSet_T_alloc_collections_btree_set_BTreeSet_Default_A.
+      Global Hint Resolve ℐ : core.
+    End
+      Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set_BTreeSet_T_alloc_collections_btree_set_BTreeSet_Default_A.
     
-    (* Module Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_vec_deque_VecDeque_T_alloc_collections_vec_deque_VecDeque_Default_A.
-      (* Section Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_vec_deque_VecDeque_T_alloc_collections_vec_deque_VecDeque_Default_A.
+    Module
+      Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_vec_deque_VecDeque_T_alloc_collections_vec_deque_VecDeque_Default_A.
+      Section
+        Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_vec_deque_VecDeque_T_alloc_collections_vec_deque_VecDeque_Default_A.
+        Context `{ℋ : State.Trait}.
+        
         Context {T : Set}.
+        
         Context
-          `{scale_info.TypeInfo.Trait T}
-          `{ink_storage_traits.storage.Packed.Trait T}.
-        Definition Self :=
+          {ℋ_0 : scale_info.TypeInfo.Trait T}
+          {ℋ_1 : ink_storage_traits.storage.Packed.Trait T}.
+        Definition Self : Set :=
           alloc.collections.vec_deque.VecDeque
             T
             alloc.collections.vec_deque.VecDeque.Default.A.
         
         Parameter layout :
-            forall `{H' : State.Trait},
-            (ref ink_primitives.key.Key) ->
-              M (H := H')
+            (ref ltac:(ink_primitives.key.Key)) ->
+              M
                 (ink_metadata.layout.Layout
                   ink_metadata.layout.Layout.Default.F).
         
-        Global Instance AssociatedFunction_layout `{H' : State.Trait} :
+        Global Instance AssociatedFunction_layout :
           Notation.DoubleColon Self "layout" := {
           Notation.double_colon := layout;
         }.
         
-        Global Instance I'
-          : ink_storage_traits.layout.StorageLayout.Trait Self := {
-          ink_storage_traits.layout.StorageLayout.layout `{H' : State.Trait}
-            :=
-            layout;
+        #[refine] Global Instance ℐ :
+          ink_storage_traits.layout.StorageLayout.Trait Self := {
+          ink_storage_traits.layout.StorageLayout.layout := layout;
         }.
-      End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_vec_deque_VecDeque_T_alloc_collections_vec_deque_VecDeque_Default_A. *)
-      Global Hint Resolve I' : core.
-    End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_vec_deque_VecDeque_T_alloc_collections_vec_deque_VecDeque_Default_A. *)
+        Admitted.
+      End
+        Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_vec_deque_VecDeque_T_alloc_collections_vec_deque_VecDeque_Default_A.
+      Global Hint Resolve ℐ : core.
+    End
+      Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_vec_deque_VecDeque_T_alloc_collections_vec_deque_VecDeque_Default_A.
   End impls.
 End layout.
 
@@ -2583,435 +3143,490 @@ Module Wrap_impls_1.
   Module impls.
     Module
       Impl_ink_storage_traits_layout_StorageLayout_for_ink_primitives_types_AccountId.
-      Definition Self := ink_primitives.types.AccountId.
-      
-      Parameter layout :
-          forall `{H' : State.Trait},
-          (ref ink_primitives.key.Key) ->
-            M (H := H')
-              (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
-      
-      Global Instance AssociatedFunction_layout `{H' : State.Trait} :
-        Notation.DoubleColon Self "layout" := {
-        Notation.double_colon := layout;
-      }.
-      
-      Global Instance I'
-        : ink_storage_traits.layout.StorageLayout.Trait Self := {
-        ink_storage_traits.layout.StorageLayout.layout `{H' : State.Trait}
-          :=
-          layout;
-      }.
-      Global Hint Resolve I' : core.
+      Section
+        Impl_ink_storage_traits_layout_StorageLayout_for_ink_primitives_types_AccountId.
+        Context `{ℋ : State.Trait}.
+        
+        Definition Self : Set := ink_primitives.types.AccountId.
+        
+        Parameter layout :
+            (ref ltac:(ink_primitives.key.Key)) ->
+              M
+                (ink_metadata.layout.Layout
+                  ink_metadata.layout.Layout.Default.F).
+        
+        Global Instance AssociatedFunction_layout :
+          Notation.DoubleColon Self "layout" := {
+          Notation.double_colon := layout;
+        }.
+        
+        #[refine] Global Instance ℐ :
+          ink_storage_traits.layout.StorageLayout.Trait Self := {
+          ink_storage_traits.layout.StorageLayout.layout := layout;
+        }.
+        Admitted.
+      End
+        Impl_ink_storage_traits_layout_StorageLayout_for_ink_primitives_types_AccountId.
+      Global Hint Resolve ℐ : core.
     End
       Impl_ink_storage_traits_layout_StorageLayout_for_ink_primitives_types_AccountId.
     
     Module
       Impl_ink_storage_traits_layout_StorageLayout_for_ink_primitives_types_Hash.
-      Definition Self := ink_primitives.types.Hash.
-      
-      Parameter layout :
-          forall `{H' : State.Trait},
-          (ref ink_primitives.key.Key) ->
-            M (H := H')
-              (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
-      
-      Global Instance AssociatedFunction_layout `{H' : State.Trait} :
-        Notation.DoubleColon Self "layout" := {
-        Notation.double_colon := layout;
-      }.
-      
-      Global Instance I'
-        : ink_storage_traits.layout.StorageLayout.Trait Self := {
-        ink_storage_traits.layout.StorageLayout.layout `{H' : State.Trait}
-          :=
-          layout;
-      }.
-      Global Hint Resolve I' : core.
-    End
-      Impl_ink_storage_traits_layout_StorageLayout_for_ink_primitives_types_Hash.
-    
-    Module Impl_ink_storage_traits_layout_StorageLayout_for_alloc_string_String.
-      Definition Self := alloc.string.String.
-      
-      Parameter layout :
-          forall `{H' : State.Trait},
-          (ref ink_primitives.key.Key) ->
-            M (H := H')
-              (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
-      
-      Global Instance AssociatedFunction_layout `{H' : State.Trait} :
-        Notation.DoubleColon Self "layout" := {
-        Notation.double_colon := layout;
-      }.
-      
-      Global Instance I'
-        : ink_storage_traits.layout.StorageLayout.Trait Self := {
-        ink_storage_traits.layout.StorageLayout.layout `{H' : State.Trait}
-          :=
-          layout;
-      }.
-      Global Hint Resolve I' : core.
-    End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_string_String.
-    
-    Module Impl_ink_storage_traits_layout_StorageLayout_for_bool.
-      Definition Self := bool.
-      
-      Parameter layout :
-          forall `{H' : State.Trait},
-          (ref ink_primitives.key.Key) ->
-            M (H := H')
-              (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
-      
-      Global Instance AssociatedFunction_layout `{H' : State.Trait} :
-        Notation.DoubleColon Self "layout" := {
-        Notation.double_colon := layout;
-      }.
-      
-      Global Instance I'
-        : ink_storage_traits.layout.StorageLayout.Trait Self := {
-        ink_storage_traits.layout.StorageLayout.layout `{H' : State.Trait}
-          :=
-          layout;
-      }.
-      Global Hint Resolve I' : core.
-    End Impl_ink_storage_traits_layout_StorageLayout_for_bool.
-    
-    Module Impl_ink_storage_traits_layout_StorageLayout_for_char.
-      Definition Self := char.
-      
-      Parameter layout :
-          forall `{H' : State.Trait},
-          (ref ink_primitives.key.Key) ->
-            M (H := H')
-              (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
-      
-      Global Instance AssociatedFunction_layout `{H' : State.Trait} :
-        Notation.DoubleColon Self "layout" := {
-        Notation.double_colon := layout;
-      }.
-      
-      Global Instance I'
-        : ink_storage_traits.layout.StorageLayout.Trait Self := {
-        ink_storage_traits.layout.StorageLayout.layout `{H' : State.Trait}
-          :=
-          layout;
-      }.
-      Global Hint Resolve I' : core.
-    End Impl_ink_storage_traits_layout_StorageLayout_for_char.
-    
-    Module Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_.
-      Definition Self := unit.
-      
-      Parameter layout :
-          forall `{H' : State.Trait},
-          (ref ink_primitives.key.Key) ->
-            M (H := H')
-              (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
-      
-      Global Instance AssociatedFunction_layout `{H' : State.Trait} :
-        Notation.DoubleColon Self "layout" := {
-        Notation.double_colon := layout;
-      }.
-      
-      Global Instance I'
-        : ink_storage_traits.layout.StorageLayout.Trait Self := {
-        ink_storage_traits.layout.StorageLayout.layout `{H' : State.Trait}
-          :=
-          layout;
-      }.
-      Global Hint Resolve I' : core.
-    End Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_.
-    
-    Module Impl_ink_storage_traits_layout_StorageLayout_for_u8.
-      Definition Self := u8.
-      
-      Parameter layout :
-          forall `{H' : State.Trait},
-          (ref ink_primitives.key.Key) ->
-            M (H := H')
-              (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
-      
-      Global Instance AssociatedFunction_layout `{H' : State.Trait} :
-        Notation.DoubleColon Self "layout" := {
-        Notation.double_colon := layout;
-      }.
-      
-      Global Instance I'
-        : ink_storage_traits.layout.StorageLayout.Trait Self := {
-        ink_storage_traits.layout.StorageLayout.layout `{H' : State.Trait}
-          :=
-          layout;
-      }.
-      Global Hint Resolve I' : core.
-    End Impl_ink_storage_traits_layout_StorageLayout_for_u8.
-    
-    Module Impl_ink_storage_traits_layout_StorageLayout_for_u16.
-      Definition Self := u16.
-      
-      Parameter layout :
-          forall `{H' : State.Trait},
-          (ref ink_primitives.key.Key) ->
-            M (H := H')
-              (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
-      
-      Global Instance AssociatedFunction_layout `{H' : State.Trait} :
-        Notation.DoubleColon Self "layout" := {
-        Notation.double_colon := layout;
-      }.
-      
-      Global Instance I'
-        : ink_storage_traits.layout.StorageLayout.Trait Self := {
-        ink_storage_traits.layout.StorageLayout.layout `{H' : State.Trait}
-          :=
-          layout;
-      }.
-      Global Hint Resolve I' : core.
-    End Impl_ink_storage_traits_layout_StorageLayout_for_u16.
-    
-    Module Impl_ink_storage_traits_layout_StorageLayout_for_u32.
-      Definition Self := u32.
-      
-      Parameter layout :
-          forall `{H' : State.Trait},
-          (ref ink_primitives.key.Key) ->
-            M (H := H')
-              (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
-      
-      Global Instance AssociatedFunction_layout `{H' : State.Trait} :
-        Notation.DoubleColon Self "layout" := {
-        Notation.double_colon := layout;
-      }.
-      
-      Global Instance I'
-        : ink_storage_traits.layout.StorageLayout.Trait Self := {
-        ink_storage_traits.layout.StorageLayout.layout `{H' : State.Trait}
-          :=
-          layout;
-      }.
-      Global Hint Resolve I' : core.
-    End Impl_ink_storage_traits_layout_StorageLayout_for_u32.
-    
-    Module Impl_ink_storage_traits_layout_StorageLayout_for_u64.
-      Definition Self := u64.
-      
-      Parameter layout :
-          forall `{H' : State.Trait},
-          (ref ink_primitives.key.Key) ->
-            M (H := H')
-              (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
-      
-      Global Instance AssociatedFunction_layout `{H' : State.Trait} :
-        Notation.DoubleColon Self "layout" := {
-        Notation.double_colon := layout;
-      }.
-      
-      Global Instance I'
-        : ink_storage_traits.layout.StorageLayout.Trait Self := {
-        ink_storage_traits.layout.StorageLayout.layout `{H' : State.Trait}
-          :=
-          layout;
-      }.
-      Global Hint Resolve I' : core.
-    End Impl_ink_storage_traits_layout_StorageLayout_for_u64.
-    
-    Module Impl_ink_storage_traits_layout_StorageLayout_for_u128.
-      Definition Self := u128.
-      
-      Parameter layout :
-          forall `{H' : State.Trait},
-          (ref ink_primitives.key.Key) ->
-            M (H := H')
-              (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
-      
-      Global Instance AssociatedFunction_layout `{H' : State.Trait} :
-        Notation.DoubleColon Self "layout" := {
-        Notation.double_colon := layout;
-      }.
-      
-      Global Instance I'
-        : ink_storage_traits.layout.StorageLayout.Trait Self := {
-        ink_storage_traits.layout.StorageLayout.layout `{H' : State.Trait}
-          :=
-          layout;
-      }.
-      Global Hint Resolve I' : core.
-    End Impl_ink_storage_traits_layout_StorageLayout_for_u128.
-    
-    Module Impl_ink_storage_traits_layout_StorageLayout_for_i8.
-      Definition Self := i8.
-      
-      Parameter layout :
-          forall `{H' : State.Trait},
-          (ref ink_primitives.key.Key) ->
-            M (H := H')
-              (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
-      
-      Global Instance AssociatedFunction_layout `{H' : State.Trait} :
-        Notation.DoubleColon Self "layout" := {
-        Notation.double_colon := layout;
-      }.
-      
-      Global Instance I'
-        : ink_storage_traits.layout.StorageLayout.Trait Self := {
-        ink_storage_traits.layout.StorageLayout.layout `{H' : State.Trait}
-          :=
-          layout;
-      }.
-      Global Hint Resolve I' : core.
-    End Impl_ink_storage_traits_layout_StorageLayout_for_i8.
-    
-    Module Impl_ink_storage_traits_layout_StorageLayout_for_i16.
-      Definition Self := i16.
-      
-      Parameter layout :
-          forall `{H' : State.Trait},
-          (ref ink_primitives.key.Key) ->
-            M (H := H')
-              (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
-      
-      Global Instance AssociatedFunction_layout `{H' : State.Trait} :
-        Notation.DoubleColon Self "layout" := {
-        Notation.double_colon := layout;
-      }.
-      
-      Global Instance I'
-        : ink_storage_traits.layout.StorageLayout.Trait Self := {
-        ink_storage_traits.layout.StorageLayout.layout `{H' : State.Trait}
-          :=
-          layout;
-      }.
-      Global Hint Resolve I' : core.
-    End Impl_ink_storage_traits_layout_StorageLayout_for_i16.
-    
-    Module Impl_ink_storage_traits_layout_StorageLayout_for_i32.
-      Definition Self := i32.
-      
-      Parameter layout :
-          forall `{H' : State.Trait},
-          (ref ink_primitives.key.Key) ->
-            M (H := H')
-              (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
-      
-      Global Instance AssociatedFunction_layout `{H' : State.Trait} :
-        Notation.DoubleColon Self "layout" := {
-        Notation.double_colon := layout;
-      }.
-      
-      Global Instance I'
-        : ink_storage_traits.layout.StorageLayout.Trait Self := {
-        ink_storage_traits.layout.StorageLayout.layout `{H' : State.Trait}
-          :=
-          layout;
-      }.
-      Global Hint Resolve I' : core.
-    End Impl_ink_storage_traits_layout_StorageLayout_for_i32.
-    
-    Module Impl_ink_storage_traits_layout_StorageLayout_for_i64.
-      Definition Self := i64.
-      
-      Parameter layout :
-          forall `{H' : State.Trait},
-          (ref ink_primitives.key.Key) ->
-            M (H := H')
-              (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
-      
-      Global Instance AssociatedFunction_layout `{H' : State.Trait} :
-        Notation.DoubleColon Self "layout" := {
-        Notation.double_colon := layout;
-      }.
-      
-      Global Instance I'
-        : ink_storage_traits.layout.StorageLayout.Trait Self := {
-        ink_storage_traits.layout.StorageLayout.layout `{H' : State.Trait}
-          :=
-          layout;
-      }.
-      Global Hint Resolve I' : core.
-    End Impl_ink_storage_traits_layout_StorageLayout_for_i64.
-    
-    Module Impl_ink_storage_traits_layout_StorageLayout_for_i128.
-      Definition Self := i128.
-      
-      Parameter layout :
-          forall `{H' : State.Trait},
-          (ref ink_primitives.key.Key) ->
-            M (H := H')
-              (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
-      
-      Global Instance AssociatedFunction_layout `{H' : State.Trait} :
-        Notation.DoubleColon Self "layout" := {
-        Notation.double_colon := layout;
-      }.
-      
-      Global Instance I'
-        : ink_storage_traits.layout.StorageLayout.Trait Self := {
-        ink_storage_traits.layout.StorageLayout.layout `{H' : State.Trait}
-          :=
-          layout;
-      }.
-      Global Hint Resolve I' : core.
-    End Impl_ink_storage_traits_layout_StorageLayout_for_i128.
-    
-    Module Impl_ink_storage_traits_layout_StorageLayout_for_Array_T.
-      Section Impl_ink_storage_traits_layout_StorageLayout_for_Array_T.
-        Context {T : Set}.
-        Context
-          `{ink_storage_traits.layout.StorageLayout.Trait T}
-          `{ink_storage_traits.storage.Packed.Trait T}.
-        Definition Self := list T.
+      Section
+        Impl_ink_storage_traits_layout_StorageLayout_for_ink_primitives_types_Hash.
+        Context `{ℋ : State.Trait}.
+        
+        Definition Self : Set := ink_primitives.types.Hash.
         
         Parameter layout :
-            forall `{H' : State.Trait},
-            (ref ink_primitives.key.Key) ->
-              M (H := H')
+            (ref ltac:(ink_primitives.key.Key)) ->
+              M
                 (ink_metadata.layout.Layout
                   ink_metadata.layout.Layout.Default.F).
         
-        Global Instance AssociatedFunction_layout `{H' : State.Trait} :
+        Global Instance AssociatedFunction_layout :
           Notation.DoubleColon Self "layout" := {
           Notation.double_colon := layout;
         }.
         
-        Global Instance I'
-          : ink_storage_traits.layout.StorageLayout.Trait Self := {
-          ink_storage_traits.layout.StorageLayout.layout `{H' : State.Trait}
-            :=
-            layout;
+        #[refine] Global Instance ℐ :
+          ink_storage_traits.layout.StorageLayout.Trait Self := {
+          ink_storage_traits.layout.StorageLayout.layout := layout;
         }.
+        Admitted.
+      End
+        Impl_ink_storage_traits_layout_StorageLayout_for_ink_primitives_types_Hash.
+      Global Hint Resolve ℐ : core.
+    End
+      Impl_ink_storage_traits_layout_StorageLayout_for_ink_primitives_types_Hash.
+    
+    Module Impl_ink_storage_traits_layout_StorageLayout_for_alloc_string_String.
+      Section
+        Impl_ink_storage_traits_layout_StorageLayout_for_alloc_string_String.
+        Context `{ℋ : State.Trait}.
+        
+        Definition Self : Set := alloc.string.String.
+        
+        Parameter layout :
+            (ref ltac:(ink_primitives.key.Key)) ->
+              M
+                (ink_metadata.layout.Layout
+                  ink_metadata.layout.Layout.Default.F).
+        
+        Global Instance AssociatedFunction_layout :
+          Notation.DoubleColon Self "layout" := {
+          Notation.double_colon := layout;
+        }.
+        
+        #[refine] Global Instance ℐ :
+          ink_storage_traits.layout.StorageLayout.Trait Self := {
+          ink_storage_traits.layout.StorageLayout.layout := layout;
+        }.
+        Admitted.
+      End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_string_String.
+      Global Hint Resolve ℐ : core.
+    End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_string_String.
+    
+    Module Impl_ink_storage_traits_layout_StorageLayout_for_bool.
+      Section Impl_ink_storage_traits_layout_StorageLayout_for_bool.
+        Context `{ℋ : State.Trait}.
+        
+        Definition Self : Set := bool.
+        
+        Parameter layout :
+            (ref ltac:(ink_primitives.key.Key)) ->
+              M
+                (ink_metadata.layout.Layout
+                  ink_metadata.layout.Layout.Default.F).
+        
+        Global Instance AssociatedFunction_layout :
+          Notation.DoubleColon Self "layout" := {
+          Notation.double_colon := layout;
+        }.
+        
+        #[refine] Global Instance ℐ :
+          ink_storage_traits.layout.StorageLayout.Trait Self := {
+          ink_storage_traits.layout.StorageLayout.layout := layout;
+        }.
+        Admitted.
+      End Impl_ink_storage_traits_layout_StorageLayout_for_bool.
+      Global Hint Resolve ℐ : core.
+    End Impl_ink_storage_traits_layout_StorageLayout_for_bool.
+    
+    Module Impl_ink_storage_traits_layout_StorageLayout_for_char.
+      Section Impl_ink_storage_traits_layout_StorageLayout_for_char.
+        Context `{ℋ : State.Trait}.
+        
+        Definition Self : Set := char.
+        
+        Parameter layout :
+            (ref ltac:(ink_primitives.key.Key)) ->
+              M
+                (ink_metadata.layout.Layout
+                  ink_metadata.layout.Layout.Default.F).
+        
+        Global Instance AssociatedFunction_layout :
+          Notation.DoubleColon Self "layout" := {
+          Notation.double_colon := layout;
+        }.
+        
+        #[refine] Global Instance ℐ :
+          ink_storage_traits.layout.StorageLayout.Trait Self := {
+          ink_storage_traits.layout.StorageLayout.layout := layout;
+        }.
+        Admitted.
+      End Impl_ink_storage_traits_layout_StorageLayout_for_char.
+      Global Hint Resolve ℐ : core.
+    End Impl_ink_storage_traits_layout_StorageLayout_for_char.
+    
+    Module Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_.
+      Section Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_.
+        Context `{ℋ : State.Trait}.
+        
+        Definition Self : Set := unit.
+        
+        Parameter layout :
+            (ref ltac:(ink_primitives.key.Key)) ->
+              M
+                (ink_metadata.layout.Layout
+                  ink_metadata.layout.Layout.Default.F).
+        
+        Global Instance AssociatedFunction_layout :
+          Notation.DoubleColon Self "layout" := {
+          Notation.double_colon := layout;
+        }.
+        
+        #[refine] Global Instance ℐ :
+          ink_storage_traits.layout.StorageLayout.Trait Self := {
+          ink_storage_traits.layout.StorageLayout.layout := layout;
+        }.
+        Admitted.
+      End Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_.
+      Global Hint Resolve ℐ : core.
+    End Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_.
+    
+    Module Impl_ink_storage_traits_layout_StorageLayout_for_u8.
+      Section Impl_ink_storage_traits_layout_StorageLayout_for_u8.
+        Context `{ℋ : State.Trait}.
+        
+        Definition Self : Set := u8.
+        
+        Parameter layout :
+            (ref ltac:(ink_primitives.key.Key)) ->
+              M
+                (ink_metadata.layout.Layout
+                  ink_metadata.layout.Layout.Default.F).
+        
+        Global Instance AssociatedFunction_layout :
+          Notation.DoubleColon Self "layout" := {
+          Notation.double_colon := layout;
+        }.
+        
+        #[refine] Global Instance ℐ :
+          ink_storage_traits.layout.StorageLayout.Trait Self := {
+          ink_storage_traits.layout.StorageLayout.layout := layout;
+        }.
+        Admitted.
+      End Impl_ink_storage_traits_layout_StorageLayout_for_u8.
+      Global Hint Resolve ℐ : core.
+    End Impl_ink_storage_traits_layout_StorageLayout_for_u8.
+    
+    Module Impl_ink_storage_traits_layout_StorageLayout_for_u16.
+      Section Impl_ink_storage_traits_layout_StorageLayout_for_u16.
+        Context `{ℋ : State.Trait}.
+        
+        Definition Self : Set := u16.
+        
+        Parameter layout :
+            (ref ltac:(ink_primitives.key.Key)) ->
+              M
+                (ink_metadata.layout.Layout
+                  ink_metadata.layout.Layout.Default.F).
+        
+        Global Instance AssociatedFunction_layout :
+          Notation.DoubleColon Self "layout" := {
+          Notation.double_colon := layout;
+        }.
+        
+        #[refine] Global Instance ℐ :
+          ink_storage_traits.layout.StorageLayout.Trait Self := {
+          ink_storage_traits.layout.StorageLayout.layout := layout;
+        }.
+        Admitted.
+      End Impl_ink_storage_traits_layout_StorageLayout_for_u16.
+      Global Hint Resolve ℐ : core.
+    End Impl_ink_storage_traits_layout_StorageLayout_for_u16.
+    
+    Module Impl_ink_storage_traits_layout_StorageLayout_for_u32.
+      Section Impl_ink_storage_traits_layout_StorageLayout_for_u32.
+        Context `{ℋ : State.Trait}.
+        
+        Definition Self : Set := u32.
+        
+        Parameter layout :
+            (ref ltac:(ink_primitives.key.Key)) ->
+              M
+                (ink_metadata.layout.Layout
+                  ink_metadata.layout.Layout.Default.F).
+        
+        Global Instance AssociatedFunction_layout :
+          Notation.DoubleColon Self "layout" := {
+          Notation.double_colon := layout;
+        }.
+        
+        #[refine] Global Instance ℐ :
+          ink_storage_traits.layout.StorageLayout.Trait Self := {
+          ink_storage_traits.layout.StorageLayout.layout := layout;
+        }.
+        Admitted.
+      End Impl_ink_storage_traits_layout_StorageLayout_for_u32.
+      Global Hint Resolve ℐ : core.
+    End Impl_ink_storage_traits_layout_StorageLayout_for_u32.
+    
+    Module Impl_ink_storage_traits_layout_StorageLayout_for_u64.
+      Section Impl_ink_storage_traits_layout_StorageLayout_for_u64.
+        Context `{ℋ : State.Trait}.
+        
+        Definition Self : Set := u64.
+        
+        Parameter layout :
+            (ref ltac:(ink_primitives.key.Key)) ->
+              M
+                (ink_metadata.layout.Layout
+                  ink_metadata.layout.Layout.Default.F).
+        
+        Global Instance AssociatedFunction_layout :
+          Notation.DoubleColon Self "layout" := {
+          Notation.double_colon := layout;
+        }.
+        
+        #[refine] Global Instance ℐ :
+          ink_storage_traits.layout.StorageLayout.Trait Self := {
+          ink_storage_traits.layout.StorageLayout.layout := layout;
+        }.
+        Admitted.
+      End Impl_ink_storage_traits_layout_StorageLayout_for_u64.
+      Global Hint Resolve ℐ : core.
+    End Impl_ink_storage_traits_layout_StorageLayout_for_u64.
+    
+    Module Impl_ink_storage_traits_layout_StorageLayout_for_u128.
+      Section Impl_ink_storage_traits_layout_StorageLayout_for_u128.
+        Context `{ℋ : State.Trait}.
+        
+        Definition Self : Set := u128.
+        
+        Parameter layout :
+            (ref ltac:(ink_primitives.key.Key)) ->
+              M
+                (ink_metadata.layout.Layout
+                  ink_metadata.layout.Layout.Default.F).
+        
+        Global Instance AssociatedFunction_layout :
+          Notation.DoubleColon Self "layout" := {
+          Notation.double_colon := layout;
+        }.
+        
+        #[refine] Global Instance ℐ :
+          ink_storage_traits.layout.StorageLayout.Trait Self := {
+          ink_storage_traits.layout.StorageLayout.layout := layout;
+        }.
+        Admitted.
+      End Impl_ink_storage_traits_layout_StorageLayout_for_u128.
+      Global Hint Resolve ℐ : core.
+    End Impl_ink_storage_traits_layout_StorageLayout_for_u128.
+    
+    Module Impl_ink_storage_traits_layout_StorageLayout_for_i8.
+      Section Impl_ink_storage_traits_layout_StorageLayout_for_i8.
+        Context `{ℋ : State.Trait}.
+        
+        Definition Self : Set := i8.
+        
+        Parameter layout :
+            (ref ltac:(ink_primitives.key.Key)) ->
+              M
+                (ink_metadata.layout.Layout
+                  ink_metadata.layout.Layout.Default.F).
+        
+        Global Instance AssociatedFunction_layout :
+          Notation.DoubleColon Self "layout" := {
+          Notation.double_colon := layout;
+        }.
+        
+        #[refine] Global Instance ℐ :
+          ink_storage_traits.layout.StorageLayout.Trait Self := {
+          ink_storage_traits.layout.StorageLayout.layout := layout;
+        }.
+        Admitted.
+      End Impl_ink_storage_traits_layout_StorageLayout_for_i8.
+      Global Hint Resolve ℐ : core.
+    End Impl_ink_storage_traits_layout_StorageLayout_for_i8.
+    
+    Module Impl_ink_storage_traits_layout_StorageLayout_for_i16.
+      Section Impl_ink_storage_traits_layout_StorageLayout_for_i16.
+        Context `{ℋ : State.Trait}.
+        
+        Definition Self : Set := i16.
+        
+        Parameter layout :
+            (ref ltac:(ink_primitives.key.Key)) ->
+              M
+                (ink_metadata.layout.Layout
+                  ink_metadata.layout.Layout.Default.F).
+        
+        Global Instance AssociatedFunction_layout :
+          Notation.DoubleColon Self "layout" := {
+          Notation.double_colon := layout;
+        }.
+        
+        #[refine] Global Instance ℐ :
+          ink_storage_traits.layout.StorageLayout.Trait Self := {
+          ink_storage_traits.layout.StorageLayout.layout := layout;
+        }.
+        Admitted.
+      End Impl_ink_storage_traits_layout_StorageLayout_for_i16.
+      Global Hint Resolve ℐ : core.
+    End Impl_ink_storage_traits_layout_StorageLayout_for_i16.
+    
+    Module Impl_ink_storage_traits_layout_StorageLayout_for_i32.
+      Section Impl_ink_storage_traits_layout_StorageLayout_for_i32.
+        Context `{ℋ : State.Trait}.
+        
+        Definition Self : Set := i32.
+        
+        Parameter layout :
+            (ref ltac:(ink_primitives.key.Key)) ->
+              M
+                (ink_metadata.layout.Layout
+                  ink_metadata.layout.Layout.Default.F).
+        
+        Global Instance AssociatedFunction_layout :
+          Notation.DoubleColon Self "layout" := {
+          Notation.double_colon := layout;
+        }.
+        
+        #[refine] Global Instance ℐ :
+          ink_storage_traits.layout.StorageLayout.Trait Self := {
+          ink_storage_traits.layout.StorageLayout.layout := layout;
+        }.
+        Admitted.
+      End Impl_ink_storage_traits_layout_StorageLayout_for_i32.
+      Global Hint Resolve ℐ : core.
+    End Impl_ink_storage_traits_layout_StorageLayout_for_i32.
+    
+    Module Impl_ink_storage_traits_layout_StorageLayout_for_i64.
+      Section Impl_ink_storage_traits_layout_StorageLayout_for_i64.
+        Context `{ℋ : State.Trait}.
+        
+        Definition Self : Set := i64.
+        
+        Parameter layout :
+            (ref ltac:(ink_primitives.key.Key)) ->
+              M
+                (ink_metadata.layout.Layout
+                  ink_metadata.layout.Layout.Default.F).
+        
+        Global Instance AssociatedFunction_layout :
+          Notation.DoubleColon Self "layout" := {
+          Notation.double_colon := layout;
+        }.
+        
+        #[refine] Global Instance ℐ :
+          ink_storage_traits.layout.StorageLayout.Trait Self := {
+          ink_storage_traits.layout.StorageLayout.layout := layout;
+        }.
+        Admitted.
+      End Impl_ink_storage_traits_layout_StorageLayout_for_i64.
+      Global Hint Resolve ℐ : core.
+    End Impl_ink_storage_traits_layout_StorageLayout_for_i64.
+    
+    Module Impl_ink_storage_traits_layout_StorageLayout_for_i128.
+      Section Impl_ink_storage_traits_layout_StorageLayout_for_i128.
+        Context `{ℋ : State.Trait}.
+        
+        Definition Self : Set := i128.
+        
+        Parameter layout :
+            (ref ltac:(ink_primitives.key.Key)) ->
+              M
+                (ink_metadata.layout.Layout
+                  ink_metadata.layout.Layout.Default.F).
+        
+        Global Instance AssociatedFunction_layout :
+          Notation.DoubleColon Self "layout" := {
+          Notation.double_colon := layout;
+        }.
+        
+        #[refine] Global Instance ℐ :
+          ink_storage_traits.layout.StorageLayout.Trait Self := {
+          ink_storage_traits.layout.StorageLayout.layout := layout;
+        }.
+        Admitted.
+      End Impl_ink_storage_traits_layout_StorageLayout_for_i128.
+      Global Hint Resolve ℐ : core.
+    End Impl_ink_storage_traits_layout_StorageLayout_for_i128.
+    
+    Module Impl_ink_storage_traits_layout_StorageLayout_for_Array_T.
+      Section Impl_ink_storage_traits_layout_StorageLayout_for_Array_T.
+        Context `{ℋ : State.Trait}.
+        
+        Context {T : Set}.
+        
+        Context
+          {ℋ_0 : ink_storage_traits.layout.StorageLayout.Trait T}
+          {ℋ_1 : ink_storage_traits.storage.Packed.Trait T}.
+        Definition Self : Set := array T.
+        
+        Parameter layout :
+            (ref ltac:(ink_primitives.key.Key)) ->
+              M
+                (ink_metadata.layout.Layout
+                  ink_metadata.layout.Layout.Default.F).
+        
+        Global Instance AssociatedFunction_layout :
+          Notation.DoubleColon Self "layout" := {
+          Notation.double_colon := layout;
+        }.
+        
+        #[refine] Global Instance ℐ :
+          ink_storage_traits.layout.StorageLayout.Trait Self := {
+          ink_storage_traits.layout.StorageLayout.layout := layout;
+        }.
+        Admitted.
       End Impl_ink_storage_traits_layout_StorageLayout_for_Array_T.
-      Global Hint Resolve I' : core.
+      Global Hint Resolve ℐ : core.
     End Impl_ink_storage_traits_layout_StorageLayout_for_Array_T.
     
     Module
       Impl_ink_storage_traits_layout_StorageLayout_for_alloc_boxed_Box_T_alloc_boxed_Box_Default_A.
       Section
         Impl_ink_storage_traits_layout_StorageLayout_for_alloc_boxed_Box_T_alloc_boxed_Box_Default_A.
+        Context `{ℋ : State.Trait}.
+        
         Context {T : Set}.
-        Context `{ink_storage_traits.layout.StorageLayout.Trait T}.
-        Definition Self := alloc.boxed.Box T alloc.boxed.Box.Default.A.
+        
+        Context {ℋ_0 : ink_storage_traits.layout.StorageLayout.Trait T}.
+        Definition Self : Set := alloc.boxed.Box T alloc.boxed.Box.Default.A.
         
         Parameter layout :
-            forall `{H' : State.Trait},
-            (ref ink_primitives.key.Key) ->
-              M (H := H')
+            (ref ltac:(ink_primitives.key.Key)) ->
+              M
                 (ink_metadata.layout.Layout
                   ink_metadata.layout.Layout.Default.F).
         
-        Global Instance AssociatedFunction_layout `{H' : State.Trait} :
+        Global Instance AssociatedFunction_layout :
           Notation.DoubleColon Self "layout" := {
           Notation.double_colon := layout;
         }.
         
-        Global Instance I'
-          : ink_storage_traits.layout.StorageLayout.Trait Self := {
-          ink_storage_traits.layout.StorageLayout.layout `{H' : State.Trait}
-            :=
-            layout;
+        #[refine] Global Instance ℐ :
+          ink_storage_traits.layout.StorageLayout.Trait Self := {
+          ink_storage_traits.layout.StorageLayout.layout := layout;
         }.
+        Admitted.
       End
         Impl_ink_storage_traits_layout_StorageLayout_for_alloc_boxed_Box_T_alloc_boxed_Box_Default_A.
-      Global Hint Resolve I' : core.
+      Global Hint Resolve ℐ : core.
     End
       Impl_ink_storage_traits_layout_StorageLayout_for_alloc_boxed_Box_T_alloc_boxed_Box_Default_A.
     
@@ -3019,1131 +3634,1214 @@ Module Wrap_impls_1.
       Impl_ink_storage_traits_layout_StorageLayout_for_core_option_Option_T.
       Section
         Impl_ink_storage_traits_layout_StorageLayout_for_core_option_Option_T.
+        Context `{ℋ : State.Trait}.
+        
         Context {T : Set}.
-        Context `{ink_storage_traits.layout.StorageLayout.Trait T}.
-        Definition Self := core.option.Option T.
+        
+        Context {ℋ_0 : ink_storage_traits.layout.StorageLayout.Trait T}.
+        Definition Self : Set := core.option.Option T.
         
         Parameter layout :
-            forall `{H' : State.Trait},
-            (ref ink_primitives.key.Key) ->
-              M (H := H')
+            (ref ltac:(ink_primitives.key.Key)) ->
+              M
                 (ink_metadata.layout.Layout
                   ink_metadata.layout.Layout.Default.F).
         
-        Global Instance AssociatedFunction_layout `{H' : State.Trait} :
+        Global Instance AssociatedFunction_layout :
           Notation.DoubleColon Self "layout" := {
           Notation.double_colon := layout;
         }.
         
-        Global Instance I'
-          : ink_storage_traits.layout.StorageLayout.Trait Self := {
-          ink_storage_traits.layout.StorageLayout.layout `{H' : State.Trait}
-            :=
-            layout;
+        #[refine] Global Instance ℐ :
+          ink_storage_traits.layout.StorageLayout.Trait Self := {
+          ink_storage_traits.layout.StorageLayout.layout := layout;
         }.
+        Admitted.
       End Impl_ink_storage_traits_layout_StorageLayout_for_core_option_Option_T.
-      Global Hint Resolve I' : core.
+      Global Hint Resolve ℐ : core.
     End Impl_ink_storage_traits_layout_StorageLayout_for_core_option_Option_T.
     
     Module
       Impl_ink_storage_traits_layout_StorageLayout_for_core_result_Result_T_E.
       Section
         Impl_ink_storage_traits_layout_StorageLayout_for_core_result_Result_T_E.
+        Context `{ℋ : State.Trait}.
+        
         Context {T E : Set}.
+        
         Context
-          `{ink_storage_traits.layout.StorageLayout.Trait T}
-          `{ink_storage_traits.layout.StorageLayout.Trait E}.
-        Definition Self := core.result.Result T E.
+          {ℋ_0 : ink_storage_traits.layout.StorageLayout.Trait T}
+          {ℋ_1 : ink_storage_traits.layout.StorageLayout.Trait E}.
+        Definition Self : Set := core.result.Result T E.
         
         Parameter layout :
-            forall `{H' : State.Trait},
-            (ref ink_primitives.key.Key) ->
-              M (H := H')
+            (ref ltac:(ink_primitives.key.Key)) ->
+              M
                 (ink_metadata.layout.Layout
                   ink_metadata.layout.Layout.Default.F).
         
-        Global Instance AssociatedFunction_layout `{H' : State.Trait} :
+        Global Instance AssociatedFunction_layout :
           Notation.DoubleColon Self "layout" := {
           Notation.double_colon := layout;
         }.
         
-        Global Instance I'
-          : ink_storage_traits.layout.StorageLayout.Trait Self := {
-          ink_storage_traits.layout.StorageLayout.layout `{H' : State.Trait}
-            :=
-            layout;
+        #[refine] Global Instance ℐ :
+          ink_storage_traits.layout.StorageLayout.Trait Self := {
+          ink_storage_traits.layout.StorageLayout.layout := layout;
         }.
+        Admitted.
       End
         Impl_ink_storage_traits_layout_StorageLayout_for_core_result_Result_T_E.
-      Global Hint Resolve I' : core.
+      Global Hint Resolve ℐ : core.
     End Impl_ink_storage_traits_layout_StorageLayout_for_core_result_Result_T_E.
     
     Module
       Impl_ink_storage_traits_layout_StorageLayout_for_alloc_vec_Vec_T_alloc_vec_Vec_Default_A.
       Section
         Impl_ink_storage_traits_layout_StorageLayout_for_alloc_vec_Vec_T_alloc_vec_Vec_Default_A.
+        Context `{ℋ : State.Trait}.
+        
         Context {T : Set}.
+        
         Context
-          `{scale_info.TypeInfo.Trait T}
-          `{ink_storage_traits.storage.Packed.Trait T}.
-        Definition Self := alloc.vec.Vec T alloc.vec.Vec.Default.A.
+          {ℋ_0 : scale_info.TypeInfo.Trait T}
+          {ℋ_1 : ink_storage_traits.storage.Packed.Trait T}.
+        Definition Self : Set := alloc.vec.Vec T alloc.vec.Vec.Default.A.
         
         Parameter layout :
-            forall `{H' : State.Trait},
-            (ref ink_primitives.key.Key) ->
-              M (H := H')
+            (ref ltac:(ink_primitives.key.Key)) ->
+              M
                 (ink_metadata.layout.Layout
                   ink_metadata.layout.Layout.Default.F).
         
-        Global Instance AssociatedFunction_layout `{H' : State.Trait} :
+        Global Instance AssociatedFunction_layout :
           Notation.DoubleColon Self "layout" := {
           Notation.double_colon := layout;
         }.
         
-        Global Instance I'
-          : ink_storage_traits.layout.StorageLayout.Trait Self := {
-          ink_storage_traits.layout.StorageLayout.layout `{H' : State.Trait}
-            :=
-            layout;
+        #[refine] Global Instance ℐ :
+          ink_storage_traits.layout.StorageLayout.Trait Self := {
+          ink_storage_traits.layout.StorageLayout.layout := layout;
         }.
+        Admitted.
       End
         Impl_ink_storage_traits_layout_StorageLayout_for_alloc_vec_Vec_T_alloc_vec_Vec_Default_A.
-      Global Hint Resolve I' : core.
+      Global Hint Resolve ℐ : core.
     End
       Impl_ink_storage_traits_layout_StorageLayout_for_alloc_vec_Vec_T_alloc_vec_Vec_Default_A.
     
-    (* Module Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map_BTreeMap_K_V_alloc_collections_btree_map_BTreeMap_Default_A.
-      (* Section Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map_BTreeMap_K_V_alloc_collections_btree_map_BTreeMap_Default_A.
+    Module
+      Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map_BTreeMap_K_V_alloc_collections_btree_map_BTreeMap_Default_A.
+      Section
+        Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map_BTreeMap_K_V_alloc_collections_btree_map_BTreeMap_Default_A.
+        Context `{ℋ : State.Trait}.
+        
         Context {K V : Set}.
+        
         Context
-          `{scale_info.TypeInfo.Trait K}
-          `{ink_storage_traits.storage.Packed.Trait K}
-          `{scale_info.TypeInfo.Trait V}
-          `{ink_storage_traits.storage.Packed.Trait V}.
-        Definition Self :=
+          {ℋ_0 : scale_info.TypeInfo.Trait K}
+          {ℋ_1 : ink_storage_traits.storage.Packed.Trait K}
+          {ℋ_2 : scale_info.TypeInfo.Trait V}
+          {ℋ_3 : ink_storage_traits.storage.Packed.Trait V}.
+        Definition Self : Set :=
           alloc.collections.btree.map.BTreeMap
             K
             V
             alloc.collections.btree.map.BTreeMap.Default.A.
         
         Parameter layout :
-            forall `{H' : State.Trait},
-            (ref ink_primitives.key.Key) ->
-              M (H := H')
+            (ref ltac:(ink_primitives.key.Key)) ->
+              M
                 (ink_metadata.layout.Layout
                   ink_metadata.layout.Layout.Default.F).
         
-        Global Instance AssociatedFunction_layout `{H' : State.Trait} :
+        Global Instance AssociatedFunction_layout :
           Notation.DoubleColon Self "layout" := {
           Notation.double_colon := layout;
         }.
         
-        Global Instance I'
-          : ink_storage_traits.layout.StorageLayout.Trait Self := {
-          ink_storage_traits.layout.StorageLayout.layout `{H' : State.Trait}
-            :=
-            layout;
+        #[refine] Global Instance ℐ :
+          ink_storage_traits.layout.StorageLayout.Trait Self := {
+          ink_storage_traits.layout.StorageLayout.layout := layout;
         }.
-      End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map_BTreeMap_K_V_alloc_collections_btree_map_BTreeMap_Default_A. *)
-      Global Hint Resolve I' : core.
-    End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map_BTreeMap_K_V_alloc_collections_btree_map_BTreeMap_Default_A. *)
+        Admitted.
+      End
+        Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map_BTreeMap_K_V_alloc_collections_btree_map_BTreeMap_Default_A.
+      Global Hint Resolve ℐ : core.
+    End
+      Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map_BTreeMap_K_V_alloc_collections_btree_map_BTreeMap_Default_A.
     
-    (* Module Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set_BTreeSet_T_alloc_collections_btree_set_BTreeSet_Default_A.
-      (* Section Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set_BTreeSet_T_alloc_collections_btree_set_BTreeSet_Default_A.
+    Module
+      Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set_BTreeSet_T_alloc_collections_btree_set_BTreeSet_Default_A.
+      Section
+        Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set_BTreeSet_T_alloc_collections_btree_set_BTreeSet_Default_A.
+        Context `{ℋ : State.Trait}.
+        
         Context {T : Set}.
+        
         Context
-          `{scale_info.TypeInfo.Trait T}
-          `{ink_storage_traits.storage.Packed.Trait T}.
-        Definition Self :=
+          {ℋ_0 : scale_info.TypeInfo.Trait T}
+          {ℋ_1 : ink_storage_traits.storage.Packed.Trait T}.
+        Definition Self : Set :=
           alloc.collections.btree.set.BTreeSet
             T
             alloc.collections.btree.set.BTreeSet.Default.A.
         
         Parameter layout :
-            forall `{H' : State.Trait},
-            (ref ink_primitives.key.Key) ->
-              M (H := H')
+            (ref ltac:(ink_primitives.key.Key)) ->
+              M
                 (ink_metadata.layout.Layout
                   ink_metadata.layout.Layout.Default.F).
         
-        Global Instance AssociatedFunction_layout `{H' : State.Trait} :
+        Global Instance AssociatedFunction_layout :
           Notation.DoubleColon Self "layout" := {
           Notation.double_colon := layout;
         }.
         
-        Global Instance I'
-          : ink_storage_traits.layout.StorageLayout.Trait Self := {
-          ink_storage_traits.layout.StorageLayout.layout `{H' : State.Trait}
-            :=
-            layout;
+        #[refine] Global Instance ℐ :
+          ink_storage_traits.layout.StorageLayout.Trait Self := {
+          ink_storage_traits.layout.StorageLayout.layout := layout;
         }.
-      End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set_BTreeSet_T_alloc_collections_btree_set_BTreeSet_Default_A. *)
-      Global Hint Resolve I' : core.
-    End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set_BTreeSet_T_alloc_collections_btree_set_BTreeSet_Default_A. *)
+        Admitted.
+      End
+        Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set_BTreeSet_T_alloc_collections_btree_set_BTreeSet_Default_A.
+      Global Hint Resolve ℐ : core.
+    End
+      Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set_BTreeSet_T_alloc_collections_btree_set_BTreeSet_Default_A.
     
-    (* Module Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_vec_deque_VecDeque_T_alloc_collections_vec_deque_VecDeque_Default_A.
-      (* Section Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_vec_deque_VecDeque_T_alloc_collections_vec_deque_VecDeque_Default_A.
+    Module
+      Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_vec_deque_VecDeque_T_alloc_collections_vec_deque_VecDeque_Default_A.
+      Section
+        Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_vec_deque_VecDeque_T_alloc_collections_vec_deque_VecDeque_Default_A.
+        Context `{ℋ : State.Trait}.
+        
         Context {T : Set}.
+        
         Context
-          `{scale_info.TypeInfo.Trait T}
-          `{ink_storage_traits.storage.Packed.Trait T}.
-        Definition Self :=
+          {ℋ_0 : scale_info.TypeInfo.Trait T}
+          {ℋ_1 : ink_storage_traits.storage.Packed.Trait T}.
+        Definition Self : Set :=
           alloc.collections.vec_deque.VecDeque
             T
             alloc.collections.vec_deque.VecDeque.Default.A.
         
         Parameter layout :
-            forall `{H' : State.Trait},
-            (ref ink_primitives.key.Key) ->
-              M (H := H')
+            (ref ltac:(ink_primitives.key.Key)) ->
+              M
                 (ink_metadata.layout.Layout
                   ink_metadata.layout.Layout.Default.F).
         
-        Global Instance AssociatedFunction_layout `{H' : State.Trait} :
+        Global Instance AssociatedFunction_layout :
           Notation.DoubleColon Self "layout" := {
           Notation.double_colon := layout;
         }.
         
-        Global Instance I'
-          : ink_storage_traits.layout.StorageLayout.Trait Self := {
-          ink_storage_traits.layout.StorageLayout.layout `{H' : State.Trait}
-            :=
-            layout;
+        #[refine] Global Instance ℐ :
+          ink_storage_traits.layout.StorageLayout.Trait Self := {
+          ink_storage_traits.layout.StorageLayout.layout := layout;
         }.
-      End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_vec_deque_VecDeque_T_alloc_collections_vec_deque_VecDeque_Default_A. *)
-      Global Hint Resolve I' : core.
-    End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_vec_deque_VecDeque_T_alloc_collections_vec_deque_VecDeque_Default_A. *)
+        Admitted.
+      End
+        Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_vec_deque_VecDeque_T_alloc_collections_vec_deque_VecDeque_Default_A.
+      Global Hint Resolve ℐ : core.
+    End
+      Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_vec_deque_VecDeque_T_alloc_collections_vec_deque_VecDeque_Default_A.
   End impls.
 End Wrap_impls_1.
 Import Wrap_impls_1.
 
 Module
   Impl_ink_storage_traits_layout_StorageLayout_for_ink_primitives_types_AccountId.
-  Definition Self := ink_primitives.types.AccountId.
-  
-  Parameter layout :
-      forall `{H' : State.Trait},
-      (ref ink_primitives.key.Key) ->
-        M (H := H')
-          (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
-  
-  Global Instance AssociatedFunction_layout `{H' : State.Trait} :
-    Notation.DoubleColon Self "layout" := {
-    Notation.double_colon := layout;
-  }.
-  
-  Global Instance I' : ink_storage_traits.layout.StorageLayout.Trait Self := {
-    ink_storage_traits.layout.StorageLayout.layout `{H' : State.Trait}
-      :=
-      layout;
-  }.
-  Global Hint Resolve I' : core.
+  Section
+    Impl_ink_storage_traits_layout_StorageLayout_for_ink_primitives_types_AccountId.
+    Context `{ℋ : State.Trait}.
+    
+    Definition Self : Set := ink_primitives.types.AccountId.
+    
+    Parameter layout :
+        (ref ltac:(ink_primitives.key.Key)) ->
+          M (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
+    
+    Global Instance AssociatedFunction_layout :
+      Notation.DoubleColon Self "layout" := {
+      Notation.double_colon := layout;
+    }.
+    
+    #[refine] Global Instance ℐ :
+      ink_storage_traits.layout.StorageLayout.Trait Self := {
+      ink_storage_traits.layout.StorageLayout.layout := layout;
+    }.
+    Admitted.
+  End
+    Impl_ink_storage_traits_layout_StorageLayout_for_ink_primitives_types_AccountId.
+  Global Hint Resolve ℐ : core.
 End
   Impl_ink_storage_traits_layout_StorageLayout_for_ink_primitives_types_AccountId.
 
 Module
   Impl_ink_storage_traits_layout_StorageLayout_for_ink_primitives_types_Hash.
-  Definition Self := ink_primitives.types.Hash.
-  
-  Parameter layout :
-      forall `{H' : State.Trait},
-      (ref ink_primitives.key.Key) ->
-        M (H := H')
-          (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
-  
-  Global Instance AssociatedFunction_layout `{H' : State.Trait} :
-    Notation.DoubleColon Self "layout" := {
-    Notation.double_colon := layout;
-  }.
-  
-  Global Instance I' : ink_storage_traits.layout.StorageLayout.Trait Self := {
-    ink_storage_traits.layout.StorageLayout.layout `{H' : State.Trait}
-      :=
-      layout;
-  }.
-  Global Hint Resolve I' : core.
+  Section
+    Impl_ink_storage_traits_layout_StorageLayout_for_ink_primitives_types_Hash.
+    Context `{ℋ : State.Trait}.
+    
+    Definition Self : Set := ink_primitives.types.Hash.
+    
+    Parameter layout :
+        (ref ltac:(ink_primitives.key.Key)) ->
+          M (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
+    
+    Global Instance AssociatedFunction_layout :
+      Notation.DoubleColon Self "layout" := {
+      Notation.double_colon := layout;
+    }.
+    
+    #[refine] Global Instance ℐ :
+      ink_storage_traits.layout.StorageLayout.Trait Self := {
+      ink_storage_traits.layout.StorageLayout.layout := layout;
+    }.
+    Admitted.
+  End
+    Impl_ink_storage_traits_layout_StorageLayout_for_ink_primitives_types_Hash.
+  Global Hint Resolve ℐ : core.
 End Impl_ink_storage_traits_layout_StorageLayout_for_ink_primitives_types_Hash.
 
 Module Impl_ink_storage_traits_layout_StorageLayout_for_alloc_string_String.
-  Definition Self := alloc.string.String.
-  
-  Parameter layout :
-      forall `{H' : State.Trait},
-      (ref ink_primitives.key.Key) ->
-        M (H := H')
-          (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
-  
-  Global Instance AssociatedFunction_layout `{H' : State.Trait} :
-    Notation.DoubleColon Self "layout" := {
-    Notation.double_colon := layout;
-  }.
-  
-  Global Instance I' : ink_storage_traits.layout.StorageLayout.Trait Self := {
-    ink_storage_traits.layout.StorageLayout.layout `{H' : State.Trait}
-      :=
-      layout;
-  }.
-  Global Hint Resolve I' : core.
+  Section Impl_ink_storage_traits_layout_StorageLayout_for_alloc_string_String.
+    Context `{ℋ : State.Trait}.
+    
+    Definition Self : Set := alloc.string.String.
+    
+    Parameter layout :
+        (ref ltac:(ink_primitives.key.Key)) ->
+          M (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
+    
+    Global Instance AssociatedFunction_layout :
+      Notation.DoubleColon Self "layout" := {
+      Notation.double_colon := layout;
+    }.
+    
+    #[refine] Global Instance ℐ :
+      ink_storage_traits.layout.StorageLayout.Trait Self := {
+      ink_storage_traits.layout.StorageLayout.layout := layout;
+    }.
+    Admitted.
+  End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_string_String.
+  Global Hint Resolve ℐ : core.
 End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_string_String.
 
 Module Impl_ink_storage_traits_layout_StorageLayout_for_bool.
-  Definition Self := bool.
-  
-  Parameter layout :
-      forall `{H' : State.Trait},
-      (ref ink_primitives.key.Key) ->
-        M (H := H')
-          (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
-  
-  Global Instance AssociatedFunction_layout `{H' : State.Trait} :
-    Notation.DoubleColon Self "layout" := {
-    Notation.double_colon := layout;
-  }.
-  
-  Global Instance I' : ink_storage_traits.layout.StorageLayout.Trait Self := {
-    ink_storage_traits.layout.StorageLayout.layout `{H' : State.Trait}
-      :=
-      layout;
-  }.
-  Global Hint Resolve I' : core.
+  Section Impl_ink_storage_traits_layout_StorageLayout_for_bool.
+    Context `{ℋ : State.Trait}.
+    
+    Definition Self : Set := bool.
+    
+    Parameter layout :
+        (ref ltac:(ink_primitives.key.Key)) ->
+          M (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
+    
+    Global Instance AssociatedFunction_layout :
+      Notation.DoubleColon Self "layout" := {
+      Notation.double_colon := layout;
+    }.
+    
+    #[refine] Global Instance ℐ :
+      ink_storage_traits.layout.StorageLayout.Trait Self := {
+      ink_storage_traits.layout.StorageLayout.layout := layout;
+    }.
+    Admitted.
+  End Impl_ink_storage_traits_layout_StorageLayout_for_bool.
+  Global Hint Resolve ℐ : core.
 End Impl_ink_storage_traits_layout_StorageLayout_for_bool.
 
 Module Impl_ink_storage_traits_layout_StorageLayout_for_char.
-  Definition Self := char.
-  
-  Parameter layout :
-      forall `{H' : State.Trait},
-      (ref ink_primitives.key.Key) ->
-        M (H := H')
-          (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
-  
-  Global Instance AssociatedFunction_layout `{H' : State.Trait} :
-    Notation.DoubleColon Self "layout" := {
-    Notation.double_colon := layout;
-  }.
-  
-  Global Instance I' : ink_storage_traits.layout.StorageLayout.Trait Self := {
-    ink_storage_traits.layout.StorageLayout.layout `{H' : State.Trait}
-      :=
-      layout;
-  }.
-  Global Hint Resolve I' : core.
+  Section Impl_ink_storage_traits_layout_StorageLayout_for_char.
+    Context `{ℋ : State.Trait}.
+    
+    Definition Self : Set := char.
+    
+    Parameter layout :
+        (ref ltac:(ink_primitives.key.Key)) ->
+          M (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
+    
+    Global Instance AssociatedFunction_layout :
+      Notation.DoubleColon Self "layout" := {
+      Notation.double_colon := layout;
+    }.
+    
+    #[refine] Global Instance ℐ :
+      ink_storage_traits.layout.StorageLayout.Trait Self := {
+      ink_storage_traits.layout.StorageLayout.layout := layout;
+    }.
+    Admitted.
+  End Impl_ink_storage_traits_layout_StorageLayout_for_char.
+  Global Hint Resolve ℐ : core.
 End Impl_ink_storage_traits_layout_StorageLayout_for_char.
 
 Module Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_.
-  Definition Self := unit.
-  
-  Parameter layout :
-      forall `{H' : State.Trait},
-      (ref ink_primitives.key.Key) ->
-        M (H := H')
-          (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
-  
-  Global Instance AssociatedFunction_layout `{H' : State.Trait} :
-    Notation.DoubleColon Self "layout" := {
-    Notation.double_colon := layout;
-  }.
-  
-  Global Instance I' : ink_storage_traits.layout.StorageLayout.Trait Self := {
-    ink_storage_traits.layout.StorageLayout.layout `{H' : State.Trait}
-      :=
-      layout;
-  }.
-  Global Hint Resolve I' : core.
+  Section Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_.
+    Context `{ℋ : State.Trait}.
+    
+    Definition Self : Set := unit.
+    
+    Parameter layout :
+        (ref ltac:(ink_primitives.key.Key)) ->
+          M (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
+    
+    Global Instance AssociatedFunction_layout :
+      Notation.DoubleColon Self "layout" := {
+      Notation.double_colon := layout;
+    }.
+    
+    #[refine] Global Instance ℐ :
+      ink_storage_traits.layout.StorageLayout.Trait Self := {
+      ink_storage_traits.layout.StorageLayout.layout := layout;
+    }.
+    Admitted.
+  End Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_.
+  Global Hint Resolve ℐ : core.
 End Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_.
 
 Module Impl_ink_storage_traits_layout_StorageLayout_for_u8.
-  Definition Self := u8.
-  
-  Parameter layout :
-      forall `{H' : State.Trait},
-      (ref ink_primitives.key.Key) ->
-        M (H := H')
-          (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
-  
-  Global Instance AssociatedFunction_layout `{H' : State.Trait} :
-    Notation.DoubleColon Self "layout" := {
-    Notation.double_colon := layout;
-  }.
-  
-  Global Instance I' : ink_storage_traits.layout.StorageLayout.Trait Self := {
-    ink_storage_traits.layout.StorageLayout.layout `{H' : State.Trait}
-      :=
-      layout;
-  }.
-  Global Hint Resolve I' : core.
+  Section Impl_ink_storage_traits_layout_StorageLayout_for_u8.
+    Context `{ℋ : State.Trait}.
+    
+    Definition Self : Set := u8.
+    
+    Parameter layout :
+        (ref ltac:(ink_primitives.key.Key)) ->
+          M (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
+    
+    Global Instance AssociatedFunction_layout :
+      Notation.DoubleColon Self "layout" := {
+      Notation.double_colon := layout;
+    }.
+    
+    #[refine] Global Instance ℐ :
+      ink_storage_traits.layout.StorageLayout.Trait Self := {
+      ink_storage_traits.layout.StorageLayout.layout := layout;
+    }.
+    Admitted.
+  End Impl_ink_storage_traits_layout_StorageLayout_for_u8.
+  Global Hint Resolve ℐ : core.
 End Impl_ink_storage_traits_layout_StorageLayout_for_u8.
 
 Module Impl_ink_storage_traits_layout_StorageLayout_for_u16.
-  Definition Self := u16.
-  
-  Parameter layout :
-      forall `{H' : State.Trait},
-      (ref ink_primitives.key.Key) ->
-        M (H := H')
-          (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
-  
-  Global Instance AssociatedFunction_layout `{H' : State.Trait} :
-    Notation.DoubleColon Self "layout" := {
-    Notation.double_colon := layout;
-  }.
-  
-  Global Instance I' : ink_storage_traits.layout.StorageLayout.Trait Self := {
-    ink_storage_traits.layout.StorageLayout.layout `{H' : State.Trait}
-      :=
-      layout;
-  }.
-  Global Hint Resolve I' : core.
+  Section Impl_ink_storage_traits_layout_StorageLayout_for_u16.
+    Context `{ℋ : State.Trait}.
+    
+    Definition Self : Set := u16.
+    
+    Parameter layout :
+        (ref ltac:(ink_primitives.key.Key)) ->
+          M (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
+    
+    Global Instance AssociatedFunction_layout :
+      Notation.DoubleColon Self "layout" := {
+      Notation.double_colon := layout;
+    }.
+    
+    #[refine] Global Instance ℐ :
+      ink_storage_traits.layout.StorageLayout.Trait Self := {
+      ink_storage_traits.layout.StorageLayout.layout := layout;
+    }.
+    Admitted.
+  End Impl_ink_storage_traits_layout_StorageLayout_for_u16.
+  Global Hint Resolve ℐ : core.
 End Impl_ink_storage_traits_layout_StorageLayout_for_u16.
 
 Module Impl_ink_storage_traits_layout_StorageLayout_for_u32.
-  Definition Self := u32.
-  
-  Parameter layout :
-      forall `{H' : State.Trait},
-      (ref ink_primitives.key.Key) ->
-        M (H := H')
-          (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
-  
-  Global Instance AssociatedFunction_layout `{H' : State.Trait} :
-    Notation.DoubleColon Self "layout" := {
-    Notation.double_colon := layout;
-  }.
-  
-  Global Instance I' : ink_storage_traits.layout.StorageLayout.Trait Self := {
-    ink_storage_traits.layout.StorageLayout.layout `{H' : State.Trait}
-      :=
-      layout;
-  }.
-  Global Hint Resolve I' : core.
+  Section Impl_ink_storage_traits_layout_StorageLayout_for_u32.
+    Context `{ℋ : State.Trait}.
+    
+    Definition Self : Set := u32.
+    
+    Parameter layout :
+        (ref ltac:(ink_primitives.key.Key)) ->
+          M (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
+    
+    Global Instance AssociatedFunction_layout :
+      Notation.DoubleColon Self "layout" := {
+      Notation.double_colon := layout;
+    }.
+    
+    #[refine] Global Instance ℐ :
+      ink_storage_traits.layout.StorageLayout.Trait Self := {
+      ink_storage_traits.layout.StorageLayout.layout := layout;
+    }.
+    Admitted.
+  End Impl_ink_storage_traits_layout_StorageLayout_for_u32.
+  Global Hint Resolve ℐ : core.
 End Impl_ink_storage_traits_layout_StorageLayout_for_u32.
 
 Module Impl_ink_storage_traits_layout_StorageLayout_for_u64.
-  Definition Self := u64.
-  
-  Parameter layout :
-      forall `{H' : State.Trait},
-      (ref ink_primitives.key.Key) ->
-        M (H := H')
-          (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
-  
-  Global Instance AssociatedFunction_layout `{H' : State.Trait} :
-    Notation.DoubleColon Self "layout" := {
-    Notation.double_colon := layout;
-  }.
-  
-  Global Instance I' : ink_storage_traits.layout.StorageLayout.Trait Self := {
-    ink_storage_traits.layout.StorageLayout.layout `{H' : State.Trait}
-      :=
-      layout;
-  }.
-  Global Hint Resolve I' : core.
+  Section Impl_ink_storage_traits_layout_StorageLayout_for_u64.
+    Context `{ℋ : State.Trait}.
+    
+    Definition Self : Set := u64.
+    
+    Parameter layout :
+        (ref ltac:(ink_primitives.key.Key)) ->
+          M (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
+    
+    Global Instance AssociatedFunction_layout :
+      Notation.DoubleColon Self "layout" := {
+      Notation.double_colon := layout;
+    }.
+    
+    #[refine] Global Instance ℐ :
+      ink_storage_traits.layout.StorageLayout.Trait Self := {
+      ink_storage_traits.layout.StorageLayout.layout := layout;
+    }.
+    Admitted.
+  End Impl_ink_storage_traits_layout_StorageLayout_for_u64.
+  Global Hint Resolve ℐ : core.
 End Impl_ink_storage_traits_layout_StorageLayout_for_u64.
 
 Module Impl_ink_storage_traits_layout_StorageLayout_for_u128.
-  Definition Self := u128.
-  
-  Parameter layout :
-      forall `{H' : State.Trait},
-      (ref ink_primitives.key.Key) ->
-        M (H := H')
-          (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
-  
-  Global Instance AssociatedFunction_layout `{H' : State.Trait} :
-    Notation.DoubleColon Self "layout" := {
-    Notation.double_colon := layout;
-  }.
-  
-  Global Instance I' : ink_storage_traits.layout.StorageLayout.Trait Self := {
-    ink_storage_traits.layout.StorageLayout.layout `{H' : State.Trait}
-      :=
-      layout;
-  }.
-  Global Hint Resolve I' : core.
+  Section Impl_ink_storage_traits_layout_StorageLayout_for_u128.
+    Context `{ℋ : State.Trait}.
+    
+    Definition Self : Set := u128.
+    
+    Parameter layout :
+        (ref ltac:(ink_primitives.key.Key)) ->
+          M (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
+    
+    Global Instance AssociatedFunction_layout :
+      Notation.DoubleColon Self "layout" := {
+      Notation.double_colon := layout;
+    }.
+    
+    #[refine] Global Instance ℐ :
+      ink_storage_traits.layout.StorageLayout.Trait Self := {
+      ink_storage_traits.layout.StorageLayout.layout := layout;
+    }.
+    Admitted.
+  End Impl_ink_storage_traits_layout_StorageLayout_for_u128.
+  Global Hint Resolve ℐ : core.
 End Impl_ink_storage_traits_layout_StorageLayout_for_u128.
 
 Module Impl_ink_storage_traits_layout_StorageLayout_for_i8.
-  Definition Self := i8.
-  
-  Parameter layout :
-      forall `{H' : State.Trait},
-      (ref ink_primitives.key.Key) ->
-        M (H := H')
-          (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
-  
-  Global Instance AssociatedFunction_layout `{H' : State.Trait} :
-    Notation.DoubleColon Self "layout" := {
-    Notation.double_colon := layout;
-  }.
-  
-  Global Instance I' : ink_storage_traits.layout.StorageLayout.Trait Self := {
-    ink_storage_traits.layout.StorageLayout.layout `{H' : State.Trait}
-      :=
-      layout;
-  }.
-  Global Hint Resolve I' : core.
+  Section Impl_ink_storage_traits_layout_StorageLayout_for_i8.
+    Context `{ℋ : State.Trait}.
+    
+    Definition Self : Set := i8.
+    
+    Parameter layout :
+        (ref ltac:(ink_primitives.key.Key)) ->
+          M (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
+    
+    Global Instance AssociatedFunction_layout :
+      Notation.DoubleColon Self "layout" := {
+      Notation.double_colon := layout;
+    }.
+    
+    #[refine] Global Instance ℐ :
+      ink_storage_traits.layout.StorageLayout.Trait Self := {
+      ink_storage_traits.layout.StorageLayout.layout := layout;
+    }.
+    Admitted.
+  End Impl_ink_storage_traits_layout_StorageLayout_for_i8.
+  Global Hint Resolve ℐ : core.
 End Impl_ink_storage_traits_layout_StorageLayout_for_i8.
 
 Module Impl_ink_storage_traits_layout_StorageLayout_for_i16.
-  Definition Self := i16.
-  
-  Parameter layout :
-      forall `{H' : State.Trait},
-      (ref ink_primitives.key.Key) ->
-        M (H := H')
-          (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
-  
-  Global Instance AssociatedFunction_layout `{H' : State.Trait} :
-    Notation.DoubleColon Self "layout" := {
-    Notation.double_colon := layout;
-  }.
-  
-  Global Instance I' : ink_storage_traits.layout.StorageLayout.Trait Self := {
-    ink_storage_traits.layout.StorageLayout.layout `{H' : State.Trait}
-      :=
-      layout;
-  }.
-  Global Hint Resolve I' : core.
+  Section Impl_ink_storage_traits_layout_StorageLayout_for_i16.
+    Context `{ℋ : State.Trait}.
+    
+    Definition Self : Set := i16.
+    
+    Parameter layout :
+        (ref ltac:(ink_primitives.key.Key)) ->
+          M (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
+    
+    Global Instance AssociatedFunction_layout :
+      Notation.DoubleColon Self "layout" := {
+      Notation.double_colon := layout;
+    }.
+    
+    #[refine] Global Instance ℐ :
+      ink_storage_traits.layout.StorageLayout.Trait Self := {
+      ink_storage_traits.layout.StorageLayout.layout := layout;
+    }.
+    Admitted.
+  End Impl_ink_storage_traits_layout_StorageLayout_for_i16.
+  Global Hint Resolve ℐ : core.
 End Impl_ink_storage_traits_layout_StorageLayout_for_i16.
 
 Module Impl_ink_storage_traits_layout_StorageLayout_for_i32.
-  Definition Self := i32.
-  
-  Parameter layout :
-      forall `{H' : State.Trait},
-      (ref ink_primitives.key.Key) ->
-        M (H := H')
-          (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
-  
-  Global Instance AssociatedFunction_layout `{H' : State.Trait} :
-    Notation.DoubleColon Self "layout" := {
-    Notation.double_colon := layout;
-  }.
-  
-  Global Instance I' : ink_storage_traits.layout.StorageLayout.Trait Self := {
-    ink_storage_traits.layout.StorageLayout.layout `{H' : State.Trait}
-      :=
-      layout;
-  }.
-  Global Hint Resolve I' : core.
+  Section Impl_ink_storage_traits_layout_StorageLayout_for_i32.
+    Context `{ℋ : State.Trait}.
+    
+    Definition Self : Set := i32.
+    
+    Parameter layout :
+        (ref ltac:(ink_primitives.key.Key)) ->
+          M (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
+    
+    Global Instance AssociatedFunction_layout :
+      Notation.DoubleColon Self "layout" := {
+      Notation.double_colon := layout;
+    }.
+    
+    #[refine] Global Instance ℐ :
+      ink_storage_traits.layout.StorageLayout.Trait Self := {
+      ink_storage_traits.layout.StorageLayout.layout := layout;
+    }.
+    Admitted.
+  End Impl_ink_storage_traits_layout_StorageLayout_for_i32.
+  Global Hint Resolve ℐ : core.
 End Impl_ink_storage_traits_layout_StorageLayout_for_i32.
 
 Module Impl_ink_storage_traits_layout_StorageLayout_for_i64.
-  Definition Self := i64.
-  
-  Parameter layout :
-      forall `{H' : State.Trait},
-      (ref ink_primitives.key.Key) ->
-        M (H := H')
-          (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
-  
-  Global Instance AssociatedFunction_layout `{H' : State.Trait} :
-    Notation.DoubleColon Self "layout" := {
-    Notation.double_colon := layout;
-  }.
-  
-  Global Instance I' : ink_storage_traits.layout.StorageLayout.Trait Self := {
-    ink_storage_traits.layout.StorageLayout.layout `{H' : State.Trait}
-      :=
-      layout;
-  }.
-  Global Hint Resolve I' : core.
+  Section Impl_ink_storage_traits_layout_StorageLayout_for_i64.
+    Context `{ℋ : State.Trait}.
+    
+    Definition Self : Set := i64.
+    
+    Parameter layout :
+        (ref ltac:(ink_primitives.key.Key)) ->
+          M (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
+    
+    Global Instance AssociatedFunction_layout :
+      Notation.DoubleColon Self "layout" := {
+      Notation.double_colon := layout;
+    }.
+    
+    #[refine] Global Instance ℐ :
+      ink_storage_traits.layout.StorageLayout.Trait Self := {
+      ink_storage_traits.layout.StorageLayout.layout := layout;
+    }.
+    Admitted.
+  End Impl_ink_storage_traits_layout_StorageLayout_for_i64.
+  Global Hint Resolve ℐ : core.
 End Impl_ink_storage_traits_layout_StorageLayout_for_i64.
 
 Module Impl_ink_storage_traits_layout_StorageLayout_for_i128.
-  Definition Self := i128.
-  
-  Parameter layout :
-      forall `{H' : State.Trait},
-      (ref ink_primitives.key.Key) ->
-        M (H := H')
-          (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
-  
-  Global Instance AssociatedFunction_layout `{H' : State.Trait} :
-    Notation.DoubleColon Self "layout" := {
-    Notation.double_colon := layout;
-  }.
-  
-  Global Instance I' : ink_storage_traits.layout.StorageLayout.Trait Self := {
-    ink_storage_traits.layout.StorageLayout.layout `{H' : State.Trait}
-      :=
-      layout;
-  }.
-  Global Hint Resolve I' : core.
+  Section Impl_ink_storage_traits_layout_StorageLayout_for_i128.
+    Context `{ℋ : State.Trait}.
+    
+    Definition Self : Set := i128.
+    
+    Parameter layout :
+        (ref ltac:(ink_primitives.key.Key)) ->
+          M (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
+    
+    Global Instance AssociatedFunction_layout :
+      Notation.DoubleColon Self "layout" := {
+      Notation.double_colon := layout;
+    }.
+    
+    #[refine] Global Instance ℐ :
+      ink_storage_traits.layout.StorageLayout.Trait Self := {
+      ink_storage_traits.layout.StorageLayout.layout := layout;
+    }.
+    Admitted.
+  End Impl_ink_storage_traits_layout_StorageLayout_for_i128.
+  Global Hint Resolve ℐ : core.
 End Impl_ink_storage_traits_layout_StorageLayout_for_i128.
 
 Module Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_.
   Section Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_.
+    Context `{ℋ : State.Trait}.
+    
     Context {A : Set}.
-    Context `{ink_storage_traits.layout.StorageLayout.Trait A}.
-    Definition Self := A.
+    
+    Context {ℋ_0 : ink_storage_traits.layout.StorageLayout.Trait A}.
+    Definition Self : Set := A.
     
     Parameter layout :
-        forall `{H' : State.Trait},
-        (ref ink_primitives.key.Key) ->
-          M (H := H')
-            (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
+        (ref ltac:(ink_primitives.key.Key)) ->
+          M (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
     
-    Global Instance AssociatedFunction_layout `{H' : State.Trait} :
+    Global Instance AssociatedFunction_layout :
       Notation.DoubleColon Self "layout" := {
       Notation.double_colon := layout;
     }.
     
-    Global Instance I' : ink_storage_traits.layout.StorageLayout.Trait Self := {
-      ink_storage_traits.layout.StorageLayout.layout `{H' : State.Trait}
-        :=
-        layout;
+    #[refine] Global Instance ℐ :
+      ink_storage_traits.layout.StorageLayout.Trait Self := {
+      ink_storage_traits.layout.StorageLayout.layout := layout;
     }.
+    Admitted.
   End Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_.
-  Global Hint Resolve I' : core.
+  Global Hint Resolve ℐ : core.
 End Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_.
 
 Module Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_.
   Section Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_.
+    Context `{ℋ : State.Trait}.
+    
     Context {A B : Set}.
+    
     Context
-      `{ink_storage_traits.layout.StorageLayout.Trait A}
-      `{ink_storage_traits.layout.StorageLayout.Trait B}.
-    Definition Self := A * B.
+      {ℋ_0 : ink_storage_traits.layout.StorageLayout.Trait A}
+      {ℋ_1 : ink_storage_traits.layout.StorageLayout.Trait B}.
+    Definition Self : Set := A * B.
     
     Parameter layout :
-        forall `{H' : State.Trait},
-        (ref ink_primitives.key.Key) ->
-          M (H := H')
-            (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
+        (ref ltac:(ink_primitives.key.Key)) ->
+          M (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
     
-    Global Instance AssociatedFunction_layout `{H' : State.Trait} :
+    Global Instance AssociatedFunction_layout :
       Notation.DoubleColon Self "layout" := {
       Notation.double_colon := layout;
     }.
     
-    Global Instance I' : ink_storage_traits.layout.StorageLayout.Trait Self := {
-      ink_storage_traits.layout.StorageLayout.layout `{H' : State.Trait}
-        :=
-        layout;
+    #[refine] Global Instance ℐ :
+      ink_storage_traits.layout.StorageLayout.Trait Self := {
+      ink_storage_traits.layout.StorageLayout.layout := layout;
     }.
+    Admitted.
   End Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_.
-  Global Hint Resolve I' : core.
+  Global Hint Resolve ℐ : core.
 End Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_.
 
 Module Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_.
   Section Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_.
+    Context `{ℋ : State.Trait}.
+    
     Context {A B C : Set}.
+    
     Context
-      `{ink_storage_traits.layout.StorageLayout.Trait A}
-      `{ink_storage_traits.layout.StorageLayout.Trait B}
-      `{ink_storage_traits.layout.StorageLayout.Trait C}.
-    Definition Self := (A * B) * C.
+      {ℋ_0 : ink_storage_traits.layout.StorageLayout.Trait A}
+      {ℋ_1 : ink_storage_traits.layout.StorageLayout.Trait B}
+      {ℋ_2 : ink_storage_traits.layout.StorageLayout.Trait C}.
+    Definition Self : Set := (A * B) * C.
     
     Parameter layout :
-        forall `{H' : State.Trait},
-        (ref ink_primitives.key.Key) ->
-          M (H := H')
-            (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
+        (ref ltac:(ink_primitives.key.Key)) ->
+          M (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
     
-    Global Instance AssociatedFunction_layout `{H' : State.Trait} :
+    Global Instance AssociatedFunction_layout :
       Notation.DoubleColon Self "layout" := {
       Notation.double_colon := layout;
     }.
     
-    Global Instance I' : ink_storage_traits.layout.StorageLayout.Trait Self := {
-      ink_storage_traits.layout.StorageLayout.layout `{H' : State.Trait}
-        :=
-        layout;
+    #[refine] Global Instance ℐ :
+      ink_storage_traits.layout.StorageLayout.Trait Self := {
+      ink_storage_traits.layout.StorageLayout.layout := layout;
     }.
+    Admitted.
   End Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_.
-  Global Hint Resolve I' : core.
+  Global Hint Resolve ℐ : core.
 End Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_.
 
 Module Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_.
   Section Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_.
+    Context `{ℋ : State.Trait}.
+    
     Context {A B C D : Set}.
+    
     Context
-      `{ink_storage_traits.layout.StorageLayout.Trait A}
-      `{ink_storage_traits.layout.StorageLayout.Trait B}
-      `{ink_storage_traits.layout.StorageLayout.Trait C}
-      `{ink_storage_traits.layout.StorageLayout.Trait D}.
-    Definition Self := ((A * B) * C) * D.
+      {ℋ_0 : ink_storage_traits.layout.StorageLayout.Trait A}
+      {ℋ_1 : ink_storage_traits.layout.StorageLayout.Trait B}
+      {ℋ_2 : ink_storage_traits.layout.StorageLayout.Trait C}
+      {ℋ_3 : ink_storage_traits.layout.StorageLayout.Trait D}.
+    Definition Self : Set := ((A * B) * C) * D.
     
     Parameter layout :
-        forall `{H' : State.Trait},
-        (ref ink_primitives.key.Key) ->
-          M (H := H')
-            (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
+        (ref ltac:(ink_primitives.key.Key)) ->
+          M (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
     
-    Global Instance AssociatedFunction_layout `{H' : State.Trait} :
+    Global Instance AssociatedFunction_layout :
       Notation.DoubleColon Self "layout" := {
       Notation.double_colon := layout;
     }.
     
-    Global Instance I' : ink_storage_traits.layout.StorageLayout.Trait Self := {
-      ink_storage_traits.layout.StorageLayout.layout `{H' : State.Trait}
-        :=
-        layout;
+    #[refine] Global Instance ℐ :
+      ink_storage_traits.layout.StorageLayout.Trait Self := {
+      ink_storage_traits.layout.StorageLayout.layout := layout;
     }.
+    Admitted.
   End Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_.
-  Global Hint Resolve I' : core.
+  Global Hint Resolve ℐ : core.
 End Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_.
 
 Module Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_E_.
   Section Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_E_.
+    Context `{ℋ : State.Trait}.
+    
     Context {A B C D E : Set}.
+    
     Context
-      `{ink_storage_traits.layout.StorageLayout.Trait A}
-      `{ink_storage_traits.layout.StorageLayout.Trait B}
-      `{ink_storage_traits.layout.StorageLayout.Trait C}
-      `{ink_storage_traits.layout.StorageLayout.Trait D}
-      `{ink_storage_traits.layout.StorageLayout.Trait E}.
-    Definition Self := (((A * B) * C) * D) * E.
+      {ℋ_0 : ink_storage_traits.layout.StorageLayout.Trait A}
+      {ℋ_1 : ink_storage_traits.layout.StorageLayout.Trait B}
+      {ℋ_2 : ink_storage_traits.layout.StorageLayout.Trait C}
+      {ℋ_3 : ink_storage_traits.layout.StorageLayout.Trait D}
+      {ℋ_4 : ink_storage_traits.layout.StorageLayout.Trait E}.
+    Definition Self : Set := (((A * B) * C) * D) * E.
     
     Parameter layout :
-        forall `{H' : State.Trait},
-        (ref ink_primitives.key.Key) ->
-          M (H := H')
-            (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
+        (ref ltac:(ink_primitives.key.Key)) ->
+          M (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
     
-    Global Instance AssociatedFunction_layout `{H' : State.Trait} :
+    Global Instance AssociatedFunction_layout :
       Notation.DoubleColon Self "layout" := {
       Notation.double_colon := layout;
     }.
     
-    Global Instance I' : ink_storage_traits.layout.StorageLayout.Trait Self := {
-      ink_storage_traits.layout.StorageLayout.layout `{H' : State.Trait}
-        :=
-        layout;
+    #[refine] Global Instance ℐ :
+      ink_storage_traits.layout.StorageLayout.Trait Self := {
+      ink_storage_traits.layout.StorageLayout.layout := layout;
     }.
+    Admitted.
   End Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_E_.
-  Global Hint Resolve I' : core.
+  Global Hint Resolve ℐ : core.
 End Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_E_.
 
 Module Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_E_F_.
   Section Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_E_F_.
+    Context `{ℋ : State.Trait}.
+    
     Context {A B C D E F : Set}.
+    
     Context
-      `{ink_storage_traits.layout.StorageLayout.Trait A}
-      `{ink_storage_traits.layout.StorageLayout.Trait B}
-      `{ink_storage_traits.layout.StorageLayout.Trait C}
-      `{ink_storage_traits.layout.StorageLayout.Trait D}
-      `{ink_storage_traits.layout.StorageLayout.Trait E}
-      `{ink_storage_traits.layout.StorageLayout.Trait F}.
-    Definition Self := ((((A * B) * C) * D) * E) * F.
+      {ℋ_0 : ink_storage_traits.layout.StorageLayout.Trait A}
+      {ℋ_1 : ink_storage_traits.layout.StorageLayout.Trait B}
+      {ℋ_2 : ink_storage_traits.layout.StorageLayout.Trait C}
+      {ℋ_3 : ink_storage_traits.layout.StorageLayout.Trait D}
+      {ℋ_4 : ink_storage_traits.layout.StorageLayout.Trait E}
+      {ℋ_5 : ink_storage_traits.layout.StorageLayout.Trait F}.
+    Definition Self : Set := ((((A * B) * C) * D) * E) * F.
     
     Parameter layout :
-        forall `{H' : State.Trait},
-        (ref ink_primitives.key.Key) ->
-          M (H := H')
-            (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
+        (ref ltac:(ink_primitives.key.Key)) ->
+          M (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
     
-    Global Instance AssociatedFunction_layout `{H' : State.Trait} :
+    Global Instance AssociatedFunction_layout :
       Notation.DoubleColon Self "layout" := {
       Notation.double_colon := layout;
     }.
     
-    Global Instance I' : ink_storage_traits.layout.StorageLayout.Trait Self := {
-      ink_storage_traits.layout.StorageLayout.layout `{H' : State.Trait}
-        :=
-        layout;
+    #[refine] Global Instance ℐ :
+      ink_storage_traits.layout.StorageLayout.Trait Self := {
+      ink_storage_traits.layout.StorageLayout.layout := layout;
     }.
+    Admitted.
   End Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_E_F_.
-  Global Hint Resolve I' : core.
+  Global Hint Resolve ℐ : core.
 End Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_E_F_.
 
 Module Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_E_F_G_.
   Section Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_E_F_G_.
+    Context `{ℋ : State.Trait}.
+    
     Context {A B C D E F G : Set}.
+    
     Context
-      `{ink_storage_traits.layout.StorageLayout.Trait A}
-      `{ink_storage_traits.layout.StorageLayout.Trait B}
-      `{ink_storage_traits.layout.StorageLayout.Trait C}
-      `{ink_storage_traits.layout.StorageLayout.Trait D}
-      `{ink_storage_traits.layout.StorageLayout.Trait E}
-      `{ink_storage_traits.layout.StorageLayout.Trait F}
-      `{ink_storage_traits.layout.StorageLayout.Trait G}.
-    Definition Self := (((((A * B) * C) * D) * E) * F) * G.
+      {ℋ_0 : ink_storage_traits.layout.StorageLayout.Trait A}
+      {ℋ_1 : ink_storage_traits.layout.StorageLayout.Trait B}
+      {ℋ_2 : ink_storage_traits.layout.StorageLayout.Trait C}
+      {ℋ_3 : ink_storage_traits.layout.StorageLayout.Trait D}
+      {ℋ_4 : ink_storage_traits.layout.StorageLayout.Trait E}
+      {ℋ_5 : ink_storage_traits.layout.StorageLayout.Trait F}
+      {ℋ_6 : ink_storage_traits.layout.StorageLayout.Trait G}.
+    Definition Self : Set := (((((A * B) * C) * D) * E) * F) * G.
     
     Parameter layout :
-        forall `{H' : State.Trait},
-        (ref ink_primitives.key.Key) ->
-          M (H := H')
-            (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
+        (ref ltac:(ink_primitives.key.Key)) ->
+          M (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
     
-    Global Instance AssociatedFunction_layout `{H' : State.Trait} :
+    Global Instance AssociatedFunction_layout :
       Notation.DoubleColon Self "layout" := {
       Notation.double_colon := layout;
     }.
     
-    Global Instance I' : ink_storage_traits.layout.StorageLayout.Trait Self := {
-      ink_storage_traits.layout.StorageLayout.layout `{H' : State.Trait}
-        :=
-        layout;
+    #[refine] Global Instance ℐ :
+      ink_storage_traits.layout.StorageLayout.Trait Self := {
+      ink_storage_traits.layout.StorageLayout.layout := layout;
     }.
+    Admitted.
   End Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_E_F_G_.
-  Global Hint Resolve I' : core.
+  Global Hint Resolve ℐ : core.
 End Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_E_F_G_.
 
 Module Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_E_F_G_H_.
   Section
     Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_E_F_G_H_.
+    Context `{ℋ : State.Trait}.
+    
     Context {A B C D E F G H : Set}.
+    
     Context
-      `{ink_storage_traits.layout.StorageLayout.Trait A}
-      `{ink_storage_traits.layout.StorageLayout.Trait B}
-      `{ink_storage_traits.layout.StorageLayout.Trait C}
-      `{ink_storage_traits.layout.StorageLayout.Trait D}
-      `{ink_storage_traits.layout.StorageLayout.Trait E}
-      `{ink_storage_traits.layout.StorageLayout.Trait F}
-      `{ink_storage_traits.layout.StorageLayout.Trait G}
-      `{ink_storage_traits.layout.StorageLayout.Trait H}.
-    Definition Self := ((((((A * B) * C) * D) * E) * F) * G) * H.
+      {ℋ_0 : ink_storage_traits.layout.StorageLayout.Trait A}
+      {ℋ_1 : ink_storage_traits.layout.StorageLayout.Trait B}
+      {ℋ_2 : ink_storage_traits.layout.StorageLayout.Trait C}
+      {ℋ_3 : ink_storage_traits.layout.StorageLayout.Trait D}
+      {ℋ_4 : ink_storage_traits.layout.StorageLayout.Trait E}
+      {ℋ_5 : ink_storage_traits.layout.StorageLayout.Trait F}
+      {ℋ_6 : ink_storage_traits.layout.StorageLayout.Trait G}
+      {ℋ_7 : ink_storage_traits.layout.StorageLayout.Trait H}.
+    Definition Self : Set := ((((((A * B) * C) * D) * E) * F) * G) * H.
     
     Parameter layout :
-        forall `{H' : State.Trait},
-        (ref ink_primitives.key.Key) ->
-          M (H := H')
-            (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
+        (ref ltac:(ink_primitives.key.Key)) ->
+          M (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
     
-    Global Instance AssociatedFunction_layout `{H' : State.Trait} :
+    Global Instance AssociatedFunction_layout :
       Notation.DoubleColon Self "layout" := {
       Notation.double_colon := layout;
     }.
     
-    Global Instance I' : ink_storage_traits.layout.StorageLayout.Trait Self := {
-      ink_storage_traits.layout.StorageLayout.layout `{H' : State.Trait}
-        :=
-        layout;
+    #[refine] Global Instance ℐ :
+      ink_storage_traits.layout.StorageLayout.Trait Self := {
+      ink_storage_traits.layout.StorageLayout.layout := layout;
     }.
+    Admitted.
   End Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_E_F_G_H_.
-  Global Hint Resolve I' : core.
+  Global Hint Resolve ℐ : core.
 End Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_E_F_G_H_.
 
 Module
   Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_E_F_G_H_I_.
   Section
     Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_E_F_G_H_I_.
+    Context `{ℋ : State.Trait}.
+    
     Context {A B C D E F G H I : Set}.
+    
     Context
-      `{ink_storage_traits.layout.StorageLayout.Trait A}
-      `{ink_storage_traits.layout.StorageLayout.Trait B}
-      `{ink_storage_traits.layout.StorageLayout.Trait C}
-      `{ink_storage_traits.layout.StorageLayout.Trait D}
-      `{ink_storage_traits.layout.StorageLayout.Trait E}
-      `{ink_storage_traits.layout.StorageLayout.Trait F}
-      `{ink_storage_traits.layout.StorageLayout.Trait G}
-      `{ink_storage_traits.layout.StorageLayout.Trait H}
-      `{ink_storage_traits.layout.StorageLayout.Trait I}.
-    Definition Self := (((((((A * B) * C) * D) * E) * F) * G) * H) * I.
+      {ℋ_0 : ink_storage_traits.layout.StorageLayout.Trait A}
+      {ℋ_1 : ink_storage_traits.layout.StorageLayout.Trait B}
+      {ℋ_2 : ink_storage_traits.layout.StorageLayout.Trait C}
+      {ℋ_3 : ink_storage_traits.layout.StorageLayout.Trait D}
+      {ℋ_4 : ink_storage_traits.layout.StorageLayout.Trait E}
+      {ℋ_5 : ink_storage_traits.layout.StorageLayout.Trait F}
+      {ℋ_6 : ink_storage_traits.layout.StorageLayout.Trait G}
+      {ℋ_7 : ink_storage_traits.layout.StorageLayout.Trait H}
+      {ℋ_8 : ink_storage_traits.layout.StorageLayout.Trait I}.
+    Definition Self : Set := (((((((A * B) * C) * D) * E) * F) * G) * H) * I.
     
     Parameter layout :
-        forall `{H' : State.Trait},
-        (ref ink_primitives.key.Key) ->
-          M (H := H')
-            (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
+        (ref ltac:(ink_primitives.key.Key)) ->
+          M (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
     
-    Global Instance AssociatedFunction_layout `{H' : State.Trait} :
+    Global Instance AssociatedFunction_layout :
       Notation.DoubleColon Self "layout" := {
       Notation.double_colon := layout;
     }.
     
-    Global Instance I' : ink_storage_traits.layout.StorageLayout.Trait Self := {
-      ink_storage_traits.layout.StorageLayout.layout `{H' : State.Trait}
-        :=
-        layout;
+    #[refine] Global Instance ℐ :
+      ink_storage_traits.layout.StorageLayout.Trait Self := {
+      ink_storage_traits.layout.StorageLayout.layout := layout;
     }.
+    Admitted.
   End Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_E_F_G_H_I_.
-  Global Hint Resolve I' : core.
+  Global Hint Resolve ℐ : core.
 End Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_E_F_G_H_I_.
 
 Module
   Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_E_F_G_H_I_J_.
   Section
     Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_E_F_G_H_I_J_.
+    Context `{ℋ : State.Trait}.
+    
     Context {A B C D E F G H I J : Set}.
+    
     Context
-      `{ink_storage_traits.layout.StorageLayout.Trait A}
-      `{ink_storage_traits.layout.StorageLayout.Trait B}
-      `{ink_storage_traits.layout.StorageLayout.Trait C}
-      `{ink_storage_traits.layout.StorageLayout.Trait D}
-      `{ink_storage_traits.layout.StorageLayout.Trait E}
-      `{ink_storage_traits.layout.StorageLayout.Trait F}
-      `{ink_storage_traits.layout.StorageLayout.Trait G}
-      `{ink_storage_traits.layout.StorageLayout.Trait H}
-      `{ink_storage_traits.layout.StorageLayout.Trait I}
-      `{ink_storage_traits.layout.StorageLayout.Trait J}.
-    Definition Self := ((((((((A * B) * C) * D) * E) * F) * G) * H) * I) * J.
+      {ℋ_0 : ink_storage_traits.layout.StorageLayout.Trait A}
+      {ℋ_1 : ink_storage_traits.layout.StorageLayout.Trait B}
+      {ℋ_2 : ink_storage_traits.layout.StorageLayout.Trait C}
+      {ℋ_3 : ink_storage_traits.layout.StorageLayout.Trait D}
+      {ℋ_4 : ink_storage_traits.layout.StorageLayout.Trait E}
+      {ℋ_5 : ink_storage_traits.layout.StorageLayout.Trait F}
+      {ℋ_6 : ink_storage_traits.layout.StorageLayout.Trait G}
+      {ℋ_7 : ink_storage_traits.layout.StorageLayout.Trait H}
+      {ℋ_8 : ink_storage_traits.layout.StorageLayout.Trait I}
+      {ℋ_9 : ink_storage_traits.layout.StorageLayout.Trait J}.
+    Definition Self : Set :=
+      ((((((((A * B) * C) * D) * E) * F) * G) * H) * I) * J.
     
     Parameter layout :
-        forall `{H' : State.Trait},
-        (ref ink_primitives.key.Key) ->
-          M (H := H')
-            (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
+        (ref ltac:(ink_primitives.key.Key)) ->
+          M (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
     
-    Global Instance AssociatedFunction_layout `{H' : State.Trait} :
+    Global Instance AssociatedFunction_layout :
       Notation.DoubleColon Self "layout" := {
       Notation.double_colon := layout;
     }.
     
-    Global Instance I' : ink_storage_traits.layout.StorageLayout.Trait Self := {
-      ink_storage_traits.layout.StorageLayout.layout `{H' : State.Trait}
-        :=
-        layout;
+    #[refine] Global Instance ℐ :
+      ink_storage_traits.layout.StorageLayout.Trait Self := {
+      ink_storage_traits.layout.StorageLayout.layout := layout;
     }.
+    Admitted.
   End
     Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_E_F_G_H_I_J_.
-  Global Hint Resolve I' : core.
+  Global Hint Resolve ℐ : core.
 End Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_E_F_G_H_I_J_.
 
 Module Impl_ink_storage_traits_layout_StorageLayout_for_Array_T.
   Section Impl_ink_storage_traits_layout_StorageLayout_for_Array_T.
+    Context `{ℋ : State.Trait}.
+    
     Context {T : Set}.
+    
     Context
-      `{ink_storage_traits.layout.StorageLayout.Trait T}
-      `{ink_storage_traits.storage.Packed.Trait T}.
-    Definition Self := list T.
+      {ℋ_0 : ink_storage_traits.layout.StorageLayout.Trait T}
+      {ℋ_1 : ink_storage_traits.storage.Packed.Trait T}.
+    Definition Self : Set := array T.
     
     Parameter layout :
-        forall `{H' : State.Trait},
-        (ref ink_primitives.key.Key) ->
-          M (H := H')
-            (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
+        (ref ltac:(ink_primitives.key.Key)) ->
+          M (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
     
-    Global Instance AssociatedFunction_layout `{H' : State.Trait} :
+    Global Instance AssociatedFunction_layout :
       Notation.DoubleColon Self "layout" := {
       Notation.double_colon := layout;
     }.
     
-    Global Instance I' : ink_storage_traits.layout.StorageLayout.Trait Self := {
-      ink_storage_traits.layout.StorageLayout.layout `{H' : State.Trait}
-        :=
-        layout;
+    #[refine] Global Instance ℐ :
+      ink_storage_traits.layout.StorageLayout.Trait Self := {
+      ink_storage_traits.layout.StorageLayout.layout := layout;
     }.
+    Admitted.
   End Impl_ink_storage_traits_layout_StorageLayout_for_Array_T.
-  Global Hint Resolve I' : core.
+  Global Hint Resolve ℐ : core.
 End Impl_ink_storage_traits_layout_StorageLayout_for_Array_T.
 
 Module
   Impl_ink_storage_traits_layout_StorageLayout_for_alloc_boxed_Box_T_alloc_boxed_Box_Default_A.
   Section
     Impl_ink_storage_traits_layout_StorageLayout_for_alloc_boxed_Box_T_alloc_boxed_Box_Default_A.
+    Context `{ℋ : State.Trait}.
+    
     Context {T : Set}.
-    Context `{ink_storage_traits.layout.StorageLayout.Trait T}.
-    Definition Self := alloc.boxed.Box T alloc.boxed.Box.Default.A.
+    
+    Context {ℋ_0 : ink_storage_traits.layout.StorageLayout.Trait T}.
+    Definition Self : Set := alloc.boxed.Box T alloc.boxed.Box.Default.A.
     
     Parameter layout :
-        forall `{H' : State.Trait},
-        (ref ink_primitives.key.Key) ->
-          M (H := H')
-            (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
+        (ref ltac:(ink_primitives.key.Key)) ->
+          M (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
     
-    Global Instance AssociatedFunction_layout `{H' : State.Trait} :
+    Global Instance AssociatedFunction_layout :
       Notation.DoubleColon Self "layout" := {
       Notation.double_colon := layout;
     }.
     
-    Global Instance I' : ink_storage_traits.layout.StorageLayout.Trait Self := {
-      ink_storage_traits.layout.StorageLayout.layout `{H' : State.Trait}
-        :=
-        layout;
+    #[refine] Global Instance ℐ :
+      ink_storage_traits.layout.StorageLayout.Trait Self := {
+      ink_storage_traits.layout.StorageLayout.layout := layout;
     }.
+    Admitted.
   End
     Impl_ink_storage_traits_layout_StorageLayout_for_alloc_boxed_Box_T_alloc_boxed_Box_Default_A.
-  Global Hint Resolve I' : core.
+  Global Hint Resolve ℐ : core.
 End
   Impl_ink_storage_traits_layout_StorageLayout_for_alloc_boxed_Box_T_alloc_boxed_Box_Default_A.
 
 Module Impl_ink_storage_traits_layout_StorageLayout_for_core_option_Option_T.
   Section Impl_ink_storage_traits_layout_StorageLayout_for_core_option_Option_T.
+    Context `{ℋ : State.Trait}.
+    
     Context {T : Set}.
-    Context `{ink_storage_traits.layout.StorageLayout.Trait T}.
-    Definition Self := core.option.Option T.
+    
+    Context {ℋ_0 : ink_storage_traits.layout.StorageLayout.Trait T}.
+    Definition Self : Set := core.option.Option T.
     
     Parameter layout :
-        forall `{H' : State.Trait},
-        (ref ink_primitives.key.Key) ->
-          M (H := H')
-            (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
+        (ref ltac:(ink_primitives.key.Key)) ->
+          M (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
     
-    Global Instance AssociatedFunction_layout `{H' : State.Trait} :
+    Global Instance AssociatedFunction_layout :
       Notation.DoubleColon Self "layout" := {
       Notation.double_colon := layout;
     }.
     
-    Global Instance I' : ink_storage_traits.layout.StorageLayout.Trait Self := {
-      ink_storage_traits.layout.StorageLayout.layout `{H' : State.Trait}
-        :=
-        layout;
+    #[refine] Global Instance ℐ :
+      ink_storage_traits.layout.StorageLayout.Trait Self := {
+      ink_storage_traits.layout.StorageLayout.layout := layout;
     }.
+    Admitted.
   End Impl_ink_storage_traits_layout_StorageLayout_for_core_option_Option_T.
-  Global Hint Resolve I' : core.
+  Global Hint Resolve ℐ : core.
 End Impl_ink_storage_traits_layout_StorageLayout_for_core_option_Option_T.
 
 Module Impl_ink_storage_traits_layout_StorageLayout_for_core_result_Result_T_E.
   Section
     Impl_ink_storage_traits_layout_StorageLayout_for_core_result_Result_T_E.
+    Context `{ℋ : State.Trait}.
+    
     Context {T E : Set}.
+    
     Context
-      `{ink_storage_traits.layout.StorageLayout.Trait T}
-      `{ink_storage_traits.layout.StorageLayout.Trait E}.
-    Definition Self := core.result.Result T E.
+      {ℋ_0 : ink_storage_traits.layout.StorageLayout.Trait T}
+      {ℋ_1 : ink_storage_traits.layout.StorageLayout.Trait E}.
+    Definition Self : Set := core.result.Result T E.
     
     Parameter layout :
-        forall `{H' : State.Trait},
-        (ref ink_primitives.key.Key) ->
-          M (H := H')
-            (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
+        (ref ltac:(ink_primitives.key.Key)) ->
+          M (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
     
-    Global Instance AssociatedFunction_layout `{H' : State.Trait} :
+    Global Instance AssociatedFunction_layout :
       Notation.DoubleColon Self "layout" := {
       Notation.double_colon := layout;
     }.
     
-    Global Instance I' : ink_storage_traits.layout.StorageLayout.Trait Self := {
-      ink_storage_traits.layout.StorageLayout.layout `{H' : State.Trait}
-        :=
-        layout;
+    #[refine] Global Instance ℐ :
+      ink_storage_traits.layout.StorageLayout.Trait Self := {
+      ink_storage_traits.layout.StorageLayout.layout := layout;
     }.
+    Admitted.
   End Impl_ink_storage_traits_layout_StorageLayout_for_core_result_Result_T_E.
-  Global Hint Resolve I' : core.
+  Global Hint Resolve ℐ : core.
 End Impl_ink_storage_traits_layout_StorageLayout_for_core_result_Result_T_E.
 
 Module
   Impl_ink_storage_traits_layout_StorageLayout_for_alloc_vec_Vec_T_alloc_vec_Vec_Default_A.
   Section
     Impl_ink_storage_traits_layout_StorageLayout_for_alloc_vec_Vec_T_alloc_vec_Vec_Default_A.
+    Context `{ℋ : State.Trait}.
+    
     Context {T : Set}.
+    
     Context
-      `{scale_info.TypeInfo.Trait T}
-      `{ink_storage_traits.storage.Packed.Trait T}.
-    Definition Self := alloc.vec.Vec T alloc.vec.Vec.Default.A.
+      {ℋ_0 : scale_info.TypeInfo.Trait T}
+      {ℋ_1 : ink_storage_traits.storage.Packed.Trait T}.
+    Definition Self : Set := alloc.vec.Vec T alloc.vec.Vec.Default.A.
     
     Parameter layout :
-        forall `{H' : State.Trait},
-        (ref ink_primitives.key.Key) ->
-          M (H := H')
-            (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
+        (ref ltac:(ink_primitives.key.Key)) ->
+          M (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
     
-    Global Instance AssociatedFunction_layout `{H' : State.Trait} :
+    Global Instance AssociatedFunction_layout :
       Notation.DoubleColon Self "layout" := {
       Notation.double_colon := layout;
     }.
     
-    Global Instance I' : ink_storage_traits.layout.StorageLayout.Trait Self := {
-      ink_storage_traits.layout.StorageLayout.layout `{H' : State.Trait}
-        :=
-        layout;
+    #[refine] Global Instance ℐ :
+      ink_storage_traits.layout.StorageLayout.Trait Self := {
+      ink_storage_traits.layout.StorageLayout.layout := layout;
     }.
+    Admitted.
   End
     Impl_ink_storage_traits_layout_StorageLayout_for_alloc_vec_Vec_T_alloc_vec_Vec_Default_A.
-  Global Hint Resolve I' : core.
+  Global Hint Resolve ℐ : core.
 End
   Impl_ink_storage_traits_layout_StorageLayout_for_alloc_vec_Vec_T_alloc_vec_Vec_Default_A.
 
-(* Module Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map_BTreeMap_K_V_alloc_collections_btree_map_BTreeMap_Default_A.
-  (* Section Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map_BTreeMap_K_V_alloc_collections_btree_map_BTreeMap_Default_A.
+Module
+  Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map_BTreeMap_K_V_alloc_collections_btree_map_BTreeMap_Default_A.
+  Section
+    Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map_BTreeMap_K_V_alloc_collections_btree_map_BTreeMap_Default_A.
+    Context `{ℋ : State.Trait}.
+    
     Context {K V : Set}.
+    
     Context
-      `{scale_info.TypeInfo.Trait K}
-      `{ink_storage_traits.storage.Packed.Trait K}
-      `{scale_info.TypeInfo.Trait V}
-      `{ink_storage_traits.storage.Packed.Trait V}.
-    Definition Self :=
+      {ℋ_0 : scale_info.TypeInfo.Trait K}
+      {ℋ_1 : ink_storage_traits.storage.Packed.Trait K}
+      {ℋ_2 : scale_info.TypeInfo.Trait V}
+      {ℋ_3 : ink_storage_traits.storage.Packed.Trait V}.
+    Definition Self : Set :=
       alloc.collections.btree.map.BTreeMap
         K
         V
         alloc.collections.btree.map.BTreeMap.Default.A.
     
     Parameter layout :
-        forall `{H' : State.Trait},
-        (ref ink_primitives.key.Key) ->
-          M (H := H')
-            (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
+        (ref ltac:(ink_primitives.key.Key)) ->
+          M (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
     
-    Global Instance AssociatedFunction_layout `{H' : State.Trait} :
+    Global Instance AssociatedFunction_layout :
       Notation.DoubleColon Self "layout" := {
       Notation.double_colon := layout;
     }.
     
-    Global Instance I' : ink_storage_traits.layout.StorageLayout.Trait Self := {
-      ink_storage_traits.layout.StorageLayout.layout `{H' : State.Trait}
-        :=
-        layout;
+    #[refine] Global Instance ℐ :
+      ink_storage_traits.layout.StorageLayout.Trait Self := {
+      ink_storage_traits.layout.StorageLayout.layout := layout;
     }.
-  End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map_BTreeMap_K_V_alloc_collections_btree_map_BTreeMap_Default_A. *)
-  Global Hint Resolve I' : core.
-End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map_BTreeMap_K_V_alloc_collections_btree_map_BTreeMap_Default_A. *)
+    Admitted.
+  End
+    Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map_BTreeMap_K_V_alloc_collections_btree_map_BTreeMap_Default_A.
+  Global Hint Resolve ℐ : core.
+End
+  Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map_BTreeMap_K_V_alloc_collections_btree_map_BTreeMap_Default_A.
 
-(* Module Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set_BTreeSet_T_alloc_collections_btree_set_BTreeSet_Default_A.
-  (* Section Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set_BTreeSet_T_alloc_collections_btree_set_BTreeSet_Default_A.
+Module
+  Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set_BTreeSet_T_alloc_collections_btree_set_BTreeSet_Default_A.
+  Section
+    Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set_BTreeSet_T_alloc_collections_btree_set_BTreeSet_Default_A.
+    Context `{ℋ : State.Trait}.
+    
     Context {T : Set}.
+    
     Context
-      `{scale_info.TypeInfo.Trait T}
-      `{ink_storage_traits.storage.Packed.Trait T}.
-    Definition Self :=
+      {ℋ_0 : scale_info.TypeInfo.Trait T}
+      {ℋ_1 : ink_storage_traits.storage.Packed.Trait T}.
+    Definition Self : Set :=
       alloc.collections.btree.set.BTreeSet
         T
         alloc.collections.btree.set.BTreeSet.Default.A.
     
     Parameter layout :
-        forall `{H' : State.Trait},
-        (ref ink_primitives.key.Key) ->
-          M (H := H')
-            (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
+        (ref ltac:(ink_primitives.key.Key)) ->
+          M (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
     
-    Global Instance AssociatedFunction_layout `{H' : State.Trait} :
+    Global Instance AssociatedFunction_layout :
       Notation.DoubleColon Self "layout" := {
       Notation.double_colon := layout;
     }.
     
-    Global Instance I' : ink_storage_traits.layout.StorageLayout.Trait Self := {
-      ink_storage_traits.layout.StorageLayout.layout `{H' : State.Trait}
-        :=
-        layout;
+    #[refine] Global Instance ℐ :
+      ink_storage_traits.layout.StorageLayout.Trait Self := {
+      ink_storage_traits.layout.StorageLayout.layout := layout;
     }.
-  End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set_BTreeSet_T_alloc_collections_btree_set_BTreeSet_Default_A. *)
-  Global Hint Resolve I' : core.
-End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set_BTreeSet_T_alloc_collections_btree_set_BTreeSet_Default_A. *)
+    Admitted.
+  End
+    Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set_BTreeSet_T_alloc_collections_btree_set_BTreeSet_Default_A.
+  Global Hint Resolve ℐ : core.
+End
+  Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set_BTreeSet_T_alloc_collections_btree_set_BTreeSet_Default_A.
 
-(* Module Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_vec_deque_VecDeque_T_alloc_collections_vec_deque_VecDeque_Default_A.
-  (* Section Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_vec_deque_VecDeque_T_alloc_collections_vec_deque_VecDeque_Default_A.
+Module
+  Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_vec_deque_VecDeque_T_alloc_collections_vec_deque_VecDeque_Default_A.
+  Section
+    Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_vec_deque_VecDeque_T_alloc_collections_vec_deque_VecDeque_Default_A.
+    Context `{ℋ : State.Trait}.
+    
     Context {T : Set}.
+    
     Context
-      `{scale_info.TypeInfo.Trait T}
-      `{ink_storage_traits.storage.Packed.Trait T}.
-    Definition Self :=
+      {ℋ_0 : scale_info.TypeInfo.Trait T}
+      {ℋ_1 : ink_storage_traits.storage.Packed.Trait T}.
+    Definition Self : Set :=
       alloc.collections.vec_deque.VecDeque
         T
         alloc.collections.vec_deque.VecDeque.Default.A.
     
     Parameter layout :
-        forall `{H' : State.Trait},
-        (ref ink_primitives.key.Key) ->
-          M (H := H')
-            (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
+        (ref ltac:(ink_primitives.key.Key)) ->
+          M (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
     
-    Global Instance AssociatedFunction_layout `{H' : State.Trait} :
+    Global Instance AssociatedFunction_layout :
       Notation.DoubleColon Self "layout" := {
       Notation.double_colon := layout;
     }.
     
-    Global Instance I' : ink_storage_traits.layout.StorageLayout.Trait Self := {
-      ink_storage_traits.layout.StorageLayout.layout `{H' : State.Trait}
-        :=
-        layout;
+    #[refine] Global Instance ℐ :
+      ink_storage_traits.layout.StorageLayout.Trait Self := {
+      ink_storage_traits.layout.StorageLayout.layout := layout;
     }.
-  End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_vec_deque_VecDeque_T_alloc_collections_vec_deque_VecDeque_Default_A. *)
-  Global Hint Resolve I' : core.
-End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_vec_deque_VecDeque_T_alloc_collections_vec_deque_VecDeque_Default_A. *)
+    Admitted.
+  End
+    Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_vec_deque_VecDeque_T_alloc_collections_vec_deque_VecDeque_Default_A.
+  Global Hint Resolve ℐ : core.
+End
+  Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_vec_deque_VecDeque_T_alloc_collections_vec_deque_VecDeque_Default_A.
 
 Module StorageLayout.
-  Class Trait (Self : Set) : Type := {
-    layout `{H' : State.Trait}
-      :
-      (ref ink_primitives.key.Key) ->
-        M (H := H')
-          (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F);
-  }.
-  
-  Global Instance Method_layout `{H' : State.Trait} `(Trait)
-    : Notation.Dot "layout" := {
-    Notation.dot := layout;
-  }.
+  Section StorageLayout.
+    Context `{ℋ : State.Trait}.
+    
+    Class Trait (Self : Set) : Type := {
+      layout :
+        (ref ltac:(ink_primitives.key.Key)) ->
+          M (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F);
+    }.
+    
+  End StorageLayout.
 End StorageLayout.

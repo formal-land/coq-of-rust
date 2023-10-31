@@ -2,39 +2,40 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module PrintInOption.
-  Class Trait (Self : Set) : Type := {
-    print_in_option `{H' : State.Trait} : Self -> M (H := H') unit;
-  }.
-  
-  Global Instance Method_print_in_option `{H' : State.Trait} `(Trait)
-    : Notation.Dot "print_in_option" := {
-    Notation.dot := print_in_option;
-  }.
+  Section PrintInOption.
+    Context `{ℋ : State.Trait}.
+    
+    Class Trait (Self : Set) : Type := {
+      print_in_option : Self -> M unit;
+    }.
+    
+  End PrintInOption.
 End PrintInOption.
 
 Module Impl_generics_where_clauses_PrintInOption_for_T.
   Section Impl_generics_where_clauses_PrintInOption_for_T.
+    Context `{ℋ : State.Trait}.
+    
     Context {T : Set}.
-    Context `{core.fmt.Debug.Trait (core.option.Option T)}.
-    Definition Self := T.
     
-    Parameter print_in_option :
-        forall `{H' : State.Trait},
-        Self -> M (H := H') unit.
+    Context {ℋ_0 : core.fmt.Debug.Trait (core.option.Option T)}.
+    Definition Self : Set := T.
     
-    Global Instance Method_print_in_option `{H' : State.Trait} :
-      Notation.Dot "print_in_option" := {
-      Notation.dot := print_in_option;
+    Parameter print_in_option : Self -> M unit.
+    
+    Global Instance AssociatedFunction_print_in_option :
+      Notation.DoubleColon Self "print_in_option" := {
+      Notation.double_colon := print_in_option;
     }.
     
-    Global Instance I : generics_where_clauses.PrintInOption.Trait Self := {
-      generics_where_clauses.PrintInOption.print_in_option `{H' : State.Trait}
-        :=
-        print_in_option;
+    #[refine] Global Instance ℐ :
+      generics_where_clauses.PrintInOption.Trait Self := {
+      generics_where_clauses.PrintInOption.print_in_option := print_in_option;
     }.
+    Admitted.
   End Impl_generics_where_clauses_PrintInOption_for_T.
-  Global Hint Resolve I : core.
+  Global Hint Resolve ℐ : core.
 End Impl_generics_where_clauses_PrintInOption_for_T.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{H' : State.Trait}, M (H := H') unit.
+Parameter main : forall `{ℋ : State.Trait}, M unit.

@@ -2,12 +2,10 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Parameter checked_division :
-    forall `{H' : State.Trait},
-    i32 -> i32 -> M (H := H') (core.option.Option i32).
+    forall `{ℋ : State.Trait},
+    i32 -> i32 -> M (core.option.Option i32).
 
-Parameter try_division :
-    forall `{H' : State.Trait},
-    i32 -> i32 -> M (H := H') unit.
+Parameter try_division : forall `{ℋ : State.Trait}, i32 -> i32 -> M unit.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{H' : State.Trait}, M (H := H') unit.
+Parameter main : forall `{ℋ : State.Trait}, M unit.

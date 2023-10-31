@@ -2,6 +2,6 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{H' : State.Trait}, M (H := H') unit.
+Parameter main : forall `{ℋ : State.Trait}, M unit.
 
-Parameter sum_odd_numbers : forall `{H' : State.Trait}, u32 -> M (H := H') u32.
+Parameter sum_odd_numbers : forall `{ℋ : State.Trait}, u32 -> M u32.

@@ -2,70 +2,151 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
+Definition main `{ℋ : State.Trait} : M unit :=
   let* array :=
-    let* α0 := 2.["neg"] in
-    Pure [ 1; α0; 6 ] in
+    let* α0 := M.alloc 1 in
+    let* α1 := M.alloc (- 2) in
+    let* α2 := M.alloc 6 in
+    Pure [ α0; α1; α2 ] in
   match array with
-  | [0; second; third] =>
+  | [_; second; third] =>
     let* _ :=
-      let* α0 := format_argument::["new_display"] (addr_of second) in
-      let* α1 := format_argument::["new_display"] (addr_of third) in
-      let* α2 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "array[0] = 0, array[1] = "; ", array[2] = "; "
-" ])
-          (addr_of [ α0; α1 ]) in
-      std.io.stdio._print α2 in
-    Pure tt
-  | [1; _; third] =>
+      let* α0 :=
+        borrow
+          [
+            mk_str "array[0] = 0, array[1] = ";
+            mk_str ", array[2] = ";
+            mk_str "
+"
+          ]
+          (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow second i32 in
+      let* α5 := deref α4 i32 in
+      let* α6 := borrow α5 i32 in
+      let* α7 := core.fmt.rt.Argument::["new_display"] α6 in
+      let* α8 := borrow third i32 in
+      let* α9 := deref α8 i32 in
+      let* α10 := borrow α9 i32 in
+      let* α11 := core.fmt.rt.Argument::["new_display"] α10 in
+      let* α12 := borrow [ α7; α11 ] (list core.fmt.rt.Argument) in
+      let* α13 := deref α12 (list core.fmt.rt.Argument) in
+      let* α14 := borrow α13 (list core.fmt.rt.Argument) in
+      let* α15 := pointer_coercion "Unsize" α14 in
+      let* α16 := core.fmt.Arguments::["new_v1"] α3 α15 in
+      std.io.stdio._print α16 in
+    M.alloc tt
+  | [_; _; third] =>
     let* _ :=
-      let* α0 := format_argument::["new_display"] (addr_of third) in
-      let* α1 :=
-        format_arguments::["new_v1"]
-          (addr_of
-            [ "array[0] = 1, array[2] = "; " and array[1] was ignored
-" ])
-          (addr_of [ α0 ]) in
-      std.io.stdio._print α1 in
-    Pure tt
+      let* α0 :=
+        borrow
+          [
+            mk_str "array[0] = 1, array[2] = ";
+            mk_str " and array[1] was ignored
+"
+          ]
+          (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow third i32 in
+      let* α5 := deref α4 i32 in
+      let* α6 := borrow α5 i32 in
+      let* α7 := core.fmt.rt.Argument::["new_display"] α6 in
+      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+      let* α9 := deref α8 (list core.fmt.rt.Argument) in
+      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+      let* α11 := pointer_coercion "Unsize" α10 in
+      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+      std.io.stdio._print α12 in
+    M.alloc tt
   | (_:: second:: _) =>
     let* _ :=
-      let* α0 := format_argument::["new_display"] (addr_of second) in
-      let* α1 :=
-        format_arguments::["new_v1"]
-          (addr_of
-            [
-              "array[0] = -1, array[1] = ";
-              " and all the other ones were ignored
+      let* α0 :=
+        borrow
+          [
+            mk_str "array[0] = -1, array[1] = ";
+            mk_str " and all the other ones were ignored
 "
-            ])
-          (addr_of [ α0 ]) in
-      std.io.stdio._print α1 in
-    Pure tt
-  | (3:: second:: (_ as tail)) =>
+          ]
+          (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow second i32 in
+      let* α5 := deref α4 i32 in
+      let* α6 := borrow α5 i32 in
+      let* α7 := core.fmt.rt.Argument::["new_display"] α6 in
+      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+      let* α9 := deref α8 (list core.fmt.rt.Argument) in
+      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+      let* α11 := pointer_coercion "Unsize" α10 in
+      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+      std.io.stdio._print α12 in
+    M.alloc tt
+  | (_:: second:: (_ as tail)) =>
     let* _ :=
-      let* α0 := format_argument::["new_display"] (addr_of second) in
-      let* α1 := format_argument::["new_debug"] (addr_of tail) in
-      let* α2 :=
-        format_arguments::["new_v1"]
-          (addr_of
-            [ "array[0] = 3, array[1] = "; " and the other elements were "; "
+      let* α0 :=
+        borrow
+          [
+            mk_str "array[0] = 3, array[1] = ";
+            mk_str " and the other elements were ";
+            mk_str "
 "
-            ])
-          (addr_of [ α0; α1 ]) in
-      std.io.stdio._print α2 in
-    Pure tt
+          ]
+          (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow second i32 in
+      let* α5 := deref α4 i32 in
+      let* α6 := borrow α5 i32 in
+      let* α7 := core.fmt.rt.Argument::["new_display"] α6 in
+      let* α8 := borrow tail (list i32) in
+      let* α9 := deref α8 (list i32) in
+      let* α10 := borrow α9 (list i32) in
+      let* α11 := core.fmt.rt.Argument::["new_debug"] α10 in
+      let* α12 := borrow [ α7; α11 ] (list core.fmt.rt.Argument) in
+      let* α13 := deref α12 (list core.fmt.rt.Argument) in
+      let* α14 := borrow α13 (list core.fmt.rt.Argument) in
+      let* α15 := pointer_coercion "Unsize" α14 in
+      let* α16 := core.fmt.Arguments::["new_v1"] α3 α15 in
+      std.io.stdio._print α16 in
+    M.alloc tt
   | _ =>
     let* _ :=
-      let* α0 := format_argument::["new_display"] (addr_of first) in
-      let* α1 := format_argument::["new_debug"] (addr_of middle) in
-      let* α2 := format_argument::["new_display"] (addr_of last) in
-      let* α3 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "array[0] = "; ", middle = "; ", array[2] = "; "
-" ])
-          (addr_of [ α0; α1; α2 ]) in
-      std.io.stdio._print α3 in
-    Pure tt
+      let* α0 :=
+        borrow
+          [
+            mk_str "array[0] = ";
+            mk_str ", middle = ";
+            mk_str ", array[2] = ";
+            mk_str "
+"
+          ]
+          (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow first i32 in
+      let* α5 := deref α4 i32 in
+      let* α6 := borrow α5 i32 in
+      let* α7 := core.fmt.rt.Argument::["new_display"] α6 in
+      let* α8 := borrow middle (list i32) in
+      let* α9 := deref α8 (list i32) in
+      let* α10 := borrow α9 (list i32) in
+      let* α11 := core.fmt.rt.Argument::["new_debug"] α10 in
+      let* α12 := borrow last i32 in
+      let* α13 := deref α12 i32 in
+      let* α14 := borrow α13 i32 in
+      let* α15 := core.fmt.rt.Argument::["new_display"] α14 in
+      let* α16 := borrow [ α7; α11; α15 ] (list core.fmt.rt.Argument) in
+      let* α17 := deref α16 (list core.fmt.rt.Argument) in
+      let* α18 := borrow α17 (list core.fmt.rt.Argument) in
+      let* α19 := pointer_coercion "Unsize" α18 in
+      let* α20 := core.fmt.Arguments::["new_v1"] α3 α19 in
+      std.io.stdio._print α20 in
+    M.alloc tt
   end.

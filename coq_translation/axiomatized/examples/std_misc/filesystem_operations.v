@@ -2,17 +2,19 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Parameter cat :
-    forall `{H' : State.Trait},
+    forall `{ℋ : State.Trait},
     (ref std.path.Path) ->
-      M (H := H') (std.io.error.Result alloc.string.String).
+      M ltac:(std.io.error.Result constr:(alloc.string.String)).
 
 Parameter echo :
-    forall `{H' : State.Trait},
-    (ref str) -> (ref std.path.Path) -> M (H := H') (std.io.error.Result unit).
+    forall `{ℋ : State.Trait},
+    (ref str) ->
+      (ref std.path.Path) ->
+      M ltac:(std.io.error.Result constr:(unit)).
 
 Parameter touch :
-    forall `{H' : State.Trait},
-    (ref std.path.Path) -> M (H := H') (std.io.error.Result unit).
+    forall `{ℋ : State.Trait},
+    (ref std.path.Path) -> M ltac:(std.io.error.Result constr:(unit)).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{H' : State.Trait}, M (H := H') unit.
+Parameter main : forall `{ℋ : State.Trait}, M unit.

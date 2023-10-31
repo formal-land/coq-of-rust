@@ -2,22 +2,31 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit := Pure tt.
+Definition main `{ℋ : State.Trait} : M unit := M.alloc tt.
 
-Definition foo `{H' : State.Trait} (arg : i32) : M (H := H') i32 :=
+Definition foo `{ℋ : State.Trait} (arg : i32) : M i32 :=
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_display"] (addr_of arg) in
-      let* α1 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "arg = "; "
-" ])
-          (addr_of [ α0 ]) in
-      std.io.stdio._print α1 in
-    Pure tt in
-  arg.["mul"] 2.
+      let* α0 := borrow [ mk_str "arg = "; mk_str "
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow arg i32 in
+      let* α5 := deref α4 i32 in
+      let* α6 := borrow α5 i32 in
+      let* α7 := core.fmt.rt.Argument::["new_display"] α6 in
+      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+      let* α9 := deref α8 (list core.fmt.rt.Argument) in
+      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+      let* α11 := pointer_coercion "Unsize" α10 in
+      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+      std.io.stdio._print α12 in
+    M.alloc tt in
+  let* α0 := M.alloc 2 in
+  mul arg α0.
 
-Definition call_foo `{H' : State.Trait} (arg : i32) : M (H := H') i32 :=
-  let result := tt in
+Definition call_foo `{ℋ : State.Trait} (arg : i32) : M i32 :=
+  let* result := M.alloc tt in
   let _ := InlineAssembly in
   Pure result.

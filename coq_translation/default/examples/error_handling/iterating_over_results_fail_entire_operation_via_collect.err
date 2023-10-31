@@ -1,0 +1,8 @@
+type Closure(
+    DefId(0:4 ~ iterating_over_results_fail_entire_operation_via_collect[e063]::main::{closure#0}),
+    [
+        i16,
+        extern "rust-call" fn((&str,)) -> std::result::Result<i32, std::num::ParseIntError>,
+        (),
+    ],
+) not yet handled

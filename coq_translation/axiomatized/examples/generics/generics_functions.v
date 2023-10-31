@@ -2,54 +2,65 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module A.
-  Inductive t : Set := Build.
+  Section A.
+    Context `{ℋ : State.Trait}.
+    
+    Inductive t : Set := Build.
+  End A.
 End A.
 Definition A := @A.t.
 
 Module S.
-  Unset Primitive Projections.
-  Record t : Set := {
-    _ : generics_functions.A;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
-  }.
-End S.
-Definition S := @S.t.
-
-Module SGen.
-  Section SGen.
-    Context {T : Set}.
+  Section S.
+    Context `{ℋ : State.Trait}.
+    
     Unset Primitive Projections.
     Record t : Set := {
-      _ : T;
+      x0 : generics_functions.A;
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_0 : Notation.Dot 0 := {
-      Notation.dot '(Build_t x0) := x0;
+    #[refine] Global Instance Get_0 : Notation.Dot "0" := {
+      Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
+    Admitted.
+  End S.
+End S.
+Definition S `{ℋ : State.Trait} : Set := M.val S.t.
+
+Module SGen.
+  Section SGen.
+    Context `{ℋ : State.Trait}.
+    
+    Context {T : Set}.
+    
+    Unset Primitive Projections.
+    Record t : Set := {
+      x0 : T;
+    }.
+    Global Set Primitive Projections.
+    
+    #[refine] Global Instance Get_0 : Notation.Dot "0" := {
+      Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
+    }.
+    Admitted.
   End SGen.
 End SGen.
-Definition SGen := @SGen.t.
+Definition SGen `{ℋ : State.Trait} (T : Set) : Set := M.val (SGen.t (T := T)).
 
-Parameter reg_fn :
-    forall `{H' : State.Trait},
-    generics_functions.S -> M (H := H') unit.
+Parameter reg_fn : forall `{ℋ : State.Trait}, generics_functions.S -> M unit.
 
 Parameter gen_spec_t :
-    forall `{H' : State.Trait},
-    (generics_functions.SGen generics_functions.A) -> M (H := H') unit.
+    forall `{ℋ : State.Trait},
+    (generics_functions.SGen generics_functions.A) -> M unit.
 
 Parameter gen_spec_i32 :
-    forall `{H' : State.Trait},
-    (generics_functions.SGen i32) -> M (H := H') unit.
+    forall `{ℋ : State.Trait},
+    (generics_functions.SGen i32) -> M unit.
 
 Parameter generic :
-    forall `{H' : State.Trait} {T : Set},
-    (generics_functions.SGen T) -> M (H := H') unit.
+    forall `{ℋ : State.Trait} {T : Set},
+    (generics_functions.SGen T) -> M unit.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{H' : State.Trait}, M (H := H') unit.
+Parameter main : forall `{ℋ : State.Trait}, M unit.

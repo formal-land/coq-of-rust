@@ -2,27 +2,40 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition division
-    `{H' : State.Trait}
+    `{ℋ : State.Trait}
     (dividend : i32)
     (divisor : i32)
-    : M (H := H') i32 :=
-  let* α0 := divisor.["eq"] 0 in
-  if (α0 : bool) then
-    let* _ := std.panicking.begin_panic "division by zero" in
-    Pure tt
+    : M i32 :=
+  let* α0 := M.alloc 0 in
+  let* α1 := eq divisor α0 in
+  let* α2 := use α1 in
+  if (α2 : bool) then
+    let* _ :=
+      let* α0 := std.panicking.begin_panic (mk_str "division by zero") in
+      never_to_any α0 in
+    let* α0 := M.alloc tt in
+    never_to_any α0
   else
-    dividend.["div"] divisor.
+    div dividend divisor.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
-  let* _x := (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] 0 in
-  let* _ := panic.division 3 0 in
+Definition main `{ℋ : State.Trait} : M unit :=
+  let* _x :=
+    let* α0 := M.alloc 0 in
+    (alloc.boxed.Box T alloc.alloc.Global)::["new"] α0 in
+  let* _ :=
+    let* α0 := M.alloc 3 in
+    let* α1 := M.alloc 0 in
+    panic.division α0 α1 in
   let* _ :=
     let* _ :=
       let* α0 :=
-        format_arguments::["new_const"]
-          (addr_of [ "This point won't be reached!
-" ]) in
-      std.io.stdio._print α0 in
-    Pure tt in
-  Pure tt.
+        borrow [ mk_str "This point won't be reached!
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := core.fmt.Arguments::["new_const"] α3 in
+      std.io.stdio._print α4 in
+    M.alloc tt in
+  M.alloc tt.

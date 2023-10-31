@@ -15,14 +15,14 @@ pub struct Assume {
 }
 *)
 Module Assume.
-  Record t : Set := { 
+  Record t `{State.Trait} : Set := { 
     alignment: bool;
     lifetimes: bool;
     safety: bool;
     validity: bool;
   }.
 End Assume.
-Definition Assume := Assume.t.
+Definition Assume `{State.Trait} : Set := Assume.t.
 
 (* pub struct Discriminant<T>(_); *)
 Module Ddiscriminant.

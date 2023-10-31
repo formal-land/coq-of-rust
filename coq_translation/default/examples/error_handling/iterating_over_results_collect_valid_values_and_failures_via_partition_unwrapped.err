@@ -1,0 +1,22 @@
+type FnDef(
+    DefId(2:8449 ~ core[af2a]::result::{impl#0}::unwrap_err),
+    [
+        i32,
+        std::num::ParseIntError,
+    ],
+) not yet handled
+type FnDef(
+    DefId(2:8446 ~ core[af2a]::result::{impl#0}::unwrap),
+    [
+        i32,
+        std::num::ParseIntError,
+    ],
+) not yet handled
+type Closure(
+    DefId(0:4 ~ iterating_over_results_collect_valid_values_and_failures_via_partition_unwrapped[5abd]::main::{closure#0}),
+    [
+        i16,
+        extern "rust-call" fn((&str,)) -> std::result::Result<i32, std::num::ParseIntError>,
+        (),
+    ],
+) not yet handled

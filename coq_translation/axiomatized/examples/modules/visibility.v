@@ -2,111 +2,83 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module my_mod.
-  Parameter private_function : forall `{H' : State.Trait}, M (H := H') unit.
+  Parameter private_function : forall `{ℋ : State.Trait}, M unit.
   
-  Parameter function : forall `{H' : State.Trait}, M (H := H') unit.
+  Parameter function : forall `{ℋ : State.Trait}, M unit.
   
-  Parameter indirect_access : forall `{H' : State.Trait}, M (H := H') unit.
+  Parameter indirect_access : forall `{ℋ : State.Trait}, M unit.
   
   Module nested.
-    Parameter function : forall `{H' : State.Trait}, M (H := H') unit.
+    Parameter function : forall `{ℋ : State.Trait}, M unit.
     
     (* #[allow(dead_code)] - function was ignored by the compiler *)
-    Parameter private_function : forall `{H' : State.Trait}, M (H := H') unit.
+    Parameter private_function : forall `{ℋ : State.Trait}, M unit.
     
-    Parameter public_function_in_my_mod :
-        forall `{H' : State.Trait},
-        M (H := H') unit.
+    Parameter public_function_in_my_mod : forall `{ℋ : State.Trait}, M unit.
     
-    Parameter public_function_in_nested :
-        forall `{H' : State.Trait},
-        M (H := H') unit.
+    Parameter public_function_in_nested : forall `{ℋ : State.Trait}, M unit.
     
-    Parameter public_function_in_super_mod :
-        forall `{H' : State.Trait},
-        M (H := H') unit.
+    Parameter public_function_in_super_mod : forall `{ℋ : State.Trait}, M unit.
   End nested.
   
-  Parameter call_public_function_in_my_mod :
-      forall `{H' : State.Trait},
-      M (H := H') unit.
+  Parameter call_public_function_in_my_mod : forall `{ℋ : State.Trait}, M unit.
   
-  Parameter public_function_in_crate :
-      forall `{H' : State.Trait},
-      M (H := H') unit.
+  Parameter public_function_in_crate : forall `{ℋ : State.Trait}, M unit.
   
   Module private_nested.
     (* #[allow(dead_code)] - function was ignored by the compiler *)
-    Parameter function : forall `{H' : State.Trait}, M (H := H') unit.
+    Parameter function : forall `{ℋ : State.Trait}, M unit.
     
     (* #[allow(dead_code)] - function was ignored by the compiler *)
-    Parameter restricted_function :
-        forall `{H' : State.Trait},
-        M (H := H') unit.
+    Parameter restricted_function : forall `{ℋ : State.Trait}, M unit.
   End private_nested.
 End my_mod.
 
-Parameter private_function : forall `{H' : State.Trait}, M (H := H') unit.
+Parameter private_function : forall `{ℋ : State.Trait}, M unit.
 
-Parameter function : forall `{H' : State.Trait}, M (H := H') unit.
+Parameter function : forall `{ℋ : State.Trait}, M unit.
 
-Parameter indirect_access : forall `{H' : State.Trait}, M (H := H') unit.
+Parameter indirect_access : forall `{ℋ : State.Trait}, M unit.
 
 Module nested.
-  Parameter function : forall `{H' : State.Trait}, M (H := H') unit.
+  Parameter function : forall `{ℋ : State.Trait}, M unit.
   
   (* #[allow(dead_code)] - function was ignored by the compiler *)
-  Parameter private_function : forall `{H' : State.Trait}, M (H := H') unit.
+  Parameter private_function : forall `{ℋ : State.Trait}, M unit.
   
-  Parameter public_function_in_my_mod :
-      forall `{H' : State.Trait},
-      M (H := H') unit.
+  Parameter public_function_in_my_mod : forall `{ℋ : State.Trait}, M unit.
   
-  Parameter public_function_in_nested :
-      forall `{H' : State.Trait},
-      M (H := H') unit.
+  Parameter public_function_in_nested : forall `{ℋ : State.Trait}, M unit.
   
-  Parameter public_function_in_super_mod :
-      forall `{H' : State.Trait},
-      M (H := H') unit.
+  Parameter public_function_in_super_mod : forall `{ℋ : State.Trait}, M unit.
 End nested.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter private_function : forall `{H' : State.Trait}, M (H := H') unit.
+Parameter private_function : forall `{ℋ : State.Trait}, M unit.
 
-Parameter public_function_in_my_mod :
-    forall `{H' : State.Trait},
-    M (H := H') unit.
+Parameter public_function_in_my_mod : forall `{ℋ : State.Trait}, M unit.
 
-Parameter public_function_in_nested :
-    forall `{H' : State.Trait},
-    M (H := H') unit.
+Parameter public_function_in_nested : forall `{ℋ : State.Trait}, M unit.
 
-Parameter public_function_in_super_mod :
-    forall `{H' : State.Trait},
-    M (H := H') unit.
+Parameter public_function_in_super_mod : forall `{ℋ : State.Trait}, M unit.
 
-Parameter call_public_function_in_my_mod :
-    forall `{H' : State.Trait},
-    M (H := H') unit.
+Parameter call_public_function_in_my_mod : forall `{ℋ : State.Trait}, M unit.
 
-Parameter public_function_in_crate :
-    forall `{H' : State.Trait},
-    M (H := H') unit.
+Parameter public_function_in_crate : forall `{ℋ : State.Trait}, M unit.
 
 Module private_nested.
   (* #[allow(dead_code)] - function was ignored by the compiler *)
-  Parameter function : forall `{H' : State.Trait}, M (H := H') unit.
+  Parameter function : forall `{ℋ : State.Trait}, M unit.
   
   (* #[allow(dead_code)] - function was ignored by the compiler *)
-  Parameter restricted_function : forall `{H' : State.Trait}, M (H := H') unit.
+  Parameter restricted_function : forall `{ℋ : State.Trait}, M unit.
 End private_nested.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter function : forall `{H' : State.Trait}, M (H := H') unit.
+Parameter function : forall `{ℋ : State.Trait}, M unit.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter restricted_function : forall `{H' : State.Trait}, M (H := H') unit.
+Parameter restricted_function : forall `{ℋ : State.Trait}, M unit.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{H' : State.Trait}, M (H := H') unit.
+Parameter main : forall `{ℋ : State.Trait}, M unit.

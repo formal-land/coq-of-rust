@@ -2,123 +2,157 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module Centimeters.
-  Unset Primitive Projections.
-  Record t : Set := {
-    _ : f64;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
-  }.
+  Section Centimeters.
+    Context `{ℋ : State.Trait}.
+    
+    Unset Primitive Projections.
+    Record t : Set := {
+      x0 : f64;
+    }.
+    Global Set Primitive Projections.
+    
+    #[refine] Global Instance Get_0 : Notation.Dot "0" := {
+      Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
+    }.
+    Admitted.
+  End Centimeters.
 End Centimeters.
-Definition Centimeters := @Centimeters.t.
+Definition Centimeters `{ℋ : State.Trait} : Set := M.val Centimeters.t.
 
 Module Impl_core_marker_StructuralPartialEq_for_derive_Centimeters.
-  Definition Self := derive.Centimeters.
-  
-  Global Instance I : core.marker.StructuralPartialEq.Trait Self := {
-  }.
-  Global Hint Resolve I : core.
+  Section Impl_core_marker_StructuralPartialEq_for_derive_Centimeters.
+    Context `{ℋ : State.Trait}.
+    
+    Definition Self : Set := derive.Centimeters.
+    
+    #[refine] Global Instance ℐ :
+      core.marker.StructuralPartialEq.Trait Self := {
+    }.
+    Admitted.
+  End Impl_core_marker_StructuralPartialEq_for_derive_Centimeters.
+  Global Hint Resolve ℐ : core.
 End Impl_core_marker_StructuralPartialEq_for_derive_Centimeters.
 
 Module Impl_core_cmp_PartialEq_for_derive_Centimeters.
-  Definition Self := derive.Centimeters.
-  
-  Parameter eq :
-      forall `{H' : State.Trait},
-      (ref Self) -> (ref derive.Centimeters) -> M (H := H') bool.
-  
-  Global Instance Method_eq `{H' : State.Trait} : Notation.Dot "eq" := {
-    Notation.dot := eq;
-  }.
-  
-  Global Instance I
-    : core.cmp.PartialEq.Trait Self (Rhs := core.cmp.PartialEq.Default.Rhs Self)
-      := {
-    core.cmp.PartialEq.eq `{H' : State.Trait} := eq;
-  }.
-  Global Hint Resolve I : core.
+  Section Impl_core_cmp_PartialEq_for_derive_Centimeters.
+    Context `{ℋ : State.Trait}.
+    
+    Definition Self : Set := derive.Centimeters.
+    
+    Parameter eq : (ref Self) -> (ref derive.Centimeters) -> M bool.
+    
+    Global Instance AssociatedFunction_eq : Notation.DoubleColon Self "eq" := {
+      Notation.double_colon := eq;
+    }.
+    
+    #[refine] Global Instance ℐ :
+      core.cmp.PartialEq.Trait Self
+        (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
+      core.cmp.PartialEq.eq := eq;
+    }.
+    Admitted.
+  End Impl_core_cmp_PartialEq_for_derive_Centimeters.
+  Global Hint Resolve ℐ : core.
 End Impl_core_cmp_PartialEq_for_derive_Centimeters.
 
 Module Impl_core_cmp_PartialOrd_for_derive_Centimeters.
-  Definition Self := derive.Centimeters.
-  
-  Parameter partial_cmp :
-      forall `{H' : State.Trait},
-      (ref Self) ->
-        (ref derive.Centimeters) ->
-        M (H := H') (core.option.Option core.cmp.Ordering).
-  
-  Global Instance Method_partial_cmp `{H' : State.Trait} :
-    Notation.Dot "partial_cmp" := {
-    Notation.dot := partial_cmp;
-  }.
-  
-  Global Instance I
-    : core.cmp.PartialOrd.Trait Self
-        (Rhs := core.cmp.PartialOrd.Default.Rhs Self)
-      := {
-    core.cmp.PartialOrd.partial_cmp `{H' : State.Trait} := partial_cmp;
-  }.
-  Global Hint Resolve I : core.
+  Section Impl_core_cmp_PartialOrd_for_derive_Centimeters.
+    Context `{ℋ : State.Trait}.
+    
+    Definition Self : Set := derive.Centimeters.
+    
+    Parameter partial_cmp :
+        (ref Self) ->
+          (ref derive.Centimeters) ->
+          M (core.option.Option core.cmp.Ordering).
+    
+    Global Instance AssociatedFunction_partial_cmp :
+      Notation.DoubleColon Self "partial_cmp" := {
+      Notation.double_colon := partial_cmp;
+    }.
+    
+    #[refine] Global Instance ℐ :
+      core.cmp.PartialOrd.Trait Self
+        (Rhs := core.cmp.PartialOrd.Default.Rhs Self) := {
+      core.cmp.PartialOrd.partial_cmp := partial_cmp;
+    }.
+    Admitted.
+  End Impl_core_cmp_PartialOrd_for_derive_Centimeters.
+  Global Hint Resolve ℐ : core.
 End Impl_core_cmp_PartialOrd_for_derive_Centimeters.
 
 Module Inches.
-  Unset Primitive Projections.
-  Record t : Set := {
-    _ : i32;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
-  }.
+  Section Inches.
+    Context `{ℋ : State.Trait}.
+    
+    Unset Primitive Projections.
+    Record t : Set := {
+      x0 : i32;
+    }.
+    Global Set Primitive Projections.
+    
+    #[refine] Global Instance Get_0 : Notation.Dot "0" := {
+      Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
+    }.
+    Admitted.
+  End Inches.
 End Inches.
-Definition Inches := @Inches.t.
+Definition Inches `{ℋ : State.Trait} : Set := M.val Inches.t.
 
 Module Impl_core_fmt_Debug_for_derive_Inches.
-  Definition Self := derive.Inches.
-  
-  Parameter fmt :
-      forall `{H' : State.Trait},
-      (ref Self) -> (mut_ref core.fmt.Formatter) -> M (H := H') core.fmt.Result.
-  
-  Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
-    Notation.dot := fmt;
-  }.
-  
-  Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
-  }.
-  Global Hint Resolve I : core.
+  Section Impl_core_fmt_Debug_for_derive_Inches.
+    Context `{ℋ : State.Trait}.
+    
+    Definition Self : Set := derive.Inches.
+    
+    Parameter fmt :
+        (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
+    
+    Global Instance AssociatedFunction_fmt :
+      Notation.DoubleColon Self "fmt" := {
+      Notation.double_colon := fmt;
+    }.
+    
+    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
+      core.fmt.Debug.fmt := fmt;
+    }.
+    Admitted.
+  End Impl_core_fmt_Debug_for_derive_Inches.
+  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_derive_Inches.
 
 Module Impl_derive_Inches_2.
-  Definition Self := derive.Inches.
-  
-  Parameter to_centimeters :
-      forall `{H' : State.Trait},
-      (ref Self) -> M (H := H') derive.Centimeters.
-  
-  Global Instance Method_to_centimeters `{H' : State.Trait} :
-    Notation.Dot "to_centimeters" := {
-    Notation.dot := to_centimeters;
-  }.
+  Section Impl_derive_Inches_2.
+    Context `{ℋ : State.Trait}.
+    
+    Definition Self : Set := derive.Inches.
+    
+    Parameter to_centimeters : (ref Self) -> M derive.Centimeters.
+    
+    Global Instance AssociatedFunction_to_centimeters :
+      Notation.DoubleColon Self "to_centimeters" := {
+      Notation.double_colon := to_centimeters;
+    }.
+  End Impl_derive_Inches_2.
 End Impl_derive_Inches_2.
 
 Module Seconds.
-  Unset Primitive Projections.
-  Record t : Set := {
-    _ : i32;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
-  }.
+  Section Seconds.
+    Context `{ℋ : State.Trait}.
+    
+    Unset Primitive Projections.
+    Record t : Set := {
+      x0 : i32;
+    }.
+    Global Set Primitive Projections.
+    
+    #[refine] Global Instance Get_0 : Notation.Dot "0" := {
+      Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
+    }.
+    Admitted.
+  End Seconds.
 End Seconds.
-Definition Seconds := @Seconds.t.
+Definition Seconds `{ℋ : State.Trait} : Set := M.val Seconds.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{H' : State.Trait}, M (H := H') unit.
+Parameter main : forall `{ℋ : State.Trait}, M unit.
