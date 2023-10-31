@@ -1127,14 +1127,11 @@ fn mt_top_level(top_level: TopLevel) -> TopLevel {
 pub(crate) struct DynNameGen {
     name: String,
     // Resources to be translated into a list of `WherePredicates`.
-    // Traits' paths along with their dynnamic type names
+    // Traits' paths along with their opaque type names
     predicates: Vec<(Path, String)>,
 }
 
 impl DynNameGen {
-    // TODO:
-    // 1. maybe put the `make_dyn_parm` into DynNameGen for better efficiency
-    // 2. maybe fix redundant clones
     pub(crate) fn new(name: String) -> Self {
         DynNameGen {
             name,
@@ -1155,14 +1152,6 @@ impl DynNameGen {
         let predicates = vec![self.predicates.clone(), vec![(path, full_name.clone())]].concat();
         self.predicates = predicates;
         self.name = next_letter;
-
-        // (
-        //     full_name,
-        //     DynNameGen {
-        //         name: next_letter,
-        //         predicates,
-        //     },
-        // )
         full_name
     }
 
@@ -1218,20 +1207,11 @@ impl FunDefinition {
         let tcx = env.tcx;
         let mut dyn_name_gen = DynNameGen::new("T".to_string());
         let FnSigAndBody { args, ret_ty, body } =
-            &compile_fn_sig_and_body(env, fn_sig_and_body, default);
-
+            compile_fn_sig_and_body(env, fn_sig_and_body, default);
         let args = args.iter().fold(vec![], |result, (string, ty)| {
             let ty = dyn_name_gen.make_dyn_parm(ty.clone());
-            // Return the generator for next fold, along with
-            // the result concatenating with the new CoqType object
             vec![result, vec![(string.to_owned(), ty)]].concat()
         });
-
-        let signature_and_body = FnSigAndBody {
-            args,
-            ret_ty: ret_ty.to_owned(),
-            body: body.to_owned(),
-        };
         let ty_params = vec![
             get_ty_params_names(env, generics),
             dyn_name_gen.get_type_parm_list(),
@@ -1242,9 +1222,10 @@ impl FunDefinition {
             dyn_name_gen.get_predicates(),
         ]
         .concat();
+        let signature_and_body = FnSigAndBody { args, ret_ty, body };
 
         FunDefinition {
-            name: name.to_owned(),
+            name: name.to_string(),
             ty_params,
             where_predicates,
             signature_and_body,
