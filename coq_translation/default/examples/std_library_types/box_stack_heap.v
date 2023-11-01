@@ -165,7 +165,7 @@ Definition boxed_origin
   let* α1 := M.alloc 0 (* 0.0 *) in
   let* α2 :=
     M.alloc {| box_stack_heap.Point.x := α0; box_stack_heap.Point.y := α1; |} in
-  (alloc.boxed.Box T alloc.alloc.Global)::["new"] α2.
+  (alloc.boxed.Box box_stack_heap.Point alloc.alloc.Global)::["new"] α2.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
@@ -195,13 +195,16 @@ Definition main `{ℋ : State.Trait} : M unit :=
           box_stack_heap.Rectangle.top_left := α0;
           box_stack_heap.Rectangle.bottom_right := α3;
         |} in
-    (alloc.boxed.Box T alloc.alloc.Global)::["new"] α4 in
+    (alloc.boxed.Box box_stack_heap.Rectangle alloc.alloc.Global)::["new"] α4 in
   let* boxed_point :=
     let* α0 := box_stack_heap.origin in
-    (alloc.boxed.Box T alloc.alloc.Global)::["new"] α0 in
+    (alloc.boxed.Box box_stack_heap.Point alloc.alloc.Global)::["new"] α0 in
   let* box_in_a_box :=
     let* α0 := box_stack_heap.boxed_origin in
-    (alloc.boxed.Box T alloc.alloc.Global)::["new"] α0 in
+    (alloc.boxed.Box
+          (alloc.boxed.Box box_stack_heap.Point alloc.alloc.Global)
+          alloc.alloc.Global)::["new"]
+      α0 in
   let* _ :=
     let* _ :=
       let* α0 :=

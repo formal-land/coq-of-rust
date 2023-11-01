@@ -5,7 +5,7 @@ Require Import CoqOfRust.CoqOfRust.
 Definition main `{ℋ : State.Trait} : M unit :=
   let* α0 := M.alloc 1 in
   let* α1 := M.alloc 100 in
-  let* α2 := (core.ops.range.RangeInclusive Idx)::["new"] α0 α1 in
+  let* α2 := (core.ops.range.RangeInclusive i32)::["new"] α0 α1 in
   let* α3 :=
     (core.iter.traits.collect.IntoIterator.into_iter
         (Self := (core.ops.range.RangeInclusive i32)))

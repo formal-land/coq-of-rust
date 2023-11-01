@@ -66,7 +66,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
     let* α3 :=
       (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] [ α0; α1; α2 ] in
     let* α4 := pointer_coercion "Unsize" α3 in
-    (Slice T)::["into_vec"] α4 in
+    (Slice i32)::["into_vec"] α4 in
   let* _ :=
     (generics_where_clauses.PrintInOption.print_in_option
         (Self := (alloc.vec.Vec i32 alloc.alloc.Global)))

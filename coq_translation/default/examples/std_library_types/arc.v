@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
-  let* apple := (alloc.sync.Arc T)::["new"] (mk_str "the same apple") in
+  let* apple := (alloc.sync.Arc (ref str))::["new"] (mk_str "the same apple") in
   let* _ :=
     let* α0 := M.alloc 0 in
     let* α1 := M.alloc 10 in

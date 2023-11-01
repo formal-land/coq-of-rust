@@ -71,14 +71,14 @@ Definition main `{ℋ : State.Trait} : M unit :=
     let* α3 :=
       (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] [ α0; α1; α2 ] in
     let* α4 := pointer_coercion "Unsize" α3 in
-    (Slice T)::["into_vec"] α4 in
+    (Slice i32)::["into_vec"] α4 in
   let* v2 :=
     let* α0 := M.alloc 4 in
     let* α1 := M.alloc 5 in
     let* α2 :=
       (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] [ α0; α1 ] in
     let* α3 := pointer_coercion "Unsize" α2 in
-    (Slice T)::["into_vec"] α3 in
+    (Slice i32)::["into_vec"] α3 in
   let* v3 := impl_trait_as_return_type.combine_vecs v1 v2 in
   let* _ :=
     let* α0 := M.alloc 1 in

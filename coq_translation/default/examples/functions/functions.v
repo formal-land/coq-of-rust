@@ -100,7 +100,7 @@ Definition fizzbuzz `{ℋ : State.Trait} (n : u32) : M unit :=
 
 Definition fizzbuzz_to `{ℋ : State.Trait} (n : u32) : M unit :=
   let* α0 := M.alloc 1 in
-  let* α1 := (core.ops.range.RangeInclusive Idx)::["new"] α0 n in
+  let* α1 := (core.ops.range.RangeInclusive u32)::["new"] α0 n in
   let* α2 :=
     (core.iter.traits.collect.IntoIterator.into_iter
         (Self := (core.ops.range.RangeInclusive u32)))

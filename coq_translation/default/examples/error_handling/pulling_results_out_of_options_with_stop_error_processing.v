@@ -17,23 +17,26 @@ Definition double_first
         α0 in
     let* α2 := deref α1 (Slice (ref str)) in
     let* α3 := borrow α2 (Slice (ref str)) in
-    let* α4 := (Slice T)::["first"] α3 in
-    (core.option.Option T)::["map"]
+    let* α4 := (Slice (ref str))::["first"] α3 in
+    (core.option.Option (ref (ref str)))::["map"]
       α4
       (let* α0 := deref first (ref str) in
       let* α1 := deref α0 str in
       let* α2 := borrow α1 str in
       let* α3 := str::["parse"] α2 in
-      (core.result.Result T E)::["map"]
+      (core.result.Result i32 core.num.error.ParseIntError)::["map"]
         α3
         (let* α0 := M.alloc 2 in
         BinOp.mul α0 n)) in
   let* α0 := M.alloc (core.option.Option.None tt) in
   let* α1 := M.alloc (core.result.Result.Ok α0) in
-  (core.option.Option T)::["map_or"]
+  (core.option.Option
+        (core.result.Result i32 core.num.error.ParseIntError))::["map_or"]
     opt
     α1
-    ((core.result.Result T E)::["map"] r "unimplemented parent_kind").
+    ((core.result.Result i32 core.num.error.ParseIntError)::["map"]
+      r
+      "unimplemented parent_kind").
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
@@ -46,8 +49,8 @@ Definition main `{ℋ : State.Trait} : M unit :=
       (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"]
         [ mk_str "42"; α1; α3 ] in
     let* α5 := pointer_coercion "Unsize" α4 in
-    (Slice T)::["into_vec"] α5 in
-  let* empty := (alloc.vec.Vec T alloc.alloc.Global)::["new"] in
+    (Slice (ref str))::["into_vec"] α5 in
+  let* empty := (alloc.vec.Vec (ref str) alloc.alloc.Global)::["new"] in
   let* strings :=
     let* α0 := deref (mk_str "93") str in
     let* α1 := borrow α0 str in
@@ -57,7 +60,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
       (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"]
         [ mk_str "tofu"; α1; α3 ] in
     let* α5 := pointer_coercion "Unsize" α4 in
-    (Slice T)::["into_vec"] α5 in
+    (Slice (ref str))::["into_vec"] α5 in
   let* _ :=
     let* _ :=
       let* α0 :=

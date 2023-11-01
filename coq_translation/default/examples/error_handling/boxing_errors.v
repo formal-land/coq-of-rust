@@ -124,23 +124,27 @@ Definition double_first
       α0 in
   let* α2 := deref α1 (Slice (ref str)) in
   let* α3 := borrow α2 (Slice (ref str)) in
-  let* α4 := (Slice T)::["first"] α3 in
+  let* α4 := (Slice (ref str))::["first"] α3 in
   let* α5 :=
-    (core.option.Option T)::["ok_or_else"]
+    (core.option.Option (ref (ref str)))::["ok_or_else"]
       α4
       (let* α0 := M.alloc (boxing_errors.EmptyVec.Build_t tt) in
       (core.convert.Into.into (Self := boxing_errors.EmptyVec)) α0) in
-  (core.result.Result T E)::["and_then"]
+  (core.result.Result
+        (ref (ref str))
+        (alloc.boxed.Box type not implemented alloc.alloc.Global))::["and_then"]
     α5
     (let* α0 := deref s (ref str) in
     let* α1 := deref α0 str in
     let* α2 := borrow α1 str in
     let* α3 := str::["parse"] α2 in
     let* α4 :=
-      (core.result.Result T E)::["map_err"]
+      (core.result.Result i32 core.num.error.ParseIntError)::["map_err"]
         α3
         ((core.convert.Into.into (Self := core.num.error.ParseIntError)) e) in
-    (core.result.Result T E)::["map"]
+    (core.result.Result
+          i32
+          (alloc.boxed.Box type not implemented alloc.alloc.Global))::["map"]
       α4
       (let* α0 := M.alloc 2 in
       BinOp.mul α0 i)).
@@ -205,8 +209,8 @@ Definition main `{ℋ : State.Trait} : M unit :=
       (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"]
         [ mk_str "42"; α1; α3 ] in
     let* α5 := pointer_coercion "Unsize" α4 in
-    (Slice T)::["into_vec"] α5 in
-  let* empty := (alloc.vec.Vec T alloc.alloc.Global)::["new"] in
+    (Slice (ref str))::["into_vec"] α5 in
+  let* empty := (alloc.vec.Vec (ref str) alloc.alloc.Global)::["new"] in
   let* strings :=
     let* α0 := deref (mk_str "93") str in
     let* α1 := borrow α0 str in
@@ -216,7 +220,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
       (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"]
         [ mk_str "tofu"; α1; α3 ] in
     let* α5 := pointer_coercion "Unsize" α4 in
-    (Slice T)::["into_vec"] α5 in
+    (Slice (ref str))::["into_vec"] α5 in
   let* _ :=
     let* α0 := boxing_errors.double_first numbers in
     boxing_errors.print α0 in

@@ -630,7 +630,10 @@ Module Impl_lib_Erc20_2.
       let* _ :=
         let* α0 :=
           borrow_mut balances (lib.Mapping lib.AccountId lib.Balance) in
-        (lib.Mapping K V)::["insert"] α0 caller total_supply in
+        (lib.Mapping lib.AccountId lib.Balance)::["insert"]
+          α0
+          caller
+          total_supply in
       let* _ :=
         let* α0 := lib.Erc20::["init_env"] in
         let* α1 := borrow α0 lib.Environment in
@@ -693,8 +696,8 @@ Module Impl_lib_Erc20_2.
       let* α2 := borrow α1 (lib.Mapping lib.AccountId lib.Balance) in
       let* α3 := deref owner lib.AccountId in
       let* α4 := borrow α3 lib.AccountId in
-      let* α5 := (lib.Mapping K V)::["get"] α2 α4 in
-      (core.option.Option T)::["unwrap_or_default"] α5.
+      let* α5 := (lib.Mapping lib.AccountId lib.Balance)::["get"] α2 α4 in
+      (core.option.Option lib.Balance)::["unwrap_or_default"] α5.
     
     Global Instance AssociatedFunction_balance_of_impl :
       Notation.DoubleColon Self "balance_of_impl" := {
@@ -735,8 +738,11 @@ Module Impl_lib_Erc20_2.
       let* α5 := borrow (α3, α4) (lib.AccountId * lib.AccountId) in
       let* α6 := deref α5 (lib.AccountId * lib.AccountId) in
       let* α7 := borrow α6 (lib.AccountId * lib.AccountId) in
-      let* α8 := (lib.Mapping K V)::["get"] α2 α7 in
-      (core.option.Option T)::["unwrap_or_default"] α8.
+      let* α8 :=
+        (lib.Mapping (lib.AccountId * lib.AccountId) lib.Balance)::["get"]
+          α2
+          α7 in
+      (core.option.Option lib.Balance)::["unwrap_or_default"] α8.
     
     Global Instance AssociatedFunction_allowance_impl :
       Notation.DoubleColon Self "allowance_impl" := {
@@ -787,7 +793,10 @@ Module Impl_lib_Erc20_2.
           borrow_mut
             α1
             (lib.Mapping (lib.AccountId * lib.AccountId) lib.Balance) in
-        (lib.Mapping K V)::["insert"] α2 (owner, spender) value in
+        (lib.Mapping (lib.AccountId * lib.AccountId) lib.Balance)::["insert"]
+          α2
+          (owner, spender)
+          value in
       let* _ :=
         let* α0 := deref self lib.Erc20 in
         let* α1 := borrow α0 lib.Erc20 in
@@ -878,7 +887,10 @@ Module Impl_lib_Erc20_2.
             (lib.Mapping (lib.AccountId * lib.AccountId) lib.Balance) in
         let* α3 :=
           (core.ops.arith.Sub.sub (Self := lib.Balance)) allowance value in
-        (lib.Mapping K V)::["insert"] α2 (from, caller) α3 in
+        (lib.Mapping (lib.AccountId * lib.AccountId) lib.Balance)::["insert"]
+          α2
+          (from, caller)
+          α3 in
       let* α0 := M.alloc tt in
       M.alloc (core.result.Result.Ok α0).
     
@@ -920,7 +932,7 @@ Module Impl_lib_Erc20_2.
         let* α3 := deref from lib.AccountId in
         let* α4 :=
           (core.ops.arith.Sub.sub (Self := lib.Balance)) from_balance value in
-        (lib.Mapping K V)::["insert"] α2 α3 α4 in
+        (lib.Mapping lib.AccountId lib.Balance)::["insert"] α2 α3 α4 in
       let* to_balance :=
         let* α0 := deref self lib.Erc20 in
         let* α1 := borrow α0 lib.Erc20 in
@@ -934,7 +946,7 @@ Module Impl_lib_Erc20_2.
         let* α3 := deref to lib.AccountId in
         let* α4 :=
           (core.ops.arith.Add.add (Self := lib.Balance)) to_balance value in
-        (lib.Mapping K V)::["insert"] α2 α3 α4 in
+        (lib.Mapping lib.AccountId lib.Balance)::["insert"] α2 α3 α4 in
       let* _ :=
         let* α0 := deref self lib.Erc20 in
         let* α1 := borrow α0 lib.Erc20 in

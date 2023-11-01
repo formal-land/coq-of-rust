@@ -12,7 +12,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
       (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"]
         [ mk_str "tofu"; α1; α3 ] in
     let* α5 := pointer_coercion "Unsize" α4 in
-    (Slice T)::["into_vec"] α5 in
+    (Slice (ref str))::["into_vec"] α5 in
   let* '(numbers, errors) :=
     let* α0 :=
       (core.iter.traits.collect.IntoIterator.into_iter
@@ -31,7 +31,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
             (alloc.vec.into_iter.IntoIter (ref str) alloc.alloc.Global)
             type not implemented)))
       α1
-      (core.result.Result T E)::["is_ok"] in
+      (core.result.Result i32 core.num.error.ParseIntError)::["is_ok"] in
   let* numbers :=
     let* α0 :=
       (core.iter.traits.collect.IntoIterator.into_iter
@@ -47,7 +47,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
               (core.result.Result i32 core.num.error.ParseIntError)
               alloc.alloc.Global)))
         α0
-        (core.result.Result T E)::["unwrap"] in
+        (core.result.Result i32 core.num.error.ParseIntError)::["unwrap"] in
     (core.iter.traits.iterator.Iterator.collect
         (Self :=
           (core.iter.adapters.map.Map
@@ -71,7 +71,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
               (core.result.Result i32 core.num.error.ParseIntError)
               alloc.alloc.Global)))
         α0
-        (core.result.Result T E)::["unwrap_err"] in
+        (core.result.Result i32 core.num.error.ParseIntError)::["unwrap_err"] in
     (core.iter.traits.iterator.Iterator.collect
         (Self :=
           (core.iter.adapters.map.Map

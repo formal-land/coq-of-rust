@@ -4,18 +4,18 @@ Require Import CoqOfRust.CoqOfRust.
 Definition create_box `{ℋ : State.Trait} : M unit :=
   let* _box1 :=
     let* α0 := M.alloc 3 in
-    (alloc.boxed.Box T alloc.alloc.Global)::["new"] α0 in
+    (alloc.boxed.Box i32 alloc.alloc.Global)::["new"] α0 in
   M.alloc tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
   let* _box2 :=
     let* α0 := M.alloc 5 in
-    (alloc.boxed.Box T alloc.alloc.Global)::["new"] α0 in
+    (alloc.boxed.Box i32 alloc.alloc.Global)::["new"] α0 in
   let* _ :=
     let* _box3 :=
       let* α0 := M.alloc 4 in
-      (alloc.boxed.Box T alloc.alloc.Global)::["new"] α0 in
+      (alloc.boxed.Box i32 alloc.alloc.Global)::["new"] α0 in
     M.alloc tt in
   let* α0 := M.alloc 0 in
   let* α1 := M.alloc 1000 in

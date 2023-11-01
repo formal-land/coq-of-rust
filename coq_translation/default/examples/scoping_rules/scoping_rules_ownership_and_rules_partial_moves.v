@@ -7,7 +7,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
     let* α0 :=
       (core.convert.From.from (Self := alloc.string.String)) (mk_str "Alice") in
     let* α1 := M.alloc 20 in
-    let* α2 := (alloc.boxed.Box T alloc.alloc.Global)::["new"] α1 in
+    let* α2 := (alloc.boxed.Box u8 alloc.alloc.Global)::["new"] α1 in
     M.alloc
       {|
         scoping_rules_ownership_and_rules_partial_moves.main.Person.name := α0;

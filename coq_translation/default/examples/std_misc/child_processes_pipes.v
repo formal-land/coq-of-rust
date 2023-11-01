@@ -40,7 +40,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
     end in
   let* _ :=
     let* α0 := process.["stdin"] in
-    let* α1 := (core.option.Option T)::["unwrap"] α0 in
+    let* α1 := (core.option.Option std.process.ChildStdin)::["unwrap"] α0 in
     let* α2 := borrow_mut α1 std.process.ChildStdin in
     let* α3 := deref child_processes_pipes.PANGRAM (ref str) in
     let* α4 := deref α3 str in
@@ -81,7 +81,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
     end in
   let* s := alloc.string.String::["new"] in
   let* α0 := process.["stdout"] in
-  let* α1 := (core.option.Option T)::["unwrap"] α0 in
+  let* α1 := (core.option.Option std.process.ChildStdout)::["unwrap"] α0 in
   let* α2 := borrow_mut α1 std.process.ChildStdout in
   let* α3 := borrow_mut s alloc.string.String in
   let* α4 := deref α3 alloc.string.String in

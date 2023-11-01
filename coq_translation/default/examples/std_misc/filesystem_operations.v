@@ -142,7 +142,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
     let* α7 := deref α6 std.path.Path in
     let* α8 := borrow α7 std.path.Path in
     let* α9 := filesystem_operations.echo α1 α8 in
-    (core.result.Result T E)::["unwrap_or_else"]
+    (core.result.Result unit std.io.error.Error)::["unwrap_or_else"]
       α9
       (let* _ :=
         let* _ :=
@@ -177,7 +177,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
     M.alloc tt in
   let* _ :=
     let* α0 := std.fs.create_dir_all (mk_str "a/c/d") in
-    (core.result.Result T E)::["unwrap_or_else"]
+    (core.result.Result unit std.io.error.Error)::["unwrap_or_else"]
       α0
       (let* _ :=
         let* _ :=
@@ -219,7 +219,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
     let* α5 := deref α4 std.path.Path in
     let* α6 := borrow α5 std.path.Path in
     let* α7 := filesystem_operations.touch α6 in
-    (core.result.Result T E)::["unwrap_or_else"]
+    (core.result.Result unit std.io.error.Error)::["unwrap_or_else"]
       α7
       (let* _ :=
         let* _ :=
@@ -260,7 +260,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* _ :=
         let* α0 :=
           std.os.unix.fs.symlink (mk_str "../b.txt") (mk_str "a/c/b.txt") in
-        (core.result.Result T E)::["unwrap_or_else"]
+        (core.result.Result unit std.io.error.Error)::["unwrap_or_else"]
           α0
           (let* _ :=
             let* _ :=
@@ -408,7 +408,11 @@ Definition main `{ℋ : State.Trait} : M unit :=
                     let* α1 := deref α0 (list (ref str)) in
                     let* α2 := borrow α1 (list (ref str)) in
                     let* α3 := pointer_coercion "Unsize" α2 in
-                    let* α4 := (core.result.Result T E)::["unwrap"] path in
+                    let* α4 :=
+                      (core.result.Result
+                            std.fs.DirEntry
+                            std.io.error.Error)::["unwrap"]
+                        path in
                     let* α5 := borrow α4 std.fs.DirEntry in
                     let* α6 := std.fs.DirEntry::["path"] α5 in
                     let* α7 := borrow α6 std.path.PathBuf in
@@ -440,7 +444,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
     M.alloc tt in
   let* _ :=
     let* α0 := std.fs.remove_file (mk_str "a/c/e.txt") in
-    (core.result.Result T E)::["unwrap_or_else"]
+    (core.result.Result unit std.io.error.Error)::["unwrap_or_else"]
       α0
       (let* _ :=
         let* _ :=
@@ -475,7 +479,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
     M.alloc tt in
   let* _ :=
     let* α0 := std.fs.remove_dir (mk_str "a/c/d") in
-    (core.result.Result T E)::["unwrap_or_else"]
+    (core.result.Result unit std.io.error.Error)::["unwrap_or_else"]
       α0
       (let* _ :=
         let* _ :=

@@ -236,7 +236,7 @@ Definition cook
     `{ℋ : State.Trait}
     (chopped : core.option.Option combinators_map.Chopped)
     : M (core.option.Option combinators_map.Cooked) :=
-  (core.option.Option T)::["map"]
+  (core.option.Option combinators_map.Chopped)::["map"]
     chopped
     (M.alloc (combinators_map.Cooked.Build_t food)).
 
@@ -245,14 +245,14 @@ Definition process
     (food : core.option.Option combinators_map.Food)
     : M (core.option.Option combinators_map.Cooked) :=
   let* α0 :=
-    (core.option.Option T)::["map"]
+    (core.option.Option combinators_map.Food)::["map"]
       food
       (M.alloc (combinators_map.Peeled.Build_t f)) in
   let* α1 :=
-    (core.option.Option T)::["map"]
+    (core.option.Option combinators_map.Peeled)::["map"]
       α0
       (M.alloc (combinators_map.Chopped.Build_t f)) in
-  (core.option.Option T)::["map"]
+  (core.option.Option combinators_map.Chopped)::["map"]
     α1
     (M.alloc (combinators_map.Cooked.Build_t f)).
 

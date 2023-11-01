@@ -40,7 +40,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α5 := std.io.stdio.Stdin::["read_line"] α1 α4 in
       let* α6 := deref (mk_str "Failed to read line") str in
       let* α7 := borrow α6 str in
-      (core.result.Result T E)::["expect"] α5 α7 in
+      (core.result.Result usize std.io.error.Error)::["expect"] α5 α7 in
     let* guess :=
       let* α0 := borrow guess alloc.string.String in
       let* α1 :=

@@ -8,7 +8,7 @@ use rustc_hir::def::DefKind;
 use rustc_hir::BinOpKind;
 use rustc_middle::mir::{BorrowKind, UnOp};
 use rustc_middle::thir::{AdtExpr, ExprKind, LogicalOp, StmtKind};
-use rustc_middle::ty::{ImplSubject, TyKind};
+use rustc_middle::ty::TyKind;
 
 impl Expr {
     fn alloc(self) -> Expr {
@@ -42,9 +42,9 @@ fn path_of_bin_op(bin_op_kind: BinOpKind) -> Path {
     }
 }
 
-pub(crate) fn compile_expr(
-    env: &mut Env,
-    thir: &rustc_middle::thir::Thir,
+pub(crate) fn compile_expr<'a>(
+    env: &mut Env<'a>,
+    thir: &rustc_middle::thir::Thir<'a>,
     expr_id: &rustc_middle::thir::ExprId,
 ) -> Expr {
     let expr = thir.exprs.get(*expr_id).unwrap();
@@ -374,15 +374,10 @@ pub(crate) fn compile_expr(
                 let parent_kind = env.tcx.opt_def_kind(parent).unwrap();
                 match parent_kind {
                     DefKind::Impl { .. } => {
-                        let parent_subject = env.tcx.impl_subject(parent);
-                        match parent_subject.0 {
-                            ImplSubject::Trait(_) => todo!(),
-                            ImplSubject::Inherent(ref parent_coq_type) => {
-                                let ty = compile_type(env, parent_coq_type);
-                                let func = symbol.unwrap().to_string();
-                                Expr::AssociatedFunction { ty, func }
-                            }
-                        }
+                        let parent_type = env.tcx.type_of(parent).subst(env.tcx, generic_args);
+                        let ty = compile_type(env, &parent_type);
+                        let func = symbol.unwrap().to_string();
+                        Expr::AssociatedFunction { ty, func }
                     }
                     DefKind::Trait => {
                         let path = Path::concat(&[
@@ -431,9 +426,9 @@ pub(crate) fn compile_expr(
     }
 }
 
-fn compile_stmts(
-    env: &mut Env,
-    thir: &rustc_middle::thir::Thir,
+fn compile_stmts<'a>(
+    env: &mut Env<'a>,
+    thir: &rustc_middle::thir::Thir<'a>,
     stmt_ids: &[rustc_middle::thir::StmtId],
     expr_id: Option<rustc_middle::thir::ExprId>,
 ) -> Stmt {
@@ -479,9 +474,9 @@ fn compile_stmts(
     )
 }
 
-fn compile_block(
-    env: &mut Env,
-    thir: &rustc_middle::thir::Thir,
+fn compile_block<'a>(
+    env: &mut Env<'a>,
+    thir: &rustc_middle::thir::Thir<'a>,
     block_id: &rustc_middle::thir::BlockId,
 ) -> Stmt {
     let block = thir.blocks.get(*block_id).unwrap();

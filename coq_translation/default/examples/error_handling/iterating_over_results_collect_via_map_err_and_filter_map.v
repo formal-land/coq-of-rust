@@ -16,8 +16,9 @@ Definition main `{ℋ : State.Trait} : M unit :=
       (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"]
         [ mk_str "42"; α1; α3; α5; α7 ] in
     let* α9 := pointer_coercion "Unsize" α8 in
-    (Slice T)::["into_vec"] α9 in
-  let* errors := (alloc.vec.Vec T alloc.alloc.Global)::["new"] in
+    (Slice (ref str))::["into_vec"] α9 in
+  let* errors :=
+    (alloc.vec.Vec core.num.error.ParseIntError alloc.alloc.Global)::["new"] in
   let* numbers :=
     let* α0 :=
       (core.iter.traits.collect.IntoIterator.into_iter
@@ -38,7 +39,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
               type not implemented)))
         α1
         (let* α0 :=
-          (core.result.Result T E)::["map_err"]
+          (core.result.Result u8 core.num.error.ParseIntError)::["map_err"]
             r
             (let* α0 :=
               borrow_mut
@@ -46,8 +47,12 @@ Definition main `{ℋ : State.Trait} : M unit :=
                 (alloc.vec.Vec
                   core.num.error.ParseIntError
                   alloc.alloc.Global) in
-            (alloc.vec.Vec T A)::["push"] α0 e) in
-        (core.result.Result T E)::["ok"] α0) in
+            (alloc.vec.Vec
+                  core.num.error.ParseIntError
+                  alloc.alloc.Global)::["push"]
+              α0
+              e) in
+        (core.result.Result u8 unit)::["ok"] α0) in
     (core.iter.traits.iterator.Iterator.collect
         (Self :=
           (core.iter.adapters.filter_map.FilterMap

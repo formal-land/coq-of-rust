@@ -299,7 +299,13 @@ Definition try_logon
   let* α2 := borrow logon hash_map_alternate_or_custom_key_types.Account in
   let* α3 := deref α2 hash_map_alternate_or_custom_key_types.Account in
   let* α4 := borrow α3 hash_map_alternate_or_custom_key_types.Account in
-  let* α5 := (std.collections.hash.map.HashMap K V S)::["get"] α1 α4 in
+  let* α5 :=
+    (std.collections.hash.map.HashMap
+          hash_map_alternate_or_custom_key_types.Account
+          hash_map_alternate_or_custom_key_types.AccountInfo
+          std.collections.hash.map.RandomState)::["get"]
+      α1
+      α4 in
   match α5 with
   | core.option.Option account_info =>
     let* _ :=
@@ -375,8 +381,8 @@ Definition try_logon
 Definition main `{ℋ : State.Trait} : M unit :=
   let* accounts :=
     (std.collections.hash.map.HashMap
-        K
-        V
+        hash_map_alternate_or_custom_key_types.Account
+        hash_map_alternate_or_custom_key_types.AccountInfo
         std.collections.hash.map.RandomState)::["new"] in
   let* account :=
     let* α0 := deref (mk_str "j.everyman") str in
@@ -406,7 +412,10 @@ Definition main `{ℋ : State.Trait} : M unit :=
           hash_map_alternate_or_custom_key_types.Account
           hash_map_alternate_or_custom_key_types.AccountInfo
           std.collections.hash.map.RandomState) in
-    (std.collections.hash.map.HashMap K V S)::["insert"]
+    (std.collections.hash.map.HashMap
+          hash_map_alternate_or_custom_key_types.Account
+          hash_map_alternate_or_custom_key_types.AccountInfo
+          std.collections.hash.map.RandomState)::["insert"]
       α0
       account
       account_info in

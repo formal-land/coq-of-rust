@@ -103,7 +103,7 @@ Definition read_lines
       never_to_any α1
     | core.ops.control_flow.ControlFlow val => Pure val
     end in
-  let* α0 := (std.io.buffered.bufreader.BufReader R)::["new"] file in
+  let* α0 := (std.io.buffered.bufreader.BufReader std.fs.File)::["new"] file in
   let* α1 :=
     (std.io.BufRead.lines
         (Self := (std.io.buffered.bufreader.BufReader std.fs.File)))

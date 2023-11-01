@@ -77,7 +77,8 @@ Definition main `{ℋ : State.Trait} : M unit :=
     (core.iter.traits.iterator.Iterator.collect (Self := std.env.Args)) α0 in
   let* α0 :=
     borrow args (alloc.vec.Vec alloc.string.String alloc.alloc.Global) in
-  let* α1 := (alloc.vec.Vec T A)::["len"] α0 in
+  let* α1 :=
+    (alloc.vec.Vec alloc.string.String alloc.alloc.Global)::["len"] α0 in
   match α1 with
   | _ =>
     let* _ :=

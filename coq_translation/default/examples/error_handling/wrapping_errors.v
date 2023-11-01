@@ -175,9 +175,9 @@ Definition double_first
         α0 in
     let* α2 := deref α1 (Slice (ref str)) in
     let* α3 := borrow α2 (Slice (ref str)) in
-    let* α4 := (Slice T)::["first"] α3 in
+    let* α4 := (Slice (ref str))::["first"] α3 in
     let* α5 := M.alloc (wrapping_errors.DoubleError.EmptyVec tt) in
-    let* α6 := (core.option.Option T)::["ok_or"] α4 α5 in
+    let* α6 := (core.option.Option (ref (ref str)))::["ok_or"] α4 α5 in
     let* α7 :=
       (core.ops.try_trait.Try.branch
           (Self :=
@@ -301,8 +301,8 @@ Definition main `{ℋ : State.Trait} : M unit :=
       (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"]
         [ mk_str "42"; α1; α3 ] in
     let* α5 := pointer_coercion "Unsize" α4 in
-    (Slice T)::["into_vec"] α5 in
-  let* empty := (alloc.vec.Vec T alloc.alloc.Global)::["new"] in
+    (Slice (ref str))::["into_vec"] α5 in
+  let* empty := (alloc.vec.Vec (ref str) alloc.alloc.Global)::["new"] in
   let* strings :=
     let* α0 := deref (mk_str "93") str in
     let* α1 := borrow α0 str in
@@ -312,7 +312,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
       (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"]
         [ mk_str "tofu"; α1; α3 ] in
     let* α5 := pointer_coercion "Unsize" α4 in
-    (Slice T)::["into_vec"] α5 in
+    (Slice (ref str))::["into_vec"] α5 in
   let* _ :=
     let* α0 := wrapping_errors.double_first numbers in
     wrapping_errors.print α0 in

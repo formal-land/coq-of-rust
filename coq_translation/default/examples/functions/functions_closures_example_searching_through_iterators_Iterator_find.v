@@ -10,7 +10,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
     let* α3 :=
       (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] [ α0; α1; α2 ] in
     let* α4 := pointer_coercion "Unsize" α3 in
-    (Slice T)::["into_vec"] α4 in
+    (Slice i32)::["into_vec"] α4 in
   let* vec2 :=
     let* α0 := M.alloc 4 in
     let* α1 := M.alloc 5 in
@@ -18,7 +18,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
     let* α3 :=
       (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] [ α0; α1; α2 ] in
     let* α4 := pointer_coercion "Unsize" α3 in
-    (Slice T)::["into_vec"] α4 in
+    (Slice i32)::["into_vec"] α4 in
   let* iter :=
     let* α0 := borrow vec1 (alloc.vec.Vec i32 alloc.alloc.Global) in
     let* α1 :=
@@ -27,7 +27,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
         α0 in
     let* α2 := deref α1 (Slice i32) in
     let* α3 := borrow α2 (Slice i32) in
-    (Slice T)::["iter"] α3 in
+    (Slice i32)::["iter"] α3 in
   let* into_iter :=
     (core.iter.traits.collect.IntoIterator.into_iter
         (Self := (alloc.vec.Vec i32 alloc.alloc.Global)))
@@ -107,7 +107,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α3 := pointer_coercion "Unsize" α2 in
       let* α4 := borrow array1 (list i32) in
       let* α5 := pointer_coercion "Unsize" α4 in
-      let* α6 := (Slice T)::["iter"] α5 in
+      let* α6 := (Slice i32)::["iter"] α5 in
       let* α7 := borrow_mut α6 (core.slice.iter.Iter i32) in
       let* α8 :=
         (core.iter.traits.iterator.Iterator.find

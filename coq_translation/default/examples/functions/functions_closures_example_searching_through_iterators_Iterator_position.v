@@ -14,7 +14,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
       (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"]
         [ α0; α1; α2; α3; α4; α5 ] in
     let* α7 := pointer_coercion "Unsize" α6 in
-    (Slice T)::["into_vec"] α7 in
+    (Slice i32)::["into_vec"] α7 in
   let* index_of_first_even_number :=
     let* α0 := borrow vec (alloc.vec.Vec i32 alloc.alloc.Global) in
     let* α1 :=
@@ -23,7 +23,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
         α0 in
     let* α2 := deref α1 (Slice i32) in
     let* α3 := borrow α2 (Slice i32) in
-    let* α4 := (Slice T)::["iter"] α3 in
+    let* α4 := (Slice i32)::["iter"] α3 in
     let* α5 := borrow_mut α4 (core.slice.iter.Iter i32) in
     (core.iter.traits.iterator.Iterator.position
         (Self := (core.slice.iter.Iter i32)))

@@ -72,7 +72,10 @@ Definition main `{ℋ : State.Trait} : M unit :=
         my_fruit
         (core.option.Option
           unpacking_options_and_defaults_via_get_or_insert.Fruit) in
-    (core.option.Option T)::["get_or_insert"] α0 apple in
+    (core.option.Option
+          unpacking_options_and_defaults_via_get_or_insert.Fruit)::["get_or_insert"]
+      α0
+      apple in
   let* _ :=
     let* _ :=
       let* α0 :=

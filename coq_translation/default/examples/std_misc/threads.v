@@ -5,7 +5,8 @@ Definition NTHREADS `{ℋ : State.Trait} : u32 := M.run (M.alloc 10).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
-  let* children := (alloc.vec.Vec T alloc.alloc.Global)::["new"] in
+  let* children :=
+    (alloc.vec.Vec (std.thread.JoinHandle unit) alloc.alloc.Global)::["new"] in
   let* _ :=
     let* α0 := M.alloc 0 in
     let* α1 :=
@@ -66,7 +67,11 @@ Definition main `{ℋ : State.Trait} : M unit :=
                         std.io.stdio._print α12 in
                       M.alloc tt in
                     M.alloc tt) in
-                (alloc.vec.Vec T A)::["push"] α0 α1 in
+                (alloc.vec.Vec
+                      (std.thread.JoinHandle unit)
+                      alloc.alloc.Global)::["push"]
+                  α0
+                  α1 in
               M.alloc tt
             end in
           M.alloc tt)
@@ -112,7 +117,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
             let* α0 := Break in
             never_to_any α0
           | core.option.Option child =>
-            let* _ := (std.thread.JoinHandle T)::["join"] child in
+            let* _ := (std.thread.JoinHandle unit)::["join"] child in
             M.alloc tt
           end in
         M.alloc tt)

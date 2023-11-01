@@ -445,7 +445,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
     M.alloc tt in
   let* α0 := borrow array (list u32) in
   let* α1 := pointer_coercion "Unsize" α0 in
-  let* α2 := (Slice T)::["iter"] α1 in
+  let* α2 := (Slice u32)::["iter"] α1 in
   let* α3 :=
     (core.iter.traits.collect.IntoIterator.into_iter
         (Self := (core.slice.iter.Iter u32)))

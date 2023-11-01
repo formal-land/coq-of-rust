@@ -28,8 +28,8 @@ Definition call `{ℋ : State.Trait} (number : ref str) : M (ref str) :=
 Definition main `{ℋ : State.Trait} : M unit :=
   let* contacts :=
     (std.collections.hash.map.HashMap
-        K
-        V
+        (ref str)
+        (ref str)
         std.collections.hash.map.RandomState)::["new"] in
   let* _ :=
     let* α0 :=
@@ -39,7 +39,10 @@ Definition main `{ℋ : State.Trait} : M unit :=
           (ref str)
           (ref str)
           std.collections.hash.map.RandomState) in
-    (std.collections.hash.map.HashMap K V S)::["insert"]
+    (std.collections.hash.map.HashMap
+          (ref str)
+          (ref str)
+          std.collections.hash.map.RandomState)::["insert"]
       α0
       (mk_str "Daniel")
       (mk_str "798-1364") in
@@ -55,7 +58,13 @@ Definition main `{ℋ : State.Trait} : M unit :=
     let* α2 := borrow α1 str in
     let* α3 := deref (mk_str "645-7689") str in
     let* α4 := borrow α3 str in
-    (std.collections.hash.map.HashMap K V S)::["insert"] α0 α2 α4 in
+    (std.collections.hash.map.HashMap
+          (ref str)
+          (ref str)
+          std.collections.hash.map.RandomState)::["insert"]
+      α0
+      α2
+      α4 in
   let* _ :=
     let* α0 :=
       borrow_mut
@@ -68,7 +77,13 @@ Definition main `{ℋ : State.Trait} : M unit :=
     let* α2 := borrow α1 str in
     let* α3 := deref (mk_str "435-8291") str in
     let* α4 := borrow α3 str in
-    (std.collections.hash.map.HashMap K V S)::["insert"] α0 α2 α4 in
+    (std.collections.hash.map.HashMap
+          (ref str)
+          (ref str)
+          std.collections.hash.map.RandomState)::["insert"]
+      α0
+      α2
+      α4 in
   let* _ :=
     let* α0 :=
       borrow_mut
@@ -81,7 +96,13 @@ Definition main `{ℋ : State.Trait} : M unit :=
     let* α2 := borrow α1 str in
     let* α3 := deref (mk_str "956-1745") str in
     let* α4 := borrow α3 str in
-    (std.collections.hash.map.HashMap K V S)::["insert"] α0 α2 α4 in
+    (std.collections.hash.map.HashMap
+          (ref str)
+          (ref str)
+          std.collections.hash.map.RandomState)::["insert"]
+      α0
+      α2
+      α4 in
   let* _ :=
     let* α0 :=
       borrow
@@ -93,7 +114,13 @@ Definition main `{ℋ : State.Trait} : M unit :=
     let* α1 := borrow (mk_str "Daniel") (ref str) in
     let* α2 := deref α1 (ref str) in
     let* α3 := borrow α2 (ref str) in
-    let* α4 := (std.collections.hash.map.HashMap K V S)::["get"] α0 α3 in
+    let* α4 :=
+      (std.collections.hash.map.HashMap
+            (ref str)
+            (ref str)
+            std.collections.hash.map.RandomState)::["get"]
+        α0
+        α3 in
     match α4 with
     | core.option.Option number =>
       let* _ :=
@@ -141,7 +168,13 @@ Definition main `{ℋ : State.Trait} : M unit :=
     let* α2 := borrow α1 str in
     let* α3 := deref (mk_str "164-6743") str in
     let* α4 := borrow α3 str in
-    (std.collections.hash.map.HashMap K V S)::["insert"] α0 α2 α4 in
+    (std.collections.hash.map.HashMap
+          (ref str)
+          (ref str)
+          std.collections.hash.map.RandomState)::["insert"]
+      α0
+      α2
+      α4 in
   let* _ :=
     let* α0 :=
       borrow
@@ -153,7 +186,13 @@ Definition main `{ℋ : State.Trait} : M unit :=
     let* α1 := borrow (mk_str "Ashley") (ref str) in
     let* α2 := deref α1 (ref str) in
     let* α3 := borrow α2 (ref str) in
-    let* α4 := (std.collections.hash.map.HashMap K V S)::["get"] α0 α3 in
+    let* α4 :=
+      (std.collections.hash.map.HashMap
+            (ref str)
+            (ref str)
+            std.collections.hash.map.RandomState)::["get"]
+        α0
+        α3 in
     match α4 with
     | core.option.Option number =>
       let* _ :=
@@ -200,7 +239,12 @@ Definition main `{ℋ : State.Trait} : M unit :=
     let* α1 := borrow (mk_str "Ashley") (ref str) in
     let* α2 := deref α1 (ref str) in
     let* α3 := borrow α2 (ref str) in
-    (std.collections.hash.map.HashMap K V S)::["remove"] α0 α3 in
+    (std.collections.hash.map.HashMap
+          (ref str)
+          (ref str)
+          std.collections.hash.map.RandomState)::["remove"]
+      α0
+      α3 in
   let* α0 :=
     borrow
       contacts
@@ -208,7 +252,12 @@ Definition main `{ℋ : State.Trait} : M unit :=
         (ref str)
         (ref str)
         std.collections.hash.map.RandomState) in
-  let* α1 := (std.collections.hash.map.HashMap K V S)::["iter"] α0 in
+  let* α1 :=
+    (std.collections.hash.map.HashMap
+          (ref str)
+          (ref str)
+          std.collections.hash.map.RandomState)::["iter"]
+      α0 in
   let* α2 :=
     (core.iter.traits.collect.IntoIterator.into_iter
         (Self := (std.collections.hash.map.Iter (ref str) (ref str))))

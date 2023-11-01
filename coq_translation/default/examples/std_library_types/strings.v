@@ -109,10 +109,10 @@ Definition main `{ℋ : State.Trait} : M unit :=
         α0 in
     let* α2 := deref α1 (Slice char) in
     let* α3 := borrow_mut α2 (Slice char) in
-    (Slice T)::["sort"] α3 in
+    (Slice char)::["sort"] α3 in
   let* _ :=
     let* α0 := borrow_mut chars (alloc.vec.Vec char alloc.alloc.Global) in
-    (alloc.vec.Vec T A)::["dedup"] α0 in
+    (alloc.vec.Vec char alloc.alloc.Global)::["dedup"] α0 in
   let* string := alloc.string.String::["new"] in
   let* _ :=
     let* α0 :=

@@ -12,7 +12,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
       (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"]
         [ mk_str "Bob"; α1; α3 ] in
     let* α5 := pointer_coercion "Unsize" α4 in
-    (Slice T)::["into_vec"] α5 in
+    (Slice (ref str))::["into_vec"] α5 in
   let* α0 :=
     (core.iter.traits.collect.IntoIterator.into_iter
         (Self := (alloc.vec.Vec (ref str) alloc.alloc.Global)))

@@ -220,9 +220,9 @@ Definition main `{ℋ : State.Trait} : M unit :=
     M.alloc tt in
   let* pair :=
     let* α0 := M.alloc 1 in
-    let* α1 := (alloc.boxed.Box T alloc.alloc.Global)::["new"] α0 in
+    let* α1 := (alloc.boxed.Box i32 alloc.alloc.Global)::["new"] α0 in
     let* α2 := M.alloc 2 in
-    let* α3 := (alloc.boxed.Box T alloc.alloc.Global)::["new"] α2 in
+    let* α3 := (alloc.boxed.Box i32 alloc.alloc.Global)::["new"] α2 in
     M.alloc (clone.Pair.Build_t α1 α3) in
   let* _ :=
     let* _ :=

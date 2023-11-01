@@ -10,7 +10,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
     let* α3 :=
       (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] [ α0; α1; α2 ] in
     let* α4 := pointer_coercion "Unsize" α3 in
-    let* α5 := (Slice T)::["into_vec"] α4 in
+    let* α5 := (Slice i32)::["into_vec"] α4 in
     let* α6 :=
       (core.iter.traits.collect.IntoIterator.into_iter
           (Self := (alloc.vec.Vec i32 alloc.alloc.Global)))
@@ -25,7 +25,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
     let* α3 :=
       (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] [ α0; α1; α2 ] in
     let* α4 := pointer_coercion "Unsize" α3 in
-    let* α5 := (Slice T)::["into_vec"] α4 in
+    let* α5 := (Slice i32)::["into_vec"] α4 in
     let* α6 :=
       (core.iter.traits.collect.IntoIterator.into_iter
           (Self := (alloc.vec.Vec i32 alloc.alloc.Global)))
@@ -41,7 +41,12 @@ Definition main `{ℋ : State.Trait} : M unit :=
           i32
           std.collections.hash.map.RandomState) in
     let* α1 := M.alloc 4 in
-    let* α2 := (std.collections.hash.set.HashSet T S)::["insert"] α0 α1 in
+    let* α2 :=
+      (std.collections.hash.set.HashSet
+            i32
+            std.collections.hash.map.RandomState)::["insert"]
+        α0
+        α1 in
     let* α3 := not α2 in
     let* α4 := use α3 in
     if (α4 : bool) then
@@ -61,7 +66,12 @@ Definition main `{ℋ : State.Trait} : M unit :=
     let* α2 := borrow α1 i32 in
     let* α3 := deref α2 i32 in
     let* α4 := borrow α3 i32 in
-    let* α5 := (std.collections.hash.set.HashSet T S)::["contains"] α0 α4 in
+    let* α5 :=
+      (std.collections.hash.set.HashSet
+            i32
+            std.collections.hash.map.RandomState)::["contains"]
+        α0
+        α4 in
     let* α6 := not α5 in
     let* α7 := use α6 in
     if (α7 : bool) then
@@ -78,7 +88,11 @@ Definition main `{ℋ : State.Trait} : M unit :=
           i32
           std.collections.hash.map.RandomState) in
     let* α1 := M.alloc 5 in
-    (std.collections.hash.set.HashSet T S)::["insert"] α0 α1 in
+    (std.collections.hash.set.HashSet
+          i32
+          std.collections.hash.map.RandomState)::["insert"]
+      α0
+      α1 in
   let* _ :=
     let* _ :=
       let* α0 := borrow [ mk_str "A: "; mk_str "
@@ -176,7 +190,12 @@ Definition main `{ℋ : State.Trait} : M unit :=
           (std.collections.hash.set.HashSet
             i32
             std.collections.hash.map.RandomState) in
-      let* α8 := (std.collections.hash.set.HashSet T S)::["union"] α4 α7 in
+      let* α8 :=
+        (std.collections.hash.set.HashSet
+              i32
+              std.collections.hash.map.RandomState)::["union"]
+          α4
+          α7 in
       let* α9 :=
         (core.iter.traits.iterator.Iterator.collect
             (Self :=
@@ -227,7 +246,12 @@ Definition main `{ℋ : State.Trait} : M unit :=
           (std.collections.hash.set.HashSet
             i32
             std.collections.hash.map.RandomState) in
-      let* α8 := (std.collections.hash.set.HashSet T S)::["difference"] α4 α7 in
+      let* α8 :=
+        (std.collections.hash.set.HashSet
+              i32
+              std.collections.hash.map.RandomState)::["difference"]
+          α4
+          α7 in
       let* α9 :=
         (core.iter.traits.iterator.Iterator.collect
             (Self :=
@@ -279,7 +303,11 @@ Definition main `{ℋ : State.Trait} : M unit :=
             i32
             std.collections.hash.map.RandomState) in
       let* α8 :=
-        (std.collections.hash.set.HashSet T S)::["intersection"] α4 α7 in
+        (std.collections.hash.set.HashSet
+              i32
+              std.collections.hash.map.RandomState)::["intersection"]
+          α4
+          α7 in
       let* α9 :=
         (core.iter.traits.iterator.Iterator.collect
             (Self :=
@@ -333,7 +361,9 @@ Definition main `{ℋ : State.Trait} : M unit :=
             i32
             std.collections.hash.map.RandomState) in
       let* α8 :=
-        (std.collections.hash.set.HashSet T S)::["symmetric_difference"]
+        (std.collections.hash.set.HashSet
+              i32
+              std.collections.hash.map.RandomState)::["symmetric_difference"]
           α4
           α7 in
       let* α9 :=

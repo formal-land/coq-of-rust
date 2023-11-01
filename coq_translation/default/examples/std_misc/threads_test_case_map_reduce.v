@@ -13,7 +13,8 @@ Definition main `{ℋ : State.Trait} : M unit :=
 58495327135744041048897885734297812
 69920216438980873548808413720956532
 16278424637452589860345374828574668" in
-  let* children := (alloc.vec.Vec T alloc.alloc.Global)::["new"] in
+  let* children :=
+    (alloc.vec.Vec (std.thread.JoinHandle u32) alloc.alloc.Global)::["new"] in
   let* chunked_data :=
     let* α0 := deref data str in
     let* α1 := borrow α0 str in
@@ -106,7 +107,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
                           let* α1 := char::["to_digit"] c α0 in
                           let* α2 := deref (mk_str "should be a digit") str in
                           let* α3 := borrow α2 str in
-                          (core.option.Option T)::["expect"] α1 α3) in
+                          (core.option.Option u32)::["expect"] α1 α3) in
                       (core.iter.traits.iterator.Iterator.sum
                           (Self :=
                             (core.iter.adapters.map.Map
@@ -144,7 +145,11 @@ Definition main `{ℋ : State.Trait} : M unit :=
                         std.io.stdio._print α16 in
                       M.alloc tt in
                     Pure result) in
-                (alloc.vec.Vec T A)::["push"] α0 α1 in
+                (alloc.vec.Vec
+                      (std.thread.JoinHandle u32)
+                      alloc.alloc.Global)::["push"]
+                  α0
+                  α1 in
               M.alloc tt
             end in
           M.alloc tt)
@@ -163,8 +168,13 @@ Definition main `{ℋ : State.Trait} : M unit :=
               (std.thread.JoinHandle u32)
               alloc.alloc.Global)))
         α0
-        (let* α0 := (std.thread.JoinHandle T)::["join"] c in
-        (core.result.Result T E)::["unwrap"] α0) in
+        (let* α0 := (std.thread.JoinHandle u32)::["join"] c in
+        (core.result.Result
+              u32
+              (alloc.boxed.Box
+                type not implemented
+                alloc.alloc.Global))::["unwrap"]
+          α0) in
     (core.iter.traits.iterator.Iterator.sum
         (Self :=
           (core.iter.adapters.map.Map

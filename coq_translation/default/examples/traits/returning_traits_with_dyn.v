@@ -93,12 +93,20 @@ Definition random_animal
   let* α3 :=
     if (α2 : bool) then
       let* α0 := M.alloc (returning_traits_with_dyn.Sheep.Build_t tt) in
-      let* α1 := (alloc.boxed.Box T alloc.alloc.Global)::["new"] α0 in
+      let* α1 :=
+        (alloc.boxed.Box
+              returning_traits_with_dyn.Sheep
+              alloc.alloc.Global)::["new"]
+          α0 in
       let* α0 := pointer_coercion "Unsize" α1 in
       pointer_coercion "Unsize" α0
     else
       let* α0 := M.alloc (returning_traits_with_dyn.Cow.Build_t tt) in
-      let* α1 := (alloc.boxed.Box T alloc.alloc.Global)::["new"] α0 in
+      let* α1 :=
+        (alloc.boxed.Box
+              returning_traits_with_dyn.Cow
+              alloc.alloc.Global)::["new"]
+          α0 in
       pointer_coercion "Unsize" α1 in
   let* α0 := pointer_coercion "Unsize" α3 in
   pointer_coercion "Unsize" α0.

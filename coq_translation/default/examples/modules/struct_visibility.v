@@ -174,6 +174,6 @@ Definition main `{ℋ : State.Trait} : M unit :=
       std.io.stdio._print α13 in
     M.alloc tt in
   let* _closed_box :=
-    (struct_visibility.my.ClosedBox T)::["new"]
+    (struct_visibility.my.ClosedBox (ref str))::["new"]
       (mk_str "classified information") in
   M.alloc tt.

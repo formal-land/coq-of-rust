@@ -1,0 +1,18 @@
+type Dynamic(
+    [
+        Binder(
+            Trait(
+                std::any::Any,
+            ),
+            [],
+        ),
+        Binder(
+            AutoTrait(
+                DefId(2:2672 ~ core[af2a]::marker::Send),
+            ),
+            [],
+        ),
+    ],
+    ReErased,
+    Dyn,
+) not yet handled

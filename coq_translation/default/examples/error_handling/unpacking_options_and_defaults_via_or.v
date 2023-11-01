@@ -67,8 +67,13 @@ Definition main `{ℋ : State.Trait} : M unit :=
     M.alloc (core.option.Option.Some α0) in
   let* no_fruit := M.alloc (core.option.Option.None tt) in
   let* first_available_fruit :=
-    let* α0 := (core.option.Option T)::["or"] no_fruit orange in
-    (core.option.Option T)::["or"] α0 apple in
+    let* α0 :=
+      (core.option.Option unpacking_options_and_defaults_via_or.Fruit)::["or"]
+        no_fruit
+        orange in
+    (core.option.Option unpacking_options_and_defaults_via_or.Fruit)::["or"]
+      α0
+      apple in
   let* _ :=
     let* _ :=
       let* α0 :=

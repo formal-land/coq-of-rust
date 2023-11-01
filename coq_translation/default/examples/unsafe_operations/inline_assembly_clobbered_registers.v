@@ -15,7 +15,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
     let* α2 := borrow α1 (list u8) in
     let* α3 := pointer_coercion "Unsize" α2 in
     let* α4 := core.str.converts.from_utf8 α3 in
-    (core.result.Result T E)::["unwrap"] α4 in
+    (core.result.Result (ref str) core.str.error.Utf8Error)::["unwrap"] α4 in
   let* _ :=
     let* _ :=
       let* α0 :=

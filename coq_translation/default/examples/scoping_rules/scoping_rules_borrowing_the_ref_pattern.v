@@ -186,7 +186,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
     M.alloc tt in
   let* mutable_tuple :=
     let* α0 := M.alloc 5 in
-    let* α1 := (alloc.boxed.Box T alloc.alloc.Global)::["new"] α0 in
+    let* α1 := (alloc.boxed.Box u32 alloc.alloc.Global)::["new"] α0 in
     let* α2 := M.alloc 3 in
     Pure (α1, α2) in
   let* _ :=

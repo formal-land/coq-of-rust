@@ -10,7 +10,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
     let* α3 :=
       (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] [ α0; α1; α2 ] in
     let* α4 := pointer_coercion "Unsize" α3 in
-    (Slice T)::["into_vec"] α4 in
+    (Slice i32)::["into_vec"] α4 in
   let contains :=
     let* α0 := borrow haystack (alloc.vec.Vec i32 alloc.alloc.Global) in
     let* α1 :=
@@ -19,7 +19,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
         α0 in
     let* α2 := deref α1 (Slice i32) in
     let* α3 := borrow α2 (Slice i32) in
-    (Slice T)::["contains"] α3 needle in
+    (Slice i32)::["contains"] α3 needle in
   let* _ :=
     let* _ :=
       let* α0 := borrow [ mk_str ""; mk_str "

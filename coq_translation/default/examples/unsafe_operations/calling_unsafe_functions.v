@@ -12,20 +12,20 @@ Definition main `{ℋ : State.Trait} : M unit :=
       (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"]
         [ α0; α1; α2; α3 ] in
     let* α5 := pointer_coercion "Unsize" α4 in
-    (Slice T)::["into_vec"] α5 in
+    (Slice u32)::["into_vec"] α5 in
   let* pointer :=
     let* α0 := borrow some_vector (alloc.vec.Vec u32 alloc.alloc.Global) in
-    (alloc.vec.Vec T A)::["as_ptr"] α0 in
+    (alloc.vec.Vec u32 alloc.alloc.Global)::["as_ptr"] α0 in
   let* length :=
     let* α0 := borrow some_vector (alloc.vec.Vec u32 alloc.alloc.Global) in
-    (alloc.vec.Vec T A)::["len"] α0 in
+    (alloc.vec.Vec u32 alloc.alloc.Global)::["len"] α0 in
   let* my_slice :=
     let* α0 := core.slice.raw.from_raw_parts pointer length in
     let* α1 := deref α0 (Slice u32) in
     borrow α1 (Slice u32) in
   let* _ :=
     let* α0 := borrow some_vector (alloc.vec.Vec u32 alloc.alloc.Global) in
-    let* α1 := (alloc.vec.Vec T A)::["as_slice"] α0 in
+    let* α1 := (alloc.vec.Vec u32 alloc.alloc.Global)::["as_slice"] α0 in
     let* α2 := borrow α1 (ref (Slice u32)) in
     let* α3 := borrow my_slice (ref (Slice u32)) in
     match (α2, α3) with

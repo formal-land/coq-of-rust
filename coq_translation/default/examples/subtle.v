@@ -2097,7 +2097,7 @@ Module Impl_subtle_CtOption_T.
           α8 in
       let* α10 := (core.ops.function.FnOnce.call_once (Self := F)) f (α9) in
       let* α11 := self.["is_some"] in
-      (subtle.CtOption T)::["new"] α10 α11.
+      (subtle.CtOption U)::["new"] α10 α11.
     
     Global Instance AssociatedFunction_map
         {U F : Set}

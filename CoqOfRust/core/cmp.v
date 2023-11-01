@@ -150,9 +150,71 @@ Module PartialOrd.
   Global Instance Method_ge `{State.Trait} `(Trait) : Notation.Dot "ge" := {
     Notation.dot := ge;
   }. *)
-  Module Impl_PartialOrd_for_str.
-    Global Instance I `{State.Trait} : Trait str (Rhs := str). Admitted.
-  End Impl_PartialOrd_for_str.
+
+  Module Instances. Section Instances.
+    Context `{State.Trait}.
+
+    Global Instance I_bool : Trait bool (Rhs := bool).
+    Admitted.
+
+    Global Instance I_char : Trait char (Rhs := char).
+    Admitted.
+
+    Global Instance I_f32 : Trait f32 (Rhs := f32).
+    Admitted.
+
+    Global Instance I_f64 : Trait f64 (Rhs := f64).
+    Admitted.
+
+    Global Instance I_i8 : Trait i8 (Rhs := i8).
+    Admitted.
+
+    Global Instance I_i16 : Trait i16 (Rhs := i16).
+    Admitted.
+
+    Global Instance I_i32 : Trait i32 (Rhs := i32).
+    Admitted.
+
+    Global Instance I_i64 : Trait i64 (Rhs := i64).
+    Admitted.
+
+    Global Instance I_i128 : Trait i128 (Rhs := i128).
+    Admitted.
+
+    Global Instance I_isize : Trait isize (Rhs := isize).
+    Admitted.
+
+    Global Instance I_never : Trait never (Rhs := never).
+    Admitted.
+
+    Global Instance I_str : Trait str (Rhs := str).
+    Admitted.
+
+    Global Instance I_u8 : Trait u8 (Rhs := u8).
+    Admitted.
+
+    Global Instance I_u16 : Trait u16 (Rhs := u16).
+    Admitted.
+
+    Global Instance I_u32 : Trait u32 (Rhs := u32).
+    Admitted.
+
+    Global Instance I_u64 : Trait u64 (Rhs := u64).
+    Admitted.
+
+    Global Instance I_u128 : Trait u128 (Rhs := u128).
+    Admitted.
+
+    Global Instance I_unit : Trait unit (Rhs := unit).
+    Admitted.
+
+    Global Instance I_usize : Trait usize (Rhs := usize).
+    Admitted.
+
+    Global Instance I_ref_ref {A B : Set} :
+      Trait A (Rhs := B) -> Trait (ref A) (Rhs := ref B).
+    Admitted.
+  End Instances. End Instances.
 End PartialOrd.
 
 (* 

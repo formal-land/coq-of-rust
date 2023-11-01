@@ -50,7 +50,7 @@ Definition drink
     `{ℋ : State.Trait}
     (drink : core.option.Option (ref str))
     : M unit :=
-  let* inside := (core.option.Option T)::["unwrap"] drink in
+  let* inside := (core.option.Option (ref str))::["unwrap"] drink in
   let* _ :=
     let* α0 := borrow inside (ref str) in
     let* α1 := borrow (mk_str "lemonade") (ref str) in

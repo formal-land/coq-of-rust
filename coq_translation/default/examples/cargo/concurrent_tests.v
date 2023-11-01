@@ -45,7 +45,7 @@ Module tests.
       let* α10 := std.fs.OpenOptions::["open"] α9 (mk_str "ferris.txt") in
       let* α11 := deref (mk_str "Failed to open ferris.txt") str in
       let* α12 := borrow α11 str in
-      (core.result.Result T E)::["expect"] α10 α12 in
+      (core.result.Result std.fs.File std.io.error.Error)::["expect"] α10 α12 in
     let* α0 := M.alloc 0 in
     let* α1 := M.alloc 5 in
     let* α2 :=
@@ -85,7 +85,9 @@ Module tests.
                   (std.io.Write.write_all (Self := std.fs.File)) α0 α5 in
                 let* α7 := deref (mk_str "Could not write to ferris.txt") str in
                 let* α8 := borrow α7 str in
-                (core.result.Result T E)::["expect"] α6 α8 in
+                (core.result.Result unit std.io.error.Error)::["expect"]
+                  α6
+                  α8 in
               M.alloc tt
             end in
           M.alloc tt)
@@ -107,7 +109,7 @@ Module tests.
       let* α10 := std.fs.OpenOptions::["open"] α9 (mk_str "ferris.txt") in
       let* α11 := deref (mk_str "Failed to open ferris.txt") str in
       let* α12 := borrow α11 str in
-      (core.result.Result T E)::["expect"] α10 α12 in
+      (core.result.Result std.fs.File std.io.error.Error)::["expect"] α10 α12 in
     let* α0 := M.alloc 0 in
     let* α1 := M.alloc 5 in
     let* α2 :=
@@ -147,7 +149,9 @@ Module tests.
                   (std.io.Write.write_all (Self := std.fs.File)) α0 α5 in
                 let* α7 := deref (mk_str "Could not write to ferris.txt") str in
                 let* α8 := borrow α7 str in
-                (core.result.Result T E)::["expect"] α6 α8 in
+                (core.result.Result unit std.io.error.Error)::["expect"]
+                  α6
+                  α8 in
               M.alloc tt
             end in
           M.alloc tt)
@@ -170,7 +174,7 @@ Definition test_file `{ℋ : State.Trait} : M unit :=
     let* α10 := std.fs.OpenOptions::["open"] α9 (mk_str "ferris.txt") in
     let* α11 := deref (mk_str "Failed to open ferris.txt") str in
     let* α12 := borrow α11 str in
-    (core.result.Result T E)::["expect"] α10 α12 in
+    (core.result.Result std.fs.File std.io.error.Error)::["expect"] α10 α12 in
   let* α0 := M.alloc 0 in
   let* α1 := M.alloc 5 in
   let* α2 :=
@@ -208,7 +212,7 @@ Definition test_file `{ℋ : State.Trait} : M unit :=
               let* α6 := (std.io.Write.write_all (Self := std.fs.File)) α0 α5 in
               let* α7 := deref (mk_str "Could not write to ferris.txt") str in
               let* α8 := borrow α7 str in
-              (core.result.Result T E)::["expect"] α6 α8 in
+              (core.result.Result unit std.io.error.Error)::["expect"] α6 α8 in
             M.alloc tt
           end in
         M.alloc tt)
@@ -230,7 +234,7 @@ Definition test_file_also `{ℋ : State.Trait} : M unit :=
     let* α10 := std.fs.OpenOptions::["open"] α9 (mk_str "ferris.txt") in
     let* α11 := deref (mk_str "Failed to open ferris.txt") str in
     let* α12 := borrow α11 str in
-    (core.result.Result T E)::["expect"] α10 α12 in
+    (core.result.Result std.fs.File std.io.error.Error)::["expect"] α10 α12 in
   let* α0 := M.alloc 0 in
   let* α1 := M.alloc 5 in
   let* α2 :=
@@ -268,7 +272,7 @@ Definition test_file_also `{ℋ : State.Trait} : M unit :=
               let* α6 := (std.io.Write.write_all (Self := std.fs.File)) α0 α5 in
               let* α7 := deref (mk_str "Could not write to ferris.txt") str in
               let* α8 := borrow α7 str in
-              (core.result.Result T E)::["expect"] α6 α8 in
+              (core.result.Result unit std.io.error.Error)::["expect"] α6 α8 in
             M.alloc tt
           end in
         M.alloc tt)

@@ -84,7 +84,10 @@ Definition main `{ℋ : State.Trait} : M unit :=
         my_fruit
         (core.option.Option
           unpacking_options_and_defaults_via_get_or_insert_with.Fruit) in
-    (core.option.Option T)::["get_or_insert_with"] α0 get_lemon_as_fallback in
+    (core.option.Option
+          unpacking_options_and_defaults_via_get_or_insert_with.Fruit)::["get_or_insert_with"]
+      α0
+      get_lemon_as_fallback in
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -161,7 +164,10 @@ Definition main `{ℋ : State.Trait} : M unit :=
         my_apple
         (core.option.Option
           unpacking_options_and_defaults_via_get_or_insert_with.Fruit) in
-    (core.option.Option T)::["get_or_insert_with"] α0 get_lemon_as_fallback in
+    (core.option.Option
+          unpacking_options_and_defaults_via_get_or_insert_with.Fruit)::["get_or_insert_with"]
+      α0
+      get_lemon_as_fallback in
   let* _ :=
     let* _ :=
       let* α0 :=

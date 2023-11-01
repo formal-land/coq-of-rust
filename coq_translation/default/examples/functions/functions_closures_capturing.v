@@ -68,7 +68,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
   let* _count_reborrowed := borrow_mut count i32 in
   let* movable :=
     let* α0 := M.alloc 3 in
-    (alloc.boxed.Box T alloc.alloc.Global)::["new"] α0 in
+    (alloc.boxed.Box i32 alloc.alloc.Global)::["new"] α0 in
   let consume :=
     let* _ :=
       let* _ :=

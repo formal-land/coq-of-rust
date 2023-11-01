@@ -96,8 +96,14 @@ Definition main `{ℋ : State.Trait} : M unit :=
     M.alloc (core.option.Option.Some α0) in
   let* first_available_fruit :=
     let* α0 :=
-      (core.option.Option T)::["or_else"] no_fruit get_kiwi_as_fallback in
-    (core.option.Option T)::["or_else"] α0 get_lemon_as_fallback in
+      (core.option.Option
+            unpacking_options_and_defaults_via_or_else.Fruit)::["or_else"]
+        no_fruit
+        get_kiwi_as_fallback in
+    (core.option.Option
+          unpacking_options_and_defaults_via_or_else.Fruit)::["or_else"]
+      α0
+      get_lemon_as_fallback in
   let* _ :=
     let* _ :=
       let* α0 :=

@@ -31,7 +31,11 @@ Module Impl_enums_testcase_linked_list_List.
         (self : Self)
         (elem : u32)
         : M enums_testcase_linked_list.List :=
-      let* α0 := (alloc.boxed.Box T alloc.alloc.Global)::["new"] self in
+      let* α0 :=
+        (alloc.boxed.Box
+              enums_testcase_linked_list.List
+              alloc.alloc.Global)::["new"]
+          self in
       M.alloc (enums_testcase_linked_list.List.Cons elem α0).
     
     Global Instance AssociatedFunction_prepend :

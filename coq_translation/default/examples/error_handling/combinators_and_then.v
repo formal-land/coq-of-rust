@@ -133,7 +133,9 @@ Definition cookable_v2
     (food : combinators_and_then.Food)
     : M (core.option.Option combinators_and_then.Food) :=
   let* α0 := combinators_and_then.have_recipe food in
-  (core.option.Option T)::["and_then"] α0 combinators_and_then.have_ingredients.
+  (core.option.Option combinators_and_then.Food)::["and_then"]
+    α0
+    combinators_and_then.have_ingredients.
 
 Definition eat
     `{ℋ : State.Trait}

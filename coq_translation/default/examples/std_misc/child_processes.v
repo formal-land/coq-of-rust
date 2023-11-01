@@ -10,7 +10,9 @@ Definition main `{ℋ : State.Trait} : M unit :=
     let* α3 := deref α2 std.process.Command in
     let* α4 := borrow_mut α3 std.process.Command in
     let* α5 := std.process.Command::["output"] α4 in
-    (core.result.Result T E)::["unwrap_or_else"]
+    (core.result.Result
+          std.process.Output
+          std.io.error.Error)::["unwrap_or_else"]
       α5
       (let* α0 :=
         borrow [ mk_str "failed to execute process: " ] (list (ref str)) in
