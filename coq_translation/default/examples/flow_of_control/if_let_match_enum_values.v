@@ -11,8 +11,8 @@ Definition Foo `{ℋ : State.Trait} : Set := Foo.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
-  let* a := M.alloc (if_let_match_enum_values.Foo.Bar tt) in
-  let* b := M.alloc (if_let_match_enum_values.Foo.Baz tt) in
+  let* a := M.alloc if_let_match_enum_values.Foo.Bar in
+  let* b := M.alloc if_let_match_enum_values.Foo.Baz in
   let* c :=
     let* α0 := M.alloc 100 in
     M.alloc (if_let_match_enum_values.Foo.Qux α0) in

@@ -13,10 +13,12 @@ Definition main `{ℋ : State.Trait} : M unit :=
     let* α5 := (Slice i32)::["into_vec"] α4 in
     let* α6 :=
       (core.iter.traits.collect.IntoIterator.into_iter
-          (Self := (alloc.vec.Vec i32 alloc.alloc.Global)))
+          (Self := alloc.vec.Vec i32 alloc.alloc.Global)
+          (Trait := ltac:(refine _)))
         α5 in
     (core.iter.traits.iterator.Iterator.collect
-        (Self := (alloc.vec.into_iter.IntoIter i32 alloc.alloc.Global)))
+        (Self := alloc.vec.into_iter.IntoIter i32 alloc.alloc.Global)
+        (Trait := ltac:(refine _)))
       α6 in
   let* b :=
     let* α0 := M.alloc 2 in
@@ -28,10 +30,12 @@ Definition main `{ℋ : State.Trait} : M unit :=
     let* α5 := (Slice i32)::["into_vec"] α4 in
     let* α6 :=
       (core.iter.traits.collect.IntoIterator.into_iter
-          (Self := (alloc.vec.Vec i32 alloc.alloc.Global)))
+          (Self := alloc.vec.Vec i32 alloc.alloc.Global)
+          (Trait := ltac:(refine _)))
         α5 in
     (core.iter.traits.iterator.Iterator.collect
-        (Self := (alloc.vec.into_iter.IntoIter i32 alloc.alloc.Global)))
+        (Self := alloc.vec.into_iter.IntoIter i32 alloc.alloc.Global)
+        (Trait := ltac:(refine _)))
       α6 in
   let* _ :=
     let* α0 :=
@@ -47,7 +51,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
             std.collections.hash.map.RandomState)::["insert"]
         α0
         α1 in
-    let* α3 := not α2 in
+    let* α3 := UnOp.not α2 in
     let* α4 := use α3 in
     if (α4 : bool) then
       let* α0 :=
@@ -72,7 +76,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
             std.collections.hash.map.RandomState)::["contains"]
         α0
         α4 in
-    let* α6 := not α5 in
+    let* α6 := UnOp.not α5 in
     let* α7 := use α6 in
     if (α7 : bool) then
       let* α0 :=
@@ -199,9 +203,10 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α9 :=
         (core.iter.traits.iterator.Iterator.collect
             (Self :=
-              (std.collections.hash.set.Union
+              std.collections.hash.set.Union
                 i32
-                std.collections.hash.map.RandomState)))
+                std.collections.hash.map.RandomState)
+            (Trait := ltac:(refine _)))
           α8 in
       let* α10 := borrow α9 (alloc.vec.Vec (ref i32) alloc.alloc.Global) in
       let* α11 := deref α10 (alloc.vec.Vec (ref i32) alloc.alloc.Global) in
@@ -255,9 +260,10 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α9 :=
         (core.iter.traits.iterator.Iterator.collect
             (Self :=
-              (std.collections.hash.set.Difference
+              std.collections.hash.set.Difference
                 i32
-                std.collections.hash.map.RandomState)))
+                std.collections.hash.map.RandomState)
+            (Trait := ltac:(refine _)))
           α8 in
       let* α10 := borrow α9 (alloc.vec.Vec (ref i32) alloc.alloc.Global) in
       let* α11 := deref α10 (alloc.vec.Vec (ref i32) alloc.alloc.Global) in
@@ -311,9 +317,10 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α9 :=
         (core.iter.traits.iterator.Iterator.collect
             (Self :=
-              (std.collections.hash.set.Intersection
+              std.collections.hash.set.Intersection
                 i32
-                std.collections.hash.map.RandomState)))
+                std.collections.hash.map.RandomState)
+            (Trait := ltac:(refine _)))
           α8 in
       let* α10 := borrow α9 (alloc.vec.Vec (ref i32) alloc.alloc.Global) in
       let* α11 := deref α10 (alloc.vec.Vec (ref i32) alloc.alloc.Global) in
@@ -369,9 +376,10 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α9 :=
         (core.iter.traits.iterator.Iterator.collect
             (Self :=
-              (std.collections.hash.set.SymmetricDifference
+              std.collections.hash.set.SymmetricDifference
                 i32
-                std.collections.hash.map.RandomState)))
+                std.collections.hash.map.RandomState)
+            (Trait := ltac:(refine _)))
           α8 in
       let* α10 := borrow α9 (alloc.vec.Vec (ref i32) alloc.alloc.Global) in
       let* α11 := deref α10 (alloc.vec.Vec (ref i32) alloc.alloc.Global) in

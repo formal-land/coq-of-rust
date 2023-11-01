@@ -122,7 +122,9 @@ Definition main `{ℋ : State.Trait} : M unit :=
   let* pasted :=
     let* α0 := deref (mk_str "my text") str in
     let* α1 := borrow α0 str in
-    let* α2 := (alloc.borrow.ToOwned.to_owned (Self := str)) α1 in
+    let* α2 :=
+      (alloc.borrow.ToOwned.to_owned (Self := str) (Trait := ltac:(refine _)))
+        α1 in
     M.alloc (enums.WebEvent.Paste α2) in
   let* click :=
     let* α0 := M.alloc 20 in
@@ -133,8 +135,8 @@ Definition main `{ℋ : State.Trait} : M unit :=
         enums.WebEvent.Click.x := α0;
         enums.WebEvent.Click.y := α1;
       |} in
-  let* load := M.alloc (enums.WebEvent.PageLoad tt) in
-  let* unload := M.alloc (enums.WebEvent.PageUnload tt) in
+  let* load := M.alloc enums.WebEvent.PageLoad in
+  let* unload := M.alloc enums.WebEvent.PageUnload in
   let* _ := enums.inspect pressed in
   let* _ := enums.inspect pasted in
   let* _ := enums.inspect click in

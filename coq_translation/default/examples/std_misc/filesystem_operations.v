@@ -9,14 +9,15 @@ Definition cat
     let* α0 := std.fs.File::["open"] path in
     let* α1 :=
       (core.ops.try_trait.Try.branch
-          (Self := (core.result.Result std.fs.File std.io.error.Error)))
+          (Self := core.result.Result std.fs.File std.io.error.Error)
+          (Trait := ltac:(refine _)))
         α0 in
     match α1 with
     | core.ops.control_flow.ControlFlow residual =>
       let* α0 :=
         (core.ops.try_trait.FromResidual.from_residual
-            (Self :=
-              (core.result.Result alloc.string.String std.io.error.Error)))
+            (Self := core.result.Result alloc.string.String std.io.error.Error)
+            (Trait := ltac:(refine _)))
           residual in
       let* α1 := Return α0 in
       never_to_any α1
@@ -27,7 +28,12 @@ Definition cat
   let* α1 := borrow_mut s alloc.string.String in
   let* α2 := deref α1 alloc.string.String in
   let* α3 := borrow_mut α2 alloc.string.String in
-  let* α4 := (std.io.Read.read_to_string (Self := std.fs.File)) α0 α3 in
+  let* α4 :=
+    (std.io.Read.read_to_string
+        (Self := std.fs.File)
+        (Trait := ltac:(refine _)))
+      α0
+      α3 in
   match α4 with
   | core.result.Result _ => M.alloc (core.result.Result.Ok s)
   | core.result.Result e => M.alloc (core.result.Result.Err e)
@@ -42,13 +48,15 @@ Definition echo
     let* α0 := std.fs.File::["create"] path in
     let* α1 :=
       (core.ops.try_trait.Try.branch
-          (Self := (core.result.Result std.fs.File std.io.error.Error)))
+          (Self := core.result.Result std.fs.File std.io.error.Error)
+          (Trait := ltac:(refine _)))
         α0 in
     match α1 with
     | core.ops.control_flow.ControlFlow residual =>
       let* α0 :=
         (core.ops.try_trait.FromResidual.from_residual
-            (Self := (core.result.Result unit std.io.error.Error)))
+            (Self := core.result.Result unit std.io.error.Error)
+            (Trait := ltac:(refine _)))
           residual in
       let* α1 := Return α0 in
       never_to_any α1
@@ -60,7 +68,9 @@ Definition echo
   let* α3 := str::["as_bytes"] α2 in
   let* α4 := deref α3 (Slice u8) in
   let* α5 := borrow α4 (Slice u8) in
-  (std.io.Write.write_all (Self := std.fs.File)) α0 α5.
+  (std.io.Write.write_all (Self := std.fs.File) (Trait := ltac:(refine _)))
+    α0
+    α5.
 
 Definition touch
     `{ℋ : State.Trait}
@@ -381,7 +391,8 @@ Definition main `{ℋ : State.Trait} : M unit :=
     | core.result.Result paths =>
       let* α0 :=
         (core.iter.traits.collect.IntoIterator.into_iter
-            (Self := std.fs.ReadDir))
+            (Self := std.fs.ReadDir)
+            (Trait := ltac:(refine _)))
           paths in
       let* α1 :=
         match α0 with
@@ -393,7 +404,8 @@ Definition main `{ℋ : State.Trait} : M unit :=
               let* α2 := borrow_mut α1 std.fs.ReadDir in
               let* α3 :=
                 (core.iter.traits.iterator.Iterator.next
-                    (Self := std.fs.ReadDir))
+                    (Self := std.fs.ReadDir)
+                    (Trait := ltac:(refine _)))
                   α2 in
               match α3 with
               | core.option.Option  =>

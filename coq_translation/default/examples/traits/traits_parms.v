@@ -46,11 +46,10 @@ Module SomeTrait.
       some_fn : M unit;
     }.
     
-    #[refine] Global Instance Method_SomeType `(Trait) :
+    Global Instance Method_SomeType `(Trait) :
       Notation.DoubleColonType Self "SomeType" := {
       Notation.double_colon_type := SomeType;
     }.
-    Admitted.
   End SomeTrait.
 End SomeTrait.
 
@@ -64,10 +63,9 @@ Module SomeOtherType.
     }.
     Global Set Primitive Projections.
     
-    #[refine] Global Instance Get_0 : Notation.Dot "0" := {
+    Global Instance Get_0 : Notation.Dot "0" := {
       Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
-    Admitted.
   End SomeOtherType.
 End SomeOtherType.
 Definition SomeOtherType `{ℋ : State.Trait} : Set := M.val SomeOtherType.t.
@@ -78,11 +76,9 @@ Module Impl_traits_parms_Foo_for_traits_parms_SomeOtherType.
     
     Definition Self : Set := traits_parms.SomeOtherType.
     
-    #[refine] Global Instance ℐ : traits_parms.Foo.Trait Self := {
+    Global Instance ℐ : traits_parms.Foo.Trait Self := {
     }.
-    Admitted.
   End Impl_traits_parms_Foo_for_traits_parms_SomeOtherType.
-  Global Hint Resolve ℐ : core.
 End Impl_traits_parms_Foo_for_traits_parms_SomeOtherType.
 
 Module Impl_traits_parms_Bar_for_traits_parms_SomeOtherType.
@@ -91,11 +87,9 @@ Module Impl_traits_parms_Bar_for_traits_parms_SomeOtherType.
     
     Definition Self : Set := traits_parms.SomeOtherType.
     
-    #[refine] Global Instance ℐ : traits_parms.Bar.Trait Self := {
+    Global Instance ℐ : traits_parms.Bar.Trait Self := {
     }.
-    Admitted.
   End Impl_traits_parms_Bar_for_traits_parms_SomeOtherType.
-  Global Hint Resolve ℐ : core.
 End Impl_traits_parms_Bar_for_traits_parms_SomeOtherType.
 
 Module Impl_traits_parms_Tar_for_traits_parms_SomeOtherType.
@@ -104,11 +98,9 @@ Module Impl_traits_parms_Tar_for_traits_parms_SomeOtherType.
     
     Definition Self : Set := traits_parms.SomeOtherType.
     
-    #[refine] Global Instance ℐ : traits_parms.Tar.Trait Self := {
+    Global Instance ℐ : traits_parms.Tar.Trait Self := {
     }.
-    Admitted.
   End Impl_traits_parms_Tar_for_traits_parms_SomeOtherType.
-  Global Hint Resolve ℐ : core.
 End Impl_traits_parms_Tar_for_traits_parms_SomeOtherType.
 
 Module Impl_traits_parms_SomeTrait_for_traits_parms_SomeOtherType.
@@ -126,11 +118,9 @@ Module Impl_traits_parms_SomeTrait_for_traits_parms_SomeOtherType.
       Notation.double_colon := some_fn;
     }.
     
-    #[refine] Global Instance ℐ : traits_parms.SomeTrait.Trait Self := {
+    Global Instance ℐ : traits_parms.SomeTrait.Trait Self := {
       traits_parms.SomeTrait.SomeType := SomeType;
       traits_parms.SomeTrait.some_fn := some_fn;
     }.
-    Admitted.
   End Impl_traits_parms_SomeTrait_for_traits_parms_SomeOtherType.
-  Global Hint Resolve ℐ : core.
 End Impl_traits_parms_SomeTrait_for_traits_parms_SomeOtherType.

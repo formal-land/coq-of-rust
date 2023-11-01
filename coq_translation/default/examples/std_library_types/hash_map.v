@@ -260,7 +260,8 @@ Definition main `{ℋ : State.Trait} : M unit :=
       α0 in
   let* α2 :=
     (core.iter.traits.collect.IntoIterator.into_iter
-        (Self := (std.collections.hash.map.Iter (ref str) (ref str))))
+        (Self := std.collections.hash.map.Iter (ref str) (ref str))
+        (Trait := ltac:(refine _)))
       α1 in
   let* α3 :=
     match α2 with
@@ -277,7 +278,8 @@ Definition main `{ℋ : State.Trait} : M unit :=
             borrow_mut α1 (std.collections.hash.map.Iter (ref str) (ref str)) in
           let* α3 :=
             (core.iter.traits.iterator.Iterator.next
-                (Self := (std.collections.hash.map.Iter (ref str) (ref str))))
+                (Self := std.collections.hash.map.Iter (ref str) (ref str))
+                (Trait := ltac:(refine _)))
               α2 in
           match α3 with
           | core.option.Option  =>

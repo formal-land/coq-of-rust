@@ -54,7 +54,10 @@ Definition drink
   let* _ :=
     let* α0 := borrow inside (ref str) in
     let* α1 := borrow (mk_str "lemonade") (ref str) in
-    let* α2 := (core.cmp.PartialEq.eq (Self := (ref str))) α0 α1 in
+    let* α2 :=
+      (core.cmp.PartialEq.eq (Self := ref str) (Trait := ltac:(refine _)))
+        α0
+        α1 in
     let* α3 := use α2 in
     if (α3 : bool) then
       let* _ :=
@@ -89,12 +92,12 @@ Definition drink
 Definition main `{ℋ : State.Trait} : M unit :=
   let* water := M.alloc (core.option.Option.Some (mk_str "water")) in
   let* lemonade := M.alloc (core.option.Option.Some (mk_str "lemonade")) in
-  let* void := M.alloc (core.option.Option.None tt) in
+  let* void := M.alloc core.option.Option.None in
   let* _ := option_and_unwrap.give_adult water in
   let* _ := option_and_unwrap.give_adult lemonade in
   let* _ := option_and_unwrap.give_adult void in
   let* coffee := M.alloc (core.option.Option.Some (mk_str "coffee")) in
-  let* nothing := M.alloc (core.option.Option.None tt) in
+  let* nothing := M.alloc core.option.Option.None in
   let* _ := option_and_unwrap.drink coffee in
   let* _ := option_and_unwrap.drink nothing in
   M.alloc tt.

@@ -49,7 +49,11 @@ Definition main `{ℋ : State.Trait} : M unit :=
     let* α7 := deref α6 (Slice u8) in
     let* α8 := borrow α7 (Slice u8) in
     let* α9 :=
-      (std.io.Write.write_all (Self := std.process.ChildStdin)) α2 α8 in
+      (std.io.Write.write_all
+          (Self := std.process.ChildStdin)
+          (Trait := ltac:(refine _)))
+        α2
+        α8 in
     match α9 with
     | core.result.Result why =>
       let* α0 :=
@@ -87,7 +91,11 @@ Definition main `{ℋ : State.Trait} : M unit :=
   let* α4 := deref α3 alloc.string.String in
   let* α5 := borrow_mut α4 alloc.string.String in
   let* α6 :=
-    (std.io.Read.read_to_string (Self := std.process.ChildStdout)) α2 α5 in
+    (std.io.Read.read_to_string
+        (Self := std.process.ChildStdout)
+        (Trait := ltac:(refine _)))
+      α2
+      α5 in
   match α6 with
   | core.result.Result why =>
     let* α0 := borrow [ mk_str "couldn't read wc stdout: " ] (list (ref str)) in

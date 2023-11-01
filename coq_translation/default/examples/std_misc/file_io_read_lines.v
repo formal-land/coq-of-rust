@@ -13,7 +13,8 @@ Definition read_lines
       (std.io.buffered.bufreader.BufReader std.fs.File)::["new"] file in
     let* α1 :=
       (std.io.BufRead.lines
-          (Self := (std.io.buffered.bufreader.BufReader std.fs.File)))
+          (Self := std.io.buffered.bufreader.BufReader std.fs.File)
+          (Trait := ltac:(refine _)))
         α0 in
     Return α1 in
   let* α0 := M.alloc tt in
@@ -24,12 +25,14 @@ Definition main `{ℋ : State.Trait} : M unit :=
   let* lines :=
     let* α0 := deref (mk_str "./hosts") str in
     let* α1 := borrow α0 str in
-    let* α2 := (alloc.string.ToString.to_string (Self := str)) α1 in
+    let* α2 :=
+      (alloc.string.ToString.to_string (Self := str) (Trait := ltac:(refine _)))
+        α1 in
     file_io_read_lines.read_lines α2 in
   let* α0 :=
     (core.iter.traits.collect.IntoIterator.into_iter
-        (Self :=
-          (std.io.Lines (std.io.buffered.bufreader.BufReader std.fs.File))))
+        (Self := std.io.Lines (std.io.buffered.bufreader.BufReader std.fs.File))
+        (Trait := ltac:(refine _)))
       lines in
   let* α1 :=
     match α0 with
@@ -54,8 +57,9 @@ Definition main `{ℋ : State.Trait} : M unit :=
           let* α3 :=
             (core.iter.traits.iterator.Iterator.next
                 (Self :=
-                  (std.io.Lines
-                    (std.io.buffered.bufreader.BufReader std.fs.File))))
+                  std.io.Lines
+                    (std.io.buffered.bufreader.BufReader std.fs.File))
+                (Trait := ltac:(refine _)))
               α2 in
           match α3 with
           | core.option.Option  =>

@@ -69,7 +69,11 @@ Definition comp_sci_student_greeting
     let* α3 := pointer_coercion "Unsize" α2 in
     let* α4 := deref student type not implemented in
     let* α5 := borrow α4 type not implemented in
-    let* α6 := (supertraits.Person.name (Self := type not implemented)) α5 in
+    let* α6 :=
+      (supertraits.Person.name
+          (Self := type not implemented)
+          (Trait := ltac:(refine _)))
+        α5 in
     let* α7 := borrow α6 alloc.string.String in
     let* α8 := deref α7 alloc.string.String in
     let* α9 := borrow α8 alloc.string.String in
@@ -77,7 +81,10 @@ Definition comp_sci_student_greeting
     let* α11 := deref student type not implemented in
     let* α12 := borrow α11 type not implemented in
     let* α13 :=
-      (supertraits.Student.university (Self := type not implemented)) α12 in
+      (supertraits.Student.university
+          (Self := type not implemented)
+          (Trait := ltac:(refine _)))
+        α12 in
     let* α14 := borrow α13 alloc.string.String in
     let* α15 := deref α14 alloc.string.String in
     let* α16 := borrow α15 alloc.string.String in
@@ -85,7 +92,9 @@ Definition comp_sci_student_greeting
     let* α18 := deref student type not implemented in
     let* α19 := borrow α18 type not implemented in
     let* α20 :=
-      (supertraits.Programmer.fav_language (Self := type not implemented))
+      (supertraits.Programmer.fav_language
+          (Self := type not implemented)
+          (Trait := ltac:(refine _)))
         α19 in
     let* α21 := borrow α20 alloc.string.String in
     let* α22 := deref α21 alloc.string.String in
@@ -94,7 +103,9 @@ Definition comp_sci_student_greeting
     let* α25 := deref student type not implemented in
     let* α26 := borrow α25 type not implemented in
     let* α27 :=
-      (supertraits.CompSciStudent.git_username (Self := type not implemented))
+      (supertraits.CompSciStudent.git_username
+          (Self := type not implemented)
+          (Trait := ltac:(refine _)))
         α26 in
     let* α28 := borrow α27 alloc.string.String in
     let* α29 := deref α28 alloc.string.String in

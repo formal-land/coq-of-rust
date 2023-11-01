@@ -22,13 +22,15 @@ Definition main `{ℋ : State.Trait} : M unit :=
   let* _ :=
     let* α0 :=
       (core.iter.traits.iterator.Iterator.enumerate
-          (Self := core.str.iter.SplitWhitespace))
+          (Self := core.str.iter.SplitWhitespace)
+          (Trait := ltac:(refine _)))
         chunked_data in
     let* α1 :=
       (core.iter.traits.collect.IntoIterator.into_iter
           (Self :=
-            (core.iter.adapters.enumerate.Enumerate
-              core.str.iter.SplitWhitespace)))
+            core.iter.adapters.enumerate.Enumerate
+              core.str.iter.SplitWhitespace)
+          (Trait := ltac:(refine _)))
         α0 in
     let* α2 :=
       match α1 with
@@ -53,8 +55,9 @@ Definition main `{ℋ : State.Trait} : M unit :=
             let* α3 :=
               (core.iter.traits.iterator.Iterator.next
                   (Self :=
-                    (core.iter.adapters.enumerate.Enumerate
-                      core.str.iter.SplitWhitespace)))
+                    core.iter.adapters.enumerate.Enumerate
+                      core.str.iter.SplitWhitespace)
+                  (Trait := ltac:(refine _)))
                 α2 in
             match α3 with
             | core.option.Option  =>
@@ -101,7 +104,8 @@ Definition main `{ℋ : State.Trait} : M unit :=
                       let* α2 := str::["chars"] α1 in
                       let* α3 :=
                         (core.iter.traits.iterator.Iterator.map
-                            (Self := core.str.iter.Chars))
+                            (Self := core.str.iter.Chars)
+                            (Trait := ltac:(refine _)))
                           α2
                           (let* α0 := M.alloc 10 in
                           let* α1 := char::["to_digit"] c α0 in
@@ -110,9 +114,10 @@ Definition main `{ℋ : State.Trait} : M unit :=
                           (core.option.Option u32)::["expect"] α1 α3) in
                       (core.iter.traits.iterator.Iterator.sum
                           (Self :=
-                            (core.iter.adapters.map.Map
+                            core.iter.adapters.map.Map
                               core.str.iter.Chars
-                              type not implemented)))
+                              type not implemented)
+                          (Trait := ltac:(refine _)))
                         α3 in
                     let* _ :=
                       let* _ :=
@@ -158,15 +163,16 @@ Definition main `{ℋ : State.Trait} : M unit :=
   let* final_result :=
     let* α0 :=
       (core.iter.traits.collect.IntoIterator.into_iter
-          (Self :=
-            (alloc.vec.Vec (std.thread.JoinHandle u32) alloc.alloc.Global)))
+          (Self := alloc.vec.Vec (std.thread.JoinHandle u32) alloc.alloc.Global)
+          (Trait := ltac:(refine _)))
         children in
     let* α1 :=
       (core.iter.traits.iterator.Iterator.map
           (Self :=
-            (alloc.vec.into_iter.IntoIter
+            alloc.vec.into_iter.IntoIter
               (std.thread.JoinHandle u32)
-              alloc.alloc.Global)))
+              alloc.alloc.Global)
+          (Trait := ltac:(refine _)))
         α0
         (let* α0 := (std.thread.JoinHandle u32)::["join"] c in
         (core.result.Result
@@ -177,11 +183,12 @@ Definition main `{ℋ : State.Trait} : M unit :=
           α0) in
     (core.iter.traits.iterator.Iterator.sum
         (Self :=
-          (core.iter.adapters.map.Map
+          core.iter.adapters.map.Map
             (alloc.vec.into_iter.IntoIter
               (std.thread.JoinHandle u32)
               alloc.alloc.Global)
-            type not implemented)))
+            type not implemented)
+        (Trait := ltac:(refine _)))
       α1 in
   let* _ :=
     let* _ :=

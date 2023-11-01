@@ -14,16 +14,13 @@ Module my.
       }.
       Global Set Primitive Projections.
       
-      #[refine] Global Instance Get_contents : Notation.Dot "contents" := {
+      Global Instance Get_contents : Notation.Dot "contents" := {
         Notation.dot x := let* x := M.read x in Pure x.(contents) : M _;
       }.
-      Admitted.
-      #[refine] Global Instance Get_AF_contents :
-        Notation.DoubleColon t "contents" := {
+      Global Instance Get_AF_contents : Notation.DoubleColon t "contents" := {
         Notation.double_colon x :=
           let* x := M.read x in Pure x.(contents) : M _;
       }.
-      Admitted.
     End OpenBox.
   End OpenBox.
   Definition OpenBox (T : Set) `{ℋ : State.Trait} : Set :=
@@ -41,16 +38,13 @@ Module my.
       }.
       Global Set Primitive Projections.
       
-      #[refine] Global Instance Get_contents : Notation.Dot "contents" := {
+      Global Instance Get_contents : Notation.Dot "contents" := {
         Notation.dot x := let* x := M.read x in Pure x.(contents) : M _;
       }.
-      Admitted.
-      #[refine] Global Instance Get_AF_contents :
-        Notation.DoubleColon t "contents" := {
+      Global Instance Get_AF_contents : Notation.DoubleColon t "contents" := {
         Notation.double_colon x :=
           let* x := M.read x in Pure x.(contents) : M _;
       }.
-      Admitted.
     End ClosedBox.
   End ClosedBox.
   Definition ClosedBox (T : Set) `{ℋ : State.Trait} : Set :=
@@ -87,15 +81,12 @@ Module OpenBox.
     }.
     Global Set Primitive Projections.
     
-    #[refine] Global Instance Get_contents : Notation.Dot "contents" := {
+    Global Instance Get_contents : Notation.Dot "contents" := {
       Notation.dot x := let* x := M.read x in Pure x.(contents) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_AF_contents :
-      Notation.DoubleColon t "contents" := {
+    Global Instance Get_AF_contents : Notation.DoubleColon t "contents" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(contents) : M _;
     }.
-    Admitted.
   End OpenBox.
 End OpenBox.
 Definition OpenBox (T : Set) `{ℋ : State.Trait} : Set :=
@@ -113,15 +104,12 @@ Module ClosedBox.
     }.
     Global Set Primitive Projections.
     
-    #[refine] Global Instance Get_contents : Notation.Dot "contents" := {
+    Global Instance Get_contents : Notation.Dot "contents" := {
       Notation.dot x := let* x := M.read x in Pure x.(contents) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_AF_contents :
-      Notation.DoubleColon t "contents" := {
+    Global Instance Get_AF_contents : Notation.DoubleColon t "contents" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(contents) : M _;
     }.
-    Admitted.
   End ClosedBox.
 End ClosedBox.
 Definition ClosedBox (T : Set) `{ℋ : State.Trait} : Set :=

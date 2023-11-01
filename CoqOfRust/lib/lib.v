@@ -104,12 +104,18 @@ Definition array (A : Set) : Set := list A.
 
 Definition never `{State.Trait} : Set := M.val Empty_set.
 
-Definition never_to_any `{State.Trait} {A : Set} (n : never) : M A :=
-  let* n := M.read n in
-  match n with end.
+Definition never_to_any `{State.Trait} {A B : Set} (x : A) : M B :=
+  M.impossible.
+
+Definition use `{State.Trait} {A : Set} (x : A) : M A := M.Pure x.
 
 Definition mk_str `{State.Trait} (s : string) : ref str :=
   M.Ref.Immutable (M.Ref.Immutable s).
+
+Module UnOp.
+  Parameter not : forall `{State.Trait}, bool -> M bool.
+  Parameter neg : forall `{State.Trait} {A : Set}, A -> M A.
+End UnOp.
 
 Module BinOp.
   Parameter add : forall `{State.Trait} {A : Set}, A -> A -> M A.
@@ -117,8 +123,6 @@ Module BinOp.
   Parameter mul : forall `{State.Trait} {A : Set}, A -> A -> M A.
   Parameter div : forall `{State.Trait} {A : Set}, A -> A -> M A.
   Parameter rem : forall `{State.Trait} {A : Set}, A -> A -> M A.
-  Parameter and : forall `{State.Trait} {A : Set}, A -> A -> M bool.
-  Parameter or : forall `{State.Trait} {A : Set}, A -> A -> M bool.
   Parameter bit_xor : forall `{State.Trait} {A : Set}, A -> A -> M A.
   Parameter bit_and : forall `{State.Trait} {A : Set}, A -> A -> M A.
   Parameter bit_or : forall `{State.Trait} {A : Set}, A -> A -> M A.
@@ -132,4 +136,7 @@ Module BinOp.
   Parameter le : forall `{State.Trait} {A : Set}, A -> A -> M bool.
   Parameter ge : forall `{State.Trait} {A : Set}, A -> A -> M bool.
   Parameter gt : forall `{State.Trait} {A : Set}, A -> A -> M bool.
+
+  Parameter and : forall `{State.Trait} {A : Set}, A -> A -> M bool.
+  Parameter or : forall `{State.Trait} {A : Set}, A -> A -> M bool.
 End BinOp.

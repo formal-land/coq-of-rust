@@ -20,7 +20,7 @@ Module Impl_enums_testcase_linked_list_List.
     Definition Self : Set := enums_testcase_linked_list.List.
     
     Definition new : M enums_testcase_linked_list.List :=
-      M.alloc (enums_testcase_linked_list.List.Nil tt).
+      M.alloc enums_testcase_linked_list.List.Nil.
     
     Global Instance AssociatedFunction_new :
       Notation.DoubleColon Self "new" := {

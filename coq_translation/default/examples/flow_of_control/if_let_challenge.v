@@ -9,7 +9,7 @@ Definition Foo `{ℋ : State.Trait} : Set := Foo.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
-  let* a := M.alloc (if_let_challenge.Foo.Bar tt) in
+  let* a := M.alloc if_let_challenge.Foo.Bar in
   let* α0 := let_if if_let_challenge.Foo  := a in
   if (α0 : bool) then
     let* _ :=

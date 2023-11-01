@@ -40,12 +40,10 @@ Module Impl_core_fmt_Debug_for_combinators_map_Food.
       Notation.double_colon := fmt;
     }.
     
-    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
-    Admitted.
   End Impl_core_fmt_Debug_for_combinators_map_Food.
-  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_combinators_map_Food.
 
 Module Peeled.
@@ -58,10 +56,9 @@ Module Peeled.
     }.
     Global Set Primitive Projections.
     
-    #[refine] Global Instance Get_0 : Notation.Dot "0" := {
+    Global Instance Get_0 : Notation.Dot "0" := {
       Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
-    Admitted.
   End Peeled.
 End Peeled.
 Definition Peeled `{ℋ : State.Trait} : Set := M.val Peeled.t.
@@ -94,12 +91,10 @@ Module Impl_core_fmt_Debug_for_combinators_map_Peeled.
       Notation.double_colon := fmt;
     }.
     
-    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
-    Admitted.
   End Impl_core_fmt_Debug_for_combinators_map_Peeled.
-  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_combinators_map_Peeled.
 
 Module Chopped.
@@ -112,10 +107,9 @@ Module Chopped.
     }.
     Global Set Primitive Projections.
     
-    #[refine] Global Instance Get_0 : Notation.Dot "0" := {
+    Global Instance Get_0 : Notation.Dot "0" := {
       Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
-    Admitted.
   End Chopped.
 End Chopped.
 Definition Chopped `{ℋ : State.Trait} : Set := M.val Chopped.t.
@@ -148,12 +142,10 @@ Module Impl_core_fmt_Debug_for_combinators_map_Chopped.
       Notation.double_colon := fmt;
     }.
     
-    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
-    Admitted.
   End Impl_core_fmt_Debug_for_combinators_map_Chopped.
-  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_combinators_map_Chopped.
 
 Module Cooked.
@@ -166,10 +158,9 @@ Module Cooked.
     }.
     Global Set Primitive Projections.
     
-    #[refine] Global Instance Get_0 : Notation.Dot "0" := {
+    Global Instance Get_0 : Notation.Dot "0" := {
       Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
-    Admitted.
   End Cooked.
 End Cooked.
 Definition Cooked `{ℋ : State.Trait} : Set := M.val Cooked.t.
@@ -202,12 +193,10 @@ Module Impl_core_fmt_Debug_for_combinators_map_Cooked.
       Notation.double_colon := fmt;
     }.
     
-    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
-    Admitted.
   End Impl_core_fmt_Debug_for_combinators_map_Cooked.
-  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_combinators_map_Cooked.
 
 Definition peel
@@ -218,7 +207,7 @@ Definition peel
   | core.option.Option food =>
     let* α0 := M.alloc (combinators_map.Peeled.Build_t food) in
     M.alloc (core.option.Option.Some α0)
-  | core.option.Option  => M.alloc (core.option.Option.None tt)
+  | core.option.Option  => M.alloc core.option.Option.None
   end.
 
 Definition chop
@@ -229,7 +218,7 @@ Definition chop
   | core.option.Option combinators_map.Peeled.Build_t food =>
     let* α0 := M.alloc (combinators_map.Chopped.Build_t food) in
     M.alloc (core.option.Option.Some α0)
-  | core.option.Option  => M.alloc (core.option.Option.None tt)
+  | core.option.Option  => M.alloc core.option.Option.None
   end.
 
 Definition cook
@@ -296,12 +285,12 @@ Definition eat
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
   let* apple :=
-    let* α0 := M.alloc (combinators_map.Food.Apple tt) in
+    let* α0 := M.alloc combinators_map.Food.Apple in
     M.alloc (core.option.Option.Some α0) in
   let* carrot :=
-    let* α0 := M.alloc (combinators_map.Food.Carrot tt) in
+    let* α0 := M.alloc combinators_map.Food.Carrot in
     M.alloc (core.option.Option.Some α0) in
-  let* potato := M.alloc (core.option.Option.None tt) in
+  let* potato := M.alloc core.option.Option.None in
   let* cooked_apple :=
     let* α0 := combinators_map.peel apple in
     let* α1 := combinators_map.chop α0 in

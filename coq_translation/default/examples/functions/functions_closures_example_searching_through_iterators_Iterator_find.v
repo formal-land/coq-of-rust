@@ -23,14 +23,16 @@ Definition main `{ℋ : State.Trait} : M unit :=
     let* α0 := borrow vec1 (alloc.vec.Vec i32 alloc.alloc.Global) in
     let* α1 :=
       (core.ops.deref.Deref.deref
-          (Self := (alloc.vec.Vec i32 alloc.alloc.Global)))
+          (Self := alloc.vec.Vec i32 alloc.alloc.Global)
+          (Trait := ltac:(refine _)))
         α0 in
     let* α2 := deref α1 (Slice i32) in
     let* α3 := borrow α2 (Slice i32) in
     (Slice i32)::["iter"] α3 in
   let* into_iter :=
     (core.iter.traits.collect.IntoIterator.into_iter
-        (Self := (alloc.vec.Vec i32 alloc.alloc.Global)))
+        (Self := alloc.vec.Vec i32 alloc.alloc.Global)
+        (Trait := ltac:(refine _)))
       vec2 in
   let* _ :=
     let* _ :=
@@ -43,7 +45,8 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α4 := borrow_mut iter (core.slice.iter.Iter i32) in
       let* α5 :=
         (core.iter.traits.iterator.Iterator.find
-            (Self := (core.slice.iter.Iter i32)))
+            (Self := core.slice.iter.Iter i32)
+            (Trait := ltac:(refine _)))
           α4
           (let* α0 := M.alloc 2 in
           BinOp.eq x α0) in
@@ -72,7 +75,8 @@ Definition main `{ℋ : State.Trait} : M unit :=
           (alloc.vec.into_iter.IntoIter i32 alloc.alloc.Global) in
       let* α5 :=
         (core.iter.traits.iterator.Iterator.find
-            (Self := (alloc.vec.into_iter.IntoIter i32 alloc.alloc.Global)))
+            (Self := alloc.vec.into_iter.IntoIter i32 alloc.alloc.Global)
+            (Trait := ltac:(refine _)))
           α4
           (let* α0 := M.alloc 2 in
           BinOp.eq x α0) in
@@ -111,7 +115,8 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α7 := borrow_mut α6 (core.slice.iter.Iter i32) in
       let* α8 :=
         (core.iter.traits.iterator.Iterator.find
-            (Self := (core.slice.iter.Iter i32)))
+            (Self := core.slice.iter.Iter i32)
+            (Trait := ltac:(refine _)))
           α7
           (let* α0 := M.alloc 2 in
           BinOp.eq x α0) in
@@ -137,12 +142,14 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α4 := borrow array2 (list i32) in
       let* α5 :=
         (core.iter.traits.collect.IntoIterator.into_iter
-            (Self := (ref (list i32))))
+            (Self := ref (list i32))
+            (Trait := ltac:(refine _)))
           α4 in
       let* α6 := borrow_mut α5 (core.slice.iter.Iter i32) in
       let* α7 :=
         (core.iter.traits.iterator.Iterator.find
-            (Self := (core.slice.iter.Iter i32)))
+            (Self := core.slice.iter.Iter i32)
+            (Trait := ltac:(refine _)))
           α6
           (let* α0 := deref x i32 in
           let* α1 := M.alloc 2 in

@@ -38,11 +38,13 @@ Definition main `{ℋ : State.Trait} : M unit :=
     let* α2 := str::["split_whitespace"] α1 in
     let* α3 :=
       (core.iter.traits.iterator.Iterator.rev
-          (Self := core.str.iter.SplitWhitespace))
+          (Self := core.str.iter.SplitWhitespace)
+          (Trait := ltac:(refine _)))
         α2 in
     let* α4 :=
       (core.iter.traits.collect.IntoIterator.into_iter
-          (Self := (core.iter.adapters.rev.Rev core.str.iter.SplitWhitespace)))
+          (Self := core.iter.adapters.rev.Rev core.str.iter.SplitWhitespace)
+          (Trait := ltac:(refine _)))
         α3 in
     let* α5 :=
       match α4 with
@@ -64,7 +66,8 @@ Definition main `{ℋ : State.Trait} : M unit :=
             let* α3 :=
               (core.iter.traits.iterator.Iterator.next
                   (Self :=
-                    (core.iter.adapters.rev.Rev core.str.iter.SplitWhitespace)))
+                    core.iter.adapters.rev.Rev core.str.iter.SplitWhitespace)
+                  (Trait := ltac:(refine _)))
                 α2 in
             match α3 with
             | core.option.Option  =>
@@ -99,13 +102,16 @@ Definition main `{ℋ : State.Trait} : M unit :=
     let* α0 := deref pangram str in
     let* α1 := borrow α0 str in
     let* α2 := str::["chars"] α1 in
-    (core.iter.traits.iterator.Iterator.collect (Self := core.str.iter.Chars))
+    (core.iter.traits.iterator.Iterator.collect
+        (Self := core.str.iter.Chars)
+        (Trait := ltac:(refine _)))
       α2 in
   let* _ :=
     let* α0 := borrow_mut chars (alloc.vec.Vec char alloc.alloc.Global) in
     let* α1 :=
       (core.ops.deref.DerefMut.deref_mut
-          (Self := (alloc.vec.Vec char alloc.alloc.Global)))
+          (Self := alloc.vec.Vec char alloc.alloc.Global)
+          (Trait := ltac:(refine _)))
         α0 in
     let* α2 := deref α1 (Slice char) in
     let* α3 := borrow_mut α2 (Slice char) in
@@ -117,7 +123,8 @@ Definition main `{ℋ : State.Trait} : M unit :=
   let* _ :=
     let* α0 :=
       (core.iter.traits.collect.IntoIterator.into_iter
-          (Self := (alloc.vec.Vec char alloc.alloc.Global)))
+          (Self := alloc.vec.Vec char alloc.alloc.Global)
+          (Trait := ltac:(refine _)))
         chars in
     let* α1 :=
       match α0 with
@@ -136,8 +143,8 @@ Definition main `{ℋ : State.Trait} : M unit :=
                 (alloc.vec.into_iter.IntoIter char alloc.alloc.Global) in
             let* α3 :=
               (core.iter.traits.iterator.Iterator.next
-                  (Self :=
-                    (alloc.vec.into_iter.IntoIter char alloc.alloc.Global)))
+                  (Self := alloc.vec.into_iter.IntoIter char alloc.alloc.Global)
+                  (Trait := ltac:(refine _)))
                 α2 in
             match α3 with
             | core.option.Option  =>
@@ -166,7 +173,11 @@ Definition main `{ℋ : State.Trait} : M unit :=
     pointer_coercion "Unsize" α4 in
   let* trimmed_str :=
     let* α0 := borrow string alloc.string.String in
-    let* α1 := (core.ops.deref.Deref.deref (Self := alloc.string.String)) α0 in
+    let* α1 :=
+      (core.ops.deref.Deref.deref
+          (Self := alloc.string.String)
+          (Trait := ltac:(refine _)))
+        α0 in
     let* α2 := deref α1 str in
     let* α3 := borrow α2 str in
     let* α4 := str::["trim_matches"] α3 chars_to_trim in
@@ -192,11 +203,17 @@ Definition main `{ℋ : State.Trait} : M unit :=
       std.io.stdio._print α12 in
     M.alloc tt in
   let* alice :=
-    (core.convert.From.from (Self := alloc.string.String))
+    (core.convert.From.from
+        (Self := alloc.string.String)
+        (Trait := ltac:(refine _)))
       (mk_str "I like dogs") in
   let* bob :=
     let* α0 := borrow alice alloc.string.String in
-    let* α1 := (core.ops.deref.Deref.deref (Self := alloc.string.String)) α0 in
+    let* α1 :=
+      (core.ops.deref.Deref.deref
+          (Self := alloc.string.String)
+          (Trait := ltac:(refine _)))
+        α0 in
     let* α2 := deref α1 str in
     let* α3 := borrow α2 str in
     let* α4 := deref (mk_str "cat") str in

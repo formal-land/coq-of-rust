@@ -15,7 +15,10 @@ Definition multiply
     | core.result.Result err =>
       let* _ :=
         let* α0 :=
-          (core.convert.From.from (Self := core.num.error.ParseIntError)) err in
+          (core.convert.From.from
+              (Self := core.num.error.ParseIntError)
+              (Trait := ltac:(refine _)))
+            err in
         let* α1 := M.alloc (core.result.Result.Err α0) in
         Return α1 in
       let* α0 := M.alloc tt in
@@ -30,7 +33,10 @@ Definition multiply
     | core.result.Result err =>
       let* _ :=
         let* α0 :=
-          (core.convert.From.from (Self := core.num.error.ParseIntError)) err in
+          (core.convert.From.from
+              (Self := core.num.error.ParseIntError)
+              (Trait := ltac:(refine _)))
+            err in
         let* α1 := M.alloc (core.result.Result.Err α0) in
         Return α1 in
       let* α0 := M.alloc tt in

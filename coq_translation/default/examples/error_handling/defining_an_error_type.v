@@ -31,12 +31,10 @@ Module Impl_core_fmt_Debug_for_defining_an_error_type_DoubleError.
       Notation.double_colon := fmt;
     }.
     
-    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
-    Admitted.
   End Impl_core_fmt_Debug_for_defining_an_error_type_DoubleError.
-  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_defining_an_error_type_DoubleError.
 
 Module Impl_core_clone_Clone_for_defining_an_error_type_DoubleError.
@@ -46,19 +44,17 @@ Module Impl_core_clone_Clone_for_defining_an_error_type_DoubleError.
     Definition Self : Set := defining_an_error_type.DoubleError.
     
     Definition clone (self : ref Self) : M defining_an_error_type.DoubleError :=
-      M.alloc (defining_an_error_type.DoubleError.Build_t tt).
+      M.alloc defining_an_error_type.DoubleError.Build_t.
     
     Global Instance AssociatedFunction_clone :
       Notation.DoubleColon Self "clone" := {
       Notation.double_colon := clone;
     }.
     
-    #[refine] Global Instance ℐ : core.clone.Clone.Trait Self := {
+    Global Instance ℐ : core.clone.Clone.Trait Self := {
       core.clone.Clone.clone := clone;
     }.
-    Admitted.
   End Impl_core_clone_Clone_for_defining_an_error_type_DoubleError.
-  Global Hint Resolve ℐ : core.
 End Impl_core_clone_Clone_for_defining_an_error_type_DoubleError.
 
 Ltac Result T :=
@@ -89,12 +85,10 @@ Module Impl_core_fmt_Display_for_defining_an_error_type_DoubleError.
       Notation.double_colon := fmt;
     }.
     
-    #[refine] Global Instance ℐ : core.fmt.Display.Trait Self := {
+    Global Instance ℐ : core.fmt.Display.Trait Self := {
       core.fmt.Display.fmt := fmt;
     }.
-    Admitted.
   End Impl_core_fmt_Display_for_defining_an_error_type_DoubleError.
-  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Display_for_defining_an_error_type_DoubleError.
 
 Definition double_first
@@ -104,12 +98,13 @@ Definition double_first
   let* α0 := borrow vec (alloc.vec.Vec (ref str) alloc.alloc.Global) in
   let* α1 :=
     (core.ops.deref.Deref.deref
-        (Self := (alloc.vec.Vec (ref str) alloc.alloc.Global)))
+        (Self := alloc.vec.Vec (ref str) alloc.alloc.Global)
+        (Trait := ltac:(refine _)))
       α0 in
   let* α2 := deref α1 (Slice (ref str)) in
   let* α3 := borrow α2 (Slice (ref str)) in
   let* α4 := (Slice (ref str))::["first"] α3 in
-  let* α5 := M.alloc (defining_an_error_type.DoubleError.Build_t tt) in
+  let* α5 := M.alloc defining_an_error_type.DoubleError.Build_t in
   let* α6 := (core.option.Option (ref (ref str)))::["ok_or"] α4 α5 in
   (core.result.Result
         (ref (ref str))
@@ -122,7 +117,7 @@ Definition double_first
     let* α4 :=
       (core.result.Result i32 core.num.error.ParseIntError)::["map_err"]
         α3
-        (M.alloc (defining_an_error_type.DoubleError.Build_t tt)) in
+        (M.alloc defining_an_error_type.DoubleError.Build_t) in
     (core.result.Result i32 defining_an_error_type.DoubleError)::["map"]
       α4
       (let* α0 := M.alloc 2 in

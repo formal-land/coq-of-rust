@@ -32,17 +32,15 @@ End Impl_PartialEq_for_Result.
 
 Module Impl_Result.
 Section Impl_Result.
+  Context `{State.Trait}.
   Context {T E : Set}.
 
   Definition Self : Set := Result T E.
 
-  Parameter expect :
-    forall `{H : State.Trait},
-    Self -> string -> M (H := H) T.
+  Parameter expect : Self -> string -> M T.
 
-  Global Instance Method_expect `{State.Trait} :
-    Notation.Dot "expect" := {|
-    Notation.dot := expect;
+  Global Instance AF_expect : Notation.DoubleColon Self "expect" := {|
+    Notation.double_colon := expect;
   |}.
 End Impl_Result.
 End Impl_Result.

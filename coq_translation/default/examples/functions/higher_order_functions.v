@@ -29,7 +29,8 @@ Definition main `{ℋ : State.Trait} : M unit :=
     let* α1 := M.alloc {| core.ops.range.RangeFrom.start := α0; |} in
     let* α2 :=
       (core.iter.traits.collect.IntoIterator.into_iter
-          (Self := (core.ops.range.RangeFrom u32)))
+          (Self := core.ops.range.RangeFrom u32)
+          (Trait := ltac:(refine _)))
         α1 in
     let* α3 :=
       match α2 with
@@ -41,7 +42,8 @@ Definition main `{ℋ : State.Trait} : M unit :=
             let* α2 := borrow_mut α1 (core.ops.range.RangeFrom u32) in
             let* α3 :=
               (core.iter.traits.iterator.Iterator.next
-                  (Self := (core.ops.range.RangeFrom u32)))
+                  (Self := core.ops.range.RangeFrom u32)
+                  (Trait := ltac:(refine _)))
                 α2 in
             match α3 with
             | core.option.Option  =>
@@ -91,36 +93,40 @@ Definition main `{ℋ : State.Trait} : M unit :=
     let* α1 := M.alloc {| core.ops.range.RangeFrom.start := α0; |} in
     let* α2 :=
       (core.iter.traits.iterator.Iterator.map
-          (Self := (core.ops.range.RangeFrom u32)))
+          (Self := core.ops.range.RangeFrom u32)
+          (Trait := ltac:(refine _)))
         α1
         (BinOp.mul n n) in
     let* α3 :=
       (core.iter.traits.iterator.Iterator.take_while
           (Self :=
-            (core.iter.adapters.map.Map
+            core.iter.adapters.map.Map
               (core.ops.range.RangeFrom u32)
-              type not implemented)))
+              type not implemented)
+          (Trait := ltac:(refine _)))
         α2
         (BinOp.lt n_squared upper) in
     let* α4 :=
       (core.iter.traits.iterator.Iterator.filter
           (Self :=
-            (core.iter.adapters.take_while.TakeWhile
+            core.iter.adapters.take_while.TakeWhile
               (core.iter.adapters.map.Map
                 (core.ops.range.RangeFrom u32)
                 type not implemented)
-              type not implemented)))
+              type not implemented)
+          (Trait := ltac:(refine _)))
         α3
         (higher_order_functions.is_odd n_squared) in
     (core.iter.traits.iterator.Iterator.sum
         (Self :=
-          (core.iter.adapters.filter.Filter
+          core.iter.adapters.filter.Filter
             (core.iter.adapters.take_while.TakeWhile
               (core.iter.adapters.map.Map
                 (core.ops.range.RangeFrom u32)
                 type not implemented)
               type not implemented)
-            type not implemented)))
+            type not implemented)
+        (Trait := ltac:(refine _)))
       α4 in
   let* _ :=
     let* _ :=

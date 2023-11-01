@@ -30,12 +30,10 @@ Module Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle.
       Notation.double_colon := area;
     }.
     
-    #[refine] Global Instance ℐ : generics_bounds.HasArea.Trait Self := {
+    Global Instance ℐ : generics_bounds.HasArea.Trait Self := {
       generics_bounds.HasArea.area := area;
     }.
-    Admitted.
   End Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle.
-  Global Hint Resolve ℐ : core.
 End Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle.
 
 Module Rectangle.
@@ -49,24 +47,18 @@ Module Rectangle.
     }.
     Global Set Primitive Projections.
     
-    #[refine] Global Instance Get_length : Notation.Dot "length" := {
+    Global Instance Get_length : Notation.Dot "length" := {
       Notation.dot x := let* x := M.read x in Pure x.(length) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_AF_length :
-      Notation.DoubleColon t "length" := {
+    Global Instance Get_AF_length : Notation.DoubleColon t "length" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(length) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_height : Notation.Dot "height" := {
+    Global Instance Get_height : Notation.Dot "height" := {
       Notation.dot x := let* x := M.read x in Pure x.(height) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_AF_height :
-      Notation.DoubleColon t "height" := {
+    Global Instance Get_AF_height : Notation.DoubleColon t "height" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(height) : M _;
     }.
-    Admitted.
   End Rectangle.
 End Rectangle.
 Definition Rectangle `{ℋ : State.Trait} : Set := M.val Rectangle.t.
@@ -109,12 +101,10 @@ Module Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
       Notation.double_colon := fmt;
     }.
     
-    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
-    Admitted.
   End Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
-  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
 
 (* #[allow(dead_code)] - struct was ignored by the compiler *)
@@ -129,24 +119,18 @@ Module Triangle.
     }.
     Global Set Primitive Projections.
     
-    #[refine] Global Instance Get_length : Notation.Dot "length" := {
+    Global Instance Get_length : Notation.Dot "length" := {
       Notation.dot x := let* x := M.read x in Pure x.(length) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_AF_length :
-      Notation.DoubleColon t "length" := {
+    Global Instance Get_AF_length : Notation.DoubleColon t "length" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(length) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_height : Notation.Dot "height" := {
+    Global Instance Get_height : Notation.Dot "height" := {
       Notation.dot x := let* x := M.read x in Pure x.(height) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_AF_height :
-      Notation.DoubleColon t "height" := {
+    Global Instance Get_AF_height : Notation.DoubleColon t "height" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(height) : M _;
     }.
-    Admitted.
   End Triangle.
 End Triangle.
 Definition Triangle `{ℋ : State.Trait} : Set := M.val Triangle.t.
@@ -185,7 +169,7 @@ Definition area
     : M f64 :=
   let* α0 := deref t T in
   let* α1 := borrow α0 T in
-  (generics_bounds.HasArea.area (Self := T)) α1.
+  (generics_bounds.HasArea.area (Self := T) (Trait := ltac:(refine _))) α1.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
@@ -219,7 +203,10 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α3 := pointer_coercion "Unsize" α2 in
       let* α4 := borrow rectangle generics_bounds.Rectangle in
       let* α5 :=
-        (generics_bounds.HasArea.area (Self := generics_bounds.Rectangle)) α4 in
+        (generics_bounds.HasArea.area
+            (Self := generics_bounds.Rectangle)
+            (Trait := ltac:(refine _)))
+          α4 in
       let* α6 := borrow α5 f64 in
       let* α7 := deref α6 f64 in
       let* α8 := borrow α7 f64 in

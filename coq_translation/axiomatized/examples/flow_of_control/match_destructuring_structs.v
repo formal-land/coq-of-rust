@@ -12,22 +12,18 @@ Module Foo.
     }.
     Global Set Primitive Projections.
     
-    #[refine] Global Instance Get_x : Notation.Dot "x" := {
+    Global Instance Get_x : Notation.Dot "x" := {
       Notation.dot x' := let* x' := M.read x' in Pure x'.(x) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_AF_x : Notation.DoubleColon t "x" := {
+    Global Instance Get_AF_x : Notation.DoubleColon t "x" := {
       Notation.double_colon x' := let* x' := M.read x' in Pure x'.(x) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_y : Notation.Dot "y" := {
+    Global Instance Get_y : Notation.Dot "y" := {
       Notation.dot x := let* x := M.read x in Pure x.(y) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_AF_y : Notation.DoubleColon t "y" := {
+    Global Instance Get_AF_y : Notation.DoubleColon t "y" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(y) : M _;
     }.
-    Admitted.
   End Foo.
 End Foo.
 Definition Foo `{ℋ : State.Trait} : Set := M.val Foo.t.

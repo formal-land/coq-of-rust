@@ -13,7 +13,8 @@ Definition main `{ℋ : State.Trait} : M unit :=
         |} in
     let* α3 :=
       (core.iter.traits.collect.IntoIterator.into_iter
-          (Self := (core.ops.range.Range i32)))
+          (Self := core.ops.range.Range i32)
+          (Trait := ltac:(refine _)))
         α2 in
     let* α4 :=
       match α3 with
@@ -25,7 +26,8 @@ Definition main `{ℋ : State.Trait} : M unit :=
             let* α2 := borrow_mut α1 (core.ops.range.Range i32) in
             let* α3 :=
               (core.iter.traits.iterator.Iterator.next
-                  (Self := (core.ops.range.Range i32)))
+                  (Self := core.ops.range.Range i32)
+                  (Trait := ltac:(refine _)))
                 α2 in
             match α3 with
             | core.option.Option  =>
@@ -36,7 +38,9 @@ Definition main `{ℋ : State.Trait} : M unit :=
                 let* α0 := borrow apple (alloc.sync.Arc (ref str)) in
                 let* α1 := deref α0 (alloc.sync.Arc (ref str)) in
                 let* α2 := borrow α1 (alloc.sync.Arc (ref str)) in
-                (core.clone.Clone.clone (Self := (alloc.sync.Arc (ref str))))
+                (core.clone.Clone.clone
+                    (Self := alloc.sync.Arc (ref str))
+                    (Trait := ltac:(refine _)))
                   α2 in
               let* _ :=
                 std.thread.spawn

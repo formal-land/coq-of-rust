@@ -37,12 +37,10 @@ Module Impl_core_fmt_Debug_for_other_uses_of_question_mark_EmptyVec.
       Notation.double_colon := fmt;
     }.
     
-    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
-    Admitted.
   End Impl_core_fmt_Debug_for_other_uses_of_question_mark_EmptyVec.
-  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_other_uses_of_question_mark_EmptyVec.
 
 Module Impl_core_fmt_Display_for_other_uses_of_question_mark_EmptyVec.
@@ -70,12 +68,10 @@ Module Impl_core_fmt_Display_for_other_uses_of_question_mark_EmptyVec.
       Notation.double_colon := fmt;
     }.
     
-    #[refine] Global Instance ℐ : core.fmt.Display.Trait Self := {
+    Global Instance ℐ : core.fmt.Display.Trait Self := {
       core.fmt.Display.fmt := fmt;
     }.
-    Admitted.
   End Impl_core_fmt_Display_for_other_uses_of_question_mark_EmptyVec.
-  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Display_for_other_uses_of_question_mark_EmptyVec.
 
 Module Impl_core_error_Error_for_other_uses_of_question_mark_EmptyVec.
@@ -84,11 +80,9 @@ Module Impl_core_error_Error_for_other_uses_of_question_mark_EmptyVec.
     
     Definition Self : Set := other_uses_of_question_mark.EmptyVec.
     
-    #[refine] Global Instance ℐ : core.error.Error.Trait Self := {
+    Global Instance ℐ : core.error.Error.Trait Self := {
     }.
-    Admitted.
   End Impl_core_error_Error_for_other_uses_of_question_mark_EmptyVec.
-  Global Hint Resolve ℐ : core.
 End Impl_core_error_Error_for_other_uses_of_question_mark_EmptyVec.
 
 Definition double_first
@@ -99,28 +93,31 @@ Definition double_first
     let* α0 := borrow vec (alloc.vec.Vec (ref str) alloc.alloc.Global) in
     let* α1 :=
       (core.ops.deref.Deref.deref
-          (Self := (alloc.vec.Vec (ref str) alloc.alloc.Global)))
+          (Self := alloc.vec.Vec (ref str) alloc.alloc.Global)
+          (Trait := ltac:(refine _)))
         α0 in
     let* α2 := deref α1 (Slice (ref str)) in
     let* α3 := borrow α2 (Slice (ref str)) in
     let* α4 := (Slice (ref str))::["first"] α3 in
-    let* α5 := M.alloc (other_uses_of_question_mark.EmptyVec.Build_t tt) in
+    let* α5 := M.alloc other_uses_of_question_mark.EmptyVec.Build_t in
     let* α6 := (core.option.Option (ref (ref str)))::["ok_or"] α4 α5 in
     let* α7 :=
       (core.ops.try_trait.Try.branch
           (Self :=
-            (core.result.Result
+            core.result.Result
               (ref (ref str))
-              other_uses_of_question_mark.EmptyVec)))
+              other_uses_of_question_mark.EmptyVec)
+          (Trait := ltac:(refine _)))
         α6 in
     match α7 with
     | core.ops.control_flow.ControlFlow residual =>
       let* α0 :=
         (core.ops.try_trait.FromResidual.from_residual
             (Self :=
-              (core.result.Result
+              core.result.Result
                 i32
-                (alloc.boxed.Box type not implemented alloc.alloc.Global))))
+                (alloc.boxed.Box type not implemented alloc.alloc.Global))
+            (Trait := ltac:(refine _)))
           residual in
       let* α1 := Return α0 in
       never_to_any α1
@@ -133,16 +130,18 @@ Definition double_first
     let* α3 := str::["parse"] α2 in
     let* α4 :=
       (core.ops.try_trait.Try.branch
-          (Self := (core.result.Result i32 core.num.error.ParseIntError)))
+          (Self := core.result.Result i32 core.num.error.ParseIntError)
+          (Trait := ltac:(refine _)))
         α3 in
     match α4 with
     | core.ops.control_flow.ControlFlow residual =>
       let* α0 :=
         (core.ops.try_trait.FromResidual.from_residual
             (Self :=
-              (core.result.Result
+              core.result.Result
                 i32
-                (alloc.boxed.Box type not implemented alloc.alloc.Global))))
+                (alloc.boxed.Box type not implemented alloc.alloc.Global))
+            (Trait := ltac:(refine _)))
           residual in
       let* α1 := Return α0 in
       never_to_any α1

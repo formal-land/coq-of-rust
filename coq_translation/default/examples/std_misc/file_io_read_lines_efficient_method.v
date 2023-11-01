@@ -10,7 +10,8 @@ Definition main `{ℋ : State.Trait} : M unit :=
     let* α0 :=
       (core.iter.traits.collect.IntoIterator.into_iter
           (Self :=
-            (std.io.Lines (std.io.buffered.bufreader.BufReader std.fs.File))))
+            std.io.Lines (std.io.buffered.bufreader.BufReader std.fs.File))
+          (Trait := ltac:(refine _)))
         lines in
     let* α1 :=
       match α0 with
@@ -35,8 +36,9 @@ Definition main `{ℋ : State.Trait} : M unit :=
             let* α3 :=
               (core.iter.traits.iterator.Iterator.next
                   (Self :=
-                    (std.io.Lines
-                      (std.io.buffered.bufreader.BufReader std.fs.File))))
+                    std.io.Lines
+                      (std.io.buffered.bufreader.BufReader std.fs.File))
+                  (Trait := ltac:(refine _)))
                 α2 in
             match α3 with
             | core.option.Option  =>
@@ -88,16 +90,18 @@ Definition read_lines
     let* α0 := std.fs.File::["open"] filename in
     let* α1 :=
       (core.ops.try_trait.Try.branch
-          (Self := (core.result.Result std.fs.File std.io.error.Error)))
+          (Self := core.result.Result std.fs.File std.io.error.Error)
+          (Trait := ltac:(refine _)))
         α0 in
     match α1 with
     | core.ops.control_flow.ControlFlow residual =>
       let* α0 :=
         (core.ops.try_trait.FromResidual.from_residual
             (Self :=
-              (core.result.Result
+              core.result.Result
                 (std.io.Lines (std.io.buffered.bufreader.BufReader std.fs.File))
-                std.io.error.Error)))
+                std.io.error.Error)
+            (Trait := ltac:(refine _)))
           residual in
       let* α1 := Return α0 in
       never_to_any α1
@@ -106,6 +110,7 @@ Definition read_lines
   let* α0 := (std.io.buffered.bufreader.BufReader std.fs.File)::["new"] file in
   let* α1 :=
     (std.io.BufRead.lines
-        (Self := (std.io.buffered.bufreader.BufReader std.fs.File)))
+        (Self := std.io.buffered.bufreader.BufReader std.fs.File)
+        (Trait := ltac:(refine _)))
       α0 in
   M.alloc (core.result.Result.Ok α1).

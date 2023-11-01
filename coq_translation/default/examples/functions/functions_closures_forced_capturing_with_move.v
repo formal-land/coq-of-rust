@@ -15,7 +15,8 @@ Definition main `{ℋ : State.Trait} : M unit :=
     let* α0 := borrow haystack (alloc.vec.Vec i32 alloc.alloc.Global) in
     let* α1 :=
       (core.ops.deref.Deref.deref
-          (Self := (alloc.vec.Vec i32 alloc.alloc.Global)))
+          (Self := alloc.vec.Vec i32 alloc.alloc.Global)
+          (Trait := ltac:(refine _)))
         α0 in
     let* α2 := deref α1 (Slice i32) in
     let* α3 := borrow α2 (Slice i32) in
@@ -33,7 +34,11 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α7 := deref α6 i32 in
       let* α8 := borrow α7 i32 in
       let* α9 :=
-        (core.ops.function.Fn.call (Self := type not implemented)) α4 (α8) in
+        (core.ops.function.Fn.call
+            (Self := type not implemented)
+            (Trait := ltac:(refine _)))
+          α4
+          (α8) in
       let* α10 := borrow α9 bool in
       let* α11 := deref α10 bool in
       let* α12 := borrow α11 bool in
@@ -58,7 +63,11 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α7 := deref α6 i32 in
       let* α8 := borrow α7 i32 in
       let* α9 :=
-        (core.ops.function.Fn.call (Self := type not implemented)) α4 (α8) in
+        (core.ops.function.Fn.call
+            (Self := type not implemented)
+            (Trait := ltac:(refine _)))
+          α4
+          (α8) in
       let* α10 := borrow α9 bool in
       let* α11 := deref α10 bool in
       let* α12 := borrow α11 bool in

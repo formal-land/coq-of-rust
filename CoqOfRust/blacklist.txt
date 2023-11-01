@@ -1,5 +1,5 @@
 # blacklisting for the change to THIR
-examples/
+#examples/
 ######
 examples/cargo/concurrent_tests.v
 examples/custom_types/enums_c_like.v

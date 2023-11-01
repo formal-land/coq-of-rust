@@ -11,14 +11,12 @@ Module Val.
     }.
     Global Set Primitive Projections.
     
-    #[refine] Global Instance Get_val : Notation.Dot "val" := {
+    Global Instance Get_val : Notation.Dot "val" := {
       Notation.dot x := let* x := M.read x in Pure x.(val) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_AF_val : Notation.DoubleColon t "val" := {
+    Global Instance Get_AF_val : Notation.DoubleColon t "val" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(val) : M _;
     }.
-    Admitted.
   End Val.
 End Val.
 Definition Val `{ℋ : State.Trait} : Set := M.val Val.t.
@@ -35,15 +33,12 @@ Module GenVal.
     }.
     Global Set Primitive Projections.
     
-    #[refine] Global Instance Get_gen_val : Notation.Dot "gen_val" := {
+    Global Instance Get_gen_val : Notation.Dot "gen_val" := {
       Notation.dot x := let* x := M.read x in Pure x.(gen_val) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_AF_gen_val :
-      Notation.DoubleColon t "gen_val" := {
+    Global Instance Get_AF_gen_val : Notation.DoubleColon t "gen_val" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(gen_val) : M _;
     }.
-    Admitted.
   End GenVal.
 End GenVal.
 Definition GenVal (T : Set) `{ℋ : State.Trait} : Set :=

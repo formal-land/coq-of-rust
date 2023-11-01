@@ -28,13 +28,10 @@ Module Impl_generics_where_clauses_PrintInOption_for_T.
       Notation.double_colon := print_in_option;
     }.
     
-    #[refine] Global Instance ℐ :
-      generics_where_clauses.PrintInOption.Trait Self := {
+    Global Instance ℐ : generics_where_clauses.PrintInOption.Trait Self := {
       generics_where_clauses.PrintInOption.print_in_option := print_in_option;
     }.
-    Admitted.
   End Impl_generics_where_clauses_PrintInOption_for_T.
-  Global Hint Resolve ℐ : core.
 End Impl_generics_where_clauses_PrintInOption_for_T.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)

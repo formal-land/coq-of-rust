@@ -215,6 +215,9 @@ Definition write `{State.Trait} {R A : Set} (r : Ref A) (v : A) :
     end
   end.
 
+Definition impossible `{State.Trait} {R A : Set} : Monad R A :=
+  fun _ _ => RawMonad.Impossible.
+
 (** Used for the definitions of "const". *)
 (* @TODO: Give a definition for [run]. There should be an additional parameter
    witnessing that the calculation is possible. *)

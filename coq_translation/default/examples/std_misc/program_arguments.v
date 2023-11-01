@@ -5,7 +5,10 @@ Require Import CoqOfRust.CoqOfRust.
 Definition main `{ℋ : State.Trait} : M unit :=
   let* args :=
     let* α0 := std.env.args in
-    (core.iter.traits.iterator.Iterator.collect (Self := std.env.Args)) α0 in
+    (core.iter.traits.iterator.Iterator.collect
+        (Self := std.env.Args)
+        (Trait := ltac:(refine _)))
+      α0 in
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -19,7 +22,8 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α5 := M.alloc 0 in
       let* α6 :=
         (core.ops.index.Index.index
-            (Self := (alloc.vec.Vec alloc.string.String alloc.alloc.Global)))
+            (Self := alloc.vec.Vec alloc.string.String alloc.alloc.Global)
+            (Trait := ltac:(refine _)))
           α4
           α5 in
       let* α7 := deref α6 alloc.string.String in
@@ -60,7 +64,8 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α14 := M.alloc {| core.ops.range.RangeFrom.start := α13; |} in
       let* α15 :=
         (core.ops.index.Index.index
-            (Self := (alloc.vec.Vec alloc.string.String alloc.alloc.Global)))
+            (Self := alloc.vec.Vec alloc.string.String alloc.alloc.Global)
+            (Trait := ltac:(refine _)))
           α12
           α14 in
       let* α16 := deref α15 (Slice alloc.string.String) in

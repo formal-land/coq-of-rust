@@ -11,10 +11,9 @@ Module SomeType.
     }.
     Global Set Primitive Projections.
     
-    #[refine] Global Instance Get_0 : Notation.Dot "0" := {
+    Global Instance Get_0 : Notation.Dot "0" := {
       Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
-    Admitted.
   End SomeType.
 End SomeType.
 Definition SomeType `{ℋ : State.Trait} : Set := M.val SomeType.t.
@@ -29,10 +28,9 @@ Module OtherType.
     }.
     Global Set Primitive Projections.
     
-    #[refine] Global Instance Get_0 : Notation.Dot "0" := {
+    Global Instance Get_0 : Notation.Dot "0" := {
       Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
-    Admitted.
   End OtherType.
 End OtherType.
 Definition OtherType `{ℋ : State.Trait} : Set := M.val OtherType.t.
@@ -91,13 +89,11 @@ Module Impl_functions_order_SomeTrait_for_functions_order_SomeType.
       Notation.double_colon := some_trait_foo;
     }.
     
-    #[refine] Global Instance ℐ : functions_order.SomeTrait.Trait Self := {
+    Global Instance ℐ : functions_order.SomeTrait.Trait Self := {
       functions_order.SomeTrait.some_trait_bar := some_trait_bar;
       functions_order.SomeTrait.some_trait_foo := some_trait_foo;
     }.
-    Admitted.
   End Impl_functions_order_SomeTrait_for_functions_order_SomeType.
-  Global Hint Resolve ℐ : core.
 End Impl_functions_order_SomeTrait_for_functions_order_SomeType.
 
 Module Impl_functions_order_SomeTrait_for_functions_order_OtherType.
@@ -120,13 +116,11 @@ Module Impl_functions_order_SomeTrait_for_functions_order_OtherType.
       Notation.double_colon := some_trait_bar;
     }.
     
-    #[refine] Global Instance ℐ : functions_order.SomeTrait.Trait Self := {
+    Global Instance ℐ : functions_order.SomeTrait.Trait Self := {
       functions_order.SomeTrait.some_trait_foo := some_trait_foo;
       functions_order.SomeTrait.some_trait_bar := some_trait_bar;
     }.
-    Admitted.
   End Impl_functions_order_SomeTrait_for_functions_order_OtherType.
-  Global Hint Resolve ℐ : core.
 End Impl_functions_order_SomeTrait_for_functions_order_OtherType.
 
 Parameter depends_on_trait_impl :

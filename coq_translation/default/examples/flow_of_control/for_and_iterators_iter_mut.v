@@ -17,14 +17,16 @@ Definition main `{ℋ : State.Trait} : M unit :=
     let* α0 := borrow_mut names (alloc.vec.Vec (ref str) alloc.alloc.Global) in
     let* α1 :=
       (core.ops.deref.DerefMut.deref_mut
-          (Self := (alloc.vec.Vec (ref str) alloc.alloc.Global)))
+          (Self := alloc.vec.Vec (ref str) alloc.alloc.Global)
+          (Trait := ltac:(refine _)))
         α0 in
     let* α2 := deref α1 (Slice (ref str)) in
     let* α3 := borrow_mut α2 (Slice (ref str)) in
     let* α4 := (Slice (ref str))::["iter_mut"] α3 in
     let* α5 :=
       (core.iter.traits.collect.IntoIterator.into_iter
-          (Self := (core.slice.iter.IterMut (ref str))))
+          (Self := core.slice.iter.IterMut (ref str))
+          (Trait := ltac:(refine _)))
         α4 in
     let* α6 :=
       match α5 with
@@ -36,7 +38,8 @@ Definition main `{ℋ : State.Trait} : M unit :=
             let* α2 := borrow_mut α1 (core.slice.iter.IterMut (ref str)) in
             let* α3 :=
               (core.iter.traits.iterator.Iterator.next
-                  (Self := (core.slice.iter.IterMut (ref str))))
+                  (Self := core.slice.iter.IterMut (ref str))
+                  (Trait := ltac:(refine _)))
                 α2 in
             match α3 with
             | core.option.Option  =>

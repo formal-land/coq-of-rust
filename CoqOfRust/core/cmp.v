@@ -21,7 +21,8 @@ Module Ordering.
   | Greater : t
   | Equal : t.
 End Ordering.
-Definition Ordering := Ordering.t.
+Definition Ordering `{State.Trait} : Set :=
+  M.val Ordering.t.
 
 (* ********TRAITS******** *)
 (* 
@@ -119,37 +120,99 @@ Module PartialEq.
 End PartialEq.
 
 Module PartialOrd.
+  Module Required.
+    Class Trait `{State.Trait} (Self : Set) {Rhs : Set} : Set := {
+      Rhs := Rhs;
+      partial_cmp : ref Self -> ref Rhs -> M (core.option.Option Ordering);
+      lt : Datatypes.option (ref Self -> ref Rhs -> M bool);
+      le : Datatypes.option (ref Self -> ref Rhs -> M bool);
+      gt : Datatypes.option (ref Self -> ref Rhs -> M bool);
+      ge : Datatypes.option (ref Self -> ref Rhs -> M bool);
+    }.
+  End Required.
+
   Class Trait `{State.Trait} (Self : Set) {Rhs : Set} : Set := {
     Rhs := Rhs;
-    partial_cmp :
-      ref Self -> ref Self -> M (core.option.Option (Ordering.t));
+    partial_cmp : ref Self -> ref Rhs -> M (core.option.Option Ordering);
+    lt : ref Self -> ref Rhs -> M bool;
+    le : ref Self -> ref Rhs -> M bool;
+    gt : ref Self -> ref Rhs -> M bool;
+    ge : ref Self -> ref Rhs -> M bool;
+  }.
 
-    (* lt `{State.Trait} : ref Self -> ref Rhs -> M bool;
-    le `{State.Trait} : ref Self -> ref Rhs -> M bool;
-    gt `{State.Trait} : ref Self -> ref Rhs -> M bool;
-    ge `{State.Trait} : ref Self -> ref Rhs -> M bool; *)
+  Global Instance From_required `{State.Trait} (Self Rhs : Set)
+      {H0 : Required.Trait Self (Rhs := Rhs)} :
+      Trait Self (Rhs := Rhs) := {
+    partial_cmp := Required.partial_cmp;
+    lt :=
+      match Required.lt with
+      | Datatypes.Some lt => lt
+      | Datatypes.None => fun self other =>
+        let* cmp := Required.partial_cmp self other in
+        let* cmp := M.read cmp in
+        match cmp with
+        | core.option.Option.Some oredering =>
+          let* ordering := M.read oredering in
+          match ordering with
+          | Ordering.Less => M.alloc true
+          | _ => M.alloc false
+          end
+        | _ => M.alloc false
+        end
+      end;
+    le :=
+      match Required.lt with
+      | Datatypes.Some lt => lt
+      | Datatypes.None => fun self other =>
+        let* cmp := Required.partial_cmp self other in
+        let* cmp := M.read cmp in
+        match cmp with
+        | core.option.Option.Some oredering =>
+          let* ordering := M.read oredering in
+          match ordering with
+          | Ordering.Less | Ordering.Equal => M.alloc true
+          | _ => M.alloc false
+          end
+        | _ => M.alloc false
+        end
+      end;
+    gt :=
+      match Required.lt with
+      | Datatypes.Some lt => lt
+      | Datatypes.None => fun self other =>
+        let* cmp := Required.partial_cmp self other in
+        let* cmp := M.read cmp in
+        match cmp with
+        | core.option.Option.Some oredering =>
+          let* ordering := M.read oredering in
+          match ordering with
+          | Ordering.Greater => M.alloc true
+          | _ => M.alloc false
+          end
+        | _ => M.alloc false
+        end
+      end;
+    ge :=
+      match Required.lt with
+      | Datatypes.Some lt => lt
+      | Datatypes.None => fun self other =>
+        let* cmp := Required.partial_cmp self other in
+        let* cmp := M.read cmp in
+        match cmp with
+        | core.option.Option.Some oredering =>
+          let* ordering := M.read oredering in
+          match ordering with
+          | Ordering.Greater | Ordering.Equal => M.alloc true
+          | _ => M.alloc false
+          end
+        | _ => M.alloc false
+        end
+      end;
   }.
 
   Module Default.
     Definition Rhs (Self : Set) : Set := Self.
   End Default.
-
-  Global Instance Method_partial_cmp `{State.Trait} `(Trait) :
-    Notation.Dot "partial_cmp" := {
-    Notation.dot := partial_cmp;
-  }.
-  (* Global Instance Method_lt `{State.Trait} `(Trait) : Notation.Dot "lt" := {
-    Notation.dot := lt;
-  }.
-  Global Instance Method_le `{State.Trait} `(Trait) : Notation.Dot "le" := {
-    Notation.dot := le;
-  }.
-  Global Instance Method_gt `{State.Trait} `(Trait) : Notation.Dot "gt" := {
-    Notation.dot := gt;
-  }.
-  Global Instance Method_ge `{State.Trait} `(Trait) : Notation.Dot "ge" := {
-    Notation.dot := ge;
-  }. *)
 
   Module Instances. Section Instances.
     Context `{State.Trait}.
@@ -250,7 +313,7 @@ Module Ord.
   Class Trait `{State.Trait} (Self : Set) := {
     _ :: Eq.Trait Self;
     _ :: PartialOrd.Trait Self (Rhs := Self);
-    cmp : ref Self -> ref Self -> M (H := H) Ordering;
+    cmp : ref Self -> ref Self -> M Ordering;
   }.
 
   Module Impl_Ord_for_str.

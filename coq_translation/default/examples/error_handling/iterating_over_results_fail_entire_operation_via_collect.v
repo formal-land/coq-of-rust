@@ -16,20 +16,23 @@ Definition main `{ℋ : State.Trait} : M unit :=
   let* numbers :=
     let* α0 :=
       (core.iter.traits.collect.IntoIterator.into_iter
-          (Self := (alloc.vec.Vec (ref str) alloc.alloc.Global)))
+          (Self := alloc.vec.Vec (ref str) alloc.alloc.Global)
+          (Trait := ltac:(refine _)))
         strings in
     let* α1 :=
       (core.iter.traits.iterator.Iterator.map
-          (Self := (alloc.vec.into_iter.IntoIter (ref str) alloc.alloc.Global)))
+          (Self := alloc.vec.into_iter.IntoIter (ref str) alloc.alloc.Global)
+          (Trait := ltac:(refine _)))
         α0
         (let* α0 := deref s str in
         let* α1 := borrow α0 str in
         str::["parse"] α1) in
     (core.iter.traits.iterator.Iterator.collect
         (Self :=
-          (core.iter.adapters.map.Map
+          core.iter.adapters.map.Map
             (alloc.vec.into_iter.IntoIter (ref str) alloc.alloc.Global)
-            type not implemented)))
+            type not implemented)
+        (Trait := ltac:(refine _)))
       α1 in
   let* _ :=
     let* _ :=

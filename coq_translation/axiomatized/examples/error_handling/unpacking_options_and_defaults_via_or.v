@@ -25,12 +25,10 @@ Module Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_Fruit.
       Notation.double_colon := fmt;
     }.
     
-    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
-    Admitted.
   End Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_Fruit.
-  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_Fruit.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)

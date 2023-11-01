@@ -5,8 +5,7 @@ use crate::pattern::*;
 use crate::thir_ty::*;
 use crate::ty::CoqType;
 use rustc_hir::def::DefKind;
-use rustc_hir::BinOpKind;
-use rustc_middle::mir::{BorrowKind, UnOp};
+use rustc_middle::mir::{BinOp, BorrowKind, UnOp};
 use rustc_middle::thir::{AdtExpr, ExprKind, LogicalOp, StmtKind};
 use rustc_middle::ty::TyKind;
 
@@ -19,26 +18,25 @@ impl Expr {
     }
 }
 
-fn path_of_bin_op(bin_op_kind: BinOpKind) -> Path {
-    match bin_op_kind {
-        BinOpKind::Add => Path::new(&["BinOp", "add"]),
-        BinOpKind::Sub => Path::new(&["BinOp", "sub"]),
-        BinOpKind::Mul => Path::new(&["BinOp", "mul"]),
-        BinOpKind::Div => Path::new(&["BinOp", "div"]),
-        BinOpKind::Rem => Path::new(&["BinOp", "rem"]),
-        BinOpKind::And => Path::new(&["BinOp", "and"]),
-        BinOpKind::Or => Path::new(&["BinOp", "or"]),
-        BinOpKind::BitXor => Path::new(&["BinOp", "bit_xor"]),
-        BinOpKind::BitAnd => Path::new(&["BinOp", "bit_and"]),
-        BinOpKind::BitOr => Path::new(&["BinOp", "bit_or"]),
-        BinOpKind::Shl => Path::new(&["BinOp", "shl"]),
-        BinOpKind::Shr => Path::new(&["BinOp", "shr"]),
-        BinOpKind::Eq => Path::new(&["BinOp", "eq"]),
-        BinOpKind::Ne => Path::new(&["BinOp", "ne"]),
-        BinOpKind::Lt => Path::new(&["BinOp", "lt"]),
-        BinOpKind::Le => Path::new(&["BinOp", "le"]),
-        BinOpKind::Ge => Path::new(&["BinOp", "ge"]),
-        BinOpKind::Gt => Path::new(&["BinOp", "gt"]),
+fn path_of_bin_op(bin_op: &BinOp) -> Path {
+    match bin_op {
+        BinOp::Add => Path::new(&["BinOp", "add"]),
+        BinOp::Sub => Path::new(&["BinOp", "sub"]),
+        BinOp::Mul => Path::new(&["BinOp", "mul"]),
+        BinOp::Div => Path::new(&["BinOp", "div"]),
+        BinOp::Rem => Path::new(&["BinOp", "rem"]),
+        BinOp::BitXor => Path::new(&["BinOp", "bit_xor"]),
+        BinOp::BitAnd => Path::new(&["BinOp", "bit_and"]),
+        BinOp::BitOr => Path::new(&["BinOp", "bit_or"]),
+        BinOp::Shl => Path::new(&["BinOp", "shl"]),
+        BinOp::Shr => Path::new(&["BinOp", "shr"]),
+        BinOp::Eq => Path::new(&["BinOp", "eq"]),
+        BinOp::Ne => Path::new(&["BinOp", "ne"]),
+        BinOp::Lt => Path::new(&["BinOp", "lt"]),
+        BinOp::Le => Path::new(&["BinOp", "le"]),
+        BinOp::Ge => Path::new(&["BinOp", "ge"]),
+        BinOp::Gt => Path::new(&["BinOp", "gt"]),
+        BinOp::Offset => Path::new(&["BinOp", "offset"]),
     }
 }
 
@@ -94,7 +92,7 @@ pub(crate) fn compile_expr<'a>(
             }
         }
         ExprKind::Binary { op, lhs, rhs } => {
-            let path = path_of_bin_op(op.to_hir_binop());
+            let path = path_of_bin_op(op);
             let lhs = compile_expr(env, thir, lhs);
             let rhs = compile_expr(env, thir, rhs);
             Expr::Call {
@@ -103,25 +101,25 @@ pub(crate) fn compile_expr<'a>(
             }
         }
         ExprKind::LogicalOp { op, lhs, rhs } => {
-            let op = match op {
-                LogicalOp::And => "and".to_string(),
-                LogicalOp::Or => "or".to_string(),
+            let path = match op {
+                LogicalOp::And => Path::new(&["BinOp", "and"]),
+                LogicalOp::Or => Path::new(&["BinOp", "or"]),
             };
             let lhs = compile_expr(env, thir, lhs);
             let rhs = compile_expr(env, thir, rhs);
             Expr::Call {
-                func: Box::new(Expr::LocalVar(op)),
+                func: Box::new(Expr::Var(path)),
                 args: vec![lhs, rhs],
             }
         }
         ExprKind::Unary { op, arg } => {
-            let op = match op {
-                UnOp::Not => "not".to_string(),
-                UnOp::Neg => "neg".to_string(),
+            let path = match op {
+                UnOp::Not => Path::new(&["UnOp", "not"]),
+                UnOp::Neg => Path::new(&["UnOp", "neg"]),
             };
             let arg = compile_expr(env, thir, arg);
             Expr::Call {
-                func: Box::new(Expr::LocalVar(op)),
+                func: Box::new(Expr::Var(path)),
                 args: vec![arg],
             }
         }

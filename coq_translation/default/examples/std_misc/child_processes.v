@@ -42,7 +42,8 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α3 := borrow α2 (alloc.vec.Vec u8 alloc.alloc.Global) in
       let* α4 :=
         (core.ops.deref.Deref.deref
-            (Self := (alloc.vec.Vec u8 alloc.alloc.Global)))
+            (Self := alloc.vec.Vec u8 alloc.alloc.Global)
+            (Trait := ltac:(refine _)))
           α3 in
       let* α5 := deref α4 (Slice u8) in
       let* α6 := borrow α5 (Slice u8) in
@@ -77,7 +78,8 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α3 := borrow α2 (alloc.vec.Vec u8 alloc.alloc.Global) in
       let* α4 :=
         (core.ops.deref.Deref.deref
-            (Self := (alloc.vec.Vec u8 alloc.alloc.Global)))
+            (Self := alloc.vec.Vec u8 alloc.alloc.Global)
+            (Trait := ltac:(refine _)))
           α3 in
       let* α5 := deref α4 (Slice u8) in
       let* α6 := borrow α5 (Slice u8) in

@@ -37,12 +37,10 @@ Module Impl_core_fmt_Debug_for_boxing_errors_EmptyVec.
       Notation.double_colon := fmt;
     }.
     
-    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
-    Admitted.
   End Impl_core_fmt_Debug_for_boxing_errors_EmptyVec.
-  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_boxing_errors_EmptyVec.
 
 Module Impl_core_clone_Clone_for_boxing_errors_EmptyVec.
@@ -52,19 +50,17 @@ Module Impl_core_clone_Clone_for_boxing_errors_EmptyVec.
     Definition Self : Set := boxing_errors.EmptyVec.
     
     Definition clone (self : ref Self) : M boxing_errors.EmptyVec :=
-      M.alloc (boxing_errors.EmptyVec.Build_t tt).
+      M.alloc boxing_errors.EmptyVec.Build_t.
     
     Global Instance AssociatedFunction_clone :
       Notation.DoubleColon Self "clone" := {
       Notation.double_colon := clone;
     }.
     
-    #[refine] Global Instance ℐ : core.clone.Clone.Trait Self := {
+    Global Instance ℐ : core.clone.Clone.Trait Self := {
       core.clone.Clone.clone := clone;
     }.
-    Admitted.
   End Impl_core_clone_Clone_for_boxing_errors_EmptyVec.
-  Global Hint Resolve ℐ : core.
 End Impl_core_clone_Clone_for_boxing_errors_EmptyVec.
 
 Module Impl_core_fmt_Display_for_boxing_errors_EmptyVec.
@@ -92,12 +88,10 @@ Module Impl_core_fmt_Display_for_boxing_errors_EmptyVec.
       Notation.double_colon := fmt;
     }.
     
-    #[refine] Global Instance ℐ : core.fmt.Display.Trait Self := {
+    Global Instance ℐ : core.fmt.Display.Trait Self := {
       core.fmt.Display.fmt := fmt;
     }.
-    Admitted.
   End Impl_core_fmt_Display_for_boxing_errors_EmptyVec.
-  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Display_for_boxing_errors_EmptyVec.
 
 Module Impl_core_error_Error_for_boxing_errors_EmptyVec.
@@ -106,11 +100,9 @@ Module Impl_core_error_Error_for_boxing_errors_EmptyVec.
     
     Definition Self : Set := boxing_errors.EmptyVec.
     
-    #[refine] Global Instance ℐ : core.error.Error.Trait Self := {
+    Global Instance ℐ : core.error.Error.Trait Self := {
     }.
-    Admitted.
   End Impl_core_error_Error_for_boxing_errors_EmptyVec.
-  Global Hint Resolve ℐ : core.
 End Impl_core_error_Error_for_boxing_errors_EmptyVec.
 
 Definition double_first
@@ -120,7 +112,8 @@ Definition double_first
   let* α0 := borrow vec (alloc.vec.Vec (ref str) alloc.alloc.Global) in
   let* α1 :=
     (core.ops.deref.Deref.deref
-        (Self := (alloc.vec.Vec (ref str) alloc.alloc.Global)))
+        (Self := alloc.vec.Vec (ref str) alloc.alloc.Global)
+        (Trait := ltac:(refine _)))
       α0 in
   let* α2 := deref α1 (Slice (ref str)) in
   let* α3 := borrow α2 (Slice (ref str)) in
@@ -128,8 +121,11 @@ Definition double_first
   let* α5 :=
     (core.option.Option (ref (ref str)))::["ok_or_else"]
       α4
-      (let* α0 := M.alloc (boxing_errors.EmptyVec.Build_t tt) in
-      (core.convert.Into.into (Self := boxing_errors.EmptyVec)) α0) in
+      (let* α0 := M.alloc boxing_errors.EmptyVec.Build_t in
+      (core.convert.Into.into
+          (Self := boxing_errors.EmptyVec)
+          (Trait := ltac:(refine _)))
+        α0) in
   (core.result.Result
         (ref (ref str))
         (alloc.boxed.Box type not implemented alloc.alloc.Global))::["and_then"]
@@ -141,7 +137,10 @@ Definition double_first
     let* α4 :=
       (core.result.Result i32 core.num.error.ParseIntError)::["map_err"]
         α3
-        ((core.convert.Into.into (Self := core.num.error.ParseIntError)) e) in
+        ((core.convert.Into.into
+            (Self := core.num.error.ParseIntError)
+            (Trait := ltac:(refine _)))
+          e) in
     (core.result.Result
           i32
           (alloc.boxed.Box type not implemented alloc.alloc.Global))::["map"]

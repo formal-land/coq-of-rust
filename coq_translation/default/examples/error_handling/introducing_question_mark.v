@@ -12,13 +12,15 @@ Definition multiply
     let* α2 := str::["parse"] α1 in
     let* α3 :=
       (core.ops.try_trait.Try.branch
-          (Self := (core.result.Result i32 core.num.error.ParseIntError)))
+          (Self := core.result.Result i32 core.num.error.ParseIntError)
+          (Trait := ltac:(refine _)))
         α2 in
     match α3 with
     | core.ops.control_flow.ControlFlow residual =>
       let* α0 :=
         (core.ops.try_trait.FromResidual.from_residual
-            (Self := (core.result.Result i32 core.num.error.ParseIntError)))
+            (Self := core.result.Result i32 core.num.error.ParseIntError)
+            (Trait := ltac:(refine _)))
           residual in
       let* α1 := Return α0 in
       never_to_any α1
@@ -30,13 +32,15 @@ Definition multiply
     let* α2 := str::["parse"] α1 in
     let* α3 :=
       (core.ops.try_trait.Try.branch
-          (Self := (core.result.Result i32 core.num.error.ParseIntError)))
+          (Self := core.result.Result i32 core.num.error.ParseIntError)
+          (Trait := ltac:(refine _)))
         α2 in
     match α3 with
     | core.ops.control_flow.ControlFlow residual =>
       let* α0 :=
         (core.ops.try_trait.FromResidual.from_residual
-            (Self := (core.result.Result i32 core.num.error.ParseIntError)))
+            (Self := core.result.Result i32 core.num.error.ParseIntError)
+            (Trait := ltac:(refine _)))
           residual in
       let* α1 := Return α0 in
       never_to_any α1

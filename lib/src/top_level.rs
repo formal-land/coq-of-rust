@@ -2348,9 +2348,6 @@ impl TopLevelItem {
                             ]
                             .concat()),
                         ),
-                        coq::TopLevel::new(&[coq::TopLevelItem::Hint(
-                            coq::Hint::standard_resolve(),
-                        )]),
                     ]),
                 )
                 .to_doc()

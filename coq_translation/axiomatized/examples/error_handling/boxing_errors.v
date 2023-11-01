@@ -30,12 +30,10 @@ Module Impl_core_fmt_Debug_for_boxing_errors_EmptyVec.
       Notation.double_colon := fmt;
     }.
     
-    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
-    Admitted.
   End Impl_core_fmt_Debug_for_boxing_errors_EmptyVec.
-  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_boxing_errors_EmptyVec.
 
 Module Impl_core_clone_Clone_for_boxing_errors_EmptyVec.
@@ -51,12 +49,10 @@ Module Impl_core_clone_Clone_for_boxing_errors_EmptyVec.
       Notation.double_colon := clone;
     }.
     
-    #[refine] Global Instance ℐ : core.clone.Clone.Trait Self := {
+    Global Instance ℐ : core.clone.Clone.Trait Self := {
       core.clone.Clone.clone := clone;
     }.
-    Admitted.
   End Impl_core_clone_Clone_for_boxing_errors_EmptyVec.
-  Global Hint Resolve ℐ : core.
 End Impl_core_clone_Clone_for_boxing_errors_EmptyVec.
 
 Module Impl_core_fmt_Display_for_boxing_errors_EmptyVec.
@@ -73,12 +69,10 @@ Module Impl_core_fmt_Display_for_boxing_errors_EmptyVec.
       Notation.double_colon := fmt;
     }.
     
-    #[refine] Global Instance ℐ : core.fmt.Display.Trait Self := {
+    Global Instance ℐ : core.fmt.Display.Trait Self := {
       core.fmt.Display.fmt := fmt;
     }.
-    Admitted.
   End Impl_core_fmt_Display_for_boxing_errors_EmptyVec.
-  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Display_for_boxing_errors_EmptyVec.
 
 Module Impl_core_error_Error_for_boxing_errors_EmptyVec.
@@ -87,11 +81,9 @@ Module Impl_core_error_Error_for_boxing_errors_EmptyVec.
     
     Definition Self : Set := boxing_errors.EmptyVec.
     
-    #[refine] Global Instance ℐ : core.error.Error.Trait Self := {
+    Global Instance ℐ : core.error.Error.Trait Self := {
     }.
-    Admitted.
   End Impl_core_error_Error_for_boxing_errors_EmptyVec.
-  Global Hint Resolve ℐ : core.
 End Impl_core_error_Error_for_boxing_errors_EmptyVec.
 
 Parameter double_first :

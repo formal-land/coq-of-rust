@@ -41,12 +41,10 @@ Module checked.
         Notation.double_colon := fmt;
       }.
       
-      #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
+      Global Instance ℐ : core.fmt.Debug.Trait Self := {
         core.fmt.Debug.fmt := fmt;
       }.
-      Admitted.
     End Impl_core_fmt_Debug_for_result_checked_MathError.
-    Global Hint Resolve ℐ : core.
   End Impl_core_fmt_Debug_for_result_checked_MathError.
   
   Ltac MathResult := refine (core.result.Result f64 result.checked.MathError).
@@ -60,7 +58,7 @@ Module checked.
     let* α1 := BinOp.eq y α0 in
     let* α2 := use α1 in
     if (α2 : bool) then
-      let* α0 := M.alloc (result.checked.MathError.DivisionByZero tt) in
+      let* α0 := M.alloc result.checked.MathError.DivisionByZero in
       M.alloc (core.result.Result.Err α0)
     else
       let* α0 := BinOp.div x y in
@@ -74,7 +72,7 @@ Module checked.
     let* α1 := BinOp.lt x α0 in
     let* α2 := use α1 in
     if (α2 : bool) then
-      let* α0 := M.alloc (result.checked.MathError.NegativeSquareRoot tt) in
+      let* α0 := M.alloc result.checked.MathError.NegativeSquareRoot in
       M.alloc (core.result.Result.Err α0)
     else
       let* α0 := f64::["sqrt"] x in
@@ -88,7 +86,7 @@ Module checked.
     let* α1 := BinOp.le x α0 in
     let* α2 := use α1 in
     if (α2 : bool) then
-      let* α0 := M.alloc (result.checked.MathError.NonPositiveLogarithm tt) in
+      let* α0 := M.alloc result.checked.MathError.NonPositiveLogarithm in
       M.alloc (core.result.Result.Err α0)
     else
       let* α0 := f64::["ln"] x in
@@ -134,12 +132,10 @@ Module Impl_core_fmt_Debug_for_result_checked_MathError.
       Notation.double_colon := fmt;
     }.
     
-    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
-    Admitted.
   End Impl_core_fmt_Debug_for_result_checked_MathError.
-  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_result_checked_MathError.
 
 Ltac MathResult := refine (core.result.Result f64 result.checked.MathError).
@@ -153,7 +149,7 @@ Definition div
   let* α1 := BinOp.eq y α0 in
   let* α2 := use α1 in
   if (α2 : bool) then
-    let* α0 := M.alloc (result.checked.MathError.DivisionByZero tt) in
+    let* α0 := M.alloc result.checked.MathError.DivisionByZero in
     M.alloc (core.result.Result.Err α0)
   else
     let* α0 := BinOp.div x y in
@@ -167,7 +163,7 @@ Definition sqrt
   let* α1 := BinOp.lt x α0 in
   let* α2 := use α1 in
   if (α2 : bool) then
-    let* α0 := M.alloc (result.checked.MathError.NegativeSquareRoot tt) in
+    let* α0 := M.alloc result.checked.MathError.NegativeSquareRoot in
     M.alloc (core.result.Result.Err α0)
   else
     let* α0 := f64::["sqrt"] x in
@@ -181,7 +177,7 @@ Definition ln
   let* α1 := BinOp.le x α0 in
   let* α2 := use α1 in
   if (α2 : bool) then
-    let* α0 := M.alloc (result.checked.MathError.NonPositiveLogarithm tt) in
+    let* α0 := M.alloc result.checked.MathError.NonPositiveLogarithm in
     M.alloc (core.result.Result.Err α0)
   else
     let* α0 := f64::["ln"] x in

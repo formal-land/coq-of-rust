@@ -44,7 +44,10 @@ Definition main `{ℋ : State.Trait} : M unit :=
     let* guess :=
       let* α0 := borrow guess alloc.string.String in
       let* α1 :=
-        (core.ops.deref.Deref.deref (Self := alloc.string.String)) α0 in
+        (core.ops.deref.Deref.deref
+            (Self := alloc.string.String)
+            (Trait := ltac:(refine _)))
+          α0 in
       let* α2 := deref α1 str in
       let* α3 := borrow α2 str in
       let* α4 := str::["trim"] α3 in
@@ -80,7 +83,8 @@ Definition main `{ℋ : State.Trait} : M unit :=
     let* α1 := borrow secret_number u32 in
     let* α2 := deref α1 u32 in
     let* α3 := borrow α2 u32 in
-    let* α4 := (core.cmp.Ord.cmp (Self := u32)) α0 α3 in
+    let* α4 :=
+      (core.cmp.Ord.cmp (Self := u32) (Trait := ltac:(refine _))) α0 α3 in
     match α4 with
     | core.cmp.Ordering  =>
       let* _ :=

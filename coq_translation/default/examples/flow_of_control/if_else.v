@@ -77,7 +77,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
     let* α1 := BinOp.lt n α0 in
     let* α2 := M.alloc (- 10) in
     let* α3 := BinOp.gt n α2 in
-    let* α4 := and α1 α3 in
+    let* α4 := BinOp.and α1 α3 in
     let* α5 := use α4 in
     if (α5 : bool) then
       let* _ :=

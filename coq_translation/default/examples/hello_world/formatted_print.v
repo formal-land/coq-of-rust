@@ -172,9 +172,9 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α12 := pointer_coercion "Unsize" α11 in
       let* α13 := M.alloc 0 in
       let* α14 := M.alloc " "%char in
-      let* α15 := M.alloc (core.fmt.rt.Alignment.Right tt) in
+      let* α15 := M.alloc core.fmt.rt.Alignment.Right in
       let* α16 := M.alloc 0 in
-      let* α17 := M.alloc (core.fmt.rt.Count.Implied tt) in
+      let* α17 := M.alloc core.fmt.rt.Count.Implied in
       let* α18 := M.alloc 5 in
       let* α19 := "unimplemented parent_kind" α18 in
       let* α20 := core.fmt.rt.Placeholder::["new"] α13 α14 α15 α16 α17 α19 in
@@ -204,9 +204,9 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α12 := pointer_coercion "Unsize" α11 in
       let* α13 := M.alloc 0 in
       let* α14 := M.alloc "0"%char in
-      let* α15 := M.alloc (core.fmt.rt.Alignment.Left tt) in
+      let* α15 := M.alloc core.fmt.rt.Alignment.Left in
       let* α16 := M.alloc 0 in
-      let* α17 := M.alloc (core.fmt.rt.Count.Implied tt) in
+      let* α17 := M.alloc core.fmt.rt.Count.Implied in
       let* α18 := M.alloc 5 in
       let* α19 := "unimplemented parent_kind" α18 in
       let* α20 := core.fmt.rt.Placeholder::["new"] α13 α14 α15 α16 α17 α19 in
@@ -241,9 +241,9 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α17 := pointer_coercion "Unsize" α16 in
       let* α18 := M.alloc 0 in
       let* α19 := M.alloc "0"%char in
-      let* α20 := M.alloc (core.fmt.rt.Alignment.Right tt) in
+      let* α20 := M.alloc core.fmt.rt.Alignment.Right in
       let* α21 := M.alloc 0 in
-      let* α22 := M.alloc (core.fmt.rt.Count.Implied tt) in
+      let* α22 := M.alloc core.fmt.rt.Count.Implied in
       let* α23 := M.alloc 1 in
       let* α24 := "unimplemented parent_kind" α23 in
       let* α25 := core.fmt.rt.Placeholder::["new"] α18 α19 α20 α21 α22 α24 in
@@ -293,9 +293,9 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α15 := pointer_coercion "Unsize" α14 in
       let* α16 := M.alloc 0 in
       let* α17 := M.alloc " "%char in
-      let* α18 := M.alloc (core.fmt.rt.Alignment.Right tt) in
+      let* α18 := M.alloc core.fmt.rt.Alignment.Right in
       let* α19 := M.alloc 0 in
-      let* α20 := M.alloc (core.fmt.rt.Count.Implied tt) in
+      let* α20 := M.alloc core.fmt.rt.Count.Implied in
       let* α21 := M.alloc 1 in
       let* α22 := "unimplemented parent_kind" α21 in
       let* α23 := core.fmt.rt.Placeholder::["new"] α16 α17 α18 α19 α20 α22 in
@@ -319,10 +319,9 @@ Module Structure.
     }.
     Global Set Primitive Projections.
     
-    #[refine] Global Instance Get_0 : Notation.Dot "0" := {
+    Global Instance Get_0 : Notation.Dot "0" := {
       Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
-    Admitted.
   End Structure.
 End Structure.
 Definition Structure `{ℋ : State.Trait} : Set := M.val Structure.t.

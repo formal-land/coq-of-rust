@@ -30,12 +30,10 @@ Module Impl_core_fmt_Debug_for_other_uses_of_question_mark_EmptyVec.
       Notation.double_colon := fmt;
     }.
     
-    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
-    Admitted.
   End Impl_core_fmt_Debug_for_other_uses_of_question_mark_EmptyVec.
-  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_other_uses_of_question_mark_EmptyVec.
 
 Module Impl_core_fmt_Display_for_other_uses_of_question_mark_EmptyVec.
@@ -52,12 +50,10 @@ Module Impl_core_fmt_Display_for_other_uses_of_question_mark_EmptyVec.
       Notation.double_colon := fmt;
     }.
     
-    #[refine] Global Instance ℐ : core.fmt.Display.Trait Self := {
+    Global Instance ℐ : core.fmt.Display.Trait Self := {
       core.fmt.Display.fmt := fmt;
     }.
-    Admitted.
   End Impl_core_fmt_Display_for_other_uses_of_question_mark_EmptyVec.
-  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Display_for_other_uses_of_question_mark_EmptyVec.
 
 Module Impl_core_error_Error_for_other_uses_of_question_mark_EmptyVec.
@@ -66,11 +62,9 @@ Module Impl_core_error_Error_for_other_uses_of_question_mark_EmptyVec.
     
     Definition Self : Set := other_uses_of_question_mark.EmptyVec.
     
-    #[refine] Global Instance ℐ : core.error.Error.Trait Self := {
+    Global Instance ℐ : core.error.Error.Trait Self := {
     }.
-    Admitted.
   End Impl_core_error_Error_for_other_uses_of_question_mark_EmptyVec.
-  Global Hint Resolve ℐ : core.
 End Impl_core_error_Error_for_other_uses_of_question_mark_EmptyVec.
 
 Parameter double_first :

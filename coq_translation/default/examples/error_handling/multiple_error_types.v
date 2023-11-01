@@ -9,7 +9,8 @@ Definition double_first
     let* α0 := borrow vec (alloc.vec.Vec (ref str) alloc.alloc.Global) in
     let* α1 :=
       (core.ops.deref.Deref.deref
-          (Self := (alloc.vec.Vec (ref str) alloc.alloc.Global)))
+          (Self := alloc.vec.Vec (ref str) alloc.alloc.Global)
+          (Trait := ltac:(refine _)))
         α0 in
     let* α2 := deref α1 (Slice (ref str)) in
     let* α3 := borrow α2 (Slice (ref str)) in

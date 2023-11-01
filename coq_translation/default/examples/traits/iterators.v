@@ -12,22 +12,18 @@ Module Fibonacci.
     }.
     Global Set Primitive Projections.
     
-    #[refine] Global Instance Get_curr : Notation.Dot "curr" := {
+    Global Instance Get_curr : Notation.Dot "curr" := {
       Notation.dot x := let* x := M.read x in Pure x.(curr) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_AF_curr : Notation.DoubleColon t "curr" := {
+    Global Instance Get_AF_curr : Notation.DoubleColon t "curr" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(curr) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_next : Notation.Dot "next" := {
+    Global Instance Get_next : Notation.Dot "next" := {
       Notation.dot x := let* x := M.read x in Pure x.(next) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_AF_next : Notation.DoubleColon t "next" := {
+    Global Instance Get_AF_next : Notation.DoubleColon t "next" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(next) : M _;
     }.
-    Admitted.
   End Fibonacci.
 End Fibonacci.
 Definition Fibonacci `{ℋ : State.Trait} : Set := M.val Fibonacci.t.
@@ -64,14 +60,11 @@ Module Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
       Notation.double_colon := next;
     }.
     
-    #[refine] Global Instance ℐ :
-      core.iter.traits.iterator.Iterator.Trait Self := {
+    Global Instance ℐ : core.iter.traits.iterator.Iterator.Trait Self := {
       core.iter.traits.iterator.Iterator.Item := Item;
       core.iter.traits.iterator.Iterator.next := next;
     }.
-    Admitted.
   End Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
-  Global Hint Resolve ℐ : core.
 End Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
 
 Definition fibonacci `{ℋ : State.Trait} : M iterators.Fibonacci :=
@@ -109,7 +102,8 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α4 := borrow_mut sequence (core.ops.range.Range i32) in
       let* α5 :=
         (core.iter.traits.iterator.Iterator.next
-            (Self := (core.ops.range.Range i32)))
+            (Self := core.ops.range.Range i32)
+            (Trait := ltac:(refine _)))
           α4 in
       let* α6 := borrow α5 (core.option.Option i32) in
       let* α7 := deref α6 (core.option.Option i32) in
@@ -132,7 +126,8 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α4 := borrow_mut sequence (core.ops.range.Range i32) in
       let* α5 :=
         (core.iter.traits.iterator.Iterator.next
-            (Self := (core.ops.range.Range i32)))
+            (Self := core.ops.range.Range i32)
+            (Trait := ltac:(refine _)))
           α4 in
       let* α6 := borrow α5 (core.option.Option i32) in
       let* α7 := deref α6 (core.option.Option i32) in
@@ -155,7 +150,8 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α4 := borrow_mut sequence (core.ops.range.Range i32) in
       let* α5 :=
         (core.iter.traits.iterator.Iterator.next
-            (Self := (core.ops.range.Range i32)))
+            (Self := core.ops.range.Range i32)
+            (Trait := ltac:(refine _)))
           α4 in
       let* α6 := borrow α5 (core.option.Option i32) in
       let* α7 := deref α6 (core.option.Option i32) in
@@ -178,7 +174,8 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α4 := borrow_mut sequence (core.ops.range.Range i32) in
       let* α5 :=
         (core.iter.traits.iterator.Iterator.next
-            (Self := (core.ops.range.Range i32)))
+            (Self := core.ops.range.Range i32)
+            (Trait := ltac:(refine _)))
           α4 in
       let* α6 := borrow α5 (core.option.Option i32) in
       let* α7 := deref α6 (core.option.Option i32) in
@@ -213,7 +210,8 @@ Definition main `{ℋ : State.Trait} : M unit :=
         |} in
     let* α3 :=
       (core.iter.traits.collect.IntoIterator.into_iter
-          (Self := (core.ops.range.Range i32)))
+          (Self := core.ops.range.Range i32)
+          (Trait := ltac:(refine _)))
         α2 in
     let* α4 :=
       match α3 with
@@ -225,7 +223,8 @@ Definition main `{ℋ : State.Trait} : M unit :=
             let* α2 := borrow_mut α1 (core.ops.range.Range i32) in
             let* α3 :=
               (core.iter.traits.iterator.Iterator.next
-                  (Self := (core.ops.range.Range i32)))
+                  (Self := core.ops.range.Range i32)
+                  (Trait := ltac:(refine _)))
                 α2 in
             match α3 with
             | core.option.Option  =>
@@ -273,12 +272,15 @@ Definition main `{ℋ : State.Trait} : M unit :=
     let* α0 := iterators.fibonacci in
     let* α1 := M.alloc 4 in
     let* α2 :=
-      (core.iter.traits.iterator.Iterator.take (Self := iterators.Fibonacci))
+      (core.iter.traits.iterator.Iterator.take
+          (Self := iterators.Fibonacci)
+          (Trait := ltac:(refine _)))
         α0
         α1 in
     let* α3 :=
       (core.iter.traits.collect.IntoIterator.into_iter
-          (Self := (core.iter.adapters.take.Take iterators.Fibonacci)))
+          (Self := core.iter.adapters.take.Take iterators.Fibonacci)
+          (Trait := ltac:(refine _)))
         α2 in
     let* α4 :=
       match α3 with
@@ -297,7 +299,8 @@ Definition main `{ℋ : State.Trait} : M unit :=
                 (core.iter.adapters.take.Take iterators.Fibonacci) in
             let* α3 :=
               (core.iter.traits.iterator.Iterator.next
-                  (Self := (core.iter.adapters.take.Take iterators.Fibonacci)))
+                  (Self := core.iter.adapters.take.Take iterators.Fibonacci)
+                  (Trait := ltac:(refine _)))
                 α2 in
             match α3 with
             | core.option.Option  =>
@@ -345,20 +348,24 @@ Definition main `{ℋ : State.Trait} : M unit :=
     let* α0 := iterators.fibonacci in
     let* α1 := M.alloc 4 in
     let* α2 :=
-      (core.iter.traits.iterator.Iterator.skip (Self := iterators.Fibonacci))
+      (core.iter.traits.iterator.Iterator.skip
+          (Self := iterators.Fibonacci)
+          (Trait := ltac:(refine _)))
         α0
         α1 in
     let* α3 := M.alloc 4 in
     let* α4 :=
       (core.iter.traits.iterator.Iterator.take
-          (Self := (core.iter.adapters.skip.Skip iterators.Fibonacci)))
+          (Self := core.iter.adapters.skip.Skip iterators.Fibonacci)
+          (Trait := ltac:(refine _)))
         α2
         α3 in
     let* α5 :=
       (core.iter.traits.collect.IntoIterator.into_iter
           (Self :=
-            (core.iter.adapters.take.Take
-              (core.iter.adapters.skip.Skip iterators.Fibonacci))))
+            core.iter.adapters.take.Take
+              (core.iter.adapters.skip.Skip iterators.Fibonacci))
+          (Trait := ltac:(refine _)))
         α4 in
     let* α6 :=
       match α5 with
@@ -383,8 +390,9 @@ Definition main `{ℋ : State.Trait} : M unit :=
             let* α3 :=
               (core.iter.traits.iterator.Iterator.next
                   (Self :=
-                    (core.iter.adapters.take.Take
-                      (core.iter.adapters.skip.Skip iterators.Fibonacci))))
+                    core.iter.adapters.take.Take
+                      (core.iter.adapters.skip.Skip iterators.Fibonacci))
+                  (Trait := ltac:(refine _)))
                 α2 in
             match α3 with
             | core.option.Option  =>
@@ -448,7 +456,8 @@ Definition main `{ℋ : State.Trait} : M unit :=
   let* α2 := (Slice u32)::["iter"] α1 in
   let* α3 :=
     (core.iter.traits.collect.IntoIterator.into_iter
-        (Self := (core.slice.iter.Iter u32)))
+        (Self := core.slice.iter.Iter u32)
+        (Trait := ltac:(refine _)))
       α2 in
   let* α4 :=
     match α3 with
@@ -460,7 +469,8 @@ Definition main `{ℋ : State.Trait} : M unit :=
           let* α2 := borrow_mut α1 (core.slice.iter.Iter u32) in
           let* α3 :=
             (core.iter.traits.iterator.Iterator.next
-                (Self := (core.slice.iter.Iter u32)))
+                (Self := core.slice.iter.Iter u32)
+                (Trait := ltac:(refine _)))
               α2 in
           match α3 with
           | core.option.Option  =>

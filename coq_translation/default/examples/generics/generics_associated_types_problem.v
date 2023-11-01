@@ -12,14 +12,12 @@ Module Container.
     }.
     Global Set Primitive Projections.
     
-    #[refine] Global Instance Get_0 : Notation.Dot "0" := {
+    Global Instance Get_0 : Notation.Dot "0" := {
       Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_1 : Notation.Dot "1" := {
+    Global Instance Get_1 : Notation.Dot "1" := {
       Notation.dot x := let* x := M.read x in Pure x.(x1) : M _;
     }.
-    Admitted.
   End Container.
 End Container.
 Definition Container `{ℋ : State.Trait} : Set := M.val Container.t.
@@ -55,14 +53,20 @@ Module
       let* α2 := borrow α1 i32 in
       let* α3 := borrow α2 (ref i32) in
       let* α4 := borrow number_1 (ref i32) in
-      let* α5 := (core.cmp.PartialEq.eq (Self := (ref i32))) α3 α4 in
+      let* α5 :=
+        (core.cmp.PartialEq.eq (Self := ref i32) (Trait := ltac:(refine _)))
+          α3
+          α4 in
       let* α6 := deref self generics_associated_types_problem.Container in
       let* α7 := α6.["1"] in
       let* α8 := borrow α7 i32 in
       let* α9 := borrow α8 (ref i32) in
       let* α10 := borrow number_2 (ref i32) in
-      let* α11 := (core.cmp.PartialEq.eq (Self := (ref i32))) α9 α10 in
-      and α5 α11.
+      let* α11 :=
+        (core.cmp.PartialEq.eq (Self := ref i32) (Trait := ltac:(refine _)))
+          α9
+          α10 in
+      BinOp.and α5 α11.
     
     Global Instance AssociatedFunction_contains :
       Notation.DoubleColon Self "contains" := {
@@ -87,7 +91,7 @@ Module
       Notation.double_colon := last;
     }.
     
-    #[refine] Global Instance ℐ :
+    Global Instance ℐ :
       generics_associated_types_problem.Contains.Trait Self
         (A := i32)
         (B := i32) := {
@@ -95,10 +99,8 @@ Module
       generics_associated_types_problem.Contains.first := first;
       generics_associated_types_problem.Contains.last := last;
     }.
-    Admitted.
   End
     Impl_generics_associated_types_problem_Contains_i32_i32_for_generics_associated_types_problem_Container.
-  Global Hint Resolve ℐ : core.
 End
   Impl_generics_associated_types_problem_Contains_i32_i32_for_generics_associated_types_problem_Container.
 
@@ -110,11 +112,18 @@ Definition difference
     : M i32 :=
   let* α0 := deref container C in
   let* α1 := borrow α0 C in
-  let* α2 := (generics_associated_types_problem.Contains.last (Self := C)) α1 in
+  let* α2 :=
+    (generics_associated_types_problem.Contains.last
+        (Self := C)
+        (Trait := ltac:(refine _)))
+      α1 in
   let* α3 := deref container C in
   let* α4 := borrow α3 C in
   let* α5 :=
-    (generics_associated_types_problem.Contains.first (Self := C)) α4 in
+    (generics_associated_types_problem.Contains.first
+        (Self := C)
+        (Trait := ltac:(refine _)))
+      α4 in
   BinOp.sub α2 α5.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
@@ -159,7 +168,8 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α20 := borrow α19 i32 in
       let* α21 :=
         (generics_associated_types_problem.Contains.contains
-            (Self := generics_associated_types_problem.Container))
+            (Self := generics_associated_types_problem.Container)
+            (Trait := ltac:(refine _)))
           α14
           α17
           α20 in
@@ -185,7 +195,8 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α4 := borrow container generics_associated_types_problem.Container in
       let* α5 :=
         (generics_associated_types_problem.Contains.first
-            (Self := generics_associated_types_problem.Container))
+            (Self := generics_associated_types_problem.Container)
+            (Trait := ltac:(refine _)))
           α4 in
       let* α6 := borrow α5 i32 in
       let* α7 := deref α6 i32 in
@@ -209,7 +220,8 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α4 := borrow container generics_associated_types_problem.Container in
       let* α5 :=
         (generics_associated_types_problem.Contains.last
-            (Self := generics_associated_types_problem.Container))
+            (Self := generics_associated_types_problem.Container)
+            (Trait := ltac:(refine _)))
           α4 in
       let* α6 := borrow α5 i32 in
       let* α7 := deref α6 i32 in

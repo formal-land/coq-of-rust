@@ -38,7 +38,8 @@ Definition sum_odd_numbers `{ℋ : State.Trait} (up_to : u32) : M u32 :=
         |} in
     let* α2 :=
       (core.iter.traits.collect.IntoIterator.into_iter
-          (Self := (core.ops.range.Range u32)))
+          (Self := core.ops.range.Range u32)
+          (Trait := ltac:(refine _)))
         α1 in
     let* α3 :=
       match α2 with
@@ -50,7 +51,8 @@ Definition sum_odd_numbers `{ℋ : State.Trait} (up_to : u32) : M u32 :=
             let* α2 := borrow_mut α1 (core.ops.range.Range u32) in
             let* α3 :=
               (core.iter.traits.iterator.Iterator.next
-                  (Self := (core.ops.range.Range u32)))
+                  (Self := core.ops.range.Range u32)
+                  (Trait := ltac:(refine _)))
                 α2 in
             match α3 with
             | core.option.Option  =>

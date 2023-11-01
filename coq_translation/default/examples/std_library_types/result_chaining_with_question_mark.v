@@ -44,13 +44,11 @@ Module checked.
         Notation.double_colon := fmt;
       }.
       
-      #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
+      Global Instance ℐ : core.fmt.Debug.Trait Self := {
         core.fmt.Debug.fmt := fmt;
       }.
-      Admitted.
     End
       Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
-    Global Hint Resolve ℐ : core.
   End
     Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
   
@@ -71,8 +69,7 @@ Module checked.
     if (α2 : bool) then
       let* α0 :=
         M.alloc
-          (result_chaining_with_question_mark.checked.MathError.DivisionByZero
-            tt) in
+          result_chaining_with_question_mark.checked.MathError.DivisionByZero in
       M.alloc (core.result.Result.Err α0)
     else
       let* α0 := BinOp.div x y in
@@ -88,8 +85,7 @@ Module checked.
     if (α2 : bool) then
       let* α0 :=
         M.alloc
-          (result_chaining_with_question_mark.checked.MathError.NegativeSquareRoot
-            tt) in
+          result_chaining_with_question_mark.checked.MathError.NegativeSquareRoot in
       M.alloc (core.result.Result.Err α0)
     else
       let* α0 := f64::["sqrt"] x in
@@ -105,8 +101,7 @@ Module checked.
     if (α2 : bool) then
       let* α0 :=
         M.alloc
-          (result_chaining_with_question_mark.checked.MathError.NonPositiveLogarithm
-            tt) in
+          result_chaining_with_question_mark.checked.MathError.NonPositiveLogarithm in
       M.alloc (core.result.Result.Err α0)
     else
       let* α0 := f64::["ln"] x in
@@ -122,18 +117,20 @@ Module checked.
       let* α1 :=
         (core.ops.try_trait.Try.branch
             (Self :=
-              (core.result.Result
+              core.result.Result
                 f64
-                result_chaining_with_question_mark.checked.MathError)))
+                result_chaining_with_question_mark.checked.MathError)
+            (Trait := ltac:(refine _)))
           α0 in
       match α1 with
       | core.ops.control_flow.ControlFlow residual =>
         let* α0 :=
           (core.ops.try_trait.FromResidual.from_residual
               (Self :=
-                (core.result.Result
+                core.result.Result
                   f64
-                  result_chaining_with_question_mark.checked.MathError)))
+                  result_chaining_with_question_mark.checked.MathError)
+              (Trait := ltac:(refine _)))
             residual in
         let* α1 := Return α0 in
         never_to_any α1
@@ -144,18 +141,20 @@ Module checked.
       let* α1 :=
         (core.ops.try_trait.Try.branch
             (Self :=
-              (core.result.Result
+              core.result.Result
                 f64
-                result_chaining_with_question_mark.checked.MathError)))
+                result_chaining_with_question_mark.checked.MathError)
+            (Trait := ltac:(refine _)))
           α0 in
       match α1 with
       | core.ops.control_flow.ControlFlow residual =>
         let* α0 :=
           (core.ops.try_trait.FromResidual.from_residual
               (Self :=
-                (core.result.Result
+                core.result.Result
                   f64
-                  result_chaining_with_question_mark.checked.MathError)))
+                  result_chaining_with_question_mark.checked.MathError)
+              (Trait := ltac:(refine _)))
             residual in
         let* α1 := Return α0 in
         never_to_any α1
@@ -246,13 +245,11 @@ Module
       Notation.double_colon := fmt;
     }.
     
-    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
-    Admitted.
   End
     Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
-  Global Hint Resolve ℐ : core.
 End
   Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
 
@@ -273,8 +270,7 @@ Definition div
   if (α2 : bool) then
     let* α0 :=
       M.alloc
-        (result_chaining_with_question_mark.checked.MathError.DivisionByZero
-          tt) in
+        result_chaining_with_question_mark.checked.MathError.DivisionByZero in
     M.alloc (core.result.Result.Err α0)
   else
     let* α0 := BinOp.div x y in
@@ -290,8 +286,7 @@ Definition sqrt
   if (α2 : bool) then
     let* α0 :=
       M.alloc
-        (result_chaining_with_question_mark.checked.MathError.NegativeSquareRoot
-          tt) in
+        result_chaining_with_question_mark.checked.MathError.NegativeSquareRoot in
     M.alloc (core.result.Result.Err α0)
   else
     let* α0 := f64::["sqrt"] x in
@@ -307,8 +302,7 @@ Definition ln
   if (α2 : bool) then
     let* α0 :=
       M.alloc
-        (result_chaining_with_question_mark.checked.MathError.NonPositiveLogarithm
-          tt) in
+        result_chaining_with_question_mark.checked.MathError.NonPositiveLogarithm in
     M.alloc (core.result.Result.Err α0)
   else
     let* α0 := f64::["ln"] x in
@@ -324,18 +318,20 @@ Definition op_
     let* α1 :=
       (core.ops.try_trait.Try.branch
           (Self :=
-            (core.result.Result
+            core.result.Result
               f64
-              result_chaining_with_question_mark.checked.MathError)))
+              result_chaining_with_question_mark.checked.MathError)
+          (Trait := ltac:(refine _)))
         α0 in
     match α1 with
     | core.ops.control_flow.ControlFlow residual =>
       let* α0 :=
         (core.ops.try_trait.FromResidual.from_residual
             (Self :=
-              (core.result.Result
+              core.result.Result
                 f64
-                result_chaining_with_question_mark.checked.MathError)))
+                result_chaining_with_question_mark.checked.MathError)
+            (Trait := ltac:(refine _)))
           residual in
       let* α1 := Return α0 in
       never_to_any α1
@@ -346,18 +342,20 @@ Definition op_
     let* α1 :=
       (core.ops.try_trait.Try.branch
           (Self :=
-            (core.result.Result
+            core.result.Result
               f64
-              result_chaining_with_question_mark.checked.MathError)))
+              result_chaining_with_question_mark.checked.MathError)
+          (Trait := ltac:(refine _)))
         α0 in
     match α1 with
     | core.ops.control_flow.ControlFlow residual =>
       let* α0 :=
         (core.ops.try_trait.FromResidual.from_residual
             (Self :=
-              (core.result.Result
+              core.result.Result
                 f64
-                result_chaining_with_question_mark.checked.MathError)))
+                result_chaining_with_question_mark.checked.MathError)
+            (Trait := ltac:(refine _)))
           residual in
       let* α1 := Return α0 in
       never_to_any α1

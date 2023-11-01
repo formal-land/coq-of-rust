@@ -37,9 +37,11 @@ Require CoqOfRust.core.result_types.
 Module Error.
   Parameter t : Set.
 End Error.
-Definition Error := Error.t.
+Definition Error `{State.Trait} : Set :=
+  M.val Error.t.
 
-Definition Result (T : Set) := core.result_types.Result T Error.t.
+Definition Result `{State.Trait} (T : Set) : Set :=
+  core.result_types.Result T Error.t.
 
 (* pub struct BorrowedBuf<'data> { /* private fields */ } *)
 Module BorrowedBuf.

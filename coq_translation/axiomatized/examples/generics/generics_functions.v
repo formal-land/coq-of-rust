@@ -20,10 +20,9 @@ Module S.
     }.
     Global Set Primitive Projections.
     
-    #[refine] Global Instance Get_0 : Notation.Dot "0" := {
+    Global Instance Get_0 : Notation.Dot "0" := {
       Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
-    Admitted.
   End S.
 End S.
 Definition S `{ℋ : State.Trait} : Set := M.val S.t.
@@ -40,10 +39,9 @@ Module SGen.
     }.
     Global Set Primitive Projections.
     
-    #[refine] Global Instance Get_0 : Notation.Dot "0" := {
+    Global Instance Get_0 : Notation.Dot "0" := {
       Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
-    Admitted.
   End SGen.
 End SGen.
 Definition SGen `{ℋ : State.Trait} (T : Set) : Set := M.val (SGen.t (T := T)).

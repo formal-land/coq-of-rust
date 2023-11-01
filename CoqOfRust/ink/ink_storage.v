@@ -20,16 +20,13 @@ Module lazy.
         }.
         Global Set Primitive Projections.
         
-        #[refine] Global Instance Get__marker : Notation.Dot "_marker" := {
+        Global Instance Get__marker : Notation.Dot "_marker" := {
           Notation.dot x := let* x := M.read x in Pure x.(_marker) : M _;
         }.
-        Admitted.
-        #[refine] Global Instance Get_AF__marker :
-          Notation.DoubleColon t "_marker" := {
+        Global Instance Get_AF__marker : Notation.DoubleColon t "_marker" := {
           Notation.double_colon x :=
             let* x := M.read x in Pure x.(_marker) : M _;
         }.
-        Admitted.
       End Mapping.
       Module Default.
         Definition KeyType := ink_storage_traits.impls.AutoKey.
@@ -63,13 +60,11 @@ Module lazy.
           Notation.double_colon := default;
         }.
         
-        #[refine] Global Instance ℐ : core.default.Default.Trait Self := {
+        Global Instance ℐ : core.default.Default.Trait Self := {
           core.default.Default.default := default;
         }.
-        Admitted.
       End
         Impl_core_default_Default_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
-      Global Hint Resolve ℐ : core.
     End
       Impl_core_default_Default_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
     
@@ -95,12 +90,10 @@ Module lazy.
           Notation.double_colon := fmt;
         }.
         
-        #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
+        Global Instance ℐ : core.fmt.Debug.Trait Self := {
           core.fmt.Debug.fmt := fmt;
         }.
-        Admitted.
       End Impl_core_fmt_Debug_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
-      Global Hint Resolve ℐ : core.
     End Impl_core_fmt_Debug_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
     
     Module
@@ -143,8 +136,7 @@ Module lazy.
           Notation.double_colon := decode (I := I);
         }.
         
-        #[refine] Global Instance ℐ :
-          ink_storage_traits.storage.Storable.Trait Self := {
+        Global Instance ℐ : ink_storage_traits.storage.Storable.Trait Self := {
           ink_storage_traits.storage.Storable.encode
             {T : Set}
             {ℋ_0 : parity_scale_codec.codec.Output.Trait T}
@@ -155,10 +147,8 @@ Module lazy.
             {ℋ_0 : parity_scale_codec.codec.Input.Trait I} :=
             decode (I := I);
         }.
-        Admitted.
       End
         Impl_ink_storage_traits_storage_Storable_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
-      Global Hint Resolve ℐ : core.
     End
       Impl_ink_storage_traits_storage_Storable_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
     
@@ -180,15 +170,13 @@ Module lazy.
         
         Definition PreferredKey : Set := InnerKey.
         
-        #[refine] Global Instance ℐ :
+        Global Instance ℐ :
           ink_storage_traits.storage.StorableHint.Trait Self (Key := Key) := {
           ink_storage_traits.storage.StorableHint.Type_ := Type_;
           ink_storage_traits.storage.StorableHint.PreferredKey := PreferredKey;
         }.
-        Admitted.
       End
         Impl_ink_storage_traits_storage_StorableHint_Key_for_ink_storage_lazy_mapping_Mapping_K_V_InnerKey.
-      Global Hint Resolve ℐ : core.
     End
       Impl_ink_storage_traits_storage_StorableHint_Key_for_ink_storage_lazy_mapping_Mapping_K_V_InnerKey.
     
@@ -212,14 +200,12 @@ Module lazy.
           Notation.double_colon := KEY;
         }.
         
-        #[refine] Global Instance ℐ :
+        Global Instance ℐ :
           ink_storage_traits.storage.StorageKey.Trait Self := {
           ink_storage_traits.storage.StorageKey.KEY := KEY;
         }.
-        Admitted.
       End
         Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
-      Global Hint Resolve ℐ : core.
     End
       Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
   End mapping.
@@ -237,15 +223,12 @@ Module lazy.
       }.
       Global Set Primitive Projections.
       
-      #[refine] Global Instance Get__marker : Notation.Dot "_marker" := {
+      Global Instance Get__marker : Notation.Dot "_marker" := {
         Notation.dot x := let* x := M.read x in Pure x.(_marker) : M _;
       }.
-      Admitted.
-      #[refine] Global Instance Get_AF__marker :
-        Notation.DoubleColon t "_marker" := {
+      Global Instance Get_AF__marker : Notation.DoubleColon t "_marker" := {
         Notation.double_colon x := let* x := M.read x in Pure x.(_marker) : M _;
       }.
-      Admitted.
     End Lazy.
     Module Default.
       Definition KeyType := ink_storage_traits.impls.AutoKey.
@@ -274,12 +257,10 @@ Module lazy.
         Notation.double_colon := default;
       }.
       
-      #[refine] Global Instance ℐ : core.default.Default.Trait Self := {
+      Global Instance ℐ : core.default.Default.Trait Self := {
         core.default.Default.default := default;
       }.
-      Admitted.
     End Impl_core_default_Default_for_ink_storage_lazy_Lazy_V_KeyType.
-    Global Hint Resolve ℐ : core.
   End Impl_core_default_Default_for_ink_storage_lazy_Lazy_V_KeyType.
   
   Module Impl_core_fmt_Debug_for_ink_storage_lazy_Lazy_V_KeyType.
@@ -301,12 +282,10 @@ Module lazy.
         Notation.double_colon := fmt;
       }.
       
-      #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
+      Global Instance ℐ : core.fmt.Debug.Trait Self := {
         core.fmt.Debug.fmt := fmt;
       }.
-      Admitted.
     End Impl_core_fmt_Debug_for_ink_storage_lazy_Lazy_V_KeyType.
-    Global Hint Resolve ℐ : core.
   End Impl_core_fmt_Debug_for_ink_storage_lazy_Lazy_V_KeyType.
   
   Module
@@ -347,8 +326,7 @@ Module lazy.
         Notation.double_colon := decode (I := I);
       }.
       
-      #[refine] Global Instance ℐ :
-        ink_storage_traits.storage.Storable.Trait Self := {
+      Global Instance ℐ : ink_storage_traits.storage.Storable.Trait Self := {
         ink_storage_traits.storage.Storable.encode
           {T : Set}
           {ℋ_0 : parity_scale_codec.codec.Output.Trait T}
@@ -359,10 +337,8 @@ Module lazy.
           {ℋ_0 : parity_scale_codec.codec.Input.Trait I} :=
           decode (I := I);
       }.
-      Admitted.
     End
       Impl_ink_storage_traits_storage_Storable_for_ink_storage_lazy_Lazy_V_KeyType.
-    Global Hint Resolve ℐ : core.
   End
     Impl_ink_storage_traits_storage_Storable_for_ink_storage_lazy_Lazy_V_KeyType.
   
@@ -384,15 +360,13 @@ Module lazy.
       
       Definition PreferredKey : Set := InnerKey.
       
-      #[refine] Global Instance ℐ :
+      Global Instance ℐ :
         ink_storage_traits.storage.StorableHint.Trait Self (Key := Key) := {
         ink_storage_traits.storage.StorableHint.Type_ := Type_;
         ink_storage_traits.storage.StorableHint.PreferredKey := PreferredKey;
       }.
-      Admitted.
     End
       Impl_ink_storage_traits_storage_StorableHint_Key_for_ink_storage_lazy_Lazy_V_InnerKey.
-    Global Hint Resolve ℐ : core.
   End
     Impl_ink_storage_traits_storage_StorableHint_Key_for_ink_storage_lazy_Lazy_V_InnerKey.
   
@@ -414,14 +388,11 @@ Module lazy.
         Notation.double_colon := KEY;
       }.
       
-      #[refine] Global Instance ℐ :
-        ink_storage_traits.storage.StorageKey.Trait Self := {
+      Global Instance ℐ : ink_storage_traits.storage.StorageKey.Trait Self := {
         ink_storage_traits.storage.StorageKey.KEY := KEY;
       }.
-      Admitted.
     End
       Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_lazy_Lazy_V_KeyType.
-    Global Hint Resolve ℐ : core.
   End
     Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_lazy_Lazy_V_KeyType.
 End lazy.
@@ -442,15 +413,12 @@ Module mapping.
       }.
       Global Set Primitive Projections.
       
-      #[refine] Global Instance Get__marker : Notation.Dot "_marker" := {
+      Global Instance Get__marker : Notation.Dot "_marker" := {
         Notation.dot x := let* x := M.read x in Pure x.(_marker) : M _;
       }.
-      Admitted.
-      #[refine] Global Instance Get_AF__marker :
-        Notation.DoubleColon t "_marker" := {
+      Global Instance Get_AF__marker : Notation.DoubleColon t "_marker" := {
         Notation.double_colon x := let* x := M.read x in Pure x.(_marker) : M _;
       }.
-      Admitted.
     End Mapping.
     Module Default.
       Definition KeyType := ink_storage_traits.impls.AutoKey.
@@ -484,13 +452,11 @@ Module mapping.
         Notation.double_colon := default;
       }.
       
-      #[refine] Global Instance ℐ : core.default.Default.Trait Self := {
+      Global Instance ℐ : core.default.Default.Trait Self := {
         core.default.Default.default := default;
       }.
-      Admitted.
     End
       Impl_core_default_Default_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
-    Global Hint Resolve ℐ : core.
   End
     Impl_core_default_Default_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
   
@@ -516,12 +482,10 @@ Module mapping.
         Notation.double_colon := fmt;
       }.
       
-      #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
+      Global Instance ℐ : core.fmt.Debug.Trait Self := {
         core.fmt.Debug.fmt := fmt;
       }.
-      Admitted.
     End Impl_core_fmt_Debug_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
-    Global Hint Resolve ℐ : core.
   End Impl_core_fmt_Debug_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
   
   Module
@@ -564,8 +528,7 @@ Module mapping.
         Notation.double_colon := decode (I := I);
       }.
       
-      #[refine] Global Instance ℐ :
-        ink_storage_traits.storage.Storable.Trait Self := {
+      Global Instance ℐ : ink_storage_traits.storage.Storable.Trait Self := {
         ink_storage_traits.storage.Storable.encode
           {T : Set}
           {ℋ_0 : parity_scale_codec.codec.Output.Trait T}
@@ -576,10 +539,8 @@ Module mapping.
           {ℋ_0 : parity_scale_codec.codec.Input.Trait I} :=
           decode (I := I);
       }.
-      Admitted.
     End
       Impl_ink_storage_traits_storage_Storable_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
-    Global Hint Resolve ℐ : core.
   End
     Impl_ink_storage_traits_storage_Storable_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
   
@@ -601,15 +562,13 @@ Module mapping.
       
       Definition PreferredKey : Set := InnerKey.
       
-      #[refine] Global Instance ℐ :
+      Global Instance ℐ :
         ink_storage_traits.storage.StorableHint.Trait Self (Key := Key) := {
         ink_storage_traits.storage.StorableHint.Type_ := Type_;
         ink_storage_traits.storage.StorableHint.PreferredKey := PreferredKey;
       }.
-      Admitted.
     End
       Impl_ink_storage_traits_storage_StorableHint_Key_for_ink_storage_lazy_mapping_Mapping_K_V_InnerKey.
-    Global Hint Resolve ℐ : core.
   End
     Impl_ink_storage_traits_storage_StorableHint_Key_for_ink_storage_lazy_mapping_Mapping_K_V_InnerKey.
   
@@ -633,14 +592,11 @@ Module mapping.
         Notation.double_colon := KEY;
       }.
       
-      #[refine] Global Instance ℐ :
-        ink_storage_traits.storage.StorageKey.Trait Self := {
+      Global Instance ℐ : ink_storage_traits.storage.StorageKey.Trait Self := {
         ink_storage_traits.storage.StorageKey.KEY := KEY;
       }.
-      Admitted.
     End
       Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
-    Global Hint Resolve ℐ : core.
   End
     Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
 End mapping.
@@ -660,15 +616,12 @@ Module Mapping.
     }.
     Global Set Primitive Projections.
     
-    #[refine] Global Instance Get__marker : Notation.Dot "_marker" := {
+    Global Instance Get__marker : Notation.Dot "_marker" := {
       Notation.dot x := let* x := M.read x in Pure x.(_marker) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_AF__marker :
-      Notation.DoubleColon t "_marker" := {
+    Global Instance Get_AF__marker : Notation.DoubleColon t "_marker" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(_marker) : M _;
     }.
-    Admitted.
   End Mapping.
   Module Default.
     Definition KeyType := ink_storage_traits.impls.AutoKey.
@@ -711,13 +664,11 @@ Module
       Notation.double_colon := type_info;
     }.
     
-    #[refine] Global Instance ℐ : scale_info.TypeInfo.Trait Self := {
+    Global Instance ℐ : scale_info.TypeInfo.Trait Self := {
       scale_info.TypeInfo.Identity := Identity;
       scale_info.TypeInfo.type_info := type_info;
     }.
-    Admitted.
   End Impl_scale_info_TypeInfo_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
-  Global Hint Resolve ℐ : core.
 End Impl_scale_info_TypeInfo_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
 
 Module
@@ -740,13 +691,11 @@ Module
       Notation.double_colon := default;
     }.
     
-    #[refine] Global Instance ℐ : core.default.Default.Trait Self := {
+    Global Instance ℐ : core.default.Default.Trait Self := {
       core.default.Default.default := default;
     }.
-    Admitted.
   End
     Impl_core_default_Default_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
-  Global Hint Resolve ℐ : core.
 End Impl_core_default_Default_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
 
 Module Impl_core_fmt_Debug_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
@@ -768,12 +717,10 @@ Module Impl_core_fmt_Debug_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
       Notation.double_colon := fmt;
     }.
     
-    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
-    Admitted.
   End Impl_core_fmt_Debug_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
-  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
 
 Module
@@ -816,8 +763,7 @@ Module
       Notation.double_colon := decode (I := I);
     }.
     
-    #[refine] Global Instance ℐ :
-      ink_storage_traits.storage.Storable.Trait Self := {
+    Global Instance ℐ : ink_storage_traits.storage.Storable.Trait Self := {
       ink_storage_traits.storage.Storable.encode
         {T : Set}
         {ℋ_0 : parity_scale_codec.codec.Output.Trait T}
@@ -828,10 +774,8 @@ Module
         {ℋ_0 : parity_scale_codec.codec.Input.Trait I} :=
         decode (I := I);
     }.
-    Admitted.
   End
     Impl_ink_storage_traits_storage_Storable_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
-  Global Hint Resolve ℐ : core.
 End
   Impl_ink_storage_traits_storage_Storable_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
 
@@ -853,15 +797,13 @@ Module
     
     Definition PreferredKey : Set := InnerKey.
     
-    #[refine] Global Instance ℐ :
+    Global Instance ℐ :
       ink_storage_traits.storage.StorableHint.Trait Self (Key := Key) := {
       ink_storage_traits.storage.StorableHint.Type_ := Type_;
       ink_storage_traits.storage.StorableHint.PreferredKey := PreferredKey;
     }.
-    Admitted.
   End
     Impl_ink_storage_traits_storage_StorableHint_Key_for_ink_storage_lazy_mapping_Mapping_K_V_InnerKey.
-  Global Hint Resolve ℐ : core.
 End
   Impl_ink_storage_traits_storage_StorableHint_Key_for_ink_storage_lazy_mapping_Mapping_K_V_InnerKey.
 
@@ -885,14 +827,11 @@ Module
       Notation.double_colon := KEY;
     }.
     
-    #[refine] Global Instance ℐ :
-      ink_storage_traits.storage.StorageKey.Trait Self := {
+    Global Instance ℐ : ink_storage_traits.storage.StorageKey.Trait Self := {
       ink_storage_traits.storage.StorageKey.KEY := KEY;
     }.
-    Admitted.
   End
     Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
-  Global Hint Resolve ℐ : core.
 End
   Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
 
@@ -922,14 +861,11 @@ Module
       Notation.double_colon := layout;
     }.
     
-    #[refine] Global Instance ℐ :
-      ink_storage_traits.layout.StorageLayout.Trait Self := {
+    Global Instance ℐ : ink_storage_traits.layout.StorageLayout.Trait Self := {
       ink_storage_traits.layout.StorageLayout.layout := layout;
     }.
-    Admitted.
   End
     Impl_ink_storage_traits_layout_StorageLayout_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
-  Global Hint Resolve ℐ : core.
 End
   Impl_ink_storage_traits_layout_StorageLayout_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
 
@@ -946,15 +882,12 @@ Module Lazy.
     }.
     Global Set Primitive Projections.
     
-    #[refine] Global Instance Get__marker : Notation.Dot "_marker" := {
+    Global Instance Get__marker : Notation.Dot "_marker" := {
       Notation.dot x := let* x := M.read x in Pure x.(_marker) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_AF__marker :
-      Notation.DoubleColon t "_marker" := {
+    Global Instance Get_AF__marker : Notation.DoubleColon t "_marker" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(_marker) : M _;
     }.
-    Admitted.
   End Lazy.
   Module Default.
     Definition KeyType := ink_storage_traits.impls.AutoKey.
@@ -990,13 +923,11 @@ Module Impl_scale_info_TypeInfo_for_ink_storage_lazy_Lazy_V_KeyType.
       Notation.double_colon := type_info;
     }.
     
-    #[refine] Global Instance ℐ : scale_info.TypeInfo.Trait Self := {
+    Global Instance ℐ : scale_info.TypeInfo.Trait Self := {
       scale_info.TypeInfo.Identity := Identity;
       scale_info.TypeInfo.type_info := type_info;
     }.
-    Admitted.
   End Impl_scale_info_TypeInfo_for_ink_storage_lazy_Lazy_V_KeyType.
-  Global Hint Resolve ℐ : core.
 End Impl_scale_info_TypeInfo_for_ink_storage_lazy_Lazy_V_KeyType.
 
 Module Impl_core_default_Default_for_ink_storage_lazy_Lazy_V_KeyType.
@@ -1015,12 +946,10 @@ Module Impl_core_default_Default_for_ink_storage_lazy_Lazy_V_KeyType.
       Notation.double_colon := default;
     }.
     
-    #[refine] Global Instance ℐ : core.default.Default.Trait Self := {
+    Global Instance ℐ : core.default.Default.Trait Self := {
       core.default.Default.default := default;
     }.
-    Admitted.
   End Impl_core_default_Default_for_ink_storage_lazy_Lazy_V_KeyType.
-  Global Hint Resolve ℐ : core.
 End Impl_core_default_Default_for_ink_storage_lazy_Lazy_V_KeyType.
 
 Module Impl_core_fmt_Debug_for_ink_storage_lazy_Lazy_V_KeyType.
@@ -1040,12 +969,10 @@ Module Impl_core_fmt_Debug_for_ink_storage_lazy_Lazy_V_KeyType.
       Notation.double_colon := fmt;
     }.
     
-    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
-    Admitted.
   End Impl_core_fmt_Debug_for_ink_storage_lazy_Lazy_V_KeyType.
-  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_ink_storage_lazy_Lazy_V_KeyType.
 
 Module
@@ -1086,8 +1013,7 @@ Module
       Notation.double_colon := decode (I := I);
     }.
     
-    #[refine] Global Instance ℐ :
-      ink_storage_traits.storage.Storable.Trait Self := {
+    Global Instance ℐ : ink_storage_traits.storage.Storable.Trait Self := {
       ink_storage_traits.storage.Storable.encode
         {T : Set}
         {ℋ_0 : parity_scale_codec.codec.Output.Trait T}
@@ -1098,10 +1024,8 @@ Module
         {ℋ_0 : parity_scale_codec.codec.Input.Trait I} :=
         decode (I := I);
     }.
-    Admitted.
   End
     Impl_ink_storage_traits_storage_Storable_for_ink_storage_lazy_Lazy_V_KeyType.
-  Global Hint Resolve ℐ : core.
 End
   Impl_ink_storage_traits_storage_Storable_for_ink_storage_lazy_Lazy_V_KeyType.
 
@@ -1123,15 +1047,13 @@ Module
     
     Definition PreferredKey : Set := InnerKey.
     
-    #[refine] Global Instance ℐ :
+    Global Instance ℐ :
       ink_storage_traits.storage.StorableHint.Trait Self (Key := Key) := {
       ink_storage_traits.storage.StorableHint.Type_ := Type_;
       ink_storage_traits.storage.StorableHint.PreferredKey := PreferredKey;
     }.
-    Admitted.
   End
     Impl_ink_storage_traits_storage_StorableHint_Key_for_ink_storage_lazy_Lazy_V_InnerKey.
-  Global Hint Resolve ℐ : core.
 End
   Impl_ink_storage_traits_storage_StorableHint_Key_for_ink_storage_lazy_Lazy_V_InnerKey.
 
@@ -1153,14 +1075,11 @@ Module
       Notation.double_colon := KEY;
     }.
     
-    #[refine] Global Instance ℐ :
-      ink_storage_traits.storage.StorageKey.Trait Self := {
+    Global Instance ℐ : ink_storage_traits.storage.StorageKey.Trait Self := {
       ink_storage_traits.storage.StorageKey.KEY := KEY;
     }.
-    Admitted.
   End
     Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_lazy_Lazy_V_KeyType.
-  Global Hint Resolve ℐ : core.
 End
   Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_lazy_Lazy_V_KeyType.
 
@@ -1188,13 +1107,10 @@ Module
       Notation.double_colon := layout;
     }.
     
-    #[refine] Global Instance ℐ :
-      ink_storage_traits.layout.StorageLayout.Trait Self := {
+    Global Instance ℐ : ink_storage_traits.layout.StorageLayout.Trait Self := {
       ink_storage_traits.layout.StorageLayout.layout := layout;
     }.
-    Admitted.
   End
     Impl_ink_storage_traits_layout_StorageLayout_for_ink_storage_lazy_Lazy_V_KeyType.
-  Global Hint Resolve ℐ : core.
 End
   Impl_ink_storage_traits_layout_StorageLayout_for_ink_storage_lazy_Lazy_V_KeyType.

@@ -24,12 +24,10 @@ Module Impl_core_fmt_Debug_for_clone_Unit.
       Notation.double_colon := fmt;
     }.
     
-    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
-    Admitted.
   End Impl_core_fmt_Debug_for_clone_Unit.
-  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_clone_Unit.
 
 Module Impl_core_clone_Clone_for_clone_Unit.
@@ -45,12 +43,10 @@ Module Impl_core_clone_Clone_for_clone_Unit.
       Notation.double_colon := clone;
     }.
     
-    #[refine] Global Instance ℐ : core.clone.Clone.Trait Self := {
+    Global Instance ℐ : core.clone.Clone.Trait Self := {
       core.clone.Clone.clone := clone;
     }.
-    Admitted.
   End Impl_core_clone_Clone_for_clone_Unit.
-  Global Hint Resolve ℐ : core.
 End Impl_core_clone_Clone_for_clone_Unit.
 
 Module Impl_core_marker_Copy_for_clone_Unit.
@@ -59,11 +55,9 @@ Module Impl_core_marker_Copy_for_clone_Unit.
     
     Definition Self : Set := clone.Unit.
     
-    #[refine] Global Instance ℐ : core.marker.Copy.Trait Self := {
+    Global Instance ℐ : core.marker.Copy.Trait Self := {
     }.
-    Admitted.
   End Impl_core_marker_Copy_for_clone_Unit.
-  Global Hint Resolve ℐ : core.
 End Impl_core_marker_Copy_for_clone_Unit.
 
 Module Pair.
@@ -77,14 +71,12 @@ Module Pair.
     }.
     Global Set Primitive Projections.
     
-    #[refine] Global Instance Get_0 : Notation.Dot "0" := {
+    Global Instance Get_0 : Notation.Dot "0" := {
       Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_1 : Notation.Dot "1" := {
+    Global Instance Get_1 : Notation.Dot "1" := {
       Notation.dot x := let* x := M.read x in Pure x.(x1) : M _;
     }.
-    Admitted.
   End Pair.
 End Pair.
 Definition Pair `{ℋ : State.Trait} : Set := M.val Pair.t.
@@ -102,12 +94,10 @@ Module Impl_core_clone_Clone_for_clone_Pair.
       Notation.double_colon := clone;
     }.
     
-    #[refine] Global Instance ℐ : core.clone.Clone.Trait Self := {
+    Global Instance ℐ : core.clone.Clone.Trait Self := {
       core.clone.Clone.clone := clone;
     }.
-    Admitted.
   End Impl_core_clone_Clone_for_clone_Pair.
-  Global Hint Resolve ℐ : core.
 End Impl_core_clone_Clone_for_clone_Pair.
 
 Module Impl_core_fmt_Debug_for_clone_Pair.
@@ -124,12 +114,10 @@ Module Impl_core_fmt_Debug_for_clone_Pair.
       Notation.double_colon := fmt;
     }.
     
-    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
-    Admitted.
   End Impl_core_fmt_Debug_for_clone_Pair.
-  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_clone_Pair.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)

@@ -25,7 +25,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
             std.io.stdio._print α4 in
           M.alloc tt in
         let* _ :=
-          let* α0 := M.alloc (core.option.Option.None tt) in
+          let* α0 := M.alloc core.option.Option.None in
           assign optional α0 in
         M.alloc tt
       else

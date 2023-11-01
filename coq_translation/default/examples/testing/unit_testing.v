@@ -21,10 +21,10 @@ Module tests.
         let* α0 := deref left_val i32 in
         let* α1 := deref right_val i32 in
         let* α2 := BinOp.eq α0 α1 in
-        let* α3 := not α2 in
+        let* α3 := UnOp.not α2 in
         let* α4 := use α3 in
         if (α4 : bool) then
-          let* kind := M.alloc (core.panicking.AssertKind.Eq tt) in
+          let* kind := M.alloc core.panicking.AssertKind.Eq in
           let* _ :=
             let* α0 := deref left_val i32 in
             let* α1 := borrow α0 i32 in
@@ -34,7 +34,7 @@ Module tests.
             let* α5 := borrow α4 i32 in
             let* α6 := deref α5 i32 in
             let* α7 := borrow α6 i32 in
-            let* α8 := M.alloc (core.option.Option.None tt) in
+            let* α8 := M.alloc core.option.Option.None in
             core.panicking.assert_failed kind α3 α7 α8 in
           let* α0 := M.alloc tt in
           never_to_any α0
@@ -56,10 +56,10 @@ Module tests.
         let* α0 := deref left_val i32 in
         let* α1 := deref right_val i32 in
         let* α2 := BinOp.eq α0 α1 in
-        let* α3 := not α2 in
+        let* α3 := UnOp.not α2 in
         let* α4 := use α3 in
         if (α4 : bool) then
-          let* kind := M.alloc (core.panicking.AssertKind.Eq tt) in
+          let* kind := M.alloc core.panicking.AssertKind.Eq in
           let* _ :=
             let* α0 := deref left_val i32 in
             let* α1 := borrow α0 i32 in
@@ -69,7 +69,7 @@ Module tests.
             let* α5 := borrow α4 i32 in
             let* α6 := deref α5 i32 in
             let* α7 := borrow α6 i32 in
-            let* α8 := M.alloc (core.option.Option.None tt) in
+            let* α8 := M.alloc core.option.Option.None in
             core.panicking.assert_failed kind α3 α7 α8 in
           let* α0 := M.alloc tt in
           never_to_any α0
@@ -92,10 +92,10 @@ Definition test_add `{ℋ : State.Trait} : M unit :=
       let* α0 := deref left_val i32 in
       let* α1 := deref right_val i32 in
       let* α2 := BinOp.eq α0 α1 in
-      let* α3 := not α2 in
+      let* α3 := UnOp.not α2 in
       let* α4 := use α3 in
       if (α4 : bool) then
-        let* kind := M.alloc (core.panicking.AssertKind.Eq tt) in
+        let* kind := M.alloc core.panicking.AssertKind.Eq in
         let* _ :=
           let* α0 := deref left_val i32 in
           let* α1 := borrow α0 i32 in
@@ -105,7 +105,7 @@ Definition test_add `{ℋ : State.Trait} : M unit :=
           let* α5 := borrow α4 i32 in
           let* α6 := deref α5 i32 in
           let* α7 := borrow α6 i32 in
-          let* α8 := M.alloc (core.option.Option.None tt) in
+          let* α8 := M.alloc core.option.Option.None in
           core.panicking.assert_failed kind α3 α7 α8 in
         let* α0 := M.alloc tt in
         never_to_any α0
@@ -127,10 +127,10 @@ Definition test_bad_add `{ℋ : State.Trait} : M unit :=
       let* α0 := deref left_val i32 in
       let* α1 := deref right_val i32 in
       let* α2 := BinOp.eq α0 α1 in
-      let* α3 := not α2 in
+      let* α3 := UnOp.not α2 in
       let* α4 := use α3 in
       if (α4 : bool) then
-        let* kind := M.alloc (core.panicking.AssertKind.Eq tt) in
+        let* kind := M.alloc core.panicking.AssertKind.Eq in
         let* _ :=
           let* α0 := deref left_val i32 in
           let* α1 := borrow α0 i32 in
@@ -140,7 +140,7 @@ Definition test_bad_add `{ℋ : State.Trait} : M unit :=
           let* α5 := borrow α4 i32 in
           let* α6 := deref α5 i32 in
           let* α7 := borrow α6 i32 in
-          let* α8 := M.alloc (core.option.Option.None tt) in
+          let* α8 := M.alloc core.option.Option.None in
           core.panicking.assert_failed kind α3 α7 α8 in
         let* α0 := M.alloc tt in
         never_to_any α0

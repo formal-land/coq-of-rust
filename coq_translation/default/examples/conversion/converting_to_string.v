@@ -11,15 +11,12 @@ Module Circle.
     }.
     Global Set Primitive Projections.
     
-    #[refine] Global Instance Get_radius : Notation.Dot "radius" := {
+    Global Instance Get_radius : Notation.Dot "radius" := {
       Notation.dot x := let* x := M.read x in Pure x.(radius) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_AF_radius :
-      Notation.DoubleColon t "radius" := {
+    Global Instance Get_AF_radius : Notation.DoubleColon t "radius" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(radius) : M _;
     }.
-    Admitted.
   End Circle.
 End Circle.
 Definition Circle `{ℋ : State.Trait} : Set := M.val Circle.t.
@@ -58,12 +55,10 @@ Module Impl_core_fmt_Display_for_converting_to_string_Circle.
       Notation.double_colon := fmt;
     }.
     
-    #[refine] Global Instance ℐ : core.fmt.Display.Trait Self := {
+    Global Instance ℐ : core.fmt.Display.Trait Self := {
       core.fmt.Display.fmt := fmt;
     }.
-    Admitted.
   End Impl_core_fmt_Display_for_converting_to_string_Circle.
-  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Display_for_converting_to_string_Circle.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
@@ -73,6 +68,8 @@ Definition main `{ℋ : State.Trait} : M unit :=
     M.alloc {| converting_to_string.Circle.radius := α0; |} in
   let* _ :=
     let* α0 := borrow circle converting_to_string.Circle in
-    (alloc.string.ToString.to_string (Self := converting_to_string.Circle))
+    (alloc.string.ToString.to_string
+        (Self := converting_to_string.Circle)
+        (Trait := ltac:(refine _)))
       α0 in
   M.alloc tt.

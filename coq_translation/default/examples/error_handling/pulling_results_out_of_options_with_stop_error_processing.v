@@ -13,7 +13,8 @@ Definition double_first
     let* α0 := borrow vec (alloc.vec.Vec (ref str) alloc.alloc.Global) in
     let* α1 :=
       (core.ops.deref.Deref.deref
-          (Self := (alloc.vec.Vec (ref str) alloc.alloc.Global)))
+          (Self := alloc.vec.Vec (ref str) alloc.alloc.Global)
+          (Trait := ltac:(refine _)))
         α0 in
     let* α2 := deref α1 (Slice (ref str)) in
     let* α3 := borrow α2 (Slice (ref str)) in
@@ -28,7 +29,7 @@ Definition double_first
         α3
         (let* α0 := M.alloc 2 in
         BinOp.mul α0 n)) in
-  let* α0 := M.alloc (core.option.Option.None tt) in
+  let* α0 := M.alloc core.option.Option.None in
   let* α1 := M.alloc (core.result.Result.Ok α0) in
   (core.option.Option
         (core.result.Result i32 core.num.error.ParseIntError))::["map_or"]

@@ -17,7 +17,8 @@ Definition main `{ℋ : State.Trait} : M unit :=
         |} in
     let* α3 :=
       (core.iter.traits.collect.IntoIterator.into_iter
-          (Self := (core.ops.range.Range i32)))
+          (Self := core.ops.range.Range i32)
+          (Trait := ltac:(refine _)))
         α2 in
     let* α4 :=
       match α3 with
@@ -29,7 +30,8 @@ Definition main `{ℋ : State.Trait} : M unit :=
             let* α2 := borrow_mut α1 (core.ops.range.Range i32) in
             let* α3 :=
               (core.iter.traits.iterator.Iterator.next
-                  (Self := (core.ops.range.Range i32)))
+                  (Self := core.ops.range.Range i32)
+                  (Trait := ltac:(refine _)))
                 α2 in
             match α3 with
             | core.option.Option  =>
@@ -38,7 +40,9 @@ Definition main `{ℋ : State.Trait} : M unit :=
             | core.option.Option id =>
               let* thread_tx :=
                 let* α0 := borrow tx (std.sync.mpsc.Sender i32) in
-                (core.clone.Clone.clone (Self := (std.sync.mpsc.Sender i32)))
+                (core.clone.Clone.clone
+                    (Self := std.sync.mpsc.Sender i32)
+                    (Trait := ltac:(refine _)))
                   α0 in
               let* child :=
                 std.thread.spawn
@@ -104,7 +108,8 @@ Definition main `{ℋ : State.Trait} : M unit :=
         |} in
     let* α3 :=
       (core.iter.traits.collect.IntoIterator.into_iter
-          (Self := (core.ops.range.Range i32)))
+          (Self := core.ops.range.Range i32)
+          (Trait := ltac:(refine _)))
         α2 in
     let* α4 :=
       match α3 with
@@ -116,7 +121,8 @@ Definition main `{ℋ : State.Trait} : M unit :=
             let* α2 := borrow_mut α1 (core.ops.range.Range i32) in
             let* α3 :=
               (core.iter.traits.iterator.Iterator.next
-                  (Self := (core.ops.range.Range i32)))
+                  (Self := core.ops.range.Range i32)
+                  (Trait := ltac:(refine _)))
                 α2 in
             match α3 with
             | core.option.Option  =>
@@ -146,7 +152,8 @@ Definition main `{ℋ : State.Trait} : M unit :=
     let* α0 :=
       (core.iter.traits.collect.IntoIterator.into_iter
           (Self :=
-            (alloc.vec.Vec (std.thread.JoinHandle unit) alloc.alloc.Global)))
+            alloc.vec.Vec (std.thread.JoinHandle unit) alloc.alloc.Global)
+          (Trait := ltac:(refine _)))
         children in
     let* α1 :=
       match α0 with
@@ -174,9 +181,10 @@ Definition main `{ℋ : State.Trait} : M unit :=
             let* α3 :=
               (core.iter.traits.iterator.Iterator.next
                   (Self :=
-                    (alloc.vec.into_iter.IntoIter
+                    alloc.vec.into_iter.IntoIter
                       (std.thread.JoinHandle unit)
-                      alloc.alloc.Global)))
+                      alloc.alloc.Global)
+                  (Trait := ltac:(refine _)))
                 α2 in
             match α3 with
             | core.option.Option  =>
