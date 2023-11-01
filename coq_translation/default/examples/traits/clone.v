@@ -121,7 +121,7 @@ Module Impl_core_clone_Clone_for_clone_Pair.
         (core.clone.Clone.clone
             (Self := (alloc.boxed.Box i32 alloc.alloc.Global)))
           α10 in
-      Pure (clone.Pair.Build_t α5 α11).
+      M.alloc (clone.Pair.Build_t α5 α11).
     
     Global Instance AssociatedFunction_clone :
       Notation.DoubleColon Self "clone" := {
@@ -180,7 +180,7 @@ End Impl_core_fmt_Debug_for_clone_Pair.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
-  let unit := clone.Unit.Build_t tt in
+  let* unit := M.alloc (clone.Unit.Build_t tt) in
   let copied_unit := unit in
   let* _ :=
     let* _ :=
@@ -223,7 +223,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
     let* α1 := (alloc.boxed.Box T alloc.alloc.Global)::["new"] α0 in
     let* α2 := M.alloc 2 in
     let* α3 := (alloc.boxed.Box T alloc.alloc.Global)::["new"] α2 in
-    Pure (clone.Pair.Build_t α1 α3) in
+    M.alloc (clone.Pair.Build_t α1 α3) in
   let* _ :=
     let* _ :=
       let* α0 := borrow [ mk_str "original: "; mk_str "

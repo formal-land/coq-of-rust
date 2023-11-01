@@ -142,17 +142,17 @@ Definition depends_on_trait_impl
     (b : bool)
     : M unit :=
   let* _ :=
-    let* α0 :=
-      borrow (functions_order.OtherType.Build_t b) functions_order.OtherType in
+    let* α0 := M.alloc (functions_order.OtherType.Build_t b) in
+    let* α1 := borrow α0 functions_order.OtherType in
     (functions_order.SomeTrait.some_trait_foo
         (Self := functions_order.OtherType))
-      α0 in
+      α1 in
   let* _ :=
-    let* α0 :=
-      borrow (functions_order.SomeType.Build_t u) functions_order.SomeType in
+    let* α0 := M.alloc (functions_order.SomeType.Build_t u) in
+    let* α1 := borrow α0 functions_order.SomeType in
     (functions_order.SomeTrait.some_trait_foo
         (Self := functions_order.SomeType))
-      α0 in
+      α1 in
   M.alloc tt.
 
 Module inner_mod.
@@ -199,5 +199,6 @@ Definition main `{ℋ : State.Trait} : M unit :=
   let* _ := functions_order.inner_mod.bar in
   let* _ :=
     let* α0 := M.alloc 0 in
-    functions_order.SomeType::["meth1"] (functions_order.SomeType.Build_t α0) in
+    let* α1 := M.alloc (functions_order.SomeType.Build_t α0) in
+    functions_order.SomeType::["meth1"] α1 in
   M.alloc tt.

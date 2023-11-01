@@ -38,7 +38,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α5 := not α4 in
       let* α6 := use α5 in
       if (α6 : bool) then
-        let kind := core.panicking.AssertKind.Eq tt in
+        let* kind := M.alloc (core.panicking.AssertKind.Eq tt) in
         let* _ :=
           let* α0 := deref left_val (ref (Slice u32)) in
           let* α1 := borrow α0 (ref (Slice u32)) in
@@ -48,11 +48,8 @@ Definition main `{ℋ : State.Trait} : M unit :=
           let* α5 := borrow α4 (ref (Slice u32)) in
           let* α6 := deref α5 (ref (Slice u32)) in
           let* α7 := borrow α6 (ref (Slice u32)) in
-          core.panicking.assert_failed
-            kind
-            α3
-            α7
-            (core.option.Option.None tt) in
+          let* α8 := M.alloc (core.option.Option.None tt) in
+          core.panicking.assert_failed kind α3 α7 α8 in
         let* α0 := M.alloc tt in
         never_to_any α0
       else

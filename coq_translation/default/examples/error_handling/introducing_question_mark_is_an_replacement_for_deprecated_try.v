@@ -16,7 +16,8 @@ Definition multiply
       let* _ :=
         let* α0 :=
           (core.convert.From.from (Self := core.num.error.ParseIntError)) err in
-        Return (core.result.Result.Err α0) in
+        let* α1 := M.alloc (core.result.Result.Err α0) in
+        Return α1 in
       let* α0 := M.alloc tt in
       never_to_any α0
     end in
@@ -30,12 +31,13 @@ Definition multiply
       let* _ :=
         let* α0 :=
           (core.convert.From.from (Self := core.num.error.ParseIntError)) err in
-        Return (core.result.Result.Err α0) in
+        let* α1 := M.alloc (core.result.Result.Err α0) in
+        Return α1 in
       let* α0 := M.alloc tt in
       never_to_any α0
     end in
-  let* α0 := mul first_number second_number in
-  Pure (core.result.Result.Ok α0).
+  let* α0 := BinOp.mul first_number second_number in
+  M.alloc (core.result.Result.Ok α0).
 
 Definition print
     `{ℋ : State.Trait}

@@ -5,7 +5,7 @@ Require Import CoqOfRust.CoqOfRust.
 Definition main `{ℋ : State.Trait} : M unit :=
   let* optional :=
     let* α0 := M.alloc 7 in
-    Pure (core.option.Option.Some α0) in
+    M.alloc (core.option.Option.Some α0) in
   let* _ :=
     match optional with
     | core.option.Option i =>

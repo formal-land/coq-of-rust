@@ -55,9 +55,9 @@ Module Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
         let* α1 := α0.["next"] in
         let* α2 := deref self iterators.Fibonacci in
         let* α3 := α2.["next"] in
-        let* α4 := add current α3 in
+        let* α4 := BinOp.add current α3 in
         assign α1 α4 in
-      Pure (core.option.Option.Some current).
+      M.alloc (core.option.Option.Some current).
     
     Global Instance AssociatedFunction_next :
       Notation.DoubleColon Self "next" := {

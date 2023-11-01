@@ -23,7 +23,7 @@ Module Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle.
       let* α1 := α0.["length"] in
       let* α2 := deref self generics_bounds.Rectangle in
       let* α3 := α2.["height"] in
-      mul α1 α3.
+      BinOp.mul α1 α3.
     
     Global Instance AssociatedFunction_area :
       Notation.DoubleColon Self "area" := {

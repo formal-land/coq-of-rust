@@ -151,7 +151,7 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
       let* α0 := deref self foreign_function_interface.Complex in
       let* α1 := α0.["im"] in
       let* α2 := M.alloc 0 (* 0. *) in
-      let* α3 := lt α1 α2 in
+      let* α3 := BinOp.lt α1 α2 in
       let* α4 := use α3 in
       if (α4 : bool) then
         let* α0 := deref f core.fmt.Formatter in

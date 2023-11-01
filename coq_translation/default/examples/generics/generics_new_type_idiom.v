@@ -47,8 +47,8 @@ Module Impl_generics_new_type_idiom_Years.
       let* α0 := deref self generics_new_type_idiom.Years in
       let* α1 := α0.["0"] in
       let* α2 := M.alloc 365 in
-      let* α3 := mul α1 α2 in
-      Pure (generics_new_type_idiom.Days.Build_t α3).
+      let* α3 := BinOp.mul α1 α2 in
+      M.alloc (generics_new_type_idiom.Days.Build_t α3).
     
     Global Instance AssociatedFunction_to_days :
       Notation.DoubleColon Self "to_days" := {
@@ -67,8 +67,8 @@ Module Impl_generics_new_type_idiom_Days.
       let* α0 := deref self generics_new_type_idiom.Days in
       let* α1 := α0.["0"] in
       let* α2 := M.alloc 365 in
-      let* α3 := div α1 α2 in
-      Pure (generics_new_type_idiom.Years.Build_t α3).
+      let* α3 := BinOp.div α1 α2 in
+      M.alloc (generics_new_type_idiom.Years.Build_t α3).
     
     Global Instance AssociatedFunction_to_years :
       Notation.DoubleColon Self "to_years" := {
@@ -84,13 +84,13 @@ Definition old_enough
   let* α0 := deref age generics_new_type_idiom.Years in
   let* α1 := α0.["0"] in
   let* α2 := M.alloc 18 in
-  ge α1 α2.
+  BinOp.ge α1 α2.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
   let* age :=
     let* α0 := M.alloc 5 in
-    Pure (generics_new_type_idiom.Years.Build_t α0) in
+    M.alloc (generics_new_type_idiom.Years.Build_t α0) in
   let* age_days :=
     let* α0 := borrow age generics_new_type_idiom.Years in
     generics_new_type_idiom.Years::["to_days"] α0 in

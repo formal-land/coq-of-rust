@@ -20,7 +20,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
     let* α0 := M.alloc 122 in
     let* α1 := M.alloc 17 in
     let* α2 := M.alloc 40 in
-    Pure (match_destructuring_enums.Color.RGB α0 α1 α2) in
+    M.alloc (match_destructuring_enums.Color.RGB α0 α1 α2) in
   let* _ :=
     let* _ :=
       let* α0 := borrow [ mk_str "What color is it?

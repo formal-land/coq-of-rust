@@ -10,7 +10,7 @@ Definition increase `{ℋ : State.Trait} (number : i32) : M unit :=
       let* α2 := borrow α1 (list (ref str)) in
       let* α3 := pointer_coercion "Unsize" α2 in
       let* α4 := M.alloc 1 in
-      let* α5 := add number α4 in
+      let* α5 := BinOp.add number α4 in
       let* α6 := borrow α5 i32 in
       let* α7 := deref α6 i32 in
       let* α8 := borrow α7 i32 in
@@ -33,7 +33,7 @@ Definition decrease `{ℋ : State.Trait} (number : i32) : M unit :=
       let* α2 := borrow α1 (list (ref str)) in
       let* α3 := pointer_coercion "Unsize" α2 in
       let* α4 := M.alloc 1 in
-      let* α5 := sub number α4 in
+      let* α5 := BinOp.sub number α4 in
       let* α6 := borrow α5 i32 in
       let* α7 := deref α6 i32 in
       let* α8 := borrow α7 i32 in
@@ -188,13 +188,12 @@ Definition main `{ℋ : State.Trait} : M unit :=
       end in
     let* α0 := deref cmd alloc.string.String in
     let* α1 := borrow α0 alloc.string.String in
-    let* α2 :=
-      (core.ops.index.Index.index (Self := alloc.string.String))
-        α1
-        (core.ops.range.RangeFull.Build_t tt) in
-    let* α3 := deref α2 str in
-    let* α4 := borrow α3 str in
-    match α4 with
+    let* α2 := M.alloc (core.ops.range.RangeFull.Build_t tt) in
+    let* α3 :=
+      (core.ops.index.Index.index (Self := alloc.string.String)) α1 α2 in
+    let* α4 := deref α3 str in
+    let* α5 := borrow α4 str in
+    match α5 with
     | _ => program_arguments_parsing.increase number
     | _ => program_arguments_parsing.decrease number
     | _ =>

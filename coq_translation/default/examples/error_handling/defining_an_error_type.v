@@ -46,7 +46,7 @@ Module Impl_core_clone_Clone_for_defining_an_error_type_DoubleError.
     Definition Self : Set := defining_an_error_type.DoubleError.
     
     Definition clone (self : ref Self) : M defining_an_error_type.DoubleError :=
-      Pure (defining_an_error_type.DoubleError.Build_t tt).
+      M.alloc (defining_an_error_type.DoubleError.Build_t tt).
     
     Global Instance AssociatedFunction_clone :
       Notation.DoubleColon Self "clone" := {
@@ -109,12 +109,10 @@ Definition double_first
   let* α2 := deref α1 (Slice (ref str)) in
   let* α3 := borrow α2 (Slice (ref str)) in
   let* α4 := (Slice T)::["first"] α3 in
-  let* α5 :=
-    (core.option.Option T)::["ok_or"]
-      α4
-      (defining_an_error_type.DoubleError.Build_t tt) in
+  let* α5 := M.alloc (defining_an_error_type.DoubleError.Build_t tt) in
+  let* α6 := (core.option.Option T)::["ok_or"] α4 α5 in
   (core.result.Result T E)::["and_then"]
-    α5
+    α6
     (let* α0 := deref s (ref str) in
     let* α1 := deref α0 str in
     let* α2 := borrow α1 str in
@@ -122,11 +120,11 @@ Definition double_first
     let* α4 :=
       (core.result.Result T E)::["map_err"]
         α3
-        (Pure (defining_an_error_type.DoubleError.Build_t tt)) in
+        (M.alloc (defining_an_error_type.DoubleError.Build_t tt)) in
     (core.result.Result T E)::["map"]
       α4
       (let* α0 := M.alloc 2 in
-      mul α0 i)).
+      BinOp.mul α0 i)).
 
 Definition print
     `{ℋ : State.Trait}

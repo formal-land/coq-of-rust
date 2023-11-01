@@ -104,9 +104,12 @@ Definition blue
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
-  let cardinal := generics_bounds_test_case_empty_bounds.Cardinal.Build_t tt in
-  let blue_jay := generics_bounds_test_case_empty_bounds.BlueJay.Build_t tt in
-  let _turkey := generics_bounds_test_case_empty_bounds.Turkey.Build_t tt in
+  let* cardinal :=
+    M.alloc (generics_bounds_test_case_empty_bounds.Cardinal.Build_t tt) in
+  let* blue_jay :=
+    M.alloc (generics_bounds_test_case_empty_bounds.BlueJay.Build_t tt) in
+  let* _turkey :=
+    M.alloc (generics_bounds_test_case_empty_bounds.Turkey.Build_t tt) in
   let* _ :=
     let* _ :=
       let* α0 :=

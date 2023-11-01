@@ -63,9 +63,9 @@ End
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
-  let my_fruit := core.option.Option.None tt in
-  let apple :=
-    unpacking_options_and_defaults_via_get_or_insert.Fruit.Apple tt in
+  let* my_fruit := M.alloc (core.option.Option.None tt) in
+  let* apple :=
+    M.alloc (unpacking_options_and_defaults_via_get_or_insert.Fruit.Apple tt) in
   let* first_available_fruit :=
     let* α0 :=
       borrow_mut

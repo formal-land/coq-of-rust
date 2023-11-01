@@ -5,9 +5,42 @@ use crate::pattern::*;
 use crate::thir_ty::*;
 use crate::ty::CoqType;
 use rustc_hir::def::DefKind;
+use rustc_hir::BinOpKind;
 use rustc_middle::mir::{BorrowKind, UnOp};
 use rustc_middle::thir::{AdtExpr, ExprKind, LogicalOp, StmtKind};
 use rustc_middle::ty::{ImplSubject, TyKind};
+
+impl Expr {
+    fn alloc(self) -> Expr {
+        Expr::Call {
+            func: Box::new(Expr::LocalVar("M.alloc".to_string())),
+            args: vec![self],
+        }
+    }
+}
+
+fn path_of_bin_op(bin_op_kind: BinOpKind) -> Path {
+    match bin_op_kind {
+        BinOpKind::Add => Path::new(&["BinOp", "add"]),
+        BinOpKind::Sub => Path::new(&["BinOp", "sub"]),
+        BinOpKind::Mul => Path::new(&["BinOp", "mul"]),
+        BinOpKind::Div => Path::new(&["BinOp", "div"]),
+        BinOpKind::Rem => Path::new(&["BinOp", "rem"]),
+        BinOpKind::And => Path::new(&["BinOp", "and"]),
+        BinOpKind::Or => Path::new(&["BinOp", "or"]),
+        BinOpKind::BitXor => Path::new(&["BinOp", "bit_xor"]),
+        BinOpKind::BitAnd => Path::new(&["BinOp", "bit_and"]),
+        BinOpKind::BitOr => Path::new(&["BinOp", "bit_or"]),
+        BinOpKind::Shl => Path::new(&["BinOp", "shl"]),
+        BinOpKind::Shr => Path::new(&["BinOp", "shr"]),
+        BinOpKind::Eq => Path::new(&["BinOp", "eq"]),
+        BinOpKind::Ne => Path::new(&["BinOp", "ne"]),
+        BinOpKind::Lt => Path::new(&["BinOp", "lt"]),
+        BinOpKind::Le => Path::new(&["BinOp", "le"]),
+        BinOpKind::Ge => Path::new(&["BinOp", "ge"]),
+        BinOpKind::Gt => Path::new(&["BinOp", "gt"]),
+    }
+}
 
 pub(crate) fn compile_expr(
     env: &mut Env,
@@ -61,11 +94,11 @@ pub(crate) fn compile_expr(
             }
         }
         ExprKind::Binary { op, lhs, rhs } => {
-            let op = compile_bin_op_kind(op.to_hir_binop());
+            let path = path_of_bin_op(op.to_hir_binop());
             let lhs = compile_expr(env, thir, lhs);
             let rhs = compile_expr(env, thir, rhs);
             Expr::Call {
-                func: Box::new(Expr::LocalVar(op)),
+                func: Box::new(Expr::Var(path)),
                 args: vec![lhs, rhs],
             }
         }
@@ -284,16 +317,15 @@ pub(crate) fn compile_expr(
                     fields,
                     struct_or_variant,
                 }
+                .alloc()
             } else {
-                Expr::Call {
-                    func: Box::new(Expr::LocalVar("M.alloc".to_string())),
-                    args: vec![Expr::StructStruct {
-                        path,
-                        fields,
-                        base: None,
-                        struct_or_variant,
-                    }],
+                Expr::StructStruct {
+                    path,
+                    fields,
+                    base: None,
+                    struct_or_variant,
                 }
+                .alloc()
             }
         }
         ExprKind::PlaceTypeAscription { source, user_ty }

@@ -142,7 +142,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
     let* α5 := deref α4 hash.Person in
     let* α6 := borrow α5 hash.Person in
     let* α7 := hash.calculate_hash α6 in
-    let* α8 := ne α3 α7 in
+    let* α8 := BinOp.ne α3 α7 in
     let* α9 := not α8 in
     let* α10 := use α9 in
     if (α10 : bool) then

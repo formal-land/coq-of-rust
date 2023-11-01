@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Definition some_number `{ℋ : State.Trait} : M (core.option.Option u32) :=
   let* α0 := M.alloc 42 in
-  Pure (core.option.Option.Some α0).
+  M.alloc (core.option.Option.Some α0).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=

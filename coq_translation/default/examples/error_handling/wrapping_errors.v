@@ -114,12 +114,12 @@ Module Impl_core_error_Error_for_wrapping_errors_DoubleError.
         : M (core.option.Option (ref _ (* dyn *))) :=
       let* α0 := deref self wrapping_errors.DoubleError in
       match α0 with
-      | wrapping_errors.DoubleError  => Pure (core.option.Option.None tt)
+      | wrapping_errors.DoubleError  => M.alloc (core.option.Option.None tt)
       | wrapping_errors.DoubleError e =>
         let* α0 := deref e core.num.error.ParseIntError in
         let* α1 := borrow α0 core.num.error.ParseIntError in
         let* α2 := pointer_coercion "Unsize" α1 in
-        Pure (core.option.Option.Some α2)
+        M.alloc (core.option.Option.Some α2)
       end.
     
     Global Instance AssociatedFunction_source :
@@ -145,7 +145,7 @@ Module
     Definition from
         (err : core.num.error.ParseIntError)
         : M wrapping_errors.DoubleError :=
-      Pure (wrapping_errors.DoubleError.Parse err).
+      M.alloc (wrapping_errors.DoubleError.Parse err).
     
     Global Instance AssociatedFunction_from :
       Notation.DoubleColon Self "from" := {
@@ -176,16 +176,14 @@ Definition double_first
     let* α2 := deref α1 (Slice (ref str)) in
     let* α3 := borrow α2 (Slice (ref str)) in
     let* α4 := (Slice T)::["first"] α3 in
-    let* α5 :=
-      (core.option.Option T)::["ok_or"]
-        α4
-        (wrapping_errors.DoubleError.EmptyVec tt) in
-    let* α6 :=
+    let* α5 := M.alloc (wrapping_errors.DoubleError.EmptyVec tt) in
+    let* α6 := (core.option.Option T)::["ok_or"] α4 α5 in
+    let* α7 :=
       (core.ops.try_trait.Try.branch
           (Self :=
             (core.result.Result (ref (ref str)) wrapping_errors.DoubleError)))
-        α5 in
-    match α6 with
+        α6 in
+    match α7 with
     | core.ops.control_flow.ControlFlow residual =>
       let* α0 :=
         (core.ops.try_trait.FromResidual.from_residual
@@ -215,8 +213,8 @@ Definition double_first
     | core.ops.control_flow.ControlFlow val => Pure val
     end in
   let* α0 := M.alloc 2 in
-  let* α1 := mul α0 parsed in
-  Pure (core.result.Result.Ok α1).
+  let* α1 := BinOp.mul α0 parsed in
+  M.alloc (core.result.Result.Ok α1).
 
 Definition print
     `{ℋ : State.Trait}

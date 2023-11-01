@@ -285,7 +285,7 @@ Module
       let* α10 := borrow α9 (core.marker.PhantomData Unit) in
       let* α11 :=
         (core.clone.Clone.clone (Self := (core.marker.PhantomData Unit))) α10 in
-      Pure
+      M.alloc
         (generics_phantom_type_test_case_unit_clarification.Length.Build_t
           α5
           α11).
@@ -346,11 +346,12 @@ Module
         : M (generics_phantom_type_test_case_unit_clarification.Length Unit) :=
       let* α0 := self.["0"] in
       let* α1 := rhs.["0"] in
-      let* α2 := add α0 α1 in
-      Pure
+      let* α2 := BinOp.add α0 α1 in
+      let* α3 := M.alloc (core.marker.PhantomData.Build_t tt) in
+      M.alloc
         (generics_phantom_type_test_case_unit_clarification.Length.Build_t
           α2
-          (core.marker.PhantomData.Build_t tt)).
+          α3).
     
     Global Instance AssociatedFunction_add :
       Notation.DoubleColon Self "add" := {
@@ -374,16 +375,18 @@ End
 Definition main `{ℋ : State.Trait} : M unit :=
   let* one_foot :=
     let* α0 := M.alloc 12 (* 12.0 *) in
-    Pure
+    let* α1 := M.alloc (core.marker.PhantomData.Build_t tt) in
+    M.alloc
       (generics_phantom_type_test_case_unit_clarification.Length.Build_t
         α0
-        (core.marker.PhantomData.Build_t tt)) in
+        α1) in
   let* one_meter :=
     let* α0 := M.alloc 1000 (* 1000.0 *) in
-    Pure
+    let* α1 := M.alloc (core.marker.PhantomData.Build_t tt) in
+    M.alloc
       (generics_phantom_type_test_case_unit_clarification.Length.Build_t
         α0
-        (core.marker.PhantomData.Build_t tt)) in
+        α1) in
   let* two_feet :=
     (core.ops.arith.Add.add
         (Self :=

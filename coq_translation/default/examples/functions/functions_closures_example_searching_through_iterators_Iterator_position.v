@@ -29,14 +29,15 @@ Definition main `{ℋ : State.Trait} : M unit :=
         (Self := (core.slice.iter.Iter i32)))
       α5
       (let* α0 := M.alloc 2 in
-      let* α1 := rem x α0 in
+      let* α1 := BinOp.rem x α0 in
       let* α2 := M.alloc 0 in
-      eq α1 α2) in
+      BinOp.eq α1 α2) in
   let* _ :=
     let* α0 := borrow index_of_first_even_number (core.option.Option usize) in
     let* α1 := M.alloc 5 in
-    let* α2 := borrow (core.option.Option.Some α1) (core.option.Option usize) in
-    match (α0, α2) with
+    let* α2 := M.alloc (core.option.Option.Some α1) in
+    let* α3 := borrow α2 (core.option.Option usize) in
+    match (α0, α3) with
     | (left_val, right_val) =>
       let* α0 := deref left_val (core.option.Option usize) in
       let* α1 := borrow α0 (core.option.Option usize) in
@@ -47,7 +48,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α5 := not α4 in
       let* α6 := use α5 in
       if (α6 : bool) then
-        let kind := core.panicking.AssertKind.Eq tt in
+        let* kind := M.alloc (core.panicking.AssertKind.Eq tt) in
         let* _ :=
           let* α0 := deref left_val (core.option.Option usize) in
           let* α1 := borrow α0 (core.option.Option usize) in
@@ -57,11 +58,8 @@ Definition main `{ℋ : State.Trait} : M unit :=
           let* α5 := borrow α4 (core.option.Option usize) in
           let* α6 := deref α5 (core.option.Option usize) in
           let* α7 := borrow α6 (core.option.Option usize) in
-          core.panicking.assert_failed
-            kind
-            α3
-            α7
-            (core.option.Option.None tt) in
+          let* α8 := M.alloc (core.option.Option.None tt) in
+          core.panicking.assert_failed kind α3 α7 α8 in
         let* α0 := M.alloc tt in
         never_to_any α0
       else
@@ -78,12 +76,13 @@ Definition main `{ℋ : State.Trait} : M unit :=
         (Self := (alloc.vec.into_iter.IntoIter i32 alloc.alloc.Global)))
       α1
       (let* α0 := M.alloc 0 in
-      lt x α0) in
+      BinOp.lt x α0) in
   let* _ :=
     let* α0 :=
       borrow index_of_first_negative_number (core.option.Option usize) in
-    let* α1 := borrow (core.option.Option.None tt) (core.option.Option usize) in
-    match (α0, α1) with
+    let* α1 := M.alloc (core.option.Option.None tt) in
+    let* α2 := borrow α1 (core.option.Option usize) in
+    match (α0, α2) with
     | (left_val, right_val) =>
       let* α0 := deref left_val (core.option.Option usize) in
       let* α1 := borrow α0 (core.option.Option usize) in
@@ -94,7 +93,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α5 := not α4 in
       let* α6 := use α5 in
       if (α6 : bool) then
-        let kind := core.panicking.AssertKind.Eq tt in
+        let* kind := M.alloc (core.panicking.AssertKind.Eq tt) in
         let* _ :=
           let* α0 := deref left_val (core.option.Option usize) in
           let* α1 := borrow α0 (core.option.Option usize) in
@@ -104,11 +103,8 @@ Definition main `{ℋ : State.Trait} : M unit :=
           let* α5 := borrow α4 (core.option.Option usize) in
           let* α6 := deref α5 (core.option.Option usize) in
           let* α7 := borrow α6 (core.option.Option usize) in
-          core.panicking.assert_failed
-            kind
-            α3
-            α7
-            (core.option.Option.None tt) in
+          let* α8 := M.alloc (core.option.Option.None tt) in
+          core.panicking.assert_failed kind α3 α7 α8 in
         let* α0 := M.alloc tt in
         never_to_any α0
       else

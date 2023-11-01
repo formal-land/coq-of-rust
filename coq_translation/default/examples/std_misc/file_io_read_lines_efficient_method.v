@@ -108,4 +108,4 @@ Definition read_lines
     (std.io.BufRead.lines
         (Self := (std.io.buffered.bufreader.BufReader std.fs.File)))
       α0 in
-  Pure (core.result.Result.Ok α1).
+  M.alloc (core.result.Result.Ok α1).

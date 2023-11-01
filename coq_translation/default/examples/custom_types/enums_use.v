@@ -17,8 +17,8 @@ Definition Work `{ℋ : State.Trait} : Set := Work.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
-  let status := enums_use.Status.Poor tt in
-  let work := enums_use.Work.Civilian tt in
+  let* status := M.alloc (enums_use.Status.Poor tt) in
+  let* work := M.alloc (enums_use.Work.Civilian tt) in
   let* _ :=
     match status with
     | enums_use.Status  =>

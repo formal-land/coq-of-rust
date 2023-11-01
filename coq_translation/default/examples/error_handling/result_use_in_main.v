@@ -13,8 +13,9 @@ Definition main
     match α2 with
     | core.result.Result number => Pure number
     | core.result.Result e =>
-      let* α0 := Return (core.result.Result.Err e) in
-      never_to_any α0
+      let* α0 := M.alloc (core.result.Result.Err e) in
+      let* α1 := Return α0 in
+      never_to_any α1
     end in
   let* _ :=
     let* _ :=
@@ -35,4 +36,4 @@ Definition main
       std.io.stdio._print α12 in
     M.alloc tt in
   let* α0 := M.alloc tt in
-  Pure (core.result.Result.Ok α0).
+  M.alloc (core.result.Result.Ok α0).

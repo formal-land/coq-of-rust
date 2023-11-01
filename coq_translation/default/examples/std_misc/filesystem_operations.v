@@ -29,8 +29,8 @@ Definition cat
   let* α3 := borrow_mut α2 alloc.string.String in
   let* α4 := (std.io.Read.read_to_string (Self := std.fs.File)) α0 α3 in
   match α4 with
-  | core.result.Result _ => Pure (core.result.Result.Ok s)
-  | core.result.Result e => Pure (core.result.Result.Err e)
+  | core.result.Result _ => M.alloc (core.result.Result.Ok s)
+  | core.result.Result e => M.alloc (core.result.Result.Err e)
   end.
 
 Definition echo
@@ -80,8 +80,8 @@ Definition touch
   match α10 with
   | core.result.Result _ =>
     let* α0 := M.alloc tt in
-    Pure (core.result.Result.Ok α0)
-  | core.result.Result e => Pure (core.result.Result.Err e)
+    M.alloc (core.result.Result.Ok α0)
+  | core.result.Result e => M.alloc (core.result.Result.Err e)
   end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)

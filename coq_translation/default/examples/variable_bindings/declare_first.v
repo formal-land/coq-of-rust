@@ -7,7 +7,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
   let* _ :=
     let* x := M.alloc 2 in
     let* _ :=
-      let* α0 := mul x x in
+      let* α0 := BinOp.mul x x in
       assign a_binding α0 in
     M.alloc tt in
   let* _ :=

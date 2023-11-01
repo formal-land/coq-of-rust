@@ -104,18 +104,16 @@ Definition double_first
     let* α2 := deref α1 (Slice (ref str)) in
     let* α3 := borrow α2 (Slice (ref str)) in
     let* α4 := (Slice T)::["first"] α3 in
-    let* α5 :=
-      (core.option.Option T)::["ok_or"]
-        α4
-        (other_uses_of_question_mark.EmptyVec.Build_t tt) in
-    let* α6 :=
+    let* α5 := M.alloc (other_uses_of_question_mark.EmptyVec.Build_t tt) in
+    let* α6 := (core.option.Option T)::["ok_or"] α4 α5 in
+    let* α7 :=
       (core.ops.try_trait.Try.branch
           (Self :=
             (core.result.Result
               (ref (ref str))
               other_uses_of_question_mark.EmptyVec)))
-        α5 in
-    match α6 with
+        α6 in
+    match α7 with
     | core.ops.control_flow.ControlFlow residual =>
       let* α0 :=
         (core.ops.try_trait.FromResidual.from_residual
@@ -151,8 +149,8 @@ Definition double_first
     | core.ops.control_flow.ControlFlow val => Pure val
     end in
   let* α0 := M.alloc 2 in
-  let* α1 := mul α0 parsed in
-  Pure (core.result.Result.Ok α1).
+  let* α1 := BinOp.mul α0 parsed in
+  M.alloc (core.result.Result.Ok α1).
 
 Definition print
     `{ℋ : State.Trait}

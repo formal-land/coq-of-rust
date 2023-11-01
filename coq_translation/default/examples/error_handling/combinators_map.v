@@ -216,8 +216,9 @@ Definition peel
     : M (core.option.Option combinators_map.Peeled) :=
   match food with
   | core.option.Option food =>
-    Pure (core.option.Option.Some (combinators_map.Peeled.Build_t food))
-  | core.option.Option  => Pure (core.option.Option.None tt)
+    let* α0 := M.alloc (combinators_map.Peeled.Build_t food) in
+    M.alloc (core.option.Option.Some α0)
+  | core.option.Option  => M.alloc (core.option.Option.None tt)
   end.
 
 Definition chop
@@ -226,8 +227,9 @@ Definition chop
     : M (core.option.Option combinators_map.Chopped) :=
   match peeled with
   | core.option.Option combinators_map.Peeled.Build_t food =>
-    Pure (core.option.Option.Some (combinators_map.Chopped.Build_t food))
-  | core.option.Option  => Pure (core.option.Option.None tt)
+    let* α0 := M.alloc (combinators_map.Chopped.Build_t food) in
+    M.alloc (core.option.Option.Some α0)
+  | core.option.Option  => M.alloc (core.option.Option.None tt)
   end.
 
 Definition cook
@@ -236,7 +238,7 @@ Definition cook
     : M (core.option.Option combinators_map.Cooked) :=
   (core.option.Option T)::["map"]
     chopped
-    (Pure (combinators_map.Cooked.Build_t food)).
+    (M.alloc (combinators_map.Cooked.Build_t food)).
 
 Definition process
     `{ℋ : State.Trait}
@@ -245,12 +247,14 @@ Definition process
   let* α0 :=
     (core.option.Option T)::["map"]
       food
-      (Pure (combinators_map.Peeled.Build_t f)) in
+      (M.alloc (combinators_map.Peeled.Build_t f)) in
   let* α1 :=
     (core.option.Option T)::["map"]
       α0
-      (Pure (combinators_map.Chopped.Build_t f)) in
-  (core.option.Option T)::["map"] α1 (Pure (combinators_map.Cooked.Build_t f)).
+      (M.alloc (combinators_map.Chopped.Build_t f)) in
+  (core.option.Option T)::["map"]
+    α1
+    (M.alloc (combinators_map.Cooked.Build_t f)).
 
 Definition eat
     `{ℋ : State.Trait}
@@ -291,9 +295,13 @@ Definition eat
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
-  let apple := core.option.Option.Some (combinators_map.Food.Apple tt) in
-  let carrot := core.option.Option.Some (combinators_map.Food.Carrot tt) in
-  let potato := core.option.Option.None tt in
+  let* apple :=
+    let* α0 := M.alloc (combinators_map.Food.Apple tt) in
+    M.alloc (core.option.Option.Some α0) in
+  let* carrot :=
+    let* α0 := M.alloc (combinators_map.Food.Carrot tt) in
+    M.alloc (core.option.Option.Some α0) in
+  let* potato := M.alloc (core.option.Option.None tt) in
   let* cooked_apple :=
     let* α0 := combinators_map.peel apple in
     let* α1 := combinators_map.chop α0 in

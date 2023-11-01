@@ -122,11 +122,11 @@ Module Impl_core_convert_From_subtle_Choice_for_bool.
           let* _ :=
             let* α0 := source.["0"] in
             let* α1 := M.alloc 0 in
-            let* α2 := eq α0 α1 in
+            let* α2 := BinOp.eq α0 α1 in
             let* α3 := source.["0"] in
             let* α4 := M.alloc 1 in
-            let* α5 := eq α3 α4 in
-            let* α6 := bitor α2 α5 in
+            let* α5 := BinOp.eq α3 α4 in
+            let* α6 := BinOp.bit_or α2 α5 in
             let* α7 := not α6 in
             let* α8 := use α7 in
             if (α8 : bool) then
@@ -142,7 +142,7 @@ Module Impl_core_convert_From_subtle_Choice_for_bool.
           M.alloc tt in
       let* α0 := source.["0"] in
       let* α1 := M.alloc 0 in
-      ne α0 α1.
+      BinOp.ne α0 α1.
     
     Global Instance AssociatedFunction_from :
       Notation.DoubleColon Self "from" := {
@@ -169,7 +169,7 @@ Module Impl_core_ops_bit_BitAnd_for_subtle_Choice.
     Definition bitand (self : Self) (rhs : subtle.Choice) : M subtle.Choice :=
       let* α0 := self.["0"] in
       let* α1 := rhs.["0"] in
-      let* α2 := bitand α0 α1 in
+      let* α2 := BinOp.bit_and α0 α1 in
       (core.convert.Into.into (Self := u8)) α2.
     
     Global Instance AssociatedFunction_bitand :
@@ -232,7 +232,7 @@ Module Impl_core_ops_bit_BitOr_for_subtle_Choice.
     Definition bitor (self : Self) (rhs : subtle.Choice) : M subtle.Choice :=
       let* α0 := self.["0"] in
       let* α1 := rhs.["0"] in
-      let* α2 := bitor α0 α1 in
+      let* α2 := BinOp.bit_or α0 α1 in
       (core.convert.Into.into (Self := u8)) α2.
     
     Global Instance AssociatedFunction_bitor :
@@ -294,7 +294,7 @@ Module Impl_core_ops_bit_BitXor_for_subtle_Choice.
     Definition bitxor (self : Self) (rhs : subtle.Choice) : M subtle.Choice :=
       let* α0 := self.["0"] in
       let* α1 := rhs.["0"] in
-      let* α2 := bitxor α0 α1 in
+      let* α2 := BinOp.bit_xor α0 α1 in
       (core.convert.Into.into (Self := u8)) α2.
     
     Global Instance AssociatedFunction_bitxor :
@@ -358,7 +358,7 @@ Module Impl_core_ops_bit_Not_for_subtle_Choice.
       let* α0 := M.alloc 1 in
       let* α1 := self.["0"] in
       let* α2 := not α1 in
-      let* α3 := bitand α0 α2 in
+      let* α3 := BinOp.bit_and α0 α2 in
       (core.convert.Into.into (Self := u8)) α3.
     
     Global Instance AssociatedFunction_not :
@@ -382,10 +382,10 @@ Definition black_box `{ℋ : State.Trait} (input : u8) : M u8 :=
     if (α1 : bool) then
       let* _ :=
         let* α0 := M.alloc 0 in
-        let* α1 := eq input α0 in
+        let* α1 := BinOp.eq input α0 in
         let* α2 := M.alloc 1 in
-        let* α3 := eq input α2 in
-        let* α4 := bitor α1 α3 in
+        let* α3 := BinOp.eq input α2 in
+        let* α4 := BinOp.bit_or α1 α3 in
         let* α5 := not α4 in
         let* α6 := use α5 in
         if (α6 : bool) then
@@ -412,7 +412,7 @@ Module Impl_core_convert_From_u8_for_subtle_Choice.
     
     Definition from (input : u8) : M subtle.Choice :=
       let* α0 := subtle.black_box input in
-      Pure (subtle.Choice.Build_t α0).
+      M.alloc (subtle.Choice.Build_t α0).
     
     Global Instance AssociatedFunction_from :
       Notation.DoubleColon Self "from" := {
@@ -459,7 +459,7 @@ Module Impl_subtle_ConstantTimeEq_for_Slice_T.
         let* α0 := deref _rhs (Slice T) in
         let* α1 := borrow α0 (Slice T) in
         let* α2 := (Slice T)::["len"] α1 in
-        let* α3 := ne len α2 in
+        let* α3 := BinOp.ne len α2 in
         let* α4 := use α3 in
         if (α4 : bool) then
           let* _ :=
@@ -593,14 +593,14 @@ Module Impl_subtle_ConstantTimeEq_for_u8.
       let* x := (core.ops.bit.BitXor.bitxor (Self := (ref u8))) self other in
       let* y :=
         let* α0 := u8::["wrapping_neg"] x in
-        let* α1 := bitor x α0 in
+        let* α1 := BinOp.bit_or x α0 in
         let* α2 := M.alloc 8 in
         let* α3 := M.alloc 1 in
-        let* α4 := sub α2 α3 in
-        shr α1 α4 in
+        let* α4 := BinOp.sub α2 α3 in
+        BinOp.shr α1 α4 in
       let* α0 := M.alloc 1 in
       let* α1 := use α0 in
-      let* α2 := bitxor y α1 in
+      let* α2 := BinOp.bit_xor y α1 in
       let* α3 := use α2 in
       (core.convert.Into.into (Self := u8)) α3.
     
@@ -657,14 +657,14 @@ Module Impl_subtle_ConstantTimeEq_for_u16.
       let* x := (core.ops.bit.BitXor.bitxor (Self := (ref u16))) self other in
       let* y :=
         let* α0 := u16::["wrapping_neg"] x in
-        let* α1 := bitor x α0 in
+        let* α1 := BinOp.bit_or x α0 in
         let* α2 := M.alloc 16 in
         let* α3 := M.alloc 1 in
-        let* α4 := sub α2 α3 in
-        shr α1 α4 in
+        let* α4 := BinOp.sub α2 α3 in
+        BinOp.shr α1 α4 in
       let* α0 := M.alloc 1 in
       let* α1 := use α0 in
-      let* α2 := bitxor y α1 in
+      let* α2 := BinOp.bit_xor y α1 in
       let* α3 := cast α2 in
       (core.convert.Into.into (Self := u8)) α3.
     
@@ -721,14 +721,14 @@ Module Impl_subtle_ConstantTimeEq_for_u32.
       let* x := (core.ops.bit.BitXor.bitxor (Self := (ref u32))) self other in
       let* y :=
         let* α0 := u32::["wrapping_neg"] x in
-        let* α1 := bitor x α0 in
+        let* α1 := BinOp.bit_or x α0 in
         let* α2 := M.alloc 32 in
         let* α3 := M.alloc 1 in
-        let* α4 := sub α2 α3 in
-        shr α1 α4 in
+        let* α4 := BinOp.sub α2 α3 in
+        BinOp.shr α1 α4 in
       let* α0 := M.alloc 1 in
       let* α1 := use α0 in
-      let* α2 := bitxor y α1 in
+      let* α2 := BinOp.bit_xor y α1 in
       let* α3 := cast α2 in
       (core.convert.Into.into (Self := u8)) α3.
     
@@ -785,14 +785,14 @@ Module Impl_subtle_ConstantTimeEq_for_u64.
       let* x := (core.ops.bit.BitXor.bitxor (Self := (ref u64))) self other in
       let* y :=
         let* α0 := u64::["wrapping_neg"] x in
-        let* α1 := bitor x α0 in
+        let* α1 := BinOp.bit_or x α0 in
         let* α2 := M.alloc 64 in
         let* α3 := M.alloc 1 in
-        let* α4 := sub α2 α3 in
-        shr α1 α4 in
+        let* α4 := BinOp.sub α2 α3 in
+        BinOp.shr α1 α4 in
       let* α0 := M.alloc 1 in
       let* α1 := use α0 in
-      let* α2 := bitxor y α1 in
+      let* α2 := BinOp.bit_xor y α1 in
       let* α3 := cast α2 in
       (core.convert.Into.into (Self := u8)) α3.
     
@@ -849,16 +849,16 @@ Module Impl_subtle_ConstantTimeEq_for_usize.
       let* x := (core.ops.bit.BitXor.bitxor (Self := (ref usize))) self other in
       let* y :=
         let* α0 := usize::["wrapping_neg"] x in
-        let* α1 := bitor x α0 in
+        let* α1 := BinOp.bit_or x α0 in
         let* α2 := core.mem.size_of in
         let* α3 := M.alloc 8 in
-        let* α4 := mul α2 α3 in
+        let* α4 := BinOp.mul α2 α3 in
         let* α5 := M.alloc 1 in
-        let* α6 := sub α4 α5 in
-        shr α1 α6 in
+        let* α6 := BinOp.sub α4 α5 in
+        BinOp.shr α1 α6 in
       let* α0 := M.alloc 1 in
       let* α1 := use α0 in
-      let* α2 := bitxor y α1 in
+      let* α2 := BinOp.bit_xor y α1 in
       let* α3 := cast α2 in
       (core.convert.Into.into (Self := u8)) α3.
     
@@ -935,7 +935,7 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
         let* α3 := neg α2 in
         cast α3 in
       let* α0 := (core.ops.bit.BitXor.bitxor (Self := (ref u8))) a b in
-      let* α1 := bitand mask α0 in
+      let* α1 := BinOp.bit_and mask α0 in
       (core.ops.bit.BitXor.bitxor (Self := (ref u8))) a α1.
     
     Global Instance AssociatedFunction_conditional_select :
@@ -958,8 +958,8 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
         let* α0 := deref self u8 in
         let* α1 := deref self u8 in
         let* α2 := deref other u8 in
-        let* α3 := bitxor α1 α2 in
-        let* α4 := bitand mask α3 in
+        let* α3 := BinOp.bit_xor α1 α2 in
+        let* α4 := BinOp.bit_and mask α3 in
         assign_op bitxor α0 α4 in
       M.alloc tt.
     
@@ -982,8 +982,8 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
       let* t :=
         let* α0 := deref a u8 in
         let* α1 := deref b u8 in
-        let* α2 := bitxor α0 α1 in
-        bitand mask α2 in
+        let* α2 := BinOp.bit_xor α0 α1 in
+        BinOp.bit_and mask α2 in
       let* _ :=
         let* α0 := deref a u8 in
         assign_op bitxor α0 t in
@@ -1023,7 +1023,7 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
         let* α3 := neg α2 in
         use α3 in
       let* α0 := (core.ops.bit.BitXor.bitxor (Self := (ref i8))) a b in
-      let* α1 := bitand mask α0 in
+      let* α1 := BinOp.bit_and mask α0 in
       (core.ops.bit.BitXor.bitxor (Self := (ref i8))) a α1.
     
     Global Instance AssociatedFunction_conditional_select :
@@ -1046,8 +1046,8 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
         let* α0 := deref self i8 in
         let* α1 := deref self i8 in
         let* α2 := deref other i8 in
-        let* α3 := bitxor α1 α2 in
-        let* α4 := bitand mask α3 in
+        let* α3 := BinOp.bit_xor α1 α2 in
+        let* α4 := BinOp.bit_and mask α3 in
         assign_op bitxor α0 α4 in
       M.alloc tt.
     
@@ -1070,8 +1070,8 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
       let* t :=
         let* α0 := deref a i8 in
         let* α1 := deref b i8 in
-        let* α2 := bitxor α0 α1 in
-        bitand mask α2 in
+        let* α2 := BinOp.bit_xor α0 α1 in
+        BinOp.bit_and mask α2 in
       let* _ :=
         let* α0 := deref a i8 in
         assign_op bitxor α0 t in
@@ -1111,7 +1111,7 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
         let* α3 := neg α2 in
         cast α3 in
       let* α0 := (core.ops.bit.BitXor.bitxor (Self := (ref u16))) a b in
-      let* α1 := bitand mask α0 in
+      let* α1 := BinOp.bit_and mask α0 in
       (core.ops.bit.BitXor.bitxor (Self := (ref u16))) a α1.
     
     Global Instance AssociatedFunction_conditional_select :
@@ -1134,8 +1134,8 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
         let* α0 := deref self u16 in
         let* α1 := deref self u16 in
         let* α2 := deref other u16 in
-        let* α3 := bitxor α1 α2 in
-        let* α4 := bitand mask α3 in
+        let* α3 := BinOp.bit_xor α1 α2 in
+        let* α4 := BinOp.bit_and mask α3 in
         assign_op bitxor α0 α4 in
       M.alloc tt.
     
@@ -1158,8 +1158,8 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
       let* t :=
         let* α0 := deref a u16 in
         let* α1 := deref b u16 in
-        let* α2 := bitxor α0 α1 in
-        bitand mask α2 in
+        let* α2 := BinOp.bit_xor α0 α1 in
+        BinOp.bit_and mask α2 in
       let* _ :=
         let* α0 := deref a u16 in
         assign_op bitxor α0 t in
@@ -1199,7 +1199,7 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
         let* α3 := neg α2 in
         use α3 in
       let* α0 := (core.ops.bit.BitXor.bitxor (Self := (ref i16))) a b in
-      let* α1 := bitand mask α0 in
+      let* α1 := BinOp.bit_and mask α0 in
       (core.ops.bit.BitXor.bitxor (Self := (ref i16))) a α1.
     
     Global Instance AssociatedFunction_conditional_select :
@@ -1222,8 +1222,8 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
         let* α0 := deref self i16 in
         let* α1 := deref self i16 in
         let* α2 := deref other i16 in
-        let* α3 := bitxor α1 α2 in
-        let* α4 := bitand mask α3 in
+        let* α3 := BinOp.bit_xor α1 α2 in
+        let* α4 := BinOp.bit_and mask α3 in
         assign_op bitxor α0 α4 in
       M.alloc tt.
     
@@ -1246,8 +1246,8 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
       let* t :=
         let* α0 := deref a i16 in
         let* α1 := deref b i16 in
-        let* α2 := bitxor α0 α1 in
-        bitand mask α2 in
+        let* α2 := BinOp.bit_xor α0 α1 in
+        BinOp.bit_and mask α2 in
       let* _ :=
         let* α0 := deref a i16 in
         assign_op bitxor α0 t in
@@ -1287,7 +1287,7 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
         let* α3 := neg α2 in
         cast α3 in
       let* α0 := (core.ops.bit.BitXor.bitxor (Self := (ref u32))) a b in
-      let* α1 := bitand mask α0 in
+      let* α1 := BinOp.bit_and mask α0 in
       (core.ops.bit.BitXor.bitxor (Self := (ref u32))) a α1.
     
     Global Instance AssociatedFunction_conditional_select :
@@ -1310,8 +1310,8 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
         let* α0 := deref self u32 in
         let* α1 := deref self u32 in
         let* α2 := deref other u32 in
-        let* α3 := bitxor α1 α2 in
-        let* α4 := bitand mask α3 in
+        let* α3 := BinOp.bit_xor α1 α2 in
+        let* α4 := BinOp.bit_and mask α3 in
         assign_op bitxor α0 α4 in
       M.alloc tt.
     
@@ -1334,8 +1334,8 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
       let* t :=
         let* α0 := deref a u32 in
         let* α1 := deref b u32 in
-        let* α2 := bitxor α0 α1 in
-        bitand mask α2 in
+        let* α2 := BinOp.bit_xor α0 α1 in
+        BinOp.bit_and mask α2 in
       let* _ :=
         let* α0 := deref a u32 in
         assign_op bitxor α0 t in
@@ -1375,7 +1375,7 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
         let* α3 := neg α2 in
         use α3 in
       let* α0 := (core.ops.bit.BitXor.bitxor (Self := (ref i32))) a b in
-      let* α1 := bitand mask α0 in
+      let* α1 := BinOp.bit_and mask α0 in
       (core.ops.bit.BitXor.bitxor (Self := (ref i32))) a α1.
     
     Global Instance AssociatedFunction_conditional_select :
@@ -1398,8 +1398,8 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
         let* α0 := deref self i32 in
         let* α1 := deref self i32 in
         let* α2 := deref other i32 in
-        let* α3 := bitxor α1 α2 in
-        let* α4 := bitand mask α3 in
+        let* α3 := BinOp.bit_xor α1 α2 in
+        let* α4 := BinOp.bit_and mask α3 in
         assign_op bitxor α0 α4 in
       M.alloc tt.
     
@@ -1422,8 +1422,8 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
       let* t :=
         let* α0 := deref a i32 in
         let* α1 := deref b i32 in
-        let* α2 := bitxor α0 α1 in
-        bitand mask α2 in
+        let* α2 := BinOp.bit_xor α0 α1 in
+        BinOp.bit_and mask α2 in
       let* _ :=
         let* α0 := deref a i32 in
         assign_op bitxor α0 t in
@@ -1463,7 +1463,7 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
         let* α3 := neg α2 in
         cast α3 in
       let* α0 := (core.ops.bit.BitXor.bitxor (Self := (ref u64))) a b in
-      let* α1 := bitand mask α0 in
+      let* α1 := BinOp.bit_and mask α0 in
       (core.ops.bit.BitXor.bitxor (Self := (ref u64))) a α1.
     
     Global Instance AssociatedFunction_conditional_select :
@@ -1486,8 +1486,8 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
         let* α0 := deref self u64 in
         let* α1 := deref self u64 in
         let* α2 := deref other u64 in
-        let* α3 := bitxor α1 α2 in
-        let* α4 := bitand mask α3 in
+        let* α3 := BinOp.bit_xor α1 α2 in
+        let* α4 := BinOp.bit_and mask α3 in
         assign_op bitxor α0 α4 in
       M.alloc tt.
     
@@ -1510,8 +1510,8 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
       let* t :=
         let* α0 := deref a u64 in
         let* α1 := deref b u64 in
-        let* α2 := bitxor α0 α1 in
-        bitand mask α2 in
+        let* α2 := BinOp.bit_xor α0 α1 in
+        BinOp.bit_and mask α2 in
       let* _ :=
         let* α0 := deref a u64 in
         assign_op bitxor α0 t in
@@ -1551,7 +1551,7 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
         let* α3 := neg α2 in
         use α3 in
       let* α0 := (core.ops.bit.BitXor.bitxor (Self := (ref i64))) a b in
-      let* α1 := bitand mask α0 in
+      let* α1 := BinOp.bit_and mask α0 in
       (core.ops.bit.BitXor.bitxor (Self := (ref i64))) a α1.
     
     Global Instance AssociatedFunction_conditional_select :
@@ -1574,8 +1574,8 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
         let* α0 := deref self i64 in
         let* α1 := deref self i64 in
         let* α2 := deref other i64 in
-        let* α3 := bitxor α1 α2 in
-        let* α4 := bitand mask α3 in
+        let* α3 := BinOp.bit_xor α1 α2 in
+        let* α4 := BinOp.bit_and mask α3 in
         assign_op bitxor α0 α4 in
       M.alloc tt.
     
@@ -1598,8 +1598,8 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
       let* t :=
         let* α0 := deref a i64 in
         let* α1 := deref b i64 in
-        let* α2 := bitxor α0 α1 in
-        bitand mask α2 in
+        let* α2 := BinOp.bit_xor α0 α1 in
+        BinOp.bit_and mask α2 in
       let* _ :=
         let* α0 := deref a i64 in
         assign_op bitxor α0 t in
@@ -1647,7 +1647,7 @@ Module Impl_subtle_ConditionallySelectable_for_subtle_Choice.
           α4
           α9
           choice in
-      Pure (subtle.Choice.Build_t α10).
+      M.alloc (subtle.Choice.Build_t α10).
     
     Global Instance AssociatedFunction_conditional_select :
       Notation.DoubleColon Self "conditional_select" := {
@@ -1870,13 +1870,13 @@ Module Impl_core_convert_From_subtle_CtOption_T_for_core_option_Option_T.
       let* α2 := borrow α1 subtle.Choice in
       let* α3 := subtle.Choice::["unwrap_u8"] α2 in
       let* α4 := M.alloc 1 in
-      let* α5 := eq α3 α4 in
+      let* α5 := BinOp.eq α3 α4 in
       let* α6 := use α5 in
       if (α6 : bool) then
         let* α0 := source.["value"] in
-        Pure (core.option.Option.Some α0)
+        M.alloc (core.option.Option.Some α0)
       else
-        Pure (core.option.Option.None tt).
+        M.alloc (core.option.Option.None tt).
     
     Global Instance AssociatedFunction_from :
       Notation.DoubleColon Self "from" := {
@@ -1925,11 +1925,11 @@ Module Impl_subtle_CtOption_T.
         | (left_val, right_val) =>
           let* α0 := deref left_val u8 in
           let* α1 := deref right_val u8 in
-          let* α2 := eq α0 α1 in
+          let* α2 := BinOp.eq α0 α1 in
           let* α3 := not α2 in
           let* α4 := use α3 in
           if (α4 : bool) then
-            let kind := core.panicking.AssertKind.Eq tt in
+            let* kind := M.alloc (core.panicking.AssertKind.Eq tt) in
             let* _ :=
               let* α0 := deref left_val u8 in
               let* α1 := borrow α0 u8 in
@@ -1952,11 +1952,8 @@ Module Impl_subtle_CtOption_T.
               let* α18 := borrow α17 (list core.fmt.rt.Argument) in
               let* α19 := pointer_coercion "Unsize" α18 in
               let* α20 := core.fmt.Arguments::["new_v1"] α11 α19 in
-              core.panicking.assert_failed
-                kind
-                α3
-                α7
-                (core.option.Option.Some α20) in
+              let* α21 := M.alloc (core.option.Option.Some α20) in
+              core.panicking.assert_failed kind α3 α7 α21 in
             let* α0 := M.alloc tt in
             never_to_any α0
           else
@@ -1981,11 +1978,11 @@ Module Impl_subtle_CtOption_T.
         | (left_val, right_val) =>
           let* α0 := deref left_val u8 in
           let* α1 := deref right_val u8 in
-          let* α2 := eq α0 α1 in
+          let* α2 := BinOp.eq α0 α1 in
           let* α3 := not α2 in
           let* α4 := use α3 in
           if (α4 : bool) then
-            let kind := core.panicking.AssertKind.Eq tt in
+            let* kind := M.alloc (core.panicking.AssertKind.Eq tt) in
             let* _ :=
               let* α0 := deref left_val u8 in
               let* α1 := borrow α0 u8 in
@@ -1995,11 +1992,8 @@ Module Impl_subtle_CtOption_T.
               let* α5 := borrow α4 u8 in
               let* α6 := deref α5 u8 in
               let* α7 := borrow α6 u8 in
-              core.panicking.assert_failed
-                kind
-                α3
-                α7
-                (core.option.Option.None tt) in
+              let* α8 := M.alloc (core.option.Option.None tt) in
+              core.panicking.assert_failed kind α3 α7 α8 in
             let* α0 := M.alloc tt in
             never_to_any α0
           else
@@ -2330,11 +2324,11 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
       let* _ :=
         loop
           (let* α0 := M.alloc 8 in
-          let* α1 := lt pow α0 in
+          let* α1 := BinOp.lt pow α0 in
           let* α2 := use α1 in
           if (α2 : bool) then
             let* _ :=
-              let* α0 := shr ltb pow in
+              let* α0 := BinOp.shr ltb pow in
               assign_op bitor ltb α0 in
             let* _ := assign_op add pow pow in
             M.alloc tt
@@ -2346,16 +2340,16 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
             never_to_any α0) in
       let* bit :=
         let* α0 := not ltb in
-        bitand gtb α0 in
+        BinOp.bit_and gtb α0 in
       let* pow := M.alloc 1 in
       let* _ :=
         loop
           (let* α0 := M.alloc 8 in
-          let* α1 := lt pow α0 in
+          let* α1 := BinOp.lt pow α0 in
           let* α2 := use α1 in
           if (α2 : bool) then
             let* _ :=
-              let* α0 := shr bit pow in
+              let* α0 := BinOp.shr bit pow in
               assign_op bitor bit α0 in
             let* _ := assign_op add pow pow in
             M.alloc tt
@@ -2366,7 +2360,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
             let* α0 := M.alloc tt in
             never_to_any α0) in
       let* α0 := M.alloc 1 in
-      let* α1 := bitand bit α0 in
+      let* α1 := BinOp.bit_and bit α0 in
       let* α2 := use α1 in
       (core.convert.From.from (Self := subtle.Choice)) α2.
     
@@ -2400,11 +2394,11 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
       let* _ :=
         loop
           (let* α0 := M.alloc 16 in
-          let* α1 := lt pow α0 in
+          let* α1 := BinOp.lt pow α0 in
           let* α2 := use α1 in
           if (α2 : bool) then
             let* _ :=
-              let* α0 := shr ltb pow in
+              let* α0 := BinOp.shr ltb pow in
               assign_op bitor ltb α0 in
             let* _ := assign_op add pow pow in
             M.alloc tt
@@ -2416,16 +2410,16 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
             never_to_any α0) in
       let* bit :=
         let* α0 := not ltb in
-        bitand gtb α0 in
+        BinOp.bit_and gtb α0 in
       let* pow := M.alloc 1 in
       let* _ :=
         loop
           (let* α0 := M.alloc 16 in
-          let* α1 := lt pow α0 in
+          let* α1 := BinOp.lt pow α0 in
           let* α2 := use α1 in
           if (α2 : bool) then
             let* _ :=
-              let* α0 := shr bit pow in
+              let* α0 := BinOp.shr bit pow in
               assign_op bitor bit α0 in
             let* _ := assign_op add pow pow in
             M.alloc tt
@@ -2436,7 +2430,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
             let* α0 := M.alloc tt in
             never_to_any α0) in
       let* α0 := M.alloc 1 in
-      let* α1 := bitand bit α0 in
+      let* α1 := BinOp.bit_and bit α0 in
       let* α2 := cast α1 in
       (core.convert.From.from (Self := subtle.Choice)) α2.
     
@@ -2470,11 +2464,11 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
       let* _ :=
         loop
           (let* α0 := M.alloc 32 in
-          let* α1 := lt pow α0 in
+          let* α1 := BinOp.lt pow α0 in
           let* α2 := use α1 in
           if (α2 : bool) then
             let* _ :=
-              let* α0 := shr ltb pow in
+              let* α0 := BinOp.shr ltb pow in
               assign_op bitor ltb α0 in
             let* _ := assign_op add pow pow in
             M.alloc tt
@@ -2486,16 +2480,16 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
             never_to_any α0) in
       let* bit :=
         let* α0 := not ltb in
-        bitand gtb α0 in
+        BinOp.bit_and gtb α0 in
       let* pow := M.alloc 1 in
       let* _ :=
         loop
           (let* α0 := M.alloc 32 in
-          let* α1 := lt pow α0 in
+          let* α1 := BinOp.lt pow α0 in
           let* α2 := use α1 in
           if (α2 : bool) then
             let* _ :=
-              let* α0 := shr bit pow in
+              let* α0 := BinOp.shr bit pow in
               assign_op bitor bit α0 in
             let* _ := assign_op add pow pow in
             M.alloc tt
@@ -2506,7 +2500,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
             let* α0 := M.alloc tt in
             never_to_any α0) in
       let* α0 := M.alloc 1 in
-      let* α1 := bitand bit α0 in
+      let* α1 := BinOp.bit_and bit α0 in
       let* α2 := cast α1 in
       (core.convert.From.from (Self := subtle.Choice)) α2.
     
@@ -2540,11 +2534,11 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
       let* _ :=
         loop
           (let* α0 := M.alloc 64 in
-          let* α1 := lt pow α0 in
+          let* α1 := BinOp.lt pow α0 in
           let* α2 := use α1 in
           if (α2 : bool) then
             let* _ :=
-              let* α0 := shr ltb pow in
+              let* α0 := BinOp.shr ltb pow in
               assign_op bitor ltb α0 in
             let* _ := assign_op add pow pow in
             M.alloc tt
@@ -2556,16 +2550,16 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
             never_to_any α0) in
       let* bit :=
         let* α0 := not ltb in
-        bitand gtb α0 in
+        BinOp.bit_and gtb α0 in
       let* pow := M.alloc 1 in
       let* _ :=
         loop
           (let* α0 := M.alloc 64 in
-          let* α1 := lt pow α0 in
+          let* α1 := BinOp.lt pow α0 in
           let* α2 := use α1 in
           if (α2 : bool) then
             let* _ :=
-              let* α0 := shr bit pow in
+              let* α0 := BinOp.shr bit pow in
               assign_op bitor bit α0 in
             let* _ := assign_op add pow pow in
             M.alloc tt
@@ -2576,7 +2570,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
             let* α0 := M.alloc tt in
             never_to_any α0) in
       let* α0 := M.alloc 1 in
-      let* α1 := bitand bit α0 in
+      let* α1 := BinOp.bit_and bit α0 in
       let* α2 := cast α1 in
       (core.convert.From.from (Self := subtle.Choice)) α2.
     

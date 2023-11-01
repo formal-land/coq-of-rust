@@ -46,7 +46,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
             (Self := (core.slice.iter.Iter i32)))
           α4
           (let* α0 := M.alloc 2 in
-          eq x α0) in
+          BinOp.eq x α0) in
       let* α6 := borrow α5 (core.option.Option (ref i32)) in
       let* α7 := deref α6 (core.option.Option (ref i32)) in
       let* α8 := borrow α7 (core.option.Option (ref i32)) in
@@ -75,7 +75,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
             (Self := (alloc.vec.into_iter.IntoIter i32 alloc.alloc.Global)))
           α4
           (let* α0 := M.alloc 2 in
-          eq x α0) in
+          BinOp.eq x α0) in
       let* α6 := borrow α5 (core.option.Option i32) in
       let* α7 := deref α6 (core.option.Option i32) in
       let* α8 := borrow α7 (core.option.Option i32) in
@@ -114,7 +114,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
             (Self := (core.slice.iter.Iter i32)))
           α7
           (let* α0 := M.alloc 2 in
-          eq x α0) in
+          BinOp.eq x α0) in
       let* α9 := borrow α8 (core.option.Option (ref i32)) in
       let* α10 := deref α9 (core.option.Option (ref i32)) in
       let* α11 := borrow α10 (core.option.Option (ref i32)) in
@@ -146,7 +146,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
           α6
           (let* α0 := deref x i32 in
           let* α1 := M.alloc 2 in
-          eq α0 α1) in
+          BinOp.eq α0 α1) in
       let* α8 := borrow α7 (core.option.Option (ref i32)) in
       let* α9 := deref α8 (core.option.Option (ref i32)) in
       let* α10 := borrow α9 (core.option.Option (ref i32)) in

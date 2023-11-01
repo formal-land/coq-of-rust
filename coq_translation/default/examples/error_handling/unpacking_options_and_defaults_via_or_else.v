@@ -59,10 +59,11 @@ End Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_else_Fruit.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
-  let apple :=
-    core.option.Option.Some
-      (unpacking_options_and_defaults_via_or_else.Fruit.Apple tt) in
-  let no_fruit := core.option.Option.None tt in
+  let* apple :=
+    let* α0 :=
+      M.alloc (unpacking_options_and_defaults_via_or_else.Fruit.Apple tt) in
+    M.alloc (core.option.Option.Some α0) in
+  let* no_fruit := M.alloc (core.option.Option.None tt) in
   let get_kiwi_as_fallback :=
     let* _ :=
       let* _ :=
@@ -75,9 +76,9 @@ Definition main `{ℋ : State.Trait} : M unit :=
         let* α4 := core.fmt.Arguments::["new_const"] α3 in
         std.io.stdio._print α4 in
       M.alloc tt in
-    Pure
-      (core.option.Option.Some
-        (unpacking_options_and_defaults_via_or_else.Fruit.Kiwi tt)) in
+    let* α0 :=
+      M.alloc (unpacking_options_and_defaults_via_or_else.Fruit.Kiwi tt) in
+    M.alloc (core.option.Option.Some α0) in
   let get_lemon_as_fallback :=
     let* _ :=
       let* _ :=
@@ -90,9 +91,9 @@ Definition main `{ℋ : State.Trait} : M unit :=
         let* α4 := core.fmt.Arguments::["new_const"] α3 in
         std.io.stdio._print α4 in
       M.alloc tt in
-    Pure
-      (core.option.Option.Some
-        (unpacking_options_and_defaults_via_or_else.Fruit.Lemon tt)) in
+    let* α0 :=
+      M.alloc (unpacking_options_and_defaults_via_or_else.Fruit.Lemon tt) in
+    M.alloc (core.option.Option.Some α0) in
   let* first_available_fruit :=
     let* α0 :=
       (core.option.Option T)::["or_else"] no_fruit get_kiwi_as_fallback in

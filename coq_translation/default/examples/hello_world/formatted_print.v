@@ -172,24 +172,19 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α12 := pointer_coercion "Unsize" α11 in
       let* α13 := M.alloc 0 in
       let* α14 := M.alloc " "%char in
-      let* α15 := M.alloc 0 in
-      let* α16 := M.alloc 5 in
-      let* α17 := "unimplemented parent_kind" α16 in
-      let* α18 :=
-        core.fmt.rt.Placeholder::["new"]
-          α13
-          α14
-          (core.fmt.rt.Alignment.Right tt)
-          α15
-          (core.fmt.rt.Count.Implied tt)
-          α17 in
-      let* α19 := borrow [ α18 ] (list core.fmt.rt.Placeholder) in
-      let* α20 := deref α19 (list core.fmt.rt.Placeholder) in
-      let* α21 := borrow α20 (list core.fmt.rt.Placeholder) in
-      let* α22 := pointer_coercion "Unsize" α21 in
-      let* α23 := core.fmt.rt.UnsafeArg::["new"] in
-      let* α24 := core.fmt.Arguments::["new_v1_formatted"] α3 α12 α22 α23 in
-      std.io.stdio._print α24 in
+      let* α15 := M.alloc (core.fmt.rt.Alignment.Right tt) in
+      let* α16 := M.alloc 0 in
+      let* α17 := M.alloc (core.fmt.rt.Count.Implied tt) in
+      let* α18 := M.alloc 5 in
+      let* α19 := "unimplemented parent_kind" α18 in
+      let* α20 := core.fmt.rt.Placeholder::["new"] α13 α14 α15 α16 α17 α19 in
+      let* α21 := borrow [ α20 ] (list core.fmt.rt.Placeholder) in
+      let* α22 := deref α21 (list core.fmt.rt.Placeholder) in
+      let* α23 := borrow α22 (list core.fmt.rt.Placeholder) in
+      let* α24 := pointer_coercion "Unsize" α23 in
+      let* α25 := core.fmt.rt.UnsafeArg::["new"] in
+      let* α26 := core.fmt.Arguments::["new_v1_formatted"] α3 α12 α24 α25 in
+      std.io.stdio._print α26 in
     M.alloc tt in
   let* _ :=
     let* _ :=
@@ -209,24 +204,19 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α12 := pointer_coercion "Unsize" α11 in
       let* α13 := M.alloc 0 in
       let* α14 := M.alloc "0"%char in
-      let* α15 := M.alloc 0 in
-      let* α16 := M.alloc 5 in
-      let* α17 := "unimplemented parent_kind" α16 in
-      let* α18 :=
-        core.fmt.rt.Placeholder::["new"]
-          α13
-          α14
-          (core.fmt.rt.Alignment.Left tt)
-          α15
-          (core.fmt.rt.Count.Implied tt)
-          α17 in
-      let* α19 := borrow [ α18 ] (list core.fmt.rt.Placeholder) in
-      let* α20 := deref α19 (list core.fmt.rt.Placeholder) in
-      let* α21 := borrow α20 (list core.fmt.rt.Placeholder) in
-      let* α22 := pointer_coercion "Unsize" α21 in
-      let* α23 := core.fmt.rt.UnsafeArg::["new"] in
-      let* α24 := core.fmt.Arguments::["new_v1_formatted"] α3 α12 α22 α23 in
-      std.io.stdio._print α24 in
+      let* α15 := M.alloc (core.fmt.rt.Alignment.Left tt) in
+      let* α16 := M.alloc 0 in
+      let* α17 := M.alloc (core.fmt.rt.Count.Implied tt) in
+      let* α18 := M.alloc 5 in
+      let* α19 := "unimplemented parent_kind" α18 in
+      let* α20 := core.fmt.rt.Placeholder::["new"] α13 α14 α15 α16 α17 α19 in
+      let* α21 := borrow [ α20 ] (list core.fmt.rt.Placeholder) in
+      let* α22 := deref α21 (list core.fmt.rt.Placeholder) in
+      let* α23 := borrow α22 (list core.fmt.rt.Placeholder) in
+      let* α24 := pointer_coercion "Unsize" α23 in
+      let* α25 := core.fmt.rt.UnsafeArg::["new"] in
+      let* α26 := core.fmt.Arguments::["new_v1_formatted"] α3 α12 α24 α25 in
+      std.io.stdio._print α26 in
     M.alloc tt in
   let* _ :=
     let* _ :=
@@ -251,24 +241,19 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α17 := pointer_coercion "Unsize" α16 in
       let* α18 := M.alloc 0 in
       let* α19 := M.alloc "0"%char in
-      let* α20 := M.alloc 0 in
-      let* α21 := M.alloc 1 in
-      let* α22 := "unimplemented parent_kind" α21 in
-      let* α23 :=
-        core.fmt.rt.Placeholder::["new"]
-          α18
-          α19
-          (core.fmt.rt.Alignment.Right tt)
-          α20
-          (core.fmt.rt.Count.Implied tt)
-          α22 in
-      let* α24 := borrow [ α23 ] (list core.fmt.rt.Placeholder) in
-      let* α25 := deref α24 (list core.fmt.rt.Placeholder) in
-      let* α26 := borrow α25 (list core.fmt.rt.Placeholder) in
-      let* α27 := pointer_coercion "Unsize" α26 in
-      let* α28 := core.fmt.rt.UnsafeArg::["new"] in
-      let* α29 := core.fmt.Arguments::["new_v1_formatted"] α3 α17 α27 α28 in
-      std.io.stdio._print α29 in
+      let* α20 := M.alloc (core.fmt.rt.Alignment.Right tt) in
+      let* α21 := M.alloc 0 in
+      let* α22 := M.alloc (core.fmt.rt.Count.Implied tt) in
+      let* α23 := M.alloc 1 in
+      let* α24 := "unimplemented parent_kind" α23 in
+      let* α25 := core.fmt.rt.Placeholder::["new"] α18 α19 α20 α21 α22 α24 in
+      let* α26 := borrow [ α25 ] (list core.fmt.rt.Placeholder) in
+      let* α27 := deref α26 (list core.fmt.rt.Placeholder) in
+      let* α28 := borrow α27 (list core.fmt.rt.Placeholder) in
+      let* α29 := pointer_coercion "Unsize" α28 in
+      let* α30 := core.fmt.rt.UnsafeArg::["new"] in
+      let* α31 := core.fmt.Arguments::["new_v1_formatted"] α3 α17 α29 α30 in
+      std.io.stdio._print α31 in
     M.alloc tt in
   let* _ :=
     let* _ :=
@@ -308,24 +293,19 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α15 := pointer_coercion "Unsize" α14 in
       let* α16 := M.alloc 0 in
       let* α17 := M.alloc " "%char in
-      let* α18 := M.alloc 0 in
-      let* α19 := M.alloc 1 in
-      let* α20 := "unimplemented parent_kind" α19 in
-      let* α21 :=
-        core.fmt.rt.Placeholder::["new"]
-          α16
-          α17
-          (core.fmt.rt.Alignment.Right tt)
-          α18
-          (core.fmt.rt.Count.Implied tt)
-          α20 in
-      let* α22 := borrow [ α21 ] (list core.fmt.rt.Placeholder) in
-      let* α23 := deref α22 (list core.fmt.rt.Placeholder) in
-      let* α24 := borrow α23 (list core.fmt.rt.Placeholder) in
-      let* α25 := pointer_coercion "Unsize" α24 in
-      let* α26 := core.fmt.rt.UnsafeArg::["new"] in
-      let* α27 := core.fmt.Arguments::["new_v1_formatted"] α3 α15 α25 α26 in
-      std.io.stdio._print α27 in
+      let* α18 := M.alloc (core.fmt.rt.Alignment.Right tt) in
+      let* α19 := M.alloc 0 in
+      let* α20 := M.alloc (core.fmt.rt.Count.Implied tt) in
+      let* α21 := M.alloc 1 in
+      let* α22 := "unimplemented parent_kind" α21 in
+      let* α23 := core.fmt.rt.Placeholder::["new"] α16 α17 α18 α19 α20 α22 in
+      let* α24 := borrow [ α23 ] (list core.fmt.rt.Placeholder) in
+      let* α25 := deref α24 (list core.fmt.rt.Placeholder) in
+      let* α26 := borrow α25 (list core.fmt.rt.Placeholder) in
+      let* α27 := pointer_coercion "Unsize" α26 in
+      let* α28 := core.fmt.rt.UnsafeArg::["new"] in
+      let* α29 := core.fmt.Arguments::["new_v1_formatted"] α3 α15 α27 α28 in
+      std.io.stdio._print α29 in
     M.alloc tt in
   M.alloc tt.
 

@@ -118,12 +118,12 @@ Definition inspect `{ℋ : State.Trait} (event : enums.WebEvent) : M unit :=
 Definition main `{ℋ : State.Trait} : M unit :=
   let* pressed :=
     let* α0 := M.alloc "x"%char in
-    Pure (enums.WebEvent.KeyPress α0) in
+    M.alloc (enums.WebEvent.KeyPress α0) in
   let* pasted :=
     let* α0 := deref (mk_str "my text") str in
     let* α1 := borrow α0 str in
     let* α2 := (alloc.borrow.ToOwned.to_owned (Self := str)) α1 in
-    Pure (enums.WebEvent.Paste α2) in
+    M.alloc (enums.WebEvent.Paste α2) in
   let* click :=
     let* α0 := M.alloc 20 in
     let* α1 := M.alloc 80 in
@@ -133,8 +133,8 @@ Definition main `{ℋ : State.Trait} : M unit :=
         enums.WebEvent.Click.x := α0;
         enums.WebEvent.Click.y := α1;
       |} in
-  let load := enums.WebEvent.PageLoad tt in
-  let unload := enums.WebEvent.PageUnload tt in
+  let* load := M.alloc (enums.WebEvent.PageLoad tt) in
+  let* unload := M.alloc (enums.WebEvent.PageUnload tt) in
   let* _ := enums.inspect pressed in
   let* _ := enums.inspect pasted in
   let* _ := enums.inspect click in

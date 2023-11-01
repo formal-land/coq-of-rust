@@ -48,7 +48,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
         borrow args (alloc.vec.Vec alloc.string.String alloc.alloc.Global) in
       let* α5 := (alloc.vec.Vec T A)::["len"] α4 in
       let* α6 := M.alloc 1 in
-      let* α7 := sub α5 α6 in
+      let* α7 := BinOp.sub α5 α6 in
       let* α8 := borrow α7 usize in
       let* α9 := deref α8 usize in
       let* α10 := borrow α9 usize in

@@ -87,14 +87,14 @@ Definition drink
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
-  let water := core.option.Option.Some (mk_str "water") in
-  let lemonade := core.option.Option.Some (mk_str "lemonade") in
-  let void := core.option.Option.None tt in
+  let* water := M.alloc (core.option.Option.Some (mk_str "water")) in
+  let* lemonade := M.alloc (core.option.Option.Some (mk_str "lemonade")) in
+  let* void := M.alloc (core.option.Option.None tt) in
   let* _ := option_and_unwrap.give_adult water in
   let* _ := option_and_unwrap.give_adult lemonade in
   let* _ := option_and_unwrap.give_adult void in
-  let coffee := core.option.Option.Some (mk_str "coffee") in
-  let nothing := core.option.Option.None tt in
+  let* coffee := M.alloc (core.option.Option.Some (mk_str "coffee")) in
+  let* nothing := M.alloc (core.option.Option.None tt) in
   let* _ := option_and_unwrap.drink coffee in
   let* _ := option_and_unwrap.drink nothing in
   M.alloc tt.

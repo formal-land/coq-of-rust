@@ -45,7 +45,7 @@ End Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
-  let x := scoping_rules_raii_desctructor.ToDrop.Build_t tt in
+  let* x := M.alloc (scoping_rules_raii_desctructor.ToDrop.Build_t tt) in
   let* _ :=
     let* _ :=
       let* α0 := borrow [ mk_str "Made a ToDrop!

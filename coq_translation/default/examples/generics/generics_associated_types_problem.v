@@ -115,14 +115,15 @@ Definition difference
   let* α4 := borrow α3 C in
   let* α5 :=
     (generics_associated_types_problem.Contains.first (Self := C)) α4 in
-  sub α2 α5.
+  BinOp.sub α2 α5.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
   let* number_1 := M.alloc 3 in
   let* number_2 := M.alloc 10 in
-  let container :=
-    generics_associated_types_problem.Container.Build_t number_1 number_2 in
+  let* container :=
+    M.alloc
+      (generics_associated_types_problem.Container.Build_t number_1 number_2) in
   let* _ :=
     let* _ :=
       let* α0 :=

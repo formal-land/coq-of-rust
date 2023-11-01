@@ -121,7 +121,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
     let* α0 := borrow x i32 in
     let* α1 := deref α0 i32 in
     let* α2 := borrow α1 i32 in
-    Pure (scoping_rules_lifetimes_bounds.Ref.Build_t α2) in
+    M.alloc (scoping_rules_lifetimes_bounds.Ref.Build_t α2) in
   let* _ :=
     let* α0 := borrow ref_x (scoping_rules_lifetimes_bounds.Ref i32) in
     let* α1 := deref α0 (scoping_rules_lifetimes_bounds.Ref i32) in

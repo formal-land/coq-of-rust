@@ -15,11 +15,11 @@ Definition main `{ℋ : State.Trait} : M unit :=
     | (left_val, right_val) =>
       let* α0 := deref left_val u64 in
       let* α1 := deref right_val u64 in
-      let* α2 := eq α0 α1 in
+      let* α2 := BinOp.eq α0 α1 in
       let* α3 := not α2 in
       let* α4 := use α3 in
       if (α4 : bool) then
-        let kind := core.panicking.AssertKind.Eq tt in
+        let* kind := M.alloc (core.panicking.AssertKind.Eq tt) in
         let* _ :=
           let* α0 := deref left_val u64 in
           let* α1 := borrow α0 u64 in
@@ -29,11 +29,8 @@ Definition main `{ℋ : State.Trait} : M unit :=
           let* α5 := borrow α4 u64 in
           let* α6 := deref α5 u64 in
           let* α7 := borrow α6 u64 in
-          core.panicking.assert_failed
-            kind
-            α3
-            α7
-            (core.option.Option.None tt) in
+          let* α8 := M.alloc (core.option.Option.None tt) in
+          core.panicking.assert_failed kind α3 α7 α8 in
         let* α0 := M.alloc tt in
         never_to_any α0
       else

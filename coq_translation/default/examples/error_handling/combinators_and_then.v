@@ -100,8 +100,8 @@ Definition have_ingredients
     (food : combinators_and_then.Food)
     : M (core.option.Option combinators_and_then.Food) :=
   match food with
-  | combinators_and_then.Food  => Pure (core.option.Option.None tt)
-  | _ => Pure (core.option.Option.Some food)
+  | combinators_and_then.Food  => M.alloc (core.option.Option.None tt)
+  | _ => M.alloc (core.option.Option.Some food)
   end.
 
 Definition have_recipe
@@ -109,8 +109,8 @@ Definition have_recipe
     (food : combinators_and_then.Food)
     : M (core.option.Option combinators_and_then.Food) :=
   match food with
-  | combinators_and_then.Food  => Pure (core.option.Option.None tt)
-  | _ => Pure (core.option.Option.Some food)
+  | combinators_and_then.Food  => M.alloc (core.option.Option.None tt)
+  | _ => M.alloc (core.option.Option.Some food)
   end.
 
 Definition cookable_v1
@@ -119,12 +119,12 @@ Definition cookable_v1
     : M (core.option.Option combinators_and_then.Food) :=
   let* α0 := combinators_and_then.have_recipe food in
   match α0 with
-  | core.option.Option  => Pure (core.option.Option.None tt)
+  | core.option.Option  => M.alloc (core.option.Option.None tt)
   | core.option.Option food =>
     let* α0 := combinators_and_then.have_ingredients food in
     match α0 with
-    | core.option.Option  => Pure (core.option.Option.None tt)
-    | core.option.Option food => Pure (core.option.Option.Some food)
+    | core.option.Option  => M.alloc (core.option.Option.None tt)
+    | core.option.Option food => M.alloc (core.option.Option.Some food)
     end
   end.
 
@@ -192,14 +192,18 @@ Definition eat
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
-  let '(cordon_bleu, steak, sushi) :=
-    (combinators_and_then.Food.CordonBleu tt,
-      combinators_and_then.Food.Steak tt,
-      combinators_and_then.Food.Sushi tt) in
+  let* '(cordon_bleu, steak, sushi) :=
+    let* α0 := M.alloc (combinators_and_then.Food.CordonBleu tt) in
+    let* α1 := M.alloc (combinators_and_then.Food.Steak tt) in
+    let* α2 := M.alloc (combinators_and_then.Food.Sushi tt) in
+    Pure (α0, α1, α2) in
   let* _ :=
-    combinators_and_then.eat cordon_bleu (combinators_and_then.Day.Monday tt) in
+    let* α0 := M.alloc (combinators_and_then.Day.Monday tt) in
+    combinators_and_then.eat cordon_bleu α0 in
   let* _ :=
-    combinators_and_then.eat steak (combinators_and_then.Day.Tuesday tt) in
+    let* α0 := M.alloc (combinators_and_then.Day.Tuesday tt) in
+    combinators_and_then.eat steak α0 in
   let* _ :=
-    combinators_and_then.eat sushi (combinators_and_then.Day.Wednesday tt) in
+    let* α0 := M.alloc (combinators_and_then.Day.Wednesday tt) in
+    combinators_and_then.eat sushi α0 in
   M.alloc tt.

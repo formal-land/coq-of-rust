@@ -28,9 +28,9 @@ Definition main `{ℋ : State.Trait} : M unit :=
             never_to_any α0
           | core.option.Option n =>
             let* α0 := M.alloc 15 in
-            let* α1 := rem n α0 in
+            let* α1 := BinOp.rem n α0 in
             let* α2 := M.alloc 0 in
-            let* α3 := eq α1 α2 in
+            let* α3 := BinOp.eq α1 α2 in
             let* α4 := use α3 in
             if (α4 : bool) then
               let* _ :=
@@ -46,9 +46,9 @@ Definition main `{ℋ : State.Trait} : M unit :=
               M.alloc tt
             else
               let* α0 := M.alloc 3 in
-              let* α1 := rem n α0 in
+              let* α1 := BinOp.rem n α0 in
               let* α2 := M.alloc 0 in
-              let* α3 := eq α1 α2 in
+              let* α3 := BinOp.eq α1 α2 in
               let* α4 := use α3 in
               if (α4 : bool) then
                 let* _ :=
@@ -64,9 +64,9 @@ Definition main `{ℋ : State.Trait} : M unit :=
                 M.alloc tt
               else
                 let* α0 := M.alloc 5 in
-                let* α1 := rem n α0 in
+                let* α1 := BinOp.rem n α0 in
                 let* α2 := M.alloc 0 in
-                let* α3 := eq α1 α2 in
+                let* α3 := BinOp.eq α1 α2 in
                 let* α4 := use α3 in
                 if (α4 : bool) then
                   let* _ :=

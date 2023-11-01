@@ -275,11 +275,11 @@ Definition main `{ℋ : State.Trait} : M unit :=
         structures.Rectangle.top_left := α0;
         structures.Rectangle.bottom_right := bottom_right;
       |} in
-  let _unit := structures.Unit.Build_t tt in
+  let* _unit := M.alloc (structures.Unit.Build_t tt) in
   let* pair :=
     let* α0 := M.alloc 1 in
     let* α1 := M.alloc 0 (* 0.1 *) in
-    Pure (structures.Pair.Build_t α0 α1) in
+    M.alloc (structures.Pair.Build_t α0 α1) in
   let* _ :=
     let* _ :=
       let* α0 :=

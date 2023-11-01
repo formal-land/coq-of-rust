@@ -221,33 +221,29 @@ End Impl_unpacking_options_via_question_mark_Person.
 Definition main `{ℋ : State.Trait} : M unit :=
   let* p :=
     let* α0 := M.alloc 61 in
-    let* α1 := M.alloc 439222222 in
-    let* α2 :=
-      M.alloc
-        {|
-          unpacking_options_via_question_mark.PhoneNumber.area_code :=
-            core.option.Option.Some α0;
-          unpacking_options_via_question_mark.PhoneNumber.number := α1;
-        |} in
+    let* α1 := M.alloc (core.option.Option.Some α0) in
+    let* α2 := M.alloc 439222222 in
     let* α3 :=
       M.alloc
         {|
-          unpacking_options_via_question_mark.Job.phone_number :=
-            core.option.Option.Some α2;
+          unpacking_options_via_question_mark.PhoneNumber.area_code := α1;
+          unpacking_options_via_question_mark.PhoneNumber.number := α2;
         |} in
-    M.alloc
-      {|
-        unpacking_options_via_question_mark.Person.job :=
-          core.option.Option.Some α3;
-      |} in
+    let* α4 := M.alloc (core.option.Option.Some α3) in
+    let* α5 :=
+      M.alloc
+        {| unpacking_options_via_question_mark.Job.phone_number := α4; |} in
+    let* α6 := M.alloc (core.option.Option.Some α5) in
+    M.alloc {| unpacking_options_via_question_mark.Person.job := α6; |} in
   let* _ :=
     let* α0 := borrow p unpacking_options_via_question_mark.Person in
     let* α1 :=
       unpacking_options_via_question_mark.Person::["work_phone_area_code"] α0 in
     let* α2 := borrow α1 (core.option.Option u8) in
     let* α3 := M.alloc 61 in
-    let* α4 := borrow (core.option.Option.Some α3) (core.option.Option u8) in
-    match (α2, α4) with
+    let* α4 := M.alloc (core.option.Option.Some α3) in
+    let* α5 := borrow α4 (core.option.Option u8) in
+    match (α2, α5) with
     | (left_val, right_val) =>
       let* α0 := deref left_val (core.option.Option u8) in
       let* α1 := borrow α0 (core.option.Option u8) in
@@ -258,7 +254,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α5 := not α4 in
       let* α6 := use α5 in
       if (α6 : bool) then
-        let kind := core.panicking.AssertKind.Eq tt in
+        let* kind := M.alloc (core.panicking.AssertKind.Eq tt) in
         let* _ :=
           let* α0 := deref left_val (core.option.Option u8) in
           let* α1 := borrow α0 (core.option.Option u8) in
@@ -268,11 +264,8 @@ Definition main `{ℋ : State.Trait} : M unit :=
           let* α5 := borrow α4 (core.option.Option u8) in
           let* α6 := deref α5 (core.option.Option u8) in
           let* α7 := borrow α6 (core.option.Option u8) in
-          core.panicking.assert_failed
-            kind
-            α3
-            α7
-            (core.option.Option.None tt) in
+          let* α8 := M.alloc (core.option.Option.None tt) in
+          core.panicking.assert_failed kind α3 α7 α8 in
         let* α0 := M.alloc tt in
         never_to_any α0
       else

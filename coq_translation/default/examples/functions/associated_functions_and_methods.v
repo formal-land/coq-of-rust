@@ -132,9 +132,9 @@ Module Impl_associated_functions_and_methods_Rectangle.
           |} :=
         let* α0 := deref self associated_functions_and_methods.Rectangle in
         α0.["p2"] in
-      let* α0 := sub x1 x2 in
-      let* α1 := sub y1 y2 in
-      let* α2 := mul α0 α1 in
+      let* α0 := BinOp.sub x1 x2 in
+      let* α1 := BinOp.sub y1 y2 in
+      let* α2 := BinOp.mul α0 α1 in
       f64::["abs"] α2.
     
     Global Instance AssociatedFunction_area :
@@ -158,12 +158,12 @@ Module Impl_associated_functions_and_methods_Rectangle.
         let* α0 := deref self associated_functions_and_methods.Rectangle in
         α0.["p2"] in
       let* α0 := M.alloc 2 (* 2.0 *) in
-      let* α1 := sub x1 x2 in
+      let* α1 := BinOp.sub x1 x2 in
       let* α2 := f64::["abs"] α1 in
-      let* α3 := sub y1 y2 in
+      let* α3 := BinOp.sub y1 y2 in
       let* α4 := f64::["abs"] α3 in
-      let* α5 := add α2 α4 in
-      mul α0 α5.
+      let* α5 := BinOp.add α2 α4 in
+      BinOp.mul α0 α5.
     
     Global Instance AssociatedFunction_perimeter :
       Notation.DoubleColon Self "perimeter" := {
@@ -341,6 +341,6 @@ Definition main `{ℋ : State.Trait} : M unit :=
     let* α1 := (alloc.boxed.Box T alloc.alloc.Global)::["new"] α0 in
     let* α2 := M.alloc 2 in
     let* α3 := (alloc.boxed.Box T alloc.alloc.Global)::["new"] α2 in
-    Pure (associated_functions_and_methods.Pair.Build_t α1 α3) in
+    M.alloc (associated_functions_and_methods.Pair.Build_t α1 α3) in
   let* _ := associated_functions_and_methods.Pair::["destroy"] pair in
   M.alloc tt.

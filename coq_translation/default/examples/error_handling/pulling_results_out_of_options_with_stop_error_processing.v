@@ -27,10 +27,12 @@ Definition double_first
       (core.result.Result T E)::["map"]
         α3
         (let* α0 := M.alloc 2 in
-        mul α0 n)) in
+        BinOp.mul α0 n)) in
+  let* α0 := M.alloc (core.option.Option.None tt) in
+  let* α1 := M.alloc (core.result.Result.Ok α0) in
   (core.option.Option T)::["map_or"]
     opt
-    (core.result.Result.Ok (core.option.Option.None tt))
+    α1
     ((core.result.Result T E)::["map"] r "unimplemented parent_kind").
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)

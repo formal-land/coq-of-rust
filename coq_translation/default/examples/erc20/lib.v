@@ -124,7 +124,7 @@ Module Impl_core_default_Default_for_lib_AccountId.
     
     Definition default : M lib.AccountId :=
       let* α0 := core.default.Default.default (Self := u64) in
-      Pure (lib.AccountId.Build_t α0).
+      M.alloc (lib.AccountId.Build_t α0).
     
     Global Instance AssociatedFunction_default :
       Notation.DoubleColon Self "default" := {
@@ -165,7 +165,7 @@ Module Impl_core_default_Default_for_lib_Balance.
     
     Definition default : M lib.Balance :=
       let* α0 := core.default.Default.default (Self := u64) in
-      Pure (lib.Balance.Build_t α0).
+      M.alloc (lib.Balance.Build_t α0).
     
     Global Instance AssociatedFunction_default :
       Notation.DoubleColon Self "default" := {
@@ -205,7 +205,7 @@ Module Impl_core_cmp_PartialEq_for_lib_Balance.
       let* α1 := α0.["0"] in
       let* α2 := deref other lib.Balance in
       let* α3 := α2.["0"] in
-      eq α1 α3.
+      BinOp.eq α1 α3.
     
     Global Instance AssociatedFunction_eq : Notation.DoubleColon Self "eq" := {
       Notation.double_colon := eq;
@@ -269,8 +269,8 @@ Module Impl_core_ops_arith_Add_for_lib_Balance.
     Definition add (self : Self) (rhs : Self) : M Output :=
       let* α0 := self.["0"] in
       let* α1 := rhs.["0"] in
-      let* α2 := add α0 α1 in
-      Pure (lib.Balance.Build_t α2).
+      let* α2 := BinOp.add α0 α1 in
+      M.alloc (lib.Balance.Build_t α2).
     
     Global Instance AssociatedFunction_add :
       Notation.DoubleColon Self "add" := {
@@ -299,8 +299,8 @@ Module Impl_core_ops_arith_Sub_for_lib_Balance.
     Definition sub (self : Self) (rhs : Self) : M Output :=
       let* α0 := self.["0"] in
       let* α1 := rhs.["0"] in
-      let* α2 := sub α0 α1 in
-      Pure (lib.Balance.Build_t α2).
+      let* α2 := BinOp.sub α0 α1 in
+      M.alloc (lib.Balance.Build_t α2).
     
     Global Instance AssociatedFunction_sub :
       Notation.DoubleColon Self "sub" := {
@@ -634,14 +634,16 @@ Module Impl_lib_Erc20_2.
       let* _ :=
         let* α0 := lib.Erc20::["init_env"] in
         let* α1 := borrow α0 lib.Environment in
-        let* α2 :=
+        let* α2 := M.alloc (core.option.Option.None tt) in
+        let* α3 := M.alloc (core.option.Option.Some caller) in
+        let* α4 :=
           M.alloc
             {|
-              lib.Transfer.from := core.option.Option.None tt;
-              lib.Transfer.to := core.option.Option.Some caller;
+              lib.Transfer.from := α2;
+              lib.Transfer.to := α3;
               lib.Transfer.value := total_supply;
             |} in
-        lib.Environment::["emit_event"] α1 α2 in
+        lib.Environment::["emit_event"] α1 α4 in
       let* α0 :=
         core.default.Default.default
           (Self := (lib.Mapping (lib.AccountId * lib.AccountId) lib.Balance)) in
@@ -800,7 +802,7 @@ Module Impl_lib_Erc20_2.
             |} in
         lib.Environment::["emit_event"] α3 α4 in
       let* α0 := M.alloc tt in
-      Pure (core.result.Result.Ok α0).
+      M.alloc (core.result.Result.Ok α0).
     
     Global Instance AssociatedFunction_approve :
       Notation.DoubleColon Self "approve" := {
@@ -836,8 +838,9 @@ Module Impl_lib_Erc20_2.
         let* α3 := use α2 in
         if (α3 : bool) then
           let* _ :=
-            Return
-              (core.result.Result.Err (lib.Error.InsufficientAllowance tt)) in
+            let* α0 := M.alloc (lib.Error.InsufficientAllowance tt) in
+            let* α1 := M.alloc (core.result.Result.Err α0) in
+            Return α1 in
           let* α0 := M.alloc tt in
           never_to_any α0
         else
@@ -877,7 +880,7 @@ Module Impl_lib_Erc20_2.
           (core.ops.arith.Sub.sub (Self := lib.Balance)) allowance value in
         (lib.Mapping K V)::["insert"] α2 (from, caller) α3 in
       let* α0 := M.alloc tt in
-      Pure (core.result.Result.Ok α0).
+      M.alloc (core.result.Result.Ok α0).
     
     Global Instance AssociatedFunction_transfer_from :
       Notation.DoubleColon Self "transfer_from" := {
@@ -903,8 +906,9 @@ Module Impl_lib_Erc20_2.
         let* α3 := use α2 in
         if (α3 : bool) then
           let* _ :=
-            Return
-              (core.result.Result.Err (lib.Error.InsufficientBalance tt)) in
+            let* α0 := M.alloc (lib.Error.InsufficientBalance tt) in
+            let* α1 := M.alloc (core.result.Result.Err α0) in
+            Return α1 in
           let* α0 := M.alloc tt in
           never_to_any α0
         else
@@ -937,17 +941,19 @@ Module Impl_lib_Erc20_2.
         let* α2 := lib.Erc20::["env"] α1 in
         let* α3 := borrow α2 lib.Environment in
         let* α4 := deref from lib.AccountId in
-        let* α5 := deref to lib.AccountId in
-        let* α6 :=
+        let* α5 := M.alloc (core.option.Option.Some α4) in
+        let* α6 := deref to lib.AccountId in
+        let* α7 := M.alloc (core.option.Option.Some α6) in
+        let* α8 :=
           M.alloc
             {|
-              lib.Transfer.from := core.option.Option.Some α4;
-              lib.Transfer.to := core.option.Option.Some α5;
+              lib.Transfer.from := α5;
+              lib.Transfer.to := α7;
               lib.Transfer.value := value;
             |} in
-        lib.Environment::["emit_event"] α3 α6 in
+        lib.Environment::["emit_event"] α3 α8 in
       let* α0 := M.alloc tt in
-      Pure (core.result.Result.Ok α0).
+      M.alloc (core.result.Result.Ok α0).
     
     Global Instance AssociatedFunction_transfer_from_to :
       Notation.DoubleColon Self "transfer_from_to" := {

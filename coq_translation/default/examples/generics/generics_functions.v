@@ -73,18 +73,23 @@ Definition generic
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
   let* _ :=
-    generics_functions.reg_fn
-      (generics_functions.S.Build_t (generics_functions.A.Build_t tt)) in
+    let* α0 := M.alloc (generics_functions.A.Build_t tt) in
+    let* α1 := M.alloc (generics_functions.S.Build_t α0) in
+    generics_functions.reg_fn α1 in
   let* _ :=
-    generics_functions.gen_spec_t
-      (generics_functions.SGen.Build_t (generics_functions.A.Build_t tt)) in
+    let* α0 := M.alloc (generics_functions.A.Build_t tt) in
+    let* α1 := M.alloc (generics_functions.SGen.Build_t α0) in
+    generics_functions.gen_spec_t α1 in
   let* _ :=
     let* α0 := M.alloc 6 in
-    generics_functions.gen_spec_i32 (generics_functions.SGen.Build_t α0) in
+    let* α1 := M.alloc (generics_functions.SGen.Build_t α0) in
+    generics_functions.gen_spec_i32 α1 in
   let* _ :=
     let* α0 := M.alloc "a"%char in
-    generics_functions.generic (generics_functions.SGen.Build_t α0) in
+    let* α1 := M.alloc (generics_functions.SGen.Build_t α0) in
+    generics_functions.generic α1 in
   let* _ :=
     let* α0 := M.alloc "c"%char in
-    generics_functions.generic (generics_functions.SGen.Build_t α0) in
+    let* α1 := M.alloc (generics_functions.SGen.Build_t α0) in
+    generics_functions.generic α1 in
   M.alloc tt.

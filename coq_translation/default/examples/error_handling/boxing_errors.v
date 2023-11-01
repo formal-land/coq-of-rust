@@ -52,7 +52,7 @@ Module Impl_core_clone_Clone_for_boxing_errors_EmptyVec.
     Definition Self : Set := boxing_errors.EmptyVec.
     
     Definition clone (self : ref Self) : M boxing_errors.EmptyVec :=
-      Pure (boxing_errors.EmptyVec.Build_t tt).
+      M.alloc (boxing_errors.EmptyVec.Build_t tt).
     
     Global Instance AssociatedFunction_clone :
       Notation.DoubleColon Self "clone" := {
@@ -128,8 +128,8 @@ Definition double_first
   let* α5 :=
     (core.option.Option T)::["ok_or_else"]
       α4
-      ((core.convert.Into.into (Self := boxing_errors.EmptyVec))
-        (boxing_errors.EmptyVec.Build_t tt)) in
+      (let* α0 := M.alloc (boxing_errors.EmptyVec.Build_t tt) in
+      (core.convert.Into.into (Self := boxing_errors.EmptyVec)) α0) in
   (core.result.Result T E)::["and_then"]
     α5
     (let* α0 := deref s (ref str) in
@@ -143,7 +143,7 @@ Definition double_first
     (core.result.Result T E)::["map"]
       α4
       (let* α0 := M.alloc 2 in
-      mul α0 i)).
+      BinOp.mul α0 i)).
 
 Definition print
     `{ℋ : State.Trait}

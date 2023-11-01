@@ -11,7 +11,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
   let* _ :=
     let* α0 := deref raw_p u32 in
     let* α1 := M.alloc 10 in
-    let* α2 := eq α0 α1 in
+    let* α2 := BinOp.eq α0 α1 in
     let* α3 := not α2 in
     let* α4 := use α3 in
     if (α4 : bool) then

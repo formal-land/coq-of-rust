@@ -40,7 +40,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
             (Self := (core.slice.iter.Iter i32)))
           α9
           (let* α0 := M.alloc 2 in
-          eq x α0) in
+          BinOp.eq x α0) in
       let* α11 := borrow α10 bool in
       let* α12 := deref α11 bool in
       let* α13 := borrow α12 bool in
@@ -70,7 +70,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
             (Self := (alloc.vec.into_iter.IntoIter i32 alloc.alloc.Global)))
           α5
           (let* α0 := M.alloc 2 in
-          eq x α0) in
+          BinOp.eq x α0) in
       let* α7 := borrow α6 bool in
       let* α8 := deref α7 bool in
       let* α9 := borrow α8 bool in
@@ -158,7 +158,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
             (Self := (core.slice.iter.Iter i32)))
           α7
           (let* α0 := M.alloc 2 in
-          eq x α0) in
+          BinOp.eq x α0) in
       let* α9 := borrow α8 bool in
       let* α10 := deref α9 bool in
       let* α11 := borrow α10 bool in
@@ -190,7 +190,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
           α6
           (let* α0 := deref x i32 in
           let* α1 := M.alloc 2 in
-          eq α0 α1) in
+          BinOp.eq α0 α1) in
       let* α8 := borrow α7 bool in
       let* α9 := deref α8 bool in
       let* α10 := borrow α9 bool in

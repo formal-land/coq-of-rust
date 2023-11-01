@@ -3,9 +3,9 @@ Require Import CoqOfRust.CoqOfRust.
 
 Definition is_odd `{ℋ : State.Trait} (n : u32) : M bool :=
   let* α0 := M.alloc 2 in
-  let* α1 := rem n α0 in
+  let* α1 := BinOp.rem n α0 in
   let* α2 := M.alloc 1 in
-  eq α1 α2.
+  BinOp.eq α1 α2.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
@@ -48,8 +48,8 @@ Definition main `{ℋ : State.Trait} : M unit :=
               let* α0 := Break in
               never_to_any α0
             | core.option.Option n =>
-              let* n_squared := mul n n in
-              let* α0 := ge n_squared upper in
+              let* n_squared := BinOp.mul n n in
+              let* α0 := BinOp.ge n_squared upper in
               let* α1 := use α0 in
               if (α1 : bool) then
                 let* _ := Break in
@@ -93,7 +93,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
       (core.iter.traits.iterator.Iterator.map
           (Self := (core.ops.range.RangeFrom u32)))
         α1
-        (mul n n) in
+        (BinOp.mul n n) in
     let* α3 :=
       (core.iter.traits.iterator.Iterator.take_while
           (Self :=
@@ -101,7 +101,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
               (core.ops.range.RangeFrom u32)
               type not implemented)))
         α2
-        (lt n_squared upper) in
+        (BinOp.lt n_squared upper) in
     let* α4 :=
       (core.iter.traits.iterator.Iterator.filter
           (Self :=

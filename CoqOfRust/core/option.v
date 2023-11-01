@@ -46,4 +46,5 @@ Module Option.
   Arguments None {_}.
   Arguments Some {_}.
 End Option.
-Definition Option := Option.t.
+Definition Option `{State.Trait} (T : Set) : Set :=
+  M.val (Option.t T).

@@ -59,9 +59,9 @@ Definition sum_odd_numbers `{ℋ : State.Trait} (up_to : u32) : M u32 :=
             | core.option.Option i =>
               let* addition :=
                 let* α0 := M.alloc 2 in
-                let* α1 := rem i α0 in
+                let* α1 := BinOp.rem i α0 in
                 let* α2 := M.alloc 1 in
-                let* α3 := eq α1 α2 in
+                let* α3 := BinOp.eq α1 α2 in
                 match α3 with
                 | _ => Pure i
                 | _ =>

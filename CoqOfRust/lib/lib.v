@@ -110,3 +110,26 @@ Definition never_to_any `{State.Trait} {A : Set} (n : never) : M A :=
 
 Definition mk_str `{State.Trait} (s : string) : ref str :=
   M.Ref.Immutable (M.Ref.Immutable s).
+
+Module BinOp.
+  Parameter add : forall `{State.Trait} {A : Set}, A -> A -> M A.
+  Parameter sub : forall `{State.Trait} {A : Set}, A -> A -> M A.
+  Parameter mul : forall `{State.Trait} {A : Set}, A -> A -> M A.
+  Parameter div : forall `{State.Trait} {A : Set}, A -> A -> M A.
+  Parameter rem : forall `{State.Trait} {A : Set}, A -> A -> M A.
+  Parameter and : forall `{State.Trait} {A : Set}, A -> A -> M bool.
+  Parameter or : forall `{State.Trait} {A : Set}, A -> A -> M bool.
+  Parameter bit_xor : forall `{State.Trait} {A : Set}, A -> A -> M A.
+  Parameter bit_and : forall `{State.Trait} {A : Set}, A -> A -> M A.
+  Parameter bit_or : forall `{State.Trait} {A : Set}, A -> A -> M A.
+  Parameter shl : forall `{State.Trait} {A : Set}, A -> A -> M A.
+  Parameter shr : forall `{State.Trait} {A : Set}, A -> A -> M A.
+
+  Parameter eq : forall `{State.Trait} {A : Set}, A -> A -> M bool.
+  Parameter ne : forall `{State.Trait} {A : Set}, A -> A -> M bool.
+
+  Parameter lt : forall `{State.Trait} {A : Set}, A -> A -> M bool.
+  Parameter le : forall `{State.Trait} {A : Set}, A -> A -> M bool.
+  Parameter ge : forall `{State.Trait} {A : Set}, A -> A -> M bool.
+  Parameter gt : forall `{State.Trait} {A : Set}, A -> A -> M bool.
+End BinOp.

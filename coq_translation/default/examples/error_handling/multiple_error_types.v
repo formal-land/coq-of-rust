@@ -21,7 +21,7 @@ Definition double_first
   let* α3 := borrow α2 str in
   let* α4 := str::["parse"] α3 in
   let* α5 := (core.result.Result T E)::["unwrap"] α4 in
-  mul α0 α5.
+  BinOp.mul α0 α5.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=

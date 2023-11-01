@@ -73,7 +73,7 @@ End Impl_scoping_rules_lifetimes_methods_Owner.
 Definition main `{ℋ : State.Trait} : M unit :=
   let* owner :=
     let* α0 := M.alloc 18 in
-    Pure (scoping_rules_lifetimes_methods.Owner.Build_t α0) in
+    M.alloc (scoping_rules_lifetimes_methods.Owner.Build_t α0) in
   let* _ :=
     let* α0 := borrow_mut owner scoping_rules_lifetimes_methods.Owner in
     scoping_rules_lifetimes_methods.Owner::["add_one"] α0 in

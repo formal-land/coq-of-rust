@@ -42,8 +42,8 @@ Definition multiply
       never_to_any α1
     | core.ops.control_flow.ControlFlow val => Pure val
     end in
-  let* α0 := mul first_number second_number in
-  Pure (core.result.Result.Ok α0).
+  let* α0 := BinOp.mul first_number second_number in
+  M.alloc (core.result.Result.Ok α0).
 
 Definition print
     `{ℋ : State.Trait}

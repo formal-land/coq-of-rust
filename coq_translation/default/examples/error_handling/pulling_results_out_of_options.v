@@ -25,7 +25,7 @@ Definition double_first
     (core.result.Result T E)::["map"]
       α3
       (let* α0 := M.alloc 2 in
-      mul α0 n)).
+      BinOp.mul α0 n)).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=

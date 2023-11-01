@@ -44,7 +44,7 @@ Module Impl_core_cmp_PartialEq_for_derive_Centimeters.
       let* α1 := α0.["0"] in
       let* α2 := deref other derive.Centimeters in
       let* α3 := α2.["0"] in
-      eq α1 α3.
+      BinOp.eq α1 α3.
     
     Global Instance AssociatedFunction_eq : Notation.DoubleColon Self "eq" := {
       Notation.double_colon := eq;
@@ -161,8 +161,8 @@ Module Impl_derive_Inches.
       let 'derive.Inches.Build_t inches := self in
       let* α0 := cast inches in
       let* α1 := M.alloc 3 (* 2.54 *) in
-      let* α2 := mul α0 α1 in
-      Pure (derive.Centimeters.Build_t α2).
+      let* α2 := BinOp.mul α0 α1 in
+      M.alloc (derive.Centimeters.Build_t α2).
     
     Global Instance AssociatedFunction_to_centimeters :
       Notation.DoubleColon Self "to_centimeters" := {
@@ -193,10 +193,10 @@ Definition Seconds `{ℋ : State.Trait} : Set := M.val Seconds.t.
 Definition main `{ℋ : State.Trait} : M unit :=
   let* _one_second :=
     let* α0 := M.alloc 1 in
-    Pure (derive.Seconds.Build_t α0) in
+    M.alloc (derive.Seconds.Build_t α0) in
   let* foot :=
     let* α0 := M.alloc 12 in
-    Pure (derive.Inches.Build_t α0) in
+    M.alloc (derive.Inches.Build_t α0) in
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -218,7 +218,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
     M.alloc tt in
   let* meter :=
     let* α0 := M.alloc 100 (* 100.0 *) in
-    Pure (derive.Centimeters.Build_t α0) in
+    M.alloc (derive.Centimeters.Build_t α0) in
   let* cmp :=
     let* α0 := borrow foot derive.Inches in
     let* α1 := derive.Inches::["to_centimeters"] α0 in

@@ -1975,7 +1975,7 @@ Module erc20.
           let* α0 := deref other erc20.erc20.Error in
           let* α1 := borrow α0 erc20.erc20.Error in
           "unimplemented parent_kind" α1 in
-        eq __self_tag __arg1_tag.
+        BinOp.eq __self_tag __arg1_tag.
       
       Global Instance AssociatedFunction_eq :
         Notation.DoubleColon Self "eq" := {
@@ -2376,7 +2376,7 @@ Module Impl_ink_storage_traits_storage_Storable_for_erc20_erc20_Erc20.
             erc20.erc20.Erc20.balances := α9;
             erc20.erc20.Erc20.allowances := α14;
           |} in
-      Pure (core.result.Result.Ok α15).
+      M.alloc (core.result.Result.Ok α15).
     
     Global Instance AssociatedFunction_decode
         {__ink_I : Set}
@@ -2713,7 +2713,7 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_erc20_erc20_Erc20.
         (ink_metadata.layout.StructLayout F)::["new"]
           (mk_str "Erc20")
           [ α3; α7; α11 ] in
-      Pure (ink_metadata.layout.Layout.Struct α12).
+      M.alloc (ink_metadata.layout.Layout.Struct α12).
     
     Global Instance AssociatedFunction_layout :
       Notation.DoubleColon Self "layout" := {
@@ -3068,13 +3068,13 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___ink_EventBase.
                       e
                       (mk_str
                         "Could not decode `__ink_EventBase::Transfer.0`") in
-                  let* α1 := Return (core.result.Result.Err α0) in
-                  never_to_any α1
+                  let* α1 := M.alloc (core.result.Result.Err α0) in
+                  let* α2 := Return α1 in
+                  never_to_any α2
                 | core.result.Result __codec_res_edqy => Pure __codec_res_edqy
                 end in
-              Pure
-                (core.result.Result.Ok
-                  (erc20.erc20.__ink_EventBase.Transfer α0)))
+              let* α1 := M.alloc (erc20.erc20.__ink_EventBase.Transfer α0) in
+              M.alloc (core.result.Result.Ok α1))
               type not implemented in
           let* α1 := M.alloc tt in
           let* α2 :=
@@ -3102,13 +3102,13 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___ink_EventBase.
                       e
                       (mk_str
                         "Could not decode `__ink_EventBase::Approval.0`") in
-                  let* α1 := Return (core.result.Result.Err α0) in
-                  never_to_any α1
+                  let* α1 := M.alloc (core.result.Result.Err α0) in
+                  let* α2 := Return α1 in
+                  never_to_any α2
                 | core.result.Result __codec_res_edqy => Pure __codec_res_edqy
                 end in
-              Pure
-                (core.result.Result.Ok
-                  (erc20.erc20.__ink_EventBase.Approval α0)))
+              let* α1 := M.alloc (erc20.erc20.__ink_EventBase.Approval α0) in
+              M.alloc (core.result.Result.Ok α1))
               type not implemented in
           let* α1 := M.alloc tt in
           let* α2 :=
@@ -3126,7 +3126,7 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___ink_EventBase.
                 (core.convert.Into.into (Self := (ref str)))
                   (mk_str
                     "Could not decode `__ink_EventBase`, variant doesn't exist") in
-              Pure (core.result.Result.Err α0))
+              M.alloc (core.result.Result.Err α0))
               type not implemented in
           let* α1 := M.alloc tt in
           let* α2 :=
@@ -3503,8 +3503,9 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Transfer.
             parity_scale_codec.error.Error::["chain"]
               e
               (mk_str "Could not decode `Transfer::from`") in
-          let* α1 := Return (core.result.Result.Err α0) in
-          never_to_any α1
+          let* α1 := M.alloc (core.result.Result.Err α0) in
+          let* α2 := Return α1 in
+          never_to_any α2
         | core.result.Result __codec_res_edqy => Pure __codec_res_edqy
         end in
       let* __codec_res_edqy :=
@@ -3520,8 +3521,9 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Transfer.
             parity_scale_codec.error.Error::["chain"]
               e
               (mk_str "Could not decode `Transfer::to`") in
-          let* α1 := Return (core.result.Result.Err α0) in
-          never_to_any α1
+          let* α1 := M.alloc (core.result.Result.Err α0) in
+          let* α2 := Return α1 in
+          never_to_any α2
         | core.result.Result __codec_res_edqy => Pure __codec_res_edqy
         end in
       let* __codec_res_edqy :=
@@ -3535,8 +3537,9 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Transfer.
             parity_scale_codec.error.Error::["chain"]
               e
               (mk_str "Could not decode `Transfer::value`") in
-          let* α1 := Return (core.result.Result.Err α0) in
-          never_to_any α1
+          let* α1 := M.alloc (core.result.Result.Err α0) in
+          let* α2 := Return α1 in
+          never_to_any α2
         | core.result.Result __codec_res_edqy => Pure __codec_res_edqy
         end in
       let* α3 :=
@@ -3546,7 +3549,7 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Transfer.
             erc20.erc20.Transfer.to := α1;
             erc20.erc20.Transfer.value := α2;
           |} in
-      Pure (core.result.Result.Ok α3).
+      M.alloc (core.result.Result.Ok α3).
     
     Global Instance AssociatedFunction_decode
         {__CodecInputEdqy : Set}
@@ -3714,8 +3717,9 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Approval.
             parity_scale_codec.error.Error::["chain"]
               e
               (mk_str "Could not decode `Approval::owner`") in
-          let* α1 := Return (core.result.Result.Err α0) in
-          never_to_any α1
+          let* α1 := M.alloc (core.result.Result.Err α0) in
+          let* α2 := Return α1 in
+          never_to_any α2
         | core.result.Result __codec_res_edqy => Pure __codec_res_edqy
         end in
       let* __codec_res_edqy :=
@@ -3731,8 +3735,9 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Approval.
             parity_scale_codec.error.Error::["chain"]
               e
               (mk_str "Could not decode `Approval::spender`") in
-          let* α1 := Return (core.result.Result.Err α0) in
-          never_to_any α1
+          let* α1 := M.alloc (core.result.Result.Err α0) in
+          let* α2 := Return α1 in
+          never_to_any α2
         | core.result.Result __codec_res_edqy => Pure __codec_res_edqy
         end in
       let* __codec_res_edqy :=
@@ -3746,8 +3751,9 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Approval.
             parity_scale_codec.error.Error::["chain"]
               e
               (mk_str "Could not decode `Approval::value`") in
-          let* α1 := Return (core.result.Result.Err α0) in
-          never_to_any α1
+          let* α1 := M.alloc (core.result.Result.Err α0) in
+          let* α2 := Return α1 in
+          never_to_any α2
         | core.result.Result __codec_res_edqy => Pure __codec_res_edqy
         end in
       let* α3 :=
@@ -3757,7 +3763,7 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Approval.
             erc20.erc20.Approval.spender := α1;
             erc20.erc20.Approval.value := α2;
           |} in
-      Pure (core.result.Result.Ok α3).
+      M.alloc (core.result.Result.Ok α3).
     
     Global Instance AssociatedFunction_decode
         {__CodecInputEdqy : Set}
@@ -4644,7 +4650,7 @@ Module
       let* α3 :=
         (core.result.Result T E)::["map_err"]
           α2
-          (Pure (ink.reflect.dispatch.DispatchError.InvalidSelector tt)) in
+          (M.alloc (ink.reflect.dispatch.DispatchError.InvalidSelector tt)) in
       let* α4 :=
         (core.ops.try_trait.Try.branch
             (Self :=
@@ -4674,7 +4680,8 @@ Module
         let* α3 :=
           (core.result.Result T E)::["map_err"]
             α2
-            (Pure (ink.reflect.dispatch.DispatchError.InvalidParameters tt)) in
+            (M.alloc
+              (ink.reflect.dispatch.DispatchError.InvalidParameters tt)) in
         let* α4 :=
           (core.ops.try_trait.Try.branch
               (Self :=
@@ -4695,11 +4702,11 @@ Module
           | core.ops.control_flow.ControlFlow val => Pure val
           end in
         let* α6 := "unimplemented parent_kind" α5 in
-        Pure (core.result.Result.Ok α6)
+        M.alloc (core.result.Result.Ok α6)
       | _invalid =>
-        Pure
-          (core.result.Result.Err
-            (ink.reflect.dispatch.DispatchError.UnknownSelector tt))
+        let* α0 :=
+          M.alloc (ink.reflect.dispatch.DispatchError.UnknownSelector tt) in
+        M.alloc (core.result.Result.Err α0)
       end.
     
     Global Instance AssociatedFunction_decode_dispatch
@@ -5008,7 +5015,7 @@ Module
       let* α3 :=
         (core.result.Result T E)::["map_err"]
           α2
-          (Pure (ink.reflect.dispatch.DispatchError.InvalidSelector tt)) in
+          (M.alloc (ink.reflect.dispatch.DispatchError.InvalidSelector tt)) in
       let* α4 :=
         (core.ops.try_trait.Try.branch
             (Self :=
@@ -5038,7 +5045,8 @@ Module
         let* α3 :=
           (core.result.Result T E)::["map_err"]
             α2
-            (Pure (ink.reflect.dispatch.DispatchError.InvalidParameters tt)) in
+            (M.alloc
+              (ink.reflect.dispatch.DispatchError.InvalidParameters tt)) in
         let* α4 :=
           (core.ops.try_trait.Try.branch
               (Self :=
@@ -5059,7 +5067,7 @@ Module
           | core.ops.control_flow.ControlFlow val => Pure val
           end in
         let* α6 := "unimplemented parent_kind" α5 in
-        Pure (core.result.Result.Ok α6)
+        M.alloc (core.result.Result.Ok α6)
       | [_; _; _; _] =>
         let* α0 := deref input I in
         let* α1 := borrow_mut α0 I in
@@ -5070,7 +5078,8 @@ Module
         let* α3 :=
           (core.result.Result T E)::["map_err"]
             α2
-            (Pure (ink.reflect.dispatch.DispatchError.InvalidParameters tt)) in
+            (M.alloc
+              (ink.reflect.dispatch.DispatchError.InvalidParameters tt)) in
         let* α4 :=
           (core.ops.try_trait.Try.branch
               (Self :=
@@ -5093,7 +5102,7 @@ Module
           | core.ops.control_flow.ControlFlow val => Pure val
           end in
         let* α6 := "unimplemented parent_kind" α5 in
-        Pure (core.result.Result.Ok α6)
+        M.alloc (core.result.Result.Ok α6)
       | [_; _; _; _] =>
         let* α0 := deref input I in
         let* α1 := borrow_mut α0 I in
@@ -5106,7 +5115,8 @@ Module
         let* α3 :=
           (core.result.Result T E)::["map_err"]
             α2
-            (Pure (ink.reflect.dispatch.DispatchError.InvalidParameters tt)) in
+            (M.alloc
+              (ink.reflect.dispatch.DispatchError.InvalidParameters tt)) in
         let* α4 :=
           (core.ops.try_trait.Try.branch
               (Self :=
@@ -5130,7 +5140,7 @@ Module
           | core.ops.control_flow.ControlFlow val => Pure val
           end in
         let* α6 := "unimplemented parent_kind" α5 in
-        Pure (core.result.Result.Ok α6)
+        M.alloc (core.result.Result.Ok α6)
       | [_; _; _; _] =>
         let* α0 := deref input I in
         let* α1 := borrow_mut α0 I in
@@ -5141,7 +5151,8 @@ Module
         let* α3 :=
           (core.result.Result T E)::["map_err"]
             α2
-            (Pure (ink.reflect.dispatch.DispatchError.InvalidParameters tt)) in
+            (M.alloc
+              (ink.reflect.dispatch.DispatchError.InvalidParameters tt)) in
         let* α4 :=
           (core.ops.try_trait.Try.branch
               (Self :=
@@ -5164,7 +5175,7 @@ Module
           | core.ops.control_flow.ControlFlow val => Pure val
           end in
         let* α6 := "unimplemented parent_kind" α5 in
-        Pure (core.result.Result.Ok α6)
+        M.alloc (core.result.Result.Ok α6)
       | [_; _; _; _] =>
         let* α0 := deref input I in
         let* α1 := borrow_mut α0 I in
@@ -5175,7 +5186,8 @@ Module
         let* α3 :=
           (core.result.Result T E)::["map_err"]
             α2
-            (Pure (ink.reflect.dispatch.DispatchError.InvalidParameters tt)) in
+            (M.alloc
+              (ink.reflect.dispatch.DispatchError.InvalidParameters tt)) in
         let* α4 :=
           (core.ops.try_trait.Try.branch
               (Self :=
@@ -5198,7 +5210,7 @@ Module
           | core.ops.control_flow.ControlFlow val => Pure val
           end in
         let* α6 := "unimplemented parent_kind" α5 in
-        Pure (core.result.Result.Ok α6)
+        M.alloc (core.result.Result.Ok α6)
       | [_; _; _; _] =>
         let* α0 := deref input I in
         let* α1 := borrow_mut α0 I in
@@ -5212,7 +5224,8 @@ Module
         let* α3 :=
           (core.result.Result T E)::["map_err"]
             α2
-            (Pure (ink.reflect.dispatch.DispatchError.InvalidParameters tt)) in
+            (M.alloc
+              (ink.reflect.dispatch.DispatchError.InvalidParameters tt)) in
         let* α4 :=
           (core.ops.try_trait.Try.branch
               (Self :=
@@ -5237,11 +5250,11 @@ Module
           | core.ops.control_flow.ControlFlow val => Pure val
           end in
         let* α6 := "unimplemented parent_kind" α5 in
-        Pure (core.result.Result.Ok α6)
+        M.alloc (core.result.Result.Ok α6)
       | _invalid =>
-        Pure
-          (core.result.Result.Err
-            (ink.reflect.dispatch.DispatchError.UnknownSelector tt))
+        let* α0 :=
+          M.alloc (ink.reflect.dispatch.DispatchError.UnknownSelector tt) in
+        M.alloc (core.result.Result.Err α0)
       end.
     
     Global Instance AssociatedFunction_decode_dispatch
@@ -5516,14 +5529,12 @@ Module
             let* α0 := borrow result u128 in
             let* α1 := deref α0 u128 in
             let* α2 := borrow α1 u128 in
-            let* α3 :=
-              borrow
-                (ink.result_info.IsResultErr.Build_t α2)
-                (ink.result_info.IsResultErr u128) in
+            let* α3 := M.alloc (ink.result_info.IsResultErr.Build_t α2) in
+            let* α4 := borrow α3 (ink.result_info.IsResultErr u128) in
             let* α0 :=
               (ink.result_info.IsResultErrFallback.value
                   (Self := (ink.result_info.IsResultErr u128)))
-                α3 in
+                α4 in
             and
               (ink.result_info.IsResultTypeFallback.VALUE
                 (Self := (ink.result_info.IsResultType u128)))
@@ -5645,14 +5656,12 @@ Module
             let* α0 := borrow result u128 in
             let* α1 := deref α0 u128 in
             let* α2 := borrow α1 u128 in
-            let* α3 :=
-              borrow
-                (ink.result_info.IsResultErr.Build_t α2)
-                (ink.result_info.IsResultErr u128) in
+            let* α3 := M.alloc (ink.result_info.IsResultErr.Build_t α2) in
+            let* α4 := borrow α3 (ink.result_info.IsResultErr u128) in
             let* α0 :=
               (ink.result_info.IsResultErrFallback.value
                   (Self := (ink.result_info.IsResultErr u128)))
-                α3 in
+                α4 in
             and
               (ink.result_info.IsResultTypeFallback.VALUE
                 (Self := (ink.result_info.IsResultType u128)))
@@ -5774,14 +5783,12 @@ Module
             let* α0 := borrow result u128 in
             let* α1 := deref α0 u128 in
             let* α2 := borrow α1 u128 in
-            let* α3 :=
-              borrow
-                (ink.result_info.IsResultErr.Build_t α2)
-                (ink.result_info.IsResultErr u128) in
+            let* α3 := M.alloc (ink.result_info.IsResultErr.Build_t α2) in
+            let* α4 := borrow α3 (ink.result_info.IsResultErr u128) in
             let* α0 :=
               (ink.result_info.IsResultErrFallback.value
                   (Self := (ink.result_info.IsResultErr u128)))
-                α3 in
+                α4 in
             and
               (ink.result_info.IsResultTypeFallback.VALUE
                 (Self := (ink.result_info.IsResultType u128)))
@@ -5904,14 +5911,15 @@ Module
               borrow result (core.result.Result unit erc20.erc20.Error) in
             let* α1 := deref α0 (core.result.Result unit erc20.erc20.Error) in
             let* α2 := borrow α1 (core.result.Result unit erc20.erc20.Error) in
-            let* α3 :=
+            let* α3 := M.alloc (ink.result_info.IsResultErr.Build_t α2) in
+            let* α4 :=
               borrow
-                (ink.result_info.IsResultErr.Build_t α2)
+                α3
                 (ink.result_info.IsResultErr
                   (core.result.Result unit erc20.erc20.Error)) in
             let* α0 :=
               (ink.result_info.IsResultErr (core.result.Result T E))::["value"]
-                α3 in
+                α4 in
             and (ink.result_info.VALUE (Self := unit)) α0 in
           let* _ :=
             let* α0 := not is_reverted in
@@ -6043,14 +6051,15 @@ Module
               borrow result (core.result.Result unit erc20.erc20.Error) in
             let* α1 := deref α0 (core.result.Result unit erc20.erc20.Error) in
             let* α2 := borrow α1 (core.result.Result unit erc20.erc20.Error) in
-            let* α3 :=
+            let* α3 := M.alloc (ink.result_info.IsResultErr.Build_t α2) in
+            let* α4 :=
               borrow
-                (ink.result_info.IsResultErr.Build_t α2)
+                α3
                 (ink.result_info.IsResultErr
                   (core.result.Result unit erc20.erc20.Error)) in
             let* α0 :=
               (ink.result_info.IsResultErr (core.result.Result T E))::["value"]
-                α3 in
+                α4 in
             and (ink.result_info.VALUE (Self := unit)) α0 in
           let* _ :=
             let* α0 := not is_reverted in
@@ -6182,14 +6191,15 @@ Module
               borrow result (core.result.Result unit erc20.erc20.Error) in
             let* α1 := deref α0 (core.result.Result unit erc20.erc20.Error) in
             let* α2 := borrow α1 (core.result.Result unit erc20.erc20.Error) in
-            let* α3 :=
+            let* α3 := M.alloc (ink.result_info.IsResultErr.Build_t α2) in
+            let* α4 :=
               borrow
-                (ink.result_info.IsResultErr.Build_t α2)
+                α3
                 (ink.result_info.IsResultErr
                   (core.result.Result unit erc20.erc20.Error)) in
             let* α0 :=
               (ink.result_info.IsResultErr (core.result.Result T E))::["value"]
-                α3 in
+                α4 in
             and (ink.result_info.VALUE (Self := unit)) α0 in
           let* _ :=
             let* α0 := not is_reverted in
@@ -6309,18 +6319,20 @@ Module Impl_erc20_erc20_Erc20.
           α3 in
       let* _ :=
         let* α0 := ink.codegen.env.StaticEnv.env (Self := erc20.erc20.Erc20) in
-        let* α1 :=
+        let* α1 := M.alloc (core.option.Option.None tt) in
+        let* α2 := M.alloc (core.option.Option.Some caller) in
+        let* α3 :=
           M.alloc
             {|
-              erc20.erc20.Transfer.from := core.option.Option.None tt;
-              erc20.erc20.Transfer.to := core.option.Option.Some caller;
+              erc20.erc20.Transfer.from := α1;
+              erc20.erc20.Transfer.to := α2;
               erc20.erc20.Transfer.value := total_supply;
             |} in
         (ink.codegen.event.emit.EmitEvent.emit_event
             (Self :=
               (ink.env_access.EnvAccess ink_env.types.DefaultEnvironment)))
           α0
-          α1 in
+          α3 in
       let* α0 :=
         core.default.Default.default
           (Self :=
@@ -6463,7 +6475,7 @@ Module Impl_erc20_erc20_Erc20.
           α2
           α3 in
       let* α0 := M.alloc tt in
-      Pure (core.result.Result.Ok α0).
+      M.alloc (core.result.Result.Ok α0).
     
     Global Instance AssociatedFunction_approve :
       Notation.DoubleColon Self "approve" := {
@@ -6493,14 +6505,13 @@ Module Impl_erc20_erc20_Erc20.
         let* α7 := borrow α6 ink_primitives.types.AccountId in
         erc20.erc20.Erc20::["allowance_impl"] α1 α4 α7 in
       let* _ :=
-        let* α0 := lt allowance value in
+        let* α0 := BinOp.lt allowance value in
         let* α1 := use α0 in
         if (α1 : bool) then
-          let* α0 :=
-            Return
-              (core.result.Result.Err
-                (erc20.erc20.Error.InsufficientAllowance tt)) in
-          never_to_any α0
+          let* α0 := M.alloc (erc20.erc20.Error.InsufficientAllowance tt) in
+          let* α1 := M.alloc (core.result.Result.Err α0) in
+          let* α2 := Return α1 in
+          never_to_any α2
         else
           M.alloc tt in
       let* _ :=
@@ -6541,7 +6552,7 @@ Module Impl_erc20_erc20_Erc20.
                 (ink_storage_traits.impls.ManualKey unit))) in
         let* α3 := borrow from ink_primitives.types.AccountId in
         let* α4 := borrow caller ink_primitives.types.AccountId in
-        let* α5 := sub allowance value in
+        let* α5 := BinOp.sub allowance value in
         let* α6 := borrow α5 u128 in
         let* α7 := deref α6 u128 in
         let* α8 := borrow α7 u128 in
@@ -6550,7 +6561,7 @@ Module Impl_erc20_erc20_Erc20.
           (α3, α4)
           α8 in
       let* α0 := M.alloc tt in
-      Pure (core.result.Result.Ok α0).
+      M.alloc (core.result.Result.Ok α0).
     
     Global Instance AssociatedFunction_transfer_from :
       Notation.DoubleColon Self "transfer_from" := {
@@ -6621,14 +6632,13 @@ Module Impl_erc20_erc20_Erc20.
         let* α3 := borrow α2 ink_primitives.types.AccountId in
         erc20.erc20.Erc20::["balance_of_impl"] α1 α3 in
       let* _ :=
-        let* α0 := lt from_balance value in
+        let* α0 := BinOp.lt from_balance value in
         let* α1 := use α0 in
         if (α1 : bool) then
-          let* α0 :=
-            Return
-              (core.result.Result.Err
-                (erc20.erc20.Error.InsufficientBalance tt)) in
-          never_to_any α0
+          let* α0 := M.alloc (erc20.erc20.Error.InsufficientBalance tt) in
+          let* α1 := M.alloc (core.result.Result.Err α0) in
+          let* α2 := Return α1 in
+          never_to_any α2
         else
           M.alloc tt in
       let* _ :=
@@ -6643,7 +6653,7 @@ Module Impl_erc20_erc20_Erc20.
               (ink_storage_traits.impls.ResolverKey
                 ink_storage_traits.impls.AutoKey
                 (ink_storage_traits.impls.ManualKey unit))) in
-        let* α3 := sub from_balance value in
+        let* α3 := BinOp.sub from_balance value in
         let* α4 := borrow α3 u128 in
         let* α5 := deref α4 u128 in
         let* α6 := borrow α5 u128 in
@@ -6666,7 +6676,7 @@ Module Impl_erc20_erc20_Erc20.
               (ink_storage_traits.impls.ResolverKey
                 ink_storage_traits.impls.AutoKey
                 (ink_storage_traits.impls.ManualKey unit))) in
-        let* α3 := add to_balance value in
+        let* α3 := BinOp.add to_balance value in
         let* α4 := borrow α3 u128 in
         let* α5 := deref α4 u128 in
         let* α6 := borrow α5 u128 in
@@ -6677,21 +6687,23 @@ Module Impl_erc20_erc20_Erc20.
         let* α2 :=
           (ink.codegen.env.Env.env (Self := (ref erc20.erc20.Erc20))) α1 in
         let* α3 := deref from ink_primitives.types.AccountId in
-        let* α4 := deref to ink_primitives.types.AccountId in
-        let* α5 :=
+        let* α4 := M.alloc (core.option.Option.Some α3) in
+        let* α5 := deref to ink_primitives.types.AccountId in
+        let* α6 := M.alloc (core.option.Option.Some α5) in
+        let* α7 :=
           M.alloc
             {|
-              erc20.erc20.Transfer.from := core.option.Option.Some α3;
-              erc20.erc20.Transfer.to := core.option.Option.Some α4;
+              erc20.erc20.Transfer.from := α4;
+              erc20.erc20.Transfer.to := α6;
               erc20.erc20.Transfer.value := value;
             |} in
         (ink.codegen.event.emit.EmitEvent.emit_event
             (Self :=
               (ink.env_access.EnvAccess ink_env.types.DefaultEnvironment)))
           α2
-          α5 in
+          α7 in
       let* α0 := M.alloc tt in
-      Pure (core.result.Result.Ok α0).
+      M.alloc (core.result.Result.Ok α0).
     
     Global Instance AssociatedFunction_transfer_from_to :
       Notation.DoubleColon Self "transfer_from_to" := {
@@ -6899,12 +6911,13 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___CallBuilder.
             parity_scale_codec.error.Error::["chain"]
               e
               (mk_str "Could not decode `CallBuilder::account_id`") in
-          let* α1 := Return (core.result.Result.Err α0) in
-          never_to_any α1
+          let* α1 := M.alloc (core.result.Result.Err α0) in
+          let* α2 := Return α1 in
+          never_to_any α2
         | core.result.Result __codec_res_edqy => Pure __codec_res_edqy
         end in
       let* α1 := M.alloc {| erc20.erc20._.CallBuilder.account_id := α0; |} in
-      Pure (core.result.Result.Ok α1).
+      M.alloc (core.result.Result.Ok α1).
     
     Global Instance AssociatedFunction_decode
         {__CodecInputEdqy : Set}
@@ -6932,11 +6945,11 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___CallBuilder.
         | (left_val, right_val) =>
           let* α0 := deref left_val usize in
           let* α1 := deref right_val usize in
-          let* α2 := eq α0 α1 in
+          let* α2 := BinOp.eq α0 α1 in
           let* α3 := not α2 in
           let* α4 := use α3 in
           if (α4 : bool) then
-            let kind := core.panicking.AssertKind.Eq tt in
+            let* kind := M.alloc (core.panicking.AssertKind.Eq tt) in
             let* _ :=
               let* α0 := deref left_val usize in
               let* α1 := borrow α0 usize in
@@ -6946,11 +6959,8 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___CallBuilder.
               let* α5 := borrow α4 usize in
               let* α6 := deref α5 usize in
               let* α7 := borrow α6 usize in
-              core.panicking.assert_failed
-                kind
-                α3
-                α7
-                (core.option.Option.None tt) in
+              let* α8 := M.alloc (core.option.Option.None tt) in
+              core.panicking.assert_failed kind α3 α7 α8 in
             let* α0 := M.alloc tt in
             never_to_any α0
           else
@@ -6959,7 +6969,7 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___CallBuilder.
       let* _ :=
         let* α0 := core.mem.size_of in
         let* α1 := M.alloc 0 in
-        let* α2 := gt α0 α1 in
+        let* α2 := BinOp.gt α0 α1 in
         let* α3 := use α2 in
         let* α4 :=
           if (α3 : bool) then
@@ -6967,7 +6977,7 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___CallBuilder.
           else
             M.alloc 0 in
         let* α5 := M.alloc 1 in
-        let* α6 := le α4 α5 in
+        let* α6 := BinOp.le α4 α5 in
         let* α7 := not α6 in
         let* α8 := use α7 in
         if (α8 : bool) then
@@ -7068,7 +7078,7 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___CallBuilder.
         M.alloc tt in
       let* α0 :=
         parity_scale_codec.decode_finished.DecodeFinished::["assert_decoding_finished"] in
-      Pure (core.result.Result.Ok α0).
+      M.alloc (core.result.Result.Ok α0).
     
     Global Instance AssociatedFunction_decode_into
         {__CodecInputEdqy : Set}
@@ -7343,7 +7353,7 @@ Module
         (ink_metadata.layout.StructLayout F)::["new"]
           (mk_str "CallBuilder")
           [ α3 ] in
-      Pure (ink_metadata.layout.Layout.Struct α4).
+      M.alloc (ink_metadata.layout.Layout.Struct α4).
     
     Global Instance AssociatedFunction_layout :
       Notation.DoubleColon Self "layout" := {
@@ -8241,12 +8251,13 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Erc20Ref.
             parity_scale_codec.error.Error::["chain"]
               e
               (mk_str "Could not decode `Erc20Ref::inner`") in
-          let* α1 := Return (core.result.Result.Err α0) in
-          never_to_any α1
+          let* α1 := M.alloc (core.result.Result.Err α0) in
+          let* α2 := Return α1 in
+          never_to_any α2
         | core.result.Result __codec_res_edqy => Pure __codec_res_edqy
         end in
       let* α1 := M.alloc {| erc20.erc20.Erc20Ref.inner := α0; |} in
-      Pure (core.result.Result.Ok α1).
+      M.alloc (core.result.Result.Ok α1).
     
     Global Instance AssociatedFunction_decode
         {__CodecInputEdqy : Set}
@@ -8509,7 +8520,7 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_erc20_erc20_Erc20Ref.
         (ink_metadata.layout.StructLayout F)::["new"]
           (mk_str "Erc20Ref")
           [ α3 ] in
-      Pure (ink_metadata.layout.Layout.Struct α4).
+      M.alloc (ink_metadata.layout.Layout.Struct α4).
     
     Global Instance AssociatedFunction_layout :
       Notation.DoubleColon Self "layout" := {
@@ -8597,14 +8608,15 @@ Module
     Definition Error : Set := E.
     
     Definition ok (value : erc20.erc20.Erc20Ref) : M Output :=
-      Pure (core.result.Result.Ok value).
+      M.alloc (core.result.Result.Ok value).
     
     Global Instance AssociatedFunction_ok : Notation.DoubleColon Self "ok" := {
       Notation.double_colon := ok;
     }.
     
     Definition err (err : Error) : M (core.option.Option Output) :=
-      Pure (core.option.Option.Some (core.result.Result.Err err)).
+      let* α0 := M.alloc (core.result.Result.Err err) in
+      M.alloc (core.option.Option.Some α0).
     
     Global Instance AssociatedFunction_err :
       Notation.DoubleColon Self "err" := {
@@ -9514,7 +9526,7 @@ Definition __ink_generate_metadata
       (ink_metadata.layout.RootLayout scale_info.form.MetaForm)::["new"]
         α0
         α4 in
-    Pure (ink_metadata.layout.Layout.Root α5) in
+    M.alloc (ink_metadata.layout.Layout.Root α5) in
   let* _ :=
     let* α0 :=
       borrow layout (ink_metadata.layout.Layout scale_info.form.MetaForm) in
@@ -9597,13 +9609,13 @@ Definition __ink_generate_metadata
         (ink_metadata.specs.TypeSpec
               scale_info.form.MetaForm)::["with_name_str"]
           (mk_str "ink_primitives::ConstructorResult") in
-      Pure (core.option.Option.Some α0)
+      M.alloc (core.option.Option.Some α0)
     else
       let* α0 :=
         (ink_metadata.specs.TypeSpec
               scale_info.form.MetaForm)::["with_name_str"]
           (mk_str "ink_primitives::ConstructorResult") in
-      Pure (core.option.Option.Some α0) in
+      M.alloc (core.option.Option.Some α0) in
   let* α20 := (ink_metadata.specs.ReturnTypeSpec F)::["new"] α19 in
   let* α21 :=
     (ink_metadata.specs.ConstructorSpecBuilder
@@ -10909,7 +10921,7 @@ Module Impl_core_cmp_PartialEq_for_erc20_erc20_Error.
         let* α0 := deref other erc20.erc20.Error in
         let* α1 := borrow α0 erc20.erc20.Error in
         "unimplemented parent_kind" α1 in
-      eq __self_tag __arg1_tag.
+      BinOp.eq __self_tag __arg1_tag.
     
     Global Instance AssociatedFunction_eq : Notation.DoubleColon Self "eq" := {
       Notation.double_colon := eq;
@@ -11077,9 +11089,8 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Error.
         let* _ :=
           let* α0 :=
             borrow
-              (Pure
-                (core.result.Result.Ok
-                  (erc20.erc20.Error.InsufficientBalance tt)))
+              (let* α0 := M.alloc (erc20.erc20.Error.InsufficientBalance tt) in
+              M.alloc (core.result.Result.Ok α0))
               type not implemented in
           let* α1 := M.alloc tt in
           let* α2 :=
@@ -11091,9 +11102,9 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Error.
         let* _ :=
           let* α0 :=
             borrow
-              (Pure
-                (core.result.Result.Ok
-                  (erc20.erc20.Error.InsufficientAllowance tt)))
+              (let* α0 :=
+                M.alloc (erc20.erc20.Error.InsufficientAllowance tt) in
+              M.alloc (core.result.Result.Ok α0))
               type not implemented in
           let* α1 := M.alloc tt in
           let* α2 :=
@@ -11108,7 +11119,7 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Error.
               (let* α0 :=
                 (core.convert.Into.into (Self := (ref str)))
                   (mk_str "Could not decode `Error`, variant doesn't exist") in
-              Pure (core.result.Result.Err α0))
+              M.alloc (core.result.Result.Err α0))
               type not implemented in
           let* α1 := M.alloc tt in
           let* α2 :=

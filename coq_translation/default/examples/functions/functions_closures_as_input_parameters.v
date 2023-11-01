@@ -88,7 +88,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
   let* _ := functions_closures_as_input_parameters.apply diary in
   let double :=
     let* α0 := M.alloc 2 in
-    mul α0 x in
+    BinOp.mul α0 x in
   let* _ :=
     let* _ :=
       let* α0 := borrow [ mk_str "3 doubled: "; mk_str "

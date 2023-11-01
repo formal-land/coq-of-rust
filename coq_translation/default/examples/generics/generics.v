@@ -51,15 +51,19 @@ Definition SingleGen `{ℋ : State.Trait} (T : Set) : Set :=
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
-  let _s := generics.Single.Build_t (generics.A.Build_t tt) in
+  let* _s :=
+    let* α0 := M.alloc (generics.A.Build_t tt) in
+    M.alloc (generics.Single.Build_t α0) in
   let* _char :=
     let* α0 := M.alloc "a"%char in
-    Pure (generics.SingleGen.Build_t α0) in
-  let _t := generics.SingleGen.Build_t (generics.A.Build_t tt) in
+    M.alloc (generics.SingleGen.Build_t α0) in
+  let* _t :=
+    let* α0 := M.alloc (generics.A.Build_t tt) in
+    M.alloc (generics.SingleGen.Build_t α0) in
   let* _i32 :=
     let* α0 := M.alloc 6 in
-    Pure (generics.SingleGen.Build_t α0) in
+    M.alloc (generics.SingleGen.Build_t α0) in
   let* _char :=
     let* α0 := M.alloc "a"%char in
-    Pure (generics.SingleGen.Build_t α0) in
+    M.alloc (generics.SingleGen.Build_t α0) in
   M.alloc tt.
