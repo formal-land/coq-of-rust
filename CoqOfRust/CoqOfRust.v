@@ -186,9 +186,10 @@ Require CoqOfRust.core.mem.
 Require CoqOfRust.core.num.
 Require CoqOfRust.core.ops.
 Require CoqOfRust.core.option.
+Require CoqOfRust.core.panic.
+Require CoqOfRust.core.panicking.
 Require CoqOfRust.core.primitive.
 Require CoqOfRust.core.result.
-Require CoqOfRust.core.panic.unwind_safe.
 
 Module core.
   Export CoqOfRust.core.alloc.
@@ -208,26 +209,10 @@ Module core.
   Export CoqOfRust.core.num.
   Export CoqOfRust.core.ops.
   Export CoqOfRust.core.option.
+  Export CoqOfRust.core.panic.
+  Export CoqOfRust.core.panicking.
   Export CoqOfRust.core.primitive.
   Export CoqOfRust.core.result.
-
-  Module panic.
-    Export CoqOfRust.core.panic.unwind_safe.
-  End panic.
-
-  Module panicking.
-    Module AssertKind.
-      Inductive t : Set :=
-      | Eq : t
-      | Ne : t
-      | Match.
-    End AssertKind.
-    Definition AssertKind := AssertKind.t.
-
-    Parameter assert_failed :
-      forall `{State.Trait} {T U : Set} `{fmt.Debug.Trait T} `{fmt.Debug.Trait U},
-      AssertKind -> ref T -> ref U -> option.Option fmt.Arguments -> M Empty_set.
-  End panicking.
 End core.
 
 Require CoqOfRust._std.arch.
@@ -515,16 +500,6 @@ Module ToString_Instances.
     alloc.string.ToString.Trait Self.
   Admitted.
 End ToString_Instances.
-
-Module Parse_Instances.
-  Global Instance Parse_u32 `{H : State.Trait} :
-    Notation.Dot "parse" (T := string -> M u32).
-  Admitted.
-
-  Global Instance Parse_bool `{H : State.Trait} :
-    Notation.Dot "parse" (T := string -> M bool).
-  Admitted.
-End Parse_Instances.
 
 (** For now we assume that all types implement [to_owned] and that this is the
     identity function. *)

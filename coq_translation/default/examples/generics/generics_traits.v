@@ -30,8 +30,8 @@ Module DoubleDrop.
   End DoubleDrop.
 End DoubleDrop.
 
-Module Impl_generics_traits_DoubleDrop_for_U.
-  Section Impl_generics_traits_DoubleDrop_for_U.
+Module Impl_generics_traits_DoubleDrop_T_for_U.
+  Section Impl_generics_traits_DoubleDrop_T_for_U.
     Context `{ℋ : State.Trait}.
     
     Context {T U : Set}.
@@ -50,9 +50,9 @@ Module Impl_generics_traits_DoubleDrop_for_U.
       generics_traits.DoubleDrop.double_drop := double_drop;
     }.
     Admitted.
-  End Impl_generics_traits_DoubleDrop_for_U.
+  End Impl_generics_traits_DoubleDrop_T_for_U.
   Global Hint Resolve ℐ : core.
-End Impl_generics_traits_DoubleDrop_for_U.
+End Impl_generics_traits_DoubleDrop_T_for_U.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=

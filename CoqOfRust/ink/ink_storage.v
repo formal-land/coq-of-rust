@@ -163,9 +163,9 @@ Module lazy.
       Impl_ink_storage_traits_storage_Storable_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
     
     Module
-      Impl_ink_storage_traits_storage_StorableHint_for_ink_storage_lazy_mapping_Mapping_K_V_InnerKey.
+      Impl_ink_storage_traits_storage_StorableHint_Key_for_ink_storage_lazy_mapping_Mapping_K_V_InnerKey.
       Section
-        Impl_ink_storage_traits_storage_StorableHint_for_ink_storage_lazy_mapping_Mapping_K_V_InnerKey.
+        Impl_ink_storage_traits_storage_StorableHint_Key_for_ink_storage_lazy_mapping_Mapping_K_V_InnerKey.
         Context `{ℋ : State.Trait}.
         
         Context {K V Key InnerKey : Set}.
@@ -187,10 +187,10 @@ Module lazy.
         }.
         Admitted.
       End
-        Impl_ink_storage_traits_storage_StorableHint_for_ink_storage_lazy_mapping_Mapping_K_V_InnerKey.
+        Impl_ink_storage_traits_storage_StorableHint_Key_for_ink_storage_lazy_mapping_Mapping_K_V_InnerKey.
       Global Hint Resolve ℐ : core.
     End
-      Impl_ink_storage_traits_storage_StorableHint_for_ink_storage_lazy_mapping_Mapping_K_V_InnerKey.
+      Impl_ink_storage_traits_storage_StorableHint_Key_for_ink_storage_lazy_mapping_Mapping_K_V_InnerKey.
     
     Module
       Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
@@ -367,9 +367,9 @@ Module lazy.
     Impl_ink_storage_traits_storage_Storable_for_ink_storage_lazy_Lazy_V_KeyType.
   
   Module
-    Impl_ink_storage_traits_storage_StorableHint_for_ink_storage_lazy_Lazy_V_InnerKey.
+    Impl_ink_storage_traits_storage_StorableHint_Key_for_ink_storage_lazy_Lazy_V_InnerKey.
     Section
-      Impl_ink_storage_traits_storage_StorableHint_for_ink_storage_lazy_Lazy_V_InnerKey.
+      Impl_ink_storage_traits_storage_StorableHint_Key_for_ink_storage_lazy_Lazy_V_InnerKey.
       Context `{ℋ : State.Trait}.
       
       Context {V Key InnerKey : Set}.
@@ -391,10 +391,10 @@ Module lazy.
       }.
       Admitted.
     End
-      Impl_ink_storage_traits_storage_StorableHint_for_ink_storage_lazy_Lazy_V_InnerKey.
+      Impl_ink_storage_traits_storage_StorableHint_Key_for_ink_storage_lazy_Lazy_V_InnerKey.
     Global Hint Resolve ℐ : core.
   End
-    Impl_ink_storage_traits_storage_StorableHint_for_ink_storage_lazy_Lazy_V_InnerKey.
+    Impl_ink_storage_traits_storage_StorableHint_Key_for_ink_storage_lazy_Lazy_V_InnerKey.
   
   Module
     Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_lazy_Lazy_V_KeyType.
@@ -584,9 +584,9 @@ Module mapping.
     Impl_ink_storage_traits_storage_Storable_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
   
   Module
-    Impl_ink_storage_traits_storage_StorableHint_for_ink_storage_lazy_mapping_Mapping_K_V_InnerKey.
+    Impl_ink_storage_traits_storage_StorableHint_Key_for_ink_storage_lazy_mapping_Mapping_K_V_InnerKey.
     Section
-      Impl_ink_storage_traits_storage_StorableHint_for_ink_storage_lazy_mapping_Mapping_K_V_InnerKey.
+      Impl_ink_storage_traits_storage_StorableHint_Key_for_ink_storage_lazy_mapping_Mapping_K_V_InnerKey.
       Context `{ℋ : State.Trait}.
       
       Context {K V Key InnerKey : Set}.
@@ -608,10 +608,10 @@ Module mapping.
       }.
       Admitted.
     End
-      Impl_ink_storage_traits_storage_StorableHint_for_ink_storage_lazy_mapping_Mapping_K_V_InnerKey.
+      Impl_ink_storage_traits_storage_StorableHint_Key_for_ink_storage_lazy_mapping_Mapping_K_V_InnerKey.
     Global Hint Resolve ℐ : core.
   End
-    Impl_ink_storage_traits_storage_StorableHint_for_ink_storage_lazy_mapping_Mapping_K_V_InnerKey.
+    Impl_ink_storage_traits_storage_StorableHint_Key_for_ink_storage_lazy_mapping_Mapping_K_V_InnerKey.
   
   Module
     Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
@@ -836,9 +836,9 @@ End
   Impl_ink_storage_traits_storage_Storable_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
 
 Module
-  Impl_ink_storage_traits_storage_StorableHint_for_ink_storage_lazy_mapping_Mapping_K_V_InnerKey.
+  Impl_ink_storage_traits_storage_StorableHint_Key_for_ink_storage_lazy_mapping_Mapping_K_V_InnerKey.
   Section
-    Impl_ink_storage_traits_storage_StorableHint_for_ink_storage_lazy_mapping_Mapping_K_V_InnerKey.
+    Impl_ink_storage_traits_storage_StorableHint_Key_for_ink_storage_lazy_mapping_Mapping_K_V_InnerKey.
     Context `{ℋ : State.Trait}.
     
     Context {K V Key InnerKey : Set}.
@@ -860,10 +860,10 @@ Module
     }.
     Admitted.
   End
-    Impl_ink_storage_traits_storage_StorableHint_for_ink_storage_lazy_mapping_Mapping_K_V_InnerKey.
+    Impl_ink_storage_traits_storage_StorableHint_Key_for_ink_storage_lazy_mapping_Mapping_K_V_InnerKey.
   Global Hint Resolve ℐ : core.
 End
-  Impl_ink_storage_traits_storage_StorableHint_for_ink_storage_lazy_mapping_Mapping_K_V_InnerKey.
+  Impl_ink_storage_traits_storage_StorableHint_Key_for_ink_storage_lazy_mapping_Mapping_K_V_InnerKey.
 
 Module
   Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
@@ -1106,9 +1106,9 @@ End
   Impl_ink_storage_traits_storage_Storable_for_ink_storage_lazy_Lazy_V_KeyType.
 
 Module
-  Impl_ink_storage_traits_storage_StorableHint_for_ink_storage_lazy_Lazy_V_InnerKey.
+  Impl_ink_storage_traits_storage_StorableHint_Key_for_ink_storage_lazy_Lazy_V_InnerKey.
   Section
-    Impl_ink_storage_traits_storage_StorableHint_for_ink_storage_lazy_Lazy_V_InnerKey.
+    Impl_ink_storage_traits_storage_StorableHint_Key_for_ink_storage_lazy_Lazy_V_InnerKey.
     Context `{ℋ : State.Trait}.
     
     Context {V Key InnerKey : Set}.
@@ -1130,10 +1130,10 @@ Module
     }.
     Admitted.
   End
-    Impl_ink_storage_traits_storage_StorableHint_for_ink_storage_lazy_Lazy_V_InnerKey.
+    Impl_ink_storage_traits_storage_StorableHint_Key_for_ink_storage_lazy_Lazy_V_InnerKey.
   Global Hint Resolve ℐ : core.
 End
-  Impl_ink_storage_traits_storage_StorableHint_for_ink_storage_lazy_Lazy_V_InnerKey.
+  Impl_ink_storage_traits_storage_StorableHint_Key_for_ink_storage_lazy_Lazy_V_InnerKey.
 
 Module
   Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_lazy_Lazy_V_KeyType.

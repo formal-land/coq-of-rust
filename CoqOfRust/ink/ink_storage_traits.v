@@ -1050,8 +1050,10 @@ Module impls.
         (ink_storage_traits.storage.StorableHint.PreferredKey (Self := T))
         (ink_storage_traits.impls.ManualKey ParentKey)).
   
-  Module Impl_ink_storage_traits_storage_AutoStorableHint_for_T.
-    Section Impl_ink_storage_traits_storage_AutoStorableHint_for_T.
+  Module
+    Impl_ink_storage_traits_storage_AutoStorableHint_ink_storage_traits_impls_ManualKey_ParentKey_for_T.
+    Section
+      Impl_ink_storage_traits_storage_AutoStorableHint_ink_storage_traits_impls_ManualKey_ParentKey_for_T.
       Context `{ℋ : State.Trait}.
       
       Context {T ParentKey : Set}.
@@ -1081,9 +1083,11 @@ Module impls.
         ink_storage_traits.storage.AutoStorableHint.Type_ := Type_;
       }.
       Admitted.
-    End Impl_ink_storage_traits_storage_AutoStorableHint_for_T.
+    End
+      Impl_ink_storage_traits_storage_AutoStorableHint_ink_storage_traits_impls_ManualKey_ParentKey_for_T.
     Global Hint Resolve ℐ : core.
-  End Impl_ink_storage_traits_storage_AutoStorableHint_for_T.
+  End
+    Impl_ink_storage_traits_storage_AutoStorableHint_ink_storage_traits_impls_ManualKey_ParentKey_for_T.
   
   Module Impl_ink_storage_traits_storage_private_Sealed_for_P.
     Section Impl_ink_storage_traits_storage_private_Sealed_for_P.
@@ -1148,8 +1152,8 @@ Module impls.
     Global Hint Resolve ℐ : core.
   End Impl_ink_storage_traits_storage_StorageKey_for_P.
   
-  Module Impl_ink_storage_traits_storage_StorableHint_for_P.
-    Section Impl_ink_storage_traits_storage_StorableHint_for_P.
+  Module Impl_ink_storage_traits_storage_StorableHint_Key_for_P.
+    Section Impl_ink_storage_traits_storage_StorableHint_Key_for_P.
       Context `{ℋ : State.Trait}.
       
       Context {P Key : Set}.
@@ -1169,9 +1173,9 @@ Module impls.
         ink_storage_traits.storage.StorableHint.PreferredKey := PreferredKey;
       }.
       Admitted.
-    End Impl_ink_storage_traits_storage_StorableHint_for_P.
+    End Impl_ink_storage_traits_storage_StorableHint_Key_for_P.
     Global Hint Resolve ℐ : core.
-  End Impl_ink_storage_traits_storage_StorableHint_for_P.
+  End Impl_ink_storage_traits_storage_StorableHint_Key_for_P.
 End impls.
 
 Module KeyType.
@@ -2131,8 +2135,10 @@ Ltac FinalKey T ParentKey :=
       (ink_storage_traits.storage.StorableHint.PreferredKey (Self := T))
       (ink_storage_traits.impls.ManualKey ParentKey)).
 
-Module Impl_ink_storage_traits_storage_AutoStorableHint_for_T.
-  Section Impl_ink_storage_traits_storage_AutoStorableHint_for_T.
+Module
+  Impl_ink_storage_traits_storage_AutoStorableHint_ink_storage_traits_impls_ManualKey_ParentKey_for_T.
+  Section
+    Impl_ink_storage_traits_storage_AutoStorableHint_ink_storage_traits_impls_ManualKey_ParentKey_for_T.
     Context `{ℋ : State.Trait}.
     
     Context {T ParentKey : Set}.
@@ -2161,9 +2167,11 @@ Module Impl_ink_storage_traits_storage_AutoStorableHint_for_T.
       ink_storage_traits.storage.AutoStorableHint.Type_ := Type_;
     }.
     Admitted.
-  End Impl_ink_storage_traits_storage_AutoStorableHint_for_T.
+  End
+    Impl_ink_storage_traits_storage_AutoStorableHint_ink_storage_traits_impls_ManualKey_ParentKey_for_T.
   Global Hint Resolve ℐ : core.
-End Impl_ink_storage_traits_storage_AutoStorableHint_for_T.
+End
+  Impl_ink_storage_traits_storage_AutoStorableHint_ink_storage_traits_impls_ManualKey_ParentKey_for_T.
 
 Module Impl_ink_storage_traits_storage_private_Sealed_for_P.
   Section Impl_ink_storage_traits_storage_private_Sealed_for_P.
@@ -2228,8 +2236,8 @@ Module Impl_ink_storage_traits_storage_StorageKey_for_P.
   Global Hint Resolve ℐ : core.
 End Impl_ink_storage_traits_storage_StorageKey_for_P.
 
-Module Impl_ink_storage_traits_storage_StorableHint_for_P.
-  Section Impl_ink_storage_traits_storage_StorableHint_for_P.
+Module Impl_ink_storage_traits_storage_StorableHint_Key_for_P.
+  Section Impl_ink_storage_traits_storage_StorableHint_Key_for_P.
     Context `{ℋ : State.Trait}.
     
     Context {P Key : Set}.
@@ -2249,9 +2257,9 @@ Module Impl_ink_storage_traits_storage_StorableHint_for_P.
       ink_storage_traits.storage.StorableHint.PreferredKey := PreferredKey;
     }.
     Admitted.
-  End Impl_ink_storage_traits_storage_StorableHint_for_P.
+  End Impl_ink_storage_traits_storage_StorableHint_Key_for_P.
   Global Hint Resolve ℐ : core.
-End Impl_ink_storage_traits_storage_StorableHint_for_P.
+End Impl_ink_storage_traits_storage_StorableHint_Key_for_P.
 
 Module Storable.
   Section Storable.

@@ -175,8 +175,10 @@ Module config.
     Global Hint Resolve ℐ : core.
   End Impl_core_cmp_Eq_for_ink_e2e_macro_config_E2EConfig.
   
-  Module Impl_core_convert_TryFrom_for_ink_e2e_macro_config_E2EConfig.
-    Section Impl_core_convert_TryFrom_for_ink_e2e_macro_config_E2EConfig.
+  Module
+    Impl_core_convert_TryFrom_ink_ir_ast_attr_args_AttributeArgs_for_ink_e2e_macro_config_E2EConfig.
+    Section
+      Impl_core_convert_TryFrom_ink_ir_ast_attr_args_AttributeArgs_for_ink_e2e_macro_config_E2EConfig.
       Context `{ℋ : State.Trait}.
       
       Definition Self : Set := ink_e2e_macro.config.E2EConfig.
@@ -199,9 +201,11 @@ Module config.
         core.convert.TryFrom.try_from := try_from;
       }.
       Admitted.
-    End Impl_core_convert_TryFrom_for_ink_e2e_macro_config_E2EConfig.
+    End
+      Impl_core_convert_TryFrom_ink_ir_ast_attr_args_AttributeArgs_for_ink_e2e_macro_config_E2EConfig.
     Global Hint Resolve ℐ : core.
-  End Impl_core_convert_TryFrom_for_ink_e2e_macro_config_E2EConfig.
+  End
+    Impl_core_convert_TryFrom_ink_ir_ast_attr_args_AttributeArgs_for_ink_e2e_macro_config_E2EConfig.
 End config.
 
 Module ir.
@@ -261,8 +265,8 @@ Module ir.
   End InkE2ETest.
   Definition InkE2ETest `{ℋ : State.Trait} : Set := M.val InkE2ETest.t.
   
-  Module Impl_core_convert_From_for_ink_e2e_macro_ir_E2EFn.
-    Section Impl_core_convert_From_for_ink_e2e_macro_ir_E2EFn.
+  Module Impl_core_convert_From_syn_item_ItemFn_for_ink_e2e_macro_ir_E2EFn.
+    Section Impl_core_convert_From_syn_item_ItemFn_for_ink_e2e_macro_ir_E2EFn.
       Context `{ℋ : State.Trait}.
       
       Definition Self : Set := ink_e2e_macro.ir.E2EFn.
@@ -279,9 +283,9 @@ Module ir.
         core.convert.From.from := from;
       }.
       Admitted.
-    End Impl_core_convert_From_for_ink_e2e_macro_ir_E2EFn.
+    End Impl_core_convert_From_syn_item_ItemFn_for_ink_e2e_macro_ir_E2EFn.
     Global Hint Resolve ℐ : core.
-  End Impl_core_convert_From_for_ink_e2e_macro_ir_E2EFn.
+  End Impl_core_convert_From_syn_item_ItemFn_for_ink_e2e_macro_ir_E2EFn.
 End ir.
 
 Module codegen.
@@ -333,8 +337,10 @@ Module codegen.
   End InkE2ETest.
   Definition InkE2ETest `{ℋ : State.Trait} : Set := M.val InkE2ETest.t.
   
-  Module Impl_core_convert_From_for_ink_e2e_macro_codegen_InkE2ETest.
-    Section Impl_core_convert_From_for_ink_e2e_macro_codegen_InkE2ETest.
+  Module
+    Impl_core_convert_From_ink_e2e_macro_ir_InkE2ETest_for_ink_e2e_macro_codegen_InkE2ETest.
+    Section
+      Impl_core_convert_From_ink_e2e_macro_ir_InkE2ETest_for_ink_e2e_macro_codegen_InkE2ETest.
       Context `{ℋ : State.Trait}.
       
       Definition Self : Set := ink_e2e_macro.codegen.InkE2ETest.
@@ -352,9 +358,11 @@ Module codegen.
         core.convert.From.from := from;
       }.
       Admitted.
-    End Impl_core_convert_From_for_ink_e2e_macro_codegen_InkE2ETest.
+    End
+      Impl_core_convert_From_ink_e2e_macro_ir_InkE2ETest_for_ink_e2e_macro_codegen_InkE2ETest.
     Global Hint Resolve ℐ : core.
-  End Impl_core_convert_From_for_ink_e2e_macro_codegen_InkE2ETest.
+  End
+    Impl_core_convert_From_ink_e2e_macro_ir_InkE2ETest_for_ink_e2e_macro_codegen_InkE2ETest.
   
   (* Module Impl_core_fmt_Debug_for_ink_e2e_macro_codegen_ContractManifests.
     (* Section Impl_core_fmt_Debug_for_ink_e2e_macro_codegen_ContractManifests.
@@ -429,8 +437,10 @@ Parameter set_already_built_contracts :
 End InkE2ETest.
 Definition InkE2ETest `{ℋ : State.Trait} : Set := M.val InkE2ETest.t. *)
 
-Module Impl_core_convert_From_for_ink_e2e_macro_codegen_InkE2ETest.
-  Section Impl_core_convert_From_for_ink_e2e_macro_codegen_InkE2ETest.
+Module
+  Impl_core_convert_From_ink_e2e_macro_ir_InkE2ETest_for_ink_e2e_macro_codegen_InkE2ETest.
+  Section
+    Impl_core_convert_From_ink_e2e_macro_ir_InkE2ETest_for_ink_e2e_macro_codegen_InkE2ETest.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := ink_e2e_macro.codegen.InkE2ETest.
@@ -448,9 +458,11 @@ Module Impl_core_convert_From_for_ink_e2e_macro_codegen_InkE2ETest.
       core.convert.From.from := from;
     }.
     Admitted.
-  End Impl_core_convert_From_for_ink_e2e_macro_codegen_InkE2ETest.
+  End
+    Impl_core_convert_From_ink_e2e_macro_ir_InkE2ETest_for_ink_e2e_macro_codegen_InkE2ETest.
   Global Hint Resolve ℐ : core.
-End Impl_core_convert_From_for_ink_e2e_macro_codegen_InkE2ETest.
+End
+  Impl_core_convert_From_ink_e2e_macro_ir_InkE2ETest_for_ink_e2e_macro_codegen_InkE2ETest.
 
 (* Module Impl_core_fmt_Debug_for_ink_e2e_macro_codegen_ContractManifests.
   (* Section Impl_core_fmt_Debug_for_ink_e2e_macro_codegen_ContractManifests.
@@ -638,8 +650,10 @@ Module Impl_core_cmp_Eq_for_ink_e2e_macro_config_E2EConfig.
   Global Hint Resolve ℐ : core.
 End Impl_core_cmp_Eq_for_ink_e2e_macro_config_E2EConfig.
 
-Module Impl_core_convert_TryFrom_for_ink_e2e_macro_config_E2EConfig.
-  Section Impl_core_convert_TryFrom_for_ink_e2e_macro_config_E2EConfig.
+Module
+  Impl_core_convert_TryFrom_ink_ir_ast_attr_args_AttributeArgs_for_ink_e2e_macro_config_E2EConfig.
+  Section
+    Impl_core_convert_TryFrom_ink_ir_ast_attr_args_AttributeArgs_for_ink_e2e_macro_config_E2EConfig.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := ink_e2e_macro.config.E2EConfig.
@@ -661,9 +675,11 @@ Module Impl_core_convert_TryFrom_for_ink_e2e_macro_config_E2EConfig.
       core.convert.TryFrom.try_from := try_from;
     }.
     Admitted.
-  End Impl_core_convert_TryFrom_for_ink_e2e_macro_config_E2EConfig.
+  End
+    Impl_core_convert_TryFrom_ink_ir_ast_attr_args_AttributeArgs_for_ink_e2e_macro_config_E2EConfig.
   Global Hint Resolve ℐ : core.
-End Impl_core_convert_TryFrom_for_ink_e2e_macro_config_E2EConfig.
+End
+  Impl_core_convert_TryFrom_ink_ir_ast_attr_args_AttributeArgs_for_ink_e2e_macro_config_E2EConfig.
 
 Module InkE2ETest.
   Section InkE2ETest.
@@ -721,8 +737,8 @@ Module E2EFn.
 End E2EFn.
 Definition E2EFn `{ℋ : State.Trait} : Set := M.val E2EFn.t.
 
-Module Impl_core_convert_From_for_ink_e2e_macro_ir_E2EFn.
-  Section Impl_core_convert_From_for_ink_e2e_macro_ir_E2EFn.
+Module Impl_core_convert_From_syn_item_ItemFn_for_ink_e2e_macro_ir_E2EFn.
+  Section Impl_core_convert_From_syn_item_ItemFn_for_ink_e2e_macro_ir_E2EFn.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := ink_e2e_macro.ir.E2EFn.
@@ -739,9 +755,9 @@ Module Impl_core_convert_From_for_ink_e2e_macro_ir_E2EFn.
       core.convert.From.from := from;
     }.
     Admitted.
-  End Impl_core_convert_From_for_ink_e2e_macro_ir_E2EFn.
+  End Impl_core_convert_From_syn_item_ItemFn_for_ink_e2e_macro_ir_E2EFn.
   Global Hint Resolve ℐ : core.
-End Impl_core_convert_From_for_ink_e2e_macro_ir_E2EFn.
+End Impl_core_convert_From_syn_item_ItemFn_for_ink_e2e_macro_ir_E2EFn.
 
 Parameter test :
     forall `{ℋ : State.Trait},

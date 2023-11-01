@@ -74,8 +74,10 @@ Module Impl_core_error_Error_for_wrapping_errors_DoubleError.
   Global Hint Resolve ℐ : core.
 End Impl_core_error_Error_for_wrapping_errors_DoubleError.
 
-Module Impl_core_convert_From_for_wrapping_errors_DoubleError.
-  Section Impl_core_convert_From_for_wrapping_errors_DoubleError.
+Module
+  Impl_core_convert_From_core_num_error_ParseIntError_for_wrapping_errors_DoubleError.
+  Section
+    Impl_core_convert_From_core_num_error_ParseIntError_for_wrapping_errors_DoubleError.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := wrapping_errors.DoubleError.
@@ -93,9 +95,11 @@ Module Impl_core_convert_From_for_wrapping_errors_DoubleError.
       core.convert.From.from := from;
     }.
     Admitted.
-  End Impl_core_convert_From_for_wrapping_errors_DoubleError.
+  End
+    Impl_core_convert_From_core_num_error_ParseIntError_for_wrapping_errors_DoubleError.
   Global Hint Resolve ℐ : core.
-End Impl_core_convert_From_for_wrapping_errors_DoubleError.
+End
+  Impl_core_convert_From_core_num_error_ParseIntError_for_wrapping_errors_DoubleError.
 
 Parameter double_first :
     forall `{ℋ : State.Trait},

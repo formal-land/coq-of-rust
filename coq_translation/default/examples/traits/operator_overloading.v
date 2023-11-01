@@ -95,8 +95,10 @@ Module Impl_core_fmt_Debug_for_operator_overloading_BarFoo.
   Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_operator_overloading_BarFoo.
 
-Module Impl_core_ops_arith_Add_for_operator_overloading_Foo.
-  Section Impl_core_ops_arith_Add_for_operator_overloading_Foo.
+Module
+  Impl_core_ops_arith_Add_operator_overloading_Bar_for_operator_overloading_Foo.
+  Section
+    Impl_core_ops_arith_Add_operator_overloading_Bar_for_operator_overloading_Foo.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := operator_overloading.Foo.
@@ -131,12 +133,16 @@ Module Impl_core_ops_arith_Add_for_operator_overloading_Foo.
       core.ops.arith.Add.add := add;
     }.
     Admitted.
-  End Impl_core_ops_arith_Add_for_operator_overloading_Foo.
+  End
+    Impl_core_ops_arith_Add_operator_overloading_Bar_for_operator_overloading_Foo.
   Global Hint Resolve ℐ : core.
-End Impl_core_ops_arith_Add_for_operator_overloading_Foo.
+End
+  Impl_core_ops_arith_Add_operator_overloading_Bar_for_operator_overloading_Foo.
 
-Module Impl_core_ops_arith_Add_for_operator_overloading_Bar.
-  Section Impl_core_ops_arith_Add_for_operator_overloading_Bar.
+Module
+  Impl_core_ops_arith_Add_operator_overloading_Foo_for_operator_overloading_Bar.
+  Section
+    Impl_core_ops_arith_Add_operator_overloading_Foo_for_operator_overloading_Bar.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := operator_overloading.Bar.
@@ -171,9 +177,11 @@ Module Impl_core_ops_arith_Add_for_operator_overloading_Bar.
       core.ops.arith.Add.add := add;
     }.
     Admitted.
-  End Impl_core_ops_arith_Add_for_operator_overloading_Bar.
+  End
+    Impl_core_ops_arith_Add_operator_overloading_Foo_for_operator_overloading_Bar.
   Global Hint Resolve ℐ : core.
-End Impl_core_ops_arith_Add_for_operator_overloading_Bar.
+End
+  Impl_core_ops_arith_Add_operator_overloading_Foo_for_operator_overloading_Bar.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=

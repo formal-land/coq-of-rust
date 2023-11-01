@@ -73,6 +73,8 @@ Module Impl_generics_implementation_GenVal_T.
   Section Impl_generics_implementation_GenVal_T.
     Context `{ℋ : State.Trait}.
     
+    Context {T : Set}.
+    
     Definition Self : Set := generics_implementation.GenVal T.
     
     Definition value (self : ref Self) : M (ref T) :=

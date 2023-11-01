@@ -151,8 +151,8 @@ Module Impl_core_fmt_Debug_for_derive_Inches.
   Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_derive_Inches.
 
-Module Impl_derive_Inches_2.
-  Section Impl_derive_Inches_2.
+Module Impl_derive_Inches.
+  Section Impl_derive_Inches.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := derive.Inches.
@@ -168,8 +168,8 @@ Module Impl_derive_Inches_2.
       Notation.DoubleColon Self "to_centimeters" := {
       Notation.double_colon := to_centimeters;
     }.
-  End Impl_derive_Inches_2.
-End Impl_derive_Inches_2.
+  End Impl_derive_Inches.
+End Impl_derive_Inches.
 
 Module Seconds.
   Section Seconds.

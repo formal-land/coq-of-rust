@@ -406,12 +406,61 @@ pub trait FromStr: Sized {
 }
 *)
 Module FromStr.
-  Class Trait `{State.Trait} (Self Err : Set) : Set := { 
-    Err := Err;
+  Class Trait `{State.Trait} (Self : Set) : Type := { 
+    Err : Set;
     from_str : ref str -> Result Self Err;
   }.
 End FromStr.
 
+Module FromStr_instances.
+  Global Instance for_bool `{State.Trait} : FromStr.Trait bool.
+  Admitted.
+
+  Global Instance for_char `{State.Trait} : FromStr.Trait char.
+  Admitted.
+
+  Global Instance for_f32 `{State.Trait} : FromStr.Trait f32.
+  Admitted.
+
+  Global Instance for_f64 `{State.Trait} : FromStr.Trait f64.
+  Admitted.
+
+  Global Instance for_i8 `{State.Trait} : FromStr.Trait i8.
+  Admitted.
+
+  Global Instance for_i16 `{State.Trait} : FromStr.Trait i16.
+  Admitted.
+
+  Global Instance for_i32 `{State.Trait} : FromStr.Trait i32.
+  Admitted.
+
+  Global Instance for_i64 `{State.Trait} : FromStr.Trait i64.
+  Admitted.
+
+  Global Instance for_i128 `{State.Trait} : FromStr.Trait i128.
+  Admitted.
+
+  Global Instance for_isize `{State.Trait} : FromStr.Trait isize.
+  Admitted.
+
+  Global Instance for_u8 `{State.Trait} : FromStr.Trait u8.
+  Admitted.
+
+  Global Instance for_u16 `{State.Trait} : FromStr.Trait u16.
+  Admitted.
+
+  Global Instance for_u32 `{State.Trait} : FromStr.Trait u32.
+  Admitted.
+
+  Global Instance for_u64 `{State.Trait} : FromStr.Trait u64.
+  Admitted.
+
+  Global Instance for_u128 `{State.Trait} : FromStr.Trait u128.
+  Admitted.
+
+  Global Instance for_usize `{State.Trait} : FromStr.Trait usize.
+  Admitted.
+End FromStr_instances.
 
 (* ********FUNCTIONS******** *)
 (*
@@ -421,3 +470,20 @@ End FromStr.
 [ ] from_utf8_unchecked
 [ ] from_utf8_unchecked_mut
 *)
+
+Module Impl_str. Section Impl_str.
+  Context `{State.Trait}.
+
+  Definition Self : Set := str.
+
+  Parameter parse :
+    forall `{State.Trait} {F : Set}
+      {H0 : FromStr.Trait F},
+    ref Self ->
+    M (core.result.Result F (FromStr.Err (Trait := H0))).
+
+  Global Instance AssociatedFunction_parse {F : Set} {H0 : FromStr.Trait F} :
+    Notation.DoubleColon Self "parse" := {
+    Notation.double_colon := parse (F := F);
+  }.
+End Impl_str. End Impl_str.

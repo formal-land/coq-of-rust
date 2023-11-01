@@ -23,8 +23,8 @@ Module Number.
 End Number.
 Definition Number `{ℋ : State.Trait} : Set := M.val Number.t.
 
-Module Impl_core_convert_From_for_from_Number.
-  Section Impl_core_convert_From_for_from_Number.
+Module Impl_core_convert_From_i32_for_from_Number.
+  Section Impl_core_convert_From_i32_for_from_Number.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := from.Number.
@@ -41,9 +41,9 @@ Module Impl_core_convert_From_for_from_Number.
       core.convert.From.from := from;
     }.
     Admitted.
-  End Impl_core_convert_From_for_from_Number.
+  End Impl_core_convert_From_i32_for_from_Number.
   Global Hint Resolve ℐ : core.
-End Impl_core_convert_From_for_from_Number.
+End Impl_core_convert_From_i32_for_from_Number.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=

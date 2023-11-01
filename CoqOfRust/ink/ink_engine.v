@@ -52,8 +52,10 @@ Module types.
     Global Hint Resolve ℐ : core.
   End Impl_core_fmt_Debug_for_ink_engine_types_AccountId.
   
-  Module Impl_core_convert_From_for_ink_engine_types_AccountId.
-    Section Impl_core_convert_From_for_ink_engine_types_AccountId.
+  Module
+    Impl_core_convert_From_alloc_vec_Vec_u8_alloc_vec_Vec_Default_A_for_ink_engine_types_AccountId.
+    Section
+      Impl_core_convert_From_alloc_vec_Vec_u8_alloc_vec_Vec_Default_A_for_ink_engine_types_AccountId.
       Context `{ℋ : State.Trait}.
       
       Definition Self : Set := ink_engine.types.AccountId.
@@ -73,9 +75,11 @@ Module types.
         core.convert.From.from := from;
       }.
       Admitted.
-    End Impl_core_convert_From_for_ink_engine_types_AccountId.
+    End
+      Impl_core_convert_From_alloc_vec_Vec_u8_alloc_vec_Vec_Default_A_for_ink_engine_types_AccountId.
     Global Hint Resolve ℐ : core.
-  End Impl_core_convert_From_for_ink_engine_types_AccountId.
+  End
+    Impl_core_convert_From_alloc_vec_Vec_u8_alloc_vec_Vec_Default_A_for_ink_engine_types_AccountId.
   
   Module Impl_core_clone_Clone_for_ink_engine_types_AccountId.
     Section Impl_core_clone_Clone_for_ink_engine_types_AccountId.
@@ -281,8 +285,10 @@ Module types.
     Global Hint Resolve ℐ : core.
   End Impl_core_default_Default_for_ink_engine_types_Key.
   
-  Module Impl_core_convert_From_for_ink_engine_types_Key.
-    Section Impl_core_convert_From_for_ink_engine_types_Key.
+  Module
+    Impl_core_convert_From_alloc_vec_Vec_u8_alloc_vec_Vec_Default_A_for_ink_engine_types_Key.
+    Section
+      Impl_core_convert_From_alloc_vec_Vec_u8_alloc_vec_Vec_Default_A_for_ink_engine_types_Key.
       Context `{ℋ : State.Trait}.
       
       Definition Self : Set := ink_engine.types.Key.
@@ -301,9 +307,11 @@ Module types.
         core.convert.From.from := from;
       }.
       Admitted.
-    End Impl_core_convert_From_for_ink_engine_types_Key.
+    End
+      Impl_core_convert_From_alloc_vec_Vec_u8_alloc_vec_Vec_Default_A_for_ink_engine_types_Key.
     Global Hint Resolve ℐ : core.
-  End Impl_core_convert_From_for_ink_engine_types_Key.
+  End
+    Impl_core_convert_From_alloc_vec_Vec_u8_alloc_vec_Vec_Default_A_for_ink_engine_types_Key.
   
   Module Impl_core_clone_Clone_for_ink_engine_types_Key.
     Section Impl_core_clone_Clone_for_ink_engine_types_Key.
@@ -523,8 +531,10 @@ Module types.
     Global Hint Resolve ℐ : core.
   End Impl_core_fmt_Debug_for_ink_engine_types_AccountError.
   
-  Module Impl_core_convert_From_for_ink_engine_types_AccountError.
-    Section Impl_core_convert_From_for_ink_engine_types_AccountError.
+  Module
+    Impl_core_convert_From_parity_scale_codec_error_Error_for_ink_engine_types_AccountError.
+    Section
+      Impl_core_convert_From_parity_scale_codec_error_Error_for_ink_engine_types_AccountError.
       Context `{ℋ : State.Trait}.
       
       Definition Self : Set := ink_engine.types.AccountError.
@@ -542,9 +552,11 @@ Module types.
         core.convert.From.from := from;
       }.
       Admitted.
-    End Impl_core_convert_From_for_ink_engine_types_AccountError.
+    End
+      Impl_core_convert_From_parity_scale_codec_error_Error_for_ink_engine_types_AccountError.
     Global Hint Resolve ℐ : core.
-  End Impl_core_convert_From_for_ink_engine_types_AccountError.
+  End
+    Impl_core_convert_From_parity_scale_codec_error_Error_for_ink_engine_types_AccountError.
   
   Module Impl_core_marker_StructuralPartialEq_for_ink_engine_types_AccountError.
     Section
@@ -1001,8 +1013,9 @@ Module chain_extension.
     Global Hint Resolve ℐ : core.
   End Impl_core_fmt_Debug_for_ink_engine_chain_extension_ExtensionId.
   
-  Module Impl_core_convert_From_for_ink_engine_chain_extension_ExtensionId.
-    Section Impl_core_convert_From_for_ink_engine_chain_extension_ExtensionId.
+  Module Impl_core_convert_From_u32_for_ink_engine_chain_extension_ExtensionId.
+    Section
+      Impl_core_convert_From_u32_for_ink_engine_chain_extension_ExtensionId.
       Context `{ℋ : State.Trait}.
       
       Definition Self : Set := ink_engine.chain_extension.ExtensionId.
@@ -1018,9 +1031,9 @@ Module chain_extension.
         core.convert.From.from := from;
       }.
       Admitted.
-    End Impl_core_convert_From_for_ink_engine_chain_extension_ExtensionId.
+    End Impl_core_convert_From_u32_for_ink_engine_chain_extension_ExtensionId.
     Global Hint Resolve ℐ : core.
-  End Impl_core_convert_From_for_ink_engine_chain_extension_ExtensionId.
+  End Impl_core_convert_From_u32_for_ink_engine_chain_extension_ExtensionId.
   
   Module
     Impl_core_marker_StructuralPartialEq_for_ink_engine_chain_extension_ExtensionId.
@@ -1383,6 +1396,8 @@ Module ext.
   End Error.
   Definition Error `{ℋ : State.Trait} : Set := Error.t.
   
+  Ltac Result := refine (core.result.Result unit ink_engine.ext.Error).
+  
   Module Impl_core_fmt_Debug_for_ink_engine_ext_Error.
     Section Impl_core_fmt_Debug_for_ink_engine_ext_Error.
       Context `{ℋ : State.Trait}.
@@ -1587,6 +1602,8 @@ Module ext.
   End Impl_core_default_Default_for_ink_engine_ext_Engine.
 End ext.
 
+Ltac Result := refine (core.result.Result unit ink_engine.ext.Error).
+
 Module Impl_core_fmt_Debug_for_ink_engine_ext_Error.
   Section Impl_core_fmt_Debug_for_ink_engine_ext_Error.
     Context `{ℋ : State.Trait}.
@@ -1609,8 +1626,10 @@ Module Impl_core_fmt_Debug_for_ink_engine_ext_Error.
   Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_ink_engine_ext_Error.
 
-(* Module Impl_core_convert_From_for_ink_engine_ext_Result.
-  (* Section Impl_core_convert_From_for_ink_engine_ext_Result.
+Module
+  Impl_core_convert_From_ink_engine_ext_ReturnCode_for_ink_engine_ext_Result.
+  Section
+    Impl_core_convert_From_ink_engine_ext_ReturnCode_for_ink_engine_ext_Result.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := ltac:(ink_engine.ext.Result).
@@ -1627,9 +1646,10 @@ End Impl_core_fmt_Debug_for_ink_engine_ext_Error.
       core.convert.From.from := from;
     }.
     Admitted.
-  End Impl_core_convert_From_for_ink_engine_ext_Result. *)
+  End
+    Impl_core_convert_From_ink_engine_ext_ReturnCode_for_ink_engine_ext_Result.
   Global Hint Resolve ℐ : core.
-End Impl_core_convert_From_for_ink_engine_ext_Result. *)
+End Impl_core_convert_From_ink_engine_ext_ReturnCode_for_ink_engine_ext_Result.
 
 Module ReturnCode.
   Section ReturnCode.
@@ -2188,8 +2208,8 @@ Module Impl_core_fmt_Debug_for_ink_engine_chain_extension_ExtensionId.
   Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_ink_engine_chain_extension_ExtensionId.
 
-Module Impl_core_convert_From_for_ink_engine_chain_extension_ExtensionId.
-  Section Impl_core_convert_From_for_ink_engine_chain_extension_ExtensionId.
+Module Impl_core_convert_From_u32_for_ink_engine_chain_extension_ExtensionId.
+  Section Impl_core_convert_From_u32_for_ink_engine_chain_extension_ExtensionId.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := ink_engine.chain_extension.ExtensionId.
@@ -2205,9 +2225,9 @@ Module Impl_core_convert_From_for_ink_engine_chain_extension_ExtensionId.
       core.convert.From.from := from;
     }.
     Admitted.
-  End Impl_core_convert_From_for_ink_engine_chain_extension_ExtensionId.
+  End Impl_core_convert_From_u32_for_ink_engine_chain_extension_ExtensionId.
   Global Hint Resolve ℐ : core.
-End Impl_core_convert_From_for_ink_engine_chain_extension_ExtensionId.
+End Impl_core_convert_From_u32_for_ink_engine_chain_extension_ExtensionId.
 
 (* Module Impl_parity_scale_codec_codec_Encode_for_ink_engine_chain_extension_ExtensionId.
   (* Section Impl_parity_scale_codec_codec_Encode_for_ink_engine_chain_extension_ExtensionId.
@@ -2743,8 +2763,10 @@ Module Impl_core_fmt_Debug_for_ink_engine_types_AccountId.
   Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_ink_engine_types_AccountId.
 
-Module Impl_core_convert_From_for_ink_engine_types_AccountId.
-  Section Impl_core_convert_From_for_ink_engine_types_AccountId.
+Module
+  Impl_core_convert_From_alloc_vec_Vec_u8_alloc_vec_Vec_Default_A_for_ink_engine_types_AccountId.
+  Section
+    Impl_core_convert_From_alloc_vec_Vec_u8_alloc_vec_Vec_Default_A_for_ink_engine_types_AccountId.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := ink_engine.types.AccountId.
@@ -2764,9 +2786,11 @@ Module Impl_core_convert_From_for_ink_engine_types_AccountId.
       core.convert.From.from := from;
     }.
     Admitted.
-  End Impl_core_convert_From_for_ink_engine_types_AccountId.
+  End
+    Impl_core_convert_From_alloc_vec_Vec_u8_alloc_vec_Vec_Default_A_for_ink_engine_types_AccountId.
   Global Hint Resolve ℐ : core.
-End Impl_core_convert_From_for_ink_engine_types_AccountId.
+End
+  Impl_core_convert_From_alloc_vec_Vec_u8_alloc_vec_Vec_Default_A_for_ink_engine_types_AccountId.
 
 Module Impl_core_clone_Clone_for_ink_engine_types_AccountId.
   Section Impl_core_clone_Clone_for_ink_engine_types_AccountId.
@@ -2971,8 +2995,10 @@ Module Impl_core_default_Default_for_ink_engine_types_Key.
   Global Hint Resolve ℐ : core.
 End Impl_core_default_Default_for_ink_engine_types_Key.
 
-Module Impl_core_convert_From_for_ink_engine_types_Key.
-  Section Impl_core_convert_From_for_ink_engine_types_Key.
+Module
+  Impl_core_convert_From_alloc_vec_Vec_u8_alloc_vec_Vec_Default_A_for_ink_engine_types_Key.
+  Section
+    Impl_core_convert_From_alloc_vec_Vec_u8_alloc_vec_Vec_Default_A_for_ink_engine_types_Key.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := ink_engine.types.Key.
@@ -2991,9 +3017,11 @@ Module Impl_core_convert_From_for_ink_engine_types_Key.
       core.convert.From.from := from;
     }.
     Admitted.
-  End Impl_core_convert_From_for_ink_engine_types_Key.
+  End
+    Impl_core_convert_From_alloc_vec_Vec_u8_alloc_vec_Vec_Default_A_for_ink_engine_types_Key.
   Global Hint Resolve ℐ : core.
-End Impl_core_convert_From_for_ink_engine_types_Key.
+End
+  Impl_core_convert_From_alloc_vec_Vec_u8_alloc_vec_Vec_Default_A_for_ink_engine_types_Key.
 
 Module Impl_core_clone_Clone_for_ink_engine_types_Key.
   Section Impl_core_clone_Clone_for_ink_engine_types_Key.
@@ -3210,8 +3238,10 @@ Module Impl_core_fmt_Debug_for_ink_engine_types_AccountError.
   Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_ink_engine_types_AccountError.
 
-Module Impl_core_convert_From_for_ink_engine_types_AccountError.
-  Section Impl_core_convert_From_for_ink_engine_types_AccountError.
+Module
+  Impl_core_convert_From_parity_scale_codec_error_Error_for_ink_engine_types_AccountError.
+  Section
+    Impl_core_convert_From_parity_scale_codec_error_Error_for_ink_engine_types_AccountError.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := ink_engine.types.AccountError.
@@ -3229,9 +3259,11 @@ Module Impl_core_convert_From_for_ink_engine_types_AccountError.
       core.convert.From.from := from;
     }.
     Admitted.
-  End Impl_core_convert_From_for_ink_engine_types_AccountError.
+  End
+    Impl_core_convert_From_parity_scale_codec_error_Error_for_ink_engine_types_AccountError.
   Global Hint Resolve ℐ : core.
-End Impl_core_convert_From_for_ink_engine_types_AccountError.
+End
+  Impl_core_convert_From_parity_scale_codec_error_Error_for_ink_engine_types_AccountError.
 
 Module Impl_core_marker_StructuralPartialEq_for_ink_engine_types_AccountError.
   Section
@@ -3334,8 +3366,10 @@ Module Impl_core_fmt_Debug_for_ink_engine_Error.
   Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_ink_engine_Error.
 
-Module Impl_core_convert_From_for_ink_engine_Error.
-  Section Impl_core_convert_From_for_ink_engine_Error.
+Module
+  Impl_core_convert_From_ink_engine_types_AccountError_for_ink_engine_Error.
+  Section
+    Impl_core_convert_From_ink_engine_types_AccountError_for_ink_engine_Error.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := ink_engine.Error.
@@ -3352,9 +3386,9 @@ Module Impl_core_convert_From_for_ink_engine_Error.
       core.convert.From.from := from;
     }.
     Admitted.
-  End Impl_core_convert_From_for_ink_engine_Error.
+  End Impl_core_convert_From_ink_engine_types_AccountError_for_ink_engine_Error.
   Global Hint Resolve ℐ : core.
-End Impl_core_convert_From_for_ink_engine_Error.
+End Impl_core_convert_From_ink_engine_types_AccountError_for_ink_engine_Error.
 
 Module Impl_core_marker_StructuralPartialEq_for_ink_engine_Error.
   Section Impl_core_marker_StructuralPartialEq_for_ink_engine_Error.

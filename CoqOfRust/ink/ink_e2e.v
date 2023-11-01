@@ -297,8 +297,10 @@ Module xts.
     Global Hint Resolve ℐ : core.
   End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Weight.
   
-  Module Impl_core_convert_From_for_ink_e2e_xts_Weight.
-    Section Impl_core_convert_From_for_ink_e2e_xts_Weight.
+  Module
+    Impl_core_convert_From_sp_weights_weight_v2_Weight_for_ink_e2e_xts_Weight.
+    Section
+      Impl_core_convert_From_sp_weights_weight_v2_Weight_for_ink_e2e_xts_Weight.
       Context `{ℋ : State.Trait}.
       
       Definition Self : Set := ink_e2e.xts.Weight.
@@ -315,12 +317,15 @@ Module xts.
         core.convert.From.from := from;
       }.
       Admitted.
-    End Impl_core_convert_From_for_ink_e2e_xts_Weight.
+    End
+      Impl_core_convert_From_sp_weights_weight_v2_Weight_for_ink_e2e_xts_Weight.
     Global Hint Resolve ℐ : core.
-  End Impl_core_convert_From_for_ink_e2e_xts_Weight.
+  End Impl_core_convert_From_sp_weights_weight_v2_Weight_for_ink_e2e_xts_Weight.
   
-  Module Impl_core_convert_From_for_sp_weights_weight_v2_Weight.
-    Section Impl_core_convert_From_for_sp_weights_weight_v2_Weight.
+  Module
+    Impl_core_convert_From_ink_e2e_xts_Weight_for_sp_weights_weight_v2_Weight.
+    Section
+      Impl_core_convert_From_ink_e2e_xts_Weight_for_sp_weights_weight_v2_Weight.
       Context `{ℋ : State.Trait}.
       
       Definition Self : Set := sp_weights.weight_v2.Weight.
@@ -337,9 +342,10 @@ Module xts.
         core.convert.From.from := from;
       }.
       Admitted.
-    End Impl_core_convert_From_for_sp_weights_weight_v2_Weight.
+    End
+      Impl_core_convert_From_ink_e2e_xts_Weight_for_sp_weights_weight_v2_Weight.
     Global Hint Resolve ℐ : core.
-  End Impl_core_convert_From_for_sp_weights_weight_v2_Weight.
+  End Impl_core_convert_From_ink_e2e_xts_Weight_for_sp_weights_weight_v2_Weight.
   
   Module InstantiateWithCode.
     Section InstantiateWithCode.
@@ -4077,8 +4083,10 @@ Module Impl_serde_de_Visitor_for_ink_e2e_xts___deserialize___Visitor.
   Global Hint Resolve ℐ : core.
 End Impl_serde_de_Visitor_for_ink_e2e_xts___deserialize___Visitor.
 
-Module Impl_core_convert_From_for_ink_e2e_xts_Weight.
-  Section Impl_core_convert_From_for_ink_e2e_xts_Weight.
+Module
+  Impl_core_convert_From_sp_weights_weight_v2_Weight_for_ink_e2e_xts_Weight.
+  Section
+    Impl_core_convert_From_sp_weights_weight_v2_Weight_for_ink_e2e_xts_Weight.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := ink_e2e.xts.Weight.
@@ -4095,12 +4103,14 @@ Module Impl_core_convert_From_for_ink_e2e_xts_Weight.
       core.convert.From.from := from;
     }.
     Admitted.
-  End Impl_core_convert_From_for_ink_e2e_xts_Weight.
+  End Impl_core_convert_From_sp_weights_weight_v2_Weight_for_ink_e2e_xts_Weight.
   Global Hint Resolve ℐ : core.
-End Impl_core_convert_From_for_ink_e2e_xts_Weight.
+End Impl_core_convert_From_sp_weights_weight_v2_Weight_for_ink_e2e_xts_Weight.
 
-Module Impl_core_convert_From_for_sp_weights_weight_v2_Weight.
-  Section Impl_core_convert_From_for_sp_weights_weight_v2_Weight.
+Module
+  Impl_core_convert_From_ink_e2e_xts_Weight_for_sp_weights_weight_v2_Weight.
+  Section
+    Impl_core_convert_From_ink_e2e_xts_Weight_for_sp_weights_weight_v2_Weight.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := sp_weights.weight_v2.Weight.
@@ -4117,9 +4127,9 @@ Module Impl_core_convert_From_for_sp_weights_weight_v2_Weight.
       core.convert.From.from := from;
     }.
     Admitted.
-  End Impl_core_convert_From_for_sp_weights_weight_v2_Weight.
+  End Impl_core_convert_From_ink_e2e_xts_Weight_for_sp_weights_weight_v2_Weight.
   Global Hint Resolve ℐ : core.
-End Impl_core_convert_From_for_sp_weights_weight_v2_Weight.
+End Impl_core_convert_From_ink_e2e_xts_Weight_for_sp_weights_weight_v2_Weight.
 
 Module InstantiateWithCode.
   Section InstantiateWithCode.

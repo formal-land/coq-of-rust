@@ -63,7 +63,7 @@ Module StringType.
 
   (* The String type (Struct std::string::String) and it's methods  *)
   (* Converts a &str into a String. *)
-  Global Instance FromStr `{State.Trait} :
+  Global Instance From_for_str `{State.Trait} :
       core.convert.From.Trait str (T := str) := {
     from := from;
   }.
