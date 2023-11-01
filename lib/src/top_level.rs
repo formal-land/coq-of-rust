@@ -94,7 +94,7 @@ struct WherePredicate {
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
 struct TraitBound {
     name: Path,
-    ty_params: Vec<Box<TraitTyParamValue>>,
+    ty_params: Vec<TraitTyParamValue>,
 }
 
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
@@ -151,6 +151,7 @@ enum TopLevelItem {
         is_dead_code: bool,
     },
     Impl {
+        generic_tys: Vec<String>,
         self_ty: Box<CoqType>,
         /// We use a counter to disambiguate several impls for the same type
         counter: u64,
@@ -167,7 +168,7 @@ enum TopLevelItem {
         predicates: Vec<WherePredicate>,
         self_ty: Box<CoqType>,
         of_trait: Path,
-        trait_ty_params: Vec<Box<TraitTyParamValue>>,
+        trait_ty_params: Vec<TraitTyParamValue>,
         items: Vec<(ImplItem, bool)>,
     },
     Error(String),
@@ -515,8 +516,6 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
             let generic_tys = get_ty_params_names(env, generics);
             let predicates = get_where_predicates(tcx, env, generics);
             let self_ty = compile_type(env, self_ty);
-            let entry = env.impl_counter.entry(*self_ty.clone());
-            let counter = *entry.and_modify(|counter| *counter += 1).or_insert(1);
             let mut items: Vec<ImplItemRef> = items.to_vec();
             let context = get_full_name(tcx, item.hir_id());
             reorder_definitions_inplace(tcx, env, &context, &mut items);
@@ -558,7 +557,12 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
                     }]
                 }
                 None => {
+                    let counter_entry = env.impl_counter.entry(*self_ty.clone());
+                    let counter = *counter_entry
+                        .and_modify(|counter| *counter += 1)
+                        .or_insert(1);
                     vec![TopLevelItem::Impl {
+                        generic_tys,
                         self_ty,
                         counter,
                         items,
@@ -782,7 +786,7 @@ fn get_ty_params_with_default_status(
     env: &Env,
     generics: &rustc_middle::ty::Generics,
     path: &rustc_hir::Path,
-) -> Vec<Box<TraitTyParamValue>> {
+) -> Vec<TraitTyParamValue> {
     let mut type_params_name_and_default_status = type_params_name_and_default_status(generics);
     // The first type parameter is always the Self type, that we do not consider as
     // part of the list of type parameters.
@@ -798,7 +802,7 @@ pub(crate) fn get_full_ty_params_with_default_status(
     env: &Env,
     generics: &rustc_middle::ty::Generics,
     path: &rustc_hir::Path,
-) -> Vec<Box<TraitTyParamValue>> {
+) -> Vec<TraitTyParamValue> {
     let type_params_name_and_default_status = type_params_name_and_default_status(generics);
     let ty_params = compile_path_ty_params(env, path);
     add_default_status_to_ty_params(&ty_params, &type_params_name_and_default_status)
@@ -824,7 +828,7 @@ pub(crate) fn get_full_ty_params(
 fn add_default_status_to_ty_params(
     ty_params: &[Box<CoqType>],
     names_and_default_status: &[(String, bool)],
-) -> Vec<Box<TraitTyParamValue>> {
+) -> Vec<TraitTyParamValue> {
     ty_params
         .iter()
         .map(Some)
@@ -841,8 +845,8 @@ fn compile_ty_param_value(
     name: &str,
     ty: Option<&CoqType>,
     has_default: &bool,
-) -> Box<TraitTyParamValue> {
-    Box::new(match ty {
+) -> TraitTyParamValue {
+    match ty {
         Some(ty) => {
             if *has_default {
                 TraitTyParamValue::ValWithDef {
@@ -859,7 +863,7 @@ fn compile_ty_param_value(
         None => TraitTyParamValue::JustDefault {
             name: name.to_string(),
         },
-    })
+    }
 }
 
 /// Get the list of type parameters names and default status (true if it has a default)
@@ -1078,10 +1082,12 @@ fn mt_top_level_item(item: TopLevelItem) -> TopLevelItem {
             is_dead_code,
         },
         TopLevelItem::Impl {
+            generic_tys,
             self_ty,
             counter,
             items,
         } => TopLevelItem::Impl {
+            generic_tys,
             self_ty,
             counter,
             items: items.into_iter().map(mt_impl_item).collect(),
@@ -1619,7 +1625,7 @@ impl TraitBound {
             args: self
                 .ty_params
                 .iter()
-                .map(|ty_param| match *ty_param.to_owned() {
+                .map(|ty_param| match ty_param.to_owned() {
                     TraitTyParamValue::JustValue { name, ty }
                     | TraitTyParamValue::ValWithDef { name, ty } => (Some(name), ty.to_coq()),
                     TraitTyParamValue::JustDefault { name } => (
@@ -2046,6 +2052,7 @@ impl TopLevelItem {
             ])
             .to_doc(),
             TopLevelItem::Impl {
+                generic_tys,
                 self_ty,
                 counter,
                 items,
@@ -2060,7 +2067,7 @@ impl TopLevelItem {
                     &module_name,
                     coq::TopLevel::add_context_in_section(
                         &module_name,
-                        &[],
+                        generic_tys,
                         &coq::TopLevel::concat(&[
                             coq::TopLevel::new(&[coq::TopLevelItem::Definition(
                                 coq::Definition::new(
@@ -2209,7 +2216,20 @@ impl TopLevelItem {
                 items,
                 ..
             } => {
-                let module_name = format!("Impl_{}_for_{}", of_trait.to_name(), self_ty.to_name());
+                let module_name = format!(
+                    "Impl_{}{}_for_{}",
+                    of_trait.to_name(),
+                    trait_ty_params
+                        .iter()
+                        .filter_map(|trait_ty_param| match trait_ty_param.to_owned() {
+                            TraitTyParamValue::JustValue { ty, .. }
+                            | TraitTyParamValue::ValWithDef { ty, .. } =>
+                                Some(format!("_{}", ty.to_name())),
+                            TraitTyParamValue::JustDefault { .. } => None,
+                        })
+                        .join(""),
+                    self_ty.to_name()
+                );
                 coq::Module::new(
                     &module_name,
                     coq::TopLevel::concat(&[
@@ -2259,8 +2279,7 @@ impl TopLevelItem {
                                         &trait_ty_params
                                             .iter()
                                             .map(|ty_param| {
-                                                let ty_param = *ty_param.clone();
-                                                match ty_param {
+                                                match ty_param.to_owned() {
                                                     TraitTyParamValue::JustValue { name, ty } | TraitTyParamValue::ValWithDef { name, ty } => {
                                                         (Some(name), ty.to_coq())
                                                     }

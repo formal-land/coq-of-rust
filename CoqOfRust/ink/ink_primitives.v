@@ -505,8 +505,8 @@ Module types.
     Global Hint Resolve ℐ : core.
   End Impl_core_hash_Hash_for_ink_primitives_types_AccountId.
   
-  Module Impl_core_convert_From_for_ink_primitives_types_AccountId.
-    Section Impl_core_convert_From_for_ink_primitives_types_AccountId.
+  Module Impl_core_convert_From_Array_u8_for_ink_primitives_types_AccountId.
+    Section Impl_core_convert_From_Array_u8_for_ink_primitives_types_AccountId.
       Context `{ℋ : State.Trait}.
       
       Definition Self : Set := ink_primitives.types.AccountId.
@@ -523,12 +523,12 @@ Module types.
         core.convert.From.from := from;
       }.
       Admitted.
-    End Impl_core_convert_From_for_ink_primitives_types_AccountId.
+    End Impl_core_convert_From_Array_u8_for_ink_primitives_types_AccountId.
     Global Hint Resolve ℐ : core.
-  End Impl_core_convert_From_for_ink_primitives_types_AccountId.
+  End Impl_core_convert_From_Array_u8_for_ink_primitives_types_AccountId.
   
-  (* Module Impl_core_convert_AsRef_for_ink_primitives_types_AccountId.
-    (* Section Impl_core_convert_AsRef_for_ink_primitives_types_AccountId.
+  Module Impl_core_convert_AsRef_Array_u8_for_ink_primitives_types_AccountId.
+    Section Impl_core_convert_AsRef_Array_u8_for_ink_primitives_types_AccountId.
       Context `{ℋ : State.Trait}.
       
       Definition Self : Set := ink_primitives.types.AccountId.
@@ -545,12 +545,12 @@ Module types.
         core.convert.AsRef.as_ref := as_ref;
       }.
       Admitted.
-    End Impl_core_convert_AsRef_for_ink_primitives_types_AccountId. *)
+    End Impl_core_convert_AsRef_Array_u8_for_ink_primitives_types_AccountId.
     Global Hint Resolve ℐ : core.
-  End Impl_core_convert_AsRef_for_ink_primitives_types_AccountId. *)
+  End Impl_core_convert_AsRef_Array_u8_for_ink_primitives_types_AccountId.
   
-  (* Module Impl_core_convert_AsMut_for_ink_primitives_types_AccountId.
-    (* Section Impl_core_convert_AsMut_for_ink_primitives_types_AccountId.
+  Module Impl_core_convert_AsMut_Array_u8_for_ink_primitives_types_AccountId.
+    Section Impl_core_convert_AsMut_Array_u8_for_ink_primitives_types_AccountId.
       Context `{ℋ : State.Trait}.
       
       Definition Self : Set := ink_primitives.types.AccountId.
@@ -567,12 +567,12 @@ Module types.
         core.convert.AsMut.as_mut := as_mut;
       }.
       Admitted.
-    End Impl_core_convert_AsMut_for_ink_primitives_types_AccountId. *)
+    End Impl_core_convert_AsMut_Array_u8_for_ink_primitives_types_AccountId.
     Global Hint Resolve ℐ : core.
-  End Impl_core_convert_AsMut_for_ink_primitives_types_AccountId. *)
+  End Impl_core_convert_AsMut_Array_u8_for_ink_primitives_types_AccountId.
   
-  (* (* Module Impl_core_convert_AsRef_for_ink_primitives_types_AccountId.
-    (* Section Impl_core_convert_AsRef_for_ink_primitives_types_AccountId.
+  Module Impl_core_convert_AsRef_Slice_u8_for_ink_primitives_types_AccountId.
+    Section Impl_core_convert_AsRef_Slice_u8_for_ink_primitives_types_AccountId.
       Context `{ℋ : State.Trait}.
       
       Definition Self : Set := ink_primitives.types.AccountId.
@@ -589,12 +589,12 @@ Module types.
         core.convert.AsRef.as_ref := as_ref;
       }.
       Admitted.
-    End Impl_core_convert_AsRef_for_ink_primitives_types_AccountId. *)
+    End Impl_core_convert_AsRef_Slice_u8_for_ink_primitives_types_AccountId.
     Global Hint Resolve ℐ : core.
-  End Impl_core_convert_AsRef_for_ink_primitives_types_AccountId. *)
+  End Impl_core_convert_AsRef_Slice_u8_for_ink_primitives_types_AccountId.
   
-  (* Module Impl_core_convert_AsMut_for_ink_primitives_types_AccountId.
-    (* Section Impl_core_convert_AsMut_for_ink_primitives_types_AccountId.
+  Module Impl_core_convert_AsMut_Slice_u8_for_ink_primitives_types_AccountId.
+    Section Impl_core_convert_AsMut_Slice_u8_for_ink_primitives_types_AccountId.
       Context `{ℋ : State.Trait}.
       
       Definition Self : Set := ink_primitives.types.AccountId.
@@ -611,12 +611,14 @@ Module types.
         core.convert.AsMut.as_mut := as_mut;
       }.
       Admitted.
-    End Impl_core_convert_AsMut_for_ink_primitives_types_AccountId. *)
+    End Impl_core_convert_AsMut_Slice_u8_for_ink_primitives_types_AccountId.
     Global Hint Resolve ℐ : core.
-  End Impl_core_convert_AsMut_for_ink_primitives_types_AccountId. *) *)
+  End Impl_core_convert_AsMut_Slice_u8_for_ink_primitives_types_AccountId.
   
-  Module Impl_core_convert_TryFrom_for_ink_primitives_types_AccountId.
-    Section Impl_core_convert_TryFrom_for_ink_primitives_types_AccountId.
+  Module
+    Impl_core_convert_TryFrom_StaticRef_Slice_u8_for_ink_primitives_types_AccountId.
+    Section
+      Impl_core_convert_TryFrom_StaticRef_Slice_u8_for_ink_primitives_types_AccountId.
       Context `{ℋ : State.Trait}.
       
       Definition Self : Set := ink_primitives.types.AccountId.
@@ -638,9 +640,11 @@ Module types.
         core.convert.TryFrom.try_from := try_from;
       }.
       Admitted.
-    End Impl_core_convert_TryFrom_for_ink_primitives_types_AccountId.
+    End
+      Impl_core_convert_TryFrom_StaticRef_Slice_u8_for_ink_primitives_types_AccountId.
     Global Hint Resolve ℐ : core.
-  End Impl_core_convert_TryFrom_for_ink_primitives_types_AccountId.
+  End
+    Impl_core_convert_TryFrom_StaticRef_Slice_u8_for_ink_primitives_types_AccountId.
   
   Module Hash.
     Section Hash.
@@ -914,8 +918,8 @@ Module types.
     Global Hint Resolve ℐ : core.
   End Impl_core_hash_Hash_for_ink_primitives_types_Hash.
   
-  Module Impl_core_convert_From_for_ink_primitives_types_Hash.
-    Section Impl_core_convert_From_for_ink_primitives_types_Hash.
+  Module Impl_core_convert_From_Array_u8_for_ink_primitives_types_Hash.
+    Section Impl_core_convert_From_Array_u8_for_ink_primitives_types_Hash.
       Context `{ℋ : State.Trait}.
       
       Definition Self : Set := ink_primitives.types.Hash.
@@ -932,9 +936,9 @@ Module types.
         core.convert.From.from := from;
       }.
       Admitted.
-    End Impl_core_convert_From_for_ink_primitives_types_Hash.
+    End Impl_core_convert_From_Array_u8_for_ink_primitives_types_Hash.
     Global Hint Resolve ℐ : core.
-  End Impl_core_convert_From_for_ink_primitives_types_Hash.
+  End Impl_core_convert_From_Array_u8_for_ink_primitives_types_Hash.
   
   Module Impl_core_default_Default_for_ink_primitives_types_Hash.
     Section Impl_core_default_Default_for_ink_primitives_types_Hash.
@@ -957,8 +961,10 @@ Module types.
     Global Hint Resolve ℐ : core.
   End Impl_core_default_Default_for_ink_primitives_types_Hash.
   
-  Module Impl_core_convert_TryFrom_for_ink_primitives_types_Hash.
-    Section Impl_core_convert_TryFrom_for_ink_primitives_types_Hash.
+  Module
+    Impl_core_convert_TryFrom_StaticRef_Slice_u8_for_ink_primitives_types_Hash.
+    Section
+      Impl_core_convert_TryFrom_StaticRef_Slice_u8_for_ink_primitives_types_Hash.
       Context `{ℋ : State.Trait}.
       
       Definition Self : Set := ink_primitives.types.Hash.
@@ -980,12 +986,14 @@ Module types.
         core.convert.TryFrom.try_from := try_from;
       }.
       Admitted.
-    End Impl_core_convert_TryFrom_for_ink_primitives_types_Hash.
+    End
+      Impl_core_convert_TryFrom_StaticRef_Slice_u8_for_ink_primitives_types_Hash.
     Global Hint Resolve ℐ : core.
-  End Impl_core_convert_TryFrom_for_ink_primitives_types_Hash.
+  End
+    Impl_core_convert_TryFrom_StaticRef_Slice_u8_for_ink_primitives_types_Hash.
   
-  Module Impl_core_convert_AsRef_for_ink_primitives_types_Hash.
-    Section Impl_core_convert_AsRef_for_ink_primitives_types_Hash.
+  Module Impl_core_convert_AsRef_Slice_u8_for_ink_primitives_types_Hash.
+    Section Impl_core_convert_AsRef_Slice_u8_for_ink_primitives_types_Hash.
       Context `{ℋ : State.Trait}.
       
       Definition Self : Set := ink_primitives.types.Hash.
@@ -1002,12 +1010,12 @@ Module types.
         core.convert.AsRef.as_ref := as_ref;
       }.
       Admitted.
-    End Impl_core_convert_AsRef_for_ink_primitives_types_Hash.
+    End Impl_core_convert_AsRef_Slice_u8_for_ink_primitives_types_Hash.
     Global Hint Resolve ℐ : core.
-  End Impl_core_convert_AsRef_for_ink_primitives_types_Hash.
+  End Impl_core_convert_AsRef_Slice_u8_for_ink_primitives_types_Hash.
   
-  Module Impl_core_convert_AsMut_for_ink_primitives_types_Hash.
-    Section Impl_core_convert_AsMut_for_ink_primitives_types_Hash.
+  Module Impl_core_convert_AsMut_Slice_u8_for_ink_primitives_types_Hash.
+    Section Impl_core_convert_AsMut_Slice_u8_for_ink_primitives_types_Hash.
       Context `{ℋ : State.Trait}.
       
       Definition Self : Set := ink_primitives.types.Hash.
@@ -1024,12 +1032,12 @@ Module types.
         core.convert.AsMut.as_mut := as_mut;
       }.
       Admitted.
-    End Impl_core_convert_AsMut_for_ink_primitives_types_Hash.
+    End Impl_core_convert_AsMut_Slice_u8_for_ink_primitives_types_Hash.
     Global Hint Resolve ℐ : core.
-  End Impl_core_convert_AsMut_for_ink_primitives_types_Hash.
+  End Impl_core_convert_AsMut_Slice_u8_for_ink_primitives_types_Hash.
   
-  Module Impl_core_convert_From_for_Array_u8.
-    Section Impl_core_convert_From_for_Array_u8.
+  Module Impl_core_convert_From_ink_primitives_types_Hash_for_Array_u8.
+    Section Impl_core_convert_From_ink_primitives_types_Hash_for_Array_u8.
       Context `{ℋ : State.Trait}.
       
       Definition Self : Set := array u8.
@@ -1046,9 +1054,9 @@ Module types.
         core.convert.From.from := from;
       }.
       Admitted.
-    End Impl_core_convert_From_for_Array_u8.
+    End Impl_core_convert_From_ink_primitives_types_Hash_for_Array_u8.
     Global Hint Resolve ℐ : core.
-  End Impl_core_convert_From_for_Array_u8.
+  End Impl_core_convert_From_ink_primitives_types_Hash_for_Array_u8.
   
   Module Clear.
     Section Clear.
@@ -1062,8 +1070,8 @@ Module types.
     End Clear.
   End Clear.
   
-  (* Module Impl_ink_primitives_types_Clear_for_Array_u8.
-    (* Section Impl_ink_primitives_types_Clear_for_Array_u8.
+  Module Impl_ink_primitives_types_Clear_for_Array_u8.
+    Section Impl_ink_primitives_types_Clear_for_Array_u8.
       Context `{ℋ : State.Trait}.
       
       Definition Self : Set := array u8.
@@ -1087,12 +1095,12 @@ Module types.
         ink_primitives.types.Clear.is_clear := is_clear;
       }.
       Admitted.
-    End Impl_ink_primitives_types_Clear_for_Array_u8. *)
+    End Impl_ink_primitives_types_Clear_for_Array_u8.
     Global Hint Resolve ℐ : core.
-  End Impl_ink_primitives_types_Clear_for_Array_u8. *)
+  End Impl_ink_primitives_types_Clear_for_Array_u8.
   
-  (* Module Impl_ink_primitives_types_Clear_for_ink_primitives_types_Hash.
-    (* Section Impl_ink_primitives_types_Clear_for_ink_primitives_types_Hash.
+  Module Impl_ink_primitives_types_Clear_for_ink_primitives_types_Hash.
+    Section Impl_ink_primitives_types_Clear_for_ink_primitives_types_Hash.
       Context `{ℋ : State.Trait}.
       
       Definition Self : Set := ink_primitives.types.Hash.
@@ -1116,9 +1124,9 @@ Module types.
         ink_primitives.types.Clear.is_clear := is_clear;
       }.
       Admitted.
-    End Impl_ink_primitives_types_Clear_for_ink_primitives_types_Hash. *)
+    End Impl_ink_primitives_types_Clear_for_ink_primitives_types_Hash.
     Global Hint Resolve ℐ : core.
-  End Impl_ink_primitives_types_Clear_for_ink_primitives_types_Hash. *)
+  End Impl_ink_primitives_types_Clear_for_ink_primitives_types_Hash.
 End types.
 
 Module AccountId.
@@ -1205,8 +1213,8 @@ Definition Visitor `{ℋ : State.Trait} : Set := M.val Visitor.t.
   Global Hint Resolve ℐ : core.
 End Impl_scale_decode_IntoVisitor_for_ink_primitives_types_AccountId. *)
 
-(* (* Module Impl_scale_decode_visitor_Visitor_for_ink_primitives_types___Visitor.
-  (* (* Section Impl_scale_decode_visitor_Visitor_for_ink_primitives_types___Visitor.
+(* Module Impl_scale_decode_visitor_Visitor_for_ink_primitives_types___Visitor.
+  (* Section Impl_scale_decode_visitor_Visitor_for_ink_primitives_types___Visitor.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := ink_primitives.types._.Visitor.
@@ -1242,9 +1250,9 @@ End Impl_scale_decode_IntoVisitor_for_ink_primitives_types_AccountId. *)
       scale_decode.visitor.Visitor.Value := Value;
     }.
     Admitted.
-  End Impl_scale_decode_visitor_Visitor_for_ink_primitives_types___Visitor. *) *)
+  End Impl_scale_decode_visitor_Visitor_for_ink_primitives_types___Visitor. *)
   Global Hint Resolve ℐ : core.
-End Impl_scale_decode_visitor_Visitor_for_ink_primitives_types___Visitor. *) *)
+End Impl_scale_decode_visitor_Visitor_for_ink_primitives_types___Visitor. *)
 
 (* Module Impl_scale_decode_DecodeAsFields_for_ink_primitives_types_AccountId.
   (* Section Impl_scale_decode_DecodeAsFields_for_ink_primitives_types_AccountId.
@@ -1525,8 +1533,9 @@ Module Impl_core_hash_Hash_for_ink_primitives_types_AccountId.
   Global Hint Resolve ℐ : core.
 End Impl_core_hash_Hash_for_ink_primitives_types_AccountId.
 
-(* Module Impl_parity_scale_codec_codec_Decode_for_ink_primitives_types_AccountId.
-  (* Section Impl_parity_scale_codec_codec_Decode_for_ink_primitives_types_AccountId.
+Module Impl_parity_scale_codec_codec_Decode_for_ink_primitives_types_AccountId.
+  Section
+    Impl_parity_scale_codec_codec_Decode_for_ink_primitives_types_AccountId.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := ink_primitives.types.AccountId.
@@ -1553,12 +1562,13 @@ End Impl_core_hash_Hash_for_ink_primitives_types_AccountId.
         decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
     Admitted.
-  End Impl_parity_scale_codec_codec_Decode_for_ink_primitives_types_AccountId. *)
+  End Impl_parity_scale_codec_codec_Decode_for_ink_primitives_types_AccountId.
   Global Hint Resolve ℐ : core.
-End Impl_parity_scale_codec_codec_Decode_for_ink_primitives_types_AccountId. *)
+End Impl_parity_scale_codec_codec_Decode_for_ink_primitives_types_AccountId.
 
-(* Module Impl_parity_scale_codec_codec_Encode_for_ink_primitives_types_AccountId.
-  (* Section Impl_parity_scale_codec_codec_Encode_for_ink_primitives_types_AccountId.
+Module Impl_parity_scale_codec_codec_Encode_for_ink_primitives_types_AccountId.
+  Section
+    Impl_parity_scale_codec_codec_Encode_for_ink_primitives_types_AccountId.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := ink_primitives.types.AccountId.
@@ -1610,12 +1620,14 @@ End Impl_parity_scale_codec_codec_Decode_for_ink_primitives_types_AccountId. *)
       parity_scale_codec.codec.Encode.Trait Self := {
     }.
     Admitted.
-  End Impl_parity_scale_codec_codec_Encode_for_ink_primitives_types_AccountId. *)
+  End Impl_parity_scale_codec_codec_Encode_for_ink_primitives_types_AccountId.
   Global Hint Resolve ℐ : core.
-End Impl_parity_scale_codec_codec_Encode_for_ink_primitives_types_AccountId. *)
+End Impl_parity_scale_codec_codec_Encode_for_ink_primitives_types_AccountId.
 
-(* Module Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_primitives_types_AccountId.
-  (* Section Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_primitives_types_AccountId.
+Module
+  Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_primitives_types_AccountId.
+  Section
+    Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_primitives_types_AccountId.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := ink_primitives.types.AccountId.
@@ -1625,12 +1637,14 @@ End Impl_parity_scale_codec_codec_Encode_for_ink_primitives_types_AccountId. *)
         (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self) := {
     }.
     Admitted.
-  End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_primitives_types_AccountId. *)
+  End
+    Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_primitives_types_AccountId.
   Global Hint Resolve ℐ : core.
-End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_primitives_types_AccountId. *)
+End
+  Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_primitives_types_AccountId.
 
-Module Impl_core_convert_From_for_ink_primitives_types_AccountId.
-  Section Impl_core_convert_From_for_ink_primitives_types_AccountId.
+Module Impl_core_convert_From_Array_u8_for_ink_primitives_types_AccountId.
+  Section Impl_core_convert_From_Array_u8_for_ink_primitives_types_AccountId.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := ink_primitives.types.AccountId.
@@ -1647,12 +1661,12 @@ Module Impl_core_convert_From_for_ink_primitives_types_AccountId.
       core.convert.From.from := from;
     }.
     Admitted.
-  End Impl_core_convert_From_for_ink_primitives_types_AccountId.
+  End Impl_core_convert_From_Array_u8_for_ink_primitives_types_AccountId.
   Global Hint Resolve ℐ : core.
-End Impl_core_convert_From_for_ink_primitives_types_AccountId.
+End Impl_core_convert_From_Array_u8_for_ink_primitives_types_AccountId.
 
-(* Module Impl_core_convert_AsRef_for_ink_primitives_types_AccountId.
-  (* Section Impl_core_convert_AsRef_for_ink_primitives_types_AccountId.
+Module Impl_core_convert_AsRef_Array_u8_for_ink_primitives_types_AccountId.
+  Section Impl_core_convert_AsRef_Array_u8_for_ink_primitives_types_AccountId.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := ink_primitives.types.AccountId.
@@ -1669,12 +1683,12 @@ End Impl_core_convert_From_for_ink_primitives_types_AccountId.
       core.convert.AsRef.as_ref := as_ref;
     }.
     Admitted.
-  End Impl_core_convert_AsRef_for_ink_primitives_types_AccountId. *)
+  End Impl_core_convert_AsRef_Array_u8_for_ink_primitives_types_AccountId.
   Global Hint Resolve ℐ : core.
-End Impl_core_convert_AsRef_for_ink_primitives_types_AccountId. *)
+End Impl_core_convert_AsRef_Array_u8_for_ink_primitives_types_AccountId.
 
-(* Module Impl_core_convert_AsMut_for_ink_primitives_types_AccountId.
-  (* Section Impl_core_convert_AsMut_for_ink_primitives_types_AccountId.
+Module Impl_core_convert_AsMut_Array_u8_for_ink_primitives_types_AccountId.
+  Section Impl_core_convert_AsMut_Array_u8_for_ink_primitives_types_AccountId.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := ink_primitives.types.AccountId.
@@ -1691,12 +1705,12 @@ End Impl_core_convert_AsRef_for_ink_primitives_types_AccountId. *)
       core.convert.AsMut.as_mut := as_mut;
     }.
     Admitted.
-  End Impl_core_convert_AsMut_for_ink_primitives_types_AccountId. *)
+  End Impl_core_convert_AsMut_Array_u8_for_ink_primitives_types_AccountId.
   Global Hint Resolve ℐ : core.
-End Impl_core_convert_AsMut_for_ink_primitives_types_AccountId. *)
+End Impl_core_convert_AsMut_Array_u8_for_ink_primitives_types_AccountId.
 
-(* Module Impl_core_convert_AsRef_for_ink_primitives_types_AccountId.
-  (* Section Impl_core_convert_AsRef_for_ink_primitives_types_AccountId.
+Module Impl_core_convert_AsRef_Slice_u8_for_ink_primitives_types_AccountId.
+  Section Impl_core_convert_AsRef_Slice_u8_for_ink_primitives_types_AccountId.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := ink_primitives.types.AccountId.
@@ -1713,12 +1727,12 @@ End Impl_core_convert_AsMut_for_ink_primitives_types_AccountId. *)
       core.convert.AsRef.as_ref := as_ref;
     }.
     Admitted.
-  End Impl_core_convert_AsRef_for_ink_primitives_types_AccountId. *)
+  End Impl_core_convert_AsRef_Slice_u8_for_ink_primitives_types_AccountId.
   Global Hint Resolve ℐ : core.
-End Impl_core_convert_AsRef_for_ink_primitives_types_AccountId. *)
+End Impl_core_convert_AsRef_Slice_u8_for_ink_primitives_types_AccountId.
 
-(* Module Impl_core_convert_AsMut_for_ink_primitives_types_AccountId.
-  (* Section Impl_core_convert_AsMut_for_ink_primitives_types_AccountId.
+Module Impl_core_convert_AsMut_Slice_u8_for_ink_primitives_types_AccountId.
+  Section Impl_core_convert_AsMut_Slice_u8_for_ink_primitives_types_AccountId.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := ink_primitives.types.AccountId.
@@ -1735,12 +1749,14 @@ End Impl_core_convert_AsRef_for_ink_primitives_types_AccountId. *)
       core.convert.AsMut.as_mut := as_mut;
     }.
     Admitted.
-  End Impl_core_convert_AsMut_for_ink_primitives_types_AccountId. *)
+  End Impl_core_convert_AsMut_Slice_u8_for_ink_primitives_types_AccountId.
   Global Hint Resolve ℐ : core.
-End Impl_core_convert_AsMut_for_ink_primitives_types_AccountId. *)
+End Impl_core_convert_AsMut_Slice_u8_for_ink_primitives_types_AccountId.
 
-Module Impl_core_convert_TryFrom_for_ink_primitives_types_AccountId.
-  Section Impl_core_convert_TryFrom_for_ink_primitives_types_AccountId.
+Module
+  Impl_core_convert_TryFrom_StaticRef_Slice_u8_for_ink_primitives_types_AccountId.
+  Section
+    Impl_core_convert_TryFrom_StaticRef_Slice_u8_for_ink_primitives_types_AccountId.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := ink_primitives.types.AccountId.
@@ -1762,9 +1778,11 @@ Module Impl_core_convert_TryFrom_for_ink_primitives_types_AccountId.
       core.convert.TryFrom.try_from := try_from;
     }.
     Admitted.
-  End Impl_core_convert_TryFrom_for_ink_primitives_types_AccountId.
+  End
+    Impl_core_convert_TryFrom_StaticRef_Slice_u8_for_ink_primitives_types_AccountId.
   Global Hint Resolve ℐ : core.
-End Impl_core_convert_TryFrom_for_ink_primitives_types_AccountId.
+End
+  Impl_core_convert_TryFrom_StaticRef_Slice_u8_for_ink_primitives_types_AccountId.
 
 Module Hash.
   Section Hash.
@@ -1832,8 +1850,8 @@ End Impl_scale_info_TypeInfo_for_ink_primitives_types_Hash.
   Global Hint Resolve ℐ : core.
 End Impl_scale_decode_IntoVisitor_for_ink_primitives_types_Hash. *)
 
-(* (* Module Impl_scale_decode_visitor_Visitor_for_ink_primitives_types___Visitor.
-  (* (* Section Impl_scale_decode_visitor_Visitor_for_ink_primitives_types___Visitor.
+(* Module Impl_scale_decode_visitor_Visitor_for_ink_primitives_types___Visitor.
+  (* Section Impl_scale_decode_visitor_Visitor_for_ink_primitives_types___Visitor.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := ink_primitives.types._.Visitor.
@@ -1869,9 +1887,9 @@ End Impl_scale_decode_IntoVisitor_for_ink_primitives_types_Hash. *)
       scale_decode.visitor.Visitor.Value := Value;
     }.
     Admitted.
-  End Impl_scale_decode_visitor_Visitor_for_ink_primitives_types___Visitor. *) *)
+  End Impl_scale_decode_visitor_Visitor_for_ink_primitives_types___Visitor. *)
   Global Hint Resolve ℐ : core.
-End Impl_scale_decode_visitor_Visitor_for_ink_primitives_types___Visitor. *) *)
+End Impl_scale_decode_visitor_Visitor_for_ink_primitives_types___Visitor. *)
 
 (* Module Impl_scale_decode_DecodeAsFields_for_ink_primitives_types_Hash.
   (* Section Impl_scale_decode_DecodeAsFields_for_ink_primitives_types_Hash.
@@ -2149,8 +2167,8 @@ Module Impl_core_hash_Hash_for_ink_primitives_types_Hash.
   Global Hint Resolve ℐ : core.
 End Impl_core_hash_Hash_for_ink_primitives_types_Hash.
 
-(* Module Impl_parity_scale_codec_codec_Decode_for_ink_primitives_types_Hash.
-  (* Section Impl_parity_scale_codec_codec_Decode_for_ink_primitives_types_Hash.
+Module Impl_parity_scale_codec_codec_Decode_for_ink_primitives_types_Hash.
+  Section Impl_parity_scale_codec_codec_Decode_for_ink_primitives_types_Hash.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := ink_primitives.types.Hash.
@@ -2177,12 +2195,12 @@ End Impl_core_hash_Hash_for_ink_primitives_types_Hash.
         decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
     Admitted.
-  End Impl_parity_scale_codec_codec_Decode_for_ink_primitives_types_Hash. *)
+  End Impl_parity_scale_codec_codec_Decode_for_ink_primitives_types_Hash.
   Global Hint Resolve ℐ : core.
-End Impl_parity_scale_codec_codec_Decode_for_ink_primitives_types_Hash. *)
+End Impl_parity_scale_codec_codec_Decode_for_ink_primitives_types_Hash.
 
-(* Module Impl_parity_scale_codec_codec_Encode_for_ink_primitives_types_Hash.
-  (* Section Impl_parity_scale_codec_codec_Encode_for_ink_primitives_types_Hash.
+Module Impl_parity_scale_codec_codec_Encode_for_ink_primitives_types_Hash.
+  Section Impl_parity_scale_codec_codec_Encode_for_ink_primitives_types_Hash.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := ink_primitives.types.Hash.
@@ -2234,12 +2252,14 @@ End Impl_parity_scale_codec_codec_Decode_for_ink_primitives_types_Hash. *)
       parity_scale_codec.codec.Encode.Trait Self := {
     }.
     Admitted.
-  End Impl_parity_scale_codec_codec_Encode_for_ink_primitives_types_Hash. *)
+  End Impl_parity_scale_codec_codec_Encode_for_ink_primitives_types_Hash.
   Global Hint Resolve ℐ : core.
-End Impl_parity_scale_codec_codec_Encode_for_ink_primitives_types_Hash. *)
+End Impl_parity_scale_codec_codec_Encode_for_ink_primitives_types_Hash.
 
-(* Module Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_primitives_types_Hash.
-  (* Section Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_primitives_types_Hash.
+Module
+  Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_primitives_types_Hash.
+  Section
+    Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_primitives_types_Hash.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := ink_primitives.types.Hash.
@@ -2249,12 +2269,14 @@ End Impl_parity_scale_codec_codec_Encode_for_ink_primitives_types_Hash. *)
         (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self) := {
     }.
     Admitted.
-  End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_primitives_types_Hash. *)
+  End
+    Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_primitives_types_Hash.
   Global Hint Resolve ℐ : core.
-End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_primitives_types_Hash. *)
+End
+  Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_primitives_types_Hash.
 
-Module Impl_core_convert_From_for_ink_primitives_types_Hash.
-  Section Impl_core_convert_From_for_ink_primitives_types_Hash.
+Module Impl_core_convert_From_Array_u8_for_ink_primitives_types_Hash.
+  Section Impl_core_convert_From_Array_u8_for_ink_primitives_types_Hash.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := ink_primitives.types.Hash.
@@ -2271,9 +2293,9 @@ Module Impl_core_convert_From_for_ink_primitives_types_Hash.
       core.convert.From.from := from;
     }.
     Admitted.
-  End Impl_core_convert_From_for_ink_primitives_types_Hash.
+  End Impl_core_convert_From_Array_u8_for_ink_primitives_types_Hash.
   Global Hint Resolve ℐ : core.
-End Impl_core_convert_From_for_ink_primitives_types_Hash.
+End Impl_core_convert_From_Array_u8_for_ink_primitives_types_Hash.
 
 Module Impl_core_default_Default_for_ink_primitives_types_Hash.
   Section Impl_core_default_Default_for_ink_primitives_types_Hash.
@@ -2296,8 +2318,10 @@ Module Impl_core_default_Default_for_ink_primitives_types_Hash.
   Global Hint Resolve ℐ : core.
 End Impl_core_default_Default_for_ink_primitives_types_Hash.
 
-Module Impl_core_convert_TryFrom_for_ink_primitives_types_Hash.
-  Section Impl_core_convert_TryFrom_for_ink_primitives_types_Hash.
+Module
+  Impl_core_convert_TryFrom_StaticRef_Slice_u8_for_ink_primitives_types_Hash.
+  Section
+    Impl_core_convert_TryFrom_StaticRef_Slice_u8_for_ink_primitives_types_Hash.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := ink_primitives.types.Hash.
@@ -2319,12 +2343,13 @@ Module Impl_core_convert_TryFrom_for_ink_primitives_types_Hash.
       core.convert.TryFrom.try_from := try_from;
     }.
     Admitted.
-  End Impl_core_convert_TryFrom_for_ink_primitives_types_Hash.
+  End
+    Impl_core_convert_TryFrom_StaticRef_Slice_u8_for_ink_primitives_types_Hash.
   Global Hint Resolve ℐ : core.
-End Impl_core_convert_TryFrom_for_ink_primitives_types_Hash.
+End Impl_core_convert_TryFrom_StaticRef_Slice_u8_for_ink_primitives_types_Hash.
 
-Module Impl_core_convert_AsRef_for_ink_primitives_types_Hash.
-  Section Impl_core_convert_AsRef_for_ink_primitives_types_Hash.
+Module Impl_core_convert_AsRef_Slice_u8_for_ink_primitives_types_Hash.
+  Section Impl_core_convert_AsRef_Slice_u8_for_ink_primitives_types_Hash.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := ink_primitives.types.Hash.
@@ -2341,12 +2366,12 @@ Module Impl_core_convert_AsRef_for_ink_primitives_types_Hash.
       core.convert.AsRef.as_ref := as_ref;
     }.
     Admitted.
-  End Impl_core_convert_AsRef_for_ink_primitives_types_Hash.
+  End Impl_core_convert_AsRef_Slice_u8_for_ink_primitives_types_Hash.
   Global Hint Resolve ℐ : core.
-End Impl_core_convert_AsRef_for_ink_primitives_types_Hash.
+End Impl_core_convert_AsRef_Slice_u8_for_ink_primitives_types_Hash.
 
-Module Impl_core_convert_AsMut_for_ink_primitives_types_Hash.
-  Section Impl_core_convert_AsMut_for_ink_primitives_types_Hash.
+Module Impl_core_convert_AsMut_Slice_u8_for_ink_primitives_types_Hash.
+  Section Impl_core_convert_AsMut_Slice_u8_for_ink_primitives_types_Hash.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := ink_primitives.types.Hash.
@@ -2363,12 +2388,12 @@ Module Impl_core_convert_AsMut_for_ink_primitives_types_Hash.
       core.convert.AsMut.as_mut := as_mut;
     }.
     Admitted.
-  End Impl_core_convert_AsMut_for_ink_primitives_types_Hash.
+  End Impl_core_convert_AsMut_Slice_u8_for_ink_primitives_types_Hash.
   Global Hint Resolve ℐ : core.
-End Impl_core_convert_AsMut_for_ink_primitives_types_Hash.
+End Impl_core_convert_AsMut_Slice_u8_for_ink_primitives_types_Hash.
 
-Module Impl_core_convert_From_for_Array_u8.
-  Section Impl_core_convert_From_for_Array_u8.
+Module Impl_core_convert_From_ink_primitives_types_Hash_for_Array_u8.
+  Section Impl_core_convert_From_ink_primitives_types_Hash_for_Array_u8.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := array u8.
@@ -2385,9 +2410,9 @@ Module Impl_core_convert_From_for_Array_u8.
       core.convert.From.from := from;
     }.
     Admitted.
-  End Impl_core_convert_From_for_Array_u8.
+  End Impl_core_convert_From_ink_primitives_types_Hash_for_Array_u8.
   Global Hint Resolve ℐ : core.
-End Impl_core_convert_From_for_Array_u8.
+End Impl_core_convert_From_ink_primitives_types_Hash_for_Array_u8.
 
 Module Clear.
   Section Clear.
@@ -2401,8 +2426,8 @@ Module Clear.
   End Clear.
 End Clear.
 
-(* Module Impl_ink_primitives_types_Clear_for_Array_u8.
-  (* Section Impl_ink_primitives_types_Clear_for_Array_u8.
+Module Impl_ink_primitives_types_Clear_for_Array_u8.
+  Section Impl_ink_primitives_types_Clear_for_Array_u8.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := array u8.
@@ -2426,12 +2451,12 @@ End Clear.
       ink_primitives.types.Clear.is_clear := is_clear;
     }.
     Admitted.
-  End Impl_ink_primitives_types_Clear_for_Array_u8. *)
+  End Impl_ink_primitives_types_Clear_for_Array_u8.
   Global Hint Resolve ℐ : core.
-End Impl_ink_primitives_types_Clear_for_Array_u8. *)
+End Impl_ink_primitives_types_Clear_for_Array_u8.
 
-(* Module Impl_ink_primitives_types_Clear_for_ink_primitives_types_Hash.
-  (* Section Impl_ink_primitives_types_Clear_for_ink_primitives_types_Hash.
+Module Impl_ink_primitives_types_Clear_for_ink_primitives_types_Hash.
+  Section Impl_ink_primitives_types_Clear_for_ink_primitives_types_Hash.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := ink_primitives.types.Hash.
@@ -2455,9 +2480,9 @@ End Impl_ink_primitives_types_Clear_for_Array_u8. *)
       ink_primitives.types.Clear.is_clear := is_clear;
     }.
     Admitted.
-  End Impl_ink_primitives_types_Clear_for_ink_primitives_types_Hash. *)
+  End Impl_ink_primitives_types_Clear_for_ink_primitives_types_Hash.
   Global Hint Resolve ℐ : core.
-End Impl_ink_primitives_types_Clear_for_ink_primitives_types_Hash. *)
+End Impl_ink_primitives_types_Clear_for_ink_primitives_types_Hash.
 
 Module LangError.
   Inductive t `{ℋ : State.Trait} : Set :=
@@ -2614,8 +2639,8 @@ Module Impl_core_cmp_Eq_for_ink_primitives_LangError.
   Global Hint Resolve ℐ : core.
 End Impl_core_cmp_Eq_for_ink_primitives_LangError.
 
-(* Module Impl_parity_scale_codec_codec_Encode_for_ink_primitives_LangError.
-  (* Section Impl_parity_scale_codec_codec_Encode_for_ink_primitives_LangError.
+Module Impl_parity_scale_codec_codec_Encode_for_ink_primitives_LangError.
+  Section Impl_parity_scale_codec_codec_Encode_for_ink_primitives_LangError.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := ink_primitives.LangError.
@@ -2641,12 +2666,14 @@ End Impl_core_cmp_Eq_for_ink_primitives_LangError.
       parity_scale_codec.codec.Encode.Trait Self := {
     }.
     Admitted.
-  End Impl_parity_scale_codec_codec_Encode_for_ink_primitives_LangError. *)
+  End Impl_parity_scale_codec_codec_Encode_for_ink_primitives_LangError.
   Global Hint Resolve ℐ : core.
-End Impl_parity_scale_codec_codec_Encode_for_ink_primitives_LangError. *)
+End Impl_parity_scale_codec_codec_Encode_for_ink_primitives_LangError.
 
-(* Module Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_primitives_LangError.
-  (* Section Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_primitives_LangError.
+Module
+  Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_primitives_LangError.
+  Section
+    Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_primitives_LangError.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := ink_primitives.LangError.
@@ -2656,12 +2683,13 @@ End Impl_parity_scale_codec_codec_Encode_for_ink_primitives_LangError. *)
         (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self) := {
     }.
     Admitted.
-  End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_primitives_LangError. *)
+  End
+    Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_primitives_LangError.
   Global Hint Resolve ℐ : core.
-End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_primitives_LangError. *)
+End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_primitives_LangError.
 
-(* Module Impl_parity_scale_codec_codec_Decode_for_ink_primitives_LangError.
-  (* Section Impl_parity_scale_codec_codec_Decode_for_ink_primitives_LangError.
+Module Impl_parity_scale_codec_codec_Decode_for_ink_primitives_LangError.
+  Section Impl_parity_scale_codec_codec_Decode_for_ink_primitives_LangError.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := ink_primitives.LangError.
@@ -2688,9 +2716,9 @@ End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_primitives_LangError.
         decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
     Admitted.
-  End Impl_parity_scale_codec_codec_Decode_for_ink_primitives_LangError. *)
+  End Impl_parity_scale_codec_codec_Decode_for_ink_primitives_LangError.
   Global Hint Resolve ℐ : core.
-End Impl_parity_scale_codec_codec_Decode_for_ink_primitives_LangError. *)
+End Impl_parity_scale_codec_codec_Decode_for_ink_primitives_LangError.
 
 Ltac MessageResult T := refine (core.result.Result T ink_primitives.LangError).
 

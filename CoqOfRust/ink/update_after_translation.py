@@ -57,7 +57,7 @@ Require CoqOfRust.ink.ink_env.""",
 
     content = ignore_module_names(
         [
-            "Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned",
+            "Impl_ink_chain_extension_Output_T_E_for_ink_chain_extension_ValueReturned",
         ],
         content,
     )
@@ -156,7 +156,6 @@ Definition Error `{ℋ : State.Trait} : Set := Error.t.
     content = ignore_module_names(
         [
             "Impl_core_iter_traits_collect_IntoIterator_for_ink_engine_test_api_RecordedDebugMessages",
-            "Impl_core_convert_From_for_ink_engine_ext_Result",
             "Impl_parity_scale_codec_codec_Encode_for_ink_engine_chain_extension_ExtensionId",
             "Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_engine_chain_extension_ExtensionId",
             "Impl_parity_scale_codec_codec_Decode_for_ink_engine_chain_extension_ExtensionId",
@@ -339,15 +338,16 @@ Module execution_input.""",
 
     content = ignore_module_names(
         [
-            "Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error",
-            "Impl_ink_env_topics_TopicsBuilderBackend_for_ink_env_engine_off_chain_impls_TopicsBuilder",
+            "Impl_core_convert_From_ink_engine_ext_Error_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error",
+            "Impl_ink_env_topics_TopicsBuilderBackend_E_for_ink_env_engine_off_chain_impls_TopicsBuilder",
             "Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_EnvBackend_for_ink_env_engine_off_chain_EnvInstance",
             "Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_TypedEnvBackend_for_ink_env_engine_off_chain_EnvInstance",
-            "Impl_core_convert_From_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_EmittedEvent",
-            "Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError",
+            "Impl_core_convert_From_ink_engine_test_api_EmittedEvent_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_EmittedEvent",
+            "Impl_core_convert_From_ink_engine_Error_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error",
+            "Impl_core_convert_From_ink_engine_types_AccountError_for_ink_env_engine_off_chain_AccountError",
+            "Impl_core_convert_From_ink_engine_types_AccountError_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error",
             "Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_OnInstance_for_ink_env_engine_off_chain_EnvInstance",
-            "Impl_core_convert_From_for_ink_env_topics_TopicsBuilder_ink_env_topics_state_Uninit_E_B",
-            "Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics",
+            "Impl_core_convert_From_B_for_ink_env_topics_TopicsBuilder_ink_env_topics_state_Uninit_E_B",
             "Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics",
         ],
         content,
@@ -456,10 +456,12 @@ Module InkE2ETest."""),
     content = sub_at_least_once(
         re.escape("""Definition InkE2ETest `{ℋ : State.Trait} : Set := M.val InkE2ETest.t.
 
-Module Impl_core_convert_From_for_ink_e2e_macro_codegen_InkE2ETest."""),
+Module
+  Impl_core_convert_From_ink_e2e_macro_ir_InkE2ETest_for_ink_e2e_macro_codegen_InkE2ETest."""),
         """Definition InkE2ETest `{ℋ : State.Trait} : Set := M.val InkE2ETest.t. *)
 
-Module Impl_core_convert_From_for_ink_e2e_macro_codegen_InkE2ETest.""",
+Module
+  Impl_core_convert_From_ink_e2e_macro_ir_InkE2ETest_for_ink_e2e_macro_codegen_InkE2ETest.""",
         content,
     )
 
@@ -519,47 +521,13 @@ Require CoqOfRust.ink.scale_info.""",
         content,
     )
 
-    content = sub_at_least_once(
-        """End Impl_core_convert_AsMut_for_ink_primitives_types_AccountId.
-  
-  Module Impl_core_convert_AsRef_for_ink_primitives_types_AccountId.""",
-        """End Impl_core_convert_AsMut_for_ink_primitives_types_AccountId.
-  
-  (* Module Impl_core_convert_AsRef_for_ink_primitives_types_AccountId.""",
-        content,
-    )
-
-    content = sub_at_least_once(
-        """End Impl_core_convert_AsMut_for_ink_primitives_types_AccountId.
-  
-  Module Impl_core_convert_TryFrom_for_ink_primitives_types_AccountId.""",
-        """End Impl_core_convert_AsMut_for_ink_primitives_types_AccountId. *)
-  
-  Module Impl_core_convert_TryFrom_for_ink_primitives_types_AccountId.""",
-        content,
-    )
-
     content = ignore_module_names(
         [
-            "Impl_ink_primitives_types_Clear_for_Array_u8",
-            "Impl_ink_primitives_types_Clear_for_ink_primitives_types_Hash",
             "Impl_scale_decode_IntoVisitor_for_ink_primitives_types_AccountId",
             "Impl_scale_decode_visitor_Visitor_for_ink_primitives_types___Visitor",
             "Impl_scale_decode_DecodeAsFields_for_ink_primitives_types_AccountId",
-            "Impl_parity_scale_codec_codec_Decode_for_ink_primitives_types_AccountId",
-            "Impl_parity_scale_codec_codec_Encode_for_ink_primitives_types_AccountId",
-            "Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_primitives_types_AccountId",
-            "Impl_core_convert_AsRef_for_ink_primitives_types_AccountId",
-            "Impl_core_convert_AsMut_for_ink_primitives_types_AccountId",
             "Impl_scale_decode_IntoVisitor_for_ink_primitives_types_Hash",
-            "Impl_scale_decode_visitor_Visitor_for_ink_primitives_types___Visitor",
             "Impl_scale_decode_DecodeAsFields_for_ink_primitives_types_Hash",
-            "Impl_parity_scale_codec_codec_Decode_for_ink_primitives_types_Hash",
-            "Impl_parity_scale_codec_codec_Encode_for_ink_primitives_types_Hash",
-            "Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_primitives_types_Hash",
-            "Impl_parity_scale_codec_codec_Encode_for_ink_primitives_LangError",
-            "Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_primitives_LangError",
-            "Impl_parity_scale_codec_codec_Decode_for_ink_primitives_LangError",
         ],
         content,
     )

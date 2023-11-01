@@ -101,8 +101,8 @@ Module Impl_core_cmp_PartialEq_for_try_from_and_try_into_EvenNumber.
   Global Hint Resolve ℐ : core.
 End Impl_core_cmp_PartialEq_for_try_from_and_try_into_EvenNumber.
 
-Module Impl_core_convert_TryFrom_for_try_from_and_try_into_EvenNumber.
-  Section Impl_core_convert_TryFrom_for_try_from_and_try_into_EvenNumber.
+Module Impl_core_convert_TryFrom_i32_for_try_from_and_try_into_EvenNumber.
+  Section Impl_core_convert_TryFrom_i32_for_try_from_and_try_into_EvenNumber.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := try_from_and_try_into.EvenNumber.
@@ -134,9 +134,9 @@ Module Impl_core_convert_TryFrom_for_try_from_and_try_into_EvenNumber.
       core.convert.TryFrom.try_from := try_from;
     }.
     Admitted.
-  End Impl_core_convert_TryFrom_for_try_from_and_try_into_EvenNumber.
+  End Impl_core_convert_TryFrom_i32_for_try_from_and_try_into_EvenNumber.
   Global Hint Resolve ℐ : core.
-End Impl_core_convert_TryFrom_for_try_from_and_try_into_EvenNumber.
+End Impl_core_convert_TryFrom_i32_for_try_from_and_try_into_EvenNumber.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=

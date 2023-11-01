@@ -60,6 +60,8 @@ Module my.
     Section Impl_struct_visibility_my_ClosedBox_T.
       Context `{ℋ : State.Trait}.
       
+      Context {T : Set}.
+      
       Definition Self : Set := struct_visibility.my.ClosedBox T.
       
       Parameter new : T -> M (struct_visibility.my.ClosedBox T).
@@ -127,6 +129,8 @@ Definition ClosedBox (T : Set) `{ℋ : State.Trait} : Set :=
 Module Impl_struct_visibility_my_ClosedBox_T_2.
   Section Impl_struct_visibility_my_ClosedBox_T_2.
     Context `{ℋ : State.Trait}.
+    
+    Context {T : Set}.
     
     Definition Self : Set := struct_visibility.my.ClosedBox T.
     

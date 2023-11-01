@@ -91,8 +91,8 @@ Module Impl_core_fmt_Debug_for_subtle_Choice.
   Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_subtle_Choice.
 
-Module Impl_subtle_Choice_4.
-  Section Impl_subtle_Choice_4.
+Module Impl_subtle_Choice.
+  Section Impl_subtle_Choice.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := subtle.Choice.
@@ -105,11 +105,11 @@ Module Impl_subtle_Choice_4.
       Notation.DoubleColon Self "unwrap_u8" := {
       Notation.double_colon := unwrap_u8;
     }.
-  End Impl_subtle_Choice_4.
-End Impl_subtle_Choice_4.
+  End Impl_subtle_Choice.
+End Impl_subtle_Choice.
 
-Module Impl_core_convert_From_for_bool.
-  Section Impl_core_convert_From_for_bool.
+Module Impl_core_convert_From_subtle_Choice_for_bool.
+  Section Impl_core_convert_From_subtle_Choice_for_bool.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := bool.
@@ -154,9 +154,9 @@ Module Impl_core_convert_From_for_bool.
       core.convert.From.from := from;
     }.
     Admitted.
-  End Impl_core_convert_From_for_bool.
+  End Impl_core_convert_From_subtle_Choice_for_bool.
   Global Hint Resolve ℐ : core.
-End Impl_core_convert_From_for_bool.
+End Impl_core_convert_From_subtle_Choice_for_bool.
 
 Module Impl_core_ops_bit_BitAnd_for_subtle_Choice.
   Section Impl_core_ops_bit_BitAnd_for_subtle_Choice.
@@ -404,8 +404,8 @@ Definition black_box `{ℋ : State.Trait} (input : u8) : M u8 :=
   let* α3 := use α2 in
   core.ptr.read_volatile α3.
 
-Module Impl_core_convert_From_for_subtle_Choice.
-  Section Impl_core_convert_From_for_subtle_Choice.
+Module Impl_core_convert_From_u8_for_subtle_Choice.
+  Section Impl_core_convert_From_u8_for_subtle_Choice.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := subtle.Choice.
@@ -423,9 +423,9 @@ Module Impl_core_convert_From_for_subtle_Choice.
       core.convert.From.from := from;
     }.
     Admitted.
-  End Impl_core_convert_From_for_subtle_Choice.
+  End Impl_core_convert_From_u8_for_subtle_Choice.
   Global Hint Resolve ℐ : core.
-End Impl_core_convert_From_for_subtle_Choice.
+End Impl_core_convert_From_u8_for_subtle_Choice.
 
 Module ConstantTimeEq.
   Section ConstantTimeEq.
@@ -1856,8 +1856,8 @@ Module Impl_core_fmt_Debug_for_subtle_CtOption_T.
   Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_subtle_CtOption_T.
 
-Module Impl_core_convert_From_for_core_option_Option_T.
-  Section Impl_core_convert_From_for_core_option_Option_T.
+Module Impl_core_convert_From_subtle_CtOption_T_for_core_option_Option_T.
+  Section Impl_core_convert_From_subtle_CtOption_T_for_core_option_Option_T.
     Context `{ℋ : State.Trait}.
     
     Context {T : Set}.
@@ -1888,13 +1888,15 @@ Module Impl_core_convert_From_for_core_option_Option_T.
       core.convert.From.from := from;
     }.
     Admitted.
-  End Impl_core_convert_From_for_core_option_Option_T.
+  End Impl_core_convert_From_subtle_CtOption_T_for_core_option_Option_T.
   Global Hint Resolve ℐ : core.
-End Impl_core_convert_From_for_core_option_Option_T.
+End Impl_core_convert_From_subtle_CtOption_T_for_core_option_Option_T.
 
-Module Impl_subtle_CtOption_T_4.
-  Section Impl_subtle_CtOption_T_4.
+Module Impl_subtle_CtOption_T.
+  Section Impl_subtle_CtOption_T.
     Context `{ℋ : State.Trait}.
+    
+    Context {T : Set}.
     
     Definition Self : Set := subtle.CtOption T.
     
@@ -2186,8 +2188,8 @@ Module Impl_subtle_CtOption_T_4.
       Notation.DoubleColon Self "or_else" := {
       Notation.double_colon := or_else (F := F);
     }.
-  End Impl_subtle_CtOption_T_4.
-End Impl_subtle_CtOption_T_4.
+  End Impl_subtle_CtOption_T.
+End Impl_subtle_CtOption_T.
 
 Module Impl_subtle_ConditionallySelectable_for_subtle_CtOption_T.
   Section Impl_subtle_ConditionallySelectable_for_subtle_CtOption_T.

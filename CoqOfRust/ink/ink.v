@@ -382,9 +382,9 @@ Module reflect.
       Impl_ink_reflect_dispatch_private_Sealed_for_ink_reflect_dispatch_ConstructorOutputValue_T.
     
     Module
-      Impl_ink_reflect_dispatch_ConstructorOutput_for_ink_reflect_dispatch_ConstructorOutputValue_C.
+      Impl_ink_reflect_dispatch_ConstructorOutput_C_for_ink_reflect_dispatch_ConstructorOutputValue_C.
       Section
-        Impl_ink_reflect_dispatch_ConstructorOutput_for_ink_reflect_dispatch_ConstructorOutputValue_C.
+        Impl_ink_reflect_dispatch_ConstructorOutput_C_for_ink_reflect_dispatch_ConstructorOutputValue_C.
         Context `{ℋ : State.Trait}.
         
         Context {C : Set}.
@@ -408,15 +408,15 @@ Module reflect.
         }.
         Admitted.
       End
-        Impl_ink_reflect_dispatch_ConstructorOutput_for_ink_reflect_dispatch_ConstructorOutputValue_C.
+        Impl_ink_reflect_dispatch_ConstructorOutput_C_for_ink_reflect_dispatch_ConstructorOutputValue_C.
       Global Hint Resolve ℐ : core.
     End
-      Impl_ink_reflect_dispatch_ConstructorOutput_for_ink_reflect_dispatch_ConstructorOutputValue_C.
+      Impl_ink_reflect_dispatch_ConstructorOutput_C_for_ink_reflect_dispatch_ConstructorOutputValue_C.
     
     Module
-      Impl_ink_reflect_dispatch_ConstructorOutput_for_ink_reflect_dispatch_ConstructorOutputValue_core_result_Result_C_E.
+      Impl_ink_reflect_dispatch_ConstructorOutput_C_for_ink_reflect_dispatch_ConstructorOutputValue_core_result_Result_C_E.
       Section
-        Impl_ink_reflect_dispatch_ConstructorOutput_for_ink_reflect_dispatch_ConstructorOutputValue_core_result_Result_C_E.
+        Impl_ink_reflect_dispatch_ConstructorOutput_C_for_ink_reflect_dispatch_ConstructorOutputValue_core_result_Result_C_E.
         Context `{ℋ : State.Trait}.
         
         Context {C E : Set}.
@@ -448,10 +448,10 @@ Module reflect.
         }.
         Admitted.
       End
-        Impl_ink_reflect_dispatch_ConstructorOutput_for_ink_reflect_dispatch_ConstructorOutputValue_core_result_Result_C_E.
+        Impl_ink_reflect_dispatch_ConstructorOutput_C_for_ink_reflect_dispatch_ConstructorOutputValue_core_result_Result_C_E.
       Global Hint Resolve ℐ : core.
     End
-      Impl_ink_reflect_dispatch_ConstructorOutput_for_ink_reflect_dispatch_ConstructorOutputValue_core_result_Result_C_E.
+      Impl_ink_reflect_dispatch_ConstructorOutput_C_for_ink_reflect_dispatch_ConstructorOutputValue_core_result_Result_C_E.
     
     Module DispatchError.
       Inductive t `{ℋ : State.Trait} : Set :=
@@ -686,8 +686,10 @@ Module reflect.
       Global Hint Resolve ℐ : core.
     End Impl_core_fmt_Display_for_ink_reflect_dispatch_DispatchError.
     
-    Module Impl_core_convert_From_for_parity_scale_codec_error_Error.
-      Section Impl_core_convert_From_for_parity_scale_codec_error_Error.
+    Module
+      Impl_core_convert_From_ink_reflect_dispatch_DispatchError_for_parity_scale_codec_error_Error.
+      Section
+        Impl_core_convert_From_ink_reflect_dispatch_DispatchError_for_parity_scale_codec_error_Error.
         Context `{ℋ : State.Trait}.
         
         Definition Self : Set := parity_scale_codec.error.Error.
@@ -705,9 +707,11 @@ Module reflect.
           core.convert.From.from := from;
         }.
         Admitted.
-      End Impl_core_convert_From_for_parity_scale_codec_error_Error.
+      End
+        Impl_core_convert_From_ink_reflect_dispatch_DispatchError_for_parity_scale_codec_error_Error.
       Global Hint Resolve ℐ : core.
-    End Impl_core_convert_From_for_parity_scale_codec_error_Error.
+    End
+      Impl_core_convert_From_ink_reflect_dispatch_DispatchError_for_parity_scale_codec_error_Error.
   End dispatch.
   
   Module event.
@@ -1056,8 +1060,8 @@ Module codegen.
       End ImpliesReturn.
     End ImpliesReturn.
     
-    Module Impl_ink_codegen_implies_return_ImpliesReturn_for_T.
-      Section Impl_ink_codegen_implies_return_ImpliesReturn_for_T.
+    Module Impl_ink_codegen_implies_return_ImpliesReturn_T_for_T.
+      Section Impl_ink_codegen_implies_return_ImpliesReturn_T_for_T.
         Context `{ℋ : State.Trait}.
         
         Context {T : Set}.
@@ -1068,14 +1072,14 @@ Module codegen.
           ink.codegen.implies_return.ImpliesReturn.Trait Self (T := T) := {
         }.
         Admitted.
-      End Impl_ink_codegen_implies_return_ImpliesReturn_for_T.
+      End Impl_ink_codegen_implies_return_ImpliesReturn_T_for_T.
       Global Hint Resolve ℐ : core.
-    End Impl_ink_codegen_implies_return_ImpliesReturn_for_T.
+    End Impl_ink_codegen_implies_return_ImpliesReturn_T_for_T.
     
     Module
-      Impl_ink_codegen_implies_return_ImpliesReturn_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_CallBuilder_E_ink_env_call_common_Set__CallType_ink_env_call_common_Set__ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set__ink_env_call_common_ReturnType_T.
+      Impl_ink_codegen_implies_return_ImpliesReturn_T_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_CallBuilder_E_ink_env_call_common_Set__CallType_ink_env_call_common_Set__ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set__ink_env_call_common_ReturnType_T.
       Section
-        Impl_ink_codegen_implies_return_ImpliesReturn_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_CallBuilder_E_ink_env_call_common_Set__CallType_ink_env_call_common_Set__ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set__ink_env_call_common_ReturnType_T.
+        Impl_ink_codegen_implies_return_ImpliesReturn_T_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_CallBuilder_E_ink_env_call_common_Set__CallType_ink_env_call_common_Set__ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set__ink_env_call_common_ReturnType_T.
         Context `{ℋ : State.Trait}.
         
         Context {T E CallType Args : Set}.
@@ -1094,15 +1098,15 @@ Module codegen.
         }.
         Admitted.
       End
-        Impl_ink_codegen_implies_return_ImpliesReturn_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_CallBuilder_E_ink_env_call_common_Set__CallType_ink_env_call_common_Set__ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set__ink_env_call_common_ReturnType_T.
+        Impl_ink_codegen_implies_return_ImpliesReturn_T_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_CallBuilder_E_ink_env_call_common_Set__CallType_ink_env_call_common_Set__ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set__ink_env_call_common_ReturnType_T.
       Global Hint Resolve ℐ : core.
     End
-      Impl_ink_codegen_implies_return_ImpliesReturn_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_CallBuilder_E_ink_env_call_common_Set__CallType_ink_env_call_common_Set__ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set__ink_env_call_common_ReturnType_T.
+      Impl_ink_codegen_implies_return_ImpliesReturn_T_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_CallBuilder_E_ink_env_call_common_Set__CallType_ink_env_call_common_Set__ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set__ink_env_call_common_ReturnType_T.
     
     Module
-      Impl_ink_codegen_implies_return_ImpliesReturn_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_CallBuilder_E_ink_env_call_common_Set__CallType_ink_env_call_common_Set__ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set__Tuple_.
+      Impl_ink_codegen_implies_return_ImpliesReturn_Tuple__for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_CallBuilder_E_ink_env_call_common_Set__CallType_ink_env_call_common_Set__ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set__Tuple_.
       Section
-        Impl_ink_codegen_implies_return_ImpliesReturn_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_CallBuilder_E_ink_env_call_common_Set__CallType_ink_env_call_common_Set__ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set__Tuple_.
+        Impl_ink_codegen_implies_return_ImpliesReturn_Tuple__for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_CallBuilder_E_ink_env_call_common_Set__CallType_ink_env_call_common_Set__ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set__Tuple_.
         Context `{ℋ : State.Trait}.
         
         Context {E CallType Args : Set}.
@@ -1121,10 +1125,10 @@ Module codegen.
         }.
         Admitted.
       End
-        Impl_ink_codegen_implies_return_ImpliesReturn_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_CallBuilder_E_ink_env_call_common_Set__CallType_ink_env_call_common_Set__ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set__Tuple_.
+        Impl_ink_codegen_implies_return_ImpliesReturn_Tuple__for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_CallBuilder_E_ink_env_call_common_Set__CallType_ink_env_call_common_Set__ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set__Tuple_.
       Global Hint Resolve ℐ : core.
     End
-      Impl_ink_codegen_implies_return_ImpliesReturn_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_CallBuilder_E_ink_env_call_common_Set__CallType_ink_env_call_common_Set__ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set__Tuple_.
+      Impl_ink_codegen_implies_return_ImpliesReturn_Tuple__for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_CallBuilder_E_ink_env_call_common_Set__CallType_ink_env_call_common_Set__ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set__Tuple_.
   End implies_return.
   
   Module trait_def.
@@ -1906,8 +1910,8 @@ Module implies_return.
     End ImpliesReturn.
   End ImpliesReturn.
   
-  Module Impl_ink_codegen_implies_return_ImpliesReturn_for_T.
-    Section Impl_ink_codegen_implies_return_ImpliesReturn_for_T.
+  Module Impl_ink_codegen_implies_return_ImpliesReturn_T_for_T.
+    Section Impl_ink_codegen_implies_return_ImpliesReturn_T_for_T.
       Context `{ℋ : State.Trait}.
       
       Context {T : Set}.
@@ -1918,14 +1922,14 @@ Module implies_return.
         ink.codegen.implies_return.ImpliesReturn.Trait Self (T := T) := {
       }.
       Admitted.
-    End Impl_ink_codegen_implies_return_ImpliesReturn_for_T.
+    End Impl_ink_codegen_implies_return_ImpliesReturn_T_for_T.
     Global Hint Resolve ℐ : core.
-  End Impl_ink_codegen_implies_return_ImpliesReturn_for_T.
+  End Impl_ink_codegen_implies_return_ImpliesReturn_T_for_T.
   
   Module
-    Impl_ink_codegen_implies_return_ImpliesReturn_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_CallBuilder_E_ink_env_call_common_Set__CallType_ink_env_call_common_Set__ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set__ink_env_call_common_ReturnType_T.
+    Impl_ink_codegen_implies_return_ImpliesReturn_T_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_CallBuilder_E_ink_env_call_common_Set__CallType_ink_env_call_common_Set__ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set__ink_env_call_common_ReturnType_T.
     Section
-      Impl_ink_codegen_implies_return_ImpliesReturn_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_CallBuilder_E_ink_env_call_common_Set__CallType_ink_env_call_common_Set__ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set__ink_env_call_common_ReturnType_T.
+      Impl_ink_codegen_implies_return_ImpliesReturn_T_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_CallBuilder_E_ink_env_call_common_Set__CallType_ink_env_call_common_Set__ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set__ink_env_call_common_ReturnType_T.
       Context `{ℋ : State.Trait}.
       
       Context {T E CallType Args : Set}.
@@ -1944,15 +1948,15 @@ Module implies_return.
       }.
       Admitted.
     End
-      Impl_ink_codegen_implies_return_ImpliesReturn_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_CallBuilder_E_ink_env_call_common_Set__CallType_ink_env_call_common_Set__ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set__ink_env_call_common_ReturnType_T.
+      Impl_ink_codegen_implies_return_ImpliesReturn_T_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_CallBuilder_E_ink_env_call_common_Set__CallType_ink_env_call_common_Set__ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set__ink_env_call_common_ReturnType_T.
     Global Hint Resolve ℐ : core.
   End
-    Impl_ink_codegen_implies_return_ImpliesReturn_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_CallBuilder_E_ink_env_call_common_Set__CallType_ink_env_call_common_Set__ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set__ink_env_call_common_ReturnType_T.
+    Impl_ink_codegen_implies_return_ImpliesReturn_T_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_CallBuilder_E_ink_env_call_common_Set__CallType_ink_env_call_common_Set__ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set__ink_env_call_common_ReturnType_T.
   
   Module
-    Impl_ink_codegen_implies_return_ImpliesReturn_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_CallBuilder_E_ink_env_call_common_Set__CallType_ink_env_call_common_Set__ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set__Tuple_.
+    Impl_ink_codegen_implies_return_ImpliesReturn_Tuple__for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_CallBuilder_E_ink_env_call_common_Set__CallType_ink_env_call_common_Set__ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set__Tuple_.
     Section
-      Impl_ink_codegen_implies_return_ImpliesReturn_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_CallBuilder_E_ink_env_call_common_Set__CallType_ink_env_call_common_Set__ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set__Tuple_.
+      Impl_ink_codegen_implies_return_ImpliesReturn_Tuple__for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_CallBuilder_E_ink_env_call_common_Set__CallType_ink_env_call_common_Set__ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set__Tuple_.
       Context `{ℋ : State.Trait}.
       
       Context {E CallType Args : Set}.
@@ -1971,10 +1975,10 @@ Module implies_return.
       }.
       Admitted.
     End
-      Impl_ink_codegen_implies_return_ImpliesReturn_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_CallBuilder_E_ink_env_call_common_Set__CallType_ink_env_call_common_Set__ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set__Tuple_.
+      Impl_ink_codegen_implies_return_ImpliesReturn_Tuple__for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_CallBuilder_E_ink_env_call_common_Set__CallType_ink_env_call_common_Set__ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set__Tuple_.
     Global Hint Resolve ℐ : core.
   End
-    Impl_ink_codegen_implies_return_ImpliesReturn_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_CallBuilder_E_ink_env_call_common_Set__CallType_ink_env_call_common_Set__ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set__Tuple_.
+    Impl_ink_codegen_implies_return_ImpliesReturn_Tuple__for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_CallBuilder_E_ink_env_call_common_Set__CallType_ink_env_call_common_Set__ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set__Tuple_.
 End implies_return.
 
 Module ImpliesReturn.
@@ -1988,8 +1992,8 @@ Module ImpliesReturn.
   End ImpliesReturn.
 End ImpliesReturn.
 
-Module Impl_ink_codegen_implies_return_ImpliesReturn_for_T.
-  Section Impl_ink_codegen_implies_return_ImpliesReturn_for_T.
+Module Impl_ink_codegen_implies_return_ImpliesReturn_T_for_T.
+  Section Impl_ink_codegen_implies_return_ImpliesReturn_T_for_T.
     Context `{ℋ : State.Trait}.
     
     Context {T : Set}.
@@ -2000,14 +2004,14 @@ Module Impl_ink_codegen_implies_return_ImpliesReturn_for_T.
       ink.codegen.implies_return.ImpliesReturn.Trait Self (T := T) := {
     }.
     Admitted.
-  End Impl_ink_codegen_implies_return_ImpliesReturn_for_T.
+  End Impl_ink_codegen_implies_return_ImpliesReturn_T_for_T.
   Global Hint Resolve ℐ : core.
-End Impl_ink_codegen_implies_return_ImpliesReturn_for_T.
+End Impl_ink_codegen_implies_return_ImpliesReturn_T_for_T.
 
 Module
-  Impl_ink_codegen_implies_return_ImpliesReturn_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_CallBuilder_E_ink_env_call_common_Set__CallType_ink_env_call_common_Set__ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set__ink_env_call_common_ReturnType_T.
+  Impl_ink_codegen_implies_return_ImpliesReturn_T_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_CallBuilder_E_ink_env_call_common_Set__CallType_ink_env_call_common_Set__ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set__ink_env_call_common_ReturnType_T.
   Section
-    Impl_ink_codegen_implies_return_ImpliesReturn_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_CallBuilder_E_ink_env_call_common_Set__CallType_ink_env_call_common_Set__ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set__ink_env_call_common_ReturnType_T.
+    Impl_ink_codegen_implies_return_ImpliesReturn_T_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_CallBuilder_E_ink_env_call_common_Set__CallType_ink_env_call_common_Set__ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set__ink_env_call_common_ReturnType_T.
     Context `{ℋ : State.Trait}.
     
     Context {T E CallType Args : Set}.
@@ -2026,15 +2030,15 @@ Module
     }.
     Admitted.
   End
-    Impl_ink_codegen_implies_return_ImpliesReturn_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_CallBuilder_E_ink_env_call_common_Set__CallType_ink_env_call_common_Set__ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set__ink_env_call_common_ReturnType_T.
+    Impl_ink_codegen_implies_return_ImpliesReturn_T_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_CallBuilder_E_ink_env_call_common_Set__CallType_ink_env_call_common_Set__ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set__ink_env_call_common_ReturnType_T.
   Global Hint Resolve ℐ : core.
 End
-  Impl_ink_codegen_implies_return_ImpliesReturn_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_CallBuilder_E_ink_env_call_common_Set__CallType_ink_env_call_common_Set__ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set__ink_env_call_common_ReturnType_T.
+  Impl_ink_codegen_implies_return_ImpliesReturn_T_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_CallBuilder_E_ink_env_call_common_Set__CallType_ink_env_call_common_Set__ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set__ink_env_call_common_ReturnType_T.
 
 Module
-  Impl_ink_codegen_implies_return_ImpliesReturn_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_CallBuilder_E_ink_env_call_common_Set__CallType_ink_env_call_common_Set__ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set__Tuple_.
+  Impl_ink_codegen_implies_return_ImpliesReturn_Tuple__for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_CallBuilder_E_ink_env_call_common_Set__CallType_ink_env_call_common_Set__ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set__Tuple_.
   Section
-    Impl_ink_codegen_implies_return_ImpliesReturn_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_CallBuilder_E_ink_env_call_common_Set__CallType_ink_env_call_common_Set__ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set__Tuple_.
+    Impl_ink_codegen_implies_return_ImpliesReturn_Tuple__for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_CallBuilder_E_ink_env_call_common_Set__CallType_ink_env_call_common_Set__ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set__Tuple_.
     Context `{ℋ : State.Trait}.
     
     Context {E CallType Args : Set}.
@@ -2053,10 +2057,10 @@ Module
     }.
     Admitted.
   End
-    Impl_ink_codegen_implies_return_ImpliesReturn_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_CallBuilder_E_ink_env_call_common_Set__CallType_ink_env_call_common_Set__ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set__Tuple_.
+    Impl_ink_codegen_implies_return_ImpliesReturn_Tuple__for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_CallBuilder_E_ink_env_call_common_Set__CallType_ink_env_call_common_Set__ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set__Tuple_.
   Global Hint Resolve ℐ : core.
 End
-  Impl_ink_codegen_implies_return_ImpliesReturn_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_CallBuilder_E_ink_env_call_common_Set__CallType_ink_env_call_common_Set__ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set__Tuple_.
+  Impl_ink_codegen_implies_return_ImpliesReturn_Tuple__for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_CallBuilder_E_ink_env_call_common_Set__CallType_ink_env_call_common_Set__ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set__Tuple_.
 
 Module trait_def.
   Module call_builder.
@@ -2599,9 +2603,9 @@ Module Wrap_dispatch_1.
       Impl_ink_reflect_dispatch_private_Sealed_for_ink_reflect_dispatch_ConstructorOutputValue_T.
     
     Module
-      Impl_ink_reflect_dispatch_ConstructorOutput_for_ink_reflect_dispatch_ConstructorOutputValue_C.
+      Impl_ink_reflect_dispatch_ConstructorOutput_C_for_ink_reflect_dispatch_ConstructorOutputValue_C.
       Section
-        Impl_ink_reflect_dispatch_ConstructorOutput_for_ink_reflect_dispatch_ConstructorOutputValue_C.
+        Impl_ink_reflect_dispatch_ConstructorOutput_C_for_ink_reflect_dispatch_ConstructorOutputValue_C.
         Context `{ℋ : State.Trait}.
         
         Context {C : Set}.
@@ -2625,15 +2629,15 @@ Module Wrap_dispatch_1.
         }.
         Admitted.
       End
-        Impl_ink_reflect_dispatch_ConstructorOutput_for_ink_reflect_dispatch_ConstructorOutputValue_C.
+        Impl_ink_reflect_dispatch_ConstructorOutput_C_for_ink_reflect_dispatch_ConstructorOutputValue_C.
       Global Hint Resolve ℐ : core.
     End
-      Impl_ink_reflect_dispatch_ConstructorOutput_for_ink_reflect_dispatch_ConstructorOutputValue_C.
+      Impl_ink_reflect_dispatch_ConstructorOutput_C_for_ink_reflect_dispatch_ConstructorOutputValue_C.
     
     Module
-      Impl_ink_reflect_dispatch_ConstructorOutput_for_ink_reflect_dispatch_ConstructorOutputValue_core_result_Result_C_E.
+      Impl_ink_reflect_dispatch_ConstructorOutput_C_for_ink_reflect_dispatch_ConstructorOutputValue_core_result_Result_C_E.
       Section
-        Impl_ink_reflect_dispatch_ConstructorOutput_for_ink_reflect_dispatch_ConstructorOutputValue_core_result_Result_C_E.
+        Impl_ink_reflect_dispatch_ConstructorOutput_C_for_ink_reflect_dispatch_ConstructorOutputValue_core_result_Result_C_E.
         Context `{ℋ : State.Trait}.
         
         Context {C E : Set}.
@@ -2665,10 +2669,10 @@ Module Wrap_dispatch_1.
         }.
         Admitted.
       End
-        Impl_ink_reflect_dispatch_ConstructorOutput_for_ink_reflect_dispatch_ConstructorOutputValue_core_result_Result_C_E.
+        Impl_ink_reflect_dispatch_ConstructorOutput_C_for_ink_reflect_dispatch_ConstructorOutputValue_core_result_Result_C_E.
       Global Hint Resolve ℐ : core.
     End
-      Impl_ink_reflect_dispatch_ConstructorOutput_for_ink_reflect_dispatch_ConstructorOutputValue_core_result_Result_C_E.
+      Impl_ink_reflect_dispatch_ConstructorOutput_C_for_ink_reflect_dispatch_ConstructorOutputValue_core_result_Result_C_E.
     
     Module DispatchError.
       Inductive t `{ℋ : State.Trait} : Set :=
@@ -2903,8 +2907,10 @@ Module Wrap_dispatch_1.
       Global Hint Resolve ℐ : core.
     End Impl_core_fmt_Display_for_ink_reflect_dispatch_DispatchError.
     
-    Module Impl_core_convert_From_for_parity_scale_codec_error_Error.
-      Section Impl_core_convert_From_for_parity_scale_codec_error_Error.
+    Module
+      Impl_core_convert_From_ink_reflect_dispatch_DispatchError_for_parity_scale_codec_error_Error.
+      Section
+        Impl_core_convert_From_ink_reflect_dispatch_DispatchError_for_parity_scale_codec_error_Error.
         Context `{ℋ : State.Trait}.
         
         Definition Self : Set := parity_scale_codec.error.Error.
@@ -2922,9 +2928,11 @@ Module Wrap_dispatch_1.
           core.convert.From.from := from;
         }.
         Admitted.
-      End Impl_core_convert_From_for_parity_scale_codec_error_Error.
+      End
+        Impl_core_convert_From_ink_reflect_dispatch_DispatchError_for_parity_scale_codec_error_Error.
       Global Hint Resolve ℐ : core.
-    End Impl_core_convert_From_for_parity_scale_codec_error_Error.
+    End
+      Impl_core_convert_From_ink_reflect_dispatch_DispatchError_for_parity_scale_codec_error_Error.
   End dispatch.
 End Wrap_dispatch_1.
 Import Wrap_dispatch_1.
@@ -3086,9 +3094,9 @@ End
   Impl_ink_reflect_dispatch_private_Sealed_for_ink_reflect_dispatch_ConstructorOutputValue_T.
 
 Module
-  Impl_ink_reflect_dispatch_ConstructorOutput_for_ink_reflect_dispatch_ConstructorOutputValue_C.
+  Impl_ink_reflect_dispatch_ConstructorOutput_C_for_ink_reflect_dispatch_ConstructorOutputValue_C.
   Section
-    Impl_ink_reflect_dispatch_ConstructorOutput_for_ink_reflect_dispatch_ConstructorOutputValue_C.
+    Impl_ink_reflect_dispatch_ConstructorOutput_C_for_ink_reflect_dispatch_ConstructorOutputValue_C.
     Context `{ℋ : State.Trait}.
     
     Context {C : Set}.
@@ -3112,15 +3120,15 @@ Module
     }.
     Admitted.
   End
-    Impl_ink_reflect_dispatch_ConstructorOutput_for_ink_reflect_dispatch_ConstructorOutputValue_C.
+    Impl_ink_reflect_dispatch_ConstructorOutput_C_for_ink_reflect_dispatch_ConstructorOutputValue_C.
   Global Hint Resolve ℐ : core.
 End
-  Impl_ink_reflect_dispatch_ConstructorOutput_for_ink_reflect_dispatch_ConstructorOutputValue_C.
+  Impl_ink_reflect_dispatch_ConstructorOutput_C_for_ink_reflect_dispatch_ConstructorOutputValue_C.
 
 Module
-  Impl_ink_reflect_dispatch_ConstructorOutput_for_ink_reflect_dispatch_ConstructorOutputValue_core_result_Result_C_E.
+  Impl_ink_reflect_dispatch_ConstructorOutput_C_for_ink_reflect_dispatch_ConstructorOutputValue_core_result_Result_C_E.
   Section
-    Impl_ink_reflect_dispatch_ConstructorOutput_for_ink_reflect_dispatch_ConstructorOutputValue_core_result_Result_C_E.
+    Impl_ink_reflect_dispatch_ConstructorOutput_C_for_ink_reflect_dispatch_ConstructorOutputValue_core_result_Result_C_E.
     Context `{ℋ : State.Trait}.
     
     Context {C E : Set}.
@@ -3152,10 +3160,10 @@ Module
     }.
     Admitted.
   End
-    Impl_ink_reflect_dispatch_ConstructorOutput_for_ink_reflect_dispatch_ConstructorOutputValue_core_result_Result_C_E.
+    Impl_ink_reflect_dispatch_ConstructorOutput_C_for_ink_reflect_dispatch_ConstructorOutputValue_core_result_Result_C_E.
   Global Hint Resolve ℐ : core.
 End
-  Impl_ink_reflect_dispatch_ConstructorOutput_for_ink_reflect_dispatch_ConstructorOutputValue_core_result_Result_C_E.
+  Impl_ink_reflect_dispatch_ConstructorOutput_C_for_ink_reflect_dispatch_ConstructorOutputValue_core_result_Result_C_E.
 
 Module ContractMessageDecoder.
   Section ContractMessageDecoder.
@@ -3366,8 +3374,10 @@ Module Impl_core_fmt_Display_for_ink_reflect_dispatch_DispatchError.
   Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Display_for_ink_reflect_dispatch_DispatchError.
 
-Module Impl_core_convert_From_for_parity_scale_codec_error_Error.
-  Section Impl_core_convert_From_for_parity_scale_codec_error_Error.
+Module
+  Impl_core_convert_From_ink_reflect_dispatch_DispatchError_for_parity_scale_codec_error_Error.
+  Section
+    Impl_core_convert_From_ink_reflect_dispatch_DispatchError_for_parity_scale_codec_error_Error.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := parity_scale_codec.error.Error.
@@ -3385,9 +3395,11 @@ Module Impl_core_convert_From_for_parity_scale_codec_error_Error.
       core.convert.From.from := from;
     }.
     Admitted.
-  End Impl_core_convert_From_for_parity_scale_codec_error_Error.
+  End
+    Impl_core_convert_From_ink_reflect_dispatch_DispatchError_for_parity_scale_codec_error_Error.
   Global Hint Resolve ℐ : core.
-End Impl_core_convert_From_for_parity_scale_codec_error_Error.
+End
+  Impl_core_convert_From_ink_reflect_dispatch_DispatchError_for_parity_scale_codec_error_Error.
 
 Module DecodeDispatch.
   Section DecodeDispatch.
@@ -3851,8 +3863,8 @@ Module chain_extension.
   End
     Impl_ink_chain_extension_private_OutputSealed_for_ink_chain_extension_ValueReturned.
   
-  (* Module Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
-    (* Section Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
+  (* Module Impl_ink_chain_extension_Output_T_E_for_ink_chain_extension_ValueReturned.
+    (* Section Impl_ink_chain_extension_Output_T_E_for_ink_chain_extension_ValueReturned.
       Context `{ℋ : State.Trait}.
       
       Context {T E : Set}.
@@ -3866,12 +3878,12 @@ Module chain_extension.
         ink.chain_extension.Output.ReturnType := ReturnType;
       }.
       Admitted.
-    End Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned. *)
+    End Impl_ink_chain_extension_Output_T_E_for_ink_chain_extension_ValueReturned. *)
     Global Hint Resolve ℐ : core.
-  End Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned. *)
+  End Impl_ink_chain_extension_Output_T_E_for_ink_chain_extension_ValueReturned. *)
   
-  (* Module Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
-    (* Section Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
+  (* Module Impl_ink_chain_extension_Output_T_E_for_ink_chain_extension_ValueReturned.
+    (* Section Impl_ink_chain_extension_Output_T_E_for_ink_chain_extension_ValueReturned.
       Context `{ℋ : State.Trait}.
       
       Context {T E : Set}.
@@ -3885,9 +3897,9 @@ Module chain_extension.
         ink.chain_extension.Output.ReturnType := ReturnType;
       }.
       Admitted.
-    End Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned. *)
+    End Impl_ink_chain_extension_Output_T_E_for_ink_chain_extension_ValueReturned. *)
     Global Hint Resolve ℐ : core.
-  End Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned. *)
+  End Impl_ink_chain_extension_Output_T_E_for_ink_chain_extension_ValueReturned. *)
 End chain_extension.
 
 Module ChainExtensionInstance.
@@ -4032,8 +4044,8 @@ Module
 End
   Impl_ink_chain_extension_private_OutputSealed_for_ink_chain_extension_ValueReturned.
 
-(* Module Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
-  (* Section Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
+(* Module Impl_ink_chain_extension_Output_T_E_for_ink_chain_extension_ValueReturned.
+  (* Section Impl_ink_chain_extension_Output_T_E_for_ink_chain_extension_ValueReturned.
     Context `{ℋ : State.Trait}.
     
     Context {T E : Set}.
@@ -4047,12 +4059,12 @@ End
       ink.chain_extension.Output.ReturnType := ReturnType;
     }.
     Admitted.
-  End Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned. *)
+  End Impl_ink_chain_extension_Output_T_E_for_ink_chain_extension_ValueReturned. *)
   Global Hint Resolve ℐ : core.
-End Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned. *)
+End Impl_ink_chain_extension_Output_T_E_for_ink_chain_extension_ValueReturned. *)
 
-(* Module Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
-  (* Section Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
+(* Module Impl_ink_chain_extension_Output_T_E_for_ink_chain_extension_ValueReturned.
+  (* Section Impl_ink_chain_extension_Output_T_E_for_ink_chain_extension_ValueReturned.
     Context `{ℋ : State.Trait}.
     
     Context {T E : Set}.
@@ -4066,9 +4078,9 @@ End Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned. *)
       ink.chain_extension.Output.ReturnType := ReturnType;
     }.
     Admitted.
-  End Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned. *)
+  End Impl_ink_chain_extension_Output_T_E_for_ink_chain_extension_ValueReturned. *)
   Global Hint Resolve ℐ : core.
-End Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned. *)
+End Impl_ink_chain_extension_Output_T_E_for_ink_chain_extension_ValueReturned. *)
 
 Module Wrap_private_1.
   Module private.

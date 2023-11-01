@@ -1096,8 +1096,8 @@ Module erc20.
     Global Hint Resolve ℐ : core.
   End Impl_core_clone_Clone_for_erc20_erc20_Erc20Ref.
   
-  Module Impl_erc20_erc20_Erc20Ref_8.
-    Section Impl_erc20_erc20_Erc20Ref_8.
+  Module Impl_erc20_erc20_Erc20Ref.
+    Section Impl_erc20_erc20_Erc20Ref.
       Context `{ℋ : State.Trait}.
       
       Definition Self : Set := erc20.erc20.Erc20Ref.
@@ -1755,13 +1755,13 @@ Module erc20.
         Notation.DoubleColon Self "try_transfer_from" := {
         Notation.double_colon := try_transfer_from;
       }.
-    End Impl_erc20_erc20_Erc20Ref_8.
-  End Impl_erc20_erc20_Erc20Ref_8.
+    End Impl_erc20_erc20_Erc20Ref.
+  End Impl_erc20_erc20_Erc20Ref.
   
   Module
-    Impl_ink_env_call_create_builder_FromAccountId_for_erc20_erc20_Erc20Ref.
+    Impl_ink_env_call_create_builder_FromAccountId_erc20_erc20_Environment_for_erc20_erc20_Erc20Ref.
     Section
-      Impl_ink_env_call_create_builder_FromAccountId_for_erc20_erc20_Erc20Ref.
+      Impl_ink_env_call_create_builder_FromAccountId_erc20_erc20_Environment_for_erc20_erc20_Erc20Ref.
       Context `{ℋ : State.Trait}.
       
       Definition Self : Set := erc20.erc20.Erc20Ref.
@@ -1787,12 +1787,16 @@ Module erc20.
           from_account_id;
       }.
       Admitted.
-    End Impl_ink_env_call_create_builder_FromAccountId_for_erc20_erc20_Erc20Ref.
+    End
+      Impl_ink_env_call_create_builder_FromAccountId_erc20_erc20_Environment_for_erc20_erc20_Erc20Ref.
     Global Hint Resolve ℐ : core.
-  End Impl_ink_env_call_create_builder_FromAccountId_for_erc20_erc20_Erc20Ref.
+  End
+    Impl_ink_env_call_create_builder_FromAccountId_erc20_erc20_Environment_for_erc20_erc20_Erc20Ref.
   
-  Module Impl_ink_contract_ref_ToAccountId_for_erc20_erc20_Erc20Ref.
-    Section Impl_ink_contract_ref_ToAccountId_for_erc20_erc20_Erc20Ref.
+  Module
+    Impl_ink_contract_ref_ToAccountId_erc20_erc20_Environment_for_erc20_erc20_Erc20Ref.
+    Section
+      Impl_ink_contract_ref_ToAccountId_erc20_erc20_Environment_for_erc20_erc20_Erc20Ref.
       Context `{ℋ : State.Trait}.
       
       Definition Self : Set := erc20.erc20.Erc20Ref.
@@ -1820,12 +1824,15 @@ Module erc20.
         ink.contract_ref.ToAccountId.to_account_id := to_account_id;
       }.
       Admitted.
-    End Impl_ink_contract_ref_ToAccountId_for_erc20_erc20_Erc20Ref.
+    End
+      Impl_ink_contract_ref_ToAccountId_erc20_erc20_Environment_for_erc20_erc20_Erc20Ref.
     Global Hint Resolve ℐ : core.
-  End Impl_ink_contract_ref_ToAccountId_for_erc20_erc20_Erc20Ref.
+  End
+    Impl_ink_contract_ref_ToAccountId_erc20_erc20_Environment_for_erc20_erc20_Erc20Ref.
   
-  Module Impl_core_convert_AsRef_for_erc20_erc20_Erc20Ref.
-    Section Impl_core_convert_AsRef_for_erc20_erc20_Erc20Ref.
+  Module Impl_core_convert_AsRef_erc20_erc20_AccountId_for_erc20_erc20_Erc20Ref.
+    Section
+      Impl_core_convert_AsRef_erc20_erc20_AccountId_for_erc20_erc20_Erc20Ref.
       Context `{ℋ : State.Trait}.
       
       Definition Self : Set := erc20.erc20.Erc20Ref.
@@ -1853,12 +1860,13 @@ Module erc20.
         core.convert.AsRef.as_ref := as_ref;
       }.
       Admitted.
-    End Impl_core_convert_AsRef_for_erc20_erc20_Erc20Ref.
+    End Impl_core_convert_AsRef_erc20_erc20_AccountId_for_erc20_erc20_Erc20Ref.
     Global Hint Resolve ℐ : core.
-  End Impl_core_convert_AsRef_for_erc20_erc20_Erc20Ref.
+  End Impl_core_convert_AsRef_erc20_erc20_AccountId_for_erc20_erc20_Erc20Ref.
   
-  Module Impl_core_convert_AsMut_for_erc20_erc20_Erc20Ref.
-    Section Impl_core_convert_AsMut_for_erc20_erc20_Erc20Ref.
+  Module Impl_core_convert_AsMut_erc20_erc20_AccountId_for_erc20_erc20_Erc20Ref.
+    Section
+      Impl_core_convert_AsMut_erc20_erc20_AccountId_for_erc20_erc20_Erc20Ref.
       Context `{ℋ : State.Trait}.
       
       Definition Self : Set := erc20.erc20.Erc20Ref.
@@ -1888,9 +1896,9 @@ Module erc20.
         core.convert.AsMut.as_mut := as_mut;
       }.
       Admitted.
-    End Impl_core_convert_AsMut_for_erc20_erc20_Erc20Ref.
+    End Impl_core_convert_AsMut_erc20_erc20_AccountId_for_erc20_erc20_Erc20Ref.
     Global Hint Resolve ℐ : core.
-  End Impl_core_convert_AsMut_for_erc20_erc20_Erc20Ref.
+  End Impl_core_convert_AsMut_erc20_erc20_AccountId_for_erc20_erc20_Erc20Ref.
   
   Module Error.
     Inductive t `{ℋ : State.Trait} : Set :=
@@ -2198,8 +2206,10 @@ Module Erc20.
 End Erc20.
 Definition Erc20 `{ℋ : State.Trait} : Set := M.val Erc20.t.
 
-Module Impl_ink_storage_traits_storage_StorableHint_for_erc20_erc20_Erc20.
-  Section Impl_ink_storage_traits_storage_StorableHint_for_erc20_erc20_Erc20.
+Module
+  Impl_ink_storage_traits_storage_StorableHint___ink_generic_salt_for_erc20_erc20_Erc20.
+  Section
+    Impl_ink_storage_traits_storage_StorableHint___ink_generic_salt_for_erc20_erc20_Erc20.
     Context `{ℋ : State.Trait}.
     
     Context {__ink_generic_salt : Set}.
@@ -2219,9 +2229,11 @@ Module Impl_ink_storage_traits_storage_StorableHint_for_erc20_erc20_Erc20.
       ink_storage_traits.storage.StorableHint.PreferredKey := PreferredKey;
     }.
     Admitted.
-  End Impl_ink_storage_traits_storage_StorableHint_for_erc20_erc20_Erc20.
+  End
+    Impl_ink_storage_traits_storage_StorableHint___ink_generic_salt_for_erc20_erc20_Erc20.
   Global Hint Resolve ℐ : core.
-End Impl_ink_storage_traits_storage_StorableHint_for_erc20_erc20_Erc20.
+End
+  Impl_ink_storage_traits_storage_StorableHint___ink_generic_salt_for_erc20_erc20_Erc20.
 
 Module Impl_ink_storage_traits_storage_StorageKey_for_erc20_erc20_Erc20.
   Section Impl_ink_storage_traits_storage_StorageKey_for_erc20_erc20_Erc20.
@@ -2842,9 +2854,9 @@ Module Impl_ink_codegen_env_StaticEnv_for_erc20_erc20_Erc20.
 End Impl_ink_codegen_env_StaticEnv_for_erc20_erc20_Erc20.
 
 Module
-  Impl_ink_codegen_event_emit_EmitEvent_for_ink_env_access_EnvAccess_erc20_erc20_Environment.
+  Impl_ink_codegen_event_emit_EmitEvent_erc20_erc20_Erc20_for_ink_env_access_EnvAccess_erc20_erc20_Environment.
   Section
-    Impl_ink_codegen_event_emit_EmitEvent_for_ink_env_access_EnvAccess_erc20_erc20_Environment.
+    Impl_ink_codegen_event_emit_EmitEvent_erc20_erc20_Erc20_for_ink_env_access_EnvAccess_erc20_erc20_Environment.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set :=
@@ -2889,10 +2901,10 @@ Module
     }.
     Admitted.
   End
-    Impl_ink_codegen_event_emit_EmitEvent_for_ink_env_access_EnvAccess_erc20_erc20_Environment.
+    Impl_ink_codegen_event_emit_EmitEvent_erc20_erc20_Erc20_for_ink_env_access_EnvAccess_erc20_erc20_Environment.
   Global Hint Resolve ℐ : core.
 End
-  Impl_ink_codegen_event_emit_EmitEvent_for_ink_env_access_EnvAccess_erc20_erc20_Environment.
+  Impl_ink_codegen_event_emit_EmitEvent_erc20_erc20_Erc20_for_ink_env_access_EnvAccess_erc20_erc20_Environment.
 
 Module __ink_EventBase.
   Inductive t `{ℋ : State.Trait} : Set :=
@@ -3160,8 +3172,10 @@ Module Impl_ink_reflect_event_ContractEventBase_for_erc20_erc20_Erc20.
   Global Hint Resolve ℐ : core.
 End Impl_ink_reflect_event_ContractEventBase_for_erc20_erc20_Erc20.
 
-Module Impl_core_convert_From_for_erc20_erc20___ink_EventBase.
-  Section Impl_core_convert_From_for_erc20_erc20___ink_EventBase.
+Module
+  Impl_core_convert_From_erc20_erc20_Transfer_for_erc20_erc20___ink_EventBase.
+  Section
+    Impl_core_convert_From_erc20_erc20_Transfer_for_erc20_erc20___ink_EventBase.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := erc20.erc20.__ink_EventBase.
@@ -3179,12 +3193,15 @@ Module Impl_core_convert_From_for_erc20_erc20___ink_EventBase.
       core.convert.From.from := from;
     }.
     Admitted.
-  End Impl_core_convert_From_for_erc20_erc20___ink_EventBase.
+  End
+    Impl_core_convert_From_erc20_erc20_Transfer_for_erc20_erc20___ink_EventBase.
   Global Hint Resolve ℐ : core.
-End Impl_core_convert_From_for_erc20_erc20___ink_EventBase.
+End Impl_core_convert_From_erc20_erc20_Transfer_for_erc20_erc20___ink_EventBase.
 
-Module Impl_core_convert_From_for_erc20_erc20___ink_EventBase.
-  Section Impl_core_convert_From_for_erc20_erc20___ink_EventBase.
+Module
+  Impl_core_convert_From_erc20_erc20_Approval_for_erc20_erc20___ink_EventBase.
+  Section
+    Impl_core_convert_From_erc20_erc20_Approval_for_erc20_erc20___ink_EventBase.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := erc20.erc20.__ink_EventBase.
@@ -3202,9 +3219,10 @@ Module Impl_core_convert_From_for_erc20_erc20___ink_EventBase.
       core.convert.From.from := from;
     }.
     Admitted.
-  End Impl_core_convert_From_for_erc20_erc20___ink_EventBase.
+  End
+    Impl_core_convert_From_erc20_erc20_Approval_for_erc20_erc20___ink_EventBase.
   Global Hint Resolve ℐ : core.
-End Impl_core_convert_From_for_erc20_erc20___ink_EventBase.
+End Impl_core_convert_From_erc20_erc20_Approval_for_erc20_erc20___ink_EventBase.
 
 Module __ink_UndefinedAmountOfTopics.
   Inductive t `{ℋ : State.Trait} : Set :=
@@ -6253,8 +6271,8 @@ Definition _
     : ink.codegen.utils.same_type.IsSameType erc20.erc20.Erc20 :=
   M.run (ink.codegen.utils.same_type.IsSameType erc20.erc20.Erc20)::["new"].
 
-Module Impl_erc20_erc20_Erc20_29.
-  Section Impl_erc20_erc20_Erc20_29.
+Module Impl_erc20_erc20_Erc20.
+  Section Impl_erc20_erc20_Erc20.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := erc20.erc20.Erc20.
@@ -6679,8 +6697,8 @@ Module Impl_erc20_erc20_Erc20_29.
       Notation.DoubleColon Self "transfer_from_to" := {
       Notation.double_colon := transfer_from_to;
     }.
-  End Impl_erc20_erc20_Erc20_29.
-End Impl_erc20_erc20_Erc20_29.
+  End Impl_erc20_erc20_Erc20.
+End Impl_erc20_erc20_Erc20.
 
 Module CallBuilder.
   Section CallBuilder.
@@ -7378,9 +7396,9 @@ Module Impl_ink_env_contract_ContractEnv_for_erc20_erc20___CallBuilder.
 End Impl_ink_env_contract_ContractEnv_for_erc20_erc20___CallBuilder.
 
 Module
-  Impl_ink_env_call_create_builder_FromAccountId_for_erc20_erc20___CallBuilder.
+  Impl_ink_env_call_create_builder_FromAccountId_erc20_erc20_Environment_for_erc20_erc20___CallBuilder.
   Section
-    Impl_ink_env_call_create_builder_FromAccountId_for_erc20_erc20___CallBuilder.
+    Impl_ink_env_call_create_builder_FromAccountId_erc20_erc20_Environment_for_erc20_erc20___CallBuilder.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := erc20.erc20._.CallBuilder.
@@ -7403,13 +7421,15 @@ Module
     }.
     Admitted.
   End
-    Impl_ink_env_call_create_builder_FromAccountId_for_erc20_erc20___CallBuilder.
+    Impl_ink_env_call_create_builder_FromAccountId_erc20_erc20_Environment_for_erc20_erc20___CallBuilder.
   Global Hint Resolve ℐ : core.
 End
-  Impl_ink_env_call_create_builder_FromAccountId_for_erc20_erc20___CallBuilder.
+  Impl_ink_env_call_create_builder_FromAccountId_erc20_erc20_Environment_for_erc20_erc20___CallBuilder.
 
-Module Impl_ink_contract_ref_ToAccountId_for_erc20_erc20___CallBuilder.
-  Section Impl_ink_contract_ref_ToAccountId_for_erc20_erc20___CallBuilder.
+Module
+  Impl_ink_contract_ref_ToAccountId_erc20_erc20_Environment_for_erc20_erc20___CallBuilder.
+  Section
+    Impl_ink_contract_ref_ToAccountId_erc20_erc20_Environment_for_erc20_erc20___CallBuilder.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := erc20.erc20._.CallBuilder.
@@ -7435,12 +7455,16 @@ Module Impl_ink_contract_ref_ToAccountId_for_erc20_erc20___CallBuilder.
       ink.contract_ref.ToAccountId.to_account_id := to_account_id;
     }.
     Admitted.
-  End Impl_ink_contract_ref_ToAccountId_for_erc20_erc20___CallBuilder.
+  End
+    Impl_ink_contract_ref_ToAccountId_erc20_erc20_Environment_for_erc20_erc20___CallBuilder.
   Global Hint Resolve ℐ : core.
-End Impl_ink_contract_ref_ToAccountId_for_erc20_erc20___CallBuilder.
+End
+  Impl_ink_contract_ref_ToAccountId_erc20_erc20_Environment_for_erc20_erc20___CallBuilder.
 
-Module Impl_core_convert_AsRef_for_erc20_erc20___CallBuilder.
-  Section Impl_core_convert_AsRef_for_erc20_erc20___CallBuilder.
+Module
+  Impl_core_convert_AsRef_erc20_erc20_AccountId_for_erc20_erc20___CallBuilder.
+  Section
+    Impl_core_convert_AsRef_erc20_erc20_AccountId_for_erc20_erc20___CallBuilder.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := erc20.erc20._.CallBuilder.
@@ -7464,12 +7488,15 @@ Module Impl_core_convert_AsRef_for_erc20_erc20___CallBuilder.
       core.convert.AsRef.as_ref := as_ref;
     }.
     Admitted.
-  End Impl_core_convert_AsRef_for_erc20_erc20___CallBuilder.
+  End
+    Impl_core_convert_AsRef_erc20_erc20_AccountId_for_erc20_erc20___CallBuilder.
   Global Hint Resolve ℐ : core.
-End Impl_core_convert_AsRef_for_erc20_erc20___CallBuilder.
+End Impl_core_convert_AsRef_erc20_erc20_AccountId_for_erc20_erc20___CallBuilder.
 
-Module Impl_core_convert_AsMut_for_erc20_erc20___CallBuilder.
-  Section Impl_core_convert_AsMut_for_erc20_erc20___CallBuilder.
+Module
+  Impl_core_convert_AsMut_erc20_erc20_AccountId_for_erc20_erc20___CallBuilder.
+  Section
+    Impl_core_convert_AsMut_erc20_erc20_AccountId_for_erc20_erc20___CallBuilder.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := erc20.erc20._.CallBuilder.
@@ -7495,12 +7522,13 @@ Module Impl_core_convert_AsMut_for_erc20_erc20___CallBuilder.
       core.convert.AsMut.as_mut := as_mut;
     }.
     Admitted.
-  End Impl_core_convert_AsMut_for_erc20_erc20___CallBuilder.
+  End
+    Impl_core_convert_AsMut_erc20_erc20_AccountId_for_erc20_erc20___CallBuilder.
   Global Hint Resolve ℐ : core.
-End Impl_core_convert_AsMut_for_erc20_erc20___CallBuilder.
+End Impl_core_convert_AsMut_erc20_erc20_AccountId_for_erc20_erc20___CallBuilder.
 
-Module Impl_erc20_erc20___CallBuilder_18.
-  Section Impl_erc20_erc20___CallBuilder_18.
+Module Impl_erc20_erc20___CallBuilder.
+  Section Impl_erc20_erc20___CallBuilder.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := erc20.erc20._.CallBuilder.
@@ -8013,8 +8041,8 @@ Module Impl_erc20_erc20___CallBuilder_18.
       Notation.DoubleColon Self "transfer_from" := {
       Notation.double_colon := transfer_from;
     }.
-  End Impl_erc20_erc20___CallBuilder_18.
-End Impl_erc20_erc20___CallBuilder_18.
+  End Impl_erc20_erc20___CallBuilder.
+End Impl_erc20_erc20___CallBuilder.
 
 Module Erc20Ref.
   Section Erc20Ref.
@@ -8515,9 +8543,9 @@ Module Impl_ink_env_contract_ContractReference_for_erc20_erc20_Erc20.
 End Impl_ink_env_contract_ContractReference_for_erc20_erc20_Erc20.
 
 Module
-  Impl_ink_env_call_create_builder_ConstructorReturnType_for_erc20_erc20_Erc20.
+  Impl_ink_env_call_create_builder_ConstructorReturnType_erc20_erc20_Erc20Ref_for_erc20_erc20_Erc20.
   Section
-    Impl_ink_env_call_create_builder_ConstructorReturnType_for_erc20_erc20_Erc20.
+    Impl_ink_env_call_create_builder_ConstructorReturnType_erc20_erc20_Erc20Ref_for_erc20_erc20_Erc20.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := erc20.erc20.Erc20.
@@ -8541,15 +8569,15 @@ Module
     }.
     Admitted.
   End
-    Impl_ink_env_call_create_builder_ConstructorReturnType_for_erc20_erc20_Erc20.
+    Impl_ink_env_call_create_builder_ConstructorReturnType_erc20_erc20_Erc20Ref_for_erc20_erc20_Erc20.
   Global Hint Resolve ℐ : core.
 End
-  Impl_ink_env_call_create_builder_ConstructorReturnType_for_erc20_erc20_Erc20.
+  Impl_ink_env_call_create_builder_ConstructorReturnType_erc20_erc20_Erc20Ref_for_erc20_erc20_Erc20.
 
 Module
-  Impl_ink_env_call_create_builder_ConstructorReturnType_for_core_result_Result_erc20_erc20_Erc20_E.
+  Impl_ink_env_call_create_builder_ConstructorReturnType_erc20_erc20_Erc20Ref_for_core_result_Result_erc20_erc20_Erc20_E.
   Section
-    Impl_ink_env_call_create_builder_ConstructorReturnType_for_core_result_Result_erc20_erc20_Erc20_E.
+    Impl_ink_env_call_create_builder_ConstructorReturnType_erc20_erc20_Erc20Ref_for_core_result_Result_erc20_erc20_Erc20_E.
     Context `{ℋ : State.Trait}.
     
     Context {E : Set}.
@@ -8592,10 +8620,10 @@ Module
     }.
     Admitted.
   End
-    Impl_ink_env_call_create_builder_ConstructorReturnType_for_core_result_Result_erc20_erc20_Erc20_E.
+    Impl_ink_env_call_create_builder_ConstructorReturnType_erc20_erc20_Erc20Ref_for_core_result_Result_erc20_erc20_Erc20_E.
   Global Hint Resolve ℐ : core.
 End
-  Impl_ink_env_call_create_builder_ConstructorReturnType_for_core_result_Result_erc20_erc20_Erc20_E.
+  Impl_ink_env_call_create_builder_ConstructorReturnType_erc20_erc20_Erc20Ref_for_core_result_Result_erc20_erc20_Erc20_E.
 
 Module Impl_ink_env_contract_ContractEnv_for_erc20_erc20_Erc20Ref.
   Section Impl_ink_env_contract_ContractEnv_for_erc20_erc20_Erc20Ref.
@@ -8614,8 +8642,8 @@ Module Impl_ink_env_contract_ContractEnv_for_erc20_erc20_Erc20Ref.
   Global Hint Resolve ℐ : core.
 End Impl_ink_env_contract_ContractEnv_for_erc20_erc20_Erc20Ref.
 
-Module Impl_erc20_erc20_Erc20Ref_26.
-  Section Impl_erc20_erc20_Erc20Ref_26.
+Module Impl_erc20_erc20_Erc20Ref_2.
+  Section Impl_erc20_erc20_Erc20Ref_2.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := erc20.erc20.Erc20Ref.
@@ -9268,8 +9296,8 @@ Module Impl_erc20_erc20_Erc20Ref_26.
       Notation.DoubleColon Self "try_transfer_from" := {
       Notation.double_colon := try_transfer_from;
     }.
-  End Impl_erc20_erc20_Erc20Ref_26.
-End Impl_erc20_erc20_Erc20Ref_26.
+  End Impl_erc20_erc20_Erc20Ref_2.
+End Impl_erc20_erc20_Erc20Ref_2.
 
 Module
   Impl_ink_codegen_trait_def_call_builder_TraitCallBuilder_for_erc20_erc20_Erc20Ref.
@@ -9322,9 +9350,10 @@ Module
 End
   Impl_ink_codegen_trait_def_call_builder_TraitCallBuilder_for_erc20_erc20_Erc20Ref.
 
-Module Impl_ink_env_call_create_builder_FromAccountId_for_erc20_erc20_Erc20Ref.
+Module
+  Impl_ink_env_call_create_builder_FromAccountId_erc20_erc20_Environment_for_erc20_erc20_Erc20Ref.
   Section
-    Impl_ink_env_call_create_builder_FromAccountId_for_erc20_erc20_Erc20Ref.
+    Impl_ink_env_call_create_builder_FromAccountId_erc20_erc20_Environment_for_erc20_erc20_Erc20Ref.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := erc20.erc20.Erc20Ref.
@@ -9350,12 +9379,16 @@ Module Impl_ink_env_call_create_builder_FromAccountId_for_erc20_erc20_Erc20Ref.
         from_account_id;
     }.
     Admitted.
-  End Impl_ink_env_call_create_builder_FromAccountId_for_erc20_erc20_Erc20Ref.
+  End
+    Impl_ink_env_call_create_builder_FromAccountId_erc20_erc20_Environment_for_erc20_erc20_Erc20Ref.
   Global Hint Resolve ℐ : core.
-End Impl_ink_env_call_create_builder_FromAccountId_for_erc20_erc20_Erc20Ref.
+End
+  Impl_ink_env_call_create_builder_FromAccountId_erc20_erc20_Environment_for_erc20_erc20_Erc20Ref.
 
-Module Impl_ink_contract_ref_ToAccountId_for_erc20_erc20_Erc20Ref.
-  Section Impl_ink_contract_ref_ToAccountId_for_erc20_erc20_Erc20Ref.
+Module
+  Impl_ink_contract_ref_ToAccountId_erc20_erc20_Environment_for_erc20_erc20_Erc20Ref.
+  Section
+    Impl_ink_contract_ref_ToAccountId_erc20_erc20_Environment_for_erc20_erc20_Erc20Ref.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := erc20.erc20.Erc20Ref.
@@ -9383,12 +9416,15 @@ Module Impl_ink_contract_ref_ToAccountId_for_erc20_erc20_Erc20Ref.
       ink.contract_ref.ToAccountId.to_account_id := to_account_id;
     }.
     Admitted.
-  End Impl_ink_contract_ref_ToAccountId_for_erc20_erc20_Erc20Ref.
+  End
+    Impl_ink_contract_ref_ToAccountId_erc20_erc20_Environment_for_erc20_erc20_Erc20Ref.
   Global Hint Resolve ℐ : core.
-End Impl_ink_contract_ref_ToAccountId_for_erc20_erc20_Erc20Ref.
+End
+  Impl_ink_contract_ref_ToAccountId_erc20_erc20_Environment_for_erc20_erc20_Erc20Ref.
 
-Module Impl_core_convert_AsRef_for_erc20_erc20_Erc20Ref.
-  Section Impl_core_convert_AsRef_for_erc20_erc20_Erc20Ref.
+Module Impl_core_convert_AsRef_erc20_erc20_AccountId_for_erc20_erc20_Erc20Ref.
+  Section
+    Impl_core_convert_AsRef_erc20_erc20_AccountId_for_erc20_erc20_Erc20Ref.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := erc20.erc20.Erc20Ref.
@@ -9416,12 +9452,13 @@ Module Impl_core_convert_AsRef_for_erc20_erc20_Erc20Ref.
       core.convert.AsRef.as_ref := as_ref;
     }.
     Admitted.
-  End Impl_core_convert_AsRef_for_erc20_erc20_Erc20Ref.
+  End Impl_core_convert_AsRef_erc20_erc20_AccountId_for_erc20_erc20_Erc20Ref.
   Global Hint Resolve ℐ : core.
-End Impl_core_convert_AsRef_for_erc20_erc20_Erc20Ref.
+End Impl_core_convert_AsRef_erc20_erc20_AccountId_for_erc20_erc20_Erc20Ref.
 
-Module Impl_core_convert_AsMut_for_erc20_erc20_Erc20Ref.
-  Section Impl_core_convert_AsMut_for_erc20_erc20_Erc20Ref.
+Module Impl_core_convert_AsMut_erc20_erc20_AccountId_for_erc20_erc20_Erc20Ref.
+  Section
+    Impl_core_convert_AsMut_erc20_erc20_AccountId_for_erc20_erc20_Erc20Ref.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := erc20.erc20.Erc20Ref.
@@ -9451,9 +9488,9 @@ Module Impl_core_convert_AsMut_for_erc20_erc20_Erc20Ref.
       core.convert.AsMut.as_mut := as_mut;
     }.
     Admitted.
-  End Impl_core_convert_AsMut_for_erc20_erc20_Erc20Ref.
+  End Impl_core_convert_AsMut_erc20_erc20_AccountId_for_erc20_erc20_Erc20Ref.
   Global Hint Resolve ℐ : core.
-End Impl_core_convert_AsMut_for_erc20_erc20_Erc20Ref.
+End Impl_core_convert_AsMut_erc20_erc20_AccountId_for_erc20_erc20_Erc20Ref.
 
 Definition __ink_generate_metadata
     `{ℋ : State.Trait}

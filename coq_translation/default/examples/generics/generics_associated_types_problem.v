@@ -38,9 +38,9 @@ Module Contains.
 End Contains.
 
 Module
-  Impl_generics_associated_types_problem_Contains_for_generics_associated_types_problem_Container.
+  Impl_generics_associated_types_problem_Contains_i32_i32_for_generics_associated_types_problem_Container.
   Section
-    Impl_generics_associated_types_problem_Contains_for_generics_associated_types_problem_Container.
+    Impl_generics_associated_types_problem_Contains_i32_i32_for_generics_associated_types_problem_Container.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := generics_associated_types_problem.Container.
@@ -97,10 +97,10 @@ Module
     }.
     Admitted.
   End
-    Impl_generics_associated_types_problem_Contains_for_generics_associated_types_problem_Container.
+    Impl_generics_associated_types_problem_Contains_i32_i32_for_generics_associated_types_problem_Container.
   Global Hint Resolve ℐ : core.
 End
-  Impl_generics_associated_types_problem_Contains_for_generics_associated_types_problem_Container.
+  Impl_generics_associated_types_problem_Contains_i32_i32_for_generics_associated_types_problem_Container.
 
 Definition difference
     `{ℋ : State.Trait}

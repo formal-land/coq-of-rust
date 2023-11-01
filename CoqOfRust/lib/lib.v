@@ -102,5 +102,11 @@ Definition mut_ref `{State.Trait} (A : Set) : Set := val A.
 Definition slice (A : Set) : Set := list A.
 Definition array (A : Set) : Set := list A.
 
+Definition never `{State.Trait} : Set := M.val Empty_set.
+
+Definition never_to_any `{State.Trait} {A : Set} (n : never) : M A :=
+  let* n := M.read n in
+  match n with end.
+
 Definition mk_str `{State.Trait} (s : string) : ref str :=
   M.Ref.Immutable (M.Ref.Immutable s).

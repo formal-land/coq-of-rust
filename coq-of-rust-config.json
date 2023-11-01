@@ -76,6 +76,7 @@
         "ChainExtension": { "move": "up", "before": "ChainExtensionHandler" }
       },
       "top_level::ext": {
+        "Error": { "move": "up", "before": "Result" },
         "ChainSpec": { "move": "up", "before": "Engine" },
         "Impl_From_for_Result": { "move": "up" }
       }

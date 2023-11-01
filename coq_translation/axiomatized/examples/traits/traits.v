@@ -104,8 +104,8 @@ Module Impl_traits_Animal_for_traits_Sheep.
   Global Hint Resolve ℐ : core.
 End Impl_traits_Animal_for_traits_Sheep.
 
-Module Impl_traits_Sheep_3.
-  Section Impl_traits_Sheep_3.
+Module Impl_traits_Sheep_2.
+  Section Impl_traits_Sheep_2.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := traits.Sheep.
@@ -116,8 +116,8 @@ Module Impl_traits_Sheep_3.
       Notation.DoubleColon Self "shear" := {
       Notation.double_colon := shear;
     }.
-  End Impl_traits_Sheep_3.
-End Impl_traits_Sheep_3.
+  End Impl_traits_Sheep_2.
+End Impl_traits_Sheep_2.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : forall `{ℋ : State.Trait}, M unit.
