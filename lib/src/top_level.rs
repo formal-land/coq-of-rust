@@ -1139,7 +1139,6 @@ impl DynNameGen {
         }
     }
 
-    // fn next(&mut self, path: Path) -> (String, Self) {
     fn next(&mut self, path: Path) -> String {
         // Get the next character
         let next_letter = self
