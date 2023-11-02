@@ -42,7 +42,7 @@ Module Impl_core_clone_Clone_for_subtle_Choice.
       Notation.double_colon := clone;
     }.
     
-    Global Instance ℐ : core.clone.Clone.Trait Self := {
+    Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
       core.clone.Clone.clone := clone;
     }.
   End Impl_core_clone_Clone_for_subtle_Choice.
@@ -307,7 +307,7 @@ Module Impl_subtle_ConstantTimeEq_for_Slice_T.
       Notation.double_colon := ct_eq;
     }.
     
-    Global Instance ℐ : subtle.ConstantTimeEq.Trait Self := {
+    Global Instance ℐ : subtle.ConstantTimeEq.Required.Trait Self := {
       subtle.ConstantTimeEq.ct_eq := ct_eq;
     }.
   End Impl_subtle_ConstantTimeEq_for_Slice_T.
@@ -326,7 +326,7 @@ Module Impl_subtle_ConstantTimeEq_for_subtle_Choice.
       Notation.double_colon := ct_eq;
     }.
     
-    Global Instance ℐ : subtle.ConstantTimeEq.Trait Self := {
+    Global Instance ℐ : subtle.ConstantTimeEq.Required.Trait Self := {
       subtle.ConstantTimeEq.ct_eq := ct_eq;
     }.
   End Impl_subtle_ConstantTimeEq_for_subtle_Choice.
@@ -345,7 +345,7 @@ Module Impl_subtle_ConstantTimeEq_for_u8.
       Notation.double_colon := ct_eq;
     }.
     
-    Global Instance ℐ : subtle.ConstantTimeEq.Trait Self := {
+    Global Instance ℐ : subtle.ConstantTimeEq.Required.Trait Self := {
       subtle.ConstantTimeEq.ct_eq := ct_eq;
     }.
   End Impl_subtle_ConstantTimeEq_for_u8.
@@ -364,7 +364,7 @@ Module Impl_subtle_ConstantTimeEq_for_i8.
       Notation.double_colon := ct_eq;
     }.
     
-    Global Instance ℐ : subtle.ConstantTimeEq.Trait Self := {
+    Global Instance ℐ : subtle.ConstantTimeEq.Required.Trait Self := {
       subtle.ConstantTimeEq.ct_eq := ct_eq;
     }.
   End Impl_subtle_ConstantTimeEq_for_i8.
@@ -383,7 +383,7 @@ Module Impl_subtle_ConstantTimeEq_for_u16.
       Notation.double_colon := ct_eq;
     }.
     
-    Global Instance ℐ : subtle.ConstantTimeEq.Trait Self := {
+    Global Instance ℐ : subtle.ConstantTimeEq.Required.Trait Self := {
       subtle.ConstantTimeEq.ct_eq := ct_eq;
     }.
   End Impl_subtle_ConstantTimeEq_for_u16.
@@ -402,7 +402,7 @@ Module Impl_subtle_ConstantTimeEq_for_i16.
       Notation.double_colon := ct_eq;
     }.
     
-    Global Instance ℐ : subtle.ConstantTimeEq.Trait Self := {
+    Global Instance ℐ : subtle.ConstantTimeEq.Required.Trait Self := {
       subtle.ConstantTimeEq.ct_eq := ct_eq;
     }.
   End Impl_subtle_ConstantTimeEq_for_i16.
@@ -421,7 +421,7 @@ Module Impl_subtle_ConstantTimeEq_for_u32.
       Notation.double_colon := ct_eq;
     }.
     
-    Global Instance ℐ : subtle.ConstantTimeEq.Trait Self := {
+    Global Instance ℐ : subtle.ConstantTimeEq.Required.Trait Self := {
       subtle.ConstantTimeEq.ct_eq := ct_eq;
     }.
   End Impl_subtle_ConstantTimeEq_for_u32.
@@ -440,7 +440,7 @@ Module Impl_subtle_ConstantTimeEq_for_i32.
       Notation.double_colon := ct_eq;
     }.
     
-    Global Instance ℐ : subtle.ConstantTimeEq.Trait Self := {
+    Global Instance ℐ : subtle.ConstantTimeEq.Required.Trait Self := {
       subtle.ConstantTimeEq.ct_eq := ct_eq;
     }.
   End Impl_subtle_ConstantTimeEq_for_i32.
@@ -459,7 +459,7 @@ Module Impl_subtle_ConstantTimeEq_for_u64.
       Notation.double_colon := ct_eq;
     }.
     
-    Global Instance ℐ : subtle.ConstantTimeEq.Trait Self := {
+    Global Instance ℐ : subtle.ConstantTimeEq.Required.Trait Self := {
       subtle.ConstantTimeEq.ct_eq := ct_eq;
     }.
   End Impl_subtle_ConstantTimeEq_for_u64.
@@ -478,7 +478,7 @@ Module Impl_subtle_ConstantTimeEq_for_i64.
       Notation.double_colon := ct_eq;
     }.
     
-    Global Instance ℐ : subtle.ConstantTimeEq.Trait Self := {
+    Global Instance ℐ : subtle.ConstantTimeEq.Required.Trait Self := {
       subtle.ConstantTimeEq.ct_eq := ct_eq;
     }.
   End Impl_subtle_ConstantTimeEq_for_i64.
@@ -497,7 +497,7 @@ Module Impl_subtle_ConstantTimeEq_for_usize.
       Notation.double_colon := ct_eq;
     }.
     
-    Global Instance ℐ : subtle.ConstantTimeEq.Trait Self := {
+    Global Instance ℐ : subtle.ConstantTimeEq.Required.Trait Self := {
       subtle.ConstantTimeEq.ct_eq := ct_eq;
     }.
   End Impl_subtle_ConstantTimeEq_for_usize.
@@ -516,7 +516,7 @@ Module Impl_subtle_ConstantTimeEq_for_isize.
       Notation.double_colon := ct_eq;
     }.
     
-    Global Instance ℐ : subtle.ConstantTimeEq.Trait Self := {
+    Global Instance ℐ : subtle.ConstantTimeEq.Required.Trait Self := {
       subtle.ConstantTimeEq.ct_eq := ct_eq;
     }.
   End Impl_subtle_ConstantTimeEq_for_isize.
@@ -564,8 +564,10 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
       Notation.double_colon := conditional_swap;
     }.
     
-    Global Instance ℐ : subtle.ConditionallySelectable.Trait Self := {
+    Global Instance ℐ : subtle.ConditionallySelectable.Required.Trait Self := {
       subtle.ConditionallySelectable.conditional_select := conditional_select;
+      subtle.ConditionallySelectable.conditional_assign := conditional_assign;
+      subtle.ConditionallySelectable.conditional_swap := conditional_swap;
     }.
   End Impl_subtle_ConditionallySelectable_for_u8.
 End Impl_subtle_ConditionallySelectable_for_u8.
@@ -600,8 +602,10 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
       Notation.double_colon := conditional_swap;
     }.
     
-    Global Instance ℐ : subtle.ConditionallySelectable.Trait Self := {
+    Global Instance ℐ : subtle.ConditionallySelectable.Required.Trait Self := {
       subtle.ConditionallySelectable.conditional_select := conditional_select;
+      subtle.ConditionallySelectable.conditional_assign := conditional_assign;
+      subtle.ConditionallySelectable.conditional_swap := conditional_swap;
     }.
   End Impl_subtle_ConditionallySelectable_for_i8.
 End Impl_subtle_ConditionallySelectable_for_i8.
@@ -636,8 +640,10 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
       Notation.double_colon := conditional_swap;
     }.
     
-    Global Instance ℐ : subtle.ConditionallySelectable.Trait Self := {
+    Global Instance ℐ : subtle.ConditionallySelectable.Required.Trait Self := {
       subtle.ConditionallySelectable.conditional_select := conditional_select;
+      subtle.ConditionallySelectable.conditional_assign := conditional_assign;
+      subtle.ConditionallySelectable.conditional_swap := conditional_swap;
     }.
   End Impl_subtle_ConditionallySelectable_for_u16.
 End Impl_subtle_ConditionallySelectable_for_u16.
@@ -672,8 +678,10 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
       Notation.double_colon := conditional_swap;
     }.
     
-    Global Instance ℐ : subtle.ConditionallySelectable.Trait Self := {
+    Global Instance ℐ : subtle.ConditionallySelectable.Required.Trait Self := {
       subtle.ConditionallySelectable.conditional_select := conditional_select;
+      subtle.ConditionallySelectable.conditional_assign := conditional_assign;
+      subtle.ConditionallySelectable.conditional_swap := conditional_swap;
     }.
   End Impl_subtle_ConditionallySelectable_for_i16.
 End Impl_subtle_ConditionallySelectable_for_i16.
@@ -708,8 +716,10 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
       Notation.double_colon := conditional_swap;
     }.
     
-    Global Instance ℐ : subtle.ConditionallySelectable.Trait Self := {
+    Global Instance ℐ : subtle.ConditionallySelectable.Required.Trait Self := {
       subtle.ConditionallySelectable.conditional_select := conditional_select;
+      subtle.ConditionallySelectable.conditional_assign := conditional_assign;
+      subtle.ConditionallySelectable.conditional_swap := conditional_swap;
     }.
   End Impl_subtle_ConditionallySelectable_for_u32.
 End Impl_subtle_ConditionallySelectable_for_u32.
@@ -744,8 +754,10 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
       Notation.double_colon := conditional_swap;
     }.
     
-    Global Instance ℐ : subtle.ConditionallySelectable.Trait Self := {
+    Global Instance ℐ : subtle.ConditionallySelectable.Required.Trait Self := {
       subtle.ConditionallySelectable.conditional_select := conditional_select;
+      subtle.ConditionallySelectable.conditional_assign := conditional_assign;
+      subtle.ConditionallySelectable.conditional_swap := conditional_swap;
     }.
   End Impl_subtle_ConditionallySelectable_for_i32.
 End Impl_subtle_ConditionallySelectable_for_i32.
@@ -780,8 +792,10 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
       Notation.double_colon := conditional_swap;
     }.
     
-    Global Instance ℐ : subtle.ConditionallySelectable.Trait Self := {
+    Global Instance ℐ : subtle.ConditionallySelectable.Required.Trait Self := {
       subtle.ConditionallySelectable.conditional_select := conditional_select;
+      subtle.ConditionallySelectable.conditional_assign := conditional_assign;
+      subtle.ConditionallySelectable.conditional_swap := conditional_swap;
     }.
   End Impl_subtle_ConditionallySelectable_for_u64.
 End Impl_subtle_ConditionallySelectable_for_u64.
@@ -816,8 +830,10 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
       Notation.double_colon := conditional_swap;
     }.
     
-    Global Instance ℐ : subtle.ConditionallySelectable.Trait Self := {
+    Global Instance ℐ : subtle.ConditionallySelectable.Required.Trait Self := {
       subtle.ConditionallySelectable.conditional_select := conditional_select;
+      subtle.ConditionallySelectable.conditional_assign := conditional_assign;
+      subtle.ConditionallySelectable.conditional_swap := conditional_swap;
     }.
   End Impl_subtle_ConditionallySelectable_for_i64.
 End Impl_subtle_ConditionallySelectable_for_i64.
@@ -836,7 +852,7 @@ Module Impl_subtle_ConditionallySelectable_for_subtle_Choice.
       Notation.double_colon := conditional_select;
     }.
     
-    Global Instance ℐ : subtle.ConditionallySelectable.Trait Self := {
+    Global Instance ℐ : subtle.ConditionallySelectable.Required.Trait Self := {
       subtle.ConditionallySelectable.conditional_select := conditional_select;
     }.
   End Impl_subtle_ConditionallySelectable_for_subtle_Choice.
@@ -923,7 +939,7 @@ Module Impl_core_clone_Clone_for_subtle_CtOption_T.
       Notation.double_colon := clone;
     }.
     
-    Global Instance ℐ : core.clone.Clone.Trait Self := {
+    Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
       core.clone.Clone.clone := clone;
     }.
   End Impl_core_clone_Clone_for_subtle_CtOption_T.
@@ -1124,7 +1140,7 @@ Module Impl_subtle_ConditionallySelectable_for_subtle_CtOption_T.
       Notation.double_colon := conditional_select;
     }.
     
-    Global Instance ℐ : subtle.ConditionallySelectable.Trait Self := {
+    Global Instance ℐ : subtle.ConditionallySelectable.Required.Trait Self := {
       subtle.ConditionallySelectable.conditional_select := conditional_select;
     }.
   End Impl_subtle_ConditionallySelectable_for_subtle_CtOption_T.
@@ -1147,7 +1163,7 @@ Module Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
       Notation.double_colon := ct_eq;
     }.
     
-    Global Instance ℐ : subtle.ConstantTimeEq.Trait Self := {
+    Global Instance ℐ : subtle.ConstantTimeEq.Required.Trait Self := {
       subtle.ConstantTimeEq.ct_eq := ct_eq;
     }.
   End Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
@@ -1258,7 +1274,7 @@ Module Impl_subtle_ConstantTimeLess_for_u8.
     
     Definition Self : Set := u8.
     
-    Global Instance ℐ : subtle.ConstantTimeLess.Trait Self := {
+    Global Instance ℐ : subtle.ConstantTimeLess.Required.Trait Self := {
     }.
   End Impl_subtle_ConstantTimeLess_for_u8.
 End Impl_subtle_ConstantTimeLess_for_u8.
@@ -1269,7 +1285,7 @@ Module Impl_subtle_ConstantTimeLess_for_u16.
     
     Definition Self : Set := u16.
     
-    Global Instance ℐ : subtle.ConstantTimeLess.Trait Self := {
+    Global Instance ℐ : subtle.ConstantTimeLess.Required.Trait Self := {
     }.
   End Impl_subtle_ConstantTimeLess_for_u16.
 End Impl_subtle_ConstantTimeLess_for_u16.
@@ -1280,7 +1296,7 @@ Module Impl_subtle_ConstantTimeLess_for_u32.
     
     Definition Self : Set := u32.
     
-    Global Instance ℐ : subtle.ConstantTimeLess.Trait Self := {
+    Global Instance ℐ : subtle.ConstantTimeLess.Required.Trait Self := {
     }.
   End Impl_subtle_ConstantTimeLess_for_u32.
 End Impl_subtle_ConstantTimeLess_for_u32.
@@ -1291,7 +1307,7 @@ Module Impl_subtle_ConstantTimeLess_for_u64.
     
     Definition Self : Set := u64.
     
-    Global Instance ℐ : subtle.ConstantTimeLess.Trait Self := {
+    Global Instance ℐ : subtle.ConstantTimeLess.Required.Trait Self := {
     }.
   End Impl_subtle_ConstantTimeLess_for_u64.
 End Impl_subtle_ConstantTimeLess_for_u64.

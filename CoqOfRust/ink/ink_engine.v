@@ -89,7 +89,7 @@ Module types.
         Notation.double_colon := clone;
       }.
       
-      Global Instance ℐ : core.clone.Clone.Trait Self := {
+      Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
         core.clone.Clone.clone := clone;
       }.
     End Impl_core_clone_Clone_for_ink_engine_types_AccountId.
@@ -120,7 +120,7 @@ Module types.
       }.
       
       Global Instance ℐ :
-        core.cmp.PartialEq.Trait Self
+        core.cmp.PartialEq.Required.Trait Self
           (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
         core.cmp.PartialEq.eq := eq;
       }.
@@ -151,7 +151,8 @@ Module types.
         Notation.double_colon := assert_receiver_is_total_eq;
       }.
       
-      Global Instance ℐ : core.cmp.Eq.Trait Self := {
+      Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
+        core.cmp.Eq.assert_receiver_is_total_eq := assert_receiver_is_total_eq;
       }.
     End Impl_core_cmp_Eq_for_ink_engine_types_AccountId.
   End Impl_core_cmp_Eq_for_ink_engine_types_AccountId.
@@ -173,7 +174,7 @@ Module types.
       }.
       
       Global Instance ℐ :
-        core.cmp.PartialOrd.Trait Self
+        core.cmp.PartialOrd.Required.Trait Self
           (Rhs := core.cmp.PartialOrd.Default.Rhs Self) := {
         core.cmp.PartialOrd.partial_cmp := partial_cmp;
       }.
@@ -194,7 +195,7 @@ Module types.
         Notation.double_colon := cmp;
       }.
       
-      Global Instance ℐ : core.cmp.Ord.Trait Self := {
+      Global Instance ℐ : core.cmp.Ord.Required.Trait Self := {
         core.cmp.Ord.cmp := cmp;
       }.
     End Impl_core_cmp_Ord_for_ink_engine_types_AccountId.
@@ -217,7 +218,7 @@ Module types.
         Notation.double_colon := hash (__H := __H);
       }.
       
-      Global Instance ℐ : core.hash.Hash.Trait Self := {
+      Global Instance ℐ : core.hash.Hash.Required.Trait Self := {
         core.hash.Hash.hash {__H : Set} {ℋ_0 : core.hash.Hasher.Trait __H} :=
           hash (__H := __H);
       }.
@@ -299,7 +300,7 @@ Module types.
         Notation.double_colon := clone;
       }.
       
-      Global Instance ℐ : core.clone.Clone.Trait Self := {
+      Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
         core.clone.Clone.clone := clone;
       }.
     End Impl_core_clone_Clone_for_ink_engine_types_Key.
@@ -330,7 +331,7 @@ Module types.
       }.
       
       Global Instance ℐ :
-        core.cmp.PartialEq.Trait Self
+        core.cmp.PartialEq.Required.Trait Self
           (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
         core.cmp.PartialEq.eq := eq;
       }.
@@ -361,7 +362,8 @@ Module types.
         Notation.double_colon := assert_receiver_is_total_eq;
       }.
       
-      Global Instance ℐ : core.cmp.Eq.Trait Self := {
+      Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
+        core.cmp.Eq.assert_receiver_is_total_eq := assert_receiver_is_total_eq;
       }.
     End Impl_core_cmp_Eq_for_ink_engine_types_Key.
   End Impl_core_cmp_Eq_for_ink_engine_types_Key.
@@ -383,7 +385,7 @@ Module types.
       }.
       
       Global Instance ℐ :
-        core.cmp.PartialOrd.Trait Self
+        core.cmp.PartialOrd.Required.Trait Self
           (Rhs := core.cmp.PartialOrd.Default.Rhs Self) := {
         core.cmp.PartialOrd.partial_cmp := partial_cmp;
       }.
@@ -404,7 +406,7 @@ Module types.
         Notation.double_colon := cmp;
       }.
       
-      Global Instance ℐ : core.cmp.Ord.Trait Self := {
+      Global Instance ℐ : core.cmp.Ord.Required.Trait Self := {
         core.cmp.Ord.cmp := cmp;
       }.
     End Impl_core_cmp_Ord_for_ink_engine_types_Key.
@@ -427,7 +429,7 @@ Module types.
         Notation.double_colon := hash (__H := __H);
       }.
       
-      Global Instance ℐ : core.hash.Hash.Trait Self := {
+      Global Instance ℐ : core.hash.Hash.Required.Trait Self := {
         core.hash.Hash.hash {__H : Set} {ℋ_0 : core.hash.Hasher.Trait __H} :=
           hash (__H := __H);
       }.
@@ -455,7 +457,7 @@ Module types.
         Notation.double_colon := clone;
       }.
       
-      Global Instance ℐ : core.clone.Clone.Trait Self := {
+      Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
         core.clone.Clone.clone := clone;
       }.
     End Impl_core_clone_Clone_for_ink_engine_types_AccountError.
@@ -535,7 +537,7 @@ Module types.
       }.
       
       Global Instance ℐ :
-        core.cmp.PartialEq.Trait Self
+        core.cmp.PartialEq.Required.Trait Self
           (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
         core.cmp.PartialEq.eq := eq;
       }.
@@ -566,7 +568,8 @@ Module types.
         Notation.double_colon := assert_receiver_is_total_eq;
       }.
       
-      Global Instance ℐ : core.cmp.Eq.Trait Self := {
+      Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
+        core.cmp.Eq.assert_receiver_is_total_eq := assert_receiver_is_total_eq;
       }.
     End Impl_core_cmp_Eq_for_ink_engine_types_AccountError.
   End Impl_core_cmp_Eq_for_ink_engine_types_AccountError.
@@ -638,7 +641,7 @@ Module test_api.
         Notation.double_colon := clone;
       }.
       
-      Global Instance ℐ : core.clone.Clone.Trait Self := {
+      Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
         core.clone.Clone.clone := clone;
       }.
     End Impl_core_clone_Clone_for_ink_engine_test_api_EmittedEvent.
@@ -682,7 +685,7 @@ Module test_api.
         Notation.double_colon := clone;
       }.
       
-      Global Instance ℐ : core.clone.Clone.Trait Self := {
+      Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
         core.clone.Clone.clone := clone;
       }.
     End Impl_core_clone_Clone_for_ink_engine_test_api_RecordedDebugMessages.
@@ -964,7 +967,7 @@ Module chain_extension.
       }.
       
       Global Instance ℐ :
-        core.cmp.PartialEq.Trait Self
+        core.cmp.PartialEq.Required.Trait Self
           (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
         core.cmp.PartialEq.eq := eq;
       }.
@@ -998,7 +1001,8 @@ Module chain_extension.
         Notation.double_colon := assert_receiver_is_total_eq;
       }.
       
-      Global Instance ℐ : core.cmp.Eq.Trait Self := {
+      Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
+        core.cmp.Eq.assert_receiver_is_total_eq := assert_receiver_is_total_eq;
       }.
     End Impl_core_cmp_Eq_for_ink_engine_chain_extension_ExtensionId.
   End Impl_core_cmp_Eq_for_ink_engine_chain_extension_ExtensionId.
@@ -1020,7 +1024,7 @@ Module chain_extension.
       }.
       
       Global Instance ℐ :
-        core.cmp.PartialOrd.Trait Self
+        core.cmp.PartialOrd.Required.Trait Self
           (Rhs := core.cmp.PartialOrd.Default.Rhs Self) := {
         core.cmp.PartialOrd.partial_cmp := partial_cmp;
       }.
@@ -1043,7 +1047,7 @@ Module chain_extension.
         Notation.double_colon := cmp;
       }.
       
-      Global Instance ℐ : core.cmp.Ord.Trait Self := {
+      Global Instance ℐ : core.cmp.Ord.Required.Trait Self := {
         core.cmp.Ord.cmp := cmp;
       }.
     End Impl_core_cmp_Ord_for_ink_engine_chain_extension_ExtensionId.
@@ -1066,7 +1070,7 @@ Module chain_extension.
         Notation.double_colon := hash (__H := __H);
       }.
       
-      Global Instance ℐ : core.hash.Hash.Trait Self := {
+      Global Instance ℐ : core.hash.Hash.Required.Trait Self := {
         core.hash.Hash.hash {__H : Set} {ℋ_0 : core.hash.Hasher.Trait __H} :=
           hash (__H := __H);
       }.
@@ -1691,7 +1695,7 @@ Module Impl_core_clone_Clone_for_ink_engine_test_api_EmittedEvent.
       Notation.double_colon := clone;
     }.
     
-    Global Instance ℐ : core.clone.Clone.Trait Self := {
+    Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
       core.clone.Clone.clone := clone;
     }.
   End Impl_core_clone_Clone_for_ink_engine_test_api_EmittedEvent.
@@ -1734,7 +1738,7 @@ Module Impl_core_clone_Clone_for_ink_engine_test_api_RecordedDebugMessages.
       Notation.double_colon := clone;
     }.
     
-    Global Instance ℐ : core.clone.Clone.Trait Self := {
+    Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
       core.clone.Clone.clone := clone;
     }.
   End Impl_core_clone_Clone_for_ink_engine_test_api_RecordedDebugMessages.
@@ -2033,7 +2037,19 @@ End Impl_core_convert_From_u32_for_ink_engine_chain_extension_ExtensionId.
       Notation.double_colon := using_encoded (R := R) (F := F);
     }.
     
-    Global Instance ℐ : parity_scale_codec.codec.Encode.Trait Self := {
+    Global Instance ℐ : parity_scale_codec.codec.Encode.Required.Trait Self := {
+      parity_scale_codec.codec.Encode.encode_to
+        {__CodecOutputEdqy : Set}
+        {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+        {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy} :=
+        encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
+      parity_scale_codec.codec.Encode.encode := encode;
+      parity_scale_codec.codec.Encode.using_encoded
+        {R F : Set}
+        {ℋ_0 :
+          core.ops.function.FnOnce.Trait F
+            (Args := ref (Slice CoqOfRust.core.primitive.u8))} :=
+        using_encoded (R := R) (F := F);
     }.
   End Impl_parity_scale_codec_codec_Encode_for_ink_engine_chain_extension_ExtensionId. *)
 End Impl_parity_scale_codec_codec_Encode_for_ink_engine_chain_extension_ExtensionId. *)
@@ -2071,7 +2087,7 @@ End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_engine_chain_extensio
       Notation.double_colon := decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
     
-    Global Instance ℐ : parity_scale_codec.codec.Decode.Trait Self := {
+    Global Instance ℐ : parity_scale_codec.codec.Decode.Required.Trait Self := {
       parity_scale_codec.codec.Decode.decode
         {__CodecInputEdqy : Set}
         {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :=
@@ -2109,7 +2125,7 @@ Module Impl_core_cmp_PartialEq_for_ink_engine_chain_extension_ExtensionId.
     }.
     
     Global Instance ℐ :
-      core.cmp.PartialEq.Trait Self
+      core.cmp.PartialEq.Required.Trait Self
         (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
       core.cmp.PartialEq.eq := eq;
     }.
@@ -2141,7 +2157,8 @@ Module Impl_core_cmp_Eq_for_ink_engine_chain_extension_ExtensionId.
       Notation.double_colon := assert_receiver_is_total_eq;
     }.
     
-    Global Instance ℐ : core.cmp.Eq.Trait Self := {
+    Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
+      core.cmp.Eq.assert_receiver_is_total_eq := assert_receiver_is_total_eq;
     }.
   End Impl_core_cmp_Eq_for_ink_engine_chain_extension_ExtensionId.
 End Impl_core_cmp_Eq_for_ink_engine_chain_extension_ExtensionId.
@@ -2163,7 +2180,7 @@ Module Impl_core_cmp_PartialOrd_for_ink_engine_chain_extension_ExtensionId.
     }.
     
     Global Instance ℐ :
-      core.cmp.PartialOrd.Trait Self
+      core.cmp.PartialOrd.Required.Trait Self
         (Rhs := core.cmp.PartialOrd.Default.Rhs Self) := {
       core.cmp.PartialOrd.partial_cmp := partial_cmp;
     }.
@@ -2186,7 +2203,7 @@ Module Impl_core_cmp_Ord_for_ink_engine_chain_extension_ExtensionId.
       Notation.double_colon := cmp;
     }.
     
-    Global Instance ℐ : core.cmp.Ord.Trait Self := {
+    Global Instance ℐ : core.cmp.Ord.Required.Trait Self := {
       core.cmp.Ord.cmp := cmp;
     }.
   End Impl_core_cmp_Ord_for_ink_engine_chain_extension_ExtensionId.
@@ -2209,7 +2226,7 @@ Module Impl_core_hash_Hash_for_ink_engine_chain_extension_ExtensionId.
       Notation.double_colon := hash (__H := __H);
     }.
     
-    Global Instance ℐ : core.hash.Hash.Trait Self := {
+    Global Instance ℐ : core.hash.Hash.Required.Trait Self := {
       core.hash.Hash.hash {__H : Set} {ℋ_0 : core.hash.Hasher.Trait __H} :=
         hash (__H := __H);
     }.
@@ -2507,7 +2524,7 @@ Module Impl_core_clone_Clone_for_ink_engine_types_AccountId.
       Notation.double_colon := clone;
     }.
     
-    Global Instance ℐ : core.clone.Clone.Trait Self := {
+    Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
       core.clone.Clone.clone := clone;
     }.
   End Impl_core_clone_Clone_for_ink_engine_types_AccountId.
@@ -2537,7 +2554,7 @@ Module Impl_core_cmp_PartialEq_for_ink_engine_types_AccountId.
     }.
     
     Global Instance ℐ :
-      core.cmp.PartialEq.Trait Self
+      core.cmp.PartialEq.Required.Trait Self
         (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
       core.cmp.PartialEq.eq := eq;
     }.
@@ -2568,7 +2585,8 @@ Module Impl_core_cmp_Eq_for_ink_engine_types_AccountId.
       Notation.double_colon := assert_receiver_is_total_eq;
     }.
     
-    Global Instance ℐ : core.cmp.Eq.Trait Self := {
+    Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
+      core.cmp.Eq.assert_receiver_is_total_eq := assert_receiver_is_total_eq;
     }.
   End Impl_core_cmp_Eq_for_ink_engine_types_AccountId.
 End Impl_core_cmp_Eq_for_ink_engine_types_AccountId.
@@ -2590,7 +2608,7 @@ Module Impl_core_cmp_PartialOrd_for_ink_engine_types_AccountId.
     }.
     
     Global Instance ℐ :
-      core.cmp.PartialOrd.Trait Self
+      core.cmp.PartialOrd.Required.Trait Self
         (Rhs := core.cmp.PartialOrd.Default.Rhs Self) := {
       core.cmp.PartialOrd.partial_cmp := partial_cmp;
     }.
@@ -2611,7 +2629,7 @@ Module Impl_core_cmp_Ord_for_ink_engine_types_AccountId.
       Notation.double_colon := cmp;
     }.
     
-    Global Instance ℐ : core.cmp.Ord.Trait Self := {
+    Global Instance ℐ : core.cmp.Ord.Required.Trait Self := {
       core.cmp.Ord.cmp := cmp;
     }.
   End Impl_core_cmp_Ord_for_ink_engine_types_AccountId.
@@ -2634,7 +2652,7 @@ Module Impl_core_hash_Hash_for_ink_engine_types_AccountId.
       Notation.double_colon := hash (__H := __H);
     }.
     
-    Global Instance ℐ : core.hash.Hash.Trait Self := {
+    Global Instance ℐ : core.hash.Hash.Required.Trait Self := {
       core.hash.Hash.hash {__H : Set} {ℋ_0 : core.hash.Hasher.Trait __H} :=
         hash (__H := __H);
     }.
@@ -2716,7 +2734,7 @@ Module Impl_core_clone_Clone_for_ink_engine_types_Key.
       Notation.double_colon := clone;
     }.
     
-    Global Instance ℐ : core.clone.Clone.Trait Self := {
+    Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
       core.clone.Clone.clone := clone;
     }.
   End Impl_core_clone_Clone_for_ink_engine_types_Key.
@@ -2746,7 +2764,7 @@ Module Impl_core_cmp_PartialEq_for_ink_engine_types_Key.
     }.
     
     Global Instance ℐ :
-      core.cmp.PartialEq.Trait Self
+      core.cmp.PartialEq.Required.Trait Self
         (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
       core.cmp.PartialEq.eq := eq;
     }.
@@ -2777,7 +2795,8 @@ Module Impl_core_cmp_Eq_for_ink_engine_types_Key.
       Notation.double_colon := assert_receiver_is_total_eq;
     }.
     
-    Global Instance ℐ : core.cmp.Eq.Trait Self := {
+    Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
+      core.cmp.Eq.assert_receiver_is_total_eq := assert_receiver_is_total_eq;
     }.
   End Impl_core_cmp_Eq_for_ink_engine_types_Key.
 End Impl_core_cmp_Eq_for_ink_engine_types_Key.
@@ -2799,7 +2818,7 @@ Module Impl_core_cmp_PartialOrd_for_ink_engine_types_Key.
     }.
     
     Global Instance ℐ :
-      core.cmp.PartialOrd.Trait Self
+      core.cmp.PartialOrd.Required.Trait Self
         (Rhs := core.cmp.PartialOrd.Default.Rhs Self) := {
       core.cmp.PartialOrd.partial_cmp := partial_cmp;
     }.
@@ -2820,7 +2839,7 @@ Module Impl_core_cmp_Ord_for_ink_engine_types_Key.
       Notation.double_colon := cmp;
     }.
     
-    Global Instance ℐ : core.cmp.Ord.Trait Self := {
+    Global Instance ℐ : core.cmp.Ord.Required.Trait Self := {
       core.cmp.Ord.cmp := cmp;
     }.
   End Impl_core_cmp_Ord_for_ink_engine_types_Key.
@@ -2843,7 +2862,7 @@ Module Impl_core_hash_Hash_for_ink_engine_types_Key.
       Notation.double_colon := hash (__H := __H);
     }.
     
-    Global Instance ℐ : core.hash.Hash.Trait Self := {
+    Global Instance ℐ : core.hash.Hash.Required.Trait Self := {
       core.hash.Hash.hash {__H : Set} {ℋ_0 : core.hash.Hasher.Trait __H} :=
         hash (__H := __H);
     }.
@@ -2871,7 +2890,7 @@ Module Impl_core_clone_Clone_for_ink_engine_types_AccountError.
       Notation.double_colon := clone;
     }.
     
-    Global Instance ℐ : core.clone.Clone.Trait Self := {
+    Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
       core.clone.Clone.clone := clone;
     }.
   End Impl_core_clone_Clone_for_ink_engine_types_AccountError.
@@ -2947,7 +2966,7 @@ Module Impl_core_cmp_PartialEq_for_ink_engine_types_AccountError.
     }.
     
     Global Instance ℐ :
-      core.cmp.PartialEq.Trait Self
+      core.cmp.PartialEq.Required.Trait Self
         (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
       core.cmp.PartialEq.eq := eq;
     }.
@@ -2978,7 +2997,8 @@ Module Impl_core_cmp_Eq_for_ink_engine_types_AccountError.
       Notation.double_colon := assert_receiver_is_total_eq;
     }.
     
-    Global Instance ℐ : core.cmp.Eq.Trait Self := {
+    Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
+      core.cmp.Eq.assert_receiver_is_total_eq := assert_receiver_is_total_eq;
     }.
   End Impl_core_cmp_Eq_for_ink_engine_types_AccountError.
 End Impl_core_cmp_Eq_for_ink_engine_types_AccountError.
@@ -3058,7 +3078,7 @@ Module Impl_core_cmp_PartialEq_for_ink_engine_Error.
     }.
     
     Global Instance ℐ :
-      core.cmp.PartialEq.Trait Self
+      core.cmp.PartialEq.Required.Trait Self
         (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
       core.cmp.PartialEq.eq := eq;
     }.
@@ -3089,7 +3109,8 @@ Module Impl_core_cmp_Eq_for_ink_engine_Error.
       Notation.double_colon := assert_receiver_is_total_eq;
     }.
     
-    Global Instance ℐ : core.cmp.Eq.Trait Self := {
+    Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
+      core.cmp.Eq.assert_receiver_is_total_eq := assert_receiver_is_total_eq;
     }.
   End Impl_core_cmp_Eq_for_ink_engine_Error.
 End Impl_core_cmp_Eq_for_ink_engine_Error.

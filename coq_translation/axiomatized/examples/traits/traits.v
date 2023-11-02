@@ -90,10 +90,11 @@ Module Impl_traits_Animal_for_traits_Sheep.
       Notation.double_colon := talk;
     }.
     
-    Global Instance ℐ : traits.Animal.Trait Self := {
+    Global Instance ℐ : traits.Animal.Required.Trait Self := {
       traits.Animal.new := new;
       traits.Animal.name := name;
       traits.Animal.noise := noise;
+      traits.Animal.talk := talk;
     }.
   End Impl_traits_Animal_for_traits_Sheep.
 End Impl_traits_Animal_for_traits_Sheep.

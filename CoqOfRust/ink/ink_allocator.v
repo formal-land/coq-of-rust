@@ -43,8 +43,9 @@ Module bump.
         Notation.double_colon := dealloc;
       }.
       
-      Global Instance ℐ : core.alloc.global.GlobalAlloc.Trait Self := {
+      Global Instance ℐ : core.alloc.global.GlobalAlloc.Required.Trait Self := {
         core.alloc.global.GlobalAlloc.alloc := alloc;
+        core.alloc.global.GlobalAlloc.alloc_zeroed := alloc_zeroed;
         core.alloc.global.GlobalAlloc.dealloc := dealloc;
       }.
     End Impl_core_alloc_global_GlobalAlloc_for_ink_allocator_bump_BumpAllocator.
@@ -96,7 +97,7 @@ Module bump.
         Notation.double_colon := clone;
       }.
       
-      Global Instance ℐ : core.clone.Clone.Trait Self := {
+      Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
         core.clone.Clone.clone := clone;
       }.
     End Impl_core_clone_Clone_for_ink_allocator_bump_InnerAlloc. *)
@@ -142,8 +143,9 @@ Module Impl_core_alloc_global_GlobalAlloc_for_ink_allocator_bump_BumpAllocator.
       Notation.double_colon := dealloc;
     }.
     
-    Global Instance ℐ : core.alloc.global.GlobalAlloc.Trait Self := {
+    Global Instance ℐ : core.alloc.global.GlobalAlloc.Required.Trait Self := {
       core.alloc.global.GlobalAlloc.alloc := alloc;
+      core.alloc.global.GlobalAlloc.alloc_zeroed := alloc_zeroed;
       core.alloc.global.GlobalAlloc.dealloc := dealloc;
     }.
   End Impl_core_alloc_global_GlobalAlloc_for_ink_allocator_bump_BumpAllocator.
@@ -193,7 +195,7 @@ End Impl_core_marker_Copy_for_ink_allocator_bump_InnerAlloc. *)
       Notation.double_colon := clone;
     }.
     
-    Global Instance ℐ : core.clone.Clone.Trait Self := {
+    Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
       core.clone.Clone.clone := clone;
     }.
   End Impl_core_clone_Clone_for_ink_allocator_bump_InnerAlloc. *)

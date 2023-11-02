@@ -55,7 +55,7 @@ Module
       Notation.double_colon := clone;
     }.
     
-    Global Instance ℐ : core.clone.Clone.Trait Self := {
+    Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
       core.clone.Clone.clone := clone;
     }.
   End
@@ -133,7 +133,7 @@ Module
       Notation.double_colon := clone;
     }.
     
-    Global Instance ℐ : core.clone.Clone.Trait Self := {
+    Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
       core.clone.Clone.clone := clone;
     }.
   End
@@ -283,7 +283,7 @@ Module
       Notation.double_colon := clone;
     }.
     
-    Global Instance ℐ : core.clone.Clone.Trait Self := {
+    Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
       core.clone.Clone.clone := clone;
     }.
   End

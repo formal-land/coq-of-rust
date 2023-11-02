@@ -57,7 +57,7 @@ Module Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job.
       Notation.double_colon := clone;
     }.
     
-    Global Instance ℐ : core.clone.Clone.Trait Self := {
+    Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
       core.clone.Clone.clone := clone;
     }.
   End Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job.
@@ -117,7 +117,7 @@ Module
       Notation.double_colon := clone;
     }.
     
-    Global Instance ℐ : core.clone.Clone.Trait Self := {
+    Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
       core.clone.Clone.clone := clone;
     }.
   End Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumber.

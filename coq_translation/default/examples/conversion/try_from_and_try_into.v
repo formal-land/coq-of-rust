@@ -86,7 +86,7 @@ Module Impl_core_cmp_PartialEq_for_try_from_and_try_into_EvenNumber.
     }.
     
     Global Instance ℐ :
-      core.cmp.PartialEq.Trait Self
+      core.cmp.PartialEq.Required.Trait Self
         (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
       core.cmp.PartialEq.eq := eq;
     }.

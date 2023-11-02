@@ -70,7 +70,7 @@ Module key.
       }.
       
       Global Instance ℐ :
-        core.cmp.PartialEq.Trait Self
+        core.cmp.PartialEq.Required.Trait Self
           (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
         core.cmp.PartialEq.eq := eq;
       }.
@@ -101,7 +101,8 @@ Module key.
         Notation.double_colon := assert_receiver_is_total_eq;
       }.
       
-      Global Instance ℐ : core.cmp.Eq.Trait Self := {
+      Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
+        core.cmp.Eq.assert_receiver_is_total_eq := assert_receiver_is_total_eq;
       }.
     End Impl_core_cmp_Eq_for_ink_primitives_key_Error.
   End Impl_core_cmp_Eq_for_ink_primitives_key_Error.
@@ -169,7 +170,7 @@ Module Impl_core_cmp_PartialEq_for_ink_primitives_key_Error.
     }.
     
     Global Instance ℐ :
-      core.cmp.PartialEq.Trait Self
+      core.cmp.PartialEq.Required.Trait Self
         (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
       core.cmp.PartialEq.eq := eq;
     }.
@@ -200,7 +201,8 @@ Module Impl_core_cmp_Eq_for_ink_primitives_key_Error.
       Notation.double_colon := assert_receiver_is_total_eq;
     }.
     
-    Global Instance ℐ : core.cmp.Eq.Trait Self := {
+    Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
+      core.cmp.Eq.assert_receiver_is_total_eq := assert_receiver_is_total_eq;
     }.
   End Impl_core_cmp_Eq_for_ink_primitives_key_Error.
 End Impl_core_cmp_Eq_for_ink_primitives_key_Error.
@@ -241,7 +243,7 @@ Module types.
         Notation.double_colon := encode_as_type_to;
       }.
       
-      Global Instance ℐ : scale_encode.EncodeAsType.Trait Self := {
+      Global Instance ℐ : scale_encode.EncodeAsType.Required.Trait Self := {
         scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
       }.
     End Impl_scale_encode_EncodeAsType_for_ink_primitives_types_AccountId.
@@ -265,7 +267,7 @@ Module types.
         Notation.double_colon := encode_as_fields_to;
       }.
       
-      Global Instance ℐ : scale_encode.EncodeAsFields.Trait Self := {
+      Global Instance ℐ : scale_encode.EncodeAsFields.Required.Trait Self := {
         scale_encode.EncodeAsFields.encode_as_fields_to := encode_as_fields_to;
       }.
     End Impl_scale_encode_EncodeAsFields_for_ink_primitives_types_AccountId.
@@ -306,7 +308,7 @@ Module types.
         Notation.double_colon := clone;
       }.
       
-      Global Instance ℐ : core.clone.Clone.Trait Self := {
+      Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
         core.clone.Clone.clone := clone;
       }.
     End Impl_core_clone_Clone_for_ink_primitives_types_AccountId.
@@ -351,7 +353,7 @@ Module types.
       }.
       
       Global Instance ℐ :
-        core.cmp.PartialEq.Trait Self
+        core.cmp.PartialEq.Required.Trait Self
           (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
         core.cmp.PartialEq.eq := eq;
       }.
@@ -382,7 +384,8 @@ Module types.
         Notation.double_colon := assert_receiver_is_total_eq;
       }.
       
-      Global Instance ℐ : core.cmp.Eq.Trait Self := {
+      Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
+        core.cmp.Eq.assert_receiver_is_total_eq := assert_receiver_is_total_eq;
       }.
     End Impl_core_cmp_Eq_for_ink_primitives_types_AccountId.
   End Impl_core_cmp_Eq_for_ink_primitives_types_AccountId.
@@ -404,7 +407,7 @@ Module types.
       }.
       
       Global Instance ℐ :
-        core.cmp.PartialOrd.Trait Self
+        core.cmp.PartialOrd.Required.Trait Self
           (Rhs := core.cmp.PartialOrd.Default.Rhs Self) := {
         core.cmp.PartialOrd.partial_cmp := partial_cmp;
       }.
@@ -427,7 +430,7 @@ Module types.
         Notation.double_colon := cmp;
       }.
       
-      Global Instance ℐ : core.cmp.Ord.Trait Self := {
+      Global Instance ℐ : core.cmp.Ord.Required.Trait Self := {
         core.cmp.Ord.cmp := cmp;
       }.
     End Impl_core_cmp_Ord_for_ink_primitives_types_AccountId.
@@ -450,7 +453,7 @@ Module types.
         Notation.double_colon := hash (__H := __H);
       }.
       
-      Global Instance ℐ : core.hash.Hash.Trait Self := {
+      Global Instance ℐ : core.hash.Hash.Required.Trait Self := {
         core.hash.Hash.hash {__H : Set} {ℋ_0 : core.hash.Hasher.Trait __H} :=
           hash (__H := __H);
       }.
@@ -616,7 +619,7 @@ Module types.
         Notation.double_colon := encode_as_type_to;
       }.
       
-      Global Instance ℐ : scale_encode.EncodeAsType.Trait Self := {
+      Global Instance ℐ : scale_encode.EncodeAsType.Required.Trait Self := {
         scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
       }.
     End Impl_scale_encode_EncodeAsType_for_ink_primitives_types_Hash.
@@ -640,7 +643,7 @@ Module types.
         Notation.double_colon := encode_as_fields_to;
       }.
       
-      Global Instance ℐ : scale_encode.EncodeAsFields.Trait Self := {
+      Global Instance ℐ : scale_encode.EncodeAsFields.Required.Trait Self := {
         scale_encode.EncodeAsFields.encode_as_fields_to := encode_as_fields_to;
       }.
     End Impl_scale_encode_EncodeAsFields_for_ink_primitives_types_Hash.
@@ -681,7 +684,7 @@ Module types.
         Notation.double_colon := clone;
       }.
       
-      Global Instance ℐ : core.clone.Clone.Trait Self := {
+      Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
         core.clone.Clone.clone := clone;
       }.
     End Impl_core_clone_Clone_for_ink_primitives_types_Hash.
@@ -723,7 +726,7 @@ Module types.
       }.
       
       Global Instance ℐ :
-        core.cmp.PartialEq.Trait Self
+        core.cmp.PartialEq.Required.Trait Self
           (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
         core.cmp.PartialEq.eq := eq;
       }.
@@ -754,7 +757,8 @@ Module types.
         Notation.double_colon := assert_receiver_is_total_eq;
       }.
       
-      Global Instance ℐ : core.cmp.Eq.Trait Self := {
+      Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
+        core.cmp.Eq.assert_receiver_is_total_eq := assert_receiver_is_total_eq;
       }.
     End Impl_core_cmp_Eq_for_ink_primitives_types_Hash.
   End Impl_core_cmp_Eq_for_ink_primitives_types_Hash.
@@ -776,7 +780,7 @@ Module types.
       }.
       
       Global Instance ℐ :
-        core.cmp.PartialOrd.Trait Self
+        core.cmp.PartialOrd.Required.Trait Self
           (Rhs := core.cmp.PartialOrd.Default.Rhs Self) := {
         core.cmp.PartialOrd.partial_cmp := partial_cmp;
       }.
@@ -797,7 +801,7 @@ Module types.
         Notation.double_colon := cmp;
       }.
       
-      Global Instance ℐ : core.cmp.Ord.Trait Self := {
+      Global Instance ℐ : core.cmp.Ord.Required.Trait Self := {
         core.cmp.Ord.cmp := cmp;
       }.
     End Impl_core_cmp_Ord_for_ink_primitives_types_Hash.
@@ -820,7 +824,7 @@ Module types.
         Notation.double_colon := hash (__H := __H);
       }.
       
-      Global Instance ℐ : core.hash.Hash.Trait Self := {
+      Global Instance ℐ : core.hash.Hash.Required.Trait Self := {
         core.hash.Hash.hash {__H : Set} {ℋ_0 : core.hash.Hasher.Trait __H} :=
           hash (__H := __H);
       }.
@@ -1129,9 +1133,11 @@ End Impl_scale_decode_IntoVisitor_for_ink_primitives_types_AccountId. *)
       Notation.double_colon := visit_tuple;
     }.
     
-    Global Instance ℐ : scale_decode.visitor.Visitor.Trait Self := {
+    Global Instance ℐ : scale_decode.visitor.Visitor.Required.Trait Self := {
       scale_decode.visitor.Visitor.Error := Error;
       scale_decode.visitor.Visitor.Value := Value;
+      scale_decode.visitor.Visitor.visit_composite := visit_composite;
+      scale_decode.visitor.Visitor.visit_tuple := visit_tuple;
     }.
   End Impl_scale_decode_visitor_Visitor_for_ink_primitives_types___Visitor. *)
 End Impl_scale_decode_visitor_Visitor_for_ink_primitives_types___Visitor. *)
@@ -1153,7 +1159,7 @@ End Impl_scale_decode_visitor_Visitor_for_ink_primitives_types___Visitor. *)
       Notation.double_colon := decode_as_fields;
     }.
     
-    Global Instance ℐ : scale_decode.DecodeAsFields.Trait Self := {
+    Global Instance ℐ : scale_decode.DecodeAsFields.Required.Trait Self := {
       scale_decode.DecodeAsFields.decode_as_fields := decode_as_fields;
     }.
   End Impl_scale_decode_DecodeAsFields_for_ink_primitives_types_AccountId. *)
@@ -1177,7 +1183,7 @@ Module Impl_scale_encode_EncodeAsType_for_ink_primitives_types_AccountId.
       Notation.double_colon := encode_as_type_to;
     }.
     
-    Global Instance ℐ : scale_encode.EncodeAsType.Trait Self := {
+    Global Instance ℐ : scale_encode.EncodeAsType.Required.Trait Self := {
       scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
     }.
   End Impl_scale_encode_EncodeAsType_for_ink_primitives_types_AccountId.
@@ -1201,7 +1207,7 @@ Module Impl_scale_encode_EncodeAsFields_for_ink_primitives_types_AccountId.
       Notation.double_colon := encode_as_fields_to;
     }.
     
-    Global Instance ℐ : scale_encode.EncodeAsFields.Trait Self := {
+    Global Instance ℐ : scale_encode.EncodeAsFields.Required.Trait Self := {
       scale_encode.EncodeAsFields.encode_as_fields_to := encode_as_fields_to;
     }.
   End Impl_scale_encode_EncodeAsFields_for_ink_primitives_types_AccountId.
@@ -1251,7 +1257,7 @@ Module Impl_core_clone_Clone_for_ink_primitives_types_AccountId.
       Notation.double_colon := clone;
     }.
     
-    Global Instance ℐ : core.clone.Clone.Trait Self := {
+    Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
       core.clone.Clone.clone := clone;
     }.
   End Impl_core_clone_Clone_for_ink_primitives_types_AccountId.
@@ -1282,7 +1288,7 @@ Module Impl_core_cmp_PartialEq_for_ink_primitives_types_AccountId.
     }.
     
     Global Instance ℐ :
-      core.cmp.PartialEq.Trait Self
+      core.cmp.PartialEq.Required.Trait Self
         (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
       core.cmp.PartialEq.eq := eq;
     }.
@@ -1313,7 +1319,8 @@ Module Impl_core_cmp_Eq_for_ink_primitives_types_AccountId.
       Notation.double_colon := assert_receiver_is_total_eq;
     }.
     
-    Global Instance ℐ : core.cmp.Eq.Trait Self := {
+    Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
+      core.cmp.Eq.assert_receiver_is_total_eq := assert_receiver_is_total_eq;
     }.
   End Impl_core_cmp_Eq_for_ink_primitives_types_AccountId.
 End Impl_core_cmp_Eq_for_ink_primitives_types_AccountId.
@@ -1334,7 +1341,7 @@ Module Impl_core_cmp_Ord_for_ink_primitives_types_AccountId.
       Notation.double_colon := cmp;
     }.
     
-    Global Instance ℐ : core.cmp.Ord.Trait Self := {
+    Global Instance ℐ : core.cmp.Ord.Required.Trait Self := {
       core.cmp.Ord.cmp := cmp;
     }.
   End Impl_core_cmp_Ord_for_ink_primitives_types_AccountId.
@@ -1357,7 +1364,7 @@ Module Impl_core_cmp_PartialOrd_for_ink_primitives_types_AccountId.
     }.
     
     Global Instance ℐ :
-      core.cmp.PartialOrd.Trait Self
+      core.cmp.PartialOrd.Required.Trait Self
         (Rhs := core.cmp.PartialOrd.Default.Rhs Self) := {
       core.cmp.PartialOrd.partial_cmp := partial_cmp;
     }.
@@ -1381,7 +1388,7 @@ Module Impl_core_hash_Hash_for_ink_primitives_types_AccountId.
       Notation.double_colon := hash (__H := __H);
     }.
     
-    Global Instance ℐ : core.hash.Hash.Trait Self := {
+    Global Instance ℐ : core.hash.Hash.Required.Trait Self := {
       core.hash.Hash.hash {__H : Set} {ℋ_0 : core.hash.Hasher.Trait __H} :=
         hash (__H := __H);
     }.
@@ -1409,7 +1416,7 @@ Module Impl_parity_scale_codec_codec_Decode_for_ink_primitives_types_AccountId.
       Notation.double_colon := decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
     
-    Global Instance ℐ : parity_scale_codec.codec.Decode.Trait Self := {
+    Global Instance ℐ : parity_scale_codec.codec.Decode.Required.Trait Self := {
       parity_scale_codec.codec.Decode.decode
         {__CodecInputEdqy : Set}
         {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :=
@@ -1468,7 +1475,19 @@ Module Impl_parity_scale_codec_codec_Encode_for_ink_primitives_types_AccountId.
       Notation.double_colon := using_encoded (R := R) (F := F);
     }.
     
-    Global Instance ℐ : parity_scale_codec.codec.Encode.Trait Self := {
+    Global Instance ℐ : parity_scale_codec.codec.Encode.Required.Trait Self := {
+      parity_scale_codec.codec.Encode.encode_to
+        {__CodecOutputEdqy : Set}
+        {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+        {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy} :=
+        encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
+      parity_scale_codec.codec.Encode.encode := encode;
+      parity_scale_codec.codec.Encode.using_encoded
+        {R F : Set}
+        {ℋ_0 :
+          core.ops.function.FnOnce.Trait F
+            (Args := ref (Slice CoqOfRust.core.primitive.u8))} :=
+        using_encoded (R := R) (F := F);
     }.
   End Impl_parity_scale_codec_codec_Encode_for_ink_primitives_types_AccountId.
 End Impl_parity_scale_codec_codec_Encode_for_ink_primitives_types_AccountId.
@@ -1707,9 +1726,11 @@ End Impl_scale_decode_IntoVisitor_for_ink_primitives_types_Hash. *)
       Notation.double_colon := visit_tuple;
     }.
     
-    Global Instance ℐ : scale_decode.visitor.Visitor.Trait Self := {
+    Global Instance ℐ : scale_decode.visitor.Visitor.Required.Trait Self := {
       scale_decode.visitor.Visitor.Error := Error;
       scale_decode.visitor.Visitor.Value := Value;
+      scale_decode.visitor.Visitor.visit_composite := visit_composite;
+      scale_decode.visitor.Visitor.visit_tuple := visit_tuple;
     }.
   End Impl_scale_decode_visitor_Visitor_for_ink_primitives_types___Visitor. *)
 End Impl_scale_decode_visitor_Visitor_for_ink_primitives_types___Visitor. *)
@@ -1731,7 +1752,7 @@ End Impl_scale_decode_visitor_Visitor_for_ink_primitives_types___Visitor. *)
       Notation.double_colon := decode_as_fields;
     }.
     
-    Global Instance ℐ : scale_decode.DecodeAsFields.Trait Self := {
+    Global Instance ℐ : scale_decode.DecodeAsFields.Required.Trait Self := {
       scale_decode.DecodeAsFields.decode_as_fields := decode_as_fields;
     }.
   End Impl_scale_decode_DecodeAsFields_for_ink_primitives_types_Hash. *)
@@ -1755,7 +1776,7 @@ Module Impl_scale_encode_EncodeAsType_for_ink_primitives_types_Hash.
       Notation.double_colon := encode_as_type_to;
     }.
     
-    Global Instance ℐ : scale_encode.EncodeAsType.Trait Self := {
+    Global Instance ℐ : scale_encode.EncodeAsType.Required.Trait Self := {
       scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
     }.
   End Impl_scale_encode_EncodeAsType_for_ink_primitives_types_Hash.
@@ -1779,7 +1800,7 @@ Module Impl_scale_encode_EncodeAsFields_for_ink_primitives_types_Hash.
       Notation.double_colon := encode_as_fields_to;
     }.
     
-    Global Instance ℐ : scale_encode.EncodeAsFields.Trait Self := {
+    Global Instance ℐ : scale_encode.EncodeAsFields.Required.Trait Self := {
       scale_encode.EncodeAsFields.encode_as_fields_to := encode_as_fields_to;
     }.
   End Impl_scale_encode_EncodeAsFields_for_ink_primitives_types_Hash.
@@ -1829,7 +1850,7 @@ Module Impl_core_clone_Clone_for_ink_primitives_types_Hash.
       Notation.double_colon := clone;
     }.
     
-    Global Instance ℐ : core.clone.Clone.Trait Self := {
+    Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
       core.clone.Clone.clone := clone;
     }.
   End Impl_core_clone_Clone_for_ink_primitives_types_Hash.
@@ -1859,7 +1880,7 @@ Module Impl_core_cmp_PartialEq_for_ink_primitives_types_Hash.
     }.
     
     Global Instance ℐ :
-      core.cmp.PartialEq.Trait Self
+      core.cmp.PartialEq.Required.Trait Self
         (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
       core.cmp.PartialEq.eq := eq;
     }.
@@ -1890,7 +1911,8 @@ Module Impl_core_cmp_Eq_for_ink_primitives_types_Hash.
       Notation.double_colon := assert_receiver_is_total_eq;
     }.
     
-    Global Instance ℐ : core.cmp.Eq.Trait Self := {
+    Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
+      core.cmp.Eq.assert_receiver_is_total_eq := assert_receiver_is_total_eq;
     }.
   End Impl_core_cmp_Eq_for_ink_primitives_types_Hash.
 End Impl_core_cmp_Eq_for_ink_primitives_types_Hash.
@@ -1909,7 +1931,7 @@ Module Impl_core_cmp_Ord_for_ink_primitives_types_Hash.
       Notation.double_colon := cmp;
     }.
     
-    Global Instance ℐ : core.cmp.Ord.Trait Self := {
+    Global Instance ℐ : core.cmp.Ord.Required.Trait Self := {
       core.cmp.Ord.cmp := cmp;
     }.
   End Impl_core_cmp_Ord_for_ink_primitives_types_Hash.
@@ -1932,7 +1954,7 @@ Module Impl_core_cmp_PartialOrd_for_ink_primitives_types_Hash.
     }.
     
     Global Instance ℐ :
-      core.cmp.PartialOrd.Trait Self
+      core.cmp.PartialOrd.Required.Trait Self
         (Rhs := core.cmp.PartialOrd.Default.Rhs Self) := {
       core.cmp.PartialOrd.partial_cmp := partial_cmp;
     }.
@@ -1956,7 +1978,7 @@ Module Impl_core_hash_Hash_for_ink_primitives_types_Hash.
       Notation.double_colon := hash (__H := __H);
     }.
     
-    Global Instance ℐ : core.hash.Hash.Trait Self := {
+    Global Instance ℐ : core.hash.Hash.Required.Trait Self := {
       core.hash.Hash.hash {__H : Set} {ℋ_0 : core.hash.Hasher.Trait __H} :=
         hash (__H := __H);
     }.
@@ -1983,7 +2005,7 @@ Module Impl_parity_scale_codec_codec_Decode_for_ink_primitives_types_Hash.
       Notation.double_colon := decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
     
-    Global Instance ℐ : parity_scale_codec.codec.Decode.Trait Self := {
+    Global Instance ℐ : parity_scale_codec.codec.Decode.Required.Trait Self := {
       parity_scale_codec.codec.Decode.decode
         {__CodecInputEdqy : Set}
         {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :=
@@ -2041,7 +2063,19 @@ Module Impl_parity_scale_codec_codec_Encode_for_ink_primitives_types_Hash.
       Notation.double_colon := using_encoded (R := R) (F := F);
     }.
     
-    Global Instance ℐ : parity_scale_codec.codec.Encode.Trait Self := {
+    Global Instance ℐ : parity_scale_codec.codec.Encode.Required.Trait Self := {
+      parity_scale_codec.codec.Encode.encode_to
+        {__CodecOutputEdqy : Set}
+        {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+        {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy} :=
+        encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
+      parity_scale_codec.codec.Encode.encode := encode;
+      parity_scale_codec.codec.Encode.using_encoded
+        {R F : Set}
+        {ℋ_0 :
+          core.ops.function.FnOnce.Trait F
+            (Args := ref (Slice CoqOfRust.core.primitive.u8))} :=
+        using_encoded (R := R) (F := F);
     }.
   End Impl_parity_scale_codec_codec_Encode_for_ink_primitives_types_Hash.
 End Impl_parity_scale_codec_codec_Encode_for_ink_primitives_types_Hash.
@@ -2314,7 +2348,7 @@ Module Impl_core_clone_Clone_for_ink_primitives_LangError.
       Notation.double_colon := clone;
     }.
     
-    Global Instance ℐ : core.clone.Clone.Trait Self := {
+    Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
       core.clone.Clone.clone := clone;
     }.
   End Impl_core_clone_Clone_for_ink_primitives_LangError.
@@ -2355,7 +2389,7 @@ Module Impl_core_cmp_PartialEq_for_ink_primitives_LangError.
     }.
     
     Global Instance ℐ :
-      core.cmp.PartialEq.Trait Self
+      core.cmp.PartialEq.Required.Trait Self
         (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
       core.cmp.PartialEq.eq := eq;
     }.
@@ -2386,7 +2420,8 @@ Module Impl_core_cmp_Eq_for_ink_primitives_LangError.
       Notation.double_colon := assert_receiver_is_total_eq;
     }.
     
-    Global Instance ℐ : core.cmp.Eq.Trait Self := {
+    Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
+      core.cmp.Eq.assert_receiver_is_total_eq := assert_receiver_is_total_eq;
     }.
   End Impl_core_cmp_Eq_for_ink_primitives_LangError.
 End Impl_core_cmp_Eq_for_ink_primitives_LangError.
@@ -2414,7 +2449,12 @@ Module Impl_parity_scale_codec_codec_Encode_for_ink_primitives_LangError.
         encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
     }.
     
-    Global Instance ℐ : parity_scale_codec.codec.Encode.Trait Self := {
+    Global Instance ℐ : parity_scale_codec.codec.Encode.Required.Trait Self := {
+      parity_scale_codec.codec.Encode.encode_to
+        {__CodecOutputEdqy : Set}
+        {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+        {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy} :=
+        encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
     }.
   End Impl_parity_scale_codec_codec_Encode_for_ink_primitives_LangError.
 End Impl_parity_scale_codec_codec_Encode_for_ink_primitives_LangError.
@@ -2455,7 +2495,7 @@ Module Impl_parity_scale_codec_codec_Decode_for_ink_primitives_LangError.
       Notation.double_colon := decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
     
-    Global Instance ℐ : parity_scale_codec.codec.Decode.Trait Self := {
+    Global Instance ℐ : parity_scale_codec.codec.Decode.Required.Trait Self := {
       parity_scale_codec.codec.Decode.decode
         {__CodecInputEdqy : Set}
         {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :=

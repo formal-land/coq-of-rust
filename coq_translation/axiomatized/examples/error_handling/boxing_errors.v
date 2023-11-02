@@ -49,7 +49,7 @@ Module Impl_core_clone_Clone_for_boxing_errors_EmptyVec.
       Notation.double_colon := clone;
     }.
     
-    Global Instance ℐ : core.clone.Clone.Trait Self := {
+    Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
       core.clone.Clone.clone := clone;
     }.
   End Impl_core_clone_Clone_for_boxing_errors_EmptyVec.
@@ -81,7 +81,7 @@ Module Impl_core_error_Error_for_boxing_errors_EmptyVec.
     
     Definition Self : Set := boxing_errors.EmptyVec.
     
-    Global Instance ℐ : core.error.Error.Trait Self := {
+    Global Instance ℐ : core.error.Error.Required.Trait Self := {
     }.
   End Impl_core_error_Error_for_boxing_errors_EmptyVec.
 End Impl_core_error_Error_for_boxing_errors_EmptyVec.

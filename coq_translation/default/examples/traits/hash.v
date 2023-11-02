@@ -85,7 +85,7 @@ Module Impl_core_hash_Hash_for_hash_Person.
       Notation.double_colon := hash (__H := __H);
     }.
     
-    Global Instance ℐ : core.hash.Hash.Trait Self := {
+    Global Instance ℐ : core.hash.Hash.Required.Trait Self := {
       core.hash.Hash.hash {__H : Set} {ℋ_0 : core.hash.Hasher.Trait __H} :=
         hash (__H := __H);
     }.

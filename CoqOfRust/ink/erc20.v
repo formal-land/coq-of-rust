@@ -934,7 +934,7 @@ Module erc20.
         Notation.double_colon := hash (__H := __H);
       }.
       
-      Global Instance ℐ : core.hash.Hash.Trait Self := {
+      Global Instance ℐ : core.hash.Hash.Required.Trait Self := {
         core.hash.Hash.hash {__H : Set} {ℋ_0 : core.hash.Hasher.Trait __H} :=
           hash (__H := __H);
       }.
@@ -980,7 +980,7 @@ Module erc20.
       }.
       
       Global Instance ℐ :
-        core.cmp.PartialEq.Trait Self
+        core.cmp.PartialEq.Required.Trait Self
           (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
         core.cmp.PartialEq.eq := eq;
       }.
@@ -1013,7 +1013,8 @@ Module erc20.
         Notation.double_colon := assert_receiver_is_total_eq;
       }.
       
-      Global Instance ℐ : core.cmp.Eq.Trait Self := {
+      Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
+        core.cmp.Eq.assert_receiver_is_total_eq := assert_receiver_is_total_eq;
       }.
     End Impl_core_cmp_Eq_for_erc20_erc20_Erc20Ref.
   End Impl_core_cmp_Eq_for_erc20_erc20_Erc20Ref.
@@ -1042,7 +1043,7 @@ Module erc20.
         Notation.double_colon := clone;
       }.
       
-      Global Instance ℐ : core.clone.Clone.Trait Self := {
+      Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
         core.clone.Clone.clone := clone;
       }.
     End Impl_core_clone_Clone_for_erc20_erc20_Erc20Ref.
@@ -2023,7 +2024,7 @@ Module erc20.
       }.
       
       Global Instance ℐ :
-        core.cmp.PartialEq.Trait Self
+        core.cmp.PartialEq.Required.Trait Self
           (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
         core.cmp.PartialEq.eq := eq;
       }.
@@ -2055,7 +2056,8 @@ Module erc20.
         Notation.double_colon := assert_receiver_is_total_eq;
       }.
       
-      Global Instance ℐ : core.cmp.Eq.Trait Self := {
+      Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
+        core.cmp.Eq.assert_receiver_is_total_eq := assert_receiver_is_total_eq;
       }.
     End Impl_core_cmp_Eq_for_erc20_erc20_Error.
   End Impl_core_cmp_Eq_for_erc20_erc20_Error.
@@ -2263,7 +2265,8 @@ Module Impl_ink_storage_traits_storage_StorageKey_for_erc20_erc20_Erc20.
       Notation.double_colon := KEY;
     }.
     
-    Global Instance ℐ : ink_storage_traits.storage.StorageKey.Trait Self := {
+    Global Instance ℐ :
+      ink_storage_traits.storage.StorageKey.Required.Trait Self := {
       ink_storage_traits.storage.StorageKey.KEY := KEY;
     }.
   End Impl_ink_storage_traits_storage_StorageKey_for_erc20_erc20_Erc20.
@@ -3039,7 +3042,12 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20___ink_EventBase.
         encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
     }.
     
-    Global Instance ℐ : parity_scale_codec.codec.Encode.Trait Self := {
+    Global Instance ℐ : parity_scale_codec.codec.Encode.Required.Trait Self := {
+      parity_scale_codec.codec.Encode.encode_to
+        {__CodecOutputEdqy : Set}
+        {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+        {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy} :=
+        encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
     }.
   End Impl_parity_scale_codec_codec_Encode_for_erc20_erc20___ink_EventBase.
 End Impl_parity_scale_codec_codec_Encode_for_erc20_erc20___ink_EventBase.
@@ -3212,7 +3220,7 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___ink_EventBase.
       Notation.double_colon := decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
     
-    Global Instance ℐ : parity_scale_codec.codec.Decode.Trait Self := {
+    Global Instance ℐ : parity_scale_codec.codec.Decode.Required.Trait Self := {
       parity_scale_codec.codec.Decode.decode
         {__CodecInputEdqy : Set}
         {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :=
@@ -3511,7 +3519,12 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Transfer.
         encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
     }.
     
-    Global Instance ℐ : parity_scale_codec.codec.Encode.Trait Self := {
+    Global Instance ℐ : parity_scale_codec.codec.Encode.Required.Trait Self := {
+      parity_scale_codec.codec.Encode.encode_to
+        {__CodecOutputEdqy : Set}
+        {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+        {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy} :=
+        encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
     }.
   End Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Transfer.
 End Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Transfer.
@@ -3614,7 +3627,7 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Transfer.
       Notation.double_colon := decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
     
-    Global Instance ℐ : parity_scale_codec.codec.Decode.Trait Self := {
+    Global Instance ℐ : parity_scale_codec.codec.Decode.Required.Trait Self := {
       parity_scale_codec.codec.Decode.decode
         {__CodecInputEdqy : Set}
         {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :=
@@ -3721,7 +3734,12 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Approval.
         encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
     }.
     
-    Global Instance ℐ : parity_scale_codec.codec.Encode.Trait Self := {
+    Global Instance ℐ : parity_scale_codec.codec.Encode.Required.Trait Self := {
+      parity_scale_codec.codec.Encode.encode_to
+        {__CodecOutputEdqy : Set}
+        {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+        {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy} :=
+        encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
     }.
   End Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Approval.
 End Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Approval.
@@ -3824,7 +3842,7 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Approval.
       Notation.double_colon := decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
     
-    Global Instance ℐ : parity_scale_codec.codec.Decode.Trait Self := {
+    Global Instance ℐ : parity_scale_codec.codec.Decode.Required.Trait Self := {
       parity_scale_codec.codec.Decode.decode
         {__CodecInputEdqy : Set}
         {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :=
@@ -4843,7 +4861,7 @@ Module
       Notation.double_colon := decode (I := I);
     }.
     
-    Global Instance ℐ : parity_scale_codec.codec.Decode.Trait Self := {
+    Global Instance ℐ : parity_scale_codec.codec.Decode.Required.Trait Self := {
       parity_scale_codec.codec.Decode.decode
         {I : Set}
         {ℋ_0 : parity_scale_codec.codec.Input.Trait I} :=
@@ -4874,13 +4892,13 @@ Module
             ink.reflect.dispatch.DispatchableConstructorInfo.PAYABLE
               (Self := erc20.erc20.Erc20)
               (Trait := ltac:(refine _)) in
-          let* α0 := or α0 constructor_0 in
+          let* α0 := BinOp.or α0 constructor_0 in
           let* α1 :=
-            not
+            UnOp.not
               (ink.reflect.dispatch.DispatchableConstructorInfo.PAYABLE
                 (Self := erc20.erc20.Erc20)
                 (Trait := ltac:(refine _))) in
-          let* α2 := and α0 α1 in
+          let* α2 := BinOp.and α0 α1 in
           let* α3 := use α2 in
           if (α3 : bool) then
             let* _ :=
@@ -5470,7 +5488,7 @@ Module
       Notation.double_colon := decode (I := I);
     }.
     
-    Global Instance ℐ : parity_scale_codec.codec.Decode.Trait Self := {
+    Global Instance ℐ : parity_scale_codec.codec.Decode.Required.Trait Self := {
       parity_scale_codec.codec.Decode.decode
         {I : Set}
         {ℋ_0 : parity_scale_codec.codec.Input.Trait I} :=
@@ -5571,43 +5589,43 @@ Module
               ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE
                 (Self := erc20.erc20.Erc20)
                 (Trait := ltac:(refine _)) in
-            let* α1 := or α0 message_0 in
+            let* α1 := BinOp.or α0 message_0 in
             let* message_1 := M.alloc false in
             let message_1 :=
               ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE
                 (Self := erc20.erc20.Erc20)
                 (Trait := ltac:(refine _)) in
-            let* α2 := or α1 message_1 in
+            let* α2 := BinOp.or α1 message_1 in
             let* message_2 := M.alloc false in
             let message_2 :=
               ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE
                 (Self := erc20.erc20.Erc20)
                 (Trait := ltac:(refine _)) in
-            let* α3 := or α2 message_2 in
+            let* α3 := BinOp.or α2 message_2 in
             let* message_3 := M.alloc false in
             let message_3 :=
               ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE
                 (Self := erc20.erc20.Erc20)
                 (Trait := ltac:(refine _)) in
-            let* α4 := or α3 message_3 in
+            let* α4 := BinOp.or α3 message_3 in
             let* message_4 := M.alloc false in
             let message_4 :=
               ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE
                 (Self := erc20.erc20.Erc20)
                 (Trait := ltac:(refine _)) in
-            let* α5 := or α4 message_4 in
+            let* α5 := BinOp.or α4 message_4 in
             let* message_5 := M.alloc false in
             let message_5 :=
               ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE
                 (Self := erc20.erc20.Erc20)
                 (Trait := ltac:(refine _)) in
-            let* α0 := or α5 message_5 in
+            let* α0 := BinOp.or α5 message_5 in
             let* α1 :=
-              not
+              UnOp.not
                 (ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE
                   (Self := erc20.erc20.Erc20)
                   (Trait := ltac:(refine _))) in
-            let* α2 := and α0 α1 in
+            let* α2 := BinOp.and α0 α1 in
             let* α3 := use α2 in
             if (α3 : bool) then
               let* _ :=
@@ -5674,13 +5692,13 @@ Module
                   (Self := ink.result_info.IsResultErr u128)
                   (Trait := ltac:(refine _)))
                 α4 in
-            and
+            BinOp.and
               (ink.result_info.IsResultTypeFallback.VALUE
                 (Self := ink.result_info.IsResultType u128)
                 (Trait := ltac:(refine _)))
               α0 in
           let* _ :=
-            let* α0 := not is_reverted in
+            let* α0 := UnOp.not is_reverted in
             let* α1 := use α0 in
             if (α1 : bool) then
               let* _ :=
@@ -5712,43 +5730,43 @@ Module
               ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE
                 (Self := erc20.erc20.Erc20)
                 (Trait := ltac:(refine _)) in
-            let* α1 := or α0 message_0 in
+            let* α1 := BinOp.or α0 message_0 in
             let* message_1 := M.alloc false in
             let message_1 :=
               ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE
                 (Self := erc20.erc20.Erc20)
                 (Trait := ltac:(refine _)) in
-            let* α2 := or α1 message_1 in
+            let* α2 := BinOp.or α1 message_1 in
             let* message_2 := M.alloc false in
             let message_2 :=
               ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE
                 (Self := erc20.erc20.Erc20)
                 (Trait := ltac:(refine _)) in
-            let* α3 := or α2 message_2 in
+            let* α3 := BinOp.or α2 message_2 in
             let* message_3 := M.alloc false in
             let message_3 :=
               ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE
                 (Self := erc20.erc20.Erc20)
                 (Trait := ltac:(refine _)) in
-            let* α4 := or α3 message_3 in
+            let* α4 := BinOp.or α3 message_3 in
             let* message_4 := M.alloc false in
             let message_4 :=
               ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE
                 (Self := erc20.erc20.Erc20)
                 (Trait := ltac:(refine _)) in
-            let* α5 := or α4 message_4 in
+            let* α5 := BinOp.or α4 message_4 in
             let* message_5 := M.alloc false in
             let message_5 :=
               ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE
                 (Self := erc20.erc20.Erc20)
                 (Trait := ltac:(refine _)) in
-            let* α0 := or α5 message_5 in
+            let* α0 := BinOp.or α5 message_5 in
             let* α1 :=
-              not
+              UnOp.not
                 (ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE
                   (Self := erc20.erc20.Erc20)
                   (Trait := ltac:(refine _))) in
-            let* α2 := and α0 α1 in
+            let* α2 := BinOp.and α0 α1 in
             let* α3 := use α2 in
             if (α3 : bool) then
               let* _ :=
@@ -5815,13 +5833,13 @@ Module
                   (Self := ink.result_info.IsResultErr u128)
                   (Trait := ltac:(refine _)))
                 α4 in
-            and
+            BinOp.and
               (ink.result_info.IsResultTypeFallback.VALUE
                 (Self := ink.result_info.IsResultType u128)
                 (Trait := ltac:(refine _)))
               α0 in
           let* _ :=
-            let* α0 := not is_reverted in
+            let* α0 := UnOp.not is_reverted in
             let* α1 := use α0 in
             if (α1 : bool) then
               let* _ :=
@@ -5853,43 +5871,43 @@ Module
               ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE
                 (Self := erc20.erc20.Erc20)
                 (Trait := ltac:(refine _)) in
-            let* α1 := or α0 message_0 in
+            let* α1 := BinOp.or α0 message_0 in
             let* message_1 := M.alloc false in
             let message_1 :=
               ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE
                 (Self := erc20.erc20.Erc20)
                 (Trait := ltac:(refine _)) in
-            let* α2 := or α1 message_1 in
+            let* α2 := BinOp.or α1 message_1 in
             let* message_2 := M.alloc false in
             let message_2 :=
               ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE
                 (Self := erc20.erc20.Erc20)
                 (Trait := ltac:(refine _)) in
-            let* α3 := or α2 message_2 in
+            let* α3 := BinOp.or α2 message_2 in
             let* message_3 := M.alloc false in
             let message_3 :=
               ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE
                 (Self := erc20.erc20.Erc20)
                 (Trait := ltac:(refine _)) in
-            let* α4 := or α3 message_3 in
+            let* α4 := BinOp.or α3 message_3 in
             let* message_4 := M.alloc false in
             let message_4 :=
               ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE
                 (Self := erc20.erc20.Erc20)
                 (Trait := ltac:(refine _)) in
-            let* α5 := or α4 message_4 in
+            let* α5 := BinOp.or α4 message_4 in
             let* message_5 := M.alloc false in
             let message_5 :=
               ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE
                 (Self := erc20.erc20.Erc20)
                 (Trait := ltac:(refine _)) in
-            let* α0 := or α5 message_5 in
+            let* α0 := BinOp.or α5 message_5 in
             let* α1 :=
-              not
+              UnOp.not
                 (ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE
                   (Self := erc20.erc20.Erc20)
                   (Trait := ltac:(refine _))) in
-            let* α2 := and α0 α1 in
+            let* α2 := BinOp.and α0 α1 in
             let* α3 := use α2 in
             if (α3 : bool) then
               let* _ :=
@@ -5956,13 +5974,13 @@ Module
                   (Self := ink.result_info.IsResultErr u128)
                   (Trait := ltac:(refine _)))
                 α4 in
-            and
+            BinOp.and
               (ink.result_info.IsResultTypeFallback.VALUE
                 (Self := ink.result_info.IsResultType u128)
                 (Trait := ltac:(refine _)))
               α0 in
           let* _ :=
-            let* α0 := not is_reverted in
+            let* α0 := UnOp.not is_reverted in
             let* α1 := use α0 in
             if (α1 : bool) then
               let* _ :=
@@ -5994,43 +6012,43 @@ Module
               ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE
                 (Self := erc20.erc20.Erc20)
                 (Trait := ltac:(refine _)) in
-            let* α1 := or α0 message_0 in
+            let* α1 := BinOp.or α0 message_0 in
             let* message_1 := M.alloc false in
             let message_1 :=
               ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE
                 (Self := erc20.erc20.Erc20)
                 (Trait := ltac:(refine _)) in
-            let* α2 := or α1 message_1 in
+            let* α2 := BinOp.or α1 message_1 in
             let* message_2 := M.alloc false in
             let message_2 :=
               ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE
                 (Self := erc20.erc20.Erc20)
                 (Trait := ltac:(refine _)) in
-            let* α3 := or α2 message_2 in
+            let* α3 := BinOp.or α2 message_2 in
             let* message_3 := M.alloc false in
             let message_3 :=
               ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE
                 (Self := erc20.erc20.Erc20)
                 (Trait := ltac:(refine _)) in
-            let* α4 := or α3 message_3 in
+            let* α4 := BinOp.or α3 message_3 in
             let* message_4 := M.alloc false in
             let message_4 :=
               ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE
                 (Self := erc20.erc20.Erc20)
                 (Trait := ltac:(refine _)) in
-            let* α5 := or α4 message_4 in
+            let* α5 := BinOp.or α4 message_4 in
             let* message_5 := M.alloc false in
             let message_5 :=
               ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE
                 (Self := erc20.erc20.Erc20)
                 (Trait := ltac:(refine _)) in
-            let* α0 := or α5 message_5 in
+            let* α0 := BinOp.or α5 message_5 in
             let* α1 :=
-              not
+              UnOp.not
                 (ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE
                   (Self := erc20.erc20.Erc20)
                   (Trait := ltac:(refine _))) in
-            let* α2 := and α0 α1 in
+            let* α2 := BinOp.and α0 α1 in
             let* α3 := use α2 in
             if (α3 : bool) then
               let* _ :=
@@ -6101,11 +6119,11 @@ Module
               (ink.result_info.IsResultErr
                     (core.result.Result unit erc20.erc20.Error))::["value"]
                 α4 in
-            and
+            BinOp.and
               (ink.result_info.VALUE (Self := unit) (Trait := ltac:(refine _)))
               α0 in
           let* _ :=
-            let* α0 := not is_reverted in
+            let* α0 := UnOp.not is_reverted in
             let* α1 := use α0 in
             if (α1 : bool) then
               let* _ :=
@@ -6149,43 +6167,43 @@ Module
               ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE
                 (Self := erc20.erc20.Erc20)
                 (Trait := ltac:(refine _)) in
-            let* α1 := or α0 message_0 in
+            let* α1 := BinOp.or α0 message_0 in
             let* message_1 := M.alloc false in
             let message_1 :=
               ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE
                 (Self := erc20.erc20.Erc20)
                 (Trait := ltac:(refine _)) in
-            let* α2 := or α1 message_1 in
+            let* α2 := BinOp.or α1 message_1 in
             let* message_2 := M.alloc false in
             let message_2 :=
               ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE
                 (Self := erc20.erc20.Erc20)
                 (Trait := ltac:(refine _)) in
-            let* α3 := or α2 message_2 in
+            let* α3 := BinOp.or α2 message_2 in
             let* message_3 := M.alloc false in
             let message_3 :=
               ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE
                 (Self := erc20.erc20.Erc20)
                 (Trait := ltac:(refine _)) in
-            let* α4 := or α3 message_3 in
+            let* α4 := BinOp.or α3 message_3 in
             let* message_4 := M.alloc false in
             let message_4 :=
               ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE
                 (Self := erc20.erc20.Erc20)
                 (Trait := ltac:(refine _)) in
-            let* α5 := or α4 message_4 in
+            let* α5 := BinOp.or α4 message_4 in
             let* message_5 := M.alloc false in
             let message_5 :=
               ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE
                 (Self := erc20.erc20.Erc20)
                 (Trait := ltac:(refine _)) in
-            let* α0 := or α5 message_5 in
+            let* α0 := BinOp.or α5 message_5 in
             let* α1 :=
-              not
+              UnOp.not
                 (ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE
                   (Self := erc20.erc20.Erc20)
                   (Trait := ltac:(refine _))) in
-            let* α2 := and α0 α1 in
+            let* α2 := BinOp.and α0 α1 in
             let* α3 := use α2 in
             if (α3 : bool) then
               let* _ :=
@@ -6256,11 +6274,11 @@ Module
               (ink.result_info.IsResultErr
                     (core.result.Result unit erc20.erc20.Error))::["value"]
                 α4 in
-            and
+            BinOp.and
               (ink.result_info.VALUE (Self := unit) (Trait := ltac:(refine _)))
               α0 in
           let* _ :=
-            let* α0 := not is_reverted in
+            let* α0 := UnOp.not is_reverted in
             let* α1 := use α0 in
             if (α1 : bool) then
               let* _ :=
@@ -6304,43 +6322,43 @@ Module
               ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE
                 (Self := erc20.erc20.Erc20)
                 (Trait := ltac:(refine _)) in
-            let* α1 := or α0 message_0 in
+            let* α1 := BinOp.or α0 message_0 in
             let* message_1 := M.alloc false in
             let message_1 :=
               ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE
                 (Self := erc20.erc20.Erc20)
                 (Trait := ltac:(refine _)) in
-            let* α2 := or α1 message_1 in
+            let* α2 := BinOp.or α1 message_1 in
             let* message_2 := M.alloc false in
             let message_2 :=
               ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE
                 (Self := erc20.erc20.Erc20)
                 (Trait := ltac:(refine _)) in
-            let* α3 := or α2 message_2 in
+            let* α3 := BinOp.or α2 message_2 in
             let* message_3 := M.alloc false in
             let message_3 :=
               ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE
                 (Self := erc20.erc20.Erc20)
                 (Trait := ltac:(refine _)) in
-            let* α4 := or α3 message_3 in
+            let* α4 := BinOp.or α3 message_3 in
             let* message_4 := M.alloc false in
             let message_4 :=
               ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE
                 (Self := erc20.erc20.Erc20)
                 (Trait := ltac:(refine _)) in
-            let* α5 := or α4 message_4 in
+            let* α5 := BinOp.or α4 message_4 in
             let* message_5 := M.alloc false in
             let message_5 :=
               ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE
                 (Self := erc20.erc20.Erc20)
                 (Trait := ltac:(refine _)) in
-            let* α0 := or α5 message_5 in
+            let* α0 := BinOp.or α5 message_5 in
             let* α1 :=
-              not
+              UnOp.not
                 (ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE
                   (Self := erc20.erc20.Erc20)
                   (Trait := ltac:(refine _))) in
-            let* α2 := and α0 α1 in
+            let* α2 := BinOp.and α0 α1 in
             let* α3 := use α2 in
             if (α3 : bool) then
               let* _ :=
@@ -6411,11 +6429,11 @@ Module
               (ink.result_info.IsResultErr
                     (core.result.Result unit erc20.erc20.Error))::["value"]
                 α4 in
-            and
+            BinOp.and
               (ink.result_info.VALUE (Self := unit) (Trait := ltac:(refine _)))
               α0 in
           let* _ :=
-            let* α0 := not is_reverted in
+            let* α0 := UnOp.not is_reverted in
             let* α1 := use α0 in
             if (α1 : bool) then
               let* _ :=
@@ -7139,7 +7157,19 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20___CallBuilder.
       Notation.double_colon := using_encoded (R := R) (F := F);
     }.
     
-    Global Instance ℐ : parity_scale_codec.codec.Encode.Trait Self := {
+    Global Instance ℐ : parity_scale_codec.codec.Encode.Required.Trait Self := {
+      parity_scale_codec.codec.Encode.encode_to
+        {__CodecOutputEdqy : Set}
+        {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+        {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy} :=
+        encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
+      parity_scale_codec.codec.Encode.encode := encode;
+      parity_scale_codec.codec.Encode.using_encoded
+        {R F : Set}
+        {ℋ_0 :
+          core.ops.function.FnOnce.Trait F
+            (Args := ref (Slice CoqOfRust.core.primitive.u8))} :=
+        using_encoded (R := R) (F := F);
     }.
   End Impl_parity_scale_codec_codec_Encode_for_erc20_erc20___CallBuilder.
 End Impl_parity_scale_codec_codec_Encode_for_erc20_erc20___CallBuilder.
@@ -7221,7 +7251,7 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___CallBuilder.
           let* α0 := deref left_val usize in
           let* α1 := deref right_val usize in
           let* α2 := BinOp.eq α0 α1 in
-          let* α3 := not α2 in
+          let* α3 := UnOp.not α2 in
           let* α4 := use α3 in
           if (α4 : bool) then
             let* kind := M.alloc core.panicking.AssertKind.Eq in
@@ -7253,7 +7283,7 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___CallBuilder.
             M.alloc 0 in
         let* α5 := M.alloc 1 in
         let* α6 := BinOp.le α4 α5 in
-        let* α7 := not α6 in
+        let* α7 := UnOp.not α6 in
         let* α8 := use α7 in
         if (α8 : bool) then
           let* α0 :=
@@ -7370,11 +7400,15 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___CallBuilder.
         decode_into (__CodecInputEdqy := __CodecInputEdqy);
     }.
     
-    Global Instance ℐ : parity_scale_codec.codec.Decode.Trait Self := {
+    Global Instance ℐ : parity_scale_codec.codec.Decode.Required.Trait Self := {
       parity_scale_codec.codec.Decode.decode
         {__CodecInputEdqy : Set}
         {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :=
         decode (__CodecInputEdqy := __CodecInputEdqy);
+      parity_scale_codec.codec.Decode.decode_into
+        {__CodecInputEdqy : Set}
+        {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :=
+        decode_into (__CodecInputEdqy := __CodecInputEdqy);
     }.
   End Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___CallBuilder.
 End Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___CallBuilder.
@@ -7411,7 +7445,7 @@ Module Impl_core_hash_Hash_for_erc20_erc20___CallBuilder.
       Notation.double_colon := hash (__H := __H);
     }.
     
-    Global Instance ℐ : core.hash.Hash.Trait Self := {
+    Global Instance ℐ : core.hash.Hash.Required.Trait Self := {
       core.hash.Hash.hash {__H : Set} {ℋ_0 : core.hash.Hasher.Trait __H} :=
         hash (__H := __H);
     }.
@@ -7456,7 +7490,7 @@ Module Impl_core_cmp_PartialEq_for_erc20_erc20___CallBuilder.
     }.
     
     Global Instance ℐ :
-      core.cmp.PartialEq.Trait Self
+      core.cmp.PartialEq.Required.Trait Self
         (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
       core.cmp.PartialEq.eq := eq;
     }.
@@ -7489,7 +7523,8 @@ Module Impl_core_cmp_Eq_for_erc20_erc20___CallBuilder.
       Notation.double_colon := assert_receiver_is_total_eq;
     }.
     
-    Global Instance ℐ : core.cmp.Eq.Trait Self := {
+    Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
+      core.cmp.Eq.assert_receiver_is_total_eq := assert_receiver_is_total_eq;
     }.
   End Impl_core_cmp_Eq_for_erc20_erc20___CallBuilder.
 End Impl_core_cmp_Eq_for_erc20_erc20___CallBuilder.
@@ -7518,7 +7553,7 @@ Module Impl_core_clone_Clone_for_erc20_erc20___CallBuilder.
       Notation.double_colon := clone;
     }.
     
-    Global Instance ℐ : core.clone.Clone.Trait Self := {
+    Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
       core.clone.Clone.clone := clone;
     }.
   End Impl_core_clone_Clone_for_erc20_erc20___CallBuilder.
@@ -8628,7 +8663,19 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Erc20Ref.
       Notation.double_colon := using_encoded (R := R) (F := F);
     }.
     
-    Global Instance ℐ : parity_scale_codec.codec.Encode.Trait Self := {
+    Global Instance ℐ : parity_scale_codec.codec.Encode.Required.Trait Self := {
+      parity_scale_codec.codec.Encode.encode_to
+        {__CodecOutputEdqy : Set}
+        {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+        {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy} :=
+        encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
+      parity_scale_codec.codec.Encode.encode := encode;
+      parity_scale_codec.codec.Encode.using_encoded
+        {R F : Set}
+        {ℋ_0 :
+          core.ops.function.FnOnce.Trait F
+            (Args := ref (Slice CoqOfRust.core.primitive.u8))} :=
+        using_encoded (R := R) (F := F);
     }.
   End Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Erc20Ref.
 End Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Erc20Ref.
@@ -8687,7 +8734,7 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Erc20Ref.
       Notation.double_colon := decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
     
-    Global Instance ℐ : parity_scale_codec.codec.Decode.Trait Self := {
+    Global Instance ℐ : parity_scale_codec.codec.Decode.Required.Trait Self := {
       parity_scale_codec.codec.Decode.decode
         {__CodecInputEdqy : Set}
         {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :=
@@ -8728,7 +8775,7 @@ Module Impl_core_hash_Hash_for_erc20_erc20_Erc20Ref.
       Notation.double_colon := hash (__H := __H);
     }.
     
-    Global Instance ℐ : core.hash.Hash.Trait Self := {
+    Global Instance ℐ : core.hash.Hash.Required.Trait Self := {
       core.hash.Hash.hash {__H : Set} {ℋ_0 : core.hash.Hasher.Trait __H} :=
         hash (__H := __H);
     }.
@@ -8773,7 +8820,7 @@ Module Impl_core_cmp_PartialEq_for_erc20_erc20_Erc20Ref.
     }.
     
     Global Instance ℐ :
-      core.cmp.PartialEq.Trait Self
+      core.cmp.PartialEq.Required.Trait Self
         (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
       core.cmp.PartialEq.eq := eq;
     }.
@@ -8806,7 +8853,8 @@ Module Impl_core_cmp_Eq_for_erc20_erc20_Erc20Ref.
       Notation.double_colon := assert_receiver_is_total_eq;
     }.
     
-    Global Instance ℐ : core.cmp.Eq.Trait Self := {
+    Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
+      core.cmp.Eq.assert_receiver_is_total_eq := assert_receiver_is_total_eq;
     }.
   End Impl_core_cmp_Eq_for_erc20_erc20_Erc20Ref.
 End Impl_core_cmp_Eq_for_erc20_erc20_Erc20Ref.
@@ -8835,7 +8883,7 @@ Module Impl_core_clone_Clone_for_erc20_erc20_Erc20Ref.
       Notation.double_colon := clone;
     }.
     
-    Global Instance ℐ : core.clone.Clone.Trait Self := {
+    Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
       core.clone.Clone.clone := clone;
     }.
   End Impl_core_clone_Clone_for_erc20_erc20_Erc20Ref.
@@ -8997,7 +9045,7 @@ Module
     }.
     
     Global Instance ℐ :
-      ink_env.call.create_builder.ConstructorReturnType.Trait Self
+      ink_env.call.create_builder.ConstructorReturnType.Required.Trait Self
         (C := erc20.erc20.Erc20Ref) := {
       ink_env.call.create_builder.ConstructorReturnType.Output := Output;
       ink_env.call.create_builder.ConstructorReturnType.Error := Error;
@@ -9047,11 +9095,13 @@ Module
     }.
     
     Global Instance ℐ :
-      ink_env.call.create_builder.ConstructorReturnType.Trait Self
+      ink_env.call.create_builder.ConstructorReturnType.Required.Trait Self
         (C := erc20.erc20.Erc20Ref) := {
+      ink_env.call.create_builder.ConstructorReturnType.IS_RESULT := IS_RESULT;
       ink_env.call.create_builder.ConstructorReturnType.Output := Output;
       ink_env.call.create_builder.ConstructorReturnType.Error := Error;
       ink_env.call.create_builder.ConstructorReturnType.ok := ok;
+      ink_env.call.create_builder.ConstructorReturnType.err := err;
     }.
   End
     Impl_ink_env_call_create_builder_ConstructorReturnType_erc20_erc20_Erc20Ref_for_core_result_Result_erc20_erc20_Erc20_E.
@@ -11884,7 +11934,7 @@ Module Impl_core_cmp_PartialEq_for_erc20_erc20_Error.
     }.
     
     Global Instance ℐ :
-      core.cmp.PartialEq.Trait Self
+      core.cmp.PartialEq.Required.Trait Self
         (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
       core.cmp.PartialEq.eq := eq;
     }.
@@ -11916,7 +11966,8 @@ Module Impl_core_cmp_Eq_for_erc20_erc20_Error.
       Notation.double_colon := assert_receiver_is_total_eq;
     }.
     
-    Global Instance ℐ : core.cmp.Eq.Trait Self := {
+    Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
+      core.cmp.Eq.assert_receiver_is_total_eq := assert_receiver_is_total_eq;
     }.
   End Impl_core_cmp_Eq_for_erc20_erc20_Error.
 End Impl_core_cmp_Eq_for_erc20_erc20_Error.
@@ -11973,7 +12024,12 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Error.
         encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
     }.
     
-    Global Instance ℐ : parity_scale_codec.codec.Encode.Trait Self := {
+    Global Instance ℐ : parity_scale_codec.codec.Encode.Required.Trait Self := {
+      parity_scale_codec.codec.Encode.encode_to
+        {__CodecOutputEdqy : Set}
+        {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+        {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy} :=
+        encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
     }.
   End Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Error.
 End Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Error.
@@ -12100,7 +12156,7 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Error.
       Notation.double_colon := decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
     
-    Global Instance ℐ : parity_scale_codec.codec.Decode.Trait Self := {
+    Global Instance ℐ : parity_scale_codec.codec.Decode.Required.Trait Self := {
       parity_scale_codec.codec.Decode.decode
         {__CodecInputEdqy : Set}
         {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :=

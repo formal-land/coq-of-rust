@@ -50,7 +50,7 @@ Module Impl_core_clone_Clone_for_foreign_function_interface_Complex.
       Notation.double_colon := clone;
     }.
     
-    Global Instance ℐ : core.clone.Clone.Trait Self := {
+    Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
       core.clone.Clone.clone := clone;
     }.
   End Impl_core_clone_Clone_for_foreign_function_interface_Complex.

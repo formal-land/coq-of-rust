@@ -201,7 +201,7 @@ Module lazy.
         }.
         
         Global Instance ℐ :
-          ink_storage_traits.storage.StorageKey.Trait Self := {
+          ink_storage_traits.storage.StorageKey.Required.Trait Self := {
           ink_storage_traits.storage.StorageKey.KEY := KEY;
         }.
       End
@@ -388,7 +388,8 @@ Module lazy.
         Notation.double_colon := KEY;
       }.
       
-      Global Instance ℐ : ink_storage_traits.storage.StorageKey.Trait Self := {
+      Global Instance ℐ :
+        ink_storage_traits.storage.StorageKey.Required.Trait Self := {
         ink_storage_traits.storage.StorageKey.KEY := KEY;
       }.
     End
@@ -592,7 +593,8 @@ Module mapping.
         Notation.double_colon := KEY;
       }.
       
-      Global Instance ℐ : ink_storage_traits.storage.StorageKey.Trait Self := {
+      Global Instance ℐ :
+        ink_storage_traits.storage.StorageKey.Required.Trait Self := {
         ink_storage_traits.storage.StorageKey.KEY := KEY;
       }.
     End
@@ -827,7 +829,8 @@ Module
       Notation.double_colon := KEY;
     }.
     
-    Global Instance ℐ : ink_storage_traits.storage.StorageKey.Trait Self := {
+    Global Instance ℐ :
+      ink_storage_traits.storage.StorageKey.Required.Trait Self := {
       ink_storage_traits.storage.StorageKey.KEY := KEY;
     }.
   End
@@ -1075,7 +1078,8 @@ Module
       Notation.double_colon := KEY;
     }.
     
-    Global Instance ℐ : ink_storage_traits.storage.StorageKey.Trait Self := {
+    Global Instance ℐ :
+      ink_storage_traits.storage.StorageKey.Required.Trait Self := {
       ink_storage_traits.storage.StorageKey.KEY := KEY;
     }.
   End

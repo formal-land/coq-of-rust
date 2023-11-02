@@ -43,7 +43,8 @@ Module Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
       Notation.double_colon := next;
     }.
     
-    Global Instance ℐ : core.iter.traits.iterator.Iterator.Trait Self := {
+    Global Instance ℐ :
+      core.iter.traits.iterator.Iterator.Required.Trait Self := {
       core.iter.traits.iterator.Iterator.Item := Item;
       core.iter.traits.iterator.Iterator.next := next;
     }.

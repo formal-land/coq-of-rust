@@ -82,7 +82,7 @@ Module
     }.
     
     Global Instance ℐ :
-      core.cmp.PartialEq.Trait Self
+      core.cmp.PartialEq.Required.Trait Self
         (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
       core.cmp.PartialEq.eq := eq;
     }.
@@ -121,7 +121,8 @@ Module Impl_core_cmp_Eq_for_hash_map_alternate_or_custom_key_types_Account.
       Notation.double_colon := assert_receiver_is_total_eq;
     }.
     
-    Global Instance ℐ : core.cmp.Eq.Trait Self := {
+    Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
+      core.cmp.Eq.assert_receiver_is_total_eq := assert_receiver_is_total_eq;
     }.
   End Impl_core_cmp_Eq_for_hash_map_alternate_or_custom_key_types_Account.
 End Impl_core_cmp_Eq_for_hash_map_alternate_or_custom_key_types_Account.
@@ -166,7 +167,7 @@ Module Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account.
       Notation.double_colon := hash (__H := __H);
     }.
     
-    Global Instance ℐ : core.hash.Hash.Trait Self := {
+    Global Instance ℐ : core.hash.Hash.Required.Trait Self := {
       core.hash.Hash.hash {__H : Set} {ℋ_0 : core.hash.Hasher.Trait __H} :=
         hash (__H := __H);
     }.

@@ -63,7 +63,8 @@ Module Impl_core_error_Error_for_wrapping_errors_DoubleError.
       Notation.double_colon := source;
     }.
     
-    Global Instance ℐ : core.error.Error.Trait Self := {
+    Global Instance ℐ : core.error.Error.Required.Trait Self := {
+      core.error.Error.source := source;
     }.
   End Impl_core_error_Error_for_wrapping_errors_DoubleError.
 End Impl_core_error_Error_for_wrapping_errors_DoubleError.

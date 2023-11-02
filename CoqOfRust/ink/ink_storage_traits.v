@@ -205,7 +205,7 @@ Module impls.
         Notation.double_colon := clone;
       }.
       
-      Global Instance ℐ : core.clone.Clone.Trait Self := {
+      Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
         core.clone.Clone.clone := clone;
       }.
     End Impl_core_clone_Clone_for_ink_storage_traits_impls_AutoKey.
@@ -251,7 +251,7 @@ Module impls.
       }.
       
       Global Instance ℐ :
-        core.cmp.PartialEq.Trait Self
+        core.cmp.PartialEq.Required.Trait Self
           (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
         core.cmp.PartialEq.eq := eq;
       }.
@@ -282,7 +282,8 @@ Module impls.
         Notation.double_colon := assert_receiver_is_total_eq;
       }.
       
-      Global Instance ℐ : core.cmp.Eq.Trait Self := {
+      Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
+        core.cmp.Eq.assert_receiver_is_total_eq := assert_receiver_is_total_eq;
       }.
     End Impl_core_cmp_Eq_for_ink_storage_traits_impls_AutoKey.
   End Impl_core_cmp_Eq_for_ink_storage_traits_impls_AutoKey.
@@ -304,7 +305,7 @@ Module impls.
       }.
       
       Global Instance ℐ :
-        core.cmp.PartialOrd.Trait Self
+        core.cmp.PartialOrd.Required.Trait Self
           (Rhs := core.cmp.PartialOrd.Default.Rhs Self) := {
         core.cmp.PartialOrd.partial_cmp := partial_cmp;
       }.
@@ -326,7 +327,8 @@ Module impls.
         Notation.double_colon := KEY;
       }.
       
-      Global Instance ℐ : ink_storage_traits.storage.StorageKey.Trait Self := {
+      Global Instance ℐ :
+        ink_storage_traits.storage.StorageKey.Required.Trait Self := {
         ink_storage_traits.storage.StorageKey.KEY := KEY;
       }.
     End
@@ -447,7 +449,7 @@ Module impls.
         Notation.double_colon := clone;
       }.
       
-      Global Instance ℐ : core.clone.Clone.Trait Self := {
+      Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
         core.clone.Clone.clone := clone;
       }.
     End Impl_core_clone_Clone_for_ink_storage_traits_impls_ManualKey_ParentKey.
@@ -514,7 +516,7 @@ Module impls.
       }.
       
       Global Instance ℐ :
-        core.cmp.PartialEq.Trait Self
+        core.cmp.PartialEq.Required.Trait Self
           (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
         core.cmp.PartialEq.eq := eq;
       }.
@@ -540,7 +542,8 @@ Module impls.
         Notation.double_colon := assert_receiver_is_total_eq;
       }.
       
-      Global Instance ℐ : core.cmp.Eq.Trait Self := {
+      Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
+        core.cmp.Eq.assert_receiver_is_total_eq := assert_receiver_is_total_eq;
       }.
     End Impl_core_cmp_Eq_for_ink_storage_traits_impls_ManualKey_ParentKey.
   End Impl_core_cmp_Eq_for_ink_storage_traits_impls_ManualKey_ParentKey.
@@ -589,7 +592,7 @@ Module impls.
       }.
       
       Global Instance ℐ :
-        core.cmp.PartialOrd.Trait Self
+        core.cmp.PartialOrd.Required.Trait Self
           (Rhs := core.cmp.PartialOrd.Default.Rhs Self) := {
         core.cmp.PartialOrd.partial_cmp := partial_cmp;
       }.
@@ -615,7 +618,8 @@ Module impls.
         Notation.double_colon := KEY;
       }.
       
-      Global Instance ℐ : ink_storage_traits.storage.StorageKey.Trait Self := {
+      Global Instance ℐ :
+        ink_storage_traits.storage.StorageKey.Required.Trait Self := {
         ink_storage_traits.storage.StorageKey.KEY := KEY;
       }.
     End
@@ -737,7 +741,7 @@ Module impls.
         Notation.double_colon := clone;
       }.
       
-      Global Instance ℐ : core.clone.Clone.Trait Self := {
+      Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
         core.clone.Clone.clone := clone;
       }.
     End Impl_core_clone_Clone_for_ink_storage_traits_impls_ResolverKey_L_R.
@@ -799,7 +803,7 @@ Module impls.
       }.
       
       Global Instance ℐ :
-        core.cmp.PartialEq.Trait Self
+        core.cmp.PartialEq.Required.Trait Self
           (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
         core.cmp.PartialEq.eq := eq;
       }.
@@ -839,7 +843,8 @@ Module impls.
         Notation.double_colon := assert_receiver_is_total_eq;
       }.
       
-      Global Instance ℐ : core.cmp.Eq.Trait Self := {
+      Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
+        core.cmp.Eq.assert_receiver_is_total_eq := assert_receiver_is_total_eq;
       }.
     End Impl_core_cmp_Eq_for_ink_storage_traits_impls_ResolverKey_L_R.
   End Impl_core_cmp_Eq_for_ink_storage_traits_impls_ResolverKey_L_R.
@@ -871,7 +876,7 @@ Module impls.
       }.
       
       Global Instance ℐ :
-        core.cmp.PartialOrd.Trait Self
+        core.cmp.PartialOrd.Required.Trait Self
           (Rhs := core.cmp.PartialOrd.Default.Rhs Self) := {
         core.cmp.PartialOrd.partial_cmp := partial_cmp;
       }.
@@ -925,7 +930,8 @@ Module impls.
         Notation.double_colon := KEY;
       }.
       
-      Global Instance ℐ : ink_storage_traits.storage.StorageKey.Trait Self := {
+      Global Instance ℐ :
+        ink_storage_traits.storage.StorageKey.Required.Trait Self := {
         ink_storage_traits.storage.StorageKey.KEY := KEY;
       }.
     End
@@ -1053,7 +1059,8 @@ Module impls.
         Notation.double_colon := KEY;
       }.
       
-      Global Instance ℐ : ink_storage_traits.storage.StorageKey.Trait Self := {
+      Global Instance ℐ :
+        ink_storage_traits.storage.StorageKey.Required.Trait Self := {
         ink_storage_traits.storage.StorageKey.KEY := KEY;
       }.
     End Impl_ink_storage_traits_storage_StorageKey_for_P.
@@ -1168,7 +1175,7 @@ Module Impl_core_clone_Clone_for_ink_storage_traits_impls_AutoKey.
       Notation.double_colon := clone;
     }.
     
-    Global Instance ℐ : core.clone.Clone.Trait Self := {
+    Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
       core.clone.Clone.clone := clone;
     }.
   End Impl_core_clone_Clone_for_ink_storage_traits_impls_AutoKey.
@@ -1201,7 +1208,7 @@ Module Impl_core_cmp_PartialEq_for_ink_storage_traits_impls_AutoKey.
     }.
     
     Global Instance ℐ :
-      core.cmp.PartialEq.Trait Self
+      core.cmp.PartialEq.Required.Trait Self
         (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
       core.cmp.PartialEq.eq := eq;
     }.
@@ -1232,7 +1239,8 @@ Module Impl_core_cmp_Eq_for_ink_storage_traits_impls_AutoKey.
       Notation.double_colon := assert_receiver_is_total_eq;
     }.
     
-    Global Instance ℐ : core.cmp.Eq.Trait Self := {
+    Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
+      core.cmp.Eq.assert_receiver_is_total_eq := assert_receiver_is_total_eq;
     }.
   End Impl_core_cmp_Eq_for_ink_storage_traits_impls_AutoKey.
 End Impl_core_cmp_Eq_for_ink_storage_traits_impls_AutoKey.
@@ -1254,7 +1262,7 @@ Module Impl_core_cmp_PartialOrd_for_ink_storage_traits_impls_AutoKey.
     }.
     
     Global Instance ℐ :
-      core.cmp.PartialOrd.Trait Self
+      core.cmp.PartialOrd.Required.Trait Self
         (Rhs := core.cmp.PartialOrd.Default.Rhs Self) := {
       core.cmp.PartialOrd.partial_cmp := partial_cmp;
     }.
@@ -1276,7 +1284,8 @@ Module
       Notation.double_colon := KEY;
     }.
     
-    Global Instance ℐ : ink_storage_traits.storage.StorageKey.Trait Self := {
+    Global Instance ℐ :
+      ink_storage_traits.storage.StorageKey.Required.Trait Self := {
       ink_storage_traits.storage.StorageKey.KEY := KEY;
     }.
   End
@@ -1441,7 +1450,7 @@ Module Impl_core_clone_Clone_for_ink_storage_traits_impls_ManualKey_ParentKey.
       Notation.double_colon := clone;
     }.
     
-    Global Instance ℐ : core.clone.Clone.Trait Self := {
+    Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
       core.clone.Clone.clone := clone;
     }.
   End Impl_core_clone_Clone_for_ink_storage_traits_impls_ManualKey_ParentKey.
@@ -1483,7 +1492,8 @@ Module Impl_core_cmp_Eq_for_ink_storage_traits_impls_ManualKey_ParentKey.
       Notation.double_colon := assert_receiver_is_total_eq;
     }.
     
-    Global Instance ℐ : core.cmp.Eq.Trait Self := {
+    Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
+      core.cmp.Eq.assert_receiver_is_total_eq := assert_receiver_is_total_eq;
     }.
   End Impl_core_cmp_Eq_for_ink_storage_traits_impls_ManualKey_ParentKey.
 End Impl_core_cmp_Eq_for_ink_storage_traits_impls_ManualKey_ParentKey.
@@ -1530,7 +1540,7 @@ Module Impl_core_cmp_PartialEq_for_ink_storage_traits_impls_ManualKey_ParentKey.
     }.
     
     Global Instance ℐ :
-      core.cmp.PartialEq.Trait Self
+      core.cmp.PartialEq.Required.Trait Self
         (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
       core.cmp.PartialEq.eq := eq;
     }.
@@ -1563,7 +1573,7 @@ Module
     }.
     
     Global Instance ℐ :
-      core.cmp.PartialOrd.Trait Self
+      core.cmp.PartialOrd.Required.Trait Self
         (Rhs := core.cmp.PartialOrd.Default.Rhs Self) := {
       core.cmp.PartialOrd.partial_cmp := partial_cmp;
     }.
@@ -1588,7 +1598,8 @@ Module
       Notation.double_colon := KEY;
     }.
     
-    Global Instance ℐ : ink_storage_traits.storage.StorageKey.Trait Self := {
+    Global Instance ℐ :
+      ink_storage_traits.storage.StorageKey.Required.Trait Self := {
       ink_storage_traits.storage.StorageKey.KEY := KEY;
     }.
   End
@@ -1749,7 +1760,7 @@ Module Impl_core_clone_Clone_for_ink_storage_traits_impls_ResolverKey_L_R.
       Notation.double_colon := clone;
     }.
     
-    Global Instance ℐ : core.clone.Clone.Trait Self := {
+    Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
       core.clone.Clone.clone := clone;
     }.
   End Impl_core_clone_Clone_for_ink_storage_traits_impls_ResolverKey_L_R.
@@ -1795,7 +1806,7 @@ Module Impl_core_cmp_PartialEq_for_ink_storage_traits_impls_ResolverKey_L_R.
     }.
     
     Global Instance ℐ :
-      core.cmp.PartialEq.Trait Self
+      core.cmp.PartialEq.Required.Trait Self
         (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
       core.cmp.PartialEq.eq := eq;
     }.
@@ -1834,7 +1845,8 @@ Module Impl_core_cmp_Eq_for_ink_storage_traits_impls_ResolverKey_L_R.
       Notation.double_colon := assert_receiver_is_total_eq;
     }.
     
-    Global Instance ℐ : core.cmp.Eq.Trait Self := {
+    Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
+      core.cmp.Eq.assert_receiver_is_total_eq := assert_receiver_is_total_eq;
     }.
   End Impl_core_cmp_Eq_for_ink_storage_traits_impls_ResolverKey_L_R.
 End Impl_core_cmp_Eq_for_ink_storage_traits_impls_ResolverKey_L_R.
@@ -1863,7 +1875,7 @@ Module Impl_core_cmp_PartialOrd_for_ink_storage_traits_impls_ResolverKey_L_R.
     }.
     
     Global Instance ℐ :
-      core.cmp.PartialOrd.Trait Self
+      core.cmp.PartialOrd.Required.Trait Self
         (Rhs := core.cmp.PartialOrd.Default.Rhs Self) := {
       core.cmp.PartialOrd.partial_cmp := partial_cmp;
     }.
@@ -1915,7 +1927,8 @@ Module
       Notation.double_colon := KEY;
     }.
     
-    Global Instance ℐ : ink_storage_traits.storage.StorageKey.Trait Self := {
+    Global Instance ℐ :
+      ink_storage_traits.storage.StorageKey.Required.Trait Self := {
       ink_storage_traits.storage.StorageKey.KEY := KEY;
     }.
   End
@@ -2042,7 +2055,8 @@ Module Impl_ink_storage_traits_storage_StorageKey_for_P.
       Notation.double_colon := KEY;
     }.
     
-    Global Instance ℐ : ink_storage_traits.storage.StorageKey.Trait Self := {
+    Global Instance ℐ :
+      ink_storage_traits.storage.StorageKey.Required.Trait Self := {
       ink_storage_traits.storage.StorageKey.KEY := KEY;
     }.
   End Impl_ink_storage_traits_storage_StorageKey_for_P.

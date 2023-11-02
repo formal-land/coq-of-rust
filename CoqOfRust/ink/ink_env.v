@@ -111,7 +111,7 @@ Module hash.
         Notation.double_colon := clone;
       }.
       
-      Global Instance ℐ : core.clone.Clone.Trait Self := {
+      Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
         core.clone.Clone.clone := clone;
       }.
     End Impl_core_clone_Clone_for_ink_env_hash_Sha2x256.
@@ -142,7 +142,7 @@ Module hash.
       }.
       
       Global Instance ℐ :
-        core.cmp.PartialEq.Trait Self
+        core.cmp.PartialEq.Required.Trait Self
           (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
         core.cmp.PartialEq.eq := eq;
       }.
@@ -173,7 +173,8 @@ Module hash.
         Notation.double_colon := assert_receiver_is_total_eq;
       }.
       
-      Global Instance ℐ : core.cmp.Eq.Trait Self := {
+      Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
+        core.cmp.Eq.assert_receiver_is_total_eq := assert_receiver_is_total_eq;
       }.
     End Impl_core_cmp_Eq_for_ink_env_hash_Sha2x256.
   End Impl_core_cmp_Eq_for_ink_env_hash_Sha2x256.
@@ -230,7 +231,7 @@ Module hash.
         Notation.double_colon := clone;
       }.
       
-      Global Instance ℐ : core.clone.Clone.Trait Self := {
+      Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
         core.clone.Clone.clone := clone;
       }.
     End Impl_core_clone_Clone_for_ink_env_hash_Keccak256.
@@ -261,7 +262,7 @@ Module hash.
       }.
       
       Global Instance ℐ :
-        core.cmp.PartialEq.Trait Self
+        core.cmp.PartialEq.Required.Trait Self
           (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
         core.cmp.PartialEq.eq := eq;
       }.
@@ -292,7 +293,8 @@ Module hash.
         Notation.double_colon := assert_receiver_is_total_eq;
       }.
       
-      Global Instance ℐ : core.cmp.Eq.Trait Self := {
+      Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
+        core.cmp.Eq.assert_receiver_is_total_eq := assert_receiver_is_total_eq;
       }.
     End Impl_core_cmp_Eq_for_ink_env_hash_Keccak256.
   End Impl_core_cmp_Eq_for_ink_env_hash_Keccak256.
@@ -349,7 +351,7 @@ Module hash.
         Notation.double_colon := clone;
       }.
       
-      Global Instance ℐ : core.clone.Clone.Trait Self := {
+      Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
         core.clone.Clone.clone := clone;
       }.
     End Impl_core_clone_Clone_for_ink_env_hash_Blake2x256.
@@ -380,7 +382,7 @@ Module hash.
       }.
       
       Global Instance ℐ :
-        core.cmp.PartialEq.Trait Self
+        core.cmp.PartialEq.Required.Trait Self
           (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
         core.cmp.PartialEq.eq := eq;
       }.
@@ -411,7 +413,8 @@ Module hash.
         Notation.double_colon := assert_receiver_is_total_eq;
       }.
       
-      Global Instance ℐ : core.cmp.Eq.Trait Self := {
+      Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
+        core.cmp.Eq.assert_receiver_is_total_eq := assert_receiver_is_total_eq;
       }.
     End Impl_core_cmp_Eq_for_ink_env_hash_Blake2x256.
   End Impl_core_cmp_Eq_for_ink_env_hash_Blake2x256.
@@ -468,7 +471,7 @@ Module hash.
         Notation.double_colon := clone;
       }.
       
-      Global Instance ℐ : core.clone.Clone.Trait Self := {
+      Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
         core.clone.Clone.clone := clone;
       }.
     End Impl_core_clone_Clone_for_ink_env_hash_Blake2x128.
@@ -499,7 +502,7 @@ Module hash.
       }.
       
       Global Instance ℐ :
-        core.cmp.PartialEq.Trait Self
+        core.cmp.PartialEq.Required.Trait Self
           (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
         core.cmp.PartialEq.eq := eq;
       }.
@@ -530,7 +533,8 @@ Module hash.
         Notation.double_colon := assert_receiver_is_total_eq;
       }.
       
-      Global Instance ℐ : core.cmp.Eq.Trait Self := {
+      Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
+        core.cmp.Eq.assert_receiver_is_total_eq := assert_receiver_is_total_eq;
       }.
     End Impl_core_cmp_Eq_for_ink_env_hash_Blake2x128.
   End Impl_core_cmp_Eq_for_ink_env_hash_Blake2x128.
@@ -1167,7 +1171,7 @@ Module types.
         Notation.double_colon := clone;
       }.
       
-      Global Instance ℐ : core.clone.Clone.Trait Self := {
+      Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
         core.clone.Clone.clone := clone;
       }.
     End Impl_core_clone_Clone_for_ink_env_types_DefaultEnvironment.
@@ -1202,7 +1206,7 @@ Module types.
       }.
       
       Global Instance ℐ :
-        core.cmp.PartialEq.Trait Self
+        core.cmp.PartialEq.Required.Trait Self
           (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
         core.cmp.PartialEq.eq := eq;
       }.
@@ -1233,7 +1237,8 @@ Module types.
         Notation.double_colon := assert_receiver_is_total_eq;
       }.
       
-      Global Instance ℐ : core.cmp.Eq.Trait Self := {
+      Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
+        core.cmp.Eq.assert_receiver_is_total_eq := assert_receiver_is_total_eq;
       }.
     End Impl_core_cmp_Eq_for_ink_env_types_DefaultEnvironment.
   End Impl_core_cmp_Eq_for_ink_env_types_DefaultEnvironment.
@@ -1645,7 +1650,7 @@ Module Impl_core_clone_Clone_for_ink_env_types_DefaultEnvironment.
       Notation.double_colon := clone;
     }.
     
-    Global Instance ℐ : core.clone.Clone.Trait Self := {
+    Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
       core.clone.Clone.clone := clone;
     }.
   End Impl_core_clone_Clone_for_ink_env_types_DefaultEnvironment.
@@ -1678,7 +1683,7 @@ Module Impl_core_cmp_PartialEq_for_ink_env_types_DefaultEnvironment.
     }.
     
     Global Instance ℐ :
-      core.cmp.PartialEq.Trait Self
+      core.cmp.PartialEq.Required.Trait Self
         (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
       core.cmp.PartialEq.eq := eq;
     }.
@@ -1709,7 +1714,8 @@ Module Impl_core_cmp_Eq_for_ink_env_types_DefaultEnvironment.
       Notation.double_colon := assert_receiver_is_total_eq;
     }.
     
-    Global Instance ℐ : core.cmp.Eq.Trait Self := {
+    Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
+      core.cmp.Eq.assert_receiver_is_total_eq := assert_receiver_is_total_eq;
     }.
   End Impl_core_cmp_Eq_for_ink_env_types_DefaultEnvironment.
 End Impl_core_cmp_Eq_for_ink_env_types_DefaultEnvironment.
@@ -1854,7 +1860,7 @@ Module call.
           Notation.double_colon := clone;
         }.
         
-        Global Instance ℐ : core.clone.Clone.Trait Self := {
+        Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
           core.clone.Clone.clone := clone;
         }.
       End Impl_core_clone_Clone_for_ink_env_call_common_ReturnType_T.
@@ -1969,7 +1975,7 @@ Module call.
           Notation.double_colon := clone;
         }.
         
-        Global Instance ℐ : core.clone.Clone.Trait Self := {
+        Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
           core.clone.Clone.clone := clone;
         }.
       End Impl_core_clone_Clone_for_ink_env_call_common_Set__T.
@@ -2035,7 +2041,7 @@ Module call.
           Notation.double_colon := clone;
         }.
         
-        Global Instance ℐ : core.clone.Clone.Trait Self := {
+        Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
           core.clone.Clone.clone := clone;
         }.
       End Impl_core_clone_Clone_for_ink_env_call_common_Unset__T.
@@ -2247,7 +2253,7 @@ Module call.
           Notation.double_colon := clone;
         }.
         
-        Global Instance ℐ : core.clone.Clone.Trait Self := {
+        Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
           core.clone.Clone.clone := clone;
         }.
       End Impl_core_clone_Clone_for_ink_env_call_selector_Selector.
@@ -2282,7 +2288,7 @@ Module call.
         }.
         
         Global Instance ℐ :
-          core.cmp.PartialEq.Trait Self
+          core.cmp.PartialEq.Required.Trait Self
             (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
           core.cmp.PartialEq.eq := eq;
         }.
@@ -2313,7 +2319,9 @@ Module call.
           Notation.double_colon := assert_receiver_is_total_eq;
         }.
         
-        Global Instance ℐ : core.cmp.Eq.Trait Self := {
+        Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
+          core.cmp.Eq.assert_receiver_is_total_eq :=
+            assert_receiver_is_total_eq;
         }.
       End Impl_core_cmp_Eq_for_ink_env_call_selector_Selector.
     End Impl_core_cmp_Eq_for_ink_env_call_selector_Selector.
@@ -2391,7 +2399,7 @@ Module call.
           Notation.double_colon := clone;
         }.
         
-        Global Instance ℐ : core.clone.Clone.Trait Self := {
+        Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
           core.clone.Clone.clone := clone;
         }.
       End
@@ -2510,7 +2518,7 @@ Module call.
           Notation.double_colon := clone;
         }.
         
-        Global Instance ℐ : core.clone.Clone.Trait Self := {
+        Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
           core.clone.Clone.clone := clone;
         }.
       End
@@ -2626,7 +2634,7 @@ Module call.
           Notation.double_colon := clone;
         }.
         
-        Global Instance ℐ : core.clone.Clone.Trait Self := {
+        Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
           core.clone.Clone.clone := clone;
         }.
       End Impl_core_clone_Clone_for_ink_env_call_execution_input_Argument_T.
@@ -2682,7 +2690,7 @@ Module call.
           Notation.double_colon := clone;
         }.
         
-        Global Instance ℐ : core.clone.Clone.Trait Self := {
+        Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
           core.clone.Clone.clone := clone;
         }.
       End
@@ -2774,7 +2782,14 @@ Module call.
           Notation.double_colon := encode_to (O := O);
         }.
         
-        Global Instance ℐ : parity_scale_codec.codec.Encode.Trait Self := {
+        Global Instance ℐ :
+          parity_scale_codec.codec.Encode.Required.Trait Self := {
+          parity_scale_codec.codec.Encode.size_hint := size_hint;
+          parity_scale_codec.codec.Encode.encode_to
+            {O : Set}
+            {ℋ_0 : parity_scale_codec.codec.Output.Trait O}
+            {ℋ_1 : core.marker.Sized.Trait O} :=
+            encode_to (O := O);
         }.
       End
         Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_Argument_T.
@@ -2812,7 +2827,14 @@ Module call.
           Notation.double_colon := encode_to (O := O);
         }.
         
-        Global Instance ℐ : parity_scale_codec.codec.Encode.Trait Self := {
+        Global Instance ℐ :
+          parity_scale_codec.codec.Encode.Required.Trait Self := {
+          parity_scale_codec.codec.Encode.size_hint := size_hint;
+          parity_scale_codec.codec.Encode.encode_to
+            {O : Set}
+            {ℋ_0 : parity_scale_codec.codec.Output.Trait O}
+            {ℋ_1 : core.marker.Sized.Trait O} :=
+            encode_to (O := O);
         }.
       End
         Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_EmptyArgumentList.
@@ -2857,7 +2879,14 @@ Module call.
           Notation.double_colon := encode_to (O := O);
         }.
         
-        Global Instance ℐ : parity_scale_codec.codec.Encode.Trait Self := {
+        Global Instance ℐ :
+          parity_scale_codec.codec.Encode.Required.Trait Self := {
+          parity_scale_codec.codec.Encode.size_hint := size_hint;
+          parity_scale_codec.codec.Encode.encode_to
+            {O : Set}
+            {ℋ_0 : parity_scale_codec.codec.Output.Trait O}
+            {ℋ_1 : core.marker.Sized.Trait O} :=
+            encode_to (O := O);
         }.
       End
         Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_ArgumentList_ink_env_call_execution_input_Argument_Head_Rest.
@@ -2898,7 +2927,14 @@ Module call.
           Notation.double_colon := encode_to (O := O);
         }.
         
-        Global Instance ℐ : parity_scale_codec.codec.Encode.Trait Self := {
+        Global Instance ℐ :
+          parity_scale_codec.codec.Encode.Required.Trait Self := {
+          parity_scale_codec.codec.Encode.size_hint := size_hint;
+          parity_scale_codec.codec.Encode.encode_to
+            {O : Set}
+            {ℋ_0 : parity_scale_codec.codec.Output.Trait O}
+            {ℋ_1 : core.marker.Sized.Trait O} :=
+            encode_to (O := O);
         }.
       End
         Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_ExecutionInput_Args.
@@ -2982,7 +3018,7 @@ Module call.
         }.
         
         Global Instance ℐ :
-          ink_env.call.create_builder.ConstructorReturnType.Trait Self
+          ink_env.call.create_builder.ConstructorReturnType.Required.Trait Self
             (C := C) := {
           ink_env.call.create_builder.ConstructorReturnType.Output := Output;
           ink_env.call.create_builder.ConstructorReturnType.Error := Error;
@@ -3035,11 +3071,14 @@ Module call.
         }.
         
         Global Instance ℐ :
-          ink_env.call.create_builder.ConstructorReturnType.Trait Self
+          ink_env.call.create_builder.ConstructorReturnType.Required.Trait Self
             (C := C) := {
+          ink_env.call.create_builder.ConstructorReturnType.IS_RESULT :=
+            IS_RESULT;
           ink_env.call.create_builder.ConstructorReturnType.Output := Output;
           ink_env.call.create_builder.ConstructorReturnType.Error := Error;
           ink_env.call.create_builder.ConstructorReturnType.ok := ok;
+          ink_env.call.create_builder.ConstructorReturnType.err := err;
         }.
       End
         Impl_ink_env_call_create_builder_ConstructorReturnType_C_for_core_result_Result_C_E.
@@ -3330,7 +3369,7 @@ Module engine.
             Notation.double_colon := clone;
           }.
           
-          Global Instance ℐ : core.clone.Clone.Trait Self := {
+          Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
             core.clone.Clone.clone := clone;
           }.
         End
@@ -3371,7 +3410,7 @@ Module engine.
           }.
           
           Global Instance ℐ :
-            core.cmp.PartialEq.Trait Self
+            core.cmp.PartialEq.Required.Trait Self
               (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
             core.cmp.PartialEq.eq := eq;
           }.
@@ -3409,7 +3448,9 @@ Module engine.
             Notation.double_colon := assert_receiver_is_total_eq;
           }.
           
-          Global Instance ℐ : core.cmp.Eq.Trait Self := {
+          Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
+            core.cmp.Eq.assert_receiver_is_total_eq :=
+              assert_receiver_is_total_eq;
           }.
         End Impl_core_cmp_Eq_for_ink_env_engine_off_chain_call_data_CallData.
       End Impl_core_cmp_Eq_for_ink_env_engine_off_chain_call_data_CallData.
@@ -3444,7 +3485,14 @@ Module engine.
             Notation.double_colon := encode_to (T := T);
           }.
           
-          Global Instance ℐ : parity_scale_codec.codec.Encode.Trait Self := {
+          Global Instance ℐ :
+            parity_scale_codec.codec.Encode.Required.Trait Self := {
+            parity_scale_codec.codec.Encode.size_hint := size_hint;
+            parity_scale_codec.codec.Encode.encode_to
+              {T : Set}
+              {ℋ_0 : parity_scale_codec.codec.Output.Trait T}
+              {ℋ_1 : core.marker.Sized.Trait T} :=
+              encode_to (T := T);
           }.
         End
           Impl_parity_scale_codec_codec_Encode_for_ink_env_engine_off_chain_call_data_CallData.
@@ -3471,7 +3519,8 @@ Module engine.
             Notation.double_colon := decode (I := I);
           }.
           
-          Global Instance ℐ : parity_scale_codec.codec.Decode.Trait Self := {
+          Global Instance ℐ :
+            parity_scale_codec.codec.Decode.Required.Trait Self := {
             parity_scale_codec.codec.Decode.decode
               {I : Set}
               {ℋ_0 : parity_scale_codec.codec.Input.Trait I} :=
@@ -4681,7 +4730,7 @@ Module engine.
         }.
         
         Global Instance ℐ :
-          core.cmp.PartialEq.Trait Self
+          core.cmp.PartialEq.Required.Trait Self
             (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
           core.cmp.PartialEq.eq := eq;
         }.
@@ -4716,7 +4765,9 @@ Module engine.
           Notation.double_colon := assert_receiver_is_total_eq;
         }.
         
-        Global Instance ℐ : core.cmp.Eq.Trait Self := {
+        Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
+          core.cmp.Eq.assert_receiver_is_total_eq :=
+            assert_receiver_is_total_eq;
         }.
       End Impl_core_cmp_Eq_for_ink_env_engine_off_chain_OffChainError.
     End Impl_core_cmp_Eq_for_ink_env_engine_off_chain_OffChainError.
@@ -4800,7 +4851,7 @@ Module engine.
         }.
         
         Global Instance ℐ :
-          core.cmp.PartialEq.Trait Self
+          core.cmp.PartialEq.Required.Trait Self
             (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
           core.cmp.PartialEq.eq := eq;
         }.
@@ -4834,7 +4885,9 @@ Module engine.
           Notation.double_colon := assert_receiver_is_total_eq;
         }.
         
-        Global Instance ℐ : core.cmp.Eq.Trait Self := {
+        Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
+          core.cmp.Eq.assert_receiver_is_total_eq :=
+            assert_receiver_is_total_eq;
         }.
       End Impl_core_cmp_Eq_for_ink_env_engine_off_chain_AccountError.
     End Impl_core_cmp_Eq_for_ink_env_engine_off_chain_AccountError.
@@ -5128,7 +5181,14 @@ Module topics.
         Notation.double_colon := encode_to (T := T);
       }.
       
-      Global Instance ℐ : parity_scale_codec.codec.Encode.Trait Self := {
+      Global Instance ℐ :
+        parity_scale_codec.codec.Encode.Required.Trait Self := {
+        parity_scale_codec.codec.Encode.size_hint := size_hint;
+        parity_scale_codec.codec.Encode.encode_to
+          {T : Set}
+          {ℋ_0 : parity_scale_codec.codec.Output.Trait T}
+          {ℋ_1 : core.marker.Sized.Trait T} :=
+          encode_to (T := T);
       }.
     End Impl_parity_scale_codec_codec_Encode_for_ink_env_topics_PrefixedValue_X.
   End Impl_parity_scale_codec_codec_Encode_for_ink_env_topics_PrefixedValue_X.
@@ -5276,7 +5336,7 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
       }.
       
       Global Instance ℐ :
-        core.cmp.PartialEq.Trait Self
+        core.cmp.PartialEq.Required.Trait Self
           (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
         core.cmp.PartialEq.eq := eq;
       }.
@@ -5317,7 +5377,8 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
         Notation.double_colon := assert_receiver_is_total_eq;
       }.
       
-      Global Instance ℐ : core.cmp.Eq.Trait Self := {
+      Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
+        core.cmp.Eq.assert_receiver_is_total_eq := assert_receiver_is_total_eq;
       }.
     End
       Impl_core_cmp_Eq_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
@@ -5379,7 +5440,7 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
         Notation.double_colon := clone;
       }.
       
-      Global Instance ℐ : core.clone.Clone.Trait Self := {
+      Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
         core.clone.Clone.clone := clone;
       }.
     End
@@ -6276,7 +6337,7 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
         Notation.double_colon := clone;
       }.
       
-      Global Instance ℐ : core.clone.Clone.Trait Self := {
+      Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
         core.clone.Clone.clone := clone;
       }.
     End
@@ -6319,7 +6380,7 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
         Notation.double_colon := clone;
       }.
       
-      Global Instance ℐ : core.clone.Clone.Trait Self := {
+      Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
         core.clone.Clone.clone := clone;
       }.
     End
@@ -6388,7 +6449,7 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
         Notation.double_colon := clone;
       }.
       
-      Global Instance ℐ : core.clone.Clone.Trait Self := {
+      Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
         core.clone.Clone.clone := clone;
       }.
     End
@@ -7430,7 +7491,7 @@ Module
     }.
     
     Global Instance ℐ :
-      core.cmp.PartialEq.Trait Self
+      core.cmp.PartialEq.Required.Trait Self
         (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
       core.cmp.PartialEq.eq := eq;
     }.
@@ -7471,7 +7532,8 @@ Module
       Notation.double_colon := assert_receiver_is_total_eq;
     }.
     
-    Global Instance ℐ : core.cmp.Eq.Trait Self := {
+    Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
+      core.cmp.Eq.assert_receiver_is_total_eq := assert_receiver_is_total_eq;
     }.
   End
     Impl_core_cmp_Eq_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
@@ -7533,7 +7595,7 @@ Module
       Notation.double_colon := clone;
     }.
     
-    Global Instance ℐ : core.clone.Clone.Trait Self := {
+    Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
       core.clone.Clone.clone := clone;
     }.
   End
@@ -8016,7 +8078,7 @@ Module
       Notation.double_colon := clone;
     }.
     
-    Global Instance ℐ : core.clone.Clone.Trait Self := {
+    Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
       core.clone.Clone.clone := clone;
     }.
   End
@@ -8153,7 +8215,7 @@ Module
       Notation.double_colon := clone;
     }.
     
-    Global Instance ℐ : core.clone.Clone.Trait Self := {
+    Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
       core.clone.Clone.clone := clone;
     }.
   End
@@ -8289,7 +8351,7 @@ Module
       Notation.double_colon := clone;
     }.
     
-    Global Instance ℐ : core.clone.Clone.Trait Self := {
+    Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
       core.clone.Clone.clone := clone;
     }.
   End
@@ -8646,7 +8708,7 @@ Module common.
         Notation.double_colon := clone;
       }.
       
-      Global Instance ℐ : core.clone.Clone.Trait Self := {
+      Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
         core.clone.Clone.clone := clone;
       }.
     End Impl_core_clone_Clone_for_ink_env_call_common_ReturnType_T.
@@ -8760,7 +8822,7 @@ Module common.
         Notation.double_colon := clone;
       }.
       
-      Global Instance ℐ : core.clone.Clone.Trait Self := {
+      Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
         core.clone.Clone.clone := clone;
       }.
     End Impl_core_clone_Clone_for_ink_env_call_common_Set__T.
@@ -8826,7 +8888,7 @@ Module common.
         Notation.double_colon := clone;
       }.
       
-      Global Instance ℐ : core.clone.Clone.Trait Self := {
+      Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
         core.clone.Clone.clone := clone;
       }.
     End Impl_core_clone_Clone_for_ink_env_call_common_Unset__T.
@@ -9010,7 +9072,7 @@ Module Impl_core_clone_Clone_for_ink_env_call_common_ReturnType_T.
       Notation.double_colon := clone;
     }.
     
-    Global Instance ℐ : core.clone.Clone.Trait Self := {
+    Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
       core.clone.Clone.clone := clone;
     }.
   End Impl_core_clone_Clone_for_ink_env_call_common_ReturnType_T.
@@ -9122,7 +9184,7 @@ Module Impl_core_clone_Clone_for_ink_env_call_common_Set__T.
       Notation.double_colon := clone;
     }.
     
-    Global Instance ℐ : core.clone.Clone.Trait Self := {
+    Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
       core.clone.Clone.clone := clone;
     }.
   End Impl_core_clone_Clone_for_ink_env_call_common_Set__T.
@@ -9186,7 +9248,7 @@ Module Impl_core_clone_Clone_for_ink_env_call_common_Unset__T.
       Notation.double_colon := clone;
     }.
     
-    Global Instance ℐ : core.clone.Clone.Trait Self := {
+    Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
       core.clone.Clone.clone := clone;
     }.
   End Impl_core_clone_Clone_for_ink_env_call_common_Unset__T.
@@ -9387,7 +9449,7 @@ Module create_builder.
       }.
       
       Global Instance ℐ :
-        ink_env.call.create_builder.ConstructorReturnType.Trait Self
+        ink_env.call.create_builder.ConstructorReturnType.Required.Trait Self
           (C := C) := {
         ink_env.call.create_builder.ConstructorReturnType.Output := Output;
         ink_env.call.create_builder.ConstructorReturnType.Error := Error;
@@ -9440,11 +9502,14 @@ Module create_builder.
       }.
       
       Global Instance ℐ :
-        ink_env.call.create_builder.ConstructorReturnType.Trait Self
+        ink_env.call.create_builder.ConstructorReturnType.Required.Trait Self
           (C := C) := {
+        ink_env.call.create_builder.ConstructorReturnType.IS_RESULT :=
+          IS_RESULT;
         ink_env.call.create_builder.ConstructorReturnType.Output := Output;
         ink_env.call.create_builder.ConstructorReturnType.Error := Error;
         ink_env.call.create_builder.ConstructorReturnType.ok := ok;
+        ink_env.call.create_builder.ConstructorReturnType.err := err;
       }.
     End
       Impl_ink_env_call_create_builder_ConstructorReturnType_C_for_core_result_Result_C_E.
@@ -9744,7 +9809,8 @@ Module Impl_ink_env_call_create_builder_ConstructorReturnType_C_for_C.
     }.
     
     Global Instance ℐ :
-      ink_env.call.create_builder.ConstructorReturnType.Trait Self (C := C) := {
+      ink_env.call.create_builder.ConstructorReturnType.Required.Trait Self
+        (C := C) := {
       ink_env.call.create_builder.ConstructorReturnType.Output := Output;
       ink_env.call.create_builder.ConstructorReturnType.Error := Error;
       ink_env.call.create_builder.ConstructorReturnType.ok := ok;
@@ -9795,10 +9861,13 @@ Module
     }.
     
     Global Instance ℐ :
-      ink_env.call.create_builder.ConstructorReturnType.Trait Self (C := C) := {
+      ink_env.call.create_builder.ConstructorReturnType.Required.Trait Self
+        (C := C) := {
+      ink_env.call.create_builder.ConstructorReturnType.IS_RESULT := IS_RESULT;
       ink_env.call.create_builder.ConstructorReturnType.Output := Output;
       ink_env.call.create_builder.ConstructorReturnType.Error := Error;
       ink_env.call.create_builder.ConstructorReturnType.ok := ok;
+      ink_env.call.create_builder.ConstructorReturnType.err := err;
     }.
   End
     Impl_ink_env_call_create_builder_ConstructorReturnType_C_for_core_result_Result_C_E.
@@ -10084,7 +10153,7 @@ Module execution_input.
         Notation.double_colon := clone;
       }.
       
-      Global Instance ℐ : core.clone.Clone.Trait Self := {
+      Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
         core.clone.Clone.clone := clone;
       }.
     End
@@ -10198,7 +10267,7 @@ Module execution_input.
         Notation.double_colon := clone;
       }.
       
-      Global Instance ℐ : core.clone.Clone.Trait Self := {
+      Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
         core.clone.Clone.clone := clone;
       }.
     End
@@ -10314,7 +10383,7 @@ Module execution_input.
         Notation.double_colon := clone;
       }.
       
-      Global Instance ℐ : core.clone.Clone.Trait Self := {
+      Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
         core.clone.Clone.clone := clone;
       }.
     End Impl_core_clone_Clone_for_ink_env_call_execution_input_Argument_T.
@@ -10369,7 +10438,7 @@ Module execution_input.
         Notation.double_colon := clone;
       }.
       
-      Global Instance ℐ : core.clone.Clone.Trait Self := {
+      Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
         core.clone.Clone.clone := clone;
       }.
     End Impl_core_clone_Clone_for_ink_env_call_execution_input_ArgumentListEnd.
@@ -10460,7 +10529,14 @@ Module execution_input.
         Notation.double_colon := encode_to (O := O);
       }.
       
-      Global Instance ℐ : parity_scale_codec.codec.Encode.Trait Self := {
+      Global Instance ℐ :
+        parity_scale_codec.codec.Encode.Required.Trait Self := {
+        parity_scale_codec.codec.Encode.size_hint := size_hint;
+        parity_scale_codec.codec.Encode.encode_to
+          {O : Set}
+          {ℋ_0 : parity_scale_codec.codec.Output.Trait O}
+          {ℋ_1 : core.marker.Sized.Trait O} :=
+          encode_to (O := O);
       }.
     End
       Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_Argument_T.
@@ -10498,7 +10574,14 @@ Module execution_input.
         Notation.double_colon := encode_to (O := O);
       }.
       
-      Global Instance ℐ : parity_scale_codec.codec.Encode.Trait Self := {
+      Global Instance ℐ :
+        parity_scale_codec.codec.Encode.Required.Trait Self := {
+        parity_scale_codec.codec.Encode.size_hint := size_hint;
+        parity_scale_codec.codec.Encode.encode_to
+          {O : Set}
+          {ℋ_0 : parity_scale_codec.codec.Output.Trait O}
+          {ℋ_1 : core.marker.Sized.Trait O} :=
+          encode_to (O := O);
       }.
     End
       Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_EmptyArgumentList.
@@ -10543,7 +10626,14 @@ Module execution_input.
         Notation.double_colon := encode_to (O := O);
       }.
       
-      Global Instance ℐ : parity_scale_codec.codec.Encode.Trait Self := {
+      Global Instance ℐ :
+        parity_scale_codec.codec.Encode.Required.Trait Self := {
+        parity_scale_codec.codec.Encode.size_hint := size_hint;
+        parity_scale_codec.codec.Encode.encode_to
+          {O : Set}
+          {ℋ_0 : parity_scale_codec.codec.Output.Trait O}
+          {ℋ_1 : core.marker.Sized.Trait O} :=
+          encode_to (O := O);
       }.
     End
       Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_ArgumentList_ink_env_call_execution_input_Argument_Head_Rest.
@@ -10583,7 +10673,14 @@ Module execution_input.
         Notation.double_colon := encode_to (O := O);
       }.
       
-      Global Instance ℐ : parity_scale_codec.codec.Encode.Trait Self := {
+      Global Instance ℐ :
+        parity_scale_codec.codec.Encode.Required.Trait Self := {
+        parity_scale_codec.codec.Encode.size_hint := size_hint;
+        parity_scale_codec.codec.Encode.encode_to
+          {O : Set}
+          {ℋ_0 : parity_scale_codec.codec.Output.Trait O}
+          {ℋ_1 : core.marker.Sized.Trait O} :=
+          encode_to (O := O);
       }.
     End
       Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_ExecutionInput_Args.
@@ -10640,7 +10737,7 @@ Module
       Notation.double_colon := clone;
     }.
     
-    Global Instance ℐ : core.clone.Clone.Trait Self := {
+    Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
       core.clone.Clone.clone := clone;
     }.
   End
@@ -10749,7 +10846,7 @@ Module
       Notation.double_colon := clone;
     }.
     
-    Global Instance ℐ : core.clone.Clone.Trait Self := {
+    Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
       core.clone.Clone.clone := clone;
     }.
   End
@@ -10858,7 +10955,7 @@ Module Impl_core_clone_Clone_for_ink_env_call_execution_input_Argument_T.
       Notation.double_colon := clone;
     }.
     
-    Global Instance ℐ : core.clone.Clone.Trait Self := {
+    Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
       core.clone.Clone.clone := clone;
     }.
   End Impl_core_clone_Clone_for_ink_env_call_execution_input_Argument_T.
@@ -10911,7 +11008,7 @@ Module Impl_core_clone_Clone_for_ink_env_call_execution_input_ArgumentListEnd.
       Notation.double_colon := clone;
     }.
     
-    Global Instance ℐ : core.clone.Clone.Trait Self := {
+    Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
       core.clone.Clone.clone := clone;
     }.
   End Impl_core_clone_Clone_for_ink_env_call_execution_input_ArgumentListEnd.
@@ -10998,7 +11095,13 @@ Module
       Notation.double_colon := encode_to (O := O);
     }.
     
-    Global Instance ℐ : parity_scale_codec.codec.Encode.Trait Self := {
+    Global Instance ℐ : parity_scale_codec.codec.Encode.Required.Trait Self := {
+      parity_scale_codec.codec.Encode.size_hint := size_hint;
+      parity_scale_codec.codec.Encode.encode_to
+        {O : Set}
+        {ℋ_0 : parity_scale_codec.codec.Output.Trait O}
+        {ℋ_1 : core.marker.Sized.Trait O} :=
+        encode_to (O := O);
     }.
   End
     Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_Argument_T.
@@ -11036,7 +11139,13 @@ Module
       Notation.double_colon := encode_to (O := O);
     }.
     
-    Global Instance ℐ : parity_scale_codec.codec.Encode.Trait Self := {
+    Global Instance ℐ : parity_scale_codec.codec.Encode.Required.Trait Self := {
+      parity_scale_codec.codec.Encode.size_hint := size_hint;
+      parity_scale_codec.codec.Encode.encode_to
+        {O : Set}
+        {ℋ_0 : parity_scale_codec.codec.Output.Trait O}
+        {ℋ_1 : core.marker.Sized.Trait O} :=
+        encode_to (O := O);
     }.
   End
     Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_EmptyArgumentList.
@@ -11081,7 +11190,13 @@ Module
       Notation.double_colon := encode_to (O := O);
     }.
     
-    Global Instance ℐ : parity_scale_codec.codec.Encode.Trait Self := {
+    Global Instance ℐ : parity_scale_codec.codec.Encode.Required.Trait Self := {
+      parity_scale_codec.codec.Encode.size_hint := size_hint;
+      parity_scale_codec.codec.Encode.encode_to
+        {O : Set}
+        {ℋ_0 : parity_scale_codec.codec.Output.Trait O}
+        {ℋ_1 : core.marker.Sized.Trait O} :=
+        encode_to (O := O);
     }.
   End
     Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_ArgumentList_ink_env_call_execution_input_Argument_Head_Rest.
@@ -11121,7 +11236,13 @@ Module
       Notation.double_colon := encode_to (O := O);
     }.
     
-    Global Instance ℐ : parity_scale_codec.codec.Encode.Trait Self := {
+    Global Instance ℐ : parity_scale_codec.codec.Encode.Required.Trait Self := {
+      parity_scale_codec.codec.Encode.size_hint := size_hint;
+      parity_scale_codec.codec.Encode.encode_to
+        {O : Set}
+        {ℋ_0 : parity_scale_codec.codec.Output.Trait O}
+        {ℋ_1 : core.marker.Sized.Trait O} :=
+        encode_to (O := O);
     }.
   End
     Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_ExecutionInput_Args.
@@ -11214,7 +11335,7 @@ Module selector.
         Notation.double_colon := clone;
       }.
       
-      Global Instance ℐ : core.clone.Clone.Trait Self := {
+      Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
         core.clone.Clone.clone := clone;
       }.
     End Impl_core_clone_Clone_for_ink_env_call_selector_Selector.
@@ -11248,7 +11369,7 @@ Module selector.
       }.
       
       Global Instance ℐ :
-        core.cmp.PartialEq.Trait Self
+        core.cmp.PartialEq.Required.Trait Self
           (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
         core.cmp.PartialEq.eq := eq;
       }.
@@ -11279,7 +11400,8 @@ Module selector.
         Notation.double_colon := assert_receiver_is_total_eq;
       }.
       
-      Global Instance ℐ : core.cmp.Eq.Trait Self := {
+      Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
+        core.cmp.Eq.assert_receiver_is_total_eq := assert_receiver_is_total_eq;
       }.
     End Impl_core_cmp_Eq_for_ink_env_call_selector_Selector.
   End Impl_core_cmp_Eq_for_ink_env_call_selector_Selector.
@@ -11387,7 +11509,7 @@ Module Impl_core_clone_Clone_for_ink_env_call_selector_Selector.
       Notation.double_colon := clone;
     }.
     
-    Global Instance ℐ : core.clone.Clone.Trait Self := {
+    Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
       core.clone.Clone.clone := clone;
     }.
   End Impl_core_clone_Clone_for_ink_env_call_selector_Selector.
@@ -11418,7 +11540,7 @@ Module Impl_core_cmp_PartialEq_for_ink_env_call_selector_Selector.
     }.
     
     Global Instance ℐ :
-      core.cmp.PartialEq.Trait Self
+      core.cmp.PartialEq.Required.Trait Self
         (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
       core.cmp.PartialEq.eq := eq;
     }.
@@ -11449,7 +11571,8 @@ Module Impl_core_cmp_Eq_for_ink_env_call_selector_Selector.
       Notation.double_colon := assert_receiver_is_total_eq;
     }.
     
-    Global Instance ℐ : core.cmp.Eq.Trait Self := {
+    Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
+      core.cmp.Eq.assert_receiver_is_total_eq := assert_receiver_is_total_eq;
     }.
   End Impl_core_cmp_Eq_for_ink_env_call_selector_Selector.
 End Impl_core_cmp_Eq_for_ink_env_call_selector_Selector.
@@ -11494,7 +11617,7 @@ Module Impl_parity_scale_codec_codec_Decode_for_ink_env_call_selector_Selector.
       Notation.double_colon := decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
     
-    Global Instance ℐ : parity_scale_codec.codec.Decode.Trait Self := {
+    Global Instance ℐ : parity_scale_codec.codec.Decode.Required.Trait Self := {
       parity_scale_codec.codec.Decode.decode
         {__CodecInputEdqy : Set}
         {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :=
@@ -11553,7 +11676,19 @@ Module Impl_parity_scale_codec_codec_Encode_for_ink_env_call_selector_Selector.
       Notation.double_colon := using_encoded (R := R) (F := F);
     }.
     
-    Global Instance ℐ : parity_scale_codec.codec.Encode.Trait Self := {
+    Global Instance ℐ : parity_scale_codec.codec.Encode.Required.Trait Self := {
+      parity_scale_codec.codec.Encode.encode_to
+        {__CodecOutputEdqy : Set}
+        {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+        {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy} :=
+        encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
+      parity_scale_codec.codec.Encode.encode := encode;
+      parity_scale_codec.codec.Encode.using_encoded
+        {R F : Set}
+        {ℋ_0 :
+          core.ops.function.FnOnce.Trait F
+            (Args := ref (Slice CoqOfRust.core.primitive.u8))} :=
+        using_encoded (R := R) (F := F);
     }.
   End Impl_parity_scale_codec_codec_Encode_for_ink_env_call_selector_Selector.
 End Impl_parity_scale_codec_codec_Encode_for_ink_env_call_selector_Selector.
@@ -12225,7 +12360,7 @@ Module off_chain.
           Notation.double_colon := clone;
         }.
         
-        Global Instance ℐ : core.clone.Clone.Trait Self := {
+        Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
           core.clone.Clone.clone := clone;
         }.
       End Impl_core_clone_Clone_for_ink_env_engine_off_chain_call_data_CallData.
@@ -12265,7 +12400,7 @@ Module off_chain.
         }.
         
         Global Instance ℐ :
-          core.cmp.PartialEq.Trait Self
+          core.cmp.PartialEq.Required.Trait Self
             (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
           core.cmp.PartialEq.eq := eq;
         }.
@@ -12301,7 +12436,9 @@ Module off_chain.
           Notation.double_colon := assert_receiver_is_total_eq;
         }.
         
-        Global Instance ℐ : core.cmp.Eq.Trait Self := {
+        Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
+          core.cmp.Eq.assert_receiver_is_total_eq :=
+            assert_receiver_is_total_eq;
         }.
       End Impl_core_cmp_Eq_for_ink_env_engine_off_chain_call_data_CallData.
     End Impl_core_cmp_Eq_for_ink_env_engine_off_chain_call_data_CallData.
@@ -12336,7 +12473,14 @@ Module off_chain.
           Notation.double_colon := encode_to (T := T);
         }.
         
-        Global Instance ℐ : parity_scale_codec.codec.Encode.Trait Self := {
+        Global Instance ℐ :
+          parity_scale_codec.codec.Encode.Required.Trait Self := {
+          parity_scale_codec.codec.Encode.size_hint := size_hint;
+          parity_scale_codec.codec.Encode.encode_to
+            {T : Set}
+            {ℋ_0 : parity_scale_codec.codec.Output.Trait T}
+            {ℋ_1 : core.marker.Sized.Trait T} :=
+            encode_to (T := T);
         }.
       End
         Impl_parity_scale_codec_codec_Encode_for_ink_env_engine_off_chain_call_data_CallData.
@@ -12363,7 +12507,8 @@ Module off_chain.
           Notation.double_colon := decode (I := I);
         }.
         
-        Global Instance ℐ : parity_scale_codec.codec.Decode.Trait Self := {
+        Global Instance ℐ :
+          parity_scale_codec.codec.Decode.Required.Trait Self := {
           parity_scale_codec.codec.Decode.decode
             {I : Set}
             {ℋ_0 : parity_scale_codec.codec.Input.Trait I} :=
@@ -13560,7 +13705,7 @@ Module off_chain.
       }.
       
       Global Instance ℐ :
-        core.cmp.PartialEq.Trait Self
+        core.cmp.PartialEq.Required.Trait Self
           (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
         core.cmp.PartialEq.eq := eq;
       }.
@@ -13594,7 +13739,8 @@ Module off_chain.
         Notation.double_colon := assert_receiver_is_total_eq;
       }.
       
-      Global Instance ℐ : core.cmp.Eq.Trait Self := {
+      Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
+        core.cmp.Eq.assert_receiver_is_total_eq := assert_receiver_is_total_eq;
       }.
     End Impl_core_cmp_Eq_for_ink_env_engine_off_chain_OffChainError.
   End Impl_core_cmp_Eq_for_ink_env_engine_off_chain_OffChainError.
@@ -13677,7 +13823,7 @@ Module off_chain.
       }.
       
       Global Instance ℐ :
-        core.cmp.PartialEq.Trait Self
+        core.cmp.PartialEq.Required.Trait Self
           (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
         core.cmp.PartialEq.eq := eq;
       }.
@@ -13710,7 +13856,8 @@ Module off_chain.
         Notation.double_colon := assert_receiver_is_total_eq;
       }.
       
-      Global Instance ℐ : core.cmp.Eq.Trait Self := {
+      Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
+        core.cmp.Eq.assert_receiver_is_total_eq := assert_receiver_is_total_eq;
       }.
     End Impl_core_cmp_Eq_for_ink_env_engine_off_chain_AccountError.
   End Impl_core_cmp_Eq_for_ink_env_engine_off_chain_AccountError.
@@ -13774,7 +13921,7 @@ Module call_data.
         Notation.double_colon := clone;
       }.
       
-      Global Instance ℐ : core.clone.Clone.Trait Self := {
+      Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
         core.clone.Clone.clone := clone;
       }.
     End Impl_core_clone_Clone_for_ink_env_engine_off_chain_call_data_CallData.
@@ -13814,7 +13961,7 @@ Module call_data.
       }.
       
       Global Instance ℐ :
-        core.cmp.PartialEq.Trait Self
+        core.cmp.PartialEq.Required.Trait Self
           (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
         core.cmp.PartialEq.eq := eq;
       }.
@@ -13849,7 +13996,8 @@ Module call_data.
         Notation.double_colon := assert_receiver_is_total_eq;
       }.
       
-      Global Instance ℐ : core.cmp.Eq.Trait Self := {
+      Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
+        core.cmp.Eq.assert_receiver_is_total_eq := assert_receiver_is_total_eq;
       }.
     End Impl_core_cmp_Eq_for_ink_env_engine_off_chain_call_data_CallData.
   End Impl_core_cmp_Eq_for_ink_env_engine_off_chain_call_data_CallData.
@@ -13884,7 +14032,14 @@ Module call_data.
         Notation.double_colon := encode_to (T := T);
       }.
       
-      Global Instance ℐ : parity_scale_codec.codec.Encode.Trait Self := {
+      Global Instance ℐ :
+        parity_scale_codec.codec.Encode.Required.Trait Self := {
+        parity_scale_codec.codec.Encode.size_hint := size_hint;
+        parity_scale_codec.codec.Encode.encode_to
+          {T : Set}
+          {ℋ_0 : parity_scale_codec.codec.Output.Trait T}
+          {ℋ_1 : core.marker.Sized.Trait T} :=
+          encode_to (T := T);
       }.
     End
       Impl_parity_scale_codec_codec_Encode_for_ink_env_engine_off_chain_call_data_CallData.
@@ -13911,7 +14066,8 @@ Module call_data.
         Notation.double_colon := decode (I := I);
       }.
       
-      Global Instance ℐ : parity_scale_codec.codec.Decode.Trait Self := {
+      Global Instance ℐ :
+        parity_scale_codec.codec.Decode.Required.Trait Self := {
         parity_scale_codec.codec.Decode.decode
           {I : Set}
           {ℋ_0 : parity_scale_codec.codec.Input.Trait I} :=
@@ -13977,7 +14133,7 @@ Module Impl_core_clone_Clone_for_ink_env_engine_off_chain_call_data_CallData.
       Notation.double_colon := clone;
     }.
     
-    Global Instance ℐ : core.clone.Clone.Trait Self := {
+    Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
       core.clone.Clone.clone := clone;
     }.
   End Impl_core_clone_Clone_for_ink_env_engine_off_chain_call_data_CallData.
@@ -14015,7 +14171,7 @@ Module Impl_core_cmp_PartialEq_for_ink_env_engine_off_chain_call_data_CallData.
     }.
     
     Global Instance ℐ :
-      core.cmp.PartialEq.Trait Self
+      core.cmp.PartialEq.Required.Trait Self
         (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
       core.cmp.PartialEq.eq := eq;
     }.
@@ -14050,7 +14206,8 @@ Module Impl_core_cmp_Eq_for_ink_env_engine_off_chain_call_data_CallData.
       Notation.double_colon := assert_receiver_is_total_eq;
     }.
     
-    Global Instance ℐ : core.cmp.Eq.Trait Self := {
+    Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
+      core.cmp.Eq.assert_receiver_is_total_eq := assert_receiver_is_total_eq;
     }.
   End Impl_core_cmp_Eq_for_ink_env_engine_off_chain_call_data_CallData.
 End Impl_core_cmp_Eq_for_ink_env_engine_off_chain_call_data_CallData.
@@ -14085,7 +14242,13 @@ Module
       Notation.double_colon := encode_to (T := T);
     }.
     
-    Global Instance ℐ : parity_scale_codec.codec.Encode.Trait Self := {
+    Global Instance ℐ : parity_scale_codec.codec.Encode.Required.Trait Self := {
+      parity_scale_codec.codec.Encode.size_hint := size_hint;
+      parity_scale_codec.codec.Encode.encode_to
+        {T : Set}
+        {ℋ_0 : parity_scale_codec.codec.Output.Trait T}
+        {ℋ_1 : core.marker.Sized.Trait T} :=
+        encode_to (T := T);
     }.
   End
     Impl_parity_scale_codec_codec_Encode_for_ink_env_engine_off_chain_call_data_CallData.
@@ -14112,7 +14275,7 @@ Module
       Notation.double_colon := decode (I := I);
     }.
     
-    Global Instance ℐ : parity_scale_codec.codec.Decode.Trait Self := {
+    Global Instance ℐ : parity_scale_codec.codec.Decode.Required.Trait Self := {
       parity_scale_codec.codec.Decode.decode
         {I : Set}
         {ℋ_0 : parity_scale_codec.codec.Input.Trait I} :=
@@ -16327,7 +16490,7 @@ Module Impl_core_cmp_PartialEq_for_ink_env_engine_off_chain_OffChainError.
     }.
     
     Global Instance ℐ :
-      core.cmp.PartialEq.Trait Self
+      core.cmp.PartialEq.Required.Trait Self
         (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
       core.cmp.PartialEq.eq := eq;
     }.
@@ -16359,7 +16522,8 @@ Module Impl_core_cmp_Eq_for_ink_env_engine_off_chain_OffChainError.
       Notation.double_colon := assert_receiver_is_total_eq;
     }.
     
-    Global Instance ℐ : core.cmp.Eq.Trait Self := {
+    Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
+      core.cmp.Eq.assert_receiver_is_total_eq := assert_receiver_is_total_eq;
     }.
   End Impl_core_cmp_Eq_for_ink_env_engine_off_chain_OffChainError.
 End Impl_core_cmp_Eq_for_ink_env_engine_off_chain_OffChainError.
@@ -16447,7 +16611,7 @@ Module Impl_core_cmp_PartialEq_for_ink_env_engine_off_chain_AccountError.
     }.
     
     Global Instance ℐ :
-      core.cmp.PartialEq.Trait Self
+      core.cmp.PartialEq.Required.Trait Self
         (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
       core.cmp.PartialEq.eq := eq;
     }.
@@ -16479,7 +16643,8 @@ Module Impl_core_cmp_Eq_for_ink_env_engine_off_chain_AccountError.
       Notation.double_colon := assert_receiver_is_total_eq;
     }.
     
-    Global Instance ℐ : core.cmp.Eq.Trait Self := {
+    Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
+      core.cmp.Eq.assert_receiver_is_total_eq := assert_receiver_is_total_eq;
     }.
   End Impl_core_cmp_Eq_for_ink_env_engine_off_chain_AccountError.
 End Impl_core_cmp_Eq_for_ink_env_engine_off_chain_AccountError.
@@ -16570,7 +16735,7 @@ Module Impl_core_clone_Clone_for_ink_env_hash_Sha2x256.
       Notation.double_colon := clone;
     }.
     
-    Global Instance ℐ : core.clone.Clone.Trait Self := {
+    Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
       core.clone.Clone.clone := clone;
     }.
   End Impl_core_clone_Clone_for_ink_env_hash_Sha2x256.
@@ -16600,7 +16765,7 @@ Module Impl_core_cmp_PartialEq_for_ink_env_hash_Sha2x256.
     }.
     
     Global Instance ℐ :
-      core.cmp.PartialEq.Trait Self
+      core.cmp.PartialEq.Required.Trait Self
         (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
       core.cmp.PartialEq.eq := eq;
     }.
@@ -16631,7 +16796,8 @@ Module Impl_core_cmp_Eq_for_ink_env_hash_Sha2x256.
       Notation.double_colon := assert_receiver_is_total_eq;
     }.
     
-    Global Instance ℐ : core.cmp.Eq.Trait Self := {
+    Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
+      core.cmp.Eq.assert_receiver_is_total_eq := assert_receiver_is_total_eq;
     }.
   End Impl_core_cmp_Eq_for_ink_env_hash_Sha2x256.
 End Impl_core_cmp_Eq_for_ink_env_hash_Sha2x256.
@@ -16686,7 +16852,7 @@ Module Impl_core_clone_Clone_for_ink_env_hash_Keccak256.
       Notation.double_colon := clone;
     }.
     
-    Global Instance ℐ : core.clone.Clone.Trait Self := {
+    Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
       core.clone.Clone.clone := clone;
     }.
   End Impl_core_clone_Clone_for_ink_env_hash_Keccak256.
@@ -16716,7 +16882,7 @@ Module Impl_core_cmp_PartialEq_for_ink_env_hash_Keccak256.
     }.
     
     Global Instance ℐ :
-      core.cmp.PartialEq.Trait Self
+      core.cmp.PartialEq.Required.Trait Self
         (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
       core.cmp.PartialEq.eq := eq;
     }.
@@ -16747,7 +16913,8 @@ Module Impl_core_cmp_Eq_for_ink_env_hash_Keccak256.
       Notation.double_colon := assert_receiver_is_total_eq;
     }.
     
-    Global Instance ℐ : core.cmp.Eq.Trait Self := {
+    Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
+      core.cmp.Eq.assert_receiver_is_total_eq := assert_receiver_is_total_eq;
     }.
   End Impl_core_cmp_Eq_for_ink_env_hash_Keccak256.
 End Impl_core_cmp_Eq_for_ink_env_hash_Keccak256.
@@ -16802,7 +16969,7 @@ Module Impl_core_clone_Clone_for_ink_env_hash_Blake2x256.
       Notation.double_colon := clone;
     }.
     
-    Global Instance ℐ : core.clone.Clone.Trait Self := {
+    Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
       core.clone.Clone.clone := clone;
     }.
   End Impl_core_clone_Clone_for_ink_env_hash_Blake2x256.
@@ -16832,7 +16999,7 @@ Module Impl_core_cmp_PartialEq_for_ink_env_hash_Blake2x256.
     }.
     
     Global Instance ℐ :
-      core.cmp.PartialEq.Trait Self
+      core.cmp.PartialEq.Required.Trait Self
         (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
       core.cmp.PartialEq.eq := eq;
     }.
@@ -16863,7 +17030,8 @@ Module Impl_core_cmp_Eq_for_ink_env_hash_Blake2x256.
       Notation.double_colon := assert_receiver_is_total_eq;
     }.
     
-    Global Instance ℐ : core.cmp.Eq.Trait Self := {
+    Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
+      core.cmp.Eq.assert_receiver_is_total_eq := assert_receiver_is_total_eq;
     }.
   End Impl_core_cmp_Eq_for_ink_env_hash_Blake2x256.
 End Impl_core_cmp_Eq_for_ink_env_hash_Blake2x256.
@@ -16918,7 +17086,7 @@ Module Impl_core_clone_Clone_for_ink_env_hash_Blake2x128.
       Notation.double_colon := clone;
     }.
     
-    Global Instance ℐ : core.clone.Clone.Trait Self := {
+    Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
       core.clone.Clone.clone := clone;
     }.
   End Impl_core_clone_Clone_for_ink_env_hash_Blake2x128.
@@ -16948,7 +17116,7 @@ Module Impl_core_cmp_PartialEq_for_ink_env_hash_Blake2x128.
     }.
     
     Global Instance ℐ :
-      core.cmp.PartialEq.Trait Self
+      core.cmp.PartialEq.Required.Trait Self
         (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
       core.cmp.PartialEq.eq := eq;
     }.
@@ -16979,7 +17147,8 @@ Module Impl_core_cmp_Eq_for_ink_env_hash_Blake2x128.
       Notation.double_colon := assert_receiver_is_total_eq;
     }.
     
-    Global Instance ℐ : core.cmp.Eq.Trait Self := {
+    Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
+      core.cmp.Eq.assert_receiver_is_total_eq := assert_receiver_is_total_eq;
     }.
   End Impl_core_cmp_Eq_for_ink_env_hash_Blake2x128.
 End Impl_core_cmp_Eq_for_ink_env_hash_Blake2x128.
@@ -17417,7 +17586,13 @@ Module Impl_parity_scale_codec_codec_Encode_for_ink_env_topics_PrefixedValue_X.
       Notation.double_colon := encode_to (T := T);
     }.
     
-    Global Instance ℐ : parity_scale_codec.codec.Encode.Trait Self := {
+    Global Instance ℐ : parity_scale_codec.codec.Encode.Required.Trait Self := {
+      parity_scale_codec.codec.Encode.size_hint := size_hint;
+      parity_scale_codec.codec.Encode.encode_to
+        {T : Set}
+        {ℋ_0 : parity_scale_codec.codec.Output.Trait T}
+        {ℋ_1 : core.marker.Sized.Trait T} :=
+        encode_to (T := T);
     }.
   End Impl_parity_scale_codec_codec_Encode_for_ink_env_topics_PrefixedValue_X.
 End Impl_parity_scale_codec_codec_Encode_for_ink_env_topics_PrefixedValue_X.

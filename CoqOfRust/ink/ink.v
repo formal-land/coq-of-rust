@@ -47,7 +47,8 @@ Module result_info.
       
       Definition Self : Set := ink.result_info.IsResultType T.
       
-      Global Instance ℐ : ink.result_info.IsResultTypeFallback.Trait Self := {
+      Global Instance ℐ :
+        ink.result_info.IsResultTypeFallback.Required.Trait Self := {
       }.
     End
       Impl_ink_result_info_IsResultTypeFallback_for_ink_result_info_IsResultType_T.
@@ -95,7 +96,8 @@ Module result_info.
       
       Definition Self : Set := ink.result_info.IsResultErr T.
       
-      Global Instance ℐ : ink.result_info.IsResultErrFallback.Trait Self := {
+      Global Instance ℐ :
+        ink.result_info.IsResultErrFallback.Required.Trait Self := {
       }.
     End
       Impl_ink_result_info_IsResultErrFallback_for_ink_result_info_IsResultErr_T.
@@ -147,7 +149,8 @@ Module
     
     Definition Self : Set := ink.result_info.IsResultType T.
     
-    Global Instance ℐ : ink.result_info.IsResultTypeFallback.Trait Self := {
+    Global Instance ℐ :
+      ink.result_info.IsResultTypeFallback.Required.Trait Self := {
     }.
   End
     Impl_ink_result_info_IsResultTypeFallback_for_ink_result_info_IsResultType_T.
@@ -195,7 +198,8 @@ Module
     
     Definition Self : Set := ink.result_info.IsResultErr T.
     
-    Global Instance ℐ : ink.result_info.IsResultErrFallback.Trait Self := {
+    Global Instance ℐ :
+      ink.result_info.IsResultErrFallback.Required.Trait Self := {
     }.
   End
     Impl_ink_result_info_IsResultErrFallback_for_ink_result_info_IsResultErr_T.
@@ -370,7 +374,8 @@ Module reflect.
         }.
         
         Global Instance ℐ :
-          ink.reflect.dispatch.ConstructorOutput.Trait Self (C := C) := {
+          ink.reflect.dispatch.ConstructorOutput.Required.Trait Self
+            (C := C) := {
           ink.reflect.dispatch.ConstructorOutput.Error := Error;
           ink.reflect.dispatch.ConstructorOutput.as_result := as_result;
         }.
@@ -408,7 +413,9 @@ Module reflect.
         }.
         
         Global Instance ℐ :
-          ink.reflect.dispatch.ConstructorOutput.Trait Self (C := C) := {
+          ink.reflect.dispatch.ConstructorOutput.Required.Trait Self
+            (C := C) := {
+          ink.reflect.dispatch.ConstructorOutput.IS_RESULT := IS_RESULT;
           ink.reflect.dispatch.ConstructorOutput.Error := Error;
           ink.reflect.dispatch.ConstructorOutput.as_result := as_result;
         }.
@@ -536,7 +543,7 @@ Module reflect.
           Notation.double_colon := clone;
         }.
         
-        Global Instance ℐ : core.clone.Clone.Trait Self := {
+        Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
           core.clone.Clone.clone := clone;
         }.
       End Impl_core_clone_Clone_for_ink_reflect_dispatch_DispatchError.
@@ -572,7 +579,7 @@ Module reflect.
         }.
         
         Global Instance ℐ :
-          core.cmp.PartialEq.Trait Self
+          core.cmp.PartialEq.Required.Trait Self
             (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
           core.cmp.PartialEq.eq := eq;
         }.
@@ -604,7 +611,9 @@ Module reflect.
           Notation.double_colon := assert_receiver_is_total_eq;
         }.
         
-        Global Instance ℐ : core.cmp.Eq.Trait Self := {
+        Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
+          core.cmp.Eq.assert_receiver_is_total_eq :=
+            assert_receiver_is_total_eq;
         }.
       End Impl_core_cmp_Eq_for_ink_reflect_dispatch_DispatchError.
     End Impl_core_cmp_Eq_for_ink_reflect_dispatch_DispatchError.
@@ -2463,7 +2472,8 @@ Module Wrap_dispatch_1.
         }.
         
         Global Instance ℐ :
-          ink.reflect.dispatch.ConstructorOutput.Trait Self (C := C) := {
+          ink.reflect.dispatch.ConstructorOutput.Required.Trait Self
+            (C := C) := {
           ink.reflect.dispatch.ConstructorOutput.Error := Error;
           ink.reflect.dispatch.ConstructorOutput.as_result := as_result;
         }.
@@ -2501,7 +2511,9 @@ Module Wrap_dispatch_1.
         }.
         
         Global Instance ℐ :
-          ink.reflect.dispatch.ConstructorOutput.Trait Self (C := C) := {
+          ink.reflect.dispatch.ConstructorOutput.Required.Trait Self
+            (C := C) := {
+          ink.reflect.dispatch.ConstructorOutput.IS_RESULT := IS_RESULT;
           ink.reflect.dispatch.ConstructorOutput.Error := Error;
           ink.reflect.dispatch.ConstructorOutput.as_result := as_result;
         }.
@@ -2629,7 +2641,7 @@ Module Wrap_dispatch_1.
           Notation.double_colon := clone;
         }.
         
-        Global Instance ℐ : core.clone.Clone.Trait Self := {
+        Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
           core.clone.Clone.clone := clone;
         }.
       End Impl_core_clone_Clone_for_ink_reflect_dispatch_DispatchError.
@@ -2665,7 +2677,7 @@ Module Wrap_dispatch_1.
         }.
         
         Global Instance ℐ :
-          core.cmp.PartialEq.Trait Self
+          core.cmp.PartialEq.Required.Trait Self
             (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
           core.cmp.PartialEq.eq := eq;
         }.
@@ -2697,7 +2709,9 @@ Module Wrap_dispatch_1.
           Notation.double_colon := assert_receiver_is_total_eq;
         }.
         
-        Global Instance ℐ : core.cmp.Eq.Trait Self := {
+        Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
+          core.cmp.Eq.assert_receiver_is_total_eq :=
+            assert_receiver_is_total_eq;
         }.
       End Impl_core_cmp_Eq_for_ink_reflect_dispatch_DispatchError.
     End Impl_core_cmp_Eq_for_ink_reflect_dispatch_DispatchError.
@@ -2917,7 +2931,7 @@ Module
     }.
     
     Global Instance ℐ :
-      ink.reflect.dispatch.ConstructorOutput.Trait Self (C := C) := {
+      ink.reflect.dispatch.ConstructorOutput.Required.Trait Self (C := C) := {
       ink.reflect.dispatch.ConstructorOutput.Error := Error;
       ink.reflect.dispatch.ConstructorOutput.as_result := as_result;
     }.
@@ -2955,7 +2969,8 @@ Module
     }.
     
     Global Instance ℐ :
-      ink.reflect.dispatch.ConstructorOutput.Trait Self (C := C) := {
+      ink.reflect.dispatch.ConstructorOutput.Required.Trait Self (C := C) := {
+      ink.reflect.dispatch.ConstructorOutput.IS_RESULT := IS_RESULT;
       ink.reflect.dispatch.ConstructorOutput.Error := Error;
       ink.reflect.dispatch.ConstructorOutput.as_result := as_result;
     }.
@@ -3064,7 +3079,7 @@ Module Impl_core_clone_Clone_for_ink_reflect_dispatch_DispatchError.
       Notation.double_colon := clone;
     }.
     
-    Global Instance ℐ : core.clone.Clone.Trait Self := {
+    Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
       core.clone.Clone.clone := clone;
     }.
   End Impl_core_clone_Clone_for_ink_reflect_dispatch_DispatchError.
@@ -3098,7 +3113,7 @@ Module Impl_core_cmp_PartialEq_for_ink_reflect_dispatch_DispatchError.
     }.
     
     Global Instance ℐ :
-      core.cmp.PartialEq.Trait Self
+      core.cmp.PartialEq.Required.Trait Self
         (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
       core.cmp.PartialEq.eq := eq;
     }.
@@ -3129,7 +3144,8 @@ Module Impl_core_cmp_Eq_for_ink_reflect_dispatch_DispatchError.
       Notation.double_colon := assert_receiver_is_total_eq;
     }.
     
-    Global Instance ℐ : core.cmp.Eq.Trait Self := {
+    Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
+      core.cmp.Eq.assert_receiver_is_total_eq := assert_receiver_is_total_eq;
     }.
   End Impl_core_cmp_Eq_for_ink_reflect_dispatch_DispatchError.
 End Impl_core_cmp_Eq_for_ink_reflect_dispatch_DispatchError.
@@ -3947,7 +3963,7 @@ Module env_access.
         Notation.double_colon := clone;
       }.
       
-      Global Instance ℐ : core.clone.Clone.Trait Self := {
+      Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
         core.clone.Clone.clone := clone;
       }.
     End Impl_core_clone_Clone_for_ink_env_access_EnvAccess_E.
@@ -4052,7 +4068,7 @@ Module Impl_core_clone_Clone_for_ink_env_access_EnvAccess_E.
       Notation.double_colon := clone;
     }.
     
-    Global Instance ℐ : core.clone.Clone.Trait Self := {
+    Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
       core.clone.Clone.clone := clone;
     }.
   End Impl_core_clone_Clone_for_ink_env_access_EnvAccess_E.

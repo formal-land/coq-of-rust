@@ -175,7 +175,7 @@ Module Impl_core_cmp_PartialEq_for_lib_Balance.
     }.
     
     Global Instance ℐ :
-      core.cmp.PartialEq.Trait Self
+      core.cmp.PartialEq.Required.Trait Self
         (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
       core.cmp.PartialEq.eq := eq;
     }.
@@ -199,8 +199,10 @@ Module Impl_core_cmp_PartialOrd_for_lib_Balance.
     }.
     
     Global Instance ℐ :
-      core.cmp.PartialOrd.Trait Self
-        (Rhs := core.cmp.PartialOrd.Default.Rhs Self). Admitted.
+      core.cmp.PartialOrd.Required.Trait Self
+        (Rhs := core.cmp.PartialOrd.Default.Rhs Self) := {
+      core.cmp.PartialOrd.partial_cmp := partial_cmp;
+    }.
   End Impl_core_cmp_PartialOrd_for_lib_Balance.
 End Impl_core_cmp_PartialOrd_for_lib_Balance.
 
