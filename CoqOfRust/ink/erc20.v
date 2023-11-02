@@ -2420,7 +2420,6 @@ Module Impl_ink_storage_traits_storage_Storable_for_erc20_erc20_Erc20.
     Definition encode
         {__ink_O : Set}
         {ℋ_0 : parity_scale_codec.codec.Output.Trait __ink_O}
-        {ℋ_1 : core.marker.Sized.Trait __ink_O}
         (self : ref Self)
         (__dest : mut_ref __ink_O)
         : M unit :=
@@ -2518,8 +2517,7 @@ Module Impl_ink_storage_traits_storage_Storable_for_erc20_erc20_Erc20.
     
     Global Instance AssociatedFunction_encode
         {__ink_O : Set}
-        {ℋ_0 : parity_scale_codec.codec.Output.Trait __ink_O}
-        {ℋ_1 : core.marker.Sized.Trait __ink_O} :
+        {ℋ_0 : parity_scale_codec.codec.Output.Trait __ink_O} :
       Notation.DoubleColon Self "encode" := {
       Notation.double_colon := encode (__ink_O := __ink_O);
     }.
@@ -2531,8 +2529,7 @@ Module Impl_ink_storage_traits_storage_Storable_for_erc20_erc20_Erc20.
         decode (__ink_I := __ink_I);
       ink_storage_traits.storage.Storable.encode
         {__ink_O : Set}
-        {ℋ_0 : parity_scale_codec.codec.Output.Trait __ink_O}
-        {ℋ_1 : core.marker.Sized.Trait __ink_O} :=
+        {ℋ_0 : parity_scale_codec.codec.Output.Trait __ink_O} :=
         encode (__ink_O := __ink_O);
     }.
   End Impl_ink_storage_traits_storage_Storable_for_erc20_erc20_Erc20.
@@ -2986,7 +2983,6 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20___ink_EventBase.
     Definition encode_to
         {__CodecOutputEdqy : Set}
         {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
-        {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy}
         (self : ref Self)
         (__codec_dest_edqy : mut_ref __CodecOutputEdqy)
         : M unit :=
@@ -3041,8 +3037,7 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20___ink_EventBase.
     
     Global Instance AssociatedFunction_encode_to
         {__CodecOutputEdqy : Set}
-        {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
-        {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy} :
+        {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy} :
       Notation.DoubleColon Self "encode_to" := {
       Notation.double_colon
         :=
@@ -3052,8 +3047,7 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20___ink_EventBase.
     Global Instance ℐ : parity_scale_codec.codec.Encode.Required.Trait Self := {
       parity_scale_codec.codec.Encode.encode_to
         {__CodecOutputEdqy : Set}
-        {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
-        {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy} :=
+        {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy} :=
         Datatypes.Some (encode_to (__CodecOutputEdqy := __CodecOutputEdqy));
       parity_scale_codec.codec.Encode.TYPE_INFO := Datatypes.None;
       parity_scale_codec.codec.Encode.size_hint := Datatypes.None;
@@ -3474,7 +3468,6 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Transfer.
     Definition encode_to
         {__CodecOutputEdqy : Set}
         {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
-        {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy}
         (self : ref Self)
         (__codec_dest_edqy : mut_ref __CodecOutputEdqy)
         : M unit :=
@@ -3527,8 +3520,7 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Transfer.
     
     Global Instance AssociatedFunction_encode_to
         {__CodecOutputEdqy : Set}
-        {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
-        {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy} :
+        {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy} :
       Notation.DoubleColon Self "encode_to" := {
       Notation.double_colon
         :=
@@ -3538,8 +3530,7 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Transfer.
     Global Instance ℐ : parity_scale_codec.codec.Encode.Required.Trait Self := {
       parity_scale_codec.codec.Encode.encode_to
         {__CodecOutputEdqy : Set}
-        {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
-        {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy} :=
+        {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy} :=
         Datatypes.Some (encode_to (__CodecOutputEdqy := __CodecOutputEdqy));
       parity_scale_codec.codec.Encode.TYPE_INFO := Datatypes.None;
       parity_scale_codec.codec.Encode.size_hint := Datatypes.None;
@@ -3704,7 +3695,6 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Approval.
     Definition encode_to
         {__CodecOutputEdqy : Set}
         {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
-        {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy}
         (self : ref Self)
         (__codec_dest_edqy : mut_ref __CodecOutputEdqy)
         : M unit :=
@@ -3751,8 +3741,7 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Approval.
     
     Global Instance AssociatedFunction_encode_to
         {__CodecOutputEdqy : Set}
-        {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
-        {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy} :
+        {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy} :
       Notation.DoubleColon Self "encode_to" := {
       Notation.double_colon
         :=
@@ -3762,8 +3751,7 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Approval.
     Global Instance ℐ : parity_scale_codec.codec.Encode.Required.Trait Self := {
       parity_scale_codec.codec.Encode.encode_to
         {__CodecOutputEdqy : Set}
-        {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
-        {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy} :=
+        {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy} :=
         Datatypes.Some (encode_to (__CodecOutputEdqy := __CodecOutputEdqy));
       parity_scale_codec.codec.Encode.TYPE_INFO := Datatypes.None;
       parity_scale_codec.codec.Encode.size_hint := Datatypes.None;
@@ -7119,7 +7107,6 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20___CallBuilder.
     Definition encode_to
         {__CodecOutputEdqy : Set}
         {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
-        {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy}
         (self : ref Self)
         (__codec_dest_edqy : mut_ref __CodecOutputEdqy)
         : M unit :=
@@ -7139,8 +7126,7 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20___CallBuilder.
     
     Global Instance AssociatedFunction_encode_to
         {__CodecOutputEdqy : Set}
-        {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
-        {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy} :
+        {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy} :
       Notation.DoubleColon Self "encode_to" := {
       Notation.double_colon
         :=
@@ -7202,8 +7188,7 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20___CallBuilder.
     Global Instance ℐ : parity_scale_codec.codec.Encode.Required.Trait Self := {
       parity_scale_codec.codec.Encode.encode_to
         {__CodecOutputEdqy : Set}
-        {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
-        {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy} :=
+        {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy} :=
         Datatypes.Some (encode_to (__CodecOutputEdqy := __CodecOutputEdqy));
       parity_scale_codec.codec.Encode.encode := Datatypes.Some encode;
       parity_scale_codec.codec.Encode.using_encoded
@@ -8635,7 +8620,6 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Erc20Ref.
     Definition encode_to
         {__CodecOutputEdqy : Set}
         {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
-        {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy}
         (self : ref Self)
         (__codec_dest_edqy : mut_ref __CodecOutputEdqy)
         : M unit :=
@@ -8655,8 +8639,7 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Erc20Ref.
     
     Global Instance AssociatedFunction_encode_to
         {__CodecOutputEdqy : Set}
-        {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
-        {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy} :
+        {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy} :
       Notation.DoubleColon Self "encode_to" := {
       Notation.double_colon
         :=
@@ -8718,8 +8701,7 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Erc20Ref.
     Global Instance ℐ : parity_scale_codec.codec.Encode.Required.Trait Self := {
       parity_scale_codec.codec.Encode.encode_to
         {__CodecOutputEdqy : Set}
-        {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
-        {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy} :=
+        {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy} :=
         Datatypes.Some (encode_to (__CodecOutputEdqy := __CodecOutputEdqy));
       parity_scale_codec.codec.Encode.encode := Datatypes.Some encode;
       parity_scale_codec.codec.Encode.using_encoded
@@ -12051,7 +12033,6 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Error.
     Definition encode_to
         {__CodecOutputEdqy : Set}
         {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
-        {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy}
         (self : ref Self)
         (__codec_dest_edqy : mut_ref __CodecOutputEdqy)
         : M unit :=
@@ -12086,8 +12067,7 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Error.
     
     Global Instance AssociatedFunction_encode_to
         {__CodecOutputEdqy : Set}
-        {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
-        {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy} :
+        {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy} :
       Notation.DoubleColon Self "encode_to" := {
       Notation.double_colon
         :=
@@ -12097,8 +12077,7 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Error.
     Global Instance ℐ : parity_scale_codec.codec.Encode.Required.Trait Self := {
       parity_scale_codec.codec.Encode.encode_to
         {__CodecOutputEdqy : Set}
-        {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
-        {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy} :=
+        {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy} :=
         Datatypes.Some (encode_to (__CodecOutputEdqy := __CodecOutputEdqy));
       parity_scale_codec.codec.Encode.TYPE_INFO := Datatypes.None;
       parity_scale_codec.codec.Encode.size_hint := Datatypes.None;

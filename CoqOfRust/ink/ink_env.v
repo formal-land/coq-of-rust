@@ -672,34 +672,33 @@ Module arithmetic.
       Context `{ℋ : State.Trait}.
       
       Class Trait (Self : Set) : Type := {
-        ℒ_0 :: core.marker.Sized.Trait Self;
-        ℒ_1 :: core.convert.From.Trait Self (T := u8);
-        ℒ_2 :: num_traits.bounds.Bounded.Trait Self;
-        ℒ_3 :: core.cmp.Ord.Trait Self;
-        ℒ_4 :: core.cmp.PartialOrd.Trait Self (Rhs := Self);
-        ℒ_5 :: num_traits.identities.Zero.Trait Self;
-        ℒ_6 :: num_traits.identities.One.Trait Self;
-        ℒ_7 :: num_traits.bounds.Bounded.Trait Self;
-        ℒ_8 :: core.ops.arith.Add.Trait Self (Rhs := Self);
-        ℒ_9 :: core.ops.arith.AddAssign.Trait Self (Rhs := Self);
-        ℒ_10 :: core.ops.arith.Sub.Trait Self (Rhs := Self);
-        ℒ_11 :: core.ops.arith.SubAssign.Trait Self (Rhs := Self);
-        ℒ_12 :: core.ops.arith.Mul.Trait Self (Rhs := Self);
-        ℒ_13 :: core.ops.arith.MulAssign.Trait Self (Rhs := Self);
-        ℒ_14 :: core.ops.arith.Div.Trait Self (Rhs := Self);
-        ℒ_15 :: core.ops.arith.DivAssign.Trait Self (Rhs := Self);
-        ℒ_16 :: num_traits.ops.checked.CheckedMul.Trait Self;
-        ℒ_17 :: ink_env.arithmetic.Saturating.Trait Self;
-        ℒ_18 :: core.convert.TryFrom.Trait Self (T := u16);
-        ℒ_19 :: core.convert.TryFrom.Trait Self (T := u32);
-        ℒ_20 :: core.convert.TryFrom.Trait Self (T := u64);
-        ℒ_21 :: core.convert.TryFrom.Trait Self (T := u128);
-        ℒ_22 :: core.convert.TryFrom.Trait Self (T := usize);
-        ℒ_23 :: core.convert.TryInto.Trait Self (T := u16);
-        ℒ_24 :: core.convert.TryInto.Trait Self (T := u32);
-        ℒ_25 :: core.convert.TryInto.Trait Self (T := u64);
-        ℒ_26 :: core.convert.TryInto.Trait Self (T := u128);
-        ℒ_27 :: core.convert.TryInto.Trait Self (T := usize);
+        ℒ_0 :: core.convert.From.Trait Self (T := u8);
+        ℒ_1 :: num_traits.bounds.Bounded.Trait Self;
+        ℒ_2 :: core.cmp.Ord.Trait Self;
+        ℒ_3 :: core.cmp.PartialOrd.Trait Self (Rhs := Self);
+        ℒ_4 :: num_traits.identities.Zero.Trait Self;
+        ℒ_5 :: num_traits.identities.One.Trait Self;
+        ℒ_6 :: num_traits.bounds.Bounded.Trait Self;
+        ℒ_7 :: core.ops.arith.Add.Trait Self (Rhs := Self);
+        ℒ_8 :: core.ops.arith.AddAssign.Trait Self (Rhs := Self);
+        ℒ_9 :: core.ops.arith.Sub.Trait Self (Rhs := Self);
+        ℒ_10 :: core.ops.arith.SubAssign.Trait Self (Rhs := Self);
+        ℒ_11 :: core.ops.arith.Mul.Trait Self (Rhs := Self);
+        ℒ_12 :: core.ops.arith.MulAssign.Trait Self (Rhs := Self);
+        ℒ_13 :: core.ops.arith.Div.Trait Self (Rhs := Self);
+        ℒ_14 :: core.ops.arith.DivAssign.Trait Self (Rhs := Self);
+        ℒ_15 :: num_traits.ops.checked.CheckedMul.Trait Self;
+        ℒ_16 :: ink_env.arithmetic.Saturating.Trait Self;
+        ℒ_17 :: core.convert.TryFrom.Trait Self (T := u16);
+        ℒ_18 :: core.convert.TryFrom.Trait Self (T := u32);
+        ℒ_19 :: core.convert.TryFrom.Trait Self (T := u64);
+        ℒ_20 :: core.convert.TryFrom.Trait Self (T := u128);
+        ℒ_21 :: core.convert.TryFrom.Trait Self (T := usize);
+        ℒ_22 :: core.convert.TryInto.Trait Self (T := u16);
+        ℒ_23 :: core.convert.TryInto.Trait Self (T := u32);
+        ℒ_24 :: core.convert.TryInto.Trait Self (T := u64);
+        ℒ_25 :: core.convert.TryInto.Trait Self (T := u128);
+        ℒ_26 :: core.convert.TryInto.Trait Self (T := usize);
       }.
       
     End BaseArithmetic.
@@ -712,33 +711,32 @@ Module arithmetic.
       Context {T : Set}.
       
       Context
-        {ℋ_0 : core.marker.Sized.Trait T}
-        {ℋ_1 : core.convert.From.Trait T (T := u8)}
-        {ℋ_2 : num_traits.bounds.Bounded.Trait T}
-        {ℋ_3 : core.cmp.Ord.Trait T}
-        {ℋ_4 : core.cmp.PartialOrd.Trait T (Rhs := T)}
-        {ℋ_5 : num_traits.identities.Zero.Trait T}
-        {ℋ_6 : num_traits.identities.One.Trait T}
-        {ℋ_7 : core.ops.arith.Add.Trait T (Rhs := T)}
-        {ℋ_8 : core.ops.arith.AddAssign.Trait T (Rhs := T)}
-        {ℋ_9 : core.ops.arith.Sub.Trait T (Rhs := T)}
-        {ℋ_10 : core.ops.arith.SubAssign.Trait T (Rhs := T)}
-        {ℋ_11 : core.ops.arith.Mul.Trait T (Rhs := T)}
-        {ℋ_12 : core.ops.arith.MulAssign.Trait T (Rhs := T)}
-        {ℋ_13 : core.ops.arith.Div.Trait T (Rhs := T)}
-        {ℋ_14 : core.ops.arith.DivAssign.Trait T (Rhs := T)}
-        {ℋ_15 : num_traits.ops.checked.CheckedMul.Trait T}
-        {ℋ_16 : ink_env.arithmetic.Saturating.Trait T}
-        {ℋ_17 : core.convert.TryFrom.Trait T (T := u16)}
-        {ℋ_18 : core.convert.TryFrom.Trait T (T := u32)}
-        {ℋ_19 : core.convert.TryFrom.Trait T (T := u64)}
-        {ℋ_20 : core.convert.TryFrom.Trait T (T := u128)}
-        {ℋ_21 : core.convert.TryFrom.Trait T (T := usize)}
-        {ℋ_22 : core.convert.TryInto.Trait T (T := u16)}
-        {ℋ_23 : core.convert.TryInto.Trait T (T := u32)}
-        {ℋ_24 : core.convert.TryInto.Trait T (T := u64)}
-        {ℋ_25 : core.convert.TryInto.Trait T (T := u128)}
-        {ℋ_26 : core.convert.TryInto.Trait T (T := usize)}.
+        {ℋ_0 : core.convert.From.Trait T (T := u8)}
+        {ℋ_1 : num_traits.bounds.Bounded.Trait T}
+        {ℋ_2 : core.cmp.Ord.Trait T}
+        {ℋ_3 : core.cmp.PartialOrd.Trait T (Rhs := T)}
+        {ℋ_4 : num_traits.identities.Zero.Trait T}
+        {ℋ_5 : num_traits.identities.One.Trait T}
+        {ℋ_6 : core.ops.arith.Add.Trait T (Rhs := T)}
+        {ℋ_7 : core.ops.arith.AddAssign.Trait T (Rhs := T)}
+        {ℋ_8 : core.ops.arith.Sub.Trait T (Rhs := T)}
+        {ℋ_9 : core.ops.arith.SubAssign.Trait T (Rhs := T)}
+        {ℋ_10 : core.ops.arith.Mul.Trait T (Rhs := T)}
+        {ℋ_11 : core.ops.arith.MulAssign.Trait T (Rhs := T)}
+        {ℋ_12 : core.ops.arith.Div.Trait T (Rhs := T)}
+        {ℋ_13 : core.ops.arith.DivAssign.Trait T (Rhs := T)}
+        {ℋ_14 : num_traits.ops.checked.CheckedMul.Trait T}
+        {ℋ_15 : ink_env.arithmetic.Saturating.Trait T}
+        {ℋ_16 : core.convert.TryFrom.Trait T (T := u16)}
+        {ℋ_17 : core.convert.TryFrom.Trait T (T := u32)}
+        {ℋ_18 : core.convert.TryFrom.Trait T (T := u64)}
+        {ℋ_19 : core.convert.TryFrom.Trait T (T := u128)}
+        {ℋ_20 : core.convert.TryFrom.Trait T (T := usize)}
+        {ℋ_21 : core.convert.TryInto.Trait T (T := u16)}
+        {ℋ_22 : core.convert.TryInto.Trait T (T := u32)}
+        {ℋ_23 : core.convert.TryInto.Trait T (T := u64)}
+        {ℋ_24 : core.convert.TryInto.Trait T (T := u128)}
+        {ℋ_25 : core.convert.TryInto.Trait T (T := usize)}.
       Definition Self : Set := T.
       
       Global Instance ℐ : ink_env.arithmetic.BaseArithmetic.Trait Self := {
@@ -2795,16 +2793,12 @@ Module call.
         }.
         
         Parameter encode_to :
-            forall
-              {O : Set}
-              {ℋ_0 : parity_scale_codec.codec.Output.Trait O}
-              {ℋ_1 : core.marker.Sized.Trait O},
+            forall {O : Set} {ℋ_0 : parity_scale_codec.codec.Output.Trait O},
             (ref Self) -> (mut_ref O) -> M unit.
         
         Global Instance AssociatedFunction_encode_to
             {O : Set}
-            {ℋ_0 : parity_scale_codec.codec.Output.Trait O}
-            {ℋ_1 : core.marker.Sized.Trait O} :
+            {ℋ_0 : parity_scale_codec.codec.Output.Trait O} :
           Notation.DoubleColon Self "encode_to" := {
           Notation.double_colon := encode_to (O := O);
         }.
@@ -2814,8 +2808,7 @@ Module call.
           parity_scale_codec.codec.Encode.size_hint := Datatypes.Some size_hint;
           parity_scale_codec.codec.Encode.encode_to
             {O : Set}
-            {ℋ_0 : parity_scale_codec.codec.Output.Trait O}
-            {ℋ_1 : core.marker.Sized.Trait O} :=
+            {ℋ_0 : parity_scale_codec.codec.Output.Trait O} :=
             Datatypes.Some (encode_to (O := O));
           parity_scale_codec.codec.Encode.TYPE_INFO := Datatypes.None;
           parity_scale_codec.codec.Encode.encode := Datatypes.None;
@@ -2844,16 +2837,12 @@ Module call.
         }.
         
         Parameter encode_to :
-            forall
-              {O : Set}
-              {ℋ_0 : parity_scale_codec.codec.Output.Trait O}
-              {ℋ_1 : core.marker.Sized.Trait O},
+            forall {O : Set} {ℋ_0 : parity_scale_codec.codec.Output.Trait O},
             (ref Self) -> (mut_ref O) -> M unit.
         
         Global Instance AssociatedFunction_encode_to
             {O : Set}
-            {ℋ_0 : parity_scale_codec.codec.Output.Trait O}
-            {ℋ_1 : core.marker.Sized.Trait O} :
+            {ℋ_0 : parity_scale_codec.codec.Output.Trait O} :
           Notation.DoubleColon Self "encode_to" := {
           Notation.double_colon := encode_to (O := O);
         }.
@@ -2863,8 +2852,7 @@ Module call.
           parity_scale_codec.codec.Encode.size_hint := Datatypes.Some size_hint;
           parity_scale_codec.codec.Encode.encode_to
             {O : Set}
-            {ℋ_0 : parity_scale_codec.codec.Output.Trait O}
-            {ℋ_1 : core.marker.Sized.Trait O} :=
+            {ℋ_0 : parity_scale_codec.codec.Output.Trait O} :=
             Datatypes.Some (encode_to (O := O));
           parity_scale_codec.codec.Encode.TYPE_INFO := Datatypes.None;
           parity_scale_codec.codec.Encode.encode := Datatypes.None;
@@ -2900,16 +2888,12 @@ Module call.
         }.
         
         Parameter encode_to :
-            forall
-              {O : Set}
-              {ℋ_0 : parity_scale_codec.codec.Output.Trait O}
-              {ℋ_1 : core.marker.Sized.Trait O},
+            forall {O : Set} {ℋ_0 : parity_scale_codec.codec.Output.Trait O},
             (ref Self) -> (mut_ref O) -> M unit.
         
         Global Instance AssociatedFunction_encode_to
             {O : Set}
-            {ℋ_0 : parity_scale_codec.codec.Output.Trait O}
-            {ℋ_1 : core.marker.Sized.Trait O} :
+            {ℋ_0 : parity_scale_codec.codec.Output.Trait O} :
           Notation.DoubleColon Self "encode_to" := {
           Notation.double_colon := encode_to (O := O);
         }.
@@ -2919,8 +2903,7 @@ Module call.
           parity_scale_codec.codec.Encode.size_hint := Datatypes.Some size_hint;
           parity_scale_codec.codec.Encode.encode_to
             {O : Set}
-            {ℋ_0 : parity_scale_codec.codec.Output.Trait O}
-            {ℋ_1 : core.marker.Sized.Trait O} :=
+            {ℋ_0 : parity_scale_codec.codec.Output.Trait O} :=
             Datatypes.Some (encode_to (O := O));
           parity_scale_codec.codec.Encode.TYPE_INFO := Datatypes.None;
           parity_scale_codec.codec.Encode.encode := Datatypes.None;
@@ -2952,16 +2935,12 @@ Module call.
         }.
         
         Parameter encode_to :
-            forall
-              {O : Set}
-              {ℋ_0 : parity_scale_codec.codec.Output.Trait O}
-              {ℋ_1 : core.marker.Sized.Trait O},
+            forall {O : Set} {ℋ_0 : parity_scale_codec.codec.Output.Trait O},
             (ref Self) -> (mut_ref O) -> M unit.
         
         Global Instance AssociatedFunction_encode_to
             {O : Set}
-            {ℋ_0 : parity_scale_codec.codec.Output.Trait O}
-            {ℋ_1 : core.marker.Sized.Trait O} :
+            {ℋ_0 : parity_scale_codec.codec.Output.Trait O} :
           Notation.DoubleColon Self "encode_to" := {
           Notation.double_colon := encode_to (O := O);
         }.
@@ -2971,8 +2950,7 @@ Module call.
           parity_scale_codec.codec.Encode.size_hint := Datatypes.Some size_hint;
           parity_scale_codec.codec.Encode.encode_to
             {O : Set}
-            {ℋ_0 : parity_scale_codec.codec.Output.Trait O}
-            {ℋ_1 : core.marker.Sized.Trait O} :=
+            {ℋ_0 : parity_scale_codec.codec.Output.Trait O} :=
             Datatypes.Some (encode_to (O := O));
           parity_scale_codec.codec.Encode.TYPE_INFO := Datatypes.None;
           parity_scale_codec.codec.Encode.encode := Datatypes.None;
@@ -3521,16 +3499,12 @@ Module engine.
           }.
           
           Parameter encode_to :
-              forall
-                {T : Set}
-                {ℋ_0 : parity_scale_codec.codec.Output.Trait T}
-                {ℋ_1 : core.marker.Sized.Trait T},
+              forall {T : Set} {ℋ_0 : parity_scale_codec.codec.Output.Trait T},
               (ref Self) -> (mut_ref T) -> M unit.
           
           Global Instance AssociatedFunction_encode_to
               {T : Set}
-              {ℋ_0 : parity_scale_codec.codec.Output.Trait T}
-              {ℋ_1 : core.marker.Sized.Trait T} :
+              {ℋ_0 : parity_scale_codec.codec.Output.Trait T} :
             Notation.DoubleColon Self "encode_to" := {
             Notation.double_colon := encode_to (T := T);
           }.
@@ -3541,8 +3515,7 @@ Module engine.
               Datatypes.Some size_hint;
             parity_scale_codec.codec.Encode.encode_to
               {T : Set}
-              {ℋ_0 : parity_scale_codec.codec.Output.Trait T}
-              {ℋ_1 : core.marker.Sized.Trait T} :=
+              {ℋ_0 : parity_scale_codec.codec.Output.Trait T} :=
               Datatypes.Some (encode_to (T := T));
             parity_scale_codec.codec.Encode.TYPE_INFO := Datatypes.None;
             parity_scale_codec.codec.Encode.encode := Datatypes.None;
@@ -5229,16 +5202,12 @@ Module topics.
       }.
       
       Parameter encode_to :
-          forall
-            {T : Set}
-            {ℋ_0 : parity_scale_codec.codec.Output.Trait T}
-            {ℋ_1 : core.marker.Sized.Trait T},
+          forall {T : Set} {ℋ_0 : parity_scale_codec.codec.Output.Trait T},
           (ref Self) -> (mut_ref T) -> M unit.
       
       Global Instance AssociatedFunction_encode_to
           {T : Set}
-          {ℋ_0 : parity_scale_codec.codec.Output.Trait T}
-          {ℋ_1 : core.marker.Sized.Trait T} :
+          {ℋ_0 : parity_scale_codec.codec.Output.Trait T} :
         Notation.DoubleColon Self "encode_to" := {
         Notation.double_colon := encode_to (T := T);
       }.
@@ -5248,8 +5217,7 @@ Module topics.
         parity_scale_codec.codec.Encode.size_hint := Datatypes.Some size_hint;
         parity_scale_codec.codec.Encode.encode_to
           {T : Set}
-          {ℋ_0 : parity_scale_codec.codec.Output.Trait T}
-          {ℋ_1 : core.marker.Sized.Trait T} :=
+          {ℋ_0 : parity_scale_codec.codec.Output.Trait T} :=
           Datatypes.Some (encode_to (T := T));
         parity_scale_codec.codec.Encode.TYPE_INFO := Datatypes.None;
         parity_scale_codec.codec.Encode.encode := Datatypes.None;
@@ -7225,34 +7193,33 @@ Module BaseArithmetic.
     Context `{ℋ : State.Trait}.
     
     Class Trait (Self : Set) : Type := {
-      ℒ_0 :: core.marker.Sized.Trait Self;
-      ℒ_1 :: core.convert.From.Trait Self (T := u8);
-      ℒ_2 :: num_traits.bounds.Bounded.Trait Self;
-      ℒ_3 :: core.cmp.Ord.Trait Self;
-      ℒ_4 :: core.cmp.PartialOrd.Trait Self (Rhs := Self);
-      ℒ_5 :: num_traits.identities.Zero.Trait Self;
-      ℒ_6 :: num_traits.identities.One.Trait Self;
-      ℒ_7 :: num_traits.bounds.Bounded.Trait Self;
-      ℒ_8 :: core.ops.arith.Add.Trait Self (Rhs := Self);
-      ℒ_9 :: core.ops.arith.AddAssign.Trait Self (Rhs := Self);
-      ℒ_10 :: core.ops.arith.Sub.Trait Self (Rhs := Self);
-      ℒ_11 :: core.ops.arith.SubAssign.Trait Self (Rhs := Self);
-      ℒ_12 :: core.ops.arith.Mul.Trait Self (Rhs := Self);
-      ℒ_13 :: core.ops.arith.MulAssign.Trait Self (Rhs := Self);
-      ℒ_14 :: core.ops.arith.Div.Trait Self (Rhs := Self);
-      ℒ_15 :: core.ops.arith.DivAssign.Trait Self (Rhs := Self);
-      ℒ_16 :: num_traits.ops.checked.CheckedMul.Trait Self;
-      ℒ_17 :: ink_env.arithmetic.Saturating.Trait Self;
-      ℒ_18 :: core.convert.TryFrom.Trait Self (T := u16);
-      ℒ_19 :: core.convert.TryFrom.Trait Self (T := u32);
-      ℒ_20 :: core.convert.TryFrom.Trait Self (T := u64);
-      ℒ_21 :: core.convert.TryFrom.Trait Self (T := u128);
-      ℒ_22 :: core.convert.TryFrom.Trait Self (T := usize);
-      ℒ_23 :: core.convert.TryInto.Trait Self (T := u16);
-      ℒ_24 :: core.convert.TryInto.Trait Self (T := u32);
-      ℒ_25 :: core.convert.TryInto.Trait Self (T := u64);
-      ℒ_26 :: core.convert.TryInto.Trait Self (T := u128);
-      ℒ_27 :: core.convert.TryInto.Trait Self (T := usize);
+      ℒ_0 :: core.convert.From.Trait Self (T := u8);
+      ℒ_1 :: num_traits.bounds.Bounded.Trait Self;
+      ℒ_2 :: core.cmp.Ord.Trait Self;
+      ℒ_3 :: core.cmp.PartialOrd.Trait Self (Rhs := Self);
+      ℒ_4 :: num_traits.identities.Zero.Trait Self;
+      ℒ_5 :: num_traits.identities.One.Trait Self;
+      ℒ_6 :: num_traits.bounds.Bounded.Trait Self;
+      ℒ_7 :: core.ops.arith.Add.Trait Self (Rhs := Self);
+      ℒ_8 :: core.ops.arith.AddAssign.Trait Self (Rhs := Self);
+      ℒ_9 :: core.ops.arith.Sub.Trait Self (Rhs := Self);
+      ℒ_10 :: core.ops.arith.SubAssign.Trait Self (Rhs := Self);
+      ℒ_11 :: core.ops.arith.Mul.Trait Self (Rhs := Self);
+      ℒ_12 :: core.ops.arith.MulAssign.Trait Self (Rhs := Self);
+      ℒ_13 :: core.ops.arith.Div.Trait Self (Rhs := Self);
+      ℒ_14 :: core.ops.arith.DivAssign.Trait Self (Rhs := Self);
+      ℒ_15 :: num_traits.ops.checked.CheckedMul.Trait Self;
+      ℒ_16 :: ink_env.arithmetic.Saturating.Trait Self;
+      ℒ_17 :: core.convert.TryFrom.Trait Self (T := u16);
+      ℒ_18 :: core.convert.TryFrom.Trait Self (T := u32);
+      ℒ_19 :: core.convert.TryFrom.Trait Self (T := u64);
+      ℒ_20 :: core.convert.TryFrom.Trait Self (T := u128);
+      ℒ_21 :: core.convert.TryFrom.Trait Self (T := usize);
+      ℒ_22 :: core.convert.TryInto.Trait Self (T := u16);
+      ℒ_23 :: core.convert.TryInto.Trait Self (T := u32);
+      ℒ_24 :: core.convert.TryInto.Trait Self (T := u64);
+      ℒ_25 :: core.convert.TryInto.Trait Self (T := u128);
+      ℒ_26 :: core.convert.TryInto.Trait Self (T := usize);
     }.
     
   End BaseArithmetic.
@@ -7265,33 +7232,32 @@ Module Impl_ink_env_arithmetic_BaseArithmetic_for_T.
     Context {T : Set}.
     
     Context
-      {ℋ_0 : core.marker.Sized.Trait T}
-      {ℋ_1 : core.convert.From.Trait T (T := u8)}
-      {ℋ_2 : num_traits.bounds.Bounded.Trait T}
-      {ℋ_3 : core.cmp.Ord.Trait T}
-      {ℋ_4 : core.cmp.PartialOrd.Trait T (Rhs := T)}
-      {ℋ_5 : num_traits.identities.Zero.Trait T}
-      {ℋ_6 : num_traits.identities.One.Trait T}
-      {ℋ_7 : core.ops.arith.Add.Trait T (Rhs := T)}
-      {ℋ_8 : core.ops.arith.AddAssign.Trait T (Rhs := T)}
-      {ℋ_9 : core.ops.arith.Sub.Trait T (Rhs := T)}
-      {ℋ_10 : core.ops.arith.SubAssign.Trait T (Rhs := T)}
-      {ℋ_11 : core.ops.arith.Mul.Trait T (Rhs := T)}
-      {ℋ_12 : core.ops.arith.MulAssign.Trait T (Rhs := T)}
-      {ℋ_13 : core.ops.arith.Div.Trait T (Rhs := T)}
-      {ℋ_14 : core.ops.arith.DivAssign.Trait T (Rhs := T)}
-      {ℋ_15 : num_traits.ops.checked.CheckedMul.Trait T}
-      {ℋ_16 : ink_env.arithmetic.Saturating.Trait T}
-      {ℋ_17 : core.convert.TryFrom.Trait T (T := u16)}
-      {ℋ_18 : core.convert.TryFrom.Trait T (T := u32)}
-      {ℋ_19 : core.convert.TryFrom.Trait T (T := u64)}
-      {ℋ_20 : core.convert.TryFrom.Trait T (T := u128)}
-      {ℋ_21 : core.convert.TryFrom.Trait T (T := usize)}
-      {ℋ_22 : core.convert.TryInto.Trait T (T := u16)}
-      {ℋ_23 : core.convert.TryInto.Trait T (T := u32)}
-      {ℋ_24 : core.convert.TryInto.Trait T (T := u64)}
-      {ℋ_25 : core.convert.TryInto.Trait T (T := u128)}
-      {ℋ_26 : core.convert.TryInto.Trait T (T := usize)}.
+      {ℋ_0 : core.convert.From.Trait T (T := u8)}
+      {ℋ_1 : num_traits.bounds.Bounded.Trait T}
+      {ℋ_2 : core.cmp.Ord.Trait T}
+      {ℋ_3 : core.cmp.PartialOrd.Trait T (Rhs := T)}
+      {ℋ_4 : num_traits.identities.Zero.Trait T}
+      {ℋ_5 : num_traits.identities.One.Trait T}
+      {ℋ_6 : core.ops.arith.Add.Trait T (Rhs := T)}
+      {ℋ_7 : core.ops.arith.AddAssign.Trait T (Rhs := T)}
+      {ℋ_8 : core.ops.arith.Sub.Trait T (Rhs := T)}
+      {ℋ_9 : core.ops.arith.SubAssign.Trait T (Rhs := T)}
+      {ℋ_10 : core.ops.arith.Mul.Trait T (Rhs := T)}
+      {ℋ_11 : core.ops.arith.MulAssign.Trait T (Rhs := T)}
+      {ℋ_12 : core.ops.arith.Div.Trait T (Rhs := T)}
+      {ℋ_13 : core.ops.arith.DivAssign.Trait T (Rhs := T)}
+      {ℋ_14 : num_traits.ops.checked.CheckedMul.Trait T}
+      {ℋ_15 : ink_env.arithmetic.Saturating.Trait T}
+      {ℋ_16 : core.convert.TryFrom.Trait T (T := u16)}
+      {ℋ_17 : core.convert.TryFrom.Trait T (T := u32)}
+      {ℋ_18 : core.convert.TryFrom.Trait T (T := u64)}
+      {ℋ_19 : core.convert.TryFrom.Trait T (T := u128)}
+      {ℋ_20 : core.convert.TryFrom.Trait T (T := usize)}
+      {ℋ_21 : core.convert.TryInto.Trait T (T := u16)}
+      {ℋ_22 : core.convert.TryInto.Trait T (T := u32)}
+      {ℋ_23 : core.convert.TryInto.Trait T (T := u64)}
+      {ℋ_24 : core.convert.TryInto.Trait T (T := u128)}
+      {ℋ_25 : core.convert.TryInto.Trait T (T := usize)}.
     Definition Self : Set := T.
     
     Global Instance ℐ : ink_env.arithmetic.BaseArithmetic.Trait Self := {
@@ -10612,16 +10578,12 @@ Module execution_input.
       }.
       
       Parameter encode_to :
-          forall
-            {O : Set}
-            {ℋ_0 : parity_scale_codec.codec.Output.Trait O}
-            {ℋ_1 : core.marker.Sized.Trait O},
+          forall {O : Set} {ℋ_0 : parity_scale_codec.codec.Output.Trait O},
           (ref Self) -> (mut_ref O) -> M unit.
       
       Global Instance AssociatedFunction_encode_to
           {O : Set}
-          {ℋ_0 : parity_scale_codec.codec.Output.Trait O}
-          {ℋ_1 : core.marker.Sized.Trait O} :
+          {ℋ_0 : parity_scale_codec.codec.Output.Trait O} :
         Notation.DoubleColon Self "encode_to" := {
         Notation.double_colon := encode_to (O := O);
       }.
@@ -10631,8 +10593,7 @@ Module execution_input.
         parity_scale_codec.codec.Encode.size_hint := Datatypes.Some size_hint;
         parity_scale_codec.codec.Encode.encode_to
           {O : Set}
-          {ℋ_0 : parity_scale_codec.codec.Output.Trait O}
-          {ℋ_1 : core.marker.Sized.Trait O} :=
+          {ℋ_0 : parity_scale_codec.codec.Output.Trait O} :=
           Datatypes.Some (encode_to (O := O));
         parity_scale_codec.codec.Encode.TYPE_INFO := Datatypes.None;
         parity_scale_codec.codec.Encode.encode := Datatypes.None;
@@ -10661,16 +10622,12 @@ Module execution_input.
       }.
       
       Parameter encode_to :
-          forall
-            {O : Set}
-            {ℋ_0 : parity_scale_codec.codec.Output.Trait O}
-            {ℋ_1 : core.marker.Sized.Trait O},
+          forall {O : Set} {ℋ_0 : parity_scale_codec.codec.Output.Trait O},
           (ref Self) -> (mut_ref O) -> M unit.
       
       Global Instance AssociatedFunction_encode_to
           {O : Set}
-          {ℋ_0 : parity_scale_codec.codec.Output.Trait O}
-          {ℋ_1 : core.marker.Sized.Trait O} :
+          {ℋ_0 : parity_scale_codec.codec.Output.Trait O} :
         Notation.DoubleColon Self "encode_to" := {
         Notation.double_colon := encode_to (O := O);
       }.
@@ -10680,8 +10637,7 @@ Module execution_input.
         parity_scale_codec.codec.Encode.size_hint := Datatypes.Some size_hint;
         parity_scale_codec.codec.Encode.encode_to
           {O : Set}
-          {ℋ_0 : parity_scale_codec.codec.Output.Trait O}
-          {ℋ_1 : core.marker.Sized.Trait O} :=
+          {ℋ_0 : parity_scale_codec.codec.Output.Trait O} :=
           Datatypes.Some (encode_to (O := O));
         parity_scale_codec.codec.Encode.TYPE_INFO := Datatypes.None;
         parity_scale_codec.codec.Encode.encode := Datatypes.None;
@@ -10717,16 +10673,12 @@ Module execution_input.
       }.
       
       Parameter encode_to :
-          forall
-            {O : Set}
-            {ℋ_0 : parity_scale_codec.codec.Output.Trait O}
-            {ℋ_1 : core.marker.Sized.Trait O},
+          forall {O : Set} {ℋ_0 : parity_scale_codec.codec.Output.Trait O},
           (ref Self) -> (mut_ref O) -> M unit.
       
       Global Instance AssociatedFunction_encode_to
           {O : Set}
-          {ℋ_0 : parity_scale_codec.codec.Output.Trait O}
-          {ℋ_1 : core.marker.Sized.Trait O} :
+          {ℋ_0 : parity_scale_codec.codec.Output.Trait O} :
         Notation.DoubleColon Self "encode_to" := {
         Notation.double_colon := encode_to (O := O);
       }.
@@ -10736,8 +10688,7 @@ Module execution_input.
         parity_scale_codec.codec.Encode.size_hint := Datatypes.Some size_hint;
         parity_scale_codec.codec.Encode.encode_to
           {O : Set}
-          {ℋ_0 : parity_scale_codec.codec.Output.Trait O}
-          {ℋ_1 : core.marker.Sized.Trait O} :=
+          {ℋ_0 : parity_scale_codec.codec.Output.Trait O} :=
           Datatypes.Some (encode_to (O := O));
         parity_scale_codec.codec.Encode.TYPE_INFO := Datatypes.None;
         parity_scale_codec.codec.Encode.encode := Datatypes.None;
@@ -10768,16 +10719,12 @@ Module execution_input.
       }.
       
       Parameter encode_to :
-          forall
-            {O : Set}
-            {ℋ_0 : parity_scale_codec.codec.Output.Trait O}
-            {ℋ_1 : core.marker.Sized.Trait O},
+          forall {O : Set} {ℋ_0 : parity_scale_codec.codec.Output.Trait O},
           (ref Self) -> (mut_ref O) -> M unit.
       
       Global Instance AssociatedFunction_encode_to
           {O : Set}
-          {ℋ_0 : parity_scale_codec.codec.Output.Trait O}
-          {ℋ_1 : core.marker.Sized.Trait O} :
+          {ℋ_0 : parity_scale_codec.codec.Output.Trait O} :
         Notation.DoubleColon Self "encode_to" := {
         Notation.double_colon := encode_to (O := O);
       }.
@@ -10787,8 +10734,7 @@ Module execution_input.
         parity_scale_codec.codec.Encode.size_hint := Datatypes.Some size_hint;
         parity_scale_codec.codec.Encode.encode_to
           {O : Set}
-          {ℋ_0 : parity_scale_codec.codec.Output.Trait O}
-          {ℋ_1 : core.marker.Sized.Trait O} :=
+          {ℋ_0 : parity_scale_codec.codec.Output.Trait O} :=
           Datatypes.Some (encode_to (O := O));
         parity_scale_codec.codec.Encode.TYPE_INFO := Datatypes.None;
         parity_scale_codec.codec.Encode.encode := Datatypes.None;
@@ -11198,16 +11144,12 @@ Module
     }.
     
     Parameter encode_to :
-        forall
-          {O : Set}
-          {ℋ_0 : parity_scale_codec.codec.Output.Trait O}
-          {ℋ_1 : core.marker.Sized.Trait O},
+        forall {O : Set} {ℋ_0 : parity_scale_codec.codec.Output.Trait O},
         (ref Self) -> (mut_ref O) -> M unit.
     
     Global Instance AssociatedFunction_encode_to
         {O : Set}
-        {ℋ_0 : parity_scale_codec.codec.Output.Trait O}
-        {ℋ_1 : core.marker.Sized.Trait O} :
+        {ℋ_0 : parity_scale_codec.codec.Output.Trait O} :
       Notation.DoubleColon Self "encode_to" := {
       Notation.double_colon := encode_to (O := O);
     }.
@@ -11216,8 +11158,7 @@ Module
       parity_scale_codec.codec.Encode.size_hint := Datatypes.Some size_hint;
       parity_scale_codec.codec.Encode.encode_to
         {O : Set}
-        {ℋ_0 : parity_scale_codec.codec.Output.Trait O}
-        {ℋ_1 : core.marker.Sized.Trait O} :=
+        {ℋ_0 : parity_scale_codec.codec.Output.Trait O} :=
         Datatypes.Some (encode_to (O := O));
       parity_scale_codec.codec.Encode.TYPE_INFO := Datatypes.None;
       parity_scale_codec.codec.Encode.encode := Datatypes.None;
@@ -11246,16 +11187,12 @@ Module
     }.
     
     Parameter encode_to :
-        forall
-          {O : Set}
-          {ℋ_0 : parity_scale_codec.codec.Output.Trait O}
-          {ℋ_1 : core.marker.Sized.Trait O},
+        forall {O : Set} {ℋ_0 : parity_scale_codec.codec.Output.Trait O},
         (ref Self) -> (mut_ref O) -> M unit.
     
     Global Instance AssociatedFunction_encode_to
         {O : Set}
-        {ℋ_0 : parity_scale_codec.codec.Output.Trait O}
-        {ℋ_1 : core.marker.Sized.Trait O} :
+        {ℋ_0 : parity_scale_codec.codec.Output.Trait O} :
       Notation.DoubleColon Self "encode_to" := {
       Notation.double_colon := encode_to (O := O);
     }.
@@ -11264,8 +11201,7 @@ Module
       parity_scale_codec.codec.Encode.size_hint := Datatypes.Some size_hint;
       parity_scale_codec.codec.Encode.encode_to
         {O : Set}
-        {ℋ_0 : parity_scale_codec.codec.Output.Trait O}
-        {ℋ_1 : core.marker.Sized.Trait O} :=
+        {ℋ_0 : parity_scale_codec.codec.Output.Trait O} :=
         Datatypes.Some (encode_to (O := O));
       parity_scale_codec.codec.Encode.TYPE_INFO := Datatypes.None;
       parity_scale_codec.codec.Encode.encode := Datatypes.None;
@@ -11301,16 +11237,12 @@ Module
     }.
     
     Parameter encode_to :
-        forall
-          {O : Set}
-          {ℋ_0 : parity_scale_codec.codec.Output.Trait O}
-          {ℋ_1 : core.marker.Sized.Trait O},
+        forall {O : Set} {ℋ_0 : parity_scale_codec.codec.Output.Trait O},
         (ref Self) -> (mut_ref O) -> M unit.
     
     Global Instance AssociatedFunction_encode_to
         {O : Set}
-        {ℋ_0 : parity_scale_codec.codec.Output.Trait O}
-        {ℋ_1 : core.marker.Sized.Trait O} :
+        {ℋ_0 : parity_scale_codec.codec.Output.Trait O} :
       Notation.DoubleColon Self "encode_to" := {
       Notation.double_colon := encode_to (O := O);
     }.
@@ -11319,8 +11251,7 @@ Module
       parity_scale_codec.codec.Encode.size_hint := Datatypes.Some size_hint;
       parity_scale_codec.codec.Encode.encode_to
         {O : Set}
-        {ℋ_0 : parity_scale_codec.codec.Output.Trait O}
-        {ℋ_1 : core.marker.Sized.Trait O} :=
+        {ℋ_0 : parity_scale_codec.codec.Output.Trait O} :=
         Datatypes.Some (encode_to (O := O));
       parity_scale_codec.codec.Encode.TYPE_INFO := Datatypes.None;
       parity_scale_codec.codec.Encode.encode := Datatypes.None;
@@ -11351,16 +11282,12 @@ Module
     }.
     
     Parameter encode_to :
-        forall
-          {O : Set}
-          {ℋ_0 : parity_scale_codec.codec.Output.Trait O}
-          {ℋ_1 : core.marker.Sized.Trait O},
+        forall {O : Set} {ℋ_0 : parity_scale_codec.codec.Output.Trait O},
         (ref Self) -> (mut_ref O) -> M unit.
     
     Global Instance AssociatedFunction_encode_to
         {O : Set}
-        {ℋ_0 : parity_scale_codec.codec.Output.Trait O}
-        {ℋ_1 : core.marker.Sized.Trait O} :
+        {ℋ_0 : parity_scale_codec.codec.Output.Trait O} :
       Notation.DoubleColon Self "encode_to" := {
       Notation.double_colon := encode_to (O := O);
     }.
@@ -11369,8 +11296,7 @@ Module
       parity_scale_codec.codec.Encode.size_hint := Datatypes.Some size_hint;
       parity_scale_codec.codec.Encode.encode_to
         {O : Set}
-        {ℋ_0 : parity_scale_codec.codec.Output.Trait O}
-        {ℋ_1 : core.marker.Sized.Trait O} :=
+        {ℋ_0 : parity_scale_codec.codec.Output.Trait O} :=
         Datatypes.Some (encode_to (O := O));
       parity_scale_codec.codec.Encode.TYPE_INFO := Datatypes.None;
       parity_scale_codec.codec.Encode.encode := Datatypes.None;
@@ -11779,14 +11705,12 @@ Module Impl_parity_scale_codec_codec_Encode_for_ink_env_call_selector_Selector.
     Parameter encode_to :
         forall
           {__CodecOutputEdqy : Set}
-          {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
-          {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy},
+          {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy},
         (ref Self) -> (mut_ref __CodecOutputEdqy) -> M unit.
     
     Global Instance AssociatedFunction_encode_to
         {__CodecOutputEdqy : Set}
-        {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
-        {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy} :
+        {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy} :
       Notation.DoubleColon Self "encode_to" := {
       Notation.double_colon
         :=
@@ -11822,8 +11746,7 @@ Module Impl_parity_scale_codec_codec_Encode_for_ink_env_call_selector_Selector.
     Global Instance ℐ : parity_scale_codec.codec.Encode.Required.Trait Self := {
       parity_scale_codec.codec.Encode.encode_to
         {__CodecOutputEdqy : Set}
-        {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
-        {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy} :=
+        {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy} :=
         Datatypes.Some (encode_to (__CodecOutputEdqy := __CodecOutputEdqy));
       parity_scale_codec.codec.Encode.encode := Datatypes.Some encode;
       parity_scale_codec.codec.Encode.using_encoded
@@ -11862,7 +11785,6 @@ Module chain_extension.
       Context `{ℋ : State.Trait}.
       
       Class Trait (Self : Set) : Type := {
-        ℒ_0 :: core.marker.Sized.Trait Self;
         from_status_code : u32 -> M (core.result.Result unit Self);
       }.
       
@@ -12099,7 +12021,6 @@ Module FromStatusCode.
     Context `{ℋ : State.Trait}.
     
     Class Trait (Self : Set) : Type := {
-      ℒ_0 :: core.marker.Sized.Trait Self;
       from_status_code : u32 -> M (core.result.Result unit Self);
     }.
     
@@ -12607,16 +12528,12 @@ Module off_chain.
         }.
         
         Parameter encode_to :
-            forall
-              {T : Set}
-              {ℋ_0 : parity_scale_codec.codec.Output.Trait T}
-              {ℋ_1 : core.marker.Sized.Trait T},
+            forall {T : Set} {ℋ_0 : parity_scale_codec.codec.Output.Trait T},
             (ref Self) -> (mut_ref T) -> M unit.
         
         Global Instance AssociatedFunction_encode_to
             {T : Set}
-            {ℋ_0 : parity_scale_codec.codec.Output.Trait T}
-            {ℋ_1 : core.marker.Sized.Trait T} :
+            {ℋ_0 : parity_scale_codec.codec.Output.Trait T} :
           Notation.DoubleColon Self "encode_to" := {
           Notation.double_colon := encode_to (T := T);
         }.
@@ -12626,8 +12543,7 @@ Module off_chain.
           parity_scale_codec.codec.Encode.size_hint := Datatypes.Some size_hint;
           parity_scale_codec.codec.Encode.encode_to
             {T : Set}
-            {ℋ_0 : parity_scale_codec.codec.Output.Trait T}
-            {ℋ_1 : core.marker.Sized.Trait T} :=
+            {ℋ_0 : parity_scale_codec.codec.Output.Trait T} :=
             Datatypes.Some (encode_to (T := T));
           parity_scale_codec.codec.Encode.TYPE_INFO := Datatypes.None;
           parity_scale_codec.codec.Encode.encode := Datatypes.None;
@@ -14181,16 +14097,12 @@ Module call_data.
       }.
       
       Parameter encode_to :
-          forall
-            {T : Set}
-            {ℋ_0 : parity_scale_codec.codec.Output.Trait T}
-            {ℋ_1 : core.marker.Sized.Trait T},
+          forall {T : Set} {ℋ_0 : parity_scale_codec.codec.Output.Trait T},
           (ref Self) -> (mut_ref T) -> M unit.
       
       Global Instance AssociatedFunction_encode_to
           {T : Set}
-          {ℋ_0 : parity_scale_codec.codec.Output.Trait T}
-          {ℋ_1 : core.marker.Sized.Trait T} :
+          {ℋ_0 : parity_scale_codec.codec.Output.Trait T} :
         Notation.DoubleColon Self "encode_to" := {
         Notation.double_colon := encode_to (T := T);
       }.
@@ -14200,8 +14112,7 @@ Module call_data.
         parity_scale_codec.codec.Encode.size_hint := Datatypes.Some size_hint;
         parity_scale_codec.codec.Encode.encode_to
           {T : Set}
-          {ℋ_0 : parity_scale_codec.codec.Output.Trait T}
-          {ℋ_1 : core.marker.Sized.Trait T} :=
+          {ℋ_0 : parity_scale_codec.codec.Output.Trait T} :=
           Datatypes.Some (encode_to (T := T));
         parity_scale_codec.codec.Encode.TYPE_INFO := Datatypes.None;
         parity_scale_codec.codec.Encode.encode := Datatypes.None;
@@ -14402,16 +14313,12 @@ Module
     }.
     
     Parameter encode_to :
-        forall
-          {T : Set}
-          {ℋ_0 : parity_scale_codec.codec.Output.Trait T}
-          {ℋ_1 : core.marker.Sized.Trait T},
+        forall {T : Set} {ℋ_0 : parity_scale_codec.codec.Output.Trait T},
         (ref Self) -> (mut_ref T) -> M unit.
     
     Global Instance AssociatedFunction_encode_to
         {T : Set}
-        {ℋ_0 : parity_scale_codec.codec.Output.Trait T}
-        {ℋ_1 : core.marker.Sized.Trait T} :
+        {ℋ_0 : parity_scale_codec.codec.Output.Trait T} :
       Notation.DoubleColon Self "encode_to" := {
       Notation.double_colon := encode_to (T := T);
     }.
@@ -14420,8 +14327,7 @@ Module
       parity_scale_codec.codec.Encode.size_hint := Datatypes.Some size_hint;
       parity_scale_codec.codec.Encode.encode_to
         {T : Set}
-        {ℋ_0 : parity_scale_codec.codec.Output.Trait T}
-        {ℋ_1 : core.marker.Sized.Trait T} :=
+        {ℋ_0 : parity_scale_codec.codec.Output.Trait T} :=
         Datatypes.Some (encode_to (T := T));
       parity_scale_codec.codec.Encode.TYPE_INFO := Datatypes.None;
       parity_scale_codec.codec.Encode.encode := Datatypes.None;
@@ -17770,16 +17676,12 @@ Module Impl_parity_scale_codec_codec_Encode_for_ink_env_topics_PrefixedValue_X.
     }.
     
     Parameter encode_to :
-        forall
-          {T : Set}
-          {ℋ_0 : parity_scale_codec.codec.Output.Trait T}
-          {ℋ_1 : core.marker.Sized.Trait T},
+        forall {T : Set} {ℋ_0 : parity_scale_codec.codec.Output.Trait T},
         (ref Self) -> (mut_ref T) -> M unit.
     
     Global Instance AssociatedFunction_encode_to
         {T : Set}
-        {ℋ_0 : parity_scale_codec.codec.Output.Trait T}
-        {ℋ_1 : core.marker.Sized.Trait T} :
+        {ℋ_0 : parity_scale_codec.codec.Output.Trait T} :
       Notation.DoubleColon Self "encode_to" := {
       Notation.double_colon := encode_to (T := T);
     }.
@@ -17788,8 +17690,7 @@ Module Impl_parity_scale_codec_codec_Encode_for_ink_env_topics_PrefixedValue_X.
       parity_scale_codec.codec.Encode.size_hint := Datatypes.Some size_hint;
       parity_scale_codec.codec.Encode.encode_to
         {T : Set}
-        {ℋ_0 : parity_scale_codec.codec.Output.Trait T}
-        {ℋ_1 : core.marker.Sized.Trait T} :=
+        {ℋ_0 : parity_scale_codec.codec.Output.Trait T} :=
         Datatypes.Some (encode_to (T := T));
       parity_scale_codec.codec.Encode.TYPE_INFO := Datatypes.None;
       parity_scale_codec.codec.Encode.encode := Datatypes.None;

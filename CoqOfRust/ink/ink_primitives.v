@@ -1516,14 +1516,12 @@ Module Impl_parity_scale_codec_codec_Encode_for_ink_primitives_types_AccountId.
     Parameter encode_to :
         forall
           {__CodecOutputEdqy : Set}
-          {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
-          {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy},
+          {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy},
         (ref Self) -> (mut_ref __CodecOutputEdqy) -> M unit.
     
     Global Instance AssociatedFunction_encode_to
         {__CodecOutputEdqy : Set}
-        {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
-        {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy} :
+        {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy} :
       Notation.DoubleColon Self "encode_to" := {
       Notation.double_colon
         :=
@@ -1559,8 +1557,7 @@ Module Impl_parity_scale_codec_codec_Encode_for_ink_primitives_types_AccountId.
     Global Instance ℐ : parity_scale_codec.codec.Encode.Required.Trait Self := {
       parity_scale_codec.codec.Encode.encode_to
         {__CodecOutputEdqy : Set}
-        {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
-        {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy} :=
+        {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy} :=
         Datatypes.Some (encode_to (__CodecOutputEdqy := __CodecOutputEdqy));
       parity_scale_codec.codec.Encode.encode := Datatypes.Some encode;
       parity_scale_codec.codec.Encode.using_encoded
@@ -2154,14 +2151,12 @@ Module Impl_parity_scale_codec_codec_Encode_for_ink_primitives_types_Hash.
     Parameter encode_to :
         forall
           {__CodecOutputEdqy : Set}
-          {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
-          {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy},
+          {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy},
         (ref Self) -> (mut_ref __CodecOutputEdqy) -> M unit.
     
     Global Instance AssociatedFunction_encode_to
         {__CodecOutputEdqy : Set}
-        {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
-        {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy} :
+        {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy} :
       Notation.DoubleColon Self "encode_to" := {
       Notation.double_colon
         :=
@@ -2197,8 +2192,7 @@ Module Impl_parity_scale_codec_codec_Encode_for_ink_primitives_types_Hash.
     Global Instance ℐ : parity_scale_codec.codec.Encode.Required.Trait Self := {
       parity_scale_codec.codec.Encode.encode_to
         {__CodecOutputEdqy : Set}
-        {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
-        {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy} :=
+        {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy} :=
         Datatypes.Some (encode_to (__CodecOutputEdqy := __CodecOutputEdqy));
       parity_scale_codec.codec.Encode.encode := Datatypes.Some encode;
       parity_scale_codec.codec.Encode.using_encoded
@@ -2572,14 +2566,12 @@ Module Impl_parity_scale_codec_codec_Encode_for_ink_primitives_LangError.
     Parameter encode_to :
         forall
           {__CodecOutputEdqy : Set}
-          {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
-          {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy},
+          {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy},
         (ref Self) -> (mut_ref __CodecOutputEdqy) -> M unit.
     
     Global Instance AssociatedFunction_encode_to
         {__CodecOutputEdqy : Set}
-        {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
-        {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy} :
+        {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy} :
       Notation.DoubleColon Self "encode_to" := {
       Notation.double_colon
         :=
@@ -2589,8 +2581,7 @@ Module Impl_parity_scale_codec_codec_Encode_for_ink_primitives_LangError.
     Global Instance ℐ : parity_scale_codec.codec.Encode.Required.Trait Self := {
       parity_scale_codec.codec.Encode.encode_to
         {__CodecOutputEdqy : Set}
-        {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
-        {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy} :=
+        {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy} :=
         Datatypes.Some (encode_to (__CodecOutputEdqy := __CodecOutputEdqy));
       parity_scale_codec.codec.Encode.TYPE_INFO := Datatypes.None;
       parity_scale_codec.codec.Encode.size_hint := Datatypes.None;
