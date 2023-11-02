@@ -64,7 +64,11 @@ Module Impl_core_error_Error_for_wrapping_errors_DoubleError.
     }.
     
     Global Instance ℐ : core.error.Error.Required.Trait Self := {
-      core.error.Error.source := source;
+      core.error.Error.source := Datatypes.Some source;
+      core.error.Error.type_id := Datatypes.None;
+      core.error.Error.description := Datatypes.None;
+      core.error.Error.cause := Datatypes.None;
+      core.error.Error.provide := Datatypes.None;
     }.
   End Impl_core_error_Error_for_wrapping_errors_DoubleError.
 End Impl_core_error_Error_for_wrapping_errors_DoubleError.

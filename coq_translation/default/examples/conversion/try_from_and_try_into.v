@@ -89,6 +89,7 @@ Module Impl_core_cmp_PartialEq_for_try_from_and_try_into_EvenNumber.
       core.cmp.PartialEq.Required.Trait Self
         (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
       core.cmp.PartialEq.eq := eq;
+      core.cmp.PartialEq.ne := Datatypes.None;
     }.
   End Impl_core_cmp_PartialEq_for_try_from_and_try_into_EvenNumber.
 End Impl_core_cmp_PartialEq_for_try_from_and_try_into_EvenNumber.

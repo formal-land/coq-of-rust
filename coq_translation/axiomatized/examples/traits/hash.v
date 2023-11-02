@@ -55,6 +55,7 @@ Module Impl_core_hash_Hash_for_hash_Person.
     Global Instance ℐ : core.hash.Hash.Required.Trait Self := {
       core.hash.Hash.hash {__H : Set} {ℋ_0 : core.hash.Hasher.Trait __H} :=
         hash (__H := __H);
+      core.hash.Hash.hash_slice := Datatypes.None;
     }.
   End Impl_core_hash_Hash_for_hash_Person.
 End Impl_core_hash_Hash_for_hash_Person.

@@ -937,6 +937,7 @@ Module erc20.
       Global Instance ℐ : core.hash.Hash.Required.Trait Self := {
         core.hash.Hash.hash {__H : Set} {ℋ_0 : core.hash.Hasher.Trait __H} :=
           hash (__H := __H);
+        core.hash.Hash.hash_slice := Datatypes.None;
       }.
     End Impl_core_hash_Hash_for_erc20_erc20_Erc20Ref.
   End Impl_core_hash_Hash_for_erc20_erc20_Erc20Ref.
@@ -983,6 +984,7 @@ Module erc20.
         core.cmp.PartialEq.Required.Trait Self
           (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
         core.cmp.PartialEq.eq := eq;
+        core.cmp.PartialEq.ne := Datatypes.None;
       }.
     End Impl_core_cmp_PartialEq_for_erc20_erc20_Erc20Ref.
   End Impl_core_cmp_PartialEq_for_erc20_erc20_Erc20Ref.
@@ -1014,7 +1016,8 @@ Module erc20.
       }.
       
       Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
-        core.cmp.Eq.assert_receiver_is_total_eq := assert_receiver_is_total_eq;
+        core.cmp.Eq.assert_receiver_is_total_eq :=
+          Datatypes.Some assert_receiver_is_total_eq;
       }.
     End Impl_core_cmp_Eq_for_erc20_erc20_Erc20Ref.
   End Impl_core_cmp_Eq_for_erc20_erc20_Erc20Ref.
@@ -1045,6 +1048,7 @@ Module erc20.
       
       Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
         core.clone.Clone.clone := clone;
+        core.clone.Clone.clone_from := Datatypes.None;
       }.
     End Impl_core_clone_Clone_for_erc20_erc20_Erc20Ref.
   End Impl_core_clone_Clone_for_erc20_erc20_Erc20Ref.
@@ -2027,6 +2031,7 @@ Module erc20.
         core.cmp.PartialEq.Required.Trait Self
           (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
         core.cmp.PartialEq.eq := eq;
+        core.cmp.PartialEq.ne := Datatypes.None;
       }.
     End Impl_core_cmp_PartialEq_for_erc20_erc20_Error.
   End Impl_core_cmp_PartialEq_for_erc20_erc20_Error.
@@ -2057,7 +2062,8 @@ Module erc20.
       }.
       
       Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
-        core.cmp.Eq.assert_receiver_is_total_eq := assert_receiver_is_total_eq;
+        core.cmp.Eq.assert_receiver_is_total_eq :=
+          Datatypes.Some assert_receiver_is_total_eq;
       }.
     End Impl_core_cmp_Eq_for_erc20_erc20_Error.
   End Impl_core_cmp_Eq_for_erc20_erc20_Error.
@@ -2268,6 +2274,7 @@ Module Impl_ink_storage_traits_storage_StorageKey_for_erc20_erc20_Erc20.
     Global Instance ℐ :
       ink_storage_traits.storage.StorageKey.Required.Trait Self := {
       ink_storage_traits.storage.StorageKey.KEY := KEY;
+      ink_storage_traits.storage.StorageKey.key := Datatypes.None;
     }.
   End Impl_ink_storage_traits_storage_StorageKey_for_erc20_erc20_Erc20.
 End Impl_ink_storage_traits_storage_StorageKey_for_erc20_erc20_Erc20.
@@ -3047,7 +3054,12 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20___ink_EventBase.
         {__CodecOutputEdqy : Set}
         {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
         {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy} :=
-        encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
+        Datatypes.Some (encode_to (__CodecOutputEdqy := __CodecOutputEdqy));
+      parity_scale_codec.codec.Encode.TYPE_INFO := Datatypes.None;
+      parity_scale_codec.codec.Encode.size_hint := Datatypes.None;
+      parity_scale_codec.codec.Encode.encode := Datatypes.None;
+      parity_scale_codec.codec.Encode.using_encoded := Datatypes.None;
+      parity_scale_codec.codec.Encode.encoded_size := Datatypes.None;
     }.
   End Impl_parity_scale_codec_codec_Encode_for_erc20_erc20___ink_EventBase.
 End Impl_parity_scale_codec_codec_Encode_for_erc20_erc20___ink_EventBase.
@@ -3225,6 +3237,10 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___ink_EventBase.
         {__CodecInputEdqy : Set}
         {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :=
         decode (__CodecInputEdqy := __CodecInputEdqy);
+      parity_scale_codec.codec.Decode.TYPE_INFO := Datatypes.None;
+      parity_scale_codec.codec.Decode.decode_into := Datatypes.None;
+      parity_scale_codec.codec.Decode.skip := Datatypes.None;
+      parity_scale_codec.codec.Decode.encoded_fixed_size := Datatypes.None;
     }.
   End Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___ink_EventBase.
 End Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___ink_EventBase.
@@ -3524,7 +3540,12 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Transfer.
         {__CodecOutputEdqy : Set}
         {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
         {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy} :=
-        encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
+        Datatypes.Some (encode_to (__CodecOutputEdqy := __CodecOutputEdqy));
+      parity_scale_codec.codec.Encode.TYPE_INFO := Datatypes.None;
+      parity_scale_codec.codec.Encode.size_hint := Datatypes.None;
+      parity_scale_codec.codec.Encode.encode := Datatypes.None;
+      parity_scale_codec.codec.Encode.using_encoded := Datatypes.None;
+      parity_scale_codec.codec.Encode.encoded_size := Datatypes.None;
     }.
   End Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Transfer.
 End Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Transfer.
@@ -3632,6 +3653,10 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Transfer.
         {__CodecInputEdqy : Set}
         {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :=
         decode (__CodecInputEdqy := __CodecInputEdqy);
+      parity_scale_codec.codec.Decode.TYPE_INFO := Datatypes.None;
+      parity_scale_codec.codec.Decode.decode_into := Datatypes.None;
+      parity_scale_codec.codec.Decode.skip := Datatypes.None;
+      parity_scale_codec.codec.Decode.encoded_fixed_size := Datatypes.None;
     }.
   End Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Transfer.
 End Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Transfer.
@@ -3739,7 +3764,12 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Approval.
         {__CodecOutputEdqy : Set}
         {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
         {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy} :=
-        encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
+        Datatypes.Some (encode_to (__CodecOutputEdqy := __CodecOutputEdqy));
+      parity_scale_codec.codec.Encode.TYPE_INFO := Datatypes.None;
+      parity_scale_codec.codec.Encode.size_hint := Datatypes.None;
+      parity_scale_codec.codec.Encode.encode := Datatypes.None;
+      parity_scale_codec.codec.Encode.using_encoded := Datatypes.None;
+      parity_scale_codec.codec.Encode.encoded_size := Datatypes.None;
     }.
   End Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Approval.
 End Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Approval.
@@ -3847,6 +3877,10 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Approval.
         {__CodecInputEdqy : Set}
         {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :=
         decode (__CodecInputEdqy := __CodecInputEdqy);
+      parity_scale_codec.codec.Decode.TYPE_INFO := Datatypes.None;
+      parity_scale_codec.codec.Decode.decode_into := Datatypes.None;
+      parity_scale_codec.codec.Decode.skip := Datatypes.None;
+      parity_scale_codec.codec.Decode.encoded_fixed_size := Datatypes.None;
     }.
   End Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Approval.
 End Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Approval.
@@ -4866,6 +4900,10 @@ Module
         {I : Set}
         {ℋ_0 : parity_scale_codec.codec.Input.Trait I} :=
         decode (I := I);
+      parity_scale_codec.codec.Decode.TYPE_INFO := Datatypes.None;
+      parity_scale_codec.codec.Decode.decode_into := Datatypes.None;
+      parity_scale_codec.codec.Decode.skip := Datatypes.None;
+      parity_scale_codec.codec.Decode.encoded_fixed_size := Datatypes.None;
     }.
   End
     Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_____ink_ConstructorDecoder.
@@ -5493,6 +5531,10 @@ Module
         {I : Set}
         {ℋ_0 : parity_scale_codec.codec.Input.Trait I} :=
         decode (I := I);
+      parity_scale_codec.codec.Decode.TYPE_INFO := Datatypes.None;
+      parity_scale_codec.codec.Decode.decode_into := Datatypes.None;
+      parity_scale_codec.codec.Decode.skip := Datatypes.None;
+      parity_scale_codec.codec.Decode.encoded_fixed_size := Datatypes.None;
     }.
   End
     Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_____ink_MessageDecoder.
@@ -7162,14 +7204,17 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20___CallBuilder.
         {__CodecOutputEdqy : Set}
         {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
         {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy} :=
-        encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
-      parity_scale_codec.codec.Encode.encode := encode;
+        Datatypes.Some (encode_to (__CodecOutputEdqy := __CodecOutputEdqy));
+      parity_scale_codec.codec.Encode.encode := Datatypes.Some encode;
       parity_scale_codec.codec.Encode.using_encoded
         {R F : Set}
         {ℋ_0 :
           core.ops.function.FnOnce.Trait F
             (Args := ref (Slice CoqOfRust.core.primitive.u8))} :=
-        using_encoded (R := R) (F := F);
+        Datatypes.Some (using_encoded (R := R) (F := F));
+      parity_scale_codec.codec.Encode.TYPE_INFO := Datatypes.None;
+      parity_scale_codec.codec.Encode.size_hint := Datatypes.None;
+      parity_scale_codec.codec.Encode.encoded_size := Datatypes.None;
     }.
   End Impl_parity_scale_codec_codec_Encode_for_erc20_erc20___CallBuilder.
 End Impl_parity_scale_codec_codec_Encode_for_erc20_erc20___CallBuilder.
@@ -7408,7 +7453,10 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___CallBuilder.
       parity_scale_codec.codec.Decode.decode_into
         {__CodecInputEdqy : Set}
         {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :=
-        decode_into (__CodecInputEdqy := __CodecInputEdqy);
+        Datatypes.Some (decode_into (__CodecInputEdqy := __CodecInputEdqy));
+      parity_scale_codec.codec.Decode.TYPE_INFO := Datatypes.None;
+      parity_scale_codec.codec.Decode.skip := Datatypes.None;
+      parity_scale_codec.codec.Decode.encoded_fixed_size := Datatypes.None;
     }.
   End Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___CallBuilder.
 End Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___CallBuilder.
@@ -7448,6 +7496,7 @@ Module Impl_core_hash_Hash_for_erc20_erc20___CallBuilder.
     Global Instance ℐ : core.hash.Hash.Required.Trait Self := {
       core.hash.Hash.hash {__H : Set} {ℋ_0 : core.hash.Hasher.Trait __H} :=
         hash (__H := __H);
+      core.hash.Hash.hash_slice := Datatypes.None;
     }.
   End Impl_core_hash_Hash_for_erc20_erc20___CallBuilder.
 End Impl_core_hash_Hash_for_erc20_erc20___CallBuilder.
@@ -7493,6 +7542,7 @@ Module Impl_core_cmp_PartialEq_for_erc20_erc20___CallBuilder.
       core.cmp.PartialEq.Required.Trait Self
         (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
       core.cmp.PartialEq.eq := eq;
+      core.cmp.PartialEq.ne := Datatypes.None;
     }.
   End Impl_core_cmp_PartialEq_for_erc20_erc20___CallBuilder.
 End Impl_core_cmp_PartialEq_for_erc20_erc20___CallBuilder.
@@ -7524,7 +7574,8 @@ Module Impl_core_cmp_Eq_for_erc20_erc20___CallBuilder.
     }.
     
     Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
-      core.cmp.Eq.assert_receiver_is_total_eq := assert_receiver_is_total_eq;
+      core.cmp.Eq.assert_receiver_is_total_eq :=
+        Datatypes.Some assert_receiver_is_total_eq;
     }.
   End Impl_core_cmp_Eq_for_erc20_erc20___CallBuilder.
 End Impl_core_cmp_Eq_for_erc20_erc20___CallBuilder.
@@ -7555,6 +7606,7 @@ Module Impl_core_clone_Clone_for_erc20_erc20___CallBuilder.
     
     Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
       core.clone.Clone.clone := clone;
+      core.clone.Clone.clone_from := Datatypes.None;
     }.
   End Impl_core_clone_Clone_for_erc20_erc20___CallBuilder.
 End Impl_core_clone_Clone_for_erc20_erc20___CallBuilder.
@@ -8668,14 +8720,17 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Erc20Ref.
         {__CodecOutputEdqy : Set}
         {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
         {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy} :=
-        encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
-      parity_scale_codec.codec.Encode.encode := encode;
+        Datatypes.Some (encode_to (__CodecOutputEdqy := __CodecOutputEdqy));
+      parity_scale_codec.codec.Encode.encode := Datatypes.Some encode;
       parity_scale_codec.codec.Encode.using_encoded
         {R F : Set}
         {ℋ_0 :
           core.ops.function.FnOnce.Trait F
             (Args := ref (Slice CoqOfRust.core.primitive.u8))} :=
-        using_encoded (R := R) (F := F);
+        Datatypes.Some (using_encoded (R := R) (F := F));
+      parity_scale_codec.codec.Encode.TYPE_INFO := Datatypes.None;
+      parity_scale_codec.codec.Encode.size_hint := Datatypes.None;
+      parity_scale_codec.codec.Encode.encoded_size := Datatypes.None;
     }.
   End Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Erc20Ref.
 End Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Erc20Ref.
@@ -8739,6 +8794,10 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Erc20Ref.
         {__CodecInputEdqy : Set}
         {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :=
         decode (__CodecInputEdqy := __CodecInputEdqy);
+      parity_scale_codec.codec.Decode.TYPE_INFO := Datatypes.None;
+      parity_scale_codec.codec.Decode.decode_into := Datatypes.None;
+      parity_scale_codec.codec.Decode.skip := Datatypes.None;
+      parity_scale_codec.codec.Decode.encoded_fixed_size := Datatypes.None;
     }.
   End Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Erc20Ref.
 End Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Erc20Ref.
@@ -8778,6 +8837,7 @@ Module Impl_core_hash_Hash_for_erc20_erc20_Erc20Ref.
     Global Instance ℐ : core.hash.Hash.Required.Trait Self := {
       core.hash.Hash.hash {__H : Set} {ℋ_0 : core.hash.Hasher.Trait __H} :=
         hash (__H := __H);
+      core.hash.Hash.hash_slice := Datatypes.None;
     }.
   End Impl_core_hash_Hash_for_erc20_erc20_Erc20Ref.
 End Impl_core_hash_Hash_for_erc20_erc20_Erc20Ref.
@@ -8823,6 +8883,7 @@ Module Impl_core_cmp_PartialEq_for_erc20_erc20_Erc20Ref.
       core.cmp.PartialEq.Required.Trait Self
         (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
       core.cmp.PartialEq.eq := eq;
+      core.cmp.PartialEq.ne := Datatypes.None;
     }.
   End Impl_core_cmp_PartialEq_for_erc20_erc20_Erc20Ref.
 End Impl_core_cmp_PartialEq_for_erc20_erc20_Erc20Ref.
@@ -8854,7 +8915,8 @@ Module Impl_core_cmp_Eq_for_erc20_erc20_Erc20Ref.
     }.
     
     Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
-      core.cmp.Eq.assert_receiver_is_total_eq := assert_receiver_is_total_eq;
+      core.cmp.Eq.assert_receiver_is_total_eq :=
+        Datatypes.Some assert_receiver_is_total_eq;
     }.
   End Impl_core_cmp_Eq_for_erc20_erc20_Erc20Ref.
 End Impl_core_cmp_Eq_for_erc20_erc20_Erc20Ref.
@@ -8885,6 +8947,7 @@ Module Impl_core_clone_Clone_for_erc20_erc20_Erc20Ref.
     
     Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
       core.clone.Clone.clone := clone;
+      core.clone.Clone.clone_from := Datatypes.None;
     }.
   End Impl_core_clone_Clone_for_erc20_erc20_Erc20Ref.
 End Impl_core_clone_Clone_for_erc20_erc20_Erc20Ref.
@@ -9050,6 +9113,9 @@ Module
       ink_env.call.create_builder.ConstructorReturnType.Output := Output;
       ink_env.call.create_builder.ConstructorReturnType.Error := Error;
       ink_env.call.create_builder.ConstructorReturnType.ok := ok;
+      ink_env.call.create_builder.ConstructorReturnType.IS_RESULT :=
+        Datatypes.None;
+      ink_env.call.create_builder.ConstructorReturnType.err := Datatypes.None;
     }.
   End
     Impl_ink_env_call_create_builder_ConstructorReturnType_erc20_erc20_Erc20Ref_for_erc20_erc20_Erc20.
@@ -9097,11 +9163,13 @@ Module
     Global Instance ℐ :
       ink_env.call.create_builder.ConstructorReturnType.Required.Trait Self
         (C := erc20.erc20.Erc20Ref) := {
-      ink_env.call.create_builder.ConstructorReturnType.IS_RESULT := IS_RESULT;
+      ink_env.call.create_builder.ConstructorReturnType.IS_RESULT :=
+        Datatypes.Some IS_RESULT;
       ink_env.call.create_builder.ConstructorReturnType.Output := Output;
       ink_env.call.create_builder.ConstructorReturnType.Error := Error;
       ink_env.call.create_builder.ConstructorReturnType.ok := ok;
-      ink_env.call.create_builder.ConstructorReturnType.err := err;
+      ink_env.call.create_builder.ConstructorReturnType.err :=
+        Datatypes.Some err;
     }.
   End
     Impl_ink_env_call_create_builder_ConstructorReturnType_erc20_erc20_Erc20Ref_for_core_result_Result_erc20_erc20_Erc20_E.
@@ -11937,6 +12005,7 @@ Module Impl_core_cmp_PartialEq_for_erc20_erc20_Error.
       core.cmp.PartialEq.Required.Trait Self
         (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
       core.cmp.PartialEq.eq := eq;
+      core.cmp.PartialEq.ne := Datatypes.None;
     }.
   End Impl_core_cmp_PartialEq_for_erc20_erc20_Error.
 End Impl_core_cmp_PartialEq_for_erc20_erc20_Error.
@@ -11967,7 +12036,8 @@ Module Impl_core_cmp_Eq_for_erc20_erc20_Error.
     }.
     
     Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
-      core.cmp.Eq.assert_receiver_is_total_eq := assert_receiver_is_total_eq;
+      core.cmp.Eq.assert_receiver_is_total_eq :=
+        Datatypes.Some assert_receiver_is_total_eq;
     }.
   End Impl_core_cmp_Eq_for_erc20_erc20_Error.
 End Impl_core_cmp_Eq_for_erc20_erc20_Error.
@@ -12029,7 +12099,12 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Error.
         {__CodecOutputEdqy : Set}
         {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
         {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy} :=
-        encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
+        Datatypes.Some (encode_to (__CodecOutputEdqy := __CodecOutputEdqy));
+      parity_scale_codec.codec.Encode.TYPE_INFO := Datatypes.None;
+      parity_scale_codec.codec.Encode.size_hint := Datatypes.None;
+      parity_scale_codec.codec.Encode.encode := Datatypes.None;
+      parity_scale_codec.codec.Encode.using_encoded := Datatypes.None;
+      parity_scale_codec.codec.Encode.encoded_size := Datatypes.None;
     }.
   End Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Error.
 End Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Error.
@@ -12161,6 +12236,10 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Error.
         {__CodecInputEdqy : Set}
         {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :=
         decode (__CodecInputEdqy := __CodecInputEdqy);
+      parity_scale_codec.codec.Decode.TYPE_INFO := Datatypes.None;
+      parity_scale_codec.codec.Decode.decode_into := Datatypes.None;
+      parity_scale_codec.codec.Decode.skip := Datatypes.None;
+      parity_scale_codec.codec.Decode.encoded_fixed_size := Datatypes.None;
     }.
   End Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Error.
 End Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Error.

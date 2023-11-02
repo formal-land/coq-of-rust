@@ -106,6 +106,7 @@ Module xts.
       
       Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
         core.clone.Clone.clone := clone;
+        core.clone.Clone.clone_from := Datatypes.None;
       }.
     End Impl_core_clone_Clone_for_ink_e2e_xts_Weight.
   End Impl_core_clone_Clone_for_ink_e2e_xts_Weight.
@@ -149,6 +150,7 @@ Module xts.
         core.cmp.PartialEq.Required.Trait Self
           (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
         core.cmp.PartialEq.eq := eq;
+        core.cmp.PartialEq.ne := Datatypes.None;
       }.
     End Impl_core_cmp_PartialEq_for_ink_e2e_xts_Weight.
   End Impl_core_cmp_PartialEq_for_ink_e2e_xts_Weight.
@@ -167,7 +169,8 @@ Module xts.
       }.
       
       Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
-        core.cmp.Eq.assert_receiver_is_total_eq := assert_receiver_is_total_eq;
+        core.cmp.Eq.assert_receiver_is_total_eq :=
+          Datatypes.Some assert_receiver_is_total_eq;
       }.
     End Impl_core_cmp_Eq_for_ink_e2e_xts_Weight.
   End Impl_core_cmp_Eq_for_ink_e2e_xts_Weight.
@@ -244,6 +247,7 @@ Module xts.
       
       Global Instance ℐ : scale_encode.EncodeAsType.Required.Trait Self := {
         scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
+        scale_encode.EncodeAsType.encode_as_type := Datatypes.None;
       }.
     End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Weight.
   End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Weight.
@@ -268,6 +272,9 @@ Module xts.
       
       Global Instance ℐ : scale_encode.EncodeAsFields.Required.Trait Self := {
         scale_encode.EncodeAsFields.encode_as_fields_to := encode_as_fields_to;
+        scale_encode.EncodeAsFields.encode_as_fields := Datatypes.None;
+        scale_encode.EncodeAsFields.encode_as_field_ids_to := Datatypes.None;
+        scale_encode.EncodeAsFields.encode_as_field_ids := Datatypes.None;
       }.
     End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Weight.
   End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Weight.
@@ -439,6 +446,7 @@ Module xts.
       
       Global Instance ℐ : scale_encode.EncodeAsType.Required.Trait Self := {
         scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
+        scale_encode.EncodeAsType.encode_as_type := Datatypes.None;
       }.
     End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_InstantiateWithCode_E.
   End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_InstantiateWithCode_E.
@@ -467,6 +475,9 @@ Module xts.
       
       Global Instance ℐ : scale_encode.EncodeAsFields.Required.Trait Self := {
         scale_encode.EncodeAsFields.encode_as_fields_to := encode_as_fields_to;
+        scale_encode.EncodeAsFields.encode_as_fields := Datatypes.None;
+        scale_encode.EncodeAsFields.encode_as_field_ids_to := Datatypes.None;
+        scale_encode.EncodeAsFields.encode_as_field_ids := Datatypes.None;
       }.
     End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_InstantiateWithCode_E.
   End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_InstantiateWithCode_E.
@@ -585,6 +596,7 @@ Module xts.
       
       Global Instance ℐ : scale_encode.EncodeAsType.Required.Trait Self := {
         scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
+        scale_encode.EncodeAsType.encode_as_type := Datatypes.None;
       }.
     End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Call_E.
   End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Call_E.
@@ -612,6 +624,9 @@ Module xts.
       
       Global Instance ℐ : scale_encode.EncodeAsFields.Required.Trait Self := {
         scale_encode.EncodeAsFields.encode_as_fields_to := encode_as_fields_to;
+        scale_encode.EncodeAsFields.encode_as_fields := Datatypes.None;
+        scale_encode.EncodeAsFields.encode_as_field_ids_to := Datatypes.None;
+        scale_encode.EncodeAsFields.encode_as_field_ids := Datatypes.None;
       }.
     End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Call_E.
   End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Call_E.
@@ -710,6 +725,7 @@ Module xts.
       
       Global Instance ℐ : scale_encode.EncodeAsType.Required.Trait Self := {
         scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
+        scale_encode.EncodeAsType.encode_as_type := Datatypes.None;
       }.
     End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Transfer_E_C.
   End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Transfer_E_C.
@@ -739,6 +755,9 @@ Module xts.
       
       Global Instance ℐ : scale_encode.EncodeAsFields.Required.Trait Self := {
         scale_encode.EncodeAsFields.encode_as_fields_to := encode_as_fields_to;
+        scale_encode.EncodeAsFields.encode_as_fields := Datatypes.None;
+        scale_encode.EncodeAsFields.encode_as_field_ids_to := Datatypes.None;
+        scale_encode.EncodeAsFields.encode_as_field_ids := Datatypes.None;
       }.
     End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Transfer_E_C.
   End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Transfer_E_C.
@@ -787,6 +806,7 @@ Module xts.
       
       Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
         core.clone.Clone.clone := clone;
+        core.clone.Clone.clone_from := Datatypes.None;
       }.
     End Impl_core_clone_Clone_for_ink_e2e_xts_Determinism.
   End Impl_core_clone_Clone_for_ink_e2e_xts_Determinism.
@@ -830,6 +850,7 @@ Module xts.
         core.cmp.PartialEq.Required.Trait Self
           (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
         core.cmp.PartialEq.eq := eq;
+        core.cmp.PartialEq.ne := Datatypes.None;
       }.
     End Impl_core_cmp_PartialEq_for_ink_e2e_xts_Determinism.
   End Impl_core_cmp_PartialEq_for_ink_e2e_xts_Determinism.
@@ -859,7 +880,8 @@ Module xts.
       }.
       
       Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
-        core.cmp.Eq.assert_receiver_is_total_eq := assert_receiver_is_total_eq;
+        core.cmp.Eq.assert_receiver_is_total_eq :=
+          Datatypes.Some assert_receiver_is_total_eq;
       }.
     End Impl_core_cmp_Eq_for_ink_e2e_xts_Determinism.
   End Impl_core_cmp_Eq_for_ink_e2e_xts_Determinism.
@@ -884,6 +906,7 @@ Module xts.
       
       Global Instance ℐ : scale_encode.EncodeAsType.Required.Trait Self := {
         scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
+        scale_encode.EncodeAsType.encode_as_type := Datatypes.None;
       }.
     End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Determinism.
   End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Determinism.
@@ -987,6 +1010,7 @@ Module xts.
       
       Global Instance ℐ : scale_encode.EncodeAsType.Required.Trait Self := {
         scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
+        scale_encode.EncodeAsType.encode_as_type := Datatypes.None;
       }.
     End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_UploadCode_E.
   End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_UploadCode_E.
@@ -1014,6 +1038,9 @@ Module xts.
       
       Global Instance ℐ : scale_encode.EncodeAsFields.Required.Trait Self := {
         scale_encode.EncodeAsFields.encode_as_fields_to := encode_as_fields_to;
+        scale_encode.EncodeAsFields.encode_as_fields := Datatypes.None;
+        scale_encode.EncodeAsFields.encode_as_field_ids_to := Datatypes.None;
+        scale_encode.EncodeAsFields.encode_as_field_ids := Datatypes.None;
       }.
     End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_UploadCode_E.
   End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_UploadCode_E.
@@ -1515,6 +1542,7 @@ Module client.
       
       Global Instance ℐ : scale_encode.EncodeAsType.Required.Trait Self := {
         scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
+        scale_encode.EncodeAsType.encode_as_type := Datatypes.None;
       }.
     End
       Impl_scale_encode_EncodeAsType_for_ink_e2e_client_ContractInstantiatedEvent_E.
@@ -1548,6 +1576,9 @@ Module client.
       
       Global Instance ℐ : scale_encode.EncodeAsFields.Required.Trait Self := {
         scale_encode.EncodeAsFields.encode_as_fields_to := encode_as_fields_to;
+        scale_encode.EncodeAsFields.encode_as_fields := Datatypes.None;
+        scale_encode.EncodeAsFields.encode_as_field_ids_to := Datatypes.None;
+        scale_encode.EncodeAsFields.encode_as_field_ids := Datatypes.None;
       }.
     End
       Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_ContractInstantiatedEvent_E.
@@ -1582,6 +1613,7 @@ Module client.
       Global Instance ℐ : subxt.events.StaticEvent.Required.Trait Self := {
         subxt.events.StaticEvent.PALLET := PALLET;
         subxt.events.StaticEvent.EVENT := EVENT;
+        subxt.events.StaticEvent.is_event := Datatypes.None;
       }.
     End
       Impl_subxt_events_StaticEvent_for_ink_e2e_client_ContractInstantiatedEvent_E.
@@ -1641,6 +1673,7 @@ Module client.
       
       Global Instance ℐ : scale_encode.EncodeAsType.Required.Trait Self := {
         scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
+        scale_encode.EncodeAsType.encode_as_type := Datatypes.None;
       }.
     End Impl_scale_encode_EncodeAsType_for_ink_e2e_client_CodeStoredEvent_E.
   End Impl_scale_encode_EncodeAsType_for_ink_e2e_client_CodeStoredEvent_E.
@@ -1671,6 +1704,9 @@ Module client.
       
       Global Instance ℐ : scale_encode.EncodeAsFields.Required.Trait Self := {
         scale_encode.EncodeAsFields.encode_as_fields_to := encode_as_fields_to;
+        scale_encode.EncodeAsFields.encode_as_fields := Datatypes.None;
+        scale_encode.EncodeAsFields.encode_as_field_ids_to := Datatypes.None;
+        scale_encode.EncodeAsFields.encode_as_field_ids := Datatypes.None;
       }.
     End Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_CodeStoredEvent_E.
   End Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_CodeStoredEvent_E.
@@ -1701,6 +1737,7 @@ Module client.
       Global Instance ℐ : subxt.events.StaticEvent.Required.Trait Self := {
         subxt.events.StaticEvent.PALLET := PALLET;
         subxt.events.StaticEvent.EVENT := EVENT;
+        subxt.events.StaticEvent.is_event := Datatypes.None;
       }.
     End Impl_subxt_events_StaticEvent_for_ink_e2e_client_CodeStoredEvent_E.
   End Impl_subxt_events_StaticEvent_for_ink_e2e_client_CodeStoredEvent_E.
@@ -2199,6 +2236,10 @@ Module
         {__CodecInputEdqy : Set}
         {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :=
         decode (__CodecInputEdqy := __CodecInputEdqy);
+      parity_scale_codec.codec.Decode.TYPE_INFO := Datatypes.None;
+      parity_scale_codec.codec.Decode.decode_into := Datatypes.None;
+      parity_scale_codec.codec.Decode.skip := Datatypes.None;
+      parity_scale_codec.codec.Decode.encoded_fixed_size := Datatypes.None;
     }.
   End
     Impl_parity_scale_codec_codec_Decode_for_ink_e2e_client_ContractInstantiatedEvent_E.
@@ -2243,7 +2284,12 @@ Module
         {__CodecOutputEdqy : Set}
         {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
         {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy} :=
-        encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
+        Datatypes.Some (encode_to (__CodecOutputEdqy := __CodecOutputEdqy));
+      parity_scale_codec.codec.Encode.TYPE_INFO := Datatypes.None;
+      parity_scale_codec.codec.Encode.size_hint := Datatypes.None;
+      parity_scale_codec.codec.Encode.encode := Datatypes.None;
+      parity_scale_codec.codec.Encode.using_encoded := Datatypes.None;
+      parity_scale_codec.codec.Encode.encoded_size := Datatypes.None;
     }.
   End
     Impl_parity_scale_codec_codec_Encode_for_ink_e2e_client_ContractInstantiatedEvent_E.
@@ -2342,8 +2388,35 @@ Module Impl_scale_decode_visitor_Visitor_for_ink_e2e_client___Visitor_E.
     Global Instance ℐ : scale_decode.visitor.Visitor.Required.Trait Self := {
       scale_decode.visitor.Visitor.Error := Error;
       scale_decode.visitor.Visitor.Value := Value;
-      scale_decode.visitor.Visitor.visit_composite := visit_composite;
-      scale_decode.visitor.Visitor.visit_tuple := visit_tuple;
+      scale_decode.visitor.Visitor.visit_composite :=
+        Datatypes.Some visit_composite;
+      scale_decode.visitor.Visitor.visit_tuple := Datatypes.Some visit_tuple;
+      scale_decode.visitor.Visitor.unchecked_decode_as_type := Datatypes.None;
+      scale_decode.visitor.Visitor.visit_unexpected := Datatypes.None;
+      scale_decode.visitor.Visitor.visit_bool := Datatypes.None;
+      scale_decode.visitor.Visitor.visit_char := Datatypes.None;
+      scale_decode.visitor.Visitor.visit_u8 := Datatypes.None;
+      scale_decode.visitor.Visitor.visit_u16 := Datatypes.None;
+      scale_decode.visitor.Visitor.visit_u32 := Datatypes.None;
+      scale_decode.visitor.Visitor.visit_u64 := Datatypes.None;
+      scale_decode.visitor.Visitor.visit_u128 := Datatypes.None;
+      scale_decode.visitor.Visitor.visit_u256 := Datatypes.None;
+      scale_decode.visitor.Visitor.visit_i8 := Datatypes.None;
+      scale_decode.visitor.Visitor.visit_i16 := Datatypes.None;
+      scale_decode.visitor.Visitor.visit_i32 := Datatypes.None;
+      scale_decode.visitor.Visitor.visit_i64 := Datatypes.None;
+      scale_decode.visitor.Visitor.visit_i128 := Datatypes.None;
+      scale_decode.visitor.Visitor.visit_i256 := Datatypes.None;
+      scale_decode.visitor.Visitor.visit_sequence := Datatypes.None;
+      scale_decode.visitor.Visitor.visit_str := Datatypes.None;
+      scale_decode.visitor.Visitor.visit_variant := Datatypes.None;
+      scale_decode.visitor.Visitor.visit_array := Datatypes.None;
+      scale_decode.visitor.Visitor.visit_bitsequence := Datatypes.None;
+      scale_decode.visitor.Visitor.visit_compact_u8 := Datatypes.None;
+      scale_decode.visitor.Visitor.visit_compact_u16 := Datatypes.None;
+      scale_decode.visitor.Visitor.visit_compact_u32 := Datatypes.None;
+      scale_decode.visitor.Visitor.visit_compact_u64 := Datatypes.None;
+      scale_decode.visitor.Visitor.visit_compact_u128 := Datatypes.None;
     }.
   End Impl_scale_decode_visitor_Visitor_for_ink_e2e_client___Visitor_E.
 End Impl_scale_decode_visitor_Visitor_for_ink_e2e_client___Visitor_E.
@@ -2372,6 +2445,7 @@ Module
     
     Global Instance ℐ : scale_decode.DecodeAsFields.Required.Trait Self := {
       scale_decode.DecodeAsFields.decode_as_fields := decode_as_fields;
+      scale_decode.DecodeAsFields.decode_as_field_ids := Datatypes.None;
     }.
   End
     Impl_scale_decode_DecodeAsFields_for_ink_e2e_client_ContractInstantiatedEvent_E.
@@ -2405,6 +2479,7 @@ Module
     
     Global Instance ℐ : scale_encode.EncodeAsType.Required.Trait Self := {
       scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
+      scale_encode.EncodeAsType.encode_as_type := Datatypes.None;
     }.
   End
     Impl_scale_encode_EncodeAsType_for_ink_e2e_client_ContractInstantiatedEvent_E.
@@ -2438,6 +2513,9 @@ Module
     
     Global Instance ℐ : scale_encode.EncodeAsFields.Required.Trait Self := {
       scale_encode.EncodeAsFields.encode_as_fields_to := encode_as_fields_to;
+      scale_encode.EncodeAsFields.encode_as_fields := Datatypes.None;
+      scale_encode.EncodeAsFields.encode_as_field_ids_to := Datatypes.None;
+      scale_encode.EncodeAsFields.encode_as_field_ids := Datatypes.None;
     }.
   End
     Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_ContractInstantiatedEvent_E.
@@ -2472,6 +2550,7 @@ Module
     Global Instance ℐ : subxt.events.StaticEvent.Required.Trait Self := {
       subxt.events.StaticEvent.PALLET := PALLET;
       subxt.events.StaticEvent.EVENT := EVENT;
+      subxt.events.StaticEvent.is_event := Datatypes.None;
     }.
   End
     Impl_subxt_events_StaticEvent_for_ink_e2e_client_ContractInstantiatedEvent_E.
@@ -2537,6 +2616,10 @@ Module
         {__CodecInputEdqy : Set}
         {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :=
         decode (__CodecInputEdqy := __CodecInputEdqy);
+      parity_scale_codec.codec.Decode.TYPE_INFO := Datatypes.None;
+      parity_scale_codec.codec.Decode.decode_into := Datatypes.None;
+      parity_scale_codec.codec.Decode.skip := Datatypes.None;
+      parity_scale_codec.codec.Decode.encoded_fixed_size := Datatypes.None;
     }.
   End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_client_CodeStoredEvent_E.
 End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_client_CodeStoredEvent_E.
@@ -2603,14 +2686,17 @@ Module
         {__CodecOutputEdqy : Set}
         {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
         {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy} :=
-        encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
-      parity_scale_codec.codec.Encode.encode := encode;
+        Datatypes.Some (encode_to (__CodecOutputEdqy := __CodecOutputEdqy));
+      parity_scale_codec.codec.Encode.encode := Datatypes.Some encode;
       parity_scale_codec.codec.Encode.using_encoded
         {R F : Set}
         {ℋ_0 :
           core.ops.function.FnOnce.Trait F
             (Args := ref (Slice CoqOfRust.core.primitive.u8))} :=
-        using_encoded (R := R) (F := F);
+        Datatypes.Some (using_encoded (R := R) (F := F));
+      parity_scale_codec.codec.Encode.TYPE_INFO := Datatypes.None;
+      parity_scale_codec.codec.Encode.size_hint := Datatypes.None;
+      parity_scale_codec.codec.Encode.encoded_size := Datatypes.None;
     }.
   End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_client_CodeStoredEvent_E.
 End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_client_CodeStoredEvent_E.
@@ -2701,8 +2787,35 @@ Module Impl_scale_decode_visitor_Visitor_for_ink_e2e_client___Visitor_E.
     Global Instance ℐ : scale_decode.visitor.Visitor.Required.Trait Self := {
       scale_decode.visitor.Visitor.Error := Error;
       scale_decode.visitor.Visitor.Value := Value;
-      scale_decode.visitor.Visitor.visit_composite := visit_composite;
-      scale_decode.visitor.Visitor.visit_tuple := visit_tuple;
+      scale_decode.visitor.Visitor.visit_composite :=
+        Datatypes.Some visit_composite;
+      scale_decode.visitor.Visitor.visit_tuple := Datatypes.Some visit_tuple;
+      scale_decode.visitor.Visitor.unchecked_decode_as_type := Datatypes.None;
+      scale_decode.visitor.Visitor.visit_unexpected := Datatypes.None;
+      scale_decode.visitor.Visitor.visit_bool := Datatypes.None;
+      scale_decode.visitor.Visitor.visit_char := Datatypes.None;
+      scale_decode.visitor.Visitor.visit_u8 := Datatypes.None;
+      scale_decode.visitor.Visitor.visit_u16 := Datatypes.None;
+      scale_decode.visitor.Visitor.visit_u32 := Datatypes.None;
+      scale_decode.visitor.Visitor.visit_u64 := Datatypes.None;
+      scale_decode.visitor.Visitor.visit_u128 := Datatypes.None;
+      scale_decode.visitor.Visitor.visit_u256 := Datatypes.None;
+      scale_decode.visitor.Visitor.visit_i8 := Datatypes.None;
+      scale_decode.visitor.Visitor.visit_i16 := Datatypes.None;
+      scale_decode.visitor.Visitor.visit_i32 := Datatypes.None;
+      scale_decode.visitor.Visitor.visit_i64 := Datatypes.None;
+      scale_decode.visitor.Visitor.visit_i128 := Datatypes.None;
+      scale_decode.visitor.Visitor.visit_i256 := Datatypes.None;
+      scale_decode.visitor.Visitor.visit_sequence := Datatypes.None;
+      scale_decode.visitor.Visitor.visit_str := Datatypes.None;
+      scale_decode.visitor.Visitor.visit_variant := Datatypes.None;
+      scale_decode.visitor.Visitor.visit_array := Datatypes.None;
+      scale_decode.visitor.Visitor.visit_bitsequence := Datatypes.None;
+      scale_decode.visitor.Visitor.visit_compact_u8 := Datatypes.None;
+      scale_decode.visitor.Visitor.visit_compact_u16 := Datatypes.None;
+      scale_decode.visitor.Visitor.visit_compact_u32 := Datatypes.None;
+      scale_decode.visitor.Visitor.visit_compact_u64 := Datatypes.None;
+      scale_decode.visitor.Visitor.visit_compact_u128 := Datatypes.None;
     }.
   End Impl_scale_decode_visitor_Visitor_for_ink_e2e_client___Visitor_E.
 End Impl_scale_decode_visitor_Visitor_for_ink_e2e_client___Visitor_E.
@@ -2729,6 +2842,7 @@ Module Impl_scale_decode_DecodeAsFields_for_ink_e2e_client_CodeStoredEvent_E.
     
     Global Instance ℐ : scale_decode.DecodeAsFields.Required.Trait Self := {
       scale_decode.DecodeAsFields.decode_as_fields := decode_as_fields;
+      scale_decode.DecodeAsFields.decode_as_field_ids := Datatypes.None;
     }.
   End Impl_scale_decode_DecodeAsFields_for_ink_e2e_client_CodeStoredEvent_E.
 End Impl_scale_decode_DecodeAsFields_for_ink_e2e_client_CodeStoredEvent_E.
@@ -2758,6 +2872,7 @@ Module Impl_scale_encode_EncodeAsType_for_ink_e2e_client_CodeStoredEvent_E.
     
     Global Instance ℐ : scale_encode.EncodeAsType.Required.Trait Self := {
       scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
+      scale_encode.EncodeAsType.encode_as_type := Datatypes.None;
     }.
   End Impl_scale_encode_EncodeAsType_for_ink_e2e_client_CodeStoredEvent_E.
 End Impl_scale_encode_EncodeAsType_for_ink_e2e_client_CodeStoredEvent_E.
@@ -2787,6 +2902,9 @@ Module Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_CodeStoredEvent_E.
     
     Global Instance ℐ : scale_encode.EncodeAsFields.Required.Trait Self := {
       scale_encode.EncodeAsFields.encode_as_fields_to := encode_as_fields_to;
+      scale_encode.EncodeAsFields.encode_as_fields := Datatypes.None;
+      scale_encode.EncodeAsFields.encode_as_field_ids_to := Datatypes.None;
+      scale_encode.EncodeAsFields.encode_as_field_ids := Datatypes.None;
     }.
   End Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_CodeStoredEvent_E.
 End Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_CodeStoredEvent_E.
@@ -2817,6 +2935,7 @@ Module Impl_subxt_events_StaticEvent_for_ink_e2e_client_CodeStoredEvent_E.
     Global Instance ℐ : subxt.events.StaticEvent.Required.Trait Self := {
       subxt.events.StaticEvent.PALLET := PALLET;
       subxt.events.StaticEvent.EVENT := EVENT;
+      subxt.events.StaticEvent.is_event := Datatypes.None;
     }.
   End Impl_subxt_events_StaticEvent_for_ink_e2e_client_CodeStoredEvent_E.
 End Impl_subxt_events_StaticEvent_for_ink_e2e_client_CodeStoredEvent_E.
@@ -3333,6 +3452,7 @@ Module Impl_core_clone_Clone_for_ink_e2e_xts_Weight.
     
     Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
       core.clone.Clone.clone := clone;
+      core.clone.Clone.clone_from := Datatypes.None;
     }.
   End Impl_core_clone_Clone_for_ink_e2e_xts_Weight.
 End Impl_core_clone_Clone_for_ink_e2e_xts_Weight.
@@ -3362,7 +3482,8 @@ Module Impl_core_cmp_Eq_for_ink_e2e_xts_Weight.
     }.
     
     Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
-      core.cmp.Eq.assert_receiver_is_total_eq := assert_receiver_is_total_eq;
+      core.cmp.Eq.assert_receiver_is_total_eq :=
+        Datatypes.Some assert_receiver_is_total_eq;
     }.
   End Impl_core_cmp_Eq_for_ink_e2e_xts_Weight.
 End Impl_core_cmp_Eq_for_ink_e2e_xts_Weight.
@@ -3394,6 +3515,7 @@ Module Impl_core_cmp_PartialEq_for_ink_e2e_xts_Weight.
       core.cmp.PartialEq.Required.Trait Self
         (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
       core.cmp.PartialEq.eq := eq;
+      core.cmp.PartialEq.ne := Datatypes.None;
     }.
   End Impl_core_cmp_PartialEq_for_ink_e2e_xts_Weight.
 End Impl_core_cmp_PartialEq_for_ink_e2e_xts_Weight.
@@ -3465,7 +3587,12 @@ Module Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Weight.
         {__CodecOutputEdqy : Set}
         {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
         {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy} :=
-        encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
+        Datatypes.Some (encode_to (__CodecOutputEdqy := __CodecOutputEdqy));
+      parity_scale_codec.codec.Encode.TYPE_INFO := Datatypes.None;
+      parity_scale_codec.codec.Encode.size_hint := Datatypes.None;
+      parity_scale_codec.codec.Encode.encode := Datatypes.None;
+      parity_scale_codec.codec.Encode.using_encoded := Datatypes.None;
+      parity_scale_codec.codec.Encode.encoded_size := Datatypes.None;
     }.
   End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Weight.
 End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Weight.
@@ -3508,6 +3635,10 @@ Module Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Weight.
         {__CodecInputEdqy : Set}
         {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :=
         decode (__CodecInputEdqy := __CodecInputEdqy);
+      parity_scale_codec.codec.Decode.TYPE_INFO := Datatypes.None;
+      parity_scale_codec.codec.Decode.decode_into := Datatypes.None;
+      parity_scale_codec.codec.Decode.skip := Datatypes.None;
+      parity_scale_codec.codec.Decode.encoded_fixed_size := Datatypes.None;
     }.
   End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Weight.
 End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Weight.
@@ -3557,6 +3688,7 @@ Module Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Weight.
     
     Global Instance ℐ : scale_encode.EncodeAsType.Required.Trait Self := {
       scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
+      scale_encode.EncodeAsType.encode_as_type := Datatypes.None;
     }.
   End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Weight.
 End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Weight.
@@ -3581,6 +3713,9 @@ Module Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Weight.
     
     Global Instance ℐ : scale_encode.EncodeAsFields.Required.Trait Self := {
       scale_encode.EncodeAsFields.encode_as_fields_to := encode_as_fields_to;
+      scale_encode.EncodeAsFields.encode_as_fields := Datatypes.None;
+      scale_encode.EncodeAsFields.encode_as_field_ids_to := Datatypes.None;
+      scale_encode.EncodeAsFields.encode_as_field_ids := Datatypes.None;
     }.
   End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Weight.
 End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Weight.
@@ -3635,6 +3770,7 @@ Module Impl_serde_de_Deserialize_for_ink_e2e_xts_Weight.
         {__D : Set}
         {ℋ_0 : serde.de.Deserializer.Trait __D} :=
         deserialize (__D := __D);
+      serde.de.Deserialize.deserialize_in_place := Datatypes.None;
     }.
   End Impl_serde_de_Deserialize_for_ink_e2e_xts_Weight.
 End Impl_serde_de_Deserialize_for_ink_e2e_xts_Weight.
@@ -3692,13 +3828,38 @@ Module Impl_serde_de_Visitor_for_ink_e2e_xts___deserialize___FieldVisitor.
       serde.de.Visitor.Value := Value;
       serde.de.Visitor.expecting := expecting;
       serde.de.Visitor.visit_u64 {__E : Set} {ℋ_0 : serde.de.Error.Trait __E} :=
-        visit_u64 (__E := __E);
+        Datatypes.Some (visit_u64 (__E := __E));
       serde.de.Visitor.visit_str {__E : Set} {ℋ_0 : serde.de.Error.Trait __E} :=
-        visit_str (__E := __E);
+        Datatypes.Some (visit_str (__E := __E));
       serde.de.Visitor.visit_bytes
         {__E : Set}
         {ℋ_0 : serde.de.Error.Trait __E} :=
-        visit_bytes (__E := __E);
+        Datatypes.Some (visit_bytes (__E := __E));
+      serde.de.Visitor.visit_bool := Datatypes.None;
+      serde.de.Visitor.visit_i8 := Datatypes.None;
+      serde.de.Visitor.visit_i16 := Datatypes.None;
+      serde.de.Visitor.visit_i32 := Datatypes.None;
+      serde.de.Visitor.visit_i64 := Datatypes.None;
+      serde.de.Visitor.visit_i128 := Datatypes.None;
+      serde.de.Visitor.visit_u8 := Datatypes.None;
+      serde.de.Visitor.visit_u16 := Datatypes.None;
+      serde.de.Visitor.visit_u32 := Datatypes.None;
+      serde.de.Visitor.visit_u128 := Datatypes.None;
+      serde.de.Visitor.visit_f32 := Datatypes.None;
+      serde.de.Visitor.visit_f64 := Datatypes.None;
+      serde.de.Visitor.visit_char := Datatypes.None;
+      serde.de.Visitor.visit_borrowed_str := Datatypes.None;
+      serde.de.Visitor.visit_string := Datatypes.None;
+      serde.de.Visitor.visit_borrowed_bytes := Datatypes.None;
+      serde.de.Visitor.visit_byte_buf := Datatypes.None;
+      serde.de.Visitor.visit_none := Datatypes.None;
+      serde.de.Visitor.visit_some := Datatypes.None;
+      serde.de.Visitor.visit_unit := Datatypes.None;
+      serde.de.Visitor.visit_newtype_struct := Datatypes.None;
+      serde.de.Visitor.visit_seq := Datatypes.None;
+      serde.de.Visitor.visit_map := Datatypes.None;
+      serde.de.Visitor.visit_enum := Datatypes.None;
+      serde.de.Visitor.__private_visit_untagged_option := Datatypes.None;
     }.
   End Impl_serde_de_Visitor_for_ink_e2e_xts___deserialize___FieldVisitor.
 End Impl_serde_de_Visitor_for_ink_e2e_xts___deserialize___FieldVisitor.
@@ -3725,6 +3886,7 @@ Module Impl_serde_de_Deserialize_for_ink_e2e_xts___deserialize___Field.
         {__D : Set}
         {ℋ_0 : serde.de.Deserializer.Trait __D} :=
         deserialize (__D := __D);
+      serde.de.Deserialize.deserialize_in_place := Datatypes.None;
     }.
   End Impl_serde_de_Deserialize_for_ink_e2e_xts___deserialize___Field.
 End Impl_serde_de_Deserialize_for_ink_e2e_xts___deserialize___Field.
@@ -3773,11 +3935,37 @@ Module Impl_serde_de_Visitor_for_ink_e2e_xts___deserialize___Visitor.
       serde.de.Visitor.visit_seq
         {__A : Set}
         {ℋ_0 : serde.de.SeqAccess.Trait __A} :=
-        visit_seq (__A := __A);
+        Datatypes.Some (visit_seq (__A := __A));
       serde.de.Visitor.visit_map
         {__A : Set}
         {ℋ_0 : serde.de.MapAccess.Trait __A} :=
-        visit_map (__A := __A);
+        Datatypes.Some (visit_map (__A := __A));
+      serde.de.Visitor.visit_bool := Datatypes.None;
+      serde.de.Visitor.visit_i8 := Datatypes.None;
+      serde.de.Visitor.visit_i16 := Datatypes.None;
+      serde.de.Visitor.visit_i32 := Datatypes.None;
+      serde.de.Visitor.visit_i64 := Datatypes.None;
+      serde.de.Visitor.visit_i128 := Datatypes.None;
+      serde.de.Visitor.visit_u8 := Datatypes.None;
+      serde.de.Visitor.visit_u16 := Datatypes.None;
+      serde.de.Visitor.visit_u32 := Datatypes.None;
+      serde.de.Visitor.visit_u64 := Datatypes.None;
+      serde.de.Visitor.visit_u128 := Datatypes.None;
+      serde.de.Visitor.visit_f32 := Datatypes.None;
+      serde.de.Visitor.visit_f64 := Datatypes.None;
+      serde.de.Visitor.visit_char := Datatypes.None;
+      serde.de.Visitor.visit_str := Datatypes.None;
+      serde.de.Visitor.visit_borrowed_str := Datatypes.None;
+      serde.de.Visitor.visit_string := Datatypes.None;
+      serde.de.Visitor.visit_bytes := Datatypes.None;
+      serde.de.Visitor.visit_borrowed_bytes := Datatypes.None;
+      serde.de.Visitor.visit_byte_buf := Datatypes.None;
+      serde.de.Visitor.visit_none := Datatypes.None;
+      serde.de.Visitor.visit_some := Datatypes.None;
+      serde.de.Visitor.visit_unit := Datatypes.None;
+      serde.de.Visitor.visit_newtype_struct := Datatypes.None;
+      serde.de.Visitor.visit_enum := Datatypes.None;
+      serde.de.Visitor.__private_visit_untagged_option := Datatypes.None;
     }.
   End Impl_serde_de_Visitor_for_ink_e2e_xts___deserialize___Visitor.
 End Impl_serde_de_Visitor_for_ink_e2e_xts___deserialize___Visitor.
@@ -3961,7 +4149,12 @@ Module
         {__CodecOutputEdqy : Set}
         {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
         {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy} :=
-        encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
+        Datatypes.Some (encode_to (__CodecOutputEdqy := __CodecOutputEdqy));
+      parity_scale_codec.codec.Encode.TYPE_INFO := Datatypes.None;
+      parity_scale_codec.codec.Encode.size_hint := Datatypes.None;
+      parity_scale_codec.codec.Encode.encode := Datatypes.None;
+      parity_scale_codec.codec.Encode.using_encoded := Datatypes.None;
+      parity_scale_codec.codec.Encode.encoded_size := Datatypes.None;
     }.
   End
     Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_InstantiateWithCode_E.
@@ -4033,6 +4226,10 @@ Module
         {__CodecInputEdqy : Set}
         {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :=
         decode (__CodecInputEdqy := __CodecInputEdqy);
+      parity_scale_codec.codec.Decode.TYPE_INFO := Datatypes.None;
+      parity_scale_codec.codec.Decode.decode_into := Datatypes.None;
+      parity_scale_codec.codec.Decode.skip := Datatypes.None;
+      parity_scale_codec.codec.Decode.encoded_fixed_size := Datatypes.None;
     }.
   End
     Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_InstantiateWithCode_E.
@@ -4061,6 +4258,7 @@ Module Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_InstantiateWithCode_E.
     
     Global Instance ℐ : scale_encode.EncodeAsType.Required.Trait Self := {
       scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
+      scale_encode.EncodeAsType.encode_as_type := Datatypes.None;
     }.
   End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_InstantiateWithCode_E.
 End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_InstantiateWithCode_E.
@@ -4089,6 +4287,9 @@ Module Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_InstantiateWithCode_E.
     
     Global Instance ℐ : scale_encode.EncodeAsFields.Required.Trait Self := {
       scale_encode.EncodeAsFields.encode_as_fields_to := encode_as_fields_to;
+      scale_encode.EncodeAsFields.encode_as_fields := Datatypes.None;
+      scale_encode.EncodeAsFields.encode_as_field_ids_to := Datatypes.None;
+      scale_encode.EncodeAsFields.encode_as_field_ids := Datatypes.None;
     }.
   End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_InstantiateWithCode_E.
 End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_InstantiateWithCode_E.
@@ -4223,6 +4424,10 @@ Module Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Call_E.
         {__CodecInputEdqy : Set}
         {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :=
         decode (__CodecInputEdqy := __CodecInputEdqy);
+      parity_scale_codec.codec.Decode.TYPE_INFO := Datatypes.None;
+      parity_scale_codec.codec.Decode.decode_into := Datatypes.None;
+      parity_scale_codec.codec.Decode.skip := Datatypes.None;
+      parity_scale_codec.codec.Decode.encoded_fixed_size := Datatypes.None;
     }.
   End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Call_E.
 End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Call_E.
@@ -4272,7 +4477,12 @@ Module Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Call_E.
         {__CodecOutputEdqy : Set}
         {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
         {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy} :=
-        encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
+        Datatypes.Some (encode_to (__CodecOutputEdqy := __CodecOutputEdqy));
+      parity_scale_codec.codec.Encode.TYPE_INFO := Datatypes.None;
+      parity_scale_codec.codec.Encode.size_hint := Datatypes.None;
+      parity_scale_codec.codec.Encode.encode := Datatypes.None;
+      parity_scale_codec.codec.Encode.using_encoded := Datatypes.None;
+      parity_scale_codec.codec.Encode.encoded_size := Datatypes.None;
     }.
   End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Call_E.
 End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Call_E.
@@ -4330,6 +4540,7 @@ Module Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Call_E.
     
     Global Instance ℐ : scale_encode.EncodeAsType.Required.Trait Self := {
       scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
+      scale_encode.EncodeAsType.encode_as_type := Datatypes.None;
     }.
   End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Call_E.
 End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Call_E.
@@ -4357,6 +4568,9 @@ Module Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Call_E.
     
     Global Instance ℐ : scale_encode.EncodeAsFields.Required.Trait Self := {
       scale_encode.EncodeAsFields.encode_as_fields_to := encode_as_fields_to;
+      scale_encode.EncodeAsFields.encode_as_fields := Datatypes.None;
+      scale_encode.EncodeAsFields.encode_as_field_ids_to := Datatypes.None;
+      scale_encode.EncodeAsFields.encode_as_field_ids := Datatypes.None;
     }.
   End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Call_E.
 End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Call_E.
@@ -4465,6 +4679,10 @@ Module Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Transfer_E_C.
         {__CodecInputEdqy : Set}
         {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :=
         decode (__CodecInputEdqy := __CodecInputEdqy);
+      parity_scale_codec.codec.Decode.TYPE_INFO := Datatypes.None;
+      parity_scale_codec.codec.Decode.decode_into := Datatypes.None;
+      parity_scale_codec.codec.Decode.skip := Datatypes.None;
+      parity_scale_codec.codec.Decode.encoded_fixed_size := Datatypes.None;
     }.
   End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Transfer_E_C.
 End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Transfer_E_C.
@@ -4509,7 +4727,12 @@ Module Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Transfer_E_C.
         {__CodecOutputEdqy : Set}
         {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
         {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy} :=
-        encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
+        Datatypes.Some (encode_to (__CodecOutputEdqy := __CodecOutputEdqy));
+      parity_scale_codec.codec.Encode.TYPE_INFO := Datatypes.None;
+      parity_scale_codec.codec.Encode.size_hint := Datatypes.None;
+      parity_scale_codec.codec.Encode.encode := Datatypes.None;
+      parity_scale_codec.codec.Encode.using_encoded := Datatypes.None;
+      parity_scale_codec.codec.Encode.encoded_size := Datatypes.None;
     }.
   End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Transfer_E_C.
 End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Transfer_E_C.
@@ -4567,6 +4790,7 @@ Module Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Transfer_E_C.
     
     Global Instance ℐ : scale_encode.EncodeAsType.Required.Trait Self := {
       scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
+      scale_encode.EncodeAsType.encode_as_type := Datatypes.None;
     }.
   End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Transfer_E_C.
 End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Transfer_E_C.
@@ -4596,6 +4820,9 @@ Module Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Transfer_E_C.
     
     Global Instance ℐ : scale_encode.EncodeAsFields.Required.Trait Self := {
       scale_encode.EncodeAsFields.encode_as_fields_to := encode_as_fields_to;
+      scale_encode.EncodeAsFields.encode_as_fields := Datatypes.None;
+      scale_encode.EncodeAsFields.encode_as_field_ids_to := Datatypes.None;
+      scale_encode.EncodeAsFields.encode_as_field_ids := Datatypes.None;
     }.
   End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Transfer_E_C.
 End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Transfer_E_C.
@@ -4642,6 +4869,7 @@ Module Impl_core_clone_Clone_for_ink_e2e_xts_Determinism.
     
     Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
       core.clone.Clone.clone := clone;
+      core.clone.Clone.clone_from := Datatypes.None;
     }.
   End Impl_core_clone_Clone_for_ink_e2e_xts_Determinism.
 End Impl_core_clone_Clone_for_ink_e2e_xts_Determinism.
@@ -4684,6 +4912,7 @@ Module Impl_core_cmp_PartialEq_for_ink_e2e_xts_Determinism.
       core.cmp.PartialEq.Required.Trait Self
         (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
       core.cmp.PartialEq.eq := eq;
+      core.cmp.PartialEq.ne := Datatypes.None;
     }.
   End Impl_core_cmp_PartialEq_for_ink_e2e_xts_Determinism.
 End Impl_core_cmp_PartialEq_for_ink_e2e_xts_Determinism.
@@ -4713,7 +4942,8 @@ Module Impl_core_cmp_Eq_for_ink_e2e_xts_Determinism.
     }.
     
     Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
-      core.cmp.Eq.assert_receiver_is_total_eq := assert_receiver_is_total_eq;
+      core.cmp.Eq.assert_receiver_is_total_eq :=
+        Datatypes.Some assert_receiver_is_total_eq;
     }.
   End Impl_core_cmp_Eq_for_ink_e2e_xts_Determinism.
 End Impl_core_cmp_Eq_for_ink_e2e_xts_Determinism.
@@ -4771,6 +5001,10 @@ Module Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Determinism.
         {__CodecInputEdqy : Set}
         {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :=
         decode (__CodecInputEdqy := __CodecInputEdqy);
+      parity_scale_codec.codec.Decode.TYPE_INFO := Datatypes.None;
+      parity_scale_codec.codec.Decode.decode_into := Datatypes.None;
+      parity_scale_codec.codec.Decode.skip := Datatypes.None;
+      parity_scale_codec.codec.Decode.encoded_fixed_size := Datatypes.None;
     }.
   End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Determinism.
 End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Determinism.
@@ -4803,7 +5037,12 @@ Module Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Determinism.
         {__CodecOutputEdqy : Set}
         {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
         {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy} :=
-        encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
+        Datatypes.Some (encode_to (__CodecOutputEdqy := __CodecOutputEdqy));
+      parity_scale_codec.codec.Encode.TYPE_INFO := Datatypes.None;
+      parity_scale_codec.codec.Encode.size_hint := Datatypes.None;
+      parity_scale_codec.codec.Encode.encode := Datatypes.None;
+      parity_scale_codec.codec.Encode.using_encoded := Datatypes.None;
+      parity_scale_codec.codec.Encode.encoded_size := Datatypes.None;
     }.
   End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Determinism.
 End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Determinism.
@@ -4844,6 +5083,7 @@ Module Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Determinism.
     
     Global Instance ℐ : scale_encode.EncodeAsType.Required.Trait Self := {
       scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
+      scale_encode.EncodeAsType.encode_as_type := Datatypes.None;
     }.
   End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Determinism.
 End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Determinism.
@@ -4960,7 +5200,12 @@ Module Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_UploadCode_E.
         {__CodecOutputEdqy : Set}
         {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
         {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy} :=
-        encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
+        Datatypes.Some (encode_to (__CodecOutputEdqy := __CodecOutputEdqy));
+      parity_scale_codec.codec.Encode.TYPE_INFO := Datatypes.None;
+      parity_scale_codec.codec.Encode.size_hint := Datatypes.None;
+      parity_scale_codec.codec.Encode.encode := Datatypes.None;
+      parity_scale_codec.codec.Encode.using_encoded := Datatypes.None;
+      parity_scale_codec.codec.Encode.encoded_size := Datatypes.None;
     }.
   End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_UploadCode_E.
 End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_UploadCode_E.
@@ -5026,6 +5271,10 @@ Module Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_UploadCode_E.
         {__CodecInputEdqy : Set}
         {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :=
         decode (__CodecInputEdqy := __CodecInputEdqy);
+      parity_scale_codec.codec.Decode.TYPE_INFO := Datatypes.None;
+      parity_scale_codec.codec.Decode.decode_into := Datatypes.None;
+      parity_scale_codec.codec.Decode.skip := Datatypes.None;
+      parity_scale_codec.codec.Decode.encoded_fixed_size := Datatypes.None;
     }.
   End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_UploadCode_E.
 End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_UploadCode_E.
@@ -5053,6 +5302,7 @@ Module Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_UploadCode_E.
     
     Global Instance ℐ : scale_encode.EncodeAsType.Required.Trait Self := {
       scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
+      scale_encode.EncodeAsType.encode_as_type := Datatypes.None;
     }.
   End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_UploadCode_E.
 End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_UploadCode_E.
@@ -5080,6 +5330,9 @@ Module Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_UploadCode_E.
     
     Global Instance ℐ : scale_encode.EncodeAsFields.Required.Trait Self := {
       scale_encode.EncodeAsFields.encode_as_fields_to := encode_as_fields_to;
+      scale_encode.EncodeAsFields.encode_as_fields := Datatypes.None;
+      scale_encode.EncodeAsFields.encode_as_field_ids_to := Datatypes.None;
+      scale_encode.EncodeAsFields.encode_as_field_ids := Datatypes.None;
     }.
   End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_UploadCode_E.
 End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_UploadCode_E.
@@ -5164,7 +5417,12 @@ Module
         {__CodecOutputEdqy : Set}
         {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
         {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy} :=
-        encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
+        Datatypes.Some (encode_to (__CodecOutputEdqy := __CodecOutputEdqy));
+      parity_scale_codec.codec.Encode.TYPE_INFO := Datatypes.None;
+      parity_scale_codec.codec.Encode.size_hint := Datatypes.None;
+      parity_scale_codec.codec.Encode.encode := Datatypes.None;
+      parity_scale_codec.codec.Encode.using_encoded := Datatypes.None;
+      parity_scale_codec.codec.Encode.encoded_size := Datatypes.None;
     }.
   End
     Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_RpcInstantiateRequest_C_E.
@@ -5282,7 +5540,12 @@ Module
         {__CodecOutputEdqy : Set}
         {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
         {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy} :=
-        encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
+        Datatypes.Some (encode_to (__CodecOutputEdqy := __CodecOutputEdqy));
+      parity_scale_codec.codec.Encode.TYPE_INFO := Datatypes.None;
+      parity_scale_codec.codec.Encode.size_hint := Datatypes.None;
+      parity_scale_codec.codec.Encode.encode := Datatypes.None;
+      parity_scale_codec.codec.Encode.using_encoded := Datatypes.None;
+      parity_scale_codec.codec.Encode.encoded_size := Datatypes.None;
     }.
   End
     Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_RpcCodeUploadRequest_C_E.
@@ -5402,7 +5665,12 @@ Module Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_RpcCallRequest_C_E.
         {__CodecOutputEdqy : Set}
         {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
         {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy} :=
-        encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
+        Datatypes.Some (encode_to (__CodecOutputEdqy := __CodecOutputEdqy));
+      parity_scale_codec.codec.Encode.TYPE_INFO := Datatypes.None;
+      parity_scale_codec.codec.Encode.size_hint := Datatypes.None;
+      parity_scale_codec.codec.Encode.encode := Datatypes.None;
+      parity_scale_codec.codec.Encode.using_encoded := Datatypes.None;
+      parity_scale_codec.codec.Encode.encoded_size := Datatypes.None;
     }.
   End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_RpcCallRequest_C_E.
 End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_RpcCallRequest_C_E.
@@ -5497,7 +5765,12 @@ Module Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Code.
         {__CodecOutputEdqy : Set}
         {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
         {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy} :=
-        encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
+        Datatypes.Some (encode_to (__CodecOutputEdqy := __CodecOutputEdqy));
+      parity_scale_codec.codec.Encode.TYPE_INFO := Datatypes.None;
+      parity_scale_codec.codec.Encode.size_hint := Datatypes.None;
+      parity_scale_codec.codec.Encode.encode := Datatypes.None;
+      parity_scale_codec.codec.Encode.using_encoded := Datatypes.None;
+      parity_scale_codec.codec.Encode.encoded_size := Datatypes.None;
     }.
   End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Code.
 End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Code.

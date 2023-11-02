@@ -33,10 +33,38 @@ Traits
 [x] PartialOrd
 *)
 Module PartialEq.
+  Module Required.
+    Class Trait (Self : Set) {Rhs : Set} `{State.Trait} : Set := {
+      Rhs := Rhs;
+      eq : ref Self -> ref Rhs -> M bool;
+      ne : Datatypes.option (ref Self -> ref Rhs -> M bool);
+    }.
+  End Required.
+
+  Module Provided.
+    Definition ne `{State.Trait} {Self Rhs : Set}
+        {H0 : Required.Trait Self (Rhs := Rhs)} :
+        ref Self -> ref Rhs -> M bool :=
+      match Required.ne with
+      | Datatypes.Some ne => ne
+      | Datatypes.None => fun self other =>
+        let* is_eq := Required.eq self other in
+        let* is_eq := M.read is_eq in
+        M.alloc (negb is_eq)
+      end.
+  End Provided.
+
   Class Trait (Self : Set) {Rhs : Set} `{State.Trait} : Set := {
     Rhs := Rhs;
-
     eq : ref Self -> ref Rhs -> M bool;
+    ne : ref Self -> ref Rhs -> M bool;
+  }.
+
+  Global Instance From_Required (Self Rhs : Set) `{State.Trait}
+      {H0 : Required.Trait Self (Rhs := Rhs)} :
+      Trait Self (Rhs := Rhs) := {
+    eq := Required.eq;
+    ne := Provided.ne;
   }.
 
   Module Default.
@@ -140,7 +168,7 @@ Module PartialOrd.
     ge : ref Self -> ref Rhs -> M bool;
   }.
 
-  Global Instance From_required `{State.Trait} (Self Rhs : Set)
+  Global Instance From_Required `{State.Trait} (Self Rhs : Set)
       {H0 : Required.Trait Self (Rhs := Rhs)} :
       Trait Self (Rhs := Rhs) := {
     partial_cmp := Required.partial_cmp;
@@ -284,14 +312,46 @@ End PartialOrd.
 pub trait Eq: PartialEq<Self> { }
  *)
 Module Eq.
+  Module Required.
+    Unset Primitive Projections.
+    Class Trait `{State.Trait} (Self : Set) : Set := {
+      L0 :: PartialEq.Trait Self (Rhs := PartialEq.Default.Rhs Self);
+      assert_receiver_is_total_eq : Datatypes.option (ref Self -> M unit);
+    }.
+    Global Set Primitive Projections.
+  End Required.
+
+  Module Provided.
+    Definition assert_receiver_is_total_eq `{State.Trait} {Self : Set}
+        {H0 : Required.Trait Self} :
+        ref Self -> M unit :=
+      match Required.assert_receiver_is_total_eq with
+      | Datatypes.Some assert_receiver_is_total_eq =>
+        assert_receiver_is_total_eq
+      | Datatypes.None => fun _ => M.alloc tt
+      end.
+  End Provided.
+
   Unset Primitive Projections.
   Class Trait `{State.Trait} (Self : Set) : Set := {
-    _ :: PartialEq.Trait Self (Rhs := PartialEq.Default.Rhs Self);
+    L0 :: PartialEq.Trait Self (Rhs := PartialEq.Default.Rhs Self);
+    assert_receiver_is_total_eq : ref Self -> M unit;
   }.
-  Set Primitive Projections.
+  Global Set Primitive Projections.
+
+  #[refine]
+  Global Instance From_Required `{State.Trait} (Self : Set)
+      {H0 : Required.Trait Self} :
+      Trait Self := {
+    assert_receiver_is_total_eq := Provided.assert_receiver_is_total_eq;
+  }.
+    match goal with H : _ |- _ => apply H end.
+  Defined.
 
   Module Impl_Eq_for_str.
-    Global Instance I `{State.Trait} : Trait str := {}.
+    Global Instance I `{State.Trait} : Required.Trait str := {
+      assert_receiver_is_total_eq := Datatypes.None;
+    }.
   End Impl_Eq_for_str.
 End Eq.
 
@@ -330,32 +390,3 @@ End Ord.
 [ ] min_by
 [ ] min_by_key
 *)
-
-(* **********IMPLS********** *)
-(*
-// Implementation of PartialEq, Eq, PartialOrd and Ord for primitive types
-*)
-Module Impls.
-  (*
-  impl PartialEq for () {
-      #[inline]
-      fn eq(&self, _other: &()) -> bool {
-          true
-      }
-      #[inline]
-      fn ne(&self, _other: &()) -> bool {
-          false
-      }
-  }
-  *)
-  Module Impl_PartialEq_for_unit.
-    Definition eq `{State.Trait} (x y : ref unit) : M bool :=
-      let* result := M.alloc true in
-      Pure result.
-
-    Global Instance I `{State.Trait} :
-      PartialEq.Trait unit (Rhs := PartialEq.Default.Rhs unit) := {
-      eq := eq;
-    }.
-  End Impl_PartialEq_for_unit.
-End Impls.

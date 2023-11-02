@@ -81,6 +81,11 @@ Module Impl_core_error_Error_for_other_uses_of_question_mark_EmptyVec.
     Definition Self : Set := other_uses_of_question_mark.EmptyVec.
     
     Global Instance ℐ : core.error.Error.Required.Trait Self := {
+      core.error.Error.source := Datatypes.None;
+      core.error.Error.type_id := Datatypes.None;
+      core.error.Error.description := Datatypes.None;
+      core.error.Error.cause := Datatypes.None;
+      core.error.Error.provide := Datatypes.None;
     }.
   End Impl_core_error_Error_for_other_uses_of_question_mark_EmptyVec.
 End Impl_core_error_Error_for_other_uses_of_question_mark_EmptyVec.

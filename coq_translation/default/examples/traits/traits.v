@@ -143,7 +143,7 @@ Module Impl_traits_Animal_for_traits_Sheep.
       traits.Animal.new := new;
       traits.Animal.name := name;
       traits.Animal.noise := noise;
-      traits.Animal.talk := talk;
+      traits.Animal.talk := Datatypes.Some talk;
     }.
   End Impl_traits_Animal_for_traits_Sheep.
 End Impl_traits_Animal_for_traits_Sheep.

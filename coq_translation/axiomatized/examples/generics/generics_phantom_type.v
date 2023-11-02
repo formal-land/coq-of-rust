@@ -66,6 +66,7 @@ Module Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_A_B.
       core.cmp.PartialEq.Required.Trait Self
         (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
       core.cmp.PartialEq.eq := eq;
+      core.cmp.PartialEq.ne := Datatypes.None;
     }.
   End Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_A_B.
 End Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_A_B.
@@ -141,6 +142,7 @@ Module Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
       core.cmp.PartialEq.Required.Trait Self
         (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
       core.cmp.PartialEq.eq := eq;
+      core.cmp.PartialEq.ne := Datatypes.None;
     }.
   End Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
 End Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.

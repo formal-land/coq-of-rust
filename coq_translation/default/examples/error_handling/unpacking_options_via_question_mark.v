@@ -63,6 +63,7 @@ Module Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job.
     
     Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
       core.clone.Clone.clone := clone;
+      core.clone.Clone.clone_from := Datatypes.None;
     }.
   End Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job.
 End Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job.
@@ -127,6 +128,7 @@ Module
     
     Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
       core.clone.Clone.clone := clone;
+      core.clone.Clone.clone_from := Datatypes.None;
     }.
   End Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumber.
 End Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumber.

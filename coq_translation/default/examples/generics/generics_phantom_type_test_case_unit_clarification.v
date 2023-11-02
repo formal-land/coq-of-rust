@@ -57,6 +57,7 @@ Module
     
     Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
       core.clone.Clone.clone := clone;
+      core.clone.Clone.clone_from := Datatypes.None;
     }.
   End
     Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Inch.
@@ -135,6 +136,7 @@ Module
     
     Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
       core.clone.Clone.clone := clone;
+      core.clone.Clone.clone_from := Datatypes.None;
     }.
   End
     Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Mm.
@@ -285,6 +287,7 @@ Module
     
     Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
       core.clone.Clone.clone := clone;
+      core.clone.Clone.clone_from := Datatypes.None;
     }.
   End
     Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.

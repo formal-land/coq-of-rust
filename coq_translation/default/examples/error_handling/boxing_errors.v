@@ -59,6 +59,7 @@ Module Impl_core_clone_Clone_for_boxing_errors_EmptyVec.
     
     Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
       core.clone.Clone.clone := clone;
+      core.clone.Clone.clone_from := Datatypes.None;
     }.
   End Impl_core_clone_Clone_for_boxing_errors_EmptyVec.
 End Impl_core_clone_Clone_for_boxing_errors_EmptyVec.
@@ -101,6 +102,11 @@ Module Impl_core_error_Error_for_boxing_errors_EmptyVec.
     Definition Self : Set := boxing_errors.EmptyVec.
     
     Global Instance ℐ : core.error.Error.Required.Trait Self := {
+      core.error.Error.source := Datatypes.None;
+      core.error.Error.type_id := Datatypes.None;
+      core.error.Error.description := Datatypes.None;
+      core.error.Error.cause := Datatypes.None;
+      core.error.Error.provide := Datatypes.None;
     }.
   End Impl_core_error_Error_for_boxing_errors_EmptyVec.
 End Impl_core_error_Error_for_boxing_errors_EmptyVec.

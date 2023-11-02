@@ -2215,16 +2215,12 @@ impl TopLevelItem {
                                 vec![coq::TopLevelItem::Line],
                                 items
                                     .iter()
-                                    .filter_map(|(name, item)| {
-                                        match item {
-                                            FieldWithDefault::RequiredValue(item) | FieldWithDefault::OptionalValue(item) =>
-                                            Some(vec![
-                                                coq::TopLevelItem::Code(item.to_doc(name)),
-                                                coq::TopLevelItem::Line,
-                                            ]),
-                                            FieldWithDefault::Default => None,
-                                        }
-                                    })
+                                    .filter_map(|(name, item)|
+                                        Into::<Option<_>>::into(item).map(|item: &ImplItem| vec![
+                                            coq::TopLevelItem::Code(item.to_doc(name)),
+                                            coq::TopLevelItem::Line,
+                                        ])
+                                    )
                                     .concat(),
                                 vec![coq::TopLevelItem::Instance(coq::Instance::new(
                                     "ℐ",
@@ -2264,16 +2260,13 @@ impl TopLevelItem {
                                     &coq::Expression::Record {
                                         fields: items
                                             .iter()
-                                            .filter_map(|(name, item)| {
-                                                let item: Option<_> = item.into();
-                                                item.map(|item: &ImplItem| (name, item))
-                                            })
                                             .map(|(name, item)| {
+                                                let optional_item = Into::<Option<&_>>::into(item);
+
                                                 coq::Field::new(
                                                     &Path::concat(&[of_trait.to_owned(), Path::new(&[name])]),
-                                                    &match item {
-                                                        ImplItem::Type {..} => vec![],
-                                                        ImplItem::Definition { definition : FunDefinition {ty_params, where_predicates, ..}, ..} =>
+                                                    &match optional_item {
+                                                        Some(ImplItem::Definition { definition : FunDefinition {ty_params, where_predicates, ..}, ..}) =>
                                                                     vec![
                                                                         if ty_params.is_empty() {
                                                                             vec![]
@@ -2286,22 +2279,31 @@ impl TopLevelItem {
                                                                             vec![WherePredicate::vec_to_coq(where_predicates)]
                                                                         },
                                                                     ].concat(),
-                                                                _ => vec![],
+                                                        _ => vec![],
                                                     },
                                                     {
                                                         let body = coq::Expression::just_name(name);
+                                                        let body =
+                                                            match optional_item {
+                                                                Some(ImplItem::Definition { definition : FunDefinition {ty_params, ..}, ..}) =>
+                                                                body.apply_many_args(&ty_params
+                                                                    .iter()
+                                                                    .map(|ty_param| {
+                                                                        (
+                                                                            Some(ty_param.to_owned()),
+                                                                            coq::Expression::just_name(ty_param),
+                                                                        )
+                                                                    })
+                                                                    .collect::<Vec<_>>(),),
+                                                                _ => body
+                                                            };
                                                         &match item {
-                                                            ImplItem::Definition { definition : FunDefinition {ty_params, ..}, ..} =>
-                                                            body.apply_many_args(&ty_params
-                                                                .iter()
-                                                                .map(|ty_param| {
-                                                                    (
-                                                                        Some(ty_param.to_owned()),
-                                                                        coq::Expression::just_name(ty_param),
-                                                                    )
-                                                                })
-                                                                .collect::<Vec<_>>(),),
-                                                            _ => body
+                                                            FieldWithDefault::RequiredValue(_) => body,
+                                                            FieldWithDefault::OptionalValue(_) =>
+                                                                coq::Expression::just_name("Datatypes.Some")
+                                                                .apply(&body),
+                                                            FieldWithDefault::Default =>
+                                                                coq::Expression::just_name("Datatypes.None"),
                                                         }
                                                     }
                                                 )

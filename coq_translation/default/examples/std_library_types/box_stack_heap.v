@@ -92,6 +92,7 @@ Module Impl_core_clone_Clone_for_box_stack_heap_Point.
     
     Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
       core.clone.Clone.clone := clone;
+      core.clone.Clone.clone_from := Datatypes.None;
     }.
   End Impl_core_clone_Clone_for_box_stack_heap_Point.
 End Impl_core_clone_Clone_for_box_stack_heap_Point.

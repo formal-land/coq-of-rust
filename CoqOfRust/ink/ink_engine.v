@@ -91,6 +91,7 @@ Module types.
       
       Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
         core.clone.Clone.clone := clone;
+        core.clone.Clone.clone_from := Datatypes.None;
       }.
     End Impl_core_clone_Clone_for_ink_engine_types_AccountId.
   End Impl_core_clone_Clone_for_ink_engine_types_AccountId.
@@ -123,6 +124,7 @@ Module types.
         core.cmp.PartialEq.Required.Trait Self
           (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
         core.cmp.PartialEq.eq := eq;
+        core.cmp.PartialEq.ne := Datatypes.None;
       }.
     End Impl_core_cmp_PartialEq_for_ink_engine_types_AccountId.
   End Impl_core_cmp_PartialEq_for_ink_engine_types_AccountId.
@@ -152,7 +154,8 @@ Module types.
       }.
       
       Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
-        core.cmp.Eq.assert_receiver_is_total_eq := assert_receiver_is_total_eq;
+        core.cmp.Eq.assert_receiver_is_total_eq :=
+          Datatypes.Some assert_receiver_is_total_eq;
       }.
     End Impl_core_cmp_Eq_for_ink_engine_types_AccountId.
   End Impl_core_cmp_Eq_for_ink_engine_types_AccountId.
@@ -177,6 +180,10 @@ Module types.
         core.cmp.PartialOrd.Required.Trait Self
           (Rhs := core.cmp.PartialOrd.Default.Rhs Self) := {
         core.cmp.PartialOrd.partial_cmp := partial_cmp;
+        core.cmp.PartialOrd.lt := Datatypes.None;
+        core.cmp.PartialOrd.le := Datatypes.None;
+        core.cmp.PartialOrd.gt := Datatypes.None;
+        core.cmp.PartialOrd.ge := Datatypes.None;
       }.
     End Impl_core_cmp_PartialOrd_for_ink_engine_types_AccountId.
   End Impl_core_cmp_PartialOrd_for_ink_engine_types_AccountId.
@@ -197,6 +204,9 @@ Module types.
       
       Global Instance ℐ : core.cmp.Ord.Required.Trait Self := {
         core.cmp.Ord.cmp := cmp;
+        core.cmp.Ord.max := Datatypes.None;
+        core.cmp.Ord.min := Datatypes.None;
+        core.cmp.Ord.clamp := Datatypes.None;
       }.
     End Impl_core_cmp_Ord_for_ink_engine_types_AccountId.
   End Impl_core_cmp_Ord_for_ink_engine_types_AccountId.
@@ -221,6 +231,7 @@ Module types.
       Global Instance ℐ : core.hash.Hash.Required.Trait Self := {
         core.hash.Hash.hash {__H : Set} {ℋ_0 : core.hash.Hasher.Trait __H} :=
           hash (__H := __H);
+        core.hash.Hash.hash_slice := Datatypes.None;
       }.
     End Impl_core_hash_Hash_for_ink_engine_types_AccountId.
   End Impl_core_hash_Hash_for_ink_engine_types_AccountId.
@@ -302,6 +313,7 @@ Module types.
       
       Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
         core.clone.Clone.clone := clone;
+        core.clone.Clone.clone_from := Datatypes.None;
       }.
     End Impl_core_clone_Clone_for_ink_engine_types_Key.
   End Impl_core_clone_Clone_for_ink_engine_types_Key.
@@ -334,6 +346,7 @@ Module types.
         core.cmp.PartialEq.Required.Trait Self
           (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
         core.cmp.PartialEq.eq := eq;
+        core.cmp.PartialEq.ne := Datatypes.None;
       }.
     End Impl_core_cmp_PartialEq_for_ink_engine_types_Key.
   End Impl_core_cmp_PartialEq_for_ink_engine_types_Key.
@@ -363,7 +376,8 @@ Module types.
       }.
       
       Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
-        core.cmp.Eq.assert_receiver_is_total_eq := assert_receiver_is_total_eq;
+        core.cmp.Eq.assert_receiver_is_total_eq :=
+          Datatypes.Some assert_receiver_is_total_eq;
       }.
     End Impl_core_cmp_Eq_for_ink_engine_types_Key.
   End Impl_core_cmp_Eq_for_ink_engine_types_Key.
@@ -388,6 +402,10 @@ Module types.
         core.cmp.PartialOrd.Required.Trait Self
           (Rhs := core.cmp.PartialOrd.Default.Rhs Self) := {
         core.cmp.PartialOrd.partial_cmp := partial_cmp;
+        core.cmp.PartialOrd.lt := Datatypes.None;
+        core.cmp.PartialOrd.le := Datatypes.None;
+        core.cmp.PartialOrd.gt := Datatypes.None;
+        core.cmp.PartialOrd.ge := Datatypes.None;
       }.
     End Impl_core_cmp_PartialOrd_for_ink_engine_types_Key.
   End Impl_core_cmp_PartialOrd_for_ink_engine_types_Key.
@@ -408,6 +426,9 @@ Module types.
       
       Global Instance ℐ : core.cmp.Ord.Required.Trait Self := {
         core.cmp.Ord.cmp := cmp;
+        core.cmp.Ord.max := Datatypes.None;
+        core.cmp.Ord.min := Datatypes.None;
+        core.cmp.Ord.clamp := Datatypes.None;
       }.
     End Impl_core_cmp_Ord_for_ink_engine_types_Key.
   End Impl_core_cmp_Ord_for_ink_engine_types_Key.
@@ -432,6 +453,7 @@ Module types.
       Global Instance ℐ : core.hash.Hash.Required.Trait Self := {
         core.hash.Hash.hash {__H : Set} {ℋ_0 : core.hash.Hasher.Trait __H} :=
           hash (__H := __H);
+        core.hash.Hash.hash_slice := Datatypes.None;
       }.
     End Impl_core_hash_Hash_for_ink_engine_types_Key.
   End Impl_core_hash_Hash_for_ink_engine_types_Key.
@@ -459,6 +481,7 @@ Module types.
       
       Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
         core.clone.Clone.clone := clone;
+        core.clone.Clone.clone_from := Datatypes.None;
       }.
     End Impl_core_clone_Clone_for_ink_engine_types_AccountError.
   End Impl_core_clone_Clone_for_ink_engine_types_AccountError.
@@ -540,6 +563,7 @@ Module types.
         core.cmp.PartialEq.Required.Trait Self
           (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
         core.cmp.PartialEq.eq := eq;
+        core.cmp.PartialEq.ne := Datatypes.None;
       }.
     End Impl_core_cmp_PartialEq_for_ink_engine_types_AccountError.
   End Impl_core_cmp_PartialEq_for_ink_engine_types_AccountError.
@@ -569,7 +593,8 @@ Module types.
       }.
       
       Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
-        core.cmp.Eq.assert_receiver_is_total_eq := assert_receiver_is_total_eq;
+        core.cmp.Eq.assert_receiver_is_total_eq :=
+          Datatypes.Some assert_receiver_is_total_eq;
       }.
     End Impl_core_cmp_Eq_for_ink_engine_types_AccountError.
   End Impl_core_cmp_Eq_for_ink_engine_types_AccountError.
@@ -643,6 +668,7 @@ Module test_api.
       
       Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
         core.clone.Clone.clone := clone;
+        core.clone.Clone.clone_from := Datatypes.None;
       }.
     End Impl_core_clone_Clone_for_ink_engine_test_api_EmittedEvent.
   End Impl_core_clone_Clone_for_ink_engine_test_api_EmittedEvent.
@@ -687,6 +713,7 @@ Module test_api.
       
       Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
         core.clone.Clone.clone := clone;
+        core.clone.Clone.clone_from := Datatypes.None;
       }.
     End Impl_core_clone_Clone_for_ink_engine_test_api_RecordedDebugMessages.
   End Impl_core_clone_Clone_for_ink_engine_test_api_RecordedDebugMessages.
@@ -970,6 +997,7 @@ Module chain_extension.
         core.cmp.PartialEq.Required.Trait Self
           (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
         core.cmp.PartialEq.eq := eq;
+        core.cmp.PartialEq.ne := Datatypes.None;
       }.
     End Impl_core_cmp_PartialEq_for_ink_engine_chain_extension_ExtensionId.
   End Impl_core_cmp_PartialEq_for_ink_engine_chain_extension_ExtensionId.
@@ -1002,7 +1030,8 @@ Module chain_extension.
       }.
       
       Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
-        core.cmp.Eq.assert_receiver_is_total_eq := assert_receiver_is_total_eq;
+        core.cmp.Eq.assert_receiver_is_total_eq :=
+          Datatypes.Some assert_receiver_is_total_eq;
       }.
     End Impl_core_cmp_Eq_for_ink_engine_chain_extension_ExtensionId.
   End Impl_core_cmp_Eq_for_ink_engine_chain_extension_ExtensionId.
@@ -1027,6 +1056,10 @@ Module chain_extension.
         core.cmp.PartialOrd.Required.Trait Self
           (Rhs := core.cmp.PartialOrd.Default.Rhs Self) := {
         core.cmp.PartialOrd.partial_cmp := partial_cmp;
+        core.cmp.PartialOrd.lt := Datatypes.None;
+        core.cmp.PartialOrd.le := Datatypes.None;
+        core.cmp.PartialOrd.gt := Datatypes.None;
+        core.cmp.PartialOrd.ge := Datatypes.None;
       }.
     End Impl_core_cmp_PartialOrd_for_ink_engine_chain_extension_ExtensionId.
   End Impl_core_cmp_PartialOrd_for_ink_engine_chain_extension_ExtensionId.
@@ -1049,6 +1082,9 @@ Module chain_extension.
       
       Global Instance ℐ : core.cmp.Ord.Required.Trait Self := {
         core.cmp.Ord.cmp := cmp;
+        core.cmp.Ord.max := Datatypes.None;
+        core.cmp.Ord.min := Datatypes.None;
+        core.cmp.Ord.clamp := Datatypes.None;
       }.
     End Impl_core_cmp_Ord_for_ink_engine_chain_extension_ExtensionId.
   End Impl_core_cmp_Ord_for_ink_engine_chain_extension_ExtensionId.
@@ -1073,6 +1109,7 @@ Module chain_extension.
       Global Instance ℐ : core.hash.Hash.Required.Trait Self := {
         core.hash.Hash.hash {__H : Set} {ℋ_0 : core.hash.Hasher.Trait __H} :=
           hash (__H := __H);
+        core.hash.Hash.hash_slice := Datatypes.None;
       }.
     End Impl_core_hash_Hash_for_ink_engine_chain_extension_ExtensionId.
   End Impl_core_hash_Hash_for_ink_engine_chain_extension_ExtensionId.
@@ -1697,6 +1734,7 @@ Module Impl_core_clone_Clone_for_ink_engine_test_api_EmittedEvent.
     
     Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
       core.clone.Clone.clone := clone;
+      core.clone.Clone.clone_from := Datatypes.None;
     }.
   End Impl_core_clone_Clone_for_ink_engine_test_api_EmittedEvent.
 End Impl_core_clone_Clone_for_ink_engine_test_api_EmittedEvent.
@@ -1740,6 +1778,7 @@ Module Impl_core_clone_Clone_for_ink_engine_test_api_RecordedDebugMessages.
     
     Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
       core.clone.Clone.clone := clone;
+      core.clone.Clone.clone_from := Datatypes.None;
     }.
   End Impl_core_clone_Clone_for_ink_engine_test_api_RecordedDebugMessages.
 End Impl_core_clone_Clone_for_ink_engine_test_api_RecordedDebugMessages.
@@ -2042,14 +2081,17 @@ End Impl_core_convert_From_u32_for_ink_engine_chain_extension_ExtensionId.
         {__CodecOutputEdqy : Set}
         {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
         {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy} :=
-        encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
-      parity_scale_codec.codec.Encode.encode := encode;
+        Datatypes.Some (encode_to (__CodecOutputEdqy := __CodecOutputEdqy));
+      parity_scale_codec.codec.Encode.encode := Datatypes.Some encode;
       parity_scale_codec.codec.Encode.using_encoded
         {R F : Set}
         {ℋ_0 :
           core.ops.function.FnOnce.Trait F
             (Args := ref (Slice CoqOfRust.core.primitive.u8))} :=
-        using_encoded (R := R) (F := F);
+        Datatypes.Some (using_encoded (R := R) (F := F));
+      parity_scale_codec.codec.Encode.TYPE_INFO := Datatypes.None;
+      parity_scale_codec.codec.Encode.size_hint := Datatypes.None;
+      parity_scale_codec.codec.Encode.encoded_size := Datatypes.None;
     }.
   End Impl_parity_scale_codec_codec_Encode_for_ink_engine_chain_extension_ExtensionId. *)
 End Impl_parity_scale_codec_codec_Encode_for_ink_engine_chain_extension_ExtensionId. *)
@@ -2092,6 +2134,10 @@ End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_engine_chain_extensio
         {__CodecInputEdqy : Set}
         {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :=
         decode (__CodecInputEdqy := __CodecInputEdqy);
+      parity_scale_codec.codec.Decode.TYPE_INFO := Datatypes.None;
+      parity_scale_codec.codec.Decode.decode_into := Datatypes.None;
+      parity_scale_codec.codec.Decode.skip := Datatypes.None;
+      parity_scale_codec.codec.Decode.encoded_fixed_size := Datatypes.None;
     }.
   End Impl_parity_scale_codec_codec_Decode_for_ink_engine_chain_extension_ExtensionId. *)
 End Impl_parity_scale_codec_codec_Decode_for_ink_engine_chain_extension_ExtensionId. *)
@@ -2128,6 +2174,7 @@ Module Impl_core_cmp_PartialEq_for_ink_engine_chain_extension_ExtensionId.
       core.cmp.PartialEq.Required.Trait Self
         (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
       core.cmp.PartialEq.eq := eq;
+      core.cmp.PartialEq.ne := Datatypes.None;
     }.
   End Impl_core_cmp_PartialEq_for_ink_engine_chain_extension_ExtensionId.
 End Impl_core_cmp_PartialEq_for_ink_engine_chain_extension_ExtensionId.
@@ -2158,7 +2205,8 @@ Module Impl_core_cmp_Eq_for_ink_engine_chain_extension_ExtensionId.
     }.
     
     Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
-      core.cmp.Eq.assert_receiver_is_total_eq := assert_receiver_is_total_eq;
+      core.cmp.Eq.assert_receiver_is_total_eq :=
+        Datatypes.Some assert_receiver_is_total_eq;
     }.
   End Impl_core_cmp_Eq_for_ink_engine_chain_extension_ExtensionId.
 End Impl_core_cmp_Eq_for_ink_engine_chain_extension_ExtensionId.
@@ -2183,6 +2231,10 @@ Module Impl_core_cmp_PartialOrd_for_ink_engine_chain_extension_ExtensionId.
       core.cmp.PartialOrd.Required.Trait Self
         (Rhs := core.cmp.PartialOrd.Default.Rhs Self) := {
       core.cmp.PartialOrd.partial_cmp := partial_cmp;
+      core.cmp.PartialOrd.lt := Datatypes.None;
+      core.cmp.PartialOrd.le := Datatypes.None;
+      core.cmp.PartialOrd.gt := Datatypes.None;
+      core.cmp.PartialOrd.ge := Datatypes.None;
     }.
   End Impl_core_cmp_PartialOrd_for_ink_engine_chain_extension_ExtensionId.
 End Impl_core_cmp_PartialOrd_for_ink_engine_chain_extension_ExtensionId.
@@ -2205,6 +2257,9 @@ Module Impl_core_cmp_Ord_for_ink_engine_chain_extension_ExtensionId.
     
     Global Instance ℐ : core.cmp.Ord.Required.Trait Self := {
       core.cmp.Ord.cmp := cmp;
+      core.cmp.Ord.max := Datatypes.None;
+      core.cmp.Ord.min := Datatypes.None;
+      core.cmp.Ord.clamp := Datatypes.None;
     }.
   End Impl_core_cmp_Ord_for_ink_engine_chain_extension_ExtensionId.
 End Impl_core_cmp_Ord_for_ink_engine_chain_extension_ExtensionId.
@@ -2229,6 +2284,7 @@ Module Impl_core_hash_Hash_for_ink_engine_chain_extension_ExtensionId.
     Global Instance ℐ : core.hash.Hash.Required.Trait Self := {
       core.hash.Hash.hash {__H : Set} {ℋ_0 : core.hash.Hasher.Trait __H} :=
         hash (__H := __H);
+      core.hash.Hash.hash_slice := Datatypes.None;
     }.
   End Impl_core_hash_Hash_for_ink_engine_chain_extension_ExtensionId.
 End Impl_core_hash_Hash_for_ink_engine_chain_extension_ExtensionId.
@@ -2526,6 +2582,7 @@ Module Impl_core_clone_Clone_for_ink_engine_types_AccountId.
     
     Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
       core.clone.Clone.clone := clone;
+      core.clone.Clone.clone_from := Datatypes.None;
     }.
   End Impl_core_clone_Clone_for_ink_engine_types_AccountId.
 End Impl_core_clone_Clone_for_ink_engine_types_AccountId.
@@ -2557,6 +2614,7 @@ Module Impl_core_cmp_PartialEq_for_ink_engine_types_AccountId.
       core.cmp.PartialEq.Required.Trait Self
         (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
       core.cmp.PartialEq.eq := eq;
+      core.cmp.PartialEq.ne := Datatypes.None;
     }.
   End Impl_core_cmp_PartialEq_for_ink_engine_types_AccountId.
 End Impl_core_cmp_PartialEq_for_ink_engine_types_AccountId.
@@ -2586,7 +2644,8 @@ Module Impl_core_cmp_Eq_for_ink_engine_types_AccountId.
     }.
     
     Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
-      core.cmp.Eq.assert_receiver_is_total_eq := assert_receiver_is_total_eq;
+      core.cmp.Eq.assert_receiver_is_total_eq :=
+        Datatypes.Some assert_receiver_is_total_eq;
     }.
   End Impl_core_cmp_Eq_for_ink_engine_types_AccountId.
 End Impl_core_cmp_Eq_for_ink_engine_types_AccountId.
@@ -2611,6 +2670,10 @@ Module Impl_core_cmp_PartialOrd_for_ink_engine_types_AccountId.
       core.cmp.PartialOrd.Required.Trait Self
         (Rhs := core.cmp.PartialOrd.Default.Rhs Self) := {
       core.cmp.PartialOrd.partial_cmp := partial_cmp;
+      core.cmp.PartialOrd.lt := Datatypes.None;
+      core.cmp.PartialOrd.le := Datatypes.None;
+      core.cmp.PartialOrd.gt := Datatypes.None;
+      core.cmp.PartialOrd.ge := Datatypes.None;
     }.
   End Impl_core_cmp_PartialOrd_for_ink_engine_types_AccountId.
 End Impl_core_cmp_PartialOrd_for_ink_engine_types_AccountId.
@@ -2631,6 +2694,9 @@ Module Impl_core_cmp_Ord_for_ink_engine_types_AccountId.
     
     Global Instance ℐ : core.cmp.Ord.Required.Trait Self := {
       core.cmp.Ord.cmp := cmp;
+      core.cmp.Ord.max := Datatypes.None;
+      core.cmp.Ord.min := Datatypes.None;
+      core.cmp.Ord.clamp := Datatypes.None;
     }.
   End Impl_core_cmp_Ord_for_ink_engine_types_AccountId.
 End Impl_core_cmp_Ord_for_ink_engine_types_AccountId.
@@ -2655,6 +2721,7 @@ Module Impl_core_hash_Hash_for_ink_engine_types_AccountId.
     Global Instance ℐ : core.hash.Hash.Required.Trait Self := {
       core.hash.Hash.hash {__H : Set} {ℋ_0 : core.hash.Hasher.Trait __H} :=
         hash (__H := __H);
+      core.hash.Hash.hash_slice := Datatypes.None;
     }.
   End Impl_core_hash_Hash_for_ink_engine_types_AccountId.
 End Impl_core_hash_Hash_for_ink_engine_types_AccountId.
@@ -2736,6 +2803,7 @@ Module Impl_core_clone_Clone_for_ink_engine_types_Key.
     
     Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
       core.clone.Clone.clone := clone;
+      core.clone.Clone.clone_from := Datatypes.None;
     }.
   End Impl_core_clone_Clone_for_ink_engine_types_Key.
 End Impl_core_clone_Clone_for_ink_engine_types_Key.
@@ -2767,6 +2835,7 @@ Module Impl_core_cmp_PartialEq_for_ink_engine_types_Key.
       core.cmp.PartialEq.Required.Trait Self
         (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
       core.cmp.PartialEq.eq := eq;
+      core.cmp.PartialEq.ne := Datatypes.None;
     }.
   End Impl_core_cmp_PartialEq_for_ink_engine_types_Key.
 End Impl_core_cmp_PartialEq_for_ink_engine_types_Key.
@@ -2796,7 +2865,8 @@ Module Impl_core_cmp_Eq_for_ink_engine_types_Key.
     }.
     
     Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
-      core.cmp.Eq.assert_receiver_is_total_eq := assert_receiver_is_total_eq;
+      core.cmp.Eq.assert_receiver_is_total_eq :=
+        Datatypes.Some assert_receiver_is_total_eq;
     }.
   End Impl_core_cmp_Eq_for_ink_engine_types_Key.
 End Impl_core_cmp_Eq_for_ink_engine_types_Key.
@@ -2821,6 +2891,10 @@ Module Impl_core_cmp_PartialOrd_for_ink_engine_types_Key.
       core.cmp.PartialOrd.Required.Trait Self
         (Rhs := core.cmp.PartialOrd.Default.Rhs Self) := {
       core.cmp.PartialOrd.partial_cmp := partial_cmp;
+      core.cmp.PartialOrd.lt := Datatypes.None;
+      core.cmp.PartialOrd.le := Datatypes.None;
+      core.cmp.PartialOrd.gt := Datatypes.None;
+      core.cmp.PartialOrd.ge := Datatypes.None;
     }.
   End Impl_core_cmp_PartialOrd_for_ink_engine_types_Key.
 End Impl_core_cmp_PartialOrd_for_ink_engine_types_Key.
@@ -2841,6 +2915,9 @@ Module Impl_core_cmp_Ord_for_ink_engine_types_Key.
     
     Global Instance ℐ : core.cmp.Ord.Required.Trait Self := {
       core.cmp.Ord.cmp := cmp;
+      core.cmp.Ord.max := Datatypes.None;
+      core.cmp.Ord.min := Datatypes.None;
+      core.cmp.Ord.clamp := Datatypes.None;
     }.
   End Impl_core_cmp_Ord_for_ink_engine_types_Key.
 End Impl_core_cmp_Ord_for_ink_engine_types_Key.
@@ -2865,6 +2942,7 @@ Module Impl_core_hash_Hash_for_ink_engine_types_Key.
     Global Instance ℐ : core.hash.Hash.Required.Trait Self := {
       core.hash.Hash.hash {__H : Set} {ℋ_0 : core.hash.Hasher.Trait __H} :=
         hash (__H := __H);
+      core.hash.Hash.hash_slice := Datatypes.None;
     }.
   End Impl_core_hash_Hash_for_ink_engine_types_Key.
 End Impl_core_hash_Hash_for_ink_engine_types_Key.
@@ -2892,6 +2970,7 @@ Module Impl_core_clone_Clone_for_ink_engine_types_AccountError.
     
     Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
       core.clone.Clone.clone := clone;
+      core.clone.Clone.clone_from := Datatypes.None;
     }.
   End Impl_core_clone_Clone_for_ink_engine_types_AccountError.
 End Impl_core_clone_Clone_for_ink_engine_types_AccountError.
@@ -2969,6 +3048,7 @@ Module Impl_core_cmp_PartialEq_for_ink_engine_types_AccountError.
       core.cmp.PartialEq.Required.Trait Self
         (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
       core.cmp.PartialEq.eq := eq;
+      core.cmp.PartialEq.ne := Datatypes.None;
     }.
   End Impl_core_cmp_PartialEq_for_ink_engine_types_AccountError.
 End Impl_core_cmp_PartialEq_for_ink_engine_types_AccountError.
@@ -2998,7 +3078,8 @@ Module Impl_core_cmp_Eq_for_ink_engine_types_AccountError.
     }.
     
     Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
-      core.cmp.Eq.assert_receiver_is_total_eq := assert_receiver_is_total_eq;
+      core.cmp.Eq.assert_receiver_is_total_eq :=
+        Datatypes.Some assert_receiver_is_total_eq;
     }.
   End Impl_core_cmp_Eq_for_ink_engine_types_AccountError.
 End Impl_core_cmp_Eq_for_ink_engine_types_AccountError.
@@ -3081,6 +3162,7 @@ Module Impl_core_cmp_PartialEq_for_ink_engine_Error.
       core.cmp.PartialEq.Required.Trait Self
         (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
       core.cmp.PartialEq.eq := eq;
+      core.cmp.PartialEq.ne := Datatypes.None;
     }.
   End Impl_core_cmp_PartialEq_for_ink_engine_Error.
 End Impl_core_cmp_PartialEq_for_ink_engine_Error.
@@ -3110,7 +3192,8 @@ Module Impl_core_cmp_Eq_for_ink_engine_Error.
     }.
     
     Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
-      core.cmp.Eq.assert_receiver_is_total_eq := assert_receiver_is_total_eq;
+      core.cmp.Eq.assert_receiver_is_total_eq :=
+        Datatypes.Some assert_receiver_is_total_eq;
     }.
   End Impl_core_cmp_Eq_for_ink_engine_Error.
 End Impl_core_cmp_Eq_for_ink_engine_Error.

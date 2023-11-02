@@ -52,6 +52,7 @@ Module Impl_core_clone_Clone_for_clone_Unit.
     
     Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
       core.clone.Clone.clone := clone;
+      core.clone.Clone.clone_from := Datatypes.None;
     }.
   End Impl_core_clone_Clone_for_clone_Unit.
 End Impl_core_clone_Clone_for_clone_Unit.
@@ -124,6 +125,7 @@ Module Impl_core_clone_Clone_for_clone_Pair.
     
     Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
       core.clone.Clone.clone := clone;
+      core.clone.Clone.clone_from := Datatypes.None;
     }.
   End Impl_core_clone_Clone_for_clone_Pair.
 End Impl_core_clone_Clone_for_clone_Pair.

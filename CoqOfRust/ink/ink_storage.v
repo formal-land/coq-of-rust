@@ -203,6 +203,7 @@ Module lazy.
         Global Instance ℐ :
           ink_storage_traits.storage.StorageKey.Required.Trait Self := {
           ink_storage_traits.storage.StorageKey.KEY := KEY;
+          ink_storage_traits.storage.StorageKey.key := Datatypes.None;
         }.
       End
         Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
@@ -391,6 +392,7 @@ Module lazy.
       Global Instance ℐ :
         ink_storage_traits.storage.StorageKey.Required.Trait Self := {
         ink_storage_traits.storage.StorageKey.KEY := KEY;
+        ink_storage_traits.storage.StorageKey.key := Datatypes.None;
       }.
     End
       Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_lazy_Lazy_V_KeyType.
@@ -596,6 +598,7 @@ Module mapping.
       Global Instance ℐ :
         ink_storage_traits.storage.StorageKey.Required.Trait Self := {
         ink_storage_traits.storage.StorageKey.KEY := KEY;
+        ink_storage_traits.storage.StorageKey.key := Datatypes.None;
       }.
     End
       Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
@@ -832,6 +835,7 @@ Module
     Global Instance ℐ :
       ink_storage_traits.storage.StorageKey.Required.Trait Self := {
       ink_storage_traits.storage.StorageKey.KEY := KEY;
+      ink_storage_traits.storage.StorageKey.key := Datatypes.None;
     }.
   End
     Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
@@ -1081,6 +1085,7 @@ Module
     Global Instance ℐ :
       ink_storage_traits.storage.StorageKey.Required.Trait Self := {
       ink_storage_traits.storage.StorageKey.KEY := KEY;
+      ink_storage_traits.storage.StorageKey.key := Datatypes.None;
     }.
   End
     Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_lazy_Lazy_V_KeyType.

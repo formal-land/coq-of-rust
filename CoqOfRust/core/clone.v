@@ -14,12 +14,29 @@ pub trait Clone: Sized {
 }
 *)
 Module Clone.
+  Module Required.
+    Class Trait `{State.Trait} (Self : Set) : Set := {
+      clone : ref Self -> M Self;
+      clone_from : Datatypes.option (mut_ref Self -> ref Self -> M unit);
+    }.
+  End Required.
+
+  Module Provided.
+    Parameter clone_from :
+      forall `{State.Trait} {Self : Set} {H0 : Required.Trait Self},
+      mut_ref Self -> ref Self -> M unit.
+  End Provided.
+
   Class Trait (Self : Set) `{H : State.Trait} : Set := {
-    clone : ref Self -> M (H := H) Self;
+    clone : ref Self -> M Self;
+    clone_from : mut_ref Self -> ref Self -> M unit;
   }.
 
-  Global Instance Method_clone `{State.Trait} `(Trait) : Notation.Dot "clone" := {
-    Notation.dot := clone;
+  Global Instance From_Required `{State.Trait} {Self : Set}
+      {H0 : Required.Trait Self} :
+      Trait Self := {
+    clone := Required.clone;
+    clone_from := Provided.clone_from;
   }.
 
   Module Impl_Clone_for_str.

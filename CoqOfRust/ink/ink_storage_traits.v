@@ -207,6 +207,7 @@ Module impls.
       
       Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
         core.clone.Clone.clone := clone;
+        core.clone.Clone.clone_from := Datatypes.None;
       }.
     End Impl_core_clone_Clone_for_ink_storage_traits_impls_AutoKey.
   End Impl_core_clone_Clone_for_ink_storage_traits_impls_AutoKey.
@@ -254,6 +255,7 @@ Module impls.
         core.cmp.PartialEq.Required.Trait Self
           (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
         core.cmp.PartialEq.eq := eq;
+        core.cmp.PartialEq.ne := Datatypes.None;
       }.
     End Impl_core_cmp_PartialEq_for_ink_storage_traits_impls_AutoKey.
   End Impl_core_cmp_PartialEq_for_ink_storage_traits_impls_AutoKey.
@@ -283,7 +285,8 @@ Module impls.
       }.
       
       Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
-        core.cmp.Eq.assert_receiver_is_total_eq := assert_receiver_is_total_eq;
+        core.cmp.Eq.assert_receiver_is_total_eq :=
+          Datatypes.Some assert_receiver_is_total_eq;
       }.
     End Impl_core_cmp_Eq_for_ink_storage_traits_impls_AutoKey.
   End Impl_core_cmp_Eq_for_ink_storage_traits_impls_AutoKey.
@@ -308,6 +311,10 @@ Module impls.
         core.cmp.PartialOrd.Required.Trait Self
           (Rhs := core.cmp.PartialOrd.Default.Rhs Self) := {
         core.cmp.PartialOrd.partial_cmp := partial_cmp;
+        core.cmp.PartialOrd.lt := Datatypes.None;
+        core.cmp.PartialOrd.le := Datatypes.None;
+        core.cmp.PartialOrd.gt := Datatypes.None;
+        core.cmp.PartialOrd.ge := Datatypes.None;
       }.
     End Impl_core_cmp_PartialOrd_for_ink_storage_traits_impls_AutoKey.
   End Impl_core_cmp_PartialOrd_for_ink_storage_traits_impls_AutoKey.
@@ -330,6 +337,7 @@ Module impls.
       Global Instance ℐ :
         ink_storage_traits.storage.StorageKey.Required.Trait Self := {
         ink_storage_traits.storage.StorageKey.KEY := KEY;
+        ink_storage_traits.storage.StorageKey.key := Datatypes.None;
       }.
     End
       Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_AutoKey.
@@ -451,6 +459,7 @@ Module impls.
       
       Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
         core.clone.Clone.clone := clone;
+        core.clone.Clone.clone_from := Datatypes.None;
       }.
     End Impl_core_clone_Clone_for_ink_storage_traits_impls_ManualKey_ParentKey.
   End Impl_core_clone_Clone_for_ink_storage_traits_impls_ManualKey_ParentKey.
@@ -519,6 +528,7 @@ Module impls.
         core.cmp.PartialEq.Required.Trait Self
           (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
         core.cmp.PartialEq.eq := eq;
+        core.cmp.PartialEq.ne := Datatypes.None;
       }.
     End
       Impl_core_cmp_PartialEq_for_ink_storage_traits_impls_ManualKey_ParentKey.
@@ -543,7 +553,8 @@ Module impls.
       }.
       
       Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
-        core.cmp.Eq.assert_receiver_is_total_eq := assert_receiver_is_total_eq;
+        core.cmp.Eq.assert_receiver_is_total_eq :=
+          Datatypes.Some assert_receiver_is_total_eq;
       }.
     End Impl_core_cmp_Eq_for_ink_storage_traits_impls_ManualKey_ParentKey.
   End Impl_core_cmp_Eq_for_ink_storage_traits_impls_ManualKey_ParentKey.
@@ -595,6 +606,10 @@ Module impls.
         core.cmp.PartialOrd.Required.Trait Self
           (Rhs := core.cmp.PartialOrd.Default.Rhs Self) := {
         core.cmp.PartialOrd.partial_cmp := partial_cmp;
+        core.cmp.PartialOrd.lt := Datatypes.None;
+        core.cmp.PartialOrd.le := Datatypes.None;
+        core.cmp.PartialOrd.gt := Datatypes.None;
+        core.cmp.PartialOrd.ge := Datatypes.None;
       }.
     End
       Impl_core_cmp_PartialOrd_for_ink_storage_traits_impls_ManualKey_ParentKey.
@@ -621,6 +636,7 @@ Module impls.
       Global Instance ℐ :
         ink_storage_traits.storage.StorageKey.Required.Trait Self := {
         ink_storage_traits.storage.StorageKey.KEY := KEY;
+        ink_storage_traits.storage.StorageKey.key := Datatypes.None;
       }.
     End
       Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ManualKey_ParentKey.
@@ -743,6 +759,7 @@ Module impls.
       
       Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
         core.clone.Clone.clone := clone;
+        core.clone.Clone.clone_from := Datatypes.None;
       }.
     End Impl_core_clone_Clone_for_ink_storage_traits_impls_ResolverKey_L_R.
   End Impl_core_clone_Clone_for_ink_storage_traits_impls_ResolverKey_L_R.
@@ -806,6 +823,7 @@ Module impls.
         core.cmp.PartialEq.Required.Trait Self
           (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
         core.cmp.PartialEq.eq := eq;
+        core.cmp.PartialEq.ne := Datatypes.None;
       }.
     End Impl_core_cmp_PartialEq_for_ink_storage_traits_impls_ResolverKey_L_R.
   End Impl_core_cmp_PartialEq_for_ink_storage_traits_impls_ResolverKey_L_R.
@@ -844,7 +862,8 @@ Module impls.
       }.
       
       Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
-        core.cmp.Eq.assert_receiver_is_total_eq := assert_receiver_is_total_eq;
+        core.cmp.Eq.assert_receiver_is_total_eq :=
+          Datatypes.Some assert_receiver_is_total_eq;
       }.
     End Impl_core_cmp_Eq_for_ink_storage_traits_impls_ResolverKey_L_R.
   End Impl_core_cmp_Eq_for_ink_storage_traits_impls_ResolverKey_L_R.
@@ -879,6 +898,10 @@ Module impls.
         core.cmp.PartialOrd.Required.Trait Self
           (Rhs := core.cmp.PartialOrd.Default.Rhs Self) := {
         core.cmp.PartialOrd.partial_cmp := partial_cmp;
+        core.cmp.PartialOrd.lt := Datatypes.None;
+        core.cmp.PartialOrd.le := Datatypes.None;
+        core.cmp.PartialOrd.gt := Datatypes.None;
+        core.cmp.PartialOrd.ge := Datatypes.None;
       }.
     End Impl_core_cmp_PartialOrd_for_ink_storage_traits_impls_ResolverKey_L_R.
   End Impl_core_cmp_PartialOrd_for_ink_storage_traits_impls_ResolverKey_L_R.
@@ -933,6 +956,7 @@ Module impls.
       Global Instance ℐ :
         ink_storage_traits.storage.StorageKey.Required.Trait Self := {
         ink_storage_traits.storage.StorageKey.KEY := KEY;
+        ink_storage_traits.storage.StorageKey.key := Datatypes.None;
       }.
     End
       Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ResolverKey_L_R.
@@ -1062,6 +1086,7 @@ Module impls.
       Global Instance ℐ :
         ink_storage_traits.storage.StorageKey.Required.Trait Self := {
         ink_storage_traits.storage.StorageKey.KEY := KEY;
+        ink_storage_traits.storage.StorageKey.key := Datatypes.None;
       }.
     End Impl_ink_storage_traits_storage_StorageKey_for_P.
   End Impl_ink_storage_traits_storage_StorageKey_for_P.
@@ -1177,6 +1202,7 @@ Module Impl_core_clone_Clone_for_ink_storage_traits_impls_AutoKey.
     
     Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
       core.clone.Clone.clone := clone;
+      core.clone.Clone.clone_from := Datatypes.None;
     }.
   End Impl_core_clone_Clone_for_ink_storage_traits_impls_AutoKey.
 End Impl_core_clone_Clone_for_ink_storage_traits_impls_AutoKey.
@@ -1211,6 +1237,7 @@ Module Impl_core_cmp_PartialEq_for_ink_storage_traits_impls_AutoKey.
       core.cmp.PartialEq.Required.Trait Self
         (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
       core.cmp.PartialEq.eq := eq;
+      core.cmp.PartialEq.ne := Datatypes.None;
     }.
   End Impl_core_cmp_PartialEq_for_ink_storage_traits_impls_AutoKey.
 End Impl_core_cmp_PartialEq_for_ink_storage_traits_impls_AutoKey.
@@ -1240,7 +1267,8 @@ Module Impl_core_cmp_Eq_for_ink_storage_traits_impls_AutoKey.
     }.
     
     Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
-      core.cmp.Eq.assert_receiver_is_total_eq := assert_receiver_is_total_eq;
+      core.cmp.Eq.assert_receiver_is_total_eq :=
+        Datatypes.Some assert_receiver_is_total_eq;
     }.
   End Impl_core_cmp_Eq_for_ink_storage_traits_impls_AutoKey.
 End Impl_core_cmp_Eq_for_ink_storage_traits_impls_AutoKey.
@@ -1265,6 +1293,10 @@ Module Impl_core_cmp_PartialOrd_for_ink_storage_traits_impls_AutoKey.
       core.cmp.PartialOrd.Required.Trait Self
         (Rhs := core.cmp.PartialOrd.Default.Rhs Self) := {
       core.cmp.PartialOrd.partial_cmp := partial_cmp;
+      core.cmp.PartialOrd.lt := Datatypes.None;
+      core.cmp.PartialOrd.le := Datatypes.None;
+      core.cmp.PartialOrd.gt := Datatypes.None;
+      core.cmp.PartialOrd.ge := Datatypes.None;
     }.
   End Impl_core_cmp_PartialOrd_for_ink_storage_traits_impls_AutoKey.
 End Impl_core_cmp_PartialOrd_for_ink_storage_traits_impls_AutoKey.
@@ -1287,6 +1319,7 @@ Module
     Global Instance ℐ :
       ink_storage_traits.storage.StorageKey.Required.Trait Self := {
       ink_storage_traits.storage.StorageKey.KEY := KEY;
+      ink_storage_traits.storage.StorageKey.key := Datatypes.None;
     }.
   End
     Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_AutoKey.
@@ -1452,6 +1485,7 @@ Module Impl_core_clone_Clone_for_ink_storage_traits_impls_ManualKey_ParentKey.
     
     Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
       core.clone.Clone.clone := clone;
+      core.clone.Clone.clone_from := Datatypes.None;
     }.
   End Impl_core_clone_Clone_for_ink_storage_traits_impls_ManualKey_ParentKey.
 End Impl_core_clone_Clone_for_ink_storage_traits_impls_ManualKey_ParentKey.
@@ -1493,7 +1527,8 @@ Module Impl_core_cmp_Eq_for_ink_storage_traits_impls_ManualKey_ParentKey.
     }.
     
     Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
-      core.cmp.Eq.assert_receiver_is_total_eq := assert_receiver_is_total_eq;
+      core.cmp.Eq.assert_receiver_is_total_eq :=
+        Datatypes.Some assert_receiver_is_total_eq;
     }.
   End Impl_core_cmp_Eq_for_ink_storage_traits_impls_ManualKey_ParentKey.
 End Impl_core_cmp_Eq_for_ink_storage_traits_impls_ManualKey_ParentKey.
@@ -1543,6 +1578,7 @@ Module Impl_core_cmp_PartialEq_for_ink_storage_traits_impls_ManualKey_ParentKey.
       core.cmp.PartialEq.Required.Trait Self
         (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
       core.cmp.PartialEq.eq := eq;
+      core.cmp.PartialEq.ne := Datatypes.None;
     }.
   End Impl_core_cmp_PartialEq_for_ink_storage_traits_impls_ManualKey_ParentKey.
 End Impl_core_cmp_PartialEq_for_ink_storage_traits_impls_ManualKey_ParentKey.
@@ -1576,6 +1612,10 @@ Module
       core.cmp.PartialOrd.Required.Trait Self
         (Rhs := core.cmp.PartialOrd.Default.Rhs Self) := {
       core.cmp.PartialOrd.partial_cmp := partial_cmp;
+      core.cmp.PartialOrd.lt := Datatypes.None;
+      core.cmp.PartialOrd.le := Datatypes.None;
+      core.cmp.PartialOrd.gt := Datatypes.None;
+      core.cmp.PartialOrd.ge := Datatypes.None;
     }.
   End Impl_core_cmp_PartialOrd_for_ink_storage_traits_impls_ManualKey_ParentKey.
 End Impl_core_cmp_PartialOrd_for_ink_storage_traits_impls_ManualKey_ParentKey.
@@ -1601,6 +1641,7 @@ Module
     Global Instance ℐ :
       ink_storage_traits.storage.StorageKey.Required.Trait Self := {
       ink_storage_traits.storage.StorageKey.KEY := KEY;
+      ink_storage_traits.storage.StorageKey.key := Datatypes.None;
     }.
   End
     Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ManualKey_ParentKey.
@@ -1762,6 +1803,7 @@ Module Impl_core_clone_Clone_for_ink_storage_traits_impls_ResolverKey_L_R.
     
     Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
       core.clone.Clone.clone := clone;
+      core.clone.Clone.clone_from := Datatypes.None;
     }.
   End Impl_core_clone_Clone_for_ink_storage_traits_impls_ResolverKey_L_R.
 End Impl_core_clone_Clone_for_ink_storage_traits_impls_ResolverKey_L_R.
@@ -1809,6 +1851,7 @@ Module Impl_core_cmp_PartialEq_for_ink_storage_traits_impls_ResolverKey_L_R.
       core.cmp.PartialEq.Required.Trait Self
         (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
       core.cmp.PartialEq.eq := eq;
+      core.cmp.PartialEq.ne := Datatypes.None;
     }.
   End Impl_core_cmp_PartialEq_for_ink_storage_traits_impls_ResolverKey_L_R.
 End Impl_core_cmp_PartialEq_for_ink_storage_traits_impls_ResolverKey_L_R.
@@ -1846,7 +1889,8 @@ Module Impl_core_cmp_Eq_for_ink_storage_traits_impls_ResolverKey_L_R.
     }.
     
     Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
-      core.cmp.Eq.assert_receiver_is_total_eq := assert_receiver_is_total_eq;
+      core.cmp.Eq.assert_receiver_is_total_eq :=
+        Datatypes.Some assert_receiver_is_total_eq;
     }.
   End Impl_core_cmp_Eq_for_ink_storage_traits_impls_ResolverKey_L_R.
 End Impl_core_cmp_Eq_for_ink_storage_traits_impls_ResolverKey_L_R.
@@ -1878,6 +1922,10 @@ Module Impl_core_cmp_PartialOrd_for_ink_storage_traits_impls_ResolverKey_L_R.
       core.cmp.PartialOrd.Required.Trait Self
         (Rhs := core.cmp.PartialOrd.Default.Rhs Self) := {
       core.cmp.PartialOrd.partial_cmp := partial_cmp;
+      core.cmp.PartialOrd.lt := Datatypes.None;
+      core.cmp.PartialOrd.le := Datatypes.None;
+      core.cmp.PartialOrd.gt := Datatypes.None;
+      core.cmp.PartialOrd.ge := Datatypes.None;
     }.
   End Impl_core_cmp_PartialOrd_for_ink_storage_traits_impls_ResolverKey_L_R.
 End Impl_core_cmp_PartialOrd_for_ink_storage_traits_impls_ResolverKey_L_R.
@@ -1930,6 +1978,7 @@ Module
     Global Instance ℐ :
       ink_storage_traits.storage.StorageKey.Required.Trait Self := {
       ink_storage_traits.storage.StorageKey.KEY := KEY;
+      ink_storage_traits.storage.StorageKey.key := Datatypes.None;
     }.
   End
     Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ResolverKey_L_R.
@@ -2058,6 +2107,7 @@ Module Impl_ink_storage_traits_storage_StorageKey_for_P.
     Global Instance ℐ :
       ink_storage_traits.storage.StorageKey.Required.Trait Self := {
       ink_storage_traits.storage.StorageKey.KEY := KEY;
+      ink_storage_traits.storage.StorageKey.key := Datatypes.None;
     }.
   End Impl_ink_storage_traits_storage_StorageKey_for_P.
 End Impl_ink_storage_traits_storage_StorageKey_for_P.

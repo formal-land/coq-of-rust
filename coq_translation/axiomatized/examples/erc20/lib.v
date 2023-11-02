@@ -178,6 +178,7 @@ Module Impl_core_cmp_PartialEq_for_lib_Balance.
       core.cmp.PartialEq.Required.Trait Self
         (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
       core.cmp.PartialEq.eq := eq;
+      core.cmp.PartialEq.ne := Datatypes.None;
     }.
   End Impl_core_cmp_PartialEq_for_lib_Balance.
 End Impl_core_cmp_PartialEq_for_lib_Balance.
@@ -202,6 +203,10 @@ Module Impl_core_cmp_PartialOrd_for_lib_Balance.
       core.cmp.PartialOrd.Required.Trait Self
         (Rhs := core.cmp.PartialOrd.Default.Rhs Self) := {
       core.cmp.PartialOrd.partial_cmp := partial_cmp;
+      core.cmp.PartialOrd.lt := Datatypes.None;
+      core.cmp.PartialOrd.le := Datatypes.None;
+      core.cmp.PartialOrd.gt := Datatypes.None;
+      core.cmp.PartialOrd.ge := Datatypes.None;
     }.
   End Impl_core_cmp_PartialOrd_for_lib_Balance.
 End Impl_core_cmp_PartialOrd_for_lib_Balance.
