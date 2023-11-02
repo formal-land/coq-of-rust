@@ -21,22 +21,18 @@ Module Complex.
     }.
     Global Set Primitive Projections.
     
-    #[refine] Global Instance Get_re : Notation.Dot "re" := {
+    Global Instance Get_re : Notation.Dot "re" := {
       Notation.dot x := let* x := M.read x in Pure x.(re) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_AF_re : Notation.DoubleColon t "re" := {
+    Global Instance Get_AF_re : Notation.DoubleColon t "re" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(re) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_im : Notation.Dot "im" := {
+    Global Instance Get_im : Notation.Dot "im" := {
       Notation.dot x := let* x := M.read x in Pure x.(im) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_AF_im : Notation.DoubleColon t "im" := {
+    Global Instance Get_AF_im : Notation.DoubleColon t "im" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(im) : M _;
     }.
-    Admitted.
   End Complex.
 End Complex.
 Definition Complex `{ℋ : State.Trait} : Set := M.val Complex.t.
@@ -54,12 +50,11 @@ Module Impl_core_clone_Clone_for_foreign_function_interface_Complex.
       Notation.double_colon := clone;
     }.
     
-    #[refine] Global Instance ℐ : core.clone.Clone.Trait Self := {
+    Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
       core.clone.Clone.clone := clone;
+      core.clone.Clone.clone_from := Datatypes.None;
     }.
-    Admitted.
   End Impl_core_clone_Clone_for_foreign_function_interface_Complex.
-  Global Hint Resolve ℐ : core.
 End Impl_core_clone_Clone_for_foreign_function_interface_Complex.
 
 Module Impl_core_marker_Copy_for_foreign_function_interface_Complex.
@@ -68,11 +63,9 @@ Module Impl_core_marker_Copy_for_foreign_function_interface_Complex.
     
     Definition Self : Set := foreign_function_interface.Complex.
     
-    #[refine] Global Instance ℐ : core.marker.Copy.Trait Self := {
+    Global Instance ℐ : core.marker.Copy.Trait Self := {
     }.
-    Admitted.
   End Impl_core_marker_Copy_for_foreign_function_interface_Complex.
-  Global Hint Resolve ℐ : core.
 End Impl_core_marker_Copy_for_foreign_function_interface_Complex.
 
 Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
@@ -89,10 +82,8 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
       Notation.double_colon := fmt;
     }.
     
-    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
-    Admitted.
   End Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
-  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_foreign_function_interface_Complex.

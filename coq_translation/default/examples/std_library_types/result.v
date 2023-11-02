@@ -41,12 +41,10 @@ Module checked.
         Notation.double_colon := fmt;
       }.
       
-      #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
+      Global Instance ℐ : core.fmt.Debug.Trait Self := {
         core.fmt.Debug.fmt := fmt;
       }.
-      Admitted.
     End Impl_core_fmt_Debug_for_result_checked_MathError.
-    Global Hint Resolve ℐ : core.
   End Impl_core_fmt_Debug_for_result_checked_MathError.
   
   Ltac MathResult := refine (core.result.Result f64 result.checked.MathError).
@@ -57,43 +55,42 @@ Module checked.
       (y : f64)
       : M ltac:(result.checked.MathResult) :=
     let* α0 := M.alloc 0 (* 0.0 *) in
-    let* α1 := eq y α0 in
+    let* α1 := BinOp.eq y α0 in
     let* α2 := use α1 in
     if (α2 : bool) then
-      Pure (core.result.Result.Err (result.checked.MathError.DivisionByZero tt))
+      let* α0 := M.alloc result.checked.MathError.DivisionByZero in
+      M.alloc (core.result.Result.Err α0)
     else
-      let* α0 := div x y in
-      Pure (core.result.Result.Ok α0).
+      let* α0 := BinOp.div x y in
+      M.alloc (core.result.Result.Ok α0).
   
   Definition sqrt
       `{ℋ : State.Trait}
       (x : f64)
       : M ltac:(result.checked.MathResult) :=
     let* α0 := M.alloc 0 (* 0.0 *) in
-    let* α1 := lt x α0 in
+    let* α1 := BinOp.lt x α0 in
     let* α2 := use α1 in
     if (α2 : bool) then
-      Pure
-        (core.result.Result.Err
-          (result.checked.MathError.NegativeSquareRoot tt))
+      let* α0 := M.alloc result.checked.MathError.NegativeSquareRoot in
+      M.alloc (core.result.Result.Err α0)
     else
       let* α0 := f64::["sqrt"] x in
-      Pure (core.result.Result.Ok α0).
+      M.alloc (core.result.Result.Ok α0).
   
   Definition ln
       `{ℋ : State.Trait}
       (x : f64)
       : M ltac:(result.checked.MathResult) :=
     let* α0 := M.alloc 0 (* 0.0 *) in
-    let* α1 := le x α0 in
+    let* α1 := BinOp.le x α0 in
     let* α2 := use α1 in
     if (α2 : bool) then
-      Pure
-        (core.result.Result.Err
-          (result.checked.MathError.NonPositiveLogarithm tt))
+      let* α0 := M.alloc result.checked.MathError.NonPositiveLogarithm in
+      M.alloc (core.result.Result.Err α0)
     else
       let* α0 := f64::["ln"] x in
-      Pure (core.result.Result.Ok α0).
+      M.alloc (core.result.Result.Ok α0).
 End checked.
 
 Module MathError.
@@ -135,12 +132,10 @@ Module Impl_core_fmt_Debug_for_result_checked_MathError.
       Notation.double_colon := fmt;
     }.
     
-    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
-    Admitted.
   End Impl_core_fmt_Debug_for_result_checked_MathError.
-  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_result_checked_MathError.
 
 Ltac MathResult := refine (core.result.Result f64 result.checked.MathError).
@@ -151,42 +146,42 @@ Definition div
     (y : f64)
     : M ltac:(result.checked.MathResult) :=
   let* α0 := M.alloc 0 (* 0.0 *) in
-  let* α1 := eq y α0 in
+  let* α1 := BinOp.eq y α0 in
   let* α2 := use α1 in
   if (α2 : bool) then
-    Pure (core.result.Result.Err (result.checked.MathError.DivisionByZero tt))
+    let* α0 := M.alloc result.checked.MathError.DivisionByZero in
+    M.alloc (core.result.Result.Err α0)
   else
-    let* α0 := div x y in
-    Pure (core.result.Result.Ok α0).
+    let* α0 := BinOp.div x y in
+    M.alloc (core.result.Result.Ok α0).
 
 Definition sqrt
     `{ℋ : State.Trait}
     (x : f64)
     : M ltac:(result.checked.MathResult) :=
   let* α0 := M.alloc 0 (* 0.0 *) in
-  let* α1 := lt x α0 in
+  let* α1 := BinOp.lt x α0 in
   let* α2 := use α1 in
   if (α2 : bool) then
-    Pure
-      (core.result.Result.Err (result.checked.MathError.NegativeSquareRoot tt))
+    let* α0 := M.alloc result.checked.MathError.NegativeSquareRoot in
+    M.alloc (core.result.Result.Err α0)
   else
     let* α0 := f64::["sqrt"] x in
-    Pure (core.result.Result.Ok α0).
+    M.alloc (core.result.Result.Ok α0).
 
 Definition ln
     `{ℋ : State.Trait}
     (x : f64)
     : M ltac:(result.checked.MathResult) :=
   let* α0 := M.alloc 0 (* 0.0 *) in
-  let* α1 := le x α0 in
+  let* α1 := BinOp.le x α0 in
   let* α2 := use α1 in
   if (α2 : bool) then
-    Pure
-      (core.result.Result.Err
-        (result.checked.MathError.NonPositiveLogarithm tt))
+    let* α0 := M.alloc result.checked.MathError.NonPositiveLogarithm in
+    M.alloc (core.result.Result.Err α0)
   else
     let* α0 := f64::["ln"] x in
-    Pure (core.result.Result.Ok α0).
+    M.alloc (core.result.Result.Ok α0).
 
 Definition op `{ℋ : State.Trait} (x : f64) (y : f64) : M f64 :=
   let* α0 := result.checked.div x y in

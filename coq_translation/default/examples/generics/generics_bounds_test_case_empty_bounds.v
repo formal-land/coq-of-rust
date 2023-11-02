@@ -58,13 +58,11 @@ Module
     
     Definition Self : Set := generics_bounds_test_case_empty_bounds.Cardinal.
     
-    #[refine] Global Instance ℐ :
+    Global Instance ℐ :
       generics_bounds_test_case_empty_bounds.Red.Trait Self := {
     }.
-    Admitted.
   End
     Impl_generics_bounds_test_case_empty_bounds_Red_for_generics_bounds_test_case_empty_bounds_Cardinal.
-  Global Hint Resolve ℐ : core.
 End
   Impl_generics_bounds_test_case_empty_bounds_Red_for_generics_bounds_test_case_empty_bounds_Cardinal.
 
@@ -76,13 +74,11 @@ Module
     
     Definition Self : Set := generics_bounds_test_case_empty_bounds.BlueJay.
     
-    #[refine] Global Instance ℐ :
+    Global Instance ℐ :
       generics_bounds_test_case_empty_bounds.Blue.Trait Self := {
     }.
-    Admitted.
   End
     Impl_generics_bounds_test_case_empty_bounds_Blue_for_generics_bounds_test_case_empty_bounds_BlueJay.
-  Global Hint Resolve ℐ : core.
 End
   Impl_generics_bounds_test_case_empty_bounds_Blue_for_generics_bounds_test_case_empty_bounds_BlueJay.
 
@@ -104,9 +100,12 @@ Definition blue
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
-  let cardinal := generics_bounds_test_case_empty_bounds.Cardinal.Build_t tt in
-  let blue_jay := generics_bounds_test_case_empty_bounds.BlueJay.Build_t tt in
-  let _turkey := generics_bounds_test_case_empty_bounds.Turkey.Build_t tt in
+  let* cardinal :=
+    M.alloc generics_bounds_test_case_empty_bounds.Cardinal.Build_t in
+  let* blue_jay :=
+    M.alloc generics_bounds_test_case_empty_bounds.BlueJay.Build_t in
+  let* _turkey :=
+    M.alloc generics_bounds_test_case_empty_bounds.Turkey.Build_t in
   let* _ :=
     let* _ :=
       let* α0 :=

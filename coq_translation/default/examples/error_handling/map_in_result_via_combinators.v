@@ -9,12 +9,14 @@ Definition multiply
   let* α0 := deref first_number_str str in
   let* α1 := borrow α0 str in
   let* α2 := str::["parse"] α1 in
-  (core.result.Result T E)::["and_then"]
+  (core.result.Result i32 core.num.error.ParseIntError)::["and_then"]
     α2
     (let* α0 := deref second_number_str str in
     let* α1 := borrow α0 str in
     let* α2 := str::["parse"] α1 in
-    (core.result.Result T E)::["map"] α2 (mul first_number second_number)).
+    (core.result.Result i32 core.num.error.ParseIntError)::["map"]
+      α2
+      (BinOp.mul first_number second_number)).
 
 Definition print
     `{ℋ : State.Trait}

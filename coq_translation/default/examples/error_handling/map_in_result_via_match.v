@@ -16,11 +16,11 @@ Definition multiply
     let* α2 := str::["parse"] α1 in
     match α2 with
     | core.result.Result second_number =>
-      let* α0 := mul first_number second_number in
-      Pure (core.result.Result.Ok α0)
-    | core.result.Result e => Pure (core.result.Result.Err e)
+      let* α0 := BinOp.mul first_number second_number in
+      M.alloc (core.result.Result.Ok α0)
+    | core.result.Result e => M.alloc (core.result.Result.Err e)
     end
-  | core.result.Result e => Pure (core.result.Result.Err e)
+  | core.result.Result e => M.alloc (core.result.Result.Err e)
   end.
 
 Definition print

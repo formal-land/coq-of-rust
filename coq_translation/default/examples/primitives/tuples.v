@@ -18,22 +18,18 @@ Module Matrix.
     }.
     Global Set Primitive Projections.
     
-    #[refine] Global Instance Get_0 : Notation.Dot "0" := {
+    Global Instance Get_0 : Notation.Dot "0" := {
       Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_1 : Notation.Dot "1" := {
+    Global Instance Get_1 : Notation.Dot "1" := {
       Notation.dot x := let* x := M.read x in Pure x.(x1) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_2 : Notation.Dot "2" := {
+    Global Instance Get_2 : Notation.Dot "2" := {
       Notation.dot x := let* x := M.read x in Pure x.(x2) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_3 : Notation.Dot "3" := {
+    Global Instance Get_3 : Notation.Dot "3" := {
       Notation.dot x := let* x := M.read x in Pure x.(x3) : M _;
     }.
-    Admitted.
   End Matrix.
 End Matrix.
 Definition Matrix `{ℋ : State.Trait} : Set := M.val Matrix.t.
@@ -84,12 +80,10 @@ Module Impl_core_fmt_Debug_for_tuples_Matrix.
       Notation.double_colon := fmt;
     }.
     
-    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
-    Admitted.
   End Impl_core_fmt_Debug_for_tuples_Matrix.
-  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_tuples_Matrix.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
@@ -305,7 +299,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
     let* α1 := M.alloc 1 (* 1.2 *) in
     let* α2 := M.alloc 2 (* 2.1 *) in
     let* α3 := M.alloc 2 (* 2.2 *) in
-    Pure (tuples.Matrix.Build_t α0 α1 α2 α3) in
+    M.alloc (tuples.Matrix.Build_t α0 α1 α2 α3) in
   let* _ :=
     let* _ :=
       let* α0 := borrow [ mk_str ""; mk_str "

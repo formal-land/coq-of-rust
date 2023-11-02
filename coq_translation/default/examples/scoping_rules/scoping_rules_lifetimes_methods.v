@@ -11,10 +11,9 @@ Module Owner.
     }.
     Global Set Primitive Projections.
     
-    #[refine] Global Instance Get_0 : Notation.Dot "0" := {
+    Global Instance Get_0 : Notation.Dot "0" := {
       Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
-    Admitted.
   End Owner.
 End Owner.
 Definition Owner `{ℋ : State.Trait} : Set := M.val Owner.t.
@@ -73,7 +72,7 @@ End Impl_scoping_rules_lifetimes_methods_Owner.
 Definition main `{ℋ : State.Trait} : M unit :=
   let* owner :=
     let* α0 := M.alloc 18 in
-    Pure (scoping_rules_lifetimes_methods.Owner.Build_t α0) in
+    M.alloc (scoping_rules_lifetimes_methods.Owner.Build_t α0) in
   let* _ :=
     let* α0 := borrow_mut owner scoping_rules_lifetimes_methods.Owner in
     scoping_rules_lifetimes_methods.Owner::["add_one"] α0 in

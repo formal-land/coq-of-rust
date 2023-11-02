@@ -57,7 +57,10 @@ Definition main `{ℋ : State.Trait} : M unit :=
   let* α4 := str::["as_bytes"] α3 in
   let* α5 := deref α4 (Slice u8) in
   let* α6 := borrow α5 (Slice u8) in
-  let* α7 := (std.io.Write.write_all (Self := std.fs.File)) α0 α6 in
+  let* α7 :=
+    (std.io.Write.write_all (Self := std.fs.File) (Trait := ltac:(refine _)))
+      α0
+      α6 in
   match α7 with
   | core.result.Result why =>
     let* α0 :=

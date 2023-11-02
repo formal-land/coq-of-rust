@@ -5,7 +5,7 @@ Require Import CoqOfRust.CoqOfRust.
 Definition main `{ℋ : State.Trait} : M unit :=
   let* immutable_box :=
     let* α0 := M.alloc 5 in
-    (alloc.boxed.Box T alloc.alloc.Global)::["new"] α0 in
+    (alloc.boxed.Box u32 alloc.alloc.Global)::["new"] α0 in
   let* _ :=
     let* _ :=
       let* α0 :=

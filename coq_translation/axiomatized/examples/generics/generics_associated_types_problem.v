@@ -12,14 +12,12 @@ Module Container.
     }.
     Global Set Primitive Projections.
     
-    #[refine] Global Instance Get_0 : Notation.Dot "0" := {
+    Global Instance Get_0 : Notation.Dot "0" := {
       Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_1 : Notation.Dot "1" := {
+    Global Instance Get_1 : Notation.Dot "1" := {
       Notation.dot x := let* x := M.read x in Pure x.(x1) : M _;
     }.
-    Admitted.
   End Container.
 End Container.
 Definition Container `{ℋ : State.Trait} : Set := M.val Container.t.
@@ -66,7 +64,7 @@ Module
       Notation.double_colon := last;
     }.
     
-    #[refine] Global Instance ℐ :
+    Global Instance ℐ :
       generics_associated_types_problem.Contains.Trait Self
         (A := i32)
         (B := i32) := {
@@ -74,10 +72,8 @@ Module
       generics_associated_types_problem.Contains.first := first;
       generics_associated_types_problem.Contains.last := last;
     }.
-    Admitted.
   End
     Impl_generics_associated_types_problem_Contains_i32_i32_for_generics_associated_types_problem_Container.
-  Global Hint Resolve ℐ : core.
 End
   Impl_generics_associated_types_problem_Contains_i32_i32_for_generics_associated_types_problem_Container.
 

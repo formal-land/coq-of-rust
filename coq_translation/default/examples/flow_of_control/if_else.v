@@ -6,7 +6,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
   let* n := M.alloc 5 in
   let* _ :=
     let* α0 := M.alloc 0 in
-    let* α1 := lt n α0 in
+    let* α1 := BinOp.lt n α0 in
     let* α2 := use α1 in
     if (α2 : bool) then
       let* _ :=
@@ -30,7 +30,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
       M.alloc tt
     else
       let* α0 := M.alloc 0 in
-      let* α1 := gt n α0 in
+      let* α1 := BinOp.gt n α0 in
       let* α2 := use α1 in
       if (α2 : bool) then
         let* _ :=
@@ -74,10 +74,10 @@ Definition main `{ℋ : State.Trait} : M unit :=
         M.alloc tt in
   let* big_n :=
     let* α0 := M.alloc 10 in
-    let* α1 := lt n α0 in
+    let* α1 := BinOp.lt n α0 in
     let* α2 := M.alloc (- 10) in
-    let* α3 := gt n α2 in
-    let* α4 := and α1 α3 in
+    let* α3 := BinOp.gt n α2 in
+    let* α4 := BinOp.and α1 α3 in
     let* α5 := use α4 in
     if (α5 : bool) then
       let* _ :=
@@ -94,7 +94,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
           std.io.stdio._print α4 in
         M.alloc tt in
       let* α0 := M.alloc 10 in
-      mul α0 n
+      BinOp.mul α0 n
     else
       let* _ :=
         let* _ :=
@@ -110,7 +110,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
           std.io.stdio._print α4 in
         M.alloc tt in
       let* α0 := M.alloc 2 in
-      div n α0 in
+      BinOp.div n α0 in
   let* _ :=
     let* _ :=
       let* α0 :=

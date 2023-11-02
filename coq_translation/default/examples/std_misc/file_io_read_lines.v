@@ -7,12 +7,14 @@ Definition read_lines
     : M (std.io.Lines (std.io.buffered.bufreader.BufReader std.fs.File)) :=
   let* file :=
     let* α0 := std.fs.File::["open"] filename in
-    (core.result.Result T E)::["unwrap"] α0 in
+    (core.result.Result std.fs.File std.io.error.Error)::["unwrap"] α0 in
   let* _ :=
-    let* α0 := (std.io.buffered.bufreader.BufReader R)::["new"] file in
+    let* α0 :=
+      (std.io.buffered.bufreader.BufReader std.fs.File)::["new"] file in
     let* α1 :=
       (std.io.BufRead.lines
-          (Self := (std.io.buffered.bufreader.BufReader std.fs.File)))
+          (Self := std.io.buffered.bufreader.BufReader std.fs.File)
+          (Trait := ltac:(refine _)))
         α0 in
     Return α1 in
   let* α0 := M.alloc tt in
@@ -23,12 +25,14 @@ Definition main `{ℋ : State.Trait} : M unit :=
   let* lines :=
     let* α0 := deref (mk_str "./hosts") str in
     let* α1 := borrow α0 str in
-    let* α2 := (alloc.string.ToString.to_string (Self := str)) α1 in
+    let* α2 :=
+      (alloc.string.ToString.to_string (Self := str) (Trait := ltac:(refine _)))
+        α1 in
     file_io_read_lines.read_lines α2 in
   let* α0 :=
     (core.iter.traits.collect.IntoIterator.into_iter
-        (Self :=
-          (std.io.Lines (std.io.buffered.bufreader.BufReader std.fs.File))))
+        (Self := std.io.Lines (std.io.buffered.bufreader.BufReader std.fs.File))
+        (Trait := ltac:(refine _)))
       lines in
   let* α1 :=
     match α0 with
@@ -53,8 +57,9 @@ Definition main `{ℋ : State.Trait} : M unit :=
           let* α3 :=
             (core.iter.traits.iterator.Iterator.next
                 (Self :=
-                  (std.io.Lines
-                    (std.io.buffered.bufreader.BufReader std.fs.File))))
+                  std.io.Lines
+                    (std.io.buffered.bufreader.BufReader std.fs.File))
+                (Trait := ltac:(refine _)))
               α2 in
           match α3 with
           | core.option.Option  =>
@@ -68,7 +73,11 @@ Definition main `{ℋ : State.Trait} : M unit :=
                 let* α1 := deref α0 (list (ref str)) in
                 let* α2 := borrow α1 (list (ref str)) in
                 let* α3 := pointer_coercion "Unsize" α2 in
-                let* α4 := (core.result.Result T E)::["unwrap"] line in
+                let* α4 :=
+                  (core.result.Result
+                        alloc.string.String
+                        std.io.error.Error)::["unwrap"]
+                    line in
                 let* α5 := borrow α4 alloc.string.String in
                 let* α6 := deref α5 alloc.string.String in
                 let* α7 := borrow α6 alloc.string.String in

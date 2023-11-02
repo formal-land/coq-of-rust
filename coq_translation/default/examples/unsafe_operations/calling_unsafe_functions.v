@@ -12,20 +12,20 @@ Definition main `{ℋ : State.Trait} : M unit :=
       (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"]
         [ α0; α1; α2; α3 ] in
     let* α5 := pointer_coercion "Unsize" α4 in
-    (Slice T)::["into_vec"] α5 in
+    (Slice u32)::["into_vec"] α5 in
   let* pointer :=
     let* α0 := borrow some_vector (alloc.vec.Vec u32 alloc.alloc.Global) in
-    (alloc.vec.Vec T A)::["as_ptr"] α0 in
+    (alloc.vec.Vec u32 alloc.alloc.Global)::["as_ptr"] α0 in
   let* length :=
     let* α0 := borrow some_vector (alloc.vec.Vec u32 alloc.alloc.Global) in
-    (alloc.vec.Vec T A)::["len"] α0 in
+    (alloc.vec.Vec u32 alloc.alloc.Global)::["len"] α0 in
   let* my_slice :=
     let* α0 := core.slice.raw.from_raw_parts pointer length in
     let* α1 := deref α0 (Slice u32) in
     borrow α1 (Slice u32) in
   let* _ :=
     let* α0 := borrow some_vector (alloc.vec.Vec u32 alloc.alloc.Global) in
-    let* α1 := (alloc.vec.Vec T A)::["as_slice"] α0 in
+    let* α1 := (alloc.vec.Vec u32 alloc.alloc.Global)::["as_slice"] α0 in
     let* α2 := borrow α1 (ref (Slice u32)) in
     let* α3 := borrow my_slice (ref (Slice u32)) in
     match (α2, α3) with
@@ -34,11 +34,16 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α1 := borrow α0 (ref (Slice u32)) in
       let* α2 := deref right_val (ref (Slice u32)) in
       let* α3 := borrow α2 (ref (Slice u32)) in
-      let* α4 := (core.cmp.PartialEq.eq (Self := (ref (Slice u32)))) α1 α3 in
-      let* α5 := not α4 in
+      let* α4 :=
+        (core.cmp.PartialEq.eq
+            (Self := ref (Slice u32))
+            (Trait := ltac:(refine _)))
+          α1
+          α3 in
+      let* α5 := UnOp.not α4 in
       let* α6 := use α5 in
       if (α6 : bool) then
-        let kind := core.panicking.AssertKind.Eq tt in
+        let* kind := M.alloc core.panicking.AssertKind.Eq in
         let* _ :=
           let* α0 := deref left_val (ref (Slice u32)) in
           let* α1 := borrow α0 (ref (Slice u32)) in
@@ -48,11 +53,8 @@ Definition main `{ℋ : State.Trait} : M unit :=
           let* α5 := borrow α4 (ref (Slice u32)) in
           let* α6 := deref α5 (ref (Slice u32)) in
           let* α7 := borrow α6 (ref (Slice u32)) in
-          core.panicking.assert_failed
-            kind
-            α3
-            α7
-            (core.option.Option.None tt) in
+          let* α8 := M.alloc core.option.Option.None in
+          core.panicking.assert_failed kind α3 α7 α8 in
         let* α0 := M.alloc tt in
         never_to_any α0
       else

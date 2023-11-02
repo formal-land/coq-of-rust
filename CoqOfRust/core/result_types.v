@@ -49,4 +49,5 @@ Module Result.
   Arguments Ok {T E} _.
   Arguments Err {T E} _.
 End Result.
-Definition Result := Result.t.
+Definition Result `{State.Trait} (T E : Set) : Set :=
+  M.val (Result.t T E).

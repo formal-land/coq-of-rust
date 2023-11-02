@@ -11,14 +11,12 @@ Module Borrowed.
     }.
     Global Set Primitive Projections.
     
-    #[refine] Global Instance Get_x : Notation.Dot "x" := {
+    Global Instance Get_x : Notation.Dot "x" := {
       Notation.dot x' := let* x' := M.read x' in Pure x'.(x) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_AF_x : Notation.DoubleColon t "x" := {
+    Global Instance Get_AF_x : Notation.DoubleColon t "x" := {
       Notation.double_colon x' := let* x' := M.read x' in Pure x'.(x) : M _;
     }.
-    Admitted.
   End Borrowed.
 End Borrowed.
 Definition Borrowed `{ℋ : State.Trait} : Set := M.val Borrowed.t.
@@ -37,12 +35,10 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed.
       Notation.double_colon := fmt;
     }.
     
-    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
-    Admitted.
   End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed.
-  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed.
 
 Module Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed.
@@ -58,12 +54,10 @@ Module Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed.
       Notation.double_colon := default;
     }.
     
-    #[refine] Global Instance ℐ : core.default.Default.Trait Self := {
+    Global Instance ℐ : core.default.Default.Trait Self := {
       core.default.Default.default := default;
     }.
-    Admitted.
   End Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed.
-  Global Hint Resolve ℐ : core.
 End Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)

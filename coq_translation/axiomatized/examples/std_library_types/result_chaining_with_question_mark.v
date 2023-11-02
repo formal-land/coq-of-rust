@@ -29,13 +29,11 @@ Module checked.
         Notation.double_colon := fmt;
       }.
       
-      #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
+      Global Instance ℐ : core.fmt.Debug.Trait Self := {
         core.fmt.Debug.fmt := fmt;
       }.
-      Admitted.
     End
       Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
-    Global Hint Resolve ℐ : core.
   End
     Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
   
@@ -93,13 +91,11 @@ Module
       Notation.double_colon := fmt;
     }.
     
-    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
-    Admitted.
   End
     Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
-  Global Hint Resolve ℐ : core.
 End
   Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
 

@@ -11,10 +11,9 @@ Module Choice.
     }.
     Global Set Primitive Projections.
     
-    #[refine] Global Instance Get_0 : Notation.Dot "0" := {
+    Global Instance Get_0 : Notation.Dot "0" := {
       Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
-    Admitted.
   End Choice.
 End Choice.
 Definition Choice `{ℋ : State.Trait} : Set := M.val Choice.t.
@@ -25,11 +24,9 @@ Module Impl_core_marker_Copy_for_subtle_Choice.
     
     Definition Self : Set := subtle.Choice.
     
-    #[refine] Global Instance ℐ : core.marker.Copy.Trait Self := {
+    Global Instance ℐ : core.marker.Copy.Trait Self := {
     }.
-    Admitted.
   End Impl_core_marker_Copy_for_subtle_Choice.
-  Global Hint Resolve ℐ : core.
 End Impl_core_marker_Copy_for_subtle_Choice.
 
 Module Impl_core_clone_Clone_for_subtle_Choice.
@@ -47,12 +44,11 @@ Module Impl_core_clone_Clone_for_subtle_Choice.
       Notation.double_colon := clone;
     }.
     
-    #[refine] Global Instance ℐ : core.clone.Clone.Trait Self := {
+    Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
       core.clone.Clone.clone := clone;
+      core.clone.Clone.clone_from := Datatypes.None;
     }.
-    Admitted.
   End Impl_core_clone_Clone_for_subtle_Choice.
-  Global Hint Resolve ℐ : core.
 End Impl_core_clone_Clone_for_subtle_Choice.
 
 Module Impl_core_fmt_Debug_for_subtle_Choice.
@@ -83,12 +79,10 @@ Module Impl_core_fmt_Debug_for_subtle_Choice.
       Notation.double_colon := fmt;
     }.
     
-    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
-    Admitted.
   End Impl_core_fmt_Debug_for_subtle_Choice.
-  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_subtle_Choice.
 
 Module Impl_subtle_Choice.
@@ -122,12 +116,12 @@ Module Impl_core_convert_From_subtle_Choice_for_bool.
           let* _ :=
             let* α0 := source.["0"] in
             let* α1 := M.alloc 0 in
-            let* α2 := eq α0 α1 in
+            let* α2 := BinOp.eq α0 α1 in
             let* α3 := source.["0"] in
             let* α4 := M.alloc 1 in
-            let* α5 := eq α3 α4 in
-            let* α6 := bitor α2 α5 in
-            let* α7 := not α6 in
+            let* α5 := BinOp.eq α3 α4 in
+            let* α6 := BinOp.bit_or α2 α5 in
+            let* α7 := UnOp.not α6 in
             let* α8 := use α7 in
             if (α8 : bool) then
               let* α0 :=
@@ -142,20 +136,17 @@ Module Impl_core_convert_From_subtle_Choice_for_bool.
           M.alloc tt in
       let* α0 := source.["0"] in
       let* α1 := M.alloc 0 in
-      ne α0 α1.
+      BinOp.ne α0 α1.
     
     Global Instance AssociatedFunction_from :
       Notation.DoubleColon Self "from" := {
       Notation.double_colon := from;
     }.
     
-    #[refine] Global Instance ℐ :
-      core.convert.From.Trait Self (T := subtle.Choice) := {
+    Global Instance ℐ : core.convert.From.Trait Self (T := subtle.Choice) := {
       core.convert.From.from := from;
     }.
-    Admitted.
   End Impl_core_convert_From_subtle_Choice_for_bool.
-  Global Hint Resolve ℐ : core.
 End Impl_core_convert_From_subtle_Choice_for_bool.
 
 Module Impl_core_ops_bit_BitAnd_for_subtle_Choice.
@@ -169,23 +160,21 @@ Module Impl_core_ops_bit_BitAnd_for_subtle_Choice.
     Definition bitand (self : Self) (rhs : subtle.Choice) : M subtle.Choice :=
       let* α0 := self.["0"] in
       let* α1 := rhs.["0"] in
-      let* α2 := bitand α0 α1 in
-      (core.convert.Into.into (Self := u8)) α2.
+      let* α2 := BinOp.bit_and α0 α1 in
+      (core.convert.Into.into (Self := u8) (Trait := ltac:(refine _))) α2.
     
     Global Instance AssociatedFunction_bitand :
       Notation.DoubleColon Self "bitand" := {
       Notation.double_colon := bitand;
     }.
     
-    #[refine] Global Instance ℐ :
+    Global Instance ℐ :
       core.ops.bit.BitAnd.Trait Self
         (Rhs := core.ops.bit.BitAnd.Default.Rhs Self) := {
       core.ops.bit.BitAnd.Output := Output;
       core.ops.bit.BitAnd.bitand := bitand;
     }.
-    Admitted.
   End Impl_core_ops_bit_BitAnd_for_subtle_Choice.
-  Global Hint Resolve ℐ : core.
 End Impl_core_ops_bit_BitAnd_for_subtle_Choice.
 
 Module Impl_core_ops_bit_BitAndAssign_for_subtle_Choice.
@@ -202,7 +191,11 @@ Module Impl_core_ops_bit_BitAndAssign_for_subtle_Choice.
         let* α0 := deref self subtle.Choice in
         let* α1 := deref self subtle.Choice in
         let* α2 :=
-          (core.ops.bit.BitAnd.bitand (Self := subtle.Choice)) α1 rhs in
+          (core.ops.bit.BitAnd.bitand
+              (Self := subtle.Choice)
+              (Trait := ltac:(refine _)))
+            α1
+            rhs in
         assign α0 α2 in
       M.alloc tt.
     
@@ -211,14 +204,12 @@ Module Impl_core_ops_bit_BitAndAssign_for_subtle_Choice.
       Notation.double_colon := bitand_assign;
     }.
     
-    #[refine] Global Instance ℐ :
+    Global Instance ℐ :
       core.ops.bit.BitAndAssign.Trait Self
         (Rhs := core.ops.bit.BitAndAssign.Default.Rhs Self) := {
       core.ops.bit.BitAndAssign.bitand_assign := bitand_assign;
     }.
-    Admitted.
   End Impl_core_ops_bit_BitAndAssign_for_subtle_Choice.
-  Global Hint Resolve ℐ : core.
 End Impl_core_ops_bit_BitAndAssign_for_subtle_Choice.
 
 Module Impl_core_ops_bit_BitOr_for_subtle_Choice.
@@ -232,23 +223,21 @@ Module Impl_core_ops_bit_BitOr_for_subtle_Choice.
     Definition bitor (self : Self) (rhs : subtle.Choice) : M subtle.Choice :=
       let* α0 := self.["0"] in
       let* α1 := rhs.["0"] in
-      let* α2 := bitor α0 α1 in
-      (core.convert.Into.into (Self := u8)) α2.
+      let* α2 := BinOp.bit_or α0 α1 in
+      (core.convert.Into.into (Self := u8) (Trait := ltac:(refine _))) α2.
     
     Global Instance AssociatedFunction_bitor :
       Notation.DoubleColon Self "bitor" := {
       Notation.double_colon := bitor;
     }.
     
-    #[refine] Global Instance ℐ :
+    Global Instance ℐ :
       core.ops.bit.BitOr.Trait Self
         (Rhs := core.ops.bit.BitOr.Default.Rhs Self) := {
       core.ops.bit.BitOr.Output := Output;
       core.ops.bit.BitOr.bitor := bitor;
     }.
-    Admitted.
   End Impl_core_ops_bit_BitOr_for_subtle_Choice.
-  Global Hint Resolve ℐ : core.
 End Impl_core_ops_bit_BitOr_for_subtle_Choice.
 
 Module Impl_core_ops_bit_BitOrAssign_for_subtle_Choice.
@@ -264,7 +253,12 @@ Module Impl_core_ops_bit_BitOrAssign_for_subtle_Choice.
       let* _ :=
         let* α0 := deref self subtle.Choice in
         let* α1 := deref self subtle.Choice in
-        let* α2 := (core.ops.bit.BitOr.bitor (Self := subtle.Choice)) α1 rhs in
+        let* α2 :=
+          (core.ops.bit.BitOr.bitor
+              (Self := subtle.Choice)
+              (Trait := ltac:(refine _)))
+            α1
+            rhs in
         assign α0 α2 in
       M.alloc tt.
     
@@ -273,14 +267,12 @@ Module Impl_core_ops_bit_BitOrAssign_for_subtle_Choice.
       Notation.double_colon := bitor_assign;
     }.
     
-    #[refine] Global Instance ℐ :
+    Global Instance ℐ :
       core.ops.bit.BitOrAssign.Trait Self
         (Rhs := core.ops.bit.BitOrAssign.Default.Rhs Self) := {
       core.ops.bit.BitOrAssign.bitor_assign := bitor_assign;
     }.
-    Admitted.
   End Impl_core_ops_bit_BitOrAssign_for_subtle_Choice.
-  Global Hint Resolve ℐ : core.
 End Impl_core_ops_bit_BitOrAssign_for_subtle_Choice.
 
 Module Impl_core_ops_bit_BitXor_for_subtle_Choice.
@@ -294,23 +286,21 @@ Module Impl_core_ops_bit_BitXor_for_subtle_Choice.
     Definition bitxor (self : Self) (rhs : subtle.Choice) : M subtle.Choice :=
       let* α0 := self.["0"] in
       let* α1 := rhs.["0"] in
-      let* α2 := bitxor α0 α1 in
-      (core.convert.Into.into (Self := u8)) α2.
+      let* α2 := BinOp.bit_xor α0 α1 in
+      (core.convert.Into.into (Self := u8) (Trait := ltac:(refine _))) α2.
     
     Global Instance AssociatedFunction_bitxor :
       Notation.DoubleColon Self "bitxor" := {
       Notation.double_colon := bitxor;
     }.
     
-    #[refine] Global Instance ℐ :
+    Global Instance ℐ :
       core.ops.bit.BitXor.Trait Self
         (Rhs := core.ops.bit.BitXor.Default.Rhs Self) := {
       core.ops.bit.BitXor.Output := Output;
       core.ops.bit.BitXor.bitxor := bitxor;
     }.
-    Admitted.
   End Impl_core_ops_bit_BitXor_for_subtle_Choice.
-  Global Hint Resolve ℐ : core.
 End Impl_core_ops_bit_BitXor_for_subtle_Choice.
 
 Module Impl_core_ops_bit_BitXorAssign_for_subtle_Choice.
@@ -327,7 +317,11 @@ Module Impl_core_ops_bit_BitXorAssign_for_subtle_Choice.
         let* α0 := deref self subtle.Choice in
         let* α1 := deref self subtle.Choice in
         let* α2 :=
-          (core.ops.bit.BitXor.bitxor (Self := subtle.Choice)) α1 rhs in
+          (core.ops.bit.BitXor.bitxor
+              (Self := subtle.Choice)
+              (Trait := ltac:(refine _)))
+            α1
+            rhs in
         assign α0 α2 in
       M.alloc tt.
     
@@ -336,14 +330,12 @@ Module Impl_core_ops_bit_BitXorAssign_for_subtle_Choice.
       Notation.double_colon := bitxor_assign;
     }.
     
-    #[refine] Global Instance ℐ :
+    Global Instance ℐ :
       core.ops.bit.BitXorAssign.Trait Self
         (Rhs := core.ops.bit.BitXorAssign.Default.Rhs Self) := {
       core.ops.bit.BitXorAssign.bitxor_assign := bitxor_assign;
     }.
-    Admitted.
   End Impl_core_ops_bit_BitXorAssign_for_subtle_Choice.
-  Global Hint Resolve ℐ : core.
 End Impl_core_ops_bit_BitXorAssign_for_subtle_Choice.
 
 Module Impl_core_ops_bit_Not_for_subtle_Choice.
@@ -357,22 +349,20 @@ Module Impl_core_ops_bit_Not_for_subtle_Choice.
     Definition not (self : Self) : M subtle.Choice :=
       let* α0 := M.alloc 1 in
       let* α1 := self.["0"] in
-      let* α2 := not α1 in
-      let* α3 := bitand α0 α2 in
-      (core.convert.Into.into (Self := u8)) α3.
+      let* α2 := UnOp.not α1 in
+      let* α3 := BinOp.bit_and α0 α2 in
+      (core.convert.Into.into (Self := u8) (Trait := ltac:(refine _))) α3.
     
     Global Instance AssociatedFunction_not :
       Notation.DoubleColon Self "not" := {
       Notation.double_colon := not;
     }.
     
-    #[refine] Global Instance ℐ : core.ops.bit.Not.Trait Self := {
+    Global Instance ℐ : core.ops.bit.Not.Trait Self := {
       core.ops.bit.Not.Output := Output;
       core.ops.bit.Not.not := not;
     }.
-    Admitted.
   End Impl_core_ops_bit_Not_for_subtle_Choice.
-  Global Hint Resolve ℐ : core.
 End Impl_core_ops_bit_Not_for_subtle_Choice.
 
 Definition black_box `{ℋ : State.Trait} (input : u8) : M u8 :=
@@ -382,11 +372,11 @@ Definition black_box `{ℋ : State.Trait} (input : u8) : M u8 :=
     if (α1 : bool) then
       let* _ :=
         let* α0 := M.alloc 0 in
-        let* α1 := eq input α0 in
+        let* α1 := BinOp.eq input α0 in
         let* α2 := M.alloc 1 in
-        let* α3 := eq input α2 in
-        let* α4 := bitor α1 α3 in
-        let* α5 := not α4 in
+        let* α3 := BinOp.eq input α2 in
+        let* α4 := BinOp.bit_or α1 α3 in
+        let* α5 := UnOp.not α4 in
         let* α6 := use α5 in
         if (α6 : bool) then
           let* α0 :=
@@ -412,19 +402,17 @@ Module Impl_core_convert_From_u8_for_subtle_Choice.
     
     Definition from (input : u8) : M subtle.Choice :=
       let* α0 := subtle.black_box input in
-      Pure (subtle.Choice.Build_t α0).
+      M.alloc (subtle.Choice.Build_t α0).
     
     Global Instance AssociatedFunction_from :
       Notation.DoubleColon Self "from" := {
       Notation.double_colon := from;
     }.
     
-    #[refine] Global Instance ℐ : core.convert.From.Trait Self (T := u8) := {
+    Global Instance ℐ : core.convert.From.Trait Self (T := u8) := {
       core.convert.From.from := from;
     }.
-    Admitted.
   End Impl_core_convert_From_u8_for_subtle_Choice.
-  Global Hint Resolve ℐ : core.
 End Impl_core_convert_From_u8_for_subtle_Choice.
 
 Module ConstantTimeEq.
@@ -459,12 +447,16 @@ Module Impl_subtle_ConstantTimeEq_for_Slice_T.
         let* α0 := deref _rhs (Slice T) in
         let* α1 := borrow α0 (Slice T) in
         let* α2 := (Slice T)::["len"] α1 in
-        let* α3 := ne len α2 in
+        let* α3 := BinOp.ne len α2 in
         let* α4 := use α3 in
         if (α4 : bool) then
           let* _ :=
             let* α0 := M.alloc 0 in
-            let* α1 := (core.convert.From.from (Self := subtle.Choice)) α0 in
+            let* α1 :=
+              (core.convert.From.from
+                  (Self := subtle.Choice)
+                  (Trait := ltac:(refine _)))
+                α0 in
             Return α1 in
           let* α0 := M.alloc tt in
           never_to_any α0
@@ -480,15 +472,17 @@ Module Impl_subtle_ConstantTimeEq_for_Slice_T.
         let* α5 := (Slice T)::["iter"] α4 in
         let* α6 :=
           (core.iter.traits.iterator.Iterator.zip
-              (Self := (core.slice.iter.Iter T)))
+              (Self := core.slice.iter.Iter T)
+              (Trait := ltac:(refine _)))
             α2
             α5 in
         let* α7 :=
           (core.iter.traits.collect.IntoIterator.into_iter
               (Self :=
-                (core.iter.adapters.zip.Zip
+                core.iter.adapters.zip.Zip
                   (core.slice.iter.Iter T)
-                  (core.slice.iter.Iter T))))
+                  (core.slice.iter.Iter T))
+              (Trait := ltac:(refine _)))
             α6 in
         let* α8 :=
           match α7 with
@@ -516,9 +510,10 @@ Module Impl_subtle_ConstantTimeEq_for_Slice_T.
                 let* α3 :=
                   (core.iter.traits.iterator.Iterator.next
                       (Self :=
-                        (core.iter.adapters.zip.Zip
+                        core.iter.adapters.zip.Zip
                           (core.slice.iter.Iter T)
-                          (core.slice.iter.Iter T))))
+                          (core.slice.iter.Iter T))
+                      (Trait := ltac:(refine _)))
                     α2 in
                 match α3 with
                 | core.option.Option  =>
@@ -531,7 +526,11 @@ Module Impl_subtle_ConstantTimeEq_for_Slice_T.
                     let* α2 := deref bi T in
                     let* α3 := borrow α2 T in
                     let* α4 :=
-                      (subtle.ConstantTimeEq.ct_eq (Self := T)) α1 α3 in
+                      (subtle.ConstantTimeEq.ct_eq
+                          (Self := T)
+                          (Trait := ltac:(refine _)))
+                        α1
+                        α3 in
                     let* α5 := borrow α4 subtle.Choice in
                     let* α6 := subtle.Choice::["unwrap_u8"] α5 in
                     assign_op bitand x α6 in
@@ -540,19 +539,18 @@ Module Impl_subtle_ConstantTimeEq_for_Slice_T.
               M.alloc tt)
           end in
         use α8 in
-      (core.convert.Into.into (Self := u8)) x.
+      (core.convert.Into.into (Self := u8) (Trait := ltac:(refine _))) x.
     
     Global Instance AssociatedFunction_ct_eq :
       Notation.DoubleColon Self "ct_eq" := {
       Notation.double_colon := ct_eq;
     }.
     
-    #[refine] Global Instance ℐ : subtle.ConstantTimeEq.Trait Self := {
+    Global Instance ℐ : subtle.ConstantTimeEq.Required.Trait Self := {
       subtle.ConstantTimeEq.ct_eq := ct_eq;
+      subtle.ConstantTimeEq.ct_ne := Datatypes.None;
     }.
-    Admitted.
   End Impl_subtle_ConstantTimeEq_for_Slice_T.
-  Global Hint Resolve ℐ : core.
 End Impl_subtle_ConstantTimeEq_for_Slice_T.
 
 Module Impl_subtle_ConstantTimeEq_for_subtle_Choice.
@@ -567,20 +565,25 @@ Module Impl_subtle_ConstantTimeEq_for_subtle_Choice.
         : M subtle.Choice :=
       let* α0 := deref self subtle.Choice in
       let* α1 := deref rhs subtle.Choice in
-      let* α2 := (core.ops.bit.BitXor.bitxor (Self := subtle.Choice)) α0 α1 in
-      (core.ops.bit.Not.not (Self := subtle.Choice)) α2.
+      let* α2 :=
+        (core.ops.bit.BitXor.bitxor
+            (Self := subtle.Choice)
+            (Trait := ltac:(refine _)))
+          α0
+          α1 in
+      (core.ops.bit.Not.not (Self := subtle.Choice) (Trait := ltac:(refine _)))
+        α2.
     
     Global Instance AssociatedFunction_ct_eq :
       Notation.DoubleColon Self "ct_eq" := {
       Notation.double_colon := ct_eq;
     }.
     
-    #[refine] Global Instance ℐ : subtle.ConstantTimeEq.Trait Self := {
+    Global Instance ℐ : subtle.ConstantTimeEq.Required.Trait Self := {
       subtle.ConstantTimeEq.ct_eq := ct_eq;
+      subtle.ConstantTimeEq.ct_ne := Datatypes.None;
     }.
-    Admitted.
   End Impl_subtle_ConstantTimeEq_for_subtle_Choice.
-  Global Hint Resolve ℐ : core.
 End Impl_subtle_ConstantTimeEq_for_subtle_Choice.
 
 Module Impl_subtle_ConstantTimeEq_for_u8.
@@ -590,31 +593,33 @@ Module Impl_subtle_ConstantTimeEq_for_u8.
     Definition Self : Set := u8.
     
     Definition ct_eq (self : ref Self) (other : ref u8) : M subtle.Choice :=
-      let* x := (core.ops.bit.BitXor.bitxor (Self := (ref u8))) self other in
+      let* x :=
+        (core.ops.bit.BitXor.bitxor (Self := ref u8) (Trait := ltac:(refine _)))
+          self
+          other in
       let* y :=
         let* α0 := u8::["wrapping_neg"] x in
-        let* α1 := bitor x α0 in
+        let* α1 := BinOp.bit_or x α0 in
         let* α2 := M.alloc 8 in
         let* α3 := M.alloc 1 in
-        let* α4 := sub α2 α3 in
-        shr α1 α4 in
+        let* α4 := BinOp.sub α2 α3 in
+        BinOp.shr α1 α4 in
       let* α0 := M.alloc 1 in
       let* α1 := use α0 in
-      let* α2 := bitxor y α1 in
+      let* α2 := BinOp.bit_xor y α1 in
       let* α3 := use α2 in
-      (core.convert.Into.into (Self := u8)) α3.
+      (core.convert.Into.into (Self := u8) (Trait := ltac:(refine _))) α3.
     
     Global Instance AssociatedFunction_ct_eq :
       Notation.DoubleColon Self "ct_eq" := {
       Notation.double_colon := ct_eq;
     }.
     
-    #[refine] Global Instance ℐ : subtle.ConstantTimeEq.Trait Self := {
+    Global Instance ℐ : subtle.ConstantTimeEq.Required.Trait Self := {
       subtle.ConstantTimeEq.ct_eq := ct_eq;
+      subtle.ConstantTimeEq.ct_ne := Datatypes.None;
     }.
-    Admitted.
   End Impl_subtle_ConstantTimeEq_for_u8.
-  Global Hint Resolve ℐ : core.
 End Impl_subtle_ConstantTimeEq_for_u8.
 
 Module Impl_subtle_ConstantTimeEq_for_i8.
@@ -632,19 +637,20 @@ Module Impl_subtle_ConstantTimeEq_for_i8.
       let* α5 := borrow α4 u8 in
       let* α6 := deref α5 u8 in
       let* α7 := borrow α6 u8 in
-      (subtle.ConstantTimeEq.ct_eq (Self := u8)) α2 α7.
+      (subtle.ConstantTimeEq.ct_eq (Self := u8) (Trait := ltac:(refine _)))
+        α2
+        α7.
     
     Global Instance AssociatedFunction_ct_eq :
       Notation.DoubleColon Self "ct_eq" := {
       Notation.double_colon := ct_eq;
     }.
     
-    #[refine] Global Instance ℐ : subtle.ConstantTimeEq.Trait Self := {
+    Global Instance ℐ : subtle.ConstantTimeEq.Required.Trait Self := {
       subtle.ConstantTimeEq.ct_eq := ct_eq;
+      subtle.ConstantTimeEq.ct_ne := Datatypes.None;
     }.
-    Admitted.
   End Impl_subtle_ConstantTimeEq_for_i8.
-  Global Hint Resolve ℐ : core.
 End Impl_subtle_ConstantTimeEq_for_i8.
 
 Module Impl_subtle_ConstantTimeEq_for_u16.
@@ -654,31 +660,35 @@ Module Impl_subtle_ConstantTimeEq_for_u16.
     Definition Self : Set := u16.
     
     Definition ct_eq (self : ref Self) (other : ref u16) : M subtle.Choice :=
-      let* x := (core.ops.bit.BitXor.bitxor (Self := (ref u16))) self other in
+      let* x :=
+        (core.ops.bit.BitXor.bitxor
+            (Self := ref u16)
+            (Trait := ltac:(refine _)))
+          self
+          other in
       let* y :=
         let* α0 := u16::["wrapping_neg"] x in
-        let* α1 := bitor x α0 in
+        let* α1 := BinOp.bit_or x α0 in
         let* α2 := M.alloc 16 in
         let* α3 := M.alloc 1 in
-        let* α4 := sub α2 α3 in
-        shr α1 α4 in
+        let* α4 := BinOp.sub α2 α3 in
+        BinOp.shr α1 α4 in
       let* α0 := M.alloc 1 in
       let* α1 := use α0 in
-      let* α2 := bitxor y α1 in
+      let* α2 := BinOp.bit_xor y α1 in
       let* α3 := cast α2 in
-      (core.convert.Into.into (Self := u8)) α3.
+      (core.convert.Into.into (Self := u8) (Trait := ltac:(refine _))) α3.
     
     Global Instance AssociatedFunction_ct_eq :
       Notation.DoubleColon Self "ct_eq" := {
       Notation.double_colon := ct_eq;
     }.
     
-    #[refine] Global Instance ℐ : subtle.ConstantTimeEq.Trait Self := {
+    Global Instance ℐ : subtle.ConstantTimeEq.Required.Trait Self := {
       subtle.ConstantTimeEq.ct_eq := ct_eq;
+      subtle.ConstantTimeEq.ct_ne := Datatypes.None;
     }.
-    Admitted.
   End Impl_subtle_ConstantTimeEq_for_u16.
-  Global Hint Resolve ℐ : core.
 End Impl_subtle_ConstantTimeEq_for_u16.
 
 Module Impl_subtle_ConstantTimeEq_for_i16.
@@ -696,19 +706,20 @@ Module Impl_subtle_ConstantTimeEq_for_i16.
       let* α5 := borrow α4 u16 in
       let* α6 := deref α5 u16 in
       let* α7 := borrow α6 u16 in
-      (subtle.ConstantTimeEq.ct_eq (Self := u16)) α2 α7.
+      (subtle.ConstantTimeEq.ct_eq (Self := u16) (Trait := ltac:(refine _)))
+        α2
+        α7.
     
     Global Instance AssociatedFunction_ct_eq :
       Notation.DoubleColon Self "ct_eq" := {
       Notation.double_colon := ct_eq;
     }.
     
-    #[refine] Global Instance ℐ : subtle.ConstantTimeEq.Trait Self := {
+    Global Instance ℐ : subtle.ConstantTimeEq.Required.Trait Self := {
       subtle.ConstantTimeEq.ct_eq := ct_eq;
+      subtle.ConstantTimeEq.ct_ne := Datatypes.None;
     }.
-    Admitted.
   End Impl_subtle_ConstantTimeEq_for_i16.
-  Global Hint Resolve ℐ : core.
 End Impl_subtle_ConstantTimeEq_for_i16.
 
 Module Impl_subtle_ConstantTimeEq_for_u32.
@@ -718,31 +729,35 @@ Module Impl_subtle_ConstantTimeEq_for_u32.
     Definition Self : Set := u32.
     
     Definition ct_eq (self : ref Self) (other : ref u32) : M subtle.Choice :=
-      let* x := (core.ops.bit.BitXor.bitxor (Self := (ref u32))) self other in
+      let* x :=
+        (core.ops.bit.BitXor.bitxor
+            (Self := ref u32)
+            (Trait := ltac:(refine _)))
+          self
+          other in
       let* y :=
         let* α0 := u32::["wrapping_neg"] x in
-        let* α1 := bitor x α0 in
+        let* α1 := BinOp.bit_or x α0 in
         let* α2 := M.alloc 32 in
         let* α3 := M.alloc 1 in
-        let* α4 := sub α2 α3 in
-        shr α1 α4 in
+        let* α4 := BinOp.sub α2 α3 in
+        BinOp.shr α1 α4 in
       let* α0 := M.alloc 1 in
       let* α1 := use α0 in
-      let* α2 := bitxor y α1 in
+      let* α2 := BinOp.bit_xor y α1 in
       let* α3 := cast α2 in
-      (core.convert.Into.into (Self := u8)) α3.
+      (core.convert.Into.into (Self := u8) (Trait := ltac:(refine _))) α3.
     
     Global Instance AssociatedFunction_ct_eq :
       Notation.DoubleColon Self "ct_eq" := {
       Notation.double_colon := ct_eq;
     }.
     
-    #[refine] Global Instance ℐ : subtle.ConstantTimeEq.Trait Self := {
+    Global Instance ℐ : subtle.ConstantTimeEq.Required.Trait Self := {
       subtle.ConstantTimeEq.ct_eq := ct_eq;
+      subtle.ConstantTimeEq.ct_ne := Datatypes.None;
     }.
-    Admitted.
   End Impl_subtle_ConstantTimeEq_for_u32.
-  Global Hint Resolve ℐ : core.
 End Impl_subtle_ConstantTimeEq_for_u32.
 
 Module Impl_subtle_ConstantTimeEq_for_i32.
@@ -760,19 +775,20 @@ Module Impl_subtle_ConstantTimeEq_for_i32.
       let* α5 := borrow α4 u32 in
       let* α6 := deref α5 u32 in
       let* α7 := borrow α6 u32 in
-      (subtle.ConstantTimeEq.ct_eq (Self := u32)) α2 α7.
+      (subtle.ConstantTimeEq.ct_eq (Self := u32) (Trait := ltac:(refine _)))
+        α2
+        α7.
     
     Global Instance AssociatedFunction_ct_eq :
       Notation.DoubleColon Self "ct_eq" := {
       Notation.double_colon := ct_eq;
     }.
     
-    #[refine] Global Instance ℐ : subtle.ConstantTimeEq.Trait Self := {
+    Global Instance ℐ : subtle.ConstantTimeEq.Required.Trait Self := {
       subtle.ConstantTimeEq.ct_eq := ct_eq;
+      subtle.ConstantTimeEq.ct_ne := Datatypes.None;
     }.
-    Admitted.
   End Impl_subtle_ConstantTimeEq_for_i32.
-  Global Hint Resolve ℐ : core.
 End Impl_subtle_ConstantTimeEq_for_i32.
 
 Module Impl_subtle_ConstantTimeEq_for_u64.
@@ -782,31 +798,35 @@ Module Impl_subtle_ConstantTimeEq_for_u64.
     Definition Self : Set := u64.
     
     Definition ct_eq (self : ref Self) (other : ref u64) : M subtle.Choice :=
-      let* x := (core.ops.bit.BitXor.bitxor (Self := (ref u64))) self other in
+      let* x :=
+        (core.ops.bit.BitXor.bitxor
+            (Self := ref u64)
+            (Trait := ltac:(refine _)))
+          self
+          other in
       let* y :=
         let* α0 := u64::["wrapping_neg"] x in
-        let* α1 := bitor x α0 in
+        let* α1 := BinOp.bit_or x α0 in
         let* α2 := M.alloc 64 in
         let* α3 := M.alloc 1 in
-        let* α4 := sub α2 α3 in
-        shr α1 α4 in
+        let* α4 := BinOp.sub α2 α3 in
+        BinOp.shr α1 α4 in
       let* α0 := M.alloc 1 in
       let* α1 := use α0 in
-      let* α2 := bitxor y α1 in
+      let* α2 := BinOp.bit_xor y α1 in
       let* α3 := cast α2 in
-      (core.convert.Into.into (Self := u8)) α3.
+      (core.convert.Into.into (Self := u8) (Trait := ltac:(refine _))) α3.
     
     Global Instance AssociatedFunction_ct_eq :
       Notation.DoubleColon Self "ct_eq" := {
       Notation.double_colon := ct_eq;
     }.
     
-    #[refine] Global Instance ℐ : subtle.ConstantTimeEq.Trait Self := {
+    Global Instance ℐ : subtle.ConstantTimeEq.Required.Trait Self := {
       subtle.ConstantTimeEq.ct_eq := ct_eq;
+      subtle.ConstantTimeEq.ct_ne := Datatypes.None;
     }.
-    Admitted.
   End Impl_subtle_ConstantTimeEq_for_u64.
-  Global Hint Resolve ℐ : core.
 End Impl_subtle_ConstantTimeEq_for_u64.
 
 Module Impl_subtle_ConstantTimeEq_for_i64.
@@ -824,19 +844,20 @@ Module Impl_subtle_ConstantTimeEq_for_i64.
       let* α5 := borrow α4 u64 in
       let* α6 := deref α5 u64 in
       let* α7 := borrow α6 u64 in
-      (subtle.ConstantTimeEq.ct_eq (Self := u64)) α2 α7.
+      (subtle.ConstantTimeEq.ct_eq (Self := u64) (Trait := ltac:(refine _)))
+        α2
+        α7.
     
     Global Instance AssociatedFunction_ct_eq :
       Notation.DoubleColon Self "ct_eq" := {
       Notation.double_colon := ct_eq;
     }.
     
-    #[refine] Global Instance ℐ : subtle.ConstantTimeEq.Trait Self := {
+    Global Instance ℐ : subtle.ConstantTimeEq.Required.Trait Self := {
       subtle.ConstantTimeEq.ct_eq := ct_eq;
+      subtle.ConstantTimeEq.ct_ne := Datatypes.None;
     }.
-    Admitted.
   End Impl_subtle_ConstantTimeEq_for_i64.
-  Global Hint Resolve ℐ : core.
 End Impl_subtle_ConstantTimeEq_for_i64.
 
 Module Impl_subtle_ConstantTimeEq_for_usize.
@@ -846,33 +867,37 @@ Module Impl_subtle_ConstantTimeEq_for_usize.
     Definition Self : Set := usize.
     
     Definition ct_eq (self : ref Self) (other : ref usize) : M subtle.Choice :=
-      let* x := (core.ops.bit.BitXor.bitxor (Self := (ref usize))) self other in
+      let* x :=
+        (core.ops.bit.BitXor.bitxor
+            (Self := ref usize)
+            (Trait := ltac:(refine _)))
+          self
+          other in
       let* y :=
         let* α0 := usize::["wrapping_neg"] x in
-        let* α1 := bitor x α0 in
+        let* α1 := BinOp.bit_or x α0 in
         let* α2 := core.mem.size_of in
         let* α3 := M.alloc 8 in
-        let* α4 := mul α2 α3 in
+        let* α4 := BinOp.mul α2 α3 in
         let* α5 := M.alloc 1 in
-        let* α6 := sub α4 α5 in
-        shr α1 α6 in
+        let* α6 := BinOp.sub α4 α5 in
+        BinOp.shr α1 α6 in
       let* α0 := M.alloc 1 in
       let* α1 := use α0 in
-      let* α2 := bitxor y α1 in
+      let* α2 := BinOp.bit_xor y α1 in
       let* α3 := cast α2 in
-      (core.convert.Into.into (Self := u8)) α3.
+      (core.convert.Into.into (Self := u8) (Trait := ltac:(refine _))) α3.
     
     Global Instance AssociatedFunction_ct_eq :
       Notation.DoubleColon Self "ct_eq" := {
       Notation.double_colon := ct_eq;
     }.
     
-    #[refine] Global Instance ℐ : subtle.ConstantTimeEq.Trait Self := {
+    Global Instance ℐ : subtle.ConstantTimeEq.Required.Trait Self := {
       subtle.ConstantTimeEq.ct_eq := ct_eq;
+      subtle.ConstantTimeEq.ct_ne := Datatypes.None;
     }.
-    Admitted.
   End Impl_subtle_ConstantTimeEq_for_usize.
-  Global Hint Resolve ℐ : core.
 End Impl_subtle_ConstantTimeEq_for_usize.
 
 Module Impl_subtle_ConstantTimeEq_for_isize.
@@ -890,19 +915,20 @@ Module Impl_subtle_ConstantTimeEq_for_isize.
       let* α5 := borrow α4 usize in
       let* α6 := deref α5 usize in
       let* α7 := borrow α6 usize in
-      (subtle.ConstantTimeEq.ct_eq (Self := usize)) α2 α7.
+      (subtle.ConstantTimeEq.ct_eq (Self := usize) (Trait := ltac:(refine _)))
+        α2
+        α7.
     
     Global Instance AssociatedFunction_ct_eq :
       Notation.DoubleColon Self "ct_eq" := {
       Notation.double_colon := ct_eq;
     }.
     
-    #[refine] Global Instance ℐ : subtle.ConstantTimeEq.Trait Self := {
+    Global Instance ℐ : subtle.ConstantTimeEq.Required.Trait Self := {
       subtle.ConstantTimeEq.ct_eq := ct_eq;
+      subtle.ConstantTimeEq.ct_ne := Datatypes.None;
     }.
-    Admitted.
   End Impl_subtle_ConstantTimeEq_for_isize.
-  Global Hint Resolve ℐ : core.
 End Impl_subtle_ConstantTimeEq_for_isize.
 
 Module ConditionallySelectable.
@@ -932,11 +958,16 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
         let* α0 := borrow choice subtle.Choice in
         let* α1 := subtle.Choice::["unwrap_u8"] α0 in
         let* α2 := cast α1 in
-        let* α3 := neg α2 in
+        let* α3 := UnOp.neg α2 in
         cast α3 in
-      let* α0 := (core.ops.bit.BitXor.bitxor (Self := (ref u8))) a b in
-      let* α1 := bitand mask α0 in
-      (core.ops.bit.BitXor.bitxor (Self := (ref u8))) a α1.
+      let* α0 :=
+        (core.ops.bit.BitXor.bitxor (Self := ref u8) (Trait := ltac:(refine _)))
+          a
+          b in
+      let* α1 := BinOp.bit_and mask α0 in
+      (core.ops.bit.BitXor.bitxor (Self := ref u8) (Trait := ltac:(refine _)))
+        a
+        α1.
     
     Global Instance AssociatedFunction_conditional_select :
       Notation.DoubleColon Self "conditional_select" := {
@@ -952,14 +983,14 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
         let* α0 := borrow choice subtle.Choice in
         let* α1 := subtle.Choice::["unwrap_u8"] α0 in
         let* α2 := cast α1 in
-        let* α3 := neg α2 in
+        let* α3 := UnOp.neg α2 in
         cast α3 in
       let* _ :=
         let* α0 := deref self u8 in
         let* α1 := deref self u8 in
         let* α2 := deref other u8 in
-        let* α3 := bitxor α1 α2 in
-        let* α4 := bitand mask α3 in
+        let* α3 := BinOp.bit_xor α1 α2 in
+        let* α4 := BinOp.bit_and mask α3 in
         assign_op bitxor α0 α4 in
       M.alloc tt.
     
@@ -977,13 +1008,13 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
         let* α0 := borrow choice subtle.Choice in
         let* α1 := subtle.Choice::["unwrap_u8"] α0 in
         let* α2 := cast α1 in
-        let* α3 := neg α2 in
+        let* α3 := UnOp.neg α2 in
         cast α3 in
       let* t :=
         let* α0 := deref a u8 in
         let* α1 := deref b u8 in
-        let* α2 := bitxor α0 α1 in
-        bitand mask α2 in
+        let* α2 := BinOp.bit_xor α0 α1 in
+        BinOp.bit_and mask α2 in
       let* _ :=
         let* α0 := deref a u8 in
         assign_op bitxor α0 t in
@@ -997,12 +1028,14 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
       Notation.double_colon := conditional_swap;
     }.
     
-    #[refine] Global Instance ℐ : subtle.ConditionallySelectable.Trait Self := {
+    Global Instance ℐ : subtle.ConditionallySelectable.Required.Trait Self := {
       subtle.ConditionallySelectable.conditional_select := conditional_select;
+      subtle.ConditionallySelectable.conditional_assign :=
+        Datatypes.Some conditional_assign;
+      subtle.ConditionallySelectable.conditional_swap :=
+        Datatypes.Some conditional_swap;
     }.
-    Admitted.
   End Impl_subtle_ConditionallySelectable_for_u8.
-  Global Hint Resolve ℐ : core.
 End Impl_subtle_ConditionallySelectable_for_u8.
 
 Module Impl_subtle_ConditionallySelectable_for_i8.
@@ -1020,11 +1053,16 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
         let* α0 := borrow choice subtle.Choice in
         let* α1 := subtle.Choice::["unwrap_u8"] α0 in
         let* α2 := cast α1 in
-        let* α3 := neg α2 in
+        let* α3 := UnOp.neg α2 in
         use α3 in
-      let* α0 := (core.ops.bit.BitXor.bitxor (Self := (ref i8))) a b in
-      let* α1 := bitand mask α0 in
-      (core.ops.bit.BitXor.bitxor (Self := (ref i8))) a α1.
+      let* α0 :=
+        (core.ops.bit.BitXor.bitxor (Self := ref i8) (Trait := ltac:(refine _)))
+          a
+          b in
+      let* α1 := BinOp.bit_and mask α0 in
+      (core.ops.bit.BitXor.bitxor (Self := ref i8) (Trait := ltac:(refine _)))
+        a
+        α1.
     
     Global Instance AssociatedFunction_conditional_select :
       Notation.DoubleColon Self "conditional_select" := {
@@ -1040,14 +1078,14 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
         let* α0 := borrow choice subtle.Choice in
         let* α1 := subtle.Choice::["unwrap_u8"] α0 in
         let* α2 := cast α1 in
-        let* α3 := neg α2 in
+        let* α3 := UnOp.neg α2 in
         use α3 in
       let* _ :=
         let* α0 := deref self i8 in
         let* α1 := deref self i8 in
         let* α2 := deref other i8 in
-        let* α3 := bitxor α1 α2 in
-        let* α4 := bitand mask α3 in
+        let* α3 := BinOp.bit_xor α1 α2 in
+        let* α4 := BinOp.bit_and mask α3 in
         assign_op bitxor α0 α4 in
       M.alloc tt.
     
@@ -1065,13 +1103,13 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
         let* α0 := borrow choice subtle.Choice in
         let* α1 := subtle.Choice::["unwrap_u8"] α0 in
         let* α2 := cast α1 in
-        let* α3 := neg α2 in
+        let* α3 := UnOp.neg α2 in
         use α3 in
       let* t :=
         let* α0 := deref a i8 in
         let* α1 := deref b i8 in
-        let* α2 := bitxor α0 α1 in
-        bitand mask α2 in
+        let* α2 := BinOp.bit_xor α0 α1 in
+        BinOp.bit_and mask α2 in
       let* _ :=
         let* α0 := deref a i8 in
         assign_op bitxor α0 t in
@@ -1085,12 +1123,14 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
       Notation.double_colon := conditional_swap;
     }.
     
-    #[refine] Global Instance ℐ : subtle.ConditionallySelectable.Trait Self := {
+    Global Instance ℐ : subtle.ConditionallySelectable.Required.Trait Self := {
       subtle.ConditionallySelectable.conditional_select := conditional_select;
+      subtle.ConditionallySelectable.conditional_assign :=
+        Datatypes.Some conditional_assign;
+      subtle.ConditionallySelectable.conditional_swap :=
+        Datatypes.Some conditional_swap;
     }.
-    Admitted.
   End Impl_subtle_ConditionallySelectable_for_i8.
-  Global Hint Resolve ℐ : core.
 End Impl_subtle_ConditionallySelectable_for_i8.
 
 Module Impl_subtle_ConditionallySelectable_for_u16.
@@ -1108,11 +1148,18 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
         let* α0 := borrow choice subtle.Choice in
         let* α1 := subtle.Choice::["unwrap_u8"] α0 in
         let* α2 := cast α1 in
-        let* α3 := neg α2 in
+        let* α3 := UnOp.neg α2 in
         cast α3 in
-      let* α0 := (core.ops.bit.BitXor.bitxor (Self := (ref u16))) a b in
-      let* α1 := bitand mask α0 in
-      (core.ops.bit.BitXor.bitxor (Self := (ref u16))) a α1.
+      let* α0 :=
+        (core.ops.bit.BitXor.bitxor
+            (Self := ref u16)
+            (Trait := ltac:(refine _)))
+          a
+          b in
+      let* α1 := BinOp.bit_and mask α0 in
+      (core.ops.bit.BitXor.bitxor (Self := ref u16) (Trait := ltac:(refine _)))
+        a
+        α1.
     
     Global Instance AssociatedFunction_conditional_select :
       Notation.DoubleColon Self "conditional_select" := {
@@ -1128,14 +1175,14 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
         let* α0 := borrow choice subtle.Choice in
         let* α1 := subtle.Choice::["unwrap_u8"] α0 in
         let* α2 := cast α1 in
-        let* α3 := neg α2 in
+        let* α3 := UnOp.neg α2 in
         cast α3 in
       let* _ :=
         let* α0 := deref self u16 in
         let* α1 := deref self u16 in
         let* α2 := deref other u16 in
-        let* α3 := bitxor α1 α2 in
-        let* α4 := bitand mask α3 in
+        let* α3 := BinOp.bit_xor α1 α2 in
+        let* α4 := BinOp.bit_and mask α3 in
         assign_op bitxor α0 α4 in
       M.alloc tt.
     
@@ -1153,13 +1200,13 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
         let* α0 := borrow choice subtle.Choice in
         let* α1 := subtle.Choice::["unwrap_u8"] α0 in
         let* α2 := cast α1 in
-        let* α3 := neg α2 in
+        let* α3 := UnOp.neg α2 in
         cast α3 in
       let* t :=
         let* α0 := deref a u16 in
         let* α1 := deref b u16 in
-        let* α2 := bitxor α0 α1 in
-        bitand mask α2 in
+        let* α2 := BinOp.bit_xor α0 α1 in
+        BinOp.bit_and mask α2 in
       let* _ :=
         let* α0 := deref a u16 in
         assign_op bitxor α0 t in
@@ -1173,12 +1220,14 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
       Notation.double_colon := conditional_swap;
     }.
     
-    #[refine] Global Instance ℐ : subtle.ConditionallySelectable.Trait Self := {
+    Global Instance ℐ : subtle.ConditionallySelectable.Required.Trait Self := {
       subtle.ConditionallySelectable.conditional_select := conditional_select;
+      subtle.ConditionallySelectable.conditional_assign :=
+        Datatypes.Some conditional_assign;
+      subtle.ConditionallySelectable.conditional_swap :=
+        Datatypes.Some conditional_swap;
     }.
-    Admitted.
   End Impl_subtle_ConditionallySelectable_for_u16.
-  Global Hint Resolve ℐ : core.
 End Impl_subtle_ConditionallySelectable_for_u16.
 
 Module Impl_subtle_ConditionallySelectable_for_i16.
@@ -1196,11 +1245,18 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
         let* α0 := borrow choice subtle.Choice in
         let* α1 := subtle.Choice::["unwrap_u8"] α0 in
         let* α2 := cast α1 in
-        let* α3 := neg α2 in
+        let* α3 := UnOp.neg α2 in
         use α3 in
-      let* α0 := (core.ops.bit.BitXor.bitxor (Self := (ref i16))) a b in
-      let* α1 := bitand mask α0 in
-      (core.ops.bit.BitXor.bitxor (Self := (ref i16))) a α1.
+      let* α0 :=
+        (core.ops.bit.BitXor.bitxor
+            (Self := ref i16)
+            (Trait := ltac:(refine _)))
+          a
+          b in
+      let* α1 := BinOp.bit_and mask α0 in
+      (core.ops.bit.BitXor.bitxor (Self := ref i16) (Trait := ltac:(refine _)))
+        a
+        α1.
     
     Global Instance AssociatedFunction_conditional_select :
       Notation.DoubleColon Self "conditional_select" := {
@@ -1216,14 +1272,14 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
         let* α0 := borrow choice subtle.Choice in
         let* α1 := subtle.Choice::["unwrap_u8"] α0 in
         let* α2 := cast α1 in
-        let* α3 := neg α2 in
+        let* α3 := UnOp.neg α2 in
         use α3 in
       let* _ :=
         let* α0 := deref self i16 in
         let* α1 := deref self i16 in
         let* α2 := deref other i16 in
-        let* α3 := bitxor α1 α2 in
-        let* α4 := bitand mask α3 in
+        let* α3 := BinOp.bit_xor α1 α2 in
+        let* α4 := BinOp.bit_and mask α3 in
         assign_op bitxor α0 α4 in
       M.alloc tt.
     
@@ -1241,13 +1297,13 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
         let* α0 := borrow choice subtle.Choice in
         let* α1 := subtle.Choice::["unwrap_u8"] α0 in
         let* α2 := cast α1 in
-        let* α3 := neg α2 in
+        let* α3 := UnOp.neg α2 in
         use α3 in
       let* t :=
         let* α0 := deref a i16 in
         let* α1 := deref b i16 in
-        let* α2 := bitxor α0 α1 in
-        bitand mask α2 in
+        let* α2 := BinOp.bit_xor α0 α1 in
+        BinOp.bit_and mask α2 in
       let* _ :=
         let* α0 := deref a i16 in
         assign_op bitxor α0 t in
@@ -1261,12 +1317,14 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
       Notation.double_colon := conditional_swap;
     }.
     
-    #[refine] Global Instance ℐ : subtle.ConditionallySelectable.Trait Self := {
+    Global Instance ℐ : subtle.ConditionallySelectable.Required.Trait Self := {
       subtle.ConditionallySelectable.conditional_select := conditional_select;
+      subtle.ConditionallySelectable.conditional_assign :=
+        Datatypes.Some conditional_assign;
+      subtle.ConditionallySelectable.conditional_swap :=
+        Datatypes.Some conditional_swap;
     }.
-    Admitted.
   End Impl_subtle_ConditionallySelectable_for_i16.
-  Global Hint Resolve ℐ : core.
 End Impl_subtle_ConditionallySelectable_for_i16.
 
 Module Impl_subtle_ConditionallySelectable_for_u32.
@@ -1284,11 +1342,18 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
         let* α0 := borrow choice subtle.Choice in
         let* α1 := subtle.Choice::["unwrap_u8"] α0 in
         let* α2 := cast α1 in
-        let* α3 := neg α2 in
+        let* α3 := UnOp.neg α2 in
         cast α3 in
-      let* α0 := (core.ops.bit.BitXor.bitxor (Self := (ref u32))) a b in
-      let* α1 := bitand mask α0 in
-      (core.ops.bit.BitXor.bitxor (Self := (ref u32))) a α1.
+      let* α0 :=
+        (core.ops.bit.BitXor.bitxor
+            (Self := ref u32)
+            (Trait := ltac:(refine _)))
+          a
+          b in
+      let* α1 := BinOp.bit_and mask α0 in
+      (core.ops.bit.BitXor.bitxor (Self := ref u32) (Trait := ltac:(refine _)))
+        a
+        α1.
     
     Global Instance AssociatedFunction_conditional_select :
       Notation.DoubleColon Self "conditional_select" := {
@@ -1304,14 +1369,14 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
         let* α0 := borrow choice subtle.Choice in
         let* α1 := subtle.Choice::["unwrap_u8"] α0 in
         let* α2 := cast α1 in
-        let* α3 := neg α2 in
+        let* α3 := UnOp.neg α2 in
         cast α3 in
       let* _ :=
         let* α0 := deref self u32 in
         let* α1 := deref self u32 in
         let* α2 := deref other u32 in
-        let* α3 := bitxor α1 α2 in
-        let* α4 := bitand mask α3 in
+        let* α3 := BinOp.bit_xor α1 α2 in
+        let* α4 := BinOp.bit_and mask α3 in
         assign_op bitxor α0 α4 in
       M.alloc tt.
     
@@ -1329,13 +1394,13 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
         let* α0 := borrow choice subtle.Choice in
         let* α1 := subtle.Choice::["unwrap_u8"] α0 in
         let* α2 := cast α1 in
-        let* α3 := neg α2 in
+        let* α3 := UnOp.neg α2 in
         cast α3 in
       let* t :=
         let* α0 := deref a u32 in
         let* α1 := deref b u32 in
-        let* α2 := bitxor α0 α1 in
-        bitand mask α2 in
+        let* α2 := BinOp.bit_xor α0 α1 in
+        BinOp.bit_and mask α2 in
       let* _ :=
         let* α0 := deref a u32 in
         assign_op bitxor α0 t in
@@ -1349,12 +1414,14 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
       Notation.double_colon := conditional_swap;
     }.
     
-    #[refine] Global Instance ℐ : subtle.ConditionallySelectable.Trait Self := {
+    Global Instance ℐ : subtle.ConditionallySelectable.Required.Trait Self := {
       subtle.ConditionallySelectable.conditional_select := conditional_select;
+      subtle.ConditionallySelectable.conditional_assign :=
+        Datatypes.Some conditional_assign;
+      subtle.ConditionallySelectable.conditional_swap :=
+        Datatypes.Some conditional_swap;
     }.
-    Admitted.
   End Impl_subtle_ConditionallySelectable_for_u32.
-  Global Hint Resolve ℐ : core.
 End Impl_subtle_ConditionallySelectable_for_u32.
 
 Module Impl_subtle_ConditionallySelectable_for_i32.
@@ -1372,11 +1439,18 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
         let* α0 := borrow choice subtle.Choice in
         let* α1 := subtle.Choice::["unwrap_u8"] α0 in
         let* α2 := cast α1 in
-        let* α3 := neg α2 in
+        let* α3 := UnOp.neg α2 in
         use α3 in
-      let* α0 := (core.ops.bit.BitXor.bitxor (Self := (ref i32))) a b in
-      let* α1 := bitand mask α0 in
-      (core.ops.bit.BitXor.bitxor (Self := (ref i32))) a α1.
+      let* α0 :=
+        (core.ops.bit.BitXor.bitxor
+            (Self := ref i32)
+            (Trait := ltac:(refine _)))
+          a
+          b in
+      let* α1 := BinOp.bit_and mask α0 in
+      (core.ops.bit.BitXor.bitxor (Self := ref i32) (Trait := ltac:(refine _)))
+        a
+        α1.
     
     Global Instance AssociatedFunction_conditional_select :
       Notation.DoubleColon Self "conditional_select" := {
@@ -1392,14 +1466,14 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
         let* α0 := borrow choice subtle.Choice in
         let* α1 := subtle.Choice::["unwrap_u8"] α0 in
         let* α2 := cast α1 in
-        let* α3 := neg α2 in
+        let* α3 := UnOp.neg α2 in
         use α3 in
       let* _ :=
         let* α0 := deref self i32 in
         let* α1 := deref self i32 in
         let* α2 := deref other i32 in
-        let* α3 := bitxor α1 α2 in
-        let* α4 := bitand mask α3 in
+        let* α3 := BinOp.bit_xor α1 α2 in
+        let* α4 := BinOp.bit_and mask α3 in
         assign_op bitxor α0 α4 in
       M.alloc tt.
     
@@ -1417,13 +1491,13 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
         let* α0 := borrow choice subtle.Choice in
         let* α1 := subtle.Choice::["unwrap_u8"] α0 in
         let* α2 := cast α1 in
-        let* α3 := neg α2 in
+        let* α3 := UnOp.neg α2 in
         use α3 in
       let* t :=
         let* α0 := deref a i32 in
         let* α1 := deref b i32 in
-        let* α2 := bitxor α0 α1 in
-        bitand mask α2 in
+        let* α2 := BinOp.bit_xor α0 α1 in
+        BinOp.bit_and mask α2 in
       let* _ :=
         let* α0 := deref a i32 in
         assign_op bitxor α0 t in
@@ -1437,12 +1511,14 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
       Notation.double_colon := conditional_swap;
     }.
     
-    #[refine] Global Instance ℐ : subtle.ConditionallySelectable.Trait Self := {
+    Global Instance ℐ : subtle.ConditionallySelectable.Required.Trait Self := {
       subtle.ConditionallySelectable.conditional_select := conditional_select;
+      subtle.ConditionallySelectable.conditional_assign :=
+        Datatypes.Some conditional_assign;
+      subtle.ConditionallySelectable.conditional_swap :=
+        Datatypes.Some conditional_swap;
     }.
-    Admitted.
   End Impl_subtle_ConditionallySelectable_for_i32.
-  Global Hint Resolve ℐ : core.
 End Impl_subtle_ConditionallySelectable_for_i32.
 
 Module Impl_subtle_ConditionallySelectable_for_u64.
@@ -1460,11 +1536,18 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
         let* α0 := borrow choice subtle.Choice in
         let* α1 := subtle.Choice::["unwrap_u8"] α0 in
         let* α2 := cast α1 in
-        let* α3 := neg α2 in
+        let* α3 := UnOp.neg α2 in
         cast α3 in
-      let* α0 := (core.ops.bit.BitXor.bitxor (Self := (ref u64))) a b in
-      let* α1 := bitand mask α0 in
-      (core.ops.bit.BitXor.bitxor (Self := (ref u64))) a α1.
+      let* α0 :=
+        (core.ops.bit.BitXor.bitxor
+            (Self := ref u64)
+            (Trait := ltac:(refine _)))
+          a
+          b in
+      let* α1 := BinOp.bit_and mask α0 in
+      (core.ops.bit.BitXor.bitxor (Self := ref u64) (Trait := ltac:(refine _)))
+        a
+        α1.
     
     Global Instance AssociatedFunction_conditional_select :
       Notation.DoubleColon Self "conditional_select" := {
@@ -1480,14 +1563,14 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
         let* α0 := borrow choice subtle.Choice in
         let* α1 := subtle.Choice::["unwrap_u8"] α0 in
         let* α2 := cast α1 in
-        let* α3 := neg α2 in
+        let* α3 := UnOp.neg α2 in
         cast α3 in
       let* _ :=
         let* α0 := deref self u64 in
         let* α1 := deref self u64 in
         let* α2 := deref other u64 in
-        let* α3 := bitxor α1 α2 in
-        let* α4 := bitand mask α3 in
+        let* α3 := BinOp.bit_xor α1 α2 in
+        let* α4 := BinOp.bit_and mask α3 in
         assign_op bitxor α0 α4 in
       M.alloc tt.
     
@@ -1505,13 +1588,13 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
         let* α0 := borrow choice subtle.Choice in
         let* α1 := subtle.Choice::["unwrap_u8"] α0 in
         let* α2 := cast α1 in
-        let* α3 := neg α2 in
+        let* α3 := UnOp.neg α2 in
         cast α3 in
       let* t :=
         let* α0 := deref a u64 in
         let* α1 := deref b u64 in
-        let* α2 := bitxor α0 α1 in
-        bitand mask α2 in
+        let* α2 := BinOp.bit_xor α0 α1 in
+        BinOp.bit_and mask α2 in
       let* _ :=
         let* α0 := deref a u64 in
         assign_op bitxor α0 t in
@@ -1525,12 +1608,14 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
       Notation.double_colon := conditional_swap;
     }.
     
-    #[refine] Global Instance ℐ : subtle.ConditionallySelectable.Trait Self := {
+    Global Instance ℐ : subtle.ConditionallySelectable.Required.Trait Self := {
       subtle.ConditionallySelectable.conditional_select := conditional_select;
+      subtle.ConditionallySelectable.conditional_assign :=
+        Datatypes.Some conditional_assign;
+      subtle.ConditionallySelectable.conditional_swap :=
+        Datatypes.Some conditional_swap;
     }.
-    Admitted.
   End Impl_subtle_ConditionallySelectable_for_u64.
-  Global Hint Resolve ℐ : core.
 End Impl_subtle_ConditionallySelectable_for_u64.
 
 Module Impl_subtle_ConditionallySelectable_for_i64.
@@ -1548,11 +1633,18 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
         let* α0 := borrow choice subtle.Choice in
         let* α1 := subtle.Choice::["unwrap_u8"] α0 in
         let* α2 := cast α1 in
-        let* α3 := neg α2 in
+        let* α3 := UnOp.neg α2 in
         use α3 in
-      let* α0 := (core.ops.bit.BitXor.bitxor (Self := (ref i64))) a b in
-      let* α1 := bitand mask α0 in
-      (core.ops.bit.BitXor.bitxor (Self := (ref i64))) a α1.
+      let* α0 :=
+        (core.ops.bit.BitXor.bitxor
+            (Self := ref i64)
+            (Trait := ltac:(refine _)))
+          a
+          b in
+      let* α1 := BinOp.bit_and mask α0 in
+      (core.ops.bit.BitXor.bitxor (Self := ref i64) (Trait := ltac:(refine _)))
+        a
+        α1.
     
     Global Instance AssociatedFunction_conditional_select :
       Notation.DoubleColon Self "conditional_select" := {
@@ -1568,14 +1660,14 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
         let* α0 := borrow choice subtle.Choice in
         let* α1 := subtle.Choice::["unwrap_u8"] α0 in
         let* α2 := cast α1 in
-        let* α3 := neg α2 in
+        let* α3 := UnOp.neg α2 in
         use α3 in
       let* _ :=
         let* α0 := deref self i64 in
         let* α1 := deref self i64 in
         let* α2 := deref other i64 in
-        let* α3 := bitxor α1 α2 in
-        let* α4 := bitand mask α3 in
+        let* α3 := BinOp.bit_xor α1 α2 in
+        let* α4 := BinOp.bit_and mask α3 in
         assign_op bitxor α0 α4 in
       M.alloc tt.
     
@@ -1593,13 +1685,13 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
         let* α0 := borrow choice subtle.Choice in
         let* α1 := subtle.Choice::["unwrap_u8"] α0 in
         let* α2 := cast α1 in
-        let* α3 := neg α2 in
+        let* α3 := UnOp.neg α2 in
         use α3 in
       let* t :=
         let* α0 := deref a i64 in
         let* α1 := deref b i64 in
-        let* α2 := bitxor α0 α1 in
-        bitand mask α2 in
+        let* α2 := BinOp.bit_xor α0 α1 in
+        BinOp.bit_and mask α2 in
       let* _ :=
         let* α0 := deref a i64 in
         assign_op bitxor α0 t in
@@ -1613,12 +1705,14 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
       Notation.double_colon := conditional_swap;
     }.
     
-    #[refine] Global Instance ℐ : subtle.ConditionallySelectable.Trait Self := {
+    Global Instance ℐ : subtle.ConditionallySelectable.Required.Trait Self := {
       subtle.ConditionallySelectable.conditional_select := conditional_select;
+      subtle.ConditionallySelectable.conditional_assign :=
+        Datatypes.Some conditional_assign;
+      subtle.ConditionallySelectable.conditional_swap :=
+        Datatypes.Some conditional_swap;
     }.
-    Admitted.
   End Impl_subtle_ConditionallySelectable_for_i64.
-  Global Hint Resolve ℐ : core.
 End Impl_subtle_ConditionallySelectable_for_i64.
 
 Module Impl_subtle_ConditionallySelectable_for_subtle_Choice.
@@ -1643,23 +1737,25 @@ Module Impl_subtle_ConditionallySelectable_for_subtle_Choice.
       let* α8 := deref α7 u8 in
       let* α9 := borrow α8 u8 in
       let* α10 :=
-        (subtle.ConditionallySelectable.conditional_select (Self := u8))
+        (subtle.ConditionallySelectable.conditional_select
+            (Self := u8)
+            (Trait := ltac:(refine _)))
           α4
           α9
           choice in
-      Pure (subtle.Choice.Build_t α10).
+      M.alloc (subtle.Choice.Build_t α10).
     
     Global Instance AssociatedFunction_conditional_select :
       Notation.DoubleColon Self "conditional_select" := {
       Notation.double_colon := conditional_select;
     }.
     
-    #[refine] Global Instance ℐ : subtle.ConditionallySelectable.Trait Self := {
+    Global Instance ℐ : subtle.ConditionallySelectable.Required.Trait Self := {
       subtle.ConditionallySelectable.conditional_select := conditional_select;
+      subtle.ConditionallySelectable.conditional_assign := Datatypes.None;
+      subtle.ConditionallySelectable.conditional_swap := Datatypes.None;
     }.
-    Admitted.
   End Impl_subtle_ConditionallySelectable_for_subtle_Choice.
-  Global Hint Resolve ℐ : core.
 End Impl_subtle_ConditionallySelectable_for_subtle_Choice.
 
 Module ConditionallyNegatable.
@@ -1692,14 +1788,17 @@ Module Impl_subtle_ConditionallyNegatable_for_T.
         let* α0 := deref self T in
         let* α1 := borrow α0 T in
         let* α2 := use α1 in
-        (core.ops.arith.Neg.neg (Self := (ref T))) (α2 : (ref T)) in
+        (core.ops.arith.Neg.neg (Self := ref T) (Trait := ltac:(refine _)))
+          (α2 : (ref T)) in
       let* _ :=
         let* α0 := deref self T in
         let* α1 := borrow_mut α0 T in
         let* α2 := borrow self_neg T in
         let* α3 := deref α2 T in
         let* α4 := borrow α3 T in
-        (subtle.ConditionallySelectable.conditional_assign (Self := T))
+        (subtle.ConditionallySelectable.conditional_assign
+            (Self := T)
+            (Trait := ltac:(refine _)))
           α1
           α4
           choice in
@@ -1710,12 +1809,10 @@ Module Impl_subtle_ConditionallyNegatable_for_T.
       Notation.double_colon := conditional_negate;
     }.
     
-    #[refine] Global Instance ℐ : subtle.ConditionallyNegatable.Trait Self := {
+    Global Instance ℐ : subtle.ConditionallyNegatable.Trait Self := {
       subtle.ConditionallyNegatable.conditional_negate := conditional_negate;
     }.
-    Admitted.
   End Impl_subtle_ConditionallyNegatable_for_T.
-  Global Hint Resolve ℐ : core.
 End Impl_subtle_ConditionallyNegatable_for_T.
 
 Module CtOption.
@@ -1731,23 +1828,18 @@ Module CtOption.
     }.
     Global Set Primitive Projections.
     
-    #[refine] Global Instance Get_value : Notation.Dot "value" := {
+    Global Instance Get_value : Notation.Dot "value" := {
       Notation.dot x := let* x := M.read x in Pure x.(value) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_AF_value : Notation.DoubleColon t "value" := {
+    Global Instance Get_AF_value : Notation.DoubleColon t "value" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(value) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_is_some : Notation.Dot "is_some" := {
+    Global Instance Get_is_some : Notation.Dot "is_some" := {
       Notation.dot x := let* x := M.read x in Pure x.(is_some) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_AF_is_some :
-      Notation.DoubleColon t "is_some" := {
+    Global Instance Get_AF_is_some : Notation.DoubleColon t "is_some" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(is_some) : M _;
     }.
-    Admitted.
   End CtOption.
 End CtOption.
 Definition CtOption (T : Set) `{ℋ : State.Trait} : Set :=
@@ -1768,13 +1860,18 @@ Module Impl_core_clone_Clone_for_subtle_CtOption_T.
       let* α2 := borrow α1 T in
       let* α3 := deref α2 T in
       let* α4 := borrow α3 T in
-      let* α5 := (core.clone.Clone.clone (Self := T)) α4 in
+      let* α5 :=
+        (core.clone.Clone.clone (Self := T) (Trait := ltac:(refine _))) α4 in
       let* α6 := deref self (subtle.CtOption T) in
       let* α7 := α6.["is_some"] in
       let* α8 := borrow α7 subtle.Choice in
       let* α9 := deref α8 subtle.Choice in
       let* α10 := borrow α9 subtle.Choice in
-      let* α11 := (core.clone.Clone.clone (Self := subtle.Choice)) α10 in
+      let* α11 :=
+        (core.clone.Clone.clone
+            (Self := subtle.Choice)
+            (Trait := ltac:(refine _)))
+          α10 in
       M.alloc
         {| subtle.CtOption.value := α5; subtle.CtOption.is_some := α11; |}.
     
@@ -1783,12 +1880,11 @@ Module Impl_core_clone_Clone_for_subtle_CtOption_T.
       Notation.double_colon := clone;
     }.
     
-    #[refine] Global Instance ℐ : core.clone.Clone.Trait Self := {
+    Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
       core.clone.Clone.clone := clone;
+      core.clone.Clone.clone_from := Datatypes.None;
     }.
-    Admitted.
   End Impl_core_clone_Clone_for_subtle_CtOption_T.
-  Global Hint Resolve ℐ : core.
 End Impl_core_clone_Clone_for_subtle_CtOption_T.
 
 Module Impl_core_marker_Copy_for_subtle_CtOption_T.
@@ -1800,11 +1896,9 @@ Module Impl_core_marker_Copy_for_subtle_CtOption_T.
     Context {ℋ_0 : core.marker.Copy.Trait T}.
     Definition Self : Set := subtle.CtOption T.
     
-    #[refine] Global Instance ℐ : core.marker.Copy.Trait Self := {
+    Global Instance ℐ : core.marker.Copy.Trait Self := {
     }.
-    Admitted.
   End Impl_core_marker_Copy_for_subtle_CtOption_T.
-  Global Hint Resolve ℐ : core.
 End Impl_core_marker_Copy_for_subtle_CtOption_T.
 
 Module Impl_core_fmt_Debug_for_subtle_CtOption_T.
@@ -1848,12 +1942,10 @@ Module Impl_core_fmt_Debug_for_subtle_CtOption_T.
       Notation.double_colon := fmt;
     }.
     
-    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
-    Admitted.
   End Impl_core_fmt_Debug_for_subtle_CtOption_T.
-  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_subtle_CtOption_T.
 
 Module Impl_core_convert_From_subtle_CtOption_T_for_core_option_Option_T.
@@ -1870,26 +1962,24 @@ Module Impl_core_convert_From_subtle_CtOption_T_for_core_option_Option_T.
       let* α2 := borrow α1 subtle.Choice in
       let* α3 := subtle.Choice::["unwrap_u8"] α2 in
       let* α4 := M.alloc 1 in
-      let* α5 := eq α3 α4 in
+      let* α5 := BinOp.eq α3 α4 in
       let* α6 := use α5 in
       if (α6 : bool) then
         let* α0 := source.["value"] in
-        Pure (core.option.Option.Some α0)
+        M.alloc (core.option.Option.Some α0)
       else
-        Pure (core.option.Option.None tt).
+        M.alloc core.option.Option.None.
     
     Global Instance AssociatedFunction_from :
       Notation.DoubleColon Self "from" := {
       Notation.double_colon := from;
     }.
     
-    #[refine] Global Instance ℐ :
+    Global Instance ℐ :
       core.convert.From.Trait Self (T := subtle.CtOption T) := {
       core.convert.From.from := from;
     }.
-    Admitted.
   End Impl_core_convert_From_subtle_CtOption_T_for_core_option_Option_T.
-  Global Hint Resolve ℐ : core.
 End Impl_core_convert_From_subtle_CtOption_T_for_core_option_Option_T.
 
 Module Impl_subtle_CtOption_T.
@@ -1925,11 +2015,11 @@ Module Impl_subtle_CtOption_T.
         | (left_val, right_val) =>
           let* α0 := deref left_val u8 in
           let* α1 := deref right_val u8 in
-          let* α2 := eq α0 α1 in
-          let* α3 := not α2 in
+          let* α2 := BinOp.eq α0 α1 in
+          let* α3 := UnOp.not α2 in
           let* α4 := use α3 in
           if (α4 : bool) then
-            let kind := core.panicking.AssertKind.Eq tt in
+            let* kind := M.alloc core.panicking.AssertKind.Eq in
             let* _ :=
               let* α0 := deref left_val u8 in
               let* α1 := borrow α0 u8 in
@@ -1952,11 +2042,8 @@ Module Impl_subtle_CtOption_T.
               let* α18 := borrow α17 (list core.fmt.rt.Argument) in
               let* α19 := pointer_coercion "Unsize" α18 in
               let* α20 := core.fmt.Arguments::["new_v1"] α11 α19 in
-              core.panicking.assert_failed
-                kind
-                α3
-                α7
-                (core.option.Option.Some α20) in
+              let* α21 := M.alloc (core.option.Option.Some α20) in
+              core.panicking.assert_failed kind α3 α7 α21 in
             let* α0 := M.alloc tt in
             never_to_any α0
           else
@@ -1981,11 +2068,11 @@ Module Impl_subtle_CtOption_T.
         | (left_val, right_val) =>
           let* α0 := deref left_val u8 in
           let* α1 := deref right_val u8 in
-          let* α2 := eq α0 α1 in
-          let* α3 := not α2 in
+          let* α2 := BinOp.eq α0 α1 in
+          let* α3 := UnOp.not α2 in
           let* α4 := use α3 in
           if (α4 : bool) then
-            let kind := core.panicking.AssertKind.Eq tt in
+            let* kind := M.alloc core.panicking.AssertKind.Eq in
             let* _ :=
               let* α0 := deref left_val u8 in
               let* α1 := borrow α0 u8 in
@@ -1995,11 +2082,8 @@ Module Impl_subtle_CtOption_T.
               let* α5 := borrow α4 u8 in
               let* α6 := deref α5 u8 in
               let* α7 := borrow α6 u8 in
-              core.panicking.assert_failed
-                kind
-                α3
-                α7
-                (core.option.Option.None tt) in
+              let* α8 := M.alloc core.option.Option.None in
+              core.panicking.assert_failed kind α3 α7 α8 in
             let* α0 := M.alloc tt in
             never_to_any α0
           else
@@ -2025,7 +2109,12 @@ Module Impl_subtle_CtOption_T.
       let* α5 := deref α4 T in
       let* α6 := borrow α5 T in
       let* α7 := self.["is_some"] in
-      (subtle.ConditionallySelectable.conditional_select (Self := T)) α2 α6 α7.
+      (subtle.ConditionallySelectable.conditional_select
+          (Self := T)
+          (Trait := ltac:(refine _)))
+        α2
+        α6
+        α7.
     
     Global Instance AssociatedFunction_unwrap_or
         {ℋ_0 : subtle.ConditionallySelectable.Trait T} :
@@ -2041,7 +2130,12 @@ Module Impl_subtle_CtOption_T.
         (f : F)
         : M T :=
       let* α0 := M.alloc tt in
-      let* α1 := (core.ops.function.FnOnce.call_once (Self := F)) f α0 in
+      let* α1 :=
+        (core.ops.function.FnOnce.call_once
+            (Self := F)
+            (Trait := ltac:(refine _)))
+          f
+          α0 in
       let* α2 := borrow α1 T in
       let* α3 := deref α2 T in
       let* α4 := borrow α3 T in
@@ -2050,7 +2144,12 @@ Module Impl_subtle_CtOption_T.
       let* α7 := deref α6 T in
       let* α8 := borrow α7 T in
       let* α9 := self.["is_some"] in
-      (subtle.ConditionallySelectable.conditional_select (Self := T)) α4 α8 α9.
+      (subtle.ConditionallySelectable.conditional_select
+          (Self := T)
+          (Trait := ltac:(refine _)))
+        α4
+        α8
+        α9.
     
     Global Instance AssociatedFunction_unwrap_or_else
         {F : Set}
@@ -2072,7 +2171,8 @@ Module Impl_subtle_CtOption_T.
     Definition is_none (self : ref Self) : M subtle.Choice :=
       let* α0 := deref self (subtle.CtOption T) in
       let* α1 := α0.["is_some"] in
-      (core.ops.bit.Not.not (Self := subtle.Choice)) α1.
+      (core.ops.bit.Not.not (Self := subtle.Choice) (Trait := ltac:(refine _)))
+        α1.
     
     Global Instance AssociatedFunction_is_none :
       Notation.DoubleColon Self "is_none" := {
@@ -2087,7 +2187,8 @@ Module Impl_subtle_CtOption_T.
         (self : Self)
         (f : F)
         : M (subtle.CtOption U) :=
-      let* α0 := core.default.Default.default (Self := T) in
+      let* α0 :=
+        core.default.Default.default (Self := T) (Trait := ltac:(refine _)) in
       let* α1 := borrow α0 T in
       let* α2 := deref α1 T in
       let* α3 := borrow α2 T in
@@ -2097,13 +2198,20 @@ Module Impl_subtle_CtOption_T.
       let* α7 := borrow α6 T in
       let* α8 := self.["is_some"] in
       let* α9 :=
-        (subtle.ConditionallySelectable.conditional_select (Self := T))
+        (subtle.ConditionallySelectable.conditional_select
+            (Self := T)
+            (Trait := ltac:(refine _)))
           α3
           α7
           α8 in
-      let* α10 := (core.ops.function.FnOnce.call_once (Self := F)) f (α9) in
+      let* α10 :=
+        (core.ops.function.FnOnce.call_once
+            (Self := F)
+            (Trait := ltac:(refine _)))
+          f
+          (α9) in
       let* α11 := self.["is_some"] in
-      (subtle.CtOption T)::["new"] α10 α11.
+      (subtle.CtOption U)::["new"] α10 α11.
     
     Global Instance AssociatedFunction_map
         {U F : Set}
@@ -2123,7 +2231,8 @@ Module Impl_subtle_CtOption_T.
         (f : F)
         : M (subtle.CtOption U) :=
       let* tmp :=
-        let* α0 := core.default.Default.default (Self := T) in
+        let* α0 :=
+          core.default.Default.default (Self := T) (Trait := ltac:(refine _)) in
         let* α1 := borrow α0 T in
         let* α2 := deref α1 T in
         let* α3 := borrow α2 T in
@@ -2133,16 +2242,24 @@ Module Impl_subtle_CtOption_T.
         let* α7 := borrow α6 T in
         let* α8 := self.["is_some"] in
         let* α9 :=
-          (subtle.ConditionallySelectable.conditional_select (Self := T))
+          (subtle.ConditionallySelectable.conditional_select
+              (Self := T)
+              (Trait := ltac:(refine _)))
             α3
             α7
             α8 in
-        (core.ops.function.FnOnce.call_once (Self := F)) f (α9) in
+        (core.ops.function.FnOnce.call_once
+            (Self := F)
+            (Trait := ltac:(refine _)))
+          f
+          (α9) in
       let* _ :=
         let* α0 := tmp.["is_some"] in
         let* α1 := borrow_mut α0 subtle.Choice in
         let* α2 := self.["is_some"] in
-        (core.ops.bit.BitAndAssign.bitand_assign (Self := subtle.Choice))
+        (core.ops.bit.BitAndAssign.bitand_assign
+            (Self := subtle.Choice)
+            (Trait := ltac:(refine _)))
           α1
           α2 in
       Pure tmp.
@@ -2168,7 +2285,11 @@ Module Impl_subtle_CtOption_T.
         (subtle.CtOption T)::["is_none"] α0 in
       let* f :=
         let* α0 := M.alloc tt in
-        (core.ops.function.FnOnce.call_once (Self := F)) f α0 in
+        (core.ops.function.FnOnce.call_once
+            (Self := F)
+            (Trait := ltac:(refine _)))
+          f
+          α0 in
       let* α0 := borrow self (subtle.CtOption T) in
       let* α1 := deref α0 (subtle.CtOption T) in
       let* α2 := borrow α1 (subtle.CtOption T) in
@@ -2176,7 +2297,8 @@ Module Impl_subtle_CtOption_T.
       let* α4 := deref α3 (subtle.CtOption T) in
       let* α5 := borrow α4 (subtle.CtOption T) in
       (subtle.ConditionallySelectable.conditional_select
-          (Self := (subtle.CtOption T)))
+          (Self := subtle.CtOption T)
+          (Trait := ltac:(refine _)))
         α2
         α5
         is_none.
@@ -2216,7 +2338,9 @@ Module Impl_subtle_ConditionallySelectable_for_subtle_CtOption_T.
       let* α8 := deref α7 T in
       let* α9 := borrow α8 T in
       let* α10 :=
-        (subtle.ConditionallySelectable.conditional_select (Self := T))
+        (subtle.ConditionallySelectable.conditional_select
+            (Self := T)
+            (Trait := ltac:(refine _)))
           α4
           α9
           choice in
@@ -2232,7 +2356,8 @@ Module Impl_subtle_ConditionallySelectable_for_subtle_CtOption_T.
       let* α20 := borrow α19 subtle.Choice in
       let* α21 :=
         (subtle.ConditionallySelectable.conditional_select
-            (Self := subtle.Choice))
+            (Self := subtle.Choice)
+            (Trait := ltac:(refine _)))
           α15
           α20
           choice in
@@ -2243,12 +2368,12 @@ Module Impl_subtle_ConditionallySelectable_for_subtle_CtOption_T.
       Notation.double_colon := conditional_select;
     }.
     
-    #[refine] Global Instance ℐ : subtle.ConditionallySelectable.Trait Self := {
+    Global Instance ℐ : subtle.ConditionallySelectable.Required.Trait Self := {
       subtle.ConditionallySelectable.conditional_select := conditional_select;
+      subtle.ConditionallySelectable.conditional_assign := Datatypes.None;
+      subtle.ConditionallySelectable.conditional_swap := Datatypes.None;
     }.
-    Admitted.
   End Impl_subtle_ConditionallySelectable_for_subtle_CtOption_T.
-  Global Hint Resolve ℐ : core.
 End Impl_subtle_ConditionallySelectable_for_subtle_CtOption_T.
 
 Module Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
@@ -2272,7 +2397,12 @@ Module Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
         let* α0 := deref rhs (subtle.CtOption T) in
         let* α1 := borrow α0 (subtle.CtOption T) in
         (subtle.CtOption T)::["is_some"] α1 in
-      let* α0 := (core.ops.bit.BitAnd.bitand (Self := subtle.Choice)) a b in
+      let* α0 :=
+        (core.ops.bit.BitAnd.bitand
+            (Self := subtle.Choice)
+            (Trait := ltac:(refine _)))
+          a
+          b in
       let* α1 := deref self (subtle.CtOption T) in
       let* α2 := α1.["value"] in
       let* α3 := borrow α2 T in
@@ -2281,25 +2411,48 @@ Module Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
       let* α6 := borrow α5 T in
       let* α7 := deref α6 T in
       let* α8 := borrow α7 T in
-      let* α9 := (subtle.ConstantTimeEq.ct_eq (Self := T)) α3 α8 in
-      let* α10 := (core.ops.bit.BitAnd.bitand (Self := subtle.Choice)) α0 α9 in
-      let* α11 := (core.ops.bit.Not.not (Self := subtle.Choice)) a in
-      let* α12 := (core.ops.bit.Not.not (Self := subtle.Choice)) b in
+      let* α9 :=
+        (subtle.ConstantTimeEq.ct_eq (Self := T) (Trait := ltac:(refine _)))
+          α3
+          α8 in
+      let* α10 :=
+        (core.ops.bit.BitAnd.bitand
+            (Self := subtle.Choice)
+            (Trait := ltac:(refine _)))
+          α0
+          α9 in
+      let* α11 :=
+        (core.ops.bit.Not.not
+            (Self := subtle.Choice)
+            (Trait := ltac:(refine _)))
+          a in
+      let* α12 :=
+        (core.ops.bit.Not.not
+            (Self := subtle.Choice)
+            (Trait := ltac:(refine _)))
+          b in
       let* α13 :=
-        (core.ops.bit.BitAnd.bitand (Self := subtle.Choice)) α11 α12 in
-      (core.ops.bit.BitOr.bitor (Self := subtle.Choice)) α10 α13.
+        (core.ops.bit.BitAnd.bitand
+            (Self := subtle.Choice)
+            (Trait := ltac:(refine _)))
+          α11
+          α12 in
+      (core.ops.bit.BitOr.bitor
+          (Self := subtle.Choice)
+          (Trait := ltac:(refine _)))
+        α10
+        α13.
     
     Global Instance AssociatedFunction_ct_eq :
       Notation.DoubleColon Self "ct_eq" := {
       Notation.double_colon := ct_eq;
     }.
     
-    #[refine] Global Instance ℐ : subtle.ConstantTimeEq.Trait Self := {
+    Global Instance ℐ : subtle.ConstantTimeEq.Required.Trait Self := {
       subtle.ConstantTimeEq.ct_eq := ct_eq;
+      subtle.ConstantTimeEq.ct_ne := Datatypes.None;
     }.
-    Admitted.
   End Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
-  Global Hint Resolve ℐ : core.
 End Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
 
 Module ConstantTimeGreater.
@@ -2321,20 +2474,28 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
     
     Definition ct_gt (self : ref Self) (other : ref u8) : M subtle.Choice :=
       let* gtb :=
-        let* α0 := (core.ops.bit.Not.not (Self := (ref u8))) other in
-        (core.ops.bit.BitAnd.bitand (Self := (ref u8))) self α0 in
+        let* α0 :=
+          (core.ops.bit.Not.not (Self := ref u8) (Trait := ltac:(refine _)))
+            other in
+        (core.ops.bit.BitAnd.bitand (Self := ref u8) (Trait := ltac:(refine _)))
+          self
+          α0 in
       let* ltb :=
-        let* α0 := (core.ops.bit.Not.not (Self := (ref u8))) self in
-        (core.ops.bit.BitAnd.bitand (Self := u8)) α0 other in
+        let* α0 :=
+          (core.ops.bit.Not.not (Self := ref u8) (Trait := ltac:(refine _)))
+            self in
+        (core.ops.bit.BitAnd.bitand (Self := u8) (Trait := ltac:(refine _)))
+          α0
+          other in
       let* pow := M.alloc 1 in
       let* _ :=
         loop
           (let* α0 := M.alloc 8 in
-          let* α1 := lt pow α0 in
+          let* α1 := BinOp.lt pow α0 in
           let* α2 := use α1 in
           if (α2 : bool) then
             let* _ :=
-              let* α0 := shr ltb pow in
+              let* α0 := BinOp.shr ltb pow in
               assign_op bitor ltb α0 in
             let* _ := assign_op add pow pow in
             M.alloc tt
@@ -2345,17 +2506,17 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
             let* α0 := M.alloc tt in
             never_to_any α0) in
       let* bit :=
-        let* α0 := not ltb in
-        bitand gtb α0 in
+        let* α0 := UnOp.not ltb in
+        BinOp.bit_and gtb α0 in
       let* pow := M.alloc 1 in
       let* _ :=
         loop
           (let* α0 := M.alloc 8 in
-          let* α1 := lt pow α0 in
+          let* α1 := BinOp.lt pow α0 in
           let* α2 := use α1 in
           if (α2 : bool) then
             let* _ :=
-              let* α0 := shr bit pow in
+              let* α0 := BinOp.shr bit pow in
               assign_op bitor bit α0 in
             let* _ := assign_op add pow pow in
             M.alloc tt
@@ -2366,21 +2527,22 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
             let* α0 := M.alloc tt in
             never_to_any α0) in
       let* α0 := M.alloc 1 in
-      let* α1 := bitand bit α0 in
+      let* α1 := BinOp.bit_and bit α0 in
       let* α2 := use α1 in
-      (core.convert.From.from (Self := subtle.Choice)) α2.
+      (core.convert.From.from
+          (Self := subtle.Choice)
+          (Trait := ltac:(refine _)))
+        α2.
     
     Global Instance AssociatedFunction_ct_gt :
       Notation.DoubleColon Self "ct_gt" := {
       Notation.double_colon := ct_gt;
     }.
     
-    #[refine] Global Instance ℐ : subtle.ConstantTimeGreater.Trait Self := {
+    Global Instance ℐ : subtle.ConstantTimeGreater.Trait Self := {
       subtle.ConstantTimeGreater.ct_gt := ct_gt;
     }.
-    Admitted.
   End Impl_subtle_ConstantTimeGreater_for_u8.
-  Global Hint Resolve ℐ : core.
 End Impl_subtle_ConstantTimeGreater_for_u8.
 
 Module Impl_subtle_ConstantTimeGreater_for_u16.
@@ -2391,20 +2553,30 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
     
     Definition ct_gt (self : ref Self) (other : ref u16) : M subtle.Choice :=
       let* gtb :=
-        let* α0 := (core.ops.bit.Not.not (Self := (ref u16))) other in
-        (core.ops.bit.BitAnd.bitand (Self := (ref u16))) self α0 in
+        let* α0 :=
+          (core.ops.bit.Not.not (Self := ref u16) (Trait := ltac:(refine _)))
+            other in
+        (core.ops.bit.BitAnd.bitand
+            (Self := ref u16)
+            (Trait := ltac:(refine _)))
+          self
+          α0 in
       let* ltb :=
-        let* α0 := (core.ops.bit.Not.not (Self := (ref u16))) self in
-        (core.ops.bit.BitAnd.bitand (Self := u16)) α0 other in
+        let* α0 :=
+          (core.ops.bit.Not.not (Self := ref u16) (Trait := ltac:(refine _)))
+            self in
+        (core.ops.bit.BitAnd.bitand (Self := u16) (Trait := ltac:(refine _)))
+          α0
+          other in
       let* pow := M.alloc 1 in
       let* _ :=
         loop
           (let* α0 := M.alloc 16 in
-          let* α1 := lt pow α0 in
+          let* α1 := BinOp.lt pow α0 in
           let* α2 := use α1 in
           if (α2 : bool) then
             let* _ :=
-              let* α0 := shr ltb pow in
+              let* α0 := BinOp.shr ltb pow in
               assign_op bitor ltb α0 in
             let* _ := assign_op add pow pow in
             M.alloc tt
@@ -2415,17 +2587,17 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
             let* α0 := M.alloc tt in
             never_to_any α0) in
       let* bit :=
-        let* α0 := not ltb in
-        bitand gtb α0 in
+        let* α0 := UnOp.not ltb in
+        BinOp.bit_and gtb α0 in
       let* pow := M.alloc 1 in
       let* _ :=
         loop
           (let* α0 := M.alloc 16 in
-          let* α1 := lt pow α0 in
+          let* α1 := BinOp.lt pow α0 in
           let* α2 := use α1 in
           if (α2 : bool) then
             let* _ :=
-              let* α0 := shr bit pow in
+              let* α0 := BinOp.shr bit pow in
               assign_op bitor bit α0 in
             let* _ := assign_op add pow pow in
             M.alloc tt
@@ -2436,21 +2608,22 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
             let* α0 := M.alloc tt in
             never_to_any α0) in
       let* α0 := M.alloc 1 in
-      let* α1 := bitand bit α0 in
+      let* α1 := BinOp.bit_and bit α0 in
       let* α2 := cast α1 in
-      (core.convert.From.from (Self := subtle.Choice)) α2.
+      (core.convert.From.from
+          (Self := subtle.Choice)
+          (Trait := ltac:(refine _)))
+        α2.
     
     Global Instance AssociatedFunction_ct_gt :
       Notation.DoubleColon Self "ct_gt" := {
       Notation.double_colon := ct_gt;
     }.
     
-    #[refine] Global Instance ℐ : subtle.ConstantTimeGreater.Trait Self := {
+    Global Instance ℐ : subtle.ConstantTimeGreater.Trait Self := {
       subtle.ConstantTimeGreater.ct_gt := ct_gt;
     }.
-    Admitted.
   End Impl_subtle_ConstantTimeGreater_for_u16.
-  Global Hint Resolve ℐ : core.
 End Impl_subtle_ConstantTimeGreater_for_u16.
 
 Module Impl_subtle_ConstantTimeGreater_for_u32.
@@ -2461,20 +2634,30 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
     
     Definition ct_gt (self : ref Self) (other : ref u32) : M subtle.Choice :=
       let* gtb :=
-        let* α0 := (core.ops.bit.Not.not (Self := (ref u32))) other in
-        (core.ops.bit.BitAnd.bitand (Self := (ref u32))) self α0 in
+        let* α0 :=
+          (core.ops.bit.Not.not (Self := ref u32) (Trait := ltac:(refine _)))
+            other in
+        (core.ops.bit.BitAnd.bitand
+            (Self := ref u32)
+            (Trait := ltac:(refine _)))
+          self
+          α0 in
       let* ltb :=
-        let* α0 := (core.ops.bit.Not.not (Self := (ref u32))) self in
-        (core.ops.bit.BitAnd.bitand (Self := u32)) α0 other in
+        let* α0 :=
+          (core.ops.bit.Not.not (Self := ref u32) (Trait := ltac:(refine _)))
+            self in
+        (core.ops.bit.BitAnd.bitand (Self := u32) (Trait := ltac:(refine _)))
+          α0
+          other in
       let* pow := M.alloc 1 in
       let* _ :=
         loop
           (let* α0 := M.alloc 32 in
-          let* α1 := lt pow α0 in
+          let* α1 := BinOp.lt pow α0 in
           let* α2 := use α1 in
           if (α2 : bool) then
             let* _ :=
-              let* α0 := shr ltb pow in
+              let* α0 := BinOp.shr ltb pow in
               assign_op bitor ltb α0 in
             let* _ := assign_op add pow pow in
             M.alloc tt
@@ -2485,17 +2668,17 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
             let* α0 := M.alloc tt in
             never_to_any α0) in
       let* bit :=
-        let* α0 := not ltb in
-        bitand gtb α0 in
+        let* α0 := UnOp.not ltb in
+        BinOp.bit_and gtb α0 in
       let* pow := M.alloc 1 in
       let* _ :=
         loop
           (let* α0 := M.alloc 32 in
-          let* α1 := lt pow α0 in
+          let* α1 := BinOp.lt pow α0 in
           let* α2 := use α1 in
           if (α2 : bool) then
             let* _ :=
-              let* α0 := shr bit pow in
+              let* α0 := BinOp.shr bit pow in
               assign_op bitor bit α0 in
             let* _ := assign_op add pow pow in
             M.alloc tt
@@ -2506,21 +2689,22 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
             let* α0 := M.alloc tt in
             never_to_any α0) in
       let* α0 := M.alloc 1 in
-      let* α1 := bitand bit α0 in
+      let* α1 := BinOp.bit_and bit α0 in
       let* α2 := cast α1 in
-      (core.convert.From.from (Self := subtle.Choice)) α2.
+      (core.convert.From.from
+          (Self := subtle.Choice)
+          (Trait := ltac:(refine _)))
+        α2.
     
     Global Instance AssociatedFunction_ct_gt :
       Notation.DoubleColon Self "ct_gt" := {
       Notation.double_colon := ct_gt;
     }.
     
-    #[refine] Global Instance ℐ : subtle.ConstantTimeGreater.Trait Self := {
+    Global Instance ℐ : subtle.ConstantTimeGreater.Trait Self := {
       subtle.ConstantTimeGreater.ct_gt := ct_gt;
     }.
-    Admitted.
   End Impl_subtle_ConstantTimeGreater_for_u32.
-  Global Hint Resolve ℐ : core.
 End Impl_subtle_ConstantTimeGreater_for_u32.
 
 Module Impl_subtle_ConstantTimeGreater_for_u64.
@@ -2531,20 +2715,30 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
     
     Definition ct_gt (self : ref Self) (other : ref u64) : M subtle.Choice :=
       let* gtb :=
-        let* α0 := (core.ops.bit.Not.not (Self := (ref u64))) other in
-        (core.ops.bit.BitAnd.bitand (Self := (ref u64))) self α0 in
+        let* α0 :=
+          (core.ops.bit.Not.not (Self := ref u64) (Trait := ltac:(refine _)))
+            other in
+        (core.ops.bit.BitAnd.bitand
+            (Self := ref u64)
+            (Trait := ltac:(refine _)))
+          self
+          α0 in
       let* ltb :=
-        let* α0 := (core.ops.bit.Not.not (Self := (ref u64))) self in
-        (core.ops.bit.BitAnd.bitand (Self := u64)) α0 other in
+        let* α0 :=
+          (core.ops.bit.Not.not (Self := ref u64) (Trait := ltac:(refine _)))
+            self in
+        (core.ops.bit.BitAnd.bitand (Self := u64) (Trait := ltac:(refine _)))
+          α0
+          other in
       let* pow := M.alloc 1 in
       let* _ :=
         loop
           (let* α0 := M.alloc 64 in
-          let* α1 := lt pow α0 in
+          let* α1 := BinOp.lt pow α0 in
           let* α2 := use α1 in
           if (α2 : bool) then
             let* _ :=
-              let* α0 := shr ltb pow in
+              let* α0 := BinOp.shr ltb pow in
               assign_op bitor ltb α0 in
             let* _ := assign_op add pow pow in
             M.alloc tt
@@ -2555,17 +2749,17 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
             let* α0 := M.alloc tt in
             never_to_any α0) in
       let* bit :=
-        let* α0 := not ltb in
-        bitand gtb α0 in
+        let* α0 := UnOp.not ltb in
+        BinOp.bit_and gtb α0 in
       let* pow := M.alloc 1 in
       let* _ :=
         loop
           (let* α0 := M.alloc 64 in
-          let* α1 := lt pow α0 in
+          let* α1 := BinOp.lt pow α0 in
           let* α2 := use α1 in
           if (α2 : bool) then
             let* _ :=
-              let* α0 := shr bit pow in
+              let* α0 := BinOp.shr bit pow in
               assign_op bitor bit α0 in
             let* _ := assign_op add pow pow in
             M.alloc tt
@@ -2576,21 +2770,22 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
             let* α0 := M.alloc tt in
             never_to_any α0) in
       let* α0 := M.alloc 1 in
-      let* α1 := bitand bit α0 in
+      let* α1 := BinOp.bit_and bit α0 in
       let* α2 := cast α1 in
-      (core.convert.From.from (Self := subtle.Choice)) α2.
+      (core.convert.From.from
+          (Self := subtle.Choice)
+          (Trait := ltac:(refine _)))
+        α2.
     
     Global Instance AssociatedFunction_ct_gt :
       Notation.DoubleColon Self "ct_gt" := {
       Notation.double_colon := ct_gt;
     }.
     
-    #[refine] Global Instance ℐ : subtle.ConstantTimeGreater.Trait Self := {
+    Global Instance ℐ : subtle.ConstantTimeGreater.Trait Self := {
       subtle.ConstantTimeGreater.ct_gt := ct_gt;
     }.
-    Admitted.
   End Impl_subtle_ConstantTimeGreater_for_u64.
-  Global Hint Resolve ℐ : core.
 End Impl_subtle_ConstantTimeGreater_for_u64.
 
 Module ConstantTimeLess.
@@ -2611,11 +2806,10 @@ Module Impl_subtle_ConstantTimeLess_for_u8.
     
     Definition Self : Set := u8.
     
-    #[refine] Global Instance ℐ : subtle.ConstantTimeLess.Trait Self := {
+    Global Instance ℐ : subtle.ConstantTimeLess.Required.Trait Self := {
+      subtle.ConstantTimeLess.ct_lt := Datatypes.None;
     }.
-    Admitted.
   End Impl_subtle_ConstantTimeLess_for_u8.
-  Global Hint Resolve ℐ : core.
 End Impl_subtle_ConstantTimeLess_for_u8.
 
 Module Impl_subtle_ConstantTimeLess_for_u16.
@@ -2624,11 +2818,10 @@ Module Impl_subtle_ConstantTimeLess_for_u16.
     
     Definition Self : Set := u16.
     
-    #[refine] Global Instance ℐ : subtle.ConstantTimeLess.Trait Self := {
+    Global Instance ℐ : subtle.ConstantTimeLess.Required.Trait Self := {
+      subtle.ConstantTimeLess.ct_lt := Datatypes.None;
     }.
-    Admitted.
   End Impl_subtle_ConstantTimeLess_for_u16.
-  Global Hint Resolve ℐ : core.
 End Impl_subtle_ConstantTimeLess_for_u16.
 
 Module Impl_subtle_ConstantTimeLess_for_u32.
@@ -2637,11 +2830,10 @@ Module Impl_subtle_ConstantTimeLess_for_u32.
     
     Definition Self : Set := u32.
     
-    #[refine] Global Instance ℐ : subtle.ConstantTimeLess.Trait Self := {
+    Global Instance ℐ : subtle.ConstantTimeLess.Required.Trait Self := {
+      subtle.ConstantTimeLess.ct_lt := Datatypes.None;
     }.
-    Admitted.
   End Impl_subtle_ConstantTimeLess_for_u32.
-  Global Hint Resolve ℐ : core.
 End Impl_subtle_ConstantTimeLess_for_u32.
 
 Module Impl_subtle_ConstantTimeLess_for_u64.
@@ -2650,9 +2842,8 @@ Module Impl_subtle_ConstantTimeLess_for_u64.
     
     Definition Self : Set := u64.
     
-    #[refine] Global Instance ℐ : subtle.ConstantTimeLess.Trait Self := {
+    Global Instance ℐ : subtle.ConstantTimeLess.Required.Trait Self := {
+      subtle.ConstantTimeLess.ct_lt := Datatypes.None;
     }.
-    Admitted.
   End Impl_subtle_ConstantTimeLess_for_u64.
-  Global Hint Resolve ℐ : core.
 End Impl_subtle_ConstantTimeLess_for_u64.

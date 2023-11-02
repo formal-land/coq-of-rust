@@ -1,5 +1,6 @@
 # blacklisting for the change to THIR
 examples/
+ink/
 ######
 examples/cargo/concurrent_tests.v
 examples/custom_types/enums_c_like.v
@@ -154,6 +155,7 @@ examples_axiomatized/traits/impl_trait_as_return_type.v
 examples_axiomatized/traits/iterators.v
 examples_axiomatized/traits/returning_traits_with_dyn.v
 examples_axiomatized/traits/supertraits.v
+examples_axiomatized/traits/traits.v
 ink/erc20.v
 ink/ink_e2e.v
 _std/iter_type.v

@@ -45,21 +45,20 @@ Module Impl_generics_traits_DoubleDrop_T_for_U.
       Notation.double_colon := double_drop;
     }.
     
-    #[refine] Global Instance ℐ :
-      generics_traits.DoubleDrop.Trait Self (T := T) := {
+    Global Instance ℐ : generics_traits.DoubleDrop.Trait Self (T := T) := {
       generics_traits.DoubleDrop.double_drop := double_drop;
     }.
-    Admitted.
   End Impl_generics_traits_DoubleDrop_T_for_U.
-  Global Hint Resolve ℐ : core.
 End Impl_generics_traits_DoubleDrop_T_for_U.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
-  let empty := generics_traits.Empty.Build_t tt in
-  let null := generics_traits.Null.Build_t tt in
+  let* empty := M.alloc generics_traits.Empty.Build_t in
+  let* null := M.alloc generics_traits.Null.Build_t in
   let* _ :=
-    (generics_traits.DoubleDrop.double_drop (Self := generics_traits.Empty))
+    (generics_traits.DoubleDrop.double_drop
+        (Self := generics_traits.Empty)
+        (Trait := ltac:(refine _)))
       empty
       null in
   M.alloc tt.

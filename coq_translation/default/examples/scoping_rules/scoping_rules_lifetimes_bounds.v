@@ -13,10 +13,9 @@ Module Ref.
     }.
     Global Set Primitive Projections.
     
-    #[refine] Global Instance Get_0 : Notation.Dot "0" := {
+    Global Instance Get_0 : Notation.Dot "0" := {
       Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
-    Admitted.
   End Ref.
 End Ref.
 Definition Ref `{ℋ : State.Trait} (T : Set) : Set := M.val (Ref.t (T := T)).
@@ -52,12 +51,10 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
       Notation.double_colon := fmt;
     }.
     
-    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
-    Admitted.
   End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
-  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
 
 Definition print
@@ -121,7 +118,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
     let* α0 := borrow x i32 in
     let* α1 := deref α0 i32 in
     let* α2 := borrow α1 i32 in
-    Pure (scoping_rules_lifetimes_bounds.Ref.Build_t α2) in
+    M.alloc (scoping_rules_lifetimes_bounds.Ref.Build_t α2) in
   let* _ :=
     let* α0 := borrow ref_x (scoping_rules_lifetimes_bounds.Ref i32) in
     let* α1 := deref α0 (scoping_rules_lifetimes_bounds.Ref i32) in

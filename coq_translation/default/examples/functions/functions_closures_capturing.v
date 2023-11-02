@@ -4,7 +4,10 @@ Require Import CoqOfRust.CoqOfRust.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
   let* color :=
-    (core.convert.From.from (Self := alloc.string.String)) (mk_str "green") in
+    (core.convert.From.from
+        (Self := alloc.string.String)
+        (Trait := ltac:(refine _)))
+      (mk_str "green") in
   let print :=
     let* _ :=
       let* α0 := borrow [ mk_str "`color`: "; mk_str "
@@ -26,12 +29,20 @@ Definition main `{ℋ : State.Trait} : M unit :=
   let* _ :=
     let* α0 := borrow print type not implemented in
     let* α1 := M.alloc tt in
-    (core.ops.function.Fn.call (Self := type not implemented)) α0 α1 in
+    (core.ops.function.Fn.call
+        (Self := type not implemented)
+        (Trait := ltac:(refine _)))
+      α0
+      α1 in
   let* _reborrow := borrow color alloc.string.String in
   let* _ :=
     let* α0 := borrow print type not implemented in
     let* α1 := M.alloc tt in
-    (core.ops.function.Fn.call (Self := type not implemented)) α0 α1 in
+    (core.ops.function.Fn.call
+        (Self := type not implemented)
+        (Trait := ltac:(refine _)))
+      α0
+      α1 in
   let _color_moved := color in
   let* count := M.alloc 0 in
   let inc :=
@@ -60,15 +71,23 @@ Definition main `{ℋ : State.Trait} : M unit :=
   let* _ :=
     let* α0 := borrow_mut inc type not implemented in
     let* α1 := M.alloc tt in
-    (core.ops.function.FnMut.call_mut (Self := type not implemented)) α0 α1 in
+    (core.ops.function.FnMut.call_mut
+        (Self := type not implemented)
+        (Trait := ltac:(refine _)))
+      α0
+      α1 in
   let* _ :=
     let* α0 := borrow_mut inc type not implemented in
     let* α1 := M.alloc tt in
-    (core.ops.function.FnMut.call_mut (Self := type not implemented)) α0 α1 in
+    (core.ops.function.FnMut.call_mut
+        (Self := type not implemented)
+        (Trait := ltac:(refine _)))
+      α0
+      α1 in
   let* _count_reborrowed := borrow_mut count i32 in
   let* movable :=
     let* α0 := M.alloc 3 in
-    (alloc.boxed.Box T alloc.alloc.Global)::["new"] α0 in
+    (alloc.boxed.Box i32 alloc.alloc.Global)::["new"] α0 in
   let consume :=
     let* _ :=
       let* _ :=
@@ -93,7 +112,9 @@ Definition main `{ℋ : State.Trait} : M unit :=
     M.alloc tt in
   let* _ :=
     let* α0 := M.alloc tt in
-    (core.ops.function.FnOnce.call_once (Self := type not implemented))
+    (core.ops.function.FnOnce.call_once
+        (Self := type not implemented)
+        (Trait := ltac:(refine _)))
       consume
       α0 in
   M.alloc tt.

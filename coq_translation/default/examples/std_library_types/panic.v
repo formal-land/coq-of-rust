@@ -7,7 +7,7 @@ Definition division
     (divisor : i32)
     : M i32 :=
   let* α0 := M.alloc 0 in
-  let* α1 := eq divisor α0 in
+  let* α1 := BinOp.eq divisor α0 in
   let* α2 := use α1 in
   if (α2 : bool) then
     let* _ :=
@@ -16,13 +16,13 @@ Definition division
     let* α0 := M.alloc tt in
     never_to_any α0
   else
-    div dividend divisor.
+    BinOp.div dividend divisor.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
   let* _x :=
     let* α0 := M.alloc 0 in
-    (alloc.boxed.Box T alloc.alloc.Global)::["new"] α0 in
+    (alloc.boxed.Box i32 alloc.alloc.Global)::["new"] α0 in
   let* _ :=
     let* α0 := M.alloc 3 in
     let* α1 := M.alloc 0 in

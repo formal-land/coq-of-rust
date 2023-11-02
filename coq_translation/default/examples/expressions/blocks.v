@@ -5,14 +5,14 @@ Require Import CoqOfRust.CoqOfRust.
 Definition main `{ℋ : State.Trait} : M unit :=
   let* x := M.alloc 5 in
   let* y :=
-    let* x_squared := mul x x in
-    let* x_cube := mul x_squared x in
-    let* α0 := add x_cube x_squared in
-    add α0 x in
+    let* x_squared := BinOp.mul x x in
+    let* x_cube := BinOp.mul x_squared x in
+    let* α0 := BinOp.add x_cube x_squared in
+    BinOp.add α0 x in
   let* z :=
     let* _ :=
       let* α0 := M.alloc 2 in
-      mul α0 x in
+      BinOp.mul α0 x in
     M.alloc tt in
   let* _ :=
     let* _ :=

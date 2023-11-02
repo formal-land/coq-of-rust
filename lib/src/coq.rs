@@ -19,7 +19,6 @@ pub(crate) enum TopLevelItem<'a> {
     Comment(Comment),
     Context(Context<'a>),
     Definition(Definition<'a>),
-    Hint(Hint),
     Instance(Instance<'a>),
     Line,
     Module(Module<'a>),
@@ -85,13 +84,6 @@ pub(crate) struct Instance<'a> {
     class: Expression<'a>,
     build_expr: Expression<'a>,
     proof_lines: Vec<Doc<'a>>,
-}
-
-#[derive(Clone)]
-/// a hint for auto
-pub(crate) struct Hint {
-    item_name: String,
-    db_name: String,
 }
 
 #[derive(Clone)]
@@ -366,7 +358,6 @@ impl<'a> TopLevelItem<'a> {
             TopLevelItem::Comment(comment) => comment.to_doc(),
             TopLevelItem::Context(context) => context.to_doc(),
             TopLevelItem::Definition(definition) => definition.to_doc(),
-            TopLevelItem::Hint(hint) => hint.to_doc(),
             TopLevelItem::Instance(instance) => instance.to_doc(),
             TopLevelItem::Line => nil(),
             TopLevelItem::Module(module) => module.to_doc(),
@@ -677,7 +668,7 @@ impl<'a> Instance<'a> {
         concat([
             nest([
                 nest([
-                    text("#[refine] Global Instance"),
+                    text("Global Instance"),
                     line(),
                     text(self.name.to_owned()),
                     if self.parameters.is_empty() {
@@ -696,8 +687,6 @@ impl<'a> Instance<'a> {
             ]),
             self.build_expr.to_doc(false),
             text("."),
-            hardline(),
-            text("Admitted."),
             if self.proof_lines.is_empty() {
                 nil()
             } else {
@@ -709,32 +698,6 @@ impl<'a> Instance<'a> {
                 ])
             },
         ])
-    }
-}
-
-impl Hint {
-    pub(crate) fn new(item_name: &str, db_name: &str) -> Self {
-        Hint {
-            item_name: item_name.to_owned(),
-            db_name: db_name.to_owned(),
-        }
-    }
-
-    pub(crate) fn to_doc<'a>(&self) -> Doc<'a> {
-        group([
-            text("Global Hint Resolve"),
-            line(),
-            text(self.item_name.to_owned()),
-            line(),
-            text(":"),
-            line(),
-            text(self.db_name.to_owned()),
-            text("."),
-        ])
-    }
-
-    pub(crate) fn standard_resolve() -> Self {
-        Hint::new("ℐ", "core")
     }
 }
 

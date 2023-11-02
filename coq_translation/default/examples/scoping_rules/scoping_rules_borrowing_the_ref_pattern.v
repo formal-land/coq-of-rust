@@ -12,22 +12,18 @@ Module Point.
     }.
     Global Set Primitive Projections.
     
-    #[refine] Global Instance Get_x : Notation.Dot "x" := {
+    Global Instance Get_x : Notation.Dot "x" := {
       Notation.dot x' := let* x' := M.read x' in Pure x'.(x) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_AF_x : Notation.DoubleColon t "x" := {
+    Global Instance Get_AF_x : Notation.DoubleColon t "x" := {
       Notation.double_colon x' := let* x' := M.read x' in Pure x'.(x) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_y : Notation.Dot "y" := {
+    Global Instance Get_y : Notation.Dot "y" := {
       Notation.dot x := let* x := M.read x in Pure x.(y) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_AF_y : Notation.DoubleColon t "y" := {
+    Global Instance Get_AF_y : Notation.DoubleColon t "y" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(y) : M _;
     }.
-    Admitted.
   End Point.
 End Point.
 Definition Point `{ℋ : State.Trait} : Set := M.val Point.t.
@@ -50,12 +46,11 @@ Module Impl_core_clone_Clone_for_scoping_rules_borrowing_the_ref_pattern_Point.
       Notation.double_colon := clone;
     }.
     
-    #[refine] Global Instance ℐ : core.clone.Clone.Trait Self := {
+    Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
       core.clone.Clone.clone := clone;
+      core.clone.Clone.clone_from := Datatypes.None;
     }.
-    Admitted.
   End Impl_core_clone_Clone_for_scoping_rules_borrowing_the_ref_pattern_Point.
-  Global Hint Resolve ℐ : core.
 End Impl_core_clone_Clone_for_scoping_rules_borrowing_the_ref_pattern_Point.
 
 Module Impl_core_marker_Copy_for_scoping_rules_borrowing_the_ref_pattern_Point.
@@ -65,11 +60,9 @@ Module Impl_core_marker_Copy_for_scoping_rules_borrowing_the_ref_pattern_Point.
     
     Definition Self : Set := scoping_rules_borrowing_the_ref_pattern.Point.
     
-    #[refine] Global Instance ℐ : core.marker.Copy.Trait Self := {
+    Global Instance ℐ : core.marker.Copy.Trait Self := {
     }.
-    Admitted.
   End Impl_core_marker_Copy_for_scoping_rules_borrowing_the_ref_pattern_Point.
-  Global Hint Resolve ℐ : core.
 End Impl_core_marker_Copy_for_scoping_rules_borrowing_the_ref_pattern_Point.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
@@ -89,7 +82,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α3 := pointer_coercion "Unsize" α2 in
       let* α4 := deref ref_c1 char in
       let* α5 := deref ref_c2 char in
-      let* α6 := eq α4 α5 in
+      let* α6 := BinOp.eq α4 α5 in
       let* α7 := borrow α6 bool in
       let* α8 := deref α7 bool in
       let* α9 := borrow α8 bool in
@@ -186,7 +179,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
     M.alloc tt in
   let* mutable_tuple :=
     let* α0 := M.alloc 5 in
-    let* α1 := (alloc.boxed.Box T alloc.alloc.Global)::["new"] α0 in
+    let* α1 := (alloc.boxed.Box u32 alloc.alloc.Global)::["new"] α0 in
     let* α2 := M.alloc 3 in
     Pure (α1, α2) in
   let* _ :=

@@ -6,7 +6,8 @@ Definition NTHREADS `{ℋ : State.Trait} : i32 := M.run (M.alloc 3).
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
   let* '(tx, rx) := std.sync.mpsc.channel in
-  let* children := (alloc.vec.Vec T alloc.alloc.Global)::["new"] in
+  let* children :=
+    (alloc.vec.Vec (std.thread.JoinHandle unit) alloc.alloc.Global)::["new"] in
   let* _ :=
     let* α0 := M.alloc 0 in
     let* α1 := deref channels.NTHREADS i32 in
@@ -16,7 +17,8 @@ Definition main `{ℋ : State.Trait} : M unit :=
         |} in
     let* α3 :=
       (core.iter.traits.collect.IntoIterator.into_iter
-          (Self := (core.ops.range.Range i32)))
+          (Self := core.ops.range.Range i32)
+          (Trait := ltac:(refine _)))
         α2 in
     let* α4 :=
       match α3 with
@@ -28,7 +30,8 @@ Definition main `{ℋ : State.Trait} : M unit :=
             let* α2 := borrow_mut α1 (core.ops.range.Range i32) in
             let* α3 :=
               (core.iter.traits.iterator.Iterator.next
-                  (Self := (core.ops.range.Range i32)))
+                  (Self := core.ops.range.Range i32)
+                  (Trait := ltac:(refine _)))
                 α2 in
             match α3 with
             | core.option.Option  =>
@@ -37,14 +40,19 @@ Definition main `{ℋ : State.Trait} : M unit :=
             | core.option.Option id =>
               let* thread_tx :=
                 let* α0 := borrow tx (std.sync.mpsc.Sender i32) in
-                (core.clone.Clone.clone (Self := (std.sync.mpsc.Sender i32)))
+                (core.clone.Clone.clone
+                    (Self := std.sync.mpsc.Sender i32)
+                    (Trait := ltac:(refine _)))
                   α0 in
               let* child :=
                 std.thread.spawn
                   (let* _ :=
                     let* α0 := borrow thread_tx (std.sync.mpsc.Sender i32) in
-                    let* α1 := (std.sync.mpsc.Sender T)::["send"] α0 id in
-                    (core.result.Result T E)::["unwrap"] α1 in
+                    let* α1 := (std.sync.mpsc.Sender i32)::["send"] α0 id in
+                    (core.result.Result
+                          unit
+                          (std.sync.mpsc.SendError i32))::["unwrap"]
+                      α1 in
                   let* _ :=
                     let* _ :=
                       let* α0 :=
@@ -74,7 +82,11 @@ Definition main `{ℋ : State.Trait} : M unit :=
                     (alloc.vec.Vec
                       (std.thread.JoinHandle unit)
                       alloc.alloc.Global) in
-                (alloc.vec.Vec T A)::["push"] α0 child in
+                (alloc.vec.Vec
+                      (std.thread.JoinHandle unit)
+                      alloc.alloc.Global)::["push"]
+                  α0
+                  child in
               M.alloc tt
             end in
           M.alloc tt)
@@ -83,7 +95,10 @@ Definition main `{ℋ : State.Trait} : M unit :=
   let* ids :=
     let* α0 := deref channels.NTHREADS i32 in
     let* α1 := cast α0 in
-    (alloc.vec.Vec T alloc.alloc.Global)::["with_capacity"] α1 in
+    (alloc.vec.Vec
+          (core.result.Result i32 std.sync.mpsc.RecvError)
+          alloc.alloc.Global)::["with_capacity"]
+      α1 in
   let* _ :=
     let* α0 := M.alloc 0 in
     let* α1 := deref channels.NTHREADS i32 in
@@ -93,7 +108,8 @@ Definition main `{ℋ : State.Trait} : M unit :=
         |} in
     let* α3 :=
       (core.iter.traits.collect.IntoIterator.into_iter
-          (Self := (core.ops.range.Range i32)))
+          (Self := core.ops.range.Range i32)
+          (Trait := ltac:(refine _)))
         α2 in
     let* α4 :=
       match α3 with
@@ -105,7 +121,8 @@ Definition main `{ℋ : State.Trait} : M unit :=
             let* α2 := borrow_mut α1 (core.ops.range.Range i32) in
             let* α3 :=
               (core.iter.traits.iterator.Iterator.next
-                  (Self := (core.ops.range.Range i32)))
+                  (Self := core.ops.range.Range i32)
+                  (Trait := ltac:(refine _)))
                 α2 in
             match α3 with
             | core.option.Option  =>
@@ -120,8 +137,12 @@ Definition main `{ℋ : State.Trait} : M unit :=
                       (core.result.Result i32 std.sync.mpsc.RecvError)
                       alloc.alloc.Global) in
                 let* α1 := borrow rx (std.sync.mpsc.Receiver i32) in
-                let* α2 := (std.sync.mpsc.Receiver T)::["recv"] α1 in
-                (alloc.vec.Vec T A)::["push"] α0 α2 in
+                let* α2 := (std.sync.mpsc.Receiver i32)::["recv"] α1 in
+                (alloc.vec.Vec
+                      (core.result.Result i32 std.sync.mpsc.RecvError)
+                      alloc.alloc.Global)::["push"]
+                  α0
+                  α2 in
               M.alloc tt
             end in
           M.alloc tt)
@@ -131,7 +152,8 @@ Definition main `{ℋ : State.Trait} : M unit :=
     let* α0 :=
       (core.iter.traits.collect.IntoIterator.into_iter
           (Self :=
-            (alloc.vec.Vec (std.thread.JoinHandle unit) alloc.alloc.Global)))
+            alloc.vec.Vec (std.thread.JoinHandle unit) alloc.alloc.Global)
+          (Trait := ltac:(refine _)))
         children in
     let* α1 :=
       match α0 with
@@ -159,9 +181,10 @@ Definition main `{ℋ : State.Trait} : M unit :=
             let* α3 :=
               (core.iter.traits.iterator.Iterator.next
                   (Self :=
-                    (alloc.vec.into_iter.IntoIter
+                    alloc.vec.into_iter.IntoIter
                       (std.thread.JoinHandle unit)
-                      alloc.alloc.Global)))
+                      alloc.alloc.Global)
+                  (Trait := ltac:(refine _)))
                 α2 in
             match α3 with
             | core.option.Option  =>
@@ -169,11 +192,17 @@ Definition main `{ℋ : State.Trait} : M unit :=
               never_to_any α0
             | core.option.Option child =>
               let* _ :=
-                let* α0 := (std.thread.JoinHandle T)::["join"] child in
+                let* α0 := (std.thread.JoinHandle unit)::["join"] child in
                 let* α1 :=
                   deref (mk_str "oops! the child thread panicked") str in
                 let* α2 := borrow α1 str in
-                (core.result.Result T E)::["expect"] α0 α2 in
+                (core.result.Result
+                      unit
+                      (alloc.boxed.Box
+                        type not implemented
+                        alloc.alloc.Global))::["expect"]
+                  α0
+                  α2 in
               M.alloc tt
             end in
           M.alloc tt)

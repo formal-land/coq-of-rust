@@ -5,12 +5,12 @@ Require Import CoqOfRust.CoqOfRust.
 Definition main `{ℋ : State.Trait} : M unit :=
   let* optional :=
     let* α0 := M.alloc 0 in
-    Pure (core.option.Option.Some α0) in
+    M.alloc (core.option.Option.Some α0) in
   loop
     (match optional with
     | core.option.Option i =>
       let* α0 := M.alloc 9 in
-      let* α1 := gt i α0 in
+      let* α1 := BinOp.gt i α0 in
       let* α2 := use α1 in
       if (α2 : bool) then
         let* _ :=
@@ -24,7 +24,9 @@ Definition main `{ℋ : State.Trait} : M unit :=
             let* α4 := core.fmt.Arguments::["new_const"] α3 in
             std.io.stdio._print α4 in
           M.alloc tt in
-        let* _ := assign optional (core.option.Option.None tt) in
+        let* _ :=
+          let* α0 := M.alloc core.option.Option.None in
+          assign optional α0 in
         M.alloc tt
       else
         let* _ :=
@@ -50,8 +52,9 @@ Definition main `{ℋ : State.Trait} : M unit :=
           M.alloc tt in
         let* _ :=
           let* α0 := M.alloc 1 in
-          let* α1 := add i α0 in
-          assign optional (core.option.Option.Some α1) in
+          let* α1 := BinOp.add i α0 in
+          let* α2 := M.alloc (core.option.Option.Some α1) in
+          assign optional α2 in
         M.alloc tt
     | _ =>
       let* _ := Break in

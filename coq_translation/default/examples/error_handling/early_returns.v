@@ -13,8 +13,9 @@ Definition multiply
     match α2 with
     | core.result.Result first_number => Pure first_number
     | core.result.Result e =>
-      let* α0 := Return (core.result.Result.Err e) in
-      never_to_any α0
+      let* α0 := M.alloc (core.result.Result.Err e) in
+      let* α1 := Return α0 in
+      never_to_any α1
     end in
   let* second_number :=
     let* α0 := deref second_number_str str in
@@ -23,11 +24,12 @@ Definition multiply
     match α2 with
     | core.result.Result second_number => Pure second_number
     | core.result.Result e =>
-      let* α0 := Return (core.result.Result.Err e) in
-      never_to_any α0
+      let* α0 := M.alloc (core.result.Result.Err e) in
+      let* α1 := Return α0 in
+      never_to_any α1
     end in
-  let* α0 := mul first_number second_number in
-  Pure (core.result.Result.Ok α0).
+  let* α0 := BinOp.mul first_number second_number in
+  M.alloc (core.result.Result.Ok α0).
 
 Definition print
     `{ℋ : State.Trait}

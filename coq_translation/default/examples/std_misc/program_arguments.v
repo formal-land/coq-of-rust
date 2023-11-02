@@ -5,7 +5,10 @@ Require Import CoqOfRust.CoqOfRust.
 Definition main `{ℋ : State.Trait} : M unit :=
   let* args :=
     let* α0 := std.env.args in
-    (core.iter.traits.iterator.Iterator.collect (Self := std.env.Args)) α0 in
+    (core.iter.traits.iterator.Iterator.collect
+        (Self := std.env.Args)
+        (Trait := ltac:(refine _)))
+      α0 in
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -19,7 +22,8 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α5 := M.alloc 0 in
       let* α6 :=
         (core.ops.index.Index.index
-            (Self := (alloc.vec.Vec alloc.string.String alloc.alloc.Global)))
+            (Self := alloc.vec.Vec alloc.string.String alloc.alloc.Global)
+            (Trait := ltac:(refine _)))
           α4
           α5 in
       let* α7 := deref α6 alloc.string.String in
@@ -46,9 +50,10 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α3 := pointer_coercion "Unsize" α2 in
       let* α4 :=
         borrow args (alloc.vec.Vec alloc.string.String alloc.alloc.Global) in
-      let* α5 := (alloc.vec.Vec T A)::["len"] α4 in
+      let* α5 :=
+        (alloc.vec.Vec alloc.string.String alloc.alloc.Global)::["len"] α4 in
       let* α6 := M.alloc 1 in
-      let* α7 := sub α5 α6 in
+      let* α7 := BinOp.sub α5 α6 in
       let* α8 := borrow α7 usize in
       let* α9 := deref α8 usize in
       let* α10 := borrow α9 usize in
@@ -59,7 +64,8 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α14 := M.alloc {| core.ops.range.RangeFrom.start := α13; |} in
       let* α15 :=
         (core.ops.index.Index.index
-            (Self := (alloc.vec.Vec alloc.string.String alloc.alloc.Global)))
+            (Self := alloc.vec.Vec alloc.string.String alloc.alloc.Global)
+            (Trait := ltac:(refine _)))
           α12
           α14 in
       let* α16 := deref α15 (Slice alloc.string.String) in

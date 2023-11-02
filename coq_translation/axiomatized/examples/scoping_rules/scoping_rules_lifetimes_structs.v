@@ -11,10 +11,9 @@ Module Borrowed.
     }.
     Global Set Primitive Projections.
     
-    #[refine] Global Instance Get_0 : Notation.Dot "0" := {
+    Global Instance Get_0 : Notation.Dot "0" := {
       Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
-    Admitted.
   End Borrowed.
 End Borrowed.
 Definition Borrowed `{ℋ : State.Trait} : Set := M.val Borrowed.t.
@@ -33,12 +32,10 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Borrowed.
       Notation.double_colon := fmt;
     }.
     
-    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
-    Admitted.
   End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Borrowed.
-  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Borrowed.
 
 Module NamedBorrowed.
@@ -52,22 +49,18 @@ Module NamedBorrowed.
     }.
     Global Set Primitive Projections.
     
-    #[refine] Global Instance Get_x : Notation.Dot "x" := {
+    Global Instance Get_x : Notation.Dot "x" := {
       Notation.dot x' := let* x' := M.read x' in Pure x'.(x) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_AF_x : Notation.DoubleColon t "x" := {
+    Global Instance Get_AF_x : Notation.DoubleColon t "x" := {
       Notation.double_colon x' := let* x' := M.read x' in Pure x'.(x) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_y : Notation.Dot "y" := {
+    Global Instance Get_y : Notation.Dot "y" := {
       Notation.dot x := let* x := M.read x in Pure x.(y) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_AF_y : Notation.DoubleColon t "y" := {
+    Global Instance Get_AF_y : Notation.DoubleColon t "y" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(y) : M _;
     }.
-    Admitted.
   End NamedBorrowed.
 End NamedBorrowed.
 Definition NamedBorrowed `{ℋ : State.Trait} : Set := M.val NamedBorrowed.t.
@@ -86,12 +79,10 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_NamedBorrowed.
       Notation.double_colon := fmt;
     }.
     
-    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
-    Admitted.
   End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_NamedBorrowed.
-  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_NamedBorrowed.
 
 Module Either.
@@ -115,12 +106,10 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
       Notation.double_colon := fmt;
     }.
     
-    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
-    Admitted.
   End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
-  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)

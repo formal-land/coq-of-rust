@@ -48,26 +48,29 @@ Module Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_Fruit.
       Notation.double_colon := fmt;
     }.
     
-    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
-    Admitted.
   End Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_Fruit.
-  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_Fruit.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
-  let apple :=
-    core.option.Option.Some
-      (unpacking_options_and_defaults_via_or.Fruit.Apple tt) in
-  let orange :=
-    core.option.Option.Some
-      (unpacking_options_and_defaults_via_or.Fruit.Orange tt) in
-  let no_fruit := core.option.Option.None tt in
+  let* apple :=
+    let* α0 := M.alloc unpacking_options_and_defaults_via_or.Fruit.Apple in
+    M.alloc (core.option.Option.Some α0) in
+  let* orange :=
+    let* α0 := M.alloc unpacking_options_and_defaults_via_or.Fruit.Orange in
+    M.alloc (core.option.Option.Some α0) in
+  let* no_fruit := M.alloc core.option.Option.None in
   let* first_available_fruit :=
-    let* α0 := (core.option.Option T)::["or"] no_fruit orange in
-    (core.option.Option T)::["or"] α0 apple in
+    let* α0 :=
+      (core.option.Option unpacking_options_and_defaults_via_or.Fruit)::["or"]
+        no_fruit
+        orange in
+    (core.option.Option unpacking_options_and_defaults_via_or.Fruit)::["or"]
+      α0
+      apple in
   let* _ :=
     let* _ :=
       let* α0 :=

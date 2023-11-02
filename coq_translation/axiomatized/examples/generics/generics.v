@@ -20,10 +20,9 @@ Module Single.
     }.
     Global Set Primitive Projections.
     
-    #[refine] Global Instance Get_0 : Notation.Dot "0" := {
+    Global Instance Get_0 : Notation.Dot "0" := {
       Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
-    Admitted.
   End Single.
 End Single.
 Definition Single `{ℋ : State.Trait} : Set := M.val Single.t.
@@ -40,10 +39,9 @@ Module SingleGen.
     }.
     Global Set Primitive Projections.
     
-    #[refine] Global Instance Get_0 : Notation.Dot "0" := {
+    Global Instance Get_0 : Notation.Dot "0" := {
       Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
-    Admitted.
   End SingleGen.
 End SingleGen.
 Definition SingleGen `{ℋ : State.Trait} (T : Set) : Set :=

@@ -11,14 +11,12 @@ Module Number.
     }.
     Global Set Primitive Projections.
     
-    #[refine] Global Instance Get_value : Notation.Dot "value" := {
+    Global Instance Get_value : Notation.Dot "value" := {
       Notation.dot x := let* x := M.read x in Pure x.(value) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_AF_value : Notation.DoubleColon t "value" := {
+    Global Instance Get_AF_value : Notation.DoubleColon t "value" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(value) : M _;
     }.
-    Admitted.
   End Number.
 End Number.
 Definition Number `{ℋ : State.Trait} : Set := M.val Number.t.
@@ -36,12 +34,10 @@ Module Impl_core_convert_From_i32_for_into_Number.
       Notation.double_colon := from;
     }.
     
-    #[refine] Global Instance ℐ : core.convert.From.Trait Self (T := i32) := {
+    Global Instance ℐ : core.convert.From.Trait Self (T := i32) := {
       core.convert.From.from := from;
     }.
-    Admitted.
   End Impl_core_convert_From_i32_for_into_Number.
-  Global Hint Resolve ℐ : core.
 End Impl_core_convert_From_i32_for_into_Number.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)

@@ -11,10 +11,9 @@ Module Centimeters.
     }.
     Global Set Primitive Projections.
     
-    #[refine] Global Instance Get_0 : Notation.Dot "0" := {
+    Global Instance Get_0 : Notation.Dot "0" := {
       Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
-    Admitted.
   End Centimeters.
 End Centimeters.
 Definition Centimeters `{ℋ : State.Trait} : Set := M.val Centimeters.t.
@@ -25,12 +24,9 @@ Module Impl_core_marker_StructuralPartialEq_for_derive_Centimeters.
     
     Definition Self : Set := derive.Centimeters.
     
-    #[refine] Global Instance ℐ :
-      core.marker.StructuralPartialEq.Trait Self := {
+    Global Instance ℐ : core.marker.StructuralPartialEq.Trait Self := {
     }.
-    Admitted.
   End Impl_core_marker_StructuralPartialEq_for_derive_Centimeters.
-  Global Hint Resolve ℐ : core.
 End Impl_core_marker_StructuralPartialEq_for_derive_Centimeters.
 
 Module Impl_core_cmp_PartialEq_for_derive_Centimeters.
@@ -44,20 +40,19 @@ Module Impl_core_cmp_PartialEq_for_derive_Centimeters.
       let* α1 := α0.["0"] in
       let* α2 := deref other derive.Centimeters in
       let* α3 := α2.["0"] in
-      eq α1 α3.
+      BinOp.eq α1 α3.
     
     Global Instance AssociatedFunction_eq : Notation.DoubleColon Self "eq" := {
       Notation.double_colon := eq;
     }.
     
-    #[refine] Global Instance ℐ :
-      core.cmp.PartialEq.Trait Self
+    Global Instance ℐ :
+      core.cmp.PartialEq.Required.Trait Self
         (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
       core.cmp.PartialEq.eq := eq;
+      core.cmp.PartialEq.ne := Datatypes.None;
     }.
-    Admitted.
   End Impl_core_cmp_PartialEq_for_derive_Centimeters.
-  Global Hint Resolve ℐ : core.
 End Impl_core_cmp_PartialEq_for_derive_Centimeters.
 
 Module Impl_core_cmp_PartialOrd_for_derive_Centimeters.
@@ -80,21 +75,25 @@ Module Impl_core_cmp_PartialOrd_for_derive_Centimeters.
       let* α7 := borrow α6 f64 in
       let* α8 := deref α7 f64 in
       let* α9 := borrow α8 f64 in
-      (core.cmp.PartialOrd.partial_cmp (Self := f64)) α4 α9.
+      (core.cmp.PartialOrd.partial_cmp (Self := f64) (Trait := ltac:(refine _)))
+        α4
+        α9.
     
     Global Instance AssociatedFunction_partial_cmp :
       Notation.DoubleColon Self "partial_cmp" := {
       Notation.double_colon := partial_cmp;
     }.
     
-    #[refine] Global Instance ℐ :
-      core.cmp.PartialOrd.Trait Self
+    Global Instance ℐ :
+      core.cmp.PartialOrd.Required.Trait Self
         (Rhs := core.cmp.PartialOrd.Default.Rhs Self) := {
       core.cmp.PartialOrd.partial_cmp := partial_cmp;
+      core.cmp.PartialOrd.lt := Datatypes.None;
+      core.cmp.PartialOrd.le := Datatypes.None;
+      core.cmp.PartialOrd.gt := Datatypes.None;
+      core.cmp.PartialOrd.ge := Datatypes.None;
     }.
-    Admitted.
   End Impl_core_cmp_PartialOrd_for_derive_Centimeters.
-  Global Hint Resolve ℐ : core.
 End Impl_core_cmp_PartialOrd_for_derive_Centimeters.
 
 Module Inches.
@@ -107,10 +106,9 @@ Module Inches.
     }.
     Global Set Primitive Projections.
     
-    #[refine] Global Instance Get_0 : Notation.Dot "0" := {
+    Global Instance Get_0 : Notation.Dot "0" := {
       Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
-    Admitted.
   End Inches.
 End Inches.
 Definition Inches `{ℋ : State.Trait} : Set := M.val Inches.t.
@@ -143,12 +141,10 @@ Module Impl_core_fmt_Debug_for_derive_Inches.
       Notation.double_colon := fmt;
     }.
     
-    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
-    Admitted.
   End Impl_core_fmt_Debug_for_derive_Inches.
-  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_derive_Inches.
 
 Module Impl_derive_Inches.
@@ -161,8 +157,8 @@ Module Impl_derive_Inches.
       let 'derive.Inches.Build_t inches := self in
       let* α0 := cast inches in
       let* α1 := M.alloc 3 (* 2.54 *) in
-      let* α2 := mul α0 α1 in
-      Pure (derive.Centimeters.Build_t α2).
+      let* α2 := BinOp.mul α0 α1 in
+      M.alloc (derive.Centimeters.Build_t α2).
     
     Global Instance AssociatedFunction_to_centimeters :
       Notation.DoubleColon Self "to_centimeters" := {
@@ -181,10 +177,9 @@ Module Seconds.
     }.
     Global Set Primitive Projections.
     
-    #[refine] Global Instance Get_0 : Notation.Dot "0" := {
+    Global Instance Get_0 : Notation.Dot "0" := {
       Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
-    Admitted.
   End Seconds.
 End Seconds.
 Definition Seconds `{ℋ : State.Trait} : Set := M.val Seconds.t.
@@ -193,10 +188,10 @@ Definition Seconds `{ℋ : State.Trait} : Set := M.val Seconds.t.
 Definition main `{ℋ : State.Trait} : M unit :=
   let* _one_second :=
     let* α0 := M.alloc 1 in
-    Pure (derive.Seconds.Build_t α0) in
+    M.alloc (derive.Seconds.Build_t α0) in
   let* foot :=
     let* α0 := M.alloc 12 in
-    Pure (derive.Inches.Build_t α0) in
+    M.alloc (derive.Inches.Build_t α0) in
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -218,13 +213,18 @@ Definition main `{ℋ : State.Trait} : M unit :=
     M.alloc tt in
   let* meter :=
     let* α0 := M.alloc 100 (* 100.0 *) in
-    Pure (derive.Centimeters.Build_t α0) in
+    M.alloc (derive.Centimeters.Build_t α0) in
   let* cmp :=
     let* α0 := borrow foot derive.Inches in
     let* α1 := derive.Inches::["to_centimeters"] α0 in
     let* α2 := borrow α1 derive.Centimeters in
     let* α3 := borrow meter derive.Centimeters in
-    let* α4 := (core.cmp.PartialOrd.lt (Self := derive.Centimeters)) α2 α3 in
+    let* α4 :=
+      (core.cmp.PartialOrd.lt
+          (Self := derive.Centimeters)
+          (Trait := ltac:(refine _)))
+        α2
+        α3 in
     let* α5 := use α4 in
     if (α5 : bool) then
       Pure (mk_str "smaller")

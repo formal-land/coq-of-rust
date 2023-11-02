@@ -5,13 +5,44 @@ use crate::pattern::*;
 use crate::thir_ty::*;
 use crate::ty::CoqType;
 use rustc_hir::def::DefKind;
-use rustc_middle::mir::{BorrowKind, UnOp};
+use rustc_middle::mir::{BinOp, BorrowKind, UnOp};
 use rustc_middle::thir::{AdtExpr, ExprKind, LogicalOp, StmtKind};
-use rustc_middle::ty::{ImplSubject, TyKind};
+use rustc_middle::ty::TyKind;
 
-pub(crate) fn compile_expr(
-    env: &mut Env,
-    thir: &rustc_middle::thir::Thir,
+impl Expr {
+    fn alloc(self) -> Expr {
+        Expr::Call {
+            func: Box::new(Expr::LocalVar("M.alloc".to_string())),
+            args: vec![self],
+        }
+    }
+}
+
+fn path_of_bin_op(bin_op: &BinOp) -> Path {
+    match bin_op {
+        BinOp::Add => Path::new(&["BinOp", "add"]),
+        BinOp::Sub => Path::new(&["BinOp", "sub"]),
+        BinOp::Mul => Path::new(&["BinOp", "mul"]),
+        BinOp::Div => Path::new(&["BinOp", "div"]),
+        BinOp::Rem => Path::new(&["BinOp", "rem"]),
+        BinOp::BitXor => Path::new(&["BinOp", "bit_xor"]),
+        BinOp::BitAnd => Path::new(&["BinOp", "bit_and"]),
+        BinOp::BitOr => Path::new(&["BinOp", "bit_or"]),
+        BinOp::Shl => Path::new(&["BinOp", "shl"]),
+        BinOp::Shr => Path::new(&["BinOp", "shr"]),
+        BinOp::Eq => Path::new(&["BinOp", "eq"]),
+        BinOp::Ne => Path::new(&["BinOp", "ne"]),
+        BinOp::Lt => Path::new(&["BinOp", "lt"]),
+        BinOp::Le => Path::new(&["BinOp", "le"]),
+        BinOp::Ge => Path::new(&["BinOp", "ge"]),
+        BinOp::Gt => Path::new(&["BinOp", "gt"]),
+        BinOp::Offset => Path::new(&["BinOp", "offset"]),
+    }
+}
+
+pub(crate) fn compile_expr<'a>(
+    env: &mut Env<'a>,
+    thir: &rustc_middle::thir::Thir<'a>,
     expr_id: &rustc_middle::thir::ExprId,
 ) -> Expr {
     let expr = thir.exprs.get(*expr_id).unwrap();
@@ -61,34 +92,34 @@ pub(crate) fn compile_expr(
             }
         }
         ExprKind::Binary { op, lhs, rhs } => {
-            let op = compile_bin_op_kind(op.to_hir_binop());
+            let path = path_of_bin_op(op);
             let lhs = compile_expr(env, thir, lhs);
             let rhs = compile_expr(env, thir, rhs);
             Expr::Call {
-                func: Box::new(Expr::LocalVar(op)),
+                func: Box::new(Expr::Var(path)),
                 args: vec![lhs, rhs],
             }
         }
         ExprKind::LogicalOp { op, lhs, rhs } => {
-            let op = match op {
-                LogicalOp::And => "and".to_string(),
-                LogicalOp::Or => "or".to_string(),
+            let path = match op {
+                LogicalOp::And => Path::new(&["BinOp", "and"]),
+                LogicalOp::Or => Path::new(&["BinOp", "or"]),
             };
             let lhs = compile_expr(env, thir, lhs);
             let rhs = compile_expr(env, thir, rhs);
             Expr::Call {
-                func: Box::new(Expr::LocalVar(op)),
+                func: Box::new(Expr::Var(path)),
                 args: vec![lhs, rhs],
             }
         }
         ExprKind::Unary { op, arg } => {
-            let op = match op {
-                UnOp::Not => "not".to_string(),
-                UnOp::Neg => "neg".to_string(),
+            let path = match op {
+                UnOp::Not => Path::new(&["UnOp", "not"]),
+                UnOp::Neg => Path::new(&["UnOp", "neg"]),
             };
             let arg = compile_expr(env, thir, arg);
             Expr::Call {
-                func: Box::new(Expr::LocalVar(op)),
+                func: Box::new(Expr::Var(path)),
                 args: vec![arg],
             }
         }
@@ -284,16 +315,15 @@ pub(crate) fn compile_expr(
                     fields,
                     struct_or_variant,
                 }
+                .alloc()
             } else {
-                Expr::Call {
-                    func: Box::new(Expr::LocalVar("M.alloc".to_string())),
-                    args: vec![Expr::StructStruct {
-                        path,
-                        fields,
-                        base: None,
-                        struct_or_variant,
-                    }],
+                Expr::StructStruct {
+                    path,
+                    fields,
+                    base: None,
+                    struct_or_variant,
                 }
+                .alloc()
             }
         }
         ExprKind::PlaceTypeAscription { source, user_ty }
@@ -342,15 +372,10 @@ pub(crate) fn compile_expr(
                 let parent_kind = env.tcx.opt_def_kind(parent).unwrap();
                 match parent_kind {
                     DefKind::Impl { .. } => {
-                        let parent_subject = env.tcx.impl_subject(parent);
-                        match parent_subject.0 {
-                            ImplSubject::Trait(_) => todo!(),
-                            ImplSubject::Inherent(ref parent_coq_type) => {
-                                let ty = compile_type(env, parent_coq_type);
-                                let func = symbol.unwrap().to_string();
-                                Expr::AssociatedFunction { ty, func }
-                            }
-                        }
+                        let parent_type = env.tcx.type_of(parent).subst(env.tcx, generic_args);
+                        let ty = compile_type(env, &parent_type);
+                        let func = symbol.unwrap().to_string();
+                        Expr::AssociatedFunction { ty, func }
                     }
                     DefKind::Trait => {
                         let path = Path::concat(&[
@@ -399,9 +424,9 @@ pub(crate) fn compile_expr(
     }
 }
 
-fn compile_stmts(
-    env: &mut Env,
-    thir: &rustc_middle::thir::Thir,
+fn compile_stmts<'a>(
+    env: &mut Env<'a>,
+    thir: &rustc_middle::thir::Thir<'a>,
     stmt_ids: &[rustc_middle::thir::StmtId],
     expr_id: Option<rustc_middle::thir::ExprId>,
 ) -> Stmt {
@@ -447,9 +472,9 @@ fn compile_stmts(
     )
 }
 
-fn compile_block(
-    env: &mut Env,
-    thir: &rustc_middle::thir::Thir,
+fn compile_block<'a>(
+    env: &mut Env<'a>,
+    thir: &rustc_middle::thir::Thir<'a>,
     block_id: &rustc_middle::thir::BlockId,
 ) -> Stmt {
     let block = thir.blocks.get(*block_id).unwrap();

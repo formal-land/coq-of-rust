@@ -7,7 +7,7 @@ Definition LANGUAGE `{ℋ : State.Trait} : ref str :=
 Definition THRESHOLD `{ℋ : State.Trait} : i32 := M.run (M.alloc 10).
 
 Definition is_big `{ℋ : State.Trait} (n : i32) : M bool :=
-  gt n constants.THRESHOLD.
+  BinOp.gt n constants.THRESHOLD.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=

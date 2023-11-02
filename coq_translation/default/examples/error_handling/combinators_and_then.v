@@ -40,12 +40,10 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Food.
       Notation.double_colon := fmt;
     }.
     
-    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
-    Admitted.
   End Impl_core_fmt_Debug_for_combinators_and_then_Food.
-  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_combinators_and_then_Food.
 
 Module Day.
@@ -87,12 +85,10 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Day.
       Notation.double_colon := fmt;
     }.
     
-    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
-    Admitted.
   End Impl_core_fmt_Debug_for_combinators_and_then_Day.
-  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_combinators_and_then_Day.
 
 Definition have_ingredients
@@ -100,8 +96,8 @@ Definition have_ingredients
     (food : combinators_and_then.Food)
     : M (core.option.Option combinators_and_then.Food) :=
   match food with
-  | combinators_and_then.Food  => Pure (core.option.Option.None tt)
-  | _ => Pure (core.option.Option.Some food)
+  | combinators_and_then.Food  => M.alloc core.option.Option.None
+  | _ => M.alloc (core.option.Option.Some food)
   end.
 
 Definition have_recipe
@@ -109,8 +105,8 @@ Definition have_recipe
     (food : combinators_and_then.Food)
     : M (core.option.Option combinators_and_then.Food) :=
   match food with
-  | combinators_and_then.Food  => Pure (core.option.Option.None tt)
-  | _ => Pure (core.option.Option.Some food)
+  | combinators_and_then.Food  => M.alloc core.option.Option.None
+  | _ => M.alloc (core.option.Option.Some food)
   end.
 
 Definition cookable_v1
@@ -119,12 +115,12 @@ Definition cookable_v1
     : M (core.option.Option combinators_and_then.Food) :=
   let* α0 := combinators_and_then.have_recipe food in
   match α0 with
-  | core.option.Option  => Pure (core.option.Option.None tt)
+  | core.option.Option  => M.alloc core.option.Option.None
   | core.option.Option food =>
     let* α0 := combinators_and_then.have_ingredients food in
     match α0 with
-    | core.option.Option  => Pure (core.option.Option.None tt)
-    | core.option.Option food => Pure (core.option.Option.Some food)
+    | core.option.Option  => M.alloc core.option.Option.None
+    | core.option.Option food => M.alloc (core.option.Option.Some food)
     end
   end.
 
@@ -133,7 +129,9 @@ Definition cookable_v2
     (food : combinators_and_then.Food)
     : M (core.option.Option combinators_and_then.Food) :=
   let* α0 := combinators_and_then.have_recipe food in
-  (core.option.Option T)::["and_then"] α0 combinators_and_then.have_ingredients.
+  (core.option.Option combinators_and_then.Food)::["and_then"]
+    α0
+    combinators_and_then.have_ingredients.
 
 Definition eat
     `{ℋ : State.Trait}
@@ -192,14 +190,18 @@ Definition eat
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
-  let '(cordon_bleu, steak, sushi) :=
-    (combinators_and_then.Food.CordonBleu tt,
-      combinators_and_then.Food.Steak tt,
-      combinators_and_then.Food.Sushi tt) in
+  let* '(cordon_bleu, steak, sushi) :=
+    let* α0 := M.alloc combinators_and_then.Food.CordonBleu in
+    let* α1 := M.alloc combinators_and_then.Food.Steak in
+    let* α2 := M.alloc combinators_and_then.Food.Sushi in
+    Pure (α0, α1, α2) in
   let* _ :=
-    combinators_and_then.eat cordon_bleu (combinators_and_then.Day.Monday tt) in
+    let* α0 := M.alloc combinators_and_then.Day.Monday in
+    combinators_and_then.eat cordon_bleu α0 in
   let* _ :=
-    combinators_and_then.eat steak (combinators_and_then.Day.Tuesday tt) in
+    let* α0 := M.alloc combinators_and_then.Day.Tuesday in
+    combinators_and_then.eat steak α0 in
   let* _ :=
-    combinators_and_then.eat sushi (combinators_and_then.Day.Wednesday tt) in
+    let* α0 := M.alloc combinators_and_then.Day.Wednesday in
+    combinators_and_then.eat sushi α0 in
   M.alloc tt.

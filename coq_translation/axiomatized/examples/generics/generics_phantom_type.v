@@ -14,14 +14,12 @@ Module PhantomTuple.
     }.
     Global Set Primitive Projections.
     
-    #[refine] Global Instance Get_0 : Notation.Dot "0" := {
+    Global Instance Get_0 : Notation.Dot "0" := {
       Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_1 : Notation.Dot "1" := {
+    Global Instance Get_1 : Notation.Dot "1" := {
       Notation.dot x := let* x := M.read x in Pure x.(x1) : M _;
     }.
-    Admitted.
   End PhantomTuple.
 End PhantomTuple.
 Definition PhantomTuple `{ℋ : State.Trait} (A B : Set) : Set :=
@@ -37,13 +35,10 @@ Module
     
     Definition Self : Set := generics_phantom_type.PhantomTuple A B.
     
-    #[refine] Global Instance ℐ :
-      core.marker.StructuralPartialEq.Trait Self := {
+    Global Instance ℐ : core.marker.StructuralPartialEq.Trait Self := {
     }.
-    Admitted.
   End
     Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomTuple_A_B.
-  Global Hint Resolve ℐ : core.
 End
   Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomTuple_A_B.
 
@@ -67,14 +62,13 @@ Module Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_A_B.
       Notation.double_colon := eq;
     }.
     
-    #[refine] Global Instance ℐ :
-      core.cmp.PartialEq.Trait Self
+    Global Instance ℐ :
+      core.cmp.PartialEq.Required.Trait Self
         (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
       core.cmp.PartialEq.eq := eq;
+      core.cmp.PartialEq.ne := Datatypes.None;
     }.
-    Admitted.
   End Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_A_B.
-  Global Hint Resolve ℐ : core.
 End Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_A_B.
 
 Module PhantomStruct.
@@ -90,23 +84,18 @@ Module PhantomStruct.
     }.
     Global Set Primitive Projections.
     
-    #[refine] Global Instance Get_first : Notation.Dot "first" := {
+    Global Instance Get_first : Notation.Dot "first" := {
       Notation.dot x := let* x := M.read x in Pure x.(first) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_AF_first : Notation.DoubleColon t "first" := {
+    Global Instance Get_AF_first : Notation.DoubleColon t "first" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(first) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_phantom : Notation.Dot "phantom" := {
+    Global Instance Get_phantom : Notation.Dot "phantom" := {
       Notation.dot x := let* x := M.read x in Pure x.(phantom) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_AF_phantom :
-      Notation.DoubleColon t "phantom" := {
+    Global Instance Get_AF_phantom : Notation.DoubleColon t "phantom" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(phantom) : M _;
     }.
-    Admitted.
   End PhantomStruct.
 End PhantomStruct.
 Definition PhantomStruct (A B : Set) `{ℋ : State.Trait} : Set :=
@@ -122,13 +111,10 @@ Module
     
     Definition Self : Set := generics_phantom_type.PhantomStruct A B.
     
-    #[refine] Global Instance ℐ :
-      core.marker.StructuralPartialEq.Trait Self := {
+    Global Instance ℐ : core.marker.StructuralPartialEq.Trait Self := {
     }.
-    Admitted.
   End
     Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomStruct_A_B.
-  Global Hint Resolve ℐ : core.
 End
   Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomStruct_A_B.
 
@@ -152,14 +138,13 @@ Module Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
       Notation.double_colon := eq;
     }.
     
-    #[refine] Global Instance ℐ :
-      core.cmp.PartialEq.Trait Self
+    Global Instance ℐ :
+      core.cmp.PartialEq.Required.Trait Self
         (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
       core.cmp.PartialEq.eq := eq;
+      core.cmp.PartialEq.ne := Datatypes.None;
     }.
-    Admitted.
   End Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
-  Global Hint Resolve ℐ : core.
 End Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)

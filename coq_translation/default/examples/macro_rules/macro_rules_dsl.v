@@ -7,7 +7,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
     let* val :=
       let* α0 := M.alloc 1 in
       let* α1 := M.alloc 2 in
-      add α0 α1 in
+      BinOp.add α0 α1 in
     let* _ :=
       let* _ :=
         let* α0 := borrow [ mk_str "1 + 2 = "; mk_str "
@@ -30,11 +30,11 @@ Definition main `{ℋ : State.Trait} : M unit :=
   let* val :=
     let* α0 := M.alloc 1 in
     let* α1 := M.alloc 2 in
-    let* α2 := add α0 α1 in
+    let* α2 := BinOp.add α0 α1 in
     let* α3 := M.alloc 3 in
     let* α4 := M.alloc 4 in
-    let* α5 := div α3 α4 in
-    mul α2 α5 in
+    let* α5 := BinOp.div α3 α4 in
+    BinOp.mul α2 α5 in
   let* _ :=
     let* _ :=
       let* α0 :=

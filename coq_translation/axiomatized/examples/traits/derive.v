@@ -11,10 +11,9 @@ Module Centimeters.
     }.
     Global Set Primitive Projections.
     
-    #[refine] Global Instance Get_0 : Notation.Dot "0" := {
+    Global Instance Get_0 : Notation.Dot "0" := {
       Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
-    Admitted.
   End Centimeters.
 End Centimeters.
 Definition Centimeters `{ℋ : State.Trait} : Set := M.val Centimeters.t.
@@ -25,12 +24,9 @@ Module Impl_core_marker_StructuralPartialEq_for_derive_Centimeters.
     
     Definition Self : Set := derive.Centimeters.
     
-    #[refine] Global Instance ℐ :
-      core.marker.StructuralPartialEq.Trait Self := {
+    Global Instance ℐ : core.marker.StructuralPartialEq.Trait Self := {
     }.
-    Admitted.
   End Impl_core_marker_StructuralPartialEq_for_derive_Centimeters.
-  Global Hint Resolve ℐ : core.
 End Impl_core_marker_StructuralPartialEq_for_derive_Centimeters.
 
 Module Impl_core_cmp_PartialEq_for_derive_Centimeters.
@@ -45,14 +41,13 @@ Module Impl_core_cmp_PartialEq_for_derive_Centimeters.
       Notation.double_colon := eq;
     }.
     
-    #[refine] Global Instance ℐ :
-      core.cmp.PartialEq.Trait Self
+    Global Instance ℐ :
+      core.cmp.PartialEq.Required.Trait Self
         (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
       core.cmp.PartialEq.eq := eq;
+      core.cmp.PartialEq.ne := Datatypes.None;
     }.
-    Admitted.
   End Impl_core_cmp_PartialEq_for_derive_Centimeters.
-  Global Hint Resolve ℐ : core.
 End Impl_core_cmp_PartialEq_for_derive_Centimeters.
 
 Module Impl_core_cmp_PartialOrd_for_derive_Centimeters.
@@ -71,14 +66,16 @@ Module Impl_core_cmp_PartialOrd_for_derive_Centimeters.
       Notation.double_colon := partial_cmp;
     }.
     
-    #[refine] Global Instance ℐ :
-      core.cmp.PartialOrd.Trait Self
+    Global Instance ℐ :
+      core.cmp.PartialOrd.Required.Trait Self
         (Rhs := core.cmp.PartialOrd.Default.Rhs Self) := {
       core.cmp.PartialOrd.partial_cmp := partial_cmp;
+      core.cmp.PartialOrd.lt := Datatypes.None;
+      core.cmp.PartialOrd.le := Datatypes.None;
+      core.cmp.PartialOrd.gt := Datatypes.None;
+      core.cmp.PartialOrd.ge := Datatypes.None;
     }.
-    Admitted.
   End Impl_core_cmp_PartialOrd_for_derive_Centimeters.
-  Global Hint Resolve ℐ : core.
 End Impl_core_cmp_PartialOrd_for_derive_Centimeters.
 
 Module Inches.
@@ -91,10 +88,9 @@ Module Inches.
     }.
     Global Set Primitive Projections.
     
-    #[refine] Global Instance Get_0 : Notation.Dot "0" := {
+    Global Instance Get_0 : Notation.Dot "0" := {
       Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
-    Admitted.
   End Inches.
 End Inches.
 Definition Inches `{ℋ : State.Trait} : Set := M.val Inches.t.
@@ -113,12 +109,10 @@ Module Impl_core_fmt_Debug_for_derive_Inches.
       Notation.double_colon := fmt;
     }.
     
-    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
-    Admitted.
   End Impl_core_fmt_Debug_for_derive_Inches.
-  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_derive_Inches.
 
 Module Impl_derive_Inches.
@@ -146,10 +140,9 @@ Module Seconds.
     }.
     Global Set Primitive Projections.
     
-    #[refine] Global Instance Get_0 : Notation.Dot "0" := {
+    Global Instance Get_0 : Notation.Dot "0" := {
       Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
-    Admitted.
   End Seconds.
 End Seconds.
 Definition Seconds `{ℋ : State.Trait} : Set := M.val Seconds.t.

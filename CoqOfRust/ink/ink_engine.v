@@ -20,10 +20,9 @@ Module types.
       }.
       Global Set Primitive Projections.
       
-      #[refine] Global Instance Get_0 : Notation.Dot "0" := {
+      Global Instance Get_0 : Notation.Dot "0" := {
         Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
       }.
-      Admitted.
     End AccountId.
   End AccountId.
   Definition AccountId `{ℋ : State.Trait} : Set := M.val AccountId.t.
@@ -44,12 +43,10 @@ Module types.
         Notation.double_colon := fmt;
       }.
       
-      #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
+      Global Instance ℐ : core.fmt.Debug.Trait Self := {
         core.fmt.Debug.fmt := fmt;
       }.
-      Admitted.
     End Impl_core_fmt_Debug_for_ink_engine_types_AccountId.
-    Global Hint Resolve ℐ : core.
   End Impl_core_fmt_Debug_for_ink_engine_types_AccountId.
   
   Module
@@ -69,15 +66,13 @@ Module types.
         Notation.double_colon := from;
       }.
       
-      #[refine] Global Instance ℐ :
+      Global Instance ℐ :
         core.convert.From.Trait Self
           (T := alloc.vec.Vec u8 alloc.vec.Vec.Default.A) := {
         core.convert.From.from := from;
       }.
-      Admitted.
     End
       Impl_core_convert_From_alloc_vec_Vec_u8_alloc_vec_Vec_Default_A_for_ink_engine_types_AccountId.
-    Global Hint Resolve ℐ : core.
   End
     Impl_core_convert_From_alloc_vec_Vec_u8_alloc_vec_Vec_Default_A_for_ink_engine_types_AccountId.
   
@@ -94,12 +89,11 @@ Module types.
         Notation.double_colon := clone;
       }.
       
-      #[refine] Global Instance ℐ : core.clone.Clone.Trait Self := {
+      Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
         core.clone.Clone.clone := clone;
+        core.clone.Clone.clone_from := Datatypes.None;
       }.
-      Admitted.
     End Impl_core_clone_Clone_for_ink_engine_types_AccountId.
-    Global Hint Resolve ℐ : core.
   End Impl_core_clone_Clone_for_ink_engine_types_AccountId.
   
   Module Impl_core_marker_StructuralPartialEq_for_ink_engine_types_AccountId.
@@ -108,12 +102,9 @@ Module types.
       
       Definition Self : Set := ink_engine.types.AccountId.
       
-      #[refine] Global Instance ℐ :
-        core.marker.StructuralPartialEq.Trait Self := {
+      Global Instance ℐ : core.marker.StructuralPartialEq.Trait Self := {
       }.
-      Admitted.
     End Impl_core_marker_StructuralPartialEq_for_ink_engine_types_AccountId.
-    Global Hint Resolve ℐ : core.
   End Impl_core_marker_StructuralPartialEq_for_ink_engine_types_AccountId.
   
   Module Impl_core_cmp_PartialEq_for_ink_engine_types_AccountId.
@@ -129,14 +120,13 @@ Module types.
         Notation.double_colon := eq;
       }.
       
-      #[refine] Global Instance ℐ :
-        core.cmp.PartialEq.Trait Self
+      Global Instance ℐ :
+        core.cmp.PartialEq.Required.Trait Self
           (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
         core.cmp.PartialEq.eq := eq;
+        core.cmp.PartialEq.ne := Datatypes.None;
       }.
-      Admitted.
     End Impl_core_cmp_PartialEq_for_ink_engine_types_AccountId.
-    Global Hint Resolve ℐ : core.
   End Impl_core_cmp_PartialEq_for_ink_engine_types_AccountId.
   
   Module Impl_core_marker_StructuralEq_for_ink_engine_types_AccountId.
@@ -145,11 +135,9 @@ Module types.
       
       Definition Self : Set := ink_engine.types.AccountId.
       
-      #[refine] Global Instance ℐ : core.marker.StructuralEq.Trait Self := {
+      Global Instance ℐ : core.marker.StructuralEq.Trait Self := {
       }.
-      Admitted.
     End Impl_core_marker_StructuralEq_for_ink_engine_types_AccountId.
-    Global Hint Resolve ℐ : core.
   End Impl_core_marker_StructuralEq_for_ink_engine_types_AccountId.
   
   Module Impl_core_cmp_Eq_for_ink_engine_types_AccountId.
@@ -165,11 +153,11 @@ Module types.
         Notation.double_colon := assert_receiver_is_total_eq;
       }.
       
-      #[refine] Global Instance ℐ : core.cmp.Eq.Trait Self := {
+      Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
+        core.cmp.Eq.assert_receiver_is_total_eq :=
+          Datatypes.Some assert_receiver_is_total_eq;
       }.
-      Admitted.
     End Impl_core_cmp_Eq_for_ink_engine_types_AccountId.
-    Global Hint Resolve ℐ : core.
   End Impl_core_cmp_Eq_for_ink_engine_types_AccountId.
   
   Module Impl_core_cmp_PartialOrd_for_ink_engine_types_AccountId.
@@ -188,14 +176,16 @@ Module types.
         Notation.double_colon := partial_cmp;
       }.
       
-      #[refine] Global Instance ℐ :
-        core.cmp.PartialOrd.Trait Self
+      Global Instance ℐ :
+        core.cmp.PartialOrd.Required.Trait Self
           (Rhs := core.cmp.PartialOrd.Default.Rhs Self) := {
         core.cmp.PartialOrd.partial_cmp := partial_cmp;
+        core.cmp.PartialOrd.lt := Datatypes.None;
+        core.cmp.PartialOrd.le := Datatypes.None;
+        core.cmp.PartialOrd.gt := Datatypes.None;
+        core.cmp.PartialOrd.ge := Datatypes.None;
       }.
-      Admitted.
     End Impl_core_cmp_PartialOrd_for_ink_engine_types_AccountId.
-    Global Hint Resolve ℐ : core.
   End Impl_core_cmp_PartialOrd_for_ink_engine_types_AccountId.
   
   Module Impl_core_cmp_Ord_for_ink_engine_types_AccountId.
@@ -212,12 +202,13 @@ Module types.
         Notation.double_colon := cmp;
       }.
       
-      #[refine] Global Instance ℐ : core.cmp.Ord.Trait Self := {
+      Global Instance ℐ : core.cmp.Ord.Required.Trait Self := {
         core.cmp.Ord.cmp := cmp;
+        core.cmp.Ord.max := Datatypes.None;
+        core.cmp.Ord.min := Datatypes.None;
+        core.cmp.Ord.clamp := Datatypes.None;
       }.
-      Admitted.
     End Impl_core_cmp_Ord_for_ink_engine_types_AccountId.
-    Global Hint Resolve ℐ : core.
   End Impl_core_cmp_Ord_for_ink_engine_types_AccountId.
   
   Module Impl_core_hash_Hash_for_ink_engine_types_AccountId.
@@ -237,13 +228,12 @@ Module types.
         Notation.double_colon := hash (__H := __H);
       }.
       
-      #[refine] Global Instance ℐ : core.hash.Hash.Trait Self := {
+      Global Instance ℐ : core.hash.Hash.Required.Trait Self := {
         core.hash.Hash.hash {__H : Set} {ℋ_0 : core.hash.Hasher.Trait __H} :=
           hash (__H := __H);
+        core.hash.Hash.hash_slice := Datatypes.None;
       }.
-      Admitted.
     End Impl_core_hash_Hash_for_ink_engine_types_AccountId.
-    Global Hint Resolve ℐ : core.
   End Impl_core_hash_Hash_for_ink_engine_types_AccountId.
   
   Module Key.
@@ -256,10 +246,9 @@ Module types.
       }.
       Global Set Primitive Projections.
       
-      #[refine] Global Instance Get_0 : Notation.Dot "0" := {
+      Global Instance Get_0 : Notation.Dot "0" := {
         Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
       }.
-      Admitted.
     End Key.
   End Key.
   Definition Key `{ℋ : State.Trait} : Set := M.val Key.t.
@@ -277,12 +266,10 @@ Module types.
         Notation.double_colon := default;
       }.
       
-      #[refine] Global Instance ℐ : core.default.Default.Trait Self := {
+      Global Instance ℐ : core.default.Default.Trait Self := {
         core.default.Default.default := default;
       }.
-      Admitted.
     End Impl_core_default_Default_for_ink_engine_types_Key.
-    Global Hint Resolve ℐ : core.
   End Impl_core_default_Default_for_ink_engine_types_Key.
   
   Module
@@ -301,15 +288,13 @@ Module types.
         Notation.double_colon := from;
       }.
       
-      #[refine] Global Instance ℐ :
+      Global Instance ℐ :
         core.convert.From.Trait Self
           (T := alloc.vec.Vec u8 alloc.vec.Vec.Default.A) := {
         core.convert.From.from := from;
       }.
-      Admitted.
     End
       Impl_core_convert_From_alloc_vec_Vec_u8_alloc_vec_Vec_Default_A_for_ink_engine_types_Key.
-    Global Hint Resolve ℐ : core.
   End
     Impl_core_convert_From_alloc_vec_Vec_u8_alloc_vec_Vec_Default_A_for_ink_engine_types_Key.
   
@@ -326,12 +311,11 @@ Module types.
         Notation.double_colon := clone;
       }.
       
-      #[refine] Global Instance ℐ : core.clone.Clone.Trait Self := {
+      Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
         core.clone.Clone.clone := clone;
+        core.clone.Clone.clone_from := Datatypes.None;
       }.
-      Admitted.
     End Impl_core_clone_Clone_for_ink_engine_types_Key.
-    Global Hint Resolve ℐ : core.
   End Impl_core_clone_Clone_for_ink_engine_types_Key.
   
   Module Impl_core_marker_StructuralPartialEq_for_ink_engine_types_Key.
@@ -340,12 +324,9 @@ Module types.
       
       Definition Self : Set := ink_engine.types.Key.
       
-      #[refine] Global Instance ℐ :
-        core.marker.StructuralPartialEq.Trait Self := {
+      Global Instance ℐ : core.marker.StructuralPartialEq.Trait Self := {
       }.
-      Admitted.
     End Impl_core_marker_StructuralPartialEq_for_ink_engine_types_Key.
-    Global Hint Resolve ℐ : core.
   End Impl_core_marker_StructuralPartialEq_for_ink_engine_types_Key.
   
   Module Impl_core_cmp_PartialEq_for_ink_engine_types_Key.
@@ -361,14 +342,13 @@ Module types.
         Notation.double_colon := eq;
       }.
       
-      #[refine] Global Instance ℐ :
-        core.cmp.PartialEq.Trait Self
+      Global Instance ℐ :
+        core.cmp.PartialEq.Required.Trait Self
           (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
         core.cmp.PartialEq.eq := eq;
+        core.cmp.PartialEq.ne := Datatypes.None;
       }.
-      Admitted.
     End Impl_core_cmp_PartialEq_for_ink_engine_types_Key.
-    Global Hint Resolve ℐ : core.
   End Impl_core_cmp_PartialEq_for_ink_engine_types_Key.
   
   Module Impl_core_marker_StructuralEq_for_ink_engine_types_Key.
@@ -377,11 +357,9 @@ Module types.
       
       Definition Self : Set := ink_engine.types.Key.
       
-      #[refine] Global Instance ℐ : core.marker.StructuralEq.Trait Self := {
+      Global Instance ℐ : core.marker.StructuralEq.Trait Self := {
       }.
-      Admitted.
     End Impl_core_marker_StructuralEq_for_ink_engine_types_Key.
-    Global Hint Resolve ℐ : core.
   End Impl_core_marker_StructuralEq_for_ink_engine_types_Key.
   
   Module Impl_core_cmp_Eq_for_ink_engine_types_Key.
@@ -397,11 +375,11 @@ Module types.
         Notation.double_colon := assert_receiver_is_total_eq;
       }.
       
-      #[refine] Global Instance ℐ : core.cmp.Eq.Trait Self := {
+      Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
+        core.cmp.Eq.assert_receiver_is_total_eq :=
+          Datatypes.Some assert_receiver_is_total_eq;
       }.
-      Admitted.
     End Impl_core_cmp_Eq_for_ink_engine_types_Key.
-    Global Hint Resolve ℐ : core.
   End Impl_core_cmp_Eq_for_ink_engine_types_Key.
   
   Module Impl_core_cmp_PartialOrd_for_ink_engine_types_Key.
@@ -420,14 +398,16 @@ Module types.
         Notation.double_colon := partial_cmp;
       }.
       
-      #[refine] Global Instance ℐ :
-        core.cmp.PartialOrd.Trait Self
+      Global Instance ℐ :
+        core.cmp.PartialOrd.Required.Trait Self
           (Rhs := core.cmp.PartialOrd.Default.Rhs Self) := {
         core.cmp.PartialOrd.partial_cmp := partial_cmp;
+        core.cmp.PartialOrd.lt := Datatypes.None;
+        core.cmp.PartialOrd.le := Datatypes.None;
+        core.cmp.PartialOrd.gt := Datatypes.None;
+        core.cmp.PartialOrd.ge := Datatypes.None;
       }.
-      Admitted.
     End Impl_core_cmp_PartialOrd_for_ink_engine_types_Key.
-    Global Hint Resolve ℐ : core.
   End Impl_core_cmp_PartialOrd_for_ink_engine_types_Key.
   
   Module Impl_core_cmp_Ord_for_ink_engine_types_Key.
@@ -444,12 +424,13 @@ Module types.
         Notation.double_colon := cmp;
       }.
       
-      #[refine] Global Instance ℐ : core.cmp.Ord.Trait Self := {
+      Global Instance ℐ : core.cmp.Ord.Required.Trait Self := {
         core.cmp.Ord.cmp := cmp;
+        core.cmp.Ord.max := Datatypes.None;
+        core.cmp.Ord.min := Datatypes.None;
+        core.cmp.Ord.clamp := Datatypes.None;
       }.
-      Admitted.
     End Impl_core_cmp_Ord_for_ink_engine_types_Key.
-    Global Hint Resolve ℐ : core.
   End Impl_core_cmp_Ord_for_ink_engine_types_Key.
   
   Module Impl_core_hash_Hash_for_ink_engine_types_Key.
@@ -469,13 +450,12 @@ Module types.
         Notation.double_colon := hash (__H := __H);
       }.
       
-      #[refine] Global Instance ℐ : core.hash.Hash.Trait Self := {
+      Global Instance ℐ : core.hash.Hash.Required.Trait Self := {
         core.hash.Hash.hash {__H : Set} {ℋ_0 : core.hash.Hasher.Trait __H} :=
           hash (__H := __H);
+        core.hash.Hash.hash_slice := Datatypes.None;
       }.
-      Admitted.
     End Impl_core_hash_Hash_for_ink_engine_types_Key.
-    Global Hint Resolve ℐ : core.
   End Impl_core_hash_Hash_for_ink_engine_types_Key.
   
   Module AccountError.
@@ -499,12 +479,11 @@ Module types.
         Notation.double_colon := clone;
       }.
       
-      #[refine] Global Instance ℐ : core.clone.Clone.Trait Self := {
+      Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
         core.clone.Clone.clone := clone;
+        core.clone.Clone.clone_from := Datatypes.None;
       }.
-      Admitted.
     End Impl_core_clone_Clone_for_ink_engine_types_AccountError.
-    Global Hint Resolve ℐ : core.
   End Impl_core_clone_Clone_for_ink_engine_types_AccountError.
   
   Module Impl_core_fmt_Debug_for_ink_engine_types_AccountError.
@@ -523,12 +502,10 @@ Module types.
         Notation.double_colon := fmt;
       }.
       
-      #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
+      Global Instance ℐ : core.fmt.Debug.Trait Self := {
         core.fmt.Debug.fmt := fmt;
       }.
-      Admitted.
     End Impl_core_fmt_Debug_for_ink_engine_types_AccountError.
-    Global Hint Resolve ℐ : core.
   End Impl_core_fmt_Debug_for_ink_engine_types_AccountError.
   
   Module
@@ -547,14 +524,12 @@ Module types.
         Notation.double_colon := from;
       }.
       
-      #[refine] Global Instance ℐ :
+      Global Instance ℐ :
         core.convert.From.Trait Self (T := parity_scale_codec.error.Error) := {
         core.convert.From.from := from;
       }.
-      Admitted.
     End
       Impl_core_convert_From_parity_scale_codec_error_Error_for_ink_engine_types_AccountError.
-    Global Hint Resolve ℐ : core.
   End
     Impl_core_convert_From_parity_scale_codec_error_Error_for_ink_engine_types_AccountError.
   
@@ -565,12 +540,9 @@ Module types.
       
       Definition Self : Set := ink_engine.types.AccountError.
       
-      #[refine] Global Instance ℐ :
-        core.marker.StructuralPartialEq.Trait Self := {
+      Global Instance ℐ : core.marker.StructuralPartialEq.Trait Self := {
       }.
-      Admitted.
     End Impl_core_marker_StructuralPartialEq_for_ink_engine_types_AccountError.
-    Global Hint Resolve ℐ : core.
   End Impl_core_marker_StructuralPartialEq_for_ink_engine_types_AccountError.
   
   Module Impl_core_cmp_PartialEq_for_ink_engine_types_AccountError.
@@ -587,14 +559,13 @@ Module types.
         Notation.double_colon := eq;
       }.
       
-      #[refine] Global Instance ℐ :
-        core.cmp.PartialEq.Trait Self
+      Global Instance ℐ :
+        core.cmp.PartialEq.Required.Trait Self
           (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
         core.cmp.PartialEq.eq := eq;
+        core.cmp.PartialEq.ne := Datatypes.None;
       }.
-      Admitted.
     End Impl_core_cmp_PartialEq_for_ink_engine_types_AccountError.
-    Global Hint Resolve ℐ : core.
   End Impl_core_cmp_PartialEq_for_ink_engine_types_AccountError.
   
   Module Impl_core_marker_StructuralEq_for_ink_engine_types_AccountError.
@@ -603,11 +574,9 @@ Module types.
       
       Definition Self : Set := ink_engine.types.AccountError.
       
-      #[refine] Global Instance ℐ : core.marker.StructuralEq.Trait Self := {
+      Global Instance ℐ : core.marker.StructuralEq.Trait Self := {
       }.
-      Admitted.
     End Impl_core_marker_StructuralEq_for_ink_engine_types_AccountError.
-    Global Hint Resolve ℐ : core.
   End Impl_core_marker_StructuralEq_for_ink_engine_types_AccountError.
   
   Module Impl_core_cmp_Eq_for_ink_engine_types_AccountError.
@@ -623,11 +592,11 @@ Module types.
         Notation.double_colon := assert_receiver_is_total_eq;
       }.
       
-      #[refine] Global Instance ℐ : core.cmp.Eq.Trait Self := {
+      Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
+        core.cmp.Eq.assert_receiver_is_total_eq :=
+          Datatypes.Some assert_receiver_is_total_eq;
       }.
-      Admitted.
     End Impl_core_cmp_Eq_for_ink_engine_types_AccountError.
-    Global Hint Resolve ℐ : core.
   End Impl_core_cmp_Eq_for_ink_engine_types_AccountError.
 End types.
 
@@ -646,23 +615,18 @@ Module test_api.
       }.
       Global Set Primitive Projections.
       
-      #[refine] Global Instance Get_topics : Notation.Dot "topics" := {
+      Global Instance Get_topics : Notation.Dot "topics" := {
         Notation.dot x := let* x := M.read x in Pure x.(topics) : M _;
       }.
-      Admitted.
-      #[refine] Global Instance Get_AF_topics :
-        Notation.DoubleColon t "topics" := {
+      Global Instance Get_AF_topics : Notation.DoubleColon t "topics" := {
         Notation.double_colon x := let* x := M.read x in Pure x.(topics) : M _;
       }.
-      Admitted.
-      #[refine] Global Instance Get_data : Notation.Dot "data" := {
+      Global Instance Get_data : Notation.Dot "data" := {
         Notation.dot x := let* x := M.read x in Pure x.(data) : M _;
       }.
-      Admitted.
-      #[refine] Global Instance Get_AF_data : Notation.DoubleColon t "data" := {
+      Global Instance Get_AF_data : Notation.DoubleColon t "data" := {
         Notation.double_colon x := let* x := M.read x in Pure x.(data) : M _;
       }.
-      Admitted.
     End EmittedEvent.
   End EmittedEvent.
   Definition EmittedEvent `{ℋ : State.Trait} : Set := M.val EmittedEvent.t.
@@ -683,12 +647,10 @@ Module test_api.
         Notation.double_colon := fmt;
       }.
       
-      #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
+      Global Instance ℐ : core.fmt.Debug.Trait Self := {
         core.fmt.Debug.fmt := fmt;
       }.
-      Admitted.
     End Impl_core_fmt_Debug_for_ink_engine_test_api_EmittedEvent.
-    Global Hint Resolve ℐ : core.
   End Impl_core_fmt_Debug_for_ink_engine_test_api_EmittedEvent.
   
   Module Impl_core_clone_Clone_for_ink_engine_test_api_EmittedEvent.
@@ -704,12 +666,11 @@ Module test_api.
         Notation.double_colon := clone;
       }.
       
-      #[refine] Global Instance ℐ : core.clone.Clone.Trait Self := {
+      Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
         core.clone.Clone.clone := clone;
+        core.clone.Clone.clone_from := Datatypes.None;
       }.
-      Admitted.
     End Impl_core_clone_Clone_for_ink_engine_test_api_EmittedEvent.
-    Global Hint Resolve ℐ : core.
   End Impl_core_clone_Clone_for_ink_engine_test_api_EmittedEvent.
   
   Module RecordedDebugMessages.
@@ -723,17 +684,14 @@ Module test_api.
       }.
       Global Set Primitive Projections.
       
-      #[refine] Global Instance Get_debug_messages :
-        Notation.Dot "debug_messages" := {
+      Global Instance Get_debug_messages : Notation.Dot "debug_messages" := {
         Notation.dot x := let* x := M.read x in Pure x.(debug_messages) : M _;
       }.
-      Admitted.
-      #[refine] Global Instance Get_AF_debug_messages :
+      Global Instance Get_AF_debug_messages :
         Notation.DoubleColon t "debug_messages" := {
         Notation.double_colon x :=
           let* x := M.read x in Pure x.(debug_messages) : M _;
       }.
-      Admitted.
     End RecordedDebugMessages.
   End RecordedDebugMessages.
   Definition RecordedDebugMessages `{ℋ : State.Trait} : Set :=
@@ -753,12 +711,11 @@ Module test_api.
         Notation.double_colon := clone;
       }.
       
-      #[refine] Global Instance ℐ : core.clone.Clone.Trait Self := {
+      Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
         core.clone.Clone.clone := clone;
+        core.clone.Clone.clone_from := Datatypes.None;
       }.
-      Admitted.
     End Impl_core_clone_Clone_for_ink_engine_test_api_RecordedDebugMessages.
-    Global Hint Resolve ℐ : core.
   End Impl_core_clone_Clone_for_ink_engine_test_api_RecordedDebugMessages.
   
   Module
@@ -776,12 +733,10 @@ Module test_api.
         Notation.double_colon := default;
       }.
       
-      #[refine] Global Instance ℐ : core.default.Default.Trait Self := {
+      Global Instance ℐ : core.default.Default.Trait Self := {
         core.default.Default.default := default;
       }.
-      Admitted.
     End Impl_core_default_Default_for_ink_engine_test_api_RecordedDebugMessages.
-    Global Hint Resolve ℐ : core.
   End Impl_core_default_Default_for_ink_engine_test_api_RecordedDebugMessages.
   
   Module DebugInfo.
@@ -816,63 +771,50 @@ Module test_api.
       }.
       Global Set Primitive Projections.
       
-      #[refine] Global Instance Get_emitted_events :
-        Notation.Dot "emitted_events" := {
+      Global Instance Get_emitted_events : Notation.Dot "emitted_events" := {
         Notation.dot x := let* x := M.read x in Pure x.(emitted_events) : M _;
       }.
-      Admitted.
-      #[refine] Global Instance Get_AF_emitted_events :
+      Global Instance Get_AF_emitted_events :
         Notation.DoubleColon t "emitted_events" := {
         Notation.double_colon x :=
           let* x := M.read x in Pure x.(emitted_events) : M _;
       }.
-      Admitted.
-      #[refine] Global Instance Get_emitted_debug_messages :
+      Global Instance Get_emitted_debug_messages :
         Notation.Dot "emitted_debug_messages" := {
         Notation.dot x :=
           let* x := M.read x in Pure x.(emitted_debug_messages) : M _;
       }.
-      Admitted.
-      #[refine] Global Instance Get_AF_emitted_debug_messages :
+      Global Instance Get_AF_emitted_debug_messages :
         Notation.DoubleColon t "emitted_debug_messages" := {
         Notation.double_colon x :=
           let* x := M.read x in Pure x.(emitted_debug_messages) : M _;
       }.
-      Admitted.
-      #[refine] Global Instance Get_count_reads :
-        Notation.Dot "count_reads" := {
+      Global Instance Get_count_reads : Notation.Dot "count_reads" := {
         Notation.dot x := let* x := M.read x in Pure x.(count_reads) : M _;
       }.
-      Admitted.
-      #[refine] Global Instance Get_AF_count_reads :
+      Global Instance Get_AF_count_reads :
         Notation.DoubleColon t "count_reads" := {
         Notation.double_colon x :=
           let* x := M.read x in Pure x.(count_reads) : M _;
       }.
-      Admitted.
-      #[refine] Global Instance Get_count_writes :
-        Notation.Dot "count_writes" := {
+      Global Instance Get_count_writes : Notation.Dot "count_writes" := {
         Notation.dot x := let* x := M.read x in Pure x.(count_writes) : M _;
       }.
-      Admitted.
-      #[refine] Global Instance Get_AF_count_writes :
+      Global Instance Get_AF_count_writes :
         Notation.DoubleColon t "count_writes" := {
         Notation.double_colon x :=
           let* x := M.read x in Pure x.(count_writes) : M _;
       }.
-      Admitted.
-      #[refine] Global Instance Get_cells_per_account :
+      Global Instance Get_cells_per_account :
         Notation.Dot "cells_per_account" := {
         Notation.dot x :=
           let* x := M.read x in Pure x.(cells_per_account) : M _;
       }.
-      Admitted.
-      #[refine] Global Instance Get_AF_cells_per_account :
+      Global Instance Get_AF_cells_per_account :
         Notation.DoubleColon t "cells_per_account" := {
         Notation.double_colon x :=
           let* x := M.read x in Pure x.(cells_per_account) : M _;
       }.
-      Admitted.
     End DebugInfo.
   End DebugInfo.
   Definition DebugInfo `{ℋ : State.Trait} : Set := M.val DebugInfo.t.
@@ -890,12 +832,10 @@ Module test_api.
         Notation.double_colon := default;
       }.
       
-      #[refine] Global Instance ℐ : core.default.Default.Trait Self := {
+      Global Instance ℐ : core.default.Default.Trait Self := {
         core.default.Default.default := default;
       }.
-      Admitted.
     End Impl_core_default_Default_for_ink_engine_test_api_DebugInfo.
-    Global Hint Resolve ℐ : core.
   End Impl_core_default_Default_for_ink_engine_test_api_DebugInfo.
 End test_api.
 
@@ -910,10 +850,9 @@ Module chain_extension.
       }.
       Global Set Primitive Projections.
       
-      #[refine] Global Instance Get_0 : Notation.Dot "0" := {
+      Global Instance Get_0 : Notation.Dot "0" := {
         Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
       }.
-      Admitted.
     End ExtensionId.
   End ExtensionId.
   Definition ExtensionId `{ℋ : State.Trait} : Set := M.val ExtensionId.t.
@@ -940,9 +879,8 @@ Module chain_extension.
       
       (* Module Dyn_ink_engine_chain_extension_ChainExtension.
         Parameter t : Set.
-        #[refine] Global Instance I_ink_engine_chain_extension_ChainExtension :
+        Global Instance I_ink_engine_chain_extension_ChainExtension :
           ink_engine.chain_extension.ChainExtension.Trait t := axiom.
-        Admitted.
         Parameter conv_Dyn :
             forall
               {A : Set}
@@ -965,25 +903,20 @@ Module chain_extension.
       }.
       Global Set Primitive Projections.
       
-      #[refine] Global Instance Get_registered : Notation.Dot "registered" := {
+      Global Instance Get_registered : Notation.Dot "registered" := {
         Notation.dot x := let* x := M.read x in Pure x.(registered) : M _;
       }.
-      Admitted.
-      #[refine] Global Instance Get_AF_registered :
+      Global Instance Get_AF_registered :
         Notation.DoubleColon t "registered" := {
         Notation.double_colon x :=
           let* x := M.read x in Pure x.(registered) : M _;
       }.
-      Admitted.
-      #[refine] Global Instance Get_output : Notation.Dot "output" := {
+      Global Instance Get_output : Notation.Dot "output" := {
         Notation.dot x := let* x := M.read x in Pure x.(output) : M _;
       }.
-      Admitted.
-      #[refine] Global Instance Get_AF_output :
-        Notation.DoubleColon t "output" := {
+      Global Instance Get_AF_output : Notation.DoubleColon t "output" := {
         Notation.double_colon x := let* x := M.read x in Pure x.(output) : M _;
       }.
-      Admitted.
     End ChainExtensionHandler.
   End ChainExtensionHandler.
   Definition ChainExtensionHandler `{ℋ : State.Trait} : Set :=
@@ -1005,12 +938,10 @@ Module chain_extension.
         Notation.double_colon := fmt;
       }.
       
-      #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
+      Global Instance ℐ : core.fmt.Debug.Trait Self := {
         core.fmt.Debug.fmt := fmt;
       }.
-      Admitted.
     End Impl_core_fmt_Debug_for_ink_engine_chain_extension_ExtensionId.
-    Global Hint Resolve ℐ : core.
   End Impl_core_fmt_Debug_for_ink_engine_chain_extension_ExtensionId.
   
   Module Impl_core_convert_From_u32_for_ink_engine_chain_extension_ExtensionId.
@@ -1027,12 +958,10 @@ Module chain_extension.
         Notation.double_colon := from;
       }.
       
-      #[refine] Global Instance ℐ : core.convert.From.Trait Self (T := u32) := {
+      Global Instance ℐ : core.convert.From.Trait Self (T := u32) := {
         core.convert.From.from := from;
       }.
-      Admitted.
     End Impl_core_convert_From_u32_for_ink_engine_chain_extension_ExtensionId.
-    Global Hint Resolve ℐ : core.
   End Impl_core_convert_From_u32_for_ink_engine_chain_extension_ExtensionId.
   
   Module
@@ -1043,13 +972,10 @@ Module chain_extension.
       
       Definition Self : Set := ink_engine.chain_extension.ExtensionId.
       
-      #[refine] Global Instance ℐ :
-        core.marker.StructuralPartialEq.Trait Self := {
+      Global Instance ℐ : core.marker.StructuralPartialEq.Trait Self := {
       }.
-      Admitted.
     End
       Impl_core_marker_StructuralPartialEq_for_ink_engine_chain_extension_ExtensionId.
-    Global Hint Resolve ℐ : core.
   End
     Impl_core_marker_StructuralPartialEq_for_ink_engine_chain_extension_ExtensionId.
   
@@ -1067,14 +993,13 @@ Module chain_extension.
         Notation.double_colon := eq;
       }.
       
-      #[refine] Global Instance ℐ :
-        core.cmp.PartialEq.Trait Self
+      Global Instance ℐ :
+        core.cmp.PartialEq.Required.Trait Self
           (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
         core.cmp.PartialEq.eq := eq;
+        core.cmp.PartialEq.ne := Datatypes.None;
       }.
-      Admitted.
     End Impl_core_cmp_PartialEq_for_ink_engine_chain_extension_ExtensionId.
-    Global Hint Resolve ℐ : core.
   End Impl_core_cmp_PartialEq_for_ink_engine_chain_extension_ExtensionId.
   
   Module
@@ -1085,12 +1010,10 @@ Module chain_extension.
       
       Definition Self : Set := ink_engine.chain_extension.ExtensionId.
       
-      #[refine] Global Instance ℐ : core.marker.StructuralEq.Trait Self := {
+      Global Instance ℐ : core.marker.StructuralEq.Trait Self := {
       }.
-      Admitted.
     End
       Impl_core_marker_StructuralEq_for_ink_engine_chain_extension_ExtensionId.
-    Global Hint Resolve ℐ : core.
   End Impl_core_marker_StructuralEq_for_ink_engine_chain_extension_ExtensionId.
   
   Module Impl_core_cmp_Eq_for_ink_engine_chain_extension_ExtensionId.
@@ -1106,11 +1029,11 @@ Module chain_extension.
         Notation.double_colon := assert_receiver_is_total_eq;
       }.
       
-      #[refine] Global Instance ℐ : core.cmp.Eq.Trait Self := {
+      Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
+        core.cmp.Eq.assert_receiver_is_total_eq :=
+          Datatypes.Some assert_receiver_is_total_eq;
       }.
-      Admitted.
     End Impl_core_cmp_Eq_for_ink_engine_chain_extension_ExtensionId.
-    Global Hint Resolve ℐ : core.
   End Impl_core_cmp_Eq_for_ink_engine_chain_extension_ExtensionId.
   
   Module Impl_core_cmp_PartialOrd_for_ink_engine_chain_extension_ExtensionId.
@@ -1129,14 +1052,16 @@ Module chain_extension.
         Notation.double_colon := partial_cmp;
       }.
       
-      #[refine] Global Instance ℐ :
-        core.cmp.PartialOrd.Trait Self
+      Global Instance ℐ :
+        core.cmp.PartialOrd.Required.Trait Self
           (Rhs := core.cmp.PartialOrd.Default.Rhs Self) := {
         core.cmp.PartialOrd.partial_cmp := partial_cmp;
+        core.cmp.PartialOrd.lt := Datatypes.None;
+        core.cmp.PartialOrd.le := Datatypes.None;
+        core.cmp.PartialOrd.gt := Datatypes.None;
+        core.cmp.PartialOrd.ge := Datatypes.None;
       }.
-      Admitted.
     End Impl_core_cmp_PartialOrd_for_ink_engine_chain_extension_ExtensionId.
-    Global Hint Resolve ℐ : core.
   End Impl_core_cmp_PartialOrd_for_ink_engine_chain_extension_ExtensionId.
   
   Module Impl_core_cmp_Ord_for_ink_engine_chain_extension_ExtensionId.
@@ -1155,12 +1080,13 @@ Module chain_extension.
         Notation.double_colon := cmp;
       }.
       
-      #[refine] Global Instance ℐ : core.cmp.Ord.Trait Self := {
+      Global Instance ℐ : core.cmp.Ord.Required.Trait Self := {
         core.cmp.Ord.cmp := cmp;
+        core.cmp.Ord.max := Datatypes.None;
+        core.cmp.Ord.min := Datatypes.None;
+        core.cmp.Ord.clamp := Datatypes.None;
       }.
-      Admitted.
     End Impl_core_cmp_Ord_for_ink_engine_chain_extension_ExtensionId.
-    Global Hint Resolve ℐ : core.
   End Impl_core_cmp_Ord_for_ink_engine_chain_extension_ExtensionId.
   
   Module Impl_core_hash_Hash_for_ink_engine_chain_extension_ExtensionId.
@@ -1180,13 +1106,12 @@ Module chain_extension.
         Notation.double_colon := hash (__H := __H);
       }.
       
-      #[refine] Global Instance ℐ : core.hash.Hash.Trait Self := {
+      Global Instance ℐ : core.hash.Hash.Required.Trait Self := {
         core.hash.Hash.hash {__H : Set} {ℋ_0 : core.hash.Hasher.Trait __H} :=
           hash (__H := __H);
+        core.hash.Hash.hash_slice := Datatypes.None;
       }.
-      Admitted.
     End Impl_core_hash_Hash_for_ink_engine_chain_extension_ExtensionId.
-    Global Hint Resolve ℐ : core.
   End Impl_core_hash_Hash_for_ink_engine_chain_extension_ExtensionId.
   
   Module
@@ -1204,13 +1129,11 @@ Module chain_extension.
         Notation.double_colon := default;
       }.
       
-      #[refine] Global Instance ℐ : core.default.Default.Trait Self := {
+      Global Instance ℐ : core.default.Default.Trait Self := {
         core.default.Default.default := default;
       }.
-      Admitted.
     End
       Impl_core_default_Default_for_ink_engine_chain_extension_ChainExtensionHandler.
-    Global Hint Resolve ℐ : core.
   End
     Impl_core_default_Default_for_ink_engine_chain_extension_ChainExtensionHandler.
 End chain_extension.
@@ -1238,14 +1161,12 @@ Module database.
       }.
       Global Set Primitive Projections.
       
-      #[refine] Global Instance Get_hmap : Notation.Dot "hmap" := {
+      Global Instance Get_hmap : Notation.Dot "hmap" := {
         Notation.dot x := let* x := M.read x in Pure x.(hmap) : M _;
       }.
-      Admitted.
-      #[refine] Global Instance Get_AF_hmap : Notation.DoubleColon t "hmap" := {
+      Global Instance Get_AF_hmap : Notation.DoubleColon t "hmap" := {
         Notation.double_colon x := let* x := M.read x in Pure x.(hmap) : M _;
       }.
-      Admitted.
     End Database.
   End Database.
   Definition Database `{ℋ : State.Trait} : Set := M.val Database.t.
@@ -1263,12 +1184,10 @@ Module database.
         Notation.double_colon := default;
       }.
       
-      #[refine] Global Instance ℐ : core.default.Default.Trait Self := {
+      Global Instance ℐ : core.default.Default.Trait Self := {
         core.default.Default.default := default;
       }.
-      Admitted.
     End Impl_core_default_Default_for_ink_engine_database_Database.
-    Global Hint Resolve ℐ : core.
   End Impl_core_default_Default_for_ink_engine_database_Database.
 End database.
 
@@ -1291,68 +1210,51 @@ Module exec_context.
       }.
       Global Set Primitive Projections.
       
-      #[refine] Global Instance Get_caller : Notation.Dot "caller" := {
+      Global Instance Get_caller : Notation.Dot "caller" := {
         Notation.dot x := let* x := M.read x in Pure x.(caller) : M _;
       }.
-      Admitted.
-      #[refine] Global Instance Get_AF_caller :
-        Notation.DoubleColon t "caller" := {
+      Global Instance Get_AF_caller : Notation.DoubleColon t "caller" := {
         Notation.double_colon x := let* x := M.read x in Pure x.(caller) : M _;
       }.
-      Admitted.
-      #[refine] Global Instance Get_callee : Notation.Dot "callee" := {
+      Global Instance Get_callee : Notation.Dot "callee" := {
         Notation.dot x := let* x := M.read x in Pure x.(callee) : M _;
       }.
-      Admitted.
-      #[refine] Global Instance Get_AF_callee :
-        Notation.DoubleColon t "callee" := {
+      Global Instance Get_AF_callee : Notation.DoubleColon t "callee" := {
         Notation.double_colon x := let* x := M.read x in Pure x.(callee) : M _;
       }.
-      Admitted.
-      #[refine] Global Instance Get_value_transferred :
+      Global Instance Get_value_transferred :
         Notation.Dot "value_transferred" := {
         Notation.dot x :=
           let* x := M.read x in Pure x.(value_transferred) : M _;
       }.
-      Admitted.
-      #[refine] Global Instance Get_AF_value_transferred :
+      Global Instance Get_AF_value_transferred :
         Notation.DoubleColon t "value_transferred" := {
         Notation.double_colon x :=
           let* x := M.read x in Pure x.(value_transferred) : M _;
       }.
-      Admitted.
-      #[refine] Global Instance Get_block_number :
-        Notation.Dot "block_number" := {
+      Global Instance Get_block_number : Notation.Dot "block_number" := {
         Notation.dot x := let* x := M.read x in Pure x.(block_number) : M _;
       }.
-      Admitted.
-      #[refine] Global Instance Get_AF_block_number :
+      Global Instance Get_AF_block_number :
         Notation.DoubleColon t "block_number" := {
         Notation.double_colon x :=
           let* x := M.read x in Pure x.(block_number) : M _;
       }.
-      Admitted.
-      #[refine] Global Instance Get_block_timestamp :
-        Notation.Dot "block_timestamp" := {
+      Global Instance Get_block_timestamp : Notation.Dot "block_timestamp" := {
         Notation.dot x := let* x := M.read x in Pure x.(block_timestamp) : M _;
       }.
-      Admitted.
-      #[refine] Global Instance Get_AF_block_timestamp :
+      Global Instance Get_AF_block_timestamp :
         Notation.DoubleColon t "block_timestamp" := {
         Notation.double_colon x :=
           let* x := M.read x in Pure x.(block_timestamp) : M _;
       }.
-      Admitted.
-      #[refine] Global Instance Get_contracts : Notation.Dot "contracts" := {
+      Global Instance Get_contracts : Notation.Dot "contracts" := {
         Notation.dot x := let* x := M.read x in Pure x.(contracts) : M _;
       }.
-      Admitted.
-      #[refine] Global Instance Get_AF_contracts :
-        Notation.DoubleColon t "contracts" := {
+      Global Instance Get_AF_contracts : Notation.DoubleColon t "contracts" := {
         Notation.double_colon x :=
           let* x := M.read x in Pure x.(contracts) : M _;
       }.
-      Admitted.
     End ExecContext.
   End ExecContext.
   Definition ExecContext `{ℋ : State.Trait} : Set := M.val ExecContext.t.
@@ -1370,12 +1272,10 @@ Module exec_context.
         Notation.double_colon := default;
       }.
       
-      #[refine] Global Instance ℐ : core.default.Default.Trait Self := {
+      Global Instance ℐ : core.default.Default.Trait Self := {
         core.default.Default.default := default;
       }.
-      Admitted.
     End Impl_core_default_Default_for_ink_engine_exec_context_ExecContext.
-    Global Hint Resolve ℐ : core.
   End Impl_core_default_Default_for_ink_engine_exec_context_ExecContext.
 End exec_context.
 
@@ -1414,12 +1314,10 @@ Module ext.
         Notation.double_colon := fmt;
       }.
       
-      #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
+      Global Instance ℐ : core.fmt.Debug.Trait Self := {
         core.fmt.Debug.fmt := fmt;
       }.
-      Admitted.
     End Impl_core_fmt_Debug_for_ink_engine_ext_Error.
-    Global Hint Resolve ℐ : core.
   End Impl_core_fmt_Debug_for_ink_engine_ext_Error.
   
   Module ReturnCode.
@@ -1432,10 +1330,9 @@ Module ext.
       }.
       Global Set Primitive Projections.
       
-      #[refine] Global Instance Get_0 : Notation.Dot "0" := {
+      Global Instance Get_0 : Notation.Dot "0" := {
         Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
       }.
-      Admitted.
     End ReturnCode.
   End ReturnCode.
   Definition ReturnCode `{ℋ : State.Trait} : Set := M.val ReturnCode.t.
@@ -1452,37 +1349,29 @@ Module ext.
       }.
       Global Set Primitive Projections.
       
-      #[refine] Global Instance Get_gas_price : Notation.Dot "gas_price" := {
+      Global Instance Get_gas_price : Notation.Dot "gas_price" := {
         Notation.dot x := let* x := M.read x in Pure x.(gas_price) : M _;
       }.
-      Admitted.
-      #[refine] Global Instance Get_AF_gas_price :
-        Notation.DoubleColon t "gas_price" := {
+      Global Instance Get_AF_gas_price : Notation.DoubleColon t "gas_price" := {
         Notation.double_colon x :=
           let* x := M.read x in Pure x.(gas_price) : M _;
       }.
-      Admitted.
-      #[refine] Global Instance Get_minimum_balance :
-        Notation.Dot "minimum_balance" := {
+      Global Instance Get_minimum_balance : Notation.Dot "minimum_balance" := {
         Notation.dot x := let* x := M.read x in Pure x.(minimum_balance) : M _;
       }.
-      Admitted.
-      #[refine] Global Instance Get_AF_minimum_balance :
+      Global Instance Get_AF_minimum_balance :
         Notation.DoubleColon t "minimum_balance" := {
         Notation.double_colon x :=
           let* x := M.read x in Pure x.(minimum_balance) : M _;
       }.
-      Admitted.
-      #[refine] Global Instance Get_block_time : Notation.Dot "block_time" := {
+      Global Instance Get_block_time : Notation.Dot "block_time" := {
         Notation.dot x := let* x := M.read x in Pure x.(block_time) : M _;
       }.
-      Admitted.
-      #[refine] Global Instance Get_AF_block_time :
+      Global Instance Get_AF_block_time :
         Notation.DoubleColon t "block_time" := {
         Notation.double_colon x :=
           let* x := M.read x in Pure x.(block_time) : M _;
       }.
-      Admitted.
     End ChainSpec.
   End ChainSpec.
   Definition ChainSpec `{ℋ : State.Trait} : Set := M.val ChainSpec.t.
@@ -1502,59 +1391,47 @@ Module ext.
       }.
       Global Set Primitive Projections.
       
-      #[refine] Global Instance Get_database : Notation.Dot "database" := {
+      Global Instance Get_database : Notation.Dot "database" := {
         Notation.dot x := let* x := M.read x in Pure x.(database) : M _;
       }.
-      Admitted.
-      #[refine] Global Instance Get_AF_database :
-        Notation.DoubleColon t "database" := {
+      Global Instance Get_AF_database : Notation.DoubleColon t "database" := {
         Notation.double_colon x :=
           let* x := M.read x in Pure x.(database) : M _;
       }.
-      Admitted.
-      #[refine] Global Instance Get_exec_context :
-        Notation.Dot "exec_context" := {
+      Global Instance Get_exec_context : Notation.Dot "exec_context" := {
         Notation.dot x := let* x := M.read x in Pure x.(exec_context) : M _;
       }.
-      Admitted.
-      #[refine] Global Instance Get_AF_exec_context :
+      Global Instance Get_AF_exec_context :
         Notation.DoubleColon t "exec_context" := {
         Notation.double_colon x :=
           let* x := M.read x in Pure x.(exec_context) : M _;
       }.
-      Admitted.
-      #[refine] Global Instance Get_debug_info : Notation.Dot "debug_info" := {
+      Global Instance Get_debug_info : Notation.Dot "debug_info" := {
         Notation.dot x := let* x := M.read x in Pure x.(debug_info) : M _;
       }.
-      Admitted.
-      #[refine] Global Instance Get_AF_debug_info :
+      Global Instance Get_AF_debug_info :
         Notation.DoubleColon t "debug_info" := {
         Notation.double_colon x :=
           let* x := M.read x in Pure x.(debug_info) : M _;
       }.
-      Admitted.
-      #[refine] Global Instance Get_chain_spec : Notation.Dot "chain_spec" := {
+      Global Instance Get_chain_spec : Notation.Dot "chain_spec" := {
         Notation.dot x := let* x := M.read x in Pure x.(chain_spec) : M _;
       }.
-      Admitted.
-      #[refine] Global Instance Get_AF_chain_spec :
+      Global Instance Get_AF_chain_spec :
         Notation.DoubleColon t "chain_spec" := {
         Notation.double_colon x :=
           let* x := M.read x in Pure x.(chain_spec) : M _;
       }.
-      Admitted.
-      #[refine] Global Instance Get_chain_extension_handler :
+      Global Instance Get_chain_extension_handler :
         Notation.Dot "chain_extension_handler" := {
         Notation.dot x :=
           let* x := M.read x in Pure x.(chain_extension_handler) : M _;
       }.
-      Admitted.
-      #[refine] Global Instance Get_AF_chain_extension_handler :
+      Global Instance Get_AF_chain_extension_handler :
         Notation.DoubleColon t "chain_extension_handler" := {
         Notation.double_colon x :=
           let* x := M.read x in Pure x.(chain_extension_handler) : M _;
       }.
-      Admitted.
     End Engine.
   End Engine.
   Definition Engine `{ℋ : State.Trait} : Set := M.val Engine.t.
@@ -1572,12 +1449,10 @@ Module ext.
         Notation.double_colon := default;
       }.
       
-      #[refine] Global Instance ℐ : core.default.Default.Trait Self := {
+      Global Instance ℐ : core.default.Default.Trait Self := {
         core.default.Default.default := default;
       }.
-      Admitted.
     End Impl_core_default_Default_for_ink_engine_ext_ChainSpec.
-    Global Hint Resolve ℐ : core.
   End Impl_core_default_Default_for_ink_engine_ext_ChainSpec.
   
   Module Impl_core_default_Default_for_ink_engine_ext_Engine.
@@ -1593,12 +1468,10 @@ Module ext.
         Notation.double_colon := default;
       }.
       
-      #[refine] Global Instance ℐ : core.default.Default.Trait Self := {
+      Global Instance ℐ : core.default.Default.Trait Self := {
         core.default.Default.default := default;
       }.
-      Admitted.
     End Impl_core_default_Default_for_ink_engine_ext_Engine.
-    Global Hint Resolve ℐ : core.
   End Impl_core_default_Default_for_ink_engine_ext_Engine.
 End ext.
 
@@ -1618,12 +1491,10 @@ Module Impl_core_fmt_Debug_for_ink_engine_ext_Error.
       Notation.double_colon := fmt;
     }.
     
-    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
-    Admitted.
   End Impl_core_fmt_Debug_for_ink_engine_ext_Error.
-  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_ink_engine_ext_Error.
 
 Module
@@ -1641,14 +1512,12 @@ Module
       Notation.double_colon := from;
     }.
     
-    #[refine] Global Instance ℐ :
+    Global Instance ℐ :
       core.convert.From.Trait Self (T := ink_engine.ext.ReturnCode) := {
       core.convert.From.from := from;
     }.
-    Admitted.
   End
     Impl_core_convert_From_ink_engine_ext_ReturnCode_for_ink_engine_ext_Result.
-  Global Hint Resolve ℐ : core.
 End Impl_core_convert_From_ink_engine_ext_ReturnCode_for_ink_engine_ext_Result.
 
 Module ReturnCode.
@@ -1661,10 +1530,9 @@ Module ReturnCode.
     }.
     Global Set Primitive Projections.
     
-    #[refine] Global Instance Get_0 : Notation.Dot "0" := {
+    Global Instance Get_0 : Notation.Dot "0" := {
       Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
-    Admitted.
   End ReturnCode.
 End ReturnCode.
 Definition ReturnCode `{ℋ : State.Trait} : Set := M.val ReturnCode.t.
@@ -1684,58 +1552,44 @@ Module Engine.
     }.
     Global Set Primitive Projections.
     
-    #[refine] Global Instance Get_database : Notation.Dot "database" := {
+    Global Instance Get_database : Notation.Dot "database" := {
       Notation.dot x := let* x := M.read x in Pure x.(database) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_AF_database :
-      Notation.DoubleColon t "database" := {
+    Global Instance Get_AF_database : Notation.DoubleColon t "database" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(database) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_exec_context :
-      Notation.Dot "exec_context" := {
+    Global Instance Get_exec_context : Notation.Dot "exec_context" := {
       Notation.dot x := let* x := M.read x in Pure x.(exec_context) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_AF_exec_context :
+    Global Instance Get_AF_exec_context :
       Notation.DoubleColon t "exec_context" := {
       Notation.double_colon x :=
         let* x := M.read x in Pure x.(exec_context) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_debug_info : Notation.Dot "debug_info" := {
+    Global Instance Get_debug_info : Notation.Dot "debug_info" := {
       Notation.dot x := let* x := M.read x in Pure x.(debug_info) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_AF_debug_info :
-      Notation.DoubleColon t "debug_info" := {
+    Global Instance Get_AF_debug_info : Notation.DoubleColon t "debug_info" := {
       Notation.double_colon x :=
         let* x := M.read x in Pure x.(debug_info) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_chain_spec : Notation.Dot "chain_spec" := {
+    Global Instance Get_chain_spec : Notation.Dot "chain_spec" := {
       Notation.dot x := let* x := M.read x in Pure x.(chain_spec) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_AF_chain_spec :
-      Notation.DoubleColon t "chain_spec" := {
+    Global Instance Get_AF_chain_spec : Notation.DoubleColon t "chain_spec" := {
       Notation.double_colon x :=
         let* x := M.read x in Pure x.(chain_spec) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_chain_extension_handler :
+    Global Instance Get_chain_extension_handler :
       Notation.Dot "chain_extension_handler" := {
       Notation.dot x :=
         let* x := M.read x in Pure x.(chain_extension_handler) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_AF_chain_extension_handler :
+    Global Instance Get_AF_chain_extension_handler :
       Notation.DoubleColon t "chain_extension_handler" := {
       Notation.double_colon x :=
         let* x := M.read x in Pure x.(chain_extension_handler) : M _;
     }.
-    Admitted.
   End Engine.
 End Engine.
 Definition Engine `{ℋ : State.Trait} : Set := M.val Engine.t.
@@ -1752,36 +1606,27 @@ Module ChainSpec.
     }.
     Global Set Primitive Projections.
     
-    #[refine] Global Instance Get_gas_price : Notation.Dot "gas_price" := {
+    Global Instance Get_gas_price : Notation.Dot "gas_price" := {
       Notation.dot x := let* x := M.read x in Pure x.(gas_price) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_AF_gas_price :
-      Notation.DoubleColon t "gas_price" := {
+    Global Instance Get_AF_gas_price : Notation.DoubleColon t "gas_price" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(gas_price) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_minimum_balance :
-      Notation.Dot "minimum_balance" := {
+    Global Instance Get_minimum_balance : Notation.Dot "minimum_balance" := {
       Notation.dot x := let* x := M.read x in Pure x.(minimum_balance) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_AF_minimum_balance :
+    Global Instance Get_AF_minimum_balance :
       Notation.DoubleColon t "minimum_balance" := {
       Notation.double_colon x :=
         let* x := M.read x in Pure x.(minimum_balance) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_block_time : Notation.Dot "block_time" := {
+    Global Instance Get_block_time : Notation.Dot "block_time" := {
       Notation.dot x := let* x := M.read x in Pure x.(block_time) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_AF_block_time :
-      Notation.DoubleColon t "block_time" := {
+    Global Instance Get_AF_block_time : Notation.DoubleColon t "block_time" := {
       Notation.double_colon x :=
         let* x := M.read x in Pure x.(block_time) : M _;
     }.
-    Admitted.
   End ChainSpec.
 End ChainSpec.
 Definition ChainSpec `{ℋ : State.Trait} : Set := M.val ChainSpec.t.
@@ -1799,12 +1644,10 @@ Module Impl_core_default_Default_for_ink_engine_ext_ChainSpec.
       Notation.double_colon := default;
     }.
     
-    #[refine] Global Instance ℐ : core.default.Default.Trait Self := {
+    Global Instance ℐ : core.default.Default.Trait Self := {
       core.default.Default.default := default;
     }.
-    Admitted.
   End Impl_core_default_Default_for_ink_engine_ext_ChainSpec.
-  Global Hint Resolve ℐ : core.
 End Impl_core_default_Default_for_ink_engine_ext_ChainSpec.
 
 Module Impl_core_default_Default_for_ink_engine_ext_Engine.
@@ -1820,12 +1663,10 @@ Module Impl_core_default_Default_for_ink_engine_ext_Engine.
       Notation.double_colon := default;
     }.
     
-    #[refine] Global Instance ℐ : core.default.Default.Trait Self := {
+    Global Instance ℐ : core.default.Default.Trait Self := {
       core.default.Default.default := default;
     }.
-    Admitted.
   End Impl_core_default_Default_for_ink_engine_ext_Engine.
-  Global Hint Resolve ℐ : core.
 End Impl_core_default_Default_for_ink_engine_ext_Engine.
 
 Module EmittedEvent.
@@ -1842,23 +1683,18 @@ Module EmittedEvent.
     }.
     Global Set Primitive Projections.
     
-    #[refine] Global Instance Get_topics : Notation.Dot "topics" := {
+    Global Instance Get_topics : Notation.Dot "topics" := {
       Notation.dot x := let* x := M.read x in Pure x.(topics) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_AF_topics :
-      Notation.DoubleColon t "topics" := {
+    Global Instance Get_AF_topics : Notation.DoubleColon t "topics" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(topics) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_data : Notation.Dot "data" := {
+    Global Instance Get_data : Notation.Dot "data" := {
       Notation.dot x := let* x := M.read x in Pure x.(data) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_AF_data : Notation.DoubleColon t "data" := {
+    Global Instance Get_AF_data : Notation.DoubleColon t "data" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(data) : M _;
     }.
-    Admitted.
   End EmittedEvent.
 End EmittedEvent.
 Definition EmittedEvent `{ℋ : State.Trait} : Set := M.val EmittedEvent.t.
@@ -1877,12 +1713,10 @@ Module Impl_core_fmt_Debug_for_ink_engine_test_api_EmittedEvent.
       Notation.double_colon := fmt;
     }.
     
-    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
-    Admitted.
   End Impl_core_fmt_Debug_for_ink_engine_test_api_EmittedEvent.
-  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_ink_engine_test_api_EmittedEvent.
 
 Module Impl_core_clone_Clone_for_ink_engine_test_api_EmittedEvent.
@@ -1898,12 +1732,11 @@ Module Impl_core_clone_Clone_for_ink_engine_test_api_EmittedEvent.
       Notation.double_colon := clone;
     }.
     
-    #[refine] Global Instance ℐ : core.clone.Clone.Trait Self := {
+    Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
       core.clone.Clone.clone := clone;
+      core.clone.Clone.clone_from := Datatypes.None;
     }.
-    Admitted.
   End Impl_core_clone_Clone_for_ink_engine_test_api_EmittedEvent.
-  Global Hint Resolve ℐ : core.
 End Impl_core_clone_Clone_for_ink_engine_test_api_EmittedEvent.
 
 Module RecordedDebugMessages.
@@ -1917,17 +1750,14 @@ Module RecordedDebugMessages.
     }.
     Global Set Primitive Projections.
     
-    #[refine] Global Instance Get_debug_messages :
-      Notation.Dot "debug_messages" := {
+    Global Instance Get_debug_messages : Notation.Dot "debug_messages" := {
       Notation.dot x := let* x := M.read x in Pure x.(debug_messages) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_AF_debug_messages :
+    Global Instance Get_AF_debug_messages :
       Notation.DoubleColon t "debug_messages" := {
       Notation.double_colon x :=
         let* x := M.read x in Pure x.(debug_messages) : M _;
     }.
-    Admitted.
   End RecordedDebugMessages.
 End RecordedDebugMessages.
 Definition RecordedDebugMessages `{ℋ : State.Trait} : Set :=
@@ -1946,12 +1776,11 @@ Module Impl_core_clone_Clone_for_ink_engine_test_api_RecordedDebugMessages.
       Notation.double_colon := clone;
     }.
     
-    #[refine] Global Instance ℐ : core.clone.Clone.Trait Self := {
+    Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
       core.clone.Clone.clone := clone;
+      core.clone.Clone.clone_from := Datatypes.None;
     }.
-    Admitted.
   End Impl_core_clone_Clone_for_ink_engine_test_api_RecordedDebugMessages.
-  Global Hint Resolve ℐ : core.
 End Impl_core_clone_Clone_for_ink_engine_test_api_RecordedDebugMessages.
 
 Module Impl_core_default_Default_for_ink_engine_test_api_RecordedDebugMessages.
@@ -1968,12 +1797,10 @@ Module Impl_core_default_Default_for_ink_engine_test_api_RecordedDebugMessages.
       Notation.double_colon := default;
     }.
     
-    #[refine] Global Instance ℐ : core.default.Default.Trait Self := {
+    Global Instance ℐ : core.default.Default.Trait Self := {
       core.default.Default.default := default;
     }.
-    Admitted.
   End Impl_core_default_Default_for_ink_engine_test_api_RecordedDebugMessages.
-  Global Hint Resolve ℐ : core.
 End Impl_core_default_Default_for_ink_engine_test_api_RecordedDebugMessages.
 
 (* Module Impl_core_iter_traits_collect_IntoIterator_for_ink_engine_test_api_RecordedDebugMessages.
@@ -1994,15 +1821,12 @@ End Impl_core_default_Default_for_ink_engine_test_api_RecordedDebugMessages.
       Notation.double_colon := into_iter;
     }.
     
-    #[refine] Global Instance ℐ :
-      core.iter.traits.collect.IntoIterator.Trait Self := {
+    Global Instance ℐ : core.iter.traits.collect.IntoIterator.Trait Self := {
       core.iter.traits.collect.IntoIterator.Item := Item;
       core.iter.traits.collect.IntoIterator.IntoIter := IntoIter;
       core.iter.traits.collect.IntoIterator.into_iter := into_iter;
     }.
-    Admitted.
   End Impl_core_iter_traits_collect_IntoIterator_for_ink_engine_test_api_RecordedDebugMessages. *)
-  Global Hint Resolve ℐ : core.
 End Impl_core_iter_traits_collect_IntoIterator_for_ink_engine_test_api_RecordedDebugMessages. *)
 
 Module DebugInfo.
@@ -2035,61 +1859,49 @@ Module DebugInfo.
     }.
     Global Set Primitive Projections.
     
-    #[refine] Global Instance Get_emitted_events :
-      Notation.Dot "emitted_events" := {
+    Global Instance Get_emitted_events : Notation.Dot "emitted_events" := {
       Notation.dot x := let* x := M.read x in Pure x.(emitted_events) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_AF_emitted_events :
+    Global Instance Get_AF_emitted_events :
       Notation.DoubleColon t "emitted_events" := {
       Notation.double_colon x :=
         let* x := M.read x in Pure x.(emitted_events) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_emitted_debug_messages :
+    Global Instance Get_emitted_debug_messages :
       Notation.Dot "emitted_debug_messages" := {
       Notation.dot x :=
         let* x := M.read x in Pure x.(emitted_debug_messages) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_AF_emitted_debug_messages :
+    Global Instance Get_AF_emitted_debug_messages :
       Notation.DoubleColon t "emitted_debug_messages" := {
       Notation.double_colon x :=
         let* x := M.read x in Pure x.(emitted_debug_messages) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_count_reads : Notation.Dot "count_reads" := {
+    Global Instance Get_count_reads : Notation.Dot "count_reads" := {
       Notation.dot x := let* x := M.read x in Pure x.(count_reads) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_AF_count_reads :
+    Global Instance Get_AF_count_reads :
       Notation.DoubleColon t "count_reads" := {
       Notation.double_colon x :=
         let* x := M.read x in Pure x.(count_reads) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_count_writes :
-      Notation.Dot "count_writes" := {
+    Global Instance Get_count_writes : Notation.Dot "count_writes" := {
       Notation.dot x := let* x := M.read x in Pure x.(count_writes) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_AF_count_writes :
+    Global Instance Get_AF_count_writes :
       Notation.DoubleColon t "count_writes" := {
       Notation.double_colon x :=
         let* x := M.read x in Pure x.(count_writes) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_cells_per_account :
+    Global Instance Get_cells_per_account :
       Notation.Dot "cells_per_account" := {
       Notation.dot x := let* x := M.read x in Pure x.(cells_per_account) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_AF_cells_per_account :
+    Global Instance Get_AF_cells_per_account :
       Notation.DoubleColon t "cells_per_account" := {
       Notation.double_colon x :=
         let* x := M.read x in Pure x.(cells_per_account) : M _;
     }.
-    Admitted.
   End DebugInfo.
 End DebugInfo.
 Definition DebugInfo `{ℋ : State.Trait} : Set := M.val DebugInfo.t.
@@ -2107,12 +1919,10 @@ Module Impl_core_default_Default_for_ink_engine_test_api_DebugInfo.
       Notation.double_colon := default;
     }.
     
-    #[refine] Global Instance ℐ : core.default.Default.Trait Self := {
+    Global Instance ℐ : core.default.Default.Trait Self := {
       core.default.Default.default := default;
     }.
-    Admitted.
   End Impl_core_default_Default_for_ink_engine_test_api_DebugInfo.
-  Global Hint Resolve ℐ : core.
 End Impl_core_default_Default_for_ink_engine_test_api_DebugInfo.
 
 Module ChainExtensionHandler.
@@ -2121,9 +1931,8 @@ Module ChainExtensionHandler.
     
     (* Module Dyn_ink_engine_chain_extension_ChainExtension.
       Parameter t : Set.
-      #[refine] Global Instance I_ink_engine_chain_extension_ChainExtension :
+      Global Instance I_ink_engine_chain_extension_ChainExtension :
         ink_engine.chain_extension.ChainExtension.Trait t := axiom.
-      Admitted.
       Parameter conv_Dyn :
           forall {A : Set} `{ink_engine.chain_extension.ChainExtension.Trait t},
           A -> t.
@@ -2144,25 +1953,19 @@ Module ChainExtensionHandler.
     }.
     Global Set Primitive Projections.
     
-    #[refine] Global Instance Get_registered : Notation.Dot "registered" := {
+    Global Instance Get_registered : Notation.Dot "registered" := {
       Notation.dot x := let* x := M.read x in Pure x.(registered) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_AF_registered :
-      Notation.DoubleColon t "registered" := {
+    Global Instance Get_AF_registered : Notation.DoubleColon t "registered" := {
       Notation.double_colon x :=
         let* x := M.read x in Pure x.(registered) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_output : Notation.Dot "output" := {
+    Global Instance Get_output : Notation.Dot "output" := {
       Notation.dot x := let* x := M.read x in Pure x.(output) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_AF_output :
-      Notation.DoubleColon t "output" := {
+    Global Instance Get_AF_output : Notation.DoubleColon t "output" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(output) : M _;
     }.
-    Admitted.
   End ChainExtensionHandler.
 End ChainExtensionHandler.
 Definition ChainExtensionHandler `{ℋ : State.Trait} : Set :=
@@ -2178,10 +1981,9 @@ Module ExtensionId.
     }.
     Global Set Primitive Projections.
     
-    #[refine] Global Instance Get_0 : Notation.Dot "0" := {
+    Global Instance Get_0 : Notation.Dot "0" := {
       Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
-    Admitted.
   End ExtensionId.
 End ExtensionId.
 Definition ExtensionId `{ℋ : State.Trait} : Set := M.val ExtensionId.t.
@@ -2200,12 +2002,10 @@ Module Impl_core_fmt_Debug_for_ink_engine_chain_extension_ExtensionId.
       Notation.double_colon := fmt;
     }.
     
-    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
-    Admitted.
   End Impl_core_fmt_Debug_for_ink_engine_chain_extension_ExtensionId.
-  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_ink_engine_chain_extension_ExtensionId.
 
 Module Impl_core_convert_From_u32_for_ink_engine_chain_extension_ExtensionId.
@@ -2221,12 +2021,10 @@ Module Impl_core_convert_From_u32_for_ink_engine_chain_extension_ExtensionId.
       Notation.double_colon := from;
     }.
     
-    #[refine] Global Instance ℐ : core.convert.From.Trait Self (T := u32) := {
+    Global Instance ℐ : core.convert.From.Trait Self (T := u32) := {
       core.convert.From.from := from;
     }.
-    Admitted.
   End Impl_core_convert_From_u32_for_ink_engine_chain_extension_ExtensionId.
-  Global Hint Resolve ℐ : core.
 End Impl_core_convert_From_u32_for_ink_engine_chain_extension_ExtensionId.
 
 (* Module Impl_parity_scale_codec_codec_Encode_for_ink_engine_chain_extension_ExtensionId.
@@ -2278,12 +2076,24 @@ End Impl_core_convert_From_u32_for_ink_engine_chain_extension_ExtensionId.
       Notation.double_colon := using_encoded (R := R) (F := F);
     }.
     
-    #[refine] Global Instance ℐ :
-      parity_scale_codec.codec.Encode.Trait Self := {
+    Global Instance ℐ : parity_scale_codec.codec.Encode.Required.Trait Self := {
+      parity_scale_codec.codec.Encode.encode_to
+        {__CodecOutputEdqy : Set}
+        {ℋ_0 : parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+        {ℋ_1 : core.marker.Sized.Trait __CodecOutputEdqy} :=
+        Datatypes.Some (encode_to (__CodecOutputEdqy := __CodecOutputEdqy));
+      parity_scale_codec.codec.Encode.encode := Datatypes.Some encode;
+      parity_scale_codec.codec.Encode.using_encoded
+        {R F : Set}
+        {ℋ_0 :
+          core.ops.function.FnOnce.Trait F
+            (Args := ref (Slice CoqOfRust.core.primitive.u8))} :=
+        Datatypes.Some (using_encoded (R := R) (F := F));
+      parity_scale_codec.codec.Encode.TYPE_INFO := Datatypes.None;
+      parity_scale_codec.codec.Encode.size_hint := Datatypes.None;
+      parity_scale_codec.codec.Encode.encoded_size := Datatypes.None;
     }.
-    Admitted.
   End Impl_parity_scale_codec_codec_Encode_for_ink_engine_chain_extension_ExtensionId. *)
-  Global Hint Resolve ℐ : core.
 End Impl_parity_scale_codec_codec_Encode_for_ink_engine_chain_extension_ExtensionId. *)
 
 (* Module Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_engine_chain_extension_ExtensionId.
@@ -2292,13 +2102,11 @@ End Impl_parity_scale_codec_codec_Encode_for_ink_engine_chain_extension_Extensio
     
     Definition Self : Set := ink_engine.chain_extension.ExtensionId.
     
-    #[refine] Global Instance ℐ :
+    Global Instance ℐ :
       parity_scale_codec.encode_like.EncodeLike.Trait Self
         (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self) := {
     }.
-    Admitted.
   End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_engine_chain_extension_ExtensionId. *)
-  Global Hint Resolve ℐ : core.
 End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_engine_chain_extension_ExtensionId. *)
 
 (* Module Impl_parity_scale_codec_codec_Decode_for_ink_engine_chain_extension_ExtensionId.
@@ -2321,16 +2129,17 @@ End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_engine_chain_extensio
       Notation.double_colon := decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
     
-    #[refine] Global Instance ℐ :
-      parity_scale_codec.codec.Decode.Trait Self := {
+    Global Instance ℐ : parity_scale_codec.codec.Decode.Required.Trait Self := {
       parity_scale_codec.codec.Decode.decode
         {__CodecInputEdqy : Set}
         {ℋ_0 : parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :=
         decode (__CodecInputEdqy := __CodecInputEdqy);
+      parity_scale_codec.codec.Decode.TYPE_INFO := Datatypes.None;
+      parity_scale_codec.codec.Decode.decode_into := Datatypes.None;
+      parity_scale_codec.codec.Decode.skip := Datatypes.None;
+      parity_scale_codec.codec.Decode.encoded_fixed_size := Datatypes.None;
     }.
-    Admitted.
   End Impl_parity_scale_codec_codec_Decode_for_ink_engine_chain_extension_ExtensionId. *)
-  Global Hint Resolve ℐ : core.
 End Impl_parity_scale_codec_codec_Decode_for_ink_engine_chain_extension_ExtensionId. *)
 
 Module
@@ -2341,13 +2150,10 @@ Module
     
     Definition Self : Set := ink_engine.chain_extension.ExtensionId.
     
-    #[refine] Global Instance ℐ :
-      core.marker.StructuralPartialEq.Trait Self := {
+    Global Instance ℐ : core.marker.StructuralPartialEq.Trait Self := {
     }.
-    Admitted.
   End
     Impl_core_marker_StructuralPartialEq_for_ink_engine_chain_extension_ExtensionId.
-  Global Hint Resolve ℐ : core.
 End
   Impl_core_marker_StructuralPartialEq_for_ink_engine_chain_extension_ExtensionId.
 
@@ -2364,14 +2170,13 @@ Module Impl_core_cmp_PartialEq_for_ink_engine_chain_extension_ExtensionId.
       Notation.double_colon := eq;
     }.
     
-    #[refine] Global Instance ℐ :
-      core.cmp.PartialEq.Trait Self
+    Global Instance ℐ :
+      core.cmp.PartialEq.Required.Trait Self
         (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
       core.cmp.PartialEq.eq := eq;
+      core.cmp.PartialEq.ne := Datatypes.None;
     }.
-    Admitted.
   End Impl_core_cmp_PartialEq_for_ink_engine_chain_extension_ExtensionId.
-  Global Hint Resolve ℐ : core.
 End Impl_core_cmp_PartialEq_for_ink_engine_chain_extension_ExtensionId.
 
 Module Impl_core_marker_StructuralEq_for_ink_engine_chain_extension_ExtensionId.
@@ -2381,11 +2186,9 @@ Module Impl_core_marker_StructuralEq_for_ink_engine_chain_extension_ExtensionId.
     
     Definition Self : Set := ink_engine.chain_extension.ExtensionId.
     
-    #[refine] Global Instance ℐ : core.marker.StructuralEq.Trait Self := {
+    Global Instance ℐ : core.marker.StructuralEq.Trait Self := {
     }.
-    Admitted.
   End Impl_core_marker_StructuralEq_for_ink_engine_chain_extension_ExtensionId.
-  Global Hint Resolve ℐ : core.
 End Impl_core_marker_StructuralEq_for_ink_engine_chain_extension_ExtensionId.
 
 Module Impl_core_cmp_Eq_for_ink_engine_chain_extension_ExtensionId.
@@ -2401,11 +2204,11 @@ Module Impl_core_cmp_Eq_for_ink_engine_chain_extension_ExtensionId.
       Notation.double_colon := assert_receiver_is_total_eq;
     }.
     
-    #[refine] Global Instance ℐ : core.cmp.Eq.Trait Self := {
+    Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
+      core.cmp.Eq.assert_receiver_is_total_eq :=
+        Datatypes.Some assert_receiver_is_total_eq;
     }.
-    Admitted.
   End Impl_core_cmp_Eq_for_ink_engine_chain_extension_ExtensionId.
-  Global Hint Resolve ℐ : core.
 End Impl_core_cmp_Eq_for_ink_engine_chain_extension_ExtensionId.
 
 Module Impl_core_cmp_PartialOrd_for_ink_engine_chain_extension_ExtensionId.
@@ -2424,14 +2227,16 @@ Module Impl_core_cmp_PartialOrd_for_ink_engine_chain_extension_ExtensionId.
       Notation.double_colon := partial_cmp;
     }.
     
-    #[refine] Global Instance ℐ :
-      core.cmp.PartialOrd.Trait Self
+    Global Instance ℐ :
+      core.cmp.PartialOrd.Required.Trait Self
         (Rhs := core.cmp.PartialOrd.Default.Rhs Self) := {
       core.cmp.PartialOrd.partial_cmp := partial_cmp;
+      core.cmp.PartialOrd.lt := Datatypes.None;
+      core.cmp.PartialOrd.le := Datatypes.None;
+      core.cmp.PartialOrd.gt := Datatypes.None;
+      core.cmp.PartialOrd.ge := Datatypes.None;
     }.
-    Admitted.
   End Impl_core_cmp_PartialOrd_for_ink_engine_chain_extension_ExtensionId.
-  Global Hint Resolve ℐ : core.
 End Impl_core_cmp_PartialOrd_for_ink_engine_chain_extension_ExtensionId.
 
 Module Impl_core_cmp_Ord_for_ink_engine_chain_extension_ExtensionId.
@@ -2450,12 +2255,13 @@ Module Impl_core_cmp_Ord_for_ink_engine_chain_extension_ExtensionId.
       Notation.double_colon := cmp;
     }.
     
-    #[refine] Global Instance ℐ : core.cmp.Ord.Trait Self := {
+    Global Instance ℐ : core.cmp.Ord.Required.Trait Self := {
       core.cmp.Ord.cmp := cmp;
+      core.cmp.Ord.max := Datatypes.None;
+      core.cmp.Ord.min := Datatypes.None;
+      core.cmp.Ord.clamp := Datatypes.None;
     }.
-    Admitted.
   End Impl_core_cmp_Ord_for_ink_engine_chain_extension_ExtensionId.
-  Global Hint Resolve ℐ : core.
 End Impl_core_cmp_Ord_for_ink_engine_chain_extension_ExtensionId.
 
 Module Impl_core_hash_Hash_for_ink_engine_chain_extension_ExtensionId.
@@ -2475,13 +2281,12 @@ Module Impl_core_hash_Hash_for_ink_engine_chain_extension_ExtensionId.
       Notation.double_colon := hash (__H := __H);
     }.
     
-    #[refine] Global Instance ℐ : core.hash.Hash.Trait Self := {
+    Global Instance ℐ : core.hash.Hash.Required.Trait Self := {
       core.hash.Hash.hash {__H : Set} {ℋ_0 : core.hash.Hasher.Trait __H} :=
         hash (__H := __H);
+      core.hash.Hash.hash_slice := Datatypes.None;
     }.
-    Admitted.
   End Impl_core_hash_Hash_for_ink_engine_chain_extension_ExtensionId.
-  Global Hint Resolve ℐ : core.
 End Impl_core_hash_Hash_for_ink_engine_chain_extension_ExtensionId.
 
 Module ChainExtension.
@@ -2515,13 +2320,11 @@ Module
       Notation.double_colon := default;
     }.
     
-    #[refine] Global Instance ℐ : core.default.Default.Trait Self := {
+    Global Instance ℐ : core.default.Default.Trait Self := {
       core.default.Default.default := default;
     }.
-    Admitted.
   End
     Impl_core_default_Default_for_ink_engine_chain_extension_ChainExtensionHandler.
-  Global Hint Resolve ℐ : core.
 End
   Impl_core_default_Default_for_ink_engine_chain_extension_ChainExtensionHandler.
 
@@ -2547,14 +2350,12 @@ Module Database.
     }.
     Global Set Primitive Projections.
     
-    #[refine] Global Instance Get_hmap : Notation.Dot "hmap" := {
+    Global Instance Get_hmap : Notation.Dot "hmap" := {
       Notation.dot x := let* x := M.read x in Pure x.(hmap) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_AF_hmap : Notation.DoubleColon t "hmap" := {
+    Global Instance Get_AF_hmap : Notation.DoubleColon t "hmap" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(hmap) : M _;
     }.
-    Admitted.
   End Database.
 End Database.
 Definition Database `{ℋ : State.Trait} : Set := M.val Database.t.
@@ -2572,12 +2373,10 @@ Module Impl_core_default_Default_for_ink_engine_database_Database.
       Notation.double_colon := default;
     }.
     
-    #[refine] Global Instance ℐ : core.default.Default.Trait Self := {
+    Global Instance ℐ : core.default.Default.Trait Self := {
       core.default.Default.default := default;
     }.
-    Admitted.
   End Impl_core_default_Default_for_ink_engine_database_Database.
-  Global Hint Resolve ℐ : core.
 End Impl_core_default_Default_for_ink_engine_database_Database.
 
 Module ExecContext.
@@ -2598,66 +2397,49 @@ Module ExecContext.
     }.
     Global Set Primitive Projections.
     
-    #[refine] Global Instance Get_caller : Notation.Dot "caller" := {
+    Global Instance Get_caller : Notation.Dot "caller" := {
       Notation.dot x := let* x := M.read x in Pure x.(caller) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_AF_caller :
-      Notation.DoubleColon t "caller" := {
+    Global Instance Get_AF_caller : Notation.DoubleColon t "caller" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(caller) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_callee : Notation.Dot "callee" := {
+    Global Instance Get_callee : Notation.Dot "callee" := {
       Notation.dot x := let* x := M.read x in Pure x.(callee) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_AF_callee :
-      Notation.DoubleColon t "callee" := {
+    Global Instance Get_AF_callee : Notation.DoubleColon t "callee" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(callee) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_value_transferred :
+    Global Instance Get_value_transferred :
       Notation.Dot "value_transferred" := {
       Notation.dot x := let* x := M.read x in Pure x.(value_transferred) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_AF_value_transferred :
+    Global Instance Get_AF_value_transferred :
       Notation.DoubleColon t "value_transferred" := {
       Notation.double_colon x :=
         let* x := M.read x in Pure x.(value_transferred) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_block_number :
-      Notation.Dot "block_number" := {
+    Global Instance Get_block_number : Notation.Dot "block_number" := {
       Notation.dot x := let* x := M.read x in Pure x.(block_number) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_AF_block_number :
+    Global Instance Get_AF_block_number :
       Notation.DoubleColon t "block_number" := {
       Notation.double_colon x :=
         let* x := M.read x in Pure x.(block_number) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_block_timestamp :
-      Notation.Dot "block_timestamp" := {
+    Global Instance Get_block_timestamp : Notation.Dot "block_timestamp" := {
       Notation.dot x := let* x := M.read x in Pure x.(block_timestamp) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_AF_block_timestamp :
+    Global Instance Get_AF_block_timestamp :
       Notation.DoubleColon t "block_timestamp" := {
       Notation.double_colon x :=
         let* x := M.read x in Pure x.(block_timestamp) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_contracts : Notation.Dot "contracts" := {
+    Global Instance Get_contracts : Notation.Dot "contracts" := {
       Notation.dot x := let* x := M.read x in Pure x.(contracts) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_AF_contracts :
-      Notation.DoubleColon t "contracts" := {
+    Global Instance Get_AF_contracts : Notation.DoubleColon t "contracts" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(contracts) : M _;
     }.
-    Admitted.
   End ExecContext.
 End ExecContext.
 Definition ExecContext `{ℋ : State.Trait} : Set := M.val ExecContext.t.
@@ -2675,12 +2457,10 @@ Module Impl_core_default_Default_for_ink_engine_exec_context_ExecContext.
       Notation.double_colon := default;
     }.
     
-    #[refine] Global Instance ℐ : core.default.Default.Trait Self := {
+    Global Instance ℐ : core.default.Default.Trait Self := {
       core.default.Default.default := default;
     }.
-    Admitted.
   End Impl_core_default_Default_for_ink_engine_exec_context_ExecContext.
-  Global Hint Resolve ℐ : core.
 End Impl_core_default_Default_for_ink_engine_exec_context_ExecContext.
 
 Module hashing.
@@ -2733,10 +2513,9 @@ Module AccountId.
     }.
     Global Set Primitive Projections.
     
-    #[refine] Global Instance Get_0 : Notation.Dot "0" := {
+    Global Instance Get_0 : Notation.Dot "0" := {
       Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
-    Admitted.
   End AccountId.
 End AccountId.
 Definition AccountId `{ℋ : State.Trait} : Set := M.val AccountId.t.
@@ -2755,12 +2534,10 @@ Module Impl_core_fmt_Debug_for_ink_engine_types_AccountId.
       Notation.double_colon := fmt;
     }.
     
-    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
-    Admitted.
   End Impl_core_fmt_Debug_for_ink_engine_types_AccountId.
-  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_ink_engine_types_AccountId.
 
 Module
@@ -2780,15 +2557,13 @@ Module
       Notation.double_colon := from;
     }.
     
-    #[refine] Global Instance ℐ :
+    Global Instance ℐ :
       core.convert.From.Trait Self
         (T := alloc.vec.Vec u8 alloc.vec.Vec.Default.A) := {
       core.convert.From.from := from;
     }.
-    Admitted.
   End
     Impl_core_convert_From_alloc_vec_Vec_u8_alloc_vec_Vec_Default_A_for_ink_engine_types_AccountId.
-  Global Hint Resolve ℐ : core.
 End
   Impl_core_convert_From_alloc_vec_Vec_u8_alloc_vec_Vec_Default_A_for_ink_engine_types_AccountId.
 
@@ -2805,12 +2580,11 @@ Module Impl_core_clone_Clone_for_ink_engine_types_AccountId.
       Notation.double_colon := clone;
     }.
     
-    #[refine] Global Instance ℐ : core.clone.Clone.Trait Self := {
+    Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
       core.clone.Clone.clone := clone;
+      core.clone.Clone.clone_from := Datatypes.None;
     }.
-    Admitted.
   End Impl_core_clone_Clone_for_ink_engine_types_AccountId.
-  Global Hint Resolve ℐ : core.
 End Impl_core_clone_Clone_for_ink_engine_types_AccountId.
 
 Module Impl_core_marker_StructuralPartialEq_for_ink_engine_types_AccountId.
@@ -2819,12 +2593,9 @@ Module Impl_core_marker_StructuralPartialEq_for_ink_engine_types_AccountId.
     
     Definition Self : Set := ink_engine.types.AccountId.
     
-    #[refine] Global Instance ℐ :
-      core.marker.StructuralPartialEq.Trait Self := {
+    Global Instance ℐ : core.marker.StructuralPartialEq.Trait Self := {
     }.
-    Admitted.
   End Impl_core_marker_StructuralPartialEq_for_ink_engine_types_AccountId.
-  Global Hint Resolve ℐ : core.
 End Impl_core_marker_StructuralPartialEq_for_ink_engine_types_AccountId.
 
 Module Impl_core_cmp_PartialEq_for_ink_engine_types_AccountId.
@@ -2839,14 +2610,13 @@ Module Impl_core_cmp_PartialEq_for_ink_engine_types_AccountId.
       Notation.double_colon := eq;
     }.
     
-    #[refine] Global Instance ℐ :
-      core.cmp.PartialEq.Trait Self
+    Global Instance ℐ :
+      core.cmp.PartialEq.Required.Trait Self
         (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
       core.cmp.PartialEq.eq := eq;
+      core.cmp.PartialEq.ne := Datatypes.None;
     }.
-    Admitted.
   End Impl_core_cmp_PartialEq_for_ink_engine_types_AccountId.
-  Global Hint Resolve ℐ : core.
 End Impl_core_cmp_PartialEq_for_ink_engine_types_AccountId.
 
 Module Impl_core_marker_StructuralEq_for_ink_engine_types_AccountId.
@@ -2855,11 +2625,9 @@ Module Impl_core_marker_StructuralEq_for_ink_engine_types_AccountId.
     
     Definition Self : Set := ink_engine.types.AccountId.
     
-    #[refine] Global Instance ℐ : core.marker.StructuralEq.Trait Self := {
+    Global Instance ℐ : core.marker.StructuralEq.Trait Self := {
     }.
-    Admitted.
   End Impl_core_marker_StructuralEq_for_ink_engine_types_AccountId.
-  Global Hint Resolve ℐ : core.
 End Impl_core_marker_StructuralEq_for_ink_engine_types_AccountId.
 
 Module Impl_core_cmp_Eq_for_ink_engine_types_AccountId.
@@ -2875,11 +2643,11 @@ Module Impl_core_cmp_Eq_for_ink_engine_types_AccountId.
       Notation.double_colon := assert_receiver_is_total_eq;
     }.
     
-    #[refine] Global Instance ℐ : core.cmp.Eq.Trait Self := {
+    Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
+      core.cmp.Eq.assert_receiver_is_total_eq :=
+        Datatypes.Some assert_receiver_is_total_eq;
     }.
-    Admitted.
   End Impl_core_cmp_Eq_for_ink_engine_types_AccountId.
-  Global Hint Resolve ℐ : core.
 End Impl_core_cmp_Eq_for_ink_engine_types_AccountId.
 
 Module Impl_core_cmp_PartialOrd_for_ink_engine_types_AccountId.
@@ -2898,14 +2666,16 @@ Module Impl_core_cmp_PartialOrd_for_ink_engine_types_AccountId.
       Notation.double_colon := partial_cmp;
     }.
     
-    #[refine] Global Instance ℐ :
-      core.cmp.PartialOrd.Trait Self
+    Global Instance ℐ :
+      core.cmp.PartialOrd.Required.Trait Self
         (Rhs := core.cmp.PartialOrd.Default.Rhs Self) := {
       core.cmp.PartialOrd.partial_cmp := partial_cmp;
+      core.cmp.PartialOrd.lt := Datatypes.None;
+      core.cmp.PartialOrd.le := Datatypes.None;
+      core.cmp.PartialOrd.gt := Datatypes.None;
+      core.cmp.PartialOrd.ge := Datatypes.None;
     }.
-    Admitted.
   End Impl_core_cmp_PartialOrd_for_ink_engine_types_AccountId.
-  Global Hint Resolve ℐ : core.
 End Impl_core_cmp_PartialOrd_for_ink_engine_types_AccountId.
 
 Module Impl_core_cmp_Ord_for_ink_engine_types_AccountId.
@@ -2922,12 +2692,13 @@ Module Impl_core_cmp_Ord_for_ink_engine_types_AccountId.
       Notation.double_colon := cmp;
     }.
     
-    #[refine] Global Instance ℐ : core.cmp.Ord.Trait Self := {
+    Global Instance ℐ : core.cmp.Ord.Required.Trait Self := {
       core.cmp.Ord.cmp := cmp;
+      core.cmp.Ord.max := Datatypes.None;
+      core.cmp.Ord.min := Datatypes.None;
+      core.cmp.Ord.clamp := Datatypes.None;
     }.
-    Admitted.
   End Impl_core_cmp_Ord_for_ink_engine_types_AccountId.
-  Global Hint Resolve ℐ : core.
 End Impl_core_cmp_Ord_for_ink_engine_types_AccountId.
 
 Module Impl_core_hash_Hash_for_ink_engine_types_AccountId.
@@ -2947,13 +2718,12 @@ Module Impl_core_hash_Hash_for_ink_engine_types_AccountId.
       Notation.double_colon := hash (__H := __H);
     }.
     
-    #[refine] Global Instance ℐ : core.hash.Hash.Trait Self := {
+    Global Instance ℐ : core.hash.Hash.Required.Trait Self := {
       core.hash.Hash.hash {__H : Set} {ℋ_0 : core.hash.Hasher.Trait __H} :=
         hash (__H := __H);
+      core.hash.Hash.hash_slice := Datatypes.None;
     }.
-    Admitted.
   End Impl_core_hash_Hash_for_ink_engine_types_AccountId.
-  Global Hint Resolve ℐ : core.
 End Impl_core_hash_Hash_for_ink_engine_types_AccountId.
 
 Module Key.
@@ -2966,10 +2736,9 @@ Module Key.
     }.
     Global Set Primitive Projections.
     
-    #[refine] Global Instance Get_0 : Notation.Dot "0" := {
+    Global Instance Get_0 : Notation.Dot "0" := {
       Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
-    Admitted.
   End Key.
 End Key.
 Definition Key `{ℋ : State.Trait} : Set := M.val Key.t.
@@ -2987,12 +2756,10 @@ Module Impl_core_default_Default_for_ink_engine_types_Key.
       Notation.double_colon := default;
     }.
     
-    #[refine] Global Instance ℐ : core.default.Default.Trait Self := {
+    Global Instance ℐ : core.default.Default.Trait Self := {
       core.default.Default.default := default;
     }.
-    Admitted.
   End Impl_core_default_Default_for_ink_engine_types_Key.
-  Global Hint Resolve ℐ : core.
 End Impl_core_default_Default_for_ink_engine_types_Key.
 
 Module
@@ -3011,15 +2778,13 @@ Module
       Notation.double_colon := from;
     }.
     
-    #[refine] Global Instance ℐ :
+    Global Instance ℐ :
       core.convert.From.Trait Self
         (T := alloc.vec.Vec u8 alloc.vec.Vec.Default.A) := {
       core.convert.From.from := from;
     }.
-    Admitted.
   End
     Impl_core_convert_From_alloc_vec_Vec_u8_alloc_vec_Vec_Default_A_for_ink_engine_types_Key.
-  Global Hint Resolve ℐ : core.
 End
   Impl_core_convert_From_alloc_vec_Vec_u8_alloc_vec_Vec_Default_A_for_ink_engine_types_Key.
 
@@ -3036,12 +2801,11 @@ Module Impl_core_clone_Clone_for_ink_engine_types_Key.
       Notation.double_colon := clone;
     }.
     
-    #[refine] Global Instance ℐ : core.clone.Clone.Trait Self := {
+    Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
       core.clone.Clone.clone := clone;
+      core.clone.Clone.clone_from := Datatypes.None;
     }.
-    Admitted.
   End Impl_core_clone_Clone_for_ink_engine_types_Key.
-  Global Hint Resolve ℐ : core.
 End Impl_core_clone_Clone_for_ink_engine_types_Key.
 
 Module Impl_core_marker_StructuralPartialEq_for_ink_engine_types_Key.
@@ -3050,12 +2814,9 @@ Module Impl_core_marker_StructuralPartialEq_for_ink_engine_types_Key.
     
     Definition Self : Set := ink_engine.types.Key.
     
-    #[refine] Global Instance ℐ :
-      core.marker.StructuralPartialEq.Trait Self := {
+    Global Instance ℐ : core.marker.StructuralPartialEq.Trait Self := {
     }.
-    Admitted.
   End Impl_core_marker_StructuralPartialEq_for_ink_engine_types_Key.
-  Global Hint Resolve ℐ : core.
 End Impl_core_marker_StructuralPartialEq_for_ink_engine_types_Key.
 
 Module Impl_core_cmp_PartialEq_for_ink_engine_types_Key.
@@ -3070,14 +2831,13 @@ Module Impl_core_cmp_PartialEq_for_ink_engine_types_Key.
       Notation.double_colon := eq;
     }.
     
-    #[refine] Global Instance ℐ :
-      core.cmp.PartialEq.Trait Self
+    Global Instance ℐ :
+      core.cmp.PartialEq.Required.Trait Self
         (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
       core.cmp.PartialEq.eq := eq;
+      core.cmp.PartialEq.ne := Datatypes.None;
     }.
-    Admitted.
   End Impl_core_cmp_PartialEq_for_ink_engine_types_Key.
-  Global Hint Resolve ℐ : core.
 End Impl_core_cmp_PartialEq_for_ink_engine_types_Key.
 
 Module Impl_core_marker_StructuralEq_for_ink_engine_types_Key.
@@ -3086,11 +2846,9 @@ Module Impl_core_marker_StructuralEq_for_ink_engine_types_Key.
     
     Definition Self : Set := ink_engine.types.Key.
     
-    #[refine] Global Instance ℐ : core.marker.StructuralEq.Trait Self := {
+    Global Instance ℐ : core.marker.StructuralEq.Trait Self := {
     }.
-    Admitted.
   End Impl_core_marker_StructuralEq_for_ink_engine_types_Key.
-  Global Hint Resolve ℐ : core.
 End Impl_core_marker_StructuralEq_for_ink_engine_types_Key.
 
 Module Impl_core_cmp_Eq_for_ink_engine_types_Key.
@@ -3106,11 +2864,11 @@ Module Impl_core_cmp_Eq_for_ink_engine_types_Key.
       Notation.double_colon := assert_receiver_is_total_eq;
     }.
     
-    #[refine] Global Instance ℐ : core.cmp.Eq.Trait Self := {
+    Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
+      core.cmp.Eq.assert_receiver_is_total_eq :=
+        Datatypes.Some assert_receiver_is_total_eq;
     }.
-    Admitted.
   End Impl_core_cmp_Eq_for_ink_engine_types_Key.
-  Global Hint Resolve ℐ : core.
 End Impl_core_cmp_Eq_for_ink_engine_types_Key.
 
 Module Impl_core_cmp_PartialOrd_for_ink_engine_types_Key.
@@ -3129,14 +2887,16 @@ Module Impl_core_cmp_PartialOrd_for_ink_engine_types_Key.
       Notation.double_colon := partial_cmp;
     }.
     
-    #[refine] Global Instance ℐ :
-      core.cmp.PartialOrd.Trait Self
+    Global Instance ℐ :
+      core.cmp.PartialOrd.Required.Trait Self
         (Rhs := core.cmp.PartialOrd.Default.Rhs Self) := {
       core.cmp.PartialOrd.partial_cmp := partial_cmp;
+      core.cmp.PartialOrd.lt := Datatypes.None;
+      core.cmp.PartialOrd.le := Datatypes.None;
+      core.cmp.PartialOrd.gt := Datatypes.None;
+      core.cmp.PartialOrd.ge := Datatypes.None;
     }.
-    Admitted.
   End Impl_core_cmp_PartialOrd_for_ink_engine_types_Key.
-  Global Hint Resolve ℐ : core.
 End Impl_core_cmp_PartialOrd_for_ink_engine_types_Key.
 
 Module Impl_core_cmp_Ord_for_ink_engine_types_Key.
@@ -3153,12 +2913,13 @@ Module Impl_core_cmp_Ord_for_ink_engine_types_Key.
       Notation.double_colon := cmp;
     }.
     
-    #[refine] Global Instance ℐ : core.cmp.Ord.Trait Self := {
+    Global Instance ℐ : core.cmp.Ord.Required.Trait Self := {
       core.cmp.Ord.cmp := cmp;
+      core.cmp.Ord.max := Datatypes.None;
+      core.cmp.Ord.min := Datatypes.None;
+      core.cmp.Ord.clamp := Datatypes.None;
     }.
-    Admitted.
   End Impl_core_cmp_Ord_for_ink_engine_types_Key.
-  Global Hint Resolve ℐ : core.
 End Impl_core_cmp_Ord_for_ink_engine_types_Key.
 
 Module Impl_core_hash_Hash_for_ink_engine_types_Key.
@@ -3178,13 +2939,12 @@ Module Impl_core_hash_Hash_for_ink_engine_types_Key.
       Notation.double_colon := hash (__H := __H);
     }.
     
-    #[refine] Global Instance ℐ : core.hash.Hash.Trait Self := {
+    Global Instance ℐ : core.hash.Hash.Required.Trait Self := {
       core.hash.Hash.hash {__H : Set} {ℋ_0 : core.hash.Hasher.Trait __H} :=
         hash (__H := __H);
+      core.hash.Hash.hash_slice := Datatypes.None;
     }.
-    Admitted.
   End Impl_core_hash_Hash_for_ink_engine_types_Key.
-  Global Hint Resolve ℐ : core.
 End Impl_core_hash_Hash_for_ink_engine_types_Key.
 
 Module AccountError.
@@ -3208,12 +2968,11 @@ Module Impl_core_clone_Clone_for_ink_engine_types_AccountError.
       Notation.double_colon := clone;
     }.
     
-    #[refine] Global Instance ℐ : core.clone.Clone.Trait Self := {
+    Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
       core.clone.Clone.clone := clone;
+      core.clone.Clone.clone_from := Datatypes.None;
     }.
-    Admitted.
   End Impl_core_clone_Clone_for_ink_engine_types_AccountError.
-  Global Hint Resolve ℐ : core.
 End Impl_core_clone_Clone_for_ink_engine_types_AccountError.
 
 Module Impl_core_fmt_Debug_for_ink_engine_types_AccountError.
@@ -3230,12 +2989,10 @@ Module Impl_core_fmt_Debug_for_ink_engine_types_AccountError.
       Notation.double_colon := fmt;
     }.
     
-    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
-    Admitted.
   End Impl_core_fmt_Debug_for_ink_engine_types_AccountError.
-  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_ink_engine_types_AccountError.
 
 Module
@@ -3254,14 +3011,12 @@ Module
       Notation.double_colon := from;
     }.
     
-    #[refine] Global Instance ℐ :
+    Global Instance ℐ :
       core.convert.From.Trait Self (T := parity_scale_codec.error.Error) := {
       core.convert.From.from := from;
     }.
-    Admitted.
   End
     Impl_core_convert_From_parity_scale_codec_error_Error_for_ink_engine_types_AccountError.
-  Global Hint Resolve ℐ : core.
 End
   Impl_core_convert_From_parity_scale_codec_error_Error_for_ink_engine_types_AccountError.
 
@@ -3272,12 +3027,9 @@ Module Impl_core_marker_StructuralPartialEq_for_ink_engine_types_AccountError.
     
     Definition Self : Set := ink_engine.types.AccountError.
     
-    #[refine] Global Instance ℐ :
-      core.marker.StructuralPartialEq.Trait Self := {
+    Global Instance ℐ : core.marker.StructuralPartialEq.Trait Self := {
     }.
-    Admitted.
   End Impl_core_marker_StructuralPartialEq_for_ink_engine_types_AccountError.
-  Global Hint Resolve ℐ : core.
 End Impl_core_marker_StructuralPartialEq_for_ink_engine_types_AccountError.
 
 Module Impl_core_cmp_PartialEq_for_ink_engine_types_AccountError.
@@ -3292,14 +3044,13 @@ Module Impl_core_cmp_PartialEq_for_ink_engine_types_AccountError.
       Notation.double_colon := eq;
     }.
     
-    #[refine] Global Instance ℐ :
-      core.cmp.PartialEq.Trait Self
+    Global Instance ℐ :
+      core.cmp.PartialEq.Required.Trait Self
         (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
       core.cmp.PartialEq.eq := eq;
+      core.cmp.PartialEq.ne := Datatypes.None;
     }.
-    Admitted.
   End Impl_core_cmp_PartialEq_for_ink_engine_types_AccountError.
-  Global Hint Resolve ℐ : core.
 End Impl_core_cmp_PartialEq_for_ink_engine_types_AccountError.
 
 Module Impl_core_marker_StructuralEq_for_ink_engine_types_AccountError.
@@ -3308,11 +3059,9 @@ Module Impl_core_marker_StructuralEq_for_ink_engine_types_AccountError.
     
     Definition Self : Set := ink_engine.types.AccountError.
     
-    #[refine] Global Instance ℐ : core.marker.StructuralEq.Trait Self := {
+    Global Instance ℐ : core.marker.StructuralEq.Trait Self := {
     }.
-    Admitted.
   End Impl_core_marker_StructuralEq_for_ink_engine_types_AccountError.
-  Global Hint Resolve ℐ : core.
 End Impl_core_marker_StructuralEq_for_ink_engine_types_AccountError.
 
 Module Impl_core_cmp_Eq_for_ink_engine_types_AccountError.
@@ -3328,11 +3077,11 @@ Module Impl_core_cmp_Eq_for_ink_engine_types_AccountError.
       Notation.double_colon := assert_receiver_is_total_eq;
     }.
     
-    #[refine] Global Instance ℐ : core.cmp.Eq.Trait Self := {
+    Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
+      core.cmp.Eq.assert_receiver_is_total_eq :=
+        Datatypes.Some assert_receiver_is_total_eq;
     }.
-    Admitted.
   End Impl_core_cmp_Eq_for_ink_engine_types_AccountError.
-  Global Hint Resolve ℐ : core.
 End Impl_core_cmp_Eq_for_ink_engine_types_AccountError.
 
 Module Error.
@@ -3358,12 +3107,10 @@ Module Impl_core_fmt_Debug_for_ink_engine_Error.
       Notation.double_colon := fmt;
     }.
     
-    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
-    Admitted.
   End Impl_core_fmt_Debug_for_ink_engine_Error.
-  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_ink_engine_Error.
 
 Module
@@ -3381,13 +3128,11 @@ Module
       Notation.double_colon := from;
     }.
     
-    #[refine] Global Instance ℐ :
+    Global Instance ℐ :
       core.convert.From.Trait Self (T := ink_engine.types.AccountError) := {
       core.convert.From.from := from;
     }.
-    Admitted.
   End Impl_core_convert_From_ink_engine_types_AccountError_for_ink_engine_Error.
-  Global Hint Resolve ℐ : core.
 End Impl_core_convert_From_ink_engine_types_AccountError_for_ink_engine_Error.
 
 Module Impl_core_marker_StructuralPartialEq_for_ink_engine_Error.
@@ -3396,12 +3141,9 @@ Module Impl_core_marker_StructuralPartialEq_for_ink_engine_Error.
     
     Definition Self : Set := ink_engine.Error.
     
-    #[refine] Global Instance ℐ :
-      core.marker.StructuralPartialEq.Trait Self := {
+    Global Instance ℐ : core.marker.StructuralPartialEq.Trait Self := {
     }.
-    Admitted.
   End Impl_core_marker_StructuralPartialEq_for_ink_engine_Error.
-  Global Hint Resolve ℐ : core.
 End Impl_core_marker_StructuralPartialEq_for_ink_engine_Error.
 
 Module Impl_core_cmp_PartialEq_for_ink_engine_Error.
@@ -3416,14 +3158,13 @@ Module Impl_core_cmp_PartialEq_for_ink_engine_Error.
       Notation.double_colon := eq;
     }.
     
-    #[refine] Global Instance ℐ :
-      core.cmp.PartialEq.Trait Self
+    Global Instance ℐ :
+      core.cmp.PartialEq.Required.Trait Self
         (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
       core.cmp.PartialEq.eq := eq;
+      core.cmp.PartialEq.ne := Datatypes.None;
     }.
-    Admitted.
   End Impl_core_cmp_PartialEq_for_ink_engine_Error.
-  Global Hint Resolve ℐ : core.
 End Impl_core_cmp_PartialEq_for_ink_engine_Error.
 
 Module Impl_core_marker_StructuralEq_for_ink_engine_Error.
@@ -3432,11 +3173,9 @@ Module Impl_core_marker_StructuralEq_for_ink_engine_Error.
     
     Definition Self : Set := ink_engine.Error.
     
-    #[refine] Global Instance ℐ : core.marker.StructuralEq.Trait Self := {
+    Global Instance ℐ : core.marker.StructuralEq.Trait Self := {
     }.
-    Admitted.
   End Impl_core_marker_StructuralEq_for_ink_engine_Error.
-  Global Hint Resolve ℐ : core.
 End Impl_core_marker_StructuralEq_for_ink_engine_Error.
 
 Module Impl_core_cmp_Eq_for_ink_engine_Error.
@@ -3452,9 +3191,9 @@ Module Impl_core_cmp_Eq_for_ink_engine_Error.
       Notation.double_colon := assert_receiver_is_total_eq;
     }.
     
-    #[refine] Global Instance ℐ : core.cmp.Eq.Trait Self := {
+    Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
+      core.cmp.Eq.assert_receiver_is_total_eq :=
+        Datatypes.Some assert_receiver_is_total_eq;
     }.
-    Admitted.
   End Impl_core_cmp_Eq_for_ink_engine_Error.
-  Global Hint Resolve ℐ : core.
 End Impl_core_cmp_Eq_for_ink_engine_Error.

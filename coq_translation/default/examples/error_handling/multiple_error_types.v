@@ -9,19 +9,21 @@ Definition double_first
     let* α0 := borrow vec (alloc.vec.Vec (ref str) alloc.alloc.Global) in
     let* α1 :=
       (core.ops.deref.Deref.deref
-          (Self := (alloc.vec.Vec (ref str) alloc.alloc.Global)))
+          (Self := alloc.vec.Vec (ref str) alloc.alloc.Global)
+          (Trait := ltac:(refine _)))
         α0 in
     let* α2 := deref α1 (Slice (ref str)) in
     let* α3 := borrow α2 (Slice (ref str)) in
-    let* α4 := (Slice T)::["first"] α3 in
-    (core.option.Option T)::["unwrap"] α4 in
+    let* α4 := (Slice (ref str))::["first"] α3 in
+    (core.option.Option (ref (ref str)))::["unwrap"] α4 in
   let* α0 := M.alloc 2 in
   let* α1 := deref first (ref str) in
   let* α2 := deref α1 str in
   let* α3 := borrow α2 str in
   let* α4 := str::["parse"] α3 in
-  let* α5 := (core.result.Result T E)::["unwrap"] α4 in
-  mul α0 α5.
+  let* α5 :=
+    (core.result.Result i32 core.num.error.ParseIntError)::["unwrap"] α4 in
+  BinOp.mul α0 α5.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
@@ -34,8 +36,8 @@ Definition main `{ℋ : State.Trait} : M unit :=
       (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"]
         [ mk_str "42"; α1; α3 ] in
     let* α5 := pointer_coercion "Unsize" α4 in
-    (Slice T)::["into_vec"] α5 in
-  let* empty := (alloc.vec.Vec T alloc.alloc.Global)::["new"] in
+    (Slice (ref str))::["into_vec"] α5 in
+  let* empty := (alloc.vec.Vec (ref str) alloc.alloc.Global)::["new"] in
   let* strings :=
     let* α0 := deref (mk_str "93") str in
     let* α1 := borrow α0 str in
@@ -45,7 +47,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
       (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"]
         [ mk_str "tofu"; α1; α3 ] in
     let* α5 := pointer_coercion "Unsize" α4 in
-    (Slice T)::["into_vec"] α5 in
+    (Slice (ref str))::["into_vec"] α5 in
   let* _ :=
     let* _ :=
       let* α0 :=

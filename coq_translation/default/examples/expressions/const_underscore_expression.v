@@ -11,14 +11,12 @@ Module Foo.
     }.
     Global Set Primitive Projections.
     
-    #[refine] Global Instance Get_test : Notation.Dot "test" := {
+    Global Instance Get_test : Notation.Dot "test" := {
       Notation.dot x := let* x := M.read x in Pure x.(test) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_AF_test : Notation.DoubleColon t "test" := {
+    Global Instance Get_AF_test : Notation.DoubleColon t "test" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(test) : M _;
     }.
-    Admitted.
   End Foo.
 End Foo.
 Definition Foo `{ℋ : State.Trait} : Set := M.val Foo.t.
@@ -33,14 +31,12 @@ Module Bar.
     }.
     Global Set Primitive Projections.
     
-    #[refine] Global Instance Get_test : Notation.Dot "test" := {
+    Global Instance Get_test : Notation.Dot "test" := {
       Notation.dot x := let* x := M.read x in Pure x.(test) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_AF_test : Notation.DoubleColon t "test" := {
+    Global Instance Get_AF_test : Notation.DoubleColon t "test" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(test) : M _;
     }.
-    Admitted.
   End Bar.
 End Bar.
 Definition Bar `{ℋ : State.Trait} : Set := M.val Bar.t.
@@ -71,13 +67,10 @@ Module
       Notation.double_colon := show;
     }.
     
-    #[refine] Global Instance ℐ :
-      const_underscore_expression.BarTrait.Trait Self := {
+    Global Instance ℐ : const_underscore_expression.BarTrait.Trait Self := {
       const_underscore_expression.BarTrait.show := show;
     }.
-    Admitted.
   End
     Impl_const_underscore_expression_BarTrait_for_const_underscore_expression_Bar.
-  Global Hint Resolve ℐ : core.
 End
   Impl_const_underscore_expression_BarTrait_for_const_underscore_expression_Bar.

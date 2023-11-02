@@ -7,6 +7,6 @@ Definition main `{ℋ : State.Trait} : M unit :=
   let _ := x in
   let* _ :=
     let* α0 := M.alloc 1 in
-    add x α0 in
+    BinOp.add x α0 in
   let* _ := M.alloc 15 in
   M.alloc tt.

@@ -24,12 +24,10 @@ Module Impl_core_fmt_Debug_for_defining_an_error_type_DoubleError.
       Notation.double_colon := fmt;
     }.
     
-    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
-    Admitted.
   End Impl_core_fmt_Debug_for_defining_an_error_type_DoubleError.
-  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_defining_an_error_type_DoubleError.
 
 Module Impl_core_clone_Clone_for_defining_an_error_type_DoubleError.
@@ -45,12 +43,11 @@ Module Impl_core_clone_Clone_for_defining_an_error_type_DoubleError.
       Notation.double_colon := clone;
     }.
     
-    #[refine] Global Instance ℐ : core.clone.Clone.Trait Self := {
+    Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
       core.clone.Clone.clone := clone;
+      core.clone.Clone.clone_from := Datatypes.None;
     }.
-    Admitted.
   End Impl_core_clone_Clone_for_defining_an_error_type_DoubleError.
-  Global Hint Resolve ℐ : core.
 End Impl_core_clone_Clone_for_defining_an_error_type_DoubleError.
 
 Ltac Result T :=
@@ -70,12 +67,10 @@ Module Impl_core_fmt_Display_for_defining_an_error_type_DoubleError.
       Notation.double_colon := fmt;
     }.
     
-    #[refine] Global Instance ℐ : core.fmt.Display.Trait Self := {
+    Global Instance ℐ : core.fmt.Display.Trait Self := {
       core.fmt.Display.fmt := fmt;
     }.
-    Admitted.
   End Impl_core_fmt_Display_for_defining_an_error_type_DoubleError.
-  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Display_for_defining_an_error_type_DoubleError.
 
 Parameter double_first :

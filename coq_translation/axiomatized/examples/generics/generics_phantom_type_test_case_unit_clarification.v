@@ -24,13 +24,11 @@ Module
       Notation.double_colon := fmt;
     }.
     
-    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
-    Admitted.
   End
     Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Inch.
-  Global Hint Resolve ℐ : core.
 End
   Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Inch.
 
@@ -51,13 +49,12 @@ Module
       Notation.double_colon := clone;
     }.
     
-    #[refine] Global Instance ℐ : core.clone.Clone.Trait Self := {
+    Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
       core.clone.Clone.clone := clone;
+      core.clone.Clone.clone_from := Datatypes.None;
     }.
-    Admitted.
   End
     Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Inch.
-  Global Hint Resolve ℐ : core.
 End
   Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Inch.
 
@@ -70,12 +67,10 @@ Module
     Definition Self : Set :=
       generics_phantom_type_test_case_unit_clarification.Inch.
     
-    #[refine] Global Instance ℐ : core.marker.Copy.Trait Self := {
+    Global Instance ℐ : core.marker.Copy.Trait Self := {
     }.
-    Admitted.
   End
     Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Inch.
-  Global Hint Resolve ℐ : core.
 End
   Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Inch.
 
@@ -102,13 +97,11 @@ Module
       Notation.double_colon := fmt;
     }.
     
-    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
-    Admitted.
   End
     Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Mm.
-  Global Hint Resolve ℐ : core.
 End
   Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Mm.
 
@@ -129,13 +122,12 @@ Module
       Notation.double_colon := clone;
     }.
     
-    #[refine] Global Instance ℐ : core.clone.Clone.Trait Self := {
+    Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
       core.clone.Clone.clone := clone;
+      core.clone.Clone.clone_from := Datatypes.None;
     }.
-    Admitted.
   End
     Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Mm.
-  Global Hint Resolve ℐ : core.
 End
   Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Mm.
 
@@ -148,12 +140,10 @@ Module
     Definition Self : Set :=
       generics_phantom_type_test_case_unit_clarification.Mm.
     
-    #[refine] Global Instance ℐ : core.marker.Copy.Trait Self := {
+    Global Instance ℐ : core.marker.Copy.Trait Self := {
     }.
-    Admitted.
   End
     Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Mm.
-  Global Hint Resolve ℐ : core.
 End
   Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Mm.
 
@@ -170,14 +160,12 @@ Module Length.
     }.
     Global Set Primitive Projections.
     
-    #[refine] Global Instance Get_0 : Notation.Dot "0" := {
+    Global Instance Get_0 : Notation.Dot "0" := {
       Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_1 : Notation.Dot "1" := {
+    Global Instance Get_1 : Notation.Dot "1" := {
       Notation.dot x := let* x := M.read x in Pure x.(x1) : M _;
     }.
-    Admitted.
   End Length.
 End Length.
 Definition Length `{ℋ : State.Trait} (Unit : Set) : Set :=
@@ -203,13 +191,11 @@ Module
       Notation.double_colon := fmt;
     }.
     
-    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
-    Admitted.
   End
     Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
-  Global Hint Resolve ℐ : core.
 End
   Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
 
@@ -234,13 +220,12 @@ Module
       Notation.double_colon := clone;
     }.
     
-    #[refine] Global Instance ℐ : core.clone.Clone.Trait Self := {
+    Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
       core.clone.Clone.clone := clone;
+      core.clone.Clone.clone_from := Datatypes.None;
     }.
-    Admitted.
   End
     Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
-  Global Hint Resolve ℐ : core.
 End
   Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
 
@@ -256,12 +241,10 @@ Module
     Definition Self : Set :=
       generics_phantom_type_test_case_unit_clarification.Length Unit.
     
-    #[refine] Global Instance ℐ : core.marker.Copy.Trait Self := {
+    Global Instance ℐ : core.marker.Copy.Trait Self := {
     }.
-    Admitted.
   End
     Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
-  Global Hint Resolve ℐ : core.
 End
   Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
 
@@ -289,16 +272,14 @@ Module
       Notation.double_colon := add;
     }.
     
-    #[refine] Global Instance ℐ :
+    Global Instance ℐ :
       core.ops.arith.Add.Trait Self
         (Rhs := core.ops.arith.Add.Default.Rhs Self) := {
       core.ops.arith.Add.Output := Output;
       core.ops.arith.Add.add := add;
     }.
-    Admitted.
   End
     Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
-  Global Hint Resolve ℐ : core.
 End
   Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
 

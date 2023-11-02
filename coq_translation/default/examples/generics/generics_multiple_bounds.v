@@ -107,7 +107,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
     let* α3 :=
       (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] [ α0; α1; α2 ] in
     let* α4 := pointer_coercion "Unsize" α3 in
-    (Slice T)::["into_vec"] α4 in
+    (Slice i32)::["into_vec"] α4 in
   let* _ :=
     let* α0 := borrow string (ref str) in
     let* α1 := deref α0 (ref str) in

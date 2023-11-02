@@ -746,10 +746,8 @@ Module form.
   (* manual implementation *)
   Module Impl_PartialOrd_for_PortableForm.
     Global Instance I `{State.Trait} :
-      core.cmp.PartialOrd.Trait PortableForm (Rhs := PortableForm) := {|
-      core.cmp.PartialOrd.partial_cmp _ _
-        := Pure (option.Option.Some std.cmp.Ordering.Equal);
-    |}.
+      core.cmp.PartialOrd.Trait PortableForm (Rhs := PortableForm).
+    Admitted.
   End Impl_PartialOrd_for_PortableForm.
 
   (* manual implementation *)

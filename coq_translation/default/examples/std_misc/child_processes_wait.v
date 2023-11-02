@@ -10,11 +10,12 @@ Definition main `{ℋ : State.Trait} : M unit :=
     let* α3 := deref α2 std.process.Command in
     let* α4 := borrow_mut α3 std.process.Command in
     let* α5 := std.process.Command::["spawn"] α4 in
-    (core.result.Result T E)::["unwrap"] α5 in
+    (core.result.Result std.process.Child std.io.error.Error)::["unwrap"] α5 in
   let* _result :=
     let* α0 := borrow_mut child std.process.Child in
     let* α1 := std.process.Child::["wait"] α0 in
-    (core.result.Result T E)::["unwrap"] α1 in
+    (core.result.Result std.process.ExitStatus std.io.error.Error)::["unwrap"]
+      α1 in
   let* _ :=
     let* _ :=
       let* α0 := borrow [ mk_str "reached end of main

@@ -64,7 +64,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
       let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := add enums_c_like.Color.Red 0 in
+      let* α4 := BinOp.add enums_c_like.Color.Red 0 in
       let* α5 := cast α4 in
       let* α6 := borrow α5 i32 in
       let* α7 := deref α6 i32 in
@@ -76,24 +76,19 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α13 := pointer_coercion "Unsize" α12 in
       let* α14 := M.alloc 0 in
       let* α15 := M.alloc " "%char in
-      let* α16 := M.alloc 8 in
-      let* α17 := M.alloc 6 in
-      let* α18 := "unimplemented parent_kind" α17 in
-      let* α19 :=
-        core.fmt.rt.Placeholder::["new"]
-          α14
-          α15
-          (core.fmt.rt.Alignment.Unknown tt)
-          α16
-          (core.fmt.rt.Count.Implied tt)
-          α18 in
-      let* α20 := borrow [ α19 ] (list core.fmt.rt.Placeholder) in
-      let* α21 := deref α20 (list core.fmt.rt.Placeholder) in
-      let* α22 := borrow α21 (list core.fmt.rt.Placeholder) in
-      let* α23 := pointer_coercion "Unsize" α22 in
-      let* α24 := core.fmt.rt.UnsafeArg::["new"] in
-      let* α25 := core.fmt.Arguments::["new_v1_formatted"] α3 α13 α23 α24 in
-      std.io.stdio._print α25 in
+      let* α16 := M.alloc core.fmt.rt.Alignment.Unknown in
+      let* α17 := M.alloc 8 in
+      let* α18 := M.alloc core.fmt.rt.Count.Implied in
+      let* α19 := M.alloc 6 in
+      let* α20 := "unimplemented parent_kind" α19 in
+      let* α21 := core.fmt.rt.Placeholder::["new"] α14 α15 α16 α17 α18 α20 in
+      let* α22 := borrow [ α21 ] (list core.fmt.rt.Placeholder) in
+      let* α23 := deref α22 (list core.fmt.rt.Placeholder) in
+      let* α24 := borrow α23 (list core.fmt.rt.Placeholder) in
+      let* α25 := pointer_coercion "Unsize" α24 in
+      let* α26 := core.fmt.rt.UnsafeArg::["new"] in
+      let* α27 := core.fmt.Arguments::["new_v1_formatted"] α3 α13 α25 α26 in
+      std.io.stdio._print α27 in
     M.alloc tt in
   let* _ :=
     let* _ :=
@@ -103,7 +98,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
       let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := add enums_c_like.Color.Blue 0 in
+      let* α4 := BinOp.add enums_c_like.Color.Blue 0 in
       let* α5 := cast α4 in
       let* α6 := borrow α5 i32 in
       let* α7 := deref α6 i32 in
@@ -115,23 +110,18 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α13 := pointer_coercion "Unsize" α12 in
       let* α14 := M.alloc 0 in
       let* α15 := M.alloc " "%char in
-      let* α16 := M.alloc 8 in
-      let* α17 := M.alloc 6 in
-      let* α18 := "unimplemented parent_kind" α17 in
-      let* α19 :=
-        core.fmt.rt.Placeholder::["new"]
-          α14
-          α15
-          (core.fmt.rt.Alignment.Unknown tt)
-          α16
-          (core.fmt.rt.Count.Implied tt)
-          α18 in
-      let* α20 := borrow [ α19 ] (list core.fmt.rt.Placeholder) in
-      let* α21 := deref α20 (list core.fmt.rt.Placeholder) in
-      let* α22 := borrow α21 (list core.fmt.rt.Placeholder) in
-      let* α23 := pointer_coercion "Unsize" α22 in
-      let* α24 := core.fmt.rt.UnsafeArg::["new"] in
-      let* α25 := core.fmt.Arguments::["new_v1_formatted"] α3 α13 α23 α24 in
-      std.io.stdio._print α25 in
+      let* α16 := M.alloc core.fmt.rt.Alignment.Unknown in
+      let* α17 := M.alloc 8 in
+      let* α18 := M.alloc core.fmt.rt.Count.Implied in
+      let* α19 := M.alloc 6 in
+      let* α20 := "unimplemented parent_kind" α19 in
+      let* α21 := core.fmt.rt.Placeholder::["new"] α14 α15 α16 α17 α18 α20 in
+      let* α22 := borrow [ α21 ] (list core.fmt.rt.Placeholder) in
+      let* α23 := deref α22 (list core.fmt.rt.Placeholder) in
+      let* α24 := borrow α23 (list core.fmt.rt.Placeholder) in
+      let* α25 := pointer_coercion "Unsize" α24 in
+      let* α26 := core.fmt.rt.UnsafeArg::["new"] in
+      let* α27 := core.fmt.Arguments::["new_v1_formatted"] α3 α13 α25 α26 in
+      std.io.stdio._print α27 in
     M.alloc tt in
   M.alloc tt.

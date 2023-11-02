@@ -11,10 +11,9 @@ Module Years.
     }.
     Global Set Primitive Projections.
     
-    #[refine] Global Instance Get_0 : Notation.Dot "0" := {
+    Global Instance Get_0 : Notation.Dot "0" := {
       Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
-    Admitted.
   End Years.
 End Years.
 Definition Years `{ℋ : State.Trait} : Set := M.val Years.t.
@@ -23,7 +22,7 @@ Definition Years `{ℋ : State.Trait} : Set := M.val Years.t.
 Definition main `{ℋ : State.Trait} : M unit :=
   let* years :=
     let* α0 := M.alloc 42 in
-    Pure (generics_new_type_idiom_as_base_type.Years.Build_t α0) in
+    M.alloc (generics_new_type_idiom_as_base_type.Years.Build_t α0) in
   let* years_as_primitive_1 := years.["0"] in
   let
       'generics_new_type_idiom_as_base_type.Years.Build_t

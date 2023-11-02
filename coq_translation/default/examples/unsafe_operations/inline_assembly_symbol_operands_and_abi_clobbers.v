@@ -24,7 +24,7 @@ Definition foo `{ℋ : State.Trait} (arg : i32) : M i32 :=
       std.io.stdio._print α12 in
     M.alloc tt in
   let* α0 := M.alloc 2 in
-  mul arg α0.
+  BinOp.mul arg α0.
 
 Definition call_foo `{ℋ : State.Trait} (arg : i32) : M i32 :=
   let* result := M.alloc tt in

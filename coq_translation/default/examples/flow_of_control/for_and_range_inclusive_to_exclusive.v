@@ -10,7 +10,8 @@ Definition main `{ℋ : State.Trait} : M unit :=
       {| core.ops.range.Range.start := α0; core.ops.range.Range.end := α1; |} in
   let* α3 :=
     (core.iter.traits.collect.IntoIterator.into_iter
-        (Self := (core.ops.range.Range i32)))
+        (Self := core.ops.range.Range i32)
+        (Trait := ltac:(refine _)))
       α2 in
   let* α4 :=
     match α3 with
@@ -22,7 +23,8 @@ Definition main `{ℋ : State.Trait} : M unit :=
           let* α2 := borrow_mut α1 (core.ops.range.Range i32) in
           let* α3 :=
             (core.iter.traits.iterator.Iterator.next
-                (Self := (core.ops.range.Range i32)))
+                (Self := core.ops.range.Range i32)
+                (Trait := ltac:(refine _)))
               α2 in
           match α3 with
           | core.option.Option  =>
@@ -30,9 +32,9 @@ Definition main `{ℋ : State.Trait} : M unit :=
             never_to_any α0
           | core.option.Option n =>
             let* α0 := M.alloc 15 in
-            let* α1 := rem n α0 in
+            let* α1 := BinOp.rem n α0 in
             let* α2 := M.alloc 0 in
-            let* α3 := eq α1 α2 in
+            let* α3 := BinOp.eq α1 α2 in
             let* α4 := use α3 in
             if (α4 : bool) then
               let* _ :=
@@ -48,9 +50,9 @@ Definition main `{ℋ : State.Trait} : M unit :=
               M.alloc tt
             else
               let* α0 := M.alloc 3 in
-              let* α1 := rem n α0 in
+              let* α1 := BinOp.rem n α0 in
               let* α2 := M.alloc 0 in
-              let* α3 := eq α1 α2 in
+              let* α3 := BinOp.eq α1 α2 in
               let* α4 := use α3 in
               if (α4 : bool) then
                 let* _ :=
@@ -66,9 +68,9 @@ Definition main `{ℋ : State.Trait} : M unit :=
                 M.alloc tt
               else
                 let* α0 := M.alloc 5 in
-                let* α1 := rem n α0 in
+                let* α1 := BinOp.rem n α0 in
                 let* α2 := M.alloc 0 in
-                let* α3 := eq α1 α2 in
+                let* α3 := BinOp.eq α1 α2 in
                 let* α4 := use α3 in
                 if (α4 : bool) then
                   let* _ :=

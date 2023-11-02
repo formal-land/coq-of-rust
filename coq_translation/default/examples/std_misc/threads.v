@@ -5,7 +5,8 @@ Definition NTHREADS `{ℋ : State.Trait} : u32 := M.run (M.alloc 10).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
-  let* children := (alloc.vec.Vec T alloc.alloc.Global)::["new"] in
+  let* children :=
+    (alloc.vec.Vec (std.thread.JoinHandle unit) alloc.alloc.Global)::["new"] in
   let* _ :=
     let* α0 := M.alloc 0 in
     let* α1 :=
@@ -16,7 +17,8 @@ Definition main `{ℋ : State.Trait} : M unit :=
         |} in
     let* α2 :=
       (core.iter.traits.collect.IntoIterator.into_iter
-          (Self := (core.ops.range.Range u32)))
+          (Self := core.ops.range.Range u32)
+          (Trait := ltac:(refine _)))
         α1 in
     let* α3 :=
       match α2 with
@@ -28,7 +30,8 @@ Definition main `{ℋ : State.Trait} : M unit :=
             let* α2 := borrow_mut α1 (core.ops.range.Range u32) in
             let* α3 :=
               (core.iter.traits.iterator.Iterator.next
-                  (Self := (core.ops.range.Range u32)))
+                  (Self := core.ops.range.Range u32)
+                  (Trait := ltac:(refine _)))
                 α2 in
             match α3 with
             | core.option.Option  =>
@@ -66,7 +69,11 @@ Definition main `{ℋ : State.Trait} : M unit :=
                         std.io.stdio._print α12 in
                       M.alloc tt in
                     M.alloc tt) in
-                (alloc.vec.Vec T A)::["push"] α0 α1 in
+                (alloc.vec.Vec
+                      (std.thread.JoinHandle unit)
+                      alloc.alloc.Global)::["push"]
+                  α0
+                  α1 in
               M.alloc tt
             end in
           M.alloc tt)
@@ -74,8 +81,8 @@ Definition main `{ℋ : State.Trait} : M unit :=
     use α3 in
   let* α0 :=
     (core.iter.traits.collect.IntoIterator.into_iter
-        (Self :=
-          (alloc.vec.Vec (std.thread.JoinHandle unit) alloc.alloc.Global)))
+        (Self := alloc.vec.Vec (std.thread.JoinHandle unit) alloc.alloc.Global)
+        (Trait := ltac:(refine _)))
       children in
   let* α1 :=
     match α0 with
@@ -103,16 +110,17 @@ Definition main `{ℋ : State.Trait} : M unit :=
           let* α3 :=
             (core.iter.traits.iterator.Iterator.next
                 (Self :=
-                  (alloc.vec.into_iter.IntoIter
+                  alloc.vec.into_iter.IntoIter
                     (std.thread.JoinHandle unit)
-                    alloc.alloc.Global)))
+                    alloc.alloc.Global)
+                (Trait := ltac:(refine _)))
               α2 in
           match α3 with
           | core.option.Option  =>
             let* α0 := Break in
             never_to_any α0
           | core.option.Option child =>
-            let* _ := (std.thread.JoinHandle T)::["join"] child in
+            let* _ := (std.thread.JoinHandle unit)::["join"] child in
             M.alloc tt
           end in
         M.alloc tt)

@@ -11,10 +11,9 @@ Module Foo.
     }.
     Global Set Primitive Projections.
     
-    #[refine] Global Instance Get_0 : Notation.Dot "0" := {
+    Global Instance Get_0 : Notation.Dot "0" := {
       Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
-    Admitted.
   End Foo.
 End Foo.
 Definition Foo `{ℋ : State.Trait} : Set := M.val Foo.t.
@@ -28,7 +27,7 @@ Module Impl_example05_Foo.
     Definition plus1 (self : Self) : M u32 :=
       let* α0 := self.["0"] in
       let* α1 := M.alloc 1 in
-      add α0 α1.
+      BinOp.add α0 α1.
     
     Global Instance AssociatedFunction_plus1 :
       Notation.DoubleColon Self "plus1" := {
@@ -41,6 +40,6 @@ End Impl_example05_Foo.
 Definition main `{ℋ : State.Trait} : M unit :=
   let* foo :=
     let* α0 := M.alloc 0 in
-    Pure (example05.Foo.Build_t α0) in
+    M.alloc (example05.Foo.Build_t α0) in
   let* _ := example05.Foo::["plus1"] foo in
   M.alloc tt.

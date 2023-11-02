@@ -20,10 +20,9 @@ Module S.
     }.
     Global Set Primitive Projections.
     
-    #[refine] Global Instance Get_0 : Notation.Dot "0" := {
+    Global Instance Get_0 : Notation.Dot "0" := {
       Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
-    Admitted.
   End S.
 End S.
 Definition S `{ℋ : State.Trait} : Set := M.val S.t.
@@ -40,10 +39,9 @@ Module SGen.
     }.
     Global Set Primitive Projections.
     
-    #[refine] Global Instance Get_0 : Notation.Dot "0" := {
+    Global Instance Get_0 : Notation.Dot "0" := {
       Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
-    Admitted.
   End SGen.
 End SGen.
 Definition SGen `{ℋ : State.Trait} (T : Set) : Set := M.val (SGen.t (T := T)).
@@ -73,18 +71,23 @@ Definition generic
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
   let* _ :=
-    generics_functions.reg_fn
-      (generics_functions.S.Build_t (generics_functions.A.Build_t tt)) in
+    let* α0 := M.alloc generics_functions.A.Build_t in
+    let* α1 := M.alloc (generics_functions.S.Build_t α0) in
+    generics_functions.reg_fn α1 in
   let* _ :=
-    generics_functions.gen_spec_t
-      (generics_functions.SGen.Build_t (generics_functions.A.Build_t tt)) in
+    let* α0 := M.alloc generics_functions.A.Build_t in
+    let* α1 := M.alloc (generics_functions.SGen.Build_t α0) in
+    generics_functions.gen_spec_t α1 in
   let* _ :=
     let* α0 := M.alloc 6 in
-    generics_functions.gen_spec_i32 (generics_functions.SGen.Build_t α0) in
+    let* α1 := M.alloc (generics_functions.SGen.Build_t α0) in
+    generics_functions.gen_spec_i32 α1 in
   let* _ :=
     let* α0 := M.alloc "a"%char in
-    generics_functions.generic (generics_functions.SGen.Build_t α0) in
+    let* α1 := M.alloc (generics_functions.SGen.Build_t α0) in
+    generics_functions.generic α1 in
   let* _ :=
     let* α0 := M.alloc "c"%char in
-    generics_functions.generic (generics_functions.SGen.Build_t α0) in
+    let* α1 := M.alloc (generics_functions.SGen.Build_t α0) in
+    generics_functions.generic α1 in
   M.alloc tt.

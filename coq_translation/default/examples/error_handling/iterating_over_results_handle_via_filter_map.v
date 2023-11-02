@@ -12,25 +12,28 @@ Definition main `{ℋ : State.Trait} : M unit :=
       (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"]
         [ mk_str "tofu"; α1; α3 ] in
     let* α5 := pointer_coercion "Unsize" α4 in
-    (Slice T)::["into_vec"] α5 in
+    (Slice (ref str))::["into_vec"] α5 in
   let* numbers :=
     let* α0 :=
       (core.iter.traits.collect.IntoIterator.into_iter
-          (Self := (alloc.vec.Vec (ref str) alloc.alloc.Global)))
+          (Self := alloc.vec.Vec (ref str) alloc.alloc.Global)
+          (Trait := ltac:(refine _)))
         strings in
     let* α1 :=
       (core.iter.traits.iterator.Iterator.filter_map
-          (Self := (alloc.vec.into_iter.IntoIter (ref str) alloc.alloc.Global)))
+          (Self := alloc.vec.into_iter.IntoIter (ref str) alloc.alloc.Global)
+          (Trait := ltac:(refine _)))
         α0
         (let* α0 := deref s str in
         let* α1 := borrow α0 str in
         let* α2 := str::["parse"] α1 in
-        (core.result.Result T E)::["ok"] α2) in
+        (core.result.Result i32 core.num.error.ParseIntError)::["ok"] α2) in
     (core.iter.traits.iterator.Iterator.collect
         (Self :=
-          (core.iter.adapters.filter_map.FilterMap
+          core.iter.adapters.filter_map.FilterMap
             (alloc.vec.into_iter.IntoIter (ref str) alloc.alloc.Global)
-            type not implemented)))
+            type not implemented)
+        (Trait := ltac:(refine _)))
       α1 in
   let* _ :=
     let* _ :=

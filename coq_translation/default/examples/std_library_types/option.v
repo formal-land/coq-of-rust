@@ -7,13 +7,13 @@ Definition checked_division
     (divisor : i32)
     : M (core.option.Option i32) :=
   let* α0 := M.alloc 0 in
-  let* α1 := eq divisor α0 in
+  let* α1 := BinOp.eq divisor α0 in
   let* α2 := use α1 in
   if (α2 : bool) then
-    Pure (core.option.Option.None tt)
+    M.alloc core.option.Option.None
   else
-    let* α0 := div dividend divisor in
-    Pure (core.option.Option.Some α0).
+    let* α0 := BinOp.div dividend divisor in
+    M.alloc (core.option.Option.Some α0).
 
 Definition try_division
     `{ℋ : State.Trait}
@@ -88,11 +88,11 @@ Definition main `{ℋ : State.Trait} : M unit :=
     let* α0 := M.alloc 1 in
     let* α1 := M.alloc 0 in
     option.try_division α0 α1 in
-  let none := core.option.Option.None tt in
-  let _equivalent_none := core.option.Option.None tt in
+  let* none := M.alloc core.option.Option.None in
+  let* _equivalent_none := M.alloc core.option.Option.None in
   let* optional_float :=
     let* α0 := M.alloc 0 (* 0 *) in
-    Pure (core.option.Option.Some α0) in
+    M.alloc (core.option.Option.Some α0) in
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -107,7 +107,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α5 := deref α4 (core.option.Option f32) in
       let* α6 := borrow α5 (core.option.Option f32) in
       let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
-      let* α8 := (core.option.Option T)::["unwrap"] optional_float in
+      let* α8 := (core.option.Option f32)::["unwrap"] optional_float in
       let* α9 := borrow α8 f32 in
       let* α10 := deref α9 f32 in
       let* α11 := borrow α10 f32 in
@@ -133,7 +133,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α5 := deref α4 (core.option.Option i32) in
       let* α6 := borrow α5 (core.option.Option i32) in
       let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
-      let* α8 := (core.option.Option T)::["unwrap"] none in
+      let* α8 := (core.option.Option i32)::["unwrap"] none in
       let* α9 := borrow α8 i32 in
       let* α10 := deref α9 i32 in
       let* α11 := borrow α10 i32 in

@@ -12,22 +12,18 @@ Module Point.
     }.
     Global Set Primitive Projections.
     
-    #[refine] Global Instance Get_x : Notation.Dot "x" := {
+    Global Instance Get_x : Notation.Dot "x" := {
       Notation.dot x' := let* x' := M.read x' in Pure x'.(x) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_AF_x : Notation.DoubleColon t "x" := {
+    Global Instance Get_AF_x : Notation.DoubleColon t "x" := {
       Notation.double_colon x' := let* x' := M.read x' in Pure x'.(x) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_y : Notation.Dot "y" := {
+    Global Instance Get_y : Notation.Dot "y" := {
       Notation.dot x := let* x := M.read x in Pure x.(y) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_AF_y : Notation.DoubleColon t "y" := {
+    Global Instance Get_AF_y : Notation.DoubleColon t "y" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(y) : M _;
     }.
-    Admitted.
   End Point.
 End Point.
 Definition Point `{ℋ : State.Trait} : Set := M.val Point.t.
@@ -80,22 +76,18 @@ Module Rectangle.
     }.
     Global Set Primitive Projections.
     
-    #[refine] Global Instance Get_p1 : Notation.Dot "p1" := {
+    Global Instance Get_p1 : Notation.Dot "p1" := {
       Notation.dot x := let* x := M.read x in Pure x.(p1) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_AF_p1 : Notation.DoubleColon t "p1" := {
+    Global Instance Get_AF_p1 : Notation.DoubleColon t "p1" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(p1) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_p2 : Notation.Dot "p2" := {
+    Global Instance Get_p2 : Notation.Dot "p2" := {
       Notation.dot x := let* x := M.read x in Pure x.(p2) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_AF_p2 : Notation.DoubleColon t "p2" := {
+    Global Instance Get_AF_p2 : Notation.DoubleColon t "p2" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(p2) : M _;
     }.
-    Admitted.
   End Rectangle.
 End Rectangle.
 Definition Rectangle `{ℋ : State.Trait} : Set := M.val Rectangle.t.
@@ -132,9 +124,9 @@ Module Impl_associated_functions_and_methods_Rectangle.
           |} :=
         let* α0 := deref self associated_functions_and_methods.Rectangle in
         α0.["p2"] in
-      let* α0 := sub x1 x2 in
-      let* α1 := sub y1 y2 in
-      let* α2 := mul α0 α1 in
+      let* α0 := BinOp.sub x1 x2 in
+      let* α1 := BinOp.sub y1 y2 in
+      let* α2 := BinOp.mul α0 α1 in
       f64::["abs"] α2.
     
     Global Instance AssociatedFunction_area :
@@ -158,12 +150,12 @@ Module Impl_associated_functions_and_methods_Rectangle.
         let* α0 := deref self associated_functions_and_methods.Rectangle in
         α0.["p2"] in
       let* α0 := M.alloc 2 (* 2.0 *) in
-      let* α1 := sub x1 x2 in
+      let* α1 := BinOp.sub x1 x2 in
       let* α2 := f64::["abs"] α1 in
-      let* α3 := sub y1 y2 in
+      let* α3 := BinOp.sub y1 y2 in
       let* α4 := f64::["abs"] α3 in
-      let* α5 := add α2 α4 in
-      mul α0 α5.
+      let* α5 := BinOp.add α2 α4 in
+      BinOp.mul α0 α5.
     
     Global Instance AssociatedFunction_perimeter :
       Notation.DoubleColon Self "perimeter" := {
@@ -211,14 +203,12 @@ Module Pair.
     }.
     Global Set Primitive Projections.
     
-    #[refine] Global Instance Get_0 : Notation.Dot "0" := {
+    Global Instance Get_0 : Notation.Dot "0" := {
       Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_1 : Notation.Dot "1" := {
+    Global Instance Get_1 : Notation.Dot "1" := {
       Notation.dot x := let* x := M.read x in Pure x.(x1) : M _;
     }.
-    Admitted.
   End Pair.
 End Pair.
 Definition Pair `{ℋ : State.Trait} : Set := M.val Pair.t.
@@ -338,9 +328,9 @@ Definition main `{ℋ : State.Trait} : M unit :=
     associated_functions_and_methods.Rectangle::["translate"] α0 α1 α2 in
   let* pair :=
     let* α0 := M.alloc 1 in
-    let* α1 := (alloc.boxed.Box T alloc.alloc.Global)::["new"] α0 in
+    let* α1 := (alloc.boxed.Box i32 alloc.alloc.Global)::["new"] α0 in
     let* α2 := M.alloc 2 in
-    let* α3 := (alloc.boxed.Box T alloc.alloc.Global)::["new"] α2 in
-    Pure (associated_functions_and_methods.Pair.Build_t α1 α3) in
+    let* α3 := (alloc.boxed.Box i32 alloc.alloc.Global)::["new"] α2 in
+    M.alloc (associated_functions_and_methods.Pair.Build_t α1 α3) in
   let* _ := associated_functions_and_methods.Pair::["destroy"] pair in
   M.alloc tt.

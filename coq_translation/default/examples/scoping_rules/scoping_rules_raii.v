@@ -4,18 +4,18 @@ Require Import CoqOfRust.CoqOfRust.
 Definition create_box `{ℋ : State.Trait} : M unit :=
   let* _box1 :=
     let* α0 := M.alloc 3 in
-    (alloc.boxed.Box T alloc.alloc.Global)::["new"] α0 in
+    (alloc.boxed.Box i32 alloc.alloc.Global)::["new"] α0 in
   M.alloc tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
   let* _box2 :=
     let* α0 := M.alloc 5 in
-    (alloc.boxed.Box T alloc.alloc.Global)::["new"] α0 in
+    (alloc.boxed.Box i32 alloc.alloc.Global)::["new"] α0 in
   let* _ :=
     let* _box3 :=
       let* α0 := M.alloc 4 in
-      (alloc.boxed.Box T alloc.alloc.Global)::["new"] α0 in
+      (alloc.boxed.Box i32 alloc.alloc.Global)::["new"] α0 in
     M.alloc tt in
   let* α0 := M.alloc 0 in
   let* α1 := M.alloc 1000 in
@@ -24,7 +24,8 @@ Definition main `{ℋ : State.Trait} : M unit :=
       {| core.ops.range.Range.start := α0; core.ops.range.Range.end := α1; |} in
   let* α3 :=
     (core.iter.traits.collect.IntoIterator.into_iter
-        (Self := (core.ops.range.Range u32)))
+        (Self := core.ops.range.Range u32)
+        (Trait := ltac:(refine _)))
       α2 in
   let* α4 :=
     match α3 with
@@ -36,7 +37,8 @@ Definition main `{ℋ : State.Trait} : M unit :=
           let* α2 := borrow_mut α1 (core.ops.range.Range u32) in
           let* α3 :=
             (core.iter.traits.iterator.Iterator.next
-                (Self := (core.ops.range.Range u32)))
+                (Self := core.ops.range.Range u32)
+                (Trait := ltac:(refine _)))
               α2 in
           match α3 with
           | core.option.Option  =>

@@ -51,19 +51,17 @@ Module
       Notation.double_colon := fmt;
     }.
     
-    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
-    Admitted.
   End
     Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_with_Fruit.
-  Global Hint Resolve ℐ : core.
 End
   Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_with_Fruit.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
-  let my_fruit := core.option.Option.None tt in
+  let* my_fruit := M.alloc core.option.Option.None in
   let get_lemon_as_fallback :=
     let* _ :=
       let* _ :=
@@ -76,15 +74,17 @@ Definition main `{ℋ : State.Trait} : M unit :=
         let* α4 := core.fmt.Arguments::["new_const"] α3 in
         std.io.stdio._print α4 in
       M.alloc tt in
-    Pure
-      (unpacking_options_and_defaults_via_get_or_insert_with.Fruit.Lemon tt) in
+    M.alloc unpacking_options_and_defaults_via_get_or_insert_with.Fruit.Lemon in
   let* first_available_fruit :=
     let* α0 :=
       borrow_mut
         my_fruit
         (core.option.Option
           unpacking_options_and_defaults_via_get_or_insert_with.Fruit) in
-    (core.option.Option T)::["get_or_insert_with"] α0 get_lemon_as_fallback in
+    (core.option.Option
+          unpacking_options_and_defaults_via_get_or_insert_with.Fruit)::["get_or_insert_with"]
+      α0
+      get_lemon_as_fallback in
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -149,16 +149,21 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
     M.alloc tt in
-  let my_apple :=
-    core.option.Option.Some
-      (unpacking_options_and_defaults_via_get_or_insert_with.Fruit.Apple tt) in
+  let* my_apple :=
+    let* α0 :=
+      M.alloc
+        unpacking_options_and_defaults_via_get_or_insert_with.Fruit.Apple in
+    M.alloc (core.option.Option.Some α0) in
   let* should_be_apple :=
     let* α0 :=
       borrow_mut
         my_apple
         (core.option.Option
           unpacking_options_and_defaults_via_get_or_insert_with.Fruit) in
-    (core.option.Option T)::["get_or_insert_with"] α0 get_lemon_as_fallback in
+    (core.option.Option
+          unpacking_options_and_defaults_via_get_or_insert_with.Fruit)::["get_or_insert_with"]
+      α0
+      get_lemon_as_fallback in
   let* _ :=
     let* _ :=
       let* α0 :=

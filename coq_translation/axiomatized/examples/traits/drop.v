@@ -11,14 +11,12 @@ Module Droppable.
     }.
     Global Set Primitive Projections.
     
-    #[refine] Global Instance Get_name : Notation.Dot "name" := {
+    Global Instance Get_name : Notation.Dot "name" := {
       Notation.dot x := let* x := M.read x in Pure x.(name) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_AF_name : Notation.DoubleColon t "name" := {
+    Global Instance Get_AF_name : Notation.DoubleColon t "name" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(name) : M _;
     }.
-    Admitted.
   End Droppable.
 End Droppable.
 Definition Droppable `{ℋ : State.Trait} : Set := M.val Droppable.t.
@@ -36,12 +34,10 @@ Module Impl_core_ops_drop_Drop_for_drop_Droppable.
       Notation.double_colon := drop;
     }.
     
-    #[refine] Global Instance ℐ : core.ops.drop.Drop.Trait Self := {
+    Global Instance ℐ : core.ops.drop.Drop.Trait Self := {
       core.ops.drop.Drop.drop := drop;
     }.
-    Admitted.
   End Impl_core_ops_drop_Drop_for_drop_Droppable.
-  Global Hint Resolve ℐ : core.
 End Impl_core_ops_drop_Drop_for_drop_Droppable.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)

@@ -60,7 +60,6 @@ enum TraitItem {
 /// fields common for all function definitions
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
 struct FunDefinition {
-    name: String,
     ty_params: Vec<String>,
     where_predicates: Vec<WherePredicate>,
     signature_and_body: FnSigAndBody,
@@ -70,17 +69,14 @@ struct FunDefinition {
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
 enum ImplItem {
     Const {
-        name: String,
         ty: Box<CoqType>,
         body: Option<Box<Expr>>,
         is_dead_code: bool,
     },
     Definition {
         definition: FunDefinition,
-        is_method: bool,
     },
     Type {
-        name: String,
         ty: Box<CoqType>,
     },
 }
@@ -94,8 +90,10 @@ struct WherePredicate {
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
 struct TraitBound {
     name: Path,
-    ty_params: Vec<TraitTyParamValue>,
+    ty_params: Vec<(String, TraitTyParamValue)>,
 }
+
+type TraitTyParamValue = FieldWithDefault<Box<CoqType>>;
 
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
 enum VariantItem {
@@ -103,15 +101,15 @@ enum VariantItem {
     Tuple { tys: Vec<Box<CoqType>> },
 }
 
-/// The actual value of the type parameter of the trait's generic parameter
+/// The value for a field that may have a default value
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
-pub(crate) enum TraitTyParamValue {
-    /// the value of the parameter that has no default
-    JustValue { name: String, ty: Box<CoqType> },
-    /// the value that replaces the default value of the parameter
-    ValWithDef { name: String, ty: Box<CoqType> },
+pub(crate) enum FieldWithDefault<A> {
+    /// the value of a field that has no defaults
+    RequiredValue(A),
+    /// the value that replaces the default value
+    OptionalValue(A),
     /// means the default value of the type parameter is used
-    JustDefault { name: String },
+    Default,
 }
 
 /// Representation of top-level hir [Item]s in coq-of-rust
@@ -123,7 +121,10 @@ enum TopLevelItem {
         ty: Box<CoqType>,
         value: Option<Box<Expr>>,
     },
-    Definition(FunDefinition),
+    Definition {
+        name: String,
+        definition: FunDefinition,
+    },
     TypeAlias {
         name: String,
         ty_params: Vec<String>,
@@ -155,7 +156,7 @@ enum TopLevelItem {
         self_ty: Box<CoqType>,
         /// We use a counter to disambiguate several impls for the same type
         counter: u64,
-        items: Vec<ImplItem>,
+        items: Vec<(String, ImplItem)>,
     },
     Trait {
         name: String,
@@ -168,8 +169,8 @@ enum TopLevelItem {
         predicates: Vec<WherePredicate>,
         self_ty: Box<CoqType>,
         of_trait: Path,
-        trait_ty_params: Vec<TraitTyParamValue>,
-        items: Vec<(ImplItem, bool)>,
+        trait_ty_params: Vec<(String, TraitTyParamValue)>,
+        items: Vec<(String, FieldWithDefault<ImplItem>)>,
     },
     Error(String),
 }
@@ -195,12 +196,25 @@ fn emit_warning_with_note(env: &Env, span: &rustc_span::Span, warning_msg: &str,
         .emit();
 }
 
-impl ImplItem {
-    fn name(&self) -> String {
+impl<A> FieldWithDefault<A> {
+    fn map<B, F>(self, f: F) -> FieldWithDefault<B>
+    where
+        F: FnOnce(A) -> B,
+    {
         match self {
-            ImplItem::Const { name, .. } => name.clone(),
-            ImplItem::Definition { definition, .. } => definition.name.clone(),
-            ImplItem::Type { name, .. } => name.clone(),
+            FieldWithDefault::RequiredValue(a) => FieldWithDefault::RequiredValue(f(a)),
+            FieldWithDefault::OptionalValue(a) => FieldWithDefault::OptionalValue(f(a)),
+            FieldWithDefault::Default => FieldWithDefault::Default,
+        }
+    }
+}
+
+impl<'a, A> From<&'a FieldWithDefault<A>> for Option<&'a A> {
+    fn from(val: &'a FieldWithDefault<A>) -> Self {
+        match val {
+            FieldWithDefault::RequiredValue(a) => Some(a),
+            FieldWithDefault::OptionalValue(a) => Some(a),
+            FieldWithDefault::Default => None,
         }
     }
 }
@@ -358,14 +372,16 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
             }
             let is_dead_code = check_dead_code_lint_in_attributes(tcx, item);
             let fn_sig_and_body = get_hir_fn_sig_and_body(tcx, fn_sig, body_id);
-            vec![TopLevelItem::Definition(FunDefinition::compile(
-                env,
-                &name,
-                generics,
-                &fn_sig_and_body,
-                "arg",
-                is_dead_code,
-            ))]
+            vec![TopLevelItem::Definition {
+                name,
+                definition: FunDefinition::compile(
+                    env,
+                    generics,
+                    &fn_sig_and_body,
+                    "arg",
+                    is_dead_code,
+                ),
+            }]
         }
         ItemKind::Macro(_, _) => vec![],
         ItemKind::Mod(module) => {
@@ -523,21 +539,38 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
 
             match of_trait {
                 Some(trait_ref) => {
-                    let rustc_non_default_items: Vec<_> = tcx
+                    let rustc_default_item_names: Vec<String> = tcx
                         .associated_items(trait_ref.trait_def_id().unwrap())
                         .in_definition_order()
-                        .filter(|item| !item.defaultness(*tcx).has_value())
+                        .filter(|item| item.defaultness(*tcx).has_value())
+                        .map(|item| to_valid_coq_name(item.name.to_string()))
                         .collect();
-                    let items_with_default_status = items
-                        .into_iter()
-                        .map(|item| {
-                            let has_no_default =
-                                rustc_non_default_items.iter().any(|non_default_item| {
-                                    item.name()
-                                        == to_valid_coq_name(non_default_item.name.to_string())
-                                });
-                            (item, has_no_default)
+                    let items: Vec<(String, FieldWithDefault<ImplItem>)> = items
+                        .iter()
+                        .map(|(name, item)| {
+                            let has_default = rustc_default_item_names
+                                .iter()
+                                .any(|default_item_name| name == default_item_name);
+                            let item = if has_default {
+                                FieldWithDefault::OptionalValue(item.clone())
+                            } else {
+                                FieldWithDefault::RequiredValue(item.clone())
+                            };
+                            (name.clone(), item)
                         })
+                        // We now add the elements that have a default value and are not in the
+                        // list of definitions
+                        .chain(
+                            rustc_default_item_names
+                                .iter()
+                                .filter(|default_item_name| {
+                                    !items.iter().any(|(name, _)| name == *default_item_name)
+                                })
+                                .map(|default_item_name| {
+                                    let item = FieldWithDefault::Default;
+                                    (default_item_name.clone(), item)
+                                }),
+                        )
                         .collect();
 
                     // Get the generics for the trait
@@ -553,7 +586,7 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
                             trait_generics,
                             trait_ref.path,
                         ),
-                        items: items_with_default_status,
+                        items,
                     }]
                 }
                 None => {
@@ -591,28 +624,11 @@ fn compile_impl_item_refs(
     env: &mut Env,
     item_refs: &[ImplItemRef],
     is_dead_code: bool,
-) -> Vec<ImplItem> {
+) -> Vec<(String, ImplItem)> {
     item_refs
         .iter()
-        .map(|item_ref| {
-            compile_impl_item(
-                tcx,
-                env,
-                tcx.hir().impl_item(item_ref.id),
-                is_method(item_ref),
-                is_dead_code,
-            )
-        })
+        .map(|item_ref| compile_impl_item(tcx, env, tcx.hir().impl_item(item_ref.id), is_dead_code))
         .collect()
-}
-
-/// tells if the referenced item is a method
-fn is_method(item_ref: &ImplItemRef) -> bool {
-    if let rustc_hir::AssocItemKind::Fn { has_self } = item_ref.kind {
-        has_self
-    } else {
-        false
-    }
 }
 
 /// compiles an item
@@ -620,11 +636,10 @@ fn compile_impl_item(
     tcx: &TyCtxt,
     env: &mut Env,
     item: &rustc_hir::ImplItem,
-    is_method: bool,
     is_dead_code: bool,
-) -> ImplItem {
+) -> (String, ImplItem) {
     let name = to_valid_coq_name(item.ident.name.to_string());
-    match &item.kind {
+    let item = match &item.kind {
         ImplItemKind::Const(ty, body_id) => {
             let ty = compile_type(env, ty);
             let body = if env.axiomatize {
@@ -633,7 +648,6 @@ fn compile_impl_item(
                 Some(Box::new(compile_hir_id(env, body_id.hir_id)))
             };
             ImplItem::Const {
-                name,
                 ty,
                 body,
                 is_dead_code,
@@ -642,19 +656,17 @@ fn compile_impl_item(
         ImplItemKind::Fn(fn_sig, body_id) => ImplItem::Definition {
             definition: FunDefinition::compile(
                 env,
-                &name,
                 item.generics,
                 &get_hir_fn_sig_and_body(tcx, fn_sig, body_id),
                 "Pattern",
                 is_dead_code,
             ),
-            is_method,
         },
         ImplItemKind::Type(ty) => ImplItem::Type {
-            name,
             ty: compile_type(env, ty),
         },
-    }
+    };
+    (name, item)
 }
 
 /// returns the body corresponding to the given body_id
@@ -786,7 +798,7 @@ fn get_ty_params_with_default_status(
     env: &Env,
     generics: &rustc_middle::ty::Generics,
     path: &rustc_hir::Path,
-) -> Vec<TraitTyParamValue> {
+) -> Vec<(String, TraitTyParamValue)> {
     let mut type_params_name_and_default_status = type_params_name_and_default_status(generics);
     // The first type parameter is always the Self type, that we do not consider as
     // part of the list of type parameters.
@@ -796,39 +808,13 @@ fn get_ty_params_with_default_status(
     add_default_status_to_ty_params(&ty_params, &type_params_name_and_default_status)
 }
 
-/// computes the full list of actual type parameters with their default status
-/// (for items other than traits)
-pub(crate) fn get_full_ty_params_with_default_status(
-    env: &Env,
-    generics: &rustc_middle::ty::Generics,
-    path: &rustc_hir::Path,
-) -> Vec<TraitTyParamValue> {
-    let type_params_name_and_default_status = type_params_name_and_default_status(generics);
-    let ty_params = compile_path_ty_params(env, path);
-    add_default_status_to_ty_params(&ty_params, &type_params_name_and_default_status)
-}
-
-#[allow(dead_code)]
-/// computes the full list of actual type parameters
-/// (for items other than traits)
-pub(crate) fn get_full_ty_params(
-    env: &Env,
-    generics: &rustc_middle::ty::Generics,
-    path: &rustc_hir::Path,
-) -> Vec<Box<CoqType>> {
-    get_full_ty_params_with_default_status(env, generics, path)
-        .into_iter()
-        .map(|ty_param| ty_param.to_coq_type())
-        .collect()
-}
-
 /// takes a list of actual type parameters
 /// and the information about required and default type parameters
 /// and returns a list that combines them
 fn add_default_status_to_ty_params(
     ty_params: &[Box<CoqType>],
     names_and_default_status: &[(String, bool)],
-) -> Vec<TraitTyParamValue> {
+) -> Vec<(String, TraitTyParamValue)> {
     ty_params
         .iter()
         .map(Some)
@@ -845,25 +831,19 @@ fn compile_ty_param_value(
     name: &str,
     ty: Option<&CoqType>,
     has_default: &bool,
-) -> TraitTyParamValue {
-    match ty {
+) -> (String, TraitTyParamValue) {
+    let name = name.to_string();
+    let ty = match ty {
         Some(ty) => {
             if *has_default {
-                TraitTyParamValue::ValWithDef {
-                    name: name.to_string(),
-                    ty: Box::new(ty.clone()),
-                }
+                FieldWithDefault::OptionalValue(Box::new(ty.clone()))
             } else {
-                TraitTyParamValue::JustValue {
-                    name: name.to_string(),
-                    ty: Box::new(ty.clone()),
-                }
+                FieldWithDefault::RequiredValue(Box::new(ty.clone()))
             }
         }
-        None => TraitTyParamValue::JustDefault {
-            name: name.to_string(),
-        },
-    }
+        None => FieldWithDefault::Default,
+    };
+    (name, ty)
 }
 
 /// Get the list of type parameters names and default status (true if it has a default)
@@ -976,7 +956,6 @@ pub(crate) fn top_level_to_coq(tcx: &TyCtxt, opts: TopLevelOptions) -> String {
 fn mt_impl_item(item: ImplItem) -> ImplItem {
     match item {
         ImplItem::Const {
-            name,
             ty,
             body,
             is_dead_code,
@@ -989,18 +968,13 @@ fn mt_impl_item(item: ImplItem) -> ImplItem {
                 }
             };
             ImplItem::Const {
-                name,
                 ty: mt_ty(ty),
                 body,
                 is_dead_code,
             }
         }
-        ImplItem::Definition {
-            definition,
-            is_method,
-        } => ImplItem::Definition {
+        ImplItem::Definition { definition } => ImplItem::Definition {
             definition: definition.mt(),
-            is_method,
         },
         ImplItem::Type { .. } => item,
     }
@@ -1066,7 +1040,10 @@ fn mt_top_level_item(item: TopLevelItem) -> TopLevelItem {
                 }
             },
         },
-        TopLevelItem::Definition(definition) => TopLevelItem::Definition(definition.mt()),
+        TopLevelItem::Definition { name, definition } => TopLevelItem::Definition {
+            name,
+            definition: definition.mt(),
+        },
         TopLevelItem::TypeAlias { .. } => item,
         TopLevelItem::TypeEnum { .. } => item,
         TopLevelItem::TypeStructStruct { .. } => item,
@@ -1090,7 +1067,10 @@ fn mt_top_level_item(item: TopLevelItem) -> TopLevelItem {
             generic_tys,
             self_ty,
             counter,
-            items: items.into_iter().map(mt_impl_item).collect(),
+            items: items
+                .into_iter()
+                .map(|(name, item)| (name, mt_impl_item(item)))
+                .collect(),
         },
         TopLevelItem::Trait {
             name,
@@ -1118,7 +1098,7 @@ fn mt_top_level_item(item: TopLevelItem) -> TopLevelItem {
             trait_ty_params,
             items: items
                 .into_iter()
-                .map(|(item, has_no_default)| (mt_impl_item(item), has_no_default))
+                .map(|(name, item)| (name, item.map(mt_impl_item)))
                 .collect(),
         },
         TopLevelItem::Error(_) => item,
@@ -1203,7 +1183,6 @@ impl FunDefinition {
     /// compiles a given function
     fn compile(
         env: &mut Env,
-        name: &str,
         generics: &rustc_hir::Generics,
         fn_sig_and_body: &HirFnSigAndBody,
         default: &str,
@@ -1230,7 +1209,6 @@ impl FunDefinition {
         let signature_and_body = FnSigAndBody { args, ret_ty, body };
 
         FunDefinition {
-            name: name.to_string(),
             ty_params,
             where_predicates,
             signature_and_body,
@@ -1240,7 +1218,6 @@ impl FunDefinition {
 
     fn mt(self) -> Self {
         FunDefinition {
-            name: self.name,
             ty_params: self.ty_params,
             where_predicates: self.where_predicates,
             signature_and_body: self.signature_and_body.mt(),
@@ -1248,7 +1225,7 @@ impl FunDefinition {
         }
     }
 
-    fn to_coq(&self, with_state_trait: bool) -> coq::TopLevel {
+    fn to_coq(&self, name: &str, with_state_trait: bool) -> coq::TopLevel {
         coq::TopLevel::new(
             &[
                 if self.is_dead_code {
@@ -1260,7 +1237,7 @@ impl FunDefinition {
                 },
                 match &self.signature_and_body.body {
                     None => {
-                        let ret_ty_name = [&self.name, "_", "ret_ty"].concat();
+                        let ret_ty_name = [name, "_", "ret_ty"].concat();
                         let ret_opaque_ty = CoqType::Application {
                             func: CoqType::var("projT1".to_string()),
                             args: vec![CoqType::var(ret_ty_name.clone())],
@@ -1330,7 +1307,7 @@ impl FunDefinition {
                         [
                             ret_ty_defs_vec,
                             vec![coq::TopLevelItem::Definition(coq::Definition::new(
-                                &self.name,
+                                name,
                                 &coq::DefinitionKind::Assumption {
                                     ty: coq::Expression::PiType {
                                         args: [
@@ -1378,7 +1355,7 @@ impl FunDefinition {
                         .concat()
                     }
                     Some(body) => vec![coq::TopLevelItem::Definition(coq::Definition::new(
-                        &self.name,
+                        name,
                         &coq::DefinitionKind::Alias {
                             args: [
                                 if with_state_trait {
@@ -1428,8 +1405,8 @@ impl FunDefinition {
         )
     }
 
-    fn to_doc(&self, with_state_trait: bool) -> Doc {
-        self.to_coq(with_state_trait).to_doc()
+    fn to_doc(&self, name: &str, with_state_trait: bool) -> Doc {
+        self.to_coq(name, with_state_trait).to_doc()
     }
 }
 
@@ -1507,10 +1484,9 @@ impl ImplItem {
         ])
     }
 
-    fn to_doc(&self) -> Doc {
+    fn to_doc<'a>(&'a self, name: &'a str) -> Doc {
         match self {
             ImplItem::Const {
-                name,
                 ty,
                 body,
                 is_dead_code,
@@ -1554,19 +1530,19 @@ impl ImplItem {
                 ),
             ]),
             ImplItem::Definition { definition, .. } => concat([
-                definition.to_doc(false),
+                definition.to_doc(name, false),
                 hardline(),
                 hardline(),
                 Self::class_instance_to_doc(
                     "AssociatedFunction",
-                    &definition.name,
+                    name,
                     Some(&definition.ty_params),
                     Some(&definition.where_predicates),
                     "Notation.DoubleColon Self",
                     "Notation.double_colon",
                 ),
             ]),
-            ImplItem::Type { name, ty } => nest([
+            ImplItem::Type { ty } => nest([
                 nest([
                     text("Definition"),
                     line(),
@@ -1625,43 +1601,21 @@ impl TraitBound {
             args: self
                 .ty_params
                 .iter()
-                .map(|ty_param| match ty_param.to_owned() {
-                    TraitTyParamValue::JustValue { name, ty }
-                    | TraitTyParamValue::ValWithDef { name, ty } => (Some(name), ty.to_coq()),
-                    TraitTyParamValue::JustDefault { name } => (
+                .map(|(name, ty_param)| match ty_param.to_owned() {
+                    FieldWithDefault::RequiredValue(ty) | FieldWithDefault::OptionalValue(ty) => {
+                        (Some(name.clone()), ty.to_coq())
+                    }
+                    FieldWithDefault::Default => (
                         Some(name.clone()),
                         coq::Expression::Code(concat([
                             self.name.to_doc(),
                             text(".Default."),
-                            text(name),
+                            text(name.clone()),
                         ]))
                         .apply(&self_ty),
                     ),
                 })
                 .collect(),
-        }
-    }
-}
-
-impl TraitTyParamValue {
-    #[allow(dead_code)] // @TODO
-    fn to_doc(&self) -> Doc {
-        match self {
-            TraitTyParamValue::ValWithDef { name, ty } => apply_argument(
-                name,
-                concat([text("(Some"), line(), ty.to_doc(false), text(")")]),
-            ),
-            TraitTyParamValue::JustValue { name, ty } => apply_argument(name, ty.to_doc(false)),
-            TraitTyParamValue::JustDefault { name } => apply_argument(name, text("None")),
-        }
-    }
-
-    #[allow(dead_code)]
-    fn to_coq_type(&self) -> Box<CoqType> {
-        match self {
-            TraitTyParamValue::JustValue { name: _, ty } => ty.to_owned(),
-            TraitTyParamValue::ValWithDef { name: _, ty } => ty.to_owned(),
-            TraitTyParamValue::JustDefault { name: _ } => CoqType::var("None".to_string()),
         }
     }
 }
@@ -1700,7 +1654,7 @@ impl TopLevelItem {
                     .to_doc()
                 }
             },
-            TopLevelItem::Definition(definition) => definition.to_doc(true),
+            TopLevelItem::Definition { name, definition } => definition.to_doc(name, true),
             TopLevelItem::Module {
                 name,
                 body,
@@ -2082,10 +2036,10 @@ impl TopLevelItem {
                             coq::TopLevel::new(
                                 &items
                                     .iter()
-                                    .flat_map(|item| {
+                                    .flat_map(|(name, item)| {
                                         [
                                             coq::TopLevelItem::Line,
-                                            coq::TopLevelItem::Code(concat([item.to_doc()])),
+                                            coq::TopLevelItem::Code(concat([item.to_doc(name)])),
                                         ]
                                     })
                                     .collect::<Vec<_>>(),
@@ -2221,15 +2175,19 @@ impl TopLevelItem {
                     of_trait.to_name(),
                     trait_ty_params
                         .iter()
-                        .filter_map(|trait_ty_param| match trait_ty_param.to_owned() {
-                            TraitTyParamValue::JustValue { ty, .. }
-                            | TraitTyParamValue::ValWithDef { ty, .. } =>
+                        .filter_map(|(_, trait_ty_param)| match trait_ty_param.to_owned() {
+                            FieldWithDefault::RequiredValue(ty)
+                            | FieldWithDefault::OptionalValue(ty) =>
                                 Some(format!("_{}", ty.to_name())),
-                            TraitTyParamValue::JustDefault { .. } => None,
+                            FieldWithDefault::Default => None,
                         })
                         .join(""),
                     self_ty.to_name()
                 );
+                let has_some_default_values = !items
+                    .iter()
+                    .all(|(_, item)| matches!(item, FieldWithDefault::RequiredValue(_)));
+
                 coq::Module::new(
                     &module_name,
                     coq::TopLevel::concat(&[
@@ -2257,12 +2215,12 @@ impl TopLevelItem {
                                 vec![coq::TopLevelItem::Line],
                                 items
                                     .iter()
-                                    .map(|(item, _)| {
-                                        vec![
-                                            coq::TopLevelItem::Code(item.to_doc()),
+                                    .filter_map(|(name, item)|
+                                        Into::<Option<_>>::into(item).map(|item: &ImplItem| vec![
+                                            coq::TopLevelItem::Code(item.to_doc(name)),
                                             coq::TopLevelItem::Line,
-                                        ]
-                                    })
+                                        ])
+                                    )
                                     .concat(),
                                 vec![coq::TopLevelItem::Instance(coq::Instance::new(
                                     "ℐ",
@@ -2270,7 +2228,12 @@ impl TopLevelItem {
                                     coq::Expression::Variable {
                                         ident: Path::concat(&[
                                             of_trait.to_owned(),
-                                            Path::new(&["Trait"]),
+                                            Path::new(
+                                                if has_some_default_values {
+                                                    &["Required", "Trait"]
+                                                } else {
+                                                    &["Trait"]
+                                                }),
                                         ]),
                                         no_implicit: false,
                                     }
@@ -2278,12 +2241,12 @@ impl TopLevelItem {
                                     .apply_many_args(
                                         &trait_ty_params
                                             .iter()
-                                            .map(|ty_param| {
-                                                match ty_param.to_owned() {
-                                                    TraitTyParamValue::JustValue { name, ty } | TraitTyParamValue::ValWithDef { name, ty } => {
-                                                        (Some(name), ty.to_coq())
+                                            .map(|(name, ty_param)| {
+                                                match ty_param {
+                                                    FieldWithDefault::RequiredValue(ty) | FieldWithDefault::OptionalValue(ty) => {
+                                                        (Some(name.clone()), ty.to_coq())
                                                     }
-                                                    TraitTyParamValue::JustDefault { name } => (
+                                                    FieldWithDefault::Default => (
                                                         Some(name.clone()),
                                                         coq::Expression::Code(
                                                             concat([of_trait.to_doc(), text(".Default."), text(name)])
@@ -2297,17 +2260,13 @@ impl TopLevelItem {
                                     &coq::Expression::Record {
                                         fields: items
                                             .iter()
-                                            .filter_map(|(item, has_no_default)| {
-                                                if !has_no_default {
-                                                    return None
-                                                }
-                                                Some(coq::Field::new(
-                                                    &Path::concat(&[of_trait.to_owned(), Path::new(&[item.name()])]),
-                                                    &match item {
-                                                        ImplItem::Type {..} => vec![],
-                                                        _ =>
-                                                            match item {
-                                                                ImplItem::Definition { definition : FunDefinition {ty_params, where_predicates, ..}, ..} =>
+                                            .map(|(name, item)| {
+                                                let optional_item = Into::<Option<&_>>::into(item);
+
+                                                coq::Field::new(
+                                                    &Path::concat(&[of_trait.to_owned(), Path::new(&[name])]),
+                                                    &match optional_item {
+                                                        Some(ImplItem::Definition { definition : FunDefinition {ty_params, where_predicates, ..}, ..}) =>
                                                                     vec![
                                                                         if ty_params.is_empty() {
                                                                             vec![]
@@ -2320,26 +2279,34 @@ impl TopLevelItem {
                                                                             vec![WherePredicate::vec_to_coq(where_predicates)]
                                                                         },
                                                                     ].concat(),
-                                                                _ => vec![]
-                                                            },
+                                                        _ => vec![],
                                                     },
                                                     {
-                                                        let body = coq::Expression::just_name(&item.name());
+                                                        let body = coq::Expression::just_name(name);
+                                                        let body =
+                                                            match optional_item {
+                                                                Some(ImplItem::Definition { definition : FunDefinition {ty_params, ..}, ..}) =>
+                                                                body.apply_many_args(&ty_params
+                                                                    .iter()
+                                                                    .map(|ty_param| {
+                                                                        (
+                                                                            Some(ty_param.to_owned()),
+                                                                            coq::Expression::just_name(ty_param),
+                                                                        )
+                                                                    })
+                                                                    .collect::<Vec<_>>(),),
+                                                                _ => body
+                                                            };
                                                         &match item {
-                                                            ImplItem::Definition { definition : FunDefinition {ty_params, ..}, ..} =>
-                                                            body.apply_many_args(&ty_params
-                                                                .iter()
-                                                                .map(|ty_param| {
-                                                                    (
-                                                                        Some(ty_param.to_owned()),
-                                                                        coq::Expression::just_name(ty_param),
-                                                                    )
-                                                                })
-                                                                .collect::<Vec<_>>(),),
-                                                            _ => body
+                                                            FieldWithDefault::RequiredValue(_) => body,
+                                                            FieldWithDefault::OptionalValue(_) =>
+                                                                coq::Expression::just_name("Datatypes.Some")
+                                                                .apply(&body),
+                                                            FieldWithDefault::Default =>
+                                                                coq::Expression::just_name("Datatypes.None"),
                                                         }
                                                     }
-                                                ))
+                                                )
                                             })
                                             .collect::<Vec<_>>(),
                                     },
@@ -2348,9 +2315,6 @@ impl TopLevelItem {
                             ]
                             .concat()),
                         ),
-                        coq::TopLevel::new(&[coq::TopLevelItem::Hint(
-                            coq::Hint::standard_resolve(),
-                        )]),
                     ]),
                 )
                 .to_doc()

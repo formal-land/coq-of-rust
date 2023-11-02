@@ -20,7 +20,7 @@ Module Impl_enums_testcase_linked_list_List.
     Definition Self : Set := enums_testcase_linked_list.List.
     
     Definition new : M enums_testcase_linked_list.List :=
-      Pure (enums_testcase_linked_list.List.Nil tt).
+      M.alloc enums_testcase_linked_list.List.Nil.
     
     Global Instance AssociatedFunction_new :
       Notation.DoubleColon Self "new" := {
@@ -31,8 +31,12 @@ Module Impl_enums_testcase_linked_list_List.
         (self : Self)
         (elem : u32)
         : M enums_testcase_linked_list.List :=
-      let* α0 := (alloc.boxed.Box T alloc.alloc.Global)::["new"] self in
-      Pure (enums_testcase_linked_list.List.Cons elem α0).
+      let* α0 :=
+        (alloc.boxed.Box
+              enums_testcase_linked_list.List
+              alloc.alloc.Global)::["new"]
+          self in
+      M.alloc (enums_testcase_linked_list.List.Cons elem α0).
     
     Global Instance AssociatedFunction_prepend :
       Notation.DoubleColon Self "prepend" := {
@@ -53,7 +57,7 @@ Module Impl_enums_testcase_linked_list_List.
         let* α2 := deref α1 enums_testcase_linked_list.List in
         let* α3 := borrow α2 enums_testcase_linked_list.List in
         let* α4 := enums_testcase_linked_list.List::["len"] α3 in
-        add α0 α4
+        BinOp.add α0 α4
       | enums_testcase_linked_list.List  => M.alloc 0
       end.
     

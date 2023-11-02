@@ -10,7 +10,7 @@ Definition apply
   let* _ :=
     let* α0 := borrow f F in
     let* α1 := M.alloc tt in
-    (core.ops.function.Fn.call (Self := F)) α0 α1 in
+    (core.ops.function.Fn.call (Self := F) (Trait := ltac:(refine _))) α0 α1 in
   M.alloc tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)

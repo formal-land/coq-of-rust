@@ -31,12 +31,10 @@ Module Impl_core_fmt_Debug_for_clone_Unit.
       Notation.double_colon := fmt;
     }.
     
-    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
-    Admitted.
   End Impl_core_fmt_Debug_for_clone_Unit.
-  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_clone_Unit.
 
 Module Impl_core_clone_Clone_for_clone_Unit.
@@ -52,12 +50,11 @@ Module Impl_core_clone_Clone_for_clone_Unit.
       Notation.double_colon := clone;
     }.
     
-    #[refine] Global Instance ℐ : core.clone.Clone.Trait Self := {
+    Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
       core.clone.Clone.clone := clone;
+      core.clone.Clone.clone_from := Datatypes.None;
     }.
-    Admitted.
   End Impl_core_clone_Clone_for_clone_Unit.
-  Global Hint Resolve ℐ : core.
 End Impl_core_clone_Clone_for_clone_Unit.
 
 Module Impl_core_marker_Copy_for_clone_Unit.
@@ -66,11 +63,9 @@ Module Impl_core_marker_Copy_for_clone_Unit.
     
     Definition Self : Set := clone.Unit.
     
-    #[refine] Global Instance ℐ : core.marker.Copy.Trait Self := {
+    Global Instance ℐ : core.marker.Copy.Trait Self := {
     }.
-    Admitted.
   End Impl_core_marker_Copy_for_clone_Unit.
-  Global Hint Resolve ℐ : core.
 End Impl_core_marker_Copy_for_clone_Unit.
 
 Module Pair.
@@ -84,14 +79,12 @@ Module Pair.
     }.
     Global Set Primitive Projections.
     
-    #[refine] Global Instance Get_0 : Notation.Dot "0" := {
+    Global Instance Get_0 : Notation.Dot "0" := {
       Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_1 : Notation.Dot "1" := {
+    Global Instance Get_1 : Notation.Dot "1" := {
       Notation.dot x := let* x := M.read x in Pure x.(x1) : M _;
     }.
-    Admitted.
   End Pair.
 End Pair.
 Definition Pair `{ℋ : State.Trait} : Set := M.val Pair.t.
@@ -110,7 +103,8 @@ Module Impl_core_clone_Clone_for_clone_Pair.
       let* α4 := borrow α3 (alloc.boxed.Box i32 alloc.alloc.Global) in
       let* α5 :=
         (core.clone.Clone.clone
-            (Self := (alloc.boxed.Box i32 alloc.alloc.Global)))
+            (Self := alloc.boxed.Box i32 alloc.alloc.Global)
+            (Trait := ltac:(refine _)))
           α4 in
       let* α6 := deref self clone.Pair in
       let* α7 := α6.["1"] in
@@ -119,21 +113,21 @@ Module Impl_core_clone_Clone_for_clone_Pair.
       let* α10 := borrow α9 (alloc.boxed.Box i32 alloc.alloc.Global) in
       let* α11 :=
         (core.clone.Clone.clone
-            (Self := (alloc.boxed.Box i32 alloc.alloc.Global)))
+            (Self := alloc.boxed.Box i32 alloc.alloc.Global)
+            (Trait := ltac:(refine _)))
           α10 in
-      Pure (clone.Pair.Build_t α5 α11).
+      M.alloc (clone.Pair.Build_t α5 α11).
     
     Global Instance AssociatedFunction_clone :
       Notation.DoubleColon Self "clone" := {
       Notation.double_colon := clone;
     }.
     
-    #[refine] Global Instance ℐ : core.clone.Clone.Trait Self := {
+    Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
       core.clone.Clone.clone := clone;
+      core.clone.Clone.clone_from := Datatypes.None;
     }.
-    Admitted.
   End Impl_core_clone_Clone_for_clone_Pair.
-  Global Hint Resolve ℐ : core.
 End Impl_core_clone_Clone_for_clone_Pair.
 
 Module Impl_core_fmt_Debug_for_clone_Pair.
@@ -170,17 +164,15 @@ Module Impl_core_fmt_Debug_for_clone_Pair.
       Notation.double_colon := fmt;
     }.
     
-    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
-    Admitted.
   End Impl_core_fmt_Debug_for_clone_Pair.
-  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_clone_Pair.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
-  let unit := clone.Unit.Build_t tt in
+  let* unit := M.alloc clone.Unit.Build_t in
   let copied_unit := unit in
   let* _ :=
     let* _ :=
@@ -220,10 +212,10 @@ Definition main `{ℋ : State.Trait} : M unit :=
     M.alloc tt in
   let* pair :=
     let* α0 := M.alloc 1 in
-    let* α1 := (alloc.boxed.Box T alloc.alloc.Global)::["new"] α0 in
+    let* α1 := (alloc.boxed.Box i32 alloc.alloc.Global)::["new"] α0 in
     let* α2 := M.alloc 2 in
-    let* α3 := (alloc.boxed.Box T alloc.alloc.Global)::["new"] α2 in
-    Pure (clone.Pair.Build_t α1 α3) in
+    let* α3 := (alloc.boxed.Box i32 alloc.alloc.Global)::["new"] α2 in
+    M.alloc (clone.Pair.Build_t α1 α3) in
   let* _ :=
     let* _ :=
       let* α0 := borrow [ mk_str "original: "; mk_str "
@@ -263,7 +255,8 @@ Definition main `{ℋ : State.Trait} : M unit :=
     M.alloc tt in
   let* cloned_pair :=
     let* α0 := borrow moved_pair clone.Pair in
-    (core.clone.Clone.clone (Self := clone.Pair)) α0 in
+    (core.clone.Clone.clone (Self := clone.Pair) (Trait := ltac:(refine _)))
+      α0 in
   let* _ := core.mem.drop moved_pair in
   let* _ :=
     let* _ :=

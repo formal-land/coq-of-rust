@@ -58,13 +58,11 @@ Module
     
     Definition Self : Set := generics_bounds_test_case_empty_bounds.Cardinal.
     
-    #[refine] Global Instance ℐ :
+    Global Instance ℐ :
       generics_bounds_test_case_empty_bounds.Red.Trait Self := {
     }.
-    Admitted.
   End
     Impl_generics_bounds_test_case_empty_bounds_Red_for_generics_bounds_test_case_empty_bounds_Cardinal.
-  Global Hint Resolve ℐ : core.
 End
   Impl_generics_bounds_test_case_empty_bounds_Red_for_generics_bounds_test_case_empty_bounds_Cardinal.
 
@@ -76,13 +74,11 @@ Module
     
     Definition Self : Set := generics_bounds_test_case_empty_bounds.BlueJay.
     
-    #[refine] Global Instance ℐ :
+    Global Instance ℐ :
       generics_bounds_test_case_empty_bounds.Blue.Trait Self := {
     }.
-    Admitted.
   End
     Impl_generics_bounds_test_case_empty_bounds_Blue_for_generics_bounds_test_case_empty_bounds_BlueJay.
-  Global Hint Resolve ℐ : core.
 End
   Impl_generics_bounds_test_case_empty_bounds_Blue_for_generics_bounds_test_case_empty_bounds_BlueJay.
 

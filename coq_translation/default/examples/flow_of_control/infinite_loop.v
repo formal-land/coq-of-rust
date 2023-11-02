@@ -21,7 +21,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
       assign_op add count α0 in
     let* _ :=
       let* α0 := M.alloc 3 in
-      let* α1 := eq count α0 in
+      let* α1 := BinOp.eq count α0 in
       let* α2 := use α1 in
       if (α2 : bool) then
         let* _ :=
@@ -58,7 +58,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
         std.io.stdio._print α12 in
       M.alloc tt in
     let* α0 := M.alloc 5 in
-    let* α1 := eq count α0 in
+    let* α1 := BinOp.eq count α0 in
     let* α2 := use α1 in
     if (α2 : bool) then
       let* _ :=

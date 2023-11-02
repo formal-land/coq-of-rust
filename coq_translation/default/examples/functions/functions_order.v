@@ -11,10 +11,9 @@ Module SomeType.
     }.
     Global Set Primitive Projections.
     
-    #[refine] Global Instance Get_0 : Notation.Dot "0" := {
+    Global Instance Get_0 : Notation.Dot "0" := {
       Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
-    Admitted.
   End SomeType.
 End SomeType.
 Definition SomeType `{ℋ : State.Trait} : Set := M.val SomeType.t.
@@ -29,10 +28,9 @@ Module OtherType.
     }.
     Global Set Primitive Projections.
     
-    #[refine] Global Instance Get_0 : Notation.Dot "0" := {
+    Global Instance Get_0 : Notation.Dot "0" := {
       Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
-    Admitted.
   End OtherType.
 End OtherType.
 Definition OtherType `{ℋ : State.Trait} : Set := M.val OtherType.t.
@@ -90,7 +88,8 @@ Module Impl_functions_order_SomeTrait_for_functions_order_SomeType.
       let* α0 := deref self functions_order.SomeType in
       let* α1 := borrow α0 functions_order.SomeType in
       (functions_order.SomeTrait.some_trait_bar
-          (Self := functions_order.SomeType))
+          (Self := functions_order.SomeType)
+          (Trait := ltac:(refine _)))
         α1.
     
     Global Instance AssociatedFunction_some_trait_foo :
@@ -98,13 +97,11 @@ Module Impl_functions_order_SomeTrait_for_functions_order_SomeType.
       Notation.double_colon := some_trait_foo;
     }.
     
-    #[refine] Global Instance ℐ : functions_order.SomeTrait.Trait Self := {
+    Global Instance ℐ : functions_order.SomeTrait.Trait Self := {
       functions_order.SomeTrait.some_trait_bar := some_trait_bar;
       functions_order.SomeTrait.some_trait_foo := some_trait_foo;
     }.
-    Admitted.
   End Impl_functions_order_SomeTrait_for_functions_order_SomeType.
-  Global Hint Resolve ℐ : core.
 End Impl_functions_order_SomeTrait_for_functions_order_SomeType.
 
 Module Impl_functions_order_SomeTrait_for_functions_order_OtherType.
@@ -127,13 +124,11 @@ Module Impl_functions_order_SomeTrait_for_functions_order_OtherType.
       Notation.double_colon := some_trait_bar;
     }.
     
-    #[refine] Global Instance ℐ : functions_order.SomeTrait.Trait Self := {
+    Global Instance ℐ : functions_order.SomeTrait.Trait Self := {
       functions_order.SomeTrait.some_trait_foo := some_trait_foo;
       functions_order.SomeTrait.some_trait_bar := some_trait_bar;
     }.
-    Admitted.
   End Impl_functions_order_SomeTrait_for_functions_order_OtherType.
-  Global Hint Resolve ℐ : core.
 End Impl_functions_order_SomeTrait_for_functions_order_OtherType.
 
 Definition depends_on_trait_impl
@@ -142,17 +137,19 @@ Definition depends_on_trait_impl
     (b : bool)
     : M unit :=
   let* _ :=
-    let* α0 :=
-      borrow (functions_order.OtherType.Build_t b) functions_order.OtherType in
+    let* α0 := M.alloc (functions_order.OtherType.Build_t b) in
+    let* α1 := borrow α0 functions_order.OtherType in
     (functions_order.SomeTrait.some_trait_foo
-        (Self := functions_order.OtherType))
-      α0 in
+        (Self := functions_order.OtherType)
+        (Trait := ltac:(refine _)))
+      α1 in
   let* _ :=
-    let* α0 :=
-      borrow (functions_order.SomeType.Build_t u) functions_order.SomeType in
+    let* α0 := M.alloc (functions_order.SomeType.Build_t u) in
+    let* α1 := borrow α0 functions_order.SomeType in
     (functions_order.SomeTrait.some_trait_foo
-        (Self := functions_order.SomeType))
-      α0 in
+        (Self := functions_order.SomeType)
+        (Trait := ltac:(refine _)))
+      α1 in
   M.alloc tt.
 
 Module inner_mod.
@@ -199,5 +196,6 @@ Definition main `{ℋ : State.Trait} : M unit :=
   let* _ := functions_order.inner_mod.bar in
   let* _ :=
     let* α0 := M.alloc 0 in
-    functions_order.SomeType::["meth1"] (functions_order.SomeType.Build_t α0) in
+    let* α1 := M.alloc (functions_order.SomeType.Build_t α0) in
+    functions_order.SomeType::["meth1"] α1 in
   M.alloc tt.

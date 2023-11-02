@@ -37,12 +37,10 @@ Module Impl_core_fmt_Debug_for_other_uses_of_question_mark_EmptyVec.
       Notation.double_colon := fmt;
     }.
     
-    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
-    Admitted.
   End Impl_core_fmt_Debug_for_other_uses_of_question_mark_EmptyVec.
-  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Debug_for_other_uses_of_question_mark_EmptyVec.
 
 Module Impl_core_fmt_Display_for_other_uses_of_question_mark_EmptyVec.
@@ -70,12 +68,10 @@ Module Impl_core_fmt_Display_for_other_uses_of_question_mark_EmptyVec.
       Notation.double_colon := fmt;
     }.
     
-    #[refine] Global Instance ℐ : core.fmt.Display.Trait Self := {
+    Global Instance ℐ : core.fmt.Display.Trait Self := {
       core.fmt.Display.fmt := fmt;
     }.
-    Admitted.
   End Impl_core_fmt_Display_for_other_uses_of_question_mark_EmptyVec.
-  Global Hint Resolve ℐ : core.
 End Impl_core_fmt_Display_for_other_uses_of_question_mark_EmptyVec.
 
 Module Impl_core_error_Error_for_other_uses_of_question_mark_EmptyVec.
@@ -84,11 +80,14 @@ Module Impl_core_error_Error_for_other_uses_of_question_mark_EmptyVec.
     
     Definition Self : Set := other_uses_of_question_mark.EmptyVec.
     
-    #[refine] Global Instance ℐ : core.error.Error.Trait Self := {
+    Global Instance ℐ : core.error.Error.Required.Trait Self := {
+      core.error.Error.source := Datatypes.None;
+      core.error.Error.type_id := Datatypes.None;
+      core.error.Error.description := Datatypes.None;
+      core.error.Error.cause := Datatypes.None;
+      core.error.Error.provide := Datatypes.None;
     }.
-    Admitted.
   End Impl_core_error_Error_for_other_uses_of_question_mark_EmptyVec.
-  Global Hint Resolve ℐ : core.
 End Impl_core_error_Error_for_other_uses_of_question_mark_EmptyVec.
 
 Definition double_first
@@ -99,30 +98,31 @@ Definition double_first
     let* α0 := borrow vec (alloc.vec.Vec (ref str) alloc.alloc.Global) in
     let* α1 :=
       (core.ops.deref.Deref.deref
-          (Self := (alloc.vec.Vec (ref str) alloc.alloc.Global)))
+          (Self := alloc.vec.Vec (ref str) alloc.alloc.Global)
+          (Trait := ltac:(refine _)))
         α0 in
     let* α2 := deref α1 (Slice (ref str)) in
     let* α3 := borrow α2 (Slice (ref str)) in
-    let* α4 := (Slice T)::["first"] α3 in
-    let* α5 :=
-      (core.option.Option T)::["ok_or"]
-        α4
-        (other_uses_of_question_mark.EmptyVec.Build_t tt) in
-    let* α6 :=
+    let* α4 := (Slice (ref str))::["first"] α3 in
+    let* α5 := M.alloc other_uses_of_question_mark.EmptyVec.Build_t in
+    let* α6 := (core.option.Option (ref (ref str)))::["ok_or"] α4 α5 in
+    let* α7 :=
       (core.ops.try_trait.Try.branch
           (Self :=
-            (core.result.Result
+            core.result.Result
               (ref (ref str))
-              other_uses_of_question_mark.EmptyVec)))
-        α5 in
-    match α6 with
+              other_uses_of_question_mark.EmptyVec)
+          (Trait := ltac:(refine _)))
+        α6 in
+    match α7 with
     | core.ops.control_flow.ControlFlow residual =>
       let* α0 :=
         (core.ops.try_trait.FromResidual.from_residual
             (Self :=
-              (core.result.Result
+              core.result.Result
                 i32
-                (alloc.boxed.Box type not implemented alloc.alloc.Global))))
+                (alloc.boxed.Box type not implemented alloc.alloc.Global))
+            (Trait := ltac:(refine _)))
           residual in
       let* α1 := Return α0 in
       never_to_any α1
@@ -135,24 +135,26 @@ Definition double_first
     let* α3 := str::["parse"] α2 in
     let* α4 :=
       (core.ops.try_trait.Try.branch
-          (Self := (core.result.Result i32 core.num.error.ParseIntError)))
+          (Self := core.result.Result i32 core.num.error.ParseIntError)
+          (Trait := ltac:(refine _)))
         α3 in
     match α4 with
     | core.ops.control_flow.ControlFlow residual =>
       let* α0 :=
         (core.ops.try_trait.FromResidual.from_residual
             (Self :=
-              (core.result.Result
+              core.result.Result
                 i32
-                (alloc.boxed.Box type not implemented alloc.alloc.Global))))
+                (alloc.boxed.Box type not implemented alloc.alloc.Global))
+            (Trait := ltac:(refine _)))
           residual in
       let* α1 := Return α0 in
       never_to_any α1
     | core.ops.control_flow.ControlFlow val => Pure val
     end in
   let* α0 := M.alloc 2 in
-  let* α1 := mul α0 parsed in
-  Pure (core.result.Result.Ok α1).
+  let* α1 := BinOp.mul α0 parsed in
+  M.alloc (core.result.Result.Ok α1).
 
 Definition print
     `{ℋ : State.Trait}
@@ -214,8 +216,8 @@ Definition main `{ℋ : State.Trait} : M unit :=
       (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"]
         [ mk_str "42"; α1; α3 ] in
     let* α5 := pointer_coercion "Unsize" α4 in
-    (Slice T)::["into_vec"] α5 in
-  let* empty := (alloc.vec.Vec T alloc.alloc.Global)::["new"] in
+    (Slice (ref str))::["into_vec"] α5 in
+  let* empty := (alloc.vec.Vec (ref str) alloc.alloc.Global)::["new"] in
   let* strings :=
     let* α0 := deref (mk_str "93") str in
     let* α1 := borrow α0 str in
@@ -225,7 +227,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
       (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"]
         [ mk_str "tofu"; α1; α3 ] in
     let* α5 := pointer_coercion "Unsize" α4 in
-    (Slice T)::["into_vec"] α5 in
+    (Slice (ref str))::["into_vec"] α5 in
   let* _ :=
     let* α0 := other_uses_of_question_mark.double_first numbers in
     other_uses_of_question_mark.print α0 in

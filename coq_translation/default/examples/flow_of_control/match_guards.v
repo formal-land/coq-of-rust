@@ -12,7 +12,7 @@ Definition Temperature `{ℋ : State.Trait} : Set := Temperature.t.
 Definition main `{ℋ : State.Trait} : M unit :=
   let* temperature :=
     let* α0 := M.alloc 35 in
-    Pure (match_guards.Temperature.Celsius α0) in
+    M.alloc (match_guards.Temperature.Celsius α0) in
   match temperature with
   | match_guards.Temperature t =>
     let* _ :=

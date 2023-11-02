@@ -1106,7 +1106,14 @@ impl Expr {
                 nest([
                     path.to_doc(),
                     line(),
-                    nest([text("(Self :="), line(), self_ty.to_doc(true), text(")")]),
+                    nest([text("(Self :="), line(), self_ty.to_doc(false), text(")")]),
+                    line(),
+                    nest([
+                        text("(Trait :="),
+                        line(),
+                        text("ltac:(refine _)"),
+                        text(")"),
+                    ]),
                 ]),
             ),
             Expr::AssociatedFunction { ty, func } => nest([
@@ -1338,19 +1345,14 @@ impl Expr {
                 fields,
                 struct_or_variant,
             } => paren(
-                with_paren,
+                with_paren && !fields.is_empty(),
                 nest([
                     path.to_doc(),
                     match struct_or_variant {
                         StructOrVariant::Struct => text(".Build_t"),
                         StructOrVariant::Variant => nil(),
                     },
-                    line(),
-                    if fields.is_empty() {
-                        text("tt")
-                    } else {
-                        intersperse(fields.iter().map(|arg| arg.to_doc(true)), [line()])
-                    },
+                    concat(fields.iter().map(|arg| concat([line(), arg.to_doc(true)]))),
                 ]),
             ),
             Expr::StructUnit { path } => nest([path.to_doc(), text(".Build")]),

@@ -4,8 +4,8 @@ Require Import CoqOfRust.CoqOfRust.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
   let* outer_var := M.alloc 42 in
-  let closure_annotated := add i outer_var in
-  let closure_inferred := add i outer_var in
+  let closure_annotated := BinOp.add i outer_var in
+  let closure_inferred := BinOp.add i outer_var in
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -17,7 +17,11 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α4 := borrow closure_annotated type not implemented in
       let* α5 := M.alloc 1 in
       let* α6 :=
-        (core.ops.function.Fn.call (Self := type not implemented)) α4 (α5) in
+        (core.ops.function.Fn.call
+            (Self := type not implemented)
+            (Trait := ltac:(refine _)))
+          α4
+          (α5) in
       let* α7 := borrow α6 i32 in
       let* α8 := deref α7 i32 in
       let* α9 := borrow α8 i32 in
@@ -40,7 +44,11 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α4 := borrow closure_inferred type not implemented in
       let* α5 := M.alloc 1 in
       let* α6 :=
-        (core.ops.function.Fn.call (Self := type not implemented)) α4 (α5) in
+        (core.ops.function.Fn.call
+            (Self := type not implemented)
+            (Trait := ltac:(refine _)))
+          α4
+          (α5) in
       let* α7 := borrow α6 i32 in
       let* α8 := deref α7 i32 in
       let* α9 := borrow α8 i32 in
@@ -66,7 +74,11 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α4 := borrow one type not implemented in
       let* α5 := M.alloc tt in
       let* α6 :=
-        (core.ops.function.Fn.call (Self := type not implemented)) α4 α5 in
+        (core.ops.function.Fn.call
+            (Self := type not implemented)
+            (Trait := ltac:(refine _)))
+          α4
+          α5 in
       let* α7 := borrow α6 i32 in
       let* α8 := deref α7 i32 in
       let* α9 := borrow α8 i32 in

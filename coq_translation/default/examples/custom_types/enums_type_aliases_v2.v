@@ -18,8 +18,10 @@ Module Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers.
     
     Definition run (self : ref Self) (x : i32) (y : i32) : M i32 :=
       match self with
-      | enums_type_aliases_v2.VeryVerboseEnumOfThingsToDoWithNumbers  => add x y
-      | enums_type_aliases_v2.VeryVerboseEnumOfThingsToDoWithNumbers  => sub x y
+      | enums_type_aliases_v2.VeryVerboseEnumOfThingsToDoWithNumbers  =>
+        BinOp.add x y
+      | enums_type_aliases_v2.VeryVerboseEnumOfThingsToDoWithNumbers  =>
+        BinOp.sub x y
       end.
     
     Global Instance AssociatedFunction_run :

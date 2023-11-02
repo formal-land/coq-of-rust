@@ -51,28 +51,29 @@ Module
       Notation.double_colon := fmt;
     }.
     
-    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
-    Admitted.
   End
     Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_Fruit.
-  Global Hint Resolve ℐ : core.
 End
   Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_Fruit.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
-  let my_fruit := core.option.Option.None tt in
-  let apple :=
-    unpacking_options_and_defaults_via_get_or_insert.Fruit.Apple tt in
+  let* my_fruit := M.alloc core.option.Option.None in
+  let* apple :=
+    M.alloc unpacking_options_and_defaults_via_get_or_insert.Fruit.Apple in
   let* first_available_fruit :=
     let* α0 :=
       borrow_mut
         my_fruit
         (core.option.Option
           unpacking_options_and_defaults_via_get_or_insert.Fruit) in
-    (core.option.Option T)::["get_or_insert"] α0 apple in
+    (core.option.Option
+          unpacking_options_and_defaults_via_get_or_insert.Fruit)::["get_or_insert"]
+      α0
+      apple in
   let* _ :=
     let* _ :=
       let* α0 :=

@@ -15,22 +15,18 @@ Module Person.
     }.
     Global Set Primitive Projections.
     
-    #[refine] Global Instance Get_name : Notation.Dot "name" := {
+    Global Instance Get_name : Notation.Dot "name" := {
       Notation.dot x := let* x := M.read x in Pure x.(name) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_AF_name : Notation.DoubleColon t "name" := {
+    Global Instance Get_AF_name : Notation.DoubleColon t "name" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(name) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_age : Notation.Dot "age" := {
+    Global Instance Get_age : Notation.Dot "age" := {
       Notation.dot x := let* x := M.read x in Pure x.(age) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_AF_age : Notation.DoubleColon t "age" := {
+    Global Instance Get_AF_age : Notation.DoubleColon t "age" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(age) : M _;
     }.
-    Admitted.
   End Person.
 End Person.
 Definition Person `{ℋ : State.Trait} : Set := M.val Person.t.
@@ -52,12 +48,10 @@ Module
       Notation.double_colon := fmt;
     }.
     
-    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
-    Admitted.
   End
     Impl_core_fmt_Debug_for_scoping_rules_ownership_and_rules_partial_moves_main_Person.
-  Global Hint Resolve ℐ : core.
 End
   Impl_core_fmt_Debug_for_scoping_rules_ownership_and_rules_partial_moves_main_Person.

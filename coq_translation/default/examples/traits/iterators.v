@@ -12,22 +12,18 @@ Module Fibonacci.
     }.
     Global Set Primitive Projections.
     
-    #[refine] Global Instance Get_curr : Notation.Dot "curr" := {
+    Global Instance Get_curr : Notation.Dot "curr" := {
       Notation.dot x := let* x := M.read x in Pure x.(curr) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_AF_curr : Notation.DoubleColon t "curr" := {
+    Global Instance Get_AF_curr : Notation.DoubleColon t "curr" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(curr) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_next : Notation.Dot "next" := {
+    Global Instance Get_next : Notation.Dot "next" := {
       Notation.dot x := let* x := M.read x in Pure x.(next) : M _;
     }.
-    Admitted.
-    #[refine] Global Instance Get_AF_next : Notation.DoubleColon t "next" := {
+    Global Instance Get_AF_next : Notation.DoubleColon t "next" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(next) : M _;
     }.
-    Admitted.
   End Fibonacci.
 End Fibonacci.
 Definition Fibonacci `{ℋ : State.Trait} : Set := M.val Fibonacci.t.
@@ -55,23 +51,97 @@ Module Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
         let* α1 := α0.["next"] in
         let* α2 := deref self iterators.Fibonacci in
         let* α3 := α2.["next"] in
-        let* α4 := add current α3 in
+        let* α4 := BinOp.add current α3 in
         assign α1 α4 in
-      Pure (core.option.Option.Some current).
+      M.alloc (core.option.Option.Some current).
     
     Global Instance AssociatedFunction_next :
       Notation.DoubleColon Self "next" := {
       Notation.double_colon := next;
     }.
     
-    #[refine] Global Instance ℐ :
-      core.iter.traits.iterator.Iterator.Trait Self := {
+    Global Instance ℐ :
+      core.iter.traits.iterator.Iterator.Required.Trait Self := {
       core.iter.traits.iterator.Iterator.Item := Item;
       core.iter.traits.iterator.Iterator.next := next;
+      core.iter.traits.iterator.Iterator.next_chunk := Datatypes.None;
+      core.iter.traits.iterator.Iterator.size_hint := Datatypes.None;
+      core.iter.traits.iterator.Iterator.count := Datatypes.None;
+      core.iter.traits.iterator.Iterator.last := Datatypes.None;
+      core.iter.traits.iterator.Iterator.advance_by := Datatypes.None;
+      core.iter.traits.iterator.Iterator.nth := Datatypes.None;
+      core.iter.traits.iterator.Iterator.step_by := Datatypes.None;
+      core.iter.traits.iterator.Iterator.chain := Datatypes.None;
+      core.iter.traits.iterator.Iterator.zip := Datatypes.None;
+      core.iter.traits.iterator.Iterator.intersperse := Datatypes.None;
+      core.iter.traits.iterator.Iterator.intersperse_with := Datatypes.None;
+      core.iter.traits.iterator.Iterator.map := Datatypes.None;
+      core.iter.traits.iterator.Iterator.for_each := Datatypes.None;
+      core.iter.traits.iterator.Iterator.filter := Datatypes.None;
+      core.iter.traits.iterator.Iterator.filter_map := Datatypes.None;
+      core.iter.traits.iterator.Iterator.enumerate := Datatypes.None;
+      core.iter.traits.iterator.Iterator.peekable := Datatypes.None;
+      core.iter.traits.iterator.Iterator.skip_while := Datatypes.None;
+      core.iter.traits.iterator.Iterator.take_while := Datatypes.None;
+      core.iter.traits.iterator.Iterator.map_while := Datatypes.None;
+      core.iter.traits.iterator.Iterator.skip := Datatypes.None;
+      core.iter.traits.iterator.Iterator.take := Datatypes.None;
+      core.iter.traits.iterator.Iterator.scan := Datatypes.None;
+      core.iter.traits.iterator.Iterator.flat_map := Datatypes.None;
+      core.iter.traits.iterator.Iterator.flatten := Datatypes.None;
+      core.iter.traits.iterator.Iterator.fuse := Datatypes.None;
+      core.iter.traits.iterator.Iterator.inspect := Datatypes.None;
+      core.iter.traits.iterator.Iterator.by_ref := Datatypes.None;
+      core.iter.traits.iterator.Iterator.collect := Datatypes.None;
+      core.iter.traits.iterator.Iterator.try_collect := Datatypes.None;
+      core.iter.traits.iterator.Iterator.collect_into := Datatypes.None;
+      core.iter.traits.iterator.Iterator.partition := Datatypes.None;
+      core.iter.traits.iterator.Iterator.partition_in_place := Datatypes.None;
+      core.iter.traits.iterator.Iterator.is_partitioned := Datatypes.None;
+      core.iter.traits.iterator.Iterator.try_fold := Datatypes.None;
+      core.iter.traits.iterator.Iterator.try_for_each := Datatypes.None;
+      core.iter.traits.iterator.Iterator.fold := Datatypes.None;
+      core.iter.traits.iterator.Iterator.reduce := Datatypes.None;
+      core.iter.traits.iterator.Iterator.try_reduce := Datatypes.None;
+      core.iter.traits.iterator.Iterator.all := Datatypes.None;
+      core.iter.traits.iterator.Iterator.any := Datatypes.None;
+      core.iter.traits.iterator.Iterator.find := Datatypes.None;
+      core.iter.traits.iterator.Iterator.find_map := Datatypes.None;
+      core.iter.traits.iterator.Iterator.try_find := Datatypes.None;
+      core.iter.traits.iterator.Iterator.position := Datatypes.None;
+      core.iter.traits.iterator.Iterator.rposition := Datatypes.None;
+      core.iter.traits.iterator.Iterator.max := Datatypes.None;
+      core.iter.traits.iterator.Iterator.min := Datatypes.None;
+      core.iter.traits.iterator.Iterator.max_by_key := Datatypes.None;
+      core.iter.traits.iterator.Iterator.max_by := Datatypes.None;
+      core.iter.traits.iterator.Iterator.min_by_key := Datatypes.None;
+      core.iter.traits.iterator.Iterator.min_by := Datatypes.None;
+      core.iter.traits.iterator.Iterator.rev := Datatypes.None;
+      core.iter.traits.iterator.Iterator.unzip := Datatypes.None;
+      core.iter.traits.iterator.Iterator.copied := Datatypes.None;
+      core.iter.traits.iterator.Iterator.cloned := Datatypes.None;
+      core.iter.traits.iterator.Iterator.cycle := Datatypes.None;
+      core.iter.traits.iterator.Iterator.array_chunks := Datatypes.None;
+      core.iter.traits.iterator.Iterator.sum := Datatypes.None;
+      core.iter.traits.iterator.Iterator.product := Datatypes.None;
+      core.iter.traits.iterator.Iterator.cmp := Datatypes.None;
+      core.iter.traits.iterator.Iterator.cmp_by := Datatypes.None;
+      core.iter.traits.iterator.Iterator.partial_cmp := Datatypes.None;
+      core.iter.traits.iterator.Iterator.partial_cmp_by := Datatypes.None;
+      core.iter.traits.iterator.Iterator.eq := Datatypes.None;
+      core.iter.traits.iterator.Iterator.eq_by := Datatypes.None;
+      core.iter.traits.iterator.Iterator.ne := Datatypes.None;
+      core.iter.traits.iterator.Iterator.lt := Datatypes.None;
+      core.iter.traits.iterator.Iterator.le := Datatypes.None;
+      core.iter.traits.iterator.Iterator.gt := Datatypes.None;
+      core.iter.traits.iterator.Iterator.ge := Datatypes.None;
+      core.iter.traits.iterator.Iterator.is_sorted := Datatypes.None;
+      core.iter.traits.iterator.Iterator.is_sorted_by := Datatypes.None;
+      core.iter.traits.iterator.Iterator.is_sorted_by_key := Datatypes.None;
+      core.iter.traits.iterator.Iterator.__iterator_get_unchecked :=
+        Datatypes.None;
     }.
-    Admitted.
   End Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
-  Global Hint Resolve ℐ : core.
 End Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
 
 Definition fibonacci `{ℋ : State.Trait} : M iterators.Fibonacci :=
@@ -109,7 +179,8 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α4 := borrow_mut sequence (core.ops.range.Range i32) in
       let* α5 :=
         (core.iter.traits.iterator.Iterator.next
-            (Self := (core.ops.range.Range i32)))
+            (Self := core.ops.range.Range i32)
+            (Trait := ltac:(refine _)))
           α4 in
       let* α6 := borrow α5 (core.option.Option i32) in
       let* α7 := deref α6 (core.option.Option i32) in
@@ -132,7 +203,8 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α4 := borrow_mut sequence (core.ops.range.Range i32) in
       let* α5 :=
         (core.iter.traits.iterator.Iterator.next
-            (Self := (core.ops.range.Range i32)))
+            (Self := core.ops.range.Range i32)
+            (Trait := ltac:(refine _)))
           α4 in
       let* α6 := borrow α5 (core.option.Option i32) in
       let* α7 := deref α6 (core.option.Option i32) in
@@ -155,7 +227,8 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α4 := borrow_mut sequence (core.ops.range.Range i32) in
       let* α5 :=
         (core.iter.traits.iterator.Iterator.next
-            (Self := (core.ops.range.Range i32)))
+            (Self := core.ops.range.Range i32)
+            (Trait := ltac:(refine _)))
           α4 in
       let* α6 := borrow α5 (core.option.Option i32) in
       let* α7 := deref α6 (core.option.Option i32) in
@@ -178,7 +251,8 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α4 := borrow_mut sequence (core.ops.range.Range i32) in
       let* α5 :=
         (core.iter.traits.iterator.Iterator.next
-            (Self := (core.ops.range.Range i32)))
+            (Self := core.ops.range.Range i32)
+            (Trait := ltac:(refine _)))
           α4 in
       let* α6 := borrow α5 (core.option.Option i32) in
       let* α7 := deref α6 (core.option.Option i32) in
@@ -213,7 +287,8 @@ Definition main `{ℋ : State.Trait} : M unit :=
         |} in
     let* α3 :=
       (core.iter.traits.collect.IntoIterator.into_iter
-          (Self := (core.ops.range.Range i32)))
+          (Self := core.ops.range.Range i32)
+          (Trait := ltac:(refine _)))
         α2 in
     let* α4 :=
       match α3 with
@@ -225,7 +300,8 @@ Definition main `{ℋ : State.Trait} : M unit :=
             let* α2 := borrow_mut α1 (core.ops.range.Range i32) in
             let* α3 :=
               (core.iter.traits.iterator.Iterator.next
-                  (Self := (core.ops.range.Range i32)))
+                  (Self := core.ops.range.Range i32)
+                  (Trait := ltac:(refine _)))
                 α2 in
             match α3 with
             | core.option.Option  =>
@@ -273,12 +349,15 @@ Definition main `{ℋ : State.Trait} : M unit :=
     let* α0 := iterators.fibonacci in
     let* α1 := M.alloc 4 in
     let* α2 :=
-      (core.iter.traits.iterator.Iterator.take (Self := iterators.Fibonacci))
+      (core.iter.traits.iterator.Iterator.take
+          (Self := iterators.Fibonacci)
+          (Trait := ltac:(refine _)))
         α0
         α1 in
     let* α3 :=
       (core.iter.traits.collect.IntoIterator.into_iter
-          (Self := (core.iter.adapters.take.Take iterators.Fibonacci)))
+          (Self := core.iter.adapters.take.Take iterators.Fibonacci)
+          (Trait := ltac:(refine _)))
         α2 in
     let* α4 :=
       match α3 with
@@ -297,7 +376,8 @@ Definition main `{ℋ : State.Trait} : M unit :=
                 (core.iter.adapters.take.Take iterators.Fibonacci) in
             let* α3 :=
               (core.iter.traits.iterator.Iterator.next
-                  (Self := (core.iter.adapters.take.Take iterators.Fibonacci)))
+                  (Self := core.iter.adapters.take.Take iterators.Fibonacci)
+                  (Trait := ltac:(refine _)))
                 α2 in
             match α3 with
             | core.option.Option  =>
@@ -345,20 +425,24 @@ Definition main `{ℋ : State.Trait} : M unit :=
     let* α0 := iterators.fibonacci in
     let* α1 := M.alloc 4 in
     let* α2 :=
-      (core.iter.traits.iterator.Iterator.skip (Self := iterators.Fibonacci))
+      (core.iter.traits.iterator.Iterator.skip
+          (Self := iterators.Fibonacci)
+          (Trait := ltac:(refine _)))
         α0
         α1 in
     let* α3 := M.alloc 4 in
     let* α4 :=
       (core.iter.traits.iterator.Iterator.take
-          (Self := (core.iter.adapters.skip.Skip iterators.Fibonacci)))
+          (Self := core.iter.adapters.skip.Skip iterators.Fibonacci)
+          (Trait := ltac:(refine _)))
         α2
         α3 in
     let* α5 :=
       (core.iter.traits.collect.IntoIterator.into_iter
           (Self :=
-            (core.iter.adapters.take.Take
-              (core.iter.adapters.skip.Skip iterators.Fibonacci))))
+            core.iter.adapters.take.Take
+              (core.iter.adapters.skip.Skip iterators.Fibonacci))
+          (Trait := ltac:(refine _)))
         α4 in
     let* α6 :=
       match α5 with
@@ -383,8 +467,9 @@ Definition main `{ℋ : State.Trait} : M unit :=
             let* α3 :=
               (core.iter.traits.iterator.Iterator.next
                   (Self :=
-                    (core.iter.adapters.take.Take
-                      (core.iter.adapters.skip.Skip iterators.Fibonacci))))
+                    core.iter.adapters.take.Take
+                      (core.iter.adapters.skip.Skip iterators.Fibonacci))
+                  (Trait := ltac:(refine _)))
                 α2 in
             match α3 with
             | core.option.Option  =>
@@ -445,10 +530,11 @@ Definition main `{ℋ : State.Trait} : M unit :=
     M.alloc tt in
   let* α0 := borrow array (list u32) in
   let* α1 := pointer_coercion "Unsize" α0 in
-  let* α2 := (Slice T)::["iter"] α1 in
+  let* α2 := (Slice u32)::["iter"] α1 in
   let* α3 :=
     (core.iter.traits.collect.IntoIterator.into_iter
-        (Self := (core.slice.iter.Iter u32)))
+        (Self := core.slice.iter.Iter u32)
+        (Trait := ltac:(refine _)))
       α2 in
   let* α4 :=
     match α3 with
@@ -460,7 +546,8 @@ Definition main `{ℋ : State.Trait} : M unit :=
           let* α2 := borrow_mut α1 (core.slice.iter.Iter u32) in
           let* α3 :=
             (core.iter.traits.iterator.Iterator.next
-                (Self := (core.slice.iter.Iter u32)))
+                (Self := core.slice.iter.Iter u32)
+                (Trait := ltac:(refine _)))
               α2 in
           match α3 with
           | core.option.Option  =>
