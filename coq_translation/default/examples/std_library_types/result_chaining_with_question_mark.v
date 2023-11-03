@@ -10,47 +10,43 @@ Module checked.
   End MathError.
   Definition MathError `{ℋ : State.Trait} : Set := MathError.t.
   
-  Module
-    Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
-    Section
-      Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
-      Context `{ℋ : State.Trait}.
-      
-      Definition Self : Set :=
-        result_chaining_with_question_mark.checked.MathError.
-      
-      Definition fmt
-          (self : ref Self)
-          (f : mut_ref core.fmt.Formatter)
-          : M ltac:(core.fmt.Result) :=
-        let* α0 := deref f core.fmt.Formatter in
-        let* α1 := borrow_mut α0 core.fmt.Formatter in
-        let* α2 :=
-          match self with
-          | result_chaining_with_question_mark.checked.MathError  =>
-            let* α0 := deref (mk_str "DivisionByZero") str in
-            borrow α0 str
-          | result_chaining_with_question_mark.checked.MathError  =>
-            let* α0 := deref (mk_str "NonPositiveLogarithm") str in
-            borrow α0 str
-          | result_chaining_with_question_mark.checked.MathError  =>
-            let* α0 := deref (mk_str "NegativeSquareRoot") str in
-            borrow α0 str
-          end in
-        core.fmt.Formatter::["write_str"] α1 α2.
-      
-      Global Instance AssociatedFunction_fmt :
-        Notation.DoubleColon Self "fmt" := {
-        Notation.double_colon := fmt;
-      }.
-      
-      Global Instance ℐ : core.fmt.Debug.Trait Self := {
-        core.fmt.Debug.fmt := fmt;
-      }.
-    End
-      Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
-  End
-    Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
+  Module  Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
+  Section Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
+    Context `{ℋ : State.Trait}.
+    
+    Definition Self : Set :=
+      result_chaining_with_question_mark.checked.MathError.
+    
+    Definition fmt
+        (self : ref Self)
+        (f : mut_ref core.fmt.Formatter)
+        : M ltac:(core.fmt.Result) :=
+      let* α0 := deref f core.fmt.Formatter in
+      let* α1 := borrow_mut α0 core.fmt.Formatter in
+      let* α2 :=
+        match self with
+        | result_chaining_with_question_mark.checked.MathError  =>
+          let* α0 := deref (mk_str "DivisionByZero") str in
+          borrow α0 str
+        | result_chaining_with_question_mark.checked.MathError  =>
+          let* α0 := deref (mk_str "NonPositiveLogarithm") str in
+          borrow α0 str
+        | result_chaining_with_question_mark.checked.MathError  =>
+          let* α0 := deref (mk_str "NegativeSquareRoot") str in
+          borrow α0 str
+        end in
+      core.fmt.Formatter::["write_str"] α1 α2.
+    
+    Global Instance AssociatedFunction_fmt :
+      Notation.DoubleColon Self "fmt" := {
+      Notation.double_colon := fmt;
+    }.
+    
+    Global Instance ℐ : core.fmt.Debug.Trait Self := {
+      core.fmt.Debug.fmt := fmt;
+    }.
+  End Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
+  End Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
   
   Ltac MathResult :=
     refine
@@ -211,47 +207,41 @@ Module MathError.
 End MathError.
 Definition MathError `{ℋ : State.Trait} : Set := MathError.t.
 
-Module
-  Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
-  Section
-    Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
-    Context `{ℋ : State.Trait}.
-    
-    Definition Self : Set :=
-      result_chaining_with_question_mark.checked.MathError.
-    
-    Definition fmt
-        (self : ref Self)
-        (f : mut_ref core.fmt.Formatter)
-        : M ltac:(core.fmt.Result) :=
-      let* α0 := deref f core.fmt.Formatter in
-      let* α1 := borrow_mut α0 core.fmt.Formatter in
-      let* α2 :=
-        match self with
-        | result_chaining_with_question_mark.checked.MathError  =>
-          let* α0 := deref (mk_str "DivisionByZero") str in
-          borrow α0 str
-        | result_chaining_with_question_mark.checked.MathError  =>
-          let* α0 := deref (mk_str "NonPositiveLogarithm") str in
-          borrow α0 str
-        | result_chaining_with_question_mark.checked.MathError  =>
-          let* α0 := deref (mk_str "NegativeSquareRoot") str in
-          borrow α0 str
-        end in
-      core.fmt.Formatter::["write_str"] α1 α2.
-    
-    Global Instance AssociatedFunction_fmt :
-      Notation.DoubleColon Self "fmt" := {
-      Notation.double_colon := fmt;
-    }.
-    
-    Global Instance ℐ : core.fmt.Debug.Trait Self := {
-      core.fmt.Debug.fmt := fmt;
-    }.
-  End
-    Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
-End
-  Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
+Module  Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
+Section Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
+  Context `{ℋ : State.Trait}.
+  
+  Definition Self : Set := result_chaining_with_question_mark.checked.MathError.
+  
+  Definition fmt
+      (self : ref Self)
+      (f : mut_ref core.fmt.Formatter)
+      : M ltac:(core.fmt.Result) :=
+    let* α0 := deref f core.fmt.Formatter in
+    let* α1 := borrow_mut α0 core.fmt.Formatter in
+    let* α2 :=
+      match self with
+      | result_chaining_with_question_mark.checked.MathError  =>
+        let* α0 := deref (mk_str "DivisionByZero") str in
+        borrow α0 str
+      | result_chaining_with_question_mark.checked.MathError  =>
+        let* α0 := deref (mk_str "NonPositiveLogarithm") str in
+        borrow α0 str
+      | result_chaining_with_question_mark.checked.MathError  =>
+        let* α0 := deref (mk_str "NegativeSquareRoot") str in
+        borrow α0 str
+      end in
+    core.fmt.Formatter::["write_str"] α1 α2.
+  
+  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {
+    Notation.double_colon := fmt;
+  }.
+  
+  Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    core.fmt.Debug.fmt := fmt;
+  }.
+End Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
+End Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
 
 Ltac MathResult :=
   refine

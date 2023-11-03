@@ -9,41 +9,40 @@ Module Food.
 End Food.
 Definition Food `{ℋ : State.Trait} : Set := Food.t.
 
-Module Impl_core_fmt_Debug_for_combinators_and_then_Food.
-  Section Impl_core_fmt_Debug_for_combinators_and_then_Food.
-    Context `{ℋ : State.Trait}.
-    
-    Definition Self : Set := combinators_and_then.Food.
-    
-    Definition fmt
-        (self : ref Self)
-        (f : mut_ref core.fmt.Formatter)
-        : M ltac:(core.fmt.Result) :=
-      let* α0 := deref f core.fmt.Formatter in
-      let* α1 := borrow_mut α0 core.fmt.Formatter in
-      let* α2 :=
-        match self with
-        | combinators_and_then.Food  =>
-          let* α0 := deref (mk_str "CordonBleu") str in
-          borrow α0 str
-        | combinators_and_then.Food  =>
-          let* α0 := deref (mk_str "Steak") str in
-          borrow α0 str
-        | combinators_and_then.Food  =>
-          let* α0 := deref (mk_str "Sushi") str in
-          borrow α0 str
-        end in
-      core.fmt.Formatter::["write_str"] α1 α2.
-    
-    Global Instance AssociatedFunction_fmt :
-      Notation.DoubleColon Self "fmt" := {
-      Notation.double_colon := fmt;
-    }.
-    
-    Global Instance ℐ : core.fmt.Debug.Trait Self := {
-      core.fmt.Debug.fmt := fmt;
-    }.
-  End Impl_core_fmt_Debug_for_combinators_and_then_Food.
+Module  Impl_core_fmt_Debug_for_combinators_and_then_Food.
+Section Impl_core_fmt_Debug_for_combinators_and_then_Food.
+  Context `{ℋ : State.Trait}.
+  
+  Definition Self : Set := combinators_and_then.Food.
+  
+  Definition fmt
+      (self : ref Self)
+      (f : mut_ref core.fmt.Formatter)
+      : M ltac:(core.fmt.Result) :=
+    let* α0 := deref f core.fmt.Formatter in
+    let* α1 := borrow_mut α0 core.fmt.Formatter in
+    let* α2 :=
+      match self with
+      | combinators_and_then.Food  =>
+        let* α0 := deref (mk_str "CordonBleu") str in
+        borrow α0 str
+      | combinators_and_then.Food  =>
+        let* α0 := deref (mk_str "Steak") str in
+        borrow α0 str
+      | combinators_and_then.Food  =>
+        let* α0 := deref (mk_str "Sushi") str in
+        borrow α0 str
+      end in
+    core.fmt.Formatter::["write_str"] α1 α2.
+  
+  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {
+    Notation.double_colon := fmt;
+  }.
+  
+  Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    core.fmt.Debug.fmt := fmt;
+  }.
+End Impl_core_fmt_Debug_for_combinators_and_then_Food.
 End Impl_core_fmt_Debug_for_combinators_and_then_Food.
 
 Module Day.
@@ -54,41 +53,40 @@ Module Day.
 End Day.
 Definition Day `{ℋ : State.Trait} : Set := Day.t.
 
-Module Impl_core_fmt_Debug_for_combinators_and_then_Day.
-  Section Impl_core_fmt_Debug_for_combinators_and_then_Day.
-    Context `{ℋ : State.Trait}.
-    
-    Definition Self : Set := combinators_and_then.Day.
-    
-    Definition fmt
-        (self : ref Self)
-        (f : mut_ref core.fmt.Formatter)
-        : M ltac:(core.fmt.Result) :=
-      let* α0 := deref f core.fmt.Formatter in
-      let* α1 := borrow_mut α0 core.fmt.Formatter in
-      let* α2 :=
-        match self with
-        | combinators_and_then.Day  =>
-          let* α0 := deref (mk_str "Monday") str in
-          borrow α0 str
-        | combinators_and_then.Day  =>
-          let* α0 := deref (mk_str "Tuesday") str in
-          borrow α0 str
-        | combinators_and_then.Day  =>
-          let* α0 := deref (mk_str "Wednesday") str in
-          borrow α0 str
-        end in
-      core.fmt.Formatter::["write_str"] α1 α2.
-    
-    Global Instance AssociatedFunction_fmt :
-      Notation.DoubleColon Self "fmt" := {
-      Notation.double_colon := fmt;
-    }.
-    
-    Global Instance ℐ : core.fmt.Debug.Trait Self := {
-      core.fmt.Debug.fmt := fmt;
-    }.
-  End Impl_core_fmt_Debug_for_combinators_and_then_Day.
+Module  Impl_core_fmt_Debug_for_combinators_and_then_Day.
+Section Impl_core_fmt_Debug_for_combinators_and_then_Day.
+  Context `{ℋ : State.Trait}.
+  
+  Definition Self : Set := combinators_and_then.Day.
+  
+  Definition fmt
+      (self : ref Self)
+      (f : mut_ref core.fmt.Formatter)
+      : M ltac:(core.fmt.Result) :=
+    let* α0 := deref f core.fmt.Formatter in
+    let* α1 := borrow_mut α0 core.fmt.Formatter in
+    let* α2 :=
+      match self with
+      | combinators_and_then.Day  =>
+        let* α0 := deref (mk_str "Monday") str in
+        borrow α0 str
+      | combinators_and_then.Day  =>
+        let* α0 := deref (mk_str "Tuesday") str in
+        borrow α0 str
+      | combinators_and_then.Day  =>
+        let* α0 := deref (mk_str "Wednesday") str in
+        borrow α0 str
+      end in
+    core.fmt.Formatter::["write_str"] α1 α2.
+  
+  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {
+    Notation.double_colon := fmt;
+  }.
+  
+  Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    core.fmt.Debug.fmt := fmt;
+  }.
+End Impl_core_fmt_Debug_for_combinators_and_then_Day.
 End Impl_core_fmt_Debug_for_combinators_and_then_Day.
 
 Definition have_ingredients

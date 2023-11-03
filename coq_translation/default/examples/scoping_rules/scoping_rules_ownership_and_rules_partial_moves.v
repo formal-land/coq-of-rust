@@ -88,84 +88,75 @@ Definition main `{ℋ : State.Trait} : M unit :=
     M.alloc tt in
   M.alloc tt.
 
-Module Person.
-  Section Person.
-    Context `{ℋ : State.Trait}.
-    
-    Unset Primitive Projections.
-    Record t : Set := {
-      name : alloc.string.String;
-      age : alloc.boxed.Box u8 alloc.boxed.Box.Default.A;
-    }.
-    Global Set Primitive Projections.
-    
-    Global Instance Get_name : Notation.Dot "name" := {
-      Notation.dot x := let* x := M.read x in Pure x.(name) : M _;
-    }.
-    Global Instance Get_AF_name : Notation.DoubleColon t "name" := {
-      Notation.double_colon x := let* x := M.read x in Pure x.(name) : M _;
-    }.
-    Global Instance Get_age : Notation.Dot "age" := {
-      Notation.dot x := let* x := M.read x in Pure x.(age) : M _;
-    }.
-    Global Instance Get_AF_age : Notation.DoubleColon t "age" := {
-      Notation.double_colon x := let* x := M.read x in Pure x.(age) : M _;
-    }.
-  End Person.
+Module  Person.
+Section Person.
+  Context `{ℋ : State.Trait}.
+  
+  Unset Primitive Projections.
+  Record t : Set := {
+    name : alloc.string.String;
+    age : alloc.boxed.Box u8 alloc.boxed.Box.Default.A;
+  }.
+  Global Set Primitive Projections.
+  
+  Global Instance Get_name : Notation.Dot "name" := {
+    Notation.dot x := let* x := M.read x in Pure x.(name) : M _;
+  }.
+  Global Instance Get_AF_name : Notation.DoubleColon t "name" := {
+    Notation.double_colon x := let* x := M.read x in Pure x.(name) : M _;
+  }.
+  Global Instance Get_age : Notation.Dot "age" := {
+    Notation.dot x := let* x := M.read x in Pure x.(age) : M _;
+  }.
+  Global Instance Get_AF_age : Notation.DoubleColon t "age" := {
+    Notation.double_colon x := let* x := M.read x in Pure x.(age) : M _;
+  }.
+End Person.
 End Person.
 Definition Person `{ℋ : State.Trait} : Set := M.val Person.t.
 
-Module
-  Impl_core_fmt_Debug_for_scoping_rules_ownership_and_rules_partial_moves_main_Person.
-  Section
-    Impl_core_fmt_Debug_for_scoping_rules_ownership_and_rules_partial_moves_main_Person.
-    Context `{ℋ : State.Trait}.
-    
-    Definition Self : Set :=
-      scoping_rules_ownership_and_rules_partial_moves.main.Person.
-    
-    Definition fmt
-        (self : ref Self)
-        (f : mut_ref core.fmt.Formatter)
-        : M ltac:(core.fmt.Result) :=
-      let* α0 := deref f core.fmt.Formatter in
-      let* α1 := borrow_mut α0 core.fmt.Formatter in
-      let* α2 := deref (mk_str "Person") str in
-      let* α3 := borrow α2 str in
-      let* α4 := deref (mk_str "name") str in
-      let* α5 := borrow α4 str in
-      let* α6 :=
-        deref
-          self
-          scoping_rules_ownership_and_rules_partial_moves.main.Person in
-      let* α7 := α6.["name"] in
-      let* α8 := borrow α7 alloc.string.String in
-      let* α9 := deref α8 alloc.string.String in
-      let* α10 := borrow α9 alloc.string.String in
-      let* α11 := pointer_coercion "Unsize" α10 in
-      let* α12 := deref (mk_str "age") str in
-      let* α13 := borrow α12 str in
-      let* α14 :=
-        deref
-          self
-          scoping_rules_ownership_and_rules_partial_moves.main.Person in
-      let* α15 := α14.["age"] in
-      let* α16 := borrow α15 (alloc.boxed.Box u8 alloc.alloc.Global) in
-      let* α17 := borrow α16 (ref (alloc.boxed.Box u8 alloc.alloc.Global)) in
-      let* α18 := deref α17 (ref (alloc.boxed.Box u8 alloc.alloc.Global)) in
-      let* α19 := borrow α18 (ref (alloc.boxed.Box u8 alloc.alloc.Global)) in
-      let* α20 := pointer_coercion "Unsize" α19 in
-      core.fmt.Formatter::["debug_struct_field2_finish"] α1 α3 α5 α11 α13 α20.
-    
-    Global Instance AssociatedFunction_fmt :
-      Notation.DoubleColon Self "fmt" := {
-      Notation.double_colon := fmt;
-    }.
-    
-    Global Instance ℐ : core.fmt.Debug.Trait Self := {
-      core.fmt.Debug.fmt := fmt;
-    }.
-  End
-    Impl_core_fmt_Debug_for_scoping_rules_ownership_and_rules_partial_moves_main_Person.
-End
-  Impl_core_fmt_Debug_for_scoping_rules_ownership_and_rules_partial_moves_main_Person.
+Module  Impl_core_fmt_Debug_for_scoping_rules_ownership_and_rules_partial_moves_main_Person.
+Section Impl_core_fmt_Debug_for_scoping_rules_ownership_and_rules_partial_moves_main_Person.
+  Context `{ℋ : State.Trait}.
+  
+  Definition Self : Set :=
+    scoping_rules_ownership_and_rules_partial_moves.main.Person.
+  
+  Definition fmt
+      (self : ref Self)
+      (f : mut_ref core.fmt.Formatter)
+      : M ltac:(core.fmt.Result) :=
+    let* α0 := deref f core.fmt.Formatter in
+    let* α1 := borrow_mut α0 core.fmt.Formatter in
+    let* α2 := deref (mk_str "Person") str in
+    let* α3 := borrow α2 str in
+    let* α4 := deref (mk_str "name") str in
+    let* α5 := borrow α4 str in
+    let* α6 :=
+      deref self scoping_rules_ownership_and_rules_partial_moves.main.Person in
+    let* α7 := α6.["name"] in
+    let* α8 := borrow α7 alloc.string.String in
+    let* α9 := deref α8 alloc.string.String in
+    let* α10 := borrow α9 alloc.string.String in
+    let* α11 := pointer_coercion "Unsize" α10 in
+    let* α12 := deref (mk_str "age") str in
+    let* α13 := borrow α12 str in
+    let* α14 :=
+      deref self scoping_rules_ownership_and_rules_partial_moves.main.Person in
+    let* α15 := α14.["age"] in
+    let* α16 := borrow α15 (alloc.boxed.Box u8 alloc.alloc.Global) in
+    let* α17 := borrow α16 (ref (alloc.boxed.Box u8 alloc.alloc.Global)) in
+    let* α18 := deref α17 (ref (alloc.boxed.Box u8 alloc.alloc.Global)) in
+    let* α19 := borrow α18 (ref (alloc.boxed.Box u8 alloc.alloc.Global)) in
+    let* α20 := pointer_coercion "Unsize" α19 in
+    core.fmt.Formatter::["debug_struct_field2_finish"] α1 α3 α5 α11 α13 α20.
+  
+  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {
+    Notation.double_colon := fmt;
+  }.
+  
+  Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    core.fmt.Debug.fmt := fmt;
+  }.
+End Impl_core_fmt_Debug_for_scoping_rules_ownership_and_rules_partial_moves_main_Person.
+End Impl_core_fmt_Debug_for_scoping_rules_ownership_and_rules_partial_moves_main_Person.

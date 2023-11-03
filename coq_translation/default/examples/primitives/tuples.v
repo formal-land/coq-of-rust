@@ -5,85 +5,84 @@ Definition reverse `{ℋ : State.Trait} (pair : i32 * bool) : M (bool * i32) :=
   let '(int_param, bool_param) := pair in
   Pure (bool_param, int_param).
 
-Module Matrix.
-  Section Matrix.
-    Context `{ℋ : State.Trait}.
-    
-    Unset Primitive Projections.
-    Record t : Set := {
-      x0 : f32;
-      x1 : f32;
-      x2 : f32;
-      x3 : f32;
-    }.
-    Global Set Primitive Projections.
-    
-    Global Instance Get_0 : Notation.Dot "0" := {
-      Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
-    }.
-    Global Instance Get_1 : Notation.Dot "1" := {
-      Notation.dot x := let* x := M.read x in Pure x.(x1) : M _;
-    }.
-    Global Instance Get_2 : Notation.Dot "2" := {
-      Notation.dot x := let* x := M.read x in Pure x.(x2) : M _;
-    }.
-    Global Instance Get_3 : Notation.Dot "3" := {
-      Notation.dot x := let* x := M.read x in Pure x.(x3) : M _;
-    }.
-  End Matrix.
+Module  Matrix.
+Section Matrix.
+  Context `{ℋ : State.Trait}.
+  
+  Unset Primitive Projections.
+  Record t : Set := {
+    x0 : f32;
+    x1 : f32;
+    x2 : f32;
+    x3 : f32;
+  }.
+  Global Set Primitive Projections.
+  
+  Global Instance Get_0 : Notation.Dot "0" := {
+    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
+  }.
+  Global Instance Get_1 : Notation.Dot "1" := {
+    Notation.dot x := let* x := M.read x in Pure x.(x1) : M _;
+  }.
+  Global Instance Get_2 : Notation.Dot "2" := {
+    Notation.dot x := let* x := M.read x in Pure x.(x2) : M _;
+  }.
+  Global Instance Get_3 : Notation.Dot "3" := {
+    Notation.dot x := let* x := M.read x in Pure x.(x3) : M _;
+  }.
+End Matrix.
 End Matrix.
 Definition Matrix `{ℋ : State.Trait} : Set := M.val Matrix.t.
 
-Module Impl_core_fmt_Debug_for_tuples_Matrix.
-  Section Impl_core_fmt_Debug_for_tuples_Matrix.
-    Context `{ℋ : State.Trait}.
-    
-    Definition Self : Set := tuples.Matrix.
-    
-    Definition fmt
-        (self : ref Self)
-        (f : mut_ref core.fmt.Formatter)
-        : M ltac:(core.fmt.Result) :=
-      let* α0 := deref f core.fmt.Formatter in
-      let* α1 := borrow_mut α0 core.fmt.Formatter in
-      let* α2 := deref (mk_str "Matrix") str in
-      let* α3 := borrow α2 str in
-      let* α4 := deref self tuples.Matrix in
-      let* α5 := α4.["0"] in
-      let* α6 := borrow α5 f32 in
-      let* α7 := deref α6 f32 in
-      let* α8 := borrow α7 f32 in
-      let* α9 := pointer_coercion "Unsize" α8 in
-      let* α10 := deref self tuples.Matrix in
-      let* α11 := α10.["1"] in
-      let* α12 := borrow α11 f32 in
-      let* α13 := deref α12 f32 in
-      let* α14 := borrow α13 f32 in
-      let* α15 := pointer_coercion "Unsize" α14 in
-      let* α16 := deref self tuples.Matrix in
-      let* α17 := α16.["2"] in
-      let* α18 := borrow α17 f32 in
-      let* α19 := deref α18 f32 in
-      let* α20 := borrow α19 f32 in
-      let* α21 := pointer_coercion "Unsize" α20 in
-      let* α22 := deref self tuples.Matrix in
-      let* α23 := α22.["3"] in
-      let* α24 := borrow α23 f32 in
-      let* α25 := borrow α24 (ref f32) in
-      let* α26 := deref α25 (ref f32) in
-      let* α27 := borrow α26 (ref f32) in
-      let* α28 := pointer_coercion "Unsize" α27 in
-      core.fmt.Formatter::["debug_tuple_field4_finish"] α1 α3 α9 α15 α21 α28.
-    
-    Global Instance AssociatedFunction_fmt :
-      Notation.DoubleColon Self "fmt" := {
-      Notation.double_colon := fmt;
-    }.
-    
-    Global Instance ℐ : core.fmt.Debug.Trait Self := {
-      core.fmt.Debug.fmt := fmt;
-    }.
-  End Impl_core_fmt_Debug_for_tuples_Matrix.
+Module  Impl_core_fmt_Debug_for_tuples_Matrix.
+Section Impl_core_fmt_Debug_for_tuples_Matrix.
+  Context `{ℋ : State.Trait}.
+  
+  Definition Self : Set := tuples.Matrix.
+  
+  Definition fmt
+      (self : ref Self)
+      (f : mut_ref core.fmt.Formatter)
+      : M ltac:(core.fmt.Result) :=
+    let* α0 := deref f core.fmt.Formatter in
+    let* α1 := borrow_mut α0 core.fmt.Formatter in
+    let* α2 := deref (mk_str "Matrix") str in
+    let* α3 := borrow α2 str in
+    let* α4 := deref self tuples.Matrix in
+    let* α5 := α4.["0"] in
+    let* α6 := borrow α5 f32 in
+    let* α7 := deref α6 f32 in
+    let* α8 := borrow α7 f32 in
+    let* α9 := pointer_coercion "Unsize" α8 in
+    let* α10 := deref self tuples.Matrix in
+    let* α11 := α10.["1"] in
+    let* α12 := borrow α11 f32 in
+    let* α13 := deref α12 f32 in
+    let* α14 := borrow α13 f32 in
+    let* α15 := pointer_coercion "Unsize" α14 in
+    let* α16 := deref self tuples.Matrix in
+    let* α17 := α16.["2"] in
+    let* α18 := borrow α17 f32 in
+    let* α19 := deref α18 f32 in
+    let* α20 := borrow α19 f32 in
+    let* α21 := pointer_coercion "Unsize" α20 in
+    let* α22 := deref self tuples.Matrix in
+    let* α23 := α22.["3"] in
+    let* α24 := borrow α23 f32 in
+    let* α25 := borrow α24 (ref f32) in
+    let* α26 := deref α25 (ref f32) in
+    let* α27 := borrow α26 (ref f32) in
+    let* α28 := pointer_coercion "Unsize" α27 in
+    core.fmt.Formatter::["debug_tuple_field4_finish"] α1 α3 α9 α15 α21 α28.
+  
+  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {
+    Notation.double_colon := fmt;
+  }.
+  
+  Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    core.fmt.Debug.fmt := fmt;
+  }.
+End Impl_core_fmt_Debug_for_tuples_Matrix.
 End Impl_core_fmt_Debug_for_tuples_Matrix.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)

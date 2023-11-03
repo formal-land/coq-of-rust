@@ -3,53 +3,52 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter reverse : forall `{ℋ : State.Trait}, (i32 * bool) -> M (bool * i32).
 
-Module Matrix.
-  Section Matrix.
-    Context `{ℋ : State.Trait}.
-    
-    Unset Primitive Projections.
-    Record t : Set := {
-      x0 : f32;
-      x1 : f32;
-      x2 : f32;
-      x3 : f32;
-    }.
-    Global Set Primitive Projections.
-    
-    Global Instance Get_0 : Notation.Dot "0" := {
-      Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
-    }.
-    Global Instance Get_1 : Notation.Dot "1" := {
-      Notation.dot x := let* x := M.read x in Pure x.(x1) : M _;
-    }.
-    Global Instance Get_2 : Notation.Dot "2" := {
-      Notation.dot x := let* x := M.read x in Pure x.(x2) : M _;
-    }.
-    Global Instance Get_3 : Notation.Dot "3" := {
-      Notation.dot x := let* x := M.read x in Pure x.(x3) : M _;
-    }.
-  End Matrix.
+Module  Matrix.
+Section Matrix.
+  Context `{ℋ : State.Trait}.
+  
+  Unset Primitive Projections.
+  Record t : Set := {
+    x0 : f32;
+    x1 : f32;
+    x2 : f32;
+    x3 : f32;
+  }.
+  Global Set Primitive Projections.
+  
+  Global Instance Get_0 : Notation.Dot "0" := {
+    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
+  }.
+  Global Instance Get_1 : Notation.Dot "1" := {
+    Notation.dot x := let* x := M.read x in Pure x.(x1) : M _;
+  }.
+  Global Instance Get_2 : Notation.Dot "2" := {
+    Notation.dot x := let* x := M.read x in Pure x.(x2) : M _;
+  }.
+  Global Instance Get_3 : Notation.Dot "3" := {
+    Notation.dot x := let* x := M.read x in Pure x.(x3) : M _;
+  }.
+End Matrix.
 End Matrix.
 Definition Matrix `{ℋ : State.Trait} : Set := M.val Matrix.t.
 
-Module Impl_core_fmt_Debug_for_tuples_Matrix.
-  Section Impl_core_fmt_Debug_for_tuples_Matrix.
-    Context `{ℋ : State.Trait}.
-    
-    Definition Self : Set := tuples.Matrix.
-    
-    Parameter fmt :
-        (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
-    
-    Global Instance AssociatedFunction_fmt :
-      Notation.DoubleColon Self "fmt" := {
-      Notation.double_colon := fmt;
-    }.
-    
-    Global Instance ℐ : core.fmt.Debug.Trait Self := {
-      core.fmt.Debug.fmt := fmt;
-    }.
-  End Impl_core_fmt_Debug_for_tuples_Matrix.
+Module  Impl_core_fmt_Debug_for_tuples_Matrix.
+Section Impl_core_fmt_Debug_for_tuples_Matrix.
+  Context `{ℋ : State.Trait}.
+  
+  Definition Self : Set := tuples.Matrix.
+  
+  Parameter fmt :
+      (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
+  
+  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {
+    Notation.double_colon := fmt;
+  }.
+  
+  Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    core.fmt.Debug.fmt := fmt;
+  }.
+End Impl_core_fmt_Debug_for_tuples_Matrix.
 End Impl_core_fmt_Debug_for_tuples_Matrix.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)

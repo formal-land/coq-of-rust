@@ -71,142 +71,141 @@ Definition main `{ℋ : State.Trait} : M unit :=
     M.alloc tt in
   M.alloc tt.
 
-Module Complex.
-  Section Complex.
-    Context `{ℋ : State.Trait}.
-    
-    Unset Primitive Projections.
-    Record t : Set := {
-      re : f32;
-      im : f32;
-    }.
-    Global Set Primitive Projections.
-    
-    Global Instance Get_re : Notation.Dot "re" := {
-      Notation.dot x := let* x := M.read x in Pure x.(re) : M _;
-    }.
-    Global Instance Get_AF_re : Notation.DoubleColon t "re" := {
-      Notation.double_colon x := let* x := M.read x in Pure x.(re) : M _;
-    }.
-    Global Instance Get_im : Notation.Dot "im" := {
-      Notation.dot x := let* x := M.read x in Pure x.(im) : M _;
-    }.
-    Global Instance Get_AF_im : Notation.DoubleColon t "im" := {
-      Notation.double_colon x := let* x := M.read x in Pure x.(im) : M _;
-    }.
-  End Complex.
+Module  Complex.
+Section Complex.
+  Context `{ℋ : State.Trait}.
+  
+  Unset Primitive Projections.
+  Record t : Set := {
+    re : f32;
+    im : f32;
+  }.
+  Global Set Primitive Projections.
+  
+  Global Instance Get_re : Notation.Dot "re" := {
+    Notation.dot x := let* x := M.read x in Pure x.(re) : M _;
+  }.
+  Global Instance Get_AF_re : Notation.DoubleColon t "re" := {
+    Notation.double_colon x := let* x := M.read x in Pure x.(re) : M _;
+  }.
+  Global Instance Get_im : Notation.Dot "im" := {
+    Notation.dot x := let* x := M.read x in Pure x.(im) : M _;
+  }.
+  Global Instance Get_AF_im : Notation.DoubleColon t "im" := {
+    Notation.double_colon x := let* x := M.read x in Pure x.(im) : M _;
+  }.
+End Complex.
 End Complex.
 Definition Complex `{ℋ : State.Trait} : Set := M.val Complex.t.
 
-Module Impl_core_clone_Clone_for_foreign_function_interface_Complex.
-  Section Impl_core_clone_Clone_for_foreign_function_interface_Complex.
-    Context `{ℋ : State.Trait}.
-    
-    Definition Self : Set := foreign_function_interface.Complex.
-    
-    Definition clone (self : ref Self) : M foreign_function_interface.Complex :=
-      let* _ := M.alloc tt in
-      deref self foreign_function_interface.Complex.
-    
-    Global Instance AssociatedFunction_clone :
-      Notation.DoubleColon Self "clone" := {
-      Notation.double_colon := clone;
-    }.
-    
-    Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
-      core.clone.Clone.clone := clone;
-      core.clone.Clone.clone_from := Datatypes.None;
-    }.
-  End Impl_core_clone_Clone_for_foreign_function_interface_Complex.
+Module  Impl_core_clone_Clone_for_foreign_function_interface_Complex.
+Section Impl_core_clone_Clone_for_foreign_function_interface_Complex.
+  Context `{ℋ : State.Trait}.
+  
+  Definition Self : Set := foreign_function_interface.Complex.
+  
+  Definition clone (self : ref Self) : M foreign_function_interface.Complex :=
+    let* _ := M.alloc tt in
+    deref self foreign_function_interface.Complex.
+  
+  Global Instance AssociatedFunction_clone :
+    Notation.DoubleColon Self "clone" := {
+    Notation.double_colon := clone;
+  }.
+  
+  Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
+    core.clone.Clone.clone := clone;
+    core.clone.Clone.clone_from := Datatypes.None;
+  }.
+End Impl_core_clone_Clone_for_foreign_function_interface_Complex.
 End Impl_core_clone_Clone_for_foreign_function_interface_Complex.
 
-Module Impl_core_marker_Copy_for_foreign_function_interface_Complex.
-  Section Impl_core_marker_Copy_for_foreign_function_interface_Complex.
-    Context `{ℋ : State.Trait}.
-    
-    Definition Self : Set := foreign_function_interface.Complex.
-    
-    Global Instance ℐ : core.marker.Copy.Trait Self := {
-    }.
-  End Impl_core_marker_Copy_for_foreign_function_interface_Complex.
+Module  Impl_core_marker_Copy_for_foreign_function_interface_Complex.
+Section Impl_core_marker_Copy_for_foreign_function_interface_Complex.
+  Context `{ℋ : State.Trait}.
+  
+  Definition Self : Set := foreign_function_interface.Complex.
+  
+  Global Instance ℐ : core.marker.Copy.Trait Self := {
+  }.
+End Impl_core_marker_Copy_for_foreign_function_interface_Complex.
 End Impl_core_marker_Copy_for_foreign_function_interface_Complex.
 
-Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
-  Section Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
-    Context `{ℋ : State.Trait}.
-    
-    Definition Self : Set := foreign_function_interface.Complex.
-    
-    Definition fmt
-        (self : ref Self)
-        (f : mut_ref core.fmt.Formatter)
-        : M ltac:(core.fmt.Result) :=
-      let* α0 := deref self foreign_function_interface.Complex in
-      let* α1 := α0.["im"] in
-      let* α2 := M.alloc 0 (* 0. *) in
-      let* α3 := BinOp.lt α1 α2 in
-      let* α4 := use α3 in
-      if (α4 : bool) then
-        let* α0 := deref f core.fmt.Formatter in
-        let* α1 := borrow_mut α0 core.fmt.Formatter in
-        let* α2 :=
-          borrow [ mk_str ""; mk_str "-"; mk_str "i" ] (list (ref str)) in
-        let* α3 := deref α2 (list (ref str)) in
-        let* α4 := borrow α3 (list (ref str)) in
-        let* α5 := pointer_coercion "Unsize" α4 in
-        let* α6 := deref self foreign_function_interface.Complex in
-        let* α7 := α6.["re"] in
-        let* α8 := borrow α7 f32 in
-        let* α9 := deref α8 f32 in
-        let* α10 := borrow α9 f32 in
-        let* α11 := core.fmt.rt.Argument::["new_display"] α10 in
-        let* α12 := deref self foreign_function_interface.Complex in
-        let* α13 := α12.["im"] in
-        let* α14 := UnOp.neg α13 in
-        let* α15 := borrow α14 f32 in
-        let* α16 := deref α15 f32 in
-        let* α17 := borrow α16 f32 in
-        let* α18 := core.fmt.rt.Argument::["new_display"] α17 in
-        let* α19 := borrow [ α11; α18 ] (list core.fmt.rt.Argument) in
-        let* α20 := deref α19 (list core.fmt.rt.Argument) in
-        let* α21 := borrow α20 (list core.fmt.rt.Argument) in
-        let* α22 := pointer_coercion "Unsize" α21 in
-        let* α23 := core.fmt.Arguments::["new_v1"] α5 α22 in
-        core.fmt.Formatter::["write_fmt"] α1 α23
-      else
-        let* α0 := deref f core.fmt.Formatter in
-        let* α1 := borrow_mut α0 core.fmt.Formatter in
-        let* α2 :=
-          borrow [ mk_str ""; mk_str "+"; mk_str "i" ] (list (ref str)) in
-        let* α3 := deref α2 (list (ref str)) in
-        let* α4 := borrow α3 (list (ref str)) in
-        let* α5 := pointer_coercion "Unsize" α4 in
-        let* α6 := deref self foreign_function_interface.Complex in
-        let* α7 := α6.["re"] in
-        let* α8 := borrow α7 f32 in
-        let* α9 := deref α8 f32 in
-        let* α10 := borrow α9 f32 in
-        let* α11 := core.fmt.rt.Argument::["new_display"] α10 in
-        let* α12 := deref self foreign_function_interface.Complex in
-        let* α13 := α12.["im"] in
-        let* α14 := borrow α13 f32 in
-        let* α15 := deref α14 f32 in
-        let* α16 := borrow α15 f32 in
-        let* α17 := core.fmt.rt.Argument::["new_display"] α16 in
-        let* α18 := borrow [ α11; α17 ] (list core.fmt.rt.Argument) in
-        let* α19 := deref α18 (list core.fmt.rt.Argument) in
-        let* α20 := borrow α19 (list core.fmt.rt.Argument) in
-        let* α21 := pointer_coercion "Unsize" α20 in
-        let* α22 := core.fmt.Arguments::["new_v1"] α5 α21 in
-        core.fmt.Formatter::["write_fmt"] α1 α22.
-    
-    Global Instance AssociatedFunction_fmt :
-      Notation.DoubleColon Self "fmt" := {
-      Notation.double_colon := fmt;
-    }.
-    
-    Global Instance ℐ : core.fmt.Debug.Trait Self := {
-      core.fmt.Debug.fmt := fmt;
-    }.
-  End Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
+Module  Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
+Section Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
+  Context `{ℋ : State.Trait}.
+  
+  Definition Self : Set := foreign_function_interface.Complex.
+  
+  Definition fmt
+      (self : ref Self)
+      (f : mut_ref core.fmt.Formatter)
+      : M ltac:(core.fmt.Result) :=
+    let* α0 := deref self foreign_function_interface.Complex in
+    let* α1 := α0.["im"] in
+    let* α2 := M.alloc 0 (* 0. *) in
+    let* α3 := BinOp.lt α1 α2 in
+    let* α4 := use α3 in
+    if (α4 : bool) then
+      let* α0 := deref f core.fmt.Formatter in
+      let* α1 := borrow_mut α0 core.fmt.Formatter in
+      let* α2 :=
+        borrow [ mk_str ""; mk_str "-"; mk_str "i" ] (list (ref str)) in
+      let* α3 := deref α2 (list (ref str)) in
+      let* α4 := borrow α3 (list (ref str)) in
+      let* α5 := pointer_coercion "Unsize" α4 in
+      let* α6 := deref self foreign_function_interface.Complex in
+      let* α7 := α6.["re"] in
+      let* α8 := borrow α7 f32 in
+      let* α9 := deref α8 f32 in
+      let* α10 := borrow α9 f32 in
+      let* α11 := core.fmt.rt.Argument::["new_display"] α10 in
+      let* α12 := deref self foreign_function_interface.Complex in
+      let* α13 := α12.["im"] in
+      let* α14 := UnOp.neg α13 in
+      let* α15 := borrow α14 f32 in
+      let* α16 := deref α15 f32 in
+      let* α17 := borrow α16 f32 in
+      let* α18 := core.fmt.rt.Argument::["new_display"] α17 in
+      let* α19 := borrow [ α11; α18 ] (list core.fmt.rt.Argument) in
+      let* α20 := deref α19 (list core.fmt.rt.Argument) in
+      let* α21 := borrow α20 (list core.fmt.rt.Argument) in
+      let* α22 := pointer_coercion "Unsize" α21 in
+      let* α23 := core.fmt.Arguments::["new_v1"] α5 α22 in
+      core.fmt.Formatter::["write_fmt"] α1 α23
+    else
+      let* α0 := deref f core.fmt.Formatter in
+      let* α1 := borrow_mut α0 core.fmt.Formatter in
+      let* α2 :=
+        borrow [ mk_str ""; mk_str "+"; mk_str "i" ] (list (ref str)) in
+      let* α3 := deref α2 (list (ref str)) in
+      let* α4 := borrow α3 (list (ref str)) in
+      let* α5 := pointer_coercion "Unsize" α4 in
+      let* α6 := deref self foreign_function_interface.Complex in
+      let* α7 := α6.["re"] in
+      let* α8 := borrow α7 f32 in
+      let* α9 := deref α8 f32 in
+      let* α10 := borrow α9 f32 in
+      let* α11 := core.fmt.rt.Argument::["new_display"] α10 in
+      let* α12 := deref self foreign_function_interface.Complex in
+      let* α13 := α12.["im"] in
+      let* α14 := borrow α13 f32 in
+      let* α15 := deref α14 f32 in
+      let* α16 := borrow α15 f32 in
+      let* α17 := core.fmt.rt.Argument::["new_display"] α16 in
+      let* α18 := borrow [ α11; α17 ] (list core.fmt.rt.Argument) in
+      let* α19 := deref α18 (list core.fmt.rt.Argument) in
+      let* α20 := borrow α19 (list core.fmt.rt.Argument) in
+      let* α21 := pointer_coercion "Unsize" α20 in
+      let* α22 := core.fmt.Arguments::["new_v1"] α5 α21 in
+      core.fmt.Formatter::["write_fmt"] α1 α22.
+  
+  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {
+    Notation.double_colon := fmt;
+  }.
+  
+  Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    core.fmt.Debug.fmt := fmt;
+  }.
+End Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
 End Impl_core_fmt_Debug_for_foreign_function_interface_Complex.

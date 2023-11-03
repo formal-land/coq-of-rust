@@ -439,17 +439,27 @@ impl<'a> Module<'a> {
     pub(crate) fn to_doc(&self) -> Doc<'a> {
         let items = self.items.to_doc();
         let items = if self.is_with_section {
-            render::enclose("Section", self.name.to_owned(), items)
+            render::enclose("Section", self.name.to_owned(), true, items)
         } else {
             items
         };
-        let inner_module = render::enclose("Module", self.name.to_owned(), items);
+        let inner_module = render::enclose(
+            if self.is_with_section {
+                // We add one space at the end for alignment with the section's name
+                "Module "
+            } else {
+                "Module"
+            },
+            self.name.to_owned(),
+            !self.is_with_section,
+            items,
+        );
         if self.nb_repeat == 0 {
             inner_module
         } else {
             let wrap_name = format!("Wrap_{}_{}", self.name, self.nb_repeat);
             concat([
-                render::enclose("Module", wrap_name.clone(), inner_module),
+                render::enclose("Module", wrap_name.clone(), false, inner_module),
                 hardline(),
                 nest([text("Import"), line(), text(wrap_name), text(".")]),
             ])
