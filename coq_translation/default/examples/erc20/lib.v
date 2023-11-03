@@ -15,21 +15,21 @@ Section Mapping.
   Global Set Primitive Projections.
   
   Global Instance Get__key : Notation.Dot "_key" := {
-    Notation.dot x := let* x := M.read x in Pure x.(_key) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(_key) : M _;
   }.
   Global Instance Get_AF__key : Notation.DoubleColon t "_key" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(_key) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(_key) : M _;
   }.
   Global Instance Get__value : Notation.Dot "_value" := {
-    Notation.dot x := let* x := M.read x in Pure x.(_value) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(_value) : M _;
   }.
   Global Instance Get_AF__value : Notation.DoubleColon t "_value" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(_value) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(_value) : M _;
   }.
 End Mapping.
 End Mapping.
 Definition Mapping (K V : Set) `{ℋ : State.Trait} : Set :=
-  M.val (Mapping.t (K := K) (V := V)).
+  M.Val (Mapping.t (K := K) (V := V)).
 
 Module  Impl_core_default_Default_for_lib_Mapping_K_V.
 Section Impl_core_default_Default_for_lib_Mapping_K_V.
@@ -102,11 +102,11 @@ Section AccountId.
   Global Set Primitive Projections.
   
   Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
   }.
 End AccountId.
 End AccountId.
-Definition AccountId `{ℋ : State.Trait} : Set := M.val AccountId.t.
+Definition AccountId `{ℋ : State.Trait} : Set := M.Val AccountId.t.
 
 Module  Impl_core_default_Default_for_lib_AccountId.
 Section Impl_core_default_Default_for_lib_AccountId.
@@ -141,11 +141,11 @@ Section Balance.
   Global Set Primitive Projections.
   
   Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
   }.
 End Balance.
 End Balance.
-Definition Balance `{ℋ : State.Trait} : Set := M.val Balance.t.
+Definition Balance `{ℋ : State.Trait} : Set := M.Val Balance.t.
 
 Module  Impl_core_default_Default_for_lib_Balance.
 Section Impl_core_default_Default_for_lib_Balance.
@@ -332,28 +332,29 @@ Section Erc20.
   Global Set Primitive Projections.
   
   Global Instance Get_total_supply : Notation.Dot "total_supply" := {
-    Notation.dot x := let* x := M.read x in Pure x.(total_supply) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(total_supply) : M _;
   }.
   Global Instance Get_AF_total_supply :
     Notation.DoubleColon t "total_supply" := {
     Notation.double_colon x :=
-      let* x := M.read x in Pure x.(total_supply) : M _;
+      let* x := M.read x in M.pure x.(total_supply) : M _;
   }.
   Global Instance Get_balances : Notation.Dot "balances" := {
-    Notation.dot x := let* x := M.read x in Pure x.(balances) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(balances) : M _;
   }.
   Global Instance Get_AF_balances : Notation.DoubleColon t "balances" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(balances) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(balances) : M _;
   }.
   Global Instance Get_allowances : Notation.Dot "allowances" := {
-    Notation.dot x := let* x := M.read x in Pure x.(allowances) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(allowances) : M _;
   }.
   Global Instance Get_AF_allowances : Notation.DoubleColon t "allowances" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(allowances) : M _;
+    Notation.double_colon x :=
+      let* x := M.read x in M.pure x.(allowances) : M _;
   }.
 End Erc20.
 End Erc20.
-Definition Erc20 `{ℋ : State.Trait} : Set := M.val Erc20.t.
+Definition Erc20 `{ℋ : State.Trait} : Set := M.Val Erc20.t.
 
 Module  Impl_core_default_Default_for_lib_Erc20.
 Section Impl_core_default_Default_for_lib_Erc20.
@@ -405,26 +406,26 @@ Section Transfer.
   Global Set Primitive Projections.
   
   Global Instance Get_from : Notation.Dot "from" := {
-    Notation.dot x := let* x := M.read x in Pure x.(from) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(from) : M _;
   }.
   Global Instance Get_AF_from : Notation.DoubleColon t "from" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(from) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(from) : M _;
   }.
   Global Instance Get_to : Notation.Dot "to" := {
-    Notation.dot x := let* x := M.read x in Pure x.(to) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(to) : M _;
   }.
   Global Instance Get_AF_to : Notation.DoubleColon t "to" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(to) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(to) : M _;
   }.
   Global Instance Get_value : Notation.Dot "value" := {
-    Notation.dot x := let* x := M.read x in Pure x.(value) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(value) : M _;
   }.
   Global Instance Get_AF_value : Notation.DoubleColon t "value" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(value) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(value) : M _;
   }.
 End Transfer.
 End Transfer.
-Definition Transfer `{ℋ : State.Trait} : Set := M.val Transfer.t.
+Definition Transfer `{ℋ : State.Trait} : Set := M.Val Transfer.t.
 
 Module  Impl_core_convert_Into_lib_Event_for_lib_Transfer.
 Section Impl_core_convert_Into_lib_Event_for_lib_Transfer.
@@ -460,26 +461,26 @@ Section Approval.
   Global Set Primitive Projections.
   
   Global Instance Get_owner : Notation.Dot "owner" := {
-    Notation.dot x := let* x := M.read x in Pure x.(owner) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(owner) : M _;
   }.
   Global Instance Get_AF_owner : Notation.DoubleColon t "owner" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(owner) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(owner) : M _;
   }.
   Global Instance Get_spender : Notation.Dot "spender" := {
-    Notation.dot x := let* x := M.read x in Pure x.(spender) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(spender) : M _;
   }.
   Global Instance Get_AF_spender : Notation.DoubleColon t "spender" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(spender) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(spender) : M _;
   }.
   Global Instance Get_value : Notation.Dot "value" := {
-    Notation.dot x := let* x := M.read x in Pure x.(value) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(value) : M _;
   }.
   Global Instance Get_AF_value : Notation.DoubleColon t "value" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(value) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(value) : M _;
   }.
 End Approval.
 End Approval.
-Definition Approval `{ℋ : State.Trait} : Set := M.val Approval.t.
+Definition Approval `{ℋ : State.Trait} : Set := M.Val Approval.t.
 
 Module  Impl_core_convert_Into_lib_Event_for_lib_Approval.
 Section Impl_core_convert_Into_lib_Event_for_lib_Approval.
@@ -925,7 +926,7 @@ Section Impl_lib_Erc20_2.
             residual in
         let* α1 := Return α0 in
         never_to_any α1
-      | core.ops.control_flow.ControlFlow val => Pure val
+      | core.ops.control_flow.ControlFlow val => M.pure val
       end in
     let* _ :=
       let* α0 := deref self lib.Erc20 in

@@ -14,26 +14,26 @@ Section Point.
   Global Set Primitive Projections.
   
   Global Instance Get_x : Notation.Dot "x" := {
-    Notation.dot x' := let* x' := M.read x' in Pure x'.(x) : M _;
+    Notation.dot x' := let* x' := M.read x' in M.pure x'.(x) : M _;
   }.
   Global Instance Get_AF_x : Notation.DoubleColon t "x" := {
-    Notation.double_colon x' := let* x' := M.read x' in Pure x'.(x) : M _;
+    Notation.double_colon x' := let* x' := M.read x' in M.pure x'.(x) : M _;
   }.
   Global Instance Get_y : Notation.Dot "y" := {
-    Notation.dot x := let* x := M.read x in Pure x.(y) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(y) : M _;
   }.
   Global Instance Get_AF_y : Notation.DoubleColon t "y" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(y) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(y) : M _;
   }.
   Global Instance Get_z : Notation.Dot "z" := {
-    Notation.dot x := let* x := M.read x in Pure x.(z) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(z) : M _;
   }.
   Global Instance Get_AF_z : Notation.DoubleColon t "z" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(z) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(z) : M _;
   }.
 End Point.
 End Point.
-Definition Point `{ℋ : State.Trait} : Set := M.val Point.t.
+Definition Point `{ℋ : State.Trait} : Set := M.Val Point.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=

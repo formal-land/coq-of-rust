@@ -124,7 +124,7 @@ Definition double_first
           residual in
       let* α1 := Return α0 in
       never_to_any α1
-    | core.ops.control_flow.ControlFlow val => Pure val
+    | core.ops.control_flow.ControlFlow val => M.pure val
     end in
   let* parsed :=
     let* α0 := deref first (ref str) in
@@ -148,7 +148,7 @@ Definition double_first
           residual in
       let* α1 := Return α0 in
       never_to_any α1
-    | core.ops.control_flow.ControlFlow val => Pure val
+    | core.ops.control_flow.ControlFlow val => M.pure val
     end in
   let* α0 := M.alloc 2 in
   let* α1 := BinOp.mul α0 parsed in

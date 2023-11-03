@@ -14,26 +14,26 @@ Section Person.
   Global Set Primitive Projections.
   
   Global Instance Get_id : Notation.Dot "id" := {
-    Notation.dot x := let* x := M.read x in Pure x.(id) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(id) : M _;
   }.
   Global Instance Get_AF_id : Notation.DoubleColon t "id" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(id) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(id) : M _;
   }.
   Global Instance Get_name : Notation.Dot "name" := {
-    Notation.dot x := let* x := M.read x in Pure x.(name) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(name) : M _;
   }.
   Global Instance Get_AF_name : Notation.DoubleColon t "name" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(name) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(name) : M _;
   }.
   Global Instance Get_phone : Notation.Dot "phone" := {
-    Notation.dot x := let* x := M.read x in Pure x.(phone) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(phone) : M _;
   }.
   Global Instance Get_AF_phone : Notation.DoubleColon t "phone" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(phone) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(phone) : M _;
   }.
 End Person.
 End Person.
-Definition Person `{ℋ : State.Trait} : Set := M.val Person.t.
+Definition Person `{ℋ : State.Trait} : Set := M.Val Person.t.
 
 Module  Impl_core_hash_Hash_for_hash_Person.
 Section Impl_core_hash_Hash_for_hash_Person.

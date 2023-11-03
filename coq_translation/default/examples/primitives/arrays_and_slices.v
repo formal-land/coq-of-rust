@@ -61,7 +61,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
     let* α2 := M.alloc 3 in
     let* α3 := M.alloc 4 in
     let* α4 := M.alloc 5 in
-    Pure [ α0; α1; α2; α3; α4 ] in
+    M.pure [ α0; α1; α2; α3; α4 ] in
   let* ys :=
     let* α0 := M.alloc 0 in
     repeat α0 500 in

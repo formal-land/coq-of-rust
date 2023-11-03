@@ -12,11 +12,11 @@ Section Borrowed.
   Global Set Primitive Projections.
   
   Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
   }.
 End Borrowed.
 End Borrowed.
-Definition Borrowed `{ℋ : State.Trait} : Set := M.val Borrowed.t.
+Definition Borrowed `{ℋ : State.Trait} : Set := M.Val Borrowed.t.
 
 Module  Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Borrowed.
 Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Borrowed.
@@ -63,20 +63,20 @@ Section NamedBorrowed.
   Global Set Primitive Projections.
   
   Global Instance Get_x : Notation.Dot "x" := {
-    Notation.dot x' := let* x' := M.read x' in Pure x'.(x) : M _;
+    Notation.dot x' := let* x' := M.read x' in M.pure x'.(x) : M _;
   }.
   Global Instance Get_AF_x : Notation.DoubleColon t "x" := {
-    Notation.double_colon x' := let* x' := M.read x' in Pure x'.(x) : M _;
+    Notation.double_colon x' := let* x' := M.read x' in M.pure x'.(x) : M _;
   }.
   Global Instance Get_y : Notation.Dot "y" := {
-    Notation.dot x := let* x := M.read x in Pure x.(y) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(y) : M _;
   }.
   Global Instance Get_AF_y : Notation.DoubleColon t "y" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(y) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(y) : M _;
   }.
 End NamedBorrowed.
 End NamedBorrowed.
-Definition NamedBorrowed `{ℋ : State.Trait} : Set := M.val NamedBorrowed.t.
+Definition NamedBorrowed `{ℋ : State.Trait} : Set := M.Val NamedBorrowed.t.
 
 Module  Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_NamedBorrowed.
 Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_NamedBorrowed.

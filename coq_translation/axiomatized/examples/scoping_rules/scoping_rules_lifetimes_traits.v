@@ -12,14 +12,14 @@ Section Borrowed.
   Global Set Primitive Projections.
   
   Global Instance Get_x : Notation.Dot "x" := {
-    Notation.dot x' := let* x' := M.read x' in Pure x'.(x) : M _;
+    Notation.dot x' := let* x' := M.read x' in M.pure x'.(x) : M _;
   }.
   Global Instance Get_AF_x : Notation.DoubleColon t "x" := {
-    Notation.double_colon x' := let* x' := M.read x' in Pure x'.(x) : M _;
+    Notation.double_colon x' := let* x' := M.read x' in M.pure x'.(x) : M _;
   }.
 End Borrowed.
 End Borrowed.
-Definition Borrowed `{ℋ : State.Trait} : Set := M.val Borrowed.t.
+Definition Borrowed `{ℋ : State.Trait} : Set := M.Val Borrowed.t.
 
 Module  Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed.
 Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed.

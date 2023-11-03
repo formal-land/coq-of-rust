@@ -13,20 +13,20 @@ Section Point.
   Global Set Primitive Projections.
   
   Global Instance Get_x : Notation.Dot "x" := {
-    Notation.dot x' := let* x' := M.read x' in Pure x'.(x) : M _;
+    Notation.dot x' := let* x' := M.read x' in M.pure x'.(x) : M _;
   }.
   Global Instance Get_AF_x : Notation.DoubleColon t "x" := {
-    Notation.double_colon x' := let* x' := M.read x' in Pure x'.(x) : M _;
+    Notation.double_colon x' := let* x' := M.read x' in M.pure x'.(x) : M _;
   }.
   Global Instance Get_y : Notation.Dot "y" := {
-    Notation.dot x := let* x := M.read x in Pure x.(y) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(y) : M _;
   }.
   Global Instance Get_AF_y : Notation.DoubleColon t "y" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(y) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(y) : M _;
   }.
 End Point.
 End Point.
-Definition Point `{ℋ : State.Trait} : Set := M.val Point.t.
+Definition Point `{ℋ : State.Trait} : Set := M.Val Point.t.
 
 Module  Impl_associated_functions_and_methods_Point.
 Section Impl_associated_functions_and_methods_Point.
@@ -61,20 +61,20 @@ Section Rectangle.
   Global Set Primitive Projections.
   
   Global Instance Get_p1 : Notation.Dot "p1" := {
-    Notation.dot x := let* x := M.read x in Pure x.(p1) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(p1) : M _;
   }.
   Global Instance Get_AF_p1 : Notation.DoubleColon t "p1" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(p1) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(p1) : M _;
   }.
   Global Instance Get_p2 : Notation.Dot "p2" := {
-    Notation.dot x := let* x := M.read x in Pure x.(p2) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(p2) : M _;
   }.
   Global Instance Get_AF_p2 : Notation.DoubleColon t "p2" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(p2) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(p2) : M _;
   }.
 End Rectangle.
 End Rectangle.
-Definition Rectangle `{ℋ : State.Trait} : Set := M.val Rectangle.t.
+Definition Rectangle `{ℋ : State.Trait} : Set := M.Val Rectangle.t.
 
 Module  Impl_associated_functions_and_methods_Rectangle.
 Section Impl_associated_functions_and_methods_Rectangle.
@@ -124,14 +124,14 @@ Section Pair.
   Global Set Primitive Projections.
   
   Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
   }.
   Global Instance Get_1 : Notation.Dot "1" := {
-    Notation.dot x := let* x := M.read x in Pure x.(x1) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(x1) : M _;
   }.
 End Pair.
 End Pair.
-Definition Pair `{ℋ : State.Trait} : Set := M.val Pair.t.
+Definition Pair `{ℋ : State.Trait} : Set := M.Val Pair.t.
 
 Module  Impl_associated_functions_and_methods_Pair.
 Section Impl_associated_functions_and_methods_Pair.

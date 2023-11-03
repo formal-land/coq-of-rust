@@ -12,14 +12,14 @@ Section Circle.
   Global Set Primitive Projections.
   
   Global Instance Get_radius : Notation.Dot "radius" := {
-    Notation.dot x := let* x := M.read x in Pure x.(radius) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(radius) : M _;
   }.
   Global Instance Get_AF_radius : Notation.DoubleColon t "radius" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(radius) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(radius) : M _;
   }.
 End Circle.
 End Circle.
-Definition Circle `{ℋ : State.Trait} : Set := M.val Circle.t.
+Definition Circle `{ℋ : State.Trait} : Set := M.Val Circle.t.
 
 Module  Impl_core_fmt_Display_for_converting_to_string_Circle.
 Section Impl_core_fmt_Display_for_converting_to_string_Circle.

@@ -19,7 +19,7 @@ Module LazyCell.
   Parameter t : forall `{State.Trait}, Set -> Set -> Set.
 End LazyCell.
 Definition LazyCell `{State.Trait} (T F : Set) : Set :=
-  M.val (LazyCell.t T F).
+  M.Val (LazyCell.t T F).
 
 (* 
 pub struct SyncUnsafeCell<T>

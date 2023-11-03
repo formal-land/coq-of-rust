@@ -11,7 +11,7 @@ Definition main
     let* α1 := borrow α0 str in
     let* α2 := str::["parse"] α1 in
     match α2 with
-    | core.result.Result number => Pure number
+    | core.result.Result number => M.pure number
     | core.result.Result e =>
       let* α0 := M.alloc (core.result.Result.Err e) in
       let* α1 := Return α0 in

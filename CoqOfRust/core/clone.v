@@ -44,6 +44,6 @@ Module Clone.
   End Impl_Clone_for_str.
 
   Module Impl_Clone_for_Z.
-    Global Instance I `{State.Trait} : Trait (M.val Z). Admitted.
+    Global Instance I `{State.Trait} : Trait (M.Val Z). Admitted.
   End Impl_Clone_for_Z.
 End Clone.

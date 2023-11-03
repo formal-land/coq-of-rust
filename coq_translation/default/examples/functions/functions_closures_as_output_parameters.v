@@ -7,7 +7,7 @@ Definition create_fn `{ℋ : State.Trait} : M _ (* OpaqueTy *) :=
     let* α1 := borrow α0 str in
     (alloc.borrow.ToOwned.to_owned (Self := str) (Trait := ltac:(refine _)))
       α1 in
-  Pure
+  M.pure
     (let* _ :=
       let* α0 := borrow [ mk_str "This is a: "; mk_str "
 " ] (list (ref str)) in
@@ -34,7 +34,7 @@ Definition create_fnmut `{ℋ : State.Trait} : M _ (* OpaqueTy *) :=
     let* α1 := borrow α0 str in
     (alloc.borrow.ToOwned.to_owned (Self := str) (Trait := ltac:(refine _)))
       α1 in
-  Pure
+  M.pure
     (let* _ :=
       let* α0 := borrow [ mk_str "This is a: "; mk_str "
 " ] (list (ref str)) in
@@ -59,7 +59,7 @@ Definition create_fnonce `{ℋ : State.Trait} : M _ (* OpaqueTy *) :=
     let* α1 := borrow α0 str in
     (alloc.borrow.ToOwned.to_owned (Self := str) (Trait := ltac:(refine _)))
       α1 in
-  Pure
+  M.pure
     (let* _ :=
       let* α0 := borrow [ mk_str "This is a: "; mk_str "
 " ] (list (ref str)) in

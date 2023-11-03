@@ -73,21 +73,22 @@ Module xts.
     Global Set Primitive Projections.
     
     Global Instance Get_ref_time : Notation.Dot "ref_time" := {
-      Notation.dot x := let* x := M.read x in Pure x.(ref_time) : M _;
+      Notation.dot x := let* x := M.read x in M.pure x.(ref_time) : M _;
     }.
     Global Instance Get_AF_ref_time : Notation.DoubleColon t "ref_time" := {
-      Notation.double_colon x := let* x := M.read x in Pure x.(ref_time) : M _;
+      Notation.double_colon x :=
+        let* x := M.read x in M.pure x.(ref_time) : M _;
     }.
     Global Instance Get_proof_size : Notation.Dot "proof_size" := {
-      Notation.dot x := let* x := M.read x in Pure x.(proof_size) : M _;
+      Notation.dot x := let* x := M.read x in M.pure x.(proof_size) : M _;
     }.
     Global Instance Get_AF_proof_size : Notation.DoubleColon t "proof_size" := {
       Notation.double_colon x :=
-        let* x := M.read x in Pure x.(proof_size) : M _;
+        let* x := M.read x in M.pure x.(proof_size) : M _;
     }.
   End Weight.
   End Weight.
-  Definition Weight `{ℋ : State.Trait} : Set := M.val Weight.t.
+  Definition Weight `{ℋ : State.Trait} : Set := M.Val Weight.t.
   
   Module  Impl_core_clone_Clone_for_ink_e2e_xts_Weight.
   Section Impl_core_clone_Clone_for_ink_e2e_xts_Weight.
@@ -333,44 +334,45 @@ Module xts.
     Global Set Primitive Projections.
     
     Global Instance Get_value : Notation.Dot "value" := {
-      Notation.dot x := let* x := M.read x in Pure x.(value) : M _;
+      Notation.dot x := let* x := M.read x in M.pure x.(value) : M _;
     }.
     Global Instance Get_AF_value : Notation.DoubleColon t "value" := {
-      Notation.double_colon x := let* x := M.read x in Pure x.(value) : M _;
+      Notation.double_colon x := let* x := M.read x in M.pure x.(value) : M _;
     }.
     Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
-      Notation.dot x := let* x := M.read x in Pure x.(gas_limit) : M _;
+      Notation.dot x := let* x := M.read x in M.pure x.(gas_limit) : M _;
     }.
     Global Instance Get_AF_gas_limit : Notation.DoubleColon t "gas_limit" := {
-      Notation.double_colon x := let* x := M.read x in Pure x.(gas_limit) : M _;
+      Notation.double_colon x :=
+        let* x := M.read x in M.pure x.(gas_limit) : M _;
     }.
     Global Instance Get_storage_deposit_limit :
       Notation.Dot "storage_deposit_limit" := {
       Notation.dot x :=
-        let* x := M.read x in Pure x.(storage_deposit_limit) : M _;
+        let* x := M.read x in M.pure x.(storage_deposit_limit) : M _;
     }.
     Global Instance Get_AF_storage_deposit_limit :
       Notation.DoubleColon t "storage_deposit_limit" := {
       Notation.double_colon x :=
-        let* x := M.read x in Pure x.(storage_deposit_limit) : M _;
+        let* x := M.read x in M.pure x.(storage_deposit_limit) : M _;
     }.
     Global Instance Get_code : Notation.Dot "code" := {
-      Notation.dot x := let* x := M.read x in Pure x.(code) : M _;
+      Notation.dot x := let* x := M.read x in M.pure x.(code) : M _;
     }.
     Global Instance Get_AF_code : Notation.DoubleColon t "code" := {
-      Notation.double_colon x := let* x := M.read x in Pure x.(code) : M _;
+      Notation.double_colon x := let* x := M.read x in M.pure x.(code) : M _;
     }.
     Global Instance Get_data : Notation.Dot "data" := {
-      Notation.dot x := let* x := M.read x in Pure x.(data) : M _;
+      Notation.dot x := let* x := M.read x in M.pure x.(data) : M _;
     }.
     Global Instance Get_AF_data : Notation.DoubleColon t "data" := {
-      Notation.double_colon x := let* x := M.read x in Pure x.(data) : M _;
+      Notation.double_colon x := let* x := M.read x in M.pure x.(data) : M _;
     }.
     Global Instance Get_salt : Notation.Dot "salt" := {
-      Notation.dot x := let* x := M.read x in Pure x.(salt) : M _;
+      Notation.dot x := let* x := M.read x in M.pure x.(salt) : M _;
     }.
     Global Instance Get_AF_salt : Notation.DoubleColon t "salt" := {
-      Notation.double_colon x := let* x := M.read x in Pure x.(salt) : M _;
+      Notation.double_colon x := let* x := M.read x in M.pure x.(salt) : M _;
     }.
   End InstantiateWithCode.
   End InstantiateWithCode.
@@ -379,7 +381,7 @@ Module xts.
       `{ℋ : State.Trait}
       {ℋ_0 : ink_env.types.Environment.Trait E}
       : Set :=
-    M.val (InstantiateWithCode.t (E := E)).
+    M.Val (InstantiateWithCode.t (E := E)).
   
   Module  Impl_core_fmt_Debug_for_ink_e2e_xts_InstantiateWithCode_E.
   Section Impl_core_fmt_Debug_for_ink_e2e_xts_InstantiateWithCode_E.
@@ -484,38 +486,39 @@ Module xts.
     Global Set Primitive Projections.
     
     Global Instance Get_dest : Notation.Dot "dest" := {
-      Notation.dot x := let* x := M.read x in Pure x.(dest) : M _;
+      Notation.dot x := let* x := M.read x in M.pure x.(dest) : M _;
     }.
     Global Instance Get_AF_dest : Notation.DoubleColon t "dest" := {
-      Notation.double_colon x := let* x := M.read x in Pure x.(dest) : M _;
+      Notation.double_colon x := let* x := M.read x in M.pure x.(dest) : M _;
     }.
     Global Instance Get_value : Notation.Dot "value" := {
-      Notation.dot x := let* x := M.read x in Pure x.(value) : M _;
+      Notation.dot x := let* x := M.read x in M.pure x.(value) : M _;
     }.
     Global Instance Get_AF_value : Notation.DoubleColon t "value" := {
-      Notation.double_colon x := let* x := M.read x in Pure x.(value) : M _;
+      Notation.double_colon x := let* x := M.read x in M.pure x.(value) : M _;
     }.
     Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
-      Notation.dot x := let* x := M.read x in Pure x.(gas_limit) : M _;
+      Notation.dot x := let* x := M.read x in M.pure x.(gas_limit) : M _;
     }.
     Global Instance Get_AF_gas_limit : Notation.DoubleColon t "gas_limit" := {
-      Notation.double_colon x := let* x := M.read x in Pure x.(gas_limit) : M _;
+      Notation.double_colon x :=
+        let* x := M.read x in M.pure x.(gas_limit) : M _;
     }.
     Global Instance Get_storage_deposit_limit :
       Notation.Dot "storage_deposit_limit" := {
       Notation.dot x :=
-        let* x := M.read x in Pure x.(storage_deposit_limit) : M _;
+        let* x := M.read x in M.pure x.(storage_deposit_limit) : M _;
     }.
     Global Instance Get_AF_storage_deposit_limit :
       Notation.DoubleColon t "storage_deposit_limit" := {
       Notation.double_colon x :=
-        let* x := M.read x in Pure x.(storage_deposit_limit) : M _;
+        let* x := M.read x in M.pure x.(storage_deposit_limit) : M _;
     }.
     Global Instance Get_data : Notation.Dot "data" := {
-      Notation.dot x := let* x := M.read x in Pure x.(data) : M _;
+      Notation.dot x := let* x := M.read x in M.pure x.(data) : M _;
     }.
     Global Instance Get_AF_data : Notation.DoubleColon t "data" := {
-      Notation.double_colon x := let* x := M.read x in Pure x.(data) : M _;
+      Notation.double_colon x := let* x := M.read x in M.pure x.(data) : M _;
     }.
   End Call.
   End Call.
@@ -524,7 +527,7 @@ Module xts.
       `{ℋ : State.Trait}
       {ℋ_0 : ink_env.types.Environment.Trait E}
       : Set :=
-    M.val (Call.t (E := E)).
+    M.Val (Call.t (E := E)).
   
   Module  Impl_core_fmt_Debug_for_ink_e2e_xts_Call_E.
   Section Impl_core_fmt_Debug_for_ink_e2e_xts_Call_E.
@@ -629,16 +632,16 @@ Module xts.
     Global Set Primitive Projections.
     
     Global Instance Get_dest : Notation.Dot "dest" := {
-      Notation.dot x := let* x := M.read x in Pure x.(dest) : M _;
+      Notation.dot x := let* x := M.read x in M.pure x.(dest) : M _;
     }.
     Global Instance Get_AF_dest : Notation.DoubleColon t "dest" := {
-      Notation.double_colon x := let* x := M.read x in Pure x.(dest) : M _;
+      Notation.double_colon x := let* x := M.read x in M.pure x.(dest) : M _;
     }.
     Global Instance Get_value : Notation.Dot "value" := {
-      Notation.dot x := let* x := M.read x in Pure x.(value) : M _;
+      Notation.dot x := let* x := M.read x in M.pure x.(value) : M _;
     }.
     Global Instance Get_AF_value : Notation.DoubleColon t "value" := {
-      Notation.double_colon x := let* x := M.read x in Pure x.(value) : M _;
+      Notation.double_colon x := let* x := M.read x in M.pure x.(value) : M _;
     }.
   End Transfer.
   End Transfer.
@@ -648,7 +651,7 @@ Module xts.
       {ℋ_0 : ink_env.types.Environment.Trait E}
       {ℋ_1 : subxt.config.Config.Trait C}
       : Set :=
-    M.val (Transfer.t (E := E) (C := C)).
+    M.Val (Transfer.t (E := E) (C := C)).
   
   Module  Impl_core_fmt_Debug_for_ink_e2e_xts_Transfer_E_C.
   Section Impl_core_fmt_Debug_for_ink_e2e_xts_Transfer_E_C.
@@ -903,28 +906,28 @@ Module xts.
     Global Set Primitive Projections.
     
     Global Instance Get_code : Notation.Dot "code" := {
-      Notation.dot x := let* x := M.read x in Pure x.(code) : M _;
+      Notation.dot x := let* x := M.read x in M.pure x.(code) : M _;
     }.
     Global Instance Get_AF_code : Notation.DoubleColon t "code" := {
-      Notation.double_colon x := let* x := M.read x in Pure x.(code) : M _;
+      Notation.double_colon x := let* x := M.read x in M.pure x.(code) : M _;
     }.
     Global Instance Get_storage_deposit_limit :
       Notation.Dot "storage_deposit_limit" := {
       Notation.dot x :=
-        let* x := M.read x in Pure x.(storage_deposit_limit) : M _;
+        let* x := M.read x in M.pure x.(storage_deposit_limit) : M _;
     }.
     Global Instance Get_AF_storage_deposit_limit :
       Notation.DoubleColon t "storage_deposit_limit" := {
       Notation.double_colon x :=
-        let* x := M.read x in Pure x.(storage_deposit_limit) : M _;
+        let* x := M.read x in M.pure x.(storage_deposit_limit) : M _;
     }.
     Global Instance Get_determinism : Notation.Dot "determinism" := {
-      Notation.dot x := let* x := M.read x in Pure x.(determinism) : M _;
+      Notation.dot x := let* x := M.read x in M.pure x.(determinism) : M _;
     }.
     Global Instance Get_AF_determinism :
       Notation.DoubleColon t "determinism" := {
       Notation.double_colon x :=
-        let* x := M.read x in Pure x.(determinism) : M _;
+        let* x := M.read x in M.pure x.(determinism) : M _;
     }.
   End UploadCode.
   End UploadCode.
@@ -933,7 +936,7 @@ Module xts.
       `{ℋ : State.Trait}
       {ℋ_0 : ink_env.types.Environment.Trait E}
       : Set :=
-    M.val (UploadCode.t (E := E)).
+    M.Val (UploadCode.t (E := E)).
   
   Module  Impl_core_fmt_Debug_for_ink_e2e_xts_UploadCode_E.
   Section Impl_core_fmt_Debug_for_ink_e2e_xts_UploadCode_E.
@@ -1036,16 +1039,17 @@ Module xts.
     Global Set Primitive Projections.
     
     Global Instance Get_client : Notation.Dot "client" := {
-      Notation.dot x := let* x := M.read x in Pure x.(client) : M _;
+      Notation.dot x := let* x := M.read x in M.pure x.(client) : M _;
     }.
     Global Instance Get_AF_client : Notation.DoubleColon t "client" := {
-      Notation.double_colon x := let* x := M.read x in Pure x.(client) : M _;
+      Notation.double_colon x := let* x := M.read x in M.pure x.(client) : M _;
     }.
     Global Instance Get__phantom : Notation.Dot "_phantom" := {
-      Notation.dot x := let* x := M.read x in Pure x.(_phantom) : M _;
+      Notation.dot x := let* x := M.read x in M.pure x.(_phantom) : M _;
     }.
     Global Instance Get_AF__phantom : Notation.DoubleColon t "_phantom" := {
-      Notation.double_colon x := let* x := M.read x in Pure x.(_phantom) : M _;
+      Notation.double_colon x :=
+        let* x := M.read x in M.pure x.(_phantom) : M _;
     }.
   End ContractsApi.
   End ContractsApi.
@@ -1055,7 +1059,7 @@ Module xts.
       {ℋ_0 : subxt.config.Config.Trait C}
       {ℋ_1 : ink_env.types.Environment.Trait E}
       : Set :=
-    M.val (ContractsApi.t (C := C) (E := E)).
+    M.Val (ContractsApi.t (C := C) (E := E)).
 End xts.
 
 Module client.
@@ -1091,23 +1095,23 @@ Module client.
     Global Set Primitive Projections.
     
     Global Instance Get_account_id : Notation.Dot "account_id" := {
-      Notation.dot x := let* x := M.read x in Pure x.(account_id) : M _;
+      Notation.dot x := let* x := M.read x in M.pure x.(account_id) : M _;
     }.
     Global Instance Get_AF_account_id : Notation.DoubleColon t "account_id" := {
       Notation.double_colon x :=
-        let* x := M.read x in Pure x.(account_id) : M _;
+        let* x := M.read x in M.pure x.(account_id) : M _;
     }.
     Global Instance Get_dry_run : Notation.Dot "dry_run" := {
-      Notation.dot x := let* x := M.read x in Pure x.(dry_run) : M _;
+      Notation.dot x := let* x := M.read x in M.pure x.(dry_run) : M _;
     }.
     Global Instance Get_AF_dry_run : Notation.DoubleColon t "dry_run" := {
-      Notation.double_colon x := let* x := M.read x in Pure x.(dry_run) : M _;
+      Notation.double_colon x := let* x := M.read x in M.pure x.(dry_run) : M _;
     }.
     Global Instance Get_events : Notation.Dot "events" := {
-      Notation.dot x := let* x := M.read x in Pure x.(events) : M _;
+      Notation.dot x := let* x := M.read x in M.pure x.(events) : M _;
     }.
     Global Instance Get_AF_events : Notation.DoubleColon t "events" := {
-      Notation.double_colon x := let* x := M.read x in Pure x.(events) : M _;
+      Notation.double_colon x := let* x := M.read x in M.pure x.(events) : M _;
     }.
   End InstantiationResult.
   End InstantiationResult.
@@ -1117,7 +1121,7 @@ Module client.
       {ℋ_0 : subxt.config.Config.Trait C}
       {ℋ_1 : ink_env.types.Environment.Trait E}
       : Set :=
-    M.val (InstantiationResult.t (C := C) (E := E)).
+    M.Val (InstantiationResult.t (C := C) (E := E)).
   
   Module  UploadResult.
   Section UploadResult.
@@ -1140,22 +1144,23 @@ Module client.
     Global Set Primitive Projections.
     
     Global Instance Get_code_hash : Notation.Dot "code_hash" := {
-      Notation.dot x := let* x := M.read x in Pure x.(code_hash) : M _;
+      Notation.dot x := let* x := M.read x in M.pure x.(code_hash) : M _;
     }.
     Global Instance Get_AF_code_hash : Notation.DoubleColon t "code_hash" := {
-      Notation.double_colon x := let* x := M.read x in Pure x.(code_hash) : M _;
+      Notation.double_colon x :=
+        let* x := M.read x in M.pure x.(code_hash) : M _;
     }.
     Global Instance Get_dry_run : Notation.Dot "dry_run" := {
-      Notation.dot x := let* x := M.read x in Pure x.(dry_run) : M _;
+      Notation.dot x := let* x := M.read x in M.pure x.(dry_run) : M _;
     }.
     Global Instance Get_AF_dry_run : Notation.DoubleColon t "dry_run" := {
-      Notation.double_colon x := let* x := M.read x in Pure x.(dry_run) : M _;
+      Notation.double_colon x := let* x := M.read x in M.pure x.(dry_run) : M _;
     }.
     Global Instance Get_events : Notation.Dot "events" := {
-      Notation.dot x := let* x := M.read x in Pure x.(events) : M _;
+      Notation.dot x := let* x := M.read x in M.pure x.(events) : M _;
     }.
     Global Instance Get_AF_events : Notation.DoubleColon t "events" := {
-      Notation.double_colon x := let* x := M.read x in Pure x.(events) : M _;
+      Notation.double_colon x := let* x := M.read x in M.pure x.(events) : M _;
     }.
   End UploadResult.
   End UploadResult.
@@ -1165,7 +1170,7 @@ Module client.
       {ℋ_0 : subxt.config.Config.Trait C}
       {ℋ_1 : ink_env.types.Environment.Trait E}
       : Set :=
-    M.val (UploadResult.t (C := C) (E := E)).
+    M.Val (UploadResult.t (C := C) (E := E)).
   
   Module  Impl_core_fmt_Debug_for_ink_e2e_client_UploadResult_C_E.
   Section Impl_core_fmt_Debug_for_ink_e2e_client_UploadResult_C_E.
@@ -1255,18 +1260,18 @@ Module client.
     Global Set Primitive Projections.
     
     Global Instance Get_exec_result : Notation.Dot "exec_result" := {
-      Notation.dot x := let* x := M.read x in Pure x.(exec_result) : M _;
+      Notation.dot x := let* x := M.read x in M.pure x.(exec_result) : M _;
     }.
     Global Instance Get_AF_exec_result :
       Notation.DoubleColon t "exec_result" := {
       Notation.double_colon x :=
-        let* x := M.read x in Pure x.(exec_result) : M _;
+        let* x := M.read x in M.pure x.(exec_result) : M _;
     }.
     Global Instance Get__marker : Notation.Dot "_marker" := {
-      Notation.dot x := let* x := M.read x in Pure x.(_marker) : M _;
+      Notation.dot x := let* x := M.read x in M.pure x.(_marker) : M _;
     }.
     Global Instance Get_AF__marker : Notation.DoubleColon t "_marker" := {
-      Notation.double_colon x := let* x := M.read x in Pure x.(_marker) : M _;
+      Notation.double_colon x := let* x := M.read x in M.pure x.(_marker) : M _;
     }.
   End CallDryRunResult.
   End CallDryRunResult.
@@ -1275,7 +1280,7 @@ Module client.
       `{ℋ : State.Trait}
       {ℋ_0 : ink_env.types.Environment.Trait E}
       : Set :=
-    M.val (CallDryRunResult.t (E := E) (V := V)).
+    M.Val (CallDryRunResult.t (E := E) (V := V)).
   
   Module  CallResult.
   Section CallResult.
@@ -1294,16 +1299,16 @@ Module client.
     Global Set Primitive Projections.
     
     Global Instance Get_dry_run : Notation.Dot "dry_run" := {
-      Notation.dot x := let* x := M.read x in Pure x.(dry_run) : M _;
+      Notation.dot x := let* x := M.read x in M.pure x.(dry_run) : M _;
     }.
     Global Instance Get_AF_dry_run : Notation.DoubleColon t "dry_run" := {
-      Notation.double_colon x := let* x := M.read x in Pure x.(dry_run) : M _;
+      Notation.double_colon x := let* x := M.read x in M.pure x.(dry_run) : M _;
     }.
     Global Instance Get_events : Notation.Dot "events" := {
-      Notation.dot x := let* x := M.read x in Pure x.(events) : M _;
+      Notation.dot x := let* x := M.read x in M.pure x.(events) : M _;
     }.
     Global Instance Get_AF_events : Notation.DoubleColon t "events" := {
-      Notation.double_colon x := let* x := M.read x in Pure x.(events) : M _;
+      Notation.double_colon x := let* x := M.read x in M.pure x.(events) : M _;
     }.
   End CallResult.
   End CallResult.
@@ -1313,7 +1318,7 @@ Module client.
       {ℋ_0 : subxt.config.Config.Trait C}
       {ℋ_1 : ink_env.types.Environment.Trait E}
       : Set :=
-    M.val (CallResult.t (C := C) (E := E) (V := V)).
+    M.Val (CallResult.t (C := C) (E := E) (V := V)).
   
   Module  Impl_core_fmt_Debug_for_ink_e2e_client_CallResult_C_E_V.
   Section Impl_core_fmt_Debug_for_ink_e2e_client_CallResult_C_E_V.
@@ -1707,16 +1712,17 @@ Module client.
     Global Set Primitive Projections.
     
     Global Instance Get_api : Notation.Dot "api" := {
-      Notation.dot x := let* x := M.read x in Pure x.(api) : M _;
+      Notation.dot x := let* x := M.read x in M.pure x.(api) : M _;
     }.
     Global Instance Get_AF_api : Notation.DoubleColon t "api" := {
-      Notation.double_colon x := let* x := M.read x in Pure x.(api) : M _;
+      Notation.double_colon x := let* x := M.read x in M.pure x.(api) : M _;
     }.
     Global Instance Get_contracts : Notation.Dot "contracts" := {
-      Notation.dot x := let* x := M.read x in Pure x.(contracts) : M _;
+      Notation.dot x := let* x := M.read x in M.pure x.(contracts) : M _;
     }.
     Global Instance Get_AF_contracts : Notation.DoubleColon t "contracts" := {
-      Notation.double_colon x := let* x := M.read x in Pure x.(contracts) : M _;
+      Notation.double_colon x :=
+        let* x := M.read x in M.pure x.(contracts) : M _;
     }.
   End Client.
   End Client.
@@ -1726,7 +1732,7 @@ Module client.
       {ℋ_0 : subxt.config.Config.Trait C}
       {ℋ_1 : ink_env.types.Environment.Trait E}
       : Set :=
-    M.val (Client.t (C := C) (E := E)).
+    M.Val (Client.t (C := C) (E := E)).
 End client.
 
 Ltac CallBuilderFinal E Args RetType :=
@@ -1761,22 +1767,23 @@ Section InstantiationResult.
   Global Set Primitive Projections.
   
   Global Instance Get_account_id : Notation.Dot "account_id" := {
-    Notation.dot x := let* x := M.read x in Pure x.(account_id) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(account_id) : M _;
   }.
   Global Instance Get_AF_account_id : Notation.DoubleColon t "account_id" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(account_id) : M _;
+    Notation.double_colon x :=
+      let* x := M.read x in M.pure x.(account_id) : M _;
   }.
   Global Instance Get_dry_run : Notation.Dot "dry_run" := {
-    Notation.dot x := let* x := M.read x in Pure x.(dry_run) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(dry_run) : M _;
   }.
   Global Instance Get_AF_dry_run : Notation.DoubleColon t "dry_run" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(dry_run) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(dry_run) : M _;
   }.
   Global Instance Get_events : Notation.Dot "events" := {
-    Notation.dot x := let* x := M.read x in Pure x.(events) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(events) : M _;
   }.
   Global Instance Get_AF_events : Notation.DoubleColon t "events" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(events) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(events) : M _;
   }.
 End InstantiationResult.
 End InstantiationResult.
@@ -1786,7 +1793,7 @@ Definition InstantiationResult
     {ℋ_0 : subxt.config.Config.Trait C}
     {ℋ_1 : ink_env.types.Environment.Trait E}
     : Set :=
-  M.val (InstantiationResult.t (C := C) (E := E)).
+  M.Val (InstantiationResult.t (C := C) (E := E)).
 
 Module  UploadResult.
 Section UploadResult.
@@ -1809,22 +1816,22 @@ Section UploadResult.
   Global Set Primitive Projections.
   
   Global Instance Get_code_hash : Notation.Dot "code_hash" := {
-    Notation.dot x := let* x := M.read x in Pure x.(code_hash) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(code_hash) : M _;
   }.
   Global Instance Get_AF_code_hash : Notation.DoubleColon t "code_hash" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(code_hash) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(code_hash) : M _;
   }.
   Global Instance Get_dry_run : Notation.Dot "dry_run" := {
-    Notation.dot x := let* x := M.read x in Pure x.(dry_run) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(dry_run) : M _;
   }.
   Global Instance Get_AF_dry_run : Notation.DoubleColon t "dry_run" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(dry_run) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(dry_run) : M _;
   }.
   Global Instance Get_events : Notation.Dot "events" := {
-    Notation.dot x := let* x := M.read x in Pure x.(events) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(events) : M _;
   }.
   Global Instance Get_AF_events : Notation.DoubleColon t "events" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(events) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(events) : M _;
   }.
 End UploadResult.
 End UploadResult.
@@ -1834,7 +1841,7 @@ Definition UploadResult
     {ℋ_0 : subxt.config.Config.Trait C}
     {ℋ_1 : ink_env.types.Environment.Trait E}
     : Set :=
-  M.val (UploadResult.t (C := C) (E := E)).
+  M.Val (UploadResult.t (C := C) (E := E)).
 
 Module  Impl_core_fmt_Debug_for_ink_e2e_client_UploadResult_C_E.
 Section Impl_core_fmt_Debug_for_ink_e2e_client_UploadResult_C_E.
@@ -1922,16 +1929,16 @@ Section CallResult.
   Global Set Primitive Projections.
   
   Global Instance Get_dry_run : Notation.Dot "dry_run" := {
-    Notation.dot x := let* x := M.read x in Pure x.(dry_run) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(dry_run) : M _;
   }.
   Global Instance Get_AF_dry_run : Notation.DoubleColon t "dry_run" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(dry_run) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(dry_run) : M _;
   }.
   Global Instance Get_events : Notation.Dot "events" := {
-    Notation.dot x := let* x := M.read x in Pure x.(events) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(events) : M _;
   }.
   Global Instance Get_AF_events : Notation.DoubleColon t "events" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(events) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(events) : M _;
   }.
 End CallResult.
 End CallResult.
@@ -1941,7 +1948,7 @@ Definition CallResult
     {ℋ_0 : subxt.config.Config.Trait C}
     {ℋ_1 : ink_env.types.Environment.Trait E}
     : Set :=
-  M.val (CallResult.t (C := C) (E := E) (V := V)).
+  M.Val (CallResult.t (C := C) (E := E) (V := V)).
 
 Module  Impl_core_fmt_Debug_for_ink_e2e_client_CallResult_C_E_V.
 Section Impl_core_fmt_Debug_for_ink_e2e_client_CallResult_C_E_V.
@@ -1992,16 +1999,17 @@ Section CallDryRunResult.
   Global Set Primitive Projections.
   
   Global Instance Get_exec_result : Notation.Dot "exec_result" := {
-    Notation.dot x := let* x := M.read x in Pure x.(exec_result) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(exec_result) : M _;
   }.
   Global Instance Get_AF_exec_result : Notation.DoubleColon t "exec_result" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(exec_result) : M _;
+    Notation.double_colon x :=
+      let* x := M.read x in M.pure x.(exec_result) : M _;
   }.
   Global Instance Get__marker : Notation.Dot "_marker" := {
-    Notation.dot x := let* x := M.read x in Pure x.(_marker) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(_marker) : M _;
   }.
   Global Instance Get_AF__marker : Notation.DoubleColon t "_marker" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(_marker) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(_marker) : M _;
   }.
 End CallDryRunResult.
 End CallDryRunResult.
@@ -2010,7 +2018,7 @@ Definition CallDryRunResult
     `{ℋ : State.Trait}
     {ℋ_0 : ink_env.types.Environment.Trait E}
     : Set :=
-  M.val (CallDryRunResult.t (E := E) (V := V)).
+  M.Val (CallDryRunResult.t (E := E) (V := V)).
 
 Module  Impl_core_fmt_Debug_for_ink_e2e_client_CallDryRunResult_E_V.
 Section Impl_core_fmt_Debug_for_ink_e2e_client_CallDryRunResult_E_V.
@@ -2844,16 +2852,16 @@ Section Client.
   Global Set Primitive Projections.
   
   Global Instance Get_api : Notation.Dot "api" := {
-    Notation.dot x := let* x := M.read x in Pure x.(api) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(api) : M _;
   }.
   Global Instance Get_AF_api : Notation.DoubleColon t "api" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(api) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(api) : M _;
   }.
   Global Instance Get_contracts : Notation.Dot "contracts" := {
-    Notation.dot x := let* x := M.read x in Pure x.(contracts) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(contracts) : M _;
   }.
   Global Instance Get_AF_contracts : Notation.DoubleColon t "contracts" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(contracts) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(contracts) : M _;
   }.
 End Client.
 End Client.
@@ -2863,7 +2871,7 @@ Definition Client
     {ℋ_0 : subxt.config.Config.Trait C}
     {ℋ_1 : ink_env.types.Environment.Trait E}
     : Set :=
-  M.val (Client.t (C := C) (E := E)).
+  M.Val (Client.t (C := C) (E := E)).
 
 Module default_accounts.
   Parameter alice :
@@ -3092,22 +3100,22 @@ Module node_proc.
     Global Set Primitive Projections.
     
     Global Instance Get_proc : Notation.Dot "proc" := {
-      Notation.dot x := let* x := M.read x in Pure x.(proc) : M _;
+      Notation.dot x := let* x := M.read x in M.pure x.(proc) : M _;
     }.
     Global Instance Get_AF_proc : Notation.DoubleColon t "proc" := {
-      Notation.double_colon x := let* x := M.read x in Pure x.(proc) : M _;
+      Notation.double_colon x := let* x := M.read x in M.pure x.(proc) : M _;
     }.
     Global Instance Get_client : Notation.Dot "client" := {
-      Notation.dot x := let* x := M.read x in Pure x.(client) : M _;
+      Notation.dot x := let* x := M.read x in M.pure x.(client) : M _;
     }.
     Global Instance Get_AF_client : Notation.DoubleColon t "client" := {
-      Notation.double_colon x := let* x := M.read x in Pure x.(client) : M _;
+      Notation.double_colon x := let* x := M.read x in M.pure x.(client) : M _;
     }.
     Global Instance Get_url : Notation.Dot "url" := {
-      Notation.dot x := let* x := M.read x in Pure x.(url) : M _;
+      Notation.dot x := let* x := M.read x in M.pure x.(url) : M _;
     }.
     Global Instance Get_AF_url : Notation.DoubleColon t "url" := {
-      Notation.double_colon x := let* x := M.read x in Pure x.(url) : M _;
+      Notation.double_colon x := let* x := M.read x in M.pure x.(url) : M _;
     }.
   End TestNodeProcess.
   End TestNodeProcess.
@@ -3116,7 +3124,7 @@ Module node_proc.
       `{ℋ : State.Trait}
       {ℋ_0 : subxt.config.Config.Trait R}
       : Set :=
-    M.val (TestNodeProcess.t (R := R)).
+    M.Val (TestNodeProcess.t (R := R)).
   
   Module  Impl_core_ops_drop_Drop_for_ink_e2e_node_proc_TestNodeProcess_R.
   Section Impl_core_ops_drop_Drop_for_ink_e2e_node_proc_TestNodeProcess_R.
@@ -3155,27 +3163,29 @@ Module node_proc.
     Global Set Primitive Projections.
     
     Global Instance Get_node_path : Notation.Dot "node_path" := {
-      Notation.dot x := let* x := M.read x in Pure x.(node_path) : M _;
+      Notation.dot x := let* x := M.read x in M.pure x.(node_path) : M _;
     }.
     Global Instance Get_AF_node_path : Notation.DoubleColon t "node_path" := {
-      Notation.double_colon x := let* x := M.read x in Pure x.(node_path) : M _;
+      Notation.double_colon x :=
+        let* x := M.read x in M.pure x.(node_path) : M _;
     }.
     Global Instance Get_authority : Notation.Dot "authority" := {
-      Notation.dot x := let* x := M.read x in Pure x.(authority) : M _;
+      Notation.dot x := let* x := M.read x in M.pure x.(authority) : M _;
     }.
     Global Instance Get_AF_authority : Notation.DoubleColon t "authority" := {
-      Notation.double_colon x := let* x := M.read x in Pure x.(authority) : M _;
+      Notation.double_colon x :=
+        let* x := M.read x in M.pure x.(authority) : M _;
     }.
     Global Instance Get_marker : Notation.Dot "marker" := {
-      Notation.dot x := let* x := M.read x in Pure x.(marker) : M _;
+      Notation.dot x := let* x := M.read x in M.pure x.(marker) : M _;
     }.
     Global Instance Get_AF_marker : Notation.DoubleColon t "marker" := {
-      Notation.double_colon x := let* x := M.read x in Pure x.(marker) : M _;
+      Notation.double_colon x := let* x := M.read x in M.pure x.(marker) : M _;
     }.
   End TestNodeProcessBuilder.
   End TestNodeProcessBuilder.
   Definition TestNodeProcessBuilder (R : Set) `{ℋ : State.Trait} : Set :=
-    M.val (TestNodeProcessBuilder.t (R := R)).
+    M.Val (TestNodeProcessBuilder.t (R := R)).
 End node_proc.
 
 Module  TestNodeProcess.
@@ -3194,22 +3204,22 @@ Section TestNodeProcess.
   Global Set Primitive Projections.
   
   Global Instance Get_proc : Notation.Dot "proc" := {
-    Notation.dot x := let* x := M.read x in Pure x.(proc) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(proc) : M _;
   }.
   Global Instance Get_AF_proc : Notation.DoubleColon t "proc" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(proc) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(proc) : M _;
   }.
   Global Instance Get_client : Notation.Dot "client" := {
-    Notation.dot x := let* x := M.read x in Pure x.(client) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(client) : M _;
   }.
   Global Instance Get_AF_client : Notation.DoubleColon t "client" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(client) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(client) : M _;
   }.
   Global Instance Get_url : Notation.Dot "url" := {
-    Notation.dot x := let* x := M.read x in Pure x.(url) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(url) : M _;
   }.
   Global Instance Get_AF_url : Notation.DoubleColon t "url" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(url) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(url) : M _;
   }.
 End TestNodeProcess.
 End TestNodeProcess.
@@ -3218,7 +3228,7 @@ Definition TestNodeProcess
     `{ℋ : State.Trait}
     {ℋ_0 : subxt.config.Config.Trait R}
     : Set :=
-  M.val (TestNodeProcess.t (R := R)).
+  M.Val (TestNodeProcess.t (R := R)).
 
 Module  Impl_core_ops_drop_Drop_for_ink_e2e_node_proc_TestNodeProcess_R.
 Section Impl_core_ops_drop_Drop_for_ink_e2e_node_proc_TestNodeProcess_R.
@@ -3257,27 +3267,27 @@ Section TestNodeProcessBuilder.
   Global Set Primitive Projections.
   
   Global Instance Get_node_path : Notation.Dot "node_path" := {
-    Notation.dot x := let* x := M.read x in Pure x.(node_path) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(node_path) : M _;
   }.
   Global Instance Get_AF_node_path : Notation.DoubleColon t "node_path" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(node_path) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(node_path) : M _;
   }.
   Global Instance Get_authority : Notation.Dot "authority" := {
-    Notation.dot x := let* x := M.read x in Pure x.(authority) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(authority) : M _;
   }.
   Global Instance Get_AF_authority : Notation.DoubleColon t "authority" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(authority) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(authority) : M _;
   }.
   Global Instance Get_marker : Notation.Dot "marker" := {
-    Notation.dot x := let* x := M.read x in Pure x.(marker) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(marker) : M _;
   }.
   Global Instance Get_AF_marker : Notation.DoubleColon t "marker" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(marker) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(marker) : M _;
   }.
 End TestNodeProcessBuilder.
 End TestNodeProcessBuilder.
 Definition TestNodeProcessBuilder (R : Set) `{ℋ : State.Trait} : Set :=
-  M.val (TestNodeProcessBuilder.t (R := R)).
+  M.Val (TestNodeProcessBuilder.t (R := R)).
 
 Module  Weight.
 Section Weight.
@@ -3291,20 +3301,21 @@ Section Weight.
   Global Set Primitive Projections.
   
   Global Instance Get_ref_time : Notation.Dot "ref_time" := {
-    Notation.dot x := let* x := M.read x in Pure x.(ref_time) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(ref_time) : M _;
   }.
   Global Instance Get_AF_ref_time : Notation.DoubleColon t "ref_time" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(ref_time) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(ref_time) : M _;
   }.
   Global Instance Get_proof_size : Notation.Dot "proof_size" := {
-    Notation.dot x := let* x := M.read x in Pure x.(proof_size) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(proof_size) : M _;
   }.
   Global Instance Get_AF_proof_size : Notation.DoubleColon t "proof_size" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(proof_size) : M _;
+    Notation.double_colon x :=
+      let* x := M.read x in M.pure x.(proof_size) : M _;
   }.
 End Weight.
 End Weight.
-Definition Weight `{ℋ : State.Trait} : Set := M.val Weight.t.
+Definition Weight `{ℋ : State.Trait} : Set := M.Val Weight.t.
 
 Module  Impl_core_marker_Copy_for_ink_e2e_xts_Weight.
 Section Impl_core_marker_Copy_for_ink_e2e_xts_Weight.
@@ -3897,44 +3908,44 @@ Section InstantiateWithCode.
   Global Set Primitive Projections.
   
   Global Instance Get_value : Notation.Dot "value" := {
-    Notation.dot x := let* x := M.read x in Pure x.(value) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(value) : M _;
   }.
   Global Instance Get_AF_value : Notation.DoubleColon t "value" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(value) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(value) : M _;
   }.
   Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
-    Notation.dot x := let* x := M.read x in Pure x.(gas_limit) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(gas_limit) : M _;
   }.
   Global Instance Get_AF_gas_limit : Notation.DoubleColon t "gas_limit" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(gas_limit) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(gas_limit) : M _;
   }.
   Global Instance Get_storage_deposit_limit :
     Notation.Dot "storage_deposit_limit" := {
     Notation.dot x :=
-      let* x := M.read x in Pure x.(storage_deposit_limit) : M _;
+      let* x := M.read x in M.pure x.(storage_deposit_limit) : M _;
   }.
   Global Instance Get_AF_storage_deposit_limit :
     Notation.DoubleColon t "storage_deposit_limit" := {
     Notation.double_colon x :=
-      let* x := M.read x in Pure x.(storage_deposit_limit) : M _;
+      let* x := M.read x in M.pure x.(storage_deposit_limit) : M _;
   }.
   Global Instance Get_code : Notation.Dot "code" := {
-    Notation.dot x := let* x := M.read x in Pure x.(code) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(code) : M _;
   }.
   Global Instance Get_AF_code : Notation.DoubleColon t "code" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(code) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(code) : M _;
   }.
   Global Instance Get_data : Notation.Dot "data" := {
-    Notation.dot x := let* x := M.read x in Pure x.(data) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(data) : M _;
   }.
   Global Instance Get_AF_data : Notation.DoubleColon t "data" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(data) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(data) : M _;
   }.
   Global Instance Get_salt : Notation.Dot "salt" := {
-    Notation.dot x := let* x := M.read x in Pure x.(salt) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(salt) : M _;
   }.
   Global Instance Get_AF_salt : Notation.DoubleColon t "salt" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(salt) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(salt) : M _;
   }.
 End InstantiateWithCode.
 End InstantiateWithCode.
@@ -3943,7 +3954,7 @@ Definition InstantiateWithCode
     `{ℋ : State.Trait}
     {ℋ_0 : ink_env.types.Environment.Trait E}
     : Set :=
-  M.val (InstantiateWithCode.t (E := E)).
+  M.Val (InstantiateWithCode.t (E := E)).
 
 Module  Impl_core_fmt_Debug_for_ink_e2e_xts_InstantiateWithCode_E.
 Section Impl_core_fmt_Debug_for_ink_e2e_xts_InstantiateWithCode_E.
@@ -4159,38 +4170,38 @@ Section Call.
   Global Set Primitive Projections.
   
   Global Instance Get_dest : Notation.Dot "dest" := {
-    Notation.dot x := let* x := M.read x in Pure x.(dest) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(dest) : M _;
   }.
   Global Instance Get_AF_dest : Notation.DoubleColon t "dest" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(dest) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(dest) : M _;
   }.
   Global Instance Get_value : Notation.Dot "value" := {
-    Notation.dot x := let* x := M.read x in Pure x.(value) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(value) : M _;
   }.
   Global Instance Get_AF_value : Notation.DoubleColon t "value" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(value) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(value) : M _;
   }.
   Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
-    Notation.dot x := let* x := M.read x in Pure x.(gas_limit) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(gas_limit) : M _;
   }.
   Global Instance Get_AF_gas_limit : Notation.DoubleColon t "gas_limit" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(gas_limit) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(gas_limit) : M _;
   }.
   Global Instance Get_storage_deposit_limit :
     Notation.Dot "storage_deposit_limit" := {
     Notation.dot x :=
-      let* x := M.read x in Pure x.(storage_deposit_limit) : M _;
+      let* x := M.read x in M.pure x.(storage_deposit_limit) : M _;
   }.
   Global Instance Get_AF_storage_deposit_limit :
     Notation.DoubleColon t "storage_deposit_limit" := {
     Notation.double_colon x :=
-      let* x := M.read x in Pure x.(storage_deposit_limit) : M _;
+      let* x := M.read x in M.pure x.(storage_deposit_limit) : M _;
   }.
   Global Instance Get_data : Notation.Dot "data" := {
-    Notation.dot x := let* x := M.read x in Pure x.(data) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(data) : M _;
   }.
   Global Instance Get_AF_data : Notation.DoubleColon t "data" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(data) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(data) : M _;
   }.
 End Call.
 End Call.
@@ -4199,7 +4210,7 @@ Definition Call
     `{ℋ : State.Trait}
     {ℋ_0 : ink_env.types.Environment.Trait E}
     : Set :=
-  M.val (Call.t (E := E)).
+  M.Val (Call.t (E := E)).
 
 Module  Impl_core_fmt_Debug_for_ink_e2e_xts_Call_E.
 Section Impl_core_fmt_Debug_for_ink_e2e_xts_Call_E.
@@ -4433,16 +4444,16 @@ Section Transfer.
   Global Set Primitive Projections.
   
   Global Instance Get_dest : Notation.Dot "dest" := {
-    Notation.dot x := let* x := M.read x in Pure x.(dest) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(dest) : M _;
   }.
   Global Instance Get_AF_dest : Notation.DoubleColon t "dest" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(dest) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(dest) : M _;
   }.
   Global Instance Get_value : Notation.Dot "value" := {
-    Notation.dot x := let* x := M.read x in Pure x.(value) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(value) : M _;
   }.
   Global Instance Get_AF_value : Notation.DoubleColon t "value" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(value) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(value) : M _;
   }.
 End Transfer.
 End Transfer.
@@ -4452,7 +4463,7 @@ Definition Transfer
     {ℋ_0 : ink_env.types.Environment.Trait E}
     {ℋ_1 : subxt.config.Config.Trait C}
     : Set :=
-  M.val (Transfer.t (E := E) (C := C)).
+  M.Val (Transfer.t (E := E) (C := C)).
 
 Module  Impl_core_fmt_Debug_for_ink_e2e_xts_Transfer_E_C.
 Section Impl_core_fmt_Debug_for_ink_e2e_xts_Transfer_E_C.
@@ -4927,26 +4938,27 @@ Section UploadCode.
   Global Set Primitive Projections.
   
   Global Instance Get_code : Notation.Dot "code" := {
-    Notation.dot x := let* x := M.read x in Pure x.(code) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(code) : M _;
   }.
   Global Instance Get_AF_code : Notation.DoubleColon t "code" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(code) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(code) : M _;
   }.
   Global Instance Get_storage_deposit_limit :
     Notation.Dot "storage_deposit_limit" := {
     Notation.dot x :=
-      let* x := M.read x in Pure x.(storage_deposit_limit) : M _;
+      let* x := M.read x in M.pure x.(storage_deposit_limit) : M _;
   }.
   Global Instance Get_AF_storage_deposit_limit :
     Notation.DoubleColon t "storage_deposit_limit" := {
     Notation.double_colon x :=
-      let* x := M.read x in Pure x.(storage_deposit_limit) : M _;
+      let* x := M.read x in M.pure x.(storage_deposit_limit) : M _;
   }.
   Global Instance Get_determinism : Notation.Dot "determinism" := {
-    Notation.dot x := let* x := M.read x in Pure x.(determinism) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(determinism) : M _;
   }.
   Global Instance Get_AF_determinism : Notation.DoubleColon t "determinism" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(determinism) : M _;
+    Notation.double_colon x :=
+      let* x := M.read x in M.pure x.(determinism) : M _;
   }.
 End UploadCode.
 End UploadCode.
@@ -4955,7 +4967,7 @@ Definition UploadCode
     `{ℋ : State.Trait}
     {ℋ_0 : ink_env.types.Environment.Trait E}
     : Set :=
-  M.val (UploadCode.t (E := E)).
+  M.Val (UploadCode.t (E := E)).
 
 Module  Impl_core_fmt_Debug_for_ink_e2e_xts_UploadCode_E.
 Section Impl_core_fmt_Debug_for_ink_e2e_xts_UploadCode_E.
@@ -5576,16 +5588,16 @@ Section ContractsApi.
   Global Set Primitive Projections.
   
   Global Instance Get_client : Notation.Dot "client" := {
-    Notation.dot x := let* x := M.read x in Pure x.(client) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(client) : M _;
   }.
   Global Instance Get_AF_client : Notation.DoubleColon t "client" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(client) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(client) : M _;
   }.
   Global Instance Get__phantom : Notation.Dot "_phantom" := {
-    Notation.dot x := let* x := M.read x in Pure x.(_phantom) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(_phantom) : M _;
   }.
   Global Instance Get_AF__phantom : Notation.DoubleColon t "_phantom" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(_phantom) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(_phantom) : M _;
   }.
 End ContractsApi.
 End ContractsApi.
@@ -5595,7 +5607,7 @@ Definition ContractsApi
     {ℋ_0 : subxt.config.Config.Trait C}
     {ℋ_1 : ink_env.types.Environment.Trait E}
     : Set :=
-  M.val (ContractsApi.t (C := C) (E := E)).
+  M.Val (ContractsApi.t (C := C) (E := E)).
 
 Module SubstrateConfig.
   Inductive t `{ℋ : State.Trait} : Set :=

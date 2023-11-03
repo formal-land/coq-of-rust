@@ -12,14 +12,14 @@ Section Val.
   Global Set Primitive Projections.
   
   Global Instance Get_val : Notation.Dot "val" := {
-    Notation.dot x := let* x := M.read x in Pure x.(val) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(val) : M _;
   }.
   Global Instance Get_AF_val : Notation.DoubleColon t "val" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(val) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(val) : M _;
   }.
 End Val.
 End Val.
-Definition Val `{ℋ : State.Trait} : Set := M.val Val.t.
+Definition Val `{ℋ : State.Trait} : Set := M.Val Val.t.
 
 Module  GenVal.
 Section GenVal.
@@ -34,15 +34,15 @@ Section GenVal.
   Global Set Primitive Projections.
   
   Global Instance Get_gen_val : Notation.Dot "gen_val" := {
-    Notation.dot x := let* x := M.read x in Pure x.(gen_val) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(gen_val) : M _;
   }.
   Global Instance Get_AF_gen_val : Notation.DoubleColon t "gen_val" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(gen_val) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(gen_val) : M _;
   }.
 End GenVal.
 End GenVal.
 Definition GenVal (T : Set) `{ℋ : State.Trait} : Set :=
-  M.val (GenVal.t (T := T)).
+  M.Val (GenVal.t (T := T)).
 
 Module  Impl_generics_implementation_Val.
 Section Impl_generics_implementation_Val.

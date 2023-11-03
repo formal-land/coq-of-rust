@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Definition LOREM_IPSUM `{ℋ : State.Trait} : ref str :=
   M.run
-    (Pure
+    (M.pure
       (mk_str
         "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
 tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
@@ -48,7 +48,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α16 := core.fmt.Arguments::["new_v1"] α3 α15 in
       let* α17 := core.panicking.panic_fmt α16 in
       never_to_any α17
-    | core.result.Result file => Pure file
+    | core.result.Result file => M.pure file
     end in
   let* α0 := borrow_mut file std.fs.File in
   let* α1 := deref file_io_create.LOREM_IPSUM (ref str) in

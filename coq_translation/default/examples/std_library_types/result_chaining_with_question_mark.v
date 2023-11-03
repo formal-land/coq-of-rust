@@ -130,7 +130,7 @@ Module checked.
             residual in
         let* α1 := Return α0 in
         never_to_any α1
-      | core.ops.control_flow.ControlFlow val => Pure val
+      | core.ops.control_flow.ControlFlow val => M.pure val
       end in
     let* ln :=
       let* α0 := result_chaining_with_question_mark.checked.ln ratio in
@@ -154,7 +154,7 @@ Module checked.
             residual in
         let* α1 := Return α0 in
         never_to_any α1
-      | core.ops.control_flow.ControlFlow val => Pure val
+      | core.ops.control_flow.ControlFlow val => M.pure val
       end in
     result_chaining_with_question_mark.checked.sqrt ln.
   
@@ -165,7 +165,7 @@ Module checked.
       let* α0 :=
         match why with
         | result_chaining_with_question_mark.checked.MathError  =>
-          Pure (mk_str "logarithm of non-positive number")
+          M.pure (mk_str "logarithm of non-positive number")
         | result_chaining_with_question_mark.checked.MathError  =>
           let* α0 := deref (mk_str "division by zero") str in
           borrow α0 str
@@ -325,7 +325,7 @@ Definition op_
           residual in
       let* α1 := Return α0 in
       never_to_any α1
-    | core.ops.control_flow.ControlFlow val => Pure val
+    | core.ops.control_flow.ControlFlow val => M.pure val
     end in
   let* ln :=
     let* α0 := result_chaining_with_question_mark.checked.ln ratio in
@@ -349,7 +349,7 @@ Definition op_
           residual in
       let* α1 := Return α0 in
       never_to_any α1
-    | core.ops.control_flow.ControlFlow val => Pure val
+    | core.ops.control_flow.ControlFlow val => M.pure val
     end in
   result_chaining_with_question_mark.checked.sqrt ln.
 
@@ -360,7 +360,7 @@ Definition op `{ℋ : State.Trait} (x : f64) (y : f64) : M unit :=
     let* α0 :=
       match why with
       | result_chaining_with_question_mark.checked.MathError  =>
-        Pure (mk_str "logarithm of non-positive number")
+        M.pure (mk_str "logarithm of non-positive number")
       | result_chaining_with_question_mark.checked.MathError  =>
         let* α0 := deref (mk_str "division by zero") str in
         borrow α0 str

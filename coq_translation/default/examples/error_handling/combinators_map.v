@@ -56,11 +56,11 @@ Section Peeled.
   Global Set Primitive Projections.
   
   Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
   }.
 End Peeled.
 End Peeled.
-Definition Peeled `{ℋ : State.Trait} : Set := M.val Peeled.t.
+Definition Peeled `{ℋ : State.Trait} : Set := M.Val Peeled.t.
 
 Module  Impl_core_fmt_Debug_for_combinators_map_Peeled.
 Section Impl_core_fmt_Debug_for_combinators_map_Peeled.
@@ -106,11 +106,11 @@ Section Chopped.
   Global Set Primitive Projections.
   
   Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
   }.
 End Chopped.
 End Chopped.
-Definition Chopped `{ℋ : State.Trait} : Set := M.val Chopped.t.
+Definition Chopped `{ℋ : State.Trait} : Set := M.Val Chopped.t.
 
 Module  Impl_core_fmt_Debug_for_combinators_map_Chopped.
 Section Impl_core_fmt_Debug_for_combinators_map_Chopped.
@@ -156,11 +156,11 @@ Section Cooked.
   Global Set Primitive Projections.
   
   Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
   }.
 End Cooked.
 End Cooked.
-Definition Cooked `{ℋ : State.Trait} : Set := M.val Cooked.t.
+Definition Cooked `{ℋ : State.Trait} : Set := M.Val Cooked.t.
 
 Module  Impl_core_fmt_Debug_for_combinators_map_Cooked.
 Section Impl_core_fmt_Debug_for_combinators_map_Cooked.

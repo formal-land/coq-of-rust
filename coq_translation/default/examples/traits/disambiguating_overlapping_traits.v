@@ -35,20 +35,20 @@ Section Form.
   Global Set Primitive Projections.
   
   Global Instance Get_username : Notation.Dot "username" := {
-    Notation.dot x := let* x := M.read x in Pure x.(username) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(username) : M _;
   }.
   Global Instance Get_AF_username : Notation.DoubleColon t "username" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(username) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(username) : M _;
   }.
   Global Instance Get_age : Notation.Dot "age" := {
-    Notation.dot x := let* x := M.read x in Pure x.(age) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(age) : M _;
   }.
   Global Instance Get_AF_age : Notation.DoubleColon t "age" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(age) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(age) : M _;
   }.
 End Form.
 End Form.
-Definition Form `{ℋ : State.Trait} : Set := M.val Form.t.
+Definition Form `{ℋ : State.Trait} : Set := M.Val Form.t.
 
 Module  Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_overlapping_traits_Form.
 Section Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_overlapping_traits_Form.

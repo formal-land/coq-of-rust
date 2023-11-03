@@ -21,11 +21,11 @@ Module types.
     Global Set Primitive Projections.
     
     Global Instance Get_0 : Notation.Dot "0" := {
-      Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
+      Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
     }.
   End AccountId.
   End AccountId.
-  Definition AccountId `{ℋ : State.Trait} : Set := M.val AccountId.t.
+  Definition AccountId `{ℋ : State.Trait} : Set := M.Val AccountId.t.
   
   Module  Impl_core_fmt_Debug_for_ink_engine_types_AccountId.
   Section Impl_core_fmt_Debug_for_ink_engine_types_AccountId.
@@ -240,11 +240,11 @@ Module types.
     Global Set Primitive Projections.
     
     Global Instance Get_0 : Notation.Dot "0" := {
-      Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
+      Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
     }.
   End Key.
   End Key.
-  Definition Key `{ℋ : State.Trait} : Set := M.val Key.t.
+  Definition Key `{ℋ : State.Trait} : Set := M.Val Key.t.
   
   Module  Impl_core_default_Default_for_ink_engine_types_Key.
   Section Impl_core_default_Default_for_ink_engine_types_Key.
@@ -595,20 +595,20 @@ Module test_api.
     Global Set Primitive Projections.
     
     Global Instance Get_topics : Notation.Dot "topics" := {
-      Notation.dot x := let* x := M.read x in Pure x.(topics) : M _;
+      Notation.dot x := let* x := M.read x in M.pure x.(topics) : M _;
     }.
     Global Instance Get_AF_topics : Notation.DoubleColon t "topics" := {
-      Notation.double_colon x := let* x := M.read x in Pure x.(topics) : M _;
+      Notation.double_colon x := let* x := M.read x in M.pure x.(topics) : M _;
     }.
     Global Instance Get_data : Notation.Dot "data" := {
-      Notation.dot x := let* x := M.read x in Pure x.(data) : M _;
+      Notation.dot x := let* x := M.read x in M.pure x.(data) : M _;
     }.
     Global Instance Get_AF_data : Notation.DoubleColon t "data" := {
-      Notation.double_colon x := let* x := M.read x in Pure x.(data) : M _;
+      Notation.double_colon x := let* x := M.read x in M.pure x.(data) : M _;
     }.
   End EmittedEvent.
   End EmittedEvent.
-  Definition EmittedEvent `{ℋ : State.Trait} : Set := M.val EmittedEvent.t.
+  Definition EmittedEvent `{ℋ : State.Trait} : Set := M.Val EmittedEvent.t.
   
   Module  Impl_core_fmt_Debug_for_ink_engine_test_api_EmittedEvent.
   Section Impl_core_fmt_Debug_for_ink_engine_test_api_EmittedEvent.
@@ -662,17 +662,17 @@ Module test_api.
     Global Set Primitive Projections.
     
     Global Instance Get_debug_messages : Notation.Dot "debug_messages" := {
-      Notation.dot x := let* x := M.read x in Pure x.(debug_messages) : M _;
+      Notation.dot x := let* x := M.read x in M.pure x.(debug_messages) : M _;
     }.
     Global Instance Get_AF_debug_messages :
       Notation.DoubleColon t "debug_messages" := {
       Notation.double_colon x :=
-        let* x := M.read x in Pure x.(debug_messages) : M _;
+        let* x := M.read x in M.pure x.(debug_messages) : M _;
     }.
   End RecordedDebugMessages.
   End RecordedDebugMessages.
   Definition RecordedDebugMessages `{ℋ : State.Trait} : Set :=
-    M.val RecordedDebugMessages.t.
+    M.Val RecordedDebugMessages.t.
   
   Module  Impl_core_clone_Clone_for_ink_engine_test_api_RecordedDebugMessages.
   Section Impl_core_clone_Clone_for_ink_engine_test_api_RecordedDebugMessages.
@@ -744,51 +744,52 @@ Module test_api.
     Global Set Primitive Projections.
     
     Global Instance Get_emitted_events : Notation.Dot "emitted_events" := {
-      Notation.dot x := let* x := M.read x in Pure x.(emitted_events) : M _;
+      Notation.dot x := let* x := M.read x in M.pure x.(emitted_events) : M _;
     }.
     Global Instance Get_AF_emitted_events :
       Notation.DoubleColon t "emitted_events" := {
       Notation.double_colon x :=
-        let* x := M.read x in Pure x.(emitted_events) : M _;
+        let* x := M.read x in M.pure x.(emitted_events) : M _;
     }.
     Global Instance Get_emitted_debug_messages :
       Notation.Dot "emitted_debug_messages" := {
       Notation.dot x :=
-        let* x := M.read x in Pure x.(emitted_debug_messages) : M _;
+        let* x := M.read x in M.pure x.(emitted_debug_messages) : M _;
     }.
     Global Instance Get_AF_emitted_debug_messages :
       Notation.DoubleColon t "emitted_debug_messages" := {
       Notation.double_colon x :=
-        let* x := M.read x in Pure x.(emitted_debug_messages) : M _;
+        let* x := M.read x in M.pure x.(emitted_debug_messages) : M _;
     }.
     Global Instance Get_count_reads : Notation.Dot "count_reads" := {
-      Notation.dot x := let* x := M.read x in Pure x.(count_reads) : M _;
+      Notation.dot x := let* x := M.read x in M.pure x.(count_reads) : M _;
     }.
     Global Instance Get_AF_count_reads :
       Notation.DoubleColon t "count_reads" := {
       Notation.double_colon x :=
-        let* x := M.read x in Pure x.(count_reads) : M _;
+        let* x := M.read x in M.pure x.(count_reads) : M _;
     }.
     Global Instance Get_count_writes : Notation.Dot "count_writes" := {
-      Notation.dot x := let* x := M.read x in Pure x.(count_writes) : M _;
+      Notation.dot x := let* x := M.read x in M.pure x.(count_writes) : M _;
     }.
     Global Instance Get_AF_count_writes :
       Notation.DoubleColon t "count_writes" := {
       Notation.double_colon x :=
-        let* x := M.read x in Pure x.(count_writes) : M _;
+        let* x := M.read x in M.pure x.(count_writes) : M _;
     }.
     Global Instance Get_cells_per_account :
       Notation.Dot "cells_per_account" := {
-      Notation.dot x := let* x := M.read x in Pure x.(cells_per_account) : M _;
+      Notation.dot x :=
+        let* x := M.read x in M.pure x.(cells_per_account) : M _;
     }.
     Global Instance Get_AF_cells_per_account :
       Notation.DoubleColon t "cells_per_account" := {
       Notation.double_colon x :=
-        let* x := M.read x in Pure x.(cells_per_account) : M _;
+        let* x := M.read x in M.pure x.(cells_per_account) : M _;
     }.
   End DebugInfo.
   End DebugInfo.
-  Definition DebugInfo `{ℋ : State.Trait} : Set := M.val DebugInfo.t.
+  Definition DebugInfo `{ℋ : State.Trait} : Set := M.Val DebugInfo.t.
   
   Module  Impl_core_default_Default_for_ink_engine_test_api_DebugInfo.
   Section Impl_core_default_Default_for_ink_engine_test_api_DebugInfo.
@@ -822,11 +823,11 @@ Module chain_extension.
     Global Set Primitive Projections.
     
     Global Instance Get_0 : Notation.Dot "0" := {
-      Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
+      Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
     }.
   End ExtensionId.
   End ExtensionId.
-  Definition ExtensionId `{ℋ : State.Trait} : Set := M.val ExtensionId.t.
+  Definition ExtensionId `{ℋ : State.Trait} : Set := M.Val ExtensionId.t.
   
   Module  ChainExtension.
   Section ChainExtension.
@@ -873,22 +874,22 @@ Module chain_extension.
     Global Set Primitive Projections.
     
     Global Instance Get_registered : Notation.Dot "registered" := {
-      Notation.dot x := let* x := M.read x in Pure x.(registered) : M _;
+      Notation.dot x := let* x := M.read x in M.pure x.(registered) : M _;
     }.
     Global Instance Get_AF_registered : Notation.DoubleColon t "registered" := {
       Notation.double_colon x :=
-        let* x := M.read x in Pure x.(registered) : M _;
+        let* x := M.read x in M.pure x.(registered) : M _;
     }.
     Global Instance Get_output : Notation.Dot "output" := {
-      Notation.dot x := let* x := M.read x in Pure x.(output) : M _;
+      Notation.dot x := let* x := M.read x in M.pure x.(output) : M _;
     }.
     Global Instance Get_AF_output : Notation.DoubleColon t "output" := {
-      Notation.double_colon x := let* x := M.read x in Pure x.(output) : M _;
+      Notation.double_colon x := let* x := M.read x in M.pure x.(output) : M _;
     }.
   End ChainExtensionHandler.
   End ChainExtensionHandler.
   Definition ChainExtensionHandler `{ℋ : State.Trait} : Set :=
-    M.val ChainExtensionHandler.t.
+    M.Val ChainExtensionHandler.t.
   
   Module  Impl_core_fmt_Debug_for_ink_engine_chain_extension_ExtensionId.
   Section Impl_core_fmt_Debug_for_ink_engine_chain_extension_ExtensionId.
@@ -1115,14 +1116,14 @@ Module database.
     Global Set Primitive Projections.
     
     Global Instance Get_hmap : Notation.Dot "hmap" := {
-      Notation.dot x := let* x := M.read x in Pure x.(hmap) : M _;
+      Notation.dot x := let* x := M.read x in M.pure x.(hmap) : M _;
     }.
     Global Instance Get_AF_hmap : Notation.DoubleColon t "hmap" := {
-      Notation.double_colon x := let* x := M.read x in Pure x.(hmap) : M _;
+      Notation.double_colon x := let* x := M.read x in M.pure x.(hmap) : M _;
     }.
   End Database.
   End Database.
-  Definition Database `{ℋ : State.Trait} : Set := M.val Database.t.
+  Definition Database `{ℋ : State.Trait} : Set := M.Val Database.t.
   
   Module  Impl_core_default_Default_for_ink_engine_database_Database.
   Section Impl_core_default_Default_for_ink_engine_database_Database.
@@ -1164,51 +1165,53 @@ Module exec_context.
     Global Set Primitive Projections.
     
     Global Instance Get_caller : Notation.Dot "caller" := {
-      Notation.dot x := let* x := M.read x in Pure x.(caller) : M _;
+      Notation.dot x := let* x := M.read x in M.pure x.(caller) : M _;
     }.
     Global Instance Get_AF_caller : Notation.DoubleColon t "caller" := {
-      Notation.double_colon x := let* x := M.read x in Pure x.(caller) : M _;
+      Notation.double_colon x := let* x := M.read x in M.pure x.(caller) : M _;
     }.
     Global Instance Get_callee : Notation.Dot "callee" := {
-      Notation.dot x := let* x := M.read x in Pure x.(callee) : M _;
+      Notation.dot x := let* x := M.read x in M.pure x.(callee) : M _;
     }.
     Global Instance Get_AF_callee : Notation.DoubleColon t "callee" := {
-      Notation.double_colon x := let* x := M.read x in Pure x.(callee) : M _;
+      Notation.double_colon x := let* x := M.read x in M.pure x.(callee) : M _;
     }.
     Global Instance Get_value_transferred :
       Notation.Dot "value_transferred" := {
-      Notation.dot x := let* x := M.read x in Pure x.(value_transferred) : M _;
+      Notation.dot x :=
+        let* x := M.read x in M.pure x.(value_transferred) : M _;
     }.
     Global Instance Get_AF_value_transferred :
       Notation.DoubleColon t "value_transferred" := {
       Notation.double_colon x :=
-        let* x := M.read x in Pure x.(value_transferred) : M _;
+        let* x := M.read x in M.pure x.(value_transferred) : M _;
     }.
     Global Instance Get_block_number : Notation.Dot "block_number" := {
-      Notation.dot x := let* x := M.read x in Pure x.(block_number) : M _;
+      Notation.dot x := let* x := M.read x in M.pure x.(block_number) : M _;
     }.
     Global Instance Get_AF_block_number :
       Notation.DoubleColon t "block_number" := {
       Notation.double_colon x :=
-        let* x := M.read x in Pure x.(block_number) : M _;
+        let* x := M.read x in M.pure x.(block_number) : M _;
     }.
     Global Instance Get_block_timestamp : Notation.Dot "block_timestamp" := {
-      Notation.dot x := let* x := M.read x in Pure x.(block_timestamp) : M _;
+      Notation.dot x := let* x := M.read x in M.pure x.(block_timestamp) : M _;
     }.
     Global Instance Get_AF_block_timestamp :
       Notation.DoubleColon t "block_timestamp" := {
       Notation.double_colon x :=
-        let* x := M.read x in Pure x.(block_timestamp) : M _;
+        let* x := M.read x in M.pure x.(block_timestamp) : M _;
     }.
     Global Instance Get_contracts : Notation.Dot "contracts" := {
-      Notation.dot x := let* x := M.read x in Pure x.(contracts) : M _;
+      Notation.dot x := let* x := M.read x in M.pure x.(contracts) : M _;
     }.
     Global Instance Get_AF_contracts : Notation.DoubleColon t "contracts" := {
-      Notation.double_colon x := let* x := M.read x in Pure x.(contracts) : M _;
+      Notation.double_colon x :=
+        let* x := M.read x in M.pure x.(contracts) : M _;
     }.
   End ExecContext.
   End ExecContext.
-  Definition ExecContext `{ℋ : State.Trait} : Set := M.val ExecContext.t.
+  Definition ExecContext `{ℋ : State.Trait} : Set := M.Val ExecContext.t.
   
   Module  Impl_core_default_Default_for_ink_engine_exec_context_ExecContext.
   Section Impl_core_default_Default_for_ink_engine_exec_context_ExecContext.
@@ -1280,11 +1283,11 @@ Module ext.
     Global Set Primitive Projections.
     
     Global Instance Get_0 : Notation.Dot "0" := {
-      Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
+      Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
     }.
   End ReturnCode.
   End ReturnCode.
-  Definition ReturnCode `{ℋ : State.Trait} : Set := M.val ReturnCode.t.
+  Definition ReturnCode `{ℋ : State.Trait} : Set := M.Val ReturnCode.t.
   
   Module  ChainSpec.
   Section ChainSpec.
@@ -1299,29 +1302,30 @@ Module ext.
     Global Set Primitive Projections.
     
     Global Instance Get_gas_price : Notation.Dot "gas_price" := {
-      Notation.dot x := let* x := M.read x in Pure x.(gas_price) : M _;
+      Notation.dot x := let* x := M.read x in M.pure x.(gas_price) : M _;
     }.
     Global Instance Get_AF_gas_price : Notation.DoubleColon t "gas_price" := {
-      Notation.double_colon x := let* x := M.read x in Pure x.(gas_price) : M _;
+      Notation.double_colon x :=
+        let* x := M.read x in M.pure x.(gas_price) : M _;
     }.
     Global Instance Get_minimum_balance : Notation.Dot "minimum_balance" := {
-      Notation.dot x := let* x := M.read x in Pure x.(minimum_balance) : M _;
+      Notation.dot x := let* x := M.read x in M.pure x.(minimum_balance) : M _;
     }.
     Global Instance Get_AF_minimum_balance :
       Notation.DoubleColon t "minimum_balance" := {
       Notation.double_colon x :=
-        let* x := M.read x in Pure x.(minimum_balance) : M _;
+        let* x := M.read x in M.pure x.(minimum_balance) : M _;
     }.
     Global Instance Get_block_time : Notation.Dot "block_time" := {
-      Notation.dot x := let* x := M.read x in Pure x.(block_time) : M _;
+      Notation.dot x := let* x := M.read x in M.pure x.(block_time) : M _;
     }.
     Global Instance Get_AF_block_time : Notation.DoubleColon t "block_time" := {
       Notation.double_colon x :=
-        let* x := M.read x in Pure x.(block_time) : M _;
+        let* x := M.read x in M.pure x.(block_time) : M _;
     }.
   End ChainSpec.
   End ChainSpec.
-  Definition ChainSpec `{ℋ : State.Trait} : Set := M.val ChainSpec.t.
+  Definition ChainSpec `{ℋ : State.Trait} : Set := M.Val ChainSpec.t.
   
   Module  Engine.
   Section Engine.
@@ -1339,46 +1343,47 @@ Module ext.
     Global Set Primitive Projections.
     
     Global Instance Get_database : Notation.Dot "database" := {
-      Notation.dot x := let* x := M.read x in Pure x.(database) : M _;
+      Notation.dot x := let* x := M.read x in M.pure x.(database) : M _;
     }.
     Global Instance Get_AF_database : Notation.DoubleColon t "database" := {
-      Notation.double_colon x := let* x := M.read x in Pure x.(database) : M _;
+      Notation.double_colon x :=
+        let* x := M.read x in M.pure x.(database) : M _;
     }.
     Global Instance Get_exec_context : Notation.Dot "exec_context" := {
-      Notation.dot x := let* x := M.read x in Pure x.(exec_context) : M _;
+      Notation.dot x := let* x := M.read x in M.pure x.(exec_context) : M _;
     }.
     Global Instance Get_AF_exec_context :
       Notation.DoubleColon t "exec_context" := {
       Notation.double_colon x :=
-        let* x := M.read x in Pure x.(exec_context) : M _;
+        let* x := M.read x in M.pure x.(exec_context) : M _;
     }.
     Global Instance Get_debug_info : Notation.Dot "debug_info" := {
-      Notation.dot x := let* x := M.read x in Pure x.(debug_info) : M _;
+      Notation.dot x := let* x := M.read x in M.pure x.(debug_info) : M _;
     }.
     Global Instance Get_AF_debug_info : Notation.DoubleColon t "debug_info" := {
       Notation.double_colon x :=
-        let* x := M.read x in Pure x.(debug_info) : M _;
+        let* x := M.read x in M.pure x.(debug_info) : M _;
     }.
     Global Instance Get_chain_spec : Notation.Dot "chain_spec" := {
-      Notation.dot x := let* x := M.read x in Pure x.(chain_spec) : M _;
+      Notation.dot x := let* x := M.read x in M.pure x.(chain_spec) : M _;
     }.
     Global Instance Get_AF_chain_spec : Notation.DoubleColon t "chain_spec" := {
       Notation.double_colon x :=
-        let* x := M.read x in Pure x.(chain_spec) : M _;
+        let* x := M.read x in M.pure x.(chain_spec) : M _;
     }.
     Global Instance Get_chain_extension_handler :
       Notation.Dot "chain_extension_handler" := {
       Notation.dot x :=
-        let* x := M.read x in Pure x.(chain_extension_handler) : M _;
+        let* x := M.read x in M.pure x.(chain_extension_handler) : M _;
     }.
     Global Instance Get_AF_chain_extension_handler :
       Notation.DoubleColon t "chain_extension_handler" := {
       Notation.double_colon x :=
-        let* x := M.read x in Pure x.(chain_extension_handler) : M _;
+        let* x := M.read x in M.pure x.(chain_extension_handler) : M _;
     }.
   End Engine.
   End Engine.
-  Definition Engine `{ℋ : State.Trait} : Set := M.val Engine.t.
+  Definition Engine `{ℋ : State.Trait} : Set := M.Val Engine.t.
   
   Module  Impl_core_default_Default_for_ink_engine_ext_ChainSpec.
   Section Impl_core_default_Default_for_ink_engine_ext_ChainSpec.
@@ -1471,11 +1476,11 @@ Section ReturnCode.
   Global Set Primitive Projections.
   
   Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
   }.
 End ReturnCode.
 End ReturnCode.
-Definition ReturnCode `{ℋ : State.Trait} : Set := M.val ReturnCode.t.
+Definition ReturnCode `{ℋ : State.Trait} : Set := M.Val ReturnCode.t.
 
 Module  Engine.
 Section Engine.
@@ -1492,44 +1497,46 @@ Section Engine.
   Global Set Primitive Projections.
   
   Global Instance Get_database : Notation.Dot "database" := {
-    Notation.dot x := let* x := M.read x in Pure x.(database) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(database) : M _;
   }.
   Global Instance Get_AF_database : Notation.DoubleColon t "database" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(database) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(database) : M _;
   }.
   Global Instance Get_exec_context : Notation.Dot "exec_context" := {
-    Notation.dot x := let* x := M.read x in Pure x.(exec_context) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(exec_context) : M _;
   }.
   Global Instance Get_AF_exec_context :
     Notation.DoubleColon t "exec_context" := {
     Notation.double_colon x :=
-      let* x := M.read x in Pure x.(exec_context) : M _;
+      let* x := M.read x in M.pure x.(exec_context) : M _;
   }.
   Global Instance Get_debug_info : Notation.Dot "debug_info" := {
-    Notation.dot x := let* x := M.read x in Pure x.(debug_info) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(debug_info) : M _;
   }.
   Global Instance Get_AF_debug_info : Notation.DoubleColon t "debug_info" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(debug_info) : M _;
+    Notation.double_colon x :=
+      let* x := M.read x in M.pure x.(debug_info) : M _;
   }.
   Global Instance Get_chain_spec : Notation.Dot "chain_spec" := {
-    Notation.dot x := let* x := M.read x in Pure x.(chain_spec) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(chain_spec) : M _;
   }.
   Global Instance Get_AF_chain_spec : Notation.DoubleColon t "chain_spec" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(chain_spec) : M _;
+    Notation.double_colon x :=
+      let* x := M.read x in M.pure x.(chain_spec) : M _;
   }.
   Global Instance Get_chain_extension_handler :
     Notation.Dot "chain_extension_handler" := {
     Notation.dot x :=
-      let* x := M.read x in Pure x.(chain_extension_handler) : M _;
+      let* x := M.read x in M.pure x.(chain_extension_handler) : M _;
   }.
   Global Instance Get_AF_chain_extension_handler :
     Notation.DoubleColon t "chain_extension_handler" := {
     Notation.double_colon x :=
-      let* x := M.read x in Pure x.(chain_extension_handler) : M _;
+      let* x := M.read x in M.pure x.(chain_extension_handler) : M _;
   }.
 End Engine.
 End Engine.
-Definition Engine `{ℋ : State.Trait} : Set := M.val Engine.t.
+Definition Engine `{ℋ : State.Trait} : Set := M.Val Engine.t.
 
 Module  ChainSpec.
 Section ChainSpec.
@@ -1544,28 +1551,29 @@ Section ChainSpec.
   Global Set Primitive Projections.
   
   Global Instance Get_gas_price : Notation.Dot "gas_price" := {
-    Notation.dot x := let* x := M.read x in Pure x.(gas_price) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(gas_price) : M _;
   }.
   Global Instance Get_AF_gas_price : Notation.DoubleColon t "gas_price" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(gas_price) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(gas_price) : M _;
   }.
   Global Instance Get_minimum_balance : Notation.Dot "minimum_balance" := {
-    Notation.dot x := let* x := M.read x in Pure x.(minimum_balance) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(minimum_balance) : M _;
   }.
   Global Instance Get_AF_minimum_balance :
     Notation.DoubleColon t "minimum_balance" := {
     Notation.double_colon x :=
-      let* x := M.read x in Pure x.(minimum_balance) : M _;
+      let* x := M.read x in M.pure x.(minimum_balance) : M _;
   }.
   Global Instance Get_block_time : Notation.Dot "block_time" := {
-    Notation.dot x := let* x := M.read x in Pure x.(block_time) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(block_time) : M _;
   }.
   Global Instance Get_AF_block_time : Notation.DoubleColon t "block_time" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(block_time) : M _;
+    Notation.double_colon x :=
+      let* x := M.read x in M.pure x.(block_time) : M _;
   }.
 End ChainSpec.
 End ChainSpec.
-Definition ChainSpec `{ℋ : State.Trait} : Set := M.val ChainSpec.t.
+Definition ChainSpec `{ℋ : State.Trait} : Set := M.Val ChainSpec.t.
 
 Module  Impl_core_default_Default_for_ink_engine_ext_ChainSpec.
 Section Impl_core_default_Default_for_ink_engine_ext_ChainSpec.
@@ -1620,20 +1628,20 @@ Section EmittedEvent.
   Global Set Primitive Projections.
   
   Global Instance Get_topics : Notation.Dot "topics" := {
-    Notation.dot x := let* x := M.read x in Pure x.(topics) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(topics) : M _;
   }.
   Global Instance Get_AF_topics : Notation.DoubleColon t "topics" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(topics) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(topics) : M _;
   }.
   Global Instance Get_data : Notation.Dot "data" := {
-    Notation.dot x := let* x := M.read x in Pure x.(data) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(data) : M _;
   }.
   Global Instance Get_AF_data : Notation.DoubleColon t "data" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(data) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(data) : M _;
   }.
 End EmittedEvent.
 End EmittedEvent.
-Definition EmittedEvent `{ℋ : State.Trait} : Set := M.val EmittedEvent.t.
+Definition EmittedEvent `{ℋ : State.Trait} : Set := M.Val EmittedEvent.t.
 
 Module  Impl_core_fmt_Debug_for_ink_engine_test_api_EmittedEvent.
 Section Impl_core_fmt_Debug_for_ink_engine_test_api_EmittedEvent.
@@ -1685,17 +1693,17 @@ Section RecordedDebugMessages.
   Global Set Primitive Projections.
   
   Global Instance Get_debug_messages : Notation.Dot "debug_messages" := {
-    Notation.dot x := let* x := M.read x in Pure x.(debug_messages) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(debug_messages) : M _;
   }.
   Global Instance Get_AF_debug_messages :
     Notation.DoubleColon t "debug_messages" := {
     Notation.double_colon x :=
-      let* x := M.read x in Pure x.(debug_messages) : M _;
+      let* x := M.read x in M.pure x.(debug_messages) : M _;
   }.
 End RecordedDebugMessages.
 End RecordedDebugMessages.
 Definition RecordedDebugMessages `{ℋ : State.Trait} : Set :=
-  M.val RecordedDebugMessages.t.
+  M.Val RecordedDebugMessages.t.
 
 Module  Impl_core_clone_Clone_for_ink_engine_test_api_RecordedDebugMessages.
 Section Impl_core_clone_Clone_for_ink_engine_test_api_RecordedDebugMessages.
@@ -1793,48 +1801,49 @@ Section DebugInfo.
   Global Set Primitive Projections.
   
   Global Instance Get_emitted_events : Notation.Dot "emitted_events" := {
-    Notation.dot x := let* x := M.read x in Pure x.(emitted_events) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(emitted_events) : M _;
   }.
   Global Instance Get_AF_emitted_events :
     Notation.DoubleColon t "emitted_events" := {
     Notation.double_colon x :=
-      let* x := M.read x in Pure x.(emitted_events) : M _;
+      let* x := M.read x in M.pure x.(emitted_events) : M _;
   }.
   Global Instance Get_emitted_debug_messages :
     Notation.Dot "emitted_debug_messages" := {
     Notation.dot x :=
-      let* x := M.read x in Pure x.(emitted_debug_messages) : M _;
+      let* x := M.read x in M.pure x.(emitted_debug_messages) : M _;
   }.
   Global Instance Get_AF_emitted_debug_messages :
     Notation.DoubleColon t "emitted_debug_messages" := {
     Notation.double_colon x :=
-      let* x := M.read x in Pure x.(emitted_debug_messages) : M _;
+      let* x := M.read x in M.pure x.(emitted_debug_messages) : M _;
   }.
   Global Instance Get_count_reads : Notation.Dot "count_reads" := {
-    Notation.dot x := let* x := M.read x in Pure x.(count_reads) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(count_reads) : M _;
   }.
   Global Instance Get_AF_count_reads : Notation.DoubleColon t "count_reads" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(count_reads) : M _;
+    Notation.double_colon x :=
+      let* x := M.read x in M.pure x.(count_reads) : M _;
   }.
   Global Instance Get_count_writes : Notation.Dot "count_writes" := {
-    Notation.dot x := let* x := M.read x in Pure x.(count_writes) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(count_writes) : M _;
   }.
   Global Instance Get_AF_count_writes :
     Notation.DoubleColon t "count_writes" := {
     Notation.double_colon x :=
-      let* x := M.read x in Pure x.(count_writes) : M _;
+      let* x := M.read x in M.pure x.(count_writes) : M _;
   }.
   Global Instance Get_cells_per_account : Notation.Dot "cells_per_account" := {
-    Notation.dot x := let* x := M.read x in Pure x.(cells_per_account) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(cells_per_account) : M _;
   }.
   Global Instance Get_AF_cells_per_account :
     Notation.DoubleColon t "cells_per_account" := {
     Notation.double_colon x :=
-      let* x := M.read x in Pure x.(cells_per_account) : M _;
+      let* x := M.read x in M.pure x.(cells_per_account) : M _;
   }.
 End DebugInfo.
 End DebugInfo.
-Definition DebugInfo `{ℋ : State.Trait} : Set := M.val DebugInfo.t.
+Definition DebugInfo `{ℋ : State.Trait} : Set := M.Val DebugInfo.t.
 
 Module  Impl_core_default_Default_for_ink_engine_test_api_DebugInfo.
 Section Impl_core_default_Default_for_ink_engine_test_api_DebugInfo.
@@ -1884,21 +1893,22 @@ Section ChainExtensionHandler.
   Global Set Primitive Projections.
   
   Global Instance Get_registered : Notation.Dot "registered" := {
-    Notation.dot x := let* x := M.read x in Pure x.(registered) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(registered) : M _;
   }.
   Global Instance Get_AF_registered : Notation.DoubleColon t "registered" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(registered) : M _;
+    Notation.double_colon x :=
+      let* x := M.read x in M.pure x.(registered) : M _;
   }.
   Global Instance Get_output : Notation.Dot "output" := {
-    Notation.dot x := let* x := M.read x in Pure x.(output) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(output) : M _;
   }.
   Global Instance Get_AF_output : Notation.DoubleColon t "output" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(output) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(output) : M _;
   }.
 End ChainExtensionHandler.
 End ChainExtensionHandler.
 Definition ChainExtensionHandler `{ℋ : State.Trait} : Set :=
-  M.val ChainExtensionHandler.t.
+  M.Val ChainExtensionHandler.t.
 
 Module  ExtensionId.
 Section ExtensionId.
@@ -1911,11 +1921,11 @@ Section ExtensionId.
   Global Set Primitive Projections.
   
   Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
   }.
 End ExtensionId.
 End ExtensionId.
-Definition ExtensionId `{ℋ : State.Trait} : Set := M.val ExtensionId.t.
+Definition ExtensionId `{ℋ : State.Trait} : Set := M.Val ExtensionId.t.
 
 Module  Impl_core_fmt_Debug_for_ink_engine_chain_extension_ExtensionId.
 Section Impl_core_fmt_Debug_for_ink_engine_chain_extension_ExtensionId.
@@ -2264,14 +2274,14 @@ Section Database.
   Global Set Primitive Projections.
   
   Global Instance Get_hmap : Notation.Dot "hmap" := {
-    Notation.dot x := let* x := M.read x in Pure x.(hmap) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(hmap) : M _;
   }.
   Global Instance Get_AF_hmap : Notation.DoubleColon t "hmap" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(hmap) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(hmap) : M _;
   }.
 End Database.
 End Database.
-Definition Database `{ℋ : State.Trait} : Set := M.val Database.t.
+Definition Database `{ℋ : State.Trait} : Set := M.Val Database.t.
 
 Module  Impl_core_default_Default_for_ink_engine_database_Database.
 Section Impl_core_default_Default_for_ink_engine_database_Database.
@@ -2311,50 +2321,50 @@ Section ExecContext.
   Global Set Primitive Projections.
   
   Global Instance Get_caller : Notation.Dot "caller" := {
-    Notation.dot x := let* x := M.read x in Pure x.(caller) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(caller) : M _;
   }.
   Global Instance Get_AF_caller : Notation.DoubleColon t "caller" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(caller) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(caller) : M _;
   }.
   Global Instance Get_callee : Notation.Dot "callee" := {
-    Notation.dot x := let* x := M.read x in Pure x.(callee) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(callee) : M _;
   }.
   Global Instance Get_AF_callee : Notation.DoubleColon t "callee" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(callee) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(callee) : M _;
   }.
   Global Instance Get_value_transferred : Notation.Dot "value_transferred" := {
-    Notation.dot x := let* x := M.read x in Pure x.(value_transferred) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(value_transferred) : M _;
   }.
   Global Instance Get_AF_value_transferred :
     Notation.DoubleColon t "value_transferred" := {
     Notation.double_colon x :=
-      let* x := M.read x in Pure x.(value_transferred) : M _;
+      let* x := M.read x in M.pure x.(value_transferred) : M _;
   }.
   Global Instance Get_block_number : Notation.Dot "block_number" := {
-    Notation.dot x := let* x := M.read x in Pure x.(block_number) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(block_number) : M _;
   }.
   Global Instance Get_AF_block_number :
     Notation.DoubleColon t "block_number" := {
     Notation.double_colon x :=
-      let* x := M.read x in Pure x.(block_number) : M _;
+      let* x := M.read x in M.pure x.(block_number) : M _;
   }.
   Global Instance Get_block_timestamp : Notation.Dot "block_timestamp" := {
-    Notation.dot x := let* x := M.read x in Pure x.(block_timestamp) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(block_timestamp) : M _;
   }.
   Global Instance Get_AF_block_timestamp :
     Notation.DoubleColon t "block_timestamp" := {
     Notation.double_colon x :=
-      let* x := M.read x in Pure x.(block_timestamp) : M _;
+      let* x := M.read x in M.pure x.(block_timestamp) : M _;
   }.
   Global Instance Get_contracts : Notation.Dot "contracts" := {
-    Notation.dot x := let* x := M.read x in Pure x.(contracts) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(contracts) : M _;
   }.
   Global Instance Get_AF_contracts : Notation.DoubleColon t "contracts" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(contracts) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(contracts) : M _;
   }.
 End ExecContext.
 End ExecContext.
-Definition ExecContext `{ℋ : State.Trait} : Set := M.val ExecContext.t.
+Definition ExecContext `{ℋ : State.Trait} : Set := M.Val ExecContext.t.
 
 Module  Impl_core_default_Default_for_ink_engine_exec_context_ExecContext.
 Section Impl_core_default_Default_for_ink_engine_exec_context_ExecContext.
@@ -2426,11 +2436,11 @@ Section AccountId.
   Global Set Primitive Projections.
   
   Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
   }.
 End AccountId.
 End AccountId.
-Definition AccountId `{ℋ : State.Trait} : Set := M.val AccountId.t.
+Definition AccountId `{ℋ : State.Trait} : Set := M.Val AccountId.t.
 
 Module  Impl_core_fmt_Debug_for_ink_engine_types_AccountId.
 Section Impl_core_fmt_Debug_for_ink_engine_types_AccountId.
@@ -2643,11 +2653,11 @@ Section Key.
   Global Set Primitive Projections.
   
   Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
   }.
 End Key.
 End Key.
-Definition Key `{ℋ : State.Trait} : Set := M.val Key.t.
+Definition Key `{ℋ : State.Trait} : Set := M.Val Key.t.
 
 Module  Impl_core_default_Default_for_ink_engine_types_Key.
 Section Impl_core_default_Default_for_ink_engine_types_Key.

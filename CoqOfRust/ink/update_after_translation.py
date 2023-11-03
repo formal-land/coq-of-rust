@@ -219,8 +219,8 @@ Module  TopicsBuilder."""),
         content,
     )
     content = sub_at_least_once(
-        re.escape("""\n  M.val (TopicsBuilder.t (S := S) (E := E) (B := B))."""),
-        """\n  M.val (TopicsBuilder.t (S := S) (E := E) (B := B)). *)""",
+        re.escape("""\n  M.Val (TopicsBuilder.t (S := S) (E := E) (B := B))."""),
+        """\n  M.Val (TopicsBuilder.t (S := S) (E := E) (B := B)). *)""",
         content,
     )
 
@@ -412,10 +412,10 @@ Module  InkE2ETest."""),
         content,
     )
     content = sub_at_least_once(
-        re.escape("""Definition InkE2ETest `{ℋ : State.Trait} : Set := M.val InkE2ETest.t.
+        re.escape("""Definition InkE2ETest `{ℋ : State.Trait} : Set := M.Val InkE2ETest.t.
 
 Module  Impl_core_convert_From_ink_e2e_macro_ir_InkE2ETest_for_ink_e2e_macro_codegen_InkE2ETest."""),
-        """Definition InkE2ETest `{ℋ : State.Trait} : Set := M.val InkE2ETest.t. *)
+        """Definition InkE2ETest `{ℋ : State.Trait} : Set := M.Val InkE2ETest.t. *)
 
 Module  Impl_core_convert_From_ink_e2e_macro_ir_InkE2ETest_for_ink_e2e_macro_codegen_InkE2ETest.""",
         content,
@@ -565,12 +565,12 @@ Require CoqOfRust.ink.ink.""",
 
 #     content = sub_at_least_once(
 #         re.escape("""  End Erc20.
-#   Definition Erc20 `{ℋ : State.Trait} : Set := M.val (Erc20.t).
+#   Definition Erc20 `{ℋ : State.Trait} : Set := M.Val (Erc20.t).
 # """),
 #         """    Global Instance Erc20_New `{ℋ : State.Trait} : Notation.DoubleColon t "new" (T := unit -> M t).
 #     Admitted.
 #   End Erc20.
-#   Definition Erc20 `{ℋ : State.Trait} : Set := M.val (Erc20.t).
+#   Definition Erc20 `{ℋ : State.Trait} : Set := M.Val (Erc20.t).
 # """,
 #         content,
 #     )

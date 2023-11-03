@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition PANGRAM `{ℋ : State.Trait} : ref str :=
-  M.run (Pure (mk_str "the quick brown fox jumped over the lazy dog
+  M.run (M.pure (mk_str "the quick brown fox jumped over the lazy dog
 ")).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
@@ -36,7 +36,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       let* α13 := core.panicking.panic_fmt α12 in
       never_to_any α13
-    | core.result.Result process => Pure process
+    | core.result.Result process => M.pure process
     end in
   let* _ :=
     let* α0 := process.["stdin"] in

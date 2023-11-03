@@ -13,20 +13,20 @@ Section Account.
   Global Set Primitive Projections.
   
   Global Instance Get_username : Notation.Dot "username" := {
-    Notation.dot x := let* x := M.read x in Pure x.(username) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(username) : M _;
   }.
   Global Instance Get_AF_username : Notation.DoubleColon t "username" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(username) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(username) : M _;
   }.
   Global Instance Get_password : Notation.Dot "password" := {
-    Notation.dot x := let* x := M.read x in Pure x.(password) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(password) : M _;
   }.
   Global Instance Get_AF_password : Notation.DoubleColon t "password" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(password) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(password) : M _;
   }.
 End Account.
 End Account.
-Definition Account `{ℋ : State.Trait} : Set := M.val Account.t.
+Definition Account `{ℋ : State.Trait} : Set := M.Val Account.t.
 
 Module  Impl_core_marker_StructuralPartialEq_for_hash_map_alternate_or_custom_key_types_Account.
 Section Impl_core_marker_StructuralPartialEq_for_hash_map_alternate_or_custom_key_types_Account.
@@ -177,20 +177,20 @@ Section AccountInfo.
   Global Set Primitive Projections.
   
   Global Instance Get_name : Notation.Dot "name" := {
-    Notation.dot x := let* x := M.read x in Pure x.(name) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(name) : M _;
   }.
   Global Instance Get_AF_name : Notation.DoubleColon t "name" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(name) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(name) : M _;
   }.
   Global Instance Get_email : Notation.Dot "email" := {
-    Notation.dot x := let* x := M.read x in Pure x.(email) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(email) : M _;
   }.
   Global Instance Get_AF_email : Notation.DoubleColon t "email" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(email) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(email) : M _;
   }.
 End AccountInfo.
 End AccountInfo.
-Definition AccountInfo `{ℋ : State.Trait} : Set := M.val AccountInfo.t.
+Definition AccountInfo `{ℋ : State.Trait} : Set := M.Val AccountInfo.t.
 
 Ltac Accounts :=
   refine

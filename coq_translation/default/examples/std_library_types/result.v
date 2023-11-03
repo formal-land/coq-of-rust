@@ -239,7 +239,7 @@ Definition op `{ℋ : State.Trait} (x : f64) (y : f64) : M f64 :=
         let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
         let* α13 := core.panicking.panic_fmt α12 in
         never_to_any α13
-      | core.result.Result sqrt => Pure sqrt
+      | core.result.Result sqrt => M.pure sqrt
       end
     end
   end.

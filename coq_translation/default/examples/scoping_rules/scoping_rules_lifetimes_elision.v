@@ -45,10 +45,11 @@ Definition annotated_input `{ℋ : State.Trait} (x : ref i32) : M unit :=
     M.alloc tt in
   M.alloc tt.
 
-Definition elided_pass `{ℋ : State.Trait} (x : ref i32) : M (ref i32) := Pure x.
+Definition elided_pass `{ℋ : State.Trait} (x : ref i32) : M (ref i32) :=
+  M.pure x.
 
 Definition annotated_pass `{ℋ : State.Trait} (x : ref i32) : M (ref i32) :=
-  Pure x.
+  M.pure x.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=

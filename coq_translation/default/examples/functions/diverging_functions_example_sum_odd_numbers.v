@@ -65,7 +65,7 @@ Definition sum_odd_numbers `{ℋ : State.Trait} (up_to : u32) : M u32 :=
                 let* α2 := M.alloc 1 in
                 let* α3 := BinOp.eq α1 α2 in
                 match α3 with
-                | _ => Pure i
+                | _ => M.pure i
                 | _ =>
                   let* α0 := Continue in
                   never_to_any α0
@@ -76,4 +76,4 @@ Definition sum_odd_numbers `{ℋ : State.Trait} (up_to : u32) : M u32 :=
           M.alloc tt)
       end in
     use α3 in
-  Pure acc.
+  M.pure acc.

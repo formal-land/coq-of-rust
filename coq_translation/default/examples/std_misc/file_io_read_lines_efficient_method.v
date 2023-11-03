@@ -105,7 +105,7 @@ Definition read_lines
           residual in
       let* α1 := Return α0 in
       never_to_any α1
-    | core.ops.control_flow.ControlFlow val => Pure val
+    | core.ops.control_flow.ControlFlow val => M.pure val
     end in
   let* α0 := (std.io.buffered.bufreader.BufReader std.fs.File)::["new"] file in
   let* α1 :=

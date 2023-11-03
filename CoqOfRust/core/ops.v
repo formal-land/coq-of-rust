@@ -387,7 +387,7 @@ End function.
 (* Module Impl_Add_for_i32. Section Impl_Add_for_i32.
   Context `{State.Trait}.
 
-  Definition add (z1 z2 : i32) : M Z := Pure (Z.add z1 z2).
+  Definition add (z1 z2 : i32) : M Z := M.pure (Z.add z1 z2).
 
   Global Instance Method_add : Notation.Dot "add" := {
     Notation.dot := add;
@@ -416,7 +416,7 @@ Module Impl_AddAssign_for_Z.
 End Impl_AddAssign_for_Z.
 
 Module Impl_Sub_for_Z.
-  Definition sub `{State.Trait} (z1 z2 : Z) : M Z := Pure (Z.sub z1 z2).
+  Definition sub `{State.Trait} (z1 z2 : Z) : M Z := M.pure (Z.sub z1 z2).
 
   Global Instance Method_sub `{State.Trait} : Notation.Dot "sub" := {
     Notation.dot := sub;
@@ -442,7 +442,7 @@ Module Impl_SubAssign_for_Z.
 End Impl_SubAssign_for_Z.
 
 Module Impl_Mul_for_Z.
-  Definition mul `{State.Trait} (z1 z2 : Z) : M Z := Pure (Z.mul z1 z2).
+  Definition mul `{State.Trait} (z1 z2 : Z) : M Z := M.pure (Z.mul z1 z2).
 
   Global Instance Method_mul `{State.Trait} : Notation.Dot "mul" := {
     Notation.dot := mul;
@@ -468,7 +468,7 @@ Module Impl_MulAssign_for_Z.
 End Impl_MulAssign_for_Z.
 
 Module Impl_Div_for_Z.
-  Definition div `{State.Trait} (z1 z2 : Z) : M Z := Pure (Z.div z1 z2).
+  Definition div `{State.Trait} (z1 z2 : Z) : M Z := M.pure (Z.div z1 z2).
 
   Global Instance Method_div `{State.Trait} : Notation.Dot "div" := {
     Notation.dot := div;
@@ -494,7 +494,7 @@ Module Impl_DivAssign_for_Z.
 End Impl_DivAssign_for_Z.
 
 Module Impl_Rem_for_Z.
-  Definition rem `{State.Trait} (z1 z2 : Z) : M Z := Pure (Z.rem z1 z2).
+  Definition rem `{State.Trait} (z1 z2 : Z) : M Z := M.pure (Z.rem z1 z2).
 
   Global Instance Method_rem `{State.Trait} : Notation.Dot "rem" := {
     Notation.dot := rem;
@@ -520,7 +520,7 @@ Module Impl_RemAssign_for_Z.
 End Impl_RemAssign_for_Z.
 
 Module Impl_Neg_for_Z.
-  Definition neg `{State.Trait} (z : Z) : M Z := Pure (Z.opp z).
+  Definition neg `{State.Trait} (z : Z) : M Z := M.pure (Z.opp z).
 
   Global Instance Method_neg `{State.Trait} : Notation.Dot "neg" := {
     Notation.dot := neg;
@@ -552,7 +552,7 @@ End Impl_Not_for_bool. End Impl_Not_for_bool.
 Module Impl_Deref_for_any. Section Impl_Deref_for_any.
   Context `{State.Trait}.
 
-  Definition deref {A : Set} (x : A) : M A := Pure x.
+  Definition deref {A : Set} (x : A) : M A := M.pure x.
 
   Global Instance Method_deref (A : Set) :
     Notation.Dot "deref" := {

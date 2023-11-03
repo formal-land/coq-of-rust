@@ -12,11 +12,11 @@ Section Owner.
   Global Set Primitive Projections.
   
   Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
   }.
 End Owner.
 End Owner.
-Definition Owner `{ℋ : State.Trait} : Set := M.val Owner.t.
+Definition Owner `{ℋ : State.Trait} : Set := M.Val Owner.t.
 
 Module  Impl_scoping_rules_lifetimes_methods_Owner.
 Section Impl_scoping_rules_lifetimes_methods_Owner.

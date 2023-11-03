@@ -13,20 +13,20 @@ Section Point.
   Global Set Primitive Projections.
   
   Global Instance Get_x : Notation.Dot "x" := {
-    Notation.dot x' := let* x' := M.read x' in Pure x'.(x) : M _;
+    Notation.dot x' := let* x' := M.read x' in M.pure x'.(x) : M _;
   }.
   Global Instance Get_AF_x : Notation.DoubleColon t "x" := {
-    Notation.double_colon x' := let* x' := M.read x' in Pure x'.(x) : M _;
+    Notation.double_colon x' := let* x' := M.read x' in M.pure x'.(x) : M _;
   }.
   Global Instance Get_y : Notation.Dot "y" := {
-    Notation.dot x := let* x := M.read x in Pure x.(y) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(y) : M _;
   }.
   Global Instance Get_AF_y : Notation.DoubleColon t "y" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(y) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(y) : M _;
   }.
 End Point.
 End Point.
-Definition Point `{ℋ : State.Trait} : Set := M.val Point.t.
+Definition Point `{ℋ : State.Trait} : Set := M.Val Point.t.
 
 Module  Impl_core_clone_Clone_for_scoping_rules_borrowing_the_ref_pattern_Point.
 Section Impl_core_clone_Clone_for_scoping_rules_borrowing_the_ref_pattern_Point.
@@ -179,7 +179,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
     let* α0 := M.alloc 5 in
     let* α1 := (alloc.boxed.Box u32 alloc.alloc.Global)::["new"] α0 in
     let* α2 := M.alloc 3 in
-    Pure (α1, α2) in
+    M.pure (α1, α2) in
   let* _ :=
     let '(_, last) := mutable_tuple in
     let* _ :=

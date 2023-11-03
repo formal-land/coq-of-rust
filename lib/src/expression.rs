@@ -1098,7 +1098,10 @@ impl LoopControlFlow {
 impl Expr {
     pub fn to_doc(&self, with_paren: bool) -> Doc {
         match self {
-            Expr::Pure(expr) => paren(with_paren, nest([text("Pure"), line(), expr.to_doc(true)])),
+            Expr::Pure(expr) => paren(
+                with_paren,
+                nest([text("M.pure"), line(), expr.to_doc(true)]),
+            ),
             Expr::LocalVar(ref name) => text(name),
             Expr::Var(path) => path.to_doc(),
             Expr::VarWithSelfTy { path, self_ty } => paren(

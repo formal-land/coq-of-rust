@@ -29,4 +29,4 @@ Definition foo `{ℋ : State.Trait} (arg : i32) : M i32 :=
 Definition call_foo `{ℋ : State.Trait} (arg : i32) : M i32 :=
   let* result := M.alloc tt in
   let _ := InlineAssembly in
-  Pure result.
+  M.pure result.

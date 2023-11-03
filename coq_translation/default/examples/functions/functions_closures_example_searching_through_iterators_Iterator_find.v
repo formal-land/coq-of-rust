@@ -95,12 +95,12 @@ Definition main `{ℋ : State.Trait} : M unit :=
     let* α0 := M.alloc 1 in
     let* α1 := M.alloc 2 in
     let* α2 := M.alloc 3 in
-    Pure [ α0; α1; α2 ] in
+    M.pure [ α0; α1; α2 ] in
   let* array2 :=
     let* α0 := M.alloc 4 in
     let* α1 := M.alloc 5 in
     let* α2 := M.alloc 6 in
-    Pure [ α0; α1; α2 ] in
+    M.pure [ α0; α1; α2 ] in
   let* _ :=
     let* _ :=
       let* α0 :=

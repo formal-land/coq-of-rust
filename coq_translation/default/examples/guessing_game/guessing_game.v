@@ -55,7 +55,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α6 := borrow α5 str in
       let* α7 := str::["parse"] α6 in
       match α7 with
-      | core.result.Result num => Pure num
+      | core.result.Result num => M.pure num
       | core.result.Result _ =>
         let* α0 := Continue in
         never_to_any α0

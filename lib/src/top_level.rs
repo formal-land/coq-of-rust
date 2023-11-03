@@ -1979,7 +1979,7 @@ impl TopLevelItem {
                         ]
                         .concat(),
                         ty: Some(coq::Expression::Set),
-                        body: coq::Expression::just_name("M.val").apply(
+                        body: coq::Expression::just_name("M.Val").apply(
                             &coq::Expression::Variable {
                                 ident: Path::new(&[name, &"t".to_string()]),
                                 no_implicit: false,
@@ -2372,7 +2372,7 @@ fn struct_field_value<'a>(name: String) -> coq::Expression<'a> {
             ]),
             line(),
             nest([
-                text("Pure"),
+                text("M.pure"),
                 line(),
                 text(format!("{x}.(")),
                 text(name),
@@ -2665,7 +2665,7 @@ impl TypeStructStruct {
                             ]
                             .concat(),
                             ty: Some(coq::Expression::Set),
-                            body: coq::Expression::just_name("M.val").apply(&coq::Expression::Variable {
+                            body: coq::Expression::just_name("M.Val").apply(&coq::Expression::Variable {
                                 ident: Path::new(&[name, &"t".to_string()]),
                                 no_implicit: false,
                             }

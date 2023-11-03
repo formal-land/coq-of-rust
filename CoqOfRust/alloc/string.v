@@ -59,7 +59,7 @@ End ToString.
 (* The String type (Struct std::string::String) and it's methods  *)
 Module StringType.
   Definition from `{State.Trait} (str_from: str) : M str :=
-    Pure str_from.
+    M.pure str_from.
 
   (* The String type (Struct std::string::String) and it's methods  *)
   (* Converts a &str into a String. *)

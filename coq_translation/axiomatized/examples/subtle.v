@@ -12,11 +12,11 @@ Section Choice.
   Global Set Primitive Projections.
   
   Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
   }.
 End Choice.
 End Choice.
-Definition Choice `{ℋ : State.Trait} : Set := M.val Choice.t.
+Definition Choice `{ℋ : State.Trait} : Set := M.Val Choice.t.
 
 Module  Impl_core_marker_Copy_for_subtle_Choice.
 Section Impl_core_marker_Copy_for_subtle_Choice.
@@ -936,21 +936,21 @@ Section CtOption.
   Global Set Primitive Projections.
   
   Global Instance Get_value : Notation.Dot "value" := {
-    Notation.dot x := let* x := M.read x in Pure x.(value) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(value) : M _;
   }.
   Global Instance Get_AF_value : Notation.DoubleColon t "value" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(value) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(value) : M _;
   }.
   Global Instance Get_is_some : Notation.Dot "is_some" := {
-    Notation.dot x := let* x := M.read x in Pure x.(is_some) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(is_some) : M _;
   }.
   Global Instance Get_AF_is_some : Notation.DoubleColon t "is_some" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(is_some) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(is_some) : M _;
   }.
 End CtOption.
 End CtOption.
 Definition CtOption (T : Set) `{ℋ : State.Trait} : Set :=
-  M.val (CtOption.t (T := T)).
+  M.Val (CtOption.t (T := T)).
 
 Module  Impl_core_clone_Clone_for_subtle_CtOption_T.
 Section Impl_core_clone_Clone_for_subtle_CtOption_T.

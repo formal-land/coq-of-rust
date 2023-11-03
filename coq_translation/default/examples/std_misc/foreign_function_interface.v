@@ -83,20 +83,20 @@ Section Complex.
   Global Set Primitive Projections.
   
   Global Instance Get_re : Notation.Dot "re" := {
-    Notation.dot x := let* x := M.read x in Pure x.(re) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(re) : M _;
   }.
   Global Instance Get_AF_re : Notation.DoubleColon t "re" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(re) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(re) : M _;
   }.
   Global Instance Get_im : Notation.Dot "im" := {
-    Notation.dot x := let* x := M.read x in Pure x.(im) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(im) : M _;
   }.
   Global Instance Get_AF_im : Notation.DoubleColon t "im" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(im) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(im) : M _;
   }.
 End Complex.
 End Complex.
-Definition Complex `{ℋ : State.Trait} : Set := M.val Complex.t.
+Definition Complex `{ℋ : State.Trait} : Set := M.Val Complex.t.
 
 Module  Impl_core_clone_Clone_for_foreign_function_interface_Complex.
 Section Impl_core_clone_Clone_for_foreign_function_interface_Complex.

@@ -74,7 +74,7 @@ Module pattern.
     .
   End SearchStep.
   Definition SearchStep `{State.Trait} : Set :=
-    val SearchStep.t.
+    M.Val SearchStep.t.
 
   (* ********TRAITS******** *)
   (*

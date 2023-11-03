@@ -21,11 +21,11 @@ Section Single.
   Global Set Primitive Projections.
   
   Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
   }.
 End Single.
 End Single.
-Definition Single `{ℋ : State.Trait} : Set := M.val Single.t.
+Definition Single `{ℋ : State.Trait} : Set := M.Val Single.t.
 
 Module  SingleGen.
 Section SingleGen.
@@ -40,12 +40,12 @@ Section SingleGen.
   Global Set Primitive Projections.
   
   Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
   }.
 End SingleGen.
 End SingleGen.
 Definition SingleGen `{ℋ : State.Trait} (T : Set) : Set :=
-  M.val (SingleGen.t (T := T)).
+  M.Val (SingleGen.t (T := T)).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=

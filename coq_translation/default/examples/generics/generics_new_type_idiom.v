@@ -12,11 +12,11 @@ Section Years.
   Global Set Primitive Projections.
   
   Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
   }.
 End Years.
 End Years.
-Definition Years `{ℋ : State.Trait} : Set := M.val Years.t.
+Definition Years `{ℋ : State.Trait} : Set := M.Val Years.t.
 
 Module  Days.
 Section Days.
@@ -29,11 +29,11 @@ Section Days.
   Global Set Primitive Projections.
   
   Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
   }.
 End Days.
 End Days.
-Definition Days `{ℋ : State.Trait} : Set := M.val Days.t.
+Definition Days `{ℋ : State.Trait} : Set := M.Val Days.t.
 
 Module  Impl_generics_new_type_idiom_Years.
 Section Impl_generics_new_type_idiom_Years.

@@ -149,7 +149,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
                         let* α16 := core.fmt.Arguments::["new_v1"] α3 α15 in
                         std.io.stdio._print α16 in
                       M.alloc tt in
-                    Pure result) in
+                    M.pure result) in
                 (alloc.vec.Vec
                       (std.thread.JoinHandle u32)
                       alloc.alloc.Global)::["push"]

@@ -21,7 +21,7 @@ Definition cat
           residual in
       let* α1 := Return α0 in
       never_to_any α1
-    | core.ops.control_flow.ControlFlow val => Pure val
+    | core.ops.control_flow.ControlFlow val => M.pure val
     end in
   let* s := alloc.string.String::["new"] in
   let* α0 := borrow_mut f std.fs.File in
@@ -60,7 +60,7 @@ Definition echo
           residual in
       let* α1 := Return α0 in
       never_to_any α1
-    | core.ops.control_flow.ControlFlow val => Pure val
+    | core.ops.control_flow.ControlFlow val => M.pure val
     end in
   let* α0 := borrow_mut f std.fs.File in
   let* α1 := deref s str in

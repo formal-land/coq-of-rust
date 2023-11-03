@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Definition reverse `{ℋ : State.Trait} (pair : i32 * bool) : M (bool * i32) :=
   let '(int_param, bool_param) := pair in
-  Pure (bool_param, int_param).
+  M.pure (bool_param, int_param).
 
 Module  Matrix.
 Section Matrix.
@@ -19,20 +19,20 @@ Section Matrix.
   Global Set Primitive Projections.
   
   Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
   }.
   Global Instance Get_1 : Notation.Dot "1" := {
-    Notation.dot x := let* x := M.read x in Pure x.(x1) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(x1) : M _;
   }.
   Global Instance Get_2 : Notation.Dot "2" := {
-    Notation.dot x := let* x := M.read x in Pure x.(x2) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(x2) : M _;
   }.
   Global Instance Get_3 : Notation.Dot "3" := {
-    Notation.dot x := let* x := M.read x in Pure x.(x3) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(x3) : M _;
   }.
 End Matrix.
 End Matrix.
-Definition Matrix `{ℋ : State.Trait} : Set := M.val Matrix.t.
+Definition Matrix `{ℋ : State.Trait} : Set := M.Val Matrix.t.
 
 Module  Impl_core_fmt_Debug_for_tuples_Matrix.
 Section Impl_core_fmt_Debug_for_tuples_Matrix.
@@ -100,7 +100,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
     let* α9 := M.alloc 0 (* 0.2 *) in
     let* α10 := M.alloc "a"%char in
     let* α11 := M.alloc true in
-    Pure (α0, α1, α2, α3, α4, α5, α6, α7, α8, α9, α10, α11) in
+    M.pure (α0, α1, α2, α3, α4, α5, α6, α7, α8, α9, α10, α11) in
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -150,7 +150,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
     let* α3 := M.alloc 4 in
     let* α4 := M.alloc (- 1) in
     let* α5 := M.alloc (- 2) in
-    Pure ((α0, α1, α2), (α3, α4), α5) in
+    M.pure ((α0, α1, α2), (α3, α4), α5) in
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -173,7 +173,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
   let* pair :=
     let* α0 := M.alloc 1 in
     let* α1 := M.alloc true in
-    Pure (α0, α1) in
+    M.pure (α0, α1) in
   let* _ :=
     let* _ :=
       let* α0 := borrow [ mk_str "pair is "; mk_str "
@@ -258,7 +258,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
     let* α0 := M.alloc 1 in
     let* α1 := M.alloc 5 (* 4.5 *) in
     let* α2 := M.alloc true in
-    Pure (α0, mk_str "hello", α1, α2) in
+    M.pure (α0, mk_str "hello", α1, α2) in
   let '(a, b, c, d) := tuple in
   let* _ :=
     let* _ :=

@@ -15,15 +15,15 @@ Section PhantomTuple.
   Global Set Primitive Projections.
   
   Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
   }.
   Global Instance Get_1 : Notation.Dot "1" := {
-    Notation.dot x := let* x := M.read x in Pure x.(x1) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(x1) : M _;
   }.
 End PhantomTuple.
 End PhantomTuple.
 Definition PhantomTuple `{ℋ : State.Trait} (A B : Set) : Set :=
-  M.val (PhantomTuple.t (A := A) (B := B)).
+  M.Val (PhantomTuple.t (A := A) (B := B)).
 
 Module  Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomTuple_A_B.
 Section Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomTuple_A_B.
@@ -103,21 +103,21 @@ Section PhantomStruct.
   Global Set Primitive Projections.
   
   Global Instance Get_first : Notation.Dot "first" := {
-    Notation.dot x := let* x := M.read x in Pure x.(first) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(first) : M _;
   }.
   Global Instance Get_AF_first : Notation.DoubleColon t "first" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(first) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(first) : M _;
   }.
   Global Instance Get_phantom : Notation.Dot "phantom" := {
-    Notation.dot x := let* x := M.read x in Pure x.(phantom) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(phantom) : M _;
   }.
   Global Instance Get_AF_phantom : Notation.DoubleColon t "phantom" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(phantom) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(phantom) : M _;
   }.
 End PhantomStruct.
 End PhantomStruct.
 Definition PhantomStruct (A B : Set) `{ℋ : State.Trait} : Set :=
-  M.val (PhantomStruct.t (A := A) (B := B)).
+  M.Val (PhantomStruct.t (A := A) (B := B)).
 
 Module  Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomStruct_A_B.
 Section Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomStruct_A_B.

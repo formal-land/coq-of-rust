@@ -17,20 +17,20 @@ Section Matrix.
   Global Set Primitive Projections.
   
   Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
   }.
   Global Instance Get_1 : Notation.Dot "1" := {
-    Notation.dot x := let* x := M.read x in Pure x.(x1) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(x1) : M _;
   }.
   Global Instance Get_2 : Notation.Dot "2" := {
-    Notation.dot x := let* x := M.read x in Pure x.(x2) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(x2) : M _;
   }.
   Global Instance Get_3 : Notation.Dot "3" := {
-    Notation.dot x := let* x := M.read x in Pure x.(x3) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(x3) : M _;
   }.
 End Matrix.
 End Matrix.
-Definition Matrix `{ℋ : State.Trait} : Set := M.val Matrix.t.
+Definition Matrix `{ℋ : State.Trait} : Set := M.Val Matrix.t.
 
 Module  Impl_core_fmt_Debug_for_tuples_Matrix.
 Section Impl_core_fmt_Debug_for_tuples_Matrix.

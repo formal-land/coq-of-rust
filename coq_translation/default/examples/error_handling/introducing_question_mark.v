@@ -24,7 +24,7 @@ Definition multiply
           residual in
       let* α1 := Return α0 in
       never_to_any α1
-    | core.ops.control_flow.ControlFlow val => Pure val
+    | core.ops.control_flow.ControlFlow val => M.pure val
     end in
   let* second_number :=
     let* α0 := deref second_number_str str in
@@ -44,7 +44,7 @@ Definition multiply
           residual in
       let* α1 := Return α0 in
       never_to_any α1
-    | core.ops.control_flow.ControlFlow val => Pure val
+    | core.ops.control_flow.ControlFlow val => M.pure val
     end in
   let* α0 := BinOp.mul first_number second_number in
   M.alloc (core.result.Result.Ok α0).

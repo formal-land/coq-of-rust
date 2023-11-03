@@ -71,43 +71,43 @@ Notation "e1 ;; e2" := (sequence e1 e2)
 
 Parameter assign : forall {A : Set}, A -> A -> unit.
 
-Definition unit `{State.Trait} : Set := val Datatypes.unit.
-Definition bool `{State.Trait} : Set := val Datatypes.bool.
+Definition unit `{State.Trait} : Set := M.Val Datatypes.unit.
+Definition bool `{State.Trait} : Set := M.Val Datatypes.bool.
 
-Definition u8 `{State.Trait} : Set := val Z.
-Definition u16 `{State.Trait} : Set := val Z.
-Definition u32 `{State.Trait} : Set := val Z.
-Definition u64 `{State.Trait} : Set := val Z.
-Definition u128 `{State.Trait} : Set := val Z.
-Definition usize `{State.Trait} : Set := val Z.
+Definition u8 `{State.Trait} : Set := M.Val Z.
+Definition u16 `{State.Trait} : Set := M.Val Z.
+Definition u32 `{State.Trait} : Set := M.Val Z.
+Definition u64 `{State.Trait} : Set := M.Val Z.
+Definition u128 `{State.Trait} : Set := M.Val Z.
+Definition usize `{State.Trait} : Set := M.Val Z.
 
-Definition i8 `{State.Trait} : Set := val Z.
-Definition i16 `{State.Trait} : Set := val Z.
-Definition i32 `{State.Trait} : Set := val Z.
-Definition i64 `{State.Trait} : Set := val Z.
-Definition i128 `{State.Trait} : Set := val Z.
-Definition isize `{State.Trait} : Set := val Z.
+Definition i8 `{State.Trait} : Set := M.Val Z.
+Definition i16 `{State.Trait} : Set := M.Val Z.
+Definition i32 `{State.Trait} : Set := M.Val Z.
+Definition i64 `{State.Trait} : Set := M.Val Z.
+Definition i128 `{State.Trait} : Set := M.Val Z.
+Definition isize `{State.Trait} : Set := M.Val Z.
 
 (* We approximate floating point numbers with integers *)
-Definition f32 `{State.Trait} : Set := val Z.
-Definition f64 `{State.Trait} : Set := val Z.
+Definition f32 `{State.Trait} : Set := M.Val Z.
+Definition f64 `{State.Trait} : Set := M.Val Z.
 
-Definition str `{State.Trait} : Set := val string.
-Definition char `{State.Trait} : Set := val ascii.
+Definition str `{State.Trait} : Set := M.Val string.
+Definition char `{State.Trait} : Set := M.Val ascii.
 Parameter String : forall `{State.Trait}, Set.
 
-Definition ref `{State.Trait} (A : Set) : Set := val A.
-Definition mut_ref `{State.Trait} (A : Set) : Set := val A.
+Definition ref `{State.Trait} (A : Set) : Set := M.Val A.
+Definition mut_ref `{State.Trait} (A : Set) : Set := M.Val A.
 
 Definition slice (A : Set) : Set := list A.
 Definition array (A : Set) : Set := list A.
 
-Definition never `{State.Trait} : Set := M.val Empty_set.
+Definition never `{State.Trait} : Set := M.Val Empty_set.
 
 Definition never_to_any `{State.Trait} {A B : Set} (x : A) : M B :=
   M.impossible.
 
-Definition use `{State.Trait} {A : Set} (x : A) : M A := M.Pure x.
+Definition use `{State.Trait} {A : Set} (x : A) : M A := M.pure x.
 
 Definition mk_str `{State.Trait} (s : string) : ref str :=
   M.Ref.Immutable (M.Ref.Immutable s).

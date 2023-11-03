@@ -117,7 +117,7 @@ Definition comp_sci_student_greeting
     let* α35 := pointer_coercion "Unsize" α34 in
     let* α36 := core.fmt.Arguments::["new_v1"] α3 α35 in
     alloc.fmt.format α36 in
-  Pure res.
+  M.pure res.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit := M.alloc tt.

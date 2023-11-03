@@ -38,7 +38,7 @@ Module Error.
   Parameter t : Set.
 End Error.
 Definition Error `{State.Trait} : Set :=
-  M.val Error.t.
+  M.Val Error.t.
 
 Definition Result `{State.Trait} (T : Set) : Set :=
   core.result_types.Result T Error.t.

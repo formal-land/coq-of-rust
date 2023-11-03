@@ -12,11 +12,11 @@ Section SomeType.
   Global Set Primitive Projections.
   
   Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
   }.
 End SomeType.
 End SomeType.
-Definition SomeType `{ℋ : State.Trait} : Set := M.val SomeType.t.
+Definition SomeType `{ℋ : State.Trait} : Set := M.Val SomeType.t.
 
 Module  OtherType.
 Section OtherType.
@@ -29,11 +29,11 @@ Section OtherType.
   Global Set Primitive Projections.
   
   Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
   }.
 End OtherType.
 End OtherType.
-Definition OtherType `{ℋ : State.Trait} : Set := M.val OtherType.t.
+Definition OtherType `{ℋ : State.Trait} : Set := M.Val OtherType.t.
 
 Module  Impl_functions_order_SomeType.
 Section Impl_functions_order_SomeType.

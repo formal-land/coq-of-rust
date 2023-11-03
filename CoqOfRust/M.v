@@ -110,8 +110,7 @@ Definition Monad `{State.Trait} (R A : Set) : Set :=
 Definition M `{State.Trait} (A : Set) : Set :=
   Monad Empty_set A.
 
-(* @TODO: change in `pure` for uniformity *)
-Definition Pure `{State.Trait} {R A : Set} (v : A) : Monad R A :=
+Definition pure `{State.Trait} {R A : Set} (v : A) : Monad R A :=
   fun fuel s => RawMonad.Pure (inl v, s).
 
 Definition bind `{State.Trait} {R A B : Set}
@@ -223,4 +222,41 @@ Definition impossible `{State.Trait} {R A : Set} : Monad R A :=
    witnessing that the calculation is possible. *)
 Parameter run : forall `{State.Trait} {A : Set}, M A -> A.
 
-Definition val `{State.Trait} (A : Set) : Set := Ref A.
+Definition Val `{State.Trait} (A : Set) : Set := Ref A.
+
+(** ** Operators for functions *)
+Definition function_body `{State.Trait} {A : Set} (body : Monad A A) : M A :=
+  fun fuel state =>
+  RawMonad.smart_bind (body fuel state) (fun '(result, state) =>
+  RawMonad.Pure (
+    match result with
+    | inl v => inl v
+    | inr exception =>
+      match exception with
+      | Exception.Return r => inl r
+      | Exception.Continue => inr Exception.Continue
+      | Exception.Break => inr Exception.Break
+      | Exception.Panic a => inr (Exception.Panic a)
+      | Exception.NonTermination => inr Exception.NonTermination
+      end
+    end,
+    state
+  )).
+
+Definition call `{State.Trait} {A R : Set} (e : M A) : Monad R A :=
+  fun fuel state =>
+  RawMonad.smart_bind (e fuel state) (fun '(result, state) =>
+  RawMonad.Pure (
+    match result with
+    | inl v => inl v
+    | inr exception =>
+      match exception with
+      | Exception.Return r => match r with end
+      | Exception.Continue => inr Exception.Continue
+      | Exception.Break => inr Exception.Break
+      | Exception.Panic a => inr (Exception.Panic a)
+      | Exception.NonTermination => inr Exception.NonTermination
+      end
+    end,
+    state
+  )).

@@ -178,7 +178,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α4 := borrow α3 str in
       let* α5 := str::["parse"] α4 in
       match α5 with
-      | core.result.Result n => Pure n
+      | core.result.Result n => M.pure n
       | core.result.Result _ =>
         let* _ :=
           let* _ :=

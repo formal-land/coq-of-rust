@@ -14,7 +14,7 @@ Module AssertKind.
   | Match.
 End AssertKind.
 Definition AssertKind `{State.Trait} : Set :=
-  M.val AssertKind.t.
+  M.Val AssertKind.t.
 
 Parameter assert_failed :
   forall `{State.Trait} {T U : Set} `{fmt.Debug.Trait T} `{fmt.Debug.Trait U},

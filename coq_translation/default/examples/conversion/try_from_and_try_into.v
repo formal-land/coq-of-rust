@@ -12,11 +12,11 @@ Section EvenNumber.
   Global Set Primitive Projections.
   
   Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
   }.
 End EvenNumber.
 End EvenNumber.
-Definition EvenNumber `{ℋ : State.Trait} : Set := M.val EvenNumber.t.
+Definition EvenNumber `{ℋ : State.Trait} : Set := M.Val EvenNumber.t.
 
 Module  Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber.
 Section Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber.

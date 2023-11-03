@@ -12,11 +12,11 @@ Section Foo.
   Global Set Primitive Projections.
   
   Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
   }.
 End Foo.
 End Foo.
-Definition Foo `{ℋ : State.Trait} : Set := M.val Foo.t.
+Definition Foo `{ℋ : State.Trait} : Set := M.Val Foo.t.
 
 Module  Impl_example05_Foo.
 Section Impl_example05_Foo.

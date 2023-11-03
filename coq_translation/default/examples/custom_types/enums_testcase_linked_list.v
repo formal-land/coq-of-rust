@@ -96,7 +96,7 @@ Section Impl_enums_testcase_linked_list_List.
         let* α19 := pointer_coercion "Unsize" α18 in
         let* α20 := core.fmt.Arguments::["new_v1"] α3 α19 in
         alloc.fmt.format α20 in
-      Pure res
+      M.pure res
     | enums_testcase_linked_list.List  =>
       let* res :=
         let* α0 := borrow [ mk_str "Nil" ] (list (ref str)) in
@@ -105,7 +105,7 @@ Section Impl_enums_testcase_linked_list_List.
         let* α3 := pointer_coercion "Unsize" α2 in
         let* α4 := core.fmt.Arguments::["new_const"] α3 in
         alloc.fmt.format α4 in
-      Pure res
+      M.pure res
     end.
   
   Global Instance AssociatedFunction_stringify :

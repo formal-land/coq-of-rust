@@ -192,7 +192,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
     let* α0 := M.alloc combinators_and_then.Food.CordonBleu in
     let* α1 := M.alloc combinators_and_then.Food.Steak in
     let* α2 := M.alloc combinators_and_then.Food.Sushi in
-    Pure (α0, α1, α2) in
+    M.pure (α0, α1, α2) in
   let* _ :=
     let* α0 := M.alloc combinators_and_then.Day.Monday in
     combinators_and_then.eat cordon_bleu α0 in

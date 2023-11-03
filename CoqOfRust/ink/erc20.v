@@ -44,29 +44,30 @@ Module erc20.
     Global Set Primitive Projections.
     
     Global Instance Get_total_supply : Notation.Dot "total_supply" := {
-      Notation.dot x := let* x := M.read x in Pure x.(total_supply) : M _;
+      Notation.dot x := let* x := M.read x in M.pure x.(total_supply) : M _;
     }.
     Global Instance Get_AF_total_supply :
       Notation.DoubleColon t "total_supply" := {
       Notation.double_colon x :=
-        let* x := M.read x in Pure x.(total_supply) : M _;
+        let* x := M.read x in M.pure x.(total_supply) : M _;
     }.
     Global Instance Get_balances : Notation.Dot "balances" := {
-      Notation.dot x := let* x := M.read x in Pure x.(balances) : M _;
+      Notation.dot x := let* x := M.read x in M.pure x.(balances) : M _;
     }.
     Global Instance Get_AF_balances : Notation.DoubleColon t "balances" := {
-      Notation.double_colon x := let* x := M.read x in Pure x.(balances) : M _;
+      Notation.double_colon x :=
+        let* x := M.read x in M.pure x.(balances) : M _;
     }.
     Global Instance Get_allowances : Notation.Dot "allowances" := {
-      Notation.dot x := let* x := M.read x in Pure x.(allowances) : M _;
+      Notation.dot x := let* x := M.read x in M.pure x.(allowances) : M _;
     }.
     Global Instance Get_AF_allowances : Notation.DoubleColon t "allowances" := {
       Notation.double_colon x :=
-        let* x := M.read x in Pure x.(allowances) : M _;
+        let* x := M.read x in M.pure x.(allowances) : M _;
     }.
   End Erc20.
   End Erc20.
-  Definition Erc20 `{ℋ : State.Trait} : Set := M.val Erc20.t.
+  Definition Erc20 `{ℋ : State.Trait} : Set := M.Val Erc20.t.
   
   Module  Impl_ink_env_contract_ContractEnv_for_erc20_erc20_Erc20.
   Section Impl_ink_env_contract_ContractEnv_for_erc20_erc20_Erc20.
@@ -107,7 +108,7 @@ Module erc20.
   
   Definition MAX_EVENT_TOPICS `{ℋ : State.Trait} : usize :=
     M.run
-      (Pure
+      (M.pure
         (ink_env.types.Environment.MAX_EVENT_TOPICS
           (Self := ink_env.types.DefaultEnvironment)
           (Trait := ltac:(refine _)))).
@@ -174,26 +175,26 @@ Module erc20.
     Global Set Primitive Projections.
     
     Global Instance Get_from : Notation.Dot "from" := {
-      Notation.dot x := let* x := M.read x in Pure x.(from) : M _;
+      Notation.dot x := let* x := M.read x in M.pure x.(from) : M _;
     }.
     Global Instance Get_AF_from : Notation.DoubleColon t "from" := {
-      Notation.double_colon x := let* x := M.read x in Pure x.(from) : M _;
+      Notation.double_colon x := let* x := M.read x in M.pure x.(from) : M _;
     }.
     Global Instance Get_to : Notation.Dot "to" := {
-      Notation.dot x := let* x := M.read x in Pure x.(to) : M _;
+      Notation.dot x := let* x := M.read x in M.pure x.(to) : M _;
     }.
     Global Instance Get_AF_to : Notation.DoubleColon t "to" := {
-      Notation.double_colon x := let* x := M.read x in Pure x.(to) : M _;
+      Notation.double_colon x := let* x := M.read x in M.pure x.(to) : M _;
     }.
     Global Instance Get_value : Notation.Dot "value" := {
-      Notation.dot x := let* x := M.read x in Pure x.(value) : M _;
+      Notation.dot x := let* x := M.read x in M.pure x.(value) : M _;
     }.
     Global Instance Get_AF_value : Notation.DoubleColon t "value" := {
-      Notation.double_colon x := let* x := M.read x in Pure x.(value) : M _;
+      Notation.double_colon x := let* x := M.read x in M.pure x.(value) : M _;
     }.
   End Transfer.
   End Transfer.
-  Definition Transfer `{ℋ : State.Trait} : Set := M.val Transfer.t.
+  Definition Transfer `{ℋ : State.Trait} : Set := M.Val Transfer.t.
   
   Module  Approval.
   Section Approval.
@@ -208,26 +209,26 @@ Module erc20.
     Global Set Primitive Projections.
     
     Global Instance Get_owner : Notation.Dot "owner" := {
-      Notation.dot x := let* x := M.read x in Pure x.(owner) : M _;
+      Notation.dot x := let* x := M.read x in M.pure x.(owner) : M _;
     }.
     Global Instance Get_AF_owner : Notation.DoubleColon t "owner" := {
-      Notation.double_colon x := let* x := M.read x in Pure x.(owner) : M _;
+      Notation.double_colon x := let* x := M.read x in M.pure x.(owner) : M _;
     }.
     Global Instance Get_spender : Notation.Dot "spender" := {
-      Notation.dot x := let* x := M.read x in Pure x.(spender) : M _;
+      Notation.dot x := let* x := M.read x in M.pure x.(spender) : M _;
     }.
     Global Instance Get_AF_spender : Notation.DoubleColon t "spender" := {
-      Notation.double_colon x := let* x := M.read x in Pure x.(spender) : M _;
+      Notation.double_colon x := let* x := M.read x in M.pure x.(spender) : M _;
     }.
     Global Instance Get_value : Notation.Dot "value" := {
-      Notation.dot x := let* x := M.read x in Pure x.(value) : M _;
+      Notation.dot x := let* x := M.read x in M.pure x.(value) : M _;
     }.
     Global Instance Get_AF_value : Notation.DoubleColon t "value" := {
-      Notation.double_colon x := let* x := M.read x in Pure x.(value) : M _;
+      Notation.double_colon x := let* x := M.read x in M.pure x.(value) : M _;
     }.
   End Approval.
   End Approval.
-  Definition Approval `{ℋ : State.Trait} : Set := M.val Approval.t.
+  Definition Approval `{ℋ : State.Trait} : Set := M.Val Approval.t.
   
   Module __ink_EventBase.
     Inductive t `{ℋ : State.Trait} : Set :=
@@ -282,7 +283,7 @@ Module erc20.
     
     Definition IS_RESULT : CoqOfRust.core.primitive.bool :=
       M.run
-        (Pure
+        (M.pure
           (ink.reflect.dispatch.ConstructorOutput.IS_RESULT
             (Self :=
               ink.reflect.dispatch.ConstructorOutputValue erc20.erc20.Erc20)
@@ -317,7 +318,7 @@ Module erc20.
         let* α1 := M.alloc 174 in
         let* α2 := M.alloc 157 in
         let* α3 := M.alloc 94 in
-        Pure [ α0; α1; α2; α3 ]).
+        M.pure [ α0; α1; α2; α3 ]).
     
     Global Instance AssociatedFunction_SELECTOR :
       Notation.DoubleColon Self "SELECTOR" := {
@@ -325,7 +326,7 @@ Module erc20.
     }.
     
     Definition LABEL : ref CoqOfRust.core.primitive.str :=
-      M.run (Pure (mk_str "new")).
+      M.run (M.pure (mk_str "new")).
     
     Global Instance AssociatedFunction_LABEL :
       Notation.DoubleColon Self "LABEL" := {
@@ -378,7 +379,7 @@ Module erc20.
         let* α1 := M.alloc 99 in
         let* α2 := M.alloc 117 in
         let* α3 := M.alloc 168 in
-        Pure [ α0; α1; α2; α3 ]).
+        M.pure [ α0; α1; α2; α3 ]).
     
     Global Instance AssociatedFunction_SELECTOR :
       Notation.DoubleColon Self "SELECTOR" := {
@@ -400,7 +401,7 @@ Module erc20.
     }.
     
     Definition LABEL : ref CoqOfRust.core.primitive.str :=
-      M.run (Pure (mk_str "total_supply")).
+      M.run (M.pure (mk_str "total_supply")).
     
     Global Instance AssociatedFunction_LABEL :
       Notation.DoubleColon Self "LABEL" := {
@@ -452,7 +453,7 @@ Module erc20.
         let* α1 := M.alloc 117 in
         let* α2 := M.alloc 90 in
         let* α3 := M.alloc 86 in
-        Pure [ α0; α1; α2; α3 ]).
+        M.pure [ α0; α1; α2; α3 ]).
     
     Global Instance AssociatedFunction_SELECTOR :
       Notation.DoubleColon Self "SELECTOR" := {
@@ -474,7 +475,7 @@ Module erc20.
     }.
     
     Definition LABEL : ref CoqOfRust.core.primitive.str :=
-      M.run (Pure (mk_str "balance_of")).
+      M.run (M.pure (mk_str "balance_of")).
     
     Global Instance AssociatedFunction_LABEL :
       Notation.DoubleColon Self "LABEL" := {
@@ -527,7 +528,7 @@ Module erc20.
         let* α1 := M.alloc 0 in
         let* α2 := M.alloc 22 in
         let* α3 := M.alloc 94 in
-        Pure [ α0; α1; α2; α3 ]).
+        M.pure [ α0; α1; α2; α3 ]).
     
     Global Instance AssociatedFunction_SELECTOR :
       Notation.DoubleColon Self "SELECTOR" := {
@@ -549,7 +550,7 @@ Module erc20.
     }.
     
     Definition LABEL : ref CoqOfRust.core.primitive.str :=
-      M.run (Pure (mk_str "allowance")).
+      M.run (M.pure (mk_str "allowance")).
     
     Global Instance AssociatedFunction_LABEL :
       Notation.DoubleColon Self "LABEL" := {
@@ -602,7 +603,7 @@ Module erc20.
         let* α1 := M.alloc 161 in
         let* α2 := M.alloc 93 in
         let* α3 := M.alloc 161 in
-        Pure [ α0; α1; α2; α3 ]).
+        M.pure [ α0; α1; α2; α3 ]).
     
     Global Instance AssociatedFunction_SELECTOR :
       Notation.DoubleColon Self "SELECTOR" := {
@@ -624,7 +625,7 @@ Module erc20.
     }.
     
     Definition LABEL : ref CoqOfRust.core.primitive.str :=
-      M.run (Pure (mk_str "transfer")).
+      M.run (M.pure (mk_str "transfer")).
     
     Global Instance AssociatedFunction_LABEL :
       Notation.DoubleColon Self "LABEL" := {
@@ -677,7 +678,7 @@ Module erc20.
         let* α1 := M.alloc 18 in
         let* α2 := M.alloc 102 in
         let* α3 := M.alloc 160 in
-        Pure [ α0; α1; α2; α3 ]).
+        M.pure [ α0; α1; α2; α3 ]).
     
     Global Instance AssociatedFunction_SELECTOR :
       Notation.DoubleColon Self "SELECTOR" := {
@@ -699,7 +700,7 @@ Module erc20.
     }.
     
     Definition LABEL : ref CoqOfRust.core.primitive.str :=
-      M.run (Pure (mk_str "approve")).
+      M.run (M.pure (mk_str "approve")).
     
     Global Instance AssociatedFunction_LABEL :
       Notation.DoubleColon Self "LABEL" := {
@@ -758,7 +759,7 @@ Module erc20.
         let* α1 := M.alloc 57 in
         let* α2 := M.alloc 111 in
         let* α3 := M.alloc 24 in
-        Pure [ α0; α1; α2; α3 ]).
+        M.pure [ α0; α1; α2; α3 ]).
     
     Global Instance AssociatedFunction_SELECTOR :
       Notation.DoubleColon Self "SELECTOR" := {
@@ -780,7 +781,7 @@ Module erc20.
     }.
     
     Definition LABEL : ref CoqOfRust.core.primitive.str :=
-      M.run (Pure (mk_str "transfer_from")).
+      M.run (M.pure (mk_str "transfer_from")).
     
     Global Instance AssociatedFunction_LABEL :
       Notation.DoubleColon Self "LABEL" := {
@@ -815,14 +816,14 @@ Module erc20.
     Global Set Primitive Projections.
     
     Global Instance Get_inner : Notation.Dot "inner" := {
-      Notation.dot x := let* x := M.read x in Pure x.(inner) : M _;
+      Notation.dot x := let* x := M.read x in M.pure x.(inner) : M _;
     }.
     Global Instance Get_AF_inner : Notation.DoubleColon t "inner" := {
-      Notation.double_colon x := let* x := M.read x in Pure x.(inner) : M _;
+      Notation.double_colon x := let* x := M.read x in M.pure x.(inner) : M _;
     }.
   End Erc20Ref.
   End Erc20Ref.
-  Definition Erc20Ref `{ℋ : State.Trait} : Set := M.val Erc20Ref.t.
+  Definition Erc20Ref `{ℋ : State.Trait} : Set := M.Val Erc20Ref.t.
   
   Module  Impl_core_fmt_Debug_for_erc20_erc20_Erc20Ref.
   Section Impl_core_fmt_Debug_for_erc20_erc20_Erc20Ref.
@@ -2051,7 +2052,7 @@ Ltac ChainExtension :=
 
 Definition MAX_EVENT_TOPICS `{ℋ : State.Trait} : usize :=
   M.run
-    (Pure
+    (M.pure
       (ink_env.types.Environment.MAX_EVENT_TOPICS
         (Self := ink_env.types.DefaultEnvironment)
         (Trait := ltac:(refine _)))).
@@ -2078,32 +2079,32 @@ Section Check.
   Global Set Primitive Projections.
   
   Global Instance Get_salt : Notation.Dot "salt" := {
-    Notation.dot x := let* x := M.read x in Pure x.(salt) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(salt) : M _;
   }.
   Global Instance Get_AF_salt : Notation.DoubleColon t "salt" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(salt) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(salt) : M _;
   }.
   Global Instance Get_field_0 : Notation.Dot "field_0" := {
-    Notation.dot x := let* x := M.read x in Pure x.(field_0) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(field_0) : M _;
   }.
   Global Instance Get_AF_field_0 : Notation.DoubleColon t "field_0" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(field_0) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(field_0) : M _;
   }.
   Global Instance Get_field_1 : Notation.Dot "field_1" := {
-    Notation.dot x := let* x := M.read x in Pure x.(field_1) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(field_1) : M _;
   }.
   Global Instance Get_AF_field_1 : Notation.DoubleColon t "field_1" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(field_1) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(field_1) : M _;
   }.
   Global Instance Get_field_2 : Notation.Dot "field_2" := {
-    Notation.dot x := let* x := M.read x in Pure x.(field_2) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(field_2) : M _;
   }.
   Global Instance Get_AF_field_2 : Notation.DoubleColon t "field_2" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(field_2) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(field_2) : M _;
   }.
 End Check.
 End Check.
-Definition Check `{ℋ : State.Trait} : Set := M.val Check.t.
+Definition Check `{ℋ : State.Trait} : Set := M.Val Check.t.
 
 Module  Erc20.
 Section Erc20.
@@ -2133,28 +2134,29 @@ Section Erc20.
   Global Set Primitive Projections.
   
   Global Instance Get_total_supply : Notation.Dot "total_supply" := {
-    Notation.dot x := let* x := M.read x in Pure x.(total_supply) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(total_supply) : M _;
   }.
   Global Instance Get_AF_total_supply :
     Notation.DoubleColon t "total_supply" := {
     Notation.double_colon x :=
-      let* x := M.read x in Pure x.(total_supply) : M _;
+      let* x := M.read x in M.pure x.(total_supply) : M _;
   }.
   Global Instance Get_balances : Notation.Dot "balances" := {
-    Notation.dot x := let* x := M.read x in Pure x.(balances) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(balances) : M _;
   }.
   Global Instance Get_AF_balances : Notation.DoubleColon t "balances" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(balances) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(balances) : M _;
   }.
   Global Instance Get_allowances : Notation.Dot "allowances" := {
-    Notation.dot x := let* x := M.read x in Pure x.(allowances) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(allowances) : M _;
   }.
   Global Instance Get_AF_allowances : Notation.DoubleColon t "allowances" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(allowances) : M _;
+    Notation.double_colon x :=
+      let* x := M.read x in M.pure x.(allowances) : M _;
   }.
 End Erc20.
 End Erc20.
-Definition Erc20 `{ℋ : State.Trait} : Set := M.val Erc20.t.
+Definition Erc20 `{ℋ : State.Trait} : Set := M.Val Erc20.t.
 
 Module  Impl_ink_storage_traits_storage_StorableHint___ink_generic_salt_for_erc20_erc20_Erc20.
 Section Impl_ink_storage_traits_storage_StorableHint___ink_generic_salt_for_erc20_erc20_Erc20.
@@ -2187,7 +2189,7 @@ Section Impl_ink_storage_traits_storage_StorageKey_for_erc20_erc20_Erc20.
   
   Definition KEY : ltac:(ink_primitives.key.Key) :=
     M.run
-      (Pure
+      (M.pure
         (ink_storage_traits.storage.StorageKey.KEY
           (Self := unit)
           (Trait := ltac:(refine _)))).
@@ -2240,7 +2242,7 @@ Section Impl_ink_storage_traits_storage_Storable_for_erc20_erc20_Erc20.
             residual in
         let* α1 := Return α0 in
         never_to_any α1
-      | core.ops.control_flow.ControlFlow val => Pure val
+      | core.ops.control_flow.ControlFlow val => M.pure val
       end in
     let* α5 := deref __input __ink_I in
     let* α6 := borrow_mut α5 __ink_I in
@@ -2281,7 +2283,7 @@ Section Impl_ink_storage_traits_storage_Storable_for_erc20_erc20_Erc20.
             residual in
         let* α1 := Return α0 in
         never_to_any α1
-      | core.ops.control_flow.ControlFlow val => Pure val
+      | core.ops.control_flow.ControlFlow val => M.pure val
       end in
     let* α10 := deref __input __ink_I in
     let* α11 := borrow_mut α10 __ink_I in
@@ -2323,7 +2325,7 @@ Section Impl_ink_storage_traits_storage_Storable_for_erc20_erc20_Erc20.
             residual in
         let* α1 := Return α0 in
         never_to_any α1
-      | core.ops.control_flow.ControlFlow val => Pure val
+      | core.ops.control_flow.ControlFlow val => M.pure val
       end in
     let* α15 :=
       M.alloc
@@ -2764,7 +2766,7 @@ Section Impl_ink_reflect_contract_ContractName_for_erc20_erc20_Erc20.
   
   Definition Self : Set := erc20.erc20.Erc20.
   
-  Definition NAME : ref str := M.run (Pure (mk_str "Erc20")).
+  Definition NAME : ref str := M.run (M.pure (mk_str "Erc20")).
   
   Global Instance AssociatedFunction_NAME :
     Notation.DoubleColon Self "NAME" := {
@@ -3022,7 +3024,7 @@ Section Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___ink_EventBase.
             residual in
         let* α1 := Return α0 in
         never_to_any α1
-      | core.ops.control_flow.ControlFlow val => Pure val
+      | core.ops.control_flow.ControlFlow val => M.pure val
       end in
     match α5 with
     | __codec_x_edqy =>
@@ -3046,7 +3048,7 @@ Section Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___ink_EventBase.
                 let* α1 := M.alloc (core.result.Result.Err α0) in
                 let* α2 := Return α1 in
                 never_to_any α2
-              | core.result.Result __codec_res_edqy => Pure __codec_res_edqy
+              | core.result.Result __codec_res_edqy => M.pure __codec_res_edqy
               end in
             let* α1 := M.alloc (erc20.erc20.__ink_EventBase.Transfer α0) in
             M.alloc (core.result.Result.Ok α1))
@@ -3082,7 +3084,7 @@ Section Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___ink_EventBase.
                 let* α1 := M.alloc (core.result.Result.Err α0) in
                 let* α2 := Return α1 in
                 never_to_any α2
-              | core.result.Result __codec_res_edqy => Pure __codec_res_edqy
+              | core.result.Result __codec_res_edqy => M.pure __codec_res_edqy
               end in
             let* α1 := M.alloc (erc20.erc20.__ink_EventBase.Approval α0) in
             M.alloc (core.result.Result.Ok α1))
@@ -3330,26 +3332,26 @@ Section Transfer.
   Global Set Primitive Projections.
   
   Global Instance Get_from : Notation.Dot "from" := {
-    Notation.dot x := let* x := M.read x in Pure x.(from) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(from) : M _;
   }.
   Global Instance Get_AF_from : Notation.DoubleColon t "from" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(from) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(from) : M _;
   }.
   Global Instance Get_to : Notation.Dot "to" := {
-    Notation.dot x := let* x := M.read x in Pure x.(to) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(to) : M _;
   }.
   Global Instance Get_AF_to : Notation.DoubleColon t "to" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(to) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(to) : M _;
   }.
   Global Instance Get_value : Notation.Dot "value" := {
-    Notation.dot x := let* x := M.read x in Pure x.(value) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(value) : M _;
   }.
   Global Instance Get_AF_value : Notation.DoubleColon t "value" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(value) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(value) : M _;
   }.
 End Transfer.
 End Transfer.
-Definition Transfer `{ℋ : State.Trait} : Set := M.val Transfer.t.
+Definition Transfer `{ℋ : State.Trait} : Set := M.Val Transfer.t.
 
 Module  Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Transfer.
 Section Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Transfer.
@@ -3470,7 +3472,7 @@ Section Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Transfer.
         let* α1 := M.alloc (core.result.Result.Err α0) in
         let* α2 := Return α1 in
         never_to_any α2
-      | core.result.Result __codec_res_edqy => Pure __codec_res_edqy
+      | core.result.Result __codec_res_edqy => M.pure __codec_res_edqy
       end in
     let* __codec_res_edqy :=
       let* α0 := deref __codec_input_edqy __CodecInputEdqy in
@@ -3489,7 +3491,7 @@ Section Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Transfer.
         let* α1 := M.alloc (core.result.Result.Err α0) in
         let* α2 := Return α1 in
         never_to_any α2
-      | core.result.Result __codec_res_edqy => Pure __codec_res_edqy
+      | core.result.Result __codec_res_edqy => M.pure __codec_res_edqy
       end in
     let* __codec_res_edqy :=
       let* α0 := deref __codec_input_edqy __CodecInputEdqy in
@@ -3508,7 +3510,7 @@ Section Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Transfer.
         let* α1 := M.alloc (core.result.Result.Err α0) in
         let* α2 := Return α1 in
         never_to_any α2
-      | core.result.Result __codec_res_edqy => Pure __codec_res_edqy
+      | core.result.Result __codec_res_edqy => M.pure __codec_res_edqy
       end in
     let* α3 :=
       M.alloc
@@ -3552,26 +3554,26 @@ Section Approval.
   Global Set Primitive Projections.
   
   Global Instance Get_owner : Notation.Dot "owner" := {
-    Notation.dot x := let* x := M.read x in Pure x.(owner) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(owner) : M _;
   }.
   Global Instance Get_AF_owner : Notation.DoubleColon t "owner" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(owner) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(owner) : M _;
   }.
   Global Instance Get_spender : Notation.Dot "spender" := {
-    Notation.dot x := let* x := M.read x in Pure x.(spender) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(spender) : M _;
   }.
   Global Instance Get_AF_spender : Notation.DoubleColon t "spender" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(spender) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(spender) : M _;
   }.
   Global Instance Get_value : Notation.Dot "value" := {
-    Notation.dot x := let* x := M.read x in Pure x.(value) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(value) : M _;
   }.
   Global Instance Get_AF_value : Notation.DoubleColon t "value" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(value) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(value) : M _;
   }.
 End Approval.
 End Approval.
-Definition Approval `{ℋ : State.Trait} : Set := M.val Approval.t.
+Definition Approval `{ℋ : State.Trait} : Set := M.Val Approval.t.
 
 Module  Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Approval.
 Section Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Approval.
@@ -3688,7 +3690,7 @@ Section Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Approval.
         let* α1 := M.alloc (core.result.Result.Err α0) in
         let* α2 := Return α1 in
         never_to_any α2
-      | core.result.Result __codec_res_edqy => Pure __codec_res_edqy
+      | core.result.Result __codec_res_edqy => M.pure __codec_res_edqy
       end in
     let* __codec_res_edqy :=
       let* α0 := deref __codec_input_edqy __CodecInputEdqy in
@@ -3707,7 +3709,7 @@ Section Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Approval.
         let* α1 := M.alloc (core.result.Result.Err α0) in
         let* α2 := Return α1 in
         never_to_any α2
-      | core.result.Result __codec_res_edqy => Pure __codec_res_edqy
+      | core.result.Result __codec_res_edqy => M.pure __codec_res_edqy
       end in
     let* __codec_res_edqy :=
       let* α0 := deref __codec_input_edqy __CodecInputEdqy in
@@ -3726,7 +3728,7 @@ Section Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Approval.
         let* α1 := M.alloc (core.result.Result.Err α0) in
         let* α2 := Return α1 in
         never_to_any α2
-      | core.result.Result __codec_res_edqy => Pure __codec_res_edqy
+      | core.result.Result __codec_res_edqy => M.pure __codec_res_edqy
       end in
     let* α3 :=
       M.alloc
@@ -4065,7 +4067,7 @@ Section Impl_ink_reflect_dispatch_DispatchableConstructorInfo_for_erc20_erc20_Er
   
   Definition IS_RESULT : CoqOfRust.core.primitive.bool :=
     M.run
-      (Pure
+      (M.pure
         (ink.reflect.dispatch.ConstructorOutput.IS_RESULT
           (Self :=
             ink.reflect.dispatch.ConstructorOutputValue erc20.erc20.Erc20)
@@ -4100,7 +4102,7 @@ Section Impl_ink_reflect_dispatch_DispatchableConstructorInfo_for_erc20_erc20_Er
       let* α1 := M.alloc 174 in
       let* α2 := M.alloc 157 in
       let* α3 := M.alloc 94 in
-      Pure [ α0; α1; α2; α3 ]).
+      M.pure [ α0; α1; α2; α3 ]).
   
   Global Instance AssociatedFunction_SELECTOR :
     Notation.DoubleColon Self "SELECTOR" := {
@@ -4108,7 +4110,7 @@ Section Impl_ink_reflect_dispatch_DispatchableConstructorInfo_for_erc20_erc20_Er
   }.
   
   Definition LABEL : ref CoqOfRust.core.primitive.str :=
-    M.run (Pure (mk_str "new")).
+    M.run (M.pure (mk_str "new")).
   
   Global Instance AssociatedFunction_LABEL :
     Notation.DoubleColon Self "LABEL" := {
@@ -4161,7 +4163,7 @@ Section Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
       let* α1 := M.alloc 99 in
       let* α2 := M.alloc 117 in
       let* α3 := M.alloc 168 in
-      Pure [ α0; α1; α2; α3 ]).
+      M.pure [ α0; α1; α2; α3 ]).
   
   Global Instance AssociatedFunction_SELECTOR :
     Notation.DoubleColon Self "SELECTOR" := {
@@ -4183,7 +4185,7 @@ Section Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
   }.
   
   Definition LABEL : ref CoqOfRust.core.primitive.str :=
-    M.run (Pure (mk_str "total_supply")).
+    M.run (M.pure (mk_str "total_supply")).
   
   Global Instance AssociatedFunction_LABEL :
     Notation.DoubleColon Self "LABEL" := {
@@ -4235,7 +4237,7 @@ Section Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
       let* α1 := M.alloc 117 in
       let* α2 := M.alloc 90 in
       let* α3 := M.alloc 86 in
-      Pure [ α0; α1; α2; α3 ]).
+      M.pure [ α0; α1; α2; α3 ]).
   
   Global Instance AssociatedFunction_SELECTOR :
     Notation.DoubleColon Self "SELECTOR" := {
@@ -4257,7 +4259,7 @@ Section Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
   }.
   
   Definition LABEL : ref CoqOfRust.core.primitive.str :=
-    M.run (Pure (mk_str "balance_of")).
+    M.run (M.pure (mk_str "balance_of")).
   
   Global Instance AssociatedFunction_LABEL :
     Notation.DoubleColon Self "LABEL" := {
@@ -4310,7 +4312,7 @@ Section Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
       let* α1 := M.alloc 0 in
       let* α2 := M.alloc 22 in
       let* α3 := M.alloc 94 in
-      Pure [ α0; α1; α2; α3 ]).
+      M.pure [ α0; α1; α2; α3 ]).
   
   Global Instance AssociatedFunction_SELECTOR :
     Notation.DoubleColon Self "SELECTOR" := {
@@ -4332,7 +4334,7 @@ Section Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
   }.
   
   Definition LABEL : ref CoqOfRust.core.primitive.str :=
-    M.run (Pure (mk_str "allowance")).
+    M.run (M.pure (mk_str "allowance")).
   
   Global Instance AssociatedFunction_LABEL :
     Notation.DoubleColon Self "LABEL" := {
@@ -4385,7 +4387,7 @@ Section Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
       let* α1 := M.alloc 161 in
       let* α2 := M.alloc 93 in
       let* α3 := M.alloc 161 in
-      Pure [ α0; α1; α2; α3 ]).
+      M.pure [ α0; α1; α2; α3 ]).
   
   Global Instance AssociatedFunction_SELECTOR :
     Notation.DoubleColon Self "SELECTOR" := {
@@ -4407,7 +4409,7 @@ Section Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
   }.
   
   Definition LABEL : ref CoqOfRust.core.primitive.str :=
-    M.run (Pure (mk_str "transfer")).
+    M.run (M.pure (mk_str "transfer")).
   
   Global Instance AssociatedFunction_LABEL :
     Notation.DoubleColon Self "LABEL" := {
@@ -4460,7 +4462,7 @@ Section Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
       let* α1 := M.alloc 18 in
       let* α2 := M.alloc 102 in
       let* α3 := M.alloc 160 in
-      Pure [ α0; α1; α2; α3 ]).
+      M.pure [ α0; α1; α2; α3 ]).
   
   Global Instance AssociatedFunction_SELECTOR :
     Notation.DoubleColon Self "SELECTOR" := {
@@ -4482,7 +4484,7 @@ Section Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
   }.
   
   Definition LABEL : ref CoqOfRust.core.primitive.str :=
-    M.run (Pure (mk_str "approve")).
+    M.run (M.pure (mk_str "approve")).
   
   Global Instance AssociatedFunction_LABEL :
     Notation.DoubleColon Self "LABEL" := {
@@ -4541,7 +4543,7 @@ Section Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
       let* α1 := M.alloc 57 in
       let* α2 := M.alloc 111 in
       let* α3 := M.alloc 24 in
-      Pure [ α0; α1; α2; α3 ]).
+      M.pure [ α0; α1; α2; α3 ]).
   
   Global Instance AssociatedFunction_SELECTOR :
     Notation.DoubleColon Self "SELECTOR" := {
@@ -4563,7 +4565,7 @@ Section Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
   }.
   
   Definition LABEL : ref CoqOfRust.core.primitive.str :=
-    M.run (Pure (mk_str "transfer_from")).
+    M.run (M.pure (mk_str "transfer_from")).
   
   Global Instance AssociatedFunction_LABEL :
     Notation.DoubleColon Self "LABEL" := {
@@ -4637,7 +4639,7 @@ Section Impl_ink_reflect_dispatch_DecodeDispatch_for_erc20_erc20_____ink_Constru
             residual in
         let* α1 := Return α0 in
         never_to_any α1
-      | core.ops.control_flow.ControlFlow val => Pure val
+      | core.ops.control_flow.ControlFlow val => M.pure val
       end in
     match α5 with
     | [_; _; _; _] =>
@@ -4670,7 +4672,7 @@ Section Impl_ink_reflect_dispatch_DecodeDispatch_for_erc20_erc20_____ink_Constru
               residual in
           let* α1 := Return α0 in
           never_to_any α1
-        | core.ops.control_flow.ControlFlow val => Pure val
+        | core.ops.control_flow.ControlFlow val => M.pure val
         end in
       let* α6 := "unimplemented parent_kind" α5 in
       M.alloc (core.result.Result.Ok α6)
@@ -4699,7 +4701,7 @@ Definition CONSTRUCTOR_0
     `{ℋ : State.Trait}
     : array CoqOfRust.core.primitive.u8 :=
   M.run
-    (Pure
+    (M.pure
       (ink.reflect.dispatch.DispatchableConstructorInfo.SELECTOR
         (Self := erc20.erc20.Erc20)
         (Trait := ltac:(refine _)))).
@@ -4797,7 +4799,7 @@ Section Impl_ink_reflect_dispatch_ExecuteDispatchable_for_erc20_erc20_____ink_Co
                   residual in
               let* α1 := Return α0 in
               never_to_any α1
-            | core.ops.control_flow.ControlFlow val => Pure val
+            | core.ops.control_flow.ControlFlow val => M.pure val
             end in
           M.alloc tt
         else
@@ -5007,7 +5009,7 @@ Section Impl_ink_reflect_dispatch_DecodeDispatch_for_erc20_erc20_____ink_Message
             residual in
         let* α1 := Return α0 in
         never_to_any α1
-      | core.ops.control_flow.ControlFlow val => Pure val
+      | core.ops.control_flow.ControlFlow val => M.pure val
       end in
     match α5 with
     | [_; _; _; _] =>
@@ -5040,7 +5042,7 @@ Section Impl_ink_reflect_dispatch_DecodeDispatch_for_erc20_erc20_____ink_Message
               residual in
           let* α1 := Return α0 in
           never_to_any α1
-        | core.ops.control_flow.ControlFlow val => Pure val
+        | core.ops.control_flow.ControlFlow val => M.pure val
         end in
       let* α6 := "unimplemented parent_kind" α5 in
       M.alloc (core.result.Result.Ok α6)
@@ -5079,7 +5081,7 @@ Section Impl_ink_reflect_dispatch_DecodeDispatch_for_erc20_erc20_____ink_Message
               residual in
           let* α1 := Return α0 in
           never_to_any α1
-        | core.ops.control_flow.ControlFlow val => Pure val
+        | core.ops.control_flow.ControlFlow val => M.pure val
         end in
       let* α6 := "unimplemented parent_kind" α5 in
       M.alloc (core.result.Result.Ok α6)
@@ -5120,7 +5122,7 @@ Section Impl_ink_reflect_dispatch_DecodeDispatch_for_erc20_erc20_____ink_Message
               residual in
           let* α1 := Return α0 in
           never_to_any α1
-        | core.ops.control_flow.ControlFlow val => Pure val
+        | core.ops.control_flow.ControlFlow val => M.pure val
         end in
       let* α6 := "unimplemented parent_kind" α5 in
       M.alloc (core.result.Result.Ok α6)
@@ -5159,7 +5161,7 @@ Section Impl_ink_reflect_dispatch_DecodeDispatch_for_erc20_erc20_____ink_Message
               residual in
           let* α1 := Return α0 in
           never_to_any α1
-        | core.ops.control_flow.ControlFlow val => Pure val
+        | core.ops.control_flow.ControlFlow val => M.pure val
         end in
       let* α6 := "unimplemented parent_kind" α5 in
       M.alloc (core.result.Result.Ok α6)
@@ -5198,7 +5200,7 @@ Section Impl_ink_reflect_dispatch_DecodeDispatch_for_erc20_erc20_____ink_Message
               residual in
           let* α1 := Return α0 in
           never_to_any α1
-        | core.ops.control_flow.ControlFlow val => Pure val
+        | core.ops.control_flow.ControlFlow val => M.pure val
         end in
       let* α6 := "unimplemented parent_kind" α5 in
       M.alloc (core.result.Result.Ok α6)
@@ -5244,7 +5246,7 @@ Section Impl_ink_reflect_dispatch_DecodeDispatch_for_erc20_erc20_____ink_Message
               residual in
           let* α1 := Return α0 in
           never_to_any α1
-        | core.ops.control_flow.ControlFlow val => Pure val
+        | core.ops.control_flow.ControlFlow val => M.pure val
         end in
       let* α6 := "unimplemented parent_kind" α5 in
       M.alloc (core.result.Result.Ok α6)
@@ -5271,42 +5273,42 @@ End Impl_ink_reflect_dispatch_DecodeDispatch_for_erc20_erc20_____ink_MessageDeco
 
 Definition MESSAGE_0 `{ℋ : State.Trait} : array CoqOfRust.core.primitive.u8 :=
   M.run
-    (Pure
+    (M.pure
       (ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR
         (Self := erc20.erc20.Erc20)
         (Trait := ltac:(refine _)))).
 
 Definition MESSAGE_1 `{ℋ : State.Trait} : array CoqOfRust.core.primitive.u8 :=
   M.run
-    (Pure
+    (M.pure
       (ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR
         (Self := erc20.erc20.Erc20)
         (Trait := ltac:(refine _)))).
 
 Definition MESSAGE_2 `{ℋ : State.Trait} : array CoqOfRust.core.primitive.u8 :=
   M.run
-    (Pure
+    (M.pure
       (ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR
         (Self := erc20.erc20.Erc20)
         (Trait := ltac:(refine _)))).
 
 Definition MESSAGE_3 `{ℋ : State.Trait} : array CoqOfRust.core.primitive.u8 :=
   M.run
-    (Pure
+    (M.pure
       (ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR
         (Self := erc20.erc20.Erc20)
         (Trait := ltac:(refine _)))).
 
 Definition MESSAGE_4 `{ℋ : State.Trait} : array CoqOfRust.core.primitive.u8 :=
   M.run
-    (Pure
+    (M.pure
       (ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR
         (Self := erc20.erc20.Erc20)
         (Trait := ltac:(refine _)))).
 
 Definition MESSAGE_5 `{ℋ : State.Trait} : array CoqOfRust.core.primitive.u8 :=
   M.run
-    (Pure
+    (M.pure
       (ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR
         (Self := erc20.erc20.Erc20)
         (Trait := ltac:(refine _)))).
@@ -5413,7 +5415,7 @@ Section Impl_ink_reflect_dispatch_ExecuteDispatchable_for_erc20_erc20_____ink_Me
       let* α3 := ink_env.api.get_contract_storage α2 in
       let* α4 :=
         match α3 with
-        | core.result.Result core.option.Option value => Pure value
+        | core.result.Result core.option.Option value => M.pure value
         | core.result.Result core.option.Option  =>
           let* α0 :=
             borrow [ mk_str "storage entry was empty" ] (list (ref str)) in
@@ -5507,7 +5509,7 @@ Section Impl_ink_reflect_dispatch_ExecuteDispatchable_for_erc20_erc20_____ink_Me
                     residual in
                 let* α1 := Return α0 in
                 never_to_any α1
-              | core.ops.control_flow.ControlFlow val => Pure val
+              | core.ops.control_flow.ControlFlow val => M.pure val
               end in
             M.alloc tt
           else
@@ -5645,7 +5647,7 @@ Section Impl_ink_reflect_dispatch_ExecuteDispatchable_for_erc20_erc20_____ink_Me
                     residual in
                 let* α1 := Return α0 in
                 never_to_any α1
-              | core.ops.control_flow.ControlFlow val => Pure val
+              | core.ops.control_flow.ControlFlow val => M.pure val
               end in
             M.alloc tt
           else
@@ -5783,7 +5785,7 @@ Section Impl_ink_reflect_dispatch_ExecuteDispatchable_for_erc20_erc20_____ink_Me
                     residual in
                 let* α1 := Return α0 in
                 never_to_any α1
-              | core.ops.control_flow.ControlFlow val => Pure val
+              | core.ops.control_flow.ControlFlow val => M.pure val
               end in
             M.alloc tt
           else
@@ -5921,7 +5923,7 @@ Section Impl_ink_reflect_dispatch_ExecuteDispatchable_for_erc20_erc20_____ink_Me
                     residual in
                 let* α1 := Return α0 in
                 never_to_any α1
-              | core.ops.control_flow.ControlFlow val => Pure val
+              | core.ops.control_flow.ControlFlow val => M.pure val
               end in
             M.alloc tt
           else
@@ -6073,7 +6075,7 @@ Section Impl_ink_reflect_dispatch_ExecuteDispatchable_for_erc20_erc20_____ink_Me
                     residual in
                 let* α1 := Return α0 in
                 never_to_any α1
-              | core.ops.control_flow.ControlFlow val => Pure val
+              | core.ops.control_flow.ControlFlow val => M.pure val
               end in
             M.alloc tt
           else
@@ -6225,7 +6227,7 @@ Section Impl_ink_reflect_dispatch_ExecuteDispatchable_for_erc20_erc20_____ink_Me
                     residual in
                 let* α1 := Return α0 in
                 never_to_any α1
-              | core.ops.control_flow.ControlFlow val => Pure val
+              | core.ops.control_flow.ControlFlow val => M.pure val
               end in
             M.alloc tt
           else
@@ -6634,7 +6636,7 @@ Section Impl_erc20_erc20_Erc20.
             residual in
         let* α1 := Return α0 in
         never_to_any α1
-      | core.ops.control_flow.ControlFlow val => Pure val
+      | core.ops.control_flow.ControlFlow val => M.pure val
       end in
     let* _ :=
       let* α0 := deref self erc20.erc20.Erc20 in
@@ -6857,14 +6859,15 @@ Section CallBuilder.
   Global Set Primitive Projections.
   
   Global Instance Get_account_id : Notation.Dot "account_id" := {
-    Notation.dot x := let* x := M.read x in Pure x.(account_id) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(account_id) : M _;
   }.
   Global Instance Get_AF_account_id : Notation.DoubleColon t "account_id" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(account_id) : M _;
+    Notation.double_colon x :=
+      let* x := M.read x in M.pure x.(account_id) : M _;
   }.
 End CallBuilder.
 End CallBuilder.
-Definition CallBuilder `{ℋ : State.Trait} : Set := M.val CallBuilder.t.
+Definition CallBuilder `{ℋ : State.Trait} : Set := M.Val CallBuilder.t.
 
 Module  Impl_core_fmt_Debug_for_erc20_erc20___CallBuilder.
 Section Impl_core_fmt_Debug_for_erc20_erc20___CallBuilder.
@@ -7042,7 +7045,7 @@ Section Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___CallBuilder.
         let* α1 := M.alloc (core.result.Result.Err α0) in
         let* α2 := Return α1 in
         never_to_any α2
-      | core.result.Result __codec_res_edqy => Pure __codec_res_edqy
+      | core.result.Result __codec_res_edqy => M.pure __codec_res_edqy
       end in
     let* α1 := M.alloc {| erc20.erc20._.CallBuilder.account_id := α0; |} in
     M.alloc (core.result.Result.Ok α1).
@@ -7206,7 +7209,7 @@ Section Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___CallBuilder.
               residual in
           let* α1 := Return α0 in
           never_to_any α1
-        | core.ops.control_flow.ControlFlow val => Pure val
+        | core.ops.control_flow.ControlFlow val => M.pure val
         end in
       M.alloc tt in
     let* α0 :=
@@ -8333,14 +8336,14 @@ Section Erc20Ref.
   Global Set Primitive Projections.
   
   Global Instance Get_inner : Notation.Dot "inner" := {
-    Notation.dot x := let* x := M.read x in Pure x.(inner) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(inner) : M _;
   }.
   Global Instance Get_AF_inner : Notation.DoubleColon t "inner" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(inner) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(inner) : M _;
   }.
 End Erc20Ref.
 End Erc20Ref.
-Definition Erc20Ref `{ℋ : State.Trait} : Set := M.val Erc20Ref.t.
+Definition Erc20Ref `{ℋ : State.Trait} : Set := M.Val Erc20Ref.t.
 
 Module  Impl_core_fmt_Debug_for_erc20_erc20_Erc20Ref.
 Section Impl_core_fmt_Debug_for_erc20_erc20_Erc20Ref.
@@ -8518,7 +8521,7 @@ Section Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Erc20Ref.
         let* α1 := M.alloc (core.result.Result.Err α0) in
         let* α2 := Return α1 in
         never_to_any α2
-      | core.result.Result __codec_res_edqy => Pure __codec_res_edqy
+      | core.result.Result __codec_res_edqy => M.pure __codec_res_edqy
       end in
     let* α1 := M.alloc {| erc20.erc20.Erc20Ref.inner := α0; |} in
     M.alloc (core.result.Result.Ok α1).
@@ -8835,7 +8838,7 @@ Section Impl_ink_env_call_create_builder_ConstructorReturnType_erc20_erc20_Erc20
   
   Definition Error : Set := unit.
   
-  Definition ok (value : erc20.erc20.Erc20Ref) : M Output := Pure value.
+  Definition ok (value : erc20.erc20.Erc20Ref) : M Output := M.pure value.
   
   Global Instance AssociatedFunction_ok : Notation.DoubleColon Self "ok" := {
     Notation.double_colon := ok;
@@ -11860,7 +11863,7 @@ Section Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Error.
             residual in
         let* α1 := Return α0 in
         never_to_any α1
-      | core.ops.control_flow.ControlFlow val => Pure val
+      | core.ops.control_flow.ControlFlow val => M.pure val
       end in
     match α5 with
     | __codec_x_edqy =>

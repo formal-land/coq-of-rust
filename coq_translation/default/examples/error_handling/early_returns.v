@@ -11,7 +11,7 @@ Definition multiply
     let* α1 := borrow α0 str in
     let* α2 := str::["parse"] α1 in
     match α2 with
-    | core.result.Result first_number => Pure first_number
+    | core.result.Result first_number => M.pure first_number
     | core.result.Result e =>
       let* α0 := M.alloc (core.result.Result.Err e) in
       let* α1 := Return α0 in
@@ -22,7 +22,7 @@ Definition multiply
     let* α1 := borrow α0 str in
     let* α2 := str::["parse"] α1 in
     match α2 with
-    | core.result.Result second_number => Pure second_number
+    | core.result.Result second_number => M.pure second_number
     | core.result.Result e =>
       let* α0 := M.alloc (core.result.Result.Err e) in
       let* α1 := Return α0 in

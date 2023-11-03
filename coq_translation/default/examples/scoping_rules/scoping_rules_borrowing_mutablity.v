@@ -15,26 +15,26 @@ Section Book.
   Global Set Primitive Projections.
   
   Global Instance Get_author : Notation.Dot "author" := {
-    Notation.dot x := let* x := M.read x in Pure x.(author) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(author) : M _;
   }.
   Global Instance Get_AF_author : Notation.DoubleColon t "author" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(author) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(author) : M _;
   }.
   Global Instance Get_title : Notation.Dot "title" := {
-    Notation.dot x := let* x := M.read x in Pure x.(title) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(title) : M _;
   }.
   Global Instance Get_AF_title : Notation.DoubleColon t "title" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(title) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(title) : M _;
   }.
   Global Instance Get_year : Notation.Dot "year" := {
-    Notation.dot x := let* x := M.read x in Pure x.(year) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(year) : M _;
   }.
   Global Instance Get_AF_year : Notation.DoubleColon t "year" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(year) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(year) : M _;
   }.
 End Book.
 End Book.
-Definition Book `{ℋ : State.Trait} : Set := M.val Book.t.
+Definition Book `{ℋ : State.Trait} : Set := M.Val Book.t.
 
 Module  Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book.
 Section Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book.

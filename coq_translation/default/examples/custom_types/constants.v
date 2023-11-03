@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition LANGUAGE `{ℋ : State.Trait} : ref str :=
-  M.run (Pure (mk_str "Rust")).
+  M.run (M.pure (mk_str "Rust")).
 
 Definition THRESHOLD `{ℋ : State.Trait} : i32 := M.run (M.alloc 10).
 
@@ -66,7 +66,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α9 := use α8 in
       let* α10 :=
         if (α9 : bool) then
-          Pure (mk_str "big")
+          M.pure (mk_str "big")
         else
           let* α0 := deref (mk_str "small") str in
           borrow α0 str in

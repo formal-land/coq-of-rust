@@ -67,7 +67,7 @@ Definition pass_x
     (x : ref i32)
     (arg : ref i32)
     : M (ref i32) :=
-  Pure x.
+  M.pure x.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=

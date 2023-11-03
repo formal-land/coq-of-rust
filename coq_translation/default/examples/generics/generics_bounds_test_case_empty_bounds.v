@@ -79,7 +79,7 @@ Definition red
     {ℋ_0 : generics_bounds_test_case_empty_bounds.Red.Trait T}
     (arg : ref T)
     : M (ref str) :=
-  Pure (mk_str "red").
+  M.pure (mk_str "red").
 
 Definition blue
     `{ℋ : State.Trait}
@@ -87,7 +87,7 @@ Definition blue
     {ℋ_0 : generics_bounds_test_case_empty_bounds.Blue.Trait T}
     (arg : ref T)
     : M (ref str) :=
-  Pure (mk_str "blue").
+  M.pure (mk_str "blue").
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=

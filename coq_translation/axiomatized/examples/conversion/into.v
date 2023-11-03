@@ -12,14 +12,14 @@ Section Number.
   Global Set Primitive Projections.
   
   Global Instance Get_value : Notation.Dot "value" := {
-    Notation.dot x := let* x := M.read x in Pure x.(value) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(value) : M _;
   }.
   Global Instance Get_AF_value : Notation.DoubleColon t "value" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(value) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(value) : M _;
   }.
 End Number.
 End Number.
-Definition Number `{ℋ : State.Trait} : Set := M.val Number.t.
+Definition Number `{ℋ : State.Trait} : Set := M.Val Number.t.
 
 Module  Impl_core_convert_From_i32_for_into_Number.
 Section Impl_core_convert_From_i32_for_into_Number.

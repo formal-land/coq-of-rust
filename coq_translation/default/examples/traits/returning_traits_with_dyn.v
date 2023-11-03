@@ -10,7 +10,7 @@ Section Sheep.
   Global Set Primitive Projections.
 End Sheep.
 End Sheep.
-Definition Sheep `{ℋ : State.Trait} : Set := M.val Sheep.t.
+Definition Sheep `{ℋ : State.Trait} : Set := M.Val Sheep.t.
 
 Module  Cow.
 Section Cow.
@@ -21,7 +21,7 @@ Section Cow.
   Global Set Primitive Projections.
 End Cow.
 End Cow.
-Definition Cow `{ℋ : State.Trait} : Set := M.val Cow.t.
+Definition Cow `{ℋ : State.Trait} : Set := M.Val Cow.t.
 
 Module  Animal.
 Section Animal.
@@ -40,7 +40,8 @@ Section Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Shee
   
   Definition Self : Set := returning_traits_with_dyn.Sheep.
   
-  Definition noise (self : ref Self) : M (ref str) := Pure (mk_str "baaaaah!").
+  Definition noise (self : ref Self) : M (ref str) :=
+    M.pure (mk_str "baaaaah!").
   
   Global Instance AssociatedFunction_noise :
     Notation.DoubleColon Self "noise" := {
@@ -59,7 +60,8 @@ Section Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
   
   Definition Self : Set := returning_traits_with_dyn.Cow.
   
-  Definition noise (self : ref Self) : M (ref str) := Pure (mk_str "moooooo!").
+  Definition noise (self : ref Self) : M (ref str) :=
+    M.pure (mk_str "moooooo!").
   
   Global Instance AssociatedFunction_noise :
     Notation.DoubleColon Self "noise" := {

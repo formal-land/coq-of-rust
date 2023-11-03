@@ -512,7 +512,7 @@ Module interner.
     End UntrackedSymbol.
   End UntrackedSymbol.
   Definition UntrackedSymbol `{State.Trait} (T : Set) :=
-    M.val (UntrackedSymbol.t (T := T)).
+    M.Val (UntrackedSymbol.t (T := T)).
   
   Module Symbol.
     Section Symbol.
@@ -533,7 +533,7 @@ Module interner.
     End Symbol.
   End Symbol.
   Definition Symbol `{State.Trait} (T : Set) :=
-    M.val (Symbol.t (T := T)).
+    M.Val (Symbol.t (T := T)).
   (*
   Module Interner.
     Section Interner.
@@ -1013,7 +1013,7 @@ Module ty.
       | MissingSegments
       | InvalidIdentifier (_ : InvalidIdentifier.t).
     End PathError.
-    Definition PathError `{State.Trait} := M.val PathError.t.
+    Definition PathError `{State.Trait} := M.Val PathError.t.
   End path.
   
   Module variant.
@@ -1309,7 +1309,7 @@ Module portable.
       Notation.dot x := x.(ty);
     }.
   End PortableType.
-  Definition PortableType `{State.Trait} : Set := M.val PortableType.t.
+  Definition PortableType `{State.Trait} : Set := M.Val PortableType.t.
 
   Module PortableRegistry.
     Unset Primitive Projections.
@@ -1325,7 +1325,7 @@ Module portable.
       Notation.dot x := x.(types);
     }.
   End PortableRegistry.
-  Definition PortableRegistry `{State.Trait} : Set := M.val PortableRegistry.t.
+  Definition PortableRegistry `{State.Trait} : Set := M.Val PortableRegistry.t.
 
   (*
   Module PortableRegistryBuilder.

@@ -13,20 +13,20 @@ Section Sheep.
   Global Set Primitive Projections.
   
   Global Instance Get_naked : Notation.Dot "naked" := {
-    Notation.dot x := let* x := M.read x in Pure x.(naked) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(naked) : M _;
   }.
   Global Instance Get_AF_naked : Notation.DoubleColon t "naked" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(naked) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(naked) : M _;
   }.
   Global Instance Get_name : Notation.Dot "name" := {
-    Notation.dot x := let* x := M.read x in Pure x.(name) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(name) : M _;
   }.
   Global Instance Get_AF_name : Notation.DoubleColon t "name" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(name) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(name) : M _;
   }.
 End Sheep.
 End Sheep.
-Definition Sheep `{ℋ : State.Trait} : Set := M.val Sheep.t.
+Definition Sheep `{ℋ : State.Trait} : Set := M.Val Sheep.t.
 
 Module  Animal.
 Section Animal.
@@ -87,9 +87,9 @@ Section Impl_traits_Animal_for_traits_Sheep.
     let* α2 := traits.Sheep::["is_naked"] α1 in
     let* α3 := use α2 in
     if (α3 : bool) then
-      Pure (mk_str "baaaaah?")
+      M.pure (mk_str "baaaaah?")
     else
-      Pure (mk_str "baaaaah!").
+      M.pure (mk_str "baaaaah!").
   
   Global Instance AssociatedFunction_noise :
     Notation.DoubleColon Self "noise" := {

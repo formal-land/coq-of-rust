@@ -379,12 +379,12 @@ Module impls.
     Global Set Primitive Projections.
     
     Global Instance Get_0 : Notation.Dot "0" := {
-      Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
+      Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
     }.
   End ManualKey.
   End ManualKey.
   Definition ManualKey `{ℋ : State.Trait} (ParentKey : Set) : Set :=
-    M.val (ManualKey.t (ParentKey := ParentKey)).
+    M.Val (ManualKey.t (ParentKey := ParentKey)).
   
   Module  Impl_core_default_Default_for_ink_storage_traits_impls_ManualKey_ParentKey.
   Section Impl_core_default_Default_for_ink_storage_traits_impls_ManualKey_ParentKey.
@@ -653,12 +653,12 @@ Module impls.
     Global Set Primitive Projections.
     
     Global Instance Get_0 : Notation.Dot "0" := {
-      Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
+      Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
     }.
   End ResolverKey.
   End ResolverKey.
   Definition ResolverKey `{ℋ : State.Trait} (L R : Set) : Set :=
-    M.val (ResolverKey.t (L := L) (R := R)).
+    M.Val (ResolverKey.t (L := L) (R := R)).
   
   Module  Impl_core_default_Default_for_ink_storage_traits_impls_ResolverKey_L_R.
   Section Impl_core_default_Default_for_ink_storage_traits_impls_ResolverKey_L_R.
@@ -1285,12 +1285,12 @@ Section ManualKey.
   Global Set Primitive Projections.
   
   Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
   }.
 End ManualKey.
 End ManualKey.
 Definition ManualKey `{ℋ : State.Trait} (ParentKey : Set) : Set :=
-  M.val (ManualKey.t (ParentKey := ParentKey)).
+  M.Val (ManualKey.t (ParentKey := ParentKey)).
 
 Module  Impl_scale_info_TypeInfo_for_ink_storage_traits_impls_ManualKey_ParentKey.
 Section Impl_scale_info_TypeInfo_for_ink_storage_traits_impls_ManualKey_ParentKey.
@@ -1586,12 +1586,12 @@ Section ResolverKey.
   Global Set Primitive Projections.
   
   Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
   }.
 End ResolverKey.
 End ResolverKey.
 Definition ResolverKey `{ℋ : State.Trait} (L R : Set) : Set :=
-  M.val (ResolverKey.t (L := L) (R := R)).
+  M.Val (ResolverKey.t (L := L) (R := R)).
 
 Module  Impl_scale_info_TypeInfo_for_ink_storage_traits_impls_ResolverKey_L_R.
 Section Impl_scale_info_TypeInfo_for_ink_storage_traits_impls_ResolverKey_L_R.

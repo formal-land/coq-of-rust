@@ -219,11 +219,11 @@ Module types.
     Global Set Primitive Projections.
     
     Global Instance Get_0 : Notation.Dot "0" := {
-      Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
+      Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
     }.
   End AccountId.
   End AccountId.
-  Definition AccountId `{ℋ : State.Trait} : Set := M.val AccountId.t.
+  Definition AccountId `{ℋ : State.Trait} : Set := M.Val AccountId.t.
   
   Module  Impl_scale_encode_EncodeAsType_for_ink_primitives_types_AccountId.
   Section Impl_scale_encode_EncodeAsType_for_ink_primitives_types_AccountId.
@@ -600,11 +600,11 @@ Module types.
     Global Set Primitive Projections.
     
     Global Instance Get_0 : Notation.Dot "0" := {
-      Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
+      Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
     }.
   End Hash.
   End Hash.
-  Definition Hash `{ℋ : State.Trait} : Set := M.val Hash.t.
+  Definition Hash `{ℋ : State.Trait} : Set := M.Val Hash.t.
   
   Module  Impl_scale_encode_EncodeAsType_for_ink_primitives_types_Hash.
   Section Impl_scale_encode_EncodeAsType_for_ink_primitives_types_Hash.
@@ -1047,11 +1047,11 @@ Section AccountId.
   Global Set Primitive Projections.
   
   Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
   }.
 End AccountId.
 End AccountId.
-Definition AccountId `{ℋ : State.Trait} : Set := M.val AccountId.t.
+Definition AccountId `{ℋ : State.Trait} : Set := M.Val AccountId.t.
 
 Module  Impl_scale_info_TypeInfo_for_ink_primitives_types_AccountId.
 Section Impl_scale_info_TypeInfo_for_ink_primitives_types_AccountId.
@@ -1086,11 +1086,11 @@ Section Visitor.
   Global Set Primitive Projections.
   
   Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
   }.
 End Visitor.
 End Visitor.
-Definition Visitor `{ℋ : State.Trait} : Set := M.val Visitor.t.
+Definition Visitor `{ℋ : State.Trait} : Set := M.Val Visitor.t.
 
 (* Module Impl_scale_decode_IntoVisitor_for_ink_primitives_types_AccountId.
 (* Section Impl_scale_decode_IntoVisitor_for_ink_primitives_types_AccountId.
@@ -1686,11 +1686,11 @@ Section Hash.
   Global Set Primitive Projections.
   
   Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
   }.
 End Hash.
 End Hash.
-Definition Hash `{ℋ : State.Trait} : Set := M.val Hash.t.
+Definition Hash `{ℋ : State.Trait} : Set := M.Val Hash.t.
 
 Module  Impl_scale_info_TypeInfo_for_ink_primitives_types_Hash.
 Section Impl_scale_info_TypeInfo_for_ink_primitives_types_Hash.

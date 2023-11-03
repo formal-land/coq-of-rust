@@ -12,11 +12,11 @@ Section Years.
   Global Set Primitive Projections.
   
   Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
   }.
 End Years.
 End Years.
-Definition Years `{ℋ : State.Trait} : Set := M.val Years.t.
+Definition Years `{ℋ : State.Trait} : Set := M.Val Years.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=

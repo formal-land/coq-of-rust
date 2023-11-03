@@ -43,20 +43,20 @@ Section Rectangle.
   Global Set Primitive Projections.
   
   Global Instance Get_length : Notation.Dot "length" := {
-    Notation.dot x := let* x := M.read x in Pure x.(length) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(length) : M _;
   }.
   Global Instance Get_AF_length : Notation.DoubleColon t "length" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(length) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(length) : M _;
   }.
   Global Instance Get_height : Notation.Dot "height" := {
-    Notation.dot x := let* x := M.read x in Pure x.(height) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(height) : M _;
   }.
   Global Instance Get_AF_height : Notation.DoubleColon t "height" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(height) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(height) : M _;
   }.
 End Rectangle.
 End Rectangle.
-Definition Rectangle `{ℋ : State.Trait} : Set := M.val Rectangle.t.
+Definition Rectangle `{ℋ : State.Trait} : Set := M.Val Rectangle.t.
 
 Module  Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
 Section Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
@@ -90,20 +90,20 @@ Section Triangle.
   Global Set Primitive Projections.
   
   Global Instance Get_length : Notation.Dot "length" := {
-    Notation.dot x := let* x := M.read x in Pure x.(length) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(length) : M _;
   }.
   Global Instance Get_AF_length : Notation.DoubleColon t "length" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(length) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(length) : M _;
   }.
   Global Instance Get_height : Notation.Dot "height" := {
-    Notation.dot x := let* x := M.read x in Pure x.(height) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(height) : M _;
   }.
   Global Instance Get_AF_height : Notation.DoubleColon t "height" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(height) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(height) : M _;
   }.
 End Triangle.
 End Triangle.
-Definition Triangle `{ℋ : State.Trait} : Set := M.val Triangle.t.
+Definition Triangle `{ℋ : State.Trait} : Set := M.Val Triangle.t.
 
 Parameter print_debug :
     forall `{ℋ : State.Trait} {T : Set} {ℋ_0 : core.fmt.Debug.Trait T},
