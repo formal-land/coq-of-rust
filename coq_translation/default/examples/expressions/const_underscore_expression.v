@@ -58,7 +58,8 @@ Section Impl_const_underscore_expression_BarTrait_for_const_underscore_expressio
   
   Definition Self : Set := const_underscore_expression.Bar.
   
-  Definition show (self : Self) : M alloc.string.String := self.["test"].
+  Definition show (self : Self) : M alloc.string.String :=
+    M.function_body self.["test"].
   
   Global Instance AssociatedFunction_show :
     Notation.DoubleColon Self "show" := {

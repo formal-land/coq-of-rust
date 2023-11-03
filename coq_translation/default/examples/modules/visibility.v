@@ -3,7 +3,244 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module my_mod.
   Definition private_function `{ℋ : State.Trait} : M unit :=
-    let* _ :=
+    M.function_body
+      (let* _ :=
+        let* _ :=
+          let* α0 :=
+            borrow
+              [ mk_str "called `my_mod::private_function()`
+" ]
+              (list (ref str)) in
+          let* α1 := deref α0 (list (ref str)) in
+          let* α2 := borrow α1 (list (ref str)) in
+          let* α3 := pointer_coercion "Unsize" α2 in
+          let* α4 := core.fmt.Arguments::["new_const"] α3 in
+          std.io.stdio._print α4 in
+        M.alloc tt in
+      M.alloc tt).
+  
+  Definition function `{ℋ : State.Trait} : M unit :=
+    M.function_body
+      (let* _ :=
+        let* _ :=
+          let* α0 :=
+            borrow [ mk_str "called `my_mod::function()`
+" ] (list (ref str)) in
+          let* α1 := deref α0 (list (ref str)) in
+          let* α2 := borrow α1 (list (ref str)) in
+          let* α3 := pointer_coercion "Unsize" α2 in
+          let* α4 := core.fmt.Arguments::["new_const"] α3 in
+          std.io.stdio._print α4 in
+        M.alloc tt in
+      M.alloc tt).
+  
+  Definition indirect_access `{ℋ : State.Trait} : M unit :=
+    M.function_body
+      (let* _ :=
+        let* _ :=
+          let* α0 :=
+            borrow
+              [ mk_str "called `my_mod::indirect_access()`, that
+> " ]
+              (list (ref str)) in
+          let* α1 := deref α0 (list (ref str)) in
+          let* α2 := borrow α1 (list (ref str)) in
+          let* α3 := pointer_coercion "Unsize" α2 in
+          let* α4 := core.fmt.Arguments::["new_const"] α3 in
+          std.io.stdio._print α4 in
+        M.alloc tt in
+      let* _ := visibility.my_mod.private_function in
+      M.alloc tt).
+  
+  Module nested.
+    Definition function `{ℋ : State.Trait} : M unit :=
+      M.function_body
+        (let* _ :=
+          let* _ :=
+            let* α0 :=
+              borrow
+                [ mk_str "called `my_mod::nested::function()`
+" ]
+                (list (ref str)) in
+            let* α1 := deref α0 (list (ref str)) in
+            let* α2 := borrow α1 (list (ref str)) in
+            let* α3 := pointer_coercion "Unsize" α2 in
+            let* α4 := core.fmt.Arguments::["new_const"] α3 in
+            std.io.stdio._print α4 in
+          M.alloc tt in
+        M.alloc tt).
+    
+    (* #[allow(dead_code)] - function was ignored by the compiler *)
+    Definition private_function `{ℋ : State.Trait} : M unit :=
+      M.function_body
+        (let* _ :=
+          let* _ :=
+            let* α0 :=
+              borrow
+                [ mk_str "called `my_mod::nested::private_function()`
+" ]
+                (list (ref str)) in
+            let* α1 := deref α0 (list (ref str)) in
+            let* α2 := borrow α1 (list (ref str)) in
+            let* α3 := pointer_coercion "Unsize" α2 in
+            let* α4 := core.fmt.Arguments::["new_const"] α3 in
+            std.io.stdio._print α4 in
+          M.alloc tt in
+        M.alloc tt).
+    
+    Definition public_function_in_my_mod `{ℋ : State.Trait} : M unit :=
+      M.function_body
+        (let* _ :=
+          let* _ :=
+            let* α0 :=
+              borrow
+                [
+                  mk_str
+                    "called `my_mod::nested::public_function_in_my_mod()`, that
+> "
+                ]
+                (list (ref str)) in
+            let* α1 := deref α0 (list (ref str)) in
+            let* α2 := borrow α1 (list (ref str)) in
+            let* α3 := pointer_coercion "Unsize" α2 in
+            let* α4 := core.fmt.Arguments::["new_const"] α3 in
+            std.io.stdio._print α4 in
+          M.alloc tt in
+        let* _ := visibility.my_mod.nested.public_function_in_nested in
+        M.alloc tt).
+    
+    Definition public_function_in_nested `{ℋ : State.Trait} : M unit :=
+      M.function_body
+        (let* _ :=
+          let* _ :=
+            let* α0 :=
+              borrow
+                [ mk_str "called `my_mod::nested::public_function_in_nested()`
+"
+                ]
+                (list (ref str)) in
+            let* α1 := deref α0 (list (ref str)) in
+            let* α2 := borrow α1 (list (ref str)) in
+            let* α3 := pointer_coercion "Unsize" α2 in
+            let* α4 := core.fmt.Arguments::["new_const"] α3 in
+            std.io.stdio._print α4 in
+          M.alloc tt in
+        M.alloc tt).
+    
+    Definition public_function_in_super_mod `{ℋ : State.Trait} : M unit :=
+      M.function_body
+        (let* _ :=
+          let* _ :=
+            let* α0 :=
+              borrow
+                [
+                  mk_str
+                    "called `my_mod::nested::public_function_in_super_mod()`
+"
+                ]
+                (list (ref str)) in
+            let* α1 := deref α0 (list (ref str)) in
+            let* α2 := borrow α1 (list (ref str)) in
+            let* α3 := pointer_coercion "Unsize" α2 in
+            let* α4 := core.fmt.Arguments::["new_const"] α3 in
+            std.io.stdio._print α4 in
+          M.alloc tt in
+        M.alloc tt).
+  End nested.
+  
+  Definition call_public_function_in_my_mod `{ℋ : State.Trait} : M unit :=
+    M.function_body
+      (let* _ :=
+        let* _ :=
+          let* α0 :=
+            borrow
+              [
+                mk_str
+                  "called `my_mod::call_public_function_in_my_mod()`, that
+> "
+              ]
+              (list (ref str)) in
+          let* α1 := deref α0 (list (ref str)) in
+          let* α2 := borrow α1 (list (ref str)) in
+          let* α3 := pointer_coercion "Unsize" α2 in
+          let* α4 := core.fmt.Arguments::["new_const"] α3 in
+          std.io.stdio._print α4 in
+        M.alloc tt in
+      let* _ := visibility.my_mod.nested.public_function_in_my_mod in
+      let* _ :=
+        let* _ :=
+          let* α0 := borrow [ mk_str "> " ] (list (ref str)) in
+          let* α1 := deref α0 (list (ref str)) in
+          let* α2 := borrow α1 (list (ref str)) in
+          let* α3 := pointer_coercion "Unsize" α2 in
+          let* α4 := core.fmt.Arguments::["new_const"] α3 in
+          std.io.stdio._print α4 in
+        M.alloc tt in
+      let* _ := visibility.my_mod.nested.public_function_in_super_mod in
+      M.alloc tt).
+  
+  Definition public_function_in_crate `{ℋ : State.Trait} : M unit :=
+    M.function_body
+      (let* _ :=
+        let* _ :=
+          let* α0 :=
+            borrow
+              [ mk_str "called `my_mod::public_function_in_crate()`
+" ]
+              (list (ref str)) in
+          let* α1 := deref α0 (list (ref str)) in
+          let* α2 := borrow α1 (list (ref str)) in
+          let* α3 := pointer_coercion "Unsize" α2 in
+          let* α4 := core.fmt.Arguments::["new_const"] α3 in
+          std.io.stdio._print α4 in
+        M.alloc tt in
+      M.alloc tt).
+  
+  Module private_nested.
+    (* #[allow(dead_code)] - function was ignored by the compiler *)
+    Definition function `{ℋ : State.Trait} : M unit :=
+      M.function_body
+        (let* _ :=
+          let* _ :=
+            let* α0 :=
+              borrow
+                [ mk_str "called `my_mod::private_nested::function()`
+" ]
+                (list (ref str)) in
+            let* α1 := deref α0 (list (ref str)) in
+            let* α2 := borrow α1 (list (ref str)) in
+            let* α3 := pointer_coercion "Unsize" α2 in
+            let* α4 := core.fmt.Arguments::["new_const"] α3 in
+            std.io.stdio._print α4 in
+          M.alloc tt in
+        M.alloc tt).
+    
+    (* #[allow(dead_code)] - function was ignored by the compiler *)
+    Definition restricted_function `{ℋ : State.Trait} : M unit :=
+      M.function_body
+        (let* _ :=
+          let* _ :=
+            let* α0 :=
+              borrow
+                [
+                  mk_str
+                    "called `my_mod::private_nested::restricted_function()`
+"
+                ]
+                (list (ref str)) in
+            let* α1 := deref α0 (list (ref str)) in
+            let* α2 := borrow α1 (list (ref str)) in
+            let* α3 := pointer_coercion "Unsize" α2 in
+            let* α4 := core.fmt.Arguments::["new_const"] α3 in
+            std.io.stdio._print α4 in
+          M.alloc tt in
+        M.alloc tt).
+  End private_nested.
+End my_mod.
+
+Definition private_function `{ℋ : State.Trait} : M unit :=
+  M.function_body
+    (let* _ :=
       let* _ :=
         let* α0 :=
           borrow
@@ -16,10 +253,11 @@ Module my_mod.
         let* α4 := core.fmt.Arguments::["new_const"] α3 in
         std.io.stdio._print α4 in
       M.alloc tt in
-    M.alloc tt.
-  
-  Definition function `{ℋ : State.Trait} : M unit :=
-    let* _ :=
+    M.alloc tt).
+
+Definition function `{ℋ : State.Trait} : M unit :=
+  M.function_body
+    (let* _ :=
       let* _ :=
         let* α0 :=
           borrow [ mk_str "called `my_mod::function()`
@@ -30,10 +268,11 @@ Module my_mod.
         let* α4 := core.fmt.Arguments::["new_const"] α3 in
         std.io.stdio._print α4 in
       M.alloc tt in
-    M.alloc tt.
-  
-  Definition indirect_access `{ℋ : State.Trait} : M unit :=
-    let* _ :=
+    M.alloc tt).
+
+Definition indirect_access `{ℋ : State.Trait} : M unit :=
+  M.function_body
+    (let* _ :=
       let* _ :=
         let* α0 :=
           borrow
@@ -47,11 +286,12 @@ Module my_mod.
         std.io.stdio._print α4 in
       M.alloc tt in
     let* _ := visibility.my_mod.private_function in
-    M.alloc tt.
-  
-  Module nested.
-    Definition function `{ℋ : State.Trait} : M unit :=
-      let* _ :=
+    M.alloc tt).
+
+Module nested.
+  Definition function `{ℋ : State.Trait} : M unit :=
+    M.function_body
+      (let* _ :=
         let* _ :=
           let* α0 :=
             borrow
@@ -64,11 +304,12 @@ Module my_mod.
           let* α4 := core.fmt.Arguments::["new_const"] α3 in
           std.io.stdio._print α4 in
         M.alloc tt in
-      M.alloc tt.
-    
-    (* #[allow(dead_code)] - function was ignored by the compiler *)
-    Definition private_function `{ℋ : State.Trait} : M unit :=
-      let* _ :=
+      M.alloc tt).
+  
+  (* #[allow(dead_code)] - function was ignored by the compiler *)
+  Definition private_function `{ℋ : State.Trait} : M unit :=
+    M.function_body
+      (let* _ :=
         let* _ :=
           let* α0 :=
             borrow
@@ -81,10 +322,11 @@ Module my_mod.
           let* α4 := core.fmt.Arguments::["new_const"] α3 in
           std.io.stdio._print α4 in
         M.alloc tt in
-      M.alloc tt.
-    
-    Definition public_function_in_my_mod `{ℋ : State.Trait} : M unit :=
-      let* _ :=
+      M.alloc tt).
+  
+  Definition public_function_in_my_mod `{ℋ : State.Trait} : M unit :=
+    M.function_body
+      (let* _ :=
         let* _ :=
           let* α0 :=
             borrow
@@ -101,10 +343,11 @@ Module my_mod.
           std.io.stdio._print α4 in
         M.alloc tt in
       let* _ := visibility.my_mod.nested.public_function_in_nested in
-      M.alloc tt.
-    
-    Definition public_function_in_nested `{ℋ : State.Trait} : M unit :=
-      let* _ :=
+      M.alloc tt).
+  
+  Definition public_function_in_nested `{ℋ : State.Trait} : M unit :=
+    M.function_body
+      (let* _ :=
         let* _ :=
           let* α0 :=
             borrow
@@ -117,10 +360,11 @@ Module my_mod.
           let* α4 := core.fmt.Arguments::["new_const"] α3 in
           std.io.stdio._print α4 in
         M.alloc tt in
-      M.alloc tt.
-    
-    Definition public_function_in_super_mod `{ℋ : State.Trait} : M unit :=
-      let* _ :=
+      M.alloc tt).
+  
+  Definition public_function_in_super_mod `{ℋ : State.Trait} : M unit :=
+    M.function_body
+      (let* _ :=
         let* _ :=
           let* α0 :=
             borrow
@@ -136,11 +380,103 @@ Module my_mod.
           let* α4 := core.fmt.Arguments::["new_const"] α3 in
           std.io.stdio._print α4 in
         M.alloc tt in
-      M.alloc tt.
-  End nested.
-  
-  Definition call_public_function_in_my_mod `{ℋ : State.Trait} : M unit :=
-    let* _ :=
+      M.alloc tt).
+End nested.
+
+Definition function `{ℋ : State.Trait} : M unit :=
+  M.function_body
+    (let* _ :=
+      let* _ :=
+        let* α0 :=
+          borrow
+            [ mk_str "called `my_mod::nested::function()`
+" ]
+            (list (ref str)) in
+        let* α1 := deref α0 (list (ref str)) in
+        let* α2 := borrow α1 (list (ref str)) in
+        let* α3 := pointer_coercion "Unsize" α2 in
+        let* α4 := core.fmt.Arguments::["new_const"] α3 in
+        std.io.stdio._print α4 in
+      M.alloc tt in
+    M.alloc tt).
+
+(* #[allow(dead_code)] - function was ignored by the compiler *)
+Definition private_function `{ℋ : State.Trait} : M unit :=
+  M.function_body
+    (let* _ :=
+      let* _ :=
+        let* α0 :=
+          borrow
+            [ mk_str "called `my_mod::nested::private_function()`
+" ]
+            (list (ref str)) in
+        let* α1 := deref α0 (list (ref str)) in
+        let* α2 := borrow α1 (list (ref str)) in
+        let* α3 := pointer_coercion "Unsize" α2 in
+        let* α4 := core.fmt.Arguments::["new_const"] α3 in
+        std.io.stdio._print α4 in
+      M.alloc tt in
+    M.alloc tt).
+
+Definition public_function_in_my_mod `{ℋ : State.Trait} : M unit :=
+  M.function_body
+    (let* _ :=
+      let* _ :=
+        let* α0 :=
+          borrow
+            [
+              mk_str
+                "called `my_mod::nested::public_function_in_my_mod()`, that
+> "
+            ]
+            (list (ref str)) in
+        let* α1 := deref α0 (list (ref str)) in
+        let* α2 := borrow α1 (list (ref str)) in
+        let* α3 := pointer_coercion "Unsize" α2 in
+        let* α4 := core.fmt.Arguments::["new_const"] α3 in
+        std.io.stdio._print α4 in
+      M.alloc tt in
+    let* _ := visibility.my_mod.nested.public_function_in_nested in
+    M.alloc tt).
+
+Definition public_function_in_nested `{ℋ : State.Trait} : M unit :=
+  M.function_body
+    (let* _ :=
+      let* _ :=
+        let* α0 :=
+          borrow
+            [ mk_str "called `my_mod::nested::public_function_in_nested()`
+" ]
+            (list (ref str)) in
+        let* α1 := deref α0 (list (ref str)) in
+        let* α2 := borrow α1 (list (ref str)) in
+        let* α3 := pointer_coercion "Unsize" α2 in
+        let* α4 := core.fmt.Arguments::["new_const"] α3 in
+        std.io.stdio._print α4 in
+      M.alloc tt in
+    M.alloc tt).
+
+Definition public_function_in_super_mod `{ℋ : State.Trait} : M unit :=
+  M.function_body
+    (let* _ :=
+      let* _ :=
+        let* α0 :=
+          borrow
+            [ mk_str "called `my_mod::nested::public_function_in_super_mod()`
+"
+            ]
+            (list (ref str)) in
+        let* α1 := deref α0 (list (ref str)) in
+        let* α2 := borrow α1 (list (ref str)) in
+        let* α3 := pointer_coercion "Unsize" α2 in
+        let* α4 := core.fmt.Arguments::["new_const"] α3 in
+        std.io.stdio._print α4 in
+      M.alloc tt in
+    M.alloc tt).
+
+Definition call_public_function_in_my_mod `{ℋ : State.Trait} : M unit :=
+  M.function_body
+    (let* _ :=
       let* _ :=
         let* α0 :=
           borrow
@@ -167,10 +503,11 @@ Module my_mod.
         std.io.stdio._print α4 in
       M.alloc tt in
     let* _ := visibility.my_mod.nested.public_function_in_super_mod in
-    M.alloc tt.
-  
-  Definition public_function_in_crate `{ℋ : State.Trait} : M unit :=
-    let* _ :=
+    M.alloc tt).
+
+Definition public_function_in_crate `{ℋ : State.Trait} : M unit :=
+  M.function_body
+    (let* _ :=
       let* _ :=
         let* α0 :=
           borrow
@@ -183,12 +520,13 @@ Module my_mod.
         let* α4 := core.fmt.Arguments::["new_const"] α3 in
         std.io.stdio._print α4 in
       M.alloc tt in
-    M.alloc tt.
-  
-  Module private_nested.
-    (* #[allow(dead_code)] - function was ignored by the compiler *)
-    Definition function `{ℋ : State.Trait} : M unit :=
-      let* _ :=
+    M.alloc tt).
+
+Module private_nested.
+  (* #[allow(dead_code)] - function was ignored by the compiler *)
+  Definition function `{ℋ : State.Trait} : M unit :=
+    M.function_body
+      (let* _ :=
         let* _ :=
           let* α0 :=
             borrow
@@ -201,11 +539,12 @@ Module my_mod.
           let* α4 := core.fmt.Arguments::["new_const"] α3 in
           std.io.stdio._print α4 in
         M.alloc tt in
-      M.alloc tt.
-    
-    (* #[allow(dead_code)] - function was ignored by the compiler *)
-    Definition restricted_function `{ℋ : State.Trait} : M unit :=
-      let* _ :=
+      M.alloc tt).
+  
+  (* #[allow(dead_code)] - function was ignored by the compiler *)
+  Definition restricted_function `{ℋ : State.Trait} : M unit :=
+    M.function_body
+      (let* _ :=
         let* _ :=
           let* α0 :=
             borrow
@@ -219,278 +558,13 @@ Module my_mod.
           let* α4 := core.fmt.Arguments::["new_const"] α3 in
           std.io.stdio._print α4 in
         M.alloc tt in
-      M.alloc tt.
-  End private_nested.
-End my_mod.
-
-Definition private_function `{ℋ : State.Trait} : M unit :=
-  let* _ :=
-    let* _ :=
-      let* α0 :=
-        borrow
-          [ mk_str "called `my_mod::private_function()`
-" ]
-          (list (ref str)) in
-      let* α1 := deref α0 (list (ref str)) in
-      let* α2 := borrow α1 (list (ref str)) in
-      let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := core.fmt.Arguments::["new_const"] α3 in
-      std.io.stdio._print α4 in
-    M.alloc tt in
-  M.alloc tt.
-
-Definition function `{ℋ : State.Trait} : M unit :=
-  let* _ :=
-    let* _ :=
-      let* α0 :=
-        borrow [ mk_str "called `my_mod::function()`
-" ] (list (ref str)) in
-      let* α1 := deref α0 (list (ref str)) in
-      let* α2 := borrow α1 (list (ref str)) in
-      let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := core.fmt.Arguments::["new_const"] α3 in
-      std.io.stdio._print α4 in
-    M.alloc tt in
-  M.alloc tt.
-
-Definition indirect_access `{ℋ : State.Trait} : M unit :=
-  let* _ :=
-    let* _ :=
-      let* α0 :=
-        borrow
-          [ mk_str "called `my_mod::indirect_access()`, that
-> " ]
-          (list (ref str)) in
-      let* α1 := deref α0 (list (ref str)) in
-      let* α2 := borrow α1 (list (ref str)) in
-      let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := core.fmt.Arguments::["new_const"] α3 in
-      std.io.stdio._print α4 in
-    M.alloc tt in
-  let* _ := visibility.my_mod.private_function in
-  M.alloc tt.
-
-Module nested.
-  Definition function `{ℋ : State.Trait} : M unit :=
-    let* _ :=
-      let* _ :=
-        let* α0 :=
-          borrow
-            [ mk_str "called `my_mod::nested::function()`
-" ]
-            (list (ref str)) in
-        let* α1 := deref α0 (list (ref str)) in
-        let* α2 := borrow α1 (list (ref str)) in
-        let* α3 := pointer_coercion "Unsize" α2 in
-        let* α4 := core.fmt.Arguments::["new_const"] α3 in
-        std.io.stdio._print α4 in
-      M.alloc tt in
-    M.alloc tt.
-  
-  (* #[allow(dead_code)] - function was ignored by the compiler *)
-  Definition private_function `{ℋ : State.Trait} : M unit :=
-    let* _ :=
-      let* _ :=
-        let* α0 :=
-          borrow
-            [ mk_str "called `my_mod::nested::private_function()`
-" ]
-            (list (ref str)) in
-        let* α1 := deref α0 (list (ref str)) in
-        let* α2 := borrow α1 (list (ref str)) in
-        let* α3 := pointer_coercion "Unsize" α2 in
-        let* α4 := core.fmt.Arguments::["new_const"] α3 in
-        std.io.stdio._print α4 in
-      M.alloc tt in
-    M.alloc tt.
-  
-  Definition public_function_in_my_mod `{ℋ : State.Trait} : M unit :=
-    let* _ :=
-      let* _ :=
-        let* α0 :=
-          borrow
-            [
-              mk_str
-                "called `my_mod::nested::public_function_in_my_mod()`, that
-> "
-            ]
-            (list (ref str)) in
-        let* α1 := deref α0 (list (ref str)) in
-        let* α2 := borrow α1 (list (ref str)) in
-        let* α3 := pointer_coercion "Unsize" α2 in
-        let* α4 := core.fmt.Arguments::["new_const"] α3 in
-        std.io.stdio._print α4 in
-      M.alloc tt in
-    let* _ := visibility.my_mod.nested.public_function_in_nested in
-    M.alloc tt.
-  
-  Definition public_function_in_nested `{ℋ : State.Trait} : M unit :=
-    let* _ :=
-      let* _ :=
-        let* α0 :=
-          borrow
-            [ mk_str "called `my_mod::nested::public_function_in_nested()`
-" ]
-            (list (ref str)) in
-        let* α1 := deref α0 (list (ref str)) in
-        let* α2 := borrow α1 (list (ref str)) in
-        let* α3 := pointer_coercion "Unsize" α2 in
-        let* α4 := core.fmt.Arguments::["new_const"] α3 in
-        std.io.stdio._print α4 in
-      M.alloc tt in
-    M.alloc tt.
-  
-  Definition public_function_in_super_mod `{ℋ : State.Trait} : M unit :=
-    let* _ :=
-      let* _ :=
-        let* α0 :=
-          borrow
-            [ mk_str "called `my_mod::nested::public_function_in_super_mod()`
-"
-            ]
-            (list (ref str)) in
-        let* α1 := deref α0 (list (ref str)) in
-        let* α2 := borrow α1 (list (ref str)) in
-        let* α3 := pointer_coercion "Unsize" α2 in
-        let* α4 := core.fmt.Arguments::["new_const"] α3 in
-        std.io.stdio._print α4 in
-      M.alloc tt in
-    M.alloc tt.
-End nested.
-
-Definition function `{ℋ : State.Trait} : M unit :=
-  let* _ :=
-    let* _ :=
-      let* α0 :=
-        borrow
-          [ mk_str "called `my_mod::nested::function()`
-" ]
-          (list (ref str)) in
-      let* α1 := deref α0 (list (ref str)) in
-      let* α2 := borrow α1 (list (ref str)) in
-      let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := core.fmt.Arguments::["new_const"] α3 in
-      std.io.stdio._print α4 in
-    M.alloc tt in
-  M.alloc tt.
+      M.alloc tt).
+End private_nested.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition private_function `{ℋ : State.Trait} : M unit :=
-  let* _ :=
-    let* _ :=
-      let* α0 :=
-        borrow
-          [ mk_str "called `my_mod::nested::private_function()`
-" ]
-          (list (ref str)) in
-      let* α1 := deref α0 (list (ref str)) in
-      let* α2 := borrow α1 (list (ref str)) in
-      let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := core.fmt.Arguments::["new_const"] α3 in
-      std.io.stdio._print α4 in
-    M.alloc tt in
-  M.alloc tt.
-
-Definition public_function_in_my_mod `{ℋ : State.Trait} : M unit :=
-  let* _ :=
-    let* _ :=
-      let* α0 :=
-        borrow
-          [
-            mk_str
-              "called `my_mod::nested::public_function_in_my_mod()`, that
-> "
-          ]
-          (list (ref str)) in
-      let* α1 := deref α0 (list (ref str)) in
-      let* α2 := borrow α1 (list (ref str)) in
-      let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := core.fmt.Arguments::["new_const"] α3 in
-      std.io.stdio._print α4 in
-    M.alloc tt in
-  let* _ := visibility.my_mod.nested.public_function_in_nested in
-  M.alloc tt.
-
-Definition public_function_in_nested `{ℋ : State.Trait} : M unit :=
-  let* _ :=
-    let* _ :=
-      let* α0 :=
-        borrow
-          [ mk_str "called `my_mod::nested::public_function_in_nested()`
-" ]
-          (list (ref str)) in
-      let* α1 := deref α0 (list (ref str)) in
-      let* α2 := borrow α1 (list (ref str)) in
-      let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := core.fmt.Arguments::["new_const"] α3 in
-      std.io.stdio._print α4 in
-    M.alloc tt in
-  M.alloc tt.
-
-Definition public_function_in_super_mod `{ℋ : State.Trait} : M unit :=
-  let* _ :=
-    let* _ :=
-      let* α0 :=
-        borrow
-          [ mk_str "called `my_mod::nested::public_function_in_super_mod()`
-" ]
-          (list (ref str)) in
-      let* α1 := deref α0 (list (ref str)) in
-      let* α2 := borrow α1 (list (ref str)) in
-      let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := core.fmt.Arguments::["new_const"] α3 in
-      std.io.stdio._print α4 in
-    M.alloc tt in
-  M.alloc tt.
-
-Definition call_public_function_in_my_mod `{ℋ : State.Trait} : M unit :=
-  let* _ :=
-    let* _ :=
-      let* α0 :=
-        borrow
-          [ mk_str "called `my_mod::call_public_function_in_my_mod()`, that
-> "
-          ]
-          (list (ref str)) in
-      let* α1 := deref α0 (list (ref str)) in
-      let* α2 := borrow α1 (list (ref str)) in
-      let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := core.fmt.Arguments::["new_const"] α3 in
-      std.io.stdio._print α4 in
-    M.alloc tt in
-  let* _ := visibility.my_mod.nested.public_function_in_my_mod in
-  let* _ :=
-    let* _ :=
-      let* α0 := borrow [ mk_str "> " ] (list (ref str)) in
-      let* α1 := deref α0 (list (ref str)) in
-      let* α2 := borrow α1 (list (ref str)) in
-      let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := core.fmt.Arguments::["new_const"] α3 in
-      std.io.stdio._print α4 in
-    M.alloc tt in
-  let* _ := visibility.my_mod.nested.public_function_in_super_mod in
-  M.alloc tt.
-
-Definition public_function_in_crate `{ℋ : State.Trait} : M unit :=
-  let* _ :=
-    let* _ :=
-      let* α0 :=
-        borrow
-          [ mk_str "called `my_mod::public_function_in_crate()`
-" ]
-          (list (ref str)) in
-      let* α1 := deref α0 (list (ref str)) in
-      let* α2 := borrow α1 (list (ref str)) in
-      let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := core.fmt.Arguments::["new_const"] α3 in
-      std.io.stdio._print α4 in
-    M.alloc tt in
-  M.alloc tt.
-
-Module private_nested.
-  (* #[allow(dead_code)] - function was ignored by the compiler *)
-  Definition function `{ℋ : State.Trait} : M unit :=
-    let* _ :=
+Definition function `{ℋ : State.Trait} : M unit :=
+  M.function_body
+    (let* _ :=
       let* _ :=
         let* α0 :=
           borrow
@@ -503,11 +577,12 @@ Module private_nested.
         let* α4 := core.fmt.Arguments::["new_const"] α3 in
         std.io.stdio._print α4 in
       M.alloc tt in
-    M.alloc tt.
-  
-  (* #[allow(dead_code)] - function was ignored by the compiler *)
-  Definition restricted_function `{ℋ : State.Trait} : M unit :=
-    let* _ :=
+    M.alloc tt).
+
+(* #[allow(dead_code)] - function was ignored by the compiler *)
+Definition restricted_function `{ℋ : State.Trait} : M unit :=
+  M.function_body
+    (let* _ :=
       let* _ :=
         let* α0 :=
           borrow
@@ -520,62 +595,29 @@ Module private_nested.
         let* α4 := core.fmt.Arguments::["new_const"] α3 in
         std.io.stdio._print α4 in
       M.alloc tt in
-    M.alloc tt.
-End private_nested.
-
-(* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition function `{ℋ : State.Trait} : M unit :=
-  let* _ :=
-    let* _ :=
-      let* α0 :=
-        borrow
-          [ mk_str "called `my_mod::private_nested::function()`
-" ]
-          (list (ref str)) in
-      let* α1 := deref α0 (list (ref str)) in
-      let* α2 := borrow α1 (list (ref str)) in
-      let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := core.fmt.Arguments::["new_const"] α3 in
-      std.io.stdio._print α4 in
-    M.alloc tt in
-  M.alloc tt.
-
-(* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition restricted_function `{ℋ : State.Trait} : M unit :=
-  let* _ :=
-    let* _ :=
-      let* α0 :=
-        borrow
-          [ mk_str "called `my_mod::private_nested::restricted_function()`
-" ]
-          (list (ref str)) in
-      let* α1 := deref α0 (list (ref str)) in
-      let* α2 := borrow α1 (list (ref str)) in
-      let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := core.fmt.Arguments::["new_const"] α3 in
-      std.io.stdio._print α4 in
-    M.alloc tt in
-  M.alloc tt.
+    M.alloc tt).
 
 Definition function `{ℋ : State.Trait} : M unit :=
-  let* _ :=
-    let* _ :=
-      let* α0 := borrow [ mk_str "called `function()`
+  M.function_body
+    (let* _ :=
+      let* _ :=
+        let* α0 := borrow [ mk_str "called `function()`
 " ] (list (ref str)) in
-      let* α1 := deref α0 (list (ref str)) in
-      let* α2 := borrow α1 (list (ref str)) in
-      let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := core.fmt.Arguments::["new_const"] α3 in
-      std.io.stdio._print α4 in
-    M.alloc tt in
-  M.alloc tt.
+        let* α1 := deref α0 (list (ref str)) in
+        let* α2 := borrow α1 (list (ref str)) in
+        let* α3 := pointer_coercion "Unsize" α2 in
+        let* α4 := core.fmt.Arguments::["new_const"] α3 in
+        std.io.stdio._print α4 in
+      M.alloc tt in
+    M.alloc tt).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
-  let* _ := visibility.function in
-  let* _ := visibility.my_mod.function in
-  let* _ := visibility.my_mod.indirect_access in
-  let* _ := visibility.my_mod.nested.function in
-  let* _ := visibility.my_mod.call_public_function_in_my_mod in
-  let* _ := visibility.my_mod.public_function_in_crate in
-  M.alloc tt.
+  M.function_body
+    (let* _ := visibility.function in
+    let* _ := visibility.my_mod.function in
+    let* _ := visibility.my_mod.indirect_access in
+    let* _ := visibility.my_mod.nested.function in
+    let* _ := visibility.my_mod.call_public_function_in_my_mod in
+    let* _ := visibility.my_mod.public_function_in_crate in
+    M.alloc tt).

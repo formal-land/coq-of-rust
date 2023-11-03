@@ -2,21 +2,39 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition function `{ℋ : State.Trait} : M unit :=
-  let* _ :=
-    let* _ :=
-      let* α0 := borrow [ mk_str "called `function()`
+  M.function_body
+    (let* _ :=
+      let* _ :=
+        let* α0 := borrow [ mk_str "called `function()`
 " ] (list (ref str)) in
-      let* α1 := deref α0 (list (ref str)) in
-      let* α2 := borrow α1 (list (ref str)) in
-      let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := core.fmt.Arguments::["new_const"] α3 in
-      std.io.stdio._print α4 in
-    M.alloc tt in
-  M.alloc tt.
+        let* α1 := deref α0 (list (ref str)) in
+        let* α2 := borrow α1 (list (ref str)) in
+        let* α3 := pointer_coercion "Unsize" α2 in
+        let* α4 := core.fmt.Arguments::["new_const"] α3 in
+        std.io.stdio._print α4 in
+      M.alloc tt in
+    M.alloc tt).
 
 Module cool.
   Definition function `{ℋ : State.Trait} : M unit :=
-    let* _ :=
+    M.function_body
+      (let* _ :=
+        let* _ :=
+          let* α0 :=
+            borrow [ mk_str "called `cool::function()`
+" ] (list (ref str)) in
+          let* α1 := deref α0 (list (ref str)) in
+          let* α2 := borrow α1 (list (ref str)) in
+          let* α3 := pointer_coercion "Unsize" α2 in
+          let* α4 := core.fmt.Arguments::["new_const"] α3 in
+          std.io.stdio._print α4 in
+        M.alloc tt in
+      M.alloc tt).
+End cool.
+
+Definition function `{ℋ : State.Trait} : M unit :=
+  M.function_body
+    (let* _ :=
       let* _ :=
         let* α0 :=
           borrow [ mk_str "called `cool::function()`
@@ -27,26 +45,69 @@ Module cool.
         let* α4 := core.fmt.Arguments::["new_const"] α3 in
         std.io.stdio._print α4 in
       M.alloc tt in
-    M.alloc tt.
-End cool.
-
-Definition function `{ℋ : State.Trait} : M unit :=
-  let* _ :=
-    let* _ :=
-      let* α0 :=
-        borrow [ mk_str "called `cool::function()`
-" ] (list (ref str)) in
-      let* α1 := deref α0 (list (ref str)) in
-      let* α2 := borrow α1 (list (ref str)) in
-      let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := core.fmt.Arguments::["new_const"] α3 in
-      std.io.stdio._print α4 in
-    M.alloc tt in
-  M.alloc tt.
+    M.alloc tt).
 
 Module my.
   Definition function `{ℋ : State.Trait} : M unit :=
-    let* _ :=
+    M.function_body
+      (let* _ :=
+        let* _ :=
+          let* α0 :=
+            borrow [ mk_str "called `my::function()`
+" ] (list (ref str)) in
+          let* α1 := deref α0 (list (ref str)) in
+          let* α2 := borrow α1 (list (ref str)) in
+          let* α3 := pointer_coercion "Unsize" α2 in
+          let* α4 := core.fmt.Arguments::["new_const"] α3 in
+          std.io.stdio._print α4 in
+        M.alloc tt in
+      M.alloc tt).
+  
+  Module cool.
+    Definition function `{ℋ : State.Trait} : M unit :=
+      M.function_body
+        (let* _ :=
+          let* _ :=
+            let* α0 :=
+              borrow
+                [ mk_str "called `my::cool::function()`
+" ]
+                (list (ref str)) in
+            let* α1 := deref α0 (list (ref str)) in
+            let* α2 := borrow α1 (list (ref str)) in
+            let* α3 := pointer_coercion "Unsize" α2 in
+            let* α4 := core.fmt.Arguments::["new_const"] α3 in
+            std.io.stdio._print α4 in
+          M.alloc tt in
+        M.alloc tt).
+  End cool.
+  
+  Definition indirect_call `{ℋ : State.Trait} : M unit :=
+    M.function_body
+      (let* _ :=
+        let* _ :=
+          let* α0 :=
+            borrow
+              [ mk_str "called `my::indirect_call()`, that
+> " ]
+              (list (ref str)) in
+          let* α1 := deref α0 (list (ref str)) in
+          let* α2 := borrow α1 (list (ref str)) in
+          let* α3 := pointer_coercion "Unsize" α2 in
+          let* α4 := core.fmt.Arguments::["new_const"] α3 in
+          std.io.stdio._print α4 in
+        M.alloc tt in
+      let* _ := super_and_self.my.function in
+      let* _ := super_and_self.my.function in
+      let* _ := super_and_self.my.cool.function in
+      let* _ := super_and_self.function in
+      let* _ := super_and_self.cool.function in
+      M.alloc tt).
+End my.
+
+Definition function `{ℋ : State.Trait} : M unit :=
+  M.function_body
+    (let* _ :=
       let* _ :=
         let* α0 :=
           borrow [ mk_str "called `my::function()`
@@ -57,11 +118,13 @@ Module my.
         let* α4 := core.fmt.Arguments::["new_const"] α3 in
         std.io.stdio._print α4 in
       M.alloc tt in
-    M.alloc tt.
-  
-  Module cool.
-    Definition function `{ℋ : State.Trait} : M unit :=
-      let* _ :=
+    M.alloc tt).
+
+Module Wrap_cool_1.
+Module cool.
+  Definition function `{ℋ : State.Trait} : M unit :=
+    M.function_body
+      (let* _ :=
         let* _ :=
           let* α0 :=
             borrow
@@ -74,11 +137,29 @@ Module my.
           let* α4 := core.fmt.Arguments::["new_const"] α3 in
           std.io.stdio._print α4 in
         M.alloc tt in
-      M.alloc tt.
-  End cool.
-  
-  Definition indirect_call `{ℋ : State.Trait} : M unit :=
-    let* _ :=
+      M.alloc tt).
+End cool.
+End Wrap_cool_1.
+Import Wrap_cool_1.
+
+Definition function `{ℋ : State.Trait} : M unit :=
+  M.function_body
+    (let* _ :=
+      let* _ :=
+        let* α0 :=
+          borrow [ mk_str "called `my::cool::function()`
+" ] (list (ref str)) in
+        let* α1 := deref α0 (list (ref str)) in
+        let* α2 := borrow α1 (list (ref str)) in
+        let* α3 := pointer_coercion "Unsize" α2 in
+        let* α4 := core.fmt.Arguments::["new_const"] α3 in
+        std.io.stdio._print α4 in
+      M.alloc tt in
+    M.alloc tt).
+
+Definition indirect_call `{ℋ : State.Trait} : M unit :=
+  M.function_body
+    (let* _ :=
       let* _ :=
         let* α0 :=
           borrow
@@ -96,78 +177,10 @@ Module my.
     let* _ := super_and_self.my.cool.function in
     let* _ := super_and_self.function in
     let* _ := super_and_self.cool.function in
-    M.alloc tt.
-End my.
-
-Definition function `{ℋ : State.Trait} : M unit :=
-  let* _ :=
-    let* _ :=
-      let* α0 :=
-        borrow [ mk_str "called `my::function()`
-" ] (list (ref str)) in
-      let* α1 := deref α0 (list (ref str)) in
-      let* α2 := borrow α1 (list (ref str)) in
-      let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := core.fmt.Arguments::["new_const"] α3 in
-      std.io.stdio._print α4 in
-    M.alloc tt in
-  M.alloc tt.
-
-Module Wrap_cool_1.
-Module cool.
-  Definition function `{ℋ : State.Trait} : M unit :=
-    let* _ :=
-      let* _ :=
-        let* α0 :=
-          borrow [ mk_str "called `my::cool::function()`
-" ] (list (ref str)) in
-        let* α1 := deref α0 (list (ref str)) in
-        let* α2 := borrow α1 (list (ref str)) in
-        let* α3 := pointer_coercion "Unsize" α2 in
-        let* α4 := core.fmt.Arguments::["new_const"] α3 in
-        std.io.stdio._print α4 in
-      M.alloc tt in
-    M.alloc tt.
-End cool.
-End Wrap_cool_1.
-Import Wrap_cool_1.
-
-Definition function `{ℋ : State.Trait} : M unit :=
-  let* _ :=
-    let* _ :=
-      let* α0 :=
-        borrow [ mk_str "called `my::cool::function()`
-" ] (list (ref str)) in
-      let* α1 := deref α0 (list (ref str)) in
-      let* α2 := borrow α1 (list (ref str)) in
-      let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := core.fmt.Arguments::["new_const"] α3 in
-      std.io.stdio._print α4 in
-    M.alloc tt in
-  M.alloc tt.
-
-Definition indirect_call `{ℋ : State.Trait} : M unit :=
-  let* _ :=
-    let* _ :=
-      let* α0 :=
-        borrow
-          [ mk_str "called `my::indirect_call()`, that
-> " ]
-          (list (ref str)) in
-      let* α1 := deref α0 (list (ref str)) in
-      let* α2 := borrow α1 (list (ref str)) in
-      let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := core.fmt.Arguments::["new_const"] α3 in
-      std.io.stdio._print α4 in
-    M.alloc tt in
-  let* _ := super_and_self.my.function in
-  let* _ := super_and_self.my.function in
-  let* _ := super_and_self.my.cool.function in
-  let* _ := super_and_self.function in
-  let* _ := super_and_self.cool.function in
-  M.alloc tt.
+    M.alloc tt).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
-  let* _ := super_and_self.my.indirect_call in
-  M.alloc tt.
+  M.function_body
+    (let* _ := super_and_self.my.indirect_call in
+    M.alloc tt).

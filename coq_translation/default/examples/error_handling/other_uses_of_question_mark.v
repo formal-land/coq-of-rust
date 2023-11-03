@@ -26,11 +26,12 @@ Section Impl_core_fmt_Debug_for_other_uses_of_question_mark_EmptyVec.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M ltac:(core.fmt.Result) :=
-    let* α0 := deref f core.fmt.Formatter in
-    let* α1 := borrow_mut α0 core.fmt.Formatter in
-    let* α2 := deref (mk_str "EmptyVec") str in
-    let* α3 := borrow α2 str in
-    core.fmt.Formatter::["write_str"] α1 α3.
+    M.function_body
+      (let* α0 := deref f core.fmt.Formatter in
+      let* α1 := borrow_mut α0 core.fmt.Formatter in
+      let* α2 := deref (mk_str "EmptyVec") str in
+      let* α3 := borrow α2 str in
+      core.fmt.Formatter::["write_str"] α1 α3).
   
   Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {
     Notation.double_colon := fmt;
@@ -52,15 +53,16 @@ Section Impl_core_fmt_Display_for_other_uses_of_question_mark_EmptyVec.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M ltac:(core.fmt.Result) :=
-    let* α0 := deref f core.fmt.Formatter in
-    let* α1 := borrow_mut α0 core.fmt.Formatter in
-    let* α2 :=
-      borrow [ mk_str "invalid first item to double" ] (list (ref str)) in
-    let* α3 := deref α2 (list (ref str)) in
-    let* α4 := borrow α3 (list (ref str)) in
-    let* α5 := pointer_coercion "Unsize" α4 in
-    let* α6 := core.fmt.Arguments::["new_const"] α5 in
-    core.fmt.Formatter::["write_fmt"] α1 α6.
+    M.function_body
+      (let* α0 := deref f core.fmt.Formatter in
+      let* α1 := borrow_mut α0 core.fmt.Formatter in
+      let* α2 :=
+        borrow [ mk_str "invalid first item to double" ] (list (ref str)) in
+      let* α3 := deref α2 (list (ref str)) in
+      let* α4 := borrow α3 (list (ref str)) in
+      let* α5 := pointer_coercion "Unsize" α4 in
+      let* α6 := core.fmt.Arguments::["new_const"] α5 in
+      core.fmt.Formatter::["write_fmt"] α1 α6).
   
   Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {
     Notation.double_colon := fmt;
@@ -92,147 +94,150 @@ Definition double_first
     `{ℋ : State.Trait}
     (vec : alloc.vec.Vec (ref str) alloc.vec.Vec.Default.A)
     : M ltac:(other_uses_of_question_mark.Result constr:(i32)) :=
-  let* first :=
-    let* α0 := borrow vec (alloc.vec.Vec (ref str) alloc.alloc.Global) in
-    let* α1 :=
-      (core.ops.deref.Deref.deref
-          (Self := alloc.vec.Vec (ref str) alloc.alloc.Global)
-          (Trait := ltac:(refine _)))
-        α0 in
-    let* α2 := deref α1 (Slice (ref str)) in
-    let* α3 := borrow α2 (Slice (ref str)) in
-    let* α4 := (Slice (ref str))::["first"] α3 in
-    let* α5 := M.alloc other_uses_of_question_mark.EmptyVec.Build_t in
-    let* α6 := (core.option.Option (ref (ref str)))::["ok_or"] α4 α5 in
-    let* α7 :=
-      (core.ops.try_trait.Try.branch
-          (Self :=
-            core.result.Result
-              (ref (ref str))
-              other_uses_of_question_mark.EmptyVec)
-          (Trait := ltac:(refine _)))
-        α6 in
-    match α7 with
-    | core.ops.control_flow.ControlFlow residual =>
-      let* α0 :=
-        (core.ops.try_trait.FromResidual.from_residual
+  M.function_body
+    (let* first :=
+      let* α0 := borrow vec (alloc.vec.Vec (ref str) alloc.alloc.Global) in
+      let* α1 :=
+        (core.ops.deref.Deref.deref
+            (Self := alloc.vec.Vec (ref str) alloc.alloc.Global)
+            (Trait := ltac:(refine _)))
+          α0 in
+      let* α2 := deref α1 (Slice (ref str)) in
+      let* α3 := borrow α2 (Slice (ref str)) in
+      let* α4 := (Slice (ref str))::["first"] α3 in
+      let* α5 := M.alloc other_uses_of_question_mark.EmptyVec.Build_t in
+      let* α6 := (core.option.Option (ref (ref str)))::["ok_or"] α4 α5 in
+      let* α7 :=
+        (core.ops.try_trait.Try.branch
             (Self :=
               core.result.Result
-                i32
-                (alloc.boxed.Box type not implemented alloc.alloc.Global))
+                (ref (ref str))
+                other_uses_of_question_mark.EmptyVec)
             (Trait := ltac:(refine _)))
-          residual in
-      let* α1 := Return α0 in
-      never_to_any α1
-    | core.ops.control_flow.ControlFlow val => M.pure val
-    end in
-  let* parsed :=
-    let* α0 := deref first (ref str) in
-    let* α1 := deref α0 str in
-    let* α2 := borrow α1 str in
-    let* α3 := str::["parse"] α2 in
-    let* α4 :=
-      (core.ops.try_trait.Try.branch
-          (Self := core.result.Result i32 core.num.error.ParseIntError)
-          (Trait := ltac:(refine _)))
-        α3 in
-    match α4 with
-    | core.ops.control_flow.ControlFlow residual =>
-      let* α0 :=
-        (core.ops.try_trait.FromResidual.from_residual
-            (Self :=
-              core.result.Result
-                i32
-                (alloc.boxed.Box type not implemented alloc.alloc.Global))
+          α6 in
+      match α7 with
+      | core.ops.control_flow.ControlFlow residual =>
+        let* α0 :=
+          (core.ops.try_trait.FromResidual.from_residual
+              (Self :=
+                core.result.Result
+                  i32
+                  (alloc.boxed.Box type not implemented alloc.alloc.Global))
+              (Trait := ltac:(refine _)))
+            residual in
+        let* α1 := Return α0 in
+        never_to_any α1
+      | core.ops.control_flow.ControlFlow val => M.pure val
+      end in
+    let* parsed :=
+      let* α0 := deref first (ref str) in
+      let* α1 := deref α0 str in
+      let* α2 := borrow α1 str in
+      let* α3 := str::["parse"] α2 in
+      let* α4 :=
+        (core.ops.try_trait.Try.branch
+            (Self := core.result.Result i32 core.num.error.ParseIntError)
             (Trait := ltac:(refine _)))
-          residual in
-      let* α1 := Return α0 in
-      never_to_any α1
-    | core.ops.control_flow.ControlFlow val => M.pure val
-    end in
-  let* α0 := M.alloc 2 in
-  let* α1 := BinOp.mul α0 parsed in
-  M.alloc (core.result.Result.Ok α1).
+          α3 in
+      match α4 with
+      | core.ops.control_flow.ControlFlow residual =>
+        let* α0 :=
+          (core.ops.try_trait.FromResidual.from_residual
+              (Self :=
+                core.result.Result
+                  i32
+                  (alloc.boxed.Box type not implemented alloc.alloc.Global))
+              (Trait := ltac:(refine _)))
+            residual in
+        let* α1 := Return α0 in
+        never_to_any α1
+      | core.ops.control_flow.ControlFlow val => M.pure val
+      end in
+    let* α0 := M.alloc 2 in
+    let* α1 := BinOp.mul α0 parsed in
+    M.alloc (core.result.Result.Ok α1)).
 
 Definition print
     `{ℋ : State.Trait}
     (result : ltac:(other_uses_of_question_mark.Result constr:(i32)))
     : M unit :=
-  match result with
-  | core.result.Result n =>
-    let* _ :=
-      let* α0 :=
-        borrow
-          [ mk_str "The first doubled is "; mk_str "
+  M.function_body
+    match result with
+    | core.result.Result n =>
+      let* _ :=
+        let* α0 :=
+          borrow
+            [ mk_str "The first doubled is "; mk_str "
 " ]
-          (list (ref str)) in
-      let* α1 := deref α0 (list (ref str)) in
-      let* α2 := borrow α1 (list (ref str)) in
-      let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := borrow n i32 in
-      let* α5 := deref α4 i32 in
-      let* α6 := borrow α5 i32 in
-      let* α7 := core.fmt.rt.Argument::["new_display"] α6 in
-      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
-      let* α9 := deref α8 (list core.fmt.rt.Argument) in
-      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
-      let* α11 := pointer_coercion "Unsize" α10 in
-      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
-      std.io.stdio._print α12 in
-    M.alloc tt
-  | core.result.Result e =>
-    let* _ :=
-      let* α0 := borrow [ mk_str "Error: "; mk_str "
+            (list (ref str)) in
+        let* α1 := deref α0 (list (ref str)) in
+        let* α2 := borrow α1 (list (ref str)) in
+        let* α3 := pointer_coercion "Unsize" α2 in
+        let* α4 := borrow n i32 in
+        let* α5 := deref α4 i32 in
+        let* α6 := borrow α5 i32 in
+        let* α7 := core.fmt.rt.Argument::["new_display"] α6 in
+        let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+        let* α9 := deref α8 (list core.fmt.rt.Argument) in
+        let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+        let* α11 := pointer_coercion "Unsize" α10 in
+        let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+        std.io.stdio._print α12 in
+      M.alloc tt
+    | core.result.Result e =>
+      let* _ :=
+        let* α0 := borrow [ mk_str "Error: "; mk_str "
 " ] (list (ref str)) in
-      let* α1 := deref α0 (list (ref str)) in
-      let* α2 := borrow α1 (list (ref str)) in
-      let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 :=
-        borrow e (alloc.boxed.Box type not implemented alloc.alloc.Global) in
-      let* α5 :=
-        deref α4 (alloc.boxed.Box type not implemented alloc.alloc.Global) in
-      let* α6 :=
-        borrow α5 (alloc.boxed.Box type not implemented alloc.alloc.Global) in
-      let* α7 := core.fmt.rt.Argument::["new_display"] α6 in
-      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
-      let* α9 := deref α8 (list core.fmt.rt.Argument) in
-      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
-      let* α11 := pointer_coercion "Unsize" α10 in
-      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
-      std.io.stdio._print α12 in
-    M.alloc tt
-  end.
+        let* α1 := deref α0 (list (ref str)) in
+        let* α2 := borrow α1 (list (ref str)) in
+        let* α3 := pointer_coercion "Unsize" α2 in
+        let* α4 :=
+          borrow e (alloc.boxed.Box type not implemented alloc.alloc.Global) in
+        let* α5 :=
+          deref α4 (alloc.boxed.Box type not implemented alloc.alloc.Global) in
+        let* α6 :=
+          borrow α5 (alloc.boxed.Box type not implemented alloc.alloc.Global) in
+        let* α7 := core.fmt.rt.Argument::["new_display"] α6 in
+        let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+        let* α9 := deref α8 (list core.fmt.rt.Argument) in
+        let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+        let* α11 := pointer_coercion "Unsize" α10 in
+        let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+        std.io.stdio._print α12 in
+      M.alloc tt
+    end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
-  let* numbers :=
-    let* α0 := deref (mk_str "93") str in
-    let* α1 := borrow α0 str in
-    let* α2 := deref (mk_str "18") str in
-    let* α3 := borrow α2 str in
-    let* α4 :=
-      (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"]
-        [ mk_str "42"; α1; α3 ] in
-    let* α5 := pointer_coercion "Unsize" α4 in
-    (Slice (ref str))::["into_vec"] α5 in
-  let* empty := (alloc.vec.Vec (ref str) alloc.alloc.Global)::["new"] in
-  let* strings :=
-    let* α0 := deref (mk_str "93") str in
-    let* α1 := borrow α0 str in
-    let* α2 := deref (mk_str "18") str in
-    let* α3 := borrow α2 str in
-    let* α4 :=
-      (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"]
-        [ mk_str "tofu"; α1; α3 ] in
-    let* α5 := pointer_coercion "Unsize" α4 in
-    (Slice (ref str))::["into_vec"] α5 in
-  let* _ :=
-    let* α0 := other_uses_of_question_mark.double_first numbers in
-    other_uses_of_question_mark.print α0 in
-  let* _ :=
-    let* α0 := other_uses_of_question_mark.double_first empty in
-    other_uses_of_question_mark.print α0 in
-  let* _ :=
-    let* α0 := other_uses_of_question_mark.double_first strings in
-    other_uses_of_question_mark.print α0 in
-  M.alloc tt.
+  M.function_body
+    (let* numbers :=
+      let* α0 := deref (mk_str "93") str in
+      let* α1 := borrow α0 str in
+      let* α2 := deref (mk_str "18") str in
+      let* α3 := borrow α2 str in
+      let* α4 :=
+        (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"]
+          [ mk_str "42"; α1; α3 ] in
+      let* α5 := pointer_coercion "Unsize" α4 in
+      (Slice (ref str))::["into_vec"] α5 in
+    let* empty := (alloc.vec.Vec (ref str) alloc.alloc.Global)::["new"] in
+    let* strings :=
+      let* α0 := deref (mk_str "93") str in
+      let* α1 := borrow α0 str in
+      let* α2 := deref (mk_str "18") str in
+      let* α3 := borrow α2 str in
+      let* α4 :=
+        (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"]
+          [ mk_str "tofu"; α1; α3 ] in
+      let* α5 := pointer_coercion "Unsize" α4 in
+      (Slice (ref str))::["into_vec"] α5 in
+    let* _ :=
+      let* α0 := other_uses_of_question_mark.double_first numbers in
+      other_uses_of_question_mark.print α0 in
+    let* _ :=
+      let* α0 := other_uses_of_question_mark.double_first empty in
+      other_uses_of_question_mark.print α0 in
+    let* _ :=
+      let* α0 := other_uses_of_question_mark.double_first strings in
+      other_uses_of_question_mark.print α0 in
+    M.alloc tt).

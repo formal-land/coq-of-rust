@@ -28,18 +28,19 @@ Section Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M ltac:(core.fmt.Result) :=
-    let* α0 := deref f core.fmt.Formatter in
-    let* α1 := borrow_mut α0 core.fmt.Formatter in
-    let* α2 := deref (mk_str "EvenNumber") str in
-    let* α3 := borrow α2 str in
-    let* α4 := deref self try_from_and_try_into.EvenNumber in
-    let* α5 := α4.["0"] in
-    let* α6 := borrow α5 i32 in
-    let* α7 := borrow α6 (ref i32) in
-    let* α8 := deref α7 (ref i32) in
-    let* α9 := borrow α8 (ref i32) in
-    let* α10 := pointer_coercion "Unsize" α9 in
-    core.fmt.Formatter::["debug_tuple_field1_finish"] α1 α3 α10.
+    M.function_body
+      (let* α0 := deref f core.fmt.Formatter in
+      let* α1 := borrow_mut α0 core.fmt.Formatter in
+      let* α2 := deref (mk_str "EvenNumber") str in
+      let* α3 := borrow α2 str in
+      let* α4 := deref self try_from_and_try_into.EvenNumber in
+      let* α5 := α4.["0"] in
+      let* α6 := borrow α5 i32 in
+      let* α7 := borrow α6 (ref i32) in
+      let* α8 := deref α7 (ref i32) in
+      let* α9 := borrow α8 (ref i32) in
+      let* α10 := pointer_coercion "Unsize" α9 in
+      core.fmt.Formatter::["debug_tuple_field1_finish"] α1 α3 α10).
   
   Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {
     Notation.double_colon := fmt;
@@ -72,11 +73,12 @@ Section Impl_core_cmp_PartialEq_for_try_from_and_try_into_EvenNumber.
       (self : ref Self)
       (other : ref try_from_and_try_into.EvenNumber)
       : M bool :=
-    let* α0 := deref self try_from_and_try_into.EvenNumber in
-    let* α1 := α0.["0"] in
-    let* α2 := deref other try_from_and_try_into.EvenNumber in
-    let* α3 := α2.["0"] in
-    BinOp.eq α1 α3.
+    M.function_body
+      (let* α0 := deref self try_from_and_try_into.EvenNumber in
+      let* α1 := α0.["0"] in
+      let* α2 := deref other try_from_and_try_into.EvenNumber in
+      let* α3 := α2.["0"] in
+      BinOp.eq α1 α3).
   
   Global Instance AssociatedFunction_eq : Notation.DoubleColon Self "eq" := {
     Notation.double_colon := eq;
@@ -100,17 +102,18 @@ Section Impl_core_convert_TryFrom_i32_for_try_from_and_try_into_EvenNumber.
   Definition Error : Set := unit.
   
   Definition try_from (value : i32) : M (core.result.Result Self Error) :=
-    let* α0 := M.alloc 2 in
-    let* α1 := BinOp.rem value α0 in
-    let* α2 := M.alloc 0 in
-    let* α3 := BinOp.eq α1 α2 in
-    let* α4 := use α3 in
-    if (α4 : bool) then
-      let* α0 := M.alloc (try_from_and_try_into.EvenNumber.Build_t value) in
-      M.alloc (core.result.Result.Ok α0)
-    else
-      let* α0 := M.alloc tt in
-      M.alloc (core.result.Result.Err α0).
+    M.function_body
+      (let* α0 := M.alloc 2 in
+      let* α1 := BinOp.rem value α0 in
+      let* α2 := M.alloc 0 in
+      let* α3 := BinOp.eq α1 α2 in
+      let* α4 := use α3 in
+      if (α4 : bool) then
+        let* α0 := M.alloc (try_from_and_try_into.EvenNumber.Build_t value) in
+        M.alloc (core.result.Result.Ok α0)
+      else
+        let* α0 := M.alloc tt in
+        M.alloc (core.result.Result.Err α0)).
   
   Global Instance AssociatedFunction_try_from :
     Notation.DoubleColon Self "try_from" := {
@@ -126,314 +129,331 @@ End Impl_core_convert_TryFrom_i32_for_try_from_and_try_into_EvenNumber.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
-  let* _ :=
-    let* α0 := M.alloc 8 in
-    let* α1 :=
-      (core.convert.TryFrom.try_from
-          (Self := try_from_and_try_into.EvenNumber)
-          (Trait := ltac:(refine _)))
+  M.function_body
+    (let* _ :=
+      let* α0 := M.alloc 8 in
+      let* α1 :=
+        (core.convert.TryFrom.try_from
+            (Self := try_from_and_try_into.EvenNumber)
+            (Trait := ltac:(refine _)))
+          α0 in
+      let* α2 :=
+        borrow α1 (core.result.Result try_from_and_try_into.EvenNumber unit) in
+      let* α3 := M.alloc 8 in
+      let* α4 := M.alloc (try_from_and_try_into.EvenNumber.Build_t α3) in
+      let* α5 := M.alloc (core.result.Result.Ok α4) in
+      let* α6 :=
+        borrow α5 (core.result.Result try_from_and_try_into.EvenNumber unit) in
+      match (α2, α6) with
+      | (left_val, right_val) =>
+        let* α0 :=
+          deref
+            left_val
+            (core.result.Result try_from_and_try_into.EvenNumber unit) in
+        let* α1 :=
+          borrow
+            α0
+            (core.result.Result try_from_and_try_into.EvenNumber unit) in
+        let* α2 :=
+          deref
+            right_val
+            (core.result.Result try_from_and_try_into.EvenNumber unit) in
+        let* α3 :=
+          borrow
+            α2
+            (core.result.Result try_from_and_try_into.EvenNumber unit) in
+        let* α4 :=
+          (core.cmp.PartialEq.eq
+              (Self := core.result.Result try_from_and_try_into.EvenNumber unit)
+              (Trait := ltac:(refine _)))
+            α1
+            α3 in
+        let* α5 := UnOp.not α4 in
+        let* α6 := use α5 in
+        if (α6 : bool) then
+          let* kind := M.alloc core.panicking.AssertKind.Eq in
+          let* _ :=
+            let* α0 :=
+              deref
+                left_val
+                (core.result.Result try_from_and_try_into.EvenNumber unit) in
+            let* α1 :=
+              borrow
+                α0
+                (core.result.Result try_from_and_try_into.EvenNumber unit) in
+            let* α2 :=
+              deref
+                α1
+                (core.result.Result try_from_and_try_into.EvenNumber unit) in
+            let* α3 :=
+              borrow
+                α2
+                (core.result.Result try_from_and_try_into.EvenNumber unit) in
+            let* α4 :=
+              deref
+                right_val
+                (core.result.Result try_from_and_try_into.EvenNumber unit) in
+            let* α5 :=
+              borrow
+                α4
+                (core.result.Result try_from_and_try_into.EvenNumber unit) in
+            let* α6 :=
+              deref
+                α5
+                (core.result.Result try_from_and_try_into.EvenNumber unit) in
+            let* α7 :=
+              borrow
+                α6
+                (core.result.Result try_from_and_try_into.EvenNumber unit) in
+            let* α8 := M.alloc core.option.Option.None in
+            core.panicking.assert_failed kind α3 α7 α8 in
+          let* α0 := M.alloc tt in
+          never_to_any α0
+        else
+          M.alloc tt
+      end in
+    let* _ :=
+      let* α0 := M.alloc 5 in
+      let* α1 :=
+        (core.convert.TryFrom.try_from
+            (Self := try_from_and_try_into.EvenNumber)
+            (Trait := ltac:(refine _)))
+          α0 in
+      let* α2 :=
+        borrow α1 (core.result.Result try_from_and_try_into.EvenNumber unit) in
+      let* α3 := M.alloc tt in
+      let* α4 := M.alloc (core.result.Result.Err α3) in
+      let* α5 :=
+        borrow α4 (core.result.Result try_from_and_try_into.EvenNumber unit) in
+      match (α2, α5) with
+      | (left_val, right_val) =>
+        let* α0 :=
+          deref
+            left_val
+            (core.result.Result try_from_and_try_into.EvenNumber unit) in
+        let* α1 :=
+          borrow
+            α0
+            (core.result.Result try_from_and_try_into.EvenNumber unit) in
+        let* α2 :=
+          deref
+            right_val
+            (core.result.Result try_from_and_try_into.EvenNumber unit) in
+        let* α3 :=
+          borrow
+            α2
+            (core.result.Result try_from_and_try_into.EvenNumber unit) in
+        let* α4 :=
+          (core.cmp.PartialEq.eq
+              (Self := core.result.Result try_from_and_try_into.EvenNumber unit)
+              (Trait := ltac:(refine _)))
+            α1
+            α3 in
+        let* α5 := UnOp.not α4 in
+        let* α6 := use α5 in
+        if (α6 : bool) then
+          let* kind := M.alloc core.panicking.AssertKind.Eq in
+          let* _ :=
+            let* α0 :=
+              deref
+                left_val
+                (core.result.Result try_from_and_try_into.EvenNumber unit) in
+            let* α1 :=
+              borrow
+                α0
+                (core.result.Result try_from_and_try_into.EvenNumber unit) in
+            let* α2 :=
+              deref
+                α1
+                (core.result.Result try_from_and_try_into.EvenNumber unit) in
+            let* α3 :=
+              borrow
+                α2
+                (core.result.Result try_from_and_try_into.EvenNumber unit) in
+            let* α4 :=
+              deref
+                right_val
+                (core.result.Result try_from_and_try_into.EvenNumber unit) in
+            let* α5 :=
+              borrow
+                α4
+                (core.result.Result try_from_and_try_into.EvenNumber unit) in
+            let* α6 :=
+              deref
+                α5
+                (core.result.Result try_from_and_try_into.EvenNumber unit) in
+            let* α7 :=
+              borrow
+                α6
+                (core.result.Result try_from_and_try_into.EvenNumber unit) in
+            let* α8 := M.alloc core.option.Option.None in
+            core.panicking.assert_failed kind α3 α7 α8 in
+          let* α0 := M.alloc tt in
+          never_to_any α0
+        else
+          M.alloc tt
+      end in
+    let* result :=
+      let* α0 := M.alloc 8 in
+      (core.convert.TryInto.try_into (Self := i32) (Trait := ltac:(refine _)))
         α0 in
-    let* α2 :=
-      borrow α1 (core.result.Result try_from_and_try_into.EvenNumber unit) in
-    let* α3 := M.alloc 8 in
-    let* α4 := M.alloc (try_from_and_try_into.EvenNumber.Build_t α3) in
-    let* α5 := M.alloc (core.result.Result.Ok α4) in
-    let* α6 :=
-      borrow α5 (core.result.Result try_from_and_try_into.EvenNumber unit) in
-    match (α2, α6) with
-    | (left_val, right_val) =>
+    let* _ :=
       let* α0 :=
-        deref
-          left_val
+        borrow
+          result
           (core.result.Result try_from_and_try_into.EvenNumber unit) in
-      let* α1 :=
-        borrow α0 (core.result.Result try_from_and_try_into.EvenNumber unit) in
-      let* α2 :=
-        deref
-          right_val
-          (core.result.Result try_from_and_try_into.EvenNumber unit) in
-      let* α3 :=
-        borrow α2 (core.result.Result try_from_and_try_into.EvenNumber unit) in
+      let* α1 := M.alloc 8 in
+      let* α2 := M.alloc (try_from_and_try_into.EvenNumber.Build_t α1) in
+      let* α3 := M.alloc (core.result.Result.Ok α2) in
       let* α4 :=
-        (core.cmp.PartialEq.eq
-            (Self := core.result.Result try_from_and_try_into.EvenNumber unit)
-            (Trait := ltac:(refine _)))
-          α1
-          α3 in
-      let* α5 := UnOp.not α4 in
-      let* α6 := use α5 in
-      if (α6 : bool) then
-        let* kind := M.alloc core.panicking.AssertKind.Eq in
-        let* _ :=
-          let* α0 :=
-            deref
-              left_val
-              (core.result.Result try_from_and_try_into.EvenNumber unit) in
-          let* α1 :=
-            borrow
-              α0
-              (core.result.Result try_from_and_try_into.EvenNumber unit) in
-          let* α2 :=
-            deref
-              α1
-              (core.result.Result try_from_and_try_into.EvenNumber unit) in
-          let* α3 :=
-            borrow
-              α2
-              (core.result.Result try_from_and_try_into.EvenNumber unit) in
-          let* α4 :=
-            deref
-              right_val
-              (core.result.Result try_from_and_try_into.EvenNumber unit) in
-          let* α5 :=
-            borrow
-              α4
-              (core.result.Result try_from_and_try_into.EvenNumber unit) in
-          let* α6 :=
-            deref
-              α5
-              (core.result.Result try_from_and_try_into.EvenNumber unit) in
-          let* α7 :=
-            borrow
-              α6
-              (core.result.Result try_from_and_try_into.EvenNumber unit) in
-          let* α8 := M.alloc core.option.Option.None in
-          core.panicking.assert_failed kind α3 α7 α8 in
-        let* α0 := M.alloc tt in
-        never_to_any α0
-      else
-        M.alloc tt
-    end in
-  let* _ :=
-    let* α0 := M.alloc 5 in
-    let* α1 :=
-      (core.convert.TryFrom.try_from
-          (Self := try_from_and_try_into.EvenNumber)
-          (Trait := ltac:(refine _)))
+        borrow α3 (core.result.Result try_from_and_try_into.EvenNumber unit) in
+      match (α0, α4) with
+      | (left_val, right_val) =>
+        let* α0 :=
+          deref
+            left_val
+            (core.result.Result try_from_and_try_into.EvenNumber unit) in
+        let* α1 :=
+          borrow
+            α0
+            (core.result.Result try_from_and_try_into.EvenNumber unit) in
+        let* α2 :=
+          deref
+            right_val
+            (core.result.Result try_from_and_try_into.EvenNumber unit) in
+        let* α3 :=
+          borrow
+            α2
+            (core.result.Result try_from_and_try_into.EvenNumber unit) in
+        let* α4 :=
+          (core.cmp.PartialEq.eq
+              (Self := core.result.Result try_from_and_try_into.EvenNumber unit)
+              (Trait := ltac:(refine _)))
+            α1
+            α3 in
+        let* α5 := UnOp.not α4 in
+        let* α6 := use α5 in
+        if (α6 : bool) then
+          let* kind := M.alloc core.panicking.AssertKind.Eq in
+          let* _ :=
+            let* α0 :=
+              deref
+                left_val
+                (core.result.Result try_from_and_try_into.EvenNumber unit) in
+            let* α1 :=
+              borrow
+                α0
+                (core.result.Result try_from_and_try_into.EvenNumber unit) in
+            let* α2 :=
+              deref
+                α1
+                (core.result.Result try_from_and_try_into.EvenNumber unit) in
+            let* α3 :=
+              borrow
+                α2
+                (core.result.Result try_from_and_try_into.EvenNumber unit) in
+            let* α4 :=
+              deref
+                right_val
+                (core.result.Result try_from_and_try_into.EvenNumber unit) in
+            let* α5 :=
+              borrow
+                α4
+                (core.result.Result try_from_and_try_into.EvenNumber unit) in
+            let* α6 :=
+              deref
+                α5
+                (core.result.Result try_from_and_try_into.EvenNumber unit) in
+            let* α7 :=
+              borrow
+                α6
+                (core.result.Result try_from_and_try_into.EvenNumber unit) in
+            let* α8 := M.alloc core.option.Option.None in
+            core.panicking.assert_failed kind α3 α7 α8 in
+          let* α0 := M.alloc tt in
+          never_to_any α0
+        else
+          M.alloc tt
+      end in
+    let* result :=
+      let* α0 := M.alloc 5 in
+      (core.convert.TryInto.try_into (Self := i32) (Trait := ltac:(refine _)))
         α0 in
-    let* α2 :=
-      borrow α1 (core.result.Result try_from_and_try_into.EvenNumber unit) in
-    let* α3 := M.alloc tt in
-    let* α4 := M.alloc (core.result.Result.Err α3) in
-    let* α5 :=
-      borrow α4 (core.result.Result try_from_and_try_into.EvenNumber unit) in
-    match (α2, α5) with
-    | (left_val, right_val) =>
+    let* _ :=
       let* α0 :=
-        deref
-          left_val
+        borrow
+          result
           (core.result.Result try_from_and_try_into.EvenNumber unit) in
-      let* α1 :=
-        borrow α0 (core.result.Result try_from_and_try_into.EvenNumber unit) in
-      let* α2 :=
-        deref
-          right_val
-          (core.result.Result try_from_and_try_into.EvenNumber unit) in
+      let* α1 := M.alloc tt in
+      let* α2 := M.alloc (core.result.Result.Err α1) in
       let* α3 :=
         borrow α2 (core.result.Result try_from_and_try_into.EvenNumber unit) in
-      let* α4 :=
-        (core.cmp.PartialEq.eq
-            (Self := core.result.Result try_from_and_try_into.EvenNumber unit)
-            (Trait := ltac:(refine _)))
-          α1
-          α3 in
-      let* α5 := UnOp.not α4 in
-      let* α6 := use α5 in
-      if (α6 : bool) then
-        let* kind := M.alloc core.panicking.AssertKind.Eq in
-        let* _ :=
-          let* α0 :=
-            deref
-              left_val
-              (core.result.Result try_from_and_try_into.EvenNumber unit) in
-          let* α1 :=
-            borrow
-              α0
-              (core.result.Result try_from_and_try_into.EvenNumber unit) in
-          let* α2 :=
-            deref
-              α1
-              (core.result.Result try_from_and_try_into.EvenNumber unit) in
-          let* α3 :=
-            borrow
-              α2
-              (core.result.Result try_from_and_try_into.EvenNumber unit) in
-          let* α4 :=
-            deref
-              right_val
-              (core.result.Result try_from_and_try_into.EvenNumber unit) in
-          let* α5 :=
-            borrow
-              α4
-              (core.result.Result try_from_and_try_into.EvenNumber unit) in
-          let* α6 :=
-            deref
-              α5
-              (core.result.Result try_from_and_try_into.EvenNumber unit) in
-          let* α7 :=
-            borrow
-              α6
-              (core.result.Result try_from_and_try_into.EvenNumber unit) in
-          let* α8 := M.alloc core.option.Option.None in
-          core.panicking.assert_failed kind α3 α7 α8 in
-        let* α0 := M.alloc tt in
-        never_to_any α0
-      else
-        M.alloc tt
-    end in
-  let* result :=
-    let* α0 := M.alloc 8 in
-    (core.convert.TryInto.try_into (Self := i32) (Trait := ltac:(refine _)))
-      α0 in
-  let* _ :=
-    let* α0 :=
-      borrow
-        result
-        (core.result.Result try_from_and_try_into.EvenNumber unit) in
-    let* α1 := M.alloc 8 in
-    let* α2 := M.alloc (try_from_and_try_into.EvenNumber.Build_t α1) in
-    let* α3 := M.alloc (core.result.Result.Ok α2) in
-    let* α4 :=
-      borrow α3 (core.result.Result try_from_and_try_into.EvenNumber unit) in
-    match (α0, α4) with
-    | (left_val, right_val) =>
-      let* α0 :=
-        deref
-          left_val
-          (core.result.Result try_from_and_try_into.EvenNumber unit) in
-      let* α1 :=
-        borrow α0 (core.result.Result try_from_and_try_into.EvenNumber unit) in
-      let* α2 :=
-        deref
-          right_val
-          (core.result.Result try_from_and_try_into.EvenNumber unit) in
-      let* α3 :=
-        borrow α2 (core.result.Result try_from_and_try_into.EvenNumber unit) in
-      let* α4 :=
-        (core.cmp.PartialEq.eq
-            (Self := core.result.Result try_from_and_try_into.EvenNumber unit)
-            (Trait := ltac:(refine _)))
-          α1
-          α3 in
-      let* α5 := UnOp.not α4 in
-      let* α6 := use α5 in
-      if (α6 : bool) then
-        let* kind := M.alloc core.panicking.AssertKind.Eq in
-        let* _ :=
-          let* α0 :=
-            deref
-              left_val
-              (core.result.Result try_from_and_try_into.EvenNumber unit) in
-          let* α1 :=
-            borrow
-              α0
-              (core.result.Result try_from_and_try_into.EvenNumber unit) in
-          let* α2 :=
-            deref
-              α1
-              (core.result.Result try_from_and_try_into.EvenNumber unit) in
-          let* α3 :=
-            borrow
-              α2
-              (core.result.Result try_from_and_try_into.EvenNumber unit) in
-          let* α4 :=
-            deref
-              right_val
-              (core.result.Result try_from_and_try_into.EvenNumber unit) in
-          let* α5 :=
-            borrow
-              α4
-              (core.result.Result try_from_and_try_into.EvenNumber unit) in
-          let* α6 :=
-            deref
-              α5
-              (core.result.Result try_from_and_try_into.EvenNumber unit) in
-          let* α7 :=
-            borrow
-              α6
-              (core.result.Result try_from_and_try_into.EvenNumber unit) in
-          let* α8 := M.alloc core.option.Option.None in
-          core.panicking.assert_failed kind α3 α7 α8 in
-        let* α0 := M.alloc tt in
-        never_to_any α0
-      else
-        M.alloc tt
-    end in
-  let* result :=
-    let* α0 := M.alloc 5 in
-    (core.convert.TryInto.try_into (Self := i32) (Trait := ltac:(refine _)))
-      α0 in
-  let* _ :=
-    let* α0 :=
-      borrow
-        result
-        (core.result.Result try_from_and_try_into.EvenNumber unit) in
-    let* α1 := M.alloc tt in
-    let* α2 := M.alloc (core.result.Result.Err α1) in
-    let* α3 :=
-      borrow α2 (core.result.Result try_from_and_try_into.EvenNumber unit) in
-    match (α0, α3) with
-    | (left_val, right_val) =>
-      let* α0 :=
-        deref
-          left_val
-          (core.result.Result try_from_and_try_into.EvenNumber unit) in
-      let* α1 :=
-        borrow α0 (core.result.Result try_from_and_try_into.EvenNumber unit) in
-      let* α2 :=
-        deref
-          right_val
-          (core.result.Result try_from_and_try_into.EvenNumber unit) in
-      let* α3 :=
-        borrow α2 (core.result.Result try_from_and_try_into.EvenNumber unit) in
-      let* α4 :=
-        (core.cmp.PartialEq.eq
-            (Self := core.result.Result try_from_and_try_into.EvenNumber unit)
-            (Trait := ltac:(refine _)))
-          α1
-          α3 in
-      let* α5 := UnOp.not α4 in
-      let* α6 := use α5 in
-      if (α6 : bool) then
-        let* kind := M.alloc core.panicking.AssertKind.Eq in
-        let* _ :=
-          let* α0 :=
-            deref
-              left_val
-              (core.result.Result try_from_and_try_into.EvenNumber unit) in
-          let* α1 :=
-            borrow
-              α0
-              (core.result.Result try_from_and_try_into.EvenNumber unit) in
-          let* α2 :=
-            deref
-              α1
-              (core.result.Result try_from_and_try_into.EvenNumber unit) in
-          let* α3 :=
-            borrow
-              α2
-              (core.result.Result try_from_and_try_into.EvenNumber unit) in
-          let* α4 :=
-            deref
-              right_val
-              (core.result.Result try_from_and_try_into.EvenNumber unit) in
-          let* α5 :=
-            borrow
-              α4
-              (core.result.Result try_from_and_try_into.EvenNumber unit) in
-          let* α6 :=
-            deref
-              α5
-              (core.result.Result try_from_and_try_into.EvenNumber unit) in
-          let* α7 :=
-            borrow
-              α6
-              (core.result.Result try_from_and_try_into.EvenNumber unit) in
-          let* α8 := M.alloc core.option.Option.None in
-          core.panicking.assert_failed kind α3 α7 α8 in
-        let* α0 := M.alloc tt in
-        never_to_any α0
-      else
-        M.alloc tt
-    end in
-  M.alloc tt.
+      match (α0, α3) with
+      | (left_val, right_val) =>
+        let* α0 :=
+          deref
+            left_val
+            (core.result.Result try_from_and_try_into.EvenNumber unit) in
+        let* α1 :=
+          borrow
+            α0
+            (core.result.Result try_from_and_try_into.EvenNumber unit) in
+        let* α2 :=
+          deref
+            right_val
+            (core.result.Result try_from_and_try_into.EvenNumber unit) in
+        let* α3 :=
+          borrow
+            α2
+            (core.result.Result try_from_and_try_into.EvenNumber unit) in
+        let* α4 :=
+          (core.cmp.PartialEq.eq
+              (Self := core.result.Result try_from_and_try_into.EvenNumber unit)
+              (Trait := ltac:(refine _)))
+            α1
+            α3 in
+        let* α5 := UnOp.not α4 in
+        let* α6 := use α5 in
+        if (α6 : bool) then
+          let* kind := M.alloc core.panicking.AssertKind.Eq in
+          let* _ :=
+            let* α0 :=
+              deref
+                left_val
+                (core.result.Result try_from_and_try_into.EvenNumber unit) in
+            let* α1 :=
+              borrow
+                α0
+                (core.result.Result try_from_and_try_into.EvenNumber unit) in
+            let* α2 :=
+              deref
+                α1
+                (core.result.Result try_from_and_try_into.EvenNumber unit) in
+            let* α3 :=
+              borrow
+                α2
+                (core.result.Result try_from_and_try_into.EvenNumber unit) in
+            let* α4 :=
+              deref
+                right_val
+                (core.result.Result try_from_and_try_into.EvenNumber unit) in
+            let* α5 :=
+              borrow
+                α4
+                (core.result.Result try_from_and_try_into.EvenNumber unit) in
+            let* α6 :=
+              deref
+                α5
+                (core.result.Result try_from_and_try_into.EvenNumber unit) in
+            let* α7 :=
+              borrow
+                α6
+                (core.result.Result try_from_and_try_into.EvenNumber unit) in
+            let* α8 := M.alloc core.option.Option.None in
+            core.panicking.assert_failed kind α3 α7 α8 in
+          let* α0 := M.alloc tt in
+          never_to_any α0
+        else
+          M.alloc tt
+      end in
+    M.alloc tt).

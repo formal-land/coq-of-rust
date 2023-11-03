@@ -79,7 +79,7 @@ Definition red
     {ℋ_0 : generics_bounds_test_case_empty_bounds.Red.Trait T}
     (arg : ref T)
     : M (ref str) :=
-  M.pure (mk_str "red").
+  M.function_body (M.pure (mk_str "red")).
 
 Definition blue
     `{ℋ : State.Trait}
@@ -87,62 +87,63 @@ Definition blue
     {ℋ_0 : generics_bounds_test_case_empty_bounds.Blue.Trait T}
     (arg : ref T)
     : M (ref str) :=
-  M.pure (mk_str "blue").
+  M.function_body (M.pure (mk_str "blue")).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
-  let* cardinal :=
-    M.alloc generics_bounds_test_case_empty_bounds.Cardinal.Build_t in
-  let* blue_jay :=
-    M.alloc generics_bounds_test_case_empty_bounds.BlueJay.Build_t in
-  let* _turkey :=
-    M.alloc generics_bounds_test_case_empty_bounds.Turkey.Build_t in
-  let* _ :=
+  M.function_body
+    (let* cardinal :=
+      M.alloc generics_bounds_test_case_empty_bounds.Cardinal.Build_t in
+    let* blue_jay :=
+      M.alloc generics_bounds_test_case_empty_bounds.BlueJay.Build_t in
+    let* _turkey :=
+      M.alloc generics_bounds_test_case_empty_bounds.Turkey.Build_t in
     let* _ :=
-      let* α0 :=
-        borrow [ mk_str "A cardinal is "; mk_str "
+      let* _ :=
+        let* α0 :=
+          borrow [ mk_str "A cardinal is "; mk_str "
 " ] (list (ref str)) in
-      let* α1 := deref α0 (list (ref str)) in
-      let* α2 := borrow α1 (list (ref str)) in
-      let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 :=
-        borrow cardinal generics_bounds_test_case_empty_bounds.Cardinal in
-      let* α5 := deref α4 generics_bounds_test_case_empty_bounds.Cardinal in
-      let* α6 := borrow α5 generics_bounds_test_case_empty_bounds.Cardinal in
-      let* α7 := generics_bounds_test_case_empty_bounds.red α6 in
-      let* α8 := borrow α7 (ref str) in
-      let* α9 := deref α8 (ref str) in
-      let* α10 := borrow α9 (ref str) in
-      let* α11 := core.fmt.rt.Argument::["new_display"] α10 in
-      let* α12 := borrow [ α11 ] (list core.fmt.rt.Argument) in
-      let* α13 := deref α12 (list core.fmt.rt.Argument) in
-      let* α14 := borrow α13 (list core.fmt.rt.Argument) in
-      let* α15 := pointer_coercion "Unsize" α14 in
-      let* α16 := core.fmt.Arguments::["new_v1"] α3 α15 in
-      std.io.stdio._print α16 in
-    M.alloc tt in
-  let* _ :=
+        let* α1 := deref α0 (list (ref str)) in
+        let* α2 := borrow α1 (list (ref str)) in
+        let* α3 := pointer_coercion "Unsize" α2 in
+        let* α4 :=
+          borrow cardinal generics_bounds_test_case_empty_bounds.Cardinal in
+        let* α5 := deref α4 generics_bounds_test_case_empty_bounds.Cardinal in
+        let* α6 := borrow α5 generics_bounds_test_case_empty_bounds.Cardinal in
+        let* α7 := generics_bounds_test_case_empty_bounds.red α6 in
+        let* α8 := borrow α7 (ref str) in
+        let* α9 := deref α8 (ref str) in
+        let* α10 := borrow α9 (ref str) in
+        let* α11 := core.fmt.rt.Argument::["new_display"] α10 in
+        let* α12 := borrow [ α11 ] (list core.fmt.rt.Argument) in
+        let* α13 := deref α12 (list core.fmt.rt.Argument) in
+        let* α14 := borrow α13 (list core.fmt.rt.Argument) in
+        let* α15 := pointer_coercion "Unsize" α14 in
+        let* α16 := core.fmt.Arguments::["new_v1"] α3 α15 in
+        std.io.stdio._print α16 in
+      M.alloc tt in
     let* _ :=
-      let* α0 :=
-        borrow [ mk_str "A blue jay is "; mk_str "
+      let* _ :=
+        let* α0 :=
+          borrow [ mk_str "A blue jay is "; mk_str "
 " ] (list (ref str)) in
-      let* α1 := deref α0 (list (ref str)) in
-      let* α2 := borrow α1 (list (ref str)) in
-      let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 :=
-        borrow blue_jay generics_bounds_test_case_empty_bounds.BlueJay in
-      let* α5 := deref α4 generics_bounds_test_case_empty_bounds.BlueJay in
-      let* α6 := borrow α5 generics_bounds_test_case_empty_bounds.BlueJay in
-      let* α7 := generics_bounds_test_case_empty_bounds.blue α6 in
-      let* α8 := borrow α7 (ref str) in
-      let* α9 := deref α8 (ref str) in
-      let* α10 := borrow α9 (ref str) in
-      let* α11 := core.fmt.rt.Argument::["new_display"] α10 in
-      let* α12 := borrow [ α11 ] (list core.fmt.rt.Argument) in
-      let* α13 := deref α12 (list core.fmt.rt.Argument) in
-      let* α14 := borrow α13 (list core.fmt.rt.Argument) in
-      let* α15 := pointer_coercion "Unsize" α14 in
-      let* α16 := core.fmt.Arguments::["new_v1"] α3 α15 in
-      std.io.stdio._print α16 in
-    M.alloc tt in
-  M.alloc tt.
+        let* α1 := deref α0 (list (ref str)) in
+        let* α2 := borrow α1 (list (ref str)) in
+        let* α3 := pointer_coercion "Unsize" α2 in
+        let* α4 :=
+          borrow blue_jay generics_bounds_test_case_empty_bounds.BlueJay in
+        let* α5 := deref α4 generics_bounds_test_case_empty_bounds.BlueJay in
+        let* α6 := borrow α5 generics_bounds_test_case_empty_bounds.BlueJay in
+        let* α7 := generics_bounds_test_case_empty_bounds.blue α6 in
+        let* α8 := borrow α7 (ref str) in
+        let* α9 := deref α8 (ref str) in
+        let* α10 := borrow α9 (ref str) in
+        let* α11 := core.fmt.rt.Argument::["new_display"] α10 in
+        let* α12 := borrow [ α11 ] (list core.fmt.rt.Argument) in
+        let* α13 := deref α12 (list core.fmt.rt.Argument) in
+        let* α14 := borrow α13 (list core.fmt.rt.Argument) in
+        let* α15 := pointer_coercion "Unsize" α14 in
+        let* α16 := core.fmt.Arguments::["new_v1"] α3 α15 in
+        std.io.stdio._print α16 in
+      M.alloc tt in
+    M.alloc tt).

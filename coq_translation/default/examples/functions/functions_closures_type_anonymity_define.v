@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{ℋ : State.Trait} : M unit := M.alloc tt.
+Definition main `{ℋ : State.Trait} : M unit := M.function_body (M.alloc tt).
 
 Definition apply
     `{ℋ : State.Trait}
@@ -10,9 +10,12 @@ Definition apply
     {ℋ_0 : core.ops.function.FnOnce.Trait F (Args := unit)}
     (f : F)
     : M unit :=
-  let* _ :=
-    let* α0 := M.alloc tt in
-    (core.ops.function.FnOnce.call_once (Self := F) (Trait := ltac:(refine _)))
-      f
-      α0 in
-  M.alloc tt.
+  M.function_body
+    (let* _ :=
+      let* α0 := M.alloc tt in
+      (core.ops.function.FnOnce.call_once
+          (Self := F)
+          (Trait := ltac:(refine _)))
+        f
+        α0 in
+    M.alloc tt).

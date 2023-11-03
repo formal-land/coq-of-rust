@@ -20,12 +20,13 @@ Definition Years `{ℋ : State.Trait} : Set := M.Val Years.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
-  let* years :=
-    let* α0 := M.alloc 42 in
-    M.alloc (generics_new_type_idiom_as_base_type.Years.Build_t α0) in
-  let* years_as_primitive_1 := years.["0"] in
-  let
-      'generics_new_type_idiom_as_base_type.Years.Build_t
-        years_as_primitive_2 :=
-    years in
-  M.alloc tt.
+  M.function_body
+    (let* years :=
+      let* α0 := M.alloc 42 in
+      M.alloc (generics_new_type_idiom_as_base_type.Years.Build_t α0) in
+    let* years_as_primitive_1 := years.["0"] in
+    let
+        'generics_new_type_idiom_as_base_type.Years.Build_t
+          years_as_primitive_2 :=
+      years in
+    M.alloc tt).

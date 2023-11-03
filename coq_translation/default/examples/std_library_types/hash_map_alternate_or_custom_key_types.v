@@ -49,27 +49,28 @@ Section Impl_core_cmp_PartialEq_for_hash_map_alternate_or_custom_key_types_Accou
       (self : ref Self)
       (other : ref hash_map_alternate_or_custom_key_types.Account)
       : M bool :=
-    let* α0 := deref self hash_map_alternate_or_custom_key_types.Account in
-    let* α1 := α0.["username"] in
-    let* α2 := borrow α1 (ref str) in
-    let* α3 := deref other hash_map_alternate_or_custom_key_types.Account in
-    let* α4 := α3.["username"] in
-    let* α5 := borrow α4 (ref str) in
-    let* α6 :=
-      (core.cmp.PartialEq.eq (Self := ref str) (Trait := ltac:(refine _)))
-        α2
-        α5 in
-    let* α7 := deref self hash_map_alternate_or_custom_key_types.Account in
-    let* α8 := α7.["password"] in
-    let* α9 := borrow α8 (ref str) in
-    let* α10 := deref other hash_map_alternate_or_custom_key_types.Account in
-    let* α11 := α10.["password"] in
-    let* α12 := borrow α11 (ref str) in
-    let* α13 :=
-      (core.cmp.PartialEq.eq (Self := ref str) (Trait := ltac:(refine _)))
-        α9
-        α12 in
-    BinOp.and α6 α13.
+    M.function_body
+      (let* α0 := deref self hash_map_alternate_or_custom_key_types.Account in
+      let* α1 := α0.["username"] in
+      let* α2 := borrow α1 (ref str) in
+      let* α3 := deref other hash_map_alternate_or_custom_key_types.Account in
+      let* α4 := α3.["username"] in
+      let* α5 := borrow α4 (ref str) in
+      let* α6 :=
+        (core.cmp.PartialEq.eq (Self := ref str) (Trait := ltac:(refine _)))
+          α2
+          α5 in
+      let* α7 := deref self hash_map_alternate_or_custom_key_types.Account in
+      let* α8 := α7.["password"] in
+      let* α9 := borrow α8 (ref str) in
+      let* α10 := deref other hash_map_alternate_or_custom_key_types.Account in
+      let* α11 := α10.["password"] in
+      let* α12 := borrow α11 (ref str) in
+      let* α13 :=
+        (core.cmp.PartialEq.eq (Self := ref str) (Trait := ltac:(refine _)))
+          α9
+          α12 in
+      BinOp.and α6 α13).
   
   Global Instance AssociatedFunction_eq : Notation.DoubleColon Self "eq" := {
     Notation.double_colon := eq;
@@ -102,9 +103,10 @@ Section Impl_core_cmp_Eq_for_hash_map_alternate_or_custom_key_types_Account.
   Definition Self : Set := hash_map_alternate_or_custom_key_types.Account.
   
   Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
-    let* _ := M.alloc tt in
-    let* _ := M.alloc tt in
-    M.alloc tt.
+    M.function_body
+      (let* _ := M.alloc tt in
+      let* _ := M.alloc tt in
+      M.alloc tt).
   
   Global Instance AssociatedFunction_assert_receiver_is_total_eq :
     Notation.DoubleColon Self "assert_receiver_is_total_eq" := {
@@ -130,25 +132,26 @@ Section Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account.
       (self : ref Self)
       (state : mut_ref __H)
       : M unit :=
-    let* _ :=
+    M.function_body
+      (let* _ :=
+        let* α0 := deref self hash_map_alternate_or_custom_key_types.Account in
+        let* α1 := α0.["username"] in
+        let* α2 := borrow α1 (ref str) in
+        let* α3 := deref α2 (ref str) in
+        let* α4 := borrow α3 (ref str) in
+        let* α5 := deref state __H in
+        let* α6 := borrow_mut α5 __H in
+        (core.hash.Hash.hash (Self := ref str) (Trait := ltac:(refine _)))
+          α4
+          α6 in
       let* α0 := deref self hash_map_alternate_or_custom_key_types.Account in
-      let* α1 := α0.["username"] in
+      let* α1 := α0.["password"] in
       let* α2 := borrow α1 (ref str) in
       let* α3 := deref α2 (ref str) in
       let* α4 := borrow α3 (ref str) in
       let* α5 := deref state __H in
       let* α6 := borrow_mut α5 __H in
-      (core.hash.Hash.hash (Self := ref str) (Trait := ltac:(refine _)))
-        α4
-        α6 in
-    let* α0 := deref self hash_map_alternate_or_custom_key_types.Account in
-    let* α1 := α0.["password"] in
-    let* α2 := borrow α1 (ref str) in
-    let* α3 := deref α2 (ref str) in
-    let* α4 := borrow α3 (ref str) in
-    let* α5 := deref state __H in
-    let* α6 := borrow_mut α5 __H in
-    (core.hash.Hash.hash (Self := ref str) (Trait := ltac:(refine _))) α4 α6.
+      (core.hash.Hash.hash (Self := ref str) (Trait := ltac:(refine _))) α4 α6).
   
   Global Instance AssociatedFunction_hash
       {__H : Set}
@@ -205,91 +208,48 @@ Definition try_logon
     (username : ref str)
     (password : ref str)
     : M unit :=
-  let* _ :=
-    let* _ :=
-      let* α0 := borrow [ mk_str "Username: "; mk_str "
+  M.function_body
+    (let* _ :=
+      let* _ :=
+        let* α0 :=
+          borrow [ mk_str "Username: "; mk_str "
 " ] (list (ref str)) in
-      let* α1 := deref α0 (list (ref str)) in
-      let* α2 := borrow α1 (list (ref str)) in
-      let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := borrow username (ref str) in
-      let* α5 := deref α4 (ref str) in
-      let* α6 := borrow α5 (ref str) in
-      let* α7 := core.fmt.rt.Argument::["new_display"] α6 in
-      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
-      let* α9 := deref α8 (list core.fmt.rt.Argument) in
-      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
-      let* α11 := pointer_coercion "Unsize" α10 in
-      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
-      std.io.stdio._print α12 in
-    M.alloc tt in
-  let* _ :=
-    let* _ :=
-      let* α0 := borrow [ mk_str "Password: "; mk_str "
-" ] (list (ref str)) in
-      let* α1 := deref α0 (list (ref str)) in
-      let* α2 := borrow α1 (list (ref str)) in
-      let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := borrow password (ref str) in
-      let* α5 := deref α4 (ref str) in
-      let* α6 := borrow α5 (ref str) in
-      let* α7 := core.fmt.rt.Argument::["new_display"] α6 in
-      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
-      let* α9 := deref α8 (list core.fmt.rt.Argument) in
-      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
-      let* α11 := pointer_coercion "Unsize" α10 in
-      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
-      std.io.stdio._print α12 in
-    M.alloc tt in
-  let* _ :=
-    let* _ :=
-      let* α0 := borrow [ mk_str "Attempting logon...
-" ] (list (ref str)) in
-      let* α1 := deref α0 (list (ref str)) in
-      let* α2 := borrow α1 (list (ref str)) in
-      let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := core.fmt.Arguments::["new_const"] α3 in
-      std.io.stdio._print α4 in
-    M.alloc tt in
-  let* logon :=
-    let* α0 := deref username str in
-    let* α1 := borrow α0 str in
-    let* α2 := deref password str in
-    let* α3 := borrow α2 str in
-    M.alloc
-      {|
-        hash_map_alternate_or_custom_key_types.Account.username := α1;
-        hash_map_alternate_or_custom_key_types.Account.password := α3;
-      |} in
-  let* α0 :=
-    deref
-      accounts
-      (std.collections.hash.map.HashMap
-        hash_map_alternate_or_custom_key_types.Account
-        hash_map_alternate_or_custom_key_types.AccountInfo
-        std.collections.hash.map.RandomState) in
-  let* α1 :=
-    borrow
-      α0
-      (std.collections.hash.map.HashMap
-        hash_map_alternate_or_custom_key_types.Account
-        hash_map_alternate_or_custom_key_types.AccountInfo
-        std.collections.hash.map.RandomState) in
-  let* α2 := borrow logon hash_map_alternate_or_custom_key_types.Account in
-  let* α3 := deref α2 hash_map_alternate_or_custom_key_types.Account in
-  let* α4 := borrow α3 hash_map_alternate_or_custom_key_types.Account in
-  let* α5 :=
-    (std.collections.hash.map.HashMap
-          hash_map_alternate_or_custom_key_types.Account
-          hash_map_alternate_or_custom_key_types.AccountInfo
-          std.collections.hash.map.RandomState)::["get"]
-      α1
-      α4 in
-  match α5 with
-  | core.option.Option account_info =>
+        let* α1 := deref α0 (list (ref str)) in
+        let* α2 := borrow α1 (list (ref str)) in
+        let* α3 := pointer_coercion "Unsize" α2 in
+        let* α4 := borrow username (ref str) in
+        let* α5 := deref α4 (ref str) in
+        let* α6 := borrow α5 (ref str) in
+        let* α7 := core.fmt.rt.Argument::["new_display"] α6 in
+        let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+        let* α9 := deref α8 (list core.fmt.rt.Argument) in
+        let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+        let* α11 := pointer_coercion "Unsize" α10 in
+        let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+        std.io.stdio._print α12 in
+      M.alloc tt in
     let* _ :=
       let* _ :=
-        let* α0 := borrow [ mk_str "Successful logon!
+        let* α0 :=
+          borrow [ mk_str "Password: "; mk_str "
+" ] (list (ref str)) in
+        let* α1 := deref α0 (list (ref str)) in
+        let* α2 := borrow α1 (list (ref str)) in
+        let* α3 := pointer_coercion "Unsize" α2 in
+        let* α4 := borrow password (ref str) in
+        let* α5 := deref α4 (ref str) in
+        let* α6 := borrow α5 (ref str) in
+        let* α7 := core.fmt.rt.Argument::["new_display"] α6 in
+        let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+        let* α9 := deref α8 (list core.fmt.rt.Argument) in
+        let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+        let* α11 := pointer_coercion "Unsize" α10 in
+        let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+        std.io.stdio._print α12 in
+      M.alloc tt in
+    let* _ :=
+      let* _ :=
+        let* α0 := borrow [ mk_str "Attempting logon...
 " ] (list (ref str)) in
         let* α1 := deref α0 (list (ref str)) in
         let* α2 := borrow α1 (list (ref str)) in
@@ -297,159 +257,206 @@ Definition try_logon
         let* α4 := core.fmt.Arguments::["new_const"] α3 in
         std.io.stdio._print α4 in
       M.alloc tt in
-    let* _ :=
+    let* logon :=
+      let* α0 := deref username str in
+      let* α1 := borrow α0 str in
+      let* α2 := deref password str in
+      let* α3 := borrow α2 str in
+      M.alloc
+        {|
+          hash_map_alternate_or_custom_key_types.Account.username := α1;
+          hash_map_alternate_or_custom_key_types.Account.password := α3;
+        |} in
+    let* α0 :=
+      deref
+        accounts
+        (std.collections.hash.map.HashMap
+          hash_map_alternate_or_custom_key_types.Account
+          hash_map_alternate_or_custom_key_types.AccountInfo
+          std.collections.hash.map.RandomState) in
+    let* α1 :=
+      borrow
+        α0
+        (std.collections.hash.map.HashMap
+          hash_map_alternate_or_custom_key_types.Account
+          hash_map_alternate_or_custom_key_types.AccountInfo
+          std.collections.hash.map.RandomState) in
+    let* α2 := borrow logon hash_map_alternate_or_custom_key_types.Account in
+    let* α3 := deref α2 hash_map_alternate_or_custom_key_types.Account in
+    let* α4 := borrow α3 hash_map_alternate_or_custom_key_types.Account in
+    let* α5 :=
+      (std.collections.hash.map.HashMap
+            hash_map_alternate_or_custom_key_types.Account
+            hash_map_alternate_or_custom_key_types.AccountInfo
+            std.collections.hash.map.RandomState)::["get"]
+        α1
+        α4 in
+    match α5 with
+    | core.option.Option account_info =>
       let* _ :=
-        let* α0 := borrow [ mk_str "Name: "; mk_str "
+        let* _ :=
+          let* α0 := borrow [ mk_str "Successful logon!
+" ] (list (ref str)) in
+          let* α1 := deref α0 (list (ref str)) in
+          let* α2 := borrow α1 (list (ref str)) in
+          let* α3 := pointer_coercion "Unsize" α2 in
+          let* α4 := core.fmt.Arguments::["new_const"] α3 in
+          std.io.stdio._print α4 in
+        M.alloc tt in
+      let* _ :=
+        let* _ :=
+          let* α0 := borrow [ mk_str "Name: "; mk_str "
+" ] (list (ref str)) in
+          let* α1 := deref α0 (list (ref str)) in
+          let* α2 := borrow α1 (list (ref str)) in
+          let* α3 := pointer_coercion "Unsize" α2 in
+          let* α4 :=
+            deref
+              account_info
+              hash_map_alternate_or_custom_key_types.AccountInfo in
+          let* α5 := α4.["name"] in
+          let* α6 := borrow α5 (ref str) in
+          let* α7 := deref α6 (ref str) in
+          let* α8 := borrow α7 (ref str) in
+          let* α9 := core.fmt.rt.Argument::["new_display"] α8 in
+          let* α10 := borrow [ α9 ] (list core.fmt.rt.Argument) in
+          let* α11 := deref α10 (list core.fmt.rt.Argument) in
+          let* α12 := borrow α11 (list core.fmt.rt.Argument) in
+          let* α13 := pointer_coercion "Unsize" α12 in
+          let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
+          std.io.stdio._print α14 in
+        M.alloc tt in
+      let* _ :=
+        let* _ :=
+          let* α0 := borrow [ mk_str "Email: "; mk_str "
+" ] (list (ref str)) in
+          let* α1 := deref α0 (list (ref str)) in
+          let* α2 := borrow α1 (list (ref str)) in
+          let* α3 := pointer_coercion "Unsize" α2 in
+          let* α4 :=
+            deref
+              account_info
+              hash_map_alternate_or_custom_key_types.AccountInfo in
+          let* α5 := α4.["email"] in
+          let* α6 := borrow α5 (ref str) in
+          let* α7 := deref α6 (ref str) in
+          let* α8 := borrow α7 (ref str) in
+          let* α9 := core.fmt.rt.Argument::["new_display"] α8 in
+          let* α10 := borrow [ α9 ] (list core.fmt.rt.Argument) in
+          let* α11 := deref α10 (list core.fmt.rt.Argument) in
+          let* α12 := borrow α11 (list core.fmt.rt.Argument) in
+          let* α13 := pointer_coercion "Unsize" α12 in
+          let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
+          std.io.stdio._print α14 in
+        M.alloc tt in
+      M.alloc tt
+    | _ =>
+      let* _ :=
+        let* α0 := borrow [ mk_str "Login failed!
 " ] (list (ref str)) in
         let* α1 := deref α0 (list (ref str)) in
         let* α2 := borrow α1 (list (ref str)) in
         let* α3 := pointer_coercion "Unsize" α2 in
-        let* α4 :=
-          deref
-            account_info
-            hash_map_alternate_or_custom_key_types.AccountInfo in
-        let* α5 := α4.["name"] in
-        let* α6 := borrow α5 (ref str) in
-        let* α7 := deref α6 (ref str) in
-        let* α8 := borrow α7 (ref str) in
-        let* α9 := core.fmt.rt.Argument::["new_display"] α8 in
-        let* α10 := borrow [ α9 ] (list core.fmt.rt.Argument) in
-        let* α11 := deref α10 (list core.fmt.rt.Argument) in
-        let* α12 := borrow α11 (list core.fmt.rt.Argument) in
-        let* α13 := pointer_coercion "Unsize" α12 in
-        let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
-        std.io.stdio._print α14 in
-      M.alloc tt in
-    let* _ :=
-      let* _ :=
-        let* α0 := borrow [ mk_str "Email: "; mk_str "
-" ] (list (ref str)) in
-        let* α1 := deref α0 (list (ref str)) in
-        let* α2 := borrow α1 (list (ref str)) in
-        let* α3 := pointer_coercion "Unsize" α2 in
-        let* α4 :=
-          deref
-            account_info
-            hash_map_alternate_or_custom_key_types.AccountInfo in
-        let* α5 := α4.["email"] in
-        let* α6 := borrow α5 (ref str) in
-        let* α7 := deref α6 (ref str) in
-        let* α8 := borrow α7 (ref str) in
-        let* α9 := core.fmt.rt.Argument::["new_display"] α8 in
-        let* α10 := borrow [ α9 ] (list core.fmt.rt.Argument) in
-        let* α11 := deref α10 (list core.fmt.rt.Argument) in
-        let* α12 := borrow α11 (list core.fmt.rt.Argument) in
-        let* α13 := pointer_coercion "Unsize" α12 in
-        let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
-        std.io.stdio._print α14 in
-      M.alloc tt in
-    M.alloc tt
-  | _ =>
-    let* _ :=
-      let* α0 := borrow [ mk_str "Login failed!
-" ] (list (ref str)) in
-      let* α1 := deref α0 (list (ref str)) in
-      let* α2 := borrow α1 (list (ref str)) in
-      let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := core.fmt.Arguments::["new_const"] α3 in
-      std.io.stdio._print α4 in
-    M.alloc tt
-  end.
+        let* α4 := core.fmt.Arguments::["new_const"] α3 in
+        std.io.stdio._print α4 in
+      M.alloc tt
+    end).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
-  let* accounts :=
-    (std.collections.hash.map.HashMap
-        hash_map_alternate_or_custom_key_types.Account
-        hash_map_alternate_or_custom_key_types.AccountInfo
-        std.collections.hash.map.RandomState)::["new"] in
-  let* account :=
-    let* α0 := deref (mk_str "j.everyman") str in
-    let* α1 := borrow α0 str in
-    let* α2 := deref (mk_str "password123") str in
-    let* α3 := borrow α2 str in
-    M.alloc
-      {|
-        hash_map_alternate_or_custom_key_types.Account.username := α1;
-        hash_map_alternate_or_custom_key_types.Account.password := α3;
-      |} in
-  let* account_info :=
-    let* α0 := deref (mk_str "John Everyman") str in
-    let* α1 := borrow α0 str in
-    let* α2 := deref (mk_str "j.everyman@email.com") str in
-    let* α3 := borrow α2 str in
-    M.alloc
-      {|
-        hash_map_alternate_or_custom_key_types.AccountInfo.name := α1;
-        hash_map_alternate_or_custom_key_types.AccountInfo.email := α3;
-      |} in
-  let* _ :=
-    let* α0 :=
-      borrow_mut
-        accounts
-        (std.collections.hash.map.HashMap
+  M.function_body
+    (let* accounts :=
+      (std.collections.hash.map.HashMap
           hash_map_alternate_or_custom_key_types.Account
           hash_map_alternate_or_custom_key_types.AccountInfo
-          std.collections.hash.map.RandomState) in
-    (std.collections.hash.map.HashMap
-          hash_map_alternate_or_custom_key_types.Account
-          hash_map_alternate_or_custom_key_types.AccountInfo
-          std.collections.hash.map.RandomState)::["insert"]
-      α0
-      account
-      account_info in
-  let* _ :=
-    let* α0 :=
-      borrow
-        accounts
-        (std.collections.hash.map.HashMap
-          hash_map_alternate_or_custom_key_types.Account
-          hash_map_alternate_or_custom_key_types.AccountInfo
-          std.collections.hash.map.RandomState) in
-    let* α1 :=
-      deref
+          std.collections.hash.map.RandomState)::["new"] in
+    let* account :=
+      let* α0 := deref (mk_str "j.everyman") str in
+      let* α1 := borrow α0 str in
+      let* α2 := deref (mk_str "password123") str in
+      let* α3 := borrow α2 str in
+      M.alloc
+        {|
+          hash_map_alternate_or_custom_key_types.Account.username := α1;
+          hash_map_alternate_or_custom_key_types.Account.password := α3;
+        |} in
+    let* account_info :=
+      let* α0 := deref (mk_str "John Everyman") str in
+      let* α1 := borrow α0 str in
+      let* α2 := deref (mk_str "j.everyman@email.com") str in
+      let* α3 := borrow α2 str in
+      M.alloc
+        {|
+          hash_map_alternate_or_custom_key_types.AccountInfo.name := α1;
+          hash_map_alternate_or_custom_key_types.AccountInfo.email := α3;
+        |} in
+    let* _ :=
+      let* α0 :=
+        borrow_mut
+          accounts
+          (std.collections.hash.map.HashMap
+            hash_map_alternate_or_custom_key_types.Account
+            hash_map_alternate_or_custom_key_types.AccountInfo
+            std.collections.hash.map.RandomState) in
+      (std.collections.hash.map.HashMap
+            hash_map_alternate_or_custom_key_types.Account
+            hash_map_alternate_or_custom_key_types.AccountInfo
+            std.collections.hash.map.RandomState)::["insert"]
         α0
-        (std.collections.hash.map.HashMap
-          hash_map_alternate_or_custom_key_types.Account
-          hash_map_alternate_or_custom_key_types.AccountInfo
-          std.collections.hash.map.RandomState) in
-    let* α2 :=
-      borrow
-        α1
-        (std.collections.hash.map.HashMap
-          hash_map_alternate_or_custom_key_types.Account
-          hash_map_alternate_or_custom_key_types.AccountInfo
-          std.collections.hash.map.RandomState) in
-    let* α3 := deref (mk_str "j.everyman") str in
-    let* α4 := borrow α3 str in
-    let* α5 := deref (mk_str "psasword123") str in
-    let* α6 := borrow α5 str in
-    hash_map_alternate_or_custom_key_types.try_logon α2 α4 α6 in
-  let* _ :=
-    let* α0 :=
-      borrow
-        accounts
-        (std.collections.hash.map.HashMap
-          hash_map_alternate_or_custom_key_types.Account
-          hash_map_alternate_or_custom_key_types.AccountInfo
-          std.collections.hash.map.RandomState) in
-    let* α1 :=
-      deref
-        α0
-        (std.collections.hash.map.HashMap
-          hash_map_alternate_or_custom_key_types.Account
-          hash_map_alternate_or_custom_key_types.AccountInfo
-          std.collections.hash.map.RandomState) in
-    let* α2 :=
-      borrow
-        α1
-        (std.collections.hash.map.HashMap
-          hash_map_alternate_or_custom_key_types.Account
-          hash_map_alternate_or_custom_key_types.AccountInfo
-          std.collections.hash.map.RandomState) in
-    let* α3 := deref (mk_str "j.everyman") str in
-    let* α4 := borrow α3 str in
-    let* α5 := deref (mk_str "password123") str in
-    let* α6 := borrow α5 str in
-    hash_map_alternate_or_custom_key_types.try_logon α2 α4 α6 in
-  M.alloc tt.
+        account
+        account_info in
+    let* _ :=
+      let* α0 :=
+        borrow
+          accounts
+          (std.collections.hash.map.HashMap
+            hash_map_alternate_or_custom_key_types.Account
+            hash_map_alternate_or_custom_key_types.AccountInfo
+            std.collections.hash.map.RandomState) in
+      let* α1 :=
+        deref
+          α0
+          (std.collections.hash.map.HashMap
+            hash_map_alternate_or_custom_key_types.Account
+            hash_map_alternate_or_custom_key_types.AccountInfo
+            std.collections.hash.map.RandomState) in
+      let* α2 :=
+        borrow
+          α1
+          (std.collections.hash.map.HashMap
+            hash_map_alternate_or_custom_key_types.Account
+            hash_map_alternate_or_custom_key_types.AccountInfo
+            std.collections.hash.map.RandomState) in
+      let* α3 := deref (mk_str "j.everyman") str in
+      let* α4 := borrow α3 str in
+      let* α5 := deref (mk_str "psasword123") str in
+      let* α6 := borrow α5 str in
+      hash_map_alternate_or_custom_key_types.try_logon α2 α4 α6 in
+    let* _ :=
+      let* α0 :=
+        borrow
+          accounts
+          (std.collections.hash.map.HashMap
+            hash_map_alternate_or_custom_key_types.Account
+            hash_map_alternate_or_custom_key_types.AccountInfo
+            std.collections.hash.map.RandomState) in
+      let* α1 :=
+        deref
+          α0
+          (std.collections.hash.map.HashMap
+            hash_map_alternate_or_custom_key_types.Account
+            hash_map_alternate_or_custom_key_types.AccountInfo
+            std.collections.hash.map.RandomState) in
+      let* α2 :=
+        borrow
+          α1
+          (std.collections.hash.map.HashMap
+            hash_map_alternate_or_custom_key_types.Account
+            hash_map_alternate_or_custom_key_types.AccountInfo
+            std.collections.hash.map.RandomState) in
+      let* α3 := deref (mk_str "j.everyman") str in
+      let* α4 := borrow α3 str in
+      let* α5 := deref (mk_str "password123") str in
+      let* α6 := borrow α5 str in
+      hash_map_alternate_or_custom_key_types.try_logon α2 α4 α6 in
+    M.alloc tt).

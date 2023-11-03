@@ -51,11 +51,12 @@ Section Impl_generics_implementation_Val.
   Definition Self : Set := generics_implementation.Val.
   
   Definition value (self : ref Self) : M (ref f64) :=
-    let* α0 := deref self generics_implementation.Val in
-    let* α1 := α0.["val"] in
-    let* α2 := borrow α1 f64 in
-    let* α3 := deref α2 f64 in
-    borrow α3 f64.
+    M.function_body
+      (let* α0 := deref self generics_implementation.Val in
+      let* α1 := α0.["val"] in
+      let* α2 := borrow α1 f64 in
+      let* α3 := deref α2 f64 in
+      borrow α3 f64).
   
   Global Instance AssociatedFunction_value :
     Notation.DoubleColon Self "value" := {
@@ -73,11 +74,12 @@ Section Impl_generics_implementation_GenVal_T.
   Definition Self : Set := generics_implementation.GenVal T.
   
   Definition value (self : ref Self) : M (ref T) :=
-    let* α0 := deref self (generics_implementation.GenVal T) in
-    let* α1 := α0.["gen_val"] in
-    let* α2 := borrow α1 T in
-    let* α3 := deref α2 T in
-    borrow α3 T.
+    M.function_body
+      (let* α0 := deref self (generics_implementation.GenVal T) in
+      let* α1 := α0.["gen_val"] in
+      let* α2 := borrow α1 T in
+      let* α3 := deref α2 T in
+      borrow α3 T).
   
   Global Instance AssociatedFunction_value :
     Notation.DoubleColon Self "value" := {
@@ -88,37 +90,38 @@ End Impl_generics_implementation_GenVal_T.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
-  let* x :=
-    let* α0 := M.alloc 3 (* 3.0 *) in
-    M.alloc {| generics_implementation.Val.val := α0; |} in
-  let* y :=
-    let* α0 := M.alloc 3 in
-    M.alloc {| generics_implementation.GenVal.gen_val := α0; |} in
-  let* _ :=
+  M.function_body
+    (let* x :=
+      let* α0 := M.alloc 3 (* 3.0 *) in
+      M.alloc {| generics_implementation.Val.val := α0; |} in
+    let* y :=
+      let* α0 := M.alloc 3 in
+      M.alloc {| generics_implementation.GenVal.gen_val := α0; |} in
     let* _ :=
-      let* α0 :=
-        borrow [ mk_str ""; mk_str ", "; mk_str "
+      let* _ :=
+        let* α0 :=
+          borrow [ mk_str ""; mk_str ", "; mk_str "
 " ] (list (ref str)) in
-      let* α1 := deref α0 (list (ref str)) in
-      let* α2 := borrow α1 (list (ref str)) in
-      let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := borrow x generics_implementation.Val in
-      let* α5 := generics_implementation.Val::["value"] α4 in
-      let* α6 := borrow α5 (ref f64) in
-      let* α7 := deref α6 (ref f64) in
-      let* α8 := borrow α7 (ref f64) in
-      let* α9 := core.fmt.rt.Argument::["new_display"] α8 in
-      let* α10 := borrow y (generics_implementation.GenVal i32) in
-      let* α11 := (generics_implementation.GenVal i32)::["value"] α10 in
-      let* α12 := borrow α11 (ref i32) in
-      let* α13 := deref α12 (ref i32) in
-      let* α14 := borrow α13 (ref i32) in
-      let* α15 := core.fmt.rt.Argument::["new_display"] α14 in
-      let* α16 := borrow [ α9; α15 ] (list core.fmt.rt.Argument) in
-      let* α17 := deref α16 (list core.fmt.rt.Argument) in
-      let* α18 := borrow α17 (list core.fmt.rt.Argument) in
-      let* α19 := pointer_coercion "Unsize" α18 in
-      let* α20 := core.fmt.Arguments::["new_v1"] α3 α19 in
-      std.io.stdio._print α20 in
-    M.alloc tt in
-  M.alloc tt.
+        let* α1 := deref α0 (list (ref str)) in
+        let* α2 := borrow α1 (list (ref str)) in
+        let* α3 := pointer_coercion "Unsize" α2 in
+        let* α4 := borrow x generics_implementation.Val in
+        let* α5 := generics_implementation.Val::["value"] α4 in
+        let* α6 := borrow α5 (ref f64) in
+        let* α7 := deref α6 (ref f64) in
+        let* α8 := borrow α7 (ref f64) in
+        let* α9 := core.fmt.rt.Argument::["new_display"] α8 in
+        let* α10 := borrow y (generics_implementation.GenVal i32) in
+        let* α11 := (generics_implementation.GenVal i32)::["value"] α10 in
+        let* α12 := borrow α11 (ref i32) in
+        let* α13 := deref α12 (ref i32) in
+        let* α14 := borrow α13 (ref i32) in
+        let* α15 := core.fmt.rt.Argument::["new_display"] α14 in
+        let* α16 := borrow [ α9; α15 ] (list core.fmt.rt.Argument) in
+        let* α17 := deref α16 (list core.fmt.rt.Argument) in
+        let* α18 := borrow α17 (list core.fmt.rt.Argument) in
+        let* α19 := pointer_coercion "Unsize" α18 in
+        let* α20 := core.fmt.Arguments::["new_v1"] α3 α19 in
+        std.io.stdio._print α20 in
+      M.alloc tt in
+    M.alloc tt).

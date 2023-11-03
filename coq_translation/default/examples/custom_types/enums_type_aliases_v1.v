@@ -14,6 +14,8 @@ Ltac Operations :=
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
-  let* x :=
-    M.alloc enums_type_aliases_v1.VeryVerboseEnumOfThingsToDoWithNumbers.Add in
-  M.alloc tt.
+  M.function_body
+    (let* x :=
+      M.alloc
+        enums_type_aliases_v1.VeryVerboseEnumOfThingsToDoWithNumbers.Add in
+    M.alloc tt).

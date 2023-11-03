@@ -59,7 +59,8 @@ Module my.
     Definition Self : Set := struct_visibility.my.ClosedBox T.
     
     Definition new (contents : T) : M (struct_visibility.my.ClosedBox T) :=
-      M.alloc {| struct_visibility.my.ClosedBox.contents := contents; |}.
+      M.function_body
+        (M.alloc {| struct_visibility.my.ClosedBox.contents := contents; |}).
     
     Global Instance AssociatedFunction_new :
       Notation.DoubleColon Self "new" := {
@@ -124,7 +125,8 @@ Section Impl_struct_visibility_my_ClosedBox_T_2.
   Definition Self : Set := struct_visibility.my.ClosedBox T.
   
   Definition new (contents : T) : M (struct_visibility.my.ClosedBox T) :=
-    M.alloc {| struct_visibility.my.ClosedBox.contents := contents; |}.
+    M.function_body
+      (M.alloc {| struct_visibility.my.ClosedBox.contents := contents; |}).
   
   Global Instance AssociatedFunction_new : Notation.DoubleColon Self "new" := {
     Notation.double_colon := new;
@@ -134,33 +136,34 @@ End Impl_struct_visibility_my_ClosedBox_T_2.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
-  let* open_box :=
-    M.alloc
-      {| struct_visibility.my.OpenBox.contents := mk_str "public information";
-      |} in
-  let* _ :=
+  M.function_body
+    (let* open_box :=
+      M.alloc
+        {| struct_visibility.my.OpenBox.contents := mk_str "public information";
+        |} in
     let* _ :=
-      let* α0 :=
-        borrow
-          [ mk_str "The open box contains: "; mk_str "
+      let* _ :=
+        let* α0 :=
+          borrow
+            [ mk_str "The open box contains: "; mk_str "
 " ]
-          (list (ref str)) in
-      let* α1 := deref α0 (list (ref str)) in
-      let* α2 := borrow α1 (list (ref str)) in
-      let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := open_box.["contents"] in
-      let* α5 := borrow α4 (ref str) in
-      let* α6 := deref α5 (ref str) in
-      let* α7 := borrow α6 (ref str) in
-      let* α8 := core.fmt.rt.Argument::["new_display"] α7 in
-      let* α9 := borrow [ α8 ] (list core.fmt.rt.Argument) in
-      let* α10 := deref α9 (list core.fmt.rt.Argument) in
-      let* α11 := borrow α10 (list core.fmt.rt.Argument) in
-      let* α12 := pointer_coercion "Unsize" α11 in
-      let* α13 := core.fmt.Arguments::["new_v1"] α3 α12 in
-      std.io.stdio._print α13 in
-    M.alloc tt in
-  let* _closed_box :=
-    (struct_visibility.my.ClosedBox (ref str))::["new"]
-      (mk_str "classified information") in
-  M.alloc tt.
+            (list (ref str)) in
+        let* α1 := deref α0 (list (ref str)) in
+        let* α2 := borrow α1 (list (ref str)) in
+        let* α3 := pointer_coercion "Unsize" α2 in
+        let* α4 := open_box.["contents"] in
+        let* α5 := borrow α4 (ref str) in
+        let* α6 := deref α5 (ref str) in
+        let* α7 := borrow α6 (ref str) in
+        let* α8 := core.fmt.rt.Argument::["new_display"] α7 in
+        let* α9 := borrow [ α8 ] (list core.fmt.rt.Argument) in
+        let* α10 := deref α9 (list core.fmt.rt.Argument) in
+        let* α11 := borrow α10 (list core.fmt.rt.Argument) in
+        let* α12 := pointer_coercion "Unsize" α11 in
+        let* α13 := core.fmt.Arguments::["new_v1"] α3 α12 in
+        std.io.stdio._print α13 in
+      M.alloc tt in
+    let* _closed_box :=
+      (struct_visibility.my.ClosedBox (ref str))::["new"]
+        (mk_str "classified information") in
+    M.alloc tt).

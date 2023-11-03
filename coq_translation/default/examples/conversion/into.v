@@ -28,7 +28,7 @@ Section Impl_core_convert_From_i32_for_into_Number.
   Definition Self : Set := into.Number.
   
   Definition from (item : i32) : M Self :=
-    M.alloc {| into.Number.value := item; |}.
+    M.function_body (M.alloc {| into.Number.value := item; |}).
   
   Global Instance AssociatedFunction_from :
     Notation.DoubleColon Self "from" := {
@@ -43,7 +43,8 @@ End Impl_core_convert_From_i32_for_into_Number.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
-  let* _ :=
-    let* α0 := M.alloc 5 in
-    (core.convert.Into.into (Self := i32) (Trait := ltac:(refine _))) α0 in
-  M.alloc tt.
+  M.function_body
+    (let* _ :=
+      let* α0 := M.alloc 5 in
+      (core.convert.Into.into (Self := i32) (Trait := ltac:(refine _))) α0 in
+    M.alloc tt).

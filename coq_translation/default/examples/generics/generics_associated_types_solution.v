@@ -59,25 +59,26 @@ Section Impl_generics_associated_types_solution_Contains_for_generics_associated
       (number_1 : ref i32)
       (number_2 : ref i32)
       : M bool :=
-    let* α0 := deref self generics_associated_types_solution.Container in
-    let* α1 := α0.["0"] in
-    let* α2 := borrow α1 i32 in
-    let* α3 := borrow α2 (ref i32) in
-    let* α4 := borrow number_1 (ref i32) in
-    let* α5 :=
-      (core.cmp.PartialEq.eq (Self := ref i32) (Trait := ltac:(refine _)))
-        α3
-        α4 in
-    let* α6 := deref self generics_associated_types_solution.Container in
-    let* α7 := α6.["1"] in
-    let* α8 := borrow α7 i32 in
-    let* α9 := borrow α8 (ref i32) in
-    let* α10 := borrow number_2 (ref i32) in
-    let* α11 :=
-      (core.cmp.PartialEq.eq (Self := ref i32) (Trait := ltac:(refine _)))
-        α9
-        α10 in
-    BinOp.and α5 α11.
+    M.function_body
+      (let* α0 := deref self generics_associated_types_solution.Container in
+      let* α1 := α0.["0"] in
+      let* α2 := borrow α1 i32 in
+      let* α3 := borrow α2 (ref i32) in
+      let* α4 := borrow number_1 (ref i32) in
+      let* α5 :=
+        (core.cmp.PartialEq.eq (Self := ref i32) (Trait := ltac:(refine _)))
+          α3
+          α4 in
+      let* α6 := deref self generics_associated_types_solution.Container in
+      let* α7 := α6.["1"] in
+      let* α8 := borrow α7 i32 in
+      let* α9 := borrow α8 (ref i32) in
+      let* α10 := borrow number_2 (ref i32) in
+      let* α11 :=
+        (core.cmp.PartialEq.eq (Self := ref i32) (Trait := ltac:(refine _)))
+          α9
+          α10 in
+      BinOp.and α5 α11).
   
   Global Instance AssociatedFunction_contains :
     Notation.DoubleColon Self "contains" := {
@@ -85,8 +86,9 @@ Section Impl_generics_associated_types_solution_Contains_for_generics_associated
   }.
   
   Definition first (self : ref Self) : M i32 :=
-    let* α0 := deref self generics_associated_types_solution.Container in
-    α0.["0"].
+    M.function_body
+      (let* α0 := deref self generics_associated_types_solution.Container in
+      α0.["0"]).
   
   Global Instance AssociatedFunction_first :
     Notation.DoubleColon Self "first" := {
@@ -94,8 +96,9 @@ Section Impl_generics_associated_types_solution_Contains_for_generics_associated
   }.
   
   Definition last (self : ref Self) : M i32 :=
-    let* α0 := deref self generics_associated_types_solution.Container in
-    α0.["1"].
+    M.function_body
+      (let* α0 := deref self generics_associated_types_solution.Container in
+      α0.["1"]).
   
   Global Instance AssociatedFunction_last :
     Notation.DoubleColon Self "last" := {
@@ -103,8 +106,9 @@ Section Impl_generics_associated_types_solution_Contains_for_generics_associated
   }.
   
   Definition a (self : ref Self) : M i32 :=
-    let* α0 := deref self generics_associated_types_solution.Container in
-    α0.["0"].
+    M.function_body
+      (let* α0 := deref self generics_associated_types_solution.Container in
+      α0.["0"]).
   
   Global Instance AssociatedFunction_a : Notation.DoubleColon Self "a" := {
     Notation.double_colon := a;
@@ -128,21 +132,22 @@ Definition difference
     {ℋ_0 : generics_associated_types_solution.Contains.Trait C}
     (container : ref C)
     : M i32 :=
-  let* α0 := deref container C in
-  let* α1 := borrow α0 C in
-  let* α2 :=
-    (generics_associated_types_solution.Contains.last
-        (Self := C)
-        (Trait := ltac:(refine _)))
-      α1 in
-  let* α3 := deref container C in
-  let* α4 := borrow α3 C in
-  let* α5 :=
-    (generics_associated_types_solution.Contains.first
-        (Self := C)
-        (Trait := ltac:(refine _)))
-      α4 in
-  BinOp.sub α2 α5.
+  M.function_body
+    (let* α0 := deref container C in
+    let* α1 := borrow α0 C in
+    let* α2 :=
+      (generics_associated_types_solution.Contains.last
+          (Self := C)
+          (Trait := ltac:(refine _)))
+        α1 in
+    let* α3 := deref container C in
+    let* α4 := borrow α3 C in
+    let* α5 :=
+      (generics_associated_types_solution.Contains.first
+          (Self := C)
+          (Trait := ltac:(refine _)))
+        α4 in
+    BinOp.sub α2 α5).
 
 Definition get_a
     `{ℋ : State.Trait}
@@ -150,147 +155,151 @@ Definition get_a
     {ℋ_0 : generics_associated_types_solution.Contains.Trait C}
     (container : ref C)
     : M C::type["A"] :=
-  let* α0 := deref container C in
-  let* α1 := borrow α0 C in
-  (generics_associated_types_solution.Contains.a
-      (Self := C)
-      (Trait := ltac:(refine _)))
-    α1.
+  M.function_body
+    (let* α0 := deref container C in
+    let* α1 := borrow α0 C in
+    (generics_associated_types_solution.Contains.a
+        (Self := C)
+        (Trait := ltac:(refine _)))
+      α1).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
-  let* number_1 := M.alloc 3 in
-  let* number_2 := M.alloc 10 in
-  let* container :=
-    M.alloc
-      (generics_associated_types_solution.Container.Build_t
-        number_1
-        number_2) in
-  let* _ :=
+  M.function_body
+    (let* number_1 := M.alloc 3 in
+    let* number_2 := M.alloc 10 in
+    let* container :=
+      M.alloc
+        (generics_associated_types_solution.Container.Build_t
+          number_1
+          number_2) in
     let* _ :=
-      let* α0 :=
-        borrow
-          [
-            mk_str "Does container contain ";
-            mk_str " and ";
-            mk_str ": ";
-            mk_str "
+      let* _ :=
+        let* α0 :=
+          borrow
+            [
+              mk_str "Does container contain ";
+              mk_str " and ";
+              mk_str ": ";
+              mk_str "
 "
-          ]
-          (list (ref str)) in
-      let* α1 := deref α0 (list (ref str)) in
-      let* α2 := borrow α1 (list (ref str)) in
-      let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := borrow number_1 i32 in
-      let* α5 := borrow α4 (ref i32) in
-      let* α6 := deref α5 (ref i32) in
-      let* α7 := borrow α6 (ref i32) in
-      let* α8 := core.fmt.rt.Argument::["new_display"] α7 in
-      let* α9 := borrow number_2 i32 in
-      let* α10 := borrow α9 (ref i32) in
-      let* α11 := deref α10 (ref i32) in
-      let* α12 := borrow α11 (ref i32) in
-      let* α13 := core.fmt.rt.Argument::["new_display"] α12 in
-      let* α14 :=
-        borrow container generics_associated_types_solution.Container in
-      let* α15 := borrow number_1 i32 in
-      let* α16 := deref α15 i32 in
-      let* α17 := borrow α16 i32 in
-      let* α18 := borrow number_2 i32 in
-      let* α19 := deref α18 i32 in
-      let* α20 := borrow α19 i32 in
-      let* α21 :=
-        (generics_associated_types_solution.Contains.contains
-            (Self := generics_associated_types_solution.Container)
-            (Trait := ltac:(refine _)))
-          α14
-          α17
-          α20 in
-      let* α22 := borrow α21 bool in
-      let* α23 := deref α22 bool in
-      let* α24 := borrow α23 bool in
-      let* α25 := core.fmt.rt.Argument::["new_display"] α24 in
-      let* α26 := borrow [ α8; α13; α25 ] (list core.fmt.rt.Argument) in
-      let* α27 := deref α26 (list core.fmt.rt.Argument) in
-      let* α28 := borrow α27 (list core.fmt.rt.Argument) in
-      let* α29 := pointer_coercion "Unsize" α28 in
-      let* α30 := core.fmt.Arguments::["new_v1"] α3 α29 in
-      std.io.stdio._print α30 in
-    M.alloc tt in
-  let* _ :=
+            ]
+            (list (ref str)) in
+        let* α1 := deref α0 (list (ref str)) in
+        let* α2 := borrow α1 (list (ref str)) in
+        let* α3 := pointer_coercion "Unsize" α2 in
+        let* α4 := borrow number_1 i32 in
+        let* α5 := borrow α4 (ref i32) in
+        let* α6 := deref α5 (ref i32) in
+        let* α7 := borrow α6 (ref i32) in
+        let* α8 := core.fmt.rt.Argument::["new_display"] α7 in
+        let* α9 := borrow number_2 i32 in
+        let* α10 := borrow α9 (ref i32) in
+        let* α11 := deref α10 (ref i32) in
+        let* α12 := borrow α11 (ref i32) in
+        let* α13 := core.fmt.rt.Argument::["new_display"] α12 in
+        let* α14 :=
+          borrow container generics_associated_types_solution.Container in
+        let* α15 := borrow number_1 i32 in
+        let* α16 := deref α15 i32 in
+        let* α17 := borrow α16 i32 in
+        let* α18 := borrow number_2 i32 in
+        let* α19 := deref α18 i32 in
+        let* α20 := borrow α19 i32 in
+        let* α21 :=
+          (generics_associated_types_solution.Contains.contains
+              (Self := generics_associated_types_solution.Container)
+              (Trait := ltac:(refine _)))
+            α14
+            α17
+            α20 in
+        let* α22 := borrow α21 bool in
+        let* α23 := deref α22 bool in
+        let* α24 := borrow α23 bool in
+        let* α25 := core.fmt.rt.Argument::["new_display"] α24 in
+        let* α26 := borrow [ α8; α13; α25 ] (list core.fmt.rt.Argument) in
+        let* α27 := deref α26 (list core.fmt.rt.Argument) in
+        let* α28 := borrow α27 (list core.fmt.rt.Argument) in
+        let* α29 := pointer_coercion "Unsize" α28 in
+        let* α30 := core.fmt.Arguments::["new_v1"] α3 α29 in
+        std.io.stdio._print α30 in
+      M.alloc tt in
     let* _ :=
-      let* α0 :=
-        borrow [ mk_str "First number: "; mk_str "
+      let* _ :=
+        let* α0 :=
+          borrow [ mk_str "First number: "; mk_str "
 " ] (list (ref str)) in
-      let* α1 := deref α0 (list (ref str)) in
-      let* α2 := borrow α1 (list (ref str)) in
-      let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 :=
-        borrow container generics_associated_types_solution.Container in
-      let* α5 :=
-        (generics_associated_types_solution.Contains.first
-            (Self := generics_associated_types_solution.Container)
-            (Trait := ltac:(refine _)))
-          α4 in
-      let* α6 := borrow α5 i32 in
-      let* α7 := deref α6 i32 in
-      let* α8 := borrow α7 i32 in
-      let* α9 := core.fmt.rt.Argument::["new_display"] α8 in
-      let* α10 := borrow [ α9 ] (list core.fmt.rt.Argument) in
-      let* α11 := deref α10 (list core.fmt.rt.Argument) in
-      let* α12 := borrow α11 (list core.fmt.rt.Argument) in
-      let* α13 := pointer_coercion "Unsize" α12 in
-      let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
-      std.io.stdio._print α14 in
-    M.alloc tt in
-  let* _ :=
+        let* α1 := deref α0 (list (ref str)) in
+        let* α2 := borrow α1 (list (ref str)) in
+        let* α3 := pointer_coercion "Unsize" α2 in
+        let* α4 :=
+          borrow container generics_associated_types_solution.Container in
+        let* α5 :=
+          (generics_associated_types_solution.Contains.first
+              (Self := generics_associated_types_solution.Container)
+              (Trait := ltac:(refine _)))
+            α4 in
+        let* α6 := borrow α5 i32 in
+        let* α7 := deref α6 i32 in
+        let* α8 := borrow α7 i32 in
+        let* α9 := core.fmt.rt.Argument::["new_display"] α8 in
+        let* α10 := borrow [ α9 ] (list core.fmt.rt.Argument) in
+        let* α11 := deref α10 (list core.fmt.rt.Argument) in
+        let* α12 := borrow α11 (list core.fmt.rt.Argument) in
+        let* α13 := pointer_coercion "Unsize" α12 in
+        let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
+        std.io.stdio._print α14 in
+      M.alloc tt in
     let* _ :=
-      let* α0 :=
-        borrow [ mk_str "Last number: "; mk_str "
+      let* _ :=
+        let* α0 :=
+          borrow [ mk_str "Last number: "; mk_str "
 " ] (list (ref str)) in
-      let* α1 := deref α0 (list (ref str)) in
-      let* α2 := borrow α1 (list (ref str)) in
-      let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 :=
-        borrow container generics_associated_types_solution.Container in
-      let* α5 :=
-        (generics_associated_types_solution.Contains.last
-            (Self := generics_associated_types_solution.Container)
-            (Trait := ltac:(refine _)))
-          α4 in
-      let* α6 := borrow α5 i32 in
-      let* α7 := deref α6 i32 in
-      let* α8 := borrow α7 i32 in
-      let* α9 := core.fmt.rt.Argument::["new_display"] α8 in
-      let* α10 := borrow [ α9 ] (list core.fmt.rt.Argument) in
-      let* α11 := deref α10 (list core.fmt.rt.Argument) in
-      let* α12 := borrow α11 (list core.fmt.rt.Argument) in
-      let* α13 := pointer_coercion "Unsize" α12 in
-      let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
-      std.io.stdio._print α14 in
-    M.alloc tt in
-  let* _ :=
+        let* α1 := deref α0 (list (ref str)) in
+        let* α2 := borrow α1 (list (ref str)) in
+        let* α3 := pointer_coercion "Unsize" α2 in
+        let* α4 :=
+          borrow container generics_associated_types_solution.Container in
+        let* α5 :=
+          (generics_associated_types_solution.Contains.last
+              (Self := generics_associated_types_solution.Container)
+              (Trait := ltac:(refine _)))
+            α4 in
+        let* α6 := borrow α5 i32 in
+        let* α7 := deref α6 i32 in
+        let* α8 := borrow α7 i32 in
+        let* α9 := core.fmt.rt.Argument::["new_display"] α8 in
+        let* α10 := borrow [ α9 ] (list core.fmt.rt.Argument) in
+        let* α11 := deref α10 (list core.fmt.rt.Argument) in
+        let* α12 := borrow α11 (list core.fmt.rt.Argument) in
+        let* α13 := pointer_coercion "Unsize" α12 in
+        let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
+        std.io.stdio._print α14 in
+      M.alloc tt in
     let* _ :=
-      let* α0 :=
-        borrow [ mk_str "The difference is: "; mk_str "
-" ] (list (ref str)) in
-      let* α1 := deref α0 (list (ref str)) in
-      let* α2 := borrow α1 (list (ref str)) in
-      let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 :=
-        borrow container generics_associated_types_solution.Container in
-      let* α5 := deref α4 generics_associated_types_solution.Container in
-      let* α6 := borrow α5 generics_associated_types_solution.Container in
-      let* α7 := generics_associated_types_solution.difference α6 in
-      let* α8 := borrow α7 i32 in
-      let* α9 := deref α8 i32 in
-      let* α10 := borrow α9 i32 in
-      let* α11 := core.fmt.rt.Argument::["new_display"] α10 in
-      let* α12 := borrow [ α11 ] (list core.fmt.rt.Argument) in
-      let* α13 := deref α12 (list core.fmt.rt.Argument) in
-      let* α14 := borrow α13 (list core.fmt.rt.Argument) in
-      let* α15 := pointer_coercion "Unsize" α14 in
-      let* α16 := core.fmt.Arguments::["new_v1"] α3 α15 in
-      std.io.stdio._print α16 in
-    M.alloc tt in
-  M.alloc tt.
+      let* _ :=
+        let* α0 :=
+          borrow
+            [ mk_str "The difference is: "; mk_str "
+" ]
+            (list (ref str)) in
+        let* α1 := deref α0 (list (ref str)) in
+        let* α2 := borrow α1 (list (ref str)) in
+        let* α3 := pointer_coercion "Unsize" α2 in
+        let* α4 :=
+          borrow container generics_associated_types_solution.Container in
+        let* α5 := deref α4 generics_associated_types_solution.Container in
+        let* α6 := borrow α5 generics_associated_types_solution.Container in
+        let* α7 := generics_associated_types_solution.difference α6 in
+        let* α8 := borrow α7 i32 in
+        let* α9 := deref α8 i32 in
+        let* α10 := borrow α9 i32 in
+        let* α11 := core.fmt.rt.Argument::["new_display"] α10 in
+        let* α12 := borrow [ α11 ] (list core.fmt.rt.Argument) in
+        let* α13 := deref α12 (list core.fmt.rt.Argument) in
+        let* α14 := borrow α13 (list core.fmt.rt.Argument) in
+        let* α15 := pointer_coercion "Unsize" α14 in
+        let* α16 := core.fmt.Arguments::["new_v1"] α3 α15 in
+        std.io.stdio._print α16 in
+      M.alloc tt in
+    M.alloc tt).

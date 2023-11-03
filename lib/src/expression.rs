@@ -64,6 +64,12 @@ pub(crate) enum Expr {
         func: Box<Expr>,
         args: Vec<Expr>,
     },
+    /// An operator that takes one argument that is supposed to be in monadic
+    /// form once the monadic translation is done.
+    MonadicOperator {
+        name: String,
+        arg: Box<Expr>,
+    },
     MethodCall {
         object: Box<Expr>,
         func: String,
@@ -363,6 +369,16 @@ pub(crate) fn mt_expression(fresh_vars: FreshVars, expr: Expr) -> (Stmt, FreshVa
                 }),
             )
         }),
+        Expr::MonadicOperator { name, arg } => {
+            let (arg, fresh_vars) = mt_expression(fresh_vars, *arg);
+            (
+                Stmt::Expr(Box::new(Expr::MonadicOperator {
+                    name,
+                    arg: Box::new(Expr::Block(Box::new(arg))),
+                })),
+                fresh_vars,
+            )
+        }
         Expr::MethodCall {
             object,
             func,
@@ -1143,6 +1159,9 @@ impl Expr {
                         ]),
                     )
                 }
+            }
+            Expr::MonadicOperator { name, arg } => {
+                paren(with_paren, nest([text(name), line(), arg.to_doc(true)]))
             }
             Expr::MethodCall {
                 object,

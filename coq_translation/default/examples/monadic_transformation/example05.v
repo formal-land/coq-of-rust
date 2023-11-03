@@ -25,9 +25,10 @@ Section Impl_example05_Foo.
   Definition Self : Set := example05.Foo.
   
   Definition plus1 (self : Self) : M u32 :=
-    let* α0 := self.["0"] in
-    let* α1 := M.alloc 1 in
-    BinOp.add α0 α1.
+    M.function_body
+      (let* α0 := self.["0"] in
+      let* α1 := M.alloc 1 in
+      BinOp.add α0 α1).
   
   Global Instance AssociatedFunction_plus1 :
     Notation.DoubleColon Self "plus1" := {
@@ -38,8 +39,9 @@ End Impl_example05_Foo.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
-  let* foo :=
-    let* α0 := M.alloc 0 in
-    M.alloc (example05.Foo.Build_t α0) in
-  let* _ := example05.Foo::["plus1"] foo in
-  M.alloc tt.
+  M.function_body
+    (let* foo :=
+      let* α0 := M.alloc 0 in
+      M.alloc (example05.Foo.Build_t α0) in
+    let* _ := example05.Foo::["plus1"] foo in
+    M.alloc tt).

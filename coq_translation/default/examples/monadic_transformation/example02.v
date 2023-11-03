@@ -3,34 +3,35 @@ Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
-  let* _ :=
-    let* α0 := M.alloc 1 in
-    match α0 with
-    | _ => M.alloc false
-    | _ => M.alloc true
-    end in
-  let* _ :=
-    let* α0 := M.alloc true in
-    let* α1 := use α0 in
-    if (α1 : bool) then
-      M.alloc 0
-    else
-      M.alloc 1 in
-  let* _ :=
-    let* α0 := M.alloc false in
-    let* α1 := use α0 in
-    if (α1 : bool) then
-      M.alloc 2
-    else
+  M.function_body
+    (let* _ :=
+      let* α0 := M.alloc 1 in
+      match α0 with
+      | _ => M.alloc false
+      | _ => M.alloc true
+      end in
+    let* _ :=
+      let* α0 := M.alloc true in
+      let* α1 := use α0 in
+      if (α1 : bool) then
+        M.alloc 0
+      else
+        M.alloc 1 in
+    let* _ :=
       let* α0 := M.alloc false in
       let* α1 := use α0 in
       if (α1 : bool) then
-        M.alloc 3
+        M.alloc 2
       else
         let* α0 := M.alloc false in
         let* α1 := use α0 in
         if (α1 : bool) then
-          M.alloc 4
+          M.alloc 3
         else
-          M.alloc 5 in
-  M.alloc tt.
+          let* α0 := M.alloc false in
+          let* α1 := use α0 in
+          if (α1 : bool) then
+            M.alloc 4
+          else
+            M.alloc 5 in
+    M.alloc tt).

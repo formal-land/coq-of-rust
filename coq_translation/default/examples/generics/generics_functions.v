@@ -47,47 +47,48 @@ End SGen.
 Definition SGen `{ℋ : State.Trait} (T : Set) : Set := M.Val (SGen.t (T := T)).
 
 Definition reg_fn `{ℋ : State.Trait} (_s : generics_functions.S) : M unit :=
-  M.alloc tt.
+  M.function_body (M.alloc tt).
 
 Definition gen_spec_t
     `{ℋ : State.Trait}
     (_s : generics_functions.SGen generics_functions.A)
     : M unit :=
-  M.alloc tt.
+  M.function_body (M.alloc tt).
 
 Definition gen_spec_i32
     `{ℋ : State.Trait}
     (_s : generics_functions.SGen i32)
     : M unit :=
-  M.alloc tt.
+  M.function_body (M.alloc tt).
 
 Definition generic
     `{ℋ : State.Trait}
     {T : Set}
     (_s : generics_functions.SGen T)
     : M unit :=
-  M.alloc tt.
+  M.function_body (M.alloc tt).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
-  let* _ :=
-    let* α0 := M.alloc generics_functions.A.Build_t in
-    let* α1 := M.alloc (generics_functions.S.Build_t α0) in
-    generics_functions.reg_fn α1 in
-  let* _ :=
-    let* α0 := M.alloc generics_functions.A.Build_t in
-    let* α1 := M.alloc (generics_functions.SGen.Build_t α0) in
-    generics_functions.gen_spec_t α1 in
-  let* _ :=
-    let* α0 := M.alloc 6 in
-    let* α1 := M.alloc (generics_functions.SGen.Build_t α0) in
-    generics_functions.gen_spec_i32 α1 in
-  let* _ :=
-    let* α0 := M.alloc "a"%char in
-    let* α1 := M.alloc (generics_functions.SGen.Build_t α0) in
-    generics_functions.generic α1 in
-  let* _ :=
-    let* α0 := M.alloc "c"%char in
-    let* α1 := M.alloc (generics_functions.SGen.Build_t α0) in
-    generics_functions.generic α1 in
-  M.alloc tt.
+  M.function_body
+    (let* _ :=
+      let* α0 := M.alloc generics_functions.A.Build_t in
+      let* α1 := M.alloc (generics_functions.S.Build_t α0) in
+      generics_functions.reg_fn α1 in
+    let* _ :=
+      let* α0 := M.alloc generics_functions.A.Build_t in
+      let* α1 := M.alloc (generics_functions.SGen.Build_t α0) in
+      generics_functions.gen_spec_t α1 in
+    let* _ :=
+      let* α0 := M.alloc 6 in
+      let* α1 := M.alloc (generics_functions.SGen.Build_t α0) in
+      generics_functions.gen_spec_i32 α1 in
+    let* _ :=
+      let* α0 := M.alloc "a"%char in
+      let* α1 := M.alloc (generics_functions.SGen.Build_t α0) in
+      generics_functions.generic α1 in
+    let* _ :=
+      let* α0 := M.alloc "c"%char in
+      let* α1 := M.alloc (generics_functions.SGen.Build_t α0) in
+      generics_functions.generic α1 in
+    M.alloc tt).

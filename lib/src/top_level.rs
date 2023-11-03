@@ -701,7 +701,10 @@ fn compile_function_body(env: &mut Env, body: &rustc_hir::Body) -> Option<Box<Ex
     if env.axiomatize {
         return None;
     }
-    Some(Box::new(compile_hir_id(env, body.value.hir_id)))
+    Some(Box::new(Expr::MonadicOperator {
+        name: "M.function_body".to_string(),
+        arg: Box::new(compile_hir_id(env, body.value.hir_id)),
+    }))
 }
 
 /// returns a list of pairs of argument names and their types

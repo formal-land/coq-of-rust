@@ -54,27 +54,28 @@ Section Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_A_B.
       (self : ref Self)
       (other : ref (generics_phantom_type.PhantomTuple A B))
       : M bool :=
-    let* α0 := deref self (generics_phantom_type.PhantomTuple A B) in
-    let* α1 := α0.["0"] in
-    let* α2 := borrow α1 A in
-    let* α3 := deref other (generics_phantom_type.PhantomTuple A B) in
-    let* α4 := α3.["0"] in
-    let* α5 := borrow α4 A in
-    let* α6 :=
-      (core.cmp.PartialEq.eq (Self := A) (Trait := ltac:(refine _))) α2 α5 in
-    let* α7 := deref self (generics_phantom_type.PhantomTuple A B) in
-    let* α8 := α7.["1"] in
-    let* α9 := borrow α8 (core.marker.PhantomData B) in
-    let* α10 := deref other (generics_phantom_type.PhantomTuple A B) in
-    let* α11 := α10.["1"] in
-    let* α12 := borrow α11 (core.marker.PhantomData B) in
-    let* α13 :=
-      (core.cmp.PartialEq.eq
-          (Self := core.marker.PhantomData B)
-          (Trait := ltac:(refine _)))
-        α9
-        α12 in
-    BinOp.and α6 α13.
+    M.function_body
+      (let* α0 := deref self (generics_phantom_type.PhantomTuple A B) in
+      let* α1 := α0.["0"] in
+      let* α2 := borrow α1 A in
+      let* α3 := deref other (generics_phantom_type.PhantomTuple A B) in
+      let* α4 := α3.["0"] in
+      let* α5 := borrow α4 A in
+      let* α6 :=
+        (core.cmp.PartialEq.eq (Self := A) (Trait := ltac:(refine _))) α2 α5 in
+      let* α7 := deref self (generics_phantom_type.PhantomTuple A B) in
+      let* α8 := α7.["1"] in
+      let* α9 := borrow α8 (core.marker.PhantomData B) in
+      let* α10 := deref other (generics_phantom_type.PhantomTuple A B) in
+      let* α11 := α10.["1"] in
+      let* α12 := borrow α11 (core.marker.PhantomData B) in
+      let* α13 :=
+        (core.cmp.PartialEq.eq
+            (Self := core.marker.PhantomData B)
+            (Trait := ltac:(refine _)))
+          α9
+          α12 in
+      BinOp.and α6 α13).
   
   Global Instance AssociatedFunction_eq : Notation.DoubleColon Self "eq" := {
     Notation.double_colon := eq;
@@ -148,27 +149,28 @@ Section Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
       (self : ref Self)
       (other : ref (generics_phantom_type.PhantomStruct A B))
       : M bool :=
-    let* α0 := deref self (generics_phantom_type.PhantomStruct A B) in
-    let* α1 := α0.["first"] in
-    let* α2 := borrow α1 A in
-    let* α3 := deref other (generics_phantom_type.PhantomStruct A B) in
-    let* α4 := α3.["first"] in
-    let* α5 := borrow α4 A in
-    let* α6 :=
-      (core.cmp.PartialEq.eq (Self := A) (Trait := ltac:(refine _))) α2 α5 in
-    let* α7 := deref self (generics_phantom_type.PhantomStruct A B) in
-    let* α8 := α7.["phantom"] in
-    let* α9 := borrow α8 (core.marker.PhantomData B) in
-    let* α10 := deref other (generics_phantom_type.PhantomStruct A B) in
-    let* α11 := α10.["phantom"] in
-    let* α12 := borrow α11 (core.marker.PhantomData B) in
-    let* α13 :=
-      (core.cmp.PartialEq.eq
-          (Self := core.marker.PhantomData B)
-          (Trait := ltac:(refine _)))
-        α9
-        α12 in
-    BinOp.and α6 α13.
+    M.function_body
+      (let* α0 := deref self (generics_phantom_type.PhantomStruct A B) in
+      let* α1 := α0.["first"] in
+      let* α2 := borrow α1 A in
+      let* α3 := deref other (generics_phantom_type.PhantomStruct A B) in
+      let* α4 := α3.["first"] in
+      let* α5 := borrow α4 A in
+      let* α6 :=
+        (core.cmp.PartialEq.eq (Self := A) (Trait := ltac:(refine _))) α2 α5 in
+      let* α7 := deref self (generics_phantom_type.PhantomStruct A B) in
+      let* α8 := α7.["phantom"] in
+      let* α9 := borrow α8 (core.marker.PhantomData B) in
+      let* α10 := deref other (generics_phantom_type.PhantomStruct A B) in
+      let* α11 := α10.["phantom"] in
+      let* α12 := borrow α11 (core.marker.PhantomData B) in
+      let* α13 :=
+        (core.cmp.PartialEq.eq
+            (Self := core.marker.PhantomData B)
+            (Trait := ltac:(refine _)))
+          α9
+          α12 in
+      BinOp.and α6 α13).
   
   Global Instance AssociatedFunction_eq : Notation.DoubleColon Self "eq" := {
     Notation.double_colon := eq;
@@ -185,28 +187,29 @@ End Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
-  let* _tuple1 :=
-    let* α0 := M.alloc "Q"%char in
-    let* α1 := M.alloc core.marker.PhantomData.Build_t in
-    M.alloc (generics_phantom_type.PhantomTuple.Build_t α0 α1) in
-  let* _tuple2 :=
-    let* α0 := M.alloc "Q"%char in
-    let* α1 := M.alloc core.marker.PhantomData.Build_t in
-    M.alloc (generics_phantom_type.PhantomTuple.Build_t α0 α1) in
-  let* _struct1 :=
-    let* α0 := M.alloc "Q"%char in
-    let* α1 := M.alloc core.marker.PhantomData.Build_t in
-    M.alloc
-      {|
-        generics_phantom_type.PhantomStruct.first := α0;
-        generics_phantom_type.PhantomStruct.phantom := α1;
-      |} in
-  let* _struct2 :=
-    let* α0 := M.alloc "Q"%char in
-    let* α1 := M.alloc core.marker.PhantomData.Build_t in
-    M.alloc
-      {|
-        generics_phantom_type.PhantomStruct.first := α0;
-        generics_phantom_type.PhantomStruct.phantom := α1;
-      |} in
-  M.alloc tt.
+  M.function_body
+    (let* _tuple1 :=
+      let* α0 := M.alloc "Q"%char in
+      let* α1 := M.alloc core.marker.PhantomData.Build_t in
+      M.alloc (generics_phantom_type.PhantomTuple.Build_t α0 α1) in
+    let* _tuple2 :=
+      let* α0 := M.alloc "Q"%char in
+      let* α1 := M.alloc core.marker.PhantomData.Build_t in
+      M.alloc (generics_phantom_type.PhantomTuple.Build_t α0 α1) in
+    let* _struct1 :=
+      let* α0 := M.alloc "Q"%char in
+      let* α1 := M.alloc core.marker.PhantomData.Build_t in
+      M.alloc
+        {|
+          generics_phantom_type.PhantomStruct.first := α0;
+          generics_phantom_type.PhantomStruct.phantom := α1;
+        |} in
+    let* _struct2 :=
+      let* α0 := M.alloc "Q"%char in
+      let* α1 := M.alloc core.marker.PhantomData.Build_t in
+      M.alloc
+        {|
+          generics_phantom_type.PhantomStruct.first := α0;
+          generics_phantom_type.PhantomStruct.phantom := α1;
+        |} in
+    M.alloc tt).

@@ -17,12 +17,13 @@ Section Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers.
     enums_type_aliases_v2.VeryVerboseEnumOfThingsToDoWithNumbers.
   
   Definition run (self : ref Self) (x : i32) (y : i32) : M i32 :=
-    match self with
-    | enums_type_aliases_v2.VeryVerboseEnumOfThingsToDoWithNumbers  =>
-      BinOp.add x y
-    | enums_type_aliases_v2.VeryVerboseEnumOfThingsToDoWithNumbers  =>
-      BinOp.sub x y
-    end.
+    M.function_body
+      match self with
+      | enums_type_aliases_v2.VeryVerboseEnumOfThingsToDoWithNumbers  =>
+        BinOp.add x y
+      | enums_type_aliases_v2.VeryVerboseEnumOfThingsToDoWithNumbers  =>
+        BinOp.sub x y
+      end.
   
   Global Instance AssociatedFunction_run : Notation.DoubleColon Self "run" := {
     Notation.double_colon := run;

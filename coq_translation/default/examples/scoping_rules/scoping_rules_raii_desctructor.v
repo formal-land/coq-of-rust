@@ -17,18 +17,19 @@ Section Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop.
   Definition Self : Set := scoping_rules_raii_desctructor.ToDrop.
   
   Definition drop (self : mut_ref Self) : M unit :=
-    let* _ :=
-      let* _ :=
-        let* α0 :=
-          borrow [ mk_str "ToDrop is being dropped
+    M.function_body
+      (let* _ :=
+        let* _ :=
+          let* α0 :=
+            borrow [ mk_str "ToDrop is being dropped
 " ] (list (ref str)) in
-        let* α1 := deref α0 (list (ref str)) in
-        let* α2 := borrow α1 (list (ref str)) in
-        let* α3 := pointer_coercion "Unsize" α2 in
-        let* α4 := core.fmt.Arguments::["new_const"] α3 in
-        std.io.stdio._print α4 in
-      M.alloc tt in
-    M.alloc tt.
+          let* α1 := deref α0 (list (ref str)) in
+          let* α2 := borrow α1 (list (ref str)) in
+          let* α3 := pointer_coercion "Unsize" α2 in
+          let* α4 := core.fmt.Arguments::["new_const"] α3 in
+          std.io.stdio._print α4 in
+        M.alloc tt in
+      M.alloc tt).
   
   Global Instance AssociatedFunction_drop :
     Notation.DoubleColon Self "drop" := {
@@ -43,15 +44,16 @@ End Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
-  let* x := M.alloc scoping_rules_raii_desctructor.ToDrop.Build_t in
-  let* _ :=
+  M.function_body
+    (let* x := M.alloc scoping_rules_raii_desctructor.ToDrop.Build_t in
     let* _ :=
-      let* α0 := borrow [ mk_str "Made a ToDrop!
+      let* _ :=
+        let* α0 := borrow [ mk_str "Made a ToDrop!
 " ] (list (ref str)) in
-      let* α1 := deref α0 (list (ref str)) in
-      let* α2 := borrow α1 (list (ref str)) in
-      let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := core.fmt.Arguments::["new_const"] α3 in
-      std.io.stdio._print α4 in
-    M.alloc tt in
-  M.alloc tt.
+        let* α1 := deref α0 (list (ref str)) in
+        let* α2 := borrow α1 (list (ref str)) in
+        let* α3 := pointer_coercion "Unsize" α2 in
+        let* α4 := core.fmt.Arguments::["new_const"] α3 in
+        std.io.stdio._print α4 in
+      M.alloc tt in
+    M.alloc tt).

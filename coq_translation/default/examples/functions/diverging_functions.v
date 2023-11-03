@@ -2,11 +2,13 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{ℋ : State.Trait} : M unit := M.alloc tt.
+Definition main `{ℋ : State.Trait} : M unit := M.function_body (M.alloc tt).
 
 Definition foo `{ℋ : State.Trait} : M Empty_set :=
-  let* _ :=
-    let* α0 := std.panicking.begin_panic (mk_str "This call never returns.") in
-    never_to_any α0 in
-  let* α0 := M.alloc tt in
-  never_to_any α0.
+  M.function_body
+    (let* _ :=
+      let* α0 :=
+        std.panicking.begin_panic (mk_str "This call never returns.") in
+      never_to_any α0 in
+    let* α0 := M.alloc tt in
+    never_to_any α0).

@@ -3,166 +3,167 @@ Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
-  let* vec1 :=
-    let* α0 := M.alloc 1 in
-    let* α1 := M.alloc 2 in
-    let* α2 := M.alloc 3 in
-    let* α3 :=
-      (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] [ α0; α1; α2 ] in
-    let* α4 := pointer_coercion "Unsize" α3 in
-    (Slice i32)::["into_vec"] α4 in
-  let* vec2 :=
-    let* α0 := M.alloc 4 in
-    let* α1 := M.alloc 5 in
-    let* α2 := M.alloc 6 in
-    let* α3 :=
-      (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] [ α0; α1; α2 ] in
-    let* α4 := pointer_coercion "Unsize" α3 in
-    (Slice i32)::["into_vec"] α4 in
-  let* iter :=
-    let* α0 := borrow vec1 (alloc.vec.Vec i32 alloc.alloc.Global) in
-    let* α1 :=
-      (core.ops.deref.Deref.deref
+  M.function_body
+    (let* vec1 :=
+      let* α0 := M.alloc 1 in
+      let* α1 := M.alloc 2 in
+      let* α2 := M.alloc 3 in
+      let* α3 :=
+        (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] [ α0; α1; α2 ] in
+      let* α4 := pointer_coercion "Unsize" α3 in
+      (Slice i32)::["into_vec"] α4 in
+    let* vec2 :=
+      let* α0 := M.alloc 4 in
+      let* α1 := M.alloc 5 in
+      let* α2 := M.alloc 6 in
+      let* α3 :=
+        (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] [ α0; α1; α2 ] in
+      let* α4 := pointer_coercion "Unsize" α3 in
+      (Slice i32)::["into_vec"] α4 in
+    let* iter :=
+      let* α0 := borrow vec1 (alloc.vec.Vec i32 alloc.alloc.Global) in
+      let* α1 :=
+        (core.ops.deref.Deref.deref
+            (Self := alloc.vec.Vec i32 alloc.alloc.Global)
+            (Trait := ltac:(refine _)))
+          α0 in
+      let* α2 := deref α1 (Slice i32) in
+      let* α3 := borrow α2 (Slice i32) in
+      (Slice i32)::["iter"] α3 in
+    let* into_iter :=
+      (core.iter.traits.collect.IntoIterator.into_iter
           (Self := alloc.vec.Vec i32 alloc.alloc.Global)
           (Trait := ltac:(refine _)))
-        α0 in
-    let* α2 := deref α1 (Slice i32) in
-    let* α3 := borrow α2 (Slice i32) in
-    (Slice i32)::["iter"] α3 in
-  let* into_iter :=
-    (core.iter.traits.collect.IntoIterator.into_iter
-        (Self := alloc.vec.Vec i32 alloc.alloc.Global)
-        (Trait := ltac:(refine _)))
-      vec2 in
-  let* _ :=
+        vec2 in
     let* _ :=
-      let* α0 :=
-        borrow [ mk_str "Find 2 in vec1: "; mk_str "
+      let* _ :=
+        let* α0 :=
+          borrow [ mk_str "Find 2 in vec1: "; mk_str "
 " ] (list (ref str)) in
-      let* α1 := deref α0 (list (ref str)) in
-      let* α2 := borrow α1 (list (ref str)) in
-      let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := borrow_mut iter (core.slice.iter.Iter i32) in
-      let* α5 :=
-        (core.iter.traits.iterator.Iterator.find
-            (Self := core.slice.iter.Iter i32)
-            (Trait := ltac:(refine _)))
-          α4
-          (let* α0 := M.alloc 2 in
-          BinOp.eq x α0) in
-      let* α6 := borrow α5 (core.option.Option (ref i32)) in
-      let* α7 := deref α6 (core.option.Option (ref i32)) in
-      let* α8 := borrow α7 (core.option.Option (ref i32)) in
-      let* α9 := core.fmt.rt.Argument::["new_debug"] α8 in
-      let* α10 := borrow [ α9 ] (list core.fmt.rt.Argument) in
-      let* α11 := deref α10 (list core.fmt.rt.Argument) in
-      let* α12 := borrow α11 (list core.fmt.rt.Argument) in
-      let* α13 := pointer_coercion "Unsize" α12 in
-      let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
-      std.io.stdio._print α14 in
-    M.alloc tt in
-  let* _ :=
+        let* α1 := deref α0 (list (ref str)) in
+        let* α2 := borrow α1 (list (ref str)) in
+        let* α3 := pointer_coercion "Unsize" α2 in
+        let* α4 := borrow_mut iter (core.slice.iter.Iter i32) in
+        let* α5 :=
+          (core.iter.traits.iterator.Iterator.find
+              (Self := core.slice.iter.Iter i32)
+              (Trait := ltac:(refine _)))
+            α4
+            (let* α0 := M.alloc 2 in
+            BinOp.eq x α0) in
+        let* α6 := borrow α5 (core.option.Option (ref i32)) in
+        let* α7 := deref α6 (core.option.Option (ref i32)) in
+        let* α8 := borrow α7 (core.option.Option (ref i32)) in
+        let* α9 := core.fmt.rt.Argument::["new_debug"] α8 in
+        let* α10 := borrow [ α9 ] (list core.fmt.rt.Argument) in
+        let* α11 := deref α10 (list core.fmt.rt.Argument) in
+        let* α12 := borrow α11 (list core.fmt.rt.Argument) in
+        let* α13 := pointer_coercion "Unsize" α12 in
+        let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
+        std.io.stdio._print α14 in
+      M.alloc tt in
     let* _ :=
-      let* α0 :=
-        borrow [ mk_str "Find 2 in vec2: "; mk_str "
+      let* _ :=
+        let* α0 :=
+          borrow [ mk_str "Find 2 in vec2: "; mk_str "
 " ] (list (ref str)) in
-      let* α1 := deref α0 (list (ref str)) in
-      let* α2 := borrow α1 (list (ref str)) in
-      let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 :=
-        borrow_mut
-          into_iter
-          (alloc.vec.into_iter.IntoIter i32 alloc.alloc.Global) in
-      let* α5 :=
-        (core.iter.traits.iterator.Iterator.find
-            (Self := alloc.vec.into_iter.IntoIter i32 alloc.alloc.Global)
-            (Trait := ltac:(refine _)))
-          α4
-          (let* α0 := M.alloc 2 in
-          BinOp.eq x α0) in
-      let* α6 := borrow α5 (core.option.Option i32) in
-      let* α7 := deref α6 (core.option.Option i32) in
-      let* α8 := borrow α7 (core.option.Option i32) in
-      let* α9 := core.fmt.rt.Argument::["new_debug"] α8 in
-      let* α10 := borrow [ α9 ] (list core.fmt.rt.Argument) in
-      let* α11 := deref α10 (list core.fmt.rt.Argument) in
-      let* α12 := borrow α11 (list core.fmt.rt.Argument) in
-      let* α13 := pointer_coercion "Unsize" α12 in
-      let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
-      std.io.stdio._print α14 in
-    M.alloc tt in
-  let* array1 :=
-    let* α0 := M.alloc 1 in
-    let* α1 := M.alloc 2 in
-    let* α2 := M.alloc 3 in
-    M.pure [ α0; α1; α2 ] in
-  let* array2 :=
-    let* α0 := M.alloc 4 in
-    let* α1 := M.alloc 5 in
-    let* α2 := M.alloc 6 in
-    M.pure [ α0; α1; α2 ] in
-  let* _ :=
+        let* α1 := deref α0 (list (ref str)) in
+        let* α2 := borrow α1 (list (ref str)) in
+        let* α3 := pointer_coercion "Unsize" α2 in
+        let* α4 :=
+          borrow_mut
+            into_iter
+            (alloc.vec.into_iter.IntoIter i32 alloc.alloc.Global) in
+        let* α5 :=
+          (core.iter.traits.iterator.Iterator.find
+              (Self := alloc.vec.into_iter.IntoIter i32 alloc.alloc.Global)
+              (Trait := ltac:(refine _)))
+            α4
+            (let* α0 := M.alloc 2 in
+            BinOp.eq x α0) in
+        let* α6 := borrow α5 (core.option.Option i32) in
+        let* α7 := deref α6 (core.option.Option i32) in
+        let* α8 := borrow α7 (core.option.Option i32) in
+        let* α9 := core.fmt.rt.Argument::["new_debug"] α8 in
+        let* α10 := borrow [ α9 ] (list core.fmt.rt.Argument) in
+        let* α11 := deref α10 (list core.fmt.rt.Argument) in
+        let* α12 := borrow α11 (list core.fmt.rt.Argument) in
+        let* α13 := pointer_coercion "Unsize" α12 in
+        let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
+        std.io.stdio._print α14 in
+      M.alloc tt in
+    let* array1 :=
+      let* α0 := M.alloc 1 in
+      let* α1 := M.alloc 2 in
+      let* α2 := M.alloc 3 in
+      M.pure [ α0; α1; α2 ] in
+    let* array2 :=
+      let* α0 := M.alloc 4 in
+      let* α1 := M.alloc 5 in
+      let* α2 := M.alloc 6 in
+      M.pure [ α0; α1; α2 ] in
     let* _ :=
-      let* α0 :=
-        borrow [ mk_str "Find 2 in array1: "; mk_str "
+      let* _ :=
+        let* α0 :=
+          borrow [ mk_str "Find 2 in array1: "; mk_str "
 " ] (list (ref str)) in
-      let* α1 := deref α0 (list (ref str)) in
-      let* α2 := borrow α1 (list (ref str)) in
-      let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := borrow array1 (list i32) in
-      let* α5 := pointer_coercion "Unsize" α4 in
-      let* α6 := (Slice i32)::["iter"] α5 in
-      let* α7 := borrow_mut α6 (core.slice.iter.Iter i32) in
-      let* α8 :=
-        (core.iter.traits.iterator.Iterator.find
-            (Self := core.slice.iter.Iter i32)
-            (Trait := ltac:(refine _)))
-          α7
-          (let* α0 := M.alloc 2 in
-          BinOp.eq x α0) in
-      let* α9 := borrow α8 (core.option.Option (ref i32)) in
-      let* α10 := deref α9 (core.option.Option (ref i32)) in
-      let* α11 := borrow α10 (core.option.Option (ref i32)) in
-      let* α12 := core.fmt.rt.Argument::["new_debug"] α11 in
-      let* α13 := borrow [ α12 ] (list core.fmt.rt.Argument) in
-      let* α14 := deref α13 (list core.fmt.rt.Argument) in
-      let* α15 := borrow α14 (list core.fmt.rt.Argument) in
-      let* α16 := pointer_coercion "Unsize" α15 in
-      let* α17 := core.fmt.Arguments::["new_v1"] α3 α16 in
-      std.io.stdio._print α17 in
-    M.alloc tt in
-  let* _ :=
+        let* α1 := deref α0 (list (ref str)) in
+        let* α2 := borrow α1 (list (ref str)) in
+        let* α3 := pointer_coercion "Unsize" α2 in
+        let* α4 := borrow array1 (list i32) in
+        let* α5 := pointer_coercion "Unsize" α4 in
+        let* α6 := (Slice i32)::["iter"] α5 in
+        let* α7 := borrow_mut α6 (core.slice.iter.Iter i32) in
+        let* α8 :=
+          (core.iter.traits.iterator.Iterator.find
+              (Self := core.slice.iter.Iter i32)
+              (Trait := ltac:(refine _)))
+            α7
+            (let* α0 := M.alloc 2 in
+            BinOp.eq x α0) in
+        let* α9 := borrow α8 (core.option.Option (ref i32)) in
+        let* α10 := deref α9 (core.option.Option (ref i32)) in
+        let* α11 := borrow α10 (core.option.Option (ref i32)) in
+        let* α12 := core.fmt.rt.Argument::["new_debug"] α11 in
+        let* α13 := borrow [ α12 ] (list core.fmt.rt.Argument) in
+        let* α14 := deref α13 (list core.fmt.rt.Argument) in
+        let* α15 := borrow α14 (list core.fmt.rt.Argument) in
+        let* α16 := pointer_coercion "Unsize" α15 in
+        let* α17 := core.fmt.Arguments::["new_v1"] α3 α16 in
+        std.io.stdio._print α17 in
+      M.alloc tt in
     let* _ :=
-      let* α0 :=
-        borrow [ mk_str "Find 2 in array2: "; mk_str "
+      let* _ :=
+        let* α0 :=
+          borrow [ mk_str "Find 2 in array2: "; mk_str "
 " ] (list (ref str)) in
-      let* α1 := deref α0 (list (ref str)) in
-      let* α2 := borrow α1 (list (ref str)) in
-      let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := borrow array2 (list i32) in
-      let* α5 :=
-        (core.iter.traits.collect.IntoIterator.into_iter
-            (Self := ref (list i32))
-            (Trait := ltac:(refine _)))
-          α4 in
-      let* α6 := borrow_mut α5 (core.slice.iter.Iter i32) in
-      let* α7 :=
-        (core.iter.traits.iterator.Iterator.find
-            (Self := core.slice.iter.Iter i32)
-            (Trait := ltac:(refine _)))
-          α6
-          (let* α0 := deref x i32 in
-          let* α1 := M.alloc 2 in
-          BinOp.eq α0 α1) in
-      let* α8 := borrow α7 (core.option.Option (ref i32)) in
-      let* α9 := deref α8 (core.option.Option (ref i32)) in
-      let* α10 := borrow α9 (core.option.Option (ref i32)) in
-      let* α11 := core.fmt.rt.Argument::["new_debug"] α10 in
-      let* α12 := borrow [ α11 ] (list core.fmt.rt.Argument) in
-      let* α13 := deref α12 (list core.fmt.rt.Argument) in
-      let* α14 := borrow α13 (list core.fmt.rt.Argument) in
-      let* α15 := pointer_coercion "Unsize" α14 in
-      let* α16 := core.fmt.Arguments::["new_v1"] α3 α15 in
-      std.io.stdio._print α16 in
-    M.alloc tt in
-  M.alloc tt.
+        let* α1 := deref α0 (list (ref str)) in
+        let* α2 := borrow α1 (list (ref str)) in
+        let* α3 := pointer_coercion "Unsize" α2 in
+        let* α4 := borrow array2 (list i32) in
+        let* α5 :=
+          (core.iter.traits.collect.IntoIterator.into_iter
+              (Self := ref (list i32))
+              (Trait := ltac:(refine _)))
+            α4 in
+        let* α6 := borrow_mut α5 (core.slice.iter.Iter i32) in
+        let* α7 :=
+          (core.iter.traits.iterator.Iterator.find
+              (Self := core.slice.iter.Iter i32)
+              (Trait := ltac:(refine _)))
+            α6
+            (let* α0 := deref x i32 in
+            let* α1 := M.alloc 2 in
+            BinOp.eq α0 α1) in
+        let* α8 := borrow α7 (core.option.Option (ref i32)) in
+        let* α9 := deref α8 (core.option.Option (ref i32)) in
+        let* α10 := borrow α9 (core.option.Option (ref i32)) in
+        let* α11 := core.fmt.rt.Argument::["new_debug"] α10 in
+        let* α12 := borrow [ α11 ] (list core.fmt.rt.Argument) in
+        let* α13 := deref α12 (list core.fmt.rt.Argument) in
+        let* α14 := borrow α13 (list core.fmt.rt.Argument) in
+        let* α15 := pointer_coercion "Unsize" α14 in
+        let* α16 := core.fmt.Arguments::["new_v1"] α3 α15 in
+        std.io.stdio._print α16 in
+      M.alloc tt in
+    M.alloc tt).
