@@ -23,7 +23,6 @@ pub(crate) enum TopLevelItem<'a> {
     Line,
     Module(Module<'a>),
     Record(Record<'a>),
-    Section(Section<'a>),
 }
 
 #[derive(Clone)]
@@ -36,14 +35,11 @@ pub(crate) struct Comment {
 /// a coq module
 pub(crate) struct Module<'a> {
     name: String,
+    is_with_section: bool,
+    /// To prevent a collision, in case a module with the same name is already
+    /// declared. In this case, we do the appropriate `Import` to complete the
+    /// previous module.
     nb_repeat: usize,
-    items: TopLevel<'a>,
-}
-
-#[derive(Clone)]
-/// a coq section
-pub(crate) struct Section<'a> {
-    name: String,
     items: TopLevel<'a>,
 }
 
@@ -304,48 +300,34 @@ impl<'a> TopLevel<'a> {
         }
     }
 
-    /// creates a section with a context with type variables
+    /// creates the context in a section with type variables
     /// with the given variable names
-    pub(crate) fn add_context_in_section(
-        name: &str,
-        ty_params: &[String],
-        items: &TopLevel<'a>,
-    ) -> Self {
+    pub(crate) fn add_context_in_section(ty_params: &[String], items: &TopLevel<'a>) -> Self {
         TopLevel {
-            items: vec![TopLevelItem::Section(Section::new(
-                name,
-                &TopLevel {
-                    items: [
-                        // `State.Trait``
-                        vec![
-                            TopLevelItem::Context(Context::new(&[
-                                ArgDecl::monadic_typeclass_parameter(),
-                            ])),
-                            TopLevelItem::Line,
-                        ],
-                        // [ty_params]
-                        if !ty_params.is_empty() {
-                            vec![
-                                TopLevelItem::Context(Context::new(&[ArgDecl::new(
-                                    &ArgDeclVar::Simple {
-                                        idents: ty_params
-                                            .iter()
-                                            .map(|arg| arg.to_owned())
-                                            .collect(),
-                                        ty: Some(Expression::Set),
-                                    },
-                                    ArgSpecKind::Implicit,
-                                )])),
-                                TopLevelItem::Line,
-                            ]
-                        } else {
-                            vec![]
-                        },
-                        items.items.to_owned(),
+            items: [
+                // `State.Trait``
+                vec![
+                    TopLevelItem::Context(Context::new(&[ArgDecl::monadic_typeclass_parameter()])),
+                    TopLevelItem::Line,
+                ],
+                // [ty_params]
+                if !ty_params.is_empty() {
+                    vec![
+                        TopLevelItem::Context(Context::new(&[ArgDecl::new(
+                            &ArgDeclVar::Simple {
+                                idents: ty_params.iter().map(|arg| arg.to_owned()).collect(),
+                                ty: Some(Expression::Set),
+                            },
+                            ArgSpecKind::Implicit,
+                        )])),
+                        TopLevelItem::Line,
                     ]
-                    .concat(),
+                } else {
+                    vec![]
                 },
-            ))],
+                items.items.to_owned(),
+            ]
+            .concat(),
         }
     }
 }
@@ -362,7 +344,6 @@ impl<'a> TopLevelItem<'a> {
             TopLevelItem::Line => nil(),
             TopLevelItem::Module(module) => module.to_doc(),
             TopLevelItem::Record(record) => record.to_doc(),
-            TopLevelItem::Section(section) => section.to_doc(),
         }
     }
 
@@ -375,87 +356,94 @@ impl<'a> TopLevelItem<'a> {
     ) -> Self {
         TopLevelItem::Module(Module::new(
             name,
-            TopLevel::new(&[TopLevelItem::Section(Section::new(
-                name,
-                &TopLevel::concat(&[
-                    // Add State.Trait in Context
-                    TopLevel::new(&[
-                        TopLevelItem::Context(Context::new(&[
-                            ArgDecl::monadic_typeclass_parameter(),
-                        ])),
-                        TopLevelItem::Line,
-                    ]),
-                    TopLevel::locally_unset_primitive_projections_if(
-                        items.is_empty(),
-                        &[TopLevelItem::Class(Class::new(
-                            "Trait",
-                            &[
+            true,
+            TopLevel::concat(&[
+                // Add State.Trait in Context
+                TopLevel::new(&[
+                    TopLevelItem::Context(Context::new(&[ArgDecl::monadic_typeclass_parameter()])),
+                    TopLevelItem::Line,
+                ]),
+                TopLevel::locally_unset_primitive_projections_if(
+                    items.is_empty(),
+                    &[TopLevelItem::Class(Class::new(
+                        "Trait",
+                        &[
+                            vec![ArgDecl::new(
+                                &ArgDeclVar::Simple {
+                                    idents: vec!["Self".to_string()],
+                                    ty: Some(Expression::Set),
+                                },
+                                ArgSpecKind::Explicit,
+                            )],
+                            if ty_params.is_empty() {
+                                vec![]
+                            } else {
                                 vec![ArgDecl::new(
                                     &ArgDeclVar::Simple {
-                                        idents: vec!["Self".to_string()],
+                                        idents: ty_params
+                                            .iter()
+                                            .map(|(ty, default)| {
+                                                match default {
+                                                    // @TODO: implement the translation of type parameters with default
+                                                    Some(_default) => ["(* TODO *) ", ty].concat(),
+                                                    None => ty.to_string(),
+                                                }
+                                            })
+                                            .collect(),
                                         ty: Some(Expression::Set),
                                     },
-                                    ArgSpecKind::Explicit,
-                                )],
-                                if ty_params.is_empty() {
-                                    vec![]
-                                } else {
-                                    vec![ArgDecl::new(
-                                        &ArgDeclVar::Simple {
-                                            idents: ty_params
-                                                .iter()
-                                                .map(|(ty, default)| {
-                                                    match default {
-                                                        // @TODO: implement the translation of type parameters with default
-                                                        Some(_default) => {
-                                                            ["(* TODO *) ", ty].concat()
-                                                        }
-                                                        None => ty.to_string(),
-                                                    }
-                                                })
-                                                .collect(),
-                                            ty: Some(Expression::Set),
-                                        },
-                                        ArgSpecKind::Implicit,
-                                    )]
-                                },
-                            ]
-                            .concat(),
-                            items.to_vec(),
-                        ))],
-                    ),
-                    TopLevel {
-                        items: instances
-                            .iter()
-                            .map(|instance| TopLevelItem::Instance(instance.to_owned()))
-                            .collect(),
-                    },
-                ]),
-            ))]),
+                                    ArgSpecKind::Implicit,
+                                )]
+                            },
+                        ]
+                        .concat(),
+                        items.to_vec(),
+                    ))],
+                ),
+                TopLevel {
+                    items: instances
+                        .iter()
+                        .map(|instance| TopLevelItem::Instance(instance.to_owned()))
+                        .collect(),
+                },
+            ]),
         ))
     }
 }
 
 impl<'a> Module<'a> {
     /// produces a new coq module
-    pub(crate) fn new(name: &str, items: TopLevel<'a>) -> Self {
+    pub(crate) fn new(name: &str, is_with_section: bool, items: TopLevel<'a>) -> Self {
         Module {
             name: name.to_string(),
+            is_with_section,
             nb_repeat: 0,
             items,
         }
     }
 
-    pub(crate) fn new_with_repeat(name: &str, nb_repeat: usize, items: TopLevel<'a>) -> Self {
+    pub(crate) fn new_with_repeat(
+        name: &str,
+        is_with_section: bool,
+        nb_repeat: usize,
+        items: TopLevel<'a>,
+    ) -> Self {
         Module {
             name: name.to_string(),
+            is_with_section,
             nb_repeat,
             items,
         }
     }
 
     pub(crate) fn to_doc(&self) -> Doc<'a> {
-        let inner_module = render::enclose("Module", self.name.to_owned(), self.items.to_doc());
+        let items = self.items.to_doc();
+        let items = if self.is_with_section {
+            render::enclose("Section", self.name.to_owned(), items)
+        } else {
+            items
+        };
+        let inner_module = render::enclose("Module", self.name.to_owned(), items);
         if self.nb_repeat == 0 {
             inner_module
         } else {
@@ -466,20 +454,6 @@ impl<'a> Module<'a> {
                 nest([text("Import"), line(), text(wrap_name), text(".")]),
             ])
         }
-    }
-}
-
-impl<'a> Section<'a> {
-    /// produces a new coq section
-    pub(crate) fn new(name: &str, items: &TopLevel<'a>) -> Self {
-        Section {
-            name: name.to_string(),
-            items: items.to_owned(),
-        }
-    }
-
-    pub(crate) fn to_doc(&self) -> Doc<'a> {
-        render::enclose("Section", self.name.to_owned(), self.items.to_doc())
     }
 }
 
