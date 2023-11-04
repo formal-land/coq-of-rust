@@ -5,393 +5,7 @@ Require CoqOfRust.ink.ink_storage_traits.
 (* #[allow(dead_code)] - module was ignored by the compiler *)
 Module lazy.
   Module mapping.
-    Module Mapping.
-      Section Mapping.
-        Context `{ℋ : State.Trait}.
-        
-        Context {K V KeyType : Set}.
-        
-        Context
-          {ℋ_0 : ink_storage_traits.storage.Packed.Trait V}
-          {ℋ_1 : ink_storage_traits.storage.StorageKey.Trait KeyType}.
-        Unset Primitive Projections.
-        Record t : Set := {
-          _marker : core.marker.PhantomData ((K * V) * KeyType);
-        }.
-        Global Set Primitive Projections.
-        
-        Global Instance Get__marker : Notation.Dot "_marker" := {
-          Notation.dot x := let* x := M.read x in Pure x.(_marker) : M _;
-        }.
-        Global Instance Get_AF__marker : Notation.DoubleColon t "_marker" := {
-          Notation.double_colon x :=
-            let* x := M.read x in Pure x.(_marker) : M _;
-        }.
-      End Mapping.
-      Module Default.
-        Definition KeyType := ink_storage_traits.impls.AutoKey.
-      End Default.
-    End Mapping.
-    Definition Mapping
-        (K V KeyType : Set)
-        `{ℋ : State.Trait}
-        {ℋ_0 : ink_storage_traits.storage.Packed.Trait V}
-        {ℋ_1 : ink_storage_traits.storage.StorageKey.Trait KeyType}
-        : Set :=
-      M.val (Mapping.t (K := K) (V := V) (KeyType := KeyType)).
-    
-    Module
-      Impl_core_default_Default_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
-      Section
-        Impl_core_default_Default_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
-        Context `{ℋ : State.Trait}.
-        
-        Context {K V KeyType : Set}.
-        
-        Context
-          {ℋ_0 : ink_storage_traits.storage.Packed.Trait V}
-          {ℋ_1 : ink_storage_traits.storage.StorageKey.Trait KeyType}.
-        Definition Self : Set := ink_storage.lazy.mapping.Mapping K V KeyType.
-        
-        Parameter default : M Self.
-        
-        Global Instance AssociatedFunction_default :
-          Notation.DoubleColon Self "default" := {
-          Notation.double_colon := default;
-        }.
-        
-        Global Instance ℐ : core.default.Default.Trait Self := {
-          core.default.Default.default := default;
-        }.
-      End
-        Impl_core_default_Default_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
-    End
-      Impl_core_default_Default_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
-    
-    Module Impl_core_fmt_Debug_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
-      Section
-        Impl_core_fmt_Debug_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
-        Context `{ℋ : State.Trait}.
-        
-        Context {K V KeyType : Set}.
-        
-        Context
-          {ℋ_0 : ink_storage_traits.storage.Packed.Trait V}
-          {ℋ_1 : ink_storage_traits.storage.StorageKey.Trait KeyType}.
-        Definition Self : Set := ink_storage.lazy.mapping.Mapping K V KeyType.
-        
-        Parameter fmt :
-            (ref Self) ->
-              (mut_ref core.fmt.Formatter) ->
-              M ltac:(core.fmt.Result).
-        
-        Global Instance AssociatedFunction_fmt :
-          Notation.DoubleColon Self "fmt" := {
-          Notation.double_colon := fmt;
-        }.
-        
-        Global Instance ℐ : core.fmt.Debug.Trait Self := {
-          core.fmt.Debug.fmt := fmt;
-        }.
-      End Impl_core_fmt_Debug_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
-    End Impl_core_fmt_Debug_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
-    
-    Module
-      Impl_ink_storage_traits_storage_Storable_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
-      Section
-        Impl_ink_storage_traits_storage_Storable_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
-        Context `{ℋ : State.Trait}.
-        
-        Context {K V KeyType : Set}.
-        
-        Context
-          {ℋ_0 : ink_storage_traits.storage.Packed.Trait V}
-          {ℋ_1 : ink_storage_traits.storage.StorageKey.Trait KeyType}.
-        Definition Self : Set := ink_storage.lazy.mapping.Mapping K V KeyType.
-        
-        Parameter encode :
-            forall {T : Set} {ℋ_0 : parity_scale_codec.codec.Output.Trait T},
-            (ref Self) -> (mut_ref T) -> M unit.
-        
-        Global Instance AssociatedFunction_encode
-            {T : Set}
-            {ℋ_0 : parity_scale_codec.codec.Output.Trait T} :
-          Notation.DoubleColon Self "encode" := {
-          Notation.double_colon := encode (T := T);
-        }.
-        
-        Parameter decode :
-            forall {I : Set} {ℋ_0 : parity_scale_codec.codec.Input.Trait I},
-            (mut_ref I) ->
-              M (core.result.Result Self parity_scale_codec.error.Error).
-        
-        Global Instance AssociatedFunction_decode
-            {I : Set}
-            {ℋ_0 : parity_scale_codec.codec.Input.Trait I} :
-          Notation.DoubleColon Self "decode" := {
-          Notation.double_colon := decode (I := I);
-        }.
-        
-        Global Instance ℐ : ink_storage_traits.storage.Storable.Trait Self := {
-          ink_storage_traits.storage.Storable.encode
-            {T : Set}
-            {ℋ_0 : parity_scale_codec.codec.Output.Trait T} :=
-            encode (T := T);
-          ink_storage_traits.storage.Storable.decode
-            {I : Set}
-            {ℋ_0 : parity_scale_codec.codec.Input.Trait I} :=
-            decode (I := I);
-        }.
-      End
-        Impl_ink_storage_traits_storage_Storable_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
-    End
-      Impl_ink_storage_traits_storage_Storable_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
-    
-    Module
-      Impl_ink_storage_traits_storage_StorableHint_Key_for_ink_storage_lazy_mapping_Mapping_K_V_InnerKey.
-      Section
-        Impl_ink_storage_traits_storage_StorableHint_Key_for_ink_storage_lazy_mapping_Mapping_K_V_InnerKey.
-        Context `{ℋ : State.Trait}.
-        
-        Context {K V Key InnerKey : Set}.
-        
-        Context
-          {ℋ_0 : ink_storage_traits.storage.Packed.Trait V}
-          {ℋ_1 : ink_storage_traits.storage.StorageKey.Trait Key}
-          {ℋ_2 : ink_storage_traits.storage.StorageKey.Trait InnerKey}.
-        Definition Self : Set := ink_storage.lazy.mapping.Mapping K V InnerKey.
-        
-        Definition Type_ : Set := ink_storage.lazy.mapping.Mapping K V Key.
-        
-        Definition PreferredKey : Set := InnerKey.
-        
-        Global Instance ℐ :
-          ink_storage_traits.storage.StorableHint.Trait Self (Key := Key) := {
-          ink_storage_traits.storage.StorableHint.Type_ := Type_;
-          ink_storage_traits.storage.StorableHint.PreferredKey := PreferredKey;
-        }.
-      End
-        Impl_ink_storage_traits_storage_StorableHint_Key_for_ink_storage_lazy_mapping_Mapping_K_V_InnerKey.
-    End
-      Impl_ink_storage_traits_storage_StorableHint_Key_for_ink_storage_lazy_mapping_Mapping_K_V_InnerKey.
-    
-    Module
-      Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
-      Section
-        Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
-        Context `{ℋ : State.Trait}.
-        
-        Context {K V KeyType : Set}.
-        
-        Context
-          {ℋ_0 : ink_storage_traits.storage.Packed.Trait V}
-          {ℋ_1 : ink_storage_traits.storage.StorageKey.Trait KeyType}.
-        Definition Self : Set := ink_storage.lazy.mapping.Mapping K V KeyType.
-        
-        Parameter KEY : ltac:(ink_primitives.key.Key).
-        
-        Global Instance AssociatedFunction_KEY :
-          Notation.DoubleColon Self "KEY" := {
-          Notation.double_colon := KEY;
-        }.
-        
-        Global Instance ℐ :
-          ink_storage_traits.storage.StorageKey.Required.Trait Self := {
-          ink_storage_traits.storage.StorageKey.KEY := KEY;
-          ink_storage_traits.storage.StorageKey.key := Datatypes.None;
-        }.
-      End
-        Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
-    End
-      Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
-  End mapping.
-  
-  Module Lazy.
-    Section Lazy.
-      Context `{ℋ : State.Trait}.
-      
-      Context {V KeyType : Set}.
-      
-      Context {ℋ_0 : ink_storage_traits.storage.StorageKey.Trait KeyType}.
-      Unset Primitive Projections.
-      Record t : Set := {
-        _marker : core.marker.PhantomData (V * KeyType);
-      }.
-      Global Set Primitive Projections.
-      
-      Global Instance Get__marker : Notation.Dot "_marker" := {
-        Notation.dot x := let* x := M.read x in Pure x.(_marker) : M _;
-      }.
-      Global Instance Get_AF__marker : Notation.DoubleColon t "_marker" := {
-        Notation.double_colon x := let* x := M.read x in Pure x.(_marker) : M _;
-      }.
-    End Lazy.
-    Module Default.
-      Definition KeyType := ink_storage_traits.impls.AutoKey.
-    End Default.
-  End Lazy.
-  Definition Lazy
-      (V KeyType : Set)
-      `{ℋ : State.Trait}
-      {ℋ_0 : ink_storage_traits.storage.StorageKey.Trait KeyType}
-      : Set :=
-    M.val (Lazy.t (V := V) (KeyType := KeyType)).
-  
-  Module Impl_core_default_Default_for_ink_storage_lazy_Lazy_V_KeyType.
-    Section Impl_core_default_Default_for_ink_storage_lazy_Lazy_V_KeyType.
-      Context `{ℋ : State.Trait}.
-      
-      Context {V KeyType : Set}.
-      
-      Context {ℋ_0 : ink_storage_traits.storage.StorageKey.Trait KeyType}.
-      Definition Self : Set := ink_storage.lazy.Lazy V KeyType.
-      
-      Parameter default : M Self.
-      
-      Global Instance AssociatedFunction_default :
-        Notation.DoubleColon Self "default" := {
-        Notation.double_colon := default;
-      }.
-      
-      Global Instance ℐ : core.default.Default.Trait Self := {
-        core.default.Default.default := default;
-      }.
-    End Impl_core_default_Default_for_ink_storage_lazy_Lazy_V_KeyType.
-  End Impl_core_default_Default_for_ink_storage_lazy_Lazy_V_KeyType.
-  
-  Module Impl_core_fmt_Debug_for_ink_storage_lazy_Lazy_V_KeyType.
-    Section Impl_core_fmt_Debug_for_ink_storage_lazy_Lazy_V_KeyType.
-      Context `{ℋ : State.Trait}.
-      
-      Context {V KeyType : Set}.
-      
-      Context {ℋ_0 : ink_storage_traits.storage.StorageKey.Trait KeyType}.
-      Definition Self : Set := ink_storage.lazy.Lazy V KeyType.
-      
-      Parameter fmt :
-          (ref Self) ->
-            (mut_ref core.fmt.Formatter) ->
-            M ltac:(core.fmt.Result).
-      
-      Global Instance AssociatedFunction_fmt :
-        Notation.DoubleColon Self "fmt" := {
-        Notation.double_colon := fmt;
-      }.
-      
-      Global Instance ℐ : core.fmt.Debug.Trait Self := {
-        core.fmt.Debug.fmt := fmt;
-      }.
-    End Impl_core_fmt_Debug_for_ink_storage_lazy_Lazy_V_KeyType.
-  End Impl_core_fmt_Debug_for_ink_storage_lazy_Lazy_V_KeyType.
-  
-  Module
-    Impl_ink_storage_traits_storage_Storable_for_ink_storage_lazy_Lazy_V_KeyType.
-    Section
-      Impl_ink_storage_traits_storage_Storable_for_ink_storage_lazy_Lazy_V_KeyType.
-      Context `{ℋ : State.Trait}.
-      
-      Context {V KeyType : Set}.
-      
-      Context {ℋ_0 : ink_storage_traits.storage.StorageKey.Trait KeyType}.
-      Definition Self : Set := ink_storage.lazy.Lazy V KeyType.
-      
-      Parameter encode :
-          forall {T : Set} {ℋ_0 : parity_scale_codec.codec.Output.Trait T},
-          (ref Self) -> (mut_ref T) -> M unit.
-      
-      Global Instance AssociatedFunction_encode
-          {T : Set}
-          {ℋ_0 : parity_scale_codec.codec.Output.Trait T} :
-        Notation.DoubleColon Self "encode" := {
-        Notation.double_colon := encode (T := T);
-      }.
-      
-      Parameter decode :
-          forall {I : Set} {ℋ_0 : parity_scale_codec.codec.Input.Trait I},
-          (mut_ref I) ->
-            M (core.result.Result Self parity_scale_codec.error.Error).
-      
-      Global Instance AssociatedFunction_decode
-          {I : Set}
-          {ℋ_0 : parity_scale_codec.codec.Input.Trait I} :
-        Notation.DoubleColon Self "decode" := {
-        Notation.double_colon := decode (I := I);
-      }.
-      
-      Global Instance ℐ : ink_storage_traits.storage.Storable.Trait Self := {
-        ink_storage_traits.storage.Storable.encode
-          {T : Set}
-          {ℋ_0 : parity_scale_codec.codec.Output.Trait T} :=
-          encode (T := T);
-        ink_storage_traits.storage.Storable.decode
-          {I : Set}
-          {ℋ_0 : parity_scale_codec.codec.Input.Trait I} :=
-          decode (I := I);
-      }.
-    End
-      Impl_ink_storage_traits_storage_Storable_for_ink_storage_lazy_Lazy_V_KeyType.
-  End
-    Impl_ink_storage_traits_storage_Storable_for_ink_storage_lazy_Lazy_V_KeyType.
-  
-  Module
-    Impl_ink_storage_traits_storage_StorableHint_Key_for_ink_storage_lazy_Lazy_V_InnerKey.
-    Section
-      Impl_ink_storage_traits_storage_StorableHint_Key_for_ink_storage_lazy_Lazy_V_InnerKey.
-      Context `{ℋ : State.Trait}.
-      
-      Context {V Key InnerKey : Set}.
-      
-      Context
-        {ℋ_0 : ink_storage_traits.storage.StorageKey.Trait Key}
-        {ℋ_1 : ink_storage_traits.storage.StorageKey.Trait InnerKey}
-        {ℋ_2 : ink_storage_traits.storage.StorableHint.Trait V (Key := Key)}.
-      Definition Self : Set := ink_storage.lazy.Lazy V InnerKey.
-      
-      Definition Type_ : Set := ink_storage.lazy.Lazy V::type["Type_"] Key.
-      
-      Definition PreferredKey : Set := InnerKey.
-      
-      Global Instance ℐ :
-        ink_storage_traits.storage.StorableHint.Trait Self (Key := Key) := {
-        ink_storage_traits.storage.StorableHint.Type_ := Type_;
-        ink_storage_traits.storage.StorableHint.PreferredKey := PreferredKey;
-      }.
-    End
-      Impl_ink_storage_traits_storage_StorableHint_Key_for_ink_storage_lazy_Lazy_V_InnerKey.
-  End
-    Impl_ink_storage_traits_storage_StorableHint_Key_for_ink_storage_lazy_Lazy_V_InnerKey.
-  
-  Module
-    Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_lazy_Lazy_V_KeyType.
-    Section
-      Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_lazy_Lazy_V_KeyType.
-      Context `{ℋ : State.Trait}.
-      
-      Context {V KeyType : Set}.
-      
-      Context {ℋ_0 : ink_storage_traits.storage.StorageKey.Trait KeyType}.
-      Definition Self : Set := ink_storage.lazy.Lazy V KeyType.
-      
-      Parameter KEY : ltac:(ink_primitives.key.Key).
-      
-      Global Instance AssociatedFunction_KEY :
-        Notation.DoubleColon Self "KEY" := {
-        Notation.double_colon := KEY;
-      }.
-      
-      Global Instance ℐ :
-        ink_storage_traits.storage.StorageKey.Required.Trait Self := {
-        ink_storage_traits.storage.StorageKey.KEY := KEY;
-        ink_storage_traits.storage.StorageKey.key := Datatypes.None;
-      }.
-    End
-      Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_lazy_Lazy_V_KeyType.
-  End
-    Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_lazy_Lazy_V_KeyType.
-End lazy.
-
-Module mapping.
-  Module Mapping.
+    Module  Mapping.
     Section Mapping.
       Context `{ℋ : State.Trait}.
       
@@ -412,23 +26,21 @@ Module mapping.
       Global Instance Get_AF__marker : Notation.DoubleColon t "_marker" := {
         Notation.double_colon x := let* x := M.read x in Pure x.(_marker) : M _;
       }.
+      Module Default.
+        Definition KeyType := ink_storage_traits.impls.AutoKey.
+      End Default.
     End Mapping.
-    Module Default.
-      Definition KeyType := ink_storage_traits.impls.AutoKey.
-    End Default.
-  End Mapping.
-  Definition Mapping
-      (K V KeyType : Set)
-      `{ℋ : State.Trait}
-      {ℋ_0 : ink_storage_traits.storage.Packed.Trait V}
-      {ℋ_1 : ink_storage_traits.storage.StorageKey.Trait KeyType}
-      : Set :=
-    M.val (Mapping.t (K := K) (V := V) (KeyType := KeyType)).
-  
-  Module
-    Impl_core_default_Default_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
-    Section
-      Impl_core_default_Default_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
+    End Mapping.
+    Definition Mapping
+        (K V KeyType : Set)
+        `{ℋ : State.Trait}
+        {ℋ_0 : ink_storage_traits.storage.Packed.Trait V}
+        {ℋ_1 : ink_storage_traits.storage.StorageKey.Trait KeyType}
+        : Set :=
+      M.val (Mapping.t (K := K) (V := V) (KeyType := KeyType)).
+    
+    Module  Impl_core_default_Default_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
+    Section Impl_core_default_Default_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
       Context `{ℋ : State.Trait}.
       
       Context {K V KeyType : Set}.
@@ -448,14 +60,11 @@ Module mapping.
       Global Instance ℐ : core.default.Default.Trait Self := {
         core.default.Default.default := default;
       }.
-    End
-      Impl_core_default_Default_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
-  End
-    Impl_core_default_Default_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
-  
-  Module Impl_core_fmt_Debug_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
-    Section
-      Impl_core_fmt_Debug_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
+    End Impl_core_default_Default_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
+    End Impl_core_default_Default_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
+    
+    Module  Impl_core_fmt_Debug_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
+    Section Impl_core_fmt_Debug_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
       Context `{ℋ : State.Trait}.
       
       Context {K V KeyType : Set}.
@@ -479,12 +88,10 @@ Module mapping.
         core.fmt.Debug.fmt := fmt;
       }.
     End Impl_core_fmt_Debug_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
-  End Impl_core_fmt_Debug_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
-  
-  Module
-    Impl_ink_storage_traits_storage_Storable_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
-    Section
-      Impl_ink_storage_traits_storage_Storable_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
+    End Impl_core_fmt_Debug_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
+    
+    Module  Impl_ink_storage_traits_storage_Storable_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
+    Section Impl_ink_storage_traits_storage_Storable_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
       Context `{ℋ : State.Trait}.
       
       Context {K V KeyType : Set}.
@@ -527,15 +134,11 @@ Module mapping.
           {ℋ_0 : parity_scale_codec.codec.Input.Trait I} :=
           decode (I := I);
       }.
-    End
-      Impl_ink_storage_traits_storage_Storable_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
-  End
-    Impl_ink_storage_traits_storage_Storable_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
-  
-  Module
-    Impl_ink_storage_traits_storage_StorableHint_Key_for_ink_storage_lazy_mapping_Mapping_K_V_InnerKey.
-    Section
-      Impl_ink_storage_traits_storage_StorableHint_Key_for_ink_storage_lazy_mapping_Mapping_K_V_InnerKey.
+    End Impl_ink_storage_traits_storage_Storable_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
+    End Impl_ink_storage_traits_storage_Storable_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
+    
+    Module  Impl_ink_storage_traits_storage_StorableHint_Key_for_ink_storage_lazy_mapping_Mapping_K_V_InnerKey.
+    Section Impl_ink_storage_traits_storage_StorableHint_Key_for_ink_storage_lazy_mapping_Mapping_K_V_InnerKey.
       Context `{ℋ : State.Trait}.
       
       Context {K V Key InnerKey : Set}.
@@ -555,15 +158,11 @@ Module mapping.
         ink_storage_traits.storage.StorableHint.Type_ := Type_;
         ink_storage_traits.storage.StorableHint.PreferredKey := PreferredKey;
       }.
-    End
-      Impl_ink_storage_traits_storage_StorableHint_Key_for_ink_storage_lazy_mapping_Mapping_K_V_InnerKey.
-  End
-    Impl_ink_storage_traits_storage_StorableHint_Key_for_ink_storage_lazy_mapping_Mapping_K_V_InnerKey.
-  
-  Module
-    Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
-    Section
-      Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
+    End Impl_ink_storage_traits_storage_StorableHint_Key_for_ink_storage_lazy_mapping_Mapping_K_V_InnerKey.
+    End Impl_ink_storage_traits_storage_StorableHint_Key_for_ink_storage_lazy_mapping_Mapping_K_V_InnerKey.
+    
+    Module  Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
+    Section Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
       Context `{ℋ : State.Trait}.
       
       Context {K V KeyType : Set}.
@@ -585,13 +184,182 @@ Module mapping.
         ink_storage_traits.storage.StorageKey.KEY := KEY;
         ink_storage_traits.storage.StorageKey.key := Datatypes.None;
       }.
-    End
-      Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
-  End
-    Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
-End mapping.
+    End Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
+    End Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
+  End mapping.
+  
+  Module  Lazy.
+  Section Lazy.
+    Context `{ℋ : State.Trait}.
+    
+    Context {V KeyType : Set}.
+    
+    Context {ℋ_0 : ink_storage_traits.storage.StorageKey.Trait KeyType}.
+    Unset Primitive Projections.
+    Record t : Set := {
+      _marker : core.marker.PhantomData (V * KeyType);
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get__marker : Notation.Dot "_marker" := {
+      Notation.dot x := let* x := M.read x in Pure x.(_marker) : M _;
+    }.
+    Global Instance Get_AF__marker : Notation.DoubleColon t "_marker" := {
+      Notation.double_colon x := let* x := M.read x in Pure x.(_marker) : M _;
+    }.
+    Module Default.
+      Definition KeyType := ink_storage_traits.impls.AutoKey.
+    End Default.
+  End Lazy.
+  End Lazy.
+  Definition Lazy
+      (V KeyType : Set)
+      `{ℋ : State.Trait}
+      {ℋ_0 : ink_storage_traits.storage.StorageKey.Trait KeyType}
+      : Set :=
+    M.val (Lazy.t (V := V) (KeyType := KeyType)).
+  
+  Module  Impl_core_default_Default_for_ink_storage_lazy_Lazy_V_KeyType.
+  Section Impl_core_default_Default_for_ink_storage_lazy_Lazy_V_KeyType.
+    Context `{ℋ : State.Trait}.
+    
+    Context {V KeyType : Set}.
+    
+    Context {ℋ_0 : ink_storage_traits.storage.StorageKey.Trait KeyType}.
+    Definition Self : Set := ink_storage.lazy.Lazy V KeyType.
+    
+    Parameter default : M Self.
+    
+    Global Instance AssociatedFunction_default :
+      Notation.DoubleColon Self "default" := {
+      Notation.double_colon := default;
+    }.
+    
+    Global Instance ℐ : core.default.Default.Trait Self := {
+      core.default.Default.default := default;
+    }.
+  End Impl_core_default_Default_for_ink_storage_lazy_Lazy_V_KeyType.
+  End Impl_core_default_Default_for_ink_storage_lazy_Lazy_V_KeyType.
+  
+  Module  Impl_core_fmt_Debug_for_ink_storage_lazy_Lazy_V_KeyType.
+  Section Impl_core_fmt_Debug_for_ink_storage_lazy_Lazy_V_KeyType.
+    Context `{ℋ : State.Trait}.
+    
+    Context {V KeyType : Set}.
+    
+    Context {ℋ_0 : ink_storage_traits.storage.StorageKey.Trait KeyType}.
+    Definition Self : Set := ink_storage.lazy.Lazy V KeyType.
+    
+    Parameter fmt :
+        (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
+    
+    Global Instance AssociatedFunction_fmt :
+      Notation.DoubleColon Self "fmt" := {
+      Notation.double_colon := fmt;
+    }.
+    
+    Global Instance ℐ : core.fmt.Debug.Trait Self := {
+      core.fmt.Debug.fmt := fmt;
+    }.
+  End Impl_core_fmt_Debug_for_ink_storage_lazy_Lazy_V_KeyType.
+  End Impl_core_fmt_Debug_for_ink_storage_lazy_Lazy_V_KeyType.
+  
+  Module  Impl_ink_storage_traits_storage_Storable_for_ink_storage_lazy_Lazy_V_KeyType.
+  Section Impl_ink_storage_traits_storage_Storable_for_ink_storage_lazy_Lazy_V_KeyType.
+    Context `{ℋ : State.Trait}.
+    
+    Context {V KeyType : Set}.
+    
+    Context {ℋ_0 : ink_storage_traits.storage.StorageKey.Trait KeyType}.
+    Definition Self : Set := ink_storage.lazy.Lazy V KeyType.
+    
+    Parameter encode :
+        forall {T : Set} {ℋ_0 : parity_scale_codec.codec.Output.Trait T},
+        (ref Self) -> (mut_ref T) -> M unit.
+    
+    Global Instance AssociatedFunction_encode
+        {T : Set}
+        {ℋ_0 : parity_scale_codec.codec.Output.Trait T} :
+      Notation.DoubleColon Self "encode" := {
+      Notation.double_colon := encode (T := T);
+    }.
+    
+    Parameter decode :
+        forall {I : Set} {ℋ_0 : parity_scale_codec.codec.Input.Trait I},
+        (mut_ref I) ->
+          M (core.result.Result Self parity_scale_codec.error.Error).
+    
+    Global Instance AssociatedFunction_decode
+        {I : Set}
+        {ℋ_0 : parity_scale_codec.codec.Input.Trait I} :
+      Notation.DoubleColon Self "decode" := {
+      Notation.double_colon := decode (I := I);
+    }.
+    
+    Global Instance ℐ : ink_storage_traits.storage.Storable.Trait Self := {
+      ink_storage_traits.storage.Storable.encode
+        {T : Set}
+        {ℋ_0 : parity_scale_codec.codec.Output.Trait T} :=
+        encode (T := T);
+      ink_storage_traits.storage.Storable.decode
+        {I : Set}
+        {ℋ_0 : parity_scale_codec.codec.Input.Trait I} :=
+        decode (I := I);
+    }.
+  End Impl_ink_storage_traits_storage_Storable_for_ink_storage_lazy_Lazy_V_KeyType.
+  End Impl_ink_storage_traits_storage_Storable_for_ink_storage_lazy_Lazy_V_KeyType.
+  
+  Module  Impl_ink_storage_traits_storage_StorableHint_Key_for_ink_storage_lazy_Lazy_V_InnerKey.
+  Section Impl_ink_storage_traits_storage_StorableHint_Key_for_ink_storage_lazy_Lazy_V_InnerKey.
+    Context `{ℋ : State.Trait}.
+    
+    Context {V Key InnerKey : Set}.
+    
+    Context
+      {ℋ_0 : ink_storage_traits.storage.StorageKey.Trait Key}
+      {ℋ_1 : ink_storage_traits.storage.StorageKey.Trait InnerKey}
+      {ℋ_2 : ink_storage_traits.storage.StorableHint.Trait V (Key := Key)}.
+    Definition Self : Set := ink_storage.lazy.Lazy V InnerKey.
+    
+    Definition Type_ : Set := ink_storage.lazy.Lazy V::type["Type_"] Key.
+    
+    Definition PreferredKey : Set := InnerKey.
+    
+    Global Instance ℐ :
+      ink_storage_traits.storage.StorableHint.Trait Self (Key := Key) := {
+      ink_storage_traits.storage.StorableHint.Type_ := Type_;
+      ink_storage_traits.storage.StorableHint.PreferredKey := PreferredKey;
+    }.
+  End Impl_ink_storage_traits_storage_StorableHint_Key_for_ink_storage_lazy_Lazy_V_InnerKey.
+  End Impl_ink_storage_traits_storage_StorableHint_Key_for_ink_storage_lazy_Lazy_V_InnerKey.
+  
+  Module  Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_lazy_Lazy_V_KeyType.
+  Section Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_lazy_Lazy_V_KeyType.
+    Context `{ℋ : State.Trait}.
+    
+    Context {V KeyType : Set}.
+    
+    Context {ℋ_0 : ink_storage_traits.storage.StorageKey.Trait KeyType}.
+    Definition Self : Set := ink_storage.lazy.Lazy V KeyType.
+    
+    Parameter KEY : ltac:(ink_primitives.key.Key).
+    
+    Global Instance AssociatedFunction_KEY :
+      Notation.DoubleColon Self "KEY" := {
+      Notation.double_colon := KEY;
+    }.
+    
+    Global Instance ℐ :
+      ink_storage_traits.storage.StorageKey.Required.Trait Self := {
+      ink_storage_traits.storage.StorageKey.KEY := KEY;
+      ink_storage_traits.storage.StorageKey.key := Datatypes.None;
+    }.
+  End Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_lazy_Lazy_V_KeyType.
+  End Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_lazy_Lazy_V_KeyType.
+End lazy.
 
-Module Mapping.
+Module mapping.
+  Module  Mapping.
   Section Mapping.
     Context `{ℋ : State.Trait}.
     
@@ -612,59 +380,21 @@ Module Mapping.
     Global Instance Get_AF__marker : Notation.DoubleColon t "_marker" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(_marker) : M _;
     }.
+    Module Default.
+      Definition KeyType := ink_storage_traits.impls.AutoKey.
+    End Default.
   End Mapping.
-  Module Default.
-    Definition KeyType := ink_storage_traits.impls.AutoKey.
-  End Default.
-End Mapping.
-Definition Mapping
-    (K V KeyType : Set)
-    `{ℋ : State.Trait}
-    {ℋ_0 : ink_storage_traits.storage.Packed.Trait V}
-    {ℋ_1 : ink_storage_traits.storage.StorageKey.Trait KeyType}
-    : Set :=
-  M.val (Mapping.t (K := K) (V := V) (KeyType := KeyType)).
-
-Module
-  Impl_scale_info_TypeInfo_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
-  Section
-    Impl_scale_info_TypeInfo_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
-    Context `{ℋ : State.Trait}.
-    
-    Context {K V KeyType : Set}.
-    
-    Context
+  End Mapping.
+  Definition Mapping
+      (K V KeyType : Set)
+      `{ℋ : State.Trait}
       {ℋ_0 : ink_storage_traits.storage.Packed.Trait V}
       {ℋ_1 : ink_storage_traits.storage.StorageKey.Trait KeyType}
-      {ℋ_2 :
-        scale_info.TypeInfo.Trait (core.marker.PhantomData ((K * V) * KeyType))}
-      {ℋ_3 : scale_info.TypeInfo.Trait K}
-      {ℋ_4 : ink_storage_traits.storage.Packed.Trait V}
-      {ℋ_5 : scale_info.TypeInfo.Trait V}
-      {ℋ_6 : ink_storage_traits.storage.StorageKey.Trait KeyType}
-      {ℋ_7 : scale_info.TypeInfo.Trait KeyType}.
-    Definition Self : Set := ink_storage.lazy.mapping.Mapping K V KeyType.
-    
-    Definition Identity : Set := Self.
-    
-    Parameter type_info : M (scale_info.ty.Type_ scale_info.ty.Type_.Default.T).
-    
-    Global Instance AssociatedFunction_type_info :
-      Notation.DoubleColon Self "type_info" := {
-      Notation.double_colon := type_info;
-    }.
-    
-    Global Instance ℐ : scale_info.TypeInfo.Trait Self := {
-      scale_info.TypeInfo.Identity := Identity;
-      scale_info.TypeInfo.type_info := type_info;
-    }.
-  End Impl_scale_info_TypeInfo_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
-End Impl_scale_info_TypeInfo_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
-
-Module
-  Impl_core_default_Default_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
-  Section
-    Impl_core_default_Default_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
+      : Set :=
+    M.val (Mapping.t (K := K) (V := V) (KeyType := KeyType)).
+  
+  Module  Impl_core_default_Default_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
+  Section Impl_core_default_Default_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
     Context `{ℋ : State.Trait}.
     
     Context {K V KeyType : Set}.
@@ -684,11 +414,10 @@ Module
     Global Instance ℐ : core.default.Default.Trait Self := {
       core.default.Default.default := default;
     }.
-  End
-    Impl_core_default_Default_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
-End Impl_core_default_Default_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
-
-Module Impl_core_fmt_Debug_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
+  End Impl_core_default_Default_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
+  End Impl_core_default_Default_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
+  
+  Module  Impl_core_fmt_Debug_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
   Section Impl_core_fmt_Debug_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
     Context `{ℋ : State.Trait}.
     
@@ -711,12 +440,10 @@ Module Impl_core_fmt_Debug_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
       core.fmt.Debug.fmt := fmt;
     }.
   End Impl_core_fmt_Debug_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
-End Impl_core_fmt_Debug_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
-
-Module
-  Impl_ink_storage_traits_storage_Storable_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
-  Section
-    Impl_ink_storage_traits_storage_Storable_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
+  End Impl_core_fmt_Debug_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
+  
+  Module  Impl_ink_storage_traits_storage_Storable_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
+  Section Impl_ink_storage_traits_storage_Storable_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
     Context `{ℋ : State.Trait}.
     
     Context {K V KeyType : Set}.
@@ -759,15 +486,11 @@ Module
         {ℋ_0 : parity_scale_codec.codec.Input.Trait I} :=
         decode (I := I);
     }.
-  End
-    Impl_ink_storage_traits_storage_Storable_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
-End
-  Impl_ink_storage_traits_storage_Storable_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
-
-Module
-  Impl_ink_storage_traits_storage_StorableHint_Key_for_ink_storage_lazy_mapping_Mapping_K_V_InnerKey.
-  Section
-    Impl_ink_storage_traits_storage_StorableHint_Key_for_ink_storage_lazy_mapping_Mapping_K_V_InnerKey.
+  End Impl_ink_storage_traits_storage_Storable_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
+  End Impl_ink_storage_traits_storage_Storable_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
+  
+  Module  Impl_ink_storage_traits_storage_StorableHint_Key_for_ink_storage_lazy_mapping_Mapping_K_V_InnerKey.
+  Section Impl_ink_storage_traits_storage_StorableHint_Key_for_ink_storage_lazy_mapping_Mapping_K_V_InnerKey.
     Context `{ℋ : State.Trait}.
     
     Context {K V Key InnerKey : Set}.
@@ -787,15 +510,11 @@ Module
       ink_storage_traits.storage.StorableHint.Type_ := Type_;
       ink_storage_traits.storage.StorableHint.PreferredKey := PreferredKey;
     }.
-  End
-    Impl_ink_storage_traits_storage_StorableHint_Key_for_ink_storage_lazy_mapping_Mapping_K_V_InnerKey.
-End
-  Impl_ink_storage_traits_storage_StorableHint_Key_for_ink_storage_lazy_mapping_Mapping_K_V_InnerKey.
-
-Module
-  Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
-  Section
-    Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
+  End Impl_ink_storage_traits_storage_StorableHint_Key_for_ink_storage_lazy_mapping_Mapping_K_V_InnerKey.
+  End Impl_ink_storage_traits_storage_StorableHint_Key_for_ink_storage_lazy_mapping_Mapping_K_V_InnerKey.
+  
+  Module  Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
+  Section Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
     Context `{ℋ : State.Trait}.
     
     Context {K V KeyType : Set}.
@@ -817,68 +536,274 @@ Module
       ink_storage_traits.storage.StorageKey.KEY := KEY;
       ink_storage_traits.storage.StorageKey.key := Datatypes.None;
     }.
-  End
-    Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
-End
-  Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
+  End Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
+  End Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
+End mapping.
 
-Module
-  Impl_ink_storage_traits_layout_StorageLayout_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
-  Section
-    Impl_ink_storage_traits_layout_StorageLayout_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
-    Context `{ℋ : State.Trait}.
-    
-    Context {K V KeyType : Set}.
-    
-    Context
-      {ℋ_0 : scale_info.TypeInfo.Trait K}
-      {ℋ_1 : ink_storage_traits.storage.Packed.Trait V}
-      {ℋ_2 : ink_storage_traits.layout.StorageLayout.Trait V}
-      {ℋ_3 : scale_info.TypeInfo.Trait V}
-      {ℋ_4 : ink_storage_traits.storage.StorageKey.Trait KeyType}
-      {ℋ_5 : scale_info.TypeInfo.Trait KeyType}.
-    Definition Self : Set := ink_storage.lazy.mapping.Mapping K V KeyType.
-    
-    Parameter layout :
-        (ref ltac:(ink_primitives.key.Key)) ->
-          M (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
-    
-    Global Instance AssociatedFunction_layout :
-      Notation.DoubleColon Self "layout" := {
-      Notation.double_colon := layout;
-    }.
-    
-    Global Instance ℐ : ink_storage_traits.layout.StorageLayout.Trait Self := {
-      ink_storage_traits.layout.StorageLayout.layout := layout;
-    }.
-  End
-    Impl_ink_storage_traits_layout_StorageLayout_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
-End
-  Impl_ink_storage_traits_layout_StorageLayout_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
-
-Module Lazy.
-  Section Lazy.
-    Context `{ℋ : State.Trait}.
-    
-    Context {V KeyType : Set}.
-    
-    Context {ℋ_0 : ink_storage_traits.storage.StorageKey.Trait KeyType}.
-    Unset Primitive Projections.
-    Record t : Set := {
-      _marker : core.marker.PhantomData (V * KeyType);
-    }.
-    Global Set Primitive Projections.
-    
-    Global Instance Get__marker : Notation.Dot "_marker" := {
-      Notation.dot x := let* x := M.read x in Pure x.(_marker) : M _;
-    }.
-    Global Instance Get_AF__marker : Notation.DoubleColon t "_marker" := {
-      Notation.double_colon x := let* x := M.read x in Pure x.(_marker) : M _;
-    }.
-  End Lazy.
+Module  Mapping.
+Section Mapping.
+  Context `{ℋ : State.Trait}.
+  
+  Context {K V KeyType : Set}.
+  
+  Context
+    {ℋ_0 : ink_storage_traits.storage.Packed.Trait V}
+    {ℋ_1 : ink_storage_traits.storage.StorageKey.Trait KeyType}.
+  Unset Primitive Projections.
+  Record t : Set := {
+    _marker : core.marker.PhantomData ((K * V) * KeyType);
+  }.
+  Global Set Primitive Projections.
+  
+  Global Instance Get__marker : Notation.Dot "_marker" := {
+    Notation.dot x := let* x := M.read x in Pure x.(_marker) : M _;
+  }.
+  Global Instance Get_AF__marker : Notation.DoubleColon t "_marker" := {
+    Notation.double_colon x := let* x := M.read x in Pure x.(_marker) : M _;
+  }.
   Module Default.
     Definition KeyType := ink_storage_traits.impls.AutoKey.
   End Default.
+End Mapping.
+End Mapping.
+Definition Mapping
+    (K V KeyType : Set)
+    `{ℋ : State.Trait}
+    {ℋ_0 : ink_storage_traits.storage.Packed.Trait V}
+    {ℋ_1 : ink_storage_traits.storage.StorageKey.Trait KeyType}
+    : Set :=
+  M.val (Mapping.t (K := K) (V := V) (KeyType := KeyType)).
+
+Module  Impl_scale_info_TypeInfo_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
+Section Impl_scale_info_TypeInfo_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
+  Context `{ℋ : State.Trait}.
+  
+  Context {K V KeyType : Set}.
+  
+  Context
+    {ℋ_0 : ink_storage_traits.storage.Packed.Trait V}
+    {ℋ_1 : ink_storage_traits.storage.StorageKey.Trait KeyType}
+    {ℋ_2 :
+      scale_info.TypeInfo.Trait (core.marker.PhantomData ((K * V) * KeyType))}
+    {ℋ_3 : scale_info.TypeInfo.Trait K}
+    {ℋ_4 : ink_storage_traits.storage.Packed.Trait V}
+    {ℋ_5 : scale_info.TypeInfo.Trait V}
+    {ℋ_6 : ink_storage_traits.storage.StorageKey.Trait KeyType}
+    {ℋ_7 : scale_info.TypeInfo.Trait KeyType}.
+  Definition Self : Set := ink_storage.lazy.mapping.Mapping K V KeyType.
+  
+  Definition Identity : Set := Self.
+  
+  Parameter type_info : M (scale_info.ty.Type_ scale_info.ty.Type_.Default.T).
+  
+  Global Instance AssociatedFunction_type_info :
+    Notation.DoubleColon Self "type_info" := {
+    Notation.double_colon := type_info;
+  }.
+  
+  Global Instance ℐ : scale_info.TypeInfo.Trait Self := {
+    scale_info.TypeInfo.Identity := Identity;
+    scale_info.TypeInfo.type_info := type_info;
+  }.
+End Impl_scale_info_TypeInfo_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
+End Impl_scale_info_TypeInfo_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
+
+Module  Impl_core_default_Default_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
+Section Impl_core_default_Default_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
+  Context `{ℋ : State.Trait}.
+  
+  Context {K V KeyType : Set}.
+  
+  Context
+    {ℋ_0 : ink_storage_traits.storage.Packed.Trait V}
+    {ℋ_1 : ink_storage_traits.storage.StorageKey.Trait KeyType}.
+  Definition Self : Set := ink_storage.lazy.mapping.Mapping K V KeyType.
+  
+  Parameter default : M Self.
+  
+  Global Instance AssociatedFunction_default :
+    Notation.DoubleColon Self "default" := {
+    Notation.double_colon := default;
+  }.
+  
+  Global Instance ℐ : core.default.Default.Trait Self := {
+    core.default.Default.default := default;
+  }.
+End Impl_core_default_Default_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
+End Impl_core_default_Default_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
+
+Module  Impl_core_fmt_Debug_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
+Section Impl_core_fmt_Debug_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
+  Context `{ℋ : State.Trait}.
+  
+  Context {K V KeyType : Set}.
+  
+  Context
+    {ℋ_0 : ink_storage_traits.storage.Packed.Trait V}
+    {ℋ_1 : ink_storage_traits.storage.StorageKey.Trait KeyType}.
+  Definition Self : Set := ink_storage.lazy.mapping.Mapping K V KeyType.
+  
+  Parameter fmt :
+      (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
+  
+  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {
+    Notation.double_colon := fmt;
+  }.
+  
+  Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    core.fmt.Debug.fmt := fmt;
+  }.
+End Impl_core_fmt_Debug_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
+End Impl_core_fmt_Debug_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
+
+Module  Impl_ink_storage_traits_storage_Storable_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
+Section Impl_ink_storage_traits_storage_Storable_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
+  Context `{ℋ : State.Trait}.
+  
+  Context {K V KeyType : Set}.
+  
+  Context
+    {ℋ_0 : ink_storage_traits.storage.Packed.Trait V}
+    {ℋ_1 : ink_storage_traits.storage.StorageKey.Trait KeyType}.
+  Definition Self : Set := ink_storage.lazy.mapping.Mapping K V KeyType.
+  
+  Parameter encode :
+      forall {T : Set} {ℋ_0 : parity_scale_codec.codec.Output.Trait T},
+      (ref Self) -> (mut_ref T) -> M unit.
+  
+  Global Instance AssociatedFunction_encode
+      {T : Set}
+      {ℋ_0 : parity_scale_codec.codec.Output.Trait T} :
+    Notation.DoubleColon Self "encode" := {
+    Notation.double_colon := encode (T := T);
+  }.
+  
+  Parameter decode :
+      forall {I : Set} {ℋ_0 : parity_scale_codec.codec.Input.Trait I},
+      (mut_ref I) -> M (core.result.Result Self parity_scale_codec.error.Error).
+  
+  Global Instance AssociatedFunction_decode
+      {I : Set}
+      {ℋ_0 : parity_scale_codec.codec.Input.Trait I} :
+    Notation.DoubleColon Self "decode" := {
+    Notation.double_colon := decode (I := I);
+  }.
+  
+  Global Instance ℐ : ink_storage_traits.storage.Storable.Trait Self := {
+    ink_storage_traits.storage.Storable.encode
+      {T : Set}
+      {ℋ_0 : parity_scale_codec.codec.Output.Trait T} :=
+      encode (T := T);
+    ink_storage_traits.storage.Storable.decode
+      {I : Set}
+      {ℋ_0 : parity_scale_codec.codec.Input.Trait I} :=
+      decode (I := I);
+  }.
+End Impl_ink_storage_traits_storage_Storable_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
+End Impl_ink_storage_traits_storage_Storable_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
+
+Module  Impl_ink_storage_traits_storage_StorableHint_Key_for_ink_storage_lazy_mapping_Mapping_K_V_InnerKey.
+Section Impl_ink_storage_traits_storage_StorableHint_Key_for_ink_storage_lazy_mapping_Mapping_K_V_InnerKey.
+  Context `{ℋ : State.Trait}.
+  
+  Context {K V Key InnerKey : Set}.
+  
+  Context
+    {ℋ_0 : ink_storage_traits.storage.Packed.Trait V}
+    {ℋ_1 : ink_storage_traits.storage.StorageKey.Trait Key}
+    {ℋ_2 : ink_storage_traits.storage.StorageKey.Trait InnerKey}.
+  Definition Self : Set := ink_storage.lazy.mapping.Mapping K V InnerKey.
+  
+  Definition Type_ : Set := ink_storage.lazy.mapping.Mapping K V Key.
+  
+  Definition PreferredKey : Set := InnerKey.
+  
+  Global Instance ℐ :
+    ink_storage_traits.storage.StorableHint.Trait Self (Key := Key) := {
+    ink_storage_traits.storage.StorableHint.Type_ := Type_;
+    ink_storage_traits.storage.StorableHint.PreferredKey := PreferredKey;
+  }.
+End Impl_ink_storage_traits_storage_StorableHint_Key_for_ink_storage_lazy_mapping_Mapping_K_V_InnerKey.
+End Impl_ink_storage_traits_storage_StorableHint_Key_for_ink_storage_lazy_mapping_Mapping_K_V_InnerKey.
+
+Module  Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
+Section Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
+  Context `{ℋ : State.Trait}.
+  
+  Context {K V KeyType : Set}.
+  
+  Context
+    {ℋ_0 : ink_storage_traits.storage.Packed.Trait V}
+    {ℋ_1 : ink_storage_traits.storage.StorageKey.Trait KeyType}.
+  Definition Self : Set := ink_storage.lazy.mapping.Mapping K V KeyType.
+  
+  Parameter KEY : ltac:(ink_primitives.key.Key).
+  
+  Global Instance AssociatedFunction_KEY : Notation.DoubleColon Self "KEY" := {
+    Notation.double_colon := KEY;
+  }.
+  
+  Global Instance ℐ :
+    ink_storage_traits.storage.StorageKey.Required.Trait Self := {
+    ink_storage_traits.storage.StorageKey.KEY := KEY;
+    ink_storage_traits.storage.StorageKey.key := Datatypes.None;
+  }.
+End Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
+End Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
+
+Module  Impl_ink_storage_traits_layout_StorageLayout_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
+Section Impl_ink_storage_traits_layout_StorageLayout_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
+  Context `{ℋ : State.Trait}.
+  
+  Context {K V KeyType : Set}.
+  
+  Context
+    {ℋ_0 : scale_info.TypeInfo.Trait K}
+    {ℋ_1 : ink_storage_traits.storage.Packed.Trait V}
+    {ℋ_2 : ink_storage_traits.layout.StorageLayout.Trait V}
+    {ℋ_3 : scale_info.TypeInfo.Trait V}
+    {ℋ_4 : ink_storage_traits.storage.StorageKey.Trait KeyType}
+    {ℋ_5 : scale_info.TypeInfo.Trait KeyType}.
+  Definition Self : Set := ink_storage.lazy.mapping.Mapping K V KeyType.
+  
+  Parameter layout :
+      (ref ltac:(ink_primitives.key.Key)) ->
+        M (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
+  
+  Global Instance AssociatedFunction_layout :
+    Notation.DoubleColon Self "layout" := {
+    Notation.double_colon := layout;
+  }.
+  
+  Global Instance ℐ : ink_storage_traits.layout.StorageLayout.Trait Self := {
+    ink_storage_traits.layout.StorageLayout.layout := layout;
+  }.
+End Impl_ink_storage_traits_layout_StorageLayout_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
+End Impl_ink_storage_traits_layout_StorageLayout_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
+
+Module  Lazy.
+Section Lazy.
+  Context `{ℋ : State.Trait}.
+  
+  Context {V KeyType : Set}.
+  
+  Context {ℋ_0 : ink_storage_traits.storage.StorageKey.Trait KeyType}.
+  Unset Primitive Projections.
+  Record t : Set := {
+    _marker : core.marker.PhantomData (V * KeyType);
+  }.
+  Global Set Primitive Projections.
+  
+  Global Instance Get__marker : Notation.Dot "_marker" := {
+    Notation.dot x := let* x := M.read x in Pure x.(_marker) : M _;
+  }.
+  Global Instance Get_AF__marker : Notation.DoubleColon t "_marker" := {
+    Notation.double_colon x := let* x := M.read x in Pure x.(_marker) : M _;
+  }.
+  Module Default.
+    Definition KeyType := ink_storage_traits.impls.AutoKey.
+  End Default.
+End Lazy.
 End Lazy.
 Definition Lazy
     (V KeyType : Set)
@@ -887,214 +812,195 @@ Definition Lazy
     : Set :=
   M.val (Lazy.t (V := V) (KeyType := KeyType)).
 
-Module Impl_scale_info_TypeInfo_for_ink_storage_lazy_Lazy_V_KeyType.
-  Section Impl_scale_info_TypeInfo_for_ink_storage_lazy_Lazy_V_KeyType.
-    Context `{ℋ : State.Trait}.
-    
-    Context {V KeyType : Set}.
-    
-    Context
-      {ℋ_0 : ink_storage_traits.storage.StorageKey.Trait KeyType}
-      {ℋ_1 : scale_info.TypeInfo.Trait (core.marker.PhantomData (V * KeyType))}
-      {ℋ_2 : scale_info.TypeInfo.Trait V}
-      {ℋ_3 : ink_storage_traits.storage.StorageKey.Trait KeyType}
-      {ℋ_4 : scale_info.TypeInfo.Trait KeyType}.
-    Definition Self : Set := ink_storage.lazy.Lazy V KeyType.
-    
-    Definition Identity : Set := Self.
-    
-    Parameter type_info : M (scale_info.ty.Type_ scale_info.ty.Type_.Default.T).
-    
-    Global Instance AssociatedFunction_type_info :
-      Notation.DoubleColon Self "type_info" := {
-      Notation.double_colon := type_info;
-    }.
-    
-    Global Instance ℐ : scale_info.TypeInfo.Trait Self := {
-      scale_info.TypeInfo.Identity := Identity;
-      scale_info.TypeInfo.type_info := type_info;
-    }.
-  End Impl_scale_info_TypeInfo_for_ink_storage_lazy_Lazy_V_KeyType.
+Module  Impl_scale_info_TypeInfo_for_ink_storage_lazy_Lazy_V_KeyType.
+Section Impl_scale_info_TypeInfo_for_ink_storage_lazy_Lazy_V_KeyType.
+  Context `{ℋ : State.Trait}.
+  
+  Context {V KeyType : Set}.
+  
+  Context
+    {ℋ_0 : ink_storage_traits.storage.StorageKey.Trait KeyType}
+    {ℋ_1 : scale_info.TypeInfo.Trait (core.marker.PhantomData (V * KeyType))}
+    {ℋ_2 : scale_info.TypeInfo.Trait V}
+    {ℋ_3 : ink_storage_traits.storage.StorageKey.Trait KeyType}
+    {ℋ_4 : scale_info.TypeInfo.Trait KeyType}.
+  Definition Self : Set := ink_storage.lazy.Lazy V KeyType.
+  
+  Definition Identity : Set := Self.
+  
+  Parameter type_info : M (scale_info.ty.Type_ scale_info.ty.Type_.Default.T).
+  
+  Global Instance AssociatedFunction_type_info :
+    Notation.DoubleColon Self "type_info" := {
+    Notation.double_colon := type_info;
+  }.
+  
+  Global Instance ℐ : scale_info.TypeInfo.Trait Self := {
+    scale_info.TypeInfo.Identity := Identity;
+    scale_info.TypeInfo.type_info := type_info;
+  }.
+End Impl_scale_info_TypeInfo_for_ink_storage_lazy_Lazy_V_KeyType.
 End Impl_scale_info_TypeInfo_for_ink_storage_lazy_Lazy_V_KeyType.
 
-Module Impl_core_default_Default_for_ink_storage_lazy_Lazy_V_KeyType.
-  Section Impl_core_default_Default_for_ink_storage_lazy_Lazy_V_KeyType.
-    Context `{ℋ : State.Trait}.
-    
-    Context {V KeyType : Set}.
-    
-    Context {ℋ_0 : ink_storage_traits.storage.StorageKey.Trait KeyType}.
-    Definition Self : Set := ink_storage.lazy.Lazy V KeyType.
-    
-    Parameter default : M Self.
-    
-    Global Instance AssociatedFunction_default :
-      Notation.DoubleColon Self "default" := {
-      Notation.double_colon := default;
-    }.
-    
-    Global Instance ℐ : core.default.Default.Trait Self := {
-      core.default.Default.default := default;
-    }.
-  End Impl_core_default_Default_for_ink_storage_lazy_Lazy_V_KeyType.
+Module  Impl_core_default_Default_for_ink_storage_lazy_Lazy_V_KeyType.
+Section Impl_core_default_Default_for_ink_storage_lazy_Lazy_V_KeyType.
+  Context `{ℋ : State.Trait}.
+  
+  Context {V KeyType : Set}.
+  
+  Context {ℋ_0 : ink_storage_traits.storage.StorageKey.Trait KeyType}.
+  Definition Self : Set := ink_storage.lazy.Lazy V KeyType.
+  
+  Parameter default : M Self.
+  
+  Global Instance AssociatedFunction_default :
+    Notation.DoubleColon Self "default" := {
+    Notation.double_colon := default;
+  }.
+  
+  Global Instance ℐ : core.default.Default.Trait Self := {
+    core.default.Default.default := default;
+  }.
+End Impl_core_default_Default_for_ink_storage_lazy_Lazy_V_KeyType.
 End Impl_core_default_Default_for_ink_storage_lazy_Lazy_V_KeyType.
 
-Module Impl_core_fmt_Debug_for_ink_storage_lazy_Lazy_V_KeyType.
-  Section Impl_core_fmt_Debug_for_ink_storage_lazy_Lazy_V_KeyType.
-    Context `{ℋ : State.Trait}.
-    
-    Context {V KeyType : Set}.
-    
-    Context {ℋ_0 : ink_storage_traits.storage.StorageKey.Trait KeyType}.
-    Definition Self : Set := ink_storage.lazy.Lazy V KeyType.
-    
-    Parameter fmt :
-        (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
-    
-    Global Instance AssociatedFunction_fmt :
-      Notation.DoubleColon Self "fmt" := {
-      Notation.double_colon := fmt;
-    }.
-    
-    Global Instance ℐ : core.fmt.Debug.Trait Self := {
-      core.fmt.Debug.fmt := fmt;
-    }.
-  End Impl_core_fmt_Debug_for_ink_storage_lazy_Lazy_V_KeyType.
+Module  Impl_core_fmt_Debug_for_ink_storage_lazy_Lazy_V_KeyType.
+Section Impl_core_fmt_Debug_for_ink_storage_lazy_Lazy_V_KeyType.
+  Context `{ℋ : State.Trait}.
+  
+  Context {V KeyType : Set}.
+  
+  Context {ℋ_0 : ink_storage_traits.storage.StorageKey.Trait KeyType}.
+  Definition Self : Set := ink_storage.lazy.Lazy V KeyType.
+  
+  Parameter fmt :
+      (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
+  
+  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {
+    Notation.double_colon := fmt;
+  }.
+  
+  Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    core.fmt.Debug.fmt := fmt;
+  }.
+End Impl_core_fmt_Debug_for_ink_storage_lazy_Lazy_V_KeyType.
 End Impl_core_fmt_Debug_for_ink_storage_lazy_Lazy_V_KeyType.
 
-Module
-  Impl_ink_storage_traits_storage_Storable_for_ink_storage_lazy_Lazy_V_KeyType.
-  Section
-    Impl_ink_storage_traits_storage_Storable_for_ink_storage_lazy_Lazy_V_KeyType.
-    Context `{ℋ : State.Trait}.
-    
-    Context {V KeyType : Set}.
-    
-    Context {ℋ_0 : ink_storage_traits.storage.StorageKey.Trait KeyType}.
-    Definition Self : Set := ink_storage.lazy.Lazy V KeyType.
-    
-    Parameter encode :
-        forall {T : Set} {ℋ_0 : parity_scale_codec.codec.Output.Trait T},
-        (ref Self) -> (mut_ref T) -> M unit.
-    
-    Global Instance AssociatedFunction_encode
-        {T : Set}
-        {ℋ_0 : parity_scale_codec.codec.Output.Trait T} :
-      Notation.DoubleColon Self "encode" := {
-      Notation.double_colon := encode (T := T);
-    }.
-    
-    Parameter decode :
-        forall {I : Set} {ℋ_0 : parity_scale_codec.codec.Input.Trait I},
-        (mut_ref I) ->
-          M (core.result.Result Self parity_scale_codec.error.Error).
-    
-    Global Instance AssociatedFunction_decode
-        {I : Set}
-        {ℋ_0 : parity_scale_codec.codec.Input.Trait I} :
-      Notation.DoubleColon Self "decode" := {
-      Notation.double_colon := decode (I := I);
-    }.
-    
-    Global Instance ℐ : ink_storage_traits.storage.Storable.Trait Self := {
-      ink_storage_traits.storage.Storable.encode
-        {T : Set}
-        {ℋ_0 : parity_scale_codec.codec.Output.Trait T} :=
-        encode (T := T);
-      ink_storage_traits.storage.Storable.decode
-        {I : Set}
-        {ℋ_0 : parity_scale_codec.codec.Input.Trait I} :=
-        decode (I := I);
-    }.
-  End
-    Impl_ink_storage_traits_storage_Storable_for_ink_storage_lazy_Lazy_V_KeyType.
-End
-  Impl_ink_storage_traits_storage_Storable_for_ink_storage_lazy_Lazy_V_KeyType.
+Module  Impl_ink_storage_traits_storage_Storable_for_ink_storage_lazy_Lazy_V_KeyType.
+Section Impl_ink_storage_traits_storage_Storable_for_ink_storage_lazy_Lazy_V_KeyType.
+  Context `{ℋ : State.Trait}.
+  
+  Context {V KeyType : Set}.
+  
+  Context {ℋ_0 : ink_storage_traits.storage.StorageKey.Trait KeyType}.
+  Definition Self : Set := ink_storage.lazy.Lazy V KeyType.
+  
+  Parameter encode :
+      forall {T : Set} {ℋ_0 : parity_scale_codec.codec.Output.Trait T},
+      (ref Self) -> (mut_ref T) -> M unit.
+  
+  Global Instance AssociatedFunction_encode
+      {T : Set}
+      {ℋ_0 : parity_scale_codec.codec.Output.Trait T} :
+    Notation.DoubleColon Self "encode" := {
+    Notation.double_colon := encode (T := T);
+  }.
+  
+  Parameter decode :
+      forall {I : Set} {ℋ_0 : parity_scale_codec.codec.Input.Trait I},
+      (mut_ref I) -> M (core.result.Result Self parity_scale_codec.error.Error).
+  
+  Global Instance AssociatedFunction_decode
+      {I : Set}
+      {ℋ_0 : parity_scale_codec.codec.Input.Trait I} :
+    Notation.DoubleColon Self "decode" := {
+    Notation.double_colon := decode (I := I);
+  }.
+  
+  Global Instance ℐ : ink_storage_traits.storage.Storable.Trait Self := {
+    ink_storage_traits.storage.Storable.encode
+      {T : Set}
+      {ℋ_0 : parity_scale_codec.codec.Output.Trait T} :=
+      encode (T := T);
+    ink_storage_traits.storage.Storable.decode
+      {I : Set}
+      {ℋ_0 : parity_scale_codec.codec.Input.Trait I} :=
+      decode (I := I);
+  }.
+End Impl_ink_storage_traits_storage_Storable_for_ink_storage_lazy_Lazy_V_KeyType.
+End Impl_ink_storage_traits_storage_Storable_for_ink_storage_lazy_Lazy_V_KeyType.
 
-Module
-  Impl_ink_storage_traits_storage_StorableHint_Key_for_ink_storage_lazy_Lazy_V_InnerKey.
-  Section
-    Impl_ink_storage_traits_storage_StorableHint_Key_for_ink_storage_lazy_Lazy_V_InnerKey.
-    Context `{ℋ : State.Trait}.
-    
-    Context {V Key InnerKey : Set}.
-    
-    Context
-      {ℋ_0 : ink_storage_traits.storage.StorageKey.Trait Key}
-      {ℋ_1 : ink_storage_traits.storage.StorageKey.Trait InnerKey}
-      {ℋ_2 : ink_storage_traits.storage.StorableHint.Trait V (Key := Key)}.
-    Definition Self : Set := ink_storage.lazy.Lazy V InnerKey.
-    
-    Definition Type_ : Set := ink_storage.lazy.Lazy V::type["Type_"] Key.
-    
-    Definition PreferredKey : Set := InnerKey.
-    
-    Global Instance ℐ :
-      ink_storage_traits.storage.StorableHint.Trait Self (Key := Key) := {
-      ink_storage_traits.storage.StorableHint.Type_ := Type_;
-      ink_storage_traits.storage.StorableHint.PreferredKey := PreferredKey;
-    }.
-  End
-    Impl_ink_storage_traits_storage_StorableHint_Key_for_ink_storage_lazy_Lazy_V_InnerKey.
-End
-  Impl_ink_storage_traits_storage_StorableHint_Key_for_ink_storage_lazy_Lazy_V_InnerKey.
+Module  Impl_ink_storage_traits_storage_StorableHint_Key_for_ink_storage_lazy_Lazy_V_InnerKey.
+Section Impl_ink_storage_traits_storage_StorableHint_Key_for_ink_storage_lazy_Lazy_V_InnerKey.
+  Context `{ℋ : State.Trait}.
+  
+  Context {V Key InnerKey : Set}.
+  
+  Context
+    {ℋ_0 : ink_storage_traits.storage.StorageKey.Trait Key}
+    {ℋ_1 : ink_storage_traits.storage.StorageKey.Trait InnerKey}
+    {ℋ_2 : ink_storage_traits.storage.StorableHint.Trait V (Key := Key)}.
+  Definition Self : Set := ink_storage.lazy.Lazy V InnerKey.
+  
+  Definition Type_ : Set := ink_storage.lazy.Lazy V::type["Type_"] Key.
+  
+  Definition PreferredKey : Set := InnerKey.
+  
+  Global Instance ℐ :
+    ink_storage_traits.storage.StorableHint.Trait Self (Key := Key) := {
+    ink_storage_traits.storage.StorableHint.Type_ := Type_;
+    ink_storage_traits.storage.StorableHint.PreferredKey := PreferredKey;
+  }.
+End Impl_ink_storage_traits_storage_StorableHint_Key_for_ink_storage_lazy_Lazy_V_InnerKey.
+End Impl_ink_storage_traits_storage_StorableHint_Key_for_ink_storage_lazy_Lazy_V_InnerKey.
 
-Module
-  Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_lazy_Lazy_V_KeyType.
-  Section
-    Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_lazy_Lazy_V_KeyType.
-    Context `{ℋ : State.Trait}.
-    
-    Context {V KeyType : Set}.
-    
-    Context {ℋ_0 : ink_storage_traits.storage.StorageKey.Trait KeyType}.
-    Definition Self : Set := ink_storage.lazy.Lazy V KeyType.
-    
-    Parameter KEY : ltac:(ink_primitives.key.Key).
-    
-    Global Instance AssociatedFunction_KEY :
-      Notation.DoubleColon Self "KEY" := {
-      Notation.double_colon := KEY;
-    }.
-    
-    Global Instance ℐ :
-      ink_storage_traits.storage.StorageKey.Required.Trait Self := {
-      ink_storage_traits.storage.StorageKey.KEY := KEY;
-      ink_storage_traits.storage.StorageKey.key := Datatypes.None;
-    }.
-  End
-    Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_lazy_Lazy_V_KeyType.
-End
-  Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_lazy_Lazy_V_KeyType.
+Module  Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_lazy_Lazy_V_KeyType.
+Section Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_lazy_Lazy_V_KeyType.
+  Context `{ℋ : State.Trait}.
+  
+  Context {V KeyType : Set}.
+  
+  Context {ℋ_0 : ink_storage_traits.storage.StorageKey.Trait KeyType}.
+  Definition Self : Set := ink_storage.lazy.Lazy V KeyType.
+  
+  Parameter KEY : ltac:(ink_primitives.key.Key).
+  
+  Global Instance AssociatedFunction_KEY : Notation.DoubleColon Self "KEY" := {
+    Notation.double_colon := KEY;
+  }.
+  
+  Global Instance ℐ :
+    ink_storage_traits.storage.StorageKey.Required.Trait Self := {
+    ink_storage_traits.storage.StorageKey.KEY := KEY;
+    ink_storage_traits.storage.StorageKey.key := Datatypes.None;
+  }.
+End Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_lazy_Lazy_V_KeyType.
+End Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_lazy_Lazy_V_KeyType.
 
-Module
-  Impl_ink_storage_traits_layout_StorageLayout_for_ink_storage_lazy_Lazy_V_KeyType.
-  Section
-    Impl_ink_storage_traits_layout_StorageLayout_for_ink_storage_lazy_Lazy_V_KeyType.
-    Context `{ℋ : State.Trait}.
-    
-    Context {V KeyType : Set}.
-    
-    Context
-      {ℋ_0 : ink_storage_traits.layout.StorageLayout.Trait V}
-      {ℋ_1 : scale_info.TypeInfo.Trait V}
-      {ℋ_2 : ink_storage_traits.storage.StorageKey.Trait KeyType}
-      {ℋ_3 : scale_info.TypeInfo.Trait KeyType}.
-    Definition Self : Set := ink_storage.lazy.Lazy V KeyType.
-    
-    Parameter layout :
-        (ref ltac:(ink_primitives.key.Key)) ->
-          M (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
-    
-    Global Instance AssociatedFunction_layout :
-      Notation.DoubleColon Self "layout" := {
-      Notation.double_colon := layout;
-    }.
-    
-    Global Instance ℐ : ink_storage_traits.layout.StorageLayout.Trait Self := {
-      ink_storage_traits.layout.StorageLayout.layout := layout;
-    }.
-  End
-    Impl_ink_storage_traits_layout_StorageLayout_for_ink_storage_lazy_Lazy_V_KeyType.
-End
-  Impl_ink_storage_traits_layout_StorageLayout_for_ink_storage_lazy_Lazy_V_KeyType.
+Module  Impl_ink_storage_traits_layout_StorageLayout_for_ink_storage_lazy_Lazy_V_KeyType.
+Section Impl_ink_storage_traits_layout_StorageLayout_for_ink_storage_lazy_Lazy_V_KeyType.
+  Context `{ℋ : State.Trait}.
+  
+  Context {V KeyType : Set}.
+  
+  Context
+    {ℋ_0 : ink_storage_traits.layout.StorageLayout.Trait V}
+    {ℋ_1 : scale_info.TypeInfo.Trait V}
+    {ℋ_2 : ink_storage_traits.storage.StorageKey.Trait KeyType}
+    {ℋ_3 : scale_info.TypeInfo.Trait KeyType}.
+  Definition Self : Set := ink_storage.lazy.Lazy V KeyType.
+  
+  Parameter layout :
+      (ref ltac:(ink_primitives.key.Key)) ->
+        M (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
+  
+  Global Instance AssociatedFunction_layout :
+    Notation.DoubleColon Self "layout" := {
+    Notation.double_colon := layout;
+  }.
+  
+  Global Instance ℐ : ink_storage_traits.layout.StorageLayout.Trait Self := {
+    ink_storage_traits.layout.StorageLayout.layout := layout;
+  }.
+End Impl_ink_storage_traits_layout_StorageLayout_for_ink_storage_lazy_Lazy_V_KeyType.
+End Impl_ink_storage_traits_layout_StorageLayout_for_ink_storage_lazy_Lazy_V_KeyType.

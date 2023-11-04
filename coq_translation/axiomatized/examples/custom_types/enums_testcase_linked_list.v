@@ -13,40 +13,38 @@ Module List.
 End List.
 Definition List `{ℋ : State.Trait} : Set := List.t.
 
-Module Impl_enums_testcase_linked_list_List.
-  Section Impl_enums_testcase_linked_list_List.
-    Context `{ℋ : State.Trait}.
-    
-    Definition Self : Set := enums_testcase_linked_list.List.
-    
-    Parameter new : M enums_testcase_linked_list.List.
-    
-    Global Instance AssociatedFunction_new :
-      Notation.DoubleColon Self "new" := {
-      Notation.double_colon := new;
-    }.
-    
-    Parameter prepend : Self -> u32 -> M enums_testcase_linked_list.List.
-    
-    Global Instance AssociatedFunction_prepend :
-      Notation.DoubleColon Self "prepend" := {
-      Notation.double_colon := prepend;
-    }.
-    
-    Parameter len : (ref Self) -> M u32.
-    
-    Global Instance AssociatedFunction_len :
-      Notation.DoubleColon Self "len" := {
-      Notation.double_colon := len;
-    }.
-    
-    Parameter stringify : (ref Self) -> M alloc.string.String.
-    
-    Global Instance AssociatedFunction_stringify :
-      Notation.DoubleColon Self "stringify" := {
-      Notation.double_colon := stringify;
-    }.
-  End Impl_enums_testcase_linked_list_List.
+Module  Impl_enums_testcase_linked_list_List.
+Section Impl_enums_testcase_linked_list_List.
+  Context `{ℋ : State.Trait}.
+  
+  Definition Self : Set := enums_testcase_linked_list.List.
+  
+  Parameter new : M enums_testcase_linked_list.List.
+  
+  Global Instance AssociatedFunction_new : Notation.DoubleColon Self "new" := {
+    Notation.double_colon := new;
+  }.
+  
+  Parameter prepend : Self -> u32 -> M enums_testcase_linked_list.List.
+  
+  Global Instance AssociatedFunction_prepend :
+    Notation.DoubleColon Self "prepend" := {
+    Notation.double_colon := prepend;
+  }.
+  
+  Parameter len : (ref Self) -> M u32.
+  
+  Global Instance AssociatedFunction_len : Notation.DoubleColon Self "len" := {
+    Notation.double_colon := len;
+  }.
+  
+  Parameter stringify : (ref Self) -> M alloc.string.String.
+  
+  Global Instance AssociatedFunction_stringify :
+    Notation.DoubleColon Self "stringify" := {
+    Notation.double_colon := stringify;
+  }.
+End Impl_enums_testcase_linked_list_List.
 End Impl_enums_testcase_linked_list_List.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)

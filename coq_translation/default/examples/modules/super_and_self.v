@@ -114,23 +114,21 @@ Definition function `{ℋ : State.Trait} : M unit :=
   M.alloc tt.
 
 Module Wrap_cool_1.
-  Module cool.
-    Definition function `{ℋ : State.Trait} : M unit :=
+Module cool.
+  Definition function `{ℋ : State.Trait} : M unit :=
+    let* _ :=
       let* _ :=
-        let* _ :=
-          let* α0 :=
-            borrow
-              [ mk_str "called `my::cool::function()`
-" ]
-              (list (ref str)) in
-          let* α1 := deref α0 (list (ref str)) in
-          let* α2 := borrow α1 (list (ref str)) in
-          let* α3 := pointer_coercion "Unsize" α2 in
-          let* α4 := core.fmt.Arguments::["new_const"] α3 in
-          std.io.stdio._print α4 in
-        M.alloc tt in
-      M.alloc tt.
-  End cool.
+        let* α0 :=
+          borrow [ mk_str "called `my::cool::function()`
+" ] (list (ref str)) in
+        let* α1 := deref α0 (list (ref str)) in
+        let* α2 := borrow α1 (list (ref str)) in
+        let* α3 := pointer_coercion "Unsize" α2 in
+        let* α4 := core.fmt.Arguments::["new_const"] α3 in
+        std.io.stdio._print α4 in
+      M.alloc tt in
+    M.alloc tt.
+End cool.
 End Wrap_cool_1.
 Import Wrap_cool_1.
 

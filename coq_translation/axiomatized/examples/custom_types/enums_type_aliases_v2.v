@@ -9,18 +9,17 @@ End VeryVerboseEnumOfThingsToDoWithNumbers.
 Definition VeryVerboseEnumOfThingsToDoWithNumbers `{ℋ : State.Trait} : Set :=
   VeryVerboseEnumOfThingsToDoWithNumbers.t.
 
-Module Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers.
-  Section Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers.
-    Context `{ℋ : State.Trait}.
-    
-    Definition Self : Set :=
-      enums_type_aliases_v2.VeryVerboseEnumOfThingsToDoWithNumbers.
-    
-    Parameter run : (ref Self) -> i32 -> i32 -> M i32.
-    
-    Global Instance AssociatedFunction_run :
-      Notation.DoubleColon Self "run" := {
-      Notation.double_colon := run;
-    }.
-  End Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers.
+Module  Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers.
+Section Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers.
+  Context `{ℋ : State.Trait}.
+  
+  Definition Self : Set :=
+    enums_type_aliases_v2.VeryVerboseEnumOfThingsToDoWithNumbers.
+  
+  Parameter run : (ref Self) -> i32 -> i32 -> M i32.
+  
+  Global Instance AssociatedFunction_run : Notation.DoubleColon Self "run" := {
+    Notation.double_colon := run;
+  }.
+End Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers.
 End Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers.

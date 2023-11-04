@@ -1700,6 +1700,7 @@ impl TopLevelItem {
                         },
                         vec![coq::TopLevelItem::Module(coq::Module::new_with_repeat(
                             name,
+                            false,
                             nb_previous_occurrences_of_module_name,
                             coq::TopLevel::new(&[coq::TopLevelItem::Code(body.to_doc())]),
                         ))],
@@ -1739,6 +1740,7 @@ impl TopLevelItem {
             } => group([
                 coq::TopLevelItem::Module(coq::Module::new(
                     name,
+                    false,
                     coq::TopLevel::concat(&[coq::TopLevel::new(&[coq::TopLevelItem::Code(
                         group([
                             concat(variants.iter().map(|(name, fields)| {
@@ -1747,6 +1749,7 @@ impl TopLevelItem {
                                     VariantItem::Struct { fields } => concat([
                                         coq::Module::new(
                                             name,
+                                            false,
                                             coq::TopLevel::locally_unset_primitive_projections(&[
                                                 coq::TopLevelItem::Code(concat([
                                                     nest([
@@ -1903,8 +1906,8 @@ impl TopLevelItem {
             } => group([coq::TopLevel::new(&[
                 coq::TopLevelItem::Module(coq::Module::new(
                     name,
+                    true,
                     coq::TopLevel::add_context_in_section(
-                        name,
                         &ty_params
                             .iter()
                             .map(|(name, _)| name.clone())
@@ -1997,8 +2000,8 @@ impl TopLevelItem {
             TopLevelItem::TypeStructUnit { name, ty_params } => coq::TopLevel::new(&[
                 coq::TopLevelItem::Module(coq::Module::new(
                     name,
+                    true,
                     coq::TopLevel::add_context_in_section(
-                        name,
                         &ty_params
                             .iter()
                             .map(|(name, _)| name.clone())
@@ -2043,8 +2046,8 @@ impl TopLevelItem {
                 };
                 coq::TopLevel::new(&[coq::TopLevelItem::Module(coq::Module::new(
                     &module_name,
+                    true,
                     coq::TopLevel::add_context_in_section(
-                        &module_name,
                         generic_tys,
                         &coq::TopLevel::concat(&[
                             coq::TopLevel::new(&[coq::TopLevelItem::Definition(
@@ -2214,9 +2217,9 @@ impl TopLevelItem {
 
                 coq::Module::new(
                     &module_name,
+                    true,
                     coq::TopLevel::concat(&[
                         coq::TopLevel::add_context_in_section(
-                            &module_name,
                             generic_tys,
                             &coq::TopLevel::new(&[
                                 if predicates.is_empty() {
@@ -2429,9 +2432,9 @@ impl TypeStructStruct {
                 vec![
                     coq::TopLevelItem::Module(coq::Module::new(
                         name,
+                        true,
                         coq::TopLevel::concat(&[
                           coq::TopLevel::add_context_in_section(
-                              name,
                               &ty_params.iter().map(|(name, _)| name.clone()).collect::<Vec<_>>(),
                               &coq::TopLevel::concat(&[
                                   coq::TopLevel::new(&if predicates.is_empty() {
@@ -2454,6 +2457,7 @@ impl TypeStructStruct {
                                               [
                                                   coq::TopLevelItem::Module(coq::Module::new(
                                                       trait_object_name,
+                                                      false,
                                                       coq::TopLevel::new(&[
                                                           vec![coq::TopLevelItem::Definition(
                                                               coq::Definition::new(
@@ -2634,7 +2638,7 @@ impl TypeStructStruct {
                           } else {
                               vec![
                                 coq::TopLevelItem::Module(coq::Module::new(
-                                  "Default", coq::TopLevel::new(&params_with_default)
+                                  "Default", false, coq::TopLevel::new(&params_with_default)
                                 ))
                               ]
                           })

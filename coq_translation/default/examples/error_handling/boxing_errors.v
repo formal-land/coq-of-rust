@@ -7,108 +7,106 @@ Ltac Result T :=
       T
       (alloc.boxed.Box _ (* OpaqueTy *) alloc.boxed.Box.Default.A)).
 
-Module EmptyVec.
-  Section EmptyVec.
-    Context `{ℋ : State.Trait}.
-    
-    Inductive t : Set := Build.
-  End EmptyVec.
+Module  EmptyVec.
+Section EmptyVec.
+  Context `{ℋ : State.Trait}.
+  
+  Inductive t : Set := Build.
+End EmptyVec.
 End EmptyVec.
 Definition EmptyVec := @EmptyVec.t.
 
-Module Impl_core_fmt_Debug_for_boxing_errors_EmptyVec.
-  Section Impl_core_fmt_Debug_for_boxing_errors_EmptyVec.
-    Context `{ℋ : State.Trait}.
-    
-    Definition Self : Set := boxing_errors.EmptyVec.
-    
-    Definition fmt
-        (self : ref Self)
-        (f : mut_ref core.fmt.Formatter)
-        : M ltac:(core.fmt.Result) :=
-      let* α0 := deref f core.fmt.Formatter in
-      let* α1 := borrow_mut α0 core.fmt.Formatter in
-      let* α2 := deref (mk_str "EmptyVec") str in
-      let* α3 := borrow α2 str in
-      core.fmt.Formatter::["write_str"] α1 α3.
-    
-    Global Instance AssociatedFunction_fmt :
-      Notation.DoubleColon Self "fmt" := {
-      Notation.double_colon := fmt;
-    }.
-    
-    Global Instance ℐ : core.fmt.Debug.Trait Self := {
-      core.fmt.Debug.fmt := fmt;
-    }.
-  End Impl_core_fmt_Debug_for_boxing_errors_EmptyVec.
+Module  Impl_core_fmt_Debug_for_boxing_errors_EmptyVec.
+Section Impl_core_fmt_Debug_for_boxing_errors_EmptyVec.
+  Context `{ℋ : State.Trait}.
+  
+  Definition Self : Set := boxing_errors.EmptyVec.
+  
+  Definition fmt
+      (self : ref Self)
+      (f : mut_ref core.fmt.Formatter)
+      : M ltac:(core.fmt.Result) :=
+    let* α0 := deref f core.fmt.Formatter in
+    let* α1 := borrow_mut α0 core.fmt.Formatter in
+    let* α2 := deref (mk_str "EmptyVec") str in
+    let* α3 := borrow α2 str in
+    core.fmt.Formatter::["write_str"] α1 α3.
+  
+  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {
+    Notation.double_colon := fmt;
+  }.
+  
+  Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    core.fmt.Debug.fmt := fmt;
+  }.
+End Impl_core_fmt_Debug_for_boxing_errors_EmptyVec.
 End Impl_core_fmt_Debug_for_boxing_errors_EmptyVec.
 
-Module Impl_core_clone_Clone_for_boxing_errors_EmptyVec.
-  Section Impl_core_clone_Clone_for_boxing_errors_EmptyVec.
-    Context `{ℋ : State.Trait}.
-    
-    Definition Self : Set := boxing_errors.EmptyVec.
-    
-    Definition clone (self : ref Self) : M boxing_errors.EmptyVec :=
-      M.alloc boxing_errors.EmptyVec.Build_t.
-    
-    Global Instance AssociatedFunction_clone :
-      Notation.DoubleColon Self "clone" := {
-      Notation.double_colon := clone;
-    }.
-    
-    Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
-      core.clone.Clone.clone := clone;
-      core.clone.Clone.clone_from := Datatypes.None;
-    }.
-  End Impl_core_clone_Clone_for_boxing_errors_EmptyVec.
+Module  Impl_core_clone_Clone_for_boxing_errors_EmptyVec.
+Section Impl_core_clone_Clone_for_boxing_errors_EmptyVec.
+  Context `{ℋ : State.Trait}.
+  
+  Definition Self : Set := boxing_errors.EmptyVec.
+  
+  Definition clone (self : ref Self) : M boxing_errors.EmptyVec :=
+    M.alloc boxing_errors.EmptyVec.Build_t.
+  
+  Global Instance AssociatedFunction_clone :
+    Notation.DoubleColon Self "clone" := {
+    Notation.double_colon := clone;
+  }.
+  
+  Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
+    core.clone.Clone.clone := clone;
+    core.clone.Clone.clone_from := Datatypes.None;
+  }.
+End Impl_core_clone_Clone_for_boxing_errors_EmptyVec.
 End Impl_core_clone_Clone_for_boxing_errors_EmptyVec.
 
-Module Impl_core_fmt_Display_for_boxing_errors_EmptyVec.
-  Section Impl_core_fmt_Display_for_boxing_errors_EmptyVec.
-    Context `{ℋ : State.Trait}.
-    
-    Definition Self : Set := boxing_errors.EmptyVec.
-    
-    Definition fmt
-        (self : ref Self)
-        (f : mut_ref core.fmt.Formatter)
-        : M ltac:(core.fmt.Result) :=
-      let* α0 := deref f core.fmt.Formatter in
-      let* α1 := borrow_mut α0 core.fmt.Formatter in
-      let* α2 :=
-        borrow [ mk_str "invalid first item to double" ] (list (ref str)) in
-      let* α3 := deref α2 (list (ref str)) in
-      let* α4 := borrow α3 (list (ref str)) in
-      let* α5 := pointer_coercion "Unsize" α4 in
-      let* α6 := core.fmt.Arguments::["new_const"] α5 in
-      core.fmt.Formatter::["write_fmt"] α1 α6.
-    
-    Global Instance AssociatedFunction_fmt :
-      Notation.DoubleColon Self "fmt" := {
-      Notation.double_colon := fmt;
-    }.
-    
-    Global Instance ℐ : core.fmt.Display.Trait Self := {
-      core.fmt.Display.fmt := fmt;
-    }.
-  End Impl_core_fmt_Display_for_boxing_errors_EmptyVec.
+Module  Impl_core_fmt_Display_for_boxing_errors_EmptyVec.
+Section Impl_core_fmt_Display_for_boxing_errors_EmptyVec.
+  Context `{ℋ : State.Trait}.
+  
+  Definition Self : Set := boxing_errors.EmptyVec.
+  
+  Definition fmt
+      (self : ref Self)
+      (f : mut_ref core.fmt.Formatter)
+      : M ltac:(core.fmt.Result) :=
+    let* α0 := deref f core.fmt.Formatter in
+    let* α1 := borrow_mut α0 core.fmt.Formatter in
+    let* α2 :=
+      borrow [ mk_str "invalid first item to double" ] (list (ref str)) in
+    let* α3 := deref α2 (list (ref str)) in
+    let* α4 := borrow α3 (list (ref str)) in
+    let* α5 := pointer_coercion "Unsize" α4 in
+    let* α6 := core.fmt.Arguments::["new_const"] α5 in
+    core.fmt.Formatter::["write_fmt"] α1 α6.
+  
+  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {
+    Notation.double_colon := fmt;
+  }.
+  
+  Global Instance ℐ : core.fmt.Display.Trait Self := {
+    core.fmt.Display.fmt := fmt;
+  }.
+End Impl_core_fmt_Display_for_boxing_errors_EmptyVec.
 End Impl_core_fmt_Display_for_boxing_errors_EmptyVec.
 
-Module Impl_core_error_Error_for_boxing_errors_EmptyVec.
-  Section Impl_core_error_Error_for_boxing_errors_EmptyVec.
-    Context `{ℋ : State.Trait}.
-    
-    Definition Self : Set := boxing_errors.EmptyVec.
-    
-    Global Instance ℐ : core.error.Error.Required.Trait Self := {
-      core.error.Error.source := Datatypes.None;
-      core.error.Error.type_id := Datatypes.None;
-      core.error.Error.description := Datatypes.None;
-      core.error.Error.cause := Datatypes.None;
-      core.error.Error.provide := Datatypes.None;
-    }.
-  End Impl_core_error_Error_for_boxing_errors_EmptyVec.
+Module  Impl_core_error_Error_for_boxing_errors_EmptyVec.
+Section Impl_core_error_Error_for_boxing_errors_EmptyVec.
+  Context `{ℋ : State.Trait}.
+  
+  Definition Self : Set := boxing_errors.EmptyVec.
+  
+  Global Instance ℐ : core.error.Error.Required.Trait Self := {
+    core.error.Error.source := Datatypes.None;
+    core.error.Error.type_id := Datatypes.None;
+    core.error.Error.description := Datatypes.None;
+    core.error.Error.cause := Datatypes.None;
+    core.error.Error.provide := Datatypes.None;
+  }.
+End Impl_core_error_Error_for_boxing_errors_EmptyVec.
 End Impl_core_error_Error_for_boxing_errors_EmptyVec.
 
 Definition double_first

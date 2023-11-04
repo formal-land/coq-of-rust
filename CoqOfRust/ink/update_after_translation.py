@@ -65,22 +65,20 @@ Require CoqOfRust.ink.ink_env.""",
     content = sub_at_least_once(
         re.escape("""End ChainExtension.
 
-Module IsResultType."""),
+Module  IsResultType."""),
         """End ChainExtension.
 
-(* Module IsResultType.""",
+(* Module  IsResultType.""",
         content,
     )
 
     content = sub_at_least_once(
         re.escape("""End IsResultType.
 
-Module
-  Impl_ink_chain_extension_private_IsResultSealed_for_core_result_Result_T_E."""),
+Module  Impl_ink_chain_extension_private_IsResultSealed_for_core_result_Result_T_E."""),
         """End IsResultType. *)
 
-Module
-  Impl_ink_chain_extension_private_IsResultSealed_for_core_result_Result_T_E.""",
+Module  Impl_ink_chain_extension_private_IsResultSealed_for_core_result_Result_T_E.""",
         content
     )
 
@@ -214,10 +212,10 @@ Require CoqOfRust.ink.ink_engine.""",
     content = sub_at_least_once(
         re.escape("""End TopicsBuilderBackend.
 
-Module TopicsBuilder."""),
+Module  TopicsBuilder."""),
         """End TopicsBuilderBackend.
 
-(* Module TopicsBuilder.""",
+(* Module  TopicsBuilder.""",
         content,
     )
     content = sub_at_least_once(
@@ -258,21 +256,21 @@ Module execution_input.""",
 
     content = sub_at_least_once(
         re.escape("""Parameter hash :
-              (ref (Slice u8)) ->
-                (mut_ref
-                  (ink_env.hash.HashOutput.Type_
-                    (Self := Self)
-                    (Trait := ltac:(try clear Trait; hauto l: on))))
-                ->
-                M unit."""),
+          (ref (Slice u8)) ->
+            (mut_ref
+              (ink_env.hash.HashOutput.Type_
+                (Self := Self)
+                (Trait := ltac:(try clear Trait; hauto l: on))))
+            ->
+            M unit."""),
         """Parameter hash :
-              (ref (Slice u8)) ->
-                (mut_ref
-                  (ink_env.hash.HashOutput.Type_
-                    (Self := Self)
-                    (Trait := _)))
-                ->
-                M unit.""",
+          (ref (Slice u8)) ->
+            (mut_ref
+              (ink_env.hash.HashOutput.Type_
+                (Self := Self)
+                (Trait := _)))
+            ->
+            M unit.""",
         content,
     )
 
@@ -294,46 +292,6 @@ Module execution_input.""",
               ->
               M unit.""",
         content,
-    )
-
-    content = sub_at_least_once(
-        re.escape("""Parameter hash :
-          (ref (Slice u8)) ->
-            (mut_ref
-              (ink_env.hash.HashOutput.Type_
-                (Self := Self)
-                (Trait := ltac:(try clear Trait; hauto l: on))))
-            ->
-            M unit."""),
-        """Parameter hash :
-          (ref (Slice u8)) ->
-            (mut_ref
-              (ink_env.hash.HashOutput.Type_
-                (Self := Self)
-                (Trait := _)))
-            ->
-            M unit.""",
-        content,
-    )
-
-    content = sub_at_least_once(
-        re.escape("""Parameter hash :
-        (ref (Slice u8)) ->
-          (mut_ref
-            (ink_env.hash.HashOutput.Type_
-              (Self := Self)
-              (Trait := ltac:(try clear Trait; hauto l: on))))
-          ->
-          M unit."""),
-        """Parameter hash :
-        (ref (Slice u8)) ->
-          (mut_ref
-            (ink_env.hash.HashOutput.Type_
-              (Self := Self)
-              (Trait := _)))
-          ->
-          M unit.""",
-        content
     )
 
     content = ignore_module_names(
@@ -447,21 +405,19 @@ Require CoqOfRust.ink.syn.""",
     content = sub_at_least_once(
         re.escape("""M unit.
 
-Module InkE2ETest."""),
+Module  InkE2ETest."""),
         """M unit.
 
-(* Module InkE2ETest.""",
+(* Module  InkE2ETest.""",
         content,
     )
     content = sub_at_least_once(
         re.escape("""Definition InkE2ETest `{ℋ : State.Trait} : Set := M.val InkE2ETest.t.
 
-Module
-  Impl_core_convert_From_ink_e2e_macro_ir_InkE2ETest_for_ink_e2e_macro_codegen_InkE2ETest."""),
+Module  Impl_core_convert_From_ink_e2e_macro_ir_InkE2ETest_for_ink_e2e_macro_codegen_InkE2ETest."""),
         """Definition InkE2ETest `{ℋ : State.Trait} : Set := M.val InkE2ETest.t. *)
 
-Module
-  Impl_core_convert_From_ink_e2e_macro_ir_InkE2ETest_for_ink_e2e_macro_codegen_InkE2ETest.""",
+Module  Impl_core_convert_From_ink_e2e_macro_ir_InkE2ETest_for_ink_e2e_macro_codegen_InkE2ETest.""",
         content,
     )
 
