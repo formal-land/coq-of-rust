@@ -375,11 +375,8 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
             let value = if env.axiomatize {
                 None
             } else {
-                let value = tcx.hir().body(*body_id).value;
-                // TODO: uncomment this line to have 100% translation with THIR
-                // for expressions
-                // let value = compile_hir_id(env, body_id.hir_id);
-                Some(Box::new(compile_expr(env, value)))
+                let value = compile_hir_id(env, body_id.hir_id);
+                Some(Box::new(value))
             };
             vec![TopLevelItem::Const {
                 name,

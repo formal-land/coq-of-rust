@@ -1,6 +1,6 @@
 use crate::env::*;
 use crate::render::*;
-use rustc_hir::def::{CtorOf, DefKind, Res};
+use rustc_hir::def::{DefKind, Res};
 use rustc_hir::{LangItem, QPath};
 use std::fmt;
 use std::vec;
@@ -195,60 +195,6 @@ pub(crate) fn get_path_generics<'a>(
 pub(crate) enum StructOrVariant {
     Struct,
     Variant,
-}
-
-impl StructOrVariant {
-    /// Returns wether a qpath refers to a struct or a variant.
-    pub(crate) fn of_qpath(env: &Env, qpath: &QPath) -> StructOrVariant {
-        let emit_warn_unsupported = || {
-            env.tcx
-                .sess
-                .struct_span_warn(
-                    qpath.span(),
-                    "Cannot determine if this is a `struct` or an `enum`.",
-                )
-                .note("It should be supported in future versions.")
-                .emit();
-        };
-        match qpath {
-            QPath::Resolved(_, path) => match path.res {
-                Res::Def(DefKind::Struct | DefKind::Ctor(CtorOf::Struct, _), _) => {
-                    StructOrVariant::Struct
-                }
-                Res::Def(DefKind::Variant | DefKind::Ctor(CtorOf::Variant, _), _) => {
-                    StructOrVariant::Variant
-                }
-                Res::SelfTyAlias { .. } => StructOrVariant::Struct,
-                _ => {
-                    emit_warn_unsupported();
-                    StructOrVariant::Variant
-                }
-            },
-            QPath::TypeRelative(..) => {
-                emit_warn_unsupported();
-                StructOrVariant::Struct
-            }
-            QPath::LangItem(lang_item, ..) => match lang_item {
-                LangItem::OptionNone => StructOrVariant::Variant,
-                LangItem::OptionSome => StructOrVariant::Variant,
-                LangItem::ResultOk => StructOrVariant::Variant,
-                LangItem::ResultErr => StructOrVariant::Variant,
-                LangItem::ControlFlowContinue => StructOrVariant::Variant,
-                LangItem::ControlFlowBreak => StructOrVariant::Variant,
-                LangItem::RangeFrom => StructOrVariant::Variant,
-                LangItem::RangeFull => StructOrVariant::Variant,
-                LangItem::RangeInclusiveStruct => StructOrVariant::Variant,
-                LangItem::RangeInclusiveNew => StructOrVariant::Variant,
-                LangItem::Range => StructOrVariant::Struct,
-                LangItem::RangeToInclusive => StructOrVariant::Variant,
-                LangItem::RangeTo => StructOrVariant::Variant,
-                _ => {
-                    emit_warn_unsupported();
-                    StructOrVariant::Struct
-                }
-            },
-        }
-    }
 }
 
 pub(crate) fn to_valid_coq_name(str: String) -> String {
