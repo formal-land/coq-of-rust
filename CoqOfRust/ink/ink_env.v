@@ -63,7 +63,7 @@ Module hash.
     Inductive t `{ℋ : State.Trait} : Set :=
     .
   End Sha2x256.
-  Definition Sha2x256 `{ℋ : State.Trait} : Set := Sha2x256.t.
+  Definition Sha2x256 `{ℋ : State.Trait} : Set := M.Val Sha2x256.t.
   
   Module  Impl_core_fmt_Debug_for_ink_env_hash_Sha2x256.
   Section Impl_core_fmt_Debug_for_ink_env_hash_Sha2x256.
@@ -183,7 +183,7 @@ Module hash.
     Inductive t `{ℋ : State.Trait} : Set :=
     .
   End Keccak256.
-  Definition Keccak256 `{ℋ : State.Trait} : Set := Keccak256.t.
+  Definition Keccak256 `{ℋ : State.Trait} : Set := M.Val Keccak256.t.
   
   Module  Impl_core_fmt_Debug_for_ink_env_hash_Keccak256.
   Section Impl_core_fmt_Debug_for_ink_env_hash_Keccak256.
@@ -303,7 +303,7 @@ Module hash.
     Inductive t `{ℋ : State.Trait} : Set :=
     .
   End Blake2x256.
-  Definition Blake2x256 `{ℋ : State.Trait} : Set := Blake2x256.t.
+  Definition Blake2x256 `{ℋ : State.Trait} : Set := M.Val Blake2x256.t.
   
   Module  Impl_core_fmt_Debug_for_ink_env_hash_Blake2x256.
   Section Impl_core_fmt_Debug_for_ink_env_hash_Blake2x256.
@@ -423,7 +423,7 @@ Module hash.
     Inductive t `{ℋ : State.Trait} : Set :=
     .
   End Blake2x128.
-  Definition Blake2x128 `{ℋ : State.Trait} : Set := Blake2x128.t.
+  Definition Blake2x128 `{ℋ : State.Trait} : Set := M.Val Blake2x128.t.
   
   Module  Impl_core_fmt_Debug_for_ink_env_hash_Blake2x128.
   Section Impl_core_fmt_Debug_for_ink_env_hash_Blake2x128.
@@ -1122,14 +1122,15 @@ Module types.
     Inductive t `{ℋ : State.Trait} : Set :=
     .
   End NoChainExtension.
-  Definition NoChainExtension `{ℋ : State.Trait} : Set := NoChainExtension.t.
+  Definition NoChainExtension `{ℋ : State.Trait} : Set :=
+    M.Val NoChainExtension.t.
   
   Module DefaultEnvironment.
     Inductive t `{ℋ : State.Trait} : Set :=
     .
   End DefaultEnvironment.
   Definition DefaultEnvironment `{ℋ : State.Trait} : Set :=
-    DefaultEnvironment.t.
+    M.Val DefaultEnvironment.t.
   
   Module  Impl_core_fmt_Debug_for_ink_env_types_DefaultEnvironment.
   Section Impl_core_fmt_Debug_for_ink_env_types_DefaultEnvironment.
@@ -1557,7 +1558,8 @@ Module NoChainExtension.
   Inductive t `{ℋ : State.Trait} : Set :=
   .
 End NoChainExtension.
-Definition NoChainExtension `{ℋ : State.Trait} : Set := NoChainExtension.t.
+Definition NoChainExtension `{ℋ : State.Trait} : Set :=
+  M.Val NoChainExtension.t.
 
 Module  Impl_scale_info_TypeInfo_for_ink_env_types_NoChainExtension.
 Section Impl_scale_info_TypeInfo_for_ink_env_types_NoChainExtension.
@@ -1585,7 +1587,8 @@ Module DefaultEnvironment.
   Inductive t `{ℋ : State.Trait} : Set :=
   .
 End DefaultEnvironment.
-Definition DefaultEnvironment `{ℋ : State.Trait} : Set := DefaultEnvironment.t.
+Definition DefaultEnvironment `{ℋ : State.Trait} : Set :=
+  M.Val DefaultEnvironment.t.
 
 Module  Impl_scale_info_TypeInfo_for_ink_env_types_DefaultEnvironment.
 Section Impl_scale_info_TypeInfo_for_ink_env_types_DefaultEnvironment.
@@ -2886,7 +2889,7 @@ Module call.
         Inductive t `{ℋ : State.Trait} : Set :=
         .
       End Salt.
-      Definition Salt `{ℋ : State.Trait} : Set := Salt.t.
+      Definition Salt `{ℋ : State.Trait} : Set := M.Val Salt.t.
     End state.
     
     Module  FromAccountId.
@@ -4532,7 +4535,7 @@ Module engine.
       | UnexpectedUserAccount
       | NoAccountForId (_ : alloc.vec.Vec u8 alloc.vec.Vec.Default.A).
     End AccountError.
-    Definition AccountError `{ℋ : State.Trait} : Set := AccountError.t.
+    Definition AccountError `{ℋ : State.Trait} : Set := M.Val AccountError.t.
     
     Module OffChainError.
       Inductive t `{ℋ : State.Trait} : Set :=
@@ -4541,7 +4544,7 @@ Module engine.
       | UninitializedExecutionContext
       | UnregisteredChainExtension.
     End OffChainError.
-    Definition OffChainError `{ℋ : State.Trait} : Set := OffChainError.t.
+    Definition OffChainError `{ℋ : State.Trait} : Set := M.Val OffChainError.t.
     
     Module  Impl_core_fmt_Debug_for_ink_env_engine_off_chain_OffChainError.
     Section Impl_core_fmt_Debug_for_ink_env_engine_off_chain_OffChainError.
@@ -4845,21 +4848,21 @@ Module topics.
       Inductive t `{ℋ : State.Trait} : Set :=
       .
     End Uninit.
-    Definition Uninit `{ℋ : State.Trait} : Set := Uninit.t.
+    Definition Uninit `{ℋ : State.Trait} : Set := M.Val Uninit.t.
     
     Module HasRemainingTopics.
       Inductive t `{ℋ : State.Trait} : Set :=
       .
     End HasRemainingTopics.
     Definition HasRemainingTopics `{ℋ : State.Trait} : Set :=
-      HasRemainingTopics.t.
+      M.Val HasRemainingTopics.t.
     
     Module NoRemainingTopics.
       Inductive t `{ℋ : State.Trait} : Set :=
       .
     End NoRemainingTopics.
     Definition NoRemainingTopics `{ℋ : State.Trait} : Set :=
-      NoRemainingTopics.t.
+      M.Val NoRemainingTopics.t.
   End state.
   
   Module  SomeRemainingTopics.
@@ -5070,7 +5073,7 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
     | CallRuntimeFailed
     | EcdsaRecoveryFailed.
   End Error.
-  Definition Error `{ℋ : State.Trait} : Set := Error.t.
+  Definition Error `{ℋ : State.Trait} : Set := M.Val Error.t.
   
   Module  Impl_core_fmt_Debug_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
   Section Impl_core_fmt_Debug_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
@@ -7156,7 +7159,7 @@ Module Error.
   | CallRuntimeFailed
   | EcdsaRecoveryFailed.
 End Error.
-Definition Error `{ℋ : State.Trait} : Set := Error.t.
+Definition Error `{ℋ : State.Trait} : Set := M.Val Error.t.
 
 Module  Impl_core_fmt_Debug_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
 Section Impl_core_fmt_Debug_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_Error.
@@ -9084,7 +9087,7 @@ Module create_builder.
       Inductive t `{ℋ : State.Trait} : Set :=
       .
     End Salt.
-    Definition Salt `{ℋ : State.Trait} : Set := Salt.t.
+    Definition Salt `{ℋ : State.Trait} : Set := M.Val Salt.t.
   End state.
   
   Module  FromAccountId.
@@ -9427,14 +9430,14 @@ Module state.
     Inductive t `{ℋ : State.Trait} : Set :=
     .
   End Salt.
-  Definition Salt `{ℋ : State.Trait} : Set := Salt.t.
+  Definition Salt `{ℋ : State.Trait} : Set := M.Val Salt.t.
 End state.
 
 Module Salt.
   Inductive t `{ℋ : State.Trait} : Set :=
   .
 End Salt.
-Definition Salt `{ℋ : State.Trait} : Set := Salt.t.
+Definition Salt `{ℋ : State.Trait} : Set := M.Val Salt.t.
 
 Module  FromAccountId.
 Section FromAccountId.
@@ -11360,7 +11363,8 @@ Module chain_extension.
       Inductive t `{ℋ : State.Trait} : Set :=
       .
     End IgnoreErrorCode.
-    Definition IgnoreErrorCode `{ℋ : State.Trait} : Set := IgnoreErrorCode.t.
+    Definition IgnoreErrorCode `{ℋ : State.Trait} : Set :=
+      M.Val IgnoreErrorCode.t.
     
     Module  Impl_core_fmt_Debug_for_ink_env_chain_extension_state_IgnoreErrorCode.
     Section Impl_core_fmt_Debug_for_ink_env_chain_extension_state_IgnoreErrorCode.
@@ -11578,7 +11582,8 @@ Module state.
     Inductive t `{ℋ : State.Trait} : Set :=
     .
   End IgnoreErrorCode.
-  Definition IgnoreErrorCode `{ℋ : State.Trait} : Set := IgnoreErrorCode.t.
+  Definition IgnoreErrorCode `{ℋ : State.Trait} : Set :=
+    M.Val IgnoreErrorCode.t.
   
   Module  Impl_core_fmt_Debug_for_ink_env_chain_extension_state_IgnoreErrorCode.
   Section Impl_core_fmt_Debug_for_ink_env_chain_extension_state_IgnoreErrorCode.
@@ -11654,7 +11659,7 @@ Module IgnoreErrorCode.
   Inductive t `{ℋ : State.Trait} : Set :=
   .
 End IgnoreErrorCode.
-Definition IgnoreErrorCode `{ℋ : State.Trait} : Set := IgnoreErrorCode.t.
+Definition IgnoreErrorCode `{ℋ : State.Trait} : Set := M.Val IgnoreErrorCode.t.
 
 Module  Impl_core_fmt_Debug_for_ink_env_chain_extension_state_IgnoreErrorCode.
 Section Impl_core_fmt_Debug_for_ink_env_chain_extension_state_IgnoreErrorCode.
@@ -13122,7 +13127,7 @@ Module off_chain.
     | UnexpectedUserAccount
     | NoAccountForId (_ : alloc.vec.Vec u8 alloc.vec.Vec.Default.A).
   End AccountError.
-  Definition AccountError `{ℋ : State.Trait} : Set := AccountError.t.
+  Definition AccountError `{ℋ : State.Trait} : Set := M.Val AccountError.t.
   
   Module OffChainError.
     Inductive t `{ℋ : State.Trait} : Set :=
@@ -13131,7 +13136,7 @@ Module off_chain.
     | UninitializedExecutionContext
     | UnregisteredChainExtension.
   End OffChainError.
-  Definition OffChainError `{ℋ : State.Trait} : Set := OffChainError.t.
+  Definition OffChainError `{ℋ : State.Trait} : Set := M.Val OffChainError.t.
   
   Module  Impl_core_fmt_Debug_for_ink_env_engine_off_chain_OffChainError.
   Section Impl_core_fmt_Debug_for_ink_env_engine_off_chain_OffChainError.
@@ -15838,7 +15843,7 @@ Module OffChainError.
   | UninitializedExecutionContext
   | UnregisteredChainExtension.
 End OffChainError.
-Definition OffChainError `{ℋ : State.Trait} : Set := OffChainError.t.
+Definition OffChainError `{ℋ : State.Trait} : Set := M.Val OffChainError.t.
 
 Module  Impl_core_fmt_Debug_for_ink_env_engine_off_chain_OffChainError.
 Section Impl_core_fmt_Debug_for_ink_env_engine_off_chain_OffChainError.
@@ -15952,7 +15957,7 @@ Module AccountError.
   | UnexpectedUserAccount
   | NoAccountForId (_ : alloc.vec.Vec u8 alloc.vec.Vec.Default.A).
 End AccountError.
-Definition AccountError `{ℋ : State.Trait} : Set := AccountError.t.
+Definition AccountError `{ℋ : State.Trait} : Set := M.Val AccountError.t.
 
 Module  Impl_core_fmt_Debug_for_ink_env_engine_off_chain_AccountError.
 Section Impl_core_fmt_Debug_for_ink_env_engine_off_chain_AccountError.
@@ -16098,7 +16103,7 @@ Module Sha2x256.
   Inductive t `{ℋ : State.Trait} : Set :=
   .
 End Sha2x256.
-Definition Sha2x256 `{ℋ : State.Trait} : Set := Sha2x256.t.
+Definition Sha2x256 `{ℋ : State.Trait} : Set := M.Val Sha2x256.t.
 
 Module  Impl_core_fmt_Debug_for_ink_env_hash_Sha2x256.
 Section Impl_core_fmt_Debug_for_ink_env_hash_Sha2x256.
@@ -16217,7 +16222,7 @@ Module Keccak256.
   Inductive t `{ℋ : State.Trait} : Set :=
   .
 End Keccak256.
-Definition Keccak256 `{ℋ : State.Trait} : Set := Keccak256.t.
+Definition Keccak256 `{ℋ : State.Trait} : Set := M.Val Keccak256.t.
 
 Module  Impl_core_fmt_Debug_for_ink_env_hash_Keccak256.
 Section Impl_core_fmt_Debug_for_ink_env_hash_Keccak256.
@@ -16336,7 +16341,7 @@ Module Blake2x256.
   Inductive t `{ℋ : State.Trait} : Set :=
   .
 End Blake2x256.
-Definition Blake2x256 `{ℋ : State.Trait} : Set := Blake2x256.t.
+Definition Blake2x256 `{ℋ : State.Trait} : Set := M.Val Blake2x256.t.
 
 Module  Impl_core_fmt_Debug_for_ink_env_hash_Blake2x256.
 Section Impl_core_fmt_Debug_for_ink_env_hash_Blake2x256.
@@ -16455,7 +16460,7 @@ Module Blake2x128.
   Inductive t `{ℋ : State.Trait} : Set :=
   .
 End Blake2x128.
-Definition Blake2x128 `{ℋ : State.Trait} : Set := Blake2x128.t.
+Definition Blake2x128 `{ℋ : State.Trait} : Set := M.Val Blake2x128.t.
 
 Module  Impl_core_fmt_Debug_for_ink_env_hash_Blake2x128.
 Section Impl_core_fmt_Debug_for_ink_env_hash_Blake2x128.
@@ -16778,20 +16783,21 @@ Module state.
     Inductive t `{ℋ : State.Trait} : Set :=
     .
   End Uninit.
-  Definition Uninit `{ℋ : State.Trait} : Set := Uninit.t.
+  Definition Uninit `{ℋ : State.Trait} : Set := M.Val Uninit.t.
   
   Module HasRemainingTopics.
     Inductive t `{ℋ : State.Trait} : Set :=
     .
   End HasRemainingTopics.
   Definition HasRemainingTopics `{ℋ : State.Trait} : Set :=
-    HasRemainingTopics.t.
+    M.Val HasRemainingTopics.t.
   
   Module NoRemainingTopics.
     Inductive t `{ℋ : State.Trait} : Set :=
     .
   End NoRemainingTopics.
-  Definition NoRemainingTopics `{ℋ : State.Trait} : Set := NoRemainingTopics.t.
+  Definition NoRemainingTopics `{ℋ : State.Trait} : Set :=
+    M.Val NoRemainingTopics.t.
 End state.
 End Wrap_state_2.
 Import Wrap_state_2.
@@ -16800,19 +16806,21 @@ Module Uninit.
   Inductive t `{ℋ : State.Trait} : Set :=
   .
 End Uninit.
-Definition Uninit `{ℋ : State.Trait} : Set := Uninit.t.
+Definition Uninit `{ℋ : State.Trait} : Set := M.Val Uninit.t.
 
 Module HasRemainingTopics.
   Inductive t `{ℋ : State.Trait} : Set :=
   .
 End HasRemainingTopics.
-Definition HasRemainingTopics `{ℋ : State.Trait} : Set := HasRemainingTopics.t.
+Definition HasRemainingTopics `{ℋ : State.Trait} : Set :=
+  M.Val HasRemainingTopics.t.
 
 Module NoRemainingTopics.
   Inductive t `{ℋ : State.Trait} : Set :=
   .
 End NoRemainingTopics.
-Definition NoRemainingTopics `{ℋ : State.Trait} : Set := NoRemainingTopics.t.
+Definition NoRemainingTopics `{ℋ : State.Trait} : Set :=
+  M.Val NoRemainingTopics.t.
 
 Module  SomeRemainingTopics.
 Section SomeRemainingTopics.

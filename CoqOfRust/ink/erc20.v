@@ -237,7 +237,8 @@ Module erc20.
     | Transfer (_ : erc20.erc20.Transfer)
     | Approval (_ : erc20.erc20.Approval).
   End __ink_EventBase.
-  Definition __ink_EventBase `{ℋ : State.Trait} : Set := __ink_EventBase.t.
+  Definition __ink_EventBase `{ℋ : State.Trait} : Set :=
+    M.Val __ink_EventBase.t.
   
   Module  Impl_ink_codegen_event_topics_EventLenTopics_for_erc20_erc20_Transfer.
   Section Impl_ink_codegen_event_topics_EventLenTopics_for_erc20_erc20_Transfer.
@@ -1925,7 +1926,7 @@ Module erc20.
     | InsufficientBalance
     | InsufficientAllowance.
   End Error.
-  Definition Error `{ℋ : State.Trait} : Set := Error.t.
+  Definition Error `{ℋ : State.Trait} : Set := M.Val Error.t.
   
   Module  Impl_core_fmt_Debug_for_erc20_erc20_Error.
   Section Impl_core_fmt_Debug_for_erc20_erc20_Error.
@@ -2277,7 +2278,7 @@ Section Impl_ink_storage_traits_storage_Storable_for_erc20_erc20_Erc20.
                     parity_scale_codec.error.Error)
                 (Trait := ltac:(refine _)))
               residual in
-          let* α1 := Return α0 in
+          let* α1 := M.return_ α0 in
           never_to_any α1
         | core.ops.control_flow.ControlFlow val => M.pure val
         end in
@@ -2318,7 +2319,7 @@ Section Impl_ink_storage_traits_storage_Storable_for_erc20_erc20_Erc20.
                     parity_scale_codec.error.Error)
                 (Trait := ltac:(refine _)))
               residual in
-          let* α1 := Return α0 in
+          let* α1 := M.return_ α0 in
           never_to_any α1
         | core.ops.control_flow.ControlFlow val => M.pure val
         end in
@@ -2361,7 +2362,7 @@ Section Impl_ink_storage_traits_storage_Storable_for_erc20_erc20_Erc20.
                     parity_scale_codec.error.Error)
                 (Trait := ltac:(refine _)))
               residual in
-          let* α1 := Return α0 in
+          let* α1 := M.return_ α0 in
           never_to_any α1
         | core.ops.control_flow.ControlFlow val => M.pure val
         end in
@@ -2937,7 +2938,7 @@ Module __ink_EventBase.
   | Transfer (_ : erc20.erc20.Transfer)
   | Approval (_ : erc20.erc20.Approval).
 End __ink_EventBase.
-Definition __ink_EventBase `{ℋ : State.Trait} : Set := __ink_EventBase.t.
+Definition __ink_EventBase `{ℋ : State.Trait} : Set := M.Val __ink_EventBase.t.
 
 Module  Impl_parity_scale_codec_codec_Encode_for_erc20_erc20___ink_EventBase.
 Section Impl_parity_scale_codec_codec_Encode_for_erc20_erc20___ink_EventBase.
@@ -3077,7 +3078,7 @@ Section Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___ink_EventBase.
                     parity_scale_codec.error.Error)
                 (Trait := ltac:(refine _)))
               residual in
-          let* α1 := Return α0 in
+          let* α1 := M.return_ α0 in
           never_to_any α1
         | core.ops.control_flow.ControlFlow val => M.pure val
         end in
@@ -3102,7 +3103,7 @@ Section Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___ink_EventBase.
                       (mk_str
                         "Could not decode `__ink_EventBase::Transfer.0`") in
                   let* α1 := M.alloc (core.result.Result.Err α0) in
-                  let* α2 := Return α1 in
+                  let* α2 := M.return_ α1 in
                   never_to_any α2
                 | core.result.Result __codec_res_edqy => M.pure __codec_res_edqy
                 end in
@@ -3116,7 +3117,7 @@ Section Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___ink_EventBase.
                 (Trait := ltac:(refine _)))
               α0
               α1 in
-          Return α2 in
+          M.return_ α2 in
         let* α0 := M.alloc tt in
         never_to_any α0
       | __codec_x_edqy =>
@@ -3139,7 +3140,7 @@ Section Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___ink_EventBase.
                       (mk_str
                         "Could not decode `__ink_EventBase::Approval.0`") in
                   let* α1 := M.alloc (core.result.Result.Err α0) in
-                  let* α2 := Return α1 in
+                  let* α2 := M.return_ α1 in
                   never_to_any α2
                 | core.result.Result __codec_res_edqy => M.pure __codec_res_edqy
                 end in
@@ -3153,7 +3154,7 @@ Section Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___ink_EventBase.
                 (Trait := ltac:(refine _)))
               α0
               α1 in
-          Return α2 in
+          M.return_ α2 in
         let* α0 := M.alloc tt in
         never_to_any α0
       | _ =>
@@ -3175,7 +3176,7 @@ Section Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___ink_EventBase.
                 (Trait := ltac:(refine _)))
               α0
               α1 in
-          Return α2 in
+          M.return_ α2 in
         let* α0 := M.alloc tt in
         never_to_any α0
       end).
@@ -3261,7 +3262,7 @@ Module __ink_UndefinedAmountOfTopics.
   .
 End __ink_UndefinedAmountOfTopics.
 Definition __ink_UndefinedAmountOfTopics `{ℋ : State.Trait} : Set :=
-  __ink_UndefinedAmountOfTopics.t.
+  M.Val __ink_UndefinedAmountOfTopics.t.
 
 Module  Impl_ink_env_topics_EventTopicsAmount_for_erc20_erc20_____ink_UndefinedAmountOfTopics.
 Section Impl_ink_env_topics_EventTopicsAmount_for_erc20_erc20_____ink_UndefinedAmountOfTopics.
@@ -3532,7 +3533,7 @@ Section Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Transfer.
               e
               (mk_str "Could not decode `Transfer::from`") in
           let* α1 := M.alloc (core.result.Result.Err α0) in
-          let* α2 := Return α1 in
+          let* α2 := M.return_ α1 in
           never_to_any α2
         | core.result.Result __codec_res_edqy => M.pure __codec_res_edqy
         end in
@@ -3551,7 +3552,7 @@ Section Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Transfer.
               e
               (mk_str "Could not decode `Transfer::to`") in
           let* α1 := M.alloc (core.result.Result.Err α0) in
-          let* α2 := Return α1 in
+          let* α2 := M.return_ α1 in
           never_to_any α2
         | core.result.Result __codec_res_edqy => M.pure __codec_res_edqy
         end in
@@ -3570,7 +3571,7 @@ Section Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Transfer.
               e
               (mk_str "Could not decode `Transfer::value`") in
           let* α1 := M.alloc (core.result.Result.Err α0) in
-          let* α2 := Return α1 in
+          let* α2 := M.return_ α1 in
           never_to_any α2
         | core.result.Result __codec_res_edqy => M.pure __codec_res_edqy
         end in
@@ -3752,7 +3753,7 @@ Section Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Approval.
               e
               (mk_str "Could not decode `Approval::owner`") in
           let* α1 := M.alloc (core.result.Result.Err α0) in
-          let* α2 := Return α1 in
+          let* α2 := M.return_ α1 in
           never_to_any α2
         | core.result.Result __codec_res_edqy => M.pure __codec_res_edqy
         end in
@@ -3771,7 +3772,7 @@ Section Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Approval.
               e
               (mk_str "Could not decode `Approval::spender`") in
           let* α1 := M.alloc (core.result.Result.Err α0) in
-          let* α2 := Return α1 in
+          let* α2 := M.return_ α1 in
           never_to_any α2
         | core.result.Result __codec_res_edqy => M.pure __codec_res_edqy
         end in
@@ -3790,7 +3791,7 @@ Section Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Approval.
               e
               (mk_str "Could not decode `Approval::value`") in
           let* α1 := M.alloc (core.result.Result.Err α0) in
-          let* α2 := Return α1 in
+          let* α2 := M.return_ α1 in
           never_to_any α2
         | core.result.Result __codec_res_edqy => M.pure __codec_res_edqy
         end in
@@ -4674,7 +4675,7 @@ Module __ink_ConstructorDecoder.
         (Self := erc20.erc20.Erc20)).
 End __ink_ConstructorDecoder.
 Definition __ink_ConstructorDecoder `{ℋ : State.Trait} : Set :=
-  __ink_ConstructorDecoder.t.
+  M.Val __ink_ConstructorDecoder.t.
 
 Module  Impl_ink_reflect_dispatch_DecodeDispatch_for_erc20_erc20_____ink_ConstructorDecoder.
 Section Impl_ink_reflect_dispatch_DecodeDispatch_for_erc20_erc20_____ink_ConstructorDecoder.
@@ -4718,7 +4719,7 @@ Section Impl_ink_reflect_dispatch_DecodeDispatch_for_erc20_erc20_____ink_Constru
                     ink.reflect.dispatch.DispatchError)
                 (Trait := ltac:(refine _)))
               residual in
-          let* α1 := Return α0 in
+          let* α1 := M.return_ α0 in
           never_to_any α1
         | core.ops.control_flow.ControlFlow val => M.pure val
         end in
@@ -4752,7 +4753,7 @@ Section Impl_ink_reflect_dispatch_DecodeDispatch_for_erc20_erc20_____ink_Constru
                       ink.reflect.dispatch.DispatchError)
                   (Trait := ltac:(refine _)))
                 residual in
-            let* α1 := Return α0 in
+            let* α1 := M.return_ α0 in
             never_to_any α1
           | core.ops.control_flow.ControlFlow val => M.pure val
           end in
@@ -4883,7 +4884,7 @@ Section Impl_ink_reflect_dispatch_ExecuteDispatchable_for_erc20_erc20_____ink_Co
                           ink.reflect.dispatch.DispatchError)
                       (Trait := ltac:(refine _)))
                     residual in
-                let* α1 := Return α0 in
+                let* α1 := M.return_ α0 in
                 never_to_any α1
               | core.ops.control_flow.ControlFlow val => M.pure val
               end in
@@ -5055,7 +5056,7 @@ Module __ink_MessageDecoder.
         (Self := erc20.erc20.Erc20)).
 End __ink_MessageDecoder.
 Definition __ink_MessageDecoder `{ℋ : State.Trait} : Set :=
-  __ink_MessageDecoder.t.
+  M.Val __ink_MessageDecoder.t.
 
 Module  Impl_ink_reflect_dispatch_DecodeDispatch_for_erc20_erc20_____ink_MessageDecoder.
 Section Impl_ink_reflect_dispatch_DecodeDispatch_for_erc20_erc20_____ink_MessageDecoder.
@@ -5099,7 +5100,7 @@ Section Impl_ink_reflect_dispatch_DecodeDispatch_for_erc20_erc20_____ink_Message
                     ink.reflect.dispatch.DispatchError)
                 (Trait := ltac:(refine _)))
               residual in
-          let* α1 := Return α0 in
+          let* α1 := M.return_ α0 in
           never_to_any α1
         | core.ops.control_flow.ControlFlow val => M.pure val
         end in
@@ -5133,7 +5134,7 @@ Section Impl_ink_reflect_dispatch_DecodeDispatch_for_erc20_erc20_____ink_Message
                       ink.reflect.dispatch.DispatchError)
                   (Trait := ltac:(refine _)))
                 residual in
-            let* α1 := Return α0 in
+            let* α1 := M.return_ α0 in
             never_to_any α1
           | core.ops.control_flow.ControlFlow val => M.pure val
           end in
@@ -5172,7 +5173,7 @@ Section Impl_ink_reflect_dispatch_DecodeDispatch_for_erc20_erc20_____ink_Message
                       ink.reflect.dispatch.DispatchError)
                   (Trait := ltac:(refine _)))
                 residual in
-            let* α1 := Return α0 in
+            let* α1 := M.return_ α0 in
             never_to_any α1
           | core.ops.control_flow.ControlFlow val => M.pure val
           end in
@@ -5214,7 +5215,7 @@ Section Impl_ink_reflect_dispatch_DecodeDispatch_for_erc20_erc20_____ink_Message
                       ink.reflect.dispatch.DispatchError)
                   (Trait := ltac:(refine _)))
                 residual in
-            let* α1 := Return α0 in
+            let* α1 := M.return_ α0 in
             never_to_any α1
           | core.ops.control_flow.ControlFlow val => M.pure val
           end in
@@ -5253,7 +5254,7 @@ Section Impl_ink_reflect_dispatch_DecodeDispatch_for_erc20_erc20_____ink_Message
                       ink.reflect.dispatch.DispatchError)
                   (Trait := ltac:(refine _)))
                 residual in
-            let* α1 := Return α0 in
+            let* α1 := M.return_ α0 in
             never_to_any α1
           | core.ops.control_flow.ControlFlow val => M.pure val
           end in
@@ -5292,7 +5293,7 @@ Section Impl_ink_reflect_dispatch_DecodeDispatch_for_erc20_erc20_____ink_Message
                       ink.reflect.dispatch.DispatchError)
                   (Trait := ltac:(refine _)))
                 residual in
-            let* α1 := Return α0 in
+            let* α1 := M.return_ α0 in
             never_to_any α1
           | core.ops.control_flow.ControlFlow val => M.pure val
           end in
@@ -5338,7 +5339,7 @@ Section Impl_ink_reflect_dispatch_DecodeDispatch_for_erc20_erc20_____ink_Message
                       ink.reflect.dispatch.DispatchError)
                   (Trait := ltac:(refine _)))
                 residual in
-            let* α1 := Return α0 in
+            let* α1 := M.return_ α0 in
             never_to_any α1
           | core.ops.control_flow.ControlFlow val => M.pure val
           end in
@@ -5604,7 +5605,7 @@ Section Impl_ink_reflect_dispatch_ExecuteDispatchable_for_erc20_erc20_____ink_Me
                             ink.reflect.dispatch.DispatchError)
                         (Trait := ltac:(refine _)))
                       residual in
-                  let* α1 := Return α0 in
+                  let* α1 := M.return_ α0 in
                   never_to_any α1
                 | core.ops.control_flow.ControlFlow val => M.pure val
                 end in
@@ -5745,7 +5746,7 @@ Section Impl_ink_reflect_dispatch_ExecuteDispatchable_for_erc20_erc20_____ink_Me
                             ink.reflect.dispatch.DispatchError)
                         (Trait := ltac:(refine _)))
                       residual in
-                  let* α1 := Return α0 in
+                  let* α1 := M.return_ α0 in
                   never_to_any α1
                 | core.ops.control_flow.ControlFlow val => M.pure val
                 end in
@@ -5886,7 +5887,7 @@ Section Impl_ink_reflect_dispatch_ExecuteDispatchable_for_erc20_erc20_____ink_Me
                             ink.reflect.dispatch.DispatchError)
                         (Trait := ltac:(refine _)))
                       residual in
-                  let* α1 := Return α0 in
+                  let* α1 := M.return_ α0 in
                   never_to_any α1
                 | core.ops.control_flow.ControlFlow val => M.pure val
                 end in
@@ -6027,7 +6028,7 @@ Section Impl_ink_reflect_dispatch_ExecuteDispatchable_for_erc20_erc20_____ink_Me
                             ink.reflect.dispatch.DispatchError)
                         (Trait := ltac:(refine _)))
                       residual in
-                  let* α1 := Return α0 in
+                  let* α1 := M.return_ α0 in
                   never_to_any α1
                 | core.ops.control_flow.ControlFlow val => M.pure val
                 end in
@@ -6182,7 +6183,7 @@ Section Impl_ink_reflect_dispatch_ExecuteDispatchable_for_erc20_erc20_____ink_Me
                             ink.reflect.dispatch.DispatchError)
                         (Trait := ltac:(refine _)))
                       residual in
-                  let* α1 := Return α0 in
+                  let* α1 := M.return_ α0 in
                   never_to_any α1
                 | core.ops.control_flow.ControlFlow val => M.pure val
                 end in
@@ -6337,7 +6338,7 @@ Section Impl_ink_reflect_dispatch_ExecuteDispatchable_for_erc20_erc20_____ink_Me
                             ink.reflect.dispatch.DispatchError)
                         (Trait := ltac:(refine _)))
                       residual in
-                  let* α1 := Return α0 in
+                  let* α1 := M.return_ α0 in
                   never_to_any α1
                 | core.ops.control_flow.ControlFlow val => M.pure val
                 end in
@@ -6730,7 +6731,7 @@ Section Impl_erc20_erc20_Erc20.
         if (α1 : bool) then
           let* α0 := M.alloc erc20.erc20.Error.InsufficientAllowance in
           let* α1 := M.alloc (core.result.Result.Err α0) in
-          let* α2 := Return α1 in
+          let* α2 := M.return_ α1 in
           never_to_any α2
         else
           M.alloc tt in
@@ -6756,7 +6757,7 @@ Section Impl_erc20_erc20_Erc20.
                 (Self := core.result.Result unit erc20.erc20.Error)
                 (Trait := ltac:(refine _)))
               residual in
-          let* α1 := Return α0 in
+          let* α1 := M.return_ α0 in
           never_to_any α1
         | core.ops.control_flow.ControlFlow val => M.pure val
         end in
@@ -6879,7 +6880,7 @@ Section Impl_erc20_erc20_Erc20.
         if (α1 : bool) then
           let* α0 := M.alloc erc20.erc20.Error.InsufficientBalance in
           let* α1 := M.alloc (core.result.Result.Err α0) in
-          let* α2 := Return α1 in
+          let* α2 := M.return_ α1 in
           never_to_any α2
         else
           M.alloc tt in
@@ -7173,7 +7174,7 @@ Section Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___CallBuilder.
               e
               (mk_str "Could not decode `CallBuilder::account_id`") in
           let* α1 := M.alloc (core.result.Result.Err α0) in
-          let* α2 := Return α1 in
+          let* α2 := M.return_ α1 in
           never_to_any α2
         | core.result.Result __codec_res_edqy => M.pure __codec_res_edqy
         end in
@@ -7339,7 +7340,7 @@ Section Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___CallBuilder.
                       parity_scale_codec.error.Error)
                   (Trait := ltac:(refine _)))
                 residual in
-            let* α1 := Return α0 in
+            let* α1 := M.return_ α0 in
             never_to_any α1
           | core.ops.control_flow.ControlFlow val => M.pure val
           end in
@@ -8673,7 +8674,7 @@ Section Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Erc20Ref.
               e
               (mk_str "Could not decode `Erc20Ref::inner`") in
           let* α1 := M.alloc (core.result.Result.Err α0) in
-          let* α2 := Return α1 in
+          let* α2 := M.return_ α1 in
           never_to_any α2
         | core.result.Result __codec_res_edqy => M.pure __codec_res_edqy
         end in
@@ -11715,7 +11716,7 @@ Module Error.
   | InsufficientBalance
   | InsufficientAllowance.
 End Error.
-Definition Error `{ℋ : State.Trait} : Set := Error.t.
+Definition Error `{ℋ : State.Trait} : Set := M.Val Error.t.
 
 Module  Impl_scale_info_TypeInfo_for_erc20_erc20_Error.
 Section Impl_scale_info_TypeInfo_for_erc20_erc20_Error.
@@ -12058,7 +12059,7 @@ Section Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Error.
                     parity_scale_codec.error.Error)
                 (Trait := ltac:(refine _)))
               residual in
-          let* α1 := Return α0 in
+          let* α1 := M.return_ α0 in
           never_to_any α1
         | core.ops.control_flow.ControlFlow val => M.pure val
         end in
@@ -12077,7 +12078,7 @@ Section Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Error.
                 (Trait := ltac:(refine _)))
               α0
               α1 in
-          Return α2 in
+          M.return_ α2 in
         let* α0 := M.alloc tt in
         never_to_any α0
       | __codec_x_edqy =>
@@ -12094,7 +12095,7 @@ Section Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Error.
                 (Trait := ltac:(refine _)))
               α0
               α1 in
-          Return α2 in
+          M.return_ α2 in
         let* α0 := M.alloc tt in
         never_to_any α0
       | _ =>
@@ -12115,7 +12116,7 @@ Section Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Error.
                 (Trait := ltac:(refine _)))
               α0
               α1 in
-          Return α2 in
+          M.return_ α2 in
         let* α0 := M.alloc tt in
         never_to_any α0
       end).

@@ -8,7 +8,7 @@ Module DoubleError.
   | EmptyVec
   | Parse (_ : core.num.error.ParseIntError).
 End DoubleError.
-Definition DoubleError `{ℋ : State.Trait} : Set := DoubleError.t.
+Definition DoubleError `{ℋ : State.Trait} : Set := M.Val DoubleError.t.
 
 Module  Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
 Section Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
@@ -187,7 +187,7 @@ Definition double_first
               (Self := core.result.Result i32 wrapping_errors.DoubleError)
               (Trait := ltac:(refine _)))
             residual in
-        let* α1 := Return α0 in
+        let* α1 := M.return_ α0 in
         never_to_any α1
       | core.ops.control_flow.ControlFlow val => M.pure val
       end in
@@ -208,7 +208,7 @@ Definition double_first
               (Self := core.result.Result i32 wrapping_errors.DoubleError)
               (Trait := ltac:(refine _)))
             residual in
-        let* α1 := Return α0 in
+        let* α1 := M.return_ α0 in
         never_to_any α1
       | core.ops.control_flow.ControlFlow val => M.pure val
       end in

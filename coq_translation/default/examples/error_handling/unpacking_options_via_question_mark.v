@@ -169,7 +169,7 @@ Section Impl_unpacking_options_via_question_mark_Person.
                 (Self := core.option.Option u8)
                 (Trait := ltac:(refine _)))
               residual in
-          let* α1 := Return α0 in
+          let* α1 := M.return_ α0 in
           never_to_any α1
         | core.ops.control_flow.ControlFlow val => M.pure val
         end in
@@ -189,7 +189,7 @@ Section Impl_unpacking_options_via_question_mark_Person.
                 (Self := core.option.Option u8)
                 (Trait := ltac:(refine _)))
               residual in
-          let* α1 := Return α0 in
+          let* α1 := M.return_ α0 in
           never_to_any α1
         | core.ops.control_flow.ControlFlow val => M.pure val
         end in

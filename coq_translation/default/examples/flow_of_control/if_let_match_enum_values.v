@@ -7,7 +7,7 @@ Module Foo.
   | Baz
   | Qux (_ : u32).
 End Foo.
-Definition Foo `{ℋ : State.Trait} : Set := Foo.t.
+Definition Foo `{ℋ : State.Trait} : Set := M.Val Foo.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=

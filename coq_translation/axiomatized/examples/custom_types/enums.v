@@ -18,7 +18,7 @@ Module WebEvent.
   | Paste (_ : alloc.string.String)
   | Click (_ : Click.t).
 End WebEvent.
-Definition WebEvent `{ℋ : State.Trait} : Set := WebEvent.t.
+Definition WebEvent `{ℋ : State.Trait} : Set := M.Val WebEvent.t.
 
 Parameter inspect : forall `{ℋ : State.Trait}, enums.WebEvent -> M unit.
 

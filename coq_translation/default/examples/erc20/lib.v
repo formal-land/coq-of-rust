@@ -520,7 +520,7 @@ Module Error.
   | InsufficientBalance
   | InsufficientAllowance.
 End Error.
-Definition Error `{ℋ : State.Trait} : Set := Error.t.
+Definition Error `{ℋ : State.Trait} : Set := M.Val Error.t.
 
 Ltac Result T := refine (core.result.Result T lib.Error).
 
@@ -756,7 +756,7 @@ Section Impl_lib_Erc20_2.
           let* _ :=
             let* α0 := M.alloc lib.Error.InsufficientBalance in
             let* α1 := M.alloc (core.result.Result.Err α0) in
-            Return α1 in
+            M.return_ α1 in
           let* α0 := M.alloc tt in
           never_to_any α0
         else
@@ -924,7 +924,7 @@ Section Impl_lib_Erc20_2.
           let* _ :=
             let* α0 := M.alloc lib.Error.InsufficientAllowance in
             let* α1 := M.alloc (core.result.Result.Err α0) in
-            Return α1 in
+            M.return_ α1 in
           let* α0 := M.alloc tt in
           never_to_any α0
         else
@@ -951,7 +951,7 @@ Section Impl_lib_Erc20_2.
                 (Self := core.result.Result unit lib.Error)
                 (Trait := ltac:(refine _)))
               residual in
-          let* α1 := Return α0 in
+          let* α1 := M.return_ α0 in
           never_to_any α1
         | core.ops.control_flow.ControlFlow val => M.pure val
         end in

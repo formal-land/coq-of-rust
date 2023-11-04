@@ -8,7 +8,7 @@ Module checked.
     | NonPositiveLogarithm
     | NegativeSquareRoot.
   End MathError.
-  Definition MathError `{ℋ : State.Trait} : Set := MathError.t.
+  Definition MathError `{ℋ : State.Trait} : Set := M.Val MathError.t.
   
   Module  Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
   Section Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
@@ -133,7 +133,7 @@ Module checked.
                     result_chaining_with_question_mark.checked.MathError)
                 (Trait := ltac:(refine _)))
               residual in
-          let* α1 := Return α0 in
+          let* α1 := M.return_ α0 in
           never_to_any α1
         | core.ops.control_flow.ControlFlow val => M.pure val
         end in
@@ -157,7 +157,7 @@ Module checked.
                     result_chaining_with_question_mark.checked.MathError)
                 (Trait := ltac:(refine _)))
               residual in
-          let* α1 := Return α0 in
+          let* α1 := M.return_ α0 in
           never_to_any α1
         | core.ops.control_flow.ControlFlow val => M.pure val
         end in
@@ -211,7 +211,7 @@ Module MathError.
   | NonPositiveLogarithm
   | NegativeSquareRoot.
 End MathError.
-Definition MathError `{ℋ : State.Trait} : Set := MathError.t.
+Definition MathError `{ℋ : State.Trait} : Set := M.Val MathError.t.
 
 Module  Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
 Section Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
@@ -334,7 +334,7 @@ Definition op_
                   result_chaining_with_question_mark.checked.MathError)
               (Trait := ltac:(refine _)))
             residual in
-        let* α1 := Return α0 in
+        let* α1 := M.return_ α0 in
         never_to_any α1
       | core.ops.control_flow.ControlFlow val => M.pure val
       end in
@@ -358,7 +358,7 @@ Definition op_
                   result_chaining_with_question_mark.checked.MathError)
               (Trait := ltac:(refine _)))
             residual in
-        let* α1 := Return α0 in
+        let* α1 := M.return_ α0 in
         never_to_any α1
       | core.ops.control_flow.ControlFlow val => M.pure val
       end in

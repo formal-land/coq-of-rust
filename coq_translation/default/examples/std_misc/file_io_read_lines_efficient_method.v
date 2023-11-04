@@ -106,7 +106,7 @@ Definition read_lines
                   std.io.error.Error)
               (Trait := ltac:(refine _)))
             residual in
-        let* α1 := Return α0 in
+        let* α1 := M.return_ α0 in
         never_to_any α1
       | core.ops.control_flow.ControlFlow val => M.pure val
       end in

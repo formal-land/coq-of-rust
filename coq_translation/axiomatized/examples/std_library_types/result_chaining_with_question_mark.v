@@ -8,7 +8,7 @@ Module checked.
     | NonPositiveLogarithm
     | NegativeSquareRoot.
   End MathError.
-  Definition MathError `{ℋ : State.Trait} : Set := MathError.t.
+  Definition MathError `{ℋ : State.Trait} : Set := M.Val MathError.t.
   
   Module  Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
   Section Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
@@ -66,7 +66,7 @@ Module MathError.
   | NonPositiveLogarithm
   | NegativeSquareRoot.
 End MathError.
-Definition MathError `{ℋ : State.Trait} : Set := MathError.t.
+Definition MathError `{ℋ : State.Trait} : Set := M.Val MathError.t.
 
 Module  Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
 Section Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.

@@ -21,7 +21,7 @@ Module key.
     | StructNameIsEmpty
     | FieldNameIsEmpty.
   End Error.
-  Definition Error `{ℋ : State.Trait} : Set := Error.t.
+  Definition Error `{ℋ : State.Trait} : Set := M.Val Error.t.
   
   Module  Impl_core_fmt_Debug_for_ink_primitives_key_Error.
   Section Impl_core_fmt_Debug_for_ink_primitives_key_Error.
@@ -123,7 +123,7 @@ Module Error.
   | StructNameIsEmpty
   | FieldNameIsEmpty.
 End Error.
-Definition Error `{ℋ : State.Trait} : Set := Error.t.
+Definition Error `{ℋ : State.Trait} : Set := M.Val Error.t.
 
 Module  Impl_core_fmt_Debug_for_ink_primitives_key_Error.
 Section Impl_core_fmt_Debug_for_ink_primitives_key_Error.
@@ -2368,7 +2368,7 @@ Module LangError.
   Inductive t `{ℋ : State.Trait} : Set :=
   | CouldNotReadInput.
 End LangError.
-Definition LangError `{ℋ : State.Trait} : Set := LangError.t.
+Definition LangError `{ℋ : State.Trait} : Set := M.Val LangError.t.
 
 Module  Impl_scale_info_TypeInfo_for_ink_primitives_LangError.
 Section Impl_scale_info_TypeInfo_for_ink_primitives_LangError.

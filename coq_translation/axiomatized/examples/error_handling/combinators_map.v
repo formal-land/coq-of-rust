@@ -7,7 +7,7 @@ Module Food.
   | Carrot
   | Potato.
 End Food.
-Definition Food `{ℋ : State.Trait} : Set := Food.t.
+Definition Food `{ℋ : State.Trait} : Set := M.Val Food.t.
 
 Module  Impl_core_fmt_Debug_for_combinators_map_Food.
 Section Impl_core_fmt_Debug_for_combinators_map_Food.

@@ -249,7 +249,7 @@ pub(crate) fn compile_expr<'a>(
         ExprKind::Break { .. } => Expr::ControlFlow(LoopControlFlow::Break),
         ExprKind::Continue { .. } => Expr::ControlFlow(LoopControlFlow::Continue),
         ExprKind::Return { value } => {
-            let func = Box::new(Expr::LocalVar("Return".to_string()));
+            let func = Box::new(Expr::LocalVar("M.return_".to_string()));
             let args = match value {
                 Some(value) => vec![compile_expr(env, thir, value)],
                 None => vec![tt()],

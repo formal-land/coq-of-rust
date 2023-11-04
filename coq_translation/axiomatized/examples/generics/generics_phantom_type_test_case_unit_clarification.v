@@ -5,7 +5,7 @@ Module Inch.
   Inductive t `{ℋ : State.Trait} : Set :=
   .
 End Inch.
-Definition Inch `{ℋ : State.Trait} : Set := Inch.t.
+Definition Inch `{ℋ : State.Trait} : Set := M.Val Inch.t.
 
 Module  Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Inch.
 Section Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Inch.
@@ -65,7 +65,7 @@ Module Mm.
   Inductive t `{ℋ : State.Trait} : Set :=
   .
 End Mm.
-Definition Mm `{ℋ : State.Trait} : Set := Mm.t.
+Definition Mm `{ℋ : State.Trait} : Set := M.Val Mm.t.
 
 Module  Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Mm.
 Section Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Mm.

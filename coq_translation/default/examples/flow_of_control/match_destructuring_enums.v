@@ -12,7 +12,7 @@ Module Color.
   | CMY (_ : u32) (_ : u32) (_ : u32)
   | CMYK (_ : u32) (_ : u32) (_ : u32) (_ : u32).
 End Color.
-Definition Color `{ℋ : State.Trait} : Set := Color.t.
+Definition Color `{ℋ : State.Trait} : Set := M.Val Color.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=

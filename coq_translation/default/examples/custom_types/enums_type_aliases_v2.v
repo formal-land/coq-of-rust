@@ -7,7 +7,7 @@ Module VeryVerboseEnumOfThingsToDoWithNumbers.
   | Subtract.
 End VeryVerboseEnumOfThingsToDoWithNumbers.
 Definition VeryVerboseEnumOfThingsToDoWithNumbers `{ℋ : State.Trait} : Set :=
-  VeryVerboseEnumOfThingsToDoWithNumbers.t.
+  M.Val VeryVerboseEnumOfThingsToDoWithNumbers.t.
 
 Module  Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers.
 Section Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers.

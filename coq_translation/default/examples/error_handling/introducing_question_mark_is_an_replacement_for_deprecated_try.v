@@ -21,7 +21,7 @@ Definition multiply
                 (Trait := ltac:(refine _)))
               err in
           let* α1 := M.alloc (core.result.Result.Err α0) in
-          Return α1 in
+          M.return_ α1 in
         let* α0 := M.alloc tt in
         never_to_any α0
       end in
@@ -39,7 +39,7 @@ Definition multiply
                 (Trait := ltac:(refine _)))
               err in
           let* α1 := M.alloc (core.result.Result.Err α0) in
-          Return α1 in
+          M.return_ α1 in
         let* α0 := M.alloc tt in
         never_to_any α0
       end in

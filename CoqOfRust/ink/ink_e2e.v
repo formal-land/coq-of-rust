@@ -749,7 +749,7 @@ Module xts.
     | Enforced
     | Relaxed.
   End Determinism.
-  Definition Determinism `{ℋ : State.Trait} : Set := Determinism.t.
+  Definition Determinism `{ℋ : State.Trait} : Set := M.Val Determinism.t.
   
   Module  Impl_core_fmt_Debug_for_ink_e2e_xts_Determinism.
   Section Impl_core_fmt_Debug_for_ink_e2e_xts_Determinism.
@@ -1420,7 +1420,7 @@ Module client.
               (Self := E)
               (Trait := ltac:(try clear Trait; hauto l: on)))}
       : Set :=
-    Error.t (C := C) (E := E).
+    M.Val (Error.t (C := C) (E := E)).
   
   Module  Impl_core_fmt_Debug_for_ink_e2e_client_Error_C_E.
   Section Impl_core_fmt_Debug_for_ink_e2e_client_Error_C_E.
@@ -2086,7 +2086,7 @@ Definition Error
             (Self := E)
             (Trait := ltac:(try clear Trait; hauto l: on)))}
     : Set :=
-  Error.t (C := C) (E := E).
+  M.Val (Error.t (C := C) (E := E)).
 
 Module  Impl_core_fmt_Debug_for_ink_e2e_client_Error_C_E.
 Section Impl_core_fmt_Debug_for_ink_e2e_client_Error_C_E.
@@ -4675,7 +4675,7 @@ Module Determinism.
   | Enforced
   | Relaxed.
 End Determinism.
-Definition Determinism `{ℋ : State.Trait} : Set := Determinism.t.
+Definition Determinism `{ℋ : State.Trait} : Set := M.Val Determinism.t.
 
 Module  Impl_core_fmt_Debug_for_ink_e2e_xts_Determinism.
 Section Impl_core_fmt_Debug_for_ink_e2e_xts_Determinism.
@@ -5613,7 +5613,7 @@ Module SubstrateConfig.
   Inductive t `{ℋ : State.Trait} : Set :=
   .
 End SubstrateConfig.
-Definition SubstrateConfig `{ℋ : State.Trait} : Set := SubstrateConfig.t.
+Definition SubstrateConfig `{ℋ : State.Trait} : Set := M.Val SubstrateConfig.t.
 
 Module  Impl_subxt_config_Config_for_ink_e2e_SubstrateConfig.
 Section Impl_subxt_config_Config_for_ink_e2e_SubstrateConfig.

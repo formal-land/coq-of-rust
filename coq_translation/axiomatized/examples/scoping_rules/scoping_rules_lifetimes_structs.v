@@ -88,7 +88,7 @@ Module Either.
   | Num (_ : i32)
   | Ref (_ : ref i32).
 End Either.
-Definition Either `{ℋ : State.Trait} : Set := Either.t.
+Definition Either `{ℋ : State.Trait} : Set := M.Val Either.t.
 
 Module  Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
 Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.

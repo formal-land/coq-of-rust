@@ -17,7 +17,7 @@ Definition read_lines
             (Self := std.io.buffered.bufreader.BufReader std.fs.File)
             (Trait := ltac:(refine _)))
           α0 in
-      Return α1 in
+      M.return_ α1 in
     let* α0 := M.alloc tt in
     never_to_any α0).
 

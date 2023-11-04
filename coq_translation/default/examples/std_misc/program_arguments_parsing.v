@@ -201,7 +201,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
           let* _ := program_arguments_parsing.help in
           let* _ :=
             let* α0 := M.alloc tt in
-            Return α0 in
+            M.return_ α0 in
           let* α0 := M.alloc tt in
           never_to_any α0
         end in

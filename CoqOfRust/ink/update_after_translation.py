@@ -133,7 +133,7 @@ Module Error.
   | EcdsaRecoveryFailed
   | Unknown.
 End Error.
-Definition Error `{ℋ : State.Trait} : Set := Error.t.
+Definition Error `{ℋ : State.Trait} : Set := M.Val Error.t.
 """),
         "",
         content,

@@ -1885,17 +1885,19 @@ impl TopLevelItem {
                         ]
                         .concat(),
                         ty: Some(coq::Expression::Set),
-                        body: coq::Expression::Variable {
-                            ident: Path::new(&[name, &"t".to_string()]),
-                            no_implicit: false,
-                        }
-                        .apply_many_args(
-                            &ty_params
-                                .iter()
-                                .map(|(name, _)| {
-                                    (Some(name.clone()), coq::Expression::just_name(name))
-                                })
-                                .collect::<Vec<_>>(),
+                        body: coq::Expression::just_name("M.Val").apply(
+                            &coq::Expression::Variable {
+                                ident: Path::new(&[name, &"t".to_string()]),
+                                no_implicit: false,
+                            }
+                            .apply_many_args(
+                                &ty_params
+                                    .iter()
+                                    .map(|(name, _)| {
+                                        (Some(name.clone()), coq::Expression::just_name(name))
+                                    })
+                                    .collect::<Vec<_>>(),
+                            ),
                         ),
                     },
                 ))

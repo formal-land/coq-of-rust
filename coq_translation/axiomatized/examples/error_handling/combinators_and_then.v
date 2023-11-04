@@ -7,7 +7,7 @@ Module Food.
   | Steak
   | Sushi.
 End Food.
-Definition Food `{ℋ : State.Trait} : Set := Food.t.
+Definition Food `{ℋ : State.Trait} : Set := M.Val Food.t.
 
 Module  Impl_core_fmt_Debug_for_combinators_and_then_Food.
 Section Impl_core_fmt_Debug_for_combinators_and_then_Food.
@@ -34,7 +34,7 @@ Module Day.
   | Tuesday
   | Wednesday.
 End Day.
-Definition Day `{ℋ : State.Trait} : Set := Day.t.
+Definition Day `{ℋ : State.Trait} : Set := M.Val Day.t.
 
 Module  Impl_core_fmt_Debug_for_combinators_and_then_Day.
 Section Impl_core_fmt_Debug_for_combinators_and_then_Day.

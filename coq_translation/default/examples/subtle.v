@@ -466,7 +466,7 @@ Section Impl_subtle_ConstantTimeEq_for_Slice_T.
                   (Self := subtle.Choice)
                   (Trait := ltac:(refine _)))
                 α0 in
-            Return α1 in
+            M.return_ α1 in
           let* α0 := M.alloc tt in
           never_to_any α0
         else

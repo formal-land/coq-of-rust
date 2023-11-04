@@ -22,7 +22,7 @@ Definition is_divisible_by
       if (α2 : bool) then
         let* _ :=
           let* α0 := M.alloc false in
-          Return α0 in
+          M.return_ α0 in
         let* α0 := M.alloc tt in
         never_to_any α0
       else

@@ -409,7 +409,7 @@ Module reflect.
       | CouldNotReadInput
       | PaidUnpayableMessage.
     End DispatchError.
-    Definition DispatchError `{ℋ : State.Trait} : Set := DispatchError.t.
+    Definition DispatchError `{ℋ : State.Trait} : Set := M.Val DispatchError.t.
     
     Module  ExecuteDispatchable.
     Section ExecuteDispatchable.
@@ -2439,7 +2439,7 @@ Module dispatch.
     | CouldNotReadInput
     | PaidUnpayableMessage.
   End DispatchError.
-  Definition DispatchError `{ℋ : State.Trait} : Set := DispatchError.t.
+  Definition DispatchError `{ℋ : State.Trait} : Set := M.Val DispatchError.t.
   
   Module  ExecuteDispatchable.
   Section ExecuteDispatchable.
@@ -2917,7 +2917,7 @@ Module DispatchError.
   | CouldNotReadInput
   | PaidUnpayableMessage.
 End DispatchError.
-Definition DispatchError `{ℋ : State.Trait} : Set := DispatchError.t.
+Definition DispatchError `{ℋ : State.Trait} : Set := M.Val DispatchError.t.
 
 Module  Impl_core_fmt_Debug_for_ink_reflect_dispatch_DispatchError.
 Section Impl_core_fmt_Debug_for_ink_reflect_dispatch_DispatchError.

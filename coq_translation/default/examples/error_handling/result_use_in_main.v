@@ -15,7 +15,7 @@ Definition main
       | core.result.Result number => M.pure number
       | core.result.Result e =>
         let* α0 := M.alloc (core.result.Result.Err e) in
-        let* α1 := Return α0 in
+        let* α1 := M.return_ α0 in
         never_to_any α1
       end in
     let* _ :=

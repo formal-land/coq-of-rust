@@ -15,7 +15,7 @@ Definition multiply
       | core.result.Result first_number => M.pure first_number
       | core.result.Result e =>
         let* α0 := M.alloc (core.result.Result.Err e) in
-        let* α1 := Return α0 in
+        let* α1 := M.return_ α0 in
         never_to_any α1
       end in
     let* second_number :=
@@ -26,7 +26,7 @@ Definition multiply
       | core.result.Result second_number => M.pure second_number
       | core.result.Result e =>
         let* α0 := M.alloc (core.result.Result.Err e) in
-        let* α1 := Return α0 in
+        let* α1 := M.return_ α0 in
         never_to_any α1
       end in
     let* α0 := BinOp.mul first_number second_number in
