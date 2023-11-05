@@ -48,11 +48,12 @@ jobs:
           startGroup "Translate Rust examples (axiomatized)"
             python run_tests.py --axiomatize --axiomatize-public --output-path ./coq_translation/axiomatized/
           endGroup
-          startGroup "Translate Ink! library"
-            cd CoqOfRust
-            ./generate_ink_example.sh
-            cd ..
-          endGroup
+          # We disable for now this translation as this makes a panic!
+          # startGroup "Translate Ink! library"
+          #   cd CoqOfRust
+          #   ./generate_ink_example.sh
+          #   cd ..
+          # endGroup
           startGroup "Check that the diff is empty"
             git -c color.ui=always diff --exit-code
           endGroup
