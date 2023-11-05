@@ -1027,7 +1027,7 @@ Section Impl_lib_Erc20_2.
             α8 in
         let* α10 := M.read α9 in
         match α10 with
-        | core.ops.control_flow.ControlFlow residual =>
+        | core.ops.control_flow.ControlFlow.Break residual =>
           let* α0 : ltac:(refine (core.result.Result unit lib.Error)) :=
             (core.ops.try_trait.FromResidual.from_residual
                 (Self := core.result.Result unit lib.Error)
@@ -1035,7 +1035,7 @@ Section Impl_lib_Erc20_2.
               residual in
           let* α1 : ltac:(refine never) := M.return_ α0 in
           never_to_any α1
-        | core.ops.control_flow.ControlFlow val => M.pure val
+        | core.ops.control_flow.ControlFlow.Continue val => M.pure val
         end in
       let* _ : ltac:(refine unit) :=
         let* α0 : ltac:(refine lib.Erc20) := deref self in

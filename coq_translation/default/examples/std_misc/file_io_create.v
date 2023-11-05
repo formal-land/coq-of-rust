@@ -32,7 +32,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
         std.fs.File::["create"] α0 in
       let* α2 := M.read α1 in
       match α2 with
-      | core.result.Result why =>
+      | core.result.Result.Err why =>
         let* α0 : ltac:(refine (array (ref str))) :=
           M.alloc [ mk_str "couldn't create "; mk_str ": " ] in
         let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
@@ -63,7 +63,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
           core.fmt.Arguments::["new_v1"] α4 α17 in
         let* α19 : ltac:(refine never) := core.panicking.panic_fmt α18 in
         never_to_any α19
-      | core.result.Result file => M.pure file
+      | core.result.Result.Ok file => M.pure file
       end in
     let* α0 : ltac:(refine (mut_ref std.fs.File)) := borrow_mut file in
     let* α1 : ltac:(refine (ref str)) := deref file_io_create.LOREM_IPSUM in
@@ -78,7 +78,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
         α6 in
     let* α8 := M.read α7 in
     match α8 with
-    | core.result.Result why =>
+    | core.result.Result.Err why =>
       let* α0 : ltac:(refine (array (ref str))) :=
         M.alloc [ mk_str "couldn't write to "; mk_str ": " ] in
       let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
@@ -109,7 +109,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
         core.fmt.Arguments::["new_v1"] α4 α17 in
       let* α19 : ltac:(refine never) := core.panicking.panic_fmt α18 in
       never_to_any α19
-    | core.result.Result _ =>
+    | core.result.Result.Ok _ =>
       let* _ : ltac:(refine unit) :=
         let* α0 : ltac:(refine (array (ref str))) :=
           M.alloc [ mk_str "successfully wrote to "; mk_str "

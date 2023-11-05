@@ -15,7 +15,7 @@ Definition multiply
       str::["parse"] α1 in
     let* α3 := M.read α2 in
     match α3 with
-    | core.result.Result first_number =>
+    | core.result.Result.Ok first_number =>
       let* α0 : ltac:(refine str) := deref second_number_str in
       let* α1 : ltac:(refine (ref str)) := borrow α0 in
       let*
@@ -24,12 +24,12 @@ Definition multiply
         str::["parse"] α1 in
       let* α3 := M.read α2 in
       match α3 with
-      | core.result.Result second_number =>
+      | core.result.Result.Ok second_number =>
         let* α0 : ltac:(refine i32) := BinOp.mul first_number second_number in
         M.alloc (core.result.Result.Ok α0)
-      | core.result.Result e => M.alloc (core.result.Result.Err e)
+      | core.result.Result.Err e => M.alloc (core.result.Result.Err e)
       end
-    | core.result.Result e => M.alloc (core.result.Result.Err e)
+    | core.result.Result.Err e => M.alloc (core.result.Result.Err e)
     end).
 
 Definition print
@@ -39,7 +39,7 @@ Definition print
   M.function_body
     (let* α0 := M.read result in
     match α0 with
-    | core.result.Result n =>
+    | core.result.Result.Ok n =>
       let* _ : ltac:(refine unit) :=
         let* α0 : ltac:(refine (array (ref str))) :=
           M.alloc [ mk_str "n is "; mk_str "
@@ -67,7 +67,7 @@ Definition print
           core.fmt.Arguments::["new_v1"] α4 α13 in
         std.io.stdio._print α14 in
       M.alloc tt
-    | core.result.Result e =>
+    | core.result.Result.Err e =>
       let* _ : ltac:(refine unit) :=
         let* α0 : ltac:(refine (array (ref str))) :=
           M.alloc [ mk_str "Error: "; mk_str "

@@ -10,7 +10,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
     let* _ : ltac:(refine unit) :=
       let* α0 := M.read optional in
       match α0 with
-      | core.option.Option i =>
+      | core.option.Option.Some i =>
         let* _ : ltac:(refine unit) :=
           let* _ : ltac:(refine unit) :=
             let* α0 : ltac:(refine (array (ref str))) :=

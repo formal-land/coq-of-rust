@@ -391,10 +391,10 @@ Definition main `{ℋ : State.Trait} : M unit :=
                 α2 in
             let* α4 := M.read α3 in
             match α4 with
-            | core.option.Option  =>
+            | core.option.Option.None  =>
               let* α0 : ltac:(refine never) := Break in
               never_to_any α0
-            | core.option.Option i =>
+            | core.option.Option.Some i =>
               let* α0 : ltac:(refine (ref (array i32))) := borrow xs in
               let* α1 : ltac:(refine (ref (slice i32))) :=
                 pointer_coercion "Unsize" α0 in
@@ -402,7 +402,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
                 (slice i32)::["get"] α1 i in
               let* α3 := M.read α2 in
               match α3 with
-              | core.option.Option xval =>
+              | core.option.Option.Some xval =>
                 let* _ : ltac:(refine unit) :=
                   let* α0 : ltac:(refine (array (ref str))) :=
                     M.alloc [ mk_str ""; mk_str ": "; mk_str "
@@ -438,7 +438,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
                     core.fmt.Arguments::["new_v1"] α4 α17 in
                   std.io.stdio._print α18 in
                 M.alloc tt
-              | core.option.Option  =>
+              | core.option.Option.None  =>
                 let* _ : ltac:(refine unit) :=
                   let* α0 : ltac:(refine (array (ref str))) :=
                     M.alloc [ mk_str "Slow down! "; mk_str " is too far!

@@ -12,7 +12,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
   M.function_body
     (let* a : ltac:(refine if_let_challenge.Foo) :=
       M.alloc if_let_challenge.Foo.Bar in
-    let* α0 : ltac:(refine bool) := let_if if_let_challenge.Foo  := a in
+    let* α0 : ltac:(refine bool) := let_if if_let_challenge.Foo.Bar  := a in
     if (α0 : bool) then
       let* _ : ltac:(refine unit) :=
         let* _ : ltac:(refine unit) :=

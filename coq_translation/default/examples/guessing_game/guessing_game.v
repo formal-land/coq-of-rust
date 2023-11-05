@@ -74,8 +74,8 @@ Definition main `{ℋ : State.Trait} : M unit :=
           str::["parse"] α6 in
         let* α8 := M.read α7 in
         match α8 with
-        | core.result.Result num => M.pure num
-        | core.result.Result _ =>
+        | core.result.Result.Ok num => M.pure num
+        | core.result.Result.Err _ =>
           let* α0 : ltac:(refine never) := Continue in
           never_to_any α0
         end in
@@ -115,7 +115,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
         (core.cmp.Ord.cmp (Self := u32) (Trait := ltac:(refine _))) α0 α3 in
       let* α5 := M.read α4 in
       match α5 with
-      | core.cmp.Ordering  =>
+      | core.cmp.Ordering.Less  =>
         let* _ : ltac:(refine unit) :=
           let* α0 : ltac:(refine (array (ref str))) :=
             M.alloc [ mk_str "Too small!
@@ -129,7 +129,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
             core.fmt.Arguments::["new_const"] α4 in
           std.io.stdio._print α5 in
         M.alloc tt
-      | core.cmp.Ordering  =>
+      | core.cmp.Ordering.Greater  =>
         let* _ : ltac:(refine unit) :=
           let* α0 : ltac:(refine (array (ref str))) :=
             M.alloc [ mk_str "Too big!
@@ -143,7 +143,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
             core.fmt.Arguments::["new_const"] α4 in
           std.io.stdio._print α5 in
         M.alloc tt
-      | core.cmp.Ordering  =>
+      | core.cmp.Ordering.Equal  =>
         let* _ : ltac:(refine unit) :=
           let* _ : ltac:(refine unit) :=
             let* α0 : ltac:(refine (array (ref str))) :=

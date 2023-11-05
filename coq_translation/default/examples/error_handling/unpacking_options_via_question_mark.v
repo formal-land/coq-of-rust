@@ -174,7 +174,7 @@ Section Impl_unpacking_options_via_question_mark_Person.
       let* α3 := M.read α2 in
       let* α4 : ltac:(refine unpacking_options_via_question_mark.Job) :=
         match α3 with
-        | core.ops.control_flow.ControlFlow residual =>
+        | core.ops.control_flow.ControlFlow.Break residual =>
           let* α0 : ltac:(refine (core.option.Option u8)) :=
             (core.ops.try_trait.FromResidual.from_residual
                 (Self := core.option.Option u8)
@@ -182,7 +182,7 @@ Section Impl_unpacking_options_via_question_mark_Person.
               residual in
           let* α1 : ltac:(refine never) := M.return_ α0 in
           never_to_any α1
-        | core.ops.control_flow.ControlFlow val => M.pure val
+        | core.ops.control_flow.ControlFlow.Continue val => M.pure val
         end in
       let*
           α5 :
@@ -205,7 +205,7 @@ Section Impl_unpacking_options_via_question_mark_Person.
       let* α7 := M.read α6 in
       let* α8 : ltac:(refine unpacking_options_via_question_mark.PhoneNumber) :=
         match α7 with
-        | core.ops.control_flow.ControlFlow residual =>
+        | core.ops.control_flow.ControlFlow.Break residual =>
           let* α0 : ltac:(refine (core.option.Option u8)) :=
             (core.ops.try_trait.FromResidual.from_residual
                 (Self := core.option.Option u8)
@@ -213,7 +213,7 @@ Section Impl_unpacking_options_via_question_mark_Person.
               residual in
           let* α1 : ltac:(refine never) := M.return_ α0 in
           never_to_any α1
-        | core.ops.control_flow.ControlFlow val => M.pure val
+        | core.ops.control_flow.ControlFlow.Continue val => M.pure val
         end in
       α8.["area_code"]).
   

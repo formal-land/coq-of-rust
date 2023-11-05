@@ -53,7 +53,7 @@ Section Impl_enums_testcase_linked_list_List.
       (let* α0 : ltac:(refine enums_testcase_linked_list.List) := deref self in
       let* α1 := M.read α0 in
       match α1 with
-      | enums_testcase_linked_list.List _ tail =>
+      | enums_testcase_linked_list.List.Cons _ tail =>
         let* α0 : ltac:(refine u32) := M.alloc 1 in
         let*
             α1 :
@@ -68,7 +68,7 @@ Section Impl_enums_testcase_linked_list_List.
         let* α4 : ltac:(refine u32) :=
           enums_testcase_linked_list.List::["len"] α3 in
         BinOp.add α0 α4
-      | enums_testcase_linked_list.List  => M.alloc 0
+      | enums_testcase_linked_list.List.Nil  => M.alloc 0
       end).
   
   Global Instance AssociatedFunction_len : Notation.DoubleColon Self "len" := {
@@ -80,7 +80,7 @@ Section Impl_enums_testcase_linked_list_List.
       (let* α0 : ltac:(refine enums_testcase_linked_list.List) := deref self in
       let* α1 := M.read α0 in
       match α1 with
-      | enums_testcase_linked_list.List head tail =>
+      | enums_testcase_linked_list.List.Cons head tail =>
         let* res : ltac:(refine alloc.string.String) :=
           let* α0 : ltac:(refine (array (ref str))) :=
             M.alloc [ mk_str ""; mk_str ", " ] in
@@ -125,7 +125,7 @@ Section Impl_enums_testcase_linked_list_List.
             core.fmt.Arguments::["new_v1"] α4 α21 in
           alloc.fmt.format α22 in
         M.pure res
-      | enums_testcase_linked_list.List  =>
+      | enums_testcase_linked_list.List.Nil  =>
         let* res : ltac:(refine alloc.string.String) :=
           let* α0 : ltac:(refine (array (ref str))) :=
             M.alloc [ mk_str "Nil" ] in

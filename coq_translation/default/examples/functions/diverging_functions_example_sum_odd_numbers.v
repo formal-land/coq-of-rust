@@ -71,10 +71,10 @@ Definition sum_odd_numbers `{ℋ : State.Trait} (up_to : u32) : M u32 :=
                   α2 in
               let* α4 := M.read α3 in
               match α4 with
-              | core.option.Option  =>
+              | core.option.Option.None  =>
                 let* α0 : ltac:(refine never) := Break in
                 never_to_any α0
-              | core.option.Option i =>
+              | core.option.Option.Some i =>
                 let* addition : ltac:(refine u32) :=
                   let* α0 : ltac:(refine u32) := M.alloc 2 in
                   let* α1 : ltac:(refine u32) := BinOp.rem i α0 in

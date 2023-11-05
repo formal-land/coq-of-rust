@@ -13,7 +13,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
       match_binding_destructure_enum_variants.some_number in
     let* α1 := M.read α0 in
     match α1 with
-    | core.option.Option (_ as n) =>
+    | core.option.Option.Some (_ as n) =>
       let* _ : ltac:(refine unit) :=
         let* α0 : ltac:(refine (array (ref str))) :=
           M.alloc [ mk_str "The Answer: "; mk_str "!
@@ -41,7 +41,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
           core.fmt.Arguments::["new_v1"] α4 α13 in
         std.io.stdio._print α14 in
       M.alloc tt
-    | core.option.Option n =>
+    | core.option.Option.Some n =>
       let* _ : ltac:(refine unit) :=
         let* α0 : ltac:(refine (array (ref str))) :=
           M.alloc [ mk_str "Not interesting... "; mk_str "

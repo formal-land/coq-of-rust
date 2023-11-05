@@ -49,10 +49,10 @@ Definition main `{ℋ : State.Trait} : M unit :=
                   α2 in
               let* α4 := M.read α3 in
               match α4 with
-              | core.option.Option  =>
+              | core.option.Option.None  =>
                 let* α0 : ltac:(refine never) := Break in
                 never_to_any α0
-              | core.option.Option id =>
+              | core.option.Option.Some id =>
                 let* thread_tx : ltac:(refine (std.sync.mpsc.Sender i32)) :=
                   let* α0 : ltac:(refine (ref (std.sync.mpsc.Sender i32))) :=
                     borrow tx in
@@ -177,10 +177,10 @@ Definition main `{ℋ : State.Trait} : M unit :=
                   α2 in
               let* α4 := M.read α3 in
               match α4 with
-              | core.option.Option  =>
+              | core.option.Option.None  =>
                 let* α0 : ltac:(refine never) := Break in
                 never_to_any α0
-              | core.option.Option _ =>
+              | core.option.Option.Some _ =>
                 let* _ : ltac:(refine unit) :=
                   let*
                       α0 :
@@ -261,10 +261,10 @@ Definition main `{ℋ : State.Trait} : M unit :=
                   α2 in
               let* α4 := M.read α3 in
               match α4 with
-              | core.option.Option  =>
+              | core.option.Option.None  =>
                 let* α0 : ltac:(refine never) := Break in
                 never_to_any α0
-              | core.option.Option child =>
+              | core.option.Option.Some child =>
                 let* _ : ltac:(refine unit) :=
                   let*
                       α0 :

@@ -44,8 +44,11 @@ pub(crate) fn compile_pattern(env: &Env, pat: &Pat) -> Pattern {
             subpatterns,
             ..
         } => {
-            let path = compile_def_id(env, adt_def.did());
             let variant = adt_def.variant(*variant_index);
+            let path = Path::concat(&[
+                compile_def_id(env, adt_def.did()),
+                Path::local(variant.name.to_string()),
+            ]);
             let struct_or_variant = StructOrVariant::Variant;
             let fields: Vec<_> = subpatterns
                 .iter()

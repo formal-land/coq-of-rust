@@ -337,7 +337,7 @@ Definition try_logon
         α4 in
     let* α6 := M.read α5 in
     match α6 with
-    | core.option.Option account_info =>
+    | core.option.Option.Some account_info =>
       let* _ : ltac:(refine unit) :=
         let* _ : ltac:(refine unit) :=
           let* α0 : ltac:(refine (array (ref str))) :=

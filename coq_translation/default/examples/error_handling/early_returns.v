@@ -16,8 +16,8 @@ Definition multiply
         str::["parse"] α1 in
       let* α3 := M.read α2 in
       match α3 with
-      | core.result.Result first_number => M.pure first_number
-      | core.result.Result e =>
+      | core.result.Result.Ok first_number => M.pure first_number
+      | core.result.Result.Err e =>
         let*
             α0 :
             ltac:(refine
@@ -35,8 +35,8 @@ Definition multiply
         str::["parse"] α1 in
       let* α3 := M.read α2 in
       match α3 with
-      | core.result.Result second_number => M.pure second_number
-      | core.result.Result e =>
+      | core.result.Result.Ok second_number => M.pure second_number
+      | core.result.Result.Err e =>
         let*
             α0 :
             ltac:(refine
@@ -55,7 +55,7 @@ Definition print
   M.function_body
     (let* α0 := M.read result in
     match α0 with
-    | core.result.Result n =>
+    | core.result.Result.Ok n =>
       let* _ : ltac:(refine unit) :=
         let* α0 : ltac:(refine (array (ref str))) :=
           M.alloc [ mk_str "n is "; mk_str "
@@ -83,7 +83,7 @@ Definition print
           core.fmt.Arguments::["new_v1"] α4 α13 in
         std.io.stdio._print α14 in
       M.alloc tt
-    | core.result.Result e =>
+    | core.result.Result.Err e =>
       let* _ : ltac:(refine unit) :=
         let* α0 : ltac:(refine (array (ref str))) :=
           M.alloc [ mk_str "Error: "; mk_str "

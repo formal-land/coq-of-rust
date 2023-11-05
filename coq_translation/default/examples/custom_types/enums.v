@@ -24,7 +24,7 @@ Definition inspect `{ℋ : State.Trait} (event : enums.WebEvent) : M unit :=
   M.function_body
     (let* α0 := M.read event in
     match α0 with
-    | enums.WebEvent  =>
+    | enums.WebEvent.PageLoad  =>
       let* _ : ltac:(refine unit) :=
         let* α0 : ltac:(refine (array (ref str))) :=
           M.alloc
@@ -43,7 +43,7 @@ Definition inspect `{ℋ : State.Trait} (event : enums.WebEvent) : M unit :=
           core.fmt.Arguments::["new_const"] α4 in
         std.io.stdio._print α5 in
       M.alloc tt
-    | enums.WebEvent  =>
+    | enums.WebEvent.PageUnload  =>
       let* _ : ltac:(refine unit) :=
         let* α0 : ltac:(refine (array (ref str))) :=
           M.alloc [ mk_str "page unloaded
@@ -57,7 +57,7 @@ Definition inspect `{ℋ : State.Trait} (event : enums.WebEvent) : M unit :=
           core.fmt.Arguments::["new_const"] α4 in
         std.io.stdio._print α5 in
       M.alloc tt
-    | enums.WebEvent c =>
+    | enums.WebEvent.KeyPress c =>
       let* _ : ltac:(refine unit) :=
         let* α0 : ltac:(refine (array (ref str))) :=
           M.alloc [ mk_str "pressed '"; mk_str "'.
@@ -85,7 +85,7 @@ Definition inspect `{ℋ : State.Trait} (event : enums.WebEvent) : M unit :=
           core.fmt.Arguments::["new_v1"] α4 α13 in
         std.io.stdio._print α14 in
       M.alloc tt
-    | enums.WebEvent s =>
+    | enums.WebEvent.Paste s =>
       let* _ : ltac:(refine unit) :=
         let* α0 : ltac:(refine (array (ref str))) :=
           M.alloc [ mk_str "pasted ""; mk_str "".
@@ -113,7 +113,11 @@ Definition inspect `{ℋ : State.Trait} (event : enums.WebEvent) : M unit :=
           core.fmt.Arguments::["new_v1"] α4 α13 in
         std.io.stdio._print α14 in
       M.alloc tt
-    | enums.WebEvent {| enums.WebEvent.x := x; enums.WebEvent.y := y; |} =>
+    |
+        enums.WebEvent.Click
+        {| enums.WebEvent.Click.x := x; enums.WebEvent.Click.y := y;
+        |}
+        =>
       let* _ : ltac:(refine unit) :=
         let* _ : ltac:(refine unit) :=
           let* α0 : ltac:(refine (array (ref str))) :=

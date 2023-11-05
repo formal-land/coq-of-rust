@@ -61,10 +61,10 @@ Definition main `{ℋ : State.Trait} : M unit :=
                   α2 in
               let* α4 := M.read α3 in
               match α4 with
-              | core.option.Option  =>
+              | core.option.Option.None  =>
                 let* α0 : ltac:(refine never) := Break in
                 never_to_any α0
-              | core.option.Option n =>
+              | core.option.Option.Some n =>
                 let* n_squared : ltac:(refine u32) := BinOp.mul n n in
                 let* α0 : ltac:(refine bool) := BinOp.ge n_squared upper in
                 let* α1 : ltac:(refine bool) := use α0 in

@@ -48,10 +48,10 @@ Definition main `{ℋ : State.Trait} : M unit :=
                 α2 in
             let* α4 := M.read α3 in
             match α4 with
-            | core.option.Option  =>
+            | core.option.Option.None  =>
               let* α0 : ltac:(refine never) := Break in
               never_to_any α0
-            | core.option.Option _ =>
+            | core.option.Option.Some _ =>
               let* _ : ltac:(refine unit) := scoping_rules_raii.create_box in
               M.alloc tt
             end in

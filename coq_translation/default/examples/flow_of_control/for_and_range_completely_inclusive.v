@@ -36,10 +36,10 @@ Definition main `{ℋ : State.Trait} : M unit :=
                 α2 in
             let* α4 := M.read α3 in
             match α4 with
-            | core.option.Option  =>
+            | core.option.Option.None  =>
               let* α0 : ltac:(refine never) := Break in
               never_to_any α0
-            | core.option.Option n =>
+            | core.option.Option.Some n =>
               let* α0 : ltac:(refine i32) := M.alloc 15 in
               let* α1 : ltac:(refine i32) := BinOp.rem n α0 in
               let* α2 : ltac:(refine i32) := M.alloc 0 in

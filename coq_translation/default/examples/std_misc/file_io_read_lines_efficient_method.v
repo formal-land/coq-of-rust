@@ -11,7 +11,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
             (std.io.Lines (std.io.buffered.bufreader.BufReader std.fs.File))
             std.io.error.Error)) :=
       file_io_read_lines_efficient_method.read_lines (mk_str "./hosts") in
-    let* α1 : ltac:(refine bool) := let_if core.result.Result lines := α0 in
+    let* α1 : ltac:(refine bool) := let_if core.result.Result.Ok lines := α0 in
     if (α1 : bool) then
       let*
           α0 :
@@ -63,12 +63,12 @@ Definition main `{ℋ : State.Trait} : M unit :=
                   α2 in
               let* α4 := M.read α3 in
               match α4 with
-              | core.option.Option  =>
+              | core.option.Option.None  =>
                 let* α0 : ltac:(refine never) := Break in
                 never_to_any α0
-              | core.option.Option line =>
+              | core.option.Option.Some line =>
                 let* α0 : ltac:(refine bool) :=
-                  let_if core.result.Result ip := line in
+                  let_if core.result.Result.Ok ip := line in
                 if (α0 : bool) then
                   let* _ : ltac:(refine unit) :=
                     let* _ : ltac:(refine unit) :=
@@ -147,7 +147,7 @@ Definition read_lines
           α0 in
       let* α2 := M.read α1 in
       match α2 with
-      | core.ops.control_flow.ControlFlow residual =>
+      | core.ops.control_flow.ControlFlow.Break residual =>
         let*
             α0 :
             ltac:(refine
@@ -164,7 +164,7 @@ Definition read_lines
             residual in
         let* α1 : ltac:(refine never) := M.return_ α0 in
         never_to_any α1
-      | core.ops.control_flow.ControlFlow val => M.pure val
+      | core.ops.control_flow.ControlFlow.Continue val => M.pure val
       end in
     let* α0 : ltac:(refine (std.io.buffered.bufreader.BufReader std.fs.File)) :=
       (std.io.buffered.bufreader.BufReader std.fs.File)::["new"] file in

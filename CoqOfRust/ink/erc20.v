@@ -2353,11 +2353,11 @@ Module erc20.
         let* α2 := M.read self in
         let* α3 : ltac:(refine (ref str)) :=
           match α2 with
-          | erc20.erc20.Error  =>
+          | erc20.erc20.Error.InsufficientBalance  =>
             let* α0 : ltac:(refine str) :=
               deref (mk_str "InsufficientBalance") in
             borrow α0
-          | erc20.erc20.Error  =>
+          | erc20.erc20.Error.InsufficientAllowance  =>
             let* α0 : ltac:(refine str) :=
               deref (mk_str "InsufficientAllowance") in
             borrow α0
@@ -2692,7 +2692,7 @@ Section Impl_ink_storage_traits_storage_Storable_for_erc20_erc20_Erc20.
       let* α4 := M.read α3 in
       let* α5 : ltac:(refine u128) :=
         match α4 with
-        | core.ops.control_flow.ControlFlow residual =>
+        | core.ops.control_flow.ControlFlow.Break residual =>
           let*
               α0 :
               ltac:(refine
@@ -2708,7 +2708,7 @@ Section Impl_ink_storage_traits_storage_Storable_for_erc20_erc20_Erc20.
               residual in
           let* α1 : ltac:(refine never) := M.return_ α0 in
           never_to_any α1
-        | core.ops.control_flow.ControlFlow val => M.pure val
+        | core.ops.control_flow.ControlFlow.Continue val => M.pure val
         end in
       let* α6 : ltac:(refine __ink_I) := deref __input in
       let* α7 : ltac:(refine (mut_ref __ink_I)) := borrow_mut α6 in
@@ -2769,7 +2769,7 @@ Section Impl_ink_storage_traits_storage_Storable_for_erc20_erc20_Erc20.
                 ink_storage_traits.impls.AutoKey
                 (ink_storage_traits.impls.ManualKey unit)))) :=
         match α10 with
-        | core.ops.control_flow.ControlFlow residual =>
+        | core.ops.control_flow.ControlFlow.Break residual =>
           let*
               α0 :
               ltac:(refine
@@ -2785,7 +2785,7 @@ Section Impl_ink_storage_traits_storage_Storable_for_erc20_erc20_Erc20.
               residual in
           let* α1 : ltac:(refine never) := M.return_ α0 in
           never_to_any α1
-        | core.ops.control_flow.ControlFlow val => M.pure val
+        | core.ops.control_flow.ControlFlow.Continue val => M.pure val
         end in
       let* α12 : ltac:(refine __ink_I) := deref __input in
       let* α13 : ltac:(refine (mut_ref __ink_I)) := borrow_mut α12 in
@@ -2856,7 +2856,7 @@ Section Impl_ink_storage_traits_storage_Storable_for_erc20_erc20_Erc20.
                 ink_storage_traits.impls.AutoKey
                 (ink_storage_traits.impls.ManualKey unit)))) :=
         match α16 with
-        | core.ops.control_flow.ControlFlow residual =>
+        | core.ops.control_flow.ControlFlow.Break residual =>
           let*
               α0 :
               ltac:(refine
@@ -2872,7 +2872,7 @@ Section Impl_ink_storage_traits_storage_Storable_for_erc20_erc20_Erc20.
               residual in
           let* α1 : ltac:(refine never) := M.return_ α0 in
           never_to_any α1
-        | core.ops.control_flow.ControlFlow val => M.pure val
+        | core.ops.control_flow.ControlFlow.Continue val => M.pure val
         end in
       let* α18 : ltac:(refine erc20.erc20.Erc20) :=
         M.alloc
@@ -3627,7 +3627,7 @@ Section Impl_parity_scale_codec_codec_Encode_for_erc20_erc20___ink_EventBase.
       (let* α0 : ltac:(refine erc20.erc20.__ink_EventBase) := deref self in
       let* α1 := M.read α0 in
       match α1 with
-      | erc20.erc20.__ink_EventBase aa =>
+      | erc20.erc20.__ink_EventBase.Transfer aa =>
         let* _ : ltac:(refine unit) :=
           let* α0 : ltac:(refine __CodecOutputEdqy) :=
             deref __codec_dest_edqy in
@@ -3653,7 +3653,7 @@ Section Impl_parity_scale_codec_codec_Encode_for_erc20_erc20___ink_EventBase.
             α1
             α3 in
         M.alloc tt
-      | erc20.erc20.__ink_EventBase aa =>
+      | erc20.erc20.__ink_EventBase.Approval aa =>
         let* _ : ltac:(refine unit) :=
           let* α0 : ltac:(refine __CodecOutputEdqy) :=
             deref __codec_dest_edqy in
@@ -3763,7 +3763,7 @@ Section Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___ink_EventBase.
       let* α5 := M.read α4 in
       let* α6 : ltac:(refine u8) :=
         match α5 with
-        | core.ops.control_flow.ControlFlow residual =>
+        | core.ops.control_flow.ControlFlow.Break residual =>
           let*
               α0 :
               ltac:(refine
@@ -3779,7 +3779,7 @@ Section Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___ink_EventBase.
               residual in
           let* α1 : ltac:(refine never) := M.return_ α0 in
           never_to_any α1
-        | core.ops.control_flow.ControlFlow val => M.pure val
+        | core.ops.control_flow.ControlFlow.Continue val => M.pure val
         end in
       let* α7 := M.read α6 in
       match α7 with
@@ -3804,7 +3804,7 @@ Section Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___ink_EventBase.
               let* α0 := M.read __codec_res_edqy in
               let* α0 : ltac:(refine erc20.erc20.Transfer) :=
                 match α0 with
-                | core.result.Result e =>
+                | core.result.Result.Err e =>
                   let* α0 : ltac:(refine parity_scale_codec.error.Error) :=
                     parity_scale_codec.error.Error::["chain"]
                       e
@@ -3819,7 +3819,8 @@ Section Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___ink_EventBase.
                     M.alloc (core.result.Result.Err α0) in
                   let* α2 : ltac:(refine never) := M.return_ α1 in
                   never_to_any α2
-                | core.result.Result __codec_res_edqy => M.pure __codec_res_edqy
+                | core.result.Result.Ok __codec_res_edqy =>
+                  M.pure __codec_res_edqy
                 end in
               let* α1 : ltac:(refine erc20.erc20.__ink_EventBase) :=
                 M.alloc (erc20.erc20.__ink_EventBase.Transfer α0) in
@@ -3860,7 +3861,7 @@ Section Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___ink_EventBase.
               let* α0 := M.read __codec_res_edqy in
               let* α0 : ltac:(refine erc20.erc20.Approval) :=
                 match α0 with
-                | core.result.Result e =>
+                | core.result.Result.Err e =>
                   let* α0 : ltac:(refine parity_scale_codec.error.Error) :=
                     parity_scale_codec.error.Error::["chain"]
                       e
@@ -3875,7 +3876,8 @@ Section Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___ink_EventBase.
                     M.alloc (core.result.Result.Err α0) in
                   let* α2 : ltac:(refine never) := M.return_ α1 in
                   never_to_any α2
-                | core.result.Result __codec_res_edqy => M.pure __codec_res_edqy
+                | core.result.Result.Ok __codec_res_edqy =>
+                  M.pure __codec_res_edqy
                 end in
               let* α1 : ltac:(refine erc20.erc20.__ink_EventBase) :=
                 M.alloc (erc20.erc20.__ink_EventBase.Approval α0) in
@@ -4048,7 +4050,7 @@ Section Impl_ink_env_topics_Topics_for_erc20_erc20___ink_EventBase.
     M.function_body
       (let* α0 := M.read self in
       match α0 with
-      | erc20.erc20.__ink_EventBase event =>
+      | erc20.erc20.__ink_EventBase.Transfer event =>
         let* α0 : ltac:(refine erc20.erc20.Transfer) := deref event in
         let* α1 : ltac:(refine (ref erc20.erc20.Transfer)) := borrow α0 in
         (ink_env.topics.Topics.topics
@@ -4056,7 +4058,7 @@ Section Impl_ink_env_topics_Topics_for_erc20_erc20___ink_EventBase.
             (Trait := ltac:(refine _)))
           α1
           builder
-      | erc20.erc20.__ink_EventBase event =>
+      | erc20.erc20.__ink_EventBase.Approval event =>
         let* α0 : ltac:(refine erc20.erc20.Approval) := deref event in
         let* α1 : ltac:(refine (ref erc20.erc20.Approval)) := borrow α0 in
         (ink_env.topics.Topics.topics
@@ -4304,7 +4306,7 @@ Section Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Transfer.
           α0 :
           ltac:(refine (core.option.Option ink_primitives.types.AccountId)) :=
         match α0 with
-        | core.result.Result e =>
+        | core.result.Result.Err e =>
           let* α0 : ltac:(refine parity_scale_codec.error.Error) :=
             parity_scale_codec.error.Error::["chain"]
               e
@@ -4318,7 +4320,7 @@ Section Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Transfer.
             M.alloc (core.result.Result.Err α0) in
           let* α2 : ltac:(refine never) := M.return_ α1 in
           never_to_any α2
-        | core.result.Result __codec_res_edqy => M.pure __codec_res_edqy
+        | core.result.Result.Ok __codec_res_edqy => M.pure __codec_res_edqy
         end in
       let*
           __codec_res_edqy :
@@ -4337,7 +4339,7 @@ Section Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Transfer.
           α1 :
           ltac:(refine (core.option.Option ink_primitives.types.AccountId)) :=
         match α0 with
-        | core.result.Result e =>
+        | core.result.Result.Err e =>
           let* α0 : ltac:(refine parity_scale_codec.error.Error) :=
             parity_scale_codec.error.Error::["chain"]
               e
@@ -4351,7 +4353,7 @@ Section Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Transfer.
             M.alloc (core.result.Result.Err α0) in
           let* α2 : ltac:(refine never) := M.return_ α1 in
           never_to_any α2
-        | core.result.Result __codec_res_edqy => M.pure __codec_res_edqy
+        | core.result.Result.Ok __codec_res_edqy => M.pure __codec_res_edqy
         end in
       let*
           __codec_res_edqy :
@@ -4366,7 +4368,7 @@ Section Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Transfer.
       let* α0 := M.read __codec_res_edqy in
       let* α2 : ltac:(refine u128) :=
         match α0 with
-        | core.result.Result e =>
+        | core.result.Result.Err e =>
           let* α0 : ltac:(refine parity_scale_codec.error.Error) :=
             parity_scale_codec.error.Error::["chain"]
               e
@@ -4380,7 +4382,7 @@ Section Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Transfer.
             M.alloc (core.result.Result.Err α0) in
           let* α2 : ltac:(refine never) := M.return_ α1 in
           never_to_any α2
-        | core.result.Result __codec_res_edqy => M.pure __codec_res_edqy
+        | core.result.Result.Ok __codec_res_edqy => M.pure __codec_res_edqy
         end in
       let* α3 : ltac:(refine erc20.erc20.Transfer) :=
         M.alloc
@@ -4566,7 +4568,7 @@ Section Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Approval.
       let* α0 := M.read __codec_res_edqy in
       let* α0 : ltac:(refine ink_primitives.types.AccountId) :=
         match α0 with
-        | core.result.Result e =>
+        | core.result.Result.Err e =>
           let* α0 : ltac:(refine parity_scale_codec.error.Error) :=
             parity_scale_codec.error.Error::["chain"]
               e
@@ -4580,7 +4582,7 @@ Section Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Approval.
             M.alloc (core.result.Result.Err α0) in
           let* α2 : ltac:(refine never) := M.return_ α1 in
           never_to_any α2
-        | core.result.Result __codec_res_edqy => M.pure __codec_res_edqy
+        | core.result.Result.Ok __codec_res_edqy => M.pure __codec_res_edqy
         end in
       let*
           __codec_res_edqy :
@@ -4597,7 +4599,7 @@ Section Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Approval.
       let* α0 := M.read __codec_res_edqy in
       let* α1 : ltac:(refine ink_primitives.types.AccountId) :=
         match α0 with
-        | core.result.Result e =>
+        | core.result.Result.Err e =>
           let* α0 : ltac:(refine parity_scale_codec.error.Error) :=
             parity_scale_codec.error.Error::["chain"]
               e
@@ -4611,7 +4613,7 @@ Section Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Approval.
             M.alloc (core.result.Result.Err α0) in
           let* α2 : ltac:(refine never) := M.return_ α1 in
           never_to_any α2
-        | core.result.Result __codec_res_edqy => M.pure __codec_res_edqy
+        | core.result.Result.Ok __codec_res_edqy => M.pure __codec_res_edqy
         end in
       let*
           __codec_res_edqy :
@@ -4626,7 +4628,7 @@ Section Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Approval.
       let* α0 := M.read __codec_res_edqy in
       let* α2 : ltac:(refine u128) :=
         match α0 with
-        | core.result.Result e =>
+        | core.result.Result.Err e =>
           let* α0 : ltac:(refine parity_scale_codec.error.Error) :=
             parity_scale_codec.error.Error::["chain"]
               e
@@ -4640,7 +4642,7 @@ Section Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Approval.
             M.alloc (core.result.Result.Err α0) in
           let* α2 : ltac:(refine never) := M.return_ α1 in
           never_to_any α2
-        | core.result.Result __codec_res_edqy => M.pure __codec_res_edqy
+        | core.result.Result.Ok __codec_res_edqy => M.pure __codec_res_edqy
         end in
       let* α3 : ltac:(refine erc20.erc20.Approval) :=
         M.alloc
@@ -5700,7 +5702,7 @@ Section Impl_ink_reflect_dispatch_DecodeDispatch_for_erc20_erc20_____ink_Constru
       let* α5 := M.read α4 in
       let* α6 : ltac:(refine (array u8)) :=
         match α5 with
-        | core.ops.control_flow.ControlFlow residual =>
+        | core.ops.control_flow.ControlFlow.Break residual =>
           let*
               α0 :
               ltac:(refine
@@ -5716,7 +5718,7 @@ Section Impl_ink_reflect_dispatch_DecodeDispatch_for_erc20_erc20_____ink_Constru
               residual in
           let* α1 : ltac:(refine never) := M.return_ α0 in
           never_to_any α1
-        | core.ops.control_flow.ControlFlow val => M.pure val
+        | core.ops.control_flow.ControlFlow.Continue val => M.pure val
         end in
       let* α7 := M.read α6 in
       match α7 with
@@ -5754,7 +5756,7 @@ Section Impl_ink_reflect_dispatch_DecodeDispatch_for_erc20_erc20_____ink_Constru
         let* α5 := M.read α4 in
         let* α6 : ltac:(refine u128) :=
           match α5 with
-          | core.ops.control_flow.ControlFlow residual =>
+          | core.ops.control_flow.ControlFlow.Break residual =>
             let*
                 α0 :
                 ltac:(refine
@@ -5770,7 +5772,7 @@ Section Impl_ink_reflect_dispatch_DecodeDispatch_for_erc20_erc20_____ink_Constru
                 residual in
             let* α1 : ltac:(refine never) := M.return_ α0 in
             never_to_any α1
-          | core.ops.control_flow.ControlFlow val => M.pure val
+          | core.ops.control_flow.ControlFlow.Continue val => M.pure val
           end in
         let* α7 : ltac:(refine erc20.erc20._.__ink_ConstructorDecoder) :=
           "unimplemented parent_kind" α6 in
@@ -5870,7 +5872,7 @@ Section Impl_ink_reflect_dispatch_ExecuteDispatchable_for_erc20_erc20_____ink_Co
     M.function_body
       (let* α0 := M.read self in
       match α0 with
-      | erc20.erc20._.__ink_ConstructorDecoder input =>
+      | erc20.erc20._.__ink_ConstructorDecoder.Constructor0 input =>
         let* _ : ltac:(refine unit) :=
           let* α0 : ltac:(refine bool) := M.alloc false in
           let* constructor_0 : ltac:(refine bool) := M.alloc false in
@@ -5912,7 +5914,7 @@ Section Impl_ink_reflect_dispatch_ExecuteDispatchable_for_erc20_erc20_____ink_Co
                   α0 in
               let* α2 := M.read α1 in
               match α2 with
-              | core.ops.control_flow.ControlFlow residual =>
+              | core.ops.control_flow.ControlFlow.Break residual =>
                 let*
                     α0 :
                     ltac:(refine
@@ -5928,7 +5930,7 @@ Section Impl_ink_reflect_dispatch_ExecuteDispatchable_for_erc20_erc20_____ink_Co
                     residual in
                 let* α1 : ltac:(refine never) := M.return_ α0 in
                 never_to_any α1
-              | core.ops.control_flow.ControlFlow val => M.pure val
+              | core.ops.control_flow.ControlFlow.Continue val => M.pure val
               end in
             M.alloc tt
           else
@@ -5995,7 +5997,7 @@ Section Impl_ink_reflect_dispatch_ExecuteDispatchable_for_erc20_erc20_____ink_Co
                   (ref (ref unit)))::["as_ref"]
               α0 in
           let* α2 : ltac:(refine bool) :=
-            let_if core.result.Result contract := α1 in
+            let_if core.result.Result.Ok contract := α1 in
           if (α2 : bool) then
             let* _ : ltac:(refine (core.option.Option u32)) :=
               let* α0 : ltac:(refine (ref u32)) :=
@@ -6192,7 +6194,7 @@ Section Impl_ink_reflect_dispatch_DecodeDispatch_for_erc20_erc20_____ink_Message
       let* α5 := M.read α4 in
       let* α6 : ltac:(refine (array u8)) :=
         match α5 with
-        | core.ops.control_flow.ControlFlow residual =>
+        | core.ops.control_flow.ControlFlow.Break residual =>
           let*
               α0 :
               ltac:(refine
@@ -6208,7 +6210,7 @@ Section Impl_ink_reflect_dispatch_DecodeDispatch_for_erc20_erc20_____ink_Message
               residual in
           let* α1 : ltac:(refine never) := M.return_ α0 in
           never_to_any α1
-        | core.ops.control_flow.ControlFlow val => M.pure val
+        | core.ops.control_flow.ControlFlow.Continue val => M.pure val
         end in
       let* α7 := M.read α6 in
       match α7 with
@@ -6246,7 +6248,7 @@ Section Impl_ink_reflect_dispatch_DecodeDispatch_for_erc20_erc20_____ink_Message
         let* α5 := M.read α4 in
         let* α6 : ltac:(refine unit) :=
           match α5 with
-          | core.ops.control_flow.ControlFlow residual =>
+          | core.ops.control_flow.ControlFlow.Break residual =>
             let*
                 α0 :
                 ltac:(refine
@@ -6262,7 +6264,7 @@ Section Impl_ink_reflect_dispatch_DecodeDispatch_for_erc20_erc20_____ink_Message
                 residual in
             let* α1 : ltac:(refine never) := M.return_ α0 in
             never_to_any α1
-          | core.ops.control_flow.ControlFlow val => M.pure val
+          | core.ops.control_flow.ControlFlow.Continue val => M.pure val
           end in
         let* α7 : ltac:(refine erc20.erc20._.__ink_MessageDecoder) :=
           "unimplemented parent_kind" α6 in
@@ -6309,7 +6311,7 @@ Section Impl_ink_reflect_dispatch_DecodeDispatch_for_erc20_erc20_____ink_Message
         let* α5 := M.read α4 in
         let* α6 : ltac:(refine ink_primitives.types.AccountId) :=
           match α5 with
-          | core.ops.control_flow.ControlFlow residual =>
+          | core.ops.control_flow.ControlFlow.Break residual =>
             let*
                 α0 :
                 ltac:(refine
@@ -6325,7 +6327,7 @@ Section Impl_ink_reflect_dispatch_DecodeDispatch_for_erc20_erc20_____ink_Message
                 residual in
             let* α1 : ltac:(refine never) := M.return_ α0 in
             never_to_any α1
-          | core.ops.control_flow.ControlFlow val => M.pure val
+          | core.ops.control_flow.ControlFlow.Continue val => M.pure val
           end in
         let* α7 : ltac:(refine erc20.erc20._.__ink_MessageDecoder) :=
           "unimplemented parent_kind" α6 in
@@ -6390,7 +6392,7 @@ Section Impl_ink_reflect_dispatch_DecodeDispatch_for_erc20_erc20_____ink_Message
                 (ink_primitives.types.AccountId *
                   ink_primitives.types.AccountId))) :=
           match α5 with
-          | core.ops.control_flow.ControlFlow residual =>
+          | core.ops.control_flow.ControlFlow.Break residual =>
             let*
                 α0 :
                 ltac:(refine
@@ -6406,7 +6408,7 @@ Section Impl_ink_reflect_dispatch_DecodeDispatch_for_erc20_erc20_____ink_Message
                 residual in
             let* α1 : ltac:(refine never) := M.return_ α0 in
             never_to_any α1
-          | core.ops.control_flow.ControlFlow val => M.pure val
+          | core.ops.control_flow.ControlFlow.Continue val => M.pure val
           end in
         let* α7 : ltac:(refine erc20.erc20._.__ink_MessageDecoder) :=
           "unimplemented parent_kind" α6 in
@@ -6455,7 +6457,7 @@ Section Impl_ink_reflect_dispatch_DecodeDispatch_for_erc20_erc20_____ink_Message
             α6 :
             ltac:(refine (M.Val (ink_primitives.types.AccountId * u128))) :=
           match α5 with
-          | core.ops.control_flow.ControlFlow residual =>
+          | core.ops.control_flow.ControlFlow.Break residual =>
             let*
                 α0 :
                 ltac:(refine
@@ -6471,7 +6473,7 @@ Section Impl_ink_reflect_dispatch_DecodeDispatch_for_erc20_erc20_____ink_Message
                 residual in
             let* α1 : ltac:(refine never) := M.return_ α0 in
             never_to_any α1
-          | core.ops.control_flow.ControlFlow val => M.pure val
+          | core.ops.control_flow.ControlFlow.Continue val => M.pure val
           end in
         let* α7 : ltac:(refine erc20.erc20._.__ink_MessageDecoder) :=
           "unimplemented parent_kind" α6 in
@@ -6520,7 +6522,7 @@ Section Impl_ink_reflect_dispatch_DecodeDispatch_for_erc20_erc20_____ink_Message
             α6 :
             ltac:(refine (M.Val (ink_primitives.types.AccountId * u128))) :=
           match α5 with
-          | core.ops.control_flow.ControlFlow residual =>
+          | core.ops.control_flow.ControlFlow.Break residual =>
             let*
                 α0 :
                 ltac:(refine
@@ -6536,7 +6538,7 @@ Section Impl_ink_reflect_dispatch_DecodeDispatch_for_erc20_erc20_____ink_Message
                 residual in
             let* α1 : ltac:(refine never) := M.return_ α0 in
             never_to_any α1
-          | core.ops.control_flow.ControlFlow val => M.pure val
+          | core.ops.control_flow.ControlFlow.Continue val => M.pure val
           end in
         let* α7 : ltac:(refine erc20.erc20._.__ink_MessageDecoder) :=
           "unimplemented parent_kind" α6 in
@@ -6608,7 +6610,7 @@ Section Impl_ink_reflect_dispatch_DecodeDispatch_for_erc20_erc20_____ink_Message
                   ink_primitives.types.AccountId *
                   u128))) :=
           match α5 with
-          | core.ops.control_flow.ControlFlow residual =>
+          | core.ops.control_flow.ControlFlow.Break residual =>
             let*
                 α0 :
                 ltac:(refine
@@ -6624,7 +6626,7 @@ Section Impl_ink_reflect_dispatch_DecodeDispatch_for_erc20_erc20_____ink_Message
                 residual in
             let* α1 : ltac:(refine never) := M.return_ α0 in
             never_to_any α1
-          | core.ops.control_flow.ControlFlow val => M.pure val
+          | core.ops.control_flow.ControlFlow.Continue val => M.pure val
           end in
         let* α7 : ltac:(refine erc20.erc20._.__ink_MessageDecoder) :=
           "unimplemented parent_kind" α6 in
@@ -6819,8 +6821,8 @@ Section Impl_ink_reflect_dispatch_ExecuteDispatchable_for_erc20_erc20_____ink_Me
         let* α4 := M.read α3 in
         let* α5 : ltac:(refine erc20.erc20.Erc20) :=
           match α4 with
-          | core.result.Result core.option.Option value => M.pure value
-          | core.result.Result core.option.Option  =>
+          | core.result.Result.Ok core.option.Option.Some value => M.pure value
+          | core.result.Result.Ok core.option.Option.None  =>
             let* α0 : ltac:(refine (array (ref str))) :=
               M.alloc [ mk_str "storage entry was empty" ] in
             let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
@@ -6832,7 +6834,7 @@ Section Impl_ink_reflect_dispatch_ExecuteDispatchable_for_erc20_erc20_____ink_Me
               core.fmt.Arguments::["new_const"] α4 in
             let* α6 : ltac:(refine never) := core.panicking.panic_fmt α5 in
             never_to_any α6
-          | core.result.Result _ =>
+          | core.result.Result.Err _ =>
             let* α0 : ltac:(refine (array (ref str))) :=
               M.alloc [ mk_str "could not properly decode storage entry" ] in
             let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
@@ -6849,7 +6851,7 @@ Section Impl_ink_reflect_dispatch_ExecuteDispatchable_for_erc20_erc20_____ink_Me
       let* _ : ltac:(refine unit) :=
         let* α0 := M.read self in
         match α0 with
-        | erc20.erc20._.__ink_MessageDecoder input =>
+        | erc20.erc20._.__ink_MessageDecoder.Message0 input =>
           let* _ : ltac:(refine unit) :=
             let* α0 : ltac:(refine bool) := M.alloc false in
             let* message_0 : ltac:(refine bool) := M.alloc false in
@@ -6921,7 +6923,7 @@ Section Impl_ink_reflect_dispatch_ExecuteDispatchable_for_erc20_erc20_____ink_Me
                     α0 in
                 let* α2 := M.read α1 in
                 match α2 with
-                | core.ops.control_flow.ControlFlow residual =>
+                | core.ops.control_flow.ControlFlow.Break residual =>
                   let*
                       α0 :
                       ltac:(refine
@@ -6937,7 +6939,7 @@ Section Impl_ink_reflect_dispatch_ExecuteDispatchable_for_erc20_erc20_____ink_Me
                       residual in
                   let* α1 : ltac:(refine never) := M.return_ α0 in
                   never_to_any α1
-                | core.ops.control_flow.ControlFlow val => M.pure val
+                | core.ops.control_flow.ControlFlow.Continue val => M.pure val
                 end in
               M.alloc tt
             else
@@ -7033,7 +7035,7 @@ Section Impl_ink_reflect_dispatch_ExecuteDispatchable_for_erc20_erc20_____ink_Me
             borrow α3 in
           let* α5 : ltac:(refine never) := ink_env.api.return_value α0 α4 in
           never_to_any α5
-        | erc20.erc20._.__ink_MessageDecoder input =>
+        | erc20.erc20._.__ink_MessageDecoder.Message1 input =>
           let* _ : ltac:(refine unit) :=
             let* α0 : ltac:(refine bool) := M.alloc false in
             let* message_0 : ltac:(refine bool) := M.alloc false in
@@ -7105,7 +7107,7 @@ Section Impl_ink_reflect_dispatch_ExecuteDispatchable_for_erc20_erc20_____ink_Me
                     α0 in
                 let* α2 := M.read α1 in
                 match α2 with
-                | core.ops.control_flow.ControlFlow residual =>
+                | core.ops.control_flow.ControlFlow.Break residual =>
                   let*
                       α0 :
                       ltac:(refine
@@ -7121,7 +7123,7 @@ Section Impl_ink_reflect_dispatch_ExecuteDispatchable_for_erc20_erc20_____ink_Me
                       residual in
                   let* α1 : ltac:(refine never) := M.return_ α0 in
                   never_to_any α1
-                | core.ops.control_flow.ControlFlow val => M.pure val
+                | core.ops.control_flow.ControlFlow.Continue val => M.pure val
                 end in
               M.alloc tt
             else
@@ -7217,7 +7219,7 @@ Section Impl_ink_reflect_dispatch_ExecuteDispatchable_for_erc20_erc20_____ink_Me
             borrow α3 in
           let* α5 : ltac:(refine never) := ink_env.api.return_value α0 α4 in
           never_to_any α5
-        | erc20.erc20._.__ink_MessageDecoder input =>
+        | erc20.erc20._.__ink_MessageDecoder.Message2 input =>
           let* _ : ltac:(refine unit) :=
             let* α0 : ltac:(refine bool) := M.alloc false in
             let* message_0 : ltac:(refine bool) := M.alloc false in
@@ -7289,7 +7291,7 @@ Section Impl_ink_reflect_dispatch_ExecuteDispatchable_for_erc20_erc20_____ink_Me
                     α0 in
                 let* α2 := M.read α1 in
                 match α2 with
-                | core.ops.control_flow.ControlFlow residual =>
+                | core.ops.control_flow.ControlFlow.Break residual =>
                   let*
                       α0 :
                       ltac:(refine
@@ -7305,7 +7307,7 @@ Section Impl_ink_reflect_dispatch_ExecuteDispatchable_for_erc20_erc20_____ink_Me
                       residual in
                   let* α1 : ltac:(refine never) := M.return_ α0 in
                   never_to_any α1
-                | core.ops.control_flow.ControlFlow val => M.pure val
+                | core.ops.control_flow.ControlFlow.Continue val => M.pure val
                 end in
               M.alloc tt
             else
@@ -7401,7 +7403,7 @@ Section Impl_ink_reflect_dispatch_ExecuteDispatchable_for_erc20_erc20_____ink_Me
             borrow α3 in
           let* α5 : ltac:(refine never) := ink_env.api.return_value α0 α4 in
           never_to_any α5
-        | erc20.erc20._.__ink_MessageDecoder input =>
+        | erc20.erc20._.__ink_MessageDecoder.Message3 input =>
           let* _ : ltac:(refine unit) :=
             let* α0 : ltac:(refine bool) := M.alloc false in
             let* message_0 : ltac:(refine bool) := M.alloc false in
@@ -7473,7 +7475,7 @@ Section Impl_ink_reflect_dispatch_ExecuteDispatchable_for_erc20_erc20_____ink_Me
                     α0 in
                 let* α2 := M.read α1 in
                 match α2 with
-                | core.ops.control_flow.ControlFlow residual =>
+                | core.ops.control_flow.ControlFlow.Break residual =>
                   let*
                       α0 :
                       ltac:(refine
@@ -7489,7 +7491,7 @@ Section Impl_ink_reflect_dispatch_ExecuteDispatchable_for_erc20_erc20_____ink_Me
                       residual in
                   let* α1 : ltac:(refine never) := M.return_ α0 in
                   never_to_any α1
-                | core.ops.control_flow.ControlFlow val => M.pure val
+                | core.ops.control_flow.ControlFlow.Continue val => M.pure val
                 end in
               M.alloc tt
             else
@@ -7614,7 +7616,7 @@ Section Impl_ink_reflect_dispatch_ExecuteDispatchable_for_erc20_erc20_____ink_Me
             borrow α3 in
           let* α5 : ltac:(refine never) := ink_env.api.return_value α0 α4 in
           never_to_any α5
-        | erc20.erc20._.__ink_MessageDecoder input =>
+        | erc20.erc20._.__ink_MessageDecoder.Message4 input =>
           let* _ : ltac:(refine unit) :=
             let* α0 : ltac:(refine bool) := M.alloc false in
             let* message_0 : ltac:(refine bool) := M.alloc false in
@@ -7686,7 +7688,7 @@ Section Impl_ink_reflect_dispatch_ExecuteDispatchable_for_erc20_erc20_____ink_Me
                     α0 in
                 let* α2 := M.read α1 in
                 match α2 with
-                | core.ops.control_flow.ControlFlow residual =>
+                | core.ops.control_flow.ControlFlow.Break residual =>
                   let*
                       α0 :
                       ltac:(refine
@@ -7702,7 +7704,7 @@ Section Impl_ink_reflect_dispatch_ExecuteDispatchable_for_erc20_erc20_____ink_Me
                       residual in
                   let* α1 : ltac:(refine never) := M.return_ α0 in
                   never_to_any α1
-                | core.ops.control_flow.ControlFlow val => M.pure val
+                | core.ops.control_flow.ControlFlow.Continue val => M.pure val
                 end in
               M.alloc tt
             else
@@ -7827,7 +7829,7 @@ Section Impl_ink_reflect_dispatch_ExecuteDispatchable_for_erc20_erc20_____ink_Me
             borrow α3 in
           let* α5 : ltac:(refine never) := ink_env.api.return_value α0 α4 in
           never_to_any α5
-        | erc20.erc20._.__ink_MessageDecoder input =>
+        | erc20.erc20._.__ink_MessageDecoder.Message5 input =>
           let* _ : ltac:(refine unit) :=
             let* α0 : ltac:(refine bool) := M.alloc false in
             let* message_0 : ltac:(refine bool) := M.alloc false in
@@ -7899,7 +7901,7 @@ Section Impl_ink_reflect_dispatch_ExecuteDispatchable_for_erc20_erc20_____ink_Me
                     α0 in
                 let* α2 := M.read α1 in
                 match α2 with
-                | core.ops.control_flow.ControlFlow residual =>
+                | core.ops.control_flow.ControlFlow.Break residual =>
                   let*
                       α0 :
                       ltac:(refine
@@ -7915,7 +7917,7 @@ Section Impl_ink_reflect_dispatch_ExecuteDispatchable_for_erc20_erc20_____ink_Me
                       residual in
                   let* α1 : ltac:(refine never) := M.return_ α0 in
                   never_to_any α1
-                | core.ops.control_flow.ControlFlow val => M.pure val
+                | core.ops.control_flow.ControlFlow.Continue val => M.pure val
                 end in
               M.alloc tt
             else
@@ -8464,7 +8466,7 @@ Section Impl_erc20_erc20_Erc20.
             α8 in
         let* α10 := M.read α9 in
         match α10 with
-        | core.ops.control_flow.ControlFlow residual =>
+        | core.ops.control_flow.ControlFlow.Break residual =>
           let* α0 : ltac:(refine (core.result.Result unit erc20.erc20.Error)) :=
             (core.ops.try_trait.FromResidual.from_residual
                 (Self := core.result.Result unit erc20.erc20.Error)
@@ -8472,7 +8474,7 @@ Section Impl_erc20_erc20_Erc20.
               residual in
           let* α1 : ltac:(refine never) := M.return_ α0 in
           never_to_any α1
-        | core.ops.control_flow.ControlFlow val => M.pure val
+        | core.ops.control_flow.ControlFlow.Continue val => M.pure val
         end in
       let* _ : ltac:(refine (core.option.Option u32)) :=
         let* α0 : ltac:(refine erc20.erc20.Erc20) := deref self in
@@ -9004,7 +9006,7 @@ Section Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___CallBuilder.
       let* α0 := M.read __codec_res_edqy in
       let* α0 : ltac:(refine ink_primitives.types.AccountId) :=
         match α0 with
-        | core.result.Result e =>
+        | core.result.Result.Err e =>
           let* α0 : ltac:(refine parity_scale_codec.error.Error) :=
             parity_scale_codec.error.Error::["chain"]
               e
@@ -9018,7 +9020,7 @@ Section Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___CallBuilder.
             M.alloc (core.result.Result.Err α0) in
           let* α2 : ltac:(refine never) := M.return_ α1 in
           never_to_any α2
-        | core.result.Result __codec_res_edqy => M.pure __codec_res_edqy
+        | core.result.Result.Ok __codec_res_edqy => M.pure __codec_res_edqy
         end in
       let* α1 : ltac:(refine erc20.erc20._.CallBuilder) :=
         M.alloc {| erc20.erc20._.CallBuilder.account_id := α0; |} in
@@ -9223,7 +9225,7 @@ Section Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___CallBuilder.
               α4 in
           let* α6 := M.read α5 in
           match α6 with
-          | core.ops.control_flow.ControlFlow residual =>
+          | core.ops.control_flow.ControlFlow.Break residual =>
             let*
                 α0 :
                 ltac:(refine
@@ -9239,7 +9241,7 @@ Section Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___CallBuilder.
                 residual in
             let* α1 : ltac:(refine never) := M.return_ α0 in
             never_to_any α1
-          | core.ops.control_flow.ControlFlow val => M.pure val
+          | core.ops.control_flow.ControlFlow.Continue val => M.pure val
           end in
         M.alloc tt in
       let*
@@ -11097,7 +11099,7 @@ Section Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Erc20Ref.
       let* α0 := M.read __codec_res_edqy in
       let* α0 : ltac:(refine erc20.erc20._.CallBuilder) :=
         match α0 with
-        | core.result.Result e =>
+        | core.result.Result.Err e =>
           let* α0 : ltac:(refine parity_scale_codec.error.Error) :=
             parity_scale_codec.error.Error::["chain"]
               e
@@ -11111,7 +11113,7 @@ Section Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Erc20Ref.
             M.alloc (core.result.Result.Err α0) in
           let* α2 : ltac:(refine never) := M.return_ α1 in
           never_to_any α2
-        | core.result.Result __codec_res_edqy => M.pure __codec_res_edqy
+        | core.result.Result.Ok __codec_res_edqy => M.pure __codec_res_edqy
         end in
       let* α1 : ltac:(refine erc20.erc20.Erc20Ref) :=
         M.alloc {| erc20.erc20.Erc20Ref.inner := α0; |} in
@@ -16064,10 +16066,10 @@ Section Impl_core_fmt_Debug_for_erc20_erc20_Error.
       let* α2 := M.read self in
       let* α3 : ltac:(refine (ref str)) :=
         match α2 with
-        | erc20.erc20.Error  =>
+        | erc20.erc20.Error.InsufficientBalance  =>
           let* α0 : ltac:(refine str) := deref (mk_str "InsufficientBalance") in
           borrow α0
-        | erc20.erc20.Error  =>
+        | erc20.erc20.Error.InsufficientAllowance  =>
           let* α0 : ltac:(refine str) :=
             deref (mk_str "InsufficientAllowance") in
           borrow α0
@@ -16174,7 +16176,7 @@ Section Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Error.
       (let* α0 : ltac:(refine erc20.erc20.Error) := deref self in
       let* α1 := M.read α0 in
       match α1 with
-      | erc20.erc20.Error  =>
+      | erc20.erc20.Error.InsufficientBalance  =>
         let* _ : ltac:(refine unit) :=
           let* α0 : ltac:(refine __CodecOutputEdqy) :=
             deref __codec_dest_edqy in
@@ -16188,7 +16190,7 @@ Section Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Error.
             α1
             α3 in
         M.alloc tt
-      | erc20.erc20.Error  =>
+      | erc20.erc20.Error.InsufficientAllowance  =>
         let* _ : ltac:(refine unit) :=
           let* α0 : ltac:(refine __CodecOutputEdqy) :=
             deref __codec_dest_edqy in
@@ -16285,7 +16287,7 @@ Section Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Error.
       let* α5 := M.read α4 in
       let* α6 : ltac:(refine u8) :=
         match α5 with
-        | core.ops.control_flow.ControlFlow residual =>
+        | core.ops.control_flow.ControlFlow.Break residual =>
           let*
               α0 :
               ltac:(refine
@@ -16301,7 +16303,7 @@ Section Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Error.
               residual in
           let* α1 : ltac:(refine never) := M.return_ α0 in
           never_to_any α1
-        | core.ops.control_flow.ControlFlow val => M.pure val
+        | core.ops.control_flow.ControlFlow.Continue val => M.pure val
         end in
       let* α7 := M.read α6 in
       match α7 with

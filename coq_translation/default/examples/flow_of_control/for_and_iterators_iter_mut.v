@@ -67,10 +67,10 @@ Definition main `{ℋ : State.Trait} : M unit :=
                   α2 in
               let* α4 := M.read α3 in
               match α4 with
-              | core.option.Option  =>
+              | core.option.Option.None  =>
                 let* α0 : ltac:(refine never) := Break in
                 never_to_any α0
-              | core.option.Option name =>
+              | core.option.Option.Some name =>
                 let* α0 : ltac:(refine (ref str)) := deref name in
                 let* α1 := M.read name in
                 let* α2 : ltac:(refine (ref str)) :=

@@ -20,7 +20,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
         std.fs.File::["open"] α0 in
       let* α2 := M.read α1 in
       match α2 with
-      | core.result.Result why =>
+      | core.result.Result.Err why =>
         let* α0 : ltac:(refine (array (ref str))) :=
           M.alloc [ mk_str "couldn't open "; mk_str ": " ] in
         let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
@@ -51,7 +51,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
           core.fmt.Arguments::["new_v1"] α4 α17 in
         let* α19 : ltac:(refine never) := core.panicking.panic_fmt α18 in
         never_to_any α19
-      | core.result.Result file => M.pure file
+      | core.result.Result.Ok file => M.pure file
       end in
     let* s : ltac:(refine alloc.string.String) :=
       alloc.string.String::["new"] in
@@ -67,7 +67,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
         α3 in
     let* α5 := M.read α4 in
     match α5 with
-    | core.result.Result why =>
+    | core.result.Result.Err why =>
       let* α0 : ltac:(refine (array (ref str))) :=
         M.alloc [ mk_str "couldn't read "; mk_str ": " ] in
       let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
@@ -98,7 +98,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
         core.fmt.Arguments::["new_v1"] α4 α17 in
       let* α19 : ltac:(refine never) := core.panicking.panic_fmt α18 in
       never_to_any α19
-    | core.result.Result _ =>
+    | core.result.Result.Ok _ =>
       let* _ : ltac:(refine unit) :=
         let* α0 : ltac:(refine (array (ref str))) :=
           M.alloc [ mk_str ""; mk_str " contains:

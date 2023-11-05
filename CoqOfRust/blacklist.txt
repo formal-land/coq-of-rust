@@ -12,7 +12,6 @@ examples/custom_types/enums_type_aliases_v2.v
 examples/custom_types/enums_use.v
 examples/custom_types/enums.v
 examples/custom_types/structures.v
-examples/erc20/lib.v
 examples/error_handling/aliases_for_result.v
 examples/error_handling/boxing_errors.v
 examples/error_handling/combinators_and_then.v

@@ -108,7 +108,8 @@ Definition main `{ℋ : State.Trait} : M unit :=
           ltac:(refine
             (core.result.Result (ref str) core.str.error.Utf8Error)) :=
         core.str.converts.from_utf8 α2 in
-      let* α4 : ltac:(refine bool) := let_if core.result.Result my_str := α3 in
+      let* α4 : ltac:(refine bool) :=
+        let_if core.result.Result.Ok my_str := α3 in
       if (α4 : bool) then
         let* _ : ltac:(refine unit) :=
           let* _ : ltac:(refine unit) :=
@@ -158,7 +159,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
         core.str.converts.from_utf8 α2 in
       let* α4 := M.read α3 in
       match α4 with
-      | core.result.Result my_str =>
+      | core.result.Result.Ok my_str =>
         let* _ : ltac:(refine unit) :=
           let* α0 : ltac:(refine (array (ref str))) :=
             M.alloc [ mk_str "Conversion successful: '"; mk_str "'
@@ -186,7 +187,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
             core.fmt.Arguments::["new_v1"] α4 α13 in
           std.io.stdio._print α14 in
         M.alloc tt
-      | core.result.Result e =>
+      | core.result.Result.Err e =>
         let* _ : ltac:(refine unit) :=
           let* α0 : ltac:(refine (array (ref str))) :=
             M.alloc [ mk_str "Conversion failed: "; mk_str "

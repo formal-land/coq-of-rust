@@ -25,13 +25,13 @@ Section Impl_core_fmt_Debug_for_combinators_and_then_Food.
       let* α2 := M.read self in
       let* α3 : ltac:(refine (ref str)) :=
         match α2 with
-        | combinators_and_then.Food  =>
+        | combinators_and_then.Food.CordonBleu  =>
           let* α0 : ltac:(refine str) := deref (mk_str "CordonBleu") in
           borrow α0
-        | combinators_and_then.Food  =>
+        | combinators_and_then.Food.Steak  =>
           let* α0 : ltac:(refine str) := deref (mk_str "Steak") in
           borrow α0
-        | combinators_and_then.Food  =>
+        | combinators_and_then.Food.Sushi  =>
           let* α0 : ltac:(refine str) := deref (mk_str "Sushi") in
           borrow α0
         end in
@@ -71,13 +71,13 @@ Section Impl_core_fmt_Debug_for_combinators_and_then_Day.
       let* α2 := M.read self in
       let* α3 : ltac:(refine (ref str)) :=
         match α2 with
-        | combinators_and_then.Day  =>
+        | combinators_and_then.Day.Monday  =>
           let* α0 : ltac:(refine str) := deref (mk_str "Monday") in
           borrow α0
-        | combinators_and_then.Day  =>
+        | combinators_and_then.Day.Tuesday  =>
           let* α0 : ltac:(refine str) := deref (mk_str "Tuesday") in
           borrow α0
-        | combinators_and_then.Day  =>
+        | combinators_and_then.Day.Wednesday  =>
           let* α0 : ltac:(refine str) := deref (mk_str "Wednesday") in
           borrow α0
         end in
@@ -100,7 +100,7 @@ Definition have_ingredients
   M.function_body
     (let* α0 := M.read food in
     match α0 with
-    | combinators_and_then.Food  => M.alloc core.option.Option.None
+    | combinators_and_then.Food.Sushi  => M.alloc core.option.Option.None
     | _ => M.alloc (core.option.Option.Some food)
     end).
 
@@ -111,7 +111,7 @@ Definition have_recipe
   M.function_body
     (let* α0 := M.read food in
     match α0 with
-    | combinators_and_then.Food  => M.alloc core.option.Option.None
+    | combinators_and_then.Food.CordonBleu  => M.alloc core.option.Option.None
     | _ => M.alloc (core.option.Option.Some food)
     end).
 
@@ -124,14 +124,14 @@ Definition cookable_v1
       combinators_and_then.have_recipe food in
     let* α1 := M.read α0 in
     match α1 with
-    | core.option.Option  => M.alloc core.option.Option.None
-    | core.option.Option food =>
+    | core.option.Option.None  => M.alloc core.option.Option.None
+    | core.option.Option.Some food =>
       let* α0 : ltac:(refine (core.option.Option combinators_and_then.Food)) :=
         combinators_and_then.have_ingredients food in
       let* α1 := M.read α0 in
       match α1 with
-      | core.option.Option  => M.alloc core.option.Option.None
-      | core.option.Option food => M.alloc (core.option.Option.Some food)
+      | core.option.Option.None  => M.alloc core.option.Option.None
+      | core.option.Option.Some food => M.alloc (core.option.Option.Some food)
       end
     end).
 
@@ -156,7 +156,7 @@ Definition eat
       combinators_and_then.cookable_v2 food in
     let* α1 := M.read α0 in
     match α1 with
-    | core.option.Option food =>
+    | core.option.Option.Some food =>
       let* _ : ltac:(refine unit) :=
         let* α0 : ltac:(refine (array (ref str))) :=
           M.alloc
@@ -192,7 +192,7 @@ Definition eat
           core.fmt.Arguments::["new_v1"] α4 α17 in
         std.io.stdio._print α18 in
       M.alloc tt
-    | core.option.Option  =>
+    | core.option.Option.None  =>
       let* _ : ltac:(refine unit) :=
         let* α0 : ltac:(refine (array (ref str))) :=
           M.alloc [ mk_str "Oh no. We don't get to eat on "; mk_str "?

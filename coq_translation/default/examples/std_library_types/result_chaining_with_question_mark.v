@@ -27,14 +27,23 @@ Module checked.
         let* α2 := M.read self in
         let* α3 : ltac:(refine (ref str)) :=
           match α2 with
-          | result_chaining_with_question_mark.checked.MathError  =>
+          |
+              result_chaining_with_question_mark.checked.MathError.DivisionByZero
+                
+              =>
             let* α0 : ltac:(refine str) := deref (mk_str "DivisionByZero") in
             borrow α0
-          | result_chaining_with_question_mark.checked.MathError  =>
+          |
+              result_chaining_with_question_mark.checked.MathError.NonPositiveLogarithm
+                
+              =>
             let* α0 : ltac:(refine str) :=
               deref (mk_str "NonPositiveLogarithm") in
             borrow α0
-          | result_chaining_with_question_mark.checked.MathError  =>
+          |
+              result_chaining_with_question_mark.checked.MathError.NegativeSquareRoot
+                
+              =>
             let* α0 : ltac:(refine str) :=
               deref (mk_str "NegativeSquareRoot") in
             borrow α0
@@ -150,7 +159,7 @@ Module checked.
             α0 in
         let* α2 := M.read α1 in
         match α2 with
-        | core.ops.control_flow.ControlFlow residual =>
+        | core.ops.control_flow.ControlFlow.Break residual =>
           let*
               α0 :
               ltac:(refine
@@ -166,7 +175,7 @@ Module checked.
               residual in
           let* α1 : ltac:(refine never) := M.return_ α0 in
           never_to_any α1
-        | core.ops.control_flow.ControlFlow val => M.pure val
+        | core.ops.control_flow.ControlFlow.Continue val => M.pure val
         end in
       let* ln : ltac:(refine f64) :=
         let*
@@ -193,7 +202,7 @@ Module checked.
             α0 in
         let* α2 := M.read α1 in
         match α2 with
-        | core.ops.control_flow.ControlFlow residual =>
+        | core.ops.control_flow.ControlFlow.Break residual =>
           let*
               α0 :
               ltac:(refine
@@ -209,7 +218,7 @@ Module checked.
               residual in
           let* α1 : ltac:(refine never) := M.return_ α0 in
           never_to_any α1
-        | core.ops.control_flow.ControlFlow val => M.pure val
+        | core.ops.control_flow.ControlFlow.Continue val => M.pure val
         end in
       result_chaining_with_question_mark.checked.sqrt ln).
   
@@ -224,16 +233,25 @@ Module checked.
         result_chaining_with_question_mark.checked.op_ x y in
       let* α1 := M.read α0 in
       match α1 with
-      | core.result.Result why =>
+      | core.result.Result.Err why =>
         let* α0 := M.read why in
         let* α1 : ltac:(refine (ref str)) :=
           match α0 with
-          | result_chaining_with_question_mark.checked.MathError  =>
+          |
+              result_chaining_with_question_mark.checked.MathError.NonPositiveLogarithm
+                
+              =>
             M.pure (mk_str "logarithm of non-positive number")
-          | result_chaining_with_question_mark.checked.MathError  =>
+          |
+              result_chaining_with_question_mark.checked.MathError.DivisionByZero
+                
+              =>
             let* α0 : ltac:(refine str) := deref (mk_str "division by zero") in
             borrow α0
-          | result_chaining_with_question_mark.checked.MathError  =>
+          |
+              result_chaining_with_question_mark.checked.MathError.NegativeSquareRoot
+                
+              =>
             let* α0 : ltac:(refine str) :=
               deref (mk_str "square root of negative number") in
             borrow α0
@@ -243,7 +261,7 @@ Module checked.
         let* α4 : ltac:(refine (ref (ref str))) := borrow α3 in
         let* α5 : ltac:(refine never) := core.panicking.panic_display α4 in
         never_to_any α5
-      | core.result.Result value =>
+      | core.result.Result.Ok value =>
         let* _ : ltac:(refine unit) :=
           let* α0 : ltac:(refine (array (ref str))) :=
             M.alloc [ mk_str ""; mk_str "
@@ -298,14 +316,22 @@ Section Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathE
       let* α2 := M.read self in
       let* α3 : ltac:(refine (ref str)) :=
         match α2 with
-        | result_chaining_with_question_mark.checked.MathError  =>
+        |
+            result_chaining_with_question_mark.checked.MathError.DivisionByZero 
+            =>
           let* α0 : ltac:(refine str) := deref (mk_str "DivisionByZero") in
           borrow α0
-        | result_chaining_with_question_mark.checked.MathError  =>
+        |
+            result_chaining_with_question_mark.checked.MathError.NonPositiveLogarithm
+              
+            =>
           let* α0 : ltac:(refine str) :=
             deref (mk_str "NonPositiveLogarithm") in
           borrow α0
-        | result_chaining_with_question_mark.checked.MathError  =>
+        |
+            result_chaining_with_question_mark.checked.MathError.NegativeSquareRoot
+              
+            =>
           let* α0 : ltac:(refine str) := deref (mk_str "NegativeSquareRoot") in
           borrow α0
         end in
@@ -416,7 +442,7 @@ Definition op_
           α0 in
       let* α2 := M.read α1 in
       match α2 with
-      | core.ops.control_flow.ControlFlow residual =>
+      | core.ops.control_flow.ControlFlow.Break residual =>
         let*
             α0 :
             ltac:(refine
@@ -432,7 +458,7 @@ Definition op_
             residual in
         let* α1 : ltac:(refine never) := M.return_ α0 in
         never_to_any α1
-      | core.ops.control_flow.ControlFlow val => M.pure val
+      | core.ops.control_flow.ControlFlow.Continue val => M.pure val
       end in
     let* ln : ltac:(refine f64) :=
       let*
@@ -459,7 +485,7 @@ Definition op_
           α0 in
       let* α2 := M.read α1 in
       match α2 with
-      | core.ops.control_flow.ControlFlow residual =>
+      | core.ops.control_flow.ControlFlow.Break residual =>
         let*
             α0 :
             ltac:(refine
@@ -475,7 +501,7 @@ Definition op_
             residual in
         let* α1 : ltac:(refine never) := M.return_ α0 in
         never_to_any α1
-      | core.ops.control_flow.ControlFlow val => M.pure val
+      | core.ops.control_flow.ControlFlow.Continue val => M.pure val
       end in
     result_chaining_with_question_mark.checked.sqrt ln).
 
@@ -490,16 +516,24 @@ Definition op `{ℋ : State.Trait} (x : f64) (y : f64) : M unit :=
       result_chaining_with_question_mark.checked.op_ x y in
     let* α1 := M.read α0 in
     match α1 with
-    | core.result.Result why =>
+    | core.result.Result.Err why =>
       let* α0 := M.read why in
       let* α1 : ltac:(refine (ref str)) :=
         match α0 with
-        | result_chaining_with_question_mark.checked.MathError  =>
+        |
+            result_chaining_with_question_mark.checked.MathError.NonPositiveLogarithm
+              
+            =>
           M.pure (mk_str "logarithm of non-positive number")
-        | result_chaining_with_question_mark.checked.MathError  =>
+        |
+            result_chaining_with_question_mark.checked.MathError.DivisionByZero 
+            =>
           let* α0 : ltac:(refine str) := deref (mk_str "division by zero") in
           borrow α0
-        | result_chaining_with_question_mark.checked.MathError  =>
+        |
+            result_chaining_with_question_mark.checked.MathError.NegativeSquareRoot
+              
+            =>
           let* α0 : ltac:(refine str) :=
             deref (mk_str "square root of negative number") in
           borrow α0
@@ -509,7 +543,7 @@ Definition op `{ℋ : State.Trait} (x : f64) (y : f64) : M unit :=
       let* α4 : ltac:(refine (ref (ref str))) := borrow α3 in
       let* α5 : ltac:(refine never) := core.panicking.panic_display α4 in
       never_to_any α5
-    | core.result.Result value =>
+    | core.result.Result.Ok value =>
       let* _ : ltac:(refine unit) :=
         let* α0 : ltac:(refine (array (ref str))) :=
           M.alloc [ mk_str ""; mk_str "

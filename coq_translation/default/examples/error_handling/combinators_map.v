@@ -25,13 +25,13 @@ Section Impl_core_fmt_Debug_for_combinators_map_Food.
       let* α2 := M.read self in
       let* α3 : ltac:(refine (ref str)) :=
         match α2 with
-        | combinators_map.Food  =>
+        | combinators_map.Food.Apple  =>
           let* α0 : ltac:(refine str) := deref (mk_str "Apple") in
           borrow α0
-        | combinators_map.Food  =>
+        | combinators_map.Food.Carrot  =>
           let* α0 : ltac:(refine str) := deref (mk_str "Carrot") in
           borrow α0
-        | combinators_map.Food  =>
+        | combinators_map.Food.Potato  =>
           let* α0 : ltac:(refine str) := deref (mk_str "Potato") in
           borrow α0
         end in
@@ -210,11 +210,11 @@ Definition peel
   M.function_body
     (let* α0 := M.read food in
     match α0 with
-    | core.option.Option food =>
+    | core.option.Option.Some food =>
       let* α0 : ltac:(refine combinators_map.Peeled) :=
         M.alloc (combinators_map.Peeled.Build_t food) in
       M.alloc (core.option.Option.Some α0)
-    | core.option.Option  => M.alloc core.option.Option.None
+    | core.option.Option.None  => M.alloc core.option.Option.None
     end).
 
 Definition chop
@@ -224,11 +224,11 @@ Definition chop
   M.function_body
     (let* α0 := M.read peeled in
     match α0 with
-    | core.option.Option combinators_map.Peeled.Build_t food =>
+    | core.option.Option.Some combinators_map.Peeled.Build_t food =>
       let* α0 : ltac:(refine combinators_map.Chopped) :=
         M.alloc (combinators_map.Chopped.Build_t food) in
       M.alloc (core.option.Option.Some α0)
-    | core.option.Option  => M.alloc core.option.Option.None
+    | core.option.Option.None  => M.alloc core.option.Option.None
     end).
 
 Definition cook
@@ -264,7 +264,7 @@ Definition eat
   M.function_body
     (let* α0 := M.read food in
     match α0 with
-    | core.option.Option food =>
+    | core.option.Option.Some food =>
       let* _ : ltac:(refine unit) :=
         let* α0 : ltac:(refine (array (ref str))) :=
           M.alloc [ mk_str "Mmm. I love "; mk_str "
@@ -292,7 +292,7 @@ Definition eat
           core.fmt.Arguments::["new_v1"] α4 α13 in
         std.io.stdio._print α14 in
       M.alloc tt
-    | core.option.Option  =>
+    | core.option.Option.None  =>
       let* _ : ltac:(refine unit) :=
         let* α0 : ltac:(refine (array (ref str))) :=
           M.alloc [ mk_str "Oh no! It wasn't edible.

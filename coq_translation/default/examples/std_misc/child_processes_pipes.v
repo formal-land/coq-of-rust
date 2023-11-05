@@ -31,7 +31,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
         std.process.Command::["spawn"] α9 in
       let* α11 := M.read α10 in
       match α11 with
-      | core.result.Result why =>
+      | core.result.Result.Err why =>
         let* α0 : ltac:(refine (array (ref str))) :=
           M.alloc [ mk_str "couldn't spawn wc: " ] in
         let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
@@ -57,7 +57,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
           core.fmt.Arguments::["new_v1"] α4 α13 in
         let* α15 : ltac:(refine never) := core.panicking.panic_fmt α14 in
         never_to_any α15
-      | core.result.Result process => M.pure process
+      | core.result.Result.Ok process => M.pure process
       end in
     let* _ : ltac:(refine unit) :=
       let* α0 : ltac:(refine (core.option.Option std.process.ChildStdin)) :=
@@ -81,7 +81,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
           α8 in
       let* α10 := M.read α9 in
       match α10 with
-      | core.result.Result why =>
+      | core.result.Result.Err why =>
         let* α0 : ltac:(refine (array (ref str))) :=
           M.alloc [ mk_str "couldn't write to wc stdin: " ] in
         let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
@@ -107,7 +107,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
           core.fmt.Arguments::["new_v1"] α4 α13 in
         let* α15 : ltac:(refine never) := core.panicking.panic_fmt α14 in
         never_to_any α15
-      | core.result.Result _ =>
+      | core.result.Result.Ok _ =>
         let* _ : ltac:(refine unit) :=
           let* α0 : ltac:(refine (array (ref str))) :=
             M.alloc [ mk_str "sent pangram to wc
@@ -141,7 +141,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
         α5 in
     let* α7 := M.read α6 in
     match α7 with
-    | core.result.Result why =>
+    | core.result.Result.Err why =>
       let* α0 : ltac:(refine (array (ref str))) :=
         M.alloc [ mk_str "couldn't read wc stdout: " ] in
       let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
@@ -166,7 +166,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
         core.fmt.Arguments::["new_v1"] α4 α13 in
       let* α15 : ltac:(refine never) := core.panicking.panic_fmt α14 in
       never_to_any α15
-    | core.result.Result _ =>
+    | core.result.Result.Ok _ =>
       let* _ : ltac:(refine unit) :=
         let* α0 : ltac:(refine (array (ref str))) :=
           M.alloc [ mk_str "wc responded with:

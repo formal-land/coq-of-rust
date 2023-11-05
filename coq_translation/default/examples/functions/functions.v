@@ -157,10 +157,10 @@ Definition fizzbuzz_to `{ℋ : State.Trait} (n : u32) : M unit :=
                 α2 in
             let* α4 := M.read α3 in
             match α4 with
-            | core.option.Option  =>
+            | core.option.Option.None  =>
               let* α0 : ltac:(refine never) := Break in
               never_to_any α0
-            | core.option.Option n =>
+            | core.option.Option.Some n =>
               let* _ : ltac:(refine unit) := functions.fizzbuzz n in
               M.alloc tt
             end in

@@ -138,7 +138,7 @@ Definition double_first
           α6 in
       let* α8 := M.read α7 in
       match α8 with
-      | core.ops.control_flow.ControlFlow residual =>
+      | core.ops.control_flow.ControlFlow.Break residual =>
         let*
             α0 :
             ltac:(refine
@@ -154,7 +154,7 @@ Definition double_first
             residual in
         let* α1 : ltac:(refine never) := M.return_ α0 in
         never_to_any α1
-      | core.ops.control_flow.ControlFlow val => M.pure val
+      | core.ops.control_flow.ControlFlow.Continue val => M.pure val
       end in
     let* parsed : ltac:(refine i32) :=
       let* α0 : ltac:(refine (ref str)) := deref first in
@@ -178,7 +178,7 @@ Definition double_first
           α3 in
       let* α5 := M.read α4 in
       match α5 with
-      | core.ops.control_flow.ControlFlow residual =>
+      | core.ops.control_flow.ControlFlow.Break residual =>
         let*
             α0 :
             ltac:(refine
@@ -194,7 +194,7 @@ Definition double_first
             residual in
         let* α1 : ltac:(refine never) := M.return_ α0 in
         never_to_any α1
-      | core.ops.control_flow.ControlFlow val => M.pure val
+      | core.ops.control_flow.ControlFlow.Continue val => M.pure val
       end in
     let* α0 : ltac:(refine i32) := M.alloc 2 in
     let* α1 : ltac:(refine i32) := BinOp.mul α0 parsed in
@@ -207,7 +207,7 @@ Definition print
   M.function_body
     (let* α0 := M.read result in
     match α0 with
-    | core.result.Result n =>
+    | core.result.Result.Ok n =>
       let* _ : ltac:(refine unit) :=
         let* α0 : ltac:(refine (array (ref str))) :=
           M.alloc [ mk_str "The first doubled is "; mk_str "
@@ -235,7 +235,7 @@ Definition print
           core.fmt.Arguments::["new_v1"] α4 α13 in
         std.io.stdio._print α14 in
       M.alloc tt
-    | core.result.Result e =>
+    | core.result.Result.Err e =>
       let* _ : ltac:(refine unit) :=
         let* α0 : ltac:(refine (array (ref str))) :=
           M.alloc [ mk_str "Error: "; mk_str "

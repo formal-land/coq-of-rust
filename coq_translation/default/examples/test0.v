@@ -43,7 +43,8 @@ Definition main `{ℋ : State.Trait} : M unit :=
     let* emoticon : ltac:(refine (core.option.Option i32)) :=
       M.alloc core.option.Option.None in
     let* _ : ltac:(refine unit) :=
-      let* α0 : ltac:(refine bool) := let_if core.option.Option i := number in
+      let* α0 : ltac:(refine bool) :=
+        let_if core.option.Option.Some i := number in
       if (α0 : bool) then
         let* _ : ltac:(refine unit) :=
           let* _ : ltac:(refine unit) :=
@@ -78,7 +79,8 @@ Definition main `{ℋ : State.Trait} : M unit :=
       else
         M.alloc tt in
     let* _ : ltac:(refine unit) :=
-      let* α0 : ltac:(refine bool) := let_if core.option.Option j := letter in
+      let* α0 : ltac:(refine bool) :=
+        let_if core.option.Option.Some j := letter in
       if (α0 : bool) then
         let* _ : ltac:(refine unit) :=
           let* _ : ltac:(refine unit) :=
@@ -128,7 +130,8 @@ Definition main `{ℋ : State.Trait} : M unit :=
           M.alloc tt in
         M.alloc tt in
     let* i_like_letters : ltac:(refine bool) := M.alloc false in
-    let* α0 : ltac:(refine bool) := let_if core.option.Option i := emoticon in
+    let* α0 : ltac:(refine bool) :=
+      let_if core.option.Option.Some i := emoticon in
     if (α0 : bool) then
       let* _ : ltac:(refine unit) :=
         let* _ : ltac:(refine unit) :=

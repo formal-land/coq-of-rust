@@ -23,13 +23,13 @@ Section Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
     M.function_body
       (let* α0 := M.read self in
       match α0 with
-      | wrapping_errors.DoubleError  =>
+      | wrapping_errors.DoubleError.EmptyVec  =>
         let* α0 : ltac:(refine core.fmt.Formatter) := deref f in
         let* α1 : ltac:(refine (mut_ref core.fmt.Formatter)) := borrow_mut α0 in
         let* α2 : ltac:(refine str) := deref (mk_str "EmptyVec") in
         let* α3 : ltac:(refine (ref str)) := borrow α2 in
         core.fmt.Formatter::["write_str"] α1 α3
-      | wrapping_errors.DoubleError __self_0 =>
+      | wrapping_errors.DoubleError.Parse __self_0 =>
         let* α0 : ltac:(refine core.fmt.Formatter) := deref f in
         let* α1 : ltac:(refine (mut_ref core.fmt.Formatter)) := borrow_mut α0 in
         let* α2 : ltac:(refine str) := deref (mk_str "Parse") in
@@ -69,7 +69,7 @@ Section Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
       (let* α0 : ltac:(refine wrapping_errors.DoubleError) := deref self in
       let* α1 := M.read α0 in
       match α1 with
-      | wrapping_errors.DoubleError  =>
+      | wrapping_errors.DoubleError.EmptyVec  =>
         let* α0 : ltac:(refine core.fmt.Formatter) := deref f in
         let* α1 : ltac:(refine (mut_ref core.fmt.Formatter)) := borrow_mut α0 in
         let* α2 : ltac:(refine (array (ref str))) :=
@@ -82,7 +82,7 @@ Section Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
         let* α7 : ltac:(refine core.fmt.Arguments) :=
           core.fmt.Arguments::["new_const"] α6 in
         core.fmt.Formatter::["write_fmt"] α1 α7
-      | wrapping_errors.DoubleError  =>
+      | wrapping_errors.DoubleError.Parse  =>
         let* α0 : ltac:(refine core.fmt.Formatter) := deref f in
         let* α1 : ltac:(refine (mut_ref core.fmt.Formatter)) := borrow_mut α0 in
         let* α2 : ltac:(refine (array (ref str))) :=
@@ -120,8 +120,8 @@ Section Impl_core_error_Error_for_wrapping_errors_DoubleError.
       (let* α0 : ltac:(refine wrapping_errors.DoubleError) := deref self in
       let* α1 := M.read α0 in
       match α1 with
-      | wrapping_errors.DoubleError  => M.alloc core.option.Option.None
-      | wrapping_errors.DoubleError e =>
+      | wrapping_errors.DoubleError.EmptyVec  => M.alloc core.option.Option.None
+      | wrapping_errors.DoubleError.Parse e =>
         let* α0 : ltac:(refine core.num.error.ParseIntError) := deref e in
         let* α1 : ltac:(refine (ref core.num.error.ParseIntError)) :=
           borrow α0 in
@@ -209,7 +209,7 @@ Definition double_first
           α6 in
       let* α8 := M.read α7 in
       match α8 with
-      | core.ops.control_flow.ControlFlow residual =>
+      | core.ops.control_flow.ControlFlow.Break residual =>
         let*
             α0 :
             ltac:(refine
@@ -220,7 +220,7 @@ Definition double_first
             residual in
         let* α1 : ltac:(refine never) := M.return_ α0 in
         never_to_any α1
-      | core.ops.control_flow.ControlFlow val => M.pure val
+      | core.ops.control_flow.ControlFlow.Continue val => M.pure val
       end in
     let* parsed : ltac:(refine i32) :=
       let* α0 : ltac:(refine (ref str)) := deref first in
@@ -244,7 +244,7 @@ Definition double_first
           α3 in
       let* α5 := M.read α4 in
       match α5 with
-      | core.ops.control_flow.ControlFlow residual =>
+      | core.ops.control_flow.ControlFlow.Break residual =>
         let*
             α0 :
             ltac:(refine
@@ -255,7 +255,7 @@ Definition double_first
             residual in
         let* α1 : ltac:(refine never) := M.return_ α0 in
         never_to_any α1
-      | core.ops.control_flow.ControlFlow val => M.pure val
+      | core.ops.control_flow.ControlFlow.Continue val => M.pure val
       end in
     let* α0 : ltac:(refine i32) := M.alloc 2 in
     let* α1 : ltac:(refine i32) := BinOp.mul α0 parsed in
@@ -268,7 +268,7 @@ Definition print
   M.function_body
     (let* α0 := M.read result in
     match α0 with
-    | core.result.Result n =>
+    | core.result.Result.Ok n =>
       let* _ : ltac:(refine unit) :=
         let* α0 : ltac:(refine (array (ref str))) :=
           M.alloc [ mk_str "The first doubled is "; mk_str "
@@ -296,7 +296,7 @@ Definition print
           core.fmt.Arguments::["new_v1"] α4 α13 in
         std.io.stdio._print α14 in
       M.alloc tt
-    | core.result.Result e =>
+    | core.result.Result.Err e =>
       let* _ : ltac:(refine unit) :=
         let* _ : ltac:(refine unit) :=
           let* α0 : ltac:(refine (array (ref str))) :=
@@ -333,7 +333,8 @@ Definition print
             (Self := wrapping_errors.DoubleError)
             (Trait := ltac:(refine _)))
           α0 in
-      let* α2 : ltac:(refine bool) := let_if core.option.Option source := α1 in
+      let* α2 : ltac:(refine bool) :=
+        let_if core.option.Option.Some source := α1 in
       if (α2 : bool) then
         let* _ : ltac:(refine unit) :=
           let* _ : ltac:(refine unit) :=

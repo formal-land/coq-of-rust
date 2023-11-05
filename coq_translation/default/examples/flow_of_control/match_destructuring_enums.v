@@ -38,7 +38,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
       M.alloc tt in
     let* α0 := M.read color in
     match α0 with
-    | match_destructuring_enums.Color  =>
+    | match_destructuring_enums.Color.Red  =>
       let* _ : ltac:(refine unit) :=
         let* α0 : ltac:(refine (array (ref str))) :=
           M.alloc [ mk_str "The color is Red!
@@ -52,7 +52,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
           core.fmt.Arguments::["new_const"] α4 in
         std.io.stdio._print α5 in
       M.alloc tt
-    | match_destructuring_enums.Color  =>
+    | match_destructuring_enums.Color.Blue  =>
       let* _ : ltac:(refine unit) :=
         let* α0 : ltac:(refine (array (ref str))) :=
           M.alloc [ mk_str "The color is Blue!
@@ -66,7 +66,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
           core.fmt.Arguments::["new_const"] α4 in
         std.io.stdio._print α5 in
       M.alloc tt
-    | match_destructuring_enums.Color  =>
+    | match_destructuring_enums.Color.Green  =>
       let* _ : ltac:(refine unit) :=
         let* α0 : ltac:(refine (array (ref str))) :=
           M.alloc [ mk_str "The color is Green!
@@ -80,7 +80,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
           core.fmt.Arguments::["new_const"] α4 in
         std.io.stdio._print α5 in
       M.alloc tt
-    | match_destructuring_enums.Color r g b =>
+    | match_destructuring_enums.Color.RGB r g b =>
       let* _ : ltac:(refine unit) :=
         let* α0 : ltac:(refine (array (ref str))) :=
           M.alloc
@@ -124,7 +124,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
           core.fmt.Arguments::["new_v1"] α4 α21 in
         std.io.stdio._print α22 in
       M.alloc tt
-    | match_destructuring_enums.Color h s v =>
+    | match_destructuring_enums.Color.HSV h s v =>
       let* _ : ltac:(refine unit) :=
         let* α0 : ltac:(refine (array (ref str))) :=
           M.alloc
@@ -168,7 +168,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
           core.fmt.Arguments::["new_v1"] α4 α21 in
         std.io.stdio._print α22 in
       M.alloc tt
-    | match_destructuring_enums.Color h s l =>
+    | match_destructuring_enums.Color.HSL h s l =>
       let* _ : ltac:(refine unit) :=
         let* α0 : ltac:(refine (array (ref str))) :=
           M.alloc
@@ -212,7 +212,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
           core.fmt.Arguments::["new_v1"] α4 α21 in
         std.io.stdio._print α22 in
       M.alloc tt
-    | match_destructuring_enums.Color c m y =>
+    | match_destructuring_enums.Color.CMY c m y =>
       let* _ : ltac:(refine unit) :=
         let* α0 : ltac:(refine (array (ref str))) :=
           M.alloc
@@ -256,7 +256,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
           core.fmt.Arguments::["new_v1"] α4 α21 in
         std.io.stdio._print α22 in
       M.alloc tt
-    | match_destructuring_enums.Color c m y k =>
+    | match_destructuring_enums.Color.CMYK c m y k =>
       let* _ : ltac:(refine unit) :=
         let* α0 : ltac:(refine (array (ref str))) :=
           M.alloc

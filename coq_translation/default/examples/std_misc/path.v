@@ -50,12 +50,12 @@ Definition main `{ℋ : State.Trait} : M unit :=
       std.path.Path::["to_str"] α3 in
     let* α5 := M.read α4 in
     match α5 with
-    | core.option.Option  =>
+    | core.option.Option.None  =>
       let* α0 : ltac:(refine never) :=
         std.panicking.begin_panic
           (mk_str "new path is not a valid UTF-8 sequence") in
       never_to_any α0
-    | core.option.Option s =>
+    | core.option.Option.Some s =>
       let* _ : ltac:(refine unit) :=
         let* α0 : ltac:(refine (array (ref str))) :=
           M.alloc [ mk_str "new path is "; mk_str "

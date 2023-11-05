@@ -10,7 +10,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
     loop
       (let* α0 := M.read optional in
       match α0 with
-      | core.option.Option i =>
+      | core.option.Option.Some i =>
         let* α0 : ltac:(refine i32) := M.alloc 9 in
         let* α1 : ltac:(refine bool) := BinOp.gt i α0 in
         let* α2 : ltac:(refine bool) := use α1 in

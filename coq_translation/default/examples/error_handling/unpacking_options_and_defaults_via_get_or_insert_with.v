@@ -28,19 +28,19 @@ Section Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert
       let* α2 := M.read self in
       let* α3 : ltac:(refine (ref str)) :=
         match α2 with
-        | unpacking_options_and_defaults_via_get_or_insert_with.Fruit  =>
+        | unpacking_options_and_defaults_via_get_or_insert_with.Fruit.Apple  =>
           let* α0 : ltac:(refine str) := deref (mk_str "Apple") in
           borrow α0
-        | unpacking_options_and_defaults_via_get_or_insert_with.Fruit  =>
+        | unpacking_options_and_defaults_via_get_or_insert_with.Fruit.Orange  =>
           let* α0 : ltac:(refine str) := deref (mk_str "Orange") in
           borrow α0
-        | unpacking_options_and_defaults_via_get_or_insert_with.Fruit  =>
+        | unpacking_options_and_defaults_via_get_or_insert_with.Fruit.Banana  =>
           let* α0 : ltac:(refine str) := deref (mk_str "Banana") in
           borrow α0
-        | unpacking_options_and_defaults_via_get_or_insert_with.Fruit  =>
+        | unpacking_options_and_defaults_via_get_or_insert_with.Fruit.Kiwi  =>
           let* α0 : ltac:(refine str) := deref (mk_str "Kiwi") in
           borrow α0
-        | unpacking_options_and_defaults_via_get_or_insert_with.Fruit  =>
+        | unpacking_options_and_defaults_via_get_or_insert_with.Fruit.Lemon  =>
           let* α0 : ltac:(refine str) := deref (mk_str "Lemon") in
           borrow α0
         end in

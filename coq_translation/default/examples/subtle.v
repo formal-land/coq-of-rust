@@ -548,10 +548,10 @@ Section Impl_subtle_ConstantTimeEq_for_slice_T.
                     α2 in
                 let* α4 := M.read α3 in
                 match α4 with
-                | core.option.Option  =>
+                | core.option.Option.None  =>
                   let* α0 : ltac:(refine never) := Break in
                   never_to_any α0
-                | core.option.Option (ai, bi) =>
+                | core.option.Option.Some (ai, bi) =>
                   let* _ : ltac:(refine unit) :=
                     let* α0 : ltac:(refine T) := deref ai in
                     let* α1 : ltac:(refine (ref T)) := borrow α0 in

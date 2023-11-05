@@ -298,10 +298,10 @@ Definition main `{ℋ : State.Trait} : M unit :=
                   α2 in
               let* α4 := M.read α3 in
               match α4 with
-              | core.option.Option  =>
+              | core.option.Option.None  =>
                 let* α0 : ltac:(refine never) := Break in
                 never_to_any α0
-              | core.option.Option x =>
+              | core.option.Option.Some x =>
                 let* _ : ltac:(refine unit) :=
                   let* _ : ltac:(refine unit) :=
                     let* α0 : ltac:(refine (array (ref str))) :=
@@ -413,10 +413,10 @@ Definition main `{ℋ : State.Trait} : M unit :=
                   α2 in
               let* α4 := M.read α3 in
               match α4 with
-              | core.option.Option  =>
+              | core.option.Option.None  =>
                 let* α0 : ltac:(refine never) := Break in
                 never_to_any α0
-              | core.option.Option (i, x) =>
+              | core.option.Option.Some (i, x) =>
                 let* _ : ltac:(refine unit) :=
                   let* _ : ltac:(refine unit) :=
                     let* α0 : ltac:(refine (array (ref str))) :=
@@ -507,10 +507,10 @@ Definition main `{ℋ : State.Trait} : M unit :=
                   α2 in
               let* α4 := M.read α3 in
               match α4 with
-              | core.option.Option  =>
+              | core.option.Option.None  =>
                 let* α0 : ltac:(refine never) := Break in
                 never_to_any α0
-              | core.option.Option x =>
+              | core.option.Option.Some x =>
                 let* _ : ltac:(refine unit) :=
                   let* α0 : ltac:(refine i32) := deref x in
                   let* α1 : ltac:(refine i32) := M.alloc 3 in

@@ -1,4 +1,6 @@
 Require Import CoqOfRust.lib.lib.
+Require CoqOfRust.core.convert.
+Require CoqOfRust.core.result.
 
 Module arith.
   Module Add.
@@ -582,3 +584,91 @@ Module drop.
     }.
   End Drop.
 End drop.
+
+Module control_flow.
+  (*
+  pub enum ControlFlow<B, C = ()> {
+      Continue(C),
+      Break(B),
+  }
+  *)
+  Module ControlFlow.
+    Inductive t `{State.Trait} (B C : Set) : Set :=
+    | Continue : C -> t B C
+    | Break : B -> t B C.
+    Arguments Continue {_ _ _ _ _}.
+    Arguments Break {_ _ _ _ _}.
+  End ControlFlow.
+  Definition ControlFlow `{State.Trait} (B C : Set) : Set :=
+    M.Val (ControlFlow.t B C).
+End control_flow.
+
+Module try_trait.
+  (*
+  pub trait Try: FromResidual<Self::Residual> {
+      type Output;
+      type Residual;
+
+      // Required methods
+      fn from_output(output: Self::Output) -> Self;
+      fn branch(self) -> ControlFlow<Self::Residual, Self::Output>;
+  }
+  *)
+  Module Try.
+    Class Trait `{State.Trait} (Self : Set) : Type := {
+      Output : Set;
+      Residual : Set;
+      from_output : Output -> M Self;
+      branch : Self -> M (control_flow.ControlFlow Residual Output);
+    }.
+
+    Module Impl.
+      Global Instance for_Result `{State.Trait} (T E : Set) :
+          Trait (core.result.Result T E) := {
+        Output := T;
+        Residual := core.result.Result core.convert.Infallible E;
+        from_output output :=
+          M.alloc (core.result.Result.Ok output);
+        branch self :=
+          let* self := M.read self in
+          match self with
+          | core.result.Result.Ok v =>
+            M.alloc (control_flow.ControlFlow.Continue v)
+          | core.result.Result.Err e =>
+            let* result := M.alloc (core.result.Result.Err e) in
+            M.alloc (control_flow.ControlFlow.Break result)
+          end;
+      }.
+    End Impl.
+  End Try.
+
+  (*
+  pub trait FromResidual<R = <Self as Try>::Residual> {
+      // Required method
+      fn from_residual(residual: R) -> Self;
+  }
+  *)
+  Module FromResidual.
+    Class Trait `{State.Trait} (Self : Set) {R : Set} : Type := {
+      from_residual : R -> M Self;
+    }.
+
+    Module Impl.
+      Global Instance for_Result `{State.Trait} (T E F : Set)
+          {H0 : core.convert.From.Trait F (T := E)} :
+          Trait (core.result.Result T F)
+            (R := core.result.Result core.convert.Infallible E) := {
+        from_residual residual :=
+          axiom "from_residual";
+      }.
+
+      (* Special case for when the From is the identity, to help the type-checker. *)
+      Global Instance for_Result_id `{State.Trait} (T E : Set) :
+          Trait (core.result.Result T E)
+            (R := core.result.Result core.convert.Infallible E) := {
+        from_residual residual :=
+          axiom "from_residual";
+      }.
+    End Impl.
+  End FromResidual.
+End try_trait.

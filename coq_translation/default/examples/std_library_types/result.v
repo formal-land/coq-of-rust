@@ -26,14 +26,14 @@ Module checked.
         let* α2 := M.read self in
         let* α3 : ltac:(refine (ref str)) :=
           match α2 with
-          | result.checked.MathError  =>
+          | result.checked.MathError.DivisionByZero  =>
             let* α0 : ltac:(refine str) := deref (mk_str "DivisionByZero") in
             borrow α0
-          | result.checked.MathError  =>
+          | result.checked.MathError.NonPositiveLogarithm  =>
             let* α0 : ltac:(refine str) :=
               deref (mk_str "NonPositiveLogarithm") in
             borrow α0
-          | result.checked.MathError  =>
+          | result.checked.MathError.NegativeSquareRoot  =>
             let* α0 : ltac:(refine str) :=
               deref (mk_str "NegativeSquareRoot") in
             borrow α0
@@ -127,14 +127,14 @@ Section Impl_core_fmt_Debug_for_result_checked_MathError.
       let* α2 := M.read self in
       let* α3 : ltac:(refine (ref str)) :=
         match α2 with
-        | result.checked.MathError  =>
+        | result.checked.MathError.DivisionByZero  =>
           let* α0 : ltac:(refine str) := deref (mk_str "DivisionByZero") in
           borrow α0
-        | result.checked.MathError  =>
+        | result.checked.MathError.NonPositiveLogarithm  =>
           let* α0 : ltac:(refine str) :=
             deref (mk_str "NonPositiveLogarithm") in
           borrow α0
-        | result.checked.MathError  =>
+        | result.checked.MathError.NegativeSquareRoot  =>
           let* α0 : ltac:(refine str) := deref (mk_str "NegativeSquareRoot") in
           borrow α0
         end in
@@ -209,7 +209,7 @@ Definition op `{ℋ : State.Trait} (x : f64) (y : f64) : M f64 :=
       result.checked.div x y in
     let* α1 := M.read α0 in
     match α1 with
-    | core.result.Result why =>
+    | core.result.Result.Err why =>
       let* α0 : ltac:(refine (array (ref str))) := M.alloc [ mk_str "" ] in
       let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
       let* α2 : ltac:(refine (array (ref str))) := deref α1 in
@@ -233,14 +233,14 @@ Definition op `{ℋ : State.Trait} (x : f64) (y : f64) : M f64 :=
         core.fmt.Arguments::["new_v1"] α4 α13 in
       let* α15 : ltac:(refine never) := core.panicking.panic_fmt α14 in
       never_to_any α15
-    | core.result.Result ratio =>
+    | core.result.Result.Ok ratio =>
       let*
           α0 :
           ltac:(refine (core.result.Result f64 result.checked.MathError)) :=
         result.checked.ln ratio in
       let* α1 := M.read α0 in
       match α1 with
-      | core.result.Result why =>
+      | core.result.Result.Err why =>
         let* α0 : ltac:(refine (array (ref str))) := M.alloc [ mk_str "" ] in
         let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
         let* α2 : ltac:(refine (array (ref str))) := deref α1 in
@@ -265,14 +265,14 @@ Definition op `{ℋ : State.Trait} (x : f64) (y : f64) : M f64 :=
           core.fmt.Arguments::["new_v1"] α4 α13 in
         let* α15 : ltac:(refine never) := core.panicking.panic_fmt α14 in
         never_to_any α15
-      | core.result.Result ln =>
+      | core.result.Result.Ok ln =>
         let*
             α0 :
             ltac:(refine (core.result.Result f64 result.checked.MathError)) :=
           result.checked.sqrt ln in
         let* α1 := M.read α0 in
         match α1 with
-        | core.result.Result why =>
+        | core.result.Result.Err why =>
           let* α0 : ltac:(refine (array (ref str))) := M.alloc [ mk_str "" ] in
           let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
           let* α2 : ltac:(refine (array (ref str))) := deref α1 in
@@ -298,7 +298,7 @@ Definition op `{ℋ : State.Trait} (x : f64) (y : f64) : M f64 :=
             core.fmt.Arguments::["new_v1"] α4 α13 in
           let* α15 : ltac:(refine never) := core.panicking.panic_fmt α14 in
           never_to_any α15
-        | core.result.Result sqrt => M.pure sqrt
+        | core.result.Result.Ok sqrt => M.pure sqrt
         end
       end
     end).

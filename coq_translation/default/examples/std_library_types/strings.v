@@ -102,10 +102,10 @@ Definition main `{ℋ : State.Trait} : M unit :=
                   α2 in
               let* α4 := M.read α3 in
               match α4 with
-              | core.option.Option  =>
+              | core.option.Option.None  =>
                 let* α0 : ltac:(refine never) := Break in
                 never_to_any α0
-              | core.option.Option word =>
+              | core.option.Option.Some word =>
                 let* _ : ltac:(refine unit) :=
                   let* _ : ltac:(refine unit) :=
                     let* α0 : ltac:(refine (array (ref str))) :=
@@ -221,10 +221,10 @@ Definition main `{ℋ : State.Trait} : M unit :=
                   α2 in
               let* α4 := M.read α3 in
               match α4 with
-              | core.option.Option  =>
+              | core.option.Option.None  =>
                 let* α0 : ltac:(refine never) := Break in
                 never_to_any α0
-              | core.option.Option c =>
+              | core.option.Option.Some c =>
                 let* _ : ltac:(refine unit) :=
                   let* α0 : ltac:(refine (mut_ref alloc.string.String)) :=
                     borrow_mut string in

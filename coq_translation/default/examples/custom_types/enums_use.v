@@ -25,7 +25,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
     let* _ : ltac:(refine unit) :=
       let* α0 := M.read status in
       match α0 with
-      | enums_use.Status  =>
+      | enums_use.Status.Rich  =>
         let* _ : ltac:(refine unit) :=
           let* α0 : ltac:(refine (array (ref str))) :=
             M.alloc [ mk_str "The rich have lots of money!
@@ -39,7 +39,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
             core.fmt.Arguments::["new_const"] α4 in
           std.io.stdio._print α5 in
         M.alloc tt
-      | enums_use.Status  =>
+      | enums_use.Status.Poor  =>
         let* _ : ltac:(refine unit) :=
           let* α0 : ltac:(refine (array (ref str))) :=
             M.alloc [ mk_str "The poor have no money...
@@ -56,7 +56,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
       end in
     let* α0 := M.read work in
     match α0 with
-    | enums_use.Work  =>
+    | enums_use.Work.Civilian  =>
       let* _ : ltac:(refine unit) :=
         let* α0 : ltac:(refine (array (ref str))) :=
           M.alloc [ mk_str "Civilians work!
@@ -70,7 +70,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
           core.fmt.Arguments::["new_const"] α4 in
         std.io.stdio._print α5 in
       M.alloc tt
-    | enums_use.Work  =>
+    | enums_use.Work.Soldier  =>
       let* _ : ltac:(refine unit) :=
         let* α0 : ltac:(refine (array (ref str))) :=
           M.alloc [ mk_str "Soldiers fight!

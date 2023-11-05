@@ -161,7 +161,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
         str::["parse"] α7 in
       let* α9 := M.read α8 in
       match α9 with
-      | core.result.Result _ =>
+      | core.result.Result.Ok _ =>
         let* _ : ltac:(refine unit) :=
           let* α0 : ltac:(refine (array (ref str))) :=
             M.alloc [ mk_str "This is the answer!
@@ -238,8 +238,8 @@ Definition main `{ℋ : State.Trait} : M unit :=
           str::["parse"] α4 in
         let* α6 := M.read α5 in
         match α6 with
-        | core.result.Result n => M.pure n
-        | core.result.Result _ =>
+        | core.result.Result.Ok n => M.pure n
+        | core.result.Result.Err _ =>
           let* _ : ltac:(refine unit) :=
             let* _ : ltac:(refine unit) :=
               let* α0 : ltac:(refine (array (ref str))) :=

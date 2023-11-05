@@ -9,7 +9,7 @@ Definition foo
   M.function_body
     (let* α0 := M.read o in
     match α0 with
-    | core.option.Option _a =>
+    | core.option.Option.Some _a =>
       let* _ : ltac:(refine unit) :=
         let* α0 : ltac:(refine (array (ref str))) :=
           M.alloc [ mk_str "some
@@ -23,7 +23,7 @@ Definition foo
           core.fmt.Arguments::["new_const"] α4 in
         std.io.stdio._print α5 in
       M.alloc tt
-    | core.option.Option  =>
+    | core.option.Option.None  =>
       let* _ : ltac:(refine unit) :=
         let* α0 : ltac:(refine (array (ref str))) :=
           M.alloc [ mk_str "nothing
@@ -95,10 +95,10 @@ Module tests.
                   α2 in
               let* α4 := M.read α3 in
               match α4 with
-              | core.option.Option  =>
+              | core.option.Option.None  =>
                 let* α0 : ltac:(refine never) := Break in
                 never_to_any α0
-              | core.option.Option _ =>
+              | core.option.Option.Some _ =>
                 let* _ : ltac:(refine unit) :=
                   let* α0 : ltac:(refine (mut_ref std.fs.File)) :=
                     borrow_mut file in
@@ -185,10 +185,10 @@ Module tests.
                   α2 in
               let* α4 := M.read α3 in
               match α4 with
-              | core.option.Option  =>
+              | core.option.Option.None  =>
                 let* α0 : ltac:(refine never) := Break in
                 never_to_any α0
-              | core.option.Option _ =>
+              | core.option.Option.Some _ =>
                 let* _ : ltac:(refine unit) :=
                   let* α0 : ltac:(refine (mut_ref std.fs.File)) :=
                     borrow_mut file in
@@ -274,10 +274,10 @@ Definition test_file `{ℋ : State.Trait} : M unit :=
                 α2 in
             let* α4 := M.read α3 in
             match α4 with
-            | core.option.Option  =>
+            | core.option.Option.None  =>
               let* α0 : ltac:(refine never) := Break in
               never_to_any α0
-            | core.option.Option _ =>
+            | core.option.Option.Some _ =>
               let* _ : ltac:(refine unit) :=
                 let* α0 : ltac:(refine (mut_ref std.fs.File)) :=
                   borrow_mut file in
@@ -362,10 +362,10 @@ Definition test_file_also `{ℋ : State.Trait} : M unit :=
                 α2 in
             let* α4 := M.read α3 in
             match α4 with
-            | core.option.Option  =>
+            | core.option.Option.None  =>
               let* α0 : ltac:(refine never) := Break in
               never_to_any α0
-            | core.option.Option _ =>
+            | core.option.Option.Some _ =>
               let* _ : ltac:(refine unit) :=
                 let* α0 : ltac:(refine (mut_ref std.fs.File)) :=
                   borrow_mut file in

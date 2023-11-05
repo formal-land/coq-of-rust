@@ -23,7 +23,7 @@ Definition cat
           α0 in
       let* α2 := M.read α1 in
       match α2 with
-      | core.ops.control_flow.ControlFlow residual =>
+      | core.ops.control_flow.ControlFlow.Break residual =>
         let*
             α0 :
             ltac:(refine
@@ -35,7 +35,7 @@ Definition cat
             residual in
         let* α1 : ltac:(refine never) := M.return_ α0 in
         never_to_any α1
-      | core.ops.control_flow.ControlFlow val => M.pure val
+      | core.ops.control_flow.ControlFlow.Continue val => M.pure val
       end in
     let* s : ltac:(refine alloc.string.String) :=
       alloc.string.String::["new"] in
@@ -51,8 +51,8 @@ Definition cat
         α3 in
     let* α5 := M.read α4 in
     match α5 with
-    | core.result.Result _ => M.alloc (core.result.Result.Ok s)
-    | core.result.Result e => M.alloc (core.result.Result.Err e)
+    | core.result.Result.Ok _ => M.alloc (core.result.Result.Ok s)
+    | core.result.Result.Err e => M.alloc (core.result.Result.Err e)
     end).
 
 Definition echo
@@ -78,7 +78,7 @@ Definition echo
           α0 in
       let* α2 := M.read α1 in
       match α2 with
-      | core.ops.control_flow.ControlFlow residual =>
+      | core.ops.control_flow.ControlFlow.Break residual =>
         let* α0 : ltac:(refine (core.result.Result unit std.io.error.Error)) :=
           (core.ops.try_trait.FromResidual.from_residual
               (Self := core.result.Result unit std.io.error.Error)
@@ -86,7 +86,7 @@ Definition echo
             residual in
         let* α1 : ltac:(refine never) := M.return_ α0 in
         never_to_any α1
-      | core.ops.control_flow.ControlFlow val => M.pure val
+      | core.ops.control_flow.ControlFlow.Continue val => M.pure val
       end in
     let* α0 : ltac:(refine (mut_ref std.fs.File)) := borrow_mut f in
     let* α1 : ltac:(refine str) := deref s in
@@ -122,10 +122,10 @@ Definition touch
       std.fs.OpenOptions::["open"] α9 path in
     let* α11 := M.read α10 in
     match α11 with
-    | core.result.Result _ =>
+    | core.result.Result.Ok _ =>
       let* α0 : ltac:(refine unit) := M.alloc tt in
       M.alloc (core.result.Result.Ok α0)
-    | core.result.Result e => M.alloc (core.result.Result.Err e)
+    | core.result.Result.Err e => M.alloc (core.result.Result.Err e)
     end).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
@@ -150,7 +150,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
         std.fs.create_dir (mk_str "a") in
       let* α1 := M.read α0 in
       match α1 with
-      | core.result.Result why =>
+      | core.result.Result.Err why =>
         let* _ : ltac:(refine unit) :=
           let* α0 : ltac:(refine (array (ref str))) :=
             M.alloc [ mk_str "! "; mk_str "
@@ -181,7 +181,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
             core.fmt.Arguments::["new_v1"] α4 α15 in
           std.io.stdio._print α16 in
         M.alloc tt
-      | core.result.Result _ => M.alloc tt
+      | core.result.Result.Ok _ => M.alloc tt
       end in
     let* _ : ltac:(refine unit) :=
       let* _ : ltac:(refine unit) :=
@@ -451,7 +451,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
         filesystem_operations.cat α6 in
       let* α8 := M.read α7 in
       match α8 with
-      | core.result.Result why =>
+      | core.result.Result.Err why =>
         let* _ : ltac:(refine unit) :=
           let* α0 : ltac:(refine (array (ref str))) :=
             M.alloc [ mk_str "! "; mk_str "
@@ -482,7 +482,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
             core.fmt.Arguments::["new_v1"] α4 α15 in
           std.io.stdio._print α16 in
         M.alloc tt
-      | core.result.Result s =>
+      | core.result.Result.Ok s =>
         let* _ : ltac:(refine unit) :=
           let* α0 : ltac:(refine (array (ref str))) :=
             M.alloc [ mk_str "> "; mk_str "
@@ -533,7 +533,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
         std.fs.read_dir (mk_str "a") in
       let* α1 := M.read α0 in
       match α1 with
-      | core.result.Result why =>
+      | core.result.Result.Err why =>
         let* _ : ltac:(refine unit) :=
           let* α0 : ltac:(refine (array (ref str))) :=
             M.alloc [ mk_str "! "; mk_str "
@@ -564,7 +564,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
             core.fmt.Arguments::["new_v1"] α4 α15 in
           std.io.stdio._print α16 in
         M.alloc tt
-      | core.result.Result paths =>
+      | core.result.Result.Ok paths =>
         let* α0 : ltac:(refine std.fs.ReadDir) :=
           (core.iter.traits.collect.IntoIterator.into_iter
               (Self := std.fs.ReadDir)
@@ -594,10 +594,10 @@ Definition main `{ℋ : State.Trait} : M unit :=
                     α2 in
                 let* α4 := M.read α3 in
                 match α4 with
-                | core.option.Option  =>
+                | core.option.Option.None  =>
                   let* α0 : ltac:(refine never) := Break in
                   never_to_any α0
-                | core.option.Option path =>
+                | core.option.Option.Some path =>
                   let* _ : ltac:(refine unit) :=
                     let* _ : ltac:(refine unit) :=
                       let* α0 : ltac:(refine (array (ref str))) :=

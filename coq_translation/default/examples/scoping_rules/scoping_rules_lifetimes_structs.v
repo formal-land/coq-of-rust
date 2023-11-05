@@ -149,7 +149,7 @@ Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
     M.function_body
       (let* α0 := M.read self in
       match α0 with
-      | scoping_rules_lifetimes_structs.Either __self_0 =>
+      | scoping_rules_lifetimes_structs.Either.Num __self_0 =>
         let* α0 : ltac:(refine core.fmt.Formatter) := deref f in
         let* α1 : ltac:(refine (mut_ref core.fmt.Formatter)) := borrow_mut α0 in
         let* α2 : ltac:(refine str) := deref (mk_str "Num") in
@@ -160,7 +160,7 @@ Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
         let* α7 : ltac:(refine (ref type not implemented)) :=
           pointer_coercion "Unsize" α6 in
         core.fmt.Formatter::["debug_tuple_field1_finish"] α1 α3 α7
-      | scoping_rules_lifetimes_structs.Either __self_0 =>
+      | scoping_rules_lifetimes_structs.Either.Ref __self_0 =>
         let* α0 : ltac:(refine core.fmt.Formatter) := deref f in
         let* α1 : ltac:(refine (mut_ref core.fmt.Formatter)) := borrow_mut α0 in
         let* α2 : ltac:(refine str) := deref (mk_str "Ref") in

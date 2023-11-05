@@ -20,9 +20,11 @@ Section Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers.
     M.function_body
       (let* α0 := M.read self in
       match α0 with
-      | enums_type_aliases_v2.VeryVerboseEnumOfThingsToDoWithNumbers  =>
+      | enums_type_aliases_v2.VeryVerboseEnumOfThingsToDoWithNumbers.Add  =>
         BinOp.add x y
-      | enums_type_aliases_v2.VeryVerboseEnumOfThingsToDoWithNumbers  =>
+      |
+          enums_type_aliases_v2.VeryVerboseEnumOfThingsToDoWithNumbers.Subtract 
+          =>
         BinOp.sub x y
       end).
   

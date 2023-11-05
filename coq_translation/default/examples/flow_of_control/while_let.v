@@ -9,7 +9,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
       M.alloc (core.option.Option.Some α0) in
     loop
       (let* α0 : ltac:(refine bool) :=
-        let_if core.option.Option i := optional in
+        let_if core.option.Option.Some i := optional in
       if (α0 : bool) then
         let* α0 : ltac:(refine i32) := M.alloc 9 in
         let* α1 : ltac:(refine bool) := BinOp.gt i α0 in

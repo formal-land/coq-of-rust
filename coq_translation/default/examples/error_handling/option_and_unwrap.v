@@ -8,7 +8,7 @@ Definition give_adult
   M.function_body
     (let* α0 := M.read drink in
     match α0 with
-    | core.option.Option _ =>
+    | core.option.Option.Some _ =>
       let* _ : ltac:(refine unit) :=
         let* α0 : ltac:(refine (array (ref str))) :=
           M.alloc [ mk_str "Yuck! Too sugary.
@@ -22,7 +22,7 @@ Definition give_adult
           core.fmt.Arguments::["new_const"] α4 in
         std.io.stdio._print α5 in
       M.alloc tt
-    | core.option.Option inner =>
+    | core.option.Option.Some inner =>
       let* _ : ltac:(refine unit) :=
         let* α0 : ltac:(refine (array (ref str))) :=
           M.alloc [ mk_str ""; mk_str "? How nice.
@@ -50,7 +50,7 @@ Definition give_adult
           core.fmt.Arguments::["new_v1"] α4 α13 in
         std.io.stdio._print α14 in
       M.alloc tt
-    | core.option.Option  =>
+    | core.option.Option.None  =>
       let* _ : ltac:(refine unit) :=
         let* α0 : ltac:(refine (array (ref str))) :=
           M.alloc [ mk_str "No drink? Oh well.

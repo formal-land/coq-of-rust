@@ -21,7 +21,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
       M.alloc (if_let_match_enum_values.Foo.Qux α0) in
     let* _ : ltac:(refine unit) :=
       let* α0 : ltac:(refine bool) :=
-        let_if if_let_match_enum_values.Foo  := a in
+        let_if if_let_match_enum_values.Foo.Bar  := a in
       if (α0 : bool) then
         let* _ : ltac:(refine unit) :=
           let* _ : ltac:(refine unit) :=
@@ -42,7 +42,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
         M.alloc tt in
     let* _ : ltac:(refine unit) :=
       let* α0 : ltac:(refine bool) :=
-        let_if if_let_match_enum_values.Foo  := b in
+        let_if if_let_match_enum_values.Foo.Bar  := b in
       if (α0 : bool) then
         let* _ : ltac:(refine unit) :=
           let* _ : ltac:(refine unit) :=
@@ -63,7 +63,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
         M.alloc tt in
     let* _ : ltac:(refine unit) :=
       let* α0 : ltac:(refine bool) :=
-        let_if if_let_match_enum_values.Foo value := c in
+        let_if if_let_match_enum_values.Foo.Qux value := c in
       if (α0 : bool) then
         let* _ : ltac:(refine unit) :=
           let* _ : ltac:(refine unit) :=
@@ -98,7 +98,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
       else
         M.alloc tt in
     let* α0 : ltac:(refine bool) :=
-      let_if if_let_match_enum_values.Foo (_ as value) := c in
+      let_if if_let_match_enum_values.Foo.Qux (_ as value) := c in
     if (α0 : bool) then
       let* _ : ltac:(refine unit) :=
         let* _ : ltac:(refine unit) :=

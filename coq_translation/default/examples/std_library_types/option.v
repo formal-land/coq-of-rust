@@ -26,7 +26,7 @@ Definition try_division
       option.checked_division dividend divisor in
     let* α1 := M.read α0 in
     match α1 with
-    | core.option.Option  =>
+    | core.option.Option.None  =>
       let* _ : ltac:(refine unit) :=
         let* α0 : ltac:(refine (array (ref str))) :=
           M.alloc [ mk_str ""; mk_str " / "; mk_str " failed!
@@ -59,7 +59,7 @@ Definition try_division
           core.fmt.Arguments::["new_v1"] α4 α17 in
         std.io.stdio._print α18 in
       M.alloc tt
-    | core.option.Option quotient =>
+    | core.option.Option.Some quotient =>
       let* _ : ltac:(refine unit) :=
         let* α0 : ltac:(refine (array (ref str))) :=
           M.alloc [ mk_str ""; mk_str " / "; mk_str " = "; mk_str "

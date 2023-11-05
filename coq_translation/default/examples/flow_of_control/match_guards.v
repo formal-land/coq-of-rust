@@ -16,7 +16,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
       M.alloc (match_guards.Temperature.Celsius α0) in
     let* α0 := M.read temperature in
     match α0 with
-    | match_guards.Temperature t =>
+    | match_guards.Temperature.Celsius t =>
       let* _ : ltac:(refine unit) :=
         let* α0 : ltac:(refine (array (ref str))) :=
           M.alloc [ mk_str ""; mk_str "C is above 30 Celsius
@@ -44,7 +44,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
           core.fmt.Arguments::["new_v1"] α4 α13 in
         std.io.stdio._print α14 in
       M.alloc tt
-    | match_guards.Temperature t =>
+    | match_guards.Temperature.Celsius t =>
       let* _ : ltac:(refine unit) :=
         let* α0 : ltac:(refine (array (ref str))) :=
           M.alloc [ mk_str ""; mk_str "C is below 30 Celsius
@@ -72,7 +72,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
           core.fmt.Arguments::["new_v1"] α4 α13 in
         std.io.stdio._print α14 in
       M.alloc tt
-    | match_guards.Temperature t =>
+    | match_guards.Temperature.Fahrenheit t =>
       let* _ : ltac:(refine unit) :=
         let* α0 : ltac:(refine (array (ref str))) :=
           M.alloc [ mk_str ""; mk_str "F is above 86 Fahrenheit
@@ -100,7 +100,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
           core.fmt.Arguments::["new_v1"] α4 α13 in
         std.io.stdio._print α14 in
       M.alloc tt
-    | match_guards.Temperature t =>
+    | match_guards.Temperature.Fahrenheit t =>
       let* _ : ltac:(refine unit) :=
         let* α0 : ltac:(refine (array (ref str))) :=
           M.alloc [ mk_str ""; mk_str "F is below 86 Fahrenheit

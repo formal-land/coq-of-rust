@@ -16,8 +16,8 @@ Definition main
         str::["parse"] α1 in
       let* α3 := M.read α2 in
       match α3 with
-      | core.result.Result number => M.pure number
-      | core.result.Result e =>
+      | core.result.Result.Ok number => M.pure number
+      | core.result.Result.Err e =>
         let*
             α0 :
             ltac:(refine
