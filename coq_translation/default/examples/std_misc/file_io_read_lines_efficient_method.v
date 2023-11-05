@@ -3,78 +3,121 @@ Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
-  let* α0 :=
-    file_io_read_lines_efficient_method.read_lines (mk_str "./hosts") in
-  let* α1 := let_if core.result.Result lines := α0 in
-  if (α1 : bool) then
-    let* α0 :=
-      (core.iter.traits.collect.IntoIterator.into_iter
-          (Self :=
-            std.io.Lines (std.io.buffered.bufreader.BufReader std.fs.File))
-          (Trait := ltac:(refine _)))
-        lines in
-    let* α1 :=
-      match α0 with
-      | iter =>
-        loop
-          (let* _ :=
-            let* α0 :=
-              borrow_mut
-                iter
-                (std.io.Lines
-                  (std.io.buffered.bufreader.BufReader std.fs.File)) in
-            let* α1 :=
-              deref
-                α0
-                (std.io.Lines
-                  (std.io.buffered.bufreader.BufReader std.fs.File)) in
-            let* α2 :=
-              borrow_mut
-                α1
-                (std.io.Lines
-                  (std.io.buffered.bufreader.BufReader std.fs.File)) in
-            let* α3 :=
-              (core.iter.traits.iterator.Iterator.next
-                  (Self :=
-                    std.io.Lines
-                      (std.io.buffered.bufreader.BufReader std.fs.File))
-                  (Trait := ltac:(refine _)))
-                α2 in
-            match α3 with
-            | core.option.Option  =>
-              let* α0 := Break in
-              never_to_any α0
-            | core.option.Option line =>
-              let* α0 := let_if core.result.Result ip := line in
-              if (α0 : bool) then
-                let* _ :=
-                  let* _ :=
-                    let* α0 :=
-                      borrow [ mk_str ""; mk_str "
-" ] (list (ref str)) in
-                    let* α1 := deref α0 (list (ref str)) in
-                    let* α2 := borrow α1 (list (ref str)) in
-                    let* α3 := pointer_coercion "Unsize" α2 in
-                    let* α4 := borrow ip alloc.string.String in
-                    let* α5 := deref α4 alloc.string.String in
-                    let* α6 := borrow α5 alloc.string.String in
-                    let* α7 := core.fmt.rt.Argument::["new_display"] α6 in
-                    let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
-                    let* α9 := deref α8 (list core.fmt.rt.Argument) in
-                    let* α10 := borrow α9 (list core.fmt.rt.Argument) in
-                    let* α11 := pointer_coercion "Unsize" α10 in
-                    let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
-                    std.io.stdio._print α12 in
-                  M.alloc tt in
-                M.alloc tt
-              else
-                M.alloc tt
-            end in
-          M.alloc tt)
-      end in
-    use α1
-  else
-    M.alloc tt.
+  M.function_body
+    (let*
+        α0 :
+        ltac:(refine
+          (core.result.Result
+            (std.io.Lines (std.io.buffered.bufreader.BufReader std.fs.File))
+            std.io.error.Error)) :=
+      file_io_read_lines_efficient_method.read_lines (mk_str "./hosts") in
+    let* α1 : ltac:(refine bool) := let_if core.result.Result.Ok lines := α0 in
+    if (α1 : bool) then
+      let*
+          α0 :
+          ltac:(refine
+            (std.io.Lines (std.io.buffered.bufreader.BufReader std.fs.File))) :=
+        (core.iter.traits.collect.IntoIterator.into_iter
+            (Self :=
+              std.io.Lines (std.io.buffered.bufreader.BufReader std.fs.File))
+            (Trait := ltac:(refine _)))
+          lines in
+      let* α1 := M.read α0 in
+      let* α2 : ltac:(refine unit) :=
+        match α1 with
+        | iter =>
+          loop
+            (let* _ : ltac:(refine unit) :=
+              let*
+                  α0 :
+                  ltac:(refine
+                    (mut_ref
+                      (std.io.Lines
+                        (std.io.buffered.bufreader.BufReader std.fs.File)))) :=
+                borrow_mut iter in
+              let*
+                  α1 :
+                  ltac:(refine
+                    (std.io.Lines
+                      (std.io.buffered.bufreader.BufReader std.fs.File))) :=
+                deref α0 in
+              let*
+                  α2 :
+                  ltac:(refine
+                    (mut_ref
+                      (std.io.Lines
+                        (std.io.buffered.bufreader.BufReader std.fs.File)))) :=
+                borrow_mut α1 in
+              let*
+                  α3 :
+                  ltac:(refine
+                    (core.option.Option
+                      (core.result.Result
+                        alloc.string.String
+                        std.io.error.Error))) :=
+                (core.iter.traits.iterator.Iterator.next
+                    (Self :=
+                      std.io.Lines
+                        (std.io.buffered.bufreader.BufReader std.fs.File))
+                    (Trait := ltac:(refine _)))
+                  α2 in
+              let* α4 := M.read α3 in
+              match α4 with
+              | core.option.Option.None  =>
+                let* α0 : ltac:(refine never) := Break in
+                never_to_any α0
+              | core.option.Option.Some line =>
+                let* α0 : ltac:(refine bool) :=
+                  let_if core.result.Result.Ok ip := line in
+                if (α0 : bool) then
+                  let* _ : ltac:(refine unit) :=
+                    let* _ : ltac:(refine unit) :=
+                      let* α0 : ltac:(refine (array (ref str))) :=
+                        M.alloc [ mk_str ""; mk_str "
+" ] in
+                      let* α1 : ltac:(refine (ref (array (ref str)))) :=
+                        borrow α0 in
+                      let* α2 : ltac:(refine (array (ref str))) := deref α1 in
+                      let* α3 : ltac:(refine (ref (array (ref str)))) :=
+                        borrow α2 in
+                      let* α4 : ltac:(refine (ref (slice (ref str)))) :=
+                        pointer_coercion "Unsize" α3 in
+                      let* α5 : ltac:(refine (ref alloc.string.String)) :=
+                        borrow ip in
+                      let* α6 : ltac:(refine alloc.string.String) := deref α5 in
+                      let* α7 : ltac:(refine (ref alloc.string.String)) :=
+                        borrow α6 in
+                      let* α8 : ltac:(refine core.fmt.rt.Argument) :=
+                        core.fmt.rt.Argument::["new_display"] α7 in
+                      let* α9 : ltac:(refine (array core.fmt.rt.Argument)) :=
+                        M.alloc [ α8 ] in
+                      let*
+                          α10 :
+                          ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+                        borrow α9 in
+                      let* α11 : ltac:(refine (array core.fmt.rt.Argument)) :=
+                        deref α10 in
+                      let*
+                          α12 :
+                          ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+                        borrow α11 in
+                      let*
+                          α13 :
+                          ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+                        pointer_coercion "Unsize" α12 in
+                      let* α14 : ltac:(refine core.fmt.Arguments) :=
+                        core.fmt.Arguments::["new_v1"] α4 α13 in
+                      std.io.stdio._print α14 in
+                    M.alloc tt in
+                  M.alloc tt
+                else
+                  M.alloc tt
+              end in
+            M.alloc tt)
+        end in
+      use α2
+    else
+      M.alloc tt).
 
 Definition read_lines
     `{ℋ : State.Trait}
@@ -86,31 +129,51 @@ Definition read_lines
         ltac:(std.io.error.Result
           constr:(std.io.Lines
             (std.io.buffered.bufreader.BufReader std.fs.File))) :=
-  let* file :=
-    let* α0 := std.fs.File::["open"] filename in
-    let* α1 :=
-      (core.ops.try_trait.Try.branch
-          (Self := core.result.Result std.fs.File std.io.error.Error)
+  M.function_body
+    (let* file : ltac:(refine std.fs.File) :=
+      let*
+          α0 :
+          ltac:(refine (core.result.Result std.fs.File std.io.error.Error)) :=
+        std.fs.File::["open"] filename in
+      let*
+          α1 :
+          ltac:(refine
+            (core.ops.control_flow.ControlFlow
+              (core.result.Result core.convert.Infallible std.io.error.Error)
+              std.fs.File)) :=
+        (core.ops.try_trait.Try.branch
+            (Self := core.result.Result std.fs.File std.io.error.Error)
+            (Trait := ltac:(refine _)))
+          α0 in
+      let* α2 := M.read α1 in
+      match α2 with
+      | core.ops.control_flow.ControlFlow.Break residual =>
+        let*
+            α0 :
+            ltac:(refine
+              (core.result.Result
+                (std.io.Lines (std.io.buffered.bufreader.BufReader std.fs.File))
+                std.io.error.Error)) :=
+          (core.ops.try_trait.FromResidual.from_residual
+              (Self :=
+                core.result.Result
+                  (std.io.Lines
+                    (std.io.buffered.bufreader.BufReader std.fs.File))
+                  std.io.error.Error)
+              (Trait := ltac:(refine _)))
+            residual in
+        let* α1 : ltac:(refine never) := M.return_ α0 in
+        never_to_any α1
+      | core.ops.control_flow.ControlFlow.Continue val => M.pure val
+      end in
+    let* α0 : ltac:(refine (std.io.buffered.bufreader.BufReader std.fs.File)) :=
+      (std.io.buffered.bufreader.BufReader std.fs.File)::["new"] file in
+    let*
+        α1 :
+        ltac:(refine
+          (std.io.Lines (std.io.buffered.bufreader.BufReader std.fs.File))) :=
+      (std.io.BufRead.lines
+          (Self := std.io.buffered.bufreader.BufReader std.fs.File)
           (Trait := ltac:(refine _)))
         α0 in
-    match α1 with
-    | core.ops.control_flow.ControlFlow residual =>
-      let* α0 :=
-        (core.ops.try_trait.FromResidual.from_residual
-            (Self :=
-              core.result.Result
-                (std.io.Lines (std.io.buffered.bufreader.BufReader std.fs.File))
-                std.io.error.Error)
-            (Trait := ltac:(refine _)))
-          residual in
-      let* α1 := Return α0 in
-      never_to_any α1
-    | core.ops.control_flow.ControlFlow val => Pure val
-    end in
-  let* α0 := (std.io.buffered.bufreader.BufReader std.fs.File)::["new"] file in
-  let* α1 :=
-    (std.io.BufRead.lines
-        (Self := std.io.buffered.bufreader.BufReader std.fs.File)
-        (Trait := ltac:(refine _)))
-      α0 in
-  M.alloc (core.result.Result.Ok α1).
+    M.alloc (core.result.Result.Ok α1)).

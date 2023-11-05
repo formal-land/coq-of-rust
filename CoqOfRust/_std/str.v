@@ -1,7 +1,7 @@
 Require Import CoqOfRust.lib.lib.
-
-Require Import CoqOfRust.core.option.
-Require Import CoqOfRust.core.result.
+Require CoqOfRust.core.option.
+Require CoqOfRust.core.result.
+Require CoqOfRust.core.str.
 
 (* ********MODULES******** *)
 (*
@@ -67,14 +67,14 @@ Module pattern.
   }
   *)
   Module SearchStep.
-    Inductive t `{State.Trait} : Set := 
+    Inductive t `{ℋ : State.Trait} : Set := 
     | Match: usize -> usize -> t
     | Reject: usize -> usize -> t
     | Done : t
     .
   End SearchStep.
-  Definition SearchStep `{State.Trait} : Set :=
-    val SearchStep.t.
+  Definition SearchStep `{ℋ : State.Trait} : Set :=
+    M.Val SearchStep.t.
 
   (* ********TRAITS******** *)
   (*
@@ -96,11 +96,11 @@ Module pattern.
   }
   *)
   Module Searcher.
-    Class Trait `{State.Trait} (Self : Set) : Set := { 
+    Class Trait `{ℋ : State.Trait} (Self : Set) : Set := { 
       haystack : ref Self -> ref str;
       next : mut_ref Self -> SearchStep;
-      next_match : mut_ref Self -> Option (usize * usize);
-      next_reject : mut_ref Self -> Option (usize * usize);
+      next_match : mut_ref Self -> option.Option (usize * usize);
+      next_reject : mut_ref Self -> option.Option (usize * usize);
     }.
   End Searcher.
 
@@ -115,11 +115,11 @@ Module pattern.
   }
   *)
   Module ReverseSearcher.
-    Class Trait `{State.Trait} (Self : Set) 
+    Class Trait `{ℋ : State.Trait} (Self : Set) 
       `{Searcher.Trait Self} : Set := { 
         next_back : mut_ref Self -> SearchStep;
-        next_match_back : mut_ref Self -> Option (usize * usize);
-        next_reject_back : mut_ref Self -> Option (usize * usize);
+        next_match_back : mut_ref Self -> option.Option (usize * usize);
+        next_reject_back : mut_ref Self -> option.Option (usize * usize);
       }.
   End ReverseSearcher.
   
@@ -142,22 +142,22 @@ Module pattern.
   }
   *)
   Module Pattern.
-    Class Trait `{State.Trait} (Self Searcher : Set) : Set := { 
+    Class Trait `{ℋ : State.Trait} (Self Searcher : Set) : Set := { 
       Searcher := Searcher;
 
       into_searcher : Self -> ref str -> Searcher;
       is_contained_in : Self -> ref str -> bool;
       is_prefix_of : Self -> ref str -> bool;
       is_suffix_of `{ReverseSearcher.Trait Searcher} : Self -> ref str -> bool;
-      strip_prefix_of : Self -> ref str -> Option (ref str);
-      strip_suffix_of `{ReverseSearcher.Trait Searcher} : Self -> ref str -> Option (ref str);
+      strip_prefix_of : Self -> ref str -> option.Option (ref str);
+      strip_suffix_of `{ReverseSearcher.Trait Searcher} : Self -> ref str -> option.Option (ref str);
     }.
   End Pattern.
 
   (* pub trait DoubleEndedSearcher<'a>: ReverseSearcher<'a> { } *)
   Module DoubleEndedSearcher.
     Unset Primitive Projections.
-    Class Trait `{State.Trait} (Self : Set) `{ReverseSearcher.Trait Self} : Set := { }.
+    Class Trait `{ℋ : State.Trait} (Self : Set) `{ReverseSearcher.Trait Self} : Set := { }.
     Set Primitive Projections.
   End DoubleEndedSearcher.
   
@@ -276,12 +276,6 @@ Module Matches.
   Parameter t : forall (P : Set) `{Pattern.Trait P}, Set.
 End Matches.
 Definition Matches := Matches.t.
-
-(* pub struct ParseBoolError; *)
-Module ParseBoolError.
-  Parameter t : Set.
-End ParseBoolError.
-Definition ParseBoolError := ParseBoolError.t.
 
 (* 
 pub struct RMatchIndices<'a, P>(_)
@@ -406,59 +400,63 @@ pub trait FromStr: Sized {
 }
 *)
 Module FromStr.
-  Class Trait `{State.Trait} (Self : Set) : Type := { 
+  Class Trait `{ℋ : State.Trait} (Self : Set) : Type := { 
     Err : Set;
-    from_str : ref str -> Result Self Err;
+    from_str : ref str -> result.Result Self Err;
   }.
 End FromStr.
 
 Module FromStr_instances.
-  Global Instance for_bool `{State.Trait} : FromStr.Trait bool.
+  #[refine]
+  Global Instance for_bool `{ℋ : State.Trait} : FromStr.Trait bool := {
+    Err := str.error.ParseBoolError;
+  }.
+    all: destruct (axiom "FromStr_instances" : Empty_set).
+  Defined.
+
+  Global Instance for_char `{ℋ : State.Trait} : FromStr.Trait char.
   Admitted.
 
-  Global Instance for_char `{State.Trait} : FromStr.Trait char.
+  Global Instance for_f32 `{ℋ : State.Trait} : FromStr.Trait f32.
   Admitted.
 
-  Global Instance for_f32 `{State.Trait} : FromStr.Trait f32.
+  Global Instance for_f64 `{ℋ : State.Trait} : FromStr.Trait f64.
   Admitted.
 
-  Global Instance for_f64 `{State.Trait} : FromStr.Trait f64.
+  Global Instance for_i8 `{ℋ : State.Trait} : FromStr.Trait i8.
   Admitted.
 
-  Global Instance for_i8 `{State.Trait} : FromStr.Trait i8.
+  Global Instance for_i16 `{ℋ : State.Trait} : FromStr.Trait i16.
   Admitted.
 
-  Global Instance for_i16 `{State.Trait} : FromStr.Trait i16.
+  Global Instance for_i32 `{ℋ : State.Trait} : FromStr.Trait i32.
   Admitted.
 
-  Global Instance for_i32 `{State.Trait} : FromStr.Trait i32.
+  Global Instance for_i64 `{ℋ : State.Trait} : FromStr.Trait i64.
   Admitted.
 
-  Global Instance for_i64 `{State.Trait} : FromStr.Trait i64.
+  Global Instance for_i128 `{ℋ : State.Trait} : FromStr.Trait i128.
   Admitted.
 
-  Global Instance for_i128 `{State.Trait} : FromStr.Trait i128.
+  Global Instance for_isize `{ℋ : State.Trait} : FromStr.Trait isize.
   Admitted.
 
-  Global Instance for_isize `{State.Trait} : FromStr.Trait isize.
+  Global Instance for_u8 `{ℋ : State.Trait} : FromStr.Trait u8.
   Admitted.
 
-  Global Instance for_u8 `{State.Trait} : FromStr.Trait u8.
+  Global Instance for_u16 `{ℋ : State.Trait} : FromStr.Trait u16.
   Admitted.
 
-  Global Instance for_u16 `{State.Trait} : FromStr.Trait u16.
+  Global Instance for_u32 `{ℋ : State.Trait} : FromStr.Trait u32.
   Admitted.
 
-  Global Instance for_u32 `{State.Trait} : FromStr.Trait u32.
+  Global Instance for_u64 `{ℋ : State.Trait} : FromStr.Trait u64.
   Admitted.
 
-  Global Instance for_u64 `{State.Trait} : FromStr.Trait u64.
+  Global Instance for_u128 `{ℋ : State.Trait} : FromStr.Trait u128.
   Admitted.
 
-  Global Instance for_u128 `{State.Trait} : FromStr.Trait u128.
-  Admitted.
-
-  Global Instance for_usize `{State.Trait} : FromStr.Trait usize.
+  Global Instance for_usize `{ℋ : State.Trait} : FromStr.Trait usize.
   Admitted.
 End FromStr_instances.
 
@@ -472,12 +470,12 @@ End FromStr_instances.
 *)
 
 Module Impl_str. Section Impl_str.
-  Context `{State.Trait}.
+  Context `{ℋ : State.Trait}.
 
   Definition Self : Set := str.
 
   Parameter parse :
-    forall `{State.Trait} {F : Set}
+    forall `{ℋ : State.Trait} {F : Set}
       {H0 : FromStr.Trait F},
     ref Self ->
     M (core.result.Result F (FromStr.Err (Trait := H0))).

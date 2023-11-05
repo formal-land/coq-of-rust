@@ -16,15 +16,15 @@ Module result_info.
     Global Set Primitive Projections.
     
     Global Instance Get_marker : Notation.Dot "marker" := {
-      Notation.dot x := let* x := M.read x in Pure x.(marker) : M _;
+      Notation.dot x := let* x := M.read x in M.pure x.(marker) : M _;
     }.
     Global Instance Get_AF_marker : Notation.DoubleColon t "marker" := {
-      Notation.double_colon x := let* x := M.read x in Pure x.(marker) : M _;
+      Notation.double_colon x := let* x := M.read x in M.pure x.(marker) : M _;
     }.
   End IsResultType.
   End IsResultType.
   Definition IsResultType (T : Set) `{ℋ : State.Trait} : Set :=
-    M.val (IsResultType.t (T := T)).
+    M.Val (IsResultType.t (T := T)).
   
   Module  IsResultTypeFallback.
   Section IsResultTypeFallback.
@@ -65,12 +65,12 @@ Module result_info.
     Global Set Primitive Projections.
     
     Global Instance Get_0 : Notation.Dot "0" := {
-      Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
+      Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
     }.
   End IsResultErr.
   End IsResultErr.
   Definition IsResultErr `{ℋ : State.Trait} (T : Set) : Set :=
-    M.val (IsResultErr.t (T := T)).
+    M.Val (IsResultErr.t (T := T)).
   
   Module  IsResultErrFallback.
   Section IsResultErrFallback.
@@ -112,15 +112,15 @@ Section IsResultType.
   Global Set Primitive Projections.
   
   Global Instance Get_marker : Notation.Dot "marker" := {
-    Notation.dot x := let* x := M.read x in Pure x.(marker) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(marker) : M _;
   }.
   Global Instance Get_AF_marker : Notation.DoubleColon t "marker" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(marker) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(marker) : M _;
   }.
 End IsResultType.
 End IsResultType.
 Definition IsResultType (T : Set) `{ℋ : State.Trait} : Set :=
-  M.val (IsResultType.t (T := T)).
+  M.Val (IsResultType.t (T := T)).
 
 Module  IsResultTypeFallback.
 Section IsResultTypeFallback.
@@ -161,12 +161,12 @@ Section IsResultErr.
   Global Set Primitive Projections.
   
   Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
   }.
 End IsResultErr.
 End IsResultErr.
 Definition IsResultErr `{ℋ : State.Trait} (T : Set) : Set :=
-  M.val (IsResultErr.t (T := T)).
+  M.Val (IsResultErr.t (T := T)).
 
 Module  IsResultErrFallback.
 Section IsResultErrFallback.
@@ -318,12 +318,12 @@ Module reflect.
       Global Set Primitive Projections.
       
       Global Instance Get_0 : Notation.Dot "0" := {
-        Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
+        Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
       }.
     End ConstructorOutputValue.
     End ConstructorOutputValue.
     Definition ConstructorOutputValue `{ℋ : State.Trait} (T : Set) : Set :=
-      M.val (ConstructorOutputValue.t (T := T)).
+      M.Val (ConstructorOutputValue.t (T := T)).
     
     Module  Impl_ink_reflect_dispatch_private_Sealed_for_ink_reflect_dispatch_ConstructorOutputValue_T.
     Section Impl_ink_reflect_dispatch_private_Sealed_for_ink_reflect_dispatch_ConstructorOutputValue_T.
@@ -409,7 +409,7 @@ Module reflect.
       | CouldNotReadInput
       | PaidUnpayableMessage.
     End DispatchError.
-    Definition DispatchError `{ℋ : State.Trait} : Set := DispatchError.t.
+    Definition DispatchError `{ℋ : State.Trait} : Set := M.Val DispatchError.t.
     
     Module  ExecuteDispatchable.
     Section ExecuteDispatchable.
@@ -695,16 +695,16 @@ Module reflect.
         Global Set Primitive Projections.
         
         Global Instance Get_marker : Notation.Dot "marker" := {
-          Notation.dot x := let* x := M.read x in Pure x.(marker) : M _;
+          Notation.dot x := let* x := M.read x in M.pure x.(marker) : M _;
         }.
         Global Instance Get_AF_marker : Notation.DoubleColon t "marker" := {
           Notation.double_colon x :=
-            let* x := M.read x in Pure x.(marker) : M _;
+            let* x := M.read x in M.pure x.(marker) : M _;
         }.
       End TraitDefinitionRegistry.
       End TraitDefinitionRegistry.
       Definition TraitDefinitionRegistry (E : Set) `{ℋ : State.Trait} : Set :=
-        M.val (TraitDefinitionRegistry.t (E := E)).
+        M.Val (TraitDefinitionRegistry.t (E := E)).
       
       Module  Impl_ink_env_contract_ContractEnv_for_ink_reflect_trait_def_registry_TraitDefinitionRegistry_E.
       Section Impl_ink_env_contract_ContractEnv_for_ink_reflect_trait_def_registry_TraitDefinitionRegistry_E.
@@ -769,12 +769,12 @@ Module codegen.
         Global Set Primitive Projections.
         
         Global Instance Get_0 : Notation.Dot "0" := {
-          Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
+          Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
         }.
       End DispatchInput.
       End DispatchInput.
       Definition DispatchInput `{ℋ : State.Trait} (T : Set) : Set :=
-        M.val (DispatchInput.t (T := T)).
+        M.Val (DispatchInput.t (T := T)).
       
       Module  DispatchOutput.
       Section DispatchOutput.
@@ -789,12 +789,12 @@ Module codegen.
         Global Set Primitive Projections.
         
         Global Instance Get_0 : Notation.Dot "0" := {
-          Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
+          Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
         }.
       End DispatchOutput.
       End DispatchOutput.
       Definition DispatchOutput `{ℋ : State.Trait} (T : Set) : Set :=
-        M.val (DispatchOutput.t (T := T)).
+        M.Val (DispatchOutput.t (T := T)).
     End type_check.
   End dispatch.
   
@@ -846,7 +846,7 @@ Module codegen.
               core.convert.Into.Trait E
                 (T := ink.reflect.event.ContractEventBase.Type_
                   (Self := C)
-                  (Trait := ltac:(try clear Trait; hauto l: on)))} :
+                  (Trait := ltac:(refine _)))} :
             Self -> E -> M unit;
         }.
         
@@ -893,7 +893,7 @@ Module codegen.
             ink.codegen.event.topics.RespectTopicLimit.Trait
                 (ink.codegen.event.topics.EventLenTopics.LenTopics
                   (Self := Event)
-                  (Trait := ltac:(try clear Trait; hauto l: on)))}.
+                  (Trait := ltac:(refine _)))}.
         Unset Primitive Projections.
         Record t : Set := {
           marker : core.marker.PhantomData (Event);
@@ -901,11 +901,11 @@ Module codegen.
         Global Set Primitive Projections.
         
         Global Instance Get_marker : Notation.Dot "marker" := {
-          Notation.dot x := let* x := M.read x in Pure x.(marker) : M _;
+          Notation.dot x := let* x := M.read x in M.pure x.(marker) : M _;
         }.
         Global Instance Get_AF_marker : Notation.DoubleColon t "marker" := {
           Notation.double_colon x :=
-            let* x := M.read x in Pure x.(marker) : M _;
+            let* x := M.read x in M.pure x.(marker) : M _;
         }.
       End EventRespectsTopicLimit.
       End EventRespectsTopicLimit.
@@ -917,9 +917,9 @@ Module codegen.
             ink.codegen.event.topics.RespectTopicLimit.Trait
                 (ink.codegen.event.topics.EventLenTopics.LenTopics
                   (Self := Event)
-                  (Trait := ltac:(try clear Trait; hauto l: on)))}
+                  (Trait := ltac:(refine _)))}
           : Set :=
-        M.val (EventRespectsTopicLimit.t (Event := Event)).
+        M.Val (EventRespectsTopicLimit.t (Event := Event)).
       
       Module  EventTopics.
       Section EventTopics.
@@ -928,7 +928,7 @@ Module codegen.
         Inductive t : Set := Build.
       End EventTopics.
       End EventTopics.
-      Definition EventTopics := @EventTopics.t.
+      Definition EventTopics `{ℋ : State.Trait} := M.Val EventTopics.t.
       
       Module  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
       Section Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
@@ -1065,14 +1065,14 @@ Module codegen.
                 (ref
                   (ink.codegen.trait_def.call_builder.TraitCallBuilder.Builder
                     (Self := Forwarder)
-                    (Trait := ltac:(try clear Trait; hauto l: on))));
+                    (Trait := ltac:(refine _))));
           build_mut :
             (mut_ref Self) ->
               M
                 (mut_ref
                   (ink.codegen.trait_def.call_builder.TraitCallBuilder.Builder
                     (Self := Forwarder)
-                    (Trait := ltac:(try clear Trait; hauto l: on))));
+                    (Trait := ltac:(refine _))));
         }.
         
         Global Instance Method_Forwarder `(Trait) :
@@ -1091,7 +1091,8 @@ Module codegen.
         Inductive t : Set := Build.
       End TraitMessagePayable.
       End TraitMessagePayable.
-      Definition TraitMessagePayable := @TraitMessagePayable.t.
+      Definition TraitMessagePayable `{ℋ : State.Trait} :=
+        M.Val TraitMessagePayable.t.
       
       Module  TraitMessageSelector.
       Section TraitMessageSelector.
@@ -1100,7 +1101,8 @@ Module codegen.
         Inductive t : Set := Build.
       End TraitMessageSelector.
       End TraitMessageSelector.
-      Definition TraitMessageSelector := @TraitMessageSelector.t.
+      Definition TraitMessageSelector `{ℋ : State.Trait} :=
+        M.Val TraitMessageSelector.t.
     End trait_message.
   End trait_def.
   
@@ -1123,16 +1125,16 @@ Module codegen.
         Global Set Primitive Projections.
         
         Global Instance Get__marker : Notation.Dot "_marker" := {
-          Notation.dot x := let* x := M.read x in Pure x.(_marker) : M _;
+          Notation.dot x := let* x := M.read x in M.pure x.(_marker) : M _;
         }.
         Global Instance Get_AF__marker : Notation.DoubleColon t "_marker" := {
           Notation.double_colon x :=
-            let* x := M.read x in Pure x.(_marker) : M _;
+            let* x := M.read x in M.pure x.(_marker) : M _;
         }.
       End IsSameType.
       End IsSameType.
       Definition IsSameType (T : Set) `{ℋ : State.Trait} : Set :=
-        M.val (IsSameType.t (T := T)).
+        M.Val (IsSameType.t (T := T)).
     End same_type.
   End utils.
 End codegen.
@@ -1178,12 +1180,12 @@ Module dispatch.
       Global Set Primitive Projections.
       
       Global Instance Get_0 : Notation.Dot "0" := {
-        Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
+        Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
       }.
     End DispatchInput.
     End DispatchInput.
     Definition DispatchInput `{ℋ : State.Trait} (T : Set) : Set :=
-      M.val (DispatchInput.t (T := T)).
+      M.Val (DispatchInput.t (T := T)).
     
     Module  DispatchOutput.
     Section DispatchOutput.
@@ -1198,12 +1200,12 @@ Module dispatch.
       Global Set Primitive Projections.
       
       Global Instance Get_0 : Notation.Dot "0" := {
-        Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
+        Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
       }.
     End DispatchOutput.
     End DispatchOutput.
     Definition DispatchOutput `{ℋ : State.Trait} (T : Set) : Set :=
-      M.val (DispatchOutput.t (T := T)).
+      M.Val (DispatchOutput.t (T := T)).
   End type_check.
 End dispatch.
 
@@ -1269,12 +1271,12 @@ Module type_check.
     Global Set Primitive Projections.
     
     Global Instance Get_0 : Notation.Dot "0" := {
-      Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
+      Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
     }.
   End DispatchInput.
   End DispatchInput.
   Definition DispatchInput `{ℋ : State.Trait} (T : Set) : Set :=
-    M.val (DispatchInput.t (T := T)).
+    M.Val (DispatchInput.t (T := T)).
   
   Module  DispatchOutput.
   Section DispatchOutput.
@@ -1289,12 +1291,12 @@ Module type_check.
     Global Set Primitive Projections.
     
     Global Instance Get_0 : Notation.Dot "0" := {
-      Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
+      Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
     }.
   End DispatchOutput.
   End DispatchOutput.
   Definition DispatchOutput `{ℋ : State.Trait} (T : Set) : Set :=
-    M.val (DispatchOutput.t (T := T)).
+    M.Val (DispatchOutput.t (T := T)).
 End type_check.
 
 Module  DispatchInput.
@@ -1310,12 +1312,12 @@ Section DispatchInput.
   Global Set Primitive Projections.
   
   Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
   }.
 End DispatchInput.
 End DispatchInput.
 Definition DispatchInput `{ℋ : State.Trait} (T : Set) : Set :=
-  M.val (DispatchInput.t (T := T)).
+  M.Val (DispatchInput.t (T := T)).
 
 Module  DispatchOutput.
 Section DispatchOutput.
@@ -1330,12 +1332,12 @@ Section DispatchOutput.
   Global Set Primitive Projections.
   
   Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
   }.
 End DispatchOutput.
 End DispatchOutput.
 Definition DispatchOutput `{ℋ : State.Trait} (T : Set) : Set :=
-  M.val (DispatchOutput.t (T := T)).
+  M.Val (DispatchOutput.t (T := T)).
 
 Module env.
   Module  Env.
@@ -1417,7 +1419,7 @@ Module event.
             core.convert.Into.Trait E
               (T := ink.reflect.event.ContractEventBase.Type_
                 (Self := C)
-                (Trait := ltac:(try clear Trait; hauto l: on)))} :
+                (Trait := ltac:(refine _)))} :
           Self -> E -> M unit;
       }.
       
@@ -1464,7 +1466,7 @@ Module event.
           ink.codegen.event.topics.RespectTopicLimit.Trait
               (ink.codegen.event.topics.EventLenTopics.LenTopics
                 (Self := Event)
-                (Trait := ltac:(try clear Trait; hauto l: on)))}.
+                (Trait := ltac:(refine _)))}.
       Unset Primitive Projections.
       Record t : Set := {
         marker : core.marker.PhantomData (Event);
@@ -1472,10 +1474,11 @@ Module event.
       Global Set Primitive Projections.
       
       Global Instance Get_marker : Notation.Dot "marker" := {
-        Notation.dot x := let* x := M.read x in Pure x.(marker) : M _;
+        Notation.dot x := let* x := M.read x in M.pure x.(marker) : M _;
       }.
       Global Instance Get_AF_marker : Notation.DoubleColon t "marker" := {
-        Notation.double_colon x := let* x := M.read x in Pure x.(marker) : M _;
+        Notation.double_colon x :=
+          let* x := M.read x in M.pure x.(marker) : M _;
       }.
     End EventRespectsTopicLimit.
     End EventRespectsTopicLimit.
@@ -1487,9 +1490,9 @@ Module event.
           ink.codegen.event.topics.RespectTopicLimit.Trait
               (ink.codegen.event.topics.EventLenTopics.LenTopics
                 (Self := Event)
-                (Trait := ltac:(try clear Trait; hauto l: on)))}
+                (Trait := ltac:(refine _)))}
         : Set :=
-      M.val (EventRespectsTopicLimit.t (Event := Event)).
+      M.Val (EventRespectsTopicLimit.t (Event := Event)).
     
     Module  EventTopics.
     Section EventTopics.
@@ -1498,7 +1501,7 @@ Module event.
       Inductive t : Set := Build.
     End EventTopics.
     End EventTopics.
-    Definition EventTopics := @EventTopics.t.
+    Definition EventTopics `{ℋ : State.Trait} := M.Val EventTopics.t.
     
     Module  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
     Section Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
@@ -1527,7 +1530,7 @@ Module emit.
           core.convert.Into.Trait E
             (T := ink.reflect.event.ContractEventBase.Type_
               (Self := C)
-              (Trait := ltac:(try clear Trait; hauto l: on)))} :
+              (Trait := ltac:(refine _)))} :
         Self -> E -> M unit;
     }.
     
@@ -1547,7 +1550,7 @@ Section EmitEvent.
         core.convert.Into.Trait E
           (T := ink.reflect.event.ContractEventBase.Type_
             (Self := C)
-            (Trait := ltac:(try clear Trait; hauto l: on)))} :
+            (Trait := ltac:(refine _)))} :
       Self -> E -> M unit;
   }.
   
@@ -1593,7 +1596,7 @@ Module topics.
         ink.codegen.event.topics.RespectTopicLimit.Trait
             (ink.codegen.event.topics.EventLenTopics.LenTopics
               (Self := Event)
-              (Trait := ltac:(try clear Trait; hauto l: on)))}.
+              (Trait := ltac:(refine _)))}.
     Unset Primitive Projections.
     Record t : Set := {
       marker : core.marker.PhantomData (Event);
@@ -1601,10 +1604,10 @@ Module topics.
     Global Set Primitive Projections.
     
     Global Instance Get_marker : Notation.Dot "marker" := {
-      Notation.dot x := let* x := M.read x in Pure x.(marker) : M _;
+      Notation.dot x := let* x := M.read x in M.pure x.(marker) : M _;
     }.
     Global Instance Get_AF_marker : Notation.DoubleColon t "marker" := {
-      Notation.double_colon x := let* x := M.read x in Pure x.(marker) : M _;
+      Notation.double_colon x := let* x := M.read x in M.pure x.(marker) : M _;
     }.
   End EventRespectsTopicLimit.
   End EventRespectsTopicLimit.
@@ -1616,9 +1619,9 @@ Module topics.
         ink.codegen.event.topics.RespectTopicLimit.Trait
             (ink.codegen.event.topics.EventLenTopics.LenTopics
               (Self := Event)
-              (Trait := ltac:(try clear Trait; hauto l: on)))}
+              (Trait := ltac:(refine _)))}
       : Set :=
-    M.val (EventRespectsTopicLimit.t (Event := Event)).
+    M.Val (EventRespectsTopicLimit.t (Event := Event)).
   
   Module  EventTopics.
   Section EventTopics.
@@ -1627,7 +1630,7 @@ Module topics.
     Inductive t : Set := Build.
   End EventTopics.
   End EventTopics.
-  Definition EventTopics := @EventTopics.t.
+  Definition EventTopics `{ℋ : State.Trait} := M.Val EventTopics.t.
   
   Module  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
   Section Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
@@ -1654,7 +1657,7 @@ Section EventRespectsTopicLimit.
       ink.codegen.event.topics.RespectTopicLimit.Trait
           (ink.codegen.event.topics.EventLenTopics.LenTopics
             (Self := Event)
-            (Trait := ltac:(try clear Trait; hauto l: on)))}.
+            (Trait := ltac:(refine _)))}.
   Unset Primitive Projections.
   Record t : Set := {
     marker : core.marker.PhantomData (Event);
@@ -1662,10 +1665,10 @@ Section EventRespectsTopicLimit.
   Global Set Primitive Projections.
   
   Global Instance Get_marker : Notation.Dot "marker" := {
-    Notation.dot x := let* x := M.read x in Pure x.(marker) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(marker) : M _;
   }.
   Global Instance Get_AF_marker : Notation.DoubleColon t "marker" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(marker) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(marker) : M _;
   }.
 End EventRespectsTopicLimit.
 End EventRespectsTopicLimit.
@@ -1677,9 +1680,9 @@ Definition EventRespectsTopicLimit
       ink.codegen.event.topics.RespectTopicLimit.Trait
           (ink.codegen.event.topics.EventLenTopics.LenTopics
             (Self := Event)
-            (Trait := ltac:(try clear Trait; hauto l: on)))}
+            (Trait := ltac:(refine _)))}
     : Set :=
-  M.val (EventRespectsTopicLimit.t (Event := Event)).
+  M.Val (EventRespectsTopicLimit.t (Event := Event)).
 
 Module  RespectTopicLimit.
 Section RespectTopicLimit.
@@ -1699,7 +1702,7 @@ Section EventTopics.
   Inductive t : Set := Build.
 End EventTopics.
 End EventTopics.
-Definition EventTopics := @EventTopics.t.
+Definition EventTopics `{ℋ : State.Trait} := M.Val EventTopics.t.
 
 Module  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
 Section Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
@@ -1915,14 +1918,14 @@ Module trait_def.
               (ref
                 (ink.codegen.trait_def.call_builder.TraitCallBuilder.Builder
                   (Self := Forwarder)
-                  (Trait := ltac:(try clear Trait; hauto l: on))));
+                  (Trait := ltac:(refine _))));
         build_mut :
           (mut_ref Self) ->
             M
               (mut_ref
                 (ink.codegen.trait_def.call_builder.TraitCallBuilder.Builder
                   (Self := Forwarder)
-                  (Trait := ltac:(try clear Trait; hauto l: on))));
+                  (Trait := ltac:(refine _))));
       }.
       
       Global Instance Method_Forwarder `(Trait) :
@@ -1941,7 +1944,8 @@ Module trait_def.
       Inductive t : Set := Build.
     End TraitMessagePayable.
     End TraitMessagePayable.
-    Definition TraitMessagePayable := @TraitMessagePayable.t.
+    Definition TraitMessagePayable `{ℋ : State.Trait} :=
+      M.Val TraitMessagePayable.t.
     
     Module  TraitMessageSelector.
     Section TraitMessageSelector.
@@ -1950,7 +1954,8 @@ Module trait_def.
       Inductive t : Set := Build.
     End TraitMessageSelector.
     End TraitMessageSelector.
-    Definition TraitMessageSelector := @TraitMessageSelector.t.
+    Definition TraitMessageSelector `{ℋ : State.Trait} :=
+      M.Val TraitMessageSelector.t.
   End trait_message.
 End trait_def.
 
@@ -2005,14 +2010,14 @@ Module call_builder.
             (ref
               (ink.codegen.trait_def.call_builder.TraitCallBuilder.Builder
                 (Self := Forwarder)
-                (Trait := ltac:(try clear Trait; hauto l: on))));
+                (Trait := ltac:(refine _))));
       build_mut :
         (mut_ref Self) ->
           M
             (mut_ref
               (ink.codegen.trait_def.call_builder.TraitCallBuilder.Builder
                 (Self := Forwarder)
-                (Trait := ltac:(try clear Trait; hauto l: on))));
+                (Trait := ltac:(refine _))));
     }.
     
     Global Instance Method_Forwarder `(Trait) :
@@ -2071,14 +2076,14 @@ Section TraitCallForwarderFor.
           (ref
             (ink.codegen.trait_def.call_builder.TraitCallBuilder.Builder
               (Self := Forwarder)
-              (Trait := ltac:(try clear Trait; hauto l: on))));
+              (Trait := ltac:(refine _))));
     build_mut :
       (mut_ref Self) ->
         M
           (mut_ref
             (ink.codegen.trait_def.call_builder.TraitCallBuilder.Builder
               (Self := Forwarder)
-              (Trait := ltac:(try clear Trait; hauto l: on))));
+              (Trait := ltac:(refine _))));
   }.
   
   Global Instance Method_Forwarder `(Trait) :
@@ -2096,7 +2101,8 @@ Module trait_message.
     Inductive t : Set := Build.
   End TraitMessagePayable.
   End TraitMessagePayable.
-  Definition TraitMessagePayable := @TraitMessagePayable.t.
+  Definition TraitMessagePayable `{ℋ : State.Trait} :=
+    M.Val TraitMessagePayable.t.
   
   Module  TraitMessageSelector.
   Section TraitMessageSelector.
@@ -2105,7 +2111,8 @@ Module trait_message.
     Inductive t : Set := Build.
   End TraitMessageSelector.
   End TraitMessageSelector.
-  Definition TraitMessageSelector := @TraitMessageSelector.t.
+  Definition TraitMessageSelector `{ℋ : State.Trait} :=
+    M.Val TraitMessageSelector.t.
 End trait_message.
 
 Module  TraitMessagePayable.
@@ -2115,7 +2122,8 @@ Section TraitMessagePayable.
   Inductive t : Set := Build.
 End TraitMessagePayable.
 End TraitMessagePayable.
-Definition TraitMessagePayable := @TraitMessagePayable.t.
+Definition TraitMessagePayable `{ℋ : State.Trait} :=
+  M.Val TraitMessagePayable.t.
 
 Module  TraitMessageSelector.
 Section TraitMessageSelector.
@@ -2124,7 +2132,8 @@ Section TraitMessageSelector.
   Inductive t : Set := Build.
 End TraitMessageSelector.
 End TraitMessageSelector.
-Definition TraitMessageSelector := @TraitMessageSelector.t.
+Definition TraitMessageSelector `{ℋ : State.Trait} :=
+  M.Val TraitMessageSelector.t.
 
 Module utils.
   Module identity_type.
@@ -2145,15 +2154,16 @@ Module utils.
       Global Set Primitive Projections.
       
       Global Instance Get__marker : Notation.Dot "_marker" := {
-        Notation.dot x := let* x := M.read x in Pure x.(_marker) : M _;
+        Notation.dot x := let* x := M.read x in M.pure x.(_marker) : M _;
       }.
       Global Instance Get_AF__marker : Notation.DoubleColon t "_marker" := {
-        Notation.double_colon x := let* x := M.read x in Pure x.(_marker) : M _;
+        Notation.double_colon x :=
+          let* x := M.read x in M.pure x.(_marker) : M _;
       }.
     End IsSameType.
     End IsSameType.
     Definition IsSameType (T : Set) `{ℋ : State.Trait} : Set :=
-      M.val (IsSameType.t (T := T)).
+      M.Val (IsSameType.t (T := T)).
   End same_type.
 End utils.
 
@@ -2177,15 +2187,15 @@ Module same_type.
     Global Set Primitive Projections.
     
     Global Instance Get__marker : Notation.Dot "_marker" := {
-      Notation.dot x := let* x := M.read x in Pure x.(_marker) : M _;
+      Notation.dot x := let* x := M.read x in M.pure x.(_marker) : M _;
     }.
     Global Instance Get_AF__marker : Notation.DoubleColon t "_marker" := {
-      Notation.double_colon x := let* x := M.read x in Pure x.(_marker) : M _;
+      Notation.double_colon x := let* x := M.read x in M.pure x.(_marker) : M _;
     }.
   End IsSameType.
   End IsSameType.
   Definition IsSameType (T : Set) `{ℋ : State.Trait} : Set :=
-    M.val (IsSameType.t (T := T)).
+    M.Val (IsSameType.t (T := T)).
 End same_type.
 
 Module  IsSameType.
@@ -2201,15 +2211,15 @@ Section IsSameType.
   Global Set Primitive Projections.
   
   Global Instance Get__marker : Notation.Dot "_marker" := {
-    Notation.dot x := let* x := M.read x in Pure x.(_marker) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(_marker) : M _;
   }.
   Global Instance Get_AF__marker : Notation.DoubleColon t "_marker" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(_marker) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(_marker) : M _;
   }.
 End IsSameType.
 End IsSameType.
 Definition IsSameType (T : Set) `{ℋ : State.Trait} : Set :=
-  M.val (IsSameType.t (T := T)).
+  M.Val (IsSameType.t (T := T)).
 
 Module contract.
   Module  ContractName.
@@ -2346,12 +2356,12 @@ Module dispatch.
     Global Set Primitive Projections.
     
     Global Instance Get_0 : Notation.Dot "0" := {
-      Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
+      Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
     }.
   End ConstructorOutputValue.
   End ConstructorOutputValue.
   Definition ConstructorOutputValue `{ℋ : State.Trait} (T : Set) : Set :=
-    M.val (ConstructorOutputValue.t (T := T)).
+    M.Val (ConstructorOutputValue.t (T := T)).
   
   Module  Impl_ink_reflect_dispatch_private_Sealed_for_ink_reflect_dispatch_ConstructorOutputValue_T.
   Section Impl_ink_reflect_dispatch_private_Sealed_for_ink_reflect_dispatch_ConstructorOutputValue_T.
@@ -2437,7 +2447,7 @@ Module dispatch.
     | CouldNotReadInput
     | PaidUnpayableMessage.
   End DispatchError.
-  Definition DispatchError `{ℋ : State.Trait} : Set := DispatchError.t.
+  Definition DispatchError `{ℋ : State.Trait} : Set := M.Val DispatchError.t.
   
   Module  ExecuteDispatchable.
   Section ExecuteDispatchable.
@@ -2778,12 +2788,12 @@ Section ConstructorOutputValue.
   Global Set Primitive Projections.
   
   Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
   }.
 End ConstructorOutputValue.
 End ConstructorOutputValue.
 Definition ConstructorOutputValue `{ℋ : State.Trait} (T : Set) : Set :=
-  M.val (ConstructorOutputValue.t (T := T)).
+  M.Val (ConstructorOutputValue.t (T := T)).
 
 Module  Impl_ink_reflect_dispatch_private_Sealed_for_ink_reflect_dispatch_ConstructorOutputValue_T.
 Section Impl_ink_reflect_dispatch_private_Sealed_for_ink_reflect_dispatch_ConstructorOutputValue_T.
@@ -2915,7 +2925,7 @@ Module DispatchError.
   | CouldNotReadInput
   | PaidUnpayableMessage.
 End DispatchError.
-Definition DispatchError `{ℋ : State.Trait} : Set := DispatchError.t.
+Definition DispatchError `{ℋ : State.Trait} : Set := M.Val DispatchError.t.
 
 Module  Impl_core_fmt_Debug_for_ink_reflect_dispatch_DispatchError.
 Section Impl_core_fmt_Debug_for_ink_reflect_dispatch_DispatchError.
@@ -3162,15 +3172,16 @@ Module trait_def.
       Global Set Primitive Projections.
       
       Global Instance Get_marker : Notation.Dot "marker" := {
-        Notation.dot x := let* x := M.read x in Pure x.(marker) : M _;
+        Notation.dot x := let* x := M.read x in M.pure x.(marker) : M _;
       }.
       Global Instance Get_AF_marker : Notation.DoubleColon t "marker" := {
-        Notation.double_colon x := let* x := M.read x in Pure x.(marker) : M _;
+        Notation.double_colon x :=
+          let* x := M.read x in M.pure x.(marker) : M _;
       }.
     End TraitDefinitionRegistry.
     End TraitDefinitionRegistry.
     Definition TraitDefinitionRegistry (E : Set) `{ℋ : State.Trait} : Set :=
-      M.val (TraitDefinitionRegistry.t (E := E)).
+      M.Val (TraitDefinitionRegistry.t (E := E)).
     
     Module  Impl_ink_env_contract_ContractEnv_for_ink_reflect_trait_def_registry_TraitDefinitionRegistry_E.
     Section Impl_ink_env_contract_ContractEnv_for_ink_reflect_trait_def_registry_TraitDefinitionRegistry_E.
@@ -3263,15 +3274,15 @@ Module registry.
     Global Set Primitive Projections.
     
     Global Instance Get_marker : Notation.Dot "marker" := {
-      Notation.dot x := let* x := M.read x in Pure x.(marker) : M _;
+      Notation.dot x := let* x := M.read x in M.pure x.(marker) : M _;
     }.
     Global Instance Get_AF_marker : Notation.DoubleColon t "marker" := {
-      Notation.double_colon x := let* x := M.read x in Pure x.(marker) : M _;
+      Notation.double_colon x := let* x := M.read x in M.pure x.(marker) : M _;
     }.
   End TraitDefinitionRegistry.
   End TraitDefinitionRegistry.
   Definition TraitDefinitionRegistry (E : Set) `{ℋ : State.Trait} : Set :=
-    M.val (TraitDefinitionRegistry.t (E := E)).
+    M.Val (TraitDefinitionRegistry.t (E := E)).
   
   Module  Impl_ink_env_contract_ContractEnv_for_ink_reflect_trait_def_registry_TraitDefinitionRegistry_E.
   Section Impl_ink_env_contract_ContractEnv_for_ink_reflect_trait_def_registry_TraitDefinitionRegistry_E.
@@ -3305,15 +3316,15 @@ Section TraitDefinitionRegistry.
   Global Set Primitive Projections.
   
   Global Instance Get_marker : Notation.Dot "marker" := {
-    Notation.dot x := let* x := M.read x in Pure x.(marker) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(marker) : M _;
   }.
   Global Instance Get_AF_marker : Notation.DoubleColon t "marker" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(marker) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(marker) : M _;
   }.
 End TraitDefinitionRegistry.
 End TraitDefinitionRegistry.
 Definition TraitDefinitionRegistry (E : Set) `{ℋ : State.Trait} : Set :=
-  M.val (TraitDefinitionRegistry.t (E := E)).
+  M.Val (TraitDefinitionRegistry.t (E := E)).
 
 Module  Impl_ink_env_contract_ContractEnv_for_ink_reflect_trait_def_registry_TraitDefinitionRegistry_E.
 Section Impl_ink_env_contract_ContractEnv_for_ink_reflect_trait_def_registry_TraitDefinitionRegistry_E.
@@ -3466,7 +3477,7 @@ Module chain_extension.
     Inductive t : Set := Build.
   End ValueReturned.
   End ValueReturned.
-  Definition ValueReturned := @ValueReturned.t.
+  Definition ValueReturned `{ℋ : State.Trait} := M.Val ValueReturned.t.
   
   Module  Impl_ink_chain_extension_private_OutputSealed_for_ink_chain_extension_ValueReturned.
   Section Impl_ink_chain_extension_private_OutputSealed_for_ink_chain_extension_ValueReturned.
@@ -3620,7 +3631,7 @@ Section ValueReturned.
   Inductive t : Set := Build.
 End ValueReturned.
 End ValueReturned.
-Definition ValueReturned := @ValueReturned.t.
+Definition ValueReturned `{ℋ : State.Trait} := M.Val ValueReturned.t.
 
 Module  Impl_ink_chain_extension_private_OutputSealed_for_ink_chain_extension_ValueReturned.
 Section Impl_ink_chain_extension_private_OutputSealed_for_ink_chain_extension_ValueReturned.
@@ -3728,7 +3739,7 @@ Module contract_ref.
           M
             (ink_env.types.Environment.AccountId
               (Self := T)
-              (Trait := ltac:(try clear Trait; hauto l: on)));
+              (Trait := ltac:(refine _)));
     }.
     
   End ToAccountId.
@@ -3746,7 +3757,7 @@ Section ToAccountId.
         M
           (ink_env.types.Environment.AccountId
             (Self := T)
-            (Trait := ltac:(try clear Trait; hauto l: on)));
+            (Trait := ltac:(refine _)));
   }.
   
 End ToAccountId.
@@ -3766,15 +3777,15 @@ Module env_access.
     Global Set Primitive Projections.
     
     Global Instance Get_marker : Notation.Dot "marker" := {
-      Notation.dot x := let* x := M.read x in Pure x.(marker) : M _;
+      Notation.dot x := let* x := M.read x in M.pure x.(marker) : M _;
     }.
     Global Instance Get_AF_marker : Notation.DoubleColon t "marker" := {
-      Notation.double_colon x := let* x := M.read x in Pure x.(marker) : M _;
+      Notation.double_colon x := let* x := M.read x in M.pure x.(marker) : M _;
     }.
   End EnvAccess.
   End EnvAccess.
   Definition EnvAccess (E : Set) `{ℋ : State.Trait} : Set :=
-    M.val (EnvAccess.t (E := E)).
+    M.Val (EnvAccess.t (E := E)).
   
   Module  Impl_core_marker_Copy_for_ink_env_access_EnvAccess_E.
   Section Impl_core_marker_Copy_for_ink_env_access_EnvAccess_E.
@@ -3870,15 +3881,15 @@ Section EnvAccess.
   Global Set Primitive Projections.
   
   Global Instance Get_marker : Notation.Dot "marker" := {
-    Notation.dot x := let* x := M.read x in Pure x.(marker) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(marker) : M _;
   }.
   Global Instance Get_AF_marker : Notation.DoubleColon t "marker" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(marker) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(marker) : M _;
   }.
 End EnvAccess.
 End EnvAccess.
 Definition EnvAccess (E : Set) `{ℋ : State.Trait} : Set :=
-  M.val (EnvAccess.t (E := E)).
+  M.Val (EnvAccess.t (E := E)).
 
 Module  Impl_core_marker_Copy_for_ink_env_access_EnvAccess_E.
 Section Impl_core_marker_Copy_for_ink_env_access_EnvAccess_E.

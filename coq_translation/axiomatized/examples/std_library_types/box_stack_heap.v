@@ -14,20 +14,20 @@ Section Point.
   Global Set Primitive Projections.
   
   Global Instance Get_x : Notation.Dot "x" := {
-    Notation.dot x' := let* x' := M.read x' in Pure x'.(x) : M _;
+    Notation.dot x' := let* x' := M.read x' in M.pure x'.(x) : M _;
   }.
   Global Instance Get_AF_x : Notation.DoubleColon t "x" := {
-    Notation.double_colon x' := let* x' := M.read x' in Pure x'.(x) : M _;
+    Notation.double_colon x' := let* x' := M.read x' in M.pure x'.(x) : M _;
   }.
   Global Instance Get_y : Notation.Dot "y" := {
-    Notation.dot x := let* x := M.read x in Pure x.(y) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(y) : M _;
   }.
   Global Instance Get_AF_y : Notation.DoubleColon t "y" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(y) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(y) : M _;
   }.
 End Point.
 End Point.
-Definition Point `{ℋ : State.Trait} : Set := M.val Point.t.
+Definition Point `{ℋ : State.Trait} : Set := M.Val Point.t.
 
 Module  Impl_core_fmt_Debug_for_box_stack_heap_Point.
 Section Impl_core_fmt_Debug_for_box_stack_heap_Point.
@@ -94,22 +94,22 @@ Section Rectangle.
   Global Set Primitive Projections.
   
   Global Instance Get_top_left : Notation.Dot "top_left" := {
-    Notation.dot x := let* x := M.read x in Pure x.(top_left) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(top_left) : M _;
   }.
   Global Instance Get_AF_top_left : Notation.DoubleColon t "top_left" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(top_left) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(top_left) : M _;
   }.
   Global Instance Get_bottom_right : Notation.Dot "bottom_right" := {
-    Notation.dot x := let* x := M.read x in Pure x.(bottom_right) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(bottom_right) : M _;
   }.
   Global Instance Get_AF_bottom_right :
     Notation.DoubleColon t "bottom_right" := {
     Notation.double_colon x :=
-      let* x := M.read x in Pure x.(bottom_right) : M _;
+      let* x := M.read x in M.pure x.(bottom_right) : M _;
   }.
 End Rectangle.
 End Rectangle.
-Definition Rectangle `{ℋ : State.Trait} : Set := M.val Rectangle.t.
+Definition Rectangle `{ℋ : State.Trait} : Set := M.Val Rectangle.t.
 
 Parameter origin : forall `{ℋ : State.Trait}, M box_stack_heap.Point.
 

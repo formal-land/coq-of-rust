@@ -1,3 +1,58 @@
+type Closure(
+    DefId(0:4 ~ functions_closures_as_output_parameters[5480]::create_fn::{closure#0}),
+    [
+        i8,
+        extern "rust-call" fn(()),
+        (std::string::String,),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:4 ~ functions_closures_as_output_parameters[5480]::create_fn::{closure#0}),
+    [
+        i8,
+        extern "rust-call" fn(()),
+        (std::string::String,),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:6 ~ functions_closures_as_output_parameters[5480]::create_fnmut::{closure#0}),
+    [
+        i16,
+        extern "rust-call" fn(()),
+        (std::string::String,),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:6 ~ functions_closures_as_output_parameters[5480]::create_fnmut::{closure#0}),
+    [
+        i16,
+        extern "rust-call" fn(()),
+        (std::string::String,),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:8 ~ functions_closures_as_output_parameters[5480]::create_fnonce::{closure#0}),
+    [
+        i32,
+        extern "rust-call" fn(()),
+        (std::string::String,),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:8 ~ functions_closures_as_output_parameters[5480]::create_fnonce::{closure#0}),
+    [
+        i32,
+        extern "rust-call" fn(()),
+        (std::string::String,),
+    ],
+) not yet handled
+type Alias(
+    Opaque,
+    AliasTy {
+        substs: [],
+        def_id: DefId(0:14 ~ functions_closures_as_output_parameters[5480]::create_fnonce::{opaque#0}),
+    },
+) not yet handled
 type Alias(
     Opaque,
     AliasTy {
@@ -23,7 +78,42 @@ type Alias(
     Opaque,
     AliasTy {
         substs: [],
+        def_id: DefId(0:13 ~ functions_closures_as_output_parameters[5480]::create_fnmut::{opaque#0}),
+    },
+) not yet handled
+type Alias(
+    Opaque,
+    AliasTy {
+        substs: [],
         def_id: DefId(0:12 ~ functions_closures_as_output_parameters[5480]::create_fn::{opaque#0}),
+    },
+) not yet handled
+type Alias(
+    Opaque,
+    AliasTy {
+        substs: [],
+        def_id: DefId(0:12 ~ functions_closures_as_output_parameters[5480]::create_fn::{opaque#0}),
+    },
+) not yet handled
+type Alias(
+    Opaque,
+    AliasTy {
+        substs: [],
+        def_id: DefId(0:12 ~ functions_closures_as_output_parameters[5480]::create_fn::{opaque#0}),
+    },
+) not yet handled
+type Alias(
+    Opaque,
+    AliasTy {
+        substs: [],
+        def_id: DefId(0:14 ~ functions_closures_as_output_parameters[5480]::create_fnonce::{opaque#0}),
+    },
+) not yet handled
+type Alias(
+    Opaque,
+    AliasTy {
+        substs: [],
+        def_id: DefId(0:13 ~ functions_closures_as_output_parameters[5480]::create_fnmut::{opaque#0}),
     },
 ) not yet handled
 type Alias(

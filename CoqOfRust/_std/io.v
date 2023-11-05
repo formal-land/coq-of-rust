@@ -1,6 +1,7 @@
 Require Import CoqOfRust.lib.lib.
 
 Require CoqOfRust.alloc.vec.
+Require CoqOfRust.alloc.string.
 Require CoqOfRust.core.fmt.
 Require CoqOfRust.core.result_types.
 
@@ -38,7 +39,7 @@ Module Error.
   Parameter t : Set.
 End Error.
 Definition Error `{State.Trait} : Set :=
-  M.val Error.t.
+  M.Val Error.t.
 
 Definition Result `{State.Trait} (T : Set) : Set :=
   core.result_types.Result T Error.t.
@@ -384,7 +385,7 @@ Module Read.
     read_vectored : mut_ref Self -> mut_ref (slice IoSliceMut) -> Result usize;
     is_read_vectored : ref Self -> bool;
     read_to_end : mut_ref Self -> mut_ref (slice u8) -> Result usize;
-    read_to_string : mut_ref Self -> mut_ref String -> Result usize;
+    read_to_string : mut_ref Self -> mut_ref alloc.string.String -> Result usize;
     read_exact : mut_ref Self -> mut_ref (slice u8) -> Result unit;
     read_buf : mut_ref Self -> BorrowedCursor -> Result unit;
     read_buf_exact : mut_ref Self -> BorrowedCursor -> Result unit;
@@ -418,7 +419,7 @@ Module BufRead.
     has_data_left : mut_ref Self -> Result bool;
     read_until :
       mut_ref Self -> u8 -> mut_ref (vec.Vec u8 vec.Vec.Default.A) -> Result usize;
-    read_line : mut_ref Self -> mut_ref String -> Result usize;
+    read_line : mut_ref Self -> mut_ref alloc.string.String -> Result usize;
     split : Self -> u8 -> Split Self;
     lines : mut_ref Self -> Lines Self;
   }.

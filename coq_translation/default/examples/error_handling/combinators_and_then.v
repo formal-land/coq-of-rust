@@ -7,7 +7,7 @@ Module Food.
   | Steak
   | Sushi.
 End Food.
-Definition Food `{ℋ : State.Trait} : Set := Food.t.
+Definition Food `{ℋ : State.Trait} : Set := M.Val Food.t.
 
 Module  Impl_core_fmt_Debug_for_combinators_and_then_Food.
 Section Impl_core_fmt_Debug_for_combinators_and_then_Food.
@@ -19,21 +19,23 @@ Section Impl_core_fmt_Debug_for_combinators_and_then_Food.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M ltac:(core.fmt.Result) :=
-    let* α0 := deref f core.fmt.Formatter in
-    let* α1 := borrow_mut α0 core.fmt.Formatter in
-    let* α2 :=
-      match self with
-      | combinators_and_then.Food  =>
-        let* α0 := deref (mk_str "CordonBleu") str in
-        borrow α0 str
-      | combinators_and_then.Food  =>
-        let* α0 := deref (mk_str "Steak") str in
-        borrow α0 str
-      | combinators_and_then.Food  =>
-        let* α0 := deref (mk_str "Sushi") str in
-        borrow α0 str
-      end in
-    core.fmt.Formatter::["write_str"] α1 α2.
+    M.function_body
+      (let* α0 : ltac:(refine core.fmt.Formatter) := deref f in
+      let* α1 : ltac:(refine (mut_ref core.fmt.Formatter)) := borrow_mut α0 in
+      let* α2 := M.read self in
+      let* α3 : ltac:(refine (ref str)) :=
+        match α2 with
+        | combinators_and_then.Food.CordonBleu  =>
+          let* α0 : ltac:(refine str) := deref (mk_str "CordonBleu") in
+          borrow α0
+        | combinators_and_then.Food.Steak  =>
+          let* α0 : ltac:(refine str) := deref (mk_str "Steak") in
+          borrow α0
+        | combinators_and_then.Food.Sushi  =>
+          let* α0 : ltac:(refine str) := deref (mk_str "Sushi") in
+          borrow α0
+        end in
+      core.fmt.Formatter::["write_str"] α1 α3).
   
   Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {
     Notation.double_colon := fmt;
@@ -51,7 +53,7 @@ Module Day.
   | Tuesday
   | Wednesday.
 End Day.
-Definition Day `{ℋ : State.Trait} : Set := Day.t.
+Definition Day `{ℋ : State.Trait} : Set := M.Val Day.t.
 
 Module  Impl_core_fmt_Debug_for_combinators_and_then_Day.
 Section Impl_core_fmt_Debug_for_combinators_and_then_Day.
@@ -63,21 +65,23 @@ Section Impl_core_fmt_Debug_for_combinators_and_then_Day.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M ltac:(core.fmt.Result) :=
-    let* α0 := deref f core.fmt.Formatter in
-    let* α1 := borrow_mut α0 core.fmt.Formatter in
-    let* α2 :=
-      match self with
-      | combinators_and_then.Day  =>
-        let* α0 := deref (mk_str "Monday") str in
-        borrow α0 str
-      | combinators_and_then.Day  =>
-        let* α0 := deref (mk_str "Tuesday") str in
-        borrow α0 str
-      | combinators_and_then.Day  =>
-        let* α0 := deref (mk_str "Wednesday") str in
-        borrow α0 str
-      end in
-    core.fmt.Formatter::["write_str"] α1 α2.
+    M.function_body
+      (let* α0 : ltac:(refine core.fmt.Formatter) := deref f in
+      let* α1 : ltac:(refine (mut_ref core.fmt.Formatter)) := borrow_mut α0 in
+      let* α2 := M.read self in
+      let* α3 : ltac:(refine (ref str)) :=
+        match α2 with
+        | combinators_and_then.Day.Monday  =>
+          let* α0 : ltac:(refine str) := deref (mk_str "Monday") in
+          borrow α0
+        | combinators_and_then.Day.Tuesday  =>
+          let* α0 : ltac:(refine str) := deref (mk_str "Tuesday") in
+          borrow α0
+        | combinators_and_then.Day.Wednesday  =>
+          let* α0 : ltac:(refine str) := deref (mk_str "Wednesday") in
+          borrow α0
+        end in
+      core.fmt.Formatter::["write_str"] α1 α3).
   
   Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {
     Notation.double_colon := fmt;
@@ -93,113 +97,158 @@ Definition have_ingredients
     `{ℋ : State.Trait}
     (food : combinators_and_then.Food)
     : M (core.option.Option combinators_and_then.Food) :=
-  match food with
-  | combinators_and_then.Food  => M.alloc core.option.Option.None
-  | _ => M.alloc (core.option.Option.Some food)
-  end.
+  M.function_body
+    (let* α0 := M.read food in
+    match α0 with
+    | combinators_and_then.Food.Sushi  => M.alloc core.option.Option.None
+    | _ => M.alloc (core.option.Option.Some food)
+    end).
 
 Definition have_recipe
     `{ℋ : State.Trait}
     (food : combinators_and_then.Food)
     : M (core.option.Option combinators_and_then.Food) :=
-  match food with
-  | combinators_and_then.Food  => M.alloc core.option.Option.None
-  | _ => M.alloc (core.option.Option.Some food)
-  end.
+  M.function_body
+    (let* α0 := M.read food in
+    match α0 with
+    | combinators_and_then.Food.CordonBleu  => M.alloc core.option.Option.None
+    | _ => M.alloc (core.option.Option.Some food)
+    end).
 
 Definition cookable_v1
     `{ℋ : State.Trait}
     (food : combinators_and_then.Food)
     : M (core.option.Option combinators_and_then.Food) :=
-  let* α0 := combinators_and_then.have_recipe food in
-  match α0 with
-  | core.option.Option  => M.alloc core.option.Option.None
-  | core.option.Option food =>
-    let* α0 := combinators_and_then.have_ingredients food in
-    match α0 with
-    | core.option.Option  => M.alloc core.option.Option.None
-    | core.option.Option food => M.alloc (core.option.Option.Some food)
-    end
-  end.
+  M.function_body
+    (let* α0 : ltac:(refine (core.option.Option combinators_and_then.Food)) :=
+      combinators_and_then.have_recipe food in
+    let* α1 := M.read α0 in
+    match α1 with
+    | core.option.Option.None  => M.alloc core.option.Option.None
+    | core.option.Option.Some food =>
+      let* α0 : ltac:(refine (core.option.Option combinators_and_then.Food)) :=
+        combinators_and_then.have_ingredients food in
+      let* α1 := M.read α0 in
+      match α1 with
+      | core.option.Option.None  => M.alloc core.option.Option.None
+      | core.option.Option.Some food => M.alloc (core.option.Option.Some food)
+      end
+    end).
 
 Definition cookable_v2
     `{ℋ : State.Trait}
     (food : combinators_and_then.Food)
     : M (core.option.Option combinators_and_then.Food) :=
-  let* α0 := combinators_and_then.have_recipe food in
-  (core.option.Option combinators_and_then.Food)::["and_then"]
-    α0
-    combinators_and_then.have_ingredients.
+  M.function_body
+    (let* α0 : ltac:(refine (core.option.Option combinators_and_then.Food)) :=
+      combinators_and_then.have_recipe food in
+    (core.option.Option combinators_and_then.Food)::["and_then"]
+      α0
+      combinators_and_then.have_ingredients).
 
 Definition eat
     `{ℋ : State.Trait}
     (food : combinators_and_then.Food)
     (day : combinators_and_then.Day)
     : M unit :=
-  let* α0 := combinators_and_then.cookable_v2 food in
-  match α0 with
-  | core.option.Option food =>
-    let* _ :=
-      let* α0 :=
-        borrow
-          [ mk_str "Yay! On "; mk_str " we get to eat "; mk_str ".
-" ]
-          (list (ref str)) in
-      let* α1 := deref α0 (list (ref str)) in
-      let* α2 := borrow α1 (list (ref str)) in
-      let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := borrow day combinators_and_then.Day in
-      let* α5 := deref α4 combinators_and_then.Day in
-      let* α6 := borrow α5 combinators_and_then.Day in
-      let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
-      let* α8 := borrow food combinators_and_then.Food in
-      let* α9 := deref α8 combinators_and_then.Food in
-      let* α10 := borrow α9 combinators_and_then.Food in
-      let* α11 := core.fmt.rt.Argument::["new_debug"] α10 in
-      let* α12 := borrow [ α7; α11 ] (list core.fmt.rt.Argument) in
-      let* α13 := deref α12 (list core.fmt.rt.Argument) in
-      let* α14 := borrow α13 (list core.fmt.rt.Argument) in
-      let* α15 := pointer_coercion "Unsize" α14 in
-      let* α16 := core.fmt.Arguments::["new_v1"] α3 α15 in
-      std.io.stdio._print α16 in
-    M.alloc tt
-  | core.option.Option  =>
-    let* _ :=
-      let* α0 :=
-        borrow
-          [ mk_str "Oh no. We don't get to eat on "; mk_str "?
-" ]
-          (list (ref str)) in
-      let* α1 := deref α0 (list (ref str)) in
-      let* α2 := borrow α1 (list (ref str)) in
-      let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := borrow day combinators_and_then.Day in
-      let* α5 := deref α4 combinators_and_then.Day in
-      let* α6 := borrow α5 combinators_and_then.Day in
-      let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
-      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
-      let* α9 := deref α8 (list core.fmt.rt.Argument) in
-      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
-      let* α11 := pointer_coercion "Unsize" α10 in
-      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
-      std.io.stdio._print α12 in
-    M.alloc tt
-  end.
+  M.function_body
+    (let* α0 : ltac:(refine (core.option.Option combinators_and_then.Food)) :=
+      combinators_and_then.cookable_v2 food in
+    let* α1 := M.read α0 in
+    match α1 with
+    | core.option.Option.Some food =>
+      let* _ : ltac:(refine unit) :=
+        let* α0 : ltac:(refine (array (ref str))) :=
+          M.alloc
+            [ mk_str "Yay! On "; mk_str " we get to eat "; mk_str ".
+" ] in
+        let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
+        let* α2 : ltac:(refine (array (ref str))) := deref α1 in
+        let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
+        let* α4 : ltac:(refine (ref (slice (ref str)))) :=
+          pointer_coercion "Unsize" α3 in
+        let* α5 : ltac:(refine (ref combinators_and_then.Day)) := borrow day in
+        let* α6 : ltac:(refine combinators_and_then.Day) := deref α5 in
+        let* α7 : ltac:(refine (ref combinators_and_then.Day)) := borrow α6 in
+        let* α8 : ltac:(refine core.fmt.rt.Argument) :=
+          core.fmt.rt.Argument::["new_debug"] α7 in
+        let* α9 : ltac:(refine (ref combinators_and_then.Food)) :=
+          borrow food in
+        let* α10 : ltac:(refine combinators_and_then.Food) := deref α9 in
+        let* α11 : ltac:(refine (ref combinators_and_then.Food)) :=
+          borrow α10 in
+        let* α12 : ltac:(refine core.fmt.rt.Argument) :=
+          core.fmt.rt.Argument::["new_debug"] α11 in
+        let* α13 : ltac:(refine (array core.fmt.rt.Argument)) :=
+          M.alloc [ α8; α12 ] in
+        let* α14 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+          borrow α13 in
+        let* α15 : ltac:(refine (array core.fmt.rt.Argument)) := deref α14 in
+        let* α16 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+          borrow α15 in
+        let* α17 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+          pointer_coercion "Unsize" α16 in
+        let* α18 : ltac:(refine core.fmt.Arguments) :=
+          core.fmt.Arguments::["new_v1"] α4 α17 in
+        std.io.stdio._print α18 in
+      M.alloc tt
+    | core.option.Option.None  =>
+      let* _ : ltac:(refine unit) :=
+        let* α0 : ltac:(refine (array (ref str))) :=
+          M.alloc [ mk_str "Oh no. We don't get to eat on "; mk_str "?
+" ] in
+        let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
+        let* α2 : ltac:(refine (array (ref str))) := deref α1 in
+        let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
+        let* α4 : ltac:(refine (ref (slice (ref str)))) :=
+          pointer_coercion "Unsize" α3 in
+        let* α5 : ltac:(refine (ref combinators_and_then.Day)) := borrow day in
+        let* α6 : ltac:(refine combinators_and_then.Day) := deref α5 in
+        let* α7 : ltac:(refine (ref combinators_and_then.Day)) := borrow α6 in
+        let* α8 : ltac:(refine core.fmt.rt.Argument) :=
+          core.fmt.rt.Argument::["new_debug"] α7 in
+        let* α9 : ltac:(refine (array core.fmt.rt.Argument)) :=
+          M.alloc [ α8 ] in
+        let* α10 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+          borrow α9 in
+        let* α11 : ltac:(refine (array core.fmt.rt.Argument)) := deref α10 in
+        let* α12 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+          borrow α11 in
+        let* α13 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+          pointer_coercion "Unsize" α12 in
+        let* α14 : ltac:(refine core.fmt.Arguments) :=
+          core.fmt.Arguments::["new_v1"] α4 α13 in
+        std.io.stdio._print α14 in
+      M.alloc tt
+    end).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
-  let* '(cordon_bleu, steak, sushi) :=
-    let* α0 := M.alloc combinators_and_then.Food.CordonBleu in
-    let* α1 := M.alloc combinators_and_then.Food.Steak in
-    let* α2 := M.alloc combinators_and_then.Food.Sushi in
-    Pure (α0, α1, α2) in
-  let* _ :=
-    let* α0 := M.alloc combinators_and_then.Day.Monday in
-    combinators_and_then.eat cordon_bleu α0 in
-  let* _ :=
-    let* α0 := M.alloc combinators_and_then.Day.Tuesday in
-    combinators_and_then.eat steak α0 in
-  let* _ :=
-    let* α0 := M.alloc combinators_and_then.Day.Wednesday in
-    combinators_and_then.eat sushi α0 in
-  M.alloc tt.
+  M.function_body
+    (let*
+        '(cordon_bleu, steak, sushi) :
+        ltac:(refine
+          (M.Val
+            (combinators_and_then.Food *
+              combinators_and_then.Food *
+              combinators_and_then.Food))) :=
+      let* α0 : ltac:(refine combinators_and_then.Food) :=
+        M.alloc combinators_and_then.Food.CordonBleu in
+      let* α1 : ltac:(refine combinators_and_then.Food) :=
+        M.alloc combinators_and_then.Food.Steak in
+      let* α2 : ltac:(refine combinators_and_then.Food) :=
+        M.alloc combinators_and_then.Food.Sushi in
+      M.alloc (α0, α1, α2) in
+    let* _ : ltac:(refine unit) :=
+      let* α0 : ltac:(refine combinators_and_then.Day) :=
+        M.alloc combinators_and_then.Day.Monday in
+      combinators_and_then.eat cordon_bleu α0 in
+    let* _ : ltac:(refine unit) :=
+      let* α0 : ltac:(refine combinators_and_then.Day) :=
+        M.alloc combinators_and_then.Day.Tuesday in
+      combinators_and_then.eat steak α0 in
+    let* _ : ltac:(refine unit) :=
+      let* α0 : ltac:(refine combinators_and_then.Day) :=
+        M.alloc combinators_and_then.Day.Wednesday in
+      combinators_and_then.eat sushi α0 in
+    M.alloc tt).

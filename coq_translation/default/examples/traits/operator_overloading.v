@@ -8,7 +8,7 @@ Section Foo.
   Inductive t : Set := Build.
 End Foo.
 End Foo.
-Definition Foo := @Foo.t.
+Definition Foo `{ℋ : State.Trait} := M.Val Foo.t.
 
 Module  Bar.
 Section Bar.
@@ -17,7 +17,7 @@ Section Bar.
   Inductive t : Set := Build.
 End Bar.
 End Bar.
-Definition Bar := @Bar.t.
+Definition Bar `{ℋ : State.Trait} := M.Val Bar.t.
 
 Module  FooBar.
 Section FooBar.
@@ -26,7 +26,7 @@ Section FooBar.
   Inductive t : Set := Build.
 End FooBar.
 End FooBar.
-Definition FooBar := @FooBar.t.
+Definition FooBar `{ℋ : State.Trait} := M.Val FooBar.t.
 
 Module  Impl_core_fmt_Debug_for_operator_overloading_FooBar.
 Section Impl_core_fmt_Debug_for_operator_overloading_FooBar.
@@ -38,11 +38,12 @@ Section Impl_core_fmt_Debug_for_operator_overloading_FooBar.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M ltac:(core.fmt.Result) :=
-    let* α0 := deref f core.fmt.Formatter in
-    let* α1 := borrow_mut α0 core.fmt.Formatter in
-    let* α2 := deref (mk_str "FooBar") str in
-    let* α3 := borrow α2 str in
-    core.fmt.Formatter::["write_str"] α1 α3.
+    M.function_body
+      (let* α0 : ltac:(refine core.fmt.Formatter) := deref f in
+      let* α1 : ltac:(refine (mut_ref core.fmt.Formatter)) := borrow_mut α0 in
+      let* α2 : ltac:(refine str) := deref (mk_str "FooBar") in
+      let* α3 : ltac:(refine (ref str)) := borrow α2 in
+      core.fmt.Formatter::["write_str"] α1 α3).
   
   Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {
     Notation.double_colon := fmt;
@@ -61,7 +62,7 @@ Section BarFoo.
   Inductive t : Set := Build.
 End BarFoo.
 End BarFoo.
-Definition BarFoo := @BarFoo.t.
+Definition BarFoo `{ℋ : State.Trait} := M.Val BarFoo.t.
 
 Module  Impl_core_fmt_Debug_for_operator_overloading_BarFoo.
 Section Impl_core_fmt_Debug_for_operator_overloading_BarFoo.
@@ -73,11 +74,12 @@ Section Impl_core_fmt_Debug_for_operator_overloading_BarFoo.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M ltac:(core.fmt.Result) :=
-    let* α0 := deref f core.fmt.Formatter in
-    let* α1 := borrow_mut α0 core.fmt.Formatter in
-    let* α2 := deref (mk_str "BarFoo") str in
-    let* α3 := borrow α2 str in
-    core.fmt.Formatter::["write_str"] α1 α3.
+    M.function_body
+      (let* α0 : ltac:(refine core.fmt.Formatter) := deref f in
+      let* α1 : ltac:(refine (mut_ref core.fmt.Formatter)) := borrow_mut α0 in
+      let* α2 : ltac:(refine str) := deref (mk_str "BarFoo") in
+      let* α3 : ltac:(refine (ref str)) := borrow α2 in
+      core.fmt.Formatter::["write_str"] α1 α3).
   
   Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {
     Notation.double_colon := fmt;
@@ -101,18 +103,22 @@ Section Impl_core_ops_arith_Add_operator_overloading_Bar_for_operator_overloadin
       (self : Self)
       (_rhs : operator_overloading.Bar)
       : M operator_overloading.FooBar :=
-    let* _ :=
-      let* _ :=
-        let* α0 :=
-          borrow [ mk_str "> Foo.add(Bar) was called
-" ] (list (ref str)) in
-        let* α1 := deref α0 (list (ref str)) in
-        let* α2 := borrow α1 (list (ref str)) in
-        let* α3 := pointer_coercion "Unsize" α2 in
-        let* α4 := core.fmt.Arguments::["new_const"] α3 in
-        std.io.stdio._print α4 in
-      M.alloc tt in
-    M.alloc operator_overloading.FooBar.Build_t.
+    M.function_body
+      (let* _ : ltac:(refine unit) :=
+        let* _ : ltac:(refine unit) :=
+          let* α0 : ltac:(refine (array (ref str))) :=
+            M.alloc [ mk_str "> Foo.add(Bar) was called
+" ] in
+          let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
+          let* α2 : ltac:(refine (array (ref str))) := deref α1 in
+          let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
+          let* α4 : ltac:(refine (ref (slice (ref str)))) :=
+            pointer_coercion "Unsize" α3 in
+          let* α5 : ltac:(refine core.fmt.Arguments) :=
+            core.fmt.Arguments::["new_const"] α4 in
+          std.io.stdio._print α5 in
+        M.alloc tt in
+      M.alloc operator_overloading.FooBar.Build_t).
   
   Global Instance AssociatedFunction_add : Notation.DoubleColon Self "add" := {
     Notation.double_colon := add;
@@ -138,18 +144,22 @@ Section Impl_core_ops_arith_Add_operator_overloading_Foo_for_operator_overloadin
       (self : Self)
       (_rhs : operator_overloading.Foo)
       : M operator_overloading.BarFoo :=
-    let* _ :=
-      let* _ :=
-        let* α0 :=
-          borrow [ mk_str "> Bar.add(Foo) was called
-" ] (list (ref str)) in
-        let* α1 := deref α0 (list (ref str)) in
-        let* α2 := borrow α1 (list (ref str)) in
-        let* α3 := pointer_coercion "Unsize" α2 in
-        let* α4 := core.fmt.Arguments::["new_const"] α3 in
-        std.io.stdio._print α4 in
-      M.alloc tt in
-    M.alloc operator_overloading.BarFoo.Build_t.
+    M.function_body
+      (let* _ : ltac:(refine unit) :=
+        let* _ : ltac:(refine unit) :=
+          let* α0 : ltac:(refine (array (ref str))) :=
+            M.alloc [ mk_str "> Bar.add(Foo) was called
+" ] in
+          let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
+          let* α2 : ltac:(refine (array (ref str))) := deref α1 in
+          let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
+          let* α4 : ltac:(refine (ref (slice (ref str)))) :=
+            pointer_coercion "Unsize" α3 in
+          let* α5 : ltac:(refine core.fmt.Arguments) :=
+            core.fmt.Arguments::["new_const"] α4 in
+          std.io.stdio._print α5 in
+        M.alloc tt in
+      M.alloc operator_overloading.BarFoo.Build_t).
   
   Global Instance AssociatedFunction_add : Notation.DoubleColon Self "add" := {
     Notation.double_colon := add;
@@ -165,58 +175,85 @@ End Impl_core_ops_arith_Add_operator_overloading_Foo_for_operator_overloading_Ba
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
-  let* _ :=
-    let* _ :=
-      let* α0 :=
-        borrow [ mk_str "Foo + Bar = "; mk_str "
-" ] (list (ref str)) in
-      let* α1 := deref α0 (list (ref str)) in
-      let* α2 := borrow α1 (list (ref str)) in
-      let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := M.alloc operator_overloading.Foo.Build_t in
-      let* α5 := M.alloc operator_overloading.Bar.Build_t in
-      let* α6 :=
-        (core.ops.arith.Add.add
-            (Self := operator_overloading.Foo)
-            (Trait := ltac:(refine _)))
-          α4
-          α5 in
-      let* α7 := borrow α6 operator_overloading.FooBar in
-      let* α8 := deref α7 operator_overloading.FooBar in
-      let* α9 := borrow α8 operator_overloading.FooBar in
-      let* α10 := core.fmt.rt.Argument::["new_debug"] α9 in
-      let* α11 := borrow [ α10 ] (list core.fmt.rt.Argument) in
-      let* α12 := deref α11 (list core.fmt.rt.Argument) in
-      let* α13 := borrow α12 (list core.fmt.rt.Argument) in
-      let* α14 := pointer_coercion "Unsize" α13 in
-      let* α15 := core.fmt.Arguments::["new_v1"] α3 α14 in
-      std.io.stdio._print α15 in
-    M.alloc tt in
-  let* _ :=
-    let* _ :=
-      let* α0 :=
-        borrow [ mk_str "Bar + Foo = "; mk_str "
-" ] (list (ref str)) in
-      let* α1 := deref α0 (list (ref str)) in
-      let* α2 := borrow α1 (list (ref str)) in
-      let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := M.alloc operator_overloading.Bar.Build_t in
-      let* α5 := M.alloc operator_overloading.Foo.Build_t in
-      let* α6 :=
-        (core.ops.arith.Add.add
-            (Self := operator_overloading.Bar)
-            (Trait := ltac:(refine _)))
-          α4
-          α5 in
-      let* α7 := borrow α6 operator_overloading.BarFoo in
-      let* α8 := deref α7 operator_overloading.BarFoo in
-      let* α9 := borrow α8 operator_overloading.BarFoo in
-      let* α10 := core.fmt.rt.Argument::["new_debug"] α9 in
-      let* α11 := borrow [ α10 ] (list core.fmt.rt.Argument) in
-      let* α12 := deref α11 (list core.fmt.rt.Argument) in
-      let* α13 := borrow α12 (list core.fmt.rt.Argument) in
-      let* α14 := pointer_coercion "Unsize" α13 in
-      let* α15 := core.fmt.Arguments::["new_v1"] α3 α14 in
-      std.io.stdio._print α15 in
-    M.alloc tt in
-  M.alloc tt.
+  M.function_body
+    (let* _ : ltac:(refine unit) :=
+      let* _ : ltac:(refine unit) :=
+        let* α0 : ltac:(refine (array (ref str))) :=
+          M.alloc [ mk_str "Foo + Bar = "; mk_str "
+" ] in
+        let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
+        let* α2 : ltac:(refine (array (ref str))) := deref α1 in
+        let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
+        let* α4 : ltac:(refine (ref (slice (ref str)))) :=
+          pointer_coercion "Unsize" α3 in
+        let* α5 : ltac:(refine operator_overloading.Foo) :=
+          M.alloc operator_overloading.Foo.Build_t in
+        let* α6 : ltac:(refine operator_overloading.Bar) :=
+          M.alloc operator_overloading.Bar.Build_t in
+        let* α7 : ltac:(refine operator_overloading.FooBar) :=
+          (core.ops.arith.Add.add
+              (Self := operator_overloading.Foo)
+              (Trait := ltac:(refine _)))
+            α5
+            α6 in
+        let* α8 : ltac:(refine (ref operator_overloading.FooBar)) :=
+          borrow α7 in
+        let* α9 : ltac:(refine operator_overloading.FooBar) := deref α8 in
+        let* α10 : ltac:(refine (ref operator_overloading.FooBar)) :=
+          borrow α9 in
+        let* α11 : ltac:(refine core.fmt.rt.Argument) :=
+          core.fmt.rt.Argument::["new_debug"] α10 in
+        let* α12 : ltac:(refine (array core.fmt.rt.Argument)) :=
+          M.alloc [ α11 ] in
+        let* α13 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+          borrow α12 in
+        let* α14 : ltac:(refine (array core.fmt.rt.Argument)) := deref α13 in
+        let* α15 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+          borrow α14 in
+        let* α16 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+          pointer_coercion "Unsize" α15 in
+        let* α17 : ltac:(refine core.fmt.Arguments) :=
+          core.fmt.Arguments::["new_v1"] α4 α16 in
+        std.io.stdio._print α17 in
+      M.alloc tt in
+    let* _ : ltac:(refine unit) :=
+      let* _ : ltac:(refine unit) :=
+        let* α0 : ltac:(refine (array (ref str))) :=
+          M.alloc [ mk_str "Bar + Foo = "; mk_str "
+" ] in
+        let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
+        let* α2 : ltac:(refine (array (ref str))) := deref α1 in
+        let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
+        let* α4 : ltac:(refine (ref (slice (ref str)))) :=
+          pointer_coercion "Unsize" α3 in
+        let* α5 : ltac:(refine operator_overloading.Bar) :=
+          M.alloc operator_overloading.Bar.Build_t in
+        let* α6 : ltac:(refine operator_overloading.Foo) :=
+          M.alloc operator_overloading.Foo.Build_t in
+        let* α7 : ltac:(refine operator_overloading.BarFoo) :=
+          (core.ops.arith.Add.add
+              (Self := operator_overloading.Bar)
+              (Trait := ltac:(refine _)))
+            α5
+            α6 in
+        let* α8 : ltac:(refine (ref operator_overloading.BarFoo)) :=
+          borrow α7 in
+        let* α9 : ltac:(refine operator_overloading.BarFoo) := deref α8 in
+        let* α10 : ltac:(refine (ref operator_overloading.BarFoo)) :=
+          borrow α9 in
+        let* α11 : ltac:(refine core.fmt.rt.Argument) :=
+          core.fmt.rt.Argument::["new_debug"] α10 in
+        let* α12 : ltac:(refine (array core.fmt.rt.Argument)) :=
+          M.alloc [ α11 ] in
+        let* α13 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+          borrow α12 in
+        let* α14 : ltac:(refine (array core.fmt.rt.Argument)) := deref α13 in
+        let* α15 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+          borrow α14 in
+        let* α16 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+          pointer_coercion "Unsize" α15 in
+        let* α17 : ltac:(refine core.fmt.Arguments) :=
+          core.fmt.Arguments::["new_v1"] α4 α16 in
+        std.io.stdio._print α17 in
+      M.alloc tt in
+    M.alloc tt).

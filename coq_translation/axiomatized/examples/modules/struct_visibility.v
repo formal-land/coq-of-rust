@@ -15,15 +15,16 @@ Module my.
     Global Set Primitive Projections.
     
     Global Instance Get_contents : Notation.Dot "contents" := {
-      Notation.dot x := let* x := M.read x in Pure x.(contents) : M _;
+      Notation.dot x := let* x := M.read x in M.pure x.(contents) : M _;
     }.
     Global Instance Get_AF_contents : Notation.DoubleColon t "contents" := {
-      Notation.double_colon x := let* x := M.read x in Pure x.(contents) : M _;
+      Notation.double_colon x :=
+        let* x := M.read x in M.pure x.(contents) : M _;
     }.
   End OpenBox.
   End OpenBox.
   Definition OpenBox (T : Set) `{ℋ : State.Trait} : Set :=
-    M.val (OpenBox.t (T := T)).
+    M.Val (OpenBox.t (T := T)).
   
   Module  ClosedBox.
   Section ClosedBox.
@@ -38,15 +39,16 @@ Module my.
     Global Set Primitive Projections.
     
     Global Instance Get_contents : Notation.Dot "contents" := {
-      Notation.dot x := let* x := M.read x in Pure x.(contents) : M _;
+      Notation.dot x := let* x := M.read x in M.pure x.(contents) : M _;
     }.
     Global Instance Get_AF_contents : Notation.DoubleColon t "contents" := {
-      Notation.double_colon x := let* x := M.read x in Pure x.(contents) : M _;
+      Notation.double_colon x :=
+        let* x := M.read x in M.pure x.(contents) : M _;
     }.
   End ClosedBox.
   End ClosedBox.
   Definition ClosedBox (T : Set) `{ℋ : State.Trait} : Set :=
-    M.val (ClosedBox.t (T := T)).
+    M.Val (ClosedBox.t (T := T)).
   
   Module  Impl_struct_visibility_my_ClosedBox_T.
   Section Impl_struct_visibility_my_ClosedBox_T.
@@ -79,15 +81,15 @@ Section OpenBox.
   Global Set Primitive Projections.
   
   Global Instance Get_contents : Notation.Dot "contents" := {
-    Notation.dot x := let* x := M.read x in Pure x.(contents) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(contents) : M _;
   }.
   Global Instance Get_AF_contents : Notation.DoubleColon t "contents" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(contents) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(contents) : M _;
   }.
 End OpenBox.
 End OpenBox.
 Definition OpenBox (T : Set) `{ℋ : State.Trait} : Set :=
-  M.val (OpenBox.t (T := T)).
+  M.Val (OpenBox.t (T := T)).
 
 Module  ClosedBox.
 Section ClosedBox.
@@ -102,15 +104,15 @@ Section ClosedBox.
   Global Set Primitive Projections.
   
   Global Instance Get_contents : Notation.Dot "contents" := {
-    Notation.dot x := let* x := M.read x in Pure x.(contents) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(contents) : M _;
   }.
   Global Instance Get_AF_contents : Notation.DoubleColon t "contents" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(contents) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(contents) : M _;
   }.
 End ClosedBox.
 End ClosedBox.
 Definition ClosedBox (T : Set) `{ℋ : State.Trait} : Set :=
-  M.val (ClosedBox.t (T := T)).
+  M.Val (ClosedBox.t (T := T)).
 
 Module  Impl_struct_visibility_my_ClosedBox_T_2.
 Section Impl_struct_visibility_my_ClosedBox_T_2.

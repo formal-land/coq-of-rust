@@ -13,20 +13,20 @@ Section Fibonacci.
   Global Set Primitive Projections.
   
   Global Instance Get_curr : Notation.Dot "curr" := {
-    Notation.dot x := let* x := M.read x in Pure x.(curr) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(curr) : M _;
   }.
   Global Instance Get_AF_curr : Notation.DoubleColon t "curr" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(curr) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(curr) : M _;
   }.
   Global Instance Get_next : Notation.Dot "next" := {
-    Notation.dot x := let* x := M.read x in Pure x.(next) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(next) : M _;
   }.
   Global Instance Get_AF_next : Notation.DoubleColon t "next" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(next) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(next) : M _;
   }.
 End Fibonacci.
 End Fibonacci.
-Definition Fibonacci `{ℋ : State.Trait} : Set := M.val Fibonacci.t.
+Definition Fibonacci `{ℋ : State.Trait} : Set := M.Val Fibonacci.t.
 
 Module  Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
 Section Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.

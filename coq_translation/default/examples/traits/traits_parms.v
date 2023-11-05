@@ -64,11 +64,11 @@ Section SomeOtherType.
   Global Set Primitive Projections.
   
   Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
   }.
 End SomeOtherType.
 End SomeOtherType.
-Definition SomeOtherType `{ℋ : State.Trait} : Set := M.val SomeOtherType.t.
+Definition SomeOtherType `{ℋ : State.Trait} : Set := M.Val SomeOtherType.t.
 
 Module  Impl_traits_parms_Foo_for_traits_parms_SomeOtherType.
 Section Impl_traits_parms_Foo_for_traits_parms_SomeOtherType.
@@ -111,7 +111,7 @@ Section Impl_traits_parms_SomeTrait_for_traits_parms_SomeOtherType.
   
   Definition SomeType : Set := traits_parms.SomeOtherType.
   
-  Definition some_fn : M unit := M.alloc tt.
+  Definition some_fn : M unit := M.function_body (M.alloc tt).
   
   Global Instance AssociatedFunction_some_fn :
     Notation.DoubleColon Self "some_fn" := {

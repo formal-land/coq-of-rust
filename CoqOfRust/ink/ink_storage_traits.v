@@ -162,7 +162,7 @@ Module impls.
     Inductive t : Set := Build.
   End AutoKey.
   End AutoKey.
-  Definition AutoKey := @AutoKey.t.
+  Definition AutoKey `{ℋ : State.Trait} := M.Val AutoKey.t.
   
   Module  Impl_core_default_Default_for_ink_storage_traits_impls_AutoKey.
   Section Impl_core_default_Default_for_ink_storage_traits_impls_AutoKey.
@@ -379,12 +379,12 @@ Module impls.
     Global Set Primitive Projections.
     
     Global Instance Get_0 : Notation.Dot "0" := {
-      Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
+      Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
     }.
   End ManualKey.
   End ManualKey.
   Definition ManualKey `{ℋ : State.Trait} (ParentKey : Set) : Set :=
-    M.val (ManualKey.t (ParentKey := ParentKey)).
+    M.Val (ManualKey.t (ParentKey := ParentKey)).
   
   Module  Impl_core_default_Default_for_ink_storage_traits_impls_ManualKey_ParentKey.
   Section Impl_core_default_Default_for_ink_storage_traits_impls_ManualKey_ParentKey.
@@ -648,17 +648,17 @@ Module impls.
     
     Unset Primitive Projections.
     Record t : Set := {
-      x0 : core.marker.PhantomData (L * R);
+      x0 : core.marker.PhantomData (M.Val (L * R));
     }.
     Global Set Primitive Projections.
     
     Global Instance Get_0 : Notation.Dot "0" := {
-      Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
+      Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
     }.
   End ResolverKey.
   End ResolverKey.
   Definition ResolverKey `{ℋ : State.Trait} (L R : Set) : Set :=
-    M.val (ResolverKey.t (L := L) (R := R)).
+    M.Val (ResolverKey.t (L := L) (R := R)).
   
   Module  Impl_core_default_Default_for_ink_storage_traits_impls_ResolverKey_L_R.
   Section Impl_core_default_Default_for_ink_storage_traits_impls_ResolverKey_L_R.
@@ -930,7 +930,7 @@ Module impls.
         ink_storage_traits.impls.KeyType.Trait
             (ink_storage_traits.storage.StorableHint.PreferredKey
               (Self := T)
-              (Trait := ltac:(try clear Trait; hauto l: on)))}
+              (Trait := ltac:(refine _)))}
       {ℋ_2 :
         ink_storage_traits.storage.StorableHint.Trait T
           (Key := ltac:(ink_storage_traits.impls.FinalKey
@@ -1049,7 +1049,7 @@ Section AutoKey.
   Inductive t : Set := Build.
 End AutoKey.
 End AutoKey.
-Definition AutoKey := @AutoKey.t.
+Definition AutoKey `{ℋ : State.Trait} := M.Val AutoKey.t.
 
 Module  Impl_scale_info_TypeInfo_for_ink_storage_traits_impls_AutoKey.
 Section Impl_scale_info_TypeInfo_for_ink_storage_traits_impls_AutoKey.
@@ -1285,12 +1285,12 @@ Section ManualKey.
   Global Set Primitive Projections.
   
   Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
   }.
 End ManualKey.
 End ManualKey.
 Definition ManualKey `{ℋ : State.Trait} (ParentKey : Set) : Set :=
-  M.val (ManualKey.t (ParentKey := ParentKey)).
+  M.Val (ManualKey.t (ParentKey := ParentKey)).
 
 Module  Impl_scale_info_TypeInfo_for_ink_storage_traits_impls_ManualKey_ParentKey.
 Section Impl_scale_info_TypeInfo_for_ink_storage_traits_impls_ManualKey_ParentKey.
@@ -1581,17 +1581,17 @@ Section ResolverKey.
   
   Unset Primitive Projections.
   Record t : Set := {
-    x0 : core.marker.PhantomData (L * R);
+    x0 : core.marker.PhantomData (M.Val (L * R));
   }.
   Global Set Primitive Projections.
   
   Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
   }.
 End ResolverKey.
 End ResolverKey.
 Definition ResolverKey `{ℋ : State.Trait} (L R : Set) : Set :=
-  M.val (ResolverKey.t (L := L) (R := R)).
+  M.Val (ResolverKey.t (L := L) (R := R)).
 
 Module  Impl_scale_info_TypeInfo_for_ink_storage_traits_impls_ResolverKey_L_R.
 Section Impl_scale_info_TypeInfo_for_ink_storage_traits_impls_ResolverKey_L_R.
@@ -1600,7 +1600,7 @@ Section Impl_scale_info_TypeInfo_for_ink_storage_traits_impls_ResolverKey_L_R.
   Context {L R : Set}.
   
   Context
-    {ℋ_0 : scale_info.TypeInfo.Trait (core.marker.PhantomData (L * R))}
+    {ℋ_0 : scale_info.TypeInfo.Trait (core.marker.PhantomData (M.Val (L * R)))}
     {ℋ_1 : scale_info.TypeInfo.Trait L}
     {ℋ_2 : scale_info.TypeInfo.Trait R}.
   Definition Self : Set := ink_storage_traits.impls.ResolverKey L R.
@@ -1885,7 +1885,7 @@ Section Impl_ink_storage_traits_storage_AutoStorableHint_ink_storage_traits_impl
       ink_storage_traits.impls.KeyType.Trait
           (ink_storage_traits.storage.StorableHint.PreferredKey
             (Self := T)
-            (Trait := ltac:(try clear Trait; hauto l: on)))}
+            (Trait := ltac:(refine _)))}
     {ℋ_2 :
       ink_storage_traits.storage.StorableHint.Trait T
         (Key := ltac:(ink_storage_traits.impls.FinalKey
@@ -3622,7 +3622,7 @@ Section Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_.
   Context {A : Set}.
   
   Context {ℋ_0 : ink_storage_traits.layout.StorageLayout.Trait A}.
-  Definition Self : Set := A.
+  Definition Self : Set := M.Val A.
   
   Parameter layout :
       (ref ltac:(ink_primitives.key.Key)) ->
@@ -3648,7 +3648,7 @@ Section Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_.
   Context
     {ℋ_0 : ink_storage_traits.layout.StorageLayout.Trait A}
     {ℋ_1 : ink_storage_traits.layout.StorageLayout.Trait B}.
-  Definition Self : Set := A * B.
+  Definition Self : Set := M.Val (A * B).
   
   Parameter layout :
       (ref ltac:(ink_primitives.key.Key)) ->
@@ -3675,7 +3675,7 @@ Section Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_.
     {ℋ_0 : ink_storage_traits.layout.StorageLayout.Trait A}
     {ℋ_1 : ink_storage_traits.layout.StorageLayout.Trait B}
     {ℋ_2 : ink_storage_traits.layout.StorageLayout.Trait C}.
-  Definition Self : Set := (A * B) * C.
+  Definition Self : Set := M.Val ((A * B) * C).
   
   Parameter layout :
       (ref ltac:(ink_primitives.key.Key)) ->
@@ -3703,7 +3703,7 @@ Section Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_.
     {ℋ_1 : ink_storage_traits.layout.StorageLayout.Trait B}
     {ℋ_2 : ink_storage_traits.layout.StorageLayout.Trait C}
     {ℋ_3 : ink_storage_traits.layout.StorageLayout.Trait D}.
-  Definition Self : Set := ((A * B) * C) * D.
+  Definition Self : Set := M.Val (((A * B) * C) * D).
   
   Parameter layout :
       (ref ltac:(ink_primitives.key.Key)) ->
@@ -3732,7 +3732,7 @@ Section Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_E_.
     {ℋ_2 : ink_storage_traits.layout.StorageLayout.Trait C}
     {ℋ_3 : ink_storage_traits.layout.StorageLayout.Trait D}
     {ℋ_4 : ink_storage_traits.layout.StorageLayout.Trait E}.
-  Definition Self : Set := (((A * B) * C) * D) * E.
+  Definition Self : Set := M.Val ((((A * B) * C) * D) * E).
   
   Parameter layout :
       (ref ltac:(ink_primitives.key.Key)) ->
@@ -3762,7 +3762,7 @@ Section Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_E_F_.
     {ℋ_3 : ink_storage_traits.layout.StorageLayout.Trait D}
     {ℋ_4 : ink_storage_traits.layout.StorageLayout.Trait E}
     {ℋ_5 : ink_storage_traits.layout.StorageLayout.Trait F}.
-  Definition Self : Set := ((((A * B) * C) * D) * E) * F.
+  Definition Self : Set := M.Val (((((A * B) * C) * D) * E) * F).
   
   Parameter layout :
       (ref ltac:(ink_primitives.key.Key)) ->
@@ -3793,7 +3793,7 @@ Section Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_E_F_G_.
     {ℋ_4 : ink_storage_traits.layout.StorageLayout.Trait E}
     {ℋ_5 : ink_storage_traits.layout.StorageLayout.Trait F}
     {ℋ_6 : ink_storage_traits.layout.StorageLayout.Trait G}.
-  Definition Self : Set := (((((A * B) * C) * D) * E) * F) * G.
+  Definition Self : Set := M.Val ((((((A * B) * C) * D) * E) * F) * G).
   
   Parameter layout :
       (ref ltac:(ink_primitives.key.Key)) ->
@@ -3825,7 +3825,7 @@ Section Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_E_F_G_H_.
     {ℋ_5 : ink_storage_traits.layout.StorageLayout.Trait F}
     {ℋ_6 : ink_storage_traits.layout.StorageLayout.Trait G}
     {ℋ_7 : ink_storage_traits.layout.StorageLayout.Trait H}.
-  Definition Self : Set := ((((((A * B) * C) * D) * E) * F) * G) * H.
+  Definition Self : Set := M.Val (((((((A * B) * C) * D) * E) * F) * G) * H).
   
   Parameter layout :
       (ref ltac:(ink_primitives.key.Key)) ->
@@ -3858,7 +3858,8 @@ Section Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_E_F_G_H_I
     {ℋ_6 : ink_storage_traits.layout.StorageLayout.Trait G}
     {ℋ_7 : ink_storage_traits.layout.StorageLayout.Trait H}
     {ℋ_8 : ink_storage_traits.layout.StorageLayout.Trait I}.
-  Definition Self : Set := (((((((A * B) * C) * D) * E) * F) * G) * H) * I.
+  Definition Self : Set :=
+    M.Val ((((((((A * B) * C) * D) * E) * F) * G) * H) * I).
   
   Parameter layout :
       (ref ltac:(ink_primitives.key.Key)) ->
@@ -3893,7 +3894,7 @@ Section Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_E_F_G_H_I
     {ℋ_8 : ink_storage_traits.layout.StorageLayout.Trait I}
     {ℋ_9 : ink_storage_traits.layout.StorageLayout.Trait J}.
   Definition Self : Set :=
-    ((((((((A * B) * C) * D) * E) * F) * G) * H) * I) * J.
+    M.Val (((((((((A * B) * C) * D) * E) * F) * G) * H) * I) * J).
   
   Parameter layout :
       (ref ltac:(ink_primitives.key.Key)) ->

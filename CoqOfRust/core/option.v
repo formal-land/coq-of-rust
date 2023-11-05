@@ -48,7 +48,7 @@ Module Option.
   Arguments Some {_}.
 End Option.
 Definition Option `{State.Trait} (T : Set) : Set :=
-  M.val (Option.t T).
+  M.Val (Option.t T).
 
 Module Impl_Option. Section Impl_Option.
   Context `{State.Trait}.
@@ -61,7 +61,7 @@ Module Impl_Option. Section Impl_Option.
     let* self := M.read self in
     match self with
     | Option.None => core.default.Default.default (Self := T)
-    | Option.Some x => M.Pure x
+    | Option.Some x => M.pure x
     end.
 
   Global Instance AF_unwrap_or_default {H0 : core.default.Default.Trait T} :

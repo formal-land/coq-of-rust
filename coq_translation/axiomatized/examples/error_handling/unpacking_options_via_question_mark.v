@@ -12,14 +12,14 @@ Section Person.
   Global Set Primitive Projections.
   
   Global Instance Get_job : Notation.Dot "job" := {
-    Notation.dot x := let* x := M.read x in Pure x.(job) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(job) : M _;
   }.
   Global Instance Get_AF_job : Notation.DoubleColon t "job" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(job) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(job) : M _;
   }.
 End Person.
 End Person.
-Definition Person `{ℋ : State.Trait} : Set := M.val Person.t.
+Definition Person `{ℋ : State.Trait} : Set := M.Val Person.t.
 
 Module  Job.
 Section Job.
@@ -33,16 +33,16 @@ Section Job.
   Global Set Primitive Projections.
   
   Global Instance Get_phone_number : Notation.Dot "phone_number" := {
-    Notation.dot x := let* x := M.read x in Pure x.(phone_number) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(phone_number) : M _;
   }.
   Global Instance Get_AF_phone_number :
     Notation.DoubleColon t "phone_number" := {
     Notation.double_colon x :=
-      let* x := M.read x in Pure x.(phone_number) : M _;
+      let* x := M.read x in M.pure x.(phone_number) : M _;
   }.
 End Job.
 End Job.
-Definition Job `{ℋ : State.Trait} : Set := M.val Job.t.
+Definition Job `{ℋ : State.Trait} : Set := M.Val Job.t.
 
 Module  Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job.
 Section Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job.
@@ -87,20 +87,20 @@ Section PhoneNumber.
   Global Set Primitive Projections.
   
   Global Instance Get_area_code : Notation.Dot "area_code" := {
-    Notation.dot x := let* x := M.read x in Pure x.(area_code) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(area_code) : M _;
   }.
   Global Instance Get_AF_area_code : Notation.DoubleColon t "area_code" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(area_code) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(area_code) : M _;
   }.
   Global Instance Get_number : Notation.Dot "number" := {
-    Notation.dot x := let* x := M.read x in Pure x.(number) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(number) : M _;
   }.
   Global Instance Get_AF_number : Notation.DoubleColon t "number" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(number) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(number) : M _;
   }.
 End PhoneNumber.
 End PhoneNumber.
-Definition PhoneNumber `{ℋ : State.Trait} : Set := M.val PhoneNumber.t.
+Definition PhoneNumber `{ℋ : State.Trait} : Set := M.Val PhoneNumber.t.
 
 Module  Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumber.
 Section Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumber.

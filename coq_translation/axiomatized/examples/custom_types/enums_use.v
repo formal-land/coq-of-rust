@@ -6,14 +6,14 @@ Module Status.
   | Rich
   | Poor.
 End Status.
-Definition Status `{ℋ : State.Trait} : Set := Status.t.
+Definition Status `{ℋ : State.Trait} : Set := M.Val Status.t.
 
 Module Work.
   Inductive t `{ℋ : State.Trait} : Set :=
   | Civilian
   | Soldier.
 End Work.
-Definition Work `{ℋ : State.Trait} : Set := Work.t.
+Definition Work `{ℋ : State.Trait} : Set := M.Val Work.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : forall `{ℋ : State.Trait}, M unit.

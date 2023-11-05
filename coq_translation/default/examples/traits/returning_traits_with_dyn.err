@@ -34,3 +34,135 @@ type Dynamic(
     ReErased,
     Dyn,
 ) not yet handled
+type Dynamic(
+    [
+        Binder(
+            Trait(
+                Animal,
+            ),
+            [],
+        ),
+    ],
+    ReErased,
+    Dyn,
+) not yet handled
+type Dynamic(
+    [
+        Binder(
+            Trait(
+                Animal,
+            ),
+            [],
+        ),
+    ],
+    ReErased,
+    Dyn,
+) not yet handled
+type Dynamic(
+    [
+        Binder(
+            Trait(
+                Animal,
+            ),
+            [],
+        ),
+    ],
+    ReErased,
+    Dyn,
+) not yet handled
+type Dynamic(
+    [
+        Binder(
+            Trait(
+                Animal,
+            ),
+            [],
+        ),
+    ],
+    ReErased,
+    Dyn,
+) not yet handled
+type Dynamic(
+    [
+        Binder(
+            Trait(
+                Animal,
+            ),
+            [],
+        ),
+    ],
+    ReErased,
+    Dyn,
+) not yet handled
+type Dynamic(
+    [
+        Binder(
+            Trait(
+                Animal,
+            ),
+            [],
+        ),
+    ],
+    ReErased,
+    Dyn,
+) not yet handled
+type Dynamic(
+    [
+        Binder(
+            Trait(
+                Animal,
+            ),
+            [],
+        ),
+    ],
+    ReErased,
+    Dyn,
+) not yet handled
+type Dynamic(
+    [
+        Binder(
+            Trait(
+                Animal,
+            ),
+            [],
+        ),
+    ],
+    ReErased,
+    Dyn,
+) not yet handled
+type Dynamic(
+    [
+        Binder(
+            Trait(
+                Animal,
+            ),
+            [],
+        ),
+    ],
+    ReErased,
+    Dyn,
+) not yet handled
+type Dynamic(
+    [
+        Binder(
+            Trait(
+                Animal,
+            ),
+            [],
+        ),
+    ],
+    ReErased,
+    Dyn,
+) not yet handled
+type Dynamic(
+    [
+        Binder(
+            Trait(
+                Animal,
+            ),
+            [],
+        ),
+    ],
+    ReErased,
+    Dyn,
+) not yet handled

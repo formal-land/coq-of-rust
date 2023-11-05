@@ -12,14 +12,14 @@ Section Droppable.
   Global Set Primitive Projections.
   
   Global Instance Get_name : Notation.Dot "name" := {
-    Notation.dot x := let* x := M.read x in Pure x.(name) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(name) : M _;
   }.
   Global Instance Get_AF_name : Notation.DoubleColon t "name" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(name) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(name) : M _;
   }.
 End Droppable.
 End Droppable.
-Definition Droppable `{ℋ : State.Trait} : Set := M.val Droppable.t.
+Definition Droppable `{ℋ : State.Trait} : Set := M.Val Droppable.t.
 
 Module  Impl_core_ops_drop_Drop_for_drop_Droppable.
 Section Impl_core_ops_drop_Drop_for_drop_Droppable.

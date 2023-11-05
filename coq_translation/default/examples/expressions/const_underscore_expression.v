@@ -12,14 +12,14 @@ Section Foo.
   Global Set Primitive Projections.
   
   Global Instance Get_test : Notation.Dot "test" := {
-    Notation.dot x := let* x := M.read x in Pure x.(test) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(test) : M _;
   }.
   Global Instance Get_AF_test : Notation.DoubleColon t "test" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(test) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(test) : M _;
   }.
 End Foo.
 End Foo.
-Definition Foo `{ℋ : State.Trait} : Set := M.val Foo.t.
+Definition Foo `{ℋ : State.Trait} : Set := M.Val Foo.t.
 
 Module  Bar.
 Section Bar.
@@ -32,14 +32,14 @@ Section Bar.
   Global Set Primitive Projections.
   
   Global Instance Get_test : Notation.Dot "test" := {
-    Notation.dot x := let* x := M.read x in Pure x.(test) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(test) : M _;
   }.
   Global Instance Get_AF_test : Notation.DoubleColon t "test" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(test) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(test) : M _;
   }.
 End Bar.
 End Bar.
-Definition Bar `{ℋ : State.Trait} : Set := M.val Bar.t.
+Definition Bar `{ℋ : State.Trait} : Set := M.Val Bar.t.
 
 Module  BarTrait.
 Section BarTrait.
@@ -58,7 +58,8 @@ Section Impl_const_underscore_expression_BarTrait_for_const_underscore_expressio
   
   Definition Self : Set := const_underscore_expression.Bar.
   
-  Definition show (self : Self) : M alloc.string.String := self.["test"].
+  Definition show (self : Self) : M alloc.string.String :=
+    M.function_body self.["test"].
   
   Global Instance AssociatedFunction_show :
     Notation.DoubleColon Self "show" := {

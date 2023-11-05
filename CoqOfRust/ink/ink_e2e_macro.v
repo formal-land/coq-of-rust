@@ -21,34 +21,34 @@ Module config.
     Global Instance Get_whitelisted_attributes :
       Notation.Dot "whitelisted_attributes" := {
       Notation.dot x :=
-        let* x := M.read x in Pure x.(whitelisted_attributes) : M _;
+        let* x := M.read x in M.pure x.(whitelisted_attributes) : M _;
     }.
     Global Instance Get_AF_whitelisted_attributes :
       Notation.DoubleColon t "whitelisted_attributes" := {
       Notation.double_colon x :=
-        let* x := M.read x in Pure x.(whitelisted_attributes) : M _;
+        let* x := M.read x in M.pure x.(whitelisted_attributes) : M _;
     }.
     Global Instance Get_additional_contracts :
       Notation.Dot "additional_contracts" := {
       Notation.dot x :=
-        let* x := M.read x in Pure x.(additional_contracts) : M _;
+        let* x := M.read x in M.pure x.(additional_contracts) : M _;
     }.
     Global Instance Get_AF_additional_contracts :
       Notation.DoubleColon t "additional_contracts" := {
       Notation.double_colon x :=
-        let* x := M.read x in Pure x.(additional_contracts) : M _;
+        let* x := M.read x in M.pure x.(additional_contracts) : M _;
     }.
     Global Instance Get_environment : Notation.Dot "environment" := {
-      Notation.dot x := let* x := M.read x in Pure x.(environment) : M _;
+      Notation.dot x := let* x := M.read x in M.pure x.(environment) : M _;
     }.
     Global Instance Get_AF_environment :
       Notation.DoubleColon t "environment" := {
       Notation.double_colon x :=
-        let* x := M.read x in Pure x.(environment) : M _;
+        let* x := M.read x in M.pure x.(environment) : M _;
     }.
   End E2EConfig.
   End E2EConfig.
-  Definition E2EConfig `{ℋ : State.Trait} : Set := M.val E2EConfig.t.
+  Definition E2EConfig `{ℋ : State.Trait} : Set := M.Val E2EConfig.t.
   
   Module  Impl_core_fmt_Debug_for_ink_e2e_macro_config_E2EConfig.
   Section Impl_core_fmt_Debug_for_ink_e2e_macro_config_E2EConfig.
@@ -190,14 +190,14 @@ Module ir.
     Global Set Primitive Projections.
     
     Global Instance Get_item_fn : Notation.Dot "item_fn" := {
-      Notation.dot x := let* x := M.read x in Pure x.(item_fn) : M _;
+      Notation.dot x := let* x := M.read x in M.pure x.(item_fn) : M _;
     }.
     Global Instance Get_AF_item_fn : Notation.DoubleColon t "item_fn" := {
-      Notation.double_colon x := let* x := M.read x in Pure x.(item_fn) : M _;
+      Notation.double_colon x := let* x := M.read x in M.pure x.(item_fn) : M _;
     }.
   End E2EFn.
   End E2EFn.
-  Definition E2EFn `{ℋ : State.Trait} : Set := M.val E2EFn.t.
+  Definition E2EFn `{ℋ : State.Trait} : Set := M.Val E2EFn.t.
   
   Module  InkE2ETest.
   Section InkE2ETest.
@@ -211,20 +211,20 @@ Module ir.
     Global Set Primitive Projections.
     
     Global Instance Get_item_fn : Notation.Dot "item_fn" := {
-      Notation.dot x := let* x := M.read x in Pure x.(item_fn) : M _;
+      Notation.dot x := let* x := M.read x in M.pure x.(item_fn) : M _;
     }.
     Global Instance Get_AF_item_fn : Notation.DoubleColon t "item_fn" := {
-      Notation.double_colon x := let* x := M.read x in Pure x.(item_fn) : M _;
+      Notation.double_colon x := let* x := M.read x in M.pure x.(item_fn) : M _;
     }.
     Global Instance Get_config : Notation.Dot "config" := {
-      Notation.dot x := let* x := M.read x in Pure x.(config) : M _;
+      Notation.dot x := let* x := M.read x in M.pure x.(config) : M _;
     }.
     Global Instance Get_AF_config : Notation.DoubleColon t "config" := {
-      Notation.double_colon x := let* x := M.read x in Pure x.(config) : M _;
+      Notation.double_colon x := let* x := M.read x in M.pure x.(config) : M _;
     }.
   End InkE2ETest.
   End InkE2ETest.
-  Definition InkE2ETest `{ℋ : State.Trait} : Set := M.val InkE2ETest.t.
+  Definition InkE2ETest `{ℋ : State.Trait} : Set := M.Val InkE2ETest.t.
   
   Module  Impl_core_convert_From_syn_item_ItemFn_for_ink_e2e_macro_ir_E2EFn.
   Section Impl_core_convert_From_syn_item_ItemFn_for_ink_e2e_macro_ir_E2EFn.
@@ -284,14 +284,14 @@ Module codegen.
     Global Set Primitive Projections.
     
     Global Instance Get_test : Notation.Dot "test" := {
-      Notation.dot x := let* x := M.read x in Pure x.(test) : M _;
+      Notation.dot x := let* x := M.read x in M.pure x.(test) : M _;
     }.
     Global Instance Get_AF_test : Notation.DoubleColon t "test" := {
-      Notation.double_colon x := let* x := M.read x in Pure x.(test) : M _;
+      Notation.double_colon x := let* x := M.read x in M.pure x.(test) : M _;
     }.
   End InkE2ETest.
   End InkE2ETest.
-  Definition InkE2ETest `{ℋ : State.Trait} : Set := M.val InkE2ETest.t.
+  Definition InkE2ETest `{ℋ : State.Trait} : Set := M.Val InkE2ETest.t.
   
   Module  Impl_core_convert_From_ink_e2e_macro_ir_InkE2ETest_for_ink_e2e_macro_codegen_InkE2ETest.
   Section Impl_core_convert_From_ink_e2e_macro_ir_InkE2ETest_for_ink_e2e_macro_codegen_InkE2ETest.
@@ -372,14 +372,14 @@ Section InkE2ETest.
   Global Set Primitive Projections.
   
   Global Instance Get_test : Notation.Dot "test" := {
-    Notation.dot x := let* x := M.read x in Pure x.(test) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(test) : M _;
   }.
   Global Instance Get_AF_test : Notation.DoubleColon t "test" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(test) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(test) : M _;
   }.
 End InkE2ETest.
 End InkE2ETest.
-Definition InkE2ETest `{ℋ : State.Trait} : Set := M.val InkE2ETest.t. *)
+Definition InkE2ETest `{ℋ : State.Trait} : Set := M.Val InkE2ETest.t. *)
 
 Module  Impl_core_convert_From_ink_e2e_macro_ir_InkE2ETest_for_ink_e2e_macro_codegen_InkE2ETest.
 Section Impl_core_convert_From_ink_e2e_macro_ir_InkE2ETest_for_ink_e2e_macro_codegen_InkE2ETest.
@@ -437,31 +437,33 @@ Section E2EConfig.
   Global Instance Get_whitelisted_attributes :
     Notation.Dot "whitelisted_attributes" := {
     Notation.dot x :=
-      let* x := M.read x in Pure x.(whitelisted_attributes) : M _;
+      let* x := M.read x in M.pure x.(whitelisted_attributes) : M _;
   }.
   Global Instance Get_AF_whitelisted_attributes :
     Notation.DoubleColon t "whitelisted_attributes" := {
     Notation.double_colon x :=
-      let* x := M.read x in Pure x.(whitelisted_attributes) : M _;
+      let* x := M.read x in M.pure x.(whitelisted_attributes) : M _;
   }.
   Global Instance Get_additional_contracts :
     Notation.Dot "additional_contracts" := {
-    Notation.dot x := let* x := M.read x in Pure x.(additional_contracts) : M _;
+    Notation.dot x :=
+      let* x := M.read x in M.pure x.(additional_contracts) : M _;
   }.
   Global Instance Get_AF_additional_contracts :
     Notation.DoubleColon t "additional_contracts" := {
     Notation.double_colon x :=
-      let* x := M.read x in Pure x.(additional_contracts) : M _;
+      let* x := M.read x in M.pure x.(additional_contracts) : M _;
   }.
   Global Instance Get_environment : Notation.Dot "environment" := {
-    Notation.dot x := let* x := M.read x in Pure x.(environment) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(environment) : M _;
   }.
   Global Instance Get_AF_environment : Notation.DoubleColon t "environment" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(environment) : M _;
+    Notation.double_colon x :=
+      let* x := M.read x in M.pure x.(environment) : M _;
   }.
 End E2EConfig.
 End E2EConfig.
-Definition E2EConfig `{ℋ : State.Trait} : Set := M.val E2EConfig.t.
+Definition E2EConfig `{ℋ : State.Trait} : Set := M.Val E2EConfig.t.
 
 Module  Impl_core_fmt_Debug_for_ink_e2e_macro_config_E2EConfig.
 Section Impl_core_fmt_Debug_for_ink_e2e_macro_config_E2EConfig.
@@ -601,20 +603,20 @@ Section InkE2ETest.
   Global Set Primitive Projections.
   
   Global Instance Get_item_fn : Notation.Dot "item_fn" := {
-    Notation.dot x := let* x := M.read x in Pure x.(item_fn) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(item_fn) : M _;
   }.
   Global Instance Get_AF_item_fn : Notation.DoubleColon t "item_fn" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(item_fn) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(item_fn) : M _;
   }.
   Global Instance Get_config : Notation.Dot "config" := {
-    Notation.dot x := let* x := M.read x in Pure x.(config) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(config) : M _;
   }.
   Global Instance Get_AF_config : Notation.DoubleColon t "config" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(config) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(config) : M _;
   }.
 End InkE2ETest.
 End InkE2ETest.
-Definition InkE2ETest `{ℋ : State.Trait} : Set := M.val InkE2ETest.t.
+Definition InkE2ETest `{ℋ : State.Trait} : Set := M.Val InkE2ETest.t.
 
 Module  E2EFn.
 Section E2EFn.
@@ -627,14 +629,14 @@ Section E2EFn.
   Global Set Primitive Projections.
   
   Global Instance Get_item_fn : Notation.Dot "item_fn" := {
-    Notation.dot x := let* x := M.read x in Pure x.(item_fn) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(item_fn) : M _;
   }.
   Global Instance Get_AF_item_fn : Notation.DoubleColon t "item_fn" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(item_fn) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(item_fn) : M _;
   }.
 End E2EFn.
 End E2EFn.
-Definition E2EFn `{ℋ : State.Trait} : Set := M.val E2EFn.t.
+Definition E2EFn `{ℋ : State.Trait} : Set := M.Val E2EFn.t.
 
 Module  Impl_core_convert_From_syn_item_ItemFn_for_ink_e2e_macro_ir_E2EFn.
 Section Impl_core_convert_From_syn_item_ItemFn_for_ink_e2e_macro_ir_E2EFn.

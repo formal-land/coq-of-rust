@@ -3,16 +3,23 @@ Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
-  let* _ :=
-    let* α0 := deref (mk_str "12") str in
-    let* α1 := borrow α0 str in
-    str::["parse"] α1 in
-  let* _ :=
-    let* α0 := deref (mk_str "true") str in
-    let* α1 := borrow α0 str in
-    str::["parse"] α1 in
-  let* _ :=
-    let* α0 := deref (mk_str "unparsable") str in
-    let* α1 := borrow α0 str in
-    str::["parse"] α1 in
-  M.alloc tt.
+  M.function_body
+    (let*
+        _ :
+        ltac:(refine (core.result.Result i32 core.num.error.ParseIntError)) :=
+      let* α0 : ltac:(refine str) := deref (mk_str "12") in
+      let* α1 : ltac:(refine (ref str)) := borrow α0 in
+      str::["parse"] α1 in
+    let*
+        _ :
+        ltac:(refine (core.result.Result bool core.str.error.ParseBoolError)) :=
+      let* α0 : ltac:(refine str) := deref (mk_str "true") in
+      let* α1 : ltac:(refine (ref str)) := borrow α0 in
+      str::["parse"] α1 in
+    let*
+        _ :
+        ltac:(refine (core.result.Result u32 core.num.error.ParseIntError)) :=
+      let* α0 : ltac:(refine str) := deref (mk_str "unparsable") in
+      let* α1 : ltac:(refine (ref str)) := borrow α0 in
+      str::["parse"] α1 in
+    M.alloc tt).

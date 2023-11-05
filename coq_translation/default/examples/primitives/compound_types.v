@@ -3,18 +3,19 @@ Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
-  let* logical := M.alloc true in
-  let* a_float := M.alloc 1 (* 1.0 *) in
-  let* an_integer := M.alloc 5 in
-  let* default_float := M.alloc 3 (* 3.0 *) in
-  let* default_integer := M.alloc 7 in
-  let* inferred_type := M.alloc 12 in
-  let* _ :=
-    let* α0 := M.alloc 4294967296 in
-    assign inferred_type α0 in
-  let* mutable := M.alloc 12 in
-  let* _ :=
-    let* α0 := M.alloc 21 in
-    assign mutable α0 in
-  let* mutable := M.alloc true in
-  M.alloc tt.
+  M.function_body
+    (let* logical : ltac:(refine bool) := M.alloc true in
+    let* a_float : ltac:(refine f64) := M.alloc 1 (* 1.0 *) in
+    let* an_integer : ltac:(refine i32) := M.alloc 5 in
+    let* default_float : ltac:(refine f64) := M.alloc 3 (* 3.0 *) in
+    let* default_integer : ltac:(refine i32) := M.alloc 7 in
+    let* inferred_type : ltac:(refine i64) := M.alloc 12 in
+    let* _ : ltac:(refine unit) :=
+      let* α0 : ltac:(refine i64) := M.alloc 4294967296 in
+      assign inferred_type α0 in
+    let* mutable : ltac:(refine i32) := M.alloc 12 in
+    let* _ : ltac:(refine unit) :=
+      let* α0 : ltac:(refine i32) := M.alloc 21 in
+      assign mutable α0 in
+    let* mutable : ltac:(refine bool) := M.alloc true in
+    M.alloc tt).

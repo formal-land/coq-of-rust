@@ -133,23 +133,23 @@ Module Error.
   | EcdsaRecoveryFailed
   | Unknown.
 End Error.
-Definition Error `{ℋ : State.Trait} : Set := Error.t.
+Definition Error `{ℋ : State.Trait} : Set := M.Val Error.t.
 """),
         "",
         content,
     )
 
-    content = sub_at_least_once(
-        re.escape(
-            "Definition Dyn_ink_engine_chain_extension_ChainExtension : Set :="),
-        "Parameter Dyn_ink_engine_chain_extension_ChainExtension : Set.",
-        content,
-    )
-    content = sub_at_least_once(
-        re.escape("Dyn_ink_engine_chain_extension_ChainExtension.t."),
-        "",
-        content,
-    )
+    # content = sub_at_least_once(
+    #     re.escape(
+    #         "Definition Dyn_ink_engine_chain_extension_ChainExtension : Set :="),
+    #     "Parameter Dyn_ink_engine_chain_extension_ChainExtension : Set.",
+    #     content,
+    # )
+    # content = sub_at_least_once(
+    #     re.escape("Dyn_ink_engine_chain_extension_ChainExtension.t."),
+    #     "",
+    #     content,
+    # )
 
     content = ignore_module_names(
         [
@@ -157,7 +157,6 @@ Definition Error `{ℋ : State.Trait} : Set := Error.t.
             "Impl_parity_scale_codec_codec_Encode_for_ink_engine_chain_extension_ExtensionId",
             "Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_engine_chain_extension_ExtensionId",
             "Impl_parity_scale_codec_codec_Decode_for_ink_engine_chain_extension_ExtensionId",
-            "Dyn_ink_engine_chain_extension_ChainExtension",
         ],
         content,
     )
@@ -191,11 +190,12 @@ Require CoqOfRust.ink.ink_engine.""",
         "(* Parameter recorded_events_ret_ty :",
         content,
     )
-    content = sub_at_least_once(
-        re.escape("M (projT1 recorded_events_ret_ty)."),
-        "M (projT1 recorded_events_ret_ty). *)",
-        content,
-    )
+
+    # content = sub_at_least_once(
+    #     re.escape("M (projT1 recorded_events_ret_ty)."),
+    #     "M (projT1 recorded_events_ret_ty). *)",
+    #     content,
+    # )
 
     content = sub_at_least_once(
         re.escape("ink_env.call.create_builder.CreateBuilder"),
@@ -219,8 +219,8 @@ Module  TopicsBuilder."""),
         content,
     )
     content = sub_at_least_once(
-        re.escape("""\n  M.val (TopicsBuilder.t (S := S) (E := E) (B := B))."""),
-        """\n  M.val (TopicsBuilder.t (S := S) (E := E) (B := B)). *)""",
+        re.escape("""\n  M.Val (TopicsBuilder.t (S := S) (E := E) (B := B))."""),
+        """\n  M.Val (TopicsBuilder.t (S := S) (E := E) (B := B)). *)""",
         content,
     )
 
@@ -251,46 +251,6 @@ Module execution_input."""),
         """. *)
 
 Module execution_input.""",
-        content,
-    )
-
-    content = sub_at_least_once(
-        re.escape("""Parameter hash :
-          (ref (Slice u8)) ->
-            (mut_ref
-              (ink_env.hash.HashOutput.Type_
-                (Self := Self)
-                (Trait := ltac:(try clear Trait; hauto l: on))))
-            ->
-            M unit."""),
-        """Parameter hash :
-          (ref (Slice u8)) ->
-            (mut_ref
-              (ink_env.hash.HashOutput.Type_
-                (Self := Self)
-                (Trait := _)))
-            ->
-            M unit.""",
-        content,
-    )
-
-    content = sub_at_least_once(
-        re.escape("""Parameter hash :
-            (ref (Slice u8)) ->
-              (mut_ref
-                (ink_env.hash.HashOutput.Type_
-                  (Self := Self)
-                  (Trait := ltac:(try clear Trait; hauto l: on))))
-              ->
-              M unit."""),
-        """Parameter hash :
-            (ref (Slice u8)) ->
-              (mut_ref
-                (ink_env.hash.HashOutput.Type_
-                  (Self := Self)
-                  (Trait := _)))
-              ->
-              M unit.""",
         content,
     )
 
@@ -412,10 +372,10 @@ Module  InkE2ETest."""),
         content,
     )
     content = sub_at_least_once(
-        re.escape("""Definition InkE2ETest `{ℋ : State.Trait} : Set := M.val InkE2ETest.t.
+        re.escape("""Definition InkE2ETest `{ℋ : State.Trait} : Set := M.Val InkE2ETest.t.
 
 Module  Impl_core_convert_From_ink_e2e_macro_ir_InkE2ETest_for_ink_e2e_macro_codegen_InkE2ETest."""),
-        """Definition InkE2ETest `{ℋ : State.Trait} : Set := M.val InkE2ETest.t. *)
+        """Definition InkE2ETest `{ℋ : State.Trait} : Set := M.Val InkE2ETest.t. *)
 
 Module  Impl_core_convert_From_ink_e2e_macro_ir_InkE2ETest_for_ink_e2e_macro_codegen_InkE2ETest.""",
         content,
@@ -565,12 +525,12 @@ Require CoqOfRust.ink.ink.""",
 
 #     content = sub_at_least_once(
 #         re.escape("""  End Erc20.
-#   Definition Erc20 `{ℋ : State.Trait} : Set := M.val (Erc20.t).
+#   Definition Erc20 `{ℋ : State.Trait} : Set := M.Val (Erc20.t).
 # """),
 #         """    Global Instance Erc20_New `{ℋ : State.Trait} : Notation.DoubleColon t "new" (T := unit -> M t).
 #     Admitted.
 #   End Erc20.
-#   Definition Erc20 `{ℋ : State.Trait} : Set := M.val (Erc20.t).
+#   Definition Erc20 `{ℋ : State.Trait} : Set := M.Val (Erc20.t).
 # """,
 #         content,
 #     )

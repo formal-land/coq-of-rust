@@ -16,15 +16,16 @@ Module lazy.
         {ℋ_1 : ink_storage_traits.storage.StorageKey.Trait KeyType}.
       Unset Primitive Projections.
       Record t : Set := {
-        _marker : core.marker.PhantomData ((K * V) * KeyType);
+        _marker : core.marker.PhantomData (M.Val ((K * V) * KeyType));
       }.
       Global Set Primitive Projections.
       
       Global Instance Get__marker : Notation.Dot "_marker" := {
-        Notation.dot x := let* x := M.read x in Pure x.(_marker) : M _;
+        Notation.dot x := let* x := M.read x in M.pure x.(_marker) : M _;
       }.
       Global Instance Get_AF__marker : Notation.DoubleColon t "_marker" := {
-        Notation.double_colon x := let* x := M.read x in Pure x.(_marker) : M _;
+        Notation.double_colon x :=
+          let* x := M.read x in M.pure x.(_marker) : M _;
       }.
       Module Default.
         Definition KeyType := ink_storage_traits.impls.AutoKey.
@@ -37,7 +38,7 @@ Module lazy.
         {ℋ_0 : ink_storage_traits.storage.Packed.Trait V}
         {ℋ_1 : ink_storage_traits.storage.StorageKey.Trait KeyType}
         : Set :=
-      M.val (Mapping.t (K := K) (V := V) (KeyType := KeyType)).
+      M.Val (Mapping.t (K := K) (V := V) (KeyType := KeyType)).
     
     Module  Impl_core_default_Default_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
     Section Impl_core_default_Default_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
@@ -197,15 +198,15 @@ Module lazy.
     Context {ℋ_0 : ink_storage_traits.storage.StorageKey.Trait KeyType}.
     Unset Primitive Projections.
     Record t : Set := {
-      _marker : core.marker.PhantomData (V * KeyType);
+      _marker : core.marker.PhantomData (M.Val (V * KeyType));
     }.
     Global Set Primitive Projections.
     
     Global Instance Get__marker : Notation.Dot "_marker" := {
-      Notation.dot x := let* x := M.read x in Pure x.(_marker) : M _;
+      Notation.dot x := let* x := M.read x in M.pure x.(_marker) : M _;
     }.
     Global Instance Get_AF__marker : Notation.DoubleColon t "_marker" := {
-      Notation.double_colon x := let* x := M.read x in Pure x.(_marker) : M _;
+      Notation.double_colon x := let* x := M.read x in M.pure x.(_marker) : M _;
     }.
     Module Default.
       Definition KeyType := ink_storage_traits.impls.AutoKey.
@@ -217,7 +218,7 @@ Module lazy.
       `{ℋ : State.Trait}
       {ℋ_0 : ink_storage_traits.storage.StorageKey.Trait KeyType}
       : Set :=
-    M.val (Lazy.t (V := V) (KeyType := KeyType)).
+    M.Val (Lazy.t (V := V) (KeyType := KeyType)).
   
   Module  Impl_core_default_Default_for_ink_storage_lazy_Lazy_V_KeyType.
   Section Impl_core_default_Default_for_ink_storage_lazy_Lazy_V_KeyType.
@@ -370,15 +371,15 @@ Module mapping.
       {ℋ_1 : ink_storage_traits.storage.StorageKey.Trait KeyType}.
     Unset Primitive Projections.
     Record t : Set := {
-      _marker : core.marker.PhantomData ((K * V) * KeyType);
+      _marker : core.marker.PhantomData (M.Val ((K * V) * KeyType));
     }.
     Global Set Primitive Projections.
     
     Global Instance Get__marker : Notation.Dot "_marker" := {
-      Notation.dot x := let* x := M.read x in Pure x.(_marker) : M _;
+      Notation.dot x := let* x := M.read x in M.pure x.(_marker) : M _;
     }.
     Global Instance Get_AF__marker : Notation.DoubleColon t "_marker" := {
-      Notation.double_colon x := let* x := M.read x in Pure x.(_marker) : M _;
+      Notation.double_colon x := let* x := M.read x in M.pure x.(_marker) : M _;
     }.
     Module Default.
       Definition KeyType := ink_storage_traits.impls.AutoKey.
@@ -391,7 +392,7 @@ Module mapping.
       {ℋ_0 : ink_storage_traits.storage.Packed.Trait V}
       {ℋ_1 : ink_storage_traits.storage.StorageKey.Trait KeyType}
       : Set :=
-    M.val (Mapping.t (K := K) (V := V) (KeyType := KeyType)).
+    M.Val (Mapping.t (K := K) (V := V) (KeyType := KeyType)).
   
   Module  Impl_core_default_Default_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
   Section Impl_core_default_Default_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
@@ -551,15 +552,15 @@ Section Mapping.
     {ℋ_1 : ink_storage_traits.storage.StorageKey.Trait KeyType}.
   Unset Primitive Projections.
   Record t : Set := {
-    _marker : core.marker.PhantomData ((K * V) * KeyType);
+    _marker : core.marker.PhantomData (M.Val ((K * V) * KeyType));
   }.
   Global Set Primitive Projections.
   
   Global Instance Get__marker : Notation.Dot "_marker" := {
-    Notation.dot x := let* x := M.read x in Pure x.(_marker) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(_marker) : M _;
   }.
   Global Instance Get_AF__marker : Notation.DoubleColon t "_marker" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(_marker) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(_marker) : M _;
   }.
   Module Default.
     Definition KeyType := ink_storage_traits.impls.AutoKey.
@@ -572,7 +573,7 @@ Definition Mapping
     {ℋ_0 : ink_storage_traits.storage.Packed.Trait V}
     {ℋ_1 : ink_storage_traits.storage.StorageKey.Trait KeyType}
     : Set :=
-  M.val (Mapping.t (K := K) (V := V) (KeyType := KeyType)).
+  M.Val (Mapping.t (K := K) (V := V) (KeyType := KeyType)).
 
 Module  Impl_scale_info_TypeInfo_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
 Section Impl_scale_info_TypeInfo_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
@@ -584,7 +585,8 @@ Section Impl_scale_info_TypeInfo_for_ink_storage_lazy_mapping_Mapping_K_V_KeyTyp
     {ℋ_0 : ink_storage_traits.storage.Packed.Trait V}
     {ℋ_1 : ink_storage_traits.storage.StorageKey.Trait KeyType}
     {ℋ_2 :
-      scale_info.TypeInfo.Trait (core.marker.PhantomData ((K * V) * KeyType))}
+      scale_info.TypeInfo.Trait
+          (core.marker.PhantomData (M.Val ((K * V) * KeyType)))}
     {ℋ_3 : scale_info.TypeInfo.Trait K}
     {ℋ_4 : ink_storage_traits.storage.Packed.Trait V}
     {ℋ_5 : scale_info.TypeInfo.Trait V}
@@ -790,15 +792,15 @@ Section Lazy.
   Context {ℋ_0 : ink_storage_traits.storage.StorageKey.Trait KeyType}.
   Unset Primitive Projections.
   Record t : Set := {
-    _marker : core.marker.PhantomData (V * KeyType);
+    _marker : core.marker.PhantomData (M.Val (V * KeyType));
   }.
   Global Set Primitive Projections.
   
   Global Instance Get__marker : Notation.Dot "_marker" := {
-    Notation.dot x := let* x := M.read x in Pure x.(_marker) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(_marker) : M _;
   }.
   Global Instance Get_AF__marker : Notation.DoubleColon t "_marker" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(_marker) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(_marker) : M _;
   }.
   Module Default.
     Definition KeyType := ink_storage_traits.impls.AutoKey.
@@ -810,7 +812,7 @@ Definition Lazy
     `{ℋ : State.Trait}
     {ℋ_0 : ink_storage_traits.storage.StorageKey.Trait KeyType}
     : Set :=
-  M.val (Lazy.t (V := V) (KeyType := KeyType)).
+  M.Val (Lazy.t (V := V) (KeyType := KeyType)).
 
 Module  Impl_scale_info_TypeInfo_for_ink_storage_lazy_Lazy_V_KeyType.
 Section Impl_scale_info_TypeInfo_for_ink_storage_lazy_Lazy_V_KeyType.
@@ -820,7 +822,8 @@ Section Impl_scale_info_TypeInfo_for_ink_storage_lazy_Lazy_V_KeyType.
   
   Context
     {ℋ_0 : ink_storage_traits.storage.StorageKey.Trait KeyType}
-    {ℋ_1 : scale_info.TypeInfo.Trait (core.marker.PhantomData (V * KeyType))}
+    {ℋ_1 :
+      scale_info.TypeInfo.Trait (core.marker.PhantomData (M.Val (V * KeyType)))}
     {ℋ_2 : scale_info.TypeInfo.Trait V}
     {ℋ_3 : ink_storage_traits.storage.StorageKey.Trait KeyType}
     {ℋ_4 : scale_info.TypeInfo.Trait KeyType}.

@@ -12,14 +12,14 @@ Section Number.
   Global Set Primitive Projections.
   
   Global Instance Get_value : Notation.Dot "value" := {
-    Notation.dot x := let* x := M.read x in Pure x.(value) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(value) : M _;
   }.
   Global Instance Get_AF_value : Notation.DoubleColon t "value" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(value) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(value) : M _;
   }.
 End Number.
 End Number.
-Definition Number `{ℋ : State.Trait} : Set := M.val Number.t.
+Definition Number `{ℋ : State.Trait} : Set := M.Val Number.t.
 
 Module  Impl_core_convert_From_i32_for_into_Number.
 Section Impl_core_convert_From_i32_for_into_Number.
@@ -28,7 +28,7 @@ Section Impl_core_convert_From_i32_for_into_Number.
   Definition Self : Set := into.Number.
   
   Definition from (item : i32) : M Self :=
-    M.alloc {| into.Number.value := item; |}.
+    M.function_body (M.alloc {| into.Number.value := item; |}).
   
   Global Instance AssociatedFunction_from :
     Notation.DoubleColon Self "from" := {
@@ -43,7 +43,8 @@ End Impl_core_convert_From_i32_for_into_Number.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
-  let* _ :=
-    let* α0 := M.alloc 5 in
-    (core.convert.Into.into (Self := i32) (Trait := ltac:(refine _))) α0 in
-  M.alloc tt.
+  M.function_body
+    (let* _ : ltac:(refine into.Number) :=
+      let* α0 : ltac:(refine i32) := M.alloc 5 in
+      (core.convert.Into.into (Self := i32) (Trait := ltac:(refine _))) α0 in
+    M.alloc tt).

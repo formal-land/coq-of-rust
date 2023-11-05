@@ -8,7 +8,7 @@ Section Empty.
   Inductive t : Set := Build.
 End Empty.
 End Empty.
-Definition Empty := @Empty.t.
+Definition Empty `{ℋ : State.Trait} := M.Val Empty.t.
 
 Module  Null.
 Section Null.
@@ -17,7 +17,7 @@ Section Null.
   Inductive t : Set := Build.
 End Null.
 End Null.
-Definition Null := @Null.t.
+Definition Null `{ℋ : State.Trait} := M.Val Null.t.
 
 Module  DoubleDrop.
 Section DoubleDrop.
@@ -38,7 +38,8 @@ Section Impl_generics_traits_DoubleDrop_T_for_U.
   
   Definition Self : Set := U.
   
-  Definition double_drop (self : Self) (Pattern : T) : M unit := M.alloc tt.
+  Definition double_drop (self : Self) (Pattern : T) : M unit :=
+    M.function_body (M.alloc tt).
   
   Global Instance AssociatedFunction_double_drop :
     Notation.DoubleColon Self "double_drop" := {
@@ -53,12 +54,15 @@ End Impl_generics_traits_DoubleDrop_T_for_U.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
-  let* empty := M.alloc generics_traits.Empty.Build_t in
-  let* null := M.alloc generics_traits.Null.Build_t in
-  let* _ :=
-    (generics_traits.DoubleDrop.double_drop
-        (Self := generics_traits.Empty)
-        (Trait := ltac:(refine _)))
-      empty
-      null in
-  M.alloc tt.
+  M.function_body
+    (let* empty : ltac:(refine generics_traits.Empty) :=
+      M.alloc generics_traits.Empty.Build_t in
+    let* null : ltac:(refine generics_traits.Null) :=
+      M.alloc generics_traits.Null.Build_t in
+    let* _ : ltac:(refine unit) :=
+      (generics_traits.DoubleDrop.double_drop
+          (Self := generics_traits.Empty)
+          (Trait := ltac:(refine _)))
+        empty
+        null in
+    M.alloc tt).

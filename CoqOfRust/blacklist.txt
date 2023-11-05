@@ -2,6 +2,7 @@
 ink/
 ######
 examples/cargo/concurrent_tests.v
+examples/conversion/parsing_a_string.v
 examples/conversion/try_from_and_try_into.v
 examples/custom_types/constants.v
 examples/custom_types/enums_c_like.v
@@ -11,7 +12,6 @@ examples/custom_types/enums_type_aliases_v2.v
 examples/custom_types/enums_use.v
 examples/custom_types/enums.v
 examples/custom_types/structures.v
-examples/erc20/lib.v
 examples/error_handling/aliases_for_result.v
 examples/error_handling/boxing_errors.v
 examples/error_handling/combinators_and_then.v
@@ -84,6 +84,8 @@ examples/functions/functions_closures.v
 examples/functions/functions_order.v
 examples/functions/functions.v
 examples/functions/higher_order_functions.v
+examples/generics/generics_associated_types_problem.v
+examples/generics/generics_associated_types_solution.v
 examples/generics/generics_bounds_test_case_empty_bounds.v
 examples/generics/generics_bounds.v
 examples/generics/generics_functions.v

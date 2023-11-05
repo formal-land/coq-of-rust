@@ -2,133 +2,196 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition PANGRAM `{ℋ : State.Trait} : ref str :=
-  M.run (Pure (mk_str "the quick brown fox jumped over the lazy dog
+  M.run (M.pure (mk_str "the quick brown fox jumped over the lazy dog
 ")).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
-  let* process :=
-    let* α0 := std.process.Command::["new"] (mk_str "wc") in
-    let* α1 := borrow_mut α0 std.process.Command in
-    let* α2 := std.process.Stdio::["piped"] in
-    let* α3 := std.process.Command::["stdin"] α1 α2 in
-    let* α4 := deref α3 std.process.Command in
-    let* α5 := borrow_mut α4 std.process.Command in
-    let* α6 := std.process.Stdio::["piped"] in
-    let* α7 := std.process.Command::["stdout"] α5 α6 in
-    let* α8 := deref α7 std.process.Command in
-    let* α9 := borrow_mut α8 std.process.Command in
-    let* α10 := std.process.Command::["spawn"] α9 in
-    match α10 with
-    | core.result.Result why =>
-      let* α0 := borrow [ mk_str "couldn't spawn wc: " ] (list (ref str)) in
-      let* α1 := deref α0 (list (ref str)) in
-      let* α2 := borrow α1 (list (ref str)) in
-      let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := borrow why std.io.error.Error in
-      let* α5 := deref α4 std.io.error.Error in
-      let* α6 := borrow α5 std.io.error.Error in
-      let* α7 := core.fmt.rt.Argument::["new_display"] α6 in
-      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
-      let* α9 := deref α8 (list core.fmt.rt.Argument) in
-      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
-      let* α11 := pointer_coercion "Unsize" α10 in
-      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
-      let* α13 := core.panicking.panic_fmt α12 in
-      never_to_any α13
-    | core.result.Result process => Pure process
-    end in
-  let* _ :=
-    let* α0 := process.["stdin"] in
-    let* α1 := (core.option.Option std.process.ChildStdin)::["unwrap"] α0 in
-    let* α2 := borrow_mut α1 std.process.ChildStdin in
-    let* α3 := deref child_processes_pipes.PANGRAM (ref str) in
-    let* α4 := deref α3 str in
-    let* α5 := borrow α4 str in
-    let* α6 := str::["as_bytes"] α5 in
-    let* α7 := deref α6 (Slice u8) in
-    let* α8 := borrow α7 (Slice u8) in
-    let* α9 :=
-      (std.io.Write.write_all
-          (Self := std.process.ChildStdin)
+  M.function_body
+    (let* process : ltac:(refine std.process.Child) :=
+      let* α0 : ltac:(refine std.process.Command) :=
+        std.process.Command::["new"] (mk_str "wc") in
+      let* α1 : ltac:(refine (mut_ref std.process.Command)) := borrow_mut α0 in
+      let* α2 : ltac:(refine std.process.Stdio) :=
+        std.process.Stdio::["piped"] in
+      let* α3 : ltac:(refine (mut_ref std.process.Command)) :=
+        std.process.Command::["stdin"] α1 α2 in
+      let* α4 : ltac:(refine std.process.Command) := deref α3 in
+      let* α5 : ltac:(refine (mut_ref std.process.Command)) := borrow_mut α4 in
+      let* α6 : ltac:(refine std.process.Stdio) :=
+        std.process.Stdio::["piped"] in
+      let* α7 : ltac:(refine (mut_ref std.process.Command)) :=
+        std.process.Command::["stdout"] α5 α6 in
+      let* α8 : ltac:(refine std.process.Command) := deref α7 in
+      let* α9 : ltac:(refine (mut_ref std.process.Command)) := borrow_mut α8 in
+      let*
+          α10 :
+          ltac:(refine
+            (core.result.Result std.process.Child std.io.error.Error)) :=
+        std.process.Command::["spawn"] α9 in
+      let* α11 := M.read α10 in
+      match α11 with
+      | core.result.Result.Err why =>
+        let* α0 : ltac:(refine (array (ref str))) :=
+          M.alloc [ mk_str "couldn't spawn wc: " ] in
+        let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
+        let* α2 : ltac:(refine (array (ref str))) := deref α1 in
+        let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
+        let* α4 : ltac:(refine (ref (slice (ref str)))) :=
+          pointer_coercion "Unsize" α3 in
+        let* α5 : ltac:(refine (ref std.io.error.Error)) := borrow why in
+        let* α6 : ltac:(refine std.io.error.Error) := deref α5 in
+        let* α7 : ltac:(refine (ref std.io.error.Error)) := borrow α6 in
+        let* α8 : ltac:(refine core.fmt.rt.Argument) :=
+          core.fmt.rt.Argument::["new_display"] α7 in
+        let* α9 : ltac:(refine (array core.fmt.rt.Argument)) :=
+          M.alloc [ α8 ] in
+        let* α10 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+          borrow α9 in
+        let* α11 : ltac:(refine (array core.fmt.rt.Argument)) := deref α10 in
+        let* α12 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+          borrow α11 in
+        let* α13 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+          pointer_coercion "Unsize" α12 in
+        let* α14 : ltac:(refine core.fmt.Arguments) :=
+          core.fmt.Arguments::["new_v1"] α4 α13 in
+        let* α15 : ltac:(refine never) := core.panicking.panic_fmt α14 in
+        never_to_any α15
+      | core.result.Result.Ok process => M.pure process
+      end in
+    let* _ : ltac:(refine unit) :=
+      let* α0 : ltac:(refine (core.option.Option std.process.ChildStdin)) :=
+        process.["stdin"] in
+      let* α1 : ltac:(refine std.process.ChildStdin) :=
+        (core.option.Option std.process.ChildStdin)::["unwrap"] α0 in
+      let* α2 : ltac:(refine (mut_ref std.process.ChildStdin)) :=
+        borrow_mut α1 in
+      let* α3 : ltac:(refine (ref str)) :=
+        deref child_processes_pipes.PANGRAM in
+      let* α4 : ltac:(refine str) := deref α3 in
+      let* α5 : ltac:(refine (ref str)) := borrow α4 in
+      let* α6 : ltac:(refine (ref (slice u8))) := str::["as_bytes"] α5 in
+      let* α7 : ltac:(refine (slice u8)) := deref α6 in
+      let* α8 : ltac:(refine (ref (slice u8))) := borrow α7 in
+      let* α9 : ltac:(refine (core.result.Result unit std.io.error.Error)) :=
+        (std.io.Write.write_all
+            (Self := std.process.ChildStdin)
+            (Trait := ltac:(refine _)))
+          α2
+          α8 in
+      let* α10 := M.read α9 in
+      match α10 with
+      | core.result.Result.Err why =>
+        let* α0 : ltac:(refine (array (ref str))) :=
+          M.alloc [ mk_str "couldn't write to wc stdin: " ] in
+        let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
+        let* α2 : ltac:(refine (array (ref str))) := deref α1 in
+        let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
+        let* α4 : ltac:(refine (ref (slice (ref str)))) :=
+          pointer_coercion "Unsize" α3 in
+        let* α5 : ltac:(refine (ref std.io.error.Error)) := borrow why in
+        let* α6 : ltac:(refine std.io.error.Error) := deref α5 in
+        let* α7 : ltac:(refine (ref std.io.error.Error)) := borrow α6 in
+        let* α8 : ltac:(refine core.fmt.rt.Argument) :=
+          core.fmt.rt.Argument::["new_display"] α7 in
+        let* α9 : ltac:(refine (array core.fmt.rt.Argument)) :=
+          M.alloc [ α8 ] in
+        let* α10 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+          borrow α9 in
+        let* α11 : ltac:(refine (array core.fmt.rt.Argument)) := deref α10 in
+        let* α12 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+          borrow α11 in
+        let* α13 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+          pointer_coercion "Unsize" α12 in
+        let* α14 : ltac:(refine core.fmt.Arguments) :=
+          core.fmt.Arguments::["new_v1"] α4 α13 in
+        let* α15 : ltac:(refine never) := core.panicking.panic_fmt α14 in
+        never_to_any α15
+      | core.result.Result.Ok _ =>
+        let* _ : ltac:(refine unit) :=
+          let* α0 : ltac:(refine (array (ref str))) :=
+            M.alloc [ mk_str "sent pangram to wc
+" ] in
+          let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
+          let* α2 : ltac:(refine (array (ref str))) := deref α1 in
+          let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
+          let* α4 : ltac:(refine (ref (slice (ref str)))) :=
+            pointer_coercion "Unsize" α3 in
+          let* α5 : ltac:(refine core.fmt.Arguments) :=
+            core.fmt.Arguments::["new_const"] α4 in
+          std.io.stdio._print α5 in
+        M.alloc tt
+      end in
+    let* s : ltac:(refine alloc.string.String) :=
+      alloc.string.String::["new"] in
+    let* α0 : ltac:(refine (core.option.Option std.process.ChildStdout)) :=
+      process.["stdout"] in
+    let* α1 : ltac:(refine std.process.ChildStdout) :=
+      (core.option.Option std.process.ChildStdout)::["unwrap"] α0 in
+    let* α2 : ltac:(refine (mut_ref std.process.ChildStdout)) :=
+      borrow_mut α1 in
+    let* α3 : ltac:(refine (mut_ref alloc.string.String)) := borrow_mut s in
+    let* α4 : ltac:(refine alloc.string.String) := deref α3 in
+    let* α5 : ltac:(refine (mut_ref alloc.string.String)) := borrow_mut α4 in
+    let* α6 : ltac:(refine (core.result.Result usize std.io.error.Error)) :=
+      (std.io.Read.read_to_string
+          (Self := std.process.ChildStdout)
           (Trait := ltac:(refine _)))
         α2
-        α8 in
-    match α9 with
-    | core.result.Result why =>
-      let* α0 :=
-        borrow [ mk_str "couldn't write to wc stdin: " ] (list (ref str)) in
-      let* α1 := deref α0 (list (ref str)) in
-      let* α2 := borrow α1 (list (ref str)) in
-      let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := borrow why std.io.error.Error in
-      let* α5 := deref α4 std.io.error.Error in
-      let* α6 := borrow α5 std.io.error.Error in
-      let* α7 := core.fmt.rt.Argument::["new_display"] α6 in
-      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
-      let* α9 := deref α8 (list core.fmt.rt.Argument) in
-      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
-      let* α11 := pointer_coercion "Unsize" α10 in
-      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
-      let* α13 := core.panicking.panic_fmt α12 in
-      never_to_any α13
-    | core.result.Result _ =>
-      let* _ :=
-        let* α0 := borrow [ mk_str "sent pangram to wc
-" ] (list (ref str)) in
-        let* α1 := deref α0 (list (ref str)) in
-        let* α2 := borrow α1 (list (ref str)) in
-        let* α3 := pointer_coercion "Unsize" α2 in
-        let* α4 := core.fmt.Arguments::["new_const"] α3 in
-        std.io.stdio._print α4 in
+        α5 in
+    let* α7 := M.read α6 in
+    match α7 with
+    | core.result.Result.Err why =>
+      let* α0 : ltac:(refine (array (ref str))) :=
+        M.alloc [ mk_str "couldn't read wc stdout: " ] in
+      let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
+      let* α2 : ltac:(refine (array (ref str))) := deref α1 in
+      let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
+      let* α4 : ltac:(refine (ref (slice (ref str)))) :=
+        pointer_coercion "Unsize" α3 in
+      let* α5 : ltac:(refine (ref std.io.error.Error)) := borrow why in
+      let* α6 : ltac:(refine std.io.error.Error) := deref α5 in
+      let* α7 : ltac:(refine (ref std.io.error.Error)) := borrow α6 in
+      let* α8 : ltac:(refine core.fmt.rt.Argument) :=
+        core.fmt.rt.Argument::["new_display"] α7 in
+      let* α9 : ltac:(refine (array core.fmt.rt.Argument)) := M.alloc [ α8 ] in
+      let* α10 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+        borrow α9 in
+      let* α11 : ltac:(refine (array core.fmt.rt.Argument)) := deref α10 in
+      let* α12 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+        borrow α11 in
+      let* α13 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+        pointer_coercion "Unsize" α12 in
+      let* α14 : ltac:(refine core.fmt.Arguments) :=
+        core.fmt.Arguments::["new_v1"] α4 α13 in
+      let* α15 : ltac:(refine never) := core.panicking.panic_fmt α14 in
+      never_to_any α15
+    | core.result.Result.Ok _ =>
+      let* _ : ltac:(refine unit) :=
+        let* α0 : ltac:(refine (array (ref str))) :=
+          M.alloc [ mk_str "wc responded with:
+" ] in
+        let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
+        let* α2 : ltac:(refine (array (ref str))) := deref α1 in
+        let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
+        let* α4 : ltac:(refine (ref (slice (ref str)))) :=
+          pointer_coercion "Unsize" α3 in
+        let* α5 : ltac:(refine (ref alloc.string.String)) := borrow s in
+        let* α6 : ltac:(refine alloc.string.String) := deref α5 in
+        let* α7 : ltac:(refine (ref alloc.string.String)) := borrow α6 in
+        let* α8 : ltac:(refine core.fmt.rt.Argument) :=
+          core.fmt.rt.Argument::["new_display"] α7 in
+        let* α9 : ltac:(refine (array core.fmt.rt.Argument)) :=
+          M.alloc [ α8 ] in
+        let* α10 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+          borrow α9 in
+        let* α11 : ltac:(refine (array core.fmt.rt.Argument)) := deref α10 in
+        let* α12 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+          borrow α11 in
+        let* α13 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+          pointer_coercion "Unsize" α12 in
+        let* α14 : ltac:(refine core.fmt.Arguments) :=
+          core.fmt.Arguments::["new_v1"] α4 α13 in
+        std.io.stdio._print α14 in
       M.alloc tt
-    end in
-  let* s := alloc.string.String::["new"] in
-  let* α0 := process.["stdout"] in
-  let* α1 := (core.option.Option std.process.ChildStdout)::["unwrap"] α0 in
-  let* α2 := borrow_mut α1 std.process.ChildStdout in
-  let* α3 := borrow_mut s alloc.string.String in
-  let* α4 := deref α3 alloc.string.String in
-  let* α5 := borrow_mut α4 alloc.string.String in
-  let* α6 :=
-    (std.io.Read.read_to_string
-        (Self := std.process.ChildStdout)
-        (Trait := ltac:(refine _)))
-      α2
-      α5 in
-  match α6 with
-  | core.result.Result why =>
-    let* α0 := borrow [ mk_str "couldn't read wc stdout: " ] (list (ref str)) in
-    let* α1 := deref α0 (list (ref str)) in
-    let* α2 := borrow α1 (list (ref str)) in
-    let* α3 := pointer_coercion "Unsize" α2 in
-    let* α4 := borrow why std.io.error.Error in
-    let* α5 := deref α4 std.io.error.Error in
-    let* α6 := borrow α5 std.io.error.Error in
-    let* α7 := core.fmt.rt.Argument::["new_display"] α6 in
-    let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
-    let* α9 := deref α8 (list core.fmt.rt.Argument) in
-    let* α10 := borrow α9 (list core.fmt.rt.Argument) in
-    let* α11 := pointer_coercion "Unsize" α10 in
-    let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
-    let* α13 := core.panicking.panic_fmt α12 in
-    never_to_any α13
-  | core.result.Result _ =>
-    let* _ :=
-      let* α0 := borrow [ mk_str "wc responded with:
-" ] (list (ref str)) in
-      let* α1 := deref α0 (list (ref str)) in
-      let* α2 := borrow α1 (list (ref str)) in
-      let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := borrow s alloc.string.String in
-      let* α5 := deref α4 alloc.string.String in
-      let* α6 := borrow α5 alloc.string.String in
-      let* α7 := core.fmt.rt.Argument::["new_display"] α6 in
-      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
-      let* α9 := deref α8 (list core.fmt.rt.Argument) in
-      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
-      let* α11 := pointer_coercion "Unsize" α10 in
-      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
-      std.io.stdio._print α12 in
-    M.alloc tt
-  end.
+    end).

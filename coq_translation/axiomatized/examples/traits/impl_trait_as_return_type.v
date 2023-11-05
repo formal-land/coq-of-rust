@@ -23,7 +23,7 @@ Parameter combine_vecs :
     forall `{ℋ : State.Trait},
     (alloc.vec.Vec i32 alloc.vec.Vec.Default.A) ->
       (alloc.vec.Vec i32 alloc.vec.Vec.Default.A) ->
-      M (projT1 combine_vecs_ret_ty).
+      M _ (* OpaqueTy *).
 
 Error OpaqueTy.
 

@@ -13,20 +13,20 @@ Section Person.
   Global Set Primitive Projections.
   
   Global Instance Get_name : Notation.Dot "name" := {
-    Notation.dot x := let* x := M.read x in Pure x.(name) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(name) : M _;
   }.
   Global Instance Get_AF_name : Notation.DoubleColon t "name" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(name) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(name) : M _;
   }.
   Global Instance Get_age : Notation.Dot "age" := {
-    Notation.dot x := let* x := M.read x in Pure x.(age) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(age) : M _;
   }.
   Global Instance Get_AF_age : Notation.DoubleColon t "age" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(age) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(age) : M _;
   }.
 End Person.
 End Person.
-Definition Person `{ℋ : State.Trait} : Set := M.val Person.t.
+Definition Person `{ℋ : State.Trait} : Set := M.Val Person.t.
 
 Module  Impl_core_fmt_Debug_for_structures_Person.
 Section Impl_core_fmt_Debug_for_structures_Person.
@@ -38,28 +38,31 @@ Section Impl_core_fmt_Debug_for_structures_Person.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M ltac:(core.fmt.Result) :=
-    let* α0 := deref f core.fmt.Formatter in
-    let* α1 := borrow_mut α0 core.fmt.Formatter in
-    let* α2 := deref (mk_str "Person") str in
-    let* α3 := borrow α2 str in
-    let* α4 := deref (mk_str "name") str in
-    let* α5 := borrow α4 str in
-    let* α6 := deref self structures.Person in
-    let* α7 := α6.["name"] in
-    let* α8 := borrow α7 alloc.string.String in
-    let* α9 := deref α8 alloc.string.String in
-    let* α10 := borrow α9 alloc.string.String in
-    let* α11 := pointer_coercion "Unsize" α10 in
-    let* α12 := deref (mk_str "age") str in
-    let* α13 := borrow α12 str in
-    let* α14 := deref self structures.Person in
-    let* α15 := α14.["age"] in
-    let* α16 := borrow α15 u8 in
-    let* α17 := borrow α16 (ref u8) in
-    let* α18 := deref α17 (ref u8) in
-    let* α19 := borrow α18 (ref u8) in
-    let* α20 := pointer_coercion "Unsize" α19 in
-    core.fmt.Formatter::["debug_struct_field2_finish"] α1 α3 α5 α11 α13 α20.
+    M.function_body
+      (let* α0 : ltac:(refine core.fmt.Formatter) := deref f in
+      let* α1 : ltac:(refine (mut_ref core.fmt.Formatter)) := borrow_mut α0 in
+      let* α2 : ltac:(refine str) := deref (mk_str "Person") in
+      let* α3 : ltac:(refine (ref str)) := borrow α2 in
+      let* α4 : ltac:(refine str) := deref (mk_str "name") in
+      let* α5 : ltac:(refine (ref str)) := borrow α4 in
+      let* α6 : ltac:(refine structures.Person) := deref self in
+      let* α7 : ltac:(refine alloc.string.String) := α6.["name"] in
+      let* α8 : ltac:(refine (ref alloc.string.String)) := borrow α7 in
+      let* α9 : ltac:(refine alloc.string.String) := deref α8 in
+      let* α10 : ltac:(refine (ref alloc.string.String)) := borrow α9 in
+      let* α11 : ltac:(refine (ref type not implemented)) :=
+        pointer_coercion "Unsize" α10 in
+      let* α12 : ltac:(refine str) := deref (mk_str "age") in
+      let* α13 : ltac:(refine (ref str)) := borrow α12 in
+      let* α14 : ltac:(refine structures.Person) := deref self in
+      let* α15 : ltac:(refine u8) := α14.["age"] in
+      let* α16 : ltac:(refine (ref u8)) := borrow α15 in
+      let* α17 : ltac:(refine (ref (ref u8))) := borrow α16 in
+      let* α18 : ltac:(refine (ref u8)) := deref α17 in
+      let* α19 : ltac:(refine (ref (ref u8))) := borrow α18 in
+      let* α20 : ltac:(refine (ref type not implemented)) :=
+        pointer_coercion "Unsize" α19 in
+      core.fmt.Formatter::["debug_struct_field2_finish"] α1 α3 α5 α11 α13 α20).
   
   Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {
     Notation.double_colon := fmt;
@@ -78,7 +81,7 @@ Section Unit.
   Inductive t : Set := Build.
 End Unit.
 End Unit.
-Definition Unit := @Unit.t.
+Definition Unit `{ℋ : State.Trait} := M.Val Unit.t.
 
 Module  Pair.
 Section Pair.
@@ -92,14 +95,14 @@ Section Pair.
   Global Set Primitive Projections.
   
   Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
   }.
   Global Instance Get_1 : Notation.Dot "1" := {
-    Notation.dot x := let* x := M.read x in Pure x.(x1) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(x1) : M _;
   }.
 End Pair.
 End Pair.
-Definition Pair `{ℋ : State.Trait} : Set := M.val Pair.t.
+Definition Pair `{ℋ : State.Trait} : Set := M.Val Pair.t.
 
 Module  Point.
 Section Point.
@@ -113,20 +116,20 @@ Section Point.
   Global Set Primitive Projections.
   
   Global Instance Get_x : Notation.Dot "x" := {
-    Notation.dot x' := let* x' := M.read x' in Pure x'.(x) : M _;
+    Notation.dot x' := let* x' := M.read x' in M.pure x'.(x) : M _;
   }.
   Global Instance Get_AF_x : Notation.DoubleColon t "x" := {
-    Notation.double_colon x' := let* x' := M.read x' in Pure x'.(x) : M _;
+    Notation.double_colon x' := let* x' := M.read x' in M.pure x'.(x) : M _;
   }.
   Global Instance Get_y : Notation.Dot "y" := {
-    Notation.dot x := let* x := M.read x in Pure x.(y) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(y) : M _;
   }.
   Global Instance Get_AF_y : Notation.DoubleColon t "y" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(y) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(y) : M _;
   }.
 End Point.
 End Point.
-Definition Point `{ℋ : State.Trait} : Set := M.val Point.t.
+Definition Point `{ℋ : State.Trait} : Set := M.Val Point.t.
 
 Module  Rectangle.
 Section Rectangle.
@@ -140,181 +143,227 @@ Section Rectangle.
   Global Set Primitive Projections.
   
   Global Instance Get_top_left : Notation.Dot "top_left" := {
-    Notation.dot x := let* x := M.read x in Pure x.(top_left) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(top_left) : M _;
   }.
   Global Instance Get_AF_top_left : Notation.DoubleColon t "top_left" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(top_left) : M _;
+    Notation.double_colon x := let* x := M.read x in M.pure x.(top_left) : M _;
   }.
   Global Instance Get_bottom_right : Notation.Dot "bottom_right" := {
-    Notation.dot x := let* x := M.read x in Pure x.(bottom_right) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(bottom_right) : M _;
   }.
   Global Instance Get_AF_bottom_right :
     Notation.DoubleColon t "bottom_right" := {
     Notation.double_colon x :=
-      let* x := M.read x in Pure x.(bottom_right) : M _;
+      let* x := M.read x in M.pure x.(bottom_right) : M _;
   }.
 End Rectangle.
 End Rectangle.
-Definition Rectangle `{ℋ : State.Trait} : Set := M.val Rectangle.t.
+Definition Rectangle `{ℋ : State.Trait} : Set := M.Val Rectangle.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
-  let* name :=
-    (core.convert.From.from
-        (Self := alloc.string.String)
-        (Trait := ltac:(refine _)))
-      (mk_str "Peter") in
-  let* age := M.alloc 27 in
-  let* peter :=
-    M.alloc
-      {| structures.Person.name := name; structures.Person.age := age; |} in
-  let* _ :=
-    let* _ :=
-      let* α0 := borrow [ mk_str ""; mk_str "
-" ] (list (ref str)) in
-      let* α1 := deref α0 (list (ref str)) in
-      let* α2 := borrow α1 (list (ref str)) in
-      let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := borrow peter structures.Person in
-      let* α5 := deref α4 structures.Person in
-      let* α6 := borrow α5 structures.Person in
-      let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
-      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
-      let* α9 := deref α8 (list core.fmt.rt.Argument) in
-      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
-      let* α11 := pointer_coercion "Unsize" α10 in
-      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
-      std.io.stdio._print α12 in
-    M.alloc tt in
-  let* point :=
-    let* α0 := M.alloc 10 (* 10.3 *) in
-    let* α1 := M.alloc 0 (* 0.4 *) in
-    M.alloc {| structures.Point.x := α0; structures.Point.y := α1; |} in
-  let* _ :=
-    let* _ :=
-      let* α0 :=
-        borrow
-          [ mk_str "point coordinates: ("; mk_str ", "; mk_str ")
-" ]
-          (list (ref str)) in
-      let* α1 := deref α0 (list (ref str)) in
-      let* α2 := borrow α1 (list (ref str)) in
-      let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := point.["x"] in
-      let* α5 := borrow α4 f32 in
-      let* α6 := deref α5 f32 in
-      let* α7 := borrow α6 f32 in
-      let* α8 := core.fmt.rt.Argument::["new_display"] α7 in
-      let* α9 := point.["y"] in
-      let* α10 := borrow α9 f32 in
-      let* α11 := deref α10 f32 in
-      let* α12 := borrow α11 f32 in
-      let* α13 := core.fmt.rt.Argument::["new_display"] α12 in
-      let* α14 := borrow [ α8; α13 ] (list core.fmt.rt.Argument) in
-      let* α15 := deref α14 (list core.fmt.rt.Argument) in
-      let* α16 := borrow α15 (list core.fmt.rt.Argument) in
-      let* α17 := pointer_coercion "Unsize" α16 in
-      let* α18 := core.fmt.Arguments::["new_v1"] α3 α17 in
-      std.io.stdio._print α18 in
-    M.alloc tt in
-  let* bottom_right :=
-    let* α0 := M.alloc 5 (* 5.2 *) in
-    M.alloc {| structures.Point.x := α0; |} in
-  let* _ :=
-    let* _ :=
-      let* α0 :=
-        borrow
-          [ mk_str "second point: ("; mk_str ", "; mk_str ")
-" ]
-          (list (ref str)) in
-      let* α1 := deref α0 (list (ref str)) in
-      let* α2 := borrow α1 (list (ref str)) in
-      let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := bottom_right.["x"] in
-      let* α5 := borrow α4 f32 in
-      let* α6 := deref α5 f32 in
-      let* α7 := borrow α6 f32 in
-      let* α8 := core.fmt.rt.Argument::["new_display"] α7 in
-      let* α9 := bottom_right.["y"] in
-      let* α10 := borrow α9 f32 in
-      let* α11 := deref α10 f32 in
-      let* α12 := borrow α11 f32 in
-      let* α13 := core.fmt.rt.Argument::["new_display"] α12 in
-      let* α14 := borrow [ α8; α13 ] (list core.fmt.rt.Argument) in
-      let* α15 := deref α14 (list core.fmt.rt.Argument) in
-      let* α16 := borrow α15 (list core.fmt.rt.Argument) in
-      let* α17 := pointer_coercion "Unsize" α16 in
-      let* α18 := core.fmt.Arguments::["new_v1"] α3 α17 in
-      std.io.stdio._print α18 in
-    M.alloc tt in
-  let '{| structures.Point.x := left_edge; structures.Point.y := top_edge; |} :=
-    point in
-  let* _rectangle :=
-    let* α0 :=
+  M.function_body
+    (let* name : ltac:(refine alloc.string.String) :=
+      (core.convert.From.from
+          (Self := alloc.string.String)
+          (Trait := ltac:(refine _)))
+        (mk_str "Peter") in
+    let* age : ltac:(refine u8) := M.alloc 27 in
+    let* peter : ltac:(refine structures.Person) :=
       M.alloc
-        {| structures.Point.x := left_edge; structures.Point.y := top_edge;
+        {| structures.Person.name := name; structures.Person.age := age; |} in
+    let* _ : ltac:(refine unit) :=
+      let* _ : ltac:(refine unit) :=
+        let* α0 : ltac:(refine (array (ref str))) :=
+          M.alloc [ mk_str ""; mk_str "
+" ] in
+        let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
+        let* α2 : ltac:(refine (array (ref str))) := deref α1 in
+        let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
+        let* α4 : ltac:(refine (ref (slice (ref str)))) :=
+          pointer_coercion "Unsize" α3 in
+        let* α5 : ltac:(refine (ref structures.Person)) := borrow peter in
+        let* α6 : ltac:(refine structures.Person) := deref α5 in
+        let* α7 : ltac:(refine (ref structures.Person)) := borrow α6 in
+        let* α8 : ltac:(refine core.fmt.rt.Argument) :=
+          core.fmt.rt.Argument::["new_debug"] α7 in
+        let* α9 : ltac:(refine (array core.fmt.rt.Argument)) :=
+          M.alloc [ α8 ] in
+        let* α10 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+          borrow α9 in
+        let* α11 : ltac:(refine (array core.fmt.rt.Argument)) := deref α10 in
+        let* α12 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+          borrow α11 in
+        let* α13 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+          pointer_coercion "Unsize" α12 in
+        let* α14 : ltac:(refine core.fmt.Arguments) :=
+          core.fmt.Arguments::["new_v1"] α4 α13 in
+        std.io.stdio._print α14 in
+      M.alloc tt in
+    let* point : ltac:(refine structures.Point) :=
+      let* α0 : ltac:(refine f32) := M.alloc 10 (* 10.3 *) in
+      let* α1 : ltac:(refine f32) := M.alloc 0 (* 0.4 *) in
+      M.alloc {| structures.Point.x := α0; structures.Point.y := α1; |} in
+    let* _ : ltac:(refine unit) :=
+      let* _ : ltac:(refine unit) :=
+        let* α0 : ltac:(refine (array (ref str))) :=
+          M.alloc [ mk_str "point coordinates: ("; mk_str ", "; mk_str ")
+" ] in
+        let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
+        let* α2 : ltac:(refine (array (ref str))) := deref α1 in
+        let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
+        let* α4 : ltac:(refine (ref (slice (ref str)))) :=
+          pointer_coercion "Unsize" α3 in
+        let* α5 : ltac:(refine f32) := point.["x"] in
+        let* α6 : ltac:(refine (ref f32)) := borrow α5 in
+        let* α7 : ltac:(refine f32) := deref α6 in
+        let* α8 : ltac:(refine (ref f32)) := borrow α7 in
+        let* α9 : ltac:(refine core.fmt.rt.Argument) :=
+          core.fmt.rt.Argument::["new_display"] α8 in
+        let* α10 : ltac:(refine f32) := point.["y"] in
+        let* α11 : ltac:(refine (ref f32)) := borrow α10 in
+        let* α12 : ltac:(refine f32) := deref α11 in
+        let* α13 : ltac:(refine (ref f32)) := borrow α12 in
+        let* α14 : ltac:(refine core.fmt.rt.Argument) :=
+          core.fmt.rt.Argument::["new_display"] α13 in
+        let* α15 : ltac:(refine (array core.fmt.rt.Argument)) :=
+          M.alloc [ α9; α14 ] in
+        let* α16 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+          borrow α15 in
+        let* α17 : ltac:(refine (array core.fmt.rt.Argument)) := deref α16 in
+        let* α18 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+          borrow α17 in
+        let* α19 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+          pointer_coercion "Unsize" α18 in
+        let* α20 : ltac:(refine core.fmt.Arguments) :=
+          core.fmt.Arguments::["new_v1"] α4 α19 in
+        std.io.stdio._print α20 in
+      M.alloc tt in
+    let* bottom_right : ltac:(refine structures.Point) :=
+      let* α0 : ltac:(refine f32) := M.alloc 5 (* 5.2 *) in
+      M.alloc {| structures.Point.x := α0; |} in
+    let* _ : ltac:(refine unit) :=
+      let* _ : ltac:(refine unit) :=
+        let* α0 : ltac:(refine (array (ref str))) :=
+          M.alloc [ mk_str "second point: ("; mk_str ", "; mk_str ")
+" ] in
+        let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
+        let* α2 : ltac:(refine (array (ref str))) := deref α1 in
+        let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
+        let* α4 : ltac:(refine (ref (slice (ref str)))) :=
+          pointer_coercion "Unsize" α3 in
+        let* α5 : ltac:(refine f32) := bottom_right.["x"] in
+        let* α6 : ltac:(refine (ref f32)) := borrow α5 in
+        let* α7 : ltac:(refine f32) := deref α6 in
+        let* α8 : ltac:(refine (ref f32)) := borrow α7 in
+        let* α9 : ltac:(refine core.fmt.rt.Argument) :=
+          core.fmt.rt.Argument::["new_display"] α8 in
+        let* α10 : ltac:(refine f32) := bottom_right.["y"] in
+        let* α11 : ltac:(refine (ref f32)) := borrow α10 in
+        let* α12 : ltac:(refine f32) := deref α11 in
+        let* α13 : ltac:(refine (ref f32)) := borrow α12 in
+        let* α14 : ltac:(refine core.fmt.rt.Argument) :=
+          core.fmt.rt.Argument::["new_display"] α13 in
+        let* α15 : ltac:(refine (array core.fmt.rt.Argument)) :=
+          M.alloc [ α9; α14 ] in
+        let* α16 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+          borrow α15 in
+        let* α17 : ltac:(refine (array core.fmt.rt.Argument)) := deref α16 in
+        let* α18 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+          borrow α17 in
+        let* α19 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+          pointer_coercion "Unsize" α18 in
+        let* α20 : ltac:(refine core.fmt.Arguments) :=
+          core.fmt.Arguments::["new_v1"] α4 α19 in
+        std.io.stdio._print α20 in
+      M.alloc tt in
+    let
+        '{| structures.Point.x := left_edge; structures.Point.y := top_edge;
+        |} :=
+      point in
+    let* _rectangle : ltac:(refine structures.Rectangle) :=
+      let* α0 : ltac:(refine structures.Point) :=
+        M.alloc
+          {| structures.Point.x := left_edge; structures.Point.y := top_edge;
+          |} in
+      M.alloc
+        {|
+          structures.Rectangle.top_left := α0;
+          structures.Rectangle.bottom_right := bottom_right;
         |} in
-    M.alloc
-      {|
-        structures.Rectangle.top_left := α0;
-        structures.Rectangle.bottom_right := bottom_right;
-      |} in
-  let* _unit := M.alloc structures.Unit.Build_t in
-  let* pair :=
-    let* α0 := M.alloc 1 in
-    let* α1 := M.alloc 0 (* 0.1 *) in
-    M.alloc (structures.Pair.Build_t α0 α1) in
-  let* _ :=
-    let* _ :=
-      let* α0 :=
-        borrow
-          [ mk_str "pair contains "; mk_str " and "; mk_str "
-" ]
-          (list (ref str)) in
-      let* α1 := deref α0 (list (ref str)) in
-      let* α2 := borrow α1 (list (ref str)) in
-      let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := pair.["0"] in
-      let* α5 := borrow α4 i32 in
-      let* α6 := deref α5 i32 in
-      let* α7 := borrow α6 i32 in
-      let* α8 := core.fmt.rt.Argument::["new_debug"] α7 in
-      let* α9 := pair.["1"] in
-      let* α10 := borrow α9 f32 in
-      let* α11 := deref α10 f32 in
-      let* α12 := borrow α11 f32 in
-      let* α13 := core.fmt.rt.Argument::["new_debug"] α12 in
-      let* α14 := borrow [ α8; α13 ] (list core.fmt.rt.Argument) in
-      let* α15 := deref α14 (list core.fmt.rt.Argument) in
-      let* α16 := borrow α15 (list core.fmt.rt.Argument) in
-      let* α17 := pointer_coercion "Unsize" α16 in
-      let* α18 := core.fmt.Arguments::["new_v1"] α3 α17 in
-      std.io.stdio._print α18 in
-    M.alloc tt in
-  let 'structures.Pair.Build_t integer decimal := pair in
-  let* _ :=
-    let* _ :=
-      let* α0 :=
-        borrow
-          [ mk_str "pair contains "; mk_str " and "; mk_str "
-" ]
-          (list (ref str)) in
-      let* α1 := deref α0 (list (ref str)) in
-      let* α2 := borrow α1 (list (ref str)) in
-      let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := borrow integer i32 in
-      let* α5 := deref α4 i32 in
-      let* α6 := borrow α5 i32 in
-      let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
-      let* α8 := borrow decimal f32 in
-      let* α9 := deref α8 f32 in
-      let* α10 := borrow α9 f32 in
-      let* α11 := core.fmt.rt.Argument::["new_debug"] α10 in
-      let* α12 := borrow [ α7; α11 ] (list core.fmt.rt.Argument) in
-      let* α13 := deref α12 (list core.fmt.rt.Argument) in
-      let* α14 := borrow α13 (list core.fmt.rt.Argument) in
-      let* α15 := pointer_coercion "Unsize" α14 in
-      let* α16 := core.fmt.Arguments::["new_v1"] α3 α15 in
-      std.io.stdio._print α16 in
-    M.alloc tt in
-  M.alloc tt.
+    let* _unit : ltac:(refine structures.Unit) :=
+      M.alloc structures.Unit.Build_t in
+    let* pair : ltac:(refine structures.Pair) :=
+      let* α0 : ltac:(refine i32) := M.alloc 1 in
+      let* α1 : ltac:(refine f32) := M.alloc 0 (* 0.1 *) in
+      M.alloc (structures.Pair.Build_t α0 α1) in
+    let* _ : ltac:(refine unit) :=
+      let* _ : ltac:(refine unit) :=
+        let* α0 : ltac:(refine (array (ref str))) :=
+          M.alloc [ mk_str "pair contains "; mk_str " and "; mk_str "
+" ] in
+        let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
+        let* α2 : ltac:(refine (array (ref str))) := deref α1 in
+        let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
+        let* α4 : ltac:(refine (ref (slice (ref str)))) :=
+          pointer_coercion "Unsize" α3 in
+        let* α5 : ltac:(refine i32) := pair.["0"] in
+        let* α6 : ltac:(refine (ref i32)) := borrow α5 in
+        let* α7 : ltac:(refine i32) := deref α6 in
+        let* α8 : ltac:(refine (ref i32)) := borrow α7 in
+        let* α9 : ltac:(refine core.fmt.rt.Argument) :=
+          core.fmt.rt.Argument::["new_debug"] α8 in
+        let* α10 : ltac:(refine f32) := pair.["1"] in
+        let* α11 : ltac:(refine (ref f32)) := borrow α10 in
+        let* α12 : ltac:(refine f32) := deref α11 in
+        let* α13 : ltac:(refine (ref f32)) := borrow α12 in
+        let* α14 : ltac:(refine core.fmt.rt.Argument) :=
+          core.fmt.rt.Argument::["new_debug"] α13 in
+        let* α15 : ltac:(refine (array core.fmt.rt.Argument)) :=
+          M.alloc [ α9; α14 ] in
+        let* α16 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+          borrow α15 in
+        let* α17 : ltac:(refine (array core.fmt.rt.Argument)) := deref α16 in
+        let* α18 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+          borrow α17 in
+        let* α19 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+          pointer_coercion "Unsize" α18 in
+        let* α20 : ltac:(refine core.fmt.Arguments) :=
+          core.fmt.Arguments::["new_v1"] α4 α19 in
+        std.io.stdio._print α20 in
+      M.alloc tt in
+    let 'structures.Pair.Build_t integer decimal := pair in
+    let* _ : ltac:(refine unit) :=
+      let* _ : ltac:(refine unit) :=
+        let* α0 : ltac:(refine (array (ref str))) :=
+          M.alloc [ mk_str "pair contains "; mk_str " and "; mk_str "
+" ] in
+        let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
+        let* α2 : ltac:(refine (array (ref str))) := deref α1 in
+        let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
+        let* α4 : ltac:(refine (ref (slice (ref str)))) :=
+          pointer_coercion "Unsize" α3 in
+        let* α5 : ltac:(refine (ref i32)) := borrow integer in
+        let* α6 : ltac:(refine i32) := deref α5 in
+        let* α7 : ltac:(refine (ref i32)) := borrow α6 in
+        let* α8 : ltac:(refine core.fmt.rt.Argument) :=
+          core.fmt.rt.Argument::["new_debug"] α7 in
+        let* α9 : ltac:(refine (ref f32)) := borrow decimal in
+        let* α10 : ltac:(refine f32) := deref α9 in
+        let* α11 : ltac:(refine (ref f32)) := borrow α10 in
+        let* α12 : ltac:(refine core.fmt.rt.Argument) :=
+          core.fmt.rt.Argument::["new_debug"] α11 in
+        let* α13 : ltac:(refine (array core.fmt.rt.Argument)) :=
+          M.alloc [ α8; α12 ] in
+        let* α14 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+          borrow α13 in
+        let* α15 : ltac:(refine (array core.fmt.rt.Argument)) := deref α14 in
+        let* α16 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+          borrow α15 in
+        let* α17 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+          pointer_coercion "Unsize" α16 in
+        let* α18 : ltac:(refine core.fmt.Arguments) :=
+          core.fmt.Arguments::["new_v1"] α4 α17 in
+        std.io.stdio._print α18 in
+      M.alloc tt in
+    M.alloc tt).

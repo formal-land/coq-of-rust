@@ -3,77 +3,94 @@ Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
-  let* _ :=
-    let* _ :=
-      let* α0 :=
-        borrow
-          [ mk_str "Sum of odd numbers up to 9 (excluding): "; mk_str "
-" ]
-          (list (ref str)) in
-      let* α1 := deref α0 (list (ref str)) in
-      let* α2 := borrow α1 (list (ref str)) in
-      let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := M.alloc 9 in
-      let* α5 := "unimplemented parent_kind" α4 in
-      let* α6 := borrow α5 u32 in
-      let* α7 := deref α6 u32 in
-      let* α8 := borrow α7 u32 in
-      let* α9 := core.fmt.rt.Argument::["new_display"] α8 in
-      let* α10 := borrow [ α9 ] (list core.fmt.rt.Argument) in
-      let* α11 := deref α10 (list core.fmt.rt.Argument) in
-      let* α12 := borrow α11 (list core.fmt.rt.Argument) in
-      let* α13 := pointer_coercion "Unsize" α12 in
-      let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
-      std.io.stdio._print α14 in
-    M.alloc tt in
-  M.alloc tt.
+  M.function_body
+    (let* _ : ltac:(refine unit) :=
+      let* _ : ltac:(refine unit) :=
+        let* α0 : ltac:(refine (array (ref str))) :=
+          M.alloc
+            [ mk_str "Sum of odd numbers up to 9 (excluding): "; mk_str "
+" ] in
+        let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
+        let* α2 : ltac:(refine (array (ref str))) := deref α1 in
+        let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
+        let* α4 : ltac:(refine (ref (slice (ref str)))) :=
+          pointer_coercion "Unsize" α3 in
+        let* α5 : ltac:(refine u32) := M.alloc 9 in
+        let* α6 : ltac:(refine u32) := "unimplemented parent_kind" α5 in
+        let* α7 : ltac:(refine (ref u32)) := borrow α6 in
+        let* α8 : ltac:(refine u32) := deref α7 in
+        let* α9 : ltac:(refine (ref u32)) := borrow α8 in
+        let* α10 : ltac:(refine core.fmt.rt.Argument) :=
+          core.fmt.rt.Argument::["new_display"] α9 in
+        let* α11 : ltac:(refine (array core.fmt.rt.Argument)) :=
+          M.alloc [ α10 ] in
+        let* α12 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+          borrow α11 in
+        let* α13 : ltac:(refine (array core.fmt.rt.Argument)) := deref α12 in
+        let* α14 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+          borrow α13 in
+        let* α15 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+          pointer_coercion "Unsize" α14 in
+        let* α16 : ltac:(refine core.fmt.Arguments) :=
+          core.fmt.Arguments::["new_v1"] α4 α15 in
+        std.io.stdio._print α16 in
+      M.alloc tt in
+    M.alloc tt).
 
 Definition sum_odd_numbers `{ℋ : State.Trait} (up_to : u32) : M u32 :=
-  let* acc := M.alloc 0 in
-  let* _ :=
-    let* α0 := M.alloc 0 in
-    let* α1 :=
-      M.alloc
-        {| core.ops.range.Range.start := α0; core.ops.range.Range.end := up_to;
-        |} in
-    let* α2 :=
-      (core.iter.traits.collect.IntoIterator.into_iter
-          (Self := core.ops.range.Range u32)
-          (Trait := ltac:(refine _)))
-        α1 in
-    let* α3 :=
-      match α2 with
-      | iter =>
-        loop
-          (let* _ :=
-            let* α0 := borrow_mut iter (core.ops.range.Range u32) in
-            let* α1 := deref α0 (core.ops.range.Range u32) in
-            let* α2 := borrow_mut α1 (core.ops.range.Range u32) in
-            let* α3 :=
-              (core.iter.traits.iterator.Iterator.next
-                  (Self := core.ops.range.Range u32)
-                  (Trait := ltac:(refine _)))
-                α2 in
-            match α3 with
-            | core.option.Option  =>
-              let* α0 := Break in
-              never_to_any α0
-            | core.option.Option i =>
-              let* addition :=
-                let* α0 := M.alloc 2 in
-                let* α1 := BinOp.rem i α0 in
-                let* α2 := M.alloc 1 in
-                let* α3 := BinOp.eq α1 α2 in
-                match α3 with
-                | _ => Pure i
-                | _ =>
-                  let* α0 := Continue in
-                  never_to_any α0
-                end in
-              let* _ := assign_op add acc addition in
-              M.alloc tt
-            end in
-          M.alloc tt)
-      end in
-    use α3 in
-  Pure acc.
+  M.function_body
+    (let* acc : ltac:(refine u32) := M.alloc 0 in
+    let* _ : ltac:(refine unit) :=
+      let* α0 : ltac:(refine u32) := M.alloc 0 in
+      let* α1 : ltac:(refine (core.ops.range.Range u32)) :=
+        M.alloc
+          {|
+            core.ops.range.Range.start := α0;
+            core.ops.range.Range.end := up_to;
+          |} in
+      let* α2 : ltac:(refine (core.ops.range.Range u32)) :=
+        (core.iter.traits.collect.IntoIterator.into_iter
+            (Self := core.ops.range.Range u32)
+            (Trait := ltac:(refine _)))
+          α1 in
+      let* α3 := M.read α2 in
+      let* α4 : ltac:(refine unit) :=
+        match α3 with
+        | iter =>
+          loop
+            (let* _ : ltac:(refine unit) :=
+              let* α0 : ltac:(refine (mut_ref (core.ops.range.Range u32))) :=
+                borrow_mut iter in
+              let* α1 : ltac:(refine (core.ops.range.Range u32)) := deref α0 in
+              let* α2 : ltac:(refine (mut_ref (core.ops.range.Range u32))) :=
+                borrow_mut α1 in
+              let* α3 : ltac:(refine (core.option.Option u32)) :=
+                (core.iter.traits.iterator.Iterator.next
+                    (Self := core.ops.range.Range u32)
+                    (Trait := ltac:(refine _)))
+                  α2 in
+              let* α4 := M.read α3 in
+              match α4 with
+              | core.option.Option.None  =>
+                let* α0 : ltac:(refine never) := Break in
+                never_to_any α0
+              | core.option.Option.Some i =>
+                let* addition : ltac:(refine u32) :=
+                  let* α0 : ltac:(refine u32) := M.alloc 2 in
+                  let* α1 : ltac:(refine u32) := BinOp.rem i α0 in
+                  let* α2 : ltac:(refine u32) := M.alloc 1 in
+                  let* α3 : ltac:(refine bool) := BinOp.eq α1 α2 in
+                  let* α4 := M.read α3 in
+                  match α4 with
+                  | _ => M.pure i
+                  | _ =>
+                    let* α0 : ltac:(refine never) := Continue in
+                    never_to_any α0
+                  end in
+                let* _ : ltac:(refine unit) := assign_op add acc addition in
+                M.alloc tt
+              end in
+            M.alloc tt)
+        end in
+      use α4 in
+    M.pure acc).

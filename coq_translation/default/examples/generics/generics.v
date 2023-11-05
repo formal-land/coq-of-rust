@@ -8,7 +8,7 @@ Section A.
   Inductive t : Set := Build.
 End A.
 End A.
-Definition A := @A.t.
+Definition A `{ℋ : State.Trait} := M.Val A.t.
 
 Module  Single.
 Section Single.
@@ -21,11 +21,11 @@ Section Single.
   Global Set Primitive Projections.
   
   Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
   }.
 End Single.
 End Single.
-Definition Single `{ℋ : State.Trait} : Set := M.val Single.t.
+Definition Single `{ℋ : State.Trait} : Set := M.Val Single.t.
 
 Module  SingleGen.
 Section SingleGen.
@@ -40,28 +40,29 @@ Section SingleGen.
   Global Set Primitive Projections.
   
   Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
   }.
 End SingleGen.
 End SingleGen.
 Definition SingleGen `{ℋ : State.Trait} (T : Set) : Set :=
-  M.val (SingleGen.t (T := T)).
+  M.Val (SingleGen.t (T := T)).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
-  let* _s :=
-    let* α0 := M.alloc generics.A.Build_t in
-    M.alloc (generics.Single.Build_t α0) in
-  let* _char :=
-    let* α0 := M.alloc "a"%char in
-    M.alloc (generics.SingleGen.Build_t α0) in
-  let* _t :=
-    let* α0 := M.alloc generics.A.Build_t in
-    M.alloc (generics.SingleGen.Build_t α0) in
-  let* _i32 :=
-    let* α0 := M.alloc 6 in
-    M.alloc (generics.SingleGen.Build_t α0) in
-  let* _char :=
-    let* α0 := M.alloc "a"%char in
-    M.alloc (generics.SingleGen.Build_t α0) in
-  M.alloc tt.
+  M.function_body
+    (let* _s : ltac:(refine generics.Single) :=
+      let* α0 : ltac:(refine generics.A) := M.alloc generics.A.Build_t in
+      M.alloc (generics.Single.Build_t α0) in
+    let* _char : ltac:(refine (generics.SingleGen char)) :=
+      let* α0 : ltac:(refine char) := M.alloc "a"%char in
+      M.alloc (generics.SingleGen.Build_t α0) in
+    let* _t : ltac:(refine (generics.SingleGen generics.A)) :=
+      let* α0 : ltac:(refine generics.A) := M.alloc generics.A.Build_t in
+      M.alloc (generics.SingleGen.Build_t α0) in
+    let* _i32 : ltac:(refine (generics.SingleGen i32)) :=
+      let* α0 : ltac:(refine i32) := M.alloc 6 in
+      M.alloc (generics.SingleGen.Build_t α0) in
+    let* _char : ltac:(refine (generics.SingleGen char)) :=
+      let* α0 : ltac:(refine char) := M.alloc "a"%char in
+      M.alloc (generics.SingleGen.Build_t α0) in
+    M.alloc tt).

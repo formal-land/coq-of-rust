@@ -15,4 +15,4 @@ End VecDeque.
 Definition VecDeque `{State.Trait} (T A : Set)
   {H0 : alloc.Allocator.Trait A} :
   Set :=
-  M.val (VecDeque.t T A).
+  M.Val (VecDeque.t T A).

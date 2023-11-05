@@ -2,149 +2,207 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition is_odd `{ℋ : State.Trait} (n : u32) : M bool :=
-  let* α0 := M.alloc 2 in
-  let* α1 := BinOp.rem n α0 in
-  let* α2 := M.alloc 1 in
-  BinOp.eq α1 α2.
+  M.function_body
+    (let* α0 : ltac:(refine u32) := M.alloc 2 in
+    let* α1 : ltac:(refine u32) := BinOp.rem n α0 in
+    let* α2 : ltac:(refine u32) := M.alloc 1 in
+    BinOp.eq α1 α2).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
-  let* _ :=
-    let* _ :=
-      let* α0 :=
-        borrow
-          [ mk_str "Find the sum of all the squared odd numbers under 1000
-" ]
-          (list (ref str)) in
-      let* α1 := deref α0 (list (ref str)) in
-      let* α2 := borrow α1 (list (ref str)) in
-      let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := core.fmt.Arguments::["new_const"] α3 in
-      std.io.stdio._print α4 in
-    M.alloc tt in
-  let* upper := M.alloc 1000 in
-  let* acc := M.alloc 0 in
-  let* _ :=
-    let* α0 := M.alloc 0 in
-    let* α1 := M.alloc {| core.ops.range.RangeFrom.start := α0; |} in
-    let* α2 :=
-      (core.iter.traits.collect.IntoIterator.into_iter
-          (Self := core.ops.range.RangeFrom u32)
-          (Trait := ltac:(refine _)))
-        α1 in
-    let* α3 :=
-      match α2 with
-      | iter =>
-        loop
-          (let* _ :=
-            let* α0 := borrow_mut iter (core.ops.range.RangeFrom u32) in
-            let* α1 := deref α0 (core.ops.range.RangeFrom u32) in
-            let* α2 := borrow_mut α1 (core.ops.range.RangeFrom u32) in
-            let* α3 :=
-              (core.iter.traits.iterator.Iterator.next
-                  (Self := core.ops.range.RangeFrom u32)
-                  (Trait := ltac:(refine _)))
-                α2 in
-            match α3 with
-            | core.option.Option  =>
-              let* α0 := Break in
-              never_to_any α0
-            | core.option.Option n =>
-              let* n_squared := BinOp.mul n n in
-              let* α0 := BinOp.ge n_squared upper in
-              let* α1 := use α0 in
-              if (α1 : bool) then
-                let* _ := Break in
-                let* α0 := M.alloc tt in
+  M.function_body
+    (let* _ : ltac:(refine unit) :=
+      let* _ : ltac:(refine unit) :=
+        let* α0 : ltac:(refine (array (ref str))) :=
+          M.alloc
+            [ mk_str "Find the sum of all the squared odd numbers under 1000
+"
+            ] in
+        let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
+        let* α2 : ltac:(refine (array (ref str))) := deref α1 in
+        let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
+        let* α4 : ltac:(refine (ref (slice (ref str)))) :=
+          pointer_coercion "Unsize" α3 in
+        let* α5 : ltac:(refine core.fmt.Arguments) :=
+          core.fmt.Arguments::["new_const"] α4 in
+        std.io.stdio._print α5 in
+      M.alloc tt in
+    let* upper : ltac:(refine u32) := M.alloc 1000 in
+    let* acc : ltac:(refine u32) := M.alloc 0 in
+    let* _ : ltac:(refine unit) :=
+      let* α0 : ltac:(refine u32) := M.alloc 0 in
+      let* α1 : ltac:(refine (core.ops.range.RangeFrom u32)) :=
+        M.alloc {| core.ops.range.RangeFrom.start := α0; |} in
+      let* α2 : ltac:(refine (core.ops.range.RangeFrom u32)) :=
+        (core.iter.traits.collect.IntoIterator.into_iter
+            (Self := core.ops.range.RangeFrom u32)
+            (Trait := ltac:(refine _)))
+          α1 in
+      let* α3 := M.read α2 in
+      let* α4 : ltac:(refine unit) :=
+        match α3 with
+        | iter =>
+          loop
+            (let* _ : ltac:(refine unit) :=
+              let*
+                  α0 :
+                  ltac:(refine (mut_ref (core.ops.range.RangeFrom u32))) :=
+                borrow_mut iter in
+              let* α1 : ltac:(refine (core.ops.range.RangeFrom u32)) :=
+                deref α0 in
+              let*
+                  α2 :
+                  ltac:(refine (mut_ref (core.ops.range.RangeFrom u32))) :=
+                borrow_mut α1 in
+              let* α3 : ltac:(refine (core.option.Option u32)) :=
+                (core.iter.traits.iterator.Iterator.next
+                    (Self := core.ops.range.RangeFrom u32)
+                    (Trait := ltac:(refine _)))
+                  α2 in
+              let* α4 := M.read α3 in
+              match α4 with
+              | core.option.Option.None  =>
+                let* α0 : ltac:(refine never) := Break in
                 never_to_any α0
-              else
-                let* α0 := higher_order_functions.is_odd n_squared in
-                let* α1 := use α0 in
+              | core.option.Option.Some n =>
+                let* n_squared : ltac:(refine u32) := BinOp.mul n n in
+                let* α0 : ltac:(refine bool) := BinOp.ge n_squared upper in
+                let* α1 : ltac:(refine bool) := use α0 in
                 if (α1 : bool) then
-                  let* _ := assign_op add acc n_squared in
-                  M.alloc tt
+                  let* _ : ltac:(refine never) := Break in
+                  let* α0 : ltac:(refine unit) := M.alloc tt in
+                  never_to_any α0
                 else
-                  M.alloc tt
-            end in
-          M.alloc tt)
-      end in
-    use α3 in
-  let* _ :=
-    let* _ :=
-      let* α0 :=
-        borrow [ mk_str "imperative style: "; mk_str "
-" ] (list (ref str)) in
-      let* α1 := deref α0 (list (ref str)) in
-      let* α2 := borrow α1 (list (ref str)) in
-      let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := borrow acc u32 in
-      let* α5 := deref α4 u32 in
-      let* α6 := borrow α5 u32 in
-      let* α7 := core.fmt.rt.Argument::["new_display"] α6 in
-      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
-      let* α9 := deref α8 (list core.fmt.rt.Argument) in
-      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
-      let* α11 := pointer_coercion "Unsize" α10 in
-      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
-      std.io.stdio._print α12 in
-    M.alloc tt in
-  let* sum_of_squared_odd_numbers :=
-    let* α0 := M.alloc 0 in
-    let* α1 := M.alloc {| core.ops.range.RangeFrom.start := α0; |} in
-    let* α2 :=
-      (core.iter.traits.iterator.Iterator.map
-          (Self := core.ops.range.RangeFrom u32)
-          (Trait := ltac:(refine _)))
-        α1
-        (BinOp.mul n n) in
-    let* α3 :=
-      (core.iter.traits.iterator.Iterator.take_while
-          (Self :=
-            core.iter.adapters.map.Map
+                  let* α0 : ltac:(refine bool) :=
+                    higher_order_functions.is_odd n_squared in
+                  let* α1 : ltac:(refine bool) := use α0 in
+                  if (α1 : bool) then
+                    let* _ : ltac:(refine unit) :=
+                      assign_op add acc n_squared in
+                    M.alloc tt
+                  else
+                    M.alloc tt
+              end in
+            M.alloc tt)
+        end in
+      use α4 in
+    let* _ : ltac:(refine unit) :=
+      let* _ : ltac:(refine unit) :=
+        let* α0 : ltac:(refine (array (ref str))) :=
+          M.alloc [ mk_str "imperative style: "; mk_str "
+" ] in
+        let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
+        let* α2 : ltac:(refine (array (ref str))) := deref α1 in
+        let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
+        let* α4 : ltac:(refine (ref (slice (ref str)))) :=
+          pointer_coercion "Unsize" α3 in
+        let* α5 : ltac:(refine (ref u32)) := borrow acc in
+        let* α6 : ltac:(refine u32) := deref α5 in
+        let* α7 : ltac:(refine (ref u32)) := borrow α6 in
+        let* α8 : ltac:(refine core.fmt.rt.Argument) :=
+          core.fmt.rt.Argument::["new_display"] α7 in
+        let* α9 : ltac:(refine (array core.fmt.rt.Argument)) :=
+          M.alloc [ α8 ] in
+        let* α10 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+          borrow α9 in
+        let* α11 : ltac:(refine (array core.fmt.rt.Argument)) := deref α10 in
+        let* α12 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+          borrow α11 in
+        let* α13 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+          pointer_coercion "Unsize" α12 in
+        let* α14 : ltac:(refine core.fmt.Arguments) :=
+          core.fmt.Arguments::["new_v1"] α4 α13 in
+        std.io.stdio._print α14 in
+      M.alloc tt in
+    let* sum_of_squared_odd_numbers : ltac:(refine u32) :=
+      let* α0 : ltac:(refine u32) := M.alloc 0 in
+      let* α1 : ltac:(refine (core.ops.range.RangeFrom u32)) :=
+        M.alloc {| core.ops.range.RangeFrom.start := α0; |} in
+      let*
+          α2 :
+          ltac:(refine
+            (core.iter.adapters.map.Map
               (core.ops.range.RangeFrom u32)
-              type not implemented)
-          (Trait := ltac:(refine _)))
-        α2
-        (BinOp.lt n_squared upper) in
-    let* α4 :=
-      (core.iter.traits.iterator.Iterator.filter
-          (Self :=
-            core.iter.adapters.take_while.TakeWhile
-              (core.iter.adapters.map.Map
-                (core.ops.range.RangeFrom u32)
-                type not implemented)
-              type not implemented)
-          (Trait := ltac:(refine _)))
-        α3
-        (higher_order_functions.is_odd n_squared) in
-    (core.iter.traits.iterator.Iterator.sum
-        (Self :=
-          core.iter.adapters.filter.Filter
+              type not implemented)) :=
+        (core.iter.traits.iterator.Iterator.map
+            (Self := core.ops.range.RangeFrom u32)
+            (Trait := ltac:(refine _)))
+          α1
+          (BinOp.mul n n) in
+      let*
+          α3 :
+          ltac:(refine
             (core.iter.adapters.take_while.TakeWhile
               (core.iter.adapters.map.Map
                 (core.ops.range.RangeFrom u32)
                 type not implemented)
+              type not implemented)) :=
+        (core.iter.traits.iterator.Iterator.take_while
+            (Self :=
+              core.iter.adapters.map.Map
+                (core.ops.range.RangeFrom u32)
+                type not implemented)
+            (Trait := ltac:(refine _)))
+          α2
+          (BinOp.lt n_squared upper) in
+      let*
+          α4 :
+          ltac:(refine
+            (core.iter.adapters.filter.Filter
+              (core.iter.adapters.take_while.TakeWhile
+                (core.iter.adapters.map.Map
+                  (core.ops.range.RangeFrom u32)
+                  type not implemented)
+                type not implemented)
+              type not implemented)) :=
+        (core.iter.traits.iterator.Iterator.filter
+            (Self :=
+              core.iter.adapters.take_while.TakeWhile
+                (core.iter.adapters.map.Map
+                  (core.ops.range.RangeFrom u32)
+                  type not implemented)
+                type not implemented)
+            (Trait := ltac:(refine _)))
+          α3
+          (higher_order_functions.is_odd n_squared) in
+      (core.iter.traits.iterator.Iterator.sum
+          (Self :=
+            core.iter.adapters.filter.Filter
+              (core.iter.adapters.take_while.TakeWhile
+                (core.iter.adapters.map.Map
+                  (core.ops.range.RangeFrom u32)
+                  type not implemented)
+                type not implemented)
               type not implemented)
-            type not implemented)
-        (Trait := ltac:(refine _)))
-      α4 in
-  let* _ :=
-    let* _ :=
-      let* α0 :=
-        borrow [ mk_str "functional style: "; mk_str "
-" ] (list (ref str)) in
-      let* α1 := deref α0 (list (ref str)) in
-      let* α2 := borrow α1 (list (ref str)) in
-      let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := borrow sum_of_squared_odd_numbers u32 in
-      let* α5 := deref α4 u32 in
-      let* α6 := borrow α5 u32 in
-      let* α7 := core.fmt.rt.Argument::["new_display"] α6 in
-      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
-      let* α9 := deref α8 (list core.fmt.rt.Argument) in
-      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
-      let* α11 := pointer_coercion "Unsize" α10 in
-      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
-      std.io.stdio._print α12 in
-    M.alloc tt in
-  M.alloc tt.
+          (Trait := ltac:(refine _)))
+        α4 in
+    let* _ : ltac:(refine unit) :=
+      let* _ : ltac:(refine unit) :=
+        let* α0 : ltac:(refine (array (ref str))) :=
+          M.alloc [ mk_str "functional style: "; mk_str "
+" ] in
+        let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
+        let* α2 : ltac:(refine (array (ref str))) := deref α1 in
+        let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
+        let* α4 : ltac:(refine (ref (slice (ref str)))) :=
+          pointer_coercion "Unsize" α3 in
+        let* α5 : ltac:(refine (ref u32)) :=
+          borrow sum_of_squared_odd_numbers in
+        let* α6 : ltac:(refine u32) := deref α5 in
+        let* α7 : ltac:(refine (ref u32)) := borrow α6 in
+        let* α8 : ltac:(refine core.fmt.rt.Argument) :=
+          core.fmt.rt.Argument::["new_display"] α7 in
+        let* α9 : ltac:(refine (array core.fmt.rt.Argument)) :=
+          M.alloc [ α8 ] in
+        let* α10 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+          borrow α9 in
+        let* α11 : ltac:(refine (array core.fmt.rt.Argument)) := deref α10 in
+        let* α12 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+          borrow α11 in
+        let* α13 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+          pointer_coercion "Unsize" α12 in
+        let* α14 : ltac:(refine core.fmt.Arguments) :=
+          core.fmt.Arguments::["new_v1"] α4 α13 in
+        std.io.stdio._print α14 in
+      M.alloc tt in
+    M.alloc tt).

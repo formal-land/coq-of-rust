@@ -1,0 +1,16 @@
+type Closure(
+    DefId(0:6 ~ pulling_results_out_of_options[0c5e]::double_first::{closure#0}::{closure#0}),
+    [
+        i32,
+        extern "rust-call" fn((i32,)) -> i32,
+        (),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:5 ~ pulling_results_out_of_options[0c5e]::double_first::{closure#0}),
+    [
+        i32,
+        extern "rust-call" fn((&&str,)) -> std::result::Result<i32, std::num::ParseIntError>,
+        (),
+    ],
+) not yet handled

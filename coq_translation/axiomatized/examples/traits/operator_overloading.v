@@ -8,7 +8,7 @@ Section Foo.
   Inductive t : Set := Build.
 End Foo.
 End Foo.
-Definition Foo := @Foo.t.
+Definition Foo `{ℋ : State.Trait} := M.Val Foo.t.
 
 Module  Bar.
 Section Bar.
@@ -17,7 +17,7 @@ Section Bar.
   Inductive t : Set := Build.
 End Bar.
 End Bar.
-Definition Bar := @Bar.t.
+Definition Bar `{ℋ : State.Trait} := M.Val Bar.t.
 
 Module  FooBar.
 Section FooBar.
@@ -26,7 +26,7 @@ Section FooBar.
   Inductive t : Set := Build.
 End FooBar.
 End FooBar.
-Definition FooBar := @FooBar.t.
+Definition FooBar `{ℋ : State.Trait} := M.Val FooBar.t.
 
 Module  Impl_core_fmt_Debug_for_operator_overloading_FooBar.
 Section Impl_core_fmt_Debug_for_operator_overloading_FooBar.
@@ -54,7 +54,7 @@ Section BarFoo.
   Inductive t : Set := Build.
 End BarFoo.
 End BarFoo.
-Definition BarFoo := @BarFoo.t.
+Definition BarFoo `{ℋ : State.Trait} := M.Val BarFoo.t.
 
 Module  Impl_core_fmt_Debug_for_operator_overloading_BarFoo.
 Section Impl_core_fmt_Debug_for_operator_overloading_BarFoo.

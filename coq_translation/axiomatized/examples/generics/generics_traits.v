@@ -8,7 +8,7 @@ Section Empty.
   Inductive t : Set := Build.
 End Empty.
 End Empty.
-Definition Empty := @Empty.t.
+Definition Empty `{ℋ : State.Trait} := M.Val Empty.t.
 
 Module  Null.
 Section Null.
@@ -17,7 +17,7 @@ Section Null.
   Inductive t : Set := Build.
 End Null.
 End Null.
-Definition Null := @Null.t.
+Definition Null `{ℋ : State.Trait} := M.Val Null.t.
 
 Module  DoubleDrop.
 Section DoubleDrop.

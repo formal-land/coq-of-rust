@@ -9,7 +9,7 @@ Module Fruit.
   | Kiwi
   | Lemon.
 End Fruit.
-Definition Fruit `{ℋ : State.Trait} : Set := Fruit.t.
+Definition Fruit `{ℋ : State.Trait} : Set := M.Val Fruit.t.
 
 Module  Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_with_Fruit.
 Section Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_with_Fruit.

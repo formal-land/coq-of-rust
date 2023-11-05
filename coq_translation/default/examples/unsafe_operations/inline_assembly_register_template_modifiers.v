@@ -3,37 +3,43 @@ Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
-  let* x := M.alloc 171 in
-  let* _ :=
-    let _ := InlineAssembly in
-    M.alloc tt in
-  let* _ :=
-    let* α0 := borrow x u16 in
-    let* α1 := M.alloc 43947 in
-    let* α2 := borrow α1 u16 in
-    match (α0, α2) with
-    | (left_val, right_val) =>
-      let* α0 := deref left_val u16 in
-      let* α1 := deref right_val u16 in
-      let* α2 := BinOp.eq α0 α1 in
-      let* α3 := UnOp.not α2 in
-      let* α4 := use α3 in
-      if (α4 : bool) then
-        let* kind := M.alloc core.panicking.AssertKind.Eq in
-        let* _ :=
-          let* α0 := deref left_val u16 in
-          let* α1 := borrow α0 u16 in
-          let* α2 := deref α1 u16 in
-          let* α3 := borrow α2 u16 in
-          let* α4 := deref right_val u16 in
-          let* α5 := borrow α4 u16 in
-          let* α6 := deref α5 u16 in
-          let* α7 := borrow α6 u16 in
-          let* α8 := M.alloc core.option.Option.None in
-          core.panicking.assert_failed kind α3 α7 α8 in
-        let* α0 := M.alloc tt in
-        never_to_any α0
-      else
-        M.alloc tt
-    end in
-  M.alloc tt.
+  M.function_body
+    (let* x : ltac:(refine u16) := M.alloc 171 in
+    let* _ : ltac:(refine unit) :=
+      let _ := InlineAssembly in
+      M.alloc tt in
+    let* _ : ltac:(refine unit) :=
+      let* α0 : ltac:(refine (ref u16)) := borrow x in
+      let* α1 : ltac:(refine u16) := M.alloc 43947 in
+      let* α2 : ltac:(refine (ref u16)) := borrow α1 in
+      let* α3 : ltac:(refine (M.Val ((ref u16) * (ref u16)))) :=
+        M.alloc (α0, α2) in
+      let* α4 := M.read α3 in
+      match α4 with
+      | (left_val, right_val) =>
+        let* α0 : ltac:(refine u16) := deref left_val in
+        let* α1 : ltac:(refine u16) := deref right_val in
+        let* α2 : ltac:(refine bool) := BinOp.eq α0 α1 in
+        let* α3 : ltac:(refine bool) := UnOp.not α2 in
+        let* α4 : ltac:(refine bool) := use α3 in
+        if (α4 : bool) then
+          let* kind : ltac:(refine core.panicking.AssertKind) :=
+            M.alloc core.panicking.AssertKind.Eq in
+          let* _ : ltac:(refine never) :=
+            let* α0 : ltac:(refine u16) := deref left_val in
+            let* α1 : ltac:(refine (ref u16)) := borrow α0 in
+            let* α2 : ltac:(refine u16) := deref α1 in
+            let* α3 : ltac:(refine (ref u16)) := borrow α2 in
+            let* α4 : ltac:(refine u16) := deref right_val in
+            let* α5 : ltac:(refine (ref u16)) := borrow α4 in
+            let* α6 : ltac:(refine u16) := deref α5 in
+            let* α7 : ltac:(refine (ref u16)) := borrow α6 in
+            let* α8 : ltac:(refine (core.option.Option core.fmt.Arguments)) :=
+              M.alloc core.option.Option.None in
+            core.panicking.assert_failed kind α3 α7 α8 in
+          let* α0 : ltac:(refine unit) := M.alloc tt in
+          never_to_any α0
+        else
+          M.alloc tt
+      end in
+    M.alloc tt).

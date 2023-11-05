@@ -14,11 +14,11 @@ Section Ref.
   Global Set Primitive Projections.
   
   Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
+    Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
   }.
 End Ref.
 End Ref.
-Definition Ref `{ℋ : State.Trait} (T : Set) : Set := M.val (Ref.t (T := T)).
+Definition Ref `{ℋ : State.Trait} (T : Set) : Set := M.Val (Ref.t (T := T)).
 
 Module  Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
 Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.

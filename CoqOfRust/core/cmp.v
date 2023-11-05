@@ -22,7 +22,7 @@ Module Ordering.
   | Equal : t.
 End Ordering.
 Definition Ordering `{State.Trait} : Set :=
-  M.val Ordering.t.
+  M.Val Ordering.t.
 
 (* ********TRAITS******** *)
 (* 
@@ -78,7 +78,7 @@ Module PartialEq.
     Notation.dot x y :=
       let* is_eq := eq x y in
       let* is_eq := M.read is_eq in
-      Pure (negb is_eq);
+      M.pure (negb is_eq);
   }.
 
   Module Instances. Section Instances.

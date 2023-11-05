@@ -2,16 +2,17 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{ℋ : State.Trait} : M unit := M.alloc tt.
+Definition main `{ℋ : State.Trait} : M unit := M.function_body (M.alloc tt).
 
 Definition mul `{ℋ : State.Trait} (a : u64) (b : u64) : M u128 :=
-  let* lo := M.alloc tt in
-  let* hi := M.alloc tt in
-  let* _ :=
-    let _ := InlineAssembly in
-    M.alloc tt in
-  let* α0 := cast hi in
-  let* α1 := M.alloc 64 in
-  let* α2 := BinOp.shl α0 α1 in
-  let* α3 := cast lo in
-  BinOp.add α2 α3.
+  M.function_body
+    (let* lo : ltac:(refine unit) := M.alloc tt in
+    let* hi : ltac:(refine unit) := M.alloc tt in
+    let* _ : ltac:(refine unit) :=
+      let _ := InlineAssembly in
+      M.alloc tt in
+    let* α0 : ltac:(refine u128) := cast hi in
+    let* α1 : ltac:(refine i32) := M.alloc 64 in
+    let* α2 : ltac:(refine u128) := BinOp.shl α0 α1 in
+    let* α3 : ltac:(refine u128) := cast lo in
+    BinOp.add α2 α3).

@@ -12,14 +12,14 @@ Section Borrowed.
   Global Set Primitive Projections.
   
   Global Instance Get_x : Notation.Dot "x" := {
-    Notation.dot x' := let* x' := M.read x' in Pure x'.(x) : M _;
+    Notation.dot x' := let* x' := M.read x' in M.pure x'.(x) : M _;
   }.
   Global Instance Get_AF_x : Notation.DoubleColon t "x" := {
-    Notation.double_colon x' := let* x' := M.read x' in Pure x'.(x) : M _;
+    Notation.double_colon x' := let* x' := M.read x' in M.pure x'.(x) : M _;
   }.
 End Borrowed.
 End Borrowed.
-Definition Borrowed `{ℋ : State.Trait} : Set := M.val Borrowed.t.
+Definition Borrowed `{ℋ : State.Trait} : Set := M.Val Borrowed.t.
 
 Module  Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed.
 Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed.
@@ -31,20 +31,23 @@ Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M ltac:(core.fmt.Result) :=
-    let* α0 := deref f core.fmt.Formatter in
-    let* α1 := borrow_mut α0 core.fmt.Formatter in
-    let* α2 := deref (mk_str "Borrowed") str in
-    let* α3 := borrow α2 str in
-    let* α4 := deref (mk_str "x") str in
-    let* α5 := borrow α4 str in
-    let* α6 := deref self scoping_rules_lifetimes_traits.Borrowed in
-    let* α7 := α6.["x"] in
-    let* α8 := borrow α7 (ref i32) in
-    let* α9 := borrow α8 (ref (ref i32)) in
-    let* α10 := deref α9 (ref (ref i32)) in
-    let* α11 := borrow α10 (ref (ref i32)) in
-    let* α12 := pointer_coercion "Unsize" α11 in
-    core.fmt.Formatter::["debug_struct_field1_finish"] α1 α3 α5 α12.
+    M.function_body
+      (let* α0 : ltac:(refine core.fmt.Formatter) := deref f in
+      let* α1 : ltac:(refine (mut_ref core.fmt.Formatter)) := borrow_mut α0 in
+      let* α2 : ltac:(refine str) := deref (mk_str "Borrowed") in
+      let* α3 : ltac:(refine (ref str)) := borrow α2 in
+      let* α4 : ltac:(refine str) := deref (mk_str "x") in
+      let* α5 : ltac:(refine (ref str)) := borrow α4 in
+      let* α6 : ltac:(refine scoping_rules_lifetimes_traits.Borrowed) :=
+        deref self in
+      let* α7 : ltac:(refine (ref i32)) := α6.["x"] in
+      let* α8 : ltac:(refine (ref (ref i32))) := borrow α7 in
+      let* α9 : ltac:(refine (ref (ref (ref i32)))) := borrow α8 in
+      let* α10 : ltac:(refine (ref (ref i32))) := deref α9 in
+      let* α11 : ltac:(refine (ref (ref (ref i32)))) := borrow α10 in
+      let* α12 : ltac:(refine (ref type not implemented)) :=
+        pointer_coercion "Unsize" α11 in
+      core.fmt.Formatter::["debug_struct_field1_finish"] α1 α3 α5 α12).
   
   Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {
     Notation.double_colon := fmt;
@@ -63,11 +66,12 @@ Section Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed.
   Definition Self : Set := scoping_rules_lifetimes_traits.Borrowed.
   
   Definition default : M Self :=
-    let* α0 := M.alloc 10 in
-    let* α1 := borrow α0 i32 in
-    let* α2 := deref α1 i32 in
-    let* α3 := borrow α2 i32 in
-    M.alloc {| scoping_rules_lifetimes_traits.Borrowed.x := α3; |}.
+    M.function_body
+      (let* α0 : ltac:(refine i32) := M.alloc 10 in
+      let* α1 : ltac:(refine (ref i32)) := borrow α0 in
+      let* α2 : ltac:(refine i32) := deref α1 in
+      let* α3 : ltac:(refine (ref i32)) := borrow α2 in
+      M.alloc {| scoping_rules_lifetimes_traits.Borrowed.x := α3; |}).
   
   Global Instance AssociatedFunction_default :
     Notation.DoubleColon Self "default" := {
@@ -82,26 +86,40 @@ End Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
-  let* b :=
-    core.default.Default.default
-      (Self := scoping_rules_lifetimes_traits.Borrowed)
-      (Trait := ltac:(refine _)) in
-  let* _ :=
-    let* _ :=
-      let* α0 := borrow [ mk_str "b is "; mk_str "
-" ] (list (ref str)) in
-      let* α1 := deref α0 (list (ref str)) in
-      let* α2 := borrow α1 (list (ref str)) in
-      let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := borrow b scoping_rules_lifetimes_traits.Borrowed in
-      let* α5 := deref α4 scoping_rules_lifetimes_traits.Borrowed in
-      let* α6 := borrow α5 scoping_rules_lifetimes_traits.Borrowed in
-      let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
-      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
-      let* α9 := deref α8 (list core.fmt.rt.Argument) in
-      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
-      let* α11 := pointer_coercion "Unsize" α10 in
-      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
-      std.io.stdio._print α12 in
-    M.alloc tt in
-  M.alloc tt.
+  M.function_body
+    (let* b : ltac:(refine scoping_rules_lifetimes_traits.Borrowed) :=
+      core.default.Default.default
+        (Self := scoping_rules_lifetimes_traits.Borrowed)
+        (Trait := ltac:(refine _)) in
+    let* _ : ltac:(refine unit) :=
+      let* _ : ltac:(refine unit) :=
+        let* α0 : ltac:(refine (array (ref str))) :=
+          M.alloc [ mk_str "b is "; mk_str "
+" ] in
+        let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
+        let* α2 : ltac:(refine (array (ref str))) := deref α1 in
+        let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
+        let* α4 : ltac:(refine (ref (slice (ref str)))) :=
+          pointer_coercion "Unsize" α3 in
+        let* α5 : ltac:(refine (ref scoping_rules_lifetimes_traits.Borrowed)) :=
+          borrow b in
+        let* α6 : ltac:(refine scoping_rules_lifetimes_traits.Borrowed) :=
+          deref α5 in
+        let* α7 : ltac:(refine (ref scoping_rules_lifetimes_traits.Borrowed)) :=
+          borrow α6 in
+        let* α8 : ltac:(refine core.fmt.rt.Argument) :=
+          core.fmt.rt.Argument::["new_debug"] α7 in
+        let* α9 : ltac:(refine (array core.fmt.rt.Argument)) :=
+          M.alloc [ α8 ] in
+        let* α10 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+          borrow α9 in
+        let* α11 : ltac:(refine (array core.fmt.rt.Argument)) := deref α10 in
+        let* α12 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+          borrow α11 in
+        let* α13 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+          pointer_coercion "Unsize" α12 in
+        let* α14 : ltac:(refine core.fmt.Arguments) :=
+          core.fmt.Arguments::["new_v1"] α4 α13 in
+        std.io.stdio._print α14 in
+      M.alloc tt in
+    M.alloc tt).

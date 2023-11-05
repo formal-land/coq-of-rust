@@ -50,4 +50,4 @@ Module Result.
   Arguments Err {T E} _.
 End Result.
 Definition Result `{State.Trait} (T E : Set) : Set :=
-  M.val (Result.t T E).
+  M.Val (Result.t T E).

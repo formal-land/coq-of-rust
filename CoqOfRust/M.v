@@ -56,10 +56,13 @@ Module RawMonad.
   | Bind {B : Set} : t B -> (B -> t A) -> t A
   (** [None] when we allocate an immediate value *)
   | AddressOracle {B : Set} : (option (MutRef B) -> t A) -> t A
+  (** Useful for example to catch the `Return` exception of a function *)
+  | Cast {B : Set} : B -> t A
   | Impossible : t A.
   Arguments Pure {_ _ _ _}.
   Arguments Bind {_ _ _ _ _}.
   Arguments AddressOracle {_ _ _ _ _}.
+  Arguments Cast {_ _ _ _ _}.
   Arguments Impossible {_ _ _ _}.
 
   Definition smart_bind `{State.Trait} {A B : Set} (e1 : t A) (e2 : A -> t B) :
@@ -81,41 +84,31 @@ Module Run.
   | AddressOracle {B : Set}
       (r : option (MutRef B)) (e : option (MutRef B) -> RawMonad A) (v : A) :
     t (e r) v ->
-    t (RawMonad.AddressOracle e) v.
+    t (RawMonad.AddressOracle e) v
+  | Cast (v : A) : t (RawMonad.Cast v) v.
 End Run.
 
 Module Exception.
-  Inductive t (R : Set) : Set :=
-  (* exceptions with Rust equivalents *)
-  | Return : R -> t R
-  | Continue : t R
-  | Break : t R
-  | Panic {A : Set} : A -> t R
-  (* exception for potential non-termination *)
-  | NonTermination : t R.
-  Arguments Return {_}.
-  Arguments Continue {_}.
-  Arguments Break {_}.
-  Arguments Panic {_ _}.
-  Arguments NonTermination {_}.
+  Inductive t : Set :=
+  (** exceptions for Rust's `return` *)
+  | Return {A : Set} : A -> t
+  (** exceptions for Rust's `continue` *)
+  | Continue : t
+  (** exceptions for Rust's `break` *)
+  | Break : t
+  | Panic {A : Set} : A -> t
+  (** exception for potential non-termination *)
+  | NonTermination : t.
 End Exception.
 Definition Exception := Exception.t.
 
-Definition StateMonad `{State.Trait} (R A : Set) : Set :=
-  State -> RawMonad ((A + Exception R) * State).
-
-Definition Monad `{State.Trait} (R A : Set) : Set :=
-  nat -> StateMonad R A.
-
 Definition M `{State.Trait} (A : Set) : Set :=
-  Monad Empty_set A.
+  nat -> State -> RawMonad ((A + Exception) * State).
 
-(* @TODO: change in `pure` for uniformity *)
-Definition Pure `{State.Trait} {R A : Set} (v : A) : Monad R A :=
+Definition pure `{State.Trait} {A : Set} (v : A) : M A :=
   fun fuel s => RawMonad.Pure (inl v, s).
 
-Definition bind `{State.Trait} {R A B : Set}
-  (e1 : Monad R A) (e2 : A -> Monad R B) : Monad R B :=
+Definition bind `{State.Trait} {A B : Set} (e1 : M A) (e2 : A -> M B) : M B :=
   fun fuel s =>
   RawMonad.smart_bind (e1 fuel s) (fun '(v, s) =>
   match v with
@@ -130,29 +123,35 @@ Module Notations.
 
   Notation "'let*' a : T := b 'in' c" :=
     (bind b (fun (a : T) => c))
-      (at level 200, b at level 100, a name).
+      (at level 200, T constr, b at level 100, a name).
 End Notations.
 Import Notations.
 
-Definition Return `{State.Trait} {R A : Set} (r : R) : Monad R A :=
-  fun _ s => RawMonad.Pure (inr (Exception.Return r), s).
-Definition Continue `{State.Trait} {R A : Set} : Monad R A :=
-  fun _ s => RawMonad.Pure (inr Exception.Continue, s).
-Definition Break `{State.Trait} {R A : Set} : Monad R A :=
-  fun _ s => RawMonad.Pure (inr Exception.Break, s).
-Definition Panic `{State.Trait} {R A B : Set} (a : A) : Monad R B :=
-  fun _ s => RawMonad.Pure (inr (Exception.Panic a), s).
+Definition cast `{State.Trait} {A B : Set} (v : A) : M B :=
+  fun _ s => RawMonad.Cast (inl (B := Exception) v, s).
 
-Definition NonTermination `{State.Trait} {R A : Set} : StateMonad R A :=
-  fun s => RawMonad.Pure (inr Exception.NonTermination, s).
+Definition raise `{State.Trait} {A : Set} (exception : Exception) : M A :=
+  fun _ s => RawMonad.Pure (inr exception, s).
 
-(* TODO: define for every (A : Set) in (Monad R A) *)
+Definition return_ `{State.Trait} {A R : Set} (r : R) : M A :=
+  raise (Exception.Return r).
+
+Definition continue `{State.Trait} {A : Set} : M A :=
+  raise Exception.Continue.
+
+Definition break `{State.Trait} {A : Set} : M A :=
+  raise Exception.Break.
+
+Definition panic `{State.Trait} {A B : Set} (v : A) : M B :=
+  raise (Exception.Panic v).
+
+(* TODO: define for every (A : Set) in (M A) *)
 (** the definition of a function representing the loop construction *)
-Definition loop `{State.Trait} {R : Set} (m : Monad R unit) : Monad R unit :=
-  fix F (fuel : nat) :=
+Definition loop `{State.Trait} (m : M unit) : M unit :=
+  fix F (fuel : nat) (s : State) {struct fuel} :=
     match fuel with
-    | 0 => NonTermination
-    | S fuel' => fun s =>
+    | 0 => RawMonad.Pure (inr Exception.NonTermination, s)
+    | S fuel' =>
       RawMonad.smart_bind (m fuel s) (fun '(v, s) =>
         match v with
         (* only Break ends the loop *)
@@ -167,7 +166,7 @@ Definition loop `{State.Trait} {R : Set} (m : Monad R unit) : Monad R unit :=
       )
     end.
 
-Definition alloc `{State.Trait} {R A : Set} (v : A) : Monad R (Ref A) :=
+Definition alloc `{State.Trait} {A : Set} (v : A) : M (Ref A) :=
   fun fuel s =>
   RawMonad.AddressOracle (B := A) (fun r =>
   match r with
@@ -186,7 +185,7 @@ Definition alloc `{State.Trait} {R A : Set} (v : A) : Monad R (Ref A) :=
     end
   end).
 
-Definition read `{State.Trait} {R A : Set} (r : Ref A) : Monad R A :=
+Definition read `{State.Trait} {A : Set} (r : Ref A) : M A :=
   fun fuel s =>
   match r with
   | Ref.Immutable v => RawMonad.Pure (inl v, s)
@@ -200,8 +199,7 @@ Definition read `{State.Trait} {R A : Set} (r : Ref A) : Monad R A :=
     end
   end.
 
-Definition write `{State.Trait} {R A : Set} (r : Ref A) (v : A) :
-  Monad R unit :=
+Definition write `{State.Trait} {A : Set} (r : Ref A) (v : A) : M unit :=
   fun fuel s =>
   match r with
   | Ref.Immutable _ => RawMonad.Impossible
@@ -215,7 +213,7 @@ Definition write `{State.Trait} {R A : Set} (r : Ref A) (v : A) :
     end
   end.
 
-Definition impossible `{State.Trait} {R A : Set} : Monad R A :=
+Definition impossible `{State.Trait} {A : Set} : M A :=
   fun _ _ => RawMonad.Impossible.
 
 (** Used for the definitions of "const". *)
@@ -223,4 +221,21 @@ Definition impossible `{State.Trait} {R A : Set} : Monad R A :=
    witnessing that the calculation is possible. *)
 Parameter run : forall `{State.Trait} {A : Set}, M A -> A.
 
-Definition val `{State.Trait} (A : Set) : Set := Ref A.
+Definition Val `{State.Trait} (A : Set) : Set := Ref A.
+
+Definition catch `{State.Trait} {A : Set}
+    (body : M A) (handler : Exception -> M A) :
+    M A :=
+  fun fuel state =>
+  RawMonad.smart_bind (body fuel state) (fun '(result, state) =>
+  match result with
+  | inl v => RawMonad.Pure (inl v, state)
+  | inr exception => handler exception fuel state
+  end).
+
+Definition function_body `{State.Trait} {A : Set} (body : M A) : M A :=
+  catch body (fun exception =>
+  match exception with
+  | Exception.Return r => cast r
+  | _ => raise exception
+  end).

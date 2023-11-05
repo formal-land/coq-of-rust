@@ -3,68 +3,84 @@ Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
-  let* path :=
-    let* α0 := deref (mk_str ".") str in
-    let* α1 := borrow α0 str in
-    std.path.Path::["new"] α1 in
-  let* _display :=
-    let* α0 := deref path std.path.Path in
-    let* α1 := borrow α0 std.path.Path in
-    std.path.Path::["display"] α1 in
-  let* new_path :=
-    let* α0 := deref path std.path.Path in
-    let* α1 := borrow α0 std.path.Path in
-    let* α2 := std.path.Path::["join"] α1 (mk_str "a") in
-    let* α3 := borrow α2 std.path.PathBuf in
-    let* α4 :=
+  M.function_body
+    (let* path : ltac:(refine (ref std.path.Path)) :=
+      let* α0 : ltac:(refine str) := deref (mk_str ".") in
+      let* α1 : ltac:(refine (ref str)) := borrow α0 in
+      std.path.Path::["new"] α1 in
+    let* _display : ltac:(refine std.path.Display) :=
+      let* α0 : ltac:(refine std.path.Path) := deref path in
+      let* α1 : ltac:(refine (ref std.path.Path)) := borrow α0 in
+      std.path.Path::["display"] α1 in
+    let* new_path : ltac:(refine std.path.PathBuf) :=
+      let* α0 : ltac:(refine std.path.Path) := deref path in
+      let* α1 : ltac:(refine (ref std.path.Path)) := borrow α0 in
+      let* α2 : ltac:(refine std.path.PathBuf) :=
+        std.path.Path::["join"] α1 (mk_str "a") in
+      let* α3 : ltac:(refine (ref std.path.PathBuf)) := borrow α2 in
+      let* α4 : ltac:(refine (ref std.path.Path)) :=
+        (core.ops.deref.Deref.deref
+            (Self := std.path.PathBuf)
+            (Trait := ltac:(refine _)))
+          α3 in
+      let* α5 : ltac:(refine std.path.Path) := deref α4 in
+      let* α6 : ltac:(refine (ref std.path.Path)) := borrow α5 in
+      std.path.Path::["join"] α6 (mk_str "b") in
+    let* _ : ltac:(refine unit) :=
+      let* α0 : ltac:(refine (mut_ref std.path.PathBuf)) :=
+        borrow_mut new_path in
+      std.path.PathBuf::["push"] α0 (mk_str "c") in
+    let* _ : ltac:(refine unit) :=
+      let* α0 : ltac:(refine (mut_ref std.path.PathBuf)) :=
+        borrow_mut new_path in
+      std.path.PathBuf::["push"] α0 (mk_str "myfile.tar.gz") in
+    let* _ : ltac:(refine unit) :=
+      let* α0 : ltac:(refine (mut_ref std.path.PathBuf)) :=
+        borrow_mut new_path in
+      std.path.PathBuf::["set_file_name"] α0 (mk_str "package.tgz") in
+    let* α0 : ltac:(refine (ref std.path.PathBuf)) := borrow new_path in
+    let* α1 : ltac:(refine (ref std.path.Path)) :=
       (core.ops.deref.Deref.deref
           (Self := std.path.PathBuf)
           (Trait := ltac:(refine _)))
-        α3 in
-    let* α5 := deref α4 std.path.Path in
-    let* α6 := borrow α5 std.path.Path in
-    std.path.Path::["join"] α6 (mk_str "b") in
-  let* _ :=
-    let* α0 := borrow_mut new_path std.path.PathBuf in
-    std.path.PathBuf::["push"] α0 (mk_str "c") in
-  let* _ :=
-    let* α0 := borrow_mut new_path std.path.PathBuf in
-    std.path.PathBuf::["push"] α0 (mk_str "myfile.tar.gz") in
-  let* _ :=
-    let* α0 := borrow_mut new_path std.path.PathBuf in
-    std.path.PathBuf::["set_file_name"] α0 (mk_str "package.tgz") in
-  let* α0 := borrow new_path std.path.PathBuf in
-  let* α1 :=
-    (core.ops.deref.Deref.deref
-        (Self := std.path.PathBuf)
-        (Trait := ltac:(refine _)))
-      α0 in
-  let* α2 := deref α1 std.path.Path in
-  let* α3 := borrow α2 std.path.Path in
-  let* α4 := std.path.Path::["to_str"] α3 in
-  match α4 with
-  | core.option.Option  =>
-    let* α0 :=
-      std.panicking.begin_panic
-        (mk_str "new path is not a valid UTF-8 sequence") in
-    never_to_any α0
-  | core.option.Option s =>
-    let* _ :=
-      let* α0 :=
-        borrow [ mk_str "new path is "; mk_str "
-" ] (list (ref str)) in
-      let* α1 := deref α0 (list (ref str)) in
-      let* α2 := borrow α1 (list (ref str)) in
-      let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := borrow s (ref str) in
-      let* α5 := deref α4 (ref str) in
-      let* α6 := borrow α5 (ref str) in
-      let* α7 := core.fmt.rt.Argument::["new_display"] α6 in
-      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
-      let* α9 := deref α8 (list core.fmt.rt.Argument) in
-      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
-      let* α11 := pointer_coercion "Unsize" α10 in
-      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
-      std.io.stdio._print α12 in
-    M.alloc tt
-  end.
+        α0 in
+    let* α2 : ltac:(refine std.path.Path) := deref α1 in
+    let* α3 : ltac:(refine (ref std.path.Path)) := borrow α2 in
+    let* α4 : ltac:(refine (core.option.Option (ref str))) :=
+      std.path.Path::["to_str"] α3 in
+    let* α5 := M.read α4 in
+    match α5 with
+    | core.option.Option.None  =>
+      let* α0 : ltac:(refine never) :=
+        std.panicking.begin_panic
+          (mk_str "new path is not a valid UTF-8 sequence") in
+      never_to_any α0
+    | core.option.Option.Some s =>
+      let* _ : ltac:(refine unit) :=
+        let* α0 : ltac:(refine (array (ref str))) :=
+          M.alloc [ mk_str "new path is "; mk_str "
+" ] in
+        let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
+        let* α2 : ltac:(refine (array (ref str))) := deref α1 in
+        let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
+        let* α4 : ltac:(refine (ref (slice (ref str)))) :=
+          pointer_coercion "Unsize" α3 in
+        let* α5 : ltac:(refine (ref (ref str))) := borrow s in
+        let* α6 : ltac:(refine (ref str)) := deref α5 in
+        let* α7 : ltac:(refine (ref (ref str))) := borrow α6 in
+        let* α8 : ltac:(refine core.fmt.rt.Argument) :=
+          core.fmt.rt.Argument::["new_display"] α7 in
+        let* α9 : ltac:(refine (array core.fmt.rt.Argument)) :=
+          M.alloc [ α8 ] in
+        let* α10 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+          borrow α9 in
+        let* α11 : ltac:(refine (array core.fmt.rt.Argument)) := deref α10 in
+        let* α12 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+          borrow α11 in
+        let* α13 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+          pointer_coercion "Unsize" α12 in
+        let* α14 : ltac:(refine core.fmt.Arguments) :=
+          core.fmt.Arguments::["new_v1"] α4 α13 in
+        std.io.stdio._print α14 in
+      M.alloc tt
+    end).
