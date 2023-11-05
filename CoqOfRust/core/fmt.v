@@ -35,9 +35,9 @@ Module Write.
 End Write.
 
 Module Formatter.
-  Parameter t : Set.
+  Parameter t : forall `{State.Trait}, Set.
 End Formatter.
-Definition Formatter := Formatter.t.
+Definition Formatter `{State.Trait} : Set := M.Val Formatter.t.
 
 Module DebugTuple.
   Parameter t : Set.
@@ -79,7 +79,7 @@ Module ImplDebugTuple.
 End ImplDebugTuple.
 
 Module ImplFormatter.
-  Definition Self := Formatter.
+  Definition Self `{State.Trait} : Set := Formatter.
 
   Parameter new : forall `{State.Trait} {W : Set} `{Write.Trait W},
     mut_ref W -> M Formatter.
@@ -289,7 +289,7 @@ End ImplArgumentV1.
 
 Module ImplArguments.
   Parameter new_const :
-    forall `{State.Trait}, ref (list (ref str)) -> M Arguments.
+    forall `{State.Trait}, ref (slice (ref str)) -> M Arguments.
 
   Global Instance Arguments_new_const `{State.Trait} :
     Notation.DoubleColon Arguments "new_const" := {
@@ -298,7 +298,7 @@ Module ImplArguments.
 
   Parameter new_v1 :
     forall `{State.Trait},
-      ref (list (ref str)) -> ref (list ArgumentV1) -> M Arguments.
+      ref (slice (ref str)) -> ref (slice ArgumentV1) -> M Arguments.
 
   Global Instance Arguments_new_v1 `{State.Trait} :
     Notation.DoubleColon Arguments "new_v1" := {

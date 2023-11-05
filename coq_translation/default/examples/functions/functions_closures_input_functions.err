@@ -1,0 +1,16 @@
+type Closure(
+    DefId(0:7 ~ functions_closures_input_functions[19d9]::main::{closure#0}),
+    [
+        i8,
+        extern "rust-call" fn(()),
+        (),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:7 ~ functions_closures_input_functions[19d9]::main::{closure#0}),
+    [
+        i8,
+        extern "rust-call" fn(()),
+        (),
+    ],
+) not yet handled

@@ -9,7 +9,7 @@ Module bump.
     Inductive t : Set := Build.
   End BumpAllocator.
   End BumpAllocator.
-  Definition BumpAllocator := @BumpAllocator.t.
+  Definition BumpAllocator `{ℋ : State.Trait} := M.Val BumpAllocator.t.
   
   Module  Impl_core_alloc_global_GlobalAlloc_for_ink_allocator_bump_BumpAllocator.
   Section Impl_core_alloc_global_GlobalAlloc_for_ink_allocator_bump_BumpAllocator.
@@ -108,7 +108,7 @@ Section BumpAllocator.
   Inductive t : Set := Build.
 End BumpAllocator.
 End BumpAllocator.
-Definition BumpAllocator := @BumpAllocator.t.
+Definition BumpAllocator `{ℋ : State.Trait} := M.Val BumpAllocator.t.
 
 Module  Impl_core_alloc_global_GlobalAlloc_for_ink_allocator_bump_BumpAllocator.
 Section Impl_core_alloc_global_GlobalAlloc_for_ink_allocator_bump_BumpAllocator.

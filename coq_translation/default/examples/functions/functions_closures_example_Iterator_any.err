@@ -1,0 +1,32 @@
+type Closure(
+    DefId(0:7 ~ functions_closures_example_Iterator_any[6ba4]::main::{closure#3}),
+    [
+        i16,
+        extern "rust-call" fn((&i32,)) -> bool,
+        (),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:6 ~ functions_closures_example_Iterator_any[6ba4]::main::{closure#2}),
+    [
+        i16,
+        extern "rust-call" fn((&i32,)) -> bool,
+        (),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:5 ~ functions_closures_example_Iterator_any[6ba4]::main::{closure#1}),
+    [
+        i16,
+        extern "rust-call" fn((i32,)) -> bool,
+        (),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:4 ~ functions_closures_example_Iterator_any[6ba4]::main::{closure#0}),
+    [
+        i16,
+        extern "rust-call" fn((&i32,)) -> bool,
+        (),
+    ],
+) not yet handled

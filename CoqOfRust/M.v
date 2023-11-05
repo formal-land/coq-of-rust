@@ -123,7 +123,7 @@ Module Notations.
 
   Notation "'let*' a : T := b 'in' c" :=
     (bind b (fun (a : T) => c))
-      (at level 200, b at level 100, a name).
+      (at level 200, T constr, b at level 100, a name).
 End Notations.
 Import Notations.
 

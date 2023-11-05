@@ -47,11 +47,11 @@ Module hash.
     Class Trait (Self : Set) : Type := {
       ℒ_0 :: ink_env.hash.HashOutput.Trait Self;
       hash :
-        (ref (Slice u8)) ->
+        (ref (slice u8)) ->
           (mut_ref
             (ink_env.hash.HashOutput.Type_
               (Self := Self)
-              (Trait := ltac:(try clear Trait; hauto l: on))))
+              (Trait := ltac:(refine _))))
           ->
           M unit;
     }.
@@ -589,7 +589,7 @@ Module hash.
     
     Definition Self : Set := ink_env.hash.Sha2x256.
     
-    Definition Type_ : Set := list u8.
+    Definition Type_ : Set := array u8.
     
     Global Instance ℐ : ink_env.hash.HashOutput.Trait Self := {
       ink_env.hash.HashOutput.Type_ := Type_;
@@ -603,7 +603,7 @@ Module hash.
     
     Definition Self : Set := ink_env.hash.Keccak256.
     
-    Definition Type_ : Set := list u8.
+    Definition Type_ : Set := array u8.
     
     Global Instance ℐ : ink_env.hash.HashOutput.Trait Self := {
       ink_env.hash.HashOutput.Type_ := Type_;
@@ -617,7 +617,7 @@ Module hash.
     
     Definition Self : Set := ink_env.hash.Blake2x256.
     
-    Definition Type_ : Set := list u8.
+    Definition Type_ : Set := array u8.
     
     Global Instance ℐ : ink_env.hash.HashOutput.Trait Self := {
       ink_env.hash.HashOutput.Type_ := Type_;
@@ -631,7 +631,7 @@ Module hash.
     
     Definition Self : Set := ink_env.hash.Blake2x128.
     
-    Definition Type_ : Set := list u8.
+    Definition Type_ : Set := array u8.
     
     Global Instance ℐ : ink_env.hash.HashOutput.Trait Self := {
       ink_env.hash.HashOutput.Type_ := Type_;
@@ -853,8 +853,8 @@ Module types.
     Class Trait (Self : Set) : Type := {
       Bytes : Set;
       ℒ_0 :: core.default.Default.Trait Bytes;
-      ℒ_1 :: core.convert.AsRef.Trait Bytes (T := Slice u8);
-      ℒ_2 :: core.convert.AsMut.Trait Bytes (T := Slice u8);
+      ℒ_1 :: core.convert.AsRef.Trait Bytes (T := slice u8);
+      ℒ_2 :: core.convert.AsMut.Trait Bytes (T := slice u8);
       from_le_bytes : Bytes -> M Self;
     }.
     
@@ -871,7 +871,7 @@ Module types.
     
     Definition Self : Set := u8.
     
-    Definition Bytes : Set := list u8.
+    Definition Bytes : Set := array u8.
     
     Parameter from_le_bytes : Bytes -> M Self.
     
@@ -893,7 +893,7 @@ Module types.
     
     Definition Self : Set := u16.
     
-    Definition Bytes : Set := list u8.
+    Definition Bytes : Set := array u8.
     
     Parameter from_le_bytes : Bytes -> M Self.
     
@@ -915,7 +915,7 @@ Module types.
     
     Definition Self : Set := u32.
     
-    Definition Bytes : Set := list u8.
+    Definition Bytes : Set := array u8.
     
     Parameter from_le_bytes : Bytes -> M Self.
     
@@ -937,7 +937,7 @@ Module types.
     
     Definition Self : Set := u64.
     
-    Definition Bytes : Set := list u8.
+    Definition Bytes : Set := array u8.
     
     Parameter from_le_bytes : Bytes -> M Self.
     
@@ -959,7 +959,7 @@ Module types.
     
     Definition Self : Set := u128.
     
-    Definition Bytes : Set := list u8.
+    Definition Bytes : Set := array u8.
     
     Parameter from_le_bytes : Bytes -> M Self.
     
@@ -1040,8 +1040,8 @@ Module types.
           (Rhs := core.cmp.PartialEq.Default.Rhs AccountId);
       ℒ_4 :: core.cmp.Eq.Trait AccountId;
       ℒ_5 :: core.cmp.Ord.Trait AccountId;
-      ℒ_6 :: core.convert.AsRef.Trait AccountId (T := Slice u8);
-      ℒ_7 :: core.convert.AsMut.Trait AccountId (T := Slice u8);
+      ℒ_6 :: core.convert.AsRef.Trait AccountId (T := slice u8);
+      ℒ_7 :: core.convert.AsMut.Trait AccountId (T := slice u8);
       Balance : Set;
       ℒ_8 :: parity_scale_codec.codec.Codec.Trait Balance;
       ℒ_9 :: ink_env.types.CodecAsType.Trait Balance;
@@ -1064,8 +1064,8 @@ Module types.
           (Rhs := core.cmp.PartialEq.Default.Rhs Hash);
       ℒ_22 :: core.cmp.Eq.Trait Hash;
       ℒ_23 :: core.cmp.Ord.Trait Hash;
-      ℒ_24 :: core.convert.AsRef.Trait Hash (T := Slice u8);
-      ℒ_25 :: core.convert.AsMut.Trait Hash (T := Slice u8);
+      ℒ_24 :: core.convert.AsRef.Trait Hash (T := slice u8);
+      ℒ_25 :: core.convert.AsMut.Trait Hash (T := slice u8);
       Timestamp : Set;
       ℒ_26 :: parity_scale_codec.codec.Codec.Trait Timestamp;
       ℒ_27 :: ink_env.types.CodecAsType.Trait Timestamp;
@@ -1289,8 +1289,8 @@ Section FromLittleEndian.
   Class Trait (Self : Set) : Type := {
     Bytes : Set;
     ℒ_0 :: core.default.Default.Trait Bytes;
-    ℒ_1 :: core.convert.AsRef.Trait Bytes (T := Slice u8);
-    ℒ_2 :: core.convert.AsMut.Trait Bytes (T := Slice u8);
+    ℒ_1 :: core.convert.AsRef.Trait Bytes (T := slice u8);
+    ℒ_2 :: core.convert.AsMut.Trait Bytes (T := slice u8);
     from_le_bytes : Bytes -> M Self;
   }.
   
@@ -1307,7 +1307,7 @@ Section Impl_ink_env_types_FromLittleEndian_for_u8.
   
   Definition Self : Set := u8.
   
-  Definition Bytes : Set := list u8.
+  Definition Bytes : Set := array u8.
   
   Parameter from_le_bytes : Bytes -> M Self.
   
@@ -1329,7 +1329,7 @@ Section Impl_ink_env_types_FromLittleEndian_for_u16.
   
   Definition Self : Set := u16.
   
-  Definition Bytes : Set := list u8.
+  Definition Bytes : Set := array u8.
   
   Parameter from_le_bytes : Bytes -> M Self.
   
@@ -1351,7 +1351,7 @@ Section Impl_ink_env_types_FromLittleEndian_for_u32.
   
   Definition Self : Set := u32.
   
-  Definition Bytes : Set := list u8.
+  Definition Bytes : Set := array u8.
   
   Parameter from_le_bytes : Bytes -> M Self.
   
@@ -1373,7 +1373,7 @@ Section Impl_ink_env_types_FromLittleEndian_for_u64.
   
   Definition Self : Set := u64.
   
-  Definition Bytes : Set := list u8.
+  Definition Bytes : Set := array u8.
   
   Parameter from_le_bytes : Bytes -> M Self.
   
@@ -1395,7 +1395,7 @@ Section Impl_ink_env_types_FromLittleEndian_for_u128.
   
   Definition Self : Set := u128.
   
-  Definition Bytes : Set := list u8.
+  Definition Bytes : Set := array u8.
   
   Parameter from_le_bytes : Bytes -> M Self.
   
@@ -1476,8 +1476,8 @@ Section Environment.
         (Rhs := core.cmp.PartialEq.Default.Rhs AccountId);
     ℒ_4 :: core.cmp.Eq.Trait AccountId;
     ℒ_5 :: core.cmp.Ord.Trait AccountId;
-    ℒ_6 :: core.convert.AsRef.Trait AccountId (T := Slice u8);
-    ℒ_7 :: core.convert.AsMut.Trait AccountId (T := Slice u8);
+    ℒ_6 :: core.convert.AsRef.Trait AccountId (T := slice u8);
+    ℒ_7 :: core.convert.AsMut.Trait AccountId (T := slice u8);
     Balance : Set;
     ℒ_8 :: parity_scale_codec.codec.Codec.Trait Balance;
     ℒ_9 :: ink_env.types.CodecAsType.Trait Balance;
@@ -1500,8 +1500,8 @@ Section Environment.
         (Rhs := core.cmp.PartialEq.Default.Rhs Hash);
     ℒ_22 :: core.cmp.Eq.Trait Hash;
     ℒ_23 :: core.cmp.Ord.Trait Hash;
-    ℒ_24 :: core.convert.AsRef.Trait Hash (T := Slice u8);
-    ℒ_25 :: core.convert.AsMut.Trait Hash (T := Slice u8);
+    ℒ_24 :: core.convert.AsRef.Trait Hash (T := slice u8);
+    ℒ_25 :: core.convert.AsMut.Trait Hash (T := slice u8);
     Timestamp : Set;
     ℒ_26 :: parity_scale_codec.codec.Codec.Trait Timestamp;
     ℒ_27 :: ink_env.types.CodecAsType.Trait Timestamp;
@@ -2641,7 +2641,7 @@ Module call.
       Inductive t : Set := Build.
     End ArgumentListEnd.
     End ArgumentListEnd.
-    Definition ArgumentListEnd := @ArgumentListEnd.t.
+    Definition ArgumentListEnd `{ℋ : State.Trait} := M.Val ArgumentListEnd.t.
     
     Module  Impl_core_clone_Clone_for_ink_env_call_execution_input_ArgumentListEnd.
     Section Impl_core_clone_Clone_for_ink_env_call_execution_input_ArgumentListEnd.
@@ -2901,7 +2901,7 @@ Module call.
         from_account_id :
           (ink_env.types.Environment.AccountId
               (Self := T)
-              (Trait := ltac:(try clear Trait; hauto l: on)))
+              (Trait := ltac:(refine _)))
             ->
             M Self;
       }.
@@ -2944,7 +2944,7 @@ Module call.
           ink_env.call.create_builder.FromAccountId.Trait C
             (T := ink_env.contract.ContractEnv.Env
               (Self := C)
-              (Trait := ltac:(try clear Trait; hauto l: on)))}.
+              (Trait := ltac:(refine _)))}.
       Definition Self : Set := C.
       
       Definition Output : Set := C.
@@ -2983,7 +2983,7 @@ Module call.
           ink_env.call.create_builder.FromAccountId.Trait C
             (T := ink_env.contract.ContractEnv.Env
               (Self := C)
-              (Trait := ltac:(try clear Trait; hauto l: on)))}
+              (Trait := ltac:(refine _)))}
         {ℋ_2 : parity_scale_codec.codec.Decode.Trait E}.
       Definition Self : Set := core.result.Result C E.
       
@@ -3162,7 +3162,7 @@ Module call.
         exec_input : Args;
         salt : Salt;
         return_type : RetType;
-        _phantom : core.marker.PhantomData (E * ContractRef);
+        _phantom : core.marker.PhantomData (M.Val (E * ContractRef));
       }.
       Global Set Primitive Projections.
       
@@ -3450,11 +3450,11 @@ Module engine.
         Definition Self : Set := ink_env.hash.Blake2x128.
         
         Parameter hash :
-            (ref (Slice u8)) ->
+            (ref (slice u8)) ->
               (mut_ref
                 (ink_env.hash.HashOutput.Type_
                   (Self := Self)
-                  (Trait := _)))
+                  (Trait := ltac:(refine _))))
               ->
               M unit.
         
@@ -3476,11 +3476,11 @@ Module engine.
         Definition Self : Set := ink_env.hash.Blake2x256.
         
         Parameter hash :
-            (ref (Slice u8)) ->
+            (ref (slice u8)) ->
               (mut_ref
                 (ink_env.hash.HashOutput.Type_
                   (Self := Self)
-                  (Trait := _)))
+                  (Trait := ltac:(refine _))))
               ->
               M unit.
         
@@ -3502,11 +3502,11 @@ Module engine.
         Definition Self : Set := ink_env.hash.Sha2x256.
         
         Parameter hash :
-            (ref (Slice u8)) ->
+            (ref (slice u8)) ->
               (mut_ref
                 (ink_env.hash.HashOutput.Type_
                   (Self := Self)
-                  (Trait := _)))
+                  (Trait := ltac:(refine _))))
               ->
               M unit.
         
@@ -3528,11 +3528,11 @@ Module engine.
         Definition Self : Set := ink_env.hash.Keccak256.
         
         Parameter hash :
-            (ref (Slice u8)) ->
+            (ref (slice u8)) ->
               (mut_ref
                 (ink_env.hash.HashOutput.Type_
                   (Self := Self)
-                  (Trait := _)))
+                  (Trait := ltac:(refine _))))
               ->
               M unit.
         
@@ -3781,11 +3781,11 @@ Module engine.
         Parameter hash_bytes :
             forall {H : Set} {ℋ_0 : ink_env.hash.CryptoHash.Trait H},
             (mut_ref Self) ->
-              (ref (Slice u8)) ->
+              (ref (slice u8)) ->
               (mut_ref
                 (ink_env.hash.HashOutput.Type_
                   (Self := H)
-                  (Trait := ltac:(try clear Trait; hauto l: on))))
+                  (Trait := ltac:(refine _))))
               ->
               M unit.
         
@@ -3806,7 +3806,7 @@ Module engine.
               (mut_ref
                 (ink_env.hash.HashOutput.Type_
                   (Self := H)
-                  (Trait := ltac:(try clear Trait; hauto l: on))))
+                  (Trait := ltac:(refine _))))
               ->
               M unit.
         
@@ -3851,8 +3851,10 @@ Module engine.
               {ℋ_0 : parity_scale_codec.codec.Encode.Trait I}
               {ℋ_1 : parity_scale_codec.codec.Decode.Trait T}
               {ℋ_2 : core.convert.From.Trait E (T := ErrorCode)}
-              {ℋ_3 : core.ops.function.FnOnce.Trait F (Args := u32)}
-              {ℋ_4 : core.ops.function.FnOnce.Trait D (Args := ref (Slice u8))},
+              {ℋ_3 : core.ops.function.FnOnce.Trait F (Args := M.Val u32)}
+              {ℋ_4 :
+                core.ops.function.FnOnce.Trait D
+                  (Args := M.Val (ref (slice u8)))},
             (mut_ref Self) ->
               u32 ->
               (ref I) ->
@@ -3865,8 +3867,10 @@ Module engine.
             {ℋ_0 : parity_scale_codec.codec.Encode.Trait I}
             {ℋ_1 : parity_scale_codec.codec.Decode.Trait T}
             {ℋ_2 : core.convert.From.Trait E (T := ErrorCode)}
-            {ℋ_3 : core.ops.function.FnOnce.Trait F (Args := u32)}
-            {ℋ_4 : core.ops.function.FnOnce.Trait D (Args := ref (Slice u8))} :
+            {ℋ_3 : core.ops.function.FnOnce.Trait F (Args := M.Val u32)}
+            {ℋ_4 :
+              core.ops.function.FnOnce.Trait D
+                (Args := M.Val (ref (slice u8)))} :
           Notation.DoubleColon Self "call_chain_extension" := {
           Notation.double_colon
             :=
@@ -3881,7 +3885,7 @@ Module engine.
         
         Parameter set_code_hash :
             (mut_ref Self) ->
-              (ref (Slice u8)) ->
+              (ref (slice u8)) ->
               M
                 ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
                   constr:(unit)).
@@ -3945,8 +3949,10 @@ Module engine.
             {ℋ_0 : parity_scale_codec.codec.Encode.Trait I}
             {ℋ_1 : parity_scale_codec.codec.Decode.Trait T}
             {ℋ_2 : core.convert.From.Trait E (T := ErrorCode)}
-            {ℋ_3 : core.ops.function.FnOnce.Trait F (Args := u32)}
-            {ℋ_4 : core.ops.function.FnOnce.Trait D (Args := ref (Slice u8))} :=
+            {ℋ_3 : core.ops.function.FnOnce.Trait F (Args := M.Val u32)}
+            {ℋ_4 :
+              core.ops.function.FnOnce.Trait D
+                (Args := M.Val (ref (slice u8)))} :=
             call_chain_extension
               (I := I)
               (T := T)
@@ -4139,7 +4145,7 @@ Module engine.
                 ink_env.call.create_builder.FromAccountId.Trait ContractRef
                   (T := E)}
               {ℋ_2 : parity_scale_codec.codec.Encode.Trait Args}
-              {ℋ_3 : core.convert.AsRef.Trait Salt (T := Slice u8)}
+              {ℋ_3 : core.convert.AsRef.Trait Salt (T := slice u8)}
               {ℋ_4 :
                 ink_env.call.create_builder.ConstructorReturnType.Trait R
                   (C := ContractRef)},
@@ -4157,7 +4163,7 @@ Module engine.
                   constr:(ltac:(ink_primitives.ConstructorResult
                     constr:(ink_env.call.create_builder.ConstructorReturnType.Output
                       (Self := R)
-                      (Trait := ltac:(try clear Trait; hauto l: on)))))).
+                      (Trait := ltac:(refine _)))))).
         
         Global Instance AssociatedFunction_instantiate_contract
             {E ContractRef Args Salt R : Set}
@@ -4166,7 +4172,7 @@ Module engine.
               ink_env.call.create_builder.FromAccountId.Trait ContractRef
                 (T := E)}
             {ℋ_2 : parity_scale_codec.codec.Encode.Trait Args}
-            {ℋ_3 : core.convert.AsRef.Trait Salt (T := Slice u8)}
+            {ℋ_3 : core.convert.AsRef.Trait Salt (T := slice u8)}
             {ℋ_4 :
               ink_env.call.create_builder.ConstructorReturnType.Trait R
                 (C := ContractRef)} :
@@ -4345,7 +4351,7 @@ Module engine.
               ink_env.call.create_builder.FromAccountId.Trait ContractRef
                 (T := E)}
             {ℋ_2 : parity_scale_codec.codec.Encode.Trait Args}
-            {ℋ_3 : core.convert.AsRef.Trait Salt (T := Slice u8)}
+            {ℋ_3 : core.convert.AsRef.Trait Salt (T := slice u8)}
             {ℋ_4 :
               ink_env.call.create_builder.ConstructorReturnType.Trait R
                 (C := ContractRef)} :=
@@ -4508,12 +4514,14 @@ Module engine.
       Parameter on_instance :
           forall
             {F R : Set}
-            {ℋ_0 : core.ops.function.FnOnce.Trait F (Args := mut_ref Self)},
+            {ℋ_0 :
+              core.ops.function.FnOnce.Trait F (Args := M.Val (mut_ref Self))},
           F -> M R.
       
       Global Instance AssociatedFunction_on_instance
           {F R : Set}
-          {ℋ_0 : core.ops.function.FnOnce.Trait F (Args := mut_ref Self)} :
+          {ℋ_0 :
+            core.ops.function.FnOnce.Trait F (Args := M.Val (mut_ref Self))} :
         Notation.DoubleColon Self "on_instance" := {
         Notation.double_colon := on_instance (F := F) (R := R);
       }.
@@ -4523,7 +4531,8 @@ Module engine.
           Self := {
         ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.OnInstance.on_instance
           {F R : Set}
-          {ℋ_0 : core.ops.function.FnOnce.Trait F (Args := mut_ref Self)} :=
+          {ℋ_0 :
+            core.ops.function.FnOnce.Trait F (Args := M.Val (mut_ref Self))} :=
           on_instance (F := F) (R := R);
       }.
     End Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_OnInstance_for_ink_env_engine_off_chain_EnvInstance. *)
@@ -4797,7 +4806,7 @@ Module topics.
     Unset Primitive Projections.
     Record t : Set := {
       backend : B;
-      state : core.marker.PhantomData (S * E);
+      state : core.marker.PhantomData (M.Val (S * E));
     }.
     Global Set Primitive Projections.
     
@@ -4897,7 +4906,7 @@ Module topics.
     
     Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
     
-    Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
+    Definition Next : Set := array ink_env.topics.state.HasRemainingTopics.
     
     Global Instance ℐ : ink_env.topics.SomeRemainingTopics.Trait Self := {
       ink_env.topics.SomeRemainingTopics.Next := Next;
@@ -4973,7 +4982,7 @@ Module topics.
           M
             (ink_env.topics.TopicsBuilderBackend.Output
               (Self := B)
-              (Trait := ltac:(try clear Trait; hauto l: on)));
+              (Trait := ltac:(refine _)));
     }.
     
     Global Instance Method_RemainingTopics `(Trait) :
@@ -4991,7 +5000,7 @@ Module topics.
     
     Unset Primitive Projections.
     Record t : Set := {
-      prefix : ref (Slice u8);
+      prefix : ref (slice u8);
       value : ref T;
     }.
     Global Set Primitive Projections.
@@ -5325,7 +5334,7 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
           core.convert.From.Trait
               (ink_env.types.Environment.AccountId
                 (Self := T)
-                (Trait := ltac:(try clear Trait; hauto l: on)))
+                (Trait := ltac:(refine _)))
             (T := array u8)},
       T::type["AccountId"] -> M unit.
   
@@ -5338,7 +5347,7 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
           core.convert.From.Trait
               (ink_env.types.Environment.AccountId
                 (Self := T)
-                (Trait := ltac:(try clear Trait; hauto l: on)))
+                (Trait := ltac:(refine _)))
             (T := array u8)},
       T::type["AccountId"] -> M unit.
   
@@ -5351,7 +5360,7 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
           core.convert.From.Trait
               (ink_env.types.Environment.AccountId
                 (Self := T)
-                (Trait := ltac:(try clear Trait; hauto l: on)))
+                (Trait := ltac:(refine _)))
             (T := array u8)},
       T::type["AccountId"] -> M unit.
   
@@ -5364,7 +5373,7 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
           core.convert.From.Trait
               (ink_env.types.Environment.AccountId
                 (Self := T)
-                (Trait := ltac:(try clear Trait; hauto l: on)))
+                (Trait := ltac:(refine _)))
             (T := array u8)},
       T::type["AccountId"] -> M bool.
   
@@ -5380,7 +5389,7 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
         `{ℋ : State.Trait}
         {T : Set}
         {ℋ_0 : ink_env.types.Environment.Trait T},
-      (ref T::type["AccountId"]) -> M (usize * usize).
+      (ref T::type["AccountId"]) -> M (M.Val (usize * usize)).
   
   Parameter set_value_transferred :
       forall
@@ -5490,13 +5499,14 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
         {ℋ_0 : ink_env.types.Environment.Trait T}
         {ℋ_1 :
           core.ops.function.FnOnce.Trait F
-            (Args := ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.DefaultAccounts
-              T)}
+            (Args := M.Val
+              (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.DefaultAccounts
+                T))}
         {ℋ_2 :
           core.convert.From.Trait
               (ink_env.types.Environment.AccountId
                 (Self := T)
-                (Trait := ltac:(try clear Trait; hauto l: on)))
+                (Trait := ltac:(refine _)))
             (T := array u8)},
       F ->
         M
@@ -5512,7 +5522,7 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
           core.convert.From.Trait
               (ink_env.types.Environment.AccountId
                 (Self := T)
-                (Trait := ltac:(try clear Trait; hauto l: on)))
+                (Trait := ltac:(refine _)))
             (T := array u8)},
       M
           (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.DefaultAccounts
@@ -5522,9 +5532,7 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
       forall `{ℋ : State.Trait},
       Sigma (Ty : Set) `(core.iter.traits.iterator.Iterator.Trait Ty),
       unit.
-  Parameter recorded_events :
-      forall `{ℋ : State.Trait},
-      M (projT1 recorded_events_ret_ty). *)
+  Parameter recorded_events : forall `{ℋ : State.Trait}, M _ (* OpaqueTy *).
   
   Parameter assert_contract_termination :
       forall
@@ -5537,12 +5545,12 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
           core.fmt.Debug.Trait
               (ink_env.types.Environment.AccountId
                 (Self := T)
-                (Trait := ltac:(try clear Trait; hauto l: on)))}
+                (Trait := ltac:(refine _)))}
         {ℋ_4 :
           core.fmt.Debug.Trait
               (ink_env.types.Environment.Balance
                 (Self := T)
-                (Trait := ltac:(try clear Trait; hauto l: on)))},
+                (Trait := ltac:(refine _)))},
       F -> T::type["AccountId"] -> T::type["Balance"] -> M unit.
   
   Module  CallFlags.
@@ -5803,11 +5811,11 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
       debug_message : (mut_ref Self) -> (ref str) -> M unit;
       hash_bytes {H : Set} {ℋ_0 : ink_env.hash.CryptoHash.Trait H} :
         (mut_ref Self) ->
-          (ref (Slice u8)) ->
+          (ref (slice u8)) ->
           (mut_ref
             (ink_env.hash.HashOutput.Type_
               (Self := H)
-              (Trait := ltac:(try clear Trait; hauto l: on))))
+              (Trait := ltac:(refine _))))
           ->
           M unit;
       hash_encoded
@@ -5819,7 +5827,7 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
           (mut_ref
             (ink_env.hash.HashOutput.Type_
               (Self := H)
-              (Trait := ltac:(try clear Trait; hauto l: on))))
+              (Trait := ltac:(refine _))))
           ->
           M unit;
       ecdsa_recover :
@@ -5842,8 +5850,9 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
         {ℋ_0 : parity_scale_codec.codec.Encode.Trait I}
         {ℋ_1 : parity_scale_codec.codec.Decode.Trait T}
         {ℋ_2 : core.convert.From.Trait E (T := ErrorCode)}
-        {ℋ_3 : core.ops.function.FnOnce.Trait F (Args := u32)}
-        {ℋ_4 : core.ops.function.FnOnce.Trait D (Args := ref (Slice u8))} :
+        {ℋ_3 : core.ops.function.FnOnce.Trait F (Args := M.Val u32)}
+        {ℋ_4 :
+          core.ops.function.FnOnce.Trait D (Args := M.Val (ref (slice u8)))} :
         (mut_ref Self) ->
           u32 ->
           (ref I) ->
@@ -5852,7 +5861,7 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
           M (core.result.Result T E);
       set_code_hash :
         (mut_ref Self) ->
-          (ref (Slice u8)) ->
+          (ref (slice u8)) ->
           M
             ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
               constr:(unit));
@@ -5933,7 +5942,7 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
         {ℋ_1 :
           ink_env.call.create_builder.FromAccountId.Trait ContractRef (T := E)}
         {ℋ_2 : parity_scale_codec.codec.Encode.Trait Args}
-        {ℋ_3 : core.convert.AsRef.Trait Salt (T := Slice u8)}
+        {ℋ_3 : core.convert.AsRef.Trait Salt (T := slice u8)}
         {ℋ_4 :
           ink_env.call.create_builder.ConstructorReturnType.Trait R
             (C := ContractRef)} :
@@ -5951,7 +5960,7 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
               constr:(ltac:(ink_primitives.ConstructorResult
                 constr:(ink_env.call.create_builder.ConstructorReturnType.Output
                   (Self := R)
-                  (Trait := ltac:(try clear Trait; hauto l: on))))));
+                  (Trait := ltac:(refine _))))));
       terminate_contract {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E} :
         (mut_ref Self) -> E::type["AccountId"] -> M Empty_set;
       transfer {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E} :
@@ -6003,7 +6012,8 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
             Self;
       on_instance
         {F R : Set}
-        {ℋ_0 : core.ops.function.FnOnce.Trait F (Args := mut_ref Self)} :
+        {ℋ_0 :
+          core.ops.function.FnOnce.Trait F (Args := M.Val (mut_ref Self))} :
         F -> M R;
     }.
     
@@ -6465,7 +6475,7 @@ Module api.
         {ℋ_1 :
           ink_env.call.create_builder.FromAccountId.Trait ContractRef (T := E)}
         {ℋ_2 : parity_scale_codec.codec.Encode.Trait Args}
-        {ℋ_3 : core.convert.AsRef.Trait Salt (T := Slice u8)}
+        {ℋ_3 : core.convert.AsRef.Trait Salt (T := slice u8)}
         {ℋ_4 :
           ink_env.call.create_builder.ConstructorReturnType.Trait R
             (C := ContractRef)},
@@ -6476,7 +6486,7 @@ Module api.
             constr:(ltac:(ink_primitives.ConstructorResult
               constr:(ink_env.call.create_builder.ConstructorReturnType.Output
                 (Self := R)
-                (Trait := ltac:(try clear Trait; hauto l: on)))))).
+                (Trait := ltac:(refine _)))))).
   
   Parameter terminate_contract :
       forall
@@ -6522,11 +6532,11 @@ Module api.
         `{ℋ : State.Trait}
         {H : Set}
         {ℋ_0 : ink_env.hash.CryptoHash.Trait H},
-      (ref (Slice u8)) ->
+      (ref (slice u8)) ->
         (mut_ref
           (ink_env.hash.HashOutput.Type_
             (Self := H)
-            (Trait := ltac:(try clear Trait; hauto l: on))))
+            (Trait := ltac:(refine _))))
         ->
         M unit.
   
@@ -6540,7 +6550,7 @@ Module api.
         (mut_ref
           (ink_env.hash.HashOutput.Type_
             (Self := H)
-            (Trait := ltac:(try clear Trait; hauto l: on))))
+            (Trait := ltac:(refine _))))
         ->
         M unit.
   
@@ -6785,7 +6795,7 @@ Parameter instantiate_contract :
       {ℋ_1 :
         ink_env.call.create_builder.FromAccountId.Trait ContractRef (T := E)}
       {ℋ_2 : parity_scale_codec.codec.Encode.Trait Args}
-      {ℋ_3 : core.convert.AsRef.Trait Salt (T := Slice u8)}
+      {ℋ_3 : core.convert.AsRef.Trait Salt (T := slice u8)}
       {ℋ_4 :
         ink_env.call.create_builder.ConstructorReturnType.Trait R
           (C := ContractRef)},
@@ -6796,7 +6806,7 @@ Parameter instantiate_contract :
           constr:(ltac:(ink_primitives.ConstructorResult
             constr:(ink_env.call.create_builder.ConstructorReturnType.Output
               (Self := R)
-              (Trait := ltac:(try clear Trait; hauto l: on)))))).
+              (Trait := ltac:(refine _)))))).
 
 Parameter terminate_contract :
     forall
@@ -6839,11 +6849,9 @@ Parameter debug_message : forall `{ℋ : State.Trait}, (ref str) -> M unit.
 
 Parameter hash_bytes :
     forall `{ℋ : State.Trait} {H : Set} {ℋ_0 : ink_env.hash.CryptoHash.Trait H},
-    (ref (Slice u8)) ->
+    (ref (slice u8)) ->
       (mut_ref
-        (ink_env.hash.HashOutput.Type_
-          (Self := H)
-          (Trait := ltac:(try clear Trait; hauto l: on))))
+        (ink_env.hash.HashOutput.Type_ (Self := H) (Trait := ltac:(refine _))))
       ->
       M unit.
 
@@ -6855,9 +6863,7 @@ Parameter hash_encoded :
       {ℋ_1 : parity_scale_codec.codec.Encode.Trait T},
     (ref T) ->
       (mut_ref
-        (ink_env.hash.HashOutput.Type_
-          (Self := H)
-          (Trait := ltac:(try clear Trait; hauto l: on))))
+        (ink_env.hash.HashOutput.Type_ (Self := H) (Trait := ltac:(refine _))))
       ->
       M unit.
 
@@ -7410,7 +7416,7 @@ Parameter set_caller :
         core.convert.From.Trait
             (ink_env.types.Environment.AccountId
               (Self := T)
-              (Trait := ltac:(try clear Trait; hauto l: on)))
+              (Trait := ltac:(refine _)))
           (T := array u8)},
     T::type["AccountId"] -> M unit.
 
@@ -7423,7 +7429,7 @@ Parameter set_callee :
         core.convert.From.Trait
             (ink_env.types.Environment.AccountId
               (Self := T)
-              (Trait := ltac:(try clear Trait; hauto l: on)))
+              (Trait := ltac:(refine _)))
           (T := array u8)},
     T::type["AccountId"] -> M unit.
 
@@ -7436,7 +7442,7 @@ Parameter set_contract :
         core.convert.From.Trait
             (ink_env.types.Environment.AccountId
               (Self := T)
-              (Trait := ltac:(try clear Trait; hauto l: on)))
+              (Trait := ltac:(refine _)))
           (T := array u8)},
     T::type["AccountId"] -> M unit.
 
@@ -7449,7 +7455,7 @@ Parameter is_contract :
         core.convert.From.Trait
             (ink_env.types.Environment.AccountId
               (Self := T)
-              (Trait := ltac:(try clear Trait; hauto l: on)))
+              (Trait := ltac:(refine _)))
           (T := array u8)},
     T::type["AccountId"] -> M bool.
 
@@ -7465,7 +7471,7 @@ Parameter get_contract_storage_rw :
       `{ℋ : State.Trait}
       {T : Set}
       {ℋ_0 : ink_env.types.Environment.Trait T},
-    (ref T::type["AccountId"]) -> M (usize * usize).
+    (ref T::type["AccountId"]) -> M (M.Val (usize * usize)).
 
 Parameter set_value_transferred :
     forall
@@ -7512,13 +7518,14 @@ Parameter run_test :
       {ℋ_0 : ink_env.types.Environment.Trait T}
       {ℋ_1 :
         core.ops.function.FnOnce.Trait F
-          (Args := ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.DefaultAccounts
-            T)}
+          (Args := M.Val
+            (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.DefaultAccounts
+              T))}
       {ℋ_2 :
         core.convert.From.Trait
             (ink_env.types.Environment.AccountId
               (Self := T)
-              (Trait := ltac:(try clear Trait; hauto l: on)))
+              (Trait := ltac:(refine _)))
           (T := array u8)},
     F ->
       M
@@ -7534,7 +7541,7 @@ Parameter default_accounts :
         core.convert.From.Trait
             (ink_env.types.Environment.AccountId
               (Self := T)
-              (Trait := ltac:(try clear Trait; hauto l: on)))
+              (Trait := ltac:(refine _)))
           (T := array u8)},
     M
         (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.DefaultAccounts
@@ -7607,9 +7614,7 @@ Definition DefaultAccounts
     forall `{ℋ : State.Trait},
     Sigma (Ty : Set) `(core.iter.traits.iterator.Iterator.Trait Ty),
     unit.
-Parameter recorded_events :
-    forall `{ℋ : State.Trait},
-    M (projT1 recorded_events_ret_ty). *)
+Parameter recorded_events : forall `{ℋ : State.Trait}, M _ (* OpaqueTy *).
 
 Parameter assert_contract_termination :
     forall
@@ -7622,12 +7627,12 @@ Parameter assert_contract_termination :
         core.fmt.Debug.Trait
             (ink_env.types.Environment.AccountId
               (Self := T)
-              (Trait := ltac:(try clear Trait; hauto l: on)))}
+              (Trait := ltac:(refine _)))}
       {ℋ_4 :
         core.fmt.Debug.Trait
             (ink_env.types.Environment.Balance
               (Self := T)
-              (Trait := ltac:(try clear Trait; hauto l: on)))},
+              (Trait := ltac:(refine _)))},
     F -> T::type["AccountId"] -> T::type["Balance"] -> M unit.
 
 Module  OnInstance.
@@ -7643,7 +7648,7 @@ Section OnInstance.
           Self;
     on_instance
       {F R : Set}
-      {ℋ_0 : core.ops.function.FnOnce.Trait F (Args := mut_ref Self)} :
+      {ℋ_0 : core.ops.function.FnOnce.Trait F (Args := M.Val (mut_ref Self))} :
       F -> M R;
   }.
   
@@ -8185,11 +8190,11 @@ Section EnvBackend.
     debug_message : (mut_ref Self) -> (ref str) -> M unit;
     hash_bytes {H : Set} {ℋ_0 : ink_env.hash.CryptoHash.Trait H} :
       (mut_ref Self) ->
-        (ref (Slice u8)) ->
+        (ref (slice u8)) ->
         (mut_ref
           (ink_env.hash.HashOutput.Type_
             (Self := H)
-            (Trait := ltac:(try clear Trait; hauto l: on))))
+            (Trait := ltac:(refine _))))
         ->
         M unit;
     hash_encoded
@@ -8201,7 +8206,7 @@ Section EnvBackend.
         (mut_ref
           (ink_env.hash.HashOutput.Type_
             (Self := H)
-            (Trait := ltac:(try clear Trait; hauto l: on))))
+            (Trait := ltac:(refine _))))
         ->
         M unit;
     ecdsa_recover :
@@ -8224,12 +8229,13 @@ Section EnvBackend.
       {ℋ_0 : parity_scale_codec.codec.Encode.Trait I}
       {ℋ_1 : parity_scale_codec.codec.Decode.Trait T}
       {ℋ_2 : core.convert.From.Trait E (T := ErrorCode)}
-      {ℋ_3 : core.ops.function.FnOnce.Trait F (Args := u32)}
-      {ℋ_4 : core.ops.function.FnOnce.Trait D (Args := ref (Slice u8))} :
+      {ℋ_3 : core.ops.function.FnOnce.Trait F (Args := M.Val u32)}
+      {ℋ_4 :
+        core.ops.function.FnOnce.Trait D (Args := M.Val (ref (slice u8)))} :
       (mut_ref Self) -> u32 -> (ref I) -> F -> D -> M (core.result.Result T E);
     set_code_hash :
       (mut_ref Self) ->
-        (ref (Slice u8)) ->
+        (ref (slice u8)) ->
         M
           ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
             constr:(unit));
@@ -8310,7 +8316,7 @@ Section TypedEnvBackend.
       {ℋ_1 :
         ink_env.call.create_builder.FromAccountId.Trait ContractRef (T := E)}
       {ℋ_2 : parity_scale_codec.codec.Encode.Trait Args}
-      {ℋ_3 : core.convert.AsRef.Trait Salt (T := Slice u8)}
+      {ℋ_3 : core.convert.AsRef.Trait Salt (T := slice u8)}
       {ℋ_4 :
         ink_env.call.create_builder.ConstructorReturnType.Trait R
           (C := ContractRef)} :
@@ -8323,7 +8329,7 @@ Section TypedEnvBackend.
             constr:(ltac:(ink_primitives.ConstructorResult
               constr:(ink_env.call.create_builder.ConstructorReturnType.Output
                 (Self := R)
-                (Trait := ltac:(try clear Trait; hauto l: on))))));
+                (Trait := ltac:(refine _))))));
     terminate_contract {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E} :
       (mut_ref Self) -> E::type["AccountId"] -> M Empty_set;
     transfer {E : Set} {ℋ_0 : ink_env.types.Environment.Trait E} :
@@ -9099,7 +9105,7 @@ Module create_builder.
       from_account_id :
         (ink_env.types.Environment.AccountId
             (Self := T)
-            (Trait := ltac:(try clear Trait; hauto l: on)))
+            (Trait := ltac:(refine _)))
           ->
           M Self;
     }.
@@ -9142,7 +9148,7 @@ Module create_builder.
         ink_env.call.create_builder.FromAccountId.Trait C
           (T := ink_env.contract.ContractEnv.Env
             (Self := C)
-            (Trait := ltac:(try clear Trait; hauto l: on)))}.
+            (Trait := ltac:(refine _)))}.
     Definition Self : Set := C.
     
     Definition Output : Set := C.
@@ -9180,7 +9186,7 @@ Module create_builder.
         ink_env.call.create_builder.FromAccountId.Trait C
           (T := ink_env.contract.ContractEnv.Env
             (Self := C)
-            (Trait := ltac:(try clear Trait; hauto l: on)))}
+            (Trait := ltac:(refine _)))}
       {ℋ_2 : parity_scale_codec.codec.Decode.Trait E}.
     Definition Self : Set := core.result.Result C E.
     
@@ -9353,7 +9359,7 @@ Module create_builder.
       exec_input : Args;
       salt : Salt;
       return_type : RetType;
-      _phantom : core.marker.PhantomData (E * ContractRef);
+      _phantom : core.marker.PhantomData (M.Val (E * ContractRef));
     }.
     Global Set Primitive Projections.
     
@@ -9448,7 +9454,7 @@ Section FromAccountId.
     from_account_id :
       (ink_env.types.Environment.AccountId
           (Self := T)
-          (Trait := ltac:(try clear Trait; hauto l: on)))
+          (Trait := ltac:(refine _)))
         ->
         M Self;
   }.
@@ -9491,7 +9497,7 @@ Section Impl_ink_env_call_create_builder_ConstructorReturnType_C_for_C.
       ink_env.call.create_builder.FromAccountId.Trait C
         (T := ink_env.contract.ContractEnv.Env
           (Self := C)
-          (Trait := ltac:(try clear Trait; hauto l: on)))}.
+          (Trait := ltac:(refine _)))}.
   Definition Self : Set := C.
   
   Definition Output : Set := C.
@@ -9529,7 +9535,7 @@ Section Impl_ink_env_call_create_builder_ConstructorReturnType_C_for_core_result
       ink_env.call.create_builder.FromAccountId.Trait C
         (T := ink_env.contract.ContractEnv.Env
           (Self := C)
-          (Trait := ltac:(try clear Trait; hauto l: on)))}
+          (Trait := ltac:(refine _)))}
     {ℋ_2 : parity_scale_codec.codec.Decode.Trait E}.
   Definition Self : Set := core.result.Result C E.
   
@@ -9695,7 +9701,7 @@ Section CreateBuilder.
     exec_input : Args;
     salt : Salt;
     return_type : RetType;
-    _phantom : core.marker.PhantomData (E * ContractRef);
+    _phantom : core.marker.PhantomData (M.Val (E * ContractRef));
   }.
   Global Set Primitive Projections.
   
@@ -9770,21 +9776,21 @@ Definition CreateBuilder
         (ink_env.call.create_builder.CreateBuilder (ℋ_0 := ltac:(sauto lq: on))
           (ink_env.contract.ContractEnv.Env
             (Self := ContractRef)
-            (Trait := ltac:(try clear Trait; hauto l: on)))
+            (Trait := ltac:(refine _)))
           ContractRef
           (ink_env.call.common.Unset_
             (ink_env.types.Environment.Hash
               (Self := ink_env.contract.ContractEnv.Env
                 (Self := ContractRef)
-                (Trait := ltac:(try clear Trait; hauto l: on)))
-              (Trait := ltac:(try clear Trait; hauto l: on))))
+                (Trait := ltac:(refine _)))
+              (Trait := ltac:(refine _))))
           (ink_env.call.common.Unset_ u64)
           (ink_env.call.common.Unset_
             (ink_env.types.Environment.Balance
               (Self := ink_env.contract.ContractEnv.Env
                 (Self := ContractRef)
-                (Trait := ltac:(try clear Trait; hauto l: on)))
-              (Trait := ltac:(try clear Trait; hauto l: on))))
+                (Trait := ltac:(refine _)))
+              (Trait := ltac:(refine _))))
           (ink_env.call.common.Unset_
             (ink_env.call.execution_input.ExecutionInput
               ltac:(ink_env.call.execution_input.EmptyArgumentList)))
@@ -10080,7 +10086,7 @@ Module execution_input.
     Inductive t : Set := Build.
   End ArgumentListEnd.
   End ArgumentListEnd.
-  Definition ArgumentListEnd := @ArgumentListEnd.t.
+  Definition ArgumentListEnd `{ℋ : State.Trait} := M.Val ArgumentListEnd.t.
   
   Module  Impl_core_clone_Clone_for_ink_env_call_execution_input_ArgumentListEnd.
   Section Impl_core_clone_Clone_for_ink_env_call_execution_input_ArgumentListEnd.
@@ -10597,7 +10603,7 @@ Section ArgumentListEnd.
   Inductive t : Set := Build.
 End ArgumentListEnd.
 End ArgumentListEnd.
-Definition ArgumentListEnd := @ArgumentListEnd.t.
+Definition ArgumentListEnd `{ℋ : State.Trait} := M.Val ArgumentListEnd.t.
 
 Module  Impl_core_clone_Clone_for_ink_env_call_execution_input_ArgumentListEnd.
 Section Impl_core_clone_Clone_for_ink_env_call_execution_input_ArgumentListEnd.
@@ -11242,14 +11248,14 @@ Section Impl_parity_scale_codec_codec_Encode_for_ink_env_call_selector_Selector.
         {R F : Set}
         {ℋ_0 :
           core.ops.function.FnOnce.Trait F
-            (Args := ref (Slice CoqOfRust.core.primitive.u8))},
+            (Args := M.Val (ref (slice CoqOfRust.core.primitive.u8)))},
       (ref Self) -> F -> M R.
   
   Global Instance AssociatedFunction_using_encoded
       {R F : Set}
       {ℋ_0 :
         core.ops.function.FnOnce.Trait F
-          (Args := ref (Slice CoqOfRust.core.primitive.u8))} :
+          (Args := M.Val (ref (slice CoqOfRust.core.primitive.u8)))} :
     Notation.DoubleColon Self "using_encoded" := {
     Notation.double_colon := using_encoded (R := R) (F := F);
   }.
@@ -11264,7 +11270,7 @@ Section Impl_parity_scale_codec_codec_Encode_for_ink_env_call_selector_Selector.
       {R F : Set}
       {ℋ_0 :
         core.ops.function.FnOnce.Trait F
-          (Args := ref (Slice CoqOfRust.core.primitive.u8))} :=
+          (Args := M.Val (ref (slice CoqOfRust.core.primitive.u8)))} :=
       Datatypes.Some (using_encoded (R := R) (F := F));
     parity_scale_codec.codec.Encode.TYPE_INFO := Datatypes.None;
     parity_scale_codec.codec.Encode.size_hint := Datatypes.None;
@@ -11307,7 +11313,7 @@ Module chain_extension.
     Unset Primitive Projections.
     Record t : Set := {
       func_id : u32;
-      state : core.marker.PhantomData ((I * O) * ErrorCode);
+      state : core.marker.PhantomData (M.Val ((I * O) * ErrorCode));
     }.
     Global Set Primitive Projections.
     
@@ -11526,7 +11532,7 @@ Section ChainExtensionMethod.
   Unset Primitive Projections.
   Record t : Set := {
     func_id : u32;
-    state : core.marker.PhantomData ((I * O) * ErrorCode);
+    state : core.marker.PhantomData (M.Val ((I * O) * ErrorCode));
   }.
   Global Set Primitive Projections.
   
@@ -12044,11 +12050,11 @@ Module off_chain.
       Definition Self : Set := ink_env.hash.Blake2x128.
       
       Parameter hash :
-          (ref (Slice u8)) ->
+          (ref (slice u8)) ->
             (mut_ref
               (ink_env.hash.HashOutput.Type_
                 (Self := Self)
-                (Trait := _)))
+                (Trait := ltac:(refine _))))
             ->
             M unit.
       
@@ -12070,11 +12076,11 @@ Module off_chain.
       Definition Self : Set := ink_env.hash.Blake2x256.
       
       Parameter hash :
-          (ref (Slice u8)) ->
+          (ref (slice u8)) ->
             (mut_ref
               (ink_env.hash.HashOutput.Type_
                 (Self := Self)
-                (Trait := _)))
+                (Trait := ltac:(refine _))))
             ->
             M unit.
       
@@ -12096,11 +12102,11 @@ Module off_chain.
       Definition Self : Set := ink_env.hash.Sha2x256.
       
       Parameter hash :
-          (ref (Slice u8)) ->
+          (ref (slice u8)) ->
             (mut_ref
               (ink_env.hash.HashOutput.Type_
                 (Self := Self)
-                (Trait := _)))
+                (Trait := ltac:(refine _))))
             ->
             M unit.
       
@@ -12122,11 +12128,11 @@ Module off_chain.
       Definition Self : Set := ink_env.hash.Keccak256.
       
       Parameter hash :
-          (ref (Slice u8)) ->
+          (ref (slice u8)) ->
             (mut_ref
               (ink_env.hash.HashOutput.Type_
                 (Self := Self)
-                (Trait := _)))
+                (Trait := ltac:(refine _))))
             ->
             M unit.
       
@@ -12374,11 +12380,11 @@ Module off_chain.
       Parameter hash_bytes :
           forall {H : Set} {ℋ_0 : ink_env.hash.CryptoHash.Trait H},
           (mut_ref Self) ->
-            (ref (Slice u8)) ->
+            (ref (slice u8)) ->
             (mut_ref
               (ink_env.hash.HashOutput.Type_
                 (Self := H)
-                (Trait := ltac:(try clear Trait; hauto l: on))))
+                (Trait := ltac:(refine _))))
             ->
             M unit.
       
@@ -12399,7 +12405,7 @@ Module off_chain.
             (mut_ref
               (ink_env.hash.HashOutput.Type_
                 (Self := H)
-                (Trait := ltac:(try clear Trait; hauto l: on))))
+                (Trait := ltac:(refine _))))
             ->
             M unit.
       
@@ -12444,8 +12450,10 @@ Module off_chain.
             {ℋ_0 : parity_scale_codec.codec.Encode.Trait I}
             {ℋ_1 : parity_scale_codec.codec.Decode.Trait T}
             {ℋ_2 : core.convert.From.Trait E (T := ErrorCode)}
-            {ℋ_3 : core.ops.function.FnOnce.Trait F (Args := u32)}
-            {ℋ_4 : core.ops.function.FnOnce.Trait D (Args := ref (Slice u8))},
+            {ℋ_3 : core.ops.function.FnOnce.Trait F (Args := M.Val u32)}
+            {ℋ_4 :
+              core.ops.function.FnOnce.Trait D
+                (Args := M.Val (ref (slice u8)))},
           (mut_ref Self) ->
             u32 ->
             (ref I) ->
@@ -12458,8 +12466,9 @@ Module off_chain.
           {ℋ_0 : parity_scale_codec.codec.Encode.Trait I}
           {ℋ_1 : parity_scale_codec.codec.Decode.Trait T}
           {ℋ_2 : core.convert.From.Trait E (T := ErrorCode)}
-          {ℋ_3 : core.ops.function.FnOnce.Trait F (Args := u32)}
-          {ℋ_4 : core.ops.function.FnOnce.Trait D (Args := ref (Slice u8))} :
+          {ℋ_3 : core.ops.function.FnOnce.Trait F (Args := M.Val u32)}
+          {ℋ_4 :
+            core.ops.function.FnOnce.Trait D (Args := M.Val (ref (slice u8)))} :
         Notation.DoubleColon Self "call_chain_extension" := {
         Notation.double_colon
           :=
@@ -12474,7 +12483,7 @@ Module off_chain.
       
       Parameter set_code_hash :
           (mut_ref Self) ->
-            (ref (Slice u8)) ->
+            (ref (slice u8)) ->
             M
               ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
                 constr:(unit)).
@@ -12538,8 +12547,10 @@ Module off_chain.
           {ℋ_0 : parity_scale_codec.codec.Encode.Trait I}
           {ℋ_1 : parity_scale_codec.codec.Decode.Trait T}
           {ℋ_2 : core.convert.From.Trait E (T := ErrorCode)}
-          {ℋ_3 : core.ops.function.FnOnce.Trait F (Args := u32)}
-          {ℋ_4 : core.ops.function.FnOnce.Trait D (Args := ref (Slice u8))} :=
+          {ℋ_3 : core.ops.function.FnOnce.Trait F (Args := M.Val u32)}
+          {ℋ_4 :
+            core.ops.function.FnOnce.Trait D
+              (Args := M.Val (ref (slice u8)))} :=
           call_chain_extension
             (I := I)
             (T := T)
@@ -12732,7 +12743,7 @@ Module off_chain.
               ink_env.call.create_builder.FromAccountId.Trait ContractRef
                 (T := E)}
             {ℋ_2 : parity_scale_codec.codec.Encode.Trait Args}
-            {ℋ_3 : core.convert.AsRef.Trait Salt (T := Slice u8)}
+            {ℋ_3 : core.convert.AsRef.Trait Salt (T := slice u8)}
             {ℋ_4 :
               ink_env.call.create_builder.ConstructorReturnType.Trait R
                 (C := ContractRef)},
@@ -12750,7 +12761,7 @@ Module off_chain.
                 constr:(ltac:(ink_primitives.ConstructorResult
                   constr:(ink_env.call.create_builder.ConstructorReturnType.Output
                     (Self := R)
-                    (Trait := ltac:(try clear Trait; hauto l: on)))))).
+                    (Trait := ltac:(refine _)))))).
       
       Global Instance AssociatedFunction_instantiate_contract
           {E ContractRef Args Salt R : Set}
@@ -12759,7 +12770,7 @@ Module off_chain.
             ink_env.call.create_builder.FromAccountId.Trait ContractRef
               (T := E)}
           {ℋ_2 : parity_scale_codec.codec.Encode.Trait Args}
-          {ℋ_3 : core.convert.AsRef.Trait Salt (T := Slice u8)}
+          {ℋ_3 : core.convert.AsRef.Trait Salt (T := slice u8)}
           {ℋ_4 :
             ink_env.call.create_builder.ConstructorReturnType.Trait R
               (C := ContractRef)} :
@@ -12938,7 +12949,7 @@ Module off_chain.
             ink_env.call.create_builder.FromAccountId.Trait ContractRef
               (T := E)}
           {ℋ_2 : parity_scale_codec.codec.Encode.Trait Args}
-          {ℋ_3 : core.convert.AsRef.Trait Salt (T := Slice u8)}
+          {ℋ_3 : core.convert.AsRef.Trait Salt (T := slice u8)}
           {ℋ_4 :
             ink_env.call.create_builder.ConstructorReturnType.Trait R
               (C := ContractRef)} :=
@@ -13100,12 +13111,14 @@ Module off_chain.
     Parameter on_instance :
         forall
           {F R : Set}
-          {ℋ_0 : core.ops.function.FnOnce.Trait F (Args := mut_ref Self)},
+          {ℋ_0 :
+            core.ops.function.FnOnce.Trait F (Args := M.Val (mut_ref Self))},
         F -> M R.
     
     Global Instance AssociatedFunction_on_instance
         {F R : Set}
-        {ℋ_0 : core.ops.function.FnOnce.Trait F (Args := mut_ref Self)} :
+        {ℋ_0 :
+          core.ops.function.FnOnce.Trait F (Args := M.Val (mut_ref Self))} :
       Notation.DoubleColon Self "on_instance" := {
       Notation.double_colon := on_instance (F := F) (R := R);
     }.
@@ -13115,7 +13128,8 @@ Module off_chain.
         Self := {
       ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.OnInstance.on_instance
         {F R : Set}
-        {ℋ_0 : core.ops.function.FnOnce.Trait F (Args := mut_ref Self)} :=
+        {ℋ_0 :
+          core.ops.function.FnOnce.Trait F (Args := M.Val (mut_ref Self))} :=
         on_instance (F := F) (R := R);
     }.
   End Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_OnInstance_for_ink_env_engine_off_chain_EnvInstance. *)
@@ -13749,11 +13763,11 @@ Module impls.
     Definition Self : Set := ink_env.hash.Blake2x128.
     
     Parameter hash :
-        (ref (Slice u8)) ->
+        (ref (slice u8)) ->
           (mut_ref
             (ink_env.hash.HashOutput.Type_
               (Self := Self)
-              (Trait := ltac:(try clear Trait; hauto l: on))))
+              (Trait := ltac:(refine _))))
           ->
           M unit.
     
@@ -13775,11 +13789,11 @@ Module impls.
     Definition Self : Set := ink_env.hash.Blake2x256.
     
     Parameter hash :
-        (ref (Slice u8)) ->
+        (ref (slice u8)) ->
           (mut_ref
             (ink_env.hash.HashOutput.Type_
               (Self := Self)
-              (Trait := ltac:(try clear Trait; hauto l: on))))
+              (Trait := ltac:(refine _))))
           ->
           M unit.
     
@@ -13801,11 +13815,11 @@ Module impls.
     Definition Self : Set := ink_env.hash.Sha2x256.
     
     Parameter hash :
-        (ref (Slice u8)) ->
+        (ref (slice u8)) ->
           (mut_ref
             (ink_env.hash.HashOutput.Type_
               (Self := Self)
-              (Trait := ltac:(try clear Trait; hauto l: on))))
+              (Trait := ltac:(refine _))))
           ->
           M unit.
     
@@ -13827,11 +13841,11 @@ Module impls.
     Definition Self : Set := ink_env.hash.Keccak256.
     
     Parameter hash :
-        (ref (Slice u8)) ->
+        (ref (slice u8)) ->
           (mut_ref
             (ink_env.hash.HashOutput.Type_
               (Self := Self)
-              (Trait := ltac:(try clear Trait; hauto l: on))))
+              (Trait := ltac:(refine _))))
           ->
           M unit.
     
@@ -14078,11 +14092,11 @@ Module impls.
     Parameter hash_bytes :
         forall {H : Set} {ℋ_0 : ink_env.hash.CryptoHash.Trait H},
         (mut_ref Self) ->
-          (ref (Slice u8)) ->
+          (ref (slice u8)) ->
           (mut_ref
             (ink_env.hash.HashOutput.Type_
               (Self := H)
-              (Trait := ltac:(try clear Trait; hauto l: on))))
+              (Trait := ltac:(refine _))))
           ->
           M unit.
     
@@ -14103,7 +14117,7 @@ Module impls.
           (mut_ref
             (ink_env.hash.HashOutput.Type_
               (Self := H)
-              (Trait := ltac:(try clear Trait; hauto l: on))))
+              (Trait := ltac:(refine _))))
           ->
           M unit.
     
@@ -14148,8 +14162,9 @@ Module impls.
           {ℋ_0 : parity_scale_codec.codec.Encode.Trait I}
           {ℋ_1 : parity_scale_codec.codec.Decode.Trait T}
           {ℋ_2 : core.convert.From.Trait E (T := ErrorCode)}
-          {ℋ_3 : core.ops.function.FnOnce.Trait F (Args := u32)}
-          {ℋ_4 : core.ops.function.FnOnce.Trait D (Args := ref (Slice u8))},
+          {ℋ_3 : core.ops.function.FnOnce.Trait F (Args := M.Val u32)}
+          {ℋ_4 :
+            core.ops.function.FnOnce.Trait D (Args := M.Val (ref (slice u8)))},
         (mut_ref Self) ->
           u32 ->
           (ref I) ->
@@ -14162,8 +14177,9 @@ Module impls.
         {ℋ_0 : parity_scale_codec.codec.Encode.Trait I}
         {ℋ_1 : parity_scale_codec.codec.Decode.Trait T}
         {ℋ_2 : core.convert.From.Trait E (T := ErrorCode)}
-        {ℋ_3 : core.ops.function.FnOnce.Trait F (Args := u32)}
-        {ℋ_4 : core.ops.function.FnOnce.Trait D (Args := ref (Slice u8))} :
+        {ℋ_3 : core.ops.function.FnOnce.Trait F (Args := M.Val u32)}
+        {ℋ_4 :
+          core.ops.function.FnOnce.Trait D (Args := M.Val (ref (slice u8)))} :
       Notation.DoubleColon Self "call_chain_extension" := {
       Notation.double_colon
         :=
@@ -14178,7 +14194,7 @@ Module impls.
     
     Parameter set_code_hash :
         (mut_ref Self) ->
-          (ref (Slice u8)) ->
+          (ref (slice u8)) ->
           M
             ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
               constr:(unit)).
@@ -14242,8 +14258,9 @@ Module impls.
         {ℋ_0 : parity_scale_codec.codec.Encode.Trait I}
         {ℋ_1 : parity_scale_codec.codec.Decode.Trait T}
         {ℋ_2 : core.convert.From.Trait E (T := ErrorCode)}
-        {ℋ_3 : core.ops.function.FnOnce.Trait F (Args := u32)}
-        {ℋ_4 : core.ops.function.FnOnce.Trait D (Args := ref (Slice u8))} :=
+        {ℋ_3 : core.ops.function.FnOnce.Trait F (Args := M.Val u32)}
+        {ℋ_4 :
+          core.ops.function.FnOnce.Trait D (Args := M.Val (ref (slice u8)))} :=
         call_chain_extension
           (I := I)
           (T := T)
@@ -14434,7 +14451,7 @@ Module impls.
             ink_env.call.create_builder.FromAccountId.Trait ContractRef
               (T := E)}
           {ℋ_2 : parity_scale_codec.codec.Encode.Trait Args}
-          {ℋ_3 : core.convert.AsRef.Trait Salt (T := Slice u8)}
+          {ℋ_3 : core.convert.AsRef.Trait Salt (T := slice u8)}
           {ℋ_4 :
             ink_env.call.create_builder.ConstructorReturnType.Trait R
               (C := ContractRef)},
@@ -14452,7 +14469,7 @@ Module impls.
               constr:(ltac:(ink_primitives.ConstructorResult
                 constr:(ink_env.call.create_builder.ConstructorReturnType.Output
                   (Self := R)
-                  (Trait := ltac:(try clear Trait; hauto l: on)))))).
+                  (Trait := ltac:(refine _)))))).
     
     Global Instance AssociatedFunction_instantiate_contract
         {E ContractRef Args Salt R : Set}
@@ -14460,7 +14477,7 @@ Module impls.
         {ℋ_1 :
           ink_env.call.create_builder.FromAccountId.Trait ContractRef (T := E)}
         {ℋ_2 : parity_scale_codec.codec.Encode.Trait Args}
-        {ℋ_3 : core.convert.AsRef.Trait Salt (T := Slice u8)}
+        {ℋ_3 : core.convert.AsRef.Trait Salt (T := slice u8)}
         {ℋ_4 :
           ink_env.call.create_builder.ConstructorReturnType.Trait R
             (C := ContractRef)} :
@@ -14638,7 +14655,7 @@ Module impls.
         {ℋ_1 :
           ink_env.call.create_builder.FromAccountId.Trait ContractRef (T := E)}
         {ℋ_2 : parity_scale_codec.codec.Encode.Trait Args}
-        {ℋ_3 : core.convert.AsRef.Trait Salt (T := Slice u8)}
+        {ℋ_3 : core.convert.AsRef.Trait Salt (T := slice u8)}
         {ℋ_4 :
           ink_env.call.create_builder.ConstructorReturnType.Trait R
             (C := ContractRef)} :=
@@ -14692,11 +14709,11 @@ Section Impl_ink_env_hash_CryptoHash_for_ink_env_hash_Blake2x128.
   Definition Self : Set := ink_env.hash.Blake2x128.
   
   Parameter hash :
-      (ref (Slice u8)) ->
+      (ref (slice u8)) ->
         (mut_ref
           (ink_env.hash.HashOutput.Type_
             (Self := Self)
-            (Trait := ltac:(try clear Trait; hauto l: on))))
+            (Trait := ltac:(refine _))))
         ->
         M unit.
   
@@ -14718,11 +14735,11 @@ Section Impl_ink_env_hash_CryptoHash_for_ink_env_hash_Blake2x256.
   Definition Self : Set := ink_env.hash.Blake2x256.
   
   Parameter hash :
-      (ref (Slice u8)) ->
+      (ref (slice u8)) ->
         (mut_ref
           (ink_env.hash.HashOutput.Type_
             (Self := Self)
-            (Trait := ltac:(try clear Trait; hauto l: on))))
+            (Trait := ltac:(refine _))))
         ->
         M unit.
   
@@ -14744,11 +14761,11 @@ Section Impl_ink_env_hash_CryptoHash_for_ink_env_hash_Sha2x256.
   Definition Self : Set := ink_env.hash.Sha2x256.
   
   Parameter hash :
-      (ref (Slice u8)) ->
+      (ref (slice u8)) ->
         (mut_ref
           (ink_env.hash.HashOutput.Type_
             (Self := Self)
-            (Trait := ltac:(try clear Trait; hauto l: on))))
+            (Trait := ltac:(refine _))))
         ->
         M unit.
   
@@ -14770,11 +14787,11 @@ Section Impl_ink_env_hash_CryptoHash_for_ink_env_hash_Keccak256.
   Definition Self : Set := ink_env.hash.Keccak256.
   
   Parameter hash :
-      (ref (Slice u8)) ->
+      (ref (slice u8)) ->
         (mut_ref
           (ink_env.hash.HashOutput.Type_
             (Self := Self)
-            (Trait := ltac:(try clear Trait; hauto l: on))))
+            (Trait := ltac:(refine _))))
         ->
         M unit.
   
@@ -15021,11 +15038,11 @@ End Impl_ink_env_topics_TopicsBuilderBackend_E_for_ink_env_engine_off_chain_impl
   Parameter hash_bytes :
       forall {H : Set} {ℋ_0 : ink_env.hash.CryptoHash.Trait H},
       (mut_ref Self) ->
-        (ref (Slice u8)) ->
+        (ref (slice u8)) ->
         (mut_ref
           (ink_env.hash.HashOutput.Type_
             (Self := H)
-            (Trait := ltac:(try clear Trait; hauto l: on))))
+            (Trait := ltac:(refine _))))
         ->
         M unit.
   
@@ -15046,7 +15063,7 @@ End Impl_ink_env_topics_TopicsBuilderBackend_E_for_ink_env_engine_off_chain_impl
         (mut_ref
           (ink_env.hash.HashOutput.Type_
             (Self := H)
-            (Trait := ltac:(try clear Trait; hauto l: on))))
+            (Trait := ltac:(refine _))))
         ->
         M unit.
   
@@ -15091,8 +15108,9 @@ End Impl_ink_env_topics_TopicsBuilderBackend_E_for_ink_env_engine_off_chain_impl
         {ℋ_0 : parity_scale_codec.codec.Encode.Trait I}
         {ℋ_1 : parity_scale_codec.codec.Decode.Trait T}
         {ℋ_2 : core.convert.From.Trait E (T := ErrorCode)}
-        {ℋ_3 : core.ops.function.FnOnce.Trait F (Args := u32)}
-        {ℋ_4 : core.ops.function.FnOnce.Trait D (Args := ref (Slice u8))},
+        {ℋ_3 : core.ops.function.FnOnce.Trait F (Args := M.Val u32)}
+        {ℋ_4 :
+          core.ops.function.FnOnce.Trait D (Args := M.Val (ref (slice u8)))},
       (mut_ref Self) -> u32 -> (ref I) -> F -> D -> M (core.result.Result T E).
   
   Global Instance AssociatedFunction_call_chain_extension
@@ -15100,8 +15118,9 @@ End Impl_ink_env_topics_TopicsBuilderBackend_E_for_ink_env_engine_off_chain_impl
       {ℋ_0 : parity_scale_codec.codec.Encode.Trait I}
       {ℋ_1 : parity_scale_codec.codec.Decode.Trait T}
       {ℋ_2 : core.convert.From.Trait E (T := ErrorCode)}
-      {ℋ_3 : core.ops.function.FnOnce.Trait F (Args := u32)}
-      {ℋ_4 : core.ops.function.FnOnce.Trait D (Args := ref (Slice u8))} :
+      {ℋ_3 : core.ops.function.FnOnce.Trait F (Args := M.Val u32)}
+      {ℋ_4 :
+        core.ops.function.FnOnce.Trait D (Args := M.Val (ref (slice u8)))} :
     Notation.DoubleColon Self "call_chain_extension" := {
     Notation.double_colon
       :=
@@ -15116,7 +15135,7 @@ End Impl_ink_env_topics_TopicsBuilderBackend_E_for_ink_env_engine_off_chain_impl
   
   Parameter set_code_hash :
       (mut_ref Self) ->
-        (ref (Slice u8)) ->
+        (ref (slice u8)) ->
         M
           ltac:(ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
             constr:(unit)).
@@ -15180,8 +15199,9 @@ End Impl_ink_env_topics_TopicsBuilderBackend_E_for_ink_env_engine_off_chain_impl
       {ℋ_0 : parity_scale_codec.codec.Encode.Trait I}
       {ℋ_1 : parity_scale_codec.codec.Decode.Trait T}
       {ℋ_2 : core.convert.From.Trait E (T := ErrorCode)}
-      {ℋ_3 : core.ops.function.FnOnce.Trait F (Args := u32)}
-      {ℋ_4 : core.ops.function.FnOnce.Trait D (Args := ref (Slice u8))} :=
+      {ℋ_3 : core.ops.function.FnOnce.Trait F (Args := M.Val u32)}
+      {ℋ_4 :
+        core.ops.function.FnOnce.Trait D (Args := M.Val (ref (slice u8)))} :=
       call_chain_extension
         (I := I)
         (T := T)
@@ -15371,7 +15391,7 @@ End Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_err
         {ℋ_1 :
           ink_env.call.create_builder.FromAccountId.Trait ContractRef (T := E)}
         {ℋ_2 : parity_scale_codec.codec.Encode.Trait Args}
-        {ℋ_3 : core.convert.AsRef.Trait Salt (T := Slice u8)}
+        {ℋ_3 : core.convert.AsRef.Trait Salt (T := slice u8)}
         {ℋ_4 :
           ink_env.call.create_builder.ConstructorReturnType.Trait R
             (C := ContractRef)},
@@ -15384,7 +15404,7 @@ End Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_err
             constr:(ltac:(ink_primitives.ConstructorResult
               constr:(ink_env.call.create_builder.ConstructorReturnType.Output
                 (Self := R)
-                (Trait := ltac:(try clear Trait; hauto l: on)))))).
+                (Trait := ltac:(refine _)))))).
   
   Global Instance AssociatedFunction_instantiate_contract
       {E ContractRef Args Salt R : Set}
@@ -15392,7 +15412,7 @@ End Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_err
       {ℋ_1 :
         ink_env.call.create_builder.FromAccountId.Trait ContractRef (T := E)}
       {ℋ_2 : parity_scale_codec.codec.Encode.Trait Args}
-      {ℋ_3 : core.convert.AsRef.Trait Salt (T := Slice u8)}
+      {ℋ_3 : core.convert.AsRef.Trait Salt (T := slice u8)}
       {ℋ_4 :
         ink_env.call.create_builder.ConstructorReturnType.Trait R
           (C := ContractRef)} :
@@ -15570,7 +15590,7 @@ End Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_err
       {ℋ_1 :
         ink_env.call.create_builder.FromAccountId.Trait ContractRef (T := E)}
       {ℋ_2 : parity_scale_codec.codec.Encode.Trait Args}
-      {ℋ_3 : core.convert.AsRef.Trait Salt (T := Slice u8)}
+      {ℋ_3 : core.convert.AsRef.Trait Salt (T := slice u8)}
       {ℋ_4 :
         ink_env.call.create_builder.ConstructorReturnType.Trait R
           (C := ContractRef)} :=
@@ -15815,12 +15835,12 @@ Definition EnvInstance `{ℋ : State.Trait} : Set := M.Val EnvInstance.t.
   Parameter on_instance :
       forall
         {F R : Set}
-        {ℋ_0 : core.ops.function.FnOnce.Trait F (Args := mut_ref Self)},
+        {ℋ_0 : core.ops.function.FnOnce.Trait F (Args := M.Val (mut_ref Self))},
       F -> M R.
   
   Global Instance AssociatedFunction_on_instance
       {F R : Set}
-      {ℋ_0 : core.ops.function.FnOnce.Trait F (Args := mut_ref Self)} :
+      {ℋ_0 : core.ops.function.FnOnce.Trait F (Args := M.Val (mut_ref Self))} :
     Notation.DoubleColon Self "on_instance" := {
     Notation.double_colon := on_instance (F := F) (R := R);
   }.
@@ -15830,7 +15850,7 @@ Definition EnvInstance `{ℋ : State.Trait} : Set := M.Val EnvInstance.t.
       Self := {
     ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.OnInstance.on_instance
       {F R : Set}
-      {ℋ_0 : core.ops.function.FnOnce.Trait F (Args := mut_ref Self)} :=
+      {ℋ_0 : core.ops.function.FnOnce.Trait F (Args := M.Val (mut_ref Self))} :=
       on_instance (F := F) (R := R);
   }.
 End Impl_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_OnInstance_for_ink_env_engine_off_chain_EnvInstance. *)
@@ -16087,11 +16107,11 @@ Section CryptoHash.
   Class Trait (Self : Set) : Type := {
     ℒ_0 :: ink_env.hash.HashOutput.Trait Self;
     hash :
-      (ref (Slice u8)) ->
+      (ref (slice u8)) ->
         (mut_ref
           (ink_env.hash.HashOutput.Type_
             (Self := Self)
-            (Trait := ltac:(try clear Trait; hauto l: on))))
+            (Trait := ltac:(refine _))))
         ->
         M unit;
   }.
@@ -16652,7 +16672,7 @@ Section Impl_ink_env_hash_HashOutput_for_ink_env_hash_Sha2x256.
   
   Definition Self : Set := ink_env.hash.Sha2x256.
   
-  Definition Type_ : Set := list u8.
+  Definition Type_ : Set := array u8.
   
   Global Instance ℐ : ink_env.hash.HashOutput.Trait Self := {
     ink_env.hash.HashOutput.Type_ := Type_;
@@ -16666,7 +16686,7 @@ Section Impl_ink_env_hash_HashOutput_for_ink_env_hash_Keccak256.
   
   Definition Self : Set := ink_env.hash.Keccak256.
   
-  Definition Type_ : Set := list u8.
+  Definition Type_ : Set := array u8.
   
   Global Instance ℐ : ink_env.hash.HashOutput.Trait Self := {
     ink_env.hash.HashOutput.Type_ := Type_;
@@ -16680,7 +16700,7 @@ Section Impl_ink_env_hash_HashOutput_for_ink_env_hash_Blake2x256.
   
   Definition Self : Set := ink_env.hash.Blake2x256.
   
-  Definition Type_ : Set := list u8.
+  Definition Type_ : Set := array u8.
   
   Global Instance ℐ : ink_env.hash.HashOutput.Trait Self := {
     ink_env.hash.HashOutput.Type_ := Type_;
@@ -16694,7 +16714,7 @@ Section Impl_ink_env_hash_HashOutput_for_ink_env_hash_Blake2x128.
   
   Definition Self : Set := ink_env.hash.Blake2x128.
   
-  Definition Type_ : Set := list u8.
+  Definition Type_ : Set := array u8.
   
   Global Instance ℐ : ink_env.hash.HashOutput.Trait Self := {
     ink_env.hash.HashOutput.Type_ := Type_;
@@ -16731,7 +16751,7 @@ Section TopicsBuilder.
   Unset Primitive Projections.
   Record t : Set := {
     backend : B;
-    state : core.marker.PhantomData (S * E);
+    state : core.marker.PhantomData (M.Val (S * E));
   }.
   Global Set Primitive Projections.
   
@@ -16854,7 +16874,7 @@ End EventTopicsAmount.
   
   Definition Self : Set := array ink_env.topics.state.HasRemainingTopics.
   
-  Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
+  Definition Next : Set := array ink_env.topics.state.HasRemainingTopics.
   
   Global Instance ℐ : ink_env.topics.SomeRemainingTopics.Trait Self := {
     ink_env.topics.SomeRemainingTopics.Next := Next;
@@ -16930,7 +16950,7 @@ Section Topics.
         M
           (ink_env.topics.TopicsBuilderBackend.Output
             (Self := B)
-            (Trait := ltac:(try clear Trait; hauto l: on)));
+            (Trait := ltac:(refine _)));
   }.
   
   Global Instance Method_RemainingTopics `(Trait) :
@@ -16948,7 +16968,7 @@ Section PrefixedValue.
   
   Unset Primitive Projections.
   Record t : Set := {
-    prefix : ref (Slice u8);
+    prefix : ref (slice u8);
     value : ref T;
   }.
   Global Set Primitive Projections.

@@ -837,7 +837,7 @@ Module chain_extension.
       func_id : (ref Self) -> M u32;
       call :
         (mut_ref Self) ->
-          (ref (Slice u8)) ->
+          (ref (slice u8)) ->
           (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
           M u32;
     }.
@@ -849,25 +849,12 @@ Module chain_extension.
   Section ChainExtensionHandler.
     Context `{ℋ : State.Trait}.
     
-    (* Module Dyn_ink_engine_chain_extension_ChainExtension.
-      Parameter t : Set.
-      Global Instance I_ink_engine_chain_extension_ChainExtension :
-        ink_engine.chain_extension.ChainExtension.Trait t := axiom.
-      Parameter conv_Dyn :
-          forall {A : Set} `{ink_engine.chain_extension.ChainExtension.Trait t},
-          A -> t.
-    End Dyn_ink_engine_chain_extension_ChainExtension. *)
-    Parameter Dyn_ink_engine_chain_extension_ChainExtension : Set.
-      
-    
     Unset Primitive Projections.
     Record t : Set := {
       registered :
         std.collections.hash.map.HashMap
           ink_engine.chain_extension.ExtensionId
-          (alloc.boxed.Box
-            Dyn_ink_engine_chain_extension_ChainExtension
-            alloc.boxed.Box.Default.A)
+          (alloc.boxed.Box _ (* dyn *) alloc.boxed.Box.Default.A)
           std.collections.hash.map.HashMap.Default.S;
       output : alloc.vec.Vec u8 alloc.vec.Vec.Default.A;
     }.
@@ -1095,11 +1082,11 @@ End chain_extension.
 Module database.
   Parameter balance_of_key :
       forall `{ℋ : State.Trait},
-      (ref (Slice u8)) -> M (array u8).
+      (ref (slice u8)) -> M (array u8).
   
   Parameter storage_of_contract_key :
       forall `{ℋ : State.Trait},
-      (ref (Slice u8)) -> (ref (Slice u8)) -> M (array u8).
+      (ref (slice u8)) -> (ref (slice u8)) -> M (array u8).
   
   Module  Database.
   Section Database.
@@ -1868,25 +1855,12 @@ Module  ChainExtensionHandler.
 Section ChainExtensionHandler.
   Context `{ℋ : State.Trait}.
   
-  (* Module Dyn_ink_engine_chain_extension_ChainExtension.
-    Parameter t : Set.
-    Global Instance I_ink_engine_chain_extension_ChainExtension :
-      ink_engine.chain_extension.ChainExtension.Trait t := axiom.
-    Parameter conv_Dyn :
-        forall {A : Set} `{ink_engine.chain_extension.ChainExtension.Trait t},
-        A -> t.
-  End Dyn_ink_engine_chain_extension_ChainExtension. *)
-  Parameter Dyn_ink_engine_chain_extension_ChainExtension : Set.
-    
-  
   Unset Primitive Projections.
   Record t : Set := {
     registered :
       std.collections.hash.map.HashMap
         ink_engine.chain_extension.ExtensionId
-        (alloc.boxed.Box
-          Dyn_ink_engine_chain_extension_ChainExtension
-          alloc.boxed.Box.Default.A)
+        (alloc.boxed.Box _ (* dyn *) alloc.boxed.Box.Default.A)
         std.collections.hash.map.HashMap.Default.S;
     output : alloc.vec.Vec u8 alloc.vec.Vec.Default.A;
   }.
@@ -1998,14 +1972,14 @@ End Impl_core_convert_From_u32_for_ink_engine_chain_extension_ExtensionId.
         {R F : Set}
         {ℋ_0 :
           core.ops.function.FnOnce.Trait F
-            (Args := ref (Slice CoqOfRust.core.primitive.u8))},
+            (Args := M.Val (ref (slice CoqOfRust.core.primitive.u8)))},
       (ref Self) -> F -> M R.
   
   Global Instance AssociatedFunction_using_encoded
       {R F : Set}
       {ℋ_0 :
         core.ops.function.FnOnce.Trait F
-          (Args := ref (Slice CoqOfRust.core.primitive.u8))} :
+          (Args := M.Val (ref (slice CoqOfRust.core.primitive.u8)))} :
     Notation.DoubleColon Self "using_encoded" := {
     Notation.double_colon := using_encoded (R := R) (F := F);
   }.
@@ -2020,7 +1994,7 @@ End Impl_core_convert_From_u32_for_ink_engine_chain_extension_ExtensionId.
       {R F : Set}
       {ℋ_0 :
         core.ops.function.FnOnce.Trait F
-          (Args := ref (Slice CoqOfRust.core.primitive.u8))} :=
+          (Args := M.Val (ref (slice CoqOfRust.core.primitive.u8)))} :=
       Datatypes.Some (using_encoded (R := R) (F := F));
     parity_scale_codec.codec.Encode.TYPE_INFO := Datatypes.None;
     parity_scale_codec.codec.Encode.size_hint := Datatypes.None;
@@ -2224,7 +2198,7 @@ Section ChainExtension.
     func_id : (ref Self) -> M u32;
     call :
       (mut_ref Self) ->
-        (ref (Slice u8)) ->
+        (ref (slice u8)) ->
         (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
         M u32;
   }.
@@ -2253,11 +2227,11 @@ End Impl_core_default_Default_for_ink_engine_chain_extension_ChainExtensionHandl
 
 Parameter balance_of_key :
     forall `{ℋ : State.Trait},
-    (ref (Slice u8)) -> M (array u8).
+    (ref (slice u8)) -> M (array u8).
 
 Parameter storage_of_contract_key :
     forall `{ℋ : State.Trait},
-    (ref (Slice u8)) -> (ref (Slice u8)) -> M (array u8).
+    (ref (slice u8)) -> (ref (slice u8)) -> M (array u8).
 
 Module  Database.
 Section Database.
@@ -2388,36 +2362,36 @@ End Impl_core_default_Default_for_ink_engine_exec_context_ExecContext.
 Module hashing.
   Parameter blake2b_256 :
       forall `{ℋ : State.Trait},
-      (ref (Slice u8)) -> (mut_ref (array u8)) -> M unit.
+      (ref (slice u8)) -> (mut_ref (array u8)) -> M unit.
   
   Parameter blake2b_128 :
       forall `{ℋ : State.Trait},
-      (ref (Slice u8)) -> (mut_ref (array u8)) -> M unit.
+      (ref (slice u8)) -> (mut_ref (array u8)) -> M unit.
   
   Parameter keccak_256 :
       forall `{ℋ : State.Trait},
-      (ref (Slice u8)) -> (mut_ref (array u8)) -> M unit.
+      (ref (slice u8)) -> (mut_ref (array u8)) -> M unit.
   
   Parameter sha2_256 :
       forall `{ℋ : State.Trait},
-      (ref (Slice u8)) -> (mut_ref (array u8)) -> M unit.
+      (ref (slice u8)) -> (mut_ref (array u8)) -> M unit.
 End hashing.
 
 Parameter blake2b_256 :
     forall `{ℋ : State.Trait},
-    (ref (Slice u8)) -> (mut_ref (array u8)) -> M unit.
+    (ref (slice u8)) -> (mut_ref (array u8)) -> M unit.
 
 Parameter blake2b_128 :
     forall `{ℋ : State.Trait},
-    (ref (Slice u8)) -> (mut_ref (array u8)) -> M unit.
+    (ref (slice u8)) -> (mut_ref (array u8)) -> M unit.
 
 Parameter keccak_256 :
     forall `{ℋ : State.Trait},
-    (ref (Slice u8)) -> (mut_ref (array u8)) -> M unit.
+    (ref (slice u8)) -> (mut_ref (array u8)) -> M unit.
 
 Parameter sha2_256 :
     forall `{ℋ : State.Trait},
-    (ref (Slice u8)) -> (mut_ref (array u8)) -> M unit.
+    (ref (slice u8)) -> (mut_ref (array u8)) -> M unit.
 
 Ltac BlockNumber := refine u32.
 

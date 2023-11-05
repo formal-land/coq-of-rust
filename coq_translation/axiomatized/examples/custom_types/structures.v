@@ -54,7 +54,7 @@ Section Unit.
   Inductive t : Set := Build.
 End Unit.
 End Unit.
-Definition Unit := @Unit.t.
+Definition Unit `{ℋ : State.Trait} := M.Val Unit.t.
 
 Module  Pair.
 Section Pair.

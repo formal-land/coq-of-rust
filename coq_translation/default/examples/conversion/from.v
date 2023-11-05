@@ -44,8 +44,8 @@ End Impl_core_convert_From_i32_for_from_Number.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
   M.function_body
-    (let* _ :=
-      let* α0 := M.alloc 30 in
+    (let* _ : ltac:(refine from.Number) :=
+      let* α0 : ltac:(refine i32) := M.alloc 30 in
       (core.convert.From.from (Self := from.Number) (Trait := ltac:(refine _)))
         α0 in
     M.alloc tt).

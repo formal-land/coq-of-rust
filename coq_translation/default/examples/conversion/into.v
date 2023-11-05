@@ -44,7 +44,7 @@ End Impl_core_convert_From_i32_for_into_Number.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
   M.function_body
-    (let* _ :=
-      let* α0 := M.alloc 5 in
+    (let* _ : ltac:(refine into.Number) :=
+      let* α0 : ltac:(refine i32) := M.alloc 5 in
       (core.convert.Into.into (Self := i32) (Trait := ltac:(refine _))) α0 in
     M.alloc tt).

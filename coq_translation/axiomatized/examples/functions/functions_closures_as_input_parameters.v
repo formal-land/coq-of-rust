@@ -12,7 +12,7 @@ Parameter apply_to_3 :
     forall
       `{ℋ : State.Trait}
       {F : Set}
-      {ℋ_0 : core.ops.function.Fn.Trait F (Args := i32)},
+      {ℋ_0 : core.ops.function.Fn.Trait F (Args := M.Val i32)},
     F -> M i32.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)

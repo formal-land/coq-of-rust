@@ -55,21 +55,26 @@ Section Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_A_B.
       (other : ref (generics_phantom_type.PhantomTuple A B))
       : M bool :=
     M.function_body
-      (let* α0 := deref self (generics_phantom_type.PhantomTuple A B) in
-      let* α1 := α0.["0"] in
-      let* α2 := borrow α1 A in
-      let* α3 := deref other (generics_phantom_type.PhantomTuple A B) in
-      let* α4 := α3.["0"] in
-      let* α5 := borrow α4 A in
-      let* α6 :=
+      (let* α0 : ltac:(refine (generics_phantom_type.PhantomTuple A B)) :=
+        deref self in
+      let* α1 : ltac:(refine A) := α0.["0"] in
+      let* α2 : ltac:(refine (ref A)) := borrow α1 in
+      let* α3 : ltac:(refine (generics_phantom_type.PhantomTuple A B)) :=
+        deref other in
+      let* α4 : ltac:(refine A) := α3.["0"] in
+      let* α5 : ltac:(refine (ref A)) := borrow α4 in
+      let* α6 : ltac:(refine bool) :=
         (core.cmp.PartialEq.eq (Self := A) (Trait := ltac:(refine _))) α2 α5 in
-      let* α7 := deref self (generics_phantom_type.PhantomTuple A B) in
-      let* α8 := α7.["1"] in
-      let* α9 := borrow α8 (core.marker.PhantomData B) in
-      let* α10 := deref other (generics_phantom_type.PhantomTuple A B) in
-      let* α11 := α10.["1"] in
-      let* α12 := borrow α11 (core.marker.PhantomData B) in
-      let* α13 :=
+      let* α7 : ltac:(refine (generics_phantom_type.PhantomTuple A B)) :=
+        deref self in
+      let* α8 : ltac:(refine (core.marker.PhantomData B)) := α7.["1"] in
+      let* α9 : ltac:(refine (ref (core.marker.PhantomData B))) := borrow α8 in
+      let* α10 : ltac:(refine (generics_phantom_type.PhantomTuple A B)) :=
+        deref other in
+      let* α11 : ltac:(refine (core.marker.PhantomData B)) := α10.["1"] in
+      let* α12 : ltac:(refine (ref (core.marker.PhantomData B))) :=
+        borrow α11 in
+      let* α13 : ltac:(refine bool) :=
         (core.cmp.PartialEq.eq
             (Self := core.marker.PhantomData B)
             (Trait := ltac:(refine _)))
@@ -150,21 +155,26 @@ Section Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
       (other : ref (generics_phantom_type.PhantomStruct A B))
       : M bool :=
     M.function_body
-      (let* α0 := deref self (generics_phantom_type.PhantomStruct A B) in
-      let* α1 := α0.["first"] in
-      let* α2 := borrow α1 A in
-      let* α3 := deref other (generics_phantom_type.PhantomStruct A B) in
-      let* α4 := α3.["first"] in
-      let* α5 := borrow α4 A in
-      let* α6 :=
+      (let* α0 : ltac:(refine (generics_phantom_type.PhantomStruct A B)) :=
+        deref self in
+      let* α1 : ltac:(refine A) := α0.["first"] in
+      let* α2 : ltac:(refine (ref A)) := borrow α1 in
+      let* α3 : ltac:(refine (generics_phantom_type.PhantomStruct A B)) :=
+        deref other in
+      let* α4 : ltac:(refine A) := α3.["first"] in
+      let* α5 : ltac:(refine (ref A)) := borrow α4 in
+      let* α6 : ltac:(refine bool) :=
         (core.cmp.PartialEq.eq (Self := A) (Trait := ltac:(refine _))) α2 α5 in
-      let* α7 := deref self (generics_phantom_type.PhantomStruct A B) in
-      let* α8 := α7.["phantom"] in
-      let* α9 := borrow α8 (core.marker.PhantomData B) in
-      let* α10 := deref other (generics_phantom_type.PhantomStruct A B) in
-      let* α11 := α10.["phantom"] in
-      let* α12 := borrow α11 (core.marker.PhantomData B) in
-      let* α13 :=
+      let* α7 : ltac:(refine (generics_phantom_type.PhantomStruct A B)) :=
+        deref self in
+      let* α8 : ltac:(refine (core.marker.PhantomData B)) := α7.["phantom"] in
+      let* α9 : ltac:(refine (ref (core.marker.PhantomData B))) := borrow α8 in
+      let* α10 : ltac:(refine (generics_phantom_type.PhantomStruct A B)) :=
+        deref other in
+      let* α11 : ltac:(refine (core.marker.PhantomData B)) := α10.["phantom"] in
+      let* α12 : ltac:(refine (ref (core.marker.PhantomData B))) :=
+        borrow α11 in
+      let* α13 : ltac:(refine bool) :=
         (core.cmp.PartialEq.eq
             (Self := core.marker.PhantomData B)
             (Trait := ltac:(refine _)))
@@ -188,25 +198,37 @@ End Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
   M.function_body
-    (let* _tuple1 :=
-      let* α0 := M.alloc "Q"%char in
-      let* α1 := M.alloc core.marker.PhantomData.Build_t in
+    (let*
+        _tuple1 :
+        ltac:(refine (generics_phantom_type.PhantomTuple char f32)) :=
+      let* α0 : ltac:(refine char) := M.alloc "Q"%char in
+      let* α1 : ltac:(refine (core.marker.PhantomData f32)) :=
+        M.alloc core.marker.PhantomData.Build_t in
       M.alloc (generics_phantom_type.PhantomTuple.Build_t α0 α1) in
-    let* _tuple2 :=
-      let* α0 := M.alloc "Q"%char in
-      let* α1 := M.alloc core.marker.PhantomData.Build_t in
+    let*
+        _tuple2 :
+        ltac:(refine (generics_phantom_type.PhantomTuple char f64)) :=
+      let* α0 : ltac:(refine char) := M.alloc "Q"%char in
+      let* α1 : ltac:(refine (core.marker.PhantomData f64)) :=
+        M.alloc core.marker.PhantomData.Build_t in
       M.alloc (generics_phantom_type.PhantomTuple.Build_t α0 α1) in
-    let* _struct1 :=
-      let* α0 := M.alloc "Q"%char in
-      let* α1 := M.alloc core.marker.PhantomData.Build_t in
+    let*
+        _struct1 :
+        ltac:(refine (generics_phantom_type.PhantomStruct char f32)) :=
+      let* α0 : ltac:(refine char) := M.alloc "Q"%char in
+      let* α1 : ltac:(refine (core.marker.PhantomData f32)) :=
+        M.alloc core.marker.PhantomData.Build_t in
       M.alloc
         {|
           generics_phantom_type.PhantomStruct.first := α0;
           generics_phantom_type.PhantomStruct.phantom := α1;
         |} in
-    let* _struct2 :=
-      let* α0 := M.alloc "Q"%char in
-      let* α1 := M.alloc core.marker.PhantomData.Build_t in
+    let*
+        _struct2 :
+        ltac:(refine (generics_phantom_type.PhantomStruct char f64)) :=
+      let* α0 : ltac:(refine char) := M.alloc "Q"%char in
+      let* α1 : ltac:(refine (core.marker.PhantomData f64)) :=
+        M.alloc core.marker.PhantomData.Build_t in
       M.alloc
         {|
           generics_phantom_type.PhantomStruct.first := α0;

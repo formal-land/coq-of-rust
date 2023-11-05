@@ -14,7 +14,7 @@ Module key.
     Inductive t : Set := Build.
   End KeyComposer.
   End KeyComposer.
-  Definition KeyComposer := @KeyComposer.t.
+  Definition KeyComposer `{ℋ : State.Trait} := M.Val KeyComposer.t.
   
   Module Error.
     Inductive t `{ℋ : State.Trait} : Set :=
@@ -116,7 +116,7 @@ Section KeyComposer.
   Inductive t : Set := Build.
 End KeyComposer.
 End KeyComposer.
-Definition KeyComposer := @KeyComposer.t.
+Definition KeyComposer `{ℋ : State.Trait} := M.Val KeyComposer.t.
 
 Module Error.
   Inductive t `{ℋ : State.Trait} : Set :=
@@ -258,7 +258,7 @@ Module types.
     
     Parameter encode_as_fields_to :
         (ref Self) ->
-          (ref (Slice ltac:(scale_encode.PortableField))) ->
+          (ref (slice ltac:(scale_encode.PortableField))) ->
           (ref scale_info.portable.PortableRegistry) ->
           (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
           M (core.result.Result unit scale_encode.error.Error).
@@ -526,46 +526,46 @@ Module types.
   End Impl_core_convert_AsMut_Array_u8_for_ink_primitives_types_AccountId.
   End Impl_core_convert_AsMut_Array_u8_for_ink_primitives_types_AccountId.
   
-  Module  Impl_core_convert_AsRef_Slice_u8_for_ink_primitives_types_AccountId.
-  Section Impl_core_convert_AsRef_Slice_u8_for_ink_primitives_types_AccountId.
+  Module  Impl_core_convert_AsRef_slice_u8_for_ink_primitives_types_AccountId.
+  Section Impl_core_convert_AsRef_slice_u8_for_ink_primitives_types_AccountId.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := ink_primitives.types.AccountId.
     
-    Parameter as_ref : (ref Self) -> M (ref (Slice u8)).
+    Parameter as_ref : (ref Self) -> M (ref (slice u8)).
     
     Global Instance AssociatedFunction_as_ref :
       Notation.DoubleColon Self "as_ref" := {
       Notation.double_colon := as_ref;
     }.
     
-    Global Instance ℐ : core.convert.AsRef.Trait Self (T := Slice u8) := {
+    Global Instance ℐ : core.convert.AsRef.Trait Self (T := slice u8) := {
       core.convert.AsRef.as_ref := as_ref;
     }.
-  End Impl_core_convert_AsRef_Slice_u8_for_ink_primitives_types_AccountId.
-  End Impl_core_convert_AsRef_Slice_u8_for_ink_primitives_types_AccountId.
+  End Impl_core_convert_AsRef_slice_u8_for_ink_primitives_types_AccountId.
+  End Impl_core_convert_AsRef_slice_u8_for_ink_primitives_types_AccountId.
   
-  Module  Impl_core_convert_AsMut_Slice_u8_for_ink_primitives_types_AccountId.
-  Section Impl_core_convert_AsMut_Slice_u8_for_ink_primitives_types_AccountId.
+  Module  Impl_core_convert_AsMut_slice_u8_for_ink_primitives_types_AccountId.
+  Section Impl_core_convert_AsMut_slice_u8_for_ink_primitives_types_AccountId.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := ink_primitives.types.AccountId.
     
-    Parameter as_mut : (mut_ref Self) -> M (mut_ref (Slice u8)).
+    Parameter as_mut : (mut_ref Self) -> M (mut_ref (slice u8)).
     
     Global Instance AssociatedFunction_as_mut :
       Notation.DoubleColon Self "as_mut" := {
       Notation.double_colon := as_mut;
     }.
     
-    Global Instance ℐ : core.convert.AsMut.Trait Self (T := Slice u8) := {
+    Global Instance ℐ : core.convert.AsMut.Trait Self (T := slice u8) := {
       core.convert.AsMut.as_mut := as_mut;
     }.
-  End Impl_core_convert_AsMut_Slice_u8_for_ink_primitives_types_AccountId.
-  End Impl_core_convert_AsMut_Slice_u8_for_ink_primitives_types_AccountId.
+  End Impl_core_convert_AsMut_slice_u8_for_ink_primitives_types_AccountId.
+  End Impl_core_convert_AsMut_slice_u8_for_ink_primitives_types_AccountId.
   
-  Module  Impl_core_convert_TryFrom_StaticRef_Slice_u8_for_ink_primitives_types_AccountId.
-  Section Impl_core_convert_TryFrom_StaticRef_Slice_u8_for_ink_primitives_types_AccountId.
+  Module  Impl_core_convert_TryFrom_StaticRef_slice_u8_for_ink_primitives_types_AccountId.
+  Section Impl_core_convert_TryFrom_StaticRef_slice_u8_for_ink_primitives_types_AccountId.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := ink_primitives.types.AccountId.
@@ -573,7 +573,7 @@ Module types.
     Definition Error : Set := core.array.TryFromSliceError.
     
     Parameter try_from :
-        (ref (Slice u8)) ->
+        (ref (slice u8)) ->
           M (core.result.Result Self core.array.TryFromSliceError).
     
     Global Instance AssociatedFunction_try_from :
@@ -582,12 +582,12 @@ Module types.
     }.
     
     Global Instance ℐ :
-      core.convert.TryFrom.Trait Self (T := ref (Slice u8)) := {
+      core.convert.TryFrom.Trait Self (T := ref (slice u8)) := {
       core.convert.TryFrom.Error := Error;
       core.convert.TryFrom.try_from := try_from;
     }.
-  End Impl_core_convert_TryFrom_StaticRef_Slice_u8_for_ink_primitives_types_AccountId.
-  End Impl_core_convert_TryFrom_StaticRef_Slice_u8_for_ink_primitives_types_AccountId.
+  End Impl_core_convert_TryFrom_StaticRef_slice_u8_for_ink_primitives_types_AccountId.
+  End Impl_core_convert_TryFrom_StaticRef_slice_u8_for_ink_primitives_types_AccountId.
   
   Module  Hash.
   Section Hash.
@@ -639,7 +639,7 @@ Module types.
     
     Parameter encode_as_fields_to :
         (ref Self) ->
-          (ref (Slice ltac:(scale_encode.PortableField))) ->
+          (ref (slice ltac:(scale_encode.PortableField))) ->
           (ref scale_info.portable.PortableRegistry) ->
           (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
           M (core.result.Result unit scale_encode.error.Error).
@@ -886,8 +886,8 @@ Module types.
   End Impl_core_default_Default_for_ink_primitives_types_Hash.
   End Impl_core_default_Default_for_ink_primitives_types_Hash.
   
-  Module  Impl_core_convert_TryFrom_StaticRef_Slice_u8_for_ink_primitives_types_Hash.
-  Section Impl_core_convert_TryFrom_StaticRef_Slice_u8_for_ink_primitives_types_Hash.
+  Module  Impl_core_convert_TryFrom_StaticRef_slice_u8_for_ink_primitives_types_Hash.
+  Section Impl_core_convert_TryFrom_StaticRef_slice_u8_for_ink_primitives_types_Hash.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := ink_primitives.types.Hash.
@@ -895,7 +895,7 @@ Module types.
     Definition Error : Set := core.array.TryFromSliceError.
     
     Parameter try_from :
-        (ref (Slice u8)) ->
+        (ref (slice u8)) ->
           M (core.result.Result Self core.array.TryFromSliceError).
     
     Global Instance AssociatedFunction_try_from :
@@ -904,50 +904,50 @@ Module types.
     }.
     
     Global Instance ℐ :
-      core.convert.TryFrom.Trait Self (T := ref (Slice u8)) := {
+      core.convert.TryFrom.Trait Self (T := ref (slice u8)) := {
       core.convert.TryFrom.Error := Error;
       core.convert.TryFrom.try_from := try_from;
     }.
-  End Impl_core_convert_TryFrom_StaticRef_Slice_u8_for_ink_primitives_types_Hash.
-  End Impl_core_convert_TryFrom_StaticRef_Slice_u8_for_ink_primitives_types_Hash.
+  End Impl_core_convert_TryFrom_StaticRef_slice_u8_for_ink_primitives_types_Hash.
+  End Impl_core_convert_TryFrom_StaticRef_slice_u8_for_ink_primitives_types_Hash.
   
-  Module  Impl_core_convert_AsRef_Slice_u8_for_ink_primitives_types_Hash.
-  Section Impl_core_convert_AsRef_Slice_u8_for_ink_primitives_types_Hash.
+  Module  Impl_core_convert_AsRef_slice_u8_for_ink_primitives_types_Hash.
+  Section Impl_core_convert_AsRef_slice_u8_for_ink_primitives_types_Hash.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := ink_primitives.types.Hash.
     
-    Parameter as_ref : (ref Self) -> M (ref (Slice u8)).
+    Parameter as_ref : (ref Self) -> M (ref (slice u8)).
     
     Global Instance AssociatedFunction_as_ref :
       Notation.DoubleColon Self "as_ref" := {
       Notation.double_colon := as_ref;
     }.
     
-    Global Instance ℐ : core.convert.AsRef.Trait Self (T := Slice u8) := {
+    Global Instance ℐ : core.convert.AsRef.Trait Self (T := slice u8) := {
       core.convert.AsRef.as_ref := as_ref;
     }.
-  End Impl_core_convert_AsRef_Slice_u8_for_ink_primitives_types_Hash.
-  End Impl_core_convert_AsRef_Slice_u8_for_ink_primitives_types_Hash.
+  End Impl_core_convert_AsRef_slice_u8_for_ink_primitives_types_Hash.
+  End Impl_core_convert_AsRef_slice_u8_for_ink_primitives_types_Hash.
   
-  Module  Impl_core_convert_AsMut_Slice_u8_for_ink_primitives_types_Hash.
-  Section Impl_core_convert_AsMut_Slice_u8_for_ink_primitives_types_Hash.
+  Module  Impl_core_convert_AsMut_slice_u8_for_ink_primitives_types_Hash.
+  Section Impl_core_convert_AsMut_slice_u8_for_ink_primitives_types_Hash.
     Context `{ℋ : State.Trait}.
     
     Definition Self : Set := ink_primitives.types.Hash.
     
-    Parameter as_mut : (mut_ref Self) -> M (mut_ref (Slice u8)).
+    Parameter as_mut : (mut_ref Self) -> M (mut_ref (slice u8)).
     
     Global Instance AssociatedFunction_as_mut :
       Notation.DoubleColon Self "as_mut" := {
       Notation.double_colon := as_mut;
     }.
     
-    Global Instance ℐ : core.convert.AsMut.Trait Self (T := Slice u8) := {
+    Global Instance ℐ : core.convert.AsMut.Trait Self (T := slice u8) := {
       core.convert.AsMut.as_mut := as_mut;
     }.
-  End Impl_core_convert_AsMut_Slice_u8_for_ink_primitives_types_Hash.
-  End Impl_core_convert_AsMut_Slice_u8_for_ink_primitives_types_Hash.
+  End Impl_core_convert_AsMut_slice_u8_for_ink_primitives_types_Hash.
+  End Impl_core_convert_AsMut_slice_u8_for_ink_primitives_types_Hash.
   
   Module  Impl_core_convert_From_ink_primitives_types_Hash_for_Array_u8.
   Section Impl_core_convert_From_ink_primitives_types_Hash_for_Array_u8.
@@ -1189,8 +1189,8 @@ End Impl_scale_decode_visitor_Visitor_for_ink_primitives_types___Visitor. *)
   Definition Self : Set := ink_primitives.types.AccountId.
   
   Parameter decode_as_fields :
-      (mut_ref (ref (Slice u8))) ->
-        (ref (Slice ltac:(scale_decode.PortableField))) ->
+      (mut_ref (ref (slice u8))) ->
+        (ref (slice ltac:(scale_decode.PortableField))) ->
         (ref scale_info.portable.PortableRegistry) ->
         M (core.result.Result Self scale_decode.error.Error).
   
@@ -1239,7 +1239,7 @@ Section Impl_scale_encode_EncodeAsFields_for_ink_primitives_types_AccountId.
   
   Parameter encode_as_fields_to :
       (ref Self) ->
-        (ref (Slice ltac:(scale_encode.PortableField))) ->
+        (ref (slice ltac:(scale_encode.PortableField))) ->
         (ref scale_info.portable.PortableRegistry) ->
         (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
         M (core.result.Result unit scale_encode.error.Error).
@@ -1512,14 +1512,14 @@ Section Impl_parity_scale_codec_codec_Encode_for_ink_primitives_types_AccountId.
         {R F : Set}
         {ℋ_0 :
           core.ops.function.FnOnce.Trait F
-            (Args := ref (Slice CoqOfRust.core.primitive.u8))},
+            (Args := M.Val (ref (slice CoqOfRust.core.primitive.u8)))},
       (ref Self) -> F -> M R.
   
   Global Instance AssociatedFunction_using_encoded
       {R F : Set}
       {ℋ_0 :
         core.ops.function.FnOnce.Trait F
-          (Args := ref (Slice CoqOfRust.core.primitive.u8))} :
+          (Args := M.Val (ref (slice CoqOfRust.core.primitive.u8)))} :
     Notation.DoubleColon Self "using_encoded" := {
     Notation.double_colon := using_encoded (R := R) (F := F);
   }.
@@ -1534,7 +1534,7 @@ Section Impl_parity_scale_codec_codec_Encode_for_ink_primitives_types_AccountId.
       {R F : Set}
       {ℋ_0 :
         core.ops.function.FnOnce.Trait F
-          (Args := ref (Slice CoqOfRust.core.primitive.u8))} :=
+          (Args := M.Val (ref (slice CoqOfRust.core.primitive.u8)))} :=
       Datatypes.Some (using_encoded (R := R) (F := F));
     parity_scale_codec.codec.Encode.TYPE_INFO := Datatypes.None;
     parity_scale_codec.codec.Encode.size_hint := Datatypes.None;
@@ -1613,46 +1613,46 @@ Section Impl_core_convert_AsMut_Array_u8_for_ink_primitives_types_AccountId.
 End Impl_core_convert_AsMut_Array_u8_for_ink_primitives_types_AccountId.
 End Impl_core_convert_AsMut_Array_u8_for_ink_primitives_types_AccountId.
 
-Module  Impl_core_convert_AsRef_Slice_u8_for_ink_primitives_types_AccountId.
-Section Impl_core_convert_AsRef_Slice_u8_for_ink_primitives_types_AccountId.
+Module  Impl_core_convert_AsRef_slice_u8_for_ink_primitives_types_AccountId.
+Section Impl_core_convert_AsRef_slice_u8_for_ink_primitives_types_AccountId.
   Context `{ℋ : State.Trait}.
   
   Definition Self : Set := ink_primitives.types.AccountId.
   
-  Parameter as_ref : (ref Self) -> M (ref (Slice u8)).
+  Parameter as_ref : (ref Self) -> M (ref (slice u8)).
   
   Global Instance AssociatedFunction_as_ref :
     Notation.DoubleColon Self "as_ref" := {
     Notation.double_colon := as_ref;
   }.
   
-  Global Instance ℐ : core.convert.AsRef.Trait Self (T := Slice u8) := {
+  Global Instance ℐ : core.convert.AsRef.Trait Self (T := slice u8) := {
     core.convert.AsRef.as_ref := as_ref;
   }.
-End Impl_core_convert_AsRef_Slice_u8_for_ink_primitives_types_AccountId.
-End Impl_core_convert_AsRef_Slice_u8_for_ink_primitives_types_AccountId.
+End Impl_core_convert_AsRef_slice_u8_for_ink_primitives_types_AccountId.
+End Impl_core_convert_AsRef_slice_u8_for_ink_primitives_types_AccountId.
 
-Module  Impl_core_convert_AsMut_Slice_u8_for_ink_primitives_types_AccountId.
-Section Impl_core_convert_AsMut_Slice_u8_for_ink_primitives_types_AccountId.
+Module  Impl_core_convert_AsMut_slice_u8_for_ink_primitives_types_AccountId.
+Section Impl_core_convert_AsMut_slice_u8_for_ink_primitives_types_AccountId.
   Context `{ℋ : State.Trait}.
   
   Definition Self : Set := ink_primitives.types.AccountId.
   
-  Parameter as_mut : (mut_ref Self) -> M (mut_ref (Slice u8)).
+  Parameter as_mut : (mut_ref Self) -> M (mut_ref (slice u8)).
   
   Global Instance AssociatedFunction_as_mut :
     Notation.DoubleColon Self "as_mut" := {
     Notation.double_colon := as_mut;
   }.
   
-  Global Instance ℐ : core.convert.AsMut.Trait Self (T := Slice u8) := {
+  Global Instance ℐ : core.convert.AsMut.Trait Self (T := slice u8) := {
     core.convert.AsMut.as_mut := as_mut;
   }.
-End Impl_core_convert_AsMut_Slice_u8_for_ink_primitives_types_AccountId.
-End Impl_core_convert_AsMut_Slice_u8_for_ink_primitives_types_AccountId.
+End Impl_core_convert_AsMut_slice_u8_for_ink_primitives_types_AccountId.
+End Impl_core_convert_AsMut_slice_u8_for_ink_primitives_types_AccountId.
 
-Module  Impl_core_convert_TryFrom_StaticRef_Slice_u8_for_ink_primitives_types_AccountId.
-Section Impl_core_convert_TryFrom_StaticRef_Slice_u8_for_ink_primitives_types_AccountId.
+Module  Impl_core_convert_TryFrom_StaticRef_slice_u8_for_ink_primitives_types_AccountId.
+Section Impl_core_convert_TryFrom_StaticRef_slice_u8_for_ink_primitives_types_AccountId.
   Context `{ℋ : State.Trait}.
   
   Definition Self : Set := ink_primitives.types.AccountId.
@@ -1660,7 +1660,7 @@ Section Impl_core_convert_TryFrom_StaticRef_Slice_u8_for_ink_primitives_types_Ac
   Definition Error : Set := core.array.TryFromSliceError.
   
   Parameter try_from :
-      (ref (Slice u8)) ->
+      (ref (slice u8)) ->
         M (core.result.Result Self core.array.TryFromSliceError).
   
   Global Instance AssociatedFunction_try_from :
@@ -1668,12 +1668,12 @@ Section Impl_core_convert_TryFrom_StaticRef_Slice_u8_for_ink_primitives_types_Ac
     Notation.double_colon := try_from;
   }.
   
-  Global Instance ℐ : core.convert.TryFrom.Trait Self (T := ref (Slice u8)) := {
+  Global Instance ℐ : core.convert.TryFrom.Trait Self (T := ref (slice u8)) := {
     core.convert.TryFrom.Error := Error;
     core.convert.TryFrom.try_from := try_from;
   }.
-End Impl_core_convert_TryFrom_StaticRef_Slice_u8_for_ink_primitives_types_AccountId.
-End Impl_core_convert_TryFrom_StaticRef_Slice_u8_for_ink_primitives_types_AccountId.
+End Impl_core_convert_TryFrom_StaticRef_slice_u8_for_ink_primitives_types_AccountId.
+End Impl_core_convert_TryFrom_StaticRef_slice_u8_for_ink_primitives_types_AccountId.
 
 Module  Hash.
 Section Hash.
@@ -1811,8 +1811,8 @@ End Impl_scale_decode_visitor_Visitor_for_ink_primitives_types___Visitor. *)
   Definition Self : Set := ink_primitives.types.Hash.
   
   Parameter decode_as_fields :
-      (mut_ref (ref (Slice u8))) ->
-        (ref (Slice ltac:(scale_decode.PortableField))) ->
+      (mut_ref (ref (slice u8))) ->
+        (ref (slice ltac:(scale_decode.PortableField))) ->
         (ref scale_info.portable.PortableRegistry) ->
         M (core.result.Result Self scale_decode.error.Error).
   
@@ -1861,7 +1861,7 @@ Section Impl_scale_encode_EncodeAsFields_for_ink_primitives_types_Hash.
   
   Parameter encode_as_fields_to :
       (ref Self) ->
-        (ref (Slice ltac:(scale_encode.PortableField))) ->
+        (ref (slice ltac:(scale_encode.PortableField))) ->
         (ref scale_info.portable.PortableRegistry) ->
         (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
         M (core.result.Result unit scale_encode.error.Error).
@@ -2134,14 +2134,14 @@ Section Impl_parity_scale_codec_codec_Encode_for_ink_primitives_types_Hash.
         {R F : Set}
         {ℋ_0 :
           core.ops.function.FnOnce.Trait F
-            (Args := ref (Slice CoqOfRust.core.primitive.u8))},
+            (Args := M.Val (ref (slice CoqOfRust.core.primitive.u8)))},
       (ref Self) -> F -> M R.
   
   Global Instance AssociatedFunction_using_encoded
       {R F : Set}
       {ℋ_0 :
         core.ops.function.FnOnce.Trait F
-          (Args := ref (Slice CoqOfRust.core.primitive.u8))} :
+          (Args := M.Val (ref (slice CoqOfRust.core.primitive.u8)))} :
     Notation.DoubleColon Self "using_encoded" := {
     Notation.double_colon := using_encoded (R := R) (F := F);
   }.
@@ -2156,7 +2156,7 @@ Section Impl_parity_scale_codec_codec_Encode_for_ink_primitives_types_Hash.
       {R F : Set}
       {ℋ_0 :
         core.ops.function.FnOnce.Trait F
-          (Args := ref (Slice CoqOfRust.core.primitive.u8))} :=
+          (Args := M.Val (ref (slice CoqOfRust.core.primitive.u8)))} :=
       Datatypes.Some (using_encoded (R := R) (F := F));
     parity_scale_codec.codec.Encode.TYPE_INFO := Datatypes.None;
     parity_scale_codec.codec.Encode.size_hint := Datatypes.None;
@@ -2216,8 +2216,8 @@ Section Impl_core_default_Default_for_ink_primitives_types_Hash.
 End Impl_core_default_Default_for_ink_primitives_types_Hash.
 End Impl_core_default_Default_for_ink_primitives_types_Hash.
 
-Module  Impl_core_convert_TryFrom_StaticRef_Slice_u8_for_ink_primitives_types_Hash.
-Section Impl_core_convert_TryFrom_StaticRef_Slice_u8_for_ink_primitives_types_Hash.
+Module  Impl_core_convert_TryFrom_StaticRef_slice_u8_for_ink_primitives_types_Hash.
+Section Impl_core_convert_TryFrom_StaticRef_slice_u8_for_ink_primitives_types_Hash.
   Context `{ℋ : State.Trait}.
   
   Definition Self : Set := ink_primitives.types.Hash.
@@ -2225,7 +2225,7 @@ Section Impl_core_convert_TryFrom_StaticRef_Slice_u8_for_ink_primitives_types_Ha
   Definition Error : Set := core.array.TryFromSliceError.
   
   Parameter try_from :
-      (ref (Slice u8)) ->
+      (ref (slice u8)) ->
         M (core.result.Result Self core.array.TryFromSliceError).
   
   Global Instance AssociatedFunction_try_from :
@@ -2233,50 +2233,50 @@ Section Impl_core_convert_TryFrom_StaticRef_Slice_u8_for_ink_primitives_types_Ha
     Notation.double_colon := try_from;
   }.
   
-  Global Instance ℐ : core.convert.TryFrom.Trait Self (T := ref (Slice u8)) := {
+  Global Instance ℐ : core.convert.TryFrom.Trait Self (T := ref (slice u8)) := {
     core.convert.TryFrom.Error := Error;
     core.convert.TryFrom.try_from := try_from;
   }.
-End Impl_core_convert_TryFrom_StaticRef_Slice_u8_for_ink_primitives_types_Hash.
-End Impl_core_convert_TryFrom_StaticRef_Slice_u8_for_ink_primitives_types_Hash.
+End Impl_core_convert_TryFrom_StaticRef_slice_u8_for_ink_primitives_types_Hash.
+End Impl_core_convert_TryFrom_StaticRef_slice_u8_for_ink_primitives_types_Hash.
 
-Module  Impl_core_convert_AsRef_Slice_u8_for_ink_primitives_types_Hash.
-Section Impl_core_convert_AsRef_Slice_u8_for_ink_primitives_types_Hash.
+Module  Impl_core_convert_AsRef_slice_u8_for_ink_primitives_types_Hash.
+Section Impl_core_convert_AsRef_slice_u8_for_ink_primitives_types_Hash.
   Context `{ℋ : State.Trait}.
   
   Definition Self : Set := ink_primitives.types.Hash.
   
-  Parameter as_ref : (ref Self) -> M (ref (Slice u8)).
+  Parameter as_ref : (ref Self) -> M (ref (slice u8)).
   
   Global Instance AssociatedFunction_as_ref :
     Notation.DoubleColon Self "as_ref" := {
     Notation.double_colon := as_ref;
   }.
   
-  Global Instance ℐ : core.convert.AsRef.Trait Self (T := Slice u8) := {
+  Global Instance ℐ : core.convert.AsRef.Trait Self (T := slice u8) := {
     core.convert.AsRef.as_ref := as_ref;
   }.
-End Impl_core_convert_AsRef_Slice_u8_for_ink_primitives_types_Hash.
-End Impl_core_convert_AsRef_Slice_u8_for_ink_primitives_types_Hash.
+End Impl_core_convert_AsRef_slice_u8_for_ink_primitives_types_Hash.
+End Impl_core_convert_AsRef_slice_u8_for_ink_primitives_types_Hash.
 
-Module  Impl_core_convert_AsMut_Slice_u8_for_ink_primitives_types_Hash.
-Section Impl_core_convert_AsMut_Slice_u8_for_ink_primitives_types_Hash.
+Module  Impl_core_convert_AsMut_slice_u8_for_ink_primitives_types_Hash.
+Section Impl_core_convert_AsMut_slice_u8_for_ink_primitives_types_Hash.
   Context `{ℋ : State.Trait}.
   
   Definition Self : Set := ink_primitives.types.Hash.
   
-  Parameter as_mut : (mut_ref Self) -> M (mut_ref (Slice u8)).
+  Parameter as_mut : (mut_ref Self) -> M (mut_ref (slice u8)).
   
   Global Instance AssociatedFunction_as_mut :
     Notation.DoubleColon Self "as_mut" := {
     Notation.double_colon := as_mut;
   }.
   
-  Global Instance ℐ : core.convert.AsMut.Trait Self (T := Slice u8) := {
+  Global Instance ℐ : core.convert.AsMut.Trait Self (T := slice u8) := {
     core.convert.AsMut.as_mut := as_mut;
   }.
-End Impl_core_convert_AsMut_Slice_u8_for_ink_primitives_types_Hash.
-End Impl_core_convert_AsMut_Slice_u8_for_ink_primitives_types_Hash.
+End Impl_core_convert_AsMut_slice_u8_for_ink_primitives_types_Hash.
+End Impl_core_convert_AsMut_slice_u8_for_ink_primitives_types_Hash.
 
 Module  Impl_core_convert_From_ink_primitives_types_Hash_for_Array_u8.
 Section Impl_core_convert_From_ink_primitives_types_Hash_for_Array_u8.

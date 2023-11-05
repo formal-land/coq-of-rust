@@ -256,7 +256,7 @@ Module xts.
     
     Parameter encode_as_fields_to :
         (ref Self) ->
-          (ref (Slice ltac:(scale_encode.PortableField))) ->
+          (ref (slice ltac:(scale_encode.PortableField))) ->
           (ref scale_info.portable.PortableRegistry) ->
           (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
           M (core.result.Result unit scale_encode.error.Error).
@@ -449,7 +449,7 @@ Module xts.
     
     Parameter encode_as_fields_to :
         (ref Self) ->
-          (ref (Slice ltac:(scale_encode.PortableField))) ->
+          (ref (slice ltac:(scale_encode.PortableField))) ->
           (ref scale_info.portable.PortableRegistry) ->
           (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
           M (core.result.Result unit scale_encode.error.Error).
@@ -596,7 +596,7 @@ Module xts.
     
     Parameter encode_as_fields_to :
         (ref Self) ->
-          (ref (Slice ltac:(scale_encode.PortableField))) ->
+          (ref (slice ltac:(scale_encode.PortableField))) ->
           (ref scale_info.portable.PortableRegistry) ->
           (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
           M (core.result.Result unit scale_encode.error.Error).
@@ -725,7 +725,7 @@ Module xts.
     
     Parameter encode_as_fields_to :
         (ref Self) ->
-          (ref (Slice ltac:(scale_encode.PortableField))) ->
+          (ref (slice ltac:(scale_encode.PortableField))) ->
           (ref scale_info.portable.PortableRegistry) ->
           (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
           M (core.result.Result unit scale_encode.error.Error).
@@ -1003,7 +1003,7 @@ Module xts.
     
     Parameter encode_as_fields_to :
         (ref Self) ->
-          (ref (Slice ltac:(scale_encode.PortableField))) ->
+          (ref (slice ltac:(scale_encode.PortableField))) ->
           (ref scale_info.portable.PortableRegistry) ->
           (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
           M (core.result.Result unit scale_encode.error.Error).
@@ -1034,7 +1034,7 @@ Module xts.
     Unset Primitive Projections.
     Record t : Set := {
       client : subxt.client.online_client.OnlineClient C;
-      _phantom : core.marker.PhantomData (C * E);
+      _phantom : core.marker.PhantomData (M.Val (C * E));
     }.
     Global Set Primitive Projections.
     
@@ -1185,12 +1185,12 @@ Module client.
         core.fmt.Debug.Trait
             (ink_env.types.Environment.Balance
               (Self := E)
-              (Trait := ltac:(try clear Trait; hauto l: on)))}
+              (Trait := ltac:(refine _)))}
       {ℋ_3 :
         core.fmt.Debug.Trait
             (ink_env.types.Environment.Hash
               (Self := E)
-              (Trait := ltac:(try clear Trait; hauto l: on)))}.
+              (Trait := ltac:(refine _)))}.
     Definition Self : Set := ink_e2e.client.UploadResult C E.
     
     Parameter fmt :
@@ -1221,12 +1221,12 @@ Module client.
         core.fmt.Debug.Trait
             (ink_env.types.Environment.AccountId
               (Self := E)
-              (Trait := ltac:(try clear Trait; hauto l: on)))}
+              (Trait := ltac:(refine _)))}
       {ℋ_4 :
         core.fmt.Debug.Trait
             (ink_env.types.Environment.Balance
               (Self := E)
-              (Trait := ltac:(try clear Trait; hauto l: on)))}.
+              (Trait := ltac:(refine _)))}.
     Definition Self : Set := ink_e2e.client.InstantiationResult C E.
     
     Parameter fmt :
@@ -1335,7 +1335,7 @@ Module client.
         core.fmt.Debug.Trait
             (ink_env.types.Environment.Balance
               (Self := E)
-              (Trait := ltac:(try clear Trait; hauto l: on)))}
+              (Trait := ltac:(refine _)))}
       {ℋ_5 : core.fmt.Debug.Trait V}.
     Definition Self : Set := ink_e2e.client.CallResult C E V.
     
@@ -1418,7 +1418,7 @@ Module client.
         core.fmt.Debug.Trait
             (ink_env.types.Environment.Balance
               (Self := E)
-              (Trait := ltac:(try clear Trait; hauto l: on)))}
+              (Trait := ltac:(refine _)))}
       : Set :=
     M.Val (Error.t (C := C) (E := E)).
   
@@ -1435,7 +1435,7 @@ Module client.
         core.fmt.Debug.Trait
             (ink_env.types.Environment.Balance
               (Self := E)
-              (Trait := ltac:(try clear Trait; hauto l: on)))}.
+              (Trait := ltac:(refine _)))}.
     Definition Self : Set := ink_e2e.client.Error C E.
     
     Parameter fmt :
@@ -1522,7 +1522,7 @@ Module client.
     
     Parameter encode_as_fields_to :
         (ref Self) ->
-          (ref (Slice ltac:(scale_encode.PortableField))) ->
+          (ref (slice ltac:(scale_encode.PortableField))) ->
           (ref scale_info.portable.PortableRegistry) ->
           (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
           M (core.result.Result unit scale_encode.error.Error).
@@ -1641,7 +1641,7 @@ Module client.
     
     Parameter encode_as_fields_to :
         (ref Self) ->
-          (ref (Slice ltac:(scale_encode.PortableField))) ->
+          (ref (slice ltac:(scale_encode.PortableField))) ->
           (ref scale_info.portable.PortableRegistry) ->
           (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
           M (core.result.Result unit scale_encode.error.Error).
@@ -1856,12 +1856,12 @@ Section Impl_core_fmt_Debug_for_ink_e2e_client_UploadResult_C_E.
       core.fmt.Debug.Trait
           (ink_env.types.Environment.Balance
             (Self := E)
-            (Trait := ltac:(try clear Trait; hauto l: on)))}
+            (Trait := ltac:(refine _)))}
     {ℋ_3 :
       core.fmt.Debug.Trait
           (ink_env.types.Environment.Hash
             (Self := E)
-            (Trait := ltac:(try clear Trait; hauto l: on)))}.
+            (Trait := ltac:(refine _)))}.
   Definition Self : Set := ink_e2e.client.UploadResult C E.
   
   Parameter fmt :
@@ -1891,12 +1891,12 @@ Section Impl_core_fmt_Debug_for_ink_e2e_client_InstantiationResult_C_E.
       core.fmt.Debug.Trait
           (ink_env.types.Environment.AccountId
             (Self := E)
-            (Trait := ltac:(try clear Trait; hauto l: on)))}
+            (Trait := ltac:(refine _)))}
     {ℋ_4 :
       core.fmt.Debug.Trait
           (ink_env.types.Environment.Balance
             (Self := E)
-            (Trait := ltac:(try clear Trait; hauto l: on)))}.
+            (Trait := ltac:(refine _)))}.
   Definition Self : Set := ink_e2e.client.InstantiationResult C E.
   
   Parameter fmt :
@@ -1965,7 +1965,7 @@ Section Impl_core_fmt_Debug_for_ink_e2e_client_CallResult_C_E_V.
       core.fmt.Debug.Trait
           (ink_env.types.Environment.Balance
             (Self := E)
-            (Trait := ltac:(try clear Trait; hauto l: on)))}
+            (Trait := ltac:(refine _)))}
     {ℋ_5 : core.fmt.Debug.Trait V}.
   Definition Self : Set := ink_e2e.client.CallResult C E V.
   
@@ -2084,7 +2084,7 @@ Definition Error
       core.fmt.Debug.Trait
           (ink_env.types.Environment.Balance
             (Self := E)
-            (Trait := ltac:(try clear Trait; hauto l: on)))}
+            (Trait := ltac:(refine _)))}
     : Set :=
   M.Val (Error.t (C := C) (E := E)).
 
@@ -2101,7 +2101,7 @@ Section Impl_core_fmt_Debug_for_ink_e2e_client_Error_C_E.
       core.fmt.Debug.Trait
           (ink_env.types.Environment.Balance
             (Self := E)
-            (Trait := ltac:(try clear Trait; hauto l: on)))}.
+            (Trait := ltac:(refine _)))}.
   Definition Self : Set := ink_e2e.client.Error C E.
   
   Parameter fmt :
@@ -2352,8 +2352,8 @@ Section Impl_scale_decode_DecodeAsFields_for_ink_e2e_client_ContractInstantiated
   Definition Self : Set := ink_e2e.client.ContractInstantiatedEvent E.
   
   Parameter decode_as_fields :
-      (mut_ref (ref (Slice u8))) ->
-        (ref (Slice ltac:(scale_decode.PortableField))) ->
+      (mut_ref (ref (slice u8))) ->
+        (ref (slice ltac:(scale_decode.PortableField))) ->
         (ref scale_info.portable.PortableRegistry) ->
         M (core.result.Result Self scale_decode.error.Error).
   
@@ -2412,7 +2412,7 @@ Section Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_ContractInstantiated
   
   Parameter encode_as_fields_to :
       (ref Self) ->
-        (ref (Slice ltac:(scale_encode.PortableField))) ->
+        (ref (slice ltac:(scale_encode.PortableField))) ->
         (ref scale_info.portable.PortableRegistry) ->
         (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
         M (core.result.Result unit scale_encode.error.Error).
@@ -2565,14 +2565,14 @@ Section Impl_parity_scale_codec_codec_Encode_for_ink_e2e_client_CodeStoredEvent_
         {R F : Set}
         {ℋ_0 :
           core.ops.function.FnOnce.Trait F
-            (Args := ref (Slice CoqOfRust.core.primitive.u8))},
+            (Args := M.Val (ref (slice CoqOfRust.core.primitive.u8)))},
       (ref Self) -> F -> M R.
   
   Global Instance AssociatedFunction_using_encoded
       {R F : Set}
       {ℋ_0 :
         core.ops.function.FnOnce.Trait F
-          (Args := ref (Slice CoqOfRust.core.primitive.u8))} :
+          (Args := M.Val (ref (slice CoqOfRust.core.primitive.u8)))} :
     Notation.DoubleColon Self "using_encoded" := {
     Notation.double_colon := using_encoded (R := R) (F := F);
   }.
@@ -2587,7 +2587,7 @@ Section Impl_parity_scale_codec_codec_Encode_for_ink_e2e_client_CodeStoredEvent_
       {R F : Set}
       {ℋ_0 :
         core.ops.function.FnOnce.Trait F
-          (Args := ref (Slice CoqOfRust.core.primitive.u8))} :=
+          (Args := M.Val (ref (slice CoqOfRust.core.primitive.u8)))} :=
       Datatypes.Some (using_encoded (R := R) (F := F));
     parity_scale_codec.codec.Encode.TYPE_INFO := Datatypes.None;
     parity_scale_codec.codec.Encode.size_hint := Datatypes.None;
@@ -2721,8 +2721,8 @@ Section Impl_scale_decode_DecodeAsFields_for_ink_e2e_client_CodeStoredEvent_E.
   Definition Self : Set := ink_e2e.client.CodeStoredEvent E.
   
   Parameter decode_as_fields :
-      (mut_ref (ref (Slice u8))) ->
-        (ref (Slice ltac:(scale_decode.PortableField))) ->
+      (mut_ref (ref (slice u8))) ->
+        (ref (slice ltac:(scale_decode.PortableField))) ->
         (ref scale_info.portable.PortableRegistry) ->
         M (core.result.Result Self scale_decode.error.Error).
   
@@ -2781,7 +2781,7 @@ Section Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_CodeStoredEvent_E.
   
   Parameter encode_as_fields_to :
       (ref Self) ->
-        (ref (Slice ltac:(scale_encode.PortableField))) ->
+        (ref (slice ltac:(scale_encode.PortableField))) ->
         (ref scale_info.portable.PortableRegistry) ->
         (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
         M (core.result.Result unit scale_encode.error.Error).
@@ -3582,7 +3582,7 @@ Section Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Weight.
   
   Parameter encode_as_fields_to :
       (ref Self) ->
-        (ref (Slice ltac:(scale_encode.PortableField))) ->
+        (ref (slice ltac:(scale_encode.PortableField))) ->
         (ref scale_info.portable.PortableRegistry) ->
         (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
         M (core.result.Result unit scale_encode.error.Error).
@@ -3696,7 +3696,7 @@ Section Impl_serde_de_Visitor_for_ink_e2e_xts___deserialize___FieldVisitor.
   
   Parameter visit_bytes :
       forall {__E : Set} {ℋ_0 : serde.de.Error.Trait __E},
-      Self -> (ref (Slice u8)) -> M (core.result.Result Value __E).
+      Self -> (ref (slice u8)) -> M (core.result.Result Value __E).
   
   Global Instance AssociatedFunction_visit_bytes
       {__E : Set}
@@ -4133,7 +4133,7 @@ Section Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_InstantiateWithCode_E.
   
   Parameter encode_as_fields_to :
       (ref Self) ->
-        (ref (Slice ltac:(scale_encode.PortableField))) ->
+        (ref (slice ltac:(scale_encode.PortableField))) ->
         (ref scale_info.portable.PortableRegistry) ->
         (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
         M (core.result.Result unit scale_encode.error.Error).
@@ -4408,7 +4408,7 @@ Section Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Call_E.
   
   Parameter encode_as_fields_to :
       (ref Self) ->
-        (ref (Slice ltac:(scale_encode.PortableField))) ->
+        (ref (slice ltac:(scale_encode.PortableField))) ->
         (ref scale_info.portable.PortableRegistry) ->
         (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
         M (core.result.Result unit scale_encode.error.Error).
@@ -4651,7 +4651,7 @@ Section Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Transfer_E_C.
   
   Parameter encode_as_fields_to :
       (ref Self) ->
-        (ref (Slice ltac:(scale_encode.PortableField))) ->
+        (ref (slice ltac:(scale_encode.PortableField))) ->
         (ref scale_info.portable.PortableRegistry) ->
         (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
         M (core.result.Result unit scale_encode.error.Error).
@@ -5142,7 +5142,7 @@ Section Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_UploadCode_E.
   
   Parameter encode_as_fields_to :
       (ref Self) ->
-        (ref (Slice ltac:(scale_encode.PortableField))) ->
+        (ref (slice ltac:(scale_encode.PortableField))) ->
         (ref scale_info.portable.PortableRegistry) ->
         (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
         M (core.result.Result unit scale_encode.error.Error).
@@ -5583,7 +5583,7 @@ Section ContractsApi.
   Unset Primitive Projections.
   Record t : Set := {
     client : subxt.client.online_client.OnlineClient C;
-    _phantom : core.marker.PhantomData (C * E);
+    _phantom : core.marker.PhantomData (M.Val (C * E));
   }.
   Global Set Primitive Projections.
   

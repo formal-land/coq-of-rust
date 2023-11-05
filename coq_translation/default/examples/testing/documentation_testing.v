@@ -6,16 +6,16 @@ Definition add `{ℋ : State.Trait} (a : i32) (b : i32) : M i32 :=
 
 Definition div `{ℋ : State.Trait} (a : i32) (b : i32) : M i32 :=
   M.function_body
-    (let* _ :=
-      let* α0 := M.alloc 0 in
-      let* α1 := BinOp.eq b α0 in
-      let* α2 := use α1 in
+    (let* _ : ltac:(refine unit) :=
+      let* α0 : ltac:(refine i32) := M.alloc 0 in
+      let* α1 : ltac:(refine bool) := BinOp.eq b α0 in
+      let* α2 : ltac:(refine bool) := use α1 in
       if (α2 : bool) then
-        let* _ :=
-          let* α0 :=
+        let* _ : ltac:(refine unit) :=
+          let* α0 : ltac:(refine never) :=
             std.panicking.begin_panic (mk_str "Divide-by-zero error") in
           never_to_any α0 in
-        let* α0 := M.alloc tt in
+        let* α0 : ltac:(refine unit) := M.alloc tt in
         never_to_any α0
       else
         M.alloc tt in

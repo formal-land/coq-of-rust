@@ -263,7 +263,7 @@ Section Environment.
   Inductive t : Set := Build.
 End Environment.
 End Environment.
-Definition Environment := @Environment.t.
+Definition Environment `{ℋ : State.Trait} := M.Val Environment.t.
 
 Module  Event.
 Section Event.
@@ -272,7 +272,7 @@ Section Event.
   Inductive t : Set := Build.
 End Event.
 End Event.
-Definition Event := @Event.t.
+Definition Event `{ℋ : State.Trait} := M.Val Event.t.
 
 Module  Erc20.
 Section Erc20.
@@ -282,7 +282,8 @@ Section Erc20.
   Record t : Set := {
     total_supply : lib.Balance;
     balances : lib.Mapping lib.AccountId lib.Balance;
-    allowances : lib.Mapping (lib.AccountId * lib.AccountId) lib.Balance;
+    allowances :
+      lib.Mapping (M.Val (lib.AccountId * lib.AccountId)) lib.Balance;
   }.
   Global Set Primitive Projections.
   

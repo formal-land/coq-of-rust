@@ -22,27 +22,28 @@ Section Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_else_Fruit
       (f : mut_ref core.fmt.Formatter)
       : M ltac:(core.fmt.Result) :=
     M.function_body
-      (let* α0 := deref f core.fmt.Formatter in
-      let* α1 := borrow_mut α0 core.fmt.Formatter in
-      let* α2 :=
-        match self with
+      (let* α0 : ltac:(refine core.fmt.Formatter) := deref f in
+      let* α1 : ltac:(refine (mut_ref core.fmt.Formatter)) := borrow_mut α0 in
+      let* α2 := M.read self in
+      let* α3 : ltac:(refine (ref str)) :=
+        match α2 with
         | unpacking_options_and_defaults_via_or_else.Fruit  =>
-          let* α0 := deref (mk_str "Apple") str in
-          borrow α0 str
+          let* α0 : ltac:(refine str) := deref (mk_str "Apple") in
+          borrow α0
         | unpacking_options_and_defaults_via_or_else.Fruit  =>
-          let* α0 := deref (mk_str "Orange") str in
-          borrow α0 str
+          let* α0 : ltac:(refine str) := deref (mk_str "Orange") in
+          borrow α0
         | unpacking_options_and_defaults_via_or_else.Fruit  =>
-          let* α0 := deref (mk_str "Banana") str in
-          borrow α0 str
+          let* α0 : ltac:(refine str) := deref (mk_str "Banana") in
+          borrow α0
         | unpacking_options_and_defaults_via_or_else.Fruit  =>
-          let* α0 := deref (mk_str "Kiwi") str in
-          borrow α0 str
+          let* α0 : ltac:(refine str) := deref (mk_str "Kiwi") in
+          borrow α0
         | unpacking_options_and_defaults_via_or_else.Fruit  =>
-          let* α0 := deref (mk_str "Lemon") str in
-          borrow α0 str
+          let* α0 : ltac:(refine str) := deref (mk_str "Lemon") in
+          borrow α0
         end in
-      core.fmt.Formatter::["write_str"] α1 α2).
+      core.fmt.Formatter::["write_str"] α1 α3).
   
   Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {
     Notation.double_colon := fmt;
@@ -57,43 +58,72 @@ End Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_else_Fruit.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
   M.function_body
-    (let* apple :=
-      let* α0 :=
+    (let*
+        apple :
+        ltac:(refine
+          (core.option.Option
+            unpacking_options_and_defaults_via_or_else.Fruit)) :=
+      let*
+          α0 :
+          ltac:(refine unpacking_options_and_defaults_via_or_else.Fruit) :=
         M.alloc unpacking_options_and_defaults_via_or_else.Fruit.Apple in
       M.alloc (core.option.Option.Some α0) in
-    let* no_fruit := M.alloc core.option.Option.None in
+    let*
+        no_fruit :
+        ltac:(refine
+          (core.option.Option
+            unpacking_options_and_defaults_via_or_else.Fruit)) :=
+      M.alloc core.option.Option.None in
     let get_kiwi_as_fallback :=
-      let* _ :=
-        let* _ :=
-          let* α0 :=
-            borrow [ mk_str "Providing kiwi as fallback
-" ] (list (ref str)) in
-          let* α1 := deref α0 (list (ref str)) in
-          let* α2 := borrow α1 (list (ref str)) in
-          let* α3 := pointer_coercion "Unsize" α2 in
-          let* α4 := core.fmt.Arguments::["new_const"] α3 in
-          std.io.stdio._print α4 in
+      let* _ : ltac:(refine unit) :=
+        let* _ : ltac:(refine unit) :=
+          let* α0 : ltac:(refine (array (ref str))) :=
+            M.alloc [ mk_str "Providing kiwi as fallback
+" ] in
+          let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
+          let* α2 : ltac:(refine (array (ref str))) := deref α1 in
+          let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
+          let* α4 : ltac:(refine (ref (slice (ref str)))) :=
+            pointer_coercion "Unsize" α3 in
+          let* α5 : ltac:(refine core.fmt.Arguments) :=
+            core.fmt.Arguments::["new_const"] α4 in
+          std.io.stdio._print α5 in
         M.alloc tt in
-      let* α0 :=
+      let*
+          α0 :
+          ltac:(refine unpacking_options_and_defaults_via_or_else.Fruit) :=
         M.alloc unpacking_options_and_defaults_via_or_else.Fruit.Kiwi in
       M.alloc (core.option.Option.Some α0) in
     let get_lemon_as_fallback :=
-      let* _ :=
-        let* _ :=
-          let* α0 :=
-            borrow [ mk_str "Providing lemon as fallback
-" ] (list (ref str)) in
-          let* α1 := deref α0 (list (ref str)) in
-          let* α2 := borrow α1 (list (ref str)) in
-          let* α3 := pointer_coercion "Unsize" α2 in
-          let* α4 := core.fmt.Arguments::["new_const"] α3 in
-          std.io.stdio._print α4 in
+      let* _ : ltac:(refine unit) :=
+        let* _ : ltac:(refine unit) :=
+          let* α0 : ltac:(refine (array (ref str))) :=
+            M.alloc [ mk_str "Providing lemon as fallback
+" ] in
+          let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
+          let* α2 : ltac:(refine (array (ref str))) := deref α1 in
+          let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
+          let* α4 : ltac:(refine (ref (slice (ref str)))) :=
+            pointer_coercion "Unsize" α3 in
+          let* α5 : ltac:(refine core.fmt.Arguments) :=
+            core.fmt.Arguments::["new_const"] α4 in
+          std.io.stdio._print α5 in
         M.alloc tt in
-      let* α0 :=
+      let*
+          α0 :
+          ltac:(refine unpacking_options_and_defaults_via_or_else.Fruit) :=
         M.alloc unpacking_options_and_defaults_via_or_else.Fruit.Lemon in
       M.alloc (core.option.Option.Some α0) in
-    let* first_available_fruit :=
-      let* α0 :=
+    let*
+        first_available_fruit :
+        ltac:(refine
+          (core.option.Option
+            unpacking_options_and_defaults_via_or_else.Fruit)) :=
+      let*
+          α0 :
+          ltac:(refine
+            (core.option.Option
+              unpacking_options_and_defaults_via_or_else.Fruit)) :=
         (core.option.Option
               unpacking_options_and_defaults_via_or_else.Fruit)::["or_else"]
           no_fruit
@@ -102,37 +132,49 @@ Definition main `{ℋ : State.Trait} : M unit :=
             unpacking_options_and_defaults_via_or_else.Fruit)::["or_else"]
         α0
         get_lemon_as_fallback in
-    let* _ :=
-      let* _ :=
-        let* α0 :=
-          borrow
-            [ mk_str "first_available_fruit: "; mk_str "
-" ]
-            (list (ref str)) in
-        let* α1 := deref α0 (list (ref str)) in
-        let* α2 := borrow α1 (list (ref str)) in
-        let* α3 := pointer_coercion "Unsize" α2 in
-        let* α4 :=
-          borrow
-            first_available_fruit
-            (core.option.Option
-              unpacking_options_and_defaults_via_or_else.Fruit) in
-        let* α5 :=
-          deref
-            α4
-            (core.option.Option
-              unpacking_options_and_defaults_via_or_else.Fruit) in
-        let* α6 :=
-          borrow
-            α5
-            (core.option.Option
-              unpacking_options_and_defaults_via_or_else.Fruit) in
-        let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
-        let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
-        let* α9 := deref α8 (list core.fmt.rt.Argument) in
-        let* α10 := borrow α9 (list core.fmt.rt.Argument) in
-        let* α11 := pointer_coercion "Unsize" α10 in
-        let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
-        std.io.stdio._print α12 in
+    let* _ : ltac:(refine unit) :=
+      let* _ : ltac:(refine unit) :=
+        let* α0 : ltac:(refine (array (ref str))) :=
+          M.alloc [ mk_str "first_available_fruit: "; mk_str "
+" ] in
+        let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
+        let* α2 : ltac:(refine (array (ref str))) := deref α1 in
+        let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
+        let* α4 : ltac:(refine (ref (slice (ref str)))) :=
+          pointer_coercion "Unsize" α3 in
+        let*
+            α5 :
+            ltac:(refine
+              (ref
+                (core.option.Option
+                  unpacking_options_and_defaults_via_or_else.Fruit))) :=
+          borrow first_available_fruit in
+        let*
+            α6 :
+            ltac:(refine
+              (core.option.Option
+                unpacking_options_and_defaults_via_or_else.Fruit)) :=
+          deref α5 in
+        let*
+            α7 :
+            ltac:(refine
+              (ref
+                (core.option.Option
+                  unpacking_options_and_defaults_via_or_else.Fruit))) :=
+          borrow α6 in
+        let* α8 : ltac:(refine core.fmt.rt.Argument) :=
+          core.fmt.rt.Argument::["new_debug"] α7 in
+        let* α9 : ltac:(refine (array core.fmt.rt.Argument)) :=
+          M.alloc [ α8 ] in
+        let* α10 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+          borrow α9 in
+        let* α11 : ltac:(refine (array core.fmt.rt.Argument)) := deref α10 in
+        let* α12 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+          borrow α11 in
+        let* α13 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+          pointer_coercion "Unsize" α12 in
+        let* α14 : ltac:(refine core.fmt.Arguments) :=
+          core.fmt.Arguments::["new_v1"] α4 α13 in
+        std.io.stdio._print α14 in
       M.alloc tt in
     M.alloc tt).

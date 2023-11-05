@@ -4,59 +4,77 @@ Require Import CoqOfRust.CoqOfRust.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
   M.function_body
-    (let* some_vector :=
-      let* α0 := M.alloc 1 in
-      let* α1 := M.alloc 2 in
-      let* α2 := M.alloc 3 in
-      let* α3 := M.alloc 4 in
-      let* α4 :=
-        (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"]
-          [ α0; α1; α2; α3 ] in
-      let* α5 := pointer_coercion "Unsize" α4 in
-      (Slice u32)::["into_vec"] α5 in
-    let* pointer :=
-      let* α0 := borrow some_vector (alloc.vec.Vec u32 alloc.alloc.Global) in
+    (let* some_vector : ltac:(refine (alloc.vec.Vec u32 alloc.alloc.Global)) :=
+      let* α0 : ltac:(refine u32) := M.alloc 1 in
+      let* α1 : ltac:(refine u32) := M.alloc 2 in
+      let* α2 : ltac:(refine u32) := M.alloc 3 in
+      let* α3 : ltac:(refine u32) := M.alloc 4 in
+      let* α4 : ltac:(refine (array u32)) := M.alloc [ α0; α1; α2; α3 ] in
+      let*
+          α5 :
+          ltac:(refine (alloc.boxed.Box (array u32) alloc.alloc.Global)) :=
+        (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α4 in
+      let*
+          α6 :
+          ltac:(refine (alloc.boxed.Box (slice u32) alloc.alloc.Global)) :=
+        pointer_coercion "Unsize" α5 in
+      (slice u32)::["into_vec"] α6 in
+    let* pointer : ltac:(refine (ref u32)) :=
+      let* α0 : ltac:(refine (ref (alloc.vec.Vec u32 alloc.alloc.Global))) :=
+        borrow some_vector in
       (alloc.vec.Vec u32 alloc.alloc.Global)::["as_ptr"] α0 in
-    let* length :=
-      let* α0 := borrow some_vector (alloc.vec.Vec u32 alloc.alloc.Global) in
+    let* length : ltac:(refine usize) :=
+      let* α0 : ltac:(refine (ref (alloc.vec.Vec u32 alloc.alloc.Global))) :=
+        borrow some_vector in
       (alloc.vec.Vec u32 alloc.alloc.Global)::["len"] α0 in
-    let* my_slice :=
-      let* α0 := core.slice.raw.from_raw_parts pointer length in
-      let* α1 := deref α0 (Slice u32) in
-      borrow α1 (Slice u32) in
-    let* _ :=
-      let* α0 := borrow some_vector (alloc.vec.Vec u32 alloc.alloc.Global) in
-      let* α1 := (alloc.vec.Vec u32 alloc.alloc.Global)::["as_slice"] α0 in
-      let* α2 := borrow α1 (ref (Slice u32)) in
-      let* α3 := borrow my_slice (ref (Slice u32)) in
-      match (α2, α3) with
+    let* my_slice : ltac:(refine (ref (slice u32))) :=
+      let* α0 : ltac:(refine (ref (slice u32))) :=
+        core.slice.raw.from_raw_parts pointer length in
+      let* α1 : ltac:(refine (slice u32)) := deref α0 in
+      borrow α1 in
+    let* _ : ltac:(refine unit) :=
+      let* α0 : ltac:(refine (ref (alloc.vec.Vec u32 alloc.alloc.Global))) :=
+        borrow some_vector in
+      let* α1 : ltac:(refine (ref (slice u32))) :=
+        (alloc.vec.Vec u32 alloc.alloc.Global)::["as_slice"] α0 in
+      let* α2 : ltac:(refine (ref (ref (slice u32)))) := borrow α1 in
+      let* α3 : ltac:(refine (ref (ref (slice u32)))) := borrow my_slice in
+      let*
+          α4 :
+          ltac:(refine
+            (M.Val ((ref (ref (slice u32))) * (ref (ref (slice u32)))))) :=
+        M.alloc (α2, α3) in
+      let* α5 := M.read α4 in
+      match α5 with
       | (left_val, right_val) =>
-        let* α0 := deref left_val (ref (Slice u32)) in
-        let* α1 := borrow α0 (ref (Slice u32)) in
-        let* α2 := deref right_val (ref (Slice u32)) in
-        let* α3 := borrow α2 (ref (Slice u32)) in
-        let* α4 :=
+        let* α0 : ltac:(refine (ref (slice u32))) := deref left_val in
+        let* α1 : ltac:(refine (ref (ref (slice u32)))) := borrow α0 in
+        let* α2 : ltac:(refine (ref (slice u32))) := deref right_val in
+        let* α3 : ltac:(refine (ref (ref (slice u32)))) := borrow α2 in
+        let* α4 : ltac:(refine bool) :=
           (core.cmp.PartialEq.eq
-              (Self := ref (Slice u32))
+              (Self := ref (slice u32))
               (Trait := ltac:(refine _)))
             α1
             α3 in
-        let* α5 := UnOp.not α4 in
-        let* α6 := use α5 in
+        let* α5 : ltac:(refine bool) := UnOp.not α4 in
+        let* α6 : ltac:(refine bool) := use α5 in
         if (α6 : bool) then
-          let* kind := M.alloc core.panicking.AssertKind.Eq in
-          let* _ :=
-            let* α0 := deref left_val (ref (Slice u32)) in
-            let* α1 := borrow α0 (ref (Slice u32)) in
-            let* α2 := deref α1 (ref (Slice u32)) in
-            let* α3 := borrow α2 (ref (Slice u32)) in
-            let* α4 := deref right_val (ref (Slice u32)) in
-            let* α5 := borrow α4 (ref (Slice u32)) in
-            let* α6 := deref α5 (ref (Slice u32)) in
-            let* α7 := borrow α6 (ref (Slice u32)) in
-            let* α8 := M.alloc core.option.Option.None in
+          let* kind : ltac:(refine core.panicking.AssertKind) :=
+            M.alloc core.panicking.AssertKind.Eq in
+          let* _ : ltac:(refine never) :=
+            let* α0 : ltac:(refine (ref (slice u32))) := deref left_val in
+            let* α1 : ltac:(refine (ref (ref (slice u32)))) := borrow α0 in
+            let* α2 : ltac:(refine (ref (slice u32))) := deref α1 in
+            let* α3 : ltac:(refine (ref (ref (slice u32)))) := borrow α2 in
+            let* α4 : ltac:(refine (ref (slice u32))) := deref right_val in
+            let* α5 : ltac:(refine (ref (ref (slice u32)))) := borrow α4 in
+            let* α6 : ltac:(refine (ref (slice u32))) := deref α5 in
+            let* α7 : ltac:(refine (ref (ref (slice u32)))) := borrow α6 in
+            let* α8 : ltac:(refine (core.option.Option core.fmt.Arguments)) :=
+              M.alloc core.option.Option.None in
             core.panicking.assert_failed kind α3 α7 α8 in
-          let* α0 := M.alloc tt in
+          let* α0 : ltac:(refine unit) := M.alloc tt in
           never_to_any α0
         else
           M.alloc tt

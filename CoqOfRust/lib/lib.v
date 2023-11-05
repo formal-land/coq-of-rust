@@ -7,8 +7,8 @@ Global Set Primitive Projections.
 Global Set Printing Projections.
 Global Open Scope list_scope.
 Global Open Scope string_scope.
-Global Open Scope type_scope.
 Global Open Scope Z_scope.
+Global Open Scope type_scope.
 
 Export List.ListNotations.
 
@@ -94,13 +94,12 @@ Definition f64 `{State.Trait} : Set := M.Val Z.
 
 Definition str `{State.Trait} : Set := M.Val string.
 Definition char `{State.Trait} : Set := M.Val ascii.
-Parameter String : forall `{State.Trait}, Set.
 
 Definition ref `{State.Trait} (A : Set) : Set := M.Val A.
 Definition mut_ref `{State.Trait} (A : Set) : Set := M.Val A.
 
-Definition slice (A : Set) : Set := list A.
-Definition array (A : Set) : Set := list A.
+Definition slice `{State.Trait} (A : Set) : Set := M.Val (list A).
+Definition array `{State.Trait} (A : Set) : Set := M.Val (list A).
 
 Definition never `{State.Trait} : Set := M.Val Empty_set.
 

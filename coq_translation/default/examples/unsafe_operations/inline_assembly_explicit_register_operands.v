@@ -4,6 +4,6 @@ Require Import CoqOfRust.CoqOfRust.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
   M.function_body
-    (let* cmd := M.alloc 209 in
+    (let* cmd : ltac:(refine i32) := M.alloc 209 in
     let _ := InlineAssembly in
     M.alloc tt).

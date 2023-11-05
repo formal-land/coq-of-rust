@@ -7,7 +7,7 @@ Section Foo.
   
   Unset Primitive Projections.
   Record t : Set := {
-    x : u32 * u32;
+    x : M.Val (u32 * u32);
     y : u32;
   }.
   Global Set Primitive Projections.

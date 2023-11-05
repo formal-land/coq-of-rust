@@ -18,4 +18,4 @@ Definition AssertKind `{State.Trait} : Set :=
 
 Parameter assert_failed :
   forall `{State.Trait} {T U : Set} `{fmt.Debug.Trait T} `{fmt.Debug.Trait U},
-  AssertKind -> ref T -> ref U -> option.Option fmt.Arguments -> M Empty_set.
+  AssertKind -> ref T -> ref U -> option.Option fmt.Arguments -> M never.

@@ -26,8 +26,8 @@ Section Impl_example05_Foo.
   
   Definition plus1 (self : Self) : M u32 :=
     M.function_body
-      (let* α0 := self.["0"] in
-      let* α1 := M.alloc 1 in
+      (let* α0 : ltac:(refine u32) := self.["0"] in
+      let* α1 : ltac:(refine u32) := M.alloc 1 in
       BinOp.add α0 α1).
   
   Global Instance AssociatedFunction_plus1 :
@@ -40,8 +40,8 @@ End Impl_example05_Foo.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
   M.function_body
-    (let* foo :=
-      let* α0 := M.alloc 0 in
+    (let* foo : ltac:(refine example05.Foo) :=
+      let* α0 : ltac:(refine u32) := M.alloc 0 in
       M.alloc (example05.Foo.Build_t α0) in
-    let* _ := example05.Foo::["plus1"] foo in
+    let* _ : ltac:(refine u32) := example05.Foo::["plus1"] foo in
     M.alloc tt).

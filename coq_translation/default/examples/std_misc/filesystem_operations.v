@@ -6,37 +6,51 @@ Definition cat
     (path : ref std.path.Path)
     : M ltac:(std.io.error.Result constr:(alloc.string.String)) :=
   M.function_body
-    (let* f :=
-      let* α0 := std.fs.File::["open"] path in
-      let* α1 :=
+    (let* f : ltac:(refine std.fs.File) :=
+      let*
+          α0 :
+          ltac:(refine (core.result.Result std.fs.File std.io.error.Error)) :=
+        std.fs.File::["open"] path in
+      let*
+          α1 :
+          ltac:(refine
+            (core.ops.control_flow.ControlFlow
+              (core.result.Result core.convert.Infallible std.io.error.Error)
+              std.fs.File)) :=
         (core.ops.try_trait.Try.branch
             (Self := core.result.Result std.fs.File std.io.error.Error)
             (Trait := ltac:(refine _)))
           α0 in
-      match α1 with
+      let* α2 := M.read α1 in
+      match α2 with
       | core.ops.control_flow.ControlFlow residual =>
-        let* α0 :=
+        let*
+            α0 :
+            ltac:(refine
+              (core.result.Result alloc.string.String std.io.error.Error)) :=
           (core.ops.try_trait.FromResidual.from_residual
               (Self :=
                 core.result.Result alloc.string.String std.io.error.Error)
               (Trait := ltac:(refine _)))
             residual in
-        let* α1 := M.return_ α0 in
+        let* α1 : ltac:(refine never) := M.return_ α0 in
         never_to_any α1
       | core.ops.control_flow.ControlFlow val => M.pure val
       end in
-    let* s := alloc.string.String::["new"] in
-    let* α0 := borrow_mut f std.fs.File in
-    let* α1 := borrow_mut s alloc.string.String in
-    let* α2 := deref α1 alloc.string.String in
-    let* α3 := borrow_mut α2 alloc.string.String in
-    let* α4 :=
+    let* s : ltac:(refine alloc.string.String) :=
+      alloc.string.String::["new"] in
+    let* α0 : ltac:(refine (mut_ref std.fs.File)) := borrow_mut f in
+    let* α1 : ltac:(refine (mut_ref alloc.string.String)) := borrow_mut s in
+    let* α2 : ltac:(refine alloc.string.String) := deref α1 in
+    let* α3 : ltac:(refine (mut_ref alloc.string.String)) := borrow_mut α2 in
+    let* α4 : ltac:(refine (core.result.Result usize std.io.error.Error)) :=
       (std.io.Read.read_to_string
           (Self := std.fs.File)
           (Trait := ltac:(refine _)))
         α0
         α3 in
-    match α4 with
+    let* α5 := M.read α4 in
+    match α5 with
     | core.result.Result _ => M.alloc (core.result.Result.Ok s)
     | core.result.Result e => M.alloc (core.result.Result.Err e)
     end).
@@ -47,30 +61,39 @@ Definition echo
     (path : ref std.path.Path)
     : M ltac:(std.io.error.Result constr:(unit)) :=
   M.function_body
-    (let* f :=
-      let* α0 := std.fs.File::["create"] path in
-      let* α1 :=
+    (let* f : ltac:(refine std.fs.File) :=
+      let*
+          α0 :
+          ltac:(refine (core.result.Result std.fs.File std.io.error.Error)) :=
+        std.fs.File::["create"] path in
+      let*
+          α1 :
+          ltac:(refine
+            (core.ops.control_flow.ControlFlow
+              (core.result.Result core.convert.Infallible std.io.error.Error)
+              std.fs.File)) :=
         (core.ops.try_trait.Try.branch
             (Self := core.result.Result std.fs.File std.io.error.Error)
             (Trait := ltac:(refine _)))
           α0 in
-      match α1 with
+      let* α2 := M.read α1 in
+      match α2 with
       | core.ops.control_flow.ControlFlow residual =>
-        let* α0 :=
+        let* α0 : ltac:(refine (core.result.Result unit std.io.error.Error)) :=
           (core.ops.try_trait.FromResidual.from_residual
               (Self := core.result.Result unit std.io.error.Error)
               (Trait := ltac:(refine _)))
             residual in
-        let* α1 := M.return_ α0 in
+        let* α1 : ltac:(refine never) := M.return_ α0 in
         never_to_any α1
       | core.ops.control_flow.ControlFlow val => M.pure val
       end in
-    let* α0 := borrow_mut f std.fs.File in
-    let* α1 := deref s str in
-    let* α2 := borrow α1 str in
-    let* α3 := str::["as_bytes"] α2 in
-    let* α4 := deref α3 (Slice u8) in
-    let* α5 := borrow α4 (Slice u8) in
+    let* α0 : ltac:(refine (mut_ref std.fs.File)) := borrow_mut f in
+    let* α1 : ltac:(refine str) := deref s in
+    let* α2 : ltac:(refine (ref str)) := borrow α1 in
+    let* α3 : ltac:(refine (ref (slice u8))) := str::["as_bytes"] α2 in
+    let* α4 : ltac:(refine (slice u8)) := deref α3 in
+    let* α5 : ltac:(refine (ref (slice u8))) := borrow α4 in
     (std.io.Write.write_all (Self := std.fs.File) (Trait := ltac:(refine _)))
       α0
       α5).
@@ -80,20 +103,27 @@ Definition touch
     (path : ref std.path.Path)
     : M ltac:(std.io.error.Result constr:(unit)) :=
   M.function_body
-    (let* α0 := std.fs.OpenOptions::["new"] in
-    let* α1 := borrow_mut α0 std.fs.OpenOptions in
-    let* α2 := M.alloc true in
-    let* α3 := std.fs.OpenOptions::["create"] α1 α2 in
-    let* α4 := deref α3 std.fs.OpenOptions in
-    let* α5 := borrow_mut α4 std.fs.OpenOptions in
-    let* α6 := M.alloc true in
-    let* α7 := std.fs.OpenOptions::["write"] α5 α6 in
-    let* α8 := deref α7 std.fs.OpenOptions in
-    let* α9 := borrow α8 std.fs.OpenOptions in
-    let* α10 := std.fs.OpenOptions::["open"] α9 path in
-    match α10 with
+    (let* α0 : ltac:(refine std.fs.OpenOptions) :=
+      std.fs.OpenOptions::["new"] in
+    let* α1 : ltac:(refine (mut_ref std.fs.OpenOptions)) := borrow_mut α0 in
+    let* α2 : ltac:(refine bool) := M.alloc true in
+    let* α3 : ltac:(refine (mut_ref std.fs.OpenOptions)) :=
+      std.fs.OpenOptions::["create"] α1 α2 in
+    let* α4 : ltac:(refine std.fs.OpenOptions) := deref α3 in
+    let* α5 : ltac:(refine (mut_ref std.fs.OpenOptions)) := borrow_mut α4 in
+    let* α6 : ltac:(refine bool) := M.alloc true in
+    let* α7 : ltac:(refine (mut_ref std.fs.OpenOptions)) :=
+      std.fs.OpenOptions::["write"] α5 α6 in
+    let* α8 : ltac:(refine std.fs.OpenOptions) := deref α7 in
+    let* α9 : ltac:(refine (ref std.fs.OpenOptions)) := borrow α8 in
+    let*
+        α10 :
+        ltac:(refine (core.result.Result std.fs.File std.io.error.Error)) :=
+      std.fs.OpenOptions::["open"] α9 path in
+    let* α11 := M.read α10 in
+    match α11 with
     | core.result.Result _ =>
-      let* α0 := M.alloc tt in
+      let* α0 : ltac:(refine unit) := M.alloc tt in
       M.alloc (core.result.Result.Ok α0)
     | core.result.Result e => M.alloc (core.result.Result.Err e)
     end).
@@ -101,424 +131,629 @@ Definition touch
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
   M.function_body
-    (let* _ :=
-      let* _ :=
-        let* α0 := borrow [ mk_str "`mkdir a`
-" ] (list (ref str)) in
-        let* α1 := deref α0 (list (ref str)) in
-        let* α2 := borrow α1 (list (ref str)) in
-        let* α3 := pointer_coercion "Unsize" α2 in
-        let* α4 := core.fmt.Arguments::["new_const"] α3 in
-        std.io.stdio._print α4 in
+    (let* _ : ltac:(refine unit) :=
+      let* _ : ltac:(refine unit) :=
+        let* α0 : ltac:(refine (array (ref str))) :=
+          M.alloc [ mk_str "`mkdir a`
+" ] in
+        let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
+        let* α2 : ltac:(refine (array (ref str))) := deref α1 in
+        let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
+        let* α4 : ltac:(refine (ref (slice (ref str)))) :=
+          pointer_coercion "Unsize" α3 in
+        let* α5 : ltac:(refine core.fmt.Arguments) :=
+          core.fmt.Arguments::["new_const"] α4 in
+        std.io.stdio._print α5 in
       M.alloc tt in
-    let* _ :=
-      let* α0 := std.fs.create_dir (mk_str "a") in
-      match α0 with
+    let* _ : ltac:(refine unit) :=
+      let* α0 : ltac:(refine (core.result.Result unit std.io.error.Error)) :=
+        std.fs.create_dir (mk_str "a") in
+      let* α1 := M.read α0 in
+      match α1 with
       | core.result.Result why =>
-        let* _ :=
-          let* α0 := borrow [ mk_str "! "; mk_str "
-" ] (list (ref str)) in
-          let* α1 := deref α0 (list (ref str)) in
-          let* α2 := borrow α1 (list (ref str)) in
-          let* α3 := pointer_coercion "Unsize" α2 in
-          let* α4 := borrow why std.io.error.Error in
-          let* α5 := std.io.error.Error::["kind"] α4 in
-          let* α6 := borrow α5 std.io.error.ErrorKind in
-          let* α7 := deref α6 std.io.error.ErrorKind in
-          let* α8 := borrow α7 std.io.error.ErrorKind in
-          let* α9 := core.fmt.rt.Argument::["new_debug"] α8 in
-          let* α10 := borrow [ α9 ] (list core.fmt.rt.Argument) in
-          let* α11 := deref α10 (list core.fmt.rt.Argument) in
-          let* α12 := borrow α11 (list core.fmt.rt.Argument) in
-          let* α13 := pointer_coercion "Unsize" α12 in
-          let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
-          std.io.stdio._print α14 in
+        let* _ : ltac:(refine unit) :=
+          let* α0 : ltac:(refine (array (ref str))) :=
+            M.alloc [ mk_str "! "; mk_str "
+" ] in
+          let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
+          let* α2 : ltac:(refine (array (ref str))) := deref α1 in
+          let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
+          let* α4 : ltac:(refine (ref (slice (ref str)))) :=
+            pointer_coercion "Unsize" α3 in
+          let* α5 : ltac:(refine (ref std.io.error.Error)) := borrow why in
+          let* α6 : ltac:(refine std.io.error.ErrorKind) :=
+            std.io.error.Error::["kind"] α5 in
+          let* α7 : ltac:(refine (ref std.io.error.ErrorKind)) := borrow α6 in
+          let* α8 : ltac:(refine std.io.error.ErrorKind) := deref α7 in
+          let* α9 : ltac:(refine (ref std.io.error.ErrorKind)) := borrow α8 in
+          let* α10 : ltac:(refine core.fmt.rt.Argument) :=
+            core.fmt.rt.Argument::["new_debug"] α9 in
+          let* α11 : ltac:(refine (array core.fmt.rt.Argument)) :=
+            M.alloc [ α10 ] in
+          let* α12 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+            borrow α11 in
+          let* α13 : ltac:(refine (array core.fmt.rt.Argument)) := deref α12 in
+          let* α14 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+            borrow α13 in
+          let* α15 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+            pointer_coercion "Unsize" α14 in
+          let* α16 : ltac:(refine core.fmt.Arguments) :=
+            core.fmt.Arguments::["new_v1"] α4 α15 in
+          std.io.stdio._print α16 in
         M.alloc tt
       | core.result.Result _ => M.alloc tt
       end in
-    let* _ :=
-      let* _ :=
-        let* α0 :=
-          borrow [ mk_str "`echo hello > a/b.txt`
-" ] (list (ref str)) in
-        let* α1 := deref α0 (list (ref str)) in
-        let* α2 := borrow α1 (list (ref str)) in
-        let* α3 := pointer_coercion "Unsize" α2 in
-        let* α4 := core.fmt.Arguments::["new_const"] α3 in
-        std.io.stdio._print α4 in
+    let* _ : ltac:(refine unit) :=
+      let* _ : ltac:(refine unit) :=
+        let* α0 : ltac:(refine (array (ref str))) :=
+          M.alloc [ mk_str "`echo hello > a/b.txt`
+" ] in
+        let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
+        let* α2 : ltac:(refine (array (ref str))) := deref α1 in
+        let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
+        let* α4 : ltac:(refine (ref (slice (ref str)))) :=
+          pointer_coercion "Unsize" α3 in
+        let* α5 : ltac:(refine core.fmt.Arguments) :=
+          core.fmt.Arguments::["new_const"] α4 in
+        std.io.stdio._print α5 in
       M.alloc tt in
-    let* _ :=
-      let* α0 := deref (mk_str "hello") str in
-      let* α1 := borrow α0 str in
-      let* α2 := deref (mk_str "a/b.txt") str in
-      let* α3 := borrow α2 str in
-      let* α4 := std.path.Path::["new"] α3 in
-      let* α5 := borrow α4 (ref std.path.Path) in
-      let* α6 := deref α5 (ref std.path.Path) in
-      let* α7 := deref α6 std.path.Path in
-      let* α8 := borrow α7 std.path.Path in
-      let* α9 := filesystem_operations.echo α1 α8 in
+    let* _ : ltac:(refine unit) :=
+      let* α0 : ltac:(refine str) := deref (mk_str "hello") in
+      let* α1 : ltac:(refine (ref str)) := borrow α0 in
+      let* α2 : ltac:(refine str) := deref (mk_str "a/b.txt") in
+      let* α3 : ltac:(refine (ref str)) := borrow α2 in
+      let* α4 : ltac:(refine (ref std.path.Path)) :=
+        std.path.Path::["new"] α3 in
+      let* α5 : ltac:(refine (ref (ref std.path.Path))) := borrow α4 in
+      let* α6 : ltac:(refine (ref std.path.Path)) := deref α5 in
+      let* α7 : ltac:(refine std.path.Path) := deref α6 in
+      let* α8 : ltac:(refine (ref std.path.Path)) := borrow α7 in
+      let* α9 : ltac:(refine (core.result.Result unit std.io.error.Error)) :=
+        filesystem_operations.echo α1 α8 in
       (core.result.Result unit std.io.error.Error)::["unwrap_or_else"]
         α9
-        (let* _ :=
-          let* _ :=
-            let* α0 := borrow [ mk_str "! "; mk_str "
-" ] (list (ref str)) in
-            let* α1 := deref α0 (list (ref str)) in
-            let* α2 := borrow α1 (list (ref str)) in
-            let* α3 := pointer_coercion "Unsize" α2 in
-            let* α4 := borrow why std.io.error.Error in
-            let* α5 := std.io.error.Error::["kind"] α4 in
-            let* α6 := borrow α5 std.io.error.ErrorKind in
-            let* α7 := deref α6 std.io.error.ErrorKind in
-            let* α8 := borrow α7 std.io.error.ErrorKind in
-            let* α9 := core.fmt.rt.Argument::["new_debug"] α8 in
-            let* α10 := borrow [ α9 ] (list core.fmt.rt.Argument) in
-            let* α11 := deref α10 (list core.fmt.rt.Argument) in
-            let* α12 := borrow α11 (list core.fmt.rt.Argument) in
-            let* α13 := pointer_coercion "Unsize" α12 in
-            let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
-            std.io.stdio._print α14 in
+        (let* _ : ltac:(refine unit) :=
+          let* _ : ltac:(refine unit) :=
+            let* α0 : ltac:(refine (array (ref str))) :=
+              M.alloc [ mk_str "! "; mk_str "
+" ] in
+            let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
+            let* α2 : ltac:(refine (array (ref str))) := deref α1 in
+            let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
+            let* α4 : ltac:(refine (ref (slice (ref str)))) :=
+              pointer_coercion "Unsize" α3 in
+            let* α5 : ltac:(refine (ref std.io.error.Error)) := borrow why in
+            let* α6 : ltac:(refine std.io.error.ErrorKind) :=
+              std.io.error.Error::["kind"] α5 in
+            let* α7 : ltac:(refine (ref std.io.error.ErrorKind)) := borrow α6 in
+            let* α8 : ltac:(refine std.io.error.ErrorKind) := deref α7 in
+            let* α9 : ltac:(refine (ref std.io.error.ErrorKind)) := borrow α8 in
+            let* α10 : ltac:(refine core.fmt.rt.Argument) :=
+              core.fmt.rt.Argument::["new_debug"] α9 in
+            let* α11 : ltac:(refine (array core.fmt.rt.Argument)) :=
+              M.alloc [ α10 ] in
+            let* α12 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+              borrow α11 in
+            let* α13 : ltac:(refine (array core.fmt.rt.Argument)) :=
+              deref α12 in
+            let* α14 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+              borrow α13 in
+            let* α15 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+              pointer_coercion "Unsize" α14 in
+            let* α16 : ltac:(refine core.fmt.Arguments) :=
+              core.fmt.Arguments::["new_v1"] α4 α15 in
+            std.io.stdio._print α16 in
           M.alloc tt in
         M.alloc tt) in
-    let* _ :=
-      let* _ :=
-        let* α0 := borrow [ mk_str "`mkdir -p a/c/d`
-" ] (list (ref str)) in
-        let* α1 := deref α0 (list (ref str)) in
-        let* α2 := borrow α1 (list (ref str)) in
-        let* α3 := pointer_coercion "Unsize" α2 in
-        let* α4 := core.fmt.Arguments::["new_const"] α3 in
-        std.io.stdio._print α4 in
+    let* _ : ltac:(refine unit) :=
+      let* _ : ltac:(refine unit) :=
+        let* α0 : ltac:(refine (array (ref str))) :=
+          M.alloc [ mk_str "`mkdir -p a/c/d`
+" ] in
+        let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
+        let* α2 : ltac:(refine (array (ref str))) := deref α1 in
+        let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
+        let* α4 : ltac:(refine (ref (slice (ref str)))) :=
+          pointer_coercion "Unsize" α3 in
+        let* α5 : ltac:(refine core.fmt.Arguments) :=
+          core.fmt.Arguments::["new_const"] α4 in
+        std.io.stdio._print α5 in
       M.alloc tt in
-    let* _ :=
-      let* α0 := std.fs.create_dir_all (mk_str "a/c/d") in
+    let* _ : ltac:(refine unit) :=
+      let* α0 : ltac:(refine (core.result.Result unit std.io.error.Error)) :=
+        std.fs.create_dir_all (mk_str "a/c/d") in
       (core.result.Result unit std.io.error.Error)::["unwrap_or_else"]
         α0
-        (let* _ :=
-          let* _ :=
-            let* α0 := borrow [ mk_str "! "; mk_str "
-" ] (list (ref str)) in
-            let* α1 := deref α0 (list (ref str)) in
-            let* α2 := borrow α1 (list (ref str)) in
-            let* α3 := pointer_coercion "Unsize" α2 in
-            let* α4 := borrow why std.io.error.Error in
-            let* α5 := std.io.error.Error::["kind"] α4 in
-            let* α6 := borrow α5 std.io.error.ErrorKind in
-            let* α7 := deref α6 std.io.error.ErrorKind in
-            let* α8 := borrow α7 std.io.error.ErrorKind in
-            let* α9 := core.fmt.rt.Argument::["new_debug"] α8 in
-            let* α10 := borrow [ α9 ] (list core.fmt.rt.Argument) in
-            let* α11 := deref α10 (list core.fmt.rt.Argument) in
-            let* α12 := borrow α11 (list core.fmt.rt.Argument) in
-            let* α13 := pointer_coercion "Unsize" α12 in
-            let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
-            std.io.stdio._print α14 in
+        (let* _ : ltac:(refine unit) :=
+          let* _ : ltac:(refine unit) :=
+            let* α0 : ltac:(refine (array (ref str))) :=
+              M.alloc [ mk_str "! "; mk_str "
+" ] in
+            let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
+            let* α2 : ltac:(refine (array (ref str))) := deref α1 in
+            let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
+            let* α4 : ltac:(refine (ref (slice (ref str)))) :=
+              pointer_coercion "Unsize" α3 in
+            let* α5 : ltac:(refine (ref std.io.error.Error)) := borrow why in
+            let* α6 : ltac:(refine std.io.error.ErrorKind) :=
+              std.io.error.Error::["kind"] α5 in
+            let* α7 : ltac:(refine (ref std.io.error.ErrorKind)) := borrow α6 in
+            let* α8 : ltac:(refine std.io.error.ErrorKind) := deref α7 in
+            let* α9 : ltac:(refine (ref std.io.error.ErrorKind)) := borrow α8 in
+            let* α10 : ltac:(refine core.fmt.rt.Argument) :=
+              core.fmt.rt.Argument::["new_debug"] α9 in
+            let* α11 : ltac:(refine (array core.fmt.rt.Argument)) :=
+              M.alloc [ α10 ] in
+            let* α12 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+              borrow α11 in
+            let* α13 : ltac:(refine (array core.fmt.rt.Argument)) :=
+              deref α12 in
+            let* α14 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+              borrow α13 in
+            let* α15 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+              pointer_coercion "Unsize" α14 in
+            let* α16 : ltac:(refine core.fmt.Arguments) :=
+              core.fmt.Arguments::["new_v1"] α4 α15 in
+            std.io.stdio._print α16 in
           M.alloc tt in
         M.alloc tt) in
-    let* _ :=
-      let* _ :=
-        let* α0 := borrow [ mk_str "`touch a/c/e.txt`
-" ] (list (ref str)) in
-        let* α1 := deref α0 (list (ref str)) in
-        let* α2 := borrow α1 (list (ref str)) in
-        let* α3 := pointer_coercion "Unsize" α2 in
-        let* α4 := core.fmt.Arguments::["new_const"] α3 in
-        std.io.stdio._print α4 in
+    let* _ : ltac:(refine unit) :=
+      let* _ : ltac:(refine unit) :=
+        let* α0 : ltac:(refine (array (ref str))) :=
+          M.alloc [ mk_str "`touch a/c/e.txt`
+" ] in
+        let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
+        let* α2 : ltac:(refine (array (ref str))) := deref α1 in
+        let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
+        let* α4 : ltac:(refine (ref (slice (ref str)))) :=
+          pointer_coercion "Unsize" α3 in
+        let* α5 : ltac:(refine core.fmt.Arguments) :=
+          core.fmt.Arguments::["new_const"] α4 in
+        std.io.stdio._print α5 in
       M.alloc tt in
-    let* _ :=
-      let* α0 := deref (mk_str "a/c/e.txt") str in
-      let* α1 := borrow α0 str in
-      let* α2 := std.path.Path::["new"] α1 in
-      let* α3 := borrow α2 (ref std.path.Path) in
-      let* α4 := deref α3 (ref std.path.Path) in
-      let* α5 := deref α4 std.path.Path in
-      let* α6 := borrow α5 std.path.Path in
-      let* α7 := filesystem_operations.touch α6 in
+    let* _ : ltac:(refine unit) :=
+      let* α0 : ltac:(refine str) := deref (mk_str "a/c/e.txt") in
+      let* α1 : ltac:(refine (ref str)) := borrow α0 in
+      let* α2 : ltac:(refine (ref std.path.Path)) :=
+        std.path.Path::["new"] α1 in
+      let* α3 : ltac:(refine (ref (ref std.path.Path))) := borrow α2 in
+      let* α4 : ltac:(refine (ref std.path.Path)) := deref α3 in
+      let* α5 : ltac:(refine std.path.Path) := deref α4 in
+      let* α6 : ltac:(refine (ref std.path.Path)) := borrow α5 in
+      let* α7 : ltac:(refine (core.result.Result unit std.io.error.Error)) :=
+        filesystem_operations.touch α6 in
       (core.result.Result unit std.io.error.Error)::["unwrap_or_else"]
         α7
-        (let* _ :=
-          let* _ :=
-            let* α0 := borrow [ mk_str "! "; mk_str "
-" ] (list (ref str)) in
-            let* α1 := deref α0 (list (ref str)) in
-            let* α2 := borrow α1 (list (ref str)) in
-            let* α3 := pointer_coercion "Unsize" α2 in
-            let* α4 := borrow why std.io.error.Error in
-            let* α5 := std.io.error.Error::["kind"] α4 in
-            let* α6 := borrow α5 std.io.error.ErrorKind in
-            let* α7 := deref α6 std.io.error.ErrorKind in
-            let* α8 := borrow α7 std.io.error.ErrorKind in
-            let* α9 := core.fmt.rt.Argument::["new_debug"] α8 in
-            let* α10 := borrow [ α9 ] (list core.fmt.rt.Argument) in
-            let* α11 := deref α10 (list core.fmt.rt.Argument) in
-            let* α12 := borrow α11 (list core.fmt.rt.Argument) in
-            let* α13 := pointer_coercion "Unsize" α12 in
-            let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
-            std.io.stdio._print α14 in
+        (let* _ : ltac:(refine unit) :=
+          let* _ : ltac:(refine unit) :=
+            let* α0 : ltac:(refine (array (ref str))) :=
+              M.alloc [ mk_str "! "; mk_str "
+" ] in
+            let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
+            let* α2 : ltac:(refine (array (ref str))) := deref α1 in
+            let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
+            let* α4 : ltac:(refine (ref (slice (ref str)))) :=
+              pointer_coercion "Unsize" α3 in
+            let* α5 : ltac:(refine (ref std.io.error.Error)) := borrow why in
+            let* α6 : ltac:(refine std.io.error.ErrorKind) :=
+              std.io.error.Error::["kind"] α5 in
+            let* α7 : ltac:(refine (ref std.io.error.ErrorKind)) := borrow α6 in
+            let* α8 : ltac:(refine std.io.error.ErrorKind) := deref α7 in
+            let* α9 : ltac:(refine (ref std.io.error.ErrorKind)) := borrow α8 in
+            let* α10 : ltac:(refine core.fmt.rt.Argument) :=
+              core.fmt.rt.Argument::["new_debug"] α9 in
+            let* α11 : ltac:(refine (array core.fmt.rt.Argument)) :=
+              M.alloc [ α10 ] in
+            let* α12 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+              borrow α11 in
+            let* α13 : ltac:(refine (array core.fmt.rt.Argument)) :=
+              deref α12 in
+            let* α14 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+              borrow α13 in
+            let* α15 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+              pointer_coercion "Unsize" α14 in
+            let* α16 : ltac:(refine core.fmt.Arguments) :=
+              core.fmt.Arguments::["new_v1"] α4 α15 in
+            std.io.stdio._print α16 in
           M.alloc tt in
         M.alloc tt) in
-    let* _ :=
-      let* _ :=
-        let* α0 :=
-          borrow [ mk_str "`ln -s ../b.txt a/c/b.txt`
-" ] (list (ref str)) in
-        let* α1 := deref α0 (list (ref str)) in
-        let* α2 := borrow α1 (list (ref str)) in
-        let* α3 := pointer_coercion "Unsize" α2 in
-        let* α4 := core.fmt.Arguments::["new_const"] α3 in
-        std.io.stdio._print α4 in
+    let* _ : ltac:(refine unit) :=
+      let* _ : ltac:(refine unit) :=
+        let* α0 : ltac:(refine (array (ref str))) :=
+          M.alloc [ mk_str "`ln -s ../b.txt a/c/b.txt`
+" ] in
+        let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
+        let* α2 : ltac:(refine (array (ref str))) := deref α1 in
+        let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
+        let* α4 : ltac:(refine (ref (slice (ref str)))) :=
+          pointer_coercion "Unsize" α3 in
+        let* α5 : ltac:(refine core.fmt.Arguments) :=
+          core.fmt.Arguments::["new_const"] α4 in
+        std.io.stdio._print α5 in
       M.alloc tt in
-    let* _ :=
-      let* α0 := M.alloc true in
-      let* α1 := use α0 in
+    let* _ : ltac:(refine unit) :=
+      let* α0 : ltac:(refine bool) := M.alloc true in
+      let* α1 : ltac:(refine bool) := use α0 in
       if (α1 : bool) then
-        let* _ :=
-          let* α0 :=
+        let* _ : ltac:(refine unit) :=
+          let*
+              α0 :
+              ltac:(refine (core.result.Result unit std.io.error.Error)) :=
             std.os.unix.fs.symlink (mk_str "../b.txt") (mk_str "a/c/b.txt") in
           (core.result.Result unit std.io.error.Error)::["unwrap_or_else"]
             α0
-            (let* _ :=
-              let* _ :=
-                let* α0 :=
-                  borrow [ mk_str "! "; mk_str "
-" ] (list (ref str)) in
-                let* α1 := deref α0 (list (ref str)) in
-                let* α2 := borrow α1 (list (ref str)) in
-                let* α3 := pointer_coercion "Unsize" α2 in
-                let* α4 := borrow why std.io.error.Error in
-                let* α5 := std.io.error.Error::["kind"] α4 in
-                let* α6 := borrow α5 std.io.error.ErrorKind in
-                let* α7 := deref α6 std.io.error.ErrorKind in
-                let* α8 := borrow α7 std.io.error.ErrorKind in
-                let* α9 := core.fmt.rt.Argument::["new_debug"] α8 in
-                let* α10 := borrow [ α9 ] (list core.fmt.rt.Argument) in
-                let* α11 := deref α10 (list core.fmt.rt.Argument) in
-                let* α12 := borrow α11 (list core.fmt.rt.Argument) in
-                let* α13 := pointer_coercion "Unsize" α12 in
-                let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
-                std.io.stdio._print α14 in
+            (let* _ : ltac:(refine unit) :=
+              let* _ : ltac:(refine unit) :=
+                let* α0 : ltac:(refine (array (ref str))) :=
+                  M.alloc [ mk_str "! "; mk_str "
+" ] in
+                let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
+                let* α2 : ltac:(refine (array (ref str))) := deref α1 in
+                let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
+                let* α4 : ltac:(refine (ref (slice (ref str)))) :=
+                  pointer_coercion "Unsize" α3 in
+                let* α5 : ltac:(refine (ref std.io.error.Error)) :=
+                  borrow why in
+                let* α6 : ltac:(refine std.io.error.ErrorKind) :=
+                  std.io.error.Error::["kind"] α5 in
+                let* α7 : ltac:(refine (ref std.io.error.ErrorKind)) :=
+                  borrow α6 in
+                let* α8 : ltac:(refine std.io.error.ErrorKind) := deref α7 in
+                let* α9 : ltac:(refine (ref std.io.error.ErrorKind)) :=
+                  borrow α8 in
+                let* α10 : ltac:(refine core.fmt.rt.Argument) :=
+                  core.fmt.rt.Argument::["new_debug"] α9 in
+                let* α11 : ltac:(refine (array core.fmt.rt.Argument)) :=
+                  M.alloc [ α10 ] in
+                let* α12 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+                  borrow α11 in
+                let* α13 : ltac:(refine (array core.fmt.rt.Argument)) :=
+                  deref α12 in
+                let* α14 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+                  borrow α13 in
+                let* α15 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+                  pointer_coercion "Unsize" α14 in
+                let* α16 : ltac:(refine core.fmt.Arguments) :=
+                  core.fmt.Arguments::["new_v1"] α4 α15 in
+                std.io.stdio._print α16 in
               M.alloc tt in
             M.alloc tt) in
         M.alloc tt
       else
         M.alloc tt in
-    let* _ :=
-      let* _ :=
-        let* α0 := borrow [ mk_str "`cat a/c/b.txt`
-" ] (list (ref str)) in
-        let* α1 := deref α0 (list (ref str)) in
-        let* α2 := borrow α1 (list (ref str)) in
-        let* α3 := pointer_coercion "Unsize" α2 in
-        let* α4 := core.fmt.Arguments::["new_const"] α3 in
-        std.io.stdio._print α4 in
+    let* _ : ltac:(refine unit) :=
+      let* _ : ltac:(refine unit) :=
+        let* α0 : ltac:(refine (array (ref str))) :=
+          M.alloc [ mk_str "`cat a/c/b.txt`
+" ] in
+        let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
+        let* α2 : ltac:(refine (array (ref str))) := deref α1 in
+        let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
+        let* α4 : ltac:(refine (ref (slice (ref str)))) :=
+          pointer_coercion "Unsize" α3 in
+        let* α5 : ltac:(refine core.fmt.Arguments) :=
+          core.fmt.Arguments::["new_const"] α4 in
+        std.io.stdio._print α5 in
       M.alloc tt in
-    let* _ :=
-      let* α0 := deref (mk_str "a/c/b.txt") str in
-      let* α1 := borrow α0 str in
-      let* α2 := std.path.Path::["new"] α1 in
-      let* α3 := borrow α2 (ref std.path.Path) in
-      let* α4 := deref α3 (ref std.path.Path) in
-      let* α5 := deref α4 std.path.Path in
-      let* α6 := borrow α5 std.path.Path in
-      let* α7 := filesystem_operations.cat α6 in
-      match α7 with
+    let* _ : ltac:(refine unit) :=
+      let* α0 : ltac:(refine str) := deref (mk_str "a/c/b.txt") in
+      let* α1 : ltac:(refine (ref str)) := borrow α0 in
+      let* α2 : ltac:(refine (ref std.path.Path)) :=
+        std.path.Path::["new"] α1 in
+      let* α3 : ltac:(refine (ref (ref std.path.Path))) := borrow α2 in
+      let* α4 : ltac:(refine (ref std.path.Path)) := deref α3 in
+      let* α5 : ltac:(refine std.path.Path) := deref α4 in
+      let* α6 : ltac:(refine (ref std.path.Path)) := borrow α5 in
+      let*
+          α7 :
+          ltac:(refine
+            (core.result.Result alloc.string.String std.io.error.Error)) :=
+        filesystem_operations.cat α6 in
+      let* α8 := M.read α7 in
+      match α8 with
       | core.result.Result why =>
-        let* _ :=
-          let* α0 := borrow [ mk_str "! "; mk_str "
-" ] (list (ref str)) in
-          let* α1 := deref α0 (list (ref str)) in
-          let* α2 := borrow α1 (list (ref str)) in
-          let* α3 := pointer_coercion "Unsize" α2 in
-          let* α4 := borrow why std.io.error.Error in
-          let* α5 := std.io.error.Error::["kind"] α4 in
-          let* α6 := borrow α5 std.io.error.ErrorKind in
-          let* α7 := deref α6 std.io.error.ErrorKind in
-          let* α8 := borrow α7 std.io.error.ErrorKind in
-          let* α9 := core.fmt.rt.Argument::["new_debug"] α8 in
-          let* α10 := borrow [ α9 ] (list core.fmt.rt.Argument) in
-          let* α11 := deref α10 (list core.fmt.rt.Argument) in
-          let* α12 := borrow α11 (list core.fmt.rt.Argument) in
-          let* α13 := pointer_coercion "Unsize" α12 in
-          let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
-          std.io.stdio._print α14 in
+        let* _ : ltac:(refine unit) :=
+          let* α0 : ltac:(refine (array (ref str))) :=
+            M.alloc [ mk_str "! "; mk_str "
+" ] in
+          let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
+          let* α2 : ltac:(refine (array (ref str))) := deref α1 in
+          let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
+          let* α4 : ltac:(refine (ref (slice (ref str)))) :=
+            pointer_coercion "Unsize" α3 in
+          let* α5 : ltac:(refine (ref std.io.error.Error)) := borrow why in
+          let* α6 : ltac:(refine std.io.error.ErrorKind) :=
+            std.io.error.Error::["kind"] α5 in
+          let* α7 : ltac:(refine (ref std.io.error.ErrorKind)) := borrow α6 in
+          let* α8 : ltac:(refine std.io.error.ErrorKind) := deref α7 in
+          let* α9 : ltac:(refine (ref std.io.error.ErrorKind)) := borrow α8 in
+          let* α10 : ltac:(refine core.fmt.rt.Argument) :=
+            core.fmt.rt.Argument::["new_debug"] α9 in
+          let* α11 : ltac:(refine (array core.fmt.rt.Argument)) :=
+            M.alloc [ α10 ] in
+          let* α12 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+            borrow α11 in
+          let* α13 : ltac:(refine (array core.fmt.rt.Argument)) := deref α12 in
+          let* α14 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+            borrow α13 in
+          let* α15 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+            pointer_coercion "Unsize" α14 in
+          let* α16 : ltac:(refine core.fmt.Arguments) :=
+            core.fmt.Arguments::["new_v1"] α4 α15 in
+          std.io.stdio._print α16 in
         M.alloc tt
       | core.result.Result s =>
-        let* _ :=
-          let* α0 := borrow [ mk_str "> "; mk_str "
-" ] (list (ref str)) in
-          let* α1 := deref α0 (list (ref str)) in
-          let* α2 := borrow α1 (list (ref str)) in
-          let* α3 := pointer_coercion "Unsize" α2 in
-          let* α4 := borrow s alloc.string.String in
-          let* α5 := deref α4 alloc.string.String in
-          let* α6 := borrow α5 alloc.string.String in
-          let* α7 := core.fmt.rt.Argument::["new_display"] α6 in
-          let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
-          let* α9 := deref α8 (list core.fmt.rt.Argument) in
-          let* α10 := borrow α9 (list core.fmt.rt.Argument) in
-          let* α11 := pointer_coercion "Unsize" α10 in
-          let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
-          std.io.stdio._print α12 in
-        M.alloc tt
-      end in
-    let* _ :=
-      let* _ :=
-        let* α0 := borrow [ mk_str "`ls a`
-" ] (list (ref str)) in
-        let* α1 := deref α0 (list (ref str)) in
-        let* α2 := borrow α1 (list (ref str)) in
-        let* α3 := pointer_coercion "Unsize" α2 in
-        let* α4 := core.fmt.Arguments::["new_const"] α3 in
-        std.io.stdio._print α4 in
-      M.alloc tt in
-    let* _ :=
-      let* α0 := std.fs.read_dir (mk_str "a") in
-      match α0 with
-      | core.result.Result why =>
-        let* _ :=
-          let* α0 := borrow [ mk_str "! "; mk_str "
-" ] (list (ref str)) in
-          let* α1 := deref α0 (list (ref str)) in
-          let* α2 := borrow α1 (list (ref str)) in
-          let* α3 := pointer_coercion "Unsize" α2 in
-          let* α4 := borrow why std.io.error.Error in
-          let* α5 := std.io.error.Error::["kind"] α4 in
-          let* α6 := borrow α5 std.io.error.ErrorKind in
-          let* α7 := deref α6 std.io.error.ErrorKind in
-          let* α8 := borrow α7 std.io.error.ErrorKind in
-          let* α9 := core.fmt.rt.Argument::["new_debug"] α8 in
-          let* α10 := borrow [ α9 ] (list core.fmt.rt.Argument) in
-          let* α11 := deref α10 (list core.fmt.rt.Argument) in
-          let* α12 := borrow α11 (list core.fmt.rt.Argument) in
-          let* α13 := pointer_coercion "Unsize" α12 in
-          let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
+        let* _ : ltac:(refine unit) :=
+          let* α0 : ltac:(refine (array (ref str))) :=
+            M.alloc [ mk_str "> "; mk_str "
+" ] in
+          let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
+          let* α2 : ltac:(refine (array (ref str))) := deref α1 in
+          let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
+          let* α4 : ltac:(refine (ref (slice (ref str)))) :=
+            pointer_coercion "Unsize" α3 in
+          let* α5 : ltac:(refine (ref alloc.string.String)) := borrow s in
+          let* α6 : ltac:(refine alloc.string.String) := deref α5 in
+          let* α7 : ltac:(refine (ref alloc.string.String)) := borrow α6 in
+          let* α8 : ltac:(refine core.fmt.rt.Argument) :=
+            core.fmt.rt.Argument::["new_display"] α7 in
+          let* α9 : ltac:(refine (array core.fmt.rt.Argument)) :=
+            M.alloc [ α8 ] in
+          let* α10 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+            borrow α9 in
+          let* α11 : ltac:(refine (array core.fmt.rt.Argument)) := deref α10 in
+          let* α12 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+            borrow α11 in
+          let* α13 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+            pointer_coercion "Unsize" α12 in
+          let* α14 : ltac:(refine core.fmt.Arguments) :=
+            core.fmt.Arguments::["new_v1"] α4 α13 in
           std.io.stdio._print α14 in
         M.alloc tt
+      end in
+    let* _ : ltac:(refine unit) :=
+      let* _ : ltac:(refine unit) :=
+        let* α0 : ltac:(refine (array (ref str))) :=
+          M.alloc [ mk_str "`ls a`
+" ] in
+        let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
+        let* α2 : ltac:(refine (array (ref str))) := deref α1 in
+        let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
+        let* α4 : ltac:(refine (ref (slice (ref str)))) :=
+          pointer_coercion "Unsize" α3 in
+        let* α5 : ltac:(refine core.fmt.Arguments) :=
+          core.fmt.Arguments::["new_const"] α4 in
+        std.io.stdio._print α5 in
+      M.alloc tt in
+    let* _ : ltac:(refine unit) :=
+      let*
+          α0 :
+          ltac:(refine
+            (core.result.Result std.fs.ReadDir std.io.error.Error)) :=
+        std.fs.read_dir (mk_str "a") in
+      let* α1 := M.read α0 in
+      match α1 with
+      | core.result.Result why =>
+        let* _ : ltac:(refine unit) :=
+          let* α0 : ltac:(refine (array (ref str))) :=
+            M.alloc [ mk_str "! "; mk_str "
+" ] in
+          let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
+          let* α2 : ltac:(refine (array (ref str))) := deref α1 in
+          let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
+          let* α4 : ltac:(refine (ref (slice (ref str)))) :=
+            pointer_coercion "Unsize" α3 in
+          let* α5 : ltac:(refine (ref std.io.error.Error)) := borrow why in
+          let* α6 : ltac:(refine std.io.error.ErrorKind) :=
+            std.io.error.Error::["kind"] α5 in
+          let* α7 : ltac:(refine (ref std.io.error.ErrorKind)) := borrow α6 in
+          let* α8 : ltac:(refine std.io.error.ErrorKind) := deref α7 in
+          let* α9 : ltac:(refine (ref std.io.error.ErrorKind)) := borrow α8 in
+          let* α10 : ltac:(refine core.fmt.rt.Argument) :=
+            core.fmt.rt.Argument::["new_debug"] α9 in
+          let* α11 : ltac:(refine (array core.fmt.rt.Argument)) :=
+            M.alloc [ α10 ] in
+          let* α12 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+            borrow α11 in
+          let* α13 : ltac:(refine (array core.fmt.rt.Argument)) := deref α12 in
+          let* α14 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+            borrow α13 in
+          let* α15 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+            pointer_coercion "Unsize" α14 in
+          let* α16 : ltac:(refine core.fmt.Arguments) :=
+            core.fmt.Arguments::["new_v1"] α4 α15 in
+          std.io.stdio._print α16 in
+        M.alloc tt
       | core.result.Result paths =>
-        let* α0 :=
+        let* α0 : ltac:(refine std.fs.ReadDir) :=
           (core.iter.traits.collect.IntoIterator.into_iter
               (Self := std.fs.ReadDir)
               (Trait := ltac:(refine _)))
             paths in
-        let* α1 :=
-          match α0 with
+        let* α1 := M.read α0 in
+        let* α2 : ltac:(refine unit) :=
+          match α1 with
           | iter =>
             loop
-              (let* _ :=
-                let* α0 := borrow_mut iter std.fs.ReadDir in
-                let* α1 := deref α0 std.fs.ReadDir in
-                let* α2 := borrow_mut α1 std.fs.ReadDir in
-                let* α3 :=
+              (let* _ : ltac:(refine unit) :=
+                let* α0 : ltac:(refine (mut_ref std.fs.ReadDir)) :=
+                  borrow_mut iter in
+                let* α1 : ltac:(refine std.fs.ReadDir) := deref α0 in
+                let* α2 : ltac:(refine (mut_ref std.fs.ReadDir)) :=
+                  borrow_mut α1 in
+                let*
+                    α3 :
+                    ltac:(refine
+                      (core.option.Option
+                        (core.result.Result
+                          std.fs.DirEntry
+                          std.io.error.Error))) :=
                   (core.iter.traits.iterator.Iterator.next
                       (Self := std.fs.ReadDir)
                       (Trait := ltac:(refine _)))
                     α2 in
-                match α3 with
+                let* α4 := M.read α3 in
+                match α4 with
                 | core.option.Option  =>
-                  let* α0 := Break in
+                  let* α0 : ltac:(refine never) := Break in
                   never_to_any α0
                 | core.option.Option path =>
-                  let* _ :=
-                    let* _ :=
-                      let* α0 :=
-                        borrow [ mk_str "> "; mk_str "
-" ] (list (ref str)) in
-                      let* α1 := deref α0 (list (ref str)) in
-                      let* α2 := borrow α1 (list (ref str)) in
-                      let* α3 := pointer_coercion "Unsize" α2 in
-                      let* α4 :=
+                  let* _ : ltac:(refine unit) :=
+                    let* _ : ltac:(refine unit) :=
+                      let* α0 : ltac:(refine (array (ref str))) :=
+                        M.alloc [ mk_str "> "; mk_str "
+" ] in
+                      let* α1 : ltac:(refine (ref (array (ref str)))) :=
+                        borrow α0 in
+                      let* α2 : ltac:(refine (array (ref str))) := deref α1 in
+                      let* α3 : ltac:(refine (ref (array (ref str)))) :=
+                        borrow α2 in
+                      let* α4 : ltac:(refine (ref (slice (ref str)))) :=
+                        pointer_coercion "Unsize" α3 in
+                      let* α5 : ltac:(refine std.fs.DirEntry) :=
                         (core.result.Result
                               std.fs.DirEntry
                               std.io.error.Error)::["unwrap"]
                           path in
-                      let* α5 := borrow α4 std.fs.DirEntry in
-                      let* α6 := std.fs.DirEntry::["path"] α5 in
-                      let* α7 := borrow α6 std.path.PathBuf in
-                      let* α8 := deref α7 std.path.PathBuf in
-                      let* α9 := borrow α8 std.path.PathBuf in
-                      let* α10 := core.fmt.rt.Argument::["new_debug"] α9 in
-                      let* α11 := borrow [ α10 ] (list core.fmt.rt.Argument) in
-                      let* α12 := deref α11 (list core.fmt.rt.Argument) in
-                      let* α13 := borrow α12 (list core.fmt.rt.Argument) in
-                      let* α14 := pointer_coercion "Unsize" α13 in
-                      let* α15 := core.fmt.Arguments::["new_v1"] α3 α14 in
-                      std.io.stdio._print α15 in
+                      let* α6 : ltac:(refine (ref std.fs.DirEntry)) :=
+                        borrow α5 in
+                      let* α7 : ltac:(refine std.path.PathBuf) :=
+                        std.fs.DirEntry::["path"] α6 in
+                      let* α8 : ltac:(refine (ref std.path.PathBuf)) :=
+                        borrow α7 in
+                      let* α9 : ltac:(refine std.path.PathBuf) := deref α8 in
+                      let* α10 : ltac:(refine (ref std.path.PathBuf)) :=
+                        borrow α9 in
+                      let* α11 : ltac:(refine core.fmt.rt.Argument) :=
+                        core.fmt.rt.Argument::["new_debug"] α10 in
+                      let* α12 : ltac:(refine (array core.fmt.rt.Argument)) :=
+                        M.alloc [ α11 ] in
+                      let*
+                          α13 :
+                          ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+                        borrow α12 in
+                      let* α14 : ltac:(refine (array core.fmt.rt.Argument)) :=
+                        deref α13 in
+                      let*
+                          α15 :
+                          ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+                        borrow α14 in
+                      let*
+                          α16 :
+                          ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+                        pointer_coercion "Unsize" α15 in
+                      let* α17 : ltac:(refine core.fmt.Arguments) :=
+                        core.fmt.Arguments::["new_v1"] α4 α16 in
+                      std.io.stdio._print α17 in
                     M.alloc tt in
                   M.alloc tt
                 end in
               M.alloc tt)
           end in
-        use α1
+        use α2
       end in
-    let* _ :=
-      let* _ :=
-        let* α0 := borrow [ mk_str "`rm a/c/e.txt`
-" ] (list (ref str)) in
-        let* α1 := deref α0 (list (ref str)) in
-        let* α2 := borrow α1 (list (ref str)) in
-        let* α3 := pointer_coercion "Unsize" α2 in
-        let* α4 := core.fmt.Arguments::["new_const"] α3 in
-        std.io.stdio._print α4 in
+    let* _ : ltac:(refine unit) :=
+      let* _ : ltac:(refine unit) :=
+        let* α0 : ltac:(refine (array (ref str))) :=
+          M.alloc [ mk_str "`rm a/c/e.txt`
+" ] in
+        let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
+        let* α2 : ltac:(refine (array (ref str))) := deref α1 in
+        let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
+        let* α4 : ltac:(refine (ref (slice (ref str)))) :=
+          pointer_coercion "Unsize" α3 in
+        let* α5 : ltac:(refine core.fmt.Arguments) :=
+          core.fmt.Arguments::["new_const"] α4 in
+        std.io.stdio._print α5 in
       M.alloc tt in
-    let* _ :=
-      let* α0 := std.fs.remove_file (mk_str "a/c/e.txt") in
+    let* _ : ltac:(refine unit) :=
+      let* α0 : ltac:(refine (core.result.Result unit std.io.error.Error)) :=
+        std.fs.remove_file (mk_str "a/c/e.txt") in
       (core.result.Result unit std.io.error.Error)::["unwrap_or_else"]
         α0
-        (let* _ :=
-          let* _ :=
-            let* α0 := borrow [ mk_str "! "; mk_str "
-" ] (list (ref str)) in
-            let* α1 := deref α0 (list (ref str)) in
-            let* α2 := borrow α1 (list (ref str)) in
-            let* α3 := pointer_coercion "Unsize" α2 in
-            let* α4 := borrow why std.io.error.Error in
-            let* α5 := std.io.error.Error::["kind"] α4 in
-            let* α6 := borrow α5 std.io.error.ErrorKind in
-            let* α7 := deref α6 std.io.error.ErrorKind in
-            let* α8 := borrow α7 std.io.error.ErrorKind in
-            let* α9 := core.fmt.rt.Argument::["new_debug"] α8 in
-            let* α10 := borrow [ α9 ] (list core.fmt.rt.Argument) in
-            let* α11 := deref α10 (list core.fmt.rt.Argument) in
-            let* α12 := borrow α11 (list core.fmt.rt.Argument) in
-            let* α13 := pointer_coercion "Unsize" α12 in
-            let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
-            std.io.stdio._print α14 in
+        (let* _ : ltac:(refine unit) :=
+          let* _ : ltac:(refine unit) :=
+            let* α0 : ltac:(refine (array (ref str))) :=
+              M.alloc [ mk_str "! "; mk_str "
+" ] in
+            let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
+            let* α2 : ltac:(refine (array (ref str))) := deref α1 in
+            let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
+            let* α4 : ltac:(refine (ref (slice (ref str)))) :=
+              pointer_coercion "Unsize" α3 in
+            let* α5 : ltac:(refine (ref std.io.error.Error)) := borrow why in
+            let* α6 : ltac:(refine std.io.error.ErrorKind) :=
+              std.io.error.Error::["kind"] α5 in
+            let* α7 : ltac:(refine (ref std.io.error.ErrorKind)) := borrow α6 in
+            let* α8 : ltac:(refine std.io.error.ErrorKind) := deref α7 in
+            let* α9 : ltac:(refine (ref std.io.error.ErrorKind)) := borrow α8 in
+            let* α10 : ltac:(refine core.fmt.rt.Argument) :=
+              core.fmt.rt.Argument::["new_debug"] α9 in
+            let* α11 : ltac:(refine (array core.fmt.rt.Argument)) :=
+              M.alloc [ α10 ] in
+            let* α12 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+              borrow α11 in
+            let* α13 : ltac:(refine (array core.fmt.rt.Argument)) :=
+              deref α12 in
+            let* α14 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+              borrow α13 in
+            let* α15 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+              pointer_coercion "Unsize" α14 in
+            let* α16 : ltac:(refine core.fmt.Arguments) :=
+              core.fmt.Arguments::["new_v1"] α4 α15 in
+            std.io.stdio._print α16 in
           M.alloc tt in
         M.alloc tt) in
-    let* _ :=
-      let* _ :=
-        let* α0 := borrow [ mk_str "`rmdir a/c/d`
-" ] (list (ref str)) in
-        let* α1 := deref α0 (list (ref str)) in
-        let* α2 := borrow α1 (list (ref str)) in
-        let* α3 := pointer_coercion "Unsize" α2 in
-        let* α4 := core.fmt.Arguments::["new_const"] α3 in
-        std.io.stdio._print α4 in
+    let* _ : ltac:(refine unit) :=
+      let* _ : ltac:(refine unit) :=
+        let* α0 : ltac:(refine (array (ref str))) :=
+          M.alloc [ mk_str "`rmdir a/c/d`
+" ] in
+        let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
+        let* α2 : ltac:(refine (array (ref str))) := deref α1 in
+        let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
+        let* α4 : ltac:(refine (ref (slice (ref str)))) :=
+          pointer_coercion "Unsize" α3 in
+        let* α5 : ltac:(refine core.fmt.Arguments) :=
+          core.fmt.Arguments::["new_const"] α4 in
+        std.io.stdio._print α5 in
       M.alloc tt in
-    let* _ :=
-      let* α0 := std.fs.remove_dir (mk_str "a/c/d") in
+    let* _ : ltac:(refine unit) :=
+      let* α0 : ltac:(refine (core.result.Result unit std.io.error.Error)) :=
+        std.fs.remove_dir (mk_str "a/c/d") in
       (core.result.Result unit std.io.error.Error)::["unwrap_or_else"]
         α0
-        (let* _ :=
-          let* _ :=
-            let* α0 := borrow [ mk_str "! "; mk_str "
-" ] (list (ref str)) in
-            let* α1 := deref α0 (list (ref str)) in
-            let* α2 := borrow α1 (list (ref str)) in
-            let* α3 := pointer_coercion "Unsize" α2 in
-            let* α4 := borrow why std.io.error.Error in
-            let* α5 := std.io.error.Error::["kind"] α4 in
-            let* α6 := borrow α5 std.io.error.ErrorKind in
-            let* α7 := deref α6 std.io.error.ErrorKind in
-            let* α8 := borrow α7 std.io.error.ErrorKind in
-            let* α9 := core.fmt.rt.Argument::["new_debug"] α8 in
-            let* α10 := borrow [ α9 ] (list core.fmt.rt.Argument) in
-            let* α11 := deref α10 (list core.fmt.rt.Argument) in
-            let* α12 := borrow α11 (list core.fmt.rt.Argument) in
-            let* α13 := pointer_coercion "Unsize" α12 in
-            let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
-            std.io.stdio._print α14 in
+        (let* _ : ltac:(refine unit) :=
+          let* _ : ltac:(refine unit) :=
+            let* α0 : ltac:(refine (array (ref str))) :=
+              M.alloc [ mk_str "! "; mk_str "
+" ] in
+            let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
+            let* α2 : ltac:(refine (array (ref str))) := deref α1 in
+            let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
+            let* α4 : ltac:(refine (ref (slice (ref str)))) :=
+              pointer_coercion "Unsize" α3 in
+            let* α5 : ltac:(refine (ref std.io.error.Error)) := borrow why in
+            let* α6 : ltac:(refine std.io.error.ErrorKind) :=
+              std.io.error.Error::["kind"] α5 in
+            let* α7 : ltac:(refine (ref std.io.error.ErrorKind)) := borrow α6 in
+            let* α8 : ltac:(refine std.io.error.ErrorKind) := deref α7 in
+            let* α9 : ltac:(refine (ref std.io.error.ErrorKind)) := borrow α8 in
+            let* α10 : ltac:(refine core.fmt.rt.Argument) :=
+              core.fmt.rt.Argument::["new_debug"] α9 in
+            let* α11 : ltac:(refine (array core.fmt.rt.Argument)) :=
+              M.alloc [ α10 ] in
+            let* α12 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+              borrow α11 in
+            let* α13 : ltac:(refine (array core.fmt.rt.Argument)) :=
+              deref α12 in
+            let* α14 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+              borrow α13 in
+            let* α15 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+              pointer_coercion "Unsize" α14 in
+            let* α16 : ltac:(refine core.fmt.Arguments) :=
+              core.fmt.Arguments::["new_v1"] α4 α15 in
+            std.io.stdio._print α16 in
           M.alloc tt in
         M.alloc tt) in
     M.alloc tt).

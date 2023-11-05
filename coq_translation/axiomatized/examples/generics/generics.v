@@ -8,7 +8,7 @@ Section A.
   Inductive t : Set := Build.
 End A.
 End A.
-Definition A := @A.t.
+Definition A `{ℋ : State.Trait} := M.Val A.t.
 
 Module  Single.
 Section Single.

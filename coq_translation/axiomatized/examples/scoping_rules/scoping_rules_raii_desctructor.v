@@ -8,7 +8,7 @@ Section ToDrop.
   Inductive t : Set := Build.
 End ToDrop.
 End ToDrop.
-Definition ToDrop := @ToDrop.t.
+Definition ToDrop `{ℋ : State.Trait} := M.Val ToDrop.t.
 
 Module  Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop.
 Section Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop.

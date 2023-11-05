@@ -8,7 +8,7 @@ Section Cardinal.
   Inductive t : Set := Build.
 End Cardinal.
 End Cardinal.
-Definition Cardinal := @Cardinal.t.
+Definition Cardinal `{ℋ : State.Trait} := M.Val Cardinal.t.
 
 Module  BlueJay.
 Section BlueJay.
@@ -17,7 +17,7 @@ Section BlueJay.
   Inductive t : Set := Build.
 End BlueJay.
 End BlueJay.
-Definition BlueJay := @BlueJay.t.
+Definition BlueJay `{ℋ : State.Trait} := M.Val BlueJay.t.
 
 Module  Turkey.
 Section Turkey.
@@ -26,7 +26,7 @@ Section Turkey.
   Inductive t : Set := Build.
 End Turkey.
 End Turkey.
-Definition Turkey := @Turkey.t.
+Definition Turkey `{ℋ : State.Trait} := M.Val Turkey.t.
 
 Module  Red.
 Section Red.

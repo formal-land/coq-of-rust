@@ -8,7 +8,7 @@ Section DoubleError.
   Inductive t : Set := Build.
 End DoubleError.
 End DoubleError.
-Definition DoubleError := @DoubleError.t.
+Definition DoubleError `{ℋ : State.Trait} := M.Val DoubleError.t.
 
 Module  Impl_core_fmt_Debug_for_defining_an_error_type_DoubleError.
 Section Impl_core_fmt_Debug_for_defining_an_error_type_DoubleError.

@@ -4,32 +4,42 @@ Require Import CoqOfRust.CoqOfRust.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
   M.function_body
-    (let* number := M.alloc 4 in
-    match number with
+    (let* number : ltac:(refine u8) := M.alloc 4 in
+    let* α0 := M.read number in
+    match α0 with
     | i =>
-      let* _ :=
-        let* α0 := borrow [ mk_str "Zero
-" ] (list (ref str)) in
-        let* α1 := deref α0 (list (ref str)) in
-        let* α2 := borrow α1 (list (ref str)) in
-        let* α3 := pointer_coercion "Unsize" α2 in
-        let* α4 := core.fmt.Arguments::["new_const"] α3 in
-        std.io.stdio._print α4 in
+      let* _ : ltac:(refine unit) :=
+        let* α0 : ltac:(refine (array (ref str))) :=
+          M.alloc [ mk_str "Zero
+" ] in
+        let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
+        let* α2 : ltac:(refine (array (ref str))) := deref α1 in
+        let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
+        let* α4 : ltac:(refine (ref (slice (ref str)))) :=
+          pointer_coercion "Unsize" α3 in
+        let* α5 : ltac:(refine core.fmt.Arguments) :=
+          core.fmt.Arguments::["new_const"] α4 in
+        std.io.stdio._print α5 in
       M.alloc tt
     | i =>
-      let* _ :=
-        let* α0 := borrow [ mk_str "Greater than zero
-" ] (list (ref str)) in
-        let* α1 := deref α0 (list (ref str)) in
-        let* α2 := borrow α1 (list (ref str)) in
-        let* α3 := pointer_coercion "Unsize" α2 in
-        let* α4 := core.fmt.Arguments::["new_const"] α3 in
-        std.io.stdio._print α4 in
+      let* _ : ltac:(refine unit) :=
+        let* α0 : ltac:(refine (array (ref str))) :=
+          M.alloc [ mk_str "Greater than zero
+" ] in
+        let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
+        let* α2 : ltac:(refine (array (ref str))) := deref α1 in
+        let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
+        let* α4 : ltac:(refine (ref (slice (ref str)))) :=
+          pointer_coercion "Unsize" α3 in
+        let* α5 : ltac:(refine core.fmt.Arguments) :=
+          core.fmt.Arguments::["new_const"] α4 in
+        std.io.stdio._print α5 in
       M.alloc tt
     | _ =>
-      let* α0 := borrow (mk_str "Should never happen.") (ref str) in
-      let* α1 := deref α0 (ref str) in
-      let* α2 := borrow α1 (ref str) in
-      let* α3 := core.panicking.unreachable_display α2 in
+      let* α0 : ltac:(refine (ref (ref str))) :=
+        borrow (mk_str "Should never happen.") in
+      let* α1 : ltac:(refine (ref str)) := deref α0 in
+      let* α2 : ltac:(refine (ref (ref str))) := borrow α1 in
+      let* α3 : ltac:(refine never) := core.panicking.unreachable_display α2 in
       never_to_any α3
     end).

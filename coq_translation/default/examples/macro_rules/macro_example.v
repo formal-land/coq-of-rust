@@ -4,12 +4,16 @@ Require Import CoqOfRust.CoqOfRust.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
   M.function_body
-    (let* _ :=
-      let* α0 := borrow [ mk_str "Hello!
-" ] (list (ref str)) in
-      let* α1 := deref α0 (list (ref str)) in
-      let* α2 := borrow α1 (list (ref str)) in
-      let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := core.fmt.Arguments::["new_const"] α3 in
-      std.io.stdio._print α4 in
+    (let* _ : ltac:(refine unit) :=
+      let* α0 : ltac:(refine (array (ref str))) :=
+        M.alloc [ mk_str "Hello!
+" ] in
+      let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
+      let* α2 : ltac:(refine (array (ref str))) := deref α1 in
+      let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
+      let* α4 : ltac:(refine (ref (slice (ref str)))) :=
+        pointer_coercion "Unsize" α3 in
+      let* α5 : ltac:(refine core.fmt.Arguments) :=
+        core.fmt.Arguments::["new_const"] α4 in
+      std.io.stdio._print α5 in
     M.alloc tt).

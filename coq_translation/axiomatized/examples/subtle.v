@@ -290,16 +290,16 @@ Section ConstantTimeEq.
 End ConstantTimeEq.
 End ConstantTimeEq.
 
-Module  Impl_subtle_ConstantTimeEq_for_Slice_T.
-Section Impl_subtle_ConstantTimeEq_for_Slice_T.
+Module  Impl_subtle_ConstantTimeEq_for_slice_T.
+Section Impl_subtle_ConstantTimeEq_for_slice_T.
   Context `{ℋ : State.Trait}.
   
   Context {T : Set}.
   
   Context {ℋ_0 : subtle.ConstantTimeEq.Trait T}.
-  Definition Self : Set := Slice T.
+  Definition Self : Set := slice T.
   
-  Parameter ct_eq : (ref Self) -> (ref (Slice T)) -> M subtle.Choice.
+  Parameter ct_eq : (ref Self) -> (ref (slice T)) -> M subtle.Choice.
   
   Global Instance AssociatedFunction_ct_eq :
     Notation.DoubleColon Self "ct_eq" := {
@@ -310,8 +310,8 @@ Section Impl_subtle_ConstantTimeEq_for_Slice_T.
     subtle.ConstantTimeEq.ct_eq := ct_eq;
     subtle.ConstantTimeEq.ct_ne := Datatypes.None;
   }.
-End Impl_subtle_ConstantTimeEq_for_Slice_T.
-End Impl_subtle_ConstantTimeEq_for_Slice_T.
+End Impl_subtle_ConstantTimeEq_for_slice_T.
+End Impl_subtle_ConstantTimeEq_for_slice_T.
 
 Module  Impl_subtle_ConstantTimeEq_for_subtle_Choice.
 Section Impl_subtle_ConstantTimeEq_for_subtle_Choice.
@@ -1104,14 +1104,14 @@ Section Impl_subtle_CtOption_T.
         {U F : Set}
         {ℋ_0 : core.default.Default.Trait T}
         {ℋ_1 : subtle.ConditionallySelectable.Trait T}
-        {ℋ_2 : core.ops.function.FnOnce.Trait F (Args := T)},
+        {ℋ_2 : core.ops.function.FnOnce.Trait F (Args := M.Val T)},
       Self -> F -> M (subtle.CtOption U).
   
   Global Instance AssociatedFunction_map
       {U F : Set}
       {ℋ_0 : core.default.Default.Trait T}
       {ℋ_1 : subtle.ConditionallySelectable.Trait T}
-      {ℋ_2 : core.ops.function.FnOnce.Trait F (Args := T)} :
+      {ℋ_2 : core.ops.function.FnOnce.Trait F (Args := M.Val T)} :
     Notation.DoubleColon Self "map" := {
     Notation.double_colon := map (U := U) (F := F);
   }.
@@ -1121,14 +1121,14 @@ Section Impl_subtle_CtOption_T.
         {U F : Set}
         {ℋ_0 : core.default.Default.Trait T}
         {ℋ_1 : subtle.ConditionallySelectable.Trait T}
-        {ℋ_2 : core.ops.function.FnOnce.Trait F (Args := T)},
+        {ℋ_2 : core.ops.function.FnOnce.Trait F (Args := M.Val T)},
       Self -> F -> M (subtle.CtOption U).
   
   Global Instance AssociatedFunction_and_then
       {U F : Set}
       {ℋ_0 : core.default.Default.Trait T}
       {ℋ_1 : subtle.ConditionallySelectable.Trait T}
-      {ℋ_2 : core.ops.function.FnOnce.Trait F (Args := T)} :
+      {ℋ_2 : core.ops.function.FnOnce.Trait F (Args := M.Val T)} :
     Notation.DoubleColon Self "and_then" := {
     Notation.double_colon := and_then (U := U) (F := F);
   }.

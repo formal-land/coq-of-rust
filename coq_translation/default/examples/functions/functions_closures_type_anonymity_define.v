@@ -11,8 +11,8 @@ Definition apply
     (f : F)
     : M unit :=
   M.function_body
-    (let* _ :=
-      let* α0 := M.alloc tt in
+    (let* _ : ltac:(refine unit) :=
+      let* α0 : ltac:(refine unit) := M.alloc tt in
       (core.ops.function.FnOnce.call_once
           (Self := F)
           (Trait := ltac:(refine _)))

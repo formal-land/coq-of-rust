@@ -47,7 +47,7 @@ Definition String `{State.Trait} := String.t.
 
 Module ToString.
   Class Trait (Self : Set) : Set := {
-    to_string `{State.Trait} : ref Self -> M string;
+    to_string `{State.Trait} : ref Self -> M String;
   }.
 
   Global Instance Method_to_string `{State.Trait} `(Trait) :

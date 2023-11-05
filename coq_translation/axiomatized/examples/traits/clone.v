@@ -8,7 +8,7 @@ Section Unit.
   Inductive t : Set := Build.
 End Unit.
 End Unit.
-Definition Unit := @Unit.t.
+Definition Unit `{ℋ : State.Trait} := M.Val Unit.t.
 
 Module  Impl_core_fmt_Debug_for_clone_Unit.
 Section Impl_core_fmt_Debug_for_clone_Unit.

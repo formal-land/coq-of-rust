@@ -4,14 +4,18 @@ Require Import CoqOfRust.CoqOfRust.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
   M.function_body
-    (let* person :=
-      let* α0 :=
+    (let*
+        person :
+        ltac:(refine
+          scoping_rules_ownership_and_rules_partial_moves.main.Person) :=
+      let* α0 : ltac:(refine alloc.string.String) :=
         (core.convert.From.from
             (Self := alloc.string.String)
             (Trait := ltac:(refine _)))
           (mk_str "Alice") in
-      let* α1 := M.alloc 20 in
-      let* α2 := (alloc.boxed.Box u8 alloc.alloc.Global)::["new"] α1 in
+      let* α1 : ltac:(refine u8) := M.alloc 20 in
+      let* α2 : ltac:(refine (alloc.boxed.Box u8 alloc.alloc.Global)) :=
+        (alloc.boxed.Box u8 alloc.alloc.Global)::["new"] α1 in
       M.alloc
         {|
           scoping_rules_ownership_and_rules_partial_moves.main.Person.name :=
@@ -28,69 +32,102 @@ Definition main `{ℋ : State.Trait} : M unit :=
             age;
         |} :=
       person in
-    let* _ :=
-      let* _ :=
-        let* α0 :=
-          borrow
-            [ mk_str "The person's age is "; mk_str "
-" ]
-            (list (ref str)) in
-        let* α1 := deref α0 (list (ref str)) in
-        let* α2 := borrow α1 (list (ref str)) in
-        let* α3 := pointer_coercion "Unsize" α2 in
-        let* α4 := borrow age (ref (alloc.boxed.Box u8 alloc.alloc.Global)) in
-        let* α5 := deref α4 (ref (alloc.boxed.Box u8 alloc.alloc.Global)) in
-        let* α6 := borrow α5 (ref (alloc.boxed.Box u8 alloc.alloc.Global)) in
-        let* α7 := core.fmt.rt.Argument::["new_display"] α6 in
-        let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
-        let* α9 := deref α8 (list core.fmt.rt.Argument) in
-        let* α10 := borrow α9 (list core.fmt.rt.Argument) in
-        let* α11 := pointer_coercion "Unsize" α10 in
-        let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
-        std.io.stdio._print α12 in
+    let* _ : ltac:(refine unit) :=
+      let* _ : ltac:(refine unit) :=
+        let* α0 : ltac:(refine (array (ref str))) :=
+          M.alloc [ mk_str "The person's age is "; mk_str "
+" ] in
+        let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
+        let* α2 : ltac:(refine (array (ref str))) := deref α1 in
+        let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
+        let* α4 : ltac:(refine (ref (slice (ref str)))) :=
+          pointer_coercion "Unsize" α3 in
+        let*
+            α5 :
+            ltac:(refine (ref (ref (alloc.boxed.Box u8 alloc.alloc.Global)))) :=
+          borrow age in
+        let* α6 : ltac:(refine (ref (alloc.boxed.Box u8 alloc.alloc.Global))) :=
+          deref α5 in
+        let*
+            α7 :
+            ltac:(refine (ref (ref (alloc.boxed.Box u8 alloc.alloc.Global)))) :=
+          borrow α6 in
+        let* α8 : ltac:(refine core.fmt.rt.Argument) :=
+          core.fmt.rt.Argument::["new_display"] α7 in
+        let* α9 : ltac:(refine (array core.fmt.rt.Argument)) :=
+          M.alloc [ α8 ] in
+        let* α10 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+          borrow α9 in
+        let* α11 : ltac:(refine (array core.fmt.rt.Argument)) := deref α10 in
+        let* α12 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+          borrow α11 in
+        let* α13 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+          pointer_coercion "Unsize" α12 in
+        let* α14 : ltac:(refine core.fmt.Arguments) :=
+          core.fmt.Arguments::["new_v1"] α4 α13 in
+        std.io.stdio._print α14 in
       M.alloc tt in
-    let* _ :=
-      let* _ :=
-        let* α0 :=
-          borrow
-            [ mk_str "The person's name is "; mk_str "
-" ]
-            (list (ref str)) in
-        let* α1 := deref α0 (list (ref str)) in
-        let* α2 := borrow α1 (list (ref str)) in
-        let* α3 := pointer_coercion "Unsize" α2 in
-        let* α4 := borrow name alloc.string.String in
-        let* α5 := deref α4 alloc.string.String in
-        let* α6 := borrow α5 alloc.string.String in
-        let* α7 := core.fmt.rt.Argument::["new_display"] α6 in
-        let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
-        let* α9 := deref α8 (list core.fmt.rt.Argument) in
-        let* α10 := borrow α9 (list core.fmt.rt.Argument) in
-        let* α11 := pointer_coercion "Unsize" α10 in
-        let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
-        std.io.stdio._print α12 in
+    let* _ : ltac:(refine unit) :=
+      let* _ : ltac:(refine unit) :=
+        let* α0 : ltac:(refine (array (ref str))) :=
+          M.alloc [ mk_str "The person's name is "; mk_str "
+" ] in
+        let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
+        let* α2 : ltac:(refine (array (ref str))) := deref α1 in
+        let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
+        let* α4 : ltac:(refine (ref (slice (ref str)))) :=
+          pointer_coercion "Unsize" α3 in
+        let* α5 : ltac:(refine (ref alloc.string.String)) := borrow name in
+        let* α6 : ltac:(refine alloc.string.String) := deref α5 in
+        let* α7 : ltac:(refine (ref alloc.string.String)) := borrow α6 in
+        let* α8 : ltac:(refine core.fmt.rt.Argument) :=
+          core.fmt.rt.Argument::["new_display"] α7 in
+        let* α9 : ltac:(refine (array core.fmt.rt.Argument)) :=
+          M.alloc [ α8 ] in
+        let* α10 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+          borrow α9 in
+        let* α11 : ltac:(refine (array core.fmt.rt.Argument)) := deref α10 in
+        let* α12 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+          borrow α11 in
+        let* α13 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+          pointer_coercion "Unsize" α12 in
+        let* α14 : ltac:(refine core.fmt.Arguments) :=
+          core.fmt.Arguments::["new_v1"] α4 α13 in
+        std.io.stdio._print α14 in
       M.alloc tt in
-    let* _ :=
-      let* _ :=
-        let* α0 :=
-          borrow
+    let* _ : ltac:(refine unit) :=
+      let* _ : ltac:(refine unit) :=
+        let* α0 : ltac:(refine (array (ref str))) :=
+          M.alloc
             [ mk_str "The person's age from person struct is "; mk_str "
-" ]
-            (list (ref str)) in
-        let* α1 := deref α0 (list (ref str)) in
-        let* α2 := borrow α1 (list (ref str)) in
-        let* α3 := pointer_coercion "Unsize" α2 in
-        let* α4 := person.["age"] in
-        let* α5 := borrow α4 (alloc.boxed.Box u8 alloc.alloc.Global) in
-        let* α6 := deref α5 (alloc.boxed.Box u8 alloc.alloc.Global) in
-        let* α7 := borrow α6 (alloc.boxed.Box u8 alloc.alloc.Global) in
-        let* α8 := core.fmt.rt.Argument::["new_display"] α7 in
-        let* α9 := borrow [ α8 ] (list core.fmt.rt.Argument) in
-        let* α10 := deref α9 (list core.fmt.rt.Argument) in
-        let* α11 := borrow α10 (list core.fmt.rt.Argument) in
-        let* α12 := pointer_coercion "Unsize" α11 in
-        let* α13 := core.fmt.Arguments::["new_v1"] α3 α12 in
-        std.io.stdio._print α13 in
+" ] in
+        let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
+        let* α2 : ltac:(refine (array (ref str))) := deref α1 in
+        let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
+        let* α4 : ltac:(refine (ref (slice (ref str)))) :=
+          pointer_coercion "Unsize" α3 in
+        let* α5 : ltac:(refine (alloc.boxed.Box u8 alloc.alloc.Global)) :=
+          person.["age"] in
+        let* α6 : ltac:(refine (ref (alloc.boxed.Box u8 alloc.alloc.Global))) :=
+          borrow α5 in
+        let* α7 : ltac:(refine (alloc.boxed.Box u8 alloc.alloc.Global)) :=
+          deref α6 in
+        let* α8 : ltac:(refine (ref (alloc.boxed.Box u8 alloc.alloc.Global))) :=
+          borrow α7 in
+        let* α9 : ltac:(refine core.fmt.rt.Argument) :=
+          core.fmt.rt.Argument::["new_display"] α8 in
+        let* α10 : ltac:(refine (array core.fmt.rt.Argument)) :=
+          M.alloc [ α9 ] in
+        let* α11 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+          borrow α10 in
+        let* α12 : ltac:(refine (array core.fmt.rt.Argument)) := deref α11 in
+        let* α13 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+          borrow α12 in
+        let* α14 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+          pointer_coercion "Unsize" α13 in
+        let* α15 : ltac:(refine core.fmt.Arguments) :=
+          core.fmt.Arguments::["new_v1"] α4 α14 in
+        std.io.stdio._print α15 in
       M.alloc tt in
     M.alloc tt).
 
@@ -133,33 +170,46 @@ Section Impl_core_fmt_Debug_for_scoping_rules_ownership_and_rules_partial_moves_
       (f : mut_ref core.fmt.Formatter)
       : M ltac:(core.fmt.Result) :=
     M.function_body
-      (let* α0 := deref f core.fmt.Formatter in
-      let* α1 := borrow_mut α0 core.fmt.Formatter in
-      let* α2 := deref (mk_str "Person") str in
-      let* α3 := borrow α2 str in
-      let* α4 := deref (mk_str "name") str in
-      let* α5 := borrow α4 str in
-      let* α6 :=
-        deref
-          self
-          scoping_rules_ownership_and_rules_partial_moves.main.Person in
-      let* α7 := α6.["name"] in
-      let* α8 := borrow α7 alloc.string.String in
-      let* α9 := deref α8 alloc.string.String in
-      let* α10 := borrow α9 alloc.string.String in
-      let* α11 := pointer_coercion "Unsize" α10 in
-      let* α12 := deref (mk_str "age") str in
-      let* α13 := borrow α12 str in
-      let* α14 :=
-        deref
-          self
-          scoping_rules_ownership_and_rules_partial_moves.main.Person in
-      let* α15 := α14.["age"] in
-      let* α16 := borrow α15 (alloc.boxed.Box u8 alloc.alloc.Global) in
-      let* α17 := borrow α16 (ref (alloc.boxed.Box u8 alloc.alloc.Global)) in
-      let* α18 := deref α17 (ref (alloc.boxed.Box u8 alloc.alloc.Global)) in
-      let* α19 := borrow α18 (ref (alloc.boxed.Box u8 alloc.alloc.Global)) in
-      let* α20 := pointer_coercion "Unsize" α19 in
+      (let* α0 : ltac:(refine core.fmt.Formatter) := deref f in
+      let* α1 : ltac:(refine (mut_ref core.fmt.Formatter)) := borrow_mut α0 in
+      let* α2 : ltac:(refine str) := deref (mk_str "Person") in
+      let* α3 : ltac:(refine (ref str)) := borrow α2 in
+      let* α4 : ltac:(refine str) := deref (mk_str "name") in
+      let* α5 : ltac:(refine (ref str)) := borrow α4 in
+      let*
+          α6 :
+          ltac:(refine
+            scoping_rules_ownership_and_rules_partial_moves.main.Person) :=
+        deref self in
+      let* α7 : ltac:(refine alloc.string.String) := α6.["name"] in
+      let* α8 : ltac:(refine (ref alloc.string.String)) := borrow α7 in
+      let* α9 : ltac:(refine alloc.string.String) := deref α8 in
+      let* α10 : ltac:(refine (ref alloc.string.String)) := borrow α9 in
+      let* α11 : ltac:(refine (ref type not implemented)) :=
+        pointer_coercion "Unsize" α10 in
+      let* α12 : ltac:(refine str) := deref (mk_str "age") in
+      let* α13 : ltac:(refine (ref str)) := borrow α12 in
+      let*
+          α14 :
+          ltac:(refine
+            scoping_rules_ownership_and_rules_partial_moves.main.Person) :=
+        deref self in
+      let* α15 : ltac:(refine (alloc.boxed.Box u8 alloc.alloc.Global)) :=
+        α14.["age"] in
+      let* α16 : ltac:(refine (ref (alloc.boxed.Box u8 alloc.alloc.Global))) :=
+        borrow α15 in
+      let*
+          α17 :
+          ltac:(refine (ref (ref (alloc.boxed.Box u8 alloc.alloc.Global)))) :=
+        borrow α16 in
+      let* α18 : ltac:(refine (ref (alloc.boxed.Box u8 alloc.alloc.Global))) :=
+        deref α17 in
+      let*
+          α19 :
+          ltac:(refine (ref (ref (alloc.boxed.Box u8 alloc.alloc.Global)))) :=
+        borrow α18 in
+      let* α20 : ltac:(refine (ref type not implemented)) :=
+        pointer_coercion "Unsize" α19 in
       core.fmt.Formatter::["debug_struct_field2_finish"] α1 α3 α5 α11 α13 α20).
   
   Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {

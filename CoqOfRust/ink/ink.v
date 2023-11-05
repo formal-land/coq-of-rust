@@ -846,7 +846,7 @@ Module codegen.
               core.convert.Into.Trait E
                 (T := ink.reflect.event.ContractEventBase.Type_
                   (Self := C)
-                  (Trait := ltac:(try clear Trait; hauto l: on)))} :
+                  (Trait := ltac:(refine _)))} :
             Self -> E -> M unit;
         }.
         
@@ -893,7 +893,7 @@ Module codegen.
             ink.codegen.event.topics.RespectTopicLimit.Trait
                 (ink.codegen.event.topics.EventLenTopics.LenTopics
                   (Self := Event)
-                  (Trait := ltac:(try clear Trait; hauto l: on)))}.
+                  (Trait := ltac:(refine _)))}.
         Unset Primitive Projections.
         Record t : Set := {
           marker : core.marker.PhantomData (Event);
@@ -917,7 +917,7 @@ Module codegen.
             ink.codegen.event.topics.RespectTopicLimit.Trait
                 (ink.codegen.event.topics.EventLenTopics.LenTopics
                   (Self := Event)
-                  (Trait := ltac:(try clear Trait; hauto l: on)))}
+                  (Trait := ltac:(refine _)))}
           : Set :=
         M.Val (EventRespectsTopicLimit.t (Event := Event)).
       
@@ -928,7 +928,7 @@ Module codegen.
         Inductive t : Set := Build.
       End EventTopics.
       End EventTopics.
-      Definition EventTopics := @EventTopics.t.
+      Definition EventTopics `{ℋ : State.Trait} := M.Val EventTopics.t.
       
       Module  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
       Section Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
@@ -1065,14 +1065,14 @@ Module codegen.
                 (ref
                   (ink.codegen.trait_def.call_builder.TraitCallBuilder.Builder
                     (Self := Forwarder)
-                    (Trait := ltac:(try clear Trait; hauto l: on))));
+                    (Trait := ltac:(refine _))));
           build_mut :
             (mut_ref Self) ->
               M
                 (mut_ref
                   (ink.codegen.trait_def.call_builder.TraitCallBuilder.Builder
                     (Self := Forwarder)
-                    (Trait := ltac:(try clear Trait; hauto l: on))));
+                    (Trait := ltac:(refine _))));
         }.
         
         Global Instance Method_Forwarder `(Trait) :
@@ -1091,7 +1091,8 @@ Module codegen.
         Inductive t : Set := Build.
       End TraitMessagePayable.
       End TraitMessagePayable.
-      Definition TraitMessagePayable := @TraitMessagePayable.t.
+      Definition TraitMessagePayable `{ℋ : State.Trait} :=
+        M.Val TraitMessagePayable.t.
       
       Module  TraitMessageSelector.
       Section TraitMessageSelector.
@@ -1100,7 +1101,8 @@ Module codegen.
         Inductive t : Set := Build.
       End TraitMessageSelector.
       End TraitMessageSelector.
-      Definition TraitMessageSelector := @TraitMessageSelector.t.
+      Definition TraitMessageSelector `{ℋ : State.Trait} :=
+        M.Val TraitMessageSelector.t.
     End trait_message.
   End trait_def.
   
@@ -1417,7 +1419,7 @@ Module event.
             core.convert.Into.Trait E
               (T := ink.reflect.event.ContractEventBase.Type_
                 (Self := C)
-                (Trait := ltac:(try clear Trait; hauto l: on)))} :
+                (Trait := ltac:(refine _)))} :
           Self -> E -> M unit;
       }.
       
@@ -1464,7 +1466,7 @@ Module event.
           ink.codegen.event.topics.RespectTopicLimit.Trait
               (ink.codegen.event.topics.EventLenTopics.LenTopics
                 (Self := Event)
-                (Trait := ltac:(try clear Trait; hauto l: on)))}.
+                (Trait := ltac:(refine _)))}.
       Unset Primitive Projections.
       Record t : Set := {
         marker : core.marker.PhantomData (Event);
@@ -1488,7 +1490,7 @@ Module event.
           ink.codegen.event.topics.RespectTopicLimit.Trait
               (ink.codegen.event.topics.EventLenTopics.LenTopics
                 (Self := Event)
-                (Trait := ltac:(try clear Trait; hauto l: on)))}
+                (Trait := ltac:(refine _)))}
         : Set :=
       M.Val (EventRespectsTopicLimit.t (Event := Event)).
     
@@ -1499,7 +1501,7 @@ Module event.
       Inductive t : Set := Build.
     End EventTopics.
     End EventTopics.
-    Definition EventTopics := @EventTopics.t.
+    Definition EventTopics `{ℋ : State.Trait} := M.Val EventTopics.t.
     
     Module  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
     Section Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
@@ -1528,7 +1530,7 @@ Module emit.
           core.convert.Into.Trait E
             (T := ink.reflect.event.ContractEventBase.Type_
               (Self := C)
-              (Trait := ltac:(try clear Trait; hauto l: on)))} :
+              (Trait := ltac:(refine _)))} :
         Self -> E -> M unit;
     }.
     
@@ -1548,7 +1550,7 @@ Section EmitEvent.
         core.convert.Into.Trait E
           (T := ink.reflect.event.ContractEventBase.Type_
             (Self := C)
-            (Trait := ltac:(try clear Trait; hauto l: on)))} :
+            (Trait := ltac:(refine _)))} :
       Self -> E -> M unit;
   }.
   
@@ -1594,7 +1596,7 @@ Module topics.
         ink.codegen.event.topics.RespectTopicLimit.Trait
             (ink.codegen.event.topics.EventLenTopics.LenTopics
               (Self := Event)
-              (Trait := ltac:(try clear Trait; hauto l: on)))}.
+              (Trait := ltac:(refine _)))}.
     Unset Primitive Projections.
     Record t : Set := {
       marker : core.marker.PhantomData (Event);
@@ -1617,7 +1619,7 @@ Module topics.
         ink.codegen.event.topics.RespectTopicLimit.Trait
             (ink.codegen.event.topics.EventLenTopics.LenTopics
               (Self := Event)
-              (Trait := ltac:(try clear Trait; hauto l: on)))}
+              (Trait := ltac:(refine _)))}
       : Set :=
     M.Val (EventRespectsTopicLimit.t (Event := Event)).
   
@@ -1628,7 +1630,7 @@ Module topics.
     Inductive t : Set := Build.
   End EventTopics.
   End EventTopics.
-  Definition EventTopics := @EventTopics.t.
+  Definition EventTopics `{ℋ : State.Trait} := M.Val EventTopics.t.
   
   Module  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
   Section Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
@@ -1655,7 +1657,7 @@ Section EventRespectsTopicLimit.
       ink.codegen.event.topics.RespectTopicLimit.Trait
           (ink.codegen.event.topics.EventLenTopics.LenTopics
             (Self := Event)
-            (Trait := ltac:(try clear Trait; hauto l: on)))}.
+            (Trait := ltac:(refine _)))}.
   Unset Primitive Projections.
   Record t : Set := {
     marker : core.marker.PhantomData (Event);
@@ -1678,7 +1680,7 @@ Definition EventRespectsTopicLimit
       ink.codegen.event.topics.RespectTopicLimit.Trait
           (ink.codegen.event.topics.EventLenTopics.LenTopics
             (Self := Event)
-            (Trait := ltac:(try clear Trait; hauto l: on)))}
+            (Trait := ltac:(refine _)))}
     : Set :=
   M.Val (EventRespectsTopicLimit.t (Event := Event)).
 
@@ -1700,7 +1702,7 @@ Section EventTopics.
   Inductive t : Set := Build.
 End EventTopics.
 End EventTopics.
-Definition EventTopics := @EventTopics.t.
+Definition EventTopics `{ℋ : State.Trait} := M.Val EventTopics.t.
 
 Module  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
 Section Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
@@ -1916,14 +1918,14 @@ Module trait_def.
               (ref
                 (ink.codegen.trait_def.call_builder.TraitCallBuilder.Builder
                   (Self := Forwarder)
-                  (Trait := ltac:(try clear Trait; hauto l: on))));
+                  (Trait := ltac:(refine _))));
         build_mut :
           (mut_ref Self) ->
             M
               (mut_ref
                 (ink.codegen.trait_def.call_builder.TraitCallBuilder.Builder
                   (Self := Forwarder)
-                  (Trait := ltac:(try clear Trait; hauto l: on))));
+                  (Trait := ltac:(refine _))));
       }.
       
       Global Instance Method_Forwarder `(Trait) :
@@ -1942,7 +1944,8 @@ Module trait_def.
       Inductive t : Set := Build.
     End TraitMessagePayable.
     End TraitMessagePayable.
-    Definition TraitMessagePayable := @TraitMessagePayable.t.
+    Definition TraitMessagePayable `{ℋ : State.Trait} :=
+      M.Val TraitMessagePayable.t.
     
     Module  TraitMessageSelector.
     Section TraitMessageSelector.
@@ -1951,7 +1954,8 @@ Module trait_def.
       Inductive t : Set := Build.
     End TraitMessageSelector.
     End TraitMessageSelector.
-    Definition TraitMessageSelector := @TraitMessageSelector.t.
+    Definition TraitMessageSelector `{ℋ : State.Trait} :=
+      M.Val TraitMessageSelector.t.
   End trait_message.
 End trait_def.
 
@@ -2006,14 +2010,14 @@ Module call_builder.
             (ref
               (ink.codegen.trait_def.call_builder.TraitCallBuilder.Builder
                 (Self := Forwarder)
-                (Trait := ltac:(try clear Trait; hauto l: on))));
+                (Trait := ltac:(refine _))));
       build_mut :
         (mut_ref Self) ->
           M
             (mut_ref
               (ink.codegen.trait_def.call_builder.TraitCallBuilder.Builder
                 (Self := Forwarder)
-                (Trait := ltac:(try clear Trait; hauto l: on))));
+                (Trait := ltac:(refine _))));
     }.
     
     Global Instance Method_Forwarder `(Trait) :
@@ -2072,14 +2076,14 @@ Section TraitCallForwarderFor.
           (ref
             (ink.codegen.trait_def.call_builder.TraitCallBuilder.Builder
               (Self := Forwarder)
-              (Trait := ltac:(try clear Trait; hauto l: on))));
+              (Trait := ltac:(refine _))));
     build_mut :
       (mut_ref Self) ->
         M
           (mut_ref
             (ink.codegen.trait_def.call_builder.TraitCallBuilder.Builder
               (Self := Forwarder)
-              (Trait := ltac:(try clear Trait; hauto l: on))));
+              (Trait := ltac:(refine _))));
   }.
   
   Global Instance Method_Forwarder `(Trait) :
@@ -2097,7 +2101,8 @@ Module trait_message.
     Inductive t : Set := Build.
   End TraitMessagePayable.
   End TraitMessagePayable.
-  Definition TraitMessagePayable := @TraitMessagePayable.t.
+  Definition TraitMessagePayable `{ℋ : State.Trait} :=
+    M.Val TraitMessagePayable.t.
   
   Module  TraitMessageSelector.
   Section TraitMessageSelector.
@@ -2106,7 +2111,8 @@ Module trait_message.
     Inductive t : Set := Build.
   End TraitMessageSelector.
   End TraitMessageSelector.
-  Definition TraitMessageSelector := @TraitMessageSelector.t.
+  Definition TraitMessageSelector `{ℋ : State.Trait} :=
+    M.Val TraitMessageSelector.t.
 End trait_message.
 
 Module  TraitMessagePayable.
@@ -2116,7 +2122,8 @@ Section TraitMessagePayable.
   Inductive t : Set := Build.
 End TraitMessagePayable.
 End TraitMessagePayable.
-Definition TraitMessagePayable := @TraitMessagePayable.t.
+Definition TraitMessagePayable `{ℋ : State.Trait} :=
+  M.Val TraitMessagePayable.t.
 
 Module  TraitMessageSelector.
 Section TraitMessageSelector.
@@ -2125,7 +2132,8 @@ Section TraitMessageSelector.
   Inductive t : Set := Build.
 End TraitMessageSelector.
 End TraitMessageSelector.
-Definition TraitMessageSelector := @TraitMessageSelector.t.
+Definition TraitMessageSelector `{ℋ : State.Trait} :=
+  M.Val TraitMessageSelector.t.
 
 Module utils.
   Module identity_type.
@@ -3469,7 +3477,7 @@ Module chain_extension.
     Inductive t : Set := Build.
   End ValueReturned.
   End ValueReturned.
-  Definition ValueReturned := @ValueReturned.t.
+  Definition ValueReturned `{ℋ : State.Trait} := M.Val ValueReturned.t.
   
   Module  Impl_ink_chain_extension_private_OutputSealed_for_ink_chain_extension_ValueReturned.
   Section Impl_ink_chain_extension_private_OutputSealed_for_ink_chain_extension_ValueReturned.
@@ -3623,7 +3631,7 @@ Section ValueReturned.
   Inductive t : Set := Build.
 End ValueReturned.
 End ValueReturned.
-Definition ValueReturned := @ValueReturned.t.
+Definition ValueReturned `{ℋ : State.Trait} := M.Val ValueReturned.t.
 
 Module  Impl_ink_chain_extension_private_OutputSealed_for_ink_chain_extension_ValueReturned.
 Section Impl_ink_chain_extension_private_OutputSealed_for_ink_chain_extension_ValueReturned.
@@ -3731,7 +3739,7 @@ Module contract_ref.
           M
             (ink_env.types.Environment.AccountId
               (Self := T)
-              (Trait := ltac:(try clear Trait; hauto l: on)));
+              (Trait := ltac:(refine _)));
     }.
     
   End ToAccountId.
@@ -3749,7 +3757,7 @@ Section ToAccountId.
         M
           (ink_env.types.Environment.AccountId
             (Self := T)
-            (Trait := ltac:(try clear Trait; hauto l: on)));
+            (Trait := ltac:(refine _)));
   }.
   
 End ToAccountId.

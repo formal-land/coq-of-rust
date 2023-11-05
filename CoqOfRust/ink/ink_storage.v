@@ -16,7 +16,7 @@ Module lazy.
         {ℋ_1 : ink_storage_traits.storage.StorageKey.Trait KeyType}.
       Unset Primitive Projections.
       Record t : Set := {
-        _marker : core.marker.PhantomData ((K * V) * KeyType);
+        _marker : core.marker.PhantomData (M.Val ((K * V) * KeyType));
       }.
       Global Set Primitive Projections.
       
@@ -198,7 +198,7 @@ Module lazy.
     Context {ℋ_0 : ink_storage_traits.storage.StorageKey.Trait KeyType}.
     Unset Primitive Projections.
     Record t : Set := {
-      _marker : core.marker.PhantomData (V * KeyType);
+      _marker : core.marker.PhantomData (M.Val (V * KeyType));
     }.
     Global Set Primitive Projections.
     
@@ -371,7 +371,7 @@ Module mapping.
       {ℋ_1 : ink_storage_traits.storage.StorageKey.Trait KeyType}.
     Unset Primitive Projections.
     Record t : Set := {
-      _marker : core.marker.PhantomData ((K * V) * KeyType);
+      _marker : core.marker.PhantomData (M.Val ((K * V) * KeyType));
     }.
     Global Set Primitive Projections.
     
@@ -552,7 +552,7 @@ Section Mapping.
     {ℋ_1 : ink_storage_traits.storage.StorageKey.Trait KeyType}.
   Unset Primitive Projections.
   Record t : Set := {
-    _marker : core.marker.PhantomData ((K * V) * KeyType);
+    _marker : core.marker.PhantomData (M.Val ((K * V) * KeyType));
   }.
   Global Set Primitive Projections.
   
@@ -585,7 +585,8 @@ Section Impl_scale_info_TypeInfo_for_ink_storage_lazy_mapping_Mapping_K_V_KeyTyp
     {ℋ_0 : ink_storage_traits.storage.Packed.Trait V}
     {ℋ_1 : ink_storage_traits.storage.StorageKey.Trait KeyType}
     {ℋ_2 :
-      scale_info.TypeInfo.Trait (core.marker.PhantomData ((K * V) * KeyType))}
+      scale_info.TypeInfo.Trait
+          (core.marker.PhantomData (M.Val ((K * V) * KeyType)))}
     {ℋ_3 : scale_info.TypeInfo.Trait K}
     {ℋ_4 : ink_storage_traits.storage.Packed.Trait V}
     {ℋ_5 : scale_info.TypeInfo.Trait V}
@@ -791,7 +792,7 @@ Section Lazy.
   Context {ℋ_0 : ink_storage_traits.storage.StorageKey.Trait KeyType}.
   Unset Primitive Projections.
   Record t : Set := {
-    _marker : core.marker.PhantomData (V * KeyType);
+    _marker : core.marker.PhantomData (M.Val (V * KeyType));
   }.
   Global Set Primitive Projections.
   
@@ -821,7 +822,8 @@ Section Impl_scale_info_TypeInfo_for_ink_storage_lazy_Lazy_V_KeyType.
   
   Context
     {ℋ_0 : ink_storage_traits.storage.StorageKey.Trait KeyType}
-    {ℋ_1 : scale_info.TypeInfo.Trait (core.marker.PhantomData (V * KeyType))}
+    {ℋ_1 :
+      scale_info.TypeInfo.Trait (core.marker.PhantomData (M.Val (V * KeyType)))}
     {ℋ_2 : scale_info.TypeInfo.Trait V}
     {ℋ_3 : ink_storage_traits.storage.StorageKey.Trait KeyType}
     {ℋ_4 : scale_info.TypeInfo.Trait KeyType}.
