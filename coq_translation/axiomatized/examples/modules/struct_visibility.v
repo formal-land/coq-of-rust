@@ -8,11 +8,9 @@ Module my.
     
     Context {T : Set}.
     
-    Unset Primitive Projections.
     Record t : Set := {
       contents : T;
     }.
-    Global Set Primitive Projections.
     
     Global Instance Get_contents : Notation.Dot "contents" := {
       Notation.dot x := let* x := M.read x in M.pure x.(contents) : M _;
@@ -32,11 +30,9 @@ Module my.
     
     Context {T : Set}.
     
-    Unset Primitive Projections.
     Record t : Set := {
       contents : T;
     }.
-    Global Set Primitive Projections.
     
     Global Instance Get_contents : Notation.Dot "contents" := {
       Notation.dot x := let* x := M.read x in M.pure x.(contents) : M _;
@@ -74,11 +70,9 @@ Section OpenBox.
   
   Context {T : Set}.
   
-  Unset Primitive Projections.
   Record t : Set := {
     contents : T;
   }.
-  Global Set Primitive Projections.
   
   Global Instance Get_contents : Notation.Dot "contents" := {
     Notation.dot x := let* x := M.read x in M.pure x.(contents) : M _;
@@ -97,11 +91,9 @@ Section ClosedBox.
   
   Context {T : Set}.
   
-  Unset Primitive Projections.
   Record t : Set := {
     contents : T;
   }.
-  Global Set Primitive Projections.
   
   Global Instance Get_contents : Notation.Dot "contents" := {
     Notation.dot x := let* x := M.read x in M.pure x.(contents) : M _;

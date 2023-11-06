@@ -8,11 +8,9 @@ Module my.
     
     Context {T : Set}.
     
-    Unset Primitive Projections.
     Record t : Set := {
       contents : T;
     }.
-    Global Set Primitive Projections.
     
     Global Instance Get_contents : Notation.Dot "contents" := {
       Notation.dot x := let* x := M.read x in M.pure x.(contents) : M _;
@@ -32,11 +30,9 @@ Module my.
     
     Context {T : Set}.
     
-    Unset Primitive Projections.
     Record t : Set := {
       contents : T;
     }.
-    Global Set Primitive Projections.
     
     Global Instance Get_contents : Notation.Dot "contents" := {
       Notation.dot x := let* x := M.read x in M.pure x.(contents) : M _;
@@ -76,11 +72,9 @@ Section OpenBox.
   
   Context {T : Set}.
   
-  Unset Primitive Projections.
   Record t : Set := {
     contents : T;
   }.
-  Global Set Primitive Projections.
   
   Global Instance Get_contents : Notation.Dot "contents" := {
     Notation.dot x := let* x := M.read x in M.pure x.(contents) : M _;
@@ -99,11 +93,9 @@ Section ClosedBox.
   
   Context {T : Set}.
   
-  Unset Primitive Projections.
   Record t : Set := {
     contents : T;
   }.
-  Global Set Primitive Projections.
   
   Global Instance Get_contents : Notation.Dot "contents" := {
     Notation.dot x := let* x := M.read x in M.pure x.(contents) : M _;
@@ -170,8 +162,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
           core.fmt.Arguments::["new_v1"] α4 α14 in
         std.io.stdio._print α15 in
       M.alloc tt in
-    let*
-        _closed_box :
+    let* _closed_box :
         ltac:(refine (struct_visibility.my.ClosedBox (ref str))) :=
       (struct_visibility.my.ClosedBox (ref str))::["new"]
         (mk_str "classified information") in

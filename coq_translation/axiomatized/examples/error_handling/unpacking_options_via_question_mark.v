@@ -5,11 +5,9 @@ Module  Person.
 Section Person.
   Context `{ℋ : State.Trait}.
   
-  Unset Primitive Projections.
   Record t : Set := {
     job : core.option.Option unpacking_options_via_question_mark.Job;
   }.
-  Global Set Primitive Projections.
   
   Global Instance Get_job : Notation.Dot "job" := {
     Notation.dot x := let* x := M.read x in M.pure x.(job) : M _;
@@ -25,12 +23,10 @@ Module  Job.
 Section Job.
   Context `{ℋ : State.Trait}.
   
-  Unset Primitive Projections.
   Record t : Set := {
     phone_number :
       core.option.Option unpacking_options_via_question_mark.PhoneNumber;
   }.
-  Global Set Primitive Projections.
   
   Global Instance Get_phone_number : Notation.Dot "phone_number" := {
     Notation.dot x := let* x := M.read x in M.pure x.(phone_number) : M _;
@@ -79,12 +75,10 @@ Module  PhoneNumber.
 Section PhoneNumber.
   Context `{ℋ : State.Trait}.
   
-  Unset Primitive Projections.
   Record t : Set := {
     area_code : core.option.Option u8;
     number : u32;
   }.
-  Global Set Primitive Projections.
   
   Global Instance Get_area_code : Notation.Dot "area_code" := {
     Notation.dot x := let* x := M.read x in M.pure x.(area_code) : M _;

@@ -5,12 +5,10 @@ Module  Point.
 Section Point.
   Context `{ℋ : State.Trait}.
   
-  Unset Primitive Projections.
   Record t : Set := {
     x : i32;
     y : i32;
   }.
-  Global Set Primitive Projections.
   
   Global Instance Get_x : Notation.Dot "x" := {
     Notation.dot x' := let* x' := M.read x' in M.pure x'.(x) : M _;
@@ -110,8 +108,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
           scoping_rules_borrowing_the_ref_pattern.Point.y := α1;
         |} in
     let* _copy_of_x : ltac:(refine i32) :=
-      let
-          '{|
+      let '{|
             scoping_rules_borrowing_the_ref_pattern.Point.x := ref_to_x;
             scoping_rules_borrowing_the_ref_pattern.Point.y := _;
           |} :=
@@ -119,8 +116,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
       deref ref_to_x in
     let mutable_point := point in
     let* _ : ltac:(refine unit) :=
-      let
-          '{|
+      let '{|
             scoping_rules_borrowing_the_ref_pattern.Point.x := _;
             scoping_rules_borrowing_the_ref_pattern.Point.y := mut_ref_to_y;
           |} :=
@@ -200,8 +196,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
           core.fmt.Arguments::["new_v1"] α4 α19 in
         std.io.stdio._print α20 in
       M.alloc tt in
-    let*
-        mutable_tuple :
+    let* mutable_tuple :
         ltac:(refine
           (M.Val ((alloc.boxed.Box u32 alloc.alloc.Global) * u32))) :=
       let* α0 : ltac:(refine u32) := M.alloc 5 in
@@ -226,18 +221,15 @@ Definition main `{ℋ : State.Trait} : M unit :=
         let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
         let* α4 : ltac:(refine (ref (slice (ref str)))) :=
           pointer_coercion "Unsize" α3 in
-        let*
-            α5 :
+        let* α5 :
             ltac:(refine
               (ref (M.Val ((alloc.boxed.Box u32 alloc.alloc.Global) * u32)))) :=
           borrow mutable_tuple in
-        let*
-            α6 :
+        let* α6 :
             ltac:(refine
               (M.Val ((alloc.boxed.Box u32 alloc.alloc.Global) * u32))) :=
           deref α5 in
-        let*
-            α7 :
+        let* α7 :
             ltac:(refine
               (ref (M.Val ((alloc.boxed.Box u32 alloc.alloc.Global) * u32)))) :=
           borrow α6 in

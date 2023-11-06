@@ -4,8 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
   M.function_body
-    (let*
-        person :
+    (let* person :
         ltac:(refine
           scoping_rules_ownership_and_rules_partial_moves.main.Person) :=
       let* α0 : ltac:(refine alloc.string.String) :=
@@ -22,8 +21,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
             α0;
           scoping_rules_ownership_and_rules_partial_moves.main.Person.age := α2;
         |} in
-    let
-        '{|
+    let '{|
           scoping_rules_ownership_and_rules_partial_moves.main.Person.name
             :=
             name;
@@ -42,14 +40,12 @@ Definition main `{ℋ : State.Trait} : M unit :=
         let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
         let* α4 : ltac:(refine (ref (slice (ref str)))) :=
           pointer_coercion "Unsize" α3 in
-        let*
-            α5 :
+        let* α5 :
             ltac:(refine (ref (ref (alloc.boxed.Box u8 alloc.alloc.Global)))) :=
           borrow age in
         let* α6 : ltac:(refine (ref (alloc.boxed.Box u8 alloc.alloc.Global))) :=
           deref α5 in
-        let*
-            α7 :
+        let* α7 :
             ltac:(refine (ref (ref (alloc.boxed.Box u8 alloc.alloc.Global)))) :=
           borrow α6 in
         let* α8 : ltac:(refine core.fmt.rt.Argument) :=
@@ -135,12 +131,10 @@ Module  Person.
 Section Person.
   Context `{ℋ : State.Trait}.
   
-  Unset Primitive Projections.
   Record t : Set := {
     name : alloc.string.String;
     age : alloc.boxed.Box u8 alloc.boxed.Box.Default.A;
   }.
-  Global Set Primitive Projections.
   
   Global Instance Get_name : Notation.Dot "name" := {
     Notation.dot x := let* x := M.read x in M.pure x.(name) : M _;
@@ -176,8 +170,7 @@ Section Impl_core_fmt_Debug_for_scoping_rules_ownership_and_rules_partial_moves_
       let* α3 : ltac:(refine (ref str)) := borrow α2 in
       let* α4 : ltac:(refine str) := deref (mk_str "name") in
       let* α5 : ltac:(refine (ref str)) := borrow α4 in
-      let*
-          α6 :
+      let* α6 :
           ltac:(refine
             scoping_rules_ownership_and_rules_partial_moves.main.Person) :=
         deref self in
@@ -189,8 +182,7 @@ Section Impl_core_fmt_Debug_for_scoping_rules_ownership_and_rules_partial_moves_
         pointer_coercion "Unsize" α10 in
       let* α12 : ltac:(refine str) := deref (mk_str "age") in
       let* α13 : ltac:(refine (ref str)) := borrow α12 in
-      let*
-          α14 :
+      let* α14 :
           ltac:(refine
             scoping_rules_ownership_and_rules_partial_moves.main.Person) :=
         deref self in
@@ -198,14 +190,12 @@ Section Impl_core_fmt_Debug_for_scoping_rules_ownership_and_rules_partial_moves_
         α14.["age"] in
       let* α16 : ltac:(refine (ref (alloc.boxed.Box u8 alloc.alloc.Global))) :=
         borrow α15 in
-      let*
-          α17 :
+      let* α17 :
           ltac:(refine (ref (ref (alloc.boxed.Box u8 alloc.alloc.Global)))) :=
         borrow α16 in
       let* α18 : ltac:(refine (ref (alloc.boxed.Box u8 alloc.alloc.Global))) :=
         deref α17 in
-      let*
-          α19 :
+      let* α19 :
           ltac:(refine (ref (ref (alloc.boxed.Box u8 alloc.alloc.Global)))) :=
         borrow α18 in
       let* α20 : ltac:(refine (ref type not implemented)) :=

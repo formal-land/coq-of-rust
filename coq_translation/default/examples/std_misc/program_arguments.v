@@ -4,8 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
   M.function_body
-    (let*
-        args :
+    (let* args :
         ltac:(refine (alloc.vec.Vec alloc.string.String alloc.alloc.Global)) :=
       let* α0 : ltac:(refine std.env.Args) := std.env.args in
       (core.iter.traits.iterator.Iterator.collect
@@ -22,8 +21,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
         let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
         let* α4 : ltac:(refine (ref (slice (ref str)))) :=
           pointer_coercion "Unsize" α3 in
-        let*
-            α5 :
+        let* α5 :
             ltac:(refine
               (ref (alloc.vec.Vec alloc.string.String alloc.alloc.Global))) :=
           borrow args in
@@ -63,8 +61,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
         let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
         let* α4 : ltac:(refine (ref (slice (ref str)))) :=
           pointer_coercion "Unsize" α3 in
-        let*
-            α5 :
+        let* α5 :
             ltac:(refine
               (ref (alloc.vec.Vec alloc.string.String alloc.alloc.Global))) :=
           borrow args in
@@ -77,8 +74,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
         let* α11 : ltac:(refine (ref usize)) := borrow α10 in
         let* α12 : ltac:(refine core.fmt.rt.Argument) :=
           core.fmt.rt.Argument::["new_debug"] α11 in
-        let*
-            α13 :
+        let* α13 :
             ltac:(refine
               (ref (alloc.vec.Vec alloc.string.String alloc.alloc.Global))) :=
           borrow args in

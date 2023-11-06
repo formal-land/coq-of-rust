@@ -7,18 +7,15 @@ Definition read_lines
     : M (std.io.Lines (std.io.buffered.bufreader.BufReader std.fs.File)) :=
   M.function_body
     (let* file : ltac:(refine std.fs.File) :=
-      let*
-          α0 :
+      let* α0 :
           ltac:(refine (core.result.Result std.fs.File std.io.error.Error)) :=
         std.fs.File::["open"] filename in
       (core.result.Result std.fs.File std.io.error.Error)::["unwrap"] α0 in
     let* _ : ltac:(refine never) :=
-      let*
-          α0 :
+      let* α0 :
           ltac:(refine (std.io.buffered.bufreader.BufReader std.fs.File)) :=
         (std.io.buffered.bufreader.BufReader std.fs.File)::["new"] file in
-      let*
-          α1 :
+      let* α1 :
           ltac:(refine
             (std.io.Lines (std.io.buffered.bufreader.BufReader std.fs.File))) :=
         (std.io.BufRead.lines
@@ -32,8 +29,7 @@ Definition read_lines
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
   M.function_body
-    (let*
-        lines :
+    (let* lines :
         ltac:(refine
           (std.io.Lines (std.io.buffered.bufreader.BufReader std.fs.File))) :=
       let* α0 : ltac:(refine str) := deref (mk_str "./hosts") in
@@ -44,8 +40,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
             (Trait := ltac:(refine _)))
           α1 in
       file_io_read_lines.read_lines α2 in
-    let*
-        α0 :
+    let* α0 :
         ltac:(refine
           (std.io.Lines (std.io.buffered.bufreader.BufReader std.fs.File))) :=
       (core.iter.traits.collect.IntoIterator.into_iter
@@ -59,28 +54,24 @@ Definition main `{ℋ : State.Trait} : M unit :=
       | iter =>
         loop
           (let* _ : ltac:(refine unit) :=
-            let*
-                α0 :
+            let* α0 :
                 ltac:(refine
                   (mut_ref
                     (std.io.Lines
                       (std.io.buffered.bufreader.BufReader std.fs.File)))) :=
               borrow_mut iter in
-            let*
-                α1 :
+            let* α1 :
                 ltac:(refine
                   (std.io.Lines
                     (std.io.buffered.bufreader.BufReader std.fs.File))) :=
               deref α0 in
-            let*
-                α2 :
+            let* α2 :
                 ltac:(refine
                   (mut_ref
                     (std.io.Lines
                       (std.io.buffered.bufreader.BufReader std.fs.File)))) :=
               borrow_mut α1 in
-            let*
-                α3 :
+            let* α3 :
                 ltac:(refine
                   (core.option.Option
                     (core.result.Result

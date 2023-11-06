@@ -7,12 +7,10 @@ Section Mapping.
   
   Context {K V : Set}.
   
-  Unset Primitive Projections.
   Record t : Set := {
     _key : core.marker.PhantomData K;
     _value : core.marker.PhantomData V;
   }.
-  Global Set Primitive Projections.
   
   Global Instance Get__key : Notation.Dot "_key" := {
     Notation.dot x := let* x := M.read x in M.pure x.(_key) : M _;
@@ -40,6 +38,7 @@ Section Impl_core_default_Default_for_lib_Mapping_K_V.
   Context
     {ℋ_0 : core.default.Default.Trait K}
     {ℋ_1 : core.default.Default.Trait V}.
+  
   Definition Self : Set := lib.Mapping K V.
   
   Definition default : M (lib.Mapping K V) :=
@@ -334,14 +333,12 @@ Module  Erc20.
 Section Erc20.
   Context `{ℋ : State.Trait}.
   
-  Unset Primitive Projections.
   Record t : Set := {
     total_supply : lib.Balance;
     balances : lib.Mapping lib.AccountId lib.Balance;
     allowances :
       lib.Mapping (M.Val (lib.AccountId * lib.AccountId)) lib.Balance;
   }.
-  Global Set Primitive Projections.
   
   Global Instance Get_total_supply : Notation.Dot "total_supply" := {
     Notation.dot x := let* x := M.read x in M.pure x.(total_supply) : M _;
@@ -384,8 +381,7 @@ Section Impl_core_default_Default_for_lib_Erc20.
         core.default.Default.default
           (Self := lib.Mapping lib.AccountId lib.Balance)
           (Trait := ltac:(refine _)) in
-      let*
-          α2 :
+      let* α2 :
           ltac:(refine
             (lib.Mapping
               (M.Val (lib.AccountId * lib.AccountId))
@@ -416,13 +412,11 @@ Module  Transfer.
 Section Transfer.
   Context `{ℋ : State.Trait}.
   
-  Unset Primitive Projections.
   Record t : Set := {
     from : core.option.Option lib.AccountId;
     to : core.option.Option lib.AccountId;
     value : lib.Balance;
   }.
-  Global Set Primitive Projections.
   
   Global Instance Get_from : Notation.Dot "from" := {
     Notation.dot x := let* x := M.read x in M.pure x.(from) : M _;
@@ -473,13 +467,11 @@ Module  Approval.
 Section Approval.
   Context `{ℋ : State.Trait}.
   
-  Unset Primitive Projections.
   Record t : Set := {
     owner : lib.AccountId;
     spender : lib.AccountId;
     value : lib.Balance;
   }.
-  Global Set Primitive Projections.
   
   Global Instance Get_owner : Notation.Dot "owner" := {
     Notation.dot x := let* x := M.read x in M.pure x.(owner) : M _;
@@ -618,8 +610,7 @@ Section Impl_lib_Erc20_2.
         let* α1 : ltac:(refine (ref lib.Environment)) := borrow α0 in
         lib.Environment::["caller"] α1 in
       let* _ : ltac:(refine unit) :=
-        let*
-            α0 :
+        let* α0 :
             ltac:(refine (mut_ref (lib.Mapping lib.AccountId lib.Balance))) :=
           borrow_mut balances in
         (lib.Mapping lib.AccountId lib.Balance)::["insert"]
@@ -641,8 +632,7 @@ Section Impl_lib_Erc20_2.
               lib.Transfer.value := total_supply;
             |} in
         lib.Environment::["emit_event"] α1 α4 in
-      let*
-          α0 :
+      let* α0 :
           ltac:(refine
             (lib.Mapping
               (M.Val (lib.AccountId * lib.AccountId))
@@ -717,15 +707,13 @@ Section Impl_lib_Erc20_2.
       : M lib.Balance :=
     M.function_body
       (let* α0 : ltac:(refine lib.Erc20) := deref self in
-      let*
-          α1 :
+      let* α1 :
           ltac:(refine
             (lib.Mapping
               (M.Val (lib.AccountId * lib.AccountId))
               lib.Balance)) :=
         α0.["allowances"] in
-      let*
-          α2 :
+      let* α2 :
           ltac:(refine
             (ref
               (lib.Mapping
@@ -814,8 +802,7 @@ Section Impl_lib_Erc20_2.
         let* α0 : ltac:(refine lib.Erc20) := deref self in
         let* α1 : ltac:(refine (lib.Mapping lib.AccountId lib.Balance)) :=
           α0.["balances"] in
-        let*
-            α2 :
+        let* α2 :
             ltac:(refine (mut_ref (lib.Mapping lib.AccountId lib.Balance))) :=
           borrow_mut α1 in
         let* α3 : ltac:(refine lib.AccountId) := deref from in
@@ -836,8 +823,7 @@ Section Impl_lib_Erc20_2.
         let* α0 : ltac:(refine lib.Erc20) := deref self in
         let* α1 : ltac:(refine (lib.Mapping lib.AccountId lib.Balance)) :=
           α0.["balances"] in
-        let*
-            α2 :
+        let* α2 :
             ltac:(refine (mut_ref (lib.Mapping lib.AccountId lib.Balance))) :=
           borrow_mut α1 in
         let* α3 : ltac:(refine lib.AccountId) := deref to in
@@ -916,15 +902,13 @@ Section Impl_lib_Erc20_2.
         lib.Environment::["caller"] α3 in
       let* _ : ltac:(refine unit) :=
         let* α0 : ltac:(refine lib.Erc20) := deref self in
-        let*
-            α1 :
+        let* α1 :
             ltac:(refine
               (lib.Mapping
                 (M.Val (lib.AccountId * lib.AccountId))
                 lib.Balance)) :=
           α0.["allowances"] in
-        let*
-            α2 :
+        let* α2 :
             ltac:(refine
               (mut_ref
                 (lib.Mapping
@@ -1015,8 +999,7 @@ Section Impl_lib_Erc20_2.
         let* α7 : ltac:(refine (ref lib.AccountId)) := borrow α6 in
         let* α8 : ltac:(refine (core.result.Result unit lib.Error)) :=
           lib.Erc20::["transfer_from_to"] α1 α4 α7 value in
-        let*
-            α9 :
+        let* α9 :
             ltac:(refine
               (core.ops.control_flow.ControlFlow
                 (core.result.Result core.convert.Infallible lib.Error)
@@ -1039,15 +1022,13 @@ Section Impl_lib_Erc20_2.
         end in
       let* _ : ltac:(refine unit) :=
         let* α0 : ltac:(refine lib.Erc20) := deref self in
-        let*
-            α1 :
+        let* α1 :
             ltac:(refine
               (lib.Mapping
                 (M.Val (lib.AccountId * lib.AccountId))
                 lib.Balance)) :=
           α0.["allowances"] in
-        let*
-            α2 :
+        let* α2 :
             ltac:(refine
               (mut_ref
                 (lib.Mapping

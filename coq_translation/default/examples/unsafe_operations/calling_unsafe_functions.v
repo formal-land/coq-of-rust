@@ -10,12 +10,10 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α2 : ltac:(refine u32) := M.alloc 3 in
       let* α3 : ltac:(refine u32) := M.alloc 4 in
       let* α4 : ltac:(refine (array u32)) := M.alloc [ α0; α1; α2; α3 ] in
-      let*
-          α5 :
+      let* α5 :
           ltac:(refine (alloc.boxed.Box (array u32) alloc.alloc.Global)) :=
         (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α4 in
-      let*
-          α6 :
+      let* α6 :
           ltac:(refine (alloc.boxed.Box (slice u32) alloc.alloc.Global)) :=
         pointer_coercion "Unsize" α5 in
       (slice u32)::["into_vec"] α6 in
@@ -39,8 +37,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
         (alloc.vec.Vec u32 alloc.alloc.Global)::["as_slice"] α0 in
       let* α2 : ltac:(refine (ref (ref (slice u32)))) := borrow α1 in
       let* α3 : ltac:(refine (ref (ref (slice u32)))) := borrow my_slice in
-      let*
-          α4 :
+      let* α4 :
           ltac:(refine
             (M.Val ((ref (ref (slice u32))) * (ref (ref (slice u32)))))) :=
         M.alloc (α2, α3) in

@@ -25,8 +25,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α0 : ltac:(refine i64) := M.alloc 42 in
       M.alloc (generics_new_type_idiom_as_base_type.Years.Build_t α0) in
     let* years_as_primitive_1 : ltac:(refine i64) := years.["0"] in
-    let
-        'generics_new_type_idiom_as_base_type.Years.Build_t
+    let 'generics_new_type_idiom_as_base_type.Years.Build_t
           years_as_primitive_2 :=
       years in
     M.alloc tt).

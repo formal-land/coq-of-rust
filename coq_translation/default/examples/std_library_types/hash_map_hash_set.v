@@ -4,8 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
   M.function_body
-    (let*
-        a :
+    (let* a :
         ltac:(refine
           (std.collections.hash.set.HashSet
             i32
@@ -14,18 +13,15 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α1 : ltac:(refine i32) := M.alloc 2 in
       let* α2 : ltac:(refine i32) := M.alloc 3 in
       let* α3 : ltac:(refine (array i32)) := M.alloc [ α0; α1; α2 ] in
-      let*
-          α4 :
+      let* α4 :
           ltac:(refine (alloc.boxed.Box (array i32) alloc.alloc.Global)) :=
         (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α3 in
-      let*
-          α5 :
+      let* α5 :
           ltac:(refine (alloc.boxed.Box (slice i32) alloc.alloc.Global)) :=
         pointer_coercion "Unsize" α4 in
       let* α6 : ltac:(refine (alloc.vec.Vec i32 alloc.alloc.Global)) :=
         (slice i32)::["into_vec"] α5 in
-      let*
-          α7 :
+      let* α7 :
           ltac:(refine (alloc.vec.into_iter.IntoIter i32 alloc.alloc.Global)) :=
         (core.iter.traits.collect.IntoIterator.into_iter
             (Self := alloc.vec.Vec i32 alloc.alloc.Global)
@@ -35,8 +31,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
           (Self := alloc.vec.into_iter.IntoIter i32 alloc.alloc.Global)
           (Trait := ltac:(refine _)))
         α7 in
-    let*
-        b :
+    let* b :
         ltac:(refine
           (std.collections.hash.set.HashSet
             i32
@@ -45,18 +40,15 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α1 : ltac:(refine i32) := M.alloc 3 in
       let* α2 : ltac:(refine i32) := M.alloc 4 in
       let* α3 : ltac:(refine (array i32)) := M.alloc [ α0; α1; α2 ] in
-      let*
-          α4 :
+      let* α4 :
           ltac:(refine (alloc.boxed.Box (array i32) alloc.alloc.Global)) :=
         (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α3 in
-      let*
-          α5 :
+      let* α5 :
           ltac:(refine (alloc.boxed.Box (slice i32) alloc.alloc.Global)) :=
         pointer_coercion "Unsize" α4 in
       let* α6 : ltac:(refine (alloc.vec.Vec i32 alloc.alloc.Global)) :=
         (slice i32)::["into_vec"] α5 in
-      let*
-          α7 :
+      let* α7 :
           ltac:(refine (alloc.vec.into_iter.IntoIter i32 alloc.alloc.Global)) :=
         (core.iter.traits.collect.IntoIterator.into_iter
             (Self := alloc.vec.Vec i32 alloc.alloc.Global)
@@ -67,8 +59,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
           (Trait := ltac:(refine _)))
         α7 in
     let* _ : ltac:(refine unit) :=
-      let*
-          α0 :
+      let* α0 :
           ltac:(refine
             (mut_ref
               (std.collections.hash.set.HashSet
@@ -91,8 +82,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
       else
         M.alloc tt in
     let* _ : ltac:(refine unit) :=
-      let*
-          α0 :
+      let* α0 :
           ltac:(refine
             (ref
               (std.collections.hash.set.HashSet
@@ -118,8 +108,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
       else
         M.alloc tt in
     let* _ : ltac:(refine bool) :=
-      let*
-          α0 :
+      let* α0 :
           ltac:(refine
             (mut_ref
               (std.collections.hash.set.HashSet
@@ -142,23 +131,20 @@ Definition main `{ℋ : State.Trait} : M unit :=
         let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
         let* α4 : ltac:(refine (ref (slice (ref str)))) :=
           pointer_coercion "Unsize" α3 in
-        let*
-            α5 :
+        let* α5 :
             ltac:(refine
               (ref
                 (std.collections.hash.set.HashSet
                   i32
                   std.collections.hash.map.RandomState))) :=
           borrow a in
-        let*
-            α6 :
+        let* α6 :
             ltac:(refine
               (std.collections.hash.set.HashSet
                 i32
                 std.collections.hash.map.RandomState)) :=
           deref α5 in
-        let*
-            α7 :
+        let* α7 :
             ltac:(refine
               (ref
                 (std.collections.hash.set.HashSet
@@ -190,23 +176,20 @@ Definition main `{ℋ : State.Trait} : M unit :=
         let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
         let* α4 : ltac:(refine (ref (slice (ref str)))) :=
           pointer_coercion "Unsize" α3 in
-        let*
-            α5 :
+        let* α5 :
             ltac:(refine
               (ref
                 (std.collections.hash.set.HashSet
                   i32
                   std.collections.hash.map.RandomState))) :=
           borrow b in
-        let*
-            α6 :
+        let* α6 :
             ltac:(refine
               (std.collections.hash.set.HashSet
                 i32
                 std.collections.hash.map.RandomState)) :=
           deref α5 in
-        let*
-            α7 :
+        let* α7 :
             ltac:(refine
               (ref
                 (std.collections.hash.set.HashSet
@@ -238,39 +221,34 @@ Definition main `{ℋ : State.Trait} : M unit :=
         let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
         let* α4 : ltac:(refine (ref (slice (ref str)))) :=
           pointer_coercion "Unsize" α3 in
-        let*
-            α5 :
+        let* α5 :
             ltac:(refine
               (ref
                 (std.collections.hash.set.HashSet
                   i32
                   std.collections.hash.map.RandomState))) :=
           borrow a in
-        let*
-            α6 :
+        let* α6 :
             ltac:(refine
               (ref
                 (std.collections.hash.set.HashSet
                   i32
                   std.collections.hash.map.RandomState))) :=
           borrow b in
-        let*
-            α7 :
+        let* α7 :
             ltac:(refine
               (std.collections.hash.set.HashSet
                 i32
                 std.collections.hash.map.RandomState)) :=
           deref α6 in
-        let*
-            α8 :
+        let* α8 :
             ltac:(refine
               (ref
                 (std.collections.hash.set.HashSet
                   i32
                   std.collections.hash.map.RandomState))) :=
           borrow α7 in
-        let*
-            α9 :
+        let* α9 :
             ltac:(refine
               (std.collections.hash.set.Union
                 i32
@@ -288,14 +266,12 @@ Definition main `{ℋ : State.Trait} : M unit :=
                   std.collections.hash.map.RandomState)
               (Trait := ltac:(refine _)))
             α9 in
-        let*
-            α11 :
+        let* α11 :
             ltac:(refine (ref (alloc.vec.Vec (ref i32) alloc.alloc.Global))) :=
           borrow α10 in
         let* α12 : ltac:(refine (alloc.vec.Vec (ref i32) alloc.alloc.Global)) :=
           deref α11 in
-        let*
-            α13 :
+        let* α13 :
             ltac:(refine (ref (alloc.vec.Vec (ref i32) alloc.alloc.Global))) :=
           borrow α12 in
         let* α14 : ltac:(refine core.fmt.rt.Argument) :=
@@ -323,39 +299,34 @@ Definition main `{ℋ : State.Trait} : M unit :=
         let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
         let* α4 : ltac:(refine (ref (slice (ref str)))) :=
           pointer_coercion "Unsize" α3 in
-        let*
-            α5 :
+        let* α5 :
             ltac:(refine
               (ref
                 (std.collections.hash.set.HashSet
                   i32
                   std.collections.hash.map.RandomState))) :=
           borrow a in
-        let*
-            α6 :
+        let* α6 :
             ltac:(refine
               (ref
                 (std.collections.hash.set.HashSet
                   i32
                   std.collections.hash.map.RandomState))) :=
           borrow b in
-        let*
-            α7 :
+        let* α7 :
             ltac:(refine
               (std.collections.hash.set.HashSet
                 i32
                 std.collections.hash.map.RandomState)) :=
           deref α6 in
-        let*
-            α8 :
+        let* α8 :
             ltac:(refine
               (ref
                 (std.collections.hash.set.HashSet
                   i32
                   std.collections.hash.map.RandomState))) :=
           borrow α7 in
-        let*
-            α9 :
+        let* α9 :
             ltac:(refine
               (std.collections.hash.set.Difference
                 i32
@@ -373,14 +344,12 @@ Definition main `{ℋ : State.Trait} : M unit :=
                   std.collections.hash.map.RandomState)
               (Trait := ltac:(refine _)))
             α9 in
-        let*
-            α11 :
+        let* α11 :
             ltac:(refine (ref (alloc.vec.Vec (ref i32) alloc.alloc.Global))) :=
           borrow α10 in
         let* α12 : ltac:(refine (alloc.vec.Vec (ref i32) alloc.alloc.Global)) :=
           deref α11 in
-        let*
-            α13 :
+        let* α13 :
             ltac:(refine (ref (alloc.vec.Vec (ref i32) alloc.alloc.Global))) :=
           borrow α12 in
         let* α14 : ltac:(refine core.fmt.rt.Argument) :=
@@ -408,39 +377,34 @@ Definition main `{ℋ : State.Trait} : M unit :=
         let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
         let* α4 : ltac:(refine (ref (slice (ref str)))) :=
           pointer_coercion "Unsize" α3 in
-        let*
-            α5 :
+        let* α5 :
             ltac:(refine
               (ref
                 (std.collections.hash.set.HashSet
                   i32
                   std.collections.hash.map.RandomState))) :=
           borrow a in
-        let*
-            α6 :
+        let* α6 :
             ltac:(refine
               (ref
                 (std.collections.hash.set.HashSet
                   i32
                   std.collections.hash.map.RandomState))) :=
           borrow b in
-        let*
-            α7 :
+        let* α7 :
             ltac:(refine
               (std.collections.hash.set.HashSet
                 i32
                 std.collections.hash.map.RandomState)) :=
           deref α6 in
-        let*
-            α8 :
+        let* α8 :
             ltac:(refine
               (ref
                 (std.collections.hash.set.HashSet
                   i32
                   std.collections.hash.map.RandomState))) :=
           borrow α7 in
-        let*
-            α9 :
+        let* α9 :
             ltac:(refine
               (std.collections.hash.set.Intersection
                 i32
@@ -458,14 +422,12 @@ Definition main `{ℋ : State.Trait} : M unit :=
                   std.collections.hash.map.RandomState)
               (Trait := ltac:(refine _)))
             α9 in
-        let*
-            α11 :
+        let* α11 :
             ltac:(refine (ref (alloc.vec.Vec (ref i32) alloc.alloc.Global))) :=
           borrow α10 in
         let* α12 : ltac:(refine (alloc.vec.Vec (ref i32) alloc.alloc.Global)) :=
           deref α11 in
-        let*
-            α13 :
+        let* α13 :
             ltac:(refine (ref (alloc.vec.Vec (ref i32) alloc.alloc.Global))) :=
           borrow α12 in
         let* α14 : ltac:(refine core.fmt.rt.Argument) :=
@@ -493,39 +455,34 @@ Definition main `{ℋ : State.Trait} : M unit :=
         let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
         let* α4 : ltac:(refine (ref (slice (ref str)))) :=
           pointer_coercion "Unsize" α3 in
-        let*
-            α5 :
+        let* α5 :
             ltac:(refine
               (ref
                 (std.collections.hash.set.HashSet
                   i32
                   std.collections.hash.map.RandomState))) :=
           borrow a in
-        let*
-            α6 :
+        let* α6 :
             ltac:(refine
               (ref
                 (std.collections.hash.set.HashSet
                   i32
                   std.collections.hash.map.RandomState))) :=
           borrow b in
-        let*
-            α7 :
+        let* α7 :
             ltac:(refine
               (std.collections.hash.set.HashSet
                 i32
                 std.collections.hash.map.RandomState)) :=
           deref α6 in
-        let*
-            α8 :
+        let* α8 :
             ltac:(refine
               (ref
                 (std.collections.hash.set.HashSet
                   i32
                   std.collections.hash.map.RandomState))) :=
           borrow α7 in
-        let*
-            α9 :
+        let* α9 :
             ltac:(refine
               (std.collections.hash.set.SymmetricDifference
                 i32
@@ -543,14 +500,12 @@ Definition main `{ℋ : State.Trait} : M unit :=
                   std.collections.hash.map.RandomState)
               (Trait := ltac:(refine _)))
             α9 in
-        let*
-            α11 :
+        let* α11 :
             ltac:(refine (ref (alloc.vec.Vec (ref i32) alloc.alloc.Global))) :=
           borrow α10 in
         let* α12 : ltac:(refine (alloc.vec.Vec (ref i32) alloc.alloc.Global)) :=
           deref α11 in
-        let*
-            α13 :
+        let* α13 :
             ltac:(refine (ref (alloc.vec.Vec (ref i32) alloc.alloc.Global))) :=
           borrow α12 in
         let* α14 : ltac:(refine core.fmt.rt.Argument) :=

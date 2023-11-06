@@ -321,24 +321,21 @@ Definition main `{ℋ : State.Trait} : M unit :=
       M.alloc (core.option.Option.Some α0) in
     let* potato : ltac:(refine (core.option.Option combinators_map.Food)) :=
       M.alloc core.option.Option.None in
-    let*
-        cooked_apple :
+    let* cooked_apple :
         ltac:(refine (core.option.Option combinators_map.Cooked)) :=
       let* α0 : ltac:(refine (core.option.Option combinators_map.Peeled)) :=
         combinators_map.peel apple in
       let* α1 : ltac:(refine (core.option.Option combinators_map.Chopped)) :=
         combinators_map.chop α0 in
       combinators_map.cook α1 in
-    let*
-        cooked_carrot :
+    let* cooked_carrot :
         ltac:(refine (core.option.Option combinators_map.Cooked)) :=
       let* α0 : ltac:(refine (core.option.Option combinators_map.Peeled)) :=
         combinators_map.peel carrot in
       let* α1 : ltac:(refine (core.option.Option combinators_map.Chopped)) :=
         combinators_map.chop α0 in
       combinators_map.cook α1 in
-    let*
-        cooked_potato :
+    let* cooked_potato :
         ltac:(refine (core.option.Option combinators_map.Cooked)) :=
       combinators_map.process potato in
     let* _ : ltac:(refine unit) := combinators_map.eat cooked_apple in

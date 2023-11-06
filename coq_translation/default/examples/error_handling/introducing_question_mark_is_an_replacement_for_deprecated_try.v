@@ -10,8 +10,7 @@ Definition multiply
     (let* first_number : ltac:(refine i32) :=
       let* α0 : ltac:(refine str) := deref first_number_str in
       let* α1 : ltac:(refine (ref str)) := borrow α0 in
-      let*
-          α2 :
+      let* α2 :
           ltac:(refine (core.result.Result i32 core.num.error.ParseIntError)) :=
         str::["parse"] α1 in
       let* α3 := M.read α2 in
@@ -24,8 +23,7 @@ Definition multiply
                 (Self := core.num.error.ParseIntError)
                 (Trait := ltac:(refine _)))
               err in
-          let*
-              α1 :
+          let* α1 :
               ltac:(refine
                 (core.result.Result i32 core.num.error.ParseIntError)) :=
             M.alloc (core.result.Result.Err α0) in
@@ -36,8 +34,7 @@ Definition multiply
     let* second_number : ltac:(refine i32) :=
       let* α0 : ltac:(refine str) := deref second_number_str in
       let* α1 : ltac:(refine (ref str)) := borrow α0 in
-      let*
-          α2 :
+      let* α2 :
           ltac:(refine (core.result.Result i32 core.num.error.ParseIntError)) :=
         str::["parse"] α1 in
       let* α3 := M.read α2 in
@@ -50,8 +47,7 @@ Definition multiply
                 (Self := core.num.error.ParseIntError)
                 (Trait := ltac:(refine _)))
               err in
-          let*
-              α1 :
+          let* α1 :
               ltac:(refine
                 (core.result.Result i32 core.num.error.ParseIntError)) :=
             M.alloc (core.result.Result.Err α0) in
@@ -137,8 +133,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α1 : ltac:(refine (ref str)) := borrow α0 in
       let* α2 : ltac:(refine str) := deref (mk_str "2") in
       let* α3 : ltac:(refine (ref str)) := borrow α2 in
-      let*
-          α4 :
+      let* α4 :
           ltac:(refine (core.result.Result i32 core.num.error.ParseIntError)) :=
         introducing_question_mark_is_an_replacement_for_deprecated_try.multiply
           α1
@@ -149,8 +144,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α1 : ltac:(refine (ref str)) := borrow α0 in
       let* α2 : ltac:(refine str) := deref (mk_str "2") in
       let* α3 : ltac:(refine (ref str)) := borrow α2 in
-      let*
-          α4 :
+      let* α4 :
           ltac:(refine (core.result.Result i32 core.num.error.ParseIntError)) :=
         introducing_question_mark_is_an_replacement_for_deprecated_try.multiply
           α1

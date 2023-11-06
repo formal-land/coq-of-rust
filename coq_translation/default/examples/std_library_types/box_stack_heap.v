@@ -6,12 +6,10 @@ Module  Point.
 Section Point.
   Context `{ℋ : State.Trait}.
   
-  Unset Primitive Projections.
   Record t : Set := {
     x : f64;
     y : f64;
   }.
-  Global Set Primitive Projections.
   
   Global Instance Get_x : Notation.Dot "x" := {
     Notation.dot x' := let* x' := M.read x' in M.pure x'.(x) : M _;
@@ -116,12 +114,10 @@ Module  Rectangle.
 Section Rectangle.
   Context `{ℋ : State.Trait}.
   
-  Unset Primitive Projections.
   Record t : Set := {
     top_left : box_stack_heap.Point;
     bottom_right : box_stack_heap.Point;
   }.
-  Global Set Primitive Projections.
   
   Global Instance Get_top_left : Notation.Dot "top_left" := {
     Notation.dot x := let* x := M.read x in M.pure x.(top_left) : M _;
@@ -174,8 +170,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
           box_stack_heap.Rectangle.top_left := α0;
           box_stack_heap.Rectangle.bottom_right := α3;
         |} in
-    let*
-        boxed_rectangle :
+    let* boxed_rectangle :
         ltac:(refine
           (alloc.boxed.Box box_stack_heap.Rectangle alloc.alloc.Global)) :=
       let* α0 : ltac:(refine box_stack_heap.Point) := box_stack_heap.origin in
@@ -192,20 +187,17 @@ Definition main `{ℋ : State.Trait} : M unit :=
           |} in
       (alloc.boxed.Box box_stack_heap.Rectangle alloc.alloc.Global)::["new"]
         α4 in
-    let*
-        boxed_point :
+    let* boxed_point :
         ltac:(refine
           (alloc.boxed.Box box_stack_heap.Point alloc.alloc.Global)) :=
       let* α0 : ltac:(refine box_stack_heap.Point) := box_stack_heap.origin in
       (alloc.boxed.Box box_stack_heap.Point alloc.alloc.Global)::["new"] α0 in
-    let*
-        box_in_a_box :
+    let* box_in_a_box :
         ltac:(refine
           (alloc.boxed.Box
             (alloc.boxed.Box box_stack_heap.Point alloc.alloc.Global)
             alloc.alloc.Global)) :=
-      let*
-          α0 :
+      let* α0 :
           ltac:(refine
             (alloc.boxed.Box box_stack_heap.Point alloc.alloc.Global)) :=
         box_stack_heap.boxed_origin in
@@ -290,19 +282,16 @@ Definition main `{ℋ : State.Trait} : M unit :=
         let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
         let* α4 : ltac:(refine (ref (slice (ref str)))) :=
           pointer_coercion "Unsize" α3 in
-        let*
-            α5 :
+        let* α5 :
             ltac:(refine
               (ref
                 (alloc.boxed.Box box_stack_heap.Point alloc.alloc.Global))) :=
           borrow boxed_point in
-        let*
-            α6 :
+        let* α6 :
             ltac:(refine
               (alloc.boxed.Box box_stack_heap.Point alloc.alloc.Global)) :=
           deref α5 in
-        let*
-            α7 :
+        let* α7 :
             ltac:(refine
               (ref
                 (alloc.boxed.Box box_stack_heap.Point alloc.alloc.Global))) :=
@@ -338,21 +327,18 @@ Definition main `{ℋ : State.Trait} : M unit :=
         let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
         let* α4 : ltac:(refine (ref (slice (ref str)))) :=
           pointer_coercion "Unsize" α3 in
-        let*
-            α5 :
+        let* α5 :
             ltac:(refine
               (ref
                 (alloc.boxed.Box
                   box_stack_heap.Rectangle
                   alloc.alloc.Global))) :=
           borrow boxed_rectangle in
-        let*
-            α6 :
+        let* α6 :
             ltac:(refine
               (alloc.boxed.Box box_stack_heap.Rectangle alloc.alloc.Global)) :=
           deref α5 in
-        let*
-            α7 :
+        let* α7 :
             ltac:(refine
               (ref
                 (alloc.boxed.Box
@@ -389,23 +375,20 @@ Definition main `{ℋ : State.Trait} : M unit :=
         let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
         let* α4 : ltac:(refine (ref (slice (ref str)))) :=
           pointer_coercion "Unsize" α3 in
-        let*
-            α5 :
+        let* α5 :
             ltac:(refine
               (ref
                 (alloc.boxed.Box
                   (alloc.boxed.Box box_stack_heap.Point alloc.alloc.Global)
                   alloc.alloc.Global))) :=
           borrow box_in_a_box in
-        let*
-            α6 :
+        let* α6 :
             ltac:(refine
               (alloc.boxed.Box
                 (alloc.boxed.Box box_stack_heap.Point alloc.alloc.Global)
                 alloc.alloc.Global)) :=
           deref α5 in
-        let*
-            α7 :
+        let* α7 :
             ltac:(refine
               (ref
                 (alloc.boxed.Box

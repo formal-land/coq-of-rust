@@ -5,11 +5,9 @@ Module  Val.
 Section Val.
   Context `{ℋ : State.Trait}.
   
-  Unset Primitive Projections.
   Record t : Set := {
     val : f64;
   }.
-  Global Set Primitive Projections.
   
   Global Instance Get_val : Notation.Dot "val" := {
     Notation.dot x := let* x := M.read x in M.pure x.(val) : M _;
@@ -27,11 +25,9 @@ Section GenVal.
   
   Context {T : Set}.
   
-  Unset Primitive Projections.
   Record t : Set := {
     gen_val : T;
   }.
-  Global Set Primitive Projections.
   
   Global Instance Get_gen_val : Notation.Dot "gen_val" := {
     Notation.dot x := let* x := M.read x in M.pure x.(gen_val) : M _;

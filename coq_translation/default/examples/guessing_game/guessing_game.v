@@ -67,8 +67,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
         let* α4 : ltac:(refine (ref str)) := str::["trim"] α3 in
         let* α5 : ltac:(refine str) := deref α4 in
         let* α6 : ltac:(refine (ref str)) := borrow α5 in
-        let*
-            α7 :
+        let* α7 :
             ltac:(refine
               (core.result.Result u32 core.num.error.ParseIntError)) :=
           str::["parse"] α6 in

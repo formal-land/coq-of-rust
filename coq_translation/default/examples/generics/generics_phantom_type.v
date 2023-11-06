@@ -48,6 +48,7 @@ Section Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_A_B.
     {ℋ_0 : core.cmp.PartialEq.Trait A (Rhs := core.cmp.PartialEq.Default.Rhs A)}
     {ℋ_1 :
       core.cmp.PartialEq.Trait B (Rhs := core.cmp.PartialEq.Default.Rhs B)}.
+  
   Definition Self : Set := generics_phantom_type.PhantomTuple A B.
   
   Definition eq
@@ -101,12 +102,10 @@ Section PhantomStruct.
   
   Context {A B : Set}.
   
-  Unset Primitive Projections.
   Record t : Set := {
     first : A;
     phantom : core.marker.PhantomData B;
   }.
-  Global Set Primitive Projections.
   
   Global Instance Get_first : Notation.Dot "first" := {
     Notation.dot x := let* x := M.read x in M.pure x.(first) : M _;
@@ -148,6 +147,7 @@ Section Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
     {ℋ_0 : core.cmp.PartialEq.Trait A (Rhs := core.cmp.PartialEq.Default.Rhs A)}
     {ℋ_1 :
       core.cmp.PartialEq.Trait B (Rhs := core.cmp.PartialEq.Default.Rhs B)}.
+  
   Definition Self : Set := generics_phantom_type.PhantomStruct A B.
   
   Definition eq
@@ -198,22 +198,19 @@ End Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
   M.function_body
-    (let*
-        _tuple1 :
+    (let* _tuple1 :
         ltac:(refine (generics_phantom_type.PhantomTuple char f32)) :=
       let* α0 : ltac:(refine char) := M.alloc "Q"%char in
       let* α1 : ltac:(refine (core.marker.PhantomData f32)) :=
         M.alloc core.marker.PhantomData.Build_t in
       M.alloc (generics_phantom_type.PhantomTuple.Build_t α0 α1) in
-    let*
-        _tuple2 :
+    let* _tuple2 :
         ltac:(refine (generics_phantom_type.PhantomTuple char f64)) :=
       let* α0 : ltac:(refine char) := M.alloc "Q"%char in
       let* α1 : ltac:(refine (core.marker.PhantomData f64)) :=
         M.alloc core.marker.PhantomData.Build_t in
       M.alloc (generics_phantom_type.PhantomTuple.Build_t α0 α1) in
-    let*
-        _struct1 :
+    let* _struct1 :
         ltac:(refine (generics_phantom_type.PhantomStruct char f32)) :=
       let* α0 : ltac:(refine char) := M.alloc "Q"%char in
       let* α1 : ltac:(refine (core.marker.PhantomData f32)) :=
@@ -223,8 +220,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
           generics_phantom_type.PhantomStruct.first := α0;
           generics_phantom_type.PhantomStruct.phantom := α1;
         |} in
-    let*
-        _struct2 :
+    let* _struct2 :
         ltac:(refine (generics_phantom_type.PhantomStruct char f64)) :=
       let* α0 : ltac:(refine char) := M.alloc "Q"%char in
       let* α1 : ltac:(refine (core.marker.PhantomData f64)) :=

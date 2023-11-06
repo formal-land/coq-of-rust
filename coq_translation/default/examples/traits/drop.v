@@ -5,11 +5,9 @@ Module  Droppable.
 Section Droppable.
   Context `{ℋ : State.Trait}.
   
-  Unset Primitive Projections.
   Record t : Set := {
     name : ref str;
   }.
-  Global Set Primitive Projections.
   
   Global Instance Get_name : Notation.Dot "name" := {
     Notation.dot x := let* x := M.read x in M.pure x.(name) : M _;

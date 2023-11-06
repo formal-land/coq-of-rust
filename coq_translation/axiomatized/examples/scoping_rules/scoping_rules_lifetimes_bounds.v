@@ -27,6 +27,7 @@ Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
   Context {T : Set}.
   
   Context {ℋ_0 : core.fmt.Debug.Trait T}.
+  
   Definition Self : Set := scoping_rules_lifetimes_bounds.Ref T.
   
   Parameter fmt :

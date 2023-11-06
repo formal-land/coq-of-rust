@@ -4,8 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
   M.function_body
-    (let*
-        strings :
+    (let* strings :
         ltac:(refine (alloc.vec.Vec (ref str) alloc.alloc.Global)) :=
       let* α0 : ltac:(refine str) := deref (mk_str "93") in
       let* α1 : ltac:(refine (ref str)) := borrow α0 in
@@ -13,33 +12,28 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α3 : ltac:(refine (ref str)) := borrow α2 in
       let* α4 : ltac:(refine (array (ref str))) :=
         M.alloc [ mk_str "tofu"; α1; α3 ] in
-      let*
-          α5 :
+      let* α5 :
           ltac:(refine
             (alloc.boxed.Box (array (ref str)) alloc.alloc.Global)) :=
         (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α4 in
-      let*
-          α6 :
+      let* α6 :
           ltac:(refine
             (alloc.boxed.Box (slice (ref str)) alloc.alloc.Global)) :=
         pointer_coercion "Unsize" α5 in
       (slice (ref str))::["into_vec"] α6 in
-    let*
-        numbers :
+    let* numbers :
         ltac:(refine
           (core.result.Result
             (alloc.vec.Vec i32 alloc.alloc.Global)
             core.num.error.ParseIntError)) :=
-      let*
-          α0 :
+      let* α0 :
           ltac:(refine
             (alloc.vec.into_iter.IntoIter (ref str) alloc.alloc.Global)) :=
         (core.iter.traits.collect.IntoIterator.into_iter
             (Self := alloc.vec.Vec (ref str) alloc.alloc.Global)
             (Trait := ltac:(refine _)))
           strings in
-      let*
-          α1 :
+      let* α1 :
           ltac:(refine
             (core.iter.adapters.map.Map
               (alloc.vec.into_iter.IntoIter (ref str) alloc.alloc.Global)
@@ -68,23 +62,20 @@ Definition main `{ℋ : State.Trait} : M unit :=
         let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
         let* α4 : ltac:(refine (ref (slice (ref str)))) :=
           pointer_coercion "Unsize" α3 in
-        let*
-            α5 :
+        let* α5 :
             ltac:(refine
               (ref
                 (core.result.Result
                   (alloc.vec.Vec i32 alloc.alloc.Global)
                   core.num.error.ParseIntError))) :=
           borrow numbers in
-        let*
-            α6 :
+        let* α6 :
             ltac:(refine
               (core.result.Result
                 (alloc.vec.Vec i32 alloc.alloc.Global)
                 core.num.error.ParseIntError)) :=
           deref α5 in
-        let*
-            α7 :
+        let* α7 :
             ltac:(refine
               (ref
                 (core.result.Result

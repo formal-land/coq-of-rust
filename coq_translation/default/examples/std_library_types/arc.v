@@ -65,32 +65,27 @@ Definition main `{ℋ : State.Trait} : M unit :=
                           borrow α2 in
                         let* α4 : ltac:(refine (ref (slice (ref str)))) :=
                           pointer_coercion "Unsize" α3 in
-                        let*
-                            α5 :
+                        let* α5 :
                             ltac:(refine (ref (alloc.sync.Arc (ref str)))) :=
                           borrow apple in
                         let* α6 : ltac:(refine (alloc.sync.Arc (ref str))) :=
                           deref α5 in
-                        let*
-                            α7 :
+                        let* α7 :
                             ltac:(refine (ref (alloc.sync.Arc (ref str)))) :=
                           borrow α6 in
                         let* α8 : ltac:(refine core.fmt.rt.Argument) :=
                           core.fmt.rt.Argument::["new_debug"] α7 in
                         let* α9 : ltac:(refine (array core.fmt.rt.Argument)) :=
                           M.alloc [ α8 ] in
-                        let*
-                            α10 :
+                        let* α10 :
                             ltac:(refine (ref (array core.fmt.rt.Argument))) :=
                           borrow α9 in
                         let* α11 : ltac:(refine (array core.fmt.rt.Argument)) :=
                           deref α10 in
-                        let*
-                            α12 :
+                        let* α12 :
                             ltac:(refine (ref (array core.fmt.rt.Argument))) :=
                           borrow α11 in
-                        let*
-                            α13 :
+                        let* α13 :
                             ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
                           pointer_coercion "Unsize" α12 in
                         let* α14 : ltac:(refine core.fmt.Arguments) :=

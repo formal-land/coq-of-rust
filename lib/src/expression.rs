@@ -1011,14 +1011,16 @@ impl StmtKind {
                 group([
                     nest([
                         nest([
-                            text("let"),
-                            if *is_monadic { text("*") } else { nil() },
-                            line(),
-                            (if !pattern.is_single_binding() {
-                                text("'")
-                            } else {
-                                nil()
-                            }),
+                            nest([
+                                text("let"),
+                                if *is_monadic { text("*") } else { nil() },
+                                line(),
+                                (if !pattern.is_single_binding() {
+                                    text("'")
+                                } else {
+                                    nil()
+                                }),
+                            ]),
                             pattern.to_doc(),
                             match &init.ty {
                                 Some(ty) => concat([

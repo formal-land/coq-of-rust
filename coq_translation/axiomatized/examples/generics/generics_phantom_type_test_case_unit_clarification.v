@@ -152,6 +152,7 @@ Section Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificati
   Context {Unit : Set}.
   
   Context {ℋ_0 : core.fmt.Debug.Trait Unit}.
+  
   Definition Self : Set :=
     generics_phantom_type_test_case_unit_clarification.Length Unit.
   
@@ -175,6 +176,7 @@ Section Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarifica
   Context {Unit : Set}.
   
   Context {ℋ_0 : core.clone.Clone.Trait Unit}.
+  
   Definition Self : Set :=
     generics_phantom_type_test_case_unit_clarification.Length Unit.
   
@@ -201,6 +203,7 @@ Section Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarifica
   Context {Unit : Set}.
   
   Context {ℋ_0 : core.marker.Copy.Trait Unit}.
+  
   Definition Self : Set :=
     generics_phantom_type_test_case_unit_clarification.Length Unit.
   

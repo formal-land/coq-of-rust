@@ -5,13 +5,11 @@ Module  Point.
 Section Point.
   Context `{ℋ : State.Trait}.
   
-  Unset Primitive Projections.
   Record t : Set := {
     x : i32;
     y : i32;
     z : i32;
   }.
-  Global Set Primitive Projections.
   
   Global Instance Get_x : Notation.Dot "x" := {
     Notation.dot x' := let* x' := M.read x' in M.pure x'.(x) : M _;
@@ -48,12 +46,10 @@ Definition main `{ℋ : State.Trait} : M unit :=
           scoping_rules_borrowing_aliasing.Point.y := α1;
           scoping_rules_borrowing_aliasing.Point.z := α2;
         |} in
-    let*
-        borrowed_point :
+    let* borrowed_point :
         ltac:(refine (ref scoping_rules_borrowing_aliasing.Point)) :=
       borrow point in
-    let*
-        another_borrow :
+    let* another_borrow :
         ltac:(refine (ref scoping_rules_borrowing_aliasing.Point)) :=
       borrow point in
     let* _ : ltac:(refine unit) :=
@@ -158,8 +154,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
           core.fmt.Arguments::["new_v1"] α4 α26 in
         std.io.stdio._print α27 in
       M.alloc tt in
-    let*
-        mutable_borrow :
+    let* mutable_borrow :
         ltac:(refine (mut_ref scoping_rules_borrowing_aliasing.Point)) :=
       borrow_mut point in
     let* _ : ltac:(refine unit) :=
@@ -233,8 +228,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
           core.fmt.Arguments::["new_v1"] α4 α27 in
         std.io.stdio._print α28 in
       M.alloc tt in
-    let*
-        new_borrowed_point :
+    let* new_borrowed_point :
         ltac:(refine (ref scoping_rules_borrowing_aliasing.Point)) :=
       borrow point in
     let* _ : ltac:(refine unit) :=

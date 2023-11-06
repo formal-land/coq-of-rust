@@ -16,22 +16,19 @@ Definition combine_vecs_explicit_return_type
               i32
               alloc.vec.into_iter.IntoIter.Default.A))) :=
   M.function_body
-    (let*
-        α0 :
+    (let* α0 :
         ltac:(refine (alloc.vec.into_iter.IntoIter i32 alloc.alloc.Global)) :=
       (core.iter.traits.collect.IntoIterator.into_iter
           (Self := alloc.vec.Vec i32 alloc.alloc.Global)
           (Trait := ltac:(refine _)))
         v in
-    let*
-        α1 :
+    let* α1 :
         ltac:(refine (alloc.vec.into_iter.IntoIter i32 alloc.alloc.Global)) :=
       (core.iter.traits.collect.IntoIterator.into_iter
           (Self := alloc.vec.Vec i32 alloc.alloc.Global)
           (Trait := ltac:(refine _)))
         u in
-    let*
-        α2 :
+    let* α2 :
         ltac:(refine
           (core.iter.adapters.chain.Chain
             (alloc.vec.into_iter.IntoIter i32 alloc.alloc.Global)
@@ -55,22 +52,19 @@ Definition combine_vecs
     (u : alloc.vec.Vec i32 alloc.vec.Vec.Default.A)
     : M _ (* OpaqueTy *) :=
   M.function_body
-    (let*
-        α0 :
+    (let* α0 :
         ltac:(refine (alloc.vec.into_iter.IntoIter i32 alloc.alloc.Global)) :=
       (core.iter.traits.collect.IntoIterator.into_iter
           (Self := alloc.vec.Vec i32 alloc.alloc.Global)
           (Trait := ltac:(refine _)))
         v in
-    let*
-        α1 :
+    let* α1 :
         ltac:(refine (alloc.vec.into_iter.IntoIter i32 alloc.alloc.Global)) :=
       (core.iter.traits.collect.IntoIterator.into_iter
           (Self := alloc.vec.Vec i32 alloc.alloc.Global)
           (Trait := ltac:(refine _)))
         u in
-    let*
-        α2 :
+    let* α2 :
         ltac:(refine
           (core.iter.adapters.chain.Chain
             (alloc.vec.into_iter.IntoIter i32 alloc.alloc.Global)
@@ -98,12 +92,10 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α1 : ltac:(refine i32) := M.alloc 2 in
       let* α2 : ltac:(refine i32) := M.alloc 3 in
       let* α3 : ltac:(refine (array i32)) := M.alloc [ α0; α1; α2 ] in
-      let*
-          α4 :
+      let* α4 :
           ltac:(refine (alloc.boxed.Box (array i32) alloc.alloc.Global)) :=
         (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α3 in
-      let*
-          α5 :
+      let* α5 :
           ltac:(refine (alloc.boxed.Box (slice i32) alloc.alloc.Global)) :=
         pointer_coercion "Unsize" α4 in
       (slice i32)::["into_vec"] α5 in
@@ -111,12 +103,10 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α0 : ltac:(refine i32) := M.alloc 4 in
       let* α1 : ltac:(refine i32) := M.alloc 5 in
       let* α2 : ltac:(refine (array i32)) := M.alloc [ α0; α1 ] in
-      let*
-          α3 :
+      let* α3 :
           ltac:(refine (alloc.boxed.Box (array i32) alloc.alloc.Global)) :=
         (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α2 in
-      let*
-          α4 :
+      let* α4 :
           ltac:(refine (alloc.boxed.Box (slice i32) alloc.alloc.Global)) :=
         pointer_coercion "Unsize" α3 in
       (slice i32)::["into_vec"] α4 in
@@ -134,8 +124,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
             (Trait := ltac:(refine _)))
           α3 in
       let* α5 : ltac:(refine (ref (core.option.Option i32))) := borrow α4 in
-      let*
-          α6 :
+      let* α6 :
           ltac:(refine
             (M.Val
               ((ref (core.option.Option i32)) *
@@ -194,8 +183,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
             (Trait := ltac:(refine _)))
           α3 in
       let* α5 : ltac:(refine (ref (core.option.Option i32))) := borrow α4 in
-      let*
-          α6 :
+      let* α6 :
           ltac:(refine
             (M.Val
               ((ref (core.option.Option i32)) *
@@ -254,8 +242,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
             (Trait := ltac:(refine _)))
           α3 in
       let* α5 : ltac:(refine (ref (core.option.Option i32))) := borrow α4 in
-      let*
-          α6 :
+      let* α6 :
           ltac:(refine
             (M.Val
               ((ref (core.option.Option i32)) *
@@ -314,8 +301,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
             (Trait := ltac:(refine _)))
           α3 in
       let* α5 : ltac:(refine (ref (core.option.Option i32))) := borrow α4 in
-      let*
-          α6 :
+      let* α6 :
           ltac:(refine
             (M.Val
               ((ref (core.option.Option i32)) *
@@ -374,8 +360,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
             (Trait := ltac:(refine _)))
           α3 in
       let* α5 : ltac:(refine (ref (core.option.Option i32))) := borrow α4 in
-      let*
-          α6 :
+      let* α6 :
           ltac:(refine
             (M.Val
               ((ref (core.option.Option i32)) *

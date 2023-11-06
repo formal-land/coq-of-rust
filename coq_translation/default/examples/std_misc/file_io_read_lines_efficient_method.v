@@ -4,8 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
   M.function_body
-    (let*
-        α0 :
+    (let* α0 :
         ltac:(refine
           (core.result.Result
             (std.io.Lines (std.io.buffered.bufreader.BufReader std.fs.File))
@@ -13,8 +12,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
       file_io_read_lines_efficient_method.read_lines (mk_str "./hosts") in
     let* α1 : ltac:(refine bool) := let_if core.result.Result.Ok lines := α0 in
     if (α1 : bool) then
-      let*
-          α0 :
+      let* α0 :
           ltac:(refine
             (std.io.Lines (std.io.buffered.bufreader.BufReader std.fs.File))) :=
         (core.iter.traits.collect.IntoIterator.into_iter
@@ -28,28 +26,24 @@ Definition main `{ℋ : State.Trait} : M unit :=
         | iter =>
           loop
             (let* _ : ltac:(refine unit) :=
-              let*
-                  α0 :
+              let* α0 :
                   ltac:(refine
                     (mut_ref
                       (std.io.Lines
                         (std.io.buffered.bufreader.BufReader std.fs.File)))) :=
                 borrow_mut iter in
-              let*
-                  α1 :
+              let* α1 :
                   ltac:(refine
                     (std.io.Lines
                       (std.io.buffered.bufreader.BufReader std.fs.File))) :=
                 deref α0 in
-              let*
-                  α2 :
+              let* α2 :
                   ltac:(refine
                     (mut_ref
                       (std.io.Lines
                         (std.io.buffered.bufreader.BufReader std.fs.File)))) :=
                 borrow_mut α1 in
-              let*
-                  α3 :
+              let* α3 :
                   ltac:(refine
                     (core.option.Option
                       (core.result.Result
@@ -91,18 +85,15 @@ Definition main `{ℋ : State.Trait} : M unit :=
                         core.fmt.rt.Argument::["new_display"] α7 in
                       let* α9 : ltac:(refine (array core.fmt.rt.Argument)) :=
                         M.alloc [ α8 ] in
-                      let*
-                          α10 :
+                      let* α10 :
                           ltac:(refine (ref (array core.fmt.rt.Argument))) :=
                         borrow α9 in
                       let* α11 : ltac:(refine (array core.fmt.rt.Argument)) :=
                         deref α10 in
-                      let*
-                          α12 :
+                      let* α12 :
                           ltac:(refine (ref (array core.fmt.rt.Argument))) :=
                         borrow α11 in
-                      let*
-                          α13 :
+                      let* α13 :
                           ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
                         pointer_coercion "Unsize" α12 in
                       let* α14 : ltac:(refine core.fmt.Arguments) :=
@@ -131,12 +122,10 @@ Definition read_lines
             (std.io.buffered.bufreader.BufReader std.fs.File))) :=
   M.function_body
     (let* file : ltac:(refine std.fs.File) :=
-      let*
-          α0 :
+      let* α0 :
           ltac:(refine (core.result.Result std.fs.File std.io.error.Error)) :=
         std.fs.File::["open"] filename in
-      let*
-          α1 :
+      let* α1 :
           ltac:(refine
             (core.ops.control_flow.ControlFlow
               (core.result.Result core.convert.Infallible std.io.error.Error)
@@ -148,8 +137,7 @@ Definition read_lines
       let* α2 := M.read α1 in
       match α2 with
       | core.ops.control_flow.ControlFlow.Break residual =>
-        let*
-            α0 :
+        let* α0 :
             ltac:(refine
               (core.result.Result
                 (std.io.Lines (std.io.buffered.bufreader.BufReader std.fs.File))
@@ -168,8 +156,7 @@ Definition read_lines
       end in
     let* α0 : ltac:(refine (std.io.buffered.bufreader.BufReader std.fs.File)) :=
       (std.io.buffered.bufreader.BufReader std.fs.File)::["new"] file in
-    let*
-        α1 :
+    let* α1 :
         ltac:(refine
           (std.io.Lines (std.io.buffered.bufreader.BufReader std.fs.File))) :=
       (std.io.BufRead.lines

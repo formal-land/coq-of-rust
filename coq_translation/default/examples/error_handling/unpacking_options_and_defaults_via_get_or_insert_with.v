@@ -59,8 +59,7 @@ End Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_wit
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
   M.function_body
-    (let*
-        my_fruit :
+    (let* my_fruit :
         ltac:(refine
           (core.option.Option
             unpacking_options_and_defaults_via_get_or_insert_with.Fruit)) :=
@@ -82,13 +81,11 @@ Definition main `{ℋ : State.Trait} : M unit :=
         M.alloc tt in
       M.alloc
         unpacking_options_and_defaults_via_get_or_insert_with.Fruit.Lemon in
-    let*
-        first_available_fruit :
+    let* first_available_fruit :
         ltac:(refine
           (mut_ref
             unpacking_options_and_defaults_via_get_or_insert_with.Fruit)) :=
-      let*
-          α0 :
+      let* α0 :
           ltac:(refine
             (mut_ref
               (core.option.Option
@@ -108,21 +105,18 @@ Definition main `{ℋ : State.Trait} : M unit :=
         let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
         let* α4 : ltac:(refine (ref (slice (ref str)))) :=
           pointer_coercion "Unsize" α3 in
-        let*
-            α5 :
+        let* α5 :
             ltac:(refine
               (ref
                 (mut_ref
                   unpacking_options_and_defaults_via_get_or_insert_with.Fruit))) :=
           borrow first_available_fruit in
-        let*
-            α6 :
+        let* α6 :
             ltac:(refine
               (mut_ref
                 unpacking_options_and_defaults_via_get_or_insert_with.Fruit)) :=
           deref α5 in
-        let*
-            α7 :
+        let* α7 :
             ltac:(refine
               (ref
                 (mut_ref
@@ -153,21 +147,18 @@ Definition main `{ℋ : State.Trait} : M unit :=
         let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
         let* α4 : ltac:(refine (ref (slice (ref str)))) :=
           pointer_coercion "Unsize" α3 in
-        let*
-            α5 :
+        let* α5 :
             ltac:(refine
               (ref
                 (mut_ref
                   unpacking_options_and_defaults_via_get_or_insert_with.Fruit))) :=
           borrow first_available_fruit in
-        let*
-            α6 :
+        let* α6 :
             ltac:(refine
               (mut_ref
                 unpacking_options_and_defaults_via_get_or_insert_with.Fruit)) :=
           deref α5 in
-        let*
-            α7 :
+        let* α7 :
             ltac:(refine
               (ref
                 (mut_ref
@@ -188,25 +179,21 @@ Definition main `{ℋ : State.Trait} : M unit :=
           core.fmt.Arguments::["new_v1"] α4 α13 in
         std.io.stdio._print α14 in
       M.alloc tt in
-    let*
-        my_apple :
+    let* my_apple :
         ltac:(refine
           (core.option.Option
             unpacking_options_and_defaults_via_get_or_insert_with.Fruit)) :=
-      let*
-          α0 :
+      let* α0 :
           ltac:(refine
             unpacking_options_and_defaults_via_get_or_insert_with.Fruit) :=
         M.alloc
           unpacking_options_and_defaults_via_get_or_insert_with.Fruit.Apple in
       M.alloc (core.option.Option.Some α0) in
-    let*
-        should_be_apple :
+    let* should_be_apple :
         ltac:(refine
           (mut_ref
             unpacking_options_and_defaults_via_get_or_insert_with.Fruit)) :=
-      let*
-          α0 :
+      let* α0 :
           ltac:(refine
             (mut_ref
               (core.option.Option
@@ -226,21 +213,18 @@ Definition main `{ℋ : State.Trait} : M unit :=
         let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
         let* α4 : ltac:(refine (ref (slice (ref str)))) :=
           pointer_coercion "Unsize" α3 in
-        let*
-            α5 :
+        let* α5 :
             ltac:(refine
               (ref
                 (mut_ref
                   unpacking_options_and_defaults_via_get_or_insert_with.Fruit))) :=
           borrow should_be_apple in
-        let*
-            α6 :
+        let* α6 :
             ltac:(refine
               (mut_ref
                 unpacking_options_and_defaults_via_get_or_insert_with.Fruit)) :=
           deref α5 in
-        let*
-            α7 :
+        let* α7 :
             ltac:(refine
               (ref
                 (mut_ref
@@ -271,21 +255,18 @@ Definition main `{ℋ : State.Trait} : M unit :=
         let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
         let* α4 : ltac:(refine (ref (slice (ref str)))) :=
           pointer_coercion "Unsize" α3 in
-        let*
-            α5 :
+        let* α5 :
             ltac:(refine
               (ref
                 (core.option.Option
                   unpacking_options_and_defaults_via_get_or_insert_with.Fruit))) :=
           borrow my_apple in
-        let*
-            α6 :
+        let* α6 :
             ltac:(refine
               (core.option.Option
                 unpacking_options_and_defaults_via_get_or_insert_with.Fruit)) :=
           deref α5 in
-        let*
-            α7 :
+        let* α7 :
             ltac:(refine
               (ref
                 (core.option.Option

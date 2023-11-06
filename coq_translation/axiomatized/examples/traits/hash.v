@@ -5,13 +5,11 @@ Module  Person.
 Section Person.
   Context `{ℋ : State.Trait}.
   
-  Unset Primitive Projections.
   Record t : Set := {
     id : u32;
     name : alloc.string.String;
     phone : u64;
   }.
-  Global Set Primitive Projections.
   
   Global Instance Get_id : Notation.Dot "id" := {
     Notation.dot x := let* x := M.read x in M.pure x.(id) : M _;

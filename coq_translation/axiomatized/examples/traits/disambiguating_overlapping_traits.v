@@ -27,12 +27,10 @@ Module  Form.
 Section Form.
   Context `{ℋ : State.Trait}.
   
-  Unset Primitive Projections.
   Record t : Set := {
     username : alloc.string.String;
     age : u8;
   }.
-  Global Set Primitive Projections.
   
   Global Instance Get_username : Notation.Dot "username" := {
     Notation.dot x := let* x := M.read x in M.pure x.(username) : M _;

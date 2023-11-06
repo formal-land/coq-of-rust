@@ -119,8 +119,7 @@ Definition double_first
     (vec : alloc.vec.Vec (ref str) alloc.vec.Vec.Default.A)
     : M ltac:(boxing_errors.Result constr:(i32)) :=
   M.function_body
-    (let*
-        α0 :
+    (let* α0 :
         ltac:(refine (ref (alloc.vec.Vec (ref str) alloc.alloc.Global))) :=
       borrow vec in
     let* α1 : ltac:(refine (ref (slice (ref str)))) :=
@@ -132,8 +131,7 @@ Definition double_first
     let* α3 : ltac:(refine (ref (slice (ref str)))) := borrow α2 in
     let* α4 : ltac:(refine (core.option.Option (ref (ref str)))) :=
       (slice (ref str))::["first"] α3 in
-    let*
-        α5 :
+    let* α5 :
         ltac:(refine
           (core.result.Result
             (ref (ref str))
@@ -155,12 +153,10 @@ Definition double_first
       (let* α0 : ltac:(refine (ref str)) := deref s in
       let* α1 : ltac:(refine str) := deref α0 in
       let* α2 : ltac:(refine (ref str)) := borrow α1 in
-      let*
-          α3 :
+      let* α3 :
           ltac:(refine (core.result.Result i32 core.num.error.ParseIntError)) :=
         str::["parse"] α2 in
-      let*
-          α4 :
+      let* α4 :
           ltac:(refine
             (core.result.Result
               i32
@@ -223,19 +219,16 @@ Definition print
         let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
         let* α4 : ltac:(refine (ref (slice (ref str)))) :=
           pointer_coercion "Unsize" α3 in
-        let*
-            α5 :
+        let* α5 :
             ltac:(refine
               (ref
                 (alloc.boxed.Box type not implemented alloc.alloc.Global))) :=
           borrow e in
-        let*
-            α6 :
+        let* α6 :
             ltac:(refine
               (alloc.boxed.Box type not implemented alloc.alloc.Global)) :=
           deref α5 in
-        let*
-            α7 :
+        let* α7 :
             ltac:(refine
               (ref
                 (alloc.boxed.Box type not implemented alloc.alloc.Global))) :=
@@ -260,8 +253,7 @@ Definition print
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
   M.function_body
-    (let*
-        numbers :
+    (let* numbers :
         ltac:(refine (alloc.vec.Vec (ref str) alloc.alloc.Global)) :=
       let* α0 : ltac:(refine str) := deref (mk_str "93") in
       let* α1 : ltac:(refine (ref str)) := borrow α0 in
@@ -269,13 +261,11 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α3 : ltac:(refine (ref str)) := borrow α2 in
       let* α4 : ltac:(refine (array (ref str))) :=
         M.alloc [ mk_str "42"; α1; α3 ] in
-      let*
-          α5 :
+      let* α5 :
           ltac:(refine
             (alloc.boxed.Box (array (ref str)) alloc.alloc.Global)) :=
         (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α4 in
-      let*
-          α6 :
+      let* α6 :
           ltac:(refine
             (alloc.boxed.Box (slice (ref str)) alloc.alloc.Global)) :=
         pointer_coercion "Unsize" α5 in
@@ -289,20 +279,17 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α3 : ltac:(refine (ref str)) := borrow α2 in
       let* α4 : ltac:(refine (array (ref str))) :=
         M.alloc [ mk_str "tofu"; α1; α3 ] in
-      let*
-          α5 :
+      let* α5 :
           ltac:(refine
             (alloc.boxed.Box (array (ref str)) alloc.alloc.Global)) :=
         (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α4 in
-      let*
-          α6 :
+      let* α6 :
           ltac:(refine
             (alloc.boxed.Box (slice (ref str)) alloc.alloc.Global)) :=
         pointer_coercion "Unsize" α5 in
       (slice (ref str))::["into_vec"] α6 in
     let* _ : ltac:(refine unit) :=
-      let*
-          α0 :
+      let* α0 :
           ltac:(refine
             (core.result.Result
               i32
@@ -310,8 +297,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
         boxing_errors.double_first numbers in
       boxing_errors.print α0 in
     let* _ : ltac:(refine unit) :=
-      let*
-          α0 :
+      let* α0 :
           ltac:(refine
             (core.result.Result
               i32
@@ -319,8 +305,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
         boxing_errors.double_first empty in
       boxing_errors.print α0 in
     let* _ : ltac:(refine unit) :=
-      let*
-          α0 :
+      let* α0 :
           ltac:(refine
             (core.result.Result
               i32

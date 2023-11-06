@@ -98,16 +98,14 @@ match_args {increase|decrease} <integer>
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
   M.function_body
-    (let*
-        args :
+    (let* args :
         ltac:(refine (alloc.vec.Vec alloc.string.String alloc.alloc.Global)) :=
       let* α0 : ltac:(refine std.env.Args) := std.env.args in
       (core.iter.traits.iterator.Iterator.collect
           (Self := std.env.Args)
           (Trait := ltac:(refine _)))
         α0 in
-    let*
-        α0 :
+    let* α0 :
         ltac:(refine
           (ref (alloc.vec.Vec alloc.string.String alloc.alloc.Global))) :=
       borrow args in
@@ -134,8 +132,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
         M.alloc tt in
       M.alloc tt
     | _ =>
-      let*
-          α0 :
+      let* α0 :
           ltac:(refine
             (ref (alloc.vec.Vec alloc.string.String alloc.alloc.Global))) :=
         borrow args in
@@ -155,8 +152,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
           α4 in
       let* α6 : ltac:(refine str) := deref α5 in
       let* α7 : ltac:(refine (ref str)) := borrow α6 in
-      let*
-          α8 :
+      let* α8 :
           ltac:(refine (core.result.Result i32 core.num.error.ParseIntError)) :=
         str::["parse"] α7 in
       let* α9 := M.read α8 in
@@ -192,8 +188,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
       end
     | _ =>
       let* cmd : ltac:(refine (ref alloc.string.String)) :=
-        let*
-            α0 :
+        let* α0 :
             ltac:(refine
               (ref (alloc.vec.Vec alloc.string.String alloc.alloc.Global))) :=
           borrow args in
@@ -207,8 +202,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
         let* α3 : ltac:(refine alloc.string.String) := deref α2 in
         borrow α3 in
       let* num : ltac:(refine (ref alloc.string.String)) :=
-        let*
-            α0 :
+        let* α0 :
             ltac:(refine
               (ref (alloc.vec.Vec alloc.string.String alloc.alloc.Global))) :=
           borrow args in
@@ -231,8 +225,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
             α1 in
         let* α3 : ltac:(refine str) := deref α2 in
         let* α4 : ltac:(refine (ref str)) := borrow α3 in
-        let*
-            α5 :
+        let* α5 :
             ltac:(refine
               (core.result.Result i32 core.num.error.ParseIntError)) :=
           str::["parse"] α4 in

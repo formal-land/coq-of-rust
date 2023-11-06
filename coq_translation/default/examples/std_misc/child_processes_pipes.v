@@ -24,8 +24,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
         std.process.Command::["stdout"] α5 α6 in
       let* α8 : ltac:(refine std.process.Command) := deref α7 in
       let* α9 : ltac:(refine (mut_ref std.process.Command)) := borrow_mut α8 in
-      let*
-          α10 :
+      let* α10 :
           ltac:(refine
             (core.result.Result std.process.Child std.io.error.Error)) :=
         std.process.Command::["spawn"] α9 in

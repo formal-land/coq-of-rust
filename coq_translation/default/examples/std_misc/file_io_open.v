@@ -14,8 +14,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
       std.path.Path::["display"] α1 in
     let* file : ltac:(refine std.fs.File) :=
       let* α0 : ltac:(refine (ref (ref std.path.Path))) := borrow path in
-      let*
-          α1 :
+      let* α1 :
           ltac:(refine (core.result.Result std.fs.File std.io.error.Error)) :=
         std.fs.File::["open"] α0 in
       let* α2 := M.read α1 in

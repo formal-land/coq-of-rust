@@ -5,12 +5,10 @@ Module  Sheep.
 Section Sheep.
   Context `{ℋ : State.Trait}.
   
-  Unset Primitive Projections.
   Record t : Set := {
     naked : bool;
     name : ref str;
   }.
-  Global Set Primitive Projections.
   
   Global Instance Get_naked : Notation.Dot "naked" := {
     Notation.dot x := let* x := M.read x in M.pure x.(naked) : M _;

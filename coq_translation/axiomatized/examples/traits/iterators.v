@@ -5,12 +5,10 @@ Module  Fibonacci.
 Section Fibonacci.
   Context `{ℋ : State.Trait}.
   
-  Unset Primitive Projections.
   Record t : Set := {
     curr : u32;
     next : u32;
   }.
-  Global Set Primitive Projections.
   
   Global Instance Get_curr : Notation.Dot "curr" := {
     Notation.dot x := let* x := M.read x in M.pure x.(curr) : M _;

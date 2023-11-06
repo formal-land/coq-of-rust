@@ -58,12 +58,10 @@ Module  NamedBorrowed.
 Section NamedBorrowed.
   Context `{ℋ : State.Trait}.
   
-  Unset Primitive Projections.
   Record t : Set := {
     x : ref i32;
     y : ref i32;
   }.
-  Global Set Primitive Projections.
   
   Global Instance Get_x : Notation.Dot "x" := {
     Notation.dot x' := let* x' := M.read x' in M.pure x'.(x) : M _;
@@ -222,14 +220,12 @@ Definition main `{ℋ : State.Trait} : M unit :=
         let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
         let* α4 : ltac:(refine (ref (slice (ref str)))) :=
           pointer_coercion "Unsize" α3 in
-        let*
-            α5 :
+        let* α5 :
             ltac:(refine (ref scoping_rules_lifetimes_structs.Borrowed)) :=
           borrow single in
         let* α6 : ltac:(refine scoping_rules_lifetimes_structs.Borrowed) :=
           deref α5 in
-        let*
-            α7 :
+        let* α7 :
             ltac:(refine (ref scoping_rules_lifetimes_structs.Borrowed)) :=
           borrow α6 in
         let* α8 : ltac:(refine core.fmt.rt.Argument) :=
@@ -257,14 +253,12 @@ Definition main `{ℋ : State.Trait} : M unit :=
         let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
         let* α4 : ltac:(refine (ref (slice (ref str)))) :=
           pointer_coercion "Unsize" α3 in
-        let*
-            α5 :
+        let* α5 :
             ltac:(refine (ref scoping_rules_lifetimes_structs.NamedBorrowed)) :=
           borrow double in
         let* α6 : ltac:(refine scoping_rules_lifetimes_structs.NamedBorrowed) :=
           deref α5 in
-        let*
-            α7 :
+        let* α7 :
             ltac:(refine (ref scoping_rules_lifetimes_structs.NamedBorrowed)) :=
           borrow α6 in
         let* α8 : ltac:(refine core.fmt.rt.Argument) :=

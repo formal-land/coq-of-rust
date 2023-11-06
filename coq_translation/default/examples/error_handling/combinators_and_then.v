@@ -225,8 +225,7 @@ Definition eat
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
   M.function_body
-    (let*
-        '(cordon_bleu, steak, sushi) :
+    (let* '(cordon_bleu, steak, sushi) :
         ltac:(refine
           (M.Val
             (combinators_and_then.Food *

@@ -445,6 +445,7 @@ Section Impl_subtle_ConstantTimeEq_for_slice_T.
   Context {T : Set}.
   
   Context {ℋ_0 : subtle.ConstantTimeEq.Trait T}.
+  
   Definition Self : Set := slice T.
   
   Definition ct_eq (self : ref Self) (_rhs : ref (slice T)) : M subtle.Choice :=
@@ -482,8 +483,7 @@ Section Impl_subtle_ConstantTimeEq_for_slice_T.
         let* α4 : ltac:(refine (ref (slice T))) := borrow α3 in
         let* α5 : ltac:(refine (core.slice.iter.Iter T)) :=
           (slice T)::["iter"] α4 in
-        let*
-            α6 :
+        let* α6 :
             ltac:(refine
               (core.iter.adapters.zip.Zip
                 (core.slice.iter.Iter T)
@@ -493,8 +493,7 @@ Section Impl_subtle_ConstantTimeEq_for_slice_T.
               (Trait := ltac:(refine _)))
             α2
             α5 in
-        let*
-            α7 :
+        let* α7 :
             ltac:(refine
               (core.iter.adapters.zip.Zip
                 (core.slice.iter.Iter T)
@@ -512,31 +511,27 @@ Section Impl_subtle_ConstantTimeEq_for_slice_T.
           | iter =>
             loop
               (let* _ : ltac:(refine unit) :=
-                let*
-                    α0 :
+                let* α0 :
                     ltac:(refine
                       (mut_ref
                         (core.iter.adapters.zip.Zip
                           (core.slice.iter.Iter T)
                           (core.slice.iter.Iter T)))) :=
                   borrow_mut iter in
-                let*
-                    α1 :
+                let* α1 :
                     ltac:(refine
                       (core.iter.adapters.zip.Zip
                         (core.slice.iter.Iter T)
                         (core.slice.iter.Iter T))) :=
                   deref α0 in
-                let*
-                    α2 :
+                let* α2 :
                     ltac:(refine
                       (mut_ref
                         (core.iter.adapters.zip.Zip
                           (core.slice.iter.Iter T)
                           (core.slice.iter.Iter T)))) :=
                   borrow_mut α1 in
-                let*
-                    α3 :
+                let* α3 :
                     ltac:(refine
                       (core.option.Option (M.Val ((ref T) * (ref T))))) :=
                   (core.iter.traits.iterator.Iterator.next
@@ -1847,6 +1842,7 @@ Section Impl_subtle_ConditionallyNegatable_for_T.
   Context
     {ℋ_0 : subtle.ConditionallySelectable.Trait T}
     {ℋ_1 : core.ops.arith.Neg.Trait (ref T)}.
+  
   Definition Self : Set := T.
   
   Definition conditional_negate
@@ -1891,12 +1887,10 @@ Section CtOption.
   
   Context {T : Set}.
   
-  Unset Primitive Projections.
   Record t : Set := {
     value : T;
     is_some : subtle.Choice;
   }.
-  Global Set Primitive Projections.
   
   Global Instance Get_value : Notation.Dot "value" := {
     Notation.dot x := let* x := M.read x in M.pure x.(value) : M _;
@@ -1922,6 +1916,7 @@ Section Impl_core_clone_Clone_for_subtle_CtOption_T.
   Context {T : Set}.
   
   Context {ℋ_0 : core.clone.Clone.Trait T}.
+  
   Definition Self : Set := subtle.CtOption T.
   
   Definition clone (self : ref Self) : M (subtle.CtOption T) :=
@@ -1965,6 +1960,7 @@ Section Impl_core_marker_Copy_for_subtle_CtOption_T.
   Context {T : Set}.
   
   Context {ℋ_0 : core.marker.Copy.Trait T}.
+  
   Definition Self : Set := subtle.CtOption T.
   
   Global Instance ℐ : core.marker.Copy.Trait Self := {
@@ -1979,6 +1975,7 @@ Section Impl_core_fmt_Debug_for_subtle_CtOption_T.
   Context {T : Set}.
   
   Context {ℋ_0 : core.fmt.Debug.Trait T}.
+  
   Definition Self : Set := subtle.CtOption T.
   
   Definition fmt
@@ -2132,8 +2129,7 @@ Section Impl_subtle_CtOption_T.
                 pointer_coercion "Unsize" α20 in
               let* α22 : ltac:(refine core.fmt.Arguments) :=
                 core.fmt.Arguments::["new_v1"] α12 α21 in
-              let*
-                  α23 :
+              let* α23 :
                   ltac:(refine (core.option.Option core.fmt.Arguments)) :=
                 M.alloc (core.option.Option.Some α22) in
               core.panicking.assert_failed kind α3 α7 α23 in
@@ -2428,6 +2424,7 @@ Section Impl_subtle_ConditionallySelectable_for_subtle_CtOption_T.
   Context {T : Set}.
   
   Context {ℋ_0 : subtle.ConditionallySelectable.Trait T}.
+  
   Definition Self : Set := subtle.CtOption T.
   
   Definition conditional_select
@@ -2492,6 +2489,7 @@ Section Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
   Context {T : Set}.
   
   Context {ℋ_0 : subtle.ConstantTimeEq.Trait T}.
+  
   Definition Self : Set := subtle.CtOption T.
   
   Definition ct_eq

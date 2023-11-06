@@ -77,8 +77,7 @@ Module checked.
       let* α1 : ltac:(refine bool) := BinOp.eq y α0 in
       let* α2 : ltac:(refine bool) := use α1 in
       if (α2 : bool) then
-        let*
-            α0 :
+        let* α0 :
             ltac:(refine
               result_chaining_with_question_mark.checked.MathError) :=
           M.alloc
@@ -97,8 +96,7 @@ Module checked.
       let* α1 : ltac:(refine bool) := BinOp.lt x α0 in
       let* α2 : ltac:(refine bool) := use α1 in
       if (α2 : bool) then
-        let*
-            α0 :
+        let* α0 :
             ltac:(refine
               result_chaining_with_question_mark.checked.MathError) :=
           M.alloc
@@ -117,8 +115,7 @@ Module checked.
       let* α1 : ltac:(refine bool) := BinOp.le x α0 in
       let* α2 : ltac:(refine bool) := use α1 in
       if (α2 : bool) then
-        let*
-            α0 :
+        let* α0 :
             ltac:(refine
               result_chaining_with_question_mark.checked.MathError) :=
           M.alloc
@@ -135,15 +132,13 @@ Module checked.
       : M ltac:(result_chaining_with_question_mark.checked.MathResult) :=
     M.function_body
       (let* ratio : ltac:(refine f64) :=
-        let*
-            α0 :
+        let* α0 :
             ltac:(refine
               (core.result.Result
                 f64
                 result_chaining_with_question_mark.checked.MathError)) :=
           result_chaining_with_question_mark.checked.div x y in
-        let*
-            α1 :
+        let* α1 :
             ltac:(refine
               (core.ops.control_flow.ControlFlow
                 (core.result.Result
@@ -160,8 +155,7 @@ Module checked.
         let* α2 := M.read α1 in
         match α2 with
         | core.ops.control_flow.ControlFlow.Break residual =>
-          let*
-              α0 :
+          let* α0 :
               ltac:(refine
                 (core.result.Result
                   f64
@@ -178,15 +172,13 @@ Module checked.
         | core.ops.control_flow.ControlFlow.Continue val => M.pure val
         end in
       let* ln : ltac:(refine f64) :=
-        let*
-            α0 :
+        let* α0 :
             ltac:(refine
               (core.result.Result
                 f64
                 result_chaining_with_question_mark.checked.MathError)) :=
           result_chaining_with_question_mark.checked.ln ratio in
-        let*
-            α1 :
+        let* α1 :
             ltac:(refine
               (core.ops.control_flow.ControlFlow
                 (core.result.Result
@@ -203,8 +195,7 @@ Module checked.
         let* α2 := M.read α1 in
         match α2 with
         | core.ops.control_flow.ControlFlow.Break residual =>
-          let*
-              α0 :
+          let* α0 :
               ltac:(refine
                 (core.result.Result
                   f64
@@ -224,8 +215,7 @@ Module checked.
   
   Definition op `{ℋ : State.Trait} (x : f64) (y : f64) : M unit :=
     M.function_body
-      (let*
-          α0 :
+      (let* α0 :
           ltac:(refine
             (core.result.Result
               f64
@@ -363,8 +353,7 @@ Definition div
     let* α1 : ltac:(refine bool) := BinOp.eq y α0 in
     let* α2 : ltac:(refine bool) := use α1 in
     if (α2 : bool) then
-      let*
-          α0 :
+      let* α0 :
           ltac:(refine result_chaining_with_question_mark.checked.MathError) :=
         M.alloc
           result_chaining_with_question_mark.checked.MathError.DivisionByZero in
@@ -382,8 +371,7 @@ Definition sqrt
     let* α1 : ltac:(refine bool) := BinOp.lt x α0 in
     let* α2 : ltac:(refine bool) := use α1 in
     if (α2 : bool) then
-      let*
-          α0 :
+      let* α0 :
           ltac:(refine result_chaining_with_question_mark.checked.MathError) :=
         M.alloc
           result_chaining_with_question_mark.checked.MathError.NegativeSquareRoot in
@@ -401,8 +389,7 @@ Definition ln
     let* α1 : ltac:(refine bool) := BinOp.le x α0 in
     let* α2 : ltac:(refine bool) := use α1 in
     if (α2 : bool) then
-      let*
-          α0 :
+      let* α0 :
           ltac:(refine result_chaining_with_question_mark.checked.MathError) :=
         M.alloc
           result_chaining_with_question_mark.checked.MathError.NonPositiveLogarithm in
@@ -418,15 +405,13 @@ Definition op_
     : M ltac:(result_chaining_with_question_mark.checked.MathResult) :=
   M.function_body
     (let* ratio : ltac:(refine f64) :=
-      let*
-          α0 :
+      let* α0 :
           ltac:(refine
             (core.result.Result
               f64
               result_chaining_with_question_mark.checked.MathError)) :=
         result_chaining_with_question_mark.checked.div x y in
-      let*
-          α1 :
+      let* α1 :
           ltac:(refine
             (core.ops.control_flow.ControlFlow
               (core.result.Result
@@ -443,8 +428,7 @@ Definition op_
       let* α2 := M.read α1 in
       match α2 with
       | core.ops.control_flow.ControlFlow.Break residual =>
-        let*
-            α0 :
+        let* α0 :
             ltac:(refine
               (core.result.Result
                 f64
@@ -461,15 +445,13 @@ Definition op_
       | core.ops.control_flow.ControlFlow.Continue val => M.pure val
       end in
     let* ln : ltac:(refine f64) :=
-      let*
-          α0 :
+      let* α0 :
           ltac:(refine
             (core.result.Result
               f64
               result_chaining_with_question_mark.checked.MathError)) :=
         result_chaining_with_question_mark.checked.ln ratio in
-      let*
-          α1 :
+      let* α1 :
           ltac:(refine
             (core.ops.control_flow.ControlFlow
               (core.result.Result
@@ -486,8 +468,7 @@ Definition op_
       let* α2 := M.read α1 in
       match α2 with
       | core.ops.control_flow.ControlFlow.Break residual =>
-        let*
-            α0 :
+        let* α0 :
             ltac:(refine
               (core.result.Result
                 f64
@@ -507,8 +488,7 @@ Definition op_
 
 Definition op `{ℋ : State.Trait} (x : f64) (y : f64) : M unit :=
   M.function_body
-    (let*
-        α0 :
+    (let* α0 :
         ltac:(refine
           (core.result.Result
             f64

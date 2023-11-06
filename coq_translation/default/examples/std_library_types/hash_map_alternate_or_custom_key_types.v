@@ -5,12 +5,10 @@ Module  Account.
 Section Account.
   Context `{ℋ : State.Trait}.
   
-  Unset Primitive Projections.
   Record t : Set := {
     username : ref str;
     password : ref str;
   }.
-  Global Set Primitive Projections.
   
   Global Instance Get_username : Notation.Dot "username" := {
     Notation.dot x := let* x := M.read x in M.pure x.(username) : M _;
@@ -138,8 +136,7 @@ Section Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account.
       : M unit :=
     M.function_body
       (let* _ : ltac:(refine unit) :=
-        let*
-            α0 :
+        let* α0 :
             ltac:(refine hash_map_alternate_or_custom_key_types.Account) :=
           deref self in
         let* α1 : ltac:(refine (ref str)) := α0.["username"] in
@@ -180,12 +177,10 @@ Module  AccountInfo.
 Section AccountInfo.
   Context `{ℋ : State.Trait}.
   
-  Unset Primitive Projections.
   Record t : Set := {
     name : ref str;
     email : ref str;
   }.
-  Global Set Primitive Projections.
   
   Global Instance Get_name : Notation.Dot "name" := {
     Notation.dot x := let* x := M.read x in M.pure x.(name) : M _;
@@ -297,16 +292,14 @@ Definition try_logon
           hash_map_alternate_or_custom_key_types.Account.username := α1;
           hash_map_alternate_or_custom_key_types.Account.password := α3;
         |} in
-    let*
-        α0 :
+    let* α0 :
         ltac:(refine
           (std.collections.hash.map.HashMap
             hash_map_alternate_or_custom_key_types.Account
             hash_map_alternate_or_custom_key_types.AccountInfo
             std.collections.hash.map.RandomState)) :=
       deref accounts in
-    let*
-        α1 :
+    let* α1 :
         ltac:(refine
           (ref
             (std.collections.hash.map.HashMap
@@ -314,18 +307,15 @@ Definition try_logon
               hash_map_alternate_or_custom_key_types.AccountInfo
               std.collections.hash.map.RandomState))) :=
       borrow α0 in
-    let*
-        α2 :
+    let* α2 :
         ltac:(refine (ref hash_map_alternate_or_custom_key_types.Account)) :=
       borrow logon in
     let* α3 : ltac:(refine hash_map_alternate_or_custom_key_types.Account) :=
       deref α2 in
-    let*
-        α4 :
+    let* α4 :
         ltac:(refine (ref hash_map_alternate_or_custom_key_types.Account)) :=
       borrow α3 in
-    let*
-        α5 :
+    let* α5 :
         ltac:(refine
           (core.option.Option
             (ref hash_map_alternate_or_custom_key_types.AccountInfo))) :=
@@ -362,8 +352,7 @@ Definition try_logon
           let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
           let* α4 : ltac:(refine (ref (slice (ref str)))) :=
             pointer_coercion "Unsize" α3 in
-          let*
-              α5 :
+          let* α5 :
               ltac:(refine
                 hash_map_alternate_or_custom_key_types.AccountInfo) :=
             deref account_info in
@@ -396,8 +385,7 @@ Definition try_logon
           let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
           let* α4 : ltac:(refine (ref (slice (ref str)))) :=
             pointer_coercion "Unsize" α3 in
-          let*
-              α5 :
+          let* α5 :
               ltac:(refine
                 hash_map_alternate_or_custom_key_types.AccountInfo) :=
             deref account_info in
@@ -440,8 +428,7 @@ Definition try_logon
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
   M.function_body
-    (let*
-        accounts :
+    (let* accounts :
         ltac:(refine
           (std.collections.hash.map.HashMap
             hash_map_alternate_or_custom_key_types.Account
@@ -451,8 +438,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
           hash_map_alternate_or_custom_key_types.Account
           hash_map_alternate_or_custom_key_types.AccountInfo
           std.collections.hash.map.RandomState)::["new"] in
-    let*
-        account :
+    let* account :
         ltac:(refine hash_map_alternate_or_custom_key_types.Account) :=
       let* α0 : ltac:(refine str) := deref (mk_str "j.everyman") in
       let* α1 : ltac:(refine (ref str)) := borrow α0 in
@@ -463,8 +449,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
           hash_map_alternate_or_custom_key_types.Account.username := α1;
           hash_map_alternate_or_custom_key_types.Account.password := α3;
         |} in
-    let*
-        account_info :
+    let* account_info :
         ltac:(refine hash_map_alternate_or_custom_key_types.AccountInfo) :=
       let* α0 : ltac:(refine str) := deref (mk_str "John Everyman") in
       let* α1 : ltac:(refine (ref str)) := borrow α0 in
@@ -475,13 +460,11 @@ Definition main `{ℋ : State.Trait} : M unit :=
           hash_map_alternate_or_custom_key_types.AccountInfo.name := α1;
           hash_map_alternate_or_custom_key_types.AccountInfo.email := α3;
         |} in
-    let*
-        _ :
+    let* _ :
         ltac:(refine
           (core.option.Option
             hash_map_alternate_or_custom_key_types.AccountInfo)) :=
-      let*
-          α0 :
+      let* α0 :
           ltac:(refine
             (mut_ref
               (std.collections.hash.map.HashMap
@@ -497,8 +480,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
         account
         account_info in
     let* _ : ltac:(refine unit) :=
-      let*
-          α0 :
+      let* α0 :
           ltac:(refine
             (ref
               (std.collections.hash.map.HashMap
@@ -506,16 +488,14 @@ Definition main `{ℋ : State.Trait} : M unit :=
                 hash_map_alternate_or_custom_key_types.AccountInfo
                 std.collections.hash.map.RandomState))) :=
         borrow accounts in
-      let*
-          α1 :
+      let* α1 :
           ltac:(refine
             (std.collections.hash.map.HashMap
               hash_map_alternate_or_custom_key_types.Account
               hash_map_alternate_or_custom_key_types.AccountInfo
               std.collections.hash.map.RandomState)) :=
         deref α0 in
-      let*
-          α2 :
+      let* α2 :
           ltac:(refine
             (ref
               (std.collections.hash.map.HashMap
@@ -529,8 +509,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α6 : ltac:(refine (ref str)) := borrow α5 in
       hash_map_alternate_or_custom_key_types.try_logon α2 α4 α6 in
     let* _ : ltac:(refine unit) :=
-      let*
-          α0 :
+      let* α0 :
           ltac:(refine
             (ref
               (std.collections.hash.map.HashMap
@@ -538,16 +517,14 @@ Definition main `{ℋ : State.Trait} : M unit :=
                 hash_map_alternate_or_custom_key_types.AccountInfo
                 std.collections.hash.map.RandomState))) :=
         borrow accounts in
-      let*
-          α1 :
+      let* α1 :
           ltac:(refine
             (std.collections.hash.map.HashMap
               hash_map_alternate_or_custom_key_types.Account
               hash_map_alternate_or_custom_key_types.AccountInfo
               std.collections.hash.map.RandomState)) :=
         deref α0 in
-      let*
-          α2 :
+      let* α2 :
           ltac:(refine
             (ref
               (std.collections.hash.map.HashMap

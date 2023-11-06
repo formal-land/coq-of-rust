@@ -52,16 +52,14 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α1 : ltac:(refine (ref str)) := borrow α0 in
       let* α2 : ltac:(refine core.str.iter.SplitWhitespace) :=
         str::["split_whitespace"] α1 in
-      let*
-          α3 :
+      let* α3 :
           ltac:(refine
             (core.iter.adapters.rev.Rev core.str.iter.SplitWhitespace)) :=
         (core.iter.traits.iterator.Iterator.rev
             (Self := core.str.iter.SplitWhitespace)
             (Trait := ltac:(refine _)))
           α2 in
-      let*
-          α4 :
+      let* α4 :
           ltac:(refine
             (core.iter.adapters.rev.Rev core.str.iter.SplitWhitespace)) :=
         (core.iter.traits.collect.IntoIterator.into_iter
@@ -74,21 +72,18 @@ Definition main `{ℋ : State.Trait} : M unit :=
         | iter =>
           loop
             (let* _ : ltac:(refine unit) :=
-              let*
-                  α0 :
+              let* α0 :
                   ltac:(refine
                     (mut_ref
                       (core.iter.adapters.rev.Rev
                         core.str.iter.SplitWhitespace))) :=
                 borrow_mut iter in
-              let*
-                  α1 :
+              let* α1 :
                   ltac:(refine
                     (core.iter.adapters.rev.Rev
                       core.str.iter.SplitWhitespace)) :=
                 deref α0 in
-              let*
-                  α2 :
+              let* α2 :
                   ltac:(refine
                     (mut_ref
                       (core.iter.adapters.rev.Rev
@@ -125,18 +120,15 @@ Definition main `{ℋ : State.Trait} : M unit :=
                       core.fmt.rt.Argument::["new_display"] α7 in
                     let* α9 : ltac:(refine (array core.fmt.rt.Argument)) :=
                       M.alloc [ α8 ] in
-                    let*
-                        α10 :
+                    let* α10 :
                         ltac:(refine (ref (array core.fmt.rt.Argument))) :=
                       borrow α9 in
                     let* α11 : ltac:(refine (array core.fmt.rt.Argument)) :=
                       deref α10 in
-                    let*
-                        α12 :
+                    let* α12 :
                         ltac:(refine (ref (array core.fmt.rt.Argument))) :=
                       borrow α11 in
-                    let*
-                        α13 :
+                    let* α13 :
                         ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
                       pointer_coercion "Unsize" α12 in
                     let* α14 : ltac:(refine core.fmt.Arguments) :=
@@ -157,8 +149,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
           (Trait := ltac:(refine _)))
         α2 in
     let* _ : ltac:(refine unit) :=
-      let*
-          α0 :
+      let* α0 :
           ltac:(refine (mut_ref (alloc.vec.Vec char alloc.alloc.Global))) :=
         borrow_mut chars in
       let* α1 : ltac:(refine (mut_ref (slice char))) :=
@@ -170,16 +161,14 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α3 : ltac:(refine (mut_ref (slice char))) := borrow_mut α2 in
       (slice char)::["sort"] α3 in
     let* _ : ltac:(refine unit) :=
-      let*
-          α0 :
+      let* α0 :
           ltac:(refine (mut_ref (alloc.vec.Vec char alloc.alloc.Global))) :=
         borrow_mut chars in
       (alloc.vec.Vec char alloc.alloc.Global)::["dedup"] α0 in
     let* string : ltac:(refine alloc.string.String) :=
       alloc.string.String::["new"] in
     let* _ : ltac:(refine unit) :=
-      let*
-          α0 :
+      let* α0 :
           ltac:(refine
             (alloc.vec.into_iter.IntoIter char alloc.alloc.Global)) :=
         (core.iter.traits.collect.IntoIterator.into_iter
@@ -192,21 +181,18 @@ Definition main `{ℋ : State.Trait} : M unit :=
         | iter =>
           loop
             (let* _ : ltac:(refine unit) :=
-              let*
-                  α0 :
+              let* α0 :
                   ltac:(refine
                     (mut_ref
                       (alloc.vec.into_iter.IntoIter
                         char
                         alloc.alloc.Global))) :=
                 borrow_mut iter in
-              let*
-                  α1 :
+              let* α1 :
                   ltac:(refine
                     (alloc.vec.into_iter.IntoIter char alloc.alloc.Global)) :=
                 deref α0 in
-              let*
-                  α2 :
+              let* α2 :
                   ltac:(refine
                     (mut_ref
                       (alloc.vec.into_iter.IntoIter

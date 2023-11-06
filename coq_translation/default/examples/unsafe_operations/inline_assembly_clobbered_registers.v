@@ -16,8 +16,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α2 : ltac:(refine (ref (array u8))) := borrow α1 in
       let* α3 : ltac:(refine (ref (slice u8))) :=
         pointer_coercion "Unsize" α2 in
-      let*
-          α4 :
+      let* α4 :
           ltac:(refine
             (core.result.Result (ref str) core.str.error.Utf8Error)) :=
         core.str.converts.from_utf8 α3 in

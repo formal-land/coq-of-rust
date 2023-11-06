@@ -27,12 +27,10 @@ Module  Form.
 Section Form.
   Context `{ℋ : State.Trait}.
   
-  Unset Primitive Projections.
   Record t : Set := {
     username : alloc.string.String;
     age : u8;
   }.
-  Global Set Primitive Projections.
   
   Global Instance Get_username : Notation.Dot "username" := {
     Notation.dot x := let* x := M.read x in M.pure x.(username) : M _;
@@ -137,8 +135,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
           α1 in
       let* α3 : ltac:(refine (ref alloc.string.String)) := borrow α2 in
       let* α4 : ltac:(refine (ref alloc.string.String)) := borrow username in
-      let*
-          α5 :
+      let* α5 :
           ltac:(refine
             (M.Val ((ref alloc.string.String) * (ref alloc.string.String)))) :=
         M.alloc (α3, α4) in

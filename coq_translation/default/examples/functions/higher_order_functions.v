@@ -44,14 +44,12 @@ Definition main `{ℋ : State.Trait} : M unit :=
         | iter =>
           loop
             (let* _ : ltac:(refine unit) :=
-              let*
-                  α0 :
+              let* α0 :
                   ltac:(refine (mut_ref (core.ops.range.RangeFrom u32))) :=
                 borrow_mut iter in
               let* α1 : ltac:(refine (core.ops.range.RangeFrom u32)) :=
                 deref α0 in
-              let*
-                  α2 :
+              let* α2 :
                   ltac:(refine (mut_ref (core.ops.range.RangeFrom u32))) :=
                 borrow_mut α1 in
               let* α3 : ltac:(refine (core.option.Option u32)) :=
@@ -118,8 +116,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α0 : ltac:(refine u32) := M.alloc 0 in
       let* α1 : ltac:(refine (core.ops.range.RangeFrom u32)) :=
         M.alloc {| core.ops.range.RangeFrom.start := α0; |} in
-      let*
-          α2 :
+      let* α2 :
           ltac:(refine
             (core.iter.adapters.map.Map
               (core.ops.range.RangeFrom u32)
@@ -129,8 +126,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
             (Trait := ltac:(refine _)))
           α1
           (BinOp.mul n n) in
-      let*
-          α3 :
+      let* α3 :
           ltac:(refine
             (core.iter.adapters.take_while.TakeWhile
               (core.iter.adapters.map.Map
@@ -145,8 +141,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
             (Trait := ltac:(refine _)))
           α2
           (BinOp.lt n_squared upper) in
-      let*
-          α4 :
+      let* α4 :
           ltac:(refine
             (core.iter.adapters.filter.Filter
               (core.iter.adapters.take_while.TakeWhile
