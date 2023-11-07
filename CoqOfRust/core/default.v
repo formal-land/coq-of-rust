@@ -1,5 +1,4 @@
 Require Import CoqOfRust.lib.lib.
-
 Require CoqOfRust.core.marker.
 
 (* ********TRAITS******** *)

@@ -15,30 +15,13 @@ impl<K, V> Mapping<K, V> {
 }
 
 #[derive(Default)]
-struct AccountId(u64);
+struct AccountId(String);
 
-#[derive(Default, PartialEq, PartialOrd)]
-struct Balance(u64);
+type Balance = u128;
 
-impl std::ops::Add for Balance {
-    type Output = Self;
+struct Environment(String);
 
-    fn add(self, rhs: Self) -> Self::Output {
-        Self(self.0 + rhs.0)
-    }
-}
-
-impl std::ops::Sub for Balance {
-    type Output = Self;
-
-    fn sub(self, rhs: Self) -> Self::Output {
-        Self(self.0 - rhs.0)
-    }
-}
-
-struct Environment;
-
-struct Event;
+struct Event(String);
 
 /// A simple ERC-20 contract.
 // #[ink(storage)]
