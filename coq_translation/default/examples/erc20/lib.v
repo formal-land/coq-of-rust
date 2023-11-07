@@ -519,9 +519,7 @@ Section Impl_lib_Erc20_2.
       (let* α0 : ltac:(refine lib.Erc20) := deref self in
       let* α1 : ltac:(refine (ref lib.Erc20)) := borrow α0 in
       let* α2 : ltac:(refine (ref lib.AccountId)) := borrow owner in
-      let* α3 : ltac:(refine lib.AccountId) := deref α2 in
-      let* α4 : ltac:(refine (ref lib.AccountId)) := borrow α3 in
-      lib.Erc20::["balance_of_impl"] α1 α4).
+      lib.Erc20::["balance_of_impl"] α1 α2).
   
   Global Instance AssociatedFunction_balance_of :
     Notation.DoubleColon Self "balance_of" := {
@@ -549,15 +547,11 @@ Section Impl_lib_Erc20_2.
         M.alloc (α3, α4) in
       let* α6 : ltac:(refine (ref (M.Val (lib.AccountId * lib.AccountId)))) :=
         borrow α5 in
-      let* α7 : ltac:(refine (M.Val (lib.AccountId * lib.AccountId))) :=
-        deref α6 in
-      let* α8 : ltac:(refine (ref (M.Val (lib.AccountId * lib.AccountId)))) :=
-        borrow α7 in
-      let* α9 : ltac:(refine (core.option.Option u128)) :=
+      let* α7 : ltac:(refine (core.option.Option u128)) :=
         (lib.Mapping (M.Val (lib.AccountId * lib.AccountId)) u128)::["get"]
           α2
-          α8 in
-      (core.option.Option u128)::["unwrap_or_default"] α9).
+          α6 in
+      (core.option.Option u128)::["unwrap_or_default"] α7).
   
   Global Instance AssociatedFunction_allowance_impl :
     Notation.DoubleColon Self "allowance_impl" := {
@@ -573,12 +567,8 @@ Section Impl_lib_Erc20_2.
       (let* α0 : ltac:(refine lib.Erc20) := deref self in
       let* α1 : ltac:(refine (ref lib.Erc20)) := borrow α0 in
       let* α2 : ltac:(refine (ref lib.AccountId)) := borrow owner in
-      let* α3 : ltac:(refine lib.AccountId) := deref α2 in
-      let* α4 : ltac:(refine (ref lib.AccountId)) := borrow α3 in
-      let* α5 : ltac:(refine (ref lib.AccountId)) := borrow spender in
-      let* α6 : ltac:(refine lib.AccountId) := deref α5 in
-      let* α7 : ltac:(refine (ref lib.AccountId)) := borrow α6 in
-      lib.Erc20::["allowance_impl"] α1 α4 α7).
+      let* α3 : ltac:(refine (ref lib.AccountId)) := borrow spender in
+      lib.Erc20::["allowance_impl"] α1 α2 α3).
   
   Global Instance AssociatedFunction_allowance :
     Notation.DoubleColon Self "allowance" := {
@@ -678,12 +668,8 @@ Section Impl_lib_Erc20_2.
       let* α0 : ltac:(refine lib.Erc20) := deref self in
       let* α1 : ltac:(refine (mut_ref lib.Erc20)) := borrow_mut α0 in
       let* α2 : ltac:(refine (ref lib.AccountId)) := borrow from in
-      let* α3 : ltac:(refine lib.AccountId) := deref α2 in
-      let* α4 : ltac:(refine (ref lib.AccountId)) := borrow α3 in
-      let* α5 : ltac:(refine (ref lib.AccountId)) := borrow to in
-      let* α6 : ltac:(refine lib.AccountId) := deref α5 in
-      let* α7 : ltac:(refine (ref lib.AccountId)) := borrow α6 in
-      lib.Erc20::["transfer_from_to"] α1 α4 α7 value).
+      let* α3 : ltac:(refine (ref lib.AccountId)) := borrow to in
+      lib.Erc20::["transfer_from_to"] α1 α2 α3 value).
   
   Global Instance AssociatedFunction_transfer :
     Notation.DoubleColon Self "transfer" := {
@@ -757,12 +743,8 @@ Section Impl_lib_Erc20_2.
         let* α0 : ltac:(refine lib.Erc20) := deref self in
         let* α1 : ltac:(refine (ref lib.Erc20)) := borrow α0 in
         let* α2 : ltac:(refine (ref lib.AccountId)) := borrow from in
-        let* α3 : ltac:(refine lib.AccountId) := deref α2 in
-        let* α4 : ltac:(refine (ref lib.AccountId)) := borrow α3 in
-        let* α5 : ltac:(refine (ref lib.AccountId)) := borrow caller in
-        let* α6 : ltac:(refine lib.AccountId) := deref α5 in
-        let* α7 : ltac:(refine (ref lib.AccountId)) := borrow α6 in
-        lib.Erc20::["allowance_impl"] α1 α4 α7 in
+        let* α3 : ltac:(refine (ref lib.AccountId)) := borrow caller in
+        lib.Erc20::["allowance_impl"] α1 α2 α3 in
       let* _ : ltac:(refine unit) :=
         let* α0 : ltac:(refine bool) := BinOp.lt allowance value in
         let* α1 : ltac:(refine bool) := use α0 in
@@ -781,14 +763,10 @@ Section Impl_lib_Erc20_2.
         let* α0 : ltac:(refine lib.Erc20) := deref self in
         let* α1 : ltac:(refine (mut_ref lib.Erc20)) := borrow_mut α0 in
         let* α2 : ltac:(refine (ref lib.AccountId)) := borrow from in
-        let* α3 : ltac:(refine lib.AccountId) := deref α2 in
-        let* α4 : ltac:(refine (ref lib.AccountId)) := borrow α3 in
-        let* α5 : ltac:(refine (ref lib.AccountId)) := borrow to in
-        let* α6 : ltac:(refine lib.AccountId) := deref α5 in
-        let* α7 : ltac:(refine (ref lib.AccountId)) := borrow α6 in
-        let* α8 : ltac:(refine (core.result.Result unit lib.Error)) :=
-          lib.Erc20::["transfer_from_to"] α1 α4 α7 value in
-        let* α9 :
+        let* α3 : ltac:(refine (ref lib.AccountId)) := borrow to in
+        let* α4 : ltac:(refine (core.result.Result unit lib.Error)) :=
+          lib.Erc20::["transfer_from_to"] α1 α2 α3 value in
+        let* α5 :
             ltac:(refine
               (core.ops.control_flow.ControlFlow
                 (core.result.Result core.convert.Infallible lib.Error)
@@ -796,9 +774,9 @@ Section Impl_lib_Erc20_2.
           (core.ops.try_trait.Try.branch
               (Self := core.result.Result unit lib.Error)
               (Trait := ltac:(refine _)))
-            α8 in
-        let* α10 := M.read α9 in
-        match α10 with
+            α4 in
+        let* α6 := M.read α5 in
+        match α6 with
         | core.ops.control_flow.ControlFlow.Break residual =>
           let* α0 : ltac:(refine (core.result.Result unit lib.Error)) :=
             (core.ops.try_trait.FromResidual.from_residual

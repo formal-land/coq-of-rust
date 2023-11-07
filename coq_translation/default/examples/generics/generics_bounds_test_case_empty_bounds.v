@@ -107,40 +107,26 @@ Definition main `{ℋ : State.Trait} : M unit :=
           M.alloc [ mk_str "A cardinal is "; mk_str "
 " ] in
         let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
-        let* α2 : ltac:(refine (array (ref str))) := deref α1 in
-        let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
-        let* α4 : ltac:(refine (ref (slice (ref str)))) :=
-          pointer_coercion "Unsize" α3 in
-        let* α5 :
+        let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+          pointer_coercion "Unsize" α1 in
+        let* α3 :
             ltac:(refine
               (ref generics_bounds_test_case_empty_bounds.Cardinal)) :=
           borrow cardinal in
-        let* α6 :
-            ltac:(refine generics_bounds_test_case_empty_bounds.Cardinal) :=
-          deref α5 in
-        let* α7 :
-            ltac:(refine
-              (ref generics_bounds_test_case_empty_bounds.Cardinal)) :=
-          borrow α6 in
-        let* α8 : ltac:(refine (ref str)) :=
-          generics_bounds_test_case_empty_bounds.red α7 in
-        let* α9 : ltac:(refine (ref (ref str))) := borrow α8 in
-        let* α10 : ltac:(refine (ref str)) := deref α9 in
-        let* α11 : ltac:(refine (ref (ref str))) := borrow α10 in
-        let* α12 : ltac:(refine core.fmt.rt.Argument) :=
-          core.fmt.rt.Argument::["new_display"] α11 in
-        let* α13 : ltac:(refine (array core.fmt.rt.Argument)) :=
-          M.alloc [ α12 ] in
-        let* α14 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
-          borrow α13 in
-        let* α15 : ltac:(refine (array core.fmt.rt.Argument)) := deref α14 in
-        let* α16 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
-          borrow α15 in
-        let* α17 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
-          pointer_coercion "Unsize" α16 in
-        let* α18 : ltac:(refine core.fmt.Arguments) :=
-          core.fmt.Arguments::["new_v1"] α4 α17 in
-        std.io.stdio._print α18 in
+        let* α4 : ltac:(refine (ref str)) :=
+          generics_bounds_test_case_empty_bounds.red α3 in
+        let* α5 : ltac:(refine (ref (ref str))) := borrow α4 in
+        let* α6 : ltac:(refine core.fmt.rt.Argument) :=
+          core.fmt.rt.Argument::["new_display"] α5 in
+        let* α7 : ltac:(refine (array core.fmt.rt.Argument)) :=
+          M.alloc [ α6 ] in
+        let* α8 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+          borrow α7 in
+        let* α9 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+          pointer_coercion "Unsize" α8 in
+        let* α10 : ltac:(refine core.fmt.Arguments) :=
+          core.fmt.Arguments::["new_v1"] α2 α9 in
+        std.io.stdio._print α10 in
       M.alloc tt in
     let* _ : ltac:(refine unit) :=
       let* _ : ltac:(refine unit) :=
@@ -148,39 +134,25 @@ Definition main `{ℋ : State.Trait} : M unit :=
           M.alloc [ mk_str "A blue jay is "; mk_str "
 " ] in
         let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
-        let* α2 : ltac:(refine (array (ref str))) := deref α1 in
-        let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
-        let* α4 : ltac:(refine (ref (slice (ref str)))) :=
-          pointer_coercion "Unsize" α3 in
-        let* α5 :
+        let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+          pointer_coercion "Unsize" α1 in
+        let* α3 :
             ltac:(refine
               (ref generics_bounds_test_case_empty_bounds.BlueJay)) :=
           borrow blue_jay in
-        let* α6 :
-            ltac:(refine generics_bounds_test_case_empty_bounds.BlueJay) :=
-          deref α5 in
-        let* α7 :
-            ltac:(refine
-              (ref generics_bounds_test_case_empty_bounds.BlueJay)) :=
-          borrow α6 in
-        let* α8 : ltac:(refine (ref str)) :=
-          generics_bounds_test_case_empty_bounds.blue α7 in
-        let* α9 : ltac:(refine (ref (ref str))) := borrow α8 in
-        let* α10 : ltac:(refine (ref str)) := deref α9 in
-        let* α11 : ltac:(refine (ref (ref str))) := borrow α10 in
-        let* α12 : ltac:(refine core.fmt.rt.Argument) :=
-          core.fmt.rt.Argument::["new_display"] α11 in
-        let* α13 : ltac:(refine (array core.fmt.rt.Argument)) :=
-          M.alloc [ α12 ] in
-        let* α14 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
-          borrow α13 in
-        let* α15 : ltac:(refine (array core.fmt.rt.Argument)) := deref α14 in
-        let* α16 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
-          borrow α15 in
-        let* α17 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
-          pointer_coercion "Unsize" α16 in
-        let* α18 : ltac:(refine core.fmt.Arguments) :=
-          core.fmt.Arguments::["new_v1"] α4 α17 in
-        std.io.stdio._print α18 in
+        let* α4 : ltac:(refine (ref str)) :=
+          generics_bounds_test_case_empty_bounds.blue α3 in
+        let* α5 : ltac:(refine (ref (ref str))) := borrow α4 in
+        let* α6 : ltac:(refine core.fmt.rt.Argument) :=
+          core.fmt.rt.Argument::["new_display"] α5 in
+        let* α7 : ltac:(refine (array core.fmt.rt.Argument)) :=
+          M.alloc [ α6 ] in
+        let* α8 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+          borrow α7 in
+        let* α9 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+          pointer_coercion "Unsize" α8 in
+        let* α10 : ltac:(refine core.fmt.Arguments) :=
+          core.fmt.Arguments::["new_v1"] α2 α9 in
+        std.io.stdio._print α10 in
       M.alloc tt in
     M.alloc tt).

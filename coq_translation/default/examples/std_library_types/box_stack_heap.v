@@ -48,21 +48,17 @@ Section Impl_core_fmt_Debug_for_box_stack_heap_Point.
       let* α6 : ltac:(refine box_stack_heap.Point) := deref self in
       let* α7 : ltac:(refine f64) := α6.["x"] in
       let* α8 : ltac:(refine (ref f64)) := borrow α7 in
-      let* α9 : ltac:(refine f64) := deref α8 in
-      let* α10 : ltac:(refine (ref f64)) := borrow α9 in
-      let* α11 : ltac:(refine (ref type not implemented)) :=
-        pointer_coercion "Unsize" α10 in
-      let* α12 : ltac:(refine str) := deref (mk_str "y") in
-      let* α13 : ltac:(refine (ref str)) := borrow α12 in
-      let* α14 : ltac:(refine box_stack_heap.Point) := deref self in
-      let* α15 : ltac:(refine f64) := α14.["y"] in
-      let* α16 : ltac:(refine (ref f64)) := borrow α15 in
-      let* α17 : ltac:(refine (ref (ref f64))) := borrow α16 in
-      let* α18 : ltac:(refine (ref f64)) := deref α17 in
-      let* α19 : ltac:(refine (ref (ref f64))) := borrow α18 in
-      let* α20 : ltac:(refine (ref type not implemented)) :=
-        pointer_coercion "Unsize" α19 in
-      core.fmt.Formatter::["debug_struct_field2_finish"] α1 α3 α5 α11 α13 α20).
+      let* α9 : ltac:(refine (ref type not implemented)) :=
+        pointer_coercion "Unsize" α8 in
+      let* α10 : ltac:(refine str) := deref (mk_str "y") in
+      let* α11 : ltac:(refine (ref str)) := borrow α10 in
+      let* α12 : ltac:(refine box_stack_heap.Point) := deref self in
+      let* α13 : ltac:(refine f64) := α12.["y"] in
+      let* α14 : ltac:(refine (ref f64)) := borrow α13 in
+      let* α15 : ltac:(refine (ref (ref f64))) := borrow α14 in
+      let* α16 : ltac:(refine (ref type not implemented)) :=
+        pointer_coercion "Unsize" α15 in
+      core.fmt.Formatter::["debug_struct_field2_finish"] α1 α3 α5 α9 α11 α16).
   
   Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {
     Notation.double_colon := fmt;
@@ -211,31 +207,22 @@ Definition main `{ℋ : State.Trait} : M unit :=
           M.alloc [ mk_str "Point occupies "; mk_str " bytes on the stack
 " ] in
         let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
-        let* α2 : ltac:(refine (array (ref str))) := deref α1 in
-        let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
-        let* α4 : ltac:(refine (ref (slice (ref str)))) :=
-          pointer_coercion "Unsize" α3 in
-        let* α5 : ltac:(refine (ref box_stack_heap.Point)) := borrow point in
-        let* α6 : ltac:(refine box_stack_heap.Point) := deref α5 in
-        let* α7 : ltac:(refine (ref box_stack_heap.Point)) := borrow α6 in
-        let* α8 : ltac:(refine usize) := core.mem.size_of_val α7 in
-        let* α9 : ltac:(refine (ref usize)) := borrow α8 in
-        let* α10 : ltac:(refine usize) := deref α9 in
-        let* α11 : ltac:(refine (ref usize)) := borrow α10 in
-        let* α12 : ltac:(refine core.fmt.rt.Argument) :=
-          core.fmt.rt.Argument::["new_display"] α11 in
-        let* α13 : ltac:(refine (array core.fmt.rt.Argument)) :=
-          M.alloc [ α12 ] in
-        let* α14 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
-          borrow α13 in
-        let* α15 : ltac:(refine (array core.fmt.rt.Argument)) := deref α14 in
-        let* α16 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
-          borrow α15 in
-        let* α17 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
-          pointer_coercion "Unsize" α16 in
-        let* α18 : ltac:(refine core.fmt.Arguments) :=
-          core.fmt.Arguments::["new_v1"] α4 α17 in
-        std.io.stdio._print α18 in
+        let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+          pointer_coercion "Unsize" α1 in
+        let* α3 : ltac:(refine (ref box_stack_heap.Point)) := borrow point in
+        let* α4 : ltac:(refine usize) := core.mem.size_of_val α3 in
+        let* α5 : ltac:(refine (ref usize)) := borrow α4 in
+        let* α6 : ltac:(refine core.fmt.rt.Argument) :=
+          core.fmt.rt.Argument::["new_display"] α5 in
+        let* α7 : ltac:(refine (array core.fmt.rt.Argument)) :=
+          M.alloc [ α6 ] in
+        let* α8 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+          borrow α7 in
+        let* α9 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+          pointer_coercion "Unsize" α8 in
+        let* α10 : ltac:(refine core.fmt.Arguments) :=
+          core.fmt.Arguments::["new_v1"] α2 α9 in
+        std.io.stdio._print α10 in
       M.alloc tt in
     let* _ : ltac:(refine unit) :=
       let* _ : ltac:(refine unit) :=
@@ -244,32 +231,23 @@ Definition main `{ℋ : State.Trait} : M unit :=
             [ mk_str "Rectangle occupies "; mk_str " bytes on the stack
 " ] in
         let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
-        let* α2 : ltac:(refine (array (ref str))) := deref α1 in
-        let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
-        let* α4 : ltac:(refine (ref (slice (ref str)))) :=
-          pointer_coercion "Unsize" α3 in
-        let* α5 : ltac:(refine (ref box_stack_heap.Rectangle)) :=
+        let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+          pointer_coercion "Unsize" α1 in
+        let* α3 : ltac:(refine (ref box_stack_heap.Rectangle)) :=
           borrow rectangle in
-        let* α6 : ltac:(refine box_stack_heap.Rectangle) := deref α5 in
-        let* α7 : ltac:(refine (ref box_stack_heap.Rectangle)) := borrow α6 in
-        let* α8 : ltac:(refine usize) := core.mem.size_of_val α7 in
-        let* α9 : ltac:(refine (ref usize)) := borrow α8 in
-        let* α10 : ltac:(refine usize) := deref α9 in
-        let* α11 : ltac:(refine (ref usize)) := borrow α10 in
-        let* α12 : ltac:(refine core.fmt.rt.Argument) :=
-          core.fmt.rt.Argument::["new_display"] α11 in
-        let* α13 : ltac:(refine (array core.fmt.rt.Argument)) :=
-          M.alloc [ α12 ] in
-        let* α14 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
-          borrow α13 in
-        let* α15 : ltac:(refine (array core.fmt.rt.Argument)) := deref α14 in
-        let* α16 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
-          borrow α15 in
-        let* α17 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
-          pointer_coercion "Unsize" α16 in
-        let* α18 : ltac:(refine core.fmt.Arguments) :=
-          core.fmt.Arguments::["new_v1"] α4 α17 in
-        std.io.stdio._print α18 in
+        let* α4 : ltac:(refine usize) := core.mem.size_of_val α3 in
+        let* α5 : ltac:(refine (ref usize)) := borrow α4 in
+        let* α6 : ltac:(refine core.fmt.rt.Argument) :=
+          core.fmt.rt.Argument::["new_display"] α5 in
+        let* α7 : ltac:(refine (array core.fmt.rt.Argument)) :=
+          M.alloc [ α6 ] in
+        let* α8 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+          borrow α7 in
+        let* α9 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+          pointer_coercion "Unsize" α8 in
+        let* α10 : ltac:(refine core.fmt.Arguments) :=
+          core.fmt.Arguments::["new_v1"] α2 α9 in
+        std.io.stdio._print α10 in
       M.alloc tt in
     let* _ : ltac:(refine unit) :=
       let* _ : ltac:(refine unit) :=
@@ -278,42 +256,26 @@ Definition main `{ℋ : State.Trait} : M unit :=
             [ mk_str "Boxed point occupies "; mk_str " bytes on the stack
 " ] in
         let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
-        let* α2 : ltac:(refine (array (ref str))) := deref α1 in
-        let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
-        let* α4 : ltac:(refine (ref (slice (ref str)))) :=
-          pointer_coercion "Unsize" α3 in
-        let* α5 :
+        let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+          pointer_coercion "Unsize" α1 in
+        let* α3 :
             ltac:(refine
               (ref
                 (alloc.boxed.Box box_stack_heap.Point alloc.alloc.Global))) :=
           borrow boxed_point in
-        let* α6 :
-            ltac:(refine
-              (alloc.boxed.Box box_stack_heap.Point alloc.alloc.Global)) :=
-          deref α5 in
-        let* α7 :
-            ltac:(refine
-              (ref
-                (alloc.boxed.Box box_stack_heap.Point alloc.alloc.Global))) :=
-          borrow α6 in
-        let* α8 : ltac:(refine usize) := core.mem.size_of_val α7 in
-        let* α9 : ltac:(refine (ref usize)) := borrow α8 in
-        let* α10 : ltac:(refine usize) := deref α9 in
-        let* α11 : ltac:(refine (ref usize)) := borrow α10 in
-        let* α12 : ltac:(refine core.fmt.rt.Argument) :=
-          core.fmt.rt.Argument::["new_display"] α11 in
-        let* α13 : ltac:(refine (array core.fmt.rt.Argument)) :=
-          M.alloc [ α12 ] in
-        let* α14 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
-          borrow α13 in
-        let* α15 : ltac:(refine (array core.fmt.rt.Argument)) := deref α14 in
-        let* α16 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
-          borrow α15 in
-        let* α17 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
-          pointer_coercion "Unsize" α16 in
-        let* α18 : ltac:(refine core.fmt.Arguments) :=
-          core.fmt.Arguments::["new_v1"] α4 α17 in
-        std.io.stdio._print α18 in
+        let* α4 : ltac:(refine usize) := core.mem.size_of_val α3 in
+        let* α5 : ltac:(refine (ref usize)) := borrow α4 in
+        let* α6 : ltac:(refine core.fmt.rt.Argument) :=
+          core.fmt.rt.Argument::["new_display"] α5 in
+        let* α7 : ltac:(refine (array core.fmt.rt.Argument)) :=
+          M.alloc [ α6 ] in
+        let* α8 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+          borrow α7 in
+        let* α9 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+          pointer_coercion "Unsize" α8 in
+        let* α10 : ltac:(refine core.fmt.Arguments) :=
+          core.fmt.Arguments::["new_v1"] α2 α9 in
+        std.io.stdio._print α10 in
       M.alloc tt in
     let* _ : ltac:(refine unit) :=
       let* _ : ltac:(refine unit) :=
@@ -323,46 +285,28 @@ Definition main `{ℋ : State.Trait} : M unit :=
 "
             ] in
         let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
-        let* α2 : ltac:(refine (array (ref str))) := deref α1 in
-        let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
-        let* α4 : ltac:(refine (ref (slice (ref str)))) :=
-          pointer_coercion "Unsize" α3 in
-        let* α5 :
+        let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+          pointer_coercion "Unsize" α1 in
+        let* α3 :
             ltac:(refine
               (ref
                 (alloc.boxed.Box
                   box_stack_heap.Rectangle
                   alloc.alloc.Global))) :=
           borrow boxed_rectangle in
-        let* α6 :
-            ltac:(refine
-              (alloc.boxed.Box box_stack_heap.Rectangle alloc.alloc.Global)) :=
-          deref α5 in
-        let* α7 :
-            ltac:(refine
-              (ref
-                (alloc.boxed.Box
-                  box_stack_heap.Rectangle
-                  alloc.alloc.Global))) :=
-          borrow α6 in
-        let* α8 : ltac:(refine usize) := core.mem.size_of_val α7 in
-        let* α9 : ltac:(refine (ref usize)) := borrow α8 in
-        let* α10 : ltac:(refine usize) := deref α9 in
-        let* α11 : ltac:(refine (ref usize)) := borrow α10 in
-        let* α12 : ltac:(refine core.fmt.rt.Argument) :=
-          core.fmt.rt.Argument::["new_display"] α11 in
-        let* α13 : ltac:(refine (array core.fmt.rt.Argument)) :=
-          M.alloc [ α12 ] in
-        let* α14 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
-          borrow α13 in
-        let* α15 : ltac:(refine (array core.fmt.rt.Argument)) := deref α14 in
-        let* α16 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
-          borrow α15 in
-        let* α17 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
-          pointer_coercion "Unsize" α16 in
-        let* α18 : ltac:(refine core.fmt.Arguments) :=
-          core.fmt.Arguments::["new_v1"] α4 α17 in
-        std.io.stdio._print α18 in
+        let* α4 : ltac:(refine usize) := core.mem.size_of_val α3 in
+        let* α5 : ltac:(refine (ref usize)) := borrow α4 in
+        let* α6 : ltac:(refine core.fmt.rt.Argument) :=
+          core.fmt.rt.Argument::["new_display"] α5 in
+        let* α7 : ltac:(refine (array core.fmt.rt.Argument)) :=
+          M.alloc [ α6 ] in
+        let* α8 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+          borrow α7 in
+        let* α9 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+          pointer_coercion "Unsize" α8 in
+        let* α10 : ltac:(refine core.fmt.Arguments) :=
+          core.fmt.Arguments::["new_v1"] α2 α9 in
+        std.io.stdio._print α10 in
       M.alloc tt in
     let* _ : ltac:(refine unit) :=
       let* _ : ltac:(refine unit) :=
@@ -371,48 +315,28 @@ Definition main `{ℋ : State.Trait} : M unit :=
             [ mk_str "Boxed box occupies "; mk_str " bytes on the stack
 " ] in
         let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
-        let* α2 : ltac:(refine (array (ref str))) := deref α1 in
-        let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
-        let* α4 : ltac:(refine (ref (slice (ref str)))) :=
-          pointer_coercion "Unsize" α3 in
-        let* α5 :
+        let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+          pointer_coercion "Unsize" α1 in
+        let* α3 :
             ltac:(refine
               (ref
                 (alloc.boxed.Box
                   (alloc.boxed.Box box_stack_heap.Point alloc.alloc.Global)
                   alloc.alloc.Global))) :=
           borrow box_in_a_box in
-        let* α6 :
-            ltac:(refine
-              (alloc.boxed.Box
-                (alloc.boxed.Box box_stack_heap.Point alloc.alloc.Global)
-                alloc.alloc.Global)) :=
-          deref α5 in
-        let* α7 :
-            ltac:(refine
-              (ref
-                (alloc.boxed.Box
-                  (alloc.boxed.Box box_stack_heap.Point alloc.alloc.Global)
-                  alloc.alloc.Global))) :=
-          borrow α6 in
-        let* α8 : ltac:(refine usize) := core.mem.size_of_val α7 in
-        let* α9 : ltac:(refine (ref usize)) := borrow α8 in
-        let* α10 : ltac:(refine usize) := deref α9 in
-        let* α11 : ltac:(refine (ref usize)) := borrow α10 in
-        let* α12 : ltac:(refine core.fmt.rt.Argument) :=
-          core.fmt.rt.Argument::["new_display"] α11 in
-        let* α13 : ltac:(refine (array core.fmt.rt.Argument)) :=
-          M.alloc [ α12 ] in
-        let* α14 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
-          borrow α13 in
-        let* α15 : ltac:(refine (array core.fmt.rt.Argument)) := deref α14 in
-        let* α16 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
-          borrow α15 in
-        let* α17 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
-          pointer_coercion "Unsize" α16 in
-        let* α18 : ltac:(refine core.fmt.Arguments) :=
-          core.fmt.Arguments::["new_v1"] α4 α17 in
-        std.io.stdio._print α18 in
+        let* α4 : ltac:(refine usize) := core.mem.size_of_val α3 in
+        let* α5 : ltac:(refine (ref usize)) := borrow α4 in
+        let* α6 : ltac:(refine core.fmt.rt.Argument) :=
+          core.fmt.rt.Argument::["new_display"] α5 in
+        let* α7 : ltac:(refine (array core.fmt.rt.Argument)) :=
+          M.alloc [ α6 ] in
+        let* α8 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+          borrow α7 in
+        let* α9 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+          pointer_coercion "Unsize" α8 in
+        let* α10 : ltac:(refine core.fmt.Arguments) :=
+          core.fmt.Arguments::["new_v1"] α2 α9 in
+        std.io.stdio._print α10 in
       M.alloc tt in
     let* unboxed_point : ltac:(refine box_stack_heap.Point) :=
       deref boxed_point in
@@ -424,31 +348,22 @@ Definition main `{ℋ : State.Trait} : M unit :=
 "
             ] in
         let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
-        let* α2 : ltac:(refine (array (ref str))) := deref α1 in
-        let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
-        let* α4 : ltac:(refine (ref (slice (ref str)))) :=
-          pointer_coercion "Unsize" α3 in
-        let* α5 : ltac:(refine (ref box_stack_heap.Point)) :=
+        let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+          pointer_coercion "Unsize" α1 in
+        let* α3 : ltac:(refine (ref box_stack_heap.Point)) :=
           borrow unboxed_point in
-        let* α6 : ltac:(refine box_stack_heap.Point) := deref α5 in
-        let* α7 : ltac:(refine (ref box_stack_heap.Point)) := borrow α6 in
-        let* α8 : ltac:(refine usize) := core.mem.size_of_val α7 in
-        let* α9 : ltac:(refine (ref usize)) := borrow α8 in
-        let* α10 : ltac:(refine usize) := deref α9 in
-        let* α11 : ltac:(refine (ref usize)) := borrow α10 in
-        let* α12 : ltac:(refine core.fmt.rt.Argument) :=
-          core.fmt.rt.Argument::["new_display"] α11 in
-        let* α13 : ltac:(refine (array core.fmt.rt.Argument)) :=
-          M.alloc [ α12 ] in
-        let* α14 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
-          borrow α13 in
-        let* α15 : ltac:(refine (array core.fmt.rt.Argument)) := deref α14 in
-        let* α16 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
-          borrow α15 in
-        let* α17 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
-          pointer_coercion "Unsize" α16 in
-        let* α18 : ltac:(refine core.fmt.Arguments) :=
-          core.fmt.Arguments::["new_v1"] α4 α17 in
-        std.io.stdio._print α18 in
+        let* α4 : ltac:(refine usize) := core.mem.size_of_val α3 in
+        let* α5 : ltac:(refine (ref usize)) := borrow α4 in
+        let* α6 : ltac:(refine core.fmt.rt.Argument) :=
+          core.fmt.rt.Argument::["new_display"] α5 in
+        let* α7 : ltac:(refine (array core.fmt.rt.Argument)) :=
+          M.alloc [ α6 ] in
+        let* α8 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+          borrow α7 in
+        let* α9 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+          pointer_coercion "Unsize" α8 in
+        let* α10 : ltac:(refine core.fmt.Arguments) :=
+          core.fmt.Arguments::["new_v1"] α2 α9 in
+        std.io.stdio._print α10 in
       M.alloc tt in
     M.alloc tt).

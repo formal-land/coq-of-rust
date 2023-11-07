@@ -38,16 +38,13 @@ Definition main `{ℋ : State.Trait} : M unit :=
           (let* _ : ltac:(refine unit) :=
             let* α0 : ltac:(refine (mut_ref (core.ops.range.Range u32))) :=
               borrow_mut iter in
-            let* α1 : ltac:(refine (core.ops.range.Range u32)) := deref α0 in
-            let* α2 : ltac:(refine (mut_ref (core.ops.range.Range u32))) :=
-              borrow_mut α1 in
-            let* α3 : ltac:(refine (core.option.Option u32)) :=
+            let* α1 : ltac:(refine (core.option.Option u32)) :=
               (core.iter.traits.iterator.Iterator.next
                   (Self := core.ops.range.Range u32)
                   (Trait := ltac:(refine _)))
-                α2 in
-            let* α4 := M.read α3 in
-            match α4 with
+                α0 in
+            let* α2 := M.read α1 in
+            match α2 with
             | core.option.Option.None  =>
               let* α0 : ltac:(refine never) := Break in
               never_to_any α0

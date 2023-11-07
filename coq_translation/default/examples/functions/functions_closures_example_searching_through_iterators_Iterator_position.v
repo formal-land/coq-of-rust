@@ -79,19 +79,13 @@ Definition main `{ℋ : State.Trait} : M unit :=
               deref left_val in
             let* α1 : ltac:(refine (ref (core.option.Option usize))) :=
               borrow α0 in
-            let* α2 : ltac:(refine (core.option.Option usize)) := deref α1 in
+            let* α2 : ltac:(refine (core.option.Option usize)) :=
+              deref right_val in
             let* α3 : ltac:(refine (ref (core.option.Option usize))) :=
               borrow α2 in
-            let* α4 : ltac:(refine (core.option.Option usize)) :=
-              deref right_val in
-            let* α5 : ltac:(refine (ref (core.option.Option usize))) :=
-              borrow α4 in
-            let* α6 : ltac:(refine (core.option.Option usize)) := deref α5 in
-            let* α7 : ltac:(refine (ref (core.option.Option usize))) :=
-              borrow α6 in
-            let* α8 : ltac:(refine (core.option.Option core.fmt.Arguments)) :=
+            let* α4 : ltac:(refine (core.option.Option core.fmt.Arguments)) :=
               M.alloc core.option.Option.None in
-            core.panicking.assert_failed kind α3 α7 α8 in
+            core.panicking.assert_failed kind α1 α3 α4 in
           let* α0 : ltac:(refine unit) := M.alloc tt in
           never_to_any α0
         else
@@ -150,19 +144,13 @@ Definition main `{ℋ : State.Trait} : M unit :=
               deref left_val in
             let* α1 : ltac:(refine (ref (core.option.Option usize))) :=
               borrow α0 in
-            let* α2 : ltac:(refine (core.option.Option usize)) := deref α1 in
+            let* α2 : ltac:(refine (core.option.Option usize)) :=
+              deref right_val in
             let* α3 : ltac:(refine (ref (core.option.Option usize))) :=
               borrow α2 in
-            let* α4 : ltac:(refine (core.option.Option usize)) :=
-              deref right_val in
-            let* α5 : ltac:(refine (ref (core.option.Option usize))) :=
-              borrow α4 in
-            let* α6 : ltac:(refine (core.option.Option usize)) := deref α5 in
-            let* α7 : ltac:(refine (ref (core.option.Option usize))) :=
-              borrow α6 in
-            let* α8 : ltac:(refine (core.option.Option core.fmt.Arguments)) :=
+            let* α4 : ltac:(refine (core.option.Option core.fmt.Arguments)) :=
               M.alloc core.option.Option.None in
-            core.panicking.assert_failed kind α3 α7 α8 in
+            core.panicking.assert_failed kind α1 α3 α4 in
           let* α0 : ltac:(refine unit) := M.alloc tt in
           never_to_any α0
         else

@@ -69,11 +69,9 @@ Section Impl_core_fmt_Debug_for_subtle_Choice.
       let* α5 : ltac:(refine u8) := α4.["0"] in
       let* α6 : ltac:(refine (ref u8)) := borrow α5 in
       let* α7 : ltac:(refine (ref (ref u8))) := borrow α6 in
-      let* α8 : ltac:(refine (ref u8)) := deref α7 in
-      let* α9 : ltac:(refine (ref (ref u8))) := borrow α8 in
-      let* α10 : ltac:(refine (ref type not implemented)) :=
-        pointer_coercion "Unsize" α9 in
-      core.fmt.Formatter::["debug_tuple_field1_finish"] α1 α3 α10).
+      let* α8 : ltac:(refine (ref type not implemented)) :=
+        pointer_coercion "Unsize" α7 in
+      core.fmt.Formatter::["debug_tuple_field1_finish"] α1 α3 α8).
   
   Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {
     Notation.double_colon := fmt;
@@ -397,11 +395,9 @@ Definition black_box `{ℋ : State.Trait} (input : u8) : M u8 :=
         M.alloc tt
       else
         M.alloc tt in
-    let* α0 : ltac:(refine (ref u8)) := borrow input in
-    let* α1 : ltac:(refine u8) := deref α0 in
-    let* α2 : ltac:(refine (ref u8)) := addr_of α1 in
-    let* α3 : ltac:(refine (ref u8)) := use α2 in
-    core.ptr.read_volatile α3).
+    let* α0 : ltac:(refine (ref u8)) := addr_of input in
+    let* α1 : ltac:(refine (ref u8)) := use α0 in
+    core.ptr.read_volatile α1).
 
 Module  Impl_core_convert_From_u8_for_subtle_Choice.
 Section Impl_core_convert_From_u8_for_subtle_Choice.
@@ -518,19 +514,6 @@ Section Impl_subtle_ConstantTimeEq_for_slice_T.
                   borrow_mut iter in
                 let* α1 :
                     ltac:(refine
-                      (core.iter.adapters.zip.Zip
-                        (core.slice.iter.Iter T)
-                        (core.slice.iter.Iter T))) :=
-                  deref α0 in
-                let* α2 :
-                    ltac:(refine
-                      (mut_ref
-                        (core.iter.adapters.zip.Zip
-                          (core.slice.iter.Iter T)
-                          (core.slice.iter.Iter T)))) :=
-                  borrow_mut α1 in
-                let* α3 :
-                    ltac:(refine
                       (core.option.Option (M.Val ((ref T) * (ref T))))) :=
                   (core.iter.traits.iterator.Iterator.next
                       (Self :=
@@ -538,9 +521,9 @@ Section Impl_subtle_ConstantTimeEq_for_slice_T.
                           (core.slice.iter.Iter T)
                           (core.slice.iter.Iter T))
                       (Trait := ltac:(refine _)))
-                    α2 in
-                let* α4 := M.read α3 in
-                match α4 with
+                    α0 in
+                let* α2 := M.read α1 in
+                match α2 with
                 | core.option.Option.None  =>
                   let* α0 : ltac:(refine never) := Break in
                   never_to_any α0
@@ -664,11 +647,9 @@ Section Impl_subtle_ConstantTimeEq_for_i8.
       let* α3 : ltac:(refine i8) := deref other in
       let* α4 : ltac:(refine u8) := cast α3 in
       let* α5 : ltac:(refine (ref u8)) := borrow α4 in
-      let* α6 : ltac:(refine u8) := deref α5 in
-      let* α7 : ltac:(refine (ref u8)) := borrow α6 in
       (subtle.ConstantTimeEq.ct_eq (Self := u8) (Trait := ltac:(refine _)))
         α2
-        α7).
+        α5).
   
   Global Instance AssociatedFunction_ct_eq :
     Notation.DoubleColon Self "ct_eq" := {
@@ -735,11 +716,9 @@ Section Impl_subtle_ConstantTimeEq_for_i16.
       let* α3 : ltac:(refine i16) := deref other in
       let* α4 : ltac:(refine u16) := cast α3 in
       let* α5 : ltac:(refine (ref u16)) := borrow α4 in
-      let* α6 : ltac:(refine u16) := deref α5 in
-      let* α7 : ltac:(refine (ref u16)) := borrow α6 in
       (subtle.ConstantTimeEq.ct_eq (Self := u16) (Trait := ltac:(refine _)))
         α2
-        α7).
+        α5).
   
   Global Instance AssociatedFunction_ct_eq :
     Notation.DoubleColon Self "ct_eq" := {
@@ -806,11 +785,9 @@ Section Impl_subtle_ConstantTimeEq_for_i32.
       let* α3 : ltac:(refine i32) := deref other in
       let* α4 : ltac:(refine u32) := cast α3 in
       let* α5 : ltac:(refine (ref u32)) := borrow α4 in
-      let* α6 : ltac:(refine u32) := deref α5 in
-      let* α7 : ltac:(refine (ref u32)) := borrow α6 in
       (subtle.ConstantTimeEq.ct_eq (Self := u32) (Trait := ltac:(refine _)))
         α2
-        α7).
+        α5).
   
   Global Instance AssociatedFunction_ct_eq :
     Notation.DoubleColon Self "ct_eq" := {
@@ -877,11 +854,9 @@ Section Impl_subtle_ConstantTimeEq_for_i64.
       let* α3 : ltac:(refine i64) := deref other in
       let* α4 : ltac:(refine u64) := cast α3 in
       let* α5 : ltac:(refine (ref u64)) := borrow α4 in
-      let* α6 : ltac:(refine u64) := deref α5 in
-      let* α7 : ltac:(refine (ref u64)) := borrow α6 in
       (subtle.ConstantTimeEq.ct_eq (Self := u64) (Trait := ltac:(refine _)))
         α2
-        α7).
+        α5).
   
   Global Instance AssociatedFunction_ct_eq :
     Notation.DoubleColon Self "ct_eq" := {
@@ -950,11 +925,9 @@ Section Impl_subtle_ConstantTimeEq_for_isize.
       let* α3 : ltac:(refine isize) := deref other in
       let* α4 : ltac:(refine usize) := cast α3 in
       let* α5 : ltac:(refine (ref usize)) := borrow α4 in
-      let* α6 : ltac:(refine usize) := deref α5 in
-      let* α7 : ltac:(refine (ref usize)) := borrow α6 in
       (subtle.ConstantTimeEq.ct_eq (Self := usize) (Trait := ltac:(refine _)))
         α2
-        α7).
+        α5).
   
   Global Instance AssociatedFunction_ct_eq :
     Notation.DoubleColon Self "ct_eq" := {
@@ -1791,21 +1764,17 @@ Section Impl_subtle_ConditionallySelectable_for_subtle_Choice.
       (let* α0 : ltac:(refine subtle.Choice) := deref a in
       let* α1 : ltac:(refine u8) := α0.["0"] in
       let* α2 : ltac:(refine (ref u8)) := borrow α1 in
-      let* α3 : ltac:(refine u8) := deref α2 in
-      let* α4 : ltac:(refine (ref u8)) := borrow α3 in
-      let* α5 : ltac:(refine subtle.Choice) := deref b in
-      let* α6 : ltac:(refine u8) := α5.["0"] in
-      let* α7 : ltac:(refine (ref u8)) := borrow α6 in
-      let* α8 : ltac:(refine u8) := deref α7 in
-      let* α9 : ltac:(refine (ref u8)) := borrow α8 in
-      let* α10 : ltac:(refine u8) :=
+      let* α3 : ltac:(refine subtle.Choice) := deref b in
+      let* α4 : ltac:(refine u8) := α3.["0"] in
+      let* α5 : ltac:(refine (ref u8)) := borrow α4 in
+      let* α6 : ltac:(refine u8) :=
         (subtle.ConditionallySelectable.conditional_select
             (Self := u8)
             (Trait := ltac:(refine _)))
-          α4
-          α9
+          α2
+          α5
           choice in
-      M.alloc (subtle.Choice.Build_t α10)).
+      M.alloc (subtle.Choice.Build_t α6)).
   
   Global Instance AssociatedFunction_conditional_select :
     Notation.DoubleColon Self "conditional_select" := {
@@ -1858,13 +1827,11 @@ Section Impl_subtle_ConditionallyNegatable_for_T.
         let* α0 : ltac:(refine T) := deref self in
         let* α1 : ltac:(refine (mut_ref T)) := borrow_mut α0 in
         let* α2 : ltac:(refine (ref T)) := borrow self_neg in
-        let* α3 : ltac:(refine T) := deref α2 in
-        let* α4 : ltac:(refine (ref T)) := borrow α3 in
         (subtle.ConditionallySelectable.conditional_assign
             (Self := T)
             (Trait := ltac:(refine _)))
           α1
-          α4
+          α2
           choice in
       M.alloc tt).
   
@@ -1922,22 +1889,18 @@ Section Impl_core_clone_Clone_for_subtle_CtOption_T.
       (let* α0 : ltac:(refine (subtle.CtOption T)) := deref self in
       let* α1 : ltac:(refine T) := α0.["value"] in
       let* α2 : ltac:(refine (ref T)) := borrow α1 in
-      let* α3 : ltac:(refine T) := deref α2 in
-      let* α4 : ltac:(refine (ref T)) := borrow α3 in
-      let* α5 : ltac:(refine T) :=
-        (core.clone.Clone.clone (Self := T) (Trait := ltac:(refine _))) α4 in
-      let* α6 : ltac:(refine (subtle.CtOption T)) := deref self in
-      let* α7 : ltac:(refine subtle.Choice) := α6.["is_some"] in
-      let* α8 : ltac:(refine (ref subtle.Choice)) := borrow α7 in
-      let* α9 : ltac:(refine subtle.Choice) := deref α8 in
-      let* α10 : ltac:(refine (ref subtle.Choice)) := borrow α9 in
-      let* α11 : ltac:(refine subtle.Choice) :=
+      let* α3 : ltac:(refine T) :=
+        (core.clone.Clone.clone (Self := T) (Trait := ltac:(refine _))) α2 in
+      let* α4 : ltac:(refine (subtle.CtOption T)) := deref self in
+      let* α5 : ltac:(refine subtle.Choice) := α4.["is_some"] in
+      let* α6 : ltac:(refine (ref subtle.Choice)) := borrow α5 in
+      let* α7 : ltac:(refine subtle.Choice) :=
         (core.clone.Clone.clone
             (Self := subtle.Choice)
             (Trait := ltac:(refine _)))
-          α10 in
+          α6 in
       M.alloc
-        {| subtle.CtOption.value := α5; subtle.CtOption.is_some := α11; |}).
+        {| subtle.CtOption.value := α3; subtle.CtOption.is_some := α7; |}).
   
   Global Instance AssociatedFunction_clone :
     Notation.DoubleColon Self "clone" := {
@@ -1990,21 +1953,17 @@ Section Impl_core_fmt_Debug_for_subtle_CtOption_T.
       let* α6 : ltac:(refine (subtle.CtOption T)) := deref self in
       let* α7 : ltac:(refine T) := α6.["value"] in
       let* α8 : ltac:(refine (ref T)) := borrow α7 in
-      let* α9 : ltac:(refine T) := deref α8 in
-      let* α10 : ltac:(refine (ref T)) := borrow α9 in
-      let* α11 : ltac:(refine (ref type not implemented)) :=
-        pointer_coercion "Unsize" α10 in
-      let* α12 : ltac:(refine str) := deref (mk_str "is_some") in
-      let* α13 : ltac:(refine (ref str)) := borrow α12 in
-      let* α14 : ltac:(refine (subtle.CtOption T)) := deref self in
-      let* α15 : ltac:(refine subtle.Choice) := α14.["is_some"] in
-      let* α16 : ltac:(refine (ref subtle.Choice)) := borrow α15 in
-      let* α17 : ltac:(refine (ref (ref subtle.Choice))) := borrow α16 in
-      let* α18 : ltac:(refine (ref subtle.Choice)) := deref α17 in
-      let* α19 : ltac:(refine (ref (ref subtle.Choice))) := borrow α18 in
-      let* α20 : ltac:(refine (ref type not implemented)) :=
-        pointer_coercion "Unsize" α19 in
-      core.fmt.Formatter::["debug_struct_field2_finish"] α1 α3 α5 α11 α13 α20).
+      let* α9 : ltac:(refine (ref type not implemented)) :=
+        pointer_coercion "Unsize" α8 in
+      let* α10 : ltac:(refine str) := deref (mk_str "is_some") in
+      let* α11 : ltac:(refine (ref str)) := borrow α10 in
+      let* α12 : ltac:(refine (subtle.CtOption T)) := deref self in
+      let* α13 : ltac:(refine subtle.Choice) := α12.["is_some"] in
+      let* α14 : ltac:(refine (ref subtle.Choice)) := borrow α13 in
+      let* α15 : ltac:(refine (ref (ref subtle.Choice))) := borrow α14 in
+      let* α16 : ltac:(refine (ref type not implemented)) :=
+        pointer_coercion "Unsize" α15 in
+      core.fmt.Formatter::["debug_struct_field2_finish"] α1 α3 α5 α9 α11 α16).
   
   Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {
     Notation.double_colon := fmt;
@@ -2097,40 +2056,28 @@ Section Impl_subtle_CtOption_T.
             let* _ : ltac:(refine never) :=
               let* α0 : ltac:(refine u8) := deref left_val in
               let* α1 : ltac:(refine (ref u8)) := borrow α0 in
-              let* α2 : ltac:(refine u8) := deref α1 in
+              let* α2 : ltac:(refine u8) := deref right_val in
               let* α3 : ltac:(refine (ref u8)) := borrow α2 in
-              let* α4 : ltac:(refine u8) := deref right_val in
-              let* α5 : ltac:(refine (ref u8)) := borrow α4 in
-              let* α6 : ltac:(refine u8) := deref α5 in
-              let* α7 : ltac:(refine (ref u8)) := borrow α6 in
-              let* α8 : ltac:(refine (array (ref str))) :=
+              let* α4 : ltac:(refine (array (ref str))) :=
                 M.alloc [ mk_str "" ] in
-              let* α9 : ltac:(refine (ref (array (ref str)))) := borrow α8 in
-              let* α10 : ltac:(refine (array (ref str))) := deref α9 in
-              let* α11 : ltac:(refine (ref (array (ref str)))) := borrow α10 in
-              let* α12 : ltac:(refine (ref (slice (ref str)))) :=
-                pointer_coercion "Unsize" α11 in
-              let* α13 : ltac:(refine (ref (ref str))) := borrow msg in
-              let* α14 : ltac:(refine (ref str)) := deref α13 in
-              let* α15 : ltac:(refine (ref (ref str))) := borrow α14 in
-              let* α16 : ltac:(refine core.fmt.rt.Argument) :=
-                core.fmt.rt.Argument::["new_display"] α15 in
-              let* α17 : ltac:(refine (array core.fmt.rt.Argument)) :=
-                M.alloc [ α16 ] in
-              let* α18 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
-                borrow α17 in
-              let* α19 : ltac:(refine (array core.fmt.rt.Argument)) :=
-                deref α18 in
-              let* α20 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
-                borrow α19 in
-              let* α21 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
-                pointer_coercion "Unsize" α20 in
-              let* α22 : ltac:(refine core.fmt.Arguments) :=
-                core.fmt.Arguments::["new_v1"] α12 α21 in
-              let* α23 :
+              let* α5 : ltac:(refine (ref (array (ref str)))) := borrow α4 in
+              let* α6 : ltac:(refine (ref (slice (ref str)))) :=
+                pointer_coercion "Unsize" α5 in
+              let* α7 : ltac:(refine (ref (ref str))) := borrow msg in
+              let* α8 : ltac:(refine core.fmt.rt.Argument) :=
+                core.fmt.rt.Argument::["new_display"] α7 in
+              let* α9 : ltac:(refine (array core.fmt.rt.Argument)) :=
+                M.alloc [ α8 ] in
+              let* α10 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+                borrow α9 in
+              let* α11 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+                pointer_coercion "Unsize" α10 in
+              let* α12 : ltac:(refine core.fmt.Arguments) :=
+                core.fmt.Arguments::["new_v1"] α6 α11 in
+              let* α13 :
                   ltac:(refine (core.option.Option core.fmt.Arguments)) :=
-                M.alloc (core.option.Option.Some α22) in
-              core.panicking.assert_failed kind α3 α7 α23 in
+                M.alloc (core.option.Option.Some α12) in
+              core.panicking.assert_failed kind α1 α3 α13 in
             let* α0 : ltac:(refine unit) := M.alloc tt in
             never_to_any α0
           else
@@ -2168,15 +2115,11 @@ Section Impl_subtle_CtOption_T.
             let* _ : ltac:(refine never) :=
               let* α0 : ltac:(refine u8) := deref left_val in
               let* α1 : ltac:(refine (ref u8)) := borrow α0 in
-              let* α2 : ltac:(refine u8) := deref α1 in
+              let* α2 : ltac:(refine u8) := deref right_val in
               let* α3 : ltac:(refine (ref u8)) := borrow α2 in
-              let* α4 : ltac:(refine u8) := deref right_val in
-              let* α5 : ltac:(refine (ref u8)) := borrow α4 in
-              let* α6 : ltac:(refine u8) := deref α5 in
-              let* α7 : ltac:(refine (ref u8)) := borrow α6 in
-              let* α8 : ltac:(refine (core.option.Option core.fmt.Arguments)) :=
+              let* α4 : ltac:(refine (core.option.Option core.fmt.Arguments)) :=
                 M.alloc core.option.Option.None in
-              core.panicking.assert_failed kind α3 α7 α8 in
+              core.panicking.assert_failed kind α1 α3 α4 in
             let* α0 : ltac:(refine unit) := M.alloc tt in
             never_to_any α0
           else
@@ -2196,19 +2139,15 @@ Section Impl_subtle_CtOption_T.
       : M T :=
     M.function_body
       (let* α0 : ltac:(refine (ref T)) := borrow def in
-      let* α1 : ltac:(refine T) := deref α0 in
+      let* α1 : ltac:(refine T) := self.["value"] in
       let* α2 : ltac:(refine (ref T)) := borrow α1 in
-      let* α3 : ltac:(refine T) := self.["value"] in
-      let* α4 : ltac:(refine (ref T)) := borrow α3 in
-      let* α5 : ltac:(refine T) := deref α4 in
-      let* α6 : ltac:(refine (ref T)) := borrow α5 in
-      let* α7 : ltac:(refine subtle.Choice) := self.["is_some"] in
+      let* α3 : ltac:(refine subtle.Choice) := self.["is_some"] in
       (subtle.ConditionallySelectable.conditional_select
           (Self := T)
           (Trait := ltac:(refine _)))
+        α0
         α2
-        α6
-        α7).
+        α3).
   
   Global Instance AssociatedFunction_unwrap_or
       {ℋ_0 : subtle.ConditionallySelectable.Trait T} :
@@ -2232,19 +2171,15 @@ Section Impl_subtle_CtOption_T.
           f
           α0 in
       let* α2 : ltac:(refine (ref T)) := borrow α1 in
-      let* α3 : ltac:(refine T) := deref α2 in
+      let* α3 : ltac:(refine T) := self.["value"] in
       let* α4 : ltac:(refine (ref T)) := borrow α3 in
-      let* α5 : ltac:(refine T) := self.["value"] in
-      let* α6 : ltac:(refine (ref T)) := borrow α5 in
-      let* α7 : ltac:(refine T) := deref α6 in
-      let* α8 : ltac:(refine (ref T)) := borrow α7 in
-      let* α9 : ltac:(refine subtle.Choice) := self.["is_some"] in
+      let* α5 : ltac:(refine subtle.Choice) := self.["is_some"] in
       (subtle.ConditionallySelectable.conditional_select
           (Self := T)
           (Trait := ltac:(refine _)))
+        α2
         α4
-        α8
-        α9).
+        α5).
   
   Global Instance AssociatedFunction_unwrap_or_else
       {F : Set}
@@ -2288,29 +2223,25 @@ Section Impl_subtle_CtOption_T.
       (let* α0 : ltac:(refine T) :=
         core.default.Default.default (Self := T) (Trait := ltac:(refine _)) in
       let* α1 : ltac:(refine (ref T)) := borrow α0 in
-      let* α2 : ltac:(refine T) := deref α1 in
+      let* α2 : ltac:(refine T) := self.["value"] in
       let* α3 : ltac:(refine (ref T)) := borrow α2 in
-      let* α4 : ltac:(refine T) := self.["value"] in
-      let* α5 : ltac:(refine (ref T)) := borrow α4 in
-      let* α6 : ltac:(refine T) := deref α5 in
-      let* α7 : ltac:(refine (ref T)) := borrow α6 in
-      let* α8 : ltac:(refine subtle.Choice) := self.["is_some"] in
-      let* α9 : ltac:(refine T) :=
+      let* α4 : ltac:(refine subtle.Choice) := self.["is_some"] in
+      let* α5 : ltac:(refine T) :=
         (subtle.ConditionallySelectable.conditional_select
             (Self := T)
             (Trait := ltac:(refine _)))
+          α1
           α3
-          α7
-          α8 in
-      let* α10 : ltac:(refine (M.Val (T))) := M.alloc (α9) in
-      let* α11 : ltac:(refine U) :=
+          α4 in
+      let* α6 : ltac:(refine (M.Val (T))) := M.alloc (α5) in
+      let* α7 : ltac:(refine U) :=
         (core.ops.function.FnOnce.call_once
             (Self := F)
             (Trait := ltac:(refine _)))
           f
-          α10 in
-      let* α12 : ltac:(refine subtle.Choice) := self.["is_some"] in
-      (subtle.CtOption U)::["new"] α11 α12).
+          α6 in
+      let* α8 : ltac:(refine subtle.Choice) := self.["is_some"] in
+      (subtle.CtOption U)::["new"] α7 α8).
   
   Global Instance AssociatedFunction_map
       {U F : Set}
@@ -2334,26 +2265,22 @@ Section Impl_subtle_CtOption_T.
         let* α0 : ltac:(refine T) :=
           core.default.Default.default (Self := T) (Trait := ltac:(refine _)) in
         let* α1 : ltac:(refine (ref T)) := borrow α0 in
-        let* α2 : ltac:(refine T) := deref α1 in
+        let* α2 : ltac:(refine T) := self.["value"] in
         let* α3 : ltac:(refine (ref T)) := borrow α2 in
-        let* α4 : ltac:(refine T) := self.["value"] in
-        let* α5 : ltac:(refine (ref T)) := borrow α4 in
-        let* α6 : ltac:(refine T) := deref α5 in
-        let* α7 : ltac:(refine (ref T)) := borrow α6 in
-        let* α8 : ltac:(refine subtle.Choice) := self.["is_some"] in
-        let* α9 : ltac:(refine T) :=
+        let* α4 : ltac:(refine subtle.Choice) := self.["is_some"] in
+        let* α5 : ltac:(refine T) :=
           (subtle.ConditionallySelectable.conditional_select
               (Self := T)
               (Trait := ltac:(refine _)))
+            α1
             α3
-            α7
-            α8 in
-        let* α10 : ltac:(refine (M.Val (T))) := M.alloc (α9) in
+            α4 in
+        let* α6 : ltac:(refine (M.Val (T))) := M.alloc (α5) in
         (core.ops.function.FnOnce.call_once
             (Self := F)
             (Trait := ltac:(refine _)))
           f
-          α10 in
+          α6 in
       let* _ : ltac:(refine unit) :=
         let* α0 : ltac:(refine subtle.Choice) := tmp.["is_some"] in
         let* α1 : ltac:(refine (mut_ref subtle.Choice)) := borrow_mut α0 in
@@ -2393,16 +2320,12 @@ Section Impl_subtle_CtOption_T.
           f
           α0 in
       let* α0 : ltac:(refine (ref (subtle.CtOption T))) := borrow self in
-      let* α1 : ltac:(refine (subtle.CtOption T)) := deref α0 in
-      let* α2 : ltac:(refine (ref (subtle.CtOption T))) := borrow α1 in
-      let* α3 : ltac:(refine (ref (subtle.CtOption T))) := borrow f in
-      let* α4 : ltac:(refine (subtle.CtOption T)) := deref α3 in
-      let* α5 : ltac:(refine (ref (subtle.CtOption T))) := borrow α4 in
+      let* α1 : ltac:(refine (ref (subtle.CtOption T))) := borrow f in
       (subtle.ConditionallySelectable.conditional_select
           (Self := subtle.CtOption T)
           (Trait := ltac:(refine _)))
-        α2
-        α5
+        α0
+        α1
         is_none).
   
   Global Instance AssociatedFunction_or_else
@@ -2434,38 +2357,30 @@ Section Impl_subtle_ConditionallySelectable_for_subtle_CtOption_T.
       (let* α0 : ltac:(refine (subtle.CtOption T)) := deref a in
       let* α1 : ltac:(refine T) := α0.["value"] in
       let* α2 : ltac:(refine (ref T)) := borrow α1 in
-      let* α3 : ltac:(refine T) := deref α2 in
-      let* α4 : ltac:(refine (ref T)) := borrow α3 in
-      let* α5 : ltac:(refine (subtle.CtOption T)) := deref b in
-      let* α6 : ltac:(refine T) := α5.["value"] in
-      let* α7 : ltac:(refine (ref T)) := borrow α6 in
-      let* α8 : ltac:(refine T) := deref α7 in
-      let* α9 : ltac:(refine (ref T)) := borrow α8 in
-      let* α10 : ltac:(refine T) :=
+      let* α3 : ltac:(refine (subtle.CtOption T)) := deref b in
+      let* α4 : ltac:(refine T) := α3.["value"] in
+      let* α5 : ltac:(refine (ref T)) := borrow α4 in
+      let* α6 : ltac:(refine T) :=
         (subtle.ConditionallySelectable.conditional_select
             (Self := T)
             (Trait := ltac:(refine _)))
-          α4
-          α9
+          α2
+          α5
           choice in
-      let* α11 : ltac:(refine (subtle.CtOption T)) := deref a in
-      let* α12 : ltac:(refine subtle.Choice) := α11.["is_some"] in
-      let* α13 : ltac:(refine (ref subtle.Choice)) := borrow α12 in
-      let* α14 : ltac:(refine subtle.Choice) := deref α13 in
-      let* α15 : ltac:(refine (ref subtle.Choice)) := borrow α14 in
-      let* α16 : ltac:(refine (subtle.CtOption T)) := deref b in
-      let* α17 : ltac:(refine subtle.Choice) := α16.["is_some"] in
-      let* α18 : ltac:(refine (ref subtle.Choice)) := borrow α17 in
-      let* α19 : ltac:(refine subtle.Choice) := deref α18 in
-      let* α20 : ltac:(refine (ref subtle.Choice)) := borrow α19 in
-      let* α21 : ltac:(refine subtle.Choice) :=
+      let* α7 : ltac:(refine (subtle.CtOption T)) := deref a in
+      let* α8 : ltac:(refine subtle.Choice) := α7.["is_some"] in
+      let* α9 : ltac:(refine (ref subtle.Choice)) := borrow α8 in
+      let* α10 : ltac:(refine (subtle.CtOption T)) := deref b in
+      let* α11 : ltac:(refine subtle.Choice) := α10.["is_some"] in
+      let* α12 : ltac:(refine (ref subtle.Choice)) := borrow α11 in
+      let* α13 : ltac:(refine subtle.Choice) :=
         (subtle.ConditionallySelectable.conditional_select
             (Self := subtle.Choice)
             (Trait := ltac:(refine _)))
-          α15
-          α20
+          α9
+          α12
           choice in
-      (subtle.CtOption T)::["new"] α10 α21).
+      (subtle.CtOption T)::["new"] α6 α13).
   
   Global Instance AssociatedFunction_conditional_select :
     Notation.DoubleColon Self "conditional_select" := {
@@ -2515,39 +2430,37 @@ Section Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
       let* α4 : ltac:(refine (subtle.CtOption T)) := deref rhs in
       let* α5 : ltac:(refine T) := α4.["value"] in
       let* α6 : ltac:(refine (ref T)) := borrow α5 in
-      let* α7 : ltac:(refine T) := deref α6 in
-      let* α8 : ltac:(refine (ref T)) := borrow α7 in
-      let* α9 : ltac:(refine subtle.Choice) :=
+      let* α7 : ltac:(refine subtle.Choice) :=
         (subtle.ConstantTimeEq.ct_eq (Self := T) (Trait := ltac:(refine _)))
           α3
-          α8 in
-      let* α10 : ltac:(refine subtle.Choice) :=
+          α6 in
+      let* α8 : ltac:(refine subtle.Choice) :=
         (core.ops.bit.BitAnd.bitand
             (Self := subtle.Choice)
             (Trait := ltac:(refine _)))
           α0
-          α9 in
-      let* α11 : ltac:(refine subtle.Choice) :=
+          α7 in
+      let* α9 : ltac:(refine subtle.Choice) :=
         (core.ops.bit.Not.not
             (Self := subtle.Choice)
             (Trait := ltac:(refine _)))
           a in
-      let* α12 : ltac:(refine subtle.Choice) :=
+      let* α10 : ltac:(refine subtle.Choice) :=
         (core.ops.bit.Not.not
             (Self := subtle.Choice)
             (Trait := ltac:(refine _)))
           b in
-      let* α13 : ltac:(refine subtle.Choice) :=
+      let* α11 : ltac:(refine subtle.Choice) :=
         (core.ops.bit.BitAnd.bitand
             (Self := subtle.Choice)
             (Trait := ltac:(refine _)))
-          α11
-          α12 in
+          α9
+          α10 in
       (core.ops.bit.BitOr.bitor
           (Self := subtle.Choice)
           (Trait := ltac:(refine _)))
-        α10
-        α13).
+        α8
+        α11).
   
   Global Instance AssociatedFunction_ct_eq :
     Notation.DoubleColon Self "ct_eq" := {

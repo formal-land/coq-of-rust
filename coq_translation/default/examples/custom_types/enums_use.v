@@ -31,13 +31,11 @@ Definition main `{ℋ : State.Trait} : M unit :=
             M.alloc [ mk_str "The rich have lots of money!
 " ] in
           let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
-          let* α2 : ltac:(refine (array (ref str))) := deref α1 in
-          let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
-          let* α4 : ltac:(refine (ref (slice (ref str)))) :=
-            pointer_coercion "Unsize" α3 in
-          let* α5 : ltac:(refine core.fmt.Arguments) :=
-            core.fmt.Arguments::["new_const"] α4 in
-          std.io.stdio._print α5 in
+          let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+            pointer_coercion "Unsize" α1 in
+          let* α3 : ltac:(refine core.fmt.Arguments) :=
+            core.fmt.Arguments::["new_const"] α2 in
+          std.io.stdio._print α3 in
         M.alloc tt
       | enums_use.Status.Poor  =>
         let* _ : ltac:(refine unit) :=
@@ -45,13 +43,11 @@ Definition main `{ℋ : State.Trait} : M unit :=
             M.alloc [ mk_str "The poor have no money...
 " ] in
           let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
-          let* α2 : ltac:(refine (array (ref str))) := deref α1 in
-          let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
-          let* α4 : ltac:(refine (ref (slice (ref str)))) :=
-            pointer_coercion "Unsize" α3 in
-          let* α5 : ltac:(refine core.fmt.Arguments) :=
-            core.fmt.Arguments::["new_const"] α4 in
-          std.io.stdio._print α5 in
+          let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+            pointer_coercion "Unsize" α1 in
+          let* α3 : ltac:(refine core.fmt.Arguments) :=
+            core.fmt.Arguments::["new_const"] α2 in
+          std.io.stdio._print α3 in
         M.alloc tt
       end in
     let* α0 := M.read work in
@@ -62,13 +58,11 @@ Definition main `{ℋ : State.Trait} : M unit :=
           M.alloc [ mk_str "Civilians work!
 " ] in
         let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
-        let* α2 : ltac:(refine (array (ref str))) := deref α1 in
-        let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
-        let* α4 : ltac:(refine (ref (slice (ref str)))) :=
-          pointer_coercion "Unsize" α3 in
-        let* α5 : ltac:(refine core.fmt.Arguments) :=
-          core.fmt.Arguments::["new_const"] α4 in
-        std.io.stdio._print α5 in
+        let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+          pointer_coercion "Unsize" α1 in
+        let* α3 : ltac:(refine core.fmt.Arguments) :=
+          core.fmt.Arguments::["new_const"] α2 in
+        std.io.stdio._print α3 in
       M.alloc tt
     | enums_use.Work.Soldier  =>
       let* _ : ltac:(refine unit) :=
@@ -76,12 +70,10 @@ Definition main `{ℋ : State.Trait} : M unit :=
           M.alloc [ mk_str "Soldiers fight!
 " ] in
         let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
-        let* α2 : ltac:(refine (array (ref str))) := deref α1 in
-        let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
-        let* α4 : ltac:(refine (ref (slice (ref str)))) :=
-          pointer_coercion "Unsize" α3 in
-        let* α5 : ltac:(refine core.fmt.Arguments) :=
-          core.fmt.Arguments::["new_const"] α4 in
-        std.io.stdio._print α5 in
+        let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+          pointer_coercion "Unsize" α1 in
+        let* α3 : ltac:(refine core.fmt.Arguments) :=
+          core.fmt.Arguments::["new_const"] α2 in
+        std.io.stdio._print α3 in
       M.alloc tt
     end).

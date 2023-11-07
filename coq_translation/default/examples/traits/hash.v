@@ -50,32 +50,26 @@ Section Impl_core_hash_Hash_for_hash_Person.
         let* α0 : ltac:(refine hash.Person) := deref self in
         let* α1 : ltac:(refine u32) := α0.["id"] in
         let* α2 : ltac:(refine (ref u32)) := borrow α1 in
-        let* α3 : ltac:(refine u32) := deref α2 in
-        let* α4 : ltac:(refine (ref u32)) := borrow α3 in
-        let* α5 : ltac:(refine __H) := deref state in
-        let* α6 : ltac:(refine (mut_ref __H)) := borrow_mut α5 in
-        (core.hash.Hash.hash (Self := u32) (Trait := ltac:(refine _))) α4 α6 in
+        let* α3 : ltac:(refine __H) := deref state in
+        let* α4 : ltac:(refine (mut_ref __H)) := borrow_mut α3 in
+        (core.hash.Hash.hash (Self := u32) (Trait := ltac:(refine _))) α2 α4 in
       let* _ : ltac:(refine unit) :=
         let* α0 : ltac:(refine hash.Person) := deref self in
         let* α1 : ltac:(refine alloc.string.String) := α0.["name"] in
         let* α2 : ltac:(refine (ref alloc.string.String)) := borrow α1 in
-        let* α3 : ltac:(refine alloc.string.String) := deref α2 in
-        let* α4 : ltac:(refine (ref alloc.string.String)) := borrow α3 in
-        let* α5 : ltac:(refine __H) := deref state in
-        let* α6 : ltac:(refine (mut_ref __H)) := borrow_mut α5 in
+        let* α3 : ltac:(refine __H) := deref state in
+        let* α4 : ltac:(refine (mut_ref __H)) := borrow_mut α3 in
         (core.hash.Hash.hash
             (Self := alloc.string.String)
             (Trait := ltac:(refine _)))
-          α4
-          α6 in
+          α2
+          α4 in
       let* α0 : ltac:(refine hash.Person) := deref self in
       let* α1 : ltac:(refine u64) := α0.["phone"] in
       let* α2 : ltac:(refine (ref u64)) := borrow α1 in
-      let* α3 : ltac:(refine u64) := deref α2 in
-      let* α4 : ltac:(refine (ref u64)) := borrow α3 in
-      let* α5 : ltac:(refine __H) := deref state in
-      let* α6 : ltac:(refine (mut_ref __H)) := borrow_mut α5 in
-      (core.hash.Hash.hash (Self := u64) (Trait := ltac:(refine _))) α4 α6).
+      let* α3 : ltac:(refine __H) := deref state in
+      let* α4 : ltac:(refine (mut_ref __H)) := borrow_mut α3 in
+      (core.hash.Hash.hash (Self := u64) (Trait := ltac:(refine _))) α2 α4).
   
   Global Instance AssociatedFunction_hash
       {__H : Set}
@@ -107,12 +101,7 @@ Definition calculate_hash
       let* α2 :
           ltac:(refine (mut_ref std.collections.hash.map.DefaultHasher)) :=
         borrow_mut s in
-      let* α3 : ltac:(refine std.collections.hash.map.DefaultHasher) :=
-        deref α2 in
-      let* α4 :
-          ltac:(refine (mut_ref std.collections.hash.map.DefaultHasher)) :=
-        borrow_mut α3 in
-      (core.hash.Hash.hash (Self := T) (Trait := ltac:(refine _))) α1 α4 in
+      (core.hash.Hash.hash (Self := T) (Trait := ltac:(refine _))) α1 α2 in
     let* α0 : ltac:(refine (ref std.collections.hash.map.DefaultHasher)) :=
       borrow s in
     (core.hash.Hasher.finish
@@ -157,17 +146,13 @@ Definition main `{ℋ : State.Trait} : M unit :=
         |} in
     let* _ : ltac:(refine unit) :=
       let* α0 : ltac:(refine (ref hash.Person)) := borrow person1 in
-      let* α1 : ltac:(refine hash.Person) := deref α0 in
-      let* α2 : ltac:(refine (ref hash.Person)) := borrow α1 in
+      let* α1 : ltac:(refine u64) := hash.calculate_hash α0 in
+      let* α2 : ltac:(refine (ref hash.Person)) := borrow person2 in
       let* α3 : ltac:(refine u64) := hash.calculate_hash α2 in
-      let* α4 : ltac:(refine (ref hash.Person)) := borrow person2 in
-      let* α5 : ltac:(refine hash.Person) := deref α4 in
-      let* α6 : ltac:(refine (ref hash.Person)) := borrow α5 in
-      let* α7 : ltac:(refine u64) := hash.calculate_hash α6 in
-      let* α8 : ltac:(refine bool) := BinOp.ne α3 α7 in
-      let* α9 : ltac:(refine bool) := UnOp.not α8 in
-      let* α10 : ltac:(refine bool) := use α9 in
-      if (α10 : bool) then
+      let* α4 : ltac:(refine bool) := BinOp.ne α1 α3 in
+      let* α5 : ltac:(refine bool) := UnOp.not α4 in
+      let* α6 : ltac:(refine bool) := use α5 in
+      if (α6 : bool) then
         let* α0 : ltac:(refine never) :=
           core.panicking.panic
             (mk_str

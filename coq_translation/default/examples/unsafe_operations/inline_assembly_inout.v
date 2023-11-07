@@ -29,15 +29,11 @@ Definition main `{ℋ : State.Trait} : M unit :=
           let* _ : ltac:(refine never) :=
             let* α0 : ltac:(refine u64) := deref left_val in
             let* α1 : ltac:(refine (ref u64)) := borrow α0 in
-            let* α2 : ltac:(refine u64) := deref α1 in
+            let* α2 : ltac:(refine u64) := deref right_val in
             let* α3 : ltac:(refine (ref u64)) := borrow α2 in
-            let* α4 : ltac:(refine u64) := deref right_val in
-            let* α5 : ltac:(refine (ref u64)) := borrow α4 in
-            let* α6 : ltac:(refine u64) := deref α5 in
-            let* α7 : ltac:(refine (ref u64)) := borrow α6 in
-            let* α8 : ltac:(refine (core.option.Option core.fmt.Arguments)) :=
+            let* α4 : ltac:(refine (core.option.Option core.fmt.Arguments)) :=
               M.alloc core.option.Option.None in
-            core.panicking.assert_failed kind α3 α7 α8 in
+            core.panicking.assert_failed kind α1 α3 α4 in
           let* α0 : ltac:(refine unit) := M.alloc tt in
           never_to_any α0
         else

@@ -57,6 +57,29 @@ pub(crate) fn compile_expr<'a>(
     Expr { kind, ty: Some(ty) }
 }
 
+impl Expr {
+    /// Return the borrowed expression if the expression is a borrow.
+    fn match_borrow(expr: &Expr) -> Option<Expr> {
+        match &expr.kind {
+            ExprKind::Call { func, args } => {
+                if args.len() != 1 {
+                    return None;
+                }
+                let arg = args.get(0).unwrap();
+
+                if let ExprKind::LocalVar(func) = &func.kind {
+                    if func == "borrow" || func == "borrow_mut" {
+                        return Some(arg.clone());
+                    }
+                }
+
+                None
+            }
+            _ => None,
+        }
+    }
+}
+
 fn compile_expr_kind<'a>(
     env: &mut Env<'a>,
     thir: &rustc_middle::thir::Thir<'a>,
@@ -105,6 +128,11 @@ fn compile_expr_kind<'a>(
         }
         thir::ExprKind::Deref { arg } => {
             let arg = compile_expr(env, thir, arg);
+
+            if let Some(borrowed) = Expr::match_borrow(&arg) {
+                return borrowed.kind;
+            }
+
             ExprKind::Call {
                 func: Box::new(Expr {
                     kind: ExprKind::LocalVar("deref".to_string()),

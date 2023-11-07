@@ -35,11 +35,9 @@ Section Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber.
       let* α5 : ltac:(refine i32) := α4.["0"] in
       let* α6 : ltac:(refine (ref i32)) := borrow α5 in
       let* α7 : ltac:(refine (ref (ref i32))) := borrow α6 in
-      let* α8 : ltac:(refine (ref i32)) := deref α7 in
-      let* α9 : ltac:(refine (ref (ref i32))) := borrow α8 in
-      let* α10 : ltac:(refine (ref type not implemented)) :=
-        pointer_coercion "Unsize" α9 in
-      core.fmt.Formatter::["debug_tuple_field1_finish"] α1 α3 α10).
+      let* α8 : ltac:(refine (ref type not implemented)) :=
+        pointer_coercion "Unsize" α7 in
+      core.fmt.Formatter::["debug_tuple_field1_finish"] α1 α3 α8).
   
   Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {
     Notation.double_colon := fmt;
@@ -211,7 +209,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
             let* α2 :
                 ltac:(refine
                   (core.result.Result try_from_and_try_into.EvenNumber unit)) :=
-              deref α1 in
+              deref right_val in
             let* α3 :
                 ltac:(refine
                   (ref
@@ -219,31 +217,9 @@ Definition main `{ℋ : State.Trait} : M unit :=
                       try_from_and_try_into.EvenNumber
                       unit))) :=
               borrow α2 in
-            let* α4 :
-                ltac:(refine
-                  (core.result.Result try_from_and_try_into.EvenNumber unit)) :=
-              deref right_val in
-            let* α5 :
-                ltac:(refine
-                  (ref
-                    (core.result.Result
-                      try_from_and_try_into.EvenNumber
-                      unit))) :=
-              borrow α4 in
-            let* α6 :
-                ltac:(refine
-                  (core.result.Result try_from_and_try_into.EvenNumber unit)) :=
-              deref α5 in
-            let* α7 :
-                ltac:(refine
-                  (ref
-                    (core.result.Result
-                      try_from_and_try_into.EvenNumber
-                      unit))) :=
-              borrow α6 in
-            let* α8 : ltac:(refine (core.option.Option core.fmt.Arguments)) :=
+            let* α4 : ltac:(refine (core.option.Option core.fmt.Arguments)) :=
               M.alloc core.option.Option.None in
-            core.panicking.assert_failed kind α3 α7 α8 in
+            core.panicking.assert_failed kind α1 α3 α4 in
           let* α0 : ltac:(refine unit) := M.alloc tt in
           never_to_any α0
         else
@@ -328,7 +304,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
             let* α2 :
                 ltac:(refine
                   (core.result.Result try_from_and_try_into.EvenNumber unit)) :=
-              deref α1 in
+              deref right_val in
             let* α3 :
                 ltac:(refine
                   (ref
@@ -336,31 +312,9 @@ Definition main `{ℋ : State.Trait} : M unit :=
                       try_from_and_try_into.EvenNumber
                       unit))) :=
               borrow α2 in
-            let* α4 :
-                ltac:(refine
-                  (core.result.Result try_from_and_try_into.EvenNumber unit)) :=
-              deref right_val in
-            let* α5 :
-                ltac:(refine
-                  (ref
-                    (core.result.Result
-                      try_from_and_try_into.EvenNumber
-                      unit))) :=
-              borrow α4 in
-            let* α6 :
-                ltac:(refine
-                  (core.result.Result try_from_and_try_into.EvenNumber unit)) :=
-              deref α5 in
-            let* α7 :
-                ltac:(refine
-                  (ref
-                    (core.result.Result
-                      try_from_and_try_into.EvenNumber
-                      unit))) :=
-              borrow α6 in
-            let* α8 : ltac:(refine (core.option.Option core.fmt.Arguments)) :=
+            let* α4 : ltac:(refine (core.option.Option core.fmt.Arguments)) :=
               M.alloc core.option.Option.None in
-            core.panicking.assert_failed kind α3 α7 α8 in
+            core.panicking.assert_failed kind α1 α3 α4 in
           let* α0 : ltac:(refine unit) := M.alloc tt in
           never_to_any α0
         else
@@ -445,7 +399,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
             let* α2 :
                 ltac:(refine
                   (core.result.Result try_from_and_try_into.EvenNumber unit)) :=
-              deref α1 in
+              deref right_val in
             let* α3 :
                 ltac:(refine
                   (ref
@@ -453,31 +407,9 @@ Definition main `{ℋ : State.Trait} : M unit :=
                       try_from_and_try_into.EvenNumber
                       unit))) :=
               borrow α2 in
-            let* α4 :
-                ltac:(refine
-                  (core.result.Result try_from_and_try_into.EvenNumber unit)) :=
-              deref right_val in
-            let* α5 :
-                ltac:(refine
-                  (ref
-                    (core.result.Result
-                      try_from_and_try_into.EvenNumber
-                      unit))) :=
-              borrow α4 in
-            let* α6 :
-                ltac:(refine
-                  (core.result.Result try_from_and_try_into.EvenNumber unit)) :=
-              deref α5 in
-            let* α7 :
-                ltac:(refine
-                  (ref
-                    (core.result.Result
-                      try_from_and_try_into.EvenNumber
-                      unit))) :=
-              borrow α6 in
-            let* α8 : ltac:(refine (core.option.Option core.fmt.Arguments)) :=
+            let* α4 : ltac:(refine (core.option.Option core.fmt.Arguments)) :=
               M.alloc core.option.Option.None in
-            core.panicking.assert_failed kind α3 α7 α8 in
+            core.panicking.assert_failed kind α1 α3 α4 in
           let* α0 : ltac:(refine unit) := M.alloc tt in
           never_to_any α0
         else
@@ -560,7 +492,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
             let* α2 :
                 ltac:(refine
                   (core.result.Result try_from_and_try_into.EvenNumber unit)) :=
-              deref α1 in
+              deref right_val in
             let* α3 :
                 ltac:(refine
                   (ref
@@ -568,31 +500,9 @@ Definition main `{ℋ : State.Trait} : M unit :=
                       try_from_and_try_into.EvenNumber
                       unit))) :=
               borrow α2 in
-            let* α4 :
-                ltac:(refine
-                  (core.result.Result try_from_and_try_into.EvenNumber unit)) :=
-              deref right_val in
-            let* α5 :
-                ltac:(refine
-                  (ref
-                    (core.result.Result
-                      try_from_and_try_into.EvenNumber
-                      unit))) :=
-              borrow α4 in
-            let* α6 :
-                ltac:(refine
-                  (core.result.Result try_from_and_try_into.EvenNumber unit)) :=
-              deref α5 in
-            let* α7 :
-                ltac:(refine
-                  (ref
-                    (core.result.Result
-                      try_from_and_try_into.EvenNumber
-                      unit))) :=
-              borrow α6 in
-            let* α8 : ltac:(refine (core.option.Option core.fmt.Arguments)) :=
+            let* α4 : ltac:(refine (core.option.Option core.fmt.Arguments)) :=
               M.alloc core.option.Option.None in
-            core.panicking.assert_failed kind α3 α7 α8 in
+            core.panicking.assert_failed kind α1 α3 α4 in
           let* α0 : ltac:(refine unit) := M.alloc tt in
           never_to_any α0
         else
