@@ -1927,7 +1927,7 @@ impl TopLevelItem {
                             .map(|(name, _)| name.clone())
                             .collect::<Vec<_>>(),
                         &coq::TopLevel::concat(&[
-                            coq::TopLevel::locally_unset_primitive_projections(&[
+                            coq::TopLevel::new(&[
                                 coq::TopLevelItem::Record(coq::Record::new(
                                     "t",
                                     &coq::Expression::Set,
@@ -1939,8 +1939,8 @@ impl TopLevelItem {
                                         })
                                         .collect::<Vec<_>>(),
                                 )),
+                                coq::TopLevelItem::Line,
                             ]),
-                            coq::TopLevel::new(&[coq::TopLevelItem::Line]),
                             coq::TopLevel::new(
                                 &fields
                                     .iter()

@@ -112,12 +112,10 @@ Module  Pair.
 Section Pair.
   Context `{ℋ : State.Trait}.
   
-  Unset Primitive Projections.
   Record t : Set := {
     x0 : alloc.boxed.Box i32 alloc.boxed.Box.Default.A;
     x1 : alloc.boxed.Box i32 alloc.boxed.Box.Default.A;
   }.
-  Global Set Primitive Projections.
   
   Global Instance Get_0 : Notation.Dot "0" := {
     Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;

@@ -13,14 +13,12 @@ Module  Matrix.
 Section Matrix.
   Context `{ℋ : State.Trait}.
   
-  Unset Primitive Projections.
   Record t : Set := {
     x0 : f32;
     x1 : f32;
     x2 : f32;
     x3 : f32;
   }.
-  Global Set Primitive Projections.
   
   Global Instance Get_0 : Notation.Dot "0" := {
     Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
