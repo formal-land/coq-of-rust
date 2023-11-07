@@ -48,6 +48,7 @@ Section Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_A_B.
     {ℋ_0 : core.cmp.PartialEq.Trait A (Rhs := core.cmp.PartialEq.Default.Rhs A)}
     {ℋ_1 :
       core.cmp.PartialEq.Trait B (Rhs := core.cmp.PartialEq.Default.Rhs B)}.
+  
   Definition Self : Set := generics_phantom_type.PhantomTuple A B.
   
   Parameter eq :
@@ -72,12 +73,10 @@ Section PhantomStruct.
   
   Context {A B : Set}.
   
-  Unset Primitive Projections.
   Record t : Set := {
     first : A;
     phantom : core.marker.PhantomData B;
   }.
-  Global Set Primitive Projections.
   
   Global Instance Get_first : Notation.Dot "first" := {
     Notation.dot x := let* x := M.read x in M.pure x.(first) : M _;
@@ -119,6 +118,7 @@ Section Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
     {ℋ_0 : core.cmp.PartialEq.Trait A (Rhs := core.cmp.PartialEq.Default.Rhs A)}
     {ℋ_1 :
       core.cmp.PartialEq.Trait B (Rhs := core.cmp.PartialEq.Default.Rhs B)}.
+  
   Definition Self : Set := generics_phantom_type.PhantomStruct A B.
   
   Parameter eq :

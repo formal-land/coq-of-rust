@@ -5,11 +5,9 @@ Module  Foo.
 Section Foo.
   Context `{ℋ : State.Trait}.
   
-  Unset Primitive Projections.
   Record t : Set := {
     test : bool;
   }.
-  Global Set Primitive Projections.
   
   Global Instance Get_test : Notation.Dot "test" := {
     Notation.dot x := let* x := M.read x in M.pure x.(test) : M _;
@@ -25,11 +23,9 @@ Module  Bar.
 Section Bar.
   Context `{ℋ : State.Trait}.
   
-  Unset Primitive Projections.
   Record t : Set := {
     test : alloc.string.String;
   }.
-  Global Set Primitive Projections.
   
   Global Instance Get_test : Notation.Dot "test" := {
     Notation.dot x := let* x := M.read x in M.pure x.(test) : M _;

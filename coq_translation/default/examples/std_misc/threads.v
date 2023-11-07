@@ -6,8 +6,7 @@ Definition NTHREADS `{ℋ : State.Trait} : u32 := M.run (M.alloc 10).
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
   M.function_body
-    (let*
-        children :
+    (let* children :
         ltac:(refine
           (alloc.vec.Vec (std.thread.JoinHandle unit) alloc.alloc.Global)) :=
       (alloc.vec.Vec
@@ -49,8 +48,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
                 never_to_any α0
               | core.option.Option.Some i =>
                 let* _ : ltac:(refine unit) :=
-                  let*
-                      α0 :
+                  let* α0 :
                       ltac:(refine
                         (mut_ref
                           (alloc.vec.Vec
@@ -78,26 +76,21 @@ Definition main `{ℋ : State.Trait} : M unit :=
                           let* α7 : ltac:(refine (ref u32)) := borrow α6 in
                           let* α8 : ltac:(refine core.fmt.rt.Argument) :=
                             core.fmt.rt.Argument::["new_display"] α7 in
-                          let*
-                              α9 :
+                          let* α9 :
                               ltac:(refine (array core.fmt.rt.Argument)) :=
                             M.alloc [ α8 ] in
-                          let*
-                              α10 :
+                          let* α10 :
                               ltac:(refine
                                 (ref (array core.fmt.rt.Argument))) :=
                             borrow α9 in
-                          let*
-                              α11 :
+                          let* α11 :
                               ltac:(refine (array core.fmt.rt.Argument)) :=
                             deref α10 in
-                          let*
-                              α12 :
+                          let* α12 :
                               ltac:(refine
                                 (ref (array core.fmt.rt.Argument))) :=
                             borrow α11 in
-                          let*
-                              α13 :
+                          let* α13 :
                               ltac:(refine
                                 (ref (slice core.fmt.rt.Argument))) :=
                             pointer_coercion "Unsize" α12 in
@@ -116,8 +109,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
             M.alloc tt)
         end in
       use α4 in
-    let*
-        α0 :
+    let* α0 :
         ltac:(refine
           (alloc.vec.into_iter.IntoIter
             (std.thread.JoinHandle unit)
@@ -133,31 +125,27 @@ Definition main `{ℋ : State.Trait} : M unit :=
       | iter =>
         loop
           (let* _ : ltac:(refine unit) :=
-            let*
-                α0 :
+            let* α0 :
                 ltac:(refine
                   (mut_ref
                     (alloc.vec.into_iter.IntoIter
                       (std.thread.JoinHandle unit)
                       alloc.alloc.Global))) :=
               borrow_mut iter in
-            let*
-                α1 :
+            let* α1 :
                 ltac:(refine
                   (alloc.vec.into_iter.IntoIter
                     (std.thread.JoinHandle unit)
                     alloc.alloc.Global)) :=
               deref α0 in
-            let*
-                α2 :
+            let* α2 :
                 ltac:(refine
                   (mut_ref
                     (alloc.vec.into_iter.IntoIter
                       (std.thread.JoinHandle unit)
                       alloc.alloc.Global))) :=
               borrow_mut α1 in
-            let*
-                α3 :
+            let* α3 :
                 ltac:(refine
                   (core.option.Option (std.thread.JoinHandle unit))) :=
               (core.iter.traits.iterator.Iterator.next
@@ -173,8 +161,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
               let* α0 : ltac:(refine never) := Break in
               never_to_any α0
             | core.option.Option.Some child =>
-              let*
-                  _ :
+              let* _ :
                   ltac:(refine
                     (core.result.Result
                       unit

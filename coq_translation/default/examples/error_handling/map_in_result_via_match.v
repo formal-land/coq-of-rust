@@ -9,8 +9,7 @@ Definition multiply
   M.function_body
     (let* α0 : ltac:(refine str) := deref first_number_str in
     let* α1 : ltac:(refine (ref str)) := borrow α0 in
-    let*
-        α2 :
+    let* α2 :
         ltac:(refine (core.result.Result i32 core.num.error.ParseIntError)) :=
       str::["parse"] α1 in
     let* α3 := M.read α2 in
@@ -18,8 +17,7 @@ Definition multiply
     | core.result.Result.Ok first_number =>
       let* α0 : ltac:(refine str) := deref second_number_str in
       let* α1 : ltac:(refine (ref str)) := borrow α0 in
-      let*
-          α2 :
+      let* α2 :
           ltac:(refine (core.result.Result i32 core.num.error.ParseIntError)) :=
         str::["parse"] α1 in
       let* α3 := M.read α2 in
@@ -102,8 +100,7 @@ Definition print
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
   M.function_body
-    (let*
-        twenty :
+    (let* twenty :
         ltac:(refine (core.result.Result i32 core.num.error.ParseIntError)) :=
       let* α0 : ltac:(refine str) := deref (mk_str "10") in
       let* α1 : ltac:(refine (ref str)) := borrow α0 in
@@ -111,8 +108,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α3 : ltac:(refine (ref str)) := borrow α2 in
       map_in_result_via_match.multiply α1 α3 in
     let* _ : ltac:(refine unit) := map_in_result_via_match.print twenty in
-    let*
-        tt :
+    let* tt :
         ltac:(refine (core.result.Result i32 core.num.error.ParseIntError)) :=
       let* α0 : ltac:(refine str) := deref (mk_str "t") in
       let* α1 : ltac:(refine (ref str)) := borrow α0 in

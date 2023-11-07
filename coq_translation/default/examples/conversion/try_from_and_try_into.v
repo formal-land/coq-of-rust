@@ -134,34 +134,29 @@ Definition main `{ℋ : State.Trait} : M unit :=
   M.function_body
     (let* _ : ltac:(refine unit) :=
       let* α0 : ltac:(refine i32) := M.alloc 8 in
-      let*
-          α1 :
+      let* α1 :
           ltac:(refine
             (core.result.Result try_from_and_try_into.EvenNumber unit)) :=
         (core.convert.TryFrom.try_from
             (Self := try_from_and_try_into.EvenNumber)
             (Trait := ltac:(refine _)))
           α0 in
-      let*
-          α2 :
+      let* α2 :
           ltac:(refine
             (ref (core.result.Result try_from_and_try_into.EvenNumber unit))) :=
         borrow α1 in
       let* α3 : ltac:(refine i32) := M.alloc 8 in
       let* α4 : ltac:(refine try_from_and_try_into.EvenNumber) :=
         M.alloc (try_from_and_try_into.EvenNumber.Build_t α3) in
-      let*
-          α5 :
+      let* α5 :
           ltac:(refine
             (core.result.Result try_from_and_try_into.EvenNumber unit)) :=
         M.alloc (core.result.Result.Ok α4) in
-      let*
-          α6 :
+      let* α6 :
           ltac:(refine
             (ref (core.result.Result try_from_and_try_into.EvenNumber unit))) :=
         borrow α5 in
-      let*
-          α7 :
+      let* α7 :
           ltac:(refine
             (M.Val
               ((ref
@@ -174,24 +169,20 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α8 := M.read α7 in
       match α8 with
       | (left_val, right_val) =>
-        let*
-            α0 :
+        let* α0 :
             ltac:(refine
               (core.result.Result try_from_and_try_into.EvenNumber unit)) :=
           deref left_val in
-        let*
-            α1 :
+        let* α1 :
             ltac:(refine
               (ref
                 (core.result.Result try_from_and_try_into.EvenNumber unit))) :=
           borrow α0 in
-        let*
-            α2 :
+        let* α2 :
             ltac:(refine
               (core.result.Result try_from_and_try_into.EvenNumber unit)) :=
           deref right_val in
-        let*
-            α3 :
+        let* α3 :
             ltac:(refine
               (ref
                 (core.result.Result try_from_and_try_into.EvenNumber unit))) :=
@@ -208,52 +199,44 @@ Definition main `{ℋ : State.Trait} : M unit :=
           let* kind : ltac:(refine core.panicking.AssertKind) :=
             M.alloc core.panicking.AssertKind.Eq in
           let* _ : ltac:(refine never) :=
-            let*
-                α0 :
+            let* α0 :
                 ltac:(refine
                   (core.result.Result try_from_and_try_into.EvenNumber unit)) :=
               deref left_val in
-            let*
-                α1 :
+            let* α1 :
                 ltac:(refine
                   (ref
                     (core.result.Result
                       try_from_and_try_into.EvenNumber
                       unit))) :=
               borrow α0 in
-            let*
-                α2 :
+            let* α2 :
                 ltac:(refine
                   (core.result.Result try_from_and_try_into.EvenNumber unit)) :=
               deref α1 in
-            let*
-                α3 :
+            let* α3 :
                 ltac:(refine
                   (ref
                     (core.result.Result
                       try_from_and_try_into.EvenNumber
                       unit))) :=
               borrow α2 in
-            let*
-                α4 :
+            let* α4 :
                 ltac:(refine
                   (core.result.Result try_from_and_try_into.EvenNumber unit)) :=
               deref right_val in
-            let*
-                α5 :
+            let* α5 :
                 ltac:(refine
                   (ref
                     (core.result.Result
                       try_from_and_try_into.EvenNumber
                       unit))) :=
               borrow α4 in
-            let*
-                α6 :
+            let* α6 :
                 ltac:(refine
                   (core.result.Result try_from_and_try_into.EvenNumber unit)) :=
               deref α5 in
-            let*
-                α7 :
+            let* α7 :
                 ltac:(refine
                   (ref
                     (core.result.Result
@@ -270,32 +253,27 @@ Definition main `{ℋ : State.Trait} : M unit :=
       end in
     let* _ : ltac:(refine unit) :=
       let* α0 : ltac:(refine i32) := M.alloc 5 in
-      let*
-          α1 :
+      let* α1 :
           ltac:(refine
             (core.result.Result try_from_and_try_into.EvenNumber unit)) :=
         (core.convert.TryFrom.try_from
             (Self := try_from_and_try_into.EvenNumber)
             (Trait := ltac:(refine _)))
           α0 in
-      let*
-          α2 :
+      let* α2 :
           ltac:(refine
             (ref (core.result.Result try_from_and_try_into.EvenNumber unit))) :=
         borrow α1 in
       let* α3 : ltac:(refine unit) := M.alloc tt in
-      let*
-          α4 :
+      let* α4 :
           ltac:(refine
             (core.result.Result try_from_and_try_into.EvenNumber unit)) :=
         M.alloc (core.result.Result.Err α3) in
-      let*
-          α5 :
+      let* α5 :
           ltac:(refine
             (ref (core.result.Result try_from_and_try_into.EvenNumber unit))) :=
         borrow α4 in
-      let*
-          α6 :
+      let* α6 :
           ltac:(refine
             (M.Val
               ((ref
@@ -308,24 +286,20 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α7 := M.read α6 in
       match α7 with
       | (left_val, right_val) =>
-        let*
-            α0 :
+        let* α0 :
             ltac:(refine
               (core.result.Result try_from_and_try_into.EvenNumber unit)) :=
           deref left_val in
-        let*
-            α1 :
+        let* α1 :
             ltac:(refine
               (ref
                 (core.result.Result try_from_and_try_into.EvenNumber unit))) :=
           borrow α0 in
-        let*
-            α2 :
+        let* α2 :
             ltac:(refine
               (core.result.Result try_from_and_try_into.EvenNumber unit)) :=
           deref right_val in
-        let*
-            α3 :
+        let* α3 :
             ltac:(refine
               (ref
                 (core.result.Result try_from_and_try_into.EvenNumber unit))) :=
@@ -342,52 +316,44 @@ Definition main `{ℋ : State.Trait} : M unit :=
           let* kind : ltac:(refine core.panicking.AssertKind) :=
             M.alloc core.panicking.AssertKind.Eq in
           let* _ : ltac:(refine never) :=
-            let*
-                α0 :
+            let* α0 :
                 ltac:(refine
                   (core.result.Result try_from_and_try_into.EvenNumber unit)) :=
               deref left_val in
-            let*
-                α1 :
+            let* α1 :
                 ltac:(refine
                   (ref
                     (core.result.Result
                       try_from_and_try_into.EvenNumber
                       unit))) :=
               borrow α0 in
-            let*
-                α2 :
+            let* α2 :
                 ltac:(refine
                   (core.result.Result try_from_and_try_into.EvenNumber unit)) :=
               deref α1 in
-            let*
-                α3 :
+            let* α3 :
                 ltac:(refine
                   (ref
                     (core.result.Result
                       try_from_and_try_into.EvenNumber
                       unit))) :=
               borrow α2 in
-            let*
-                α4 :
+            let* α4 :
                 ltac:(refine
                   (core.result.Result try_from_and_try_into.EvenNumber unit)) :=
               deref right_val in
-            let*
-                α5 :
+            let* α5 :
                 ltac:(refine
                   (ref
                     (core.result.Result
                       try_from_and_try_into.EvenNumber
                       unit))) :=
               borrow α4 in
-            let*
-                α6 :
+            let* α6 :
                 ltac:(refine
                   (core.result.Result try_from_and_try_into.EvenNumber unit)) :=
               deref α5 in
-            let*
-                α7 :
+            let* α7 :
                 ltac:(refine
                   (ref
                     (core.result.Result
@@ -402,34 +368,29 @@ Definition main `{ℋ : State.Trait} : M unit :=
         else
           M.alloc tt
       end in
-    let*
-        result :
+    let* result :
         ltac:(refine
           (core.result.Result try_from_and_try_into.EvenNumber unit)) :=
       let* α0 : ltac:(refine i32) := M.alloc 8 in
       (core.convert.TryInto.try_into (Self := i32) (Trait := ltac:(refine _)))
         α0 in
     let* _ : ltac:(refine unit) :=
-      let*
-          α0 :
+      let* α0 :
           ltac:(refine
             (ref (core.result.Result try_from_and_try_into.EvenNumber unit))) :=
         borrow result in
       let* α1 : ltac:(refine i32) := M.alloc 8 in
       let* α2 : ltac:(refine try_from_and_try_into.EvenNumber) :=
         M.alloc (try_from_and_try_into.EvenNumber.Build_t α1) in
-      let*
-          α3 :
+      let* α3 :
           ltac:(refine
             (core.result.Result try_from_and_try_into.EvenNumber unit)) :=
         M.alloc (core.result.Result.Ok α2) in
-      let*
-          α4 :
+      let* α4 :
           ltac:(refine
             (ref (core.result.Result try_from_and_try_into.EvenNumber unit))) :=
         borrow α3 in
-      let*
-          α5 :
+      let* α5 :
           ltac:(refine
             (M.Val
               ((ref
@@ -442,24 +403,20 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α6 := M.read α5 in
       match α6 with
       | (left_val, right_val) =>
-        let*
-            α0 :
+        let* α0 :
             ltac:(refine
               (core.result.Result try_from_and_try_into.EvenNumber unit)) :=
           deref left_val in
-        let*
-            α1 :
+        let* α1 :
             ltac:(refine
               (ref
                 (core.result.Result try_from_and_try_into.EvenNumber unit))) :=
           borrow α0 in
-        let*
-            α2 :
+        let* α2 :
             ltac:(refine
               (core.result.Result try_from_and_try_into.EvenNumber unit)) :=
           deref right_val in
-        let*
-            α3 :
+        let* α3 :
             ltac:(refine
               (ref
                 (core.result.Result try_from_and_try_into.EvenNumber unit))) :=
@@ -476,52 +433,44 @@ Definition main `{ℋ : State.Trait} : M unit :=
           let* kind : ltac:(refine core.panicking.AssertKind) :=
             M.alloc core.panicking.AssertKind.Eq in
           let* _ : ltac:(refine never) :=
-            let*
-                α0 :
+            let* α0 :
                 ltac:(refine
                   (core.result.Result try_from_and_try_into.EvenNumber unit)) :=
               deref left_val in
-            let*
-                α1 :
+            let* α1 :
                 ltac:(refine
                   (ref
                     (core.result.Result
                       try_from_and_try_into.EvenNumber
                       unit))) :=
               borrow α0 in
-            let*
-                α2 :
+            let* α2 :
                 ltac:(refine
                   (core.result.Result try_from_and_try_into.EvenNumber unit)) :=
               deref α1 in
-            let*
-                α3 :
+            let* α3 :
                 ltac:(refine
                   (ref
                     (core.result.Result
                       try_from_and_try_into.EvenNumber
                       unit))) :=
               borrow α2 in
-            let*
-                α4 :
+            let* α4 :
                 ltac:(refine
                   (core.result.Result try_from_and_try_into.EvenNumber unit)) :=
               deref right_val in
-            let*
-                α5 :
+            let* α5 :
                 ltac:(refine
                   (ref
                     (core.result.Result
                       try_from_and_try_into.EvenNumber
                       unit))) :=
               borrow α4 in
-            let*
-                α6 :
+            let* α6 :
                 ltac:(refine
                   (core.result.Result try_from_and_try_into.EvenNumber unit)) :=
               deref α5 in
-            let*
-                α7 :
+            let* α7 :
                 ltac:(refine
                   (ref
                     (core.result.Result
@@ -536,32 +485,27 @@ Definition main `{ℋ : State.Trait} : M unit :=
         else
           M.alloc tt
       end in
-    let*
-        result :
+    let* result :
         ltac:(refine
           (core.result.Result try_from_and_try_into.EvenNumber unit)) :=
       let* α0 : ltac:(refine i32) := M.alloc 5 in
       (core.convert.TryInto.try_into (Self := i32) (Trait := ltac:(refine _)))
         α0 in
     let* _ : ltac:(refine unit) :=
-      let*
-          α0 :
+      let* α0 :
           ltac:(refine
             (ref (core.result.Result try_from_and_try_into.EvenNumber unit))) :=
         borrow result in
       let* α1 : ltac:(refine unit) := M.alloc tt in
-      let*
-          α2 :
+      let* α2 :
           ltac:(refine
             (core.result.Result try_from_and_try_into.EvenNumber unit)) :=
         M.alloc (core.result.Result.Err α1) in
-      let*
-          α3 :
+      let* α3 :
           ltac:(refine
             (ref (core.result.Result try_from_and_try_into.EvenNumber unit))) :=
         borrow α2 in
-      let*
-          α4 :
+      let* α4 :
           ltac:(refine
             (M.Val
               ((ref
@@ -574,24 +518,20 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α5 := M.read α4 in
       match α5 with
       | (left_val, right_val) =>
-        let*
-            α0 :
+        let* α0 :
             ltac:(refine
               (core.result.Result try_from_and_try_into.EvenNumber unit)) :=
           deref left_val in
-        let*
-            α1 :
+        let* α1 :
             ltac:(refine
               (ref
                 (core.result.Result try_from_and_try_into.EvenNumber unit))) :=
           borrow α0 in
-        let*
-            α2 :
+        let* α2 :
             ltac:(refine
               (core.result.Result try_from_and_try_into.EvenNumber unit)) :=
           deref right_val in
-        let*
-            α3 :
+        let* α3 :
             ltac:(refine
               (ref
                 (core.result.Result try_from_and_try_into.EvenNumber unit))) :=
@@ -608,52 +548,44 @@ Definition main `{ℋ : State.Trait} : M unit :=
           let* kind : ltac:(refine core.panicking.AssertKind) :=
             M.alloc core.panicking.AssertKind.Eq in
           let* _ : ltac:(refine never) :=
-            let*
-                α0 :
+            let* α0 :
                 ltac:(refine
                   (core.result.Result try_from_and_try_into.EvenNumber unit)) :=
               deref left_val in
-            let*
-                α1 :
+            let* α1 :
                 ltac:(refine
                   (ref
                     (core.result.Result
                       try_from_and_try_into.EvenNumber
                       unit))) :=
               borrow α0 in
-            let*
-                α2 :
+            let* α2 :
                 ltac:(refine
                   (core.result.Result try_from_and_try_into.EvenNumber unit)) :=
               deref α1 in
-            let*
-                α3 :
+            let* α3 :
                 ltac:(refine
                   (ref
                     (core.result.Result
                       try_from_and_try_into.EvenNumber
                       unit))) :=
               borrow α2 in
-            let*
-                α4 :
+            let* α4 :
                 ltac:(refine
                   (core.result.Result try_from_and_try_into.EvenNumber unit)) :=
               deref right_val in
-            let*
-                α5 :
+            let* α5 :
                 ltac:(refine
                   (ref
                     (core.result.Result
                       try_from_and_try_into.EvenNumber
                       unit))) :=
               borrow α4 in
-            let*
-                α6 :
+            let* α6 :
                 ltac:(refine
                   (core.result.Result try_from_and_try_into.EvenNumber unit)) :=
               deref α5 in
-            let*
-                α7 :
+            let* α7 :
                 ltac:(refine
                   (ref
                     (core.result.Result

@@ -16,12 +16,10 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α2 : ltac:(refine i32) := M.alloc 7 in
       let* α3 : ltac:(refine i32) := M.alloc 8 in
       let* α4 : ltac:(refine (array i32)) := M.alloc [ α0; α1; α2; α3 ] in
-      let*
-          α5 :
+      let* α5 :
           ltac:(refine (alloc.boxed.Box (array i32) alloc.alloc.Global)) :=
         (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α4 in
-      let*
-          α6 :
+      let* α6 :
           ltac:(refine (alloc.boxed.Box (slice i32) alloc.alloc.Global)) :=
         pointer_coercion "Unsize" α5 in
       (slice i32)::["into_vec"] α6 in

@@ -6,14 +6,12 @@ Definition NTHREADS `{ℋ : State.Trait} : i32 := M.run (M.alloc 3).
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
   M.function_body
-    (let*
-        '(tx, rx) :
+    (let* '(tx, rx) :
         ltac:(refine
           (M.Val
             ((std.sync.mpsc.Sender i32) * (std.sync.mpsc.Receiver i32)))) :=
       std.sync.mpsc.channel in
-    let*
-        children :
+    let* children :
         ltac:(refine
           (alloc.vec.Vec (std.thread.JoinHandle unit) alloc.alloc.Global)) :=
       (alloc.vec.Vec
@@ -63,12 +61,10 @@ Definition main `{ℋ : State.Trait} : M unit :=
                 let* child : ltac:(refine (std.thread.JoinHandle unit)) :=
                   std.thread.spawn
                     (let* _ : ltac:(refine unit) :=
-                      let*
-                          α0 :
+                      let* α0 :
                           ltac:(refine (ref (std.sync.mpsc.Sender i32))) :=
                         borrow thread_tx in
-                      let*
-                          α1 :
+                      let* α1 :
                           ltac:(refine
                             (core.result.Result
                               unit
@@ -97,18 +93,15 @@ Definition main `{ℋ : State.Trait} : M unit :=
                           core.fmt.rt.Argument::["new_display"] α7 in
                         let* α9 : ltac:(refine (array core.fmt.rt.Argument)) :=
                           M.alloc [ α8 ] in
-                        let*
-                            α10 :
+                        let* α10 :
                             ltac:(refine (ref (array core.fmt.rt.Argument))) :=
                           borrow α9 in
                         let* α11 : ltac:(refine (array core.fmt.rt.Argument)) :=
                           deref α10 in
-                        let*
-                            α12 :
+                        let* α12 :
                             ltac:(refine (ref (array core.fmt.rt.Argument))) :=
                           borrow α11 in
-                        let*
-                            α13 :
+                        let* α13 :
                             ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
                           pointer_coercion "Unsize" α12 in
                         let* α14 : ltac:(refine core.fmt.Arguments) :=
@@ -117,8 +110,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
                       M.alloc tt in
                     M.alloc tt) in
                 let* _ : ltac:(refine unit) :=
-                  let*
-                      α0 :
+                  let* α0 :
                       ltac:(refine
                         (mut_ref
                           (alloc.vec.Vec
@@ -135,8 +127,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
             M.alloc tt)
         end in
       use α5 in
-    let*
-        ids :
+    let* ids :
         ltac:(refine
           (alloc.vec.Vec
             (core.result.Result i32 std.sync.mpsc.RecvError)
@@ -182,8 +173,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
                 never_to_any α0
               | core.option.Option.Some _ =>
                 let* _ : ltac:(refine unit) :=
-                  let*
-                      α0 :
+                  let* α0 :
                       ltac:(refine
                         (mut_ref
                           (alloc.vec.Vec
@@ -192,8 +182,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
                     borrow_mut ids in
                   let* α1 : ltac:(refine (ref (std.sync.mpsc.Receiver i32))) :=
                     borrow rx in
-                  let*
-                      α2 :
+                  let* α2 :
                       ltac:(refine
                         (core.result.Result i32 std.sync.mpsc.RecvError)) :=
                     (std.sync.mpsc.Receiver i32)::["recv"] α1 in
@@ -208,8 +197,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
         end in
       use α5 in
     let* _ : ltac:(refine unit) :=
-      let*
-          α0 :
+      let* α0 :
           ltac:(refine
             (alloc.vec.into_iter.IntoIter
               (std.thread.JoinHandle unit)
@@ -225,31 +213,27 @@ Definition main `{ℋ : State.Trait} : M unit :=
         | iter =>
           loop
             (let* _ : ltac:(refine unit) :=
-              let*
-                  α0 :
+              let* α0 :
                   ltac:(refine
                     (mut_ref
                       (alloc.vec.into_iter.IntoIter
                         (std.thread.JoinHandle unit)
                         alloc.alloc.Global))) :=
                 borrow_mut iter in
-              let*
-                  α1 :
+              let* α1 :
                   ltac:(refine
                     (alloc.vec.into_iter.IntoIter
                       (std.thread.JoinHandle unit)
                       alloc.alloc.Global)) :=
                 deref α0 in
-              let*
-                  α2 :
+              let* α2 :
                   ltac:(refine
                     (mut_ref
                       (alloc.vec.into_iter.IntoIter
                         (std.thread.JoinHandle unit)
                         alloc.alloc.Global))) :=
                 borrow_mut α1 in
-              let*
-                  α3 :
+              let* α3 :
                   ltac:(refine
                     (core.option.Option (std.thread.JoinHandle unit))) :=
                 (core.iter.traits.iterator.Iterator.next
@@ -266,8 +250,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
                 never_to_any α0
               | core.option.Option.Some child =>
                 let* _ : ltac:(refine unit) :=
-                  let*
-                      α0 :
+                  let* α0 :
                       ltac:(refine
                         (core.result.Result
                           unit
@@ -300,23 +283,20 @@ Definition main `{ℋ : State.Trait} : M unit :=
         let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
         let* α4 : ltac:(refine (ref (slice (ref str)))) :=
           pointer_coercion "Unsize" α3 in
-        let*
-            α5 :
+        let* α5 :
             ltac:(refine
               (ref
                 (alloc.vec.Vec
                   (core.result.Result i32 std.sync.mpsc.RecvError)
                   alloc.alloc.Global))) :=
           borrow ids in
-        let*
-            α6 :
+        let* α6 :
             ltac:(refine
               (alloc.vec.Vec
                 (core.result.Result i32 std.sync.mpsc.RecvError)
                 alloc.alloc.Global)) :=
           deref α5 in
-        let*
-            α7 :
+        let* α7 :
             ltac:(refine
               (ref
                 (alloc.vec.Vec

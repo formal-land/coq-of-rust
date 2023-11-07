@@ -35,12 +35,10 @@ Module  Rectangle.
 Section Rectangle.
   Context `{ℋ : State.Trait}.
   
-  Unset Primitive Projections.
   Record t : Set := {
     length : f64;
     height : f64;
   }.
-  Global Set Primitive Projections.
   
   Global Instance Get_length : Notation.Dot "length" := {
     Notation.dot x := let* x := M.read x in M.pure x.(length) : M _;
@@ -82,12 +80,10 @@ Module  Triangle.
 Section Triangle.
   Context `{ℋ : State.Trait}.
   
-  Unset Primitive Projections.
   Record t : Set := {
     length : f64;
     height : f64;
   }.
-  Global Set Primitive Projections.
   
   Global Instance Get_length : Notation.Dot "length" := {
     Notation.dot x := let* x := M.read x in M.pure x.(length) : M _;

@@ -10,16 +10,14 @@ Definition main
     let* number : ltac:(refine i32) :=
       let* α0 : ltac:(refine str) := deref number_str in
       let* α1 : ltac:(refine (ref str)) := borrow α0 in
-      let*
-          α2 :
+      let* α2 :
           ltac:(refine (core.result.Result i32 core.num.error.ParseIntError)) :=
         str::["parse"] α1 in
       let* α3 := M.read α2 in
       match α3 with
       | core.result.Result.Ok number => M.pure number
       | core.result.Result.Err e =>
-        let*
-            α0 :
+        let* α0 :
             ltac:(refine
               (core.result.Result unit core.num.error.ParseIntError)) :=
           M.alloc (core.result.Result.Err e) in

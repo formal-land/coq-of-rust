@@ -10,12 +10,10 @@ Definition multiply
     (let* first_number : ltac:(refine i32) :=
       let* α0 : ltac:(refine str) := deref first_number_str in
       let* α1 : ltac:(refine (ref str)) := borrow α0 in
-      let*
-          α2 :
+      let* α2 :
           ltac:(refine (core.result.Result i32 core.num.error.ParseIntError)) :=
         str::["parse"] α1 in
-      let*
-          α3 :
+      let* α3 :
           ltac:(refine
             (core.ops.control_flow.ControlFlow
               (core.result.Result
@@ -29,8 +27,7 @@ Definition multiply
       let* α4 := M.read α3 in
       match α4 with
       | core.ops.control_flow.ControlFlow.Break residual =>
-        let*
-            α0 :
+        let* α0 :
             ltac:(refine
               (core.result.Result i32 core.num.error.ParseIntError)) :=
           (core.ops.try_trait.FromResidual.from_residual
@@ -44,12 +41,10 @@ Definition multiply
     let* second_number : ltac:(refine i32) :=
       let* α0 : ltac:(refine str) := deref second_number_str in
       let* α1 : ltac:(refine (ref str)) := borrow α0 in
-      let*
-          α2 :
+      let* α2 :
           ltac:(refine (core.result.Result i32 core.num.error.ParseIntError)) :=
         str::["parse"] α1 in
-      let*
-          α3 :
+      let* α3 :
           ltac:(refine
             (core.ops.control_flow.ControlFlow
               (core.result.Result
@@ -63,8 +58,7 @@ Definition multiply
       let* α4 := M.read α3 in
       match α4 with
       | core.ops.control_flow.ControlFlow.Break residual =>
-        let*
-            α0 :
+        let* α0 :
             ltac:(refine
               (core.result.Result i32 core.num.error.ParseIntError)) :=
           (core.ops.try_trait.FromResidual.from_residual
@@ -153,8 +147,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α1 : ltac:(refine (ref str)) := borrow α0 in
       let* α2 : ltac:(refine str) := deref (mk_str "2") in
       let* α3 : ltac:(refine (ref str)) := borrow α2 in
-      let*
-          α4 :
+      let* α4 :
           ltac:(refine (core.result.Result i32 core.num.error.ParseIntError)) :=
         introducing_question_mark.multiply α1 α3 in
       introducing_question_mark.print α4 in
@@ -163,8 +156,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α1 : ltac:(refine (ref str)) := borrow α0 in
       let* α2 : ltac:(refine str) := deref (mk_str "2") in
       let* α3 : ltac:(refine (ref str)) := borrow α2 in
-      let*
-          α4 :
+      let* α4 :
           ltac:(refine (core.result.Result i32 core.num.error.ParseIntError)) :=
         introducing_question_mark.multiply α1 α3 in
       introducing_question_mark.print α4 in

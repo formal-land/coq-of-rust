@@ -19,6 +19,7 @@ Section Impl_generics_where_clauses_PrintInOption_for_T.
   Context {T : Set}.
   
   Context {ℋ_0 : core.fmt.Debug.Trait (core.option.Option T)}.
+  
   Definition Self : Set := T.
   
   Definition print_in_option (self : Self) : M unit :=
@@ -74,12 +75,10 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α1 : ltac:(refine i32) := M.alloc 2 in
       let* α2 : ltac:(refine i32) := M.alloc 3 in
       let* α3 : ltac:(refine (array i32)) := M.alloc [ α0; α1; α2 ] in
-      let*
-          α4 :
+      let* α4 :
           ltac:(refine (alloc.boxed.Box (array i32) alloc.alloc.Global)) :=
         (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α3 in
-      let*
-          α5 :
+      let* α5 :
           ltac:(refine (alloc.boxed.Box (slice i32) alloc.alloc.Global)) :=
         pointer_coercion "Unsize" α4 in
       (slice i32)::["into_vec"] α5 in

@@ -27,8 +27,7 @@ Definition call `{ℋ : State.Trait} (number : ref str) : M (ref str) :=
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
   M.function_body
-    (let*
-        contacts :
+    (let* contacts :
         ltac:(refine
           (std.collections.hash.map.HashMap
             (ref str)
@@ -39,8 +38,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
           (ref str)
           std.collections.hash.map.RandomState)::["new"] in
     let* _ : ltac:(refine (core.option.Option (ref str))) :=
-      let*
-          α0 :
+      let* α0 :
           ltac:(refine
             (mut_ref
               (std.collections.hash.map.HashMap
@@ -56,8 +54,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
         (mk_str "Daniel")
         (mk_str "798-1364") in
     let* _ : ltac:(refine (core.option.Option (ref str))) :=
-      let*
-          α0 :
+      let* α0 :
           ltac:(refine
             (mut_ref
               (std.collections.hash.map.HashMap
@@ -77,8 +74,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
         α2
         α4 in
     let* _ : ltac:(refine (core.option.Option (ref str))) :=
-      let*
-          α0 :
+      let* α0 :
           ltac:(refine
             (mut_ref
               (std.collections.hash.map.HashMap
@@ -98,8 +94,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
         α2
         α4 in
     let* _ : ltac:(refine (core.option.Option (ref str))) :=
-      let*
-          α0 :
+      let* α0 :
           ltac:(refine
             (mut_ref
               (std.collections.hash.map.HashMap
@@ -119,8 +114,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
         α2
         α4 in
     let* _ : ltac:(refine unit) :=
-      let*
-          α0 :
+      let* α0 :
           ltac:(refine
             (ref
               (std.collections.hash.map.HashMap
@@ -187,8 +181,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
         M.alloc tt
       end in
     let* _ : ltac:(refine (core.option.Option (ref str))) :=
-      let*
-          α0 :
+      let* α0 :
           ltac:(refine
             (mut_ref
               (std.collections.hash.map.HashMap
@@ -208,8 +201,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
         α2
         α4 in
     let* _ : ltac:(refine unit) :=
-      let*
-          α0 :
+      let* α0 :
           ltac:(refine
             (ref
               (std.collections.hash.map.HashMap
@@ -276,8 +268,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
         M.alloc tt
       end in
     let* _ : ltac:(refine (core.option.Option (ref str))) :=
-      let*
-          α0 :
+      let* α0 :
           ltac:(refine
             (mut_ref
               (std.collections.hash.map.HashMap
@@ -294,8 +285,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
             std.collections.hash.map.RandomState)::["remove"]
         α0
         α3 in
-    let*
-        α0 :
+    let* α0 :
         ltac:(refine
           (ref
             (std.collections.hash.map.HashMap
@@ -303,16 +293,14 @@ Definition main `{ℋ : State.Trait} : M unit :=
               (ref str)
               std.collections.hash.map.RandomState))) :=
       borrow contacts in
-    let*
-        α1 :
+    let* α1 :
         ltac:(refine (std.collections.hash.map.Iter (ref str) (ref str))) :=
       (std.collections.hash.map.HashMap
             (ref str)
             (ref str)
             std.collections.hash.map.RandomState)::["iter"]
         α0 in
-    let*
-        α2 :
+    let* α2 :
         ltac:(refine (std.collections.hash.map.Iter (ref str) (ref str))) :=
       (core.iter.traits.collect.IntoIterator.into_iter
           (Self := std.collections.hash.map.Iter (ref str) (ref str))
@@ -324,25 +312,21 @@ Definition main `{ℋ : State.Trait} : M unit :=
       | iter =>
         loop
           (let* _ : ltac:(refine unit) :=
-            let*
-                α0 :
+            let* α0 :
                 ltac:(refine
                   (mut_ref
                     (std.collections.hash.map.Iter (ref str) (ref str)))) :=
               borrow_mut iter in
-            let*
-                α1 :
+            let* α1 :
                 ltac:(refine
                   (std.collections.hash.map.Iter (ref str) (ref str))) :=
               deref α0 in
-            let*
-                α2 :
+            let* α2 :
                 ltac:(refine
                   (mut_ref
                     (std.collections.hash.map.Iter (ref str) (ref str)))) :=
               borrow_mut α1 in
-            let*
-                α3 :
+            let* α3 :
                 ltac:(refine
                   (core.option.Option
                     (M.Val ((ref (ref str)) * (ref (ref str)))))) :=

@@ -7,12 +7,10 @@ Definition cat
     : M ltac:(std.io.error.Result constr:(alloc.string.String)) :=
   M.function_body
     (let* f : ltac:(refine std.fs.File) :=
-      let*
-          α0 :
+      let* α0 :
           ltac:(refine (core.result.Result std.fs.File std.io.error.Error)) :=
         std.fs.File::["open"] path in
-      let*
-          α1 :
+      let* α1 :
           ltac:(refine
             (core.ops.control_flow.ControlFlow
               (core.result.Result core.convert.Infallible std.io.error.Error)
@@ -24,8 +22,7 @@ Definition cat
       let* α2 := M.read α1 in
       match α2 with
       | core.ops.control_flow.ControlFlow.Break residual =>
-        let*
-            α0 :
+        let* α0 :
             ltac:(refine
               (core.result.Result alloc.string.String std.io.error.Error)) :=
           (core.ops.try_trait.FromResidual.from_residual
@@ -62,12 +59,10 @@ Definition echo
     : M ltac:(std.io.error.Result constr:(unit)) :=
   M.function_body
     (let* f : ltac:(refine std.fs.File) :=
-      let*
-          α0 :
+      let* α0 :
           ltac:(refine (core.result.Result std.fs.File std.io.error.Error)) :=
         std.fs.File::["create"] path in
-      let*
-          α1 :
+      let* α1 :
           ltac:(refine
             (core.ops.control_flow.ControlFlow
               (core.result.Result core.convert.Infallible std.io.error.Error)
@@ -116,8 +111,7 @@ Definition touch
       std.fs.OpenOptions::["write"] α5 α6 in
     let* α8 : ltac:(refine std.fs.OpenOptions) := deref α7 in
     let* α9 : ltac:(refine (ref std.fs.OpenOptions)) := borrow α8 in
-    let*
-        α10 :
+    let* α10 :
         ltac:(refine (core.result.Result std.fs.File std.io.error.Error)) :=
       std.fs.OpenOptions::["open"] α9 path in
     let* α11 := M.read α10 in
@@ -376,8 +370,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α1 : ltac:(refine bool) := use α0 in
       if (α1 : bool) then
         let* _ : ltac:(refine unit) :=
-          let*
-              α0 :
+          let* α0 :
               ltac:(refine (core.result.Result unit std.io.error.Error)) :=
             std.os.unix.fs.symlink (mk_str "../b.txt") (mk_str "a/c/b.txt") in
           (core.result.Result unit std.io.error.Error)::["unwrap_or_else"]
@@ -444,8 +437,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α4 : ltac:(refine (ref std.path.Path)) := deref α3 in
       let* α5 : ltac:(refine std.path.Path) := deref α4 in
       let* α6 : ltac:(refine (ref std.path.Path)) := borrow α5 in
-      let*
-          α7 :
+      let* α7 :
           ltac:(refine
             (core.result.Result alloc.string.String std.io.error.Error)) :=
         filesystem_operations.cat α6 in
@@ -526,8 +518,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
         std.io.stdio._print α5 in
       M.alloc tt in
     let* _ : ltac:(refine unit) :=
-      let*
-          α0 :
+      let* α0 :
           ltac:(refine
             (core.result.Result std.fs.ReadDir std.io.error.Error)) :=
         std.fs.read_dir (mk_str "a") in
@@ -581,8 +572,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
                 let* α1 : ltac:(refine std.fs.ReadDir) := deref α0 in
                 let* α2 : ltac:(refine (mut_ref std.fs.ReadDir)) :=
                   borrow_mut α1 in
-                let*
-                    α3 :
+                let* α3 :
                     ltac:(refine
                       (core.option.Option
                         (core.result.Result
@@ -628,18 +618,15 @@ Definition main `{ℋ : State.Trait} : M unit :=
                         core.fmt.rt.Argument::["new_debug"] α10 in
                       let* α12 : ltac:(refine (array core.fmt.rt.Argument)) :=
                         M.alloc [ α11 ] in
-                      let*
-                          α13 :
+                      let* α13 :
                           ltac:(refine (ref (array core.fmt.rt.Argument))) :=
                         borrow α12 in
                       let* α14 : ltac:(refine (array core.fmt.rt.Argument)) :=
                         deref α13 in
-                      let*
-                          α15 :
+                      let* α15 :
                           ltac:(refine (ref (array core.fmt.rt.Argument))) :=
                         borrow α14 in
-                      let*
-                          α16 :
+                      let* α16 :
                           ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
                         pointer_coercion "Unsize" α15 in
                       let* α17 : ltac:(refine core.fmt.Arguments) :=

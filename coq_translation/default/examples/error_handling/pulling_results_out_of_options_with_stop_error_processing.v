@@ -10,13 +10,11 @@ Definition double_first
           (core.option.Option i32)
           core.num.error.ParseIntError) :=
   M.function_body
-    (let*
-        opt :
+    (let* opt :
         ltac:(refine
           (core.option.Option
             (core.result.Result i32 core.num.error.ParseIntError))) :=
-      let*
-          α0 :
+      let* α0 :
           ltac:(refine (ref (alloc.vec.Vec (ref str) alloc.alloc.Global))) :=
         borrow vec in
       let* α1 : ltac:(refine (ref (slice (ref str)))) :=
@@ -33,8 +31,7 @@ Definition double_first
         (let* α0 : ltac:(refine (ref str)) := deref first in
         let* α1 : ltac:(refine str) := deref α0 in
         let* α2 : ltac:(refine (ref str)) := borrow α1 in
-        let*
-            α3 :
+        let* α3 :
             ltac:(refine
               (core.result.Result i32 core.num.error.ParseIntError)) :=
           str::["parse"] α2 in
@@ -44,8 +41,7 @@ Definition double_first
           BinOp.mul α0 n)) in
     let* α0 : ltac:(refine (core.option.Option i32)) :=
       M.alloc core.option.Option.None in
-    let*
-        α1 :
+    let* α1 :
         ltac:(refine
           (core.result.Result
             (core.option.Option i32)
@@ -62,8 +58,7 @@ Definition double_first
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
   M.function_body
-    (let*
-        numbers :
+    (let* numbers :
         ltac:(refine (alloc.vec.Vec (ref str) alloc.alloc.Global)) :=
       let* α0 : ltac:(refine str) := deref (mk_str "93") in
       let* α1 : ltac:(refine (ref str)) := borrow α0 in
@@ -71,13 +66,11 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α3 : ltac:(refine (ref str)) := borrow α2 in
       let* α4 : ltac:(refine (array (ref str))) :=
         M.alloc [ mk_str "42"; α1; α3 ] in
-      let*
-          α5 :
+      let* α5 :
           ltac:(refine
             (alloc.boxed.Box (array (ref str)) alloc.alloc.Global)) :=
         (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α4 in
-      let*
-          α6 :
+      let* α6 :
           ltac:(refine
             (alloc.boxed.Box (slice (ref str)) alloc.alloc.Global)) :=
         pointer_coercion "Unsize" α5 in
@@ -91,13 +84,11 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α3 : ltac:(refine (ref str)) := borrow α2 in
       let* α4 : ltac:(refine (array (ref str))) :=
         M.alloc [ mk_str "tofu"; α1; α3 ] in
-      let*
-          α5 :
+      let* α5 :
           ltac:(refine
             (alloc.boxed.Box (array (ref str)) alloc.alloc.Global)) :=
         (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α4 in
-      let*
-          α6 :
+      let* α6 :
           ltac:(refine
             (alloc.boxed.Box (slice (ref str)) alloc.alloc.Global)) :=
         pointer_coercion "Unsize" α5 in
@@ -112,31 +103,27 @@ Definition main `{ℋ : State.Trait} : M unit :=
         let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
         let* α4 : ltac:(refine (ref (slice (ref str)))) :=
           pointer_coercion "Unsize" α3 in
-        let*
-            α5 :
+        let* α5 :
             ltac:(refine
               (core.result.Result
                 (core.option.Option i32)
                 core.num.error.ParseIntError)) :=
           pulling_results_out_of_options_with_stop_error_processing.double_first
             numbers in
-        let*
-            α6 :
+        let* α6 :
             ltac:(refine
               (ref
                 (core.result.Result
                   (core.option.Option i32)
                   core.num.error.ParseIntError))) :=
           borrow α5 in
-        let*
-            α7 :
+        let* α7 :
             ltac:(refine
               (core.result.Result
                 (core.option.Option i32)
                 core.num.error.ParseIntError)) :=
           deref α6 in
-        let*
-            α8 :
+        let* α8 :
             ltac:(refine
               (ref
                 (core.result.Result
@@ -168,31 +155,27 @@ Definition main `{ℋ : State.Trait} : M unit :=
         let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
         let* α4 : ltac:(refine (ref (slice (ref str)))) :=
           pointer_coercion "Unsize" α3 in
-        let*
-            α5 :
+        let* α5 :
             ltac:(refine
               (core.result.Result
                 (core.option.Option i32)
                 core.num.error.ParseIntError)) :=
           pulling_results_out_of_options_with_stop_error_processing.double_first
             empty in
-        let*
-            α6 :
+        let* α6 :
             ltac:(refine
               (ref
                 (core.result.Result
                   (core.option.Option i32)
                   core.num.error.ParseIntError))) :=
           borrow α5 in
-        let*
-            α7 :
+        let* α7 :
             ltac:(refine
               (core.result.Result
                 (core.option.Option i32)
                 core.num.error.ParseIntError)) :=
           deref α6 in
-        let*
-            α8 :
+        let* α8 :
             ltac:(refine
               (ref
                 (core.result.Result
@@ -224,31 +207,27 @@ Definition main `{ℋ : State.Trait} : M unit :=
         let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
         let* α4 : ltac:(refine (ref (slice (ref str)))) :=
           pointer_coercion "Unsize" α3 in
-        let*
-            α5 :
+        let* α5 :
             ltac:(refine
               (core.result.Result
                 (core.option.Option i32)
                 core.num.error.ParseIntError)) :=
           pulling_results_out_of_options_with_stop_error_processing.double_first
             strings in
-        let*
-            α6 :
+        let* α6 :
             ltac:(refine
               (ref
                 (core.result.Result
                   (core.option.Option i32)
                   core.num.error.ParseIntError))) :=
           borrow α5 in
-        let*
-            α7 :
+        let* α7 :
             ltac:(refine
               (core.result.Result
                 (core.option.Option i32)
                 core.num.error.ParseIntError)) :=
           deref α6 in
-        let*
-            α8 :
+        let* α8 :
             ltac:(refine
               (ref
                 (core.result.Result

@@ -2241,9 +2241,12 @@ impl TopLevelItem {
                                 if predicates.is_empty() {
                                     vec![]
                                 } else {
-                                    vec![coq::TopLevelItem::Context(coq::Context::new(
+                                    vec![
+                                        coq::TopLevelItem::Context(coq::Context::new(
                                             &[WherePredicate::vec_to_coq(predicates)]
-                                    ))]
+                                        )),
+                                        coq::TopLevelItem::Line,
+                                    ]
                                 },
                                 vec![
                                     coq::TopLevelItem::Definition(coq::Definition::new(
@@ -2576,8 +2579,8 @@ impl TypeStructStruct {
                                     //           })
                                     //           .collect()
                                     //   }),
-                                    coq::TopLevel::locally_unset_primitive_projections(&[
-                                        coq::TopLevelItem::Record(coq::Record::new(
+                                    coq::TopLevel::new(&[coq::TopLevelItem::Record(
+                                        coq::Record::new(
                                             "t",
                                             &coq::Expression::Set,
                                             &fields
@@ -2589,8 +2592,8 @@ impl TypeStructStruct {
                                                     )
                                                 })
                                                 .collect::<Vec<_>>(),
-                                        )),
-                                    ]),
+                                        ),
+                                    )]),
                                     coq::TopLevel::new(&if fields.is_empty() {
                                         vec![]
                                     } else {

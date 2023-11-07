@@ -92,16 +92,13 @@ Definition blue
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
   M.function_body
-    (let*
-        cardinal :
+    (let* cardinal :
         ltac:(refine generics_bounds_test_case_empty_bounds.Cardinal) :=
       M.alloc generics_bounds_test_case_empty_bounds.Cardinal.Build_t in
-    let*
-        blue_jay :
+    let* blue_jay :
         ltac:(refine generics_bounds_test_case_empty_bounds.BlueJay) :=
       M.alloc generics_bounds_test_case_empty_bounds.BlueJay.Build_t in
-    let*
-        _turkey :
+    let* _turkey :
         ltac:(refine generics_bounds_test_case_empty_bounds.Turkey) :=
       M.alloc generics_bounds_test_case_empty_bounds.Turkey.Build_t in
     let* _ : ltac:(refine unit) :=
@@ -114,17 +111,14 @@ Definition main `{ℋ : State.Trait} : M unit :=
         let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
         let* α4 : ltac:(refine (ref (slice (ref str)))) :=
           pointer_coercion "Unsize" α3 in
-        let*
-            α5 :
+        let* α5 :
             ltac:(refine
               (ref generics_bounds_test_case_empty_bounds.Cardinal)) :=
           borrow cardinal in
-        let*
-            α6 :
+        let* α6 :
             ltac:(refine generics_bounds_test_case_empty_bounds.Cardinal) :=
           deref α5 in
-        let*
-            α7 :
+        let* α7 :
             ltac:(refine
               (ref generics_bounds_test_case_empty_bounds.Cardinal)) :=
           borrow α6 in
@@ -158,17 +152,14 @@ Definition main `{ℋ : State.Trait} : M unit :=
         let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
         let* α4 : ltac:(refine (ref (slice (ref str)))) :=
           pointer_coercion "Unsize" α3 in
-        let*
-            α5 :
+        let* α5 :
             ltac:(refine
               (ref generics_bounds_test_case_empty_bounds.BlueJay)) :=
           borrow blue_jay in
-        let*
-            α6 :
+        let* α6 :
             ltac:(refine generics_bounds_test_case_empty_bounds.BlueJay) :=
           deref α5 in
-        let*
-            α7 :
+        let* α7 :
             ltac:(refine
               (ref generics_bounds_test_case_empty_bounds.BlueJay)) :=
           borrow α6 in

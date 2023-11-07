@@ -11,27 +11,23 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α3 : ltac:(refine (ref str)) := borrow α2 in
       let* α4 : ltac:(refine (array (ref str))) :=
         M.alloc [ mk_str "Bob"; α1; α3 ] in
-      let*
-          α5 :
+      let* α5 :
           ltac:(refine
             (alloc.boxed.Box (array (ref str)) alloc.alloc.Global)) :=
         (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α4 in
-      let*
-          α6 :
+      let* α6 :
           ltac:(refine
             (alloc.boxed.Box (slice (ref str)) alloc.alloc.Global)) :=
         pointer_coercion "Unsize" α5 in
       (slice (ref str))::["into_vec"] α6 in
-    let*
-        α0 :
+    let* α0 :
         ltac:(refine
           (alloc.vec.into_iter.IntoIter (ref str) alloc.alloc.Global)) :=
       (core.iter.traits.collect.IntoIterator.into_iter
           (Self := alloc.vec.Vec (ref str) alloc.alloc.Global)
           (Trait := ltac:(refine _)))
         names in
-    let*
-        α1 :
+    let* α1 :
         ltac:(refine
           (alloc.vec.into_iter.IntoIter (ref str) alloc.alloc.Global)) :=
       (core.iter.traits.collect.IntoIterator.into_iter
@@ -44,23 +40,20 @@ Definition main `{ℋ : State.Trait} : M unit :=
       | iter =>
         loop
           (let* _ : ltac:(refine unit) :=
-            let*
-                α0 :
+            let* α0 :
                 ltac:(refine
                   (mut_ref
                     (alloc.vec.into_iter.IntoIter
                       (ref str)
                       alloc.alloc.Global))) :=
               borrow_mut iter in
-            let*
-                α1 :
+            let* α1 :
                 ltac:(refine
                   (alloc.vec.into_iter.IntoIter
                     (ref str)
                     alloc.alloc.Global)) :=
               deref α0 in
-            let*
-                α2 :
+            let* α2 :
                 ltac:(refine
                   (mut_ref
                     (alloc.vec.into_iter.IntoIter

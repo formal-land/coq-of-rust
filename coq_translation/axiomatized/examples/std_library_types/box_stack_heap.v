@@ -6,12 +6,10 @@ Module  Point.
 Section Point.
   Context `{ℋ : State.Trait}.
   
-  Unset Primitive Projections.
   Record t : Set := {
     x : f64;
     y : f64;
   }.
-  Global Set Primitive Projections.
   
   Global Instance Get_x : Notation.Dot "x" := {
     Notation.dot x' := let* x' := M.read x' in M.pure x'.(x) : M _;
@@ -86,12 +84,10 @@ Module  Rectangle.
 Section Rectangle.
   Context `{ℋ : State.Trait}.
   
-  Unset Primitive Projections.
   Record t : Set := {
     top_left : box_stack_heap.Point;
     bottom_right : box_stack_heap.Point;
   }.
-  Global Set Primitive Projections.
   
   Global Instance Get_top_left : Notation.Dot "top_left" := {
     Notation.dot x := let* x := M.read x in M.pure x.(top_left) : M _;

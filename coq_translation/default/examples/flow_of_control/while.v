@@ -100,18 +100,15 @@ Definition main `{ℋ : State.Trait} : M unit :=
                       core.fmt.rt.Argument::["new_display"] α7 in
                     let* α9 : ltac:(refine (array core.fmt.rt.Argument)) :=
                       M.alloc [ α8 ] in
-                    let*
-                        α10 :
+                    let* α10 :
                         ltac:(refine (ref (array core.fmt.rt.Argument))) :=
                       borrow α9 in
                     let* α11 : ltac:(refine (array core.fmt.rt.Argument)) :=
                       deref α10 in
-                    let*
-                        α12 :
+                    let* α12 :
                         ltac:(refine (ref (array core.fmt.rt.Argument))) :=
                       borrow α11 in
-                    let*
-                        α13 :
+                    let* α13 :
                         ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
                       pointer_coercion "Unsize" α12 in
                     let* α14 : ltac:(refine core.fmt.Arguments) :=

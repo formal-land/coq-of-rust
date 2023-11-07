@@ -7,12 +7,10 @@ Section Mapping.
   
   Context {K V : Set}.
   
-  Unset Primitive Projections.
   Record t : Set := {
     _key : core.marker.PhantomData K;
     _value : core.marker.PhantomData V;
   }.
-  Global Set Primitive Projections.
   
   Global Instance Get__key : Notation.Dot "_key" := {
     Notation.dot x := let* x := M.read x in M.pure x.(_key) : M _;
@@ -40,6 +38,7 @@ Section Impl_core_default_Default_for_lib_Mapping_K_V.
   Context
     {ℋ_0 : core.default.Default.Trait K}
     {ℋ_1 : core.default.Default.Trait V}.
+  
   Definition Self : Set := lib.Mapping K V.
   
   Parameter default : M (lib.Mapping K V).
@@ -278,14 +277,12 @@ Module  Erc20.
 Section Erc20.
   Context `{ℋ : State.Trait}.
   
-  Unset Primitive Projections.
   Record t : Set := {
     total_supply : lib.Balance;
     balances : lib.Mapping lib.AccountId lib.Balance;
     allowances :
       lib.Mapping (M.Val (lib.AccountId * lib.AccountId)) lib.Balance;
   }.
-  Global Set Primitive Projections.
   
   Global Instance Get_total_supply : Notation.Dot "total_supply" := {
     Notation.dot x := let* x := M.read x in M.pure x.(total_supply) : M _;
@@ -335,13 +332,11 @@ Module  Transfer.
 Section Transfer.
   Context `{ℋ : State.Trait}.
   
-  Unset Primitive Projections.
   Record t : Set := {
     from : core.option.Option lib.AccountId;
     to : core.option.Option lib.AccountId;
     value : lib.Balance;
   }.
-  Global Set Primitive Projections.
   
   Global Instance Get_from : Notation.Dot "from" := {
     Notation.dot x := let* x := M.read x in M.pure x.(from) : M _;
@@ -388,13 +383,11 @@ Module  Approval.
 Section Approval.
   Context `{ℋ : State.Trait}.
   
-  Unset Primitive Projections.
   Record t : Set := {
     owner : lib.AccountId;
     spender : lib.AccountId;
     value : lib.Balance;
   }.
-  Global Set Primitive Projections.
   
   Global Instance Get_owner : Notation.Dot "owner" := {
     Notation.dot x := let* x := M.read x in M.pure x.(owner) : M _;

@@ -171,14 +171,12 @@ Section Impl_core_fmt_Debug_for_clone_Pair.
         α10.["1"] in
       let* α12 : ltac:(refine (ref (alloc.boxed.Box i32 alloc.alloc.Global))) :=
         borrow α11 in
-      let*
-          α13 :
+      let* α13 :
           ltac:(refine (ref (ref (alloc.boxed.Box i32 alloc.alloc.Global)))) :=
         borrow α12 in
       let* α14 : ltac:(refine (ref (alloc.boxed.Box i32 alloc.alloc.Global))) :=
         deref α13 in
-      let*
-          α15 :
+      let* α15 :
           ltac:(refine (ref (ref (alloc.boxed.Box i32 alloc.alloc.Global)))) :=
         borrow α14 in
       let* α16 : ltac:(refine (ref type not implemented)) :=

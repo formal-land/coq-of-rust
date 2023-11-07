@@ -31,8 +31,7 @@ Section Impl_enums_testcase_linked_list_List.
       (elem : u32)
       : M enums_testcase_linked_list.List :=
     M.function_body
-      (let*
-          α0 :
+      (let* α0 :
           ltac:(refine
             (alloc.boxed.Box
               enums_testcase_linked_list.List
@@ -55,8 +54,7 @@ Section Impl_enums_testcase_linked_list_List.
       match α1 with
       | enums_testcase_linked_list.List.Cons _ tail =>
         let* α0 : ltac:(refine u32) := M.alloc 1 in
-        let*
-            α1 :
+        let* α1 :
             ltac:(refine
               (alloc.boxed.Box
                 enums_testcase_linked_list.List
@@ -94,8 +92,7 @@ Section Impl_enums_testcase_linked_list_List.
           let* α7 : ltac:(refine (ref u32)) := borrow α6 in
           let* α8 : ltac:(refine core.fmt.rt.Argument) :=
             core.fmt.rt.Argument::["new_display"] α7 in
-          let*
-              α9 :
+          let* α9 :
               ltac:(refine
                 (alloc.boxed.Box
                   enums_testcase_linked_list.List

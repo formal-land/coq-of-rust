@@ -56,8 +56,7 @@ Module tests.
           std.fs.OpenOptions::["create"] α5 α6 in
         let* α8 : ltac:(refine std.fs.OpenOptions) := deref α7 in
         let* α9 : ltac:(refine (ref std.fs.OpenOptions)) := borrow α8 in
-        let*
-            α10 :
+        let* α10 :
             ltac:(refine (core.result.Result std.fs.File std.io.error.Error)) :=
           std.fs.OpenOptions::["open"] α9 (mk_str "ferris.txt") in
         let* α11 : ltac:(refine str) :=
@@ -109,8 +108,7 @@ Module tests.
                     str::["as_bytes"] α2 in
                   let* α4 : ltac:(refine (slice u8)) := deref α3 in
                   let* α5 : ltac:(refine (ref (slice u8))) := borrow α4 in
-                  let*
-                      α6 :
+                  let* α6 :
                       ltac:(refine
                         (core.result.Result unit std.io.error.Error)) :=
                     (std.io.Write.write_all
@@ -146,8 +144,7 @@ Module tests.
           std.fs.OpenOptions::["create"] α5 α6 in
         let* α8 : ltac:(refine std.fs.OpenOptions) := deref α7 in
         let* α9 : ltac:(refine (ref std.fs.OpenOptions)) := borrow α8 in
-        let*
-            α10 :
+        let* α10 :
             ltac:(refine (core.result.Result std.fs.File std.io.error.Error)) :=
           std.fs.OpenOptions::["open"] α9 (mk_str "ferris.txt") in
         let* α11 : ltac:(refine str) :=
@@ -199,8 +196,7 @@ Module tests.
                     str::["as_bytes"] α2 in
                   let* α4 : ltac:(refine (slice u8)) := deref α3 in
                   let* α5 : ltac:(refine (ref (slice u8))) := borrow α4 in
-                  let*
-                      α6 :
+                  let* α6 :
                       ltac:(refine
                         (core.result.Result unit std.io.error.Error)) :=
                     (std.io.Write.write_all
@@ -237,8 +233,7 @@ Definition test_file `{ℋ : State.Trait} : M unit :=
         std.fs.OpenOptions::["create"] α5 α6 in
       let* α8 : ltac:(refine std.fs.OpenOptions) := deref α7 in
       let* α9 : ltac:(refine (ref std.fs.OpenOptions)) := borrow α8 in
-      let*
-          α10 :
+      let* α10 :
           ltac:(refine (core.result.Result std.fs.File std.io.error.Error)) :=
         std.fs.OpenOptions::["open"] α9 (mk_str "ferris.txt") in
       let* α11 : ltac:(refine str) :=
@@ -288,8 +283,7 @@ Definition test_file `{ℋ : State.Trait} : M unit :=
                   str::["as_bytes"] α2 in
                 let* α4 : ltac:(refine (slice u8)) := deref α3 in
                 let* α5 : ltac:(refine (ref (slice u8))) := borrow α4 in
-                let*
-                    α6 :
+                let* α6 :
                     ltac:(refine
                       (core.result.Result unit std.io.error.Error)) :=
                   (std.io.Write.write_all
@@ -325,8 +319,7 @@ Definition test_file_also `{ℋ : State.Trait} : M unit :=
         std.fs.OpenOptions::["create"] α5 α6 in
       let* α8 : ltac:(refine std.fs.OpenOptions) := deref α7 in
       let* α9 : ltac:(refine (ref std.fs.OpenOptions)) := borrow α8 in
-      let*
-          α10 :
+      let* α10 :
           ltac:(refine (core.result.Result std.fs.File std.io.error.Error)) :=
         std.fs.OpenOptions::["open"] α9 (mk_str "ferris.txt") in
       let* α11 : ltac:(refine str) :=
@@ -376,8 +369,7 @@ Definition test_file_also `{ℋ : State.Trait} : M unit :=
                   str::["as_bytes"] α2 in
                 let* α4 : ltac:(refine (slice u8)) := deref α3 in
                 let* α5 : ltac:(refine (ref (slice u8))) := borrow α4 in
-                let*
-                    α6 :
+                let* α6 :
                     ltac:(refine
                       (core.result.Result unit std.io.error.Error)) :=
                   (std.io.Write.write_all

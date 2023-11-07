@@ -166,6 +166,7 @@ Section Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificati
   Context {Unit : Set}.
   
   Context {ℋ_0 : core.fmt.Debug.Trait Unit}.
+  
   Definition Self : Set :=
     generics_phantom_type_test_case_unit_clarification.Length Unit.
   
@@ -178,8 +179,7 @@ Section Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificati
       let* α1 : ltac:(refine (mut_ref core.fmt.Formatter)) := borrow_mut α0 in
       let* α2 : ltac:(refine str) := deref (mk_str "Length") in
       let* α3 : ltac:(refine (ref str)) := borrow α2 in
-      let*
-          α4 :
+      let* α4 :
           ltac:(refine
             (generics_phantom_type_test_case_unit_clarification.Length Unit)) :=
         deref self in
@@ -189,8 +189,7 @@ Section Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificati
       let* α8 : ltac:(refine (ref f64)) := borrow α7 in
       let* α9 : ltac:(refine (ref type not implemented)) :=
         pointer_coercion "Unsize" α8 in
-      let*
-          α10 :
+      let* α10 :
           ltac:(refine
             (generics_phantom_type_test_case_unit_clarification.Length Unit)) :=
         deref self in
@@ -224,6 +223,7 @@ Section Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarifica
   Context {Unit : Set}.
   
   Context {ℋ_0 : core.clone.Clone.Trait Unit}.
+  
   Definition Self : Set :=
     generics_phantom_type_test_case_unit_clarification.Length Unit.
   
@@ -231,8 +231,7 @@ Section Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarifica
       (self : ref Self)
       : M (generics_phantom_type_test_case_unit_clarification.Length Unit) :=
     M.function_body
-      (let*
-          α0 :
+      (let* α0 :
           ltac:(refine
             (generics_phantom_type_test_case_unit_clarification.Length Unit)) :=
         deref self in
@@ -242,8 +241,7 @@ Section Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarifica
       let* α4 : ltac:(refine (ref f64)) := borrow α3 in
       let* α5 : ltac:(refine f64) :=
         (core.clone.Clone.clone (Self := f64) (Trait := ltac:(refine _))) α4 in
-      let*
-          α6 :
+      let* α6 :
           ltac:(refine
             (generics_phantom_type_test_case_unit_clarification.Length Unit)) :=
         deref self in
@@ -282,6 +280,7 @@ Section Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarifica
   Context {Unit : Set}.
   
   Context {ℋ_0 : core.marker.Copy.Trait Unit}.
+  
   Definition Self : Set :=
     generics_phantom_type_test_case_unit_clarification.Length Unit.
   
@@ -333,14 +332,12 @@ End Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarificati
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
   M.function_body
-    (let*
-        one_foot :
+    (let* one_foot :
         ltac:(refine
           (generics_phantom_type_test_case_unit_clarification.Length
             generics_phantom_type_test_case_unit_clarification.Inch)) :=
       let* α0 : ltac:(refine f64) := M.alloc 12 (* 12.0 *) in
-      let*
-          α1 :
+      let* α1 :
           ltac:(refine
             (core.marker.PhantomData
               generics_phantom_type_test_case_unit_clarification.Inch)) :=
@@ -349,14 +346,12 @@ Definition main `{ℋ : State.Trait} : M unit :=
         (generics_phantom_type_test_case_unit_clarification.Length.Build_t
           α0
           α1) in
-    let*
-        one_meter :
+    let* one_meter :
         ltac:(refine
           (generics_phantom_type_test_case_unit_clarification.Length
             generics_phantom_type_test_case_unit_clarification.Mm)) :=
       let* α0 : ltac:(refine f64) := M.alloc 1000 (* 1000.0 *) in
-      let*
-          α1 :
+      let* α1 :
           ltac:(refine
             (core.marker.PhantomData
               generics_phantom_type_test_case_unit_clarification.Mm)) :=
@@ -365,8 +360,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
         (generics_phantom_type_test_case_unit_clarification.Length.Build_t
           α0
           α1) in
-    let*
-        two_feet :
+    let* two_feet :
         ltac:(refine
           (generics_phantom_type_test_case_unit_clarification.Length
             generics_phantom_type_test_case_unit_clarification.Inch)) :=
@@ -377,8 +371,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
           (Trait := ltac:(refine _)))
         one_foot
         one_foot in
-    let*
-        two_meters :
+    let* two_meters :
         ltac:(refine
           (generics_phantom_type_test_case_unit_clarification.Length
             generics_phantom_type_test_case_unit_clarification.Mm)) :=

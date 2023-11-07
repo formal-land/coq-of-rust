@@ -5,13 +5,11 @@ Module  Person.
 Section Person.
   Context `{ℋ : State.Trait}.
   
-  Unset Primitive Projections.
   Record t : Set := {
     id : u32;
     name : alloc.string.String;
     phone : u64;
   }.
-  Global Set Primitive Projections.
   
   Global Instance Get_id : Notation.Dot "id" := {
     Notation.dot x := let* x := M.read x in M.pure x.(id) : M _;
@@ -106,14 +104,12 @@ Definition calculate_hash
     let* _ : ltac:(refine unit) :=
       let* α0 : ltac:(refine T) := deref t in
       let* α1 : ltac:(refine (ref T)) := borrow α0 in
-      let*
-          α2 :
+      let* α2 :
           ltac:(refine (mut_ref std.collections.hash.map.DefaultHasher)) :=
         borrow_mut s in
       let* α3 : ltac:(refine std.collections.hash.map.DefaultHasher) :=
         deref α2 in
-      let*
-          α4 :
+      let* α4 :
           ltac:(refine (mut_ref std.collections.hash.map.DefaultHasher)) :=
         borrow_mut α3 in
       (core.hash.Hash.hash (Self := T) (Trait := ltac:(refine _))) α1 α4 in

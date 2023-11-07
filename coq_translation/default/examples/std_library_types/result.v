@@ -203,8 +203,7 @@ Definition ln
 
 Definition op `{ℋ : State.Trait} (x : f64) (y : f64) : M f64 :=
   M.function_body
-    (let*
-        α0 :
+    (let* α0 :
         ltac:(refine (core.result.Result f64 result.checked.MathError)) :=
       result.checked.div x y in
     let* α1 := M.read α0 in
@@ -234,8 +233,7 @@ Definition op `{ℋ : State.Trait} (x : f64) (y : f64) : M f64 :=
       let* α15 : ltac:(refine never) := core.panicking.panic_fmt α14 in
       never_to_any α15
     | core.result.Result.Ok ratio =>
-      let*
-          α0 :
+      let* α0 :
           ltac:(refine (core.result.Result f64 result.checked.MathError)) :=
         result.checked.ln ratio in
       let* α1 := M.read α0 in
@@ -266,8 +264,7 @@ Definition op `{ℋ : State.Trait} (x : f64) (y : f64) : M f64 :=
         let* α15 : ltac:(refine never) := core.panicking.panic_fmt α14 in
         never_to_any α15
       | core.result.Result.Ok ln =>
-        let*
-            α0 :
+        let* α0 :
             ltac:(refine (core.result.Result f64 result.checked.MathError)) :=
           result.checked.sqrt ln in
         let* α1 := M.read α0 in

@@ -5,9 +5,7 @@ Module  Sheep.
 Section Sheep.
   Context `{ℋ : State.Trait}.
   
-  Unset Primitive Projections.
   Record t : Set := { }.
-  Global Set Primitive Projections.
 End Sheep.
 End Sheep.
 Definition Sheep `{ℋ : State.Trait} : Set := M.Val Sheep.t.
@@ -16,9 +14,7 @@ Module  Cow.
 Section Cow.
   Context `{ℋ : State.Trait}.
   
-  Unset Primitive Projections.
   Record t : Set := { }.
-  Global Set Primitive Projections.
 End Cow.
 End Cow.
 Definition Cow `{ℋ : State.Trait} : Set := M.Val Cow.t.

@@ -5,12 +5,10 @@ Module  Person.
 Section Person.
   Context `{ℋ : State.Trait}.
   
-  Unset Primitive Projections.
   Record t : Set := {
     name : alloc.string.String;
     age : u8;
   }.
-  Global Set Primitive Projections.
   
   Global Instance Get_name : Notation.Dot "name" := {
     Notation.dot x := let* x := M.read x in M.pure x.(name) : M _;
@@ -108,12 +106,10 @@ Module  Point.
 Section Point.
   Context `{ℋ : State.Trait}.
   
-  Unset Primitive Projections.
   Record t : Set := {
     x : f32;
     y : f32;
   }.
-  Global Set Primitive Projections.
   
   Global Instance Get_x : Notation.Dot "x" := {
     Notation.dot x' := let* x' := M.read x' in M.pure x'.(x) : M _;
@@ -135,12 +131,10 @@ Module  Rectangle.
 Section Rectangle.
   Context `{ℋ : State.Trait}.
   
-  Unset Primitive Projections.
   Record t : Set := {
     top_left : structures.Point;
     bottom_right : structures.Point;
   }.
-  Global Set Primitive Projections.
   
   Global Instance Get_top_left : Notation.Dot "top_left" := {
     Notation.dot x := let* x := M.read x in M.pure x.(top_left) : M _;
@@ -277,8 +271,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
           core.fmt.Arguments::["new_v1"] α4 α19 in
         std.io.stdio._print α20 in
       M.alloc tt in
-    let
-        '{| structures.Point.x := left_edge; structures.Point.y := top_edge;
+    let '{| structures.Point.x := left_edge; structures.Point.y := top_edge;
         |} :=
       point in
     let* _rectangle : ltac:(refine structures.Rectangle) :=

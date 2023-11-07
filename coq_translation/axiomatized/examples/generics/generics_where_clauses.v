@@ -19,6 +19,7 @@ Section Impl_generics_where_clauses_PrintInOption_for_T.
   Context {T : Set}.
   
   Context {ℋ_0 : core.fmt.Debug.Trait (core.option.Option T)}.
+  
   Definition Self : Set := T.
   
   Parameter print_in_option : Self -> M unit.

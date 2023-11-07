@@ -14,8 +14,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
 58495327135744041048897885734297812
 69920216438980873548808413720956532
 16278424637452589860345374828574668" in
-    let*
-        children :
+    let* children :
         ltac:(refine
           (alloc.vec.Vec (std.thread.JoinHandle u32) alloc.alloc.Global)) :=
       (alloc.vec.Vec (std.thread.JoinHandle u32) alloc.alloc.Global)::["new"] in
@@ -24,8 +23,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α1 : ltac:(refine (ref str)) := borrow α0 in
       str::["split_whitespace"] α1 in
     let* _ : ltac:(refine unit) :=
-      let*
-          α0 :
+      let* α0 :
           ltac:(refine
             (core.iter.adapters.enumerate.Enumerate
               core.str.iter.SplitWhitespace)) :=
@@ -33,8 +31,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
             (Self := core.str.iter.SplitWhitespace)
             (Trait := ltac:(refine _)))
           chunked_data in
-      let*
-          α1 :
+      let* α1 :
           ltac:(refine
             (core.iter.adapters.enumerate.Enumerate
               core.str.iter.SplitWhitespace)) :=
@@ -50,28 +47,24 @@ Definition main `{ℋ : State.Trait} : M unit :=
         | iter =>
           loop
             (let* _ : ltac:(refine unit) :=
-              let*
-                  α0 :
+              let* α0 :
                   ltac:(refine
                     (mut_ref
                       (core.iter.adapters.enumerate.Enumerate
                         core.str.iter.SplitWhitespace))) :=
                 borrow_mut iter in
-              let*
-                  α1 :
+              let* α1 :
                   ltac:(refine
                     (core.iter.adapters.enumerate.Enumerate
                       core.str.iter.SplitWhitespace)) :=
                 deref α0 in
-              let*
-                  α2 :
+              let* α2 :
                   ltac:(refine
                     (mut_ref
                       (core.iter.adapters.enumerate.Enumerate
                         core.str.iter.SplitWhitespace))) :=
                 borrow_mut α1 in
-              let*
-                  α3 :
+              let* α3 :
                   ltac:(refine
                     (core.option.Option (M.Val (usize * (ref str))))) :=
                 (core.iter.traits.iterator.Iterator.next
@@ -113,18 +106,15 @@ Definition main `{ℋ : State.Trait} : M unit :=
                       core.fmt.rt.Argument::["new_display"] α11 in
                     let* α13 : ltac:(refine (array core.fmt.rt.Argument)) :=
                       M.alloc [ α8; α12 ] in
-                    let*
-                        α14 :
+                    let* α14 :
                         ltac:(refine (ref (array core.fmt.rt.Argument))) :=
                       borrow α13 in
                     let* α15 : ltac:(refine (array core.fmt.rt.Argument)) :=
                       deref α14 in
-                    let*
-                        α16 :
+                    let* α16 :
                         ltac:(refine (ref (array core.fmt.rt.Argument))) :=
                       borrow α15 in
-                    let*
-                        α17 :
+                    let* α17 :
                         ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
                       pointer_coercion "Unsize" α16 in
                     let* α18 : ltac:(refine core.fmt.Arguments) :=
@@ -132,8 +122,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
                     std.io.stdio._print α18 in
                   M.alloc tt in
                 let* _ : ltac:(refine unit) :=
-                  let*
-                      α0 :
+                  let* α0 :
                       ltac:(refine
                         (mut_ref
                           (alloc.vec.Vec
@@ -147,8 +136,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
                         let* α1 : ltac:(refine (ref str)) := borrow α0 in
                         let* α2 : ltac:(refine core.str.iter.Chars) :=
                           str::["chars"] α1 in
-                        let*
-                            α3 :
+                        let* α3 :
                             ltac:(refine
                               (core.iter.adapters.map.Map
                                 core.str.iter.Chars
@@ -199,26 +187,21 @@ Definition main `{ℋ : State.Trait} : M unit :=
                           let* α11 : ltac:(refine (ref u32)) := borrow α10 in
                           let* α12 : ltac:(refine core.fmt.rt.Argument) :=
                             core.fmt.rt.Argument::["new_display"] α11 in
-                          let*
-                              α13 :
+                          let* α13 :
                               ltac:(refine (array core.fmt.rt.Argument)) :=
                             M.alloc [ α8; α12 ] in
-                          let*
-                              α14 :
+                          let* α14 :
                               ltac:(refine
                                 (ref (array core.fmt.rt.Argument))) :=
                             borrow α13 in
-                          let*
-                              α15 :
+                          let* α15 :
                               ltac:(refine (array core.fmt.rt.Argument)) :=
                             deref α14 in
-                          let*
-                              α16 :
+                          let* α16 :
                               ltac:(refine
                                 (ref (array core.fmt.rt.Argument))) :=
                             borrow α15 in
-                          let*
-                              α17 :
+                          let* α17 :
                               ltac:(refine
                                 (ref (slice core.fmt.rt.Argument))) :=
                             pointer_coercion "Unsize" α16 in
@@ -238,8 +221,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
         end in
       use α3 in
     let* final_result : ltac:(refine u32) :=
-      let*
-          α0 :
+      let* α0 :
           ltac:(refine
             (alloc.vec.into_iter.IntoIter
               (std.thread.JoinHandle u32)
@@ -249,8 +231,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
               alloc.vec.Vec (std.thread.JoinHandle u32) alloc.alloc.Global)
             (Trait := ltac:(refine _)))
           children in
-      let*
-          α1 :
+      let* α1 :
           ltac:(refine
             (core.iter.adapters.map.Map
               (alloc.vec.into_iter.IntoIter
@@ -264,8 +245,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
                 alloc.alloc.Global)
             (Trait := ltac:(refine _)))
           α0
-          (let*
-              α0 :
+          (let* α0 :
               ltac:(refine
                 (core.result.Result
                   u32

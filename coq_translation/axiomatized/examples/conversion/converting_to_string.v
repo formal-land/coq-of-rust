@@ -5,11 +5,9 @@ Module  Circle.
 Section Circle.
   Context `{ℋ : State.Trait}.
   
-  Unset Primitive Projections.
   Record t : Set := {
     radius : i32;
   }.
-  Global Set Primitive Projections.
   
   Global Instance Get_radius : Notation.Dot "radius" := {
     Notation.dot x := let* x := M.read x in M.pure x.(radius) : M _;

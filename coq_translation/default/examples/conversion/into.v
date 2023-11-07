@@ -5,11 +5,9 @@ Module  Number.
 Section Number.
   Context `{ℋ : State.Trait}.
   
-  Unset Primitive Projections.
   Record t : Set := {
     value : i32;
   }.
-  Global Set Primitive Projections.
   
   Global Instance Get_value : Notation.Dot "value" := {
     Notation.dot x := let* x := M.read x in M.pure x.(value) : M _;

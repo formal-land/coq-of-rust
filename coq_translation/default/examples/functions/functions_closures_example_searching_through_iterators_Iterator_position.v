@@ -13,17 +13,14 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α5 : ltac:(refine i32) := M.alloc 2 in
       let* α6 : ltac:(refine (array i32)) :=
         M.alloc [ α0; α1; α2; α3; α4; α5 ] in
-      let*
-          α7 :
+      let* α7 :
           ltac:(refine (alloc.boxed.Box (array i32) alloc.alloc.Global)) :=
         (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α6 in
-      let*
-          α8 :
+      let* α8 :
           ltac:(refine (alloc.boxed.Box (slice i32) alloc.alloc.Global)) :=
         pointer_coercion "Unsize" α7 in
       (slice i32)::["into_vec"] α8 in
-    let*
-        index_of_first_even_number :
+    let* index_of_first_even_number :
         ltac:(refine (core.option.Option usize)) :=
       let* α0 : ltac:(refine (ref (alloc.vec.Vec i32 alloc.alloc.Global))) :=
         borrow vec in
@@ -53,8 +50,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α2 : ltac:(refine (core.option.Option usize)) :=
         M.alloc (core.option.Option.Some α1) in
       let* α3 : ltac:(refine (ref (core.option.Option usize))) := borrow α2 in
-      let*
-          α4 :
+      let* α4 :
           ltac:(refine
             (M.Val
               ((ref (core.option.Option usize)) *
@@ -101,18 +97,15 @@ Definition main `{ℋ : State.Trait} : M unit :=
         else
           M.alloc tt
       end in
-    let*
-        index_of_first_negative_number :
+    let* index_of_first_negative_number :
         ltac:(refine (core.option.Option usize)) :=
-      let*
-          α0 :
+      let* α0 :
           ltac:(refine (alloc.vec.into_iter.IntoIter i32 alloc.alloc.Global)) :=
         (core.iter.traits.collect.IntoIterator.into_iter
             (Self := alloc.vec.Vec i32 alloc.alloc.Global)
             (Trait := ltac:(refine _)))
           vec in
-      let*
-          α1 :
+      let* α1 :
           ltac:(refine
             (mut_ref (alloc.vec.into_iter.IntoIter i32 alloc.alloc.Global))) :=
         borrow_mut α0 in
@@ -128,8 +121,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α1 : ltac:(refine (core.option.Option usize)) :=
         M.alloc core.option.Option.None in
       let* α2 : ltac:(refine (ref (core.option.Option usize))) := borrow α1 in
-      let*
-          α3 :
+      let* α3 :
           ltac:(refine
             (M.Val
               ((ref (core.option.Option usize)) *

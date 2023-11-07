@@ -4,8 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
   M.function_body
-    (let*
-        collected_iterator :
+    (let* collected_iterator :
         ltac:(refine (alloc.vec.Vec i32 alloc.alloc.Global)) :=
       let* α0 : ltac:(refine i32) := M.alloc 0 in
       let* α1 : ltac:(refine i32) := M.alloc 10 in
@@ -53,12 +52,10 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α1 : ltac:(refine i32) := M.alloc 2 in
       let* α2 : ltac:(refine i32) := M.alloc 3 in
       let* α3 : ltac:(refine (array i32)) := M.alloc [ α0; α1; α2 ] in
-      let*
-          α4 :
+      let* α4 :
           ltac:(refine (alloc.boxed.Box (array i32) alloc.alloc.Global)) :=
         (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α3 in
-      let*
-          α5 :
+      let* α5 :
           ltac:(refine (alloc.boxed.Box (slice i32) alloc.alloc.Global)) :=
         pointer_coercion "Unsize" α4 in
       (slice i32)::["into_vec"] α5 in
@@ -108,8 +105,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
         std.io.stdio._print α5 in
       M.alloc tt in
     let* _ : ltac:(refine unit) :=
-      let*
-          α0 :
+      let* α0 :
           ltac:(refine (mut_ref (alloc.vec.Vec i32 alloc.alloc.Global))) :=
         borrow_mut xs in
       let* α1 : ltac:(refine i32) := M.alloc 4 in
@@ -225,8 +221,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
         let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
         let* α4 : ltac:(refine (ref (slice (ref str)))) :=
           pointer_coercion "Unsize" α3 in
-        let*
-            α5 :
+        let* α5 :
             ltac:(refine (mut_ref (alloc.vec.Vec i32 alloc.alloc.Global))) :=
           borrow_mut xs in
         let* α6 : ltac:(refine (core.option.Option i32)) :=
@@ -321,18 +316,15 @@ Definition main `{ℋ : State.Trait} : M unit :=
                       core.fmt.rt.Argument::["new_display"] α7 in
                     let* α9 : ltac:(refine (array core.fmt.rt.Argument)) :=
                       M.alloc [ α8 ] in
-                    let*
-                        α10 :
+                    let* α10 :
                         ltac:(refine (ref (array core.fmt.rt.Argument))) :=
                       borrow α9 in
                     let* α11 : ltac:(refine (array core.fmt.rt.Argument)) :=
                       deref α10 in
-                    let*
-                        α12 :
+                    let* α12 :
                         ltac:(refine (ref (array core.fmt.rt.Argument))) :=
                       borrow α11 in
-                    let*
-                        α13 :
+                    let* α13 :
                         ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
                       pointer_coercion "Unsize" α12 in
                     let* α14 : ltac:(refine core.fmt.Arguments) :=
@@ -356,8 +348,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α3 : ltac:(refine (ref (slice i32))) := borrow α2 in
       let* α4 : ltac:(refine (core.slice.iter.Iter i32)) :=
         (slice i32)::["iter"] α3 in
-      let*
-          α5 :
+      let* α5 :
           ltac:(refine
             (core.iter.adapters.enumerate.Enumerate
               (core.slice.iter.Iter i32))) :=
@@ -365,8 +356,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
             (Self := core.slice.iter.Iter i32)
             (Trait := ltac:(refine _)))
           α4 in
-      let*
-          α6 :
+      let* α6 :
           ltac:(refine
             (core.iter.adapters.enumerate.Enumerate
               (core.slice.iter.Iter i32))) :=
@@ -381,28 +371,24 @@ Definition main `{ℋ : State.Trait} : M unit :=
         | iter =>
           loop
             (let* _ : ltac:(refine unit) :=
-              let*
-                  α0 :
+              let* α0 :
                   ltac:(refine
                     (mut_ref
                       (core.iter.adapters.enumerate.Enumerate
                         (core.slice.iter.Iter i32)))) :=
                 borrow_mut iter in
-              let*
-                  α1 :
+              let* α1 :
                   ltac:(refine
                     (core.iter.adapters.enumerate.Enumerate
                       (core.slice.iter.Iter i32))) :=
                 deref α0 in
-              let*
-                  α2 :
+              let* α2 :
                   ltac:(refine
                     (mut_ref
                       (core.iter.adapters.enumerate.Enumerate
                         (core.slice.iter.Iter i32)))) :=
                 borrow_mut α1 in
-              let*
-                  α3 :
+              let* α3 :
                   ltac:(refine
                     (core.option.Option (M.Val (usize * (ref i32))))) :=
                 (core.iter.traits.iterator.Iterator.next
@@ -446,18 +432,15 @@ Definition main `{ℋ : State.Trait} : M unit :=
                       core.fmt.rt.Argument::["new_display"] α11 in
                     let* α13 : ltac:(refine (array core.fmt.rt.Argument)) :=
                       M.alloc [ α8; α12 ] in
-                    let*
-                        α14 :
+                    let* α14 :
                         ltac:(refine (ref (array core.fmt.rt.Argument))) :=
                       borrow α13 in
                     let* α15 : ltac:(refine (array core.fmt.rt.Argument)) :=
                       deref α14 in
-                    let*
-                        α16 :
+                    let* α16 :
                         ltac:(refine (ref (array core.fmt.rt.Argument))) :=
                       borrow α15 in
-                    let*
-                        α17 :
+                    let* α17 :
                         ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
                       pointer_coercion "Unsize" α16 in
                     let* α18 : ltac:(refine core.fmt.Arguments) :=
@@ -470,8 +453,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
         end in
       use α8 in
     let* _ : ltac:(refine unit) :=
-      let*
-          α0 :
+      let* α0 :
           ltac:(refine (mut_ref (alloc.vec.Vec i32 alloc.alloc.Global))) :=
         borrow_mut xs in
       let* α1 : ltac:(refine (mut_ref (slice i32))) :=

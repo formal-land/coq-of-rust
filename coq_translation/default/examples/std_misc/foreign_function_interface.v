@@ -108,12 +108,10 @@ Module  Complex.
 Section Complex.
   Context `{ℋ : State.Trait}.
   
-  Unset Primitive Projections.
   Record t : Set := {
     re : f32;
     im : f32;
   }.
-  Global Set Primitive Projections.
   
   Global Instance Get_re : Notation.Dot "re" := {
     Notation.dot x := let* x := M.read x in M.pure x.(re) : M _;

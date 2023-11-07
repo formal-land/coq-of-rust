@@ -4,8 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
   M.function_body
-    (let*
-        immutable_box :
+    (let* immutable_box :
         ltac:(refine (alloc.boxed.Box u32 alloc.alloc.Global)) :=
       let* α0 : ltac:(refine u32) := M.alloc 5 in
       (alloc.boxed.Box u32 alloc.alloc.Global)::["new"] α0 in
@@ -19,14 +18,12 @@ Definition main `{ℋ : State.Trait} : M unit :=
         let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
         let* α4 : ltac:(refine (ref (slice (ref str)))) :=
           pointer_coercion "Unsize" α3 in
-        let*
-            α5 :
+        let* α5 :
             ltac:(refine (ref (alloc.boxed.Box u32 alloc.alloc.Global))) :=
           borrow immutable_box in
         let* α6 : ltac:(refine (alloc.boxed.Box u32 alloc.alloc.Global)) :=
           deref α5 in
-        let*
-            α7 :
+        let* α7 :
             ltac:(refine (ref (alloc.boxed.Box u32 alloc.alloc.Global))) :=
           borrow α6 in
         let* α8 : ltac:(refine core.fmt.rt.Argument) :=
@@ -55,14 +52,12 @@ Definition main `{ℋ : State.Trait} : M unit :=
         let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
         let* α4 : ltac:(refine (ref (slice (ref str)))) :=
           pointer_coercion "Unsize" α3 in
-        let*
-            α5 :
+        let* α5 :
             ltac:(refine (ref (alloc.boxed.Box u32 alloc.alloc.Global))) :=
           borrow mutable_box in
         let* α6 : ltac:(refine (alloc.boxed.Box u32 alloc.alloc.Global)) :=
           deref α5 in
-        let*
-            α7 :
+        let* α7 :
             ltac:(refine (ref (alloc.boxed.Box u32 alloc.alloc.Global))) :=
           borrow α6 in
         let* α8 : ltac:(refine core.fmt.rt.Argument) :=
@@ -94,14 +89,12 @@ Definition main `{ℋ : State.Trait} : M unit :=
         let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
         let* α4 : ltac:(refine (ref (slice (ref str)))) :=
           pointer_coercion "Unsize" α3 in
-        let*
-            α5 :
+        let* α5 :
             ltac:(refine (ref (alloc.boxed.Box u32 alloc.alloc.Global))) :=
           borrow mutable_box in
         let* α6 : ltac:(refine (alloc.boxed.Box u32 alloc.alloc.Global)) :=
           deref α5 in
-        let*
-            α7 :
+        let* α7 :
             ltac:(refine (ref (alloc.boxed.Box u32 alloc.alloc.Global))) :=
           borrow α6 in
         let* α8 : ltac:(refine core.fmt.rt.Argument) :=

@@ -5,12 +5,10 @@ Module  Point.
 Section Point.
   Context `{ℋ : State.Trait}.
   
-  Unset Primitive Projections.
   Record t : Set := {
     x : f64;
     y : f64;
   }.
-  Global Set Primitive Projections.
   
   Global Instance Get_x : Notation.Dot "x" := {
     Notation.dot x' := let* x' := M.read x' in M.pure x'.(x) : M _;
@@ -70,12 +68,10 @@ Module  Rectangle.
 Section Rectangle.
   Context `{ℋ : State.Trait}.
   
-  Unset Primitive Projections.
   Record t : Set := {
     p1 : associated_functions_and_methods.Point;
     p2 : associated_functions_and_methods.Point;
   }.
-  Global Set Primitive Projections.
   
   Global Instance Get_p1 : Notation.Dot "p1" := {
     Notation.dot x := let* x := M.read x in M.pure x.(p1) : M _;
@@ -114,8 +110,7 @@ Section Impl_associated_functions_and_methods_Rectangle.
   
   Definition area (self : ref Self) : M f64 :=
     M.function_body
-      (let*
-          '{|
+      (let* '{|
             associated_functions_and_methods.Point.x := x1;
             associated_functions_and_methods.Point.y := y1;
           |} :
@@ -123,8 +118,7 @@ Section Impl_associated_functions_and_methods_Rectangle.
         let* α0 : ltac:(refine associated_functions_and_methods.Rectangle) :=
           deref self in
         α0.["p1"] in
-      let*
-          '{|
+      let* '{|
             associated_functions_and_methods.Point.x := x2;
             associated_functions_and_methods.Point.y := y2;
           |} :
@@ -144,8 +138,7 @@ Section Impl_associated_functions_and_methods_Rectangle.
   
   Definition perimeter (self : ref Self) : M f64 :=
     M.function_body
-      (let*
-          '{|
+      (let* '{|
             associated_functions_and_methods.Point.x := x1;
             associated_functions_and_methods.Point.y := y1;
           |} :
@@ -153,8 +146,7 @@ Section Impl_associated_functions_and_methods_Rectangle.
         let* α0 : ltac:(refine associated_functions_and_methods.Rectangle) :=
           deref self in
         α0.["p1"] in
-      let*
-          '{|
+      let* '{|
             associated_functions_and_methods.Point.x := x2;
             associated_functions_and_methods.Point.y := y2;
           |} :
@@ -255,26 +247,22 @@ Section Impl_associated_functions_and_methods_Pair.
           let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
           let* α4 : ltac:(refine (ref (slice (ref str)))) :=
             pointer_coercion "Unsize" α3 in
-          let*
-              α5 :
+          let* α5 :
               ltac:(refine (ref (alloc.boxed.Box i32 alloc.alloc.Global))) :=
             borrow first in
           let* α6 : ltac:(refine (alloc.boxed.Box i32 alloc.alloc.Global)) :=
             deref α5 in
-          let*
-              α7 :
+          let* α7 :
               ltac:(refine (ref (alloc.boxed.Box i32 alloc.alloc.Global))) :=
             borrow α6 in
           let* α8 : ltac:(refine core.fmt.rt.Argument) :=
             core.fmt.rt.Argument::["new_display"] α7 in
-          let*
-              α9 :
+          let* α9 :
               ltac:(refine (ref (alloc.boxed.Box i32 alloc.alloc.Global))) :=
             borrow second in
           let* α10 : ltac:(refine (alloc.boxed.Box i32 alloc.alloc.Global)) :=
             deref α9 in
-          let*
-              α11 :
+          let* α11 :
               ltac:(refine (ref (alloc.boxed.Box i32 alloc.alloc.Global))) :=
             borrow α10 in
           let* α12 : ltac:(refine core.fmt.rt.Argument) :=
@@ -304,8 +292,7 @@ End Impl_associated_functions_and_methods_Pair.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
   M.function_body
-    (let*
-        rectangle :
+    (let* rectangle :
         ltac:(refine associated_functions_and_methods.Rectangle) :=
       let* α0 : ltac:(refine associated_functions_and_methods.Point) :=
         associated_functions_and_methods.Point::["origin"] in
@@ -328,8 +315,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
         let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
         let* α4 : ltac:(refine (ref (slice (ref str)))) :=
           pointer_coercion "Unsize" α3 in
-        let*
-            α5 :
+        let* α5 :
             ltac:(refine (ref associated_functions_and_methods.Rectangle)) :=
           borrow rectangle in
         let* α6 : ltac:(refine f64) :=
@@ -362,8 +348,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
         let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
         let* α4 : ltac:(refine (ref (slice (ref str)))) :=
           pointer_coercion "Unsize" α3 in
-        let*
-            α5 :
+        let* α5 :
             ltac:(refine (ref associated_functions_and_methods.Rectangle)) :=
           borrow rectangle in
         let* α6 : ltac:(refine f64) :=
@@ -399,8 +384,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
           associated_functions_and_methods.Rectangle.p2 := α3;
         |} in
     let* _ : ltac:(refine unit) :=
-      let*
-          α0 :
+      let* α0 :
           ltac:(refine (mut_ref associated_functions_and_methods.Rectangle)) :=
         borrow_mut square in
       let* α1 : ltac:(refine f64) := M.alloc 1 (* 1.0 *) in

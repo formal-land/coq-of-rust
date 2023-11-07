@@ -140,14 +140,12 @@ Definition fizzbuzz_to `{ℋ : State.Trait} (n : u32) : M unit :=
       | iter =>
         loop
           (let* _ : ltac:(refine unit) :=
-            let*
-                α0 :
+            let* α0 :
                 ltac:(refine (mut_ref (core.ops.range.RangeInclusive u32))) :=
               borrow_mut iter in
             let* α1 : ltac:(refine (core.ops.range.RangeInclusive u32)) :=
               deref α0 in
-            let*
-                α2 :
+            let* α2 :
                 ltac:(refine (mut_ref (core.ops.range.RangeInclusive u32))) :=
               borrow_mut α1 in
             let* α3 : ltac:(refine (core.option.Option u32)) :=

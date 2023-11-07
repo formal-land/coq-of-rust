@@ -262,8 +262,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α2 : ltac:(refine (array u32)) := M.alloc [ ] in
       let* α3 : ltac:(refine (ref (array u32))) := borrow α2 in
       let* α4 : ltac:(refine (ref (ref (array u32)))) := borrow α3 in
-      let*
-          α5 :
+      let* α5 :
           ltac:(refine
             (M.Val ((ref (ref (array u32))) * (ref (ref (array u32)))))) :=
         M.alloc (α1, α4) in
@@ -318,8 +317,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α6 : ltac:(refine (slice u32)) := deref α5 in
       let* α7 : ltac:(refine (ref (slice u32))) := borrow α6 in
       let* α8 : ltac:(refine (ref (ref (slice u32)))) := borrow α7 in
-      let*
-          α9 :
+      let* α9 :
           ltac:(refine
             (M.Val ((ref (ref (array u32))) * (ref (ref (slice u32)))))) :=
         M.alloc (α1, α8) in

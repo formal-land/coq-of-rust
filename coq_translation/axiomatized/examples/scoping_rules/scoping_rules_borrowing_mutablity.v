@@ -6,13 +6,11 @@ Module  Book.
 Section Book.
   Context `{ℋ : State.Trait}.
   
-  Unset Primitive Projections.
   Record t : Set := {
     author : ref str;
     title : ref str;
     year : u32;
   }.
-  Global Set Primitive Projections.
   
   Global Instance Get_author : Notation.Dot "author" := {
     Notation.dot x := let* x := M.read x in M.pure x.(author) : M _;

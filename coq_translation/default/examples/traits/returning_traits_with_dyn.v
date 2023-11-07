@@ -5,9 +5,7 @@ Module  Sheep.
 Section Sheep.
   Context `{ℋ : State.Trait}.
   
-  Unset Primitive Projections.
   Record t : Set := { }.
-  Global Set Primitive Projections.
 End Sheep.
 End Sheep.
 Definition Sheep `{ℋ : State.Trait} : Set := M.Val Sheep.t.
@@ -16,9 +14,7 @@ Module  Cow.
 Section Cow.
   Context `{ℋ : State.Trait}.
   
-  Unset Primitive Projections.
   Record t : Set := { }.
-  Global Set Primitive Projections.
 End Cow.
 End Cow.
 Definition Cow `{ℋ : State.Trait} : Set := M.Val Cow.t.
@@ -82,15 +78,13 @@ Definition random_animal
     (let* α0 : ltac:(refine f64) := M.alloc 1 (* 0.5 *) in
     let* α1 : ltac:(refine bool) := BinOp.lt random_number α0 in
     let* α2 : ltac:(refine bool) := use α1 in
-    let*
-        α3 :
+    let* α3 :
         ltac:(refine
           (alloc.boxed.Box type not implemented alloc.alloc.Global)) :=
       if (α2 : bool) then
         let* α0 : ltac:(refine returning_traits_with_dyn.Sheep) :=
           M.alloc returning_traits_with_dyn.Sheep.Build_t in
-        let*
-            α1 :
+        let* α1 :
             ltac:(refine
               (alloc.boxed.Box
                 returning_traits_with_dyn.Sheep
@@ -99,8 +93,7 @@ Definition random_animal
                 returning_traits_with_dyn.Sheep
                 alloc.alloc.Global)::["new"]
             α0 in
-        let*
-            α0 :
+        let* α0 :
             ltac:(refine
               (alloc.boxed.Box type not implemented alloc.alloc.Global)) :=
           pointer_coercion "Unsize" α1 in
@@ -108,8 +101,7 @@ Definition random_animal
       else
         let* α0 : ltac:(refine returning_traits_with_dyn.Cow) :=
           M.alloc returning_traits_with_dyn.Cow.Build_t in
-        let*
-            α1 :
+        let* α1 :
             ltac:(refine
               (alloc.boxed.Box
                 returning_traits_with_dyn.Cow
@@ -119,8 +111,7 @@ Definition random_animal
                 alloc.alloc.Global)::["new"]
             α0 in
         pointer_coercion "Unsize" α1 in
-    let*
-        α0 :
+    let* α0 :
         ltac:(refine
           (alloc.boxed.Box type not implemented alloc.alloc.Global)) :=
       pointer_coercion "Unsize" α3 in
@@ -130,8 +121,7 @@ Definition random_animal
 Definition main `{ℋ : State.Trait} : M unit :=
   M.function_body
     (let* random_number : ltac:(refine f64) := M.alloc 0 (* 0.234 *) in
-    let*
-        animal :
+    let* animal :
         ltac:(refine
           (alloc.boxed.Box type not implemented alloc.alloc.Global)) :=
       returning_traits_with_dyn.random_animal random_number in

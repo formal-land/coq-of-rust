@@ -97,8 +97,7 @@ End Impl_core_fmt_Debug_for_tuples_Matrix.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
   M.function_body
-    (let*
-        long_tuple :
+    (let* long_tuple :
         ltac:(refine
           (M.Val
             (u8 *
@@ -182,8 +181,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
           core.fmt.Arguments::["new_v1"] α4 α13 in
         std.io.stdio._print α14 in
       M.alloc tt in
-    let*
-        tuple_of_tuples :
+    let* tuple_of_tuples :
         ltac:(refine
           (M.Val ((M.Val (u8 * u16 * u32)) * (M.Val (u64 * i8)) * i16))) :=
       let* α0 : ltac:(refine u8) := M.alloc 1 in
@@ -206,20 +204,17 @@ Definition main `{ℋ : State.Trait} : M unit :=
         let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
         let* α4 : ltac:(refine (ref (slice (ref str)))) :=
           pointer_coercion "Unsize" α3 in
-        let*
-            α5 :
+        let* α5 :
             ltac:(refine
               (ref
                 (M.Val
                   ((M.Val (u8 * u16 * u32)) * (M.Val (u64 * i8)) * i16)))) :=
           borrow tuple_of_tuples in
-        let*
-            α6 :
+        let* α6 :
             ltac:(refine
               (M.Val ((M.Val (u8 * u16 * u32)) * (M.Val (u64 * i8)) * i16))) :=
           deref α5 in
-        let*
-            α7 :
+        let* α7 :
             ltac:(refine
               (ref
                 (M.Val

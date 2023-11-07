@@ -6,13 +6,11 @@ Module  Book.
 Section Book.
   Context `{ℋ : State.Trait}.
   
-  Unset Primitive Projections.
   Record t : Set := {
     author : ref str;
     title : ref str;
     year : u32;
   }.
-  Global Set Primitive Projections.
   
   Global Instance Get_author : Notation.Dot "author" := {
     Notation.dot x := let* x := M.read x in M.pure x.(author) : M _;
@@ -208,14 +206,12 @@ Definition main `{ℋ : State.Trait} : M unit :=
         borrow α1 in
       scoping_rules_borrowing_mutablity.borrow_book α2 in
     let* _ : ltac:(refine unit) :=
-      let*
-          α0 :
+      let* α0 :
           ltac:(refine (mut_ref scoping_rules_borrowing_mutablity.Book)) :=
         borrow_mut mutabook in
       let* α1 : ltac:(refine scoping_rules_borrowing_mutablity.Book) :=
         deref α0 in
-      let*
-          α2 :
+      let* α2 :
           ltac:(refine (mut_ref scoping_rules_borrowing_mutablity.Book)) :=
         borrow_mut α1 in
       scoping_rules_borrowing_mutablity.new_edition α2 in

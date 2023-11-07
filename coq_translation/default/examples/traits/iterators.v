@@ -5,12 +5,10 @@ Module  Fibonacci.
 Section Fibonacci.
   Context `{ℋ : State.Trait}.
   
-  Unset Primitive Projections.
   Record t : Set := {
     curr : u32;
     next : u32;
   }.
-  Global Set Primitive Projections.
   
   Global Instance Get_curr : Notation.Dot "curr" := {
     Notation.dot x := let* x := M.read x in M.pure x.(curr) : M _;
@@ -382,18 +380,15 @@ Definition main `{ℋ : State.Trait} : M unit :=
                       core.fmt.rt.Argument::["new_display"] α7 in
                     let* α9 : ltac:(refine (array core.fmt.rt.Argument)) :=
                       M.alloc [ α8 ] in
-                    let*
-                        α10 :
+                    let* α10 :
                         ltac:(refine (ref (array core.fmt.rt.Argument))) :=
                       borrow α9 in
                     let* α11 : ltac:(refine (array core.fmt.rt.Argument)) :=
                       deref α10 in
-                    let*
-                        α12 :
+                    let* α12 :
                         ltac:(refine (ref (array core.fmt.rt.Argument))) :=
                       borrow α11 in
-                    let*
-                        α13 :
+                    let* α13 :
                         ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
                       pointer_coercion "Unsize" α12 in
                     let* α14 : ltac:(refine core.fmt.Arguments) :=
@@ -424,16 +419,14 @@ Definition main `{ℋ : State.Trait} : M unit :=
     let* _ : ltac:(refine unit) :=
       let* α0 : ltac:(refine iterators.Fibonacci) := iterators.fibonacci in
       let* α1 : ltac:(refine usize) := M.alloc 4 in
-      let*
-          α2 :
+      let* α2 :
           ltac:(refine (core.iter.adapters.take.Take iterators.Fibonacci)) :=
         (core.iter.traits.iterator.Iterator.take
             (Self := iterators.Fibonacci)
             (Trait := ltac:(refine _)))
           α0
           α1 in
-      let*
-          α3 :
+      let* α3 :
           ltac:(refine (core.iter.adapters.take.Take iterators.Fibonacci)) :=
         (core.iter.traits.collect.IntoIterator.into_iter
             (Self := core.iter.adapters.take.Take iterators.Fibonacci)
@@ -445,19 +438,16 @@ Definition main `{ℋ : State.Trait} : M unit :=
         | iter =>
           loop
             (let* _ : ltac:(refine unit) :=
-              let*
-                  α0 :
+              let* α0 :
                   ltac:(refine
                     (mut_ref
                       (core.iter.adapters.take.Take iterators.Fibonacci))) :=
                 borrow_mut iter in
-              let*
-                  α1 :
+              let* α1 :
                   ltac:(refine
                     (core.iter.adapters.take.Take iterators.Fibonacci)) :=
                 deref α0 in
-              let*
-                  α2 :
+              let* α2 :
                   ltac:(refine
                     (mut_ref
                       (core.iter.adapters.take.Take iterators.Fibonacci))) :=
@@ -492,18 +482,15 @@ Definition main `{ℋ : State.Trait} : M unit :=
                       core.fmt.rt.Argument::["new_display"] α7 in
                     let* α9 : ltac:(refine (array core.fmt.rt.Argument)) :=
                       M.alloc [ α8 ] in
-                    let*
-                        α10 :
+                    let* α10 :
                         ltac:(refine (ref (array core.fmt.rt.Argument))) :=
                       borrow α9 in
                     let* α11 : ltac:(refine (array core.fmt.rt.Argument)) :=
                       deref α10 in
-                    let*
-                        α12 :
+                    let* α12 :
                         ltac:(refine (ref (array core.fmt.rt.Argument))) :=
                       borrow α11 in
-                    let*
-                        α13 :
+                    let* α13 :
                         ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
                       pointer_coercion "Unsize" α12 in
                     let* α14 : ltac:(refine core.fmt.Arguments) :=
@@ -533,8 +520,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
     let* _ : ltac:(refine unit) :=
       let* α0 : ltac:(refine iterators.Fibonacci) := iterators.fibonacci in
       let* α1 : ltac:(refine usize) := M.alloc 4 in
-      let*
-          α2 :
+      let* α2 :
           ltac:(refine (core.iter.adapters.skip.Skip iterators.Fibonacci)) :=
         (core.iter.traits.iterator.Iterator.skip
             (Self := iterators.Fibonacci)
@@ -542,8 +528,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
           α0
           α1 in
       let* α3 : ltac:(refine usize) := M.alloc 4 in
-      let*
-          α4 :
+      let* α4 :
           ltac:(refine
             (core.iter.adapters.take.Take
               (core.iter.adapters.skip.Skip iterators.Fibonacci))) :=
@@ -552,8 +537,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
             (Trait := ltac:(refine _)))
           α2
           α3 in
-      let*
-          α5 :
+      let* α5 :
           ltac:(refine
             (core.iter.adapters.take.Take
               (core.iter.adapters.skip.Skip iterators.Fibonacci))) :=
@@ -569,21 +553,18 @@ Definition main `{ℋ : State.Trait} : M unit :=
         | iter =>
           loop
             (let* _ : ltac:(refine unit) :=
-              let*
-                  α0 :
+              let* α0 :
                   ltac:(refine
                     (mut_ref
                       (core.iter.adapters.take.Take
                         (core.iter.adapters.skip.Skip iterators.Fibonacci)))) :=
                 borrow_mut iter in
-              let*
-                  α1 :
+              let* α1 :
                   ltac:(refine
                     (core.iter.adapters.take.Take
                       (core.iter.adapters.skip.Skip iterators.Fibonacci))) :=
                 deref α0 in
-              let*
-                  α2 :
+              let* α2 :
                   ltac:(refine
                     (mut_ref
                       (core.iter.adapters.take.Take
@@ -621,18 +602,15 @@ Definition main `{ℋ : State.Trait} : M unit :=
                       core.fmt.rt.Argument::["new_display"] α7 in
                     let* α9 : ltac:(refine (array core.fmt.rt.Argument)) :=
                       M.alloc [ α8 ] in
-                    let*
-                        α10 :
+                    let* α10 :
                         ltac:(refine (ref (array core.fmt.rt.Argument))) :=
                       borrow α9 in
                     let* α11 : ltac:(refine (array core.fmt.rt.Argument)) :=
                       deref α10 in
-                    let*
-                        α12 :
+                    let* α12 :
                         ltac:(refine (ref (array core.fmt.rt.Argument))) :=
                       borrow α11 in
-                    let*
-                        α13 :
+                    let* α13 :
                         ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
                       pointer_coercion "Unsize" α12 in
                     let* α14 : ltac:(refine core.fmt.Arguments) :=

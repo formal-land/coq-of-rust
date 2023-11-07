@@ -5,12 +5,10 @@ Module  Account.
 Section Account.
   Context `{ℋ : State.Trait}.
   
-  Unset Primitive Projections.
   Record t : Set := {
     username : ref str;
     password : ref str;
   }.
-  Global Set Primitive Projections.
   
   Global Instance Get_username : Notation.Dot "username" := {
     Notation.dot x := let* x := M.read x in M.pure x.(username) : M _;
@@ -123,12 +121,10 @@ Module  AccountInfo.
 Section AccountInfo.
   Context `{ℋ : State.Trait}.
   
-  Unset Primitive Projections.
   Record t : Set := {
     name : ref str;
     email : ref str;
   }.
-  Global Set Primitive Projections.
   
   Global Instance Get_name : Notation.Dot "name" := {
     Notation.dot x := let* x := M.read x in M.pure x.(name) : M _;

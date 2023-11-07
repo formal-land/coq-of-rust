@@ -135,8 +135,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
   M.function_body
     (let* number_1 : ltac:(refine i32) := M.alloc 3 in
     let* number_2 : ltac:(refine i32) := M.alloc 10 in
-    let*
-        container :
+    let* container :
         ltac:(refine generics_associated_types_problem.Container) :=
       M.alloc
         (generics_associated_types_problem.Container.Build_t
@@ -170,8 +169,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
         let* α13 : ltac:(refine (ref (ref i32))) := borrow α12 in
         let* α14 : ltac:(refine core.fmt.rt.Argument) :=
           core.fmt.rt.Argument::["new_display"] α13 in
-        let*
-            α15 :
+        let* α15 :
             ltac:(refine (ref generics_associated_types_problem.Container)) :=
           borrow container in
         let* α16 : ltac:(refine (ref i32)) := borrow number_1 in
@@ -215,8 +213,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
         let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
         let* α4 : ltac:(refine (ref (slice (ref str)))) :=
           pointer_coercion "Unsize" α3 in
-        let*
-            α5 :
+        let* α5 :
             ltac:(refine (ref generics_associated_types_problem.Container)) :=
           borrow container in
         let* α6 : ltac:(refine i32) :=
@@ -252,8 +249,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
         let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
         let* α4 : ltac:(refine (ref (slice (ref str)))) :=
           pointer_coercion "Unsize" α3 in
-        let*
-            α5 :
+        let* α5 :
             ltac:(refine (ref generics_associated_types_problem.Container)) :=
           borrow container in
         let* α6 : ltac:(refine i32) :=
@@ -289,14 +285,12 @@ Definition main `{ℋ : State.Trait} : M unit :=
         let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
         let* α4 : ltac:(refine (ref (slice (ref str)))) :=
           pointer_coercion "Unsize" α3 in
-        let*
-            α5 :
+        let* α5 :
             ltac:(refine (ref generics_associated_types_problem.Container)) :=
           borrow container in
         let* α6 : ltac:(refine generics_associated_types_problem.Container) :=
           deref α5 in
-        let*
-            α7 :
+        let* α7 :
             ltac:(refine (ref generics_associated_types_problem.Container)) :=
           borrow α6 in
         let* α8 : ltac:(refine i32) :=

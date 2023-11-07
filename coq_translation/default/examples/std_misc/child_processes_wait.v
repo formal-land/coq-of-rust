@@ -12,8 +12,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
         std.process.Command::["arg"] α1 (mk_str "5") in
       let* α3 : ltac:(refine std.process.Command) := deref α2 in
       let* α4 : ltac:(refine (mut_ref std.process.Command)) := borrow_mut α3 in
-      let*
-          α5 :
+      let* α5 :
           ltac:(refine
             (core.result.Result std.process.Child std.io.error.Error)) :=
         std.process.Command::["spawn"] α4 in
@@ -21,8 +20,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
         α5 in
     let* _result : ltac:(refine std.process.ExitStatus) :=
       let* α0 : ltac:(refine (mut_ref std.process.Child)) := borrow_mut child in
-      let*
-          α1 :
+      let* α1 :
           ltac:(refine
             (core.result.Result std.process.ExitStatus std.io.error.Error)) :=
         std.process.Child::["wait"] α0 in

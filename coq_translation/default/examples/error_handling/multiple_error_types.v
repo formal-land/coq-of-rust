@@ -7,8 +7,7 @@ Definition double_first
     : M i32 :=
   M.function_body
     (let* first : ltac:(refine (ref (ref str))) :=
-      let*
-          α0 :
+      let* α0 :
           ltac:(refine (ref (alloc.vec.Vec (ref str) alloc.alloc.Global))) :=
         borrow vec in
       let* α1 : ltac:(refine (ref (slice (ref str)))) :=
@@ -25,8 +24,7 @@ Definition double_first
     let* α1 : ltac:(refine (ref str)) := deref first in
     let* α2 : ltac:(refine str) := deref α1 in
     let* α3 : ltac:(refine (ref str)) := borrow α2 in
-    let*
-        α4 :
+    let* α4 :
         ltac:(refine (core.result.Result i32 core.num.error.ParseIntError)) :=
       str::["parse"] α3 in
     let* α5 : ltac:(refine i32) :=
@@ -36,8 +34,7 @@ Definition double_first
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
   M.function_body
-    (let*
-        numbers :
+    (let* numbers :
         ltac:(refine (alloc.vec.Vec (ref str) alloc.alloc.Global)) :=
       let* α0 : ltac:(refine str) := deref (mk_str "93") in
       let* α1 : ltac:(refine (ref str)) := borrow α0 in
@@ -45,13 +42,11 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α3 : ltac:(refine (ref str)) := borrow α2 in
       let* α4 : ltac:(refine (array (ref str))) :=
         M.alloc [ mk_str "42"; α1; α3 ] in
-      let*
-          α5 :
+      let* α5 :
           ltac:(refine
             (alloc.boxed.Box (array (ref str)) alloc.alloc.Global)) :=
         (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α4 in
-      let*
-          α6 :
+      let* α6 :
           ltac:(refine
             (alloc.boxed.Box (slice (ref str)) alloc.alloc.Global)) :=
         pointer_coercion "Unsize" α5 in
@@ -65,13 +60,11 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α3 : ltac:(refine (ref str)) := borrow α2 in
       let* α4 : ltac:(refine (array (ref str))) :=
         M.alloc [ mk_str "tofu"; α1; α3 ] in
-      let*
-          α5 :
+      let* α5 :
           ltac:(refine
             (alloc.boxed.Box (array (ref str)) alloc.alloc.Global)) :=
         (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α4 in
-      let*
-          α6 :
+      let* α6 :
           ltac:(refine
             (alloc.boxed.Box (slice (ref str)) alloc.alloc.Global)) :=
         pointer_coercion "Unsize" α5 in

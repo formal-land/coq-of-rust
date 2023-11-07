@@ -297,6 +297,7 @@ Section Impl_subtle_ConstantTimeEq_for_slice_T.
   Context {T : Set}.
   
   Context {ℋ_0 : subtle.ConstantTimeEq.Trait T}.
+  
   Definition Self : Set := slice T.
   
   Parameter ct_eq : (ref Self) -> (ref (slice T)) -> M subtle.Choice.
@@ -907,6 +908,7 @@ Section Impl_subtle_ConditionallyNegatable_for_T.
   Context
     {ℋ_0 : subtle.ConditionallySelectable.Trait T}
     {ℋ_1 : core.ops.arith.Neg.Trait (ref T)}.
+  
   Definition Self : Set := T.
   
   Parameter conditional_negate : (mut_ref Self) -> subtle.Choice -> M unit.
@@ -928,12 +930,10 @@ Section CtOption.
   
   Context {T : Set}.
   
-  Unset Primitive Projections.
   Record t : Set := {
     value : T;
     is_some : subtle.Choice;
   }.
-  Global Set Primitive Projections.
   
   Global Instance Get_value : Notation.Dot "value" := {
     Notation.dot x := let* x := M.read x in M.pure x.(value) : M _;
@@ -959,6 +959,7 @@ Section Impl_core_clone_Clone_for_subtle_CtOption_T.
   Context {T : Set}.
   
   Context {ℋ_0 : core.clone.Clone.Trait T}.
+  
   Definition Self : Set := subtle.CtOption T.
   
   Parameter clone : (ref Self) -> M (subtle.CtOption T).
@@ -982,6 +983,7 @@ Section Impl_core_marker_Copy_for_subtle_CtOption_T.
   Context {T : Set}.
   
   Context {ℋ_0 : core.marker.Copy.Trait T}.
+  
   Definition Self : Set := subtle.CtOption T.
   
   Global Instance ℐ : core.marker.Copy.Trait Self := {
@@ -996,6 +998,7 @@ Section Impl_core_fmt_Debug_for_subtle_CtOption_T.
   Context {T : Set}.
   
   Context {ℋ_0 : core.fmt.Debug.Trait T}.
+  
   Definition Self : Set := subtle.CtOption T.
   
   Parameter fmt :
@@ -1157,6 +1160,7 @@ Section Impl_subtle_ConditionallySelectable_for_subtle_CtOption_T.
   Context {T : Set}.
   
   Context {ℋ_0 : subtle.ConditionallySelectable.Trait T}.
+  
   Definition Self : Set := subtle.CtOption T.
   
   Parameter conditional_select :
@@ -1182,6 +1186,7 @@ Section Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
   Context {T : Set}.
   
   Context {ℋ_0 : subtle.ConstantTimeEq.Trait T}.
+  
   Definition Self : Set := subtle.CtOption T.
   
   Parameter ct_eq : (ref Self) -> (ref (subtle.CtOption T)) -> M subtle.Choice.

@@ -12,8 +12,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
         std.process.Command::["arg"] α1 (mk_str "--version") in
       let* α3 : ltac:(refine std.process.Command) := deref α2 in
       let* α4 : ltac:(refine (mut_ref std.process.Command)) := borrow_mut α3 in
-      let*
-          α5 :
+      let* α5 :
           ltac:(refine
             (core.result.Result std.process.Output std.io.error.Error)) :=
         std.process.Command::["output"] α4 in

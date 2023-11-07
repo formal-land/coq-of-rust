@@ -5,11 +5,9 @@ Module  Person.
 Section Person.
   Context `{ℋ : State.Trait}.
   
-  Unset Primitive Projections.
   Record t : Set := {
     job : core.option.Option unpacking_options_via_question_mark.Job;
   }.
-  Global Set Primitive Projections.
   
   Global Instance Get_job : Notation.Dot "job" := {
     Notation.dot x := let* x := M.read x in M.pure x.(job) : M _;
@@ -25,12 +23,10 @@ Module  Job.
 Section Job.
   Context `{ℋ : State.Trait}.
   
-  Unset Primitive Projections.
   Record t : Set := {
     phone_number :
       core.option.Option unpacking_options_via_question_mark.PhoneNumber;
   }.
-  Global Set Primitive Projections.
   
   Global Instance Get_phone_number : Notation.Dot "phone_number" := {
     Notation.dot x := let* x := M.read x in M.pure x.(phone_number) : M _;
@@ -84,12 +80,10 @@ Module  PhoneNumber.
 Section PhoneNumber.
   Context `{ℋ : State.Trait}.
   
-  Unset Primitive Projections.
   Record t : Set := {
     area_code : core.option.Option u8;
     number : u32;
   }.
-  Global Set Primitive Projections.
   
   Global Instance Get_area_code : Notation.Dot "area_code" := {
     Notation.dot x := let* x := M.read x in M.pure x.(area_code) : M _;
@@ -156,13 +150,11 @@ Section Impl_unpacking_options_via_question_mark_Person.
     M.function_body
       (let* α0 : ltac:(refine unpacking_options_via_question_mark.Person) :=
         deref self in
-      let*
-          α1 :
+      let* α1 :
           ltac:(refine
             (core.option.Option unpacking_options_via_question_mark.Job)) :=
         α0.["job"] in
-      let*
-          α2 :
+      let* α2 :
           ltac:(refine
             (core.ops.control_flow.ControlFlow
               (core.option.Option core.convert.Infallible)
@@ -184,14 +176,12 @@ Section Impl_unpacking_options_via_question_mark_Person.
           never_to_any α1
         | core.ops.control_flow.ControlFlow.Continue val => M.pure val
         end in
-      let*
-          α5 :
+      let* α5 :
           ltac:(refine
             (core.option.Option
               unpacking_options_via_question_mark.PhoneNumber)) :=
         α4.["phone_number"] in
-      let*
-          α6 :
+      let* α6 :
           ltac:(refine
             (core.ops.control_flow.ControlFlow
               (core.option.Option core.convert.Infallible)
@@ -238,8 +228,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
             unpacking_options_via_question_mark.PhoneNumber.area_code := α1;
             unpacking_options_via_question_mark.PhoneNumber.number := α2;
           |} in
-      let*
-          α4 :
+      let* α4 :
           ltac:(refine
             (core.option.Option
               unpacking_options_via_question_mark.PhoneNumber)) :=
@@ -247,15 +236,13 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α5 : ltac:(refine unpacking_options_via_question_mark.Job) :=
         M.alloc
           {| unpacking_options_via_question_mark.Job.phone_number := α4; |} in
-      let*
-          α6 :
+      let* α6 :
           ltac:(refine
             (core.option.Option unpacking_options_via_question_mark.Job)) :=
         M.alloc (core.option.Option.Some α5) in
       M.alloc {| unpacking_options_via_question_mark.Person.job := α6; |} in
     let* _ : ltac:(refine unit) :=
-      let*
-          α0 :
+      let* α0 :
           ltac:(refine (ref unpacking_options_via_question_mark.Person)) :=
         borrow p in
       let* α1 : ltac:(refine (core.option.Option u8)) :=
@@ -266,8 +253,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α4 : ltac:(refine (core.option.Option u8)) :=
         M.alloc (core.option.Option.Some α3) in
       let* α5 : ltac:(refine (ref (core.option.Option u8))) := borrow α4 in
-      let*
-          α6 :
+      let* α6 :
           ltac:(refine
             (M.Val
               ((ref (core.option.Option u8)) *

@@ -103,8 +103,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α1 : ltac:(refine (ref (array u8))) := borrow α0 in
       let* α2 : ltac:(refine (ref (slice u8))) :=
         pointer_coercion "Unsize" α1 in
-      let*
-          α3 :
+      let* α3 :
           ltac:(refine
             (core.result.Result (ref str) core.str.error.Utf8Error)) :=
         core.str.converts.from_utf8 α2 in
@@ -152,8 +151,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
       let* α1 : ltac:(refine (ref (array u8))) := borrow α0 in
       let* α2 : ltac:(refine (ref (slice u8))) :=
         pointer_coercion "Unsize" α1 in
-      let*
-          α3 :
+      let* α3 :
           ltac:(refine
             (core.result.Result (ref str) core.str.error.Utf8Error)) :=
         core.str.converts.from_utf8 α2 in
