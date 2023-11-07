@@ -81,11 +81,9 @@ Module  AccountId.
 Section AccountId.
   Context `{ℋ : State.Trait}.
   
-  Unset Primitive Projections.
   Record t : Set := {
-    x0 : u64;
+    x0 : alloc.string.String;
   }.
-  Global Set Primitive Projections.
   
   Global Instance Get_0 : Notation.Dot "0" := {
     Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
@@ -113,175 +111,47 @@ Section Impl_core_default_Default_for_lib_AccountId.
 End Impl_core_default_Default_for_lib_AccountId.
 End Impl_core_default_Default_for_lib_AccountId.
 
-Module  Balance.
-Section Balance.
-  Context `{ℋ : State.Trait}.
-  
-  Unset Primitive Projections.
-  Record t : Set := {
-    x0 : u64;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
-  }.
-End Balance.
-End Balance.
-Definition Balance `{ℋ : State.Trait} : Set := M.Val Balance.t.
-
-Module  Impl_core_default_Default_for_lib_Balance.
-Section Impl_core_default_Default_for_lib_Balance.
-  Context `{ℋ : State.Trait}.
-  
-  Definition Self : Set := lib.Balance.
-  
-  Parameter default : M lib.Balance.
-  
-  Global Instance AssociatedFunction_default :
-    Notation.DoubleColon Self "default" := {
-    Notation.double_colon := default;
-  }.
-  
-  Global Instance ℐ : core.default.Default.Trait Self := {
-    core.default.Default.default := default;
-  }.
-End Impl_core_default_Default_for_lib_Balance.
-End Impl_core_default_Default_for_lib_Balance.
-
-Module  Impl_core_marker_StructuralPartialEq_for_lib_Balance.
-Section Impl_core_marker_StructuralPartialEq_for_lib_Balance.
-  Context `{ℋ : State.Trait}.
-  
-  Definition Self : Set := lib.Balance.
-  
-  Global Instance ℐ : core.marker.StructuralPartialEq.Trait Self := {
-  }.
-End Impl_core_marker_StructuralPartialEq_for_lib_Balance.
-End Impl_core_marker_StructuralPartialEq_for_lib_Balance.
-
-Module  Impl_core_cmp_PartialEq_for_lib_Balance.
-Section Impl_core_cmp_PartialEq_for_lib_Balance.
-  Context `{ℋ : State.Trait}.
-  
-  Definition Self : Set := lib.Balance.
-  
-  Parameter eq : (ref Self) -> (ref lib.Balance) -> M bool.
-  
-  Global Instance AssociatedFunction_eq : Notation.DoubleColon Self "eq" := {
-    Notation.double_colon := eq;
-  }.
-  
-  Global Instance ℐ :
-    core.cmp.PartialEq.Required.Trait Self
-      (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
-    core.cmp.PartialEq.eq := eq;
-    core.cmp.PartialEq.ne := Datatypes.None;
-  }.
-End Impl_core_cmp_PartialEq_for_lib_Balance.
-End Impl_core_cmp_PartialEq_for_lib_Balance.
-
-Module  Impl_core_cmp_PartialOrd_for_lib_Balance.
-Section Impl_core_cmp_PartialOrd_for_lib_Balance.
-  Context `{ℋ : State.Trait}.
-  
-  Definition Self : Set := lib.Balance.
-  
-  Parameter partial_cmp :
-      (ref Self) ->
-        (ref lib.Balance) ->
-        M (core.option.Option core.cmp.Ordering).
-  
-  Global Instance AssociatedFunction_partial_cmp :
-    Notation.DoubleColon Self "partial_cmp" := {
-    Notation.double_colon := partial_cmp;
-  }.
-  
-  Global Instance ℐ :
-    core.cmp.PartialOrd.Required.Trait Self
-      (Rhs := core.cmp.PartialOrd.Default.Rhs Self) := {
-    core.cmp.PartialOrd.partial_cmp := partial_cmp;
-    core.cmp.PartialOrd.lt := Datatypes.None;
-    core.cmp.PartialOrd.le := Datatypes.None;
-    core.cmp.PartialOrd.gt := Datatypes.None;
-    core.cmp.PartialOrd.ge := Datatypes.None;
-  }.
-End Impl_core_cmp_PartialOrd_for_lib_Balance.
-End Impl_core_cmp_PartialOrd_for_lib_Balance.
-
-Module  Impl_core_ops_arith_Add_for_lib_Balance.
-Section Impl_core_ops_arith_Add_for_lib_Balance.
-  Context `{ℋ : State.Trait}.
-  
-  Definition Self : Set := lib.Balance.
-  
-  Definition Output : Set := Self.
-  
-  Parameter add : Self -> Self -> M Output.
-  
-  Global Instance AssociatedFunction_add : Notation.DoubleColon Self "add" := {
-    Notation.double_colon := add;
-  }.
-  
-  Global Instance ℐ :
-    core.ops.arith.Add.Trait Self
-      (Rhs := core.ops.arith.Add.Default.Rhs Self) := {
-    core.ops.arith.Add.Output := Output;
-    core.ops.arith.Add.add := add;
-  }.
-End Impl_core_ops_arith_Add_for_lib_Balance.
-End Impl_core_ops_arith_Add_for_lib_Balance.
-
-Module  Impl_core_ops_arith_Sub_for_lib_Balance.
-Section Impl_core_ops_arith_Sub_for_lib_Balance.
-  Context `{ℋ : State.Trait}.
-  
-  Definition Self : Set := lib.Balance.
-  
-  Definition Output : Set := Self.
-  
-  Parameter sub : Self -> Self -> M Output.
-  
-  Global Instance AssociatedFunction_sub : Notation.DoubleColon Self "sub" := {
-    Notation.double_colon := sub;
-  }.
-  
-  Global Instance ℐ :
-    core.ops.arith.Sub.Trait Self
-      (Rhs := core.ops.arith.Sub.Default.Rhs Self) := {
-    core.ops.arith.Sub.Output := Output;
-    core.ops.arith.Sub.sub := sub;
-  }.
-End Impl_core_ops_arith_Sub_for_lib_Balance.
-End Impl_core_ops_arith_Sub_for_lib_Balance.
+Ltac Balance := refine u128.
 
 Module  Environment.
 Section Environment.
   Context `{ℋ : State.Trait}.
   
-  Inductive t : Set := Build.
+  Record t : Set := {
+    x0 : alloc.string.String;
+  }.
+  
+  Global Instance Get_0 : Notation.Dot "0" := {
+    Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
+  }.
 End Environment.
 End Environment.
-Definition Environment `{ℋ : State.Trait} := M.Val Environment.t.
+Definition Environment `{ℋ : State.Trait} : Set := M.Val Environment.t.
 
 Module  Event.
 Section Event.
   Context `{ℋ : State.Trait}.
   
-  Inductive t : Set := Build.
+  Record t : Set := {
+    x0 : alloc.string.String;
+  }.
+  
+  Global Instance Get_0 : Notation.Dot "0" := {
+    Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
+  }.
 End Event.
 End Event.
-Definition Event `{ℋ : State.Trait} := M.Val Event.t.
+Definition Event `{ℋ : State.Trait} : Set := M.Val Event.t.
 
 Module  Erc20.
 Section Erc20.
   Context `{ℋ : State.Trait}.
   
   Record t : Set := {
-    total_supply : lib.Balance;
-    balances : lib.Mapping lib.AccountId lib.Balance;
+    total_supply : ltac:(lib.Balance);
+    balances : lib.Mapping lib.AccountId ltac:(lib.Balance);
     allowances :
-      lib.Mapping (M.Val (lib.AccountId * lib.AccountId)) lib.Balance;
+      lib.Mapping (M.Val (lib.AccountId * lib.AccountId)) ltac:(lib.Balance);
   }.
   
   Global Instance Get_total_supply : Notation.Dot "total_supply" := {
@@ -335,7 +205,7 @@ Section Transfer.
   Record t : Set := {
     from : core.option.Option lib.AccountId;
     to : core.option.Option lib.AccountId;
-    value : lib.Balance;
+    value : ltac:(lib.Balance);
   }.
   
   Global Instance Get_from : Notation.Dot "from" := {
@@ -386,7 +256,7 @@ Section Approval.
   Record t : Set := {
     owner : lib.AccountId;
     spender : lib.AccountId;
-    value : lib.Balance;
+    value : ltac:(lib.Balance);
   }.
   
   Global Instance Get_owner : Notation.Dot "owner" := {
@@ -492,13 +362,13 @@ Section Impl_lib_Erc20_2.
   
   Definition Self : Set := lib.Erc20.
   
-  Parameter new : lib.Balance -> M Self.
+  Parameter new : ltac:(lib.Balance) -> M Self.
   
   Global Instance AssociatedFunction_new : Notation.DoubleColon Self "new" := {
     Notation.double_colon := new;
   }.
   
-  Parameter total_supply : (ref Self) -> M lib.Balance.
+  Parameter total_supply : (ref Self) -> M ltac:(lib.Balance).
   
   Global Instance AssociatedFunction_total_supply :
     Notation.DoubleColon Self "total_supply" := {
@@ -506,14 +376,14 @@ Section Impl_lib_Erc20_2.
   }.
   
   Parameter balance_of_impl :
-      (ref Self) -> (ref lib.AccountId) -> M lib.Balance.
+      (ref Self) -> (ref lib.AccountId) -> M ltac:(lib.Balance).
   
   Global Instance AssociatedFunction_balance_of_impl :
     Notation.DoubleColon Self "balance_of_impl" := {
     Notation.double_colon := balance_of_impl;
   }.
   
-  Parameter balance_of : (ref Self) -> lib.AccountId -> M lib.Balance.
+  Parameter balance_of : (ref Self) -> lib.AccountId -> M ltac:(lib.Balance).
   
   Global Instance AssociatedFunction_balance_of :
     Notation.DoubleColon Self "balance_of" := {
@@ -521,7 +391,10 @@ Section Impl_lib_Erc20_2.
   }.
   
   Parameter allowance_impl :
-      (ref Self) -> (ref lib.AccountId) -> (ref lib.AccountId) -> M lib.Balance.
+      (ref Self) ->
+        (ref lib.AccountId) ->
+        (ref lib.AccountId) ->
+        M ltac:(lib.Balance).
   
   Global Instance AssociatedFunction_allowance_impl :
     Notation.DoubleColon Self "allowance_impl" := {
@@ -529,7 +402,7 @@ Section Impl_lib_Erc20_2.
   }.
   
   Parameter allowance :
-      (ref Self) -> lib.AccountId -> lib.AccountId -> M lib.Balance.
+      (ref Self) -> lib.AccountId -> lib.AccountId -> M ltac:(lib.Balance).
   
   Global Instance AssociatedFunction_allowance :
     Notation.DoubleColon Self "allowance" := {
@@ -540,7 +413,7 @@ Section Impl_lib_Erc20_2.
       (mut_ref Self) ->
         (ref lib.AccountId) ->
         (ref lib.AccountId) ->
-        lib.Balance ->
+        ltac:(lib.Balance) ->
         M ltac:(lib.Result constr:(unit)).
   
   Global Instance AssociatedFunction_transfer_from_to :
@@ -551,7 +424,7 @@ Section Impl_lib_Erc20_2.
   Parameter transfer :
       (mut_ref Self) ->
         lib.AccountId ->
-        lib.Balance ->
+        ltac:(lib.Balance) ->
         M ltac:(lib.Result constr:(unit)).
   
   Global Instance AssociatedFunction_transfer :
@@ -562,7 +435,7 @@ Section Impl_lib_Erc20_2.
   Parameter approve :
       (mut_ref Self) ->
         lib.AccountId ->
-        lib.Balance ->
+        ltac:(lib.Balance) ->
         M ltac:(lib.Result constr:(unit)).
   
   Global Instance AssociatedFunction_approve :
@@ -574,7 +447,7 @@ Section Impl_lib_Erc20_2.
       (mut_ref Self) ->
         lib.AccountId ->
         lib.AccountId ->
-        lib.Balance ->
+        ltac:(lib.Balance) ->
         M ltac:(lib.Result constr:(unit)).
   
   Global Instance AssociatedFunction_transfer_from :

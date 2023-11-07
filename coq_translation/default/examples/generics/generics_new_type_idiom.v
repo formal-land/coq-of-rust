@@ -5,11 +5,9 @@ Module  Years.
 Section Years.
   Context `{ℋ : State.Trait}.
   
-  Unset Primitive Projections.
   Record t : Set := {
     x0 : i64;
   }.
-  Global Set Primitive Projections.
   
   Global Instance Get_0 : Notation.Dot "0" := {
     Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
@@ -22,11 +20,9 @@ Module  Days.
 Section Days.
   Context `{ℋ : State.Trait}.
   
-  Unset Primitive Projections.
   Record t : Set := {
     x0 : i64;
   }.
-  Global Set Primitive Projections.
   
   Global Instance Get_0 : Notation.Dot "0" := {
     Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
@@ -103,33 +99,23 @@ Definition main `{ℋ : State.Trait} : M unit :=
           M.alloc [ mk_str "Old enough "; mk_str "
 " ] in
         let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
-        let* α2 : ltac:(refine (array (ref str))) := deref α1 in
-        let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
-        let* α4 : ltac:(refine (ref (slice (ref str)))) :=
-          pointer_coercion "Unsize" α3 in
-        let* α5 : ltac:(refine (ref generics_new_type_idiom.Years)) :=
+        let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+          pointer_coercion "Unsize" α1 in
+        let* α3 : ltac:(refine (ref generics_new_type_idiom.Years)) :=
           borrow age in
-        let* α6 : ltac:(refine generics_new_type_idiom.Years) := deref α5 in
-        let* α7 : ltac:(refine (ref generics_new_type_idiom.Years)) :=
-          borrow α6 in
-        let* α8 : ltac:(refine bool) := generics_new_type_idiom.old_enough α7 in
-        let* α9 : ltac:(refine (ref bool)) := borrow α8 in
-        let* α10 : ltac:(refine bool) := deref α9 in
-        let* α11 : ltac:(refine (ref bool)) := borrow α10 in
-        let* α12 : ltac:(refine core.fmt.rt.Argument) :=
-          core.fmt.rt.Argument::["new_display"] α11 in
-        let* α13 : ltac:(refine (array core.fmt.rt.Argument)) :=
-          M.alloc [ α12 ] in
-        let* α14 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
-          borrow α13 in
-        let* α15 : ltac:(refine (array core.fmt.rt.Argument)) := deref α14 in
-        let* α16 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
-          borrow α15 in
-        let* α17 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
-          pointer_coercion "Unsize" α16 in
-        let* α18 : ltac:(refine core.fmt.Arguments) :=
-          core.fmt.Arguments::["new_v1"] α4 α17 in
-        std.io.stdio._print α18 in
+        let* α4 : ltac:(refine bool) := generics_new_type_idiom.old_enough α3 in
+        let* α5 : ltac:(refine (ref bool)) := borrow α4 in
+        let* α6 : ltac:(refine core.fmt.rt.Argument) :=
+          core.fmt.rt.Argument::["new_display"] α5 in
+        let* α7 : ltac:(refine (array core.fmt.rt.Argument)) :=
+          M.alloc [ α6 ] in
+        let* α8 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+          borrow α7 in
+        let* α9 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+          pointer_coercion "Unsize" α8 in
+        let* α10 : ltac:(refine core.fmt.Arguments) :=
+          core.fmt.Arguments::["new_v1"] α2 α9 in
+        std.io.stdio._print α10 in
       M.alloc tt in
     let* _ : ltac:(refine unit) :=
       let* _ : ltac:(refine unit) :=
@@ -137,37 +123,26 @@ Definition main `{ℋ : State.Trait} : M unit :=
           M.alloc [ mk_str "Old enough "; mk_str "
 " ] in
         let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
-        let* α2 : ltac:(refine (array (ref str))) := deref α1 in
-        let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
-        let* α4 : ltac:(refine (ref (slice (ref str)))) :=
-          pointer_coercion "Unsize" α3 in
-        let* α5 : ltac:(refine (ref generics_new_type_idiom.Days)) :=
+        let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+          pointer_coercion "Unsize" α1 in
+        let* α3 : ltac:(refine (ref generics_new_type_idiom.Days)) :=
           borrow age_days in
-        let* α6 : ltac:(refine generics_new_type_idiom.Years) :=
-          generics_new_type_idiom.Days::["to_years"] α5 in
-        let* α7 : ltac:(refine (ref generics_new_type_idiom.Years)) :=
-          borrow α6 in
-        let* α8 : ltac:(refine generics_new_type_idiom.Years) := deref α7 in
-        let* α9 : ltac:(refine (ref generics_new_type_idiom.Years)) :=
-          borrow α8 in
-        let* α10 : ltac:(refine bool) :=
-          generics_new_type_idiom.old_enough α9 in
-        let* α11 : ltac:(refine (ref bool)) := borrow α10 in
-        let* α12 : ltac:(refine bool) := deref α11 in
-        let* α13 : ltac:(refine (ref bool)) := borrow α12 in
-        let* α14 : ltac:(refine core.fmt.rt.Argument) :=
-          core.fmt.rt.Argument::["new_display"] α13 in
-        let* α15 : ltac:(refine (array core.fmt.rt.Argument)) :=
-          M.alloc [ α14 ] in
-        let* α16 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
-          borrow α15 in
-        let* α17 : ltac:(refine (array core.fmt.rt.Argument)) := deref α16 in
-        let* α18 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
-          borrow α17 in
-        let* α19 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
-          pointer_coercion "Unsize" α18 in
-        let* α20 : ltac:(refine core.fmt.Arguments) :=
-          core.fmt.Arguments::["new_v1"] α4 α19 in
-        std.io.stdio._print α20 in
+        let* α4 : ltac:(refine generics_new_type_idiom.Years) :=
+          generics_new_type_idiom.Days::["to_years"] α3 in
+        let* α5 : ltac:(refine (ref generics_new_type_idiom.Years)) :=
+          borrow α4 in
+        let* α6 : ltac:(refine bool) := generics_new_type_idiom.old_enough α5 in
+        let* α7 : ltac:(refine (ref bool)) := borrow α6 in
+        let* α8 : ltac:(refine core.fmt.rt.Argument) :=
+          core.fmt.rt.Argument::["new_display"] α7 in
+        let* α9 : ltac:(refine (array core.fmt.rt.Argument)) :=
+          M.alloc [ α8 ] in
+        let* α10 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+          borrow α9 in
+        let* α11 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+          pointer_coercion "Unsize" α10 in
+        let* α12 : ltac:(refine core.fmt.Arguments) :=
+          core.fmt.Arguments::["new_v1"] α2 α11 in
+        std.io.stdio._print α12 in
       M.alloc tt in
     M.alloc tt).

@@ -51,11 +51,9 @@ Module  Peeled.
 Section Peeled.
   Context `{ℋ : State.Trait}.
   
-  Unset Primitive Projections.
   Record t : Set := {
     x0 : combinators_map.Food;
   }.
-  Global Set Primitive Projections.
   
   Global Instance Get_0 : Notation.Dot "0" := {
     Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
@@ -83,11 +81,9 @@ Section Impl_core_fmt_Debug_for_combinators_map_Peeled.
       let* α5 : ltac:(refine combinators_map.Food) := α4.["0"] in
       let* α6 : ltac:(refine (ref combinators_map.Food)) := borrow α5 in
       let* α7 : ltac:(refine (ref (ref combinators_map.Food))) := borrow α6 in
-      let* α8 : ltac:(refine (ref combinators_map.Food)) := deref α7 in
-      let* α9 : ltac:(refine (ref (ref combinators_map.Food))) := borrow α8 in
-      let* α10 : ltac:(refine (ref type not implemented)) :=
-        pointer_coercion "Unsize" α9 in
-      core.fmt.Formatter::["debug_tuple_field1_finish"] α1 α3 α10).
+      let* α8 : ltac:(refine (ref type not implemented)) :=
+        pointer_coercion "Unsize" α7 in
+      core.fmt.Formatter::["debug_tuple_field1_finish"] α1 α3 α8).
   
   Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {
     Notation.double_colon := fmt;
@@ -103,11 +99,9 @@ Module  Chopped.
 Section Chopped.
   Context `{ℋ : State.Trait}.
   
-  Unset Primitive Projections.
   Record t : Set := {
     x0 : combinators_map.Food;
   }.
-  Global Set Primitive Projections.
   
   Global Instance Get_0 : Notation.Dot "0" := {
     Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
@@ -135,11 +129,9 @@ Section Impl_core_fmt_Debug_for_combinators_map_Chopped.
       let* α5 : ltac:(refine combinators_map.Food) := α4.["0"] in
       let* α6 : ltac:(refine (ref combinators_map.Food)) := borrow α5 in
       let* α7 : ltac:(refine (ref (ref combinators_map.Food))) := borrow α6 in
-      let* α8 : ltac:(refine (ref combinators_map.Food)) := deref α7 in
-      let* α9 : ltac:(refine (ref (ref combinators_map.Food))) := borrow α8 in
-      let* α10 : ltac:(refine (ref type not implemented)) :=
-        pointer_coercion "Unsize" α9 in
-      core.fmt.Formatter::["debug_tuple_field1_finish"] α1 α3 α10).
+      let* α8 : ltac:(refine (ref type not implemented)) :=
+        pointer_coercion "Unsize" α7 in
+      core.fmt.Formatter::["debug_tuple_field1_finish"] α1 α3 α8).
   
   Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {
     Notation.double_colon := fmt;
@@ -155,11 +147,9 @@ Module  Cooked.
 Section Cooked.
   Context `{ℋ : State.Trait}.
   
-  Unset Primitive Projections.
   Record t : Set := {
     x0 : combinators_map.Food;
   }.
-  Global Set Primitive Projections.
   
   Global Instance Get_0 : Notation.Dot "0" := {
     Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
@@ -187,11 +177,9 @@ Section Impl_core_fmt_Debug_for_combinators_map_Cooked.
       let* α5 : ltac:(refine combinators_map.Food) := α4.["0"] in
       let* α6 : ltac:(refine (ref combinators_map.Food)) := borrow α5 in
       let* α7 : ltac:(refine (ref (ref combinators_map.Food))) := borrow α6 in
-      let* α8 : ltac:(refine (ref combinators_map.Food)) := deref α7 in
-      let* α9 : ltac:(refine (ref (ref combinators_map.Food))) := borrow α8 in
-      let* α10 : ltac:(refine (ref type not implemented)) :=
-        pointer_coercion "Unsize" α9 in
-      core.fmt.Formatter::["debug_tuple_field1_finish"] α1 α3 α10).
+      let* α8 : ltac:(refine (ref type not implemented)) :=
+        pointer_coercion "Unsize" α7 in
+      core.fmt.Formatter::["debug_tuple_field1_finish"] α1 α3 α8).
   
   Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {
     Notation.double_colon := fmt;
@@ -270,27 +258,20 @@ Definition eat
           M.alloc [ mk_str "Mmm. I love "; mk_str "
 " ] in
         let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
-        let* α2 : ltac:(refine (array (ref str))) := deref α1 in
-        let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
-        let* α4 : ltac:(refine (ref (slice (ref str)))) :=
-          pointer_coercion "Unsize" α3 in
-        let* α5 : ltac:(refine (ref combinators_map.Cooked)) := borrow food in
-        let* α6 : ltac:(refine combinators_map.Cooked) := deref α5 in
-        let* α7 : ltac:(refine (ref combinators_map.Cooked)) := borrow α6 in
-        let* α8 : ltac:(refine core.fmt.rt.Argument) :=
-          core.fmt.rt.Argument::["new_debug"] α7 in
-        let* α9 : ltac:(refine (array core.fmt.rt.Argument)) :=
-          M.alloc [ α8 ] in
-        let* α10 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
-          borrow α9 in
-        let* α11 : ltac:(refine (array core.fmt.rt.Argument)) := deref α10 in
-        let* α12 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
-          borrow α11 in
-        let* α13 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
-          pointer_coercion "Unsize" α12 in
-        let* α14 : ltac:(refine core.fmt.Arguments) :=
-          core.fmt.Arguments::["new_v1"] α4 α13 in
-        std.io.stdio._print α14 in
+        let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+          pointer_coercion "Unsize" α1 in
+        let* α3 : ltac:(refine (ref combinators_map.Cooked)) := borrow food in
+        let* α4 : ltac:(refine core.fmt.rt.Argument) :=
+          core.fmt.rt.Argument::["new_debug"] α3 in
+        let* α5 : ltac:(refine (array core.fmt.rt.Argument)) :=
+          M.alloc [ α4 ] in
+        let* α6 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+          borrow α5 in
+        let* α7 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+          pointer_coercion "Unsize" α6 in
+        let* α8 : ltac:(refine core.fmt.Arguments) :=
+          core.fmt.Arguments::["new_v1"] α2 α7 in
+        std.io.stdio._print α8 in
       M.alloc tt
     | core.option.Option.None  =>
       let* _ : ltac:(refine unit) :=
@@ -298,13 +279,11 @@ Definition eat
           M.alloc [ mk_str "Oh no! It wasn't edible.
 " ] in
         let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
-        let* α2 : ltac:(refine (array (ref str))) := deref α1 in
-        let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
-        let* α4 : ltac:(refine (ref (slice (ref str)))) :=
-          pointer_coercion "Unsize" α3 in
-        let* α5 : ltac:(refine core.fmt.Arguments) :=
-          core.fmt.Arguments::["new_const"] α4 in
-        std.io.stdio._print α5 in
+        let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+          pointer_coercion "Unsize" α1 in
+        let* α3 : ltac:(refine core.fmt.Arguments) :=
+          core.fmt.Arguments::["new_const"] α2 in
+        std.io.stdio._print α3 in
       M.alloc tt
     end).
 

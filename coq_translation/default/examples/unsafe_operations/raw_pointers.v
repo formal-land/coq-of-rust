@@ -6,9 +6,7 @@ Definition main `{ℋ : State.Trait} : M unit :=
   M.function_body
     (let* raw_p : ltac:(refine (ref u32)) :=
       let* α0 : ltac:(refine u32) := M.alloc 10 in
-      let* α1 : ltac:(refine (ref u32)) := borrow α0 in
-      let* α2 : ltac:(refine u32) := deref α1 in
-      addr_of α2 in
+      addr_of α0 in
     let* _ : ltac:(refine unit) :=
       let* α0 : ltac:(refine u32) := deref raw_p in
       let* α1 : ltac:(refine u32) := M.alloc 10 in

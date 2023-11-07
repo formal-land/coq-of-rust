@@ -36,13 +36,9 @@ Section Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
         let* α3 : ltac:(refine (ref str)) := borrow α2 in
         let* α4 : ltac:(refine (ref (ref core.num.error.ParseIntError))) :=
           borrow __self_0 in
-        let* α5 : ltac:(refine (ref core.num.error.ParseIntError)) :=
-          deref α4 in
-        let* α6 : ltac:(refine (ref (ref core.num.error.ParseIntError))) :=
-          borrow α5 in
-        let* α7 : ltac:(refine (ref type not implemented)) :=
-          pointer_coercion "Unsize" α6 in
-        core.fmt.Formatter::["debug_tuple_field1_finish"] α1 α3 α7
+        let* α5 : ltac:(refine (ref type not implemented)) :=
+          pointer_coercion "Unsize" α4 in
+        core.fmt.Formatter::["debug_tuple_field1_finish"] α1 α3 α5
       end).
   
   Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {
@@ -75,26 +71,22 @@ Section Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
         let* α2 : ltac:(refine (array (ref str))) :=
           M.alloc [ mk_str "please use a vector with at least one element" ] in
         let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
-        let* α4 : ltac:(refine (array (ref str))) := deref α3 in
-        let* α5 : ltac:(refine (ref (array (ref str)))) := borrow α4 in
-        let* α6 : ltac:(refine (ref (slice (ref str)))) :=
-          pointer_coercion "Unsize" α5 in
-        let* α7 : ltac:(refine core.fmt.Arguments) :=
-          core.fmt.Arguments::["new_const"] α6 in
-        core.fmt.Formatter::["write_fmt"] α1 α7
+        let* α4 : ltac:(refine (ref (slice (ref str)))) :=
+          pointer_coercion "Unsize" α3 in
+        let* α5 : ltac:(refine core.fmt.Arguments) :=
+          core.fmt.Arguments::["new_const"] α4 in
+        core.fmt.Formatter::["write_fmt"] α1 α5
       | wrapping_errors.DoubleError.Parse  =>
         let* α0 : ltac:(refine core.fmt.Formatter) := deref f in
         let* α1 : ltac:(refine (mut_ref core.fmt.Formatter)) := borrow_mut α0 in
         let* α2 : ltac:(refine (array (ref str))) :=
           M.alloc [ mk_str "the provided string could not be parsed as int" ] in
         let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
-        let* α4 : ltac:(refine (array (ref str))) := deref α3 in
-        let* α5 : ltac:(refine (ref (array (ref str)))) := borrow α4 in
-        let* α6 : ltac:(refine (ref (slice (ref str)))) :=
-          pointer_coercion "Unsize" α5 in
-        let* α7 : ltac:(refine core.fmt.Arguments) :=
-          core.fmt.Arguments::["new_const"] α6 in
-        core.fmt.Formatter::["write_fmt"] α1 α7
+        let* α4 : ltac:(refine (ref (slice (ref str)))) :=
+          pointer_coercion "Unsize" α3 in
+        let* α5 : ltac:(refine core.fmt.Arguments) :=
+          core.fmt.Arguments::["new_const"] α4 in
+        core.fmt.Formatter::["write_fmt"] α1 α5
       end).
   
   Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {
@@ -267,27 +259,20 @@ Definition print
           M.alloc [ mk_str "The first doubled is "; mk_str "
 " ] in
         let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
-        let* α2 : ltac:(refine (array (ref str))) := deref α1 in
-        let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
-        let* α4 : ltac:(refine (ref (slice (ref str)))) :=
-          pointer_coercion "Unsize" α3 in
-        let* α5 : ltac:(refine (ref i32)) := borrow n in
-        let* α6 : ltac:(refine i32) := deref α5 in
-        let* α7 : ltac:(refine (ref i32)) := borrow α6 in
-        let* α8 : ltac:(refine core.fmt.rt.Argument) :=
-          core.fmt.rt.Argument::["new_display"] α7 in
-        let* α9 : ltac:(refine (array core.fmt.rt.Argument)) :=
-          M.alloc [ α8 ] in
-        let* α10 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
-          borrow α9 in
-        let* α11 : ltac:(refine (array core.fmt.rt.Argument)) := deref α10 in
-        let* α12 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
-          borrow α11 in
-        let* α13 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
-          pointer_coercion "Unsize" α12 in
-        let* α14 : ltac:(refine core.fmt.Arguments) :=
-          core.fmt.Arguments::["new_v1"] α4 α13 in
-        std.io.stdio._print α14 in
+        let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+          pointer_coercion "Unsize" α1 in
+        let* α3 : ltac:(refine (ref i32)) := borrow n in
+        let* α4 : ltac:(refine core.fmt.rt.Argument) :=
+          core.fmt.rt.Argument::["new_display"] α3 in
+        let* α5 : ltac:(refine (array core.fmt.rt.Argument)) :=
+          M.alloc [ α4 ] in
+        let* α6 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+          borrow α5 in
+        let* α7 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+          pointer_coercion "Unsize" α6 in
+        let* α8 : ltac:(refine core.fmt.Arguments) :=
+          core.fmt.Arguments::["new_v1"] α2 α7 in
+        std.io.stdio._print α8 in
       M.alloc tt
     | core.result.Result.Err e =>
       let* _ : ltac:(refine unit) :=
@@ -296,29 +281,21 @@ Definition print
             M.alloc [ mk_str "Error: "; mk_str "
 " ] in
           let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
-          let* α2 : ltac:(refine (array (ref str))) := deref α1 in
-          let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
-          let* α4 : ltac:(refine (ref (slice (ref str)))) :=
-            pointer_coercion "Unsize" α3 in
-          let* α5 : ltac:(refine (ref wrapping_errors.DoubleError)) :=
+          let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+            pointer_coercion "Unsize" α1 in
+          let* α3 : ltac:(refine (ref wrapping_errors.DoubleError)) :=
             borrow e in
-          let* α6 : ltac:(refine wrapping_errors.DoubleError) := deref α5 in
-          let* α7 : ltac:(refine (ref wrapping_errors.DoubleError)) :=
-            borrow α6 in
-          let* α8 : ltac:(refine core.fmt.rt.Argument) :=
-            core.fmt.rt.Argument::["new_display"] α7 in
-          let* α9 : ltac:(refine (array core.fmt.rt.Argument)) :=
-            M.alloc [ α8 ] in
-          let* α10 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
-            borrow α9 in
-          let* α11 : ltac:(refine (array core.fmt.rt.Argument)) := deref α10 in
-          let* α12 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
-            borrow α11 in
-          let* α13 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
-            pointer_coercion "Unsize" α12 in
-          let* α14 : ltac:(refine core.fmt.Arguments) :=
-            core.fmt.Arguments::["new_v1"] α4 α13 in
-          std.io.stdio._print α14 in
+          let* α4 : ltac:(refine core.fmt.rt.Argument) :=
+            core.fmt.rt.Argument::["new_display"] α3 in
+          let* α5 : ltac:(refine (array core.fmt.rt.Argument)) :=
+            M.alloc [ α4 ] in
+          let* α6 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+            borrow α5 in
+          let* α7 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+            pointer_coercion "Unsize" α6 in
+          let* α8 : ltac:(refine core.fmt.Arguments) :=
+            core.fmt.Arguments::["new_v1"] α2 α7 in
+          std.io.stdio._print α8 in
         M.alloc tt in
       let* α0 : ltac:(refine (ref wrapping_errors.DoubleError)) := borrow e in
       let* α1 : ltac:(refine (core.option.Option (ref type not implemented))) :=
@@ -335,30 +312,21 @@ Definition print
               M.alloc [ mk_str "  Caused by: "; mk_str "
 " ] in
             let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
-            let* α2 : ltac:(refine (array (ref str))) := deref α1 in
-            let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
-            let* α4 : ltac:(refine (ref (slice (ref str)))) :=
-              pointer_coercion "Unsize" α3 in
-            let* α5 : ltac:(refine (ref (ref type not implemented))) :=
+            let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+              pointer_coercion "Unsize" α1 in
+            let* α3 : ltac:(refine (ref (ref type not implemented))) :=
               borrow source in
-            let* α6 : ltac:(refine (ref type not implemented)) := deref α5 in
-            let* α7 : ltac:(refine (ref (ref type not implemented))) :=
-              borrow α6 in
-            let* α8 : ltac:(refine core.fmt.rt.Argument) :=
-              core.fmt.rt.Argument::["new_display"] α7 in
-            let* α9 : ltac:(refine (array core.fmt.rt.Argument)) :=
-              M.alloc [ α8 ] in
-            let* α10 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
-              borrow α9 in
-            let* α11 : ltac:(refine (array core.fmt.rt.Argument)) :=
-              deref α10 in
-            let* α12 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
-              borrow α11 in
-            let* α13 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
-              pointer_coercion "Unsize" α12 in
-            let* α14 : ltac:(refine core.fmt.Arguments) :=
-              core.fmt.Arguments::["new_v1"] α4 α13 in
-            std.io.stdio._print α14 in
+            let* α4 : ltac:(refine core.fmt.rt.Argument) :=
+              core.fmt.rt.Argument::["new_display"] α3 in
+            let* α5 : ltac:(refine (array core.fmt.rt.Argument)) :=
+              M.alloc [ α4 ] in
+            let* α6 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+              borrow α5 in
+            let* α7 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+              pointer_coercion "Unsize" α6 in
+            let* α8 : ltac:(refine core.fmt.Arguments) :=
+              core.fmt.Arguments::["new_v1"] α2 α7 in
+            std.io.stdio._print α8 in
           M.alloc tt in
         M.alloc tt
       else

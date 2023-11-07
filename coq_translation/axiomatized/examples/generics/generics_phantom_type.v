@@ -7,12 +7,10 @@ Section PhantomTuple.
   
   Context {A B : Set}.
   
-  Unset Primitive Projections.
   Record t : Set := {
     x0 : A;
     x1 : core.marker.PhantomData B;
   }.
-  Global Set Primitive Projections.
   
   Global Instance Get_0 : Notation.Dot "0" := {
     Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;

@@ -99,11 +99,9 @@ Module  AccountId.
 Section AccountId.
   Context `{ℋ : State.Trait}.
   
-  Unset Primitive Projections.
   Record t : Set := {
-    x0 : u64;
+    x0 : alloc.string.String;
   }.
-  Global Set Primitive Projections.
   
   Global Instance Get_0 : Notation.Dot "0" := {
     Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
@@ -120,8 +118,10 @@ Section Impl_core_default_Default_for_lib_AccountId.
   
   Definition default : M lib.AccountId :=
     M.function_body
-      (let* α0 : ltac:(refine u64) :=
-        core.default.Default.default (Self := u64) (Trait := ltac:(refine _)) in
+      (let* α0 : ltac:(refine alloc.string.String) :=
+        core.default.Default.default
+          (Self := alloc.string.String)
+          (Trait := ltac:(refine _)) in
       M.alloc (lib.AccountId.Build_t α0)).
   
   Global Instance AssociatedFunction_default :
@@ -135,209 +135,47 @@ Section Impl_core_default_Default_for_lib_AccountId.
 End Impl_core_default_Default_for_lib_AccountId.
 End Impl_core_default_Default_for_lib_AccountId.
 
-Module  Balance.
-Section Balance.
-  Context `{ℋ : State.Trait}.
-  
-  Unset Primitive Projections.
-  Record t : Set := {
-    x0 : u64;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
-  }.
-End Balance.
-End Balance.
-Definition Balance `{ℋ : State.Trait} : Set := M.Val Balance.t.
-
-Module  Impl_core_default_Default_for_lib_Balance.
-Section Impl_core_default_Default_for_lib_Balance.
-  Context `{ℋ : State.Trait}.
-  
-  Definition Self : Set := lib.Balance.
-  
-  Definition default : M lib.Balance :=
-    M.function_body
-      (let* α0 : ltac:(refine u64) :=
-        core.default.Default.default (Self := u64) (Trait := ltac:(refine _)) in
-      M.alloc (lib.Balance.Build_t α0)).
-  
-  Global Instance AssociatedFunction_default :
-    Notation.DoubleColon Self "default" := {
-    Notation.double_colon := default;
-  }.
-  
-  Global Instance ℐ : core.default.Default.Trait Self := {
-    core.default.Default.default := default;
-  }.
-End Impl_core_default_Default_for_lib_Balance.
-End Impl_core_default_Default_for_lib_Balance.
-
-Module  Impl_core_marker_StructuralPartialEq_for_lib_Balance.
-Section Impl_core_marker_StructuralPartialEq_for_lib_Balance.
-  Context `{ℋ : State.Trait}.
-  
-  Definition Self : Set := lib.Balance.
-  
-  Global Instance ℐ : core.marker.StructuralPartialEq.Trait Self := {
-  }.
-End Impl_core_marker_StructuralPartialEq_for_lib_Balance.
-End Impl_core_marker_StructuralPartialEq_for_lib_Balance.
-
-Module  Impl_core_cmp_PartialEq_for_lib_Balance.
-Section Impl_core_cmp_PartialEq_for_lib_Balance.
-  Context `{ℋ : State.Trait}.
-  
-  Definition Self : Set := lib.Balance.
-  
-  Definition eq (self : ref Self) (other : ref lib.Balance) : M bool :=
-    M.function_body
-      (let* α0 : ltac:(refine lib.Balance) := deref self in
-      let* α1 : ltac:(refine u64) := α0.["0"] in
-      let* α2 : ltac:(refine lib.Balance) := deref other in
-      let* α3 : ltac:(refine u64) := α2.["0"] in
-      BinOp.eq α1 α3).
-  
-  Global Instance AssociatedFunction_eq : Notation.DoubleColon Self "eq" := {
-    Notation.double_colon := eq;
-  }.
-  
-  Global Instance ℐ :
-    core.cmp.PartialEq.Required.Trait Self
-      (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
-    core.cmp.PartialEq.eq := eq;
-    core.cmp.PartialEq.ne := Datatypes.None;
-  }.
-End Impl_core_cmp_PartialEq_for_lib_Balance.
-End Impl_core_cmp_PartialEq_for_lib_Balance.
-
-Module  Impl_core_cmp_PartialOrd_for_lib_Balance.
-Section Impl_core_cmp_PartialOrd_for_lib_Balance.
-  Context `{ℋ : State.Trait}.
-  
-  Definition Self : Set := lib.Balance.
-  
-  Definition partial_cmp
-      (self : ref Self)
-      (other : ref lib.Balance)
-      : M (core.option.Option core.cmp.Ordering) :=
-    M.function_body
-      (let* α0 : ltac:(refine lib.Balance) := deref self in
-      let* α1 : ltac:(refine u64) := α0.["0"] in
-      let* α2 : ltac:(refine (ref u64)) := borrow α1 in
-      let* α3 : ltac:(refine u64) := deref α2 in
-      let* α4 : ltac:(refine (ref u64)) := borrow α3 in
-      let* α5 : ltac:(refine lib.Balance) := deref other in
-      let* α6 : ltac:(refine u64) := α5.["0"] in
-      let* α7 : ltac:(refine (ref u64)) := borrow α6 in
-      let* α8 : ltac:(refine u64) := deref α7 in
-      let* α9 : ltac:(refine (ref u64)) := borrow α8 in
-      (core.cmp.PartialOrd.partial_cmp (Self := u64) (Trait := ltac:(refine _)))
-        α4
-        α9).
-  
-  Global Instance AssociatedFunction_partial_cmp :
-    Notation.DoubleColon Self "partial_cmp" := {
-    Notation.double_colon := partial_cmp;
-  }.
-  
-  Global Instance ℐ :
-    core.cmp.PartialOrd.Required.Trait Self
-      (Rhs := core.cmp.PartialOrd.Default.Rhs Self) := {
-    core.cmp.PartialOrd.partial_cmp := partial_cmp;
-    core.cmp.PartialOrd.lt := Datatypes.None;
-    core.cmp.PartialOrd.le := Datatypes.None;
-    core.cmp.PartialOrd.gt := Datatypes.None;
-    core.cmp.PartialOrd.ge := Datatypes.None;
-  }.
-End Impl_core_cmp_PartialOrd_for_lib_Balance.
-End Impl_core_cmp_PartialOrd_for_lib_Balance.
-
-Module  Impl_core_ops_arith_Add_for_lib_Balance.
-Section Impl_core_ops_arith_Add_for_lib_Balance.
-  Context `{ℋ : State.Trait}.
-  
-  Definition Self : Set := lib.Balance.
-  
-  Definition Output : Set := Self.
-  
-  Definition add (self : Self) (rhs : Self) : M Output :=
-    M.function_body
-      (let* α0 : ltac:(refine u64) := self.["0"] in
-      let* α1 : ltac:(refine u64) := rhs.["0"] in
-      let* α2 : ltac:(refine u64) := BinOp.add α0 α1 in
-      M.alloc (lib.Balance.Build_t α2)).
-  
-  Global Instance AssociatedFunction_add : Notation.DoubleColon Self "add" := {
-    Notation.double_colon := add;
-  }.
-  
-  Global Instance ℐ :
-    core.ops.arith.Add.Trait Self
-      (Rhs := core.ops.arith.Add.Default.Rhs Self) := {
-    core.ops.arith.Add.Output := Output;
-    core.ops.arith.Add.add := add;
-  }.
-End Impl_core_ops_arith_Add_for_lib_Balance.
-End Impl_core_ops_arith_Add_for_lib_Balance.
-
-Module  Impl_core_ops_arith_Sub_for_lib_Balance.
-Section Impl_core_ops_arith_Sub_for_lib_Balance.
-  Context `{ℋ : State.Trait}.
-  
-  Definition Self : Set := lib.Balance.
-  
-  Definition Output : Set := Self.
-  
-  Definition sub (self : Self) (rhs : Self) : M Output :=
-    M.function_body
-      (let* α0 : ltac:(refine u64) := self.["0"] in
-      let* α1 : ltac:(refine u64) := rhs.["0"] in
-      let* α2 : ltac:(refine u64) := BinOp.sub α0 α1 in
-      M.alloc (lib.Balance.Build_t α2)).
-  
-  Global Instance AssociatedFunction_sub : Notation.DoubleColon Self "sub" := {
-    Notation.double_colon := sub;
-  }.
-  
-  Global Instance ℐ :
-    core.ops.arith.Sub.Trait Self
-      (Rhs := core.ops.arith.Sub.Default.Rhs Self) := {
-    core.ops.arith.Sub.Output := Output;
-    core.ops.arith.Sub.sub := sub;
-  }.
-End Impl_core_ops_arith_Sub_for_lib_Balance.
-End Impl_core_ops_arith_Sub_for_lib_Balance.
+Ltac Balance := refine u128.
 
 Module  Environment.
 Section Environment.
   Context `{ℋ : State.Trait}.
   
-  Inductive t : Set := Build.
+  Record t : Set := {
+    x0 : alloc.string.String;
+  }.
+  
+  Global Instance Get_0 : Notation.Dot "0" := {
+    Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
+  }.
 End Environment.
 End Environment.
-Definition Environment `{ℋ : State.Trait} := M.Val Environment.t.
+Definition Environment `{ℋ : State.Trait} : Set := M.Val Environment.t.
 
 Module  Event.
 Section Event.
   Context `{ℋ : State.Trait}.
   
-  Inductive t : Set := Build.
+  Record t : Set := {
+    x0 : alloc.string.String;
+  }.
+  
+  Global Instance Get_0 : Notation.Dot "0" := {
+    Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
+  }.
 End Event.
 End Event.
-Definition Event `{ℋ : State.Trait} := M.Val Event.t.
+Definition Event `{ℋ : State.Trait} : Set := M.Val Event.t.
 
 Module  Erc20.
 Section Erc20.
   Context `{ℋ : State.Trait}.
   
   Record t : Set := {
-    total_supply : lib.Balance;
-    balances : lib.Mapping lib.AccountId lib.Balance;
+    total_supply : ltac:(lib.Balance);
+    balances : lib.Mapping lib.AccountId ltac:(lib.Balance);
     allowances :
-      lib.Mapping (M.Val (lib.AccountId * lib.AccountId)) lib.Balance;
+      lib.Mapping (M.Val (lib.AccountId * lib.AccountId)) ltac:(lib.Balance);
   }.
   
   Global Instance Get_total_supply : Notation.Dot "total_supply" := {
@@ -373,22 +211,19 @@ Section Impl_core_default_Default_for_lib_Erc20.
   
   Definition default : M lib.Erc20 :=
     M.function_body
-      (let* α0 : ltac:(refine lib.Balance) :=
+      (let* α0 : ltac:(refine u128) :=
         core.default.Default.default
-          (Self := lib.Balance)
+          (Self := u128)
           (Trait := ltac:(refine _)) in
-      let* α1 : ltac:(refine (lib.Mapping lib.AccountId lib.Balance)) :=
+      let* α1 : ltac:(refine (lib.Mapping lib.AccountId u128)) :=
         core.default.Default.default
-          (Self := lib.Mapping lib.AccountId lib.Balance)
+          (Self := lib.Mapping lib.AccountId u128)
           (Trait := ltac:(refine _)) in
       let* α2 :
           ltac:(refine
-            (lib.Mapping
-              (M.Val (lib.AccountId * lib.AccountId))
-              lib.Balance)) :=
+            (lib.Mapping (M.Val (lib.AccountId * lib.AccountId)) u128)) :=
         core.default.Default.default
-          (Self :=
-            lib.Mapping (M.Val (lib.AccountId * lib.AccountId)) lib.Balance)
+          (Self := lib.Mapping (M.Val (lib.AccountId * lib.AccountId)) u128)
           (Trait := ltac:(refine _)) in
       M.alloc
         {|
@@ -415,7 +250,7 @@ Section Transfer.
   Record t : Set := {
     from : core.option.Option lib.AccountId;
     to : core.option.Option lib.AccountId;
-    value : lib.Balance;
+    value : ltac:(lib.Balance);
   }.
   
   Global Instance Get_from : Notation.Dot "from" := {
@@ -470,7 +305,7 @@ Section Approval.
   Record t : Set := {
     owner : lib.AccountId;
     spender : lib.AccountId;
-    value : lib.Balance;
+    value : ltac:(lib.Balance);
   }.
   
   Global Instance Get_owner : Notation.Dot "owner" := {
@@ -599,24 +434,20 @@ Section Impl_lib_Erc20_2.
   
   Definition Self : Set := lib.Erc20.
   
-  Definition new (total_supply : lib.Balance) : M Self :=
+  Definition new (total_supply : ltac:(lib.Balance)) : M Self :=
     M.function_body
-      (let* balances : ltac:(refine (lib.Mapping lib.AccountId lib.Balance)) :=
+      (let* balances : ltac:(refine (lib.Mapping lib.AccountId u128)) :=
         core.default.Default.default
-          (Self := lib.Mapping lib.AccountId lib.Balance)
+          (Self := lib.Mapping lib.AccountId u128)
           (Trait := ltac:(refine _)) in
       let* caller : ltac:(refine lib.AccountId) :=
         let* α0 : ltac:(refine lib.Environment) := lib.Erc20::["init_env"] in
         let* α1 : ltac:(refine (ref lib.Environment)) := borrow α0 in
         lib.Environment::["caller"] α1 in
       let* _ : ltac:(refine unit) :=
-        let* α0 :
-            ltac:(refine (mut_ref (lib.Mapping lib.AccountId lib.Balance))) :=
+        let* α0 : ltac:(refine (mut_ref (lib.Mapping lib.AccountId u128))) :=
           borrow_mut balances in
-        (lib.Mapping lib.AccountId lib.Balance)::["insert"]
-          α0
-          caller
-          total_supply in
+        (lib.Mapping lib.AccountId u128)::["insert"] α0 caller total_supply in
       let* _ : ltac:(refine unit) :=
         let* α0 : ltac:(refine lib.Environment) := lib.Erc20::["init_env"] in
         let* α1 : ltac:(refine (ref lib.Environment)) := borrow α0 in
@@ -634,12 +465,9 @@ Section Impl_lib_Erc20_2.
         lib.Environment::["emit_event"] α1 α4 in
       let* α0 :
           ltac:(refine
-            (lib.Mapping
-              (M.Val (lib.AccountId * lib.AccountId))
-              lib.Balance)) :=
+            (lib.Mapping (M.Val (lib.AccountId * lib.AccountId)) u128)) :=
         core.default.Default.default
-          (Self :=
-            lib.Mapping (M.Val (lib.AccountId * lib.AccountId)) lib.Balance)
+          (Self := lib.Mapping (M.Val (lib.AccountId * lib.AccountId)) u128)
           (Trait := ltac:(refine _)) in
       M.alloc
         {|
@@ -652,7 +480,7 @@ Section Impl_lib_Erc20_2.
     Notation.double_colon := new;
   }.
   
-  Definition total_supply (self : ref Self) : M lib.Balance :=
+  Definition total_supply (self : ref Self) : M ltac:(lib.Balance) :=
     M.function_body
       (let* α0 : ltac:(refine lib.Erc20) := deref self in
       α0.["total_supply"]).
@@ -665,18 +493,18 @@ Section Impl_lib_Erc20_2.
   Definition balance_of_impl
       (self : ref Self)
       (owner : ref lib.AccountId)
-      : M lib.Balance :=
+      : M ltac:(lib.Balance) :=
     M.function_body
       (let* α0 : ltac:(refine lib.Erc20) := deref self in
-      let* α1 : ltac:(refine (lib.Mapping lib.AccountId lib.Balance)) :=
+      let* α1 : ltac:(refine (lib.Mapping lib.AccountId u128)) :=
         α0.["balances"] in
-      let* α2 : ltac:(refine (ref (lib.Mapping lib.AccountId lib.Balance))) :=
+      let* α2 : ltac:(refine (ref (lib.Mapping lib.AccountId u128))) :=
         borrow α1 in
       let* α3 : ltac:(refine lib.AccountId) := deref owner in
       let* α4 : ltac:(refine (ref lib.AccountId)) := borrow α3 in
-      let* α5 : ltac:(refine (core.option.Option lib.Balance)) :=
-        (lib.Mapping lib.AccountId lib.Balance)::["get"] α2 α4 in
-      (core.option.Option lib.Balance)::["unwrap_or_default"] α5).
+      let* α5 : ltac:(refine (core.option.Option u128)) :=
+        (lib.Mapping lib.AccountId u128)::["get"] α2 α4 in
+      (core.option.Option u128)::["unwrap_or_default"] α5).
   
   Global Instance AssociatedFunction_balance_of_impl :
     Notation.DoubleColon Self "balance_of_impl" := {
@@ -686,14 +514,12 @@ Section Impl_lib_Erc20_2.
   Definition balance_of
       (self : ref Self)
       (owner : lib.AccountId)
-      : M lib.Balance :=
+      : M ltac:(lib.Balance) :=
     M.function_body
       (let* α0 : ltac:(refine lib.Erc20) := deref self in
       let* α1 : ltac:(refine (ref lib.Erc20)) := borrow α0 in
       let* α2 : ltac:(refine (ref lib.AccountId)) := borrow owner in
-      let* α3 : ltac:(refine lib.AccountId) := deref α2 in
-      let* α4 : ltac:(refine (ref lib.AccountId)) := borrow α3 in
-      lib.Erc20::["balance_of_impl"] α1 α4).
+      lib.Erc20::["balance_of_impl"] α1 α2).
   
   Global Instance AssociatedFunction_balance_of :
     Notation.DoubleColon Self "balance_of" := {
@@ -704,21 +530,16 @@ Section Impl_lib_Erc20_2.
       (self : ref Self)
       (owner : ref lib.AccountId)
       (spender : ref lib.AccountId)
-      : M lib.Balance :=
+      : M ltac:(lib.Balance) :=
     M.function_body
       (let* α0 : ltac:(refine lib.Erc20) := deref self in
       let* α1 :
           ltac:(refine
-            (lib.Mapping
-              (M.Val (lib.AccountId * lib.AccountId))
-              lib.Balance)) :=
+            (lib.Mapping (M.Val (lib.AccountId * lib.AccountId)) u128)) :=
         α0.["allowances"] in
       let* α2 :
           ltac:(refine
-            (ref
-              (lib.Mapping
-                (M.Val (lib.AccountId * lib.AccountId))
-                lib.Balance))) :=
+            (ref (lib.Mapping (M.Val (lib.AccountId * lib.AccountId)) u128))) :=
         borrow α1 in
       let* α3 : ltac:(refine lib.AccountId) := deref owner in
       let* α4 : ltac:(refine lib.AccountId) := deref spender in
@@ -726,17 +547,11 @@ Section Impl_lib_Erc20_2.
         M.alloc (α3, α4) in
       let* α6 : ltac:(refine (ref (M.Val (lib.AccountId * lib.AccountId)))) :=
         borrow α5 in
-      let* α7 : ltac:(refine (M.Val (lib.AccountId * lib.AccountId))) :=
-        deref α6 in
-      let* α8 : ltac:(refine (ref (M.Val (lib.AccountId * lib.AccountId)))) :=
-        borrow α7 in
-      let* α9 : ltac:(refine (core.option.Option lib.Balance)) :=
-        (lib.Mapping
-              (M.Val (lib.AccountId * lib.AccountId))
-              lib.Balance)::["get"]
+      let* α7 : ltac:(refine (core.option.Option u128)) :=
+        (lib.Mapping (M.Val (lib.AccountId * lib.AccountId)) u128)::["get"]
           α2
-          α8 in
-      (core.option.Option lib.Balance)::["unwrap_or_default"] α9).
+          α6 in
+      (core.option.Option u128)::["unwrap_or_default"] α7).
   
   Global Instance AssociatedFunction_allowance_impl :
     Notation.DoubleColon Self "allowance_impl" := {
@@ -747,17 +562,13 @@ Section Impl_lib_Erc20_2.
       (self : ref Self)
       (owner : lib.AccountId)
       (spender : lib.AccountId)
-      : M lib.Balance :=
+      : M ltac:(lib.Balance) :=
     M.function_body
       (let* α0 : ltac:(refine lib.Erc20) := deref self in
       let* α1 : ltac:(refine (ref lib.Erc20)) := borrow α0 in
       let* α2 : ltac:(refine (ref lib.AccountId)) := borrow owner in
-      let* α3 : ltac:(refine lib.AccountId) := deref α2 in
-      let* α4 : ltac:(refine (ref lib.AccountId)) := borrow α3 in
-      let* α5 : ltac:(refine (ref lib.AccountId)) := borrow spender in
-      let* α6 : ltac:(refine lib.AccountId) := deref α5 in
-      let* α7 : ltac:(refine (ref lib.AccountId)) := borrow α6 in
-      lib.Erc20::["allowance_impl"] α1 α4 α7).
+      let* α3 : ltac:(refine (ref lib.AccountId)) := borrow spender in
+      lib.Erc20::["allowance_impl"] α1 α2 α3).
   
   Global Instance AssociatedFunction_allowance :
     Notation.DoubleColon Self "allowance" := {
@@ -768,26 +579,19 @@ Section Impl_lib_Erc20_2.
       (self : mut_ref Self)
       (from : ref lib.AccountId)
       (to : ref lib.AccountId)
-      (value : lib.Balance)
+      (value : ltac:(lib.Balance))
       : M ltac:(lib.Result constr:(unit)) :=
     M.function_body
-      (let* from_balance : ltac:(refine lib.Balance) :=
+      (let* from_balance : ltac:(refine u128) :=
         let* α0 : ltac:(refine lib.Erc20) := deref self in
         let* α1 : ltac:(refine (ref lib.Erc20)) := borrow α0 in
         let* α2 : ltac:(refine lib.AccountId) := deref from in
         let* α3 : ltac:(refine (ref lib.AccountId)) := borrow α2 in
         lib.Erc20::["balance_of_impl"] α1 α3 in
       let* _ : ltac:(refine unit) :=
-        let* α0 : ltac:(refine (ref lib.Balance)) := borrow from_balance in
-        let* α1 : ltac:(refine (ref lib.Balance)) := borrow value in
-        let* α2 : ltac:(refine bool) :=
-          (core.cmp.PartialOrd.lt
-              (Self := lib.Balance)
-              (Trait := ltac:(refine _)))
-            α0
-            α1 in
-        let* α3 : ltac:(refine bool) := use α2 in
-        if (α3 : bool) then
+        let* α0 : ltac:(refine bool) := BinOp.lt from_balance value in
+        let* α1 : ltac:(refine bool) := use α0 in
+        if (α1 : bool) then
           let* _ : ltac:(refine never) :=
             let* α0 : ltac:(refine lib.Error) :=
               M.alloc lib.Error.InsufficientBalance in
@@ -800,20 +604,14 @@ Section Impl_lib_Erc20_2.
           M.alloc tt in
       let* _ : ltac:(refine unit) :=
         let* α0 : ltac:(refine lib.Erc20) := deref self in
-        let* α1 : ltac:(refine (lib.Mapping lib.AccountId lib.Balance)) :=
+        let* α1 : ltac:(refine (lib.Mapping lib.AccountId u128)) :=
           α0.["balances"] in
-        let* α2 :
-            ltac:(refine (mut_ref (lib.Mapping lib.AccountId lib.Balance))) :=
+        let* α2 : ltac:(refine (mut_ref (lib.Mapping lib.AccountId u128))) :=
           borrow_mut α1 in
         let* α3 : ltac:(refine lib.AccountId) := deref from in
-        let* α4 : ltac:(refine lib.Balance) :=
-          (core.ops.arith.Sub.sub
-              (Self := lib.Balance)
-              (Trait := ltac:(refine _)))
-            from_balance
-            value in
-        (lib.Mapping lib.AccountId lib.Balance)::["insert"] α2 α3 α4 in
-      let* to_balance : ltac:(refine lib.Balance) :=
+        let* α4 : ltac:(refine u128) := BinOp.sub from_balance value in
+        (lib.Mapping lib.AccountId u128)::["insert"] α2 α3 α4 in
+      let* to_balance : ltac:(refine u128) :=
         let* α0 : ltac:(refine lib.Erc20) := deref self in
         let* α1 : ltac:(refine (ref lib.Erc20)) := borrow α0 in
         let* α2 : ltac:(refine lib.AccountId) := deref to in
@@ -821,19 +619,13 @@ Section Impl_lib_Erc20_2.
         lib.Erc20::["balance_of_impl"] α1 α3 in
       let* _ : ltac:(refine unit) :=
         let* α0 : ltac:(refine lib.Erc20) := deref self in
-        let* α1 : ltac:(refine (lib.Mapping lib.AccountId lib.Balance)) :=
+        let* α1 : ltac:(refine (lib.Mapping lib.AccountId u128)) :=
           α0.["balances"] in
-        let* α2 :
-            ltac:(refine (mut_ref (lib.Mapping lib.AccountId lib.Balance))) :=
+        let* α2 : ltac:(refine (mut_ref (lib.Mapping lib.AccountId u128))) :=
           borrow_mut α1 in
         let* α3 : ltac:(refine lib.AccountId) := deref to in
-        let* α4 : ltac:(refine lib.Balance) :=
-          (core.ops.arith.Add.add
-              (Self := lib.Balance)
-              (Trait := ltac:(refine _)))
-            to_balance
-            value in
-        (lib.Mapping lib.AccountId lib.Balance)::["insert"] α2 α3 α4 in
+        let* α4 : ltac:(refine u128) := BinOp.add to_balance value in
+        (lib.Mapping lib.AccountId u128)::["insert"] α2 α3 α4 in
       let* _ : ltac:(refine unit) :=
         let* α0 : ltac:(refine lib.Erc20) := deref self in
         let* α1 : ltac:(refine (ref lib.Erc20)) := borrow α0 in
@@ -864,7 +656,7 @@ Section Impl_lib_Erc20_2.
   Definition transfer
       (self : mut_ref Self)
       (to : lib.AccountId)
-      (value : lib.Balance)
+      (value : ltac:(lib.Balance))
       : M ltac:(lib.Result constr:(unit)) :=
     M.function_body
       (let* from : ltac:(refine lib.AccountId) :=
@@ -876,12 +668,8 @@ Section Impl_lib_Erc20_2.
       let* α0 : ltac:(refine lib.Erc20) := deref self in
       let* α1 : ltac:(refine (mut_ref lib.Erc20)) := borrow_mut α0 in
       let* α2 : ltac:(refine (ref lib.AccountId)) := borrow from in
-      let* α3 : ltac:(refine lib.AccountId) := deref α2 in
-      let* α4 : ltac:(refine (ref lib.AccountId)) := borrow α3 in
-      let* α5 : ltac:(refine (ref lib.AccountId)) := borrow to in
-      let* α6 : ltac:(refine lib.AccountId) := deref α5 in
-      let* α7 : ltac:(refine (ref lib.AccountId)) := borrow α6 in
-      lib.Erc20::["transfer_from_to"] α1 α4 α7 value).
+      let* α3 : ltac:(refine (ref lib.AccountId)) := borrow to in
+      lib.Erc20::["transfer_from_to"] α1 α2 α3 value).
   
   Global Instance AssociatedFunction_transfer :
     Notation.DoubleColon Self "transfer" := {
@@ -891,7 +679,7 @@ Section Impl_lib_Erc20_2.
   Definition approve
       (self : mut_ref Self)
       (spender : lib.AccountId)
-      (value : lib.Balance)
+      (value : ltac:(lib.Balance))
       : M ltac:(lib.Result constr:(unit)) :=
     M.function_body
       (let* owner : ltac:(refine lib.AccountId) :=
@@ -904,22 +692,16 @@ Section Impl_lib_Erc20_2.
         let* α0 : ltac:(refine lib.Erc20) := deref self in
         let* α1 :
             ltac:(refine
-              (lib.Mapping
-                (M.Val (lib.AccountId * lib.AccountId))
-                lib.Balance)) :=
+              (lib.Mapping (M.Val (lib.AccountId * lib.AccountId)) u128)) :=
           α0.["allowances"] in
         let* α2 :
             ltac:(refine
               (mut_ref
-                (lib.Mapping
-                  (M.Val (lib.AccountId * lib.AccountId))
-                  lib.Balance))) :=
+                (lib.Mapping (M.Val (lib.AccountId * lib.AccountId)) u128))) :=
           borrow_mut α1 in
         let* α3 : ltac:(refine (M.Val (lib.AccountId * lib.AccountId))) :=
           M.alloc (owner, spender) in
-        (lib.Mapping
-              (M.Val (lib.AccountId * lib.AccountId))
-              lib.Balance)::["insert"]
+        (lib.Mapping (M.Val (lib.AccountId * lib.AccountId)) u128)::["insert"]
           α2
           α3
           value in
@@ -948,7 +730,7 @@ Section Impl_lib_Erc20_2.
       (self : mut_ref Self)
       (from : lib.AccountId)
       (to : lib.AccountId)
-      (value : lib.Balance)
+      (value : ltac:(lib.Balance))
       : M ltac:(lib.Result constr:(unit)) :=
     M.function_body
       (let* caller : ltac:(refine lib.AccountId) :=
@@ -957,27 +739,16 @@ Section Impl_lib_Erc20_2.
         let* α2 : ltac:(refine lib.Environment) := lib.Erc20::["env"] α1 in
         let* α3 : ltac:(refine (ref lib.Environment)) := borrow α2 in
         lib.Environment::["caller"] α3 in
-      let* allowance : ltac:(refine lib.Balance) :=
+      let* allowance : ltac:(refine u128) :=
         let* α0 : ltac:(refine lib.Erc20) := deref self in
         let* α1 : ltac:(refine (ref lib.Erc20)) := borrow α0 in
         let* α2 : ltac:(refine (ref lib.AccountId)) := borrow from in
-        let* α3 : ltac:(refine lib.AccountId) := deref α2 in
-        let* α4 : ltac:(refine (ref lib.AccountId)) := borrow α3 in
-        let* α5 : ltac:(refine (ref lib.AccountId)) := borrow caller in
-        let* α6 : ltac:(refine lib.AccountId) := deref α5 in
-        let* α7 : ltac:(refine (ref lib.AccountId)) := borrow α6 in
-        lib.Erc20::["allowance_impl"] α1 α4 α7 in
+        let* α3 : ltac:(refine (ref lib.AccountId)) := borrow caller in
+        lib.Erc20::["allowance_impl"] α1 α2 α3 in
       let* _ : ltac:(refine unit) :=
-        let* α0 : ltac:(refine (ref lib.Balance)) := borrow allowance in
-        let* α1 : ltac:(refine (ref lib.Balance)) := borrow value in
-        let* α2 : ltac:(refine bool) :=
-          (core.cmp.PartialOrd.lt
-              (Self := lib.Balance)
-              (Trait := ltac:(refine _)))
-            α0
-            α1 in
-        let* α3 : ltac:(refine bool) := use α2 in
-        if (α3 : bool) then
+        let* α0 : ltac:(refine bool) := BinOp.lt allowance value in
+        let* α1 : ltac:(refine bool) := use α0 in
+        if (α1 : bool) then
           let* _ : ltac:(refine never) :=
             let* α0 : ltac:(refine lib.Error) :=
               M.alloc lib.Error.InsufficientAllowance in
@@ -992,14 +763,10 @@ Section Impl_lib_Erc20_2.
         let* α0 : ltac:(refine lib.Erc20) := deref self in
         let* α1 : ltac:(refine (mut_ref lib.Erc20)) := borrow_mut α0 in
         let* α2 : ltac:(refine (ref lib.AccountId)) := borrow from in
-        let* α3 : ltac:(refine lib.AccountId) := deref α2 in
-        let* α4 : ltac:(refine (ref lib.AccountId)) := borrow α3 in
-        let* α5 : ltac:(refine (ref lib.AccountId)) := borrow to in
-        let* α6 : ltac:(refine lib.AccountId) := deref α5 in
-        let* α7 : ltac:(refine (ref lib.AccountId)) := borrow α6 in
-        let* α8 : ltac:(refine (core.result.Result unit lib.Error)) :=
-          lib.Erc20::["transfer_from_to"] α1 α4 α7 value in
-        let* α9 :
+        let* α3 : ltac:(refine (ref lib.AccountId)) := borrow to in
+        let* α4 : ltac:(refine (core.result.Result unit lib.Error)) :=
+          lib.Erc20::["transfer_from_to"] α1 α2 α3 value in
+        let* α5 :
             ltac:(refine
               (core.ops.control_flow.ControlFlow
                 (core.result.Result core.convert.Infallible lib.Error)
@@ -1007,9 +774,9 @@ Section Impl_lib_Erc20_2.
           (core.ops.try_trait.Try.branch
               (Self := core.result.Result unit lib.Error)
               (Trait := ltac:(refine _)))
-            α8 in
-        let* α10 := M.read α9 in
-        match α10 with
+            α4 in
+        let* α6 := M.read α5 in
+        match α6 with
         | core.ops.control_flow.ControlFlow.Break residual =>
           let* α0 : ltac:(refine (core.result.Result unit lib.Error)) :=
             (core.ops.try_trait.FromResidual.from_residual
@@ -1024,28 +791,17 @@ Section Impl_lib_Erc20_2.
         let* α0 : ltac:(refine lib.Erc20) := deref self in
         let* α1 :
             ltac:(refine
-              (lib.Mapping
-                (M.Val (lib.AccountId * lib.AccountId))
-                lib.Balance)) :=
+              (lib.Mapping (M.Val (lib.AccountId * lib.AccountId)) u128)) :=
           α0.["allowances"] in
         let* α2 :
             ltac:(refine
               (mut_ref
-                (lib.Mapping
-                  (M.Val (lib.AccountId * lib.AccountId))
-                  lib.Balance))) :=
+                (lib.Mapping (M.Val (lib.AccountId * lib.AccountId)) u128))) :=
           borrow_mut α1 in
         let* α3 : ltac:(refine (M.Val (lib.AccountId * lib.AccountId))) :=
           M.alloc (from, caller) in
-        let* α4 : ltac:(refine lib.Balance) :=
-          (core.ops.arith.Sub.sub
-              (Self := lib.Balance)
-              (Trait := ltac:(refine _)))
-            allowance
-            value in
-        (lib.Mapping
-              (M.Val (lib.AccountId * lib.AccountId))
-              lib.Balance)::["insert"]
+        let* α4 : ltac:(refine u128) := BinOp.sub allowance value in
+        (lib.Mapping (M.Val (lib.AccountId * lib.AccountId)) u128)::["insert"]
           α2
           α3
           α4 in

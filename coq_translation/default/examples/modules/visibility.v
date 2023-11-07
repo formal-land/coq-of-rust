@@ -10,13 +10,11 @@ Module my_mod.
             M.alloc [ mk_str "called `my_mod::private_function()`
 " ] in
           let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
-          let* α2 : ltac:(refine (array (ref str))) := deref α1 in
-          let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
-          let* α4 : ltac:(refine (ref (slice (ref str)))) :=
-            pointer_coercion "Unsize" α3 in
-          let* α5 : ltac:(refine core.fmt.Arguments) :=
-            core.fmt.Arguments::["new_const"] α4 in
-          std.io.stdio._print α5 in
+          let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+            pointer_coercion "Unsize" α1 in
+          let* α3 : ltac:(refine core.fmt.Arguments) :=
+            core.fmt.Arguments::["new_const"] α2 in
+          std.io.stdio._print α3 in
         M.alloc tt in
       M.alloc tt).
   
@@ -28,13 +26,11 @@ Module my_mod.
             M.alloc [ mk_str "called `my_mod::function()`
 " ] in
           let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
-          let* α2 : ltac:(refine (array (ref str))) := deref α1 in
-          let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
-          let* α4 : ltac:(refine (ref (slice (ref str)))) :=
-            pointer_coercion "Unsize" α3 in
-          let* α5 : ltac:(refine core.fmt.Arguments) :=
-            core.fmt.Arguments::["new_const"] α4 in
-          std.io.stdio._print α5 in
+          let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+            pointer_coercion "Unsize" α1 in
+          let* α3 : ltac:(refine core.fmt.Arguments) :=
+            core.fmt.Arguments::["new_const"] α2 in
+          std.io.stdio._print α3 in
         M.alloc tt in
       M.alloc tt).
   
@@ -46,13 +42,11 @@ Module my_mod.
             M.alloc [ mk_str "called `my_mod::indirect_access()`, that
 > " ] in
           let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
-          let* α2 : ltac:(refine (array (ref str))) := deref α1 in
-          let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
-          let* α4 : ltac:(refine (ref (slice (ref str)))) :=
-            pointer_coercion "Unsize" α3 in
-          let* α5 : ltac:(refine core.fmt.Arguments) :=
-            core.fmt.Arguments::["new_const"] α4 in
-          std.io.stdio._print α5 in
+          let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+            pointer_coercion "Unsize" α1 in
+          let* α3 : ltac:(refine core.fmt.Arguments) :=
+            core.fmt.Arguments::["new_const"] α2 in
+          std.io.stdio._print α3 in
         M.alloc tt in
       let* _ : ltac:(refine unit) := visibility.my_mod.private_function in
       M.alloc tt).
@@ -66,13 +60,11 @@ Module my_mod.
               M.alloc [ mk_str "called `my_mod::nested::function()`
 " ] in
             let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
-            let* α2 : ltac:(refine (array (ref str))) := deref α1 in
-            let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
-            let* α4 : ltac:(refine (ref (slice (ref str)))) :=
-              pointer_coercion "Unsize" α3 in
-            let* α5 : ltac:(refine core.fmt.Arguments) :=
-              core.fmt.Arguments::["new_const"] α4 in
-            std.io.stdio._print α5 in
+            let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+              pointer_coercion "Unsize" α1 in
+            let* α3 : ltac:(refine core.fmt.Arguments) :=
+              core.fmt.Arguments::["new_const"] α2 in
+            std.io.stdio._print α3 in
           M.alloc tt in
         M.alloc tt).
     
@@ -86,13 +78,11 @@ Module my_mod.
                 [ mk_str "called `my_mod::nested::private_function()`
 " ] in
             let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
-            let* α2 : ltac:(refine (array (ref str))) := deref α1 in
-            let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
-            let* α4 : ltac:(refine (ref (slice (ref str)))) :=
-              pointer_coercion "Unsize" α3 in
-            let* α5 : ltac:(refine core.fmt.Arguments) :=
-              core.fmt.Arguments::["new_const"] α4 in
-            std.io.stdio._print α5 in
+            let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+              pointer_coercion "Unsize" α1 in
+            let* α3 : ltac:(refine core.fmt.Arguments) :=
+              core.fmt.Arguments::["new_const"] α2 in
+            std.io.stdio._print α3 in
           M.alloc tt in
         M.alloc tt).
     
@@ -108,13 +98,11 @@ Module my_mod.
 > "
                 ] in
             let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
-            let* α2 : ltac:(refine (array (ref str))) := deref α1 in
-            let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
-            let* α4 : ltac:(refine (ref (slice (ref str)))) :=
-              pointer_coercion "Unsize" α3 in
-            let* α5 : ltac:(refine core.fmt.Arguments) :=
-              core.fmt.Arguments::["new_const"] α4 in
-            std.io.stdio._print α5 in
+            let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+              pointer_coercion "Unsize" α1 in
+            let* α3 : ltac:(refine core.fmt.Arguments) :=
+              core.fmt.Arguments::["new_const"] α2 in
+            std.io.stdio._print α3 in
           M.alloc tt in
         let* _ : ltac:(refine unit) :=
           visibility.my_mod.nested.public_function_in_nested in
@@ -130,13 +118,11 @@ Module my_mod.
 "
                 ] in
             let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
-            let* α2 : ltac:(refine (array (ref str))) := deref α1 in
-            let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
-            let* α4 : ltac:(refine (ref (slice (ref str)))) :=
-              pointer_coercion "Unsize" α3 in
-            let* α5 : ltac:(refine core.fmt.Arguments) :=
-              core.fmt.Arguments::["new_const"] α4 in
-            std.io.stdio._print α5 in
+            let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+              pointer_coercion "Unsize" α1 in
+            let* α3 : ltac:(refine core.fmt.Arguments) :=
+              core.fmt.Arguments::["new_const"] α2 in
+            std.io.stdio._print α3 in
           M.alloc tt in
         M.alloc tt).
     
@@ -152,13 +138,11 @@ Module my_mod.
 "
                 ] in
             let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
-            let* α2 : ltac:(refine (array (ref str))) := deref α1 in
-            let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
-            let* α4 : ltac:(refine (ref (slice (ref str)))) :=
-              pointer_coercion "Unsize" α3 in
-            let* α5 : ltac:(refine core.fmt.Arguments) :=
-              core.fmt.Arguments::["new_const"] α4 in
-            std.io.stdio._print α5 in
+            let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+              pointer_coercion "Unsize" α1 in
+            let* α3 : ltac:(refine core.fmt.Arguments) :=
+              core.fmt.Arguments::["new_const"] α2 in
+            std.io.stdio._print α3 in
           M.alloc tt in
         M.alloc tt).
   End nested.
@@ -175,13 +159,11 @@ Module my_mod.
 > "
               ] in
           let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
-          let* α2 : ltac:(refine (array (ref str))) := deref α1 in
-          let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
-          let* α4 : ltac:(refine (ref (slice (ref str)))) :=
-            pointer_coercion "Unsize" α3 in
-          let* α5 : ltac:(refine core.fmt.Arguments) :=
-            core.fmt.Arguments::["new_const"] α4 in
-          std.io.stdio._print α5 in
+          let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+            pointer_coercion "Unsize" α1 in
+          let* α3 : ltac:(refine core.fmt.Arguments) :=
+            core.fmt.Arguments::["new_const"] α2 in
+          std.io.stdio._print α3 in
         M.alloc tt in
       let* _ : ltac:(refine unit) :=
         visibility.my_mod.nested.public_function_in_my_mod in
@@ -190,13 +172,11 @@ Module my_mod.
           let* α0 : ltac:(refine (array (ref str))) :=
             M.alloc [ mk_str "> " ] in
           let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
-          let* α2 : ltac:(refine (array (ref str))) := deref α1 in
-          let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
-          let* α4 : ltac:(refine (ref (slice (ref str)))) :=
-            pointer_coercion "Unsize" α3 in
-          let* α5 : ltac:(refine core.fmt.Arguments) :=
-            core.fmt.Arguments::["new_const"] α4 in
-          std.io.stdio._print α5 in
+          let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+            pointer_coercion "Unsize" α1 in
+          let* α3 : ltac:(refine core.fmt.Arguments) :=
+            core.fmt.Arguments::["new_const"] α2 in
+          std.io.stdio._print α3 in
         M.alloc tt in
       let* _ : ltac:(refine unit) :=
         visibility.my_mod.nested.public_function_in_super_mod in
@@ -210,13 +190,11 @@ Module my_mod.
             M.alloc [ mk_str "called `my_mod::public_function_in_crate()`
 " ] in
           let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
-          let* α2 : ltac:(refine (array (ref str))) := deref α1 in
-          let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
-          let* α4 : ltac:(refine (ref (slice (ref str)))) :=
-            pointer_coercion "Unsize" α3 in
-          let* α5 : ltac:(refine core.fmt.Arguments) :=
-            core.fmt.Arguments::["new_const"] α4 in
-          std.io.stdio._print α5 in
+          let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+            pointer_coercion "Unsize" α1 in
+          let* α3 : ltac:(refine core.fmt.Arguments) :=
+            core.fmt.Arguments::["new_const"] α2 in
+          std.io.stdio._print α3 in
         M.alloc tt in
       M.alloc tt).
   
@@ -231,13 +209,11 @@ Module my_mod.
                 [ mk_str "called `my_mod::private_nested::function()`
 " ] in
             let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
-            let* α2 : ltac:(refine (array (ref str))) := deref α1 in
-            let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
-            let* α4 : ltac:(refine (ref (slice (ref str)))) :=
-              pointer_coercion "Unsize" α3 in
-            let* α5 : ltac:(refine core.fmt.Arguments) :=
-              core.fmt.Arguments::["new_const"] α4 in
-            std.io.stdio._print α5 in
+            let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+              pointer_coercion "Unsize" α1 in
+            let* α3 : ltac:(refine core.fmt.Arguments) :=
+              core.fmt.Arguments::["new_const"] α2 in
+            std.io.stdio._print α3 in
           M.alloc tt in
         M.alloc tt).
     
@@ -254,13 +230,11 @@ Module my_mod.
 "
                 ] in
             let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
-            let* α2 : ltac:(refine (array (ref str))) := deref α1 in
-            let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
-            let* α4 : ltac:(refine (ref (slice (ref str)))) :=
-              pointer_coercion "Unsize" α3 in
-            let* α5 : ltac:(refine core.fmt.Arguments) :=
-              core.fmt.Arguments::["new_const"] α4 in
-            std.io.stdio._print α5 in
+            let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+              pointer_coercion "Unsize" α1 in
+            let* α3 : ltac:(refine core.fmt.Arguments) :=
+              core.fmt.Arguments::["new_const"] α2 in
+            std.io.stdio._print α3 in
           M.alloc tt in
         M.alloc tt).
   End private_nested.
@@ -274,13 +248,11 @@ Definition private_function `{ℋ : State.Trait} : M unit :=
           M.alloc [ mk_str "called `my_mod::private_function()`
 " ] in
         let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
-        let* α2 : ltac:(refine (array (ref str))) := deref α1 in
-        let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
-        let* α4 : ltac:(refine (ref (slice (ref str)))) :=
-          pointer_coercion "Unsize" α3 in
-        let* α5 : ltac:(refine core.fmt.Arguments) :=
-          core.fmt.Arguments::["new_const"] α4 in
-        std.io.stdio._print α5 in
+        let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+          pointer_coercion "Unsize" α1 in
+        let* α3 : ltac:(refine core.fmt.Arguments) :=
+          core.fmt.Arguments::["new_const"] α2 in
+        std.io.stdio._print α3 in
       M.alloc tt in
     M.alloc tt).
 
@@ -292,13 +264,11 @@ Definition function `{ℋ : State.Trait} : M unit :=
           M.alloc [ mk_str "called `my_mod::function()`
 " ] in
         let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
-        let* α2 : ltac:(refine (array (ref str))) := deref α1 in
-        let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
-        let* α4 : ltac:(refine (ref (slice (ref str)))) :=
-          pointer_coercion "Unsize" α3 in
-        let* α5 : ltac:(refine core.fmt.Arguments) :=
-          core.fmt.Arguments::["new_const"] α4 in
-        std.io.stdio._print α5 in
+        let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+          pointer_coercion "Unsize" α1 in
+        let* α3 : ltac:(refine core.fmt.Arguments) :=
+          core.fmt.Arguments::["new_const"] α2 in
+        std.io.stdio._print α3 in
       M.alloc tt in
     M.alloc tt).
 
@@ -310,13 +280,11 @@ Definition indirect_access `{ℋ : State.Trait} : M unit :=
           M.alloc [ mk_str "called `my_mod::indirect_access()`, that
 > " ] in
         let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
-        let* α2 : ltac:(refine (array (ref str))) := deref α1 in
-        let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
-        let* α4 : ltac:(refine (ref (slice (ref str)))) :=
-          pointer_coercion "Unsize" α3 in
-        let* α5 : ltac:(refine core.fmt.Arguments) :=
-          core.fmt.Arguments::["new_const"] α4 in
-        std.io.stdio._print α5 in
+        let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+          pointer_coercion "Unsize" α1 in
+        let* α3 : ltac:(refine core.fmt.Arguments) :=
+          core.fmt.Arguments::["new_const"] α2 in
+        std.io.stdio._print α3 in
       M.alloc tt in
     let* _ : ltac:(refine unit) := visibility.my_mod.private_function in
     M.alloc tt).
@@ -330,13 +298,11 @@ Module nested.
             M.alloc [ mk_str "called `my_mod::nested::function()`
 " ] in
           let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
-          let* α2 : ltac:(refine (array (ref str))) := deref α1 in
-          let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
-          let* α4 : ltac:(refine (ref (slice (ref str)))) :=
-            pointer_coercion "Unsize" α3 in
-          let* α5 : ltac:(refine core.fmt.Arguments) :=
-            core.fmt.Arguments::["new_const"] α4 in
-          std.io.stdio._print α5 in
+          let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+            pointer_coercion "Unsize" α1 in
+          let* α3 : ltac:(refine core.fmt.Arguments) :=
+            core.fmt.Arguments::["new_const"] α2 in
+          std.io.stdio._print α3 in
         M.alloc tt in
       M.alloc tt).
   
@@ -349,13 +315,11 @@ Module nested.
             M.alloc [ mk_str "called `my_mod::nested::private_function()`
 " ] in
           let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
-          let* α2 : ltac:(refine (array (ref str))) := deref α1 in
-          let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
-          let* α4 : ltac:(refine (ref (slice (ref str)))) :=
-            pointer_coercion "Unsize" α3 in
-          let* α5 : ltac:(refine core.fmt.Arguments) :=
-            core.fmt.Arguments::["new_const"] α4 in
-          std.io.stdio._print α5 in
+          let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+            pointer_coercion "Unsize" α1 in
+          let* α3 : ltac:(refine core.fmt.Arguments) :=
+            core.fmt.Arguments::["new_const"] α2 in
+          std.io.stdio._print α3 in
         M.alloc tt in
       M.alloc tt).
   
@@ -371,13 +335,11 @@ Module nested.
 > "
               ] in
           let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
-          let* α2 : ltac:(refine (array (ref str))) := deref α1 in
-          let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
-          let* α4 : ltac:(refine (ref (slice (ref str)))) :=
-            pointer_coercion "Unsize" α3 in
-          let* α5 : ltac:(refine core.fmt.Arguments) :=
-            core.fmt.Arguments::["new_const"] α4 in
-          std.io.stdio._print α5 in
+          let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+            pointer_coercion "Unsize" α1 in
+          let* α3 : ltac:(refine core.fmt.Arguments) :=
+            core.fmt.Arguments::["new_const"] α2 in
+          std.io.stdio._print α3 in
         M.alloc tt in
       let* _ : ltac:(refine unit) :=
         visibility.my_mod.nested.public_function_in_nested in
@@ -393,13 +355,11 @@ Module nested.
 "
               ] in
           let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
-          let* α2 : ltac:(refine (array (ref str))) := deref α1 in
-          let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
-          let* α4 : ltac:(refine (ref (slice (ref str)))) :=
-            pointer_coercion "Unsize" α3 in
-          let* α5 : ltac:(refine core.fmt.Arguments) :=
-            core.fmt.Arguments::["new_const"] α4 in
-          std.io.stdio._print α5 in
+          let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+            pointer_coercion "Unsize" α1 in
+          let* α3 : ltac:(refine core.fmt.Arguments) :=
+            core.fmt.Arguments::["new_const"] α2 in
+          std.io.stdio._print α3 in
         M.alloc tt in
       M.alloc tt).
   
@@ -415,13 +375,11 @@ Module nested.
 "
               ] in
           let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
-          let* α2 : ltac:(refine (array (ref str))) := deref α1 in
-          let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
-          let* α4 : ltac:(refine (ref (slice (ref str)))) :=
-            pointer_coercion "Unsize" α3 in
-          let* α5 : ltac:(refine core.fmt.Arguments) :=
-            core.fmt.Arguments::["new_const"] α4 in
-          std.io.stdio._print α5 in
+          let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+            pointer_coercion "Unsize" α1 in
+          let* α3 : ltac:(refine core.fmt.Arguments) :=
+            core.fmt.Arguments::["new_const"] α2 in
+          std.io.stdio._print α3 in
         M.alloc tt in
       M.alloc tt).
 End nested.
@@ -434,13 +392,11 @@ Definition function `{ℋ : State.Trait} : M unit :=
           M.alloc [ mk_str "called `my_mod::nested::function()`
 " ] in
         let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
-        let* α2 : ltac:(refine (array (ref str))) := deref α1 in
-        let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
-        let* α4 : ltac:(refine (ref (slice (ref str)))) :=
-          pointer_coercion "Unsize" α3 in
-        let* α5 : ltac:(refine core.fmt.Arguments) :=
-          core.fmt.Arguments::["new_const"] α4 in
-        std.io.stdio._print α5 in
+        let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+          pointer_coercion "Unsize" α1 in
+        let* α3 : ltac:(refine core.fmt.Arguments) :=
+          core.fmt.Arguments::["new_const"] α2 in
+        std.io.stdio._print α3 in
       M.alloc tt in
     M.alloc tt).
 
@@ -453,13 +409,11 @@ Definition private_function `{ℋ : State.Trait} : M unit :=
           M.alloc [ mk_str "called `my_mod::nested::private_function()`
 " ] in
         let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
-        let* α2 : ltac:(refine (array (ref str))) := deref α1 in
-        let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
-        let* α4 : ltac:(refine (ref (slice (ref str)))) :=
-          pointer_coercion "Unsize" α3 in
-        let* α5 : ltac:(refine core.fmt.Arguments) :=
-          core.fmt.Arguments::["new_const"] α4 in
-        std.io.stdio._print α5 in
+        let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+          pointer_coercion "Unsize" α1 in
+        let* α3 : ltac:(refine core.fmt.Arguments) :=
+          core.fmt.Arguments::["new_const"] α2 in
+        std.io.stdio._print α3 in
       M.alloc tt in
     M.alloc tt).
 
@@ -475,13 +429,11 @@ Definition public_function_in_my_mod `{ℋ : State.Trait} : M unit :=
 > "
             ] in
         let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
-        let* α2 : ltac:(refine (array (ref str))) := deref α1 in
-        let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
-        let* α4 : ltac:(refine (ref (slice (ref str)))) :=
-          pointer_coercion "Unsize" α3 in
-        let* α5 : ltac:(refine core.fmt.Arguments) :=
-          core.fmt.Arguments::["new_const"] α4 in
-        std.io.stdio._print α5 in
+        let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+          pointer_coercion "Unsize" α1 in
+        let* α3 : ltac:(refine core.fmt.Arguments) :=
+          core.fmt.Arguments::["new_const"] α2 in
+        std.io.stdio._print α3 in
       M.alloc tt in
     let* _ : ltac:(refine unit) :=
       visibility.my_mod.nested.public_function_in_nested in
@@ -497,13 +449,11 @@ Definition public_function_in_nested `{ℋ : State.Trait} : M unit :=
 "
             ] in
         let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
-        let* α2 : ltac:(refine (array (ref str))) := deref α1 in
-        let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
-        let* α4 : ltac:(refine (ref (slice (ref str)))) :=
-          pointer_coercion "Unsize" α3 in
-        let* α5 : ltac:(refine core.fmt.Arguments) :=
-          core.fmt.Arguments::["new_const"] α4 in
-        std.io.stdio._print α5 in
+        let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+          pointer_coercion "Unsize" α1 in
+        let* α3 : ltac:(refine core.fmt.Arguments) :=
+          core.fmt.Arguments::["new_const"] α2 in
+        std.io.stdio._print α3 in
       M.alloc tt in
     M.alloc tt).
 
@@ -517,13 +467,11 @@ Definition public_function_in_super_mod `{ℋ : State.Trait} : M unit :=
 "
             ] in
         let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
-        let* α2 : ltac:(refine (array (ref str))) := deref α1 in
-        let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
-        let* α4 : ltac:(refine (ref (slice (ref str)))) :=
-          pointer_coercion "Unsize" α3 in
-        let* α5 : ltac:(refine core.fmt.Arguments) :=
-          core.fmt.Arguments::["new_const"] α4 in
-        std.io.stdio._print α5 in
+        let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+          pointer_coercion "Unsize" α1 in
+        let* α3 : ltac:(refine core.fmt.Arguments) :=
+          core.fmt.Arguments::["new_const"] α2 in
+        std.io.stdio._print α3 in
       M.alloc tt in
     M.alloc tt).
 
@@ -539,13 +487,11 @@ Definition call_public_function_in_my_mod `{ℋ : State.Trait} : M unit :=
 > "
             ] in
         let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
-        let* α2 : ltac:(refine (array (ref str))) := deref α1 in
-        let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
-        let* α4 : ltac:(refine (ref (slice (ref str)))) :=
-          pointer_coercion "Unsize" α3 in
-        let* α5 : ltac:(refine core.fmt.Arguments) :=
-          core.fmt.Arguments::["new_const"] α4 in
-        std.io.stdio._print α5 in
+        let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+          pointer_coercion "Unsize" α1 in
+        let* α3 : ltac:(refine core.fmt.Arguments) :=
+          core.fmt.Arguments::["new_const"] α2 in
+        std.io.stdio._print α3 in
       M.alloc tt in
     let* _ : ltac:(refine unit) :=
       visibility.my_mod.nested.public_function_in_my_mod in
@@ -553,13 +499,11 @@ Definition call_public_function_in_my_mod `{ℋ : State.Trait} : M unit :=
       let* _ : ltac:(refine unit) :=
         let* α0 : ltac:(refine (array (ref str))) := M.alloc [ mk_str "> " ] in
         let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
-        let* α2 : ltac:(refine (array (ref str))) := deref α1 in
-        let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
-        let* α4 : ltac:(refine (ref (slice (ref str)))) :=
-          pointer_coercion "Unsize" α3 in
-        let* α5 : ltac:(refine core.fmt.Arguments) :=
-          core.fmt.Arguments::["new_const"] α4 in
-        std.io.stdio._print α5 in
+        let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+          pointer_coercion "Unsize" α1 in
+        let* α3 : ltac:(refine core.fmt.Arguments) :=
+          core.fmt.Arguments::["new_const"] α2 in
+        std.io.stdio._print α3 in
       M.alloc tt in
     let* _ : ltac:(refine unit) :=
       visibility.my_mod.nested.public_function_in_super_mod in
@@ -573,13 +517,11 @@ Definition public_function_in_crate `{ℋ : State.Trait} : M unit :=
           M.alloc [ mk_str "called `my_mod::public_function_in_crate()`
 " ] in
         let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
-        let* α2 : ltac:(refine (array (ref str))) := deref α1 in
-        let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
-        let* α4 : ltac:(refine (ref (slice (ref str)))) :=
-          pointer_coercion "Unsize" α3 in
-        let* α5 : ltac:(refine core.fmt.Arguments) :=
-          core.fmt.Arguments::["new_const"] α4 in
-        std.io.stdio._print α5 in
+        let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+          pointer_coercion "Unsize" α1 in
+        let* α3 : ltac:(refine core.fmt.Arguments) :=
+          core.fmt.Arguments::["new_const"] α2 in
+        std.io.stdio._print α3 in
       M.alloc tt in
     M.alloc tt).
 
@@ -593,13 +535,11 @@ Module private_nested.
             M.alloc [ mk_str "called `my_mod::private_nested::function()`
 " ] in
           let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
-          let* α2 : ltac:(refine (array (ref str))) := deref α1 in
-          let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
-          let* α4 : ltac:(refine (ref (slice (ref str)))) :=
-            pointer_coercion "Unsize" α3 in
-          let* α5 : ltac:(refine core.fmt.Arguments) :=
-            core.fmt.Arguments::["new_const"] α4 in
-          std.io.stdio._print α5 in
+          let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+            pointer_coercion "Unsize" α1 in
+          let* α3 : ltac:(refine core.fmt.Arguments) :=
+            core.fmt.Arguments::["new_const"] α2 in
+          std.io.stdio._print α3 in
         M.alloc tt in
       M.alloc tt).
   
@@ -614,13 +554,11 @@ Module private_nested.
 "
               ] in
           let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
-          let* α2 : ltac:(refine (array (ref str))) := deref α1 in
-          let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
-          let* α4 : ltac:(refine (ref (slice (ref str)))) :=
-            pointer_coercion "Unsize" α3 in
-          let* α5 : ltac:(refine core.fmt.Arguments) :=
-            core.fmt.Arguments::["new_const"] α4 in
-          std.io.stdio._print α5 in
+          let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+            pointer_coercion "Unsize" α1 in
+          let* α3 : ltac:(refine core.fmt.Arguments) :=
+            core.fmt.Arguments::["new_const"] α2 in
+          std.io.stdio._print α3 in
         M.alloc tt in
       M.alloc tt).
 End private_nested.
@@ -634,13 +572,11 @@ Definition function `{ℋ : State.Trait} : M unit :=
           M.alloc [ mk_str "called `my_mod::private_nested::function()`
 " ] in
         let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
-        let* α2 : ltac:(refine (array (ref str))) := deref α1 in
-        let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
-        let* α4 : ltac:(refine (ref (slice (ref str)))) :=
-          pointer_coercion "Unsize" α3 in
-        let* α5 : ltac:(refine core.fmt.Arguments) :=
-          core.fmt.Arguments::["new_const"] α4 in
-        std.io.stdio._print α5 in
+        let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+          pointer_coercion "Unsize" α1 in
+        let* α3 : ltac:(refine core.fmt.Arguments) :=
+          core.fmt.Arguments::["new_const"] α2 in
+        std.io.stdio._print α3 in
       M.alloc tt in
     M.alloc tt).
 
@@ -655,13 +591,11 @@ Definition restricted_function `{ℋ : State.Trait} : M unit :=
 "
             ] in
         let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
-        let* α2 : ltac:(refine (array (ref str))) := deref α1 in
-        let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
-        let* α4 : ltac:(refine (ref (slice (ref str)))) :=
-          pointer_coercion "Unsize" α3 in
-        let* α5 : ltac:(refine core.fmt.Arguments) :=
-          core.fmt.Arguments::["new_const"] α4 in
-        std.io.stdio._print α5 in
+        let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+          pointer_coercion "Unsize" α1 in
+        let* α3 : ltac:(refine core.fmt.Arguments) :=
+          core.fmt.Arguments::["new_const"] α2 in
+        std.io.stdio._print α3 in
       M.alloc tt in
     M.alloc tt).
 
@@ -673,13 +607,11 @@ Definition function `{ℋ : State.Trait} : M unit :=
           M.alloc [ mk_str "called `function()`
 " ] in
         let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
-        let* α2 : ltac:(refine (array (ref str))) := deref α1 in
-        let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
-        let* α4 : ltac:(refine (ref (slice (ref str)))) :=
-          pointer_coercion "Unsize" α3 in
-        let* α5 : ltac:(refine core.fmt.Arguments) :=
-          core.fmt.Arguments::["new_const"] α4 in
-        std.io.stdio._print α5 in
+        let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+          pointer_coercion "Unsize" α1 in
+        let* α3 : ltac:(refine core.fmt.Arguments) :=
+          core.fmt.Arguments::["new_const"] α2 in
+        std.io.stdio._print α3 in
       M.alloc tt in
     M.alloc tt).
 

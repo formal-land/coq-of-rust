@@ -50,9 +50,7 @@ Section Impl_generics_implementation_Val.
     M.function_body
       (let* α0 : ltac:(refine generics_implementation.Val) := deref self in
       let* α1 : ltac:(refine f64) := α0.["val"] in
-      let* α2 : ltac:(refine (ref f64)) := borrow α1 in
-      let* α3 : ltac:(refine f64) := deref α2 in
-      borrow α3).
+      borrow α1).
   
   Global Instance AssociatedFunction_value :
     Notation.DoubleColon Self "value" := {
@@ -74,9 +72,7 @@ Section Impl_generics_implementation_GenVal_T.
       (let* α0 : ltac:(refine (generics_implementation.GenVal T)) :=
         deref self in
       let* α1 : ltac:(refine T) := α0.["gen_val"] in
-      let* α2 : ltac:(refine (ref T)) := borrow α1 in
-      let* α3 : ltac:(refine T) := deref α2 in
-      borrow α3).
+      borrow α1).
   
   Global Instance AssociatedFunction_value :
     Notation.DoubleColon Self "value" := {
@@ -100,38 +96,29 @@ Definition main `{ℋ : State.Trait} : M unit :=
           M.alloc [ mk_str ""; mk_str ", "; mk_str "
 " ] in
         let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
-        let* α2 : ltac:(refine (array (ref str))) := deref α1 in
-        let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
-        let* α4 : ltac:(refine (ref (slice (ref str)))) :=
-          pointer_coercion "Unsize" α3 in
-        let* α5 : ltac:(refine (ref generics_implementation.Val)) := borrow x in
-        let* α6 : ltac:(refine (ref f64)) :=
-          generics_implementation.Val::["value"] α5 in
-        let* α7 : ltac:(refine (ref (ref f64))) := borrow α6 in
-        let* α8 : ltac:(refine (ref f64)) := deref α7 in
-        let* α9 : ltac:(refine (ref (ref f64))) := borrow α8 in
+        let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+          pointer_coercion "Unsize" α1 in
+        let* α3 : ltac:(refine (ref generics_implementation.Val)) := borrow x in
+        let* α4 : ltac:(refine (ref f64)) :=
+          generics_implementation.Val::["value"] α3 in
+        let* α5 : ltac:(refine (ref (ref f64))) := borrow α4 in
+        let* α6 : ltac:(refine core.fmt.rt.Argument) :=
+          core.fmt.rt.Argument::["new_display"] α5 in
+        let* α7 : ltac:(refine (ref (generics_implementation.GenVal i32))) :=
+          borrow y in
+        let* α8 : ltac:(refine (ref i32)) :=
+          (generics_implementation.GenVal i32)::["value"] α7 in
+        let* α9 : ltac:(refine (ref (ref i32))) := borrow α8 in
         let* α10 : ltac:(refine core.fmt.rt.Argument) :=
           core.fmt.rt.Argument::["new_display"] α9 in
-        let* α11 : ltac:(refine (ref (generics_implementation.GenVal i32))) :=
-          borrow y in
-        let* α12 : ltac:(refine (ref i32)) :=
-          (generics_implementation.GenVal i32)::["value"] α11 in
-        let* α13 : ltac:(refine (ref (ref i32))) := borrow α12 in
-        let* α14 : ltac:(refine (ref i32)) := deref α13 in
-        let* α15 : ltac:(refine (ref (ref i32))) := borrow α14 in
-        let* α16 : ltac:(refine core.fmt.rt.Argument) :=
-          core.fmt.rt.Argument::["new_display"] α15 in
-        let* α17 : ltac:(refine (array core.fmt.rt.Argument)) :=
-          M.alloc [ α10; α16 ] in
-        let* α18 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
-          borrow α17 in
-        let* α19 : ltac:(refine (array core.fmt.rt.Argument)) := deref α18 in
-        let* α20 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
-          borrow α19 in
-        let* α21 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
-          pointer_coercion "Unsize" α20 in
-        let* α22 : ltac:(refine core.fmt.Arguments) :=
-          core.fmt.Arguments::["new_v1"] α4 α21 in
-        std.io.stdio._print α22 in
+        let* α11 : ltac:(refine (array core.fmt.rt.Argument)) :=
+          M.alloc [ α6; α10 ] in
+        let* α12 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+          borrow α11 in
+        let* α13 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+          pointer_coercion "Unsize" α12 in
+        let* α14 : ltac:(refine core.fmt.Arguments) :=
+          core.fmt.Arguments::["new_v1"] α2 α13 in
+        std.io.stdio._print α14 in
       M.alloc tt in
     M.alloc tt).

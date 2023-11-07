@@ -117,14 +117,10 @@ Definition main `{ℋ : State.Trait} : M unit :=
     let* username : ltac:(refine alloc.string.String) :=
       let* α0 : ltac:(refine (ref disambiguating_overlapping_traits.Form)) :=
         borrow form in
-      let* α1 : ltac:(refine disambiguating_overlapping_traits.Form) :=
-        deref α0 in
-      let* α2 : ltac:(refine (ref disambiguating_overlapping_traits.Form)) :=
-        borrow α1 in
       (disambiguating_overlapping_traits.UsernameWidget.get
           (Self := disambiguating_overlapping_traits.Form)
           (Trait := ltac:(refine _)))
-        α2 in
+        α0 in
     let* _ : ltac:(refine unit) :=
       let* α0 : ltac:(refine str) := deref (mk_str "rustacean") in
       let* α1 : ltac:(refine (ref str)) := borrow α0 in
@@ -160,15 +156,11 @@ Definition main `{ℋ : State.Trait} : M unit :=
           let* _ : ltac:(refine never) :=
             let* α0 : ltac:(refine alloc.string.String) := deref left_val in
             let* α1 : ltac:(refine (ref alloc.string.String)) := borrow α0 in
-            let* α2 : ltac:(refine alloc.string.String) := deref α1 in
+            let* α2 : ltac:(refine alloc.string.String) := deref right_val in
             let* α3 : ltac:(refine (ref alloc.string.String)) := borrow α2 in
-            let* α4 : ltac:(refine alloc.string.String) := deref right_val in
-            let* α5 : ltac:(refine (ref alloc.string.String)) := borrow α4 in
-            let* α6 : ltac:(refine alloc.string.String) := deref α5 in
-            let* α7 : ltac:(refine (ref alloc.string.String)) := borrow α6 in
-            let* α8 : ltac:(refine (core.option.Option core.fmt.Arguments)) :=
+            let* α4 : ltac:(refine (core.option.Option core.fmt.Arguments)) :=
               M.alloc core.option.Option.None in
-            core.panicking.assert_failed kind α3 α7 α8 in
+            core.panicking.assert_failed kind α1 α3 α4 in
           let* α0 : ltac:(refine unit) := M.alloc tt in
           never_to_any α0
         else
@@ -177,14 +169,10 @@ Definition main `{ℋ : State.Trait} : M unit :=
     let* age : ltac:(refine u8) :=
       let* α0 : ltac:(refine (ref disambiguating_overlapping_traits.Form)) :=
         borrow form in
-      let* α1 : ltac:(refine disambiguating_overlapping_traits.Form) :=
-        deref α0 in
-      let* α2 : ltac:(refine (ref disambiguating_overlapping_traits.Form)) :=
-        borrow α1 in
       (disambiguating_overlapping_traits.AgeWidget.get
           (Self := disambiguating_overlapping_traits.Form)
           (Trait := ltac:(refine _)))
-        α2 in
+        α0 in
     let* _ : ltac:(refine unit) :=
       let* α0 : ltac:(refine u8) := M.alloc 28 in
       let* α1 : ltac:(refine (ref u8)) := borrow α0 in
@@ -205,15 +193,11 @@ Definition main `{ℋ : State.Trait} : M unit :=
           let* _ : ltac:(refine never) :=
             let* α0 : ltac:(refine u8) := deref left_val in
             let* α1 : ltac:(refine (ref u8)) := borrow α0 in
-            let* α2 : ltac:(refine u8) := deref α1 in
+            let* α2 : ltac:(refine u8) := deref right_val in
             let* α3 : ltac:(refine (ref u8)) := borrow α2 in
-            let* α4 : ltac:(refine u8) := deref right_val in
-            let* α5 : ltac:(refine (ref u8)) := borrow α4 in
-            let* α6 : ltac:(refine u8) := deref α5 in
-            let* α7 : ltac:(refine (ref u8)) := borrow α6 in
-            let* α8 : ltac:(refine (core.option.Option core.fmt.Arguments)) :=
+            let* α4 : ltac:(refine (core.option.Option core.fmt.Arguments)) :=
               M.alloc core.option.Option.None in
-            core.panicking.assert_failed kind α3 α7 α8 in
+            core.panicking.assert_failed kind α1 α3 α4 in
           let* α0 : ltac:(refine unit) := M.alloc tt in
           never_to_any α0
         else

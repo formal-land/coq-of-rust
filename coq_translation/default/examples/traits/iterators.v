@@ -165,13 +165,11 @@ Definition main `{ℋ : State.Trait} : M unit :=
           M.alloc [ mk_str "Four consecutive `next` calls on 0..3
 " ] in
         let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
-        let* α2 : ltac:(refine (array (ref str))) := deref α1 in
-        let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
-        let* α4 : ltac:(refine (ref (slice (ref str)))) :=
-          pointer_coercion "Unsize" α3 in
-        let* α5 : ltac:(refine core.fmt.Arguments) :=
-          core.fmt.Arguments::["new_const"] α4 in
-        std.io.stdio._print α5 in
+        let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+          pointer_coercion "Unsize" α1 in
+        let* α3 : ltac:(refine core.fmt.Arguments) :=
+          core.fmt.Arguments::["new_const"] α2 in
+        std.io.stdio._print α3 in
       M.alloc tt in
     let* _ : ltac:(refine unit) :=
       let* _ : ltac:(refine unit) :=
@@ -179,34 +177,27 @@ Definition main `{ℋ : State.Trait} : M unit :=
           M.alloc [ mk_str "> "; mk_str "
 " ] in
         let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
-        let* α2 : ltac:(refine (array (ref str))) := deref α1 in
-        let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
-        let* α4 : ltac:(refine (ref (slice (ref str)))) :=
-          pointer_coercion "Unsize" α3 in
-        let* α5 : ltac:(refine (mut_ref (core.ops.range.Range i32))) :=
+        let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+          pointer_coercion "Unsize" α1 in
+        let* α3 : ltac:(refine (mut_ref (core.ops.range.Range i32))) :=
           borrow_mut sequence in
-        let* α6 : ltac:(refine (core.option.Option i32)) :=
+        let* α4 : ltac:(refine (core.option.Option i32)) :=
           (core.iter.traits.iterator.Iterator.next
               (Self := core.ops.range.Range i32)
               (Trait := ltac:(refine _)))
-            α5 in
-        let* α7 : ltac:(refine (ref (core.option.Option i32))) := borrow α6 in
-        let* α8 : ltac:(refine (core.option.Option i32)) := deref α7 in
-        let* α9 : ltac:(refine (ref (core.option.Option i32))) := borrow α8 in
-        let* α10 : ltac:(refine core.fmt.rt.Argument) :=
-          core.fmt.rt.Argument::["new_debug"] α9 in
-        let* α11 : ltac:(refine (array core.fmt.rt.Argument)) :=
-          M.alloc [ α10 ] in
-        let* α12 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
-          borrow α11 in
-        let* α13 : ltac:(refine (array core.fmt.rt.Argument)) := deref α12 in
-        let* α14 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
-          borrow α13 in
-        let* α15 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
-          pointer_coercion "Unsize" α14 in
-        let* α16 : ltac:(refine core.fmt.Arguments) :=
-          core.fmt.Arguments::["new_v1"] α4 α15 in
-        std.io.stdio._print α16 in
+            α3 in
+        let* α5 : ltac:(refine (ref (core.option.Option i32))) := borrow α4 in
+        let* α6 : ltac:(refine core.fmt.rt.Argument) :=
+          core.fmt.rt.Argument::["new_debug"] α5 in
+        let* α7 : ltac:(refine (array core.fmt.rt.Argument)) :=
+          M.alloc [ α6 ] in
+        let* α8 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+          borrow α7 in
+        let* α9 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+          pointer_coercion "Unsize" α8 in
+        let* α10 : ltac:(refine core.fmt.Arguments) :=
+          core.fmt.Arguments::["new_v1"] α2 α9 in
+        std.io.stdio._print α10 in
       M.alloc tt in
     let* _ : ltac:(refine unit) :=
       let* _ : ltac:(refine unit) :=
@@ -214,34 +205,27 @@ Definition main `{ℋ : State.Trait} : M unit :=
           M.alloc [ mk_str "> "; mk_str "
 " ] in
         let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
-        let* α2 : ltac:(refine (array (ref str))) := deref α1 in
-        let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
-        let* α4 : ltac:(refine (ref (slice (ref str)))) :=
-          pointer_coercion "Unsize" α3 in
-        let* α5 : ltac:(refine (mut_ref (core.ops.range.Range i32))) :=
+        let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+          pointer_coercion "Unsize" α1 in
+        let* α3 : ltac:(refine (mut_ref (core.ops.range.Range i32))) :=
           borrow_mut sequence in
-        let* α6 : ltac:(refine (core.option.Option i32)) :=
+        let* α4 : ltac:(refine (core.option.Option i32)) :=
           (core.iter.traits.iterator.Iterator.next
               (Self := core.ops.range.Range i32)
               (Trait := ltac:(refine _)))
-            α5 in
-        let* α7 : ltac:(refine (ref (core.option.Option i32))) := borrow α6 in
-        let* α8 : ltac:(refine (core.option.Option i32)) := deref α7 in
-        let* α9 : ltac:(refine (ref (core.option.Option i32))) := borrow α8 in
-        let* α10 : ltac:(refine core.fmt.rt.Argument) :=
-          core.fmt.rt.Argument::["new_debug"] α9 in
-        let* α11 : ltac:(refine (array core.fmt.rt.Argument)) :=
-          M.alloc [ α10 ] in
-        let* α12 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
-          borrow α11 in
-        let* α13 : ltac:(refine (array core.fmt.rt.Argument)) := deref α12 in
-        let* α14 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
-          borrow α13 in
-        let* α15 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
-          pointer_coercion "Unsize" α14 in
-        let* α16 : ltac:(refine core.fmt.Arguments) :=
-          core.fmt.Arguments::["new_v1"] α4 α15 in
-        std.io.stdio._print α16 in
+            α3 in
+        let* α5 : ltac:(refine (ref (core.option.Option i32))) := borrow α4 in
+        let* α6 : ltac:(refine core.fmt.rt.Argument) :=
+          core.fmt.rt.Argument::["new_debug"] α5 in
+        let* α7 : ltac:(refine (array core.fmt.rt.Argument)) :=
+          M.alloc [ α6 ] in
+        let* α8 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+          borrow α7 in
+        let* α9 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+          pointer_coercion "Unsize" α8 in
+        let* α10 : ltac:(refine core.fmt.Arguments) :=
+          core.fmt.Arguments::["new_v1"] α2 α9 in
+        std.io.stdio._print α10 in
       M.alloc tt in
     let* _ : ltac:(refine unit) :=
       let* _ : ltac:(refine unit) :=
@@ -249,34 +233,27 @@ Definition main `{ℋ : State.Trait} : M unit :=
           M.alloc [ mk_str "> "; mk_str "
 " ] in
         let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
-        let* α2 : ltac:(refine (array (ref str))) := deref α1 in
-        let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
-        let* α4 : ltac:(refine (ref (slice (ref str)))) :=
-          pointer_coercion "Unsize" α3 in
-        let* α5 : ltac:(refine (mut_ref (core.ops.range.Range i32))) :=
+        let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+          pointer_coercion "Unsize" α1 in
+        let* α3 : ltac:(refine (mut_ref (core.ops.range.Range i32))) :=
           borrow_mut sequence in
-        let* α6 : ltac:(refine (core.option.Option i32)) :=
+        let* α4 : ltac:(refine (core.option.Option i32)) :=
           (core.iter.traits.iterator.Iterator.next
               (Self := core.ops.range.Range i32)
               (Trait := ltac:(refine _)))
-            α5 in
-        let* α7 : ltac:(refine (ref (core.option.Option i32))) := borrow α6 in
-        let* α8 : ltac:(refine (core.option.Option i32)) := deref α7 in
-        let* α9 : ltac:(refine (ref (core.option.Option i32))) := borrow α8 in
-        let* α10 : ltac:(refine core.fmt.rt.Argument) :=
-          core.fmt.rt.Argument::["new_debug"] α9 in
-        let* α11 : ltac:(refine (array core.fmt.rt.Argument)) :=
-          M.alloc [ α10 ] in
-        let* α12 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
-          borrow α11 in
-        let* α13 : ltac:(refine (array core.fmt.rt.Argument)) := deref α12 in
-        let* α14 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
-          borrow α13 in
-        let* α15 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
-          pointer_coercion "Unsize" α14 in
-        let* α16 : ltac:(refine core.fmt.Arguments) :=
-          core.fmt.Arguments::["new_v1"] α4 α15 in
-        std.io.stdio._print α16 in
+            α3 in
+        let* α5 : ltac:(refine (ref (core.option.Option i32))) := borrow α4 in
+        let* α6 : ltac:(refine core.fmt.rt.Argument) :=
+          core.fmt.rt.Argument::["new_debug"] α5 in
+        let* α7 : ltac:(refine (array core.fmt.rt.Argument)) :=
+          M.alloc [ α6 ] in
+        let* α8 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+          borrow α7 in
+        let* α9 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+          pointer_coercion "Unsize" α8 in
+        let* α10 : ltac:(refine core.fmt.Arguments) :=
+          core.fmt.Arguments::["new_v1"] α2 α9 in
+        std.io.stdio._print α10 in
       M.alloc tt in
     let* _ : ltac:(refine unit) :=
       let* _ : ltac:(refine unit) :=
@@ -284,34 +261,27 @@ Definition main `{ℋ : State.Trait} : M unit :=
           M.alloc [ mk_str "> "; mk_str "
 " ] in
         let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
-        let* α2 : ltac:(refine (array (ref str))) := deref α1 in
-        let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
-        let* α4 : ltac:(refine (ref (slice (ref str)))) :=
-          pointer_coercion "Unsize" α3 in
-        let* α5 : ltac:(refine (mut_ref (core.ops.range.Range i32))) :=
+        let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+          pointer_coercion "Unsize" α1 in
+        let* α3 : ltac:(refine (mut_ref (core.ops.range.Range i32))) :=
           borrow_mut sequence in
-        let* α6 : ltac:(refine (core.option.Option i32)) :=
+        let* α4 : ltac:(refine (core.option.Option i32)) :=
           (core.iter.traits.iterator.Iterator.next
               (Self := core.ops.range.Range i32)
               (Trait := ltac:(refine _)))
-            α5 in
-        let* α7 : ltac:(refine (ref (core.option.Option i32))) := borrow α6 in
-        let* α8 : ltac:(refine (core.option.Option i32)) := deref α7 in
-        let* α9 : ltac:(refine (ref (core.option.Option i32))) := borrow α8 in
-        let* α10 : ltac:(refine core.fmt.rt.Argument) :=
-          core.fmt.rt.Argument::["new_debug"] α9 in
-        let* α11 : ltac:(refine (array core.fmt.rt.Argument)) :=
-          M.alloc [ α10 ] in
-        let* α12 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
-          borrow α11 in
-        let* α13 : ltac:(refine (array core.fmt.rt.Argument)) := deref α12 in
-        let* α14 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
-          borrow α13 in
-        let* α15 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
-          pointer_coercion "Unsize" α14 in
-        let* α16 : ltac:(refine core.fmt.Arguments) :=
-          core.fmt.Arguments::["new_v1"] α4 α15 in
-        std.io.stdio._print α16 in
+            α3 in
+        let* α5 : ltac:(refine (ref (core.option.Option i32))) := borrow α4 in
+        let* α6 : ltac:(refine core.fmt.rt.Argument) :=
+          core.fmt.rt.Argument::["new_debug"] α5 in
+        let* α7 : ltac:(refine (array core.fmt.rt.Argument)) :=
+          M.alloc [ α6 ] in
+        let* α8 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+          borrow α7 in
+        let* α9 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+          pointer_coercion "Unsize" α8 in
+        let* α10 : ltac:(refine core.fmt.Arguments) :=
+          core.fmt.Arguments::["new_v1"] α2 α9 in
+        std.io.stdio._print α10 in
       M.alloc tt in
     let* _ : ltac:(refine unit) :=
       let* _ : ltac:(refine unit) :=
@@ -319,13 +289,11 @@ Definition main `{ℋ : State.Trait} : M unit :=
           M.alloc [ mk_str "Iterate through 0..3 using `for`
 " ] in
         let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
-        let* α2 : ltac:(refine (array (ref str))) := deref α1 in
-        let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
-        let* α4 : ltac:(refine (ref (slice (ref str)))) :=
-          pointer_coercion "Unsize" α3 in
-        let* α5 : ltac:(refine core.fmt.Arguments) :=
-          core.fmt.Arguments::["new_const"] α4 in
-        std.io.stdio._print α5 in
+        let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+          pointer_coercion "Unsize" α1 in
+        let* α3 : ltac:(refine core.fmt.Arguments) :=
+          core.fmt.Arguments::["new_const"] α2 in
+        std.io.stdio._print α3 in
       M.alloc tt in
     let* _ : ltac:(refine unit) :=
       let* α0 : ltac:(refine i32) := M.alloc 0 in
@@ -347,16 +315,13 @@ Definition main `{ℋ : State.Trait} : M unit :=
             (let* _ : ltac:(refine unit) :=
               let* α0 : ltac:(refine (mut_ref (core.ops.range.Range i32))) :=
                 borrow_mut iter in
-              let* α1 : ltac:(refine (core.ops.range.Range i32)) := deref α0 in
-              let* α2 : ltac:(refine (mut_ref (core.ops.range.Range i32))) :=
-                borrow_mut α1 in
-              let* α3 : ltac:(refine (core.option.Option i32)) :=
+              let* α1 : ltac:(refine (core.option.Option i32)) :=
                 (core.iter.traits.iterator.Iterator.next
                     (Self := core.ops.range.Range i32)
                     (Trait := ltac:(refine _)))
-                  α2 in
-              let* α4 := M.read α3 in
-              match α4 with
+                  α0 in
+              let* α2 := M.read α1 in
+              match α2 with
               | core.option.Option.None  =>
                 let* α0 : ltac:(refine never) := Break in
                 never_to_any α0
@@ -368,32 +333,22 @@ Definition main `{ℋ : State.Trait} : M unit :=
 " ] in
                     let* α1 : ltac:(refine (ref (array (ref str)))) :=
                       borrow α0 in
-                    let* α2 : ltac:(refine (array (ref str))) := deref α1 in
-                    let* α3 : ltac:(refine (ref (array (ref str)))) :=
-                      borrow α2 in
-                    let* α4 : ltac:(refine (ref (slice (ref str)))) :=
-                      pointer_coercion "Unsize" α3 in
-                    let* α5 : ltac:(refine (ref i32)) := borrow i in
-                    let* α6 : ltac:(refine i32) := deref α5 in
-                    let* α7 : ltac:(refine (ref i32)) := borrow α6 in
-                    let* α8 : ltac:(refine core.fmt.rt.Argument) :=
-                      core.fmt.rt.Argument::["new_display"] α7 in
-                    let* α9 : ltac:(refine (array core.fmt.rt.Argument)) :=
-                      M.alloc [ α8 ] in
-                    let* α10 :
+                    let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+                      pointer_coercion "Unsize" α1 in
+                    let* α3 : ltac:(refine (ref i32)) := borrow i in
+                    let* α4 : ltac:(refine core.fmt.rt.Argument) :=
+                      core.fmt.rt.Argument::["new_display"] α3 in
+                    let* α5 : ltac:(refine (array core.fmt.rt.Argument)) :=
+                      M.alloc [ α4 ] in
+                    let* α6 :
                         ltac:(refine (ref (array core.fmt.rt.Argument))) :=
-                      borrow α9 in
-                    let* α11 : ltac:(refine (array core.fmt.rt.Argument)) :=
-                      deref α10 in
-                    let* α12 :
-                        ltac:(refine (ref (array core.fmt.rt.Argument))) :=
-                      borrow α11 in
-                    let* α13 :
+                      borrow α5 in
+                    let* α7 :
                         ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
-                      pointer_coercion "Unsize" α12 in
-                    let* α14 : ltac:(refine core.fmt.Arguments) :=
-                      core.fmt.Arguments::["new_v1"] α4 α13 in
-                    std.io.stdio._print α14 in
+                      pointer_coercion "Unsize" α6 in
+                    let* α8 : ltac:(refine core.fmt.Arguments) :=
+                      core.fmt.Arguments::["new_v1"] α2 α7 in
+                    std.io.stdio._print α8 in
                   M.alloc tt in
                 M.alloc tt
               end in
@@ -408,13 +363,11 @@ Definition main `{ℋ : State.Trait} : M unit :=
 "
             ] in
         let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
-        let* α2 : ltac:(refine (array (ref str))) := deref α1 in
-        let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
-        let* α4 : ltac:(refine (ref (slice (ref str)))) :=
-          pointer_coercion "Unsize" α3 in
-        let* α5 : ltac:(refine core.fmt.Arguments) :=
-          core.fmt.Arguments::["new_const"] α4 in
-        std.io.stdio._print α5 in
+        let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+          pointer_coercion "Unsize" α1 in
+        let* α3 : ltac:(refine core.fmt.Arguments) :=
+          core.fmt.Arguments::["new_const"] α2 in
+        std.io.stdio._print α3 in
       M.alloc tt in
     let* _ : ltac:(refine unit) :=
       let* α0 : ltac:(refine iterators.Fibonacci) := iterators.fibonacci in
@@ -443,22 +396,13 @@ Definition main `{ℋ : State.Trait} : M unit :=
                     (mut_ref
                       (core.iter.adapters.take.Take iterators.Fibonacci))) :=
                 borrow_mut iter in
-              let* α1 :
-                  ltac:(refine
-                    (core.iter.adapters.take.Take iterators.Fibonacci)) :=
-                deref α0 in
-              let* α2 :
-                  ltac:(refine
-                    (mut_ref
-                      (core.iter.adapters.take.Take iterators.Fibonacci))) :=
-                borrow_mut α1 in
-              let* α3 : ltac:(refine (core.option.Option u32)) :=
+              let* α1 : ltac:(refine (core.option.Option u32)) :=
                 (core.iter.traits.iterator.Iterator.next
                     (Self := core.iter.adapters.take.Take iterators.Fibonacci)
                     (Trait := ltac:(refine _)))
-                  α2 in
-              let* α4 := M.read α3 in
-              match α4 with
+                  α0 in
+              let* α2 := M.read α1 in
+              match α2 with
               | core.option.Option.None  =>
                 let* α0 : ltac:(refine never) := Break in
                 never_to_any α0
@@ -470,32 +414,22 @@ Definition main `{ℋ : State.Trait} : M unit :=
 " ] in
                     let* α1 : ltac:(refine (ref (array (ref str)))) :=
                       borrow α0 in
-                    let* α2 : ltac:(refine (array (ref str))) := deref α1 in
-                    let* α3 : ltac:(refine (ref (array (ref str)))) :=
-                      borrow α2 in
-                    let* α4 : ltac:(refine (ref (slice (ref str)))) :=
-                      pointer_coercion "Unsize" α3 in
-                    let* α5 : ltac:(refine (ref u32)) := borrow i in
-                    let* α6 : ltac:(refine u32) := deref α5 in
-                    let* α7 : ltac:(refine (ref u32)) := borrow α6 in
-                    let* α8 : ltac:(refine core.fmt.rt.Argument) :=
-                      core.fmt.rt.Argument::["new_display"] α7 in
-                    let* α9 : ltac:(refine (array core.fmt.rt.Argument)) :=
-                      M.alloc [ α8 ] in
-                    let* α10 :
+                    let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+                      pointer_coercion "Unsize" α1 in
+                    let* α3 : ltac:(refine (ref u32)) := borrow i in
+                    let* α4 : ltac:(refine core.fmt.rt.Argument) :=
+                      core.fmt.rt.Argument::["new_display"] α3 in
+                    let* α5 : ltac:(refine (array core.fmt.rt.Argument)) :=
+                      M.alloc [ α4 ] in
+                    let* α6 :
                         ltac:(refine (ref (array core.fmt.rt.Argument))) :=
-                      borrow α9 in
-                    let* α11 : ltac:(refine (array core.fmt.rt.Argument)) :=
-                      deref α10 in
-                    let* α12 :
-                        ltac:(refine (ref (array core.fmt.rt.Argument))) :=
-                      borrow α11 in
-                    let* α13 :
+                      borrow α5 in
+                    let* α7 :
                         ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
-                      pointer_coercion "Unsize" α12 in
-                    let* α14 : ltac:(refine core.fmt.Arguments) :=
-                      core.fmt.Arguments::["new_v1"] α4 α13 in
-                    std.io.stdio._print α14 in
+                      pointer_coercion "Unsize" α6 in
+                    let* α8 : ltac:(refine core.fmt.Arguments) :=
+                      core.fmt.Arguments::["new_v1"] α2 α7 in
+                    std.io.stdio._print α8 in
                   M.alloc tt in
                 M.alloc tt
               end in
@@ -509,13 +443,11 @@ Definition main `{ℋ : State.Trait} : M unit :=
             [ mk_str "The next four terms of the Fibonacci sequence are: 
 " ] in
         let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
-        let* α2 : ltac:(refine (array (ref str))) := deref α1 in
-        let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
-        let* α4 : ltac:(refine (ref (slice (ref str)))) :=
-          pointer_coercion "Unsize" α3 in
-        let* α5 : ltac:(refine core.fmt.Arguments) :=
-          core.fmt.Arguments::["new_const"] α4 in
-        std.io.stdio._print α5 in
+        let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+          pointer_coercion "Unsize" α1 in
+        let* α3 : ltac:(refine core.fmt.Arguments) :=
+          core.fmt.Arguments::["new_const"] α2 in
+        std.io.stdio._print α3 in
       M.alloc tt in
     let* _ : ltac:(refine unit) :=
       let* α0 : ltac:(refine iterators.Fibonacci) := iterators.fibonacci in
@@ -559,26 +491,15 @@ Definition main `{ℋ : State.Trait} : M unit :=
                       (core.iter.adapters.take.Take
                         (core.iter.adapters.skip.Skip iterators.Fibonacci)))) :=
                 borrow_mut iter in
-              let* α1 :
-                  ltac:(refine
-                    (core.iter.adapters.take.Take
-                      (core.iter.adapters.skip.Skip iterators.Fibonacci))) :=
-                deref α0 in
-              let* α2 :
-                  ltac:(refine
-                    (mut_ref
-                      (core.iter.adapters.take.Take
-                        (core.iter.adapters.skip.Skip iterators.Fibonacci)))) :=
-                borrow_mut α1 in
-              let* α3 : ltac:(refine (core.option.Option u32)) :=
+              let* α1 : ltac:(refine (core.option.Option u32)) :=
                 (core.iter.traits.iterator.Iterator.next
                     (Self :=
                       core.iter.adapters.take.Take
                         (core.iter.adapters.skip.Skip iterators.Fibonacci))
                     (Trait := ltac:(refine _)))
-                  α2 in
-              let* α4 := M.read α3 in
-              match α4 with
+                  α0 in
+              let* α2 := M.read α1 in
+              match α2 with
               | core.option.Option.None  =>
                 let* α0 : ltac:(refine never) := Break in
                 never_to_any α0
@@ -590,32 +511,22 @@ Definition main `{ℋ : State.Trait} : M unit :=
 " ] in
                     let* α1 : ltac:(refine (ref (array (ref str)))) :=
                       borrow α0 in
-                    let* α2 : ltac:(refine (array (ref str))) := deref α1 in
-                    let* α3 : ltac:(refine (ref (array (ref str)))) :=
-                      borrow α2 in
-                    let* α4 : ltac:(refine (ref (slice (ref str)))) :=
-                      pointer_coercion "Unsize" α3 in
-                    let* α5 : ltac:(refine (ref u32)) := borrow i in
-                    let* α6 : ltac:(refine u32) := deref α5 in
-                    let* α7 : ltac:(refine (ref u32)) := borrow α6 in
-                    let* α8 : ltac:(refine core.fmt.rt.Argument) :=
-                      core.fmt.rt.Argument::["new_display"] α7 in
-                    let* α9 : ltac:(refine (array core.fmt.rt.Argument)) :=
-                      M.alloc [ α8 ] in
-                    let* α10 :
+                    let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+                      pointer_coercion "Unsize" α1 in
+                    let* α3 : ltac:(refine (ref u32)) := borrow i in
+                    let* α4 : ltac:(refine core.fmt.rt.Argument) :=
+                      core.fmt.rt.Argument::["new_display"] α3 in
+                    let* α5 : ltac:(refine (array core.fmt.rt.Argument)) :=
+                      M.alloc [ α4 ] in
+                    let* α6 :
                         ltac:(refine (ref (array core.fmt.rt.Argument))) :=
-                      borrow α9 in
-                    let* α11 : ltac:(refine (array core.fmt.rt.Argument)) :=
-                      deref α10 in
-                    let* α12 :
-                        ltac:(refine (ref (array core.fmt.rt.Argument))) :=
-                      borrow α11 in
-                    let* α13 :
+                      borrow α5 in
+                    let* α7 :
                         ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
-                      pointer_coercion "Unsize" α12 in
-                    let* α14 : ltac:(refine core.fmt.Arguments) :=
-                      core.fmt.Arguments::["new_v1"] α4 α13 in
-                    std.io.stdio._print α14 in
+                      pointer_coercion "Unsize" α6 in
+                    let* α8 : ltac:(refine core.fmt.Arguments) :=
+                      core.fmt.Arguments::["new_v1"] α2 α7 in
+                    std.io.stdio._print α8 in
                   M.alloc tt in
                 M.alloc tt
               end in
@@ -634,28 +545,21 @@ Definition main `{ℋ : State.Trait} : M unit :=
           M.alloc [ mk_str "Iterate the following array "; mk_str "
 " ] in
         let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
-        let* α2 : ltac:(refine (array (ref str))) := deref α1 in
-        let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
-        let* α4 : ltac:(refine (ref (slice (ref str)))) :=
-          pointer_coercion "Unsize" α3 in
-        let* α5 : ltac:(refine (ref (array u32))) := borrow array in
-        let* α6 : ltac:(refine (ref (ref (array u32)))) := borrow α5 in
-        let* α7 : ltac:(refine (ref (array u32))) := deref α6 in
-        let* α8 : ltac:(refine (ref (ref (array u32)))) := borrow α7 in
-        let* α9 : ltac:(refine core.fmt.rt.Argument) :=
-          core.fmt.rt.Argument::["new_debug"] α8 in
-        let* α10 : ltac:(refine (array core.fmt.rt.Argument)) :=
-          M.alloc [ α9 ] in
-        let* α11 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
-          borrow α10 in
-        let* α12 : ltac:(refine (array core.fmt.rt.Argument)) := deref α11 in
-        let* α13 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
-          borrow α12 in
-        let* α14 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
-          pointer_coercion "Unsize" α13 in
-        let* α15 : ltac:(refine core.fmt.Arguments) :=
-          core.fmt.Arguments::["new_v1"] α4 α14 in
-        std.io.stdio._print α15 in
+        let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+          pointer_coercion "Unsize" α1 in
+        let* α3 : ltac:(refine (ref (array u32))) := borrow array in
+        let* α4 : ltac:(refine (ref (ref (array u32)))) := borrow α3 in
+        let* α5 : ltac:(refine core.fmt.rt.Argument) :=
+          core.fmt.rt.Argument::["new_debug"] α4 in
+        let* α6 : ltac:(refine (array core.fmt.rt.Argument)) :=
+          M.alloc [ α5 ] in
+        let* α7 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+          borrow α6 in
+        let* α8 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+          pointer_coercion "Unsize" α7 in
+        let* α9 : ltac:(refine core.fmt.Arguments) :=
+          core.fmt.Arguments::["new_v1"] α2 α8 in
+        std.io.stdio._print α9 in
       M.alloc tt in
     let* α0 : ltac:(refine (ref (array u32))) := borrow array in
     let* α1 : ltac:(refine (ref (slice u32))) := pointer_coercion "Unsize" α0 in
@@ -674,16 +578,13 @@ Definition main `{ℋ : State.Trait} : M unit :=
           (let* _ : ltac:(refine unit) :=
             let* α0 : ltac:(refine (mut_ref (core.slice.iter.Iter u32))) :=
               borrow_mut iter in
-            let* α1 : ltac:(refine (core.slice.iter.Iter u32)) := deref α0 in
-            let* α2 : ltac:(refine (mut_ref (core.slice.iter.Iter u32))) :=
-              borrow_mut α1 in
-            let* α3 : ltac:(refine (core.option.Option (ref u32))) :=
+            let* α1 : ltac:(refine (core.option.Option (ref u32))) :=
               (core.iter.traits.iterator.Iterator.next
                   (Self := core.slice.iter.Iter u32)
                   (Trait := ltac:(refine _)))
-                α2 in
-            let* α4 := M.read α3 in
-            match α4 with
+                α0 in
+            let* α2 := M.read α1 in
+            match α2 with
             | core.option.Option.None  =>
               let* α0 : ltac:(refine never) := Break in
               never_to_any α0
@@ -695,29 +596,20 @@ Definition main `{ℋ : State.Trait} : M unit :=
 " ] in
                   let* α1 : ltac:(refine (ref (array (ref str)))) :=
                     borrow α0 in
-                  let* α2 : ltac:(refine (array (ref str))) := deref α1 in
-                  let* α3 : ltac:(refine (ref (array (ref str)))) :=
-                    borrow α2 in
-                  let* α4 : ltac:(refine (ref (slice (ref str)))) :=
-                    pointer_coercion "Unsize" α3 in
-                  let* α5 : ltac:(refine (ref (ref u32))) := borrow i in
-                  let* α6 : ltac:(refine (ref u32)) := deref α5 in
-                  let* α7 : ltac:(refine (ref (ref u32))) := borrow α6 in
-                  let* α8 : ltac:(refine core.fmt.rt.Argument) :=
-                    core.fmt.rt.Argument::["new_display"] α7 in
-                  let* α9 : ltac:(refine (array core.fmt.rt.Argument)) :=
-                    M.alloc [ α8 ] in
-                  let* α10 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
-                    borrow α9 in
-                  let* α11 : ltac:(refine (array core.fmt.rt.Argument)) :=
-                    deref α10 in
-                  let* α12 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
-                    borrow α11 in
-                  let* α13 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
-                    pointer_coercion "Unsize" α12 in
-                  let* α14 : ltac:(refine core.fmt.Arguments) :=
-                    core.fmt.Arguments::["new_v1"] α4 α13 in
-                  std.io.stdio._print α14 in
+                  let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+                    pointer_coercion "Unsize" α1 in
+                  let* α3 : ltac:(refine (ref (ref u32))) := borrow i in
+                  let* α4 : ltac:(refine core.fmt.rt.Argument) :=
+                    core.fmt.rt.Argument::["new_display"] α3 in
+                  let* α5 : ltac:(refine (array core.fmt.rt.Argument)) :=
+                    M.alloc [ α4 ] in
+                  let* α6 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+                    borrow α5 in
+                  let* α7 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+                    pointer_coercion "Unsize" α6 in
+                  let* α8 : ltac:(refine core.fmt.Arguments) :=
+                    core.fmt.Arguments::["new_v1"] α2 α7 in
+                  std.io.stdio._print α8 in
                 M.alloc tt in
               M.alloc tt
             end in

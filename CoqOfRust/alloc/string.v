@@ -1,6 +1,6 @@
 Require Import CoqOfRust.lib.lib.
-Require Import CoqOfRust.core.convert.
-Require Import CoqOfRust.core.fmt.
+Require CoqOfRust.core.convert.
+Require CoqOfRust.core.fmt.
 
 (* ********TYPE DEFS******** *)
 (* 
@@ -75,3 +75,7 @@ Module StringType.
 
  (* @TODO add more methods from (Struct std::string::String) *)
 End StringType.
+
+Global Instance Default_for_String `{State.Trait} :
+  core.default.Default.Trait alloc.string.String.
+Admitted.
