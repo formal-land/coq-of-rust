@@ -23,29 +23,33 @@ Module EmptyState.
 End EmptyState.
 
 Module State.
-  Definition t : Set := Datatypes.option (erc20.lib.Erc20 (ℋ := EmptyState.I)).
+  Module State.
+    Definition t : Set := Datatypes.option (erc20.lib.Erc20 (ℋ := EmptyState.I)).
+  End State.
+
+  Module Address.
+    Definition t : Set := Datatypes.unit.
+  End Address.
+
+  Local Instance I : State.Trait State.t Address.t := {
+    State.get_Set address :=
+      match address with
+      | tt => erc20.lib.Erc20 (ℋ := EmptyState.I)
+      end;
+    State.read address state :=
+      match address with
+      | tt => state
+      end;
+    State.alloc_write address state value :=
+      match address, value with
+      | tt, _ => Some (Some value)
+      end;
+  }.
+
+  Lemma is_valid : State.Valid.t I.
+  Proof.
+    sauto l: on.
+  Qed.
 End State.
 
-Module Address.
-  Definition t : Set := Datatypes.unit.
-End Address.
 
-Local Instance I : State.Trait State.t Address.t := {
-  State.get_Set address :=
-    match address with
-    | tt => erc20.lib.Erc20 (ℋ := EmptyState.I)
-    end;
-  State.read address state :=
-    match address with
-    | tt => state
-    end;
-  State.alloc_write address state value :=
-    match address, value with
-    | tt, _ => Datatypes.Some (Datatypes.Some value)
-    end;
-}.
-
-Lemma is_valid : State.Valid.t I.
-Proof.
-  sauto l: on.
-Qed.
