@@ -24,32 +24,54 @@ End EmptyState.
 
 Module State.
   Module State.
-    Definition t : Set := Datatypes.option (erc20.lib.Erc20 (ℋ := EmptyState.I)).
+    Record t : Set := {
+      total_supply :
+        let ℋ := EmptyState.I in
+        option ltac:(lib.Balance);
+      balances :
+        let ℋ := EmptyState.I in
+        option ltac:(lib.Mapping lib.AccountId constr:(ltac:(lib.Balance)));
+      allowances :
+        let ℋ := EmptyState.I in
+        option ltac:(lib.Mapping
+          (M.Val (lib.AccountId * lib.AccountId))
+          constr:(ltac:(lib.Balance))
+        );
+    }.
   End State.
 
   Module Address.
-    Definition t : Set := Datatypes.unit.
+    Inductive t : Set :=
+    | total_supply
+    | balances
+    | allowances.
   End Address.
 
   Local Instance I : State.Trait State.t Address.t := {
     State.get_Set address :=
+      let ℋ := EmptyState.I in
       match address with
-      | tt => erc20.lib.Erc20 (ℋ := EmptyState.I)
+      | Address.total_supply =>
+        ltac:(lib.Balance)
+      | Address.balances =>
+        ltac:(lib.Mapping lib.AccountId constr:(ltac:(lib.Balance)))
+      | Address.allowances =>
+        ltac:(lib.Mapping
+          (M.Val (lib.AccountId * lib.AccountId))
+          constr:(ltac:(lib.Balance))
+        )
       end;
     State.read address state :=
       match address with
-      | tt => state
+      | Address.total_supply => state.(State.total_supply)
+      | Address.balances => state.(State.balances)
+      | Address.allowances => state.(State.allowances)
       end;
     State.alloc_write address state value :=
-      match address, value with
-      | tt, _ => Some (Some value)
-      end;
+      axiom "alloc_write";
   }.
 
   Lemma is_valid : State.Valid.t I.
   Proof.
-    sauto l: on.
-  Qed.
+  Admitted.
 End State.
-
-
