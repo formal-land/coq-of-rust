@@ -5,7 +5,7 @@ Module traits.
   Module iterator.
     (* pub trait Iterator *)
     Module Iterator.
-    Class Trait `{State.Trait} (Self : Set) : Type := {
+    Class Trait (Self : Set) : Type := {
         (* type Item; *)
         Item : Set;
         (* fn next(&mut self) -> Option<Self::Item>; *)

@@ -52,13 +52,13 @@ pub struct Child {
 }
 *)
 Module Child.
-  Record t `{State.Trait} : Set := {
+  Record t : Set := {
     stdin : Option ChildStdin;
     stdout : Option ChildStdout;
     stderr : Option ChildStderr;
   }.
 End Child.
-Definition Child `{State.Trait} := Child.t.
+Definition Child := Child.t.
 
 (* pub struct ExitCode(_); *)
 Module ExitCode.
@@ -98,13 +98,13 @@ pub struct Output {
 }
 *)
 Module Output.
-  Record t `{State.Trait} : Set := { 
+  Record t : Set := { 
     status : ExitStatus;
     stdout : Vec u8 Vec.Default.A;
     stderr : Vec u8 Vec.Default.A;
   }.
 End Output.
-Definition Output `{State.Trait} := Output.t.
+Definition Output := Output.t.
 
 (* pub struct Stdio(_); *)
 Module Stdio.

@@ -15,14 +15,14 @@ pub struct Assume {
 }
 *)
 Module Assume.
-  Record t `{State.Trait} : Set := { 
+  Record t : Set := {
     alignment: bool;
     lifetimes: bool;
     safety: bool;
     validity: bool;
   }.
 End Assume.
-Definition Assume `{State.Trait} : Set := Assume.t.
+Definition Assume : Set := Assume.t.
 
 (* pub struct Discriminant<T>(_); *)
 Module Ddiscriminant.
@@ -86,9 +86,9 @@ End BikeshedIntrinsicFrom.
 *)
 
 Parameter size_of_val :
-  forall `{H : State.Trait} {T : Set},
+  forall {T : Set},
   ref T ->
-  M (H := H) usize.
+  M usize.
 
 (* NOTE: Can we translate unions? *)
 (* ********UNIONS******** *)
@@ -98,7 +98,7 @@ Parameter size_of_val :
 
 (* pub fn drop<T>(_x: T) *)
 Parameter drop :
-  forall `{H : State.Trait} {T : Set},
+  forall {T : Set},
   T ->
-  M (H := H) unit.
+  M unit.
 

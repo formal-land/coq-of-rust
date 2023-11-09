@@ -40,9 +40,9 @@ where
 { /* private fields */ }
 *)
 Module ArrayChunks.
-  Parameter t : forall (T : Set) (N : Z) `{State.Trait}, Set.
+  Parameter t : forall (T : Set) (N : Z), Set.
 End ArrayChunks.
-Definition ArrayChunks (T : Set) (N : Z) `{State.Trait} : Set :=
+Definition ArrayChunks (T : Set) (N : Z) : Set :=
   ArrayChunks.t T N.
 
 (* 
@@ -52,9 +52,9 @@ where
 { /* private fields */ }
 *)
 Module ArrayChunksMut.
-  Parameter t : forall (T : Set) (N : Z) `{State.Trait}, Set.
+  Parameter t : forall (T : Set) (N : Z), Set.
 End ArrayChunksMut.
-Definition ArrayChunksMut (T : Set) (N : Z) `{State.Trait} : Set :=
+Definition ArrayChunksMut (T : Set) (N : Z) : Set :=
   ArrayChunksMut.t T N.
 
 (* 
@@ -64,9 +64,9 @@ where
 { /* private fields */ }
 *)
 Module ArrayWindows.
-  Parameter t : forall (T : Set) (N : Z) `{State.Trait}, Set.
+  Parameter t : forall (T : Set) (N : Z), Set.
 End ArrayWindows.
-Definition ArrayWindows (T : Set) (N : Z) `{State.Trait} : Set :=
+Definition ArrayWindows (T : Set) (N : Z) : Set :=
   ArrayWindows.t T N.
 
 (* 
@@ -366,7 +366,7 @@ where
 }
 *)
 Module Concat.
-  Class Trait `{State.Trait} (Self Item Output: Set) : Set := { 
+  Class Trait (Self Item Output: Set) : Set := { 
     Item := Item;
     Output := Output;
 
@@ -383,7 +383,7 @@ pub trait Join<Separator> {
 }
 *)
 Module Join.
-  Class Trait `{State.Trait} (Self Separator Output : Set) : Set := { 
+  Class Trait (Self Separator Output : Set) : Set := { 
     Separator := Separator;
     Output := Output;
 
@@ -408,7 +408,7 @@ where
 }
 *)
 Module SliceIndex.
-  Class Trait `{State.Trait} (Self T Output : Set) : Set := { 
+  Class Trait (Self T Output : Set) : Set := { 
     Output := Output;
 
     get : Self -> ref T -> Option Output;

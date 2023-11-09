@@ -28,7 +28,7 @@ pub trait Hasher {
 }
 *)
 Module Hasher.
-  Class Trait (Self : Set) `{State.Trait} : Set := {
+  Class Trait (Self : Set) : Set := {
   (* fn finish(&self) -> u64; *)
   finish : ref Self -> u64;
 
@@ -93,7 +93,7 @@ pub trait Hash {
 *)
 Module Hash.
   Module Required.
-    Class Trait `{ℋ : State.Trait} (Self : Set) : Set := {
+    Class Trait (Self : Set) : Set := {
       hash {H : Set} {H0 : Hasher.Trait H} : ref Self -> mut_ref H -> M unit;
       hash_slice :
         Datatypes.option (
@@ -105,18 +105,18 @@ Module Hash.
 
   Module Provided.
     Parameter hash_slice :
-      forall `{ℋ : State.Trait} {Self : Set} {H0 : Required.Trait Self},
+      forall {Self : Set} {H0 : Required.Trait Self},
       forall {H : Set} {H0 : Hasher.Trait H},
       ref (slice Self) -> mut_ref H -> M unit.
   End Provided.
 
-  Class Trait `{ℋ : State.Trait} (Self : Set) : Set := {
+  Class Trait (Self : Set) : Set := {
     hash {H : Set} {H0 : Hasher.Trait H} : ref Self -> mut_ref H -> M unit;
     hash_slice {H : Set} {H0 : Hasher.Trait H} :
       ref (slice Self) -> mut_ref H -> M unit;
   }.
 
-  Global Instance From_Required `{ℋ : State.Trait} {Self : Set}
+  Global Instance From_Required {Self : Set}
       {H0 : Required.Trait Self} :
       Trait Self := {
     hash {H : Set} {H0 : Hasher.Trait H} := Required.hash (H := H);

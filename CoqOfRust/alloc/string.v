@@ -36,9 +36,9 @@ Definition FromUtf16Error := FromUtf16Error.t.
 
 (* pub struct String { /* private fields */ } *)
 Module String.
-  Definition t `{State.Trait} : Set := str.
+  Definition t : Set := str.
 End String.
-Definition String `{State.Trait} := String.t.
+Definition String := String.t.
 
 (* ********TRAITS******** *)
 (* 
@@ -47,10 +47,10 @@ Definition String `{State.Trait} := String.t.
 
 Module ToString.
   Class Trait (Self : Set) : Set := {
-    to_string `{State.Trait} : ref Self -> M String;
+    to_string : ref Self -> M String;
   }.
 
-  Global Instance Method_to_string `{State.Trait} `(Trait) :
+  Global Instance Method_to_string `(Trait) :
     Notation.Dot "to_string" := {
     Notation.dot := to_string;
   }.
@@ -58,17 +58,17 @@ End ToString.
 
 (* The String type (Struct std::string::String) and it's methods  *)
 Module StringType.
-  Definition from `{State.Trait} (str_from: str) : M str :=
+  Definition from (str_from: str) : M str :=
     M.pure str_from.
 
   (* The String type (Struct std::string::String) and it's methods  *)
   (* Converts a &str into a String. *)
-  Global Instance From_for_str `{State.Trait} :
+  Global Instance From_for_str :
       core.convert.From.Trait str (T := str) := {
     from := from;
   }.
 
-  Global Instance Method_from `{State.Trait} :
+  Global Instance Method_from :
       Notation.DoubleColon String "from" := {
     Notation.double_colon := from;
   }.
@@ -76,6 +76,6 @@ Module StringType.
  (* @TODO add more methods from (Struct std::string::String) *)
 End StringType.
 
-Global Instance Default_for_String `{State.Trait} :
+Global Instance Default_for_String :
   core.default.Default.Trait alloc.string.String.
 Admitted.

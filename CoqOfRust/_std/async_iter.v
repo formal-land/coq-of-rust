@@ -35,7 +35,7 @@ pub trait AsyncIterator {
 }
 *)
 Module AsyncIterator.
-  Class Trait `{State.Trait} (Self Item : Set) : Set := { 
+  Class Trait (Self Item : Set) : Set := { 
     Item := Item;
 
     poll_next : Pin (mut_ref Self) -> mut_ref Context -> Poll (Option Item);

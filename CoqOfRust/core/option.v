@@ -47,11 +47,10 @@ Module Option.
   Arguments None {_}.
   Arguments Some {_}.
 End Option.
-Definition Option `{State.Trait} (T : Set) : Set :=
+Definition Option (T : Set) : Set :=
   M.Val (Option.t T).
 
 Module Impl_Option. Section Impl_Option.
-  Context `{State.Trait}.
   Context {T : Set}.
 
   Definition Self : Set := Option T.

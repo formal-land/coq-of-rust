@@ -9,7 +9,7 @@ where
 { /* private fields */ }
 *)
 Module BTreeSet.
-  Parameter t : forall `{State.Trait} (K A : Set)
+  Parameter t : forall (K A : Set)
     {H0 : alloc.Allocator.Trait A}
     {H1 : core.clone.Clone.Trait A},
     Set.
@@ -18,7 +18,7 @@ Module BTreeSet.
     Definition A : Set := alloc.Global.
   End Default.
 End BTreeSet.
-Definition BTreeSet `{State.Trait} (K A : Set)
+Definition BTreeSet (K A : Set)
   {H0 : alloc.Allocator.Trait A}
   {H1 : core.clone.Clone.Trait A} :
   Set :=

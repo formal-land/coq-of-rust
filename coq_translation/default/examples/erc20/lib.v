@@ -32,8 +32,6 @@ Ltac Mapping K V :=
 
 Module  Impl_core_default_Default_for_lib_Mapping_K_V.
 Section Impl_core_default_Default_for_lib_Mapping_K_V.
-  Context `{ℋ : State.Trait}.
-  
   Context {K V : Set}.
   
   Context
@@ -58,8 +56,6 @@ End Impl_core_default_Default_for_lib_Mapping_K_V.
 
 Module  Impl_lib_Mapping_K_V.
 Section Impl_lib_Mapping_K_V.
-  Context `{ℋ : State.Trait}.
-  
   Context {K V : Set}.
   
   Definition Self : Set := ltac:(lib.Mapping (M.Val K) (M.Val V)).
@@ -98,9 +94,6 @@ End Impl_lib_Mapping_K_V.
 End Impl_lib_Mapping_K_V.
 
 Module  AccountId.
-Section AccountId.
-  Context `{ℋ : State.Trait}.
-  
   Record t : Set := {
     x0 : alloc.string.String;
   }.
@@ -109,13 +102,9 @@ Section AccountId.
     Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
   }.
 End AccountId.
-End AccountId.
-Definition AccountId `{ℋ : State.Trait} : Set := M.Val AccountId.t.
+Definition AccountId : Set := M.Val AccountId.t.
 
 Module  Impl_core_default_Default_for_lib_AccountId.
-Section Impl_core_default_Default_for_lib_AccountId.
-  Context `{ℋ : State.Trait}.
-  
   Definition Self : Set := lib.AccountId.
   
   Definition default : M lib.AccountId :=
@@ -135,14 +124,10 @@ Section Impl_core_default_Default_for_lib_AccountId.
     core.default.Default.default := default;
   }.
 End Impl_core_default_Default_for_lib_AccountId.
-End Impl_core_default_Default_for_lib_AccountId.
 
 Ltac Balance := refine u128.
 
 Module  Environment.
-Section Environment.
-  Context `{ℋ : State.Trait}.
-  
   Record t : Set := {
     x0 : alloc.string.String;
   }.
@@ -151,13 +136,9 @@ Section Environment.
     Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
   }.
 End Environment.
-End Environment.
-Definition Environment `{ℋ : State.Trait} : Set := M.Val Environment.t.
+Definition Environment : Set := M.Val Environment.t.
 
 Module  Event.
-Section Event.
-  Context `{ℋ : State.Trait}.
-  
   Record t : Set := {
     x0 : alloc.string.String;
   }.
@@ -166,13 +147,9 @@ Section Event.
     Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
   }.
 End Event.
-End Event.
-Definition Event `{ℋ : State.Trait} : Set := M.Val Event.t.
+Definition Event : Set := M.Val Event.t.
 
 Module  Erc20.
-Section Erc20.
-  Context `{ℋ : State.Trait}.
-  
   Record t : Set := {
     total_supply : ltac:(lib.Balance);
     balances : ltac:(lib.Mapping lib.AccountId constr:(ltac:(lib.Balance)));
@@ -205,13 +182,9 @@ Section Erc20.
       let* x := M.read x in M.pure x.(allowances) : M _;
   }.
 End Erc20.
-End Erc20.
-Definition Erc20 `{ℋ : State.Trait} : Set := M.Val Erc20.t.
+Definition Erc20 : Set := M.Val Erc20.t.
 
 Module  Impl_core_default_Default_for_lib_Erc20.
-Section Impl_core_default_Default_for_lib_Erc20.
-  Context `{ℋ : State.Trait}.
-  
   Definition Self : Set := lib.Erc20.
   
   Definition default : M lib.Erc20 :=
@@ -246,12 +219,8 @@ Section Impl_core_default_Default_for_lib_Erc20.
     core.default.Default.default := default;
   }.
 End Impl_core_default_Default_for_lib_Erc20.
-End Impl_core_default_Default_for_lib_Erc20.
 
 Module  Transfer.
-Section Transfer.
-  Context `{ℋ : State.Trait}.
-  
   Record t : Set := {
     from : core.option.Option lib.AccountId;
     to : core.option.Option lib.AccountId;
@@ -277,13 +246,9 @@ Section Transfer.
     Notation.double_colon x := let* x := M.read x in M.pure x.(value) : M _;
   }.
 End Transfer.
-End Transfer.
-Definition Transfer `{ℋ : State.Trait} : Set := M.Val Transfer.t.
+Definition Transfer : Set := M.Val Transfer.t.
 
 Module  Impl_core_convert_Into_lib_Event_for_lib_Transfer.
-Section Impl_core_convert_Into_lib_Event_for_lib_Transfer.
-  Context `{ℋ : State.Trait}.
-  
   Definition Self : Set := lib.Transfer.
   
   Definition into (self : Self) : M lib.Event :=
@@ -301,12 +266,8 @@ Section Impl_core_convert_Into_lib_Event_for_lib_Transfer.
     core.convert.Into.into := into;
   }.
 End Impl_core_convert_Into_lib_Event_for_lib_Transfer.
-End Impl_core_convert_Into_lib_Event_for_lib_Transfer.
 
 Module  Approval.
-Section Approval.
-  Context `{ℋ : State.Trait}.
-  
   Record t : Set := {
     owner : lib.AccountId;
     spender : lib.AccountId;
@@ -332,13 +293,9 @@ Section Approval.
     Notation.double_colon x := let* x := M.read x in M.pure x.(value) : M _;
   }.
 End Approval.
-End Approval.
-Definition Approval `{ℋ : State.Trait} : Set := M.Val Approval.t.
+Definition Approval : Set := M.Val Approval.t.
 
 Module  Impl_core_convert_Into_lib_Event_for_lib_Approval.
-Section Impl_core_convert_Into_lib_Event_for_lib_Approval.
-  Context `{ℋ : State.Trait}.
-  
   Definition Self : Set := lib.Approval.
   
   Definition into (self : Self) : M lib.Event :=
@@ -356,21 +313,17 @@ Section Impl_core_convert_Into_lib_Event_for_lib_Approval.
     core.convert.Into.into := into;
   }.
 End Impl_core_convert_Into_lib_Event_for_lib_Approval.
-End Impl_core_convert_Into_lib_Event_for_lib_Approval.
 
 Module Error.
-  Inductive t `{ℋ : State.Trait} : Set :=
+  Inductive t : Set :=
   | InsufficientBalance
   | InsufficientAllowance.
 End Error.
-Definition Error `{ℋ : State.Trait} : Set := M.Val Error.t.
+Definition Error : Set := M.Val Error.t.
 
 Ltac Result T := refine (core.result.Result T lib.Error).
 
 Module  Impl_lib_Environment.
-Section Impl_lib_Environment.
-  Context `{ℋ : State.Trait}.
-  
   Definition Self : Set := lib.Environment.
   
   Definition caller (self : ref Self) : M lib.AccountId :=
@@ -402,12 +355,8 @@ Section Impl_lib_Environment.
     Notation.double_colon := emit_event (E := E);
   }.
 End Impl_lib_Environment.
-End Impl_lib_Environment.
 
 Module  Impl_lib_Erc20.
-Section Impl_lib_Erc20.
-  Context `{ℋ : State.Trait}.
-  
   Definition Self : Set := lib.Erc20.
   
   Definition init_env : M lib.Environment :=
@@ -431,12 +380,8 @@ Section Impl_lib_Erc20.
     Notation.double_colon := env;
   }.
 End Impl_lib_Erc20.
-End Impl_lib_Erc20.
 
 Module  Impl_lib_Erc20_2.
-Section Impl_lib_Erc20_2.
-  Context `{ℋ : State.Trait}.
-  
   Definition Self : Set := lib.Erc20.
   
   Definition new (total_supply : ltac:(lib.Balance)) : M Self :=
@@ -817,5 +762,4 @@ Section Impl_lib_Erc20_2.
     Notation.DoubleColon Self "transfer_from" := {
     Notation.double_colon := transfer_from;
   }.
-End Impl_lib_Erc20_2.
 End Impl_lib_Erc20_2.

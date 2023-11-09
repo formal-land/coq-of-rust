@@ -79,7 +79,7 @@ pub enum Component<'a> {
 }
 *)
 Module Component.
-  Inductive t `{State.Trait} : Set := 
+  Inductive t : Set := 
   | Prefix : PrefixComponent -> t
   | RootDir : t
   | CurDir : t
@@ -87,7 +87,7 @@ Module Component.
   | Normal : ref OsStr -> t
   .
 End Component.
-Definition Component `{State.Trait} := Component.t.
+Definition Component := Component.t.
 
 (* 
 pub enum Prefix<'a> {
@@ -100,7 +100,7 @@ pub enum Prefix<'a> {
 }
 *)
 Module Prefix.
-  Inductive t `{State.Trait} : Set := 
+  Inductive t : Set := 
   | Verbatim : ref OsStr -> t
   | VerbatimUNC : ref OsStr -> ref OsStr -> t
   | VerbatimDisk : u8 -> t
@@ -109,7 +109,7 @@ Module Prefix.
   | Disk : u8 -> t
   .
 End Prefix.
-Definition Prefix `{State.Trait} := Prefix.t.
+Definition Prefix := Prefix.t.
 
 (* ********CONSTANTS******** *)
 (*

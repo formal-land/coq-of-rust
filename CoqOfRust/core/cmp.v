@@ -21,7 +21,7 @@ Module Ordering.
   | Greater : t
   | Equal : t.
 End Ordering.
-Definition Ordering `{State.Trait} : Set :=
+Definition Ordering : Set :=
   M.Val Ordering.t.
 
 (* ********TRAITS******** *)
@@ -34,7 +34,7 @@ Traits
 *)
 Module PartialEq.
   Module Required.
-    Class Trait (Self : Set) {Rhs : Set} `{State.Trait} : Set := {
+    Class Trait (Self : Set) {Rhs : Set} : Set := {
       Rhs := Rhs;
       eq : ref Self -> ref Rhs -> M bool;
       ne : Datatypes.option (ref Self -> ref Rhs -> M bool);
@@ -42,7 +42,7 @@ Module PartialEq.
   End Required.
 
   Module Provided.
-    Definition ne `{State.Trait} {Self Rhs : Set}
+    Definition ne {Self Rhs : Set}
         {H0 : Required.Trait Self (Rhs := Rhs)} :
         ref Self -> ref Rhs -> M bool :=
       match Required.ne with
@@ -54,13 +54,13 @@ Module PartialEq.
       end.
   End Provided.
 
-  Class Trait (Self : Set) {Rhs : Set} `{State.Trait} : Set := {
+  Class Trait (Self : Set) {Rhs : Set} : Set := {
     Rhs := Rhs;
     eq : ref Self -> ref Rhs -> M bool;
     ne : ref Self -> ref Rhs -> M bool;
   }.
 
-  Global Instance From_Required (Self Rhs : Set) `{State.Trait}
+  Global Instance From_Required (Self Rhs : Set)
       {H0 : Required.Trait Self (Rhs := Rhs)} :
       Trait Self (Rhs := Rhs) := {
     eq := Required.eq;
@@ -81,9 +81,7 @@ Module PartialEq.
       M.pure (negb is_eq);
   }.
 
-  Module Instances. Section Instances.
-    Context `{State.Trait}.
-
+  Module Instances.
     Global Instance I_bool : Trait bool (Rhs := bool).
     Admitted.
 
@@ -144,12 +142,12 @@ Module PartialEq.
     Global Instance I_ref_ref {A B : Set} :
       Trait A (Rhs := B) -> Trait (ref A) (Rhs := ref B).
     Admitted.
-  End Instances. End Instances.
+  End Instances.
 End PartialEq.
 
 Module PartialOrd.
   Module Required.
-    Class Trait `{State.Trait} (Self : Set) {Rhs : Set} : Set := {
+    Class Trait (Self : Set) {Rhs : Set} : Set := {
       Rhs := Rhs;
       partial_cmp : ref Self -> ref Rhs -> M (core.option.Option Ordering);
       lt : Datatypes.option (ref Self -> ref Rhs -> M bool);
@@ -159,7 +157,7 @@ Module PartialOrd.
     }.
   End Required.
 
-  Class Trait `{State.Trait} (Self : Set) {Rhs : Set} : Set := {
+  Class Trait (Self : Set) {Rhs : Set} : Set := {
     Rhs := Rhs;
     partial_cmp : ref Self -> ref Rhs -> M (core.option.Option Ordering);
     lt : ref Self -> ref Rhs -> M bool;
@@ -168,7 +166,7 @@ Module PartialOrd.
     ge : ref Self -> ref Rhs -> M bool;
   }.
 
-  Global Instance From_Required `{State.Trait} (Self Rhs : Set)
+  Global Instance From_Required (Self Rhs : Set)
       {H0 : Required.Trait Self (Rhs := Rhs)} :
       Trait Self (Rhs := Rhs) := {
     partial_cmp := Required.partial_cmp;
@@ -242,9 +240,7 @@ Module PartialOrd.
     Definition Rhs (Self : Set) : Set := Self.
   End Default.
 
-  Module Instances. Section Instances.
-    Context `{State.Trait}.
-
+  Module Instances.
     Global Instance I_bool : Trait bool (Rhs := bool).
     Admitted.
 
@@ -305,7 +301,7 @@ Module PartialOrd.
     Global Instance I_ref_ref {A B : Set} :
       Trait A (Rhs := B) -> Trait (ref A) (Rhs := ref B).
     Admitted.
-  End Instances. End Instances.
+  End Instances.
 End PartialOrd.
 
 (* 
@@ -314,7 +310,7 @@ pub trait Eq: PartialEq<Self> { }
 Module Eq.
   Module Required.
     Unset Primitive Projections.
-    Class Trait `{State.Trait} (Self : Set) : Set := {
+    Class Trait (Self : Set) : Set := {
       L0 :: PartialEq.Trait Self (Rhs := PartialEq.Default.Rhs Self);
       assert_receiver_is_total_eq : Datatypes.option (ref Self -> M unit);
     }.
@@ -322,7 +318,7 @@ Module Eq.
   End Required.
 
   Module Provided.
-    Definition assert_receiver_is_total_eq `{State.Trait} {Self : Set}
+    Definition assert_receiver_is_total_eq {Self : Set}
         {H0 : Required.Trait Self} :
         ref Self -> M unit :=
       match Required.assert_receiver_is_total_eq with
@@ -333,14 +329,14 @@ Module Eq.
   End Provided.
 
   Unset Primitive Projections.
-  Class Trait `{State.Trait} (Self : Set) : Set := {
+  Class Trait (Self : Set) : Set := {
     L0 :: PartialEq.Trait Self (Rhs := PartialEq.Default.Rhs Self);
     assert_receiver_is_total_eq : ref Self -> M unit;
   }.
   Global Set Primitive Projections.
 
   #[refine]
-  Global Instance From_Required `{State.Trait} (Self : Set)
+  Global Instance From_Required (Self : Set)
       {H0 : Required.Trait Self} :
       Trait Self := {
     assert_receiver_is_total_eq := Provided.assert_receiver_is_total_eq;
@@ -349,7 +345,7 @@ Module Eq.
   Defined.
 
   Module Impl_Eq_for_str.
-    Global Instance I `{State.Trait} : Required.Trait str := {
+    Global Instance I : Required.Trait str := {
       assert_receiver_is_total_eq := Datatypes.None;
     }.
   End Impl_Eq_for_str.
@@ -370,14 +366,14 @@ pub trait Ord: Eq + PartialOrd<Self> {
 }
 *)
 Module Ord.
-  Class Trait `{State.Trait} (Self : Set) := {
+  Class Trait (Self : Set) := {
     _ :: Eq.Trait Self;
     _ :: PartialOrd.Trait Self (Rhs := Self);
     cmp : ref Self -> ref Self -> M Ordering;
   }.
 
   Module Impl_Ord_for_str.
-    Global Instance I `{State.Trait} : Trait str. Admitted.
+    Global Instance I : Trait str. Admitted.
   End Impl_Ord_for_str.
 End Ord.
 

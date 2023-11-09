@@ -20,7 +20,7 @@ pub trait Error: Debug + Display {
 *)
 Module Error.
   Unset Primitive Projections.
-  Class Trait `{State.Trait} (Self : Set) 
+  Class Trait (Self : Set) 
     `{fmt.Debug.Trait Self}
     `{fmt.Display.Trait Self}
   : Set := {

@@ -123,20 +123,16 @@ Section Impl_Vec.
 
   Definition Self : Set := Vec T Global.
 
-  Parameter new :
-    forall `{H : State.Trait},
-    M (H := H) Self.
+  Parameter new : M Self.
 
-  Global Instance AssociatedFunction_new `{State.Trait} :
+  Global Instance AssociatedFunction_new :
     Notation.DoubleColon Self "new" := {
     Notation.double_colon := new;
   }.
 
-  Parameter push :
-    forall `{H : State.Trait},
-    Self -> T -> M (H := H) unit.
+  Parameter push : Self -> T -> M unit.
 
-  Global Instance Method_push `{State.Trait} :
+  Global Instance Method_push :
     Notation.Dot "push" := {
     Notation.dot := push;
   }.

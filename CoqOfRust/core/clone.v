@@ -15,7 +15,7 @@ pub trait Clone: Sized {
 *)
 Module Clone.
   Module Required.
-    Class Trait `{State.Trait} (Self : Set) : Set := {
+    Class Trait (Self : Set) : Set := {
       clone : ref Self -> M Self;
       clone_from : Datatypes.option (mut_ref Self -> ref Self -> M unit);
     }.
@@ -23,16 +23,16 @@ Module Clone.
 
   Module Provided.
     Parameter clone_from :
-      forall `{State.Trait} {Self : Set} {H0 : Required.Trait Self},
+      forall {Self : Set} {H0 : Required.Trait Self},
       mut_ref Self -> ref Self -> M unit.
   End Provided.
 
-  Class Trait (Self : Set) `{H : State.Trait} : Set := {
+  Class Trait (Self : Set) : Set := {
     clone : ref Self -> M Self;
     clone_from : mut_ref Self -> ref Self -> M unit;
   }.
 
-  Global Instance From_Required `{State.Trait} {Self : Set}
+  Global Instance From_Required {Self : Set}
       {H0 : Required.Trait Self} :
       Trait Self := {
     clone := Required.clone;
@@ -40,10 +40,10 @@ Module Clone.
   }.
 
   Module Impl_Clone_for_str.
-    Global Instance I `{State.Trait} : Trait str. Admitted.
+    Global Instance I : Trait str. Admitted.
   End Impl_Clone_for_str.
 
   Module Impl_Clone_for_Z.
-    Global Instance I `{State.Trait} : Trait (M.Val Z). Admitted.
+    Global Instance I : Trait (M.Val Z). Admitted.
   End Impl_Clone_for_Z.
 End Clone.

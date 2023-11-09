@@ -53,7 +53,7 @@ Module ControlFlow.
   | Break : B -> t B C
   .
 End ControlFlow.
-Definition ControlFlow `{State.Trait} (B : Set) (C : Set) : Set :=
+Definition ControlFlow (B : Set) (C : Set) : Set :=
   M.Val (ControlFlow.t B C).
 
 (* ********STRUCTS******** *)
@@ -239,8 +239,7 @@ pub trait Generator<R = ()> {
 }
 *)
 Module Generator.
-  Class Trait `{State.Trait} (Self : Set)
-      (R : option Set) (Yield Return : Set) : Set := {
+  Class Trait (Self : Set) (R : option Set) (Yield Return : Set) : Set := {
     R := defaultType R unit;
     Yield := Yield;
     Return := Return;
@@ -264,7 +263,7 @@ where
 }
 *)
 Module RangeBounds.
-  Class Trait `{State.Trait}  (Self T : Set) : Set := { 
+  Class Trait (Self T : Set) : Set := { 
     start_bound : ref Self -> Bound (ref T);
     end_bound : ref Self -> Bound (ref T);
     contains (U : Set) {T : Set}
@@ -323,7 +322,7 @@ where
 }
 *)
 Module FnMut.
-  Class Trait `{State.Trait} (Self : Set) (Args Output : Set) 
+  Class Trait (Self : Set) (Args Output : Set) 
     `{FnOnce.Trait Self Args}
     (* Note: can we just write `Args : Tuple`? *)
     `{Tuple.Trait Args}
@@ -363,7 +362,7 @@ where
 }
 *)
 Module Index.
-  Class Trait `{State.Trait} (Self : Set) (Idx : Set) (Output : Set) : Set := {
+  Class Trait (Self : Set) (Idx : Set) (Output : Set) : Set := {
     index : ref Self -> Idx -> Output;
   }.
 End Index.

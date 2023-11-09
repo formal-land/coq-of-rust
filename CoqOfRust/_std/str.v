@@ -67,13 +67,13 @@ Module pattern.
   }
   *)
   Module SearchStep.
-    Inductive t `{ℋ : State.Trait} : Set := 
+    Inductive t : Set := 
     | Match: usize -> usize -> t
     | Reject: usize -> usize -> t
     | Done : t
     .
   End SearchStep.
-  Definition SearchStep `{ℋ : State.Trait} : Set :=
+  Definition SearchStep : Set :=
     M.Val SearchStep.t.
 
   (* ********TRAITS******** *)
@@ -96,7 +96,7 @@ Module pattern.
   }
   *)
   Module Searcher.
-    Class Trait `{ℋ : State.Trait} (Self : Set) : Set := { 
+    Class Trait (Self : Set) : Set := { 
       haystack : ref Self -> ref str;
       next : mut_ref Self -> SearchStep;
       next_match : mut_ref Self -> option.Option (usize * usize);
@@ -115,7 +115,7 @@ Module pattern.
   }
   *)
   Module ReverseSearcher.
-    Class Trait `{ℋ : State.Trait} (Self : Set) 
+    Class Trait (Self : Set) 
       `{Searcher.Trait Self} : Set := { 
         next_back : mut_ref Self -> SearchStep;
         next_match_back : mut_ref Self -> option.Option (usize * usize);
@@ -142,7 +142,7 @@ Module pattern.
   }
   *)
   Module Pattern.
-    Class Trait `{ℋ : State.Trait} (Self Searcher : Set) : Set := { 
+    Class Trait (Self Searcher : Set) : Set := { 
       Searcher := Searcher;
 
       into_searcher : Self -> ref str -> Searcher;
@@ -157,7 +157,7 @@ Module pattern.
   (* pub trait DoubleEndedSearcher<'a>: ReverseSearcher<'a> { } *)
   Module DoubleEndedSearcher.
     Unset Primitive Projections.
-    Class Trait `{ℋ : State.Trait} (Self : Set) `{ReverseSearcher.Trait Self} : Set := { }.
+    Class Trait (Self : Set) `{ReverseSearcher.Trait Self} : Set := { }.
     Set Primitive Projections.
   End DoubleEndedSearcher.
   
@@ -400,7 +400,7 @@ pub trait FromStr: Sized {
 }
 *)
 Module FromStr.
-  Class Trait `{ℋ : State.Trait} (Self : Set) : Type := { 
+  Class Trait (Self : Set) : Type := { 
     Err : Set;
     from_str : ref str -> result.Result Self Err;
   }.
@@ -408,55 +408,55 @@ End FromStr.
 
 Module FromStr_instances.
   #[refine]
-  Global Instance for_bool `{ℋ : State.Trait} : FromStr.Trait bool := {
+  Global Instance for_bool : FromStr.Trait bool := {
     Err := str.error.ParseBoolError;
   }.
     all: destruct (axiom "FromStr_instances" : Empty_set).
   Defined.
 
-  Global Instance for_char `{ℋ : State.Trait} : FromStr.Trait char.
+  Global Instance for_char : FromStr.Trait char.
   Admitted.
 
-  Global Instance for_f32 `{ℋ : State.Trait} : FromStr.Trait f32.
+  Global Instance for_f32 : FromStr.Trait f32.
   Admitted.
 
-  Global Instance for_f64 `{ℋ : State.Trait} : FromStr.Trait f64.
+  Global Instance for_f64 : FromStr.Trait f64.
   Admitted.
 
-  Global Instance for_i8 `{ℋ : State.Trait} : FromStr.Trait i8.
+  Global Instance for_i8 : FromStr.Trait i8.
   Admitted.
 
-  Global Instance for_i16 `{ℋ : State.Trait} : FromStr.Trait i16.
+  Global Instance for_i16 : FromStr.Trait i16.
   Admitted.
 
-  Global Instance for_i32 `{ℋ : State.Trait} : FromStr.Trait i32.
+  Global Instance for_i32 : FromStr.Trait i32.
   Admitted.
 
-  Global Instance for_i64 `{ℋ : State.Trait} : FromStr.Trait i64.
+  Global Instance for_i64 : FromStr.Trait i64.
   Admitted.
 
-  Global Instance for_i128 `{ℋ : State.Trait} : FromStr.Trait i128.
+  Global Instance for_i128 : FromStr.Trait i128.
   Admitted.
 
-  Global Instance for_isize `{ℋ : State.Trait} : FromStr.Trait isize.
+  Global Instance for_isize : FromStr.Trait isize.
   Admitted.
 
-  Global Instance for_u8 `{ℋ : State.Trait} : FromStr.Trait u8.
+  Global Instance for_u8 : FromStr.Trait u8.
   Admitted.
 
-  Global Instance for_u16 `{ℋ : State.Trait} : FromStr.Trait u16.
+  Global Instance for_u16 : FromStr.Trait u16.
   Admitted.
 
-  Global Instance for_u32 `{ℋ : State.Trait} : FromStr.Trait u32.
+  Global Instance for_u32 : FromStr.Trait u32.
   Admitted.
 
-  Global Instance for_u64 `{ℋ : State.Trait} : FromStr.Trait u64.
+  Global Instance for_u64 : FromStr.Trait u64.
   Admitted.
 
-  Global Instance for_u128 `{ℋ : State.Trait} : FromStr.Trait u128.
+  Global Instance for_u128 : FromStr.Trait u128.
   Admitted.
 
-  Global Instance for_usize `{ℋ : State.Trait} : FromStr.Trait usize.
+  Global Instance for_usize : FromStr.Trait usize.
   Admitted.
 End FromStr_instances.
 
@@ -469,14 +469,11 @@ End FromStr_instances.
 [ ] from_utf8_unchecked_mut
 *)
 
-Module Impl_str. Section Impl_str.
-  Context `{ℋ : State.Trait}.
-
+Module Impl_str.
   Definition Self : Set := str.
 
   Parameter parse :
-    forall `{ℋ : State.Trait} {F : Set}
-      {H0 : FromStr.Trait F},
+    forall {F : Set} {H0 : FromStr.Trait F},
     ref Self ->
     M (core.result.Result F (FromStr.Err (Trait := H0))).
 
@@ -484,4 +481,4 @@ Module Impl_str. Section Impl_str.
     Notation.DoubleColon Self "parse" := {
     Notation.double_colon := parse (F := F);
   }.
-End Impl_str. End Impl_str.
+End Impl_str.

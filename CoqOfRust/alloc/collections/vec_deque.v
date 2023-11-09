@@ -4,7 +4,7 @@ Require CoqOfRust.core.clone.
 
 (* pub struct VecDeque<T, A: Allocator = Global> { /* private fields */ } *)
 Module VecDeque.
-  Parameter t : forall `{State.Trait} (T A : Set)
+  Parameter t : forall (T A : Set)
     {H0 : alloc.Allocator.Trait A},
     Set.
 
@@ -12,7 +12,7 @@ Module VecDeque.
     Definition A : Set := alloc.Global.
   End Default.
 End VecDeque.
-Definition VecDeque `{State.Trait} (T A : Set)
+Definition VecDeque (T A : Set)
   {H0 : alloc.Allocator.Trait A} :
   Set :=
   M.Val (VecDeque.t T A).
