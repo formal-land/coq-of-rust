@@ -16,6 +16,9 @@ More thoughts: it can happen that contracts are written by people and thus these
   to be verified. When contracts goe larger, then some basic properties for verifying their 
   correctness in each aspects of translactions that involves them could be important. 
   What I want to see from the paper is common properties that need to be verifies for contracts.
+
+(23.11.10) 
+https://www.quicknode.com/guides/ethereum-development/smart-contracts/how-to-create-and-deploy-an-erc20-token
   
 TODO:
   IDEAS of properties to be proved:
