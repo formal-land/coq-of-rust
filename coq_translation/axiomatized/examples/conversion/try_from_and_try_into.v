@@ -12,7 +12,6 @@ Section EvenNumber.
   }.
 End EvenNumber.
 End EvenNumber.
-Definition EvenNumber : Set := M.Val EvenNumber.t.
 
 Module  Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber_t.
 Section Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber_t.

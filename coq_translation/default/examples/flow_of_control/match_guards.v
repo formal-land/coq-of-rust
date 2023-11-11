@@ -6,7 +6,6 @@ Module Temperature.
   | Celsius (_ : i32.t)
   | Fahrenheit (_ : i32.t).
 End Temperature.
-Definition Temperature : Set := M.Val Temperature.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M (M.Val unit) :=

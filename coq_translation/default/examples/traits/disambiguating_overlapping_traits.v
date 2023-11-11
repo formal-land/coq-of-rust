@@ -40,7 +40,6 @@ Section Form.
   }.
 End Form.
 End Form.
-Definition Form : Set := M.Val Form.t.
 
 Module  Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_overlapping_traits_Form_t.
 Section Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_overlapping_traits_Form_t.

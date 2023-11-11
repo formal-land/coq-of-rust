@@ -9,7 +9,6 @@ Module Fruit.
   | Kiwi
   | Lemon.
 End Fruit.
-Definition Fruit : Set := M.Val Fruit.t.
 
 Module  Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_else_Fruit_t.
 Section Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_else_Fruit_t.

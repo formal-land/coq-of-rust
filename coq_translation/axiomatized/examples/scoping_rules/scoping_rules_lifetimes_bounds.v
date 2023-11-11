@@ -14,7 +14,6 @@ Section Ref.
   }.
 End Ref.
 End Ref.
-Definition Ref (T : Set) : Set := M.Val (Ref.t (T := T)).
 
 Module  Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_t_T.
 Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_t_T.

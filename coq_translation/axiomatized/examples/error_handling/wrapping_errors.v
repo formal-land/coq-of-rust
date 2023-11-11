@@ -8,7 +8,6 @@ Module DoubleError.
   | EmptyVec
   | Parse (_ : core.num.error.ParseIntError.t).
 End DoubleError.
-Definition DoubleError : Set := M.Val DoubleError.t.
 
 Module  Impl_core_fmt_Debug_for_wrapping_errors_DoubleError_t.
 Section Impl_core_fmt_Debug_for_wrapping_errors_DoubleError_t.

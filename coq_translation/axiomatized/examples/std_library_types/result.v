@@ -8,7 +8,6 @@ Module checked.
     | NonPositiveLogarithm
     | NegativeSquareRoot.
   End MathError.
-  Definition MathError : Set := M.Val MathError.t.
   
   Module  Impl_core_fmt_Debug_for_result_checked_MathError_t.
   Section Impl_core_fmt_Debug_for_result_checked_MathError_t.
@@ -49,7 +48,6 @@ Module MathError.
   | NonPositiveLogarithm
   | NegativeSquareRoot.
 End MathError.
-Definition MathError : Set := M.Val MathError.t.
 
 Module  Impl_core_fmt_Debug_for_result_checked_MathError_t.
 Section Impl_core_fmt_Debug_for_result_checked_MathError_t.

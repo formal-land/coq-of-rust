@@ -7,7 +7,6 @@ Module Food.
   | Carrot
   | Potato.
 End Food.
-Definition Food : Set := M.Val Food.t.
 
 Module  Impl_core_fmt_Debug_for_combinators_map_Food_t.
 Section Impl_core_fmt_Debug_for_combinators_map_Food_t.
@@ -58,7 +57,6 @@ Section Peeled.
   }.
 End Peeled.
 End Peeled.
-Definition Peeled : Set := M.Val Peeled.t.
 
 Module  Impl_core_fmt_Debug_for_combinators_map_Peeled_t.
 Section Impl_core_fmt_Debug_for_combinators_map_Peeled_t.
@@ -106,7 +104,6 @@ Section Chopped.
   }.
 End Chopped.
 End Chopped.
-Definition Chopped : Set := M.Val Chopped.t.
 
 Module  Impl_core_fmt_Debug_for_combinators_map_Chopped_t.
 Section Impl_core_fmt_Debug_for_combinators_map_Chopped_t.
@@ -154,7 +151,6 @@ Section Cooked.
   }.
 End Cooked.
 End Cooked.
-Definition Cooked : Set := M.Val Cooked.t.
 
 Module  Impl_core_fmt_Debug_for_combinators_map_Cooked_t.
 Section Impl_core_fmt_Debug_for_combinators_map_Cooked_t.

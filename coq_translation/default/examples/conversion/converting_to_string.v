@@ -15,7 +15,6 @@ Section Circle.
   }.
 End Circle.
 End Circle.
-Definition Circle : Set := M.Val Circle.t.
 
 Module  Impl_core_fmt_Display_for_converting_to_string_Circle_t.
 Section Impl_core_fmt_Display_for_converting_to_string_Circle_t.

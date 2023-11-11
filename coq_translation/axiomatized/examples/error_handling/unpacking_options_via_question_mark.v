@@ -15,7 +15,6 @@ Section Person.
   }.
 End Person.
 End Person.
-Definition Person : Set := M.Val Person.t.
 
 Module  Job.
 Section Job.
@@ -34,7 +33,6 @@ Section Job.
   }.
 End Job.
 End Job.
-Definition Job : Set := M.Val Job.t.
 
 Module  Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job_t.
 Section Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job_t.
@@ -87,7 +85,6 @@ Section PhoneNumber.
   }.
 End PhoneNumber.
 End PhoneNumber.
-Definition PhoneNumber : Set := M.Val PhoneNumber.t.
 
 Module  Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumber_t.
 Section Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumber_t.

@@ -6,21 +6,18 @@ Section Cardinal.
   Inductive t : Set := Build.
 End Cardinal.
 End Cardinal.
-Definition Cardinal := M.Val Cardinal.t.
 
 Module  BlueJay.
 Section BlueJay.
   Inductive t : Set := Build.
 End BlueJay.
 End BlueJay.
-Definition BlueJay := M.Val BlueJay.t.
 
 Module  Turkey.
 Section Turkey.
   Inductive t : Set := Build.
 End Turkey.
 End Turkey.
-Definition Turkey := M.Val Turkey.t.
 
 Module  Red.
 Section Red.

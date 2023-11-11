@@ -22,7 +22,6 @@ Section Account.
   }.
 End Account.
 End Account.
-Definition Account : Set := M.Val Account.t.
 
 Module  Impl_core_marker_StructuralPartialEq_for_hash_map_alternate_or_custom_key_types_Account_t.
 Section Impl_core_marker_StructuralPartialEq_for_hash_map_alternate_or_custom_key_types_Account_t.
@@ -192,7 +191,6 @@ Section AccountInfo.
   }.
 End AccountInfo.
 End AccountInfo.
-Definition AccountInfo : Set := M.Val AccountInfo.t.
 
 Ltac Accounts :=
   exact

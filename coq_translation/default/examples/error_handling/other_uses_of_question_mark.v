@@ -12,7 +12,6 @@ Section EmptyVec.
   Inductive t : Set := Build.
 End EmptyVec.
 End EmptyVec.
-Definition EmptyVec := M.Val EmptyVec.t.
 
 Module  Impl_core_fmt_Debug_for_other_uses_of_question_mark_EmptyVec_t.
 Section Impl_core_fmt_Debug_for_other_uses_of_question_mark_EmptyVec_t.

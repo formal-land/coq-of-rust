@@ -6,21 +6,18 @@ Section Foo.
   Inductive t : Set := Build.
 End Foo.
 End Foo.
-Definition Foo := M.Val Foo.t.
 
 Module  Bar.
 Section Bar.
   Inductive t : Set := Build.
 End Bar.
 End Bar.
-Definition Bar := M.Val Bar.t.
 
 Module  FooBar.
 Section FooBar.
   Inductive t : Set := Build.
 End FooBar.
 End FooBar.
-Definition FooBar := M.Val FooBar.t.
 
 Module  Impl_core_fmt_Debug_for_operator_overloading_FooBar_t.
 Section Impl_core_fmt_Debug_for_operator_overloading_FooBar_t.
@@ -47,7 +44,6 @@ Section BarFoo.
   Inductive t : Set := Build.
 End BarFoo.
 End BarFoo.
-Definition BarFoo := M.Val BarFoo.t.
 
 Module  Impl_core_fmt_Debug_for_operator_overloading_BarFoo_t.
 Section Impl_core_fmt_Debug_for_operator_overloading_BarFoo_t.

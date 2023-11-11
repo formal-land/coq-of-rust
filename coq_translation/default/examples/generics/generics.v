@@ -6,7 +6,6 @@ Section A.
   Inductive t : Set := Build.
 End A.
 End A.
-Definition A := M.Val A.t.
 
 Module  Single.
 Section Single.
@@ -19,7 +18,6 @@ Section Single.
   }.
 End Single.
 End Single.
-Definition Single : Set := M.Val Single.t.
 
 Module  SingleGen.
 Section SingleGen.
@@ -34,7 +32,6 @@ Section SingleGen.
   }.
 End SingleGen.
 End SingleGen.
-Definition SingleGen (T : Set) : Set := M.Val (SingleGen.t (T := T)).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M (M.Val unit) :=

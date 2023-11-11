@@ -15,7 +15,6 @@ Section Val.
   }.
 End Val.
 End Val.
-Definition Val : Set := M.Val Val.t.
 
 Module  GenVal.
 Section GenVal.
@@ -33,7 +32,6 @@ Section GenVal.
   }.
 End GenVal.
 End GenVal.
-Definition GenVal (T : Set) : Set := M.Val (GenVal.t T).
 
 Module  Impl_generics_implementation_Val_t.
 Section Impl_generics_implementation_Val_t.

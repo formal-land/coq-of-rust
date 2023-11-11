@@ -12,7 +12,6 @@ Section Years.
   }.
 End Years.
 End Years.
-Definition Years : Set := M.Val Years.t.
 
 Module  Days.
 Section Days.
@@ -25,7 +24,6 @@ Section Days.
   }.
 End Days.
 End Days.
-Definition Days : Set := M.Val Days.t.
 
 Module  Impl_generics_new_type_idiom_Years_t.
 Section Impl_generics_new_type_idiom_Years_t.

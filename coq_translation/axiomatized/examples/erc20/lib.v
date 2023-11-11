@@ -24,7 +24,6 @@ Section Mapping.
   }.
 End Mapping.
 End Mapping.
-Definition Mapping (K V : Set) : Set := M.Val (Mapping.t K V).
 
 Module  Impl_core_default_Default_for_lib_Mapping_t_K_V.
 Section Impl_core_default_Default_for_lib_Mapping_t_K_V.
@@ -86,7 +85,6 @@ Section AccountId.
   }.
 End AccountId.
 End AccountId.
-Definition AccountId : Set := M.Val AccountId.t.
 
 Module  Impl_core_default_Default_for_lib_AccountId_t.
 Section Impl_core_default_Default_for_lib_AccountId_t.
@@ -118,7 +116,6 @@ Section Environment.
   }.
 End Environment.
 End Environment.
-Definition Environment : Set := M.Val Environment.t.
 
 Module  Event.
 Section Event.
@@ -131,7 +128,6 @@ Section Event.
   }.
 End Event.
 End Event.
-Definition Event : Set := M.Val Event.t.
 
 Module  Erc20.
 Section Erc20.
@@ -165,7 +161,6 @@ Section Erc20.
   }.
 End Erc20.
 End Erc20.
-Definition Erc20 : Set := M.Val Erc20.t.
 
 Module  Impl_core_default_Default_for_lib_Erc20_t.
 Section Impl_core_default_Default_for_lib_Erc20_t.
@@ -212,7 +207,6 @@ Section Transfer.
   }.
 End Transfer.
 End Transfer.
-Definition Transfer : Set := M.Val Transfer.t.
 
 Module  Impl_core_convert_Into_lib_Event_t_for_lib_Transfer_t.
 Section Impl_core_convert_Into_lib_Event_t_for_lib_Transfer_t.
@@ -260,7 +254,6 @@ Section Approval.
   }.
 End Approval.
 End Approval.
-Definition Approval : Set := M.Val Approval.t.
 
 Module  Impl_core_convert_Into_lib_Event_t_for_lib_Approval_t.
 Section Impl_core_convert_Into_lib_Event_t_for_lib_Approval_t.
@@ -285,7 +278,6 @@ Module Error.
   | InsufficientBalance
   | InsufficientAllowance.
 End Error.
-Definition Error : Set := M.Val Error.t.
 
 Ltac Result T := exact (core.result.Result.t T lib.Error.t).
 

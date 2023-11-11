@@ -15,7 +15,6 @@ Section Borrowed.
   }.
 End Borrowed.
 End Borrowed.
-Definition Borrowed : Set := M.Val Borrowed.t.
 
 Module  Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed_t.
 Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed_t.

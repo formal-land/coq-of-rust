@@ -6,14 +6,12 @@ Module Status.
   | Rich
   | Poor.
 End Status.
-Definition Status : Set := M.Val Status.t.
 
 Module Work.
   Inductive t : Set :=
   | Civilian
   | Soldier.
 End Work.
-Definition Work : Set := M.Val Work.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : M (M.Val unit).

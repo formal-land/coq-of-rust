@@ -12,7 +12,6 @@ Section Borrowed.
   }.
 End Borrowed.
 End Borrowed.
-Definition Borrowed : Set := M.Val Borrowed.t.
 
 Module  Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Borrowed_t.
 Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Borrowed_t.
@@ -55,7 +54,6 @@ Section NamedBorrowed.
   }.
 End NamedBorrowed.
 End NamedBorrowed.
-Definition NamedBorrowed : Set := M.Val NamedBorrowed.t.
 
 Module  Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_NamedBorrowed_t.
 Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_NamedBorrowed_t.
@@ -82,7 +80,6 @@ Module Either.
   | Num (_ : i32.t)
   | Ref (_ : ref i32.t).
 End Either.
-Definition Either : Set := M.Val Either.t.
 
 Module  Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either_t.
 Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either_t.

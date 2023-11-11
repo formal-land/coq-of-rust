@@ -22,7 +22,6 @@ Section Point.
   }.
 End Point.
 End Point.
-Definition Point : Set := M.Val Point.t.
 
 Module  Impl_associated_functions_and_methods_Point_t.
 Section Impl_associated_functions_and_methods_Point_t.
@@ -68,7 +67,6 @@ Section Rectangle.
   }.
 End Rectangle.
 End Rectangle.
-Definition Rectangle : Set := M.Val Rectangle.t.
 
 Module  Impl_associated_functions_and_methods_Rectangle_t.
 Section Impl_associated_functions_and_methods_Rectangle_t.
@@ -125,7 +123,6 @@ Section Pair.
   }.
 End Pair.
 End Pair.
-Definition Pair : Set := M.Val Pair.t.
 
 Module  Impl_associated_functions_and_methods_Pair_t.
 Section Impl_associated_functions_and_methods_Pair_t.

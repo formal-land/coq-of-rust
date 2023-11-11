@@ -6,7 +6,6 @@ Section DoubleError.
   Inductive t : Set := Build.
 End DoubleError.
 End DoubleError.
-Definition DoubleError := M.Val DoubleError.t.
 
 Module  Impl_core_fmt_Debug_for_defining_an_error_type_DoubleError_t.
 Section Impl_core_fmt_Debug_for_defining_an_error_type_DoubleError_t.

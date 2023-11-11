@@ -15,7 +15,6 @@ Section Number.
   }.
 End Number.
 End Number.
-Definition Number : Set := M.Val Number.t.
 
 Module  Impl_core_convert_From_i32_t_for_from_Number_t.
 Section Impl_core_convert_From_i32_t_for_from_Number_t.

@@ -26,7 +26,6 @@ Section Matrix.
   }.
 End Matrix.
 End Matrix.
-Definition Matrix : Set := M.Val Matrix.t.
 
 Module  Impl_core_fmt_Debug_for_tuples_Matrix_t.
 Section Impl_core_fmt_Debug_for_tuples_Matrix_t.

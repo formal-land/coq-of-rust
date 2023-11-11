@@ -133,7 +133,6 @@ Section Person.
   }.
 End Person.
 End Person.
-Definition Person : Set := M.Val Person.t.
 
 Module  Impl_core_fmt_Debug_for_scoping_rules_ownership_and_rules_partial_moves_main_Person_t.
 Section Impl_core_fmt_Debug_for_scoping_rules_ownership_and_rules_partial_moves_main_Person_t.

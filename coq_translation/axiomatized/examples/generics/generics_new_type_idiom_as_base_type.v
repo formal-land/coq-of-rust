@@ -12,7 +12,6 @@ Section Years.
   }.
 End Years.
 End Years.
-Definition Years : Set := M.Val Years.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : M (M.Val unit).

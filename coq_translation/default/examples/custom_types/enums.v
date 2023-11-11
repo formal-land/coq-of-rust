@@ -18,7 +18,6 @@ Module WebEvent.
   | Paste (_ : alloc.string.String.t)
   | Click (_ : Click.t).
 End WebEvent.
-Definition WebEvent : Set := M.Val WebEvent.t.
 
 Definition inspect (event : M.Val enums.WebEvent.t) : M (M.Val unit) :=
   M.function_body

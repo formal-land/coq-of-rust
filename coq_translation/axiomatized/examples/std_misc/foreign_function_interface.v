@@ -31,7 +31,6 @@ Section Complex.
   }.
 End Complex.
 End Complex.
-Definition Complex : Set := M.Val Complex.t.
 
 Module  Impl_core_clone_Clone_for_foreign_function_interface_Complex_t.
 Section Impl_core_clone_Clone_for_foreign_function_interface_Complex_t.

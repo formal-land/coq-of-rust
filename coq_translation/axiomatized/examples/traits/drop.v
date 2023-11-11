@@ -15,7 +15,6 @@ Section Droppable.
   }.
 End Droppable.
 End Droppable.
-Definition Droppable : Set := M.Val Droppable.t.
 
 Module  Impl_core_ops_drop_Drop_for_drop_Droppable_t.
 Section Impl_core_ops_drop_Drop_for_drop_Droppable_t.

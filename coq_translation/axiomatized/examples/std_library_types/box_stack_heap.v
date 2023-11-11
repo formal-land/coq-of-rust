@@ -23,7 +23,6 @@ Section Point.
   }.
 End Point.
 End Point.
-Definition Point : Set := M.Val Point.t.
 
 Module  Impl_core_fmt_Debug_for_box_stack_heap_Point_t.
 Section Impl_core_fmt_Debug_for_box_stack_heap_Point_t.
@@ -99,7 +98,6 @@ Section Rectangle.
   }.
 End Rectangle.
 End Rectangle.
-Definition Rectangle : Set := M.Val Rectangle.t.
 
 Parameter origin : M (M.Val box_stack_heap.Point.t).
 

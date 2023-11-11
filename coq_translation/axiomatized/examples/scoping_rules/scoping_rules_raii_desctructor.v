@@ -6,7 +6,6 @@ Section ToDrop.
   Inductive t : Set := Build.
 End ToDrop.
 End ToDrop.
-Definition ToDrop := M.Val ToDrop.t.
 
 Module  Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop_t.
 Section Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop_t.

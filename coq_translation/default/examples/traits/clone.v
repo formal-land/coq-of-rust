@@ -6,7 +6,6 @@ Section Unit.
   Inductive t : Set := Build.
 End Unit.
 End Unit.
-Definition Unit := M.Val Unit.t.
 
 Module  Impl_core_fmt_Debug_for_clone_Unit_t.
 Section Impl_core_fmt_Debug_for_clone_Unit_t.
@@ -78,7 +77,6 @@ Section Pair.
   }.
 End Pair.
 End Pair.
-Definition Pair : Set := M.Val Pair.t.
 
 Module  Impl_core_clone_Clone_for_clone_Pair_t.
 Section Impl_core_clone_Clone_for_clone_Pair_t.

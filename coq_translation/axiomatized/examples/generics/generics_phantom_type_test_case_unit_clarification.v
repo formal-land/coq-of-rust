@@ -5,7 +5,6 @@ Module Inch.
   Inductive t : Set :=
   .
 End Inch.
-Definition Inch : Set := M.Val Inch.t.
 
 Module  Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Inch_t.
 Section Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Inch_t.
@@ -60,7 +59,6 @@ Module Mm.
   Inductive t : Set :=
   .
 End Mm.
-Definition Mm : Set := M.Val Mm.t.
 
 Module  Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Mm_t.
 Section Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Mm_t.
@@ -128,7 +126,6 @@ Section Length.
   }.
 End Length.
 End Length.
-Definition Length (Unit : Set) : Set := M.Val (Length.t (Unit := Unit)).
 
 Module  Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Length_t_Unit.
 Section Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Length_t_Unit.

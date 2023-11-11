@@ -7,7 +7,6 @@ Module Food.
   | Steak
   | Sushi.
 End Food.
-Definition Food : Set := M.Val Food.t.
 
 Module  Impl_core_fmt_Debug_for_combinators_and_then_Food_t.
 Section Impl_core_fmt_Debug_for_combinators_and_then_Food_t.
@@ -35,7 +34,6 @@ Module Day.
   | Tuesday
   | Wednesday.
 End Day.
-Definition Day : Set := M.Val Day.t.
 
 Module  Impl_core_fmt_Debug_for_combinators_and_then_Day_t.
 Section Impl_core_fmt_Debug_for_combinators_and_then_Day_t.

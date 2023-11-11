@@ -16,7 +16,6 @@ Section Container.
   }.
 End Container.
 End Container.
-Definition Container : Set := M.Val Container.t.
 
 Module  Contains.
 Section Contains.

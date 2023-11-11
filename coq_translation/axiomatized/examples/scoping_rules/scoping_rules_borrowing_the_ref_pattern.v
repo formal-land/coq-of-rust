@@ -22,7 +22,6 @@ Section Point.
   }.
 End Point.
 End Point.
-Definition Point : Set := M.Val Point.t.
 
 Module  Impl_core_clone_Clone_for_scoping_rules_borrowing_the_ref_pattern_Point_t.
 Section Impl_core_clone_Clone_for_scoping_rules_borrowing_the_ref_pattern_Point_t.

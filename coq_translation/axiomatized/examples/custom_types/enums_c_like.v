@@ -7,7 +7,6 @@ Module Number.
   | One
   | Two.
 End Number.
-Definition Number : Set := M.Val Number.t.
 
 Module Color.
   Inductive t : Set :=
@@ -15,7 +14,6 @@ Module Color.
   | Green
   | Blue.
 End Color.
-Definition Color : Set := M.Val Color.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : M (M.Val unit).

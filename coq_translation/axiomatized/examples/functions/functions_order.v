@@ -12,7 +12,6 @@ Section SomeType.
   }.
 End SomeType.
 End SomeType.
-Definition SomeType : Set := M.Val SomeType.t.
 
 Module  OtherType.
 Section OtherType.
@@ -25,7 +24,6 @@ Section OtherType.
   }.
 End OtherType.
 End OtherType.
-Definition OtherType : Set := M.Val OtherType.t.
 
 Module  Impl_functions_order_SomeType_t.
 Section Impl_functions_order_SomeType_t.

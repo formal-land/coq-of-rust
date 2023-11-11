@@ -30,7 +30,6 @@ Section Book.
   }.
 End Book.
 End Book.
-Definition Book : Set := M.Val Book.t.
 
 Module  Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book_t.
 Section Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book_t.

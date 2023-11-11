@@ -56,7 +56,6 @@ Section Rectangle.
   }.
 End Rectangle.
 End Rectangle.
-Definition Rectangle : Set := M.Val Rectangle.t.
 
 Module  Impl_core_fmt_Debug_for_generics_bounds_Rectangle_t.
 Section Impl_core_fmt_Debug_for_generics_bounds_Rectangle_t.
@@ -124,7 +123,6 @@ Section Triangle.
   }.
 End Triangle.
 End Triangle.
-Definition Triangle : Set := M.Val Triangle.t.
 
 Definition print_debug
     {T : Set}

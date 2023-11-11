@@ -12,7 +12,6 @@ Section Foo.
   }.
 End Foo.
 End Foo.
-Definition Foo : Set := M.Val Foo.t.
 
 Module  Impl_example05_Foo_t.
 Section Impl_example05_Foo_t.

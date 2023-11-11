@@ -22,7 +22,6 @@ Section Sheep.
   }.
 End Sheep.
 End Sheep.
-Definition Sheep : Set := M.Val Sheep.t.
 
 Module  Animal.
 Section Animal.

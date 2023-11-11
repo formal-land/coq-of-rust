@@ -13,7 +13,6 @@ Module List.
         alloc.boxed.Box.Default.A)
   | Nil.
 End List.
-Definition List : Set := M.Val List.t.
 
 Module  Impl_enums_testcase_linked_list_List_t.
 Section Impl_enums_testcase_linked_list_List_t.

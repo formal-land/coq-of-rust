@@ -22,7 +22,6 @@ Section Person.
   }.
 End Person.
 End Person.
-Definition Person : Set := M.Val Person.t.
 
 Module  Impl_core_fmt_Debug_for_structures_Person_t.
 Section Impl_core_fmt_Debug_for_structures_Person_t.
@@ -49,7 +48,6 @@ Section Unit.
   Inductive t : Set := Build.
 End Unit.
 End Unit.
-Definition Unit := M.Val Unit.t.
 
 Module  Pair.
 Section Pair.
@@ -66,7 +64,6 @@ Section Pair.
   }.
 End Pair.
 End Pair.
-Definition Pair : Set := M.Val Pair.t.
 
 Module  Point.
 Section Point.
@@ -89,7 +86,6 @@ Section Point.
   }.
 End Point.
 End Point.
-Definition Point : Set := M.Val Point.t.
 
 Module  Rectangle.
 Section Rectangle.
@@ -114,7 +110,6 @@ Section Rectangle.
   }.
 End Rectangle.
 End Rectangle.
-Definition Rectangle : Set := M.Val Rectangle.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : M (M.Val unit).

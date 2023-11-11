@@ -12,7 +12,6 @@ Section Centimeters.
   }.
 End Centimeters.
 End Centimeters.
-Definition Centimeters : Set := M.Val Centimeters.t.
 
 Module  Impl_core_marker_StructuralPartialEq_for_derive_Centimeters_t.
 Section Impl_core_marker_StructuralPartialEq_for_derive_Centimeters_t.
@@ -101,7 +100,6 @@ Section Inches.
   }.
 End Inches.
 End Inches.
-Definition Inches : Set := M.Val Inches.t.
 
 Module  Impl_core_fmt_Debug_for_derive_Inches_t.
 Section Impl_core_fmt_Debug_for_derive_Inches_t.
@@ -169,7 +167,6 @@ Section Seconds.
   }.
 End Seconds.
 End Seconds.
-Definition Seconds : Set := M.Val Seconds.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M (M.Val unit) :=

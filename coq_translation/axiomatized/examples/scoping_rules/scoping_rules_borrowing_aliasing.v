@@ -29,7 +29,6 @@ Section Point.
   }.
 End Point.
 End Point.
-Definition Point : Set := M.Val Point.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : M (M.Val unit).

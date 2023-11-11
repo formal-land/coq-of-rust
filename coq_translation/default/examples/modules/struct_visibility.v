@@ -19,7 +19,6 @@ Module my.
     }.
   End OpenBox.
   End OpenBox.
-  Definition OpenBox (T : Set) : Set := M.Val (OpenBox.t T).
   
   Module  ClosedBox.
   Section ClosedBox.
@@ -38,7 +37,6 @@ Module my.
     }.
   End ClosedBox.
   End ClosedBox.
-  Definition ClosedBox (T : Set) : Set := M.Val (ClosedBox.t T).
   
   Module  Impl_struct_visibility_my_ClosedBox_t_T.
   Section Impl_struct_visibility_my_ClosedBox_t_T.
@@ -77,7 +75,6 @@ Section OpenBox.
   }.
 End OpenBox.
 End OpenBox.
-Definition OpenBox (T : Set) : Set := M.Val (OpenBox.t T).
 
 Module  ClosedBox.
 Section ClosedBox.
@@ -95,7 +92,6 @@ Section ClosedBox.
   }.
 End ClosedBox.
 End ClosedBox.
-Definition ClosedBox (T : Set) : Set := M.Val (ClosedBox.t T).
 
 Module  Impl_struct_visibility_my_ClosedBox_t_T_2.
 Section Impl_struct_visibility_my_ClosedBox_t_T_2.

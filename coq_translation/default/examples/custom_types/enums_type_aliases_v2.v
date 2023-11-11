@@ -6,8 +6,6 @@ Module VeryVerboseEnumOfThingsToDoWithNumbers.
   | Add
   | Subtract.
 End VeryVerboseEnumOfThingsToDoWithNumbers.
-Definition VeryVerboseEnumOfThingsToDoWithNumbers : Set :=
-  M.Val VeryVerboseEnumOfThingsToDoWithNumbers.t.
 
 Module  Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers_t.
 Section Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers_t.

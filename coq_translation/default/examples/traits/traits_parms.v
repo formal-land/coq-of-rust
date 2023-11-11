@@ -56,7 +56,6 @@ Section SomeOtherType.
   }.
 End SomeOtherType.
 End SomeOtherType.
-Definition SomeOtherType : Set := M.Val SomeOtherType.t.
 
 Module  Impl_traits_parms_Foo_for_traits_parms_SomeOtherType_t.
 Section Impl_traits_parms_Foo_for_traits_parms_SomeOtherType_t.

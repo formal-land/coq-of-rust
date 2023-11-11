@@ -6,14 +6,12 @@ Section Sheep.
   Record t : Set := { }.
 End Sheep.
 End Sheep.
-Definition Sheep : Set := M.Val Sheep.t.
 
 Module  Cow.
 Section Cow.
   Record t : Set := { }.
 End Cow.
 End Cow.
-Definition Cow : Set := M.Val Cow.t.
 
 Module  Animal.
 Section Animal.

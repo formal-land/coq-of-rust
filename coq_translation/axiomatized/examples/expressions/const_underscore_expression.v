@@ -15,7 +15,6 @@ Section Foo.
   }.
 End Foo.
 End Foo.
-Definition Foo : Set := M.Val Foo.t.
 
 Module  Bar.
 Section Bar.
@@ -31,7 +30,6 @@ Section Bar.
   }.
 End Bar.
 End Bar.
-Definition Bar : Set := M.Val Bar.t.
 
 Module  BarTrait.
 Section BarTrait.

@@ -12,7 +12,6 @@ Section Owner.
   }.
 End Owner.
 End Owner.
-Definition Owner : Set := M.Val Owner.t.
 
 Module  Impl_scoping_rules_lifetimes_methods_Owner_t.
 Section Impl_scoping_rules_lifetimes_methods_Owner_t.

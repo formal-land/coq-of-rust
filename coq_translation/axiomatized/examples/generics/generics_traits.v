@@ -6,14 +6,12 @@ Section Empty.
   Inductive t : Set := Build.
 End Empty.
 End Empty.
-Definition Empty := M.Val Empty.t.
 
 Module  Null.
 Section Null.
   Inductive t : Set := Build.
 End Null.
 End Null.
-Definition Null := M.Val Null.t.
 
 Module  DoubleDrop.
 Section DoubleDrop.

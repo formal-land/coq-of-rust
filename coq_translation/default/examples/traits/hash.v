@@ -29,7 +29,6 @@ Section Person.
   }.
 End Person.
 End Person.
-Definition Person : Set := M.Val Person.t.
 
 Module  Impl_core_hash_Hash_for_hash_Person_t.
 Section Impl_core_hash_Hash_for_hash_Person_t.

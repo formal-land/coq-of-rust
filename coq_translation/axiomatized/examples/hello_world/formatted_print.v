@@ -15,4 +15,3 @@ Section Structure.
   }.
 End Structure.
 End Structure.
-Definition Structure : Set := M.Val Structure.t.

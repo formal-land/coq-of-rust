@@ -12,7 +12,6 @@ Section Choice.
   }.
 End Choice.
 End Choice.
-Definition Choice : Set := M.Val Choice.t.
 
 Module  Impl_core_marker_Copy_for_subtle_Choice_t.
 Section Impl_core_marker_Copy_for_subtle_Choice_t.
@@ -1017,7 +1016,6 @@ Section CtOption.
   }.
 End CtOption.
 End CtOption.
-Definition CtOption (T : Set) : Set := M.Val (CtOption.t T).
 
 Module  Impl_core_clone_Clone_for_subtle_CtOption_t_T.
 Section Impl_core_clone_Clone_for_subtle_CtOption_t_T.

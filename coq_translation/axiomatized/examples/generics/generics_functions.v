@@ -6,7 +6,6 @@ Section A.
   Inductive t : Set := Build.
 End A.
 End A.
-Definition A := M.Val A.t.
 
 Module  S.
 Section S.
@@ -19,7 +18,6 @@ Section S.
   }.
 End S.
 End S.
-Definition S : Set := M.Val S.t.
 
 Module  SGen.
 Section SGen.
@@ -34,7 +32,6 @@ Section SGen.
   }.
 End SGen.
 End SGen.
-Definition SGen (T : Set) : Set := M.Val (SGen.t (T := T)).
 
 Parameter reg_fn : (M.Val generics_functions.S.t) -> M (M.Val unit).
 

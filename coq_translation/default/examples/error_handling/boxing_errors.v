@@ -12,7 +12,6 @@ Section EmptyVec.
   Inductive t : Set := Build.
 End EmptyVec.
 End EmptyVec.
-Definition EmptyVec := M.Val EmptyVec.t.
 
 Module  Impl_core_fmt_Debug_for_boxing_errors_EmptyVec_t.
 Section Impl_core_fmt_Debug_for_boxing_errors_EmptyVec_t.

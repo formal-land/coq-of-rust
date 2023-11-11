@@ -18,8 +18,6 @@ Section PhantomTuple.
   }.
 End PhantomTuple.
 End PhantomTuple.
-Definition PhantomTuple (A B : Set) : Set :=
-  M.Val (PhantomTuple.t (A := A) (B := B)).
 
 Module  Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomTuple_t_A_B.
 Section Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomTuple_t_A_B.
@@ -119,7 +117,6 @@ Section PhantomStruct.
   }.
 End PhantomStruct.
 End PhantomStruct.
-Definition PhantomStruct (A B : Set) : Set := M.Val (PhantomStruct.t A B).
 
 Module  Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomStruct_t_A_B.
 Section Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomStruct_t_A_B.
