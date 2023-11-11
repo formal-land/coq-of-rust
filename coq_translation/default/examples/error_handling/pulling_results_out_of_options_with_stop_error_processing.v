@@ -2,197 +2,219 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition double_first
-    `{ℋ : State.Trait}
-    (vec : alloc.vec.Vec (ref str) alloc.vec.Vec.Default.A)
+    (vec : M.Val (alloc.vec.Vec.t (ref str.t) alloc.vec.Vec.Default.A))
     :
       M
-        (core.result.Result
-          (core.option.Option i32)
-          core.num.error.ParseIntError) :=
+        (M.Val
+          (core.result.Result.t
+            (core.option.Option.t i32.t)
+            core.num.error.ParseIntError.t)) :=
   M.function_body
     (let* opt :
         ltac:(refine
-          (core.option.Option
-            (core.result.Result i32 core.num.error.ParseIntError))) :=
+          (M.Val
+            (core.option.Option.t
+              (core.result.Result.t i32.t core.num.error.ParseIntError.t)))) :=
       let* α0 :
-          ltac:(refine (ref (alloc.vec.Vec (ref str) alloc.alloc.Global))) :=
+          ltac:(refine
+            (M.Val (ref (alloc.vec.Vec.t (ref str) alloc.alloc.Global.t)))) :=
         borrow vec in
-      let* α1 : ltac:(refine (ref (slice (ref str)))) :=
+      let* α1 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
         (core.ops.deref.Deref.deref
-            (Self := alloc.vec.Vec (ref str) alloc.alloc.Global)
+            (Self := alloc.vec.Vec.t (ref str) alloc.alloc.Global.t)
             (Trait := ltac:(refine _)))
           α0 in
-      let* α2 : ltac:(refine (slice (ref str))) := deref α1 in
-      let* α3 : ltac:(refine (ref (slice (ref str)))) := borrow α2 in
-      let* α4 : ltac:(refine (core.option.Option (ref (ref str)))) :=
+      let* α2 : ltac:(refine (M.Val (slice (ref str)))) := deref α1 in
+      let* α3 : ltac:(refine (M.Val (ref (slice (ref str))))) := borrow α2 in
+      let* α4 : ltac:(refine (M.Val (core.option.Option.t (ref (ref str))))) :=
         (slice (ref str))::["first"] α3 in
-      (core.option.Option (ref (ref str)))::["map"]
+      (core.option.Option.t (ref (ref str)))::["map"]
         α4
-        (let* α0 : ltac:(refine (ref str)) := deref first in
-        let* α1 : ltac:(refine str) := deref α0 in
-        let* α2 : ltac:(refine (ref str)) := borrow α1 in
+        (let* α0 : ltac:(refine (M.Val (ref str))) := deref first in
+        let* α1 : ltac:(refine (M.Val str)) := deref α0 in
+        let* α2 : ltac:(refine (M.Val (ref str))) := borrow α1 in
         let* α3 :
             ltac:(refine
-              (core.result.Result i32 core.num.error.ParseIntError)) :=
+              (M.Val
+                (core.result.Result.t i32.t core.num.error.ParseIntError.t))) :=
           str::["parse"] α2 in
-        (core.result.Result i32 core.num.error.ParseIntError)::["map"]
+        (core.result.Result.t i32.t core.num.error.ParseIntError.t)::["map"]
           α3
-          (let* α0 : ltac:(refine i32) := M.alloc 2 in
+          (let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 2 in
           BinOp.mul α0 n)) in
-    let* α0 : ltac:(refine (core.option.Option i32)) :=
+    let* α0 : ltac:(refine (M.Val (core.option.Option.t i32.t))) :=
       M.alloc core.option.Option.None in
-    let* α1 :
+    let* α1 := M.read α0 in
+    let* α2 :
         ltac:(refine
-          (core.result.Result
-            (core.option.Option i32)
-            core.num.error.ParseIntError)) :=
-      M.alloc (core.result.Result.Ok α0) in
-    (core.option.Option
-          (core.result.Result i32 core.num.error.ParseIntError))::["map_or"]
+          (M.Val
+            (core.result.Result.t
+              (core.option.Option.t i32.t)
+              core.num.error.ParseIntError.t))) :=
+      M.alloc (core.result.Result.Ok α1) in
+    (core.option.Option.t
+          (core.result.Result.t
+            i32.t
+            core.num.error.ParseIntError.t))::["map_or"]
       opt
-      α1
-      ((core.result.Result i32 core.num.error.ParseIntError)::["map"]
+      α2
+      ((core.result.Result.t i32.t core.num.error.ParseIntError.t)::["map"]
         r
         "unimplemented parent_kind")).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{ℋ : State.Trait} : M unit :=
+Definition main : M (M.Val unit) :=
   M.function_body
     (let* numbers :
-        ltac:(refine (alloc.vec.Vec (ref str) alloc.alloc.Global)) :=
-      let* α0 : ltac:(refine str) := deref (mk_str "93") in
-      let* α1 : ltac:(refine (ref str)) := borrow α0 in
-      let* α2 : ltac:(refine str) := deref (mk_str "18") in
-      let* α3 : ltac:(refine (ref str)) := borrow α2 in
-      let* α4 : ltac:(refine (array (ref str))) :=
+        ltac:(refine
+          (M.Val (alloc.vec.Vec.t (ref str) alloc.alloc.Global.t))) :=
+      let* α0 : ltac:(refine (M.Val str)) := deref (mk_str "93") in
+      let* α1 : ltac:(refine (M.Val (ref str))) := borrow α0 in
+      let* α2 : ltac:(refine (M.Val str)) := deref (mk_str "18") in
+      let* α3 : ltac:(refine (M.Val (ref str))) := borrow α2 in
+      let* α4 : ltac:(refine (M.Val (array (ref str)))) :=
         M.alloc [ mk_str "42"; α1; α3 ] in
       let* α5 :
           ltac:(refine
-            (alloc.boxed.Box (array (ref str)) alloc.alloc.Global)) :=
+            (M.Val
+              (alloc.boxed.Box.t (array (ref str)) alloc.alloc.Global.t))) :=
         (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α4 in
       let* α6 :
           ltac:(refine
-            (alloc.boxed.Box (slice (ref str)) alloc.alloc.Global)) :=
+            (M.Val
+              (alloc.boxed.Box.t (slice (ref str)) alloc.alloc.Global.t))) :=
         pointer_coercion "Unsize" α5 in
       (slice (ref str))::["into_vec"] α6 in
-    let* empty : ltac:(refine (alloc.vec.Vec (ref str) alloc.alloc.Global)) :=
-      (alloc.vec.Vec (ref str) alloc.alloc.Global)::["new"] in
-    let* strings : ltac:(refine (alloc.vec.Vec (ref str) alloc.alloc.Global)) :=
-      let* α0 : ltac:(refine str) := deref (mk_str "93") in
-      let* α1 : ltac:(refine (ref str)) := borrow α0 in
-      let* α2 : ltac:(refine str) := deref (mk_str "18") in
-      let* α3 : ltac:(refine (ref str)) := borrow α2 in
-      let* α4 : ltac:(refine (array (ref str))) :=
+    let* empty :
+        ltac:(refine
+          (M.Val (alloc.vec.Vec.t (ref str) alloc.alloc.Global.t))) :=
+      (alloc.vec.Vec.t (ref str) alloc.alloc.Global.t)::["new"] in
+    let* strings :
+        ltac:(refine
+          (M.Val (alloc.vec.Vec.t (ref str) alloc.alloc.Global.t))) :=
+      let* α0 : ltac:(refine (M.Val str)) := deref (mk_str "93") in
+      let* α1 : ltac:(refine (M.Val (ref str))) := borrow α0 in
+      let* α2 : ltac:(refine (M.Val str)) := deref (mk_str "18") in
+      let* α3 : ltac:(refine (M.Val (ref str))) := borrow α2 in
+      let* α4 : ltac:(refine (M.Val (array (ref str)))) :=
         M.alloc [ mk_str "tofu"; α1; α3 ] in
       let* α5 :
           ltac:(refine
-            (alloc.boxed.Box (array (ref str)) alloc.alloc.Global)) :=
+            (M.Val
+              (alloc.boxed.Box.t (array (ref str)) alloc.alloc.Global.t))) :=
         (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α4 in
       let* α6 :
           ltac:(refine
-            (alloc.boxed.Box (slice (ref str)) alloc.alloc.Global)) :=
+            (M.Val
+              (alloc.boxed.Box.t (slice (ref str)) alloc.alloc.Global.t))) :=
         pointer_coercion "Unsize" α5 in
       (slice (ref str))::["into_vec"] α6 in
-    let* _ : ltac:(refine unit) :=
-      let* _ : ltac:(refine unit) :=
-        let* α0 : ltac:(refine (array (ref str))) :=
+    let* _ : ltac:(refine (M.Val unit)) :=
+      let* _ : ltac:(refine (M.Val unit)) :=
+        let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
           M.alloc [ mk_str "The first doubled is "; mk_str "
 " ] in
-        let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
-        let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+        let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) := borrow α0 in
+        let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
           pointer_coercion "Unsize" α1 in
         let* α3 :
             ltac:(refine
-              (core.result.Result
-                (core.option.Option i32)
-                core.num.error.ParseIntError)) :=
+              (M.Val
+                (core.result.Result.t
+                  (core.option.Option.t i32.t)
+                  core.num.error.ParseIntError.t))) :=
           pulling_results_out_of_options_with_stop_error_processing.double_first
             numbers in
         let* α4 :
             ltac:(refine
-              (ref
-                (core.result.Result
-                  (core.option.Option i32)
-                  core.num.error.ParseIntError))) :=
+              (M.Val
+                (ref
+                  (core.result.Result.t
+                    (core.option.Option.t i32.t)
+                    core.num.error.ParseIntError.t)))) :=
           borrow α3 in
-        let* α5 : ltac:(refine core.fmt.rt.Argument) :=
-          core.fmt.rt.Argument::["new_debug"] α4 in
-        let* α6 : ltac:(refine (array core.fmt.rt.Argument)) :=
+        let* α5 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
+          core.fmt.rt.Argument.t::["new_debug"] α4 in
+        let* α6 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
           M.alloc [ α5 ] in
-        let* α7 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+        let* α7 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
           borrow α6 in
-        let* α8 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+        let* α8 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
           pointer_coercion "Unsize" α7 in
-        let* α9 : ltac:(refine core.fmt.Arguments) :=
-          core.fmt.Arguments::["new_v1"] α2 α8 in
+        let* α9 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
+          core.fmt.Arguments.t::["new_v1"] α2 α8 in
         std.io.stdio._print α9 in
       M.alloc tt in
-    let* _ : ltac:(refine unit) :=
-      let* _ : ltac:(refine unit) :=
-        let* α0 : ltac:(refine (array (ref str))) :=
+    let* _ : ltac:(refine (M.Val unit)) :=
+      let* _ : ltac:(refine (M.Val unit)) :=
+        let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
           M.alloc [ mk_str "The first doubled is "; mk_str "
 " ] in
-        let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
-        let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+        let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) := borrow α0 in
+        let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
           pointer_coercion "Unsize" α1 in
         let* α3 :
             ltac:(refine
-              (core.result.Result
-                (core.option.Option i32)
-                core.num.error.ParseIntError)) :=
+              (M.Val
+                (core.result.Result.t
+                  (core.option.Option.t i32.t)
+                  core.num.error.ParseIntError.t))) :=
           pulling_results_out_of_options_with_stop_error_processing.double_first
             empty in
         let* α4 :
             ltac:(refine
-              (ref
-                (core.result.Result
-                  (core.option.Option i32)
-                  core.num.error.ParseIntError))) :=
+              (M.Val
+                (ref
+                  (core.result.Result.t
+                    (core.option.Option.t i32.t)
+                    core.num.error.ParseIntError.t)))) :=
           borrow α3 in
-        let* α5 : ltac:(refine core.fmt.rt.Argument) :=
-          core.fmt.rt.Argument::["new_debug"] α4 in
-        let* α6 : ltac:(refine (array core.fmt.rt.Argument)) :=
+        let* α5 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
+          core.fmt.rt.Argument.t::["new_debug"] α4 in
+        let* α6 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
           M.alloc [ α5 ] in
-        let* α7 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+        let* α7 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
           borrow α6 in
-        let* α8 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+        let* α8 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
           pointer_coercion "Unsize" α7 in
-        let* α9 : ltac:(refine core.fmt.Arguments) :=
-          core.fmt.Arguments::["new_v1"] α2 α8 in
+        let* α9 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
+          core.fmt.Arguments.t::["new_v1"] α2 α8 in
         std.io.stdio._print α9 in
       M.alloc tt in
-    let* _ : ltac:(refine unit) :=
-      let* _ : ltac:(refine unit) :=
-        let* α0 : ltac:(refine (array (ref str))) :=
+    let* _ : ltac:(refine (M.Val unit)) :=
+      let* _ : ltac:(refine (M.Val unit)) :=
+        let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
           M.alloc [ mk_str "The first doubled is "; mk_str "
 " ] in
-        let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
-        let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+        let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) := borrow α0 in
+        let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
           pointer_coercion "Unsize" α1 in
         let* α3 :
             ltac:(refine
-              (core.result.Result
-                (core.option.Option i32)
-                core.num.error.ParseIntError)) :=
+              (M.Val
+                (core.result.Result.t
+                  (core.option.Option.t i32.t)
+                  core.num.error.ParseIntError.t))) :=
           pulling_results_out_of_options_with_stop_error_processing.double_first
             strings in
         let* α4 :
             ltac:(refine
-              (ref
-                (core.result.Result
-                  (core.option.Option i32)
-                  core.num.error.ParseIntError))) :=
+              (M.Val
+                (ref
+                  (core.result.Result.t
+                    (core.option.Option.t i32.t)
+                    core.num.error.ParseIntError.t)))) :=
           borrow α3 in
-        let* α5 : ltac:(refine core.fmt.rt.Argument) :=
-          core.fmt.rt.Argument::["new_debug"] α4 in
-        let* α6 : ltac:(refine (array core.fmt.rt.Argument)) :=
+        let* α5 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
+          core.fmt.rt.Argument.t::["new_debug"] α4 in
+        let* α6 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
           M.alloc [ α5 ] in
-        let* α7 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+        let* α7 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
           borrow α6 in
-        let* α8 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+        let* α8 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
           pointer_coercion "Unsize" α7 in
-        let* α9 : ltac:(refine core.fmt.Arguments) :=
-          core.fmt.Arguments::["new_v1"] α2 α8 in
+        let* α9 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
+          core.fmt.Arguments.t::["new_v1"] α2 α8 in
         std.io.stdio._print α9 in
       M.alloc tt in
     M.alloc tt).

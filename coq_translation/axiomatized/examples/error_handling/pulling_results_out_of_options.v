@@ -2,11 +2,11 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Parameter double_first :
-    forall `{ℋ : State.Trait},
-    (alloc.vec.Vec (ref str) alloc.vec.Vec.Default.A) ->
+    (M.Val (alloc.vec.Vec.t (ref str.t) alloc.vec.Vec.Default.A)) ->
       M
-        (core.option.Option
-          (core.result.Result i32 core.num.error.ParseIntError)).
+        (M.Val
+          (core.option.Option.t
+            (core.result.Result.t i32.t core.num.error.ParseIntError.t))).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{ℋ : State.Trait}, M unit.
+Parameter main : M (M.Val unit).

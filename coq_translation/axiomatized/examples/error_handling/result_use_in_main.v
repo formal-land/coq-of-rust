@@ -3,5 +3,4 @@ Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main :
-    forall `{ℋ : State.Trait},
-    M (core.result.Result unit core.num.error.ParseIntError).
+    M (M.Val (core.result.Result.t unit core.num.error.ParseIntError.t)).

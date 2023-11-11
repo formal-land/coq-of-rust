@@ -2,33 +2,34 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module Fruit.
-  Inductive t `{ℋ : State.Trait} : Set :=
+  Inductive t : Set :=
   | Apple
   | Orange
   | Banana
   | Kiwi
   | Lemon.
 End Fruit.
-Definition Fruit `{ℋ : State.Trait} : Set := M.Val Fruit.t.
+Definition Fruit : Set := M.Val Fruit.t.
 
-Module  Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_Fruit.
-Section Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_Fruit.
-  Context `{ℋ : State.Trait}.
-  
-  Definition Self : Set := unpacking_options_and_defaults_via_or.Fruit.
+Module  Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_Fruit_t.
+Section Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_Fruit_t.
+  Ltac Self := exact unpacking_options_and_defaults_via_or.Fruit.t.
   
   Parameter fmt :
-      (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
+      (M.Val (ref ltac:(Self))) ->
+        (M.Val (mut_ref core.fmt.Formatter.t)) ->
+        M (M.Val ltac:(core.fmt.Result)).
   
-  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {
+  Global Instance AssociatedFunction_fmt :
+    Notation.DoubleColon ltac:(Self) "fmt" := {
     Notation.double_colon := fmt;
   }.
   
-  Global Instance ℐ : core.fmt.Debug.Trait Self := {
+  Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
     core.fmt.Debug.fmt := fmt;
   }.
-End Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_Fruit.
-End Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_Fruit.
+End Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_Fruit_t.
+End Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_Fruit_t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{ℋ : State.Trait}, M unit.
+Parameter main : M (M.Val unit).

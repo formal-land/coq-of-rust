@@ -3,8 +3,6 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module  Foo.
 Section Foo.
-  Context `{ℋ : State.Trait}.
-  
   Unset Primitive Projections.
   Class Trait (Self : Set) : Type := {
   }.
@@ -14,8 +12,6 @@ End Foo.
 
 Module  Bar.
 Section Bar.
-  Context `{ℋ : State.Trait}.
-  
   Unset Primitive Projections.
   Class Trait (Self : Set) : Type := {
   }.
@@ -25,8 +21,6 @@ End Bar.
 
 Module  Tar.
 Section Tar.
-  Context `{ℋ : State.Trait}.
-  
   Unset Primitive Projections.
   Class Trait (Self : Set) : Type := {
   }.
@@ -36,8 +30,6 @@ End Tar.
 
 Module  SomeTrait.
 Section SomeTrait.
-  Context `{ℋ : State.Trait}.
-  
   Class Trait (Self : Set) : Type := {
     SomeType : Set;
     ℒ_0 :: traits_parms.Foo.Trait SomeType;
@@ -55,70 +47,60 @@ End SomeTrait.
 
 Module  SomeOtherType.
 Section SomeOtherType.
-  Context `{ℋ : State.Trait}.
-  
   Record t : Set := {
-    x0 : u32;
+    x0 : u32.t;
   }.
   
   Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
+    Notation.dot x := let* x := M.read x in M.alloc x.(x0) : M _;
   }.
 End SomeOtherType.
 End SomeOtherType.
-Definition SomeOtherType `{ℋ : State.Trait} : Set := M.Val SomeOtherType.t.
+Definition SomeOtherType : Set := M.Val SomeOtherType.t.
 
-Module  Impl_traits_parms_Foo_for_traits_parms_SomeOtherType.
-Section Impl_traits_parms_Foo_for_traits_parms_SomeOtherType.
-  Context `{ℋ : State.Trait}.
+Module  Impl_traits_parms_Foo_for_traits_parms_SomeOtherType_t.
+Section Impl_traits_parms_Foo_for_traits_parms_SomeOtherType_t.
+  Ltac Self := exact traits_parms.SomeOtherType.t.
   
-  Definition Self : Set := traits_parms.SomeOtherType.
-  
-  Global Instance ℐ : traits_parms.Foo.Trait Self := {
+  Global Instance ℐ : traits_parms.Foo.Trait ltac:(Self) := {
   }.
-End Impl_traits_parms_Foo_for_traits_parms_SomeOtherType.
-End Impl_traits_parms_Foo_for_traits_parms_SomeOtherType.
+End Impl_traits_parms_Foo_for_traits_parms_SomeOtherType_t.
+End Impl_traits_parms_Foo_for_traits_parms_SomeOtherType_t.
 
-Module  Impl_traits_parms_Bar_for_traits_parms_SomeOtherType.
-Section Impl_traits_parms_Bar_for_traits_parms_SomeOtherType.
-  Context `{ℋ : State.Trait}.
+Module  Impl_traits_parms_Bar_for_traits_parms_SomeOtherType_t.
+Section Impl_traits_parms_Bar_for_traits_parms_SomeOtherType_t.
+  Ltac Self := exact traits_parms.SomeOtherType.t.
   
-  Definition Self : Set := traits_parms.SomeOtherType.
-  
-  Global Instance ℐ : traits_parms.Bar.Trait Self := {
+  Global Instance ℐ : traits_parms.Bar.Trait ltac:(Self) := {
   }.
-End Impl_traits_parms_Bar_for_traits_parms_SomeOtherType.
-End Impl_traits_parms_Bar_for_traits_parms_SomeOtherType.
+End Impl_traits_parms_Bar_for_traits_parms_SomeOtherType_t.
+End Impl_traits_parms_Bar_for_traits_parms_SomeOtherType_t.
 
-Module  Impl_traits_parms_Tar_for_traits_parms_SomeOtherType.
-Section Impl_traits_parms_Tar_for_traits_parms_SomeOtherType.
-  Context `{ℋ : State.Trait}.
+Module  Impl_traits_parms_Tar_for_traits_parms_SomeOtherType_t.
+Section Impl_traits_parms_Tar_for_traits_parms_SomeOtherType_t.
+  Ltac Self := exact traits_parms.SomeOtherType.t.
   
-  Definition Self : Set := traits_parms.SomeOtherType.
-  
-  Global Instance ℐ : traits_parms.Tar.Trait Self := {
+  Global Instance ℐ : traits_parms.Tar.Trait ltac:(Self) := {
   }.
-End Impl_traits_parms_Tar_for_traits_parms_SomeOtherType.
-End Impl_traits_parms_Tar_for_traits_parms_SomeOtherType.
+End Impl_traits_parms_Tar_for_traits_parms_SomeOtherType_t.
+End Impl_traits_parms_Tar_for_traits_parms_SomeOtherType_t.
 
-Module  Impl_traits_parms_SomeTrait_for_traits_parms_SomeOtherType.
-Section Impl_traits_parms_SomeTrait_for_traits_parms_SomeOtherType.
-  Context `{ℋ : State.Trait}.
+Module  Impl_traits_parms_SomeTrait_for_traits_parms_SomeOtherType_t.
+Section Impl_traits_parms_SomeTrait_for_traits_parms_SomeOtherType_t.
+  Ltac Self := exact traits_parms.SomeOtherType.t.
   
-  Definition Self : Set := traits_parms.SomeOtherType.
+  Definition SomeType : Set := traits_parms.SomeOtherType.t.
   
-  Definition SomeType : Set := traits_parms.SomeOtherType.
-  
-  Parameter some_fn : M unit.
+  Parameter some_fn : M (M.Val unit).
   
   Global Instance AssociatedFunction_some_fn :
-    Notation.DoubleColon Self "some_fn" := {
+    Notation.DoubleColon ltac:(Self) "some_fn" := {
     Notation.double_colon := some_fn;
   }.
   
-  Global Instance ℐ : traits_parms.SomeTrait.Trait Self := {
+  Global Instance ℐ : traits_parms.SomeTrait.Trait ltac:(Self) := {
     traits_parms.SomeTrait.SomeType := SomeType;
     traits_parms.SomeTrait.some_fn := some_fn;
   }.
-End Impl_traits_parms_SomeTrait_for_traits_parms_SomeOtherType.
-End Impl_traits_parms_SomeTrait_for_traits_parms_SomeOtherType.
+End Impl_traits_parms_SomeTrait_for_traits_parms_SomeOtherType_t.
+End Impl_traits_parms_SomeTrait_for_traits_parms_SomeOtherType_t.

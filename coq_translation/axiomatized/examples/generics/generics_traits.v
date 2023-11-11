@@ -3,28 +3,22 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module  Empty.
 Section Empty.
-  Context `{ℋ : State.Trait}.
-  
   Inductive t : Set := Build.
 End Empty.
 End Empty.
-Definition Empty `{ℋ : State.Trait} := M.Val Empty.t.
+Definition Empty := M.Val Empty.t.
 
 Module  Null.
 Section Null.
-  Context `{ℋ : State.Trait}.
-  
   Inductive t : Set := Build.
 End Null.
 End Null.
-Definition Null `{ℋ : State.Trait} := M.Val Null.t.
+Definition Null := M.Val Null.t.
 
 Module  DoubleDrop.
 Section DoubleDrop.
-  Context `{ℋ : State.Trait}.
-  
   Class Trait (Self : Set) {T : Set} : Type := {
-    double_drop : Self -> T -> M unit;
+    double_drop : ltac:(Self) -> T -> M unit;
   }.
   
 End DoubleDrop.
@@ -32,24 +26,22 @@ End DoubleDrop.
 
 Module  Impl_generics_traits_DoubleDrop_T_for_U.
 Section Impl_generics_traits_DoubleDrop_T_for_U.
-  Context `{ℋ : State.Trait}.
-  
   Context {T U : Set}.
   
-  Definition Self : Set := U.
+  Ltac Self := exact U.
   
-  Parameter double_drop : Self -> T -> M unit.
+  Parameter double_drop : (M.Val ltac:(Self)) -> (M.Val T) -> M (M.Val unit).
   
   Global Instance AssociatedFunction_double_drop :
-    Notation.DoubleColon Self "double_drop" := {
+    Notation.DoubleColon ltac:(Self) "double_drop" := {
     Notation.double_colon := double_drop;
   }.
   
-  Global Instance ℐ : generics_traits.DoubleDrop.Trait Self (T := T) := {
+  Global Instance ℐ : generics_traits.DoubleDrop.Trait ltac:(Self) (T := T) := {
     generics_traits.DoubleDrop.double_drop := double_drop;
   }.
 End Impl_generics_traits_DoubleDrop_T_for_U.
 End Impl_generics_traits_DoubleDrop_T_for_U.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{ℋ : State.Trait}, M unit.
+Parameter main : M (M.Val unit).

@@ -3,40 +3,39 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module  Circle.
 Section Circle.
-  Context `{ℋ : State.Trait}.
-  
   Record t : Set := {
-    radius : i32;
+    radius : i32.t;
   }.
   
   Global Instance Get_radius : Notation.Dot "radius" := {
-    Notation.dot x := let* x := M.read x in M.pure x.(radius) : M _;
+    Notation.dot x := let* x := M.read x in M.alloc x.(radius) : M _;
   }.
   Global Instance Get_AF_radius : Notation.DoubleColon t "radius" := {
-    Notation.double_colon x := let* x := M.read x in M.pure x.(radius) : M _;
+    Notation.double_colon x := let* x := M.read x in M.alloc x.(radius) : M _;
   }.
 End Circle.
 End Circle.
-Definition Circle `{ℋ : State.Trait} : Set := M.Val Circle.t.
+Definition Circle : Set := M.Val Circle.t.
 
-Module  Impl_core_fmt_Display_for_converting_to_string_Circle.
-Section Impl_core_fmt_Display_for_converting_to_string_Circle.
-  Context `{ℋ : State.Trait}.
-  
-  Definition Self : Set := converting_to_string.Circle.
+Module  Impl_core_fmt_Display_for_converting_to_string_Circle_t.
+Section Impl_core_fmt_Display_for_converting_to_string_Circle_t.
+  Ltac Self := exact converting_to_string.Circle.t.
   
   Parameter fmt :
-      (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
+      (M.Val (ref ltac:(Self))) ->
+        (M.Val (mut_ref core.fmt.Formatter.t)) ->
+        M (M.Val ltac:(core.fmt.Result)).
   
-  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {
+  Global Instance AssociatedFunction_fmt :
+    Notation.DoubleColon ltac:(Self) "fmt" := {
     Notation.double_colon := fmt;
   }.
   
-  Global Instance ℐ : core.fmt.Display.Trait Self := {
+  Global Instance ℐ : core.fmt.Display.Trait ltac:(Self) := {
     core.fmt.Display.fmt := fmt;
   }.
-End Impl_core_fmt_Display_for_converting_to_string_Circle.
-End Impl_core_fmt_Display_for_converting_to_string_Circle.
+End Impl_core_fmt_Display_for_converting_to_string_Circle_t.
+End Impl_core_fmt_Display_for_converting_to_string_Circle_t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{ℋ : State.Trait}, M unit.
+Parameter main : M (M.Val unit).

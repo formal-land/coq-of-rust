@@ -2,42 +2,44 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{ℋ : State.Trait} : M unit :=
+Definition main : M (M.Val unit) :=
   M.function_body
-    (let* name_buf : ltac:(refine (array u8)) :=
-      let* α0 : ltac:(refine u8) := M.alloc 0 in
+    (let* name_buf : ltac:(refine (M.Val (array u8.t))) :=
+      let* α0 : ltac:(refine (M.Val u8.t)) := M.alloc 0 in
       repeat α0 12 in
-    let* _ : ltac:(refine unit) :=
+    let* _ : ltac:(refine (M.Val unit)) :=
       let _ := InlineAssembly in
       M.alloc tt in
-    let* name : ltac:(refine (ref str)) :=
-      let* α0 : ltac:(refine (ref (array u8))) := borrow name_buf in
-      let* α1 : ltac:(refine (ref (slice u8))) :=
+    let* name : ltac:(refine (M.Val (ref str))) :=
+      let* α0 : ltac:(refine (M.Val (ref (array u8.t)))) := borrow name_buf in
+      let* α1 : ltac:(refine (M.Val (ref (slice u8.t)))) :=
         pointer_coercion "Unsize" α0 in
       let* α2 :
           ltac:(refine
-            (core.result.Result (ref str) core.str.error.Utf8Error)) :=
+            (M.Val
+              (core.result.Result.t (ref str) core.str.error.Utf8Error.t))) :=
         core.str.converts.from_utf8 α1 in
-      (core.result.Result (ref str) core.str.error.Utf8Error)::["unwrap"] α2 in
-    let* _ : ltac:(refine unit) :=
-      let* _ : ltac:(refine unit) :=
-        let* α0 : ltac:(refine (array (ref str))) :=
+      (core.result.Result.t (ref str) core.str.error.Utf8Error.t)::["unwrap"]
+        α2 in
+    let* _ : ltac:(refine (M.Val unit)) :=
+      let* _ : ltac:(refine (M.Val unit)) :=
+        let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
           M.alloc [ mk_str "CPU Manufacturer ID: "; mk_str "
 " ] in
-        let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
-        let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+        let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) := borrow α0 in
+        let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
           pointer_coercion "Unsize" α1 in
-        let* α3 : ltac:(refine (ref (ref str))) := borrow name in
-        let* α4 : ltac:(refine core.fmt.rt.Argument) :=
-          core.fmt.rt.Argument::["new_display"] α3 in
-        let* α5 : ltac:(refine (array core.fmt.rt.Argument)) :=
+        let* α3 : ltac:(refine (M.Val (ref (ref str)))) := borrow name in
+        let* α4 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
+          core.fmt.rt.Argument.t::["new_display"] α3 in
+        let* α5 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
           M.alloc [ α4 ] in
-        let* α6 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+        let* α6 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
           borrow α5 in
-        let* α7 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+        let* α7 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
           pointer_coercion "Unsize" α6 in
-        let* α8 : ltac:(refine core.fmt.Arguments) :=
-          core.fmt.Arguments::["new_v1"] α2 α7 in
+        let* α8 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
+          core.fmt.Arguments.t::["new_v1"] α2 α7 in
         std.io.stdio._print α8 in
       M.alloc tt in
     M.alloc tt).

@@ -3,229 +3,259 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module checked.
   Module MathError.
-    Inductive t `{ℋ : State.Trait} : Set :=
+    Inductive t : Set :=
     | DivisionByZero
     | NonPositiveLogarithm
     | NegativeSquareRoot.
   End MathError.
-  Definition MathError `{ℋ : State.Trait} : Set := M.Val MathError.t.
+  Definition MathError : Set := M.Val MathError.t.
   
-  Module  Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
-  Section Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
-    Context `{ℋ : State.Trait}.
-    
-    Definition Self : Set :=
-      result_chaining_with_question_mark.checked.MathError.
+  Module  Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError_t.
+  Section Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError_t.
+    Ltac Self := exact result_chaining_with_question_mark.checked.MathError.t.
     
     Definition fmt
-        (self : ref Self)
-        (f : mut_ref core.fmt.Formatter)
-        : M ltac:(core.fmt.Result) :=
+        (self : M.Val (ref ltac:(Self)))
+        (f : M.Val (mut_ref core.fmt.Formatter.t))
+        : M (M.Val ltac:(core.fmt.Result)) :=
       M.function_body
-        (let* α0 : ltac:(refine core.fmt.Formatter) := deref f in
-        let* α1 : ltac:(refine (mut_ref core.fmt.Formatter)) := borrow_mut α0 in
+        (let* α0 : ltac:(refine (M.Val core.fmt.Formatter.t)) := deref f in
+        let* α1 : ltac:(refine (M.Val (mut_ref core.fmt.Formatter.t))) :=
+          borrow_mut α0 in
         let* α2 := M.read self in
-        let* α3 : ltac:(refine (ref str)) :=
+        let* α3 : ltac:(refine (M.Val (ref str))) :=
           match α2 with
           |
               result_chaining_with_question_mark.checked.MathError.DivisionByZero
                 
               =>
-            let* α0 : ltac:(refine str) := deref (mk_str "DivisionByZero") in
+            let* α0 : ltac:(refine (M.Val str)) :=
+              deref (mk_str "DivisionByZero") in
             borrow α0
           |
               result_chaining_with_question_mark.checked.MathError.NonPositiveLogarithm
                 
               =>
-            let* α0 : ltac:(refine str) :=
+            let* α0 : ltac:(refine (M.Val str)) :=
               deref (mk_str "NonPositiveLogarithm") in
             borrow α0
           |
               result_chaining_with_question_mark.checked.MathError.NegativeSquareRoot
                 
               =>
-            let* α0 : ltac:(refine str) :=
+            let* α0 : ltac:(refine (M.Val str)) :=
               deref (mk_str "NegativeSquareRoot") in
             borrow α0
           end in
-        core.fmt.Formatter::["write_str"] α1 α3).
+        core.fmt.Formatter.t::["write_str"] α1 α3).
     
     Global Instance AssociatedFunction_fmt :
-      Notation.DoubleColon Self "fmt" := {
+      Notation.DoubleColon ltac:(Self) "fmt" := {
       Notation.double_colon := fmt;
     }.
     
-    Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
       core.fmt.Debug.fmt := fmt;
     }.
-  End Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
-  End Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
+  End Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError_t.
+  End Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError_t.
   
   Ltac MathResult :=
-    refine
-      (core.result.Result
-        f64
-        result_chaining_with_question_mark.checked.MathError).
+    exact
+      (core.result.Result.t
+        f64.t
+        result_chaining_with_question_mark.checked.MathError.t).
   
   Definition div
-      `{ℋ : State.Trait}
-      (x : f64)
-      (y : f64)
-      : M ltac:(result_chaining_with_question_mark.checked.MathResult) :=
+      (x : M.Val f64.t)
+      (y : M.Val f64.t)
+      :
+        M
+          (M.Val
+            ltac:(result_chaining_with_question_mark.checked.MathResult)) :=
     M.function_body
-      (let* α0 : ltac:(refine f64) := M.alloc 0 (* 0.0 *) in
-      let* α1 : ltac:(refine bool) := BinOp.eq y α0 in
-      let* α2 : ltac:(refine bool) := use α1 in
-      if (α2 : bool) then
+      (let* α0 : ltac:(refine (M.Val f64.t)) := M.alloc 0 (* 0.0 *) in
+      let* α1 : ltac:(refine (M.Val bool.t)) := BinOp.eq y α0 in
+      let* α2 : ltac:(refine (M.Val bool.t)) := use α1 in
+      let* α3 := M.read α2 in
+      if (α3 : bool) then
         let* α0 :
             ltac:(refine
-              result_chaining_with_question_mark.checked.MathError) :=
+              (M.Val result_chaining_with_question_mark.checked.MathError.t)) :=
           M.alloc
             result_chaining_with_question_mark.checked.MathError.DivisionByZero in
-        M.alloc (core.result.Result.Err α0)
+        let* α1 := M.read α0 in
+        M.alloc (core.result.Result.Err α1)
       else
-        let* α0 : ltac:(refine f64) := BinOp.div x y in
-        M.alloc (core.result.Result.Ok α0)).
+        let* α0 : ltac:(refine (M.Val f64.t)) := BinOp.div x y in
+        let* α1 := M.read α0 in
+        M.alloc (core.result.Result.Ok α1)).
   
   Definition sqrt
-      `{ℋ : State.Trait}
-      (x : f64)
-      : M ltac:(result_chaining_with_question_mark.checked.MathResult) :=
+      (x : M.Val f64.t)
+      :
+        M
+          (M.Val
+            ltac:(result_chaining_with_question_mark.checked.MathResult)) :=
     M.function_body
-      (let* α0 : ltac:(refine f64) := M.alloc 0 (* 0.0 *) in
-      let* α1 : ltac:(refine bool) := BinOp.lt x α0 in
-      let* α2 : ltac:(refine bool) := use α1 in
-      if (α2 : bool) then
+      (let* α0 : ltac:(refine (M.Val f64.t)) := M.alloc 0 (* 0.0 *) in
+      let* α1 : ltac:(refine (M.Val bool.t)) := BinOp.lt x α0 in
+      let* α2 : ltac:(refine (M.Val bool.t)) := use α1 in
+      let* α3 := M.read α2 in
+      if (α3 : bool) then
         let* α0 :
             ltac:(refine
-              result_chaining_with_question_mark.checked.MathError) :=
+              (M.Val result_chaining_with_question_mark.checked.MathError.t)) :=
           M.alloc
             result_chaining_with_question_mark.checked.MathError.NegativeSquareRoot in
-        M.alloc (core.result.Result.Err α0)
+        let* α1 := M.read α0 in
+        M.alloc (core.result.Result.Err α1)
       else
-        let* α0 : ltac:(refine f64) := f64::["sqrt"] x in
-        M.alloc (core.result.Result.Ok α0)).
+        let* α0 : ltac:(refine (M.Val f64.t)) := f64.t::["sqrt"] x in
+        let* α1 := M.read α0 in
+        M.alloc (core.result.Result.Ok α1)).
   
   Definition ln
-      `{ℋ : State.Trait}
-      (x : f64)
-      : M ltac:(result_chaining_with_question_mark.checked.MathResult) :=
+      (x : M.Val f64.t)
+      :
+        M
+          (M.Val
+            ltac:(result_chaining_with_question_mark.checked.MathResult)) :=
     M.function_body
-      (let* α0 : ltac:(refine f64) := M.alloc 0 (* 0.0 *) in
-      let* α1 : ltac:(refine bool) := BinOp.le x α0 in
-      let* α2 : ltac:(refine bool) := use α1 in
-      if (α2 : bool) then
+      (let* α0 : ltac:(refine (M.Val f64.t)) := M.alloc 0 (* 0.0 *) in
+      let* α1 : ltac:(refine (M.Val bool.t)) := BinOp.le x α0 in
+      let* α2 : ltac:(refine (M.Val bool.t)) := use α1 in
+      let* α3 := M.read α2 in
+      if (α3 : bool) then
         let* α0 :
             ltac:(refine
-              result_chaining_with_question_mark.checked.MathError) :=
+              (M.Val result_chaining_with_question_mark.checked.MathError.t)) :=
           M.alloc
             result_chaining_with_question_mark.checked.MathError.NonPositiveLogarithm in
-        M.alloc (core.result.Result.Err α0)
+        let* α1 := M.read α0 in
+        M.alloc (core.result.Result.Err α1)
       else
-        let* α0 : ltac:(refine f64) := f64::["ln"] x in
-        M.alloc (core.result.Result.Ok α0)).
+        let* α0 : ltac:(refine (M.Val f64.t)) := f64.t::["ln"] x in
+        let* α1 := M.read α0 in
+        M.alloc (core.result.Result.Ok α1)).
   
   Definition op_
-      `{ℋ : State.Trait}
-      (x : f64)
-      (y : f64)
-      : M ltac:(result_chaining_with_question_mark.checked.MathResult) :=
+      (x : M.Val f64.t)
+      (y : M.Val f64.t)
+      :
+        M
+          (M.Val
+            ltac:(result_chaining_with_question_mark.checked.MathResult)) :=
     M.function_body
-      (let* ratio : ltac:(refine f64) :=
+      (let* ratio : ltac:(refine (M.Val f64.t)) :=
         let* α0 :
             ltac:(refine
-              (core.result.Result
-                f64
-                result_chaining_with_question_mark.checked.MathError)) :=
+              (M.Val
+                (core.result.Result.t
+                  f64.t
+                  result_chaining_with_question_mark.checked.MathError.t))) :=
           result_chaining_with_question_mark.checked.div x y in
         let* α1 :
             ltac:(refine
-              (core.ops.control_flow.ControlFlow
-                (core.result.Result
-                  core.convert.Infallible
-                  result_chaining_with_question_mark.checked.MathError)
-                f64)) :=
+              (M.Val
+                (core.ops.control_flow.ControlFlow.t
+                  (core.result.Result.t
+                    core.convert.Infallible.t
+                    result_chaining_with_question_mark.checked.MathError.t)
+                  f64.t))) :=
           (core.ops.try_trait.Try.branch
               (Self :=
-                core.result.Result
-                  f64
-                  result_chaining_with_question_mark.checked.MathError)
+                core.result.Result.t
+                  f64.t
+                  result_chaining_with_question_mark.checked.MathError.t)
               (Trait := ltac:(refine _)))
             α0 in
         let* α2 := M.read α1 in
         match α2 with
         | core.ops.control_flow.ControlFlow.Break residual =>
+          let* residual := M.alloc residual in
           let* α0 :
               ltac:(refine
-                (core.result.Result
-                  f64
-                  result_chaining_with_question_mark.checked.MathError)) :=
+                (M.Val
+                  (core.result.Result.t
+                    f64.t
+                    result_chaining_with_question_mark.checked.MathError.t))) :=
             (core.ops.try_trait.FromResidual.from_residual
                 (Self :=
-                  core.result.Result
-                    f64
-                    result_chaining_with_question_mark.checked.MathError)
+                  core.result.Result.t
+                    f64.t
+                    result_chaining_with_question_mark.checked.MathError.t)
                 (Trait := ltac:(refine _)))
               residual in
-          let* α1 : ltac:(refine never) := M.return_ α0 in
+          let* α1 : ltac:(refine (M.Val never.t)) := M.return_ α0 in
           never_to_any α1
-        | core.ops.control_flow.ControlFlow.Continue val => M.pure val
+        | core.ops.control_flow.ControlFlow.Continue val =>
+          let* val := M.alloc val in
+          M.pure val
         end in
-      let* ln : ltac:(refine f64) :=
+      let* ln : ltac:(refine (M.Val f64.t)) :=
         let* α0 :
             ltac:(refine
-              (core.result.Result
-                f64
-                result_chaining_with_question_mark.checked.MathError)) :=
+              (M.Val
+                (core.result.Result.t
+                  f64.t
+                  result_chaining_with_question_mark.checked.MathError.t))) :=
           result_chaining_with_question_mark.checked.ln ratio in
         let* α1 :
             ltac:(refine
-              (core.ops.control_flow.ControlFlow
-                (core.result.Result
-                  core.convert.Infallible
-                  result_chaining_with_question_mark.checked.MathError)
-                f64)) :=
+              (M.Val
+                (core.ops.control_flow.ControlFlow.t
+                  (core.result.Result.t
+                    core.convert.Infallible.t
+                    result_chaining_with_question_mark.checked.MathError.t)
+                  f64.t))) :=
           (core.ops.try_trait.Try.branch
               (Self :=
-                core.result.Result
-                  f64
-                  result_chaining_with_question_mark.checked.MathError)
+                core.result.Result.t
+                  f64.t
+                  result_chaining_with_question_mark.checked.MathError.t)
               (Trait := ltac:(refine _)))
             α0 in
         let* α2 := M.read α1 in
         match α2 with
         | core.ops.control_flow.ControlFlow.Break residual =>
+          let* residual := M.alloc residual in
           let* α0 :
               ltac:(refine
-                (core.result.Result
-                  f64
-                  result_chaining_with_question_mark.checked.MathError)) :=
+                (M.Val
+                  (core.result.Result.t
+                    f64.t
+                    result_chaining_with_question_mark.checked.MathError.t))) :=
             (core.ops.try_trait.FromResidual.from_residual
                 (Self :=
-                  core.result.Result
-                    f64
-                    result_chaining_with_question_mark.checked.MathError)
+                  core.result.Result.t
+                    f64.t
+                    result_chaining_with_question_mark.checked.MathError.t)
                 (Trait := ltac:(refine _)))
               residual in
-          let* α1 : ltac:(refine never) := M.return_ α0 in
+          let* α1 : ltac:(refine (M.Val never.t)) := M.return_ α0 in
           never_to_any α1
-        | core.ops.control_flow.ControlFlow.Continue val => M.pure val
+        | core.ops.control_flow.ControlFlow.Continue val =>
+          let* val := M.alloc val in
+          M.pure val
         end in
       result_chaining_with_question_mark.checked.sqrt ln).
   
-  Definition op `{ℋ : State.Trait} (x : f64) (y : f64) : M unit :=
+  Definition op (x : M.Val f64.t) (y : M.Val f64.t) : M (M.Val unit) :=
     M.function_body
       (let* α0 :
           ltac:(refine
-            (core.result.Result
-              f64
-              result_chaining_with_question_mark.checked.MathError)) :=
+            (M.Val
+              (core.result.Result.t
+                f64.t
+                result_chaining_with_question_mark.checked.MathError.t))) :=
         result_chaining_with_question_mark.checked.op_ x y in
       let* α1 := M.read α0 in
       match α1 with
       | core.result.Result.Err why =>
+        let* why := M.alloc why in
         let* α0 := M.read why in
-        let* α1 : ltac:(refine (ref str)) :=
+        let* α1 : ltac:(refine (M.Val (ref str))) :=
           match α0 with
           |
               result_chaining_with_question_mark.checked.MathError.NonPositiveLogarithm
@@ -236,260 +266,290 @@ Module checked.
               result_chaining_with_question_mark.checked.MathError.DivisionByZero
                 
               =>
-            let* α0 : ltac:(refine str) := deref (mk_str "division by zero") in
+            let* α0 : ltac:(refine (M.Val str)) :=
+              deref (mk_str "division by zero") in
             borrow α0
           |
               result_chaining_with_question_mark.checked.MathError.NegativeSquareRoot
                 
               =>
-            let* α0 : ltac:(refine str) :=
+            let* α0 : ltac:(refine (M.Val str)) :=
               deref (mk_str "square root of negative number") in
             borrow α0
           end in
-        let* α2 : ltac:(refine (ref (ref str))) := borrow α1 in
-        let* α3 : ltac:(refine never) := core.panicking.panic_display α2 in
+        let* α2 : ltac:(refine (M.Val (ref (ref str)))) := borrow α1 in
+        let* α3 : ltac:(refine (M.Val never.t)) :=
+          core.panicking.panic_display α2 in
         never_to_any α3
       | core.result.Result.Ok value =>
-        let* _ : ltac:(refine unit) :=
-          let* α0 : ltac:(refine (array (ref str))) :=
+        let* value := M.alloc value in
+        let* _ : ltac:(refine (M.Val unit)) :=
+          let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
             M.alloc [ mk_str ""; mk_str "
 " ] in
-          let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
-          let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+          let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) :=
+            borrow α0 in
+          let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
             pointer_coercion "Unsize" α1 in
-          let* α3 : ltac:(refine (ref f64)) := borrow value in
-          let* α4 : ltac:(refine core.fmt.rt.Argument) :=
-            core.fmt.rt.Argument::["new_display"] α3 in
-          let* α5 : ltac:(refine (array core.fmt.rt.Argument)) :=
+          let* α3 : ltac:(refine (M.Val (ref f64.t))) := borrow value in
+          let* α4 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
+            core.fmt.rt.Argument.t::["new_display"] α3 in
+          let* α5 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
             M.alloc [ α4 ] in
-          let* α6 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+          let* α6 :
+              ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
             borrow α5 in
-          let* α7 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+          let* α7 :
+              ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
             pointer_coercion "Unsize" α6 in
-          let* α8 : ltac:(refine core.fmt.Arguments) :=
-            core.fmt.Arguments::["new_v1"] α2 α7 in
+          let* α8 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
+            core.fmt.Arguments.t::["new_v1"] α2 α7 in
           std.io.stdio._print α8 in
         M.alloc tt
       end).
 End checked.
 
 Module MathError.
-  Inductive t `{ℋ : State.Trait} : Set :=
+  Inductive t : Set :=
   | DivisionByZero
   | NonPositiveLogarithm
   | NegativeSquareRoot.
 End MathError.
-Definition MathError `{ℋ : State.Trait} : Set := M.Val MathError.t.
+Definition MathError : Set := M.Val MathError.t.
 
-Module  Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
-Section Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
-  Context `{ℋ : State.Trait}.
-  
-  Definition Self : Set := result_chaining_with_question_mark.checked.MathError.
+Module  Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError_t.
+Section Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError_t.
+  Ltac Self := exact result_chaining_with_question_mark.checked.MathError.t.
   
   Definition fmt
-      (self : ref Self)
-      (f : mut_ref core.fmt.Formatter)
-      : M ltac:(core.fmt.Result) :=
+      (self : M.Val (ref ltac:(Self)))
+      (f : M.Val (mut_ref core.fmt.Formatter.t))
+      : M (M.Val ltac:(core.fmt.Result)) :=
     M.function_body
-      (let* α0 : ltac:(refine core.fmt.Formatter) := deref f in
-      let* α1 : ltac:(refine (mut_ref core.fmt.Formatter)) := borrow_mut α0 in
+      (let* α0 : ltac:(refine (M.Val core.fmt.Formatter.t)) := deref f in
+      let* α1 : ltac:(refine (M.Val (mut_ref core.fmt.Formatter.t))) :=
+        borrow_mut α0 in
       let* α2 := M.read self in
-      let* α3 : ltac:(refine (ref str)) :=
+      let* α3 : ltac:(refine (M.Val (ref str))) :=
         match α2 with
         |
             result_chaining_with_question_mark.checked.MathError.DivisionByZero 
             =>
-          let* α0 : ltac:(refine str) := deref (mk_str "DivisionByZero") in
+          let* α0 : ltac:(refine (M.Val str)) :=
+            deref (mk_str "DivisionByZero") in
           borrow α0
         |
             result_chaining_with_question_mark.checked.MathError.NonPositiveLogarithm
               
             =>
-          let* α0 : ltac:(refine str) :=
+          let* α0 : ltac:(refine (M.Val str)) :=
             deref (mk_str "NonPositiveLogarithm") in
           borrow α0
         |
             result_chaining_with_question_mark.checked.MathError.NegativeSquareRoot
               
             =>
-          let* α0 : ltac:(refine str) := deref (mk_str "NegativeSquareRoot") in
+          let* α0 : ltac:(refine (M.Val str)) :=
+            deref (mk_str "NegativeSquareRoot") in
           borrow α0
         end in
-      core.fmt.Formatter::["write_str"] α1 α3).
+      core.fmt.Formatter.t::["write_str"] α1 α3).
   
-  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {
+  Global Instance AssociatedFunction_fmt :
+    Notation.DoubleColon ltac:(Self) "fmt" := {
     Notation.double_colon := fmt;
   }.
   
-  Global Instance ℐ : core.fmt.Debug.Trait Self := {
+  Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
     core.fmt.Debug.fmt := fmt;
   }.
-End Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
-End Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
+End Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError_t.
+End Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError_t.
 
 Ltac MathResult :=
-  refine
-    (core.result.Result
-      f64
-      result_chaining_with_question_mark.checked.MathError).
+  exact
+    (core.result.Result.t
+      f64.t
+      result_chaining_with_question_mark.checked.MathError.t).
 
 Definition div
-    `{ℋ : State.Trait}
-    (x : f64)
-    (y : f64)
-    : M ltac:(result_chaining_with_question_mark.checked.MathResult) :=
+    (x : M.Val f64.t)
+    (y : M.Val f64.t)
+    : M (M.Val ltac:(result_chaining_with_question_mark.checked.MathResult)) :=
   M.function_body
-    (let* α0 : ltac:(refine f64) := M.alloc 0 (* 0.0 *) in
-    let* α1 : ltac:(refine bool) := BinOp.eq y α0 in
-    let* α2 : ltac:(refine bool) := use α1 in
-    if (α2 : bool) then
-      let* α0 :
-          ltac:(refine result_chaining_with_question_mark.checked.MathError) :=
-        M.alloc
-          result_chaining_with_question_mark.checked.MathError.DivisionByZero in
-      M.alloc (core.result.Result.Err α0)
-    else
-      let* α0 : ltac:(refine f64) := BinOp.div x y in
-      M.alloc (core.result.Result.Ok α0)).
-
-Definition sqrt
-    `{ℋ : State.Trait}
-    (x : f64)
-    : M ltac:(result_chaining_with_question_mark.checked.MathResult) :=
-  M.function_body
-    (let* α0 : ltac:(refine f64) := M.alloc 0 (* 0.0 *) in
-    let* α1 : ltac:(refine bool) := BinOp.lt x α0 in
-    let* α2 : ltac:(refine bool) := use α1 in
-    if (α2 : bool) then
-      let* α0 :
-          ltac:(refine result_chaining_with_question_mark.checked.MathError) :=
-        M.alloc
-          result_chaining_with_question_mark.checked.MathError.NegativeSquareRoot in
-      M.alloc (core.result.Result.Err α0)
-    else
-      let* α0 : ltac:(refine f64) := f64::["sqrt"] x in
-      M.alloc (core.result.Result.Ok α0)).
-
-Definition ln
-    `{ℋ : State.Trait}
-    (x : f64)
-    : M ltac:(result_chaining_with_question_mark.checked.MathResult) :=
-  M.function_body
-    (let* α0 : ltac:(refine f64) := M.alloc 0 (* 0.0 *) in
-    let* α1 : ltac:(refine bool) := BinOp.le x α0 in
-    let* α2 : ltac:(refine bool) := use α1 in
-    if (α2 : bool) then
-      let* α0 :
-          ltac:(refine result_chaining_with_question_mark.checked.MathError) :=
-        M.alloc
-          result_chaining_with_question_mark.checked.MathError.NonPositiveLogarithm in
-      M.alloc (core.result.Result.Err α0)
-    else
-      let* α0 : ltac:(refine f64) := f64::["ln"] x in
-      M.alloc (core.result.Result.Ok α0)).
-
-Definition op_
-    `{ℋ : State.Trait}
-    (x : f64)
-    (y : f64)
-    : M ltac:(result_chaining_with_question_mark.checked.MathResult) :=
-  M.function_body
-    (let* ratio : ltac:(refine f64) :=
+    (let* α0 : ltac:(refine (M.Val f64.t)) := M.alloc 0 (* 0.0 *) in
+    let* α1 : ltac:(refine (M.Val bool.t)) := BinOp.eq y α0 in
+    let* α2 : ltac:(refine (M.Val bool.t)) := use α1 in
+    let* α3 := M.read α2 in
+    if (α3 : bool) then
       let* α0 :
           ltac:(refine
-            (core.result.Result
-              f64
-              result_chaining_with_question_mark.checked.MathError)) :=
+            (M.Val result_chaining_with_question_mark.checked.MathError.t)) :=
+        M.alloc
+          result_chaining_with_question_mark.checked.MathError.DivisionByZero in
+      let* α1 := M.read α0 in
+      M.alloc (core.result.Result.Err α1)
+    else
+      let* α0 : ltac:(refine (M.Val f64.t)) := BinOp.div x y in
+      let* α1 := M.read α0 in
+      M.alloc (core.result.Result.Ok α1)).
+
+Definition sqrt
+    (x : M.Val f64.t)
+    : M (M.Val ltac:(result_chaining_with_question_mark.checked.MathResult)) :=
+  M.function_body
+    (let* α0 : ltac:(refine (M.Val f64.t)) := M.alloc 0 (* 0.0 *) in
+    let* α1 : ltac:(refine (M.Val bool.t)) := BinOp.lt x α0 in
+    let* α2 : ltac:(refine (M.Val bool.t)) := use α1 in
+    let* α3 := M.read α2 in
+    if (α3 : bool) then
+      let* α0 :
+          ltac:(refine
+            (M.Val result_chaining_with_question_mark.checked.MathError.t)) :=
+        M.alloc
+          result_chaining_with_question_mark.checked.MathError.NegativeSquareRoot in
+      let* α1 := M.read α0 in
+      M.alloc (core.result.Result.Err α1)
+    else
+      let* α0 : ltac:(refine (M.Val f64.t)) := f64.t::["sqrt"] x in
+      let* α1 := M.read α0 in
+      M.alloc (core.result.Result.Ok α1)).
+
+Definition ln
+    (x : M.Val f64.t)
+    : M (M.Val ltac:(result_chaining_with_question_mark.checked.MathResult)) :=
+  M.function_body
+    (let* α0 : ltac:(refine (M.Val f64.t)) := M.alloc 0 (* 0.0 *) in
+    let* α1 : ltac:(refine (M.Val bool.t)) := BinOp.le x α0 in
+    let* α2 : ltac:(refine (M.Val bool.t)) := use α1 in
+    let* α3 := M.read α2 in
+    if (α3 : bool) then
+      let* α0 :
+          ltac:(refine
+            (M.Val result_chaining_with_question_mark.checked.MathError.t)) :=
+        M.alloc
+          result_chaining_with_question_mark.checked.MathError.NonPositiveLogarithm in
+      let* α1 := M.read α0 in
+      M.alloc (core.result.Result.Err α1)
+    else
+      let* α0 : ltac:(refine (M.Val f64.t)) := f64.t::["ln"] x in
+      let* α1 := M.read α0 in
+      M.alloc (core.result.Result.Ok α1)).
+
+Definition op_
+    (x : M.Val f64.t)
+    (y : M.Val f64.t)
+    : M (M.Val ltac:(result_chaining_with_question_mark.checked.MathResult)) :=
+  M.function_body
+    (let* ratio : ltac:(refine (M.Val f64.t)) :=
+      let* α0 :
+          ltac:(refine
+            (M.Val
+              (core.result.Result.t
+                f64.t
+                result_chaining_with_question_mark.checked.MathError.t))) :=
         result_chaining_with_question_mark.checked.div x y in
       let* α1 :
           ltac:(refine
-            (core.ops.control_flow.ControlFlow
-              (core.result.Result
-                core.convert.Infallible
-                result_chaining_with_question_mark.checked.MathError)
-              f64)) :=
+            (M.Val
+              (core.ops.control_flow.ControlFlow.t
+                (core.result.Result.t
+                  core.convert.Infallible.t
+                  result_chaining_with_question_mark.checked.MathError.t)
+                f64.t))) :=
         (core.ops.try_trait.Try.branch
             (Self :=
-              core.result.Result
-                f64
-                result_chaining_with_question_mark.checked.MathError)
+              core.result.Result.t
+                f64.t
+                result_chaining_with_question_mark.checked.MathError.t)
             (Trait := ltac:(refine _)))
           α0 in
       let* α2 := M.read α1 in
       match α2 with
       | core.ops.control_flow.ControlFlow.Break residual =>
+        let* residual := M.alloc residual in
         let* α0 :
             ltac:(refine
-              (core.result.Result
-                f64
-                result_chaining_with_question_mark.checked.MathError)) :=
+              (M.Val
+                (core.result.Result.t
+                  f64.t
+                  result_chaining_with_question_mark.checked.MathError.t))) :=
           (core.ops.try_trait.FromResidual.from_residual
               (Self :=
-                core.result.Result
-                  f64
-                  result_chaining_with_question_mark.checked.MathError)
+                core.result.Result.t
+                  f64.t
+                  result_chaining_with_question_mark.checked.MathError.t)
               (Trait := ltac:(refine _)))
             residual in
-        let* α1 : ltac:(refine never) := M.return_ α0 in
+        let* α1 : ltac:(refine (M.Val never.t)) := M.return_ α0 in
         never_to_any α1
-      | core.ops.control_flow.ControlFlow.Continue val => M.pure val
+      | core.ops.control_flow.ControlFlow.Continue val =>
+        let* val := M.alloc val in
+        M.pure val
       end in
-    let* ln : ltac:(refine f64) :=
+    let* ln : ltac:(refine (M.Val f64.t)) :=
       let* α0 :
           ltac:(refine
-            (core.result.Result
-              f64
-              result_chaining_with_question_mark.checked.MathError)) :=
+            (M.Val
+              (core.result.Result.t
+                f64.t
+                result_chaining_with_question_mark.checked.MathError.t))) :=
         result_chaining_with_question_mark.checked.ln ratio in
       let* α1 :
           ltac:(refine
-            (core.ops.control_flow.ControlFlow
-              (core.result.Result
-                core.convert.Infallible
-                result_chaining_with_question_mark.checked.MathError)
-              f64)) :=
+            (M.Val
+              (core.ops.control_flow.ControlFlow.t
+                (core.result.Result.t
+                  core.convert.Infallible.t
+                  result_chaining_with_question_mark.checked.MathError.t)
+                f64.t))) :=
         (core.ops.try_trait.Try.branch
             (Self :=
-              core.result.Result
-                f64
-                result_chaining_with_question_mark.checked.MathError)
+              core.result.Result.t
+                f64.t
+                result_chaining_with_question_mark.checked.MathError.t)
             (Trait := ltac:(refine _)))
           α0 in
       let* α2 := M.read α1 in
       match α2 with
       | core.ops.control_flow.ControlFlow.Break residual =>
+        let* residual := M.alloc residual in
         let* α0 :
             ltac:(refine
-              (core.result.Result
-                f64
-                result_chaining_with_question_mark.checked.MathError)) :=
+              (M.Val
+                (core.result.Result.t
+                  f64.t
+                  result_chaining_with_question_mark.checked.MathError.t))) :=
           (core.ops.try_trait.FromResidual.from_residual
               (Self :=
-                core.result.Result
-                  f64
-                  result_chaining_with_question_mark.checked.MathError)
+                core.result.Result.t
+                  f64.t
+                  result_chaining_with_question_mark.checked.MathError.t)
               (Trait := ltac:(refine _)))
             residual in
-        let* α1 : ltac:(refine never) := M.return_ α0 in
+        let* α1 : ltac:(refine (M.Val never.t)) := M.return_ α0 in
         never_to_any α1
-      | core.ops.control_flow.ControlFlow.Continue val => M.pure val
+      | core.ops.control_flow.ControlFlow.Continue val =>
+        let* val := M.alloc val in
+        M.pure val
       end in
     result_chaining_with_question_mark.checked.sqrt ln).
 
-Definition op `{ℋ : State.Trait} (x : f64) (y : f64) : M unit :=
+Definition op (x : M.Val f64.t) (y : M.Val f64.t) : M (M.Val unit) :=
   M.function_body
     (let* α0 :
         ltac:(refine
-          (core.result.Result
-            f64
-            result_chaining_with_question_mark.checked.MathError)) :=
+          (M.Val
+            (core.result.Result.t
+              f64.t
+              result_chaining_with_question_mark.checked.MathError.t))) :=
       result_chaining_with_question_mark.checked.op_ x y in
     let* α1 := M.read α0 in
     match α1 with
     | core.result.Result.Err why =>
+      let* why := M.alloc why in
       let* α0 := M.read why in
-      let* α1 : ltac:(refine (ref str)) :=
+      let* α1 : ltac:(refine (M.Val (ref str))) :=
         match α0 with
         |
             result_chaining_with_question_mark.checked.MathError.NonPositiveLogarithm
@@ -499,47 +559,50 @@ Definition op `{ℋ : State.Trait} (x : f64) (y : f64) : M unit :=
         |
             result_chaining_with_question_mark.checked.MathError.DivisionByZero 
             =>
-          let* α0 : ltac:(refine str) := deref (mk_str "division by zero") in
+          let* α0 : ltac:(refine (M.Val str)) :=
+            deref (mk_str "division by zero") in
           borrow α0
         |
             result_chaining_with_question_mark.checked.MathError.NegativeSquareRoot
               
             =>
-          let* α0 : ltac:(refine str) :=
+          let* α0 : ltac:(refine (M.Val str)) :=
             deref (mk_str "square root of negative number") in
           borrow α0
         end in
-      let* α2 : ltac:(refine (ref (ref str))) := borrow α1 in
-      let* α3 : ltac:(refine never) := core.panicking.panic_display α2 in
+      let* α2 : ltac:(refine (M.Val (ref (ref str)))) := borrow α1 in
+      let* α3 : ltac:(refine (M.Val never.t)) :=
+        core.panicking.panic_display α2 in
       never_to_any α3
     | core.result.Result.Ok value =>
-      let* _ : ltac:(refine unit) :=
-        let* α0 : ltac:(refine (array (ref str))) :=
+      let* value := M.alloc value in
+      let* _ : ltac:(refine (M.Val unit)) :=
+        let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
           M.alloc [ mk_str ""; mk_str "
 " ] in
-        let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
-        let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+        let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) := borrow α0 in
+        let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
           pointer_coercion "Unsize" α1 in
-        let* α3 : ltac:(refine (ref f64)) := borrow value in
-        let* α4 : ltac:(refine core.fmt.rt.Argument) :=
-          core.fmt.rt.Argument::["new_display"] α3 in
-        let* α5 : ltac:(refine (array core.fmt.rt.Argument)) :=
+        let* α3 : ltac:(refine (M.Val (ref f64.t))) := borrow value in
+        let* α4 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
+          core.fmt.rt.Argument.t::["new_display"] α3 in
+        let* α5 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
           M.alloc [ α4 ] in
-        let* α6 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+        let* α6 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
           borrow α5 in
-        let* α7 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+        let* α7 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
           pointer_coercion "Unsize" α6 in
-        let* α8 : ltac:(refine core.fmt.Arguments) :=
-          core.fmt.Arguments::["new_v1"] α2 α7 in
+        let* α8 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
+          core.fmt.Arguments.t::["new_v1"] α2 α7 in
         std.io.stdio._print α8 in
       M.alloc tt
     end).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{ℋ : State.Trait} : M unit :=
+Definition main : M (M.Val unit) :=
   M.function_body
-    (let* _ : ltac:(refine unit) :=
-      let* α0 : ltac:(refine f64) := M.alloc 1 (* 1.0 *) in
-      let* α1 : ltac:(refine f64) := M.alloc 10 (* 10.0 *) in
+    (let* _ : ltac:(refine (M.Val unit)) :=
+      let* α0 : ltac:(refine (M.Val f64.t)) := M.alloc 1 (* 1.0 *) in
+      let* α1 : ltac:(refine (M.Val f64.t)) := M.alloc 10 (* 10.0 *) in
       result_chaining_with_question_mark.checked.op α0 α1 in
     M.alloc tt).

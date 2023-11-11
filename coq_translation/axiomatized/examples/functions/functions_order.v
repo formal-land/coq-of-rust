@@ -3,153 +3,140 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module  SomeType.
 Section SomeType.
-  Context `{ℋ : State.Trait}.
-  
   Record t : Set := {
-    x0 : u32;
+    x0 : u32.t;
   }.
   
   Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
+    Notation.dot x := let* x := M.read x in M.alloc x.(x0) : M _;
   }.
 End SomeType.
 End SomeType.
-Definition SomeType `{ℋ : State.Trait} : Set := M.Val SomeType.t.
+Definition SomeType : Set := M.Val SomeType.t.
 
 Module  OtherType.
 Section OtherType.
-  Context `{ℋ : State.Trait}.
-  
   Record t : Set := {
-    x0 : bool;
+    x0 : bool.t;
   }.
   
   Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
+    Notation.dot x := let* x := M.read x in M.alloc x.(x0) : M _;
   }.
 End OtherType.
 End OtherType.
-Definition OtherType `{ℋ : State.Trait} : Set := M.Val OtherType.t.
+Definition OtherType : Set := M.Val OtherType.t.
 
-Module  Impl_functions_order_SomeType.
-Section Impl_functions_order_SomeType.
-  Context `{ℋ : State.Trait}.
+Module  Impl_functions_order_SomeType_t.
+Section Impl_functions_order_SomeType_t.
+  Ltac Self := exact functions_order.SomeType.t.
   
-  Definition Self : Set := functions_order.SomeType.
-  
-  Parameter meth2 : Self -> M unit.
+  Parameter meth2 : (M.Val ltac:(Self)) -> M (M.Val unit).
   
   Global Instance AssociatedFunction_meth2 :
-    Notation.DoubleColon Self "meth2" := {
+    Notation.DoubleColon ltac:(Self) "meth2" := {
     Notation.double_colon := meth2;
   }.
   
-  Parameter meth1 : Self -> M unit.
+  Parameter meth1 : (M.Val ltac:(Self)) -> M (M.Val unit).
   
   Global Instance AssociatedFunction_meth1 :
-    Notation.DoubleColon Self "meth1" := {
+    Notation.DoubleColon ltac:(Self) "meth1" := {
     Notation.double_colon := meth1;
   }.
-End Impl_functions_order_SomeType.
-End Impl_functions_order_SomeType.
+End Impl_functions_order_SomeType_t.
+End Impl_functions_order_SomeType_t.
 
 Module  SomeTrait.
 Section SomeTrait.
-  Context `{ℋ : State.Trait}.
-  
   Class Trait (Self : Set) : Type := {
-    some_trait_foo : (ref Self) -> M unit;
-    some_trait_bar : (ref Self) -> M unit;
+    some_trait_foo : (ref ltac:(Self)) -> M unit;
+    some_trait_bar : (ref ltac:(Self)) -> M unit;
   }.
   
 End SomeTrait.
 End SomeTrait.
 
-Module  Impl_functions_order_SomeTrait_for_functions_order_SomeType.
-Section Impl_functions_order_SomeTrait_for_functions_order_SomeType.
-  Context `{ℋ : State.Trait}.
+Module  Impl_functions_order_SomeTrait_for_functions_order_SomeType_t.
+Section Impl_functions_order_SomeTrait_for_functions_order_SomeType_t.
+  Ltac Self := exact functions_order.SomeType.t.
   
-  Definition Self : Set := functions_order.SomeType.
-  
-  Parameter some_trait_bar : (ref Self) -> M unit.
+  Parameter some_trait_bar : (M.Val (ref ltac:(Self))) -> M (M.Val unit).
   
   Global Instance AssociatedFunction_some_trait_bar :
-    Notation.DoubleColon Self "some_trait_bar" := {
+    Notation.DoubleColon ltac:(Self) "some_trait_bar" := {
     Notation.double_colon := some_trait_bar;
   }.
   
-  Parameter some_trait_foo : (ref Self) -> M unit.
+  Parameter some_trait_foo : (M.Val (ref ltac:(Self))) -> M (M.Val unit).
   
   Global Instance AssociatedFunction_some_trait_foo :
-    Notation.DoubleColon Self "some_trait_foo" := {
+    Notation.DoubleColon ltac:(Self) "some_trait_foo" := {
     Notation.double_colon := some_trait_foo;
   }.
   
-  Global Instance ℐ : functions_order.SomeTrait.Trait Self := {
+  Global Instance ℐ : functions_order.SomeTrait.Trait ltac:(Self) := {
     functions_order.SomeTrait.some_trait_bar := some_trait_bar;
     functions_order.SomeTrait.some_trait_foo := some_trait_foo;
   }.
-End Impl_functions_order_SomeTrait_for_functions_order_SomeType.
-End Impl_functions_order_SomeTrait_for_functions_order_SomeType.
+End Impl_functions_order_SomeTrait_for_functions_order_SomeType_t.
+End Impl_functions_order_SomeTrait_for_functions_order_SomeType_t.
 
-Module  Impl_functions_order_SomeTrait_for_functions_order_OtherType.
-Section Impl_functions_order_SomeTrait_for_functions_order_OtherType.
-  Context `{ℋ : State.Trait}.
+Module  Impl_functions_order_SomeTrait_for_functions_order_OtherType_t.
+Section Impl_functions_order_SomeTrait_for_functions_order_OtherType_t.
+  Ltac Self := exact functions_order.OtherType.t.
   
-  Definition Self : Set := functions_order.OtherType.
-  
-  Parameter some_trait_foo : (ref Self) -> M unit.
+  Parameter some_trait_foo : (M.Val (ref ltac:(Self))) -> M (M.Val unit).
   
   Global Instance AssociatedFunction_some_trait_foo :
-    Notation.DoubleColon Self "some_trait_foo" := {
+    Notation.DoubleColon ltac:(Self) "some_trait_foo" := {
     Notation.double_colon := some_trait_foo;
   }.
   
-  Parameter some_trait_bar : (ref Self) -> M unit.
+  Parameter some_trait_bar : (M.Val (ref ltac:(Self))) -> M (M.Val unit).
   
   Global Instance AssociatedFunction_some_trait_bar :
-    Notation.DoubleColon Self "some_trait_bar" := {
+    Notation.DoubleColon ltac:(Self) "some_trait_bar" := {
     Notation.double_colon := some_trait_bar;
   }.
   
-  Global Instance ℐ : functions_order.SomeTrait.Trait Self := {
+  Global Instance ℐ : functions_order.SomeTrait.Trait ltac:(Self) := {
     functions_order.SomeTrait.some_trait_foo := some_trait_foo;
     functions_order.SomeTrait.some_trait_bar := some_trait_bar;
   }.
-End Impl_functions_order_SomeTrait_for_functions_order_OtherType.
-End Impl_functions_order_SomeTrait_for_functions_order_OtherType.
+End Impl_functions_order_SomeTrait_for_functions_order_OtherType_t.
+End Impl_functions_order_SomeTrait_for_functions_order_OtherType_t.
 
 Parameter depends_on_trait_impl :
-    forall `{ℋ : State.Trait},
-    u32 -> bool -> M unit.
+    (M.Val u32.t) -> (M.Val bool.t) -> M (M.Val unit).
 
 Module inner_mod.
-  Parameter tar : forall `{ℋ : State.Trait}, M unit.
+  Parameter tar : M (M.Val unit).
   
-  Parameter bar : forall `{ℋ : State.Trait}, M unit.
+  Parameter bar : M (M.Val unit).
   
   Module nested_mod.
-    Parameter tack : forall `{ℋ : State.Trait}, M unit.
+    Parameter tack : M (M.Val unit).
     
-    Parameter tick : forall `{ℋ : State.Trait}, M unit.
+    Parameter tick : M (M.Val unit).
   End nested_mod.
 End inner_mod.
 
-Parameter bar : forall `{ℋ : State.Trait}, M unit.
+Parameter bar : M (M.Val unit).
 
-Parameter tar : forall `{ℋ : State.Trait}, M unit.
+Parameter tar : M (M.Val unit).
 
 Module nested_mod.
-  Parameter tack : forall `{ℋ : State.Trait}, M unit.
+  Parameter tack : M (M.Val unit).
   
-  Parameter tick : forall `{ℋ : State.Trait}, M unit.
+  Parameter tick : M (M.Val unit).
 End nested_mod.
 
-Parameter tick : forall `{ℋ : State.Trait}, M unit.
+Parameter tick : M (M.Val unit).
 
-Parameter tack : forall `{ℋ : State.Trait}, M unit.
+Parameter tack : M (M.Val unit).
 
-Parameter foo : forall `{ℋ : State.Trait}, M unit.
+Parameter foo : M (M.Val unit).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{ℋ : State.Trait}, M unit.
+Parameter main : M (M.Val unit).

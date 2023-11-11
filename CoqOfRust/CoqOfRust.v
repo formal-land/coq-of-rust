@@ -116,7 +116,7 @@ Global Instance Method_Z_eq : Notation.Dot "eq" := {
 
 (* TODO: find a better place for this instance *)
 Global Instance Method_bool_andb : Notation.Dot "andb" := {
-  Notation.dot (x y : bool) :=
+  Notation.dot (x y : M.Val bool) :=
     let* x := M.read x in
     let* y := M.read y in
     M.alloc (andb x y) : M _;

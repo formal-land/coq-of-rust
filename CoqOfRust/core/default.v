@@ -14,7 +14,7 @@ pub trait Default: Sized {
 *)
 Module Default.
   Class Trait (Self : Set) : Set := {
-    default : M Self;
+    default : M (M.Val Self);
   }.
 End Default.
 
@@ -67,7 +67,7 @@ Module Default_instances.
   Global Instance I_u64 : Default.Trait u64.
   Admitted.
 
-  Global Instance I_u128 : Default.Trait u128.
+  Global Instance I_u128 : Default.Trait u128.t.
   Admitted.
 
   Global Instance I_unit : Default.Trait unit.
@@ -86,6 +86,6 @@ Module Default_instances.
   Admitted.
 
   Global Instance I_PhantomData {T : Set} :
-    Default.Trait (core.marker.PhantomData T).
+    Default.Trait (core.marker.PhantomData.t T).
   Admitted.
 End Default_instances.

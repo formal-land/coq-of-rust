@@ -3,19 +3,17 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter compare_prints :
     forall
-      `{ℋ : State.Trait}
       {T : Set}
       {ℋ_0 : core.fmt.Debug.Trait T}
       {ℋ_1 : core.fmt.Display.Trait T},
-    (ref T) -> M unit.
+    (M.Val (ref T)) -> M (M.Val unit).
 
 Parameter compare_types :
     forall
-      `{ℋ : State.Trait}
       {T U : Set}
       {ℋ_0 : core.fmt.Debug.Trait T}
       {ℋ_1 : core.fmt.Debug.Trait U},
-    (ref T) -> (ref U) -> M unit.
+    (M.Val (ref T)) -> (M.Val (ref U)) -> M (M.Val unit).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{ℋ : State.Trait}, M unit.
+Parameter main : M (M.Val unit).

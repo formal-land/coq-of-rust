@@ -3,123 +3,121 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module  Foo.
 Section Foo.
-  Context `{ℋ : State.Trait}.
-  
   Inductive t : Set := Build.
 End Foo.
 End Foo.
-Definition Foo `{ℋ : State.Trait} := M.Val Foo.t.
+Definition Foo := M.Val Foo.t.
 
 Module  Bar.
 Section Bar.
-  Context `{ℋ : State.Trait}.
-  
   Inductive t : Set := Build.
 End Bar.
 End Bar.
-Definition Bar `{ℋ : State.Trait} := M.Val Bar.t.
+Definition Bar := M.Val Bar.t.
 
 Module  FooBar.
 Section FooBar.
-  Context `{ℋ : State.Trait}.
-  
   Inductive t : Set := Build.
 End FooBar.
 End FooBar.
-Definition FooBar `{ℋ : State.Trait} := M.Val FooBar.t.
+Definition FooBar := M.Val FooBar.t.
 
-Module  Impl_core_fmt_Debug_for_operator_overloading_FooBar.
-Section Impl_core_fmt_Debug_for_operator_overloading_FooBar.
-  Context `{ℋ : State.Trait}.
-  
-  Definition Self : Set := operator_overloading.FooBar.
+Module  Impl_core_fmt_Debug_for_operator_overloading_FooBar_t.
+Section Impl_core_fmt_Debug_for_operator_overloading_FooBar_t.
+  Ltac Self := exact operator_overloading.FooBar.t.
   
   Parameter fmt :
-      (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
+      (M.Val (ref ltac:(Self))) ->
+        (M.Val (mut_ref core.fmt.Formatter.t)) ->
+        M (M.Val ltac:(core.fmt.Result)).
   
-  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {
+  Global Instance AssociatedFunction_fmt :
+    Notation.DoubleColon ltac:(Self) "fmt" := {
     Notation.double_colon := fmt;
   }.
   
-  Global Instance ℐ : core.fmt.Debug.Trait Self := {
+  Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
     core.fmt.Debug.fmt := fmt;
   }.
-End Impl_core_fmt_Debug_for_operator_overloading_FooBar.
-End Impl_core_fmt_Debug_for_operator_overloading_FooBar.
+End Impl_core_fmt_Debug_for_operator_overloading_FooBar_t.
+End Impl_core_fmt_Debug_for_operator_overloading_FooBar_t.
 
 Module  BarFoo.
 Section BarFoo.
-  Context `{ℋ : State.Trait}.
-  
   Inductive t : Set := Build.
 End BarFoo.
 End BarFoo.
-Definition BarFoo `{ℋ : State.Trait} := M.Val BarFoo.t.
+Definition BarFoo := M.Val BarFoo.t.
 
-Module  Impl_core_fmt_Debug_for_operator_overloading_BarFoo.
-Section Impl_core_fmt_Debug_for_operator_overloading_BarFoo.
-  Context `{ℋ : State.Trait}.
-  
-  Definition Self : Set := operator_overloading.BarFoo.
+Module  Impl_core_fmt_Debug_for_operator_overloading_BarFoo_t.
+Section Impl_core_fmt_Debug_for_operator_overloading_BarFoo_t.
+  Ltac Self := exact operator_overloading.BarFoo.t.
   
   Parameter fmt :
-      (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
+      (M.Val (ref ltac:(Self))) ->
+        (M.Val (mut_ref core.fmt.Formatter.t)) ->
+        M (M.Val ltac:(core.fmt.Result)).
   
-  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {
+  Global Instance AssociatedFunction_fmt :
+    Notation.DoubleColon ltac:(Self) "fmt" := {
     Notation.double_colon := fmt;
   }.
   
-  Global Instance ℐ : core.fmt.Debug.Trait Self := {
+  Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
     core.fmt.Debug.fmt := fmt;
   }.
-End Impl_core_fmt_Debug_for_operator_overloading_BarFoo.
-End Impl_core_fmt_Debug_for_operator_overloading_BarFoo.
+End Impl_core_fmt_Debug_for_operator_overloading_BarFoo_t.
+End Impl_core_fmt_Debug_for_operator_overloading_BarFoo_t.
 
-Module  Impl_core_ops_arith_Add_operator_overloading_Bar_for_operator_overloading_Foo.
-Section Impl_core_ops_arith_Add_operator_overloading_Bar_for_operator_overloading_Foo.
-  Context `{ℋ : State.Trait}.
+Module  Impl_core_ops_arith_Add_operator_overloading_Bar_t_for_operator_overloading_Foo_t.
+Section Impl_core_ops_arith_Add_operator_overloading_Bar_t_for_operator_overloading_Foo_t.
+  Ltac Self := exact operator_overloading.Foo.t.
   
-  Definition Self : Set := operator_overloading.Foo.
-  
-  Definition Output : Set := operator_overloading.FooBar.
+  Definition Output : Set := operator_overloading.FooBar.t.
   
   Parameter add :
-      Self -> operator_overloading.Bar -> M operator_overloading.FooBar.
+      (M.Val ltac:(Self)) ->
+        (M.Val operator_overloading.Bar.t) ->
+        M (M.Val operator_overloading.FooBar.t).
   
-  Global Instance AssociatedFunction_add : Notation.DoubleColon Self "add" := {
+  Global Instance AssociatedFunction_add :
+    Notation.DoubleColon ltac:(Self) "add" := {
     Notation.double_colon := add;
   }.
   
   Global Instance ℐ :
-    core.ops.arith.Add.Trait Self (Rhs := operator_overloading.Bar) := {
+    core.ops.arith.Add.Trait ltac:(Self)
+      (Rhs := operator_overloading.Bar.t) := {
     core.ops.arith.Add.Output := Output;
     core.ops.arith.Add.add := add;
   }.
-End Impl_core_ops_arith_Add_operator_overloading_Bar_for_operator_overloading_Foo.
-End Impl_core_ops_arith_Add_operator_overloading_Bar_for_operator_overloading_Foo.
+End Impl_core_ops_arith_Add_operator_overloading_Bar_t_for_operator_overloading_Foo_t.
+End Impl_core_ops_arith_Add_operator_overloading_Bar_t_for_operator_overloading_Foo_t.
 
-Module  Impl_core_ops_arith_Add_operator_overloading_Foo_for_operator_overloading_Bar.
-Section Impl_core_ops_arith_Add_operator_overloading_Foo_for_operator_overloading_Bar.
-  Context `{ℋ : State.Trait}.
+Module  Impl_core_ops_arith_Add_operator_overloading_Foo_t_for_operator_overloading_Bar_t.
+Section Impl_core_ops_arith_Add_operator_overloading_Foo_t_for_operator_overloading_Bar_t.
+  Ltac Self := exact operator_overloading.Bar.t.
   
-  Definition Self : Set := operator_overloading.Bar.
-  
-  Definition Output : Set := operator_overloading.BarFoo.
+  Definition Output : Set := operator_overloading.BarFoo.t.
   
   Parameter add :
-      Self -> operator_overloading.Foo -> M operator_overloading.BarFoo.
+      (M.Val ltac:(Self)) ->
+        (M.Val operator_overloading.Foo.t) ->
+        M (M.Val operator_overloading.BarFoo.t).
   
-  Global Instance AssociatedFunction_add : Notation.DoubleColon Self "add" := {
+  Global Instance AssociatedFunction_add :
+    Notation.DoubleColon ltac:(Self) "add" := {
     Notation.double_colon := add;
   }.
   
   Global Instance ℐ :
-    core.ops.arith.Add.Trait Self (Rhs := operator_overloading.Foo) := {
+    core.ops.arith.Add.Trait ltac:(Self)
+      (Rhs := operator_overloading.Foo.t) := {
     core.ops.arith.Add.Output := Output;
     core.ops.arith.Add.add := add;
   }.
-End Impl_core_ops_arith_Add_operator_overloading_Foo_for_operator_overloading_Bar.
-End Impl_core_ops_arith_Add_operator_overloading_Foo_for_operator_overloading_Bar.
+End Impl_core_ops_arith_Add_operator_overloading_Foo_t_for_operator_overloading_Bar_t.
+End Impl_core_ops_arith_Add_operator_overloading_Foo_t_for_operator_overloading_Bar_t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{ℋ : State.Trait}, M unit.
+Parameter main : M (M.Val unit).

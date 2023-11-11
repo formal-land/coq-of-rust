@@ -3,158 +3,145 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module  Account.
 Section Account.
-  Context `{ℋ : State.Trait}.
-  
   Record t : Set := {
-    username : ref str;
-    password : ref str;
+    username : ref str.t;
+    password : ref str.t;
   }.
   
   Global Instance Get_username : Notation.Dot "username" := {
-    Notation.dot x := let* x := M.read x in M.pure x.(username) : M _;
+    Notation.dot x := let* x := M.read x in M.alloc x.(username) : M _;
   }.
   Global Instance Get_AF_username : Notation.DoubleColon t "username" := {
-    Notation.double_colon x := let* x := M.read x in M.pure x.(username) : M _;
+    Notation.double_colon x := let* x := M.read x in M.alloc x.(username) : M _;
   }.
   Global Instance Get_password : Notation.Dot "password" := {
-    Notation.dot x := let* x := M.read x in M.pure x.(password) : M _;
+    Notation.dot x := let* x := M.read x in M.alloc x.(password) : M _;
   }.
   Global Instance Get_AF_password : Notation.DoubleColon t "password" := {
-    Notation.double_colon x := let* x := M.read x in M.pure x.(password) : M _;
+    Notation.double_colon x := let* x := M.read x in M.alloc x.(password) : M _;
   }.
 End Account.
 End Account.
-Definition Account `{ℋ : State.Trait} : Set := M.Val Account.t.
+Definition Account : Set := M.Val Account.t.
 
-Module  Impl_core_marker_StructuralPartialEq_for_hash_map_alternate_or_custom_key_types_Account.
-Section Impl_core_marker_StructuralPartialEq_for_hash_map_alternate_or_custom_key_types_Account.
-  Context `{ℋ : State.Trait}.
+Module  Impl_core_marker_StructuralPartialEq_for_hash_map_alternate_or_custom_key_types_Account_t.
+Section Impl_core_marker_StructuralPartialEq_for_hash_map_alternate_or_custom_key_types_Account_t.
+  Ltac Self := exact hash_map_alternate_or_custom_key_types.Account.t.
   
-  Definition Self : Set := hash_map_alternate_or_custom_key_types.Account.
-  
-  Global Instance ℐ : core.marker.StructuralPartialEq.Trait Self := {
+  Global Instance ℐ : core.marker.StructuralPartialEq.Trait ltac:(Self) := {
   }.
-End Impl_core_marker_StructuralPartialEq_for_hash_map_alternate_or_custom_key_types_Account.
-End Impl_core_marker_StructuralPartialEq_for_hash_map_alternate_or_custom_key_types_Account.
+End Impl_core_marker_StructuralPartialEq_for_hash_map_alternate_or_custom_key_types_Account_t.
+End Impl_core_marker_StructuralPartialEq_for_hash_map_alternate_or_custom_key_types_Account_t.
 
-Module  Impl_core_cmp_PartialEq_for_hash_map_alternate_or_custom_key_types_Account.
-Section Impl_core_cmp_PartialEq_for_hash_map_alternate_or_custom_key_types_Account.
-  Context `{ℋ : State.Trait}.
-  
-  Definition Self : Set := hash_map_alternate_or_custom_key_types.Account.
+Module  Impl_core_cmp_PartialEq_for_hash_map_alternate_or_custom_key_types_Account_t.
+Section Impl_core_cmp_PartialEq_for_hash_map_alternate_or_custom_key_types_Account_t.
+  Ltac Self := exact hash_map_alternate_or_custom_key_types.Account.t.
   
   Parameter eq :
-      (ref Self) ->
-        (ref hash_map_alternate_or_custom_key_types.Account) ->
-        M bool.
+      (M.Val (ref ltac:(Self))) ->
+        (M.Val (ref hash_map_alternate_or_custom_key_types.Account.t)) ->
+        M (M.Val bool.t).
   
-  Global Instance AssociatedFunction_eq : Notation.DoubleColon Self "eq" := {
+  Global Instance AssociatedFunction_eq :
+    Notation.DoubleColon ltac:(Self) "eq" := {
     Notation.double_colon := eq;
   }.
   
   Global Instance ℐ :
-    core.cmp.PartialEq.Required.Trait Self
-      (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
+    core.cmp.PartialEq.Required.Trait ltac:(Self)
+      (Rhs := core.cmp.PartialEq.Default.Rhs ltac:(Self)) := {
     core.cmp.PartialEq.eq := eq;
     core.cmp.PartialEq.ne := Datatypes.None;
   }.
-End Impl_core_cmp_PartialEq_for_hash_map_alternate_or_custom_key_types_Account.
-End Impl_core_cmp_PartialEq_for_hash_map_alternate_or_custom_key_types_Account.
+End Impl_core_cmp_PartialEq_for_hash_map_alternate_or_custom_key_types_Account_t.
+End Impl_core_cmp_PartialEq_for_hash_map_alternate_or_custom_key_types_Account_t.
 
-Module  Impl_core_marker_StructuralEq_for_hash_map_alternate_or_custom_key_types_Account.
-Section Impl_core_marker_StructuralEq_for_hash_map_alternate_or_custom_key_types_Account.
-  Context `{ℋ : State.Trait}.
+Module  Impl_core_marker_StructuralEq_for_hash_map_alternate_or_custom_key_types_Account_t.
+Section Impl_core_marker_StructuralEq_for_hash_map_alternate_or_custom_key_types_Account_t.
+  Ltac Self := exact hash_map_alternate_or_custom_key_types.Account.t.
   
-  Definition Self : Set := hash_map_alternate_or_custom_key_types.Account.
-  
-  Global Instance ℐ : core.marker.StructuralEq.Trait Self := {
+  Global Instance ℐ : core.marker.StructuralEq.Trait ltac:(Self) := {
   }.
-End Impl_core_marker_StructuralEq_for_hash_map_alternate_or_custom_key_types_Account.
-End Impl_core_marker_StructuralEq_for_hash_map_alternate_or_custom_key_types_Account.
+End Impl_core_marker_StructuralEq_for_hash_map_alternate_or_custom_key_types_Account_t.
+End Impl_core_marker_StructuralEq_for_hash_map_alternate_or_custom_key_types_Account_t.
 
-Module  Impl_core_cmp_Eq_for_hash_map_alternate_or_custom_key_types_Account.
-Section Impl_core_cmp_Eq_for_hash_map_alternate_or_custom_key_types_Account.
-  Context `{ℋ : State.Trait}.
+Module  Impl_core_cmp_Eq_for_hash_map_alternate_or_custom_key_types_Account_t.
+Section Impl_core_cmp_Eq_for_hash_map_alternate_or_custom_key_types_Account_t.
+  Ltac Self := exact hash_map_alternate_or_custom_key_types.Account.t.
   
-  Definition Self : Set := hash_map_alternate_or_custom_key_types.Account.
-  
-  Parameter assert_receiver_is_total_eq : (ref Self) -> M unit.
+  Parameter assert_receiver_is_total_eq :
+      (M.Val (ref ltac:(Self))) -> M (M.Val unit).
   
   Global Instance AssociatedFunction_assert_receiver_is_total_eq :
-    Notation.DoubleColon Self "assert_receiver_is_total_eq" := {
+    Notation.DoubleColon ltac:(Self) "assert_receiver_is_total_eq" := {
     Notation.double_colon := assert_receiver_is_total_eq;
   }.
   
-  Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
+  Global Instance ℐ : core.cmp.Eq.Required.Trait ltac:(Self) := {
     core.cmp.Eq.assert_receiver_is_total_eq :=
       Datatypes.Some assert_receiver_is_total_eq;
   }.
-End Impl_core_cmp_Eq_for_hash_map_alternate_or_custom_key_types_Account.
-End Impl_core_cmp_Eq_for_hash_map_alternate_or_custom_key_types_Account.
+End Impl_core_cmp_Eq_for_hash_map_alternate_or_custom_key_types_Account_t.
+End Impl_core_cmp_Eq_for_hash_map_alternate_or_custom_key_types_Account_t.
 
-Module  Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account.
-Section Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account.
-  Context `{ℋ : State.Trait}.
-  
-  Definition Self : Set := hash_map_alternate_or_custom_key_types.Account.
+Module  Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account_t.
+Section Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account_t.
+  Ltac Self := exact hash_map_alternate_or_custom_key_types.Account.t.
   
   Parameter hash :
       forall {__H : Set} {ℋ_0 : core.hash.Hasher.Trait __H},
-      (ref Self) -> (mut_ref __H) -> M unit.
+      (M.Val (ref ltac:(Self))) -> (M.Val (mut_ref __H)) -> M (M.Val unit).
   
   Global Instance AssociatedFunction_hash
       {__H : Set}
       {ℋ_0 : core.hash.Hasher.Trait __H} :
-    Notation.DoubleColon Self "hash" := {
+    Notation.DoubleColon ltac:(Self) "hash" := {
     Notation.double_colon := hash (__H := __H);
   }.
   
-  Global Instance ℐ : core.hash.Hash.Required.Trait Self := {
+  Global Instance ℐ : core.hash.Hash.Required.Trait ltac:(Self) := {
     core.hash.Hash.hash {__H : Set} {ℋ_0 : core.hash.Hasher.Trait __H} :=
       hash (__H := __H);
     core.hash.Hash.hash_slice := Datatypes.None;
   }.
-End Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account.
-End Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account.
+End Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account_t.
+End Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account_t.
 
 Module  AccountInfo.
 Section AccountInfo.
-  Context `{ℋ : State.Trait}.
-  
   Record t : Set := {
-    name : ref str;
-    email : ref str;
+    name : ref str.t;
+    email : ref str.t;
   }.
   
   Global Instance Get_name : Notation.Dot "name" := {
-    Notation.dot x := let* x := M.read x in M.pure x.(name) : M _;
+    Notation.dot x := let* x := M.read x in M.alloc x.(name) : M _;
   }.
   Global Instance Get_AF_name : Notation.DoubleColon t "name" := {
-    Notation.double_colon x := let* x := M.read x in M.pure x.(name) : M _;
+    Notation.double_colon x := let* x := M.read x in M.alloc x.(name) : M _;
   }.
   Global Instance Get_email : Notation.Dot "email" := {
-    Notation.dot x := let* x := M.read x in M.pure x.(email) : M _;
+    Notation.dot x := let* x := M.read x in M.alloc x.(email) : M _;
   }.
   Global Instance Get_AF_email : Notation.DoubleColon t "email" := {
-    Notation.double_colon x := let* x := M.read x in M.pure x.(email) : M _;
+    Notation.double_colon x := let* x := M.read x in M.alloc x.(email) : M _;
   }.
 End AccountInfo.
 End AccountInfo.
-Definition AccountInfo `{ℋ : State.Trait} : Set := M.Val AccountInfo.t.
+Definition AccountInfo : Set := M.Val AccountInfo.t.
 
 Ltac Accounts :=
-  refine
-    (std.collections.hash.map.HashMap
-      hash_map_alternate_or_custom_key_types.Account
-      hash_map_alternate_or_custom_key_types.AccountInfo
+  exact
+    (std.collections.hash.map.HashMap.t
+      hash_map_alternate_or_custom_key_types.Account.t
+      hash_map_alternate_or_custom_key_types.AccountInfo.t
       std.collections.hash.map.HashMap.Default.S).
 
 Parameter try_logon :
-    forall `{ℋ : State.Trait},
-    (ref ltac:(hash_map_alternate_or_custom_key_types.Accounts)) ->
-      (ref str) ->
-      (ref str) ->
-      M unit.
+    (M.Val (ref ltac:(hash_map_alternate_or_custom_key_types.Accounts))) ->
+      (M.Val (ref str.t)) ->
+      (M.Val (ref str.t)) ->
+      M (M.Val unit).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{ℋ : State.Trait}, M unit.
+Parameter main : M (M.Val unit).

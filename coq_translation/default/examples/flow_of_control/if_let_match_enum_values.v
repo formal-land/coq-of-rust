@@ -2,102 +2,113 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module Foo.
-  Inductive t `{ℋ : State.Trait} : Set :=
+  Inductive t : Set :=
   | Bar
   | Baz
-  | Qux (_ : u32).
+  | Qux (_ : u32.t).
 End Foo.
-Definition Foo `{ℋ : State.Trait} : Set := M.Val Foo.t.
+Definition Foo : Set := M.Val Foo.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{ℋ : State.Trait} : M unit :=
+Definition main : M (M.Val unit) :=
   M.function_body
-    (let* a : ltac:(refine if_let_match_enum_values.Foo) :=
+    (let* a : ltac:(refine (M.Val if_let_match_enum_values.Foo.t)) :=
       M.alloc if_let_match_enum_values.Foo.Bar in
-    let* b : ltac:(refine if_let_match_enum_values.Foo) :=
+    let* b : ltac:(refine (M.Val if_let_match_enum_values.Foo.t)) :=
       M.alloc if_let_match_enum_values.Foo.Baz in
-    let* c : ltac:(refine if_let_match_enum_values.Foo) :=
-      let* α0 : ltac:(refine u32) := M.alloc 100 in
-      M.alloc (if_let_match_enum_values.Foo.Qux α0) in
-    let* _ : ltac:(refine unit) :=
-      let* α0 : ltac:(refine bool) :=
+    let* c : ltac:(refine (M.Val if_let_match_enum_values.Foo.t)) :=
+      let* α0 : ltac:(refine (M.Val u32.t)) := M.alloc 100 in
+      let* α1 := M.read α0 in
+      M.alloc (if_let_match_enum_values.Foo.Qux α1) in
+    let* _ : ltac:(refine (M.Val unit)) :=
+      let* α0 : ltac:(refine (M.Val bool.t)) :=
         let_if if_let_match_enum_values.Foo.Bar  := a in
-      if (α0 : bool) then
-        let* _ : ltac:(refine unit) :=
-          let* _ : ltac:(refine unit) :=
-            let* α0 : ltac:(refine (array (ref str))) :=
+      let* α1 := M.read α0 in
+      if (α1 : bool) then
+        let* _ : ltac:(refine (M.Val unit)) :=
+          let* _ : ltac:(refine (M.Val unit)) :=
+            let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
               M.alloc [ mk_str "a is foobar
 " ] in
-            let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
-            let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+            let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) :=
+              borrow α0 in
+            let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
               pointer_coercion "Unsize" α1 in
-            let* α3 : ltac:(refine core.fmt.Arguments) :=
-              core.fmt.Arguments::["new_const"] α2 in
+            let* α3 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
+              core.fmt.Arguments.t::["new_const"] α2 in
             std.io.stdio._print α3 in
           M.alloc tt in
         M.alloc tt
       else
         M.alloc tt in
-    let* _ : ltac:(refine unit) :=
-      let* α0 : ltac:(refine bool) :=
+    let* _ : ltac:(refine (M.Val unit)) :=
+      let* α0 : ltac:(refine (M.Val bool.t)) :=
         let_if if_let_match_enum_values.Foo.Bar  := b in
-      if (α0 : bool) then
-        let* _ : ltac:(refine unit) :=
-          let* _ : ltac:(refine unit) :=
-            let* α0 : ltac:(refine (array (ref str))) :=
+      let* α1 := M.read α0 in
+      if (α1 : bool) then
+        let* _ : ltac:(refine (M.Val unit)) :=
+          let* _ : ltac:(refine (M.Val unit)) :=
+            let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
               M.alloc [ mk_str "b is foobar
 " ] in
-            let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
-            let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+            let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) :=
+              borrow α0 in
+            let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
               pointer_coercion "Unsize" α1 in
-            let* α3 : ltac:(refine core.fmt.Arguments) :=
-              core.fmt.Arguments::["new_const"] α2 in
+            let* α3 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
+              core.fmt.Arguments.t::["new_const"] α2 in
             std.io.stdio._print α3 in
           M.alloc tt in
         M.alloc tt
       else
         M.alloc tt in
-    let* _ : ltac:(refine unit) :=
-      let* α0 : ltac:(refine bool) :=
+    let* _ : ltac:(refine (M.Val unit)) :=
+      let* α0 : ltac:(refine (M.Val bool.t)) :=
         let_if if_let_match_enum_values.Foo.Qux value := c in
-      if (α0 : bool) then
-        let* _ : ltac:(refine unit) :=
-          let* _ : ltac:(refine unit) :=
-            let* α0 : ltac:(refine (array (ref str))) :=
+      let* α1 := M.read α0 in
+      if (α1 : bool) then
+        let* _ : ltac:(refine (M.Val unit)) :=
+          let* _ : ltac:(refine (M.Val unit)) :=
+            let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
               M.alloc [ mk_str "c is "; mk_str "
 " ] in
-            let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
-            let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+            let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) :=
+              borrow α0 in
+            let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
               pointer_coercion "Unsize" α1 in
-            let* α3 : ltac:(refine (ref u32)) := borrow value in
-            let* α4 : ltac:(refine core.fmt.rt.Argument) :=
-              core.fmt.rt.Argument::["new_display"] α3 in
-            let* α5 : ltac:(refine (array core.fmt.rt.Argument)) :=
+            let* α3 : ltac:(refine (M.Val (ref u32.t))) := borrow value in
+            let* α4 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
+              core.fmt.rt.Argument.t::["new_display"] α3 in
+            let* α5 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
               M.alloc [ α4 ] in
-            let* α6 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+            let* α6 :
+                ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
               borrow α5 in
-            let* α7 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+            let* α7 :
+                ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
               pointer_coercion "Unsize" α6 in
-            let* α8 : ltac:(refine core.fmt.Arguments) :=
-              core.fmt.Arguments::["new_v1"] α2 α7 in
+            let* α8 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
+              core.fmt.Arguments.t::["new_v1"] α2 α7 in
             std.io.stdio._print α8 in
           M.alloc tt in
         M.alloc tt
       else
         M.alloc tt in
-    let* α0 : ltac:(refine bool) :=
+    let* α0 : ltac:(refine (M.Val bool.t)) :=
       let_if if_let_match_enum_values.Foo.Qux (_ as value) := c in
-    if (α0 : bool) then
-      let* _ : ltac:(refine unit) :=
-        let* _ : ltac:(refine unit) :=
-          let* α0 : ltac:(refine (array (ref str))) :=
+    let* α1 := M.read α0 in
+    if (α1 : bool) then
+      let* _ : ltac:(refine (M.Val unit)) :=
+        let* _ : ltac:(refine (M.Val unit)) :=
+          let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
             M.alloc [ mk_str "c is one hundred
 " ] in
-          let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
-          let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+          let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) :=
+            borrow α0 in
+          let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
             pointer_coercion "Unsize" α1 in
-          let* α3 : ltac:(refine core.fmt.Arguments) :=
-            core.fmt.Arguments::["new_const"] α2 in
+          let* α3 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
+            core.fmt.Arguments.t::["new_const"] α2 in
           std.io.stdio._print α3 in
         M.alloc tt in
       M.alloc tt

@@ -9,8 +9,6 @@ Require Import CoqOfRust.core.result_types.
 Module Infallible.
   Inductive t : Set := .
 End Infallible.
-Definition Infallible := Infallible.t.
-
 
 (* ********TRAITS******** *)
 (* 
@@ -90,7 +88,7 @@ pub trait From<T>: Sized {
 *)
 Module From.
   Class Trait (Self : Set) {T : Set} : Set := {
-    from : T -> M Self;
+    from : M.Val T -> M (M.Val Self);
   }.
 End From.
 
@@ -102,7 +100,7 @@ pub trait Into<T>: Sized {
 *)
 Module Into.
   Class Trait (Self : Set) {T : Set } : Set := {
-    into : Self -> M T;
+    into : M.Val Self -> M (M.Val T);
   }.
 End Into.
 
@@ -113,7 +111,7 @@ Module Impl_Into_for_T.
 
     Definition Self := T.
 
-    Definition into : Self -> M U := From.from.
+    Definition into : M.Val Self -> M (M.Val U) := From.from.
 
     Global Instance Method_into : Notation.Dot "into" := {
       Notation.dot := into;

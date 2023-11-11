@@ -3,120 +3,112 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module  Unit.
 Section Unit.
-  Context `{ℋ : State.Trait}.
-  
   Inductive t : Set := Build.
 End Unit.
 End Unit.
-Definition Unit `{ℋ : State.Trait} := M.Val Unit.t.
+Definition Unit := M.Val Unit.t.
 
-Module  Impl_core_fmt_Debug_for_clone_Unit.
-Section Impl_core_fmt_Debug_for_clone_Unit.
-  Context `{ℋ : State.Trait}.
-  
-  Definition Self : Set := clone.Unit.
+Module  Impl_core_fmt_Debug_for_clone_Unit_t.
+Section Impl_core_fmt_Debug_for_clone_Unit_t.
+  Ltac Self := exact clone.Unit.t.
   
   Parameter fmt :
-      (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
+      (M.Val (ref ltac:(Self))) ->
+        (M.Val (mut_ref core.fmt.Formatter.t)) ->
+        M (M.Val ltac:(core.fmt.Result)).
   
-  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {
+  Global Instance AssociatedFunction_fmt :
+    Notation.DoubleColon ltac:(Self) "fmt" := {
     Notation.double_colon := fmt;
   }.
   
-  Global Instance ℐ : core.fmt.Debug.Trait Self := {
+  Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
     core.fmt.Debug.fmt := fmt;
   }.
-End Impl_core_fmt_Debug_for_clone_Unit.
-End Impl_core_fmt_Debug_for_clone_Unit.
+End Impl_core_fmt_Debug_for_clone_Unit_t.
+End Impl_core_fmt_Debug_for_clone_Unit_t.
 
-Module  Impl_core_clone_Clone_for_clone_Unit.
-Section Impl_core_clone_Clone_for_clone_Unit.
-  Context `{ℋ : State.Trait}.
+Module  Impl_core_clone_Clone_for_clone_Unit_t.
+Section Impl_core_clone_Clone_for_clone_Unit_t.
+  Ltac Self := exact clone.Unit.t.
   
-  Definition Self : Set := clone.Unit.
-  
-  Parameter clone : (ref Self) -> M clone.Unit.
+  Parameter clone : (M.Val (ref ltac:(Self))) -> M (M.Val clone.Unit.t).
   
   Global Instance AssociatedFunction_clone :
-    Notation.DoubleColon Self "clone" := {
+    Notation.DoubleColon ltac:(Self) "clone" := {
     Notation.double_colon := clone;
   }.
   
-  Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
+  Global Instance ℐ : core.clone.Clone.Required.Trait ltac:(Self) := {
     core.clone.Clone.clone := clone;
     core.clone.Clone.clone_from := Datatypes.None;
   }.
-End Impl_core_clone_Clone_for_clone_Unit.
-End Impl_core_clone_Clone_for_clone_Unit.
+End Impl_core_clone_Clone_for_clone_Unit_t.
+End Impl_core_clone_Clone_for_clone_Unit_t.
 
-Module  Impl_core_marker_Copy_for_clone_Unit.
-Section Impl_core_marker_Copy_for_clone_Unit.
-  Context `{ℋ : State.Trait}.
+Module  Impl_core_marker_Copy_for_clone_Unit_t.
+Section Impl_core_marker_Copy_for_clone_Unit_t.
+  Ltac Self := exact clone.Unit.t.
   
-  Definition Self : Set := clone.Unit.
-  
-  Global Instance ℐ : core.marker.Copy.Trait Self := {
+  Global Instance ℐ : core.marker.Copy.Trait ltac:(Self) := {
   }.
-End Impl_core_marker_Copy_for_clone_Unit.
-End Impl_core_marker_Copy_for_clone_Unit.
+End Impl_core_marker_Copy_for_clone_Unit_t.
+End Impl_core_marker_Copy_for_clone_Unit_t.
 
 Module  Pair.
 Section Pair.
-  Context `{ℋ : State.Trait}.
-  
   Record t : Set := {
-    x0 : alloc.boxed.Box i32 alloc.boxed.Box.Default.A;
-    x1 : alloc.boxed.Box i32 alloc.boxed.Box.Default.A;
+    x0 : alloc.boxed.Box.t i32.t alloc.boxed.Box.Default.A;
+    x1 : alloc.boxed.Box.t i32.t alloc.boxed.Box.Default.A;
   }.
   
   Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
+    Notation.dot x := let* x := M.read x in M.alloc x.(x0) : M _;
   }.
   Global Instance Get_1 : Notation.Dot "1" := {
-    Notation.dot x := let* x := M.read x in M.pure x.(x1) : M _;
+    Notation.dot x := let* x := M.read x in M.alloc x.(x1) : M _;
   }.
 End Pair.
 End Pair.
-Definition Pair `{ℋ : State.Trait} : Set := M.Val Pair.t.
+Definition Pair : Set := M.Val Pair.t.
 
-Module  Impl_core_clone_Clone_for_clone_Pair.
-Section Impl_core_clone_Clone_for_clone_Pair.
-  Context `{ℋ : State.Trait}.
+Module  Impl_core_clone_Clone_for_clone_Pair_t.
+Section Impl_core_clone_Clone_for_clone_Pair_t.
+  Ltac Self := exact clone.Pair.t.
   
-  Definition Self : Set := clone.Pair.
-  
-  Parameter clone : (ref Self) -> M clone.Pair.
+  Parameter clone : (M.Val (ref ltac:(Self))) -> M (M.Val clone.Pair.t).
   
   Global Instance AssociatedFunction_clone :
-    Notation.DoubleColon Self "clone" := {
+    Notation.DoubleColon ltac:(Self) "clone" := {
     Notation.double_colon := clone;
   }.
   
-  Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
+  Global Instance ℐ : core.clone.Clone.Required.Trait ltac:(Self) := {
     core.clone.Clone.clone := clone;
     core.clone.Clone.clone_from := Datatypes.None;
   }.
-End Impl_core_clone_Clone_for_clone_Pair.
-End Impl_core_clone_Clone_for_clone_Pair.
+End Impl_core_clone_Clone_for_clone_Pair_t.
+End Impl_core_clone_Clone_for_clone_Pair_t.
 
-Module  Impl_core_fmt_Debug_for_clone_Pair.
-Section Impl_core_fmt_Debug_for_clone_Pair.
-  Context `{ℋ : State.Trait}.
-  
-  Definition Self : Set := clone.Pair.
+Module  Impl_core_fmt_Debug_for_clone_Pair_t.
+Section Impl_core_fmt_Debug_for_clone_Pair_t.
+  Ltac Self := exact clone.Pair.t.
   
   Parameter fmt :
-      (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
+      (M.Val (ref ltac:(Self))) ->
+        (M.Val (mut_ref core.fmt.Formatter.t)) ->
+        M (M.Val ltac:(core.fmt.Result)).
   
-  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {
+  Global Instance AssociatedFunction_fmt :
+    Notation.DoubleColon ltac:(Self) "fmt" := {
     Notation.double_colon := fmt;
   }.
   
-  Global Instance ℐ : core.fmt.Debug.Trait Self := {
+  Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
     core.fmt.Debug.fmt := fmt;
   }.
-End Impl_core_fmt_Debug_for_clone_Pair.
-End Impl_core_fmt_Debug_for_clone_Pair.
+End Impl_core_fmt_Debug_for_clone_Pair_t.
+End Impl_core_fmt_Debug_for_clone_Pair_t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{ℋ : State.Trait}, M unit.
+Parameter main : M (M.Val unit).

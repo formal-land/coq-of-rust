@@ -95,6 +95,11 @@ pub(crate) enum DefinitionKind<'a> {
     /// an opaque constant
     /// (using `Parameter`)
     Assumption { ty: Expression<'a> },
+    /// a definition with an `exact` tactic
+    Ltac {
+        args: Vec<String>,
+        body: Expression<'a>,
+    },
 }
 
 #[derive(Clone)]
@@ -302,14 +307,13 @@ impl<'a> TopLevel<'a> {
 
     /// creates the context in a section with type variables
     /// with the given variable names
-    pub(crate) fn add_context_in_section(ty_params: &[String], items: &TopLevel<'a>) -> Self {
+    pub(crate) fn add_context_in_section(
+        ty_params: &[String],
+        are_ty_params_explicit: bool,
+        items: &TopLevel<'a>,
+    ) -> Self {
         TopLevel {
             items: [
-                // `State.Trait``
-                vec![
-                    TopLevelItem::Context(Context::new(&[ArgDecl::monadic_typeclass_parameter()])),
-                    TopLevelItem::Line,
-                ],
                 // [ty_params]
                 if !ty_params.is_empty() {
                     vec![
@@ -318,7 +322,11 @@ impl<'a> TopLevel<'a> {
                                 idents: ty_params.iter().map(|arg| arg.to_owned()).collect(),
                                 ty: Some(Expression::Set),
                             },
-                            ArgSpecKind::Implicit,
+                            if are_ty_params_explicit {
+                                ArgSpecKind::Explicit
+                            } else {
+                                ArgSpecKind::Implicit
+                            },
                         )])),
                         TopLevelItem::Line,
                     ]
@@ -358,11 +366,6 @@ impl<'a> TopLevelItem<'a> {
             name,
             true,
             TopLevel::concat(&[
-                // Add State.Trait in Context
-                TopLevel::new(&[
-                    TopLevelItem::Context(Context::new(&[ArgDecl::monadic_typeclass_parameter()])),
-                    TopLevelItem::Line,
-                ]),
                 TopLevel::locally_unset_primitive_projections_if(
                     items.is_empty(),
                     &[TopLevelItem::Class(Class::new(
@@ -408,6 +411,20 @@ impl<'a> TopLevelItem<'a> {
                 },
             ]),
         ))
+    }
+
+    pub(crate) fn ty_alias_definition(
+        name: &str,
+        ty_params: Vec<String>,
+        ty: &Expression<'a>,
+    ) -> Vec<Self> {
+        vec![TopLevelItem::Definition(Definition::new(
+            name,
+            &DefinitionKind::Ltac {
+                args: ty_params,
+                body: ty.clone(),
+            },
+        ))]
     }
 }
 
@@ -511,6 +528,16 @@ impl<'a> Definition<'a> {
                     line(),
                 ]),
                 nest([text(":"), line(), ty.to_doc(false)]),
+                text("."),
+            ]),
+            DefinitionKind::Ltac { args, body } => nest([
+                nest([
+                    nest([text("Ltac"), line(), text(self.name.to_owned())]),
+                    concat(args.iter().map(|arg| concat([line(), text(arg.clone())]))),
+                    text(" :="),
+                ]),
+                line(),
+                nest([text("exact"), line(), body.to_doc(true)]),
                 text("."),
             ]),
         }
@@ -914,6 +941,13 @@ impl<'a> Expression<'a> {
             None => Expression::Unit,
         }
     }
+
+    pub(crate) fn self_() -> Self {
+        Expression::ModeWrapper {
+            mode: "ltac".to_string(),
+            expr: Box::new(Expression::just_name("Self")),
+        }
+    }
 }
 
 impl<'a> Field<'a> {
@@ -952,22 +986,6 @@ impl<'a> ArgDecl<'a> {
         ArgDecl {
             decl: decl.to_owned(),
             kind,
-        }
-    }
-
-    /// provides the instance of the Struct.Trait typeclass
-    /// for definitions of functions and constants
-    /// which types utilize the M monad constructor
-    pub(crate) fn monadic_typeclass_parameter() -> Self {
-        ArgDecl {
-            decl: ArgDeclVar::Generalized {
-                idents: vec!["ℋ".to_string()],
-                ty: Expression::Variable {
-                    ident: Path::new(&["State", "Trait"]),
-                    no_implicit: false,
-                },
-            },
-            kind: ArgSpecKind::Implicit,
         }
     }
 

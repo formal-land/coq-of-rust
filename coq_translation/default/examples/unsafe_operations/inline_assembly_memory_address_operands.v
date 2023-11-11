@@ -2,9 +2,9 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{ℋ : State.Trait} : M unit := M.function_body (M.alloc tt).
+Definition main : M (M.Val unit) := M.function_body (M.alloc tt).
 
-Definition load_fpu_control_word `{ℋ : State.Trait} (control : u16) : M unit :=
+Definition load_fpu_control_word (control : M.Val u16.t) : M (M.Val unit) :=
   M.function_body
     (let _ := InlineAssembly in
     M.alloc tt).

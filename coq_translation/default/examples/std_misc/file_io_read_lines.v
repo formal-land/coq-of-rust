@@ -2,39 +2,50 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition read_lines
-    `{ℋ : State.Trait}
-    (filename : alloc.string.String)
-    : M (std.io.Lines (std.io.buffered.bufreader.BufReader std.fs.File)) :=
+    (filename : M.Val alloc.string.String.t)
+    :
+      M
+        (M.Val
+          (std.io.Lines.t
+            (std.io.buffered.bufreader.BufReader.t std.fs.File.t))) :=
   M.function_body
-    (let* file : ltac:(refine std.fs.File) :=
+    (let* file : ltac:(refine (M.Val std.fs.File.t)) :=
       let* α0 :
-          ltac:(refine (core.result.Result std.fs.File std.io.error.Error)) :=
-        std.fs.File::["open"] filename in
-      (core.result.Result std.fs.File std.io.error.Error)::["unwrap"] α0 in
-    let* _ : ltac:(refine never) :=
+          ltac:(refine
+            (M.Val
+              (core.result.Result.t std.fs.File.t std.io.error.Error.t))) :=
+        std.fs.File.t::["open"] filename in
+      (core.result.Result.t std.fs.File.t std.io.error.Error.t)::["unwrap"]
+        α0 in
+    let* _ : ltac:(refine (M.Val never.t)) :=
       let* α0 :
-          ltac:(refine (std.io.buffered.bufreader.BufReader std.fs.File)) :=
-        (std.io.buffered.bufreader.BufReader std.fs.File)::["new"] file in
+          ltac:(refine
+            (M.Val (std.io.buffered.bufreader.BufReader.t std.fs.File.t))) :=
+        (std.io.buffered.bufreader.BufReader.t std.fs.File.t)::["new"] file in
       let* α1 :
           ltac:(refine
-            (std.io.Lines (std.io.buffered.bufreader.BufReader std.fs.File))) :=
+            (M.Val
+              (std.io.Lines.t
+                (std.io.buffered.bufreader.BufReader.t std.fs.File.t)))) :=
         (std.io.BufRead.lines
-            (Self := std.io.buffered.bufreader.BufReader std.fs.File)
+            (Self := std.io.buffered.bufreader.BufReader.t std.fs.File.t)
             (Trait := ltac:(refine _)))
           α0 in
       M.return_ α1 in
-    let* α0 : ltac:(refine unit) := M.alloc tt in
+    let* α0 : ltac:(refine (M.Val unit)) := M.alloc tt in
     never_to_any α0).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{ℋ : State.Trait} : M unit :=
+Definition main : M (M.Val unit) :=
   M.function_body
     (let* lines :
         ltac:(refine
-          (std.io.Lines (std.io.buffered.bufreader.BufReader std.fs.File))) :=
-      let* α0 : ltac:(refine str) := deref (mk_str "./hosts") in
-      let* α1 : ltac:(refine (ref str)) := borrow α0 in
-      let* α2 : ltac:(refine alloc.string.String) :=
+          (M.Val
+            (std.io.Lines.t
+              (std.io.buffered.bufreader.BufReader.t std.fs.File.t)))) :=
+      let* α0 : ltac:(refine (M.Val str)) := deref (mk_str "./hosts") in
+      let* α1 : ltac:(refine (M.Val (ref str))) := borrow α0 in
+      let* α2 : ltac:(refine (M.Val alloc.string.String.t)) :=
         (alloc.string.ToString.to_string
             (Self := str)
             (Trait := ltac:(refine _)))
@@ -42,68 +53,81 @@ Definition main `{ℋ : State.Trait} : M unit :=
       file_io_read_lines.read_lines α2 in
     let* α0 :
         ltac:(refine
-          (std.io.Lines (std.io.buffered.bufreader.BufReader std.fs.File))) :=
+          (M.Val
+            (std.io.Lines.t
+              (std.io.buffered.bufreader.BufReader.t std.fs.File.t)))) :=
       (core.iter.traits.collect.IntoIterator.into_iter
           (Self :=
-            std.io.Lines (std.io.buffered.bufreader.BufReader std.fs.File))
+            std.io.Lines.t
+              (std.io.buffered.bufreader.BufReader.t std.fs.File.t))
           (Trait := ltac:(refine _)))
         lines in
     let* α1 := M.read α0 in
-    let* α2 : ltac:(refine unit) :=
+    let* α2 : ltac:(refine (M.Val unit)) :=
       match α1 with
       | iter =>
+        let* iter := M.alloc iter in
         loop
-          (let* _ : ltac:(refine unit) :=
+          (let* _ : ltac:(refine (M.Val unit)) :=
             let* α0 :
                 ltac:(refine
-                  (mut_ref
-                    (std.io.Lines
-                      (std.io.buffered.bufreader.BufReader std.fs.File)))) :=
+                  (M.Val
+                    (mut_ref
+                      (std.io.Lines.t
+                        (std.io.buffered.bufreader.BufReader.t
+                          std.fs.File.t))))) :=
               borrow_mut iter in
             let* α1 :
                 ltac:(refine
-                  (core.option.Option
-                    (core.result.Result
-                      alloc.string.String
-                      std.io.error.Error))) :=
+                  (M.Val
+                    (core.option.Option.t
+                      (core.result.Result.t
+                        alloc.string.String.t
+                        std.io.error.Error.t)))) :=
               (core.iter.traits.iterator.Iterator.next
                   (Self :=
-                    std.io.Lines
-                      (std.io.buffered.bufreader.BufReader std.fs.File))
+                    std.io.Lines.t
+                      (std.io.buffered.bufreader.BufReader.t std.fs.File.t))
                   (Trait := ltac:(refine _)))
                 α0 in
             let* α2 := M.read α1 in
             match α2 with
             | core.option.Option.None  =>
-              let* α0 : ltac:(refine never) := Break in
+              let* α0 : ltac:(refine (M.Val never.t)) := Break in
               never_to_any α0
             | core.option.Option.Some line =>
-              let* _ : ltac:(refine unit) :=
-                let* _ : ltac:(refine unit) :=
-                  let* α0 : ltac:(refine (array (ref str))) :=
+              let* line := M.alloc line in
+              let* _ : ltac:(refine (M.Val unit)) :=
+                let* _ : ltac:(refine (M.Val unit)) :=
+                  let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
                     M.alloc [ mk_str ""; mk_str "
 " ] in
-                  let* α1 : ltac:(refine (ref (array (ref str)))) :=
+                  let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) :=
                     borrow α0 in
-                  let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+                  let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
                     pointer_coercion "Unsize" α1 in
-                  let* α3 : ltac:(refine alloc.string.String) :=
-                    (core.result.Result
-                          alloc.string.String
-                          std.io.error.Error)::["unwrap"]
+                  let* α3 : ltac:(refine (M.Val alloc.string.String.t)) :=
+                    (core.result.Result.t
+                          alloc.string.String.t
+                          std.io.error.Error.t)::["unwrap"]
                       line in
-                  let* α4 : ltac:(refine (ref alloc.string.String)) :=
+                  let* α4 : ltac:(refine (M.Val (ref alloc.string.String.t))) :=
                     borrow α3 in
-                  let* α5 : ltac:(refine core.fmt.rt.Argument) :=
-                    core.fmt.rt.Argument::["new_display"] α4 in
-                  let* α6 : ltac:(refine (array core.fmt.rt.Argument)) :=
+                  let* α5 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
+                    core.fmt.rt.Argument.t::["new_display"] α4 in
+                  let* α6 :
+                      ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
                     M.alloc [ α5 ] in
-                  let* α7 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+                  let* α7 :
+                      ltac:(refine
+                        (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
                     borrow α6 in
-                  let* α8 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+                  let* α8 :
+                      ltac:(refine
+                        (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
                     pointer_coercion "Unsize" α7 in
-                  let* α9 : ltac:(refine core.fmt.Arguments) :=
-                    core.fmt.Arguments::["new_v1"] α2 α8 in
+                  let* α9 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
+                    core.fmt.Arguments.t::["new_v1"] α2 α8 in
                   std.io.stdio._print α9 in
                 M.alloc tt in
               M.alloc tt

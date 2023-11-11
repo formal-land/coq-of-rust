@@ -3,144 +3,142 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module  Point.
 Section Point.
-  Context `{ℋ : State.Trait}.
-  
   Record t : Set := {
-    x : f64;
-    y : f64;
+    x : f64.t;
+    y : f64.t;
   }.
   
   Global Instance Get_x : Notation.Dot "x" := {
-    Notation.dot x' := let* x' := M.read x' in M.pure x'.(x) : M _;
+    Notation.dot x' := let* x' := M.read x' in M.alloc x'.(x) : M _;
   }.
   Global Instance Get_AF_x : Notation.DoubleColon t "x" := {
-    Notation.double_colon x' := let* x' := M.read x' in M.pure x'.(x) : M _;
+    Notation.double_colon x' := let* x' := M.read x' in M.alloc x'.(x) : M _;
   }.
   Global Instance Get_y : Notation.Dot "y" := {
-    Notation.dot x := let* x := M.read x in M.pure x.(y) : M _;
+    Notation.dot x := let* x := M.read x in M.alloc x.(y) : M _;
   }.
   Global Instance Get_AF_y : Notation.DoubleColon t "y" := {
-    Notation.double_colon x := let* x := M.read x in M.pure x.(y) : M _;
+    Notation.double_colon x := let* x := M.read x in M.alloc x.(y) : M _;
   }.
 End Point.
 End Point.
-Definition Point `{ℋ : State.Trait} : Set := M.Val Point.t.
+Definition Point : Set := M.Val Point.t.
 
-Module  Impl_associated_functions_and_methods_Point.
-Section Impl_associated_functions_and_methods_Point.
-  Context `{ℋ : State.Trait}.
+Module  Impl_associated_functions_and_methods_Point_t.
+Section Impl_associated_functions_and_methods_Point_t.
+  Ltac Self := exact associated_functions_and_methods.Point.t.
   
-  Definition Self : Set := associated_functions_and_methods.Point.
-  
-  Parameter origin : M associated_functions_and_methods.Point.
+  Parameter origin : M (M.Val associated_functions_and_methods.Point.t).
   
   Global Instance AssociatedFunction_origin :
-    Notation.DoubleColon Self "origin" := {
+    Notation.DoubleColon ltac:(Self) "origin" := {
     Notation.double_colon := origin;
   }.
   
-  Parameter new : f64 -> f64 -> M associated_functions_and_methods.Point.
+  Parameter new :
+      (M.Val f64.t) ->
+        (M.Val f64.t) ->
+        M (M.Val associated_functions_and_methods.Point.t).
   
-  Global Instance AssociatedFunction_new : Notation.DoubleColon Self "new" := {
+  Global Instance AssociatedFunction_new :
+    Notation.DoubleColon ltac:(Self) "new" := {
     Notation.double_colon := new;
   }.
-End Impl_associated_functions_and_methods_Point.
-End Impl_associated_functions_and_methods_Point.
+End Impl_associated_functions_and_methods_Point_t.
+End Impl_associated_functions_and_methods_Point_t.
 
 Module  Rectangle.
 Section Rectangle.
-  Context `{ℋ : State.Trait}.
-  
   Record t : Set := {
-    p1 : associated_functions_and_methods.Point;
-    p2 : associated_functions_and_methods.Point;
+    p1 : associated_functions_and_methods.Point.t;
+    p2 : associated_functions_and_methods.Point.t;
   }.
   
   Global Instance Get_p1 : Notation.Dot "p1" := {
-    Notation.dot x := let* x := M.read x in M.pure x.(p1) : M _;
+    Notation.dot x := let* x := M.read x in M.alloc x.(p1) : M _;
   }.
   Global Instance Get_AF_p1 : Notation.DoubleColon t "p1" := {
-    Notation.double_colon x := let* x := M.read x in M.pure x.(p1) : M _;
+    Notation.double_colon x := let* x := M.read x in M.alloc x.(p1) : M _;
   }.
   Global Instance Get_p2 : Notation.Dot "p2" := {
-    Notation.dot x := let* x := M.read x in M.pure x.(p2) : M _;
+    Notation.dot x := let* x := M.read x in M.alloc x.(p2) : M _;
   }.
   Global Instance Get_AF_p2 : Notation.DoubleColon t "p2" := {
-    Notation.double_colon x := let* x := M.read x in M.pure x.(p2) : M _;
+    Notation.double_colon x := let* x := M.read x in M.alloc x.(p2) : M _;
   }.
 End Rectangle.
 End Rectangle.
-Definition Rectangle `{ℋ : State.Trait} : Set := M.Val Rectangle.t.
+Definition Rectangle : Set := M.Val Rectangle.t.
 
-Module  Impl_associated_functions_and_methods_Rectangle.
-Section Impl_associated_functions_and_methods_Rectangle.
-  Context `{ℋ : State.Trait}.
+Module  Impl_associated_functions_and_methods_Rectangle_t.
+Section Impl_associated_functions_and_methods_Rectangle_t.
+  Ltac Self := exact associated_functions_and_methods.Rectangle.t.
   
-  Definition Self : Set := associated_functions_and_methods.Rectangle.
-  
-  Parameter get_p1 : (ref Self) -> M associated_functions_and_methods.Point.
+  Parameter get_p1 :
+      (M.Val (ref ltac:(Self))) ->
+        M (M.Val associated_functions_and_methods.Point.t).
   
   Global Instance AssociatedFunction_get_p1 :
-    Notation.DoubleColon Self "get_p1" := {
+    Notation.DoubleColon ltac:(Self) "get_p1" := {
     Notation.double_colon := get_p1;
   }.
   
-  Parameter area : (ref Self) -> M f64.
+  Parameter area : (M.Val (ref ltac:(Self))) -> M (M.Val f64.t).
   
   Global Instance AssociatedFunction_area :
-    Notation.DoubleColon Self "area" := {
+    Notation.DoubleColon ltac:(Self) "area" := {
     Notation.double_colon := area;
   }.
   
-  Parameter perimeter : (ref Self) -> M f64.
+  Parameter perimeter : (M.Val (ref ltac:(Self))) -> M (M.Val f64.t).
   
   Global Instance AssociatedFunction_perimeter :
-    Notation.DoubleColon Self "perimeter" := {
+    Notation.DoubleColon ltac:(Self) "perimeter" := {
     Notation.double_colon := perimeter;
   }.
   
-  Parameter translate : (mut_ref Self) -> f64 -> f64 -> M unit.
+  Parameter translate :
+      (M.Val (mut_ref ltac:(Self))) ->
+        (M.Val f64.t) ->
+        (M.Val f64.t) ->
+        M (M.Val unit).
   
   Global Instance AssociatedFunction_translate :
-    Notation.DoubleColon Self "translate" := {
+    Notation.DoubleColon ltac:(Self) "translate" := {
     Notation.double_colon := translate;
   }.
-End Impl_associated_functions_and_methods_Rectangle.
-End Impl_associated_functions_and_methods_Rectangle.
+End Impl_associated_functions_and_methods_Rectangle_t.
+End Impl_associated_functions_and_methods_Rectangle_t.
 
 Module  Pair.
 Section Pair.
-  Context `{ℋ : State.Trait}.
-  
   Record t : Set := {
-    x0 : alloc.boxed.Box i32 alloc.boxed.Box.Default.A;
-    x1 : alloc.boxed.Box i32 alloc.boxed.Box.Default.A;
+    x0 : alloc.boxed.Box.t i32.t alloc.boxed.Box.Default.A;
+    x1 : alloc.boxed.Box.t i32.t alloc.boxed.Box.Default.A;
   }.
   
   Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
+    Notation.dot x := let* x := M.read x in M.alloc x.(x0) : M _;
   }.
   Global Instance Get_1 : Notation.Dot "1" := {
-    Notation.dot x := let* x := M.read x in M.pure x.(x1) : M _;
+    Notation.dot x := let* x := M.read x in M.alloc x.(x1) : M _;
   }.
 End Pair.
 End Pair.
-Definition Pair `{ℋ : State.Trait} : Set := M.Val Pair.t.
+Definition Pair : Set := M.Val Pair.t.
 
-Module  Impl_associated_functions_and_methods_Pair.
-Section Impl_associated_functions_and_methods_Pair.
-  Context `{ℋ : State.Trait}.
+Module  Impl_associated_functions_and_methods_Pair_t.
+Section Impl_associated_functions_and_methods_Pair_t.
+  Ltac Self := exact associated_functions_and_methods.Pair.t.
   
-  Definition Self : Set := associated_functions_and_methods.Pair.
-  
-  Parameter destroy : Self -> M unit.
+  Parameter destroy : (M.Val ltac:(Self)) -> M (M.Val unit).
   
   Global Instance AssociatedFunction_destroy :
-    Notation.DoubleColon Self "destroy" := {
+    Notation.DoubleColon ltac:(Self) "destroy" := {
     Notation.double_colon := destroy;
   }.
-End Impl_associated_functions_and_methods_Pair.
-End Impl_associated_functions_and_methods_Pair.
+End Impl_associated_functions_and_methods_Pair_t.
+End Impl_associated_functions_and_methods_Pair_t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{ℋ : State.Trait}, M unit.
+Parameter main : M (M.Val unit).

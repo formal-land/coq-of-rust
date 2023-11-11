@@ -2,18 +2,18 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module Status.
-  Inductive t `{ℋ : State.Trait} : Set :=
+  Inductive t : Set :=
   | Rich
   | Poor.
 End Status.
-Definition Status `{ℋ : State.Trait} : Set := M.Val Status.t.
+Definition Status : Set := M.Val Status.t.
 
 Module Work.
-  Inductive t `{ℋ : State.Trait} : Set :=
+  Inductive t : Set :=
   | Civilian
   | Soldier.
 End Work.
-Definition Work `{ℋ : State.Trait} : Set := M.Val Work.t.
+Definition Work : Set := M.Val Work.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{ℋ : State.Trait}, M unit.
+Parameter main : M (M.Val unit).

@@ -2,6 +2,6 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{ℋ : State.Trait}, M unit.
+Parameter main : M (M.Val unit).
 
-Parameter load_fpu_control_word : forall `{ℋ : State.Trait}, u16 -> M unit.
+Parameter load_fpu_control_word : (M.Val u16.t) -> M (M.Val unit).

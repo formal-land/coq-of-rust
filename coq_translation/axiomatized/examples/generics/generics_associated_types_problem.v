@@ -3,81 +3,78 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module  Container.
 Section Container.
-  Context `{ℋ : State.Trait}.
-  
   Record t : Set := {
-    x0 : i32;
-    x1 : i32;
+    x0 : i32.t;
+    x1 : i32.t;
   }.
   
   Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
+    Notation.dot x := let* x := M.read x in M.alloc x.(x0) : M _;
   }.
   Global Instance Get_1 : Notation.Dot "1" := {
-    Notation.dot x := let* x := M.read x in M.pure x.(x1) : M _;
+    Notation.dot x := let* x := M.read x in M.alloc x.(x1) : M _;
   }.
 End Container.
 End Container.
-Definition Container `{ℋ : State.Trait} : Set := M.Val Container.t.
+Definition Container : Set := M.Val Container.t.
 
 Module  Contains.
 Section Contains.
-  Context `{ℋ : State.Trait}.
-  
   Class Trait (Self : Set) {A B : Set} : Type := {
-    contains : (ref Self) -> (ref A) -> (ref B) -> M bool;
-    first : (ref Self) -> M i32;
-    last : (ref Self) -> M i32;
+    contains : (ref ltac:(Self)) -> (ref A) -> (ref B) -> M bool.t;
+    first : (ref ltac:(Self)) -> M i32.t;
+    last : (ref ltac:(Self)) -> M i32.t;
   }.
   
 End Contains.
 End Contains.
 
-Module  Impl_generics_associated_types_problem_Contains_i32_i32_for_generics_associated_types_problem_Container.
-Section Impl_generics_associated_types_problem_Contains_i32_i32_for_generics_associated_types_problem_Container.
-  Context `{ℋ : State.Trait}.
+Module  Impl_generics_associated_types_problem_Contains_i32_t_i32_t_for_generics_associated_types_problem_Container_t.
+Section Impl_generics_associated_types_problem_Contains_i32_t_i32_t_for_generics_associated_types_problem_Container_t.
+  Ltac Self := exact generics_associated_types_problem.Container.t.
   
-  Definition Self : Set := generics_associated_types_problem.Container.
-  
-  Parameter contains : (ref Self) -> (ref i32) -> (ref i32) -> M bool.
+  Parameter contains :
+      (M.Val (ref ltac:(Self))) ->
+        (M.Val (ref i32.t)) ->
+        (M.Val (ref i32.t)) ->
+        M (M.Val bool.t).
   
   Global Instance AssociatedFunction_contains :
-    Notation.DoubleColon Self "contains" := {
+    Notation.DoubleColon ltac:(Self) "contains" := {
     Notation.double_colon := contains;
   }.
   
-  Parameter first : (ref Self) -> M i32.
+  Parameter first : (M.Val (ref ltac:(Self))) -> M (M.Val i32.t).
   
   Global Instance AssociatedFunction_first :
-    Notation.DoubleColon Self "first" := {
+    Notation.DoubleColon ltac:(Self) "first" := {
     Notation.double_colon := first;
   }.
   
-  Parameter last : (ref Self) -> M i32.
+  Parameter last : (M.Val (ref ltac:(Self))) -> M (M.Val i32.t).
   
   Global Instance AssociatedFunction_last :
-    Notation.DoubleColon Self "last" := {
+    Notation.DoubleColon ltac:(Self) "last" := {
     Notation.double_colon := last;
   }.
   
   Global Instance ℐ :
-    generics_associated_types_problem.Contains.Trait Self
-      (A := i32)
-      (B := i32) := {
+    generics_associated_types_problem.Contains.Trait ltac:(Self)
+      (A := i32.t)
+      (B := i32.t) := {
     generics_associated_types_problem.Contains.contains := contains;
     generics_associated_types_problem.Contains.first := first;
     generics_associated_types_problem.Contains.last := last;
   }.
-End Impl_generics_associated_types_problem_Contains_i32_i32_for_generics_associated_types_problem_Container.
-End Impl_generics_associated_types_problem_Contains_i32_i32_for_generics_associated_types_problem_Container.
+End Impl_generics_associated_types_problem_Contains_i32_t_i32_t_for_generics_associated_types_problem_Container_t.
+End Impl_generics_associated_types_problem_Contains_i32_t_i32_t_for_generics_associated_types_problem_Container_t.
 
 Parameter difference :
     forall
-      `{ℋ : State.Trait}
       {A B C : Set}
       {ℋ_0 :
         generics_associated_types_problem.Contains.Trait C (A := A) (B := B)},
-    (ref C) -> M i32.
+    (M.Val (ref C)) -> M (M.Val i32.t).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{ℋ : State.Trait}, M unit.
+Parameter main : M (M.Val unit).

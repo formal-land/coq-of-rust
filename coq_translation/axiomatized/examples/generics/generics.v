@@ -3,32 +3,26 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module  A.
 Section A.
-  Context `{ℋ : State.Trait}.
-  
   Inductive t : Set := Build.
 End A.
 End A.
-Definition A `{ℋ : State.Trait} := M.Val A.t.
+Definition A := M.Val A.t.
 
 Module  Single.
 Section Single.
-  Context `{ℋ : State.Trait}.
-  
   Record t : Set := {
-    x0 : generics.A;
+    x0 : generics.A.t;
   }.
   
   Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
+    Notation.dot x := let* x := M.read x in M.alloc x.(x0) : M _;
   }.
 End Single.
 End Single.
-Definition Single `{ℋ : State.Trait} : Set := M.Val Single.t.
+Definition Single : Set := M.Val Single.t.
 
 Module  SingleGen.
 Section SingleGen.
-  Context `{ℋ : State.Trait}.
-  
   Context {T : Set}.
   
   Record t : Set := {
@@ -36,12 +30,11 @@ Section SingleGen.
   }.
   
   Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
+    Notation.dot x := let* x := M.read x in M.alloc x.(x0) : M _;
   }.
 End SingleGen.
 End SingleGen.
-Definition SingleGen `{ℋ : State.Trait} (T : Set) : Set :=
-  M.Val (SingleGen.t (T := T)).
+Definition SingleGen (T : Set) : Set := M.Val (SingleGen.t (T := T)).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{ℋ : State.Trait}, M unit.
+Parameter main : M (M.Val unit).

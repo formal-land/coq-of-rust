@@ -3,213 +3,209 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module  SomeType.
 Section SomeType.
-  Context `{ℋ : State.Trait}.
-  
   Record t : Set := {
-    x0 : u32;
+    x0 : u32.t;
   }.
   
   Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
+    Notation.dot x := let* x := M.read x in M.alloc x.(x0) : M _;
   }.
 End SomeType.
 End SomeType.
-Definition SomeType `{ℋ : State.Trait} : Set := M.Val SomeType.t.
+Definition SomeType : Set := M.Val SomeType.t.
 
 Module  OtherType.
 Section OtherType.
-  Context `{ℋ : State.Trait}.
-  
   Record t : Set := {
-    x0 : bool;
+    x0 : bool.t;
   }.
   
   Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
+    Notation.dot x := let* x := M.read x in M.alloc x.(x0) : M _;
   }.
 End OtherType.
 End OtherType.
-Definition OtherType `{ℋ : State.Trait} : Set := M.Val OtherType.t.
+Definition OtherType : Set := M.Val OtherType.t.
 
-Module  Impl_functions_order_SomeType.
-Section Impl_functions_order_SomeType.
-  Context `{ℋ : State.Trait}.
+Module  Impl_functions_order_SomeType_t.
+Section Impl_functions_order_SomeType_t.
+  Ltac Self := exact functions_order.SomeType.t.
   
-  Definition Self : Set := functions_order.SomeType.
-  
-  Definition meth2 (self : Self) : M unit := M.function_body (M.alloc tt).
+  Definition meth2 (self : M.Val ltac:(Self)) : M (M.Val unit) :=
+    M.function_body (M.alloc tt).
   
   Global Instance AssociatedFunction_meth2 :
-    Notation.DoubleColon Self "meth2" := {
+    Notation.DoubleColon ltac:(Self) "meth2" := {
     Notation.double_colon := meth2;
   }.
   
-  Definition meth1 (self : Self) : M unit :=
+  Definition meth1 (self : M.Val ltac:(Self)) : M (M.Val unit) :=
     M.function_body
-      (let* _ : ltac:(refine unit) :=
-        functions_order.SomeType::["meth2"] self in
+      (let* _ : ltac:(refine (M.Val unit)) :=
+        functions_order.SomeType.t::["meth2"] self in
       M.alloc tt).
   
   Global Instance AssociatedFunction_meth1 :
-    Notation.DoubleColon Self "meth1" := {
+    Notation.DoubleColon ltac:(Self) "meth1" := {
     Notation.double_colon := meth1;
   }.
-End Impl_functions_order_SomeType.
-End Impl_functions_order_SomeType.
+End Impl_functions_order_SomeType_t.
+End Impl_functions_order_SomeType_t.
 
 Module  SomeTrait.
 Section SomeTrait.
-  Context `{ℋ : State.Trait}.
-  
   Class Trait (Self : Set) : Type := {
-    some_trait_foo : (ref Self) -> M unit;
-    some_trait_bar : (ref Self) -> M unit;
+    some_trait_foo : (ref ltac:(Self)) -> M unit;
+    some_trait_bar : (ref ltac:(Self)) -> M unit;
   }.
   
 End SomeTrait.
 End SomeTrait.
 
-Module  Impl_functions_order_SomeTrait_for_functions_order_SomeType.
-Section Impl_functions_order_SomeTrait_for_functions_order_SomeType.
-  Context `{ℋ : State.Trait}.
+Module  Impl_functions_order_SomeTrait_for_functions_order_SomeType_t.
+Section Impl_functions_order_SomeTrait_for_functions_order_SomeType_t.
+  Ltac Self := exact functions_order.SomeType.t.
   
-  Definition Self : Set := functions_order.SomeType.
-  
-  Definition some_trait_bar (self : ref Self) : M unit :=
+  Definition some_trait_bar (self : M.Val (ref ltac:(Self))) : M (M.Val unit) :=
     M.function_body (M.alloc tt).
   
   Global Instance AssociatedFunction_some_trait_bar :
-    Notation.DoubleColon Self "some_trait_bar" := {
+    Notation.DoubleColon ltac:(Self) "some_trait_bar" := {
     Notation.double_colon := some_trait_bar;
   }.
   
-  Definition some_trait_foo (self : ref Self) : M unit :=
+  Definition some_trait_foo (self : M.Val (ref ltac:(Self))) : M (M.Val unit) :=
     M.function_body
-      (let* α0 : ltac:(refine functions_order.SomeType) := deref self in
-      let* α1 : ltac:(refine (ref functions_order.SomeType)) := borrow α0 in
+      (let* α0 : ltac:(refine (M.Val functions_order.SomeType.t)) :=
+        deref self in
+      let* α1 : ltac:(refine (M.Val (ref functions_order.SomeType.t))) :=
+        borrow α0 in
       (functions_order.SomeTrait.some_trait_bar
-          (Self := functions_order.SomeType)
+          (Self := functions_order.SomeType.t)
           (Trait := ltac:(refine _)))
         α1).
   
   Global Instance AssociatedFunction_some_trait_foo :
-    Notation.DoubleColon Self "some_trait_foo" := {
+    Notation.DoubleColon ltac:(Self) "some_trait_foo" := {
     Notation.double_colon := some_trait_foo;
   }.
   
-  Global Instance ℐ : functions_order.SomeTrait.Trait Self := {
+  Global Instance ℐ : functions_order.SomeTrait.Trait ltac:(Self) := {
     functions_order.SomeTrait.some_trait_bar := some_trait_bar;
     functions_order.SomeTrait.some_trait_foo := some_trait_foo;
   }.
-End Impl_functions_order_SomeTrait_for_functions_order_SomeType.
-End Impl_functions_order_SomeTrait_for_functions_order_SomeType.
+End Impl_functions_order_SomeTrait_for_functions_order_SomeType_t.
+End Impl_functions_order_SomeTrait_for_functions_order_SomeType_t.
 
-Module  Impl_functions_order_SomeTrait_for_functions_order_OtherType.
-Section Impl_functions_order_SomeTrait_for_functions_order_OtherType.
-  Context `{ℋ : State.Trait}.
+Module  Impl_functions_order_SomeTrait_for_functions_order_OtherType_t.
+Section Impl_functions_order_SomeTrait_for_functions_order_OtherType_t.
+  Ltac Self := exact functions_order.OtherType.t.
   
-  Definition Self : Set := functions_order.OtherType.
-  
-  Definition some_trait_foo (self : ref Self) : M unit :=
+  Definition some_trait_foo (self : M.Val (ref ltac:(Self))) : M (M.Val unit) :=
     M.function_body (M.alloc tt).
   
   Global Instance AssociatedFunction_some_trait_foo :
-    Notation.DoubleColon Self "some_trait_foo" := {
+    Notation.DoubleColon ltac:(Self) "some_trait_foo" := {
     Notation.double_colon := some_trait_foo;
   }.
   
-  Definition some_trait_bar (self : ref Self) : M unit :=
+  Definition some_trait_bar (self : M.Val (ref ltac:(Self))) : M (M.Val unit) :=
     M.function_body (M.alloc tt).
   
   Global Instance AssociatedFunction_some_trait_bar :
-    Notation.DoubleColon Self "some_trait_bar" := {
+    Notation.DoubleColon ltac:(Self) "some_trait_bar" := {
     Notation.double_colon := some_trait_bar;
   }.
   
-  Global Instance ℐ : functions_order.SomeTrait.Trait Self := {
+  Global Instance ℐ : functions_order.SomeTrait.Trait ltac:(Self) := {
     functions_order.SomeTrait.some_trait_foo := some_trait_foo;
     functions_order.SomeTrait.some_trait_bar := some_trait_bar;
   }.
-End Impl_functions_order_SomeTrait_for_functions_order_OtherType.
-End Impl_functions_order_SomeTrait_for_functions_order_OtherType.
+End Impl_functions_order_SomeTrait_for_functions_order_OtherType_t.
+End Impl_functions_order_SomeTrait_for_functions_order_OtherType_t.
 
 Definition depends_on_trait_impl
-    `{ℋ : State.Trait}
-    (u : u32)
-    (b : bool)
-    : M unit :=
+    (u : M.Val u32.t)
+    (b : M.Val bool.t)
+    : M (M.Val unit) :=
   M.function_body
-    (let* _ : ltac:(refine unit) :=
-      let* α0 : ltac:(refine functions_order.OtherType) :=
-        M.alloc (functions_order.OtherType.Build_t b) in
-      let* α1 : ltac:(refine (ref functions_order.OtherType)) := borrow α0 in
+    (let* _ : ltac:(refine (M.Val unit)) :=
+      let* α0 := M.read b in
+      let* α1 : ltac:(refine (M.Val functions_order.OtherType.t)) :=
+        M.alloc (functions_order.OtherType.Build_t α0) in
+      let* α2 : ltac:(refine (M.Val (ref functions_order.OtherType.t))) :=
+        borrow α1 in
       (functions_order.SomeTrait.some_trait_foo
-          (Self := functions_order.OtherType)
+          (Self := functions_order.OtherType.t)
           (Trait := ltac:(refine _)))
-        α1 in
-    let* _ : ltac:(refine unit) :=
-      let* α0 : ltac:(refine functions_order.SomeType) :=
-        M.alloc (functions_order.SomeType.Build_t u) in
-      let* α1 : ltac:(refine (ref functions_order.SomeType)) := borrow α0 in
+        α2 in
+    let* _ : ltac:(refine (M.Val unit)) :=
+      let* α0 := M.read u in
+      let* α1 : ltac:(refine (M.Val functions_order.SomeType.t)) :=
+        M.alloc (functions_order.SomeType.Build_t α0) in
+      let* α2 : ltac:(refine (M.Val (ref functions_order.SomeType.t))) :=
+        borrow α1 in
       (functions_order.SomeTrait.some_trait_foo
-          (Self := functions_order.SomeType)
+          (Self := functions_order.SomeType.t)
           (Trait := ltac:(refine _)))
-        α1 in
+        α2 in
     M.alloc tt).
 
 Module inner_mod.
-  Definition tar `{ℋ : State.Trait} : M unit := M.function_body (M.alloc tt).
+  Definition tar : M (M.Val unit) := M.function_body (M.alloc tt).
   
-  Definition bar `{ℋ : State.Trait} : M unit :=
+  Definition bar : M (M.Val unit) :=
     M.function_body
-      (let* _ : ltac:(refine unit) := functions_order.inner_mod.tar in
+      (let* _ : ltac:(refine (M.Val unit)) := functions_order.inner_mod.tar in
       M.alloc tt).
   
   Module nested_mod.
-    Definition tack `{ℋ : State.Trait} : M unit := M.function_body (M.alloc tt).
+    Definition tack : M (M.Val unit) := M.function_body (M.alloc tt).
     
-    Definition tick `{ℋ : State.Trait} : M unit :=
+    Definition tick : M (M.Val unit) :=
       M.function_body
-        (let* _ : ltac:(refine unit) :=
+        (let* _ : ltac:(refine (M.Val unit)) :=
           functions_order.inner_mod.nested_mod.tack in
         M.alloc tt).
   End nested_mod.
 End inner_mod.
 
-Definition bar `{ℋ : State.Trait} : M unit :=
+Definition bar : M (M.Val unit) :=
   M.function_body
-    (let* _ : ltac:(refine unit) := functions_order.inner_mod.tar in
+    (let* _ : ltac:(refine (M.Val unit)) := functions_order.inner_mod.tar in
     M.alloc tt).
 
-Definition tar `{ℋ : State.Trait} : M unit := M.function_body (M.alloc tt).
+Definition tar : M (M.Val unit) := M.function_body (M.alloc tt).
 
 Module nested_mod.
-  Definition tack `{ℋ : State.Trait} : M unit := M.function_body (M.alloc tt).
+  Definition tack : M (M.Val unit) := M.function_body (M.alloc tt).
   
-  Definition tick `{ℋ : State.Trait} : M unit :=
+  Definition tick : M (M.Val unit) :=
     M.function_body
-      (let* _ : ltac:(refine unit) :=
+      (let* _ : ltac:(refine (M.Val unit)) :=
         functions_order.inner_mod.nested_mod.tack in
       M.alloc tt).
 End nested_mod.
 
-Definition tick `{ℋ : State.Trait} : M unit :=
+Definition tick : M (M.Val unit) :=
   M.function_body
-    (let* _ : ltac:(refine unit) := functions_order.inner_mod.nested_mod.tack in
+    (let* _ : ltac:(refine (M.Val unit)) :=
+      functions_order.inner_mod.nested_mod.tack in
     M.alloc tt).
 
-Definition tack `{ℋ : State.Trait} : M unit := M.function_body (M.alloc tt).
+Definition tack : M (M.Val unit) := M.function_body (M.alloc tt).
 
-Definition foo `{ℋ : State.Trait} : M unit := M.function_body (M.alloc tt).
+Definition foo : M (M.Val unit) := M.function_body (M.alloc tt).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{ℋ : State.Trait} : M unit :=
+Definition main : M (M.Val unit) :=
   M.function_body
-    (let* _ : ltac:(refine unit) := functions_order.foo in
-    let* _ : ltac:(refine unit) := functions_order.inner_mod.bar in
-    let* _ : ltac:(refine unit) :=
-      let* α0 : ltac:(refine u32) := M.alloc 0 in
-      let* α1 : ltac:(refine functions_order.SomeType) :=
-        M.alloc (functions_order.SomeType.Build_t α0) in
-      functions_order.SomeType::["meth1"] α1 in
+    (let* _ : ltac:(refine (M.Val unit)) := functions_order.foo in
+    let* _ : ltac:(refine (M.Val unit)) := functions_order.inner_mod.bar in
+    let* _ : ltac:(refine (M.Val unit)) :=
+      let* α0 : ltac:(refine (M.Val u32.t)) := M.alloc 0 in
+      let* α1 := M.read α0 in
+      let* α2 : ltac:(refine (M.Val functions_order.SomeType.t)) :=
+        M.alloc (functions_order.SomeType.Build_t α1) in
+      functions_order.SomeType.t::["meth1"] α2 in
     M.alloc tt).

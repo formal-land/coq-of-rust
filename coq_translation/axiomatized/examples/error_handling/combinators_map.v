@@ -2,157 +2,150 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module Food.
-  Inductive t `{ℋ : State.Trait} : Set :=
+  Inductive t : Set :=
   | Apple
   | Carrot
   | Potato.
 End Food.
-Definition Food `{ℋ : State.Trait} : Set := M.Val Food.t.
+Definition Food : Set := M.Val Food.t.
 
-Module  Impl_core_fmt_Debug_for_combinators_map_Food.
-Section Impl_core_fmt_Debug_for_combinators_map_Food.
-  Context `{ℋ : State.Trait}.
-  
-  Definition Self : Set := combinators_map.Food.
+Module  Impl_core_fmt_Debug_for_combinators_map_Food_t.
+Section Impl_core_fmt_Debug_for_combinators_map_Food_t.
+  Ltac Self := exact combinators_map.Food.t.
   
   Parameter fmt :
-      (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
+      (M.Val (ref ltac:(Self))) ->
+        (M.Val (mut_ref core.fmt.Formatter.t)) ->
+        M (M.Val ltac:(core.fmt.Result)).
   
-  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {
+  Global Instance AssociatedFunction_fmt :
+    Notation.DoubleColon ltac:(Self) "fmt" := {
     Notation.double_colon := fmt;
   }.
   
-  Global Instance ℐ : core.fmt.Debug.Trait Self := {
+  Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
     core.fmt.Debug.fmt := fmt;
   }.
-End Impl_core_fmt_Debug_for_combinators_map_Food.
-End Impl_core_fmt_Debug_for_combinators_map_Food.
+End Impl_core_fmt_Debug_for_combinators_map_Food_t.
+End Impl_core_fmt_Debug_for_combinators_map_Food_t.
 
 Module  Peeled.
 Section Peeled.
-  Context `{ℋ : State.Trait}.
-  
   Record t : Set := {
-    x0 : combinators_map.Food;
+    x0 : combinators_map.Food.t;
   }.
   
   Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
+    Notation.dot x := let* x := M.read x in M.alloc x.(x0) : M _;
   }.
 End Peeled.
 End Peeled.
-Definition Peeled `{ℋ : State.Trait} : Set := M.Val Peeled.t.
+Definition Peeled : Set := M.Val Peeled.t.
 
-Module  Impl_core_fmt_Debug_for_combinators_map_Peeled.
-Section Impl_core_fmt_Debug_for_combinators_map_Peeled.
-  Context `{ℋ : State.Trait}.
-  
-  Definition Self : Set := combinators_map.Peeled.
+Module  Impl_core_fmt_Debug_for_combinators_map_Peeled_t.
+Section Impl_core_fmt_Debug_for_combinators_map_Peeled_t.
+  Ltac Self := exact combinators_map.Peeled.t.
   
   Parameter fmt :
-      (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
+      (M.Val (ref ltac:(Self))) ->
+        (M.Val (mut_ref core.fmt.Formatter.t)) ->
+        M (M.Val ltac:(core.fmt.Result)).
   
-  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {
+  Global Instance AssociatedFunction_fmt :
+    Notation.DoubleColon ltac:(Self) "fmt" := {
     Notation.double_colon := fmt;
   }.
   
-  Global Instance ℐ : core.fmt.Debug.Trait Self := {
+  Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
     core.fmt.Debug.fmt := fmt;
   }.
-End Impl_core_fmt_Debug_for_combinators_map_Peeled.
-End Impl_core_fmt_Debug_for_combinators_map_Peeled.
+End Impl_core_fmt_Debug_for_combinators_map_Peeled_t.
+End Impl_core_fmt_Debug_for_combinators_map_Peeled_t.
 
 Module  Chopped.
 Section Chopped.
-  Context `{ℋ : State.Trait}.
-  
   Record t : Set := {
-    x0 : combinators_map.Food;
+    x0 : combinators_map.Food.t;
   }.
   
   Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
+    Notation.dot x := let* x := M.read x in M.alloc x.(x0) : M _;
   }.
 End Chopped.
 End Chopped.
-Definition Chopped `{ℋ : State.Trait} : Set := M.Val Chopped.t.
+Definition Chopped : Set := M.Val Chopped.t.
 
-Module  Impl_core_fmt_Debug_for_combinators_map_Chopped.
-Section Impl_core_fmt_Debug_for_combinators_map_Chopped.
-  Context `{ℋ : State.Trait}.
-  
-  Definition Self : Set := combinators_map.Chopped.
+Module  Impl_core_fmt_Debug_for_combinators_map_Chopped_t.
+Section Impl_core_fmt_Debug_for_combinators_map_Chopped_t.
+  Ltac Self := exact combinators_map.Chopped.t.
   
   Parameter fmt :
-      (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
+      (M.Val (ref ltac:(Self))) ->
+        (M.Val (mut_ref core.fmt.Formatter.t)) ->
+        M (M.Val ltac:(core.fmt.Result)).
   
-  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {
+  Global Instance AssociatedFunction_fmt :
+    Notation.DoubleColon ltac:(Self) "fmt" := {
     Notation.double_colon := fmt;
   }.
   
-  Global Instance ℐ : core.fmt.Debug.Trait Self := {
+  Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
     core.fmt.Debug.fmt := fmt;
   }.
-End Impl_core_fmt_Debug_for_combinators_map_Chopped.
-End Impl_core_fmt_Debug_for_combinators_map_Chopped.
+End Impl_core_fmt_Debug_for_combinators_map_Chopped_t.
+End Impl_core_fmt_Debug_for_combinators_map_Chopped_t.
 
 Module  Cooked.
 Section Cooked.
-  Context `{ℋ : State.Trait}.
-  
   Record t : Set := {
-    x0 : combinators_map.Food;
+    x0 : combinators_map.Food.t;
   }.
   
   Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
+    Notation.dot x := let* x := M.read x in M.alloc x.(x0) : M _;
   }.
 End Cooked.
 End Cooked.
-Definition Cooked `{ℋ : State.Trait} : Set := M.Val Cooked.t.
+Definition Cooked : Set := M.Val Cooked.t.
 
-Module  Impl_core_fmt_Debug_for_combinators_map_Cooked.
-Section Impl_core_fmt_Debug_for_combinators_map_Cooked.
-  Context `{ℋ : State.Trait}.
-  
-  Definition Self : Set := combinators_map.Cooked.
+Module  Impl_core_fmt_Debug_for_combinators_map_Cooked_t.
+Section Impl_core_fmt_Debug_for_combinators_map_Cooked_t.
+  Ltac Self := exact combinators_map.Cooked.t.
   
   Parameter fmt :
-      (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
+      (M.Val (ref ltac:(Self))) ->
+        (M.Val (mut_ref core.fmt.Formatter.t)) ->
+        M (M.Val ltac:(core.fmt.Result)).
   
-  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {
+  Global Instance AssociatedFunction_fmt :
+    Notation.DoubleColon ltac:(Self) "fmt" := {
     Notation.double_colon := fmt;
   }.
   
-  Global Instance ℐ : core.fmt.Debug.Trait Self := {
+  Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
     core.fmt.Debug.fmt := fmt;
   }.
-End Impl_core_fmt_Debug_for_combinators_map_Cooked.
-End Impl_core_fmt_Debug_for_combinators_map_Cooked.
+End Impl_core_fmt_Debug_for_combinators_map_Cooked_t.
+End Impl_core_fmt_Debug_for_combinators_map_Cooked_t.
 
 Parameter peel :
-    forall `{ℋ : State.Trait},
-    (core.option.Option combinators_map.Food) ->
-      M (core.option.Option combinators_map.Peeled).
+    (M.Val (core.option.Option.t combinators_map.Food.t)) ->
+      M (M.Val (core.option.Option.t combinators_map.Peeled.t)).
 
 Parameter chop :
-    forall `{ℋ : State.Trait},
-    (core.option.Option combinators_map.Peeled) ->
-      M (core.option.Option combinators_map.Chopped).
+    (M.Val (core.option.Option.t combinators_map.Peeled.t)) ->
+      M (M.Val (core.option.Option.t combinators_map.Chopped.t)).
 
 Parameter cook :
-    forall `{ℋ : State.Trait},
-    (core.option.Option combinators_map.Chopped) ->
-      M (core.option.Option combinators_map.Cooked).
+    (M.Val (core.option.Option.t combinators_map.Chopped.t)) ->
+      M (M.Val (core.option.Option.t combinators_map.Cooked.t)).
 
 Parameter process :
-    forall `{ℋ : State.Trait},
-    (core.option.Option combinators_map.Food) ->
-      M (core.option.Option combinators_map.Cooked).
+    (M.Val (core.option.Option.t combinators_map.Food.t)) ->
+      M (M.Val (core.option.Option.t combinators_map.Cooked.t)).
 
 Parameter eat :
-    forall `{ℋ : State.Trait},
-    (core.option.Option combinators_map.Cooked) -> M unit.
+    (M.Val (core.option.Option.t combinators_map.Cooked.t)) -> M (M.Val unit).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{ℋ : State.Trait}, M unit.
+Parameter main : M (M.Val unit).

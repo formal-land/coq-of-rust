@@ -3,10 +3,8 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module  PrintInOption.
 Section PrintInOption.
-  Context `{ℋ : State.Trait}.
-  
   Class Trait (Self : Set) : Type := {
-    print_in_option : Self -> M unit;
+    print_in_option : ltac:(Self) -> M unit;
   }.
   
 End PrintInOption.
@@ -14,26 +12,25 @@ End PrintInOption.
 
 Module  Impl_generics_where_clauses_PrintInOption_for_T.
 Section Impl_generics_where_clauses_PrintInOption_for_T.
-  Context `{ℋ : State.Trait}.
-  
   Context {T : Set}.
   
-  Context {ℋ_0 : core.fmt.Debug.Trait (core.option.Option T)}.
+  Context {ℋ_0 : core.fmt.Debug.Trait (core.option.Option.t T)}.
   
-  Definition Self : Set := T.
+  Ltac Self := exact T.
   
-  Parameter print_in_option : Self -> M unit.
+  Parameter print_in_option : (M.Val ltac:(Self)) -> M (M.Val unit).
   
   Global Instance AssociatedFunction_print_in_option :
-    Notation.DoubleColon Self "print_in_option" := {
+    Notation.DoubleColon ltac:(Self) "print_in_option" := {
     Notation.double_colon := print_in_option;
   }.
   
-  Global Instance ℐ : generics_where_clauses.PrintInOption.Trait Self := {
+  Global Instance ℐ :
+    generics_where_clauses.PrintInOption.Trait ltac:(Self) := {
     generics_where_clauses.PrintInOption.print_in_option := print_in_option;
   }.
 End Impl_generics_where_clauses_PrintInOption_for_T.
 End Impl_generics_where_clauses_PrintInOption_for_T.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{ℋ : State.Trait}, M unit.
+Parameter main : M (M.Val unit).

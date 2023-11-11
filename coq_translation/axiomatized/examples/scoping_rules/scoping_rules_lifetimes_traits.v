@@ -3,59 +3,56 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module  Borrowed.
 Section Borrowed.
-  Context `{ℋ : State.Trait}.
-  
   Record t : Set := {
-    x : ref i32;
+    x : ref i32.t;
   }.
   
   Global Instance Get_x : Notation.Dot "x" := {
-    Notation.dot x' := let* x' := M.read x' in M.pure x'.(x) : M _;
+    Notation.dot x' := let* x' := M.read x' in M.alloc x'.(x) : M _;
   }.
   Global Instance Get_AF_x : Notation.DoubleColon t "x" := {
-    Notation.double_colon x' := let* x' := M.read x' in M.pure x'.(x) : M _;
+    Notation.double_colon x' := let* x' := M.read x' in M.alloc x'.(x) : M _;
   }.
 End Borrowed.
 End Borrowed.
-Definition Borrowed `{ℋ : State.Trait} : Set := M.Val Borrowed.t.
+Definition Borrowed : Set := M.Val Borrowed.t.
 
-Module  Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed.
-Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed.
-  Context `{ℋ : State.Trait}.
-  
-  Definition Self : Set := scoping_rules_lifetimes_traits.Borrowed.
+Module  Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed_t.
+Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed_t.
+  Ltac Self := exact scoping_rules_lifetimes_traits.Borrowed.t.
   
   Parameter fmt :
-      (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
+      (M.Val (ref ltac:(Self))) ->
+        (M.Val (mut_ref core.fmt.Formatter.t)) ->
+        M (M.Val ltac:(core.fmt.Result)).
   
-  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {
+  Global Instance AssociatedFunction_fmt :
+    Notation.DoubleColon ltac:(Self) "fmt" := {
     Notation.double_colon := fmt;
   }.
   
-  Global Instance ℐ : core.fmt.Debug.Trait Self := {
+  Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
     core.fmt.Debug.fmt := fmt;
   }.
-End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed.
-End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed.
+End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed_t.
+End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed_t.
 
-Module  Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed.
-Section Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed.
-  Context `{ℋ : State.Trait}.
+Module  Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed_t.
+Section Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed_t.
+  Ltac Self := exact scoping_rules_lifetimes_traits.Borrowed.t.
   
-  Definition Self : Set := scoping_rules_lifetimes_traits.Borrowed.
-  
-  Parameter default : M Self.
+  Parameter default : M (M.Val ltac:(Self)).
   
   Global Instance AssociatedFunction_default :
-    Notation.DoubleColon Self "default" := {
+    Notation.DoubleColon ltac:(Self) "default" := {
     Notation.double_colon := default;
   }.
   
-  Global Instance ℐ : core.default.Default.Trait Self := {
+  Global Instance ℐ : core.default.Default.Trait ltac:(Self) := {
     core.default.Default.default := default;
   }.
-End Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed.
-End Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed.
+End Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed_t.
+End Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed_t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{ℋ : State.Trait}, M unit.
+Parameter main : M (M.Val unit).

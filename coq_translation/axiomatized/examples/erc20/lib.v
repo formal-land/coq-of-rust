@@ -3,456 +3,441 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module  Mapping.
 Section Mapping.
-  Context `{ℋ : State.Trait}.
-  
-  Context {K V : Set}.
+  Context (K V : Set).
   
   Record t : Set := {
-    _key : core.marker.PhantomData K;
-    _value : core.marker.PhantomData V;
+    _key : core.marker.PhantomData.t K;
+    _value : core.marker.PhantomData.t V;
   }.
   
   Global Instance Get__key : Notation.Dot "_key" := {
-    Notation.dot x := let* x := M.read x in M.pure x.(_key) : M _;
+    Notation.dot x := let* x := M.read x in M.alloc x.(_key) : M _;
   }.
   Global Instance Get_AF__key : Notation.DoubleColon t "_key" := {
-    Notation.double_colon x := let* x := M.read x in M.pure x.(_key) : M _;
+    Notation.double_colon x := let* x := M.read x in M.alloc x.(_key) : M _;
   }.
   Global Instance Get__value : Notation.Dot "_value" := {
-    Notation.dot x := let* x := M.read x in M.pure x.(_value) : M _;
+    Notation.dot x := let* x := M.read x in M.alloc x.(_value) : M _;
   }.
   Global Instance Get_AF__value : Notation.DoubleColon t "_value" := {
-    Notation.double_colon x := let* x := M.read x in M.pure x.(_value) : M _;
+    Notation.double_colon x := let* x := M.read x in M.alloc x.(_value) : M _;
   }.
 End Mapping.
 End Mapping.
-Definition Mapping (K V : Set) `{ℋ : State.Trait} : Set :=
-  M.Val (Mapping.t (K := K) (V := V)).
+Definition Mapping (K V : Set) : Set := M.Val (Mapping.t K V).
 
-Module  Impl_core_default_Default_for_lib_Mapping_K_V.
-Section Impl_core_default_Default_for_lib_Mapping_K_V.
-  Context `{ℋ : State.Trait}.
-  
+Module  Impl_core_default_Default_for_lib_Mapping_t_K_V.
+Section Impl_core_default_Default_for_lib_Mapping_t_K_V.
   Context {K V : Set}.
   
   Context
     {ℋ_0 : core.default.Default.Trait K}
     {ℋ_1 : core.default.Default.Trait V}.
   
-  Definition Self : Set := lib.Mapping K V.
+  Ltac Self := exact (lib.Mapping.t K V).
   
-  Parameter default : M (lib.Mapping K V).
+  Parameter default : M (M.Val (lib.Mapping.t K V)).
   
   Global Instance AssociatedFunction_default :
-    Notation.DoubleColon Self "default" := {
+    Notation.DoubleColon ltac:(Self) "default" := {
     Notation.double_colon := default;
   }.
   
-  Global Instance ℐ : core.default.Default.Trait Self := {
+  Global Instance ℐ : core.default.Default.Trait ltac:(Self) := {
     core.default.Default.default := default;
   }.
-End Impl_core_default_Default_for_lib_Mapping_K_V.
-End Impl_core_default_Default_for_lib_Mapping_K_V.
+End Impl_core_default_Default_for_lib_Mapping_t_K_V.
+End Impl_core_default_Default_for_lib_Mapping_t_K_V.
 
-Module  Impl_lib_Mapping_K_V.
-Section Impl_lib_Mapping_K_V.
-  Context `{ℋ : State.Trait}.
-  
+Module  Impl_lib_Mapping_t_K_V.
+Section Impl_lib_Mapping_t_K_V.
   Context {K V : Set}.
   
-  Definition Self : Set := lib.Mapping K V.
+  Ltac Self := exact (lib.Mapping.t K V).
   
-  Parameter get : (ref Self) -> (ref K) -> M (core.option.Option V).
+  Parameter get :
+      (M.Val (ref ltac:(Self))) ->
+        (M.Val (ref K)) ->
+        M (M.Val (core.option.Option.t V)).
   
-  Global Instance AssociatedFunction_get : Notation.DoubleColon Self "get" := {
+  Global Instance AssociatedFunction_get :
+    Notation.DoubleColon ltac:(Self) "get" := {
     Notation.double_colon := get;
   }.
   
-  Parameter insert : (mut_ref Self) -> K -> V -> M unit.
+  Parameter insert :
+      (M.Val (mut_ref ltac:(Self))) -> (M.Val K) -> (M.Val V) -> M (M.Val unit).
   
   Global Instance AssociatedFunction_insert :
-    Notation.DoubleColon Self "insert" := {
+    Notation.DoubleColon ltac:(Self) "insert" := {
     Notation.double_colon := insert;
   }.
-End Impl_lib_Mapping_K_V.
-End Impl_lib_Mapping_K_V.
+End Impl_lib_Mapping_t_K_V.
+End Impl_lib_Mapping_t_K_V.
 
 Module  AccountId.
 Section AccountId.
-  Context `{ℋ : State.Trait}.
-  
   Record t : Set := {
-    x0 : alloc.string.String;
+    x0 : alloc.string.String.t;
   }.
   
   Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
+    Notation.dot x := let* x := M.read x in M.alloc x.(x0) : M _;
   }.
 End AccountId.
 End AccountId.
-Definition AccountId `{ℋ : State.Trait} : Set := M.Val AccountId.t.
+Definition AccountId : Set := M.Val AccountId.t.
 
-Module  Impl_core_default_Default_for_lib_AccountId.
-Section Impl_core_default_Default_for_lib_AccountId.
-  Context `{ℋ : State.Trait}.
+Module  Impl_core_default_Default_for_lib_AccountId_t.
+Section Impl_core_default_Default_for_lib_AccountId_t.
+  Ltac Self := exact lib.AccountId.t.
   
-  Definition Self : Set := lib.AccountId.
-  
-  Parameter default : M lib.AccountId.
+  Parameter default : M (M.Val lib.AccountId.t).
   
   Global Instance AssociatedFunction_default :
-    Notation.DoubleColon Self "default" := {
+    Notation.DoubleColon ltac:(Self) "default" := {
     Notation.double_colon := default;
   }.
   
-  Global Instance ℐ : core.default.Default.Trait Self := {
+  Global Instance ℐ : core.default.Default.Trait ltac:(Self) := {
     core.default.Default.default := default;
   }.
-End Impl_core_default_Default_for_lib_AccountId.
-End Impl_core_default_Default_for_lib_AccountId.
+End Impl_core_default_Default_for_lib_AccountId_t.
+End Impl_core_default_Default_for_lib_AccountId_t.
 
-Ltac Balance := refine u128.
+Ltac Balance := exact u128.t.
 
 Module  Environment.
 Section Environment.
-  Context `{ℋ : State.Trait}.
-  
   Record t : Set := {
-    x0 : alloc.string.String;
+    x0 : alloc.string.String.t;
   }.
   
   Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
+    Notation.dot x := let* x := M.read x in M.alloc x.(x0) : M _;
   }.
 End Environment.
 End Environment.
-Definition Environment `{ℋ : State.Trait} : Set := M.Val Environment.t.
+Definition Environment : Set := M.Val Environment.t.
 
 Module  Event.
 Section Event.
-  Context `{ℋ : State.Trait}.
-  
   Record t : Set := {
-    x0 : alloc.string.String;
+    x0 : alloc.string.String.t;
   }.
   
   Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
+    Notation.dot x := let* x := M.read x in M.alloc x.(x0) : M _;
   }.
 End Event.
 End Event.
-Definition Event `{ℋ : State.Trait} : Set := M.Val Event.t.
+Definition Event : Set := M.Val Event.t.
 
 Module  Erc20.
 Section Erc20.
-  Context `{ℋ : State.Trait}.
-  
   Record t : Set := {
     total_supply : ltac:(lib.Balance);
-    balances : lib.Mapping lib.AccountId ltac:(lib.Balance);
+    balances : lib.Mapping.t lib.AccountId.t ltac:(lib.Balance);
     allowances :
-      lib.Mapping (M.Val (lib.AccountId * lib.AccountId)) ltac:(lib.Balance);
+      lib.Mapping.t (lib.AccountId.t * lib.AccountId.t) ltac:(lib.Balance);
   }.
   
   Global Instance Get_total_supply : Notation.Dot "total_supply" := {
-    Notation.dot x := let* x := M.read x in M.pure x.(total_supply) : M _;
+    Notation.dot x := let* x := M.read x in M.alloc x.(total_supply) : M _;
   }.
   Global Instance Get_AF_total_supply :
     Notation.DoubleColon t "total_supply" := {
     Notation.double_colon x :=
-      let* x := M.read x in M.pure x.(total_supply) : M _;
+      let* x := M.read x in M.alloc x.(total_supply) : M _;
   }.
   Global Instance Get_balances : Notation.Dot "balances" := {
-    Notation.dot x := let* x := M.read x in M.pure x.(balances) : M _;
+    Notation.dot x := let* x := M.read x in M.alloc x.(balances) : M _;
   }.
   Global Instance Get_AF_balances : Notation.DoubleColon t "balances" := {
-    Notation.double_colon x := let* x := M.read x in M.pure x.(balances) : M _;
+    Notation.double_colon x := let* x := M.read x in M.alloc x.(balances) : M _;
   }.
   Global Instance Get_allowances : Notation.Dot "allowances" := {
-    Notation.dot x := let* x := M.read x in M.pure x.(allowances) : M _;
+    Notation.dot x := let* x := M.read x in M.alloc x.(allowances) : M _;
   }.
   Global Instance Get_AF_allowances : Notation.DoubleColon t "allowances" := {
     Notation.double_colon x :=
-      let* x := M.read x in M.pure x.(allowances) : M _;
+      let* x := M.read x in M.alloc x.(allowances) : M _;
   }.
 End Erc20.
 End Erc20.
-Definition Erc20 `{ℋ : State.Trait} : Set := M.Val Erc20.t.
+Definition Erc20 : Set := M.Val Erc20.t.
 
-Module  Impl_core_default_Default_for_lib_Erc20.
-Section Impl_core_default_Default_for_lib_Erc20.
-  Context `{ℋ : State.Trait}.
+Module  Impl_core_default_Default_for_lib_Erc20_t.
+Section Impl_core_default_Default_for_lib_Erc20_t.
+  Ltac Self := exact lib.Erc20.t.
   
-  Definition Self : Set := lib.Erc20.
-  
-  Parameter default : M lib.Erc20.
+  Parameter default : M (M.Val lib.Erc20.t).
   
   Global Instance AssociatedFunction_default :
-    Notation.DoubleColon Self "default" := {
+    Notation.DoubleColon ltac:(Self) "default" := {
     Notation.double_colon := default;
   }.
   
-  Global Instance ℐ : core.default.Default.Trait Self := {
+  Global Instance ℐ : core.default.Default.Trait ltac:(Self) := {
     core.default.Default.default := default;
   }.
-End Impl_core_default_Default_for_lib_Erc20.
-End Impl_core_default_Default_for_lib_Erc20.
+End Impl_core_default_Default_for_lib_Erc20_t.
+End Impl_core_default_Default_for_lib_Erc20_t.
 
 Module  Transfer.
 Section Transfer.
-  Context `{ℋ : State.Trait}.
-  
   Record t : Set := {
-    from : core.option.Option lib.AccountId;
-    to : core.option.Option lib.AccountId;
+    from : core.option.Option.t lib.AccountId.t;
+    to : core.option.Option.t lib.AccountId.t;
     value : ltac:(lib.Balance);
   }.
   
   Global Instance Get_from : Notation.Dot "from" := {
-    Notation.dot x := let* x := M.read x in M.pure x.(from) : M _;
+    Notation.dot x := let* x := M.read x in M.alloc x.(from) : M _;
   }.
   Global Instance Get_AF_from : Notation.DoubleColon t "from" := {
-    Notation.double_colon x := let* x := M.read x in M.pure x.(from) : M _;
+    Notation.double_colon x := let* x := M.read x in M.alloc x.(from) : M _;
   }.
   Global Instance Get_to : Notation.Dot "to" := {
-    Notation.dot x := let* x := M.read x in M.pure x.(to) : M _;
+    Notation.dot x := let* x := M.read x in M.alloc x.(to) : M _;
   }.
   Global Instance Get_AF_to : Notation.DoubleColon t "to" := {
-    Notation.double_colon x := let* x := M.read x in M.pure x.(to) : M _;
+    Notation.double_colon x := let* x := M.read x in M.alloc x.(to) : M _;
   }.
   Global Instance Get_value : Notation.Dot "value" := {
-    Notation.dot x := let* x := M.read x in M.pure x.(value) : M _;
+    Notation.dot x := let* x := M.read x in M.alloc x.(value) : M _;
   }.
   Global Instance Get_AF_value : Notation.DoubleColon t "value" := {
-    Notation.double_colon x := let* x := M.read x in M.pure x.(value) : M _;
+    Notation.double_colon x := let* x := M.read x in M.alloc x.(value) : M _;
   }.
 End Transfer.
 End Transfer.
-Definition Transfer `{ℋ : State.Trait} : Set := M.Val Transfer.t.
+Definition Transfer : Set := M.Val Transfer.t.
 
-Module  Impl_core_convert_Into_lib_Event_for_lib_Transfer.
-Section Impl_core_convert_Into_lib_Event_for_lib_Transfer.
-  Context `{ℋ : State.Trait}.
+Module  Impl_core_convert_Into_lib_Event_t_for_lib_Transfer_t.
+Section Impl_core_convert_Into_lib_Event_t_for_lib_Transfer_t.
+  Ltac Self := exact lib.Transfer.t.
   
-  Definition Self : Set := lib.Transfer.
-  
-  Parameter into : Self -> M lib.Event.
+  Parameter into : (M.Val ltac:(Self)) -> M (M.Val lib.Event.t).
   
   Global Instance AssociatedFunction_into :
-    Notation.DoubleColon Self "into" := {
+    Notation.DoubleColon ltac:(Self) "into" := {
     Notation.double_colon := into;
   }.
   
-  Global Instance ℐ : core.convert.Into.Trait Self (T := lib.Event) := {
+  Global Instance ℐ :
+    core.convert.Into.Trait ltac:(Self) (T := lib.Event.t) := {
     core.convert.Into.into := into;
   }.
-End Impl_core_convert_Into_lib_Event_for_lib_Transfer.
-End Impl_core_convert_Into_lib_Event_for_lib_Transfer.
+End Impl_core_convert_Into_lib_Event_t_for_lib_Transfer_t.
+End Impl_core_convert_Into_lib_Event_t_for_lib_Transfer_t.
 
 Module  Approval.
 Section Approval.
-  Context `{ℋ : State.Trait}.
-  
   Record t : Set := {
-    owner : lib.AccountId;
-    spender : lib.AccountId;
+    owner : lib.AccountId.t;
+    spender : lib.AccountId.t;
     value : ltac:(lib.Balance);
   }.
   
   Global Instance Get_owner : Notation.Dot "owner" := {
-    Notation.dot x := let* x := M.read x in M.pure x.(owner) : M _;
+    Notation.dot x := let* x := M.read x in M.alloc x.(owner) : M _;
   }.
   Global Instance Get_AF_owner : Notation.DoubleColon t "owner" := {
-    Notation.double_colon x := let* x := M.read x in M.pure x.(owner) : M _;
+    Notation.double_colon x := let* x := M.read x in M.alloc x.(owner) : M _;
   }.
   Global Instance Get_spender : Notation.Dot "spender" := {
-    Notation.dot x := let* x := M.read x in M.pure x.(spender) : M _;
+    Notation.dot x := let* x := M.read x in M.alloc x.(spender) : M _;
   }.
   Global Instance Get_AF_spender : Notation.DoubleColon t "spender" := {
-    Notation.double_colon x := let* x := M.read x in M.pure x.(spender) : M _;
+    Notation.double_colon x := let* x := M.read x in M.alloc x.(spender) : M _;
   }.
   Global Instance Get_value : Notation.Dot "value" := {
-    Notation.dot x := let* x := M.read x in M.pure x.(value) : M _;
+    Notation.dot x := let* x := M.read x in M.alloc x.(value) : M _;
   }.
   Global Instance Get_AF_value : Notation.DoubleColon t "value" := {
-    Notation.double_colon x := let* x := M.read x in M.pure x.(value) : M _;
+    Notation.double_colon x := let* x := M.read x in M.alloc x.(value) : M _;
   }.
 End Approval.
 End Approval.
-Definition Approval `{ℋ : State.Trait} : Set := M.Val Approval.t.
+Definition Approval : Set := M.Val Approval.t.
 
-Module  Impl_core_convert_Into_lib_Event_for_lib_Approval.
-Section Impl_core_convert_Into_lib_Event_for_lib_Approval.
-  Context `{ℋ : State.Trait}.
+Module  Impl_core_convert_Into_lib_Event_t_for_lib_Approval_t.
+Section Impl_core_convert_Into_lib_Event_t_for_lib_Approval_t.
+  Ltac Self := exact lib.Approval.t.
   
-  Definition Self : Set := lib.Approval.
-  
-  Parameter into : Self -> M lib.Event.
+  Parameter into : (M.Val ltac:(Self)) -> M (M.Val lib.Event.t).
   
   Global Instance AssociatedFunction_into :
-    Notation.DoubleColon Self "into" := {
+    Notation.DoubleColon ltac:(Self) "into" := {
     Notation.double_colon := into;
   }.
   
-  Global Instance ℐ : core.convert.Into.Trait Self (T := lib.Event) := {
+  Global Instance ℐ :
+    core.convert.Into.Trait ltac:(Self) (T := lib.Event.t) := {
     core.convert.Into.into := into;
   }.
-End Impl_core_convert_Into_lib_Event_for_lib_Approval.
-End Impl_core_convert_Into_lib_Event_for_lib_Approval.
+End Impl_core_convert_Into_lib_Event_t_for_lib_Approval_t.
+End Impl_core_convert_Into_lib_Event_t_for_lib_Approval_t.
 
 Module Error.
-  Inductive t `{ℋ : State.Trait} : Set :=
+  Inductive t : Set :=
   | InsufficientBalance
   | InsufficientAllowance.
 End Error.
-Definition Error `{ℋ : State.Trait} : Set := M.Val Error.t.
+Definition Error : Set := M.Val Error.t.
 
-Ltac Result T := refine (core.result.Result T lib.Error).
+Ltac Result T := exact (core.result.Result.t T lib.Error.t).
 
-Module  Impl_lib_Environment.
-Section Impl_lib_Environment.
-  Context `{ℋ : State.Trait}.
+Module  Impl_lib_Environment_t.
+Section Impl_lib_Environment_t.
+  Ltac Self := exact lib.Environment.t.
   
-  Definition Self : Set := lib.Environment.
-  
-  Parameter caller : (ref Self) -> M lib.AccountId.
+  Parameter caller : (M.Val (ref ltac:(Self))) -> M (M.Val lib.AccountId.t).
   
   Global Instance AssociatedFunction_caller :
-    Notation.DoubleColon Self "caller" := {
+    Notation.DoubleColon ltac:(Self) "caller" := {
     Notation.double_colon := caller;
   }.
   
   Parameter emit_event :
-      forall {E : Set} {ℋ_0 : core.convert.Into.Trait E (T := lib.Event)},
-      (ref Self) -> E -> M unit.
+      forall {E : Set} {ℋ_0 : core.convert.Into.Trait E (T := lib.Event.t)},
+      (M.Val (ref ltac:(Self))) -> (M.Val E) -> M (M.Val unit).
   
   Global Instance AssociatedFunction_emit_event
       {E : Set}
-      {ℋ_0 : core.convert.Into.Trait E (T := lib.Event)} :
-    Notation.DoubleColon Self "emit_event" := {
+      {ℋ_0 : core.convert.Into.Trait E (T := lib.Event.t)} :
+    Notation.DoubleColon ltac:(Self) "emit_event" := {
     Notation.double_colon := emit_event (E := E);
   }.
-End Impl_lib_Environment.
-End Impl_lib_Environment.
+End Impl_lib_Environment_t.
+End Impl_lib_Environment_t.
 
-Module  Impl_lib_Erc20.
-Section Impl_lib_Erc20.
-  Context `{ℋ : State.Trait}.
+Module  Impl_lib_Erc20_t.
+Section Impl_lib_Erc20_t.
+  Ltac Self := exact lib.Erc20.t.
   
-  Definition Self : Set := lib.Erc20.
-  
-  Parameter init_env : M lib.Environment.
+  Parameter init_env : M (M.Val lib.Environment.t).
   
   Global Instance AssociatedFunction_init_env :
-    Notation.DoubleColon Self "init_env" := {
+    Notation.DoubleColon ltac:(Self) "init_env" := {
     Notation.double_colon := init_env;
   }.
   
-  Parameter env : (ref Self) -> M lib.Environment.
+  Parameter env : (M.Val (ref ltac:(Self))) -> M (M.Val lib.Environment.t).
   
-  Global Instance AssociatedFunction_env : Notation.DoubleColon Self "env" := {
+  Global Instance AssociatedFunction_env :
+    Notation.DoubleColon ltac:(Self) "env" := {
     Notation.double_colon := env;
   }.
-End Impl_lib_Erc20.
-End Impl_lib_Erc20.
+End Impl_lib_Erc20_t.
+End Impl_lib_Erc20_t.
 
-Module  Impl_lib_Erc20_2.
-Section Impl_lib_Erc20_2.
-  Context `{ℋ : State.Trait}.
+Module  Impl_lib_Erc20_t_2.
+Section Impl_lib_Erc20_t_2.
+  Ltac Self := exact lib.Erc20.t.
   
-  Definition Self : Set := lib.Erc20.
+  Parameter new : (M.Val ltac:(lib.Balance)) -> M (M.Val ltac:(Self)).
   
-  Parameter new : ltac:(lib.Balance) -> M Self.
-  
-  Global Instance AssociatedFunction_new : Notation.DoubleColon Self "new" := {
+  Global Instance AssociatedFunction_new :
+    Notation.DoubleColon ltac:(Self) "new" := {
     Notation.double_colon := new;
   }.
   
-  Parameter total_supply : (ref Self) -> M ltac:(lib.Balance).
+  Parameter total_supply :
+      (M.Val (ref ltac:(Self))) -> M (M.Val ltac:(lib.Balance)).
   
   Global Instance AssociatedFunction_total_supply :
-    Notation.DoubleColon Self "total_supply" := {
+    Notation.DoubleColon ltac:(Self) "total_supply" := {
     Notation.double_colon := total_supply;
   }.
   
   Parameter balance_of_impl :
-      (ref Self) -> (ref lib.AccountId) -> M ltac:(lib.Balance).
+      (M.Val (ref ltac:(Self))) ->
+        (M.Val (ref lib.AccountId.t)) ->
+        M (M.Val ltac:(lib.Balance)).
   
   Global Instance AssociatedFunction_balance_of_impl :
-    Notation.DoubleColon Self "balance_of_impl" := {
+    Notation.DoubleColon ltac:(Self) "balance_of_impl" := {
     Notation.double_colon := balance_of_impl;
   }.
   
-  Parameter balance_of : (ref Self) -> lib.AccountId -> M ltac:(lib.Balance).
+  Parameter balance_of :
+      (M.Val (ref ltac:(Self))) ->
+        (M.Val lib.AccountId.t) ->
+        M (M.Val ltac:(lib.Balance)).
   
   Global Instance AssociatedFunction_balance_of :
-    Notation.DoubleColon Self "balance_of" := {
+    Notation.DoubleColon ltac:(Self) "balance_of" := {
     Notation.double_colon := balance_of;
   }.
   
   Parameter allowance_impl :
-      (ref Self) ->
-        (ref lib.AccountId) ->
-        (ref lib.AccountId) ->
-        M ltac:(lib.Balance).
+      (M.Val (ref ltac:(Self))) ->
+        (M.Val (ref lib.AccountId.t)) ->
+        (M.Val (ref lib.AccountId.t)) ->
+        M (M.Val ltac:(lib.Balance)).
   
   Global Instance AssociatedFunction_allowance_impl :
-    Notation.DoubleColon Self "allowance_impl" := {
+    Notation.DoubleColon ltac:(Self) "allowance_impl" := {
     Notation.double_colon := allowance_impl;
   }.
   
   Parameter allowance :
-      (ref Self) -> lib.AccountId -> lib.AccountId -> M ltac:(lib.Balance).
+      (M.Val (ref ltac:(Self))) ->
+        (M.Val lib.AccountId.t) ->
+        (M.Val lib.AccountId.t) ->
+        M (M.Val ltac:(lib.Balance)).
   
   Global Instance AssociatedFunction_allowance :
-    Notation.DoubleColon Self "allowance" := {
+    Notation.DoubleColon ltac:(Self) "allowance" := {
     Notation.double_colon := allowance;
   }.
   
   Parameter transfer_from_to :
-      (mut_ref Self) ->
-        (ref lib.AccountId) ->
-        (ref lib.AccountId) ->
-        ltac:(lib.Balance) ->
-        M ltac:(lib.Result constr:(unit)).
+      (M.Val (mut_ref ltac:(Self))) ->
+        (M.Val (ref lib.AccountId.t)) ->
+        (M.Val (ref lib.AccountId.t)) ->
+        (M.Val ltac:(lib.Balance)) ->
+        M (M.Val ltac:(lib.Result unit)).
   
   Global Instance AssociatedFunction_transfer_from_to :
-    Notation.DoubleColon Self "transfer_from_to" := {
+    Notation.DoubleColon ltac:(Self) "transfer_from_to" := {
     Notation.double_colon := transfer_from_to;
   }.
   
   Parameter transfer :
-      (mut_ref Self) ->
-        lib.AccountId ->
-        ltac:(lib.Balance) ->
-        M ltac:(lib.Result constr:(unit)).
+      (M.Val (mut_ref ltac:(Self))) ->
+        (M.Val lib.AccountId.t) ->
+        (M.Val ltac:(lib.Balance)) ->
+        M (M.Val ltac:(lib.Result unit)).
   
   Global Instance AssociatedFunction_transfer :
-    Notation.DoubleColon Self "transfer" := {
+    Notation.DoubleColon ltac:(Self) "transfer" := {
     Notation.double_colon := transfer;
   }.
   
   Parameter approve :
-      (mut_ref Self) ->
-        lib.AccountId ->
-        ltac:(lib.Balance) ->
-        M ltac:(lib.Result constr:(unit)).
+      (M.Val (mut_ref ltac:(Self))) ->
+        (M.Val lib.AccountId.t) ->
+        (M.Val ltac:(lib.Balance)) ->
+        M (M.Val ltac:(lib.Result unit)).
   
   Global Instance AssociatedFunction_approve :
-    Notation.DoubleColon Self "approve" := {
+    Notation.DoubleColon ltac:(Self) "approve" := {
     Notation.double_colon := approve;
   }.
   
   Parameter transfer_from :
-      (mut_ref Self) ->
-        lib.AccountId ->
-        lib.AccountId ->
-        ltac:(lib.Balance) ->
-        M ltac:(lib.Result constr:(unit)).
+      (M.Val (mut_ref ltac:(Self))) ->
+        (M.Val lib.AccountId.t) ->
+        (M.Val lib.AccountId.t) ->
+        (M.Val ltac:(lib.Balance)) ->
+        M (M.Val ltac:(lib.Result unit)).
   
   Global Instance AssociatedFunction_transfer_from :
-    Notation.DoubleColon Self "transfer_from" := {
+    Notation.DoubleColon ltac:(Self) "transfer_from" := {
     Notation.double_colon := transfer_from;
   }.
-End Impl_lib_Erc20_2.
-End Impl_lib_Erc20_2.
+End Impl_lib_Erc20_t_2.
+End Impl_lib_Erc20_t_2.

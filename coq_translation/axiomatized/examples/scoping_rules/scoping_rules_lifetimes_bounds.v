@@ -3,8 +3,6 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module  Ref.
 Section Ref.
-  Context `{ℋ : State.Trait}.
-  
   Context {T : Set}.
   
   Record t : Set := {
@@ -12,42 +10,43 @@ Section Ref.
   }.
   
   Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
+    Notation.dot x := let* x := M.read x in M.alloc x.(x0) : M _;
   }.
 End Ref.
 End Ref.
-Definition Ref `{ℋ : State.Trait} (T : Set) : Set := M.Val (Ref.t (T := T)).
+Definition Ref (T : Set) : Set := M.Val (Ref.t (T := T)).
 
-Module  Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
-Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
-  Context `{ℋ : State.Trait}.
-  
+Module  Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_t_T.
+Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_t_T.
   Context {T : Set}.
   
   Context {ℋ_0 : core.fmt.Debug.Trait T}.
   
-  Definition Self : Set := scoping_rules_lifetimes_bounds.Ref T.
+  Ltac Self := exact (scoping_rules_lifetimes_bounds.Ref.t T).
   
   Parameter fmt :
-      (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
+      (M.Val (ref ltac:(Self))) ->
+        (M.Val (mut_ref core.fmt.Formatter.t)) ->
+        M (M.Val ltac:(core.fmt.Result)).
   
-  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {
+  Global Instance AssociatedFunction_fmt :
+    Notation.DoubleColon ltac:(Self) "fmt" := {
     Notation.double_colon := fmt;
   }.
   
-  Global Instance ℐ : core.fmt.Debug.Trait Self := {
+  Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
     core.fmt.Debug.fmt := fmt;
   }.
-End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
-End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
+End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_t_T.
+End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_t_T.
 
 Parameter print :
-    forall `{ℋ : State.Trait} {T : Set} {ℋ_0 : core.fmt.Debug.Trait T},
-    T -> M unit.
+    forall {T : Set} {ℋ_0 : core.fmt.Debug.Trait T},
+    (M.Val T) -> M (M.Val unit).
 
 Parameter print_ref :
-    forall `{ℋ : State.Trait} {T : Set} {ℋ_0 : core.fmt.Debug.Trait T},
-    (ref T) -> M unit.
+    forall {T : Set} {ℋ_0 : core.fmt.Debug.Trait T},
+    (M.Val (ref T)) -> M (M.Val unit).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{ℋ : State.Trait}, M unit.
+Parameter main : M (M.Val unit).

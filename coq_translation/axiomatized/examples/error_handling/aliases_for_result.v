@@ -2,17 +2,15 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Ltac AliasedResult T :=
-  refine (core.result.Result T core.num.error.ParseIntError).
+  exact (core.result.Result.t T core.num.error.ParseIntError.t).
 
 Parameter multiply :
-    forall `{ℋ : State.Trait},
-    (ref str) ->
-      (ref str) ->
-      M ltac:(aliases_for_result.AliasedResult constr:(i32)).
+    (M.Val (ref str.t)) ->
+      (M.Val (ref str.t)) ->
+      M (M.Val ltac:(aliases_for_result.AliasedResult i32.t)).
 
 Parameter print :
-    forall `{ℋ : State.Trait},
-    ltac:(aliases_for_result.AliasedResult constr:(i32)) -> M unit.
+    (M.Val ltac:(aliases_for_result.AliasedResult i32.t)) -> M (M.Val unit).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{ℋ : State.Trait}, M unit.
+Parameter main : M (M.Val unit).

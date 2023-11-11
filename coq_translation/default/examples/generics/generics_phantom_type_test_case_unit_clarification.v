@@ -2,415 +2,428 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module Inch.
-  Inductive t `{ℋ : State.Trait} : Set :=
+  Inductive t : Set :=
   .
 End Inch.
-Definition Inch `{ℋ : State.Trait} : Set := M.Val Inch.t.
+Definition Inch : Set := M.Val Inch.t.
 
-Module  Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Inch.
-Section Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Inch.
-  Context `{ℋ : State.Trait}.
-  
-  Definition Self : Set :=
-    generics_phantom_type_test_case_unit_clarification.Inch.
+Module  Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Inch_t.
+Section Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Inch_t.
+  Ltac Self := exact generics_phantom_type_test_case_unit_clarification.Inch.t.
   
   Definition fmt
-      (self : ref Self)
-      (f : mut_ref core.fmt.Formatter)
-      : M ltac:(core.fmt.Result) :=
+      (self : M.Val (ref ltac:(Self)))
+      (f : M.Val (mut_ref core.fmt.Formatter.t))
+      : M (M.Val ltac:(core.fmt.Result)) :=
     M.function_body
-      (let* α0 : ltac:(refine never) := "unimplemented parent_kind" in
+      (let* α0 : ltac:(refine (M.Val never.t)) := "unimplemented parent_kind" in
       never_to_any α0).
   
-  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {
+  Global Instance AssociatedFunction_fmt :
+    Notation.DoubleColon ltac:(Self) "fmt" := {
     Notation.double_colon := fmt;
   }.
   
-  Global Instance ℐ : core.fmt.Debug.Trait Self := {
+  Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
     core.fmt.Debug.fmt := fmt;
   }.
-End Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Inch.
-End Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Inch.
+End Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Inch_t.
+End Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Inch_t.
 
-Module  Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Inch.
-Section Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Inch.
-  Context `{ℋ : State.Trait}.
-  
-  Definition Self : Set :=
-    generics_phantom_type_test_case_unit_clarification.Inch.
+Module  Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Inch_t.
+Section Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Inch_t.
+  Ltac Self := exact generics_phantom_type_test_case_unit_clarification.Inch.t.
   
   Definition clone
-      (self : ref Self)
-      : M generics_phantom_type_test_case_unit_clarification.Inch :=
+      (self : M.Val (ref ltac:(Self)))
+      : M (M.Val generics_phantom_type_test_case_unit_clarification.Inch.t) :=
     M.function_body (deref self).
   
   Global Instance AssociatedFunction_clone :
-    Notation.DoubleColon Self "clone" := {
+    Notation.DoubleColon ltac:(Self) "clone" := {
     Notation.double_colon := clone;
   }.
   
-  Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
+  Global Instance ℐ : core.clone.Clone.Required.Trait ltac:(Self) := {
     core.clone.Clone.clone := clone;
     core.clone.Clone.clone_from := Datatypes.None;
   }.
-End Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Inch.
-End Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Inch.
+End Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Inch_t.
+End Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Inch_t.
 
-Module  Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Inch.
-Section Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Inch.
-  Context `{ℋ : State.Trait}.
+Module  Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Inch_t.
+Section Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Inch_t.
+  Ltac Self := exact generics_phantom_type_test_case_unit_clarification.Inch.t.
   
-  Definition Self : Set :=
-    generics_phantom_type_test_case_unit_clarification.Inch.
-  
-  Global Instance ℐ : core.marker.Copy.Trait Self := {
+  Global Instance ℐ : core.marker.Copy.Trait ltac:(Self) := {
   }.
-End Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Inch.
-End Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Inch.
+End Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Inch_t.
+End Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Inch_t.
 
 Module Mm.
-  Inductive t `{ℋ : State.Trait} : Set :=
+  Inductive t : Set :=
   .
 End Mm.
-Definition Mm `{ℋ : State.Trait} : Set := M.Val Mm.t.
+Definition Mm : Set := M.Val Mm.t.
 
-Module  Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Mm.
-Section Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Mm.
-  Context `{ℋ : State.Trait}.
-  
-  Definition Self : Set :=
-    generics_phantom_type_test_case_unit_clarification.Mm.
+Module  Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Mm_t.
+Section Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Mm_t.
+  Ltac Self := exact generics_phantom_type_test_case_unit_clarification.Mm.t.
   
   Definition fmt
-      (self : ref Self)
-      (f : mut_ref core.fmt.Formatter)
-      : M ltac:(core.fmt.Result) :=
+      (self : M.Val (ref ltac:(Self)))
+      (f : M.Val (mut_ref core.fmt.Formatter.t))
+      : M (M.Val ltac:(core.fmt.Result)) :=
     M.function_body
-      (let* α0 : ltac:(refine never) := "unimplemented parent_kind" in
+      (let* α0 : ltac:(refine (M.Val never.t)) := "unimplemented parent_kind" in
       never_to_any α0).
   
-  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {
+  Global Instance AssociatedFunction_fmt :
+    Notation.DoubleColon ltac:(Self) "fmt" := {
     Notation.double_colon := fmt;
   }.
   
-  Global Instance ℐ : core.fmt.Debug.Trait Self := {
+  Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
     core.fmt.Debug.fmt := fmt;
   }.
-End Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Mm.
-End Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Mm.
+End Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Mm_t.
+End Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Mm_t.
 
-Module  Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Mm.
-Section Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Mm.
-  Context `{ℋ : State.Trait}.
-  
-  Definition Self : Set :=
-    generics_phantom_type_test_case_unit_clarification.Mm.
+Module  Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Mm_t.
+Section Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Mm_t.
+  Ltac Self := exact generics_phantom_type_test_case_unit_clarification.Mm.t.
   
   Definition clone
-      (self : ref Self)
-      : M generics_phantom_type_test_case_unit_clarification.Mm :=
+      (self : M.Val (ref ltac:(Self)))
+      : M (M.Val generics_phantom_type_test_case_unit_clarification.Mm.t) :=
     M.function_body (deref self).
   
   Global Instance AssociatedFunction_clone :
-    Notation.DoubleColon Self "clone" := {
+    Notation.DoubleColon ltac:(Self) "clone" := {
     Notation.double_colon := clone;
   }.
   
-  Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
+  Global Instance ℐ : core.clone.Clone.Required.Trait ltac:(Self) := {
     core.clone.Clone.clone := clone;
     core.clone.Clone.clone_from := Datatypes.None;
   }.
-End Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Mm.
-End Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Mm.
+End Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Mm_t.
+End Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Mm_t.
 
-Module  Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Mm.
-Section Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Mm.
-  Context `{ℋ : State.Trait}.
+Module  Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Mm_t.
+Section Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Mm_t.
+  Ltac Self := exact generics_phantom_type_test_case_unit_clarification.Mm.t.
   
-  Definition Self : Set :=
-    generics_phantom_type_test_case_unit_clarification.Mm.
-  
-  Global Instance ℐ : core.marker.Copy.Trait Self := {
+  Global Instance ℐ : core.marker.Copy.Trait ltac:(Self) := {
   }.
-End Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Mm.
-End Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Mm.
+End Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Mm_t.
+End Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Mm_t.
 
 Module  Length.
 Section Length.
-  Context `{ℋ : State.Trait}.
-  
   Context {Unit : Set}.
   
   Record t : Set := {
-    x0 : f64;
-    x1 : core.marker.PhantomData Unit;
+    x0 : f64.t;
+    x1 : core.marker.PhantomData.t Unit;
   }.
   
   Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
+    Notation.dot x := let* x := M.read x in M.alloc x.(x0) : M _;
   }.
   Global Instance Get_1 : Notation.Dot "1" := {
-    Notation.dot x := let* x := M.read x in M.pure x.(x1) : M _;
+    Notation.dot x := let* x := M.read x in M.alloc x.(x1) : M _;
   }.
 End Length.
 End Length.
-Definition Length `{ℋ : State.Trait} (Unit : Set) : Set :=
-  M.Val (Length.t (Unit := Unit)).
+Definition Length (Unit : Set) : Set := M.Val (Length.t (Unit := Unit)).
 
-Module  Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
-Section Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
-  Context `{ℋ : State.Trait}.
-  
+Module  Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Length_t_Unit.
+Section Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Length_t_Unit.
   Context {Unit : Set}.
   
   Context {ℋ_0 : core.fmt.Debug.Trait Unit}.
   
-  Definition Self : Set :=
-    generics_phantom_type_test_case_unit_clarification.Length Unit.
+  Ltac Self :=
+    exact (generics_phantom_type_test_case_unit_clarification.Length.t Unit).
   
   Definition fmt
-      (self : ref Self)
-      (f : mut_ref core.fmt.Formatter)
-      : M ltac:(core.fmt.Result) :=
+      (self : M.Val (ref ltac:(Self)))
+      (f : M.Val (mut_ref core.fmt.Formatter.t))
+      : M (M.Val ltac:(core.fmt.Result)) :=
     M.function_body
-      (let* α0 : ltac:(refine core.fmt.Formatter) := deref f in
-      let* α1 : ltac:(refine (mut_ref core.fmt.Formatter)) := borrow_mut α0 in
-      let* α2 : ltac:(refine str) := deref (mk_str "Length") in
-      let* α3 : ltac:(refine (ref str)) := borrow α2 in
+      (let* α0 : ltac:(refine (M.Val core.fmt.Formatter.t)) := deref f in
+      let* α1 : ltac:(refine (M.Val (mut_ref core.fmt.Formatter.t))) :=
+        borrow_mut α0 in
+      let* α2 : ltac:(refine (M.Val str)) := deref (mk_str "Length") in
+      let* α3 : ltac:(refine (M.Val (ref str))) := borrow α2 in
       let* α4 :
           ltac:(refine
-            (generics_phantom_type_test_case_unit_clarification.Length Unit)) :=
+            (M.Val
+              (generics_phantom_type_test_case_unit_clarification.Length.t
+                Unit))) :=
         deref self in
-      let* α5 : ltac:(refine f64) := α4.["0"] in
-      let* α6 : ltac:(refine (ref f64)) := borrow α5 in
-      let* α7 : ltac:(refine (ref type not implemented)) :=
+      let* α5 : ltac:(refine (M.Val f64.t)) := α4.["0"] in
+      let* α6 : ltac:(refine (M.Val (ref f64.t))) := borrow α5 in
+      let* α7 : ltac:(refine (M.Val (ref type not implemented))) :=
         pointer_coercion "Unsize" α6 in
       let* α8 :
           ltac:(refine
-            (generics_phantom_type_test_case_unit_clarification.Length Unit)) :=
+            (M.Val
+              (generics_phantom_type_test_case_unit_clarification.Length.t
+                Unit))) :=
         deref self in
-      let* α9 : ltac:(refine (core.marker.PhantomData Unit)) := α8.["1"] in
-      let* α10 : ltac:(refine (ref (core.marker.PhantomData Unit))) :=
+      let* α9 : ltac:(refine (M.Val (core.marker.PhantomData.t Unit))) :=
+        α8.["1"] in
+      let* α10 : ltac:(refine (M.Val (ref (core.marker.PhantomData.t Unit)))) :=
         borrow α9 in
-      let* α11 : ltac:(refine (ref (ref (core.marker.PhantomData Unit)))) :=
+      let* α11 :
+          ltac:(refine (M.Val (ref (ref (core.marker.PhantomData.t Unit))))) :=
         borrow α10 in
-      let* α12 : ltac:(refine (ref type not implemented)) :=
+      let* α12 : ltac:(refine (M.Val (ref type not implemented))) :=
         pointer_coercion "Unsize" α11 in
-      core.fmt.Formatter::["debug_tuple_field2_finish"] α1 α3 α7 α12).
+      core.fmt.Formatter.t::["debug_tuple_field2_finish"] α1 α3 α7 α12).
   
-  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {
+  Global Instance AssociatedFunction_fmt :
+    Notation.DoubleColon ltac:(Self) "fmt" := {
     Notation.double_colon := fmt;
   }.
   
-  Global Instance ℐ : core.fmt.Debug.Trait Self := {
+  Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
     core.fmt.Debug.fmt := fmt;
   }.
-End Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
-End Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
+End Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Length_t_Unit.
+End Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Length_t_Unit.
 
-Module  Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
-Section Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
-  Context `{ℋ : State.Trait}.
-  
+Module  Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Length_t_Unit.
+Section Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Length_t_Unit.
   Context {Unit : Set}.
   
   Context {ℋ_0 : core.clone.Clone.Trait Unit}.
   
-  Definition Self : Set :=
-    generics_phantom_type_test_case_unit_clarification.Length Unit.
+  Ltac Self :=
+    exact (generics_phantom_type_test_case_unit_clarification.Length.t Unit).
   
   Definition clone
-      (self : ref Self)
-      : M (generics_phantom_type_test_case_unit_clarification.Length Unit) :=
+      (self : M.Val (ref ltac:(Self)))
+      :
+        M
+          (M.Val
+            (generics_phantom_type_test_case_unit_clarification.Length.t
+              Unit)) :=
     M.function_body
       (let* α0 :
           ltac:(refine
-            (generics_phantom_type_test_case_unit_clarification.Length Unit)) :=
+            (M.Val
+              (generics_phantom_type_test_case_unit_clarification.Length.t
+                Unit))) :=
         deref self in
-      let* α1 : ltac:(refine f64) := α0.["0"] in
-      let* α2 : ltac:(refine (ref f64)) := borrow α1 in
-      let* α3 : ltac:(refine f64) :=
-        (core.clone.Clone.clone (Self := f64) (Trait := ltac:(refine _))) α2 in
-      let* α4 :
+      let* α1 : ltac:(refine (M.Val f64.t)) := α0.["0"] in
+      let* α2 : ltac:(refine (M.Val (ref f64.t))) := borrow α1 in
+      let* α3 : ltac:(refine (M.Val f64.t)) :=
+        (core.clone.Clone.clone (Self := f64.t) (Trait := ltac:(refine _)))
+          α2 in
+      let* α4 := M.read α3 in
+      let* α5 :
           ltac:(refine
-            (generics_phantom_type_test_case_unit_clarification.Length Unit)) :=
+            (M.Val
+              (generics_phantom_type_test_case_unit_clarification.Length.t
+                Unit))) :=
         deref self in
-      let* α5 : ltac:(refine (core.marker.PhantomData Unit)) := α4.["1"] in
-      let* α6 : ltac:(refine (ref (core.marker.PhantomData Unit))) :=
-        borrow α5 in
-      let* α7 : ltac:(refine (core.marker.PhantomData Unit)) :=
+      let* α6 : ltac:(refine (M.Val (core.marker.PhantomData.t Unit))) :=
+        α5.["1"] in
+      let* α7 : ltac:(refine (M.Val (ref (core.marker.PhantomData.t Unit)))) :=
+        borrow α6 in
+      let* α8 : ltac:(refine (M.Val (core.marker.PhantomData.t Unit))) :=
         (core.clone.Clone.clone
-            (Self := core.marker.PhantomData Unit)
+            (Self := core.marker.PhantomData.t Unit)
             (Trait := ltac:(refine _)))
-          α6 in
+          α7 in
+      let* α9 := M.read α8 in
       M.alloc
         (generics_phantom_type_test_case_unit_clarification.Length.Build_t
-          α3
-          α7)).
+          α4
+          α9)).
   
   Global Instance AssociatedFunction_clone :
-    Notation.DoubleColon Self "clone" := {
+    Notation.DoubleColon ltac:(Self) "clone" := {
     Notation.double_colon := clone;
   }.
   
-  Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
+  Global Instance ℐ : core.clone.Clone.Required.Trait ltac:(Self) := {
     core.clone.Clone.clone := clone;
     core.clone.Clone.clone_from := Datatypes.None;
   }.
-End Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
-End Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
+End Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Length_t_Unit.
+End Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Length_t_Unit.
 
-Module  Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
-Section Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
-  Context `{ℋ : State.Trait}.
-  
+Module  Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Length_t_Unit.
+Section Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Length_t_Unit.
   Context {Unit : Set}.
   
   Context {ℋ_0 : core.marker.Copy.Trait Unit}.
   
-  Definition Self : Set :=
-    generics_phantom_type_test_case_unit_clarification.Length Unit.
+  Ltac Self :=
+    exact (generics_phantom_type_test_case_unit_clarification.Length.t Unit).
   
-  Global Instance ℐ : core.marker.Copy.Trait Self := {
+  Global Instance ℐ : core.marker.Copy.Trait ltac:(Self) := {
   }.
-End Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
-End Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
+End Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Length_t_Unit.
+End Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Length_t_Unit.
 
-Module  Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
-Section Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
-  Context `{ℋ : State.Trait}.
-  
+Module  Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarification_Length_t_Unit.
+Section Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarification_Length_t_Unit.
   Context {Unit : Set}.
   
-  Definition Self : Set :=
-    generics_phantom_type_test_case_unit_clarification.Length Unit.
+  Ltac Self :=
+    exact (generics_phantom_type_test_case_unit_clarification.Length.t Unit).
   
   Definition Output : Set :=
-    generics_phantom_type_test_case_unit_clarification.Length Unit.
+    generics_phantom_type_test_case_unit_clarification.Length.t Unit.
   
   Definition add
-      (self : Self)
-      (rhs : generics_phantom_type_test_case_unit_clarification.Length Unit)
-      : M (generics_phantom_type_test_case_unit_clarification.Length Unit) :=
+      (self : M.Val ltac:(Self))
+      (rhs
+        :
+        M.Val
+          (generics_phantom_type_test_case_unit_clarification.Length.t Unit))
+      :
+        M
+          (M.Val
+            (generics_phantom_type_test_case_unit_clarification.Length.t
+              Unit)) :=
     M.function_body
-      (let* α0 : ltac:(refine f64) := self.["0"] in
-      let* α1 : ltac:(refine f64) := rhs.["0"] in
-      let* α2 : ltac:(refine f64) := BinOp.add α0 α1 in
-      let* α3 : ltac:(refine (core.marker.PhantomData Unit)) :=
+      (let* α0 : ltac:(refine (M.Val f64.t)) := self.["0"] in
+      let* α1 : ltac:(refine (M.Val f64.t)) := rhs.["0"] in
+      let* α2 : ltac:(refine (M.Val f64.t)) := BinOp.add α0 α1 in
+      let* α3 := M.read α2 in
+      let* α4 : ltac:(refine (M.Val (core.marker.PhantomData.t Unit))) :=
         M.alloc core.marker.PhantomData.Build_t in
+      let* α5 := M.read α4 in
       M.alloc
         (generics_phantom_type_test_case_unit_clarification.Length.Build_t
-          α2
-          α3)).
+          α3
+          α5)).
   
-  Global Instance AssociatedFunction_add : Notation.DoubleColon Self "add" := {
+  Global Instance AssociatedFunction_add :
+    Notation.DoubleColon ltac:(Self) "add" := {
     Notation.double_colon := add;
   }.
   
   Global Instance ℐ :
-    core.ops.arith.Add.Trait Self
-      (Rhs := core.ops.arith.Add.Default.Rhs Self) := {
+    core.ops.arith.Add.Trait ltac:(Self)
+      (Rhs := core.ops.arith.Add.Default.Rhs ltac:(Self)) := {
     core.ops.arith.Add.Output := Output;
     core.ops.arith.Add.add := add;
   }.
-End Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
-End Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
+End Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarification_Length_t_Unit.
+End Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarification_Length_t_Unit.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{ℋ : State.Trait} : M unit :=
+Definition main : M (M.Val unit) :=
   M.function_body
     (let* one_foot :
         ltac:(refine
-          (generics_phantom_type_test_case_unit_clarification.Length
-            generics_phantom_type_test_case_unit_clarification.Inch)) :=
-      let* α0 : ltac:(refine f64) := M.alloc 12 (* 12.0 *) in
-      let* α1 :
+          (M.Val
+            (generics_phantom_type_test_case_unit_clarification.Length.t
+              generics_phantom_type_test_case_unit_clarification.Inch.t))) :=
+      let* α0 : ltac:(refine (M.Val f64.t)) := M.alloc 12 (* 12.0 *) in
+      let* α1 := M.read α0 in
+      let* α2 :
           ltac:(refine
-            (core.marker.PhantomData
-              generics_phantom_type_test_case_unit_clarification.Inch)) :=
+            (M.Val
+              (core.marker.PhantomData.t
+                generics_phantom_type_test_case_unit_clarification.Inch.t))) :=
         M.alloc core.marker.PhantomData.Build_t in
+      let* α3 := M.read α2 in
       M.alloc
         (generics_phantom_type_test_case_unit_clarification.Length.Build_t
-          α0
-          α1) in
+          α1
+          α3) in
     let* one_meter :
         ltac:(refine
-          (generics_phantom_type_test_case_unit_clarification.Length
-            generics_phantom_type_test_case_unit_clarification.Mm)) :=
-      let* α0 : ltac:(refine f64) := M.alloc 1000 (* 1000.0 *) in
-      let* α1 :
+          (M.Val
+            (generics_phantom_type_test_case_unit_clarification.Length.t
+              generics_phantom_type_test_case_unit_clarification.Mm.t))) :=
+      let* α0 : ltac:(refine (M.Val f64.t)) := M.alloc 1000 (* 1000.0 *) in
+      let* α1 := M.read α0 in
+      let* α2 :
           ltac:(refine
-            (core.marker.PhantomData
-              generics_phantom_type_test_case_unit_clarification.Mm)) :=
+            (M.Val
+              (core.marker.PhantomData.t
+                generics_phantom_type_test_case_unit_clarification.Mm.t))) :=
         M.alloc core.marker.PhantomData.Build_t in
+      let* α3 := M.read α2 in
       M.alloc
         (generics_phantom_type_test_case_unit_clarification.Length.Build_t
-          α0
-          α1) in
+          α1
+          α3) in
     let* two_feet :
         ltac:(refine
-          (generics_phantom_type_test_case_unit_clarification.Length
-            generics_phantom_type_test_case_unit_clarification.Inch)) :=
+          (M.Val
+            (generics_phantom_type_test_case_unit_clarification.Length.t
+              generics_phantom_type_test_case_unit_clarification.Inch.t))) :=
       (core.ops.arith.Add.add
           (Self :=
-            generics_phantom_type_test_case_unit_clarification.Length
-              generics_phantom_type_test_case_unit_clarification.Inch)
+            generics_phantom_type_test_case_unit_clarification.Length.t
+              generics_phantom_type_test_case_unit_clarification.Inch.t)
           (Trait := ltac:(refine _)))
         one_foot
         one_foot in
     let* two_meters :
         ltac:(refine
-          (generics_phantom_type_test_case_unit_clarification.Length
-            generics_phantom_type_test_case_unit_clarification.Mm)) :=
+          (M.Val
+            (generics_phantom_type_test_case_unit_clarification.Length.t
+              generics_phantom_type_test_case_unit_clarification.Mm.t))) :=
       (core.ops.arith.Add.add
           (Self :=
-            generics_phantom_type_test_case_unit_clarification.Length
-              generics_phantom_type_test_case_unit_clarification.Mm)
+            generics_phantom_type_test_case_unit_clarification.Length.t
+              generics_phantom_type_test_case_unit_clarification.Mm.t)
           (Trait := ltac:(refine _)))
         one_meter
         one_meter in
-    let* _ : ltac:(refine unit) :=
-      let* _ : ltac:(refine unit) :=
-        let* α0 : ltac:(refine (array (ref str))) :=
+    let* _ : ltac:(refine (M.Val unit)) :=
+      let* _ : ltac:(refine (M.Val unit)) :=
+        let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
           M.alloc [ mk_str "one foot + one_foot = "; mk_str " in
 " ] in
-        let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
-        let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+        let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) := borrow α0 in
+        let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
           pointer_coercion "Unsize" α1 in
-        let* α3 : ltac:(refine f64) := two_feet.["0"] in
-        let* α4 : ltac:(refine (ref f64)) := borrow α3 in
-        let* α5 : ltac:(refine core.fmt.rt.Argument) :=
-          core.fmt.rt.Argument::["new_debug"] α4 in
-        let* α6 : ltac:(refine (array core.fmt.rt.Argument)) :=
+        let* α3 : ltac:(refine (M.Val f64.t)) := two_feet.["0"] in
+        let* α4 : ltac:(refine (M.Val (ref f64.t))) := borrow α3 in
+        let* α5 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
+          core.fmt.rt.Argument.t::["new_debug"] α4 in
+        let* α6 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
           M.alloc [ α5 ] in
-        let* α7 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+        let* α7 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
           borrow α6 in
-        let* α8 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+        let* α8 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
           pointer_coercion "Unsize" α7 in
-        let* α9 : ltac:(refine core.fmt.Arguments) :=
-          core.fmt.Arguments::["new_v1"] α2 α8 in
+        let* α9 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
+          core.fmt.Arguments.t::["new_v1"] α2 α8 in
         std.io.stdio._print α9 in
       M.alloc tt in
-    let* _ : ltac:(refine unit) :=
-      let* _ : ltac:(refine unit) :=
-        let* α0 : ltac:(refine (array (ref str))) :=
+    let* _ : ltac:(refine (M.Val unit)) :=
+      let* _ : ltac:(refine (M.Val unit)) :=
+        let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
           M.alloc [ mk_str "one meter + one_meter = "; mk_str " mm
 " ] in
-        let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
-        let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+        let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) := borrow α0 in
+        let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
           pointer_coercion "Unsize" α1 in
-        let* α3 : ltac:(refine f64) := two_meters.["0"] in
-        let* α4 : ltac:(refine (ref f64)) := borrow α3 in
-        let* α5 : ltac:(refine core.fmt.rt.Argument) :=
-          core.fmt.rt.Argument::["new_debug"] α4 in
-        let* α6 : ltac:(refine (array core.fmt.rt.Argument)) :=
+        let* α3 : ltac:(refine (M.Val f64.t)) := two_meters.["0"] in
+        let* α4 : ltac:(refine (M.Val (ref f64.t))) := borrow α3 in
+        let* α5 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
+          core.fmt.rt.Argument.t::["new_debug"] α4 in
+        let* α6 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
           M.alloc [ α5 ] in
-        let* α7 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+        let* α7 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
           borrow α6 in
-        let* α8 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+        let* α8 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
           pointer_coercion "Unsize" α7 in
-        let* α9 : ltac:(refine core.fmt.Arguments) :=
-          core.fmt.Arguments::["new_v1"] α2 α8 in
+        let* α9 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
+          core.fmt.Arguments.t::["new_v1"] α2 α8 in
         std.io.stdio._print α9 in
       M.alloc tt in
     M.alloc tt).

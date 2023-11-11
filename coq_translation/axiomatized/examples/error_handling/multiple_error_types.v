@@ -2,8 +2,8 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Parameter double_first :
-    forall `{ℋ : State.Trait},
-    (alloc.vec.Vec (ref str) alloc.vec.Vec.Default.A) -> M i32.
+    (M.Val (alloc.vec.Vec.t (ref str.t) alloc.vec.Vec.Default.A)) ->
+      M (M.Val i32.t).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{ℋ : State.Trait}, M unit.
+Parameter main : M (M.Val unit).

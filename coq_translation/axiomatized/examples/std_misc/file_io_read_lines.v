@@ -2,9 +2,11 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Parameter read_lines :
-    forall `{ℋ : State.Trait},
-    alloc.string.String ->
-      M (std.io.Lines (std.io.buffered.bufreader.BufReader std.fs.File)).
+    (M.Val alloc.string.String.t) ->
+      M
+        (M.Val
+          (std.io.Lines.t
+            (std.io.buffered.bufreader.BufReader.t std.fs.File.t))).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{ℋ : State.Trait}, M unit.
+Parameter main : M (M.Val unit).

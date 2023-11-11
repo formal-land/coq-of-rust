@@ -18,7 +18,7 @@ where
 Module PhantomData.
   Inductive t (T : Set) : Set := Build.
 End PhantomData.
-Definition PhantomData := PhantomData.t.
+Definition PhantomData (T : Set) : Set := M.Val (PhantomData.t T).
 
 (* pub struct PhantomPinned; *)
 Module PhantomPinned.

@@ -2,10 +2,10 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{ℋ : State.Trait}, M unit.
+Parameter main : M (M.Val unit).
 
-Parameter is_divisible_by : forall `{ℋ : State.Trait}, u32 -> u32 -> M bool.
+Parameter is_divisible_by : (M.Val u32.t) -> (M.Val u32.t) -> M (M.Val bool.t).
 
-Parameter fizzbuzz : forall `{ℋ : State.Trait}, u32 -> M unit.
+Parameter fizzbuzz : (M.Val u32.t) -> M (M.Val unit).
 
-Parameter fizzbuzz_to : forall `{ℋ : State.Trait}, u32 -> M unit.
+Parameter fizzbuzz_to : (M.Val u32.t) -> M (M.Val unit).

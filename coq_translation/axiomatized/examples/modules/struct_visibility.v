@@ -4,123 +4,108 @@ Require Import CoqOfRust.CoqOfRust.
 Module my.
   Module  OpenBox.
   Section OpenBox.
-    Context `{ℋ : State.Trait}.
-    
-    Context {T : Set}.
+    Context (T : Set).
     
     Record t : Set := {
       contents : T;
     }.
     
     Global Instance Get_contents : Notation.Dot "contents" := {
-      Notation.dot x := let* x := M.read x in M.pure x.(contents) : M _;
+      Notation.dot x := let* x := M.read x in M.alloc x.(contents) : M _;
     }.
     Global Instance Get_AF_contents : Notation.DoubleColon t "contents" := {
       Notation.double_colon x :=
-        let* x := M.read x in M.pure x.(contents) : M _;
+        let* x := M.read x in M.alloc x.(contents) : M _;
     }.
   End OpenBox.
   End OpenBox.
-  Definition OpenBox (T : Set) `{ℋ : State.Trait} : Set :=
-    M.Val (OpenBox.t (T := T)).
+  Definition OpenBox (T : Set) : Set := M.Val (OpenBox.t T).
   
   Module  ClosedBox.
   Section ClosedBox.
-    Context `{ℋ : State.Trait}.
-    
-    Context {T : Set}.
+    Context (T : Set).
     
     Record t : Set := {
       contents : T;
     }.
     
     Global Instance Get_contents : Notation.Dot "contents" := {
-      Notation.dot x := let* x := M.read x in M.pure x.(contents) : M _;
+      Notation.dot x := let* x := M.read x in M.alloc x.(contents) : M _;
     }.
     Global Instance Get_AF_contents : Notation.DoubleColon t "contents" := {
       Notation.double_colon x :=
-        let* x := M.read x in M.pure x.(contents) : M _;
+        let* x := M.read x in M.alloc x.(contents) : M _;
     }.
   End ClosedBox.
   End ClosedBox.
-  Definition ClosedBox (T : Set) `{ℋ : State.Trait} : Set :=
-    M.Val (ClosedBox.t (T := T)).
+  Definition ClosedBox (T : Set) : Set := M.Val (ClosedBox.t T).
   
-  Module  Impl_struct_visibility_my_ClosedBox_T.
-  Section Impl_struct_visibility_my_ClosedBox_T.
-    Context `{ℋ : State.Trait}.
-    
+  Module  Impl_struct_visibility_my_ClosedBox_t_T.
+  Section Impl_struct_visibility_my_ClosedBox_t_T.
     Context {T : Set}.
     
-    Definition Self : Set := struct_visibility.my.ClosedBox T.
+    Ltac Self := exact (struct_visibility.my.ClosedBox.t T).
     
-    Parameter new : T -> M (struct_visibility.my.ClosedBox T).
+    Parameter new : (M.Val T) -> M (M.Val (struct_visibility.my.ClosedBox.t T)).
     
     Global Instance AssociatedFunction_new :
-      Notation.DoubleColon Self "new" := {
+      Notation.DoubleColon ltac:(Self) "new" := {
       Notation.double_colon := new;
     }.
-  End Impl_struct_visibility_my_ClosedBox_T.
-  End Impl_struct_visibility_my_ClosedBox_T.
+  End Impl_struct_visibility_my_ClosedBox_t_T.
+  End Impl_struct_visibility_my_ClosedBox_t_T.
 End my.
 
 Module  OpenBox.
 Section OpenBox.
-  Context `{ℋ : State.Trait}.
-  
-  Context {T : Set}.
+  Context (T : Set).
   
   Record t : Set := {
     contents : T;
   }.
   
   Global Instance Get_contents : Notation.Dot "contents" := {
-    Notation.dot x := let* x := M.read x in M.pure x.(contents) : M _;
+    Notation.dot x := let* x := M.read x in M.alloc x.(contents) : M _;
   }.
   Global Instance Get_AF_contents : Notation.DoubleColon t "contents" := {
-    Notation.double_colon x := let* x := M.read x in M.pure x.(contents) : M _;
+    Notation.double_colon x := let* x := M.read x in M.alloc x.(contents) : M _;
   }.
 End OpenBox.
 End OpenBox.
-Definition OpenBox (T : Set) `{ℋ : State.Trait} : Set :=
-  M.Val (OpenBox.t (T := T)).
+Definition OpenBox (T : Set) : Set := M.Val (OpenBox.t T).
 
 Module  ClosedBox.
 Section ClosedBox.
-  Context `{ℋ : State.Trait}.
-  
-  Context {T : Set}.
+  Context (T : Set).
   
   Record t : Set := {
     contents : T;
   }.
   
   Global Instance Get_contents : Notation.Dot "contents" := {
-    Notation.dot x := let* x := M.read x in M.pure x.(contents) : M _;
+    Notation.dot x := let* x := M.read x in M.alloc x.(contents) : M _;
   }.
   Global Instance Get_AF_contents : Notation.DoubleColon t "contents" := {
-    Notation.double_colon x := let* x := M.read x in M.pure x.(contents) : M _;
+    Notation.double_colon x := let* x := M.read x in M.alloc x.(contents) : M _;
   }.
 End ClosedBox.
 End ClosedBox.
-Definition ClosedBox (T : Set) `{ℋ : State.Trait} : Set :=
-  M.Val (ClosedBox.t (T := T)).
+Definition ClosedBox (T : Set) : Set := M.Val (ClosedBox.t T).
 
-Module  Impl_struct_visibility_my_ClosedBox_T_2.
-Section Impl_struct_visibility_my_ClosedBox_T_2.
-  Context `{ℋ : State.Trait}.
-  
+Module  Impl_struct_visibility_my_ClosedBox_t_T_2.
+Section Impl_struct_visibility_my_ClosedBox_t_T_2.
   Context {T : Set}.
   
-  Definition Self : Set := struct_visibility.my.ClosedBox T.
+  Ltac Self := exact (struct_visibility.my.ClosedBox.t T).
   
-  Parameter new : T -> M (struct_visibility.my.ClosedBox T).
+  Parameter new : (M.Val T) -> M (M.Val (struct_visibility.my.ClosedBox.t T)).
   
-  Global Instance AssociatedFunction_new : Notation.DoubleColon Self "new" := {
+  Global Instance AssociatedFunction_new :
+    Notation.DoubleColon ltac:(Self) "new" := {
     Notation.double_colon := new;
   }.
-End Impl_struct_visibility_my_ClosedBox_T_2.
-End Impl_struct_visibility_my_ClosedBox_T_2.
+End Impl_struct_visibility_my_ClosedBox_t_T_2.
+End Impl_struct_visibility_my_ClosedBox_t_T_2.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{ℋ : State.Trait}, M unit.
+Parameter main : M (M.Val unit).

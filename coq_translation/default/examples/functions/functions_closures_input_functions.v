@@ -2,54 +2,53 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition call_me
-    `{ℋ : State.Trait}
     {F : Set}
     {ℋ_0 : core.ops.function.Fn.Trait F (Args := unit)}
-    (f : F)
-    : M unit :=
+    (f : M.Val F)
+    : M (M.Val unit) :=
   M.function_body
-    (let* _ : ltac:(refine unit) :=
-      let* α0 : ltac:(refine (ref F)) := borrow f in
-      let* α1 : ltac:(refine unit) := M.alloc tt in
+    (let* _ : ltac:(refine (M.Val unit)) :=
+      let* α0 : ltac:(refine (M.Val (ref F))) := borrow f in
+      let* α1 : ltac:(refine (M.Val unit)) := M.alloc tt in
       (core.ops.function.Fn.call (Self := F) (Trait := ltac:(refine _)))
         α0
         α1 in
     M.alloc tt).
 
-Definition function `{ℋ : State.Trait} : M unit :=
+Definition function : M (M.Val unit) :=
   M.function_body
-    (let* _ : ltac:(refine unit) :=
-      let* _ : ltac:(refine unit) :=
-        let* α0 : ltac:(refine (array (ref str))) :=
+    (let* _ : ltac:(refine (M.Val unit)) :=
+      let* _ : ltac:(refine (M.Val unit)) :=
+        let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
           M.alloc [ mk_str "I'm a function!
 " ] in
-        let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
-        let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+        let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) := borrow α0 in
+        let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
           pointer_coercion "Unsize" α1 in
-        let* α3 : ltac:(refine core.fmt.Arguments) :=
-          core.fmt.Arguments::["new_const"] α2 in
+        let* α3 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
+          core.fmt.Arguments.t::["new_const"] α2 in
         std.io.stdio._print α3 in
       M.alloc tt in
     M.alloc tt).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{ℋ : State.Trait} : M unit :=
+Definition main : M (M.Val unit) :=
   M.function_body
     (let closure :=
-      let* _ : ltac:(refine unit) :=
-        let* α0 : ltac:(refine (array (ref str))) :=
+      let* _ : ltac:(refine (M.Val unit)) :=
+        let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
           M.alloc [ mk_str "I'm a closure!
 " ] in
-        let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
-        let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+        let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) := borrow α0 in
+        let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
           pointer_coercion "Unsize" α1 in
-        let* α3 : ltac:(refine core.fmt.Arguments) :=
-          core.fmt.Arguments::["new_const"] α2 in
+        let* α3 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
+          core.fmt.Arguments.t::["new_const"] α2 in
         std.io.stdio._print α3 in
       M.alloc tt in
-    let* _ : ltac:(refine unit) :=
+    let* _ : ltac:(refine (M.Val unit)) :=
       functions_closures_input_functions.call_me closure in
-    let* _ : ltac:(refine unit) :=
+    let* _ : ltac:(refine (M.Val unit)) :=
       functions_closures_input_functions.call_me
         functions_closures_input_functions.function in
     M.alloc tt).

@@ -2,35 +2,40 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{ℋ : State.Trait} : M unit :=
+Definition main : M (M.Val unit) :=
   M.function_body
-    (let* elem : ltac:(refine u8) := M.alloc 5 in
-    let* vec : ltac:(refine (alloc.vec.Vec u8 alloc.alloc.Global)) :=
-      (alloc.vec.Vec u8 alloc.alloc.Global)::["new"] in
-    let* _ : ltac:(refine unit) :=
-      let* α0 : ltac:(refine (mut_ref (alloc.vec.Vec u8 alloc.alloc.Global))) :=
+    (let* elem : ltac:(refine (M.Val u8.t)) := M.alloc 5 in
+    let* vec :
+        ltac:(refine (M.Val (alloc.vec.Vec.t u8.t alloc.alloc.Global.t))) :=
+      (alloc.vec.Vec.t u8.t alloc.alloc.Global.t)::["new"] in
+    let* _ : ltac:(refine (M.Val unit)) :=
+      let* α0 :
+          ltac:(refine
+            (M.Val (mut_ref (alloc.vec.Vec.t u8.t alloc.alloc.Global.t)))) :=
         borrow_mut vec in
-      (alloc.vec.Vec u8 alloc.alloc.Global)::["push"] α0 elem in
-    let* _ : ltac:(refine unit) :=
-      let* _ : ltac:(refine unit) :=
-        let* α0 : ltac:(refine (array (ref str))) :=
+      (alloc.vec.Vec.t u8.t alloc.alloc.Global.t)::["push"] α0 elem in
+    let* _ : ltac:(refine (M.Val unit)) :=
+      let* _ : ltac:(refine (M.Val unit)) :=
+        let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
           M.alloc [ mk_str ""; mk_str "
 " ] in
-        let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
-        let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+        let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) := borrow α0 in
+        let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
           pointer_coercion "Unsize" α1 in
-        let* α3 : ltac:(refine (ref (alloc.vec.Vec u8 alloc.alloc.Global))) :=
+        let* α3 :
+            ltac:(refine
+              (M.Val (ref (alloc.vec.Vec.t u8.t alloc.alloc.Global.t)))) :=
           borrow vec in
-        let* α4 : ltac:(refine core.fmt.rt.Argument) :=
-          core.fmt.rt.Argument::["new_debug"] α3 in
-        let* α5 : ltac:(refine (array core.fmt.rt.Argument)) :=
+        let* α4 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
+          core.fmt.rt.Argument.t::["new_debug"] α3 in
+        let* α5 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
           M.alloc [ α4 ] in
-        let* α6 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+        let* α6 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
           borrow α5 in
-        let* α7 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+        let* α7 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
           pointer_coercion "Unsize" α6 in
-        let* α8 : ltac:(refine core.fmt.Arguments) :=
-          core.fmt.Arguments::["new_v1"] α2 α7 in
+        let* α8 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
+          core.fmt.Arguments.t::["new_v1"] α2 α7 in
         std.io.stdio._print α8 in
       M.alloc tt in
     M.alloc tt).

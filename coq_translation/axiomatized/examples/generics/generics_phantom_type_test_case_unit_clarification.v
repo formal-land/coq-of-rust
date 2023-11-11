@@ -2,243 +2,232 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module Inch.
-  Inductive t `{ℋ : State.Trait} : Set :=
+  Inductive t : Set :=
   .
 End Inch.
-Definition Inch `{ℋ : State.Trait} : Set := M.Val Inch.t.
+Definition Inch : Set := M.Val Inch.t.
 
-Module  Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Inch.
-Section Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Inch.
-  Context `{ℋ : State.Trait}.
-  
-  Definition Self : Set :=
-    generics_phantom_type_test_case_unit_clarification.Inch.
+Module  Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Inch_t.
+Section Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Inch_t.
+  Ltac Self := exact generics_phantom_type_test_case_unit_clarification.Inch.t.
   
   Parameter fmt :
-      (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
+      (M.Val (ref ltac:(Self))) ->
+        (M.Val (mut_ref core.fmt.Formatter.t)) ->
+        M (M.Val ltac:(core.fmt.Result)).
   
-  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {
+  Global Instance AssociatedFunction_fmt :
+    Notation.DoubleColon ltac:(Self) "fmt" := {
     Notation.double_colon := fmt;
   }.
   
-  Global Instance ℐ : core.fmt.Debug.Trait Self := {
+  Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
     core.fmt.Debug.fmt := fmt;
   }.
-End Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Inch.
-End Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Inch.
+End Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Inch_t.
+End Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Inch_t.
 
-Module  Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Inch.
-Section Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Inch.
-  Context `{ℋ : State.Trait}.
-  
-  Definition Self : Set :=
-    generics_phantom_type_test_case_unit_clarification.Inch.
+Module  Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Inch_t.
+Section Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Inch_t.
+  Ltac Self := exact generics_phantom_type_test_case_unit_clarification.Inch.t.
   
   Parameter clone :
-      (ref Self) -> M generics_phantom_type_test_case_unit_clarification.Inch.
+      (M.Val (ref ltac:(Self))) ->
+        M (M.Val generics_phantom_type_test_case_unit_clarification.Inch.t).
   
   Global Instance AssociatedFunction_clone :
-    Notation.DoubleColon Self "clone" := {
+    Notation.DoubleColon ltac:(Self) "clone" := {
     Notation.double_colon := clone;
   }.
   
-  Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
+  Global Instance ℐ : core.clone.Clone.Required.Trait ltac:(Self) := {
     core.clone.Clone.clone := clone;
     core.clone.Clone.clone_from := Datatypes.None;
   }.
-End Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Inch.
-End Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Inch.
+End Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Inch_t.
+End Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Inch_t.
 
-Module  Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Inch.
-Section Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Inch.
-  Context `{ℋ : State.Trait}.
+Module  Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Inch_t.
+Section Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Inch_t.
+  Ltac Self := exact generics_phantom_type_test_case_unit_clarification.Inch.t.
   
-  Definition Self : Set :=
-    generics_phantom_type_test_case_unit_clarification.Inch.
-  
-  Global Instance ℐ : core.marker.Copy.Trait Self := {
+  Global Instance ℐ : core.marker.Copy.Trait ltac:(Self) := {
   }.
-End Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Inch.
-End Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Inch.
+End Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Inch_t.
+End Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Inch_t.
 
 Module Mm.
-  Inductive t `{ℋ : State.Trait} : Set :=
+  Inductive t : Set :=
   .
 End Mm.
-Definition Mm `{ℋ : State.Trait} : Set := M.Val Mm.t.
+Definition Mm : Set := M.Val Mm.t.
 
-Module  Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Mm.
-Section Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Mm.
-  Context `{ℋ : State.Trait}.
-  
-  Definition Self : Set :=
-    generics_phantom_type_test_case_unit_clarification.Mm.
+Module  Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Mm_t.
+Section Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Mm_t.
+  Ltac Self := exact generics_phantom_type_test_case_unit_clarification.Mm.t.
   
   Parameter fmt :
-      (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
+      (M.Val (ref ltac:(Self))) ->
+        (M.Val (mut_ref core.fmt.Formatter.t)) ->
+        M (M.Val ltac:(core.fmt.Result)).
   
-  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {
+  Global Instance AssociatedFunction_fmt :
+    Notation.DoubleColon ltac:(Self) "fmt" := {
     Notation.double_colon := fmt;
   }.
   
-  Global Instance ℐ : core.fmt.Debug.Trait Self := {
+  Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
     core.fmt.Debug.fmt := fmt;
   }.
-End Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Mm.
-End Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Mm.
+End Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Mm_t.
+End Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Mm_t.
 
-Module  Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Mm.
-Section Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Mm.
-  Context `{ℋ : State.Trait}.
-  
-  Definition Self : Set :=
-    generics_phantom_type_test_case_unit_clarification.Mm.
+Module  Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Mm_t.
+Section Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Mm_t.
+  Ltac Self := exact generics_phantom_type_test_case_unit_clarification.Mm.t.
   
   Parameter clone :
-      (ref Self) -> M generics_phantom_type_test_case_unit_clarification.Mm.
+      (M.Val (ref ltac:(Self))) ->
+        M (M.Val generics_phantom_type_test_case_unit_clarification.Mm.t).
   
   Global Instance AssociatedFunction_clone :
-    Notation.DoubleColon Self "clone" := {
+    Notation.DoubleColon ltac:(Self) "clone" := {
     Notation.double_colon := clone;
   }.
   
-  Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
+  Global Instance ℐ : core.clone.Clone.Required.Trait ltac:(Self) := {
     core.clone.Clone.clone := clone;
     core.clone.Clone.clone_from := Datatypes.None;
   }.
-End Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Mm.
-End Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Mm.
+End Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Mm_t.
+End Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Mm_t.
 
-Module  Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Mm.
-Section Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Mm.
-  Context `{ℋ : State.Trait}.
+Module  Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Mm_t.
+Section Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Mm_t.
+  Ltac Self := exact generics_phantom_type_test_case_unit_clarification.Mm.t.
   
-  Definition Self : Set :=
-    generics_phantom_type_test_case_unit_clarification.Mm.
-  
-  Global Instance ℐ : core.marker.Copy.Trait Self := {
+  Global Instance ℐ : core.marker.Copy.Trait ltac:(Self) := {
   }.
-End Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Mm.
-End Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Mm.
+End Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Mm_t.
+End Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Mm_t.
 
 Module  Length.
 Section Length.
-  Context `{ℋ : State.Trait}.
-  
   Context {Unit : Set}.
   
   Record t : Set := {
-    x0 : f64;
-    x1 : core.marker.PhantomData Unit;
+    x0 : f64.t;
+    x1 : core.marker.PhantomData.t Unit;
   }.
   
   Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
+    Notation.dot x := let* x := M.read x in M.alloc x.(x0) : M _;
   }.
   Global Instance Get_1 : Notation.Dot "1" := {
-    Notation.dot x := let* x := M.read x in M.pure x.(x1) : M _;
+    Notation.dot x := let* x := M.read x in M.alloc x.(x1) : M _;
   }.
 End Length.
 End Length.
-Definition Length `{ℋ : State.Trait} (Unit : Set) : Set :=
-  M.Val (Length.t (Unit := Unit)).
+Definition Length (Unit : Set) : Set := M.Val (Length.t (Unit := Unit)).
 
-Module  Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
-Section Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
-  Context `{ℋ : State.Trait}.
-  
+Module  Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Length_t_Unit.
+Section Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Length_t_Unit.
   Context {Unit : Set}.
   
   Context {ℋ_0 : core.fmt.Debug.Trait Unit}.
   
-  Definition Self : Set :=
-    generics_phantom_type_test_case_unit_clarification.Length Unit.
+  Ltac Self :=
+    exact (generics_phantom_type_test_case_unit_clarification.Length.t Unit).
   
   Parameter fmt :
-      (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
+      (M.Val (ref ltac:(Self))) ->
+        (M.Val (mut_ref core.fmt.Formatter.t)) ->
+        M (M.Val ltac:(core.fmt.Result)).
   
-  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {
+  Global Instance AssociatedFunction_fmt :
+    Notation.DoubleColon ltac:(Self) "fmt" := {
     Notation.double_colon := fmt;
   }.
   
-  Global Instance ℐ : core.fmt.Debug.Trait Self := {
+  Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
     core.fmt.Debug.fmt := fmt;
   }.
-End Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
-End Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
+End Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Length_t_Unit.
+End Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Length_t_Unit.
 
-Module  Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
-Section Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
-  Context `{ℋ : State.Trait}.
-  
+Module  Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Length_t_Unit.
+Section Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Length_t_Unit.
   Context {Unit : Set}.
   
   Context {ℋ_0 : core.clone.Clone.Trait Unit}.
   
-  Definition Self : Set :=
-    generics_phantom_type_test_case_unit_clarification.Length Unit.
+  Ltac Self :=
+    exact (generics_phantom_type_test_case_unit_clarification.Length.t Unit).
   
   Parameter clone :
-      (ref Self) ->
-        M (generics_phantom_type_test_case_unit_clarification.Length Unit).
+      (M.Val (ref ltac:(Self))) ->
+        M
+          (M.Val
+            (generics_phantom_type_test_case_unit_clarification.Length.t Unit)).
   
   Global Instance AssociatedFunction_clone :
-    Notation.DoubleColon Self "clone" := {
+    Notation.DoubleColon ltac:(Self) "clone" := {
     Notation.double_colon := clone;
   }.
   
-  Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
+  Global Instance ℐ : core.clone.Clone.Required.Trait ltac:(Self) := {
     core.clone.Clone.clone := clone;
     core.clone.Clone.clone_from := Datatypes.None;
   }.
-End Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
-End Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
+End Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Length_t_Unit.
+End Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Length_t_Unit.
 
-Module  Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
-Section Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
-  Context `{ℋ : State.Trait}.
-  
+Module  Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Length_t_Unit.
+Section Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Length_t_Unit.
   Context {Unit : Set}.
   
   Context {ℋ_0 : core.marker.Copy.Trait Unit}.
   
-  Definition Self : Set :=
-    generics_phantom_type_test_case_unit_clarification.Length Unit.
+  Ltac Self :=
+    exact (generics_phantom_type_test_case_unit_clarification.Length.t Unit).
   
-  Global Instance ℐ : core.marker.Copy.Trait Self := {
+  Global Instance ℐ : core.marker.Copy.Trait ltac:(Self) := {
   }.
-End Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
-End Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
+End Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Length_t_Unit.
+End Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Length_t_Unit.
 
-Module  Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
-Section Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
-  Context `{ℋ : State.Trait}.
-  
+Module  Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarification_Length_t_Unit.
+Section Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarification_Length_t_Unit.
   Context {Unit : Set}.
   
-  Definition Self : Set :=
-    generics_phantom_type_test_case_unit_clarification.Length Unit.
+  Ltac Self :=
+    exact (generics_phantom_type_test_case_unit_clarification.Length.t Unit).
   
   Definition Output : Set :=
-    generics_phantom_type_test_case_unit_clarification.Length Unit.
+    generics_phantom_type_test_case_unit_clarification.Length.t Unit.
   
   Parameter add :
-      Self ->
-        (generics_phantom_type_test_case_unit_clarification.Length Unit) ->
-        M (generics_phantom_type_test_case_unit_clarification.Length Unit).
+      (M.Val ltac:(Self)) ->
+        (M.Val
+          (generics_phantom_type_test_case_unit_clarification.Length.t Unit))
+        ->
+        M
+          (M.Val
+            (generics_phantom_type_test_case_unit_clarification.Length.t Unit)).
   
-  Global Instance AssociatedFunction_add : Notation.DoubleColon Self "add" := {
+  Global Instance AssociatedFunction_add :
+    Notation.DoubleColon ltac:(Self) "add" := {
     Notation.double_colon := add;
   }.
   
   Global Instance ℐ :
-    core.ops.arith.Add.Trait Self
-      (Rhs := core.ops.arith.Add.Default.Rhs Self) := {
+    core.ops.arith.Add.Trait ltac:(Self)
+      (Rhs := core.ops.arith.Add.Default.Rhs ltac:(Self)) := {
     core.ops.arith.Add.Output := Output;
     core.ops.arith.Add.add := add;
   }.
-End Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
-End Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
+End Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarification_Length_t_Unit.
+End Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarification_Length_t_Unit.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{ℋ : State.Trait}, M unit.
+Parameter main : M (M.Val unit).

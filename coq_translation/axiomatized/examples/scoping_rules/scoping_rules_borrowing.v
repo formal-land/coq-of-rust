@@ -2,10 +2,10 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Parameter eat_box_i32 :
-    forall `{ℋ : State.Trait},
-    (alloc.boxed.Box i32 alloc.boxed.Box.Default.A) -> M unit.
+    (M.Val (alloc.boxed.Box.t i32.t alloc.boxed.Box.Default.A)) ->
+      M (M.Val unit).
 
-Parameter borrow_i32 : forall `{ℋ : State.Trait}, (ref i32) -> M unit.
+Parameter borrow_i32 : (M.Val (ref i32.t)) -> M (M.Val unit).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{ℋ : State.Trait}, M unit.
+Parameter main : M (M.Val unit).

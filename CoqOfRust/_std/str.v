@@ -453,7 +453,7 @@ Module FromStr_instances.
   Global Instance for_u64 : FromStr.Trait u64.
   Admitted.
 
-  Global Instance for_u128 : FromStr.Trait u128.
+  Global Instance for_u128 : FromStr.Trait u128.t.
   Admitted.
 
   Global Instance for_usize : FromStr.Trait usize.

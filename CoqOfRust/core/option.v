@@ -53,14 +53,14 @@ Definition Option (T : Set) : Set :=
 Module Impl_Option. Section Impl_Option.
   Context {T : Set}.
 
-  Definition Self : Set := Option T.
+  Definition Self : Set := Option.t T.
 
   Definition unwrap_or_default {H0 : core.default.Default.Trait T}
-      (self : Self) : M T :=
+      (self : M.Val Self) : M (M.Val T) :=
     let* self := M.read self in
     match self with
     | Option.None => core.default.Default.default (Self := T)
-    | Option.Some x => M.pure x
+    | Option.Some x => M.alloc x
     end.
 
   Global Instance AF_unwrap_or_default {H0 : core.default.Default.Trait T} :

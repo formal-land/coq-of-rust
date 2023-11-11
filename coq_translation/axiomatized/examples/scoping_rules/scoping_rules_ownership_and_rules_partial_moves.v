@@ -2,49 +2,48 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{ℋ : State.Trait}, M unit.
+Parameter main : M (M.Val unit).
 
 Module  Person.
 Section Person.
-  Context `{ℋ : State.Trait}.
-  
   Record t : Set := {
-    name : alloc.string.String;
-    age : alloc.boxed.Box u8 alloc.boxed.Box.Default.A;
+    name : alloc.string.String.t;
+    age : alloc.boxed.Box.t u8.t alloc.boxed.Box.Default.A;
   }.
   
   Global Instance Get_name : Notation.Dot "name" := {
-    Notation.dot x := let* x := M.read x in M.pure x.(name) : M _;
+    Notation.dot x := let* x := M.read x in M.alloc x.(name) : M _;
   }.
   Global Instance Get_AF_name : Notation.DoubleColon t "name" := {
-    Notation.double_colon x := let* x := M.read x in M.pure x.(name) : M _;
+    Notation.double_colon x := let* x := M.read x in M.alloc x.(name) : M _;
   }.
   Global Instance Get_age : Notation.Dot "age" := {
-    Notation.dot x := let* x := M.read x in M.pure x.(age) : M _;
+    Notation.dot x := let* x := M.read x in M.alloc x.(age) : M _;
   }.
   Global Instance Get_AF_age : Notation.DoubleColon t "age" := {
-    Notation.double_colon x := let* x := M.read x in M.pure x.(age) : M _;
+    Notation.double_colon x := let* x := M.read x in M.alloc x.(age) : M _;
   }.
 End Person.
 End Person.
-Definition Person `{ℋ : State.Trait} : Set := M.Val Person.t.
+Definition Person : Set := M.Val Person.t.
 
-Module  Impl_core_fmt_Debug_for_scoping_rules_ownership_and_rules_partial_moves_main_Person.
-Section Impl_core_fmt_Debug_for_scoping_rules_ownership_and_rules_partial_moves_main_Person.
-  Context `{ℋ : State.Trait}.
-  
-  Definition Self : Set :=
-    scoping_rules_ownership_and_rules_partial_moves.main.Person.
+Module  Impl_core_fmt_Debug_for_scoping_rules_ownership_and_rules_partial_moves_main_Person_t.
+Section Impl_core_fmt_Debug_for_scoping_rules_ownership_and_rules_partial_moves_main_Person_t.
+  Ltac Self :=
+    exact scoping_rules_ownership_and_rules_partial_moves.main.Person.t.
   
   Parameter fmt :
-      (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
+      (M.Val (ref ltac:(Self))) ->
+        (M.Val (mut_ref core.fmt.Formatter.t)) ->
+        M (M.Val ltac:(core.fmt.Result)).
   
-  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {
+  Global Instance AssociatedFunction_fmt :
+    Notation.DoubleColon ltac:(Self) "fmt" := {
     Notation.double_colon := fmt;
   }.
   
-  Global Instance ℐ : core.fmt.Debug.Trait Self := {
+  Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
     core.fmt.Debug.fmt := fmt;
   }.
-End Impl_core_fmt_Debug_for_scoping_rules_ownership_and_rules_partial_moves_main_Person.
-End Impl_core_fmt_Debug_for_scoping_rules_ownership_and_rules_partial_moves_main_Person.
+End Impl_core_fmt_Debug_for_scoping_rules_ownership_and_rules_partial_moves_main_Person_t.
+End Impl_core_fmt_Debug_for_scoping_rules_ownership_and_rules_partial_moves_main_Person_t.

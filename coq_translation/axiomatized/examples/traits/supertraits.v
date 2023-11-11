@@ -3,10 +3,8 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module  Person.
 Section Person.
-  Context `{ℋ : State.Trait}.
-  
   Class Trait (Self : Set) : Type := {
-    name : (ref Self) -> M alloc.string.String;
+    name : (ref ltac:(Self)) -> M alloc.string.String.t;
   }.
   
 End Person.
@@ -14,11 +12,9 @@ End Person.
 
 Module  Student.
 Section Student.
-  Context `{ℋ : State.Trait}.
-  
   Class Trait (Self : Set) : Type := {
     ℒ_0 :: supertraits.Person.Trait Self;
-    university : (ref Self) -> M alloc.string.String;
+    university : (ref ltac:(Self)) -> M alloc.string.String.t;
   }.
   
 End Student.
@@ -26,10 +22,8 @@ End Student.
 
 Module  Programmer.
 Section Programmer.
-  Context `{ℋ : State.Trait}.
-  
   Class Trait (Self : Set) : Type := {
-    fav_language : (ref Self) -> M alloc.string.String;
+    fav_language : (ref ltac:(Self)) -> M alloc.string.String.t;
   }.
   
 End Programmer.
@@ -37,23 +31,17 @@ End Programmer.
 
 Module  CompSciStudent.
 Section CompSciStudent.
-  Context `{ℋ : State.Trait}.
-  
   Class Trait (Self : Set) : Type := {
     ℒ_0 :: supertraits.Programmer.Trait Self;
     ℒ_1 :: supertraits.Student.Trait Self;
-    git_username : (ref Self) -> M alloc.string.String;
+    git_username : (ref ltac:(Self)) -> M alloc.string.String.t;
   }.
   
 End CompSciStudent.
 End CompSciStudent.
 
 Parameter comp_sci_student_greeting :
-    forall
-      `{ℋ : State.Trait}
-      {DynT : Set}
-      {ℋ_0 : supertraits.CompSciStudent.Trait DynT},
-    (ref DynT) -> M alloc.string.String.
+    (M.Val (ref _ (* dyn *))) -> M (M.Val alloc.string.String.t).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{ℋ : State.Trait}, M unit.
+Parameter main : M (M.Val unit).

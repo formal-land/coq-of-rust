@@ -2,24 +2,27 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module VeryVerboseEnumOfThingsToDoWithNumbers.
-  Inductive t `{ℋ : State.Trait} : Set :=
+  Inductive t : Set :=
   | Add
   | Subtract.
 End VeryVerboseEnumOfThingsToDoWithNumbers.
-Definition VeryVerboseEnumOfThingsToDoWithNumbers `{ℋ : State.Trait} : Set :=
+Definition VeryVerboseEnumOfThingsToDoWithNumbers : Set :=
   M.Val VeryVerboseEnumOfThingsToDoWithNumbers.t.
 
-Module  Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers.
-Section Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers.
-  Context `{ℋ : State.Trait}.
+Module  Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers_t.
+Section Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers_t.
+  Ltac Self :=
+    exact enums_type_aliases_v2.VeryVerboseEnumOfThingsToDoWithNumbers.t.
   
-  Definition Self : Set :=
-    enums_type_aliases_v2.VeryVerboseEnumOfThingsToDoWithNumbers.
+  Parameter run :
+      (M.Val (ref ltac:(Self))) ->
+        (M.Val i32.t) ->
+        (M.Val i32.t) ->
+        M (M.Val i32.t).
   
-  Parameter run : (ref Self) -> i32 -> i32 -> M i32.
-  
-  Global Instance AssociatedFunction_run : Notation.DoubleColon Self "run" := {
+  Global Instance AssociatedFunction_run :
+    Notation.DoubleColon ltac:(Self) "run" := {
     Notation.double_colon := run;
   }.
-End Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers.
-End Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers.
+End Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers_t.
+End Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers_t.

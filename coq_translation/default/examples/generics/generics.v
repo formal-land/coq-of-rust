@@ -3,32 +3,26 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module  A.
 Section A.
-  Context `{ℋ : State.Trait}.
-  
   Inductive t : Set := Build.
 End A.
 End A.
-Definition A `{ℋ : State.Trait} := M.Val A.t.
+Definition A := M.Val A.t.
 
 Module  Single.
 Section Single.
-  Context `{ℋ : State.Trait}.
-  
   Record t : Set := {
-    x0 : generics.A;
+    x0 : generics.A.t;
   }.
   
   Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
+    Notation.dot x := let* x := M.read x in M.alloc x.(x0) : M _;
   }.
 End Single.
 End Single.
-Definition Single `{ℋ : State.Trait} : Set := M.Val Single.t.
+Definition Single : Set := M.Val Single.t.
 
 Module  SingleGen.
 Section SingleGen.
-  Context `{ℋ : State.Trait}.
-  
   Context {T : Set}.
   
   Record t : Set := {
@@ -36,29 +30,35 @@ Section SingleGen.
   }.
   
   Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
+    Notation.dot x := let* x := M.read x in M.alloc x.(x0) : M _;
   }.
 End SingleGen.
 End SingleGen.
-Definition SingleGen `{ℋ : State.Trait} (T : Set) : Set :=
-  M.Val (SingleGen.t (T := T)).
+Definition SingleGen (T : Set) : Set := M.Val (SingleGen.t (T := T)).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{ℋ : State.Trait} : M unit :=
+Definition main : M (M.Val unit) :=
   M.function_body
-    (let* _s : ltac:(refine generics.Single) :=
-      let* α0 : ltac:(refine generics.A) := M.alloc generics.A.Build_t in
-      M.alloc (generics.Single.Build_t α0) in
-    let* _char : ltac:(refine (generics.SingleGen char)) :=
-      let* α0 : ltac:(refine char) := M.alloc "a"%char in
-      M.alloc (generics.SingleGen.Build_t α0) in
-    let* _t : ltac:(refine (generics.SingleGen generics.A)) :=
-      let* α0 : ltac:(refine generics.A) := M.alloc generics.A.Build_t in
-      M.alloc (generics.SingleGen.Build_t α0) in
-    let* _i32 : ltac:(refine (generics.SingleGen i32)) :=
-      let* α0 : ltac:(refine i32) := M.alloc 6 in
-      M.alloc (generics.SingleGen.Build_t α0) in
-    let* _char : ltac:(refine (generics.SingleGen char)) :=
-      let* α0 : ltac:(refine char) := M.alloc "a"%char in
-      M.alloc (generics.SingleGen.Build_t α0) in
+    (let* _s : ltac:(refine (M.Val generics.Single.t)) :=
+      let* α0 : ltac:(refine (M.Val generics.A.t)) :=
+        M.alloc generics.A.Build_t in
+      let* α1 := M.read α0 in
+      M.alloc (generics.Single.Build_t α1) in
+    let* _char : ltac:(refine (M.Val (generics.SingleGen.t char.t))) :=
+      let* α0 : ltac:(refine (M.Val char.t)) := M.alloc "a"%char in
+      let* α1 := M.read α0 in
+      M.alloc (generics.SingleGen.Build_t α1) in
+    let* _t : ltac:(refine (M.Val (generics.SingleGen.t generics.A.t))) :=
+      let* α0 : ltac:(refine (M.Val generics.A.t)) :=
+        M.alloc generics.A.Build_t in
+      let* α1 := M.read α0 in
+      M.alloc (generics.SingleGen.Build_t α1) in
+    let* _i32 : ltac:(refine (M.Val (generics.SingleGen.t i32.t))) :=
+      let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 6 in
+      let* α1 := M.read α0 in
+      M.alloc (generics.SingleGen.Build_t α1) in
+    let* _char : ltac:(refine (M.Val (generics.SingleGen.t char.t))) :=
+      let* α0 : ltac:(refine (M.Val char.t)) := M.alloc "a"%char in
+      let* α1 := M.read α0 in
+      M.alloc (generics.SingleGen.Build_t α1) in
     M.alloc tt).

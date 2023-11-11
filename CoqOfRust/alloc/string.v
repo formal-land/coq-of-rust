@@ -58,7 +58,7 @@ End ToString.
 
 (* The String type (Struct std::string::String) and it's methods  *)
 Module StringType.
-  Definition from (str_from: str) : M str :=
+  Definition from (str_from : M.Val str) : M (M.Val str) :=
     M.pure str_from.
 
   (* The String type (Struct std::string::String) and it's methods  *)

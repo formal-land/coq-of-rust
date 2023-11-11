@@ -348,7 +348,7 @@ Module arith.
   Module Not.
     Class Trait (Self : Set) : Type := {
       Output : Set;
-      not : Self -> M Output;
+      not : M.Val Self -> M (M.Val Output);
     }.
 
     Global Instance Method_not `(Trait) :
@@ -534,7 +534,7 @@ Module Impl_Neg_for_Z.
 End Impl_Neg_for_Z. *)
 
 Module Impl_Not_for_bool.
-  Definition not (b : bool) : M bool :=
+  Definition not (b : M.Val bool) : M (M.Val bool) :=
     let* b := M.read b in
     M.alloc (negb b).
 
@@ -595,8 +595,6 @@ Module control_flow.
     Arguments Continue {_ _}.
     Arguments Break {_ _}.
   End ControlFlow.
-  Definition ControlFlow (B C : Set) : Set :=
-    M.Val (ControlFlow.t B C).
 End control_flow.
 
 Module try_trait.
@@ -614,16 +612,19 @@ Module try_trait.
     Class Trait (Self : Set) : Type := {
       Output : Set;
       Residual : Set;
-      from_output : Output -> M Self;
-      branch : Self -> M (control_flow.ControlFlow Residual Output);
+      from_output : M.Val Output -> M (M.Val Self);
+      branch :
+        M.Val Self ->
+        M (M.Val (control_flow.ControlFlow.t Residual Output));
     }.
 
     Module Impl.
       Global Instance for_Result (T E : Set) :
-          Trait (core.result.Result T E) := {
+          Trait (core.result.Result.t T E) := {
         Output := T;
-        Residual := core.result.Result core.convert.Infallible E;
+        Residual := core.result.Result.t core.convert.Infallible.t E;
         from_output output :=
+          let* output := M.read output in
           M.alloc (core.result.Result.Ok output);
         branch self :=
           let* self := M.read self in
@@ -631,7 +632,7 @@ Module try_trait.
           | core.result.Result.Ok v =>
             M.alloc (control_flow.ControlFlow.Continue v)
           | core.result.Result.Err e =>
-            let* result := M.alloc (core.result.Result.Err e) in
+            let result := core.result.Result.Err e in
             M.alloc (control_flow.ControlFlow.Break result)
           end;
       }.
@@ -646,22 +647,22 @@ Module try_trait.
   *)
   Module FromResidual.
     Class Trait (Self : Set) {R : Set} : Type := {
-      from_residual : R -> M Self;
+      from_residual : M.Val R -> M (M.Val Self);
     }.
 
     Module Impl.
       Global Instance for_Result (T E F : Set)
           {H0 : core.convert.From.Trait F (T := E)} :
-          Trait (core.result.Result T F)
-            (R := core.result.Result core.convert.Infallible E) := {
+          Trait (core.result.Result.t T F)
+            (R := core.result.Result.t core.convert.Infallible.t E) := {
         from_residual residual :=
           axiom "from_residual";
       }.
 
       (* Special case for when the From is the identity, to help the type-checker. *)
       Global Instance for_Result_id (T E : Set) :
-          Trait (core.result.Result T E)
-            (R := core.result.Result core.convert.Infallible E) := {
+          Trait (core.result.Result.t T E)
+            (R := core.result.Result.t core.convert.Infallible.t E) := {
         from_residual residual :=
           axiom "from_residual";
       }.

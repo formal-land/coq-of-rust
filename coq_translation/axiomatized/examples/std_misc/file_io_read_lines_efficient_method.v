@@ -2,15 +2,13 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{ℋ : State.Trait}, M unit.
+Parameter main : M (M.Val unit).
 
 Parameter read_lines :
-    forall
-      `{ℋ : State.Trait}
-      {P : Set}
-      {ℋ_0 : core.convert.AsRef.Trait P (T := std.path.Path)},
-    P ->
+    forall {P : Set} {ℋ_0 : core.convert.AsRef.Trait P (T := std.path.Path.t)},
+    (M.Val P) ->
       M
-        ltac:(std.io.error.Result
-          constr:(std.io.Lines
-            (std.io.buffered.bufreader.BufReader std.fs.File))).
+        (M.Val
+          ltac:(std.io.error.Result
+            (std.io.Lines.t
+              (std.io.buffered.bufreader.BufReader.t std.fs.File.t)))).

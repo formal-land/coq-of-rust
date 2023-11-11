@@ -48,7 +48,7 @@ Module Hasher.
   write_u64 : mut_ref Self -> u64 -> unit;
 
   (* fn write_u128(&mut self, i: u128) { ... } *)
-  write_u128 : mut_ref Self -> u128 -> unit;
+  write_u128 : mut_ref Self -> M.Val u128.t -> unit;
 
   (* fn write_usize(&mut self, i: usize) { ... } *)
   write_usize : mut_ref Self -> usize -> unit;

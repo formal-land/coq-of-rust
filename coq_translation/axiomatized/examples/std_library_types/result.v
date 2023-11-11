@@ -3,90 +3,87 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module checked.
   Module MathError.
-    Inductive t `{ℋ : State.Trait} : Set :=
+    Inductive t : Set :=
     | DivisionByZero
     | NonPositiveLogarithm
     | NegativeSquareRoot.
   End MathError.
-  Definition MathError `{ℋ : State.Trait} : Set := M.Val MathError.t.
+  Definition MathError : Set := M.Val MathError.t.
   
-  Module  Impl_core_fmt_Debug_for_result_checked_MathError.
-  Section Impl_core_fmt_Debug_for_result_checked_MathError.
-    Context `{ℋ : State.Trait}.
-    
-    Definition Self : Set := result.checked.MathError.
+  Module  Impl_core_fmt_Debug_for_result_checked_MathError_t.
+  Section Impl_core_fmt_Debug_for_result_checked_MathError_t.
+    Ltac Self := exact result.checked.MathError.t.
     
     Parameter fmt :
-        (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
+        (M.Val (ref ltac:(Self))) ->
+          (M.Val (mut_ref core.fmt.Formatter.t)) ->
+          M (M.Val ltac:(core.fmt.Result)).
     
     Global Instance AssociatedFunction_fmt :
-      Notation.DoubleColon Self "fmt" := {
+      Notation.DoubleColon ltac:(Self) "fmt" := {
       Notation.double_colon := fmt;
     }.
     
-    Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
       core.fmt.Debug.fmt := fmt;
     }.
-  End Impl_core_fmt_Debug_for_result_checked_MathError.
-  End Impl_core_fmt_Debug_for_result_checked_MathError.
+  End Impl_core_fmt_Debug_for_result_checked_MathError_t.
+  End Impl_core_fmt_Debug_for_result_checked_MathError_t.
   
-  Ltac MathResult := refine (core.result.Result f64 result.checked.MathError).
+  Ltac MathResult :=
+    exact (core.result.Result.t f64.t result.checked.MathError.t).
   
   Parameter div :
-      forall `{ℋ : State.Trait},
-      f64 -> f64 -> M ltac:(result.checked.MathResult).
+      (M.Val f64.t) ->
+        (M.Val f64.t) ->
+        M (M.Val ltac:(result.checked.MathResult)).
   
-  Parameter sqrt :
-      forall `{ℋ : State.Trait},
-      f64 -> M ltac:(result.checked.MathResult).
+  Parameter sqrt : (M.Val f64.t) -> M (M.Val ltac:(result.checked.MathResult)).
   
-  Parameter ln :
-      forall `{ℋ : State.Trait},
-      f64 -> M ltac:(result.checked.MathResult).
+  Parameter ln : (M.Val f64.t) -> M (M.Val ltac:(result.checked.MathResult)).
 End checked.
 
 Module MathError.
-  Inductive t `{ℋ : State.Trait} : Set :=
+  Inductive t : Set :=
   | DivisionByZero
   | NonPositiveLogarithm
   | NegativeSquareRoot.
 End MathError.
-Definition MathError `{ℋ : State.Trait} : Set := M.Val MathError.t.
+Definition MathError : Set := M.Val MathError.t.
 
-Module  Impl_core_fmt_Debug_for_result_checked_MathError.
-Section Impl_core_fmt_Debug_for_result_checked_MathError.
-  Context `{ℋ : State.Trait}.
-  
-  Definition Self : Set := result.checked.MathError.
+Module  Impl_core_fmt_Debug_for_result_checked_MathError_t.
+Section Impl_core_fmt_Debug_for_result_checked_MathError_t.
+  Ltac Self := exact result.checked.MathError.t.
   
   Parameter fmt :
-      (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
+      (M.Val (ref ltac:(Self))) ->
+        (M.Val (mut_ref core.fmt.Formatter.t)) ->
+        M (M.Val ltac:(core.fmt.Result)).
   
-  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {
+  Global Instance AssociatedFunction_fmt :
+    Notation.DoubleColon ltac:(Self) "fmt" := {
     Notation.double_colon := fmt;
   }.
   
-  Global Instance ℐ : core.fmt.Debug.Trait Self := {
+  Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
     core.fmt.Debug.fmt := fmt;
   }.
-End Impl_core_fmt_Debug_for_result_checked_MathError.
-End Impl_core_fmt_Debug_for_result_checked_MathError.
+End Impl_core_fmt_Debug_for_result_checked_MathError_t.
+End Impl_core_fmt_Debug_for_result_checked_MathError_t.
 
-Ltac MathResult := refine (core.result.Result f64 result.checked.MathError).
+Ltac MathResult :=
+  exact (core.result.Result.t f64.t result.checked.MathError.t).
 
 Parameter div :
-    forall `{ℋ : State.Trait},
-    f64 -> f64 -> M ltac:(result.checked.MathResult).
+    (M.Val f64.t) ->
+      (M.Val f64.t) ->
+      M (M.Val ltac:(result.checked.MathResult)).
 
-Parameter sqrt :
-    forall `{ℋ : State.Trait},
-    f64 -> M ltac:(result.checked.MathResult).
+Parameter sqrt : (M.Val f64.t) -> M (M.Val ltac:(result.checked.MathResult)).
 
-Parameter ln :
-    forall `{ℋ : State.Trait},
-    f64 -> M ltac:(result.checked.MathResult).
+Parameter ln : (M.Val f64.t) -> M (M.Val ltac:(result.checked.MathResult)).
 
-Parameter op : forall `{ℋ : State.Trait}, f64 -> f64 -> M f64.
+Parameter op : (M.Val f64.t) -> (M.Val f64.t) -> M (M.Val f64.t).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{ℋ : State.Trait}, M unit.
+Parameter main : M (M.Val unit).
