@@ -41,10 +41,21 @@ Module  Impl_generics_associated_types_solution_Contains_for_generics_associated
 Section Impl_generics_associated_types_solution_Contains_for_generics_associated_types_solution_Container_t.
   Ltac Self := exact generics_associated_types_solution.Container.t.
   
+  (*
+      type A = i32;
+  *)
   Definition A : Set := i32.t.
   
+  (*
+      type B = i32;
+  *)
   Definition B : Set := i32.t.
   
+  (*
+      fn contains(&self, number_1: &i32, number_2: &i32) -> bool {
+          (&self.0 == number_1) && (&self.1 == number_2)
+      }
+  *)
   Parameter contains :
       (M.Val (ref ltac:(Self))) ->
         (M.Val (ref i32.t)) ->
@@ -56,6 +67,11 @@ Section Impl_generics_associated_types_solution_Contains_for_generics_associated
     Notation.double_colon := contains;
   }.
   
+  (*
+      fn first(&self) -> i32 {
+          self.0
+      }
+  *)
   Parameter first : (M.Val (ref ltac:(Self))) -> M (M.Val i32.t).
   
   Global Instance AssociatedFunction_first :
@@ -63,6 +79,11 @@ Section Impl_generics_associated_types_solution_Contains_for_generics_associated
     Notation.double_colon := first;
   }.
   
+  (*
+      fn last(&self) -> i32 {
+          self.1
+      }
+  *)
   Parameter last : (M.Val (ref ltac:(Self))) -> M (M.Val i32.t).
   
   Global Instance AssociatedFunction_last :
@@ -70,6 +91,11 @@ Section Impl_generics_associated_types_solution_Contains_for_generics_associated
     Notation.double_colon := last;
   }.
   
+  (*
+      fn a(&self) -> i32 {
+          self.0
+      }
+  *)
   Parameter a : (M.Val (ref ltac:(Self))) -> M (M.Val i32.t).
   
   Global Instance AssociatedFunction_a :
@@ -89,17 +115,46 @@ Section Impl_generics_associated_types_solution_Contains_for_generics_associated
 End Impl_generics_associated_types_solution_Contains_for_generics_associated_types_solution_Container_t.
 End Impl_generics_associated_types_solution_Contains_for_generics_associated_types_solution_Container_t.
 
+(*
+fn difference<C: Contains>(container: &C) -> i32 {
+    container.last() - container.first()
+}
+*)
 Parameter difference :
     forall
       {C : Set}
       {ℋ_0 : generics_associated_types_solution.Contains.Trait C},
     (M.Val (ref C)) -> M (M.Val i32.t).
 
+(*
+fn get_a<C: Contains>(container: &C) -> C::A {
+    container.a()
+}
+*)
 Parameter get_a :
     forall
       {C : Set}
       {ℋ_0 : generics_associated_types_solution.Contains.Trait C},
     (M.Val (ref C)) -> M (M.Val C::type["A"].t).
 
+(*
+fn main() {
+    let number_1 = 3;
+    let number_2 = 10;
+
+    let container = Container(number_1, number_2);
+
+    println!(
+        "Does container contain {} and {}: {}",
+        &number_1,
+        &number_2,
+        container.contains(&number_1, &number_2)
+    );
+    println!("First number: {}", container.first());
+    println!("Last number: {}", container.last());
+
+    println!("The difference is: {}", difference(&container));
+}
+*)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : M (M.Val unit).

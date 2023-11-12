@@ -29,6 +29,11 @@ Module  Impl_generics_new_type_idiom_Years_t.
 Section Impl_generics_new_type_idiom_Years_t.
   Ltac Self := exact generics_new_type_idiom.Years.t.
   
+  (*
+      pub fn to_days(&self) -> Days {
+          Days(self.0 * 365)
+      }
+  *)
   Parameter to_days :
       (M.Val (ref ltac:(Self))) -> M (M.Val generics_new_type_idiom.Days.t).
   
@@ -43,6 +48,11 @@ Module  Impl_generics_new_type_idiom_Days_t.
 Section Impl_generics_new_type_idiom_Days_t.
   Ltac Self := exact generics_new_type_idiom.Days.t.
   
+  (*
+      pub fn to_years(&self) -> Years {
+          Years(self.0 / 365)
+      }
+  *)
   Parameter to_years :
       (M.Val (ref ltac:(Self))) -> M (M.Val generics_new_type_idiom.Years.t).
   
@@ -53,8 +63,22 @@ Section Impl_generics_new_type_idiom_Days_t.
 End Impl_generics_new_type_idiom_Days_t.
 End Impl_generics_new_type_idiom_Days_t.
 
+(*
+fn old_enough(age: &Years) -> bool {
+    age.0 >= 18
+}
+*)
 Parameter old_enough :
     (M.Val (ref generics_new_type_idiom.Years.t)) -> M (M.Val bool.t).
 
+(*
+fn main() {
+    let age = Years(5);
+    let age_days = age.to_days();
+    println!("Old enough {}", old_enough(&age));
+    println!("Old enough {}", old_enough(&age_days.to_years()));
+    // println!("Old enough {}", old_enough(&age_days));
+}
+*)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : M (M.Val unit).

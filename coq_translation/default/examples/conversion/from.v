@@ -20,6 +20,11 @@ Module  Impl_core_convert_From_i32_t_for_from_Number_t.
 Section Impl_core_convert_From_i32_t_for_from_Number_t.
   Ltac Self := exact from.Number.t.
   
+  (*
+      fn from(item: i32) -> Self {
+          Number { value: item }
+      }
+  *)
   Definition from (item : M.Val i32.t) : M (M.Val ltac:(Self)) :=
     M.function_body
       (let* α0 := M.read item in
@@ -36,6 +41,11 @@ Section Impl_core_convert_From_i32_t_for_from_Number_t.
 End Impl_core_convert_From_i32_t_for_from_Number_t.
 End Impl_core_convert_From_i32_t_for_from_Number_t.
 
+(*
+fn main() {
+    Number::from(30);
+}
+*)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M (M.Val unit) :=
   M.function_body

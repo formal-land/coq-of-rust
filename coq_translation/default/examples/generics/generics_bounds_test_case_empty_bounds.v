@@ -57,6 +57,11 @@ Section Impl_generics_bounds_test_case_empty_bounds_Blue_for_generics_bounds_tes
 End Impl_generics_bounds_test_case_empty_bounds_Blue_for_generics_bounds_test_case_empty_bounds_BlueJay_t.
 End Impl_generics_bounds_test_case_empty_bounds_Blue_for_generics_bounds_test_case_empty_bounds_BlueJay_t.
 
+(*
+fn red<T: Red>(_: &T) -> &'static str {
+    "red"
+}
+*)
 Definition red
     {T : Set}
     {ℋ_0 : generics_bounds_test_case_empty_bounds.Red.Trait T}
@@ -64,6 +69,11 @@ Definition red
     : M (M.Val (ref str.t)) :=
   M.function_body (M.pure (mk_str "red")).
 
+(*
+fn blue<T: Blue>(_: &T) -> &'static str {
+    "blue"
+}
+*)
 Definition blue
     {T : Set}
     {ℋ_0 : generics_bounds_test_case_empty_bounds.Blue.Trait T}
@@ -71,6 +81,20 @@ Definition blue
     : M (M.Val (ref str.t)) :=
   M.function_body (M.pure (mk_str "blue")).
 
+(*
+fn main() {
+    let cardinal = Cardinal;
+    let blue_jay = BlueJay;
+    let _turkey = Turkey;
+
+    // `red()` won't work on a blue jay nor vice versa
+    // because of the bounds.
+    println!("A cardinal is {}", red(&cardinal));
+    println!("A blue jay is {}", blue(&blue_jay));
+    //println!("A turkey is {}", red(&_turkey));
+    // ^ TODO: Try uncommenting this line.
+}
+*)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M (M.Val unit) :=
   M.function_body

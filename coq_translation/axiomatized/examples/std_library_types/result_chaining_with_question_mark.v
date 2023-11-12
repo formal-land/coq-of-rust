@@ -13,6 +13,9 @@ Module checked.
   Section Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError_t.
     Ltac Self := exact result_chaining_with_question_mark.checked.MathError.t.
     
+    (*
+        Debug
+    *)
     Parameter fmt :
         (M.Val (ref ltac:(Self))) ->
           (M.Val (mut_ref core.fmt.Formatter.t)) ->
@@ -35,24 +38,77 @@ Module checked.
         f64.t
         result_chaining_with_question_mark.checked.MathError.t).
   
+  (*
+      fn div(x: f64, y: f64) -> MathResult {
+          if y == 0.0 {
+              Err(MathError::DivisionByZero)
+          } else {
+              Ok(x / y)
+          }
+      }
+  *)
   Parameter div :
       (M.Val f64.t) ->
         (M.Val f64.t) ->
         M (M.Val ltac:(result_chaining_with_question_mark.checked.MathResult)).
   
+  (*
+      fn sqrt(x: f64) -> MathResult {
+          if x < 0.0 {
+              Err(MathError::NegativeSquareRoot)
+          } else {
+              Ok(x.sqrt())
+          }
+      }
+  *)
   Parameter sqrt :
       (M.Val f64.t) ->
         M (M.Val ltac:(result_chaining_with_question_mark.checked.MathResult)).
   
+  (*
+      fn ln(x: f64) -> MathResult {
+          if x <= 0.0 {
+              Err(MathError::NonPositiveLogarithm)
+          } else {
+              Ok(x.ln())
+          }
+      }
+  *)
   Parameter ln :
       (M.Val f64.t) ->
         M (M.Val ltac:(result_chaining_with_question_mark.checked.MathResult)).
   
+  (*
+      fn op_(x: f64, y: f64) -> MathResult {
+          // if `div` "fails", then `DivisionByZero` will be `return`ed
+          let ratio = div(x, y)?;
+  
+          // if `ln` "fails", then `NonPositiveLogarithm` will be `return`ed
+          let ln = ln(ratio)?;
+  
+          sqrt(ln)
+      }
+  *)
   Parameter op_ :
       (M.Val f64.t) ->
         (M.Val f64.t) ->
         M (M.Val ltac:(result_chaining_with_question_mark.checked.MathResult)).
   
+  (*
+      pub fn op(x: f64, y: f64) {
+          match op_(x, y) {
+              Err(why) => panic!(
+                  "{}",
+                  match why {
+                      MathError::NonPositiveLogarithm => "logarithm of non-positive number",
+                      MathError::DivisionByZero => "division by zero",
+                      MathError::NegativeSquareRoot => "square root of negative number",
+                  }
+              ),
+              Ok(value) => println!("{}", value),
+          }
+      }
+  *)
   Parameter op : (M.Val f64.t) -> (M.Val f64.t) -> M (M.Val unit).
 End checked.
 
@@ -67,6 +123,9 @@ Module  Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathE
 Section Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError_t.
   Ltac Self := exact result_chaining_with_question_mark.checked.MathError.t.
   
+  (*
+      Debug
+  *)
   Parameter fmt :
       (M.Val (ref ltac:(Self))) ->
         (M.Val (mut_ref core.fmt.Formatter.t)) ->
@@ -89,25 +148,83 @@ Ltac MathResult :=
       f64.t
       result_chaining_with_question_mark.checked.MathError.t).
 
+(*
+    fn div(x: f64, y: f64) -> MathResult {
+        if y == 0.0 {
+            Err(MathError::DivisionByZero)
+        } else {
+            Ok(x / y)
+        }
+    }
+*)
 Parameter div :
     (M.Val f64.t) ->
       (M.Val f64.t) ->
       M (M.Val ltac:(result_chaining_with_question_mark.checked.MathResult)).
 
+(*
+    fn sqrt(x: f64) -> MathResult {
+        if x < 0.0 {
+            Err(MathError::NegativeSquareRoot)
+        } else {
+            Ok(x.sqrt())
+        }
+    }
+*)
 Parameter sqrt :
     (M.Val f64.t) ->
       M (M.Val ltac:(result_chaining_with_question_mark.checked.MathResult)).
 
+(*
+    fn ln(x: f64) -> MathResult {
+        if x <= 0.0 {
+            Err(MathError::NonPositiveLogarithm)
+        } else {
+            Ok(x.ln())
+        }
+    }
+*)
 Parameter ln :
     (M.Val f64.t) ->
       M (M.Val ltac:(result_chaining_with_question_mark.checked.MathResult)).
 
+(*
+    fn op_(x: f64, y: f64) -> MathResult {
+        // if `div` "fails", then `DivisionByZero` will be `return`ed
+        let ratio = div(x, y)?;
+
+        // if `ln` "fails", then `NonPositiveLogarithm` will be `return`ed
+        let ln = ln(ratio)?;
+
+        sqrt(ln)
+    }
+*)
 Parameter op_ :
     (M.Val f64.t) ->
       (M.Val f64.t) ->
       M (M.Val ltac:(result_chaining_with_question_mark.checked.MathResult)).
 
+(*
+    pub fn op(x: f64, y: f64) {
+        match op_(x, y) {
+            Err(why) => panic!(
+                "{}",
+                match why {
+                    MathError::NonPositiveLogarithm => "logarithm of non-positive number",
+                    MathError::DivisionByZero => "division by zero",
+                    MathError::NegativeSquareRoot => "square root of negative number",
+                }
+            ),
+            Ok(value) => println!("{}", value),
+        }
+    }
+*)
 Parameter op : (M.Val f64.t) -> (M.Val f64.t) -> M (M.Val unit).
 
+(*
+fn main() {
+    checked::op(1.0, 10.0);
+}
+*)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : M (M.Val unit).

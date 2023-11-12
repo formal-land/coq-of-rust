@@ -34,6 +34,9 @@ Module  Impl_core_hash_Hash_for_hash_Person_t.
 Section Impl_core_hash_Hash_for_hash_Person_t.
   Ltac Self := exact hash.Person.t.
   
+  (*
+  Hash
+  *)
   Definition hash
       {__H : Set}
       {ℋ_0 : core.hash.Hasher.Trait __H}
@@ -84,6 +87,13 @@ Section Impl_core_hash_Hash_for_hash_Person_t.
 End Impl_core_hash_Hash_for_hash_Person_t.
 End Impl_core_hash_Hash_for_hash_Person_t.
 
+(*
+fn calculate_hash<T: Hash>(t: &T) -> u64 {
+    let mut s = DefaultHasher::new();
+    t.hash(&mut s);
+    s.finish()
+}
+*)
 Definition calculate_hash
     {T : Set}
     {ℋ_0 : core.hash.Hash.Trait T}
@@ -108,6 +118,22 @@ Definition calculate_hash
         (Trait := ltac:(refine _)))
       α0).
 
+(*
+fn main() {
+    let person1 = Person {
+        id: 5,
+        name: "Janet".to_string(),
+        phone: 555_666_7777,
+    };
+    let person2 = Person {
+        id: 5,
+        name: "Bob".to_string(),
+        phone: 555_666_7777,
+    };
+
+    assert!(calculate_hash(&person1) != calculate_hash(&person2));
+}
+*)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M (M.Val unit) :=
   M.function_body

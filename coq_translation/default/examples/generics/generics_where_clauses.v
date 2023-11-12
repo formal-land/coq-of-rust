@@ -18,6 +18,11 @@ Section Impl_generics_where_clauses_PrintInOption_for_T.
   
   Ltac Self := exact T.
   
+  (*
+      fn print_in_option(self) {
+          println!("{:?}", Some(self));
+      }
+  *)
   Definition print_in_option (self : M.Val ltac:(Self)) : M (M.Val unit) :=
     M.function_body
       (let* _ : ltac:(refine (M.Val unit)) :=
@@ -62,6 +67,13 @@ Section Impl_generics_where_clauses_PrintInOption_for_T.
 End Impl_generics_where_clauses_PrintInOption_for_T.
 End Impl_generics_where_clauses_PrintInOption_for_T.
 
+(*
+fn main() {
+    let vec = vec![1, 2, 3];
+
+    vec.print_in_option();
+}
+*)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M (M.Val unit) :=
   M.function_body

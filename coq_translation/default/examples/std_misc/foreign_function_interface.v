@@ -3,11 +3,30 @@ Require Import CoqOfRust.CoqOfRust.
 
 Error ForeignMod.
 
+(*
+fn cos(z: Complex) -> Complex {
+    unsafe { ccosf(z) }
+}
+*)
 Definition cos
     (z : M.Val foreign_function_interface.Complex.t)
     : M (M.Val foreign_function_interface.Complex.t) :=
   M.function_body ("unimplemented parent_kind" z).
 
+(*
+fn main() {
+    // z = -1 + 0i
+    let z = Complex { re: -1., im: 0. };
+
+    // calling a foreign function is an unsafe operation
+    let z_sqrt = unsafe { csqrtf(z) };
+
+    println!("the square root of {:?} is {:?}", z, z_sqrt);
+
+    // calling safe API wrapped around unsafe operation
+    println!("cos({:?}) = {:?}", z, cos(z));
+}
+*)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M (M.Val unit) :=
   M.function_body
@@ -109,6 +128,9 @@ Module  Impl_core_clone_Clone_for_foreign_function_interface_Complex_t.
 Section Impl_core_clone_Clone_for_foreign_function_interface_Complex_t.
   Ltac Self := exact foreign_function_interface.Complex.t.
   
+  (*
+  Clone
+  *)
   Definition clone
       (self : M.Val (ref ltac:(Self)))
       : M (M.Val foreign_function_interface.Complex.t) :=
@@ -141,6 +163,15 @@ Module  Impl_core_fmt_Debug_for_foreign_function_interface_Complex_t.
 Section Impl_core_fmt_Debug_for_foreign_function_interface_Complex_t.
   Ltac Self := exact foreign_function_interface.Complex.t.
   
+  (*
+      fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+          if self.im < 0. {
+              write!(f, "{}-{}i", self.re, -self.im)
+          } else {
+              write!(f, "{}+{}i", self.re, self.im)
+          }
+      }
+  *)
   Definition fmt
       (self : M.Val (ref ltac:(Self)))
       (f : M.Val (mut_ref core.fmt.Formatter.t))

@@ -29,6 +29,9 @@ Module  Impl_functions_order_SomeType_t.
 Section Impl_functions_order_SomeType_t.
   Ltac Self := exact functions_order.SomeType.t.
   
+  (*
+      fn meth2(self) {}
+  *)
   Definition meth2 (self : M.Val ltac:(Self)) : M (M.Val unit) :=
     M.function_body (M.alloc tt).
   
@@ -37,6 +40,11 @@ Section Impl_functions_order_SomeType_t.
     Notation.double_colon := meth2;
   }.
   
+  (*
+      pub fn meth1(self) {
+          self.meth2();
+      }
+  *)
   Definition meth1 (self : M.Val ltac:(Self)) : M (M.Val unit) :=
     M.function_body
       (let* _ : ltac:(refine (M.Val unit)) :=
@@ -64,6 +72,9 @@ Module  Impl_functions_order_SomeTrait_for_functions_order_SomeType_t.
 Section Impl_functions_order_SomeTrait_for_functions_order_SomeType_t.
   Ltac Self := exact functions_order.SomeType.t.
   
+  (*
+      fn some_trait_bar(&self) {}
+  *)
   Definition some_trait_bar (self : M.Val (ref ltac:(Self))) : M (M.Val unit) :=
     M.function_body (M.alloc tt).
   
@@ -72,6 +83,11 @@ Section Impl_functions_order_SomeTrait_for_functions_order_SomeType_t.
     Notation.double_colon := some_trait_bar;
   }.
   
+  (*
+      fn some_trait_foo(&self) {
+          self.some_trait_bar()
+      }
+  *)
   Definition some_trait_foo (self : M.Val (ref ltac:(Self))) : M (M.Val unit) :=
     M.function_body
       (let* α0 : ltac:(refine (M.Val functions_order.SomeType.t)) :=
@@ -99,6 +115,9 @@ Module  Impl_functions_order_SomeTrait_for_functions_order_OtherType_t.
 Section Impl_functions_order_SomeTrait_for_functions_order_OtherType_t.
   Ltac Self := exact functions_order.OtherType.t.
   
+  (*
+      fn some_trait_foo(&self) {}
+  *)
   Definition some_trait_foo (self : M.Val (ref ltac:(Self))) : M (M.Val unit) :=
     M.function_body (M.alloc tt).
   
@@ -107,6 +126,9 @@ Section Impl_functions_order_SomeTrait_for_functions_order_OtherType_t.
     Notation.double_colon := some_trait_foo;
   }.
   
+  (*
+      fn some_trait_bar(&self) {}
+  *)
   Definition some_trait_bar (self : M.Val (ref ltac:(Self))) : M (M.Val unit) :=
     M.function_body (M.alloc tt).
   
@@ -122,6 +144,12 @@ Section Impl_functions_order_SomeTrait_for_functions_order_OtherType_t.
 End Impl_functions_order_SomeTrait_for_functions_order_OtherType_t.
 End Impl_functions_order_SomeTrait_for_functions_order_OtherType_t.
 
+(*
+fn depends_on_trait_impl(u: u32, b: bool) {
+    OtherType(b).some_trait_foo();
+    SomeType(u).some_trait_foo();
+}
+*)
 Definition depends_on_trait_impl
     (u : M.Val u32.t)
     (b : M.Val bool.t)
@@ -150,16 +178,33 @@ Definition depends_on_trait_impl
     M.alloc tt).
 
 Module inner_mod.
+  (*
+      fn tar() {}
+  *)
   Definition tar : M (M.Val unit) := M.function_body (M.alloc tt).
   
+  (*
+      pub fn bar() {
+          // functions_order::inner_mod::bar
+          tar();
+      }
+  *)
   Definition bar : M (M.Val unit) :=
     M.function_body
       (let* _ : ltac:(refine (M.Val unit)) := functions_order.inner_mod.tar in
       M.alloc tt).
   
   Module nested_mod.
+    (*
+            fn tack() {}
+    *)
     Definition tack : M (M.Val unit) := M.function_body (M.alloc tt).
     
+    (*
+            pub fn tick() {
+                tack();
+            }
+    *)
     Definition tick : M (M.Val unit) :=
       M.function_body
         (let* _ : ltac:(refine (M.Val unit)) :=
@@ -168,16 +213,33 @@ Module inner_mod.
   End nested_mod.
 End inner_mod.
 
+(*
+    pub fn bar() {
+        // functions_order::inner_mod::bar
+        tar();
+    }
+*)
 Definition bar : M (M.Val unit) :=
   M.function_body
     (let* _ : ltac:(refine (M.Val unit)) := functions_order.inner_mod.tar in
     M.alloc tt).
 
+(*
+    fn tar() {}
+*)
 Definition tar : M (M.Val unit) := M.function_body (M.alloc tt).
 
 Module nested_mod.
+  (*
+          fn tack() {}
+  *)
   Definition tack : M (M.Val unit) := M.function_body (M.alloc tt).
   
+  (*
+          pub fn tick() {
+              tack();
+          }
+  *)
   Definition tick : M (M.Val unit) :=
     M.function_body
       (let* _ : ltac:(refine (M.Val unit)) :=
@@ -185,16 +247,35 @@ Module nested_mod.
       M.alloc tt).
 End nested_mod.
 
+(*
+        pub fn tick() {
+            tack();
+        }
+*)
 Definition tick : M (M.Val unit) :=
   M.function_body
     (let* _ : ltac:(refine (M.Val unit)) :=
       functions_order.inner_mod.nested_mod.tack in
     M.alloc tt).
 
+(*
+        fn tack() {}
+*)
 Definition tack : M (M.Val unit) := M.function_body (M.alloc tt).
 
+(*
+fn foo() {}
+*)
 Definition foo : M (M.Val unit) := M.function_body (M.alloc tt).
 
+(*
+fn main() {
+    // functions_order::main
+    foo();
+    inner_mod::bar();
+    SomeType(0).meth1();
+}
+*)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M (M.Val unit) :=
   M.function_body

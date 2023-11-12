@@ -57,15 +57,39 @@ Section Impl_generics_bounds_test_case_empty_bounds_Blue_for_generics_bounds_tes
 End Impl_generics_bounds_test_case_empty_bounds_Blue_for_generics_bounds_test_case_empty_bounds_BlueJay_t.
 End Impl_generics_bounds_test_case_empty_bounds_Blue_for_generics_bounds_test_case_empty_bounds_BlueJay_t.
 
+(*
+fn red<T: Red>(_: &T) -> &'static str {
+    "red"
+}
+*)
 Parameter red :
     forall {T : Set} {ℋ_0 : generics_bounds_test_case_empty_bounds.Red.Trait T},
     (M.Val (ref T)) -> M (M.Val (ref str.t)).
 
+(*
+fn blue<T: Blue>(_: &T) -> &'static str {
+    "blue"
+}
+*)
 Parameter blue :
     forall
       {T : Set}
       {ℋ_0 : generics_bounds_test_case_empty_bounds.Blue.Trait T},
     (M.Val (ref T)) -> M (M.Val (ref str.t)).
 
+(*
+fn main() {
+    let cardinal = Cardinal;
+    let blue_jay = BlueJay;
+    let _turkey = Turkey;
+
+    // `red()` won't work on a blue jay nor vice versa
+    // because of the bounds.
+    println!("A cardinal is {}", red(&cardinal));
+    println!("A blue jay is {}", blue(&blue_jay));
+    //println!("A turkey is {}", red(&_turkey));
+    // ^ TODO: Try uncommenting this line.
+}
+*)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : M (M.Val unit).

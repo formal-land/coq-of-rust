@@ -14,6 +14,9 @@ Module  Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_else_Fruit
 Section Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_else_Fruit_t.
   Ltac Self := exact unpacking_options_and_defaults_via_or_else.Fruit.t.
   
+  (*
+  Debug
+  *)
   Parameter fmt :
       (M.Val (ref ltac:(Self))) ->
         (M.Val (mut_ref core.fmt.Formatter.t)) ->
@@ -30,5 +33,26 @@ Section Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_else_Fruit
 End Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_else_Fruit_t.
 End Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_else_Fruit_t.
 
+(*
+fn main() {
+    let apple = Some(Fruit::Apple);
+    let no_fruit: Option<Fruit> = None;
+    let get_kiwi_as_fallback = || {
+        println!("Providing kiwi as fallback");
+        Some(Fruit::Kiwi)
+    };
+    let get_lemon_as_fallback = || {
+        println!("Providing lemon as fallback");
+        Some(Fruit::Lemon)
+    };
+
+    let first_available_fruit = no_fruit
+        .or_else(get_kiwi_as_fallback)
+        .or_else(get_lemon_as_fallback);
+    println!("first_available_fruit: {:?}", first_available_fruit);
+    // Providing kiwi as fallback
+    // first_available_fruit: Some(Kiwi)
+}
+*)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : M (M.Val unit).

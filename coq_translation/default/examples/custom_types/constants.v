@@ -5,9 +5,29 @@ Definition LANGUAGE : ref str.t := M.run (M.pure (mk_str "Rust")).
 
 Definition THRESHOLD : i32.t := M.run (M.alloc 10).
 
+(*
+fn is_big(n: i32) -> bool {
+    // Access constant in some function
+    n > THRESHOLD
+}
+*)
 Definition is_big (n : M.Val i32.t) : M (M.Val bool.t) :=
   M.function_body (BinOp.gt n constants.THRESHOLD).
 
+(*
+fn main() {
+    let n = 16;
+
+    // Access constant in the main thread
+    println!("This is {}", LANGUAGE);
+    println!("The threshold is {}", THRESHOLD);
+    println!("{} is {}", n, if is_big(n) { "big" } else { "small" });
+
+    // Error! Cannot modify a `const`.
+    // THRESHOLD = 5;
+    // FIXME ^ Comment out this line
+}
+*)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M (M.Val unit) :=
   M.function_body

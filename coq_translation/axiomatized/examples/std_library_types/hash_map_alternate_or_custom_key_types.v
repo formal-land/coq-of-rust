@@ -36,6 +36,9 @@ Module  Impl_core_cmp_PartialEq_for_hash_map_alternate_or_custom_key_types_Accou
 Section Impl_core_cmp_PartialEq_for_hash_map_alternate_or_custom_key_types_Account_t.
   Ltac Self := exact hash_map_alternate_or_custom_key_types.Account.t.
   
+  (*
+  PartialEq
+  *)
   Parameter eq :
       (M.Val (ref ltac:(Self))) ->
         (M.Val (ref hash_map_alternate_or_custom_key_types.Account.t)) ->
@@ -68,6 +71,9 @@ Module  Impl_core_cmp_Eq_for_hash_map_alternate_or_custom_key_types_Account_t.
 Section Impl_core_cmp_Eq_for_hash_map_alternate_or_custom_key_types_Account_t.
   Ltac Self := exact hash_map_alternate_or_custom_key_types.Account.t.
   
+  (*
+  Eq
+  *)
   Parameter assert_receiver_is_total_eq :
       (M.Val (ref ltac:(Self))) -> M (M.Val unit).
   
@@ -87,6 +93,9 @@ Module  Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account_t
 Section Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account_t.
   Ltac Self := exact hash_map_alternate_or_custom_key_types.Account.t.
   
+  (*
+  Hash
+  *)
   Parameter hash :
       forall {__H : Set} {ℋ_0 : core.hash.Hasher.Trait __H},
       (M.Val (ref ltac:(Self))) -> (M.Val (mut_ref __H)) -> M (M.Val unit).
@@ -135,11 +144,50 @@ Ltac Accounts :=
       hash_map_alternate_or_custom_key_types.AccountInfo.t
       std.collections.hash.map.HashMap.Default.S).
 
+(*
+fn try_logon<'a>(accounts: &Accounts<'a>, username: &'a str, password: &'a str) {
+    println!("Username: {}", username);
+    println!("Password: {}", password);
+    println!("Attempting logon...");
+
+    let logon = Account { username, password };
+
+    match accounts.get(&logon) {
+        Some(account_info) => {
+            println!("Successful logon!");
+            println!("Name: {}", account_info.name);
+            println!("Email: {}", account_info.email);
+        }
+        _ => println!("Login failed!"),
+    }
+}
+*)
 Parameter try_logon :
     (M.Val (ref ltac:(hash_map_alternate_or_custom_key_types.Accounts))) ->
       (M.Val (ref str.t)) ->
       (M.Val (ref str.t)) ->
       M (M.Val unit).
 
+(*
+fn main() {
+    let mut accounts: Accounts = HashMap::new();
+
+    let account = Account {
+        username: "j.everyman",
+        password: "password123",
+    };
+
+    let account_info = AccountInfo {
+        name: "John Everyman",
+        email: "j.everyman@email.com",
+    };
+
+    accounts.insert(account, account_info);
+
+    try_logon(&accounts, "j.everyman", "psasword123");
+
+    try_logon(&accounts, "j.everyman", "password123");
+}
+*)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : M (M.Val unit).

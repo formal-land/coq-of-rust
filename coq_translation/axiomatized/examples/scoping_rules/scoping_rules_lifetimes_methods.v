@@ -17,6 +17,11 @@ Module  Impl_scoping_rules_lifetimes_methods_Owner_t.
 Section Impl_scoping_rules_lifetimes_methods_Owner_t.
   Ltac Self := exact scoping_rules_lifetimes_methods.Owner.t.
   
+  (*
+      fn add_one<'a>(&'a mut self) {
+          self.0 += 1;
+      }
+  *)
   Parameter add_one : (M.Val (mut_ref ltac:(Self))) -> M (M.Val unit).
   
   Global Instance AssociatedFunction_add_one :
@@ -24,6 +29,11 @@ Section Impl_scoping_rules_lifetimes_methods_Owner_t.
     Notation.double_colon := add_one;
   }.
   
+  (*
+      fn print<'a>(&'a self) {
+          println!("`print`: {}", self.0);
+      }
+  *)
   Parameter print : (M.Val (ref ltac:(Self))) -> M (M.Val unit).
   
   Global Instance AssociatedFunction_print :
@@ -33,5 +43,13 @@ Section Impl_scoping_rules_lifetimes_methods_Owner_t.
 End Impl_scoping_rules_lifetimes_methods_Owner_t.
 End Impl_scoping_rules_lifetimes_methods_Owner_t.
 
+(*
+fn main() {
+    let mut owner = Owner(18);
+
+    owner.add_one();
+    owner.print();
+}
+*)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : M (M.Val unit).

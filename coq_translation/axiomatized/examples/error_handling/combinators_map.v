@@ -12,6 +12,9 @@ Module  Impl_core_fmt_Debug_for_combinators_map_Food_t.
 Section Impl_core_fmt_Debug_for_combinators_map_Food_t.
   Ltac Self := exact combinators_map.Food.t.
   
+  (*
+  Debug
+  *)
   Parameter fmt :
       (M.Val (ref ltac:(Self))) ->
         (M.Val (mut_ref core.fmt.Formatter.t)) ->
@@ -44,6 +47,9 @@ Module  Impl_core_fmt_Debug_for_combinators_map_Peeled_t.
 Section Impl_core_fmt_Debug_for_combinators_map_Peeled_t.
   Ltac Self := exact combinators_map.Peeled.t.
   
+  (*
+  Debug
+  *)
   Parameter fmt :
       (M.Val (ref ltac:(Self))) ->
         (M.Val (mut_ref core.fmt.Formatter.t)) ->
@@ -76,6 +82,9 @@ Module  Impl_core_fmt_Debug_for_combinators_map_Chopped_t.
 Section Impl_core_fmt_Debug_for_combinators_map_Chopped_t.
   Ltac Self := exact combinators_map.Chopped.t.
   
+  (*
+  Debug
+  *)
   Parameter fmt :
       (M.Val (ref ltac:(Self))) ->
         (M.Val (mut_ref core.fmt.Formatter.t)) ->
@@ -108,6 +117,9 @@ Module  Impl_core_fmt_Debug_for_combinators_map_Cooked_t.
 Section Impl_core_fmt_Debug_for_combinators_map_Cooked_t.
   Ltac Self := exact combinators_map.Cooked.t.
   
+  (*
+  Debug
+  *)
   Parameter fmt :
       (M.Val (ref ltac:(Self))) ->
         (M.Val (mut_ref core.fmt.Formatter.t)) ->
@@ -124,24 +136,76 @@ Section Impl_core_fmt_Debug_for_combinators_map_Cooked_t.
 End Impl_core_fmt_Debug_for_combinators_map_Cooked_t.
 End Impl_core_fmt_Debug_for_combinators_map_Cooked_t.
 
+(*
+fn peel(food: Option<Food>) -> Option<Peeled> {
+    match food {
+        Some(food) => Some(Peeled(food)),
+        None => None,
+    }
+}
+*)
 Parameter peel :
     (M.Val (core.option.Option.t combinators_map.Food.t)) ->
       M (M.Val (core.option.Option.t combinators_map.Peeled.t)).
 
+(*
+fn chop(peeled: Option<Peeled>) -> Option<Chopped> {
+    match peeled {
+        Some(Peeled(food)) => Some(Chopped(food)),
+        None => None,
+    }
+}
+*)
 Parameter chop :
     (M.Val (core.option.Option.t combinators_map.Peeled.t)) ->
       M (M.Val (core.option.Option.t combinators_map.Chopped.t)).
 
+(*
+fn cook(chopped: Option<Chopped>) -> Option<Cooked> {
+    chopped.map(|Chopped(food)| Cooked(food))
+}
+*)
 Parameter cook :
     (M.Val (core.option.Option.t combinators_map.Chopped.t)) ->
       M (M.Val (core.option.Option.t combinators_map.Cooked.t)).
 
+(*
+fn process(food: Option<Food>) -> Option<Cooked> {
+    food.map(|f| Peeled(f))
+        .map(|Peeled(f)| Chopped(f))
+        .map(|Chopped(f)| Cooked(f))
+}
+*)
 Parameter process :
     (M.Val (core.option.Option.t combinators_map.Food.t)) ->
       M (M.Val (core.option.Option.t combinators_map.Cooked.t)).
 
+(*
+fn eat(food: Option<Cooked>) {
+    match food {
+        Some(food) => println!("Mmm. I love {:?}", food),
+        None => println!("Oh no! It wasn't edible."),
+    }
+}
+*)
 Parameter eat :
     (M.Val (core.option.Option.t combinators_map.Cooked.t)) -> M (M.Val unit).
 
+(*
+fn main() {
+    let apple = Some(Food::Apple);
+    let carrot = Some(Food::Carrot);
+    let potato = None;
+
+    let cooked_apple = cook(chop(peel(apple)));
+    let cooked_carrot = cook(chop(peel(carrot)));
+    // Let's try the simpler looking `process()` now.
+    let cooked_potato = process(potato);
+
+    eat(cooked_apple);
+    eat(cooked_carrot);
+    eat(cooked_potato);
+}
+*)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : M (M.Val unit).

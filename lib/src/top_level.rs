@@ -10,8 +10,8 @@ use crate::ty::*;
 use itertools::Itertools;
 use rustc_ast::ast::{AttrArgs, AttrKind};
 use rustc_hir::{
-    GenericBound, GenericBounds, GenericParamKind, Impl, ImplItemKind, ImplItemRef, Item, ItemId,
-    ItemKind, PatKind, QPath, TraitFn, TraitItemKind, Ty, TyKind, VariantData,
+    GenericBound, GenericBounds, GenericParamKind, Impl, ImplItemRef, Item, ItemId, ItemKind,
+    PatKind, QPath, TraitFn, TraitItemKind, Ty, TyKind, VariantData,
 };
 use rustc_middle::ty::TyCtxt;
 use rustc_span::symbol::sym;
@@ -67,7 +67,7 @@ struct FunDefinition {
 }
 
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
-enum ImplItem {
+enum ImplItemKind {
     Const {
         ty: Rc<CoqType>,
         body: Option<Box<Expr>>,
@@ -112,6 +112,23 @@ pub(crate) enum FieldWithDefault<A> {
     Default,
 }
 
+#[derive(Clone, Debug, Eq, Hash, PartialEq)]
+struct Snippet(Vec<String>);
+
+#[derive(Clone, Debug, Eq, Hash, PartialEq)]
+struct ImplItem {
+    name: String,
+    snippet: Snippet,
+    kind: ImplItemKind,
+}
+
+#[derive(Clone, Debug, Eq, Hash, PartialEq)]
+struct TraitImplItem {
+    name: String,
+    snippet: Snippet,
+    kind: FieldWithDefault<ImplItemKind>,
+}
+
 /// Representation of top-level hir [Item]s in coq-of-rust
 /// See https://doc.rust-lang.org/reference/items.html
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
@@ -123,6 +140,7 @@ enum TopLevelItem {
     },
     Definition {
         name: String,
+        snippet: Snippet,
         definition: FunDefinition,
     },
     TypeAlias {
@@ -156,7 +174,7 @@ enum TopLevelItem {
         self_ty: Rc<CoqType>,
         /// We use a counter to disambiguate several impls for the same type
         counter: u64,
-        items: Vec<(String, ImplItem)>,
+        items: Vec<ImplItem>,
     },
     Trait {
         name: String,
@@ -170,7 +188,7 @@ enum TopLevelItem {
         self_ty: Rc<CoqType>,
         of_trait: Path,
         trait_ty_params: Vec<(String, TraitTyParamValue)>,
-        items: Vec<(String, FieldWithDefault<ImplItem>)>,
+        items: Vec<TraitImplItem>,
     },
     Error(String),
 }
@@ -388,10 +406,12 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
             if check_if_is_test_main_function(tcx, body_id) {
                 return vec![];
             }
+            let snippet = Snippet::of_span(env, &item.span);
             let is_dead_code = check_dead_code_lint_in_attributes(tcx, item);
             let fn_sig_and_body = get_hir_fn_sig_and_body(tcx, fn_sig, body_id);
             vec![TopLevelItem::Definition {
                 name,
+                snippet,
                 definition: FunDefinition::compile(
                     env,
                     generics,
@@ -564,30 +584,46 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
                         .filter(|item| item.defaultness(*tcx).has_value())
                         .map(|item| to_valid_coq_name(item.name.to_string()))
                         .collect();
-                    let items: Vec<(String, FieldWithDefault<ImplItem>)> = items
+                    let items: Vec<TraitImplItem> = items
                         .iter()
-                        .map(|(name, item)| {
-                            let has_default = rustc_default_item_names
-                                .iter()
-                                .any(|default_item_name| name == default_item_name);
-                            let item = if has_default {
-                                FieldWithDefault::OptionalValue(item.clone())
-                            } else {
-                                FieldWithDefault::RequiredValue(item.clone())
-                            };
-                            (name.clone(), item)
-                        })
+                        .map(
+                            |ImplItem {
+                                 name,
+                                 snippet,
+                                 kind,
+                             }| {
+                                let has_default = rustc_default_item_names
+                                    .iter()
+                                    .any(|default_item_name| name == default_item_name);
+                                let kind = if has_default {
+                                    FieldWithDefault::OptionalValue(kind.clone())
+                                } else {
+                                    FieldWithDefault::RequiredValue(kind.clone())
+                                };
+                                TraitImplItem {
+                                    name: name.clone(),
+                                    snippet: snippet.clone(),
+                                    kind,
+                                }
+                            },
+                        )
                         // We now add the elements that have a default value and are not in the
                         // list of definitions
                         .chain(
                             rustc_default_item_names
                                 .iter()
                                 .filter(|default_item_name| {
-                                    !items.iter().any(|(name, _)| name == *default_item_name)
+                                    !items
+                                        .iter()
+                                        .any(|ImplItem { name, .. }| name == *default_item_name)
                                 })
                                 .map(|default_item_name| {
-                                    let item = FieldWithDefault::Default;
-                                    (default_item_name.clone(), item)
+                                    let kind = FieldWithDefault::Default;
+                                    TraitImplItem {
+                                        name: default_item_name.clone(),
+                                        snippet: Snippet(vec![]),
+                                        kind,
+                                    }
                                 }),
                         )
                         .collect();
@@ -643,7 +679,7 @@ fn compile_impl_item_refs(
     env: &mut Env,
     item_refs: &[ImplItemRef],
     is_dead_code: bool,
-) -> Vec<(String, ImplItem)> {
+) -> Vec<ImplItem> {
     item_refs
         .iter()
         .map(|item_ref| compile_impl_item(tcx, env, tcx.hir().impl_item(item_ref.id), is_dead_code))
@@ -656,23 +692,24 @@ fn compile_impl_item(
     env: &mut Env,
     item: &rustc_hir::ImplItem,
     is_dead_code: bool,
-) -> (String, ImplItem) {
+) -> ImplItem {
     let name = to_valid_coq_name(item.ident.name.to_string());
-    let item = match &item.kind {
-        ImplItemKind::Const(ty, body_id) => {
+    let snippet = Snippet::of_span(env, &item.span);
+    let kind = match &item.kind {
+        rustc_hir::ImplItemKind::Const(ty, body_id) => {
             let ty = compile_type(env, ty);
             let body = if env.axiomatize {
                 None
             } else {
                 Some(Box::new(compile_hir_id(env, body_id.hir_id)))
             };
-            ImplItem::Const {
+            ImplItemKind::Const {
                 ty,
                 body,
                 is_dead_code,
             }
         }
-        ImplItemKind::Fn(fn_sig, body_id) => ImplItem::Definition {
+        rustc_hir::ImplItemKind::Fn(fn_sig, body_id) => ImplItemKind::Definition {
             definition: FunDefinition::compile(
                 env,
                 item.generics,
@@ -681,11 +718,15 @@ fn compile_impl_item(
                 is_dead_code,
             ),
         },
-        ImplItemKind::Type(ty) => ImplItem::Type {
+        rustc_hir::ImplItemKind::Type(ty) => ImplItemKind::Type {
             ty: compile_type(env, ty),
         },
     };
-    (name, item)
+    ImplItem {
+        name,
+        snippet,
+        kind,
+    }
 }
 
 /// returns the body corresponding to the given body_id
@@ -979,9 +1020,9 @@ pub(crate) fn top_level_to_coq(tcx: &TyCtxt, opts: TopLevelOptions) -> String {
     top_level.to_pretty(LINE_WIDTH)
 }
 
-fn mt_impl_item(item: ImplItem) -> ImplItem {
+fn mt_impl_item(item: ImplItemKind) -> ImplItemKind {
     match item {
-        ImplItem::Const {
+        ImplItemKind::Const {
             ty,
             body,
             is_dead_code,
@@ -996,16 +1037,16 @@ fn mt_impl_item(item: ImplItem) -> ImplItem {
                     }))
                 }
             };
-            ImplItem::Const {
+            ImplItemKind::Const {
                 ty: mt_ty(ty),
                 body,
                 is_dead_code,
             }
         }
-        ImplItem::Definition { definition } => ImplItem::Definition {
+        ImplItemKind::Definition { definition } => ImplItemKind::Definition {
             definition: definition.mt(),
         },
-        ImplItem::Type { .. } => item,
+        ImplItemKind::Type { .. } => item,
     }
 }
 
@@ -1075,8 +1116,13 @@ fn mt_top_level_item(item: TopLevelItem) -> TopLevelItem {
                 }
             },
         },
-        TopLevelItem::Definition { name, definition } => TopLevelItem::Definition {
+        TopLevelItem::Definition {
             name,
+            snippet,
+            definition,
+        } => TopLevelItem::Definition {
+            name,
+            snippet,
             definition: definition.mt(),
         },
         TopLevelItem::TypeAlias { .. } => item,
@@ -1104,7 +1150,17 @@ fn mt_top_level_item(item: TopLevelItem) -> TopLevelItem {
             counter,
             items: items
                 .into_iter()
-                .map(|(name, item)| (name, mt_impl_item(item)))
+                .map(
+                    |ImplItem {
+                         name,
+                         snippet,
+                         kind,
+                     }| ImplItem {
+                        name,
+                        snippet,
+                        kind: mt_impl_item(kind),
+                    },
+                )
                 .collect(),
         },
         TopLevelItem::Trait {
@@ -1133,7 +1189,17 @@ fn mt_top_level_item(item: TopLevelItem) -> TopLevelItem {
             trait_ty_params,
             items: items
                 .into_iter()
-                .map(|(name, item)| (name, item.map(mt_impl_item)))
+                .map(
+                    |TraitImplItem {
+                         name,
+                         snippet,
+                         kind,
+                     }| TraitImplItem {
+                        name,
+                        snippet,
+                        kind: kind.map(mt_impl_item),
+                    },
+                )
                 .collect(),
         },
         TopLevelItem::Error(_) => item,
@@ -1265,9 +1331,13 @@ impl FunDefinition {
         }
     }
 
-    fn to_coq(&self, name: &str) -> coq::TopLevel {
+    fn to_coq<'a>(&'a self, name: &'a str, snippet: Option<&'a Snippet>) -> coq::TopLevel<'a> {
         coq::TopLevel::new(
             &[
+                match snippet {
+                    Some(snippet) => snippet.to_coq(),
+                    None => vec![],
+                },
                 if self.is_dead_code {
                     vec![coq::TopLevelItem::Comment(coq::Comment::new(
                         "#[allow(dead_code)] - function was ignored by the compiler",
@@ -1432,12 +1502,12 @@ impl FunDefinition {
         )
     }
 
-    fn to_doc(&self, name: &str) -> Doc {
-        self.to_coq(name).to_doc()
+    fn to_doc<'a>(&'a self, name: &'a str, snippet: Option<&'a Snippet>) -> Doc<'a> {
+        self.to_coq(name, snippet).to_doc()
     }
 }
 
-impl ImplItem {
+impl ImplItemKind {
     fn class_instance_to_doc<'a>(
         instance_prefix: &'a str,
         name: &'a str,
@@ -1513,7 +1583,7 @@ impl ImplItem {
 
     fn to_doc<'a>(&'a self, name: &'a str) -> Doc {
         match self {
-            ImplItem::Const {
+            ImplItemKind::Const {
                 ty,
                 body,
                 is_dead_code,
@@ -1556,8 +1626,8 @@ impl ImplItem {
                     "Notation.double_colon",
                 ),
             ]),
-            ImplItem::Definition { definition, .. } => concat([
-                definition.to_doc(name),
+            ImplItemKind::Definition { definition, .. } => concat([
+                definition.to_doc(name, None),
                 hardline(),
                 hardline(),
                 Self::class_instance_to_doc(
@@ -1569,7 +1639,7 @@ impl ImplItem {
                     "Notation.double_colon",
                 ),
             ]),
-            ImplItem::Type { ty } => nest([
+            ImplItemKind::Type { ty } => nest([
                 nest([
                     text("Definition"),
                     line(),
@@ -1651,6 +1721,43 @@ struct ToDocContext {
     previous_module_names: Vec<String>,
 }
 
+impl Snippet {
+    fn of_span(env: &Env, span: &rustc_span::Span) -> Self {
+        let source_map = env.tcx.sess.source_map();
+        let snippet = match (
+            source_map.span_to_margin(*span),
+            source_map.span_to_snippet(*span),
+        ) {
+            (Some(margin), Result::Ok(snippet)) => (" ".repeat(margin) + &snippet)
+                .split('\n')
+                .map(|line| line.to_string())
+                .collect::<Vec<_>>(),
+            _ => vec!["Rust source not found".to_string()],
+        };
+
+        Snippet(snippet)
+    }
+
+    fn to_coq(&self) -> Vec<coq::TopLevelItem> {
+        if self.0.is_empty() {
+            return vec![];
+        }
+
+        [
+            vec![coq::TopLevelItem::Code(text("(*"))],
+            self.0
+                .iter()
+                // We do this replace to avoid messing up with the Coq comments
+                .map(|line| {
+                    coq::TopLevelItem::Code(text(line.replace("(*", "( *").replace("*)", "* )")))
+                })
+                .collect(),
+            vec![coq::TopLevelItem::Code(text("*)"))],
+        ]
+        .concat()
+    }
+}
+
 impl TopLevelItem {
     fn to_doc(&self, to_doc_context: ToDocContext) -> Doc {
         match self {
@@ -1676,7 +1783,11 @@ impl TopLevelItem {
                     .to_doc()
                 }
             },
-            TopLevelItem::Definition { name, definition } => definition.to_doc(name),
+            TopLevelItem::Definition {
+                name,
+                snippet,
+                definition,
+            } => definition.to_doc(name, Some(snippet)),
             TopLevelItem::Module {
                 name,
                 body,
@@ -1949,12 +2060,22 @@ impl TopLevelItem {
                             coq::TopLevel::new(
                                 &items
                                     .iter()
-                                    .flat_map(|(name, item)| {
-                                        [
-                                            coq::TopLevelItem::Line,
-                                            coq::TopLevelItem::Code(concat([item.to_doc(name)])),
-                                        ]
-                                    })
+                                    .flat_map(
+                                        |ImplItem {
+                                             name,
+                                             snippet,
+                                             kind,
+                                         }| {
+                                            [
+                                                vec![coq::TopLevelItem::Line],
+                                                snippet.to_coq(),
+                                                vec![coq::TopLevelItem::Code(concat([
+                                                    kind.to_doc(name)
+                                                ]))],
+                                            ]
+                                            .concat()
+                                        },
+                                    )
                                     .collect::<Vec<_>>(),
                             ),
                         ]),
@@ -2097,9 +2218,10 @@ impl TopLevelItem {
                         .join(""),
                     self_ty.to_name()
                 );
-                let has_some_default_values = !items
-                    .iter()
-                    .all(|(_, item)| matches!(item, FieldWithDefault::RequiredValue(_)));
+                let has_some_default_values =
+                    !items.iter().all(|TraitImplItem { kind, .. }| {
+                        matches!(kind, FieldWithDefault::RequiredValue(_))
+                    });
 
                 coq::Module::new(
                     &module_name,
@@ -2131,11 +2253,15 @@ impl TopLevelItem {
                                 vec![coq::TopLevelItem::Line],
                                 items
                                     .iter()
-                                    .filter_map(|(name, item)|
-                                        Into::<Option<_>>::into(item).map(|item: &ImplItem| vec![
-                                            coq::TopLevelItem::Code(item.to_doc(name)),
-                                            coq::TopLevelItem::Line,
-                                        ])
+                                    .filter_map(|TraitImplItem{name, snippet, kind}|
+                                        Into::<Option<_>>::into(kind).map(|kind: &ImplItemKind|
+                                            [
+                                                snippet.to_coq(),
+                                                vec![
+                                                    coq::TopLevelItem::Code(kind.to_doc(name)),
+                                                    coq::TopLevelItem::Line,
+                                                ]
+                                            ].concat())
                                     )
                                     .concat(),
                                 vec![coq::TopLevelItem::Instance(coq::Instance::new(
@@ -2176,13 +2302,13 @@ impl TopLevelItem {
                                     &coq::Expression::Record {
                                         fields: items
                                             .iter()
-                                            .map(|(name, item)| {
-                                                let optional_item = Into::<Option<&_>>::into(item);
+                                            .map(|TraitImplItem{name, kind, ..}| {
+                                                let optional_item = Into::<Option<&_>>::into(kind);
 
                                                 coq::Field::new(
                                                     &Path::concat(&[of_trait.to_owned(), Path::new(&[name])]),
                                                     &match optional_item {
-                                                        Some(ImplItem::Definition { definition : FunDefinition {ty_params, where_predicates, ..}, ..}) =>
+                                                        Some(ImplItemKind::Definition { definition : FunDefinition {ty_params, where_predicates, ..}, ..}) =>
                                                                     vec![
                                                                         if ty_params.is_empty() {
                                                                             vec![]
@@ -2201,7 +2327,7 @@ impl TopLevelItem {
                                                         let body = coq::Expression::just_name(name);
                                                         let body =
                                                             match optional_item {
-                                                                Some(ImplItem::Definition { definition : FunDefinition {ty_params, ..}, ..}) =>
+                                                                Some(ImplItemKind::Definition { definition : FunDefinition {ty_params, ..}, ..}) =>
                                                                 body.apply_many_args(&ty_params
                                                                     .iter()
                                                                     .map(|ty_param| {
@@ -2213,7 +2339,7 @@ impl TopLevelItem {
                                                                     .collect::<Vec<_>>(),),
                                                                 _ => body
                                                             };
-                                                        &match item {
+                                                        &match kind {
                                                             FieldWithDefault::RequiredValue(_) => body,
                                                             FieldWithDefault::OptionalValue(_) =>
                                                                 coq::Expression::just_name("Datatypes.Some")

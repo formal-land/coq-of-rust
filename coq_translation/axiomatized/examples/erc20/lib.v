@@ -35,6 +35,9 @@ Section Impl_core_default_Default_for_lib_Mapping_t_K_V.
   
   Ltac Self := exact (lib.Mapping.t K V).
   
+  (*
+  Default
+  *)
   Parameter default : M (M.Val (lib.Mapping.t K V)).
   
   Global Instance AssociatedFunction_default :
@@ -54,6 +57,11 @@ Section Impl_lib_Mapping_t_K_V.
   
   Ltac Self := exact (lib.Mapping.t K V).
   
+  (*
+      fn get(&self, _key: &K) -> Option<V> {
+          unimplemented!()
+      }
+  *)
   Parameter get :
       (M.Val (ref ltac:(Self))) ->
         (M.Val (ref K)) ->
@@ -64,6 +72,11 @@ Section Impl_lib_Mapping_t_K_V.
     Notation.double_colon := get;
   }.
   
+  (*
+      fn insert(&mut self, _key: K, _value: V) {
+          unimplemented!()
+      }
+  *)
   Parameter insert :
       (M.Val (mut_ref ltac:(Self))) -> (M.Val K) -> (M.Val V) -> M (M.Val unit).
   
@@ -90,6 +103,9 @@ Module  Impl_core_default_Default_for_lib_AccountId_t.
 Section Impl_core_default_Default_for_lib_AccountId_t.
   Ltac Self := exact lib.AccountId.t.
   
+  (*
+  Default
+  *)
   Parameter default : M (M.Val lib.AccountId.t).
   
   Global Instance AssociatedFunction_default :
@@ -166,6 +182,9 @@ Module  Impl_core_default_Default_for_lib_Erc20_t.
 Section Impl_core_default_Default_for_lib_Erc20_t.
   Ltac Self := exact lib.Erc20.t.
   
+  (*
+  Default
+  *)
   Parameter default : M (M.Val lib.Erc20.t).
   
   Global Instance AssociatedFunction_default :
@@ -212,6 +231,11 @@ Module  Impl_core_convert_Into_lib_Event_t_for_lib_Transfer_t.
 Section Impl_core_convert_Into_lib_Event_t_for_lib_Transfer_t.
   Ltac Self := exact lib.Transfer.t.
   
+  (*
+      fn into(self) -> Event {
+          unimplemented!()
+      }
+  *)
   Parameter into : (M.Val ltac:(Self)) -> M (M.Val lib.Event.t).
   
   Global Instance AssociatedFunction_into :
@@ -259,6 +283,11 @@ Module  Impl_core_convert_Into_lib_Event_t_for_lib_Approval_t.
 Section Impl_core_convert_Into_lib_Event_t_for_lib_Approval_t.
   Ltac Self := exact lib.Approval.t.
   
+  (*
+      fn into(self) -> Event {
+          unimplemented!()
+      }
+  *)
   Parameter into : (M.Val ltac:(Self)) -> M (M.Val lib.Event.t).
   
   Global Instance AssociatedFunction_into :
@@ -285,6 +314,11 @@ Module  Impl_lib_Environment_t.
 Section Impl_lib_Environment_t.
   Ltac Self := exact lib.Environment.t.
   
+  (*
+      fn caller(&self) -> AccountId {
+          unimplemented!()
+      }
+  *)
   Parameter caller : (M.Val (ref ltac:(Self))) -> M (M.Val lib.AccountId.t).
   
   Global Instance AssociatedFunction_caller :
@@ -292,6 +326,11 @@ Section Impl_lib_Environment_t.
     Notation.double_colon := caller;
   }.
   
+  (*
+      fn emit_event<E: Into<Event>>(&self, event: E) {
+          unimplemented!()
+      }
+  *)
   Parameter emit_event :
       forall {E : Set} {ℋ_0 : core.convert.Into.Trait E (T := lib.Event.t)},
       (M.Val (ref ltac:(Self))) -> (M.Val E) -> M (M.Val unit).
@@ -309,6 +348,11 @@ Module  Impl_lib_Erc20_t.
 Section Impl_lib_Erc20_t.
   Ltac Self := exact lib.Erc20.t.
   
+  (*
+      fn init_env() -> Environment {
+          unimplemented!()
+      }
+  *)
   Parameter init_env : M (M.Val lib.Environment.t).
   
   Global Instance AssociatedFunction_init_env :
@@ -316,6 +360,11 @@ Section Impl_lib_Erc20_t.
     Notation.double_colon := init_env;
   }.
   
+  (*
+      fn env(&self) -> Environment {
+          unimplemented!()
+      }
+  *)
   Parameter env : (M.Val (ref ltac:(Self))) -> M (M.Val lib.Environment.t).
   
   Global Instance AssociatedFunction_env :
@@ -329,6 +378,23 @@ Module  Impl_lib_Erc20_t_2.
 Section Impl_lib_Erc20_t_2.
   Ltac Self := exact lib.Erc20.t.
   
+  (*
+      pub fn new(total_supply: Balance) -> Self {
+          let mut balances = Mapping::default();
+          let caller = Self::init_env().caller();
+          balances.insert(caller, total_supply);
+          Self::init_env().emit_event(Transfer {
+              from: None,
+              to: Some(caller),
+              value: total_supply,
+          });
+          Self {
+              total_supply,
+              balances,
+              allowances: Default::default(),
+          }
+      }
+  *)
   Parameter new : (M.Val ltac:(lib.Balance)) -> M (M.Val ltac:(Self)).
   
   Global Instance AssociatedFunction_new :
@@ -336,6 +402,11 @@ Section Impl_lib_Erc20_t_2.
     Notation.double_colon := new;
   }.
   
+  (*
+      pub fn total_supply(&self) -> Balance {
+          self.total_supply
+      }
+  *)
   Parameter total_supply :
       (M.Val (ref ltac:(Self))) -> M (M.Val ltac:(lib.Balance)).
   
@@ -344,6 +415,11 @@ Section Impl_lib_Erc20_t_2.
     Notation.double_colon := total_supply;
   }.
   
+  (*
+      fn balance_of_impl(&self, owner: &AccountId) -> Balance {
+          self.balances.get(owner).unwrap_or_default()
+      }
+  *)
   Parameter balance_of_impl :
       (M.Val (ref ltac:(Self))) ->
         (M.Val (ref lib.AccountId.t)) ->
@@ -354,6 +430,11 @@ Section Impl_lib_Erc20_t_2.
     Notation.double_colon := balance_of_impl;
   }.
   
+  (*
+      pub fn balance_of(&self, owner: AccountId) -> Balance {
+          self.balance_of_impl(&owner)
+      }
+  *)
   Parameter balance_of :
       (M.Val (ref ltac:(Self))) ->
         (M.Val lib.AccountId.t) ->
@@ -364,6 +445,11 @@ Section Impl_lib_Erc20_t_2.
     Notation.double_colon := balance_of;
   }.
   
+  (*
+      fn allowance_impl(&self, owner: &AccountId, spender: &AccountId) -> Balance {
+          self.allowances.get(&( *owner, *spender)).unwrap_or_default()
+      }
+  *)
   Parameter allowance_impl :
       (M.Val (ref ltac:(Self))) ->
         (M.Val (ref lib.AccountId.t)) ->
@@ -375,6 +461,11 @@ Section Impl_lib_Erc20_t_2.
     Notation.double_colon := allowance_impl;
   }.
   
+  (*
+      pub fn allowance(&self, owner: AccountId, spender: AccountId) -> Balance {
+          self.allowance_impl(&owner, &spender)
+      }
+  *)
   Parameter allowance :
       (M.Val (ref ltac:(Self))) ->
         (M.Val lib.AccountId.t) ->
@@ -386,6 +477,24 @@ Section Impl_lib_Erc20_t_2.
     Notation.double_colon := allowance;
   }.
   
+  (*
+      fn transfer_from_to(&mut self, from: &AccountId, to: &AccountId, value: Balance) -> Result<()> {
+          let from_balance = self.balance_of_impl(from);
+          if from_balance < value {
+              return Err(Error::InsufficientBalance);
+          }
+  
+          self.balances.insert( *from, from_balance - value);
+          let to_balance = self.balance_of_impl(to);
+          self.balances.insert( *to, to_balance + value);
+          self.env().emit_event(Transfer {
+              from: Some( *from),
+              to: Some( *to),
+              value,
+          });
+          Ok(())
+      }
+  *)
   Parameter transfer_from_to :
       (M.Val (mut_ref ltac:(Self))) ->
         (M.Val (ref lib.AccountId.t)) ->
@@ -398,6 +507,12 @@ Section Impl_lib_Erc20_t_2.
     Notation.double_colon := transfer_from_to;
   }.
   
+  (*
+      pub fn transfer(&mut self, to: AccountId, value: Balance) -> Result<()> {
+          let from = self.env().caller();
+          self.transfer_from_to(&from, &to, value)
+      }
+  *)
   Parameter transfer :
       (M.Val (mut_ref ltac:(Self))) ->
         (M.Val lib.AccountId.t) ->
@@ -409,6 +524,18 @@ Section Impl_lib_Erc20_t_2.
     Notation.double_colon := transfer;
   }.
   
+  (*
+      pub fn approve(&mut self, spender: AccountId, value: Balance) -> Result<()> {
+          let owner = self.env().caller();
+          self.allowances.insert((owner, spender), value);
+          self.env().emit_event(Approval {
+              owner,
+              spender,
+              value,
+          });
+          Ok(())
+      }
+  *)
   Parameter approve :
       (M.Val (mut_ref ltac:(Self))) ->
         (M.Val lib.AccountId.t) ->
@@ -420,6 +547,18 @@ Section Impl_lib_Erc20_t_2.
     Notation.double_colon := approve;
   }.
   
+  (*
+      pub fn transfer_from(&mut self, from: AccountId, to: AccountId, value: Balance) -> Result<()> {
+          let caller = self.env().caller();
+          let allowance = self.allowance_impl(&from, &caller);
+          if allowance < value {
+              return Err(Error::InsufficientAllowance);
+          }
+          self.transfer_from_to(&from, &to, value)?;
+          self.allowances.insert((from, caller), allowance - value);
+          Ok(())
+      }
+  *)
   Parameter transfer_from :
       (M.Val (mut_ref ltac:(Self))) ->
         (M.Val lib.AccountId.t) ->

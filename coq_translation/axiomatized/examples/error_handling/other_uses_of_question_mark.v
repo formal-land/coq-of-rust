@@ -17,6 +17,9 @@ Module  Impl_core_fmt_Debug_for_other_uses_of_question_mark_EmptyVec_t.
 Section Impl_core_fmt_Debug_for_other_uses_of_question_mark_EmptyVec_t.
   Ltac Self := exact other_uses_of_question_mark.EmptyVec.t.
   
+  (*
+  Debug
+  *)
   Parameter fmt :
       (M.Val (ref ltac:(Self))) ->
         (M.Val (mut_ref core.fmt.Formatter.t)) ->
@@ -37,6 +40,11 @@ Module  Impl_core_fmt_Display_for_other_uses_of_question_mark_EmptyVec_t.
 Section Impl_core_fmt_Display_for_other_uses_of_question_mark_EmptyVec_t.
   Ltac Self := exact other_uses_of_question_mark.EmptyVec.t.
   
+  (*
+      fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+          write!(f, "invalid first item to double")
+      }
+  *)
   Parameter fmt :
       (M.Val (ref ltac:(Self))) ->
         (M.Val (mut_ref core.fmt.Formatter.t)) ->
@@ -67,12 +75,38 @@ Section Impl_core_error_Error_for_other_uses_of_question_mark_EmptyVec_t.
 End Impl_core_error_Error_for_other_uses_of_question_mark_EmptyVec_t.
 End Impl_core_error_Error_for_other_uses_of_question_mark_EmptyVec_t.
 
+(*
+fn double_first(vec: Vec<&str>) -> Result<i32> {
+    let first = vec.first().ok_or(EmptyVec)?;
+    let parsed = first.parse::<i32>()?;
+    Ok(2 * parsed)
+}
+*)
 Parameter double_first :
     (M.Val (alloc.vec.Vec.t (ref str.t) alloc.vec.Vec.Default.A)) ->
       M (M.Val ltac:(other_uses_of_question_mark.Result i32.t)).
 
+(*
+fn print(result: Result<i32>) {
+    match result {
+        Ok(n) => println!("The first doubled is {}", n),
+        Err(e) => println!("Error: {}", e),
+    }
+}
+*)
 Parameter print :
     (M.Val ltac:(other_uses_of_question_mark.Result i32.t)) -> M (M.Val unit).
 
+(*
+fn main() {
+    let numbers = vec!["42", "93", "18"];
+    let empty = vec![];
+    let strings = vec!["tofu", "93", "18"];
+
+    print(double_first(numbers));
+    print(double_first(empty));
+    print(double_first(strings));
+}
+*)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : M (M.Val unit).

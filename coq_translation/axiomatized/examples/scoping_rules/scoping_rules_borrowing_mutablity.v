@@ -35,6 +35,9 @@ Module  Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book_t.
 Section Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book_t.
   Ltac Self := exact scoping_rules_borrowing_mutablity.Book.t.
   
+  (*
+  Clone
+  *)
   (* #[allow(dead_code)] - function was ignored by the compiler *)
   Parameter clone :
       (M.Val (ref ltac:(Self))) ->
@@ -61,12 +64,53 @@ Section Impl_core_marker_Copy_for_scoping_rules_borrowing_mutablity_Book_t.
 End Impl_core_marker_Copy_for_scoping_rules_borrowing_mutablity_Book_t.
 End Impl_core_marker_Copy_for_scoping_rules_borrowing_mutablity_Book_t.
 
+(*
+fn borrow_book(book: &Book) {
+    println!(
+        "I immutably borrowed {} - {} edition",
+        book.title, book.year
+    );
+}
+*)
 Parameter borrow_book :
     (M.Val (ref scoping_rules_borrowing_mutablity.Book.t)) -> M (M.Val unit).
 
+(*
+fn new_edition(book: &mut Book) {
+    book.year = 2014;
+    println!("I mutably borrowed {} - {} edition", book.title, book.year);
+}
+*)
 Parameter new_edition :
     (M.Val (mut_ref scoping_rules_borrowing_mutablity.Book.t)) ->
       M (M.Val unit).
 
+(*
+fn main() {
+    // Create an immutable Book named `immutabook`
+    let immutabook = Book {
+        // string literals have type `&'static str`
+        author: "Douglas Hofstadter",
+        title: "Gödel, Escher, Bach",
+        year: 1979,
+    };
+
+    // Create a mutable copy of `immutabook` and call it `mutabook`
+    let mut mutabook = immutabook;
+
+    // Immutably borrow an immutable object
+    borrow_book(&immutabook);
+
+    // Immutably borrow a mutable object
+    borrow_book(&mutabook);
+
+    // Borrow a mutable object as mutable
+    new_edition(&mut mutabook);
+
+    // Error! Cannot borrow an immutable object as mutable
+    //new_edition(&mut immutabook);
+    // FIXME ^ Comment out this line
+}
+*)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : M (M.Val unit).

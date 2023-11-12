@@ -11,6 +11,11 @@ Module  Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop_t.
 Section Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop_t.
   Ltac Self := exact scoping_rules_raii_desctructor.ToDrop.t.
   
+  (*
+      fn drop(&mut self) {
+          println!("ToDrop is being dropped");
+      }
+  *)
   Parameter drop : (M.Val (mut_ref ltac:(Self))) -> M (M.Val unit).
   
   Global Instance AssociatedFunction_drop :
@@ -24,5 +29,11 @@ Section Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop_t.
 End Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop_t.
 End Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop_t.
 
+(*
+fn main() {
+    let x = ToDrop;
+    println!("Made a ToDrop!");
+}
+*)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : M (M.Val unit).

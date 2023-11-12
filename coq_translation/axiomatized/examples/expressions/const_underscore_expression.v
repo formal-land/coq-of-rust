@@ -44,6 +44,11 @@ Module  Impl_const_underscore_expression_BarTrait_for_const_underscore_expressio
 Section Impl_const_underscore_expression_BarTrait_for_const_underscore_expression_Bar_t.
   Ltac Self := exact const_underscore_expression.Bar.t.
   
+  (*
+          fn show(self: Self) -> String {
+              self.test
+          }
+  *)
   Parameter show : (M.Val ltac:(Self)) -> M (M.Val alloc.string.String.t).
   
   Global Instance AssociatedFunction_show :

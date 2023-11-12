@@ -88,8 +88,14 @@ Module  Impl_traits_parms_SomeTrait_for_traits_parms_SomeOtherType_t.
 Section Impl_traits_parms_SomeTrait_for_traits_parms_SomeOtherType_t.
   Ltac Self := exact traits_parms.SomeOtherType.t.
   
+  (*
+      type SomeType = SomeOtherType;
+  *)
   Definition SomeType : Set := traits_parms.SomeOtherType.t.
   
+  (*
+      fn some_fn() {}
+  *)
   Parameter some_fn : M (M.Val unit).
   
   Global Instance AssociatedFunction_some_fn :

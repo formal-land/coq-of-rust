@@ -23,6 +23,9 @@ Module  Impl_core_fmt_Debug_for_operator_overloading_FooBar_t.
 Section Impl_core_fmt_Debug_for_operator_overloading_FooBar_t.
   Ltac Self := exact operator_overloading.FooBar.t.
   
+  (*
+  Debug
+  *)
   Definition fmt
       (self : M.Val (ref ltac:(Self)))
       (f : M.Val (mut_ref core.fmt.Formatter.t))
@@ -56,6 +59,9 @@ Module  Impl_core_fmt_Debug_for_operator_overloading_BarFoo_t.
 Section Impl_core_fmt_Debug_for_operator_overloading_BarFoo_t.
   Ltac Self := exact operator_overloading.BarFoo.t.
   
+  (*
+  Debug
+  *)
   Definition fmt
       (self : M.Val (ref ltac:(Self)))
       (f : M.Val (mut_ref core.fmt.Formatter.t))
@@ -83,8 +89,18 @@ Module  Impl_core_ops_arith_Add_operator_overloading_Bar_t_for_operator_overload
 Section Impl_core_ops_arith_Add_operator_overloading_Bar_t_for_operator_overloading_Foo_t.
   Ltac Self := exact operator_overloading.Foo.t.
   
+  (*
+      type Output = FooBar;
+  *)
   Definition Output : Set := operator_overloading.FooBar.t.
   
+  (*
+      fn add(self, _rhs: Bar) -> FooBar {
+          println!("> Foo.add(Bar) was called");
+  
+          FooBar
+      }
+  *)
   Definition add
       (self : M.Val ltac:(Self))
       (_rhs : M.Val operator_overloading.Bar.t)
@@ -123,8 +139,18 @@ Module  Impl_core_ops_arith_Add_operator_overloading_Foo_t_for_operator_overload
 Section Impl_core_ops_arith_Add_operator_overloading_Foo_t_for_operator_overloading_Bar_t.
   Ltac Self := exact operator_overloading.Bar.t.
   
+  (*
+      type Output = BarFoo;
+  *)
   Definition Output : Set := operator_overloading.BarFoo.t.
   
+  (*
+      fn add(self, _rhs: Foo) -> BarFoo {
+          println!("> Bar.add(Foo) was called");
+  
+          BarFoo
+      }
+  *)
   Definition add
       (self : M.Val ltac:(Self))
       (_rhs : M.Val operator_overloading.Foo.t)
@@ -159,6 +185,12 @@ Section Impl_core_ops_arith_Add_operator_overloading_Foo_t_for_operator_overload
 End Impl_core_ops_arith_Add_operator_overloading_Foo_t_for_operator_overloading_Bar_t.
 End Impl_core_ops_arith_Add_operator_overloading_Foo_t_for_operator_overloading_Bar_t.
 
+(*
+fn main() {
+    println!("Foo + Bar = {:?}", Foo + Bar);
+    println!("Bar + Foo = {:?}", Bar + Foo);
+}
+*)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M (M.Val unit) :=
   M.function_body

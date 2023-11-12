@@ -27,6 +27,11 @@ Module  Impl_associated_functions_and_methods_Point_t.
 Section Impl_associated_functions_and_methods_Point_t.
   Ltac Self := exact associated_functions_and_methods.Point.t.
   
+  (*
+      fn origin() -> Point {
+          Point { y: 0.0, x: 1.0 }
+      }
+  *)
   Definition origin : M (M.Val associated_functions_and_methods.Point.t) :=
     M.function_body
       (let* α0 : ltac:(refine (M.Val f64.t)) := M.alloc 0 (* 0.0 *) in
@@ -44,6 +49,11 @@ Section Impl_associated_functions_and_methods_Point_t.
     Notation.double_colon := origin;
   }.
   
+  (*
+      fn new(x: f64, y: f64) -> Point {
+          Point { x: x, y: y }
+      }
+  *)
   Definition new
       (x : M.Val f64.t)
       (y : M.Val f64.t)
@@ -90,6 +100,11 @@ Module  Impl_associated_functions_and_methods_Rectangle_t.
 Section Impl_associated_functions_and_methods_Rectangle_t.
   Ltac Self := exact associated_functions_and_methods.Rectangle.t.
   
+  (*
+      fn get_p1(&self) -> Point {
+          self.p1
+      }
+  *)
   Definition get_p1
       (self : M.Val (ref ltac:(Self)))
       : M (M.Val associated_functions_and_methods.Point.t) :=
@@ -104,6 +119,17 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
     Notation.double_colon := get_p1;
   }.
   
+  (*
+      fn area(&self) -> f64 {
+          // `self` gives access to the struct fields via the dot operator
+          let Point { x: x1, y: y1 } = self.p1;
+          let Point { x: x2, y: y2 } = self.p2;
+  
+          // `abs` is a `f64` method that returns the absolute value of the
+          // caller
+          ((x1 - x2) * (y1 - y2)).abs()
+      }
+  *)
   Definition area (self : M.Val (ref ltac:(Self))) : M (M.Val f64.t) :=
     M.function_body
       (let* '{|
@@ -136,6 +162,14 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
     Notation.double_colon := area;
   }.
   
+  (*
+      fn perimeter(&self) -> f64 {
+          let Point { x: x1, y: y1 } = self.p1;
+          let Point { x: x2, y: y2 } = self.p2;
+  
+          2.0 * ((x1 - x2).abs() + (y1 - y2).abs())
+      }
+  *)
   Definition perimeter (self : M.Val (ref ltac:(Self))) : M (M.Val f64.t) :=
     M.function_body
       (let* '{|
@@ -171,6 +205,15 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
     Notation.double_colon := perimeter;
   }.
   
+  (*
+      fn translate(&mut self, x: f64, y: f64) {
+          self.p1.x += x;
+          self.p2.x += x;
+  
+          self.p1.y += y;
+          self.p2.y += y;
+      }
+  *)
   Definition translate
       (self : M.Val (mut_ref ltac:(Self)))
       (x : M.Val f64.t)
@@ -246,6 +289,16 @@ Module  Impl_associated_functions_and_methods_Pair_t.
 Section Impl_associated_functions_and_methods_Pair_t.
   Ltac Self := exact associated_functions_and_methods.Pair.t.
   
+  (*
+      fn destroy(self) {
+          // Destructure `self`
+          let Pair(first, second) = self;
+  
+          println!("Destroying Pair({}, {})", first, second);
+  
+          // `first` and `second` go out of scope and get freed
+      }
+  *)
   Definition destroy (self : M.Val ltac:(Self)) : M (M.Val unit) :=
     M.function_body
       (let 'associated_functions_and_methods.Pair.Build_t first second :=
@@ -292,6 +345,42 @@ Section Impl_associated_functions_and_methods_Pair_t.
 End Impl_associated_functions_and_methods_Pair_t.
 End Impl_associated_functions_and_methods_Pair_t.
 
+(*
+fn main() {
+    let rectangle = Rectangle {
+        // Associated functions are called using double colons
+        p1: Point::origin(),
+        p2: Point::new(3.0, 4.0),
+    };
+
+    // Methods are called using the dot operator
+    // Note that the first argument `&self` is implicitly passed, i.e.
+    // `rectangle.perimeter()` === `Rectangle::perimeter(&rectangle)`
+    println!("Rectangle perimeter: {}", rectangle.perimeter());
+    println!("Rectangle area: {}", rectangle.area());
+
+    let mut square = Rectangle {
+        p1: Point::origin(),
+        p2: Point::new(1.0, 1.0),
+    };
+
+    // Error! `rectangle` is immutable, but this method requires a mutable
+    // object
+    //rectangle.translate(1.0, 0.0);
+    // TODO ^ Try uncommenting this line
+
+    // Okay! Mutable objects can call mutable methods
+    square.translate(1.0, 1.0);
+
+    let pair = Pair(Box::new(1), Box::new(2));
+
+    pair.destroy();
+
+    // Error! Previous `destroy` call "consumed" `pair`
+    //pair.destroy();
+    // TODO ^ Try uncommenting this line
+}
+*)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M (M.Val unit) :=
   M.function_body

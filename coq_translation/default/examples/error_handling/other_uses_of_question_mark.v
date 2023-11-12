@@ -17,6 +17,9 @@ Module  Impl_core_fmt_Debug_for_other_uses_of_question_mark_EmptyVec_t.
 Section Impl_core_fmt_Debug_for_other_uses_of_question_mark_EmptyVec_t.
   Ltac Self := exact other_uses_of_question_mark.EmptyVec.t.
   
+  (*
+  Debug
+  *)
   Definition fmt
       (self : M.Val (ref ltac:(Self)))
       (f : M.Val (mut_ref core.fmt.Formatter.t))
@@ -44,6 +47,11 @@ Module  Impl_core_fmt_Display_for_other_uses_of_question_mark_EmptyVec_t.
 Section Impl_core_fmt_Display_for_other_uses_of_question_mark_EmptyVec_t.
   Ltac Self := exact other_uses_of_question_mark.EmptyVec.t.
   
+  (*
+      fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+          write!(f, "invalid first item to double")
+      }
+  *)
   Definition fmt
       (self : M.Val (ref ltac:(Self)))
       (f : M.Val (mut_ref core.fmt.Formatter.t))
@@ -86,6 +94,13 @@ Section Impl_core_error_Error_for_other_uses_of_question_mark_EmptyVec_t.
 End Impl_core_error_Error_for_other_uses_of_question_mark_EmptyVec_t.
 End Impl_core_error_Error_for_other_uses_of_question_mark_EmptyVec_t.
 
+(*
+fn double_first(vec: Vec<&str>) -> Result<i32> {
+    let first = vec.first().ok_or(EmptyVec)?;
+    let parsed = first.parse::<i32>()?;
+    Ok(2 * parsed)
+}
+*)
 Definition double_first
     (vec : M.Val (alloc.vec.Vec.t (ref str.t) alloc.vec.Vec.Default.A))
     : M (M.Val ltac:(other_uses_of_question_mark.Result i32.t)) :=
@@ -204,6 +219,14 @@ Definition double_first
     let* α2 := M.read α1 in
     M.alloc (core.result.Result.Ok α2)).
 
+(*
+fn print(result: Result<i32>) {
+    match result {
+        Ok(n) => println!("The first doubled is {}", n),
+        Err(e) => println!("Error: {}", e),
+    }
+}
+*)
 Definition print
     (result : M.Val ltac:(other_uses_of_question_mark.Result i32.t))
     : M (M.Val unit) :=
@@ -263,6 +286,17 @@ Definition print
       M.alloc tt
     end).
 
+(*
+fn main() {
+    let numbers = vec!["42", "93", "18"];
+    let empty = vec![];
+    let strings = vec!["tofu", "93", "18"];
+
+    print(double_first(numbers));
+    print(double_first(empty));
+    print(double_first(strings));
+}
+*)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M (M.Val unit) :=
   M.function_body

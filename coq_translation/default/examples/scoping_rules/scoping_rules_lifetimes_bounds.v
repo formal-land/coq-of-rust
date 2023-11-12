@@ -23,6 +23,9 @@ Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_t_T.
   
   Ltac Self := exact (scoping_rules_lifetimes_bounds.Ref.t T).
   
+  (*
+  Debug
+  *)
   Definition fmt
       (self : M.Val (ref ltac:(Self)))
       (f : M.Val (mut_ref core.fmt.Formatter.t))
@@ -54,6 +57,14 @@ Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_t_T.
 End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_t_T.
 End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_t_T.
 
+(*
+fn print<T>(t: T)
+where
+    T: Debug,
+{
+    println!("`print`: t is {:?}", t);
+}
+*)
 Definition print
     {T : Set}
     {ℋ_0 : core.fmt.Debug.Trait T}
@@ -83,6 +94,14 @@ Definition print
       M.alloc tt in
     M.alloc tt).
 
+(*
+fn print_ref<'a, T>(t: &'a T)
+where
+    T: Debug + 'a,
+{
+    println!("`print_ref`: t is {:?}", t);
+}
+*)
 Definition print_ref
     {T : Set}
     {ℋ_0 : core.fmt.Debug.Trait T}
@@ -112,6 +131,15 @@ Definition print_ref
       M.alloc tt in
     M.alloc tt).
 
+(*
+fn main() {
+    let x = 7;
+    let ref_x = Ref(&x);
+
+    print_ref(&ref_x);
+    print(ref_x);
+}
+*)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M (M.Val unit) :=
   M.function_body

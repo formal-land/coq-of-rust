@@ -12,6 +12,14 @@ Section Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers_t.
   Ltac Self :=
     exact enums_type_aliases_v2.VeryVerboseEnumOfThingsToDoWithNumbers.t.
   
+  (*
+      fn run(&self, x: i32, y: i32) -> i32 {
+          match self {
+              Self::Add => x + y,
+              Self::Subtract => x - y,
+          }
+      }
+  *)
   Definition run
       (self : M.Val (ref ltac:(Self)))
       (x : M.Val i32.t)

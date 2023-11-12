@@ -14,6 +14,11 @@ Module  Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle_t.
 Section Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle_t.
   Ltac Self := exact generics_bounds.Rectangle.t.
   
+  (*
+      fn area(&self) -> f64 {
+          self.length * self.height
+      }
+  *)
   Definition area (self : M.Val (ref ltac:(Self))) : M (M.Val f64.t) :=
     M.function_body
       (let* α0 : ltac:(refine (M.Val generics_bounds.Rectangle.t)) :=
@@ -61,6 +66,9 @@ Module  Impl_core_fmt_Debug_for_generics_bounds_Rectangle_t.
 Section Impl_core_fmt_Debug_for_generics_bounds_Rectangle_t.
   Ltac Self := exact generics_bounds.Rectangle.t.
   
+  (*
+  Debug
+  *)
   Definition fmt
       (self : M.Val (ref ltac:(Self)))
       (f : M.Val (mut_ref core.fmt.Formatter.t))
@@ -124,6 +132,11 @@ Section Triangle.
 End Triangle.
 End Triangle.
 
+(*
+fn print_debug<T: Debug>(t: &T) {
+    println!("{:?}", t);
+}
+*)
 Definition print_debug
     {T : Set}
     {ℋ_0 : core.fmt.Debug.Trait T}
@@ -153,6 +166,11 @@ Definition print_debug
       M.alloc tt in
     M.alloc tt).
 
+(*
+fn area<T: HasArea>(t: &T) -> f64 {
+    t.area()
+}
+*)
 Definition area
     {T : Set}
     {ℋ_0 : generics_bounds.HasArea.Trait T}
@@ -163,6 +181,26 @@ Definition area
     let* α1 : ltac:(refine (M.Val (ref T))) := borrow α0 in
     (generics_bounds.HasArea.area (Self := T) (Trait := ltac:(refine _))) α1).
 
+(*
+fn main() {
+    let rectangle = Rectangle {
+        length: 3.0,
+        height: 4.0,
+    };
+    let _triangle = Triangle {
+        length: 3.0,
+        height: 4.0,
+    };
+
+    print_debug(&rectangle);
+    println!("Area: {}", rectangle.area());
+
+    //print_debug(&_triangle);
+    //println!("Area: {}", _triangle.area());
+    // ^ TODO: Try uncommenting these.
+    // | Error: Does not implement either `Debug` or `HasArea`.
+}
+*)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M (M.Val unit) :=
   M.function_body

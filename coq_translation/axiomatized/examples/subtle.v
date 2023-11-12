@@ -26,6 +26,9 @@ Module  Impl_core_clone_Clone_for_subtle_Choice_t.
 Section Impl_core_clone_Clone_for_subtle_Choice_t.
   Ltac Self := exact subtle.Choice.t.
   
+  (*
+  Clone
+  *)
   Parameter clone : (M.Val (ref ltac:(Self))) -> M (M.Val subtle.Choice.t).
   
   Global Instance AssociatedFunction_clone :
@@ -44,6 +47,9 @@ Module  Impl_core_fmt_Debug_for_subtle_Choice_t.
 Section Impl_core_fmt_Debug_for_subtle_Choice_t.
   Ltac Self := exact subtle.Choice.t.
   
+  (*
+  Debug
+  *)
   Parameter fmt :
       (M.Val (ref ltac:(Self))) ->
         (M.Val (mut_ref core.fmt.Formatter.t)) ->
@@ -64,6 +70,11 @@ Module  Impl_subtle_Choice_t.
 Section Impl_subtle_Choice_t.
   Ltac Self := exact subtle.Choice.t.
   
+  (*
+      pub fn unwrap_u8(&self) -> u8 {
+          self.0
+      }
+  *)
   Parameter unwrap_u8 : (M.Val (ref ltac:(Self))) -> M (M.Val u8.t).
   
   Global Instance AssociatedFunction_unwrap_u8 :
@@ -77,6 +88,12 @@ Module  Impl_core_convert_From_subtle_Choice_t_for_bool_t.
 Section Impl_core_convert_From_subtle_Choice_t_for_bool_t.
   Ltac Self := exact bool.t.
   
+  (*
+      fn from(source: Choice) -> bool {
+          debug_assert!((source.0 == 0u8) | (source.0 == 1u8));
+          source.0 != 0
+      }
+  *)
   Parameter from : (M.Val subtle.Choice.t) -> M (M.Val bool.t).
   
   Global Instance AssociatedFunction_from :
@@ -95,8 +112,16 @@ Module  Impl_core_ops_bit_BitAnd_for_subtle_Choice_t.
 Section Impl_core_ops_bit_BitAnd_for_subtle_Choice_t.
   Ltac Self := exact subtle.Choice.t.
   
+  (*
+      type Output = Choice;
+  *)
   Definition Output : Set := subtle.Choice.t.
   
+  (*
+      fn bitand(self, rhs: Choice) -> Choice {
+          (self.0 & rhs.0).into()
+      }
+  *)
   Parameter bitand :
       (M.Val ltac:(Self)) ->
         (M.Val subtle.Choice.t) ->
@@ -120,6 +145,11 @@ Module  Impl_core_ops_bit_BitAndAssign_for_subtle_Choice_t.
 Section Impl_core_ops_bit_BitAndAssign_for_subtle_Choice_t.
   Ltac Self := exact subtle.Choice.t.
   
+  (*
+      fn bitand_assign(&mut self, rhs: Choice) {
+          *self = *self & rhs;
+      }
+  *)
   Parameter bitand_assign :
       (M.Val (mut_ref ltac:(Self))) ->
         (M.Val subtle.Choice.t) ->
@@ -142,8 +172,16 @@ Module  Impl_core_ops_bit_BitOr_for_subtle_Choice_t.
 Section Impl_core_ops_bit_BitOr_for_subtle_Choice_t.
   Ltac Self := exact subtle.Choice.t.
   
+  (*
+      type Output = Choice;
+  *)
   Definition Output : Set := subtle.Choice.t.
   
+  (*
+      fn bitor(self, rhs: Choice) -> Choice {
+          (self.0 | rhs.0).into()
+      }
+  *)
   Parameter bitor :
       (M.Val ltac:(Self)) ->
         (M.Val subtle.Choice.t) ->
@@ -167,6 +205,11 @@ Module  Impl_core_ops_bit_BitOrAssign_for_subtle_Choice_t.
 Section Impl_core_ops_bit_BitOrAssign_for_subtle_Choice_t.
   Ltac Self := exact subtle.Choice.t.
   
+  (*
+      fn bitor_assign(&mut self, rhs: Choice) {
+          *self = *self | rhs;
+      }
+  *)
   Parameter bitor_assign :
       (M.Val (mut_ref ltac:(Self))) ->
         (M.Val subtle.Choice.t) ->
@@ -189,8 +232,16 @@ Module  Impl_core_ops_bit_BitXor_for_subtle_Choice_t.
 Section Impl_core_ops_bit_BitXor_for_subtle_Choice_t.
   Ltac Self := exact subtle.Choice.t.
   
+  (*
+      type Output = Choice;
+  *)
   Definition Output : Set := subtle.Choice.t.
   
+  (*
+      fn bitxor(self, rhs: Choice) -> Choice {
+          (self.0 ^ rhs.0).into()
+      }
+  *)
   Parameter bitxor :
       (M.Val ltac:(Self)) ->
         (M.Val subtle.Choice.t) ->
@@ -214,6 +265,11 @@ Module  Impl_core_ops_bit_BitXorAssign_for_subtle_Choice_t.
 Section Impl_core_ops_bit_BitXorAssign_for_subtle_Choice_t.
   Ltac Self := exact subtle.Choice.t.
   
+  (*
+      fn bitxor_assign(&mut self, rhs: Choice) {
+          *self = *self ^ rhs;
+      }
+  *)
   Parameter bitxor_assign :
       (M.Val (mut_ref ltac:(Self))) ->
         (M.Val subtle.Choice.t) ->
@@ -236,8 +292,16 @@ Module  Impl_core_ops_bit_Not_for_subtle_Choice_t.
 Section Impl_core_ops_bit_Not_for_subtle_Choice_t.
   Ltac Self := exact subtle.Choice.t.
   
+  (*
+      type Output = Choice;
+  *)
   Definition Output : Set := subtle.Choice.t.
   
+  (*
+      fn not(self) -> Choice {
+          (1u8 & (!self.0)).into()
+      }
+  *)
   Parameter not : (M.Val ltac:(Self)) -> M (M.Val subtle.Choice.t).
   
   Global Instance AssociatedFunction_not :
@@ -252,12 +316,36 @@ Section Impl_core_ops_bit_Not_for_subtle_Choice_t.
 End Impl_core_ops_bit_Not_for_subtle_Choice_t.
 End Impl_core_ops_bit_Not_for_subtle_Choice_t.
 
+(*
+fn black_box(input: u8) -> u8 {
+    debug_assert!((input == 0u8) | (input == 1u8));
+
+    unsafe {
+        // Optimization barrier
+        //
+        // Unsafe is ok, because:
+        //   - &input is not NULL;
+        //   - size of input is not zero;
+        //   - u8 is neither Sync, nor Send;
+        //   - u8 is Copy, so input is always live;
+        //   - u8 type is always properly aligned.
+        core::ptr::read_volatile(&input as *const u8)
+    }
+}
+*)
 Parameter black_box : (M.Val u8.t) -> M (M.Val u8.t).
 
 Module  Impl_core_convert_From_u8_t_for_subtle_Choice_t.
 Section Impl_core_convert_From_u8_t_for_subtle_Choice_t.
   Ltac Self := exact subtle.Choice.t.
   
+  (*
+      fn from(input: u8) -> Choice {
+          // Our goal is to prevent the compiler from inferring that the value held inside the
+          // resulting `Choice` struct is really an `i1` instead of an `i8`.
+          Choice(black_box(input))
+      }
+  *)
   Parameter from : (M.Val u8.t) -> M (M.Val subtle.Choice.t).
   
   Global Instance AssociatedFunction_from :
@@ -288,6 +376,27 @@ Section Impl_subtle_ConstantTimeEq_for_slice_T.
   
   Ltac Self := exact (slice T).
   
+  (*
+      fn ct_eq(&self, _rhs: &[T]) -> Choice {
+          let len = self.len();
+  
+          // Short-circuit on the *lengths* of the slices, not their
+          // contents.
+          if len != _rhs.len() {
+              return Choice::from(0);
+          }
+  
+          // This loop shouldn't be shortcircuitable, since the compiler
+          // shouldn't be able to reason about the value of the `u8`
+          // unwrapped from the `ct_eq` result.
+          let mut x = 1u8;
+          for (ai, bi) in self.iter().zip(_rhs.iter()) {
+              x &= ai.ct_eq(bi).unwrap_u8();
+          }
+  
+          x.into()
+      }
+  *)
   Parameter ct_eq :
       (M.Val (ref ltac:(Self))) ->
         (M.Val (ref (slice T))) ->
@@ -309,6 +418,11 @@ Module  Impl_subtle_ConstantTimeEq_for_subtle_Choice_t.
 Section Impl_subtle_ConstantTimeEq_for_subtle_Choice_t.
   Ltac Self := exact subtle.Choice.t.
   
+  (*
+      fn ct_eq(&self, rhs: &Choice) -> Choice {
+          !( *self ^ *rhs)
+      }
+  *)
   Parameter ct_eq :
       (M.Val (ref ltac:(Self))) ->
         (M.Val (ref subtle.Choice.t)) ->
@@ -330,6 +444,19 @@ Module  Impl_subtle_ConstantTimeEq_for_u8_t.
 Section Impl_subtle_ConstantTimeEq_for_u8_t.
   Ltac Self := exact u8.t.
   
+  (*
+              fn ct_eq(&self, other: &$t_u) -> Choice {
+                  // x == 0 if and only if self == other
+                  let x: $t_u = self ^ other;
+  
+                  // If x == 0, then x and -x are both equal to zero;
+                  // otherwise, one or both will have its high bit set.
+                  let y: $t_u = (x | x.wrapping_neg()) >> ($bit_width - 1);
+  
+                  // Result is the opposite of the high bit (now shifted to low).
+                  ((y ^ (1 as $t_u)) as u8).into()
+              }
+  *)
   Parameter ct_eq :
       (M.Val (ref ltac:(Self))) ->
         (M.Val (ref u8.t)) ->
@@ -351,6 +478,12 @@ Module  Impl_subtle_ConstantTimeEq_for_i8_t.
 Section Impl_subtle_ConstantTimeEq_for_i8_t.
   Ltac Self := exact i8.t.
   
+  (*
+              fn ct_eq(&self, other: &$t_i) -> Choice {
+                  // Bitcast to unsigned and call that implementation.
+                  ( *self as $t_u).ct_eq(&( *other as $t_u))
+              }
+  *)
   Parameter ct_eq :
       (M.Val (ref ltac:(Self))) ->
         (M.Val (ref i8.t)) ->
@@ -372,6 +505,19 @@ Module  Impl_subtle_ConstantTimeEq_for_u16_t.
 Section Impl_subtle_ConstantTimeEq_for_u16_t.
   Ltac Self := exact u16.t.
   
+  (*
+              fn ct_eq(&self, other: &$t_u) -> Choice {
+                  // x == 0 if and only if self == other
+                  let x: $t_u = self ^ other;
+  
+                  // If x == 0, then x and -x are both equal to zero;
+                  // otherwise, one or both will have its high bit set.
+                  let y: $t_u = (x | x.wrapping_neg()) >> ($bit_width - 1);
+  
+                  // Result is the opposite of the high bit (now shifted to low).
+                  ((y ^ (1 as $t_u)) as u8).into()
+              }
+  *)
   Parameter ct_eq :
       (M.Val (ref ltac:(Self))) ->
         (M.Val (ref u16.t)) ->
@@ -393,6 +539,12 @@ Module  Impl_subtle_ConstantTimeEq_for_i16_t.
 Section Impl_subtle_ConstantTimeEq_for_i16_t.
   Ltac Self := exact i16.t.
   
+  (*
+              fn ct_eq(&self, other: &$t_i) -> Choice {
+                  // Bitcast to unsigned and call that implementation.
+                  ( *self as $t_u).ct_eq(&( *other as $t_u))
+              }
+  *)
   Parameter ct_eq :
       (M.Val (ref ltac:(Self))) ->
         (M.Val (ref i16.t)) ->
@@ -414,6 +566,19 @@ Module  Impl_subtle_ConstantTimeEq_for_u32_t.
 Section Impl_subtle_ConstantTimeEq_for_u32_t.
   Ltac Self := exact u32.t.
   
+  (*
+              fn ct_eq(&self, other: &$t_u) -> Choice {
+                  // x == 0 if and only if self == other
+                  let x: $t_u = self ^ other;
+  
+                  // If x == 0, then x and -x are both equal to zero;
+                  // otherwise, one or both will have its high bit set.
+                  let y: $t_u = (x | x.wrapping_neg()) >> ($bit_width - 1);
+  
+                  // Result is the opposite of the high bit (now shifted to low).
+                  ((y ^ (1 as $t_u)) as u8).into()
+              }
+  *)
   Parameter ct_eq :
       (M.Val (ref ltac:(Self))) ->
         (M.Val (ref u32.t)) ->
@@ -435,6 +600,12 @@ Module  Impl_subtle_ConstantTimeEq_for_i32_t.
 Section Impl_subtle_ConstantTimeEq_for_i32_t.
   Ltac Self := exact i32.t.
   
+  (*
+              fn ct_eq(&self, other: &$t_i) -> Choice {
+                  // Bitcast to unsigned and call that implementation.
+                  ( *self as $t_u).ct_eq(&( *other as $t_u))
+              }
+  *)
   Parameter ct_eq :
       (M.Val (ref ltac:(Self))) ->
         (M.Val (ref i32.t)) ->
@@ -456,6 +627,19 @@ Module  Impl_subtle_ConstantTimeEq_for_u64_t.
 Section Impl_subtle_ConstantTimeEq_for_u64_t.
   Ltac Self := exact u64.t.
   
+  (*
+              fn ct_eq(&self, other: &$t_u) -> Choice {
+                  // x == 0 if and only if self == other
+                  let x: $t_u = self ^ other;
+  
+                  // If x == 0, then x and -x are both equal to zero;
+                  // otherwise, one or both will have its high bit set.
+                  let y: $t_u = (x | x.wrapping_neg()) >> ($bit_width - 1);
+  
+                  // Result is the opposite of the high bit (now shifted to low).
+                  ((y ^ (1 as $t_u)) as u8).into()
+              }
+  *)
   Parameter ct_eq :
       (M.Val (ref ltac:(Self))) ->
         (M.Val (ref u64.t)) ->
@@ -477,6 +661,12 @@ Module  Impl_subtle_ConstantTimeEq_for_i64_t.
 Section Impl_subtle_ConstantTimeEq_for_i64_t.
   Ltac Self := exact i64.t.
   
+  (*
+              fn ct_eq(&self, other: &$t_i) -> Choice {
+                  // Bitcast to unsigned and call that implementation.
+                  ( *self as $t_u).ct_eq(&( *other as $t_u))
+              }
+  *)
   Parameter ct_eq :
       (M.Val (ref ltac:(Self))) ->
         (M.Val (ref i64.t)) ->
@@ -498,6 +688,19 @@ Module  Impl_subtle_ConstantTimeEq_for_usize_t.
 Section Impl_subtle_ConstantTimeEq_for_usize_t.
   Ltac Self := exact usize.t.
   
+  (*
+              fn ct_eq(&self, other: &$t_u) -> Choice {
+                  // x == 0 if and only if self == other
+                  let x: $t_u = self ^ other;
+  
+                  // If x == 0, then x and -x are both equal to zero;
+                  // otherwise, one or both will have its high bit set.
+                  let y: $t_u = (x | x.wrapping_neg()) >> ($bit_width - 1);
+  
+                  // Result is the opposite of the high bit (now shifted to low).
+                  ((y ^ (1 as $t_u)) as u8).into()
+              }
+  *)
   Parameter ct_eq :
       (M.Val (ref ltac:(Self))) ->
         (M.Val (ref usize.t)) ->
@@ -519,6 +722,12 @@ Module  Impl_subtle_ConstantTimeEq_for_isize_t.
 Section Impl_subtle_ConstantTimeEq_for_isize_t.
   Ltac Self := exact isize.t.
   
+  (*
+              fn ct_eq(&self, other: &$t_i) -> Choice {
+                  // Bitcast to unsigned and call that implementation.
+                  ( *self as $t_u).ct_eq(&( *other as $t_u))
+              }
+  *)
   Parameter ct_eq :
       (M.Val (ref ltac:(Self))) ->
         (M.Val (ref isize.t)) ->
@@ -554,6 +763,14 @@ Module  Impl_subtle_ConditionallySelectable_for_u8_t.
 Section Impl_subtle_ConditionallySelectable_for_u8_t.
   Ltac Self := exact u8.t.
   
+  (*
+              fn conditional_select(a: &Self, b: &Self, choice: Choice) -> Self {
+                  // if choice = 0, mask = (-0) = 0000...0000
+                  // if choice = 1, mask = (-1) = 1111...1111
+                  let mask = -(choice.unwrap_u8() as to_signed_int!($t)) as $t;
+                  a ^ (mask & (a ^ b))
+              }
+  *)
   Parameter conditional_select :
       (M.Val (ref ltac:(Self))) ->
         (M.Val (ref ltac:(Self))) ->
@@ -565,6 +782,14 @@ Section Impl_subtle_ConditionallySelectable_for_u8_t.
     Notation.double_colon := conditional_select;
   }.
   
+  (*
+              fn conditional_assign(&mut self, other: &Self, choice: Choice) {
+                  // if choice = 0, mask = (-0) = 0000...0000
+                  // if choice = 1, mask = (-1) = 1111...1111
+                  let mask = -(choice.unwrap_u8() as to_signed_int!($t)) as $t;
+                  *self ^= mask & ( *self ^ *other);
+              }
+  *)
   Parameter conditional_assign :
       (M.Val (mut_ref ltac:(Self))) ->
         (M.Val (ref ltac:(Self))) ->
@@ -576,6 +801,16 @@ Section Impl_subtle_ConditionallySelectable_for_u8_t.
     Notation.double_colon := conditional_assign;
   }.
   
+  (*
+              fn conditional_swap(a: &mut Self, b: &mut Self, choice: Choice) {
+                  // if choice = 0, mask = (-0) = 0000...0000
+                  // if choice = 1, mask = (-1) = 1111...1111
+                  let mask = -(choice.unwrap_u8() as to_signed_int!($t)) as $t;
+                  let t = mask & ( *a ^ *b);
+                  *a ^= t;
+                  *b ^= t;
+              }
+  *)
   Parameter conditional_swap :
       (M.Val (mut_ref ltac:(Self))) ->
         (M.Val (mut_ref ltac:(Self))) ->
@@ -602,6 +837,14 @@ Module  Impl_subtle_ConditionallySelectable_for_i8_t.
 Section Impl_subtle_ConditionallySelectable_for_i8_t.
   Ltac Self := exact i8.t.
   
+  (*
+              fn conditional_select(a: &Self, b: &Self, choice: Choice) -> Self {
+                  // if choice = 0, mask = (-0) = 0000...0000
+                  // if choice = 1, mask = (-1) = 1111...1111
+                  let mask = -(choice.unwrap_u8() as to_signed_int!($t)) as $t;
+                  a ^ (mask & (a ^ b))
+              }
+  *)
   Parameter conditional_select :
       (M.Val (ref ltac:(Self))) ->
         (M.Val (ref ltac:(Self))) ->
@@ -613,6 +856,14 @@ Section Impl_subtle_ConditionallySelectable_for_i8_t.
     Notation.double_colon := conditional_select;
   }.
   
+  (*
+              fn conditional_assign(&mut self, other: &Self, choice: Choice) {
+                  // if choice = 0, mask = (-0) = 0000...0000
+                  // if choice = 1, mask = (-1) = 1111...1111
+                  let mask = -(choice.unwrap_u8() as to_signed_int!($t)) as $t;
+                  *self ^= mask & ( *self ^ *other);
+              }
+  *)
   Parameter conditional_assign :
       (M.Val (mut_ref ltac:(Self))) ->
         (M.Val (ref ltac:(Self))) ->
@@ -624,6 +875,16 @@ Section Impl_subtle_ConditionallySelectable_for_i8_t.
     Notation.double_colon := conditional_assign;
   }.
   
+  (*
+              fn conditional_swap(a: &mut Self, b: &mut Self, choice: Choice) {
+                  // if choice = 0, mask = (-0) = 0000...0000
+                  // if choice = 1, mask = (-1) = 1111...1111
+                  let mask = -(choice.unwrap_u8() as to_signed_int!($t)) as $t;
+                  let t = mask & ( *a ^ *b);
+                  *a ^= t;
+                  *b ^= t;
+              }
+  *)
   Parameter conditional_swap :
       (M.Val (mut_ref ltac:(Self))) ->
         (M.Val (mut_ref ltac:(Self))) ->
@@ -650,6 +911,14 @@ Module  Impl_subtle_ConditionallySelectable_for_u16_t.
 Section Impl_subtle_ConditionallySelectable_for_u16_t.
   Ltac Self := exact u16.t.
   
+  (*
+              fn conditional_select(a: &Self, b: &Self, choice: Choice) -> Self {
+                  // if choice = 0, mask = (-0) = 0000...0000
+                  // if choice = 1, mask = (-1) = 1111...1111
+                  let mask = -(choice.unwrap_u8() as to_signed_int!($t)) as $t;
+                  a ^ (mask & (a ^ b))
+              }
+  *)
   Parameter conditional_select :
       (M.Val (ref ltac:(Self))) ->
         (M.Val (ref ltac:(Self))) ->
@@ -661,6 +930,14 @@ Section Impl_subtle_ConditionallySelectable_for_u16_t.
     Notation.double_colon := conditional_select;
   }.
   
+  (*
+              fn conditional_assign(&mut self, other: &Self, choice: Choice) {
+                  // if choice = 0, mask = (-0) = 0000...0000
+                  // if choice = 1, mask = (-1) = 1111...1111
+                  let mask = -(choice.unwrap_u8() as to_signed_int!($t)) as $t;
+                  *self ^= mask & ( *self ^ *other);
+              }
+  *)
   Parameter conditional_assign :
       (M.Val (mut_ref ltac:(Self))) ->
         (M.Val (ref ltac:(Self))) ->
@@ -672,6 +949,16 @@ Section Impl_subtle_ConditionallySelectable_for_u16_t.
     Notation.double_colon := conditional_assign;
   }.
   
+  (*
+              fn conditional_swap(a: &mut Self, b: &mut Self, choice: Choice) {
+                  // if choice = 0, mask = (-0) = 0000...0000
+                  // if choice = 1, mask = (-1) = 1111...1111
+                  let mask = -(choice.unwrap_u8() as to_signed_int!($t)) as $t;
+                  let t = mask & ( *a ^ *b);
+                  *a ^= t;
+                  *b ^= t;
+              }
+  *)
   Parameter conditional_swap :
       (M.Val (mut_ref ltac:(Self))) ->
         (M.Val (mut_ref ltac:(Self))) ->
@@ -698,6 +985,14 @@ Module  Impl_subtle_ConditionallySelectable_for_i16_t.
 Section Impl_subtle_ConditionallySelectable_for_i16_t.
   Ltac Self := exact i16.t.
   
+  (*
+              fn conditional_select(a: &Self, b: &Self, choice: Choice) -> Self {
+                  // if choice = 0, mask = (-0) = 0000...0000
+                  // if choice = 1, mask = (-1) = 1111...1111
+                  let mask = -(choice.unwrap_u8() as to_signed_int!($t)) as $t;
+                  a ^ (mask & (a ^ b))
+              }
+  *)
   Parameter conditional_select :
       (M.Val (ref ltac:(Self))) ->
         (M.Val (ref ltac:(Self))) ->
@@ -709,6 +1004,14 @@ Section Impl_subtle_ConditionallySelectable_for_i16_t.
     Notation.double_colon := conditional_select;
   }.
   
+  (*
+              fn conditional_assign(&mut self, other: &Self, choice: Choice) {
+                  // if choice = 0, mask = (-0) = 0000...0000
+                  // if choice = 1, mask = (-1) = 1111...1111
+                  let mask = -(choice.unwrap_u8() as to_signed_int!($t)) as $t;
+                  *self ^= mask & ( *self ^ *other);
+              }
+  *)
   Parameter conditional_assign :
       (M.Val (mut_ref ltac:(Self))) ->
         (M.Val (ref ltac:(Self))) ->
@@ -720,6 +1023,16 @@ Section Impl_subtle_ConditionallySelectable_for_i16_t.
     Notation.double_colon := conditional_assign;
   }.
   
+  (*
+              fn conditional_swap(a: &mut Self, b: &mut Self, choice: Choice) {
+                  // if choice = 0, mask = (-0) = 0000...0000
+                  // if choice = 1, mask = (-1) = 1111...1111
+                  let mask = -(choice.unwrap_u8() as to_signed_int!($t)) as $t;
+                  let t = mask & ( *a ^ *b);
+                  *a ^= t;
+                  *b ^= t;
+              }
+  *)
   Parameter conditional_swap :
       (M.Val (mut_ref ltac:(Self))) ->
         (M.Val (mut_ref ltac:(Self))) ->
@@ -746,6 +1059,14 @@ Module  Impl_subtle_ConditionallySelectable_for_u32_t.
 Section Impl_subtle_ConditionallySelectable_for_u32_t.
   Ltac Self := exact u32.t.
   
+  (*
+              fn conditional_select(a: &Self, b: &Self, choice: Choice) -> Self {
+                  // if choice = 0, mask = (-0) = 0000...0000
+                  // if choice = 1, mask = (-1) = 1111...1111
+                  let mask = -(choice.unwrap_u8() as to_signed_int!($t)) as $t;
+                  a ^ (mask & (a ^ b))
+              }
+  *)
   Parameter conditional_select :
       (M.Val (ref ltac:(Self))) ->
         (M.Val (ref ltac:(Self))) ->
@@ -757,6 +1078,14 @@ Section Impl_subtle_ConditionallySelectable_for_u32_t.
     Notation.double_colon := conditional_select;
   }.
   
+  (*
+              fn conditional_assign(&mut self, other: &Self, choice: Choice) {
+                  // if choice = 0, mask = (-0) = 0000...0000
+                  // if choice = 1, mask = (-1) = 1111...1111
+                  let mask = -(choice.unwrap_u8() as to_signed_int!($t)) as $t;
+                  *self ^= mask & ( *self ^ *other);
+              }
+  *)
   Parameter conditional_assign :
       (M.Val (mut_ref ltac:(Self))) ->
         (M.Val (ref ltac:(Self))) ->
@@ -768,6 +1097,16 @@ Section Impl_subtle_ConditionallySelectable_for_u32_t.
     Notation.double_colon := conditional_assign;
   }.
   
+  (*
+              fn conditional_swap(a: &mut Self, b: &mut Self, choice: Choice) {
+                  // if choice = 0, mask = (-0) = 0000...0000
+                  // if choice = 1, mask = (-1) = 1111...1111
+                  let mask = -(choice.unwrap_u8() as to_signed_int!($t)) as $t;
+                  let t = mask & ( *a ^ *b);
+                  *a ^= t;
+                  *b ^= t;
+              }
+  *)
   Parameter conditional_swap :
       (M.Val (mut_ref ltac:(Self))) ->
         (M.Val (mut_ref ltac:(Self))) ->
@@ -794,6 +1133,14 @@ Module  Impl_subtle_ConditionallySelectable_for_i32_t.
 Section Impl_subtle_ConditionallySelectable_for_i32_t.
   Ltac Self := exact i32.t.
   
+  (*
+              fn conditional_select(a: &Self, b: &Self, choice: Choice) -> Self {
+                  // if choice = 0, mask = (-0) = 0000...0000
+                  // if choice = 1, mask = (-1) = 1111...1111
+                  let mask = -(choice.unwrap_u8() as to_signed_int!($t)) as $t;
+                  a ^ (mask & (a ^ b))
+              }
+  *)
   Parameter conditional_select :
       (M.Val (ref ltac:(Self))) ->
         (M.Val (ref ltac:(Self))) ->
@@ -805,6 +1152,14 @@ Section Impl_subtle_ConditionallySelectable_for_i32_t.
     Notation.double_colon := conditional_select;
   }.
   
+  (*
+              fn conditional_assign(&mut self, other: &Self, choice: Choice) {
+                  // if choice = 0, mask = (-0) = 0000...0000
+                  // if choice = 1, mask = (-1) = 1111...1111
+                  let mask = -(choice.unwrap_u8() as to_signed_int!($t)) as $t;
+                  *self ^= mask & ( *self ^ *other);
+              }
+  *)
   Parameter conditional_assign :
       (M.Val (mut_ref ltac:(Self))) ->
         (M.Val (ref ltac:(Self))) ->
@@ -816,6 +1171,16 @@ Section Impl_subtle_ConditionallySelectable_for_i32_t.
     Notation.double_colon := conditional_assign;
   }.
   
+  (*
+              fn conditional_swap(a: &mut Self, b: &mut Self, choice: Choice) {
+                  // if choice = 0, mask = (-0) = 0000...0000
+                  // if choice = 1, mask = (-1) = 1111...1111
+                  let mask = -(choice.unwrap_u8() as to_signed_int!($t)) as $t;
+                  let t = mask & ( *a ^ *b);
+                  *a ^= t;
+                  *b ^= t;
+              }
+  *)
   Parameter conditional_swap :
       (M.Val (mut_ref ltac:(Self))) ->
         (M.Val (mut_ref ltac:(Self))) ->
@@ -842,6 +1207,14 @@ Module  Impl_subtle_ConditionallySelectable_for_u64_t.
 Section Impl_subtle_ConditionallySelectable_for_u64_t.
   Ltac Self := exact u64.t.
   
+  (*
+              fn conditional_select(a: &Self, b: &Self, choice: Choice) -> Self {
+                  // if choice = 0, mask = (-0) = 0000...0000
+                  // if choice = 1, mask = (-1) = 1111...1111
+                  let mask = -(choice.unwrap_u8() as to_signed_int!($t)) as $t;
+                  a ^ (mask & (a ^ b))
+              }
+  *)
   Parameter conditional_select :
       (M.Val (ref ltac:(Self))) ->
         (M.Val (ref ltac:(Self))) ->
@@ -853,6 +1226,14 @@ Section Impl_subtle_ConditionallySelectable_for_u64_t.
     Notation.double_colon := conditional_select;
   }.
   
+  (*
+              fn conditional_assign(&mut self, other: &Self, choice: Choice) {
+                  // if choice = 0, mask = (-0) = 0000...0000
+                  // if choice = 1, mask = (-1) = 1111...1111
+                  let mask = -(choice.unwrap_u8() as to_signed_int!($t)) as $t;
+                  *self ^= mask & ( *self ^ *other);
+              }
+  *)
   Parameter conditional_assign :
       (M.Val (mut_ref ltac:(Self))) ->
         (M.Val (ref ltac:(Self))) ->
@@ -864,6 +1245,16 @@ Section Impl_subtle_ConditionallySelectable_for_u64_t.
     Notation.double_colon := conditional_assign;
   }.
   
+  (*
+              fn conditional_swap(a: &mut Self, b: &mut Self, choice: Choice) {
+                  // if choice = 0, mask = (-0) = 0000...0000
+                  // if choice = 1, mask = (-1) = 1111...1111
+                  let mask = -(choice.unwrap_u8() as to_signed_int!($t)) as $t;
+                  let t = mask & ( *a ^ *b);
+                  *a ^= t;
+                  *b ^= t;
+              }
+  *)
   Parameter conditional_swap :
       (M.Val (mut_ref ltac:(Self))) ->
         (M.Val (mut_ref ltac:(Self))) ->
@@ -890,6 +1281,14 @@ Module  Impl_subtle_ConditionallySelectable_for_i64_t.
 Section Impl_subtle_ConditionallySelectable_for_i64_t.
   Ltac Self := exact i64.t.
   
+  (*
+              fn conditional_select(a: &Self, b: &Self, choice: Choice) -> Self {
+                  // if choice = 0, mask = (-0) = 0000...0000
+                  // if choice = 1, mask = (-1) = 1111...1111
+                  let mask = -(choice.unwrap_u8() as to_signed_int!($t)) as $t;
+                  a ^ (mask & (a ^ b))
+              }
+  *)
   Parameter conditional_select :
       (M.Val (ref ltac:(Self))) ->
         (M.Val (ref ltac:(Self))) ->
@@ -901,6 +1300,14 @@ Section Impl_subtle_ConditionallySelectable_for_i64_t.
     Notation.double_colon := conditional_select;
   }.
   
+  (*
+              fn conditional_assign(&mut self, other: &Self, choice: Choice) {
+                  // if choice = 0, mask = (-0) = 0000...0000
+                  // if choice = 1, mask = (-1) = 1111...1111
+                  let mask = -(choice.unwrap_u8() as to_signed_int!($t)) as $t;
+                  *self ^= mask & ( *self ^ *other);
+              }
+  *)
   Parameter conditional_assign :
       (M.Val (mut_ref ltac:(Self))) ->
         (M.Val (ref ltac:(Self))) ->
@@ -912,6 +1319,16 @@ Section Impl_subtle_ConditionallySelectable_for_i64_t.
     Notation.double_colon := conditional_assign;
   }.
   
+  (*
+              fn conditional_swap(a: &mut Self, b: &mut Self, choice: Choice) {
+                  // if choice = 0, mask = (-0) = 0000...0000
+                  // if choice = 1, mask = (-1) = 1111...1111
+                  let mask = -(choice.unwrap_u8() as to_signed_int!($t)) as $t;
+                  let t = mask & ( *a ^ *b);
+                  *a ^= t;
+                  *b ^= t;
+              }
+  *)
   Parameter conditional_swap :
       (M.Val (mut_ref ltac:(Self))) ->
         (M.Val (mut_ref ltac:(Self))) ->
@@ -938,6 +1355,11 @@ Module  Impl_subtle_ConditionallySelectable_for_subtle_Choice_t.
 Section Impl_subtle_ConditionallySelectable_for_subtle_Choice_t.
   Ltac Self := exact subtle.Choice.t.
   
+  (*
+      fn conditional_select(a: &Self, b: &Self, choice: Choice) -> Self {
+          Choice(u8::conditional_select(&a.0, &b.0, choice))
+      }
+  *)
   Parameter conditional_select :
       (M.Val (ref ltac:(Self))) ->
         (M.Val (ref ltac:(Self))) ->
@@ -977,6 +1399,13 @@ Section Impl_subtle_ConditionallyNegatable_for_T.
   
   Ltac Self := exact T.
   
+  (*
+      fn conditional_negate(&mut self, choice: Choice) {
+          // Need to cast to eliminate mutability
+          let self_neg: T = -(self as &T);
+          self.conditional_assign(&self_neg, choice);
+      }
+  *)
   Parameter conditional_negate :
       (M.Val (mut_ref ltac:(Self))) ->
         (M.Val subtle.Choice.t) ->
@@ -1025,6 +1454,9 @@ Section Impl_core_clone_Clone_for_subtle_CtOption_t_T.
   
   Ltac Self := exact (subtle.CtOption.t T).
   
+  (*
+  Clone
+  *)
   Parameter clone :
       (M.Val (ref ltac:(Self))) -> M (M.Val (subtle.CtOption.t T)).
   
@@ -1061,6 +1493,9 @@ Section Impl_core_fmt_Debug_for_subtle_CtOption_t_T.
   
   Ltac Self := exact (subtle.CtOption.t T).
   
+  (*
+  Debug
+  *)
   Parameter fmt :
       (M.Val (ref ltac:(Self))) ->
         (M.Val (mut_ref core.fmt.Formatter.t)) ->
@@ -1083,6 +1518,15 @@ Section Impl_core_convert_From_subtle_CtOption_t_T_for_core_option_Option_t_T.
   
   Ltac Self := exact (core.option.Option.t T).
   
+  (*
+      fn from(source: CtOption<T>) -> Option<T> {
+          if source.is_some().unwrap_u8() == 1u8 {
+              Option::Some(source.value)
+          } else {
+              None
+          }
+      }
+  *)
   Parameter from :
       (M.Val (subtle.CtOption.t T)) -> M (M.Val (core.option.Option.t T)).
   
@@ -1104,6 +1548,14 @@ Section Impl_subtle_CtOption_t_T.
   
   Ltac Self := exact (subtle.CtOption.t T).
   
+  (*
+      pub fn new(value: T, is_some: Choice) -> CtOption<T> {
+          CtOption {
+              value: value,
+              is_some: is_some,
+          }
+      }
+  *)
   Parameter new :
       (M.Val T) -> (M.Val subtle.Choice.t) -> M (M.Val (subtle.CtOption.t T)).
   
@@ -1112,6 +1564,13 @@ Section Impl_subtle_CtOption_t_T.
     Notation.double_colon := new;
   }.
   
+  (*
+      pub fn expect(self, msg: &str) -> T {
+          assert_eq!(self.is_some.unwrap_u8(), 1, "{}", msg);
+  
+          self.value
+      }
+  *)
   Parameter expect : (M.Val ltac:(Self)) -> (M.Val (ref str.t)) -> M (M.Val T).
   
   Global Instance AssociatedFunction_expect :
@@ -1119,6 +1578,13 @@ Section Impl_subtle_CtOption_t_T.
     Notation.double_colon := expect;
   }.
   
+  (*
+      pub fn unwrap(self) -> T {
+          assert_eq!(self.is_some.unwrap_u8(), 1);
+  
+          self.value
+      }
+  *)
   Parameter unwrap : (M.Val ltac:(Self)) -> M (M.Val T).
   
   Global Instance AssociatedFunction_unwrap :
@@ -1126,6 +1592,14 @@ Section Impl_subtle_CtOption_t_T.
     Notation.double_colon := unwrap;
   }.
   
+  (*
+      pub fn unwrap_or(self, def: T) -> T
+      where
+          T: ConditionallySelectable,
+      {
+          T::conditional_select(&def, &self.value, self.is_some)
+      }
+  *)
   Parameter unwrap_or :
       forall {ℋ_0 : subtle.ConditionallySelectable.Trait T},
       (M.Val ltac:(Self)) -> (M.Val T) -> M (M.Val T).
@@ -1136,6 +1610,15 @@ Section Impl_subtle_CtOption_t_T.
     Notation.double_colon := unwrap_or;
   }.
   
+  (*
+      pub fn unwrap_or_else<F>(self, f: F) -> T
+      where
+          T: ConditionallySelectable,
+          F: FnOnce() -> T,
+      {
+          T::conditional_select(&f(), &self.value, self.is_some)
+      }
+  *)
   Parameter unwrap_or_else :
       forall
         {F : Set}
@@ -1151,6 +1634,11 @@ Section Impl_subtle_CtOption_t_T.
     Notation.double_colon := unwrap_or_else (F := F);
   }.
   
+  (*
+      pub fn is_some(&self) -> Choice {
+          self.is_some
+      }
+  *)
   Parameter is_some : (M.Val (ref ltac:(Self))) -> M (M.Val subtle.Choice.t).
   
   Global Instance AssociatedFunction_is_some :
@@ -1158,6 +1646,11 @@ Section Impl_subtle_CtOption_t_T.
     Notation.double_colon := is_some;
   }.
   
+  (*
+      pub fn is_none(&self) -> Choice {
+          !self.is_some
+      }
+  *)
   Parameter is_none : (M.Val (ref ltac:(Self))) -> M (M.Val subtle.Choice.t).
   
   Global Instance AssociatedFunction_is_none :
@@ -1165,6 +1658,22 @@ Section Impl_subtle_CtOption_t_T.
     Notation.double_colon := is_none;
   }.
   
+  (*
+      pub fn map<U, F>(self, f: F) -> CtOption<U>
+      where
+          T: Default + ConditionallySelectable,
+          F: FnOnce(T) -> U,
+      {
+          CtOption::new(
+              f(T::conditional_select(
+                  &T::default(),
+                  &self.value,
+                  self.is_some,
+              )),
+              self.is_some,
+          )
+      }
+  *)
   Parameter map :
       forall
         {U F : Set}
@@ -1182,6 +1691,22 @@ Section Impl_subtle_CtOption_t_T.
     Notation.double_colon := map (U := U) (F := F);
   }.
   
+  (*
+      pub fn and_then<U, F>(self, f: F) -> CtOption<U>
+      where
+          T: Default + ConditionallySelectable,
+          F: FnOnce(T) -> CtOption<U>,
+      {
+          let mut tmp = f(T::conditional_select(
+              &T::default(),
+              &self.value,
+              self.is_some,
+          ));
+          tmp.is_some &= self.is_some;
+  
+          tmp
+      }
+  *)
   Parameter and_then :
       forall
         {U F : Set}
@@ -1199,6 +1724,18 @@ Section Impl_subtle_CtOption_t_T.
     Notation.double_colon := and_then (U := U) (F := F);
   }.
   
+  (*
+      pub fn or_else<F>(self, f: F) -> CtOption<T>
+      where
+          T: ConditionallySelectable,
+          F: FnOnce() -> CtOption<T>,
+      {
+          let is_none = self.is_none();
+          let f = f();
+  
+          Self::conditional_select(&self, &f, is_none)
+      }
+  *)
   Parameter or_else :
       forall
         {F : Set}
@@ -1224,6 +1761,14 @@ Section Impl_subtle_ConditionallySelectable_for_subtle_CtOption_t_T.
   
   Ltac Self := exact (subtle.CtOption.t T).
   
+  (*
+      fn conditional_select(a: &Self, b: &Self, choice: Choice) -> Self {
+          CtOption::new(
+              T::conditional_select(&a.value, &b.value, choice),
+              Choice::conditional_select(&a.is_some, &b.is_some, choice),
+          )
+      }
+  *)
   Parameter conditional_select :
       (M.Val (ref ltac:(Self))) ->
         (M.Val (ref ltac:(Self))) ->
@@ -1252,6 +1797,14 @@ Section Impl_subtle_ConstantTimeEq_for_subtle_CtOption_t_T.
   
   Ltac Self := exact (subtle.CtOption.t T).
   
+  (*
+      fn ct_eq(&self, rhs: &CtOption<T>) -> Choice {
+          let a = self.is_some();
+          let b = rhs.is_some();
+  
+          (a & b & self.value.ct_eq(&rhs.value)) | (!a & !b)
+      }
+  *)
   Parameter ct_eq :
       (M.Val (ref ltac:(Self))) ->
         (M.Val (ref (subtle.CtOption.t T))) ->
@@ -1282,6 +1835,29 @@ Module  Impl_subtle_ConstantTimeGreater_for_u8_t.
 Section Impl_subtle_ConstantTimeGreater_for_u8_t.
   Ltac Self := exact u8.t.
   
+  (*
+              fn ct_gt(&self, other: &$t_u) -> Choice {
+                  let gtb = self & !other; // All the bits in self that are greater than their corresponding bits in other.
+                  let mut ltb = !self & other; // All the bits in self that are less than their corresponding bits in other.
+                  let mut pow = 1;
+  
+                  // Less-than operator is okay here because it's dependent on the bit-width.
+                  while pow < $bit_width {
+                      ltb |= ltb >> pow; // Bit-smear the highest set bit to the right.
+                      pow += pow;
+                  }
+                  let mut bit = gtb & !ltb; // Select the highest set bit.
+                  let mut pow = 1;
+  
+                  while pow < $bit_width {
+                      bit |= bit >> pow; // Shift it to the right until we end up with either 0 or 1.
+                      pow += pow;
+                  }
+                  // XXX We should possibly do the above flattening to 0 or 1 in the
+                  //     Choice constructor rather than making it a debug error?
+                  Choice::from((bit & 1) as u8)
+              }
+  *)
   Parameter ct_gt :
       (M.Val (ref ltac:(Self))) ->
         (M.Val (ref u8.t)) ->
@@ -1302,6 +1878,29 @@ Module  Impl_subtle_ConstantTimeGreater_for_u16_t.
 Section Impl_subtle_ConstantTimeGreater_for_u16_t.
   Ltac Self := exact u16.t.
   
+  (*
+              fn ct_gt(&self, other: &$t_u) -> Choice {
+                  let gtb = self & !other; // All the bits in self that are greater than their corresponding bits in other.
+                  let mut ltb = !self & other; // All the bits in self that are less than their corresponding bits in other.
+                  let mut pow = 1;
+  
+                  // Less-than operator is okay here because it's dependent on the bit-width.
+                  while pow < $bit_width {
+                      ltb |= ltb >> pow; // Bit-smear the highest set bit to the right.
+                      pow += pow;
+                  }
+                  let mut bit = gtb & !ltb; // Select the highest set bit.
+                  let mut pow = 1;
+  
+                  while pow < $bit_width {
+                      bit |= bit >> pow; // Shift it to the right until we end up with either 0 or 1.
+                      pow += pow;
+                  }
+                  // XXX We should possibly do the above flattening to 0 or 1 in the
+                  //     Choice constructor rather than making it a debug error?
+                  Choice::from((bit & 1) as u8)
+              }
+  *)
   Parameter ct_gt :
       (M.Val (ref ltac:(Self))) ->
         (M.Val (ref u16.t)) ->
@@ -1322,6 +1921,29 @@ Module  Impl_subtle_ConstantTimeGreater_for_u32_t.
 Section Impl_subtle_ConstantTimeGreater_for_u32_t.
   Ltac Self := exact u32.t.
   
+  (*
+              fn ct_gt(&self, other: &$t_u) -> Choice {
+                  let gtb = self & !other; // All the bits in self that are greater than their corresponding bits in other.
+                  let mut ltb = !self & other; // All the bits in self that are less than their corresponding bits in other.
+                  let mut pow = 1;
+  
+                  // Less-than operator is okay here because it's dependent on the bit-width.
+                  while pow < $bit_width {
+                      ltb |= ltb >> pow; // Bit-smear the highest set bit to the right.
+                      pow += pow;
+                  }
+                  let mut bit = gtb & !ltb; // Select the highest set bit.
+                  let mut pow = 1;
+  
+                  while pow < $bit_width {
+                      bit |= bit >> pow; // Shift it to the right until we end up with either 0 or 1.
+                      pow += pow;
+                  }
+                  // XXX We should possibly do the above flattening to 0 or 1 in the
+                  //     Choice constructor rather than making it a debug error?
+                  Choice::from((bit & 1) as u8)
+              }
+  *)
   Parameter ct_gt :
       (M.Val (ref ltac:(Self))) ->
         (M.Val (ref u32.t)) ->
@@ -1342,6 +1964,29 @@ Module  Impl_subtle_ConstantTimeGreater_for_u64_t.
 Section Impl_subtle_ConstantTimeGreater_for_u64_t.
   Ltac Self := exact u64.t.
   
+  (*
+              fn ct_gt(&self, other: &$t_u) -> Choice {
+                  let gtb = self & !other; // All the bits in self that are greater than their corresponding bits in other.
+                  let mut ltb = !self & other; // All the bits in self that are less than their corresponding bits in other.
+                  let mut pow = 1;
+  
+                  // Less-than operator is okay here because it's dependent on the bit-width.
+                  while pow < $bit_width {
+                      ltb |= ltb >> pow; // Bit-smear the highest set bit to the right.
+                      pow += pow;
+                  }
+                  let mut bit = gtb & !ltb; // Select the highest set bit.
+                  let mut pow = 1;
+  
+                  while pow < $bit_width {
+                      bit |= bit >> pow; // Shift it to the right until we end up with either 0 or 1.
+                      pow += pow;
+                  }
+                  // XXX We should possibly do the above flattening to 0 or 1 in the
+                  //     Choice constructor rather than making it a debug error?
+                  Choice::from((bit & 1) as u8)
+              }
+  *)
   Parameter ct_gt :
       (M.Val (ref ltac:(Self))) ->
         (M.Val (ref u64.t)) ->

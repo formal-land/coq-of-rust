@@ -28,6 +28,9 @@ Section Impl_generics_traits_DoubleDrop_T_for_U.
   
   Ltac Self := exact U.
   
+  (*
+      fn double_drop(self, _: T) {}
+  *)
   Definition double_drop
       (self : M.Val ltac:(Self))
       (Pattern : M.Val T)
@@ -45,6 +48,19 @@ Section Impl_generics_traits_DoubleDrop_T_for_U.
 End Impl_generics_traits_DoubleDrop_T_for_U.
 End Impl_generics_traits_DoubleDrop_T_for_U.
 
+(*
+fn main() {
+    let empty = Empty;
+    let null = Null;
+
+    // Deallocate `empty` and `null`.
+    empty.double_drop(null);
+
+    //empty;
+    //null;
+    // ^ TODO: Try uncommenting these lines.
+}
+*)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M (M.Val unit) :=
   M.function_body

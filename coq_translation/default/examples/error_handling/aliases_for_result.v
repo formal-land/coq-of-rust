@@ -4,6 +4,15 @@ Require Import CoqOfRust.CoqOfRust.
 Ltac AliasedResult T :=
   exact (core.result.Result.t T core.num.error.ParseIntError.t).
 
+(*
+fn multiply(first_number_str: &str, second_number_str: &str) -> AliasedResult<i32> {
+    first_number_str.parse::<i32>().and_then(|first_number| {
+        second_number_str
+            .parse::<i32>()
+            .map(|second_number| first_number * second_number)
+    })
+}
+*)
 Definition multiply
     (first_number_str : M.Val (ref str.t))
     (second_number_str : M.Val (ref str.t))
@@ -29,6 +38,14 @@ Definition multiply
         α2
         (BinOp.mul first_number second_number))).
 
+(*
+fn print(result: AliasedResult<i32>) {
+    match result {
+        Ok(n) => println!("n is {}", n),
+        Err(e) => println!("Error: {}", e),
+    }
+}
+*)
 Definition print
     (result : M.Val ltac:(aliases_for_result.AliasedResult i32.t))
     : M (M.Val unit) :=
@@ -82,6 +99,12 @@ Definition print
       M.alloc tt
     end).
 
+(*
+fn main() {
+    print(multiply("10", "2"));
+    print(multiply("t", "2"));
+}
+*)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M (M.Val unit) :=
   M.function_body

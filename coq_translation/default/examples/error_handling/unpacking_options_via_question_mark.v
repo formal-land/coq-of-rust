@@ -38,6 +38,9 @@ Module  Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job_t.
 Section Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job_t.
   Ltac Self := exact unpacking_options_via_question_mark.Job.t.
   
+  (*
+  Clone
+  *)
   Definition clone
       (self : M.Val (ref ltac:(Self)))
       : M (M.Val unpacking_options_via_question_mark.Job.t) :=
@@ -93,6 +96,9 @@ Module  Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumbe
 Section Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumber_t.
   Ltac Self := exact unpacking_options_via_question_mark.PhoneNumber.t.
   
+  (*
+  Clone
+  *)
   Definition clone
       (self : M.Val (ref ltac:(Self)))
       : M (M.Val unpacking_options_via_question_mark.PhoneNumber.t) :=
@@ -126,6 +132,14 @@ Module  Impl_unpacking_options_via_question_mark_Person_t.
 Section Impl_unpacking_options_via_question_mark_Person_t.
   Ltac Self := exact unpacking_options_via_question_mark.Person.t.
   
+  (*
+      fn work_phone_area_code(&self) -> Option<u8> {
+          // This would need many nested `match` statements without the `?` operator.
+          // It would take a lot more code - try writing it yourself and see which
+          // is easier.
+          self.job?.phone_number?.area_code
+      }
+  *)
   Definition work_phone_area_code
       (self : M.Val (ref ltac:(Self)))
       : M (M.Val (core.option.Option.t u8.t)) :=
@@ -212,6 +226,20 @@ Section Impl_unpacking_options_via_question_mark_Person_t.
 End Impl_unpacking_options_via_question_mark_Person_t.
 End Impl_unpacking_options_via_question_mark_Person_t.
 
+(*
+fn main() {
+    let p = Person {
+        job: Some(Job {
+            phone_number: Some(PhoneNumber {
+                area_code: Some(61),
+                number: 439222222,
+            }),
+        }),
+    };
+
+    assert_eq!(p.work_phone_area_code(), Some(61));
+}
+*)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M (M.Val unit) :=
   M.function_body

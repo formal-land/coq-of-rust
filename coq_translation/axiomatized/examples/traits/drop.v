@@ -20,6 +20,11 @@ Module  Impl_core_ops_drop_Drop_for_drop_Droppable_t.
 Section Impl_core_ops_drop_Drop_for_drop_Droppable_t.
   Ltac Self := exact drop.Droppable.t.
   
+  (*
+      fn drop(&mut self) {
+          println!("> Dropping {}", self.name);
+      }
+  *)
   Parameter drop : (M.Val (mut_ref ltac:(Self))) -> M (M.Val unit).
   
   Global Instance AssociatedFunction_drop :
@@ -33,5 +38,36 @@ Section Impl_core_ops_drop_Drop_for_drop_Droppable_t.
 End Impl_core_ops_drop_Drop_for_drop_Droppable_t.
 End Impl_core_ops_drop_Drop_for_drop_Droppable_t.
 
+(*
+fn main() {
+    let _a = Droppable { name: "a" };
+
+    // block A
+    {
+        let _b = Droppable { name: "b" };
+
+        // block B
+        {
+            let _c = Droppable { name: "c" };
+            let _d = Droppable { name: "d" };
+
+            println!("Exiting block B");
+        }
+        println!("Just exited block B");
+
+        println!("Exiting block A");
+    }
+    println!("Just exited block A");
+
+    // Variable can be manually dropped using the `drop` function
+    drop(_a);
+    // TODO ^ Try commenting this line
+
+    println!("end of the main function");
+
+    // `_a` *won't* be `drop`ed again here, because it already has been
+    // (manually) `drop`ed
+}
+*)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : M (M.Val unit).

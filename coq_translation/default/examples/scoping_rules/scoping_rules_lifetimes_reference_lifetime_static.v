@@ -3,12 +3,41 @@ Require Import CoqOfRust.CoqOfRust.
 
 Definition NUM : i32.t := M.run (M.alloc 18).
 
+(*
+fn coerce_static<'a>(_: &'a i32) -> &'a i32 {
+    &NUM
+}
+*)
 Definition coerce_static (arg : M.Val (ref i32.t)) : M (M.Val (ref i32.t)) :=
   M.function_body
     (let* α0 : ltac:(refine (M.Val i32.t)) :=
       deref scoping_rules_lifetimes_reference_lifetime_static.NUM in
     borrow α0).
 
+(*
+fn main() {
+    {
+        // Make a `string` literal and print it:
+        let static_string = "I'm in read-only memory";
+        println!("static_string: {}", static_string);
+
+        // When `static_string` goes out of scope, the reference
+        // can no longer be used, but the data remains in the binary.
+    }
+
+    {
+        // Make an integer to use for `coerce_static`:
+        let lifetime_num = 9;
+
+        // Coerce `NUM` to lifetime of `lifetime_num`:
+        let coerced_static = coerce_static(&lifetime_num);
+
+        println!("coerced_static: {}", coerced_static);
+    }
+
+    println!("NUM: {} stays accessible!", NUM);
+}
+*)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M (M.Val unit) :=
   M.function_body

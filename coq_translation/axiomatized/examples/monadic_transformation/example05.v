@@ -17,6 +17,11 @@ Module  Impl_example05_Foo_t.
 Section Impl_example05_Foo_t.
   Ltac Self := exact example05.Foo.t.
   
+  (*
+      fn plus1(self) -> u32 {
+          self.0 + 1
+      }
+  *)
   Parameter plus1 : (M.Val ltac:(Self)) -> M (M.Val u32.t).
   
   Global Instance AssociatedFunction_plus1 :
@@ -26,5 +31,11 @@ Section Impl_example05_Foo_t.
 End Impl_example05_Foo_t.
 End Impl_example05_Foo_t.
 
+(*
+fn main() {
+    let foo = Foo(0);
+    foo.plus1();
+}
+*)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : M (M.Val unit).

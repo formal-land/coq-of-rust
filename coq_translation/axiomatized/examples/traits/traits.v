@@ -38,6 +38,11 @@ Module  Impl_traits_Sheep_t.
 Section Impl_traits_Sheep_t.
   Ltac Self := exact traits.Sheep.t.
   
+  (*
+      fn is_naked(&self) -> bool {
+          self.naked
+      }
+  *)
   Parameter is_naked : (M.Val (ref ltac:(Self))) -> M (M.Val bool.t).
   
   Global Instance AssociatedFunction_is_naked :
@@ -51,6 +56,14 @@ Module  Impl_traits_Animal_for_traits_Sheep_t.
 Section Impl_traits_Animal_for_traits_Sheep_t.
   Ltac Self := exact traits.Sheep.t.
   
+  (*
+      fn new(name: &'static str) -> Sheep {
+          Sheep {
+              name: name,
+              naked: false,
+          }
+      }
+  *)
   Parameter new : (M.Val (ref str.t)) -> M (M.Val traits.Sheep.t).
   
   Global Instance AssociatedFunction_new :
@@ -58,6 +71,11 @@ Section Impl_traits_Animal_for_traits_Sheep_t.
     Notation.double_colon := new;
   }.
   
+  (*
+      fn name(&self) -> &'static str {
+          self.name
+      }
+  *)
   Parameter name : (M.Val (ref ltac:(Self))) -> M (M.Val (ref str.t)).
   
   Global Instance AssociatedFunction_name :
@@ -65,6 +83,15 @@ Section Impl_traits_Animal_for_traits_Sheep_t.
     Notation.double_colon := name;
   }.
   
+  (*
+      fn noise(&self) -> &'static str {
+          if self.is_naked() {
+              "baaaaah?"
+          } else {
+              "baaaaah!"
+          }
+      }
+  *)
   Parameter noise : (M.Val (ref ltac:(Self))) -> M (M.Val (ref str.t)).
   
   Global Instance AssociatedFunction_noise :
@@ -72,6 +99,12 @@ Section Impl_traits_Animal_for_traits_Sheep_t.
     Notation.double_colon := noise;
   }.
   
+  (*
+      fn talk(&self) {
+          // For example, we can add some quiet contemplation.
+          println!("{} pauses briefly... {}", self.name, self.noise());
+      }
+  *)
   Parameter talk : (M.Val (ref ltac:(Self))) -> M (M.Val unit).
   
   Global Instance AssociatedFunction_talk :
@@ -92,6 +125,18 @@ Module  Impl_traits_Sheep_t_2.
 Section Impl_traits_Sheep_t_2.
   Ltac Self := exact traits.Sheep.t.
   
+  (*
+      fn shear(&mut self) {
+          if self.is_naked() {
+              // Implementor methods can use the implementor's trait methods.
+              println!("{} is already naked...", self.name());
+          } else {
+              println!("{} gets a haircut!", self.name);
+  
+              self.naked = true;
+          }
+      }
+  *)
   Parameter shear : (M.Val (mut_ref ltac:(Self))) -> M (M.Val unit).
   
   Global Instance AssociatedFunction_shear :
@@ -101,5 +146,16 @@ Section Impl_traits_Sheep_t_2.
 End Impl_traits_Sheep_t_2.
 End Impl_traits_Sheep_t_2.
 
+(*
+fn main() {
+    // Type annotation is necessary in this case.
+    let mut dolly: Sheep = Animal::new("Dolly");
+    // TODO ^ Try removing the type annotations.
+
+    dolly.talk();
+    dolly.shear();
+    dolly.talk();
+}
+*)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : M (M.Val unit).

@@ -26,6 +26,11 @@ Module  Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Shee
 Section Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep_t.
   Ltac Self := exact returning_traits_with_dyn.Sheep.t.
   
+  (*
+      fn noise(&self) -> &'static str {
+          "baaaaah!"
+      }
+  *)
   Parameter noise : (M.Val (ref ltac:(Self))) -> M (M.Val (ref str.t)).
   
   Global Instance AssociatedFunction_noise :
@@ -43,6 +48,11 @@ Module  Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow_
 Section Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow_t.
   Ltac Self := exact returning_traits_with_dyn.Cow.t.
   
+  (*
+      fn noise(&self) -> &'static str {
+          "moooooo!"
+      }
+  *)
   Parameter noise : (M.Val (ref ltac:(Self))) -> M (M.Val (ref str.t)).
   
   Global Instance AssociatedFunction_noise :
@@ -56,9 +66,28 @@ Section Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow_
 End Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow_t.
 End Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow_t.
 
+(*
+fn random_animal(random_number: f64) -> Box<dyn Animal> {
+    if random_number < 0.5 {
+        Box::new(Sheep {})
+    } else {
+        Box::new(Cow {})
+    }
+}
+*)
 Parameter random_animal :
     (M.Val f64.t) ->
       M (M.Val (alloc.boxed.Box.t _ (* dyn *) alloc.boxed.Box.Default.A)).
 
+(*
+fn main() {
+    let random_number = 0.234;
+    let animal = random_animal(random_number);
+    println!(
+        "You've randomly chosen an animal, and it says {}",
+        animal.noise()
+    );
+}
+*)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : M (M.Val unit).

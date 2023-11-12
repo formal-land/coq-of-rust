@@ -11,6 +11,9 @@ Module  Impl_core_fmt_Debug_for_clone_Unit_t.
 Section Impl_core_fmt_Debug_for_clone_Unit_t.
   Ltac Self := exact clone.Unit.t.
   
+  (*
+  Debug
+  *)
   Definition fmt
       (self : M.Val (ref ltac:(Self)))
       (f : M.Val (mut_ref core.fmt.Formatter.t))
@@ -38,6 +41,9 @@ Module  Impl_core_clone_Clone_for_clone_Unit_t.
 Section Impl_core_clone_Clone_for_clone_Unit_t.
   Ltac Self := exact clone.Unit.t.
   
+  (*
+  Clone
+  *)
   Definition clone (self : M.Val (ref ltac:(Self))) : M (M.Val clone.Unit.t) :=
     M.function_body (deref self).
   
@@ -82,6 +88,9 @@ Module  Impl_core_clone_Clone_for_clone_Pair_t.
 Section Impl_core_clone_Clone_for_clone_Pair_t.
   Ltac Self := exact clone.Pair.t.
   
+  (*
+  Clone
+  *)
   Definition clone (self : M.Val (ref ltac:(Self))) : M (M.Val clone.Pair.t) :=
     M.function_body
       (let* α0 : ltac:(refine (M.Val clone.Pair.t)) := deref self in
@@ -136,6 +145,9 @@ Module  Impl_core_fmt_Debug_for_clone_Pair_t.
 Section Impl_core_fmt_Debug_for_clone_Pair_t.
   Ltac Self := exact clone.Pair.t.
   
+  (*
+  Debug
+  *)
   Definition fmt
       (self : M.Val (ref ltac:(Self)))
       (f : M.Val (mut_ref core.fmt.Formatter.t))
@@ -186,6 +198,42 @@ Section Impl_core_fmt_Debug_for_clone_Pair_t.
 End Impl_core_fmt_Debug_for_clone_Pair_t.
 End Impl_core_fmt_Debug_for_clone_Pair_t.
 
+(*
+fn main() {
+    // Instantiate `Unit`
+    let unit = Unit;
+    // Copy `Unit`, there are no resources to move
+    let copied_unit = unit;
+
+    // Both `Unit`s can be used independently
+    println!("original: {:?}", unit);
+    println!("copy: {:?}", copied_unit);
+
+    // Instantiate `Pair`
+    let pair = Pair(Box::new(1), Box::new(2));
+    println!("original: {:?}", pair);
+
+    // Move `pair` into `moved_pair`, moves resources
+    let moved_pair = pair;
+    println!("moved: {:?}", moved_pair);
+
+    // Error! `pair` has lost its resources
+    //println!("original: {:?}", pair);
+    // TODO ^ Try uncommenting this line
+
+    // Clone `moved_pair` into `cloned_pair` (resources are included)
+    let cloned_pair = moved_pair.clone();
+    // Drop the original pair using std::mem::drop
+    drop(moved_pair);
+
+    // Error! `moved_pair` has been dropped
+    //println!("copy: {:?}", moved_pair);
+    // TODO ^ Try uncommenting this line
+
+    // The result from .clone() can still be used!
+    println!("clone: {:?}", cloned_pair);
+}
+*)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M (M.Val unit) :=
   M.function_body

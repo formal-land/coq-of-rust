@@ -40,6 +40,17 @@ Section CompSciStudent.
 End CompSciStudent.
 End CompSciStudent.
 
+(*
+fn comp_sci_student_greeting(student: &dyn CompSciStudent) -> String {
+    format!(
+        "My name is {} and I attend {}. My favorite language is {}. My Git username is {}",
+        student.name(),
+        student.university(),
+        student.fav_language(),
+        student.git_username()
+    )
+}
+*)
 Definition comp_sci_student_greeting
     (student : M.Val (ref _ (* dyn *)))
     : M (M.Val alloc.string.String.t) :=
@@ -113,5 +124,8 @@ Definition comp_sci_student_greeting
       alloc.fmt.format α26 in
     M.pure res).
 
+(*
+fn main() {}
+*)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M (M.Val unit) := M.function_body (M.alloc tt).

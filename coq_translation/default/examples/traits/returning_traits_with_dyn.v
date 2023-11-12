@@ -26,6 +26,11 @@ Module  Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Shee
 Section Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep_t.
   Ltac Self := exact returning_traits_with_dyn.Sheep.t.
   
+  (*
+      fn noise(&self) -> &'static str {
+          "baaaaah!"
+      }
+  *)
   Definition noise (self : M.Val (ref ltac:(Self))) : M (M.Val (ref str.t)) :=
     M.function_body (M.pure (mk_str "baaaaah!")).
   
@@ -44,6 +49,11 @@ Module  Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow_
 Section Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow_t.
   Ltac Self := exact returning_traits_with_dyn.Cow.t.
   
+  (*
+      fn noise(&self) -> &'static str {
+          "moooooo!"
+      }
+  *)
   Definition noise (self : M.Val (ref ltac:(Self))) : M (M.Val (ref str.t)) :=
     M.function_body (M.pure (mk_str "moooooo!")).
   
@@ -58,6 +68,15 @@ Section Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow_
 End Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow_t.
 End Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow_t.
 
+(*
+fn random_animal(random_number: f64) -> Box<dyn Animal> {
+    if random_number < 0.5 {
+        Box::new(Sheep {})
+    } else {
+        Box::new(Cow {})
+    }
+}
+*)
 Definition random_animal
     (random_number : M.Val f64.t)
     : M (M.Val (alloc.boxed.Box.t _ (* dyn *) alloc.boxed.Box.Default.A)) :=
@@ -112,6 +131,16 @@ Definition random_animal
       pointer_coercion "Unsize" α4 in
     pointer_coercion "Unsize" α0).
 
+(*
+fn main() {
+    let random_number = 0.234;
+    let animal = random_animal(random_number);
+    println!(
+        "You've randomly chosen an animal, and it says {}",
+        animal.noise()
+    );
+}
+*)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M (M.Val unit) :=
   M.function_body

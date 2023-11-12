@@ -33,25 +33,51 @@ Section SGen.
 End SGen.
 End SGen.
 
+(*
+fn reg_fn(_s: S) {}
+*)
 Definition reg_fn (_s : M.Val generics_functions.S.t) : M (M.Val unit) :=
   M.function_body (M.alloc tt).
 
+(*
+fn gen_spec_t(_s: SGen<A>) {}
+*)
 Definition gen_spec_t
     (_s : M.Val (generics_functions.SGen.t generics_functions.A.t))
     : M (M.Val unit) :=
   M.function_body (M.alloc tt).
 
+(*
+fn gen_spec_i32(_s: SGen<i32>) {}
+*)
 Definition gen_spec_i32
     (_s : M.Val (generics_functions.SGen.t i32.t))
     : M (M.Val unit) :=
   M.function_body (M.alloc tt).
 
+(*
+fn generic<T>(_s: SGen<T>) {}
+*)
 Definition generic
     {T : Set}
     (_s : M.Val (generics_functions.SGen.t T))
     : M (M.Val unit) :=
   M.function_body (M.alloc tt).
 
+(*
+fn main() {
+    // Using the non-generic functions
+    reg_fn(S(A)); // Concrete type.
+    gen_spec_t(SGen(A)); // Implicitly specified type parameter `A`.
+    gen_spec_i32(SGen(6)); // Implicitly specified type parameter `i32`.
+
+    // Explicitly specified type parameter `char` to `generic()`.
+    generic::<char>(SGen('a'));
+
+    // Implicitly specified type parameter `char` to `generic()`.
+    generic(SGen('c'));
+}
+*)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M (M.Val unit) :=
   M.function_body

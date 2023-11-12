@@ -17,6 +17,9 @@ Module  Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber_t.
 Section Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber_t.
   Ltac Self := exact try_from_and_try_into.EvenNumber.t.
   
+  (*
+  Debug
+  *)
   Parameter fmt :
       (M.Val (ref ltac:(Self))) ->
         (M.Val (mut_ref core.fmt.Formatter.t)) ->
@@ -46,6 +49,9 @@ Module  Impl_core_cmp_PartialEq_for_try_from_and_try_into_EvenNumber_t.
 Section Impl_core_cmp_PartialEq_for_try_from_and_try_into_EvenNumber_t.
   Ltac Self := exact try_from_and_try_into.EvenNumber.t.
   
+  (*
+  PartialEq
+  *)
   Parameter eq :
       (M.Val (ref ltac:(Self))) ->
         (M.Val (ref try_from_and_try_into.EvenNumber.t)) ->
@@ -69,8 +75,20 @@ Module  Impl_core_convert_TryFrom_i32_t_for_try_from_and_try_into_EvenNumber_t.
 Section Impl_core_convert_TryFrom_i32_t_for_try_from_and_try_into_EvenNumber_t.
   Ltac Self := exact try_from_and_try_into.EvenNumber.t.
   
+  (*
+      type Error = ();
+  *)
   Definition Error : Set := unit.
   
+  (*
+      fn try_from(value: i32) -> Result<Self, Self::Error> {
+          if value % 2 == 0 {
+              Ok(EvenNumber(value))
+          } else {
+              Err(())
+          }
+      }
+  *)
   Parameter try_from :
       (M.Val i32.t) -> M (M.Val (core.result.Result.t ltac:(Self) Error.t)).
   
@@ -86,5 +104,20 @@ Section Impl_core_convert_TryFrom_i32_t_for_try_from_and_try_into_EvenNumber_t.
 End Impl_core_convert_TryFrom_i32_t_for_try_from_and_try_into_EvenNumber_t.
 End Impl_core_convert_TryFrom_i32_t_for_try_from_and_try_into_EvenNumber_t.
 
+(*
+fn main() {
+    // TryFrom
+
+    assert_eq!(EvenNumber::try_from(8), Ok(EvenNumber(8)));
+    assert_eq!(EvenNumber::try_from(5), Err(()));
+
+    // TryInto
+
+    let result: Result<EvenNumber, ()> = 8i32.try_into();
+    assert_eq!(result, Ok(EvenNumber(8)));
+    let result: Result<EvenNumber, ()> = 5i32.try_into();
+    assert_eq!(result, Err(()));
+}
+*)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : M (M.Val unit).

@@ -20,6 +20,9 @@ Module  Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed_t.
 Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed_t.
   Ltac Self := exact scoping_rules_lifetimes_traits.Borrowed.t.
   
+  (*
+  Debug
+  *)
   Parameter fmt :
       (M.Val (ref ltac:(Self))) ->
         (M.Val (mut_ref core.fmt.Formatter.t)) ->
@@ -40,6 +43,11 @@ Module  Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed_t.
 Section Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed_t.
   Ltac Self := exact scoping_rules_lifetimes_traits.Borrowed.t.
   
+  (*
+      fn default() -> Self {
+          Self { x: &10 }
+      }
+  *)
   Parameter default : M (M.Val ltac:(Self)).
   
   Global Instance AssociatedFunction_default :
@@ -53,5 +61,11 @@ Section Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed_t.
 End Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed_t.
 End Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed_t.
 
+(*
+fn main() {
+    let b: Borrowed = Default::default();
+    println!("b is {:?}", b);
+}
+*)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : M (M.Val unit).
