@@ -1,0 +1,221 @@
+    Checking erc20 v4.2.0 (/mnt/c/Users/hilov/Desktop/CODE/InfiniteEchoes/coq-of-rust/ink/integration-tests/erc20)
+Compiling create erc20
+type Closure(
+    DefId(0:38 ~ erc20[e582]::flipper::{impl#1}::CALLABLE::{closure#0}),
+    [
+        i8,
+        extern "rust-call" fn((bool,)) -> flipper::Flipper,
+        (),
+    ],
+) not yet handled
+type FnPtr(
+    Binder(
+        ([bool]; c_variadic: false)->flipper::Flipper,
+        [],
+    ),
+) not yet handled
+type Closure(
+    DefId(0:51 ~ erc20[e582]::flipper::{impl#2}::CALLABLE::{closure#0}),
+    [
+        i8,
+        extern "rust-call" fn(((),)) -> flipper::Flipper,
+        (),
+    ],
+) not yet handled
+type FnPtr(
+    Binder(
+        ([()]; c_variadic: false)->flipper::Flipper,
+        [],
+    ),
+) not yet handled
+type Closure(
+    DefId(0:62 ~ erc20[e582]::flipper::{impl#3}::CALLABLE::{closure#0}),
+    [
+        i8,
+        for<'a> extern "rust-call" fn((&'a mut flipper::Flipper, ())),
+        (),
+    ],
+) not yet handled
+type FnPtr(
+    Binder(
+        ([&mut flipper::Flipper, ()]; c_variadic: false)->(),
+        [
+            Region(
+                BrAnon(None),
+            ),
+        ],
+    ),
+) not yet handled
+type Closure(
+    DefId(0:74 ~ erc20[e582]::flipper::{impl#4}::CALLABLE::{closure#0}),
+    [
+        i8,
+        for<'a> extern "rust-call" fn((&'a mut flipper::Flipper, ())) -> bool,
+        (),
+    ],
+) not yet handled
+type FnPtr(
+    Binder(
+        ([&mut flipper::Flipper, ()]; c_variadic: false)->bool,
+        [
+            Region(
+                BrAnon(None),
+            ),
+        ],
+    ),
+) not yet handled
+type Dynamic(
+    [
+        Binder(
+            Trait(
+                std::fmt::Debug,
+            ),
+            [],
+        ),
+    ],
+    ReErased,
+    Dyn,
+) not yet handled
+type Closure(
+    DefId(0:223 ~ erc20[e582]::flipper::{impl#5}::flip::{closure#0}),
+    [
+        i32,
+        extern "rust-call" fn((ink::LangError,)),
+        (),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:225 ~ erc20[e582]::flipper::{impl#5}::try_flip::{closure#0}),
+    [
+        i32,
+        extern "rust-call" fn((ink::ink_env::Error,)) -> std::result::Result<(), ink::LangError>,
+        (),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:227 ~ erc20[e582]::flipper::{impl#5}::get::{closure#0}),
+    [
+        i32,
+        extern "rust-call" fn((ink::LangError,)) -> bool,
+        (),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:229 ~ erc20[e582]::flipper::{impl#5}::try_get::{closure#0}),
+    [
+        i32,
+        extern "rust-call" fn((ink::ink_env::Error,)) -> std::result::Result<bool, ink::LangError>,
+        (),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:258 ~ erc20[e582]::flipper::_#11::{impl#0}::type_info::{closure#0}),
+    [
+        i8,
+        extern "rust-call" fn((scale_info::build::FieldBuilder,)) -> scale_info::build::FieldBuilder<scale_info::form::MetaForm, scale_info::build::field_state::NameAssigned, scale_info::build::field_state::TypeAssigned>,
+        (),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:38 ~ erc20[e582]::flipper::{impl#1}::CALLABLE::{closure#0}),
+    [
+        i8,
+        extern "rust-call" fn((bool,)) -> flipper::Flipper,
+        (),
+    ],
+) not yet handled
+type FnPtr(
+    Binder(
+        ([bool]; c_variadic: false)->flipper::Flipper,
+        [],
+    ),
+) not yet handled
+type Closure(
+    DefId(0:51 ~ erc20[e582]::flipper::{impl#2}::CALLABLE::{closure#0}),
+    [
+        i8,
+        extern "rust-call" fn(((),)) -> flipper::Flipper,
+        (),
+    ],
+) not yet handled
+type FnPtr(
+    Binder(
+        ([()]; c_variadic: false)->flipper::Flipper,
+        [],
+    ),
+) not yet handled
+type Closure(
+    DefId(0:62 ~ erc20[e582]::flipper::{impl#3}::CALLABLE::{closure#0}),
+    [
+        i8,
+        for<'a> extern "rust-call" fn((&'a mut flipper::Flipper, ())),
+        (),
+    ],
+) not yet handled
+type FnPtr(
+    Binder(
+        ([&mut flipper::Flipper, ()]; c_variadic: false)->(),
+        [
+            Region(
+                BrAnon(None),
+            ),
+        ],
+    ),
+) not yet handled
+type Closure(
+    DefId(0:74 ~ erc20[e582]::flipper::{impl#4}::CALLABLE::{closure#0}),
+    [
+        i8,
+        for<'a> extern "rust-call" fn((&'a mut flipper::Flipper, ())) -> bool,
+        (),
+    ],
+) not yet handled
+type FnPtr(
+    Binder(
+        ([&mut flipper::Flipper, ()]; c_variadic: false)->bool,
+        [
+            Region(
+                BrAnon(None),
+            ),
+        ],
+    ),
+) not yet handled
+type Closure(
+    DefId(0:100 ~ erc20[e582]::flipper::_#3::{impl#0}::decode_dispatch::{closure#0}),
+    [
+        I,
+        i32,
+        extern "rust-call" fn((parity_scale_codec::Error,)) -> ink::reflect::DispatchError,
+        (),
+    ],
+) not yet handled
+warning: Constants in patterns are not yet supported.
+   --> lib.rs:661:1
+    |
+661 | #[ink::contract]
+    | ^^^^^^^^^^^^^^^^
+    |
+    = note: this warning originates in the attribute macro `ink::contract` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+type Closure(
+    DefId(0:102 ~ erc20[e582]::flipper::_#3::{impl#0}::decode_dispatch::{closure#1}),
+    [
+        I,
+        i32,
+        extern "rust-call" fn((parity_scale_codec::Error,)) -> ink::reflect::DispatchError,
+        (),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:104 ~ erc20[e582]::flipper::_#3::{impl#0}::decode_dispatch::{closure#2}),
+    [
+        I,
+        i32,
+        extern "rust-call" fn((parity_scale_codec::Error,)) -> ink::reflect::DispatchError,
+        (),
+    ],
+) not yet handled
+thread 'rustc' panicked at 'attempted to read from stolen value: rustc_middle::thir::Thir', lib/src/expression.rs:740:21
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+warning: `erc20` (lib) generated 1 warning
+error: could not compile `erc20` (lib); 1 warning emitted
