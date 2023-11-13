@@ -27,22 +27,22 @@ Section Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert
       let* α1 : ltac:(refine (M.Val (mut_ref core.fmt.Formatter.t))) :=
         borrow_mut α0 in
       let* α2 := M.read self in
-      let* α3 : ltac:(refine (M.Val (ref str))) :=
+      let* α3 : ltac:(refine (M.Val (ref str.t))) :=
         match α2 with
         | unpacking_options_and_defaults_via_get_or_insert_with.Fruit.Apple  =>
-          let* α0 : ltac:(refine (M.Val str)) := deref (mk_str "Apple") in
+          let* α0 : ltac:(refine (M.Val str.t)) := deref (mk_str "Apple") in
           borrow α0
         | unpacking_options_and_defaults_via_get_or_insert_with.Fruit.Orange  =>
-          let* α0 : ltac:(refine (M.Val str)) := deref (mk_str "Orange") in
+          let* α0 : ltac:(refine (M.Val str.t)) := deref (mk_str "Orange") in
           borrow α0
         | unpacking_options_and_defaults_via_get_or_insert_with.Fruit.Banana  =>
-          let* α0 : ltac:(refine (M.Val str)) := deref (mk_str "Banana") in
+          let* α0 : ltac:(refine (M.Val str.t)) := deref (mk_str "Banana") in
           borrow α0
         | unpacking_options_and_defaults_via_get_or_insert_with.Fruit.Kiwi  =>
-          let* α0 : ltac:(refine (M.Val str)) := deref (mk_str "Kiwi") in
+          let* α0 : ltac:(refine (M.Val str.t)) := deref (mk_str "Kiwi") in
           borrow α0
         | unpacking_options_and_defaults_via_get_or_insert_with.Fruit.Lemon  =>
-          let* α0 : ltac:(refine (M.Val str)) := deref (mk_str "Lemon") in
+          let* α0 : ltac:(refine (M.Val str.t)) := deref (mk_str "Lemon") in
           borrow α0
         end in
       core.fmt.Formatter.t::["write_str"] α1 α3).
@@ -94,12 +94,12 @@ Definition main : M (M.Val unit) :=
     let get_lemon_as_fallback :=
       let* _ : ltac:(refine (M.Val unit)) :=
         let* _ : ltac:(refine (M.Val unit)) :=
-          let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+          let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
             M.alloc [ mk_str "Providing lemon as fallback
 " ] in
-          let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) :=
+          let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
             borrow α0 in
-          let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+          let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
             pointer_coercion "Unsize" α1 in
           let* α3 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
             core.fmt.Arguments.t::["new_const"] α2 in
@@ -125,11 +125,12 @@ Definition main : M (M.Val unit) :=
         get_lemon_as_fallback in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
           M.alloc [ mk_str "my_fruit is: "; mk_str "
 " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) := borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+          borrow α0 in
+        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
         let* α3 :
             ltac:(refine
@@ -152,11 +153,12 @@ Definition main : M (M.Val unit) :=
       M.alloc tt in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
           M.alloc [ mk_str "first_available_fruit is: "; mk_str "
 " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) := borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+          borrow α0 in
+        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
         let* α3 :
             ltac:(refine
@@ -208,11 +210,12 @@ Definition main : M (M.Val unit) :=
         get_lemon_as_fallback in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
           M.alloc [ mk_str "should_be_apple is: "; mk_str "
 " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) := borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+          borrow α0 in
+        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
         let* α3 :
             ltac:(refine
@@ -235,11 +238,12 @@ Definition main : M (M.Val unit) :=
       M.alloc tt in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
           M.alloc [ mk_str "my_apple is unchanged: "; mk_str "
 " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) := borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+          borrow α0 in
+        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
         let* α3 :
             ltac:(refine

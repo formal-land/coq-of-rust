@@ -133,14 +133,14 @@ Definition main : M (M.Val unit) :=
                         α1 in
                     let* _ : ltac:(refine (M.Val unit)) :=
                       let* _ : ltac:(refine (M.Val unit)) :=
-                        let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+                        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
                           M.alloc [ mk_str "thread "; mk_str " finished
 " ] in
                         let* α1 :
-                            ltac:(refine (M.Val (ref (array (ref str))))) :=
+                            ltac:(refine (M.Val (ref (array (ref str.t))))) :=
                           borrow α0 in
                         let* α2 :
-                            ltac:(refine (M.Val (ref (slice (ref str))))) :=
+                            ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
                           pointer_coercion "Unsize" α1 in
                         let* α3 : ltac:(refine (M.Val (ref i32.t))) :=
                           borrow id in
@@ -320,9 +320,9 @@ Definition main : M (M.Val unit) :=
                               type not implemented
                               alloc.alloc.Global.t)))) :=
                     (std.thread.JoinHandle.t unit)::["join"] child in
-                  let* α1 : ltac:(refine (M.Val str)) :=
+                  let* α1 : ltac:(refine (M.Val str.t)) :=
                     deref (mk_str "oops! the child thread panicked") in
-                  let* α2 : ltac:(refine (M.Val (ref str))) := borrow α1 in
+                  let* α2 : ltac:(refine (M.Val (ref str.t))) := borrow α1 in
                   (core.result.Result.t
                         unit
                         (alloc.boxed.Box.t
@@ -337,11 +337,12 @@ Definition main : M (M.Val unit) :=
       use α2 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
           M.alloc [ mk_str ""; mk_str "
 " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) := borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+          borrow α0 in
+        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
         let* α3 :
             ltac:(refine

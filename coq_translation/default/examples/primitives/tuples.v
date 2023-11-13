@@ -57,8 +57,8 @@ Section Impl_core_fmt_Debug_for_tuples_Matrix_t.
       (let* α0 : ltac:(refine (M.Val core.fmt.Formatter.t)) := deref f in
       let* α1 : ltac:(refine (M.Val (mut_ref core.fmt.Formatter.t))) :=
         borrow_mut α0 in
-      let* α2 : ltac:(refine (M.Val str)) := deref (mk_str "Matrix") in
-      let* α3 : ltac:(refine (M.Val (ref str))) := borrow α2 in
+      let* α2 : ltac:(refine (M.Val str.t)) := deref (mk_str "Matrix") in
+      let* α3 : ltac:(refine (M.Val (ref str.t))) := borrow α2 in
       let* α4 : ltac:(refine (M.Val tuples.Matrix.t)) := deref self in
       let* α5 : ltac:(refine (M.Val f32.t)) := α4.["0"] in
       let* α6 : ltac:(refine (M.Val (ref f32.t))) := borrow α5 in
@@ -181,11 +181,12 @@ Definition main : M (M.Val unit) :=
       M.alloc (α1, α3, α5, α7, α9, α11, α13, α15, α17, α19, α21, α23) in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
           M.alloc [ mk_str "long tuple first value: "; mk_str "
 " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) := borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+          borrow α0 in
+        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
         let* α3 : ltac:(refine (M.Val (ref u8.t))) := borrow "Unknown Field" in
         let* α4 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
@@ -202,11 +203,12 @@ Definition main : M (M.Val unit) :=
       M.alloc tt in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
           M.alloc [ mk_str "long tuple second value: "; mk_str "
 " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) := borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+          borrow α0 in
+        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
         let* α3 : ltac:(refine (M.Val (ref u16.t))) := borrow "Unknown Field" in
         let* α4 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
@@ -244,11 +246,12 @@ Definition main : M (M.Val unit) :=
       M.alloc (α7, α13, α15) in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
           M.alloc [ mk_str "tuple of tuples: "; mk_str "
 " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) := borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+          borrow α0 in
+        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
         let* α3 :
             ltac:(refine
@@ -275,11 +278,12 @@ Definition main : M (M.Val unit) :=
       M.alloc (α1, α3) in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
           M.alloc [ mk_str "pair is "; mk_str "
 " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) := borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+          borrow α0 in
+        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
         let* α3 : ltac:(refine (M.Val (ref (i32.t * bool.t)))) := borrow pair in
         let* α4 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
@@ -296,11 +300,12 @@ Definition main : M (M.Val unit) :=
       M.alloc tt in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
           M.alloc [ mk_str "the reversed pair is "; mk_str "
 " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) := borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+          borrow α0 in
+        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
         let* α3 : ltac:(refine (M.Val (bool.t * i32.t))) :=
           tuples.reverse pair in
@@ -319,11 +324,12 @@ Definition main : M (M.Val unit) :=
       M.alloc tt in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
           M.alloc [ mk_str "one element tuple: "; mk_str "
 " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) := borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+          borrow α0 in
+        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
         let* α3 : ltac:(refine (M.Val u32.t)) := M.alloc 5 in
         let* α4 := M.read α3 in
@@ -343,11 +349,12 @@ Definition main : M (M.Val unit) :=
       M.alloc tt in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
           M.alloc [ mk_str "just an integer: "; mk_str "
 " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) := borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+          borrow α0 in
+        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
         let* α3 : ltac:(refine (M.Val u32.t)) := M.alloc 5 in
         let* α4 : ltac:(refine (M.Val (ref u32.t))) := borrow α3 in
@@ -364,7 +371,7 @@ Definition main : M (M.Val unit) :=
         std.io.stdio._print α9 in
       M.alloc tt in
     let* tuple :
-        ltac:(refine (M.Val (((i32.t * (ref str)) * f64.t) * bool.t))) :=
+        ltac:(refine (M.Val (((i32.t * (ref str.t)) * f64.t) * bool.t))) :=
       let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 1 in
       let* α1 := M.read α0 in
       let* α2 := M.read (mk_str "hello") in
@@ -376,17 +383,18 @@ Definition main : M (M.Val unit) :=
     let '(a, b, c, d) := tuple in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
           M.alloc
             [ mk_str ""; mk_str ", "; mk_str ", "; mk_str ", "; mk_str "
 " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) := borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+          borrow α0 in
+        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
         let* α3 : ltac:(refine (M.Val (ref i32.t))) := borrow a in
         let* α4 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
           core.fmt.rt.Argument.t::["new_debug"] α3 in
-        let* α5 : ltac:(refine (M.Val (ref (ref str)))) := borrow b in
+        let* α5 : ltac:(refine (M.Val (ref (ref str.t)))) := borrow b in
         let* α6 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
           core.fmt.rt.Argument.t::["new_debug"] α5 in
         let* α7 : ltac:(refine (M.Val (ref f64.t))) := borrow c in
@@ -417,11 +425,12 @@ Definition main : M (M.Val unit) :=
       M.alloc (tuples.Matrix.Build_t α1 α3 α5 α7) in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
           M.alloc [ mk_str ""; mk_str "
 " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) := borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+          borrow α0 in
+        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
         let* α3 : ltac:(refine (M.Val (ref tuples.Matrix.t))) :=
           borrow matrix in

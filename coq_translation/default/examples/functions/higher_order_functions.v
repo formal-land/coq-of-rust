@@ -50,13 +50,14 @@ Definition main : M (M.Val unit) :=
   M.function_body
     (let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
           M.alloc
             [ mk_str "Find the sum of all the squared odd numbers under 1000
 "
             ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) := borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+          borrow α0 in
+        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
         let* α3 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
           core.fmt.Arguments.t::["new_const"] α2 in
@@ -123,11 +124,12 @@ Definition main : M (M.Val unit) :=
       use α5 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
           M.alloc [ mk_str "imperative style: "; mk_str "
 " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) := borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+          borrow α0 in
+        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
         let* α3 : ltac:(refine (M.Val (ref u32.t))) := borrow acc in
         let* α4 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
@@ -207,11 +209,12 @@ Definition main : M (M.Val unit) :=
         α5 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
           M.alloc [ mk_str "functional style: "; mk_str "
 " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) := borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+          borrow α0 in
+        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
         let* α3 : ltac:(refine (M.Val (ref u32.t))) :=
           borrow sum_of_squared_odd_numbers in

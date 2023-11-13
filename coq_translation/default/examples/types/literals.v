@@ -30,11 +30,12 @@ Definition main : M (M.Val unit) :=
     let* f : ltac:(refine (M.Val f64.t)) := M.alloc 1 (* 1.0 *) in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
           M.alloc [ mk_str "size of `x` in bytes: "; mk_str "
 " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) := borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+          borrow α0 in
+        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
         let* α3 : ltac:(refine (M.Val (ref u8.t))) := borrow x in
         let* α4 : ltac:(refine (M.Val usize.t)) := core.mem.size_of_val α3 in
@@ -53,11 +54,12 @@ Definition main : M (M.Val unit) :=
       M.alloc tt in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
           M.alloc [ mk_str "size of `y` in bytes: "; mk_str "
 " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) := borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+          borrow α0 in
+        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
         let* α3 : ltac:(refine (M.Val (ref u32.t))) := borrow y in
         let* α4 : ltac:(refine (M.Val usize.t)) := core.mem.size_of_val α3 in
@@ -76,11 +78,12 @@ Definition main : M (M.Val unit) :=
       M.alloc tt in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
           M.alloc [ mk_str "size of `z` in bytes: "; mk_str "
 " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) := borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+          borrow α0 in
+        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
         let* α3 : ltac:(refine (M.Val (ref f32.t))) := borrow z in
         let* α4 : ltac:(refine (M.Val usize.t)) := core.mem.size_of_val α3 in
@@ -99,11 +102,12 @@ Definition main : M (M.Val unit) :=
       M.alloc tt in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
           M.alloc [ mk_str "size of `i` in bytes: "; mk_str "
 " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) := borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+          borrow α0 in
+        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
         let* α3 : ltac:(refine (M.Val (ref i32.t))) := borrow i in
         let* α4 : ltac:(refine (M.Val usize.t)) := core.mem.size_of_val α3 in
@@ -122,11 +126,12 @@ Definition main : M (M.Val unit) :=
       M.alloc tt in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
           M.alloc [ mk_str "size of `f` in bytes: "; mk_str "
 " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) := borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+          borrow α0 in
+        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
         let* α3 : ltac:(refine (M.Val (ref f64.t))) := borrow f in
         let* α4 : ltac:(refine (M.Val usize.t)) := core.mem.size_of_val α3 in

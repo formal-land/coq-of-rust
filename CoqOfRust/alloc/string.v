@@ -20,25 +20,21 @@ Require CoqOfRust.core.fmt.
 Module Drain.
   Parameter t : Set.
 End Drain.
-Definition Drain := Drain.t.
 
 (* pub struct FromUtf8Error { /* private fields */ } *)
 Module FromUtf8Error.
   Parameter t : Set.
 End FromUtf8Error.
-Definition FromUtf8Error := FromUtf8Error.t.
 
 (* pub struct FromUtf16Error(_); *)
 Module FromUtf16Error.
   Parameter t : Set.
 End FromUtf16Error.
-Definition FromUtf16Error := FromUtf16Error.t.
 
 (* pub struct String { /* private fields */ } *)
 Module String.
-  Definition t : Set := str.
+  Definition t : Set := str.t.
 End String.
-Definition String := String.t.
 
 (* ********TRAITS******** *)
 (* 
@@ -47,7 +43,7 @@ Definition String := String.t.
 
 Module ToString.
   Class Trait (Self : Set) : Set := {
-    to_string : ref Self -> M String;
+    to_string : M.Val (ref Self) -> M (M.Val String.t);
   }.
 
   Global Instance Method_to_string `(Trait) :
@@ -58,13 +54,13 @@ End ToString.
 
 (* The String type (Struct std::string::String) and it's methods  *)
 Module StringType.
-  Definition from (str_from : M.Val str) : M (M.Val str) :=
+  Definition from (str_from : M.Val str.t) : M (M.Val str.t) :=
     M.pure str_from.
 
   (* The String type (Struct std::string::String) and it's methods  *)
   (* Converts a &str into a String. *)
   Global Instance From_for_str :
-      core.convert.From.Trait str (T := str) := {
+      core.convert.From.Trait str.t (T := str.t) := {
     from := from;
   }.
 
@@ -77,5 +73,5 @@ Module StringType.
 End StringType.
 
 Global Instance Default_for_String :
-  core.default.Default.Trait alloc.string.String.
+  core.default.Default.Trait alloc.string.String.t.
 Admitted.

@@ -24,16 +24,16 @@ Section Impl_core_fmt_Debug_for_combinators_map_Food_t.
       let* α1 : ltac:(refine (M.Val (mut_ref core.fmt.Formatter.t))) :=
         borrow_mut α0 in
       let* α2 := M.read self in
-      let* α3 : ltac:(refine (M.Val (ref str))) :=
+      let* α3 : ltac:(refine (M.Val (ref str.t))) :=
         match α2 with
         | combinators_map.Food.Apple  =>
-          let* α0 : ltac:(refine (M.Val str)) := deref (mk_str "Apple") in
+          let* α0 : ltac:(refine (M.Val str.t)) := deref (mk_str "Apple") in
           borrow α0
         | combinators_map.Food.Carrot  =>
-          let* α0 : ltac:(refine (M.Val str)) := deref (mk_str "Carrot") in
+          let* α0 : ltac:(refine (M.Val str.t)) := deref (mk_str "Carrot") in
           borrow α0
         | combinators_map.Food.Potato  =>
-          let* α0 : ltac:(refine (M.Val str)) := deref (mk_str "Potato") in
+          let* α0 : ltac:(refine (M.Val str.t)) := deref (mk_str "Potato") in
           borrow α0
         end in
       core.fmt.Formatter.t::["write_str"] α1 α3).
@@ -76,8 +76,8 @@ Section Impl_core_fmt_Debug_for_combinators_map_Peeled_t.
       (let* α0 : ltac:(refine (M.Val core.fmt.Formatter.t)) := deref f in
       let* α1 : ltac:(refine (M.Val (mut_ref core.fmt.Formatter.t))) :=
         borrow_mut α0 in
-      let* α2 : ltac:(refine (M.Val str)) := deref (mk_str "Peeled") in
-      let* α3 : ltac:(refine (M.Val (ref str))) := borrow α2 in
+      let* α2 : ltac:(refine (M.Val str.t)) := deref (mk_str "Peeled") in
+      let* α3 : ltac:(refine (M.Val (ref str.t))) := borrow α2 in
       let* α4 : ltac:(refine (M.Val combinators_map.Peeled.t)) := deref self in
       let* α5 : ltac:(refine (M.Val combinators_map.Food.t)) := α4.["0"] in
       let* α6 : ltac:(refine (M.Val (ref combinators_map.Food.t))) :=
@@ -126,8 +126,8 @@ Section Impl_core_fmt_Debug_for_combinators_map_Chopped_t.
       (let* α0 : ltac:(refine (M.Val core.fmt.Formatter.t)) := deref f in
       let* α1 : ltac:(refine (M.Val (mut_ref core.fmt.Formatter.t))) :=
         borrow_mut α0 in
-      let* α2 : ltac:(refine (M.Val str)) := deref (mk_str "Chopped") in
-      let* α3 : ltac:(refine (M.Val (ref str))) := borrow α2 in
+      let* α2 : ltac:(refine (M.Val str.t)) := deref (mk_str "Chopped") in
+      let* α3 : ltac:(refine (M.Val (ref str.t))) := borrow α2 in
       let* α4 : ltac:(refine (M.Val combinators_map.Chopped.t)) := deref self in
       let* α5 : ltac:(refine (M.Val combinators_map.Food.t)) := α4.["0"] in
       let* α6 : ltac:(refine (M.Val (ref combinators_map.Food.t))) :=
@@ -176,8 +176,8 @@ Section Impl_core_fmt_Debug_for_combinators_map_Cooked_t.
       (let* α0 : ltac:(refine (M.Val core.fmt.Formatter.t)) := deref f in
       let* α1 : ltac:(refine (M.Val (mut_ref core.fmt.Formatter.t))) :=
         borrow_mut α0 in
-      let* α2 : ltac:(refine (M.Val str)) := deref (mk_str "Cooked") in
-      let* α3 : ltac:(refine (M.Val (ref str))) := borrow α2 in
+      let* α2 : ltac:(refine (M.Val str.t)) := deref (mk_str "Cooked") in
+      let* α3 : ltac:(refine (M.Val (ref str.t))) := borrow α2 in
       let* α4 : ltac:(refine (M.Val combinators_map.Cooked.t)) := deref self in
       let* α5 : ltac:(refine (M.Val combinators_map.Food.t)) := α4.["0"] in
       let* α6 : ltac:(refine (M.Val (ref combinators_map.Food.t))) :=
@@ -307,11 +307,12 @@ Definition eat
     | core.option.Option.Some food =>
       let* food := M.alloc food in
       let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
           M.alloc [ mk_str "Mmm. I love "; mk_str "
 " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) := borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+          borrow α0 in
+        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
         let* α3 : ltac:(refine (M.Val (ref combinators_map.Cooked.t))) :=
           borrow food in
@@ -329,11 +330,12 @@ Definition eat
       M.alloc tt
     | core.option.Option.None  =>
       let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
           M.alloc [ mk_str "Oh no! It wasn't edible.
 " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) := borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+          borrow α0 in
+        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
         let* α3 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
           core.fmt.Arguments.t::["new_const"] α2 in

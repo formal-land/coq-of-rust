@@ -42,11 +42,11 @@ Definition main : M (M.Val unit) :=
       if (α3 : bool) then
         let* _ : ltac:(refine (M.Val unit)) :=
           let* _ : ltac:(refine (M.Val unit)) :=
-            let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+            let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
               M.alloc [ mk_str ""; mk_str " is negative" ] in
-            let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) :=
+            let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
               borrow α0 in
-            let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+            let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
               pointer_coercion "Unsize" α1 in
             let* α3 : ltac:(refine (M.Val (ref i32.t))) := borrow n in
             let* α4 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
@@ -72,11 +72,11 @@ Definition main : M (M.Val unit) :=
         if (α3 : bool) then
           let* _ : ltac:(refine (M.Val unit)) :=
             let* _ : ltac:(refine (M.Val unit)) :=
-              let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+              let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
                 M.alloc [ mk_str ""; mk_str " is positive" ] in
-              let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) :=
+              let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
                 borrow α0 in
-              let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+              let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
                 pointer_coercion "Unsize" α1 in
               let* α3 : ltac:(refine (M.Val (ref i32.t))) := borrow n in
               let* α4 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
@@ -97,11 +97,11 @@ Definition main : M (M.Val unit) :=
         else
           let* _ : ltac:(refine (M.Val unit)) :=
             let* _ : ltac:(refine (M.Val unit)) :=
-              let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+              let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
                 M.alloc [ mk_str ""; mk_str " is zero" ] in
-              let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) :=
+              let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
                 borrow α0 in
-              let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+              let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
                 pointer_coercion "Unsize" α1 in
               let* α3 : ltac:(refine (M.Val (ref i32.t))) := borrow n in
               let* α4 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
@@ -130,13 +130,13 @@ Definition main : M (M.Val unit) :=
       if (α6 : bool) then
         let* _ : ltac:(refine (M.Val unit)) :=
           let* _ : ltac:(refine (M.Val unit)) :=
-            let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+            let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
               M.alloc
                 [ mk_str ", and is a small number, increase ten-fold
 " ] in
-            let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) :=
+            let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
               borrow α0 in
-            let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+            let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
               pointer_coercion "Unsize" α1 in
             let* α3 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
               core.fmt.Arguments.t::["new_const"] α2 in
@@ -147,12 +147,12 @@ Definition main : M (M.Val unit) :=
       else
         let* _ : ltac:(refine (M.Val unit)) :=
           let* _ : ltac:(refine (M.Val unit)) :=
-            let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+            let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
               M.alloc [ mk_str ", and is a big number, halve the number
 " ] in
-            let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) :=
+            let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
               borrow α0 in
-            let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+            let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
               pointer_coercion "Unsize" α1 in
             let* α3 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
               core.fmt.Arguments.t::["new_const"] α2 in
@@ -162,11 +162,12 @@ Definition main : M (M.Val unit) :=
         BinOp.div n α0 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
           M.alloc [ mk_str ""; mk_str " -> "; mk_str "
 " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) := borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+          borrow α0 in
+        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
         let* α3 : ltac:(refine (M.Val (ref i32.t))) := borrow n in
         let* α4 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=

@@ -34,8 +34,8 @@ Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_t_T.
       (let* α0 : ltac:(refine (M.Val core.fmt.Formatter.t)) := deref f in
       let* α1 : ltac:(refine (M.Val (mut_ref core.fmt.Formatter.t))) :=
         borrow_mut α0 in
-      let* α2 : ltac:(refine (M.Val str)) := deref (mk_str "Ref") in
-      let* α3 : ltac:(refine (M.Val (ref str))) := borrow α2 in
+      let* α2 : ltac:(refine (M.Val str.t)) := deref (mk_str "Ref") in
+      let* α3 : ltac:(refine (M.Val (ref str.t))) := borrow α2 in
       let* α4 :
           ltac:(refine (M.Val (scoping_rules_lifetimes_bounds.Ref.t T))) :=
         deref self in
@@ -73,11 +73,12 @@ Definition print
   M.function_body
     (let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
           M.alloc [ mk_str "`print`: t is "; mk_str "
 " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) := borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+          borrow α0 in
+        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
         let* α3 : ltac:(refine (M.Val (ref T))) := borrow t in
         let* α4 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
@@ -110,11 +111,12 @@ Definition print_ref
   M.function_body
     (let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
           M.alloc [ mk_str "`print_ref`: t is "; mk_str "
 " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) := borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+          borrow α0 in
+        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
         let* α3 : ltac:(refine (M.Val (ref (ref T)))) := borrow t in
         let* α4 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=

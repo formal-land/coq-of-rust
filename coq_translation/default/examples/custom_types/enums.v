@@ -40,7 +40,7 @@ Definition inspect (event : M.Val enums.WebEvent.t) : M (M.Val unit) :=
     match α0 with
     | enums.WebEvent.PageLoad  =>
       let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
           M.alloc
             [
               mk_str
@@ -48,8 +48,9 @@ Definition inspect (event : M.Val enums.WebEvent.t) : M (M.Val unit) :=
                   String.String "233" ("f" ++ String.String "233" "
 "))
             ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) := borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+          borrow α0 in
+        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
         let* α3 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
           core.fmt.Arguments.t::["new_const"] α2 in
@@ -57,11 +58,12 @@ Definition inspect (event : M.Val enums.WebEvent.t) : M (M.Val unit) :=
       M.alloc tt
     | enums.WebEvent.PageUnload  =>
       let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
           M.alloc [ mk_str "page unloaded
 " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) := borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+          borrow α0 in
+        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
         let* α3 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
           core.fmt.Arguments.t::["new_const"] α2 in
@@ -70,11 +72,12 @@ Definition inspect (event : M.Val enums.WebEvent.t) : M (M.Val unit) :=
     | enums.WebEvent.KeyPress c =>
       let* c := M.alloc c in
       let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
           M.alloc [ mk_str "pressed '"; mk_str "'.
 " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) := borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+          borrow α0 in
+        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
         let* α3 : ltac:(refine (M.Val (ref char.t))) := borrow c in
         let* α4 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
@@ -92,11 +95,12 @@ Definition inspect (event : M.Val enums.WebEvent.t) : M (M.Val unit) :=
     | enums.WebEvent.Paste s =>
       let* s := M.alloc s in
       let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
           M.alloc [ mk_str "pasted ""; mk_str "".
 " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) := borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+          borrow α0 in
+        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
         let* α3 : ltac:(refine (M.Val (ref alloc.string.String.t))) :=
           borrow s in
@@ -121,12 +125,12 @@ Definition inspect (event : M.Val enums.WebEvent.t) : M (M.Val unit) :=
       let* x := M.alloc x in
       let* _ : ltac:(refine (M.Val unit)) :=
         let* _ : ltac:(refine (M.Val unit)) :=
-          let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+          let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
             M.alloc [ mk_str "clicked at x="; mk_str ", y="; mk_str ".
 " ] in
-          let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) :=
+          let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
             borrow α0 in
-          let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+          let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
             pointer_coercion "Unsize" α1 in
           let* α3 : ltac:(refine (M.Val (ref i64.t))) := borrow x in
           let* α4 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
@@ -173,10 +177,12 @@ Definition main : M (M.Val unit) :=
       let* α1 := M.read α0 in
       M.alloc (enums.WebEvent.KeyPress α1) in
     let* pasted : ltac:(refine (M.Val enums.WebEvent.t)) :=
-      let* α0 : ltac:(refine (M.Val str)) := deref (mk_str "my text") in
-      let* α1 : ltac:(refine (M.Val (ref str))) := borrow α0 in
+      let* α0 : ltac:(refine (M.Val str.t)) := deref (mk_str "my text") in
+      let* α1 : ltac:(refine (M.Val (ref str.t))) := borrow α0 in
       let* α2 : ltac:(refine (M.Val alloc.string.String.t)) :=
-        (alloc.borrow.ToOwned.to_owned (Self := str) (Trait := ltac:(refine _)))
+        (alloc.borrow.ToOwned.to_owned
+            (Self := str.t)
+            (Trait := ltac:(refine _)))
           α1 in
       let* α3 := M.read α2 in
       M.alloc (enums.WebEvent.Paste α3) in

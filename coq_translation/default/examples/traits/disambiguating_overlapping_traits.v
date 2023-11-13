@@ -129,10 +129,12 @@ Definition main : M (M.Val unit) :=
   M.function_body
     (let* form :
         ltac:(refine (M.Val disambiguating_overlapping_traits.Form.t)) :=
-      let* α0 : ltac:(refine (M.Val str)) := deref (mk_str "rustacean") in
-      let* α1 : ltac:(refine (M.Val (ref str))) := borrow α0 in
+      let* α0 : ltac:(refine (M.Val str.t)) := deref (mk_str "rustacean") in
+      let* α1 : ltac:(refine (M.Val (ref str.t))) := borrow α0 in
       let* α2 : ltac:(refine (M.Val alloc.string.String.t)) :=
-        (alloc.borrow.ToOwned.to_owned (Self := str) (Trait := ltac:(refine _)))
+        (alloc.borrow.ToOwned.to_owned
+            (Self := str.t)
+            (Trait := ltac:(refine _)))
           α1 in
       let* α3 := M.read α2 in
       let* α4 : ltac:(refine (M.Val u8.t)) := M.alloc 28 in
@@ -152,11 +154,11 @@ Definition main : M (M.Val unit) :=
           (Trait := ltac:(refine _)))
         α0 in
     let* _ : ltac:(refine (M.Val unit)) :=
-      let* α0 : ltac:(refine (M.Val str)) := deref (mk_str "rustacean") in
-      let* α1 : ltac:(refine (M.Val (ref str))) := borrow α0 in
+      let* α0 : ltac:(refine (M.Val str.t)) := deref (mk_str "rustacean") in
+      let* α1 : ltac:(refine (M.Val (ref str.t))) := borrow α0 in
       let* α2 : ltac:(refine (M.Val alloc.string.String.t)) :=
         (alloc.string.ToString.to_string
-            (Self := str)
+            (Self := str.t)
             (Trait := ltac:(refine _)))
           α1 in
       let* α3 : ltac:(refine (M.Val (ref alloc.string.String.t))) :=

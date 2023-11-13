@@ -39,12 +39,14 @@ where
 *)
 Module AsMut.
   Class Trait (Self : Set) {T : Set} : Set := {
-    as_mut : mut_ref Self -> M (mut_ref T);
+    as_mut :
+      M.Val (mut_ref Self) ->
+      M (M.Val (mut_ref T));
   }.
 End AsMut.
 
 Module AsMut_instances.
-  Global Instance I_str : AsMut.Trait str (T := str).
+  Global Instance I_str : AsMut.Trait str.t (T := str.t).
   Admitted.
 
   Global Instance I_slice {T : Set} : AsMut.Trait (slice T) (T := slice T).
@@ -65,12 +67,14 @@ where
 *)
 Module AsRef.
   Class Trait (Self : Set) {T : Set} : Set := {
-    as_ref : ref Self -> M (ref T);
+    as_ref :
+      M.Val (ref Self) ->
+      M (M.Val (ref T));
   }.
 End AsRef.
 
 Module AsRef_instances.
-  Global Instance I_str : AsRef.Trait str (T := str).
+  Global Instance I_str : AsRef.Trait str.t (T := str.t).
   Admitted.
 
   Global Instance I_slice {T : Set} : AsRef.Trait (slice T) (T := slice T).

@@ -12,7 +12,6 @@ Require CoqOfRust.core.default.
 Module IntoIter.
   Parameter t : Set -> Set.
 End IntoIter.
-Definition IntoIter := IntoIter.t.
 
 (*
 pub struct Iter<'a, A>
@@ -23,7 +22,6 @@ where
 Module Iter.
   Parameter t : Set -> Set.
 End Iter.
-Definition Iter := Iter.t.
 
 (* pub struct IterMut<'a, A>
 where
@@ -32,7 +30,6 @@ where
 Module IterMut.
   Parameter t : Set -> Set.
 End IterMut.
-Definition IterMut := IterMut.t.
 
 
 (* ********ENUMS******** *)
@@ -47,8 +44,6 @@ Module Option.
   Arguments None {_}.
   Arguments Some {_}.
 End Option.
-Definition Option (T : Set) : Set :=
-  M.Val (Option.t T).
 
 Module Impl_Option. Section Impl_Option.
   Context {T : Set}.

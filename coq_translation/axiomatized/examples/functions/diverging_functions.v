@@ -16,4 +16,4 @@ Parameter main : M (M.Val unit).
         panic!("This call never returns.");
     }
 *)
-Parameter foo : M (M.Val never).
+Parameter foo : M (M.Val never.t).

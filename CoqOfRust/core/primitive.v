@@ -1,19 +1,19 @@
 Require Import CoqOfRust.lib.lib.
 
-Definition bool : Set := bool.
-Definition char : Set := char.
-Definition f32 : Set := f32.
-Definition f64 : Set := f64.
-Definition i128 : Set := i128.
-Definition i16 : Set := i16.
-Definition i32 : Set := i32.
-Definition i64 : Set := i64.
-Definition i8 : Set := i8.
-Definition isize : Set := isize.
-Definition str : Set := str.
+Module bool := bool.
+Module char := char.
+Module f32 := f32.
+Module f64 := f64.
+Module i128 := i128.
+Module i16 := i16.
+Module i32 := i32.
+Module i64 := i64.
+Module i8 := i8.
+Module isize := isize.
+Module str := str.
 Module u128 := u128.
-Definition u16 : Set := u16.
-Definition u32 : Set := u32.
-Definition u64 : Set := u64.
-Definition u8 : Set := u8.
-Definition usize : Set := usize.
+Module u16 := u16.
+Module u32 := u32.
+Module u64 := u64.
+Module u8 := u8.
+Module usize := usize.

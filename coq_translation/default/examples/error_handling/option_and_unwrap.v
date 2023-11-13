@@ -19,11 +19,12 @@ Definition give_adult
     match α0 with
     | core.option.Option.Some _ =>
       let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
           M.alloc [ mk_str "Yuck! Too sugary.
 " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) := borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+          borrow α0 in
+        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
         let* α3 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
           core.fmt.Arguments.t::["new_const"] α2 in
@@ -32,13 +33,14 @@ Definition give_adult
     | core.option.Option.Some inner =>
       let* inner := M.alloc inner in
       let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
           M.alloc [ mk_str ""; mk_str "? How nice.
 " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) := borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+          borrow α0 in
+        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
-        let* α3 : ltac:(refine (M.Val (ref (ref str)))) := borrow inner in
+        let* α3 : ltac:(refine (M.Val (ref (ref str.t)))) := borrow inner in
         let* α4 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
           core.fmt.rt.Argument.t::["new_display"] α3 in
         let* α5 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
@@ -53,11 +55,12 @@ Definition give_adult
       M.alloc tt
     | core.option.Option.None  =>
       let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
           M.alloc [ mk_str "No drink? Oh well.
 " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) := borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+          borrow α0 in
+        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
         let* α3 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
           core.fmt.Arguments.t::["new_const"] α2 in
@@ -80,14 +83,14 @@ Definition drink
     (drink : M.Val (core.option.Option.t (ref str.t)))
     : M (M.Val unit) :=
   M.function_body
-    (let* inside : ltac:(refine (M.Val (ref str))) :=
-      (core.option.Option.t (ref str))::["unwrap"] drink in
+    (let* inside : ltac:(refine (M.Val (ref str.t))) :=
+      (core.option.Option.t (ref str.t))::["unwrap"] drink in
     let* _ : ltac:(refine (M.Val unit)) :=
-      let* α0 : ltac:(refine (M.Val (ref (ref str)))) := borrow inside in
-      let* α1 : ltac:(refine (M.Val (ref (ref str)))) :=
+      let* α0 : ltac:(refine (M.Val (ref (ref str.t)))) := borrow inside in
+      let* α1 : ltac:(refine (M.Val (ref (ref str.t)))) :=
         borrow (mk_str "lemonade") in
       let* α2 : ltac:(refine (M.Val bool.t)) :=
-        (core.cmp.PartialEq.eq (Self := ref str) (Trait := ltac:(refine _)))
+        (core.cmp.PartialEq.eq (Self := ref str.t) (Trait := ltac:(refine _)))
           α0
           α1 in
       let* α3 : ltac:(refine (M.Val bool.t)) := use α2 in
@@ -103,13 +106,14 @@ Definition drink
         M.alloc tt in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
           M.alloc [ mk_str "I love "; mk_str "s!!!!!
 " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) := borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+          borrow α0 in
+        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
-        let* α3 : ltac:(refine (M.Val (ref (ref str)))) := borrow inside in
+        let* α3 : ltac:(refine (M.Val (ref (ref str.t)))) := borrow inside in
         let* α4 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
           core.fmt.rt.Argument.t::["new_display"] α3 in
         let* α5 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
@@ -144,22 +148,22 @@ fn main() {
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M (M.Val unit) :=
   M.function_body
-    (let* water : ltac:(refine (M.Val (core.option.Option.t (ref str)))) :=
+    (let* water : ltac:(refine (M.Val (core.option.Option.t (ref str.t)))) :=
       let* α0 := M.read (mk_str "water") in
       M.alloc (core.option.Option.Some α0) in
-    let* lemonade : ltac:(refine (M.Val (core.option.Option.t (ref str)))) :=
+    let* lemonade : ltac:(refine (M.Val (core.option.Option.t (ref str.t)))) :=
       let* α0 := M.read (mk_str "lemonade") in
       M.alloc (core.option.Option.Some α0) in
-    let* void : ltac:(refine (M.Val (core.option.Option.t (ref str)))) :=
+    let* void : ltac:(refine (M.Val (core.option.Option.t (ref str.t)))) :=
       M.alloc core.option.Option.None in
     let* _ : ltac:(refine (M.Val unit)) := option_and_unwrap.give_adult water in
     let* _ : ltac:(refine (M.Val unit)) :=
       option_and_unwrap.give_adult lemonade in
     let* _ : ltac:(refine (M.Val unit)) := option_and_unwrap.give_adult void in
-    let* coffee : ltac:(refine (M.Val (core.option.Option.t (ref str)))) :=
+    let* coffee : ltac:(refine (M.Val (core.option.Option.t (ref str.t)))) :=
       let* α0 := M.read (mk_str "coffee") in
       M.alloc (core.option.Option.Some α0) in
-    let* nothing : ltac:(refine (M.Val (core.option.Option.t (ref str)))) :=
+    let* nothing : ltac:(refine (M.Val (core.option.Option.t (ref str.t)))) :=
       M.alloc core.option.Option.None in
     let* _ : ltac:(refine (M.Val unit)) := option_and_unwrap.drink coffee in
     let* _ : ltac:(refine (M.Val unit)) := option_and_unwrap.drink nothing in

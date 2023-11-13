@@ -43,10 +43,11 @@ Definition main : M (M.Val unit) :=
             std.process.Output.t
             std.io.error.Error.t)::["unwrap_or_else"]
         α5
-        (let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+        (let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
           M.alloc [ mk_str "failed to execute process: " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) := borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+          borrow α0 in
+        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
         let* α3 : ltac:(refine (M.Val (ref std.io.error.Error.t))) :=
           borrow e in
@@ -72,7 +73,7 @@ Definition main : M (M.Val unit) :=
     let* α3 : ltac:(refine (M.Val bool.t)) := use α2 in
     let* α4 := M.read α3 in
     if (α4 : bool) then
-      let* s : ltac:(refine (M.Val (alloc.borrow.Cow.t str))) :=
+      let* s : ltac:(refine (M.Val (alloc.borrow.Cow.t str.t))) :=
         let* α0 :
             ltac:(refine (M.Val (alloc.vec.Vec.t u8.t alloc.alloc.Global.t))) :=
           output.["stdout"] in
@@ -90,14 +91,14 @@ Definition main : M (M.Val unit) :=
         alloc.string.String.t::["from_utf8_lossy"] α4 in
       let* _ : ltac:(refine (M.Val unit)) :=
         let* _ : ltac:(refine (M.Val unit)) :=
-          let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+          let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
             M.alloc [ mk_str "rustc succeeded and stdout was:
 " ] in
-          let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) :=
+          let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
             borrow α0 in
-          let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+          let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
             pointer_coercion "Unsize" α1 in
-          let* α3 : ltac:(refine (M.Val (ref (alloc.borrow.Cow.t str)))) :=
+          let* α3 : ltac:(refine (M.Val (ref (alloc.borrow.Cow.t str.t)))) :=
             borrow s in
           let* α4 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
             core.fmt.rt.Argument.t::["new_display"] α3 in
@@ -115,7 +116,7 @@ Definition main : M (M.Val unit) :=
         M.alloc tt in
       M.alloc tt
     else
-      let* s : ltac:(refine (M.Val (alloc.borrow.Cow.t str))) :=
+      let* s : ltac:(refine (M.Val (alloc.borrow.Cow.t str.t))) :=
         let* α0 :
             ltac:(refine (M.Val (alloc.vec.Vec.t u8.t alloc.alloc.Global.t))) :=
           output.["stderr"] in
@@ -133,14 +134,14 @@ Definition main : M (M.Val unit) :=
         alloc.string.String.t::["from_utf8_lossy"] α4 in
       let* _ : ltac:(refine (M.Val unit)) :=
         let* _ : ltac:(refine (M.Val unit)) :=
-          let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+          let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
             M.alloc [ mk_str "rustc failed and stderr was:
 " ] in
-          let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) :=
+          let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
             borrow α0 in
-          let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+          let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
             pointer_coercion "Unsize" α1 in
-          let* α3 : ltac:(refine (M.Val (ref (alloc.borrow.Cow.t str)))) :=
+          let* α3 : ltac:(refine (M.Val (ref (alloc.borrow.Cow.t str.t)))) :=
             borrow s in
           let* α4 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
             core.fmt.rt.Argument.t::["new_display"] α3 in

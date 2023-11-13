@@ -63,8 +63,8 @@ Section Impl_core_fmt_Debug_for_subtle_Choice_t.
       (let* α0 : ltac:(refine (M.Val core.fmt.Formatter.t)) := deref f in
       let* α1 : ltac:(refine (M.Val (mut_ref core.fmt.Formatter.t))) :=
         borrow_mut α0 in
-      let* α2 : ltac:(refine (M.Val str)) := deref (mk_str "Choice") in
-      let* α3 : ltac:(refine (M.Val (ref str))) := borrow α2 in
+      let* α2 : ltac:(refine (M.Val str.t)) := deref (mk_str "Choice") in
+      let* α3 : ltac:(refine (M.Val (ref str.t))) := borrow α2 in
       let* α4 : ltac:(refine (M.Val subtle.Choice.t)) := deref self in
       let* α5 : ltac:(refine (M.Val u8.t)) := α4.["0"] in
       let* α6 : ltac:(refine (M.Val (ref u8.t))) := borrow α5 in
@@ -2441,17 +2441,17 @@ Section Impl_core_fmt_Debug_for_subtle_CtOption_t_T.
       (let* α0 : ltac:(refine (M.Val core.fmt.Formatter.t)) := deref f in
       let* α1 : ltac:(refine (M.Val (mut_ref core.fmt.Formatter.t))) :=
         borrow_mut α0 in
-      let* α2 : ltac:(refine (M.Val str)) := deref (mk_str "CtOption") in
-      let* α3 : ltac:(refine (M.Val (ref str))) := borrow α2 in
-      let* α4 : ltac:(refine (M.Val str)) := deref (mk_str "value") in
-      let* α5 : ltac:(refine (M.Val (ref str))) := borrow α4 in
+      let* α2 : ltac:(refine (M.Val str.t)) := deref (mk_str "CtOption") in
+      let* α3 : ltac:(refine (M.Val (ref str.t))) := borrow α2 in
+      let* α4 : ltac:(refine (M.Val str.t)) := deref (mk_str "value") in
+      let* α5 : ltac:(refine (M.Val (ref str.t))) := borrow α4 in
       let* α6 : ltac:(refine (M.Val (subtle.CtOption.t T))) := deref self in
       let* α7 : ltac:(refine (M.Val T)) := α6.["value"] in
       let* α8 : ltac:(refine (M.Val (ref T))) := borrow α7 in
       let* α9 : ltac:(refine (M.Val (ref type not implemented))) :=
         pointer_coercion "Unsize" α8 in
-      let* α10 : ltac:(refine (M.Val str)) := deref (mk_str "is_some") in
-      let* α11 : ltac:(refine (M.Val (ref str))) := borrow α10 in
+      let* α10 : ltac:(refine (M.Val str.t)) := deref (mk_str "is_some") in
+      let* α11 : ltac:(refine (M.Val (ref str.t))) := borrow α10 in
       let* α12 : ltac:(refine (M.Val (subtle.CtOption.t T))) := deref self in
       let* α13 : ltac:(refine (M.Val subtle.Choice.t)) := α12.["is_some"] in
       let* α14 : ltac:(refine (M.Val (ref subtle.Choice.t))) := borrow α13 in
@@ -2593,13 +2593,13 @@ Section Impl_subtle_CtOption_t_T.
               let* α1 : ltac:(refine (M.Val (ref u8.t))) := borrow α0 in
               let* α2 : ltac:(refine (M.Val u8.t)) := deref right_val in
               let* α3 : ltac:(refine (M.Val (ref u8.t))) := borrow α2 in
-              let* α4 : ltac:(refine (M.Val (array (ref str)))) :=
+              let* α4 : ltac:(refine (M.Val (array (ref str.t)))) :=
                 M.alloc [ mk_str "" ] in
-              let* α5 : ltac:(refine (M.Val (ref (array (ref str))))) :=
+              let* α5 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
                 borrow α4 in
-              let* α6 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+              let* α6 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
                 pointer_coercion "Unsize" α5 in
-              let* α7 : ltac:(refine (M.Val (ref (ref str)))) := borrow msg in
+              let* α7 : ltac:(refine (M.Val (ref (ref str.t)))) := borrow msg in
               let* α8 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
                 core.fmt.rt.Argument.t::["new_display"] α7 in
               let* α9 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=

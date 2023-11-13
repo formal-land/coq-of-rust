@@ -25,8 +25,8 @@ fn main() {
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M (M.Val unit) :=
   M.function_body
-    (let* apple : ltac:(refine (M.Val (alloc.sync.Arc.t (ref str)))) :=
-      (alloc.sync.Arc.t (ref str))::["new"] (mk_str "the same apple") in
+    (let* apple : ltac:(refine (M.Val (alloc.sync.Arc.t (ref str.t)))) :=
+      (alloc.sync.Arc.t (ref str.t))::["new"] (mk_str "the same apple") in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 0 in
       let* α1 := M.read α0 in
@@ -64,31 +64,31 @@ Definition main : M (M.Val unit) :=
                 never_to_any α0
               | core.option.Option.Some _ =>
                 let* apple :
-                    ltac:(refine (M.Val (alloc.sync.Arc.t (ref str)))) :=
+                    ltac:(refine (M.Val (alloc.sync.Arc.t (ref str.t)))) :=
                   let* α0 :
                       ltac:(refine
-                        (M.Val (ref (alloc.sync.Arc.t (ref str))))) :=
+                        (M.Val (ref (alloc.sync.Arc.t (ref str.t))))) :=
                     borrow apple in
                   (core.clone.Clone.clone
-                      (Self := alloc.sync.Arc.t (ref str))
+                      (Self := alloc.sync.Arc.t (ref str.t))
                       (Trait := ltac:(refine _)))
                     α0 in
                 let* _ : ltac:(refine (M.Val (std.thread.JoinHandle.t unit))) :=
                   std.thread.spawn
                     (let* _ : ltac:(refine (M.Val unit)) :=
                       let* _ : ltac:(refine (M.Val unit)) :=
-                        let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+                        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
                           M.alloc [ mk_str ""; mk_str "
 " ] in
                         let* α1 :
-                            ltac:(refine (M.Val (ref (array (ref str))))) :=
+                            ltac:(refine (M.Val (ref (array (ref str.t))))) :=
                           borrow α0 in
                         let* α2 :
-                            ltac:(refine (M.Val (ref (slice (ref str))))) :=
+                            ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
                           pointer_coercion "Unsize" α1 in
                         let* α3 :
                             ltac:(refine
-                              (M.Val (ref (alloc.sync.Arc.t (ref str))))) :=
+                              (M.Val (ref (alloc.sync.Arc.t (ref str.t))))) :=
                           borrow apple in
                         let* α4 :
                             ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=

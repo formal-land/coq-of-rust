@@ -16,7 +16,7 @@ Definition main : M (M.Val unit) := M.function_body (M.alloc tt).
         panic!("This call never returns.");
     }
 *)
-Definition foo : M (M.Val never) :=
+Definition foo : M (M.Val never.t) :=
   M.function_body
     (let* _ : ltac:(refine (M.Val unit)) :=
       let* α0 : ltac:(refine (M.Val never.t)) :=

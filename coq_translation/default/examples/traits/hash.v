@@ -140,11 +140,11 @@ Definition main : M (M.Val unit) :=
     (let* person1 : ltac:(refine (M.Val hash.Person.t)) :=
       let* α0 : ltac:(refine (M.Val u32.t)) := M.alloc 5 in
       let* α1 := M.read α0 in
-      let* α2 : ltac:(refine (M.Val str)) := deref (mk_str "Janet") in
-      let* α3 : ltac:(refine (M.Val (ref str))) := borrow α2 in
+      let* α2 : ltac:(refine (M.Val str.t)) := deref (mk_str "Janet") in
+      let* α3 : ltac:(refine (M.Val (ref str.t))) := borrow α2 in
       let* α4 : ltac:(refine (M.Val alloc.string.String.t)) :=
         (alloc.string.ToString.to_string
-            (Self := str)
+            (Self := str.t)
             (Trait := ltac:(refine _)))
           α3 in
       let* α5 := M.read α4 in
@@ -159,11 +159,11 @@ Definition main : M (M.Val unit) :=
     let* person2 : ltac:(refine (M.Val hash.Person.t)) :=
       let* α0 : ltac:(refine (M.Val u32.t)) := M.alloc 5 in
       let* α1 := M.read α0 in
-      let* α2 : ltac:(refine (M.Val str)) := deref (mk_str "Bob") in
-      let* α3 : ltac:(refine (M.Val (ref str))) := borrow α2 in
+      let* α2 : ltac:(refine (M.Val str.t)) := deref (mk_str "Bob") in
+      let* α3 : ltac:(refine (M.Val (ref str.t))) := borrow α2 in
       let* α4 : ltac:(refine (M.Val alloc.string.String.t)) :=
         (alloc.string.ToString.to_string
-            (Self := str)
+            (Self := str.t)
             (Trait := ltac:(refine _)))
           α3 in
       let* α5 := M.read α4 in

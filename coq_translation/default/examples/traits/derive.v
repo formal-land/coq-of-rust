@@ -122,8 +122,8 @@ Section Impl_core_fmt_Debug_for_derive_Inches_t.
       (let* α0 : ltac:(refine (M.Val core.fmt.Formatter.t)) := deref f in
       let* α1 : ltac:(refine (M.Val (mut_ref core.fmt.Formatter.t))) :=
         borrow_mut α0 in
-      let* α2 : ltac:(refine (M.Val str)) := deref (mk_str "Inches") in
-      let* α3 : ltac:(refine (M.Val (ref str))) := borrow α2 in
+      let* α2 : ltac:(refine (M.Val str.t)) := deref (mk_str "Inches") in
+      let* α3 : ltac:(refine (M.Val (ref str.t))) := borrow α2 in
       let* α4 : ltac:(refine (M.Val derive.Inches.t)) := deref self in
       let* α5 : ltac:(refine (M.Val i32.t)) := α4.["0"] in
       let* α6 : ltac:(refine (M.Val (ref i32.t))) := borrow α5 in
@@ -224,11 +224,12 @@ Definition main : M (M.Val unit) :=
       M.alloc (derive.Inches.Build_t α1) in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
           M.alloc [ mk_str "One foot equals "; mk_str "
 " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) := borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+          borrow α0 in
+        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
         let* α3 : ltac:(refine (M.Val (ref derive.Inches.t))) := borrow foot in
         let* α4 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
@@ -247,7 +248,7 @@ Definition main : M (M.Val unit) :=
       let* α0 : ltac:(refine (M.Val f64.t)) := M.alloc 100 (* 100.0 *) in
       let* α1 := M.read α0 in
       M.alloc (derive.Centimeters.Build_t α1) in
-    let* cmp : ltac:(refine (M.Val (ref str))) :=
+    let* cmp : ltac:(refine (M.Val (ref str.t))) :=
       let* α0 : ltac:(refine (M.Val (ref derive.Inches.t))) := borrow foot in
       let* α1 : ltac:(refine (M.Val derive.Centimeters.t)) :=
         derive.Inches.t::["to_centimeters"] α0 in
@@ -265,17 +266,18 @@ Definition main : M (M.Val unit) :=
       if (α6 : bool) then
         M.pure (mk_str "smaller")
       else
-        let* α0 : ltac:(refine (M.Val str)) := deref (mk_str "bigger") in
+        let* α0 : ltac:(refine (M.Val str.t)) := deref (mk_str "bigger") in
         borrow α0 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
           M.alloc [ mk_str "One foot is "; mk_str " than one meter.
 " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) := borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+          borrow α0 in
+        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
-        let* α3 : ltac:(refine (M.Val (ref (ref str)))) := borrow cmp in
+        let* α3 : ltac:(refine (M.Val (ref (ref str.t)))) := borrow cmp in
         let* α4 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
           core.fmt.rt.Argument.t::["new_display"] α3 in
         let* α5 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=

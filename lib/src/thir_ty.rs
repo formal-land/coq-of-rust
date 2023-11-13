@@ -28,7 +28,7 @@ pub(crate) fn compile_type(env: &Env, ty: &rustc_middle::ty::Ty) -> Rc<CoqType> 
             })
         }
         // Foreign(DefId),
-        TyKind::Str => CoqType::var("str"),
+        TyKind::Str => CoqType::path(&["str", "t"]),
         TyKind::Array(ty, _) => Rc::new(CoqType::Application {
             func: CoqType::path(&["array"]),
             args: vec![compile_type(env, ty)],

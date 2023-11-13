@@ -9,7 +9,7 @@ fn main() {
     let emoticon: Option<i32> = None;
 
     // The `if let` construct reads: "if `let` destructures `number` into
-    // `Some(i)`, evaluate the block (`{}`).
+    // `Some(i)`, evaluate the block (`{}`)".
     if let Some(i) = number {
         println!("Matched {:?}!", i);
     }

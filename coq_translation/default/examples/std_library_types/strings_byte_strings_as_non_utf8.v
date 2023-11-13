@@ -47,11 +47,12 @@ Definition main : M (M.Val unit) :=
       borrow α1 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
           M.alloc [ mk_str "A byte string: "; mk_str "
 " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) := borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+          borrow α0 in
+        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
         let* α3 : ltac:(refine (M.Val (ref (ref (array u8.t))))) :=
           borrow bytestring in
@@ -71,11 +72,12 @@ Definition main : M (M.Val unit) :=
       [82, 117, 115, 116, 32, 97, 115, 32, 98, 121, 116, 101, 115] in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
           M.alloc [ mk_str "Some escaped bytes: "; mk_str "
 " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) := borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+          borrow α0 in
+        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
         let* α3 : ltac:(refine (M.Val (ref (ref (array u8.t))))) :=
           borrow escaped in
@@ -95,11 +97,12 @@ Definition main : M (M.Val unit) :=
       [92, 117, 123, 50, 49, 49, 68, 125, 32, 105, 115, 32, 110, 111, 116, 32, 101, 115, 99, 97, 112, 101, 100, 32, 104, 101, 114, 101] in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
           M.alloc [ mk_str ""; mk_str "
 " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) := borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+          borrow α0 in
+        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
         let* α3 : ltac:(refine (M.Val (ref (ref (array u8.t))))) :=
           borrow raw_bytestring in
@@ -123,7 +126,7 @@ Definition main : M (M.Val unit) :=
       let* α3 :
           ltac:(refine
             (M.Val
-              (core.result.Result.t (ref str) core.str.error.Utf8Error.t))) :=
+              (core.result.Result.t (ref str.t) core.str.error.Utf8Error.t))) :=
         core.str.converts.from_utf8 α2 in
       let* α4 : ltac:(refine (M.Val bool.t)) :=
         let_if core.result.Result.Ok my_str := α3 in
@@ -131,14 +134,15 @@ Definition main : M (M.Val unit) :=
       if (α5 : bool) then
         let* _ : ltac:(refine (M.Val unit)) :=
           let* _ : ltac:(refine (M.Val unit)) :=
-            let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+            let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
               M.alloc [ mk_str "And the same as text: '"; mk_str "'
 " ] in
-            let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) :=
+            let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
               borrow α0 in
-            let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+            let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
               pointer_coercion "Unsize" α1 in
-            let* α3 : ltac:(refine (M.Val (ref (ref str)))) := borrow my_str in
+            let* α3 : ltac:(refine (M.Val (ref (ref str.t)))) :=
+              borrow my_str in
             let* α4 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
               core.fmt.rt.Argument.t::["new_display"] α3 in
             let* α5 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
@@ -168,21 +172,21 @@ Definition main : M (M.Val unit) :=
       let* α3 :
           ltac:(refine
             (M.Val
-              (core.result.Result.t (ref str) core.str.error.Utf8Error.t))) :=
+              (core.result.Result.t (ref str.t) core.str.error.Utf8Error.t))) :=
         core.str.converts.from_utf8 α2 in
       let* α4 := M.read α3 in
       match α4 with
       | core.result.Result.Ok my_str =>
         let* my_str := M.alloc my_str in
         let* _ : ltac:(refine (M.Val unit)) :=
-          let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+          let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
             M.alloc [ mk_str "Conversion successful: '"; mk_str "'
 " ] in
-          let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) :=
+          let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
             borrow α0 in
-          let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+          let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
             pointer_coercion "Unsize" α1 in
-          let* α3 : ltac:(refine (M.Val (ref (ref str)))) := borrow my_str in
+          let* α3 : ltac:(refine (M.Val (ref (ref str.t)))) := borrow my_str in
           let* α4 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
             core.fmt.rt.Argument.t::["new_display"] α3 in
           let* α5 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
@@ -200,12 +204,12 @@ Definition main : M (M.Val unit) :=
       | core.result.Result.Err e =>
         let* e := M.alloc e in
         let* _ : ltac:(refine (M.Val unit)) :=
-          let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+          let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
             M.alloc [ mk_str "Conversion failed: "; mk_str "
 " ] in
-          let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) :=
+          let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
             borrow α0 in
-          let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+          let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
             pointer_coercion "Unsize" α1 in
           let* α3 : ltac:(refine (M.Val (ref core.str.error.Utf8Error.t))) :=
             borrow e in

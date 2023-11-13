@@ -73,10 +73,11 @@ Definition main : M (M.Val unit) :=
       match α11 with
       | core.result.Result.Err why =>
         let* why := M.alloc why in
-        let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
           M.alloc [ mk_str "couldn't spawn wc: " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) := borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+          borrow α0 in
+        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
         let* α3 : ltac:(refine (M.Val (ref std.io.error.Error.t))) :=
           borrow why in
@@ -106,12 +107,12 @@ Definition main : M (M.Val unit) :=
         (core.option.Option.t std.process.ChildStdin.t)::["unwrap"] α0 in
       let* α2 : ltac:(refine (M.Val (mut_ref std.process.ChildStdin.t))) :=
         borrow_mut α1 in
-      let* α3 : ltac:(refine (M.Val (ref str))) :=
+      let* α3 : ltac:(refine (M.Val (ref str.t))) :=
         deref child_processes_pipes.PANGRAM in
-      let* α4 : ltac:(refine (M.Val str)) := deref α3 in
-      let* α5 : ltac:(refine (M.Val (ref str))) := borrow α4 in
+      let* α4 : ltac:(refine (M.Val str.t)) := deref α3 in
+      let* α5 : ltac:(refine (M.Val (ref str.t))) := borrow α4 in
       let* α6 : ltac:(refine (M.Val (ref (slice u8.t)))) :=
-        str::["as_bytes"] α5 in
+        str.t::["as_bytes"] α5 in
       let* α7 : ltac:(refine (M.Val (slice u8.t))) := deref α6 in
       let* α8 : ltac:(refine (M.Val (ref (slice u8.t)))) := borrow α7 in
       let* α9 :
@@ -126,10 +127,11 @@ Definition main : M (M.Val unit) :=
       match α10 with
       | core.result.Result.Err why =>
         let* why := M.alloc why in
-        let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
           M.alloc [ mk_str "couldn't write to wc stdin: " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) := borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+          borrow α0 in
+        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
         let* α3 : ltac:(refine (M.Val (ref std.io.error.Error.t))) :=
           borrow why in
@@ -148,12 +150,12 @@ Definition main : M (M.Val unit) :=
         never_to_any α9
       | core.result.Result.Ok _ =>
         let* _ : ltac:(refine (M.Val unit)) :=
-          let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+          let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
             M.alloc [ mk_str "sent pangram to wc
 " ] in
-          let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) :=
+          let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
             borrow α0 in
-          let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+          let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
             pointer_coercion "Unsize" α1 in
           let* α3 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
             core.fmt.Arguments.t::["new_const"] α2 in
@@ -184,10 +186,10 @@ Definition main : M (M.Val unit) :=
     match α5 with
     | core.result.Result.Err why =>
       let* why := M.alloc why in
-      let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+      let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
         M.alloc [ mk_str "couldn't read wc stdout: " ] in
-      let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) := borrow α0 in
-      let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+      let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) := borrow α0 in
+      let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
         pointer_coercion "Unsize" α1 in
       let* α3 : ltac:(refine (M.Val (ref std.io.error.Error.t))) :=
         borrow why in
@@ -205,11 +207,12 @@ Definition main : M (M.Val unit) :=
       never_to_any α9
     | core.result.Result.Ok _ =>
       let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
           M.alloc [ mk_str "wc responded with:
 " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) := borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+          borrow α0 in
+        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
         let* α3 : ltac:(refine (M.Val (ref alloc.string.String.t))) :=
           borrow s in

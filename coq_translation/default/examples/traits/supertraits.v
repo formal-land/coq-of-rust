@@ -56,7 +56,7 @@ Definition comp_sci_student_greeting
     : M (M.Val alloc.string.String.t) :=
   M.function_body
     (let* res : ltac:(refine (M.Val alloc.string.String.t)) :=
-      let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+      let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
         M.alloc
           [
             mk_str "My name is ";
@@ -64,8 +64,8 @@ Definition comp_sci_student_greeting
             mk_str ". My favorite language is ";
             mk_str ". My Git username is "
           ] in
-      let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) := borrow α0 in
-      let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+      let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) := borrow α0 in
+      let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
         pointer_coercion "Unsize" α1 in
       let* α3 : ltac:(refine (M.Val type not implemented)) := deref student in
       let* α4 : ltac:(refine (M.Val (ref type not implemented))) := borrow α3 in

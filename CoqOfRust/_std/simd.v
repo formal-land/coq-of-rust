@@ -423,7 +423,6 @@ Module Mask.
     `{SupportedLaneCount.Trait (LaneCount LANES)},
     Set.
 End Mask.
-Definition Mask := Mask.t.
 
 (* ********ENUMS******** *)
 (*
@@ -437,12 +436,11 @@ pub enum Which {
 }
 *)
 Module Which.
-  Inductive t : Set := 
-  | First : usize -> t
-  | Second : usize -> t
+  Inductive t : Set :=
+  | First : usize.t -> t
+  | Second : usize.t -> t
   .
 End Which.
-Definition Which := Which.t.
 
 
 (* ********TYPE DEFINITIONS******** *)

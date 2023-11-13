@@ -45,26 +45,27 @@ Definition main : M (M.Val unit) :=
     let* _ : ltac:(refine (M.Val unit)) :=
       let _ := InlineAssembly in
       M.alloc tt in
-    let* name : ltac:(refine (M.Val (ref str))) :=
+    let* name : ltac:(refine (M.Val (ref str.t))) :=
       let* α0 : ltac:(refine (M.Val (ref (array u8.t)))) := borrow name_buf in
       let* α1 : ltac:(refine (M.Val (ref (slice u8.t)))) :=
         pointer_coercion "Unsize" α0 in
       let* α2 :
           ltac:(refine
             (M.Val
-              (core.result.Result.t (ref str) core.str.error.Utf8Error.t))) :=
+              (core.result.Result.t (ref str.t) core.str.error.Utf8Error.t))) :=
         core.str.converts.from_utf8 α1 in
-      (core.result.Result.t (ref str) core.str.error.Utf8Error.t)::["unwrap"]
+      (core.result.Result.t (ref str.t) core.str.error.Utf8Error.t)::["unwrap"]
         α2 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
           M.alloc [ mk_str "CPU Manufacturer ID: "; mk_str "
 " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) := borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+          borrow α0 in
+        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
-        let* α3 : ltac:(refine (M.Val (ref (ref str)))) := borrow name in
+        let* α3 : ltac:(refine (M.Val (ref (ref str.t)))) := borrow name in
         let* α4 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
           core.fmt.rt.Argument.t::["new_display"] α3 in
         let* α5 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=

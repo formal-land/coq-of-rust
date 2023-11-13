@@ -11,17 +11,18 @@ fn create_fn() -> impl Fn() {
 Definition create_fn : M (M.Val _ (* OpaqueTy *)) :=
   M.function_body
     (let* text : ltac:(refine (M.Val alloc.string.String.t)) :=
-      let* α0 : ltac:(refine (M.Val str)) := deref (mk_str "Fn") in
-      let* α1 : ltac:(refine (M.Val (ref str))) := borrow α0 in
-      (alloc.borrow.ToOwned.to_owned (Self := str) (Trait := ltac:(refine _)))
+      let* α0 : ltac:(refine (M.Val str.t)) := deref (mk_str "Fn") in
+      let* α1 : ltac:(refine (M.Val (ref str.t))) := borrow α0 in
+      (alloc.borrow.ToOwned.to_owned (Self := str.t) (Trait := ltac:(refine _)))
         α1 in
     M.pure
       (let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
           M.alloc [ mk_str "This is a: "; mk_str "
 " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) := borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+          borrow α0 in
+        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
         let* α3 : ltac:(refine (M.Val (ref alloc.string.String.t))) :=
           borrow text in
@@ -50,17 +51,18 @@ fn create_fnmut() -> impl FnMut() {
 Definition create_fnmut : M (M.Val _ (* OpaqueTy *)) :=
   M.function_body
     (let* text : ltac:(refine (M.Val alloc.string.String.t)) :=
-      let* α0 : ltac:(refine (M.Val str)) := deref (mk_str "FnMut") in
-      let* α1 : ltac:(refine (M.Val (ref str))) := borrow α0 in
-      (alloc.borrow.ToOwned.to_owned (Self := str) (Trait := ltac:(refine _)))
+      let* α0 : ltac:(refine (M.Val str.t)) := deref (mk_str "FnMut") in
+      let* α1 : ltac:(refine (M.Val (ref str.t))) := borrow α0 in
+      (alloc.borrow.ToOwned.to_owned (Self := str.t) (Trait := ltac:(refine _)))
         α1 in
     M.pure
       (let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
           M.alloc [ mk_str "This is a: "; mk_str "
 " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) := borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+          borrow α0 in
+        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
         let* α3 : ltac:(refine (M.Val (ref alloc.string.String.t))) :=
           borrow text in
@@ -87,17 +89,18 @@ fn create_fnonce() -> impl FnOnce() {
 Definition create_fnonce : M (M.Val _ (* OpaqueTy *)) :=
   M.function_body
     (let* text : ltac:(refine (M.Val alloc.string.String.t)) :=
-      let* α0 : ltac:(refine (M.Val str)) := deref (mk_str "FnOnce") in
-      let* α1 : ltac:(refine (M.Val (ref str))) := borrow α0 in
-      (alloc.borrow.ToOwned.to_owned (Self := str) (Trait := ltac:(refine _)))
+      let* α0 : ltac:(refine (M.Val str.t)) := deref (mk_str "FnOnce") in
+      let* α1 : ltac:(refine (M.Val (ref str.t))) := borrow α0 in
+      (alloc.borrow.ToOwned.to_owned (Self := str.t) (Trait := ltac:(refine _)))
         α1 in
     M.pure
       (let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
           M.alloc [ mk_str "This is a: "; mk_str "
 " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) := borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+          borrow α0 in
+        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
         let* α3 : ltac:(refine (M.Val (ref alloc.string.String.t))) :=
           borrow text in

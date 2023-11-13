@@ -20,43 +20,43 @@ Definition main : M (M.Val unit) :=
   M.function_body
     (let* names :
         ltac:(refine
-          (M.Val (alloc.vec.Vec.t (ref str) alloc.alloc.Global.t))) :=
-      let* α0 : ltac:(refine (M.Val str)) := deref (mk_str "Frank") in
-      let* α1 : ltac:(refine (M.Val (ref str))) := borrow α0 in
-      let* α2 : ltac:(refine (M.Val str)) := deref (mk_str "Ferris") in
-      let* α3 : ltac:(refine (M.Val (ref str))) := borrow α2 in
-      let* α4 : ltac:(refine (M.Val (array (ref str)))) :=
+          (M.Val (alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t))) :=
+      let* α0 : ltac:(refine (M.Val str.t)) := deref (mk_str "Frank") in
+      let* α1 : ltac:(refine (M.Val (ref str.t))) := borrow α0 in
+      let* α2 : ltac:(refine (M.Val str.t)) := deref (mk_str "Ferris") in
+      let* α3 : ltac:(refine (M.Val (ref str.t))) := borrow α2 in
+      let* α4 : ltac:(refine (M.Val (array (ref str.t)))) :=
         M.alloc [ mk_str "Bob"; α1; α3 ] in
       let* α5 :
           ltac:(refine
             (M.Val
-              (alloc.boxed.Box.t (array (ref str)) alloc.alloc.Global.t))) :=
+              (alloc.boxed.Box.t (array (ref str.t)) alloc.alloc.Global.t))) :=
         (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α4 in
       let* α6 :
           ltac:(refine
             (M.Val
-              (alloc.boxed.Box.t (slice (ref str)) alloc.alloc.Global.t))) :=
+              (alloc.boxed.Box.t (slice (ref str.t)) alloc.alloc.Global.t))) :=
         pointer_coercion "Unsize" α5 in
-      (slice (ref str))::["into_vec"] α6 in
+      (slice (ref str.t))::["into_vec"] α6 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* α0 :
           ltac:(refine
             (M.Val
-              (mut_ref (alloc.vec.Vec.t (ref str) alloc.alloc.Global.t)))) :=
+              (mut_ref (alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t)))) :=
         borrow_mut names in
-      let* α1 : ltac:(refine (M.Val (mut_ref (slice (ref str))))) :=
+      let* α1 : ltac:(refine (M.Val (mut_ref (slice (ref str.t))))) :=
         (core.ops.deref.DerefMut.deref_mut
-            (Self := alloc.vec.Vec.t (ref str) alloc.alloc.Global.t)
+            (Self := alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t)
             (Trait := ltac:(refine _)))
           α0 in
-      let* α2 : ltac:(refine (M.Val (slice (ref str)))) := deref α1 in
-      let* α3 : ltac:(refine (M.Val (mut_ref (slice (ref str))))) :=
+      let* α2 : ltac:(refine (M.Val (slice (ref str.t)))) := deref α1 in
+      let* α3 : ltac:(refine (M.Val (mut_ref (slice (ref str.t))))) :=
         borrow_mut α2 in
-      let* α4 : ltac:(refine (M.Val (core.slice.iter.IterMut.t (ref str)))) :=
-        (slice (ref str))::["iter_mut"] α3 in
-      let* α5 : ltac:(refine (M.Val (core.slice.iter.IterMut.t (ref str)))) :=
+      let* α4 : ltac:(refine (M.Val (core.slice.iter.IterMut.t (ref str.t)))) :=
+        (slice (ref str.t))::["iter_mut"] α3 in
+      let* α5 : ltac:(refine (M.Val (core.slice.iter.IterMut.t (ref str.t)))) :=
         (core.iter.traits.collect.IntoIterator.into_iter
-            (Self := core.slice.iter.IterMut.t (ref str))
+            (Self := core.slice.iter.IterMut.t (ref str.t))
             (Trait := ltac:(refine _)))
           α4 in
       let* α6 := M.read α5 in
@@ -68,13 +68,14 @@ Definition main : M (M.Val unit) :=
             (let* _ : ltac:(refine (M.Val unit)) :=
               let* α0 :
                   ltac:(refine
-                    (M.Val (mut_ref (core.slice.iter.IterMut.t (ref str))))) :=
+                    (M.Val
+                      (mut_ref (core.slice.iter.IterMut.t (ref str.t))))) :=
                 borrow_mut iter in
               let* α1 :
                   ltac:(refine
-                    (M.Val (core.option.Option.t (mut_ref (ref str))))) :=
+                    (M.Val (core.option.Option.t (mut_ref (ref str.t))))) :=
                 (core.iter.traits.iterator.Iterator.next
-                    (Self := core.slice.iter.IterMut.t (ref str))
+                    (Self := core.slice.iter.IterMut.t (ref str.t))
                     (Trait := ltac:(refine _)))
                   α0 in
               let* α2 := M.read α1 in
@@ -84,16 +85,16 @@ Definition main : M (M.Val unit) :=
                 never_to_any α0
               | core.option.Option.Some name =>
                 let* name := M.alloc name in
-                let* α0 : ltac:(refine (M.Val (ref str))) := deref name in
+                let* α0 : ltac:(refine (M.Val (ref str.t))) := deref name in
                 let* α1 := M.read name in
-                let* α2 : ltac:(refine (M.Val (ref str))) :=
+                let* α2 : ltac:(refine (M.Val (ref str.t))) :=
                   match α1 with
                   | _ =>
-                    let* α0 : ltac:(refine (M.Val str)) :=
+                    let* α0 : ltac:(refine (M.Val str.t)) :=
                       deref (mk_str "There is a rustacean among us!") in
                     borrow α0
                   | _ =>
-                    let* α0 : ltac:(refine (M.Val str)) :=
+                    let* α0 : ltac:(refine (M.Val str.t)) :=
                       deref (mk_str "Hello") in
                     borrow α0
                   end in
@@ -104,15 +105,17 @@ Definition main : M (M.Val unit) :=
       use α7 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
           M.alloc [ mk_str "names: "; mk_str "
 " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) := borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+          borrow α0 in
+        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
         let* α3 :
             ltac:(refine
-              (M.Val (ref (alloc.vec.Vec.t (ref str) alloc.alloc.Global.t)))) :=
+              (M.Val
+                (ref (alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t)))) :=
           borrow names in
         let* α4 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
           core.fmt.rt.Argument.t::["new_debug"] α3 in

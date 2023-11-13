@@ -85,49 +85,49 @@ Module PartialEq.
     Global Instance I_bool : Trait bool (Rhs := bool).
     Admitted.
 
-    Global Instance I_char : Trait char (Rhs := char).
+    Global Instance I_char : Trait char.t (Rhs := char.t).
     Admitted.
 
-    Global Instance I_f32 : Trait f32 (Rhs := f32).
+    Global Instance I_f32 : Trait f32.t (Rhs := f32.t).
     Admitted.
 
-    Global Instance I_f64 : Trait f64 (Rhs := f64).
+    Global Instance I_f64 : Trait f64.t (Rhs := f64.t).
     Admitted.
 
-    Global Instance I_i8 : Trait i8 (Rhs := i8).
+    Global Instance I_i8 : Trait i8.t (Rhs := i8.t).
     Admitted.
 
-    Global Instance I_i16 : Trait i16 (Rhs := i16).
+    Global Instance I_i16 : Trait i16.t (Rhs := i16.t).
     Admitted.
 
-    Global Instance I_i32 : Trait i32 (Rhs := i32).
+    Global Instance I_i32 : Trait i32.t (Rhs := i32.t).
     Admitted.
 
-    Global Instance I_i64 : Trait i64 (Rhs := i64).
+    Global Instance I_i64 : Trait i64.t (Rhs := i64.t).
     Admitted.
 
-    Global Instance I_i128 : Trait i128 (Rhs := i128).
+    Global Instance I_i128 : Trait i128.t (Rhs := i128.t).
     Admitted.
 
-    Global Instance I_isize : Trait isize (Rhs := isize).
+    Global Instance I_isize : Trait isize.t (Rhs := isize.t).
     Admitted.
 
     Global Instance I_never : Trait never.t (Rhs := never.t).
     Admitted.
 
-    Global Instance I_str : Trait str (Rhs := str).
+    Global Instance I_str : Trait str.t (Rhs := str.t).
     Admitted.
 
-    Global Instance I_u8 : Trait u8 (Rhs := u8).
+    Global Instance I_u8 : Trait u8.t (Rhs := u8.t).
     Admitted.
 
-    Global Instance I_u16 : Trait u16 (Rhs := u16).
+    Global Instance I_u16 : Trait u16.t (Rhs := u16.t).
     Admitted.
 
-    Global Instance I_u32 : Trait u32 (Rhs := u32).
+    Global Instance I_u32 : Trait u32.t (Rhs := u32.t).
     Admitted.
 
-    Global Instance I_u64 : Trait u64 (Rhs := u64).
+    Global Instance I_u64 : Trait u64.t (Rhs := u64.t).
     Admitted.
 
     Global Instance I_u128 : Trait u128.t (Rhs := u128.t).
@@ -136,7 +136,7 @@ Module PartialEq.
     Global Instance I_unit : Trait unit (Rhs := unit).
     Admitted.
 
-    Global Instance I_usize : Trait usize (Rhs := usize).
+    Global Instance I_usize : Trait usize.t (Rhs := usize.t).
     Admitted.
 
     Global Instance I_ref_ref {A B : Set} :
@@ -149,7 +149,10 @@ Module PartialOrd.
   Module Required.
     Class Trait (Self : Set) {Rhs : Set} : Set := {
       Rhs := Rhs;
-      partial_cmp : M.Val (ref Self) -> M.Val (ref Rhs) -> M (core.option.Option Ordering.t);
+      partial_cmp :
+        M.Val (ref Self) ->
+        M.Val (ref Rhs) ->
+        M (M.Val (core.option.Option.t Ordering.t));
       lt : Datatypes.option (M.Val (ref Self) -> M.Val (ref Rhs) -> M (M.Val bool));
       le : Datatypes.option (M.Val (ref Self) -> M.Val (ref Rhs) -> M (M.Val bool));
       gt : Datatypes.option (M.Val (ref Self) -> M.Val (ref Rhs) -> M (M.Val bool));
@@ -159,7 +162,10 @@ Module PartialOrd.
 
   Class Trait (Self : Set) {Rhs : Set} : Set := {
     Rhs := Rhs;
-    partial_cmp : M.Val (ref Self) -> M.Val (ref Rhs) -> M (core.option.Option Ordering.t);
+    partial_cmp :
+      M.Val (ref Self) ->
+      M.Val (ref Rhs) ->
+      M (M.Val (core.option.Option.t Ordering.t));
     lt : M.Val (ref Self) -> M.Val (ref Rhs) -> M (M.Val bool);
     le : M.Val (ref Self) -> M.Val (ref Rhs) -> M (M.Val bool);
     gt : M.Val (ref Self) -> M.Val (ref Rhs) -> M (M.Val bool);
@@ -240,49 +246,49 @@ Module PartialOrd.
     Global Instance I_bool : Trait bool (Rhs := bool).
     Admitted.
 
-    Global Instance I_char : Trait char (Rhs := char).
+    Global Instance I_char : Trait char.t (Rhs := char.t).
     Admitted.
 
-    Global Instance I_f32 : Trait f32 (Rhs := f32).
+    Global Instance I_f32 : Trait f32.t (Rhs := f32.t).
     Admitted.
 
-    Global Instance I_f64 : Trait f64 (Rhs := f64).
+    Global Instance I_f64 : Trait f64.t (Rhs := f64.t).
     Admitted.
 
-    Global Instance I_i8 : Trait i8 (Rhs := i8).
+    Global Instance I_i8 : Trait i8.t (Rhs := i8.t).
     Admitted.
 
-    Global Instance I_i16 : Trait i16 (Rhs := i16).
+    Global Instance I_i16 : Trait i16.t (Rhs := i16.t).
     Admitted.
 
-    Global Instance I_i32 : Trait i32 (Rhs := i32).
+    Global Instance I_i32 : Trait i32.t (Rhs := i32.t).
     Admitted.
 
-    Global Instance I_i64 : Trait i64 (Rhs := i64).
+    Global Instance I_i64 : Trait i64.t (Rhs := i64.t).
     Admitted.
 
-    Global Instance I_i128 : Trait i128 (Rhs := i128).
+    Global Instance I_i128 : Trait i128.t (Rhs := i128.t).
     Admitted.
 
-    Global Instance I_isize : Trait isize (Rhs := isize).
+    Global Instance I_isize : Trait isize.t (Rhs := isize.t).
     Admitted.
 
     Global Instance I_never : Trait never.t (Rhs := never.t).
     Admitted.
 
-    Global Instance I_str : Trait str (Rhs := str).
+    Global Instance I_str : Trait str.t (Rhs := str.t).
     Admitted.
 
-    Global Instance I_u8 : Trait u8 (Rhs := u8).
+    Global Instance I_u8 : Trait u8.t (Rhs := u8.t).
     Admitted.
 
-    Global Instance I_u16 : Trait u16 (Rhs := u16).
+    Global Instance I_u16 : Trait u16.t (Rhs := u16.t).
     Admitted.
 
-    Global Instance I_u32 : Trait u32 (Rhs := u32).
+    Global Instance I_u32 : Trait u32.t (Rhs := u32.t).
     Admitted.
 
-    Global Instance I_u64 : Trait u64 (Rhs := u64).
+    Global Instance I_u64 : Trait u64.t (Rhs := u64.t).
     Admitted.
 
     Global Instance I_u128 : Trait u128.t (Rhs := u128.t).
@@ -291,7 +297,7 @@ Module PartialOrd.
     Global Instance I_unit : Trait unit (Rhs := unit).
     Admitted.
 
-    Global Instance I_usize : Trait usize (Rhs := usize).
+    Global Instance I_usize : Trait usize.t (Rhs := usize.t).
     Admitted.
 
     Global Instance I_ref_ref {A B : Set} :
@@ -342,7 +348,7 @@ Module Eq.
   Defined.
 
   Module Impl_Eq_for_str.
-    Global Instance I : Required.Trait str := {
+    Global Instance I : Required.Trait str.t := {
       assert_receiver_is_total_eq := Datatypes.None;
     }.
   End Impl_Eq_for_str.
@@ -370,7 +376,7 @@ Module Ord.
   }.
 
   Module Impl_Ord_for_str.
-    Global Instance I : Trait str. Admitted.
+    Global Instance I : Trait str.t. Admitted.
   End Impl_Ord_for_str.
 End Ord.
 

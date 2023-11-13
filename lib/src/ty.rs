@@ -138,7 +138,7 @@ pub(crate) fn compile_type(env: &Env, ty: &Ty) -> Rc<CoqType> {
             CoqType::make_ref(mutbl, compile_type(env, ty))
         }
         TyKind::BareFn(BareFnTy { decl, .. }) => compile_fn_decl(env, decl),
-        TyKind::Never => CoqType::path(&["never"]),
+        TyKind::Never => CoqType::path(&["never", "t"]),
         TyKind::Tup(tys) => Rc::new(CoqType::Tuple(
             tys.iter().map(|ty| compile_type(env, ty)).collect(),
         )),

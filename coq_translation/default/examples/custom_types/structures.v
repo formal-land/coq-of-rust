@@ -38,18 +38,18 @@ Section Impl_core_fmt_Debug_for_structures_Person_t.
       (let* α0 : ltac:(refine (M.Val core.fmt.Formatter.t)) := deref f in
       let* α1 : ltac:(refine (M.Val (mut_ref core.fmt.Formatter.t))) :=
         borrow_mut α0 in
-      let* α2 : ltac:(refine (M.Val str)) := deref (mk_str "Person") in
-      let* α3 : ltac:(refine (M.Val (ref str))) := borrow α2 in
-      let* α4 : ltac:(refine (M.Val str)) := deref (mk_str "name") in
-      let* α5 : ltac:(refine (M.Val (ref str))) := borrow α4 in
+      let* α2 : ltac:(refine (M.Val str.t)) := deref (mk_str "Person") in
+      let* α3 : ltac:(refine (M.Val (ref str.t))) := borrow α2 in
+      let* α4 : ltac:(refine (M.Val str.t)) := deref (mk_str "name") in
+      let* α5 : ltac:(refine (M.Val (ref str.t))) := borrow α4 in
       let* α6 : ltac:(refine (M.Val structures.Person.t)) := deref self in
       let* α7 : ltac:(refine (M.Val alloc.string.String.t)) := α6.["name"] in
       let* α8 : ltac:(refine (M.Val (ref alloc.string.String.t))) :=
         borrow α7 in
       let* α9 : ltac:(refine (M.Val (ref type not implemented))) :=
         pointer_coercion "Unsize" α8 in
-      let* α10 : ltac:(refine (M.Val str)) := deref (mk_str "age") in
-      let* α11 : ltac:(refine (M.Val (ref str))) := borrow α10 in
+      let* α10 : ltac:(refine (M.Val str.t)) := deref (mk_str "age") in
+      let* α11 : ltac:(refine (M.Val (ref str.t))) := borrow α10 in
       let* α12 : ltac:(refine (M.Val structures.Person.t)) := deref self in
       let* α13 : ltac:(refine (M.Val u8.t)) := α12.["age"] in
       let* α14 : ltac:(refine (M.Val (ref u8.t))) := borrow α13 in
@@ -207,11 +207,12 @@ Definition main : M (M.Val unit) :=
         {| structures.Person.name := α0; structures.Person.age := α1; |} in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
           M.alloc [ mk_str ""; mk_str "
 " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) := borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+          borrow α0 in
+        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
         let* α3 : ltac:(refine (M.Val (ref structures.Person.t))) :=
           borrow peter in
@@ -235,11 +236,12 @@ Definition main : M (M.Val unit) :=
       M.alloc {| structures.Point.x := α1; structures.Point.y := α3; |} in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
           M.alloc [ mk_str "point coordinates: ("; mk_str ", "; mk_str ")
 " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) := borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+          borrow α0 in
+        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
         let* α3 : ltac:(refine (M.Val f32.t)) := point.["x"] in
         let* α4 : ltac:(refine (M.Val (ref f32.t))) := borrow α3 in
@@ -265,11 +267,12 @@ Definition main : M (M.Val unit) :=
       M.alloc {| structures.Point.x := α1; |} in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
           M.alloc [ mk_str "second point: ("; mk_str ", "; mk_str ")
 " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) := borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+          borrow α0 in
+        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
         let* α3 : ltac:(refine (M.Val f32.t)) := bottom_right.["x"] in
         let* α4 : ltac:(refine (M.Val (ref f32.t))) := borrow α3 in
@@ -314,11 +317,12 @@ Definition main : M (M.Val unit) :=
       M.alloc (structures.Pair.Build_t α1 α3) in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
           M.alloc [ mk_str "pair contains "; mk_str " and "; mk_str "
 " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) := borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+          borrow α0 in
+        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
         let* α3 : ltac:(refine (M.Val i32.t)) := pair.["0"] in
         let* α4 : ltac:(refine (M.Val (ref i32.t))) := borrow α3 in
@@ -341,11 +345,12 @@ Definition main : M (M.Val unit) :=
     let 'structures.Pair.Build_t integer decimal := pair in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
           M.alloc [ mk_str "pair contains "; mk_str " and "; mk_str "
 " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) := borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+          borrow α0 in
+        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
         let* α3 : ltac:(refine (M.Val (ref i32.t))) := borrow integer in
         let* α4 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=

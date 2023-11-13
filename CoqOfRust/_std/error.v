@@ -26,7 +26,7 @@ Module Error.
   : Set := {
     (* BUGGED: How to translate this function? *)
     (* source : ref Self -> Option (???) *)
-    description : ref Self -> ref str;
+    description : ref Self -> ref str.t;
     (* BUGGED: What is this dyn? *)
     (* cause : ref Self -> Option ((ref dyn) Error); *)
     provide : ref Self -> mut_ref any.Demand -> unit;
@@ -49,4 +49,3 @@ Module Report.
     Definition E : Set := boxed.Box dyn_Error boxed.Box.Default.A.
   End Default.
 End Report.
-Definition Report : Set -> Set := Report.t.

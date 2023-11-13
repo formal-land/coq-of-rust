@@ -31,8 +31,8 @@ fn main() {
 Definition main : M (M.Val unit) :=
   M.function_body
     (let* path : ltac:(refine (M.Val (ref std.path.Path.t))) :=
-      let* α0 : ltac:(refine (M.Val str)) := deref (mk_str ".") in
-      let* α1 : ltac:(refine (M.Val (ref str))) := borrow α0 in
+      let* α0 : ltac:(refine (M.Val str.t)) := deref (mk_str ".") in
+      let* α1 : ltac:(refine (M.Val (ref str.t))) := borrow α0 in
       std.path.Path.t::["new"] α1 in
     let* _display : ltac:(refine (M.Val std.path.Display.t)) :=
       let* α0 : ltac:(refine (M.Val std.path.Path.t)) := deref path in
@@ -73,7 +73,7 @@ Definition main : M (M.Val unit) :=
         α0 in
     let* α2 : ltac:(refine (M.Val std.path.Path.t)) := deref α1 in
     let* α3 : ltac:(refine (M.Val (ref std.path.Path.t))) := borrow α2 in
-    let* α4 : ltac:(refine (M.Val (core.option.Option.t (ref str)))) :=
+    let* α4 : ltac:(refine (M.Val (core.option.Option.t (ref str.t)))) :=
       std.path.Path.t::["to_str"] α3 in
     let* α5 := M.read α4 in
     match α5 with
@@ -85,13 +85,14 @@ Definition main : M (M.Val unit) :=
     | core.option.Option.Some s =>
       let* s := M.alloc s in
       let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
           M.alloc [ mk_str "new path is "; mk_str "
 " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) := borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+          borrow α0 in
+        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
-        let* α3 : ltac:(refine (M.Val (ref (ref str)))) := borrow s in
+        let* α3 : ltac:(refine (M.Val (ref (ref str.t)))) := borrow s in
         let* α4 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
           core.fmt.rt.Argument.t::["new_display"] α3 in
         let* α5 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=

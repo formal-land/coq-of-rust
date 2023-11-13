@@ -21,21 +21,21 @@ Definition call (number : M.Val (ref str.t)) : M (M.Val (ref str.t)) :=
     (let* α0 := M.read number in
     match α0 with
     | _ =>
-      let* α0 : ltac:(refine (M.Val str)) :=
+      let* α0 : ltac:(refine (M.Val str.t)) :=
         deref
           (mk_str
             "We're sorry, the call cannot be completed as dialed. 
             Please hang up and try again.") in
       borrow α0
     | _ =>
-      let* α0 : ltac:(refine (M.Val str)) :=
+      let* α0 : ltac:(refine (M.Val str.t)) :=
         deref
           (mk_str
             "Hello, this is Mr. Awesome's Pizza. My name is Fred.
             What can I get for you today?") in
       borrow α0
     | _ =>
-      let* α0 : ltac:(refine (M.Val str)) :=
+      let* α0 : ltac:(refine (M.Val str.t)) :=
         deref (mk_str "Hi! Who is this again?") in
       borrow α0
     end).
@@ -80,89 +80,89 @@ Definition main : M (M.Val unit) :=
         ltac:(refine
           (M.Val
             (std.collections.hash.map.HashMap.t
-              (ref str)
-              (ref str)
+              (ref str.t)
+              (ref str.t)
               std.collections.hash.map.RandomState.t))) :=
       (std.collections.hash.map.HashMap.t
-          (ref str)
-          (ref str)
+          (ref str.t)
+          (ref str.t)
           std.collections.hash.map.RandomState.t)::["new"] in
-    let* _ : ltac:(refine (M.Val (core.option.Option.t (ref str)))) :=
+    let* _ : ltac:(refine (M.Val (core.option.Option.t (ref str.t)))) :=
       let* α0 :
           ltac:(refine
             (M.Val
               (mut_ref
                 (std.collections.hash.map.HashMap.t
-                  (ref str)
-                  (ref str)
+                  (ref str.t)
+                  (ref str.t)
                   std.collections.hash.map.RandomState.t)))) :=
         borrow_mut contacts in
       (std.collections.hash.map.HashMap.t
-            (ref str)
-            (ref str)
+            (ref str.t)
+            (ref str.t)
             std.collections.hash.map.RandomState.t)::["insert"]
         α0
         (mk_str "Daniel")
         (mk_str "798-1364") in
-    let* _ : ltac:(refine (M.Val (core.option.Option.t (ref str)))) :=
+    let* _ : ltac:(refine (M.Val (core.option.Option.t (ref str.t)))) :=
       let* α0 :
           ltac:(refine
             (M.Val
               (mut_ref
                 (std.collections.hash.map.HashMap.t
-                  (ref str)
-                  (ref str)
+                  (ref str.t)
+                  (ref str.t)
                   std.collections.hash.map.RandomState.t)))) :=
         borrow_mut contacts in
-      let* α1 : ltac:(refine (M.Val str)) := deref (mk_str "Ashley") in
-      let* α2 : ltac:(refine (M.Val (ref str))) := borrow α1 in
-      let* α3 : ltac:(refine (M.Val str)) := deref (mk_str "645-7689") in
-      let* α4 : ltac:(refine (M.Val (ref str))) := borrow α3 in
+      let* α1 : ltac:(refine (M.Val str.t)) := deref (mk_str "Ashley") in
+      let* α2 : ltac:(refine (M.Val (ref str.t))) := borrow α1 in
+      let* α3 : ltac:(refine (M.Val str.t)) := deref (mk_str "645-7689") in
+      let* α4 : ltac:(refine (M.Val (ref str.t))) := borrow α3 in
       (std.collections.hash.map.HashMap.t
-            (ref str)
-            (ref str)
+            (ref str.t)
+            (ref str.t)
             std.collections.hash.map.RandomState.t)::["insert"]
         α0
         α2
         α4 in
-    let* _ : ltac:(refine (M.Val (core.option.Option.t (ref str)))) :=
+    let* _ : ltac:(refine (M.Val (core.option.Option.t (ref str.t)))) :=
       let* α0 :
           ltac:(refine
             (M.Val
               (mut_ref
                 (std.collections.hash.map.HashMap.t
-                  (ref str)
-                  (ref str)
+                  (ref str.t)
+                  (ref str.t)
                   std.collections.hash.map.RandomState.t)))) :=
         borrow_mut contacts in
-      let* α1 : ltac:(refine (M.Val str)) := deref (mk_str "Katie") in
-      let* α2 : ltac:(refine (M.Val (ref str))) := borrow α1 in
-      let* α3 : ltac:(refine (M.Val str)) := deref (mk_str "435-8291") in
-      let* α4 : ltac:(refine (M.Val (ref str))) := borrow α3 in
+      let* α1 : ltac:(refine (M.Val str.t)) := deref (mk_str "Katie") in
+      let* α2 : ltac:(refine (M.Val (ref str.t))) := borrow α1 in
+      let* α3 : ltac:(refine (M.Val str.t)) := deref (mk_str "435-8291") in
+      let* α4 : ltac:(refine (M.Val (ref str.t))) := borrow α3 in
       (std.collections.hash.map.HashMap.t
-            (ref str)
-            (ref str)
+            (ref str.t)
+            (ref str.t)
             std.collections.hash.map.RandomState.t)::["insert"]
         α0
         α2
         α4 in
-    let* _ : ltac:(refine (M.Val (core.option.Option.t (ref str)))) :=
+    let* _ : ltac:(refine (M.Val (core.option.Option.t (ref str.t)))) :=
       let* α0 :
           ltac:(refine
             (M.Val
               (mut_ref
                 (std.collections.hash.map.HashMap.t
-                  (ref str)
-                  (ref str)
+                  (ref str.t)
+                  (ref str.t)
                   std.collections.hash.map.RandomState.t)))) :=
         borrow_mut contacts in
-      let* α1 : ltac:(refine (M.Val str)) := deref (mk_str "Robert") in
-      let* α2 : ltac:(refine (M.Val (ref str))) := borrow α1 in
-      let* α3 : ltac:(refine (M.Val str)) := deref (mk_str "956-1745") in
-      let* α4 : ltac:(refine (M.Val (ref str))) := borrow α3 in
+      let* α1 : ltac:(refine (M.Val str.t)) := deref (mk_str "Robert") in
+      let* α2 : ltac:(refine (M.Val (ref str.t))) := borrow α1 in
+      let* α3 : ltac:(refine (M.Val str.t)) := deref (mk_str "956-1745") in
+      let* α4 : ltac:(refine (M.Val (ref str.t))) := borrow α3 in
       (std.collections.hash.map.HashMap.t
-            (ref str)
-            (ref str)
+            (ref str.t)
+            (ref str.t)
             std.collections.hash.map.RandomState.t)::["insert"]
         α0
         α2
@@ -173,16 +173,17 @@ Definition main : M (M.Val unit) :=
             (M.Val
               (ref
                 (std.collections.hash.map.HashMap.t
-                  (ref str)
-                  (ref str)
+                  (ref str.t)
+                  (ref str.t)
                   std.collections.hash.map.RandomState.t)))) :=
         borrow contacts in
-      let* α1 : ltac:(refine (M.Val (ref (ref str)))) :=
+      let* α1 : ltac:(refine (M.Val (ref (ref str.t)))) :=
         borrow (mk_str "Daniel") in
-      let* α2 : ltac:(refine (M.Val (core.option.Option.t (ref (ref str))))) :=
+      let* α2 :
+          ltac:(refine (M.Val (core.option.Option.t (ref (ref str.t))))) :=
         (std.collections.hash.map.HashMap.t
-              (ref str)
-              (ref str)
+              (ref str.t)
+              (ref str.t)
               std.collections.hash.map.RandomState.t)::["get"]
           α0
           α1 in
@@ -191,17 +192,17 @@ Definition main : M (M.Val unit) :=
       | core.option.Option.Some number =>
         let* number := M.alloc number in
         let* _ : ltac:(refine (M.Val unit)) :=
-          let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+          let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
             M.alloc [ mk_str "Calling Daniel: "; mk_str "
 " ] in
-          let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) :=
+          let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
             borrow α0 in
-          let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+          let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
             pointer_coercion "Unsize" α1 in
-          let* α3 : ltac:(refine (M.Val str)) := deref number in
-          let* α4 : ltac:(refine (M.Val (ref str))) := borrow α3 in
-          let* α5 : ltac:(refine (M.Val (ref str))) := hash_map.call α4 in
-          let* α6 : ltac:(refine (M.Val (ref (ref str)))) := borrow α5 in
+          let* α3 : ltac:(refine (M.Val str.t)) := deref number in
+          let* α4 : ltac:(refine (M.Val (ref str.t))) := borrow α3 in
+          let* α5 : ltac:(refine (M.Val (ref str.t))) := hash_map.call α4 in
+          let* α6 : ltac:(refine (M.Val (ref (ref str.t)))) := borrow α5 in
           let* α7 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
             core.fmt.rt.Argument.t::["new_display"] α6 in
           let* α8 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
@@ -218,35 +219,35 @@ Definition main : M (M.Val unit) :=
         M.alloc tt
       | _ =>
         let* _ : ltac:(refine (M.Val unit)) :=
-          let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+          let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
             M.alloc [ mk_str "Don't have Daniel's number.
 " ] in
-          let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) :=
+          let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
             borrow α0 in
-          let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+          let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
             pointer_coercion "Unsize" α1 in
           let* α3 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
             core.fmt.Arguments.t::["new_const"] α2 in
           std.io.stdio._print α3 in
         M.alloc tt
       end in
-    let* _ : ltac:(refine (M.Val (core.option.Option.t (ref str)))) :=
+    let* _ : ltac:(refine (M.Val (core.option.Option.t (ref str.t)))) :=
       let* α0 :
           ltac:(refine
             (M.Val
               (mut_ref
                 (std.collections.hash.map.HashMap.t
-                  (ref str)
-                  (ref str)
+                  (ref str.t)
+                  (ref str.t)
                   std.collections.hash.map.RandomState.t)))) :=
         borrow_mut contacts in
-      let* α1 : ltac:(refine (M.Val str)) := deref (mk_str "Daniel") in
-      let* α2 : ltac:(refine (M.Val (ref str))) := borrow α1 in
-      let* α3 : ltac:(refine (M.Val str)) := deref (mk_str "164-6743") in
-      let* α4 : ltac:(refine (M.Val (ref str))) := borrow α3 in
+      let* α1 : ltac:(refine (M.Val str.t)) := deref (mk_str "Daniel") in
+      let* α2 : ltac:(refine (M.Val (ref str.t))) := borrow α1 in
+      let* α3 : ltac:(refine (M.Val str.t)) := deref (mk_str "164-6743") in
+      let* α4 : ltac:(refine (M.Val (ref str.t))) := borrow α3 in
       (std.collections.hash.map.HashMap.t
-            (ref str)
-            (ref str)
+            (ref str.t)
+            (ref str.t)
             std.collections.hash.map.RandomState.t)::["insert"]
         α0
         α2
@@ -257,16 +258,17 @@ Definition main : M (M.Val unit) :=
             (M.Val
               (ref
                 (std.collections.hash.map.HashMap.t
-                  (ref str)
-                  (ref str)
+                  (ref str.t)
+                  (ref str.t)
                   std.collections.hash.map.RandomState.t)))) :=
         borrow contacts in
-      let* α1 : ltac:(refine (M.Val (ref (ref str)))) :=
+      let* α1 : ltac:(refine (M.Val (ref (ref str.t)))) :=
         borrow (mk_str "Ashley") in
-      let* α2 : ltac:(refine (M.Val (core.option.Option.t (ref (ref str))))) :=
+      let* α2 :
+          ltac:(refine (M.Val (core.option.Option.t (ref (ref str.t))))) :=
         (std.collections.hash.map.HashMap.t
-              (ref str)
-              (ref str)
+              (ref str.t)
+              (ref str.t)
               std.collections.hash.map.RandomState.t)::["get"]
           α0
           α1 in
@@ -275,17 +277,17 @@ Definition main : M (M.Val unit) :=
       | core.option.Option.Some number =>
         let* number := M.alloc number in
         let* _ : ltac:(refine (M.Val unit)) :=
-          let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+          let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
             M.alloc [ mk_str "Calling Ashley: "; mk_str "
 " ] in
-          let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) :=
+          let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
             borrow α0 in
-          let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+          let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
             pointer_coercion "Unsize" α1 in
-          let* α3 : ltac:(refine (M.Val str)) := deref number in
-          let* α4 : ltac:(refine (M.Val (ref str))) := borrow α3 in
-          let* α5 : ltac:(refine (M.Val (ref str))) := hash_map.call α4 in
-          let* α6 : ltac:(refine (M.Val (ref (ref str)))) := borrow α5 in
+          let* α3 : ltac:(refine (M.Val str.t)) := deref number in
+          let* α4 : ltac:(refine (M.Val (ref str.t))) := borrow α3 in
+          let* α5 : ltac:(refine (M.Val (ref str.t))) := hash_map.call α4 in
+          let* α6 : ltac:(refine (M.Val (ref (ref str.t)))) := borrow α5 in
           let* α7 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
             core.fmt.rt.Argument.t::["new_display"] α6 in
           let* α8 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
@@ -302,33 +304,33 @@ Definition main : M (M.Val unit) :=
         M.alloc tt
       | _ =>
         let* _ : ltac:(refine (M.Val unit)) :=
-          let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+          let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
             M.alloc [ mk_str "Don't have Ashley's number.
 " ] in
-          let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) :=
+          let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
             borrow α0 in
-          let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+          let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
             pointer_coercion "Unsize" α1 in
           let* α3 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
             core.fmt.Arguments.t::["new_const"] α2 in
           std.io.stdio._print α3 in
         M.alloc tt
       end in
-    let* _ : ltac:(refine (M.Val (core.option.Option.t (ref str)))) :=
+    let* _ : ltac:(refine (M.Val (core.option.Option.t (ref str.t)))) :=
       let* α0 :
           ltac:(refine
             (M.Val
               (mut_ref
                 (std.collections.hash.map.HashMap.t
-                  (ref str)
-                  (ref str)
+                  (ref str.t)
+                  (ref str.t)
                   std.collections.hash.map.RandomState.t)))) :=
         borrow_mut contacts in
-      let* α1 : ltac:(refine (M.Val (ref (ref str)))) :=
+      let* α1 : ltac:(refine (M.Val (ref (ref str.t)))) :=
         borrow (mk_str "Ashley") in
       (std.collections.hash.map.HashMap.t
-            (ref str)
-            (ref str)
+            (ref str.t)
+            (ref str.t)
             std.collections.hash.map.RandomState.t)::["remove"]
         α0
         α1 in
@@ -337,23 +339,23 @@ Definition main : M (M.Val unit) :=
           (M.Val
             (ref
               (std.collections.hash.map.HashMap.t
-                (ref str)
-                (ref str)
+                (ref str.t)
+                (ref str.t)
                 std.collections.hash.map.RandomState.t)))) :=
       borrow contacts in
     let* α1 :
         ltac:(refine
-          (M.Val (std.collections.hash.map.Iter.t (ref str) (ref str)))) :=
+          (M.Val (std.collections.hash.map.Iter.t (ref str.t) (ref str.t)))) :=
       (std.collections.hash.map.HashMap.t
-            (ref str)
-            (ref str)
+            (ref str.t)
+            (ref str.t)
             std.collections.hash.map.RandomState.t)::["iter"]
         α0 in
     let* α2 :
         ltac:(refine
-          (M.Val (std.collections.hash.map.Iter.t (ref str) (ref str)))) :=
+          (M.Val (std.collections.hash.map.Iter.t (ref str.t) (ref str.t)))) :=
       (core.iter.traits.collect.IntoIterator.into_iter
-          (Self := std.collections.hash.map.Iter.t (ref str) (ref str))
+          (Self := std.collections.hash.map.Iter.t (ref str.t) (ref str.t))
           (Trait := ltac:(refine _)))
         α1 in
     let* α3 := M.read α2 in
@@ -368,16 +370,17 @@ Definition main : M (M.Val unit) :=
                   (M.Val
                     (mut_ref
                       (std.collections.hash.map.Iter.t
-                        (ref str)
-                        (ref str))))) :=
+                        (ref str.t)
+                        (ref str.t))))) :=
               borrow_mut iter in
             let* α1 :
                 ltac:(refine
                   (M.Val
                     (core.option.Option.t
-                      ((ref (ref str)) * (ref (ref str)))))) :=
+                      ((ref (ref str.t)) * (ref (ref str.t)))))) :=
               (core.iter.traits.iterator.Iterator.next
-                  (Self := std.collections.hash.map.Iter.t (ref str) (ref str))
+                  (Self :=
+                    std.collections.hash.map.Iter.t (ref str.t) (ref str.t))
                   (Trait := ltac:(refine _)))
                 α0 in
             let* α2 := M.read α1 in
@@ -390,22 +393,22 @@ Definition main : M (M.Val unit) :=
               let* contact := M.alloc contact in
               let* _ : ltac:(refine (M.Val unit)) :=
                 let* _ : ltac:(refine (M.Val unit)) :=
-                  let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+                  let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
                     M.alloc [ mk_str "Calling "; mk_str ": "; mk_str "
 " ] in
-                  let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) :=
+                  let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
                     borrow α0 in
-                  let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+                  let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
                     pointer_coercion "Unsize" α1 in
-                  let* α3 : ltac:(refine (M.Val (ref (ref (ref str))))) :=
+                  let* α3 : ltac:(refine (M.Val (ref (ref (ref str.t))))) :=
                     borrow contact in
                   let* α4 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
                     core.fmt.rt.Argument.t::["new_display"] α3 in
-                  let* α5 : ltac:(refine (M.Val str)) := deref number in
-                  let* α6 : ltac:(refine (M.Val (ref str))) := borrow α5 in
-                  let* α7 : ltac:(refine (M.Val (ref str))) :=
+                  let* α5 : ltac:(refine (M.Val str.t)) := deref number in
+                  let* α6 : ltac:(refine (M.Val (ref str.t))) := borrow α5 in
+                  let* α7 : ltac:(refine (M.Val (ref str.t))) :=
                     hash_map.call α6 in
-                  let* α8 : ltac:(refine (M.Val (ref (ref str)))) :=
+                  let* α8 : ltac:(refine (M.Val (ref (ref str.t)))) :=
                     borrow α7 in
                   let* α9 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
                     core.fmt.rt.Argument.t::["new_display"] α8 in

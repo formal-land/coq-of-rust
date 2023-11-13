@@ -83,19 +83,20 @@ Definition borrow_book
   M.function_body
     (let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
           M.alloc
             [ mk_str "I immutably borrowed "; mk_str " - "; mk_str " edition
 "
             ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) := borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+          borrow α0 in
+        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
         let* α3 :
             ltac:(refine (M.Val scoping_rules_borrowing_mutablity.Book.t)) :=
           deref book in
-        let* α4 : ltac:(refine (M.Val (ref str))) := α3.["title"] in
-        let* α5 : ltac:(refine (M.Val (ref (ref str)))) := borrow α4 in
+        let* α4 : ltac:(refine (M.Val (ref str.t))) := α3.["title"] in
+        let* α5 : ltac:(refine (M.Val (ref (ref str.t)))) := borrow α4 in
         let* α6 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
           core.fmt.rt.Argument.t::["new_display"] α5 in
         let* α7 :
@@ -136,19 +137,20 @@ Definition new_edition
       assign α1 α2 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
           M.alloc
             [ mk_str "I mutably borrowed "; mk_str " - "; mk_str " edition
 "
             ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) := borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+          borrow α0 in
+        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
         let* α3 :
             ltac:(refine (M.Val scoping_rules_borrowing_mutablity.Book.t)) :=
           deref book in
-        let* α4 : ltac:(refine (M.Val (ref str))) := α3.["title"] in
-        let* α5 : ltac:(refine (M.Val (ref (ref str)))) := borrow α4 in
+        let* α4 : ltac:(refine (M.Val (ref str.t))) := α3.["title"] in
+        let* α5 : ltac:(refine (M.Val (ref (ref str.t)))) := borrow α4 in
         let* α6 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
           core.fmt.rt.Argument.t::["new_display"] α5 in
         let* α7 :

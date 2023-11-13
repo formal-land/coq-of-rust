@@ -28,8 +28,8 @@ Section Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber_t.
       (let* α0 : ltac:(refine (M.Val core.fmt.Formatter.t)) := deref f in
       let* α1 : ltac:(refine (M.Val (mut_ref core.fmt.Formatter.t))) :=
         borrow_mut α0 in
-      let* α2 : ltac:(refine (M.Val str)) := deref (mk_str "EvenNumber") in
-      let* α3 : ltac:(refine (M.Val (ref str))) := borrow α2 in
+      let* α2 : ltac:(refine (M.Val str.t)) := deref (mk_str "EvenNumber") in
+      let* α3 : ltac:(refine (M.Val (ref str.t))) := borrow α2 in
       let* α4 : ltac:(refine (M.Val try_from_and_try_into.EvenNumber.t)) :=
         deref self in
       let* α5 : ltac:(refine (M.Val i32.t)) := α4.["0"] in

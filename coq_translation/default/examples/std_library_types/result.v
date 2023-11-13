@@ -25,18 +25,18 @@ Module checked.
         let* α1 : ltac:(refine (M.Val (mut_ref core.fmt.Formatter.t))) :=
           borrow_mut α0 in
         let* α2 := M.read self in
-        let* α3 : ltac:(refine (M.Val (ref str))) :=
+        let* α3 : ltac:(refine (M.Val (ref str.t))) :=
           match α2 with
           | result.checked.MathError.DivisionByZero  =>
-            let* α0 : ltac:(refine (M.Val str)) :=
+            let* α0 : ltac:(refine (M.Val str.t)) :=
               deref (mk_str "DivisionByZero") in
             borrow α0
           | result.checked.MathError.NonPositiveLogarithm  =>
-            let* α0 : ltac:(refine (M.Val str)) :=
+            let* α0 : ltac:(refine (M.Val str.t)) :=
               deref (mk_str "NonPositiveLogarithm") in
             borrow α0
           | result.checked.MathError.NegativeSquareRoot  =>
-            let* α0 : ltac:(refine (M.Val str)) :=
+            let* α0 : ltac:(refine (M.Val str.t)) :=
               deref (mk_str "NegativeSquareRoot") in
             borrow α0
           end in
@@ -165,18 +165,18 @@ Section Impl_core_fmt_Debug_for_result_checked_MathError_t.
       let* α1 : ltac:(refine (M.Val (mut_ref core.fmt.Formatter.t))) :=
         borrow_mut α0 in
       let* α2 := M.read self in
-      let* α3 : ltac:(refine (M.Val (ref str))) :=
+      let* α3 : ltac:(refine (M.Val (ref str.t))) :=
         match α2 with
         | result.checked.MathError.DivisionByZero  =>
-          let* α0 : ltac:(refine (M.Val str)) :=
+          let* α0 : ltac:(refine (M.Val str.t)) :=
             deref (mk_str "DivisionByZero") in
           borrow α0
         | result.checked.MathError.NonPositiveLogarithm  =>
-          let* α0 : ltac:(refine (M.Val str)) :=
+          let* α0 : ltac:(refine (M.Val str.t)) :=
             deref (mk_str "NonPositiveLogarithm") in
           borrow α0
         | result.checked.MathError.NegativeSquareRoot  =>
-          let* α0 : ltac:(refine (M.Val str)) :=
+          let* α0 : ltac:(refine (M.Val str.t)) :=
             deref (mk_str "NegativeSquareRoot") in
           borrow α0
         end in
@@ -304,10 +304,10 @@ Definition op (x : M.Val f64.t) (y : M.Val f64.t) : M (M.Val f64.t) :=
     match α1 with
     | core.result.Result.Err why =>
       let* why := M.alloc why in
-      let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+      let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
         M.alloc [ mk_str "" ] in
-      let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) := borrow α0 in
-      let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+      let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) := borrow α0 in
+      let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
         pointer_coercion "Unsize" α1 in
       let* α3 : ltac:(refine (M.Val (ref result.checked.MathError.t))) :=
         borrow why in
@@ -333,10 +333,11 @@ Definition op (x : M.Val f64.t) (y : M.Val f64.t) : M (M.Val f64.t) :=
       match α1 with
       | core.result.Result.Err why =>
         let* why := M.alloc why in
-        let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
           M.alloc [ mk_str "" ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) := borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+          borrow α0 in
+        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
         let* α3 : ltac:(refine (M.Val (ref result.checked.MathError.t))) :=
           borrow why in
@@ -364,11 +365,11 @@ Definition op (x : M.Val f64.t) (y : M.Val f64.t) : M (M.Val f64.t) :=
         match α1 with
         | core.result.Result.Err why =>
           let* why := M.alloc why in
-          let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+          let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
             M.alloc [ mk_str "" ] in
-          let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) :=
+          let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
             borrow α0 in
-          let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+          let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
             pointer_coercion "Unsize" α1 in
           let* α3 : ltac:(refine (M.Val (ref result.checked.MathError.t))) :=
             borrow why in
@@ -405,11 +406,12 @@ Definition main : M (M.Val unit) :=
   M.function_body
     (let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
           M.alloc [ mk_str ""; mk_str "
 " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) := borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+          borrow α0 in
+        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
         let* α3 : ltac:(refine (M.Val f64.t)) := M.alloc 1 (* 1.0 *) in
         let* α4 : ltac:(refine (M.Val f64.t)) := M.alloc 10 (* 10.0 *) in

@@ -17,7 +17,7 @@ Module bounds.
   
   Module UpperBounded.
     Class Trait (Self : Set) : Set := {
-      max_value : (M (H := H) Self);
+      max_value : M Self;
     }.
   End UpperBounded.
 End bounds.
@@ -27,8 +27,8 @@ Module identities.
     Class Trait (Self : Set) : Set := {
       _ :: core.marker.Sized.Trait Self;
       _ :: core.ops.arith.Add.Trait Self (Rhs := Self);
-      zero `{H : State.Trait} : (M (H := H) Self);
-      is_zero `{H : State.Trait} : (ref Self) -> (M (H := H) bool);
+      zero : (M Self);
+      is_zero : (ref Self) -> (M bool);
     }.
   End Zero.
   
@@ -36,19 +36,17 @@ Module identities.
     Class Trait (Self : Set) : Set := {
       _ :: core.marker.Sized.Trait Self;
       _ :: core.ops.arith.Mul.Trait Self (Rhs := Self);
-      one `{H : State.Trait} : (M (H := H) Self);
+      one : (M Self);
     }.
   End One.
   
-  Parameter zero : forall `{State.Trait},
-      forall
-      {T : Set},
-      forall `{num_traits.identities.Zero.Trait T}, M (H := H) T.
+  Parameter zero :
+      forall {T : Set},
+      forall `{num_traits.identities.Zero.Trait T}, M T.
   
-  Parameter one : forall `{State.Trait},
-      forall
-      {T : Set},
-      forall `{num_traits.identities.One.Trait T}, M (H := H) T.
+  Parameter one :
+      forall {T : Set},
+      forall `{num_traits.identities.One.Trait T}, M T.
 End identities.
 
 Module ops.
@@ -58,7 +56,7 @@ Module ops.
         _ :: core.marker.Sized.Trait Self;
         _ :: core.ops.arith.Add.Trait Self (Rhs := Self);
         checked_add :
-          (ref Self) -> (ref Self) -> M (core.option.Option Self);
+          (ref Self) -> (ref Self) -> M (core.option.Option.t Self);
       }.
     End CheckedAdd.
     
@@ -67,7 +65,7 @@ Module ops.
         _ :: core.marker.Sized.Trait Self;
         _ :: core.ops.arith.Sub.Trait Self (Rhs := Self);
         checked_sub :
-          (ref Self) -> (ref Self) -> (M (core.option.Option Self));
+          (ref Self) -> (ref Self) -> (M (core.option.Option.t Self));
       }.
     End CheckedSub.
     
@@ -76,7 +74,7 @@ Module ops.
         _ :: core.marker.Sized.Trait Self;
         _ :: core.ops.arith.Mul.Trait Self (Rhs := Self);
         checked_mul :
-          (ref Self) -> (ref Self) -> (M (core.option.Option Self));
+          (ref Self) -> (ref Self) -> (M (core.option.Option.t Self));
       }.
     End CheckedMul.
     
@@ -85,7 +83,7 @@ Module ops.
         _ :: core.marker.Sized.Trait Self;
         _ :: core.ops.arith.Div.Trait Self (Rhs := Self);
         checked_div :
-          (ref Self) -> (ref Self) -> (M (core.option.Option Self));
+          (ref Self) -> (ref Self) -> (M (core.option.Option.t Self));
       }.
     End CheckedDiv.
     
@@ -94,7 +92,7 @@ Module ops.
         _ :: core.marker.Sized.Trait Self;
         _ :: core.ops.arith.Rem.Trait Self (Rhs := Self);
         checked_rem :
-          (ref Self) -> (ref Self) -> (M (core.option.Option Self));
+          (ref Self) -> (ref Self) -> (M (core.option.Option.t Self));
       }.
     End CheckedRem.
     
@@ -102,7 +100,7 @@ Module ops.
       Class Trait (Self : Set) : Set := {
         _ :: core.marker.Sized.Trait Self;
         checked_neg :
-          (ref Self) -> (M (core.option.Option Self));
+          (ref Self) -> (M (core.option.Option.t Self));
       }.
     End CheckedNeg.
   End checked.
@@ -140,8 +138,8 @@ Module Num.
     _ :: num_traits.NumOps.Trait Self (Rhs := Self) (Output := None);
     FromStrRadixErr : Set;
     from_str_radix :
-      (ref str) ->
-      u32 ->
+      (ref str.t) ->
+      u32.t ->
       (M (core.result.Result Self FromStrRadixErr));
   }.
 End Num.

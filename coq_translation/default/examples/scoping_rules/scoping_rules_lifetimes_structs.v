@@ -28,8 +28,8 @@ Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Borrowed_t.
       (let* α0 : ltac:(refine (M.Val core.fmt.Formatter.t)) := deref f in
       let* α1 : ltac:(refine (M.Val (mut_ref core.fmt.Formatter.t))) :=
         borrow_mut α0 in
-      let* α2 : ltac:(refine (M.Val str)) := deref (mk_str "Borrowed") in
-      let* α3 : ltac:(refine (M.Val (ref str))) := borrow α2 in
+      let* α2 : ltac:(refine (M.Val str.t)) := deref (mk_str "Borrowed") in
+      let* α3 : ltac:(refine (M.Val (ref str.t))) := borrow α2 in
       let* α4 :
           ltac:(refine (M.Val scoping_rules_lifetimes_structs.Borrowed.t)) :=
         deref self in
@@ -88,10 +88,10 @@ Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_NamedBorrowed_t.
       (let* α0 : ltac:(refine (M.Val core.fmt.Formatter.t)) := deref f in
       let* α1 : ltac:(refine (M.Val (mut_ref core.fmt.Formatter.t))) :=
         borrow_mut α0 in
-      let* α2 : ltac:(refine (M.Val str)) := deref (mk_str "NamedBorrowed") in
-      let* α3 : ltac:(refine (M.Val (ref str))) := borrow α2 in
-      let* α4 : ltac:(refine (M.Val str)) := deref (mk_str "x") in
-      let* α5 : ltac:(refine (M.Val (ref str))) := borrow α4 in
+      let* α2 : ltac:(refine (M.Val str.t)) := deref (mk_str "NamedBorrowed") in
+      let* α3 : ltac:(refine (M.Val (ref str.t))) := borrow α2 in
+      let* α4 : ltac:(refine (M.Val str.t)) := deref (mk_str "x") in
+      let* α5 : ltac:(refine (M.Val (ref str.t))) := borrow α4 in
       let* α6 :
           ltac:(refine
             (M.Val scoping_rules_lifetimes_structs.NamedBorrowed.t)) :=
@@ -100,8 +100,8 @@ Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_NamedBorrowed_t.
       let* α8 : ltac:(refine (M.Val (ref (ref i32.t)))) := borrow α7 in
       let* α9 : ltac:(refine (M.Val (ref type not implemented))) :=
         pointer_coercion "Unsize" α8 in
-      let* α10 : ltac:(refine (M.Val str)) := deref (mk_str "y") in
-      let* α11 : ltac:(refine (M.Val (ref str))) := borrow α10 in
+      let* α10 : ltac:(refine (M.Val str.t)) := deref (mk_str "y") in
+      let* α11 : ltac:(refine (M.Val (ref str.t))) := borrow α10 in
       let* α12 :
           ltac:(refine
             (M.Val scoping_rules_lifetimes_structs.NamedBorrowed.t)) :=
@@ -149,8 +149,8 @@ Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either_t.
         let* α0 : ltac:(refine (M.Val core.fmt.Formatter.t)) := deref f in
         let* α1 : ltac:(refine (M.Val (mut_ref core.fmt.Formatter.t))) :=
           borrow_mut α0 in
-        let* α2 : ltac:(refine (M.Val str)) := deref (mk_str "Num") in
-        let* α3 : ltac:(refine (M.Val (ref str))) := borrow α2 in
+        let* α2 : ltac:(refine (M.Val str.t)) := deref (mk_str "Num") in
+        let* α3 : ltac:(refine (M.Val (ref str.t))) := borrow α2 in
         let* α4 : ltac:(refine (M.Val (ref (ref i32.t)))) := borrow __self_0 in
         let* α5 : ltac:(refine (M.Val (ref type not implemented))) :=
           pointer_coercion "Unsize" α4 in
@@ -160,8 +160,8 @@ Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either_t.
         let* α0 : ltac:(refine (M.Val core.fmt.Formatter.t)) := deref f in
         let* α1 : ltac:(refine (M.Val (mut_ref core.fmt.Formatter.t))) :=
           borrow_mut α0 in
-        let* α2 : ltac:(refine (M.Val str)) := deref (mk_str "Ref") in
-        let* α3 : ltac:(refine (M.Val (ref str))) := borrow α2 in
+        let* α2 : ltac:(refine (M.Val str.t)) := deref (mk_str "Ref") in
+        let* α3 : ltac:(refine (M.Val (ref str.t))) := borrow α2 in
         let* α4 : ltac:(refine (M.Val (ref (ref (ref i32.t))))) :=
           borrow __self_0 in
         let* α5 : ltac:(refine (M.Val (ref type not implemented))) :=
@@ -228,11 +228,12 @@ Definition main : M (M.Val unit) :=
       M.alloc (scoping_rules_lifetimes_structs.Either.Num α0) in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
           M.alloc [ mk_str "x is borrowed in "; mk_str "
 " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) := borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+          borrow α0 in
+        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
         let* α3 :
             ltac:(refine
@@ -252,11 +253,12 @@ Definition main : M (M.Val unit) :=
       M.alloc tt in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
           M.alloc [ mk_str "x and y are borrowed in "; mk_str "
 " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) := borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+          borrow α0 in
+        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
         let* α3 :
             ltac:(refine
@@ -276,11 +278,12 @@ Definition main : M (M.Val unit) :=
       M.alloc tt in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
           M.alloc [ mk_str "x is borrowed in "; mk_str "
 " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) := borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+          borrow α0 in
+        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
         let* α3 :
             ltac:(refine
@@ -300,11 +303,12 @@ Definition main : M (M.Val unit) :=
       M.alloc tt in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
           M.alloc [ mk_str "y is *not* borrowed in "; mk_str "
 " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) := borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+          borrow α0 in
+        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
         let* α3 :
             ltac:(refine

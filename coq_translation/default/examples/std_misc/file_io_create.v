@@ -35,8 +35,9 @@ fn main() {
 Definition main : M (M.Val unit) :=
   M.function_body
     (let* path : ltac:(refine (M.Val (ref std.path.Path.t))) :=
-      let* α0 : ltac:(refine (M.Val str)) := deref (mk_str "lorem_ipsum.txt") in
-      let* α1 : ltac:(refine (M.Val (ref str))) := borrow α0 in
+      let* α0 : ltac:(refine (M.Val str.t)) :=
+        deref (mk_str "lorem_ipsum.txt") in
+      let* α1 : ltac:(refine (M.Val (ref str.t))) := borrow α0 in
       std.path.Path.t::["new"] α1 in
     let* display : ltac:(refine (M.Val std.path.Display.t)) :=
       let* α0 : ltac:(refine (M.Val std.path.Path.t)) := deref path in
@@ -54,10 +55,11 @@ Definition main : M (M.Val unit) :=
       match α2 with
       | core.result.Result.Err why =>
         let* why := M.alloc why in
-        let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
           M.alloc [ mk_str "couldn't create "; mk_str ": " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) := borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+          borrow α0 in
+        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
         let* α3 : ltac:(refine (M.Val (ref std.path.Display.t))) :=
           borrow display in
@@ -84,12 +86,12 @@ Definition main : M (M.Val unit) :=
       end in
     let* α0 : ltac:(refine (M.Val (mut_ref std.fs.File.t))) :=
       borrow_mut file in
-    let* α1 : ltac:(refine (M.Val (ref str))) :=
+    let* α1 : ltac:(refine (M.Val (ref str.t))) :=
       deref file_io_create.LOREM_IPSUM in
-    let* α2 : ltac:(refine (M.Val str)) := deref α1 in
-    let* α3 : ltac:(refine (M.Val (ref str))) := borrow α2 in
+    let* α2 : ltac:(refine (M.Val str.t)) := deref α1 in
+    let* α3 : ltac:(refine (M.Val (ref str.t))) := borrow α2 in
     let* α4 : ltac:(refine (M.Val (ref (slice u8.t)))) :=
-      str::["as_bytes"] α3 in
+      str.t::["as_bytes"] α3 in
     let* α5 : ltac:(refine (M.Val (slice u8.t))) := deref α4 in
     let* α6 : ltac:(refine (M.Val (ref (slice u8.t)))) := borrow α5 in
     let* α7 :
@@ -104,10 +106,10 @@ Definition main : M (M.Val unit) :=
     match α8 with
     | core.result.Result.Err why =>
       let* why := M.alloc why in
-      let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+      let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
         M.alloc [ mk_str "couldn't write to "; mk_str ": " ] in
-      let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) := borrow α0 in
-      let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+      let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) := borrow α0 in
+      let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
         pointer_coercion "Unsize" α1 in
       let* α3 : ltac:(refine (M.Val (ref std.path.Display.t))) :=
         borrow display in
@@ -130,11 +132,12 @@ Definition main : M (M.Val unit) :=
       never_to_any α11
     | core.result.Result.Ok _ =>
       let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
           M.alloc [ mk_str "successfully wrote to "; mk_str "
 " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) := borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+          borrow α0 in
+        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
         let* α3 : ltac:(refine (M.Val (ref std.path.Display.t))) :=
           borrow display in

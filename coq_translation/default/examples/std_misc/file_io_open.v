@@ -27,8 +27,8 @@ fn main() {
 Definition main : M (M.Val unit) :=
   M.function_body
     (let* path : ltac:(refine (M.Val (ref std.path.Path.t))) :=
-      let* α0 : ltac:(refine (M.Val str)) := deref (mk_str "hello.txt") in
-      let* α1 : ltac:(refine (M.Val (ref str))) := borrow α0 in
+      let* α0 : ltac:(refine (M.Val str.t)) := deref (mk_str "hello.txt") in
+      let* α1 : ltac:(refine (M.Val (ref str.t))) := borrow α0 in
       std.path.Path.t::["new"] α1 in
     let* display : ltac:(refine (M.Val std.path.Display.t)) :=
       let* α0 : ltac:(refine (M.Val std.path.Path.t)) := deref path in
@@ -46,10 +46,11 @@ Definition main : M (M.Val unit) :=
       match α2 with
       | core.result.Result.Err why =>
         let* why := M.alloc why in
-        let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
           M.alloc [ mk_str "couldn't open "; mk_str ": " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) := borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+          borrow α0 in
+        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
         let* α3 : ltac:(refine (M.Val (ref std.path.Display.t))) :=
           borrow display in
@@ -92,10 +93,10 @@ Definition main : M (M.Val unit) :=
     match α3 with
     | core.result.Result.Err why =>
       let* why := M.alloc why in
-      let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+      let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
         M.alloc [ mk_str "couldn't read "; mk_str ": " ] in
-      let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) := borrow α0 in
-      let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+      let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) := borrow α0 in
+      let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
         pointer_coercion "Unsize" α1 in
       let* α3 : ltac:(refine (M.Val (ref std.path.Display.t))) :=
         borrow display in
@@ -118,11 +119,12 @@ Definition main : M (M.Val unit) :=
       never_to_any α11
     | core.result.Result.Ok _ =>
       let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
           M.alloc [ mk_str ""; mk_str " contains:
 " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) := borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+          borrow α0 in
+        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
         let* α3 : ltac:(refine (M.Val (ref std.path.Display.t))) :=
           borrow display in

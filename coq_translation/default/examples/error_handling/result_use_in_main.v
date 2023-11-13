@@ -18,13 +18,13 @@ Definition main
   M.function_body
     (let number_str := mk_str "10" in
     let* number : ltac:(refine (M.Val i32.t)) :=
-      let* α0 : ltac:(refine (M.Val str)) := deref number_str in
-      let* α1 : ltac:(refine (M.Val (ref str))) := borrow α0 in
+      let* α0 : ltac:(refine (M.Val str.t)) := deref number_str in
+      let* α1 : ltac:(refine (M.Val (ref str.t))) := borrow α0 in
       let* α2 :
           ltac:(refine
             (M.Val
               (core.result.Result.t i32.t core.num.error.ParseIntError.t))) :=
-        str::["parse"] α1 in
+        str.t::["parse"] α1 in
       let* α3 := M.read α2 in
       match α3 with
       | core.result.Result.Ok number =>
@@ -43,11 +43,12 @@ Definition main
       end in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
           M.alloc [ mk_str ""; mk_str "
 " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) := borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+          borrow α0 in
+        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
         let* α3 : ltac:(refine (M.Val (ref i32.t))) := borrow number in
         let* α4 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=

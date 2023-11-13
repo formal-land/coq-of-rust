@@ -34,14 +34,16 @@ Definition main : M (M.Val unit) :=
     (let* n : ltac:(refine (M.Val i32.t)) := M.alloc 16 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
           M.alloc [ mk_str "This is "; mk_str "
 " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) := borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+          borrow α0 in
+        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
-        let* α3 : ltac:(refine (M.Val (ref str))) := deref constants.LANGUAGE in
-        let* α4 : ltac:(refine (M.Val (ref (ref str)))) := borrow α3 in
+        let* α3 : ltac:(refine (M.Val (ref str.t))) :=
+          deref constants.LANGUAGE in
+        let* α4 : ltac:(refine (M.Val (ref (ref str.t)))) := borrow α3 in
         let* α5 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
           core.fmt.rt.Argument.t::["new_display"] α4 in
         let* α6 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
@@ -56,11 +58,12 @@ Definition main : M (M.Val unit) :=
       M.alloc tt in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
           M.alloc [ mk_str "The threshold is "; mk_str "
 " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) := borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+          borrow α0 in
+        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
         let* α3 : ltac:(refine (M.Val (ref i32.t))) :=
           borrow constants.THRESHOLD in
@@ -78,11 +81,12 @@ Definition main : M (M.Val unit) :=
       M.alloc tt in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
           M.alloc [ mk_str ""; mk_str " is "; mk_str "
 " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) := borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+          borrow α0 in
+        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
         let* α3 : ltac:(refine (M.Val (ref i32.t))) := borrow n in
         let* α4 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
@@ -90,13 +94,13 @@ Definition main : M (M.Val unit) :=
         let* α5 : ltac:(refine (M.Val bool.t)) := constants.is_big n in
         let* α6 : ltac:(refine (M.Val bool.t)) := use α5 in
         let* α7 := M.read α6 in
-        let* α8 : ltac:(refine (M.Val (ref str))) :=
+        let* α8 : ltac:(refine (M.Val (ref str.t))) :=
           if (α7 : bool) then
             M.pure (mk_str "big")
           else
-            let* α0 : ltac:(refine (M.Val str)) := deref (mk_str "small") in
+            let* α0 : ltac:(refine (M.Val str.t)) := deref (mk_str "small") in
             borrow α0 in
-        let* α9 : ltac:(refine (M.Val (ref (ref str)))) := borrow α8 in
+        let* α9 : ltac:(refine (M.Val (ref (ref str.t)))) := borrow α8 in
         let* α10 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
           core.fmt.rt.Argument.t::["new_display"] α9 in
         let* α11 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=

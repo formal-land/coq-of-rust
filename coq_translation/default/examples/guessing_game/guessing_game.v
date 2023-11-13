@@ -51,11 +51,12 @@ Definition main : M (M.Val unit) :=
   M.function_body
     (let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
           M.alloc [ mk_str "Guess the number!
 " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) := borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+          borrow α0 in
+        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
         let* α3 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
           core.fmt.Arguments.t::["new_const"] α2 in
@@ -66,12 +67,12 @@ Definition main : M (M.Val unit) :=
     loop
       (let* _ : ltac:(refine (M.Val unit)) :=
         let* _ : ltac:(refine (M.Val unit)) :=
-          let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+          let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
             M.alloc [ mk_str "Please input your guess.
 " ] in
-          let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) :=
+          let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
             borrow α0 in
-          let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+          let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
             pointer_coercion "Unsize" α1 in
           let* α3 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
             core.fmt.Arguments.t::["new_const"] α2 in
@@ -90,28 +91,28 @@ Definition main : M (M.Val unit) :=
             ltac:(refine
               (M.Val (core.result.Result.t usize.t std.io.error.Error.t))) :=
           std.io.stdio.Stdin.t::["read_line"] α1 α2 in
-        let* α4 : ltac:(refine (M.Val str)) :=
+        let* α4 : ltac:(refine (M.Val str.t)) :=
           deref (mk_str "Failed to read line") in
-        let* α5 : ltac:(refine (M.Val (ref str))) := borrow α4 in
+        let* α5 : ltac:(refine (M.Val (ref str.t))) := borrow α4 in
         (core.result.Result.t usize.t std.io.error.Error.t)::["expect"] α3 α5 in
       let* guess : ltac:(refine (M.Val u32.t)) :=
         let* α0 : ltac:(refine (M.Val (ref alloc.string.String.t))) :=
           borrow guess in
-        let* α1 : ltac:(refine (M.Val (ref str))) :=
+        let* α1 : ltac:(refine (M.Val (ref str.t))) :=
           (core.ops.deref.Deref.deref
               (Self := alloc.string.String.t)
               (Trait := ltac:(refine _)))
             α0 in
-        let* α2 : ltac:(refine (M.Val str)) := deref α1 in
-        let* α3 : ltac:(refine (M.Val (ref str))) := borrow α2 in
-        let* α4 : ltac:(refine (M.Val (ref str))) := str::["trim"] α3 in
-        let* α5 : ltac:(refine (M.Val str)) := deref α4 in
-        let* α6 : ltac:(refine (M.Val (ref str))) := borrow α5 in
+        let* α2 : ltac:(refine (M.Val str.t)) := deref α1 in
+        let* α3 : ltac:(refine (M.Val (ref str.t))) := borrow α2 in
+        let* α4 : ltac:(refine (M.Val (ref str.t))) := str.t::["trim"] α3 in
+        let* α5 : ltac:(refine (M.Val str.t)) := deref α4 in
+        let* α6 : ltac:(refine (M.Val (ref str.t))) := borrow α5 in
         let* α7 :
             ltac:(refine
               (M.Val
                 (core.result.Result.t u32.t core.num.error.ParseIntError.t))) :=
-          str::["parse"] α6 in
+          str.t::["parse"] α6 in
         let* α8 := M.read α7 in
         match α8 with
         | core.result.Result.Ok num =>
@@ -123,12 +124,12 @@ Definition main : M (M.Val unit) :=
         end in
       let* _ : ltac:(refine (M.Val unit)) :=
         let* _ : ltac:(refine (M.Val unit)) :=
-          let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+          let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
             M.alloc [ mk_str "You guessed: "; mk_str "
 " ] in
-          let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) :=
+          let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
             borrow α0 in
-          let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+          let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
             pointer_coercion "Unsize" α1 in
           let* α3 : ltac:(refine (M.Val (ref u32.t))) := borrow guess in
           let* α4 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
@@ -153,12 +154,12 @@ Definition main : M (M.Val unit) :=
       match α3 with
       | core.cmp.Ordering.Less  =>
         let* _ : ltac:(refine (M.Val unit)) :=
-          let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+          let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
             M.alloc [ mk_str "Too small!
 " ] in
-          let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) :=
+          let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
             borrow α0 in
-          let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+          let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
             pointer_coercion "Unsize" α1 in
           let* α3 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
             core.fmt.Arguments.t::["new_const"] α2 in
@@ -166,12 +167,12 @@ Definition main : M (M.Val unit) :=
         M.alloc tt
       | core.cmp.Ordering.Greater  =>
         let* _ : ltac:(refine (M.Val unit)) :=
-          let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+          let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
             M.alloc [ mk_str "Too big!
 " ] in
-          let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) :=
+          let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
             borrow α0 in
-          let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+          let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
             pointer_coercion "Unsize" α1 in
           let* α3 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
             core.fmt.Arguments.t::["new_const"] α2 in
@@ -180,12 +181,12 @@ Definition main : M (M.Val unit) :=
       | core.cmp.Ordering.Equal  =>
         let* _ : ltac:(refine (M.Val unit)) :=
           let* _ : ltac:(refine (M.Val unit)) :=
-            let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+            let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
               M.alloc [ mk_str "You win!
 " ] in
-            let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) :=
+            let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
               borrow α0 in
-            let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+            let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
               pointer_coercion "Unsize" α1 in
             let* α3 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
               core.fmt.Arguments.t::["new_const"] α2 in

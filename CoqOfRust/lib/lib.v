@@ -69,42 +69,76 @@ Parameter sequence : forall {A B : Set}, A -> B -> B.
 Notation "e1 ;; e2" := (sequence e1 e2)
   (at level 61, right associativity).
 
-Parameter assign : forall {A : Set}, A -> A -> unit.
+Parameter assign : forall {A : Set}, M.Val A -> M.Val A -> M (M.Val unit).
 
-Definition unit : Set := Datatypes.unit.
 Module bool.
   Definition t : Set := bool.
 End bool.
 
-Definition u8 : Set := Z.
-Definition u16 : Set := Z.
+Module u8.
+  Definition t : Set := Z.
+End u8.
+
+Module u16.
+  Definition t : Set := Z.
+End u16.
 
 Module u32.
   Definition t : Set := Z.
 End u32.
-Definition u32 : Set := u32.t.
 
-Definition u64 : Set := Z.
+Module u64.
+  Definition t : Set := Z.
+End u64.
 
 Module u128.
   Definition t : Set := Z.
 End u128.
 
-Definition usize : Set := Z.
+Module usize.
+  Definition t : Set := Z.
+End usize.
 
-Definition i8 : Set := Z.
-Definition i16 : Set := Z.
-Definition i32 : Set := Z.
-Definition i64 : Set := Z.
-Definition i128 : Set := Z.
-Definition isize : Set := Z.
+Module i8.
+  Definition t : Set := Z.
+End i8.
+
+Module i16.
+  Definition t : Set := Z.
+End i16.
+
+Module i32.
+  Definition t : Set := Z.
+End i32.
+
+Module i64.
+  Definition t : Set := Z.
+End i64.
+
+Module i128.
+  Definition t : Set := Z.
+End i128.
+
+Module isize.
+  Definition t : Set := Z.
+End isize.
 
 (* We approximate floating point numbers with integers *)
-Definition f32 : Set := Z.
-Definition f64 : Set := Z.
+Module f32.
+  Definition t : Set := Z.
+End f32.
 
-Definition str : Set := Coq.Strings.String.string.
-Definition char : Set := Coq.Strings.Ascii.ascii.
+Module f64.
+  Definition t : Set := Z.
+End f64.
+
+Module str.
+  Definition t : Set := Coq.Strings.String.string.
+End str.
+
+Module char.
+  Definition t : Set := Coq.Strings.Ascii.ascii.
+End char.
 
 Definition ref (A : Set) : Set := M.Val A.
 Definition mut_ref (A : Set) : Set := M.Val A.
@@ -121,34 +155,34 @@ Definition never_to_any {A B : Set} (x : A) : M B :=
 
 Definition use {A : Set} (x : A) : M A := M.pure x.
 
-Definition mk_str (s : Coq.Strings.String.string) : M.Val (ref str) :=
+Definition mk_str (s : Coq.Strings.String.string) : M.Val (ref str.t) :=
   M.Ref.Immutable (M.Ref.Immutable s).
 
 Module UnOp.
-  Parameter not : bool -> M bool.
-  Parameter neg : forall {A : Set}, A -> M A.
+  Parameter not : M.Val bool -> M (M.Val bool).
+  Parameter neg : forall {A : Set}, M.Val A -> M (M.Val A).
 End UnOp.
 
 Module BinOp.
-  Parameter add : forall {A : Set}, A -> A -> M A.
-  Parameter sub : forall {A : Set}, A -> A -> M A.
-  Parameter mul : forall {A : Set}, A -> A -> M A.
-  Parameter div : forall {A : Set}, A -> A -> M A.
-  Parameter rem : forall {A : Set}, A -> A -> M A.
-  Parameter bit_xor : forall {A : Set}, A -> A -> M A.
-  Parameter bit_and : forall {A : Set}, A -> A -> M A.
-  Parameter bit_or : forall {A : Set}, A -> A -> M A.
-  Parameter shl : forall {A : Set}, A -> A -> M A.
-  Parameter shr : forall {A : Set}, A -> A -> M A.
+  Parameter add : forall {A : Set}, M.Val A -> M.Val A -> M (M.Val A).
+  Parameter sub : forall {A : Set}, M.Val A -> M.Val A -> M (M.Val A).
+  Parameter mul : forall {A : Set}, M.Val A -> M.Val A -> M (M.Val A).
+  Parameter div : forall {A : Set}, M.Val A -> M.Val A -> M (M.Val A).
+  Parameter rem : forall {A : Set}, M.Val A -> M.Val A -> M (M.Val A).
+  Parameter bit_xor : forall {A : Set}, M.Val A -> M.Val A -> M (M.Val A).
+  Parameter bit_and : forall {A : Set}, M.Val A -> M.Val A -> M (M.Val A).
+  Parameter bit_or : forall {A : Set}, M.Val A -> M.Val A -> M (M.Val A).
+  Parameter shl : forall {A : Set}, M.Val A -> M.Val A -> M (M.Val A).
+  Parameter shr : forall {A : Set}, M.Val A -> M.Val A -> M (M.Val A).
 
-  Parameter eq : forall {A : Set}, A -> A -> M (M.Val bool.t).
-  Parameter ne : forall {A : Set}, A -> A -> M (M.Val bool.t).
+  Parameter eq : forall {A : Set}, M.Val A -> M.Val A -> M (M.Val bool.t).
+  Parameter ne : forall {A : Set}, M.Val A -> M.Val A -> M (M.Val bool.t).
 
-  Parameter lt : forall {A : Set}, A -> A -> M (M.Val bool.t).
-  Parameter le : forall {A : Set}, A -> A -> M (M.Val bool.t).
-  Parameter ge : forall {A : Set}, A -> A -> M (M.Val bool.t).
-  Parameter gt : forall {A : Set}, A -> A -> M (M.Val bool.t).
+  Parameter lt : forall {A : Set}, M.Val A -> M.Val A -> M (M.Val bool.t).
+  Parameter le : forall {A : Set}, M.Val A -> M.Val A -> M (M.Val bool.t).
+  Parameter ge : forall {A : Set}, M.Val A -> M.Val A -> M (M.Val bool.t).
+  Parameter gt : forall {A : Set}, M.Val A -> M.Val A -> M (M.Val bool.t).
 
-  Parameter and : forall {A : Set}, A -> A -> M (M.Val bool.t).
-  Parameter or : forall {A : Set}, A -> A -> M (M.Val bool.t).
+  Parameter and : forall {A : Set}, M.Val A -> M.Val A -> M (M.Val bool.t).
+  Parameter or : forall {A : Set}, M.Val A -> M.Val A -> M (M.Val bool.t).
 End BinOp.

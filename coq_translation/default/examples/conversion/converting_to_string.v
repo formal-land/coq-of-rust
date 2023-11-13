@@ -33,10 +33,10 @@ Section Impl_core_fmt_Display_for_converting_to_string_Circle_t.
       (let* α0 : ltac:(refine (M.Val core.fmt.Formatter.t)) := deref f in
       let* α1 : ltac:(refine (M.Val (mut_ref core.fmt.Formatter.t))) :=
         borrow_mut α0 in
-      let* α2 : ltac:(refine (M.Val (array (ref str)))) :=
+      let* α2 : ltac:(refine (M.Val (array (ref str.t)))) :=
         M.alloc [ mk_str "Circle of radius " ] in
-      let* α3 : ltac:(refine (M.Val (ref (array (ref str))))) := borrow α2 in
-      let* α4 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+      let* α3 : ltac:(refine (M.Val (ref (array (ref str.t))))) := borrow α2 in
+      let* α4 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
         pointer_coercion "Unsize" α3 in
       let* α5 : ltac:(refine (M.Val converting_to_string.Circle.t)) :=
         deref self in

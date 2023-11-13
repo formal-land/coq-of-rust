@@ -14,11 +14,11 @@ fn drink(beverage: &str) {
 Definition drink (beverage : M.Val (ref str.t)) : M (M.Val unit) :=
   M.function_body
     (let* _ : ltac:(refine (M.Val unit)) :=
-      let* α0 : ltac:(refine (M.Val (ref (ref str)))) := borrow beverage in
-      let* α1 : ltac:(refine (M.Val (ref (ref str)))) :=
+      let* α0 : ltac:(refine (M.Val (ref (ref str.t)))) := borrow beverage in
+      let* α1 : ltac:(refine (M.Val (ref (ref str.t)))) :=
         borrow (mk_str "lemonade") in
       let* α2 : ltac:(refine (M.Val bool.t)) :=
-        (core.cmp.PartialEq.eq (Self := ref str) (Trait := ltac:(refine _)))
+        (core.cmp.PartialEq.eq (Self := ref str.t) (Trait := ltac:(refine _)))
           α0
           α1 in
       let* α3 : ltac:(refine (M.Val bool.t)) := use α2 in
@@ -34,13 +34,14 @@ Definition drink (beverage : M.Val (ref str.t)) : M (M.Val unit) :=
         M.alloc tt in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str)))) :=
+        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
           M.alloc [ mk_str "Some refreshing "; mk_str " is all I need.
 " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str))))) := borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str))))) :=
+        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+          borrow α0 in
+        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
-        let* α3 : ltac:(refine (M.Val (ref (ref str)))) := borrow beverage in
+        let* α3 : ltac:(refine (M.Val (ref (ref str.t)))) := borrow beverage in
         let* α4 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
           core.fmt.rt.Argument.t::["new_display"] α3 in
         let* α5 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
@@ -65,11 +66,11 @@ fn main() {
 Definition main : M (M.Val unit) :=
   M.function_body
     (let* _ : ltac:(refine (M.Val unit)) :=
-      let* α0 : ltac:(refine (M.Val str)) := deref (mk_str "water") in
-      let* α1 : ltac:(refine (M.Val (ref str))) := borrow α0 in
+      let* α0 : ltac:(refine (M.Val str.t)) := deref (mk_str "water") in
+      let* α1 : ltac:(refine (M.Val (ref str.t))) := borrow α0 in
       panic.drink α1 in
     let* _ : ltac:(refine (M.Val unit)) :=
-      let* α0 : ltac:(refine (M.Val str)) := deref (mk_str "lemonade") in
-      let* α1 : ltac:(refine (M.Val (ref str))) := borrow α0 in
+      let* α0 : ltac:(refine (M.Val str.t)) := deref (mk_str "lemonade") in
+      let* α1 : ltac:(refine (M.Val (ref str.t))) := borrow α0 in
       panic.drink α1 in
     M.alloc tt).
