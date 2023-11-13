@@ -1,7 +1,7 @@
 use crate::env::*;
 use crate::render::*;
 use rustc_hir::def::{DefKind, Res};
-use rustc_hir::{QPath};
+use rustc_hir::QPath;
 use std::fmt;
 use std::vec;
 
