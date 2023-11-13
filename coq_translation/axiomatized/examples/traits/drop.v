@@ -3,40 +3,71 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module  Droppable.
 Section Droppable.
-  Context `{ℋ : State.Trait}.
-  
   Record t : Set := {
-    name : ref str;
+    name : ref str.t;
   }.
   
   Global Instance Get_name : Notation.Dot "name" := {
-    Notation.dot x := let* x := M.read x in M.pure x.(name) : M _;
+    Notation.dot x := let* x := M.read x in M.alloc x.(name) : M _;
   }.
   Global Instance Get_AF_name : Notation.DoubleColon t "name" := {
-    Notation.double_colon x := let* x := M.read x in M.pure x.(name) : M _;
+    Notation.double_colon x := let* x := M.read x in M.alloc x.(name) : M _;
   }.
 End Droppable.
 End Droppable.
-Definition Droppable `{ℋ : State.Trait} : Set := M.Val Droppable.t.
 
-Module  Impl_core_ops_drop_Drop_for_drop_Droppable.
-Section Impl_core_ops_drop_Drop_for_drop_Droppable.
-  Context `{ℋ : State.Trait}.
+Module  Impl_core_ops_drop_Drop_for_drop_Droppable_t.
+Section Impl_core_ops_drop_Drop_for_drop_Droppable_t.
+  Ltac Self := exact drop.Droppable.t.
   
-  Definition Self : Set := drop.Droppable.
-  
-  Parameter drop : (mut_ref Self) -> M unit.
+  (*
+      fn drop(&mut self) {
+          println!("> Dropping {}", self.name);
+      }
+  *)
+  Parameter drop : (M.Val (mut_ref ltac:(Self))) -> M (M.Val unit).
   
   Global Instance AssociatedFunction_drop :
-    Notation.DoubleColon Self "drop" := {
+    Notation.DoubleColon ltac:(Self) "drop" := {
     Notation.double_colon := drop;
   }.
   
-  Global Instance ℐ : core.ops.drop.Drop.Trait Self := {
+  Global Instance ℐ : core.ops.drop.Drop.Trait ltac:(Self) := {
     core.ops.drop.Drop.drop := drop;
   }.
-End Impl_core_ops_drop_Drop_for_drop_Droppable.
-End Impl_core_ops_drop_Drop_for_drop_Droppable.
+End Impl_core_ops_drop_Drop_for_drop_Droppable_t.
+End Impl_core_ops_drop_Drop_for_drop_Droppable_t.
 
+(*
+fn main() {
+    let _a = Droppable { name: "a" };
+
+    // block A
+    {
+        let _b = Droppable { name: "b" };
+
+        // block B
+        {
+            let _c = Droppable { name: "c" };
+            let _d = Droppable { name: "d" };
+
+            println!("Exiting block B");
+        }
+        println!("Just exited block B");
+
+        println!("Exiting block A");
+    }
+    println!("Just exited block A");
+
+    // Variable can be manually dropped using the `drop` function
+    drop(_a);
+    // TODO ^ Try commenting this line
+
+    println!("end of the main function");
+
+    // `_a` *won't* be `drop`ed again here, because it already has been
+    // (manually) `drop`ed
+}
+*)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{ℋ : State.Trait}, M unit.
+Parameter main : M (M.Val unit).

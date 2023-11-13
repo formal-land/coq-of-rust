@@ -18,7 +18,7 @@ where
 Module PhantomData.
   Inductive t (T : Set) : Set := Build.
 End PhantomData.
-Definition PhantomData := PhantomData.t.
+Definition PhantomData (T : Set) : Set := M.Val (PhantomData.t T).
 
 (* pub struct PhantomPinned; *)
 Module PhantomPinned.
@@ -92,7 +92,7 @@ End Unsize.
 (* pub trait Copy: Clone { } *)
 Module Copy.
   Unset Primitive Projections.
-  Class Trait `{State.Trait} (Self : Set) : Set := {
+  Class Trait (Self : Set) : Set := {
     _ :: core.clone.Clone.Trait Self;
   }.
   Set Primitive Projections.

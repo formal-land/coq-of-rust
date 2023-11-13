@@ -5,11 +5,13 @@ Module traits.
   Module iterator.
     (* pub trait Iterator *)
     Module Iterator.
-    Class Trait `{State.Trait} (Self : Set) : Type := {
+    Class Trait (Self : Set) : Type := {
         (* type Item; *)
         Item : Set;
         (* fn next(&mut self) -> Option<Self::Item>; *)
-        next : mut_ref Self -> option.Option Item;
+        next :
+          M.Val (mut_ref Self) ->
+          M (M.Val (option.Option.t Item));
         (* Provided methods:
 
         fn next_chunk<const N: usize>(

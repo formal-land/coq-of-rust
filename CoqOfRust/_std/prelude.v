@@ -111,7 +111,7 @@ Module rust_2021.
   *)
   Module From.
     Class Trait (T : Set) (Self : Set) : Set := {
-      from `{State.Trait} : T -> M Self;
+      from : T -> M Self;
     }.
   End From.
 End rust_2021.

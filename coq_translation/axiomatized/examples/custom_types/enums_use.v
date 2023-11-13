@@ -2,18 +2,36 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module Status.
-  Inductive t `{ℋ : State.Trait} : Set :=
+  Inductive t : Set :=
   | Rich
   | Poor.
 End Status.
-Definition Status `{ℋ : State.Trait} : Set := M.Val Status.t.
 
 Module Work.
-  Inductive t `{ℋ : State.Trait} : Set :=
+  Inductive t : Set :=
   | Civilian
   | Soldier.
 End Work.
-Definition Work `{ℋ : State.Trait} : Set := M.Val Work.t.
 
+(*
+fn main() {
+    // Equivalent to `Status::Poor`.
+    let status = Poor;
+    // Equivalent to `Work::Civilian`.
+    let work = Civilian;
+
+    match status {
+        // Note the lack of scoping because of the explicit `use` above.
+        Rich => println!("The rich have lots of money!"),
+        Poor => println!("The poor have no money..."),
+    }
+
+    match work {
+        // Note again the lack of scoping.
+        Civilian => println!("Civilians work!"),
+        Soldier => println!("Soldiers fight!"),
+    }
+}
+*)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{ℋ : State.Trait}, M unit.
+Parameter main : M (M.Val unit).

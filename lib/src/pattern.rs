@@ -25,11 +25,53 @@ pub(crate) enum Pattern {
 impl Pattern {
     /// Returns wether a pattern is a single binding, to know if we need a quote
     /// in the "let" in Coq.
-    pub fn is_single_binding(&self) -> bool {
+    pub(crate) fn is_single_binding(&self) -> bool {
         matches!(self, Pattern::Variable(_) | Pattern::Wild)
     }
 
-    pub fn to_doc(&self) -> Doc {
+    pub(crate) fn get_bindings(&self) -> Vec<String> {
+        match self {
+            Pattern::Wild => vec![],
+            Pattern::Variable(name) => vec![name.clone()],
+            Pattern::Binding(name, pattern) => {
+                vec![vec![name.clone()], pattern.get_bindings()].concat()
+            }
+            Pattern::StructStruct(_, fields, _) => fields
+                .iter()
+                .flat_map(|(_, pattern)| pattern.get_bindings())
+                .collect(),
+            Pattern::StructTuple(_, patterns, _) => {
+                patterns.iter().flat_map(Pattern::get_bindings).collect()
+            }
+            Pattern::Or(patterns) => {
+                if patterns.is_empty() {
+                    vec![]
+                } else {
+                    // All patterns should have the exact same list of bindings,
+                    // so we only evaluate the first one
+                    patterns.first().unwrap().get_bindings()
+                }
+            }
+            Pattern::Tuple(patterns) => patterns.iter().flat_map(Pattern::get_bindings).collect(),
+            Pattern::Lit(_) => vec![],
+            Pattern::Slice {
+                init_patterns,
+                slice_pattern,
+            } => vec![
+                init_patterns
+                    .iter()
+                    .flat_map(Pattern::get_bindings)
+                    .collect(),
+                match slice_pattern {
+                    None => vec![],
+                    Some(pattern) => pattern.get_bindings(),
+                },
+            ]
+            .concat(),
+        }
+    }
+
+    pub(crate) fn to_doc(&self) -> Doc {
         match self {
             Pattern::Wild => text("_"),
             Pattern::Variable(name) => text(name),

@@ -9,8 +9,6 @@ Require Import CoqOfRust.core.result_types.
 Module Infallible.
   Inductive t : Set := .
 End Infallible.
-Definition Infallible := Infallible.t.
-
 
 (* ********TRAITS******** *)
 (* 
@@ -40,15 +38,15 @@ where
 }
 *)
 Module AsMut.
-  Class Trait `{State.Trait} (Self : Set) {T : Set} : Set := {
-    as_mut : mut_ref Self -> M (mut_ref T);
+  Class Trait (Self : Set) {T : Set} : Set := {
+    as_mut :
+      M.Val (mut_ref Self) ->
+      M (M.Val (mut_ref T));
   }.
 End AsMut.
 
-Module AsMut_instances. Section AsMut_instances.
-  Context `{State.Trait}.
-
-  Global Instance I_str : AsMut.Trait str (T := str).
+Module AsMut_instances.
+  Global Instance I_str : AsMut.Trait str.t (T := str.t).
   Admitted.
 
   Global Instance I_slice {T : Set} : AsMut.Trait (slice T) (T := slice T).
@@ -56,7 +54,7 @@ Module AsMut_instances. Section AsMut_instances.
 
   Global Instance I_array {T : Set} : AsMut.Trait (array T) (T := slice T).
   Admitted.
-End AsMut_instances. End AsMut_instances.
+End AsMut_instances.
 
 (* 
 pub trait AsRef<T>
@@ -68,15 +66,15 @@ where
 }
 *)
 Module AsRef.
-  Class Trait `{State.Trait} (Self : Set) {T : Set} : Set := {
-    as_ref : ref Self -> M (ref T);
+  Class Trait (Self : Set) {T : Set} : Set := {
+    as_ref :
+      M.Val (ref Self) ->
+      M (M.Val (ref T));
   }.
 End AsRef.
 
-Module AsRef_instances. Section AsRef_instances.
-  Context `{State.Trait}.
-
-  Global Instance I_str : AsRef.Trait str (T := str).
+Module AsRef_instances.
+  Global Instance I_str : AsRef.Trait str.t (T := str.t).
   Admitted.
 
   Global Instance I_slice {T : Set} : AsRef.Trait (slice T) (T := slice T).
@@ -84,7 +82,7 @@ Module AsRef_instances. Section AsRef_instances.
 
   Global Instance I_array {T : Set} : AsRef.Trait (array T) (T := slice T).
   Admitted.
-End AsRef_instances. End AsRef_instances.
+End AsRef_instances.
 
 (* 
 pub trait From<T>: Sized {
@@ -93,8 +91,8 @@ pub trait From<T>: Sized {
 }
 *)
 Module From.
-  Class Trait (Self : Set) {T : Set} `{State.Trait} : Set := {
-    from : T -> M Self;
+  Class Trait (Self : Set) {T : Set} : Set := {
+    from : M.Val T -> M (M.Val Self);
   }.
 End From.
 
@@ -105,20 +103,19 @@ pub trait Into<T>: Sized {
 }
 *)
 Module Into.
-  Class Trait (Self : Set) {T : Set } `{State.Trait} : Set := {
-    into : Self -> M T;
+  Class Trait (Self : Set) {T : Set } : Set := {
+    into : M.Val Self -> M (M.Val T);
   }.
 End Into.
 
 Module Impl_Into_for_T.
   Section Impl_Into_for_T.
     Context {T U : Set}.
-    Context `{State.Trait}.
     Context `{From.Trait U (T := T)}.
 
     Definition Self := T.
 
-    Definition into : Self -> M U := From.from.
+    Definition into : M.Val Self -> M (M.Val U) := From.from.
 
     Global Instance Method_into : Notation.Dot "into" := {
       Notation.dot := into;
@@ -139,13 +136,13 @@ pub trait TryFrom<T>: Sized {
 }
 *)
 Module TryFrom.
-  Class Trait (Self : Set) {T : Set} `{State.Trait} : Type := {
+  Class Trait (Self : Set) {T : Set} : Type := {
     Error : Set;
 
     try_from : T -> M (Result Self Error);
   }.
 
-  Global Instance AssociatedFunction_try_from `{State.Trait}
+  Global Instance AssociatedFunction_try_from
       (Self T : Set) {_ : Trait Self (T := T)} :
     Notation.DoubleColon Self "try_from" := {
     Notation.double_colon := try_from;
@@ -161,15 +158,14 @@ pub trait TryInto<T>: Sized {
 }
 *)
 Module TryInto.
-  Class Trait (Self : Set) {T : Set} `{State.Trait} : Type := { 
+  Class Trait (Self : Set) {T : Set} : Type := { 
     Error : Set;
     try_into : Self -> M (Result T Error);
   }.
 
-  Global Instance Method_try_into (Self T : Set) `{State.Trait}
-      {_ : Trait Self (T := T)} :
+  Global Instance Method_try_into (Self T : Set) {_ : Trait Self (T := T)} :
     Notation.Dot "try_into" := {
-    Notation.dot `{State.Trait} := try_into;
+    Notation.dot := try_into;
   }.
 End TryInto.
 
@@ -188,7 +184,6 @@ where
 *)
 Module Impl_TryInto_for_T.
   Section Impl_TryInto_for_T.
-    Context `{State.Trait}.
     Context {T U : Set}.
     Context {H_TryFrom : TryFrom.Trait U (T := T)}.
 

@@ -3,64 +3,85 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module  Person.
 Section Person.
-  Context `{ℋ : State.Trait}.
-  
   Record t : Set := {
-    id : u32;
-    name : alloc.string.String;
-    phone : u64;
+    id : u32.t;
+    name : alloc.string.String.t;
+    phone : u64.t;
   }.
   
   Global Instance Get_id : Notation.Dot "id" := {
-    Notation.dot x := let* x := M.read x in M.pure x.(id) : M _;
+    Notation.dot x := let* x := M.read x in M.alloc x.(id) : M _;
   }.
   Global Instance Get_AF_id : Notation.DoubleColon t "id" := {
-    Notation.double_colon x := let* x := M.read x in M.pure x.(id) : M _;
+    Notation.double_colon x := let* x := M.read x in M.alloc x.(id) : M _;
   }.
   Global Instance Get_name : Notation.Dot "name" := {
-    Notation.dot x := let* x := M.read x in M.pure x.(name) : M _;
+    Notation.dot x := let* x := M.read x in M.alloc x.(name) : M _;
   }.
   Global Instance Get_AF_name : Notation.DoubleColon t "name" := {
-    Notation.double_colon x := let* x := M.read x in M.pure x.(name) : M _;
+    Notation.double_colon x := let* x := M.read x in M.alloc x.(name) : M _;
   }.
   Global Instance Get_phone : Notation.Dot "phone" := {
-    Notation.dot x := let* x := M.read x in M.pure x.(phone) : M _;
+    Notation.dot x := let* x := M.read x in M.alloc x.(phone) : M _;
   }.
   Global Instance Get_AF_phone : Notation.DoubleColon t "phone" := {
-    Notation.double_colon x := let* x := M.read x in M.pure x.(phone) : M _;
+    Notation.double_colon x := let* x := M.read x in M.alloc x.(phone) : M _;
   }.
 End Person.
 End Person.
-Definition Person `{ℋ : State.Trait} : Set := M.Val Person.t.
 
-Module  Impl_core_hash_Hash_for_hash_Person.
-Section Impl_core_hash_Hash_for_hash_Person.
-  Context `{ℋ : State.Trait}.
+Module  Impl_core_hash_Hash_for_hash_Person_t.
+Section Impl_core_hash_Hash_for_hash_Person_t.
+  Ltac Self := exact hash.Person.t.
   
-  Definition Self : Set := hash.Person.
-  
+  (*
+  Hash
+  *)
   Parameter hash :
       forall {__H : Set} {ℋ_0 : core.hash.Hasher.Trait __H},
-      (ref Self) -> (mut_ref __H) -> M unit.
+      (M.Val (ref ltac:(Self))) -> (M.Val (mut_ref __H)) -> M (M.Val unit).
   
   Global Instance AssociatedFunction_hash
       {__H : Set}
       {ℋ_0 : core.hash.Hasher.Trait __H} :
-    Notation.DoubleColon Self "hash" := {
+    Notation.DoubleColon ltac:(Self) "hash" := {
     Notation.double_colon := hash (__H := __H);
   }.
   
-  Global Instance ℐ : core.hash.Hash.Required.Trait Self := {
+  Global Instance ℐ : core.hash.Hash.Required.Trait ltac:(Self) := {
     core.hash.Hash.hash {__H : Set} {ℋ_0 : core.hash.Hasher.Trait __H} :=
       hash (__H := __H);
     core.hash.Hash.hash_slice := Datatypes.None;
   }.
-End Impl_core_hash_Hash_for_hash_Person.
-End Impl_core_hash_Hash_for_hash_Person.
+End Impl_core_hash_Hash_for_hash_Person_t.
+End Impl_core_hash_Hash_for_hash_Person_t.
 
+(*
+fn calculate_hash<T: Hash>(t: &T) -> u64 {
+    let mut s = DefaultHasher::new();
+    t.hash(&mut s);
+    s.finish()
+}
+*)
 Parameter calculate_hash :
-    forall `{ℋ : State.Trait} {T : Set} {ℋ_0 : core.hash.Hash.Trait T},
-    (ref T) -> M u64.
+    forall {T : Set} {ℋ_0 : core.hash.Hash.Trait T},
+    (M.Val (ref T)) -> M (M.Val u64.t).
 
+(*
+fn main() {
+    let person1 = Person {
+        id: 5,
+        name: "Janet".to_string(),
+        phone: 555_666_7777,
+    };
+    let person2 = Person {
+        id: 5,
+        name: "Bob".to_string(),
+        phone: 555_666_7777,
+    };
+
+    assert!(calculate_hash(&person1) != calculate_hash(&person2));
+}
+*)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{ℋ : State.Trait}, M unit.
+Parameter main : M (M.Val unit).

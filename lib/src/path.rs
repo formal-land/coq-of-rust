@@ -29,6 +29,12 @@ impl Path {
         self.segments.push(format!("Impl{last}"));
     }
 
+    pub(crate) fn suffix_last_with_dot_t(&self) -> Self {
+        let mut path = self.clone();
+        path.segments.push("t".to_string());
+        path
+    }
+
     pub(crate) fn new<S: ToString>(segments: &[S]) -> Self {
         Path {
             segments: segments.iter().map(|s| s.to_string()).collect(),

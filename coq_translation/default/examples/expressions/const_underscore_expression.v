@@ -3,67 +3,65 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module  Foo.
 Section Foo.
-  Context `{ℋ : State.Trait}.
-  
   Record t : Set := {
-    test : bool;
+    test : bool.t;
   }.
   
   Global Instance Get_test : Notation.Dot "test" := {
-    Notation.dot x := let* x := M.read x in M.pure x.(test) : M _;
+    Notation.dot x := let* x := M.read x in M.alloc x.(test) : M _;
   }.
   Global Instance Get_AF_test : Notation.DoubleColon t "test" := {
-    Notation.double_colon x := let* x := M.read x in M.pure x.(test) : M _;
+    Notation.double_colon x := let* x := M.read x in M.alloc x.(test) : M _;
   }.
 End Foo.
 End Foo.
-Definition Foo `{ℋ : State.Trait} : Set := M.Val Foo.t.
 
 Module  Bar.
 Section Bar.
-  Context `{ℋ : State.Trait}.
-  
   Record t : Set := {
-    test : alloc.string.String;
+    test : alloc.string.String.t;
   }.
   
   Global Instance Get_test : Notation.Dot "test" := {
-    Notation.dot x := let* x := M.read x in M.pure x.(test) : M _;
+    Notation.dot x := let* x := M.read x in M.alloc x.(test) : M _;
   }.
   Global Instance Get_AF_test : Notation.DoubleColon t "test" := {
-    Notation.double_colon x := let* x := M.read x in M.pure x.(test) : M _;
+    Notation.double_colon x := let* x := M.read x in M.alloc x.(test) : M _;
   }.
 End Bar.
 End Bar.
-Definition Bar `{ℋ : State.Trait} : Set := M.Val Bar.t.
 
 Module  BarTrait.
 Section BarTrait.
-  Context `{ℋ : State.Trait}.
-  
   Class Trait (Self : Set) : Type := {
-    show : Self -> M alloc.string.String;
+    show : ltac:(Self) -> M alloc.string.String.t;
   }.
   
 End BarTrait.
 End BarTrait.
 
-Module  Impl_const_underscore_expression_BarTrait_for_const_underscore_expression_Bar.
-Section Impl_const_underscore_expression_BarTrait_for_const_underscore_expression_Bar.
-  Context `{ℋ : State.Trait}.
+Module  Impl_const_underscore_expression_BarTrait_for_const_underscore_expression_Bar_t.
+Section Impl_const_underscore_expression_BarTrait_for_const_underscore_expression_Bar_t.
+  Ltac Self := exact const_underscore_expression.Bar.t.
   
-  Definition Self : Set := const_underscore_expression.Bar.
-  
-  Definition show (self : Self) : M alloc.string.String :=
+  (*
+          fn show(self: Self) -> String {
+              self.test
+          }
+  *)
+  Definition show
+      (self : M.Val ltac:(Self))
+      : M (M.Val alloc.string.String.t) :=
     M.function_body self.["test"].
   
   Global Instance AssociatedFunction_show :
-    Notation.DoubleColon Self "show" := {
+    Notation.DoubleColon ltac:(Self) "show" := {
     Notation.double_colon := show;
   }.
   
-  Global Instance ℐ : const_underscore_expression.BarTrait.Trait Self := {
+  Global Instance ℐ :
+    const_underscore_expression.BarTrait.Trait ltac:(Self) := {
     const_underscore_expression.BarTrait.show := show;
   }.
-End Impl_const_underscore_expression_BarTrait_for_const_underscore_expression_Bar.
-End Impl_const_underscore_expression_BarTrait_for_const_underscore_expression_Bar.
+End Impl_const_underscore_expression_BarTrait_for_const_underscore_expression_Bar_t.
+End Impl_const_underscore_expression_BarTrait_for_const_underscore_expression_Bar_t.

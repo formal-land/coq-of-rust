@@ -192,7 +192,7 @@ impl Expr {
     pub(crate) fn tt() -> Self {
         Expr {
             kind: ExprKind::tt(),
-            ty: Some(CoqType::unit()),
+            ty: Some(CoqType::unit().val()),
         }
     }
 }
@@ -780,7 +780,12 @@ impl ExprKind {
                 nest([
                     path.to_doc(),
                     line(),
-                    nest([text("(Self :="), line(), self_ty.to_doc(false), text(")")]),
+                    nest([
+                        text("(Self :="),
+                        line(),
+                        self_ty.to_coq().to_doc(false),
+                        text(")"),
+                    ]),
                     line(),
                     nest([
                         text("(Trait :="),
@@ -791,7 +796,7 @@ impl ExprKind {
                 ]),
             ),
             ExprKind::AssociatedFunction { ty, func } => nest([
-                ty.to_doc(true),
+                ty.to_coq().to_doc(true),
                 text("::["),
                 text(format!("\"{func}\"")),
                 text("]"),
@@ -1030,7 +1035,7 @@ impl StmtKind {
                                         text("ltac:("),
                                         text("refine"),
                                         line(),
-                                        ty.to_doc(true),
+                                        ty.to_coq().to_doc(true),
                                         text(")"),
                                     ]),
                                 ]),

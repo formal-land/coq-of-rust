@@ -3,47 +3,56 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module  Number.
 Section Number.
-  Context `{ℋ : State.Trait}.
-  
   Record t : Set := {
-    value : i32;
+    value : i32.t;
   }.
   
   Global Instance Get_value : Notation.Dot "value" := {
-    Notation.dot x := let* x := M.read x in M.pure x.(value) : M _;
+    Notation.dot x := let* x := M.read x in M.alloc x.(value) : M _;
   }.
   Global Instance Get_AF_value : Notation.DoubleColon t "value" := {
-    Notation.double_colon x := let* x := M.read x in M.pure x.(value) : M _;
+    Notation.double_colon x := let* x := M.read x in M.alloc x.(value) : M _;
   }.
 End Number.
 End Number.
-Definition Number `{ℋ : State.Trait} : Set := M.Val Number.t.
 
-Module  Impl_core_convert_From_i32_for_from_Number.
-Section Impl_core_convert_From_i32_for_from_Number.
-  Context `{ℋ : State.Trait}.
+Module  Impl_core_convert_From_i32_t_for_from_Number_t.
+Section Impl_core_convert_From_i32_t_for_from_Number_t.
+  Ltac Self := exact from.Number.t.
   
-  Definition Self : Set := from.Number.
-  
-  Definition from (item : i32) : M Self :=
-    M.function_body (M.alloc {| from.Number.value := item; |}).
+  (*
+      fn from(item: i32) -> Self {
+          Number { value: item }
+      }
+  *)
+  Definition from (item : M.Val i32.t) : M (M.Val ltac:(Self)) :=
+    M.function_body
+      (let* α0 := M.read item in
+      M.alloc {| from.Number.value := α0; |}).
   
   Global Instance AssociatedFunction_from :
-    Notation.DoubleColon Self "from" := {
+    Notation.DoubleColon ltac:(Self) "from" := {
     Notation.double_colon := from;
   }.
   
-  Global Instance ℐ : core.convert.From.Trait Self (T := i32) := {
+  Global Instance ℐ : core.convert.From.Trait ltac:(Self) (T := i32.t) := {
     core.convert.From.from := from;
   }.
-End Impl_core_convert_From_i32_for_from_Number.
-End Impl_core_convert_From_i32_for_from_Number.
+End Impl_core_convert_From_i32_t_for_from_Number_t.
+End Impl_core_convert_From_i32_t_for_from_Number_t.
 
+(*
+fn main() {
+    Number::from(30);
+}
+*)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{ℋ : State.Trait} : M unit :=
+Definition main : M (M.Val unit) :=
   M.function_body
-    (let* _ : ltac:(refine from.Number) :=
-      let* α0 : ltac:(refine i32) := M.alloc 30 in
-      (core.convert.From.from (Self := from.Number) (Trait := ltac:(refine _)))
+    (let* _ : ltac:(refine (M.Val from.Number.t)) :=
+      let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 30 in
+      (core.convert.From.from
+          (Self := from.Number.t)
+          (Trait := ltac:(refine _)))
         α0 in
     M.alloc tt).

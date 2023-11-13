@@ -3,74 +3,91 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module  Sheep.
 Section Sheep.
-  Context `{ℋ : State.Trait}.
-  
   Record t : Set := { }.
 End Sheep.
 End Sheep.
-Definition Sheep `{ℋ : State.Trait} : Set := M.Val Sheep.t.
 
 Module  Cow.
 Section Cow.
-  Context `{ℋ : State.Trait}.
-  
   Record t : Set := { }.
 End Cow.
 End Cow.
-Definition Cow `{ℋ : State.Trait} : Set := M.Val Cow.t.
 
 Module  Animal.
 Section Animal.
-  Context `{ℋ : State.Trait}.
-  
   Class Trait (Self : Set) : Type := {
-    noise : (ref Self) -> M (ref str);
+    noise : (ref ltac:(Self)) -> M (ref str.t);
   }.
   
 End Animal.
 End Animal.
 
-Module  Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep.
-Section Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep.
-  Context `{ℋ : State.Trait}.
+Module  Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep_t.
+Section Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep_t.
+  Ltac Self := exact returning_traits_with_dyn.Sheep.t.
   
-  Definition Self : Set := returning_traits_with_dyn.Sheep.
-  
-  Parameter noise : (ref Self) -> M (ref str).
+  (*
+      fn noise(&self) -> &'static str {
+          "baaaaah!"
+      }
+  *)
+  Parameter noise : (M.Val (ref ltac:(Self))) -> M (M.Val (ref str.t)).
   
   Global Instance AssociatedFunction_noise :
-    Notation.DoubleColon Self "noise" := {
+    Notation.DoubleColon ltac:(Self) "noise" := {
     Notation.double_colon := noise;
   }.
   
-  Global Instance ℐ : returning_traits_with_dyn.Animal.Trait Self := {
+  Global Instance ℐ : returning_traits_with_dyn.Animal.Trait ltac:(Self) := {
     returning_traits_with_dyn.Animal.noise := noise;
   }.
-End Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep.
-End Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep.
+End Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep_t.
+End Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep_t.
 
-Module  Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
-Section Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
-  Context `{ℋ : State.Trait}.
+Module  Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow_t.
+Section Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow_t.
+  Ltac Self := exact returning_traits_with_dyn.Cow.t.
   
-  Definition Self : Set := returning_traits_with_dyn.Cow.
-  
-  Parameter noise : (ref Self) -> M (ref str).
+  (*
+      fn noise(&self) -> &'static str {
+          "moooooo!"
+      }
+  *)
+  Parameter noise : (M.Val (ref ltac:(Self))) -> M (M.Val (ref str.t)).
   
   Global Instance AssociatedFunction_noise :
-    Notation.DoubleColon Self "noise" := {
+    Notation.DoubleColon ltac:(Self) "noise" := {
     Notation.double_colon := noise;
   }.
   
-  Global Instance ℐ : returning_traits_with_dyn.Animal.Trait Self := {
+  Global Instance ℐ : returning_traits_with_dyn.Animal.Trait ltac:(Self) := {
     returning_traits_with_dyn.Animal.noise := noise;
   }.
-End Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
-End Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
+End Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow_t.
+End Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow_t.
 
+(*
+fn random_animal(random_number: f64) -> Box<dyn Animal> {
+    if random_number < 0.5 {
+        Box::new(Sheep {})
+    } else {
+        Box::new(Cow {})
+    }
+}
+*)
 Parameter random_animal :
-    forall `{ℋ : State.Trait},
-    f64 -> M (alloc.boxed.Box _ (* dyn *) alloc.boxed.Box.Default.A).
+    (M.Val f64.t) ->
+      M (M.Val (alloc.boxed.Box.t _ (* dyn *) alloc.boxed.Box.Default.A)).
 
+(*
+fn main() {
+    let random_number = 0.234;
+    let animal = random_animal(random_number);
+    println!(
+        "You've randomly chosen an animal, and it says {}",
+        animal.noise()
+    );
+}
+*)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{ℋ : State.Trait}, M unit.
+Parameter main : M (M.Val unit).

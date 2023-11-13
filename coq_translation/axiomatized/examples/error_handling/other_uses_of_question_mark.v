@@ -2,82 +2,111 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Ltac Result T :=
-  refine
-    (core.result.Result
+  exact
+    (core.result.Result.t
       T
-      (alloc.boxed.Box _ (* OpaqueTy *) alloc.boxed.Box.Default.A)).
+      (alloc.boxed.Box.t _ (* dyn *) alloc.boxed.Box.Default.A)).
 
 Module  EmptyVec.
 Section EmptyVec.
-  Context `{ℋ : State.Trait}.
-  
   Inductive t : Set := Build.
 End EmptyVec.
 End EmptyVec.
-Definition EmptyVec `{ℋ : State.Trait} := M.Val EmptyVec.t.
 
-Module  Impl_core_fmt_Debug_for_other_uses_of_question_mark_EmptyVec.
-Section Impl_core_fmt_Debug_for_other_uses_of_question_mark_EmptyVec.
-  Context `{ℋ : State.Trait}.
+Module  Impl_core_fmt_Debug_for_other_uses_of_question_mark_EmptyVec_t.
+Section Impl_core_fmt_Debug_for_other_uses_of_question_mark_EmptyVec_t.
+  Ltac Self := exact other_uses_of_question_mark.EmptyVec.t.
   
-  Definition Self : Set := other_uses_of_question_mark.EmptyVec.
-  
+  (*
+  Debug
+  *)
   Parameter fmt :
-      (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
+      (M.Val (ref ltac:(Self))) ->
+        (M.Val (mut_ref core.fmt.Formatter.t)) ->
+        M (M.Val ltac:(core.fmt.Result)).
   
-  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {
+  Global Instance AssociatedFunction_fmt :
+    Notation.DoubleColon ltac:(Self) "fmt" := {
     Notation.double_colon := fmt;
   }.
   
-  Global Instance ℐ : core.fmt.Debug.Trait Self := {
+  Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
     core.fmt.Debug.fmt := fmt;
   }.
-End Impl_core_fmt_Debug_for_other_uses_of_question_mark_EmptyVec.
-End Impl_core_fmt_Debug_for_other_uses_of_question_mark_EmptyVec.
+End Impl_core_fmt_Debug_for_other_uses_of_question_mark_EmptyVec_t.
+End Impl_core_fmt_Debug_for_other_uses_of_question_mark_EmptyVec_t.
 
-Module  Impl_core_fmt_Display_for_other_uses_of_question_mark_EmptyVec.
-Section Impl_core_fmt_Display_for_other_uses_of_question_mark_EmptyVec.
-  Context `{ℋ : State.Trait}.
+Module  Impl_core_fmt_Display_for_other_uses_of_question_mark_EmptyVec_t.
+Section Impl_core_fmt_Display_for_other_uses_of_question_mark_EmptyVec_t.
+  Ltac Self := exact other_uses_of_question_mark.EmptyVec.t.
   
-  Definition Self : Set := other_uses_of_question_mark.EmptyVec.
-  
+  (*
+      fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+          write!(f, "invalid first item to double")
+      }
+  *)
   Parameter fmt :
-      (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
+      (M.Val (ref ltac:(Self))) ->
+        (M.Val (mut_ref core.fmt.Formatter.t)) ->
+        M (M.Val ltac:(core.fmt.Result)).
   
-  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {
+  Global Instance AssociatedFunction_fmt :
+    Notation.DoubleColon ltac:(Self) "fmt" := {
     Notation.double_colon := fmt;
   }.
   
-  Global Instance ℐ : core.fmt.Display.Trait Self := {
+  Global Instance ℐ : core.fmt.Display.Trait ltac:(Self) := {
     core.fmt.Display.fmt := fmt;
   }.
-End Impl_core_fmt_Display_for_other_uses_of_question_mark_EmptyVec.
-End Impl_core_fmt_Display_for_other_uses_of_question_mark_EmptyVec.
+End Impl_core_fmt_Display_for_other_uses_of_question_mark_EmptyVec_t.
+End Impl_core_fmt_Display_for_other_uses_of_question_mark_EmptyVec_t.
 
-Module  Impl_core_error_Error_for_other_uses_of_question_mark_EmptyVec.
-Section Impl_core_error_Error_for_other_uses_of_question_mark_EmptyVec.
-  Context `{ℋ : State.Trait}.
+Module  Impl_core_error_Error_for_other_uses_of_question_mark_EmptyVec_t.
+Section Impl_core_error_Error_for_other_uses_of_question_mark_EmptyVec_t.
+  Ltac Self := exact other_uses_of_question_mark.EmptyVec.t.
   
-  Definition Self : Set := other_uses_of_question_mark.EmptyVec.
-  
-  Global Instance ℐ : core.error.Error.Required.Trait Self := {
+  Global Instance ℐ : core.error.Error.Required.Trait ltac:(Self) := {
     core.error.Error.source := Datatypes.None;
     core.error.Error.type_id := Datatypes.None;
     core.error.Error.description := Datatypes.None;
     core.error.Error.cause := Datatypes.None;
     core.error.Error.provide := Datatypes.None;
   }.
-End Impl_core_error_Error_for_other_uses_of_question_mark_EmptyVec.
-End Impl_core_error_Error_for_other_uses_of_question_mark_EmptyVec.
+End Impl_core_error_Error_for_other_uses_of_question_mark_EmptyVec_t.
+End Impl_core_error_Error_for_other_uses_of_question_mark_EmptyVec_t.
 
+(*
+fn double_first(vec: Vec<&str>) -> Result<i32> {
+    let first = vec.first().ok_or(EmptyVec)?;
+    let parsed = first.parse::<i32>()?;
+    Ok(2 * parsed)
+}
+*)
 Parameter double_first :
-    forall `{ℋ : State.Trait},
-    (alloc.vec.Vec (ref str) alloc.vec.Vec.Default.A) ->
-      M ltac:(other_uses_of_question_mark.Result constr:(i32)).
+    (M.Val (alloc.vec.Vec.t (ref str.t) alloc.vec.Vec.Default.A)) ->
+      M (M.Val ltac:(other_uses_of_question_mark.Result i32.t)).
 
+(*
+fn print(result: Result<i32>) {
+    match result {
+        Ok(n) => println!("The first doubled is {}", n),
+        Err(e) => println!("Error: {}", e),
+    }
+}
+*)
 Parameter print :
-    forall `{ℋ : State.Trait},
-    ltac:(other_uses_of_question_mark.Result constr:(i32)) -> M unit.
+    (M.Val ltac:(other_uses_of_question_mark.Result i32.t)) -> M (M.Val unit).
 
+(*
+fn main() {
+    let numbers = vec!["42", "93", "18"];
+    let empty = vec![];
+    let strings = vec!["tofu", "93", "18"];
+
+    print(double_first(numbers));
+    print(double_first(empty));
+    print(double_first(strings));
+}
+*)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{ℋ : State.Trait}, M unit.
+Parameter main : M (M.Val unit).

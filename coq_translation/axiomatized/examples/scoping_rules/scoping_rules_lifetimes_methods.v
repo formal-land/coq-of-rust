@@ -3,40 +3,53 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module  Owner.
 Section Owner.
-  Context `{ℋ : State.Trait}.
-  
   Record t : Set := {
-    x0 : i32;
+    x0 : i32.t;
   }.
   
   Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
+    Notation.dot x := let* x := M.read x in M.alloc x.(x0) : M _;
   }.
 End Owner.
 End Owner.
-Definition Owner `{ℋ : State.Trait} : Set := M.Val Owner.t.
 
-Module  Impl_scoping_rules_lifetimes_methods_Owner.
-Section Impl_scoping_rules_lifetimes_methods_Owner.
-  Context `{ℋ : State.Trait}.
+Module  Impl_scoping_rules_lifetimes_methods_Owner_t.
+Section Impl_scoping_rules_lifetimes_methods_Owner_t.
+  Ltac Self := exact scoping_rules_lifetimes_methods.Owner.t.
   
-  Definition Self : Set := scoping_rules_lifetimes_methods.Owner.
-  
-  Parameter add_one : (mut_ref Self) -> M unit.
+  (*
+      fn add_one<'a>(&'a mut self) {
+          self.0 += 1;
+      }
+  *)
+  Parameter add_one : (M.Val (mut_ref ltac:(Self))) -> M (M.Val unit).
   
   Global Instance AssociatedFunction_add_one :
-    Notation.DoubleColon Self "add_one" := {
+    Notation.DoubleColon ltac:(Self) "add_one" := {
     Notation.double_colon := add_one;
   }.
   
-  Parameter print : (ref Self) -> M unit.
+  (*
+      fn print<'a>(&'a self) {
+          println!("`print`: {}", self.0);
+      }
+  *)
+  Parameter print : (M.Val (ref ltac:(Self))) -> M (M.Val unit).
   
   Global Instance AssociatedFunction_print :
-    Notation.DoubleColon Self "print" := {
+    Notation.DoubleColon ltac:(Self) "print" := {
     Notation.double_colon := print;
   }.
-End Impl_scoping_rules_lifetimes_methods_Owner.
-End Impl_scoping_rules_lifetimes_methods_Owner.
+End Impl_scoping_rules_lifetimes_methods_Owner_t.
+End Impl_scoping_rules_lifetimes_methods_Owner_t.
 
+(*
+fn main() {
+    let mut owner = Owner(18);
+
+    owner.add_one();
+    owner.print();
+}
+*)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{ℋ : State.Trait}, M unit.
+Parameter main : M (M.Val unit).

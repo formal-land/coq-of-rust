@@ -9,12 +9,13 @@ Require CoqOfRust.core.cmp.
 (* derived implementation of PartialEq *)
 Module Impl_PartialEq_for_Result.
   Parameter eq :
-    forall `{State.Trait} {T E : Set}
+    forall {T E : Set}
       `{core.cmp.PartialEq.Trait T} `{core.cmp.PartialEq.Trait E},
-      ref (Result T E) -> ref (Result T E) -> M bool.
+      M.Val (ref (Result T E)) ->
+      M.Val (ref (Result T E)) ->
+      M (M.Val bool).
 
   Global Instance I {T T_Rhs E E_Rhs : Set}
-    `{State.Trait}
     {_ : core.cmp.PartialEq.Trait T (Rhs := T_Rhs)}
     {_ : core.cmp.PartialEq.Trait E (Rhs := E_Rhs)} :
     core.cmp.PartialEq.Required.Trait (Result T E) (Rhs := _) := {
@@ -25,7 +26,6 @@ End Impl_PartialEq_for_Result.
 
 Module Impl_Result.
 Section Impl_Result.
-  Context `{State.Trait}.
   Context {T E : Set}.
 
   Definition Self : Set := Result T E.

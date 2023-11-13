@@ -2,20 +2,28 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module Number.
-  Inductive t `{ℋ : State.Trait} : Set :=
+  Inductive t : Set :=
   | Zero
   | One
   | Two.
 End Number.
-Definition Number `{ℋ : State.Trait} : Set := M.Val Number.t.
 
 Module Color.
-  Inductive t `{ℋ : State.Trait} : Set :=
+  Inductive t : Set :=
   | Red
   | Green
   | Blue.
 End Color.
-Definition Color `{ℋ : State.Trait} : Set := M.Val Color.t.
 
+(*
+fn main() {
+    // `enums` can be cast as integers.
+    println!("zero is {}", Number::Zero as i32);
+    println!("one is {}", Number::One as i32);
+
+    println!("roses are #{:06x}", Color::Red as i32);
+    println!("violets are #{:06x}", Color::Blue as i32);
+}
+*)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{ℋ : State.Trait}, M unit.
+Parameter main : M (M.Val unit).

@@ -3,117 +3,228 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module checked.
   Module MathError.
-    Inductive t `{ℋ : State.Trait} : Set :=
+    Inductive t : Set :=
     | DivisionByZero
     | NonPositiveLogarithm
     | NegativeSquareRoot.
   End MathError.
-  Definition MathError `{ℋ : State.Trait} : Set := M.Val MathError.t.
   
-  Module  Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
-  Section Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
-    Context `{ℋ : State.Trait}.
+  Module  Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError_t.
+  Section Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError_t.
+    Ltac Self := exact result_chaining_with_question_mark.checked.MathError.t.
     
-    Definition Self : Set :=
-      result_chaining_with_question_mark.checked.MathError.
-    
+    (*
+        Debug
+    *)
     Parameter fmt :
-        (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
+        (M.Val (ref ltac:(Self))) ->
+          (M.Val (mut_ref core.fmt.Formatter.t)) ->
+          M (M.Val ltac:(core.fmt.Result)).
     
     Global Instance AssociatedFunction_fmt :
-      Notation.DoubleColon Self "fmt" := {
+      Notation.DoubleColon ltac:(Self) "fmt" := {
       Notation.double_colon := fmt;
     }.
     
-    Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
       core.fmt.Debug.fmt := fmt;
     }.
-  End Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
-  End Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
+  End Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError_t.
+  End Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError_t.
   
   Ltac MathResult :=
-    refine
-      (core.result.Result
-        f64
-        result_chaining_with_question_mark.checked.MathError).
+    exact
+      (core.result.Result.t
+        f64.t
+        result_chaining_with_question_mark.checked.MathError.t).
   
+  (*
+      fn div(x: f64, y: f64) -> MathResult {
+          if y == 0.0 {
+              Err(MathError::DivisionByZero)
+          } else {
+              Ok(x / y)
+          }
+      }
+  *)
   Parameter div :
-      forall `{ℋ : State.Trait},
-      f64 ->
-        f64 ->
-        M ltac:(result_chaining_with_question_mark.checked.MathResult).
+      (M.Val f64.t) ->
+        (M.Val f64.t) ->
+        M (M.Val ltac:(result_chaining_with_question_mark.checked.MathResult)).
   
+  (*
+      fn sqrt(x: f64) -> MathResult {
+          if x < 0.0 {
+              Err(MathError::NegativeSquareRoot)
+          } else {
+              Ok(x.sqrt())
+          }
+      }
+  *)
   Parameter sqrt :
-      forall `{ℋ : State.Trait},
-      f64 -> M ltac:(result_chaining_with_question_mark.checked.MathResult).
+      (M.Val f64.t) ->
+        M (M.Val ltac:(result_chaining_with_question_mark.checked.MathResult)).
   
+  (*
+      fn ln(x: f64) -> MathResult {
+          if x <= 0.0 {
+              Err(MathError::NonPositiveLogarithm)
+          } else {
+              Ok(x.ln())
+          }
+      }
+  *)
   Parameter ln :
-      forall `{ℋ : State.Trait},
-      f64 -> M ltac:(result_chaining_with_question_mark.checked.MathResult).
+      (M.Val f64.t) ->
+        M (M.Val ltac:(result_chaining_with_question_mark.checked.MathResult)).
   
+  (*
+      fn op_(x: f64, y: f64) -> MathResult {
+          // if `div` "fails", then `DivisionByZero` will be `return`ed
+          let ratio = div(x, y)?;
+  
+          // if `ln` "fails", then `NonPositiveLogarithm` will be `return`ed
+          let ln = ln(ratio)?;
+  
+          sqrt(ln)
+      }
+  *)
   Parameter op_ :
-      forall `{ℋ : State.Trait},
-      f64 ->
-        f64 ->
-        M ltac:(result_chaining_with_question_mark.checked.MathResult).
+      (M.Val f64.t) ->
+        (M.Val f64.t) ->
+        M (M.Val ltac:(result_chaining_with_question_mark.checked.MathResult)).
   
-  Parameter op : forall `{ℋ : State.Trait}, f64 -> f64 -> M unit.
+  (*
+      pub fn op(x: f64, y: f64) {
+          match op_(x, y) {
+              Err(why) => panic!(
+                  "{}",
+                  match why {
+                      MathError::NonPositiveLogarithm => "logarithm of non-positive number",
+                      MathError::DivisionByZero => "division by zero",
+                      MathError::NegativeSquareRoot => "square root of negative number",
+                  }
+              ),
+              Ok(value) => println!("{}", value),
+          }
+      }
+  *)
+  Parameter op : (M.Val f64.t) -> (M.Val f64.t) -> M (M.Val unit).
 End checked.
 
 Module MathError.
-  Inductive t `{ℋ : State.Trait} : Set :=
+  Inductive t : Set :=
   | DivisionByZero
   | NonPositiveLogarithm
   | NegativeSquareRoot.
 End MathError.
-Definition MathError `{ℋ : State.Trait} : Set := M.Val MathError.t.
 
-Module  Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
-Section Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
-  Context `{ℋ : State.Trait}.
+Module  Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError_t.
+Section Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError_t.
+  Ltac Self := exact result_chaining_with_question_mark.checked.MathError.t.
   
-  Definition Self : Set := result_chaining_with_question_mark.checked.MathError.
-  
+  (*
+      Debug
+  *)
   Parameter fmt :
-      (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
+      (M.Val (ref ltac:(Self))) ->
+        (M.Val (mut_ref core.fmt.Formatter.t)) ->
+        M (M.Val ltac:(core.fmt.Result)).
   
-  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {
+  Global Instance AssociatedFunction_fmt :
+    Notation.DoubleColon ltac:(Self) "fmt" := {
     Notation.double_colon := fmt;
   }.
   
-  Global Instance ℐ : core.fmt.Debug.Trait Self := {
+  Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
     core.fmt.Debug.fmt := fmt;
   }.
-End Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
-End Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
+End Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError_t.
+End Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError_t.
 
 Ltac MathResult :=
-  refine
-    (core.result.Result
-      f64
-      result_chaining_with_question_mark.checked.MathError).
+  exact
+    (core.result.Result.t
+      f64.t
+      result_chaining_with_question_mark.checked.MathError.t).
 
+(*
+    fn div(x: f64, y: f64) -> MathResult {
+        if y == 0.0 {
+            Err(MathError::DivisionByZero)
+        } else {
+            Ok(x / y)
+        }
+    }
+*)
 Parameter div :
-    forall `{ℋ : State.Trait},
-    f64 ->
-      f64 ->
-      M ltac:(result_chaining_with_question_mark.checked.MathResult).
+    (M.Val f64.t) ->
+      (M.Val f64.t) ->
+      M (M.Val ltac:(result_chaining_with_question_mark.checked.MathResult)).
 
+(*
+    fn sqrt(x: f64) -> MathResult {
+        if x < 0.0 {
+            Err(MathError::NegativeSquareRoot)
+        } else {
+            Ok(x.sqrt())
+        }
+    }
+*)
 Parameter sqrt :
-    forall `{ℋ : State.Trait},
-    f64 -> M ltac:(result_chaining_with_question_mark.checked.MathResult).
+    (M.Val f64.t) ->
+      M (M.Val ltac:(result_chaining_with_question_mark.checked.MathResult)).
 
+(*
+    fn ln(x: f64) -> MathResult {
+        if x <= 0.0 {
+            Err(MathError::NonPositiveLogarithm)
+        } else {
+            Ok(x.ln())
+        }
+    }
+*)
 Parameter ln :
-    forall `{ℋ : State.Trait},
-    f64 -> M ltac:(result_chaining_with_question_mark.checked.MathResult).
+    (M.Val f64.t) ->
+      M (M.Val ltac:(result_chaining_with_question_mark.checked.MathResult)).
 
+(*
+    fn op_(x: f64, y: f64) -> MathResult {
+        // if `div` "fails", then `DivisionByZero` will be `return`ed
+        let ratio = div(x, y)?;
+
+        // if `ln` "fails", then `NonPositiveLogarithm` will be `return`ed
+        let ln = ln(ratio)?;
+
+        sqrt(ln)
+    }
+*)
 Parameter op_ :
-    forall `{ℋ : State.Trait},
-    f64 ->
-      f64 ->
-      M ltac:(result_chaining_with_question_mark.checked.MathResult).
+    (M.Val f64.t) ->
+      (M.Val f64.t) ->
+      M (M.Val ltac:(result_chaining_with_question_mark.checked.MathResult)).
 
-Parameter op : forall `{ℋ : State.Trait}, f64 -> f64 -> M unit.
+(*
+    pub fn op(x: f64, y: f64) {
+        match op_(x, y) {
+            Err(why) => panic!(
+                "{}",
+                match why {
+                    MathError::NonPositiveLogarithm => "logarithm of non-positive number",
+                    MathError::DivisionByZero => "division by zero",
+                    MathError::NegativeSquareRoot => "square root of negative number",
+                }
+            ),
+            Ok(value) => println!("{}", value),
+        }
+    }
+*)
+Parameter op : (M.Val f64.t) -> (M.Val f64.t) -> M (M.Val unit).
 
+(*
+fn main() {
+    checked::op(1.0, 10.0);
+}
+*)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{ℋ : State.Trait}, M unit.
+Parameter main : M (M.Val unit).

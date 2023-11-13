@@ -2,34 +2,61 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module Fruit.
-  Inductive t `{ℋ : State.Trait} : Set :=
+  Inductive t : Set :=
   | Apple
   | Orange
   | Banana
   | Kiwi
   | Lemon.
 End Fruit.
-Definition Fruit `{ℋ : State.Trait} : Set := M.Val Fruit.t.
 
-Module  Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_with_Fruit.
-Section Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_with_Fruit.
-  Context `{ℋ : State.Trait}.
+Module  Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_with_Fruit_t.
+Section Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_with_Fruit_t.
+  Ltac Self :=
+    exact unpacking_options_and_defaults_via_get_or_insert_with.Fruit.t.
   
-  Definition Self : Set :=
-    unpacking_options_and_defaults_via_get_or_insert_with.Fruit.
-  
+  (*
+  Debug
+  *)
   Parameter fmt :
-      (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
+      (M.Val (ref ltac:(Self))) ->
+        (M.Val (mut_ref core.fmt.Formatter.t)) ->
+        M (M.Val ltac:(core.fmt.Result)).
   
-  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {
+  Global Instance AssociatedFunction_fmt :
+    Notation.DoubleColon ltac:(Self) "fmt" := {
     Notation.double_colon := fmt;
   }.
   
-  Global Instance ℐ : core.fmt.Debug.Trait Self := {
+  Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
     core.fmt.Debug.fmt := fmt;
   }.
-End Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_with_Fruit.
-End Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_with_Fruit.
+End Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_with_Fruit_t.
+End Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_with_Fruit_t.
 
+(*
+fn main() {
+    let mut my_fruit: Option<Fruit> = None;
+    let get_lemon_as_fallback = || {
+        println!("Providing lemon as fallback");
+        Fruit::Lemon
+    };
+    let first_available_fruit = my_fruit.get_or_insert_with(get_lemon_as_fallback);
+    println!("my_fruit is: {:?}", first_available_fruit);
+    println!("first_available_fruit is: {:?}", first_available_fruit);
+    // Providing lemon as fallback
+    // my_fruit is: Lemon
+    // first_available_fruit is: Lemon
+
+    // If the Option has a value, it is left unchanged, and the closure is not invoked
+    let mut my_apple = Some(Fruit::Apple);
+    let should_be_apple = my_apple.get_or_insert_with(get_lemon_as_fallback);
+    println!("should_be_apple is: {:?}", should_be_apple);
+    println!("my_apple is unchanged: {:?}", my_apple);
+    // The output is a follows. Note that the closure `get_lemon_as_fallback` is not invoked
+    // should_be_apple is: Apple
+    // my_apple is unchanged: Some(Apple)
+}
+*)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{ℋ : State.Trait}, M unit.
+Parameter main : M (M.Val unit).

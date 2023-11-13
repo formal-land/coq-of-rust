@@ -53,14 +53,14 @@ pub(crate) fn compile_expr<'a>(
 ) -> Expr {
     let expr = thir.exprs.get(*expr_id).unwrap();
     let kind = compile_expr_kind(env, thir, expr_id);
-    let ty = compile_type(env, &expr.ty);
+    let ty = compile_type(env, &expr.ty).val();
     Expr { kind, ty: Some(ty) }
 }
 
 impl Expr {
     /// Return the borrowed expression if the expression is a borrow.
-    fn match_borrow(expr: &Expr) -> Option<Expr> {
-        match &expr.kind {
+    fn match_borrow(&self) -> Option<Self> {
+        match &self.kind {
             ExprKind::Call { func, args } => {
                 if args.len() != 1 {
                     return None;
@@ -76,6 +76,19 @@ impl Expr {
                 None
             }
             _ => None,
+        }
+    }
+
+    fn read(self) -> Self {
+        Expr {
+            kind: ExprKind::Call {
+                func: Box::new(Expr {
+                    kind: ExprKind::LocalVar("M.read".to_string()),
+                    ty: None,
+                }),
+                args: vec![self],
+            },
+            ty: None,
         }
     }
 }
@@ -106,7 +119,7 @@ fn compile_expr_kind<'a>(
             else_opt,
             ..
         } => {
-            let condition = Box::new(compile_expr(env, thir, cond));
+            let condition = Box::new(compile_expr(env, thir, cond).read());
             let success = Box::new(compile_expr(env, thir, then));
             let failure = match else_opt {
                 Some(else_expr) => Box::new(compile_expr(env, thir, else_expr)),
@@ -261,7 +274,33 @@ fn compile_expr_kind<'a>(
                     let arm = thir.arms.get(*arm_id).unwrap();
                     let pat = crate::thir_pattern::compile_pattern(env, &arm.pattern);
                     let body = compile_expr(env, thir, &arm.body);
-                    MatchArm { pat, body }
+                    let body = Box::new(Stmt {
+                        ty: body.ty.clone(),
+                        kind: StmtKind::Expr(Box::new(body)),
+                    });
+                    let bindings = pat.get_bindings();
+                    // Allocate all the bindings to [M.Val]
+                    let body = bindings.iter().fold(body, |body, binding| {
+                        Box::new(Stmt {
+                            ty: body.ty.clone(),
+                            kind: StmtKind::Let {
+                                is_monadic: false,
+                                pattern: Box::new(Pattern::Variable(binding.clone())),
+                                init: Box::new(Expr {
+                                    kind: ExprKind::LocalVar(binding.clone()).alloc(),
+                                    ty: None,
+                                }),
+                                body,
+                            },
+                        })
+                    });
+                    MatchArm {
+                        pat,
+                        body: Expr {
+                            ty: body.ty.clone(),
+                            kind: ExprKind::Block(body),
+                        },
+                    }
                 })
                 .collect();
             ExprKind::Match { scrutinee, arms }
@@ -386,7 +425,7 @@ fn compile_expr_kind<'a>(
         thir::ExprKind::Tuple { fields } => {
             let elements: Vec<_> = fields
                 .iter()
-                .map(|field| compile_expr(env, thir, field))
+                .map(|field| compile_expr(env, thir, field).read())
                 .collect();
             if elements.is_empty() {
                 ExprKind::tt()
@@ -408,7 +447,7 @@ fn compile_expr_kind<'a>(
                 .map(|field| {
                     (
                         variant.fields.get(field.name).unwrap().name.to_string(),
-                        compile_expr(env, thir, &field.expr),
+                        compile_expr(env, thir, &field.expr).read(),
                     )
                 })
                 .collect();

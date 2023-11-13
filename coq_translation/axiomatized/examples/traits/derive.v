@@ -3,142 +3,174 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module  Centimeters.
 Section Centimeters.
-  Context `{ℋ : State.Trait}.
-  
   Record t : Set := {
-    x0 : f64;
+    x0 : f64.t;
   }.
   
   Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
+    Notation.dot x := let* x := M.read x in M.alloc x.(x0) : M _;
   }.
 End Centimeters.
 End Centimeters.
-Definition Centimeters `{ℋ : State.Trait} : Set := M.Val Centimeters.t.
 
-Module  Impl_core_marker_StructuralPartialEq_for_derive_Centimeters.
-Section Impl_core_marker_StructuralPartialEq_for_derive_Centimeters.
-  Context `{ℋ : State.Trait}.
+Module  Impl_core_marker_StructuralPartialEq_for_derive_Centimeters_t.
+Section Impl_core_marker_StructuralPartialEq_for_derive_Centimeters_t.
+  Ltac Self := exact derive.Centimeters.t.
   
-  Definition Self : Set := derive.Centimeters.
-  
-  Global Instance ℐ : core.marker.StructuralPartialEq.Trait Self := {
+  Global Instance ℐ : core.marker.StructuralPartialEq.Trait ltac:(Self) := {
   }.
-End Impl_core_marker_StructuralPartialEq_for_derive_Centimeters.
-End Impl_core_marker_StructuralPartialEq_for_derive_Centimeters.
+End Impl_core_marker_StructuralPartialEq_for_derive_Centimeters_t.
+End Impl_core_marker_StructuralPartialEq_for_derive_Centimeters_t.
 
-Module  Impl_core_cmp_PartialEq_for_derive_Centimeters.
-Section Impl_core_cmp_PartialEq_for_derive_Centimeters.
-  Context `{ℋ : State.Trait}.
+Module  Impl_core_cmp_PartialEq_for_derive_Centimeters_t.
+Section Impl_core_cmp_PartialEq_for_derive_Centimeters_t.
+  Ltac Self := exact derive.Centimeters.t.
   
-  Definition Self : Set := derive.Centimeters.
+  (*
+  PartialEq
+  *)
+  Parameter eq :
+      (M.Val (ref ltac:(Self))) ->
+        (M.Val (ref derive.Centimeters.t)) ->
+        M (M.Val bool.t).
   
-  Parameter eq : (ref Self) -> (ref derive.Centimeters) -> M bool.
-  
-  Global Instance AssociatedFunction_eq : Notation.DoubleColon Self "eq" := {
+  Global Instance AssociatedFunction_eq :
+    Notation.DoubleColon ltac:(Self) "eq" := {
     Notation.double_colon := eq;
   }.
   
   Global Instance ℐ :
-    core.cmp.PartialEq.Required.Trait Self
-      (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
+    core.cmp.PartialEq.Required.Trait ltac:(Self)
+      (Rhs := core.cmp.PartialEq.Default.Rhs ltac:(Self)) := {
     core.cmp.PartialEq.eq := eq;
     core.cmp.PartialEq.ne := Datatypes.None;
   }.
-End Impl_core_cmp_PartialEq_for_derive_Centimeters.
-End Impl_core_cmp_PartialEq_for_derive_Centimeters.
+End Impl_core_cmp_PartialEq_for_derive_Centimeters_t.
+End Impl_core_cmp_PartialEq_for_derive_Centimeters_t.
 
-Module  Impl_core_cmp_PartialOrd_for_derive_Centimeters.
-Section Impl_core_cmp_PartialOrd_for_derive_Centimeters.
-  Context `{ℋ : State.Trait}.
+Module  Impl_core_cmp_PartialOrd_for_derive_Centimeters_t.
+Section Impl_core_cmp_PartialOrd_for_derive_Centimeters_t.
+  Ltac Self := exact derive.Centimeters.t.
   
-  Definition Self : Set := derive.Centimeters.
-  
+  (*
+  PartialOrd
+  *)
   Parameter partial_cmp :
-      (ref Self) ->
-        (ref derive.Centimeters) ->
-        M (core.option.Option core.cmp.Ordering).
+      (M.Val (ref ltac:(Self))) ->
+        (M.Val (ref derive.Centimeters.t)) ->
+        M (M.Val (core.option.Option.t core.cmp.Ordering.t)).
   
   Global Instance AssociatedFunction_partial_cmp :
-    Notation.DoubleColon Self "partial_cmp" := {
+    Notation.DoubleColon ltac:(Self) "partial_cmp" := {
     Notation.double_colon := partial_cmp;
   }.
   
   Global Instance ℐ :
-    core.cmp.PartialOrd.Required.Trait Self
-      (Rhs := core.cmp.PartialOrd.Default.Rhs Self) := {
+    core.cmp.PartialOrd.Required.Trait ltac:(Self)
+      (Rhs := core.cmp.PartialOrd.Default.Rhs ltac:(Self)) := {
     core.cmp.PartialOrd.partial_cmp := partial_cmp;
     core.cmp.PartialOrd.lt := Datatypes.None;
     core.cmp.PartialOrd.le := Datatypes.None;
     core.cmp.PartialOrd.gt := Datatypes.None;
     core.cmp.PartialOrd.ge := Datatypes.None;
   }.
-End Impl_core_cmp_PartialOrd_for_derive_Centimeters.
-End Impl_core_cmp_PartialOrd_for_derive_Centimeters.
+End Impl_core_cmp_PartialOrd_for_derive_Centimeters_t.
+End Impl_core_cmp_PartialOrd_for_derive_Centimeters_t.
 
 Module  Inches.
 Section Inches.
-  Context `{ℋ : State.Trait}.
-  
   Record t : Set := {
-    x0 : i32;
+    x0 : i32.t;
   }.
   
   Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
+    Notation.dot x := let* x := M.read x in M.alloc x.(x0) : M _;
   }.
 End Inches.
 End Inches.
-Definition Inches `{ℋ : State.Trait} : Set := M.Val Inches.t.
 
-Module  Impl_core_fmt_Debug_for_derive_Inches.
-Section Impl_core_fmt_Debug_for_derive_Inches.
-  Context `{ℋ : State.Trait}.
+Module  Impl_core_fmt_Debug_for_derive_Inches_t.
+Section Impl_core_fmt_Debug_for_derive_Inches_t.
+  Ltac Self := exact derive.Inches.t.
   
-  Definition Self : Set := derive.Inches.
-  
+  (*
+  Debug
+  *)
   Parameter fmt :
-      (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
+      (M.Val (ref ltac:(Self))) ->
+        (M.Val (mut_ref core.fmt.Formatter.t)) ->
+        M (M.Val ltac:(core.fmt.Result)).
   
-  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {
+  Global Instance AssociatedFunction_fmt :
+    Notation.DoubleColon ltac:(Self) "fmt" := {
     Notation.double_colon := fmt;
   }.
   
-  Global Instance ℐ : core.fmt.Debug.Trait Self := {
+  Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
     core.fmt.Debug.fmt := fmt;
   }.
-End Impl_core_fmt_Debug_for_derive_Inches.
-End Impl_core_fmt_Debug_for_derive_Inches.
+End Impl_core_fmt_Debug_for_derive_Inches_t.
+End Impl_core_fmt_Debug_for_derive_Inches_t.
 
-Module  Impl_derive_Inches.
-Section Impl_derive_Inches.
-  Context `{ℋ : State.Trait}.
+Module  Impl_derive_Inches_t.
+Section Impl_derive_Inches_t.
+  Ltac Self := exact derive.Inches.t.
   
-  Definition Self : Set := derive.Inches.
+  (*
+      fn to_centimeters(&self) -> Centimeters {
+          let &Inches(inches) = self;
   
-  Parameter to_centimeters : (ref Self) -> M derive.Centimeters.
+          Centimeters(inches as f64 * 2.54)
+      }
+  *)
+  Parameter to_centimeters :
+      (M.Val (ref ltac:(Self))) -> M (M.Val derive.Centimeters.t).
   
   Global Instance AssociatedFunction_to_centimeters :
-    Notation.DoubleColon Self "to_centimeters" := {
+    Notation.DoubleColon ltac:(Self) "to_centimeters" := {
     Notation.double_colon := to_centimeters;
   }.
-End Impl_derive_Inches.
-End Impl_derive_Inches.
+End Impl_derive_Inches_t.
+End Impl_derive_Inches_t.
 
 Module  Seconds.
 Section Seconds.
-  Context `{ℋ : State.Trait}.
-  
   Record t : Set := {
-    x0 : i32;
+    x0 : i32.t;
   }.
   
   Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
+    Notation.dot x := let* x := M.read x in M.alloc x.(x0) : M _;
   }.
 End Seconds.
 End Seconds.
-Definition Seconds `{ℋ : State.Trait} : Set := M.Val Seconds.t.
 
+(*
+fn main() {
+    let _one_second = Seconds(1);
+
+    // Error: `Seconds` can't be printed; it doesn't implement the `Debug` trait
+    //println!("One second looks like: {:?}", _one_second);
+    // TODO ^ Try uncommenting this line
+
+    // Error: `Seconds` can't be compared; it doesn't implement the `PartialEq` trait
+    //let _this_is_true = (_one_second == _one_second);
+    // TODO ^ Try uncommenting this line
+
+    let foot = Inches(12);
+
+    println!("One foot equals {:?}", foot);
+
+    let meter = Centimeters(100.0);
+
+    let cmp = if foot.to_centimeters() < meter {
+        "smaller"
+    } else {
+        "bigger"
+    };
+
+    println!("One foot is {} than one meter.", cmp);
+}
+*)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{ℋ : State.Trait}, M unit.
+Parameter main : M (M.Val unit).

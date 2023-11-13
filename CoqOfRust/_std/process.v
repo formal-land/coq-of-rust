@@ -23,25 +23,21 @@ Require Import CoqOfRust.alloc.vec.
 Module ExitStatusError.
   Parameter t : Set.
 End ExitStatusError.
-Definition ExitStatusError := ExitStatusError.t.
 
 (* pub struct ChildStdin { /* private fields */ } *)
 Module ChildStdin.
   Parameter t : Set.
 End ChildStdin.
-Definition ChildStdin := ChildStdin.t.
 
 (* pub struct ChildStdout { /* private fields */ } *)
 Module ChildStdout.
   Parameter t : Set.
 End ChildStdout.
-Definition ChildStdout := ChildStdout.t.
 
 (* pub struct ChildStderr { /* private fields */ } *)
 Module ChildStderr.
   Parameter t : Set.
 End ChildStderr.
-Definition ChildStderr := ChildStderr.t.
 
 (* 
 pub struct Child {
@@ -52,43 +48,37 @@ pub struct Child {
 }
 *)
 Module Child.
-  Record t `{State.Trait} : Set := {
-    stdin : Option ChildStdin;
-    stdout : Option ChildStdout;
-    stderr : Option ChildStderr;
+  Record t : Set := {
+    stdin : Option.t ChildStdin.t;
+    stdout : Option.t ChildStdout.t;
+    stderr : Option.t ChildStderr.t;
   }.
 End Child.
-Definition Child `{State.Trait} := Child.t.
 
 (* pub struct ExitCode(_); *)
 Module ExitCode.
   Parameter t : Set.
 End ExitCode.
-Definition ExitCode := ExitCode.t.
 
 (* pub struct Command { /* private fields */ } *)
 Module Command.
   Parameter t : Set.
 End Command.
-Definition Command := Command.t.
 
 (* pub struct CommandArgs<'a> { /* private fields */ } *)
 Module CommandArgs.
   Parameter t : Set.
 End CommandArgs.
-Definition CommandArgs := CommandArgs.t.
 
 (* pub struct CommandEnvs<'a> { /* private fields */ } *)
 Module CommandEnvs.
   Parameter t : Set.
 End CommandEnvs.
-Definition CommandEnvs := CommandEnvs.t.
 
 (* pub struct ExitStatus(_); *)
 Module ExitStatus.
   Parameter t : Set.
 End ExitStatus.
-Definition ExitStatus := ExitStatus.t.
 
 (* 
 pub struct Output {
@@ -98,19 +88,17 @@ pub struct Output {
 }
 *)
 Module Output.
-  Record t `{State.Trait} : Set := { 
-    status : ExitStatus;
-    stdout : Vec u8 Vec.Default.A;
-    stderr : Vec u8 Vec.Default.A;
+  Record t : Set := {
+    status : ExitStatus.t;
+    stdout : Vec u8.t Vec.Default.A;
+    stderr : Vec u8.t Vec.Default.A;
   }.
 End Output.
-Definition Output `{State.Trait} := Output.t.
 
 (* pub struct Stdio(_); *)
 Module Stdio.
   Parameter t : Set.
 End Stdio.
-Definition Stdio := Stdio.t.
  
 
 (* ********TRAITS******** *)
@@ -124,7 +112,7 @@ pub trait Termination {
 *)
 Module Termination.
   Class Trait (Self : Set) : Set := { 
-    report : Self -> ExitCode;
+    report : M.Val Self -> M (M.Val ExitCode.t);
   }.
 End Termination.
 

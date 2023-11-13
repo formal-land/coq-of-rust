@@ -3,40 +3,45 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module  Number.
 Section Number.
-  Context `{ℋ : State.Trait}.
-  
   Record t : Set := {
-    value : i32;
+    value : i32.t;
   }.
   
   Global Instance Get_value : Notation.Dot "value" := {
-    Notation.dot x := let* x := M.read x in M.pure x.(value) : M _;
+    Notation.dot x := let* x := M.read x in M.alloc x.(value) : M _;
   }.
   Global Instance Get_AF_value : Notation.DoubleColon t "value" := {
-    Notation.double_colon x := let* x := M.read x in M.pure x.(value) : M _;
+    Notation.double_colon x := let* x := M.read x in M.alloc x.(value) : M _;
   }.
 End Number.
 End Number.
-Definition Number `{ℋ : State.Trait} : Set := M.Val Number.t.
 
-Module  Impl_core_convert_From_i32_for_into_Number.
-Section Impl_core_convert_From_i32_for_into_Number.
-  Context `{ℋ : State.Trait}.
+Module  Impl_core_convert_From_i32_t_for_into_Number_t.
+Section Impl_core_convert_From_i32_t_for_into_Number_t.
+  Ltac Self := exact into.Number.t.
   
-  Definition Self : Set := into.Number.
-  
-  Parameter from : i32 -> M Self.
+  (*
+      fn from(item: i32) -> Self {
+          Number { value: item }
+      }
+  *)
+  Parameter from : (M.Val i32.t) -> M (M.Val ltac:(Self)).
   
   Global Instance AssociatedFunction_from :
-    Notation.DoubleColon Self "from" := {
+    Notation.DoubleColon ltac:(Self) "from" := {
     Notation.double_colon := from;
   }.
   
-  Global Instance ℐ : core.convert.From.Trait Self (T := i32) := {
+  Global Instance ℐ : core.convert.From.Trait ltac:(Self) (T := i32.t) := {
     core.convert.From.from := from;
   }.
-End Impl_core_convert_From_i32_for_into_Number.
-End Impl_core_convert_From_i32_for_into_Number.
+End Impl_core_convert_From_i32_t_for_into_Number_t.
+End Impl_core_convert_From_i32_t_for_into_Number_t.
 
+(*
+fn main() {
+    <i32 as std::convert::Into<Number>>::into(5);
+}
+*)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{ℋ : State.Trait}, M unit.
+Parameter main : M (M.Val unit).

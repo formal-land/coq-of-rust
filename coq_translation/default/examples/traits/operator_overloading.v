@@ -3,237 +3,261 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module  Foo.
 Section Foo.
-  Context `{ℋ : State.Trait}.
-  
   Inductive t : Set := Build.
 End Foo.
 End Foo.
-Definition Foo `{ℋ : State.Trait} := M.Val Foo.t.
 
 Module  Bar.
 Section Bar.
-  Context `{ℋ : State.Trait}.
-  
   Inductive t : Set := Build.
 End Bar.
 End Bar.
-Definition Bar `{ℋ : State.Trait} := M.Val Bar.t.
 
 Module  FooBar.
 Section FooBar.
-  Context `{ℋ : State.Trait}.
-  
   Inductive t : Set := Build.
 End FooBar.
 End FooBar.
-Definition FooBar `{ℋ : State.Trait} := M.Val FooBar.t.
 
-Module  Impl_core_fmt_Debug_for_operator_overloading_FooBar.
-Section Impl_core_fmt_Debug_for_operator_overloading_FooBar.
-  Context `{ℋ : State.Trait}.
+Module  Impl_core_fmt_Debug_for_operator_overloading_FooBar_t.
+Section Impl_core_fmt_Debug_for_operator_overloading_FooBar_t.
+  Ltac Self := exact operator_overloading.FooBar.t.
   
-  Definition Self : Set := operator_overloading.FooBar.
-  
+  (*
+  Debug
+  *)
   Definition fmt
-      (self : ref Self)
-      (f : mut_ref core.fmt.Formatter)
-      : M ltac:(core.fmt.Result) :=
+      (self : M.Val (ref ltac:(Self)))
+      (f : M.Val (mut_ref core.fmt.Formatter.t))
+      : M (M.Val ltac:(core.fmt.Result)) :=
     M.function_body
-      (let* α0 : ltac:(refine core.fmt.Formatter) := deref f in
-      let* α1 : ltac:(refine (mut_ref core.fmt.Formatter)) := borrow_mut α0 in
-      let* α2 : ltac:(refine str) := deref (mk_str "FooBar") in
-      let* α3 : ltac:(refine (ref str)) := borrow α2 in
-      core.fmt.Formatter::["write_str"] α1 α3).
+      (let* α0 : ltac:(refine (M.Val core.fmt.Formatter.t)) := deref f in
+      let* α1 : ltac:(refine (M.Val (mut_ref core.fmt.Formatter.t))) :=
+        borrow_mut α0 in
+      let* α2 : ltac:(refine (M.Val str.t)) := deref (mk_str "FooBar") in
+      let* α3 : ltac:(refine (M.Val (ref str.t))) := borrow α2 in
+      core.fmt.Formatter.t::["write_str"] α1 α3).
   
-  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {
+  Global Instance AssociatedFunction_fmt :
+    Notation.DoubleColon ltac:(Self) "fmt" := {
     Notation.double_colon := fmt;
   }.
   
-  Global Instance ℐ : core.fmt.Debug.Trait Self := {
+  Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
     core.fmt.Debug.fmt := fmt;
   }.
-End Impl_core_fmt_Debug_for_operator_overloading_FooBar.
-End Impl_core_fmt_Debug_for_operator_overloading_FooBar.
+End Impl_core_fmt_Debug_for_operator_overloading_FooBar_t.
+End Impl_core_fmt_Debug_for_operator_overloading_FooBar_t.
 
 Module  BarFoo.
 Section BarFoo.
-  Context `{ℋ : State.Trait}.
-  
   Inductive t : Set := Build.
 End BarFoo.
 End BarFoo.
-Definition BarFoo `{ℋ : State.Trait} := M.Val BarFoo.t.
 
-Module  Impl_core_fmt_Debug_for_operator_overloading_BarFoo.
-Section Impl_core_fmt_Debug_for_operator_overloading_BarFoo.
-  Context `{ℋ : State.Trait}.
+Module  Impl_core_fmt_Debug_for_operator_overloading_BarFoo_t.
+Section Impl_core_fmt_Debug_for_operator_overloading_BarFoo_t.
+  Ltac Self := exact operator_overloading.BarFoo.t.
   
-  Definition Self : Set := operator_overloading.BarFoo.
-  
+  (*
+  Debug
+  *)
   Definition fmt
-      (self : ref Self)
-      (f : mut_ref core.fmt.Formatter)
-      : M ltac:(core.fmt.Result) :=
+      (self : M.Val (ref ltac:(Self)))
+      (f : M.Val (mut_ref core.fmt.Formatter.t))
+      : M (M.Val ltac:(core.fmt.Result)) :=
     M.function_body
-      (let* α0 : ltac:(refine core.fmt.Formatter) := deref f in
-      let* α1 : ltac:(refine (mut_ref core.fmt.Formatter)) := borrow_mut α0 in
-      let* α2 : ltac:(refine str) := deref (mk_str "BarFoo") in
-      let* α3 : ltac:(refine (ref str)) := borrow α2 in
-      core.fmt.Formatter::["write_str"] α1 α3).
+      (let* α0 : ltac:(refine (M.Val core.fmt.Formatter.t)) := deref f in
+      let* α1 : ltac:(refine (M.Val (mut_ref core.fmt.Formatter.t))) :=
+        borrow_mut α0 in
+      let* α2 : ltac:(refine (M.Val str.t)) := deref (mk_str "BarFoo") in
+      let* α3 : ltac:(refine (M.Val (ref str.t))) := borrow α2 in
+      core.fmt.Formatter.t::["write_str"] α1 α3).
   
-  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {
+  Global Instance AssociatedFunction_fmt :
+    Notation.DoubleColon ltac:(Self) "fmt" := {
     Notation.double_colon := fmt;
   }.
   
-  Global Instance ℐ : core.fmt.Debug.Trait Self := {
+  Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
     core.fmt.Debug.fmt := fmt;
   }.
-End Impl_core_fmt_Debug_for_operator_overloading_BarFoo.
-End Impl_core_fmt_Debug_for_operator_overloading_BarFoo.
+End Impl_core_fmt_Debug_for_operator_overloading_BarFoo_t.
+End Impl_core_fmt_Debug_for_operator_overloading_BarFoo_t.
 
-Module  Impl_core_ops_arith_Add_operator_overloading_Bar_for_operator_overloading_Foo.
-Section Impl_core_ops_arith_Add_operator_overloading_Bar_for_operator_overloading_Foo.
-  Context `{ℋ : State.Trait}.
+Module  Impl_core_ops_arith_Add_operator_overloading_Bar_t_for_operator_overloading_Foo_t.
+Section Impl_core_ops_arith_Add_operator_overloading_Bar_t_for_operator_overloading_Foo_t.
+  Ltac Self := exact operator_overloading.Foo.t.
   
-  Definition Self : Set := operator_overloading.Foo.
+  (*
+      type Output = FooBar;
+  *)
+  Definition Output : Set := operator_overloading.FooBar.t.
   
-  Definition Output : Set := operator_overloading.FooBar.
+  (*
+      fn add(self, _rhs: Bar) -> FooBar {
+          println!("> Foo.add(Bar) was called");
   
+          FooBar
+      }
+  *)
   Definition add
-      (self : Self)
-      (_rhs : operator_overloading.Bar)
-      : M operator_overloading.FooBar :=
+      (self : M.Val ltac:(Self))
+      (_rhs : M.Val operator_overloading.Bar.t)
+      : M (M.Val operator_overloading.FooBar.t) :=
     M.function_body
-      (let* _ : ltac:(refine unit) :=
-        let* _ : ltac:(refine unit) :=
-          let* α0 : ltac:(refine (array (ref str))) :=
+      (let* _ : ltac:(refine (M.Val unit)) :=
+        let* _ : ltac:(refine (M.Val unit)) :=
+          let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
             M.alloc [ mk_str "> Foo.add(Bar) was called
 " ] in
-          let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
-          let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+          let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+            borrow α0 in
+          let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
             pointer_coercion "Unsize" α1 in
-          let* α3 : ltac:(refine core.fmt.Arguments) :=
-            core.fmt.Arguments::["new_const"] α2 in
+          let* α3 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
+            core.fmt.Arguments.t::["new_const"] α2 in
           std.io.stdio._print α3 in
         M.alloc tt in
       M.alloc operator_overloading.FooBar.Build_t).
   
-  Global Instance AssociatedFunction_add : Notation.DoubleColon Self "add" := {
+  Global Instance AssociatedFunction_add :
+    Notation.DoubleColon ltac:(Self) "add" := {
     Notation.double_colon := add;
   }.
   
   Global Instance ℐ :
-    core.ops.arith.Add.Trait Self (Rhs := operator_overloading.Bar) := {
+    core.ops.arith.Add.Trait ltac:(Self)
+      (Rhs := operator_overloading.Bar.t) := {
     core.ops.arith.Add.Output := Output;
     core.ops.arith.Add.add := add;
   }.
-End Impl_core_ops_arith_Add_operator_overloading_Bar_for_operator_overloading_Foo.
-End Impl_core_ops_arith_Add_operator_overloading_Bar_for_operator_overloading_Foo.
+End Impl_core_ops_arith_Add_operator_overloading_Bar_t_for_operator_overloading_Foo_t.
+End Impl_core_ops_arith_Add_operator_overloading_Bar_t_for_operator_overloading_Foo_t.
 
-Module  Impl_core_ops_arith_Add_operator_overloading_Foo_for_operator_overloading_Bar.
-Section Impl_core_ops_arith_Add_operator_overloading_Foo_for_operator_overloading_Bar.
-  Context `{ℋ : State.Trait}.
+Module  Impl_core_ops_arith_Add_operator_overloading_Foo_t_for_operator_overloading_Bar_t.
+Section Impl_core_ops_arith_Add_operator_overloading_Foo_t_for_operator_overloading_Bar_t.
+  Ltac Self := exact operator_overloading.Bar.t.
   
-  Definition Self : Set := operator_overloading.Bar.
+  (*
+      type Output = BarFoo;
+  *)
+  Definition Output : Set := operator_overloading.BarFoo.t.
   
-  Definition Output : Set := operator_overloading.BarFoo.
+  (*
+      fn add(self, _rhs: Foo) -> BarFoo {
+          println!("> Bar.add(Foo) was called");
   
+          BarFoo
+      }
+  *)
   Definition add
-      (self : Self)
-      (_rhs : operator_overloading.Foo)
-      : M operator_overloading.BarFoo :=
+      (self : M.Val ltac:(Self))
+      (_rhs : M.Val operator_overloading.Foo.t)
+      : M (M.Val operator_overloading.BarFoo.t) :=
     M.function_body
-      (let* _ : ltac:(refine unit) :=
-        let* _ : ltac:(refine unit) :=
-          let* α0 : ltac:(refine (array (ref str))) :=
+      (let* _ : ltac:(refine (M.Val unit)) :=
+        let* _ : ltac:(refine (M.Val unit)) :=
+          let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
             M.alloc [ mk_str "> Bar.add(Foo) was called
 " ] in
-          let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
-          let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+          let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+            borrow α0 in
+          let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
             pointer_coercion "Unsize" α1 in
-          let* α3 : ltac:(refine core.fmt.Arguments) :=
-            core.fmt.Arguments::["new_const"] α2 in
+          let* α3 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
+            core.fmt.Arguments.t::["new_const"] α2 in
           std.io.stdio._print α3 in
         M.alloc tt in
       M.alloc operator_overloading.BarFoo.Build_t).
   
-  Global Instance AssociatedFunction_add : Notation.DoubleColon Self "add" := {
+  Global Instance AssociatedFunction_add :
+    Notation.DoubleColon ltac:(Self) "add" := {
     Notation.double_colon := add;
   }.
   
   Global Instance ℐ :
-    core.ops.arith.Add.Trait Self (Rhs := operator_overloading.Foo) := {
+    core.ops.arith.Add.Trait ltac:(Self)
+      (Rhs := operator_overloading.Foo.t) := {
     core.ops.arith.Add.Output := Output;
     core.ops.arith.Add.add := add;
   }.
-End Impl_core_ops_arith_Add_operator_overloading_Foo_for_operator_overloading_Bar.
-End Impl_core_ops_arith_Add_operator_overloading_Foo_for_operator_overloading_Bar.
+End Impl_core_ops_arith_Add_operator_overloading_Foo_t_for_operator_overloading_Bar_t.
+End Impl_core_ops_arith_Add_operator_overloading_Foo_t_for_operator_overloading_Bar_t.
 
+(*
+fn main() {
+    println!("Foo + Bar = {:?}", Foo + Bar);
+    println!("Bar + Foo = {:?}", Bar + Foo);
+}
+*)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{ℋ : State.Trait} : M unit :=
+Definition main : M (M.Val unit) :=
   M.function_body
-    (let* _ : ltac:(refine unit) :=
-      let* _ : ltac:(refine unit) :=
-        let* α0 : ltac:(refine (array (ref str))) :=
+    (let* _ : ltac:(refine (M.Val unit)) :=
+      let* _ : ltac:(refine (M.Val unit)) :=
+        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
           M.alloc [ mk_str "Foo + Bar = "; mk_str "
 " ] in
-        let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
-        let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+          borrow α0 in
+        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
-        let* α3 : ltac:(refine operator_overloading.Foo) :=
+        let* α3 : ltac:(refine (M.Val operator_overloading.Foo.t)) :=
           M.alloc operator_overloading.Foo.Build_t in
-        let* α4 : ltac:(refine operator_overloading.Bar) :=
+        let* α4 : ltac:(refine (M.Val operator_overloading.Bar.t)) :=
           M.alloc operator_overloading.Bar.Build_t in
-        let* α5 : ltac:(refine operator_overloading.FooBar) :=
+        let* α5 : ltac:(refine (M.Val operator_overloading.FooBar.t)) :=
           (core.ops.arith.Add.add
-              (Self := operator_overloading.Foo)
+              (Self := operator_overloading.Foo.t)
               (Trait := ltac:(refine _)))
             α3
             α4 in
-        let* α6 : ltac:(refine (ref operator_overloading.FooBar)) :=
+        let* α6 : ltac:(refine (M.Val (ref operator_overloading.FooBar.t))) :=
           borrow α5 in
-        let* α7 : ltac:(refine core.fmt.rt.Argument) :=
-          core.fmt.rt.Argument::["new_debug"] α6 in
-        let* α8 : ltac:(refine (array core.fmt.rt.Argument)) :=
+        let* α7 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
+          core.fmt.rt.Argument.t::["new_debug"] α6 in
+        let* α8 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
           M.alloc [ α7 ] in
-        let* α9 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+        let* α9 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
           borrow α8 in
-        let* α10 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+        let* α10 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
           pointer_coercion "Unsize" α9 in
-        let* α11 : ltac:(refine core.fmt.Arguments) :=
-          core.fmt.Arguments::["new_v1"] α2 α10 in
+        let* α11 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
+          core.fmt.Arguments.t::["new_v1"] α2 α10 in
         std.io.stdio._print α11 in
       M.alloc tt in
-    let* _ : ltac:(refine unit) :=
-      let* _ : ltac:(refine unit) :=
-        let* α0 : ltac:(refine (array (ref str))) :=
+    let* _ : ltac:(refine (M.Val unit)) :=
+      let* _ : ltac:(refine (M.Val unit)) :=
+        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
           M.alloc [ mk_str "Bar + Foo = "; mk_str "
 " ] in
-        let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
-        let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+          borrow α0 in
+        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
-        let* α3 : ltac:(refine operator_overloading.Bar) :=
+        let* α3 : ltac:(refine (M.Val operator_overloading.Bar.t)) :=
           M.alloc operator_overloading.Bar.Build_t in
-        let* α4 : ltac:(refine operator_overloading.Foo) :=
+        let* α4 : ltac:(refine (M.Val operator_overloading.Foo.t)) :=
           M.alloc operator_overloading.Foo.Build_t in
-        let* α5 : ltac:(refine operator_overloading.BarFoo) :=
+        let* α5 : ltac:(refine (M.Val operator_overloading.BarFoo.t)) :=
           (core.ops.arith.Add.add
-              (Self := operator_overloading.Bar)
+              (Self := operator_overloading.Bar.t)
               (Trait := ltac:(refine _)))
             α3
             α4 in
-        let* α6 : ltac:(refine (ref operator_overloading.BarFoo)) :=
+        let* α6 : ltac:(refine (M.Val (ref operator_overloading.BarFoo.t))) :=
           borrow α5 in
-        let* α7 : ltac:(refine core.fmt.rt.Argument) :=
-          core.fmt.rt.Argument::["new_debug"] α6 in
-        let* α8 : ltac:(refine (array core.fmt.rt.Argument)) :=
+        let* α7 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
+          core.fmt.rt.Argument.t::["new_debug"] α6 in
+        let* α8 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
           M.alloc [ α7 ] in
-        let* α9 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+        let* α9 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
           borrow α8 in
-        let* α10 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+        let* α10 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
           pointer_coercion "Unsize" α9 in
-        let* α11 : ltac:(refine core.fmt.Arguments) :=
-          core.fmt.Arguments::["new_v1"] α2 α10 in
+        let* α11 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
+          core.fmt.Arguments.t::["new_v1"] α2 α10 in
         std.io.stdio._print α11 in
       M.alloc tt in
     M.alloc tt).

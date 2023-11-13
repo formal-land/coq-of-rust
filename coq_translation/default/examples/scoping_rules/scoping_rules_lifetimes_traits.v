@@ -3,108 +3,122 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module  Borrowed.
 Section Borrowed.
-  Context `{ℋ : State.Trait}.
-  
   Record t : Set := {
-    x : ref i32;
+    x : ref i32.t;
   }.
   
   Global Instance Get_x : Notation.Dot "x" := {
-    Notation.dot x' := let* x' := M.read x' in M.pure x'.(x) : M _;
+    Notation.dot x' := let* x' := M.read x' in M.alloc x'.(x) : M _;
   }.
   Global Instance Get_AF_x : Notation.DoubleColon t "x" := {
-    Notation.double_colon x' := let* x' := M.read x' in M.pure x'.(x) : M _;
+    Notation.double_colon x' := let* x' := M.read x' in M.alloc x'.(x) : M _;
   }.
 End Borrowed.
 End Borrowed.
-Definition Borrowed `{ℋ : State.Trait} : Set := M.Val Borrowed.t.
 
-Module  Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed.
-Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed.
-  Context `{ℋ : State.Trait}.
+Module  Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed_t.
+Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed_t.
+  Ltac Self := exact scoping_rules_lifetimes_traits.Borrowed.t.
   
-  Definition Self : Set := scoping_rules_lifetimes_traits.Borrowed.
-  
+  (*
+  Debug
+  *)
   Definition fmt
-      (self : ref Self)
-      (f : mut_ref core.fmt.Formatter)
-      : M ltac:(core.fmt.Result) :=
+      (self : M.Val (ref ltac:(Self)))
+      (f : M.Val (mut_ref core.fmt.Formatter.t))
+      : M (M.Val ltac:(core.fmt.Result)) :=
     M.function_body
-      (let* α0 : ltac:(refine core.fmt.Formatter) := deref f in
-      let* α1 : ltac:(refine (mut_ref core.fmt.Formatter)) := borrow_mut α0 in
-      let* α2 : ltac:(refine str) := deref (mk_str "Borrowed") in
-      let* α3 : ltac:(refine (ref str)) := borrow α2 in
-      let* α4 : ltac:(refine str) := deref (mk_str "x") in
-      let* α5 : ltac:(refine (ref str)) := borrow α4 in
-      let* α6 : ltac:(refine scoping_rules_lifetimes_traits.Borrowed) :=
+      (let* α0 : ltac:(refine (M.Val core.fmt.Formatter.t)) := deref f in
+      let* α1 : ltac:(refine (M.Val (mut_ref core.fmt.Formatter.t))) :=
+        borrow_mut α0 in
+      let* α2 : ltac:(refine (M.Val str.t)) := deref (mk_str "Borrowed") in
+      let* α3 : ltac:(refine (M.Val (ref str.t))) := borrow α2 in
+      let* α4 : ltac:(refine (M.Val str.t)) := deref (mk_str "x") in
+      let* α5 : ltac:(refine (M.Val (ref str.t))) := borrow α4 in
+      let* α6 :
+          ltac:(refine (M.Val scoping_rules_lifetimes_traits.Borrowed.t)) :=
         deref self in
-      let* α7 : ltac:(refine (ref i32)) := α6.["x"] in
-      let* α8 : ltac:(refine (ref (ref i32))) := borrow α7 in
-      let* α9 : ltac:(refine (ref (ref (ref i32)))) := borrow α8 in
-      let* α10 : ltac:(refine (ref type not implemented)) :=
+      let* α7 : ltac:(refine (M.Val (ref i32.t))) := α6.["x"] in
+      let* α8 : ltac:(refine (M.Val (ref (ref i32.t)))) := borrow α7 in
+      let* α9 : ltac:(refine (M.Val (ref (ref (ref i32.t))))) := borrow α8 in
+      let* α10 : ltac:(refine (M.Val (ref type not implemented))) :=
         pointer_coercion "Unsize" α9 in
-      core.fmt.Formatter::["debug_struct_field1_finish"] α1 α3 α5 α10).
+      core.fmt.Formatter.t::["debug_struct_field1_finish"] α1 α3 α5 α10).
   
-  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {
+  Global Instance AssociatedFunction_fmt :
+    Notation.DoubleColon ltac:(Self) "fmt" := {
     Notation.double_colon := fmt;
   }.
   
-  Global Instance ℐ : core.fmt.Debug.Trait Self := {
+  Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
     core.fmt.Debug.fmt := fmt;
   }.
-End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed.
-End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed.
+End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed_t.
+End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed_t.
 
-Module  Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed.
-Section Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed.
-  Context `{ℋ : State.Trait}.
+Module  Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed_t.
+Section Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed_t.
+  Ltac Self := exact scoping_rules_lifetimes_traits.Borrowed.t.
   
-  Definition Self : Set := scoping_rules_lifetimes_traits.Borrowed.
-  
-  Definition default : M Self :=
+  (*
+      fn default() -> Self {
+          Self { x: &10 }
+      }
+  *)
+  Definition default : M (M.Val ltac:(Self)) :=
     M.function_body
-      (let* α0 : ltac:(refine i32) := M.alloc 10 in
-      let* α1 : ltac:(refine (ref i32)) := borrow α0 in
-      M.alloc {| scoping_rules_lifetimes_traits.Borrowed.x := α1; |}).
+      (let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 10 in
+      let* α1 : ltac:(refine (M.Val (ref i32.t))) := borrow α0 in
+      let* α2 := M.read α1 in
+      M.alloc {| scoping_rules_lifetimes_traits.Borrowed.x := α2; |}).
   
   Global Instance AssociatedFunction_default :
-    Notation.DoubleColon Self "default" := {
+    Notation.DoubleColon ltac:(Self) "default" := {
     Notation.double_colon := default;
   }.
   
-  Global Instance ℐ : core.default.Default.Trait Self := {
+  Global Instance ℐ : core.default.Default.Trait ltac:(Self) := {
     core.default.Default.default := default;
   }.
-End Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed.
-End Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed.
+End Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed_t.
+End Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed_t.
 
+(*
+fn main() {
+    let b: Borrowed = Default::default();
+    println!("b is {:?}", b);
+}
+*)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{ℋ : State.Trait} : M unit :=
+Definition main : M (M.Val unit) :=
   M.function_body
-    (let* b : ltac:(refine scoping_rules_lifetimes_traits.Borrowed) :=
+    (let* b : ltac:(refine (M.Val scoping_rules_lifetimes_traits.Borrowed.t)) :=
       core.default.Default.default
-        (Self := scoping_rules_lifetimes_traits.Borrowed)
+        (Self := scoping_rules_lifetimes_traits.Borrowed.t)
         (Trait := ltac:(refine _)) in
-    let* _ : ltac:(refine unit) :=
-      let* _ : ltac:(refine unit) :=
-        let* α0 : ltac:(refine (array (ref str))) :=
+    let* _ : ltac:(refine (M.Val unit)) :=
+      let* _ : ltac:(refine (M.Val unit)) :=
+        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
           M.alloc [ mk_str "b is "; mk_str "
 " ] in
-        let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
-        let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+          borrow α0 in
+        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
-        let* α3 : ltac:(refine (ref scoping_rules_lifetimes_traits.Borrowed)) :=
+        let* α3 :
+            ltac:(refine
+              (M.Val (ref scoping_rules_lifetimes_traits.Borrowed.t))) :=
           borrow b in
-        let* α4 : ltac:(refine core.fmt.rt.Argument) :=
-          core.fmt.rt.Argument::["new_debug"] α3 in
-        let* α5 : ltac:(refine (array core.fmt.rt.Argument)) :=
+        let* α4 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
+          core.fmt.rt.Argument.t::["new_debug"] α3 in
+        let* α5 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
           M.alloc [ α4 ] in
-        let* α6 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+        let* α6 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
           borrow α5 in
-        let* α7 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+        let* α7 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
           pointer_coercion "Unsize" α6 in
-        let* α8 : ltac:(refine core.fmt.Arguments) :=
-          core.fmt.Arguments::["new_v1"] α2 α7 in
+        let* α8 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
+          core.fmt.Arguments.t::["new_v1"] α2 α7 in
         std.io.stdio._print α8 in
       M.alloc tt in
     M.alloc tt).

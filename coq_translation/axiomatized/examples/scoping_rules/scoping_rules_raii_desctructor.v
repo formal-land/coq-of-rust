@@ -3,31 +3,37 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module  ToDrop.
 Section ToDrop.
-  Context `{ℋ : State.Trait}.
-  
   Inductive t : Set := Build.
 End ToDrop.
 End ToDrop.
-Definition ToDrop `{ℋ : State.Trait} := M.Val ToDrop.t.
 
-Module  Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop.
-Section Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop.
-  Context `{ℋ : State.Trait}.
+Module  Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop_t.
+Section Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop_t.
+  Ltac Self := exact scoping_rules_raii_desctructor.ToDrop.t.
   
-  Definition Self : Set := scoping_rules_raii_desctructor.ToDrop.
-  
-  Parameter drop : (mut_ref Self) -> M unit.
+  (*
+      fn drop(&mut self) {
+          println!("ToDrop is being dropped");
+      }
+  *)
+  Parameter drop : (M.Val (mut_ref ltac:(Self))) -> M (M.Val unit).
   
   Global Instance AssociatedFunction_drop :
-    Notation.DoubleColon Self "drop" := {
+    Notation.DoubleColon ltac:(Self) "drop" := {
     Notation.double_colon := drop;
   }.
   
-  Global Instance ℐ : core.ops.drop.Drop.Trait Self := {
+  Global Instance ℐ : core.ops.drop.Drop.Trait ltac:(Self) := {
     core.ops.drop.Drop.drop := drop;
   }.
-End Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop.
-End Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop.
+End Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop_t.
+End Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop_t.
 
+(*
+fn main() {
+    let x = ToDrop;
+    println!("Made a ToDrop!");
+}
+*)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{ℋ : State.Trait}, M unit.
+Parameter main : M (M.Val unit).

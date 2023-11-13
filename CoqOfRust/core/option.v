@@ -12,7 +12,6 @@ Require CoqOfRust.core.default.
 Module IntoIter.
   Parameter t : Set -> Set.
 End IntoIter.
-Definition IntoIter := IntoIter.t.
 
 (*
 pub struct Iter<'a, A>
@@ -23,7 +22,6 @@ where
 Module Iter.
   Parameter t : Set -> Set.
 End Iter.
-Definition Iter := Iter.t.
 
 (* pub struct IterMut<'a, A>
 where
@@ -32,7 +30,6 @@ where
 Module IterMut.
   Parameter t : Set -> Set.
 End IterMut.
-Definition IterMut := IterMut.t.
 
 
 (* ********ENUMS******** *)
@@ -47,21 +44,18 @@ Module Option.
   Arguments None {_}.
   Arguments Some {_}.
 End Option.
-Definition Option `{State.Trait} (T : Set) : Set :=
-  M.Val (Option.t T).
 
 Module Impl_Option. Section Impl_Option.
-  Context `{State.Trait}.
   Context {T : Set}.
 
-  Definition Self : Set := Option T.
+  Definition Self : Set := Option.t T.
 
   Definition unwrap_or_default {H0 : core.default.Default.Trait T}
-      (self : Self) : M T :=
+      (self : M.Val Self) : M (M.Val T) :=
     let* self := M.read self in
     match self with
     | Option.None => core.default.Default.default (Self := T)
-    | Option.Some x => M.pure x
+    | Option.Some x => M.alloc x
     end.
 
   Global Instance AF_unwrap_or_default {H0 : core.default.Default.Trait T} :

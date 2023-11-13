@@ -16,9 +16,9 @@ Require Import CoqOfRust.lib.lib.
 
 (* pub struct LazyCell<T, F = fn() -> T> { /* private fields */ } *)
 Module LazyCell.
-  Parameter t : forall `{State.Trait}, Set -> Set -> Set.
+  Parameter t : Set -> Set -> Set.
 End LazyCell.
-Definition LazyCell `{State.Trait} (T F : Set) : Set :=
+Definition LazyCell (T F : Set) : Set :=
   M.Val (LazyCell.t T F).
 
 (* 

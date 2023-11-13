@@ -40,10 +40,8 @@ where
 { /* private fields */ }
 *)
 Module ArrayChunks.
-  Parameter t : forall (T : Set) (N : Z) `{State.Trait}, Set.
+  Parameter t : forall (T : Set) (N : Z), Set.
 End ArrayChunks.
-Definition ArrayChunks (T : Set) (N : Z) `{State.Trait} : Set :=
-  ArrayChunks.t T N.
 
 (* 
 pub struct ArrayChunksMut<'a, T, const N: usize>
@@ -52,10 +50,8 @@ where
 { /* private fields */ }
 *)
 Module ArrayChunksMut.
-  Parameter t : forall (T : Set) (N : Z) `{State.Trait}, Set.
+  Parameter t : forall (T : Set) (N : Z), Set.
 End ArrayChunksMut.
-Definition ArrayChunksMut (T : Set) (N : Z) `{State.Trait} : Set :=
-  ArrayChunksMut.t T N.
 
 (* 
 pub struct ArrayWindows<'a, T, const N: usize>
@@ -64,10 +60,8 @@ where
 { /* private fields */ }
 *)
 Module ArrayWindows.
-  Parameter t : forall (T : Set) (N : Z) `{State.Trait}, Set.
+  Parameter t : forall (T : Set) (N : Z), Set.
 End ArrayWindows.
-Definition ArrayWindows (T : Set) (N : Z) `{State.Trait} : Set :=
-  ArrayWindows.t T N.
 
 (* 
 pub struct GroupBy<'a, T, P>
@@ -78,7 +72,6 @@ where
 Module GroupBy.
   Parameter t : Set -> Set -> Set.
 End GroupBy.
-Definition GroupBy := GroupBy.t.
 
 (* 
 pub struct GroupByMut<'a, T, P>
@@ -89,7 +82,6 @@ where
 Module GroupByMut.
   Parameter t : Set -> Set -> Set.
 End GroupByMut.
-Definition GroupByMut := GroupByMut.t.
 
 (* 
 pub struct Chunks<'a, T>
@@ -100,7 +92,6 @@ where
 Module Chunks.
   Parameter t : Set -> Set.
 End Chunks.
-Definition Chunks := Chunks.t.
 
 (* 
 pub struct ChunksExact<'a, T>
@@ -111,7 +102,6 @@ where
 Module ChunksExact.
   Parameter t : Set -> Set.
 End ChunksExact.
-Definition ChunksExact := ChunksExact.t.
 
 (* 
 pub struct ChunksExactMut<'a, T>
@@ -122,7 +112,6 @@ where
 Module ChunksExactMut.
   Parameter t : Set -> Set.
 End ChunksExactMut.
-Definition ChunksExactMut := ChunksExactMut.t.
 
 (* 
 pub struct ChunksMut<'a, T>
@@ -133,13 +122,11 @@ where
 Module ChunksMut.
   Parameter t : Set -> Set.
 End ChunksMut.
-Definition ChunksMut := ChunksMut.t.
 
 (* pub struct EscapeAscii<'a> { /* private fields */ } *)
 Module EscapeAscii.
   Parameter t : Set.
 End EscapeAscii.
-Definition EscapeAscii := EscapeAscii.t.
 
 (* 
 pub struct Iter<'a, T>
@@ -150,7 +137,6 @@ where
 Module Iter.
   Parameter t : Set -> Set.
 End Iter.
-Definition Iter := Iter.t.
 
 (* 
 pub struct IterMut<'a, T>
@@ -161,7 +147,6 @@ where
 Module IterMut.
   Parameter t : Set -> Set.
 End IterMut.
-Definition IterMut := IterMut.t.
 
 (* 
 pub struct RChunks<'a, T>
@@ -172,7 +157,6 @@ where
 Module RChunks.
   Parameter t : Set -> Set.
 End RChunks.
-Definition RChunks := RChunks.t.
 
 (* 
 pub struct RChunksExact<'a, T>
@@ -183,7 +167,6 @@ where
 Module RChunksExact.
   Parameter t : Set -> Set.
 End RChunksExact.
-Definition RChunksExact := RChunksExact.t.
 
 (* 
 pub struct RChunksExactMut<'a, T>
@@ -194,7 +177,6 @@ where
 Module RChunksExactMut.
   Parameter t : Set -> Set.
 End RChunksExactMut.
-Definition RChunksExactMut := RChunksExactMut.t.
 
 (* 
 pub struct RChunksMut<'a, T>
@@ -205,7 +187,6 @@ where
 Module RChunksMut.
   Parameter t : Set -> Set.
 End RChunksMut.
-Definition RChunksMut := RChunksMut.t.
 
 (* BUGGED: To be translated with function support *)
 (* 
@@ -218,7 +199,6 @@ where
 Module RSplit.
   Parameter t : Set -> Set -> Set.
 End RSplit.
-Definition RSplit := RSplit.t.
 
 (* BUGGED: same as above *)
 (* 
@@ -231,7 +211,6 @@ where
 Module RSplitMut.
   Parameter t : Set -> Set -> Set.
 End RSplitMut.
-Definition RSplitMut := RSplitMut.t.
 
 (* BUGGED: same as above *)
 (* 
@@ -244,7 +223,6 @@ where
 Module RSplitN.
   Parameter t : Set -> Set -> Set.
 End RSplitN.
-Definition RSplitN := RSplitN.t.
 
 (* BUGGED: same as above *)
 (* 
@@ -257,7 +235,6 @@ where
 Module RSplitNMut.
   Parameter t : Set -> Set -> Set.
 End RSplitNMut.
-Definition RSplitNMut := RSplitNMut.t.
 
 (* BUGGED: same as above *)
 (* 
@@ -270,7 +247,6 @@ where
 Module Split.
   Parameter t : Set -> Set -> Set.
 End Split.
-Definition Split := Split.t.
 
 (* BUGGED: same as above *)
 (* 
@@ -283,7 +259,6 @@ where
 Module SplitInclusive.
   Parameter t : Set -> Set -> Set.
 End SplitInclusive.
-Definition SplitInclusive := SplitInclusive.t.
 
 (* BUGGED: same as above *)
 (* 
@@ -296,7 +271,6 @@ where
 Module SplitInclusiveMut.
   Parameter t : Set -> Set -> Set.
 End SplitInclusiveMut.
-Definition SplitInclusiveMut := SplitInclusiveMut.t.
 
 (* BUGGED: same as above *)
 (* 
@@ -309,7 +283,6 @@ where
 Module SplitMut.
   Parameter t : Set -> Set -> Set.
 End SplitMut.
-Definition SplitMut := SplitMut.t.
 
 (* BUGGED: same as above *)
 (* 
@@ -322,7 +295,6 @@ where
 Module SplitN.
   Parameter t : Set -> Set -> Set.
 End SplitN.
-Definition SplitN := SplitN.t.
 
 (* BUGGED: same as above *)
 (* 
@@ -335,7 +307,6 @@ where
 Module SplitNMut.
   Parameter t : Set -> Set -> Set.
 End SplitNMut.
-Definition SplitNMut := SplitNMut.t.
 
 (* 
 pub struct Windows<'a, T>
@@ -346,7 +317,6 @@ where
 Module Windows.
   Parameter t : Set -> Set.
 End Windows.
-Definition Windows := Windows.t.
 
 (* ********TRAITS******** *)
 (*
@@ -366,7 +336,7 @@ where
 }
 *)
 Module Concat.
-  Class Trait `{State.Trait} (Self Item Output: Set) : Set := { 
+  Class Trait (Self Item Output: Set) : Set := { 
     Item := Item;
     Output := Output;
 
@@ -383,7 +353,7 @@ pub trait Join<Separator> {
 }
 *)
 Module Join.
-  Class Trait `{State.Trait} (Self Separator Output : Set) : Set := { 
+  Class Trait (Self Separator Output : Set) : Set := { 
     Separator := Separator;
     Output := Output;
 
@@ -408,15 +378,33 @@ where
 }
 *)
 Module SliceIndex.
-  Class Trait `{State.Trait} (Self T Output : Set) : Set := { 
+  Class Trait (Self T Output : Set) : Set := { 
     Output := Output;
 
-    get : Self -> ref T -> Option Output;
-    get_mut : Self -> mut_ref T -> Option (mut_ref Output);
-    get_unchecked : Self -> ref T -> ref Output;
-    get_unchecked_mut : Self -> mut_ref T -> mut_ref Output;
-    index : Self -> ref T -> ref Output;
-    index_mut : Self -> mut_ref T -> mut_ref Output;
+    get :
+      M.Val Self ->
+      M.Val (ref T) ->
+      M (M.Val (Option.t Output));
+    get_mut :
+      M.Val Self ->
+      M.Val (mut_ref T) ->
+      M (M.Val (Option.t (mut_ref Output)));
+    get_unchecked :
+      M.Val Self ->
+      M.Val (ref T) ->
+      M (M.Val (ref Output));
+    get_unchecked_mut :
+      M.Val Self ->
+      M.Val (mut_ref T) ->
+      M (M.Val (mut_ref Output));
+    index :
+      M.Val Self ->
+      M.Val (ref T) ->
+      M (M.Val (ref Output));
+    index_mut :
+      M.Val Self ->
+      M.Val (mut_ref T) ->
+      M (M.Val (mut_ref Output));
   }.
 End SliceIndex.
 

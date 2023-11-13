@@ -24,10 +24,10 @@ Definition Box (T : Set) (*(A : option Set)
   := Box.t T (*(defaultType A Global)*).
 
 Parameter new :
-  forall `{State.Trait} {T : Set},
+  forall {T : Set},
   T -> M (Box T core.alloc.Global).
 
-Global Instance Method_Box_new `{State.Trait} {T : Set} :
+Global Instance Method_Box_new {T : Set} :
   Notation.DoubleColon (Box T core.alloc.Global) "new" := {
   Notation.double_colon (x : T) := new x;
 }.

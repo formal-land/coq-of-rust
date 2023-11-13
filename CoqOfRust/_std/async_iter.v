@@ -13,7 +13,6 @@ Require Import CoqOfRust._std.task.
 Module FromIter.
   Parameter t : Set -> Set.
 End FromIter.
-Definition FromIter := FromIter.t.
 
 
 (* ********TRAITS******** *)
@@ -35,11 +34,16 @@ pub trait AsyncIterator {
 }
 *)
 Module AsyncIterator.
-  Class Trait `{State.Trait} (Self Item : Set) : Set := { 
+  Class Trait (Self Item : Set) : Set := { 
     Item := Item;
 
-    poll_next : Pin (mut_ref Self) -> mut_ref Context -> Poll (Option Item);
-    size_hint : ref Self -> usize * Option usize;
+    poll_next :
+      M.Val (Pin (mut_ref Self)) ->
+      M.Val (mut_ref Context) ->
+      M (M.Val (Poll (Option.t Item)));
+    size_hint :
+      M.Val (ref Self) ->
+      M (M.Val (usize.t * Option.t usize.t));
   }.
 End AsyncIterator.
 

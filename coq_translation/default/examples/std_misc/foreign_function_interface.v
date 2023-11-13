@@ -3,223 +3,260 @@ Require Import CoqOfRust.CoqOfRust.
 
 Error ForeignMod.
 
+(*
+fn cos(z: Complex) -> Complex {
+    unsafe { ccosf(z) }
+}
+*)
 Definition cos
-    `{ℋ : State.Trait}
-    (z : foreign_function_interface.Complex)
-    : M foreign_function_interface.Complex :=
+    (z : M.Val foreign_function_interface.Complex.t)
+    : M (M.Val foreign_function_interface.Complex.t) :=
   M.function_body ("unimplemented parent_kind" z).
 
+(*
+fn main() {
+    // z = -1 + 0i
+    let z = Complex { re: -1., im: 0. };
+
+    // calling a foreign function is an unsafe operation
+    let z_sqrt = unsafe { csqrtf(z) };
+
+    println!("the square root of {:?} is {:?}", z, z_sqrt);
+
+    // calling safe API wrapped around unsafe operation
+    println!("cos({:?}) = {:?}", z, cos(z));
+}
+*)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{ℋ : State.Trait} : M unit :=
+Definition main : M (M.Val unit) :=
   M.function_body
-    (let* z : ltac:(refine foreign_function_interface.Complex) :=
-      let* α0 : ltac:(refine f32) := M.alloc (- 1 (* 1. *)) in
-      let* α1 : ltac:(refine f32) := M.alloc 0 (* 0. *) in
+    (let* z : ltac:(refine (M.Val foreign_function_interface.Complex.t)) :=
+      let* α0 : ltac:(refine (M.Val f32.t)) := M.alloc (- 1 (* 1. *)) in
+      let* α1 := M.read α0 in
+      let* α2 : ltac:(refine (M.Val f32.t)) := M.alloc 0 (* 0. *) in
+      let* α3 := M.read α2 in
       M.alloc
         {|
-          foreign_function_interface.Complex.re := α0;
-          foreign_function_interface.Complex.im := α1;
+          foreign_function_interface.Complex.re := α1;
+          foreign_function_interface.Complex.im := α3;
         |} in
-    let* z_sqrt : ltac:(refine foreign_function_interface.Complex) :=
+    let* z_sqrt : ltac:(refine (M.Val foreign_function_interface.Complex.t)) :=
       "unimplemented parent_kind" z in
-    let* _ : ltac:(refine unit) :=
-      let* _ : ltac:(refine unit) :=
-        let* α0 : ltac:(refine (array (ref str))) :=
+    let* _ : ltac:(refine (M.Val unit)) :=
+      let* _ : ltac:(refine (M.Val unit)) :=
+        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
           M.alloc [ mk_str "the square root of "; mk_str " is "; mk_str "
 " ] in
-        let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
-        let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+          borrow α0 in
+        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
-        let* α3 : ltac:(refine (ref foreign_function_interface.Complex)) :=
+        let* α3 :
+            ltac:(refine (M.Val (ref foreign_function_interface.Complex.t))) :=
           borrow z in
-        let* α4 : ltac:(refine core.fmt.rt.Argument) :=
-          core.fmt.rt.Argument::["new_debug"] α3 in
-        let* α5 : ltac:(refine (ref foreign_function_interface.Complex)) :=
+        let* α4 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
+          core.fmt.rt.Argument.t::["new_debug"] α3 in
+        let* α5 :
+            ltac:(refine (M.Val (ref foreign_function_interface.Complex.t))) :=
           borrow z_sqrt in
-        let* α6 : ltac:(refine core.fmt.rt.Argument) :=
-          core.fmt.rt.Argument::["new_debug"] α5 in
-        let* α7 : ltac:(refine (array core.fmt.rt.Argument)) :=
+        let* α6 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
+          core.fmt.rt.Argument.t::["new_debug"] α5 in
+        let* α7 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
           M.alloc [ α4; α6 ] in
-        let* α8 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+        let* α8 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
           borrow α7 in
-        let* α9 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+        let* α9 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
           pointer_coercion "Unsize" α8 in
-        let* α10 : ltac:(refine core.fmt.Arguments) :=
-          core.fmt.Arguments::["new_v1"] α2 α9 in
+        let* α10 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
+          core.fmt.Arguments.t::["new_v1"] α2 α9 in
         std.io.stdio._print α10 in
       M.alloc tt in
-    let* _ : ltac:(refine unit) :=
-      let* _ : ltac:(refine unit) :=
-        let* α0 : ltac:(refine (array (ref str))) :=
+    let* _ : ltac:(refine (M.Val unit)) :=
+      let* _ : ltac:(refine (M.Val unit)) :=
+        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
           M.alloc [ mk_str "cos("; mk_str ") = "; mk_str "
 " ] in
-        let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
-        let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+          borrow α0 in
+        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
-        let* α3 : ltac:(refine (ref foreign_function_interface.Complex)) :=
+        let* α3 :
+            ltac:(refine (M.Val (ref foreign_function_interface.Complex.t))) :=
           borrow z in
-        let* α4 : ltac:(refine core.fmt.rt.Argument) :=
-          core.fmt.rt.Argument::["new_debug"] α3 in
-        let* α5 : ltac:(refine foreign_function_interface.Complex) :=
+        let* α4 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
+          core.fmt.rt.Argument.t::["new_debug"] α3 in
+        let* α5 : ltac:(refine (M.Val foreign_function_interface.Complex.t)) :=
           foreign_function_interface.cos z in
-        let* α6 : ltac:(refine (ref foreign_function_interface.Complex)) :=
+        let* α6 :
+            ltac:(refine (M.Val (ref foreign_function_interface.Complex.t))) :=
           borrow α5 in
-        let* α7 : ltac:(refine core.fmt.rt.Argument) :=
-          core.fmt.rt.Argument::["new_debug"] α6 in
-        let* α8 : ltac:(refine (array core.fmt.rt.Argument)) :=
+        let* α7 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
+          core.fmt.rt.Argument.t::["new_debug"] α6 in
+        let* α8 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
           M.alloc [ α4; α7 ] in
-        let* α9 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+        let* α9 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
           borrow α8 in
-        let* α10 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+        let* α10 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
           pointer_coercion "Unsize" α9 in
-        let* α11 : ltac:(refine core.fmt.Arguments) :=
-          core.fmt.Arguments::["new_v1"] α2 α10 in
+        let* α11 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
+          core.fmt.Arguments.t::["new_v1"] α2 α10 in
         std.io.stdio._print α11 in
       M.alloc tt in
     M.alloc tt).
 
 Module  Complex.
 Section Complex.
-  Context `{ℋ : State.Trait}.
-  
   Record t : Set := {
-    re : f32;
-    im : f32;
+    re : f32.t;
+    im : f32.t;
   }.
   
   Global Instance Get_re : Notation.Dot "re" := {
-    Notation.dot x := let* x := M.read x in M.pure x.(re) : M _;
+    Notation.dot x := let* x := M.read x in M.alloc x.(re) : M _;
   }.
   Global Instance Get_AF_re : Notation.DoubleColon t "re" := {
-    Notation.double_colon x := let* x := M.read x in M.pure x.(re) : M _;
+    Notation.double_colon x := let* x := M.read x in M.alloc x.(re) : M _;
   }.
   Global Instance Get_im : Notation.Dot "im" := {
-    Notation.dot x := let* x := M.read x in M.pure x.(im) : M _;
+    Notation.dot x := let* x := M.read x in M.alloc x.(im) : M _;
   }.
   Global Instance Get_AF_im : Notation.DoubleColon t "im" := {
-    Notation.double_colon x := let* x := M.read x in M.pure x.(im) : M _;
+    Notation.double_colon x := let* x := M.read x in M.alloc x.(im) : M _;
   }.
 End Complex.
 End Complex.
-Definition Complex `{ℋ : State.Trait} : Set := M.Val Complex.t.
 
-Module  Impl_core_clone_Clone_for_foreign_function_interface_Complex.
-Section Impl_core_clone_Clone_for_foreign_function_interface_Complex.
-  Context `{ℋ : State.Trait}.
+Module  Impl_core_clone_Clone_for_foreign_function_interface_Complex_t.
+Section Impl_core_clone_Clone_for_foreign_function_interface_Complex_t.
+  Ltac Self := exact foreign_function_interface.Complex.t.
   
-  Definition Self : Set := foreign_function_interface.Complex.
-  
-  Definition clone (self : ref Self) : M foreign_function_interface.Complex :=
+  (*
+  Clone
+  *)
+  Definition clone
+      (self : M.Val (ref ltac:(Self)))
+      : M (M.Val foreign_function_interface.Complex.t) :=
     M.function_body
-      (let* _ : ltac:(refine unit) := M.alloc tt in
+      (let* _ : ltac:(refine (M.Val unit)) := M.alloc tt in
       deref self).
   
   Global Instance AssociatedFunction_clone :
-    Notation.DoubleColon Self "clone" := {
+    Notation.DoubleColon ltac:(Self) "clone" := {
     Notation.double_colon := clone;
   }.
   
-  Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
+  Global Instance ℐ : core.clone.Clone.Required.Trait ltac:(Self) := {
     core.clone.Clone.clone := clone;
     core.clone.Clone.clone_from := Datatypes.None;
   }.
-End Impl_core_clone_Clone_for_foreign_function_interface_Complex.
-End Impl_core_clone_Clone_for_foreign_function_interface_Complex.
+End Impl_core_clone_Clone_for_foreign_function_interface_Complex_t.
+End Impl_core_clone_Clone_for_foreign_function_interface_Complex_t.
 
-Module  Impl_core_marker_Copy_for_foreign_function_interface_Complex.
-Section Impl_core_marker_Copy_for_foreign_function_interface_Complex.
-  Context `{ℋ : State.Trait}.
+Module  Impl_core_marker_Copy_for_foreign_function_interface_Complex_t.
+Section Impl_core_marker_Copy_for_foreign_function_interface_Complex_t.
+  Ltac Self := exact foreign_function_interface.Complex.t.
   
-  Definition Self : Set := foreign_function_interface.Complex.
-  
-  Global Instance ℐ : core.marker.Copy.Trait Self := {
+  Global Instance ℐ : core.marker.Copy.Trait ltac:(Self) := {
   }.
-End Impl_core_marker_Copy_for_foreign_function_interface_Complex.
-End Impl_core_marker_Copy_for_foreign_function_interface_Complex.
+End Impl_core_marker_Copy_for_foreign_function_interface_Complex_t.
+End Impl_core_marker_Copy_for_foreign_function_interface_Complex_t.
 
-Module  Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
-Section Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
-  Context `{ℋ : State.Trait}.
+Module  Impl_core_fmt_Debug_for_foreign_function_interface_Complex_t.
+Section Impl_core_fmt_Debug_for_foreign_function_interface_Complex_t.
+  Ltac Self := exact foreign_function_interface.Complex.t.
   
-  Definition Self : Set := foreign_function_interface.Complex.
-  
+  (*
+      fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+          if self.im < 0. {
+              write!(f, "{}-{}i", self.re, -self.im)
+          } else {
+              write!(f, "{}+{}i", self.re, self.im)
+          }
+      }
+  *)
   Definition fmt
-      (self : ref Self)
-      (f : mut_ref core.fmt.Formatter)
-      : M ltac:(core.fmt.Result) :=
+      (self : M.Val (ref ltac:(Self)))
+      (f : M.Val (mut_ref core.fmt.Formatter.t))
+      : M (M.Val ltac:(core.fmt.Result)) :=
     M.function_body
-      (let* α0 : ltac:(refine foreign_function_interface.Complex) :=
+      (let* α0 : ltac:(refine (M.Val foreign_function_interface.Complex.t)) :=
         deref self in
-      let* α1 : ltac:(refine f32) := α0.["im"] in
-      let* α2 : ltac:(refine f32) := M.alloc 0 (* 0. *) in
-      let* α3 : ltac:(refine bool) := BinOp.lt α1 α2 in
-      let* α4 : ltac:(refine bool) := use α3 in
-      if (α4 : bool) then
-        let* α0 : ltac:(refine core.fmt.Formatter) := deref f in
-        let* α1 : ltac:(refine (mut_ref core.fmt.Formatter)) := borrow_mut α0 in
-        let* α2 : ltac:(refine (array (ref str))) :=
+      let* α1 : ltac:(refine (M.Val f32.t)) := α0.["im"] in
+      let* α2 : ltac:(refine (M.Val f32.t)) := M.alloc 0 (* 0. *) in
+      let* α3 : ltac:(refine (M.Val bool.t)) := BinOp.lt α1 α2 in
+      let* α4 : ltac:(refine (M.Val bool.t)) := use α3 in
+      let* α5 := M.read α4 in
+      if (α5 : bool) then
+        let* α0 : ltac:(refine (M.Val core.fmt.Formatter.t)) := deref f in
+        let* α1 : ltac:(refine (M.Val (mut_ref core.fmt.Formatter.t))) :=
+          borrow_mut α0 in
+        let* α2 : ltac:(refine (M.Val (array (ref str.t)))) :=
           M.alloc [ mk_str ""; mk_str "-"; mk_str "i" ] in
-        let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
-        let* α4 : ltac:(refine (ref (slice (ref str)))) :=
+        let* α3 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+          borrow α2 in
+        let* α4 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α3 in
-        let* α5 : ltac:(refine foreign_function_interface.Complex) :=
+        let* α5 : ltac:(refine (M.Val foreign_function_interface.Complex.t)) :=
           deref self in
-        let* α6 : ltac:(refine f32) := α5.["re"] in
-        let* α7 : ltac:(refine (ref f32)) := borrow α6 in
-        let* α8 : ltac:(refine core.fmt.rt.Argument) :=
-          core.fmt.rt.Argument::["new_display"] α7 in
-        let* α9 : ltac:(refine foreign_function_interface.Complex) :=
+        let* α6 : ltac:(refine (M.Val f32.t)) := α5.["re"] in
+        let* α7 : ltac:(refine (M.Val (ref f32.t))) := borrow α6 in
+        let* α8 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
+          core.fmt.rt.Argument.t::["new_display"] α7 in
+        let* α9 : ltac:(refine (M.Val foreign_function_interface.Complex.t)) :=
           deref self in
-        let* α10 : ltac:(refine f32) := α9.["im"] in
-        let* α11 : ltac:(refine f32) := UnOp.neg α10 in
-        let* α12 : ltac:(refine (ref f32)) := borrow α11 in
-        let* α13 : ltac:(refine core.fmt.rt.Argument) :=
-          core.fmt.rt.Argument::["new_display"] α12 in
-        let* α14 : ltac:(refine (array core.fmt.rt.Argument)) :=
+        let* α10 : ltac:(refine (M.Val f32.t)) := α9.["im"] in
+        let* α11 : ltac:(refine (M.Val f32.t)) := UnOp.neg α10 in
+        let* α12 : ltac:(refine (M.Val (ref f32.t))) := borrow α11 in
+        let* α13 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
+          core.fmt.rt.Argument.t::["new_display"] α12 in
+        let* α14 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
           M.alloc [ α8; α13 ] in
-        let* α15 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+        let* α15 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
           borrow α14 in
-        let* α16 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+        let* α16 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
           pointer_coercion "Unsize" α15 in
-        let* α17 : ltac:(refine core.fmt.Arguments) :=
-          core.fmt.Arguments::["new_v1"] α4 α16 in
-        core.fmt.Formatter::["write_fmt"] α1 α17
+        let* α17 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
+          core.fmt.Arguments.t::["new_v1"] α4 α16 in
+        core.fmt.Formatter.t::["write_fmt"] α1 α17
       else
-        let* α0 : ltac:(refine core.fmt.Formatter) := deref f in
-        let* α1 : ltac:(refine (mut_ref core.fmt.Formatter)) := borrow_mut α0 in
-        let* α2 : ltac:(refine (array (ref str))) :=
+        let* α0 : ltac:(refine (M.Val core.fmt.Formatter.t)) := deref f in
+        let* α1 : ltac:(refine (M.Val (mut_ref core.fmt.Formatter.t))) :=
+          borrow_mut α0 in
+        let* α2 : ltac:(refine (M.Val (array (ref str.t)))) :=
           M.alloc [ mk_str ""; mk_str "+"; mk_str "i" ] in
-        let* α3 : ltac:(refine (ref (array (ref str)))) := borrow α2 in
-        let* α4 : ltac:(refine (ref (slice (ref str)))) :=
+        let* α3 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+          borrow α2 in
+        let* α4 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α3 in
-        let* α5 : ltac:(refine foreign_function_interface.Complex) :=
+        let* α5 : ltac:(refine (M.Val foreign_function_interface.Complex.t)) :=
           deref self in
-        let* α6 : ltac:(refine f32) := α5.["re"] in
-        let* α7 : ltac:(refine (ref f32)) := borrow α6 in
-        let* α8 : ltac:(refine core.fmt.rt.Argument) :=
-          core.fmt.rt.Argument::["new_display"] α7 in
-        let* α9 : ltac:(refine foreign_function_interface.Complex) :=
+        let* α6 : ltac:(refine (M.Val f32.t)) := α5.["re"] in
+        let* α7 : ltac:(refine (M.Val (ref f32.t))) := borrow α6 in
+        let* α8 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
+          core.fmt.rt.Argument.t::["new_display"] α7 in
+        let* α9 : ltac:(refine (M.Val foreign_function_interface.Complex.t)) :=
           deref self in
-        let* α10 : ltac:(refine f32) := α9.["im"] in
-        let* α11 : ltac:(refine (ref f32)) := borrow α10 in
-        let* α12 : ltac:(refine core.fmt.rt.Argument) :=
-          core.fmt.rt.Argument::["new_display"] α11 in
-        let* α13 : ltac:(refine (array core.fmt.rt.Argument)) :=
+        let* α10 : ltac:(refine (M.Val f32.t)) := α9.["im"] in
+        let* α11 : ltac:(refine (M.Val (ref f32.t))) := borrow α10 in
+        let* α12 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
+          core.fmt.rt.Argument.t::["new_display"] α11 in
+        let* α13 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
           M.alloc [ α8; α12 ] in
-        let* α14 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+        let* α14 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
           borrow α13 in
-        let* α15 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+        let* α15 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
           pointer_coercion "Unsize" α14 in
-        let* α16 : ltac:(refine core.fmt.Arguments) :=
-          core.fmt.Arguments::["new_v1"] α4 α15 in
-        core.fmt.Formatter::["write_fmt"] α1 α16).
+        let* α16 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
+          core.fmt.Arguments.t::["new_v1"] α4 α15 in
+        core.fmt.Formatter.t::["write_fmt"] α1 α16).
   
-  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {
+  Global Instance AssociatedFunction_fmt :
+    Notation.DoubleColon ltac:(Self) "fmt" := {
     Notation.double_colon := fmt;
   }.
   
-  Global Instance ℐ : core.fmt.Debug.Trait Self := {
+  Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
     core.fmt.Debug.fmt := fmt;
   }.
-End Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
-End Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
+End Impl_core_fmt_Debug_for_foreign_function_interface_Complex_t.
+End Impl_core_fmt_Debug_for_foreign_function_interface_Complex_t.

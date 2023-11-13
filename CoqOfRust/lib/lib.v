@@ -69,73 +69,120 @@ Parameter sequence : forall {A B : Set}, A -> B -> B.
 Notation "e1 ;; e2" := (sequence e1 e2)
   (at level 61, right associativity).
 
-Parameter assign : forall {A : Set}, A -> A -> unit.
+Parameter assign : forall {A : Set}, M.Val A -> M.Val A -> M (M.Val unit).
 
-Definition unit `{State.Trait} : Set := M.Val Datatypes.unit.
-Definition bool `{State.Trait} : Set := M.Val Datatypes.bool.
+Module bool.
+  Definition t : Set := bool.
+End bool.
 
-Definition u8 `{State.Trait} : Set := M.Val Z.
-Definition u16 `{State.Trait} : Set := M.Val Z.
-Definition u32 `{State.Trait} : Set := M.Val Z.
-Definition u64 `{State.Trait} : Set := M.Val Z.
-Definition u128 `{State.Trait} : Set := M.Val Z.
-Definition usize `{State.Trait} : Set := M.Val Z.
+Module u8.
+  Definition t : Set := Z.
+End u8.
 
-Definition i8 `{State.Trait} : Set := M.Val Z.
-Definition i16 `{State.Trait} : Set := M.Val Z.
-Definition i32 `{State.Trait} : Set := M.Val Z.
-Definition i64 `{State.Trait} : Set := M.Val Z.
-Definition i128 `{State.Trait} : Set := M.Val Z.
-Definition isize `{State.Trait} : Set := M.Val Z.
+Module u16.
+  Definition t : Set := Z.
+End u16.
+
+Module u32.
+  Definition t : Set := Z.
+End u32.
+
+Module u64.
+  Definition t : Set := Z.
+End u64.
+
+Module u128.
+  Definition t : Set := Z.
+End u128.
+
+Module usize.
+  Definition t : Set := Z.
+End usize.
+
+Module i8.
+  Definition t : Set := Z.
+End i8.
+
+Module i16.
+  Definition t : Set := Z.
+End i16.
+
+Module i32.
+  Definition t : Set := Z.
+End i32.
+
+Module i64.
+  Definition t : Set := Z.
+End i64.
+
+Module i128.
+  Definition t : Set := Z.
+End i128.
+
+Module isize.
+  Definition t : Set := Z.
+End isize.
 
 (* We approximate floating point numbers with integers *)
-Definition f32 `{State.Trait} : Set := M.Val Z.
-Definition f64 `{State.Trait} : Set := M.Val Z.
+Module f32.
+  Definition t : Set := Z.
+End f32.
 
-Definition str `{State.Trait} : Set := M.Val string.
-Definition char `{State.Trait} : Set := M.Val ascii.
+Module f64.
+  Definition t : Set := Z.
+End f64.
 
-Definition ref `{State.Trait} (A : Set) : Set := M.Val A.
-Definition mut_ref `{State.Trait} (A : Set) : Set := M.Val A.
+Module str.
+  Definition t : Set := Coq.Strings.String.string.
+End str.
 
-Definition slice `{State.Trait} (A : Set) : Set := M.Val (list A).
-Definition array `{State.Trait} (A : Set) : Set := M.Val (list A).
+Module char.
+  Definition t : Set := Coq.Strings.Ascii.ascii.
+End char.
 
-Definition never `{State.Trait} : Set := M.Val Empty_set.
+Definition ref (A : Set) : Set := M.Val A.
+Definition mut_ref (A : Set) : Set := M.Val A.
 
-Definition never_to_any `{State.Trait} {A B : Set} (x : A) : M B :=
+Definition slice (A : Set) : Set := list A.
+Definition array (A : Set) : Set := list A.
+
+Module never.
+  Definition t : Set := Empty_set.
+End never.
+
+Definition never_to_any {A B : Set} (x : A) : M B :=
   M.impossible.
 
-Definition use `{State.Trait} {A : Set} (x : A) : M A := M.pure x.
+Definition use {A : Set} (x : A) : M A := M.pure x.
 
-Definition mk_str `{State.Trait} (s : string) : ref str :=
+Definition mk_str (s : Coq.Strings.String.string) : M.Val (ref str.t) :=
   M.Ref.Immutable (M.Ref.Immutable s).
 
 Module UnOp.
-  Parameter not : forall `{State.Trait}, bool -> M bool.
-  Parameter neg : forall `{State.Trait} {A : Set}, A -> M A.
+  Parameter not : M.Val bool -> M (M.Val bool).
+  Parameter neg : forall {A : Set}, M.Val A -> M (M.Val A).
 End UnOp.
 
 Module BinOp.
-  Parameter add : forall `{State.Trait} {A : Set}, A -> A -> M A.
-  Parameter sub : forall `{State.Trait} {A : Set}, A -> A -> M A.
-  Parameter mul : forall `{State.Trait} {A : Set}, A -> A -> M A.
-  Parameter div : forall `{State.Trait} {A : Set}, A -> A -> M A.
-  Parameter rem : forall `{State.Trait} {A : Set}, A -> A -> M A.
-  Parameter bit_xor : forall `{State.Trait} {A : Set}, A -> A -> M A.
-  Parameter bit_and : forall `{State.Trait} {A : Set}, A -> A -> M A.
-  Parameter bit_or : forall `{State.Trait} {A : Set}, A -> A -> M A.
-  Parameter shl : forall `{State.Trait} {A : Set}, A -> A -> M A.
-  Parameter shr : forall `{State.Trait} {A : Set}, A -> A -> M A.
+  Parameter add : forall {A : Set}, M.Val A -> M.Val A -> M (M.Val A).
+  Parameter sub : forall {A : Set}, M.Val A -> M.Val A -> M (M.Val A).
+  Parameter mul : forall {A : Set}, M.Val A -> M.Val A -> M (M.Val A).
+  Parameter div : forall {A : Set}, M.Val A -> M.Val A -> M (M.Val A).
+  Parameter rem : forall {A : Set}, M.Val A -> M.Val A -> M (M.Val A).
+  Parameter bit_xor : forall {A : Set}, M.Val A -> M.Val A -> M (M.Val A).
+  Parameter bit_and : forall {A : Set}, M.Val A -> M.Val A -> M (M.Val A).
+  Parameter bit_or : forall {A : Set}, M.Val A -> M.Val A -> M (M.Val A).
+  Parameter shl : forall {A : Set}, M.Val A -> M.Val A -> M (M.Val A).
+  Parameter shr : forall {A : Set}, M.Val A -> M.Val A -> M (M.Val A).
 
-  Parameter eq : forall `{State.Trait} {A : Set}, A -> A -> M bool.
-  Parameter ne : forall `{State.Trait} {A : Set}, A -> A -> M bool.
+  Parameter eq : forall {A : Set}, M.Val A -> M.Val A -> M (M.Val bool.t).
+  Parameter ne : forall {A : Set}, M.Val A -> M.Val A -> M (M.Val bool.t).
 
-  Parameter lt : forall `{State.Trait} {A : Set}, A -> A -> M bool.
-  Parameter le : forall `{State.Trait} {A : Set}, A -> A -> M bool.
-  Parameter ge : forall `{State.Trait} {A : Set}, A -> A -> M bool.
-  Parameter gt : forall `{State.Trait} {A : Set}, A -> A -> M bool.
+  Parameter lt : forall {A : Set}, M.Val A -> M.Val A -> M (M.Val bool.t).
+  Parameter le : forall {A : Set}, M.Val A -> M.Val A -> M (M.Val bool.t).
+  Parameter ge : forall {A : Set}, M.Val A -> M.Val A -> M (M.Val bool.t).
+  Parameter gt : forall {A : Set}, M.Val A -> M.Val A -> M (M.Val bool.t).
 
-  Parameter and : forall `{State.Trait} {A : Set}, A -> A -> M bool.
-  Parameter or : forall `{State.Trait} {A : Set}, A -> A -> M bool.
+  Parameter and : forall {A : Set}, M.Val A -> M.Val A -> M (M.Val bool.t).
+  Parameter or : forall {A : Set}, M.Val A -> M.Val A -> M (M.Val bool.t).
 End BinOp.

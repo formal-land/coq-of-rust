@@ -14,4 +14,4 @@ Module Impl_PartialEq_for_Result := Impl_PartialEq_for_Result.
 Definition IntoIter := IntoIter.
 Definition Iter := Iter.
 Definition IterMut := IterMut.
-Definition Result `{State.Trait} := Result.
+Definition Result := Result.

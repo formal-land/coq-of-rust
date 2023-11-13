@@ -118,7 +118,7 @@ where
 { /* private fields */ }
 *)
 Module BTreeMap.
-  Parameter t : forall `{State.Trait} (K V A : Set)
+  Parameter t : forall (K V A : Set)
     {H0 : alloc.Allocator.Trait A}
     {H1 : core.clone.Clone.Trait A},
     Set.
@@ -127,7 +127,7 @@ Module BTreeMap.
     Definition A : Set := alloc.Global.
   End Default.
 End BTreeMap.
-Definition BTreeMap `{State.Trait} (K V A : Set)
+Definition BTreeMap (K V A : Set)
   {H0 : alloc.Allocator.Trait A}
   {H1 : core.clone.Clone.Trait A} :
   Set :=

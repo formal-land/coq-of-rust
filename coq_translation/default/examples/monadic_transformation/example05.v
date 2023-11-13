@@ -3,43 +3,50 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module  Foo.
 Section Foo.
-  Context `{ℋ : State.Trait}.
-  
   Record t : Set := {
-    x0 : u32;
+    x0 : u32.t;
   }.
   
   Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
+    Notation.dot x := let* x := M.read x in M.alloc x.(x0) : M _;
   }.
 End Foo.
 End Foo.
-Definition Foo `{ℋ : State.Trait} : Set := M.Val Foo.t.
 
-Module  Impl_example05_Foo.
-Section Impl_example05_Foo.
-  Context `{ℋ : State.Trait}.
+Module  Impl_example05_Foo_t.
+Section Impl_example05_Foo_t.
+  Ltac Self := exact example05.Foo.t.
   
-  Definition Self : Set := example05.Foo.
-  
-  Definition plus1 (self : Self) : M u32 :=
+  (*
+      fn plus1(self) -> u32 {
+          self.0 + 1
+      }
+  *)
+  Definition plus1 (self : M.Val ltac:(Self)) : M (M.Val u32.t) :=
     M.function_body
-      (let* α0 : ltac:(refine u32) := self.["0"] in
-      let* α1 : ltac:(refine u32) := M.alloc 1 in
+      (let* α0 : ltac:(refine (M.Val u32.t)) := self.["0"] in
+      let* α1 : ltac:(refine (M.Val u32.t)) := M.alloc 1 in
       BinOp.add α0 α1).
   
   Global Instance AssociatedFunction_plus1 :
-    Notation.DoubleColon Self "plus1" := {
+    Notation.DoubleColon ltac:(Self) "plus1" := {
     Notation.double_colon := plus1;
   }.
-End Impl_example05_Foo.
-End Impl_example05_Foo.
+End Impl_example05_Foo_t.
+End Impl_example05_Foo_t.
 
+(*
+fn main() {
+    let foo = Foo(0);
+    foo.plus1();
+}
+*)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{ℋ : State.Trait} : M unit :=
+Definition main : M (M.Val unit) :=
   M.function_body
-    (let* foo : ltac:(refine example05.Foo) :=
-      let* α0 : ltac:(refine u32) := M.alloc 0 in
-      M.alloc (example05.Foo.Build_t α0) in
-    let* _ : ltac:(refine u32) := example05.Foo::["plus1"] foo in
+    (let* foo : ltac:(refine (M.Val example05.Foo.t)) :=
+      let* α0 : ltac:(refine (M.Val u32.t)) := M.alloc 0 in
+      let* α1 := M.read α0 in
+      M.alloc (example05.Foo.Build_t α1) in
+    let* _ : ltac:(refine (M.Val u32.t)) := example05.Foo.t::["plus1"] foo in
     M.alloc tt).

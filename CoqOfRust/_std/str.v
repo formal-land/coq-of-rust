@@ -67,14 +67,12 @@ Module pattern.
   }
   *)
   Module SearchStep.
-    Inductive t `{ℋ : State.Trait} : Set := 
-    | Match: usize -> usize -> t
-    | Reject: usize -> usize -> t
+    Inductive t : Set := 
+    | Match: usize.t -> usize.t -> t
+    | Reject: usize.t -> usize.t -> t
     | Done : t
     .
   End SearchStep.
-  Definition SearchStep `{ℋ : State.Trait} : Set :=
-    M.Val SearchStep.t.
 
   (* ********TRAITS******** *)
   (*
@@ -96,11 +94,19 @@ Module pattern.
   }
   *)
   Module Searcher.
-    Class Trait `{ℋ : State.Trait} (Self : Set) : Set := { 
-      haystack : ref Self -> ref str;
-      next : mut_ref Self -> SearchStep;
-      next_match : mut_ref Self -> option.Option (usize * usize);
-      next_reject : mut_ref Self -> option.Option (usize * usize);
+    Class Trait (Self : Set) : Set := { 
+      haystack :
+        M.Val (ref Self) ->
+        M (M.Val (ref str.t));
+      next :
+        M.Val (mut_ref Self) ->
+        M (M.Val SearchStep.t);
+      next_match :
+        M.Val (mut_ref Self) ->
+        M (M.Val (option.Option.t (usize.t * usize.t)));
+      next_reject :
+        M.Val (mut_ref Self) ->
+        M (M.Val (option.Option.t (usize.t * usize.t)));
     }.
   End Searcher.
 
@@ -115,11 +121,11 @@ Module pattern.
   }
   *)
   Module ReverseSearcher.
-    Class Trait `{ℋ : State.Trait} (Self : Set) 
+    Class Trait (Self : Set) 
       `{Searcher.Trait Self} : Set := { 
-        next_back : mut_ref Self -> SearchStep;
-        next_match_back : mut_ref Self -> option.Option (usize * usize);
-        next_reject_back : mut_ref Self -> option.Option (usize * usize);
+        next_back : mut_ref Self -> SearchStep.t;
+        next_match_back : mut_ref Self -> option.Option.t (usize.t * usize.t);
+        next_reject_back : mut_ref Self -> option.Option.t (usize.t * usize.t);
       }.
   End ReverseSearcher.
   
@@ -142,22 +148,22 @@ Module pattern.
   }
   *)
   Module Pattern.
-    Class Trait `{ℋ : State.Trait} (Self Searcher : Set) : Set := { 
+    Class Trait (Self Searcher : Set) : Set := { 
       Searcher := Searcher;
 
-      into_searcher : Self -> ref str -> Searcher;
-      is_contained_in : Self -> ref str -> bool;
-      is_prefix_of : Self -> ref str -> bool;
-      is_suffix_of `{ReverseSearcher.Trait Searcher} : Self -> ref str -> bool;
-      strip_prefix_of : Self -> ref str -> option.Option (ref str);
-      strip_suffix_of `{ReverseSearcher.Trait Searcher} : Self -> ref str -> option.Option (ref str);
+      into_searcher : Self -> ref str.t -> Searcher;
+      is_contained_in : Self -> ref str.t -> bool;
+      is_prefix_of : Self -> ref str.t -> bool;
+      is_suffix_of `{ReverseSearcher.Trait Searcher} : Self -> ref str.t -> bool;
+      strip_prefix_of : Self -> ref str.t -> option.Option.t (ref str.t);
+      strip_suffix_of `{ReverseSearcher.Trait Searcher} : Self -> ref str.t -> option.Option.t (ref str.t);
     }.
   End Pattern.
 
   (* pub trait DoubleEndedSearcher<'a>: ReverseSearcher<'a> { } *)
   Module DoubleEndedSearcher.
     Unset Primitive Projections.
-    Class Trait `{ℋ : State.Trait} (Self : Set) `{ReverseSearcher.Trait Self} : Set := { }.
+    Class Trait (Self : Set) `{ReverseSearcher.Trait Self} : Set := { }.
     Set Primitive Projections.
   End DoubleEndedSearcher.
   
@@ -199,61 +205,51 @@ Import pattern.
 Module Utf8Chunk.
   Parameter t : Set.
 End Utf8Chunk.
-Definition Utf8Chunk := Utf8Chunk.t.
 
 (* pub struct Utf8Chunks<'a> { /* private fields */ } *)
 Module Utf8Chunks.
   Parameter t : Set.
 End Utf8Chunks.
-Definition Utf8Chunks := Utf8Chunks.t.
 
 (* pub struct Bytes<'a>(_); *)
 Module Bytes.
   Parameter t : Set.
 End Bytes.
-Definition Bytes := Bytes.t.
 
 (* pub struct CharIndices<'a> { /* private fields */ } *)
 Module CharIndices.
   Parameter t : Set.
 End CharIndices.
-Definition CharIndices := CharIndices.t.
 
 (* pub struct Chars<'a> { /* private fields */ } *)
 Module Chars.
   Parameter t : Set.
 End Chars.
-Definition Chars := Chars.t.
 
 (* pub struct EncodeUtf16<'a> { /* private fields */ } *)
 Module EncodeUtf16.
   Parameter t : Set.
 End EncodeUtf16.
-Definition EncodeUtf16 := EncodeUtf16.t.
 
 (* pub struct EscapeDebug<'a> { /* private fields */ } *)
 Module EscapeDebug.
   Parameter t : Set.
 End EscapeDebug.
-Definition EscapeDebug := EscapeDebug.t.
 
 (* pub struct EscapeDefault<'a> { /* private fields */ } *)
 Module EscapeDefault.
   Parameter t : Set.
 End EscapeDefault.
-Definition EscapeDefault := EscapeDefault.t.
 
 (* pub struct EscapeUnicode<'a> { /* private fields */ } *)
 Module EscapeUnicode.
   Parameter t : Set.
 End EscapeUnicode.
-Definition EscapeUnicode := EscapeUnicode.t.
 
 (* pub struct Lines<'a>(_); *)
 Module Lines.
   Parameter t : Set.
 End Lines.
-Definition Lines := Lines.t.
 
 (* NOTE: LinesAny deprecated *)
 
@@ -265,7 +261,6 @@ where
 Module MatchIndices.
   Parameter t : forall (P : Set) `{Pattern.Trait P}, Set.
 End MatchIndices.
-Definition MatchIndices := MatchIndices.t.
 
 (* 
 pub struct Matches<'a, P>(_)
@@ -275,7 +270,6 @@ where
 Module Matches.
   Parameter t : forall (P : Set) `{Pattern.Trait P}, Set.
 End Matches.
-Definition Matches := Matches.t.
 
 (* 
 pub struct RMatchIndices<'a, P>(_)
@@ -285,7 +279,6 @@ where
 Module RMatchIndices.
   Parameter t : forall (P : Set) `{Pattern.Trait P}, Set.
 End RMatchIndices.
-Definition RMatchIndices := RMatchIndices.t.
 
 (* 
 pub struct RMatches<'a, P>(_)
@@ -295,7 +288,6 @@ where
 Module RMatches.
   Parameter t : forall (P : Set) `{Pattern.Trait P}, Set.
 End RMatches.
-Definition RMatches := RMatches.t.
 
 (* 
 pub struct RSplit<'a, P>(_)
@@ -305,7 +297,6 @@ where
 Module RSplit.
   Parameter t : forall (P : Set) `{Pattern.Trait P}, Set.
 End RSplit.
-Definition RSplit := RSplit.t.
 
 (* 
 pub struct RSplitN<'a, P>(_)
@@ -315,7 +306,6 @@ where
 Module RSplitN.
   Parameter t : forall (P : Set) `{Pattern.Trait P}, Set.
 End RSplitN.
-Definition RSplitN := RSplitN.t.
 
 (* 
 pub struct RSplitTerminator<'a, P>(_)
@@ -325,7 +315,6 @@ where
 Module RSplitTerminator.
   Parameter t : forall (P : Set) `{Pattern.Trait P}, Set.
 End RSplitTerminator.
-Definition RSplitTerminator := RSplitTerminator.t.
 
 (* 
 pub struct Split<'a, P>(_)
@@ -335,13 +324,11 @@ where
 Module Split.
   Parameter t : forall (P : Set) `{Pattern.Trait P}, Set.
 End Split.
-Definition Split := Split.t.
 
 (* pub struct SplitAsciiWhitespace<'a> { /* private fields */ } *)
 Module SplitAsciiWhitespace.
   Parameter t : Set.
 End SplitAsciiWhitespace.
-Definition SplitAsciiWhitespace := SplitAsciiWhitespace.t.
 
 (* 
 pub struct SplitInclusive<'a, P>(_)
@@ -351,7 +338,6 @@ where
 Module SplitInclusive.
   Parameter t : forall (P : Set) `{Pattern.Trait P}, Set.
 End SplitInclusive.
-Definition SplitInclusive := SplitInclusive.t.
 
 (* 
 pub struct SplitN<'a, P>(_)
@@ -361,8 +347,6 @@ where
 Module SplitN.
   Parameter t : forall (P : Set) `{Pattern.Trait P}, Set.
 End SplitN.
-Definition SplitN := SplitN.t.
-
 
 (* 
 pub struct SplitTerminator<'a, P>(_)
@@ -372,20 +356,17 @@ where
 Module SplitTerminator.
   Parameter t : forall (P : Set) `{Pattern.Trait P}, Set.
 End SplitTerminator.
-Definition SplitTerminator := SplitTerminator.t.
 
 
 (* pub struct SplitWhitespace<'a> { /* private fields */ } *)
 Module SplitWhitespace.
   Parameter t : Set.
 End SplitWhitespace.
-Definition SplitWhitespace := SplitWhitespace.t.
 
 (* pub struct Utf8Error { /* private fields */ } *)
 Module Utf8Error.
   Parameter t : Set.
 End Utf8Error.
-Definition Utf8Error := Utf8Error.t.
 
 (* ********TRAITS******** *)
 (*
@@ -400,63 +381,65 @@ pub trait FromStr: Sized {
 }
 *)
 Module FromStr.
-  Class Trait `{ℋ : State.Trait} (Self : Set) : Type := { 
+  Class Trait (Self : Set) : Type := { 
     Err : Set;
-    from_str : ref str -> result.Result Self Err;
+    from_str :
+      M.Val (ref str.t) ->
+      M (M.Val (result.Result Self Err));
   }.
 End FromStr.
 
 Module FromStr_instances.
   #[refine]
-  Global Instance for_bool `{ℋ : State.Trait} : FromStr.Trait bool := {
+  Global Instance for_bool : FromStr.Trait bool := {
     Err := str.error.ParseBoolError;
   }.
     all: destruct (axiom "FromStr_instances" : Empty_set).
   Defined.
 
-  Global Instance for_char `{ℋ : State.Trait} : FromStr.Trait char.
+  Global Instance for_char : FromStr.Trait char.t.
   Admitted.
 
-  Global Instance for_f32 `{ℋ : State.Trait} : FromStr.Trait f32.
+  Global Instance for_f32 : FromStr.Trait f32.t.
   Admitted.
 
-  Global Instance for_f64 `{ℋ : State.Trait} : FromStr.Trait f64.
+  Global Instance for_f64 : FromStr.Trait f64.t.
   Admitted.
 
-  Global Instance for_i8 `{ℋ : State.Trait} : FromStr.Trait i8.
+  Global Instance for_i8 : FromStr.Trait i8.t.
   Admitted.
 
-  Global Instance for_i16 `{ℋ : State.Trait} : FromStr.Trait i16.
+  Global Instance for_i16 : FromStr.Trait i16.t.
   Admitted.
 
-  Global Instance for_i32 `{ℋ : State.Trait} : FromStr.Trait i32.
+  Global Instance for_i32 : FromStr.Trait i32.t.
   Admitted.
 
-  Global Instance for_i64 `{ℋ : State.Trait} : FromStr.Trait i64.
+  Global Instance for_i64 : FromStr.Trait i64.t.
   Admitted.
 
-  Global Instance for_i128 `{ℋ : State.Trait} : FromStr.Trait i128.
+  Global Instance for_i128 : FromStr.Trait i128.t.
   Admitted.
 
-  Global Instance for_isize `{ℋ : State.Trait} : FromStr.Trait isize.
+  Global Instance for_isize : FromStr.Trait isize.t.
   Admitted.
 
-  Global Instance for_u8 `{ℋ : State.Trait} : FromStr.Trait u8.
+  Global Instance for_u8 : FromStr.Trait u8.t.
   Admitted.
 
-  Global Instance for_u16 `{ℋ : State.Trait} : FromStr.Trait u16.
+  Global Instance for_u16 : FromStr.Trait u16.t.
   Admitted.
 
-  Global Instance for_u32 `{ℋ : State.Trait} : FromStr.Trait u32.
+  Global Instance for_u32 : FromStr.Trait u32.t.
   Admitted.
 
-  Global Instance for_u64 `{ℋ : State.Trait} : FromStr.Trait u64.
+  Global Instance for_u64 : FromStr.Trait u64.t.
   Admitted.
 
-  Global Instance for_u128 `{ℋ : State.Trait} : FromStr.Trait u128.
+  Global Instance for_u128 : FromStr.Trait u128.t.
   Admitted.
 
-  Global Instance for_usize `{ℋ : State.Trait} : FromStr.Trait usize.
+  Global Instance for_usize : FromStr.Trait usize.t.
   Admitted.
 End FromStr_instances.
 
@@ -469,19 +452,16 @@ End FromStr_instances.
 [ ] from_utf8_unchecked_mut
 *)
 
-Module Impl_str. Section Impl_str.
-  Context `{ℋ : State.Trait}.
-
-  Definition Self : Set := str.
+Module Impl_str.
+  Definition Self : Set := str.t.
 
   Parameter parse :
-    forall `{ℋ : State.Trait} {F : Set}
-      {H0 : FromStr.Trait F},
-    ref Self ->
-    M (core.result.Result F (FromStr.Err (Trait := H0))).
+    forall {F : Set} {H0 : FromStr.Trait F},
+    M.Val (ref Self) ->
+    M (M.Val (core.result.Result F (FromStr.Err (Trait := H0)))).
 
   Global Instance AssociatedFunction_parse {F : Set} {H0 : FromStr.Trait F} :
     Notation.DoubleColon Self "parse" := {
     Notation.double_colon := parse (F := F);
   }.
-End Impl_str. End Impl_str.
+End Impl_str.

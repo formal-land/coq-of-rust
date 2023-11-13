@@ -4,5 +4,5 @@ Require CoqOfRust.alloc.string.
 Require CoqOfRust.core.fmt.
 
 Parameter format :
-  forall `{H : State.Trait},
-  core.fmt.Arguments -> M (H := H) alloc.string.String.
+  M.Val core.fmt.Arguments.t ->
+  M (M.Val alloc.string.String.t).

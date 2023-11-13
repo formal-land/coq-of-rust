@@ -3,111 +3,140 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module  HasArea.
 Section HasArea.
-  Context `{ℋ : State.Trait}.
-  
   Class Trait (Self : Set) : Type := {
-    area : (ref Self) -> M f64;
+    area : (ref ltac:(Self)) -> M f64.t;
   }.
   
 End HasArea.
 End HasArea.
 
-Module  Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle.
-Section Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle.
-  Context `{ℋ : State.Trait}.
+Module  Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle_t.
+Section Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle_t.
+  Ltac Self := exact generics_bounds.Rectangle.t.
   
-  Definition Self : Set := generics_bounds.Rectangle.
-  
-  Parameter area : (ref Self) -> M f64.
+  (*
+      fn area(&self) -> f64 {
+          self.length * self.height
+      }
+  *)
+  Parameter area : (M.Val (ref ltac:(Self))) -> M (M.Val f64.t).
   
   Global Instance AssociatedFunction_area :
-    Notation.DoubleColon Self "area" := {
+    Notation.DoubleColon ltac:(Self) "area" := {
     Notation.double_colon := area;
   }.
   
-  Global Instance ℐ : generics_bounds.HasArea.Trait Self := {
+  Global Instance ℐ : generics_bounds.HasArea.Trait ltac:(Self) := {
     generics_bounds.HasArea.area := area;
   }.
-End Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle.
-End Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle.
+End Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle_t.
+End Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle_t.
 
 Module  Rectangle.
 Section Rectangle.
-  Context `{ℋ : State.Trait}.
-  
   Record t : Set := {
-    length : f64;
-    height : f64;
+    length : f64.t;
+    height : f64.t;
   }.
   
   Global Instance Get_length : Notation.Dot "length" := {
-    Notation.dot x := let* x := M.read x in M.pure x.(length) : M _;
+    Notation.dot x := let* x := M.read x in M.alloc x.(length) : M _;
   }.
   Global Instance Get_AF_length : Notation.DoubleColon t "length" := {
-    Notation.double_colon x := let* x := M.read x in M.pure x.(length) : M _;
+    Notation.double_colon x := let* x := M.read x in M.alloc x.(length) : M _;
   }.
   Global Instance Get_height : Notation.Dot "height" := {
-    Notation.dot x := let* x := M.read x in M.pure x.(height) : M _;
+    Notation.dot x := let* x := M.read x in M.alloc x.(height) : M _;
   }.
   Global Instance Get_AF_height : Notation.DoubleColon t "height" := {
-    Notation.double_colon x := let* x := M.read x in M.pure x.(height) : M _;
+    Notation.double_colon x := let* x := M.read x in M.alloc x.(height) : M _;
   }.
 End Rectangle.
 End Rectangle.
-Definition Rectangle `{ℋ : State.Trait} : Set := M.Val Rectangle.t.
 
-Module  Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
-Section Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
-  Context `{ℋ : State.Trait}.
+Module  Impl_core_fmt_Debug_for_generics_bounds_Rectangle_t.
+Section Impl_core_fmt_Debug_for_generics_bounds_Rectangle_t.
+  Ltac Self := exact generics_bounds.Rectangle.t.
   
-  Definition Self : Set := generics_bounds.Rectangle.
-  
+  (*
+  Debug
+  *)
   Parameter fmt :
-      (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
+      (M.Val (ref ltac:(Self))) ->
+        (M.Val (mut_ref core.fmt.Formatter.t)) ->
+        M (M.Val ltac:(core.fmt.Result)).
   
-  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {
+  Global Instance AssociatedFunction_fmt :
+    Notation.DoubleColon ltac:(Self) "fmt" := {
     Notation.double_colon := fmt;
   }.
   
-  Global Instance ℐ : core.fmt.Debug.Trait Self := {
+  Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
     core.fmt.Debug.fmt := fmt;
   }.
-End Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
-End Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
+End Impl_core_fmt_Debug_for_generics_bounds_Rectangle_t.
+End Impl_core_fmt_Debug_for_generics_bounds_Rectangle_t.
 
 (* #[allow(dead_code)] - struct was ignored by the compiler *)
 Module  Triangle.
 Section Triangle.
-  Context `{ℋ : State.Trait}.
-  
   Record t : Set := {
-    length : f64;
-    height : f64;
+    length : f64.t;
+    height : f64.t;
   }.
   
   Global Instance Get_length : Notation.Dot "length" := {
-    Notation.dot x := let* x := M.read x in M.pure x.(length) : M _;
+    Notation.dot x := let* x := M.read x in M.alloc x.(length) : M _;
   }.
   Global Instance Get_AF_length : Notation.DoubleColon t "length" := {
-    Notation.double_colon x := let* x := M.read x in M.pure x.(length) : M _;
+    Notation.double_colon x := let* x := M.read x in M.alloc x.(length) : M _;
   }.
   Global Instance Get_height : Notation.Dot "height" := {
-    Notation.dot x := let* x := M.read x in M.pure x.(height) : M _;
+    Notation.dot x := let* x := M.read x in M.alloc x.(height) : M _;
   }.
   Global Instance Get_AF_height : Notation.DoubleColon t "height" := {
-    Notation.double_colon x := let* x := M.read x in M.pure x.(height) : M _;
+    Notation.double_colon x := let* x := M.read x in M.alloc x.(height) : M _;
   }.
 End Triangle.
 End Triangle.
-Definition Triangle `{ℋ : State.Trait} : Set := M.Val Triangle.t.
 
+(*
+fn print_debug<T: Debug>(t: &T) {
+    println!("{:?}", t);
+}
+*)
 Parameter print_debug :
-    forall `{ℋ : State.Trait} {T : Set} {ℋ_0 : core.fmt.Debug.Trait T},
-    (ref T) -> M unit.
+    forall {T : Set} {ℋ_0 : core.fmt.Debug.Trait T},
+    (M.Val (ref T)) -> M (M.Val unit).
 
+(*
+fn area<T: HasArea>(t: &T) -> f64 {
+    t.area()
+}
+*)
 Parameter area :
-    forall `{ℋ : State.Trait} {T : Set} {ℋ_0 : generics_bounds.HasArea.Trait T},
-    (ref T) -> M f64.
+    forall {T : Set} {ℋ_0 : generics_bounds.HasArea.Trait T},
+    (M.Val (ref T)) -> M (M.Val f64.t).
 
+(*
+fn main() {
+    let rectangle = Rectangle {
+        length: 3.0,
+        height: 4.0,
+    };
+    let _triangle = Triangle {
+        length: 3.0,
+        height: 4.0,
+    };
+
+    print_debug(&rectangle);
+    println!("Area: {}", rectangle.area());
+
+    //print_debug(&_triangle);
+    //println!("Area: {}", _triangle.area());
+    // ^ TODO: Try uncommenting these.
+    // | Error: Does not implement either `Debug` or `HasArea`.
+}
+*)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{ℋ : State.Trait}, M unit.
+Parameter main : M (M.Val unit).

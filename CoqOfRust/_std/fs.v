@@ -41,7 +41,7 @@ End File.
 Definition File := File.t.
 
 Module Impl_Write_for_File.
-  Global Instance I `{State.Trait} : _std.io.Write.Trait File.
+  Global Instance I : _std.io.Write.Trait File.
   Admitted.
 End Impl_Write_for_File.
 
@@ -66,74 +66,67 @@ Definition OpenOptions : Set := OpenOptions.t.
 Module Impl_OpenOptions.
   Definition Self := OpenOptions.
 
-  Parameter new : forall `{H : State.Trait}, M (H := H) Self.
+  Parameter new : M Self.
 
-  Global Instance AssociatedFunction_new `{H : State.Trait} :
+  Global Instance AssociatedFunction_new :
     Notation.DoubleColon Self "new" := {
     Notation.double_colon := new;
   }.
 
   Parameter read :
-    forall `{H : State.Trait},
-    mut_ref Self -> bool -> M (H := H) (mut_ref Self).
+    mut_ref Self -> bool -> M (mut_ref Self).
 
-  Global Instance Method_read `{H : State.Trait} :
+  Global Instance Method_read :
     Notation.Dot "read" := {
     Notation.dot := read;
   }.
 
   Parameter write :
-    forall `{H : State.Trait},
-    mut_ref Self -> bool -> M (H := H) (mut_ref Self).
+    mut_ref Self -> bool -> M (mut_ref Self).
 
-  Global Instance Method_write `{H : State.Trait} :
+  Global Instance Method_write :
     Notation.Dot "write" := {
     Notation.dot := write;
   }.
 
   Parameter append :
-    forall `{H : State.Trait},
-    mut_ref Self -> bool -> M (H := H) (mut_ref Self).
+    mut_ref Self -> bool -> M (mut_ref Self).
 
-  Global Instance Method_append `{H : State.Trait} :
+  Global Instance Method_append :
     Notation.Dot "append" := {
     Notation.dot := append;
   }.
 
   Parameter truncate :
-    forall `{H : State.Trait},
-    mut_ref Self -> bool -> M (H := H) (mut_ref Self).
+    mut_ref Self -> bool -> M (mut_ref Self).
 
-  Global Instance Method_truncate `{H : State.Trait} :
+  Global Instance Method_truncate :
     Notation.Dot "truncate" := {
     Notation.dot := truncate;
   }.
 
   Parameter create :
-    forall `{H : State.Trait},
-    mut_ref Self -> bool -> M (H := H) (mut_ref Self).
+    mut_ref Self -> bool -> M (mut_ref Self).
 
-  Global Instance Method_create `{H : State.Trait} :
+  Global Instance Method_create :
     Notation.Dot "create" := {
     Notation.dot := create;
   }.
 
   Parameter create_new :
-    forall `{H : State.Trait},
-    mut_ref Self -> bool -> M (H := H) (mut_ref Self).
+    mut_ref Self -> bool -> M (mut_ref Self).
 
-  Global Instance Method_create_new `{H : State.Trait} :
+  Global Instance Method_create_new :
     Notation.Dot "create_new" := {
     Notation.dot := create_new;
   }.
 
   Parameter open :
-    forall `{H : State.Trait}
-      {P : Set} (*`{core.convert.AsRef.Trait P _std.path.Path}*),
-    ref Self -> P -> M (H := H) (_std.io.Result File).
+    forall {P : Set} (*`{core.convert.AsRef.Trait P _std.path.Path}*),
+    ref Self -> P -> M (_std.io.Result File).
 
-  Global Instance Method_open `{H : State.Trait}
-      {P : Set} (*`{core.convert.AsRef.Trait P _std.path.Path}*) :
+  Global Instance Method_open {P : Set}
+      (*`{core.convert.AsRef.Trait P _std.path.Path}*) :
     Notation.Dot "open" := {
     Notation.dot := open (P := P);
   }.

@@ -2,10 +2,20 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module Foo.
-  Inductive t `{ℋ : State.Trait} : Set :=
+  Inductive t : Set :=
   | Bar.
 End Foo.
-Definition Foo `{ℋ : State.Trait} : Set := M.Val Foo.t.
 
+(*
+fn main() {
+    let a = Foo::Bar;
+
+    // Variable a matches Foo::Bar
+    if let Foo::Bar = a {
+        // ^-- this causes a compile-time error. Use `if let` instead.
+        println!("a is foobar");
+    }
+}
+*)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{ℋ : State.Trait}, M unit.
+Parameter main : M (M.Val unit).

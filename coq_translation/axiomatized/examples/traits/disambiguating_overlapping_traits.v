@@ -3,10 +3,8 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module  UsernameWidget.
 Section UsernameWidget.
-  Context `{ℋ : State.Trait}.
-  
   Class Trait (Self : Set) : Type := {
-    get : (ref Self) -> M alloc.string.String;
+    get : (ref ltac:(Self)) -> M alloc.string.String.t;
   }.
   
 End UsernameWidget.
@@ -14,10 +12,8 @@ End UsernameWidget.
 
 Module  AgeWidget.
 Section AgeWidget.
-  Context `{ℋ : State.Trait}.
-  
   Class Trait (Self : Set) : Type := {
-    get : (ref Self) -> M u8;
+    get : (ref ltac:(Self)) -> M u8.t;
   }.
   
 End AgeWidget.
@@ -25,66 +21,89 @@ End AgeWidget.
 
 Module  Form.
 Section Form.
-  Context `{ℋ : State.Trait}.
-  
   Record t : Set := {
-    username : alloc.string.String;
-    age : u8;
+    username : alloc.string.String.t;
+    age : u8.t;
   }.
   
   Global Instance Get_username : Notation.Dot "username" := {
-    Notation.dot x := let* x := M.read x in M.pure x.(username) : M _;
+    Notation.dot x := let* x := M.read x in M.alloc x.(username) : M _;
   }.
   Global Instance Get_AF_username : Notation.DoubleColon t "username" := {
-    Notation.double_colon x := let* x := M.read x in M.pure x.(username) : M _;
+    Notation.double_colon x := let* x := M.read x in M.alloc x.(username) : M _;
   }.
   Global Instance Get_age : Notation.Dot "age" := {
-    Notation.dot x := let* x := M.read x in M.pure x.(age) : M _;
+    Notation.dot x := let* x := M.read x in M.alloc x.(age) : M _;
   }.
   Global Instance Get_AF_age : Notation.DoubleColon t "age" := {
-    Notation.double_colon x := let* x := M.read x in M.pure x.(age) : M _;
+    Notation.double_colon x := let* x := M.read x in M.alloc x.(age) : M _;
   }.
 End Form.
 End Form.
-Definition Form `{ℋ : State.Trait} : Set := M.Val Form.t.
 
-Module  Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_overlapping_traits_Form.
-Section Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_overlapping_traits_Form.
-  Context `{ℋ : State.Trait}.
+Module  Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_overlapping_traits_Form_t.
+Section Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_overlapping_traits_Form_t.
+  Ltac Self := exact disambiguating_overlapping_traits.Form.t.
   
-  Definition Self : Set := disambiguating_overlapping_traits.Form.
+  (*
+      fn get(&self) -> String {
+          self.username.clone()
+      }
+  *)
+  Parameter get : (M.Val (ref ltac:(Self))) -> M (M.Val alloc.string.String.t).
   
-  Parameter get : (ref Self) -> M alloc.string.String.
-  
-  Global Instance AssociatedFunction_get : Notation.DoubleColon Self "get" := {
+  Global Instance AssociatedFunction_get :
+    Notation.DoubleColon ltac:(Self) "get" := {
     Notation.double_colon := get;
   }.
   
   Global Instance ℐ :
-    disambiguating_overlapping_traits.UsernameWidget.Trait Self := {
+    disambiguating_overlapping_traits.UsernameWidget.Trait ltac:(Self) := {
     disambiguating_overlapping_traits.UsernameWidget.get := get;
   }.
-End Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_overlapping_traits_Form.
-End Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_overlapping_traits_Form.
+End Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_overlapping_traits_Form_t.
+End Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_overlapping_traits_Form_t.
 
-Module  Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overlapping_traits_Form.
-Section Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overlapping_traits_Form.
-  Context `{ℋ : State.Trait}.
+Module  Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overlapping_traits_Form_t.
+Section Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overlapping_traits_Form_t.
+  Ltac Self := exact disambiguating_overlapping_traits.Form.t.
   
-  Definition Self : Set := disambiguating_overlapping_traits.Form.
+  (*
+      fn get(&self) -> u8 {
+          self.age
+      }
+  *)
+  Parameter get : (M.Val (ref ltac:(Self))) -> M (M.Val u8.t).
   
-  Parameter get : (ref Self) -> M u8.
-  
-  Global Instance AssociatedFunction_get : Notation.DoubleColon Self "get" := {
+  Global Instance AssociatedFunction_get :
+    Notation.DoubleColon ltac:(Self) "get" := {
     Notation.double_colon := get;
   }.
   
   Global Instance ℐ :
-    disambiguating_overlapping_traits.AgeWidget.Trait Self := {
+    disambiguating_overlapping_traits.AgeWidget.Trait ltac:(Self) := {
     disambiguating_overlapping_traits.AgeWidget.get := get;
   }.
-End Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overlapping_traits_Form.
-End Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overlapping_traits_Form.
+End Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overlapping_traits_Form_t.
+End Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overlapping_traits_Form_t.
 
+(*
+fn main() {
+    let form = Form {
+        username: "rustacean".to_owned(),
+        age: 28,
+    };
+
+    // If you uncomment this line, you'll get an error saying
+    // "multiple `get` found". Because, after all, there are multiple methods
+    // named `get`.
+    // println!("{}", form.get());
+
+    let username = <Form as UsernameWidget>::get(&form);
+    assert_eq!(("rustacean".to_string()), username);
+    let age = <Form as AgeWidget>::get(&form);
+    assert_eq!(28, age);
+}
+*)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{ℋ : State.Trait}, M unit.
+Parameter main : M (M.Val unit).

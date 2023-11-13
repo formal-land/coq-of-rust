@@ -3,32 +3,24 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module  A.
 Section A.
-  Context `{ℋ : State.Trait}.
-  
   Inductive t : Set := Build.
 End A.
 End A.
-Definition A `{ℋ : State.Trait} := M.Val A.t.
 
 Module  S.
 Section S.
-  Context `{ℋ : State.Trait}.
-  
   Record t : Set := {
-    x0 : generics_functions.A;
+    x0 : generics_functions.A.t;
   }.
   
   Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
+    Notation.dot x := let* x := M.read x in M.alloc x.(x0) : M _;
   }.
 End S.
 End S.
-Definition S `{ℋ : State.Trait} : Set := M.Val S.t.
 
 Module  SGen.
 Section SGen.
-  Context `{ℋ : State.Trait}.
-  
   Context {T : Set}.
   
   Record t : Set := {
@@ -36,25 +28,49 @@ Section SGen.
   }.
   
   Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
+    Notation.dot x := let* x := M.read x in M.alloc x.(x0) : M _;
   }.
 End SGen.
 End SGen.
-Definition SGen `{ℋ : State.Trait} (T : Set) : Set := M.Val (SGen.t (T := T)).
 
-Parameter reg_fn : forall `{ℋ : State.Trait}, generics_functions.S -> M unit.
+(*
+fn reg_fn(_s: S) {}
+*)
+Parameter reg_fn : (M.Val generics_functions.S.t) -> M (M.Val unit).
 
+(*
+fn gen_spec_t(_s: SGen<A>) {}
+*)
 Parameter gen_spec_t :
-    forall `{ℋ : State.Trait},
-    (generics_functions.SGen generics_functions.A) -> M unit.
+    (M.Val (generics_functions.SGen.t generics_functions.A.t)) ->
+      M (M.Val unit).
 
+(*
+fn gen_spec_i32(_s: SGen<i32>) {}
+*)
 Parameter gen_spec_i32 :
-    forall `{ℋ : State.Trait},
-    (generics_functions.SGen i32) -> M unit.
+    (M.Val (generics_functions.SGen.t i32.t)) -> M (M.Val unit).
 
+(*
+fn generic<T>(_s: SGen<T>) {}
+*)
 Parameter generic :
-    forall `{ℋ : State.Trait} {T : Set},
-    (generics_functions.SGen T) -> M unit.
+    forall {T : Set},
+    (M.Val (generics_functions.SGen.t T)) -> M (M.Val unit).
 
+(*
+fn main() {
+    // Using the non-generic functions
+    reg_fn(S(A)); // Concrete type.
+    gen_spec_t(SGen(A)); // Implicitly specified type parameter `A`.
+    gen_spec_i32(SGen(6)); // Implicitly specified type parameter `i32`.
+
+    // Explicitly specified type parameter `char` to `generic()`.
+    generic::<char>(SGen('a'));
+
+    // Implicitly specified type parameter `char` to `generic()`.
+    generic(SGen('c'));
+}
+*)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{ℋ : State.Trait}, M unit.
+Parameter main : M (M.Val unit).

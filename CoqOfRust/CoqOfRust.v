@@ -79,56 +79,54 @@ Parameter axiom : forall {A : Set}, A.
 
 Parameter cast : forall {A : Set}, A -> forall (B : Set), B.
 
-Parameter assign : forall `{State.Trait} {A : Set}, A -> A -> M unit.
-
-Definition pointer_coercion `{State.Trait} {T : Set} (cast : string) (x : T) :
+Definition pointer_coercion {T : Set} (cast : string) (x : T) :
     M T :=
   M.pure x.
 
 (** We replace assembly blocks by a value of type unit. *)
-Parameter InlineAssembly : forall `{State.Trait}, unit.
+Parameter InlineAssembly : unit.
 
 (** The functions on [Z] should eventually be replaced by functions on the
     corresponding integer types. *)
-Global Instance Method_Z_abs `{State.Trait} : Notation.Dot "abs" := {
+Global Instance Method_Z_abs : Notation.Dot "abs" := {
   Notation.dot (z : Z) := (M.pure (Z.abs z) : M _);
 }.
 
 (* TODO: find a better place for this instance *)
-Global Instance Method_Z_neg `{State.Trait} : Notation.Dot "neg" := {
+Global Instance Method_Z_neg : Notation.Dot "neg" := {
   Notation.dot (x : Z) := (M.pure (Z.opp x) : M _);
 }.
 
 (* TODO: find a better place for this instance *)
-Global Instance Method_Z_lt `{State.Trait} : Notation.Dot "lt" := {
+Global Instance Method_Z_lt : Notation.Dot "lt" := {
   Notation.dot (x y : Z) := (M.pure (Z.ltb x y) : M _);
 }.
 
 (* TODO: find a better place for this instance *)
-Global Instance Method_Z_gt `{State.Trait} : Notation.Dot "gt" := {
+Global Instance Method_Z_gt : Notation.Dot "gt" := {
   Notation.dot (x y : Z) := (M.pure (Z.gtb x y) : M _);
 }.
 
 (* TODO: find a better place for this instance *)
-Global Instance Method_Z_eq `{State.Trait} : Notation.Dot "eq" := {
+Global Instance Method_Z_eq : Notation.Dot "eq" := {
   Notation.dot (x y : Z) := (M.pure (Z.eqb x y) : M _);
 }.
 
 (* TODO: find a better place for this instance *)
-Global Instance Method_bool_andb `{State.Trait} : Notation.Dot "andb" := {
-  Notation.dot (x y : bool) :=
+Global Instance Method_bool_andb : Notation.Dot "andb" := {
+  Notation.dot (x y : M.Val bool) :=
     let* x := M.read x in
     let* y := M.read y in
     M.alloc (andb x y) : M _;
 }.
 
-Global Instance Method_destroy `{State.Trait} (A : Set) :
+Global Instance Method_destroy (A : Set) :
   Notation.Dot "destroy" := {
   Notation.dot (x : A) := (M.pure tt : M _);
 }.
 
-Global Instance Method_ne_u64 `{State.Trait} :
-  Notation.Dot "ne" (T := u64 -> u64 -> M bool). Admitted.
+Global Instance Method_ne_u64 :
+  Notation.Dot "ne" (T := u64.t -> u64.t -> M bool). Admitted.
 
 Require CoqOfRust.alloc.alloc.
 Require CoqOfRust.alloc.boxed.
@@ -287,81 +285,79 @@ End std.
 
 Module hash_Instances.
   (** Hasher instance functions *)
-  Global Instance Hasher_Method_finish `{State.Trait}
+  Global Instance Hasher_Method_finish
       (Self : Set) `{core.hash.Hasher.Trait Self} :
     Notation.Dot "finish" := {
     Notation.dot := core.hash.Hasher.finish (Self := Self);
   }.
 
   (** Hash instance functions *)
-  Global Instance Hash_Method_hash `{State.Trait} (Self : Set)
+  Global Instance Hash_Method_hash (Self : Set)
       {H1 : core.hash.Hasher.Trait Self} {H2 : core.hash.Hash.Trait Self} :
     Notation.Dot "hash" := {
       Notation.dot := core.hash.Hash.hash (Self := Self);
   }.
 
   (** Hasher implementation for DefaultHasher *)
-  Global Instance DefaultHasher_Hasher `{State.Trait} :
+  Global Instance DefaultHasher_Hasher :
     core.hash.Hasher.Trait std.collections.hash.map.DefaultHasher. Admitted.
 
   (** Hash implementation for primitive types *)
-  Global Instance Hash_for_unit `{State.Trait} : core.hash.Hash.Trait unit. Admitted.
-  Global Instance Hash_for_bool `{State.Trait} : core.hash.Hash.Trait unit. Admitted.
-  Global Instance Hash_for_i32 `{State.Trait} : core.hash.Hash.Trait i32. Admitted.
-  Global Instance Hash_for_u32 `{State.Trait} : core.hash.Hash.Trait u32. Admitted.
-  Global Instance Hash_for_String `{State.Trait} : core.hash.Hash.Trait alloc.string.String. Admitted.
-  Global Instance Hash_for_i64 `{State.Trait} : core.hash.Hash.Trait i64. Admitted.
-  Global Instance Hash_for_u64 `{State.Trait} : core.hash.Hash.Trait u64. Admitted.
+  Global Instance Hash_for_unit : core.hash.Hash.Trait unit. Admitted.
+  Global Instance Hash_for_bool : core.hash.Hash.Trait unit. Admitted.
+  Global Instance Hash_for_i32 : core.hash.Hash.Trait i32.t. Admitted.
+  Global Instance Hash_for_u32 : core.hash.Hash.Trait u32.t. Admitted.
+  Global Instance Hash_for_String : core.hash.Hash.Trait alloc.string.String.t. Admitted.
+  Global Instance Hash_for_i64 : core.hash.Hash.Trait i64.t. Admitted.
+  Global Instance Hash_for_u64 : core.hash.Hash.Trait u64.t. Admitted.
 End hash_Instances.
 
 Module unit_Instances.
-  Global Instance IDisplay `{State.Trait} : core.fmt.Display.Trait unit.
+  Global Instance IDisplay : core.fmt.Display.Trait unit.
   Admitted.
 
-  Global Instance IDebug `{State.Trait} : core.fmt.Debug.Trait unit.
+  Global Instance IDebug : core.fmt.Debug.Trait unit.
   Admitted.
 End unit_Instances.
 
 Module bool_Instances.
-  Global Instance IDisplay `{State.Trait} : core.fmt.Display.Trait bool.
+  Global Instance IDisplay : core.fmt.Display.Trait bool.
   Admitted.
 
-  Global Instance IDebug `{State.Trait} : core.fmt.Debug.Trait bool.
+  Global Instance IDebug : core.fmt.Debug.Trait bool.
   Admitted.
 End bool_Instances.
 
 Module char_Instances.
-  Global Instance IDisplay `{State.Trait} : core.fmt.Display.Trait char.
+  Global Instance IDisplay : core.fmt.Display.Trait char.t.
   Admitted.
 
-  Global Instance IDebug `{State.Trait} : core.fmt.Debug.Trait char.
+  Global Instance IDebug : core.fmt.Debug.Trait char.t.
   Admitted.
 End char_Instances.
 
 Module str_Instances.
-  Global Instance IDisplay `{State.Trait} : core.fmt.Display.Trait str.
+  Global Instance IDisplay : core.fmt.Display.Trait str.t.
   Admitted.
 
-  Global Instance IDebug `{State.Trait} : core.fmt.Debug.Trait str.
+  Global Instance IDebug : core.fmt.Debug.Trait str.t.
   Admitted.
 End str_Instances.
 
 Module i32_Instances.
-  Global Instance IDisplay `{State.Trait} : core.fmt.Display.Trait i32.
+  Global Instance IDisplay : core.fmt.Display.Trait i32.t.
   Admitted.
 
-  Global Instance IDebug `{State.Trait} : core.fmt.Debug.Trait i32.
+  Global Instance IDebug : core.fmt.Debug.Trait i32.t.
   Admitted.
 End i32_Instances.
 
 Module ref_Instances.
-  Global Instance IDisplay {T : Set} `{H : State.Trait}
-      {_ : core.fmt.Display.Trait T (H := H)} :
+  Global Instance IDisplay {T : Set} {_ : core.fmt.Display.Trait T} :
     core.fmt.Display.Trait (ref T).
   Admitted.
 
-  Global Instance IDebug {T : Set} `{H : State.Trait}
-      {_ : core.fmt.Debug.Trait T (H := H)} :
+  Global Instance IDebug {T : Set} {_ : core.fmt.Debug.Trait T} :
     core.fmt.Debug.Trait (ref T).
   Admitted.
 End ref_Instances.
@@ -498,7 +494,7 @@ End ToString_Instances.
 
 (** For now we assume that all types implement [to_owned] and that this is the
     identity function. *)
-Global Instance Method_to_owned `{State.Trait} {A : Set} :
+Global Instance Method_to_owned {A : Set} :
   Notation.Dot "to_owned" := {
   Notation.dot (x : A) := (M.pure x : M _);
 }.
@@ -507,16 +503,16 @@ Global Instance Method_to_owned `{State.Trait} {A : Set} :
 Definition format_argument : Set := core.fmt.ArgumentV1.
 
 (** A LangItem generated by the Rust compiler. *)
-Definition format_arguments : Set := core.fmt.Arguments.
+Definition format_arguments : Set := core.fmt.Arguments.t.
 
 (* This is a specialized instance to make try_from_and_into.v work.
  * It is necessary because Coq has a problem with inferring the correct value of
  * the parameter T of core.fmt.ImplFormatter.Formatter_debug_tuple_field1_finish
  * and in result does not use this instance at all.
  *)
-Global Instance Formatter_debug_tuple_field1_finish_for_i32 `{State.Trait} :
-  Notation.DoubleColon core.fmt.Formatter "debug_tuple_field1_finish" :=
-  core.fmt.ImplFormatter.Formatter_debug_tuple_field1_finish (T := i32).
+Global Instance Formatter_debug_tuple_field1_finish_for_i32 :
+  Notation.DoubleColon core.fmt.Formatter.t "debug_tuple_field1_finish" :=
+  core.fmt.ImplFormatter.Formatter_debug_tuple_field1_finish (T := i32.t).
 
 (* derived implementation of Debug for Result *)
 Module Impl_Debug_for_Result.
@@ -526,11 +522,11 @@ Module Impl_Debug_for_Result.
     Context `{core.fmt.Debug.Trait E}.
 
     Parameter fmt :
-      forall `{State.Trait}, ref (core.result.Result T E) ->
-      mut_ref core.fmt.Formatter ->
-      M ltac:(core.fmt.Result).
+      M.Val (ref (core.result.Result T E)) ->
+      M.Val (mut_ref core.fmt.Formatter.t) ->
+      M (M.Val ltac:(core.fmt.Result)).
 
-    Global Instance I `{State.Trait} :
+    Global Instance I :
         core.fmt.Debug.Trait (core.result.Result T E) := {
       fmt := fmt;
     }.
@@ -543,9 +539,9 @@ Module Impl_RangeInclusive.
 
   Definition Self := RangeInclusive Idx.
 
-  Parameter new : forall `{State.Trait}, Idx -> Idx -> M Self.
+  Parameter new : Idx -> Idx -> M Self.
 
-  Global Instance RangeInclusive_new `{State.Trait} :
+  Global Instance RangeInclusive_new :
     Notation.DoubleColon RangeInclusive "new" := {
     Notation.double_colon := new;
   }.
@@ -559,7 +555,7 @@ Module Impl_Slice.
 
     (* defined only for A = Global *)
     Parameter into_vec :
-      forall `{State.Trait} {T (* A *) : Set}
+      forall {T (* A *) : Set}
       (* `{(* core. *) alloc.Allocator.Trait A} *)
       (b : alloc.boxed.Box (slice T) alloc.boxed.Box.Default.A),
         M (alloc.vec.Vec T alloc.vec.Vec.Default.A).
@@ -567,7 +563,7 @@ Module Impl_Slice.
   Definition hack := hack.t.
 
   Module hack_notations.
-    Global Instance hack_into_vec `{State.Trait}
+    Global Instance hack_into_vec
       {T (* A *) : Set} (* `{(* core. *) alloc.Allocator.Trait A} *) :
       Notation.DoubleColon hack "into_vec" := {
       Notation.double_colon (b : alloc.boxed.Box (slice T) alloc.boxed.Box.Default.A) :=
@@ -576,19 +572,18 @@ Module Impl_Slice.
   End hack_notations.
 
   Section Impl_Slice.
-    Context `{State.Trait}.
     Context {T : Set}.
 
     Definition Self := slice T.
 
-    Definition into_vec `{State.Trait}
+    Definition into_vec
       {A : Set}
       {H1 : alloc.Allocator.Trait A}
       (self : alloc.boxed.Box Self A) :
       M (alloc.vec.Vec T A).
     Admitted.
 
-    Global Instance Method_into_vec `{State.Trait}
+    Global Instance Method_into_vec
         {A : Set} {H1 : alloc.Allocator.Trait A} :
         Notation.DoubleColon (alloc.boxed.Box Self A) "into_vec" := {
       Notation.double_colon := into_vec (A := A);
@@ -602,14 +597,13 @@ Module Impl_Iterator_for_Slice_Iter.
   Section Impl_Iterator_for_Slice_Iter.
   Context {A : Set}.
 
-  Definition Self := std.slice.Iter A.
+  Definition Self := std.slice.Iter.t A.
 
   Definition Item := A.
 
-  Parameter next :
-    forall `{State.Trait}, mut_ref Self -> M (core.option.Option A).
+  Parameter next : mut_ref Self -> M (core.option.Option.t A).
 
-  Global Instance Method_next `{State.Trait} : Notation.Dot "next" := {
+  Global Instance Method_next : Notation.Dot "next" := {
     Notation.dot := next;
   }.
   End Impl_Iterator_for_Slice_Iter.
@@ -621,17 +615,16 @@ End Impl_Iterator_for_Slice_Iter.
 Module Impl_IntoIterator_for_Slice_Iter.
   Section Impl_IntoIterator_for_Slice_Iter.
   Context {A : Set}.
-  Definition I := std.slice.Iter A.
+  Definition I := std.slice.Iter.t A.
 
   Definition Self := I.
 
   Definition Item := A.
   Definition IntoIter := I.
 
-  Parameter into_iter :
-    forall `{State.Trait}, Self -> M IntoIter.
+  Parameter into_iter : Self -> M IntoIter.
 
-  Global Instance Method_into_iter `{State.Trait} :
+  Global Instance Method_into_iter :
     Notation.Dot "into_iter" := {
     Notation.dot := into_iter;
   }.
@@ -644,14 +637,13 @@ Module Impl_Iterator_for_Slice_IterMut.
   Section Impl_Iterator_for_Slice_IterMut.
   Context {A : Set}.
 
-  Definition Self := std.slice.IterMut A.
+  Definition Self := std.slice.IterMut.t A.
 
   Definition Item := A.
 
-  Parameter next :
-    forall `{State.Trait}, mut_ref Self -> M (core.option.Option A).
+  Parameter next : mut_ref Self -> M (core.option.Option.t A).
 
-  Global Instance Method_next `{State.Trait} : Notation.Dot "next" := {
+  Global Instance Method_next : Notation.Dot "next" := {
     Notation.dot := next;
   }.
   End Impl_Iterator_for_Slice_IterMut.
@@ -663,17 +655,16 @@ End Impl_Iterator_for_Slice_IterMut.
 Module Impl_IntoIterator_for_Slice_IterMut.
   Section Impl_IntoIterator_for_Slice_IterMut.
   Context {A : Set}.
-  Definition I := std.slice.IterMut A.
+  Definition I := std.slice.IterMut.t A.
 
   Definition Self := I.
 
   Definition Item := A.
   Definition IntoIter := I.
 
-  Parameter into_iter :
-    forall `{State.Trait}, Self -> M IntoIter.
+  Parameter into_iter : Self -> M IntoIter.
 
-  Global Instance Method_into_iter `{State.Trait} :
+  Global Instance Method_into_iter :
     Notation.Dot "into_iter" := {
     Notation.dot := into_iter;
   }.
@@ -689,15 +680,14 @@ Module Impl_IntoIter_for_Vec.
   Definition Item := T.
   Definition IntoIter := alloc.vec.into_iter.IntoIter T None (* (Some A) *).
 
-  Parameter into_iter :
-    forall `{State.Trait}, Self -> M IntoIter.
+  Parameter into_iter : Self -> M IntoIter.
 
 (* TODO: uncomment after fixing iter_type.v *)
-(*   Global Instance IntoIter_for_Vec `{State.Trait} :
+(*   Global Instance IntoIter_for_Vec :
     std.iter_type.IntoIterator Self Item IntoIter := {
     into_iter := into_iter;
   }. *)
-  Global Instance Method_into_iter `{State.Trait} :
+  Global Instance Method_into_iter :
     Notation.Dot "into_iter" := {
     Notation.dot := into_iter;
   }.
@@ -714,10 +704,9 @@ Module Impl_Iterator_for_Vec_IntoIter.
 
   Definition Item := T.
 
-  Parameter next : forall `{State.Trait} (self : mut_ref Self),
-    M (core.option.Option T).
+  Parameter next : mut_ref Self -> M (core.option.Option.t T).
 
-  Global Instance Method_next `{State.Trait} : Notation.Dot "next" := {
+  Global Instance Method_next : Notation.Dot "next" := {
     Notation.dot := next;
   }.
   End Impl_Iterator_for_Vec_IntoIter.
@@ -734,9 +723,9 @@ Module Impl_IntoIter_for_Vec_IntoIter.
   Definition Item := T.
   Definition IntoIter := alloc.vec.into_iter.IntoIter T None (* (Some A) *).
 
-  Definition into_iter `{State.Trait} (self : Self) : M IntoIter := M.pure self.
+  Definition into_iter (self : Self) : M IntoIter := M.pure self.
 
-  Global Instance Method_into_iter `{State.Trait} :
+  Global Instance Method_into_iter :
     Notation.Dot "into_iter" := {
     Notation.dot := into_iter;
   }.
@@ -752,15 +741,15 @@ Module Temp_Impl_for_Vec.
 
   Definition Self := alloc.vec.Vec T alloc.vec.Vec.Default.A.
 
-  Parameter iter : forall `{State.Trait}, ref Self -> M (std.slice.Iter T).
+  Parameter iter : ref Self -> M (std.slice.Iter.t T).
   Parameter iter_mut :
-    forall `{State.Trait}, ref Self -> M (std.slice.IterMut T).
+    ref Self -> M (std.slice.IterMut.t T).
 
-  Global Instance Method_iter `{State.Trait} : Notation.Dot "iter" := {
+  Global Instance Method_iter : Notation.Dot "iter" := {
     Notation.dot := iter;
   }.
 
-  Global Instance Method_iter_mut `{State.Trait} : Notation.Dot "iter_mut" := {
+  Global Instance Method_iter_mut : Notation.Dot "iter_mut" := {
     Notation.dot := iter_mut;
   }.
   End Temp_Impl_for_Vec.
@@ -789,9 +778,9 @@ Module Impl_Iterator_for_Range.
 
   Definition Item := A.
 
-  Parameter next : forall `{State.Trait}, mut_ref Self -> M (core.option.Option A).
+  Parameter next : mut_ref Self -> M (core.option.Option.t A).
 
-  Global Instance Method_next `{State.Trait} : Notation.Dot "next" := {
+  Global Instance Method_next : Notation.Dot "next" := {
     Notation.dot := next;
   }.
   End Impl_Iterator_for_Range.
@@ -811,9 +800,9 @@ Module Impl_IntoIterator_for_Range.
   Definition IntoIter := I.
 
   Parameter into_iter :
-    forall `{State.Trait}, Self -> M IntoIter.
+    Self -> M IntoIter.
 
-  Global Instance Method_into_iter `{State.Trait} :
+  Global Instance Method_into_iter :
     Notation.Dot "into_iter" := {
     Notation.dot := into_iter;
   }.
@@ -831,9 +820,9 @@ Module Impl_Iterator_for_RangeInclusive.
 
   Definition Item := A.
 
-  Parameter next : forall `{State.Trait}, mut_ref Self -> M (core.option.Option A).
+  Parameter next : mut_ref Self -> M (core.option.Option.t A).
 
-  Global Instance Method_next `{State.Trait} : Notation.Dot "next" := {
+  Global Instance Method_next : Notation.Dot "next" := {
     Notation.dot := next;
   }.
   End Impl_Iterator_for_RangeInclusive.
@@ -853,9 +842,9 @@ Module Impl_IntoIterator_for_RangeInclusive.
   Definition IntoIter := I.
 
   Parameter into_iter :
-    forall `{State.Trait}, Self -> M IntoIter.
+    Self -> M IntoIter.
 
-  Global Instance Method_into_iter `{State.Trait} :
+  Global Instance Method_into_iter :
     Notation.Dot "into_iter" := {
     Notation.dot := into_iter;
   }.
@@ -864,17 +853,17 @@ End Impl_IntoIterator_for_RangeInclusive.
 
 (* TODO: remove - it is a temporary definition *)
 Module Impl_Iterator_for_Range_Z.
-  Global Instance Method_next {A : Set} `{State.Trait} :
-    Notation.Dot "next" (T := std.ops.Range A -> M (core.option.Option Z)).
+  Global Instance Method_next {A : Set} :
+    Notation.Dot "next" (T := std.ops.Range A -> M (core.option.Option.t Z)).
   Admitted.
 (*   Impl_Iterator_for_Range.Method_next (A := Z). *)
 End Impl_Iterator_for_Range_Z.
 
 (* TODO: remove - it is a temporary definition *)
 Module Impl_Iterator_for_RangeInclusive_Z.
-  Global Instance Method_next {A : Set} `{State.Trait} :
+  Global Instance Method_next {A : Set} :
     Notation.Dot "next"
-      (T := std.ops.RangeInclusive A -> M (core.option.Option Z)).
+      (T := std.ops.RangeInclusive A -> M (core.option.Option.t Z)).
   Admitted.
 (*   Impl_Iterator_for_Range.Method_next (A := Z). *)
 End Impl_Iterator_for_RangeInclusive_Z.
@@ -885,13 +874,13 @@ Global Hint Resolve existT : core.
 (* a hint for eauto to automatically solve unit goals *)
 Global Hint Resolve tt : core.
 
-Definition deref `{State.Trait} {Self : Set} (r : ref Self) : M Self :=
+Definition deref {Self : Set} (r : ref Self) : M Self :=
   M.read r.
 
-Definition borrow `{State.Trait} {A : Set} (v : M.Val A) :
+Definition borrow {A : Set} (v : M.Val A) :
     M (ref (M.Val A)) :=
   M.alloc v.
 
-Definition borrow_mut `{State.Trait} {A : Set} (v : M.Val A) :
+Definition borrow_mut {A : Set} (v : M.Val A) :
     M (mut_ref (M.Val A)) :=
   M.alloc v.

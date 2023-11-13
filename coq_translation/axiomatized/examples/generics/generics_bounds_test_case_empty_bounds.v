@@ -3,35 +3,24 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module  Cardinal.
 Section Cardinal.
-  Context `{ℋ : State.Trait}.
-  
   Inductive t : Set := Build.
 End Cardinal.
 End Cardinal.
-Definition Cardinal `{ℋ : State.Trait} := M.Val Cardinal.t.
 
 Module  BlueJay.
 Section BlueJay.
-  Context `{ℋ : State.Trait}.
-  
   Inductive t : Set := Build.
 End BlueJay.
 End BlueJay.
-Definition BlueJay `{ℋ : State.Trait} := M.Val BlueJay.t.
 
 Module  Turkey.
 Section Turkey.
-  Context `{ℋ : State.Trait}.
-  
   Inductive t : Set := Build.
 End Turkey.
 End Turkey.
-Definition Turkey `{ℋ : State.Trait} := M.Val Turkey.t.
 
 Module  Red.
 Section Red.
-  Context `{ℋ : State.Trait}.
-  
   Unset Primitive Projections.
   Class Trait (Self : Set) : Type := {
   }.
@@ -41,8 +30,6 @@ End Red.
 
 Module  Blue.
 Section Blue.
-  Context `{ℋ : State.Trait}.
-  
   Unset Primitive Projections.
   Class Trait (Self : Set) : Type := {
   }.
@@ -50,42 +37,59 @@ Section Blue.
 End Blue.
 End Blue.
 
-Module  Impl_generics_bounds_test_case_empty_bounds_Red_for_generics_bounds_test_case_empty_bounds_Cardinal.
-Section Impl_generics_bounds_test_case_empty_bounds_Red_for_generics_bounds_test_case_empty_bounds_Cardinal.
-  Context `{ℋ : State.Trait}.
-  
-  Definition Self : Set := generics_bounds_test_case_empty_bounds.Cardinal.
-  
-  Global Instance ℐ : generics_bounds_test_case_empty_bounds.Red.Trait Self := {
-  }.
-End Impl_generics_bounds_test_case_empty_bounds_Red_for_generics_bounds_test_case_empty_bounds_Cardinal.
-End Impl_generics_bounds_test_case_empty_bounds_Red_for_generics_bounds_test_case_empty_bounds_Cardinal.
-
-Module  Impl_generics_bounds_test_case_empty_bounds_Blue_for_generics_bounds_test_case_empty_bounds_BlueJay.
-Section Impl_generics_bounds_test_case_empty_bounds_Blue_for_generics_bounds_test_case_empty_bounds_BlueJay.
-  Context `{ℋ : State.Trait}.
-  
-  Definition Self : Set := generics_bounds_test_case_empty_bounds.BlueJay.
+Module  Impl_generics_bounds_test_case_empty_bounds_Red_for_generics_bounds_test_case_empty_bounds_Cardinal_t.
+Section Impl_generics_bounds_test_case_empty_bounds_Red_for_generics_bounds_test_case_empty_bounds_Cardinal_t.
+  Ltac Self := exact generics_bounds_test_case_empty_bounds.Cardinal.t.
   
   Global Instance ℐ :
-    generics_bounds_test_case_empty_bounds.Blue.Trait Self := {
+    generics_bounds_test_case_empty_bounds.Red.Trait ltac:(Self) := {
   }.
-End Impl_generics_bounds_test_case_empty_bounds_Blue_for_generics_bounds_test_case_empty_bounds_BlueJay.
-End Impl_generics_bounds_test_case_empty_bounds_Blue_for_generics_bounds_test_case_empty_bounds_BlueJay.
+End Impl_generics_bounds_test_case_empty_bounds_Red_for_generics_bounds_test_case_empty_bounds_Cardinal_t.
+End Impl_generics_bounds_test_case_empty_bounds_Red_for_generics_bounds_test_case_empty_bounds_Cardinal_t.
 
+Module  Impl_generics_bounds_test_case_empty_bounds_Blue_for_generics_bounds_test_case_empty_bounds_BlueJay_t.
+Section Impl_generics_bounds_test_case_empty_bounds_Blue_for_generics_bounds_test_case_empty_bounds_BlueJay_t.
+  Ltac Self := exact generics_bounds_test_case_empty_bounds.BlueJay.t.
+  
+  Global Instance ℐ :
+    generics_bounds_test_case_empty_bounds.Blue.Trait ltac:(Self) := {
+  }.
+End Impl_generics_bounds_test_case_empty_bounds_Blue_for_generics_bounds_test_case_empty_bounds_BlueJay_t.
+End Impl_generics_bounds_test_case_empty_bounds_Blue_for_generics_bounds_test_case_empty_bounds_BlueJay_t.
+
+(*
+fn red<T: Red>(_: &T) -> &'static str {
+    "red"
+}
+*)
 Parameter red :
-    forall
-      `{ℋ : State.Trait}
-      {T : Set}
-      {ℋ_0 : generics_bounds_test_case_empty_bounds.Red.Trait T},
-    (ref T) -> M (ref str).
+    forall {T : Set} {ℋ_0 : generics_bounds_test_case_empty_bounds.Red.Trait T},
+    (M.Val (ref T)) -> M (M.Val (ref str.t)).
 
+(*
+fn blue<T: Blue>(_: &T) -> &'static str {
+    "blue"
+}
+*)
 Parameter blue :
     forall
-      `{ℋ : State.Trait}
       {T : Set}
       {ℋ_0 : generics_bounds_test_case_empty_bounds.Blue.Trait T},
-    (ref T) -> M (ref str).
+    (M.Val (ref T)) -> M (M.Val (ref str.t)).
 
+(*
+fn main() {
+    let cardinal = Cardinal;
+    let blue_jay = BlueJay;
+    let _turkey = Turkey;
+
+    // `red()` won't work on a blue jay nor vice versa
+    // because of the bounds.
+    println!("A cardinal is {}", red(&cardinal));
+    println!("A blue jay is {}", blue(&blue_jay));
+    //println!("A turkey is {}", red(&_turkey));
+    // ^ TODO: Try uncommenting this line.
+}
+*)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{ℋ : State.Trait}, M unit.
+Parameter main : M (M.Val unit).

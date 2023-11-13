@@ -3,127 +3,170 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module  Person.
 Section Person.
-  Context `{ℋ : State.Trait}.
-  
   Record t : Set := {
-    name : alloc.string.String;
-    age : u8;
+    name : alloc.string.String.t;
+    age : u8.t;
   }.
   
   Global Instance Get_name : Notation.Dot "name" := {
-    Notation.dot x := let* x := M.read x in M.pure x.(name) : M _;
+    Notation.dot x := let* x := M.read x in M.alloc x.(name) : M _;
   }.
   Global Instance Get_AF_name : Notation.DoubleColon t "name" := {
-    Notation.double_colon x := let* x := M.read x in M.pure x.(name) : M _;
+    Notation.double_colon x := let* x := M.read x in M.alloc x.(name) : M _;
   }.
   Global Instance Get_age : Notation.Dot "age" := {
-    Notation.dot x := let* x := M.read x in M.pure x.(age) : M _;
+    Notation.dot x := let* x := M.read x in M.alloc x.(age) : M _;
   }.
   Global Instance Get_AF_age : Notation.DoubleColon t "age" := {
-    Notation.double_colon x := let* x := M.read x in M.pure x.(age) : M _;
+    Notation.double_colon x := let* x := M.read x in M.alloc x.(age) : M _;
   }.
 End Person.
 End Person.
-Definition Person `{ℋ : State.Trait} : Set := M.Val Person.t.
 
-Module  Impl_core_fmt_Debug_for_structures_Person.
-Section Impl_core_fmt_Debug_for_structures_Person.
-  Context `{ℋ : State.Trait}.
+Module  Impl_core_fmt_Debug_for_structures_Person_t.
+Section Impl_core_fmt_Debug_for_structures_Person_t.
+  Ltac Self := exact structures.Person.t.
   
-  Definition Self : Set := structures.Person.
-  
+  (*
+  Debug
+  *)
   Parameter fmt :
-      (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
+      (M.Val (ref ltac:(Self))) ->
+        (M.Val (mut_ref core.fmt.Formatter.t)) ->
+        M (M.Val ltac:(core.fmt.Result)).
   
-  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {
+  Global Instance AssociatedFunction_fmt :
+    Notation.DoubleColon ltac:(Self) "fmt" := {
     Notation.double_colon := fmt;
   }.
   
-  Global Instance ℐ : core.fmt.Debug.Trait Self := {
+  Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
     core.fmt.Debug.fmt := fmt;
   }.
-End Impl_core_fmt_Debug_for_structures_Person.
-End Impl_core_fmt_Debug_for_structures_Person.
+End Impl_core_fmt_Debug_for_structures_Person_t.
+End Impl_core_fmt_Debug_for_structures_Person_t.
 
 Module  Unit.
 Section Unit.
-  Context `{ℋ : State.Trait}.
-  
   Inductive t : Set := Build.
 End Unit.
 End Unit.
-Definition Unit `{ℋ : State.Trait} := M.Val Unit.t.
 
 Module  Pair.
 Section Pair.
-  Context `{ℋ : State.Trait}.
-  
   Record t : Set := {
-    x0 : i32;
-    x1 : f32;
+    x0 : i32.t;
+    x1 : f32.t;
   }.
   
   Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
+    Notation.dot x := let* x := M.read x in M.alloc x.(x0) : M _;
   }.
   Global Instance Get_1 : Notation.Dot "1" := {
-    Notation.dot x := let* x := M.read x in M.pure x.(x1) : M _;
+    Notation.dot x := let* x := M.read x in M.alloc x.(x1) : M _;
   }.
 End Pair.
 End Pair.
-Definition Pair `{ℋ : State.Trait} : Set := M.Val Pair.t.
 
 Module  Point.
 Section Point.
-  Context `{ℋ : State.Trait}.
-  
   Record t : Set := {
-    x : f32;
-    y : f32;
+    x : f32.t;
+    y : f32.t;
   }.
   
   Global Instance Get_x : Notation.Dot "x" := {
-    Notation.dot x' := let* x' := M.read x' in M.pure x'.(x) : M _;
+    Notation.dot x' := let* x' := M.read x' in M.alloc x'.(x) : M _;
   }.
   Global Instance Get_AF_x : Notation.DoubleColon t "x" := {
-    Notation.double_colon x' := let* x' := M.read x' in M.pure x'.(x) : M _;
+    Notation.double_colon x' := let* x' := M.read x' in M.alloc x'.(x) : M _;
   }.
   Global Instance Get_y : Notation.Dot "y" := {
-    Notation.dot x := let* x := M.read x in M.pure x.(y) : M _;
+    Notation.dot x := let* x := M.read x in M.alloc x.(y) : M _;
   }.
   Global Instance Get_AF_y : Notation.DoubleColon t "y" := {
-    Notation.double_colon x := let* x := M.read x in M.pure x.(y) : M _;
+    Notation.double_colon x := let* x := M.read x in M.alloc x.(y) : M _;
   }.
 End Point.
 End Point.
-Definition Point `{ℋ : State.Trait} : Set := M.Val Point.t.
 
 Module  Rectangle.
 Section Rectangle.
-  Context `{ℋ : State.Trait}.
-  
   Record t : Set := {
-    top_left : structures.Point;
-    bottom_right : structures.Point;
+    top_left : structures.Point.t;
+    bottom_right : structures.Point.t;
   }.
   
   Global Instance Get_top_left : Notation.Dot "top_left" := {
-    Notation.dot x := let* x := M.read x in M.pure x.(top_left) : M _;
+    Notation.dot x := let* x := M.read x in M.alloc x.(top_left) : M _;
   }.
   Global Instance Get_AF_top_left : Notation.DoubleColon t "top_left" := {
-    Notation.double_colon x := let* x := M.read x in M.pure x.(top_left) : M _;
+    Notation.double_colon x := let* x := M.read x in M.alloc x.(top_left) : M _;
   }.
   Global Instance Get_bottom_right : Notation.Dot "bottom_right" := {
-    Notation.dot x := let* x := M.read x in M.pure x.(bottom_right) : M _;
+    Notation.dot x := let* x := M.read x in M.alloc x.(bottom_right) : M _;
   }.
   Global Instance Get_AF_bottom_right :
     Notation.DoubleColon t "bottom_right" := {
     Notation.double_colon x :=
-      let* x := M.read x in M.pure x.(bottom_right) : M _;
+      let* x := M.read x in M.alloc x.(bottom_right) : M _;
   }.
 End Rectangle.
 End Rectangle.
-Definition Rectangle `{ℋ : State.Trait} : Set := M.Val Rectangle.t.
 
+(*
+fn main() {
+    // Create struct with field init shorthand
+    let name = String::from("Peter");
+    let age = 27;
+    let peter = Person { name, age };
+
+    // Print debug struct
+    println!("{:?}", peter);
+
+    // Instantiate a `Point`
+    let point: Point = Point { x: 10.3, y: 0.4 };
+
+    // Access the fields of the point
+    println!("point coordinates: ({}, {})", point.x, point.y);
+
+    // Make a new point by using struct update syntax to use the fields of our
+    // other one
+    let bottom_right = Point { x: 5.2, ..point };
+
+    // `bottom_right.y` will be the same as `point.y` because we used that field
+    // from `point`
+    println!("second point: ({}, {})", bottom_right.x, bottom_right.y);
+
+    // Destructure the point using a `let` binding
+    let Point {
+        x: left_edge,
+        y: top_edge,
+    } = point;
+
+    let _rectangle = Rectangle {
+        // struct instantiation is an expression too
+        top_left: Point {
+            x: left_edge,
+            y: top_edge,
+        },
+        bottom_right: bottom_right,
+    };
+
+    // Instantiate a unit struct
+    let _unit = Unit;
+
+    // Instantiate a tuple struct
+    let pair = Pair(1, 0.1);
+
+    // Access the fields of a tuple struct
+    println!("pair contains {:?} and {:?}", pair.0, pair.1);
+
+    // Destructure a tuple struct
+    let Pair(integer, decimal) = pair;
+
+    println!("pair contains {:?} and {:?}", integer, decimal);
+}
+*)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{ℋ : State.Trait}, M unit.
+Parameter main : M (M.Val unit).

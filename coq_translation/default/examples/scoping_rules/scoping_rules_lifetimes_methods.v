@@ -3,87 +3,110 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module  Owner.
 Section Owner.
-  Context `{ℋ : State.Trait}.
-  
   Record t : Set := {
-    x0 : i32;
+    x0 : i32.t;
   }.
   
   Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
+    Notation.dot x := let* x := M.read x in M.alloc x.(x0) : M _;
   }.
 End Owner.
 End Owner.
-Definition Owner `{ℋ : State.Trait} : Set := M.Val Owner.t.
 
-Module  Impl_scoping_rules_lifetimes_methods_Owner.
-Section Impl_scoping_rules_lifetimes_methods_Owner.
-  Context `{ℋ : State.Trait}.
+Module  Impl_scoping_rules_lifetimes_methods_Owner_t.
+Section Impl_scoping_rules_lifetimes_methods_Owner_t.
+  Ltac Self := exact scoping_rules_lifetimes_methods.Owner.t.
   
-  Definition Self : Set := scoping_rules_lifetimes_methods.Owner.
-  
-  Definition add_one (self : mut_ref Self) : M unit :=
+  (*
+      fn add_one<'a>(&'a mut self) {
+          self.0 += 1;
+      }
+  *)
+  Definition add_one (self : M.Val (mut_ref ltac:(Self))) : M (M.Val unit) :=
     M.function_body
-      (let* _ : ltac:(refine unit) :=
-        let* α0 : ltac:(refine scoping_rules_lifetimes_methods.Owner) :=
+      (let* _ : ltac:(refine (M.Val unit)) :=
+        let* α0 :
+            ltac:(refine (M.Val scoping_rules_lifetimes_methods.Owner.t)) :=
           deref self in
-        let* α1 : ltac:(refine i32) := α0.["0"] in
-        let* α2 : ltac:(refine i32) := M.alloc 1 in
+        let* α1 : ltac:(refine (M.Val i32.t)) := α0.["0"] in
+        let* α2 : ltac:(refine (M.Val i32.t)) := M.alloc 1 in
         assign_op add α1 α2 in
       M.alloc tt).
   
   Global Instance AssociatedFunction_add_one :
-    Notation.DoubleColon Self "add_one" := {
+    Notation.DoubleColon ltac:(Self) "add_one" := {
     Notation.double_colon := add_one;
   }.
   
-  Definition print (self : ref Self) : M unit :=
+  (*
+      fn print<'a>(&'a self) {
+          println!("`print`: {}", self.0);
+      }
+  *)
+  Definition print (self : M.Val (ref ltac:(Self))) : M (M.Val unit) :=
     M.function_body
-      (let* _ : ltac:(refine unit) :=
-        let* _ : ltac:(refine unit) :=
-          let* α0 : ltac:(refine (array (ref str))) :=
+      (let* _ : ltac:(refine (M.Val unit)) :=
+        let* _ : ltac:(refine (M.Val unit)) :=
+          let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
             M.alloc [ mk_str "`print`: "; mk_str "
 " ] in
-          let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
-          let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+          let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+            borrow α0 in
+          let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
             pointer_coercion "Unsize" α1 in
-          let* α3 : ltac:(refine scoping_rules_lifetimes_methods.Owner) :=
+          let* α3 :
+              ltac:(refine (M.Val scoping_rules_lifetimes_methods.Owner.t)) :=
             deref self in
-          let* α4 : ltac:(refine i32) := α3.["0"] in
-          let* α5 : ltac:(refine (ref i32)) := borrow α4 in
-          let* α6 : ltac:(refine core.fmt.rt.Argument) :=
-            core.fmt.rt.Argument::["new_display"] α5 in
-          let* α7 : ltac:(refine (array core.fmt.rt.Argument)) :=
+          let* α4 : ltac:(refine (M.Val i32.t)) := α3.["0"] in
+          let* α5 : ltac:(refine (M.Val (ref i32.t))) := borrow α4 in
+          let* α6 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
+            core.fmt.rt.Argument.t::["new_display"] α5 in
+          let* α7 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
             M.alloc [ α6 ] in
-          let* α8 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+          let* α8 :
+              ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
             borrow α7 in
-          let* α9 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+          let* α9 :
+              ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
             pointer_coercion "Unsize" α8 in
-          let* α10 : ltac:(refine core.fmt.Arguments) :=
-            core.fmt.Arguments::["new_v1"] α2 α9 in
+          let* α10 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
+            core.fmt.Arguments.t::["new_v1"] α2 α9 in
           std.io.stdio._print α10 in
         M.alloc tt in
       M.alloc tt).
   
   Global Instance AssociatedFunction_print :
-    Notation.DoubleColon Self "print" := {
+    Notation.DoubleColon ltac:(Self) "print" := {
     Notation.double_colon := print;
   }.
-End Impl_scoping_rules_lifetimes_methods_Owner.
-End Impl_scoping_rules_lifetimes_methods_Owner.
+End Impl_scoping_rules_lifetimes_methods_Owner_t.
+End Impl_scoping_rules_lifetimes_methods_Owner_t.
 
+(*
+fn main() {
+    let mut owner = Owner(18);
+
+    owner.add_one();
+    owner.print();
+}
+*)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{ℋ : State.Trait} : M unit :=
+Definition main : M (M.Val unit) :=
   M.function_body
-    (let* owner : ltac:(refine scoping_rules_lifetimes_methods.Owner) :=
-      let* α0 : ltac:(refine i32) := M.alloc 18 in
-      M.alloc (scoping_rules_lifetimes_methods.Owner.Build_t α0) in
-    let* _ : ltac:(refine unit) :=
-      let* α0 : ltac:(refine (mut_ref scoping_rules_lifetimes_methods.Owner)) :=
+    (let* owner :
+        ltac:(refine (M.Val scoping_rules_lifetimes_methods.Owner.t)) :=
+      let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 18 in
+      let* α1 := M.read α0 in
+      M.alloc (scoping_rules_lifetimes_methods.Owner.Build_t α1) in
+    let* _ : ltac:(refine (M.Val unit)) :=
+      let* α0 :
+          ltac:(refine
+            (M.Val (mut_ref scoping_rules_lifetimes_methods.Owner.t))) :=
         borrow_mut owner in
-      scoping_rules_lifetimes_methods.Owner::["add_one"] α0 in
-    let* _ : ltac:(refine unit) :=
-      let* α0 : ltac:(refine (ref scoping_rules_lifetimes_methods.Owner)) :=
+      scoping_rules_lifetimes_methods.Owner.t::["add_one"] α0 in
+    let* _ : ltac:(refine (M.Val unit)) :=
+      let* α0 :
+          ltac:(refine (M.Val (ref scoping_rules_lifetimes_methods.Owner.t))) :=
         borrow owner in
-      scoping_rules_lifetimes_methods.Owner::["print"] α0 in
+      scoping_rules_lifetimes_methods.Owner.t::["print"] α0 in
     M.alloc tt).

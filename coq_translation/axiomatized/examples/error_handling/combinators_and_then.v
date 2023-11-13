@@ -2,82 +2,134 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module Food.
-  Inductive t `{ℋ : State.Trait} : Set :=
+  Inductive t : Set :=
   | CordonBleu
   | Steak
   | Sushi.
 End Food.
-Definition Food `{ℋ : State.Trait} : Set := M.Val Food.t.
 
-Module  Impl_core_fmt_Debug_for_combinators_and_then_Food.
-Section Impl_core_fmt_Debug_for_combinators_and_then_Food.
-  Context `{ℋ : State.Trait}.
+Module  Impl_core_fmt_Debug_for_combinators_and_then_Food_t.
+Section Impl_core_fmt_Debug_for_combinators_and_then_Food_t.
+  Ltac Self := exact combinators_and_then.Food.t.
   
-  Definition Self : Set := combinators_and_then.Food.
-  
+  (*
+  Debug
+  *)
   Parameter fmt :
-      (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
+      (M.Val (ref ltac:(Self))) ->
+        (M.Val (mut_ref core.fmt.Formatter.t)) ->
+        M (M.Val ltac:(core.fmt.Result)).
   
-  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {
+  Global Instance AssociatedFunction_fmt :
+    Notation.DoubleColon ltac:(Self) "fmt" := {
     Notation.double_colon := fmt;
   }.
   
-  Global Instance ℐ : core.fmt.Debug.Trait Self := {
+  Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
     core.fmt.Debug.fmt := fmt;
   }.
-End Impl_core_fmt_Debug_for_combinators_and_then_Food.
-End Impl_core_fmt_Debug_for_combinators_and_then_Food.
+End Impl_core_fmt_Debug_for_combinators_and_then_Food_t.
+End Impl_core_fmt_Debug_for_combinators_and_then_Food_t.
 
 Module Day.
-  Inductive t `{ℋ : State.Trait} : Set :=
+  Inductive t : Set :=
   | Monday
   | Tuesday
   | Wednesday.
 End Day.
-Definition Day `{ℋ : State.Trait} : Set := M.Val Day.t.
 
-Module  Impl_core_fmt_Debug_for_combinators_and_then_Day.
-Section Impl_core_fmt_Debug_for_combinators_and_then_Day.
-  Context `{ℋ : State.Trait}.
+Module  Impl_core_fmt_Debug_for_combinators_and_then_Day_t.
+Section Impl_core_fmt_Debug_for_combinators_and_then_Day_t.
+  Ltac Self := exact combinators_and_then.Day.t.
   
-  Definition Self : Set := combinators_and_then.Day.
-  
+  (*
+  Debug
+  *)
   Parameter fmt :
-      (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
+      (M.Val (ref ltac:(Self))) ->
+        (M.Val (mut_ref core.fmt.Formatter.t)) ->
+        M (M.Val ltac:(core.fmt.Result)).
   
-  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {
+  Global Instance AssociatedFunction_fmt :
+    Notation.DoubleColon ltac:(Self) "fmt" := {
     Notation.double_colon := fmt;
   }.
   
-  Global Instance ℐ : core.fmt.Debug.Trait Self := {
+  Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
     core.fmt.Debug.fmt := fmt;
   }.
-End Impl_core_fmt_Debug_for_combinators_and_then_Day.
-End Impl_core_fmt_Debug_for_combinators_and_then_Day.
+End Impl_core_fmt_Debug_for_combinators_and_then_Day_t.
+End Impl_core_fmt_Debug_for_combinators_and_then_Day_t.
 
+(*
+fn have_ingredients(food: Food) -> Option<Food> {
+    match food {
+        Food::Sushi => None,
+        _ => Some(food),
+    }
+}
+*)
 Parameter have_ingredients :
-    forall `{ℋ : State.Trait},
-    combinators_and_then.Food ->
-      M (core.option.Option combinators_and_then.Food).
+    (M.Val combinators_and_then.Food.t) ->
+      M (M.Val (core.option.Option.t combinators_and_then.Food.t)).
 
+(*
+fn have_recipe(food: Food) -> Option<Food> {
+    match food {
+        Food::CordonBleu => None,
+        _ => Some(food),
+    }
+}
+*)
 Parameter have_recipe :
-    forall `{ℋ : State.Trait},
-    combinators_and_then.Food ->
-      M (core.option.Option combinators_and_then.Food).
+    (M.Val combinators_and_then.Food.t) ->
+      M (M.Val (core.option.Option.t combinators_and_then.Food.t)).
 
+(*
+fn cookable_v1(food: Food) -> Option<Food> {
+    match have_recipe(food) {
+        None => None,
+        Some(food) => match have_ingredients(food) {
+            None => None,
+            Some(food) => Some(food),
+        },
+    }
+}
+*)
 Parameter cookable_v1 :
-    forall `{ℋ : State.Trait},
-    combinators_and_then.Food ->
-      M (core.option.Option combinators_and_then.Food).
+    (M.Val combinators_and_then.Food.t) ->
+      M (M.Val (core.option.Option.t combinators_and_then.Food.t)).
 
+(*
+fn cookable_v2(food: Food) -> Option<Food> {
+    have_recipe(food).and_then(have_ingredients)
+}
+*)
 Parameter cookable_v2 :
-    forall `{ℋ : State.Trait},
-    combinators_and_then.Food ->
-      M (core.option.Option combinators_and_then.Food).
+    (M.Val combinators_and_then.Food.t) ->
+      M (M.Val (core.option.Option.t combinators_and_then.Food.t)).
 
+(*
+fn eat(food: Food, day: Day) {
+    match cookable_v2(food) {
+        Some(food) => println!("Yay! On {:?} we get to eat {:?}.", day, food),
+        None => println!("Oh no. We don't get to eat on {:?}?", day),
+    }
+}
+*)
 Parameter eat :
-    forall `{ℋ : State.Trait},
-    combinators_and_then.Food -> combinators_and_then.Day -> M unit.
+    (M.Val combinators_and_then.Food.t) ->
+      (M.Val combinators_and_then.Day.t) ->
+      M (M.Val unit).
 
+(*
+fn main() {
+    let (cordon_bleu, steak, sushi) = (Food::CordonBleu, Food::Steak, Food::Sushi);
+
+    eat(cordon_bleu, Day::Monday);
+    eat(steak, Day::Tuesday);
+    eat(sushi, Day::Wednesday);
+}
+*)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{ℋ : State.Trait}, M unit.
+Parameter main : M (M.Val unit).

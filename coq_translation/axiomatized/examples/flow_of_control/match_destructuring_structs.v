@@ -3,28 +3,44 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module  Foo.
 Section Foo.
-  Context `{ℋ : State.Trait}.
-  
   Record t : Set := {
-    x : M.Val (u32 * u32);
-    y : u32;
+    x : u32.t * u32.t;
+    y : u32.t;
   }.
   
   Global Instance Get_x : Notation.Dot "x" := {
-    Notation.dot x' := let* x' := M.read x' in M.pure x'.(x) : M _;
+    Notation.dot x' := let* x' := M.read x' in M.alloc x'.(x) : M _;
   }.
   Global Instance Get_AF_x : Notation.DoubleColon t "x" := {
-    Notation.double_colon x' := let* x' := M.read x' in M.pure x'.(x) : M _;
+    Notation.double_colon x' := let* x' := M.read x' in M.alloc x'.(x) : M _;
   }.
   Global Instance Get_y : Notation.Dot "y" := {
-    Notation.dot x := let* x := M.read x in M.pure x.(y) : M _;
+    Notation.dot x := let* x := M.read x in M.alloc x.(y) : M _;
   }.
   Global Instance Get_AF_y : Notation.DoubleColon t "y" := {
-    Notation.double_colon x := let* x := M.read x in M.pure x.(y) : M _;
+    Notation.double_colon x := let* x := M.read x in M.alloc x.(y) : M _;
   }.
 End Foo.
 End Foo.
-Definition Foo `{ℋ : State.Trait} : Set := M.Val Foo.t.
 
+(*
+fn main() {
+    // Try changing the values in the struct to see what happens
+    let foo = Foo { x: (1, 2), y: 3 };
+
+    match foo {
+        Foo { x: (1, b), y } => println!("First of x is 1, b = {},  y = {} ", b, y),
+
+        // you can destructure structs and rename the variables,
+        // the order is not important
+        Foo { y: 2, x: i } => println!("y is 2, i = {:?}", i),
+
+        // and you can also ignore some variables:
+        Foo { y, .. } => println!("y = {}, we don't care about x", y),
+        // this will give an error: pattern does not mention field `x`
+        //Foo { y } => println!("y = {}", y),
+    }
+}
+*)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{ℋ : State.Trait}, M unit.
+Parameter main : M (M.Val unit).

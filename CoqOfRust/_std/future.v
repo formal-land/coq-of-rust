@@ -40,7 +40,7 @@ pub trait Future {
 }
 *)
 Module Future.
-  Class Trait `{State.Trait} (Self Output : Set) : Set := { 
+  Class Trait (Self Output : Set) : Set := { 
     Output := Output;
 
     poll : Pin (mut_ref Self) -> mut_ref Context -> Poll Output;
@@ -58,7 +58,7 @@ pub trait IntoFuture {
 *)
 (* NOTE: The syntax for Future trait is weird. It looks like a defaultType but it isn't *)
 Module IntoFuture.
-  Class Trait `{State.Trait} (Self Output IntoFuture : Set) 
+  Class Trait (Self Output IntoFuture : Set) 
     `{Future.Trait IntoFuture Output}
   : Set := { 
     Output := Output;

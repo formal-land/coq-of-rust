@@ -2,10 +2,10 @@ Require Import CoqOfRust.lib.lib.
 Require CoqOfRust.core.alloc.
 
 Module Global.
-  Parameter t : forall `{State.Trait}, Set.
+  Parameter t : Set.
 End Global.
-Definition Global `{State.Trait} := Global.t.
+Definition Global := Global.t.
 
-Global Instance Allocator_for_Global `{State.Trait} :
+Global Instance Allocator_for_Global :
   core.alloc.Allocator.Trait Global.
 Admitted.

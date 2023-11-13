@@ -4,7 +4,7 @@ Require CoqOfRust.core.result.
 
 Module arith.
   Module Add.
-    Class Trait `{State.Trait} (Self : Set) {Rhs : Set} : Type := {
+    Class Trait (Self : Set) {Rhs : Set} : Type := {
       Output : Set;
       Rhs := Rhs;
       add : Self -> Rhs -> M Output;
@@ -21,7 +21,7 @@ Module arith.
   End Add.
 
   Module AddAssign.
-    Class Trait `{State.Trait} (Self : Set) {Rhs : Set} : Set := {
+    Class Trait (Self : Set) {Rhs : Set} : Set := {
       Rhs := Rhs;
       add_assign : mut_ref Self -> Rhs -> M unit;
     }.
@@ -37,7 +37,7 @@ Module arith.
   End AddAssign.
 
   Module Sub.
-    Class Trait `{State.Trait} (Self : Set) {Rhs : Set} : Type := {
+    Class Trait (Self : Set) {Rhs : Set} : Type := {
       Output : Set;
       Rhs := Rhs;
       sub : Self -> Rhs -> M Output;
@@ -54,7 +54,7 @@ Module arith.
   End Sub.
 
   Module SubAssign.
-    Class Trait `{State.Trait} (Self : Set) {Rhs : Set} : Set := {
+    Class Trait (Self : Set) {Rhs : Set} : Set := {
       Rhs := Rhs;
       sub_assign : mut_ref Self -> Rhs -> M unit;
     }.
@@ -70,7 +70,7 @@ Module arith.
   End SubAssign.
 
   Module Mul.
-    Class Trait `{State.Trait} (Self : Set) {Rhs : Set} : Type := {
+    Class Trait (Self : Set) {Rhs : Set} : Type := {
       Output : Set;
       Rhs := Rhs;
       mul : Self -> Rhs -> M Output;
@@ -87,7 +87,7 @@ Module arith.
   End Mul.
 
   Module MulAssign.
-    Class Trait `{State.Trait} (Self : Set) {Rhs : Set} : Set := {
+    Class Trait (Self : Set) {Rhs : Set} : Set := {
       Rhs := Rhs;
       mul_assign : mut_ref Self -> Rhs -> M unit;
     }.
@@ -103,7 +103,7 @@ Module arith.
   End MulAssign.
 
   Module Div.
-    Class Trait `{State.Trait} (Self : Set) {Rhs : Set} : Type := {
+    Class Trait (Self : Set) {Rhs : Set} : Type := {
       Output : Set;
       Rhs := Rhs;
       div : Self -> Rhs -> M Output;
@@ -120,7 +120,7 @@ Module arith.
   End Div.
 
   Module DivAssign.
-    Class Trait `{State.Trait} (Self : Set) {Rhs : Set} : Set := {
+    Class Trait (Self : Set) {Rhs : Set} : Set := {
       Rhs := Rhs;
       div_assign : mut_ref Self -> Rhs -> M unit;
     }.
@@ -136,7 +136,7 @@ Module arith.
   End DivAssign.
 
   Module Rem.
-    Class Trait `{State.Trait} (Self : Set) {Rhs : Set} : Type := {
+    Class Trait (Self : Set) {Rhs : Set} : Type := {
       Output : Set;
       Rhs := Rhs;
       rem : Self -> Rhs -> M Output;
@@ -153,7 +153,7 @@ Module arith.
   End Rem.
 
   Module RemAssign.
-    Class Trait `{State.Trait} (Self : Set) {Rhs : Set} : Set := {
+    Class Trait (Self : Set) {Rhs : Set} : Set := {
       Rhs := Rhs;
       rem_assign : mut_ref Self -> Rhs -> M unit;
     }.
@@ -169,7 +169,7 @@ Module arith.
   End RemAssign.
 
   Module BitXor.
-    Class Trait `{State.Trait} (Self : Set) {Rhs : Set} : Type := {
+    Class Trait (Self : Set) {Rhs : Set} : Type := {
       Output : Set;
       Rhs := Rhs;
       bitxor : Self -> Rhs -> M Output;
@@ -186,7 +186,7 @@ Module arith.
   End BitXor.
 
   Module BitXorAssign.
-    Class Trait `{State.Trait} (Self : Set) {Rhs : Set} : Set := {
+    Class Trait (Self : Set) {Rhs : Set} : Set := {
       Rhs := Rhs;
       bitxor_assign : mut_ref Self -> Rhs -> M unit;
     }.
@@ -202,7 +202,7 @@ Module arith.
   End BitXorAssign.
 
   Module BitAnd.
-    Class Trait `{State.Trait} (Self : Set) {Rhs : Set} : Type := {
+    Class Trait (Self : Set) {Rhs : Set} : Type := {
       Output : Set;
       Rhs := Rhs;
       bitand : Self -> Rhs -> M Output;
@@ -219,7 +219,7 @@ Module arith.
   End BitAnd.
 
   Module BitAndAssign.
-    Class Trait `{State.Trait} (Self : Set) {Rhs : Set} : Set := {
+    Class Trait (Self : Set) {Rhs : Set} : Set := {
       Rhs := Rhs;
       bitand_assign : mut_ref Self -> Rhs -> M unit;
     }.
@@ -235,7 +235,7 @@ Module arith.
   End BitAndAssign.
 
   Module BitOr.
-    Class Trait `{State.Trait} (Self : Set) {Rhs : Set} : Type := {
+    Class Trait (Self : Set) {Rhs : Set} : Type := {
       Output : Set;
       Rhs := Rhs;
       bitor : Self -> Rhs -> M Output;
@@ -252,7 +252,7 @@ Module arith.
   End BitOr.
 
   Module BitOrAssign.
-    Class Trait `{State.Trait} (Self : Set) {Rhs : Set} : Set := {
+    Class Trait (Self : Set) {Rhs : Set} : Set := {
       Rhs := Rhs;
       bitor_assign : mut_ref Self -> Rhs -> M unit;
     }.
@@ -268,7 +268,7 @@ Module arith.
   End BitOrAssign.
 
   Module Shl.
-    Class Trait `{State.Trait} (Self : Set) {Rhs : Set} : Type := {
+    Class Trait (Self : Set) {Rhs : Set} : Type := {
       Output : Set;
       Rhs := Rhs;
       shl : Self -> Rhs -> M Output;
@@ -285,7 +285,7 @@ Module arith.
   End Shl.
 
   Module ShlAssign.
-    Class Trait `{State.Trait} (Self : Set) {Rhs : Set} : Set := {
+    Class Trait (Self : Set) {Rhs : Set} : Set := {
       Rhs := Rhs;
       shl_assign : mut_ref Self -> Rhs -> M unit;
     }.
@@ -301,7 +301,7 @@ Module arith.
   End ShlAssign.
 
   Module Shr.
-    Class Trait `{State.Trait} (Self : Set) {Rhs : Set} : Type := {
+    Class Trait (Self : Set) {Rhs : Set} : Type := {
       Output : Set;
       Rhs := Rhs;
       shr : Self -> Rhs -> M Output;
@@ -318,7 +318,7 @@ Module arith.
   End Shr.
 
   Module ShrAssign.
-    Class Trait `{State.Trait} (Self : Set) {Rhs : Set} : Set := {
+    Class Trait (Self : Set) {Rhs : Set} : Set := {
       Rhs := Rhs;
       shr_assign : mut_ref Self -> Rhs -> M unit;
     }.
@@ -334,7 +334,7 @@ Module arith.
   End ShrAssign.
 
   Module Neg.
-    Class Trait `{State.Trait} (Self : Set) : Type := {
+    Class Trait (Self : Set) : Type := {
       Output : Set;
       neg : Self -> M Output;
     }.
@@ -346,9 +346,9 @@ Module arith.
   End Neg.
 
   Module Not.
-    Class Trait `{State.Trait} (Self : Set) : Type := {
+    Class Trait (Self : Set) : Type := {
       Output : Set;
-      not : Self -> M Output;
+      not : M.Val Self -> M (M.Val Output);
     }.
 
     Global Instance Method_not `(Trait) :
@@ -359,7 +359,7 @@ Module arith.
 End arith.
 
 Module Deref.
-  Class Trait `{State.Trait} (Self : Set) {Target : Set} : Set := {
+  Class Trait (Self : Set) {Target : Set} : Set := {
     Target := Target;
     deref : ref Self -> M (ref Target);
   }.
@@ -372,14 +372,14 @@ End Deref.
 
 Module function.
   Module FnOnce.
-    Class Trait `{State.Trait} (Self : Set) {Args : Set} : Type := {
+    Class Trait (Self : Set) {Args : Set} : Type := {
       Output : Set;
       call_once : Self -> Args -> M Output;
     }.
   End FnOnce.
 
   Module FnMut.
-    Class Trait `{State.Trait} (Self : Set) {Args : Set} : Type := {
+    Class Trait (Self : Set) {Args : Set} : Type := {
       L0 :: FnOnce.Trait Self (Args := Args);
       call_mut : mut_ref Self -> Args -> M FnOnce.Output;
     }.
@@ -533,10 +533,8 @@ Module Impl_Neg_for_Z.
   }.
 End Impl_Neg_for_Z. *)
 
-Module Impl_Not_for_bool. Section Impl_Not_for_bool.
-  Context `{State.Trait}.
-
-  Definition not `{State.Trait} (b : bool) : M bool :=
+Module Impl_Not_for_bool.
+  Definition not (b : M.Val bool) : M (M.Val bool) :=
     let* b := M.read b in
     M.alloc (negb b).
 
@@ -547,13 +545,11 @@ Module Impl_Not_for_bool. Section Impl_Not_for_bool.
   Global Instance Not_for_bool : arith.Not.Trait bool := {
     not := not;
   }.
-End Impl_Not_for_bool. End Impl_Not_for_bool.
+End Impl_Not_for_bool.
 
 (** For now we implement the dereferencing operator on any types, as the
     identity. *)
-Module Impl_Deref_for_any. Section Impl_Deref_for_any.
-  Context `{State.Trait}.
-
+Module Impl_Deref_for_any.
   Definition deref {A : Set} (x : A) : M A := M.pure x.
 
   Global Instance Method_deref (A : Set) :
@@ -564,7 +560,7 @@ Module Impl_Deref_for_any. Section Impl_Deref_for_any.
   Global Instance Deref_for_any (A : Set) : Deref.Trait A := {
     deref := deref;
   }.
-End Impl_Deref_for_any. End Impl_Deref_for_any.
+End Impl_Deref_for_any.
 
 Module drop.
   (*
@@ -574,7 +570,7 @@ Module drop.
   }
   *)
   Module Drop.
-    Class Trait `{State.Trait} (Self : Set) : Set := {
+    Class Trait (Self : Set) : Set := {
       drop : mut_ref Self -> M unit;
     }.
 
@@ -593,14 +589,12 @@ Module control_flow.
   }
   *)
   Module ControlFlow.
-    Inductive t `{State.Trait} (B C : Set) : Set :=
+    Inductive t (B C : Set) : Set :=
     | Continue : C -> t B C
     | Break : B -> t B C.
-    Arguments Continue {_ _ _ _ _}.
-    Arguments Break {_ _ _ _ _}.
+    Arguments Continue {_ _}.
+    Arguments Break {_ _}.
   End ControlFlow.
-  Definition ControlFlow `{State.Trait} (B C : Set) : Set :=
-    M.Val (ControlFlow.t B C).
 End control_flow.
 
 Module try_trait.
@@ -615,19 +609,22 @@ Module try_trait.
   }
   *)
   Module Try.
-    Class Trait `{State.Trait} (Self : Set) : Type := {
+    Class Trait (Self : Set) : Type := {
       Output : Set;
       Residual : Set;
-      from_output : Output -> M Self;
-      branch : Self -> M (control_flow.ControlFlow Residual Output);
+      from_output : M.Val Output -> M (M.Val Self);
+      branch :
+        M.Val Self ->
+        M (M.Val (control_flow.ControlFlow.t Residual Output));
     }.
 
     Module Impl.
-      Global Instance for_Result `{State.Trait} (T E : Set) :
-          Trait (core.result.Result T E) := {
+      Global Instance for_Result (T E : Set) :
+          Trait (core.result.Result.t T E) := {
         Output := T;
-        Residual := core.result.Result core.convert.Infallible E;
+        Residual := core.result.Result.t core.convert.Infallible.t E;
         from_output output :=
+          let* output := M.read output in
           M.alloc (core.result.Result.Ok output);
         branch self :=
           let* self := M.read self in
@@ -635,7 +632,7 @@ Module try_trait.
           | core.result.Result.Ok v =>
             M.alloc (control_flow.ControlFlow.Continue v)
           | core.result.Result.Err e =>
-            let* result := M.alloc (core.result.Result.Err e) in
+            let result := core.result.Result.Err e in
             M.alloc (control_flow.ControlFlow.Break result)
           end;
       }.
@@ -649,23 +646,23 @@ Module try_trait.
   }
   *)
   Module FromResidual.
-    Class Trait `{State.Trait} (Self : Set) {R : Set} : Type := {
-      from_residual : R -> M Self;
+    Class Trait (Self : Set) {R : Set} : Type := {
+      from_residual : M.Val R -> M (M.Val Self);
     }.
 
     Module Impl.
-      Global Instance for_Result `{State.Trait} (T E F : Set)
+      Global Instance for_Result (T E F : Set)
           {H0 : core.convert.From.Trait F (T := E)} :
-          Trait (core.result.Result T F)
-            (R := core.result.Result core.convert.Infallible E) := {
+          Trait (core.result.Result.t T F)
+            (R := core.result.Result.t core.convert.Infallible.t E) := {
         from_residual residual :=
           axiom "from_residual";
       }.
 
       (* Special case for when the From is the identity, to help the type-checker. *)
-      Global Instance for_Result_id `{State.Trait} (T E : Set) :
-          Trait (core.result.Result T E)
-            (R := core.result.Result core.convert.Infallible E) := {
+      Global Instance for_Result_id (T E : Set) :
+          Trait (core.result.Result.t T E)
+            (R := core.result.Result.t core.convert.Infallible.t E) := {
         from_residual residual :=
           axiom "from_residual";
       }.

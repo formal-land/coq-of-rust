@@ -23,7 +23,7 @@ Module Global.
 End Global.
 Definition Global := Global.t.
 
-Global Instance Clone_for_Global `{State.Trait} : core.clone.Clone.Trait Global.
+Global Instance Clone_for_Global : core.clone.Clone.Trait Global.
 Admitted.
 
 Module layout.
@@ -55,12 +55,12 @@ pub unsafe trait Allocator {
 }
 *)
 Module Allocator.
-  Class Trait `{State.Trait} (Self : Set) : Set := { 
+  Class Trait (Self : Set) : Set := { 
     (* fn allocate(&self, layout: Layout) -> Result<NonNull<[u8]>, AllocError>; *)
-    allocate : ref Self -> layout.Layout -> Result (NonNull (slice u8)) AllocError;
+    allocate : ref Self -> layout.Layout -> Result (NonNull (slice u8.t)) AllocError;
     
     (* unsafe fn deallocate(&self, ptr: NonNull<u8>, layout: Layout); *)
-    deallocate : ref Self -> NonNull u8 -> layout.Layout -> unit;
+    deallocate : ref Self -> NonNull u8.t -> layout.Layout -> unit;
 
     (* 
     fn allocate_zeroed(
@@ -68,7 +68,7 @@ Module Allocator.
         layout: Layout
     ) -> Result<NonNull<[u8]>, AllocError> { ... }
     *)
-    allocate_zeroed : ref Self -> layout.Layout -> Result (NonNull (slice u8)) AllocError;
+    allocate_zeroed : ref Self -> layout.Layout -> Result (NonNull (slice u8.t)) AllocError;
 
     (* 
     unsafe fn grow(
@@ -78,8 +78,8 @@ Module Allocator.
         new_layout: Layout
     ) -> Result<NonNull<[u8]>, AllocError> { ... }
     *)
-    grow : ref Self -> NonNull u8 -> layout.Layout -> layout.Layout
-         -> Result (NonNull (slice u8)) AllocError;
+    grow : ref Self -> NonNull u8.t -> layout.Layout -> layout.Layout
+         -> Result (NonNull (slice u8.t)) AllocError;
 
     (* 
     unsafe fn grow_zeroed(
@@ -89,8 +89,8 @@ Module Allocator.
         new_layout: Layout
     ) -> Result<NonNull<[u8]>, AllocError> { ... }
     *)
-    grow_zeroed : ref Self -> NonNull u8 -> layout.Layout -> layout.Layout
-                -> Result (NonNull (slice u8)) AllocError;
+    grow_zeroed : ref Self -> NonNull u8.t -> layout.Layout -> layout.Layout
+                -> Result (NonNull (slice u8.t)) AllocError;
 
     (* 
     unsafe fn shrink(
@@ -100,8 +100,8 @@ Module Allocator.
         new_layout: Layout
     ) -> Result<NonNull<[u8]>, AllocError> { ... }
     *)
-    shrink : ref Self -> NonNull u8 -> layout.Layout -> layout.Layout
-            -> Result (NonNull (slice u8)) AllocError;
+    shrink : ref Self -> NonNull u8.t -> layout.Layout -> layout.Layout
+            -> Result (NonNull (slice u8.t)) AllocError;
 
     (*
     fn by_ref(&self) -> &Self
@@ -112,7 +112,7 @@ Module Allocator.
   }.
 End Allocator.
 
-Global Instance Allocator_for_Global `{State.Trait} : Allocator.Trait Global.
+Global Instance Allocator_for_Global : Allocator.Trait Global.
 Admitted.
 
 Module global.
@@ -133,11 +133,11 @@ Module global.
   }
   *)
   Module GlobalAlloc.
-    Class Trait `{State.Trait} (Self : Set) : Set := {
+    Class Trait (Self : Set) : Set := {
       alloc :
-        ref Self -> layout.Layout -> M (mut_ref u8);
+        ref Self -> layout.Layout -> M (mut_ref u8.t);
       dealloc :
-        ref Self -> mut_ref u8 -> layout.Layout -> M unit;
+        ref Self -> mut_ref u8.t -> layout.Layout -> M unit;
       (* Provided methods *)
       (* alloc_zeroed :
         ref Self -> layout.Layout -> M (mut_ref u8);

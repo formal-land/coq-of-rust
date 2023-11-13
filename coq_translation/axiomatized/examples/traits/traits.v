@@ -3,113 +3,159 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module  Sheep.
 Section Sheep.
-  Context `{ℋ : State.Trait}.
-  
   Record t : Set := {
-    naked : bool;
-    name : ref str;
+    naked : bool.t;
+    name : ref str.t;
   }.
   
   Global Instance Get_naked : Notation.Dot "naked" := {
-    Notation.dot x := let* x := M.read x in M.pure x.(naked) : M _;
+    Notation.dot x := let* x := M.read x in M.alloc x.(naked) : M _;
   }.
   Global Instance Get_AF_naked : Notation.DoubleColon t "naked" := {
-    Notation.double_colon x := let* x := M.read x in M.pure x.(naked) : M _;
+    Notation.double_colon x := let* x := M.read x in M.alloc x.(naked) : M _;
   }.
   Global Instance Get_name : Notation.Dot "name" := {
-    Notation.dot x := let* x := M.read x in M.pure x.(name) : M _;
+    Notation.dot x := let* x := M.read x in M.alloc x.(name) : M _;
   }.
   Global Instance Get_AF_name : Notation.DoubleColon t "name" := {
-    Notation.double_colon x := let* x := M.read x in M.pure x.(name) : M _;
+    Notation.double_colon x := let* x := M.read x in M.alloc x.(name) : M _;
   }.
 End Sheep.
 End Sheep.
-Definition Sheep `{ℋ : State.Trait} : Set := M.Val Sheep.t.
 
 Module  Animal.
 Section Animal.
-  Context `{ℋ : State.Trait}.
-  
   Class Trait (Self : Set) : Type := {
-    new : (ref str) -> M Self;
-    name : (ref Self) -> M (ref str);
-    noise : (ref Self) -> M (ref str);
+    new : (ref str.t) -> M ltac:(Self);
+    name : (ref ltac:(Self)) -> M (ref str.t);
+    noise : (ref ltac:(Self)) -> M (ref str.t);
   }.
   
 End Animal.
 End Animal.
 
-Module  Impl_traits_Sheep.
-Section Impl_traits_Sheep.
-  Context `{ℋ : State.Trait}.
+Module  Impl_traits_Sheep_t.
+Section Impl_traits_Sheep_t.
+  Ltac Self := exact traits.Sheep.t.
   
-  Definition Self : Set := traits.Sheep.
-  
-  Parameter is_naked : (ref Self) -> M bool.
+  (*
+      fn is_naked(&self) -> bool {
+          self.naked
+      }
+  *)
+  Parameter is_naked : (M.Val (ref ltac:(Self))) -> M (M.Val bool.t).
   
   Global Instance AssociatedFunction_is_naked :
-    Notation.DoubleColon Self "is_naked" := {
+    Notation.DoubleColon ltac:(Self) "is_naked" := {
     Notation.double_colon := is_naked;
   }.
-End Impl_traits_Sheep.
-End Impl_traits_Sheep.
+End Impl_traits_Sheep_t.
+End Impl_traits_Sheep_t.
 
-Module  Impl_traits_Animal_for_traits_Sheep.
-Section Impl_traits_Animal_for_traits_Sheep.
-  Context `{ℋ : State.Trait}.
+Module  Impl_traits_Animal_for_traits_Sheep_t.
+Section Impl_traits_Animal_for_traits_Sheep_t.
+  Ltac Self := exact traits.Sheep.t.
   
-  Definition Self : Set := traits.Sheep.
+  (*
+      fn new(name: &'static str) -> Sheep {
+          Sheep {
+              name: name,
+              naked: false,
+          }
+      }
+  *)
+  Parameter new : (M.Val (ref str.t)) -> M (M.Val traits.Sheep.t).
   
-  Parameter new : (ref str) -> M traits.Sheep.
-  
-  Global Instance AssociatedFunction_new : Notation.DoubleColon Self "new" := {
+  Global Instance AssociatedFunction_new :
+    Notation.DoubleColon ltac:(Self) "new" := {
     Notation.double_colon := new;
   }.
   
-  Parameter name : (ref Self) -> M (ref str).
+  (*
+      fn name(&self) -> &'static str {
+          self.name
+      }
+  *)
+  Parameter name : (M.Val (ref ltac:(Self))) -> M (M.Val (ref str.t)).
   
   Global Instance AssociatedFunction_name :
-    Notation.DoubleColon Self "name" := {
+    Notation.DoubleColon ltac:(Self) "name" := {
     Notation.double_colon := name;
   }.
   
-  Parameter noise : (ref Self) -> M (ref str).
+  (*
+      fn noise(&self) -> &'static str {
+          if self.is_naked() {
+              "baaaaah?"
+          } else {
+              "baaaaah!"
+          }
+      }
+  *)
+  Parameter noise : (M.Val (ref ltac:(Self))) -> M (M.Val (ref str.t)).
   
   Global Instance AssociatedFunction_noise :
-    Notation.DoubleColon Self "noise" := {
+    Notation.DoubleColon ltac:(Self) "noise" := {
     Notation.double_colon := noise;
   }.
   
-  Parameter talk : (ref Self) -> M unit.
+  (*
+      fn talk(&self) {
+          // For example, we can add some quiet contemplation.
+          println!("{} pauses briefly... {}", self.name, self.noise());
+      }
+  *)
+  Parameter talk : (M.Val (ref ltac:(Self))) -> M (M.Val unit).
   
   Global Instance AssociatedFunction_talk :
-    Notation.DoubleColon Self "talk" := {
+    Notation.DoubleColon ltac:(Self) "talk" := {
     Notation.double_colon := talk;
   }.
   
-  Global Instance ℐ : traits.Animal.Required.Trait Self := {
+  Global Instance ℐ : traits.Animal.Required.Trait ltac:(Self) := {
     traits.Animal.new := new;
     traits.Animal.name := name;
     traits.Animal.noise := noise;
     traits.Animal.talk := Datatypes.Some talk;
   }.
-End Impl_traits_Animal_for_traits_Sheep.
-End Impl_traits_Animal_for_traits_Sheep.
+End Impl_traits_Animal_for_traits_Sheep_t.
+End Impl_traits_Animal_for_traits_Sheep_t.
 
-Module  Impl_traits_Sheep_2.
-Section Impl_traits_Sheep_2.
-  Context `{ℋ : State.Trait}.
+Module  Impl_traits_Sheep_t_2.
+Section Impl_traits_Sheep_t_2.
+  Ltac Self := exact traits.Sheep.t.
   
-  Definition Self : Set := traits.Sheep.
+  (*
+      fn shear(&mut self) {
+          if self.is_naked() {
+              // Implementor methods can use the implementor's trait methods.
+              println!("{} is already naked...", self.name());
+          } else {
+              println!("{} gets a haircut!", self.name);
   
-  Parameter shear : (mut_ref Self) -> M unit.
+              self.naked = true;
+          }
+      }
+  *)
+  Parameter shear : (M.Val (mut_ref ltac:(Self))) -> M (M.Val unit).
   
   Global Instance AssociatedFunction_shear :
-    Notation.DoubleColon Self "shear" := {
+    Notation.DoubleColon ltac:(Self) "shear" := {
     Notation.double_colon := shear;
   }.
-End Impl_traits_Sheep_2.
-End Impl_traits_Sheep_2.
+End Impl_traits_Sheep_t_2.
+End Impl_traits_Sheep_t_2.
 
+(*
+fn main() {
+    // Type annotation is necessary in this case.
+    let mut dolly: Sheep = Animal::new("Dolly");
+    // TODO ^ Try removing the type annotations.
+
+    dolly.talk();
+    dolly.shear();
+    dolly.talk();
+}
+*)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{ℋ : State.Trait}, M unit.
+Parameter main : M (M.Val unit).

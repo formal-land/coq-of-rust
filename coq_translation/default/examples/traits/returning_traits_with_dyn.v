@@ -3,158 +3,186 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module  Sheep.
 Section Sheep.
-  Context `{ℋ : State.Trait}.
-  
   Record t : Set := { }.
 End Sheep.
 End Sheep.
-Definition Sheep `{ℋ : State.Trait} : Set := M.Val Sheep.t.
 
 Module  Cow.
 Section Cow.
-  Context `{ℋ : State.Trait}.
-  
   Record t : Set := { }.
 End Cow.
 End Cow.
-Definition Cow `{ℋ : State.Trait} : Set := M.Val Cow.t.
 
 Module  Animal.
 Section Animal.
-  Context `{ℋ : State.Trait}.
-  
   Class Trait (Self : Set) : Type := {
-    noise : (ref Self) -> M (ref str);
+    noise : (ref ltac:(Self)) -> M (ref str.t);
   }.
   
 End Animal.
 End Animal.
 
-Module  Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep.
-Section Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep.
-  Context `{ℋ : State.Trait}.
+Module  Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep_t.
+Section Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep_t.
+  Ltac Self := exact returning_traits_with_dyn.Sheep.t.
   
-  Definition Self : Set := returning_traits_with_dyn.Sheep.
-  
-  Definition noise (self : ref Self) : M (ref str) :=
+  (*
+      fn noise(&self) -> &'static str {
+          "baaaaah!"
+      }
+  *)
+  Definition noise (self : M.Val (ref ltac:(Self))) : M (M.Val (ref str.t)) :=
     M.function_body (M.pure (mk_str "baaaaah!")).
   
   Global Instance AssociatedFunction_noise :
-    Notation.DoubleColon Self "noise" := {
+    Notation.DoubleColon ltac:(Self) "noise" := {
     Notation.double_colon := noise;
   }.
   
-  Global Instance ℐ : returning_traits_with_dyn.Animal.Trait Self := {
+  Global Instance ℐ : returning_traits_with_dyn.Animal.Trait ltac:(Self) := {
     returning_traits_with_dyn.Animal.noise := noise;
   }.
-End Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep.
-End Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep.
+End Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep_t.
+End Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep_t.
 
-Module  Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
-Section Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
-  Context `{ℋ : State.Trait}.
+Module  Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow_t.
+Section Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow_t.
+  Ltac Self := exact returning_traits_with_dyn.Cow.t.
   
-  Definition Self : Set := returning_traits_with_dyn.Cow.
-  
-  Definition noise (self : ref Self) : M (ref str) :=
+  (*
+      fn noise(&self) -> &'static str {
+          "moooooo!"
+      }
+  *)
+  Definition noise (self : M.Val (ref ltac:(Self))) : M (M.Val (ref str.t)) :=
     M.function_body (M.pure (mk_str "moooooo!")).
   
   Global Instance AssociatedFunction_noise :
-    Notation.DoubleColon Self "noise" := {
+    Notation.DoubleColon ltac:(Self) "noise" := {
     Notation.double_colon := noise;
   }.
   
-  Global Instance ℐ : returning_traits_with_dyn.Animal.Trait Self := {
+  Global Instance ℐ : returning_traits_with_dyn.Animal.Trait ltac:(Self) := {
     returning_traits_with_dyn.Animal.noise := noise;
   }.
-End Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
-End Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
+End Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow_t.
+End Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow_t.
 
+(*
+fn random_animal(random_number: f64) -> Box<dyn Animal> {
+    if random_number < 0.5 {
+        Box::new(Sheep {})
+    } else {
+        Box::new(Cow {})
+    }
+}
+*)
 Definition random_animal
-    `{ℋ : State.Trait}
-    (random_number : f64)
-    : M (alloc.boxed.Box _ (* dyn *) alloc.boxed.Box.Default.A) :=
+    (random_number : M.Val f64.t)
+    : M (M.Val (alloc.boxed.Box.t _ (* dyn *) alloc.boxed.Box.Default.A)) :=
   M.function_body
-    (let* α0 : ltac:(refine f64) := M.alloc 1 (* 0.5 *) in
-    let* α1 : ltac:(refine bool) := BinOp.lt random_number α0 in
-    let* α2 : ltac:(refine bool) := use α1 in
-    let* α3 :
+    (let* α0 : ltac:(refine (M.Val f64.t)) := M.alloc 1 (* 0.5 *) in
+    let* α1 : ltac:(refine (M.Val bool.t)) := BinOp.lt random_number α0 in
+    let* α2 : ltac:(refine (M.Val bool.t)) := use α1 in
+    let* α3 := M.read α2 in
+    let* α4 :
         ltac:(refine
-          (alloc.boxed.Box type not implemented alloc.alloc.Global)) :=
-      if (α2 : bool) then
-        let* α0 : ltac:(refine returning_traits_with_dyn.Sheep) :=
+          (M.Val
+            (alloc.boxed.Box.t type not implemented alloc.alloc.Global.t))) :=
+      if (α3 : bool) then
+        let* α0 : ltac:(refine (M.Val returning_traits_with_dyn.Sheep.t)) :=
           M.alloc returning_traits_with_dyn.Sheep.Build_t in
         let* α1 :
             ltac:(refine
-              (alloc.boxed.Box
-                returning_traits_with_dyn.Sheep
-                alloc.alloc.Global)) :=
-          (alloc.boxed.Box
-                returning_traits_with_dyn.Sheep
-                alloc.alloc.Global)::["new"]
+              (M.Val
+                (alloc.boxed.Box.t
+                  returning_traits_with_dyn.Sheep.t
+                  alloc.alloc.Global.t))) :=
+          (alloc.boxed.Box.t
+                returning_traits_with_dyn.Sheep.t
+                alloc.alloc.Global.t)::["new"]
             α0 in
         let* α0 :
             ltac:(refine
-              (alloc.boxed.Box type not implemented alloc.alloc.Global)) :=
+              (M.Val
+                (alloc.boxed.Box.t
+                  type not implemented
+                  alloc.alloc.Global.t))) :=
           pointer_coercion "Unsize" α1 in
         pointer_coercion "Unsize" α0
       else
-        let* α0 : ltac:(refine returning_traits_with_dyn.Cow) :=
+        let* α0 : ltac:(refine (M.Val returning_traits_with_dyn.Cow.t)) :=
           M.alloc returning_traits_with_dyn.Cow.Build_t in
         let* α1 :
             ltac:(refine
-              (alloc.boxed.Box
-                returning_traits_with_dyn.Cow
-                alloc.alloc.Global)) :=
-          (alloc.boxed.Box
-                returning_traits_with_dyn.Cow
-                alloc.alloc.Global)::["new"]
+              (M.Val
+                (alloc.boxed.Box.t
+                  returning_traits_with_dyn.Cow.t
+                  alloc.alloc.Global.t))) :=
+          (alloc.boxed.Box.t
+                returning_traits_with_dyn.Cow.t
+                alloc.alloc.Global.t)::["new"]
             α0 in
         pointer_coercion "Unsize" α1 in
     let* α0 :
         ltac:(refine
-          (alloc.boxed.Box type not implemented alloc.alloc.Global)) :=
-      pointer_coercion "Unsize" α3 in
+          (M.Val
+            (alloc.boxed.Box.t type not implemented alloc.alloc.Global.t))) :=
+      pointer_coercion "Unsize" α4 in
     pointer_coercion "Unsize" α0).
 
+(*
+fn main() {
+    let random_number = 0.234;
+    let animal = random_animal(random_number);
+    println!(
+        "You've randomly chosen an animal, and it says {}",
+        animal.noise()
+    );
+}
+*)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{ℋ : State.Trait} : M unit :=
+Definition main : M (M.Val unit) :=
   M.function_body
-    (let* random_number : ltac:(refine f64) := M.alloc 0 (* 0.234 *) in
+    (let* random_number : ltac:(refine (M.Val f64.t)) :=
+      M.alloc 0 (* 0.234 *) in
     let* animal :
         ltac:(refine
-          (alloc.boxed.Box type not implemented alloc.alloc.Global)) :=
+          (M.Val
+            (alloc.boxed.Box.t type not implemented alloc.alloc.Global.t))) :=
       returning_traits_with_dyn.random_animal random_number in
-    let* _ : ltac:(refine unit) :=
-      let* _ : ltac:(refine unit) :=
-        let* α0 : ltac:(refine (array (ref str))) :=
+    let* _ : ltac:(refine (M.Val unit)) :=
+      let* _ : ltac:(refine (M.Val unit)) :=
+        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
           M.alloc
             [
               mk_str "You've randomly chosen an animal, and it says ";
               mk_str "
 "
             ] in
-        let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
-        let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+          borrow α0 in
+        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
-        let* α3 : ltac:(refine type not implemented) := deref animal in
-        let* α4 : ltac:(refine (ref type not implemented)) := borrow α3 in
-        let* α5 : ltac:(refine (ref str)) :=
+        let* α3 : ltac:(refine (M.Val type not implemented)) := deref animal in
+        let* α4 : ltac:(refine (M.Val (ref type not implemented))) :=
+          borrow α3 in
+        let* α5 : ltac:(refine (M.Val (ref str.t))) :=
           (returning_traits_with_dyn.Animal.noise
               (Self := type not implemented)
               (Trait := ltac:(refine _)))
             α4 in
-        let* α6 : ltac:(refine (ref (ref str))) := borrow α5 in
-        let* α7 : ltac:(refine core.fmt.rt.Argument) :=
-          core.fmt.rt.Argument::["new_display"] α6 in
-        let* α8 : ltac:(refine (array core.fmt.rt.Argument)) :=
+        let* α6 : ltac:(refine (M.Val (ref (ref str.t)))) := borrow α5 in
+        let* α7 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
+          core.fmt.rt.Argument.t::["new_display"] α6 in
+        let* α8 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
           M.alloc [ α7 ] in
-        let* α9 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+        let* α9 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
           borrow α8 in
-        let* α10 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+        let* α10 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
           pointer_coercion "Unsize" α9 in
-        let* α11 : ltac:(refine core.fmt.Arguments) :=
-          core.fmt.Arguments::["new_v1"] α2 α10 in
+        let* α11 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
+          core.fmt.Arguments.t::["new_v1"] α2 α10 in
         std.io.stdio._print α11 in
       M.alloc tt in
     M.alloc tt).

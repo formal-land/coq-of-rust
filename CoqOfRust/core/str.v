@@ -2,7 +2,7 @@ Require Import CoqOfRust.lib.lib.
 
 Module error.
   Module ParseBoolError.
-    Parameter t : forall `{State.Trait}, Set.
+    Parameter t : Set.
   End ParseBoolError.
-  Definition ParseBoolError `{State.Trait} := ParseBoolError.t.
+  Definition ParseBoolError := ParseBoolError.t.
 End error.

@@ -4,123 +4,139 @@ Require Import CoqOfRust.CoqOfRust.
 Module my.
   Module  OpenBox.
   Section OpenBox.
-    Context `{ℋ : State.Trait}.
-    
-    Context {T : Set}.
+    Context (T : Set).
     
     Record t : Set := {
       contents : T;
     }.
     
     Global Instance Get_contents : Notation.Dot "contents" := {
-      Notation.dot x := let* x := M.read x in M.pure x.(contents) : M _;
+      Notation.dot x := let* x := M.read x in M.alloc x.(contents) : M _;
     }.
     Global Instance Get_AF_contents : Notation.DoubleColon t "contents" := {
       Notation.double_colon x :=
-        let* x := M.read x in M.pure x.(contents) : M _;
+        let* x := M.read x in M.alloc x.(contents) : M _;
     }.
   End OpenBox.
   End OpenBox.
-  Definition OpenBox (T : Set) `{ℋ : State.Trait} : Set :=
-    M.Val (OpenBox.t (T := T)).
   
   Module  ClosedBox.
   Section ClosedBox.
-    Context `{ℋ : State.Trait}.
-    
-    Context {T : Set}.
+    Context (T : Set).
     
     Record t : Set := {
       contents : T;
     }.
     
     Global Instance Get_contents : Notation.Dot "contents" := {
-      Notation.dot x := let* x := M.read x in M.pure x.(contents) : M _;
+      Notation.dot x := let* x := M.read x in M.alloc x.(contents) : M _;
     }.
     Global Instance Get_AF_contents : Notation.DoubleColon t "contents" := {
       Notation.double_colon x :=
-        let* x := M.read x in M.pure x.(contents) : M _;
+        let* x := M.read x in M.alloc x.(contents) : M _;
     }.
   End ClosedBox.
   End ClosedBox.
-  Definition ClosedBox (T : Set) `{ℋ : State.Trait} : Set :=
-    M.Val (ClosedBox.t (T := T)).
   
-  Module  Impl_struct_visibility_my_ClosedBox_T.
-  Section Impl_struct_visibility_my_ClosedBox_T.
-    Context `{ℋ : State.Trait}.
-    
+  Module  Impl_struct_visibility_my_ClosedBox_t_T.
+  Section Impl_struct_visibility_my_ClosedBox_t_T.
     Context {T : Set}.
     
-    Definition Self : Set := struct_visibility.my.ClosedBox T.
+    Ltac Self := exact (struct_visibility.my.ClosedBox.t T).
     
-    Parameter new : T -> M (struct_visibility.my.ClosedBox T).
+    (*
+            pub fn new(contents: T) -> ClosedBox<T> {
+                ClosedBox { contents: contents }
+            }
+    *)
+    Parameter new : (M.Val T) -> M (M.Val (struct_visibility.my.ClosedBox.t T)).
     
     Global Instance AssociatedFunction_new :
-      Notation.DoubleColon Self "new" := {
+      Notation.DoubleColon ltac:(Self) "new" := {
       Notation.double_colon := new;
     }.
-  End Impl_struct_visibility_my_ClosedBox_T.
-  End Impl_struct_visibility_my_ClosedBox_T.
+  End Impl_struct_visibility_my_ClosedBox_t_T.
+  End Impl_struct_visibility_my_ClosedBox_t_T.
 End my.
 
 Module  OpenBox.
 Section OpenBox.
-  Context `{ℋ : State.Trait}.
-  
-  Context {T : Set}.
+  Context (T : Set).
   
   Record t : Set := {
     contents : T;
   }.
   
   Global Instance Get_contents : Notation.Dot "contents" := {
-    Notation.dot x := let* x := M.read x in M.pure x.(contents) : M _;
+    Notation.dot x := let* x := M.read x in M.alloc x.(contents) : M _;
   }.
   Global Instance Get_AF_contents : Notation.DoubleColon t "contents" := {
-    Notation.double_colon x := let* x := M.read x in M.pure x.(contents) : M _;
+    Notation.double_colon x := let* x := M.read x in M.alloc x.(contents) : M _;
   }.
 End OpenBox.
 End OpenBox.
-Definition OpenBox (T : Set) `{ℋ : State.Trait} : Set :=
-  M.Val (OpenBox.t (T := T)).
 
 Module  ClosedBox.
 Section ClosedBox.
-  Context `{ℋ : State.Trait}.
-  
-  Context {T : Set}.
+  Context (T : Set).
   
   Record t : Set := {
     contents : T;
   }.
   
   Global Instance Get_contents : Notation.Dot "contents" := {
-    Notation.dot x := let* x := M.read x in M.pure x.(contents) : M _;
+    Notation.dot x := let* x := M.read x in M.alloc x.(contents) : M _;
   }.
   Global Instance Get_AF_contents : Notation.DoubleColon t "contents" := {
-    Notation.double_colon x := let* x := M.read x in M.pure x.(contents) : M _;
+    Notation.double_colon x := let* x := M.read x in M.alloc x.(contents) : M _;
   }.
 End ClosedBox.
 End ClosedBox.
-Definition ClosedBox (T : Set) `{ℋ : State.Trait} : Set :=
-  M.Val (ClosedBox.t (T := T)).
 
-Module  Impl_struct_visibility_my_ClosedBox_T_2.
-Section Impl_struct_visibility_my_ClosedBox_T_2.
-  Context `{ℋ : State.Trait}.
-  
+Module  Impl_struct_visibility_my_ClosedBox_t_T_2.
+Section Impl_struct_visibility_my_ClosedBox_t_T_2.
   Context {T : Set}.
   
-  Definition Self : Set := struct_visibility.my.ClosedBox T.
+  Ltac Self := exact (struct_visibility.my.ClosedBox.t T).
   
-  Parameter new : T -> M (struct_visibility.my.ClosedBox T).
+  (*
+          pub fn new(contents: T) -> ClosedBox<T> {
+              ClosedBox { contents: contents }
+          }
+  *)
+  Parameter new : (M.Val T) -> M (M.Val (struct_visibility.my.ClosedBox.t T)).
   
-  Global Instance AssociatedFunction_new : Notation.DoubleColon Self "new" := {
+  Global Instance AssociatedFunction_new :
+    Notation.DoubleColon ltac:(Self) "new" := {
     Notation.double_colon := new;
   }.
-End Impl_struct_visibility_my_ClosedBox_T_2.
-End Impl_struct_visibility_my_ClosedBox_T_2.
+End Impl_struct_visibility_my_ClosedBox_t_T_2.
+End Impl_struct_visibility_my_ClosedBox_t_T_2.
 
+(*
+fn main() {
+    // Public structs with public fields can be constructed as usual
+    let open_box = my::OpenBox {
+        contents: "public information",
+    };
+
+    // and their fields can be normally accessed.
+    println!("The open box contains: {}", open_box.contents);
+
+    // Public structs with private fields cannot be constructed using field names.
+    // Error! `ClosedBox` has private fields
+    //let closed_box = my::ClosedBox { contents: "classified information" };
+    // TODO ^ Try uncommenting this line
+
+    // However, structs with private fields can be created using
+    // public constructors
+    let _closed_box = my::ClosedBox::new("classified information");
+
+    // and the private fields of a public struct cannot be accessed.
+    // Error! The `contents` field is private
+    //println!("The closed box contains: {}", _closed_box.contents);
+    // TODO ^ Try uncommenting this line
+}
+*)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{ℋ : State.Trait}, M unit.
+Parameter main : M (M.Val unit).

@@ -2,17 +2,39 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module Color.
-  Inductive t `{ℋ : State.Trait} : Set :=
+  Inductive t : Set :=
   | Red
   | Blue
   | Green
-  | RGB (_ : u32) (_ : u32) (_ : u32)
-  | HSV (_ : u32) (_ : u32) (_ : u32)
-  | HSL (_ : u32) (_ : u32) (_ : u32)
-  | CMY (_ : u32) (_ : u32) (_ : u32)
-  | CMYK (_ : u32) (_ : u32) (_ : u32) (_ : u32).
+  | RGB (_ : u32.t) (_ : u32.t) (_ : u32.t)
+  | HSV (_ : u32.t) (_ : u32.t) (_ : u32.t)
+  | HSL (_ : u32.t) (_ : u32.t) (_ : u32.t)
+  | CMY (_ : u32.t) (_ : u32.t) (_ : u32.t)
+  | CMYK (_ : u32.t) (_ : u32.t) (_ : u32.t) (_ : u32.t).
 End Color.
-Definition Color `{ℋ : State.Trait} : Set := M.Val Color.t.
 
+(*
+fn main() {
+    let color = Color::RGB(122, 17, 40);
+    // TODO ^ Try different variants for `color`
+
+    println!("What color is it?");
+    // An `enum` can be destructured using a `match`.
+    match color {
+        Color::Red => println!("The color is Red!"),
+        Color::Blue => println!("The color is Blue!"),
+        Color::Green => println!("The color is Green!"),
+        Color::RGB(r, g, b) => println!("Red: {}, green: {}, and blue: {}!", r, g, b),
+        Color::HSV(h, s, v) => println!("Hue: {}, saturation: {}, value: {}!", h, s, v),
+        Color::HSL(h, s, l) => println!("Hue: {}, saturation: {}, lightness: {}!", h, s, l),
+        Color::CMY(c, m, y) => println!("Cyan: {}, magenta: {}, yellow: {}!", c, m, y),
+        Color::CMYK(c, m, y, k) => println!(
+            "Cyan: {}, magenta: {}, yellow: {}, key (black): {}!",
+            c, m, y, k
+        ),
+        // Don't need another arm because all variants have been examined
+    }
+}
+*)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{ℋ : State.Trait}, M unit.
+Parameter main : M (M.Val unit).

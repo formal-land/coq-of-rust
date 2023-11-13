@@ -38,10 +38,10 @@ Require CoqOfRust.core.result_types.
 Module Error.
   Parameter t : Set.
 End Error.
-Definition Error `{State.Trait} : Set :=
+Definition Error : Set :=
   M.Val Error.t.
 
-Definition Result `{State.Trait} (T : Set) : Set :=
+Definition Result (T : Set) : Set :=
   core.result_types.Result T Error.t.
 
 (* pub struct BorrowedBuf<'data> { /* private fields */ } *)
@@ -85,14 +85,14 @@ pub trait Write {
 }
 *)
 Module Write.
-  Class Trait `{State.Trait} (Self : Set) : Set := { 
-    write : mut_ref Self -> ref (slice u8) -> Result usize;
+  Class Trait (Self : Set) : Set := { 
+    write : mut_ref Self -> ref (slice u8.t) -> Result usize.t;
     flush : mut_ref Self -> Result unit;
-    write_vectored : mut_ref Self -> ref (slice IoSlice) -> Result usize;
+    write_vectored : mut_ref Self -> ref (slice IoSlice) -> Result usize.t;
     is_write_vectored : mut_ref Self -> bool;
-    write_all : mut_ref Self -> ref (slice u8) -> Result unit;
+    write_all : mut_ref Self -> ref (slice u8.t) -> Result unit;
     write_all_vectored : mut_ref Self -> mut_ref (slice IoSlice) -> Result unit;
-    write_fmt : mut_ref Self -> fmt.Arguments -> Result unit;
+    write_fmt : mut_ref Self -> fmt.Arguments.t -> Result unit;
     by_ref : mut_ref Self -> mut_ref Self;
   }.
 End Write.
@@ -102,124 +102,101 @@ End Write.
 Module BufWriter.
   Parameter t : forall (W : Set) `{Write.Trait W}, Set.
 End BufWriter.
-Definition BufWriter := BufWriter.t.
 
 (* pub struct Bytes<R> { /* private fields */ } *)
 Module Bytes.
   Parameter t : forall (R : Set), Set.
 End Bytes.
-Definition Bytes := Bytes.t.
 
 (* pub struct Chain<T, U> { /* private fields */ } *)
 Module Chain.
   Parameter t : forall (T U : Set), Set.
 End Chain.
-Definition Chain := Chain.t.
 
 (* pub struct Cursor<T> { /* private fields */ } *)
 Module Cursor.
   Parameter t : forall (T : Set), Set.
 End Cursor.
-Definition Cursor := Cursor.t.
 
 (* pub struct Empty; *)
 Module Empty.
   Parameter t : Set.
 End Empty.
-Definition Empty := Empty.t.
 
 (* pub struct IntoInnerError<W>(_, _); *)
 Module IntoInnerError.
   Parameter t : forall (W : Set), Set.
 End IntoInnerError.
-Definition IntoInnerError := IntoInnerError.t.
 
 (* pub struct IoSliceMut<'a>(_); *)
 Module IoSliceMut.
   Parameter t : Set.
 End IoSliceMut.
-Definition IoSliceMut := IoSliceMut.t.
 
 (* pub struct LineWriter<W: Write> { /* private fields */ } *)
 Module LineWriter.
   Parameter t : forall (W : Set) `{Write.Trait W}, Set.
 End LineWriter.
-Definition LineWriter := LineWriter.t.
 
 (* pub struct Lines<B> { /* private fields */ } *)
 Module Lines.
   Parameter t : forall (B : Set), Set.
 End Lines.
-Definition Lines := Lines.t.
 
 (* pub struct Repeat { /* private fields */ } *)
 Module Repeat.
   Parameter t : Set.
 End Repeat.
-Definition Repeat := Repeat.t.
 
 (* pub struct Sink; *)
 Module Sink.
   Parameter t : Set.
 End Sink.
-Definition Sink := Sink.t.
 
 (* pub struct Split<B> { /* private fields */ } *)
 Module Split.
   Parameter t : forall (B : Set), Set.
 End Split.
-Definition Split := Split.t.
 
 (* pub struct Stderr { /* private fields */ } *)
 Module Stderr.
   Parameter t : Set.
 End Stderr.
-Definition Stderr := Stderr.t.
 
 (* pub struct StderrLock<'a> { /* private fields */ } *)
 Module StderrLock.
   Parameter t : Set.
 End StderrLock.
-Definition StderrLock := StderrLock.t.
 
 (* pub struct Stdin { /* private fields */ } *)
 Module Stdin.
   Parameter t : Set.
 End Stdin.
-Definition Stdin := Stdin.t.
 
 (* pub struct StdinLock<'a> { /* private fields */ } *)
 Module StdinLock.
   Parameter t : Set.
 End StdinLock.
-Definition StdinLock := StdinLock.t.
 
 (* pub struct Stdout { /* private fields */ } *)
 Module Stdout.
   Parameter t : Set.
 End Stdout.
-Definition Stdout := Stdout.t.
 
 (* pub struct StdoutLock<'a> { /* private fields */ } *)
 Module StdoutLock.
   Parameter t : Set.
 End StdoutLock.
-Definition StdoutLock := StdoutLock.t.
 
 (* pub struct Take<T> { /* private fields */ } *)
 Module Take.
   Parameter t : forall (T : Set), Set.
 End Take.
-Definition Take := Take.t.
 
 (* pub struct WriterPanicked { /* private fields */ } *)
 Module WriterPanicked.
   Parameter t : Set.
 End WriterPanicked.
-Definition WriterPanicked := WriterPanicked.t.
-
-
-
 
 (* ********ENUMS******** *)
 
@@ -317,7 +294,6 @@ Module ErrorKind.
   | Other
   .
 End ErrorKind.
-Definition ErrorKind := ErrorKind.t.
 
 (* 
 pub enum SeekFrom {
@@ -327,13 +303,12 @@ pub enum SeekFrom {
 }
 *)
 Module SeekFrom.
-  Inductive t `{State.Trait} : Set :=
-  | Start : u64 -> t
-  | End : i64 -> t
-  | Current : i64 -> t
+  Inductive t : Set :=
+  | Start : u64.t -> t
+  | End : i64.t -> t
+  | Current : i64.t -> t
   .
 End SeekFrom.
-Definition SeekFrom `{State.Trait} := SeekFrom.t.
 
 (* ********TRAITS******** *)
 (* 
@@ -351,7 +326,7 @@ pub trait IsTerminal: Sealed {
 }
 *)
 Module IsTerminal.
-  Class Trait `{State.Trait} (Self : Set) : Set := { 
+  Class Trait (Self : Set) : Set := { 
     is_terminal : ref Self -> bool;
   }.
 End IsTerminal.
@@ -380,19 +355,19 @@ pub trait Read {
 }
 *)
 Module Read.
-  Class Trait `{State.Trait} (Self : Set) : Set := { 
-    read : mut_ref Self -> mut_ref (slice u8) -> Result usize;
-    read_vectored : mut_ref Self -> mut_ref (slice IoSliceMut) -> Result usize;
+  Class Trait (Self : Set) : Set := { 
+    read : mut_ref Self -> mut_ref (slice u8.t) -> Result usize.t;
+    read_vectored : mut_ref Self -> mut_ref (slice IoSliceMut.t) -> Result usize.t;
     is_read_vectored : ref Self -> bool;
-    read_to_end : mut_ref Self -> mut_ref (slice u8) -> Result usize;
-    read_to_string : mut_ref Self -> mut_ref alloc.string.String -> Result usize;
-    read_exact : mut_ref Self -> mut_ref (slice u8) -> Result unit;
+    read_to_end : mut_ref Self -> mut_ref (slice u8.t) -> Result usize.t;
+    read_to_string : mut_ref Self -> mut_ref alloc.string.String.t -> Result usize.t;
+    read_exact : mut_ref Self -> mut_ref (slice u8.t) -> Result unit;
     read_buf : mut_ref Self -> BorrowedCursor -> Result unit;
     read_buf_exact : mut_ref Self -> BorrowedCursor -> Result unit;
     by_ref : mut_ref Self -> mut_ref Self;
-    bytes : Self -> Bytes Self;
-    chain {R : Set} : Self -> R -> Chain Self R;
-    take : Self -> u64 -> Take Self;
+    bytes : Self -> Bytes.t Self;
+    chain {R : Set} : Self -> R -> Chain.t Self R;
+    take : Self -> u64.t -> Take.t Self;
   }.
 End Read.
 
@@ -413,15 +388,15 @@ pub trait BufRead: Read {
 }
 *)
 Module BufRead.
-  Class Trait `{State.Trait} (Self : Set) `{Read.Trait Self}: Set := { 
-    fill_buf : mut_ref Self -> Result (ref (slice u8));
-    consume : mut_ref Self -> usize -> unit;
+  Class Trait (Self : Set) `{Read.Trait Self}: Set := { 
+    fill_buf : mut_ref Self -> Result (ref (slice u8.t));
+    consume : mut_ref Self -> usize.t -> unit;
     has_data_left : mut_ref Self -> Result bool;
     read_until :
-      mut_ref Self -> u8 -> mut_ref (vec.Vec u8 vec.Vec.Default.A) -> Result usize;
-    read_line : mut_ref Self -> mut_ref alloc.string.String -> Result usize;
-    split : Self -> u8 -> Split Self;
-    lines : mut_ref Self -> Lines Self;
+      mut_ref Self -> u8.t -> mut_ref (vec.Vec u8.t vec.Vec.Default.A) -> Result usize.t;
+    read_line : mut_ref Self -> mut_ref alloc.string.String.t -> Result usize.t;
+    split : Self -> u8.t -> Split.t Self;
+    lines : mut_ref Self -> Lines.t Self;
   }.
 End BufRead.
 
@@ -437,11 +412,11 @@ pub trait Seek {
 }
 *)
 Module Seek.
-  Class Trait `{State.Trait} (Self : Set) : Set := { 
-    seek : mut_ref Self -> SeekFrom -> Result u64;
+  Class Trait (Self : Set) : Set := { 
+    seek : mut_ref Self -> SeekFrom.t -> Result u64.t;
     rewind : mut_ref Self -> Result unit;
-    stream_len : mut_ref Self -> Result u64;
-    stream_position : mut_ref Self -> Result u64;
+    stream_len : mut_ref Self -> Result u64.t;
+    stream_position : mut_ref Self -> Result u64.t;
   }.
 End Seek.
 
@@ -464,5 +439,5 @@ End Seek.
 *)
 
 Module stdio.
-  Parameter _print : forall `{State.Trait}, fmt.Arguments -> M unit.
+  Parameter _print : fmt.Arguments.t -> M unit.
 End stdio.

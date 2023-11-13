@@ -3,299 +3,374 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module  Unit.
 Section Unit.
-  Context `{ℋ : State.Trait}.
-  
   Inductive t : Set := Build.
 End Unit.
 End Unit.
-Definition Unit `{ℋ : State.Trait} := M.Val Unit.t.
 
-Module  Impl_core_fmt_Debug_for_clone_Unit.
-Section Impl_core_fmt_Debug_for_clone_Unit.
-  Context `{ℋ : State.Trait}.
+Module  Impl_core_fmt_Debug_for_clone_Unit_t.
+Section Impl_core_fmt_Debug_for_clone_Unit_t.
+  Ltac Self := exact clone.Unit.t.
   
-  Definition Self : Set := clone.Unit.
-  
+  (*
+  Debug
+  *)
   Definition fmt
-      (self : ref Self)
-      (f : mut_ref core.fmt.Formatter)
-      : M ltac:(core.fmt.Result) :=
+      (self : M.Val (ref ltac:(Self)))
+      (f : M.Val (mut_ref core.fmt.Formatter.t))
+      : M (M.Val ltac:(core.fmt.Result)) :=
     M.function_body
-      (let* α0 : ltac:(refine core.fmt.Formatter) := deref f in
-      let* α1 : ltac:(refine (mut_ref core.fmt.Formatter)) := borrow_mut α0 in
-      let* α2 : ltac:(refine str) := deref (mk_str "Unit") in
-      let* α3 : ltac:(refine (ref str)) := borrow α2 in
-      core.fmt.Formatter::["write_str"] α1 α3).
+      (let* α0 : ltac:(refine (M.Val core.fmt.Formatter.t)) := deref f in
+      let* α1 : ltac:(refine (M.Val (mut_ref core.fmt.Formatter.t))) :=
+        borrow_mut α0 in
+      let* α2 : ltac:(refine (M.Val str.t)) := deref (mk_str "Unit") in
+      let* α3 : ltac:(refine (M.Val (ref str.t))) := borrow α2 in
+      core.fmt.Formatter.t::["write_str"] α1 α3).
   
-  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {
+  Global Instance AssociatedFunction_fmt :
+    Notation.DoubleColon ltac:(Self) "fmt" := {
     Notation.double_colon := fmt;
   }.
   
-  Global Instance ℐ : core.fmt.Debug.Trait Self := {
+  Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
     core.fmt.Debug.fmt := fmt;
   }.
-End Impl_core_fmt_Debug_for_clone_Unit.
-End Impl_core_fmt_Debug_for_clone_Unit.
+End Impl_core_fmt_Debug_for_clone_Unit_t.
+End Impl_core_fmt_Debug_for_clone_Unit_t.
 
-Module  Impl_core_clone_Clone_for_clone_Unit.
-Section Impl_core_clone_Clone_for_clone_Unit.
-  Context `{ℋ : State.Trait}.
+Module  Impl_core_clone_Clone_for_clone_Unit_t.
+Section Impl_core_clone_Clone_for_clone_Unit_t.
+  Ltac Self := exact clone.Unit.t.
   
-  Definition Self : Set := clone.Unit.
-  
-  Definition clone (self : ref Self) : M clone.Unit :=
+  (*
+  Clone
+  *)
+  Definition clone (self : M.Val (ref ltac:(Self))) : M (M.Val clone.Unit.t) :=
     M.function_body (deref self).
   
   Global Instance AssociatedFunction_clone :
-    Notation.DoubleColon Self "clone" := {
+    Notation.DoubleColon ltac:(Self) "clone" := {
     Notation.double_colon := clone;
   }.
   
-  Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
+  Global Instance ℐ : core.clone.Clone.Required.Trait ltac:(Self) := {
     core.clone.Clone.clone := clone;
     core.clone.Clone.clone_from := Datatypes.None;
   }.
-End Impl_core_clone_Clone_for_clone_Unit.
-End Impl_core_clone_Clone_for_clone_Unit.
+End Impl_core_clone_Clone_for_clone_Unit_t.
+End Impl_core_clone_Clone_for_clone_Unit_t.
 
-Module  Impl_core_marker_Copy_for_clone_Unit.
-Section Impl_core_marker_Copy_for_clone_Unit.
-  Context `{ℋ : State.Trait}.
+Module  Impl_core_marker_Copy_for_clone_Unit_t.
+Section Impl_core_marker_Copy_for_clone_Unit_t.
+  Ltac Self := exact clone.Unit.t.
   
-  Definition Self : Set := clone.Unit.
-  
-  Global Instance ℐ : core.marker.Copy.Trait Self := {
+  Global Instance ℐ : core.marker.Copy.Trait ltac:(Self) := {
   }.
-End Impl_core_marker_Copy_for_clone_Unit.
-End Impl_core_marker_Copy_for_clone_Unit.
+End Impl_core_marker_Copy_for_clone_Unit_t.
+End Impl_core_marker_Copy_for_clone_Unit_t.
 
 Module  Pair.
 Section Pair.
-  Context `{ℋ : State.Trait}.
-  
   Record t : Set := {
-    x0 : alloc.boxed.Box i32 alloc.boxed.Box.Default.A;
-    x1 : alloc.boxed.Box i32 alloc.boxed.Box.Default.A;
+    x0 : alloc.boxed.Box.t i32.t alloc.boxed.Box.Default.A;
+    x1 : alloc.boxed.Box.t i32.t alloc.boxed.Box.Default.A;
   }.
   
   Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
+    Notation.dot x := let* x := M.read x in M.alloc x.(x0) : M _;
   }.
   Global Instance Get_1 : Notation.Dot "1" := {
-    Notation.dot x := let* x := M.read x in M.pure x.(x1) : M _;
+    Notation.dot x := let* x := M.read x in M.alloc x.(x1) : M _;
   }.
 End Pair.
 End Pair.
-Definition Pair `{ℋ : State.Trait} : Set := M.Val Pair.t.
 
-Module  Impl_core_clone_Clone_for_clone_Pair.
-Section Impl_core_clone_Clone_for_clone_Pair.
-  Context `{ℋ : State.Trait}.
+Module  Impl_core_clone_Clone_for_clone_Pair_t.
+Section Impl_core_clone_Clone_for_clone_Pair_t.
+  Ltac Self := exact clone.Pair.t.
   
-  Definition Self : Set := clone.Pair.
-  
-  Definition clone (self : ref Self) : M clone.Pair :=
+  (*
+  Clone
+  *)
+  Definition clone (self : M.Val (ref ltac:(Self))) : M (M.Val clone.Pair.t) :=
     M.function_body
-      (let* α0 : ltac:(refine clone.Pair) := deref self in
-      let* α1 : ltac:(refine (alloc.boxed.Box i32 alloc.alloc.Global)) :=
+      (let* α0 : ltac:(refine (M.Val clone.Pair.t)) := deref self in
+      let* α1 :
+          ltac:(refine
+            (M.Val (alloc.boxed.Box.t i32.t alloc.alloc.Global.t))) :=
         α0.["0"] in
-      let* α2 : ltac:(refine (ref (alloc.boxed.Box i32 alloc.alloc.Global))) :=
+      let* α2 :
+          ltac:(refine
+            (M.Val (ref (alloc.boxed.Box.t i32.t alloc.alloc.Global.t)))) :=
         borrow α1 in
-      let* α3 : ltac:(refine (alloc.boxed.Box i32 alloc.alloc.Global)) :=
+      let* α3 :
+          ltac:(refine
+            (M.Val (alloc.boxed.Box.t i32.t alloc.alloc.Global.t))) :=
         (core.clone.Clone.clone
-            (Self := alloc.boxed.Box i32 alloc.alloc.Global)
+            (Self := alloc.boxed.Box.t i32.t alloc.alloc.Global.t)
             (Trait := ltac:(refine _)))
           α2 in
-      let* α4 : ltac:(refine clone.Pair) := deref self in
-      let* α5 : ltac:(refine (alloc.boxed.Box i32 alloc.alloc.Global)) :=
-        α4.["1"] in
-      let* α6 : ltac:(refine (ref (alloc.boxed.Box i32 alloc.alloc.Global))) :=
-        borrow α5 in
-      let* α7 : ltac:(refine (alloc.boxed.Box i32 alloc.alloc.Global)) :=
+      let* α4 := M.read α3 in
+      let* α5 : ltac:(refine (M.Val clone.Pair.t)) := deref self in
+      let* α6 :
+          ltac:(refine
+            (M.Val (alloc.boxed.Box.t i32.t alloc.alloc.Global.t))) :=
+        α5.["1"] in
+      let* α7 :
+          ltac:(refine
+            (M.Val (ref (alloc.boxed.Box.t i32.t alloc.alloc.Global.t)))) :=
+        borrow α6 in
+      let* α8 :
+          ltac:(refine
+            (M.Val (alloc.boxed.Box.t i32.t alloc.alloc.Global.t))) :=
         (core.clone.Clone.clone
-            (Self := alloc.boxed.Box i32 alloc.alloc.Global)
+            (Self := alloc.boxed.Box.t i32.t alloc.alloc.Global.t)
             (Trait := ltac:(refine _)))
-          α6 in
-      M.alloc (clone.Pair.Build_t α3 α7)).
+          α7 in
+      let* α9 := M.read α8 in
+      M.alloc (clone.Pair.Build_t α4 α9)).
   
   Global Instance AssociatedFunction_clone :
-    Notation.DoubleColon Self "clone" := {
+    Notation.DoubleColon ltac:(Self) "clone" := {
     Notation.double_colon := clone;
   }.
   
-  Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
+  Global Instance ℐ : core.clone.Clone.Required.Trait ltac:(Self) := {
     core.clone.Clone.clone := clone;
     core.clone.Clone.clone_from := Datatypes.None;
   }.
-End Impl_core_clone_Clone_for_clone_Pair.
-End Impl_core_clone_Clone_for_clone_Pair.
+End Impl_core_clone_Clone_for_clone_Pair_t.
+End Impl_core_clone_Clone_for_clone_Pair_t.
 
-Module  Impl_core_fmt_Debug_for_clone_Pair.
-Section Impl_core_fmt_Debug_for_clone_Pair.
-  Context `{ℋ : State.Trait}.
+Module  Impl_core_fmt_Debug_for_clone_Pair_t.
+Section Impl_core_fmt_Debug_for_clone_Pair_t.
+  Ltac Self := exact clone.Pair.t.
   
-  Definition Self : Set := clone.Pair.
-  
+  (*
+  Debug
+  *)
   Definition fmt
-      (self : ref Self)
-      (f : mut_ref core.fmt.Formatter)
-      : M ltac:(core.fmt.Result) :=
+      (self : M.Val (ref ltac:(Self)))
+      (f : M.Val (mut_ref core.fmt.Formatter.t))
+      : M (M.Val ltac:(core.fmt.Result)) :=
     M.function_body
-      (let* α0 : ltac:(refine core.fmt.Formatter) := deref f in
-      let* α1 : ltac:(refine (mut_ref core.fmt.Formatter)) := borrow_mut α0 in
-      let* α2 : ltac:(refine str) := deref (mk_str "Pair") in
-      let* α3 : ltac:(refine (ref str)) := borrow α2 in
-      let* α4 : ltac:(refine clone.Pair) := deref self in
-      let* α5 : ltac:(refine (alloc.boxed.Box i32 alloc.alloc.Global)) :=
+      (let* α0 : ltac:(refine (M.Val core.fmt.Formatter.t)) := deref f in
+      let* α1 : ltac:(refine (M.Val (mut_ref core.fmt.Formatter.t))) :=
+        borrow_mut α0 in
+      let* α2 : ltac:(refine (M.Val str.t)) := deref (mk_str "Pair") in
+      let* α3 : ltac:(refine (M.Val (ref str.t))) := borrow α2 in
+      let* α4 : ltac:(refine (M.Val clone.Pair.t)) := deref self in
+      let* α5 :
+          ltac:(refine
+            (M.Val (alloc.boxed.Box.t i32.t alloc.alloc.Global.t))) :=
         α4.["0"] in
-      let* α6 : ltac:(refine (ref (alloc.boxed.Box i32 alloc.alloc.Global))) :=
+      let* α6 :
+          ltac:(refine
+            (M.Val (ref (alloc.boxed.Box.t i32.t alloc.alloc.Global.t)))) :=
         borrow α5 in
-      let* α7 : ltac:(refine (ref type not implemented)) :=
+      let* α7 : ltac:(refine (M.Val (ref type not implemented))) :=
         pointer_coercion "Unsize" α6 in
-      let* α8 : ltac:(refine clone.Pair) := deref self in
-      let* α9 : ltac:(refine (alloc.boxed.Box i32 alloc.alloc.Global)) :=
+      let* α8 : ltac:(refine (M.Val clone.Pair.t)) := deref self in
+      let* α9 :
+          ltac:(refine
+            (M.Val (alloc.boxed.Box.t i32.t alloc.alloc.Global.t))) :=
         α8.["1"] in
-      let* α10 : ltac:(refine (ref (alloc.boxed.Box i32 alloc.alloc.Global))) :=
+      let* α10 :
+          ltac:(refine
+            (M.Val (ref (alloc.boxed.Box.t i32.t alloc.alloc.Global.t)))) :=
         borrow α9 in
       let* α11 :
-          ltac:(refine (ref (ref (alloc.boxed.Box i32 alloc.alloc.Global)))) :=
+          ltac:(refine
+            (M.Val
+              (ref (ref (alloc.boxed.Box.t i32.t alloc.alloc.Global.t))))) :=
         borrow α10 in
-      let* α12 : ltac:(refine (ref type not implemented)) :=
+      let* α12 : ltac:(refine (M.Val (ref type not implemented))) :=
         pointer_coercion "Unsize" α11 in
-      core.fmt.Formatter::["debug_tuple_field2_finish"] α1 α3 α7 α12).
+      core.fmt.Formatter.t::["debug_tuple_field2_finish"] α1 α3 α7 α12).
   
-  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {
+  Global Instance AssociatedFunction_fmt :
+    Notation.DoubleColon ltac:(Self) "fmt" := {
     Notation.double_colon := fmt;
   }.
   
-  Global Instance ℐ : core.fmt.Debug.Trait Self := {
+  Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
     core.fmt.Debug.fmt := fmt;
   }.
-End Impl_core_fmt_Debug_for_clone_Pair.
-End Impl_core_fmt_Debug_for_clone_Pair.
+End Impl_core_fmt_Debug_for_clone_Pair_t.
+End Impl_core_fmt_Debug_for_clone_Pair_t.
 
+(*
+fn main() {
+    // Instantiate `Unit`
+    let unit = Unit;
+    // Copy `Unit`, there are no resources to move
+    let copied_unit = unit;
+
+    // Both `Unit`s can be used independently
+    println!("original: {:?}", unit);
+    println!("copy: {:?}", copied_unit);
+
+    // Instantiate `Pair`
+    let pair = Pair(Box::new(1), Box::new(2));
+    println!("original: {:?}", pair);
+
+    // Move `pair` into `moved_pair`, moves resources
+    let moved_pair = pair;
+    println!("moved: {:?}", moved_pair);
+
+    // Error! `pair` has lost its resources
+    //println!("original: {:?}", pair);
+    // TODO ^ Try uncommenting this line
+
+    // Clone `moved_pair` into `cloned_pair` (resources are included)
+    let cloned_pair = moved_pair.clone();
+    // Drop the original pair using std::mem::drop
+    drop(moved_pair);
+
+    // Error! `moved_pair` has been dropped
+    //println!("copy: {:?}", moved_pair);
+    // TODO ^ Try uncommenting this line
+
+    // The result from .clone() can still be used!
+    println!("clone: {:?}", cloned_pair);
+}
+*)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{ℋ : State.Trait} : M unit :=
+Definition main : M (M.Val unit) :=
   M.function_body
-    (let* unit : ltac:(refine clone.Unit) := M.alloc clone.Unit.Build_t in
+    (let* unit : ltac:(refine (M.Val clone.Unit.t)) :=
+      M.alloc clone.Unit.Build_t in
     let copied_unit := unit in
-    let* _ : ltac:(refine unit) :=
-      let* _ : ltac:(refine unit) :=
-        let* α0 : ltac:(refine (array (ref str))) :=
+    let* _ : ltac:(refine (M.Val unit)) :=
+      let* _ : ltac:(refine (M.Val unit)) :=
+        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
           M.alloc [ mk_str "original: "; mk_str "
 " ] in
-        let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
-        let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+          borrow α0 in
+        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
-        let* α3 : ltac:(refine (ref clone.Unit)) := borrow unit in
-        let* α4 : ltac:(refine core.fmt.rt.Argument) :=
-          core.fmt.rt.Argument::["new_debug"] α3 in
-        let* α5 : ltac:(refine (array core.fmt.rt.Argument)) :=
+        let* α3 : ltac:(refine (M.Val (ref clone.Unit.t))) := borrow unit in
+        let* α4 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
+          core.fmt.rt.Argument.t::["new_debug"] α3 in
+        let* α5 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
           M.alloc [ α4 ] in
-        let* α6 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+        let* α6 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
           borrow α5 in
-        let* α7 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+        let* α7 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
           pointer_coercion "Unsize" α6 in
-        let* α8 : ltac:(refine core.fmt.Arguments) :=
-          core.fmt.Arguments::["new_v1"] α2 α7 in
+        let* α8 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
+          core.fmt.Arguments.t::["new_v1"] α2 α7 in
         std.io.stdio._print α8 in
       M.alloc tt in
-    let* _ : ltac:(refine unit) :=
-      let* _ : ltac:(refine unit) :=
-        let* α0 : ltac:(refine (array (ref str))) :=
+    let* _ : ltac:(refine (M.Val unit)) :=
+      let* _ : ltac:(refine (M.Val unit)) :=
+        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
           M.alloc [ mk_str "copy: "; mk_str "
 " ] in
-        let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
-        let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+          borrow α0 in
+        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
-        let* α3 : ltac:(refine (ref clone.Unit)) := borrow copied_unit in
-        let* α4 : ltac:(refine core.fmt.rt.Argument) :=
-          core.fmt.rt.Argument::["new_debug"] α3 in
-        let* α5 : ltac:(refine (array core.fmt.rt.Argument)) :=
+        let* α3 : ltac:(refine (M.Val (ref clone.Unit.t))) :=
+          borrow copied_unit in
+        let* α4 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
+          core.fmt.rt.Argument.t::["new_debug"] α3 in
+        let* α5 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
           M.alloc [ α4 ] in
-        let* α6 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+        let* α6 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
           borrow α5 in
-        let* α7 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+        let* α7 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
           pointer_coercion "Unsize" α6 in
-        let* α8 : ltac:(refine core.fmt.Arguments) :=
-          core.fmt.Arguments::["new_v1"] α2 α7 in
+        let* α8 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
+          core.fmt.Arguments.t::["new_v1"] α2 α7 in
         std.io.stdio._print α8 in
       M.alloc tt in
-    let* pair : ltac:(refine clone.Pair) :=
-      let* α0 : ltac:(refine i32) := M.alloc 1 in
-      let* α1 : ltac:(refine (alloc.boxed.Box i32 alloc.alloc.Global)) :=
-        (alloc.boxed.Box i32 alloc.alloc.Global)::["new"] α0 in
-      let* α2 : ltac:(refine i32) := M.alloc 2 in
-      let* α3 : ltac:(refine (alloc.boxed.Box i32 alloc.alloc.Global)) :=
-        (alloc.boxed.Box i32 alloc.alloc.Global)::["new"] α2 in
-      M.alloc (clone.Pair.Build_t α1 α3) in
-    let* _ : ltac:(refine unit) :=
-      let* _ : ltac:(refine unit) :=
-        let* α0 : ltac:(refine (array (ref str))) :=
+    let* pair : ltac:(refine (M.Val clone.Pair.t)) :=
+      let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 1 in
+      let* α1 :
+          ltac:(refine
+            (M.Val (alloc.boxed.Box.t i32.t alloc.alloc.Global.t))) :=
+        (alloc.boxed.Box.t i32.t alloc.alloc.Global.t)::["new"] α0 in
+      let* α2 := M.read α1 in
+      let* α3 : ltac:(refine (M.Val i32.t)) := M.alloc 2 in
+      let* α4 :
+          ltac:(refine
+            (M.Val (alloc.boxed.Box.t i32.t alloc.alloc.Global.t))) :=
+        (alloc.boxed.Box.t i32.t alloc.alloc.Global.t)::["new"] α3 in
+      let* α5 := M.read α4 in
+      M.alloc (clone.Pair.Build_t α2 α5) in
+    let* _ : ltac:(refine (M.Val unit)) :=
+      let* _ : ltac:(refine (M.Val unit)) :=
+        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
           M.alloc [ mk_str "original: "; mk_str "
 " ] in
-        let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
-        let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+          borrow α0 in
+        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
-        let* α3 : ltac:(refine (ref clone.Pair)) := borrow pair in
-        let* α4 : ltac:(refine core.fmt.rt.Argument) :=
-          core.fmt.rt.Argument::["new_debug"] α3 in
-        let* α5 : ltac:(refine (array core.fmt.rt.Argument)) :=
+        let* α3 : ltac:(refine (M.Val (ref clone.Pair.t))) := borrow pair in
+        let* α4 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
+          core.fmt.rt.Argument.t::["new_debug"] α3 in
+        let* α5 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
           M.alloc [ α4 ] in
-        let* α6 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+        let* α6 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
           borrow α5 in
-        let* α7 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+        let* α7 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
           pointer_coercion "Unsize" α6 in
-        let* α8 : ltac:(refine core.fmt.Arguments) :=
-          core.fmt.Arguments::["new_v1"] α2 α7 in
+        let* α8 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
+          core.fmt.Arguments.t::["new_v1"] α2 α7 in
         std.io.stdio._print α8 in
       M.alloc tt in
     let moved_pair := pair in
-    let* _ : ltac:(refine unit) :=
-      let* _ : ltac:(refine unit) :=
-        let* α0 : ltac:(refine (array (ref str))) :=
+    let* _ : ltac:(refine (M.Val unit)) :=
+      let* _ : ltac:(refine (M.Val unit)) :=
+        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
           M.alloc [ mk_str "moved: "; mk_str "
 " ] in
-        let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
-        let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+          borrow α0 in
+        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
-        let* α3 : ltac:(refine (ref clone.Pair)) := borrow moved_pair in
-        let* α4 : ltac:(refine core.fmt.rt.Argument) :=
-          core.fmt.rt.Argument::["new_debug"] α3 in
-        let* α5 : ltac:(refine (array core.fmt.rt.Argument)) :=
+        let* α3 : ltac:(refine (M.Val (ref clone.Pair.t))) :=
+          borrow moved_pair in
+        let* α4 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
+          core.fmt.rt.Argument.t::["new_debug"] α3 in
+        let* α5 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
           M.alloc [ α4 ] in
-        let* α6 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+        let* α6 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
           borrow α5 in
-        let* α7 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+        let* α7 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
           pointer_coercion "Unsize" α6 in
-        let* α8 : ltac:(refine core.fmt.Arguments) :=
-          core.fmt.Arguments::["new_v1"] α2 α7 in
+        let* α8 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
+          core.fmt.Arguments.t::["new_v1"] α2 α7 in
         std.io.stdio._print α8 in
       M.alloc tt in
-    let* cloned_pair : ltac:(refine clone.Pair) :=
-      let* α0 : ltac:(refine (ref clone.Pair)) := borrow moved_pair in
-      (core.clone.Clone.clone (Self := clone.Pair) (Trait := ltac:(refine _)))
+    let* cloned_pair : ltac:(refine (M.Val clone.Pair.t)) :=
+      let* α0 : ltac:(refine (M.Val (ref clone.Pair.t))) := borrow moved_pair in
+      (core.clone.Clone.clone (Self := clone.Pair.t) (Trait := ltac:(refine _)))
         α0 in
-    let* _ : ltac:(refine unit) := core.mem.drop moved_pair in
-    let* _ : ltac:(refine unit) :=
-      let* _ : ltac:(refine unit) :=
-        let* α0 : ltac:(refine (array (ref str))) :=
+    let* _ : ltac:(refine (M.Val unit)) := core.mem.drop moved_pair in
+    let* _ : ltac:(refine (M.Val unit)) :=
+      let* _ : ltac:(refine (M.Val unit)) :=
+        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
           M.alloc [ mk_str "clone: "; mk_str "
 " ] in
-        let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
-        let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+          borrow α0 in
+        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
-        let* α3 : ltac:(refine (ref clone.Pair)) := borrow cloned_pair in
-        let* α4 : ltac:(refine core.fmt.rt.Argument) :=
-          core.fmt.rt.Argument::["new_debug"] α3 in
-        let* α5 : ltac:(refine (array core.fmt.rt.Argument)) :=
+        let* α3 : ltac:(refine (M.Val (ref clone.Pair.t))) :=
+          borrow cloned_pair in
+        let* α4 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
+          core.fmt.rt.Argument.t::["new_debug"] α3 in
+        let* α5 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
           M.alloc [ α4 ] in
-        let* α6 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+        let* α6 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
           borrow α5 in
-        let* α7 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+        let* α7 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
           pointer_coercion "Unsize" α6 in
-        let* α8 : ltac:(refine core.fmt.Arguments) :=
-          core.fmt.Arguments::["new_v1"] α2 α7 in
+        let* α8 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
+          core.fmt.Arguments.t::["new_v1"] α2 α7 in
         std.io.stdio._print α8 in
       M.alloc tt in
     M.alloc tt).

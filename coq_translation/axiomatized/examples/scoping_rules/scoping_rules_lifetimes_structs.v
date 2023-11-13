@@ -3,107 +3,128 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module  Borrowed.
 Section Borrowed.
-  Context `{ℋ : State.Trait}.
-  
   Record t : Set := {
-    x0 : ref i32;
+    x0 : ref i32.t;
   }.
   
   Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
+    Notation.dot x := let* x := M.read x in M.alloc x.(x0) : M _;
   }.
 End Borrowed.
 End Borrowed.
-Definition Borrowed `{ℋ : State.Trait} : Set := M.Val Borrowed.t.
 
-Module  Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Borrowed.
-Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Borrowed.
-  Context `{ℋ : State.Trait}.
+Module  Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Borrowed_t.
+Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Borrowed_t.
+  Ltac Self := exact scoping_rules_lifetimes_structs.Borrowed.t.
   
-  Definition Self : Set := scoping_rules_lifetimes_structs.Borrowed.
-  
+  (*
+  Debug
+  *)
   Parameter fmt :
-      (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
+      (M.Val (ref ltac:(Self))) ->
+        (M.Val (mut_ref core.fmt.Formatter.t)) ->
+        M (M.Val ltac:(core.fmt.Result)).
   
-  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {
+  Global Instance AssociatedFunction_fmt :
+    Notation.DoubleColon ltac:(Self) "fmt" := {
     Notation.double_colon := fmt;
   }.
   
-  Global Instance ℐ : core.fmt.Debug.Trait Self := {
+  Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
     core.fmt.Debug.fmt := fmt;
   }.
-End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Borrowed.
-End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Borrowed.
+End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Borrowed_t.
+End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Borrowed_t.
 
 Module  NamedBorrowed.
 Section NamedBorrowed.
-  Context `{ℋ : State.Trait}.
-  
   Record t : Set := {
-    x : ref i32;
-    y : ref i32;
+    x : ref i32.t;
+    y : ref i32.t;
   }.
   
   Global Instance Get_x : Notation.Dot "x" := {
-    Notation.dot x' := let* x' := M.read x' in M.pure x'.(x) : M _;
+    Notation.dot x' := let* x' := M.read x' in M.alloc x'.(x) : M _;
   }.
   Global Instance Get_AF_x : Notation.DoubleColon t "x" := {
-    Notation.double_colon x' := let* x' := M.read x' in M.pure x'.(x) : M _;
+    Notation.double_colon x' := let* x' := M.read x' in M.alloc x'.(x) : M _;
   }.
   Global Instance Get_y : Notation.Dot "y" := {
-    Notation.dot x := let* x := M.read x in M.pure x.(y) : M _;
+    Notation.dot x := let* x := M.read x in M.alloc x.(y) : M _;
   }.
   Global Instance Get_AF_y : Notation.DoubleColon t "y" := {
-    Notation.double_colon x := let* x := M.read x in M.pure x.(y) : M _;
+    Notation.double_colon x := let* x := M.read x in M.alloc x.(y) : M _;
   }.
 End NamedBorrowed.
 End NamedBorrowed.
-Definition NamedBorrowed `{ℋ : State.Trait} : Set := M.Val NamedBorrowed.t.
 
-Module  Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_NamedBorrowed.
-Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_NamedBorrowed.
-  Context `{ℋ : State.Trait}.
+Module  Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_NamedBorrowed_t.
+Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_NamedBorrowed_t.
+  Ltac Self := exact scoping_rules_lifetimes_structs.NamedBorrowed.t.
   
-  Definition Self : Set := scoping_rules_lifetimes_structs.NamedBorrowed.
-  
+  (*
+  Debug
+  *)
   Parameter fmt :
-      (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
+      (M.Val (ref ltac:(Self))) ->
+        (M.Val (mut_ref core.fmt.Formatter.t)) ->
+        M (M.Val ltac:(core.fmt.Result)).
   
-  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {
+  Global Instance AssociatedFunction_fmt :
+    Notation.DoubleColon ltac:(Self) "fmt" := {
     Notation.double_colon := fmt;
   }.
   
-  Global Instance ℐ : core.fmt.Debug.Trait Self := {
+  Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
     core.fmt.Debug.fmt := fmt;
   }.
-End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_NamedBorrowed.
-End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_NamedBorrowed.
+End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_NamedBorrowed_t.
+End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_NamedBorrowed_t.
 
 Module Either.
-  Inductive t `{ℋ : State.Trait} : Set :=
-  | Num (_ : i32)
-  | Ref (_ : ref i32).
+  Inductive t : Set :=
+  | Num (_ : i32.t)
+  | Ref (_ : ref i32.t).
 End Either.
-Definition Either `{ℋ : State.Trait} : Set := M.Val Either.t.
 
-Module  Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
-Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
-  Context `{ℋ : State.Trait}.
+Module  Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either_t.
+Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either_t.
+  Ltac Self := exact scoping_rules_lifetimes_structs.Either.t.
   
-  Definition Self : Set := scoping_rules_lifetimes_structs.Either.
-  
+  (*
+  Debug
+  *)
   Parameter fmt :
-      (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
+      (M.Val (ref ltac:(Self))) ->
+        (M.Val (mut_ref core.fmt.Formatter.t)) ->
+        M (M.Val ltac:(core.fmt.Result)).
   
-  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {
+  Global Instance AssociatedFunction_fmt :
+    Notation.DoubleColon ltac:(Self) "fmt" := {
     Notation.double_colon := fmt;
   }.
   
-  Global Instance ℐ : core.fmt.Debug.Trait Self := {
+  Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
     core.fmt.Debug.fmt := fmt;
   }.
-End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
-End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
+End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either_t.
+End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either_t.
 
+(*
+fn main() {
+    let x = 18;
+    let y = 15;
+
+    let single = Borrowed(&x);
+    let double = NamedBorrowed { x: &x, y: &y };
+    let reference = Either::Ref(&x);
+    let number = Either::Num(y);
+
+    println!("x is borrowed in {:?}", single);
+    println!("x and y are borrowed in {:?}", double);
+    println!("x is borrowed in {:?}", reference);
+    println!("y is *not* borrowed in {:?}", number);
+}
+*)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{ℋ : State.Trait}, M unit.
+Parameter main : M (M.Val unit).
