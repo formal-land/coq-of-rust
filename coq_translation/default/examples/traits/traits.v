@@ -8,17 +8,18 @@ Section Sheep.
     name : ref str.t;
   }.
   
-  Global Instance Get_naked : Notation.Dot "naked" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(naked) : M _;
+  Global Instance Get_naked : Notations.Dot "naked" := {
+    Notations.dot :=
+      Ref.map (fun x => x.(naked)) (fun v x => x <| naked := v |>);
   }.
-  Global Instance Get_AF_naked : Notation.DoubleColon t "naked" := {
-    Notation.double_colon x := let* x := M.read x in M.alloc x.(naked) : M _;
+  Global Instance Get_AF_naked : Notations.DoubleColon t "naked" := {
+    Notations.double_colon (x : M.Val t) := x.["naked"];
   }.
-  Global Instance Get_name : Notation.Dot "name" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(name) : M _;
+  Global Instance Get_name : Notations.Dot "name" := {
+    Notations.dot := Ref.map (fun x => x.(name)) (fun v x => x <| name := v |>);
   }.
-  Global Instance Get_AF_name : Notation.DoubleColon t "name" := {
-    Notation.double_colon x := let* x := M.read x in M.alloc x.(name) : M _;
+  Global Instance Get_AF_name : Notations.DoubleColon t "name" := {
+    Notations.double_colon (x : M.Val t) := x.["name"];
   }.
 End Sheep.
 End Sheep.
@@ -46,11 +47,11 @@ Section Impl_traits_Sheep_t.
   Definition is_naked (self : M.Val (ref ltac:(Self))) : M (M.Val bool.t) :=
     M.function_body
       (let* α0 : ltac:(refine (M.Val traits.Sheep.t)) := deref self in
-      α0.["naked"]).
+      M.pure α0.["naked"]).
   
   Global Instance AssociatedFunction_is_naked :
-    Notation.DoubleColon ltac:(Self) "is_naked" := {
-    Notation.double_colon := is_naked;
+    Notations.DoubleColon ltac:(Self) "is_naked" := {
+    Notations.double_colon := is_naked;
   }.
 End Impl_traits_Sheep_t.
 End Impl_traits_Sheep_t.
@@ -75,8 +76,8 @@ Section Impl_traits_Animal_for_traits_Sheep_t.
       M.alloc {| traits.Sheep.name := α0; traits.Sheep.naked := α2; |}).
   
   Global Instance AssociatedFunction_new :
-    Notation.DoubleColon ltac:(Self) "new" := {
-    Notation.double_colon := new;
+    Notations.DoubleColon ltac:(Self) "new" := {
+    Notations.double_colon := new;
   }.
   
   (*
@@ -87,11 +88,11 @@ Section Impl_traits_Animal_for_traits_Sheep_t.
   Definition name (self : M.Val (ref ltac:(Self))) : M (M.Val (ref str.t)) :=
     M.function_body
       (let* α0 : ltac:(refine (M.Val traits.Sheep.t)) := deref self in
-      α0.["name"]).
+      M.pure α0.["name"]).
   
   Global Instance AssociatedFunction_name :
-    Notation.DoubleColon ltac:(Self) "name" := {
-    Notation.double_colon := name;
+    Notations.DoubleColon ltac:(Self) "name" := {
+    Notations.double_colon := name;
   }.
   
   (*
@@ -117,8 +118,8 @@ Section Impl_traits_Animal_for_traits_Sheep_t.
         M.pure (mk_str "baaaaah!")).
   
   Global Instance AssociatedFunction_noise :
-    Notation.DoubleColon ltac:(Self) "noise" := {
-    Notation.double_colon := noise;
+    Notations.DoubleColon ltac:(Self) "noise" := {
+    Notations.double_colon := noise;
   }.
   
   (*
@@ -139,37 +140,37 @@ Section Impl_traits_Animal_for_traits_Sheep_t.
           let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
             pointer_coercion "Unsize" α1 in
           let* α3 : ltac:(refine (M.Val traits.Sheep.t)) := deref self in
-          let* α4 : ltac:(refine (M.Val (ref str.t))) := α3.["name"] in
-          let* α5 : ltac:(refine (M.Val (ref (ref str.t)))) := borrow α4 in
-          let* α6 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
-            core.fmt.rt.Argument.t::["new_display"] α5 in
-          let* α7 : ltac:(refine (M.Val traits.Sheep.t)) := deref self in
-          let* α8 : ltac:(refine (M.Val (ref traits.Sheep.t))) := borrow α7 in
-          let* α9 : ltac:(refine (M.Val (ref str.t))) :=
+          let* α4 : ltac:(refine (M.Val (ref (ref str.t)))) :=
+            borrow α3.["name"] in
+          let* α5 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
+            core.fmt.rt.Argument.t::["new_display"] α4 in
+          let* α6 : ltac:(refine (M.Val traits.Sheep.t)) := deref self in
+          let* α7 : ltac:(refine (M.Val (ref traits.Sheep.t))) := borrow α6 in
+          let* α8 : ltac:(refine (M.Val (ref str.t))) :=
             (traits.Animal.noise
                 (Self := traits.Sheep.t)
                 (Trait := ltac:(refine _)))
-              α8 in
-          let* α10 : ltac:(refine (M.Val (ref (ref str.t)))) := borrow α9 in
-          let* α11 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
-            core.fmt.rt.Argument.t::["new_display"] α10 in
-          let* α12 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
-            M.alloc [ α6; α11 ] in
-          let* α13 :
+              α7 in
+          let* α9 : ltac:(refine (M.Val (ref (ref str.t)))) := borrow α8 in
+          let* α10 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
+            core.fmt.rt.Argument.t::["new_display"] α9 in
+          let* α11 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
+            M.alloc [ α5; α10 ] in
+          let* α12 :
               ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
-            borrow α12 in
-          let* α14 :
+            borrow α11 in
+          let* α13 :
               ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
-            pointer_coercion "Unsize" α13 in
-          let* α15 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-            core.fmt.Arguments.t::["new_v1"] α2 α14 in
-          std.io.stdio._print α15 in
+            pointer_coercion "Unsize" α12 in
+          let* α14 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
+            core.fmt.Arguments.t::["new_v1"] α2 α13 in
+          std.io.stdio._print α14 in
         M.alloc tt in
       M.alloc tt).
   
   Global Instance AssociatedFunction_talk :
-    Notation.DoubleColon ltac:(Self) "talk" := {
-    Notation.double_colon := talk;
+    Notations.DoubleColon ltac:(Self) "talk" := {
+    Notations.double_colon := talk;
   }.
   
   Global Instance ℐ : traits.Animal.Required.Trait ltac:(Self) := {
@@ -249,32 +250,31 @@ Section Impl_traits_Sheep_t_2.
             let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
               pointer_coercion "Unsize" α1 in
             let* α3 : ltac:(refine (M.Val traits.Sheep.t)) := deref self in
-            let* α4 : ltac:(refine (M.Val (ref str.t))) := α3.["name"] in
-            let* α5 : ltac:(refine (M.Val (ref (ref str.t)))) := borrow α4 in
-            let* α6 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
-              core.fmt.rt.Argument.t::["new_display"] α5 in
-            let* α7 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
-              M.alloc [ α6 ] in
-            let* α8 :
+            let* α4 : ltac:(refine (M.Val (ref (ref str.t)))) :=
+              borrow α3.["name"] in
+            let* α5 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
+              core.fmt.rt.Argument.t::["new_display"] α4 in
+            let* α6 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
+              M.alloc [ α5 ] in
+            let* α7 :
                 ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
-              borrow α7 in
-            let* α9 :
+              borrow α6 in
+            let* α8 :
                 ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
-              pointer_coercion "Unsize" α8 in
-            let* α10 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-              core.fmt.Arguments.t::["new_v1"] α2 α9 in
-            std.io.stdio._print α10 in
+              pointer_coercion "Unsize" α7 in
+            let* α9 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
+              core.fmt.Arguments.t::["new_v1"] α2 α8 in
+            std.io.stdio._print α9 in
           M.alloc tt in
         let* _ : ltac:(refine (M.Val unit)) :=
           let* α0 : ltac:(refine (M.Val traits.Sheep.t)) := deref self in
-          let* α1 : ltac:(refine (M.Val bool.t)) := α0.["naked"] in
-          let* α2 : ltac:(refine (M.Val bool.t)) := M.alloc true in
-          assign α1 α2 in
+          let* α1 : ltac:(refine (M.Val bool.t)) := M.alloc true in
+          assign α0.["naked"] α1 in
         M.alloc tt).
   
   Global Instance AssociatedFunction_shear :
-    Notation.DoubleColon ltac:(Self) "shear" := {
-    Notation.double_colon := shear;
+    Notations.DoubleColon ltac:(Self) "shear" := {
+    Notations.double_colon := shear;
   }.
 End Impl_traits_Sheep_t_2.
 End Impl_traits_Sheep_t_2.

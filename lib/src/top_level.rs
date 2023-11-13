@@ -1622,8 +1622,8 @@ impl ImplItemKind {
                     name,
                     None,
                     None,
-                    "Notation.DoubleColon ltac:(Self)",
-                    "Notation.double_colon",
+                    "Notations.DoubleColon ltac:(Self)",
+                    "Notations.double_colon",
                 ),
             ]),
             ImplItemKind::Definition { definition, .. } => concat([
@@ -1635,8 +1635,8 @@ impl ImplItemKind {
                     name,
                     Some(&definition.ty_params),
                     Some(&definition.where_predicates),
-                    "Notation.DoubleColon ltac:(Self)",
-                    "Notation.double_colon",
+                    "Notations.DoubleColon ltac:(Self)",
+                    "Notations.double_colon",
                 ),
             ]),
             ImplItemKind::Type { ty } => nest([
@@ -1981,7 +1981,7 @@ impl TopLevelItem {
                                             &format!("Get_{i}"),
                                             &[],
                                             coq::Expression::Variable {
-                                                ident: Path::new(&["Notation", "Dot"]),
+                                                ident: Path::new(&["Notations", "Dot"]),
                                                 no_implicit: false,
                                             }
                                             .apply(
@@ -1989,8 +1989,8 @@ impl TopLevelItem {
                                             ),
                                             &coq::Expression::Record {
                                                 fields: vec![coq::Field::new(
-                                                    &Path::new(&["Notation", "dot"]),
-                                                    &[struct_projection_pattern(name.to_owned())],
+                                                    &Path::new(&["Notations", "dot"]),
+                                                    &[],
                                                     &struct_field_value(format!("x{i}")),
                                                 )],
                                             },
@@ -2176,14 +2176,14 @@ impl TopLevelItem {
                                 coq::ArgSpecKind::Explicit,
                             )],
                             coq::Expression::Variable {
-                                ident: Path::new(&["Notation", "DoubleColonType"]),
+                                ident: Path::new(&["Notations", "DoubleColonType"]),
                                 no_implicit: false,
                             }
                             .apply(&coq::Expression::just_name("Self"))
                             .apply(&coq::Expression::String(name.to_owned())),
                             &coq::Expression::Record {
                                 fields: vec![coq::Field::new(
-                                    &Path::new(&["Notation", "double_colon_type"]),
+                                    &Path::new(&["Notations", "double_colon_type"]),
                                     &[],
                                     &coq::Expression::just_name(name),
                                 )],
@@ -2370,7 +2370,7 @@ fn struct_projection_pattern<'a>(name: String) -> coq::ArgDecl<'a> {
     coq::ArgDecl::new(
         &coq::ArgDeclVar::Simple {
             idents: vec![if name == "x" { "x'" } else { "x" }.to_string()],
-            ty: None,
+            ty: Some(coq::Expression::just_name("M.Val").apply(&coq::Expression::just_name("t"))),
         },
         coq::ArgSpecKind::Explicit,
     )
@@ -2378,25 +2378,25 @@ fn struct_projection_pattern<'a>(name: String) -> coq::ArgDecl<'a> {
 
 fn struct_field_value<'a>(name: String) -> coq::Expression<'a> {
     let x = if name == "x" { "x'" } else { "x" };
-    coq::Expression::Code(nest([
-        group([
-            nest([
-                text(format!("let* {x} :=")),
-                line(),
-                text(format!("M.read {x} in")),
-            ]),
-            line(),
-            nest([
-                text("M.alloc"),
-                line(),
-                text(format!("{x}.(")),
-                text(name),
-                text(") :"),
-            ]),
-        ]),
-        line(),
-        text("M _"),
-    ]))
+    let v = if name == "v" { "v'" } else { "v" };
+
+    coq::Expression::just_name("Ref.map").apply_many(&[
+        coq::Expression::Function {
+            parameters: vec![coq::Expression::just_name(x)],
+            body: Box::new(coq::Expression::RecordField {
+                record: Box::new(coq::Expression::just_name(x)),
+                field: name.to_owned(),
+            }),
+        },
+        coq::Expression::Function {
+            parameters: vec![coq::Expression::just_name(v), coq::Expression::just_name(x)],
+            body: Box::new(coq::Expression::RecordUpdate {
+                record: Box::new(coq::Expression::just_name(x)),
+                field: name,
+                update: Box::new(coq::Expression::just_name(v)),
+            }),
+        },
+    ])
 }
 
 impl TypeStructStruct {
@@ -2599,7 +2599,7 @@ impl TypeStructStruct {
                                                     &format!("Get_{name}"),
                                                     &[],
                                                     coq::Expression::Variable {
-                                                        ident: Path::new(&["Notation", "Dot"]),
+                                                        ident: Path::new(&["Notations", "Dot"]),
                                                         no_implicit: false,
                                                     }
                                                     .apply(&coq::Expression::String(
@@ -2607,10 +2607,8 @@ impl TypeStructStruct {
                                                     )),
                                                     &coq::Expression::Record {
                                                         fields: vec![coq::Field::new(
-                                                            &Path::new(&["Notation", "dot"]),
-                                                            &[struct_projection_pattern(
-                                                                name.to_owned(),
-                                                            )],
+                                                            &Path::new(&["Notations", "dot"]),
+                                                            &[],
                                                             &struct_field_value(name.to_owned()),
                                                         )],
                                                     },
@@ -2621,7 +2619,7 @@ impl TypeStructStruct {
                                                     &[],
                                                     coq::Expression::Variable {
                                                         ident: Path::new(&[
-                                                            "Notation",
+                                                            "Notations",
                                                             "DoubleColon",
                                                         ]),
                                                         no_implicit: false,
@@ -2633,13 +2631,24 @@ impl TypeStructStruct {
                                                     &coq::Expression::Record {
                                                         fields: vec![coq::Field::new(
                                                             &Path::new(&[
-                                                                "Notation",
+                                                                "Notations",
                                                                 "double_colon",
                                                             ]),
                                                             &[struct_projection_pattern(
                                                                 name.to_owned(),
                                                             )],
-                                                            &struct_field_value(name.to_owned()),
+                                                            &coq::Expression::NotationsDot {
+                                                                value: Box::new(
+                                                                    coq::Expression::just_name(
+                                                                        if name == "x" {
+                                                                            "x'"
+                                                                        } else {
+                                                                            "x"
+                                                                        },
+                                                                    ),
+                                                                ),
+                                                                field: name.to_owned(),
+                                                            },
                                                         )],
                                                     },
                                                     vec![],

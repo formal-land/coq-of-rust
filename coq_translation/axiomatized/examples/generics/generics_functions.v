@@ -13,8 +13,8 @@ Section S.
     x0 : generics_functions.A.t;
   }.
   
-  Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(x0) : M _;
+  Global Instance Get_0 : Notations.Dot "0" := {
+    Notations.dot := Ref.map (fun x => x.(x0)) (fun v x => x <| x0 := v |>);
   }.
 End S.
 End S.
@@ -27,8 +27,8 @@ Section SGen.
     x0 : T;
   }.
   
-  Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(x0) : M _;
+  Global Instance Get_0 : Notations.Dot "0" := {
+    Notations.dot := Ref.map (fun x => x.(x0)) (fun v x => x <| x0 := v |>);
   }.
 End SGen.
 End SGen.

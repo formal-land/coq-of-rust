@@ -8,17 +8,17 @@ Section Fibonacci.
     next : u32.t;
   }.
   
-  Global Instance Get_curr : Notation.Dot "curr" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(curr) : M _;
+  Global Instance Get_curr : Notations.Dot "curr" := {
+    Notations.dot := Ref.map (fun x => x.(curr)) (fun v x => x <| curr := v |>);
   }.
-  Global Instance Get_AF_curr : Notation.DoubleColon t "curr" := {
-    Notation.double_colon x := let* x := M.read x in M.alloc x.(curr) : M _;
+  Global Instance Get_AF_curr : Notations.DoubleColon t "curr" := {
+    Notations.double_colon (x : M.Val t) := x.["curr"];
   }.
-  Global Instance Get_next : Notation.Dot "next" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(next) : M _;
+  Global Instance Get_next : Notations.Dot "next" := {
+    Notations.dot := Ref.map (fun x => x.(next)) (fun v x => x <| next := v |>);
   }.
-  Global Instance Get_AF_next : Notation.DoubleColon t "next" := {
-    Notation.double_colon x := let* x := M.read x in M.alloc x.(next) : M _;
+  Global Instance Get_AF_next : Notations.DoubleColon t "next" := {
+    Notations.double_colon (x : M.Val t) := x.["next"];
   }.
 End Fibonacci.
 End Fibonacci.
@@ -48,8 +48,8 @@ Section Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci_t.
       (M.Val (mut_ref ltac:(Self))) -> M (M.Val (core.option.Option.t Item.t)).
   
   Global Instance AssociatedFunction_next :
-    Notation.DoubleColon ltac:(Self) "next" := {
-    Notation.double_colon := next;
+    Notations.DoubleColon ltac:(Self) "next" := {
+    Notations.double_colon := next;
   }.
   
   Global Instance ℐ :

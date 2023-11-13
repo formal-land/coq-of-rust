@@ -14,10 +14,34 @@ Notation "{ ' pat : A @ P }" := (sigS (A := A) (fun pat => P)) : type_scope.
 
 Module Ref.
   Inductive t (A : Set) : Set :=
-  | Immutable : A -> t A
-  | MutRef : forall {Address : Set}, Address -> t A.
-  Arguments Immutable {_}.
-  Arguments MutRef {_ _}.
+  | Imm : A -> t A
+  | MutRef {Address B : Set} (address : Address)
+      (projection : B -> A) (injection : A -> B -> B) :
+      t A.
+  Arguments Imm {_}.
+  Arguments MutRef {_ _ _}.
+
+  (** For the case where the reference covers the whole address. *)
+  Definition mut_ref {Address A : Set} (address : Address) : t A :=
+    MutRef address (fun v => v) (fun v _ => v).
+
+  Definition map {Big Small : Set}
+      (projection : Big -> Small) (injection : Small -> Big -> Big)
+      (r : t Big)
+      : t Small :=
+    match r with
+    | Imm big => Imm (projection big)
+    | MutRef address projection' injection' =>
+      MutRef address
+        (fun big_big =>
+          let big := projection' big_big in
+          projection big
+        )
+        (fun small big_big =>
+          let big := projection' big_big in
+          injection' (injection small big) big_big
+        )
+    end.
 End Ref.
 Definition Ref := Ref.t.
 
@@ -32,21 +56,15 @@ Definition Primitive : Set -> Set := Primitive.t.
 Module LowM.
   Inductive t (A : Set) : Set :=
   | Pure : A -> t A
-  | Bind {B : Set} : t B -> (B -> t A) -> t A
+  | Let {B : Set} : t B -> (B -> t A) -> t A
   | CallPrimitive : Primitive A -> t A
   | Cast {B : Set} : B -> t A
   | Impossible : t A.
   Arguments Pure {_}.
-  Arguments Bind {_ _}.
+  Arguments Let {_ _}.
   Arguments CallPrimitive {_}.
   Arguments Cast {_ _}.
   Arguments Impossible {_}.
-
-  Definition smart_bind {A B : Set} (e1 : t A) (e2 : A -> t B) : t B :=
-    match e1 with
-    | Pure v1 => e2 v1
-    | _ => Bind e1 e2
-    end.
 End LowM.
 Definition LowM : Set -> Set := LowM.t.
 
@@ -70,21 +88,25 @@ Definition M (A : Set) : Set :=
 Definition pure {A : Set} (v : A) : M A :=
   fun fuel => LowM.Pure (inl v).
 
-Definition bind {A B : Set} (e1 : M A) (e2 : A -> M B) : M B :=
+Definition let_ {A B : Set} (e1 : M A) (e2 : A -> M B) : M B :=
   fun fuel =>
-  LowM.smart_bind (e1 fuel) (fun v1 =>
+  LowM.Let (e1 fuel) (fun v1 =>
   match v1 with
   | inl v1 => e2 v1 fuel
   | inr error => LowM.Pure (inr error)
   end).
 
 Module Notations.
+  Notation "'let-' a := b 'in' c" :=
+    (LowM.Let b (fun a => c))
+      (at level 200, b at level 100, a name).
+
   Notation "'let*' a := b 'in' c" :=
-    (bind b (fun a => c))
+    (let_ b (fun a => c))
       (at level 200, b at level 100, a name).
 
   Notation "'let*' a : T := b 'in' c" :=
-    (bind b (fun (a : T) => c))
+    (let_ b (fun (a : T) => c))
       (at level 200, T constr, b at level 100, a name).
 End Notations.
 Import Notations.
@@ -114,42 +136,42 @@ Definition loop (m : M unit) : M unit :=
     match fuel with
     | 0 => LowM.Pure (inr Exception.NonTermination)
     | S fuel' =>
-      LowM.smart_bind (m fuel) (fun v =>
-        match v with
-        (* only Break ends the loop *)
-        | inl tt                 => F fuel'
-        | inr Exception.Continue => F fuel'
-        | inr Exception.Break    => LowM.Pure (inl tt)
-        (* every other exception is kept *)
-        | inr (Exception.Return _)
-        | inr (Exception.Panic _)
-        | inr Exception.NonTermination => LowM.Pure (v)
-        end
-      )
+      let- v := m fuel in
+      match v with
+      (* only Break ends the loop *)
+      | inl tt                 => F fuel'
+      | inr Exception.Continue => F fuel'
+      | inr Exception.Break    => LowM.Pure (inl tt)
+      (* every other exception is kept *)
+      | inr (Exception.Return _)
+      | inr (Exception.Panic _)
+      | inr Exception.NonTermination => LowM.Pure (v)
+      end
     end.
 
 Definition alloc {A : Set} (v : A) : M (Ref A) :=
   fun _fuel =>
-  LowM.smart_bind (LowM.CallPrimitive (Primitive.StateAlloc v)) (fun ref =>
-  LowM.Pure (inl ref)).
+  let- ref := LowM.CallPrimitive (Primitive.StateAlloc v) in
+  LowM.Pure (inl ref).
 
 Definition read {A : Set} (r : Ref A) : M A :=
   fun _fuel =>
   match r with
-  | Ref.Immutable v => LowM.Pure (inl v)
-  | Ref.MutRef address =>
-    LowM.smart_bind (LowM.CallPrimitive (Primitive.StateRead address)) (fun v =>
-    LowM.Pure (inl v))
+  | Ref.Imm v => LowM.Pure (inl v)
+  | Ref.MutRef address projection _ =>
+    let- full_v := LowM.CallPrimitive (Primitive.StateRead address) in
+    LowM.Pure (inl (projection full_v))
   end.
 
 Definition write {A : Set} (r : Ref A) (v : A) : M unit :=
   fun _fuel =>
   match r with
-  | Ref.Immutable _ => LowM.Impossible
-  | Ref.MutRef address =>
-    LowM.smart_bind
-      (LowM.CallPrimitive (Primitive.StateWrite address v))
-      (fun _ => LowM.Pure (inl tt))
+  | Ref.Imm _ => LowM.Impossible
+  | Ref.MutRef address _ injection =>
+    let- full_v := LowM.CallPrimitive (Primitive.StateRead address) in
+    let full_v' := injection v full_v in
+    let- _ := LowM.CallPrimitive (Primitive.StateWrite address full_v') in
+    LowM.Pure (inl tt)
   end.
 
 Definition impossible {A : Set} : M A :=
@@ -164,11 +186,11 @@ Definition Val (A : Set) : Set := Ref A.
 
 Definition catch {A : Set} (body : M A) (handler : Exception -> M A) : M A :=
   fun fuel =>
-  LowM.smart_bind (body fuel) (fun result =>
+  let- result := body fuel in
   match result with
   | inl v => LowM.Pure (inl v)
   | inr exception => handler exception fuel
-  end).
+  end.
 
 Definition function_body {A : Set} (body : M A) : M A :=
   catch body (fun exception =>

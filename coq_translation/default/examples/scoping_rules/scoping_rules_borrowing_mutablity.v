@@ -10,23 +10,25 @@ Section Book.
     year : u32.t;
   }.
   
-  Global Instance Get_author : Notation.Dot "author" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(author) : M _;
+  Global Instance Get_author : Notations.Dot "author" := {
+    Notations.dot :=
+      Ref.map (fun x => x.(author)) (fun v x => x <| author := v |>);
   }.
-  Global Instance Get_AF_author : Notation.DoubleColon t "author" := {
-    Notation.double_colon x := let* x := M.read x in M.alloc x.(author) : M _;
+  Global Instance Get_AF_author : Notations.DoubleColon t "author" := {
+    Notations.double_colon (x : M.Val t) := x.["author"];
   }.
-  Global Instance Get_title : Notation.Dot "title" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(title) : M _;
+  Global Instance Get_title : Notations.Dot "title" := {
+    Notations.dot :=
+      Ref.map (fun x => x.(title)) (fun v x => x <| title := v |>);
   }.
-  Global Instance Get_AF_title : Notation.DoubleColon t "title" := {
-    Notation.double_colon x := let* x := M.read x in M.alloc x.(title) : M _;
+  Global Instance Get_AF_title : Notations.DoubleColon t "title" := {
+    Notations.double_colon (x : M.Val t) := x.["title"];
   }.
-  Global Instance Get_year : Notation.Dot "year" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(year) : M _;
+  Global Instance Get_year : Notations.Dot "year" := {
+    Notations.dot := Ref.map (fun x => x.(year)) (fun v x => x <| year := v |>);
   }.
-  Global Instance Get_AF_year : Notation.DoubleColon t "year" := {
-    Notation.double_colon x := let* x := M.read x in M.alloc x.(year) : M _;
+  Global Instance Get_AF_year : Notations.DoubleColon t "year" := {
+    Notations.double_colon (x : M.Val t) := x.["year"];
   }.
 End Book.
 End Book.
@@ -49,8 +51,8 @@ Section Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book_t.
       deref self).
   
   Global Instance AssociatedFunction_clone :
-    Notation.DoubleColon ltac:(Self) "clone" := {
-    Notation.double_colon := clone;
+    Notations.DoubleColon ltac:(Self) "clone" := {
+    Notations.double_colon := clone;
   }.
   
   Global Instance ℐ : core.clone.Clone.Required.Trait ltac:(Self) := {
@@ -95,26 +97,25 @@ Definition borrow_book
         let* α3 :
             ltac:(refine (M.Val scoping_rules_borrowing_mutablity.Book.t)) :=
           deref book in
-        let* α4 : ltac:(refine (M.Val (ref str.t))) := α3.["title"] in
-        let* α5 : ltac:(refine (M.Val (ref (ref str.t)))) := borrow α4 in
-        let* α6 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
-          core.fmt.rt.Argument.t::["new_display"] α5 in
-        let* α7 :
+        let* α4 : ltac:(refine (M.Val (ref (ref str.t)))) :=
+          borrow α3.["title"] in
+        let* α5 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
+          core.fmt.rt.Argument.t::["new_display"] α4 in
+        let* α6 :
             ltac:(refine (M.Val scoping_rules_borrowing_mutablity.Book.t)) :=
           deref book in
-        let* α8 : ltac:(refine (M.Val u32.t)) := α7.["year"] in
-        let* α9 : ltac:(refine (M.Val (ref u32.t))) := borrow α8 in
-        let* α10 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
-          core.fmt.rt.Argument.t::["new_display"] α9 in
-        let* α11 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
-          M.alloc [ α6; α10 ] in
-        let* α12 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
-          borrow α11 in
-        let* α13 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
-          pointer_coercion "Unsize" α12 in
-        let* α14 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-          core.fmt.Arguments.t::["new_v1"] α2 α13 in
-        std.io.stdio._print α14 in
+        let* α7 : ltac:(refine (M.Val (ref u32.t))) := borrow α6.["year"] in
+        let* α8 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
+          core.fmt.rt.Argument.t::["new_display"] α7 in
+        let* α9 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
+          M.alloc [ α5; α8 ] in
+        let* α10 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
+          borrow α9 in
+        let* α11 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
+          pointer_coercion "Unsize" α10 in
+        let* α12 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
+          core.fmt.Arguments.t::["new_v1"] α2 α11 in
+        std.io.stdio._print α12 in
       M.alloc tt in
     M.alloc tt).
 
@@ -132,9 +133,8 @@ Definition new_edition
       let* α0 :
           ltac:(refine (M.Val scoping_rules_borrowing_mutablity.Book.t)) :=
         deref book in
-      let* α1 : ltac:(refine (M.Val u32.t)) := α0.["year"] in
-      let* α2 : ltac:(refine (M.Val u32.t)) := M.alloc 2014 in
-      assign α1 α2 in
+      let* α1 : ltac:(refine (M.Val u32.t)) := M.alloc 2014 in
+      assign α0.["year"] α1 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
@@ -149,26 +149,25 @@ Definition new_edition
         let* α3 :
             ltac:(refine (M.Val scoping_rules_borrowing_mutablity.Book.t)) :=
           deref book in
-        let* α4 : ltac:(refine (M.Val (ref str.t))) := α3.["title"] in
-        let* α5 : ltac:(refine (M.Val (ref (ref str.t)))) := borrow α4 in
-        let* α6 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
-          core.fmt.rt.Argument.t::["new_display"] α5 in
-        let* α7 :
+        let* α4 : ltac:(refine (M.Val (ref (ref str.t)))) :=
+          borrow α3.["title"] in
+        let* α5 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
+          core.fmt.rt.Argument.t::["new_display"] α4 in
+        let* α6 :
             ltac:(refine (M.Val scoping_rules_borrowing_mutablity.Book.t)) :=
           deref book in
-        let* α8 : ltac:(refine (M.Val u32.t)) := α7.["year"] in
-        let* α9 : ltac:(refine (M.Val (ref u32.t))) := borrow α8 in
-        let* α10 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
-          core.fmt.rt.Argument.t::["new_display"] α9 in
-        let* α11 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
-          M.alloc [ α6; α10 ] in
-        let* α12 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
-          borrow α11 in
-        let* α13 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
-          pointer_coercion "Unsize" α12 in
-        let* α14 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-          core.fmt.Arguments.t::["new_v1"] α2 α13 in
-        std.io.stdio._print α14 in
+        let* α7 : ltac:(refine (M.Val (ref u32.t))) := borrow α6.["year"] in
+        let* α8 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
+          core.fmt.rt.Argument.t::["new_display"] α7 in
+        let* α9 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
+          M.alloc [ α5; α8 ] in
+        let* α10 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
+          borrow α9 in
+        let* α11 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
+          pointer_coercion "Unsize" α10 in
+        let* α12 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
+          core.fmt.Arguments.t::["new_v1"] α2 α11 in
+        std.io.stdio._print α12 in
       M.alloc tt in
     M.alloc tt).
 

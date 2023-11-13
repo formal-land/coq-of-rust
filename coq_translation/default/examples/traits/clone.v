@@ -27,8 +27,8 @@ Section Impl_core_fmt_Debug_for_clone_Unit_t.
       core.fmt.Formatter.t::["write_str"] α1 α3).
   
   Global Instance AssociatedFunction_fmt :
-    Notation.DoubleColon ltac:(Self) "fmt" := {
-    Notation.double_colon := fmt;
+    Notations.DoubleColon ltac:(Self) "fmt" := {
+    Notations.double_colon := fmt;
   }.
   
   Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
@@ -48,8 +48,8 @@ Section Impl_core_clone_Clone_for_clone_Unit_t.
     M.function_body (deref self).
   
   Global Instance AssociatedFunction_clone :
-    Notation.DoubleColon ltac:(Self) "clone" := {
-    Notation.double_colon := clone;
+    Notations.DoubleColon ltac:(Self) "clone" := {
+    Notations.double_colon := clone;
   }.
   
   Global Instance ℐ : core.clone.Clone.Required.Trait ltac:(Self) := {
@@ -75,11 +75,11 @@ Section Pair.
     x1 : alloc.boxed.Box.t i32.t alloc.boxed.Box.Default.A;
   }.
   
-  Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(x0) : M _;
+  Global Instance Get_0 : Notations.Dot "0" := {
+    Notations.dot := Ref.map (fun x => x.(x0)) (fun v x => x <| x0 := v |>);
   }.
-  Global Instance Get_1 : Notation.Dot "1" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(x1) : M _;
+  Global Instance Get_1 : Notations.Dot "1" := {
+    Notations.dot := Ref.map (fun x => x.(x1)) (fun v x => x <| x1 := v |>);
   }.
 End Pair.
 End Pair.
@@ -96,42 +96,34 @@ Section Impl_core_clone_Clone_for_clone_Pair_t.
       (let* α0 : ltac:(refine (M.Val clone.Pair.t)) := deref self in
       let* α1 :
           ltac:(refine
-            (M.Val (alloc.boxed.Box.t i32.t alloc.alloc.Global.t))) :=
-        α0.["0"] in
-      let* α2 :
-          ltac:(refine
             (M.Val (ref (alloc.boxed.Box.t i32.t alloc.alloc.Global.t)))) :=
-        borrow α1 in
-      let* α3 :
+        borrow α0.["0"] in
+      let* α2 :
           ltac:(refine
             (M.Val (alloc.boxed.Box.t i32.t alloc.alloc.Global.t))) :=
         (core.clone.Clone.clone
             (Self := alloc.boxed.Box.t i32.t alloc.alloc.Global.t)
             (Trait := ltac:(refine _)))
-          α2 in
-      let* α4 := M.read α3 in
-      let* α5 : ltac:(refine (M.Val clone.Pair.t)) := deref self in
+          α1 in
+      let* α3 := M.read α2 in
+      let* α4 : ltac:(refine (M.Val clone.Pair.t)) := deref self in
+      let* α5 :
+          ltac:(refine
+            (M.Val (ref (alloc.boxed.Box.t i32.t alloc.alloc.Global.t)))) :=
+        borrow α4.["1"] in
       let* α6 :
           ltac:(refine
             (M.Val (alloc.boxed.Box.t i32.t alloc.alloc.Global.t))) :=
-        α5.["1"] in
-      let* α7 :
-          ltac:(refine
-            (M.Val (ref (alloc.boxed.Box.t i32.t alloc.alloc.Global.t)))) :=
-        borrow α6 in
-      let* α8 :
-          ltac:(refine
-            (M.Val (alloc.boxed.Box.t i32.t alloc.alloc.Global.t))) :=
         (core.clone.Clone.clone
             (Self := alloc.boxed.Box.t i32.t alloc.alloc.Global.t)
             (Trait := ltac:(refine _)))
-          α7 in
-      let* α9 := M.read α8 in
-      M.alloc (clone.Pair.Build_t α4 α9)).
+          α5 in
+      let* α7 := M.read α6 in
+      M.alloc (clone.Pair.Build_t α3 α7)).
   
   Global Instance AssociatedFunction_clone :
-    Notation.DoubleColon ltac:(Self) "clone" := {
-    Notation.double_colon := clone;
+    Notations.DoubleColon ltac:(Self) "clone" := {
+    Notations.double_colon := clone;
   }.
   
   Global Instance ℐ : core.clone.Clone.Required.Trait ltac:(Self) := {
@@ -161,35 +153,27 @@ Section Impl_core_fmt_Debug_for_clone_Pair_t.
       let* α4 : ltac:(refine (M.Val clone.Pair.t)) := deref self in
       let* α5 :
           ltac:(refine
-            (M.Val (alloc.boxed.Box.t i32.t alloc.alloc.Global.t))) :=
-        α4.["0"] in
-      let* α6 :
+            (M.Val (ref (alloc.boxed.Box.t i32.t alloc.alloc.Global.t)))) :=
+        borrow α4.["0"] in
+      let* α6 : ltac:(refine (M.Val (ref type not implemented))) :=
+        pointer_coercion "Unsize" α5 in
+      let* α7 : ltac:(refine (M.Val clone.Pair.t)) := deref self in
+      let* α8 :
           ltac:(refine
             (M.Val (ref (alloc.boxed.Box.t i32.t alloc.alloc.Global.t)))) :=
-        borrow α5 in
-      let* α7 : ltac:(refine (M.Val (ref type not implemented))) :=
-        pointer_coercion "Unsize" α6 in
-      let* α8 : ltac:(refine (M.Val clone.Pair.t)) := deref self in
+        borrow α7.["1"] in
       let* α9 :
-          ltac:(refine
-            (M.Val (alloc.boxed.Box.t i32.t alloc.alloc.Global.t))) :=
-        α8.["1"] in
-      let* α10 :
-          ltac:(refine
-            (M.Val (ref (alloc.boxed.Box.t i32.t alloc.alloc.Global.t)))) :=
-        borrow α9 in
-      let* α11 :
           ltac:(refine
             (M.Val
               (ref (ref (alloc.boxed.Box.t i32.t alloc.alloc.Global.t))))) :=
-        borrow α10 in
-      let* α12 : ltac:(refine (M.Val (ref type not implemented))) :=
-        pointer_coercion "Unsize" α11 in
-      core.fmt.Formatter.t::["debug_tuple_field2_finish"] α1 α3 α7 α12).
+        borrow α8 in
+      let* α10 : ltac:(refine (M.Val (ref type not implemented))) :=
+        pointer_coercion "Unsize" α9 in
+      core.fmt.Formatter.t::["debug_tuple_field2_finish"] α1 α3 α6 α10).
   
   Global Instance AssociatedFunction_fmt :
-    Notation.DoubleColon ltac:(Self) "fmt" := {
-    Notation.double_colon := fmt;
+    Notations.DoubleColon ltac:(Self) "fmt" := {
+    Notations.double_colon := fmt;
   }.
   
   Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {

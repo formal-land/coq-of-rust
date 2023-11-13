@@ -7,11 +7,11 @@ Section Person.
     job : core.option.Option.t unpacking_options_via_question_mark.Job.t;
   }.
   
-  Global Instance Get_job : Notation.Dot "job" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(job) : M _;
+  Global Instance Get_job : Notations.Dot "job" := {
+    Notations.dot := Ref.map (fun x => x.(job)) (fun v x => x <| job := v |>);
   }.
-  Global Instance Get_AF_job : Notation.DoubleColon t "job" := {
-    Notation.double_colon x := let* x := M.read x in M.alloc x.(job) : M _;
+  Global Instance Get_AF_job : Notations.DoubleColon t "job" := {
+    Notations.double_colon (x : M.Val t) := x.["job"];
   }.
 End Person.
 End Person.
@@ -23,13 +23,15 @@ Section Job.
       core.option.Option.t unpacking_options_via_question_mark.PhoneNumber.t;
   }.
   
-  Global Instance Get_phone_number : Notation.Dot "phone_number" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(phone_number) : M _;
+  Global Instance Get_phone_number : Notations.Dot "phone_number" := {
+    Notations.dot :=
+      Ref.map
+        (fun x => x.(phone_number))
+        (fun v x => x <| phone_number := v |>);
   }.
   Global Instance Get_AF_phone_number :
-    Notation.DoubleColon t "phone_number" := {
-    Notation.double_colon x :=
-      let* x := M.read x in M.alloc x.(phone_number) : M _;
+    Notations.DoubleColon t "phone_number" := {
+    Notations.double_colon (x : M.Val t) := x.["phone_number"];
   }.
 End Job.
 End Job.
@@ -49,8 +51,8 @@ Section Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job_t.
       deref self).
   
   Global Instance AssociatedFunction_clone :
-    Notation.DoubleColon ltac:(Self) "clone" := {
-    Notation.double_colon := clone;
+    Notations.DoubleColon ltac:(Self) "clone" := {
+    Notations.double_colon := clone;
   }.
   
   Global Instance ℐ : core.clone.Clone.Required.Trait ltac:(Self) := {
@@ -76,18 +78,19 @@ Section PhoneNumber.
     number : u32.t;
   }.
   
-  Global Instance Get_area_code : Notation.Dot "area_code" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(area_code) : M _;
+  Global Instance Get_area_code : Notations.Dot "area_code" := {
+    Notations.dot :=
+      Ref.map (fun x => x.(area_code)) (fun v x => x <| area_code := v |>);
   }.
-  Global Instance Get_AF_area_code : Notation.DoubleColon t "area_code" := {
-    Notation.double_colon x :=
-      let* x := M.read x in M.alloc x.(area_code) : M _;
+  Global Instance Get_AF_area_code : Notations.DoubleColon t "area_code" := {
+    Notations.double_colon (x : M.Val t) := x.["area_code"];
   }.
-  Global Instance Get_number : Notation.Dot "number" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(number) : M _;
+  Global Instance Get_number : Notations.Dot "number" := {
+    Notations.dot :=
+      Ref.map (fun x => x.(number)) (fun v x => x <| number := v |>);
   }.
-  Global Instance Get_AF_number : Notation.DoubleColon t "number" := {
-    Notation.double_colon x := let* x := M.read x in M.alloc x.(number) : M _;
+  Global Instance Get_AF_number : Notations.DoubleColon t "number" := {
+    Notations.double_colon (x : M.Val t) := x.["number"];
   }.
 End PhoneNumber.
 End PhoneNumber.
@@ -108,8 +111,8 @@ Section Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumbe
       deref self).
   
   Global Instance AssociatedFunction_clone :
-    Notation.DoubleColon ltac:(Self) "clone" := {
-    Notation.double_colon := clone;
+    Notations.DoubleColon ltac:(Self) "clone" := {
+    Notations.double_colon := clone;
   }.
   
   Global Instance ℐ : core.clone.Clone.Required.Trait ltac:(Self) := {
@@ -150,12 +153,6 @@ Section Impl_unpacking_options_via_question_mark_Person_t.
       let* α1 :
           ltac:(refine
             (M.Val
-              (core.option.Option.t
-                unpacking_options_via_question_mark.Job.t))) :=
-        α0.["job"] in
-      let* α2 :
-          ltac:(refine
-            (M.Val
               (core.ops.control_flow.ControlFlow.t
                 (core.option.Option.t core.convert.Infallible.t)
                 unpacking_options_via_question_mark.Job.t))) :=
@@ -163,11 +160,11 @@ Section Impl_unpacking_options_via_question_mark_Person_t.
             (Self :=
               core.option.Option.t unpacking_options_via_question_mark.Job.t)
             (Trait := ltac:(refine _)))
-          α1 in
-      let* α3 := M.read α2 in
-      let* α4 :
+          α0.["job"] in
+      let* α2 := M.read α1 in
+      let* α3 :
           ltac:(refine (M.Val unpacking_options_via_question_mark.Job.t)) :=
-        match α3 with
+        match α2 with
         | core.ops.control_flow.ControlFlow.Break residual =>
           let* residual := M.alloc residual in
           let* α0 : ltac:(refine (M.Val (core.option.Option.t u8.t))) :=
@@ -181,13 +178,7 @@ Section Impl_unpacking_options_via_question_mark_Person_t.
           let* val := M.alloc val in
           M.pure val
         end in
-      let* α5 :
-          ltac:(refine
-            (M.Val
-              (core.option.Option.t
-                unpacking_options_via_question_mark.PhoneNumber.t))) :=
-        α4.["phone_number"] in
-      let* α6 :
+      let* α4 :
           ltac:(refine
             (M.Val
               (core.ops.control_flow.ControlFlow.t
@@ -198,12 +189,12 @@ Section Impl_unpacking_options_via_question_mark_Person_t.
               core.option.Option.t
                 unpacking_options_via_question_mark.PhoneNumber.t)
             (Trait := ltac:(refine _)))
-          α5 in
-      let* α7 := M.read α6 in
-      let* α8 :
+          α3.["phone_number"] in
+      let* α5 := M.read α4 in
+      let* α6 :
           ltac:(refine
             (M.Val unpacking_options_via_question_mark.PhoneNumber.t)) :=
-        match α7 with
+        match α5 with
         | core.ops.control_flow.ControlFlow.Break residual =>
           let* residual := M.alloc residual in
           let* α0 : ltac:(refine (M.Val (core.option.Option.t u8.t))) :=
@@ -217,11 +208,11 @@ Section Impl_unpacking_options_via_question_mark_Person_t.
           let* val := M.alloc val in
           M.pure val
         end in
-      α8.["area_code"]).
+      M.pure α6.["area_code"]).
   
   Global Instance AssociatedFunction_work_phone_area_code :
-    Notation.DoubleColon ltac:(Self) "work_phone_area_code" := {
-    Notation.double_colon := work_phone_area_code;
+    Notations.DoubleColon ltac:(Self) "work_phone_area_code" := {
+    Notations.double_colon := work_phone_area_code;
   }.
 End Impl_unpacking_options_via_question_mark_Person_t.
 End Impl_unpacking_options_via_question_mark_Person_t.

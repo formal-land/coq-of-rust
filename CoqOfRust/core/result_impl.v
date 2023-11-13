@@ -32,8 +32,8 @@ Section Impl_Result.
 
   Parameter expect : Self -> string -> M T.
 
-  Global Instance AF_expect : Notation.DoubleColon Self "expect" := {|
-    Notation.double_colon := expect;
+  Global Instance AF_expect : Notations.DoubleColon Self "expect" := {|
+    Notations.double_colon := expect;
   |}.
 End Impl_Result.
 End Impl_Result.

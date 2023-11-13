@@ -26,17 +26,18 @@ Section Form.
     age : u8.t;
   }.
   
-  Global Instance Get_username : Notation.Dot "username" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(username) : M _;
+  Global Instance Get_username : Notations.Dot "username" := {
+    Notations.dot :=
+      Ref.map (fun x => x.(username)) (fun v x => x <| username := v |>);
   }.
-  Global Instance Get_AF_username : Notation.DoubleColon t "username" := {
-    Notation.double_colon x := let* x := M.read x in M.alloc x.(username) : M _;
+  Global Instance Get_AF_username : Notations.DoubleColon t "username" := {
+    Notations.double_colon (x : M.Val t) := x.["username"];
   }.
-  Global Instance Get_age : Notation.Dot "age" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(age) : M _;
+  Global Instance Get_age : Notations.Dot "age" := {
+    Notations.dot := Ref.map (fun x => x.(age)) (fun v x => x <| age := v |>);
   }.
-  Global Instance Get_AF_age : Notation.DoubleColon t "age" := {
-    Notation.double_colon x := let* x := M.read x in M.alloc x.(age) : M _;
+  Global Instance Get_AF_age : Notations.DoubleColon t "age" := {
+    Notations.double_colon (x : M.Val t) := x.["age"];
   }.
 End Form.
 End Form.
@@ -53,8 +54,8 @@ Section Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating
   Parameter get : (M.Val (ref ltac:(Self))) -> M (M.Val alloc.string.String.t).
   
   Global Instance AssociatedFunction_get :
-    Notation.DoubleColon ltac:(Self) "get" := {
-    Notation.double_colon := get;
+    Notations.DoubleColon ltac:(Self) "get" := {
+    Notations.double_colon := get;
   }.
   
   Global Instance ℐ :
@@ -76,8 +77,8 @@ Section Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_over
   Parameter get : (M.Val (ref ltac:(Self))) -> M (M.Val u8.t).
   
   Global Instance AssociatedFunction_get :
-    Notation.DoubleColon ltac:(Self) "get" := {
-    Notation.double_colon := get;
+    Notations.DoubleColon ltac:(Self) "get" := {
+    Notations.double_colon := get;
   }.
   
   Global Instance ℐ :

@@ -40,35 +40,37 @@ Module Run.
       LowM A -> State -> A -> State -> Prop :=
   | Pure {A : Set} (state : State) (v : A) :
     t (LowM.Pure v) state v state
-  | Bind {A B : Set} (e1 : LowM B) (e2 : B -> LowM A)
+  | Let {A B : Set} (e1 : LowM B) (e2 : B -> LowM A)
       (state state1 state2 : State)
       (v1 : B) (v2 : A) :
     t e1 state v1 state1 ->
     t (e2 v1) state1 v2 state2 ->
-    t (LowM.Bind e1 e2) state v2 state2
+    t (LowM.Let e1 e2) state v2 state2
   | CallPrimitiveStateAllocNone {A : Set} (state : State) (v : A) :
     t (LowM.CallPrimitive (Primitive.StateAlloc v))
       state
-      (Ref.Immutable v)
+      (Ref.Imm v)
       state
   | CallPrimitiveStateAllocSome
-      {address : Address} (v : State.get_Set address)
+      (address : Address) (v : State.get_Set address)
       (state state' : State) :
     State.read address state = None ->
     State.alloc_write address state v = Some state' ->
     t (LowM.CallPrimitive (Primitive.StateAlloc v))
       state
-      (Ref.MutRef (A := State.get_Set address) address)
+      (Ref.MutRef (A := State.get_Set address) (B := State.get_Set address)
+        address (fun full_v => full_v) (fun v _full_v => v)
+      )
       state'
   | CallPrimitiveStateRead
-      {address : Address} (v : State.get_Set address) (state : State) :
+      (address : Address) (v : State.get_Set address) (state : State) :
     State.read address state = Some v ->
     t (LowM.CallPrimitive (Primitive.StateRead address))
       state
       v
       state
   | CallPrimitiveStateWrite
-      {address : Address} (v : State.get_Set address) (state state' : State) :
+      (address : Address) (v : State.get_Set address) (state state' : State) :
     State.alloc_write address state v = Some state' ->
     t (LowM.CallPrimitive (Primitive.StateWrite address v))
       state

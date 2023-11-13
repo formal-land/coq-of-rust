@@ -134,8 +134,13 @@ pub(crate) enum Expression<'a> {
         ///     the application is curried when it gets printed)
         args: Vec<(Option<String>, Expression<'a>)>,
     },
-    /// a (curried) function type
+    /// a (curried) function
     Function {
+        parameters: Vec<Expression<'a>>,
+        body: Box<Expression<'a>>,
+    },
+    /// a (curried) function type
+    FunctionType {
         /// a nonempty list of domains
         /// (we accept many domains to control their indentation in the type better,
         ///     the type is curried when it gets printed)
@@ -161,7 +166,20 @@ pub(crate) enum Expression<'a> {
     Record {
         fields: Vec<Field<'a>>,
     },
-    // For example ltac:(...) or constr:(...)
+    RecordField {
+        record: Box<Expression<'a>>,
+        field: String,
+    },
+    RecordUpdate {
+        record: Box<Expression<'a>>,
+        field: String,
+        update: Box<Expression<'a>>,
+    },
+    NotationsDot {
+        value: Box<Expression<'a>>,
+        field: String,
+    },
+    /// For example ltac:(...) or constr:(...)
     ModeWrapper {
         mode: String,
         expr: Box<Expression<'a>>,
@@ -790,7 +808,23 @@ impl<'a> Expression<'a> {
                     ),
                 ]),
             ),
-            Self::Function { domains, image } => paren(
+            Self::Function { parameters, body } => paren(
+                with_paren,
+                nest([
+                    nest([
+                        text("fun"),
+                        concat(
+                            parameters
+                                .iter()
+                                .map(|parameter| concat([line(), parameter.to_doc(true)])),
+                        ),
+                        text(" =>"),
+                    ]),
+                    line(),
+                    body.to_doc(false),
+                ]),
+            ),
+            Self::FunctionType { domains, image } => paren(
                 with_paren,
                 nest([
                     intersperse(
@@ -844,6 +878,34 @@ impl<'a> Expression<'a> {
                 },
                 hardline(),
                 text("}"),
+            ]),
+            Self::RecordField { record, field } => concat([
+                record.to_doc(true),
+                text(".("),
+                text(field.to_owned()),
+                text(")"),
+            ]),
+            Self::RecordUpdate {
+                record,
+                field,
+                update,
+            } => nest([
+                record.to_doc(true),
+                line(),
+                nest([
+                    text("<| "),
+                    text(field.to_owned()),
+                    text(" :="),
+                    line(),
+                    update.to_doc(false),
+                    text(" |>"),
+                ]),
+            ]),
+            Self::NotationsDot { value, field } => concat([
+                value.to_doc(true),
+                text(".[\""),
+                text(field.to_owned()),
+                text("\"]"),
             ]),
             Self::ModeWrapper { mode, expr } => concat([
                 text(mode.to_owned()),
@@ -918,7 +980,7 @@ impl<'a> Expression<'a> {
     }
 
     pub(crate) fn arrows_from(&self, domains: &[Self]) -> Self {
-        Expression::Function {
+        Expression::FunctionType {
             domains: domains.to_owned(),
             image: Box::new(self.to_owned()),
         }

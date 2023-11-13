@@ -7,8 +7,8 @@ Section Owner.
     x0 : i32.t;
   }.
   
-  Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(x0) : M _;
+  Global Instance Get_0 : Notations.Dot "0" := {
+    Notations.dot := Ref.map (fun x => x.(x0)) (fun v x => x <| x0 := v |>);
   }.
 End Owner.
 End Owner.
@@ -28,14 +28,13 @@ Section Impl_scoping_rules_lifetimes_methods_Owner_t.
         let* α0 :
             ltac:(refine (M.Val scoping_rules_lifetimes_methods.Owner.t)) :=
           deref self in
-        let* α1 : ltac:(refine (M.Val i32.t)) := α0.["0"] in
-        let* α2 : ltac:(refine (M.Val i32.t)) := M.alloc 1 in
-        assign_op add α1 α2 in
+        let* α1 : ltac:(refine (M.Val i32.t)) := M.alloc 1 in
+        assign_op add α0.["0"] α1 in
       M.alloc tt).
   
   Global Instance AssociatedFunction_add_one :
-    Notation.DoubleColon ltac:(Self) "add_one" := {
-    Notation.double_colon := add_one;
+    Notations.DoubleColon ltac:(Self) "add_one" := {
+    Notations.double_colon := add_one;
   }.
   
   (*
@@ -57,27 +56,26 @@ Section Impl_scoping_rules_lifetimes_methods_Owner_t.
           let* α3 :
               ltac:(refine (M.Val scoping_rules_lifetimes_methods.Owner.t)) :=
             deref self in
-          let* α4 : ltac:(refine (M.Val i32.t)) := α3.["0"] in
-          let* α5 : ltac:(refine (M.Val (ref i32.t))) := borrow α4 in
-          let* α6 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
-            core.fmt.rt.Argument.t::["new_display"] α5 in
-          let* α7 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
-            M.alloc [ α6 ] in
-          let* α8 :
+          let* α4 : ltac:(refine (M.Val (ref i32.t))) := borrow α3.["0"] in
+          let* α5 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
+            core.fmt.rt.Argument.t::["new_display"] α4 in
+          let* α6 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
+            M.alloc [ α5 ] in
+          let* α7 :
               ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
-            borrow α7 in
-          let* α9 :
+            borrow α6 in
+          let* α8 :
               ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
-            pointer_coercion "Unsize" α8 in
-          let* α10 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-            core.fmt.Arguments.t::["new_v1"] α2 α9 in
-          std.io.stdio._print α10 in
+            pointer_coercion "Unsize" α7 in
+          let* α9 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
+            core.fmt.Arguments.t::["new_v1"] α2 α8 in
+          std.io.stdio._print α9 in
         M.alloc tt in
       M.alloc tt).
   
   Global Instance AssociatedFunction_print :
-    Notation.DoubleColon ltac:(Self) "print" := {
-    Notation.double_colon := print;
+    Notations.DoubleColon ltac:(Self) "print" := {
+    Notations.double_colon := print;
   }.
 End Impl_scoping_rules_lifetimes_methods_Owner_t.
 End Impl_scoping_rules_lifetimes_methods_Owner_t.

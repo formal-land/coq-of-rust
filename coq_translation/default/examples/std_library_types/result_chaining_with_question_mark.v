@@ -52,8 +52,8 @@ Module checked.
         core.fmt.Formatter.t::["write_str"] α1 α3).
     
     Global Instance AssociatedFunction_fmt :
-      Notation.DoubleColon ltac:(Self) "fmt" := {
-      Notation.double_colon := fmt;
+      Notations.DoubleColon ltac:(Self) "fmt" := {
+      Notations.double_colon := fmt;
     }.
     
     Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
@@ -401,8 +401,8 @@ Section Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathE
       core.fmt.Formatter.t::["write_str"] α1 α3).
   
   Global Instance AssociatedFunction_fmt :
-    Notation.DoubleColon ltac:(Self) "fmt" := {
-    Notation.double_colon := fmt;
+    Notations.DoubleColon ltac:(Self) "fmt" := {
+    Notations.double_colon := fmt;
   }.
   
   Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {

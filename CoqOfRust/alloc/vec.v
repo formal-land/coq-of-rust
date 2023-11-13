@@ -126,15 +126,15 @@ Section Impl_Vec.
   Parameter new : M Self.
 
   Global Instance AssociatedFunction_new :
-    Notation.DoubleColon Self "new" := {
-    Notation.double_colon := new;
+    Notations.DoubleColon Self "new" := {
+    Notations.double_colon := new;
   }.
 
   Parameter push : Self -> T -> M unit.
 
   Global Instance Method_push :
-    Notation.Dot "push" := {
-    Notation.dot := push;
+    Notations.Dot "push" := {
+    Notations.dot := push;
   }.
 End Impl_Vec.
 End Impl_Vec.

@@ -71,11 +71,11 @@ Module PartialEq.
     Definition Rhs (Self : Set) : Set := Self.
   End Default.
 
-  Global Instance Method_eq `(Trait) : Notation.Dot "eq" := {
-    Notation.dot := eq;
+  Global Instance Method_eq `(Trait) : Notations.Dot "eq" := {
+    Notations.dot := eq;
   }.
-  Global Instance Method_ne `(Trait) : Notation.Dot "ne" := {
-    Notation.dot x y :=
+  Global Instance Method_ne `(Trait) : Notations.Dot "ne" := {
+    Notations.dot x y :=
       let* is_eq := eq x y in
       let* is_eq := M.read is_eq in
       M.pure (negb is_eq);

@@ -27,46 +27,21 @@ Require Export Coq.Strings.Ascii.
 Require Export Coq.Strings.String.
 Require Export Coq.ZArith.ZArith.
 From Hammer Require Export Tactics.
+Require Export CoqOfRust.RecordUpdate.
 
 Export List.ListNotations.
 
 Require Export CoqOfRust.M.
 Export M.Notations.
 
-(** Notation for a function call. Translated directly to function application
-    for now. It will drive the monadic transformation in near future. *)
-Notation "e (| e1 , .. , en |)" :=
-  ((.. (e e1) ..) en)
-  (at level 0,
-    only parsing).
-
-(** Particular case when there are no arguments. *)
-Notation "e (||)" :=
-  (e tt)
-  (at level 0,
-    only parsing).
-
-Require CoqOfRust.lib.lib.
-Export CoqOfRust.lib.lib.
-Export Notations.
-Module Notation := CoqOfRust.lib.lib.Notation.
-
-(** Note that we revert the arguments in this notation. *)
-Notation "e1 .[ e2 ]" := (Notation.dot e2 e1)
-  (at level 0).
-
-Notation "e1 ::[ e2 ]" := (Notation.double_colon e1 e2)
-  (at level 0).
-
-Notation "e1 ::type[ e2 ]" := (Notation.double_colon_type e1 e2)
-  (at level 0).
+Require Export CoqOfRust.lib.lib.
 
 (** A method is also an associated function for its type. *)
 Global Instance AssociatedFunctionFromMethod
   (type : Set) (name : string) (T : Set)
-  `(Notation.Dot name (T := type -> T)) :
-  Notation.DoubleColon type name (T := type -> T) := {
-  Notation.double_colon := Notation.dot name;
+  `(Notations.Dot name (T := type -> T)) :
+  Notations.DoubleColon type name (T := type -> T) := {
+  Notations.double_colon := Notations.dot name;
 }.
 
 Definition defaultType (T : option Set) (Default : Set) : Set :=
@@ -88,45 +63,45 @@ Parameter InlineAssembly : unit.
 
 (** The functions on [Z] should eventually be replaced by functions on the
     corresponding integer types. *)
-Global Instance Method_Z_abs : Notation.Dot "abs" := {
-  Notation.dot (z : Z) := (M.pure (Z.abs z) : M _);
+Global Instance Method_Z_abs : Notations.Dot "abs" := {
+  Notations.dot (z : Z) := (M.pure (Z.abs z) : M _);
 }.
 
 (* TODO: find a better place for this instance *)
-Global Instance Method_Z_neg : Notation.Dot "neg" := {
-  Notation.dot (x : Z) := (M.pure (Z.opp x) : M _);
+Global Instance Method_Z_neg : Notations.Dot "neg" := {
+  Notations.dot (x : Z) := (M.pure (Z.opp x) : M _);
 }.
 
 (* TODO: find a better place for this instance *)
-Global Instance Method_Z_lt : Notation.Dot "lt" := {
-  Notation.dot (x y : Z) := (M.pure (Z.ltb x y) : M _);
+Global Instance Method_Z_lt : Notations.Dot "lt" := {
+  Notations.dot (x y : Z) := (M.pure (Z.ltb x y) : M _);
 }.
 
 (* TODO: find a better place for this instance *)
-Global Instance Method_Z_gt : Notation.Dot "gt" := {
-  Notation.dot (x y : Z) := (M.pure (Z.gtb x y) : M _);
+Global Instance Method_Z_gt : Notations.Dot "gt" := {
+  Notations.dot (x y : Z) := (M.pure (Z.gtb x y) : M _);
 }.
 
 (* TODO: find a better place for this instance *)
-Global Instance Method_Z_eq : Notation.Dot "eq" := {
-  Notation.dot (x y : Z) := (M.pure (Z.eqb x y) : M _);
+Global Instance Method_Z_eq : Notations.Dot "eq" := {
+  Notations.dot (x y : Z) := (M.pure (Z.eqb x y) : M _);
 }.
 
 (* TODO: find a better place for this instance *)
-Global Instance Method_bool_andb : Notation.Dot "andb" := {
-  Notation.dot (x y : M.Val bool) :=
+Global Instance Method_bool_andb : Notations.Dot "andb" := {
+  Notations.dot (x y : M.Val bool) :=
     let* x := M.read x in
     let* y := M.read y in
     M.alloc (andb x y) : M _;
 }.
 
 Global Instance Method_destroy (A : Set) :
-  Notation.Dot "destroy" := {
-  Notation.dot (x : A) := (M.pure tt : M _);
+  Notations.Dot "destroy" := {
+  Notations.dot (x : A) := (M.pure tt : M _);
 }.
 
 Global Instance Method_ne_u64 :
-  Notation.Dot "ne" (T := u64.t -> u64.t -> M bool). Admitted.
+  Notations.Dot "ne" (T := u64.t -> u64.t -> M bool). Admitted.
 
 Require CoqOfRust.alloc.alloc.
 Require CoqOfRust.alloc.boxed.
@@ -287,15 +262,15 @@ Module hash_Instances.
   (** Hasher instance functions *)
   Global Instance Hasher_Method_finish
       (Self : Set) `{core.hash.Hasher.Trait Self} :
-    Notation.Dot "finish" := {
-    Notation.dot := core.hash.Hasher.finish (Self := Self);
+    Notations.Dot "finish" := {
+    Notations.dot := core.hash.Hasher.finish (Self := Self);
   }.
 
   (** Hash instance functions *)
   Global Instance Hash_Method_hash (Self : Set)
       {H1 : core.hash.Hasher.Trait Self} {H2 : core.hash.Hash.Trait Self} :
-    Notation.Dot "hash" := {
-      Notation.dot := core.hash.Hash.hash (Self := Self);
+    Notations.Dot "hash" := {
+      Notations.dot := core.hash.Hash.hash (Self := Self);
   }.
 
   (** Hasher implementation for DefaultHasher *)
@@ -495,8 +470,8 @@ End ToString_Instances.
 (** For now we assume that all types implement [to_owned] and that this is the
     identity function. *)
 Global Instance Method_to_owned {A : Set} :
-  Notation.Dot "to_owned" := {
-  Notation.dot (x : A) := (M.pure x : M _);
+  Notations.Dot "to_owned" := {
+  Notations.dot (x : A) := (M.pure x : M _);
 }.
 
 (** A LangItem generated by the Rust compiler. *)
@@ -511,7 +486,7 @@ Definition format_arguments : Set := core.fmt.Arguments.t.
  * and in result does not use this instance at all.
  *)
 Global Instance Formatter_debug_tuple_field1_finish_for_i32 :
-  Notation.DoubleColon core.fmt.Formatter.t "debug_tuple_field1_finish" :=
+  Notations.DoubleColon core.fmt.Formatter.t "debug_tuple_field1_finish" :=
   core.fmt.ImplFormatter.Formatter_debug_tuple_field1_finish (T := i32.t).
 
 (* derived implementation of Debug for Result *)
@@ -542,8 +517,8 @@ Module Impl_RangeInclusive.
   Parameter new : Idx -> Idx -> M Self.
 
   Global Instance RangeInclusive_new :
-    Notation.DoubleColon RangeInclusive "new" := {
-    Notation.double_colon := new;
+    Notations.DoubleColon RangeInclusive "new" := {
+    Notations.double_colon := new;
   }.
   End Impl_RangeInclusive.
 End Impl_RangeInclusive.
@@ -565,8 +540,8 @@ Module Impl_Slice.
   Module hack_notations.
     Global Instance hack_into_vec
       {T (* A *) : Set} (* `{(* core. *) alloc.Allocator.Trait A} *) :
-      Notation.DoubleColon hack "into_vec" := {
-      Notation.double_colon (b : alloc.boxed.Box (slice T) alloc.boxed.Box.Default.A) :=
+      Notations.DoubleColon hack "into_vec" := {
+      Notations.double_colon (b : alloc.boxed.Box (slice T) alloc.boxed.Box.Default.A) :=
         hack.into_vec (T := T) (* (A := A) *) b;
     }.
   End hack_notations.
@@ -585,8 +560,8 @@ Module Impl_Slice.
 
     Global Instance Method_into_vec
         {A : Set} {H1 : alloc.Allocator.Trait A} :
-        Notation.DoubleColon (alloc.boxed.Box Self A) "into_vec" := {
-      Notation.double_colon := into_vec (A := A);
+        Notations.DoubleColon (alloc.boxed.Box Self A) "into_vec" := {
+      Notations.double_colon := into_vec (A := A);
     }.
   End Impl_Slice.
 End Impl_Slice.
@@ -603,8 +578,8 @@ Module Impl_Iterator_for_Slice_Iter.
 
   Parameter next : mut_ref Self -> M (core.option.Option.t A).
 
-  Global Instance Method_next : Notation.Dot "next" := {
-    Notation.dot := next;
+  Global Instance Method_next : Notations.Dot "next" := {
+    Notations.dot := next;
   }.
   End Impl_Iterator_for_Slice_Iter.
 End Impl_Iterator_for_Slice_Iter.
@@ -625,8 +600,8 @@ Module Impl_IntoIterator_for_Slice_Iter.
   Parameter into_iter : Self -> M IntoIter.
 
   Global Instance Method_into_iter :
-    Notation.Dot "into_iter" := {
-    Notation.dot := into_iter;
+    Notations.Dot "into_iter" := {
+    Notations.dot := into_iter;
   }.
   End Impl_IntoIterator_for_Slice_Iter.
 End Impl_IntoIterator_for_Slice_Iter.
@@ -643,8 +618,8 @@ Module Impl_Iterator_for_Slice_IterMut.
 
   Parameter next : mut_ref Self -> M (core.option.Option.t A).
 
-  Global Instance Method_next : Notation.Dot "next" := {
-    Notation.dot := next;
+  Global Instance Method_next : Notations.Dot "next" := {
+    Notations.dot := next;
   }.
   End Impl_Iterator_for_Slice_IterMut.
 End Impl_Iterator_for_Slice_IterMut.
@@ -665,8 +640,8 @@ Module Impl_IntoIterator_for_Slice_IterMut.
   Parameter into_iter : Self -> M IntoIter.
 
   Global Instance Method_into_iter :
-    Notation.Dot "into_iter" := {
-    Notation.dot := into_iter;
+    Notations.Dot "into_iter" := {
+    Notations.dot := into_iter;
   }.
   End Impl_IntoIterator_for_Slice_IterMut.
 End Impl_IntoIterator_for_Slice_IterMut.
@@ -688,8 +663,8 @@ Module Impl_IntoIter_for_Vec.
     into_iter := into_iter;
   }. *)
   Global Instance Method_into_iter :
-    Notation.Dot "into_iter" := {
-    Notation.dot := into_iter;
+    Notations.Dot "into_iter" := {
+    Notations.dot := into_iter;
   }.
   End Impl_IntoIter_for_Vec.
 End Impl_IntoIter_for_Vec.
@@ -706,8 +681,8 @@ Module Impl_Iterator_for_Vec_IntoIter.
 
   Parameter next : mut_ref Self -> M (core.option.Option.t T).
 
-  Global Instance Method_next : Notation.Dot "next" := {
-    Notation.dot := next;
+  Global Instance Method_next : Notations.Dot "next" := {
+    Notations.dot := next;
   }.
   End Impl_Iterator_for_Vec_IntoIter.
 End Impl_Iterator_for_Vec_IntoIter.
@@ -726,8 +701,8 @@ Module Impl_IntoIter_for_Vec_IntoIter.
   Definition into_iter (self : Self) : M IntoIter := M.pure self.
 
   Global Instance Method_into_iter :
-    Notation.Dot "into_iter" := {
-    Notation.dot := into_iter;
+    Notations.Dot "into_iter" := {
+    Notations.dot := into_iter;
   }.
   End Impl_IntoIter_for_Vec_IntoIter.
 End Impl_IntoIter_for_Vec_IntoIter.
@@ -745,12 +720,12 @@ Module Temp_Impl_for_Vec.
   Parameter iter_mut :
     ref Self -> M (std.slice.IterMut.t T).
 
-  Global Instance Method_iter : Notation.Dot "iter" := {
-    Notation.dot := iter;
+  Global Instance Method_iter : Notations.Dot "iter" := {
+    Notations.dot := iter;
   }.
 
-  Global Instance Method_iter_mut : Notation.Dot "iter_mut" := {
-    Notation.dot := iter_mut;
+  Global Instance Method_iter_mut : Notations.Dot "iter_mut" := {
+    Notations.dot := iter_mut;
   }.
   End Temp_Impl_for_Vec.
 End Temp_Impl_for_Vec.
@@ -780,8 +755,8 @@ Module Impl_Iterator_for_Range.
 
   Parameter next : mut_ref Self -> M (core.option.Option.t A).
 
-  Global Instance Method_next : Notation.Dot "next" := {
-    Notation.dot := next;
+  Global Instance Method_next : Notations.Dot "next" := {
+    Notations.dot := next;
   }.
   End Impl_Iterator_for_Range.
 End Impl_Iterator_for_Range.
@@ -803,8 +778,8 @@ Module Impl_IntoIterator_for_Range.
     Self -> M IntoIter.
 
   Global Instance Method_into_iter :
-    Notation.Dot "into_iter" := {
-    Notation.dot := into_iter;
+    Notations.Dot "into_iter" := {
+    Notations.dot := into_iter;
   }.
   End Impl_IntoIterator_for_Range.
 End Impl_IntoIterator_for_Range.
@@ -822,8 +797,8 @@ Module Impl_Iterator_for_RangeInclusive.
 
   Parameter next : mut_ref Self -> M (core.option.Option.t A).
 
-  Global Instance Method_next : Notation.Dot "next" := {
-    Notation.dot := next;
+  Global Instance Method_next : Notations.Dot "next" := {
+    Notations.dot := next;
   }.
   End Impl_Iterator_for_RangeInclusive.
 End Impl_Iterator_for_RangeInclusive.
@@ -845,8 +820,8 @@ Module Impl_IntoIterator_for_RangeInclusive.
     Self -> M IntoIter.
 
   Global Instance Method_into_iter :
-    Notation.Dot "into_iter" := {
-    Notation.dot := into_iter;
+    Notations.Dot "into_iter" := {
+    Notations.dot := into_iter;
   }.
   End Impl_IntoIterator_for_RangeInclusive.
 End Impl_IntoIterator_for_RangeInclusive.
@@ -854,7 +829,7 @@ End Impl_IntoIterator_for_RangeInclusive.
 (* TODO: remove - it is a temporary definition *)
 Module Impl_Iterator_for_Range_Z.
   Global Instance Method_next {A : Set} :
-    Notation.Dot "next" (T := std.ops.Range A -> M (core.option.Option.t Z)).
+    Notations.Dot "next" (T := std.ops.Range A -> M (core.option.Option.t Z)).
   Admitted.
 (*   Impl_Iterator_for_Range.Method_next (A := Z). *)
 End Impl_Iterator_for_Range_Z.
@@ -862,7 +837,7 @@ End Impl_Iterator_for_Range_Z.
 (* TODO: remove - it is a temporary definition *)
 Module Impl_Iterator_for_RangeInclusive_Z.
   Global Instance Method_next {A : Set} :
-    Notation.Dot "next"
+    Notations.Dot "next"
       (T := std.ops.RangeInclusive A -> M (core.option.Option.t Z)).
   Admitted.
 (*   Impl_Iterator_for_Range.Method_next (A := Z). *)

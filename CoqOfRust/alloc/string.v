@@ -6,7 +6,7 @@ Require CoqOfRust.core.fmt.
 (* 
 [ ] ParseError
 *)
-(* Notation ParseError := Infallible. *)
+(* Notations ParseError := Infallible. *)
 
 (* ********STRUCTS******** *)
 (* 
@@ -47,8 +47,8 @@ Module ToString.
   }.
 
   Global Instance Method_to_string `(Trait) :
-    Notation.Dot "to_string" := {
-    Notation.dot := to_string;
+    Notations.Dot "to_string" := {
+    Notations.dot := to_string;
   }.
 End ToString.
 
@@ -65,8 +65,8 @@ Module StringType.
   }.
 
   Global Instance Method_from :
-      Notation.DoubleColon String "from" := {
-    Notation.double_colon := from;
+      Notations.DoubleColon String "from" := {
+    Notations.double_colon := from;
   }.
 
  (* @TODO add more methods from (Struct std::string::String) *)

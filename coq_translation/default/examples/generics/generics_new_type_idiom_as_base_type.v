@@ -7,8 +7,8 @@ Section Years.
     x0 : i64.t;
   }.
   
-  Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(x0) : M _;
+  Global Instance Get_0 : Notations.Dot "0" := {
+    Notations.dot := Ref.map (fun x => x.(x0)) (fun v x => x <| x0 := v |>);
   }.
 End Years.
 End Years.
@@ -28,7 +28,7 @@ Definition main : M (M.Val unit) :=
       let* α0 : ltac:(refine (M.Val i64.t)) := M.alloc 42 in
       let* α1 := M.read α0 in
       M.alloc (generics_new_type_idiom_as_base_type.Years.Build_t α1) in
-    let* years_as_primitive_1 : ltac:(refine (M.Val i64.t)) := years.["0"] in
+    let years_as_primitive_1 := years.["0"] in
     let 'generics_new_type_idiom_as_base_type.Years.Build_t
           years_as_primitive_2 :=
       years in

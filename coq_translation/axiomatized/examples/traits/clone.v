@@ -20,8 +20,8 @@ Section Impl_core_fmt_Debug_for_clone_Unit_t.
         M (M.Val ltac:(core.fmt.Result)).
   
   Global Instance AssociatedFunction_fmt :
-    Notation.DoubleColon ltac:(Self) "fmt" := {
-    Notation.double_colon := fmt;
+    Notations.DoubleColon ltac:(Self) "fmt" := {
+    Notations.double_colon := fmt;
   }.
   
   Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
@@ -40,8 +40,8 @@ Section Impl_core_clone_Clone_for_clone_Unit_t.
   Parameter clone : (M.Val (ref ltac:(Self))) -> M (M.Val clone.Unit.t).
   
   Global Instance AssociatedFunction_clone :
-    Notation.DoubleColon ltac:(Self) "clone" := {
-    Notation.double_colon := clone;
+    Notations.DoubleColon ltac:(Self) "clone" := {
+    Notations.double_colon := clone;
   }.
   
   Global Instance ℐ : core.clone.Clone.Required.Trait ltac:(Self) := {
@@ -67,11 +67,11 @@ Section Pair.
     x1 : alloc.boxed.Box.t i32.t alloc.boxed.Box.Default.A;
   }.
   
-  Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(x0) : M _;
+  Global Instance Get_0 : Notations.Dot "0" := {
+    Notations.dot := Ref.map (fun x => x.(x0)) (fun v x => x <| x0 := v |>);
   }.
-  Global Instance Get_1 : Notation.Dot "1" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(x1) : M _;
+  Global Instance Get_1 : Notations.Dot "1" := {
+    Notations.dot := Ref.map (fun x => x.(x1)) (fun v x => x <| x1 := v |>);
   }.
 End Pair.
 End Pair.
@@ -86,8 +86,8 @@ Section Impl_core_clone_Clone_for_clone_Pair_t.
   Parameter clone : (M.Val (ref ltac:(Self))) -> M (M.Val clone.Pair.t).
   
   Global Instance AssociatedFunction_clone :
-    Notation.DoubleColon ltac:(Self) "clone" := {
-    Notation.double_colon := clone;
+    Notations.DoubleColon ltac:(Self) "clone" := {
+    Notations.double_colon := clone;
   }.
   
   Global Instance ℐ : core.clone.Clone.Required.Trait ltac:(Self) := {
@@ -110,8 +110,8 @@ Section Impl_core_fmt_Debug_for_clone_Pair_t.
         M (M.Val ltac:(core.fmt.Result)).
   
   Global Instance AssociatedFunction_fmt :
-    Notation.DoubleColon ltac:(Self) "fmt" := {
-    Notation.double_colon := fmt;
+    Notations.DoubleColon ltac:(Self) "fmt" := {
+    Notations.double_colon := fmt;
   }.
   
   Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {

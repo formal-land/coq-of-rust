@@ -8,17 +8,19 @@ Section Account.
     password : ref str.t;
   }.
   
-  Global Instance Get_username : Notation.Dot "username" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(username) : M _;
+  Global Instance Get_username : Notations.Dot "username" := {
+    Notations.dot :=
+      Ref.map (fun x => x.(username)) (fun v x => x <| username := v |>);
   }.
-  Global Instance Get_AF_username : Notation.DoubleColon t "username" := {
-    Notation.double_colon x := let* x := M.read x in M.alloc x.(username) : M _;
+  Global Instance Get_AF_username : Notations.DoubleColon t "username" := {
+    Notations.double_colon (x : M.Val t) := x.["username"];
   }.
-  Global Instance Get_password : Notation.Dot "password" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(password) : M _;
+  Global Instance Get_password : Notations.Dot "password" := {
+    Notations.dot :=
+      Ref.map (fun x => x.(password)) (fun v x => x <| password := v |>);
   }.
-  Global Instance Get_AF_password : Notation.DoubleColon t "password" := {
-    Notation.double_colon x := let* x := M.read x in M.alloc x.(password) : M _;
+  Global Instance Get_AF_password : Notations.DoubleColon t "password" := {
+    Notations.double_colon (x : M.Val t) := x.["password"];
   }.
 End Account.
 End Account.
@@ -48,39 +50,39 @@ Section Impl_core_cmp_PartialEq_for_hash_map_alternate_or_custom_key_types_Accou
           ltac:(refine
             (M.Val hash_map_alternate_or_custom_key_types.Account.t)) :=
         deref self in
-      let* α1 : ltac:(refine (M.Val (ref str.t))) := α0.["username"] in
-      let* α2 : ltac:(refine (M.Val (ref (ref str.t)))) := borrow α1 in
-      let* α3 :
+      let* α1 : ltac:(refine (M.Val (ref (ref str.t)))) :=
+        borrow α0.["username"] in
+      let* α2 :
           ltac:(refine
             (M.Val hash_map_alternate_or_custom_key_types.Account.t)) :=
         deref other in
-      let* α4 : ltac:(refine (M.Val (ref str.t))) := α3.["username"] in
-      let* α5 : ltac:(refine (M.Val (ref (ref str.t)))) := borrow α4 in
-      let* α6 : ltac:(refine (M.Val bool.t)) :=
+      let* α3 : ltac:(refine (M.Val (ref (ref str.t)))) :=
+        borrow α2.["username"] in
+      let* α4 : ltac:(refine (M.Val bool.t)) :=
         (core.cmp.PartialEq.eq (Self := ref str.t) (Trait := ltac:(refine _)))
-          α2
-          α5 in
-      let* α7 :
+          α1
+          α3 in
+      let* α5 :
           ltac:(refine
             (M.Val hash_map_alternate_or_custom_key_types.Account.t)) :=
         deref self in
-      let* α8 : ltac:(refine (M.Val (ref str.t))) := α7.["password"] in
-      let* α9 : ltac:(refine (M.Val (ref (ref str.t)))) := borrow α8 in
-      let* α10 :
+      let* α6 : ltac:(refine (M.Val (ref (ref str.t)))) :=
+        borrow α5.["password"] in
+      let* α7 :
           ltac:(refine
             (M.Val hash_map_alternate_or_custom_key_types.Account.t)) :=
         deref other in
-      let* α11 : ltac:(refine (M.Val (ref str.t))) := α10.["password"] in
-      let* α12 : ltac:(refine (M.Val (ref (ref str.t)))) := borrow α11 in
-      let* α13 : ltac:(refine (M.Val bool.t)) :=
+      let* α8 : ltac:(refine (M.Val (ref (ref str.t)))) :=
+        borrow α7.["password"] in
+      let* α9 : ltac:(refine (M.Val bool.t)) :=
         (core.cmp.PartialEq.eq (Self := ref str.t) (Trait := ltac:(refine _)))
-          α9
-          α12 in
-      BinOp.and α6 α13).
+          α6
+          α8 in
+      BinOp.and α4 α9).
   
   Global Instance AssociatedFunction_eq :
-    Notation.DoubleColon ltac:(Self) "eq" := {
-    Notation.double_colon := eq;
+    Notations.DoubleColon ltac:(Self) "eq" := {
+    Notations.double_colon := eq;
   }.
   
   Global Instance ℐ :
@@ -117,8 +119,8 @@ Section Impl_core_cmp_Eq_for_hash_map_alternate_or_custom_key_types_Account_t.
       M.alloc tt).
   
   Global Instance AssociatedFunction_assert_receiver_is_total_eq :
-    Notation.DoubleColon ltac:(Self) "assert_receiver_is_total_eq" := {
-    Notation.double_colon := assert_receiver_is_total_eq;
+    Notations.DoubleColon ltac:(Self) "assert_receiver_is_total_eq" := {
+    Notations.double_colon := assert_receiver_is_total_eq;
   }.
   
   Global Instance ℐ : core.cmp.Eq.Required.Trait ltac:(Self) := {
@@ -147,30 +149,30 @@ Section Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account_t
             ltac:(refine
               (M.Val hash_map_alternate_or_custom_key_types.Account.t)) :=
           deref self in
-        let* α1 : ltac:(refine (M.Val (ref str.t))) := α0.["username"] in
-        let* α2 : ltac:(refine (M.Val (ref (ref str.t)))) := borrow α1 in
-        let* α3 : ltac:(refine (M.Val __H)) := deref state in
-        let* α4 : ltac:(refine (M.Val (mut_ref __H))) := borrow_mut α3 in
+        let* α1 : ltac:(refine (M.Val (ref (ref str.t)))) :=
+          borrow α0.["username"] in
+        let* α2 : ltac:(refine (M.Val __H)) := deref state in
+        let* α3 : ltac:(refine (M.Val (mut_ref __H))) := borrow_mut α2 in
         (core.hash.Hash.hash (Self := ref str.t) (Trait := ltac:(refine _)))
-          α2
-          α4 in
+          α1
+          α3 in
       let* α0 :
           ltac:(refine
             (M.Val hash_map_alternate_or_custom_key_types.Account.t)) :=
         deref self in
-      let* α1 : ltac:(refine (M.Val (ref str.t))) := α0.["password"] in
-      let* α2 : ltac:(refine (M.Val (ref (ref str.t)))) := borrow α1 in
-      let* α3 : ltac:(refine (M.Val __H)) := deref state in
-      let* α4 : ltac:(refine (M.Val (mut_ref __H))) := borrow_mut α3 in
+      let* α1 : ltac:(refine (M.Val (ref (ref str.t)))) :=
+        borrow α0.["password"] in
+      let* α2 : ltac:(refine (M.Val __H)) := deref state in
+      let* α3 : ltac:(refine (M.Val (mut_ref __H))) := borrow_mut α2 in
       (core.hash.Hash.hash (Self := ref str.t) (Trait := ltac:(refine _)))
-        α2
-        α4).
+        α1
+        α3).
   
   Global Instance AssociatedFunction_hash
       {__H : Set}
       {ℋ_0 : core.hash.Hasher.Trait __H} :
-    Notation.DoubleColon ltac:(Self) "hash" := {
-    Notation.double_colon := hash (__H := __H);
+    Notations.DoubleColon ltac:(Self) "hash" := {
+    Notations.double_colon := hash (__H := __H);
   }.
   
   Global Instance ℐ : core.hash.Hash.Required.Trait ltac:(Self) := {
@@ -188,17 +190,18 @@ Section AccountInfo.
     email : ref str.t;
   }.
   
-  Global Instance Get_name : Notation.Dot "name" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(name) : M _;
+  Global Instance Get_name : Notations.Dot "name" := {
+    Notations.dot := Ref.map (fun x => x.(name)) (fun v x => x <| name := v |>);
   }.
-  Global Instance Get_AF_name : Notation.DoubleColon t "name" := {
-    Notation.double_colon x := let* x := M.read x in M.alloc x.(name) : M _;
+  Global Instance Get_AF_name : Notations.DoubleColon t "name" := {
+    Notations.double_colon (x : M.Val t) := x.["name"];
   }.
-  Global Instance Get_email : Notation.Dot "email" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(email) : M _;
+  Global Instance Get_email : Notations.Dot "email" := {
+    Notations.dot :=
+      Ref.map (fun x => x.(email)) (fun v x => x <| email := v |>);
   }.
-  Global Instance Get_AF_email : Notation.DoubleColon t "email" := {
-    Notation.double_colon x := let* x := M.read x in M.alloc x.(email) : M _;
+  Global Instance Get_AF_email : Notations.DoubleColon t "email" := {
+    Notations.double_colon (x : M.Val t) := x.["email"];
   }.
 End AccountInfo.
 End AccountInfo.
@@ -369,21 +372,21 @@ Definition try_logon
               ltac:(refine
                 (M.Val hash_map_alternate_or_custom_key_types.AccountInfo.t)) :=
             deref account_info in
-          let* α4 : ltac:(refine (M.Val (ref str.t))) := α3.["name"] in
-          let* α5 : ltac:(refine (M.Val (ref (ref str.t)))) := borrow α4 in
-          let* α6 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
-            core.fmt.rt.Argument.t::["new_display"] α5 in
-          let* α7 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
-            M.alloc [ α6 ] in
-          let* α8 :
+          let* α4 : ltac:(refine (M.Val (ref (ref str.t)))) :=
+            borrow α3.["name"] in
+          let* α5 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
+            core.fmt.rt.Argument.t::["new_display"] α4 in
+          let* α6 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
+            M.alloc [ α5 ] in
+          let* α7 :
               ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
-            borrow α7 in
-          let* α9 :
+            borrow α6 in
+          let* α8 :
               ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
-            pointer_coercion "Unsize" α8 in
-          let* α10 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-            core.fmt.Arguments.t::["new_v1"] α2 α9 in
-          std.io.stdio._print α10 in
+            pointer_coercion "Unsize" α7 in
+          let* α9 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
+            core.fmt.Arguments.t::["new_v1"] α2 α8 in
+          std.io.stdio._print α9 in
         M.alloc tt in
       let* _ : ltac:(refine (M.Val unit)) :=
         let* _ : ltac:(refine (M.Val unit)) :=
@@ -398,21 +401,21 @@ Definition try_logon
               ltac:(refine
                 (M.Val hash_map_alternate_or_custom_key_types.AccountInfo.t)) :=
             deref account_info in
-          let* α4 : ltac:(refine (M.Val (ref str.t))) := α3.["email"] in
-          let* α5 : ltac:(refine (M.Val (ref (ref str.t)))) := borrow α4 in
-          let* α6 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
-            core.fmt.rt.Argument.t::["new_display"] α5 in
-          let* α7 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
-            M.alloc [ α6 ] in
-          let* α8 :
+          let* α4 : ltac:(refine (M.Val (ref (ref str.t)))) :=
+            borrow α3.["email"] in
+          let* α5 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
+            core.fmt.rt.Argument.t::["new_display"] α4 in
+          let* α6 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
+            M.alloc [ α5 ] in
+          let* α7 :
               ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
-            borrow α7 in
-          let* α9 :
+            borrow α6 in
+          let* α8 :
               ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
-            pointer_coercion "Unsize" α8 in
-          let* α10 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-            core.fmt.Arguments.t::["new_v1"] α2 α9 in
-          std.io.stdio._print α10 in
+            pointer_coercion "Unsize" α7 in
+          let* α9 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
+            core.fmt.Arguments.t::["new_v1"] α2 α8 in
+          std.io.stdio._print α9 in
         M.alloc tt in
       M.alloc tt
     | _ =>

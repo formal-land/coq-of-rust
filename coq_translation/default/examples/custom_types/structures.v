@@ -8,17 +8,17 @@ Section Person.
     age : u8.t;
   }.
   
-  Global Instance Get_name : Notation.Dot "name" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(name) : M _;
+  Global Instance Get_name : Notations.Dot "name" := {
+    Notations.dot := Ref.map (fun x => x.(name)) (fun v x => x <| name := v |>);
   }.
-  Global Instance Get_AF_name : Notation.DoubleColon t "name" := {
-    Notation.double_colon x := let* x := M.read x in M.alloc x.(name) : M _;
+  Global Instance Get_AF_name : Notations.DoubleColon t "name" := {
+    Notations.double_colon (x : M.Val t) := x.["name"];
   }.
-  Global Instance Get_age : Notation.Dot "age" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(age) : M _;
+  Global Instance Get_age : Notations.Dot "age" := {
+    Notations.dot := Ref.map (fun x => x.(age)) (fun v x => x <| age := v |>);
   }.
-  Global Instance Get_AF_age : Notation.DoubleColon t "age" := {
-    Notation.double_colon x := let* x := M.read x in M.alloc x.(age) : M _;
+  Global Instance Get_AF_age : Notations.DoubleColon t "age" := {
+    Notations.double_colon (x : M.Val t) := x.["age"];
   }.
 End Person.
 End Person.
@@ -43,24 +43,22 @@ Section Impl_core_fmt_Debug_for_structures_Person_t.
       let* α4 : ltac:(refine (M.Val str.t)) := deref (mk_str "name") in
       let* α5 : ltac:(refine (M.Val (ref str.t))) := borrow α4 in
       let* α6 : ltac:(refine (M.Val structures.Person.t)) := deref self in
-      let* α7 : ltac:(refine (M.Val alloc.string.String.t)) := α6.["name"] in
-      let* α8 : ltac:(refine (M.Val (ref alloc.string.String.t))) :=
-        borrow α7 in
-      let* α9 : ltac:(refine (M.Val (ref type not implemented))) :=
-        pointer_coercion "Unsize" α8 in
-      let* α10 : ltac:(refine (M.Val str.t)) := deref (mk_str "age") in
-      let* α11 : ltac:(refine (M.Val (ref str.t))) := borrow α10 in
-      let* α12 : ltac:(refine (M.Val structures.Person.t)) := deref self in
-      let* α13 : ltac:(refine (M.Val u8.t)) := α12.["age"] in
-      let* α14 : ltac:(refine (M.Val (ref u8.t))) := borrow α13 in
-      let* α15 : ltac:(refine (M.Val (ref (ref u8.t)))) := borrow α14 in
-      let* α16 : ltac:(refine (M.Val (ref type not implemented))) :=
-        pointer_coercion "Unsize" α15 in
-      core.fmt.Formatter.t::["debug_struct_field2_finish"] α1 α3 α5 α9 α11 α16).
+      let* α7 : ltac:(refine (M.Val (ref alloc.string.String.t))) :=
+        borrow α6.["name"] in
+      let* α8 : ltac:(refine (M.Val (ref type not implemented))) :=
+        pointer_coercion "Unsize" α7 in
+      let* α9 : ltac:(refine (M.Val str.t)) := deref (mk_str "age") in
+      let* α10 : ltac:(refine (M.Val (ref str.t))) := borrow α9 in
+      let* α11 : ltac:(refine (M.Val structures.Person.t)) := deref self in
+      let* α12 : ltac:(refine (M.Val (ref u8.t))) := borrow α11.["age"] in
+      let* α13 : ltac:(refine (M.Val (ref (ref u8.t)))) := borrow α12 in
+      let* α14 : ltac:(refine (M.Val (ref type not implemented))) :=
+        pointer_coercion "Unsize" α13 in
+      core.fmt.Formatter.t::["debug_struct_field2_finish"] α1 α3 α5 α8 α10 α14).
   
   Global Instance AssociatedFunction_fmt :
-    Notation.DoubleColon ltac:(Self) "fmt" := {
-    Notation.double_colon := fmt;
+    Notations.DoubleColon ltac:(Self) "fmt" := {
+    Notations.double_colon := fmt;
   }.
   
   Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
@@ -82,11 +80,11 @@ Section Pair.
     x1 : f32.t;
   }.
   
-  Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(x0) : M _;
+  Global Instance Get_0 : Notations.Dot "0" := {
+    Notations.dot := Ref.map (fun x => x.(x0)) (fun v x => x <| x0 := v |>);
   }.
-  Global Instance Get_1 : Notation.Dot "1" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(x1) : M _;
+  Global Instance Get_1 : Notations.Dot "1" := {
+    Notations.dot := Ref.map (fun x => x.(x1)) (fun v x => x <| x1 := v |>);
   }.
 End Pair.
 End Pair.
@@ -98,17 +96,17 @@ Section Point.
     y : f32.t;
   }.
   
-  Global Instance Get_x : Notation.Dot "x" := {
-    Notation.dot x' := let* x' := M.read x' in M.alloc x'.(x) : M _;
+  Global Instance Get_x : Notations.Dot "x" := {
+    Notations.dot := Ref.map (fun x' => x'.(x)) (fun v x' => x' <| x := v |>);
   }.
-  Global Instance Get_AF_x : Notation.DoubleColon t "x" := {
-    Notation.double_colon x' := let* x' := M.read x' in M.alloc x'.(x) : M _;
+  Global Instance Get_AF_x : Notations.DoubleColon t "x" := {
+    Notations.double_colon (x' : M.Val t) := x'.["x"];
   }.
-  Global Instance Get_y : Notation.Dot "y" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(y) : M _;
+  Global Instance Get_y : Notations.Dot "y" := {
+    Notations.dot := Ref.map (fun x => x.(y)) (fun v x => x <| y := v |>);
   }.
-  Global Instance Get_AF_y : Notation.DoubleColon t "y" := {
-    Notation.double_colon x := let* x := M.read x in M.alloc x.(y) : M _;
+  Global Instance Get_AF_y : Notations.DoubleColon t "y" := {
+    Notations.double_colon (x : M.Val t) := x.["y"];
   }.
 End Point.
 End Point.
@@ -120,19 +118,22 @@ Section Rectangle.
     bottom_right : structures.Point.t;
   }.
   
-  Global Instance Get_top_left : Notation.Dot "top_left" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(top_left) : M _;
+  Global Instance Get_top_left : Notations.Dot "top_left" := {
+    Notations.dot :=
+      Ref.map (fun x => x.(top_left)) (fun v x => x <| top_left := v |>);
   }.
-  Global Instance Get_AF_top_left : Notation.DoubleColon t "top_left" := {
-    Notation.double_colon x := let* x := M.read x in M.alloc x.(top_left) : M _;
+  Global Instance Get_AF_top_left : Notations.DoubleColon t "top_left" := {
+    Notations.double_colon (x : M.Val t) := x.["top_left"];
   }.
-  Global Instance Get_bottom_right : Notation.Dot "bottom_right" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(bottom_right) : M _;
+  Global Instance Get_bottom_right : Notations.Dot "bottom_right" := {
+    Notations.dot :=
+      Ref.map
+        (fun x => x.(bottom_right))
+        (fun v x => x <| bottom_right := v |>);
   }.
   Global Instance Get_AF_bottom_right :
-    Notation.DoubleColon t "bottom_right" := {
-    Notation.double_colon x :=
-      let* x := M.read x in M.alloc x.(bottom_right) : M _;
+    Notations.DoubleColon t "bottom_right" := {
+    Notations.double_colon (x : M.Val t) := x.["bottom_right"];
   }.
 End Rectangle.
 End Rectangle.
@@ -243,23 +244,21 @@ Definition main : M (M.Val unit) :=
           borrow α0 in
         let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
-        let* α3 : ltac:(refine (M.Val f32.t)) := point.["x"] in
-        let* α4 : ltac:(refine (M.Val (ref f32.t))) := borrow α3 in
-        let* α5 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
-          core.fmt.rt.Argument.t::["new_display"] α4 in
-        let* α6 : ltac:(refine (M.Val f32.t)) := point.["y"] in
-        let* α7 : ltac:(refine (M.Val (ref f32.t))) := borrow α6 in
-        let* α8 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
-          core.fmt.rt.Argument.t::["new_display"] α7 in
-        let* α9 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
-          M.alloc [ α5; α8 ] in
-        let* α10 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
-          borrow α9 in
-        let* α11 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
-          pointer_coercion "Unsize" α10 in
-        let* α12 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-          core.fmt.Arguments.t::["new_v1"] α2 α11 in
-        std.io.stdio._print α12 in
+        let* α3 : ltac:(refine (M.Val (ref f32.t))) := borrow point.["x"] in
+        let* α4 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
+          core.fmt.rt.Argument.t::["new_display"] α3 in
+        let* α5 : ltac:(refine (M.Val (ref f32.t))) := borrow point.["y"] in
+        let* α6 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
+          core.fmt.rt.Argument.t::["new_display"] α5 in
+        let* α7 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
+          M.alloc [ α4; α6 ] in
+        let* α8 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
+          borrow α7 in
+        let* α9 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
+          pointer_coercion "Unsize" α8 in
+        let* α10 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
+          core.fmt.Arguments.t::["new_v1"] α2 α9 in
+        std.io.stdio._print α10 in
       M.alloc tt in
     let* bottom_right : ltac:(refine (M.Val structures.Point.t)) :=
       let* α0 : ltac:(refine (M.Val f32.t)) := M.alloc 5 (* 5.2 *) in
@@ -274,23 +273,23 @@ Definition main : M (M.Val unit) :=
           borrow α0 in
         let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
-        let* α3 : ltac:(refine (M.Val f32.t)) := bottom_right.["x"] in
-        let* α4 : ltac:(refine (M.Val (ref f32.t))) := borrow α3 in
-        let* α5 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
-          core.fmt.rt.Argument.t::["new_display"] α4 in
-        let* α6 : ltac:(refine (M.Val f32.t)) := bottom_right.["y"] in
-        let* α7 : ltac:(refine (M.Val (ref f32.t))) := borrow α6 in
-        let* α8 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
-          core.fmt.rt.Argument.t::["new_display"] α7 in
-        let* α9 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
-          M.alloc [ α5; α8 ] in
-        let* α10 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
-          borrow α9 in
-        let* α11 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
-          pointer_coercion "Unsize" α10 in
-        let* α12 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-          core.fmt.Arguments.t::["new_v1"] α2 α11 in
-        std.io.stdio._print α12 in
+        let* α3 : ltac:(refine (M.Val (ref f32.t))) :=
+          borrow bottom_right.["x"] in
+        let* α4 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
+          core.fmt.rt.Argument.t::["new_display"] α3 in
+        let* α5 : ltac:(refine (M.Val (ref f32.t))) :=
+          borrow bottom_right.["y"] in
+        let* α6 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
+          core.fmt.rt.Argument.t::["new_display"] α5 in
+        let* α7 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
+          M.alloc [ α4; α6 ] in
+        let* α8 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
+          borrow α7 in
+        let* α9 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
+          pointer_coercion "Unsize" α8 in
+        let* α10 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
+          core.fmt.Arguments.t::["new_v1"] α2 α9 in
+        std.io.stdio._print α10 in
       M.alloc tt in
     let '{| structures.Point.x := left_edge; structures.Point.y := top_edge;
         |} :=
@@ -322,23 +321,21 @@ Definition main : M (M.Val unit) :=
           borrow α0 in
         let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
-        let* α3 : ltac:(refine (M.Val i32.t)) := pair.["0"] in
-        let* α4 : ltac:(refine (M.Val (ref i32.t))) := borrow α3 in
-        let* α5 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
-          core.fmt.rt.Argument.t::["new_debug"] α4 in
-        let* α6 : ltac:(refine (M.Val f32.t)) := pair.["1"] in
-        let* α7 : ltac:(refine (M.Val (ref f32.t))) := borrow α6 in
-        let* α8 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
-          core.fmt.rt.Argument.t::["new_debug"] α7 in
-        let* α9 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
-          M.alloc [ α5; α8 ] in
-        let* α10 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
-          borrow α9 in
-        let* α11 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
-          pointer_coercion "Unsize" α10 in
-        let* α12 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-          core.fmt.Arguments.t::["new_v1"] α2 α11 in
-        std.io.stdio._print α12 in
+        let* α3 : ltac:(refine (M.Val (ref i32.t))) := borrow pair.["0"] in
+        let* α4 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
+          core.fmt.rt.Argument.t::["new_debug"] α3 in
+        let* α5 : ltac:(refine (M.Val (ref f32.t))) := borrow pair.["1"] in
+        let* α6 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
+          core.fmt.rt.Argument.t::["new_debug"] α5 in
+        let* α7 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
+          M.alloc [ α4; α6 ] in
+        let* α8 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
+          borrow α7 in
+        let* α9 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
+          pointer_coercion "Unsize" α8 in
+        let* α10 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
+          core.fmt.Arguments.t::["new_v1"] α2 α9 in
+        std.io.stdio._print α10 in
       M.alloc tt in
     let 'structures.Pair.Build_t integer decimal := pair in
     let* _ : ltac:(refine (M.Val unit)) :=

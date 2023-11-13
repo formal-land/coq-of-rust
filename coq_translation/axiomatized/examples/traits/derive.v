@@ -7,8 +7,8 @@ Section Centimeters.
     x0 : f64.t;
   }.
   
-  Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(x0) : M _;
+  Global Instance Get_0 : Notations.Dot "0" := {
+    Notations.dot := Ref.map (fun x => x.(x0)) (fun v x => x <| x0 := v |>);
   }.
 End Centimeters.
 End Centimeters.
@@ -35,8 +35,8 @@ Section Impl_core_cmp_PartialEq_for_derive_Centimeters_t.
         M (M.Val bool.t).
   
   Global Instance AssociatedFunction_eq :
-    Notation.DoubleColon ltac:(Self) "eq" := {
-    Notation.double_colon := eq;
+    Notations.DoubleColon ltac:(Self) "eq" := {
+    Notations.double_colon := eq;
   }.
   
   Global Instance ℐ :
@@ -61,8 +61,8 @@ Section Impl_core_cmp_PartialOrd_for_derive_Centimeters_t.
         M (M.Val (core.option.Option.t core.cmp.Ordering.t)).
   
   Global Instance AssociatedFunction_partial_cmp :
-    Notation.DoubleColon ltac:(Self) "partial_cmp" := {
-    Notation.double_colon := partial_cmp;
+    Notations.DoubleColon ltac:(Self) "partial_cmp" := {
+    Notations.double_colon := partial_cmp;
   }.
   
   Global Instance ℐ :
@@ -83,8 +83,8 @@ Section Inches.
     x0 : i32.t;
   }.
   
-  Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(x0) : M _;
+  Global Instance Get_0 : Notations.Dot "0" := {
+    Notations.dot := Ref.map (fun x => x.(x0)) (fun v x => x <| x0 := v |>);
   }.
 End Inches.
 End Inches.
@@ -102,8 +102,8 @@ Section Impl_core_fmt_Debug_for_derive_Inches_t.
         M (M.Val ltac:(core.fmt.Result)).
   
   Global Instance AssociatedFunction_fmt :
-    Notation.DoubleColon ltac:(Self) "fmt" := {
-    Notation.double_colon := fmt;
+    Notations.DoubleColon ltac:(Self) "fmt" := {
+    Notations.double_colon := fmt;
   }.
   
   Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
@@ -127,8 +127,8 @@ Section Impl_derive_Inches_t.
       (M.Val (ref ltac:(Self))) -> M (M.Val derive.Centimeters.t).
   
   Global Instance AssociatedFunction_to_centimeters :
-    Notation.DoubleColon ltac:(Self) "to_centimeters" := {
-    Notation.double_colon := to_centimeters;
+    Notations.DoubleColon ltac:(Self) "to_centimeters" := {
+    Notations.double_colon := to_centimeters;
   }.
 End Impl_derive_Inches_t.
 End Impl_derive_Inches_t.
@@ -139,8 +139,8 @@ Section Seconds.
     x0 : i32.t;
   }.
   
-  Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(x0) : M _;
+  Global Instance Get_0 : Notations.Dot "0" := {
+    Notations.dot := Ref.map (fun x => x.(x0)) (fun v x => x <| x0 := v |>);
   }.
 End Seconds.
 End Seconds.

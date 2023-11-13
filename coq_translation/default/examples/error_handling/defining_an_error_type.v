@@ -27,8 +27,8 @@ Section Impl_core_fmt_Debug_for_defining_an_error_type_DoubleError_t.
       core.fmt.Formatter.t::["write_str"] α1 α3).
   
   Global Instance AssociatedFunction_fmt :
-    Notation.DoubleColon ltac:(Self) "fmt" := {
-    Notation.double_colon := fmt;
+    Notations.DoubleColon ltac:(Self) "fmt" := {
+    Notations.double_colon := fmt;
   }.
   
   Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
@@ -50,8 +50,8 @@ Section Impl_core_clone_Clone_for_defining_an_error_type_DoubleError_t.
     M.function_body (M.alloc defining_an_error_type.DoubleError.Build_t).
   
   Global Instance AssociatedFunction_clone :
-    Notation.DoubleColon ltac:(Self) "clone" := {
-    Notation.double_colon := clone;
+    Notations.DoubleColon ltac:(Self) "clone" := {
+    Notations.double_colon := clone;
   }.
   
   Global Instance ℐ : core.clone.Clone.Required.Trait ltac:(Self) := {
@@ -91,8 +91,8 @@ Section Impl_core_fmt_Display_for_defining_an_error_type_DoubleError_t.
       core.fmt.Formatter.t::["write_fmt"] α1 α5).
   
   Global Instance AssociatedFunction_fmt :
-    Notation.DoubleColon ltac:(Self) "fmt" := {
-    Notation.double_colon := fmt;
+    Notations.DoubleColon ltac:(Self) "fmt" := {
+    Notations.double_colon := fmt;
   }.
   
   Global Instance ℐ : core.fmt.Display.Trait ltac:(Self) := {

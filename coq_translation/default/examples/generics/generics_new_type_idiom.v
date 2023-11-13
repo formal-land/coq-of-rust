@@ -7,8 +7,8 @@ Section Years.
     x0 : i64.t;
   }.
   
-  Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(x0) : M _;
+  Global Instance Get_0 : Notations.Dot "0" := {
+    Notations.dot := Ref.map (fun x => x.(x0)) (fun v x => x <| x0 := v |>);
   }.
 End Years.
 End Years.
@@ -19,8 +19,8 @@ Section Days.
     x0 : i64.t;
   }.
   
-  Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(x0) : M _;
+  Global Instance Get_0 : Notations.Dot "0" := {
+    Notations.dot := Ref.map (fun x => x.(x0)) (fun v x => x <| x0 := v |>);
   }.
 End Days.
 End Days.
@@ -40,15 +40,14 @@ Section Impl_generics_new_type_idiom_Years_t.
     M.function_body
       (let* α0 : ltac:(refine (M.Val generics_new_type_idiom.Years.t)) :=
         deref self in
-      let* α1 : ltac:(refine (M.Val i64.t)) := α0.["0"] in
-      let* α2 : ltac:(refine (M.Val i64.t)) := M.alloc 365 in
-      let* α3 : ltac:(refine (M.Val i64.t)) := BinOp.mul α1 α2 in
-      let* α4 := M.read α3 in
-      M.alloc (generics_new_type_idiom.Days.Build_t α4)).
+      let* α1 : ltac:(refine (M.Val i64.t)) := M.alloc 365 in
+      let* α2 : ltac:(refine (M.Val i64.t)) := BinOp.mul α0.["0"] α1 in
+      let* α3 := M.read α2 in
+      M.alloc (generics_new_type_idiom.Days.Build_t α3)).
   
   Global Instance AssociatedFunction_to_days :
-    Notation.DoubleColon ltac:(Self) "to_days" := {
-    Notation.double_colon := to_days;
+    Notations.DoubleColon ltac:(Self) "to_days" := {
+    Notations.double_colon := to_days;
   }.
 End Impl_generics_new_type_idiom_Years_t.
 End Impl_generics_new_type_idiom_Years_t.
@@ -68,15 +67,14 @@ Section Impl_generics_new_type_idiom_Days_t.
     M.function_body
       (let* α0 : ltac:(refine (M.Val generics_new_type_idiom.Days.t)) :=
         deref self in
-      let* α1 : ltac:(refine (M.Val i64.t)) := α0.["0"] in
-      let* α2 : ltac:(refine (M.Val i64.t)) := M.alloc 365 in
-      let* α3 : ltac:(refine (M.Val i64.t)) := BinOp.div α1 α2 in
-      let* α4 := M.read α3 in
-      M.alloc (generics_new_type_idiom.Years.Build_t α4)).
+      let* α1 : ltac:(refine (M.Val i64.t)) := M.alloc 365 in
+      let* α2 : ltac:(refine (M.Val i64.t)) := BinOp.div α0.["0"] α1 in
+      let* α3 := M.read α2 in
+      M.alloc (generics_new_type_idiom.Years.Build_t α3)).
   
   Global Instance AssociatedFunction_to_years :
-    Notation.DoubleColon ltac:(Self) "to_years" := {
-    Notation.double_colon := to_years;
+    Notations.DoubleColon ltac:(Self) "to_years" := {
+    Notations.double_colon := to_years;
   }.
 End Impl_generics_new_type_idiom_Days_t.
 End Impl_generics_new_type_idiom_Days_t.
@@ -92,9 +90,8 @@ Definition old_enough
   M.function_body
     (let* α0 : ltac:(refine (M.Val generics_new_type_idiom.Years.t)) :=
       deref age in
-    let* α1 : ltac:(refine (M.Val i64.t)) := α0.["0"] in
-    let* α2 : ltac:(refine (M.Val i64.t)) := M.alloc 18 in
-    BinOp.ge α1 α2).
+    let* α1 : ltac:(refine (M.Val i64.t)) := M.alloc 18 in
+    BinOp.ge α0.["0"] α1).
 
 (*
 fn main() {

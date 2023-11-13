@@ -550,16 +550,13 @@ pub(crate) fn mt_expression(fresh_vars: FreshVars, expr: Expr) -> (Stmt, FreshVa
         ExprKind::NamedField { base, name } => {
             monadic_let(fresh_vars, *base, |fresh_vars, base| {
                 (
-                    Stmt {
-                        kind: StmtKind::Expr(Box::new(Expr {
-                            kind: ExprKind::NamedField {
-                                base: Box::new(base),
-                                name,
-                            },
-                            ty: ty.clone(),
-                        })),
-                        ty,
-                    },
+                    pure(Expr {
+                        kind: ExprKind::NamedField {
+                            base: Box::new(base),
+                            name,
+                        },
+                        ty: ty.clone(),
+                    }),
                     fresh_vars,
                 )
             })

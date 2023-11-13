@@ -7,11 +7,11 @@ Section Foo.
     test : bool.t;
   }.
   
-  Global Instance Get_test : Notation.Dot "test" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(test) : M _;
+  Global Instance Get_test : Notations.Dot "test" := {
+    Notations.dot := Ref.map (fun x => x.(test)) (fun v x => x <| test := v |>);
   }.
-  Global Instance Get_AF_test : Notation.DoubleColon t "test" := {
-    Notation.double_colon x := let* x := M.read x in M.alloc x.(test) : M _;
+  Global Instance Get_AF_test : Notations.DoubleColon t "test" := {
+    Notations.double_colon (x : M.Val t) := x.["test"];
   }.
 End Foo.
 End Foo.
@@ -22,11 +22,11 @@ Section Bar.
     test : alloc.string.String.t;
   }.
   
-  Global Instance Get_test : Notation.Dot "test" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(test) : M _;
+  Global Instance Get_test : Notations.Dot "test" := {
+    Notations.dot := Ref.map (fun x => x.(test)) (fun v x => x <| test := v |>);
   }.
-  Global Instance Get_AF_test : Notation.DoubleColon t "test" := {
-    Notation.double_colon x := let* x := M.read x in M.alloc x.(test) : M _;
+  Global Instance Get_AF_test : Notations.DoubleColon t "test" := {
+    Notations.double_colon (x : M.Val t) := x.["test"];
   }.
 End Bar.
 End Bar.
@@ -52,8 +52,8 @@ Section Impl_const_underscore_expression_BarTrait_for_const_underscore_expressio
   Parameter show : (M.Val ltac:(Self)) -> M (M.Val alloc.string.String.t).
   
   Global Instance AssociatedFunction_show :
-    Notation.DoubleColon ltac:(Self) "show" := {
-    Notation.double_colon := show;
+    Notations.DoubleColon ltac:(Self) "show" := {
+    Notations.double_colon := show;
   }.
   
   Global Instance ℐ :

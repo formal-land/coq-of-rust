@@ -7,8 +7,8 @@ Section Foo.
     x0 : u32.t;
   }.
   
-  Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(x0) : M _;
+  Global Instance Get_0 : Notations.Dot "0" := {
+    Notations.dot := Ref.map (fun x => x.(x0)) (fun v x => x <| x0 := v |>);
   }.
 End Foo.
 End Foo.
@@ -24,13 +24,12 @@ Section Impl_example05_Foo_t.
   *)
   Definition plus1 (self : M.Val ltac:(Self)) : M (M.Val u32.t) :=
     M.function_body
-      (let* α0 : ltac:(refine (M.Val u32.t)) := self.["0"] in
-      let* α1 : ltac:(refine (M.Val u32.t)) := M.alloc 1 in
-      BinOp.add α0 α1).
+      (let* α0 : ltac:(refine (M.Val u32.t)) := M.alloc 1 in
+      BinOp.add self.["0"] α0).
   
   Global Instance AssociatedFunction_plus1 :
-    Notation.DoubleColon ltac:(Self) "plus1" := {
-    Notation.double_colon := plus1;
+    Notations.DoubleColon ltac:(Self) "plus1" := {
+    Notations.double_colon := plus1;
   }.
 End Impl_example05_Foo_t.
 End Impl_example05_Foo_t.

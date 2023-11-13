@@ -59,7 +59,7 @@ Module Impl_Option. Section Impl_Option.
     end.
 
   Global Instance AF_unwrap_or_default {H0 : core.default.Default.Trait T} :
-    Notation.DoubleColon Self "unwrap_or_default" := {
-    Notation.double_colon := unwrap_or_default;
+    Notations.DoubleColon Self "unwrap_or_default" := {
+    Notations.double_colon := unwrap_or_default;
   }.
 End Impl_Option. End Impl_Option.

@@ -40,8 +40,8 @@ Section Impl_core_fmt_Debug_for_combinators_and_then_Food_t.
       core.fmt.Formatter.t::["write_str"] α1 α3).
   
   Global Instance AssociatedFunction_fmt :
-    Notation.DoubleColon ltac:(Self) "fmt" := {
-    Notation.double_colon := fmt;
+    Notations.DoubleColon ltac:(Self) "fmt" := {
+    Notations.double_colon := fmt;
   }.
   
   Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
@@ -88,8 +88,8 @@ Section Impl_core_fmt_Debug_for_combinators_and_then_Day_t.
       core.fmt.Formatter.t::["write_str"] α1 α3).
   
   Global Instance AssociatedFunction_fmt :
-    Notation.DoubleColon ltac:(Self) "fmt" := {
-    Notation.double_colon := fmt;
+    Notations.DoubleColon ltac:(Self) "fmt" := {
+    Notations.double_colon := fmt;
   }.
   
   Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {

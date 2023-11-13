@@ -27,17 +27,17 @@ Section Matrix.
     x3 : f32.t;
   }.
   
-  Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(x0) : M _;
+  Global Instance Get_0 : Notations.Dot "0" := {
+    Notations.dot := Ref.map (fun x => x.(x0)) (fun v x => x <| x0 := v |>);
   }.
-  Global Instance Get_1 : Notation.Dot "1" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(x1) : M _;
+  Global Instance Get_1 : Notations.Dot "1" := {
+    Notations.dot := Ref.map (fun x => x.(x1)) (fun v x => x <| x1 := v |>);
   }.
-  Global Instance Get_2 : Notation.Dot "2" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(x2) : M _;
+  Global Instance Get_2 : Notations.Dot "2" := {
+    Notations.dot := Ref.map (fun x => x.(x2)) (fun v x => x <| x2 := v |>);
   }.
-  Global Instance Get_3 : Notation.Dot "3" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(x3) : M _;
+  Global Instance Get_3 : Notations.Dot "3" := {
+    Notations.dot := Ref.map (fun x => x.(x3)) (fun v x => x <| x3 := v |>);
   }.
 End Matrix.
 End Matrix.
@@ -60,31 +60,27 @@ Section Impl_core_fmt_Debug_for_tuples_Matrix_t.
       let* α2 : ltac:(refine (M.Val str.t)) := deref (mk_str "Matrix") in
       let* α3 : ltac:(refine (M.Val (ref str.t))) := borrow α2 in
       let* α4 : ltac:(refine (M.Val tuples.Matrix.t)) := deref self in
-      let* α5 : ltac:(refine (M.Val f32.t)) := α4.["0"] in
-      let* α6 : ltac:(refine (M.Val (ref f32.t))) := borrow α5 in
-      let* α7 : ltac:(refine (M.Val (ref type not implemented))) :=
-        pointer_coercion "Unsize" α6 in
-      let* α8 : ltac:(refine (M.Val tuples.Matrix.t)) := deref self in
-      let* α9 : ltac:(refine (M.Val f32.t)) := α8.["1"] in
-      let* α10 : ltac:(refine (M.Val (ref f32.t))) := borrow α9 in
-      let* α11 : ltac:(refine (M.Val (ref type not implemented))) :=
-        pointer_coercion "Unsize" α10 in
-      let* α12 : ltac:(refine (M.Val tuples.Matrix.t)) := deref self in
-      let* α13 : ltac:(refine (M.Val f32.t)) := α12.["2"] in
-      let* α14 : ltac:(refine (M.Val (ref f32.t))) := borrow α13 in
-      let* α15 : ltac:(refine (M.Val (ref type not implemented))) :=
-        pointer_coercion "Unsize" α14 in
-      let* α16 : ltac:(refine (M.Val tuples.Matrix.t)) := deref self in
-      let* α17 : ltac:(refine (M.Val f32.t)) := α16.["3"] in
-      let* α18 : ltac:(refine (M.Val (ref f32.t))) := borrow α17 in
-      let* α19 : ltac:(refine (M.Val (ref (ref f32.t)))) := borrow α18 in
-      let* α20 : ltac:(refine (M.Val (ref type not implemented))) :=
-        pointer_coercion "Unsize" α19 in
-      core.fmt.Formatter.t::["debug_tuple_field4_finish"] α1 α3 α7 α11 α15 α20).
+      let* α5 : ltac:(refine (M.Val (ref f32.t))) := borrow α4.["0"] in
+      let* α6 : ltac:(refine (M.Val (ref type not implemented))) :=
+        pointer_coercion "Unsize" α5 in
+      let* α7 : ltac:(refine (M.Val tuples.Matrix.t)) := deref self in
+      let* α8 : ltac:(refine (M.Val (ref f32.t))) := borrow α7.["1"] in
+      let* α9 : ltac:(refine (M.Val (ref type not implemented))) :=
+        pointer_coercion "Unsize" α8 in
+      let* α10 : ltac:(refine (M.Val tuples.Matrix.t)) := deref self in
+      let* α11 : ltac:(refine (M.Val (ref f32.t))) := borrow α10.["2"] in
+      let* α12 : ltac:(refine (M.Val (ref type not implemented))) :=
+        pointer_coercion "Unsize" α11 in
+      let* α13 : ltac:(refine (M.Val tuples.Matrix.t)) := deref self in
+      let* α14 : ltac:(refine (M.Val (ref f32.t))) := borrow α13.["3"] in
+      let* α15 : ltac:(refine (M.Val (ref (ref f32.t)))) := borrow α14 in
+      let* α16 : ltac:(refine (M.Val (ref type not implemented))) :=
+        pointer_coercion "Unsize" α15 in
+      core.fmt.Formatter.t::["debug_tuple_field4_finish"] α1 α3 α6 α9 α12 α16).
   
   Global Instance AssociatedFunction_fmt :
-    Notation.DoubleColon ltac:(Self) "fmt" := {
-    Notation.double_colon := fmt;
+    Notations.DoubleColon ltac:(Self) "fmt" := {
+    Notations.double_colon := fmt;
   }.
   
   Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {

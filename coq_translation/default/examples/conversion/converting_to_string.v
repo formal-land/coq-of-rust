@@ -7,11 +7,12 @@ Section Circle.
     radius : i32.t;
   }.
   
-  Global Instance Get_radius : Notation.Dot "radius" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(radius) : M _;
+  Global Instance Get_radius : Notations.Dot "radius" := {
+    Notations.dot :=
+      Ref.map (fun x => x.(radius)) (fun v x => x <| radius := v |>);
   }.
-  Global Instance Get_AF_radius : Notation.DoubleColon t "radius" := {
-    Notation.double_colon x := let* x := M.read x in M.alloc x.(radius) : M _;
+  Global Instance Get_AF_radius : Notations.DoubleColon t "radius" := {
+    Notations.double_colon (x : M.Val t) := x.["radius"];
   }.
 End Circle.
 End Circle.
@@ -40,23 +41,22 @@ Section Impl_core_fmt_Display_for_converting_to_string_Circle_t.
         pointer_coercion "Unsize" α3 in
       let* α5 : ltac:(refine (M.Val converting_to_string.Circle.t)) :=
         deref self in
-      let* α6 : ltac:(refine (M.Val i32.t)) := α5.["radius"] in
-      let* α7 : ltac:(refine (M.Val (ref i32.t))) := borrow α6 in
-      let* α8 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
-        core.fmt.rt.Argument.t::["new_display"] α7 in
-      let* α9 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
-        M.alloc [ α8 ] in
-      let* α10 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
-        borrow α9 in
-      let* α11 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
-        pointer_coercion "Unsize" α10 in
-      let* α12 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-        core.fmt.Arguments.t::["new_v1"] α4 α11 in
-      core.fmt.Formatter.t::["write_fmt"] α1 α12).
+      let* α6 : ltac:(refine (M.Val (ref i32.t))) := borrow α5.["radius"] in
+      let* α7 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
+        core.fmt.rt.Argument.t::["new_display"] α6 in
+      let* α8 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
+        M.alloc [ α7 ] in
+      let* α9 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
+        borrow α8 in
+      let* α10 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
+        pointer_coercion "Unsize" α9 in
+      let* α11 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
+        core.fmt.Arguments.t::["new_v1"] α4 α10 in
+      core.fmt.Formatter.t::["write_fmt"] α1 α11).
   
   Global Instance AssociatedFunction_fmt :
-    Notation.DoubleColon ltac:(Self) "fmt" := {
-    Notation.double_colon := fmt;
+    Notations.DoubleColon ltac:(Self) "fmt" := {
+    Notations.double_colon := fmt;
   }.
   
   Global Instance ℐ : core.fmt.Display.Trait ltac:(Self) := {

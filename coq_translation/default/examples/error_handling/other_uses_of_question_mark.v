@@ -33,8 +33,8 @@ Section Impl_core_fmt_Debug_for_other_uses_of_question_mark_EmptyVec_t.
       core.fmt.Formatter.t::["write_str"] α1 α3).
   
   Global Instance AssociatedFunction_fmt :
-    Notation.DoubleColon ltac:(Self) "fmt" := {
-    Notation.double_colon := fmt;
+    Notations.DoubleColon ltac:(Self) "fmt" := {
+    Notations.double_colon := fmt;
   }.
   
   Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
@@ -70,8 +70,8 @@ Section Impl_core_fmt_Display_for_other_uses_of_question_mark_EmptyVec_t.
       core.fmt.Formatter.t::["write_fmt"] α1 α5).
   
   Global Instance AssociatedFunction_fmt :
-    Notation.DoubleColon ltac:(Self) "fmt" := {
-    Notation.double_colon := fmt;
+    Notations.DoubleColon ltac:(Self) "fmt" := {
+    Notations.double_colon := fmt;
   }.
   
   Global Instance ℐ : core.fmt.Display.Trait ltac:(Self) := {

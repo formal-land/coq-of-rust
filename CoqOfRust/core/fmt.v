@@ -67,16 +67,16 @@ Module ImplDebugTuple.
       mut_ref Self -> ref T -> M (mut_ref DebugTuple.t).
 
   Global Instance Method_field {T : Set} `{Debug.Trait T} :
-    Notation.Dot "field" := {
-    Notation.dot := field;
+    Notations.Dot "field" := {
+    Notations.dot := field;
   }.
 
   (** finish(&mut self) -> Result<(), Error> *)
   Parameter finish : mut_ref Self -> M ltac:(Result).
 
   Global Instance Method_finish :
-    Notation.Dot "finish" := {
-    Notation.dot := finish;
+    Notations.Dot "finish" := {
+    Notations.dot := finish;
   }.
 End ImplDebugTuple.
 
@@ -87,8 +87,8 @@ Module ImplFormatter.
     mut_ref W -> M Formatter.t.
 
   Global Instance Formatter_new {W : Set} `{Write.Trait W} :
-    Notation.DoubleColon Formatter.t "new" := {
-    Notation.double_colon := new;
+    Notations.DoubleColon Formatter.t "new" := {
+    Notations.double_colon := new;
   }.
 
   (*
@@ -105,8 +105,8 @@ Module ImplFormatter.
       M DebugTuple.t.
 
   Global Instance Method_debug_tuple :
-    Notation.Dot "debug_tuple_new" := {
-    Notation.dot := debug_tuple_new;
+    Notations.Dot "debug_tuple_new" := {
+    Notations.dot := debug_tuple_new;
   }.
 
   (*
@@ -125,8 +125,8 @@ Module ImplFormatter.
 
   Global Instance Formatter_debug_tuple_field1_finish
     {T : Set} `{core.fmt.Debug.Trait T} :
-    Notation.DoubleColon core.fmt.Formatter.t "debug_tuple_field1_finish" := {
-    Notation.double_colon := debug_tuple_field1_finish (T := T);
+    Notations.DoubleColon core.fmt.Formatter.t "debug_tuple_field1_finish" := {
+    Notations.double_colon := debug_tuple_field1_finish (T := T);
   }.
 
   (*
@@ -148,8 +148,8 @@ Module ImplFormatter.
 
   Global Instance Formatter_debug_tuple_field2_finish {T1 T2 : Set}
      `{core.fmt.Debug.Trait T1} `{core.fmt.Debug.Trait T2} :
-      Notation.DoubleColon core.fmt.Formatter.t "debug_tuple_field2_finish" := {
-    Notation.double_colon := debug_tuple_field2_finish (T1 := T1) (T2 := T2);
+      Notations.DoubleColon core.fmt.Formatter.t "debug_tuple_field2_finish" := {
+    Notations.double_colon := debug_tuple_field2_finish (T1 := T1) (T2 := T2);
   }.
 End ImplFormatter.
 
@@ -229,8 +229,8 @@ Module ImplArgumentV1.
     ref T -> (ref T -> mut_ref Formatter.t -> M ltac:(Result)) -> M Self.
 
   Global Instance ArgumentV1_new {T : Set} :
-    Notation.DoubleColon ArgumentV1 "new" := {
-    Notation.double_colon := new (T := T);
+    Notations.DoubleColon ArgumentV1 "new" := {
+    Notations.double_colon := new (T := T);
   }.
 
   Parameter new_display :
@@ -238,8 +238,8 @@ Module ImplArgumentV1.
 
   Global Instance ArgumentV1_new_display
     {T : Set} `{Display.Trait T} :
-    Notation.DoubleColon ArgumentV1 "new_display" := {
-    Notation.double_colon := new_display (T := T);
+    Notations.DoubleColon ArgumentV1 "new_display" := {
+    Notations.double_colon := new_display (T := T);
   }.
 
   Parameter new_debug :
@@ -247,8 +247,8 @@ Module ImplArgumentV1.
 
   Global Instance ArgumentV1_new_debug
     {T : Set} `{Debug.Trait T} :
-    Notation.DoubleColon ArgumentV1 "new_debug" := {
-    Notation.double_colon := new_debug (T := T);
+    Notations.DoubleColon ArgumentV1 "new_debug" := {
+    Notations.double_colon := new_debug (T := T);
   }.
 
   Parameter new_octal :
@@ -256,8 +256,8 @@ Module ImplArgumentV1.
 
   Global Instance ArgumentV1_new_octal
     {T : Set} `{Octal.Trait T} :
-    Notation.DoubleColon ArgumentV1 "new_octal" := {
-    Notation.double_colon := new_octal (T := T);
+    Notations.DoubleColon ArgumentV1 "new_octal" := {
+    Notations.double_colon := new_octal (T := T);
   }.
 
   Parameter new_lower_hex :
@@ -265,8 +265,8 @@ Module ImplArgumentV1.
 
   Global Instance ArgumentV1_new_lower_hex
     {T : Set} `{LowerHex.Trait T} :
-    Notation.DoubleColon ArgumentV1 "new_lower_hex" := {
-    Notation.double_colon := new_lower_hex (T := T);
+    Notations.DoubleColon ArgumentV1 "new_lower_hex" := {
+    Notations.double_colon := new_lower_hex (T := T);
   }.
 
   Parameter new_upper_hex :
@@ -274,8 +274,8 @@ Module ImplArgumentV1.
 
   Global Instance ArgumentV1_new_upper_hex
     {T : Set} `{UpperHex.Trait T} :
-    Notation.DoubleColon ArgumentV1 "new_upper_hex" := {
-    Notation.double_colon := new_upper_hex (T := T);
+    Notations.DoubleColon ArgumentV1 "new_upper_hex" := {
+    Notations.double_colon := new_upper_hex (T := T);
   }.
 
   Parameter new_pointer :
@@ -283,8 +283,8 @@ Module ImplArgumentV1.
 
   Global Instance ArgumentV1_new_pointer
     {T : Set} `{Pointer.Trait T} :
-    Notation.DoubleColon ArgumentV1 "new_pointer" := {
-    Notation.double_colon := new_pointer (T := T);
+    Notations.DoubleColon ArgumentV1 "new_pointer" := {
+    Notations.double_colon := new_pointer (T := T);
   }.
 
   Parameter new_binary :
@@ -292,8 +292,8 @@ Module ImplArgumentV1.
 
   Global Instance ArgumentV1_new_binary
     {T : Set} `{Binary.Trait T} :
-    Notation.DoubleColon ArgumentV1 "new_binary" := {
-    Notation.double_colon := new_binary (T := T);
+    Notations.DoubleColon ArgumentV1 "new_binary" := {
+    Notations.double_colon := new_binary (T := T);
   }.
 
   Parameter new_lower_exp :
@@ -301,8 +301,8 @@ Module ImplArgumentV1.
 
   Global Instance ArgumentV1_new_lower_exp
     {T : Set} `{LowerExp.Trait T} :
-    Notation.DoubleColon ArgumentV1 "new_lower_exp" := {
-    Notation.double_colon := new_lower_exp (T := T);
+    Notations.DoubleColon ArgumentV1 "new_lower_exp" := {
+    Notations.double_colon := new_lower_exp (T := T);
   }.
 
   Parameter new_upper_exp :
@@ -310,8 +310,8 @@ Module ImplArgumentV1.
 
   Global Instance ArgumentV1_new_upper_exp
     {T : Set} `{UpperExp.Trait T} :
-    Notation.DoubleColon ArgumentV1 "new_upper_exp" := {
-    Notation.double_colon := new_upper_exp (T := T);
+    Notations.DoubleColon ArgumentV1 "new_upper_exp" := {
+    Notations.double_colon := new_upper_exp (T := T);
   }.
 End ImplArgumentV1.
 
@@ -319,16 +319,16 @@ Module ImplArguments.
   Parameter new_const : ref (slice (ref str.t)) -> M Arguments.t.
 
   Global Instance Arguments_new_const :
-    Notation.DoubleColon Arguments.t "new_const" := {
-    Notation.double_colon := new_const;
+    Notations.DoubleColon Arguments.t "new_const" := {
+    Notations.double_colon := new_const;
   }.
 
   Parameter new_v1 :
     ref (slice (ref str.t)) -> ref (slice ArgumentV1) -> M Arguments.t.
 
   Global Instance Arguments_new_v1 :
-    Notation.DoubleColon Arguments.t "new_v1" := {
-    Notation.double_colon := new_v1;
+    Notations.DoubleColon Arguments.t "new_v1" := {
+    Notations.double_colon := new_v1;
   }.
 End ImplArguments.
 
@@ -338,22 +338,22 @@ Module Impl_Write_for_Formatter.
   Parameter write_str : mut_ref Self -> ref str.t -> M ltac:(Result).
 
   Global Instance AF_write_str :
-    Notation.DoubleColon Self "write_str" := {
-    Notation.double_colon := write_str;
+    Notations.DoubleColon Self "write_str" := {
+    Notations.double_colon := write_str;
   }.
 
   Parameter write_char : mut_ref Self -> char.t -> M ltac:(Result).
 
   Global Instance AF_write_char :
-    Notation.DoubleColon Self "write_char" := {
-    Notation.double_colon := write_char;
+    Notations.DoubleColon Self "write_char" := {
+    Notations.double_colon := write_char;
   }.
 
   Parameter write_fmt : mut_ref Self -> Arguments.t -> M ltac:(Result).
 
   Global Instance AF_write_fmt :
-    Notation.DoubleColon Self "write_fmt" := {
-    Notation.double_colon := write_fmt;
+    Notations.DoubleColon Self "write_fmt" := {
+    Notations.double_colon := write_fmt;
   }.
 
   Global Instance I : Write.Trait Formatter.t := {
@@ -373,8 +373,8 @@ Module rt.
 
   Global Instance Argument_new_display
     {T : Set} `{Display.Trait T} :
-    Notation.DoubleColon Argument.t "new_display" := {
-    Notation.double_colon := new_display (T := T);
+    Notations.DoubleColon Argument.t "new_display" := {
+    Notations.double_colon := new_display (T := T);
   }.
 
   Parameter new_debug :
@@ -382,7 +382,7 @@ Module rt.
 
   Global Instance Argument_new_debug
     {T : Set} `{Debug.Trait T} :
-    Notation.DoubleColon Argument.t "new_debug" := {
-    Notation.double_colon := new_debug (T := T);
+    Notations.DoubleColon Argument.t "new_debug" := {
+    Notations.double_colon := new_debug (T := T);
   }.
 End rt.

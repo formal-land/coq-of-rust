@@ -8,17 +8,17 @@ Section Foo.
     y : u32.t;
   }.
   
-  Global Instance Get_x : Notation.Dot "x" := {
-    Notation.dot x' := let* x' := M.read x' in M.alloc x'.(x) : M _;
+  Global Instance Get_x : Notations.Dot "x" := {
+    Notations.dot := Ref.map (fun x' => x'.(x)) (fun v x' => x' <| x := v |>);
   }.
-  Global Instance Get_AF_x : Notation.DoubleColon t "x" := {
-    Notation.double_colon x' := let* x' := M.read x' in M.alloc x'.(x) : M _;
+  Global Instance Get_AF_x : Notations.DoubleColon t "x" := {
+    Notations.double_colon (x' : M.Val t) := x'.["x"];
   }.
-  Global Instance Get_y : Notation.Dot "y" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(y) : M _;
+  Global Instance Get_y : Notations.Dot "y" := {
+    Notations.dot := Ref.map (fun x => x.(y)) (fun v x => x <| y := v |>);
   }.
-  Global Instance Get_AF_y : Notation.DoubleColon t "y" := {
-    Notation.double_colon x := let* x := M.read x in M.alloc x.(y) : M _;
+  Global Instance Get_AF_y : Notations.DoubleColon t "y" := {
+    Notations.double_colon (x : M.Val t) := x.["y"];
   }.
 End Foo.
 End Foo.

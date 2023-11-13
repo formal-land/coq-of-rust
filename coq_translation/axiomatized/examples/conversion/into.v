@@ -7,11 +7,12 @@ Section Number.
     value : i32.t;
   }.
   
-  Global Instance Get_value : Notation.Dot "value" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(value) : M _;
+  Global Instance Get_value : Notations.Dot "value" := {
+    Notations.dot :=
+      Ref.map (fun x => x.(value)) (fun v x => x <| value := v |>);
   }.
-  Global Instance Get_AF_value : Notation.DoubleColon t "value" := {
-    Notation.double_colon x := let* x := M.read x in M.alloc x.(value) : M _;
+  Global Instance Get_AF_value : Notations.DoubleColon t "value" := {
+    Notations.double_colon (x : M.Val t) := x.["value"];
   }.
 End Number.
 End Number.
@@ -28,8 +29,8 @@ Section Impl_core_convert_From_i32_t_for_into_Number_t.
   Parameter from : (M.Val i32.t) -> M (M.Val ltac:(Self)).
   
   Global Instance AssociatedFunction_from :
-    Notation.DoubleColon ltac:(Self) "from" := {
-    Notation.double_colon := from;
+    Notations.DoubleColon ltac:(Self) "from" := {
+    Notations.double_colon := from;
   }.
   
   Global Instance ℐ : core.convert.From.Trait ltac:(Self) (T := i32.t) := {

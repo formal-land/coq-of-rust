@@ -69,56 +69,56 @@ Module Impl_OpenOptions.
   Parameter new : M Self.
 
   Global Instance AssociatedFunction_new :
-    Notation.DoubleColon Self "new" := {
-    Notation.double_colon := new;
+    Notations.DoubleColon Self "new" := {
+    Notations.double_colon := new;
   }.
 
   Parameter read :
     mut_ref Self -> bool -> M (mut_ref Self).
 
   Global Instance Method_read :
-    Notation.Dot "read" := {
-    Notation.dot := read;
+    Notations.Dot "read" := {
+    Notations.dot := read;
   }.
 
   Parameter write :
     mut_ref Self -> bool -> M (mut_ref Self).
 
   Global Instance Method_write :
-    Notation.Dot "write" := {
-    Notation.dot := write;
+    Notations.Dot "write" := {
+    Notations.dot := write;
   }.
 
   Parameter append :
     mut_ref Self -> bool -> M (mut_ref Self).
 
   Global Instance Method_append :
-    Notation.Dot "append" := {
-    Notation.dot := append;
+    Notations.Dot "append" := {
+    Notations.dot := append;
   }.
 
   Parameter truncate :
     mut_ref Self -> bool -> M (mut_ref Self).
 
   Global Instance Method_truncate :
-    Notation.Dot "truncate" := {
-    Notation.dot := truncate;
+    Notations.Dot "truncate" := {
+    Notations.dot := truncate;
   }.
 
   Parameter create :
     mut_ref Self -> bool -> M (mut_ref Self).
 
   Global Instance Method_create :
-    Notation.Dot "create" := {
-    Notation.dot := create;
+    Notations.Dot "create" := {
+    Notations.dot := create;
   }.
 
   Parameter create_new :
     mut_ref Self -> bool -> M (mut_ref Self).
 
   Global Instance Method_create_new :
-    Notation.Dot "create_new" := {
-    Notation.dot := create_new;
+    Notations.Dot "create_new" := {
+    Notations.dot := create_new;
   }.
 
   Parameter open :
@@ -127,8 +127,8 @@ Module Impl_OpenOptions.
 
   Global Instance Method_open {P : Set}
       (*`{core.convert.AsRef.Trait P _std.path.Path}*) :
-    Notation.Dot "open" := {
-    Notation.dot := open (P := P);
+    Notations.Dot "open" := {
+    Notations.dot := open (P := P);
   }.
 End Impl_OpenOptions.
 

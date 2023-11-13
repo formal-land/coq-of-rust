@@ -7,8 +7,8 @@ Section Borrowed.
     x0 : ref i32.t;
   }.
   
-  Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(x0) : M _;
+  Global Instance Get_0 : Notations.Dot "0" := {
+    Notations.dot := Ref.map (fun x => x.(x0)) (fun v x => x <| x0 := v |>);
   }.
 End Borrowed.
 End Borrowed.
@@ -33,16 +33,15 @@ Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Borrowed_t.
       let* α4 :
           ltac:(refine (M.Val scoping_rules_lifetimes_structs.Borrowed.t)) :=
         deref self in
-      let* α5 : ltac:(refine (M.Val (ref i32.t))) := α4.["0"] in
-      let* α6 : ltac:(refine (M.Val (ref (ref i32.t)))) := borrow α5 in
-      let* α7 : ltac:(refine (M.Val (ref (ref (ref i32.t))))) := borrow α6 in
-      let* α8 : ltac:(refine (M.Val (ref type not implemented))) :=
-        pointer_coercion "Unsize" α7 in
-      core.fmt.Formatter.t::["debug_tuple_field1_finish"] α1 α3 α8).
+      let* α5 : ltac:(refine (M.Val (ref (ref i32.t)))) := borrow α4.["0"] in
+      let* α6 : ltac:(refine (M.Val (ref (ref (ref i32.t))))) := borrow α5 in
+      let* α7 : ltac:(refine (M.Val (ref type not implemented))) :=
+        pointer_coercion "Unsize" α6 in
+      core.fmt.Formatter.t::["debug_tuple_field1_finish"] α1 α3 α7).
   
   Global Instance AssociatedFunction_fmt :
-    Notation.DoubleColon ltac:(Self) "fmt" := {
-    Notation.double_colon := fmt;
+    Notations.DoubleColon ltac:(Self) "fmt" := {
+    Notations.double_colon := fmt;
   }.
   
   Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
@@ -58,17 +57,17 @@ Section NamedBorrowed.
     y : ref i32.t;
   }.
   
-  Global Instance Get_x : Notation.Dot "x" := {
-    Notation.dot x' := let* x' := M.read x' in M.alloc x'.(x) : M _;
+  Global Instance Get_x : Notations.Dot "x" := {
+    Notations.dot := Ref.map (fun x' => x'.(x)) (fun v x' => x' <| x := v |>);
   }.
-  Global Instance Get_AF_x : Notation.DoubleColon t "x" := {
-    Notation.double_colon x' := let* x' := M.read x' in M.alloc x'.(x) : M _;
+  Global Instance Get_AF_x : Notations.DoubleColon t "x" := {
+    Notations.double_colon (x' : M.Val t) := x'.["x"];
   }.
-  Global Instance Get_y : Notation.Dot "y" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(y) : M _;
+  Global Instance Get_y : Notations.Dot "y" := {
+    Notations.dot := Ref.map (fun x => x.(y)) (fun v x => x <| y := v |>);
   }.
-  Global Instance Get_AF_y : Notation.DoubleColon t "y" := {
-    Notation.double_colon x := let* x := M.read x in M.alloc x.(y) : M _;
+  Global Instance Get_AF_y : Notations.DoubleColon t "y" := {
+    Notations.double_colon (x : M.Val t) := x.["y"];
   }.
 End NamedBorrowed.
 End NamedBorrowed.
@@ -96,26 +95,24 @@ Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_NamedBorrowed_t.
           ltac:(refine
             (M.Val scoping_rules_lifetimes_structs.NamedBorrowed.t)) :=
         deref self in
-      let* α7 : ltac:(refine (M.Val (ref i32.t))) := α6.["x"] in
-      let* α8 : ltac:(refine (M.Val (ref (ref i32.t)))) := borrow α7 in
-      let* α9 : ltac:(refine (M.Val (ref type not implemented))) :=
-        pointer_coercion "Unsize" α8 in
-      let* α10 : ltac:(refine (M.Val str.t)) := deref (mk_str "y") in
-      let* α11 : ltac:(refine (M.Val (ref str.t))) := borrow α10 in
-      let* α12 :
+      let* α7 : ltac:(refine (M.Val (ref (ref i32.t)))) := borrow α6.["x"] in
+      let* α8 : ltac:(refine (M.Val (ref type not implemented))) :=
+        pointer_coercion "Unsize" α7 in
+      let* α9 : ltac:(refine (M.Val str.t)) := deref (mk_str "y") in
+      let* α10 : ltac:(refine (M.Val (ref str.t))) := borrow α9 in
+      let* α11 :
           ltac:(refine
             (M.Val scoping_rules_lifetimes_structs.NamedBorrowed.t)) :=
         deref self in
-      let* α13 : ltac:(refine (M.Val (ref i32.t))) := α12.["y"] in
-      let* α14 : ltac:(refine (M.Val (ref (ref i32.t)))) := borrow α13 in
-      let* α15 : ltac:(refine (M.Val (ref (ref (ref i32.t))))) := borrow α14 in
-      let* α16 : ltac:(refine (M.Val (ref type not implemented))) :=
-        pointer_coercion "Unsize" α15 in
-      core.fmt.Formatter.t::["debug_struct_field2_finish"] α1 α3 α5 α9 α11 α16).
+      let* α12 : ltac:(refine (M.Val (ref (ref i32.t)))) := borrow α11.["y"] in
+      let* α13 : ltac:(refine (M.Val (ref (ref (ref i32.t))))) := borrow α12 in
+      let* α14 : ltac:(refine (M.Val (ref type not implemented))) :=
+        pointer_coercion "Unsize" α13 in
+      core.fmt.Formatter.t::["debug_struct_field2_finish"] α1 α3 α5 α8 α10 α14).
   
   Global Instance AssociatedFunction_fmt :
-    Notation.DoubleColon ltac:(Self) "fmt" := {
-    Notation.double_colon := fmt;
+    Notations.DoubleColon ltac:(Self) "fmt" := {
+    Notations.double_colon := fmt;
   }.
   
   Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
@@ -170,8 +167,8 @@ Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either_t.
       end).
   
   Global Instance AssociatedFunction_fmt :
-    Notation.DoubleColon ltac:(Self) "fmt" := {
-    Notation.double_colon := fmt;
+    Notations.DoubleColon ltac:(Self) "fmt" := {
+    Notations.double_colon := fmt;
   }.
   
   Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {

@@ -99,32 +99,29 @@ Definition main : M (M.Val unit) :=
         M.pure process
       end in
     let* _ : ltac:(refine (M.Val unit)) :=
-      let* α0 :
-          ltac:(refine
-            (M.Val (core.option.Option.t std.process.ChildStdin.t))) :=
-        process.["stdin"] in
-      let* α1 : ltac:(refine (M.Val std.process.ChildStdin.t)) :=
-        (core.option.Option.t std.process.ChildStdin.t)::["unwrap"] α0 in
-      let* α2 : ltac:(refine (M.Val (mut_ref std.process.ChildStdin.t))) :=
-        borrow_mut α1 in
-      let* α3 : ltac:(refine (M.Val (ref str.t))) :=
+      let* α0 : ltac:(refine (M.Val std.process.ChildStdin.t)) :=
+        (core.option.Option.t std.process.ChildStdin.t)::["unwrap"]
+          process.["stdin"] in
+      let* α1 : ltac:(refine (M.Val (mut_ref std.process.ChildStdin.t))) :=
+        borrow_mut α0 in
+      let* α2 : ltac:(refine (M.Val (ref str.t))) :=
         deref child_processes_pipes.PANGRAM in
-      let* α4 : ltac:(refine (M.Val str.t)) := deref α3 in
-      let* α5 : ltac:(refine (M.Val (ref str.t))) := borrow α4 in
-      let* α6 : ltac:(refine (M.Val (ref (slice u8.t)))) :=
-        str.t::["as_bytes"] α5 in
-      let* α7 : ltac:(refine (M.Val (slice u8.t))) := deref α6 in
-      let* α8 : ltac:(refine (M.Val (ref (slice u8.t)))) := borrow α7 in
-      let* α9 :
+      let* α3 : ltac:(refine (M.Val str.t)) := deref α2 in
+      let* α4 : ltac:(refine (M.Val (ref str.t))) := borrow α3 in
+      let* α5 : ltac:(refine (M.Val (ref (slice u8.t)))) :=
+        str.t::["as_bytes"] α4 in
+      let* α6 : ltac:(refine (M.Val (slice u8.t))) := deref α5 in
+      let* α7 : ltac:(refine (M.Val (ref (slice u8.t)))) := borrow α6 in
+      let* α8 :
           ltac:(refine
             (M.Val (core.result.Result.t unit std.io.error.Error.t))) :=
         (std.io.Write.write_all
             (Self := std.process.ChildStdin.t)
             (Trait := ltac:(refine _)))
-          α2
-          α8 in
-      let* α10 := M.read α9 in
-      match α10 with
+          α1
+          α7 in
+      let* α9 := M.read α8 in
+      match α9 with
       | core.result.Result.Err why =>
         let* why := M.alloc why in
         let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
@@ -164,26 +161,23 @@ Definition main : M (M.Val unit) :=
       end in
     let* s : ltac:(refine (M.Val alloc.string.String.t)) :=
       alloc.string.String.t::["new"] in
-    let* α0 :
-        ltac:(refine
-          (M.Val (core.option.Option.t std.process.ChildStdout.t))) :=
-      process.["stdout"] in
-    let* α1 : ltac:(refine (M.Val std.process.ChildStdout.t)) :=
-      (core.option.Option.t std.process.ChildStdout.t)::["unwrap"] α0 in
-    let* α2 : ltac:(refine (M.Val (mut_ref std.process.ChildStdout.t))) :=
-      borrow_mut α1 in
-    let* α3 : ltac:(refine (M.Val (mut_ref alloc.string.String.t))) :=
+    let* α0 : ltac:(refine (M.Val std.process.ChildStdout.t)) :=
+      (core.option.Option.t std.process.ChildStdout.t)::["unwrap"]
+        process.["stdout"] in
+    let* α1 : ltac:(refine (M.Val (mut_ref std.process.ChildStdout.t))) :=
+      borrow_mut α0 in
+    let* α2 : ltac:(refine (M.Val (mut_ref alloc.string.String.t))) :=
       borrow_mut s in
-    let* α4 :
+    let* α3 :
         ltac:(refine
           (M.Val (core.result.Result.t usize.t std.io.error.Error.t))) :=
       (std.io.Read.read_to_string
           (Self := std.process.ChildStdout.t)
           (Trait := ltac:(refine _)))
-        α2
-        α3 in
-    let* α5 := M.read α4 in
-    match α5 with
+        α1
+        α2 in
+    let* α4 := M.read α3 in
+    match α4 with
     | core.result.Result.Err why =>
       let* why := M.alloc why in
       let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=

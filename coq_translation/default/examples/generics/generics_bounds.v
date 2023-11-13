@@ -23,15 +23,13 @@ Section Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle_t.
     M.function_body
       (let* α0 : ltac:(refine (M.Val generics_bounds.Rectangle.t)) :=
         deref self in
-      let* α1 : ltac:(refine (M.Val f64.t)) := α0.["length"] in
-      let* α2 : ltac:(refine (M.Val generics_bounds.Rectangle.t)) :=
+      let* α1 : ltac:(refine (M.Val generics_bounds.Rectangle.t)) :=
         deref self in
-      let* α3 : ltac:(refine (M.Val f64.t)) := α2.["height"] in
-      BinOp.mul α1 α3).
+      BinOp.mul α0.["length"] α1.["height"]).
   
   Global Instance AssociatedFunction_area :
-    Notation.DoubleColon ltac:(Self) "area" := {
-    Notation.double_colon := area;
+    Notations.DoubleColon ltac:(Self) "area" := {
+    Notations.double_colon := area;
   }.
   
   Global Instance ℐ : generics_bounds.HasArea.Trait ltac:(Self) := {
@@ -47,17 +45,19 @@ Section Rectangle.
     height : f64.t;
   }.
   
-  Global Instance Get_length : Notation.Dot "length" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(length) : M _;
+  Global Instance Get_length : Notations.Dot "length" := {
+    Notations.dot :=
+      Ref.map (fun x => x.(length)) (fun v x => x <| length := v |>);
   }.
-  Global Instance Get_AF_length : Notation.DoubleColon t "length" := {
-    Notation.double_colon x := let* x := M.read x in M.alloc x.(length) : M _;
+  Global Instance Get_AF_length : Notations.DoubleColon t "length" := {
+    Notations.double_colon (x : M.Val t) := x.["length"];
   }.
-  Global Instance Get_height : Notation.Dot "height" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(height) : M _;
+  Global Instance Get_height : Notations.Dot "height" := {
+    Notations.dot :=
+      Ref.map (fun x => x.(height)) (fun v x => x <| height := v |>);
   }.
-  Global Instance Get_AF_height : Notation.DoubleColon t "height" := {
-    Notation.double_colon x := let* x := M.read x in M.alloc x.(height) : M _;
+  Global Instance Get_AF_height : Notations.DoubleColon t "height" := {
+    Notations.double_colon (x : M.Val t) := x.["height"];
   }.
 End Rectangle.
 End Rectangle.
@@ -83,24 +83,22 @@ Section Impl_core_fmt_Debug_for_generics_bounds_Rectangle_t.
       let* α5 : ltac:(refine (M.Val (ref str.t))) := borrow α4 in
       let* α6 : ltac:(refine (M.Val generics_bounds.Rectangle.t)) :=
         deref self in
-      let* α7 : ltac:(refine (M.Val f64.t)) := α6.["length"] in
-      let* α8 : ltac:(refine (M.Val (ref f64.t))) := borrow α7 in
-      let* α9 : ltac:(refine (M.Val (ref type not implemented))) :=
-        pointer_coercion "Unsize" α8 in
-      let* α10 : ltac:(refine (M.Val str.t)) := deref (mk_str "height") in
-      let* α11 : ltac:(refine (M.Val (ref str.t))) := borrow α10 in
-      let* α12 : ltac:(refine (M.Val generics_bounds.Rectangle.t)) :=
+      let* α7 : ltac:(refine (M.Val (ref f64.t))) := borrow α6.["length"] in
+      let* α8 : ltac:(refine (M.Val (ref type not implemented))) :=
+        pointer_coercion "Unsize" α7 in
+      let* α9 : ltac:(refine (M.Val str.t)) := deref (mk_str "height") in
+      let* α10 : ltac:(refine (M.Val (ref str.t))) := borrow α9 in
+      let* α11 : ltac:(refine (M.Val generics_bounds.Rectangle.t)) :=
         deref self in
-      let* α13 : ltac:(refine (M.Val f64.t)) := α12.["height"] in
-      let* α14 : ltac:(refine (M.Val (ref f64.t))) := borrow α13 in
-      let* α15 : ltac:(refine (M.Val (ref (ref f64.t)))) := borrow α14 in
-      let* α16 : ltac:(refine (M.Val (ref type not implemented))) :=
-        pointer_coercion "Unsize" α15 in
-      core.fmt.Formatter.t::["debug_struct_field2_finish"] α1 α3 α5 α9 α11 α16).
+      let* α12 : ltac:(refine (M.Val (ref f64.t))) := borrow α11.["height"] in
+      let* α13 : ltac:(refine (M.Val (ref (ref f64.t)))) := borrow α12 in
+      let* α14 : ltac:(refine (M.Val (ref type not implemented))) :=
+        pointer_coercion "Unsize" α13 in
+      core.fmt.Formatter.t::["debug_struct_field2_finish"] α1 α3 α5 α8 α10 α14).
   
   Global Instance AssociatedFunction_fmt :
-    Notation.DoubleColon ltac:(Self) "fmt" := {
-    Notation.double_colon := fmt;
+    Notations.DoubleColon ltac:(Self) "fmt" := {
+    Notations.double_colon := fmt;
   }.
   
   Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
@@ -117,17 +115,19 @@ Section Triangle.
     height : f64.t;
   }.
   
-  Global Instance Get_length : Notation.Dot "length" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(length) : M _;
+  Global Instance Get_length : Notations.Dot "length" := {
+    Notations.dot :=
+      Ref.map (fun x => x.(length)) (fun v x => x <| length := v |>);
   }.
-  Global Instance Get_AF_length : Notation.DoubleColon t "length" := {
-    Notation.double_colon x := let* x := M.read x in M.alloc x.(length) : M _;
+  Global Instance Get_AF_length : Notations.DoubleColon t "length" := {
+    Notations.double_colon (x : M.Val t) := x.["length"];
   }.
-  Global Instance Get_height : Notation.Dot "height" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(height) : M _;
+  Global Instance Get_height : Notations.Dot "height" := {
+    Notations.dot :=
+      Ref.map (fun x => x.(height)) (fun v x => x <| height := v |>);
   }.
-  Global Instance Get_AF_height : Notation.DoubleColon t "height" := {
-    Notation.double_colon x := let* x := M.read x in M.alloc x.(height) : M _;
+  Global Instance Get_AF_height : Notations.DoubleColon t "height" := {
+    Notations.double_colon (x : M.Val t) := x.["height"];
   }.
 End Triangle.
 End Triangle.

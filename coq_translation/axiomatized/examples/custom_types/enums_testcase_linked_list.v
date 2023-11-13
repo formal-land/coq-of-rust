@@ -27,8 +27,8 @@ Section Impl_enums_testcase_linked_list_List_t.
   Parameter new : M (M.Val enums_testcase_linked_list.List.t).
   
   Global Instance AssociatedFunction_new :
-    Notation.DoubleColon ltac:(Self) "new" := {
-    Notation.double_colon := new;
+    Notations.DoubleColon ltac:(Self) "new" := {
+    Notations.double_colon := new;
   }.
   
   (*
@@ -43,8 +43,8 @@ Section Impl_enums_testcase_linked_list_List_t.
         M (M.Val enums_testcase_linked_list.List.t).
   
   Global Instance AssociatedFunction_prepend :
-    Notation.DoubleColon ltac:(Self) "prepend" := {
-    Notation.double_colon := prepend;
+    Notations.DoubleColon ltac:(Self) "prepend" := {
+    Notations.double_colon := prepend;
   }.
   
   (*
@@ -68,8 +68,8 @@ Section Impl_enums_testcase_linked_list_List_t.
   Parameter len : (M.Val (ref ltac:(Self))) -> M (M.Val u32.t).
   
   Global Instance AssociatedFunction_len :
-    Notation.DoubleColon ltac:(Self) "len" := {
-    Notation.double_colon := len;
+    Notations.DoubleColon ltac:(Self) "len" := {
+    Notations.double_colon := len;
   }.
   
   (*
@@ -90,8 +90,8 @@ Section Impl_enums_testcase_linked_list_List_t.
       (M.Val (ref ltac:(Self))) -> M (M.Val alloc.string.String.t).
   
   Global Instance AssociatedFunction_stringify :
-    Notation.DoubleColon ltac:(Self) "stringify" := {
-    Notation.double_colon := stringify;
+    Notations.DoubleColon ltac:(Self) "stringify" := {
+    Notations.double_colon := stringify;
   }.
 End Impl_enums_testcase_linked_list_List_t.
 End Impl_enums_testcase_linked_list_List_t.

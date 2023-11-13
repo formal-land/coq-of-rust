@@ -1,54 +1,131 @@
 Require Import CoqOfRust.CoqOfRust.
 Require CoqOfRust.examples.erc20.lib.
-Require CoqOfRust.Proofs.M.
+Require Import CoqOfRust.Proofs.M.
 
 Module State.
   Module State.
-    Record t : Set := {
-      total_supply :
-        option ltac:(lib.Balance);
-      balances :
-        option ltac:(lib.Mapping lib.AccountId constr:(ltac:(lib.Balance)));
-      allowances :
-        option ltac:(lib.Mapping
-          (M.Val (lib.AccountId * lib.AccountId))
-          constr:(ltac:(lib.Balance))
-        );
-    }.
+    (** The state is a single cell containing the contract's state. This is an
+        option type as it may or may not be allocated. *)
+    Definition t : Set := option lib.Erc20.t.
   End State.
 
   Module Address.
-    Inductive t : Set :=
-    | total_supply
-    | balances
-    | allowances.
+    (** As there is a single cell in the state, the address type carries no
+        information. *)
+    Definition t : Set := unit.
   End Address.
 
-  Local Instance I : State.Trait State.t Address.t := {
+  Global Instance I : State.Trait State.t Address.t := {
     State.get_Set address :=
-      let ℋ := EmptyState.I in
       match address with
-      | Address.total_supply =>
-        ltac:(lib.Balance)
-      | Address.balances =>
-        ltac:(lib.Mapping lib.AccountId constr:(ltac:(lib.Balance)))
-      | Address.allowances =>
-        ltac:(lib.Mapping
-          (M.Val (lib.AccountId * lib.AccountId))
-          constr:(ltac:(lib.Balance))
-        )
+      | tt => lib.Erc20.t
       end;
     State.read address state :=
       match address with
-      | Address.total_supply => state.(State.total_supply)
-      | Address.balances => state.(State.balances)
-      | Address.allowances => state.(State.allowances)
+      | tt => state
       end;
     State.alloc_write address state value :=
-      axiom "alloc_write";
+      match address, value with
+      | tt, _ => Some (Some value)
+      end;
   }.
 
   Lemma is_valid : State.Valid.t I.
   Proof.
-  Admitted.
+    sauto lq: on rew: off.
+  Qed.
 End State.
+
+(** Starting from a state with a given [balance] for a given [owner], when we
+    read that information we get the expected [balance]. *)
+Lemma balance_of_impl_run
+  (owner : lib.AccountId.t)
+  (balance : Z)
+  fuel :
+  (* An initial state *)
+  let state := Some ({|
+    lib.Erc20.total_supply := 0;
+    lib.Erc20.balances := lib.PureMap.insert owner balance lib.PureMap.empty;
+    lib.Erc20.allowances := lib.PureMap.empty;
+  |}) in
+  (* The value [self] is allocated in the state *)
+  let self : M.Val (ref lib.Erc20.t) := Ref.Imm (Ref.mut_ref tt) in
+  (* The value [owner] is an immediate value *)
+  let owner : M.Val (ref lib.AccountId.t) := Ref.Imm (Ref.Imm owner) in
+  Run.t
+    (lib.Impl_lib_Erc20_t_2.balance_of_impl self owner fuel)
+    state
+    (* expected output *)
+    (inl (Ref.Imm balance))
+    (* the state does not change *)
+    state.
+Proof.
+  unfold lib.Impl_lib_Erc20_t_2.balance_of_impl.
+  unfold function_body, catch.
+  simpl.
+  eapply Run.Let. {
+    eapply Run.Let. {
+      econstructor.
+    }
+    simpl.
+    eapply Run.Let. {
+      unfold borrow, M.alloc.
+      eapply Run.Let. {
+        econstructor.
+      }
+      econstructor.
+    }
+    simpl.
+    eapply Run.Let. {
+      econstructor.
+    }
+    simpl.
+    eapply Run.Let. {
+      eapply Run.Let. {
+        econstructor.
+      }
+      econstructor.
+    }
+    simpl.
+    eapply Run.Let. {
+      eapply Run.Let. {
+        econstructor.
+      }
+      simpl.
+      eapply Run.Let. {
+        eapply Run.Let. {
+          (* for some reasons the tactic [eapply] does not work *)
+          pose proof (H := Run.CallPrimitiveStateRead tt).
+          apply H.
+          reflexivity.
+        }
+        econstructor.
+      }
+      simpl.
+      eapply Run.Let. {
+        econstructor.
+      }
+      simpl.
+      eapply Run.Let. {
+        econstructor.
+      }
+      simpl.
+      eapply Run.Let. {
+        econstructor.
+      }
+      econstructor.
+    }
+    simpl.
+    eapply Run.Let. {
+      econstructor.
+    }
+    simpl.
+    rewrite lib.PureMap.get_insert_eq.
+    eapply Run.Let. {
+      econstructor.
+    }
+    econstructor.
+  }
+  simpl.
+  econstructor.
+Qed.

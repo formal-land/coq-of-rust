@@ -21,7 +21,6 @@ examples_axiomatized/traits/hash.v
 examples_axiomatized/traits/operator_overloading.v
 examples_axiomatized/traits/traits_parms.v
 examples/conversion/converting_to_string.v
-examples/erc20/Proofs/lib
 examples/expressions/blocks.v
 examples/expressions/const_underscore_expression.v
 examples/flow_of_control/if_else.v

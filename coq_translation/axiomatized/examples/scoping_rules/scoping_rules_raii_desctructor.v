@@ -19,8 +19,8 @@ Section Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop_t.
   Parameter drop : (M.Val (mut_ref ltac:(Self))) -> M (M.Val unit).
   
   Global Instance AssociatedFunction_drop :
-    Notation.DoubleColon ltac:(Self) "drop" := {
-    Notation.double_colon := drop;
+    Notations.DoubleColon ltac:(Self) "drop" := {
+    Notations.double_colon := drop;
   }.
   
   Global Instance ℐ : core.ops.drop.Drop.Trait ltac:(Self) := {

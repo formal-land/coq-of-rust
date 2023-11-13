@@ -8,11 +8,11 @@ Section Container.
     x1 : i32.t;
   }.
   
-  Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(x0) : M _;
+  Global Instance Get_0 : Notations.Dot "0" := {
+    Notations.dot := Ref.map (fun x => x.(x0)) (fun v x => x <| x0 := v |>);
   }.
-  Global Instance Get_1 : Notation.Dot "1" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(x1) : M _;
+  Global Instance Get_1 : Notations.Dot "1" := {
+    Notations.dot := Ref.map (fun x => x.(x1)) (fun v x => x <| x1 := v |>);
   }.
 End Container.
 End Container.
@@ -46,30 +46,28 @@ Section Impl_generics_associated_types_problem_Contains_i32_t_i32_t_for_generics
       (let* α0 :
           ltac:(refine (M.Val generics_associated_types_problem.Container.t)) :=
         deref self in
-      let* α1 : ltac:(refine (M.Val i32.t)) := α0.["0"] in
-      let* α2 : ltac:(refine (M.Val (ref i32.t))) := borrow α1 in
-      let* α3 : ltac:(refine (M.Val (ref (ref i32.t)))) := borrow α2 in
-      let* α4 : ltac:(refine (M.Val (ref (ref i32.t)))) := borrow number_1 in
-      let* α5 : ltac:(refine (M.Val bool.t)) :=
+      let* α1 : ltac:(refine (M.Val (ref i32.t))) := borrow α0.["0"] in
+      let* α2 : ltac:(refine (M.Val (ref (ref i32.t)))) := borrow α1 in
+      let* α3 : ltac:(refine (M.Val (ref (ref i32.t)))) := borrow number_1 in
+      let* α4 : ltac:(refine (M.Val bool.t)) :=
         (core.cmp.PartialEq.eq (Self := ref i32.t) (Trait := ltac:(refine _)))
-          α3
-          α4 in
-      let* α6 :
+          α2
+          α3 in
+      let* α5 :
           ltac:(refine (M.Val generics_associated_types_problem.Container.t)) :=
         deref self in
-      let* α7 : ltac:(refine (M.Val i32.t)) := α6.["1"] in
-      let* α8 : ltac:(refine (M.Val (ref i32.t))) := borrow α7 in
-      let* α9 : ltac:(refine (M.Val (ref (ref i32.t)))) := borrow α8 in
-      let* α10 : ltac:(refine (M.Val (ref (ref i32.t)))) := borrow number_2 in
-      let* α11 : ltac:(refine (M.Val bool.t)) :=
+      let* α6 : ltac:(refine (M.Val (ref i32.t))) := borrow α5.["1"] in
+      let* α7 : ltac:(refine (M.Val (ref (ref i32.t)))) := borrow α6 in
+      let* α8 : ltac:(refine (M.Val (ref (ref i32.t)))) := borrow number_2 in
+      let* α9 : ltac:(refine (M.Val bool.t)) :=
         (core.cmp.PartialEq.eq (Self := ref i32.t) (Trait := ltac:(refine _)))
-          α9
-          α10 in
-      BinOp.and α5 α11).
+          α7
+          α8 in
+      BinOp.and α4 α9).
   
   Global Instance AssociatedFunction_contains :
-    Notation.DoubleColon ltac:(Self) "contains" := {
-    Notation.double_colon := contains;
+    Notations.DoubleColon ltac:(Self) "contains" := {
+    Notations.double_colon := contains;
   }.
   
   (*
@@ -82,11 +80,11 @@ Section Impl_generics_associated_types_problem_Contains_i32_t_i32_t_for_generics
       (let* α0 :
           ltac:(refine (M.Val generics_associated_types_problem.Container.t)) :=
         deref self in
-      α0.["0"]).
+      M.pure α0.["0"]).
   
   Global Instance AssociatedFunction_first :
-    Notation.DoubleColon ltac:(Self) "first" := {
-    Notation.double_colon := first;
+    Notations.DoubleColon ltac:(Self) "first" := {
+    Notations.double_colon := first;
   }.
   
   (*
@@ -99,11 +97,11 @@ Section Impl_generics_associated_types_problem_Contains_i32_t_i32_t_for_generics
       (let* α0 :
           ltac:(refine (M.Val generics_associated_types_problem.Container.t)) :=
         deref self in
-      α0.["1"]).
+      M.pure α0.["1"]).
   
   Global Instance AssociatedFunction_last :
-    Notation.DoubleColon ltac:(Self) "last" := {
-    Notation.double_colon := last;
+    Notations.DoubleColon ltac:(Self) "last" := {
+    Notations.double_colon := last;
   }.
   
   Global Instance ℐ :

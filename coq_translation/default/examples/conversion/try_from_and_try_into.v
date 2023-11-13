@@ -7,8 +7,8 @@ Section EvenNumber.
     x0 : i32.t;
   }.
   
-  Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(x0) : M _;
+  Global Instance Get_0 : Notations.Dot "0" := {
+    Notations.dot := Ref.map (fun x => x.(x0)) (fun v x => x <| x0 := v |>);
   }.
 End EvenNumber.
 End EvenNumber.
@@ -32,16 +32,15 @@ Section Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber_t.
       let* α3 : ltac:(refine (M.Val (ref str.t))) := borrow α2 in
       let* α4 : ltac:(refine (M.Val try_from_and_try_into.EvenNumber.t)) :=
         deref self in
-      let* α5 : ltac:(refine (M.Val i32.t)) := α4.["0"] in
-      let* α6 : ltac:(refine (M.Val (ref i32.t))) := borrow α5 in
-      let* α7 : ltac:(refine (M.Val (ref (ref i32.t)))) := borrow α6 in
-      let* α8 : ltac:(refine (M.Val (ref type not implemented))) :=
-        pointer_coercion "Unsize" α7 in
-      core.fmt.Formatter.t::["debug_tuple_field1_finish"] α1 α3 α8).
+      let* α5 : ltac:(refine (M.Val (ref i32.t))) := borrow α4.["0"] in
+      let* α6 : ltac:(refine (M.Val (ref (ref i32.t)))) := borrow α5 in
+      let* α7 : ltac:(refine (M.Val (ref type not implemented))) :=
+        pointer_coercion "Unsize" α6 in
+      core.fmt.Formatter.t::["debug_tuple_field1_finish"] α1 α3 α7).
   
   Global Instance AssociatedFunction_fmt :
-    Notation.DoubleColon ltac:(Self) "fmt" := {
-    Notation.double_colon := fmt;
+    Notations.DoubleColon ltac:(Self) "fmt" := {
+    Notations.double_colon := fmt;
   }.
   
   Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
@@ -73,15 +72,13 @@ Section Impl_core_cmp_PartialEq_for_try_from_and_try_into_EvenNumber_t.
     M.function_body
       (let* α0 : ltac:(refine (M.Val try_from_and_try_into.EvenNumber.t)) :=
         deref self in
-      let* α1 : ltac:(refine (M.Val i32.t)) := α0.["0"] in
-      let* α2 : ltac:(refine (M.Val try_from_and_try_into.EvenNumber.t)) :=
+      let* α1 : ltac:(refine (M.Val try_from_and_try_into.EvenNumber.t)) :=
         deref other in
-      let* α3 : ltac:(refine (M.Val i32.t)) := α2.["0"] in
-      BinOp.eq α1 α3).
+      BinOp.eq α0.["0"] α1.["0"]).
   
   Global Instance AssociatedFunction_eq :
-    Notation.DoubleColon ltac:(Self) "eq" := {
-    Notation.double_colon := eq;
+    Notations.DoubleColon ltac:(Self) "eq" := {
+    Notations.double_colon := eq;
   }.
   
   Global Instance ℐ :
@@ -129,8 +126,8 @@ Section Impl_core_convert_TryFrom_i32_t_for_try_from_and_try_into_EvenNumber_t.
         M.alloc (core.result.Result.Err tt)).
   
   Global Instance AssociatedFunction_try_from :
-    Notation.DoubleColon ltac:(Self) "try_from" := {
-    Notation.double_colon := try_from;
+    Notations.DoubleColon ltac:(Self) "try_from" := {
+    Notations.double_colon := try_from;
   }.
   
   Global Instance ℐ : core.convert.TryFrom.Trait ltac:(Self) (T := i32.t) := {

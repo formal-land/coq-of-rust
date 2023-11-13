@@ -10,17 +10,18 @@ Section Mapping.
     _value : core.marker.PhantomData.t V;
   }.
   
-  Global Instance Get__key : Notation.Dot "_key" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(_key) : M _;
+  Global Instance Get__key : Notations.Dot "_key" := {
+    Notations.dot := Ref.map (fun x => x.(_key)) (fun v x => x <| _key := v |>);
   }.
-  Global Instance Get_AF__key : Notation.DoubleColon t "_key" := {
-    Notation.double_colon x := let* x := M.read x in M.alloc x.(_key) : M _;
+  Global Instance Get_AF__key : Notations.DoubleColon t "_key" := {
+    Notations.double_colon (x : M.Val t) := x.["_key"];
   }.
-  Global Instance Get__value : Notation.Dot "_value" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(_value) : M _;
+  Global Instance Get__value : Notations.Dot "_value" := {
+    Notations.dot :=
+      Ref.map (fun x => x.(_value)) (fun v x => x <| _value := v |>);
   }.
-  Global Instance Get_AF__value : Notation.DoubleColon t "_value" := {
-    Notation.double_colon x := let* x := M.read x in M.alloc x.(_value) : M _;
+  Global Instance Get_AF__value : Notations.DoubleColon t "_value" := {
+    Notations.double_colon (x : M.Val t) := x.["_value"];
   }.
 End Mapping.
 End Mapping.
@@ -41,8 +42,8 @@ Section Impl_core_default_Default_for_lib_Mapping_t_K_V.
   Parameter default : M (M.Val (lib.Mapping.t K V)).
   
   Global Instance AssociatedFunction_default :
-    Notation.DoubleColon ltac:(Self) "default" := {
-    Notation.double_colon := default;
+    Notations.DoubleColon ltac:(Self) "default" := {
+    Notations.double_colon := default;
   }.
   
   Global Instance ℐ : core.default.Default.Trait ltac:(Self) := {
@@ -68,8 +69,8 @@ Section Impl_lib_Mapping_t_K_V.
         M (M.Val (core.option.Option.t V)).
   
   Global Instance AssociatedFunction_get :
-    Notation.DoubleColon ltac:(Self) "get" := {
-    Notation.double_colon := get;
+    Notations.DoubleColon ltac:(Self) "get" := {
+    Notations.double_colon := get;
   }.
   
   (*
@@ -81,8 +82,8 @@ Section Impl_lib_Mapping_t_K_V.
       (M.Val (mut_ref ltac:(Self))) -> (M.Val K) -> (M.Val V) -> M (M.Val unit).
   
   Global Instance AssociatedFunction_insert :
-    Notation.DoubleColon ltac:(Self) "insert" := {
-    Notation.double_colon := insert;
+    Notations.DoubleColon ltac:(Self) "insert" := {
+    Notations.double_colon := insert;
   }.
 End Impl_lib_Mapping_t_K_V.
 End Impl_lib_Mapping_t_K_V.
@@ -93,8 +94,8 @@ Section AccountId.
     x0 : alloc.string.String.t;
   }.
   
-  Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(x0) : M _;
+  Global Instance Get_0 : Notations.Dot "0" := {
+    Notations.dot := Ref.map (fun x => x.(x0)) (fun v x => x <| x0 := v |>);
   }.
 End AccountId.
 End AccountId.
@@ -109,8 +110,8 @@ Section Impl_core_default_Default_for_lib_AccountId_t.
   Parameter default : M (M.Val lib.AccountId.t).
   
   Global Instance AssociatedFunction_default :
-    Notation.DoubleColon ltac:(Self) "default" := {
-    Notation.double_colon := default;
+    Notations.DoubleColon ltac:(Self) "default" := {
+    Notations.double_colon := default;
   }.
   
   Global Instance ℐ : core.default.Default.Trait ltac:(Self) := {
@@ -127,8 +128,8 @@ Section Environment.
     x0 : alloc.string.String.t;
   }.
   
-  Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(x0) : M _;
+  Global Instance Get_0 : Notations.Dot "0" := {
+    Notations.dot := Ref.map (fun x => x.(x0)) (fun v x => x <| x0 := v |>);
   }.
 End Environment.
 End Environment.
@@ -139,8 +140,8 @@ Section Event.
     x0 : alloc.string.String.t;
   }.
   
-  Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(x0) : M _;
+  Global Instance Get_0 : Notations.Dot "0" := {
+    Notations.dot := Ref.map (fun x => x.(x0)) (fun v x => x <| x0 := v |>);
   }.
 End Event.
 End Event.
@@ -154,26 +155,29 @@ Section Erc20.
       lib.Mapping.t (lib.AccountId.t * lib.AccountId.t) ltac:(lib.Balance);
   }.
   
-  Global Instance Get_total_supply : Notation.Dot "total_supply" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(total_supply) : M _;
+  Global Instance Get_total_supply : Notations.Dot "total_supply" := {
+    Notations.dot :=
+      Ref.map
+        (fun x => x.(total_supply))
+        (fun v x => x <| total_supply := v |>);
   }.
   Global Instance Get_AF_total_supply :
-    Notation.DoubleColon t "total_supply" := {
-    Notation.double_colon x :=
-      let* x := M.read x in M.alloc x.(total_supply) : M _;
+    Notations.DoubleColon t "total_supply" := {
+    Notations.double_colon (x : M.Val t) := x.["total_supply"];
   }.
-  Global Instance Get_balances : Notation.Dot "balances" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(balances) : M _;
+  Global Instance Get_balances : Notations.Dot "balances" := {
+    Notations.dot :=
+      Ref.map (fun x => x.(balances)) (fun v x => x <| balances := v |>);
   }.
-  Global Instance Get_AF_balances : Notation.DoubleColon t "balances" := {
-    Notation.double_colon x := let* x := M.read x in M.alloc x.(balances) : M _;
+  Global Instance Get_AF_balances : Notations.DoubleColon t "balances" := {
+    Notations.double_colon (x : M.Val t) := x.["balances"];
   }.
-  Global Instance Get_allowances : Notation.Dot "allowances" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(allowances) : M _;
+  Global Instance Get_allowances : Notations.Dot "allowances" := {
+    Notations.dot :=
+      Ref.map (fun x => x.(allowances)) (fun v x => x <| allowances := v |>);
   }.
-  Global Instance Get_AF_allowances : Notation.DoubleColon t "allowances" := {
-    Notation.double_colon x :=
-      let* x := M.read x in M.alloc x.(allowances) : M _;
+  Global Instance Get_AF_allowances : Notations.DoubleColon t "allowances" := {
+    Notations.double_colon (x : M.Val t) := x.["allowances"];
   }.
 End Erc20.
 End Erc20.
@@ -188,8 +192,8 @@ Section Impl_core_default_Default_for_lib_Erc20_t.
   Parameter default : M (M.Val lib.Erc20.t).
   
   Global Instance AssociatedFunction_default :
-    Notation.DoubleColon ltac:(Self) "default" := {
-    Notation.double_colon := default;
+    Notations.DoubleColon ltac:(Self) "default" := {
+    Notations.double_colon := default;
   }.
   
   Global Instance ℐ : core.default.Default.Trait ltac:(Self) := {
@@ -206,23 +210,24 @@ Section Transfer.
     value : ltac:(lib.Balance);
   }.
   
-  Global Instance Get_from : Notation.Dot "from" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(from) : M _;
+  Global Instance Get_from : Notations.Dot "from" := {
+    Notations.dot := Ref.map (fun x => x.(from)) (fun v x => x <| from := v |>);
   }.
-  Global Instance Get_AF_from : Notation.DoubleColon t "from" := {
-    Notation.double_colon x := let* x := M.read x in M.alloc x.(from) : M _;
+  Global Instance Get_AF_from : Notations.DoubleColon t "from" := {
+    Notations.double_colon (x : M.Val t) := x.["from"];
   }.
-  Global Instance Get_to : Notation.Dot "to" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(to) : M _;
+  Global Instance Get_to : Notations.Dot "to" := {
+    Notations.dot := Ref.map (fun x => x.(to)) (fun v x => x <| to := v |>);
   }.
-  Global Instance Get_AF_to : Notation.DoubleColon t "to" := {
-    Notation.double_colon x := let* x := M.read x in M.alloc x.(to) : M _;
+  Global Instance Get_AF_to : Notations.DoubleColon t "to" := {
+    Notations.double_colon (x : M.Val t) := x.["to"];
   }.
-  Global Instance Get_value : Notation.Dot "value" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(value) : M _;
+  Global Instance Get_value : Notations.Dot "value" := {
+    Notations.dot :=
+      Ref.map (fun x => x.(value)) (fun v x => x <| value := v |>);
   }.
-  Global Instance Get_AF_value : Notation.DoubleColon t "value" := {
-    Notation.double_colon x := let* x := M.read x in M.alloc x.(value) : M _;
+  Global Instance Get_AF_value : Notations.DoubleColon t "value" := {
+    Notations.double_colon (x : M.Val t) := x.["value"];
   }.
 End Transfer.
 End Transfer.
@@ -239,8 +244,8 @@ Section Impl_core_convert_Into_lib_Event_t_for_lib_Transfer_t.
   Parameter into : (M.Val ltac:(Self)) -> M (M.Val lib.Event.t).
   
   Global Instance AssociatedFunction_into :
-    Notation.DoubleColon ltac:(Self) "into" := {
-    Notation.double_colon := into;
+    Notations.DoubleColon ltac:(Self) "into" := {
+    Notations.double_colon := into;
   }.
   
   Global Instance ℐ :
@@ -258,23 +263,26 @@ Section Approval.
     value : ltac:(lib.Balance);
   }.
   
-  Global Instance Get_owner : Notation.Dot "owner" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(owner) : M _;
+  Global Instance Get_owner : Notations.Dot "owner" := {
+    Notations.dot :=
+      Ref.map (fun x => x.(owner)) (fun v x => x <| owner := v |>);
   }.
-  Global Instance Get_AF_owner : Notation.DoubleColon t "owner" := {
-    Notation.double_colon x := let* x := M.read x in M.alloc x.(owner) : M _;
+  Global Instance Get_AF_owner : Notations.DoubleColon t "owner" := {
+    Notations.double_colon (x : M.Val t) := x.["owner"];
   }.
-  Global Instance Get_spender : Notation.Dot "spender" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(spender) : M _;
+  Global Instance Get_spender : Notations.Dot "spender" := {
+    Notations.dot :=
+      Ref.map (fun x => x.(spender)) (fun v x => x <| spender := v |>);
   }.
-  Global Instance Get_AF_spender : Notation.DoubleColon t "spender" := {
-    Notation.double_colon x := let* x := M.read x in M.alloc x.(spender) : M _;
+  Global Instance Get_AF_spender : Notations.DoubleColon t "spender" := {
+    Notations.double_colon (x : M.Val t) := x.["spender"];
   }.
-  Global Instance Get_value : Notation.Dot "value" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(value) : M _;
+  Global Instance Get_value : Notations.Dot "value" := {
+    Notations.dot :=
+      Ref.map (fun x => x.(value)) (fun v x => x <| value := v |>);
   }.
-  Global Instance Get_AF_value : Notation.DoubleColon t "value" := {
-    Notation.double_colon x := let* x := M.read x in M.alloc x.(value) : M _;
+  Global Instance Get_AF_value : Notations.DoubleColon t "value" := {
+    Notations.double_colon (x : M.Val t) := x.["value"];
   }.
 End Approval.
 End Approval.
@@ -291,8 +299,8 @@ Section Impl_core_convert_Into_lib_Event_t_for_lib_Approval_t.
   Parameter into : (M.Val ltac:(Self)) -> M (M.Val lib.Event.t).
   
   Global Instance AssociatedFunction_into :
-    Notation.DoubleColon ltac:(Self) "into" := {
-    Notation.double_colon := into;
+    Notations.DoubleColon ltac:(Self) "into" := {
+    Notations.double_colon := into;
   }.
   
   Global Instance ℐ :
@@ -322,8 +330,8 @@ Section Impl_lib_Environment_t.
   Parameter caller : (M.Val (ref ltac:(Self))) -> M (M.Val lib.AccountId.t).
   
   Global Instance AssociatedFunction_caller :
-    Notation.DoubleColon ltac:(Self) "caller" := {
-    Notation.double_colon := caller;
+    Notations.DoubleColon ltac:(Self) "caller" := {
+    Notations.double_colon := caller;
   }.
   
   (*
@@ -338,8 +346,8 @@ Section Impl_lib_Environment_t.
   Global Instance AssociatedFunction_emit_event
       {E : Set}
       {ℋ_0 : core.convert.Into.Trait E (T := lib.Event.t)} :
-    Notation.DoubleColon ltac:(Self) "emit_event" := {
-    Notation.double_colon := emit_event (E := E);
+    Notations.DoubleColon ltac:(Self) "emit_event" := {
+    Notations.double_colon := emit_event (E := E);
   }.
 End Impl_lib_Environment_t.
 End Impl_lib_Environment_t.
@@ -356,8 +364,8 @@ Section Impl_lib_Erc20_t.
   Parameter init_env : M (M.Val lib.Environment.t).
   
   Global Instance AssociatedFunction_init_env :
-    Notation.DoubleColon ltac:(Self) "init_env" := {
-    Notation.double_colon := init_env;
+    Notations.DoubleColon ltac:(Self) "init_env" := {
+    Notations.double_colon := init_env;
   }.
   
   (*
@@ -368,8 +376,8 @@ Section Impl_lib_Erc20_t.
   Parameter env : (M.Val (ref ltac:(Self))) -> M (M.Val lib.Environment.t).
   
   Global Instance AssociatedFunction_env :
-    Notation.DoubleColon ltac:(Self) "env" := {
-    Notation.double_colon := env;
+    Notations.DoubleColon ltac:(Self) "env" := {
+    Notations.double_colon := env;
   }.
 End Impl_lib_Erc20_t.
 End Impl_lib_Erc20_t.
@@ -398,8 +406,8 @@ Section Impl_lib_Erc20_t_2.
   Parameter new : (M.Val ltac:(lib.Balance)) -> M (M.Val ltac:(Self)).
   
   Global Instance AssociatedFunction_new :
-    Notation.DoubleColon ltac:(Self) "new" := {
-    Notation.double_colon := new;
+    Notations.DoubleColon ltac:(Self) "new" := {
+    Notations.double_colon := new;
   }.
   
   (*
@@ -411,8 +419,8 @@ Section Impl_lib_Erc20_t_2.
       (M.Val (ref ltac:(Self))) -> M (M.Val ltac:(lib.Balance)).
   
   Global Instance AssociatedFunction_total_supply :
-    Notation.DoubleColon ltac:(Self) "total_supply" := {
-    Notation.double_colon := total_supply;
+    Notations.DoubleColon ltac:(Self) "total_supply" := {
+    Notations.double_colon := total_supply;
   }.
   
   (*
@@ -426,8 +434,8 @@ Section Impl_lib_Erc20_t_2.
         M (M.Val ltac:(lib.Balance)).
   
   Global Instance AssociatedFunction_balance_of_impl :
-    Notation.DoubleColon ltac:(Self) "balance_of_impl" := {
-    Notation.double_colon := balance_of_impl;
+    Notations.DoubleColon ltac:(Self) "balance_of_impl" := {
+    Notations.double_colon := balance_of_impl;
   }.
   
   (*
@@ -441,8 +449,8 @@ Section Impl_lib_Erc20_t_2.
         M (M.Val ltac:(lib.Balance)).
   
   Global Instance AssociatedFunction_balance_of :
-    Notation.DoubleColon ltac:(Self) "balance_of" := {
-    Notation.double_colon := balance_of;
+    Notations.DoubleColon ltac:(Self) "balance_of" := {
+    Notations.double_colon := balance_of;
   }.
   
   (*
@@ -457,8 +465,8 @@ Section Impl_lib_Erc20_t_2.
         M (M.Val ltac:(lib.Balance)).
   
   Global Instance AssociatedFunction_allowance_impl :
-    Notation.DoubleColon ltac:(Self) "allowance_impl" := {
-    Notation.double_colon := allowance_impl;
+    Notations.DoubleColon ltac:(Self) "allowance_impl" := {
+    Notations.double_colon := allowance_impl;
   }.
   
   (*
@@ -473,8 +481,8 @@ Section Impl_lib_Erc20_t_2.
         M (M.Val ltac:(lib.Balance)).
   
   Global Instance AssociatedFunction_allowance :
-    Notation.DoubleColon ltac:(Self) "allowance" := {
-    Notation.double_colon := allowance;
+    Notations.DoubleColon ltac:(Self) "allowance" := {
+    Notations.double_colon := allowance;
   }.
   
   (*
@@ -503,8 +511,8 @@ Section Impl_lib_Erc20_t_2.
         M (M.Val ltac:(lib.Result unit)).
   
   Global Instance AssociatedFunction_transfer_from_to :
-    Notation.DoubleColon ltac:(Self) "transfer_from_to" := {
-    Notation.double_colon := transfer_from_to;
+    Notations.DoubleColon ltac:(Self) "transfer_from_to" := {
+    Notations.double_colon := transfer_from_to;
   }.
   
   (*
@@ -520,8 +528,8 @@ Section Impl_lib_Erc20_t_2.
         M (M.Val ltac:(lib.Result unit)).
   
   Global Instance AssociatedFunction_transfer :
-    Notation.DoubleColon ltac:(Self) "transfer" := {
-    Notation.double_colon := transfer;
+    Notations.DoubleColon ltac:(Self) "transfer" := {
+    Notations.double_colon := transfer;
   }.
   
   (*
@@ -543,8 +551,8 @@ Section Impl_lib_Erc20_t_2.
         M (M.Val ltac:(lib.Result unit)).
   
   Global Instance AssociatedFunction_approve :
-    Notation.DoubleColon ltac:(Self) "approve" := {
-    Notation.double_colon := approve;
+    Notations.DoubleColon ltac:(Self) "approve" := {
+    Notations.double_colon := approve;
   }.
   
   (*
@@ -567,8 +575,8 @@ Section Impl_lib_Erc20_t_2.
         M (M.Val ltac:(lib.Result unit)).
   
   Global Instance AssociatedFunction_transfer_from :
-    Notation.DoubleColon ltac:(Self) "transfer_from" := {
-    Notation.double_colon := transfer_from;
+    Notations.DoubleColon ltac:(Self) "transfer_from" := {
+    Notations.double_colon := transfer_from;
   }.
 End Impl_lib_Erc20_t_2.
 End Impl_lib_Erc20_t_2.

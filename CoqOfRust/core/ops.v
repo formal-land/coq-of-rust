@@ -15,8 +15,8 @@ Module arith.
     End Default.
 
     Global Instance Method_add `(Trait) :
-      Notation.Dot "add" := {
-      Notation.dot := add;
+      Notations.Dot "add" := {
+      Notations.dot := add;
     }.
   End Add.
 
@@ -31,8 +31,8 @@ Module arith.
     End Default.
 
     Global Instance Method_add_assign `(Trait) :
-      Notation.Dot "add_assign" := {
-      Notation.dot := add_assign;
+      Notations.Dot "add_assign" := {
+      Notations.dot := add_assign;
     }.
   End AddAssign.
 
@@ -48,8 +48,8 @@ Module arith.
     End Default.
 
     Global Instance Method_sub `(Trait) :
-      Notation.Dot "sub" := {
-      Notation.dot := sub;
+      Notations.Dot "sub" := {
+      Notations.dot := sub;
     }.
   End Sub.
 
@@ -64,8 +64,8 @@ Module arith.
     End Default.
 
     Global Instance Method_sub_assign `(Trait) :
-      Notation.Dot "sub_assign" := {
-      Notation.dot := sub_assign;
+      Notations.Dot "sub_assign" := {
+      Notations.dot := sub_assign;
     }.
   End SubAssign.
 
@@ -81,8 +81,8 @@ Module arith.
     End Default.
 
     Global Instance Method_mul `(Trait) :
-      Notation.Dot "mul" := {
-      Notation.dot := mul;
+      Notations.Dot "mul" := {
+      Notations.dot := mul;
     }.
   End Mul.
 
@@ -97,8 +97,8 @@ Module arith.
     End Default.
 
     Global Instance Method_mul_assign `(Trait) :
-      Notation.Dot "mul_assign" := {
-      Notation.dot := mul_assign;
+      Notations.Dot "mul_assign" := {
+      Notations.dot := mul_assign;
     }.
   End MulAssign.
 
@@ -114,8 +114,8 @@ Module arith.
     End Default.
 
     Global Instance Method_div `(Trait) :
-      Notation.Dot "div" := {
-      Notation.dot := div;
+      Notations.Dot "div" := {
+      Notations.dot := div;
     }.
   End Div.
 
@@ -130,8 +130,8 @@ Module arith.
     End Default.
 
     Global Instance Method_div_assign `(Trait) :
-      Notation.Dot "div_assign" := {
-      Notation.dot := div_assign;
+      Notations.Dot "div_assign" := {
+      Notations.dot := div_assign;
     }.
   End DivAssign.
 
@@ -147,8 +147,8 @@ Module arith.
     End Default.
 
     Global Instance Method_rem `(Trait) :
-      Notation.Dot "rem" := {
-      Notation.dot := rem;
+      Notations.Dot "rem" := {
+      Notations.dot := rem;
     }.
   End Rem.
 
@@ -163,8 +163,8 @@ Module arith.
     End Default.
 
     Global Instance Method_rem_assign `(Trait) :
-      Notation.Dot "rem_assign" := {
-      Notation.dot := rem_assign;
+      Notations.Dot "rem_assign" := {
+      Notations.dot := rem_assign;
     }.
   End RemAssign.
 
@@ -180,8 +180,8 @@ Module arith.
     End Default.
 
     Global Instance Method_bitxor `(Trait) :
-      Notation.Dot "bitxor" := {
-      Notation.dot := bitxor;
+      Notations.Dot "bitxor" := {
+      Notations.dot := bitxor;
     }.
   End BitXor.
 
@@ -196,8 +196,8 @@ Module arith.
     End Default.
 
     Global Instance Method_bitxor_assign `(Trait) :
-      Notation.Dot "bitxor_assign" := {
-      Notation.dot := bitxor_assign;
+      Notations.Dot "bitxor_assign" := {
+      Notations.dot := bitxor_assign;
     }.
   End BitXorAssign.
 
@@ -213,8 +213,8 @@ Module arith.
     End Default.
 
     Global Instance Method_bitand `(Trait) :
-      Notation.Dot "bitand" := {
-      Notation.dot := bitand;
+      Notations.Dot "bitand" := {
+      Notations.dot := bitand;
     }.
   End BitAnd.
 
@@ -229,8 +229,8 @@ Module arith.
     End Default.
 
     Global Instance Method_bitand_assign `(Trait) :
-      Notation.Dot "bitand_assign" := {
-      Notation.dot := bitand_assign;
+      Notations.Dot "bitand_assign" := {
+      Notations.dot := bitand_assign;
     }.
   End BitAndAssign.
 
@@ -246,8 +246,8 @@ Module arith.
     End Default.
 
     Global Instance Method_bitor `(Trait) :
-      Notation.Dot "bitor" := {
-      Notation.dot := bitor;
+      Notations.Dot "bitor" := {
+      Notations.dot := bitor;
     }.
   End BitOr.
 
@@ -262,8 +262,8 @@ Module arith.
     End Default.
 
     Global Instance Method_bitor_assign `(Trait) :
-      Notation.Dot "bitor_assign" := {
-      Notation.dot := bitor_assign;
+      Notations.Dot "bitor_assign" := {
+      Notations.dot := bitor_assign;
     }.
   End BitOrAssign.
 
@@ -279,8 +279,8 @@ Module arith.
     End Default.
 
     Global Instance Method_shl `(Trait) :
-      Notation.Dot "shl" := {
-      Notation.dot := shl;
+      Notations.Dot "shl" := {
+      Notations.dot := shl;
     }.
   End Shl.
 
@@ -295,8 +295,8 @@ Module arith.
     End Default.
 
     Global Instance Method_shl_assign `(Trait) :
-      Notation.Dot "shl_assign" := {
-      Notation.dot := shl_assign;
+      Notations.Dot "shl_assign" := {
+      Notations.dot := shl_assign;
     }.
   End ShlAssign.
 
@@ -312,8 +312,8 @@ Module arith.
     End Default.
 
     Global Instance Method_shr `(Trait) :
-      Notation.Dot "shr" := {
-      Notation.dot := shr;
+      Notations.Dot "shr" := {
+      Notations.dot := shr;
     }.
   End Shr.
 
@@ -328,8 +328,8 @@ Module arith.
     End Default.
 
     Global Instance Method_shr_assign `(Trait) :
-      Notation.Dot "shr_assign" := {
-      Notation.dot := shr_assign;
+      Notations.Dot "shr_assign" := {
+      Notations.dot := shr_assign;
     }.
   End ShrAssign.
 
@@ -340,8 +340,8 @@ Module arith.
     }.
 
     Global Instance Method_neg `(Trait) :
-      Notation.Dot "neg" := {
-      Notation.dot := neg;
+      Notations.Dot "neg" := {
+      Notations.dot := neg;
     }.
   End Neg.
 
@@ -352,8 +352,8 @@ Module arith.
     }.
 
     Global Instance Method_not `(Trait) :
-      Notation.Dot "not" := {
-      Notation.dot := not;
+      Notations.Dot "not" := {
+      Notations.dot := not;
     }.
   End Not.
 End arith.
@@ -365,8 +365,8 @@ Module Deref.
   }.
 
   Global Instance Method_deref `(Trait) :
-    Notation.Dot "deref" := {
-    Notation.dot := deref;
+    Notations.Dot "deref" := {
+    Notations.dot := deref;
   }.
 End Deref.
 
@@ -391,8 +391,8 @@ End function.
 
   Definition add (z1 z2 : i32) : M Z := M.pure (Z.add z1 z2).
 
-  Global Instance Method_add : Notation.Dot "add" := {
-    Notation.dot := add;
+  Global Instance Method_add : Notations.Dot "add" := {
+    Notations.dot := add;
   }.
 
   Global Instance Add_for_Z :
@@ -407,8 +407,8 @@ Module Impl_AddAssign_for_Z.
   Parameter add_assign : forall `{State.Trait}, mut_ref Z -> Z -> M unit.
 
   Global Instance Method_add_assign `{State.Trait} :
-    Notation.Dot "add_assign" := {
-    Notation.dot := add_assign;
+    Notations.Dot "add_assign" := {
+    Notations.dot := add_assign;
   }.
 
   Global Instance AddAssign_for_Z :
@@ -420,8 +420,8 @@ End Impl_AddAssign_for_Z.
 Module Impl_Sub_for_Z.
   Definition sub `{State.Trait} (z1 z2 : Z) : M Z := M.pure (Z.sub z1 z2).
 
-  Global Instance Method_sub `{State.Trait} : Notation.Dot "sub" := {
-    Notation.dot := sub;
+  Global Instance Method_sub `{State.Trait} : Notations.Dot "sub" := {
+    Notations.dot := sub;
   }.
 
   Global Instance Sub_for_Z : arith.Sub.Trait Z (Rhs := Z) := {
@@ -433,8 +433,8 @@ Module Impl_SubAssign_for_Z.
   Parameter sub_assign : forall `{State.Trait}, mut_ref Z -> Z -> M unit.
 
   Global Instance Method_sub_assign `{State.Trait} :
-    Notation.Dot "sub_assign" := {
-    Notation.dot := sub_assign;
+    Notations.Dot "sub_assign" := {
+    Notations.dot := sub_assign;
   }.
 
   Global Instance SubAssign_for_Z :
@@ -446,8 +446,8 @@ End Impl_SubAssign_for_Z.
 Module Impl_Mul_for_Z.
   Definition mul `{State.Trait} (z1 z2 : Z) : M Z := M.pure (Z.mul z1 z2).
 
-  Global Instance Method_mul `{State.Trait} : Notation.Dot "mul" := {
-    Notation.dot := mul;
+  Global Instance Method_mul `{State.Trait} : Notations.Dot "mul" := {
+    Notations.dot := mul;
   }.
 
   Global Instance Mul_for_Z : arith.Mul.Trait Z (Rhs := Z) := {
@@ -459,8 +459,8 @@ Module Impl_MulAssign_for_Z.
   Parameter mul_assign : forall `{State.Trait}, mut_ref Z -> Z -> M unit.
 
   Global Instance Method_mul_assign `{State.Trait} :
-    Notation.Dot "mul_assign" := {
-    Notation.dot := mul_assign;
+    Notations.Dot "mul_assign" := {
+    Notations.dot := mul_assign;
   }.
 
   Global Instance MulAssign_for_Z :
@@ -472,8 +472,8 @@ End Impl_MulAssign_for_Z.
 Module Impl_Div_for_Z.
   Definition div `{State.Trait} (z1 z2 : Z) : M Z := M.pure (Z.div z1 z2).
 
-  Global Instance Method_div `{State.Trait} : Notation.Dot "div" := {
-    Notation.dot := div;
+  Global Instance Method_div `{State.Trait} : Notations.Dot "div" := {
+    Notations.dot := div;
   }.
 
   Global Instance Div_for_Z : arith.Div.Trait Z (Rhs := Z) := {
@@ -485,8 +485,8 @@ Module Impl_DivAssign_for_Z.
   Parameter div_assign : forall `{State.Trait}, mut_ref Z -> Z -> M unit.
 
   Global Instance Method_div_assign `{State.Trait} :
-    Notation.Dot "div_assign" := {
-    Notation.dot := div_assign;
+    Notations.Dot "div_assign" := {
+    Notations.dot := div_assign;
   }.
 
   Global Instance DivAssign_for_Z :
@@ -498,8 +498,8 @@ End Impl_DivAssign_for_Z.
 Module Impl_Rem_for_Z.
   Definition rem `{State.Trait} (z1 z2 : Z) : M Z := M.pure (Z.rem z1 z2).
 
-  Global Instance Method_rem `{State.Trait} : Notation.Dot "rem" := {
-    Notation.dot := rem;
+  Global Instance Method_rem `{State.Trait} : Notations.Dot "rem" := {
+    Notations.dot := rem;
   }.
 
   Global Instance Rem_for_Z : arith.Rem.Trait Z (Rhs := Z) := {
@@ -511,8 +511,8 @@ Module Impl_RemAssign_for_Z.
   Parameter rem_assign : forall `{State.Trait}, mut_ref Z -> Z -> M unit.
 
   Global Instance Method_rem_assign `{State.Trait} :
-    Notation.Dot "rem_assign" := {
-    Notation.dot := rem_assign;
+    Notations.Dot "rem_assign" := {
+    Notations.dot := rem_assign;
   }.
 
   Global Instance RemAssign_for_Z :
@@ -524,8 +524,8 @@ End Impl_RemAssign_for_Z.
 Module Impl_Neg_for_Z.
   Definition neg `{State.Trait} (z : Z) : M Z := M.pure (Z.opp z).
 
-  Global Instance Method_neg `{State.Trait} : Notation.Dot "neg" := {
-    Notation.dot := neg;
+  Global Instance Method_neg `{State.Trait} : Notations.Dot "neg" := {
+    Notations.dot := neg;
   }.
 
   Global Instance Neg_for_Z : arith.Neg.Trait Z := {
@@ -538,8 +538,8 @@ Module Impl_Not_for_bool.
     let* b := M.read b in
     M.alloc (negb b).
 
-  Global Instance Method_not : Notation.Dot "not" := {
-    Notation.dot := not;
+  Global Instance Method_not : Notations.Dot "not" := {
+    Notations.dot := not;
   }.
 
   Global Instance Not_for_bool : arith.Not.Trait bool := {
@@ -553,8 +553,8 @@ Module Impl_Deref_for_any.
   Definition deref {A : Set} (x : A) : M A := M.pure x.
 
   Global Instance Method_deref (A : Set) :
-    Notation.Dot "deref" := {
-    Notation.dot := deref (A := A);
+    Notations.Dot "deref" := {
+    Notations.dot := deref (A := A);
   }.
 
   Global Instance Deref_for_any (A : Set) : Deref.Trait A := {
@@ -575,8 +575,8 @@ Module drop.
     }.
 
     Global Instance Method_drop `(Trait) :
-      Notation.Dot "drop" := {
-      Notation.dot := drop;
+      Notations.Dot "drop" := {
+      Notations.dot := drop;
     }.
   End Drop.
 End drop.

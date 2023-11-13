@@ -7,8 +7,8 @@ Section EvenNumber.
     x0 : i32.t;
   }.
   
-  Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(x0) : M _;
+  Global Instance Get_0 : Notations.Dot "0" := {
+    Notations.dot := Ref.map (fun x => x.(x0)) (fun v x => x <| x0 := v |>);
   }.
 End EvenNumber.
 End EvenNumber.
@@ -26,8 +26,8 @@ Section Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber_t.
         M (M.Val ltac:(core.fmt.Result)).
   
   Global Instance AssociatedFunction_fmt :
-    Notation.DoubleColon ltac:(Self) "fmt" := {
-    Notation.double_colon := fmt;
+    Notations.DoubleColon ltac:(Self) "fmt" := {
+    Notations.double_colon := fmt;
   }.
   
   Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
@@ -58,8 +58,8 @@ Section Impl_core_cmp_PartialEq_for_try_from_and_try_into_EvenNumber_t.
         M (M.Val bool.t).
   
   Global Instance AssociatedFunction_eq :
-    Notation.DoubleColon ltac:(Self) "eq" := {
-    Notation.double_colon := eq;
+    Notations.DoubleColon ltac:(Self) "eq" := {
+    Notations.double_colon := eq;
   }.
   
   Global Instance ℐ :
@@ -93,8 +93,8 @@ Section Impl_core_convert_TryFrom_i32_t_for_try_from_and_try_into_EvenNumber_t.
       (M.Val i32.t) -> M (M.Val (core.result.Result.t ltac:(Self) Error.t)).
   
   Global Instance AssociatedFunction_try_from :
-    Notation.DoubleColon ltac:(Self) "try_from" := {
-    Notation.double_colon := try_from;
+    Notations.DoubleColon ltac:(Self) "try_from" := {
+    Notations.double_colon := try_from;
   }.
   
   Global Instance ℐ : core.convert.TryFrom.Trait ltac:(Self) (T := i32.t) := {

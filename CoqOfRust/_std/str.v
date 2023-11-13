@@ -461,7 +461,7 @@ Module Impl_str.
     M (M.Val (core.result.Result F (FromStr.Err (Trait := H0)))).
 
   Global Instance AssociatedFunction_parse {F : Set} {H0 : FromStr.Trait F} :
-    Notation.DoubleColon Self "parse" := {
-    Notation.double_colon := parse (F := F);
+    Notations.DoubleColon Self "parse" := {
+    Notations.double_colon := parse (F := F);
   }.
 End Impl_str.
