@@ -508,24 +508,16 @@ Section Impl_lib_Erc20_t_2.
         let* α0 : ltac:(refine (M.Val lib.Environment.t)) :=
           lib.Erc20.t::["init_env"] in
         let* α1 : ltac:(refine (M.Val (ref lib.Environment.t))) := borrow α0 in
-        let* α2 :
-            ltac:(refine (M.Val (core.option.Option.t lib.AccountId.t))) :=
-          M.alloc core.option.Option.None in
-        let* α3 := M.read α2 in
-        let* α4 := M.read caller in
-        let* α5 :
-            ltac:(refine (M.Val (core.option.Option.t lib.AccountId.t))) :=
-          M.alloc (core.option.Option.Some α4) in
-        let* α6 := M.read α5 in
-        let* α7 := M.read total_supply in
-        let* α8 : ltac:(refine (M.Val lib.Transfer.t)) :=
+        let* α2 := M.read caller in
+        let* α3 := M.read total_supply in
+        let* α4 : ltac:(refine (M.Val lib.Transfer.t)) :=
           M.alloc
             {|
-              lib.Transfer.from := α3;
-              lib.Transfer.to := α6;
-              lib.Transfer.value := α7;
+              lib.Transfer.from := core.option.Option.None;
+              lib.Transfer.to := core.option.Option.Some α2;
+              lib.Transfer.value := α3;
             |} in
-        lib.Environment.t::["emit_event"] α1 α8 in
+        lib.Environment.t::["emit_event"] α1 α4 in
       let* α0 := M.read total_supply in
       let* α1 := M.read balances in
       let* α2 :
@@ -714,13 +706,10 @@ Section Impl_lib_Erc20_t_2.
         let* α2 := M.read α1 in
         if (α2 : bool) then
           let* _ : ltac:(refine (M.Val never.t)) :=
-            let* α0 : ltac:(refine (M.Val lib.Error.t)) :=
-              M.alloc lib.Error.InsufficientBalance in
-            let* α1 := M.read α0 in
-            let* α2 :
+            let* α0 :
                 ltac:(refine (M.Val (core.result.Result.t unit lib.Error.t))) :=
-              M.alloc (core.result.Result.Err α1) in
-            M.return_ α2 in
+              M.alloc (core.result.Result.Err lib.Error.InsufficientBalance) in
+            M.return_ α0 in
           let* α0 : ltac:(refine (M.Val unit)) := M.alloc tt in
           never_to_any α0
         else
@@ -764,28 +753,18 @@ Section Impl_lib_Erc20_t_2.
         let* α3 : ltac:(refine (M.Val (ref lib.Environment.t))) := borrow α2 in
         let* α4 : ltac:(refine (M.Val lib.AccountId.t)) := deref from in
         let* α5 := M.read α4 in
-        let* α6 :
-            ltac:(refine (M.Val (core.option.Option.t lib.AccountId.t))) :=
-          M.alloc (core.option.Option.Some α5) in
+        let* α6 : ltac:(refine (M.Val lib.AccountId.t)) := deref to in
         let* α7 := M.read α6 in
-        let* α8 : ltac:(refine (M.Val lib.AccountId.t)) := deref to in
-        let* α9 := M.read α8 in
-        let* α10 :
-            ltac:(refine (M.Val (core.option.Option.t lib.AccountId.t))) :=
-          M.alloc (core.option.Option.Some α9) in
-        let* α11 := M.read α10 in
-        let* α12 := M.read value in
-        let* α13 : ltac:(refine (M.Val lib.Transfer.t)) :=
+        let* α8 := M.read value in
+        let* α9 : ltac:(refine (M.Val lib.Transfer.t)) :=
           M.alloc
             {|
-              lib.Transfer.from := α7;
-              lib.Transfer.to := α11;
-              lib.Transfer.value := α12;
+              lib.Transfer.from := core.option.Option.Some α5;
+              lib.Transfer.to := core.option.Option.Some α7;
+              lib.Transfer.value := α8;
             |} in
-        lib.Environment.t::["emit_event"] α3 α13 in
-      let* α0 : ltac:(refine (M.Val unit)) := M.alloc tt in
-      let* α1 := M.read α0 in
-      M.alloc (core.result.Result.Ok α1)).
+        lib.Environment.t::["emit_event"] α3 α9 in
+      M.alloc (core.result.Result.Ok tt)).
   
   Global Instance AssociatedFunction_transfer_from_to :
     Notation.DoubleColon ltac:(Self) "transfer_from_to" := {
@@ -887,9 +866,7 @@ Section Impl_lib_Erc20_t_2.
               lib.Approval.value := α6;
             |} in
         lib.Environment.t::["emit_event"] α3 α7 in
-      let* α0 : ltac:(refine (M.Val unit)) := M.alloc tt in
-      let* α1 := M.read α0 in
-      M.alloc (core.result.Result.Ok α1)).
+      M.alloc (core.result.Result.Ok tt)).
   
   Global Instance AssociatedFunction_approve :
     Notation.DoubleColon ltac:(Self) "approve" := {
@@ -935,13 +912,11 @@ Section Impl_lib_Erc20_t_2.
         let* α2 := M.read α1 in
         if (α2 : bool) then
           let* _ : ltac:(refine (M.Val never.t)) :=
-            let* α0 : ltac:(refine (M.Val lib.Error.t)) :=
-              M.alloc lib.Error.InsufficientAllowance in
-            let* α1 := M.read α0 in
-            let* α2 :
+            let* α0 :
                 ltac:(refine (M.Val (core.result.Result.t unit lib.Error.t))) :=
-              M.alloc (core.result.Result.Err α1) in
-            M.return_ α2 in
+              M.alloc
+                (core.result.Result.Err lib.Error.InsufficientAllowance) in
+            M.return_ α0 in
           let* α0 : ltac:(refine (M.Val unit)) := M.alloc tt in
           never_to_any α0
         else
@@ -1005,9 +980,7 @@ Section Impl_lib_Erc20_t_2.
           α2
           α5
           α6 in
-      let* α0 : ltac:(refine (M.Val unit)) := M.alloc tt in
-      let* α1 := M.read α0 in
-      M.alloc (core.result.Result.Ok α1)).
+      M.alloc (core.result.Result.Ok tt)).
   
   Global Instance AssociatedFunction_transfer_from :
     Notation.DoubleColon ltac:(Self) "transfer_from" := {

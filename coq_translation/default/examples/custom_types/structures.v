@@ -298,14 +298,12 @@ Definition main : M (M.Val unit) :=
     let* _rectangle : ltac:(refine (M.Val structures.Rectangle.t)) :=
       let* α0 := M.read left_edge in
       let* α1 := M.read top_edge in
-      let* α2 : ltac:(refine (M.Val structures.Point.t)) :=
-        M.alloc {| structures.Point.x := α0; structures.Point.y := α1; |} in
-      let* α3 := M.read α2 in
-      let* α4 := M.read bottom_right in
+      let* α2 := M.read bottom_right in
       M.alloc
         {|
-          structures.Rectangle.top_left := α3;
-          structures.Rectangle.bottom_right := α4;
+          structures.Rectangle.top_left :=
+            {| structures.Point.x := α0; structures.Point.y := α1; |};
+          structures.Rectangle.bottom_right := α2;
         |} in
     let* _unit : ltac:(refine (M.Val structures.Unit.t)) :=
       M.alloc structures.Unit.Build_t in

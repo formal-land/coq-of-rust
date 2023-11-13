@@ -216,10 +216,7 @@ Definition peel
     | core.option.Option.Some food =>
       let* food := M.alloc food in
       let* α0 := M.read food in
-      let* α1 : ltac:(refine (M.Val combinators_map.Peeled.t)) :=
-        M.alloc (combinators_map.Peeled.Build_t α0) in
-      let* α2 := M.read α1 in
-      M.alloc (core.option.Option.Some α2)
+      M.alloc (core.option.Option.Some (combinators_map.Peeled.Build_t α0))
     | core.option.Option.None  => M.alloc core.option.Option.None
     end).
 
@@ -240,10 +237,7 @@ Definition chop
     | core.option.Option.Some combinators_map.Peeled.Build_t food =>
       let* food := M.alloc food in
       let* α0 := M.read food in
-      let* α1 : ltac:(refine (M.Val combinators_map.Chopped.t)) :=
-        M.alloc (combinators_map.Chopped.Build_t α0) in
-      let* α2 := M.read α1 in
-      M.alloc (core.option.Option.Some α2)
+      M.alloc (core.option.Option.Some (combinators_map.Chopped.Build_t α0))
     | core.option.Option.None  => M.alloc core.option.Option.None
     end).
 
@@ -364,16 +358,10 @@ Definition main : M (M.Val unit) :=
   M.function_body
     (let* apple :
         ltac:(refine (M.Val (core.option.Option.t combinators_map.Food.t))) :=
-      let* α0 : ltac:(refine (M.Val combinators_map.Food.t)) :=
-        M.alloc combinators_map.Food.Apple in
-      let* α1 := M.read α0 in
-      M.alloc (core.option.Option.Some α1) in
+      M.alloc (core.option.Option.Some combinators_map.Food.Apple) in
     let* carrot :
         ltac:(refine (M.Val (core.option.Option.t combinators_map.Food.t))) :=
-      let* α0 : ltac:(refine (M.Val combinators_map.Food.t)) :=
-        M.alloc combinators_map.Food.Carrot in
-      let* α1 := M.read α0 in
-      M.alloc (core.option.Option.Some α1) in
+      M.alloc (core.option.Option.Some combinators_map.Food.Carrot) in
     let* potato :
         ltac:(refine (M.Val (core.option.Option.t combinators_map.Food.t))) :=
       M.alloc core.option.Option.None in

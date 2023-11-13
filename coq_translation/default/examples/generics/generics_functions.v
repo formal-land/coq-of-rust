@@ -82,21 +82,16 @@ fn main() {
 Definition main : M (M.Val unit) :=
   M.function_body
     (let* _ : ltac:(refine (M.Val unit)) :=
-      let* α0 : ltac:(refine (M.Val generics_functions.A.t)) :=
-        M.alloc generics_functions.A.Build_t in
-      let* α1 := M.read α0 in
-      let* α2 : ltac:(refine (M.Val generics_functions.S.t)) :=
-        M.alloc (generics_functions.S.Build_t α1) in
-      generics_functions.reg_fn α2 in
+      let* α0 : ltac:(refine (M.Val generics_functions.S.t)) :=
+        M.alloc (generics_functions.S.Build_t generics_functions.A.Build_t) in
+      generics_functions.reg_fn α0 in
     let* _ : ltac:(refine (M.Val unit)) :=
-      let* α0 : ltac:(refine (M.Val generics_functions.A.t)) :=
-        M.alloc generics_functions.A.Build_t in
-      let* α1 := M.read α0 in
-      let* α2 :
+      let* α0 :
           ltac:(refine
             (M.Val (generics_functions.SGen.t generics_functions.A.t))) :=
-        M.alloc (generics_functions.SGen.Build_t α1) in
-      generics_functions.gen_spec_t α2 in
+        M.alloc
+          (generics_functions.SGen.Build_t generics_functions.A.Build_t) in
+      generics_functions.gen_spec_t α0 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 6 in
       let* α1 := M.read α0 in

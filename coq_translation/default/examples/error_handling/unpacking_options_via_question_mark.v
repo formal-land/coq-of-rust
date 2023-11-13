@@ -247,40 +247,23 @@ Definition main : M (M.Val unit) :=
         ltac:(refine (M.Val unpacking_options_via_question_mark.Person.t)) :=
       let* α0 : ltac:(refine (M.Val u8.t)) := M.alloc 61 in
       let* α1 := M.read α0 in
-      let* α2 : ltac:(refine (M.Val (core.option.Option.t u8.t))) :=
-        M.alloc (core.option.Option.Some α1) in
+      let* α2 : ltac:(refine (M.Val u32.t)) := M.alloc 439222222 in
       let* α3 := M.read α2 in
-      let* α4 : ltac:(refine (M.Val u32.t)) := M.alloc 439222222 in
-      let* α5 := M.read α4 in
-      let* α6 :
-          ltac:(refine
-            (M.Val unpacking_options_via_question_mark.PhoneNumber.t)) :=
-        M.alloc
-          {|
-            unpacking_options_via_question_mark.PhoneNumber.area_code := α3;
-            unpacking_options_via_question_mark.PhoneNumber.number := α5;
-          |} in
-      let* α7 := M.read α6 in
-      let* α8 :
-          ltac:(refine
-            (M.Val
-              (core.option.Option.t
-                unpacking_options_via_question_mark.PhoneNumber.t))) :=
-        M.alloc (core.option.Option.Some α7) in
-      let* α9 := M.read α8 in
-      let* α10 :
-          ltac:(refine (M.Val unpacking_options_via_question_mark.Job.t)) :=
-        M.alloc
-          {| unpacking_options_via_question_mark.Job.phone_number := α9; |} in
-      let* α11 := M.read α10 in
-      let* α12 :
-          ltac:(refine
-            (M.Val
-              (core.option.Option.t
-                unpacking_options_via_question_mark.Job.t))) :=
-        M.alloc (core.option.Option.Some α11) in
-      let* α13 := M.read α12 in
-      M.alloc {| unpacking_options_via_question_mark.Person.job := α13; |} in
+      M.alloc
+        {|
+          unpacking_options_via_question_mark.Person.job :=
+            core.option.Option.Some
+              {|
+                unpacking_options_via_question_mark.Job.phone_number :=
+                  core.option.Option.Some
+                    {|
+                      unpacking_options_via_question_mark.PhoneNumber.area_code :=
+                        core.option.Option.Some α1;
+                      unpacking_options_via_question_mark.PhoneNumber.number :=
+                        α3;
+                    |};
+              |};
+        |} in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* α0 :
           ltac:(refine

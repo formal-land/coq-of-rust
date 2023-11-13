@@ -80,6 +80,15 @@ impl Expr {
     }
 
     fn read(self) -> Self {
+        // If we read an allocated expression, we just return the expression.
+        if let ExprKind::Call { func, args } = &self.kind {
+            if let ExprKind::LocalVar(func) = &func.kind {
+                if func == "M.alloc" && args.len() == 1 {
+                    return args.get(0).unwrap().clone();
+                }
+            }
+        }
+
         Expr {
             kind: ExprKind::Call {
                 func: Box::new(Expr {

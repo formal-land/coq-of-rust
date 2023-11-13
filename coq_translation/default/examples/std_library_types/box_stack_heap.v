@@ -234,14 +234,11 @@ Definition main : M (M.Val unit) :=
       let* α3 := M.read α2 in
       let* α4 : ltac:(refine (M.Val f64.t)) := M.alloc (- 4 (* 4.0 *)) in
       let* α5 := M.read α4 in
-      let* α6 : ltac:(refine (M.Val box_stack_heap.Point.t)) :=
-        M.alloc
-          {| box_stack_heap.Point.x := α3; box_stack_heap.Point.y := α5; |} in
-      let* α7 := M.read α6 in
       M.alloc
         {|
           box_stack_heap.Rectangle.top_left := α1;
-          box_stack_heap.Rectangle.bottom_right := α7;
+          box_stack_heap.Rectangle.bottom_right :=
+            {| box_stack_heap.Point.x := α3; box_stack_heap.Point.y := α5; |};
         |} in
     let* boxed_rectangle :
         ltac:(refine
@@ -256,20 +253,17 @@ Definition main : M (M.Val unit) :=
       let* α3 := M.read α2 in
       let* α4 : ltac:(refine (M.Val f64.t)) := M.alloc (- 4 (* 4.0 *)) in
       let* α5 := M.read α4 in
-      let* α6 : ltac:(refine (M.Val box_stack_heap.Point.t)) :=
-        M.alloc
-          {| box_stack_heap.Point.x := α3; box_stack_heap.Point.y := α5; |} in
-      let* α7 := M.read α6 in
-      let* α8 : ltac:(refine (M.Val box_stack_heap.Rectangle.t)) :=
+      let* α6 : ltac:(refine (M.Val box_stack_heap.Rectangle.t)) :=
         M.alloc
           {|
             box_stack_heap.Rectangle.top_left := α1;
-            box_stack_heap.Rectangle.bottom_right := α7;
+            box_stack_heap.Rectangle.bottom_right :=
+              {| box_stack_heap.Point.x := α3; box_stack_heap.Point.y := α5; |};
           |} in
       (alloc.boxed.Box.t
             box_stack_heap.Rectangle.t
             alloc.alloc.Global.t)::["new"]
-        α8 in
+        α6 in
     let* boxed_point :
         ltac:(refine
           (M.Val

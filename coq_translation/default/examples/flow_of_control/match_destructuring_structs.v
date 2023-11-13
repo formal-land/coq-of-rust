@@ -50,14 +50,12 @@ Definition main : M (M.Val unit) :=
       let* α1 := M.read α0 in
       let* α2 : ltac:(refine (M.Val u32.t)) := M.alloc 2 in
       let* α3 := M.read α2 in
-      let* α4 : ltac:(refine (M.Val (u32.t * u32.t))) := M.alloc (α1, α3) in
+      let* α4 : ltac:(refine (M.Val u32.t)) := M.alloc 3 in
       let* α5 := M.read α4 in
-      let* α6 : ltac:(refine (M.Val u32.t)) := M.alloc 3 in
-      let* α7 := M.read α6 in
       M.alloc
         {|
-          match_destructuring_structs.Foo.x := α5;
-          match_destructuring_structs.Foo.y := α7;
+          match_destructuring_structs.Foo.x := (α1, α3);
+          match_destructuring_structs.Foo.y := α5;
         |} in
     let* α0 := M.read foo in
     match α0 with

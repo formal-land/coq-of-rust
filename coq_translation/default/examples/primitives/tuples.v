@@ -232,18 +232,13 @@ Definition main : M (M.Val unit) :=
       let* α3 := M.read α2 in
       let* α4 : ltac:(refine (M.Val u32.t)) := M.alloc 2 in
       let* α5 := M.read α4 in
-      let* α6 : ltac:(refine (M.Val ((u8.t * u16.t) * u32.t))) :=
-        M.alloc (α1, α3, α5) in
+      let* α6 : ltac:(refine (M.Val u64.t)) := M.alloc 4 in
       let* α7 := M.read α6 in
-      let* α8 : ltac:(refine (M.Val u64.t)) := M.alloc 4 in
+      let* α8 : ltac:(refine (M.Val i8.t)) := M.alloc (- 1) in
       let* α9 := M.read α8 in
-      let* α10 : ltac:(refine (M.Val i8.t)) := M.alloc (- 1) in
+      let* α10 : ltac:(refine (M.Val i16.t)) := M.alloc (- 2) in
       let* α11 := M.read α10 in
-      let* α12 : ltac:(refine (M.Val (u64.t * i8.t))) := M.alloc (α9, α11) in
-      let* α13 := M.read α12 in
-      let* α14 : ltac:(refine (M.Val i16.t)) := M.alloc (- 2) in
-      let* α15 := M.read α14 in
-      M.alloc (α7, α13, α15) in
+      M.alloc ((α1, α3, α5), (α7, α9), α11) in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=

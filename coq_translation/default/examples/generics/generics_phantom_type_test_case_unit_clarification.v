@@ -321,13 +321,10 @@ Section Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarifi
       let* α1 : ltac:(refine (M.Val f64.t)) := rhs.["0"] in
       let* α2 : ltac:(refine (M.Val f64.t)) := BinOp.add α0 α1 in
       let* α3 := M.read α2 in
-      let* α4 : ltac:(refine (M.Val (core.marker.PhantomData.t Unit))) :=
-        M.alloc core.marker.PhantomData.Build_t in
-      let* α5 := M.read α4 in
       M.alloc
         (generics_phantom_type_test_case_unit_clarification.Length.Build_t
           α3
-          α5)).
+          core.marker.PhantomData.Build_t)).
   
   Global Instance AssociatedFunction_add :
     Notation.DoubleColon ltac:(Self) "add" := {
@@ -376,17 +373,10 @@ Definition main : M (M.Val unit) :=
               generics_phantom_type_test_case_unit_clarification.Inch.t))) :=
       let* α0 : ltac:(refine (M.Val f64.t)) := M.alloc 12 (* 12.0 *) in
       let* α1 := M.read α0 in
-      let* α2 :
-          ltac:(refine
-            (M.Val
-              (core.marker.PhantomData.t
-                generics_phantom_type_test_case_unit_clarification.Inch.t))) :=
-        M.alloc core.marker.PhantomData.Build_t in
-      let* α3 := M.read α2 in
       M.alloc
         (generics_phantom_type_test_case_unit_clarification.Length.Build_t
           α1
-          α3) in
+          core.marker.PhantomData.Build_t) in
     let* one_meter :
         ltac:(refine
           (M.Val
@@ -394,17 +384,10 @@ Definition main : M (M.Val unit) :=
               generics_phantom_type_test_case_unit_clarification.Mm.t))) :=
       let* α0 : ltac:(refine (M.Val f64.t)) := M.alloc 1000 (* 1000.0 *) in
       let* α1 := M.read α0 in
-      let* α2 :
-          ltac:(refine
-            (M.Val
-              (core.marker.PhantomData.t
-                generics_phantom_type_test_case_unit_clarification.Mm.t))) :=
-        M.alloc core.marker.PhantomData.Build_t in
-      let* α3 := M.read α2 in
       M.alloc
         (generics_phantom_type_test_case_unit_clarification.Length.Build_t
           α1
-          α3) in
+          core.marker.PhantomData.Build_t) in
     let* two_feet :
         ltac:(refine
           (M.Val

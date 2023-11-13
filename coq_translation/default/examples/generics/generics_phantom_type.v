@@ -235,43 +235,39 @@ Definition main : M (M.Val unit) :=
           (M.Val (generics_phantom_type.PhantomTuple.t char.t f32.t))) :=
       let* α0 : ltac:(refine (M.Val char.t)) := M.alloc "Q"%char in
       let* α1 := M.read α0 in
-      let* α2 : ltac:(refine (M.Val (core.marker.PhantomData.t f32.t))) :=
-        M.alloc core.marker.PhantomData.Build_t in
-      let* α3 := M.read α2 in
-      M.alloc (generics_phantom_type.PhantomTuple.Build_t α1 α3) in
+      M.alloc
+        (generics_phantom_type.PhantomTuple.Build_t
+          α1
+          core.marker.PhantomData.Build_t) in
     let* _tuple2 :
         ltac:(refine
           (M.Val (generics_phantom_type.PhantomTuple.t char.t f64.t))) :=
       let* α0 : ltac:(refine (M.Val char.t)) := M.alloc "Q"%char in
       let* α1 := M.read α0 in
-      let* α2 : ltac:(refine (M.Val (core.marker.PhantomData.t f64.t))) :=
-        M.alloc core.marker.PhantomData.Build_t in
-      let* α3 := M.read α2 in
-      M.alloc (generics_phantom_type.PhantomTuple.Build_t α1 α3) in
+      M.alloc
+        (generics_phantom_type.PhantomTuple.Build_t
+          α1
+          core.marker.PhantomData.Build_t) in
     let* _struct1 :
         ltac:(refine
           (M.Val (generics_phantom_type.PhantomStruct.t char.t f32.t))) :=
       let* α0 : ltac:(refine (M.Val char.t)) := M.alloc "Q"%char in
       let* α1 := M.read α0 in
-      let* α2 : ltac:(refine (M.Val (core.marker.PhantomData.t f32.t))) :=
-        M.alloc core.marker.PhantomData.Build_t in
-      let* α3 := M.read α2 in
       M.alloc
         {|
           generics_phantom_type.PhantomStruct.first := α1;
-          generics_phantom_type.PhantomStruct.phantom := α3;
+          generics_phantom_type.PhantomStruct.phantom :=
+            core.marker.PhantomData.Build_t;
         |} in
     let* _struct2 :
         ltac:(refine
           (M.Val (generics_phantom_type.PhantomStruct.t char.t f64.t))) :=
       let* α0 : ltac:(refine (M.Val char.t)) := M.alloc "Q"%char in
       let* α1 := M.read α0 in
-      let* α2 : ltac:(refine (M.Val (core.marker.PhantomData.t f64.t))) :=
-        M.alloc core.marker.PhantomData.Build_t in
-      let* α3 := M.read α2 in
       M.alloc
         {|
           generics_phantom_type.PhantomStruct.first := α1;
-          generics_phantom_type.PhantomStruct.phantom := α3;
+          generics_phantom_type.PhantomStruct.phantom :=
+            core.marker.PhantomData.Build_t;
         |} in
     M.alloc tt).

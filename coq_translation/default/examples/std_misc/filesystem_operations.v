@@ -169,10 +169,7 @@ Definition touch
       std.fs.OpenOptions.t::["open"] α9 path in
     let* α11 := M.read α10 in
     match α11 with
-    | core.result.Result.Ok _ =>
-      let* α0 : ltac:(refine (M.Val unit)) := M.alloc tt in
-      let* α1 := M.read α0 in
-      M.alloc (core.result.Result.Ok α1)
+    | core.result.Result.Ok _ => M.alloc (core.result.Result.Ok tt)
     | core.result.Result.Err e =>
       let* e := M.alloc e in
       let* α0 := M.read e in
