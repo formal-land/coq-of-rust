@@ -22,6 +22,218 @@ type Dynamic(
     ReErased,
     Dyn,
 ) not yet handled
+type Closure(
+    DefId(0:11 ~ boxing_errors[a63b]::double_first::{closure#0}),
+    [
+        i32,
+        extern "rust-call" fn(()) -> std::boxed::Box<dyn std::error::Error>,
+        (),
+    ],
+) not yet handled
+type Dynamic(
+    [
+        Binder(
+            Trait(
+                std::error::Error,
+            ),
+            [],
+        ),
+    ],
+    ReErased,
+    Dyn,
+) not yet handled
+type Dynamic(
+    [
+        Binder(
+            Trait(
+                std::error::Error,
+            ),
+            [],
+        ),
+    ],
+    ReErased,
+    Dyn,
+) not yet handled
+type Dynamic(
+    [
+        Binder(
+            Trait(
+                std::error::Error,
+            ),
+            [],
+        ),
+    ],
+    ReErased,
+    Dyn,
+) not yet handled
+type Closure(
+    DefId(0:13 ~ boxing_errors[a63b]::double_first::{closure#1}::{closure#0}),
+    [
+        i32,
+        extern "rust-call" fn((std::num::ParseIntError,)) -> std::boxed::Box<dyn std::error::Error>,
+        (),
+    ],
+) not yet handled
+type Dynamic(
+    [
+        Binder(
+            Trait(
+                std::error::Error,
+            ),
+            [],
+        ),
+    ],
+    ReErased,
+    Dyn,
+) not yet handled
+type Closure(
+    DefId(0:14 ~ boxing_errors[a63b]::double_first::{closure#1}::{closure#1}),
+    [
+        i32,
+        extern "rust-call" fn((i32,)) -> i32,
+        (),
+    ],
+) not yet handled
+type Dynamic(
+    [
+        Binder(
+            Trait(
+                std::error::Error,
+            ),
+            [],
+        ),
+    ],
+    ReErased,
+    Dyn,
+) not yet handled
+type Dynamic(
+    [
+        Binder(
+            Trait(
+                std::error::Error,
+            ),
+            [],
+        ),
+    ],
+    ReErased,
+    Dyn,
+) not yet handled
+type Closure(
+    DefId(0:12 ~ boxing_errors[a63b]::double_first::{closure#1}),
+    [
+        i32,
+        extern "rust-call" fn((&&str,)) -> std::result::Result<i32, std::boxed::Box<dyn std::error::Error>>,
+        (),
+    ],
+) not yet handled
+type Dynamic(
+    [
+        Binder(
+            Trait(
+                std::error::Error,
+            ),
+            [],
+        ),
+    ],
+    ReErased,
+    Dyn,
+) not yet handled
+type Dynamic(
+    [
+        Binder(
+            Trait(
+                std::error::Error,
+            ),
+            [],
+        ),
+    ],
+    ReErased,
+    Dyn,
+) not yet handled
+type Dynamic(
+    [
+        Binder(
+            Trait(
+                std::error::Error,
+            ),
+            [],
+        ),
+    ],
+    ReErased,
+    Dyn,
+) not yet handled
+type Dynamic(
+    [
+        Binder(
+            Trait(
+                std::error::Error,
+            ),
+            [],
+        ),
+    ],
+    ReErased,
+    Dyn,
+) not yet handled
+type Dynamic(
+    [
+        Binder(
+            Trait(
+                std::error::Error,
+            ),
+            [],
+        ),
+    ],
+    ReErased,
+    Dyn,
+) not yet handled
+type Dynamic(
+    [
+        Binder(
+            Trait(
+                std::error::Error,
+            ),
+            [],
+        ),
+    ],
+    ReErased,
+    Dyn,
+) not yet handled
+type Dynamic(
+    [
+        Binder(
+            Trait(
+                std::error::Error,
+            ),
+            [],
+        ),
+    ],
+    ReErased,
+    Dyn,
+) not yet handled
+type Dynamic(
+    [
+        Binder(
+            Trait(
+                std::error::Error,
+            ),
+            [],
+        ),
+    ],
+    ReErased,
+    Dyn,
+) not yet handled
+type Dynamic(
+    [
+        Binder(
+            Trait(
+                std::error::Error,
+            ),
+            [],
+        ),
+    ],
+    ReErased,
+    Dyn,
+) not yet handled
 type Dynamic(
     [
         Binder(

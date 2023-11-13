@@ -291,7 +291,7 @@ Module utils.
     End MultiAddress.
     Definition MultiAddress `{State.Trait} (AccountId AccountIndex : Set) :
       Set :=
-      M.val (MultiAddress.t AccountId AccountIndex).
+      M.Val (MultiAddress.t AccountId AccountIndex).
   End multi_address.
 
   Module static_type.

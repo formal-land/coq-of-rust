@@ -52,13 +52,13 @@ pub struct Child {
 }
 *)
 Module Child.
-  Record t : Set := { 
+  Record t `{State.Trait} : Set := {
     stdin : Option ChildStdin;
     stdout : Option ChildStdout;
     stderr : Option ChildStderr;
   }.
 End Child.
-Definition Child := Child.t.
+Definition Child `{State.Trait} := Child.t.
 
 (* pub struct ExitCode(_); *)
 Module ExitCode.

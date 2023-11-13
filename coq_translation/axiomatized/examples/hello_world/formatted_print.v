@@ -4,20 +4,17 @@ Require Import CoqOfRust.CoqOfRust.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : forall `{ℋ : State.Trait}, M unit.
 
-Module Structure.
-  Section Structure.
-    Context `{ℋ : State.Trait}.
-    
-    Unset Primitive Projections.
-    Record t : Set := {
-      x0 : i32;
-    }.
-    Global Set Primitive Projections.
-    
-    #[refine] Global Instance Get_0 : Notation.Dot "0" := {
-      Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
-    }.
-    Admitted.
-  End Structure.
+Module  Structure.
+Section Structure.
+  Context `{ℋ : State.Trait}.
+  
+  Record t : Set := {
+    x0 : i32;
+  }.
+  
+  Global Instance Get_0 : Notation.Dot "0" := {
+    Notation.dot x := let* x := M.read x in M.pure x.(x0) : M _;
+  }.
 End Structure.
-Definition Structure `{ℋ : State.Trait} : Set := M.val Structure.t.
+End Structure.
+Definition Structure `{ℋ : State.Trait} : Set := M.Val Structure.t.

@@ -1,4 +1,6 @@
 Require Import CoqOfRust.lib.lib.
+Require CoqOfRust.core.convert.
+Require CoqOfRust.core.result.
 
 Module arith.
   Module Add.
@@ -387,7 +389,7 @@ End function.
 (* Module Impl_Add_for_i32. Section Impl_Add_for_i32.
   Context `{State.Trait}.
 
-  Definition add (z1 z2 : i32) : M Z := Pure (Z.add z1 z2).
+  Definition add (z1 z2 : i32) : M Z := M.pure (Z.add z1 z2).
 
   Global Instance Method_add : Notation.Dot "add" := {
     Notation.dot := add;
@@ -416,7 +418,7 @@ Module Impl_AddAssign_for_Z.
 End Impl_AddAssign_for_Z.
 
 Module Impl_Sub_for_Z.
-  Definition sub `{State.Trait} (z1 z2 : Z) : M Z := Pure (Z.sub z1 z2).
+  Definition sub `{State.Trait} (z1 z2 : Z) : M Z := M.pure (Z.sub z1 z2).
 
   Global Instance Method_sub `{State.Trait} : Notation.Dot "sub" := {
     Notation.dot := sub;
@@ -442,7 +444,7 @@ Module Impl_SubAssign_for_Z.
 End Impl_SubAssign_for_Z.
 
 Module Impl_Mul_for_Z.
-  Definition mul `{State.Trait} (z1 z2 : Z) : M Z := Pure (Z.mul z1 z2).
+  Definition mul `{State.Trait} (z1 z2 : Z) : M Z := M.pure (Z.mul z1 z2).
 
   Global Instance Method_mul `{State.Trait} : Notation.Dot "mul" := {
     Notation.dot := mul;
@@ -468,7 +470,7 @@ Module Impl_MulAssign_for_Z.
 End Impl_MulAssign_for_Z.
 
 Module Impl_Div_for_Z.
-  Definition div `{State.Trait} (z1 z2 : Z) : M Z := Pure (Z.div z1 z2).
+  Definition div `{State.Trait} (z1 z2 : Z) : M Z := M.pure (Z.div z1 z2).
 
   Global Instance Method_div `{State.Trait} : Notation.Dot "div" := {
     Notation.dot := div;
@@ -494,7 +496,7 @@ Module Impl_DivAssign_for_Z.
 End Impl_DivAssign_for_Z.
 
 Module Impl_Rem_for_Z.
-  Definition rem `{State.Trait} (z1 z2 : Z) : M Z := Pure (Z.rem z1 z2).
+  Definition rem `{State.Trait} (z1 z2 : Z) : M Z := M.pure (Z.rem z1 z2).
 
   Global Instance Method_rem `{State.Trait} : Notation.Dot "rem" := {
     Notation.dot := rem;
@@ -520,7 +522,7 @@ Module Impl_RemAssign_for_Z.
 End Impl_RemAssign_for_Z.
 
 Module Impl_Neg_for_Z.
-  Definition neg `{State.Trait} (z : Z) : M Z := Pure (Z.opp z).
+  Definition neg `{State.Trait} (z : Z) : M Z := M.pure (Z.opp z).
 
   Global Instance Method_neg `{State.Trait} : Notation.Dot "neg" := {
     Notation.dot := neg;
@@ -552,7 +554,7 @@ End Impl_Not_for_bool. End Impl_Not_for_bool.
 Module Impl_Deref_for_any. Section Impl_Deref_for_any.
   Context `{State.Trait}.
 
-  Definition deref {A : Set} (x : A) : M A := Pure x.
+  Definition deref {A : Set} (x : A) : M A := M.pure x.
 
   Global Instance Method_deref (A : Set) :
     Notation.Dot "deref" := {
@@ -582,3 +584,91 @@ Module drop.
     }.
   End Drop.
 End drop.
+
+Module control_flow.
+  (*
+  pub enum ControlFlow<B, C = ()> {
+      Continue(C),
+      Break(B),
+  }
+  *)
+  Module ControlFlow.
+    Inductive t `{State.Trait} (B C : Set) : Set :=
+    | Continue : C -> t B C
+    | Break : B -> t B C.
+    Arguments Continue {_ _ _ _ _}.
+    Arguments Break {_ _ _ _ _}.
+  End ControlFlow.
+  Definition ControlFlow `{State.Trait} (B C : Set) : Set :=
+    M.Val (ControlFlow.t B C).
+End control_flow.
+
+Module try_trait.
+  (*
+  pub trait Try: FromResidual<Self::Residual> {
+      type Output;
+      type Residual;
+
+      // Required methods
+      fn from_output(output: Self::Output) -> Self;
+      fn branch(self) -> ControlFlow<Self::Residual, Self::Output>;
+  }
+  *)
+  Module Try.
+    Class Trait `{State.Trait} (Self : Set) : Type := {
+      Output : Set;
+      Residual : Set;
+      from_output : Output -> M Self;
+      branch : Self -> M (control_flow.ControlFlow Residual Output);
+    }.
+
+    Module Impl.
+      Global Instance for_Result `{State.Trait} (T E : Set) :
+          Trait (core.result.Result T E) := {
+        Output := T;
+        Residual := core.result.Result core.convert.Infallible E;
+        from_output output :=
+          M.alloc (core.result.Result.Ok output);
+        branch self :=
+          let* self := M.read self in
+          match self with
+          | core.result.Result.Ok v =>
+            M.alloc (control_flow.ControlFlow.Continue v)
+          | core.result.Result.Err e =>
+            let* result := M.alloc (core.result.Result.Err e) in
+            M.alloc (control_flow.ControlFlow.Break result)
+          end;
+      }.
+    End Impl.
+  End Try.
+
+  (*
+  pub trait FromResidual<R = <Self as Try>::Residual> {
+      // Required method
+      fn from_residual(residual: R) -> Self;
+  }
+  *)
+  Module FromResidual.
+    Class Trait `{State.Trait} (Self : Set) {R : Set} : Type := {
+      from_residual : R -> M Self;
+    }.
+
+    Module Impl.
+      Global Instance for_Result `{State.Trait} (T E F : Set)
+          {H0 : core.convert.From.Trait F (T := E)} :
+          Trait (core.result.Result T F)
+            (R := core.result.Result core.convert.Infallible E) := {
+        from_residual residual :=
+          axiom "from_residual";
+      }.
+
+      (* Special case for when the From is the identity, to help the type-checker. *)
+      Global Instance for_Result_id `{State.Trait} (T E : Set) :
+          Trait (core.result.Result T E)
+            (R := core.result.Result core.convert.Infallible E) := {
+        from_residual residual :=
+          axiom "from_residual";
+      }.
+    End Impl.
+  End FromResidual.
+End try_trait.

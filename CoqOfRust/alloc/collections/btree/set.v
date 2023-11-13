@@ -22,4 +22,4 @@ Definition BTreeSet `{State.Trait} (K A : Set)
   {H0 : alloc.Allocator.Trait A}
   {H1 : core.clone.Clone.Trait A} :
   Set :=
-  M.val (BTreeSet.t K A).
+  M.Val (BTreeSet.t K A).

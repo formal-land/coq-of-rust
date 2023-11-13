@@ -14,7 +14,7 @@ Module sr25519.
     Record t `{State.Trait} : Set := { }.
   End Pair.
   Global Set Primitive Projections.
-  Definition Pair `{State.Trait} := M.val Pair.t.
+  Definition Pair `{State.Trait} := M.Val Pair.t.
 
   (* pub struct Signature(pub [u8; 64]); *)
   (* NOTE: For now we use normal slice to approximate the array type *)
@@ -25,7 +25,7 @@ Module sr25519.
     }.
   End Signature.
   Global Set Primitive Projections.
-  Definition Signature `{State.Trait} := M.val Signature.t.
+  Definition Signature `{State.Trait} := M.Val Signature.t.
 End sr25519.
 
 Module crypto.
@@ -35,5 +35,5 @@ Module crypto.
     Record t `{State.Trait} : Set := { }.
   End AccountId32.
   Global Set Primitive Projections.
-  Definition AccountId32 `{State.Trait} := M.val AccountId32.t.
+  Definition AccountId32 `{State.Trait} := M.Val AccountId32.t.
 End crypto.

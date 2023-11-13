@@ -6,105 +6,94 @@ use crate::top_level::*;
 use itertools::Itertools;
 use rustc_hir::def::{DefKind, Res};
 use rustc_hir::{BareFnTy, FnDecl, FnRetTy, GenericBound, ItemKind, OpaqueTyOrigin, Ty, TyKind};
+use std::rc::Rc;
 
 #[derive(Debug, PartialEq, Eq, Hash, Clone)]
 pub(crate) enum CoqType {
     Var(Box<Path>),
-    VarWithSelfTy(Box<Path>, Box<CoqType>),
+    VarWithSelfTy(Box<Path>, Rc<CoqType>),
     Application {
-        func: Box<CoqType>,
-        args: Vec<Box<CoqType>>,
+        func: Rc<CoqType>,
+        args: Vec<Rc<CoqType>>,
         is_alias: bool,
     },
     Function {
         /// We group together the arguments that are called together, as this
         /// will be useful for the monadic translation of types later.
-        args: Vec<Box<CoqType>>,
-        ret: Box<CoqType>,
+        args: Vec<Rc<CoqType>>,
+        ret: Rc<CoqType>,
     },
-    Tuple(Vec<Box<CoqType>>),
-    Array(Box<CoqType>),
-    Ref(Box<CoqType>, rustc_hir::Mutability),
+    Tuple(Vec<Rc<CoqType>>),
+    Array(Rc<CoqType>),
+    Ref(Rc<CoqType>, rustc_hir::Mutability),
     OpaqueType(Vec<Path>),
     Dyn(Vec<Path>),
     Infer,
 }
 
 impl CoqType {
-    pub(crate) fn var(name: String) -> Box<CoqType> {
-        Box::new(CoqType::Var(Box::new(Path::local(name))))
+    pub(crate) fn var(name: String) -> Rc<CoqType> {
+        Rc::new(CoqType::Var(Box::new(Path::local(name))))
     }
 
-    pub(crate) fn unit() -> Box<CoqType> {
+    pub(crate) fn unit() -> Rc<CoqType> {
         CoqType::var("unit".to_string())
     }
 
-    pub(crate) fn monad(ty: Box<CoqType>) -> Box<CoqType> {
-        Box::new(CoqType::Application {
+    pub(crate) fn monad(ty: Rc<CoqType>) -> Rc<CoqType> {
+        Rc::new(CoqType::Application {
             func: CoqType::var("M".to_string()),
             args: vec![ty],
             is_alias: false,
         })
     }
-
-    pub(crate) fn remove_ref(ty: CoqType) -> CoqType {
-        match ty {
-            CoqType::Ref(ty, _) => *ty,
-            _ => panic!("remove_ref called on a non-ref type"),
-        }
-    }
 }
 
-pub(crate) fn mt_ty_unboxed(ty: CoqType) -> CoqType {
-    match ty {
+pub(crate) fn mt_ty(ty: Rc<CoqType>) -> Rc<CoqType> {
+    match (*ty).clone() {
         CoqType::Application {
             func,
             args,
             is_alias,
-        } => CoqType::Application {
+        } => Rc::new(CoqType::Application {
             func,
             args: args.into_iter().map(mt_ty).collect(),
             is_alias,
-        },
+        }),
         CoqType::Var(..) => ty,
-        CoqType::VarWithSelfTy(path, self_ty) => CoqType::VarWithSelfTy(path, mt_ty(self_ty)),
-        CoqType::Function { args, ret } => CoqType::Function {
+        CoqType::VarWithSelfTy(path, self_ty) => {
+            Rc::new(CoqType::VarWithSelfTy(path, mt_ty(self_ty)))
+        }
+        CoqType::Function { args, ret } => Rc::new(CoqType::Function {
             args: args.into_iter().map(mt_ty).collect(),
             ret: CoqType::monad(mt_ty(ret)),
-        },
-        CoqType::Tuple(tys) => CoqType::Tuple(tys.into_iter().map(mt_ty).collect()),
-        CoqType::Array(ty) => CoqType::Array(mt_ty(ty)),
-        CoqType::Ref(ty, mutability) => CoqType::Ref(mt_ty(ty), mutability),
+        }),
+        CoqType::Tuple(tys) => Rc::new(CoqType::Tuple(tys.into_iter().map(mt_ty).collect())),
+        CoqType::Array(ty) => Rc::new(CoqType::Array(mt_ty(ty))),
+        CoqType::Ref(ty, mutability) => Rc::new(CoqType::Ref(mt_ty(ty), mutability)),
         CoqType::OpaqueType(..) => ty,
         CoqType::Dyn(..) => ty,
         CoqType::Infer => ty,
     }
 }
 
-#[allow(clippy::boxed_local)]
-pub(crate) fn mt_ty(ty: Box<CoqType>) -> Box<CoqType> {
-    Box::new(mt_ty_unboxed(*ty))
-}
-
-pub(crate) fn compile_type(env: &Env, ty: &Ty) -> Box<CoqType> {
+pub(crate) fn compile_type(env: &Env, ty: &Ty) -> Rc<CoqType> {
     match &ty.kind {
         TyKind::Slice(ty) => {
-            let func = Box::new(CoqType::Var(Box::new(Path::local("Slice".to_string()))));
+            let func = Rc::new(CoqType::Var(Box::new(Path::local("slice".to_string()))));
             let args = vec![compile_type(env, ty)];
-            Box::new(CoqType::Application {
+            Rc::new(CoqType::Application {
                 func,
                 args,
                 is_alias: false,
             })
         }
-        TyKind::Array(ty, _) => Box::new(CoqType::Array(compile_type(env, ty))),
-        TyKind::Ptr(mut_ty) => Box::new(CoqType::Ref(compile_type(env, mut_ty.ty), mut_ty.mutbl)),
-        TyKind::Ref(_, mut_ty) => {
-            Box::new(CoqType::Ref(compile_type(env, mut_ty.ty), mut_ty.mutbl))
-        }
+        TyKind::Array(ty, _) => Rc::new(CoqType::Array(compile_type(env, ty))),
+        TyKind::Ptr(mut_ty) => Rc::new(CoqType::Ref(compile_type(env, mut_ty.ty), mut_ty.mutbl)),
+        TyKind::Ref(_, mut_ty) => Rc::new(CoqType::Ref(compile_type(env, mut_ty.ty), mut_ty.mutbl)),
         TyKind::BareFn(BareFnTy { decl, .. }) => compile_fn_decl(env, decl),
         TyKind::Never => CoqType::var("Empty_set".to_string()),
-        TyKind::Tup(tys) => Box::new(CoqType::Tuple(
+        TyKind::Tup(tys) => Rc::new(CoqType::Tuple(
             tys.iter().map(|ty| compile_type(env, ty)).collect(),
         )),
         TyKind::Path(qpath) => {
@@ -119,7 +108,7 @@ pub(crate) fn compile_type(env: &Env, ty: &Ty) -> Box<CoqType> {
                 _ => None,
             };
             let coq_path = Box::new(compile_qpath(env, qpath));
-            let func = Box::new(match self_ty {
+            let func = Rc::new(match self_ty {
                 Some(self_ty) => CoqType::VarWithSelfTy(coq_path.clone(), self_ty),
                 None => CoqType::Var(coq_path.clone()),
             });
@@ -141,9 +130,9 @@ pub(crate) fn compile_type(env: &Env, ty: &Ty) -> Box<CoqType> {
                                         let mut segments = coq_path.segments.clone();
                                         segments.push("Default".to_string());
                                         segments.push(name);
-                                        Box::new(CoqType::Var(Box::new(Path { segments })))
+                                        Rc::new(CoqType::Var(Box::new(Path { segments })))
                                     } else {
-                                        Box::new(CoqType::Infer)
+                                        Rc::new(CoqType::Infer)
                                     }
                                 }
                             })
@@ -154,7 +143,7 @@ pub(crate) fn compile_type(env: &Env, ty: &Ty) -> Box<CoqType> {
                 }
                 _ => vec![],
             };
-            Box::new(CoqType::Application {
+            Rc::new(CoqType::Application {
                 func,
                 args: params,
                 is_alias,
@@ -166,7 +155,7 @@ pub(crate) fn compile_type(env: &Env, ty: &Ty) -> Box<CoqType> {
                 if opaque_ty.generics.params.is_empty() {
                     if opaque_ty.generics.predicates.is_empty() {
                         if let OpaqueTyOrigin::FnReturn(_) = opaque_ty.origin {
-                            Box::new(CoqType::OpaqueType(
+                            Rc::new(CoqType::OpaqueType(
                                 opaque_ty
                                     .bounds
                                     .iter()
@@ -235,19 +224,19 @@ pub(crate) fn compile_type(env: &Env, ty: &Ty) -> Box<CoqType> {
                 CoqType::var("OpaqueDef".to_string())
             }
         }
-        TyKind::TraitObject(ptrait_refs, _, _) => Box::new(CoqType::Dyn(
+        TyKind::TraitObject(ptrait_refs, _, _) => Rc::new(CoqType::Dyn(
             ptrait_refs
                 .iter()
                 .map(|ptrait_ref| compile_path(env, ptrait_ref.trait_ref.path))
                 .collect(),
         )),
         TyKind::Typeof(_) => CoqType::var("Typeof".to_string()),
-        TyKind::Infer => Box::new(CoqType::Infer),
+        TyKind::Infer => Rc::new(CoqType::Infer),
         TyKind::Err(_) => CoqType::var("Error_type".to_string()),
     }
 }
 
-pub(crate) fn compile_fn_ret_ty(env: &Env, fn_ret_ty: &FnRetTy) -> Box<CoqType> {
+pub(crate) fn compile_fn_ret_ty(env: &Env, fn_ret_ty: &FnRetTy) -> Rc<CoqType> {
     match fn_ret_ty {
         FnRetTy::DefaultReturn(_) => CoqType::unit(),
         FnRetTy::Return(ty) => compile_type(env, ty),
@@ -255,9 +244,9 @@ pub(crate) fn compile_fn_ret_ty(env: &Env, fn_ret_ty: &FnRetTy) -> Box<CoqType> 
 }
 
 // The type of a function declaration
-pub(crate) fn compile_fn_decl(env: &Env, fn_decl: &FnDecl) -> Box<CoqType> {
+pub(crate) fn compile_fn_decl(env: &Env, fn_decl: &FnDecl) -> Rc<CoqType> {
     let ret = compile_fn_ret_ty(env, &fn_decl.output);
-    Box::new(CoqType::Function {
+    Rc::new(CoqType::Function {
         args: fn_decl
             .inputs
             .iter()
@@ -268,7 +257,7 @@ pub(crate) fn compile_fn_decl(env: &Env, fn_decl: &FnDecl) -> Box<CoqType> {
 }
 
 /// Return the type parameters on a path
-pub(crate) fn compile_path_ty_params(env: &Env, path: &rustc_hir::Path) -> Vec<Box<CoqType>> {
+pub(crate) fn compile_path_ty_params(env: &Env, path: &rustc_hir::Path) -> Vec<Rc<CoqType>> {
     match path.segments.last().unwrap().args {
         Some(args) => args
             .args
@@ -297,7 +286,7 @@ impl CoqType {
                 (Some("Self".to_string()), self_ty.to_coq()),
                 (
                     Some("Trait".to_string()),
-                    coq::Expression::Code(text("ltac:(try clear Trait; hauto l: on)")),
+                    coq::Expression::Code(text("ltac:(refine _)")),
                 ),
             ]),
             CoqType::Application {
@@ -333,9 +322,15 @@ impl CoqType {
             CoqType::Function { args, ret } => ret
                 .to_coq()
                 .arrows_from(&args.iter().map(|arg| arg.to_coq()).collect::<Vec<_>>()),
-            CoqType::Tuple(tys) => coq::Expression::multiply_many(
-                &tys.iter().map(|ty| ty.to_coq()).collect::<Vec<_>>(),
-            ),
+            CoqType::Tuple(tys) => {
+                if tys.is_empty() {
+                    coq::Expression::just_name("unit")
+                } else {
+                    coq::Expression::just_name("M.Val").apply(&coq::Expression::multiply_many(
+                        &tys.iter().map(|ty| ty.to_coq()).collect::<Vec<_>>(),
+                    ))
+                }
+            }
             CoqType::Array(ty) => coq::Expression::Variable {
                 ident: Path::new(&["array"]),
                 no_implicit: false,
@@ -423,14 +418,20 @@ impl CoqType {
                 } else {
                     paren(
                         with_paren,
-                        nest([intersperse(
-                            tys.iter().map(|ty| ty.to_doc(true)),
-                            [text(" *"), line()],
-                        )]),
+                        nest([
+                            text("M.Val"),
+                            line(),
+                            text("("),
+                            nest([intersperse(
+                                tys.iter().map(|ty| ty.to_doc(true)),
+                                [text(" *"), line()],
+                            )]),
+                            text(")"),
+                        ]),
                     )
                 }
             }
-            CoqType::Array(ty) => paren(with_paren, nest([text("list"), line(), ty.to_doc(true)])),
+            CoqType::Array(ty) => paren(with_paren, nest([text("array"), line(), ty.to_doc(true)])),
             CoqType::Ref(ty, mutbl) => paren(
                 with_paren,
                 match mutbl {
@@ -544,64 +545,68 @@ impl CoqType {
     }
 
     /// substitutes all occurrences of OpaqueType with ty
-    pub(crate) fn subst_opaque_types(&mut self, ty: &CoqType) {
-        match self {
-            CoqType::Var(_) => {}
-            CoqType::VarWithSelfTy(_, self_ty) => self_ty.subst_opaque_types(ty),
-            CoqType::Application { args, .. } => args
-                .iter_mut()
-                .map(|arg_ty| arg_ty.subst_opaque_types(ty))
-                .collect(),
-            CoqType::Function { args, ret } => {
-                ret.subst_opaque_types(ty);
-                args.iter_mut()
-                    .map(|arg_ty| arg_ty.subst_opaque_types(ty))
-                    .collect()
-            }
-            CoqType::Tuple(types) => types
-                .iter_mut()
-                .map(|one_ty| one_ty.subst_opaque_types(ty))
-                .collect(),
-            CoqType::Array(item_ty) => item_ty.subst_opaque_types(ty),
-            CoqType::Ref(ref_ty, _) => ref_ty.subst_opaque_types(ty),
-            CoqType::OpaqueType(_) => *self = ty.clone(),
-            CoqType::Dyn(_) => (),
-            CoqType::Infer => (),
-        }
+    #[allow(dead_code)]
+    pub(crate) fn subst_opaque_types(&mut self, _ty: &CoqType) {
+        // match self {
+        //     CoqType::Var(_) => {}
+        //     CoqType::VarWithSelfTy(_, self_ty) => self_ty.subst_opaque_types(ty),
+        //     CoqType::Application { args, .. } => args
+        //         .iter_mut()
+        //         .map(|arg_ty| arg_ty.subst_opaque_types(ty))
+        //         .collect(),
+        //     CoqType::Function { args, ret } => {
+        //         ret.subst_opaque_types(ty);
+        //         args.iter_mut()
+        //             .map(|arg_ty| arg_ty.subst_opaque_types(ty))
+        //             .collect()
+        //     }
+        //     CoqType::Tuple(types) => types
+        //         .iter_mut()
+        //         .map(|one_ty| one_ty.subst_opaque_types(ty))
+        //         .collect(),
+        //     CoqType::Array(item_ty) => item_ty.subst_opaque_types(ty),
+        //     CoqType::Ref(ref_ty, _) => ref_ty.subst_opaque_types(ty),
+        //     CoqType::OpaqueType(_) => *self = ty.clone(),
+        //     CoqType::Dyn(_) => (),
+        //     CoqType::Infer => (),
+        // }
     }
 
     /// returns the list of the trait names for the opaque types
     /// generated for the trait objects from the subtree rooted in [self]
+    #[allow(dead_code)]
     pub(crate) fn collect_and_subst_trait_objects(&mut self) -> Vec<Vec<Path>> {
-        match self {
-            CoqType::Var(_) => vec![],
-            CoqType::VarWithSelfTy(_, self_ty) => self_ty.collect_and_subst_trait_objects(),
-            CoqType::Application { args, .. } => args
-                .iter_mut()
-                .flat_map(|ty| ty.collect_and_subst_trait_objects())
-                .collect(),
-            CoqType::Function { args, ret } => args
-                .iter_mut()
-                .flat_map(|ty| ty.collect_and_subst_trait_objects())
-                .chain(ret.collect_and_subst_trait_objects())
-                .collect(),
-            CoqType::Tuple(types) => types
-                .iter_mut()
-                .flat_map(|ty| ty.collect_and_subst_trait_objects())
-                .collect(),
-            CoqType::Array(ty) => ty.collect_and_subst_trait_objects(),
-            CoqType::Ref(ty, _) => ty.collect_and_subst_trait_objects(),
-            CoqType::OpaqueType(..) => vec![],
-            CoqType::Dyn(trait_names) => {
-                let tn = trait_names.to_owned();
-                *self = *CoqType::var(CoqType::trait_object_to_name(trait_names));
-                vec![tn]
-            }
-            CoqType::Infer => vec![],
-        }
+        vec![]
+        // match self {
+        //     CoqType::Var(_) => vec![],
+        //     CoqType::VarWithSelfTy(_, self_ty) => self_ty.collect_and_subst_trait_objects(),
+        //     CoqType::Application { args, .. } => args
+        //         .iter_mut()
+        //         .flat_map(|ty| ty.collect_and_subst_trait_objects())
+        //         .collect(),
+        //     CoqType::Function { args, ret } => args
+        //         .iter_mut()
+        //         .flat_map(|ty| ty.collect_and_subst_trait_objects())
+        //         .chain(ret.collect_and_subst_trait_objects())
+        //         .collect(),
+        //     CoqType::Tuple(types) => types
+        //         .iter_mut()
+        //         .flat_map(|ty| ty.collect_and_subst_trait_objects())
+        //         .collect(),
+        //     CoqType::Array(ty) => ty.collect_and_subst_trait_objects(),
+        //     CoqType::Ref(ty, _) => ty.collect_and_subst_trait_objects(),
+        //     CoqType::OpaqueType(..) => vec![],
+        //     CoqType::Dyn(trait_names) => {
+        //         let tn = trait_names.to_owned();
+        //         *self = *CoqType::var(CoqType::trait_object_to_name(trait_names));
+        //         vec![tn]
+        //     }
+        //     CoqType::Infer => vec![],
+        // }
     }
 
     /// produces a name for the opaque type generated for the trait object
+    #[allow(dead_code)]
     pub(crate) fn trait_object_to_name(trait_names: &[Path]) -> String {
         [
             "Dyn_",

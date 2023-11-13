@@ -10,7 +10,7 @@ Module Error.
   Record t : Set := {}.
   Set Primitive Projections.
 End Error.
-Definition Error `{State.Trait} := M.val Error.t.
+Definition Error `{State.Trait} := M.Val Error.t.
 
 (*
 pub trait DecodeAsType: Sized {

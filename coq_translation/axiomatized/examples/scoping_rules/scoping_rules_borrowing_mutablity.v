@@ -2,80 +2,68 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - struct was ignored by the compiler *)
-Module Book.
-  Section Book.
-    Context `{ℋ : State.Trait}.
-    
-    Unset Primitive Projections.
-    Record t : Set := {
-      author : ref str;
-      title : ref str;
-      year : u32;
-    }.
-    Global Set Primitive Projections.
-    
-    #[refine] Global Instance Get_author : Notation.Dot "author" := {
-      Notation.dot x := let* x := M.read x in Pure x.(author) : M _;
-    }.
-    Admitted.
-    #[refine] Global Instance Get_AF_author :
-      Notation.DoubleColon t "author" := {
-      Notation.double_colon x := let* x := M.read x in Pure x.(author) : M _;
-    }.
-    Admitted.
-    #[refine] Global Instance Get_title : Notation.Dot "title" := {
-      Notation.dot x := let* x := M.read x in Pure x.(title) : M _;
-    }.
-    Admitted.
-    #[refine] Global Instance Get_AF_title : Notation.DoubleColon t "title" := {
-      Notation.double_colon x := let* x := M.read x in Pure x.(title) : M _;
-    }.
-    Admitted.
-    #[refine] Global Instance Get_year : Notation.Dot "year" := {
-      Notation.dot x := let* x := M.read x in Pure x.(year) : M _;
-    }.
-    Admitted.
-    #[refine] Global Instance Get_AF_year : Notation.DoubleColon t "year" := {
-      Notation.double_colon x := let* x := M.read x in Pure x.(year) : M _;
-    }.
-    Admitted.
-  End Book.
+Module  Book.
+Section Book.
+  Context `{ℋ : State.Trait}.
+  
+  Record t : Set := {
+    author : ref str;
+    title : ref str;
+    year : u32;
+  }.
+  
+  Global Instance Get_author : Notation.Dot "author" := {
+    Notation.dot x := let* x := M.read x in M.pure x.(author) : M _;
+  }.
+  Global Instance Get_AF_author : Notation.DoubleColon t "author" := {
+    Notation.double_colon x := let* x := M.read x in M.pure x.(author) : M _;
+  }.
+  Global Instance Get_title : Notation.Dot "title" := {
+    Notation.dot x := let* x := M.read x in M.pure x.(title) : M _;
+  }.
+  Global Instance Get_AF_title : Notation.DoubleColon t "title" := {
+    Notation.double_colon x := let* x := M.read x in M.pure x.(title) : M _;
+  }.
+  Global Instance Get_year : Notation.Dot "year" := {
+    Notation.dot x := let* x := M.read x in M.pure x.(year) : M _;
+  }.
+  Global Instance Get_AF_year : Notation.DoubleColon t "year" := {
+    Notation.double_colon x := let* x := M.read x in M.pure x.(year) : M _;
+  }.
 End Book.
-Definition Book `{ℋ : State.Trait} : Set := M.val Book.t.
+End Book.
+Definition Book `{ℋ : State.Trait} : Set := M.Val Book.t.
 
-Module Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book.
-  Section Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book.
-    Context `{ℋ : State.Trait}.
-    
-    Definition Self : Set := scoping_rules_borrowing_mutablity.Book.
-    
-    (* #[allow(dead_code)] - function was ignored by the compiler *)
-    Parameter clone : (ref Self) -> M scoping_rules_borrowing_mutablity.Book.
-    
-    Global Instance AssociatedFunction_clone :
-      Notation.DoubleColon Self "clone" := {
-      Notation.double_colon := clone;
-    }.
-    
-    #[refine] Global Instance ℐ : core.clone.Clone.Trait Self := {
-      core.clone.Clone.clone := clone;
-    }.
-    Admitted.
-  End Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book.
-  Global Hint Resolve ℐ : core.
+Module  Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book.
+Section Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book.
+  Context `{ℋ : State.Trait}.
+  
+  Definition Self : Set := scoping_rules_borrowing_mutablity.Book.
+  
+  (* #[allow(dead_code)] - function was ignored by the compiler *)
+  Parameter clone : (ref Self) -> M scoping_rules_borrowing_mutablity.Book.
+  
+  Global Instance AssociatedFunction_clone :
+    Notation.DoubleColon Self "clone" := {
+    Notation.double_colon := clone;
+  }.
+  
+  Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
+    core.clone.Clone.clone := clone;
+    core.clone.Clone.clone_from := Datatypes.None;
+  }.
+End Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book.
 End Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book.
 
-Module Impl_core_marker_Copy_for_scoping_rules_borrowing_mutablity_Book.
-  Section Impl_core_marker_Copy_for_scoping_rules_borrowing_mutablity_Book.
-    Context `{ℋ : State.Trait}.
-    
-    Definition Self : Set := scoping_rules_borrowing_mutablity.Book.
-    
-    #[refine] Global Instance ℐ : core.marker.Copy.Trait Self := {
-    }.
-    Admitted.
-  End Impl_core_marker_Copy_for_scoping_rules_borrowing_mutablity_Book.
-  Global Hint Resolve ℐ : core.
+Module  Impl_core_marker_Copy_for_scoping_rules_borrowing_mutablity_Book.
+Section Impl_core_marker_Copy_for_scoping_rules_borrowing_mutablity_Book.
+  Context `{ℋ : State.Trait}.
+  
+  Definition Self : Set := scoping_rules_borrowing_mutablity.Book.
+  
+  Global Instance ℐ : core.marker.Copy.Trait Self := {
+  }.
+End Impl_core_marker_Copy_for_scoping_rules_borrowing_mutablity_Book.
 End Impl_core_marker_Copy_for_scoping_rules_borrowing_mutablity_Book.
 
 Parameter borrow_book :

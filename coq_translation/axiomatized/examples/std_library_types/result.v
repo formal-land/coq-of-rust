@@ -8,30 +8,26 @@ Module checked.
     | NonPositiveLogarithm
     | NegativeSquareRoot.
   End MathError.
-  Definition MathError `{ℋ : State.Trait} : Set := MathError.t.
+  Definition MathError `{ℋ : State.Trait} : Set := M.Val MathError.t.
   
-  Module Impl_core_fmt_Debug_for_result_checked_MathError.
-    Section Impl_core_fmt_Debug_for_result_checked_MathError.
-      Context `{ℋ : State.Trait}.
-      
-      Definition Self : Set := result.checked.MathError.
-      
-      Parameter fmt :
-          (ref Self) ->
-            (mut_ref core.fmt.Formatter) ->
-            M ltac:(core.fmt.Result).
-      
-      Global Instance AssociatedFunction_fmt :
-        Notation.DoubleColon Self "fmt" := {
-        Notation.double_colon := fmt;
-      }.
-      
-      #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
-        core.fmt.Debug.fmt := fmt;
-      }.
-      Admitted.
-    End Impl_core_fmt_Debug_for_result_checked_MathError.
-    Global Hint Resolve ℐ : core.
+  Module  Impl_core_fmt_Debug_for_result_checked_MathError.
+  Section Impl_core_fmt_Debug_for_result_checked_MathError.
+    Context `{ℋ : State.Trait}.
+    
+    Definition Self : Set := result.checked.MathError.
+    
+    Parameter fmt :
+        (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
+    
+    Global Instance AssociatedFunction_fmt :
+      Notation.DoubleColon Self "fmt" := {
+      Notation.double_colon := fmt;
+    }.
+    
+    Global Instance ℐ : core.fmt.Debug.Trait Self := {
+      core.fmt.Debug.fmt := fmt;
+    }.
+  End Impl_core_fmt_Debug_for_result_checked_MathError.
   End Impl_core_fmt_Debug_for_result_checked_MathError.
   
   Ltac MathResult := refine (core.result.Result f64 result.checked.MathError).
@@ -55,28 +51,25 @@ Module MathError.
   | NonPositiveLogarithm
   | NegativeSquareRoot.
 End MathError.
-Definition MathError `{ℋ : State.Trait} : Set := MathError.t.
+Definition MathError `{ℋ : State.Trait} : Set := M.Val MathError.t.
 
-Module Impl_core_fmt_Debug_for_result_checked_MathError.
-  Section Impl_core_fmt_Debug_for_result_checked_MathError.
-    Context `{ℋ : State.Trait}.
-    
-    Definition Self : Set := result.checked.MathError.
-    
-    Parameter fmt :
-        (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
-    
-    Global Instance AssociatedFunction_fmt :
-      Notation.DoubleColon Self "fmt" := {
-      Notation.double_colon := fmt;
-    }.
-    
-    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
-      core.fmt.Debug.fmt := fmt;
-    }.
-    Admitted.
-  End Impl_core_fmt_Debug_for_result_checked_MathError.
-  Global Hint Resolve ℐ : core.
+Module  Impl_core_fmt_Debug_for_result_checked_MathError.
+Section Impl_core_fmt_Debug_for_result_checked_MathError.
+  Context `{ℋ : State.Trait}.
+  
+  Definition Self : Set := result.checked.MathError.
+  
+  Parameter fmt :
+      (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
+  
+  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {
+    Notation.double_colon := fmt;
+  }.
+  
+  Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    core.fmt.Debug.fmt := fmt;
+  }.
+End Impl_core_fmt_Debug_for_result_checked_MathError.
 End Impl_core_fmt_Debug_for_result_checked_MathError.
 
 Ltac MathResult := refine (core.result.Result f64 result.checked.MathError).

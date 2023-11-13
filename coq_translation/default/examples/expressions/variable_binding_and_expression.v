@@ -3,10 +3,11 @@ Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
-  let* x := M.alloc 5 in
-  let _ := x in
-  let* _ :=
-    let* α0 := M.alloc 1 in
-    add x α0 in
-  let* _ := M.alloc 15 in
-  M.alloc tt.
+  M.function_body
+    (let* x : ltac:(refine i32) := M.alloc 5 in
+    let _ := x in
+    let* _ : ltac:(refine i32) :=
+      let* α0 : ltac:(refine i32) := M.alloc 1 in
+      BinOp.add x α0 in
+    let* _ : ltac:(refine i32) := M.alloc 15 in
+    M.alloc tt).

@@ -131,7 +131,7 @@ Definition BTreeMap `{State.Trait} (K V A : Set)
   {H0 : alloc.Allocator.Trait A}
   {H1 : core.clone.Clone.Trait A} :
   Set :=
-  M.val (BTreeMap.t K V A).
+  M.Val (BTreeMap.t K V A).
 
 (* 
 pub struct IntoIter<K, V, A = Global>

@@ -7,7 +7,7 @@ Module Number.
   | One
   | Two.
 End Number.
-Definition Number `{ℋ : State.Trait} : Set := Number.t.
+Definition Number `{ℋ : State.Trait} : Set := M.Val Number.t.
 
 Module Color.
   Inductive t `{ℋ : State.Trait} : Set :=
@@ -15,123 +15,139 @@ Module Color.
   | Green
   | Blue.
 End Color.
-Definition Color `{ℋ : State.Trait} : Set := Color.t.
+Definition Color `{ℋ : State.Trait} : Set := M.Val Color.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
-  let* _ :=
-    let* _ :=
-      let* α0 := borrow [ mk_str "zero is "; mk_str "
-" ] (list (ref str)) in
-      let* α1 := deref α0 (list (ref str)) in
-      let* α2 := borrow α1 (list (ref str)) in
-      let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := cast 0 in
-      let* α5 := borrow α4 i32 in
-      let* α6 := deref α5 i32 in
-      let* α7 := borrow α6 i32 in
-      let* α8 := core.fmt.rt.Argument::["new_display"] α7 in
-      let* α9 := borrow [ α8 ] (list core.fmt.rt.Argument) in
-      let* α10 := deref α9 (list core.fmt.rt.Argument) in
-      let* α11 := borrow α10 (list core.fmt.rt.Argument) in
-      let* α12 := pointer_coercion "Unsize" α11 in
-      let* α13 := core.fmt.Arguments::["new_v1"] α3 α12 in
-      std.io.stdio._print α13 in
-    M.alloc tt in
-  let* _ :=
-    let* _ :=
-      let* α0 := borrow [ mk_str "one is "; mk_str "
-" ] (list (ref str)) in
-      let* α1 := deref α0 (list (ref str)) in
-      let* α2 := borrow α1 (list (ref str)) in
-      let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := cast 1 in
-      let* α5 := borrow α4 i32 in
-      let* α6 := deref α5 i32 in
-      let* α7 := borrow α6 i32 in
-      let* α8 := core.fmt.rt.Argument::["new_display"] α7 in
-      let* α9 := borrow [ α8 ] (list core.fmt.rt.Argument) in
-      let* α10 := deref α9 (list core.fmt.rt.Argument) in
-      let* α11 := borrow α10 (list core.fmt.rt.Argument) in
-      let* α12 := pointer_coercion "Unsize" α11 in
-      let* α13 := core.fmt.Arguments::["new_v1"] α3 α12 in
-      std.io.stdio._print α13 in
-    M.alloc tt in
-  let* _ :=
-    let* _ :=
-      let* α0 := borrow [ mk_str "roses are #"; mk_str "
-" ] (list (ref str)) in
-      let* α1 := deref α0 (list (ref str)) in
-      let* α2 := borrow α1 (list (ref str)) in
-      let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := add enums_c_like.Color.Red 0 in
-      let* α5 := cast α4 in
-      let* α6 := borrow α5 i32 in
-      let* α7 := deref α6 i32 in
-      let* α8 := borrow α7 i32 in
-      let* α9 := core.fmt.rt.Argument::["new_lower_hex"] α8 in
-      let* α10 := borrow [ α9 ] (list core.fmt.rt.Argument) in
-      let* α11 := deref α10 (list core.fmt.rt.Argument) in
-      let* α12 := borrow α11 (list core.fmt.rt.Argument) in
-      let* α13 := pointer_coercion "Unsize" α12 in
-      let* α14 := M.alloc 0 in
-      let* α15 := M.alloc " "%char in
-      let* α16 := M.alloc 8 in
-      let* α17 := M.alloc 6 in
-      let* α18 := "unimplemented parent_kind" α17 in
-      let* α19 :=
-        core.fmt.rt.Placeholder::["new"]
-          α14
-          α15
-          (core.fmt.rt.Alignment.Unknown tt)
-          α16
-          (core.fmt.rt.Count.Implied tt)
-          α18 in
-      let* α20 := borrow [ α19 ] (list core.fmt.rt.Placeholder) in
-      let* α21 := deref α20 (list core.fmt.rt.Placeholder) in
-      let* α22 := borrow α21 (list core.fmt.rt.Placeholder) in
-      let* α23 := pointer_coercion "Unsize" α22 in
-      let* α24 := core.fmt.rt.UnsafeArg::["new"] in
-      let* α25 := core.fmt.Arguments::["new_v1_formatted"] α3 α13 α23 α24 in
-      std.io.stdio._print α25 in
-    M.alloc tt in
-  let* _ :=
-    let* _ :=
-      let* α0 :=
-        borrow [ mk_str "violets are #"; mk_str "
-" ] (list (ref str)) in
-      let* α1 := deref α0 (list (ref str)) in
-      let* α2 := borrow α1 (list (ref str)) in
-      let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := add enums_c_like.Color.Blue 0 in
-      let* α5 := cast α4 in
-      let* α6 := borrow α5 i32 in
-      let* α7 := deref α6 i32 in
-      let* α8 := borrow α7 i32 in
-      let* α9 := core.fmt.rt.Argument::["new_lower_hex"] α8 in
-      let* α10 := borrow [ α9 ] (list core.fmt.rt.Argument) in
-      let* α11 := deref α10 (list core.fmt.rt.Argument) in
-      let* α12 := borrow α11 (list core.fmt.rt.Argument) in
-      let* α13 := pointer_coercion "Unsize" α12 in
-      let* α14 := M.alloc 0 in
-      let* α15 := M.alloc " "%char in
-      let* α16 := M.alloc 8 in
-      let* α17 := M.alloc 6 in
-      let* α18 := "unimplemented parent_kind" α17 in
-      let* α19 :=
-        core.fmt.rt.Placeholder::["new"]
-          α14
-          α15
-          (core.fmt.rt.Alignment.Unknown tt)
-          α16
-          (core.fmt.rt.Count.Implied tt)
-          α18 in
-      let* α20 := borrow [ α19 ] (list core.fmt.rt.Placeholder) in
-      let* α21 := deref α20 (list core.fmt.rt.Placeholder) in
-      let* α22 := borrow α21 (list core.fmt.rt.Placeholder) in
-      let* α23 := pointer_coercion "Unsize" α22 in
-      let* α24 := core.fmt.rt.UnsafeArg::["new"] in
-      let* α25 := core.fmt.Arguments::["new_v1_formatted"] α3 α13 α23 α24 in
-      std.io.stdio._print α25 in
-    M.alloc tt in
-  M.alloc tt.
+  M.function_body
+    (let* _ : ltac:(refine unit) :=
+      let* _ : ltac:(refine unit) :=
+        let* α0 : ltac:(refine (array (ref str))) :=
+          M.alloc [ mk_str "zero is "; mk_str "
+" ] in
+        let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
+        let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+          pointer_coercion "Unsize" α1 in
+        let* α3 : ltac:(refine i32) := cast 0 in
+        let* α4 : ltac:(refine (ref i32)) := borrow α3 in
+        let* α5 : ltac:(refine core.fmt.rt.Argument) :=
+          core.fmt.rt.Argument::["new_display"] α4 in
+        let* α6 : ltac:(refine (array core.fmt.rt.Argument)) :=
+          M.alloc [ α5 ] in
+        let* α7 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+          borrow α6 in
+        let* α8 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+          pointer_coercion "Unsize" α7 in
+        let* α9 : ltac:(refine core.fmt.Arguments) :=
+          core.fmt.Arguments::["new_v1"] α2 α8 in
+        std.io.stdio._print α9 in
+      M.alloc tt in
+    let* _ : ltac:(refine unit) :=
+      let* _ : ltac:(refine unit) :=
+        let* α0 : ltac:(refine (array (ref str))) :=
+          M.alloc [ mk_str "one is "; mk_str "
+" ] in
+        let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
+        let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+          pointer_coercion "Unsize" α1 in
+        let* α3 : ltac:(refine i32) := cast 1 in
+        let* α4 : ltac:(refine (ref i32)) := borrow α3 in
+        let* α5 : ltac:(refine core.fmt.rt.Argument) :=
+          core.fmt.rt.Argument::["new_display"] α4 in
+        let* α6 : ltac:(refine (array core.fmt.rt.Argument)) :=
+          M.alloc [ α5 ] in
+        let* α7 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+          borrow α6 in
+        let* α8 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+          pointer_coercion "Unsize" α7 in
+        let* α9 : ltac:(refine core.fmt.Arguments) :=
+          core.fmt.Arguments::["new_v1"] α2 α8 in
+        std.io.stdio._print α9 in
+      M.alloc tt in
+    let* _ : ltac:(refine unit) :=
+      let* _ : ltac:(refine unit) :=
+        let* α0 : ltac:(refine (array (ref str))) :=
+          M.alloc [ mk_str "roses are #"; mk_str "
+" ] in
+        let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
+        let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+          pointer_coercion "Unsize" α1 in
+        let* α3 : ltac:(refine isize) := BinOp.add enums_c_like.Color.Red 0 in
+        let* α4 : ltac:(refine i32) := cast α3 in
+        let* α5 : ltac:(refine (ref i32)) := borrow α4 in
+        let* α6 : ltac:(refine core.fmt.rt.Argument) :=
+          core.fmt.rt.Argument::["new_lower_hex"] α5 in
+        let* α7 : ltac:(refine (array core.fmt.rt.Argument)) :=
+          M.alloc [ α6 ] in
+        let* α8 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+          borrow α7 in
+        let* α9 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+          pointer_coercion "Unsize" α8 in
+        let* α10 : ltac:(refine usize) := M.alloc 0 in
+        let* α11 : ltac:(refine char) := M.alloc " "%char in
+        let* α12 : ltac:(refine core.fmt.rt.Alignment) :=
+          M.alloc core.fmt.rt.Alignment.Unknown in
+        let* α13 : ltac:(refine u32) := M.alloc 8 in
+        let* α14 : ltac:(refine core.fmt.rt.Count) :=
+          M.alloc core.fmt.rt.Count.Implied in
+        let* α15 : ltac:(refine usize) := M.alloc 6 in
+        let* α16 : ltac:(refine core.fmt.rt.Count) :=
+          "unimplemented parent_kind" α15 in
+        let* α17 : ltac:(refine core.fmt.rt.Placeholder) :=
+          core.fmt.rt.Placeholder::["new"] α10 α11 α12 α13 α14 α16 in
+        let* α18 : ltac:(refine (array core.fmt.rt.Placeholder)) :=
+          M.alloc [ α17 ] in
+        let* α19 : ltac:(refine (ref (array core.fmt.rt.Placeholder))) :=
+          borrow α18 in
+        let* α20 : ltac:(refine (ref (slice core.fmt.rt.Placeholder))) :=
+          pointer_coercion "Unsize" α19 in
+        let* α21 : ltac:(refine core.fmt.rt.UnsafeArg) :=
+          core.fmt.rt.UnsafeArg::["new"] in
+        let* α22 : ltac:(refine core.fmt.Arguments) :=
+          core.fmt.Arguments::["new_v1_formatted"] α2 α9 α20 α21 in
+        std.io.stdio._print α22 in
+      M.alloc tt in
+    let* _ : ltac:(refine unit) :=
+      let* _ : ltac:(refine unit) :=
+        let* α0 : ltac:(refine (array (ref str))) :=
+          M.alloc [ mk_str "violets are #"; mk_str "
+" ] in
+        let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
+        let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+          pointer_coercion "Unsize" α1 in
+        let* α3 : ltac:(refine isize) := BinOp.add enums_c_like.Color.Blue 0 in
+        let* α4 : ltac:(refine i32) := cast α3 in
+        let* α5 : ltac:(refine (ref i32)) := borrow α4 in
+        let* α6 : ltac:(refine core.fmt.rt.Argument) :=
+          core.fmt.rt.Argument::["new_lower_hex"] α5 in
+        let* α7 : ltac:(refine (array core.fmt.rt.Argument)) :=
+          M.alloc [ α6 ] in
+        let* α8 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+          borrow α7 in
+        let* α9 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+          pointer_coercion "Unsize" α8 in
+        let* α10 : ltac:(refine usize) := M.alloc 0 in
+        let* α11 : ltac:(refine char) := M.alloc " "%char in
+        let* α12 : ltac:(refine core.fmt.rt.Alignment) :=
+          M.alloc core.fmt.rt.Alignment.Unknown in
+        let* α13 : ltac:(refine u32) := M.alloc 8 in
+        let* α14 : ltac:(refine core.fmt.rt.Count) :=
+          M.alloc core.fmt.rt.Count.Implied in
+        let* α15 : ltac:(refine usize) := M.alloc 6 in
+        let* α16 : ltac:(refine core.fmt.rt.Count) :=
+          "unimplemented parent_kind" α15 in
+        let* α17 : ltac:(refine core.fmt.rt.Placeholder) :=
+          core.fmt.rt.Placeholder::["new"] α10 α11 α12 α13 α14 α16 in
+        let* α18 : ltac:(refine (array core.fmt.rt.Placeholder)) :=
+          M.alloc [ α17 ] in
+        let* α19 : ltac:(refine (ref (array core.fmt.rt.Placeholder))) :=
+          borrow α18 in
+        let* α20 : ltac:(refine (ref (slice core.fmt.rt.Placeholder))) :=
+          pointer_coercion "Unsize" α19 in
+        let* α21 : ltac:(refine core.fmt.rt.UnsafeArg) :=
+          core.fmt.rt.UnsafeArg::["new"] in
+        let* α22 : ltac:(refine core.fmt.Arguments) :=
+          core.fmt.Arguments::["new_v1_formatted"] α2 α9 α20 α21 in
+        std.io.stdio._print α22 in
+      M.alloc tt in
+    M.alloc tt).

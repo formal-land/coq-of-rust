@@ -2,118 +2,140 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition gen_range `{ℋ : State.Trait} : M u32 :=
-  let* α0 := core.panicking.panic (mk_str "not yet implemented") in
-  never_to_any α0.
+  M.function_body
+    (let* α0 : ltac:(refine never) :=
+      core.panicking.panic (mk_str "not yet implemented") in
+    never_to_any α0).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
-  let* _ :=
-    let* _ :=
-      let* α0 := borrow [ mk_str "Guess the number!
-" ] (list (ref str)) in
-      let* α1 := deref α0 (list (ref str)) in
-      let* α2 := borrow α1 (list (ref str)) in
-      let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := core.fmt.Arguments::["new_const"] α3 in
-      std.io.stdio._print α4 in
-    M.alloc tt in
-  let* secret_number := guessing_game.gen_range in
-  loop
-    (let* _ :=
-      let* _ :=
-        let* α0 :=
-          borrow [ mk_str "Please input your guess.
-" ] (list (ref str)) in
-        let* α1 := deref α0 (list (ref str)) in
-        let* α2 := borrow α1 (list (ref str)) in
-        let* α3 := pointer_coercion "Unsize" α2 in
-        let* α4 := core.fmt.Arguments::["new_const"] α3 in
-        std.io.stdio._print α4 in
+  M.function_body
+    (let* _ : ltac:(refine unit) :=
+      let* _ : ltac:(refine unit) :=
+        let* α0 : ltac:(refine (array (ref str))) :=
+          M.alloc [ mk_str "Guess the number!
+" ] in
+        let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
+        let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+          pointer_coercion "Unsize" α1 in
+        let* α3 : ltac:(refine core.fmt.Arguments) :=
+          core.fmt.Arguments::["new_const"] α2 in
+        std.io.stdio._print α3 in
       M.alloc tt in
-    let* guess := alloc.string.String::["new"] in
-    let* _ :=
-      let* α0 := std.io.stdio.stdin in
-      let* α1 := borrow α0 std.io.stdio.Stdin in
-      let* α2 := borrow_mut guess alloc.string.String in
-      let* α3 := deref α2 alloc.string.String in
-      let* α4 := borrow_mut α3 alloc.string.String in
-      let* α5 := std.io.stdio.Stdin::["read_line"] α1 α4 in
-      let* α6 := deref (mk_str "Failed to read line") str in
-      let* α7 := borrow α6 str in
-      (core.result.Result T E)::["expect"] α5 α7 in
-    let* guess :=
-      let* α0 := borrow guess alloc.string.String in
-      let* α1 :=
-        (core.ops.deref.Deref.deref (Self := alloc.string.String)) α0 in
-      let* α2 := deref α1 str in
-      let* α3 := borrow α2 str in
-      let* α4 := str::["trim"] α3 in
-      let* α5 := deref α4 str in
-      let* α6 := borrow α5 str in
-      let* α7 := str::["parse"] α6 in
-      match α7 with
-      | core.result.Result num => Pure num
-      | core.result.Result _ =>
-        let* α0 := Continue in
-        never_to_any α0
-      end in
-    let* _ :=
-      let* _ :=
-        let* α0 :=
-          borrow [ mk_str "You guessed: "; mk_str "
-" ] (list (ref str)) in
-        let* α1 := deref α0 (list (ref str)) in
-        let* α2 := borrow α1 (list (ref str)) in
-        let* α3 := pointer_coercion "Unsize" α2 in
-        let* α4 := borrow guess u32 in
-        let* α5 := deref α4 u32 in
-        let* α6 := borrow α5 u32 in
-        let* α7 := core.fmt.rt.Argument::["new_display"] α6 in
-        let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
-        let* α9 := deref α8 (list core.fmt.rt.Argument) in
-        let* α10 := borrow α9 (list core.fmt.rt.Argument) in
-        let* α11 := pointer_coercion "Unsize" α10 in
-        let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
-        std.io.stdio._print α12 in
-      M.alloc tt in
-    let* α0 := borrow guess u32 in
-    let* α1 := borrow secret_number u32 in
-    let* α2 := deref α1 u32 in
-    let* α3 := borrow α2 u32 in
-    let* α4 := (core.cmp.Ord.cmp (Self := u32)) α0 α3 in
-    match α4 with
-    | core.cmp.Ordering  =>
-      let* _ :=
-        let* α0 := borrow [ mk_str "Too small!
-" ] (list (ref str)) in
-        let* α1 := deref α0 (list (ref str)) in
-        let* α2 := borrow α1 (list (ref str)) in
-        let* α3 := pointer_coercion "Unsize" α2 in
-        let* α4 := core.fmt.Arguments::["new_const"] α3 in
-        std.io.stdio._print α4 in
-      M.alloc tt
-    | core.cmp.Ordering  =>
-      let* _ :=
-        let* α0 := borrow [ mk_str "Too big!
-" ] (list (ref str)) in
-        let* α1 := deref α0 (list (ref str)) in
-        let* α2 := borrow α1 (list (ref str)) in
-        let* α3 := pointer_coercion "Unsize" α2 in
-        let* α4 := core.fmt.Arguments::["new_const"] α3 in
-        std.io.stdio._print α4 in
-      M.alloc tt
-    | core.cmp.Ordering  =>
-      let* _ :=
-        let* _ :=
-          let* α0 := borrow [ mk_str "You win!
-" ] (list (ref str)) in
-          let* α1 := deref α0 (list (ref str)) in
-          let* α2 := borrow α1 (list (ref str)) in
-          let* α3 := pointer_coercion "Unsize" α2 in
-          let* α4 := core.fmt.Arguments::["new_const"] α3 in
-          std.io.stdio._print α4 in
+    let* secret_number : ltac:(refine u32) := guessing_game.gen_range in
+    loop
+      (let* _ : ltac:(refine unit) :=
+        let* _ : ltac:(refine unit) :=
+          let* α0 : ltac:(refine (array (ref str))) :=
+            M.alloc [ mk_str "Please input your guess.
+" ] in
+          let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
+          let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+            pointer_coercion "Unsize" α1 in
+          let* α3 : ltac:(refine core.fmt.Arguments) :=
+            core.fmt.Arguments::["new_const"] α2 in
+          std.io.stdio._print α3 in
         M.alloc tt in
-      let* _ := Break in
-      let* α0 := M.alloc tt in
-      never_to_any α0
-    end).
+      let* guess : ltac:(refine alloc.string.String) :=
+        alloc.string.String::["new"] in
+      let* _ : ltac:(refine usize) :=
+        let* α0 : ltac:(refine std.io.stdio.Stdin) := std.io.stdio.stdin in
+        let* α1 : ltac:(refine (ref std.io.stdio.Stdin)) := borrow α0 in
+        let* α2 : ltac:(refine (mut_ref alloc.string.String)) :=
+          borrow_mut guess in
+        let* α3 : ltac:(refine (core.result.Result usize std.io.error.Error)) :=
+          std.io.stdio.Stdin::["read_line"] α1 α2 in
+        let* α4 : ltac:(refine str) := deref (mk_str "Failed to read line") in
+        let* α5 : ltac:(refine (ref str)) := borrow α4 in
+        (core.result.Result usize std.io.error.Error)::["expect"] α3 α5 in
+      let* guess : ltac:(refine u32) :=
+        let* α0 : ltac:(refine (ref alloc.string.String)) := borrow guess in
+        let* α1 : ltac:(refine (ref str)) :=
+          (core.ops.deref.Deref.deref
+              (Self := alloc.string.String)
+              (Trait := ltac:(refine _)))
+            α0 in
+        let* α2 : ltac:(refine str) := deref α1 in
+        let* α3 : ltac:(refine (ref str)) := borrow α2 in
+        let* α4 : ltac:(refine (ref str)) := str::["trim"] α3 in
+        let* α5 : ltac:(refine str) := deref α4 in
+        let* α6 : ltac:(refine (ref str)) := borrow α5 in
+        let* α7 :
+            ltac:(refine
+              (core.result.Result u32 core.num.error.ParseIntError)) :=
+          str::["parse"] α6 in
+        let* α8 := M.read α7 in
+        match α8 with
+        | core.result.Result.Ok num => M.pure num
+        | core.result.Result.Err _ =>
+          let* α0 : ltac:(refine never) := Continue in
+          never_to_any α0
+        end in
+      let* _ : ltac:(refine unit) :=
+        let* _ : ltac:(refine unit) :=
+          let* α0 : ltac:(refine (array (ref str))) :=
+            M.alloc [ mk_str "You guessed: "; mk_str "
+" ] in
+          let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
+          let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+            pointer_coercion "Unsize" α1 in
+          let* α3 : ltac:(refine (ref u32)) := borrow guess in
+          let* α4 : ltac:(refine core.fmt.rt.Argument) :=
+            core.fmt.rt.Argument::["new_display"] α3 in
+          let* α5 : ltac:(refine (array core.fmt.rt.Argument)) :=
+            M.alloc [ α4 ] in
+          let* α6 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+            borrow α5 in
+          let* α7 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+            pointer_coercion "Unsize" α6 in
+          let* α8 : ltac:(refine core.fmt.Arguments) :=
+            core.fmt.Arguments::["new_v1"] α2 α7 in
+          std.io.stdio._print α8 in
+        M.alloc tt in
+      let* α0 : ltac:(refine (ref u32)) := borrow guess in
+      let* α1 : ltac:(refine (ref u32)) := borrow secret_number in
+      let* α2 : ltac:(refine core.cmp.Ordering) :=
+        (core.cmp.Ord.cmp (Self := u32) (Trait := ltac:(refine _))) α0 α1 in
+      let* α3 := M.read α2 in
+      match α3 with
+      | core.cmp.Ordering.Less  =>
+        let* _ : ltac:(refine unit) :=
+          let* α0 : ltac:(refine (array (ref str))) :=
+            M.alloc [ mk_str "Too small!
+" ] in
+          let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
+          let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+            pointer_coercion "Unsize" α1 in
+          let* α3 : ltac:(refine core.fmt.Arguments) :=
+            core.fmt.Arguments::["new_const"] α2 in
+          std.io.stdio._print α3 in
+        M.alloc tt
+      | core.cmp.Ordering.Greater  =>
+        let* _ : ltac:(refine unit) :=
+          let* α0 : ltac:(refine (array (ref str))) :=
+            M.alloc [ mk_str "Too big!
+" ] in
+          let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
+          let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+            pointer_coercion "Unsize" α1 in
+          let* α3 : ltac:(refine core.fmt.Arguments) :=
+            core.fmt.Arguments::["new_const"] α2 in
+          std.io.stdio._print α3 in
+        M.alloc tt
+      | core.cmp.Ordering.Equal  =>
+        let* _ : ltac:(refine unit) :=
+          let* _ : ltac:(refine unit) :=
+            let* α0 : ltac:(refine (array (ref str))) :=
+              M.alloc [ mk_str "You win!
+" ] in
+            let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
+            let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+              pointer_coercion "Unsize" α1 in
+            let* α3 : ltac:(refine core.fmt.Arguments) :=
+              core.fmt.Arguments::["new_const"] α2 in
+            std.io.stdio._print α3 in
+          M.alloc tt in
+        let* _ : ltac:(refine never) := Break in
+        let* α0 : ltac:(refine unit) := M.alloc tt in
+        never_to_any α0
+      end)).

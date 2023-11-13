@@ -6,63 +6,74 @@ Module Status.
   | Rich
   | Poor.
 End Status.
-Definition Status `{ℋ : State.Trait} : Set := Status.t.
+Definition Status `{ℋ : State.Trait} : Set := M.Val Status.t.
 
 Module Work.
   Inductive t `{ℋ : State.Trait} : Set :=
   | Civilian
   | Soldier.
 End Work.
-Definition Work `{ℋ : State.Trait} : Set := Work.t.
+Definition Work `{ℋ : State.Trait} : Set := M.Val Work.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
-  let status := enums_use.Status.Poor tt in
-  let work := enums_use.Work.Civilian tt in
-  let* _ :=
-    match status with
-    | enums_use.Status  =>
-      let* _ :=
-        let* α0 :=
-          borrow [ mk_str "The rich have lots of money!
-" ] (list (ref str)) in
-        let* α1 := deref α0 (list (ref str)) in
-        let* α2 := borrow α1 (list (ref str)) in
-        let* α3 := pointer_coercion "Unsize" α2 in
-        let* α4 := core.fmt.Arguments::["new_const"] α3 in
-        std.io.stdio._print α4 in
+  M.function_body
+    (let* status : ltac:(refine enums_use.Status) :=
+      M.alloc enums_use.Status.Poor in
+    let* work : ltac:(refine enums_use.Work) :=
+      M.alloc enums_use.Work.Civilian in
+    let* _ : ltac:(refine unit) :=
+      let* α0 := M.read status in
+      match α0 with
+      | enums_use.Status.Rich  =>
+        let* _ : ltac:(refine unit) :=
+          let* α0 : ltac:(refine (array (ref str))) :=
+            M.alloc [ mk_str "The rich have lots of money!
+" ] in
+          let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
+          let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+            pointer_coercion "Unsize" α1 in
+          let* α3 : ltac:(refine core.fmt.Arguments) :=
+            core.fmt.Arguments::["new_const"] α2 in
+          std.io.stdio._print α3 in
+        M.alloc tt
+      | enums_use.Status.Poor  =>
+        let* _ : ltac:(refine unit) :=
+          let* α0 : ltac:(refine (array (ref str))) :=
+            M.alloc [ mk_str "The poor have no money...
+" ] in
+          let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
+          let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+            pointer_coercion "Unsize" α1 in
+          let* α3 : ltac:(refine core.fmt.Arguments) :=
+            core.fmt.Arguments::["new_const"] α2 in
+          std.io.stdio._print α3 in
+        M.alloc tt
+      end in
+    let* α0 := M.read work in
+    match α0 with
+    | enums_use.Work.Civilian  =>
+      let* _ : ltac:(refine unit) :=
+        let* α0 : ltac:(refine (array (ref str))) :=
+          M.alloc [ mk_str "Civilians work!
+" ] in
+        let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
+        let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+          pointer_coercion "Unsize" α1 in
+        let* α3 : ltac:(refine core.fmt.Arguments) :=
+          core.fmt.Arguments::["new_const"] α2 in
+        std.io.stdio._print α3 in
       M.alloc tt
-    | enums_use.Status  =>
-      let* _ :=
-        let* α0 :=
-          borrow [ mk_str "The poor have no money...
-" ] (list (ref str)) in
-        let* α1 := deref α0 (list (ref str)) in
-        let* α2 := borrow α1 (list (ref str)) in
-        let* α3 := pointer_coercion "Unsize" α2 in
-        let* α4 := core.fmt.Arguments::["new_const"] α3 in
-        std.io.stdio._print α4 in
+    | enums_use.Work.Soldier  =>
+      let* _ : ltac:(refine unit) :=
+        let* α0 : ltac:(refine (array (ref str))) :=
+          M.alloc [ mk_str "Soldiers fight!
+" ] in
+        let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
+        let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+          pointer_coercion "Unsize" α1 in
+        let* α3 : ltac:(refine core.fmt.Arguments) :=
+          core.fmt.Arguments::["new_const"] α2 in
+        std.io.stdio._print α3 in
       M.alloc tt
-    end in
-  match work with
-  | enums_use.Work  =>
-    let* _ :=
-      let* α0 := borrow [ mk_str "Civilians work!
-" ] (list (ref str)) in
-      let* α1 := deref α0 (list (ref str)) in
-      let* α2 := borrow α1 (list (ref str)) in
-      let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := core.fmt.Arguments::["new_const"] α3 in
-      std.io.stdio._print α4 in
-    M.alloc tt
-  | enums_use.Work  =>
-    let* _ :=
-      let* α0 := borrow [ mk_str "Soldiers fight!
-" ] (list (ref str)) in
-      let* α1 := deref α0 (list (ref str)) in
-      let* α2 := borrow α1 (list (ref str)) in
-      let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := core.fmt.Arguments::["new_const"] α3 in
-      std.io.stdio._print α4 in
-    M.alloc tt
-  end.
+    end).

@@ -92,16 +92,35 @@ pub trait Hash {
 }
 *)
 Module Hash.
-  Class Trait `{State.Trait} (Self : Set) : Set := {
-    hash {H : Set} {H1 : Hasher.Trait H} : ref Self -> mut_ref H -> M unit;
+  Module Required.
+    Class Trait `{ℋ : State.Trait} (Self : Set) : Set := {
+      hash {H : Set} {H0 : Hasher.Trait H} : ref Self -> mut_ref H -> M unit;
+      hash_slice :
+        Datatypes.option (
+          forall (H : Set) (H0 : Hasher.Trait H),
+          ref (slice Self) -> mut_ref H -> M unit
+        );
+    }.
+  End Required.
 
+  Module Provided.
+    Parameter hash_slice :
+      forall `{ℋ : State.Trait} {Self : Set} {H0 : Required.Trait Self},
+      forall {H : Set} {H0 : Hasher.Trait H},
+      ref (slice Self) -> mut_ref H -> M unit.
+  End Provided.
 
-    (* @TODO 
-    hash_slice (H : Set)
-      `{Hasher.Trait H}
-      (* `{Sized.Trait Self} *)
-      : ref (list Self) -> M (mut_ref H);
-     *)
+  Class Trait `{ℋ : State.Trait} (Self : Set) : Set := {
+    hash {H : Set} {H0 : Hasher.Trait H} : ref Self -> mut_ref H -> M unit;
+    hash_slice {H : Set} {H0 : Hasher.Trait H} :
+      ref (slice Self) -> mut_ref H -> M unit;
+  }.
+
+  Global Instance From_Required `{ℋ : State.Trait} {Self : Set}
+      {H0 : Required.Trait Self} :
+      Trait Self := {
+    hash {H : Set} {H0 : Hasher.Trait H} := Required.hash (H := H);
+    hash_slice {H : Set} {H0 : Hasher.Trait H} := Provided.hash_slice (H := H);
   }.
 End Hash.
 

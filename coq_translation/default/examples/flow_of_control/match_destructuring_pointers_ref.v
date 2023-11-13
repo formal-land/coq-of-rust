@@ -3,112 +3,117 @@ Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
-  let* reference :=
-    let* α0 := M.alloc 4 in
-    borrow α0 i32 in
-  let* _ :=
-    match reference with
-    | val =>
-      let* _ :=
-        let* α0 :=
-          borrow
-            [ mk_str "Got a value via destructuring: "; mk_str "
-" ]
-            (list (ref str)) in
-        let* α1 := deref α0 (list (ref str)) in
-        let* α2 := borrow α1 (list (ref str)) in
-        let* α3 := pointer_coercion "Unsize" α2 in
-        let* α4 := borrow val i32 in
-        let* α5 := deref α4 i32 in
-        let* α6 := borrow α5 i32 in
-        let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
-        let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
-        let* α9 := deref α8 (list core.fmt.rt.Argument) in
-        let* α10 := borrow α9 (list core.fmt.rt.Argument) in
-        let* α11 := pointer_coercion "Unsize" α10 in
-        let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
-        std.io.stdio._print α12 in
-      M.alloc tt
-    end in
-  let* _ :=
-    let* α0 := deref reference i32 in
+  M.function_body
+    (let* reference : ltac:(refine (ref i32)) :=
+      let* α0 : ltac:(refine i32) := M.alloc 4 in
+      borrow α0 in
+    let* _ : ltac:(refine unit) :=
+      let* α0 := M.read reference in
+      match α0 with
+      | val =>
+        let* _ : ltac:(refine unit) :=
+          let* α0 : ltac:(refine (array (ref str))) :=
+            M.alloc [ mk_str "Got a value via destructuring: "; mk_str "
+" ] in
+          let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
+          let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+            pointer_coercion "Unsize" α1 in
+          let* α3 : ltac:(refine (ref i32)) := borrow val in
+          let* α4 : ltac:(refine core.fmt.rt.Argument) :=
+            core.fmt.rt.Argument::["new_debug"] α3 in
+          let* α5 : ltac:(refine (array core.fmt.rt.Argument)) :=
+            M.alloc [ α4 ] in
+          let* α6 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+            borrow α5 in
+          let* α7 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+            pointer_coercion "Unsize" α6 in
+          let* α8 : ltac:(refine core.fmt.Arguments) :=
+            core.fmt.Arguments::["new_v1"] α2 α7 in
+          std.io.stdio._print α8 in
+        M.alloc tt
+      end in
+    let* _ : ltac:(refine unit) :=
+      let* α0 : ltac:(refine i32) := deref reference in
+      let* α1 := M.read α0 in
+      match α1 with
+      | val =>
+        let* _ : ltac:(refine unit) :=
+          let* α0 : ltac:(refine (array (ref str))) :=
+            M.alloc [ mk_str "Got a value via dereferencing: "; mk_str "
+" ] in
+          let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
+          let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+            pointer_coercion "Unsize" α1 in
+          let* α3 : ltac:(refine (ref i32)) := borrow val in
+          let* α4 : ltac:(refine core.fmt.rt.Argument) :=
+            core.fmt.rt.Argument::["new_debug"] α3 in
+          let* α5 : ltac:(refine (array core.fmt.rt.Argument)) :=
+            M.alloc [ α4 ] in
+          let* α6 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+            borrow α5 in
+          let* α7 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+            pointer_coercion "Unsize" α6 in
+          let* α8 : ltac:(refine core.fmt.Arguments) :=
+            core.fmt.Arguments::["new_v1"] α2 α7 in
+          std.io.stdio._print α8 in
+        M.alloc tt
+      end in
+    let* _not_a_reference : ltac:(refine i32) := M.alloc 3 in
+    let* _is_a_reference : ltac:(refine i32) := M.alloc 3 in
+    let* value : ltac:(refine i32) := M.alloc 5 in
+    let* mut_value : ltac:(refine i32) := M.alloc 6 in
+    let* _ : ltac:(refine unit) :=
+      let* α0 := M.read value in
+      match α0 with
+      | r =>
+        let* _ : ltac:(refine unit) :=
+          let* α0 : ltac:(refine (array (ref str))) :=
+            M.alloc [ mk_str "Got a reference to a value: "; mk_str "
+" ] in
+          let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
+          let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+            pointer_coercion "Unsize" α1 in
+          let* α3 : ltac:(refine (ref (ref i32))) := borrow r in
+          let* α4 : ltac:(refine core.fmt.rt.Argument) :=
+            core.fmt.rt.Argument::["new_debug"] α3 in
+          let* α5 : ltac:(refine (array core.fmt.rt.Argument)) :=
+            M.alloc [ α4 ] in
+          let* α6 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+            borrow α5 in
+          let* α7 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+            pointer_coercion "Unsize" α6 in
+          let* α8 : ltac:(refine core.fmt.Arguments) :=
+            core.fmt.Arguments::["new_v1"] α2 α7 in
+          std.io.stdio._print α8 in
+        M.alloc tt
+      end in
+    let* α0 := M.read mut_value in
     match α0 with
-    | val =>
-      let* _ :=
-        let* α0 :=
-          borrow
-            [ mk_str "Got a value via dereferencing: "; mk_str "
-" ]
-            (list (ref str)) in
-        let* α1 := deref α0 (list (ref str)) in
-        let* α2 := borrow α1 (list (ref str)) in
-        let* α3 := pointer_coercion "Unsize" α2 in
-        let* α4 := borrow val i32 in
-        let* α5 := deref α4 i32 in
-        let* α6 := borrow α5 i32 in
-        let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
-        let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
-        let* α9 := deref α8 (list core.fmt.rt.Argument) in
-        let* α10 := borrow α9 (list core.fmt.rt.Argument) in
-        let* α11 := pointer_coercion "Unsize" α10 in
-        let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
-        std.io.stdio._print α12 in
+    | m =>
+      let* _ : ltac:(refine unit) :=
+        let* α0 : ltac:(refine i32) := deref m in
+        let* α1 : ltac:(refine i32) := M.alloc 10 in
+        assign_op add α0 α1 in
+      let* _ : ltac:(refine unit) :=
+        let* _ : ltac:(refine unit) :=
+          let* α0 : ltac:(refine (array (ref str))) :=
+            M.alloc [ mk_str "We added 10. `mut_value`: "; mk_str "
+" ] in
+          let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
+          let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+            pointer_coercion "Unsize" α1 in
+          let* α3 : ltac:(refine (ref (mut_ref i32))) := borrow m in
+          let* α4 : ltac:(refine core.fmt.rt.Argument) :=
+            core.fmt.rt.Argument::["new_debug"] α3 in
+          let* α5 : ltac:(refine (array core.fmt.rt.Argument)) :=
+            M.alloc [ α4 ] in
+          let* α6 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+            borrow α5 in
+          let* α7 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+            pointer_coercion "Unsize" α6 in
+          let* α8 : ltac:(refine core.fmt.Arguments) :=
+            core.fmt.Arguments::["new_v1"] α2 α7 in
+          std.io.stdio._print α8 in
+        M.alloc tt in
       M.alloc tt
-    end in
-  let* _not_a_reference := M.alloc 3 in
-  let* _is_a_reference := M.alloc 3 in
-  let* value := M.alloc 5 in
-  let* mut_value := M.alloc 6 in
-  let* _ :=
-    match value with
-    | r =>
-      let* _ :=
-        let* α0 :=
-          borrow
-            [ mk_str "Got a reference to a value: "; mk_str "
-" ]
-            (list (ref str)) in
-        let* α1 := deref α0 (list (ref str)) in
-        let* α2 := borrow α1 (list (ref str)) in
-        let* α3 := pointer_coercion "Unsize" α2 in
-        let* α4 := borrow r (ref i32) in
-        let* α5 := deref α4 (ref i32) in
-        let* α6 := borrow α5 (ref i32) in
-        let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
-        let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
-        let* α9 := deref α8 (list core.fmt.rt.Argument) in
-        let* α10 := borrow α9 (list core.fmt.rt.Argument) in
-        let* α11 := pointer_coercion "Unsize" α10 in
-        let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
-        std.io.stdio._print α12 in
-      M.alloc tt
-    end in
-  match mut_value with
-  | m =>
-    let* _ :=
-      let* α0 := deref m i32 in
-      let* α1 := M.alloc 10 in
-      assign_op add α0 α1 in
-    let* _ :=
-      let* _ :=
-        let* α0 :=
-          borrow
-            [ mk_str "We added 10. `mut_value`: "; mk_str "
-" ]
-            (list (ref str)) in
-        let* α1 := deref α0 (list (ref str)) in
-        let* α2 := borrow α1 (list (ref str)) in
-        let* α3 := pointer_coercion "Unsize" α2 in
-        let* α4 := borrow m (mut_ref i32) in
-        let* α5 := deref α4 (mut_ref i32) in
-        let* α6 := borrow α5 (mut_ref i32) in
-        let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
-        let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
-        let* α9 := deref α8 (list core.fmt.rt.Argument) in
-        let* α10 := borrow α9 (list core.fmt.rt.Argument) in
-        let* α11 := pointer_coercion "Unsize" α10 in
-        let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
-        std.io.stdio._print α12 in
-      M.alloc tt in
-    M.alloc tt
-  end.
+    end).

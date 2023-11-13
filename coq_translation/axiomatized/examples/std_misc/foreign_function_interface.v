@@ -10,89 +10,77 @@ Parameter cos :
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : forall `{ℋ : State.Trait}, M unit.
 
-Module Complex.
-  Section Complex.
-    Context `{ℋ : State.Trait}.
-    
-    Unset Primitive Projections.
-    Record t : Set := {
-      re : f32;
-      im : f32;
-    }.
-    Global Set Primitive Projections.
-    
-    #[refine] Global Instance Get_re : Notation.Dot "re" := {
-      Notation.dot x := let* x := M.read x in Pure x.(re) : M _;
-    }.
-    Admitted.
-    #[refine] Global Instance Get_AF_re : Notation.DoubleColon t "re" := {
-      Notation.double_colon x := let* x := M.read x in Pure x.(re) : M _;
-    }.
-    Admitted.
-    #[refine] Global Instance Get_im : Notation.Dot "im" := {
-      Notation.dot x := let* x := M.read x in Pure x.(im) : M _;
-    }.
-    Admitted.
-    #[refine] Global Instance Get_AF_im : Notation.DoubleColon t "im" := {
-      Notation.double_colon x := let* x := M.read x in Pure x.(im) : M _;
-    }.
-    Admitted.
-  End Complex.
+Module  Complex.
+Section Complex.
+  Context `{ℋ : State.Trait}.
+  
+  Record t : Set := {
+    re : f32;
+    im : f32;
+  }.
+  
+  Global Instance Get_re : Notation.Dot "re" := {
+    Notation.dot x := let* x := M.read x in M.pure x.(re) : M _;
+  }.
+  Global Instance Get_AF_re : Notation.DoubleColon t "re" := {
+    Notation.double_colon x := let* x := M.read x in M.pure x.(re) : M _;
+  }.
+  Global Instance Get_im : Notation.Dot "im" := {
+    Notation.dot x := let* x := M.read x in M.pure x.(im) : M _;
+  }.
+  Global Instance Get_AF_im : Notation.DoubleColon t "im" := {
+    Notation.double_colon x := let* x := M.read x in M.pure x.(im) : M _;
+  }.
 End Complex.
-Definition Complex `{ℋ : State.Trait} : Set := M.val Complex.t.
+End Complex.
+Definition Complex `{ℋ : State.Trait} : Set := M.Val Complex.t.
 
-Module Impl_core_clone_Clone_for_foreign_function_interface_Complex.
-  Section Impl_core_clone_Clone_for_foreign_function_interface_Complex.
-    Context `{ℋ : State.Trait}.
-    
-    Definition Self : Set := foreign_function_interface.Complex.
-    
-    Parameter clone : (ref Self) -> M foreign_function_interface.Complex.
-    
-    Global Instance AssociatedFunction_clone :
-      Notation.DoubleColon Self "clone" := {
-      Notation.double_colon := clone;
-    }.
-    
-    #[refine] Global Instance ℐ : core.clone.Clone.Trait Self := {
-      core.clone.Clone.clone := clone;
-    }.
-    Admitted.
-  End Impl_core_clone_Clone_for_foreign_function_interface_Complex.
-  Global Hint Resolve ℐ : core.
+Module  Impl_core_clone_Clone_for_foreign_function_interface_Complex.
+Section Impl_core_clone_Clone_for_foreign_function_interface_Complex.
+  Context `{ℋ : State.Trait}.
+  
+  Definition Self : Set := foreign_function_interface.Complex.
+  
+  Parameter clone : (ref Self) -> M foreign_function_interface.Complex.
+  
+  Global Instance AssociatedFunction_clone :
+    Notation.DoubleColon Self "clone" := {
+    Notation.double_colon := clone;
+  }.
+  
+  Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
+    core.clone.Clone.clone := clone;
+    core.clone.Clone.clone_from := Datatypes.None;
+  }.
+End Impl_core_clone_Clone_for_foreign_function_interface_Complex.
 End Impl_core_clone_Clone_for_foreign_function_interface_Complex.
 
-Module Impl_core_marker_Copy_for_foreign_function_interface_Complex.
-  Section Impl_core_marker_Copy_for_foreign_function_interface_Complex.
-    Context `{ℋ : State.Trait}.
-    
-    Definition Self : Set := foreign_function_interface.Complex.
-    
-    #[refine] Global Instance ℐ : core.marker.Copy.Trait Self := {
-    }.
-    Admitted.
-  End Impl_core_marker_Copy_for_foreign_function_interface_Complex.
-  Global Hint Resolve ℐ : core.
+Module  Impl_core_marker_Copy_for_foreign_function_interface_Complex.
+Section Impl_core_marker_Copy_for_foreign_function_interface_Complex.
+  Context `{ℋ : State.Trait}.
+  
+  Definition Self : Set := foreign_function_interface.Complex.
+  
+  Global Instance ℐ : core.marker.Copy.Trait Self := {
+  }.
+End Impl_core_marker_Copy_for_foreign_function_interface_Complex.
 End Impl_core_marker_Copy_for_foreign_function_interface_Complex.
 
-Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
-  Section Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
-    Context `{ℋ : State.Trait}.
-    
-    Definition Self : Set := foreign_function_interface.Complex.
-    
-    Parameter fmt :
-        (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
-    
-    Global Instance AssociatedFunction_fmt :
-      Notation.DoubleColon Self "fmt" := {
-      Notation.double_colon := fmt;
-    }.
-    
-    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
-      core.fmt.Debug.fmt := fmt;
-    }.
-    Admitted.
-  End Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
-  Global Hint Resolve ℐ : core.
+Module  Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
+Section Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
+  Context `{ℋ : State.Trait}.
+  
+  Definition Self : Set := foreign_function_interface.Complex.
+  
+  Parameter fmt :
+      (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
+  
+  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {
+    Notation.double_colon := fmt;
+  }.
+  
+  Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    core.fmt.Debug.fmt := fmt;
+  }.
+End Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
 End Impl_core_fmt_Debug_for_foreign_function_interface_Complex.

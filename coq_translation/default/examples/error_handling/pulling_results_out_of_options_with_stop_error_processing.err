@@ -1,0 +1,24 @@
+type Closure(
+    DefId(0:7 ~ pulling_results_out_of_options_with_stop_error_processing[3df0]::double_first::{closure#1}),
+    [
+        i32,
+        extern "rust-call" fn((std::result::Result<i32, std::num::ParseIntError>,)) -> std::result::Result<std::option::Option<i32>, std::num::ParseIntError>,
+        (),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:6 ~ pulling_results_out_of_options_with_stop_error_processing[3df0]::double_first::{closure#0}::{closure#0}),
+    [
+        i32,
+        extern "rust-call" fn((i32,)) -> i32,
+        (),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:5 ~ pulling_results_out_of_options_with_stop_error_processing[3df0]::double_first::{closure#0}),
+    [
+        i32,
+        extern "rust-call" fn((&&str,)) -> std::result::Result<i32, std::num::ParseIntError>,
+        (),
+    ],
+) not yet handled

@@ -7,91 +7,87 @@ Ltac Result T :=
       T
       (alloc.boxed.Box _ (* OpaqueTy *) alloc.boxed.Box.Default.A)).
 
-Module EmptyVec.
-  Section EmptyVec.
-    Context `{ℋ : State.Trait}.
-    
-    Inductive t : Set := Build.
-  End EmptyVec.
+Module  EmptyVec.
+Section EmptyVec.
+  Context `{ℋ : State.Trait}.
+  
+  Inductive t : Set := Build.
 End EmptyVec.
-Definition EmptyVec := @EmptyVec.t.
+End EmptyVec.
+Definition EmptyVec `{ℋ : State.Trait} := M.Val EmptyVec.t.
 
-Module Impl_core_fmt_Debug_for_boxing_errors_EmptyVec.
-  Section Impl_core_fmt_Debug_for_boxing_errors_EmptyVec.
-    Context `{ℋ : State.Trait}.
-    
-    Definition Self : Set := boxing_errors.EmptyVec.
-    
-    Parameter fmt :
-        (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
-    
-    Global Instance AssociatedFunction_fmt :
-      Notation.DoubleColon Self "fmt" := {
-      Notation.double_colon := fmt;
-    }.
-    
-    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
-      core.fmt.Debug.fmt := fmt;
-    }.
-    Admitted.
-  End Impl_core_fmt_Debug_for_boxing_errors_EmptyVec.
-  Global Hint Resolve ℐ : core.
+Module  Impl_core_fmt_Debug_for_boxing_errors_EmptyVec.
+Section Impl_core_fmt_Debug_for_boxing_errors_EmptyVec.
+  Context `{ℋ : State.Trait}.
+  
+  Definition Self : Set := boxing_errors.EmptyVec.
+  
+  Parameter fmt :
+      (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
+  
+  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {
+    Notation.double_colon := fmt;
+  }.
+  
+  Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    core.fmt.Debug.fmt := fmt;
+  }.
+End Impl_core_fmt_Debug_for_boxing_errors_EmptyVec.
 End Impl_core_fmt_Debug_for_boxing_errors_EmptyVec.
 
-Module Impl_core_clone_Clone_for_boxing_errors_EmptyVec.
-  Section Impl_core_clone_Clone_for_boxing_errors_EmptyVec.
-    Context `{ℋ : State.Trait}.
-    
-    Definition Self : Set := boxing_errors.EmptyVec.
-    
-    Parameter clone : (ref Self) -> M boxing_errors.EmptyVec.
-    
-    Global Instance AssociatedFunction_clone :
-      Notation.DoubleColon Self "clone" := {
-      Notation.double_colon := clone;
-    }.
-    
-    #[refine] Global Instance ℐ : core.clone.Clone.Trait Self := {
-      core.clone.Clone.clone := clone;
-    }.
-    Admitted.
-  End Impl_core_clone_Clone_for_boxing_errors_EmptyVec.
-  Global Hint Resolve ℐ : core.
+Module  Impl_core_clone_Clone_for_boxing_errors_EmptyVec.
+Section Impl_core_clone_Clone_for_boxing_errors_EmptyVec.
+  Context `{ℋ : State.Trait}.
+  
+  Definition Self : Set := boxing_errors.EmptyVec.
+  
+  Parameter clone : (ref Self) -> M boxing_errors.EmptyVec.
+  
+  Global Instance AssociatedFunction_clone :
+    Notation.DoubleColon Self "clone" := {
+    Notation.double_colon := clone;
+  }.
+  
+  Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
+    core.clone.Clone.clone := clone;
+    core.clone.Clone.clone_from := Datatypes.None;
+  }.
+End Impl_core_clone_Clone_for_boxing_errors_EmptyVec.
 End Impl_core_clone_Clone_for_boxing_errors_EmptyVec.
 
-Module Impl_core_fmt_Display_for_boxing_errors_EmptyVec.
-  Section Impl_core_fmt_Display_for_boxing_errors_EmptyVec.
-    Context `{ℋ : State.Trait}.
-    
-    Definition Self : Set := boxing_errors.EmptyVec.
-    
-    Parameter fmt :
-        (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
-    
-    Global Instance AssociatedFunction_fmt :
-      Notation.DoubleColon Self "fmt" := {
-      Notation.double_colon := fmt;
-    }.
-    
-    #[refine] Global Instance ℐ : core.fmt.Display.Trait Self := {
-      core.fmt.Display.fmt := fmt;
-    }.
-    Admitted.
-  End Impl_core_fmt_Display_for_boxing_errors_EmptyVec.
-  Global Hint Resolve ℐ : core.
+Module  Impl_core_fmt_Display_for_boxing_errors_EmptyVec.
+Section Impl_core_fmt_Display_for_boxing_errors_EmptyVec.
+  Context `{ℋ : State.Trait}.
+  
+  Definition Self : Set := boxing_errors.EmptyVec.
+  
+  Parameter fmt :
+      (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
+  
+  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {
+    Notation.double_colon := fmt;
+  }.
+  
+  Global Instance ℐ : core.fmt.Display.Trait Self := {
+    core.fmt.Display.fmt := fmt;
+  }.
+End Impl_core_fmt_Display_for_boxing_errors_EmptyVec.
 End Impl_core_fmt_Display_for_boxing_errors_EmptyVec.
 
-Module Impl_core_error_Error_for_boxing_errors_EmptyVec.
-  Section Impl_core_error_Error_for_boxing_errors_EmptyVec.
-    Context `{ℋ : State.Trait}.
-    
-    Definition Self : Set := boxing_errors.EmptyVec.
-    
-    #[refine] Global Instance ℐ : core.error.Error.Trait Self := {
-    }.
-    Admitted.
-  End Impl_core_error_Error_for_boxing_errors_EmptyVec.
-  Global Hint Resolve ℐ : core.
+Module  Impl_core_error_Error_for_boxing_errors_EmptyVec.
+Section Impl_core_error_Error_for_boxing_errors_EmptyVec.
+  Context `{ℋ : State.Trait}.
+  
+  Definition Self : Set := boxing_errors.EmptyVec.
+  
+  Global Instance ℐ : core.error.Error.Required.Trait Self := {
+    core.error.Error.source := Datatypes.None;
+    core.error.Error.type_id := Datatypes.None;
+    core.error.Error.description := Datatypes.None;
+    core.error.Error.cause := Datatypes.None;
+    core.error.Error.provide := Datatypes.None;
+  }.
+End Impl_core_error_Error_for_boxing_errors_EmptyVec.
 End Impl_core_error_Error_for_boxing_errors_EmptyVec.
 
 Parameter double_first :

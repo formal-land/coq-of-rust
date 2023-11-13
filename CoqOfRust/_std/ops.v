@@ -54,7 +54,7 @@ Module ControlFlow.
   .
 End ControlFlow.
 Definition ControlFlow `{State.Trait} (B : Set) (C : Set) : Set :=
-  M.val (ControlFlow.t B C).
+  M.Val (ControlFlow.t B C).
 
 (* ********STRUCTS******** *)
 (* 

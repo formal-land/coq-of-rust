@@ -3,60 +3,63 @@ Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
-  let* _ :=
-    loop
-      (let* _ :=
-        let* _ :=
-          let* α0 :=
-            borrow [ mk_str "Entered the outer loop
-" ] (list (ref str)) in
-          let* α1 := deref α0 (list (ref str)) in
-          let* α2 := borrow α1 (list (ref str)) in
-          let* α3 := pointer_coercion "Unsize" α2 in
-          let* α4 := core.fmt.Arguments::["new_const"] α3 in
-          std.io.stdio._print α4 in
-        M.alloc tt in
-      let* _ :=
-        let* α0 :=
-          loop
-            (let* _ :=
-              let* _ :=
-                let* α0 :=
-                  borrow
-                    [ mk_str "Entered the inner loop
-" ]
-                    (list (ref str)) in
-                let* α1 := deref α0 (list (ref str)) in
-                let* α2 := borrow α1 (list (ref str)) in
-                let* α3 := pointer_coercion "Unsize" α2 in
-                let* α4 := core.fmt.Arguments::["new_const"] α3 in
-                std.io.stdio._print α4 in
-              M.alloc tt in
-            let* _ := Break in
-            M.alloc tt) in
-        never_to_any α0 in
-      let* _ :=
-        let* _ :=
-          let* α0 :=
-            borrow
-              [ mk_str "This point will never be reached
-" ]
-              (list (ref str)) in
-          let* α1 := deref α0 (list (ref str)) in
-          let* α2 := borrow α1 (list (ref str)) in
-          let* α3 := pointer_coercion "Unsize" α2 in
-          let* α4 := core.fmt.Arguments::["new_const"] α3 in
-          std.io.stdio._print α4 in
-        M.alloc tt in
-      M.alloc tt) in
-  let* _ :=
-    let* _ :=
-      let* α0 := borrow [ mk_str "Exited the outer loop
-" ] (list (ref str)) in
-      let* α1 := deref α0 (list (ref str)) in
-      let* α2 := borrow α1 (list (ref str)) in
-      let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := core.fmt.Arguments::["new_const"] α3 in
-      std.io.stdio._print α4 in
-    M.alloc tt in
-  M.alloc tt.
+  M.function_body
+    (let* _ : ltac:(refine unit) :=
+      loop
+        (let* _ : ltac:(refine unit) :=
+          let* _ : ltac:(refine unit) :=
+            let* α0 : ltac:(refine (array (ref str))) :=
+              M.alloc [ mk_str "Entered the outer loop
+" ] in
+            let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
+            let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+              pointer_coercion "Unsize" α1 in
+            let* α3 : ltac:(refine core.fmt.Arguments) :=
+              core.fmt.Arguments::["new_const"] α2 in
+            std.io.stdio._print α3 in
+          M.alloc tt in
+        let* _ : ltac:(refine unit) :=
+          let* α0 : ltac:(refine never) :=
+            loop
+              (let* _ : ltac:(refine unit) :=
+                let* _ : ltac:(refine unit) :=
+                  let* α0 : ltac:(refine (array (ref str))) :=
+                    M.alloc [ mk_str "Entered the inner loop
+" ] in
+                  let* α1 : ltac:(refine (ref (array (ref str)))) :=
+                    borrow α0 in
+                  let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+                    pointer_coercion "Unsize" α1 in
+                  let* α3 : ltac:(refine core.fmt.Arguments) :=
+                    core.fmt.Arguments::["new_const"] α2 in
+                  std.io.stdio._print α3 in
+                M.alloc tt in
+              let* _ : ltac:(refine never) := Break in
+              M.alloc tt) in
+          never_to_any α0 in
+        let* _ : ltac:(refine unit) :=
+          let* _ : ltac:(refine unit) :=
+            let* α0 : ltac:(refine (array (ref str))) :=
+              M.alloc [ mk_str "This point will never be reached
+" ] in
+            let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
+            let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+              pointer_coercion "Unsize" α1 in
+            let* α3 : ltac:(refine core.fmt.Arguments) :=
+              core.fmt.Arguments::["new_const"] α2 in
+            std.io.stdio._print α3 in
+          M.alloc tt in
+        M.alloc tt) in
+    let* _ : ltac:(refine unit) :=
+      let* _ : ltac:(refine unit) :=
+        let* α0 : ltac:(refine (array (ref str))) :=
+          M.alloc [ mk_str "Exited the outer loop
+" ] in
+        let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
+        let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+          pointer_coercion "Unsize" α1 in
+        let* α3 : ltac:(refine core.fmt.Arguments) :=
+          core.fmt.Arguments::["new_const"] α2 in
+        std.io.stdio._print α3 in
+      M.alloc tt in
+    M.alloc tt).

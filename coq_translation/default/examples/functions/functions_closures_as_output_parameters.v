@@ -2,95 +2,125 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition create_fn `{ℋ : State.Trait} : M _ (* OpaqueTy *) :=
-  let* text :=
-    let* α0 := deref (mk_str "Fn") str in
-    let* α1 := borrow α0 str in
-    (alloc.borrow.ToOwned.to_owned (Self := str)) α1 in
-  Pure
-    (let* _ :=
-      let* α0 := borrow [ mk_str "This is a: "; mk_str "
-" ] (list (ref str)) in
-      let* α1 := deref α0 (list (ref str)) in
-      let* α2 := borrow α1 (list (ref str)) in
-      let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := borrow text alloc.string.String in
-      let* α5 := deref α4 alloc.string.String in
-      let* α6 := borrow α5 alloc.string.String in
-      let* α7 := core.fmt.rt.Argument::["new_display"] α6 in
-      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
-      let* α9 := deref α8 (list core.fmt.rt.Argument) in
-      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
-      let* α11 := pointer_coercion "Unsize" α10 in
-      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
-      std.io.stdio._print α12 in
-    M.alloc tt).
+  M.function_body
+    (let* text : ltac:(refine alloc.string.String) :=
+      let* α0 : ltac:(refine str) := deref (mk_str "Fn") in
+      let* α1 : ltac:(refine (ref str)) := borrow α0 in
+      (alloc.borrow.ToOwned.to_owned (Self := str) (Trait := ltac:(refine _)))
+        α1 in
+    M.pure
+      (let* _ : ltac:(refine unit) :=
+        let* α0 : ltac:(refine (array (ref str))) :=
+          M.alloc [ mk_str "This is a: "; mk_str "
+" ] in
+        let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
+        let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+          pointer_coercion "Unsize" α1 in
+        let* α3 : ltac:(refine (ref alloc.string.String)) := borrow text in
+        let* α4 : ltac:(refine core.fmt.rt.Argument) :=
+          core.fmt.rt.Argument::["new_display"] α3 in
+        let* α5 : ltac:(refine (array core.fmt.rt.Argument)) :=
+          M.alloc [ α4 ] in
+        let* α6 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+          borrow α5 in
+        let* α7 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+          pointer_coercion "Unsize" α6 in
+        let* α8 : ltac:(refine core.fmt.Arguments) :=
+          core.fmt.Arguments::["new_v1"] α2 α7 in
+        std.io.stdio._print α8 in
+      M.alloc tt)).
 
 Error OpaqueTy.
 
 Definition create_fnmut `{ℋ : State.Trait} : M _ (* OpaqueTy *) :=
-  let* text :=
-    let* α0 := deref (mk_str "FnMut") str in
-    let* α1 := borrow α0 str in
-    (alloc.borrow.ToOwned.to_owned (Self := str)) α1 in
-  Pure
-    (let* _ :=
-      let* α0 := borrow [ mk_str "This is a: "; mk_str "
-" ] (list (ref str)) in
-      let* α1 := deref α0 (list (ref str)) in
-      let* α2 := borrow α1 (list (ref str)) in
-      let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := borrow text alloc.string.String in
-      let* α5 := deref α4 alloc.string.String in
-      let* α6 := borrow α5 alloc.string.String in
-      let* α7 := core.fmt.rt.Argument::["new_display"] α6 in
-      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
-      let* α9 := deref α8 (list core.fmt.rt.Argument) in
-      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
-      let* α11 := pointer_coercion "Unsize" α10 in
-      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
-      std.io.stdio._print α12 in
-    M.alloc tt).
+  M.function_body
+    (let* text : ltac:(refine alloc.string.String) :=
+      let* α0 : ltac:(refine str) := deref (mk_str "FnMut") in
+      let* α1 : ltac:(refine (ref str)) := borrow α0 in
+      (alloc.borrow.ToOwned.to_owned (Self := str) (Trait := ltac:(refine _)))
+        α1 in
+    M.pure
+      (let* _ : ltac:(refine unit) :=
+        let* α0 : ltac:(refine (array (ref str))) :=
+          M.alloc [ mk_str "This is a: "; mk_str "
+" ] in
+        let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
+        let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+          pointer_coercion "Unsize" α1 in
+        let* α3 : ltac:(refine (ref alloc.string.String)) := borrow text in
+        let* α4 : ltac:(refine core.fmt.rt.Argument) :=
+          core.fmt.rt.Argument::["new_display"] α3 in
+        let* α5 : ltac:(refine (array core.fmt.rt.Argument)) :=
+          M.alloc [ α4 ] in
+        let* α6 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+          borrow α5 in
+        let* α7 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+          pointer_coercion "Unsize" α6 in
+        let* α8 : ltac:(refine core.fmt.Arguments) :=
+          core.fmt.Arguments::["new_v1"] α2 α7 in
+        std.io.stdio._print α8 in
+      M.alloc tt)).
 
 Definition create_fnonce `{ℋ : State.Trait} : M _ (* OpaqueTy *) :=
-  let* text :=
-    let* α0 := deref (mk_str "FnOnce") str in
-    let* α1 := borrow α0 str in
-    (alloc.borrow.ToOwned.to_owned (Self := str)) α1 in
-  Pure
-    (let* _ :=
-      let* α0 := borrow [ mk_str "This is a: "; mk_str "
-" ] (list (ref str)) in
-      let* α1 := deref α0 (list (ref str)) in
-      let* α2 := borrow α1 (list (ref str)) in
-      let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := borrow text alloc.string.String in
-      let* α5 := deref α4 alloc.string.String in
-      let* α6 := borrow α5 alloc.string.String in
-      let* α7 := core.fmt.rt.Argument::["new_display"] α6 in
-      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
-      let* α9 := deref α8 (list core.fmt.rt.Argument) in
-      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
-      let* α11 := pointer_coercion "Unsize" α10 in
-      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
-      std.io.stdio._print α12 in
-    M.alloc tt).
+  M.function_body
+    (let* text : ltac:(refine alloc.string.String) :=
+      let* α0 : ltac:(refine str) := deref (mk_str "FnOnce") in
+      let* α1 : ltac:(refine (ref str)) := borrow α0 in
+      (alloc.borrow.ToOwned.to_owned (Self := str) (Trait := ltac:(refine _)))
+        α1 in
+    M.pure
+      (let* _ : ltac:(refine unit) :=
+        let* α0 : ltac:(refine (array (ref str))) :=
+          M.alloc [ mk_str "This is a: "; mk_str "
+" ] in
+        let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
+        let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+          pointer_coercion "Unsize" α1 in
+        let* α3 : ltac:(refine (ref alloc.string.String)) := borrow text in
+        let* α4 : ltac:(refine core.fmt.rt.Argument) :=
+          core.fmt.rt.Argument::["new_display"] α3 in
+        let* α5 : ltac:(refine (array core.fmt.rt.Argument)) :=
+          M.alloc [ α4 ] in
+        let* α6 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+          borrow α5 in
+        let* α7 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+          pointer_coercion "Unsize" α6 in
+        let* α8 : ltac:(refine core.fmt.Arguments) :=
+          core.fmt.Arguments::["new_v1"] α2 α7 in
+        std.io.stdio._print α8 in
+      M.alloc tt)).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
-  let* fn_plain := functions_closures_as_output_parameters.create_fn in
-  let* fn_mut := functions_closures_as_output_parameters.create_fnmut in
-  let* fn_once := functions_closures_as_output_parameters.create_fnonce in
-  let* _ :=
-    let* α0 := borrow fn_plain type not implemented in
-    let* α1 := M.alloc tt in
-    (core.ops.function.Fn.call (Self := type not implemented)) α0 α1 in
-  let* _ :=
-    let* α0 := borrow_mut fn_mut type not implemented in
-    let* α1 := M.alloc tt in
-    (core.ops.function.FnMut.call_mut (Self := type not implemented)) α0 α1 in
-  let* _ :=
-    let* α0 := M.alloc tt in
-    (core.ops.function.FnOnce.call_once (Self := type not implemented))
-      fn_once
-      α0 in
-  M.alloc tt.
+  M.function_body
+    (let* fn_plain : ltac:(refine type not implemented) :=
+      functions_closures_as_output_parameters.create_fn in
+    let* fn_mut : ltac:(refine type not implemented) :=
+      functions_closures_as_output_parameters.create_fnmut in
+    let* fn_once : ltac:(refine type not implemented) :=
+      functions_closures_as_output_parameters.create_fnonce in
+    let* _ : ltac:(refine unit) :=
+      let* α0 : ltac:(refine (ref type not implemented)) := borrow fn_plain in
+      let* α1 : ltac:(refine unit) := M.alloc tt in
+      (core.ops.function.Fn.call
+          (Self := type not implemented)
+          (Trait := ltac:(refine _)))
+        α0
+        α1 in
+    let* _ : ltac:(refine unit) :=
+      let* α0 : ltac:(refine (mut_ref type not implemented)) :=
+        borrow_mut fn_mut in
+      let* α1 : ltac:(refine unit) := M.alloc tt in
+      (core.ops.function.FnMut.call_mut
+          (Self := type not implemented)
+          (Trait := ltac:(refine _)))
+        α0
+        α1 in
+    let* _ : ltac:(refine unit) :=
+      let* α0 : ltac:(refine unit) := M.alloc tt in
+      (core.ops.function.FnOnce.call_once
+          (Self := type not implemented)
+          (Trait := ltac:(refine _)))
+        fn_once
+        α0 in
+    M.alloc tt).

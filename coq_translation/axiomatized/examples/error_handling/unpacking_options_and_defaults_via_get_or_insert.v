@@ -9,34 +9,27 @@ Module Fruit.
   | Kiwi
   | Lemon.
 End Fruit.
-Definition Fruit `{ℋ : State.Trait} : Set := Fruit.t.
+Definition Fruit `{ℋ : State.Trait} : Set := M.Val Fruit.t.
 
-Module
-  Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_Fruit.
-  Section
-    Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_Fruit.
-    Context `{ℋ : State.Trait}.
-    
-    Definition Self : Set :=
-      unpacking_options_and_defaults_via_get_or_insert.Fruit.
-    
-    Parameter fmt :
-        (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
-    
-    Global Instance AssociatedFunction_fmt :
-      Notation.DoubleColon Self "fmt" := {
-      Notation.double_colon := fmt;
-    }.
-    
-    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
-      core.fmt.Debug.fmt := fmt;
-    }.
-    Admitted.
-  End
-    Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_Fruit.
-  Global Hint Resolve ℐ : core.
-End
-  Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_Fruit.
+Module  Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_Fruit.
+Section Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_Fruit.
+  Context `{ℋ : State.Trait}.
+  
+  Definition Self : Set :=
+    unpacking_options_and_defaults_via_get_or_insert.Fruit.
+  
+  Parameter fmt :
+      (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
+  
+  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {
+    Notation.double_colon := fmt;
+  }.
+  
+  Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    core.fmt.Debug.fmt := fmt;
+  }.
+End Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_Fruit.
+End Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_Fruit.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : forall `{ℋ : State.Trait}, M unit.

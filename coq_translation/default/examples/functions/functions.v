@@ -3,128 +3,146 @@ Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
-  let* _ :=
-    let* α0 := M.alloc 100 in
-    functions.fizzbuzz_to α0 in
-  M.alloc tt.
+  M.function_body
+    (let* _ : ltac:(refine unit) :=
+      let* α0 : ltac:(refine u32) := M.alloc 100 in
+      functions.fizzbuzz_to α0 in
+    M.alloc tt).
 
 Definition is_divisible_by
     `{ℋ : State.Trait}
     (lhs : u32)
     (rhs : u32)
     : M bool :=
-  let* _ :=
-    let* α0 := M.alloc 0 in
-    let* α1 := eq rhs α0 in
-    let* α2 := use α1 in
-    if (α2 : bool) then
-      let* _ :=
-        let* α0 := M.alloc false in
-        Return α0 in
-      let* α0 := M.alloc tt in
-      never_to_any α0
-    else
-      M.alloc tt in
-  let* α0 := rem lhs rhs in
-  let* α1 := M.alloc 0 in
-  eq α0 α1.
+  M.function_body
+    (let* _ : ltac:(refine unit) :=
+      let* α0 : ltac:(refine u32) := M.alloc 0 in
+      let* α1 : ltac:(refine bool) := BinOp.eq rhs α0 in
+      let* α2 : ltac:(refine bool) := use α1 in
+      if (α2 : bool) then
+        let* _ : ltac:(refine never) :=
+          let* α0 : ltac:(refine bool) := M.alloc false in
+          M.return_ α0 in
+        let* α0 : ltac:(refine unit) := M.alloc tt in
+        never_to_any α0
+      else
+        M.alloc tt in
+    let* α0 : ltac:(refine u32) := BinOp.rem lhs rhs in
+    let* α1 : ltac:(refine u32) := M.alloc 0 in
+    BinOp.eq α0 α1).
 
 Definition fizzbuzz `{ℋ : State.Trait} (n : u32) : M unit :=
-  let* α0 := M.alloc 15 in
-  let* α1 := functions.is_divisible_by n α0 in
-  let* α2 := use α1 in
-  if (α2 : bool) then
-    let* _ :=
-      let* _ :=
-        let* α0 := borrow [ mk_str "fizzbuzz
-" ] (list (ref str)) in
-        let* α1 := deref α0 (list (ref str)) in
-        let* α2 := borrow α1 (list (ref str)) in
-        let* α3 := pointer_coercion "Unsize" α2 in
-        let* α4 := core.fmt.Arguments::["new_const"] α3 in
-        std.io.stdio._print α4 in
-      M.alloc tt in
-    M.alloc tt
-  else
-    let* α0 := M.alloc 3 in
-    let* α1 := functions.is_divisible_by n α0 in
-    let* α2 := use α1 in
+  M.function_body
+    (let* α0 : ltac:(refine u32) := M.alloc 15 in
+    let* α1 : ltac:(refine bool) := functions.is_divisible_by n α0 in
+    let* α2 : ltac:(refine bool) := use α1 in
     if (α2 : bool) then
-      let* _ :=
-        let* _ :=
-          let* α0 := borrow [ mk_str "fizz
-" ] (list (ref str)) in
-          let* α1 := deref α0 (list (ref str)) in
-          let* α2 := borrow α1 (list (ref str)) in
-          let* α3 := pointer_coercion "Unsize" α2 in
-          let* α4 := core.fmt.Arguments::["new_const"] α3 in
-          std.io.stdio._print α4 in
+      let* _ : ltac:(refine unit) :=
+        let* _ : ltac:(refine unit) :=
+          let* α0 : ltac:(refine (array (ref str))) :=
+            M.alloc [ mk_str "fizzbuzz
+" ] in
+          let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
+          let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+            pointer_coercion "Unsize" α1 in
+          let* α3 : ltac:(refine core.fmt.Arguments) :=
+            core.fmt.Arguments::["new_const"] α2 in
+          std.io.stdio._print α3 in
         M.alloc tt in
       M.alloc tt
     else
-      let* α0 := M.alloc 5 in
-      let* α1 := functions.is_divisible_by n α0 in
-      let* α2 := use α1 in
+      let* α0 : ltac:(refine u32) := M.alloc 3 in
+      let* α1 : ltac:(refine bool) := functions.is_divisible_by n α0 in
+      let* α2 : ltac:(refine bool) := use α1 in
       if (α2 : bool) then
-        let* _ :=
-          let* _ :=
-            let* α0 := borrow [ mk_str "buzz
-" ] (list (ref str)) in
-            let* α1 := deref α0 (list (ref str)) in
-            let* α2 := borrow α1 (list (ref str)) in
-            let* α3 := pointer_coercion "Unsize" α2 in
-            let* α4 := core.fmt.Arguments::["new_const"] α3 in
-            std.io.stdio._print α4 in
+        let* _ : ltac:(refine unit) :=
+          let* _ : ltac:(refine unit) :=
+            let* α0 : ltac:(refine (array (ref str))) :=
+              M.alloc [ mk_str "fizz
+" ] in
+            let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
+            let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+              pointer_coercion "Unsize" α1 in
+            let* α3 : ltac:(refine core.fmt.Arguments) :=
+              core.fmt.Arguments::["new_const"] α2 in
+            std.io.stdio._print α3 in
           M.alloc tt in
         M.alloc tt
       else
-        let* _ :=
-          let* _ :=
-            let* α0 := borrow [ mk_str ""; mk_str "
-" ] (list (ref str)) in
-            let* α1 := deref α0 (list (ref str)) in
-            let* α2 := borrow α1 (list (ref str)) in
-            let* α3 := pointer_coercion "Unsize" α2 in
-            let* α4 := borrow n u32 in
-            let* α5 := deref α4 u32 in
-            let* α6 := borrow α5 u32 in
-            let* α7 := core.fmt.rt.Argument::["new_display"] α6 in
-            let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
-            let* α9 := deref α8 (list core.fmt.rt.Argument) in
-            let* α10 := borrow α9 (list core.fmt.rt.Argument) in
-            let* α11 := pointer_coercion "Unsize" α10 in
-            let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
-            std.io.stdio._print α12 in
-          M.alloc tt in
-        M.alloc tt.
+        let* α0 : ltac:(refine u32) := M.alloc 5 in
+        let* α1 : ltac:(refine bool) := functions.is_divisible_by n α0 in
+        let* α2 : ltac:(refine bool) := use α1 in
+        if (α2 : bool) then
+          let* _ : ltac:(refine unit) :=
+            let* _ : ltac:(refine unit) :=
+              let* α0 : ltac:(refine (array (ref str))) :=
+                M.alloc [ mk_str "buzz
+" ] in
+              let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
+              let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+                pointer_coercion "Unsize" α1 in
+              let* α3 : ltac:(refine core.fmt.Arguments) :=
+                core.fmt.Arguments::["new_const"] α2 in
+              std.io.stdio._print α3 in
+            M.alloc tt in
+          M.alloc tt
+        else
+          let* _ : ltac:(refine unit) :=
+            let* _ : ltac:(refine unit) :=
+              let* α0 : ltac:(refine (array (ref str))) :=
+                M.alloc [ mk_str ""; mk_str "
+" ] in
+              let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
+              let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+                pointer_coercion "Unsize" α1 in
+              let* α3 : ltac:(refine (ref u32)) := borrow n in
+              let* α4 : ltac:(refine core.fmt.rt.Argument) :=
+                core.fmt.rt.Argument::["new_display"] α3 in
+              let* α5 : ltac:(refine (array core.fmt.rt.Argument)) :=
+                M.alloc [ α4 ] in
+              let* α6 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+                borrow α5 in
+              let* α7 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+                pointer_coercion "Unsize" α6 in
+              let* α8 : ltac:(refine core.fmt.Arguments) :=
+                core.fmt.Arguments::["new_v1"] α2 α7 in
+              std.io.stdio._print α8 in
+            M.alloc tt in
+          M.alloc tt).
 
 Definition fizzbuzz_to `{ℋ : State.Trait} (n : u32) : M unit :=
-  let* α0 := M.alloc 1 in
-  let* α1 := (core.ops.range.RangeInclusive Idx)::["new"] α0 n in
-  let* α2 :=
-    (core.iter.traits.collect.IntoIterator.into_iter
-        (Self := (core.ops.range.RangeInclusive u32)))
-      α1 in
-  let* α3 :=
-    match α2 with
-    | iter =>
-      loop
-        (let* _ :=
-          let* α0 := borrow_mut iter (core.ops.range.RangeInclusive u32) in
-          let* α1 := deref α0 (core.ops.range.RangeInclusive u32) in
-          let* α2 := borrow_mut α1 (core.ops.range.RangeInclusive u32) in
-          let* α3 :=
-            (core.iter.traits.iterator.Iterator.next
-                (Self := (core.ops.range.RangeInclusive u32)))
-              α2 in
-          match α3 with
-          | core.option.Option  =>
-            let* α0 := Break in
-            never_to_any α0
-          | core.option.Option n =>
-            let* _ := functions.fizzbuzz n in
-            M.alloc tt
-          end in
-        M.alloc tt)
-    end in
-  use α3.
+  M.function_body
+    (let* α0 : ltac:(refine u32) := M.alloc 1 in
+    let* α1 : ltac:(refine (core.ops.range.RangeInclusive u32)) :=
+      (core.ops.range.RangeInclusive u32)::["new"] α0 n in
+    let* α2 : ltac:(refine (core.ops.range.RangeInclusive u32)) :=
+      (core.iter.traits.collect.IntoIterator.into_iter
+          (Self := core.ops.range.RangeInclusive u32)
+          (Trait := ltac:(refine _)))
+        α1 in
+    let* α3 := M.read α2 in
+    let* α4 : ltac:(refine unit) :=
+      match α3 with
+      | iter =>
+        loop
+          (let* _ : ltac:(refine unit) :=
+            let* α0 :
+                ltac:(refine (mut_ref (core.ops.range.RangeInclusive u32))) :=
+              borrow_mut iter in
+            let* α1 : ltac:(refine (core.option.Option u32)) :=
+              (core.iter.traits.iterator.Iterator.next
+                  (Self := core.ops.range.RangeInclusive u32)
+                  (Trait := ltac:(refine _)))
+                α0 in
+            let* α2 := M.read α1 in
+            match α2 with
+            | core.option.Option.None  =>
+              let* α0 : ltac:(refine never) := Break in
+              never_to_any α0
+            | core.option.Option.Some n =>
+              let* _ : ltac:(refine unit) := functions.fizzbuzz n in
+              M.alloc tt
+            end in
+          M.alloc tt)
+      end in
+    use α4).

@@ -7,28 +7,25 @@ Module Food.
   | Steak
   | Sushi.
 End Food.
-Definition Food `{ℋ : State.Trait} : Set := Food.t.
+Definition Food `{ℋ : State.Trait} : Set := M.Val Food.t.
 
-Module Impl_core_fmt_Debug_for_combinators_and_then_Food.
-  Section Impl_core_fmt_Debug_for_combinators_and_then_Food.
-    Context `{ℋ : State.Trait}.
-    
-    Definition Self : Set := combinators_and_then.Food.
-    
-    Parameter fmt :
-        (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
-    
-    Global Instance AssociatedFunction_fmt :
-      Notation.DoubleColon Self "fmt" := {
-      Notation.double_colon := fmt;
-    }.
-    
-    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
-      core.fmt.Debug.fmt := fmt;
-    }.
-    Admitted.
-  End Impl_core_fmt_Debug_for_combinators_and_then_Food.
-  Global Hint Resolve ℐ : core.
+Module  Impl_core_fmt_Debug_for_combinators_and_then_Food.
+Section Impl_core_fmt_Debug_for_combinators_and_then_Food.
+  Context `{ℋ : State.Trait}.
+  
+  Definition Self : Set := combinators_and_then.Food.
+  
+  Parameter fmt :
+      (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
+  
+  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {
+    Notation.double_colon := fmt;
+  }.
+  
+  Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    core.fmt.Debug.fmt := fmt;
+  }.
+End Impl_core_fmt_Debug_for_combinators_and_then_Food.
 End Impl_core_fmt_Debug_for_combinators_and_then_Food.
 
 Module Day.
@@ -37,28 +34,25 @@ Module Day.
   | Tuesday
   | Wednesday.
 End Day.
-Definition Day `{ℋ : State.Trait} : Set := Day.t.
+Definition Day `{ℋ : State.Trait} : Set := M.Val Day.t.
 
-Module Impl_core_fmt_Debug_for_combinators_and_then_Day.
-  Section Impl_core_fmt_Debug_for_combinators_and_then_Day.
-    Context `{ℋ : State.Trait}.
-    
-    Definition Self : Set := combinators_and_then.Day.
-    
-    Parameter fmt :
-        (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
-    
-    Global Instance AssociatedFunction_fmt :
-      Notation.DoubleColon Self "fmt" := {
-      Notation.double_colon := fmt;
-    }.
-    
-    #[refine] Global Instance ℐ : core.fmt.Debug.Trait Self := {
-      core.fmt.Debug.fmt := fmt;
-    }.
-    Admitted.
-  End Impl_core_fmt_Debug_for_combinators_and_then_Day.
-  Global Hint Resolve ℐ : core.
+Module  Impl_core_fmt_Debug_for_combinators_and_then_Day.
+Section Impl_core_fmt_Debug_for_combinators_and_then_Day.
+  Context `{ℋ : State.Trait}.
+  
+  Definition Self : Set := combinators_and_then.Day.
+  
+  Parameter fmt :
+      (ref Self) -> (mut_ref core.fmt.Formatter) -> M ltac:(core.fmt.Result).
+  
+  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {
+    Notation.double_colon := fmt;
+  }.
+  
+  Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    core.fmt.Debug.fmt := fmt;
+  }.
+End Impl_core_fmt_Debug_for_combinators_and_then_Day.
 End Impl_core_fmt_Debug_for_combinators_and_then_Day.
 
 Parameter have_ingredients :

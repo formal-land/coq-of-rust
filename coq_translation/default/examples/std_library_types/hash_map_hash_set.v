@@ -3,355 +3,394 @@ Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
-  let* a :=
-    let* α0 := M.alloc 1 in
-    let* α1 := M.alloc 2 in
-    let* α2 := M.alloc 3 in
-    let* α3 :=
-      (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] [ α0; α1; α2 ] in
-    let* α4 := pointer_coercion "Unsize" α3 in
-    let* α5 := (Slice T)::["into_vec"] α4 in
-    let* α6 :=
-      (core.iter.traits.collect.IntoIterator.into_iter
-          (Self := (alloc.vec.Vec i32 alloc.alloc.Global)))
-        α5 in
-    (core.iter.traits.iterator.Iterator.collect
-        (Self := (alloc.vec.into_iter.IntoIter i32 alloc.alloc.Global)))
-      α6 in
-  let* b :=
-    let* α0 := M.alloc 2 in
-    let* α1 := M.alloc 3 in
-    let* α2 := M.alloc 4 in
-    let* α3 :=
-      (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] [ α0; α1; α2 ] in
-    let* α4 := pointer_coercion "Unsize" α3 in
-    let* α5 := (Slice T)::["into_vec"] α4 in
-    let* α6 :=
-      (core.iter.traits.collect.IntoIterator.into_iter
-          (Self := (alloc.vec.Vec i32 alloc.alloc.Global)))
-        α5 in
-    (core.iter.traits.iterator.Iterator.collect
-        (Self := (alloc.vec.into_iter.IntoIter i32 alloc.alloc.Global)))
-      α6 in
-  let* _ :=
-    let* α0 :=
-      borrow_mut
-        a
+  M.function_body
+    (let* a :
+        ltac:(refine
+          (std.collections.hash.set.HashSet
+            i32
+            std.collections.hash.map.RandomState)) :=
+      let* α0 : ltac:(refine i32) := M.alloc 1 in
+      let* α1 : ltac:(refine i32) := M.alloc 2 in
+      let* α2 : ltac:(refine i32) := M.alloc 3 in
+      let* α3 : ltac:(refine (array i32)) := M.alloc [ α0; α1; α2 ] in
+      let* α4 :
+          ltac:(refine (alloc.boxed.Box (array i32) alloc.alloc.Global)) :=
+        (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α3 in
+      let* α5 :
+          ltac:(refine (alloc.boxed.Box (slice i32) alloc.alloc.Global)) :=
+        pointer_coercion "Unsize" α4 in
+      let* α6 : ltac:(refine (alloc.vec.Vec i32 alloc.alloc.Global)) :=
+        (slice i32)::["into_vec"] α5 in
+      let* α7 :
+          ltac:(refine (alloc.vec.into_iter.IntoIter i32 alloc.alloc.Global)) :=
+        (core.iter.traits.collect.IntoIterator.into_iter
+            (Self := alloc.vec.Vec i32 alloc.alloc.Global)
+            (Trait := ltac:(refine _)))
+          α6 in
+      (core.iter.traits.iterator.Iterator.collect
+          (Self := alloc.vec.into_iter.IntoIter i32 alloc.alloc.Global)
+          (Trait := ltac:(refine _)))
+        α7 in
+    let* b :
+        ltac:(refine
+          (std.collections.hash.set.HashSet
+            i32
+            std.collections.hash.map.RandomState)) :=
+      let* α0 : ltac:(refine i32) := M.alloc 2 in
+      let* α1 : ltac:(refine i32) := M.alloc 3 in
+      let* α2 : ltac:(refine i32) := M.alloc 4 in
+      let* α3 : ltac:(refine (array i32)) := M.alloc [ α0; α1; α2 ] in
+      let* α4 :
+          ltac:(refine (alloc.boxed.Box (array i32) alloc.alloc.Global)) :=
+        (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α3 in
+      let* α5 :
+          ltac:(refine (alloc.boxed.Box (slice i32) alloc.alloc.Global)) :=
+        pointer_coercion "Unsize" α4 in
+      let* α6 : ltac:(refine (alloc.vec.Vec i32 alloc.alloc.Global)) :=
+        (slice i32)::["into_vec"] α5 in
+      let* α7 :
+          ltac:(refine (alloc.vec.into_iter.IntoIter i32 alloc.alloc.Global)) :=
+        (core.iter.traits.collect.IntoIterator.into_iter
+            (Self := alloc.vec.Vec i32 alloc.alloc.Global)
+            (Trait := ltac:(refine _)))
+          α6 in
+      (core.iter.traits.iterator.Iterator.collect
+          (Self := alloc.vec.into_iter.IntoIter i32 alloc.alloc.Global)
+          (Trait := ltac:(refine _)))
+        α7 in
+    let* _ : ltac:(refine unit) :=
+      let* α0 :
+          ltac:(refine
+            (mut_ref
+              (std.collections.hash.set.HashSet
+                i32
+                std.collections.hash.map.RandomState))) :=
+        borrow_mut a in
+      let* α1 : ltac:(refine i32) := M.alloc 4 in
+      let* α2 : ltac:(refine bool) :=
         (std.collections.hash.set.HashSet
-          i32
-          std.collections.hash.map.RandomState) in
-    let* α1 := M.alloc 4 in
-    let* α2 := (std.collections.hash.set.HashSet T S)::["insert"] α0 α1 in
-    let* α3 := not α2 in
-    let* α4 := use α3 in
-    if (α4 : bool) then
-      let* α0 :=
-        core.panicking.panic (mk_str "assertion failed: a.insert(4)") in
-      never_to_any α0
-    else
+              i32
+              std.collections.hash.map.RandomState)::["insert"]
+          α0
+          α1 in
+      let* α3 : ltac:(refine bool) := UnOp.not α2 in
+      let* α4 : ltac:(refine bool) := use α3 in
+      if (α4 : bool) then
+        let* α0 : ltac:(refine never) :=
+          core.panicking.panic (mk_str "assertion failed: a.insert(4)") in
+        never_to_any α0
+      else
+        M.alloc tt in
+    let* _ : ltac:(refine unit) :=
+      let* α0 :
+          ltac:(refine
+            (ref
+              (std.collections.hash.set.HashSet
+                i32
+                std.collections.hash.map.RandomState))) :=
+        borrow a in
+      let* α1 : ltac:(refine i32) := M.alloc 4 in
+      let* α2 : ltac:(refine (ref i32)) := borrow α1 in
+      let* α3 : ltac:(refine bool) :=
+        (std.collections.hash.set.HashSet
+              i32
+              std.collections.hash.map.RandomState)::["contains"]
+          α0
+          α2 in
+      let* α4 : ltac:(refine bool) := UnOp.not α3 in
+      let* α5 : ltac:(refine bool) := use α4 in
+      if (α5 : bool) then
+        let* α0 : ltac:(refine never) :=
+          core.panicking.panic (mk_str "assertion failed: a.contains(&4)") in
+        never_to_any α0
+      else
+        M.alloc tt in
+    let* _ : ltac:(refine bool) :=
+      let* α0 :
+          ltac:(refine
+            (mut_ref
+              (std.collections.hash.set.HashSet
+                i32
+                std.collections.hash.map.RandomState))) :=
+        borrow_mut b in
+      let* α1 : ltac:(refine i32) := M.alloc 5 in
+      (std.collections.hash.set.HashSet
+            i32
+            std.collections.hash.map.RandomState)::["insert"]
+        α0
+        α1 in
+    let* _ : ltac:(refine unit) :=
+      let* _ : ltac:(refine unit) :=
+        let* α0 : ltac:(refine (array (ref str))) :=
+          M.alloc [ mk_str "A: "; mk_str "
+" ] in
+        let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
+        let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+          pointer_coercion "Unsize" α1 in
+        let* α3 :
+            ltac:(refine
+              (ref
+                (std.collections.hash.set.HashSet
+                  i32
+                  std.collections.hash.map.RandomState))) :=
+          borrow a in
+        let* α4 : ltac:(refine core.fmt.rt.Argument) :=
+          core.fmt.rt.Argument::["new_debug"] α3 in
+        let* α5 : ltac:(refine (array core.fmt.rt.Argument)) :=
+          M.alloc [ α4 ] in
+        let* α6 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+          borrow α5 in
+        let* α7 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+          pointer_coercion "Unsize" α6 in
+        let* α8 : ltac:(refine core.fmt.Arguments) :=
+          core.fmt.Arguments::["new_v1"] α2 α7 in
+        std.io.stdio._print α8 in
       M.alloc tt in
-  let* _ :=
-    let* α0 :=
-      borrow
-        a
-        (std.collections.hash.set.HashSet
-          i32
-          std.collections.hash.map.RandomState) in
-    let* α1 := M.alloc 4 in
-    let* α2 := borrow α1 i32 in
-    let* α3 := deref α2 i32 in
-    let* α4 := borrow α3 i32 in
-    let* α5 := (std.collections.hash.set.HashSet T S)::["contains"] α0 α4 in
-    let* α6 := not α5 in
-    let* α7 := use α6 in
-    if (α7 : bool) then
-      let* α0 :=
-        core.panicking.panic (mk_str "assertion failed: a.contains(&4)") in
-      never_to_any α0
-    else
+    let* _ : ltac:(refine unit) :=
+      let* _ : ltac:(refine unit) :=
+        let* α0 : ltac:(refine (array (ref str))) :=
+          M.alloc [ mk_str "B: "; mk_str "
+" ] in
+        let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
+        let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+          pointer_coercion "Unsize" α1 in
+        let* α3 :
+            ltac:(refine
+              (ref
+                (std.collections.hash.set.HashSet
+                  i32
+                  std.collections.hash.map.RandomState))) :=
+          borrow b in
+        let* α4 : ltac:(refine core.fmt.rt.Argument) :=
+          core.fmt.rt.Argument::["new_debug"] α3 in
+        let* α5 : ltac:(refine (array core.fmt.rt.Argument)) :=
+          M.alloc [ α4 ] in
+        let* α6 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+          borrow α5 in
+        let* α7 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+          pointer_coercion "Unsize" α6 in
+        let* α8 : ltac:(refine core.fmt.Arguments) :=
+          core.fmt.Arguments::["new_v1"] α2 α7 in
+        std.io.stdio._print α8 in
       M.alloc tt in
-  let* _ :=
-    let* α0 :=
-      borrow_mut
-        b
-        (std.collections.hash.set.HashSet
-          i32
-          std.collections.hash.map.RandomState) in
-    let* α1 := M.alloc 5 in
-    (std.collections.hash.set.HashSet T S)::["insert"] α0 α1 in
-  let* _ :=
-    let* _ :=
-      let* α0 := borrow [ mk_str "A: "; mk_str "
-" ] (list (ref str)) in
-      let* α1 := deref α0 (list (ref str)) in
-      let* α2 := borrow α1 (list (ref str)) in
-      let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 :=
-        borrow
-          a
-          (std.collections.hash.set.HashSet
-            i32
-            std.collections.hash.map.RandomState) in
-      let* α5 :=
-        deref
-          α4
-          (std.collections.hash.set.HashSet
-            i32
-            std.collections.hash.map.RandomState) in
-      let* α6 :=
-        borrow
-          α5
-          (std.collections.hash.set.HashSet
-            i32
-            std.collections.hash.map.RandomState) in
-      let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
-      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
-      let* α9 := deref α8 (list core.fmt.rt.Argument) in
-      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
-      let* α11 := pointer_coercion "Unsize" α10 in
-      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
-      std.io.stdio._print α12 in
-    M.alloc tt in
-  let* _ :=
-    let* _ :=
-      let* α0 := borrow [ mk_str "B: "; mk_str "
-" ] (list (ref str)) in
-      let* α1 := deref α0 (list (ref str)) in
-      let* α2 := borrow α1 (list (ref str)) in
-      let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 :=
-        borrow
-          b
-          (std.collections.hash.set.HashSet
-            i32
-            std.collections.hash.map.RandomState) in
-      let* α5 :=
-        deref
-          α4
-          (std.collections.hash.set.HashSet
-            i32
-            std.collections.hash.map.RandomState) in
-      let* α6 :=
-        borrow
-          α5
-          (std.collections.hash.set.HashSet
-            i32
-            std.collections.hash.map.RandomState) in
-      let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
-      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
-      let* α9 := deref α8 (list core.fmt.rt.Argument) in
-      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
-      let* α11 := pointer_coercion "Unsize" α10 in
-      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
-      std.io.stdio._print α12 in
-    M.alloc tt in
-  let* _ :=
-    let* _ :=
-      let* α0 := borrow [ mk_str "Union: "; mk_str "
-" ] (list (ref str)) in
-      let* α1 := deref α0 (list (ref str)) in
-      let* α2 := borrow α1 (list (ref str)) in
-      let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 :=
-        borrow
-          a
-          (std.collections.hash.set.HashSet
-            i32
-            std.collections.hash.map.RandomState) in
-      let* α5 :=
-        borrow
-          b
-          (std.collections.hash.set.HashSet
-            i32
-            std.collections.hash.map.RandomState) in
-      let* α6 :=
-        deref
-          α5
-          (std.collections.hash.set.HashSet
-            i32
-            std.collections.hash.map.RandomState) in
-      let* α7 :=
-        borrow
-          α6
-          (std.collections.hash.set.HashSet
-            i32
-            std.collections.hash.map.RandomState) in
-      let* α8 := (std.collections.hash.set.HashSet T S)::["union"] α4 α7 in
-      let* α9 :=
-        (core.iter.traits.iterator.Iterator.collect
-            (Self :=
+    let* _ : ltac:(refine unit) :=
+      let* _ : ltac:(refine unit) :=
+        let* α0 : ltac:(refine (array (ref str))) :=
+          M.alloc [ mk_str "Union: "; mk_str "
+" ] in
+        let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
+        let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+          pointer_coercion "Unsize" α1 in
+        let* α3 :
+            ltac:(refine
+              (ref
+                (std.collections.hash.set.HashSet
+                  i32
+                  std.collections.hash.map.RandomState))) :=
+          borrow a in
+        let* α4 :
+            ltac:(refine
+              (ref
+                (std.collections.hash.set.HashSet
+                  i32
+                  std.collections.hash.map.RandomState))) :=
+          borrow b in
+        let* α5 :
+            ltac:(refine
               (std.collections.hash.set.Union
                 i32
-                std.collections.hash.map.RandomState)))
-          α8 in
-      let* α10 := borrow α9 (alloc.vec.Vec (ref i32) alloc.alloc.Global) in
-      let* α11 := deref α10 (alloc.vec.Vec (ref i32) alloc.alloc.Global) in
-      let* α12 := borrow α11 (alloc.vec.Vec (ref i32) alloc.alloc.Global) in
-      let* α13 := core.fmt.rt.Argument::["new_debug"] α12 in
-      let* α14 := borrow [ α13 ] (list core.fmt.rt.Argument) in
-      let* α15 := deref α14 (list core.fmt.rt.Argument) in
-      let* α16 := borrow α15 (list core.fmt.rt.Argument) in
-      let* α17 := pointer_coercion "Unsize" α16 in
-      let* α18 := core.fmt.Arguments::["new_v1"] α3 α17 in
-      std.io.stdio._print α18 in
-    M.alloc tt in
-  let* _ :=
-    let* _ :=
-      let* α0 :=
-        borrow [ mk_str "Difference: "; mk_str "
-" ] (list (ref str)) in
-      let* α1 := deref α0 (list (ref str)) in
-      let* α2 := borrow α1 (list (ref str)) in
-      let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 :=
-        borrow
-          a
+                std.collections.hash.map.RandomState)) :=
           (std.collections.hash.set.HashSet
-            i32
-            std.collections.hash.map.RandomState) in
-      let* α5 :=
-        borrow
-          b
-          (std.collections.hash.set.HashSet
-            i32
-            std.collections.hash.map.RandomState) in
-      let* α6 :=
-        deref
-          α5
-          (std.collections.hash.set.HashSet
-            i32
-            std.collections.hash.map.RandomState) in
-      let* α7 :=
-        borrow
-          α6
-          (std.collections.hash.set.HashSet
-            i32
-            std.collections.hash.map.RandomState) in
-      let* α8 := (std.collections.hash.set.HashSet T S)::["difference"] α4 α7 in
-      let* α9 :=
-        (core.iter.traits.iterator.Iterator.collect
-            (Self :=
+                i32
+                std.collections.hash.map.RandomState)::["union"]
+            α3
+            α4 in
+        let* α6 : ltac:(refine (alloc.vec.Vec (ref i32) alloc.alloc.Global)) :=
+          (core.iter.traits.iterator.Iterator.collect
+              (Self :=
+                std.collections.hash.set.Union
+                  i32
+                  std.collections.hash.map.RandomState)
+              (Trait := ltac:(refine _)))
+            α5 in
+        let* α7 :
+            ltac:(refine (ref (alloc.vec.Vec (ref i32) alloc.alloc.Global))) :=
+          borrow α6 in
+        let* α8 : ltac:(refine core.fmt.rt.Argument) :=
+          core.fmt.rt.Argument::["new_debug"] α7 in
+        let* α9 : ltac:(refine (array core.fmt.rt.Argument)) :=
+          M.alloc [ α8 ] in
+        let* α10 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+          borrow α9 in
+        let* α11 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+          pointer_coercion "Unsize" α10 in
+        let* α12 : ltac:(refine core.fmt.Arguments) :=
+          core.fmt.Arguments::["new_v1"] α2 α11 in
+        std.io.stdio._print α12 in
+      M.alloc tt in
+    let* _ : ltac:(refine unit) :=
+      let* _ : ltac:(refine unit) :=
+        let* α0 : ltac:(refine (array (ref str))) :=
+          M.alloc [ mk_str "Difference: "; mk_str "
+" ] in
+        let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
+        let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+          pointer_coercion "Unsize" α1 in
+        let* α3 :
+            ltac:(refine
+              (ref
+                (std.collections.hash.set.HashSet
+                  i32
+                  std.collections.hash.map.RandomState))) :=
+          borrow a in
+        let* α4 :
+            ltac:(refine
+              (ref
+                (std.collections.hash.set.HashSet
+                  i32
+                  std.collections.hash.map.RandomState))) :=
+          borrow b in
+        let* α5 :
+            ltac:(refine
               (std.collections.hash.set.Difference
                 i32
-                std.collections.hash.map.RandomState)))
-          α8 in
-      let* α10 := borrow α9 (alloc.vec.Vec (ref i32) alloc.alloc.Global) in
-      let* α11 := deref α10 (alloc.vec.Vec (ref i32) alloc.alloc.Global) in
-      let* α12 := borrow α11 (alloc.vec.Vec (ref i32) alloc.alloc.Global) in
-      let* α13 := core.fmt.rt.Argument::["new_debug"] α12 in
-      let* α14 := borrow [ α13 ] (list core.fmt.rt.Argument) in
-      let* α15 := deref α14 (list core.fmt.rt.Argument) in
-      let* α16 := borrow α15 (list core.fmt.rt.Argument) in
-      let* α17 := pointer_coercion "Unsize" α16 in
-      let* α18 := core.fmt.Arguments::["new_v1"] α3 α17 in
-      std.io.stdio._print α18 in
-    M.alloc tt in
-  let* _ :=
-    let* _ :=
-      let* α0 :=
-        borrow [ mk_str "Intersection: "; mk_str "
-" ] (list (ref str)) in
-      let* α1 := deref α0 (list (ref str)) in
-      let* α2 := borrow α1 (list (ref str)) in
-      let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 :=
-        borrow
-          a
+                std.collections.hash.map.RandomState)) :=
           (std.collections.hash.set.HashSet
-            i32
-            std.collections.hash.map.RandomState) in
-      let* α5 :=
-        borrow
-          b
-          (std.collections.hash.set.HashSet
-            i32
-            std.collections.hash.map.RandomState) in
-      let* α6 :=
-        deref
-          α5
-          (std.collections.hash.set.HashSet
-            i32
-            std.collections.hash.map.RandomState) in
-      let* α7 :=
-        borrow
-          α6
-          (std.collections.hash.set.HashSet
-            i32
-            std.collections.hash.map.RandomState) in
-      let* α8 :=
-        (std.collections.hash.set.HashSet T S)::["intersection"] α4 α7 in
-      let* α9 :=
-        (core.iter.traits.iterator.Iterator.collect
-            (Self :=
+                i32
+                std.collections.hash.map.RandomState)::["difference"]
+            α3
+            α4 in
+        let* α6 : ltac:(refine (alloc.vec.Vec (ref i32) alloc.alloc.Global)) :=
+          (core.iter.traits.iterator.Iterator.collect
+              (Self :=
+                std.collections.hash.set.Difference
+                  i32
+                  std.collections.hash.map.RandomState)
+              (Trait := ltac:(refine _)))
+            α5 in
+        let* α7 :
+            ltac:(refine (ref (alloc.vec.Vec (ref i32) alloc.alloc.Global))) :=
+          borrow α6 in
+        let* α8 : ltac:(refine core.fmt.rt.Argument) :=
+          core.fmt.rt.Argument::["new_debug"] α7 in
+        let* α9 : ltac:(refine (array core.fmt.rt.Argument)) :=
+          M.alloc [ α8 ] in
+        let* α10 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+          borrow α9 in
+        let* α11 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+          pointer_coercion "Unsize" α10 in
+        let* α12 : ltac:(refine core.fmt.Arguments) :=
+          core.fmt.Arguments::["new_v1"] α2 α11 in
+        std.io.stdio._print α12 in
+      M.alloc tt in
+    let* _ : ltac:(refine unit) :=
+      let* _ : ltac:(refine unit) :=
+        let* α0 : ltac:(refine (array (ref str))) :=
+          M.alloc [ mk_str "Intersection: "; mk_str "
+" ] in
+        let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
+        let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+          pointer_coercion "Unsize" α1 in
+        let* α3 :
+            ltac:(refine
+              (ref
+                (std.collections.hash.set.HashSet
+                  i32
+                  std.collections.hash.map.RandomState))) :=
+          borrow a in
+        let* α4 :
+            ltac:(refine
+              (ref
+                (std.collections.hash.set.HashSet
+                  i32
+                  std.collections.hash.map.RandomState))) :=
+          borrow b in
+        let* α5 :
+            ltac:(refine
               (std.collections.hash.set.Intersection
                 i32
-                std.collections.hash.map.RandomState)))
-          α8 in
-      let* α10 := borrow α9 (alloc.vec.Vec (ref i32) alloc.alloc.Global) in
-      let* α11 := deref α10 (alloc.vec.Vec (ref i32) alloc.alloc.Global) in
-      let* α12 := borrow α11 (alloc.vec.Vec (ref i32) alloc.alloc.Global) in
-      let* α13 := core.fmt.rt.Argument::["new_debug"] α12 in
-      let* α14 := borrow [ α13 ] (list core.fmt.rt.Argument) in
-      let* α15 := deref α14 (list core.fmt.rt.Argument) in
-      let* α16 := borrow α15 (list core.fmt.rt.Argument) in
-      let* α17 := pointer_coercion "Unsize" α16 in
-      let* α18 := core.fmt.Arguments::["new_v1"] α3 α17 in
-      std.io.stdio._print α18 in
-    M.alloc tt in
-  let* _ :=
-    let* _ :=
-      let* α0 :=
-        borrow
-          [ mk_str "Symmetric Difference: "; mk_str "
-" ]
-          (list (ref str)) in
-      let* α1 := deref α0 (list (ref str)) in
-      let* α2 := borrow α1 (list (ref str)) in
-      let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 :=
-        borrow
-          a
+                std.collections.hash.map.RandomState)) :=
           (std.collections.hash.set.HashSet
-            i32
-            std.collections.hash.map.RandomState) in
-      let* α5 :=
-        borrow
-          b
-          (std.collections.hash.set.HashSet
-            i32
-            std.collections.hash.map.RandomState) in
-      let* α6 :=
-        deref
-          α5
-          (std.collections.hash.set.HashSet
-            i32
-            std.collections.hash.map.RandomState) in
-      let* α7 :=
-        borrow
-          α6
-          (std.collections.hash.set.HashSet
-            i32
-            std.collections.hash.map.RandomState) in
-      let* α8 :=
-        (std.collections.hash.set.HashSet T S)::["symmetric_difference"]
-          α4
-          α7 in
-      let* α9 :=
-        (core.iter.traits.iterator.Iterator.collect
-            (Self :=
+                i32
+                std.collections.hash.map.RandomState)::["intersection"]
+            α3
+            α4 in
+        let* α6 : ltac:(refine (alloc.vec.Vec (ref i32) alloc.alloc.Global)) :=
+          (core.iter.traits.iterator.Iterator.collect
+              (Self :=
+                std.collections.hash.set.Intersection
+                  i32
+                  std.collections.hash.map.RandomState)
+              (Trait := ltac:(refine _)))
+            α5 in
+        let* α7 :
+            ltac:(refine (ref (alloc.vec.Vec (ref i32) alloc.alloc.Global))) :=
+          borrow α6 in
+        let* α8 : ltac:(refine core.fmt.rt.Argument) :=
+          core.fmt.rt.Argument::["new_debug"] α7 in
+        let* α9 : ltac:(refine (array core.fmt.rt.Argument)) :=
+          M.alloc [ α8 ] in
+        let* α10 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+          borrow α9 in
+        let* α11 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+          pointer_coercion "Unsize" α10 in
+        let* α12 : ltac:(refine core.fmt.Arguments) :=
+          core.fmt.Arguments::["new_v1"] α2 α11 in
+        std.io.stdio._print α12 in
+      M.alloc tt in
+    let* _ : ltac:(refine unit) :=
+      let* _ : ltac:(refine unit) :=
+        let* α0 : ltac:(refine (array (ref str))) :=
+          M.alloc [ mk_str "Symmetric Difference: "; mk_str "
+" ] in
+        let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
+        let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+          pointer_coercion "Unsize" α1 in
+        let* α3 :
+            ltac:(refine
+              (ref
+                (std.collections.hash.set.HashSet
+                  i32
+                  std.collections.hash.map.RandomState))) :=
+          borrow a in
+        let* α4 :
+            ltac:(refine
+              (ref
+                (std.collections.hash.set.HashSet
+                  i32
+                  std.collections.hash.map.RandomState))) :=
+          borrow b in
+        let* α5 :
+            ltac:(refine
               (std.collections.hash.set.SymmetricDifference
                 i32
-                std.collections.hash.map.RandomState)))
-          α8 in
-      let* α10 := borrow α9 (alloc.vec.Vec (ref i32) alloc.alloc.Global) in
-      let* α11 := deref α10 (alloc.vec.Vec (ref i32) alloc.alloc.Global) in
-      let* α12 := borrow α11 (alloc.vec.Vec (ref i32) alloc.alloc.Global) in
-      let* α13 := core.fmt.rt.Argument::["new_debug"] α12 in
-      let* α14 := borrow [ α13 ] (list core.fmt.rt.Argument) in
-      let* α15 := deref α14 (list core.fmt.rt.Argument) in
-      let* α16 := borrow α15 (list core.fmt.rt.Argument) in
-      let* α17 := pointer_coercion "Unsize" α16 in
-      let* α18 := core.fmt.Arguments::["new_v1"] α3 α17 in
-      std.io.stdio._print α18 in
-    M.alloc tt in
-  M.alloc tt.
+                std.collections.hash.map.RandomState)) :=
+          (std.collections.hash.set.HashSet
+                i32
+                std.collections.hash.map.RandomState)::["symmetric_difference"]
+            α3
+            α4 in
+        let* α6 : ltac:(refine (alloc.vec.Vec (ref i32) alloc.alloc.Global)) :=
+          (core.iter.traits.iterator.Iterator.collect
+              (Self :=
+                std.collections.hash.set.SymmetricDifference
+                  i32
+                  std.collections.hash.map.RandomState)
+              (Trait := ltac:(refine _)))
+            α5 in
+        let* α7 :
+            ltac:(refine (ref (alloc.vec.Vec (ref i32) alloc.alloc.Global))) :=
+          borrow α6 in
+        let* α8 : ltac:(refine core.fmt.rt.Argument) :=
+          core.fmt.rt.Argument::["new_debug"] α7 in
+        let* α9 : ltac:(refine (array core.fmt.rt.Argument)) :=
+          M.alloc [ α8 ] in
+        let* α10 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+          borrow α9 in
+        let* α11 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+          pointer_coercion "Unsize" α10 in
+        let* α12 : ltac:(refine core.fmt.Arguments) :=
+          core.fmt.Arguments::["new_v1"] α2 α11 in
+        std.io.stdio._print α12 in
+      M.alloc tt in
+    M.alloc tt).

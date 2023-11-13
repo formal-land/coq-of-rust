@@ -3,79 +3,100 @@ Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
-  let* outer_var := M.alloc 42 in
-  let closure_annotated := add i outer_var in
-  let closure_inferred := add i outer_var in
-  let* _ :=
-    let* _ :=
-      let* α0 :=
-        borrow [ mk_str "closure_annotated: "; mk_str "
-" ] (list (ref str)) in
-      let* α1 := deref α0 (list (ref str)) in
-      let* α2 := borrow α1 (list (ref str)) in
-      let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := borrow closure_annotated type not implemented in
-      let* α5 := M.alloc 1 in
-      let* α6 :=
-        (core.ops.function.Fn.call (Self := type not implemented)) α4 (α5) in
-      let* α7 := borrow α6 i32 in
-      let* α8 := deref α7 i32 in
-      let* α9 := borrow α8 i32 in
-      let* α10 := core.fmt.rt.Argument::["new_display"] α9 in
-      let* α11 := borrow [ α10 ] (list core.fmt.rt.Argument) in
-      let* α12 := deref α11 (list core.fmt.rt.Argument) in
-      let* α13 := borrow α12 (list core.fmt.rt.Argument) in
-      let* α14 := pointer_coercion "Unsize" α13 in
-      let* α15 := core.fmt.Arguments::["new_v1"] α3 α14 in
-      std.io.stdio._print α15 in
-    M.alloc tt in
-  let* _ :=
-    let* _ :=
-      let* α0 :=
-        borrow [ mk_str "closure_inferred: "; mk_str "
-" ] (list (ref str)) in
-      let* α1 := deref α0 (list (ref str)) in
-      let* α2 := borrow α1 (list (ref str)) in
-      let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := borrow closure_inferred type not implemented in
-      let* α5 := M.alloc 1 in
-      let* α6 :=
-        (core.ops.function.Fn.call (Self := type not implemented)) α4 (α5) in
-      let* α7 := borrow α6 i32 in
-      let* α8 := deref α7 i32 in
-      let* α9 := borrow α8 i32 in
-      let* α10 := core.fmt.rt.Argument::["new_display"] α9 in
-      let* α11 := borrow [ α10 ] (list core.fmt.rt.Argument) in
-      let* α12 := deref α11 (list core.fmt.rt.Argument) in
-      let* α13 := borrow α12 (list core.fmt.rt.Argument) in
-      let* α14 := pointer_coercion "Unsize" α13 in
-      let* α15 := core.fmt.Arguments::["new_v1"] α3 α14 in
-      std.io.stdio._print α15 in
-    M.alloc tt in
-  let one := M.alloc 1 in
-  let* _ :=
-    let* _ :=
-      let* α0 :=
-        borrow
-          [ mk_str "closure returning one: "; mk_str "
-" ]
-          (list (ref str)) in
-      let* α1 := deref α0 (list (ref str)) in
-      let* α2 := borrow α1 (list (ref str)) in
-      let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := borrow one type not implemented in
-      let* α5 := M.alloc tt in
-      let* α6 :=
-        (core.ops.function.Fn.call (Self := type not implemented)) α4 α5 in
-      let* α7 := borrow α6 i32 in
-      let* α8 := deref α7 i32 in
-      let* α9 := borrow α8 i32 in
-      let* α10 := core.fmt.rt.Argument::["new_display"] α9 in
-      let* α11 := borrow [ α10 ] (list core.fmt.rt.Argument) in
-      let* α12 := deref α11 (list core.fmt.rt.Argument) in
-      let* α13 := borrow α12 (list core.fmt.rt.Argument) in
-      let* α14 := pointer_coercion "Unsize" α13 in
-      let* α15 := core.fmt.Arguments::["new_v1"] α3 α14 in
-      std.io.stdio._print α15 in
-    M.alloc tt in
-  M.alloc tt.
+  M.function_body
+    (let* outer_var : ltac:(refine i32) := M.alloc 42 in
+    let closure_annotated := BinOp.add i outer_var in
+    let closure_inferred := BinOp.add i outer_var in
+    let* _ : ltac:(refine unit) :=
+      let* _ : ltac:(refine unit) :=
+        let* α0 : ltac:(refine (array (ref str))) :=
+          M.alloc [ mk_str "closure_annotated: "; mk_str "
+" ] in
+        let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
+        let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+          pointer_coercion "Unsize" α1 in
+        let* α3 : ltac:(refine (ref type not implemented)) :=
+          borrow closure_annotated in
+        let* α4 : ltac:(refine i32) := M.alloc 1 in
+        let* α5 : ltac:(refine (M.Val (i32))) := M.alloc (α4) in
+        let* α6 : ltac:(refine i32) :=
+          (core.ops.function.Fn.call
+              (Self := type not implemented)
+              (Trait := ltac:(refine _)))
+            α3
+            α5 in
+        let* α7 : ltac:(refine (ref i32)) := borrow α6 in
+        let* α8 : ltac:(refine core.fmt.rt.Argument) :=
+          core.fmt.rt.Argument::["new_display"] α7 in
+        let* α9 : ltac:(refine (array core.fmt.rt.Argument)) :=
+          M.alloc [ α8 ] in
+        let* α10 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+          borrow α9 in
+        let* α11 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+          pointer_coercion "Unsize" α10 in
+        let* α12 : ltac:(refine core.fmt.Arguments) :=
+          core.fmt.Arguments::["new_v1"] α2 α11 in
+        std.io.stdio._print α12 in
+      M.alloc tt in
+    let* _ : ltac:(refine unit) :=
+      let* _ : ltac:(refine unit) :=
+        let* α0 : ltac:(refine (array (ref str))) :=
+          M.alloc [ mk_str "closure_inferred: "; mk_str "
+" ] in
+        let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
+        let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+          pointer_coercion "Unsize" α1 in
+        let* α3 : ltac:(refine (ref type not implemented)) :=
+          borrow closure_inferred in
+        let* α4 : ltac:(refine i32) := M.alloc 1 in
+        let* α5 : ltac:(refine (M.Val (i32))) := M.alloc (α4) in
+        let* α6 : ltac:(refine i32) :=
+          (core.ops.function.Fn.call
+              (Self := type not implemented)
+              (Trait := ltac:(refine _)))
+            α3
+            α5 in
+        let* α7 : ltac:(refine (ref i32)) := borrow α6 in
+        let* α8 : ltac:(refine core.fmt.rt.Argument) :=
+          core.fmt.rt.Argument::["new_display"] α7 in
+        let* α9 : ltac:(refine (array core.fmt.rt.Argument)) :=
+          M.alloc [ α8 ] in
+        let* α10 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+          borrow α9 in
+        let* α11 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+          pointer_coercion "Unsize" α10 in
+        let* α12 : ltac:(refine core.fmt.Arguments) :=
+          core.fmt.Arguments::["new_v1"] α2 α11 in
+        std.io.stdio._print α12 in
+      M.alloc tt in
+    let one := M.alloc 1 in
+    let* _ : ltac:(refine unit) :=
+      let* _ : ltac:(refine unit) :=
+        let* α0 : ltac:(refine (array (ref str))) :=
+          M.alloc [ mk_str "closure returning one: "; mk_str "
+" ] in
+        let* α1 : ltac:(refine (ref (array (ref str)))) := borrow α0 in
+        let* α2 : ltac:(refine (ref (slice (ref str)))) :=
+          pointer_coercion "Unsize" α1 in
+        let* α3 : ltac:(refine (ref type not implemented)) := borrow one in
+        let* α4 : ltac:(refine unit) := M.alloc tt in
+        let* α5 : ltac:(refine i32) :=
+          (core.ops.function.Fn.call
+              (Self := type not implemented)
+              (Trait := ltac:(refine _)))
+            α3
+            α4 in
+        let* α6 : ltac:(refine (ref i32)) := borrow α5 in
+        let* α7 : ltac:(refine core.fmt.rt.Argument) :=
+          core.fmt.rt.Argument::["new_display"] α6 in
+        let* α8 : ltac:(refine (array core.fmt.rt.Argument)) :=
+          M.alloc [ α7 ] in
+        let* α9 : ltac:(refine (ref (array core.fmt.rt.Argument))) :=
+          borrow α8 in
+        let* α10 : ltac:(refine (ref (slice core.fmt.rt.Argument))) :=
+          pointer_coercion "Unsize" α9 in
+        let* α11 : ltac:(refine core.fmt.Arguments) :=
+          core.fmt.Arguments::["new_v1"] α2 α10 in
+        std.io.stdio._print α11 in
+      M.alloc tt in
+    M.alloc tt).

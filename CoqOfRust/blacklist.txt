@@ -1,11 +1,16 @@
 # blacklisting for the change to THIR
-examples/
+ink/
 ######
 examples/cargo/concurrent_tests.v
+examples/conversion/parsing_a_string.v
+examples/conversion/try_from_and_try_into.v
+examples/custom_types/constants.v
 examples/custom_types/enums_c_like.v
 examples/custom_types/enums_testcase_linked_list.v
 examples/custom_types/enums_type_aliases_v1.v
 examples/custom_types/enums_type_aliases_v2.v
+examples/custom_types/enums_use.v
+examples/custom_types/enums.v
 examples/custom_types/structures.v
 examples/error_handling/aliases_for_result.v
 examples/error_handling/boxing_errors.v
@@ -48,15 +53,24 @@ examples/functions/functions_closures_forced_capturing_with_move.v
 examples/functions/functions_closures_input_functions.v
 examples/functions/functions_closures_type_anonymity_define_and_use.v
 examples/functions/functions_closures_type_anonymity_define.v
+examples/functions/functions_closures.v
+examples/functions/functions_order.v
 examples/functions/functions.v
 examples/functions/higher_order_functions.v
+examples/generics/generics_associated_types_problem.v
+examples/generics/generics_associated_types_solution.v
+examples/generics/generics_bounds_test_case_empty_bounds.v
 examples/generics/generics_bounds.v
+examples/generics/generics_functions.v
 examples/generics/generics_implementation.v
-# examples/generics/generics_multiple_bounds.v
+examples/generics/generics_multiple_bounds.v
+examples/generics/generics_new_type_idiom_as_base_type.v
 examples/generics/generics_new_type_idiom.v
 examples/generics/generics_phantom_type_test_case_unit_clarification.v
 examples/generics/generics_phantom_type.v
+examples/generics/generics_traits.v
 examples/generics/generics_where_clauses.v
+examples/generics/generics.v
 examples/guessing_game/guessing_game.v
 examples/hello_world/formatted_print.v
 examples/monadic_transformation/example05.v
@@ -76,6 +90,7 @@ examples/std_misc/program_arguments.v
 examples/std_misc/threads_test_case_map_reduce.v
 examples/std_misc/threads.v
 examples/subtle.v
+examples/test0.v
 examples/testing/documentation_testing.v
 examples/unsafe_operations/calling_unsafe_functions.v
 examples/unsafe_operations/inline_assembly_clobbered_registers.v
@@ -86,6 +101,7 @@ examples/unsafe_operations/inline_assembly_inputs_and_outputs.v
 examples/unsafe_operations/inline_assembly_symbol_operands_and_abi_clobbers.v
 examples/unsafe_operations/raw_pointers.v
 examples/variable_bindings/declare_first.v
+examples/variable_bindings/mutability.v
 examples_axiomatized/custom_types/enums_testcase_linked_list.v
 examples_axiomatized/error_handling/boxing_errors.v
 examples_axiomatized/error_handling/other_uses_of_question_mark.v
@@ -111,6 +127,7 @@ examples_axiomatized/traits/impl_trait_as_return_type.v
 examples_axiomatized/traits/iterators.v
 examples_axiomatized/traits/returning_traits_with_dyn.v
 examples_axiomatized/traits/supertraits.v
+examples_axiomatized/traits/traits.v
 ink/erc20.v
 ink/ink_e2e.v
 _std/iter_type.v

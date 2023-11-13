@@ -7,13 +7,17 @@ Module VeryVerboseEnumOfThingsToDoWithNumbers.
   | Subtract.
 End VeryVerboseEnumOfThingsToDoWithNumbers.
 Definition VeryVerboseEnumOfThingsToDoWithNumbers `{ℋ : State.Trait} : Set :=
-  VeryVerboseEnumOfThingsToDoWithNumbers.t.
+  M.Val VeryVerboseEnumOfThingsToDoWithNumbers.t.
 
 Ltac Operations :=
   refine enums_type_aliases_v1.VeryVerboseEnumOfThingsToDoWithNumbers.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{ℋ : State.Trait} : M unit :=
-  let x :=
-    enums_type_aliases_v1.VeryVerboseEnumOfThingsToDoWithNumbers.Add tt in
-  M.alloc tt.
+  M.function_body
+    (let* x :
+        ltac:(refine
+          enums_type_aliases_v1.VeryVerboseEnumOfThingsToDoWithNumbers) :=
+      M.alloc
+        enums_type_aliases_v1.VeryVerboseEnumOfThingsToDoWithNumbers.Add in
+    M.alloc tt).

@@ -45,6 +45,19 @@ Module AsMut.
   }.
 End AsMut.
 
+Module AsMut_instances. Section AsMut_instances.
+  Context `{State.Trait}.
+
+  Global Instance I_str : AsMut.Trait str (T := str).
+  Admitted.
+
+  Global Instance I_slice {T : Set} : AsMut.Trait (slice T) (T := slice T).
+  Admitted.
+
+  Global Instance I_array {T : Set} : AsMut.Trait (array T) (T := slice T).
+  Admitted.
+End AsMut_instances. End AsMut_instances.
+
 (* 
 pub trait AsRef<T>
 where
@@ -60,11 +73,18 @@ Module AsRef.
   }.
 End AsRef.
 
-Module Impl_AsRef_for_string.
-  Global Instance I `{State.Trait} : convert.AsRef.Trait string (T := string) := {
-    as_ref self := Pure self;
-  }.
-End Impl_AsRef_for_string.
+Module AsRef_instances. Section AsRef_instances.
+  Context `{State.Trait}.
+
+  Global Instance I_str : AsRef.Trait str (T := str).
+  Admitted.
+
+  Global Instance I_slice {T : Set} : AsRef.Trait (slice T) (T := slice T).
+  Admitted.
+
+  Global Instance I_array {T : Set} : AsRef.Trait (array T) (T := slice T).
+  Admitted.
+End AsRef_instances. End AsRef_instances.
 
 (* 
 pub trait From<T>: Sized {

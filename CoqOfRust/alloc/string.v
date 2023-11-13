@@ -1,6 +1,6 @@
 Require Import CoqOfRust.lib.lib.
-Require Import CoqOfRust.core.convert.
-Require Import CoqOfRust.core.fmt.
+Require CoqOfRust.core.convert.
+Require CoqOfRust.core.fmt.
 
 (* ********TYPE DEFS******** *)
 (* 
@@ -47,7 +47,7 @@ Definition String `{State.Trait} := String.t.
 
 Module ToString.
   Class Trait (Self : Set) : Set := {
-    to_string `{State.Trait} : ref Self -> M string;
+    to_string `{State.Trait} : ref Self -> M String;
   }.
 
   Global Instance Method_to_string `{State.Trait} `(Trait) :
@@ -59,11 +59,11 @@ End ToString.
 (* The String type (Struct std::string::String) and it's methods  *)
 Module StringType.
   Definition from `{State.Trait} (str_from: str) : M str :=
-    Pure str_from.
+    M.pure str_from.
 
   (* The String type (Struct std::string::String) and it's methods  *)
   (* Converts a &str into a String. *)
-  Global Instance FromStr `{State.Trait} :
+  Global Instance From_for_str `{State.Trait} :
       core.convert.From.Trait str (T := str) := {
     from := from;
   }.
@@ -75,3 +75,7 @@ Module StringType.
 
  (* @TODO add more methods from (Struct std::string::String) *)
 End StringType.
+
+Global Instance Default_for_String `{State.Trait} :
+  core.default.Default.Trait alloc.string.String.
+Admitted.
