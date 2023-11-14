@@ -65,7 +65,10 @@ Definition defaultType (T : option Set) (Default : Set) : Set :=
 
 Parameter axiom : forall {A : Set}, A.
 
-Parameter assign : forall {A : Set}, M.Val A -> M.Val A -> M (M.Val unit).
+Definition assign {A : Set} (target source : M.Val A) : M (M.Val unit) :=
+  let* source := M.read source in
+  let* _ := M.write target source in
+  M.alloc tt.
 
 Module bool.
   Definition t : Set := bool.

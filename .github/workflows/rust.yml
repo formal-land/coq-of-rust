@@ -43,10 +43,7 @@ jobs:
             cargo clippy --all-targets --all-features -- -D warnings
           endGroup
           startGroup "Translate Rust examples"
-            python run_tests.py --output-path ./coq_translation/default/
-          endGroup
-          startGroup "Translate Rust examples (axiomatized)"
-            python run_tests.py --axiomatize --axiomatize-public --output-path ./coq_translation/axiomatized/
+            python run_tests.py
           endGroup
           # We disable for now this translation as this makes a panic!
           # startGroup "Translate Ink! library"

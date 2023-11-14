@@ -26,20 +26,20 @@ Section Mapping.
 End Mapping.
 End Mapping.
 
-Module  Impl_core_default_Default_for_lib_Mapping_t_K_V.
-Section Impl_core_default_Default_for_lib_Mapping_t_K_V.
+Module  Impl_core_default_Default_for_erc20_Mapping_t_K_V.
+Section Impl_core_default_Default_for_erc20_Mapping_t_K_V.
   Context {K V : Set}.
   
   Context
     {ℋ_0 : core.default.Default.Trait K}
     {ℋ_1 : core.default.Default.Trait V}.
   
-  Ltac Self := exact (lib.Mapping.t K V).
+  Ltac Self := exact (erc20.Mapping.t K V).
   
   (*
   Default
   *)
-  Parameter default : M (M.Val (lib.Mapping.t K V)).
+  Parameter default : M (M.Val (erc20.Mapping.t K V)).
   
   Global Instance AssociatedFunction_default :
     Notations.DoubleColon ltac:(Self) "default" := {
@@ -49,14 +49,14 @@ Section Impl_core_default_Default_for_lib_Mapping_t_K_V.
   Global Instance ℐ : core.default.Default.Trait ltac:(Self) := {
     core.default.Default.default := default;
   }.
-End Impl_core_default_Default_for_lib_Mapping_t_K_V.
-End Impl_core_default_Default_for_lib_Mapping_t_K_V.
+End Impl_core_default_Default_for_erc20_Mapping_t_K_V.
+End Impl_core_default_Default_for_erc20_Mapping_t_K_V.
 
-Module  Impl_lib_Mapping_t_K_V.
-Section Impl_lib_Mapping_t_K_V.
+Module  Impl_erc20_Mapping_t_K_V.
+Section Impl_erc20_Mapping_t_K_V.
   Context {K V : Set}.
   
-  Ltac Self := exact (lib.Mapping.t K V).
+  Ltac Self := exact (erc20.Mapping.t K V).
   
   (*
       fn get(&self, _key: &K) -> Option<V> {
@@ -85,8 +85,8 @@ Section Impl_lib_Mapping_t_K_V.
     Notations.DoubleColon ltac:(Self) "insert" := {
     Notations.double_colon := insert;
   }.
-End Impl_lib_Mapping_t_K_V.
-End Impl_lib_Mapping_t_K_V.
+End Impl_erc20_Mapping_t_K_V.
+End Impl_erc20_Mapping_t_K_V.
 
 Module  AccountId.
 Section AccountId.
@@ -100,14 +100,14 @@ Section AccountId.
 End AccountId.
 End AccountId.
 
-Module  Impl_core_default_Default_for_lib_AccountId_t.
-Section Impl_core_default_Default_for_lib_AccountId_t.
-  Ltac Self := exact lib.AccountId.t.
+Module  Impl_core_default_Default_for_erc20_AccountId_t.
+Section Impl_core_default_Default_for_erc20_AccountId_t.
+  Ltac Self := exact erc20.AccountId.t.
   
   (*
   Default
   *)
-  Parameter default : M (M.Val lib.AccountId.t).
+  Parameter default : M (M.Val erc20.AccountId.t).
   
   Global Instance AssociatedFunction_default :
     Notations.DoubleColon ltac:(Self) "default" := {
@@ -117,8 +117,8 @@ Section Impl_core_default_Default_for_lib_AccountId_t.
   Global Instance ℐ : core.default.Default.Trait ltac:(Self) := {
     core.default.Default.default := default;
   }.
-End Impl_core_default_Default_for_lib_AccountId_t.
-End Impl_core_default_Default_for_lib_AccountId_t.
+End Impl_core_default_Default_for_erc20_AccountId_t.
+End Impl_core_default_Default_for_erc20_AccountId_t.
 
 Ltac Balance := exact u128.t.
 
@@ -149,10 +149,12 @@ End Event.
 Module  Erc20.
 Section Erc20.
   Record t : Set := {
-    total_supply : ltac:(lib.Balance);
-    balances : lib.Mapping.t lib.AccountId.t ltac:(lib.Balance);
+    total_supply : ltac:(erc20.Balance);
+    balances : erc20.Mapping.t erc20.AccountId.t ltac:(erc20.Balance);
     allowances :
-      lib.Mapping.t (lib.AccountId.t * lib.AccountId.t) ltac:(lib.Balance);
+      erc20.Mapping.t
+        (erc20.AccountId.t * erc20.AccountId.t)
+        ltac:(erc20.Balance);
   }.
   
   Global Instance Get_total_supply : Notations.Dot "total_supply" := {
@@ -182,14 +184,14 @@ Section Erc20.
 End Erc20.
 End Erc20.
 
-Module  Impl_core_default_Default_for_lib_Erc20_t.
-Section Impl_core_default_Default_for_lib_Erc20_t.
-  Ltac Self := exact lib.Erc20.t.
+Module  Impl_core_default_Default_for_erc20_Erc20_t.
+Section Impl_core_default_Default_for_erc20_Erc20_t.
+  Ltac Self := exact erc20.Erc20.t.
   
   (*
   Default
   *)
-  Parameter default : M (M.Val lib.Erc20.t).
+  Parameter default : M (M.Val erc20.Erc20.t).
   
   Global Instance AssociatedFunction_default :
     Notations.DoubleColon ltac:(Self) "default" := {
@@ -199,15 +201,15 @@ Section Impl_core_default_Default_for_lib_Erc20_t.
   Global Instance ℐ : core.default.Default.Trait ltac:(Self) := {
     core.default.Default.default := default;
   }.
-End Impl_core_default_Default_for_lib_Erc20_t.
-End Impl_core_default_Default_for_lib_Erc20_t.
+End Impl_core_default_Default_for_erc20_Erc20_t.
+End Impl_core_default_Default_for_erc20_Erc20_t.
 
 Module  Transfer.
 Section Transfer.
   Record t : Set := {
-    from : core.option.Option.t lib.AccountId.t;
-    to : core.option.Option.t lib.AccountId.t;
-    value : ltac:(lib.Balance);
+    from : core.option.Option.t erc20.AccountId.t;
+    to : core.option.Option.t erc20.AccountId.t;
+    value : ltac:(erc20.Balance);
   }.
   
   Global Instance Get_from : Notations.Dot "from" := {
@@ -232,16 +234,16 @@ Section Transfer.
 End Transfer.
 End Transfer.
 
-Module  Impl_core_convert_Into_lib_Event_t_for_lib_Transfer_t.
-Section Impl_core_convert_Into_lib_Event_t_for_lib_Transfer_t.
-  Ltac Self := exact lib.Transfer.t.
+Module  Impl_core_convert_Into_erc20_Event_t_for_erc20_Transfer_t.
+Section Impl_core_convert_Into_erc20_Event_t_for_erc20_Transfer_t.
+  Ltac Self := exact erc20.Transfer.t.
   
   (*
       fn into(self) -> Event {
           unimplemented!()
       }
   *)
-  Parameter into : (M.Val ltac:(Self)) -> M (M.Val lib.Event.t).
+  Parameter into : (M.Val ltac:(Self)) -> M (M.Val erc20.Event.t).
   
   Global Instance AssociatedFunction_into :
     Notations.DoubleColon ltac:(Self) "into" := {
@@ -249,18 +251,18 @@ Section Impl_core_convert_Into_lib_Event_t_for_lib_Transfer_t.
   }.
   
   Global Instance ℐ :
-    core.convert.Into.Trait ltac:(Self) (T := lib.Event.t) := {
+    core.convert.Into.Trait ltac:(Self) (T := erc20.Event.t) := {
     core.convert.Into.into := into;
   }.
-End Impl_core_convert_Into_lib_Event_t_for_lib_Transfer_t.
-End Impl_core_convert_Into_lib_Event_t_for_lib_Transfer_t.
+End Impl_core_convert_Into_erc20_Event_t_for_erc20_Transfer_t.
+End Impl_core_convert_Into_erc20_Event_t_for_erc20_Transfer_t.
 
 Module  Approval.
 Section Approval.
   Record t : Set := {
-    owner : lib.AccountId.t;
-    spender : lib.AccountId.t;
-    value : ltac:(lib.Balance);
+    owner : erc20.AccountId.t;
+    spender : erc20.AccountId.t;
+    value : ltac:(erc20.Balance);
   }.
   
   Global Instance Get_owner : Notations.Dot "owner" := {
@@ -287,16 +289,16 @@ Section Approval.
 End Approval.
 End Approval.
 
-Module  Impl_core_convert_Into_lib_Event_t_for_lib_Approval_t.
-Section Impl_core_convert_Into_lib_Event_t_for_lib_Approval_t.
-  Ltac Self := exact lib.Approval.t.
+Module  Impl_core_convert_Into_erc20_Event_t_for_erc20_Approval_t.
+Section Impl_core_convert_Into_erc20_Event_t_for_erc20_Approval_t.
+  Ltac Self := exact erc20.Approval.t.
   
   (*
       fn into(self) -> Event {
           unimplemented!()
       }
   *)
-  Parameter into : (M.Val ltac:(Self)) -> M (M.Val lib.Event.t).
+  Parameter into : (M.Val ltac:(Self)) -> M (M.Val erc20.Event.t).
   
   Global Instance AssociatedFunction_into :
     Notations.DoubleColon ltac:(Self) "into" := {
@@ -304,11 +306,11 @@ Section Impl_core_convert_Into_lib_Event_t_for_lib_Approval_t.
   }.
   
   Global Instance ℐ :
-    core.convert.Into.Trait ltac:(Self) (T := lib.Event.t) := {
+    core.convert.Into.Trait ltac:(Self) (T := erc20.Event.t) := {
     core.convert.Into.into := into;
   }.
-End Impl_core_convert_Into_lib_Event_t_for_lib_Approval_t.
-End Impl_core_convert_Into_lib_Event_t_for_lib_Approval_t.
+End Impl_core_convert_Into_erc20_Event_t_for_erc20_Approval_t.
+End Impl_core_convert_Into_erc20_Event_t_for_erc20_Approval_t.
 
 Module Error.
   Inductive t : Set :=
@@ -316,18 +318,18 @@ Module Error.
   | InsufficientAllowance.
 End Error.
 
-Ltac Result T := exact (core.result.Result.t T lib.Error.t).
+Ltac Result T := exact (core.result.Result.t T erc20.Error.t).
 
-Module  Impl_lib_Environment_t.
-Section Impl_lib_Environment_t.
-  Ltac Self := exact lib.Environment.t.
+Module  Impl_erc20_Environment_t.
+Section Impl_erc20_Environment_t.
+  Ltac Self := exact erc20.Environment.t.
   
   (*
       fn caller(&self) -> AccountId {
           unimplemented!()
       }
   *)
-  Parameter caller : (M.Val (ref ltac:(Self))) -> M (M.Val lib.AccountId.t).
+  Parameter caller : (M.Val (ref ltac:(Self))) -> M (M.Val erc20.AccountId.t).
   
   Global Instance AssociatedFunction_caller :
     Notations.DoubleColon ltac:(Self) "caller" := {
@@ -340,28 +342,28 @@ Section Impl_lib_Environment_t.
       }
   *)
   Parameter emit_event :
-      forall {E : Set} {ℋ_0 : core.convert.Into.Trait E (T := lib.Event.t)},
+      forall {E : Set} {ℋ_0 : core.convert.Into.Trait E (T := erc20.Event.t)},
       (M.Val (ref ltac:(Self))) -> (M.Val E) -> M (M.Val unit).
   
   Global Instance AssociatedFunction_emit_event
       {E : Set}
-      {ℋ_0 : core.convert.Into.Trait E (T := lib.Event.t)} :
+      {ℋ_0 : core.convert.Into.Trait E (T := erc20.Event.t)} :
     Notations.DoubleColon ltac:(Self) "emit_event" := {
     Notations.double_colon := emit_event (E := E);
   }.
-End Impl_lib_Environment_t.
-End Impl_lib_Environment_t.
+End Impl_erc20_Environment_t.
+End Impl_erc20_Environment_t.
 
-Module  Impl_lib_Erc20_t.
-Section Impl_lib_Erc20_t.
-  Ltac Self := exact lib.Erc20.t.
+Module  Impl_erc20_Erc20_t.
+Section Impl_erc20_Erc20_t.
+  Ltac Self := exact erc20.Erc20.t.
   
   (*
       fn init_env() -> Environment {
           unimplemented!()
       }
   *)
-  Parameter init_env : M (M.Val lib.Environment.t).
+  Parameter init_env : M (M.Val erc20.Environment.t).
   
   Global Instance AssociatedFunction_init_env :
     Notations.DoubleColon ltac:(Self) "init_env" := {
@@ -373,18 +375,18 @@ Section Impl_lib_Erc20_t.
           unimplemented!()
       }
   *)
-  Parameter env : (M.Val (ref ltac:(Self))) -> M (M.Val lib.Environment.t).
+  Parameter env : (M.Val (ref ltac:(Self))) -> M (M.Val erc20.Environment.t).
   
   Global Instance AssociatedFunction_env :
     Notations.DoubleColon ltac:(Self) "env" := {
     Notations.double_colon := env;
   }.
-End Impl_lib_Erc20_t.
-End Impl_lib_Erc20_t.
+End Impl_erc20_Erc20_t.
+End Impl_erc20_Erc20_t.
 
-Module  Impl_lib_Erc20_t_2.
-Section Impl_lib_Erc20_t_2.
-  Ltac Self := exact lib.Erc20.t.
+Module  Impl_erc20_Erc20_t_2.
+Section Impl_erc20_Erc20_t_2.
+  Ltac Self := exact erc20.Erc20.t.
   
   (*
       pub fn new(total_supply: Balance) -> Self {
@@ -403,7 +405,7 @@ Section Impl_lib_Erc20_t_2.
           }
       }
   *)
-  Parameter new : (M.Val ltac:(lib.Balance)) -> M (M.Val ltac:(Self)).
+  Parameter new : (M.Val ltac:(erc20.Balance)) -> M (M.Val ltac:(Self)).
   
   Global Instance AssociatedFunction_new :
     Notations.DoubleColon ltac:(Self) "new" := {
@@ -416,7 +418,7 @@ Section Impl_lib_Erc20_t_2.
       }
   *)
   Parameter total_supply :
-      (M.Val (ref ltac:(Self))) -> M (M.Val ltac:(lib.Balance)).
+      (M.Val (ref ltac:(Self))) -> M (M.Val ltac:(erc20.Balance)).
   
   Global Instance AssociatedFunction_total_supply :
     Notations.DoubleColon ltac:(Self) "total_supply" := {
@@ -430,8 +432,8 @@ Section Impl_lib_Erc20_t_2.
   *)
   Parameter balance_of_impl :
       (M.Val (ref ltac:(Self))) ->
-        (M.Val (ref lib.AccountId.t)) ->
-        M (M.Val ltac:(lib.Balance)).
+        (M.Val (ref erc20.AccountId.t)) ->
+        M (M.Val ltac:(erc20.Balance)).
   
   Global Instance AssociatedFunction_balance_of_impl :
     Notations.DoubleColon ltac:(Self) "balance_of_impl" := {
@@ -445,8 +447,8 @@ Section Impl_lib_Erc20_t_2.
   *)
   Parameter balance_of :
       (M.Val (ref ltac:(Self))) ->
-        (M.Val lib.AccountId.t) ->
-        M (M.Val ltac:(lib.Balance)).
+        (M.Val erc20.AccountId.t) ->
+        M (M.Val ltac:(erc20.Balance)).
   
   Global Instance AssociatedFunction_balance_of :
     Notations.DoubleColon ltac:(Self) "balance_of" := {
@@ -460,9 +462,9 @@ Section Impl_lib_Erc20_t_2.
   *)
   Parameter allowance_impl :
       (M.Val (ref ltac:(Self))) ->
-        (M.Val (ref lib.AccountId.t)) ->
-        (M.Val (ref lib.AccountId.t)) ->
-        M (M.Val ltac:(lib.Balance)).
+        (M.Val (ref erc20.AccountId.t)) ->
+        (M.Val (ref erc20.AccountId.t)) ->
+        M (M.Val ltac:(erc20.Balance)).
   
   Global Instance AssociatedFunction_allowance_impl :
     Notations.DoubleColon ltac:(Self) "allowance_impl" := {
@@ -476,9 +478,9 @@ Section Impl_lib_Erc20_t_2.
   *)
   Parameter allowance :
       (M.Val (ref ltac:(Self))) ->
-        (M.Val lib.AccountId.t) ->
-        (M.Val lib.AccountId.t) ->
-        M (M.Val ltac:(lib.Balance)).
+        (M.Val erc20.AccountId.t) ->
+        (M.Val erc20.AccountId.t) ->
+        M (M.Val ltac:(erc20.Balance)).
   
   Global Instance AssociatedFunction_allowance :
     Notations.DoubleColon ltac:(Self) "allowance" := {
@@ -505,10 +507,10 @@ Section Impl_lib_Erc20_t_2.
   *)
   Parameter transfer_from_to :
       (M.Val (mut_ref ltac:(Self))) ->
-        (M.Val (ref lib.AccountId.t)) ->
-        (M.Val (ref lib.AccountId.t)) ->
-        (M.Val ltac:(lib.Balance)) ->
-        M (M.Val ltac:(lib.Result unit)).
+        (M.Val (ref erc20.AccountId.t)) ->
+        (M.Val (ref erc20.AccountId.t)) ->
+        (M.Val ltac:(erc20.Balance)) ->
+        M (M.Val ltac:(erc20.Result unit)).
   
   Global Instance AssociatedFunction_transfer_from_to :
     Notations.DoubleColon ltac:(Self) "transfer_from_to" := {
@@ -523,9 +525,9 @@ Section Impl_lib_Erc20_t_2.
   *)
   Parameter transfer :
       (M.Val (mut_ref ltac:(Self))) ->
-        (M.Val lib.AccountId.t) ->
-        (M.Val ltac:(lib.Balance)) ->
-        M (M.Val ltac:(lib.Result unit)).
+        (M.Val erc20.AccountId.t) ->
+        (M.Val ltac:(erc20.Balance)) ->
+        M (M.Val ltac:(erc20.Result unit)).
   
   Global Instance AssociatedFunction_transfer :
     Notations.DoubleColon ltac:(Self) "transfer" := {
@@ -546,9 +548,9 @@ Section Impl_lib_Erc20_t_2.
   *)
   Parameter approve :
       (M.Val (mut_ref ltac:(Self))) ->
-        (M.Val lib.AccountId.t) ->
-        (M.Val ltac:(lib.Balance)) ->
-        M (M.Val ltac:(lib.Result unit)).
+        (M.Val erc20.AccountId.t) ->
+        (M.Val ltac:(erc20.Balance)) ->
+        M (M.Val ltac:(erc20.Result unit)).
   
   Global Instance AssociatedFunction_approve :
     Notations.DoubleColon ltac:(Self) "approve" := {
@@ -569,14 +571,14 @@ Section Impl_lib_Erc20_t_2.
   *)
   Parameter transfer_from :
       (M.Val (mut_ref ltac:(Self))) ->
-        (M.Val lib.AccountId.t) ->
-        (M.Val lib.AccountId.t) ->
-        (M.Val ltac:(lib.Balance)) ->
-        M (M.Val ltac:(lib.Result unit)).
+        (M.Val erc20.AccountId.t) ->
+        (M.Val erc20.AccountId.t) ->
+        (M.Val ltac:(erc20.Balance)) ->
+        M (M.Val ltac:(erc20.Result unit)).
   
   Global Instance AssociatedFunction_transfer_from :
     Notations.DoubleColon ltac:(Self) "transfer_from" := {
     Notations.double_colon := transfer_from;
   }.
-End Impl_lib_Erc20_t_2.
-End Impl_lib_Erc20_t_2.
+End Impl_erc20_Erc20_t_2.
+End Impl_erc20_Erc20_t_2.
