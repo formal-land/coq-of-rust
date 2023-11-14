@@ -47,8 +47,8 @@ Section Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_else_Fruit
       core.fmt.Formatter.t::["write_str"] α1 α3).
   
   Global Instance AssociatedFunction_fmt :
-    Notation.DoubleColon ltac:(Self) "fmt" := {
-    Notation.double_colon := fmt;
+    Notations.DoubleColon ltac:(Self) "fmt" := {
+    Notations.double_colon := fmt;
   }.
   
   Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
@@ -86,12 +86,9 @@ Definition main : M (M.Val unit) :=
           (M.Val
             (core.option.Option.t
               unpacking_options_and_defaults_via_or_else.Fruit.t))) :=
-      let* α0 :
-          ltac:(refine
-            (M.Val unpacking_options_and_defaults_via_or_else.Fruit.t)) :=
-        M.alloc unpacking_options_and_defaults_via_or_else.Fruit.Apple in
-      let* α1 := M.read α0 in
-      M.alloc (core.option.Option.Some α1) in
+      M.alloc
+        (core.option.Option.Some
+          unpacking_options_and_defaults_via_or_else.Fruit.Apple) in
     let* no_fruit :
         ltac:(refine
           (M.Val
@@ -112,12 +109,9 @@ Definition main : M (M.Val unit) :=
             core.fmt.Arguments.t::["new_const"] α2 in
           std.io.stdio._print α3 in
         M.alloc tt in
-      let* α0 :
-          ltac:(refine
-            (M.Val unpacking_options_and_defaults_via_or_else.Fruit.t)) :=
-        M.alloc unpacking_options_and_defaults_via_or_else.Fruit.Kiwi in
-      let* α1 := M.read α0 in
-      M.alloc (core.option.Option.Some α1) in
+      M.alloc
+        (core.option.Option.Some
+          unpacking_options_and_defaults_via_or_else.Fruit.Kiwi) in
     let get_lemon_as_fallback :=
       let* _ : ltac:(refine (M.Val unit)) :=
         let* _ : ltac:(refine (M.Val unit)) :=
@@ -132,12 +126,9 @@ Definition main : M (M.Val unit) :=
             core.fmt.Arguments.t::["new_const"] α2 in
           std.io.stdio._print α3 in
         M.alloc tt in
-      let* α0 :
-          ltac:(refine
-            (M.Val unpacking_options_and_defaults_via_or_else.Fruit.t)) :=
-        M.alloc unpacking_options_and_defaults_via_or_else.Fruit.Lemon in
-      let* α1 := M.read α0 in
-      M.alloc (core.option.Option.Some α1) in
+      M.alloc
+        (core.option.Option.Some
+          unpacking_options_and_defaults_via_or_else.Fruit.Lemon) in
     let* first_available_fruit :
         ltac:(refine
           (M.Val

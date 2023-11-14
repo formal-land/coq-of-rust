@@ -7,11 +7,11 @@ Section Borrowed.
     x : ref i32.t;
   }.
   
-  Global Instance Get_x : Notation.Dot "x" := {
-    Notation.dot x' := let* x' := M.read x' in M.alloc x'.(x) : M _;
+  Global Instance Get_x : Notations.Dot "x" := {
+    Notations.dot := Ref.map (fun x' => x'.(x)) (fun v x' => x' <| x := v |>);
   }.
-  Global Instance Get_AF_x : Notation.DoubleColon t "x" := {
-    Notation.double_colon x' := let* x' := M.read x' in M.alloc x'.(x) : M _;
+  Global Instance Get_AF_x : Notations.DoubleColon t "x" := {
+    Notations.double_colon (x' : M.Val t) := x'.["x"];
   }.
 End Borrowed.
 End Borrowed.
@@ -38,16 +38,15 @@ Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed_t.
       let* α6 :
           ltac:(refine (M.Val scoping_rules_lifetimes_traits.Borrowed.t)) :=
         deref self in
-      let* α7 : ltac:(refine (M.Val (ref i32.t))) := α6.["x"] in
-      let* α8 : ltac:(refine (M.Val (ref (ref i32.t)))) := borrow α7 in
-      let* α9 : ltac:(refine (M.Val (ref (ref (ref i32.t))))) := borrow α8 in
-      let* α10 : ltac:(refine (M.Val (ref type not implemented))) :=
-        pointer_coercion "Unsize" α9 in
-      core.fmt.Formatter.t::["debug_struct_field1_finish"] α1 α3 α5 α10).
+      let* α7 : ltac:(refine (M.Val (ref (ref i32.t)))) := borrow α6.["x"] in
+      let* α8 : ltac:(refine (M.Val (ref (ref (ref i32.t))))) := borrow α7 in
+      let* α9 : ltac:(refine (M.Val (ref type not implemented))) :=
+        pointer_coercion "Unsize" α8 in
+      core.fmt.Formatter.t::["debug_struct_field1_finish"] α1 α3 α5 α9).
   
   Global Instance AssociatedFunction_fmt :
-    Notation.DoubleColon ltac:(Self) "fmt" := {
-    Notation.double_colon := fmt;
+    Notations.DoubleColon ltac:(Self) "fmt" := {
+    Notations.double_colon := fmt;
   }.
   
   Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
@@ -73,8 +72,8 @@ Section Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed_t.
       M.alloc {| scoping_rules_lifetimes_traits.Borrowed.x := α2; |}).
   
   Global Instance AssociatedFunction_default :
-    Notation.DoubleColon ltac:(Self) "default" := {
-    Notation.double_colon := default;
+    Notations.DoubleColon ltac:(Self) "default" := {
+    Notations.double_colon := default;
   }.
   
   Global Instance ℐ : core.default.Default.Trait ltac:(Self) := {

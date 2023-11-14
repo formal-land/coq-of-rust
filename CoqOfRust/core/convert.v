@@ -117,8 +117,8 @@ Module Impl_Into_for_T.
 
     Definition into : M.Val Self -> M (M.Val U) := From.from.
 
-    Global Instance Method_into : Notation.Dot "into" := {
-      Notation.dot := into;
+    Global Instance Method_into : Notations.Dot "into" := {
+      Notations.dot := into;
     }.
 
     Global Instance Into_for_T : Into.Trait T := {
@@ -144,8 +144,8 @@ Module TryFrom.
 
   Global Instance AssociatedFunction_try_from
       (Self T : Set) {_ : Trait Self (T := T)} :
-    Notation.DoubleColon Self "try_from" := {
-    Notation.double_colon := try_from;
+    Notations.DoubleColon Self "try_from" := {
+    Notations.double_colon := try_from;
   }.
 End TryFrom.
 
@@ -164,8 +164,8 @@ Module TryInto.
   }.
 
   Global Instance Method_try_into (Self T : Set) {_ : Trait Self (T := T)} :
-    Notation.Dot "try_into" := {
-    Notation.dot := try_into;
+    Notations.Dot "try_into" := {
+    Notations.dot := try_into;
   }.
 End TryInto.
 
@@ -192,8 +192,8 @@ Module Impl_TryInto_for_T.
     Definition try_into : Self -> M (Result U TryFrom.Error) :=
       TryFrom.try_from.
 
-    Global Instance Method_try_into : Notation.Dot "try_into" := {
-      Notation.dot := try_into;
+    Global Instance Method_try_into : Notations.Dot "try_into" := {
+      Notations.dot := try_into;
     }.
 
     Global Instance TryInto_for_T : TryInto.Trait T (T := U) := {

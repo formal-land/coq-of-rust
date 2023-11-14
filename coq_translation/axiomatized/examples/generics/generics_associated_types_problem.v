@@ -8,11 +8,11 @@ Section Container.
     x1 : i32.t;
   }.
   
-  Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(x0) : M _;
+  Global Instance Get_0 : Notations.Dot "0" := {
+    Notations.dot := Ref.map (fun x => x.(x0)) (fun v x => x <| x0 := v |>);
   }.
-  Global Instance Get_1 : Notation.Dot "1" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(x1) : M _;
+  Global Instance Get_1 : Notations.Dot "1" := {
+    Notations.dot := Ref.map (fun x => x.(x1)) (fun v x => x <| x1 := v |>);
   }.
 End Container.
 End Container.
@@ -44,8 +44,8 @@ Section Impl_generics_associated_types_problem_Contains_i32_t_i32_t_for_generics
         M (M.Val bool.t).
   
   Global Instance AssociatedFunction_contains :
-    Notation.DoubleColon ltac:(Self) "contains" := {
-    Notation.double_colon := contains;
+    Notations.DoubleColon ltac:(Self) "contains" := {
+    Notations.double_colon := contains;
   }.
   
   (*
@@ -56,8 +56,8 @@ Section Impl_generics_associated_types_problem_Contains_i32_t_i32_t_for_generics
   Parameter first : (M.Val (ref ltac:(Self))) -> M (M.Val i32.t).
   
   Global Instance AssociatedFunction_first :
-    Notation.DoubleColon ltac:(Self) "first" := {
-    Notation.double_colon := first;
+    Notations.DoubleColon ltac:(Self) "first" := {
+    Notations.double_colon := first;
   }.
   
   (*
@@ -68,8 +68,8 @@ Section Impl_generics_associated_types_problem_Contains_i32_t_i32_t_for_generics
   Parameter last : (M.Val (ref ltac:(Self))) -> M (M.Val i32.t).
   
   Global Instance AssociatedFunction_last :
-    Notation.DoubleColon ltac:(Self) "last" := {
-    Notation.double_colon := last;
+    Notations.DoubleColon ltac:(Self) "last" := {
+    Notations.double_colon := last;
   }.
   
   Global Instance ℐ :

@@ -63,6 +63,4 @@ Definition main
           core.fmt.Arguments.t::["new_v1"] α2 α7 in
         std.io.stdio._print α8 in
       M.alloc tt in
-    let* α0 : ltac:(refine (M.Val unit)) := M.alloc tt in
-    let* α1 := M.read α0 in
-    M.alloc (core.result.Result.Ok α1)).
+    M.alloc (core.result.Result.Ok tt)).

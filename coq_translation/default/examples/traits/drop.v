@@ -7,11 +7,11 @@ Section Droppable.
     name : ref str.t;
   }.
   
-  Global Instance Get_name : Notation.Dot "name" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(name) : M _;
+  Global Instance Get_name : Notations.Dot "name" := {
+    Notations.dot := Ref.map (fun x => x.(name)) (fun v x => x <| name := v |>);
   }.
-  Global Instance Get_AF_name : Notation.DoubleColon t "name" := {
-    Notation.double_colon x := let* x := M.read x in M.alloc x.(name) : M _;
+  Global Instance Get_AF_name : Notations.DoubleColon t "name" := {
+    Notations.double_colon (x : M.Val t) := x.["name"];
   }.
 End Droppable.
 End Droppable.
@@ -37,27 +37,27 @@ Section Impl_core_ops_drop_Drop_for_drop_Droppable_t.
           let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
             pointer_coercion "Unsize" α1 in
           let* α3 : ltac:(refine (M.Val drop.Droppable.t)) := deref self in
-          let* α4 : ltac:(refine (M.Val (ref str.t))) := α3.["name"] in
-          let* α5 : ltac:(refine (M.Val (ref (ref str.t)))) := borrow α4 in
-          let* α6 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
-            core.fmt.rt.Argument.t::["new_display"] α5 in
-          let* α7 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
-            M.alloc [ α6 ] in
-          let* α8 :
+          let* α4 : ltac:(refine (M.Val (ref (ref str.t)))) :=
+            borrow α3.["name"] in
+          let* α5 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
+            core.fmt.rt.Argument.t::["new_display"] α4 in
+          let* α6 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
+            M.alloc [ α5 ] in
+          let* α7 :
               ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
-            borrow α7 in
-          let* α9 :
+            borrow α6 in
+          let* α8 :
               ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
-            pointer_coercion "Unsize" α8 in
-          let* α10 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-            core.fmt.Arguments.t::["new_v1"] α2 α9 in
-          std.io.stdio._print α10 in
+            pointer_coercion "Unsize" α7 in
+          let* α9 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
+            core.fmt.Arguments.t::["new_v1"] α2 α8 in
+          std.io.stdio._print α9 in
         M.alloc tt in
       M.alloc tt).
   
   Global Instance AssociatedFunction_drop :
-    Notation.DoubleColon ltac:(Self) "drop" := {
-    Notation.double_colon := drop;
+    Notations.DoubleColon ltac:(Self) "drop" := {
+    Notations.double_colon := drop;
   }.
   
   Global Instance ℐ : core.ops.drop.Drop.Trait ltac:(Self) := {

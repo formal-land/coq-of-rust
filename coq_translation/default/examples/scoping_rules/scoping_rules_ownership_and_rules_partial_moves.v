@@ -122,23 +122,19 @@ Definition main : M (M.Val unit) :=
           pointer_coercion "Unsize" α1 in
         let* α3 :
             ltac:(refine
-              (M.Val (alloc.boxed.Box.t u8.t alloc.alloc.Global.t))) :=
-          person.["age"] in
-        let* α4 :
-            ltac:(refine
               (M.Val (ref (alloc.boxed.Box.t u8.t alloc.alloc.Global.t)))) :=
-          borrow α3 in
-        let* α5 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
-          core.fmt.rt.Argument.t::["new_display"] α4 in
-        let* α6 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
-          M.alloc [ α5 ] in
-        let* α7 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
-          borrow α6 in
-        let* α8 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
-          pointer_coercion "Unsize" α7 in
-        let* α9 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-          core.fmt.Arguments.t::["new_v1"] α2 α8 in
-        std.io.stdio._print α9 in
+          borrow person.["age"] in
+        let* α4 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
+          core.fmt.rt.Argument.t::["new_display"] α3 in
+        let* α5 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
+          M.alloc [ α4 ] in
+        let* α6 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
+          borrow α5 in
+        let* α7 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
+          pointer_coercion "Unsize" α6 in
+        let* α8 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
+          core.fmt.Arguments.t::["new_v1"] α2 α7 in
+        std.io.stdio._print α8 in
       M.alloc tt in
     M.alloc tt).
 
@@ -149,17 +145,17 @@ Section Person.
     age : alloc.boxed.Box.t u8.t alloc.boxed.Box.Default.A;
   }.
   
-  Global Instance Get_name : Notation.Dot "name" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(name) : M _;
+  Global Instance Get_name : Notations.Dot "name" := {
+    Notations.dot := Ref.map (fun x => x.(name)) (fun v x => x <| name := v |>);
   }.
-  Global Instance Get_AF_name : Notation.DoubleColon t "name" := {
-    Notation.double_colon x := let* x := M.read x in M.alloc x.(name) : M _;
+  Global Instance Get_AF_name : Notations.DoubleColon t "name" := {
+    Notations.double_colon (x : M.Val t) := x.["name"];
   }.
-  Global Instance Get_age : Notation.Dot "age" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(age) : M _;
+  Global Instance Get_age : Notations.Dot "age" := {
+    Notations.dot := Ref.map (fun x => x.(age)) (fun v x => x <| age := v |>);
   }.
-  Global Instance Get_AF_age : Notation.DoubleColon t "age" := {
-    Notation.double_colon x := let* x := M.read x in M.alloc x.(age) : M _;
+  Global Instance Get_AF_age : Notations.DoubleColon t "age" := {
+    Notations.double_colon (x : M.Val t) := x.["age"];
   }.
 End Person.
 End Person.
@@ -189,37 +185,33 @@ Section Impl_core_fmt_Debug_for_scoping_rules_ownership_and_rules_partial_moves_
             (M.Val
               scoping_rules_ownership_and_rules_partial_moves.main.Person.t)) :=
         deref self in
-      let* α7 : ltac:(refine (M.Val alloc.string.String.t)) := α6.["name"] in
-      let* α8 : ltac:(refine (M.Val (ref alloc.string.String.t))) :=
-        borrow α7 in
-      let* α9 : ltac:(refine (M.Val (ref type not implemented))) :=
-        pointer_coercion "Unsize" α8 in
-      let* α10 : ltac:(refine (M.Val str.t)) := deref (mk_str "age") in
-      let* α11 : ltac:(refine (M.Val (ref str.t))) := borrow α10 in
-      let* α12 :
+      let* α7 : ltac:(refine (M.Val (ref alloc.string.String.t))) :=
+        borrow α6.["name"] in
+      let* α8 : ltac:(refine (M.Val (ref type not implemented))) :=
+        pointer_coercion "Unsize" α7 in
+      let* α9 : ltac:(refine (M.Val str.t)) := deref (mk_str "age") in
+      let* α10 : ltac:(refine (M.Val (ref str.t))) := borrow α9 in
+      let* α11 :
           ltac:(refine
             (M.Val
               scoping_rules_ownership_and_rules_partial_moves.main.Person.t)) :=
         deref self in
-      let* α13 :
-          ltac:(refine (M.Val (alloc.boxed.Box.t u8.t alloc.alloc.Global.t))) :=
-        α12.["age"] in
-      let* α14 :
+      let* α12 :
           ltac:(refine
             (M.Val (ref (alloc.boxed.Box.t u8.t alloc.alloc.Global.t)))) :=
-        borrow α13 in
-      let* α15 :
+        borrow α11.["age"] in
+      let* α13 :
           ltac:(refine
             (M.Val
               (ref (ref (alloc.boxed.Box.t u8.t alloc.alloc.Global.t))))) :=
-        borrow α14 in
-      let* α16 : ltac:(refine (M.Val (ref type not implemented))) :=
-        pointer_coercion "Unsize" α15 in
-      core.fmt.Formatter.t::["debug_struct_field2_finish"] α1 α3 α5 α9 α11 α16).
+        borrow α12 in
+      let* α14 : ltac:(refine (M.Val (ref type not implemented))) :=
+        pointer_coercion "Unsize" α13 in
+      core.fmt.Formatter.t::["debug_struct_field2_finish"] α1 α3 α5 α8 α10 α14).
   
   Global Instance AssociatedFunction_fmt :
-    Notation.DoubleColon ltac:(Self) "fmt" := {
-    Notation.double_colon := fmt;
+    Notations.DoubleColon ltac:(Self) "fmt" := {
+    Notations.double_colon := fmt;
   }.
   
   Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {

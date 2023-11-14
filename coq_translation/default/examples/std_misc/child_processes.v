@@ -64,31 +64,26 @@ Definition main : M (M.Val unit) :=
         let* α9 : ltac:(refine (M.Val never.t)) :=
           core.panicking.panic_fmt α8 in
         never_to_any α9) in
-    let* α0 : ltac:(refine (M.Val std.process.ExitStatus.t)) :=
-      output.["status"] in
-    let* α1 : ltac:(refine (M.Val (ref std.process.ExitStatus.t))) :=
-      borrow α0 in
-    let* α2 : ltac:(refine (M.Val bool.t)) :=
-      std.process.ExitStatus.t::["success"] α1 in
-    let* α3 : ltac:(refine (M.Val bool.t)) := use α2 in
-    let* α4 := M.read α3 in
-    if (α4 : bool) then
+    let* α0 : ltac:(refine (M.Val (ref std.process.ExitStatus.t))) :=
+      borrow output.["status"] in
+    let* α1 : ltac:(refine (M.Val bool.t)) :=
+      std.process.ExitStatus.t::["success"] α0 in
+    let* α2 : ltac:(refine (M.Val bool.t)) := use α1 in
+    let* α3 := M.read α2 in
+    if (α3 : bool) then
       let* s : ltac:(refine (M.Val (alloc.borrow.Cow.t str.t))) :=
         let* α0 :
-            ltac:(refine (M.Val (alloc.vec.Vec.t u8.t alloc.alloc.Global.t))) :=
-          output.["stdout"] in
-        let* α1 :
             ltac:(refine
               (M.Val (ref (alloc.vec.Vec.t u8.t alloc.alloc.Global.t)))) :=
-          borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice u8.t)))) :=
+          borrow output.["stdout"] in
+        let* α1 : ltac:(refine (M.Val (ref (slice u8.t)))) :=
           (core.ops.deref.Deref.deref
               (Self := alloc.vec.Vec.t u8.t alloc.alloc.Global.t)
               (Trait := ltac:(refine _)))
-            α1 in
-        let* α3 : ltac:(refine (M.Val (slice u8.t))) := deref α2 in
-        let* α4 : ltac:(refine (M.Val (ref (slice u8.t)))) := borrow α3 in
-        alloc.string.String.t::["from_utf8_lossy"] α4 in
+            α0 in
+        let* α2 : ltac:(refine (M.Val (slice u8.t))) := deref α1 in
+        let* α3 : ltac:(refine (M.Val (ref (slice u8.t)))) := borrow α2 in
+        alloc.string.String.t::["from_utf8_lossy"] α3 in
       let* _ : ltac:(refine (M.Val unit)) :=
         let* _ : ltac:(refine (M.Val unit)) :=
           let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
@@ -118,20 +113,17 @@ Definition main : M (M.Val unit) :=
     else
       let* s : ltac:(refine (M.Val (alloc.borrow.Cow.t str.t))) :=
         let* α0 :
-            ltac:(refine (M.Val (alloc.vec.Vec.t u8.t alloc.alloc.Global.t))) :=
-          output.["stderr"] in
-        let* α1 :
             ltac:(refine
               (M.Val (ref (alloc.vec.Vec.t u8.t alloc.alloc.Global.t)))) :=
-          borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice u8.t)))) :=
+          borrow output.["stderr"] in
+        let* α1 : ltac:(refine (M.Val (ref (slice u8.t)))) :=
           (core.ops.deref.Deref.deref
               (Self := alloc.vec.Vec.t u8.t alloc.alloc.Global.t)
               (Trait := ltac:(refine _)))
-            α1 in
-        let* α3 : ltac:(refine (M.Val (slice u8.t))) := deref α2 in
-        let* α4 : ltac:(refine (M.Val (ref (slice u8.t)))) := borrow α3 in
-        alloc.string.String.t::["from_utf8_lossy"] α4 in
+            α0 in
+        let* α2 : ltac:(refine (M.Val (slice u8.t))) := deref α1 in
+        let* α3 : ltac:(refine (M.Val (ref (slice u8.t)))) := borrow α2 in
+        alloc.string.String.t::["from_utf8_lossy"] α3 in
       let* _ : ltac:(refine (M.Val unit)) :=
         let* _ : ltac:(refine (M.Val unit)) :=
           let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=

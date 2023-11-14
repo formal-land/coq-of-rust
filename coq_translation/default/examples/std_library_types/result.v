@@ -43,8 +43,8 @@ Module checked.
         core.fmt.Formatter.t::["write_str"] α1 α3).
     
     Global Instance AssociatedFunction_fmt :
-      Notation.DoubleColon ltac:(Self) "fmt" := {
-      Notation.double_colon := fmt;
+      Notations.DoubleColon ltac:(Self) "fmt" := {
+      Notations.double_colon := fmt;
     }.
     
     Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
@@ -78,10 +78,7 @@ Module checked.
       let* α2 : ltac:(refine (M.Val bool.t)) := use α1 in
       let* α3 := M.read α2 in
       if (α3 : bool) then
-        let* α0 : ltac:(refine (M.Val result.checked.MathError.t)) :=
-          M.alloc result.checked.MathError.DivisionByZero in
-        let* α1 := M.read α0 in
-        M.alloc (core.result.Result.Err α1)
+        M.alloc (core.result.Result.Err result.checked.MathError.DivisionByZero)
       else
         let* α0 : ltac:(refine (M.Val f64.t)) := BinOp.div x y in
         let* α1 := M.read α0 in
@@ -105,10 +102,8 @@ Module checked.
       let* α2 : ltac:(refine (M.Val bool.t)) := use α1 in
       let* α3 := M.read α2 in
       if (α3 : bool) then
-        let* α0 : ltac:(refine (M.Val result.checked.MathError.t)) :=
-          M.alloc result.checked.MathError.NegativeSquareRoot in
-        let* α1 := M.read α0 in
-        M.alloc (core.result.Result.Err α1)
+        M.alloc
+          (core.result.Result.Err result.checked.MathError.NegativeSquareRoot)
       else
         let* α0 : ltac:(refine (M.Val f64.t)) := f64.t::["sqrt"] x in
         let* α1 := M.read α0 in
@@ -132,10 +127,8 @@ Module checked.
       let* α2 : ltac:(refine (M.Val bool.t)) := use α1 in
       let* α3 := M.read α2 in
       if (α3 : bool) then
-        let* α0 : ltac:(refine (M.Val result.checked.MathError.t)) :=
-          M.alloc result.checked.MathError.NonPositiveLogarithm in
-        let* α1 := M.read α0 in
-        M.alloc (core.result.Result.Err α1)
+        M.alloc
+          (core.result.Result.Err result.checked.MathError.NonPositiveLogarithm)
       else
         let* α0 : ltac:(refine (M.Val f64.t)) := f64.t::["ln"] x in
         let* α1 := M.read α0 in
@@ -183,8 +176,8 @@ Section Impl_core_fmt_Debug_for_result_checked_MathError_t.
       core.fmt.Formatter.t::["write_str"] α1 α3).
   
   Global Instance AssociatedFunction_fmt :
-    Notation.DoubleColon ltac:(Self) "fmt" := {
-    Notation.double_colon := fmt;
+    Notations.DoubleColon ltac:(Self) "fmt" := {
+    Notations.double_colon := fmt;
   }.
   
   Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
@@ -218,10 +211,7 @@ Definition div
     let* α2 : ltac:(refine (M.Val bool.t)) := use α1 in
     let* α3 := M.read α2 in
     if (α3 : bool) then
-      let* α0 : ltac:(refine (M.Val result.checked.MathError.t)) :=
-        M.alloc result.checked.MathError.DivisionByZero in
-      let* α1 := M.read α0 in
-      M.alloc (core.result.Result.Err α1)
+      M.alloc (core.result.Result.Err result.checked.MathError.DivisionByZero)
     else
       let* α0 : ltac:(refine (M.Val f64.t)) := BinOp.div x y in
       let* α1 := M.read α0 in
@@ -245,10 +235,8 @@ Definition sqrt
     let* α2 : ltac:(refine (M.Val bool.t)) := use α1 in
     let* α3 := M.read α2 in
     if (α3 : bool) then
-      let* α0 : ltac:(refine (M.Val result.checked.MathError.t)) :=
-        M.alloc result.checked.MathError.NegativeSquareRoot in
-      let* α1 := M.read α0 in
-      M.alloc (core.result.Result.Err α1)
+      M.alloc
+        (core.result.Result.Err result.checked.MathError.NegativeSquareRoot)
     else
       let* α0 : ltac:(refine (M.Val f64.t)) := f64.t::["sqrt"] x in
       let* α1 := M.read α0 in
@@ -270,10 +258,8 @@ Definition ln (x : M.Val f64.t) : M (M.Val ltac:(result.checked.MathResult)) :=
     let* α2 : ltac:(refine (M.Val bool.t)) := use α1 in
     let* α3 := M.read α2 in
     if (α3 : bool) then
-      let* α0 : ltac:(refine (M.Val result.checked.MathError.t)) :=
-        M.alloc result.checked.MathError.NonPositiveLogarithm in
-      let* α1 := M.read α0 in
-      M.alloc (core.result.Result.Err α1)
+      M.alloc
+        (core.result.Result.Err result.checked.MathError.NonPositiveLogarithm)
     else
       let* α0 : ltac:(refine (M.Val f64.t)) := f64.t::["ln"] x in
       let* α1 := M.read α0 in

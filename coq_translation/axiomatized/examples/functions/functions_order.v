@@ -7,8 +7,8 @@ Section SomeType.
     x0 : u32.t;
   }.
   
-  Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(x0) : M _;
+  Global Instance Get_0 : Notations.Dot "0" := {
+    Notations.dot := Ref.map (fun x => x.(x0)) (fun v x => x <| x0 := v |>);
   }.
 End SomeType.
 End SomeType.
@@ -19,8 +19,8 @@ Section OtherType.
     x0 : bool.t;
   }.
   
-  Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(x0) : M _;
+  Global Instance Get_0 : Notations.Dot "0" := {
+    Notations.dot := Ref.map (fun x => x.(x0)) (fun v x => x <| x0 := v |>);
   }.
 End OtherType.
 End OtherType.
@@ -35,8 +35,8 @@ Section Impl_functions_order_SomeType_t.
   Parameter meth2 : (M.Val ltac:(Self)) -> M (M.Val unit).
   
   Global Instance AssociatedFunction_meth2 :
-    Notation.DoubleColon ltac:(Self) "meth2" := {
-    Notation.double_colon := meth2;
+    Notations.DoubleColon ltac:(Self) "meth2" := {
+    Notations.double_colon := meth2;
   }.
   
   (*
@@ -47,8 +47,8 @@ Section Impl_functions_order_SomeType_t.
   Parameter meth1 : (M.Val ltac:(Self)) -> M (M.Val unit).
   
   Global Instance AssociatedFunction_meth1 :
-    Notation.DoubleColon ltac:(Self) "meth1" := {
-    Notation.double_colon := meth1;
+    Notations.DoubleColon ltac:(Self) "meth1" := {
+    Notations.double_colon := meth1;
   }.
 End Impl_functions_order_SomeType_t.
 End Impl_functions_order_SomeType_t.
@@ -73,8 +73,8 @@ Section Impl_functions_order_SomeTrait_for_functions_order_SomeType_t.
   Parameter some_trait_bar : (M.Val (ref ltac:(Self))) -> M (M.Val unit).
   
   Global Instance AssociatedFunction_some_trait_bar :
-    Notation.DoubleColon ltac:(Self) "some_trait_bar" := {
-    Notation.double_colon := some_trait_bar;
+    Notations.DoubleColon ltac:(Self) "some_trait_bar" := {
+    Notations.double_colon := some_trait_bar;
   }.
   
   (*
@@ -85,8 +85,8 @@ Section Impl_functions_order_SomeTrait_for_functions_order_SomeType_t.
   Parameter some_trait_foo : (M.Val (ref ltac:(Self))) -> M (M.Val unit).
   
   Global Instance AssociatedFunction_some_trait_foo :
-    Notation.DoubleColon ltac:(Self) "some_trait_foo" := {
-    Notation.double_colon := some_trait_foo;
+    Notations.DoubleColon ltac:(Self) "some_trait_foo" := {
+    Notations.double_colon := some_trait_foo;
   }.
   
   Global Instance ℐ : functions_order.SomeTrait.Trait ltac:(Self) := {
@@ -106,8 +106,8 @@ Section Impl_functions_order_SomeTrait_for_functions_order_OtherType_t.
   Parameter some_trait_foo : (M.Val (ref ltac:(Self))) -> M (M.Val unit).
   
   Global Instance AssociatedFunction_some_trait_foo :
-    Notation.DoubleColon ltac:(Self) "some_trait_foo" := {
-    Notation.double_colon := some_trait_foo;
+    Notations.DoubleColon ltac:(Self) "some_trait_foo" := {
+    Notations.double_colon := some_trait_foo;
   }.
   
   (*
@@ -116,8 +116,8 @@ Section Impl_functions_order_SomeTrait_for_functions_order_OtherType_t.
   Parameter some_trait_bar : (M.Val (ref ltac:(Self))) -> M (M.Val unit).
   
   Global Instance AssociatedFunction_some_trait_bar :
-    Notation.DoubleColon ltac:(Self) "some_trait_bar" := {
-    Notation.double_colon := some_trait_bar;
+    Notations.DoubleColon ltac:(Self) "some_trait_bar" := {
+    Notations.double_colon := some_trait_bar;
   }.
   
   Global Instance ℐ : functions_order.SomeTrait.Trait ltac:(Self) := {

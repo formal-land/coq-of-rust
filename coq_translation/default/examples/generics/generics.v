@@ -13,8 +13,8 @@ Section Single.
     x0 : generics.A.t;
   }.
   
-  Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(x0) : M _;
+  Global Instance Get_0 : Notations.Dot "0" := {
+    Notations.dot := Ref.map (fun x => x.(x0)) (fun v x => x <| x0 := v |>);
   }.
 End Single.
 End Single.
@@ -27,8 +27,8 @@ Section SingleGen.
     x0 : T;
   }.
   
-  Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(x0) : M _;
+  Global Instance Get_0 : Notations.Dot "0" := {
+    Notations.dot := Ref.map (fun x => x.(x0)) (fun v x => x <| x0 := v |>);
   }.
 End SingleGen.
 End SingleGen.
@@ -53,19 +53,13 @@ fn main() {
 Definition main : M (M.Val unit) :=
   M.function_body
     (let* _s : ltac:(refine (M.Val generics.Single.t)) :=
-      let* α0 : ltac:(refine (M.Val generics.A.t)) :=
-        M.alloc generics.A.Build_t in
-      let* α1 := M.read α0 in
-      M.alloc (generics.Single.Build_t α1) in
+      M.alloc (generics.Single.Build_t generics.A.Build_t) in
     let* _char : ltac:(refine (M.Val (generics.SingleGen.t char.t))) :=
       let* α0 : ltac:(refine (M.Val char.t)) := M.alloc "a"%char in
       let* α1 := M.read α0 in
       M.alloc (generics.SingleGen.Build_t α1) in
     let* _t : ltac:(refine (M.Val (generics.SingleGen.t generics.A.t))) :=
-      let* α0 : ltac:(refine (M.Val generics.A.t)) :=
-        M.alloc generics.A.Build_t in
-      let* α1 := M.read α0 in
-      M.alloc (generics.SingleGen.Build_t α1) in
+      M.alloc (generics.SingleGen.Build_t generics.A.Build_t) in
     let* _i32 : ltac:(refine (M.Val (generics.SingleGen.t i32.t))) :=
       let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 6 in
       let* α1 := M.read α0 in

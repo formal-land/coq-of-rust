@@ -10,12 +10,12 @@ Module my.
       contents : T;
     }.
     
-    Global Instance Get_contents : Notation.Dot "contents" := {
-      Notation.dot x := let* x := M.read x in M.alloc x.(contents) : M _;
+    Global Instance Get_contents : Notations.Dot "contents" := {
+      Notations.dot :=
+        Ref.map (fun x => x.(contents)) (fun v x => x <| contents := v |>);
     }.
-    Global Instance Get_AF_contents : Notation.DoubleColon t "contents" := {
-      Notation.double_colon x :=
-        let* x := M.read x in M.alloc x.(contents) : M _;
+    Global Instance Get_AF_contents : Notations.DoubleColon t "contents" := {
+      Notations.double_colon (x : M.Val t) := x.["contents"];
     }.
   End OpenBox.
   End OpenBox.
@@ -28,12 +28,12 @@ Module my.
       contents : T;
     }.
     
-    Global Instance Get_contents : Notation.Dot "contents" := {
-      Notation.dot x := let* x := M.read x in M.alloc x.(contents) : M _;
+    Global Instance Get_contents : Notations.Dot "contents" := {
+      Notations.dot :=
+        Ref.map (fun x => x.(contents)) (fun v x => x <| contents := v |>);
     }.
-    Global Instance Get_AF_contents : Notation.DoubleColon t "contents" := {
-      Notation.double_colon x :=
-        let* x := M.read x in M.alloc x.(contents) : M _;
+    Global Instance Get_AF_contents : Notations.DoubleColon t "contents" := {
+      Notations.double_colon (x : M.Val t) := x.["contents"];
     }.
   End ClosedBox.
   End ClosedBox.
@@ -57,8 +57,8 @@ Module my.
         M.alloc {| struct_visibility.my.ClosedBox.contents := α0; |}).
     
     Global Instance AssociatedFunction_new :
-      Notation.DoubleColon ltac:(Self) "new" := {
-      Notation.double_colon := new;
+      Notations.DoubleColon ltac:(Self) "new" := {
+      Notations.double_colon := new;
     }.
   End Impl_struct_visibility_my_ClosedBox_t_T.
   End Impl_struct_visibility_my_ClosedBox_t_T.
@@ -72,11 +72,12 @@ Section OpenBox.
     contents : T;
   }.
   
-  Global Instance Get_contents : Notation.Dot "contents" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(contents) : M _;
+  Global Instance Get_contents : Notations.Dot "contents" := {
+    Notations.dot :=
+      Ref.map (fun x => x.(contents)) (fun v x => x <| contents := v |>);
   }.
-  Global Instance Get_AF_contents : Notation.DoubleColon t "contents" := {
-    Notation.double_colon x := let* x := M.read x in M.alloc x.(contents) : M _;
+  Global Instance Get_AF_contents : Notations.DoubleColon t "contents" := {
+    Notations.double_colon (x : M.Val t) := x.["contents"];
   }.
 End OpenBox.
 End OpenBox.
@@ -89,11 +90,12 @@ Section ClosedBox.
     contents : T;
   }.
   
-  Global Instance Get_contents : Notation.Dot "contents" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(contents) : M _;
+  Global Instance Get_contents : Notations.Dot "contents" := {
+    Notations.dot :=
+      Ref.map (fun x => x.(contents)) (fun v x => x <| contents := v |>);
   }.
-  Global Instance Get_AF_contents : Notation.DoubleColon t "contents" := {
-    Notation.double_colon x := let* x := M.read x in M.alloc x.(contents) : M _;
+  Global Instance Get_AF_contents : Notations.DoubleColon t "contents" := {
+    Notations.double_colon (x : M.Val t) := x.["contents"];
   }.
 End ClosedBox.
 End ClosedBox.
@@ -117,8 +119,8 @@ Section Impl_struct_visibility_my_ClosedBox_t_T_2.
       M.alloc {| struct_visibility.my.ClosedBox.contents := α0; |}).
   
   Global Instance AssociatedFunction_new :
-    Notation.DoubleColon ltac:(Self) "new" := {
-    Notation.double_colon := new;
+    Notations.DoubleColon ltac:(Self) "new" := {
+    Notations.double_colon := new;
   }.
 End Impl_struct_visibility_my_ClosedBox_t_T_2.
 End Impl_struct_visibility_my_ClosedBox_t_T_2.
@@ -164,19 +166,19 @@ Definition main : M (M.Val unit) :=
           borrow α0 in
         let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
-        let* α3 : ltac:(refine (M.Val (ref str.t))) := open_box.["contents"] in
-        let* α4 : ltac:(refine (M.Val (ref (ref str.t)))) := borrow α3 in
-        let* α5 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
-          core.fmt.rt.Argument.t::["new_display"] α4 in
-        let* α6 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
-          M.alloc [ α5 ] in
-        let* α7 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
-          borrow α6 in
-        let* α8 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
-          pointer_coercion "Unsize" α7 in
-        let* α9 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-          core.fmt.Arguments.t::["new_v1"] α2 α8 in
-        std.io.stdio._print α9 in
+        let* α3 : ltac:(refine (M.Val (ref (ref str.t)))) :=
+          borrow open_box.["contents"] in
+        let* α4 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
+          core.fmt.rt.Argument.t::["new_display"] α3 in
+        let* α5 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
+          M.alloc [ α4 ] in
+        let* α6 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
+          borrow α5 in
+        let* α7 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
+          pointer_coercion "Unsize" α6 in
+        let* α8 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
+          core.fmt.Arguments.t::["new_v1"] α2 α7 in
+        std.io.stdio._print α8 in
       M.alloc tt in
     let* _closed_box :
         ltac:(refine (M.Val (struct_visibility.my.ClosedBox.t (ref str.t)))) :=

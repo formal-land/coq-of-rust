@@ -36,17 +36,17 @@ Section Complex.
     im : f32.t;
   }.
   
-  Global Instance Get_re : Notation.Dot "re" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(re) : M _;
+  Global Instance Get_re : Notations.Dot "re" := {
+    Notations.dot := Ref.map (fun x => x.(re)) (fun v x => x <| re := v |>);
   }.
-  Global Instance Get_AF_re : Notation.DoubleColon t "re" := {
-    Notation.double_colon x := let* x := M.read x in M.alloc x.(re) : M _;
+  Global Instance Get_AF_re : Notations.DoubleColon t "re" := {
+    Notations.double_colon (x : M.Val t) := x.["re"];
   }.
-  Global Instance Get_im : Notation.Dot "im" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(im) : M _;
+  Global Instance Get_im : Notations.Dot "im" := {
+    Notations.dot := Ref.map (fun x => x.(im)) (fun v x => x <| im := v |>);
   }.
-  Global Instance Get_AF_im : Notation.DoubleColon t "im" := {
-    Notation.double_colon x := let* x := M.read x in M.alloc x.(im) : M _;
+  Global Instance Get_AF_im : Notations.DoubleColon t "im" := {
+    Notations.double_colon (x : M.Val t) := x.["im"];
   }.
 End Complex.
 End Complex.
@@ -63,8 +63,8 @@ Section Impl_core_clone_Clone_for_foreign_function_interface_Complex_t.
         M (M.Val foreign_function_interface.Complex.t).
   
   Global Instance AssociatedFunction_clone :
-    Notation.DoubleColon ltac:(Self) "clone" := {
-    Notation.double_colon := clone;
+    Notations.DoubleColon ltac:(Self) "clone" := {
+    Notations.double_colon := clone;
   }.
   
   Global Instance ℐ : core.clone.Clone.Required.Trait ltac:(Self) := {
@@ -102,8 +102,8 @@ Section Impl_core_fmt_Debug_for_foreign_function_interface_Complex_t.
         M (M.Val ltac:(core.fmt.Result)).
   
   Global Instance AssociatedFunction_fmt :
-    Notation.DoubleColon ltac:(Self) "fmt" := {
-    Notation.double_colon := fmt;
+    Notations.DoubleColon ltac:(Self) "fmt" := {
+    Notations.double_colon := fmt;
   }.
   
   Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {

@@ -50,22 +50,19 @@ Definition double_first
           α3
           (let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 2 in
           BinOp.mul α0 n)) in
-    let* α0 : ltac:(refine (M.Val (core.option.Option.t i32.t))) :=
-      M.alloc core.option.Option.None in
-    let* α1 := M.read α0 in
-    let* α2 :
+    let* α0 :
         ltac:(refine
           (M.Val
             (core.result.Result.t
               (core.option.Option.t i32.t)
               core.num.error.ParseIntError.t))) :=
-      M.alloc (core.result.Result.Ok α1) in
+      M.alloc (core.result.Result.Ok core.option.Option.None) in
     (core.option.Option.t
           (core.result.Result.t
             i32.t
             core.num.error.ParseIntError.t))::["map_or"]
       opt
-      α2
+      α0
       ((core.result.Result.t i32.t core.num.error.ParseIntError.t)::["map"]
         r
         "unimplemented parent_kind")).

@@ -8,17 +8,17 @@ Section Fibonacci.
     next : u32.t;
   }.
   
-  Global Instance Get_curr : Notation.Dot "curr" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(curr) : M _;
+  Global Instance Get_curr : Notations.Dot "curr" := {
+    Notations.dot := Ref.map (fun x => x.(curr)) (fun v x => x <| curr := v |>);
   }.
-  Global Instance Get_AF_curr : Notation.DoubleColon t "curr" := {
-    Notation.double_colon x := let* x := M.read x in M.alloc x.(curr) : M _;
+  Global Instance Get_AF_curr : Notations.DoubleColon t "curr" := {
+    Notations.double_colon (x : M.Val t) := x.["curr"];
   }.
-  Global Instance Get_next : Notation.Dot "next" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(next) : M _;
+  Global Instance Get_next : Notations.Dot "next" := {
+    Notations.dot := Ref.map (fun x => x.(next)) (fun v x => x <| next := v |>);
   }.
-  Global Instance Get_AF_next : Notation.DoubleColon t "next" := {
-    Notation.double_colon x := let* x := M.read x in M.alloc x.(next) : M _;
+  Global Instance Get_AF_next : Notations.DoubleColon t "next" := {
+    Notations.double_colon (x : M.Val t) := x.["next"];
   }.
 End Fibonacci.
 End Fibonacci.
@@ -50,26 +50,23 @@ Section Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci_t.
     M.function_body
       (let* current : ltac:(refine (M.Val u32.t)) :=
         let* α0 : ltac:(refine (M.Val iterators.Fibonacci.t)) := deref self in
-        α0.["curr"] in
+        M.pure α0.["curr"] in
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val iterators.Fibonacci.t)) := deref self in
-        let* α1 : ltac:(refine (M.Val u32.t)) := α0.["curr"] in
-        let* α2 : ltac:(refine (M.Val iterators.Fibonacci.t)) := deref self in
-        let* α3 : ltac:(refine (M.Val u32.t)) := α2.["next"] in
-        assign α1 α3 in
+        let* α1 : ltac:(refine (M.Val iterators.Fibonacci.t)) := deref self in
+        assign α0.["curr"] α1.["next"] in
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val iterators.Fibonacci.t)) := deref self in
-        let* α1 : ltac:(refine (M.Val u32.t)) := α0.["next"] in
-        let* α2 : ltac:(refine (M.Val iterators.Fibonacci.t)) := deref self in
-        let* α3 : ltac:(refine (M.Val u32.t)) := α2.["next"] in
-        let* α4 : ltac:(refine (M.Val u32.t)) := BinOp.add current α3 in
-        assign α1 α4 in
+        let* α1 : ltac:(refine (M.Val iterators.Fibonacci.t)) := deref self in
+        let* α2 : ltac:(refine (M.Val u32.t)) :=
+          BinOp.add current α1.["next"] in
+        assign α0.["next"] α2 in
       let* α0 := M.read current in
       M.alloc (core.option.Option.Some α0)).
   
   Global Instance AssociatedFunction_next :
-    Notation.DoubleColon ltac:(Self) "next" := {
-    Notation.double_colon := next;
+    Notations.DoubleColon ltac:(Self) "next" := {
+    Notations.double_colon := next;
   }.
   
   Global Instance ℐ :

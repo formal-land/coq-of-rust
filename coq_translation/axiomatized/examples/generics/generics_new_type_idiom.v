@@ -7,8 +7,8 @@ Section Years.
     x0 : i64.t;
   }.
   
-  Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(x0) : M _;
+  Global Instance Get_0 : Notations.Dot "0" := {
+    Notations.dot := Ref.map (fun x => x.(x0)) (fun v x => x <| x0 := v |>);
   }.
 End Years.
 End Years.
@@ -19,8 +19,8 @@ Section Days.
     x0 : i64.t;
   }.
   
-  Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(x0) : M _;
+  Global Instance Get_0 : Notations.Dot "0" := {
+    Notations.dot := Ref.map (fun x => x.(x0)) (fun v x => x <| x0 := v |>);
   }.
 End Days.
 End Days.
@@ -38,8 +38,8 @@ Section Impl_generics_new_type_idiom_Years_t.
       (M.Val (ref ltac:(Self))) -> M (M.Val generics_new_type_idiom.Days.t).
   
   Global Instance AssociatedFunction_to_days :
-    Notation.DoubleColon ltac:(Self) "to_days" := {
-    Notation.double_colon := to_days;
+    Notations.DoubleColon ltac:(Self) "to_days" := {
+    Notations.double_colon := to_days;
   }.
 End Impl_generics_new_type_idiom_Years_t.
 End Impl_generics_new_type_idiom_Years_t.
@@ -57,8 +57,8 @@ Section Impl_generics_new_type_idiom_Days_t.
       (M.Val (ref ltac:(Self))) -> M (M.Val generics_new_type_idiom.Years.t).
   
   Global Instance AssociatedFunction_to_years :
-    Notation.DoubleColon ltac:(Self) "to_years" := {
-    Notation.double_colon := to_years;
+    Notations.DoubleColon ltac:(Self) "to_years" := {
+    Notations.double_colon := to_years;
   }.
 End Impl_generics_new_type_idiom_Days_t.
 End Impl_generics_new_type_idiom_Days_t.

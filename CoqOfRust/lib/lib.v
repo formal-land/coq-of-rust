@@ -15,7 +15,7 @@ Export List.ListNotations.
 Require Export CoqOfRust.M.
 Export M.Notations.
 
-Module Notation.
+Module Notations.
   (** A class to represent the notation [e1.e2]. This is mainly used to call
       methods, or access to named or indexed fields of structures. *)
   Class Dot (name : string) {T : Set} : Set := {
@@ -37,21 +37,24 @@ Module Notation.
     double_colon_type : Set;
   }.
   Arguments double_colon_type {Kind} type name {DoubleColonType}.
-End Notation.
+End Notations.
 
 (** Note that we revert the arguments in this notation. *)
-Notation "e1 .[ e2 ]" := (Notation.dot e2 e1)
+Notation "e1 .[ e2 ]" := (Notations.dot e2 e1)
   (at level 0).
 
-Notation "e1 ::[ e2 ]" := (Notation.double_colon e1 e2)
+Notation "e1 ::[ e2 ]" := (Notations.double_colon e1 e2)
+  (at level 0).
+
+Notation "e1 ::type[ e2 ]" := (Notations.double_colon_type e1 e2)
   (at level 0).
 
 (** A method is also an associated function for its type. *)
 Global Instance AssociatedFunctionFromMethod
   (type : Set) (name : string) (T : Set)
-  `(Notation.Dot name (T := type -> T)) :
-  Notation.DoubleColon type name (T := type -> T) := {
-  Notation.double_colon := Notation.dot name;
+  `(Notations.Dot name (T := type -> T)) :
+  Notations.DoubleColon type name (T := type -> T) := {
+  Notations.double_colon := Notations.dot name;
 }.
 
 Definition defaultType (T : option Set) (Default : Set) : Set :=
@@ -62,14 +65,10 @@ Definition defaultType (T : option Set) (Default : Set) : Set :=
 
 Parameter axiom : forall {A : Set}, A.
 
-Parameter cast : forall {A : Set}, A -> forall (B : Set), B.
-
-Parameter sequence : forall {A B : Set}, A -> B -> B.
-
-Notation "e1 ;; e2" := (sequence e1 e2)
-  (at level 61, right associativity).
-
-Parameter assign : forall {A : Set}, M.Val A -> M.Val A -> M (M.Val unit).
+Definition assign {A : Set} (target source : M.Val A) : M (M.Val unit) :=
+  let* source := M.read source in
+  let* _ := M.write target source in
+  M.alloc tt.
 
 Module bool.
   Definition t : Set := bool.
@@ -156,7 +155,7 @@ Definition never_to_any {A B : Set} (x : A) : M B :=
 Definition use {A : Set} (x : A) : M A := M.pure x.
 
 Definition mk_str (s : Coq.Strings.String.string) : M.Val (ref str.t) :=
-  M.Ref.Immutable (M.Ref.Immutable s).
+  M.Ref.Imm (M.Ref.Imm s).
 
 Module UnOp.
   Parameter not : M.Val bool -> M (M.Val bool).

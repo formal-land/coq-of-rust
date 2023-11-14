@@ -40,8 +40,8 @@ Section Impl_core_fmt_Debug_for_combinators_and_then_Food_t.
       core.fmt.Formatter.t::["write_str"] α1 α3).
   
   Global Instance AssociatedFunction_fmt :
-    Notation.DoubleColon ltac:(Self) "fmt" := {
-    Notation.double_colon := fmt;
+    Notations.DoubleColon ltac:(Self) "fmt" := {
+    Notations.double_colon := fmt;
   }.
   
   Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
@@ -88,8 +88,8 @@ Section Impl_core_fmt_Debug_for_combinators_and_then_Day_t.
       core.fmt.Formatter.t::["write_str"] α1 α3).
   
   Global Instance AssociatedFunction_fmt :
-    Notation.DoubleColon ltac:(Self) "fmt" := {
-    Notation.double_colon := fmt;
+    Notations.DoubleColon ltac:(Self) "fmt" := {
+    Notations.double_colon := fmt;
   }.
   
   Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
@@ -284,16 +284,10 @@ Definition main : M (M.Val unit) :=
             ((combinators_and_then.Food.t * combinators_and_then.Food.t)
             *
             combinators_and_then.Food.t))) :=
-      let* α0 : ltac:(refine (M.Val combinators_and_then.Food.t)) :=
-        M.alloc combinators_and_then.Food.CordonBleu in
-      let* α1 := M.read α0 in
-      let* α2 : ltac:(refine (M.Val combinators_and_then.Food.t)) :=
-        M.alloc combinators_and_then.Food.Steak in
-      let* α3 := M.read α2 in
-      let* α4 : ltac:(refine (M.Val combinators_and_then.Food.t)) :=
-        M.alloc combinators_and_then.Food.Sushi in
-      let* α5 := M.read α4 in
-      M.alloc (α1, α3, α5) in
+      M.alloc
+        (combinators_and_then.Food.CordonBleu,
+          combinators_and_then.Food.Steak,
+          combinators_and_then.Food.Sushi) in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* α0 : ltac:(refine (M.Val combinators_and_then.Day.t)) :=
         M.alloc combinators_and_then.Day.Monday in

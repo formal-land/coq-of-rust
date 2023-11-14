@@ -10,11 +10,11 @@ Section PhantomTuple.
     x1 : core.marker.PhantomData.t B;
   }.
   
-  Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(x0) : M _;
+  Global Instance Get_0 : Notations.Dot "0" := {
+    Notations.dot := Ref.map (fun x => x.(x0)) (fun v x => x <| x0 := v |>);
   }.
-  Global Instance Get_1 : Notation.Dot "1" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(x1) : M _;
+  Global Instance Get_1 : Notations.Dot "1" := {
+    Notations.dot := Ref.map (fun x => x.(x1)) (fun v x => x <| x1 := v |>);
   }.
 End PhantomTuple.
 End PhantomTuple.
@@ -50,8 +50,8 @@ Section Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_t_A_B.
         M (M.Val bool.t).
   
   Global Instance AssociatedFunction_eq :
-    Notation.DoubleColon ltac:(Self) "eq" := {
-    Notation.double_colon := eq;
+    Notations.DoubleColon ltac:(Self) "eq" := {
+    Notations.double_colon := eq;
   }.
   
   Global Instance ℐ :
@@ -72,17 +72,19 @@ Section PhantomStruct.
     phantom : core.marker.PhantomData.t B;
   }.
   
-  Global Instance Get_first : Notation.Dot "first" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(first) : M _;
+  Global Instance Get_first : Notations.Dot "first" := {
+    Notations.dot :=
+      Ref.map (fun x => x.(first)) (fun v x => x <| first := v |>);
   }.
-  Global Instance Get_AF_first : Notation.DoubleColon t "first" := {
-    Notation.double_colon x := let* x := M.read x in M.alloc x.(first) : M _;
+  Global Instance Get_AF_first : Notations.DoubleColon t "first" := {
+    Notations.double_colon (x : M.Val t) := x.["first"];
   }.
-  Global Instance Get_phantom : Notation.Dot "phantom" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(phantom) : M _;
+  Global Instance Get_phantom : Notations.Dot "phantom" := {
+    Notations.dot :=
+      Ref.map (fun x => x.(phantom)) (fun v x => x <| phantom := v |>);
   }.
-  Global Instance Get_AF_phantom : Notation.DoubleColon t "phantom" := {
-    Notation.double_colon x := let* x := M.read x in M.alloc x.(phantom) : M _;
+  Global Instance Get_AF_phantom : Notations.DoubleColon t "phantom" := {
+    Notations.double_colon (x : M.Val t) := x.["phantom"];
   }.
 End PhantomStruct.
 End PhantomStruct.
@@ -118,8 +120,8 @@ Section Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_t_A_B.
         M (M.Val bool.t).
   
   Global Instance AssociatedFunction_eq :
-    Notation.DoubleColon ltac:(Self) "eq" := {
-    Notation.double_colon := eq;
+    Notations.DoubleColon ltac:(Self) "eq" := {
+    Notations.double_colon := eq;
   }.
   
   Global Instance ℐ :

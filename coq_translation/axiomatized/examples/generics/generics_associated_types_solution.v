@@ -8,11 +8,11 @@ Section Container.
     x1 : i32.t;
   }.
   
-  Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(x0) : M _;
+  Global Instance Get_0 : Notations.Dot "0" := {
+    Notations.dot := Ref.map (fun x => x.(x0)) (fun v x => x <| x0 := v |>);
   }.
-  Global Instance Get_1 : Notation.Dot "1" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(x1) : M _;
+  Global Instance Get_1 : Notations.Dot "1" := {
+    Notations.dot := Ref.map (fun x => x.(x1)) (fun v x => x <| x1 := v |>);
   }.
 End Container.
 End Container.
@@ -28,11 +28,11 @@ Section Contains.
     a : (ref ltac:(Self)) -> M A.t;
   }.
   
-  Global Instance Method_A `(Trait) : Notation.DoubleColonType Self "A" := {
-    Notation.double_colon_type := A;
+  Global Instance Method_A `(Trait) : Notations.DoubleColonType Self "A" := {
+    Notations.double_colon_type := A;
   }.
-  Global Instance Method_B `(Trait) : Notation.DoubleColonType Self "B" := {
-    Notation.double_colon_type := B;
+  Global Instance Method_B `(Trait) : Notations.DoubleColonType Self "B" := {
+    Notations.double_colon_type := B;
   }.
 End Contains.
 End Contains.
@@ -63,8 +63,8 @@ Section Impl_generics_associated_types_solution_Contains_for_generics_associated
         M (M.Val bool.t).
   
   Global Instance AssociatedFunction_contains :
-    Notation.DoubleColon ltac:(Self) "contains" := {
-    Notation.double_colon := contains;
+    Notations.DoubleColon ltac:(Self) "contains" := {
+    Notations.double_colon := contains;
   }.
   
   (*
@@ -75,8 +75,8 @@ Section Impl_generics_associated_types_solution_Contains_for_generics_associated
   Parameter first : (M.Val (ref ltac:(Self))) -> M (M.Val i32.t).
   
   Global Instance AssociatedFunction_first :
-    Notation.DoubleColon ltac:(Self) "first" := {
-    Notation.double_colon := first;
+    Notations.DoubleColon ltac:(Self) "first" := {
+    Notations.double_colon := first;
   }.
   
   (*
@@ -87,8 +87,8 @@ Section Impl_generics_associated_types_solution_Contains_for_generics_associated
   Parameter last : (M.Val (ref ltac:(Self))) -> M (M.Val i32.t).
   
   Global Instance AssociatedFunction_last :
-    Notation.DoubleColon ltac:(Self) "last" := {
-    Notation.double_colon := last;
+    Notations.DoubleColon ltac:(Self) "last" := {
+    Notations.double_colon := last;
   }.
   
   (*
@@ -99,8 +99,8 @@ Section Impl_generics_associated_types_solution_Contains_for_generics_associated
   Parameter a : (M.Val (ref ltac:(Self))) -> M (M.Val i32.t).
   
   Global Instance AssociatedFunction_a :
-    Notation.DoubleColon ltac:(Self) "a" := {
-    Notation.double_colon := a;
+    Notations.DoubleColon ltac:(Self) "a" := {
+    Notations.double_colon := a;
   }.
   
   Global Instance ℐ :

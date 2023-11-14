@@ -8,17 +8,17 @@ Section Point.
     y : f64.t;
   }.
   
-  Global Instance Get_x : Notation.Dot "x" := {
-    Notation.dot x' := let* x' := M.read x' in M.alloc x'.(x) : M _;
+  Global Instance Get_x : Notations.Dot "x" := {
+    Notations.dot := Ref.map (fun x' => x'.(x)) (fun v x' => x' <| x := v |>);
   }.
-  Global Instance Get_AF_x : Notation.DoubleColon t "x" := {
-    Notation.double_colon x' := let* x' := M.read x' in M.alloc x'.(x) : M _;
+  Global Instance Get_AF_x : Notations.DoubleColon t "x" := {
+    Notations.double_colon (x' : M.Val t) := x'.["x"];
   }.
-  Global Instance Get_y : Notation.Dot "y" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(y) : M _;
+  Global Instance Get_y : Notations.Dot "y" := {
+    Notations.dot := Ref.map (fun x => x.(y)) (fun v x => x <| y := v |>);
   }.
-  Global Instance Get_AF_y : Notation.DoubleColon t "y" := {
-    Notation.double_colon x := let* x := M.read x in M.alloc x.(y) : M _;
+  Global Instance Get_AF_y : Notations.DoubleColon t "y" := {
+    Notations.double_colon (x : M.Val t) := x.["y"];
   }.
 End Point.
 End Point.
@@ -35,8 +35,8 @@ Section Impl_associated_functions_and_methods_Point_t.
   Parameter origin : M (M.Val associated_functions_and_methods.Point.t).
   
   Global Instance AssociatedFunction_origin :
-    Notation.DoubleColon ltac:(Self) "origin" := {
-    Notation.double_colon := origin;
+    Notations.DoubleColon ltac:(Self) "origin" := {
+    Notations.double_colon := origin;
   }.
   
   (*
@@ -50,8 +50,8 @@ Section Impl_associated_functions_and_methods_Point_t.
         M (M.Val associated_functions_and_methods.Point.t).
   
   Global Instance AssociatedFunction_new :
-    Notation.DoubleColon ltac:(Self) "new" := {
-    Notation.double_colon := new;
+    Notations.DoubleColon ltac:(Self) "new" := {
+    Notations.double_colon := new;
   }.
 End Impl_associated_functions_and_methods_Point_t.
 End Impl_associated_functions_and_methods_Point_t.
@@ -63,17 +63,17 @@ Section Rectangle.
     p2 : associated_functions_and_methods.Point.t;
   }.
   
-  Global Instance Get_p1 : Notation.Dot "p1" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(p1) : M _;
+  Global Instance Get_p1 : Notations.Dot "p1" := {
+    Notations.dot := Ref.map (fun x => x.(p1)) (fun v x => x <| p1 := v |>);
   }.
-  Global Instance Get_AF_p1 : Notation.DoubleColon t "p1" := {
-    Notation.double_colon x := let* x := M.read x in M.alloc x.(p1) : M _;
+  Global Instance Get_AF_p1 : Notations.DoubleColon t "p1" := {
+    Notations.double_colon (x : M.Val t) := x.["p1"];
   }.
-  Global Instance Get_p2 : Notation.Dot "p2" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(p2) : M _;
+  Global Instance Get_p2 : Notations.Dot "p2" := {
+    Notations.dot := Ref.map (fun x => x.(p2)) (fun v x => x <| p2 := v |>);
   }.
-  Global Instance Get_AF_p2 : Notation.DoubleColon t "p2" := {
-    Notation.double_colon x := let* x := M.read x in M.alloc x.(p2) : M _;
+  Global Instance Get_AF_p2 : Notations.DoubleColon t "p2" := {
+    Notations.double_colon (x : M.Val t) := x.["p2"];
   }.
 End Rectangle.
 End Rectangle.
@@ -92,8 +92,8 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
         M (M.Val associated_functions_and_methods.Point.t).
   
   Global Instance AssociatedFunction_get_p1 :
-    Notation.DoubleColon ltac:(Self) "get_p1" := {
-    Notation.double_colon := get_p1;
+    Notations.DoubleColon ltac:(Self) "get_p1" := {
+    Notations.double_colon := get_p1;
   }.
   
   (*
@@ -110,8 +110,8 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
   Parameter area : (M.Val (ref ltac:(Self))) -> M (M.Val f64.t).
   
   Global Instance AssociatedFunction_area :
-    Notation.DoubleColon ltac:(Self) "area" := {
-    Notation.double_colon := area;
+    Notations.DoubleColon ltac:(Self) "area" := {
+    Notations.double_colon := area;
   }.
   
   (*
@@ -125,8 +125,8 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
   Parameter perimeter : (M.Val (ref ltac:(Self))) -> M (M.Val f64.t).
   
   Global Instance AssociatedFunction_perimeter :
-    Notation.DoubleColon ltac:(Self) "perimeter" := {
-    Notation.double_colon := perimeter;
+    Notations.DoubleColon ltac:(Self) "perimeter" := {
+    Notations.double_colon := perimeter;
   }.
   
   (*
@@ -145,8 +145,8 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
         M (M.Val unit).
   
   Global Instance AssociatedFunction_translate :
-    Notation.DoubleColon ltac:(Self) "translate" := {
-    Notation.double_colon := translate;
+    Notations.DoubleColon ltac:(Self) "translate" := {
+    Notations.double_colon := translate;
   }.
 End Impl_associated_functions_and_methods_Rectangle_t.
 End Impl_associated_functions_and_methods_Rectangle_t.
@@ -158,11 +158,11 @@ Section Pair.
     x1 : alloc.boxed.Box.t i32.t alloc.boxed.Box.Default.A;
   }.
   
-  Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(x0) : M _;
+  Global Instance Get_0 : Notations.Dot "0" := {
+    Notations.dot := Ref.map (fun x => x.(x0)) (fun v x => x <| x0 := v |>);
   }.
-  Global Instance Get_1 : Notation.Dot "1" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(x1) : M _;
+  Global Instance Get_1 : Notations.Dot "1" := {
+    Notations.dot := Ref.map (fun x => x.(x1)) (fun v x => x <| x1 := v |>);
   }.
 End Pair.
 End Pair.
@@ -184,8 +184,8 @@ Section Impl_associated_functions_and_methods_Pair_t.
   Parameter destroy : (M.Val ltac:(Self)) -> M (M.Val unit).
   
   Global Instance AssociatedFunction_destroy :
-    Notation.DoubleColon ltac:(Self) "destroy" := {
-    Notation.double_colon := destroy;
+    Notations.DoubleColon ltac:(Self) "destroy" := {
+    Notations.double_colon := destroy;
   }.
 End Impl_associated_functions_and_methods_Pair_t.
 End Impl_associated_functions_and_methods_Pair_t.

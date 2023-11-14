@@ -39,8 +39,8 @@ Section Impl_core_fmt_Debug_for_combinators_map_Food_t.
       core.fmt.Formatter.t::["write_str"] α1 α3).
   
   Global Instance AssociatedFunction_fmt :
-    Notation.DoubleColon ltac:(Self) "fmt" := {
-    Notation.double_colon := fmt;
+    Notations.DoubleColon ltac:(Self) "fmt" := {
+    Notations.double_colon := fmt;
   }.
   
   Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
@@ -55,8 +55,8 @@ Section Peeled.
     x0 : combinators_map.Food.t;
   }.
   
-  Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(x0) : M _;
+  Global Instance Get_0 : Notations.Dot "0" := {
+    Notations.dot := Ref.map (fun x => x.(x0)) (fun v x => x <| x0 := v |>);
   }.
 End Peeled.
 End Peeled.
@@ -79,18 +79,17 @@ Section Impl_core_fmt_Debug_for_combinators_map_Peeled_t.
       let* α2 : ltac:(refine (M.Val str.t)) := deref (mk_str "Peeled") in
       let* α3 : ltac:(refine (M.Val (ref str.t))) := borrow α2 in
       let* α4 : ltac:(refine (M.Val combinators_map.Peeled.t)) := deref self in
-      let* α5 : ltac:(refine (M.Val combinators_map.Food.t)) := α4.["0"] in
-      let* α6 : ltac:(refine (M.Val (ref combinators_map.Food.t))) :=
+      let* α5 : ltac:(refine (M.Val (ref combinators_map.Food.t))) :=
+        borrow α4.["0"] in
+      let* α6 : ltac:(refine (M.Val (ref (ref combinators_map.Food.t)))) :=
         borrow α5 in
-      let* α7 : ltac:(refine (M.Val (ref (ref combinators_map.Food.t)))) :=
-        borrow α6 in
-      let* α8 : ltac:(refine (M.Val (ref type not implemented))) :=
-        pointer_coercion "Unsize" α7 in
-      core.fmt.Formatter.t::["debug_tuple_field1_finish"] α1 α3 α8).
+      let* α7 : ltac:(refine (M.Val (ref type not implemented))) :=
+        pointer_coercion "Unsize" α6 in
+      core.fmt.Formatter.t::["debug_tuple_field1_finish"] α1 α3 α7).
   
   Global Instance AssociatedFunction_fmt :
-    Notation.DoubleColon ltac:(Self) "fmt" := {
-    Notation.double_colon := fmt;
+    Notations.DoubleColon ltac:(Self) "fmt" := {
+    Notations.double_colon := fmt;
   }.
   
   Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
@@ -105,8 +104,8 @@ Section Chopped.
     x0 : combinators_map.Food.t;
   }.
   
-  Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(x0) : M _;
+  Global Instance Get_0 : Notations.Dot "0" := {
+    Notations.dot := Ref.map (fun x => x.(x0)) (fun v x => x <| x0 := v |>);
   }.
 End Chopped.
 End Chopped.
@@ -129,18 +128,17 @@ Section Impl_core_fmt_Debug_for_combinators_map_Chopped_t.
       let* α2 : ltac:(refine (M.Val str.t)) := deref (mk_str "Chopped") in
       let* α3 : ltac:(refine (M.Val (ref str.t))) := borrow α2 in
       let* α4 : ltac:(refine (M.Val combinators_map.Chopped.t)) := deref self in
-      let* α5 : ltac:(refine (M.Val combinators_map.Food.t)) := α4.["0"] in
-      let* α6 : ltac:(refine (M.Val (ref combinators_map.Food.t))) :=
+      let* α5 : ltac:(refine (M.Val (ref combinators_map.Food.t))) :=
+        borrow α4.["0"] in
+      let* α6 : ltac:(refine (M.Val (ref (ref combinators_map.Food.t)))) :=
         borrow α5 in
-      let* α7 : ltac:(refine (M.Val (ref (ref combinators_map.Food.t)))) :=
-        borrow α6 in
-      let* α8 : ltac:(refine (M.Val (ref type not implemented))) :=
-        pointer_coercion "Unsize" α7 in
-      core.fmt.Formatter.t::["debug_tuple_field1_finish"] α1 α3 α8).
+      let* α7 : ltac:(refine (M.Val (ref type not implemented))) :=
+        pointer_coercion "Unsize" α6 in
+      core.fmt.Formatter.t::["debug_tuple_field1_finish"] α1 α3 α7).
   
   Global Instance AssociatedFunction_fmt :
-    Notation.DoubleColon ltac:(Self) "fmt" := {
-    Notation.double_colon := fmt;
+    Notations.DoubleColon ltac:(Self) "fmt" := {
+    Notations.double_colon := fmt;
   }.
   
   Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
@@ -155,8 +153,8 @@ Section Cooked.
     x0 : combinators_map.Food.t;
   }.
   
-  Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(x0) : M _;
+  Global Instance Get_0 : Notations.Dot "0" := {
+    Notations.dot := Ref.map (fun x => x.(x0)) (fun v x => x <| x0 := v |>);
   }.
 End Cooked.
 End Cooked.
@@ -179,18 +177,17 @@ Section Impl_core_fmt_Debug_for_combinators_map_Cooked_t.
       let* α2 : ltac:(refine (M.Val str.t)) := deref (mk_str "Cooked") in
       let* α3 : ltac:(refine (M.Val (ref str.t))) := borrow α2 in
       let* α4 : ltac:(refine (M.Val combinators_map.Cooked.t)) := deref self in
-      let* α5 : ltac:(refine (M.Val combinators_map.Food.t)) := α4.["0"] in
-      let* α6 : ltac:(refine (M.Val (ref combinators_map.Food.t))) :=
+      let* α5 : ltac:(refine (M.Val (ref combinators_map.Food.t))) :=
+        borrow α4.["0"] in
+      let* α6 : ltac:(refine (M.Val (ref (ref combinators_map.Food.t)))) :=
         borrow α5 in
-      let* α7 : ltac:(refine (M.Val (ref (ref combinators_map.Food.t)))) :=
-        borrow α6 in
-      let* α8 : ltac:(refine (M.Val (ref type not implemented))) :=
-        pointer_coercion "Unsize" α7 in
-      core.fmt.Formatter.t::["debug_tuple_field1_finish"] α1 α3 α8).
+      let* α7 : ltac:(refine (M.Val (ref type not implemented))) :=
+        pointer_coercion "Unsize" α6 in
+      core.fmt.Formatter.t::["debug_tuple_field1_finish"] α1 α3 α7).
   
   Global Instance AssociatedFunction_fmt :
-    Notation.DoubleColon ltac:(Self) "fmt" := {
-    Notation.double_colon := fmt;
+    Notations.DoubleColon ltac:(Self) "fmt" := {
+    Notations.double_colon := fmt;
   }.
   
   Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
@@ -216,10 +213,7 @@ Definition peel
     | core.option.Option.Some food =>
       let* food := M.alloc food in
       let* α0 := M.read food in
-      let* α1 : ltac:(refine (M.Val combinators_map.Peeled.t)) :=
-        M.alloc (combinators_map.Peeled.Build_t α0) in
-      let* α2 := M.read α1 in
-      M.alloc (core.option.Option.Some α2)
+      M.alloc (core.option.Option.Some (combinators_map.Peeled.Build_t α0))
     | core.option.Option.None  => M.alloc core.option.Option.None
     end).
 
@@ -240,10 +234,7 @@ Definition chop
     | core.option.Option.Some combinators_map.Peeled.Build_t food =>
       let* food := M.alloc food in
       let* α0 := M.read food in
-      let* α1 : ltac:(refine (M.Val combinators_map.Chopped.t)) :=
-        M.alloc (combinators_map.Chopped.Build_t α0) in
-      let* α2 := M.read α1 in
-      M.alloc (core.option.Option.Some α2)
+      M.alloc (core.option.Option.Some (combinators_map.Chopped.Build_t α0))
     | core.option.Option.None  => M.alloc core.option.Option.None
     end).
 
@@ -364,16 +355,10 @@ Definition main : M (M.Val unit) :=
   M.function_body
     (let* apple :
         ltac:(refine (M.Val (core.option.Option.t combinators_map.Food.t))) :=
-      let* α0 : ltac:(refine (M.Val combinators_map.Food.t)) :=
-        M.alloc combinators_map.Food.Apple in
-      let* α1 := M.read α0 in
-      M.alloc (core.option.Option.Some α1) in
+      M.alloc (core.option.Option.Some combinators_map.Food.Apple) in
     let* carrot :
         ltac:(refine (M.Val (core.option.Option.t combinators_map.Food.t))) :=
-      let* α0 : ltac:(refine (M.Val combinators_map.Food.t)) :=
-        M.alloc combinators_map.Food.Carrot in
-      let* α1 := M.read α0 in
-      M.alloc (core.option.Option.Some α1) in
+      M.alloc (core.option.Option.Some combinators_map.Food.Carrot) in
     let* potato :
         ltac:(refine (M.Val (core.option.Option.t combinators_map.Food.t))) :=
       M.alloc core.option.Option.None in

@@ -7,11 +7,11 @@ Section Droppable.
     name : ref str.t;
   }.
   
-  Global Instance Get_name : Notation.Dot "name" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(name) : M _;
+  Global Instance Get_name : Notations.Dot "name" := {
+    Notations.dot := Ref.map (fun x => x.(name)) (fun v x => x <| name := v |>);
   }.
-  Global Instance Get_AF_name : Notation.DoubleColon t "name" := {
-    Notation.double_colon x := let* x := M.read x in M.alloc x.(name) : M _;
+  Global Instance Get_AF_name : Notations.DoubleColon t "name" := {
+    Notations.double_colon (x : M.Val t) := x.["name"];
   }.
 End Droppable.
 End Droppable.
@@ -28,8 +28,8 @@ Section Impl_core_ops_drop_Drop_for_drop_Droppable_t.
   Parameter drop : (M.Val (mut_ref ltac:(Self))) -> M (M.Val unit).
   
   Global Instance AssociatedFunction_drop :
-    Notation.DoubleColon ltac:(Self) "drop" := {
-    Notation.double_colon := drop;
+    Notations.DoubleColon ltac:(Self) "drop" := {
+    Notations.double_colon := drop;
   }.
   
   Global Instance ℐ : core.ops.drop.Drop.Trait ltac:(Self) := {

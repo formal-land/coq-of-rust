@@ -26,8 +26,8 @@ Section Impl_generics_where_clauses_PrintInOption_for_T.
   Parameter print_in_option : (M.Val ltac:(Self)) -> M (M.Val unit).
   
   Global Instance AssociatedFunction_print_in_option :
-    Notation.DoubleColon ltac:(Self) "print_in_option" := {
-    Notation.double_colon := print_in_option;
+    Notations.DoubleColon ltac:(Self) "print_in_option" := {
+    Notations.double_colon := print_in_option;
   }.
   
   Global Instance ℐ :

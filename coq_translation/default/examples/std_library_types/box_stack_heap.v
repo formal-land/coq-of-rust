@@ -9,17 +9,17 @@ Section Point.
     y : f64.t;
   }.
   
-  Global Instance Get_x : Notation.Dot "x" := {
-    Notation.dot x' := let* x' := M.read x' in M.alloc x'.(x) : M _;
+  Global Instance Get_x : Notations.Dot "x" := {
+    Notations.dot := Ref.map (fun x' => x'.(x)) (fun v x' => x' <| x := v |>);
   }.
-  Global Instance Get_AF_x : Notation.DoubleColon t "x" := {
-    Notation.double_colon x' := let* x' := M.read x' in M.alloc x'.(x) : M _;
+  Global Instance Get_AF_x : Notations.DoubleColon t "x" := {
+    Notations.double_colon (x' : M.Val t) := x'.["x"];
   }.
-  Global Instance Get_y : Notation.Dot "y" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(y) : M _;
+  Global Instance Get_y : Notations.Dot "y" := {
+    Notations.dot := Ref.map (fun x => x.(y)) (fun v x => x <| y := v |>);
   }.
-  Global Instance Get_AF_y : Notation.DoubleColon t "y" := {
-    Notation.double_colon x := let* x := M.read x in M.alloc x.(y) : M _;
+  Global Instance Get_AF_y : Notations.DoubleColon t "y" := {
+    Notations.double_colon (x : M.Val t) := x.["y"];
   }.
 End Point.
 End Point.
@@ -45,23 +45,21 @@ Section Impl_core_fmt_Debug_for_box_stack_heap_Point_t.
       let* α4 : ltac:(refine (M.Val str.t)) := deref (mk_str "x") in
       let* α5 : ltac:(refine (M.Val (ref str.t))) := borrow α4 in
       let* α6 : ltac:(refine (M.Val box_stack_heap.Point.t)) := deref self in
-      let* α7 : ltac:(refine (M.Val f64.t)) := α6.["x"] in
-      let* α8 : ltac:(refine (M.Val (ref f64.t))) := borrow α7 in
-      let* α9 : ltac:(refine (M.Val (ref type not implemented))) :=
-        pointer_coercion "Unsize" α8 in
-      let* α10 : ltac:(refine (M.Val str.t)) := deref (mk_str "y") in
-      let* α11 : ltac:(refine (M.Val (ref str.t))) := borrow α10 in
-      let* α12 : ltac:(refine (M.Val box_stack_heap.Point.t)) := deref self in
-      let* α13 : ltac:(refine (M.Val f64.t)) := α12.["y"] in
-      let* α14 : ltac:(refine (M.Val (ref f64.t))) := borrow α13 in
-      let* α15 : ltac:(refine (M.Val (ref (ref f64.t)))) := borrow α14 in
-      let* α16 : ltac:(refine (M.Val (ref type not implemented))) :=
-        pointer_coercion "Unsize" α15 in
-      core.fmt.Formatter.t::["debug_struct_field2_finish"] α1 α3 α5 α9 α11 α16).
+      let* α7 : ltac:(refine (M.Val (ref f64.t))) := borrow α6.["x"] in
+      let* α8 : ltac:(refine (M.Val (ref type not implemented))) :=
+        pointer_coercion "Unsize" α7 in
+      let* α9 : ltac:(refine (M.Val str.t)) := deref (mk_str "y") in
+      let* α10 : ltac:(refine (M.Val (ref str.t))) := borrow α9 in
+      let* α11 : ltac:(refine (M.Val box_stack_heap.Point.t)) := deref self in
+      let* α12 : ltac:(refine (M.Val (ref f64.t))) := borrow α11.["y"] in
+      let* α13 : ltac:(refine (M.Val (ref (ref f64.t)))) := borrow α12 in
+      let* α14 : ltac:(refine (M.Val (ref type not implemented))) :=
+        pointer_coercion "Unsize" α13 in
+      core.fmt.Formatter.t::["debug_struct_field2_finish"] α1 α3 α5 α8 α10 α14).
   
   Global Instance AssociatedFunction_fmt :
-    Notation.DoubleColon ltac:(Self) "fmt" := {
-    Notation.double_colon := fmt;
+    Notations.DoubleColon ltac:(Self) "fmt" := {
+    Notations.double_colon := fmt;
   }.
   
   Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
@@ -86,8 +84,8 @@ Section Impl_core_clone_Clone_for_box_stack_heap_Point_t.
       deref self).
   
   Global Instance AssociatedFunction_clone :
-    Notation.DoubleColon ltac:(Self) "clone" := {
-    Notation.double_colon := clone;
+    Notations.DoubleColon ltac:(Self) "clone" := {
+    Notations.double_colon := clone;
   }.
   
   Global Instance ℐ : core.clone.Clone.Required.Trait ltac:(Self) := {
@@ -114,19 +112,22 @@ Section Rectangle.
     bottom_right : box_stack_heap.Point.t;
   }.
   
-  Global Instance Get_top_left : Notation.Dot "top_left" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(top_left) : M _;
+  Global Instance Get_top_left : Notations.Dot "top_left" := {
+    Notations.dot :=
+      Ref.map (fun x => x.(top_left)) (fun v x => x <| top_left := v |>);
   }.
-  Global Instance Get_AF_top_left : Notation.DoubleColon t "top_left" := {
-    Notation.double_colon x := let* x := M.read x in M.alloc x.(top_left) : M _;
+  Global Instance Get_AF_top_left : Notations.DoubleColon t "top_left" := {
+    Notations.double_colon (x : M.Val t) := x.["top_left"];
   }.
-  Global Instance Get_bottom_right : Notation.Dot "bottom_right" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(bottom_right) : M _;
+  Global Instance Get_bottom_right : Notations.Dot "bottom_right" := {
+    Notations.dot :=
+      Ref.map
+        (fun x => x.(bottom_right))
+        (fun v x => x <| bottom_right := v |>);
   }.
   Global Instance Get_AF_bottom_right :
-    Notation.DoubleColon t "bottom_right" := {
-    Notation.double_colon x :=
-      let* x := M.read x in M.alloc x.(bottom_right) : M _;
+    Notations.DoubleColon t "bottom_right" := {
+    Notations.double_colon (x : M.Val t) := x.["bottom_right"];
   }.
 End Rectangle.
 End Rectangle.
@@ -234,14 +235,11 @@ Definition main : M (M.Val unit) :=
       let* α3 := M.read α2 in
       let* α4 : ltac:(refine (M.Val f64.t)) := M.alloc (- 4 (* 4.0 *)) in
       let* α5 := M.read α4 in
-      let* α6 : ltac:(refine (M.Val box_stack_heap.Point.t)) :=
-        M.alloc
-          {| box_stack_heap.Point.x := α3; box_stack_heap.Point.y := α5; |} in
-      let* α7 := M.read α6 in
       M.alloc
         {|
           box_stack_heap.Rectangle.top_left := α1;
-          box_stack_heap.Rectangle.bottom_right := α7;
+          box_stack_heap.Rectangle.bottom_right :=
+            {| box_stack_heap.Point.x := α3; box_stack_heap.Point.y := α5; |};
         |} in
     let* boxed_rectangle :
         ltac:(refine
@@ -256,20 +254,17 @@ Definition main : M (M.Val unit) :=
       let* α3 := M.read α2 in
       let* α4 : ltac:(refine (M.Val f64.t)) := M.alloc (- 4 (* 4.0 *)) in
       let* α5 := M.read α4 in
-      let* α6 : ltac:(refine (M.Val box_stack_heap.Point.t)) :=
-        M.alloc
-          {| box_stack_heap.Point.x := α3; box_stack_heap.Point.y := α5; |} in
-      let* α7 := M.read α6 in
-      let* α8 : ltac:(refine (M.Val box_stack_heap.Rectangle.t)) :=
+      let* α6 : ltac:(refine (M.Val box_stack_heap.Rectangle.t)) :=
         M.alloc
           {|
             box_stack_heap.Rectangle.top_left := α1;
-            box_stack_heap.Rectangle.bottom_right := α7;
+            box_stack_heap.Rectangle.bottom_right :=
+              {| box_stack_heap.Point.x := α3; box_stack_heap.Point.y := α5; |};
           |} in
       (alloc.boxed.Box.t
             box_stack_heap.Rectangle.t
             alloc.alloc.Global.t)::["new"]
-        α8 in
+        α6 in
     let* boxed_point :
         ltac:(refine
           (M.Val

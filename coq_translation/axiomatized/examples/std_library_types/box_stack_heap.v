@@ -9,17 +9,17 @@ Section Point.
     y : f64.t;
   }.
   
-  Global Instance Get_x : Notation.Dot "x" := {
-    Notation.dot x' := let* x' := M.read x' in M.alloc x'.(x) : M _;
+  Global Instance Get_x : Notations.Dot "x" := {
+    Notations.dot := Ref.map (fun x' => x'.(x)) (fun v x' => x' <| x := v |>);
   }.
-  Global Instance Get_AF_x : Notation.DoubleColon t "x" := {
-    Notation.double_colon x' := let* x' := M.read x' in M.alloc x'.(x) : M _;
+  Global Instance Get_AF_x : Notations.DoubleColon t "x" := {
+    Notations.double_colon (x' : M.Val t) := x'.["x"];
   }.
-  Global Instance Get_y : Notation.Dot "y" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(y) : M _;
+  Global Instance Get_y : Notations.Dot "y" := {
+    Notations.dot := Ref.map (fun x => x.(y)) (fun v x => x <| y := v |>);
   }.
-  Global Instance Get_AF_y : Notation.DoubleColon t "y" := {
-    Notation.double_colon x := let* x := M.read x in M.alloc x.(y) : M _;
+  Global Instance Get_AF_y : Notations.DoubleColon t "y" := {
+    Notations.double_colon (x : M.Val t) := x.["y"];
   }.
 End Point.
 End Point.
@@ -38,8 +38,8 @@ Section Impl_core_fmt_Debug_for_box_stack_heap_Point_t.
         M (M.Val ltac:(core.fmt.Result)).
   
   Global Instance AssociatedFunction_fmt :
-    Notation.DoubleColon ltac:(Self) "fmt" := {
-    Notation.double_colon := fmt;
+    Notations.DoubleColon ltac:(Self) "fmt" := {
+    Notations.double_colon := fmt;
   }.
   
   Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
@@ -60,8 +60,8 @@ Section Impl_core_clone_Clone_for_box_stack_heap_Point_t.
       (M.Val (ref ltac:(Self))) -> M (M.Val box_stack_heap.Point.t).
   
   Global Instance AssociatedFunction_clone :
-    Notation.DoubleColon ltac:(Self) "clone" := {
-    Notation.double_colon := clone;
+    Notations.DoubleColon ltac:(Self) "clone" := {
+    Notations.double_colon := clone;
   }.
   
   Global Instance ℐ : core.clone.Clone.Required.Trait ltac:(Self) := {
@@ -88,19 +88,22 @@ Section Rectangle.
     bottom_right : box_stack_heap.Point.t;
   }.
   
-  Global Instance Get_top_left : Notation.Dot "top_left" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(top_left) : M _;
+  Global Instance Get_top_left : Notations.Dot "top_left" := {
+    Notations.dot :=
+      Ref.map (fun x => x.(top_left)) (fun v x => x <| top_left := v |>);
   }.
-  Global Instance Get_AF_top_left : Notation.DoubleColon t "top_left" := {
-    Notation.double_colon x := let* x := M.read x in M.alloc x.(top_left) : M _;
+  Global Instance Get_AF_top_left : Notations.DoubleColon t "top_left" := {
+    Notations.double_colon (x : M.Val t) := x.["top_left"];
   }.
-  Global Instance Get_bottom_right : Notation.Dot "bottom_right" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(bottom_right) : M _;
+  Global Instance Get_bottom_right : Notations.Dot "bottom_right" := {
+    Notations.dot :=
+      Ref.map
+        (fun x => x.(bottom_right))
+        (fun v x => x <| bottom_right := v |>);
   }.
   Global Instance Get_AF_bottom_right :
-    Notation.DoubleColon t "bottom_right" := {
-    Notation.double_colon x :=
-      let* x := M.read x in M.alloc x.(bottom_right) : M _;
+    Notations.DoubleColon t "bottom_right" := {
+    Notations.double_colon (x : M.Val t) := x.["bottom_right"];
   }.
 End Rectangle.
 End Rectangle.

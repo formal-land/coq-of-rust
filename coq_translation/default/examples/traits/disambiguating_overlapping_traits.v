@@ -26,17 +26,18 @@ Section Form.
     age : u8.t;
   }.
   
-  Global Instance Get_username : Notation.Dot "username" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(username) : M _;
+  Global Instance Get_username : Notations.Dot "username" := {
+    Notations.dot :=
+      Ref.map (fun x => x.(username)) (fun v x => x <| username := v |>);
   }.
-  Global Instance Get_AF_username : Notation.DoubleColon t "username" := {
-    Notation.double_colon x := let* x := M.read x in M.alloc x.(username) : M _;
+  Global Instance Get_AF_username : Notations.DoubleColon t "username" := {
+    Notations.double_colon (x : M.Val t) := x.["username"];
   }.
-  Global Instance Get_age : Notation.Dot "age" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(age) : M _;
+  Global Instance Get_age : Notations.Dot "age" := {
+    Notations.dot := Ref.map (fun x => x.(age)) (fun v x => x <| age := v |>);
   }.
-  Global Instance Get_AF_age : Notation.DoubleColon t "age" := {
-    Notation.double_colon x := let* x := M.read x in M.alloc x.(age) : M _;
+  Global Instance Get_AF_age : Notations.DoubleColon t "age" := {
+    Notations.double_colon (x : M.Val t) := x.["age"];
   }.
 End Form.
 End Form.
@@ -57,18 +58,16 @@ Section Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating
       (let* α0 :
           ltac:(refine (M.Val disambiguating_overlapping_traits.Form.t)) :=
         deref self in
-      let* α1 : ltac:(refine (M.Val alloc.string.String.t)) :=
-        α0.["username"] in
-      let* α2 : ltac:(refine (M.Val (ref alloc.string.String.t))) :=
-        borrow α1 in
+      let* α1 : ltac:(refine (M.Val (ref alloc.string.String.t))) :=
+        borrow α0.["username"] in
       (core.clone.Clone.clone
           (Self := alloc.string.String.t)
           (Trait := ltac:(refine _)))
-        α2).
+        α1).
   
   Global Instance AssociatedFunction_get :
-    Notation.DoubleColon ltac:(Self) "get" := {
-    Notation.double_colon := get;
+    Notations.DoubleColon ltac:(Self) "get" := {
+    Notations.double_colon := get;
   }.
   
   Global Instance ℐ :
@@ -92,11 +91,11 @@ Section Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_over
       (let* α0 :
           ltac:(refine (M.Val disambiguating_overlapping_traits.Form.t)) :=
         deref self in
-      α0.["age"]).
+      M.pure α0.["age"]).
   
   Global Instance AssociatedFunction_get :
-    Notation.DoubleColon ltac:(Self) "get" := {
-    Notation.double_colon := get;
+    Notations.DoubleColon ltac:(Self) "get" := {
+    Notations.double_colon := get;
   }.
   
   Global Instance ℐ :

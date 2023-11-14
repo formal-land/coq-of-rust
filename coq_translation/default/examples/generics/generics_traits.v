@@ -38,8 +38,8 @@ Section Impl_generics_traits_DoubleDrop_T_for_U.
     M.function_body (M.alloc tt).
   
   Global Instance AssociatedFunction_double_drop :
-    Notation.DoubleColon ltac:(Self) "double_drop" := {
-    Notation.double_colon := double_drop;
+    Notations.DoubleColon ltac:(Self) "double_drop" := {
+    Notations.double_colon := double_drop;
   }.
   
   Global Instance ℐ : generics_traits.DoubleDrop.Trait ltac:(Self) (T := T) := {

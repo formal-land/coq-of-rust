@@ -9,8 +9,8 @@ Section Ref.
     x0 : ref T;
   }.
   
-  Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(x0) : M _;
+  Global Instance Get_0 : Notations.Dot "0" := {
+    Notations.dot := Ref.map (fun x => x.(x0)) (fun v x => x <| x0 := v |>);
   }.
 End Ref.
 End Ref.
@@ -39,16 +39,15 @@ Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_t_T.
       let* α4 :
           ltac:(refine (M.Val (scoping_rules_lifetimes_bounds.Ref.t T))) :=
         deref self in
-      let* α5 : ltac:(refine (M.Val (ref T))) := α4.["0"] in
-      let* α6 : ltac:(refine (M.Val (ref (ref T)))) := borrow α5 in
-      let* α7 : ltac:(refine (M.Val (ref (ref (ref T))))) := borrow α6 in
-      let* α8 : ltac:(refine (M.Val (ref type not implemented))) :=
-        pointer_coercion "Unsize" α7 in
-      core.fmt.Formatter.t::["debug_tuple_field1_finish"] α1 α3 α8).
+      let* α5 : ltac:(refine (M.Val (ref (ref T)))) := borrow α4.["0"] in
+      let* α6 : ltac:(refine (M.Val (ref (ref (ref T))))) := borrow α5 in
+      let* α7 : ltac:(refine (M.Val (ref type not implemented))) :=
+        pointer_coercion "Unsize" α6 in
+      core.fmt.Formatter.t::["debug_tuple_field1_finish"] α1 α3 α7).
   
   Global Instance AssociatedFunction_fmt :
-    Notation.DoubleColon ltac:(Self) "fmt" := {
-    Notation.double_colon := fmt;
+    Notations.DoubleColon ltac:(Self) "fmt" := {
+    Notations.double_colon := fmt;
   }.
   
   Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {

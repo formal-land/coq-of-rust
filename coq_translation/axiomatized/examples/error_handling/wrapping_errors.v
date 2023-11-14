@@ -22,8 +22,8 @@ Section Impl_core_fmt_Debug_for_wrapping_errors_DoubleError_t.
         M (M.Val ltac:(core.fmt.Result)).
   
   Global Instance AssociatedFunction_fmt :
-    Notation.DoubleColon ltac:(Self) "fmt" := {
-    Notation.double_colon := fmt;
+    Notations.DoubleColon ltac:(Self) "fmt" := {
+    Notations.double_colon := fmt;
   }.
   
   Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
@@ -52,8 +52,8 @@ Section Impl_core_fmt_Display_for_wrapping_errors_DoubleError_t.
         M (M.Val ltac:(core.fmt.Result)).
   
   Global Instance AssociatedFunction_fmt :
-    Notation.DoubleColon ltac:(Self) "fmt" := {
-    Notation.double_colon := fmt;
+    Notations.DoubleColon ltac:(Self) "fmt" := {
+    Notations.double_colon := fmt;
   }.
   
   Global Instance ℐ : core.fmt.Display.Trait ltac:(Self) := {
@@ -82,8 +82,8 @@ Section Impl_core_error_Error_for_wrapping_errors_DoubleError_t.
         M (M.Val (core.option.Option.t (ref _ (* dyn *)))).
   
   Global Instance AssociatedFunction_source :
-    Notation.DoubleColon ltac:(Self) "source" := {
-    Notation.double_colon := source;
+    Notations.DoubleColon ltac:(Self) "source" := {
+    Notations.double_colon := source;
   }.
   
   Global Instance ℐ : core.error.Error.Required.Trait ltac:(Self) := {
@@ -110,8 +110,8 @@ Section Impl_core_convert_From_core_num_error_ParseIntError_t_for_wrapping_error
         M (M.Val wrapping_errors.DoubleError.t).
   
   Global Instance AssociatedFunction_from :
-    Notation.DoubleColon ltac:(Self) "from" := {
-    Notation.double_colon := from;
+    Notations.DoubleColon ltac:(Self) "from" := {
+    Notations.double_colon := from;
   }.
   
   Global Instance ℐ :

@@ -7,11 +7,11 @@ Section Borrowed.
     x : ref i32.t;
   }.
   
-  Global Instance Get_x : Notation.Dot "x" := {
-    Notation.dot x' := let* x' := M.read x' in M.alloc x'.(x) : M _;
+  Global Instance Get_x : Notations.Dot "x" := {
+    Notations.dot := Ref.map (fun x' => x'.(x)) (fun v x' => x' <| x := v |>);
   }.
-  Global Instance Get_AF_x : Notation.DoubleColon t "x" := {
-    Notation.double_colon x' := let* x' := M.read x' in M.alloc x'.(x) : M _;
+  Global Instance Get_AF_x : Notations.DoubleColon t "x" := {
+    Notations.double_colon (x' : M.Val t) := x'.["x"];
   }.
 End Borrowed.
 End Borrowed.
@@ -29,8 +29,8 @@ Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed_t.
         M (M.Val ltac:(core.fmt.Result)).
   
   Global Instance AssociatedFunction_fmt :
-    Notation.DoubleColon ltac:(Self) "fmt" := {
-    Notation.double_colon := fmt;
+    Notations.DoubleColon ltac:(Self) "fmt" := {
+    Notations.double_colon := fmt;
   }.
   
   Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
@@ -51,8 +51,8 @@ Section Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed_t.
   Parameter default : M (M.Val ltac:(Self)).
   
   Global Instance AssociatedFunction_default :
-    Notation.DoubleColon ltac:(Self) "default" := {
-    Notation.double_colon := default;
+    Notations.DoubleColon ltac:(Self) "default" := {
+    Notations.double_colon := default;
   }.
   
   Global Instance ℐ : core.default.Default.Trait ltac:(Self) := {

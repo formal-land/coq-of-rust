@@ -9,23 +9,24 @@ Section Person.
     phone : u64.t;
   }.
   
-  Global Instance Get_id : Notation.Dot "id" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(id) : M _;
+  Global Instance Get_id : Notations.Dot "id" := {
+    Notations.dot := Ref.map (fun x => x.(id)) (fun v x => x <| id := v |>);
   }.
-  Global Instance Get_AF_id : Notation.DoubleColon t "id" := {
-    Notation.double_colon x := let* x := M.read x in M.alloc x.(id) : M _;
+  Global Instance Get_AF_id : Notations.DoubleColon t "id" := {
+    Notations.double_colon (x : M.Val t) := x.["id"];
   }.
-  Global Instance Get_name : Notation.Dot "name" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(name) : M _;
+  Global Instance Get_name : Notations.Dot "name" := {
+    Notations.dot := Ref.map (fun x => x.(name)) (fun v x => x <| name := v |>);
   }.
-  Global Instance Get_AF_name : Notation.DoubleColon t "name" := {
-    Notation.double_colon x := let* x := M.read x in M.alloc x.(name) : M _;
+  Global Instance Get_AF_name : Notations.DoubleColon t "name" := {
+    Notations.double_colon (x : M.Val t) := x.["name"];
   }.
-  Global Instance Get_phone : Notation.Dot "phone" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(phone) : M _;
+  Global Instance Get_phone : Notations.Dot "phone" := {
+    Notations.dot :=
+      Ref.map (fun x => x.(phone)) (fun v x => x <| phone := v |>);
   }.
-  Global Instance Get_AF_phone : Notation.DoubleColon t "phone" := {
-    Notation.double_colon x := let* x := M.read x in M.alloc x.(phone) : M _;
+  Global Instance Get_AF_phone : Notations.DoubleColon t "phone" := {
+    Notations.double_colon (x : M.Val t) := x.["phone"];
   }.
 End Person.
 End Person.
@@ -46,37 +47,34 @@ Section Impl_core_hash_Hash_for_hash_Person_t.
     M.function_body
       (let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val hash.Person.t)) := deref self in
-        let* α1 : ltac:(refine (M.Val u32.t)) := α0.["id"] in
-        let* α2 : ltac:(refine (M.Val (ref u32.t))) := borrow α1 in
-        let* α3 : ltac:(refine (M.Val __H)) := deref state in
-        let* α4 : ltac:(refine (M.Val (mut_ref __H))) := borrow_mut α3 in
+        let* α1 : ltac:(refine (M.Val (ref u32.t))) := borrow α0.["id"] in
+        let* α2 : ltac:(refine (M.Val __H)) := deref state in
+        let* α3 : ltac:(refine (M.Val (mut_ref __H))) := borrow_mut α2 in
         (core.hash.Hash.hash (Self := u32.t) (Trait := ltac:(refine _)))
-          α2
-          α4 in
+          α1
+          α3 in
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val hash.Person.t)) := deref self in
-        let* α1 : ltac:(refine (M.Val alloc.string.String.t)) := α0.["name"] in
-        let* α2 : ltac:(refine (M.Val (ref alloc.string.String.t))) :=
-          borrow α1 in
-        let* α3 : ltac:(refine (M.Val __H)) := deref state in
-        let* α4 : ltac:(refine (M.Val (mut_ref __H))) := borrow_mut α3 in
+        let* α1 : ltac:(refine (M.Val (ref alloc.string.String.t))) :=
+          borrow α0.["name"] in
+        let* α2 : ltac:(refine (M.Val __H)) := deref state in
+        let* α3 : ltac:(refine (M.Val (mut_ref __H))) := borrow_mut α2 in
         (core.hash.Hash.hash
             (Self := alloc.string.String.t)
             (Trait := ltac:(refine _)))
-          α2
-          α4 in
+          α1
+          α3 in
       let* α0 : ltac:(refine (M.Val hash.Person.t)) := deref self in
-      let* α1 : ltac:(refine (M.Val u64.t)) := α0.["phone"] in
-      let* α2 : ltac:(refine (M.Val (ref u64.t))) := borrow α1 in
-      let* α3 : ltac:(refine (M.Val __H)) := deref state in
-      let* α4 : ltac:(refine (M.Val (mut_ref __H))) := borrow_mut α3 in
-      (core.hash.Hash.hash (Self := u64.t) (Trait := ltac:(refine _))) α2 α4).
+      let* α1 : ltac:(refine (M.Val (ref u64.t))) := borrow α0.["phone"] in
+      let* α2 : ltac:(refine (M.Val __H)) := deref state in
+      let* α3 : ltac:(refine (M.Val (mut_ref __H))) := borrow_mut α2 in
+      (core.hash.Hash.hash (Self := u64.t) (Trait := ltac:(refine _))) α1 α3).
   
   Global Instance AssociatedFunction_hash
       {__H : Set}
       {ℋ_0 : core.hash.Hasher.Trait __H} :
-    Notation.DoubleColon ltac:(Self) "hash" := {
-    Notation.double_colon := hash (__H := __H);
+    Notations.DoubleColon ltac:(Self) "hash" := {
+    Notations.double_colon := hash (__H := __H);
   }.
   
   Global Instance ℐ : core.hash.Hash.Required.Trait ltac:(Self) := {

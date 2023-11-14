@@ -13,23 +13,6 @@ import multiprocessing as mp
 
 test_folder = "examples"
 
-
-def get_output_path() -> str:
-    opts = sys.argv[1:]
-    if not opts:
-        return "coq_translation"
-
-    it = iter(opts)
-    while True:
-        try:
-            arg = next(it)
-            if arg == "--output-path":
-                return next(it)
-        except StopIteration:
-            break
-    return "coq_translation"
-
-
 # For each file recursively in the test folder
 rs_files = []
 for root, _dirs, files in os.walk(test_folder):
@@ -38,21 +21,20 @@ for root, _dirs, files in os.walk(test_folder):
     ]
 
 
-def compile(index, file):
-    print()
-    print(f"Translating file {index + 1}/{len(rs_files)}: {file}")
+def compile_with_option(file: str, output_path: str, is_axiomatized: bool):
     base = os.path.splitext(file)[0]
     os.makedirs(
-        os.path.dirname(os.path.join(get_output_path(), base + ".err")), exist_ok=True
+        os.path.dirname(os.path.join(output_path, base + ".err")), exist_ok=True
     )
     # Translate the file, and save the error output if any
     command = (
         "cargo run --quiet --bin coq-of-rust -- translate --path "
         + file
         + " "
-        + " ".join(sys.argv[1:])
+        + ("--axiomatize --axiomatize-public " if is_axiomatized else "")
+        + "--output-path " + output_path
         + " 2> "
-        + os.path.join(get_output_path(), base + ".err")
+        + os.path.join(output_path, base + ".err")
     )
     print(command)
 
@@ -66,6 +48,40 @@ def compile(index, file):
         sys.exit(1)
 
 
+def compile(index, file):
+    print()
+    print(f"Translating file {index + 1}/{len(rs_files)}: {file}")
+    compile_with_option(file, "coq_translation/default/", False)
+    compile_with_option(file, "coq_translation/axiomatized/", True)
+
+
 # run in parallel
-pool = mp.Pool(processes=(1 if os.environ.get("RUN_TESTS_SINGLE_PROCESS") else None))
+pool = mp.Pool(processes=(1 if os.environ.get(
+    "RUN_TESTS_SINGLE_PROCESS") else None))
 pool.starmap(compile, enumerate(rs_files))
+
+
+def update_erc_20():
+    file_name = "coq_translation/default/examples/ink_contracts/erc20.v"
+    with open(file_name, "r") as f:
+        content = f.read()
+
+    content = content.replace(
+        "Module  Mapping.",
+        """Require Import CoqOfRust.examples.ink_contracts.Lib.
+
+Module Mapping := Mapping.
+
+(* Module  Mapping. (*""",
+    )
+    content = content.replace(
+        "End Impl_erc20_Mapping_t_K_V.",
+        "End Impl_erc20_Mapping_t_K_V. *)",
+    )
+
+    with open(file_name, "w") as f:
+        f.write(content)
+
+
+# update files for last changes
+update_erc_20()

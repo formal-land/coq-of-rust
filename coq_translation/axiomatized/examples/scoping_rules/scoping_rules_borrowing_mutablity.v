@@ -10,23 +10,25 @@ Section Book.
     year : u32.t;
   }.
   
-  Global Instance Get_author : Notation.Dot "author" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(author) : M _;
+  Global Instance Get_author : Notations.Dot "author" := {
+    Notations.dot :=
+      Ref.map (fun x => x.(author)) (fun v x => x <| author := v |>);
   }.
-  Global Instance Get_AF_author : Notation.DoubleColon t "author" := {
-    Notation.double_colon x := let* x := M.read x in M.alloc x.(author) : M _;
+  Global Instance Get_AF_author : Notations.DoubleColon t "author" := {
+    Notations.double_colon (x : M.Val t) := x.["author"];
   }.
-  Global Instance Get_title : Notation.Dot "title" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(title) : M _;
+  Global Instance Get_title : Notations.Dot "title" := {
+    Notations.dot :=
+      Ref.map (fun x => x.(title)) (fun v x => x <| title := v |>);
   }.
-  Global Instance Get_AF_title : Notation.DoubleColon t "title" := {
-    Notation.double_colon x := let* x := M.read x in M.alloc x.(title) : M _;
+  Global Instance Get_AF_title : Notations.DoubleColon t "title" := {
+    Notations.double_colon (x : M.Val t) := x.["title"];
   }.
-  Global Instance Get_year : Notation.Dot "year" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(year) : M _;
+  Global Instance Get_year : Notations.Dot "year" := {
+    Notations.dot := Ref.map (fun x => x.(year)) (fun v x => x <| year := v |>);
   }.
-  Global Instance Get_AF_year : Notation.DoubleColon t "year" := {
-    Notation.double_colon x := let* x := M.read x in M.alloc x.(year) : M _;
+  Global Instance Get_AF_year : Notations.DoubleColon t "year" := {
+    Notations.double_colon (x : M.Val t) := x.["year"];
   }.
 End Book.
 End Book.
@@ -44,8 +46,8 @@ Section Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book_t.
         M (M.Val scoping_rules_borrowing_mutablity.Book.t).
   
   Global Instance AssociatedFunction_clone :
-    Notation.DoubleColon ltac:(Self) "clone" := {
-    Notation.double_colon := clone;
+    Notations.DoubleColon ltac:(Self) "clone" := {
+    Notations.double_colon := clone;
   }.
   
   Global Instance ℐ : core.clone.Clone.Required.Trait ltac:(Self) := {

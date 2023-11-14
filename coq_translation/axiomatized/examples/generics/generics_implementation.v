@@ -7,11 +7,11 @@ Section Val.
     val : f64.t;
   }.
   
-  Global Instance Get_val : Notation.Dot "val" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(val) : M _;
+  Global Instance Get_val : Notations.Dot "val" := {
+    Notations.dot := Ref.map (fun x => x.(val)) (fun v x => x <| val := v |>);
   }.
-  Global Instance Get_AF_val : Notation.DoubleColon t "val" := {
-    Notation.double_colon x := let* x := M.read x in M.alloc x.(val) : M _;
+  Global Instance Get_AF_val : Notations.DoubleColon t "val" := {
+    Notations.double_colon (x : M.Val t) := x.["val"];
   }.
 End Val.
 End Val.
@@ -24,11 +24,12 @@ Section GenVal.
     gen_val : T;
   }.
   
-  Global Instance Get_gen_val : Notation.Dot "gen_val" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(gen_val) : M _;
+  Global Instance Get_gen_val : Notations.Dot "gen_val" := {
+    Notations.dot :=
+      Ref.map (fun x => x.(gen_val)) (fun v x => x <| gen_val := v |>);
   }.
-  Global Instance Get_AF_gen_val : Notation.DoubleColon t "gen_val" := {
-    Notation.double_colon x := let* x := M.read x in M.alloc x.(gen_val) : M _;
+  Global Instance Get_AF_gen_val : Notations.DoubleColon t "gen_val" := {
+    Notations.double_colon (x : M.Val t) := x.["gen_val"];
   }.
 End GenVal.
 End GenVal.
@@ -45,8 +46,8 @@ Section Impl_generics_implementation_Val_t.
   Parameter value : (M.Val (ref ltac:(Self))) -> M (M.Val (ref f64.t)).
   
   Global Instance AssociatedFunction_value :
-    Notation.DoubleColon ltac:(Self) "value" := {
-    Notation.double_colon := value;
+    Notations.DoubleColon ltac:(Self) "value" := {
+    Notations.double_colon := value;
   }.
 End Impl_generics_implementation_Val_t.
 End Impl_generics_implementation_Val_t.
@@ -65,8 +66,8 @@ Section Impl_generics_implementation_GenVal_t_T.
   Parameter value : (M.Val (ref ltac:(Self))) -> M (M.Val (ref T)).
   
   Global Instance AssociatedFunction_value :
-    Notation.DoubleColon ltac:(Self) "value" := {
-    Notation.double_colon := value;
+    Notations.DoubleColon ltac:(Self) "value" := {
+    Notations.double_colon := value;
   }.
 End Impl_generics_implementation_GenVal_t_T.
 End Impl_generics_implementation_GenVal_t_T.

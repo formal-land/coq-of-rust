@@ -7,8 +7,8 @@ Section Owner.
     x0 : i32.t;
   }.
   
-  Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(x0) : M _;
+  Global Instance Get_0 : Notations.Dot "0" := {
+    Notations.dot := Ref.map (fun x => x.(x0)) (fun v x => x <| x0 := v |>);
   }.
 End Owner.
 End Owner.
@@ -25,8 +25,8 @@ Section Impl_scoping_rules_lifetimes_methods_Owner_t.
   Parameter add_one : (M.Val (mut_ref ltac:(Self))) -> M (M.Val unit).
   
   Global Instance AssociatedFunction_add_one :
-    Notation.DoubleColon ltac:(Self) "add_one" := {
-    Notation.double_colon := add_one;
+    Notations.DoubleColon ltac:(Self) "add_one" := {
+    Notations.double_colon := add_one;
   }.
   
   (*
@@ -37,8 +37,8 @@ Section Impl_scoping_rules_lifetimes_methods_Owner_t.
   Parameter print : (M.Val (ref ltac:(Self))) -> M (M.Val unit).
   
   Global Instance AssociatedFunction_print :
-    Notation.DoubleColon ltac:(Self) "print" := {
-    Notation.double_colon := print;
+    Notations.DoubleColon ltac:(Self) "print" := {
+    Notations.double_colon := print;
   }.
 End Impl_scoping_rules_lifetimes_methods_Owner_t.
 End Impl_scoping_rules_lifetimes_methods_Owner_t.

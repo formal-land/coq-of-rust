@@ -32,8 +32,8 @@ Section Impl_core_fmt_Debug_for_operator_overloading_FooBar_t.
         M (M.Val ltac:(core.fmt.Result)).
   
   Global Instance AssociatedFunction_fmt :
-    Notation.DoubleColon ltac:(Self) "fmt" := {
-    Notation.double_colon := fmt;
+    Notations.DoubleColon ltac:(Self) "fmt" := {
+    Notations.double_colon := fmt;
   }.
   
   Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
@@ -61,8 +61,8 @@ Section Impl_core_fmt_Debug_for_operator_overloading_BarFoo_t.
         M (M.Val ltac:(core.fmt.Result)).
   
   Global Instance AssociatedFunction_fmt :
-    Notation.DoubleColon ltac:(Self) "fmt" := {
-    Notation.double_colon := fmt;
+    Notations.DoubleColon ltac:(Self) "fmt" := {
+    Notations.double_colon := fmt;
   }.
   
   Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
@@ -93,8 +93,8 @@ Section Impl_core_ops_arith_Add_operator_overloading_Bar_t_for_operator_overload
         M (M.Val operator_overloading.FooBar.t).
   
   Global Instance AssociatedFunction_add :
-    Notation.DoubleColon ltac:(Self) "add" := {
-    Notation.double_colon := add;
+    Notations.DoubleColon ltac:(Self) "add" := {
+    Notations.double_colon := add;
   }.
   
   Global Instance ℐ :
@@ -128,8 +128,8 @@ Section Impl_core_ops_arith_Add_operator_overloading_Foo_t_for_operator_overload
         M (M.Val operator_overloading.BarFoo.t).
   
   Global Instance AssociatedFunction_add :
-    Notation.DoubleColon ltac:(Self) "add" := {
-    Notation.double_colon := add;
+    Notations.DoubleColon ltac:(Self) "add" := {
+    Notations.double_colon := add;
   }.
   
   Global Instance ℐ :

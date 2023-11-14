@@ -8,17 +8,19 @@ Section Account.
     password : ref str.t;
   }.
   
-  Global Instance Get_username : Notation.Dot "username" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(username) : M _;
+  Global Instance Get_username : Notations.Dot "username" := {
+    Notations.dot :=
+      Ref.map (fun x => x.(username)) (fun v x => x <| username := v |>);
   }.
-  Global Instance Get_AF_username : Notation.DoubleColon t "username" := {
-    Notation.double_colon x := let* x := M.read x in M.alloc x.(username) : M _;
+  Global Instance Get_AF_username : Notations.DoubleColon t "username" := {
+    Notations.double_colon (x : M.Val t) := x.["username"];
   }.
-  Global Instance Get_password : Notation.Dot "password" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(password) : M _;
+  Global Instance Get_password : Notations.Dot "password" := {
+    Notations.dot :=
+      Ref.map (fun x => x.(password)) (fun v x => x <| password := v |>);
   }.
-  Global Instance Get_AF_password : Notation.DoubleColon t "password" := {
-    Notation.double_colon x := let* x := M.read x in M.alloc x.(password) : M _;
+  Global Instance Get_AF_password : Notations.DoubleColon t "password" := {
+    Notations.double_colon (x : M.Val t) := x.["password"];
   }.
 End Account.
 End Account.
@@ -45,8 +47,8 @@ Section Impl_core_cmp_PartialEq_for_hash_map_alternate_or_custom_key_types_Accou
         M (M.Val bool.t).
   
   Global Instance AssociatedFunction_eq :
-    Notation.DoubleColon ltac:(Self) "eq" := {
-    Notation.double_colon := eq;
+    Notations.DoubleColon ltac:(Self) "eq" := {
+    Notations.double_colon := eq;
   }.
   
   Global Instance ℐ :
@@ -78,8 +80,8 @@ Section Impl_core_cmp_Eq_for_hash_map_alternate_or_custom_key_types_Account_t.
       (M.Val (ref ltac:(Self))) -> M (M.Val unit).
   
   Global Instance AssociatedFunction_assert_receiver_is_total_eq :
-    Notation.DoubleColon ltac:(Self) "assert_receiver_is_total_eq" := {
-    Notation.double_colon := assert_receiver_is_total_eq;
+    Notations.DoubleColon ltac:(Self) "assert_receiver_is_total_eq" := {
+    Notations.double_colon := assert_receiver_is_total_eq;
   }.
   
   Global Instance ℐ : core.cmp.Eq.Required.Trait ltac:(Self) := {
@@ -103,8 +105,8 @@ Section Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account_t
   Global Instance AssociatedFunction_hash
       {__H : Set}
       {ℋ_0 : core.hash.Hasher.Trait __H} :
-    Notation.DoubleColon ltac:(Self) "hash" := {
-    Notation.double_colon := hash (__H := __H);
+    Notations.DoubleColon ltac:(Self) "hash" := {
+    Notations.double_colon := hash (__H := __H);
   }.
   
   Global Instance ℐ : core.hash.Hash.Required.Trait ltac:(Self) := {
@@ -122,17 +124,18 @@ Section AccountInfo.
     email : ref str.t;
   }.
   
-  Global Instance Get_name : Notation.Dot "name" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(name) : M _;
+  Global Instance Get_name : Notations.Dot "name" := {
+    Notations.dot := Ref.map (fun x => x.(name)) (fun v x => x <| name := v |>);
   }.
-  Global Instance Get_AF_name : Notation.DoubleColon t "name" := {
-    Notation.double_colon x := let* x := M.read x in M.alloc x.(name) : M _;
+  Global Instance Get_AF_name : Notations.DoubleColon t "name" := {
+    Notations.double_colon (x : M.Val t) := x.["name"];
   }.
-  Global Instance Get_email : Notation.Dot "email" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(email) : M _;
+  Global Instance Get_email : Notations.Dot "email" := {
+    Notations.dot :=
+      Ref.map (fun x => x.(email)) (fun v x => x <| email := v |>);
   }.
-  Global Instance Get_AF_email : Notation.DoubleColon t "email" := {
-    Notation.double_colon x := let* x := M.read x in M.alloc x.(email) : M _;
+  Global Instance Get_AF_email : Notations.DoubleColon t "email" := {
+    Notations.double_colon (x : M.Val t) := x.["email"];
   }.
 End AccountInfo.
 End AccountInfo.

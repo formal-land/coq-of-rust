@@ -27,8 +27,8 @@ Section Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers_t.
         M (M.Val i32.t).
   
   Global Instance AssociatedFunction_run :
-    Notation.DoubleColon ltac:(Self) "run" := {
-    Notation.double_colon := run;
+    Notations.DoubleColon ltac:(Self) "run" := {
+    Notations.double_colon := run;
   }.
 End Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers_t.
 End Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers_t.

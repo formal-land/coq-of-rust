@@ -34,8 +34,8 @@ Section Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Shee
   Parameter noise : (M.Val (ref ltac:(Self))) -> M (M.Val (ref str.t)).
   
   Global Instance AssociatedFunction_noise :
-    Notation.DoubleColon ltac:(Self) "noise" := {
-    Notation.double_colon := noise;
+    Notations.DoubleColon ltac:(Self) "noise" := {
+    Notations.double_colon := noise;
   }.
   
   Global Instance ℐ : returning_traits_with_dyn.Animal.Trait ltac:(Self) := {
@@ -56,8 +56,8 @@ Section Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow_
   Parameter noise : (M.Val (ref ltac:(Self))) -> M (M.Val (ref str.t)).
   
   Global Instance AssociatedFunction_noise :
-    Notation.DoubleColon ltac:(Self) "noise" := {
-    Notation.double_colon := noise;
+    Notations.DoubleColon ltac:(Self) "noise" := {
+    Notations.double_colon := noise;
   }.
   
   Global Instance ℐ : returning_traits_with_dyn.Animal.Trait ltac:(Self) := {

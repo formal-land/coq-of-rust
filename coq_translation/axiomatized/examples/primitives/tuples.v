@@ -20,17 +20,17 @@ Section Matrix.
     x3 : f32.t;
   }.
   
-  Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(x0) : M _;
+  Global Instance Get_0 : Notations.Dot "0" := {
+    Notations.dot := Ref.map (fun x => x.(x0)) (fun v x => x <| x0 := v |>);
   }.
-  Global Instance Get_1 : Notation.Dot "1" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(x1) : M _;
+  Global Instance Get_1 : Notations.Dot "1" := {
+    Notations.dot := Ref.map (fun x => x.(x1)) (fun v x => x <| x1 := v |>);
   }.
-  Global Instance Get_2 : Notation.Dot "2" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(x2) : M _;
+  Global Instance Get_2 : Notations.Dot "2" := {
+    Notations.dot := Ref.map (fun x => x.(x2)) (fun v x => x <| x2 := v |>);
   }.
-  Global Instance Get_3 : Notation.Dot "3" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(x3) : M _;
+  Global Instance Get_3 : Notations.Dot "3" := {
+    Notations.dot := Ref.map (fun x => x.(x3)) (fun v x => x <| x3 := v |>);
   }.
 End Matrix.
 End Matrix.
@@ -48,8 +48,8 @@ Section Impl_core_fmt_Debug_for_tuples_Matrix_t.
         M (M.Val ltac:(core.fmt.Result)).
   
   Global Instance AssociatedFunction_fmt :
-    Notation.DoubleColon ltac:(Self) "fmt" := {
-    Notation.double_colon := fmt;
+    Notations.DoubleColon ltac:(Self) "fmt" := {
+    Notations.double_colon := fmt;
   }.
   
   Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {

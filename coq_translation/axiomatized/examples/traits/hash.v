@@ -9,23 +9,24 @@ Section Person.
     phone : u64.t;
   }.
   
-  Global Instance Get_id : Notation.Dot "id" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(id) : M _;
+  Global Instance Get_id : Notations.Dot "id" := {
+    Notations.dot := Ref.map (fun x => x.(id)) (fun v x => x <| id := v |>);
   }.
-  Global Instance Get_AF_id : Notation.DoubleColon t "id" := {
-    Notation.double_colon x := let* x := M.read x in M.alloc x.(id) : M _;
+  Global Instance Get_AF_id : Notations.DoubleColon t "id" := {
+    Notations.double_colon (x : M.Val t) := x.["id"];
   }.
-  Global Instance Get_name : Notation.Dot "name" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(name) : M _;
+  Global Instance Get_name : Notations.Dot "name" := {
+    Notations.dot := Ref.map (fun x => x.(name)) (fun v x => x <| name := v |>);
   }.
-  Global Instance Get_AF_name : Notation.DoubleColon t "name" := {
-    Notation.double_colon x := let* x := M.read x in M.alloc x.(name) : M _;
+  Global Instance Get_AF_name : Notations.DoubleColon t "name" := {
+    Notations.double_colon (x : M.Val t) := x.["name"];
   }.
-  Global Instance Get_phone : Notation.Dot "phone" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(phone) : M _;
+  Global Instance Get_phone : Notations.Dot "phone" := {
+    Notations.dot :=
+      Ref.map (fun x => x.(phone)) (fun v x => x <| phone := v |>);
   }.
-  Global Instance Get_AF_phone : Notation.DoubleColon t "phone" := {
-    Notation.double_colon x := let* x := M.read x in M.alloc x.(phone) : M _;
+  Global Instance Get_AF_phone : Notations.DoubleColon t "phone" := {
+    Notations.double_colon (x : M.Val t) := x.["phone"];
   }.
 End Person.
 End Person.
@@ -44,8 +45,8 @@ Section Impl_core_hash_Hash_for_hash_Person_t.
   Global Instance AssociatedFunction_hash
       {__H : Set}
       {ℋ_0 : core.hash.Hasher.Trait __H} :
-    Notation.DoubleColon ltac:(Self) "hash" := {
-    Notation.double_colon := hash (__H := __H);
+    Notations.DoubleColon ltac:(Self) "hash" := {
+    Notations.double_colon := hash (__H := __H);
   }.
   
   Global Instance ℐ : core.hash.Hash.Required.Trait ltac:(Self) := {

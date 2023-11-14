@@ -35,8 +35,8 @@ Section Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Shee
     M.function_body (M.pure (mk_str "baaaaah!")).
   
   Global Instance AssociatedFunction_noise :
-    Notation.DoubleColon ltac:(Self) "noise" := {
-    Notation.double_colon := noise;
+    Notations.DoubleColon ltac:(Self) "noise" := {
+    Notations.double_colon := noise;
   }.
   
   Global Instance ℐ : returning_traits_with_dyn.Animal.Trait ltac:(Self) := {
@@ -58,8 +58,8 @@ Section Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow_
     M.function_body (M.pure (mk_str "moooooo!")).
   
   Global Instance AssociatedFunction_noise :
-    Notation.DoubleColon ltac:(Self) "noise" := {
-    Notation.double_colon := noise;
+    Notations.DoubleColon ltac:(Self) "noise" := {
+    Notations.double_colon := noise;
   }.
   
   Global Instance ℐ : returning_traits_with_dyn.Animal.Trait ltac:(Self) := {

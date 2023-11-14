@@ -39,8 +39,8 @@ Section SomeTrait.
   }.
   
   Global Instance Method_SomeType `(Trait) :
-    Notation.DoubleColonType Self "SomeType" := {
-    Notation.double_colon_type := SomeType;
+    Notations.DoubleColonType Self "SomeType" := {
+    Notations.double_colon_type := SomeType;
   }.
 End SomeTrait.
 End SomeTrait.
@@ -51,8 +51,8 @@ Section SomeOtherType.
     x0 : u32.t;
   }.
   
-  Global Instance Get_0 : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(x0) : M _;
+  Global Instance Get_0 : Notations.Dot "0" := {
+    Notations.dot := Ref.map (fun x => x.(x0)) (fun v x => x <| x0 := v |>);
   }.
 End SomeOtherType.
 End SomeOtherType.
@@ -99,8 +99,8 @@ Section Impl_traits_parms_SomeTrait_for_traits_parms_SomeOtherType_t.
   Definition some_fn : M (M.Val unit) := M.function_body (M.alloc tt).
   
   Global Instance AssociatedFunction_some_fn :
-    Notation.DoubleColon ltac:(Self) "some_fn" := {
-    Notation.double_colon := some_fn;
+    Notations.DoubleColon ltac:(Self) "some_fn" := {
+    Notations.double_colon := some_fn;
   }.
   
   Global Instance ℐ : traits_parms.SomeTrait.Trait ltac:(Self) := {

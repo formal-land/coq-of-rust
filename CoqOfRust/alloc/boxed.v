@@ -28,6 +28,6 @@ Parameter new :
   T -> M (Box T core.alloc.Global).
 
 Global Instance Method_Box_new {T : Set} :
-  Notation.DoubleColon (Box T core.alloc.Global) "new" := {
-  Notation.double_colon (x : T) := new x;
+  Notations.DoubleColon (Box T core.alloc.Global) "new" := {
+  Notations.double_colon (x : T) := new x;
 }.

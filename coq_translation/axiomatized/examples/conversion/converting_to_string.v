@@ -7,11 +7,12 @@ Section Circle.
     radius : i32.t;
   }.
   
-  Global Instance Get_radius : Notation.Dot "radius" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(radius) : M _;
+  Global Instance Get_radius : Notations.Dot "radius" := {
+    Notations.dot :=
+      Ref.map (fun x => x.(radius)) (fun v x => x <| radius := v |>);
   }.
-  Global Instance Get_AF_radius : Notation.DoubleColon t "radius" := {
-    Notation.double_colon x := let* x := M.read x in M.alloc x.(radius) : M _;
+  Global Instance Get_AF_radius : Notations.DoubleColon t "radius" := {
+    Notations.double_colon (x : M.Val t) := x.["radius"];
   }.
 End Circle.
 End Circle.
@@ -31,8 +32,8 @@ Section Impl_core_fmt_Display_for_converting_to_string_Circle_t.
         M (M.Val ltac:(core.fmt.Result)).
   
   Global Instance AssociatedFunction_fmt :
-    Notation.DoubleColon ltac:(Self) "fmt" := {
-    Notation.double_colon := fmt;
+    Notations.DoubleColon ltac:(Self) "fmt" := {
+    Notations.double_colon := fmt;
   }.
   
   Global Instance ℐ : core.fmt.Display.Trait ltac:(Self) := {

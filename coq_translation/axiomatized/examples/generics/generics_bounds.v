@@ -22,8 +22,8 @@ Section Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle_t.
   Parameter area : (M.Val (ref ltac:(Self))) -> M (M.Val f64.t).
   
   Global Instance AssociatedFunction_area :
-    Notation.DoubleColon ltac:(Self) "area" := {
-    Notation.double_colon := area;
+    Notations.DoubleColon ltac:(Self) "area" := {
+    Notations.double_colon := area;
   }.
   
   Global Instance ℐ : generics_bounds.HasArea.Trait ltac:(Self) := {
@@ -39,17 +39,19 @@ Section Rectangle.
     height : f64.t;
   }.
   
-  Global Instance Get_length : Notation.Dot "length" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(length) : M _;
+  Global Instance Get_length : Notations.Dot "length" := {
+    Notations.dot :=
+      Ref.map (fun x => x.(length)) (fun v x => x <| length := v |>);
   }.
-  Global Instance Get_AF_length : Notation.DoubleColon t "length" := {
-    Notation.double_colon x := let* x := M.read x in M.alloc x.(length) : M _;
+  Global Instance Get_AF_length : Notations.DoubleColon t "length" := {
+    Notations.double_colon (x : M.Val t) := x.["length"];
   }.
-  Global Instance Get_height : Notation.Dot "height" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(height) : M _;
+  Global Instance Get_height : Notations.Dot "height" := {
+    Notations.dot :=
+      Ref.map (fun x => x.(height)) (fun v x => x <| height := v |>);
   }.
-  Global Instance Get_AF_height : Notation.DoubleColon t "height" := {
-    Notation.double_colon x := let* x := M.read x in M.alloc x.(height) : M _;
+  Global Instance Get_AF_height : Notations.DoubleColon t "height" := {
+    Notations.double_colon (x : M.Val t) := x.["height"];
   }.
 End Rectangle.
 End Rectangle.
@@ -67,8 +69,8 @@ Section Impl_core_fmt_Debug_for_generics_bounds_Rectangle_t.
         M (M.Val ltac:(core.fmt.Result)).
   
   Global Instance AssociatedFunction_fmt :
-    Notation.DoubleColon ltac:(Self) "fmt" := {
-    Notation.double_colon := fmt;
+    Notations.DoubleColon ltac:(Self) "fmt" := {
+    Notations.double_colon := fmt;
   }.
   
   Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
@@ -85,17 +87,19 @@ Section Triangle.
     height : f64.t;
   }.
   
-  Global Instance Get_length : Notation.Dot "length" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(length) : M _;
+  Global Instance Get_length : Notations.Dot "length" := {
+    Notations.dot :=
+      Ref.map (fun x => x.(length)) (fun v x => x <| length := v |>);
   }.
-  Global Instance Get_AF_length : Notation.DoubleColon t "length" := {
-    Notation.double_colon x := let* x := M.read x in M.alloc x.(length) : M _;
+  Global Instance Get_AF_length : Notations.DoubleColon t "length" := {
+    Notations.double_colon (x : M.Val t) := x.["length"];
   }.
-  Global Instance Get_height : Notation.Dot "height" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(height) : M _;
+  Global Instance Get_height : Notations.Dot "height" := {
+    Notations.dot :=
+      Ref.map (fun x => x.(height)) (fun v x => x <| height := v |>);
   }.
-  Global Instance Get_AF_height : Notation.DoubleColon t "height" := {
-    Notation.double_colon x := let* x := M.read x in M.alloc x.(height) : M _;
+  Global Instance Get_AF_height : Notations.DoubleColon t "height" := {
+    Notations.double_colon (x : M.Val t) := x.["height"];
   }.
 End Triangle.
 End Triangle.

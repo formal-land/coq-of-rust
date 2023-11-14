@@ -8,17 +8,17 @@ Section Foo.
     y : u32.t;
   }.
   
-  Global Instance Get_x : Notation.Dot "x" := {
-    Notation.dot x' := let* x' := M.read x' in M.alloc x'.(x) : M _;
+  Global Instance Get_x : Notations.Dot "x" := {
+    Notations.dot := Ref.map (fun x' => x'.(x)) (fun v x' => x' <| x := v |>);
   }.
-  Global Instance Get_AF_x : Notation.DoubleColon t "x" := {
-    Notation.double_colon x' := let* x' := M.read x' in M.alloc x'.(x) : M _;
+  Global Instance Get_AF_x : Notations.DoubleColon t "x" := {
+    Notations.double_colon (x' : M.Val t) := x'.["x"];
   }.
-  Global Instance Get_y : Notation.Dot "y" := {
-    Notation.dot x := let* x := M.read x in M.alloc x.(y) : M _;
+  Global Instance Get_y : Notations.Dot "y" := {
+    Notations.dot := Ref.map (fun x => x.(y)) (fun v x => x <| y := v |>);
   }.
-  Global Instance Get_AF_y : Notation.DoubleColon t "y" := {
-    Notation.double_colon x := let* x := M.read x in M.alloc x.(y) : M _;
+  Global Instance Get_AF_y : Notations.DoubleColon t "y" := {
+    Notations.double_colon (x : M.Val t) := x.["y"];
   }.
 End Foo.
 End Foo.
@@ -50,14 +50,12 @@ Definition main : M (M.Val unit) :=
       let* α1 := M.read α0 in
       let* α2 : ltac:(refine (M.Val u32.t)) := M.alloc 2 in
       let* α3 := M.read α2 in
-      let* α4 : ltac:(refine (M.Val (u32.t * u32.t))) := M.alloc (α1, α3) in
+      let* α4 : ltac:(refine (M.Val u32.t)) := M.alloc 3 in
       let* α5 := M.read α4 in
-      let* α6 : ltac:(refine (M.Val u32.t)) := M.alloc 3 in
-      let* α7 := M.read α6 in
       M.alloc
         {|
-          match_destructuring_structs.Foo.x := α5;
-          match_destructuring_structs.Foo.y := α7;
+          match_destructuring_structs.Foo.x := (α1, α3);
+          match_destructuring_structs.Foo.y := α5;
         |} in
     let* α0 := M.read foo in
     match α0 with
