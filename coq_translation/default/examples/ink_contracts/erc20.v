@@ -118,7 +118,7 @@ End Impl_erc20_Mapping_t_K_V. *)
 Module  AccountId.
 Section AccountId.
   Record t : Set := {
-    x0 : alloc.string.String.t;
+    x0 : u128.t;
   }.
   
   Global Instance Get_0 : Notations.Dot "0" := {
@@ -136,9 +136,9 @@ Section Impl_core_default_Default_for_erc20_AccountId_t.
   *)
   Definition default : M (M.Val erc20.AccountId.t) :=
     M.function_body
-      (let* α0 : ltac:(refine (M.Val alloc.string.String.t)) :=
+      (let* α0 : ltac:(refine (M.Val u128.t)) :=
         core.default.Default.default
-          (Self := alloc.string.String.t)
+          (Self := u128.t)
           (Trait := ltac:(refine _)) in
       let* α1 := M.read α0 in
       M.alloc (erc20.AccountId.Build_t α1)).
@@ -153,6 +153,41 @@ Section Impl_core_default_Default_for_erc20_AccountId_t.
   }.
 End Impl_core_default_Default_for_erc20_AccountId_t.
 End Impl_core_default_Default_for_erc20_AccountId_t.
+
+Module  Impl_core_clone_Clone_for_erc20_AccountId_t.
+Section Impl_core_clone_Clone_for_erc20_AccountId_t.
+  Ltac Self := exact erc20.AccountId.t.
+  
+  (*
+  Clone
+  *)
+  Definition clone
+      (self : M.Val (ref ltac:(Self)))
+      : M (M.Val erc20.AccountId.t) :=
+    M.function_body
+      (let* _ : ltac:(refine (M.Val unit)) := M.alloc tt in
+      deref self).
+  
+  Global Instance AssociatedFunction_clone :
+    Notations.DoubleColon ltac:(Self) "clone" := {
+    Notations.double_colon := clone;
+  }.
+  
+  Global Instance ℐ : core.clone.Clone.Required.Trait ltac:(Self) := {
+    core.clone.Clone.clone := clone;
+    core.clone.Clone.clone_from := Datatypes.None;
+  }.
+End Impl_core_clone_Clone_for_erc20_AccountId_t.
+End Impl_core_clone_Clone_for_erc20_AccountId_t.
+
+Module  Impl_core_marker_Copy_for_erc20_AccountId_t.
+Section Impl_core_marker_Copy_for_erc20_AccountId_t.
+  Ltac Self := exact erc20.AccountId.t.
+  
+  Global Instance ℐ : core.marker.Copy.Trait ltac:(Self) := {
+  }.
+End Impl_core_marker_Copy_for_erc20_AccountId_t.
+End Impl_core_marker_Copy_for_erc20_AccountId_t.
 
 Ltac Balance := exact u128.t.
 
@@ -483,7 +518,7 @@ Section Impl_erc20_Erc20_t_2.
   Ltac Self := exact erc20.Erc20.t.
   
   (*
-      pub fn new(total_supply: Balance) -> Self {
+      fn new(total_supply: Balance) -> Self {
           let mut balances = Mapping::default();
           let caller = Self::init_env().caller();
           balances.insert(caller, total_supply);
@@ -564,7 +599,7 @@ Section Impl_erc20_Erc20_t_2.
   }.
   
   (*
-      pub fn total_supply(&self) -> Balance {
+      fn total_supply(&self) -> Balance {
           self.total_supply
       }
   *)
@@ -607,7 +642,7 @@ Section Impl_erc20_Erc20_t_2.
   }.
   
   (*
-      pub fn balance_of(&self, owner: AccountId) -> Balance {
+      fn balance_of(&self, owner: AccountId) -> Balance {
           self.balance_of_impl(&owner)
       }
   *)
@@ -669,7 +704,7 @@ Section Impl_erc20_Erc20_t_2.
   }.
   
   (*
-      pub fn allowance(&self, owner: AccountId, spender: AccountId) -> Balance {
+      fn allowance(&self, owner: AccountId, spender: AccountId) -> Balance {
           self.allowance_impl(&owner, &spender)
       }
   *)
@@ -791,7 +826,7 @@ Section Impl_erc20_Erc20_t_2.
   }.
   
   (*
-      pub fn transfer(&mut self, to: AccountId, value: Balance) -> Result<()> {
+      fn transfer(&mut self, to: AccountId, value: Balance) -> Result<()> {
           let from = self.env().caller();
           self.transfer_from_to(&from, &to, value)
       }
@@ -823,7 +858,7 @@ Section Impl_erc20_Erc20_t_2.
   }.
   
   (*
-      pub fn approve(&mut self, spender: AccountId, value: Balance) -> Result<()> {
+      fn approve(&mut self, spender: AccountId, value: Balance) -> Result<()> {
           let owner = self.env().caller();
           self.allowances.insert((owner, spender), value);
           self.env().emit_event(Approval {
@@ -895,7 +930,7 @@ Section Impl_erc20_Erc20_t_2.
   }.
   
   (*
-      pub fn transfer_from(&mut self, from: AccountId, to: AccountId, value: Balance) -> Result<()> {
+      fn transfer_from(&mut self, from: AccountId, to: AccountId, value: Balance) -> Result<()> {
           let caller = self.env().caller();
           let allowance = self.allowance_impl(&from, &caller);
           if allowance < value {

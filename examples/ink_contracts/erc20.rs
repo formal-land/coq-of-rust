@@ -14,8 +14,8 @@ impl<K, V> Mapping<K, V> {
     }
 }
 
-#[derive(Default)]
-struct AccountId(String);
+#[derive(Default, Clone, Copy)]
+struct AccountId(u128);
 
 type Balance = u128;
 
@@ -26,7 +26,7 @@ struct Event(String);
 /// A simple ERC-20 contract.
 // #[ink(storage)]
 #[derive(Default)]
-pub struct Erc20 {
+struct Erc20 {
     /// Total token supply.
     total_supply: Balance,
     /// Mapping from owner to number of owned token.
@@ -38,7 +38,7 @@ pub struct Erc20 {
 
 /// Event emitted when a token transfer occurs.
 // #[ink(event)]
-pub struct Transfer {
+struct Transfer {
     // #[ink(topic)]
     from: Option<AccountId>,
     // #[ink(topic)]
@@ -55,7 +55,7 @@ impl Into<Event> for Transfer {
 /// Event emitted when an approval occurs that `spender` is allowed to withdraw
 /// up to the amount of `value` tokens from `owner`.
 // #[ink(event)]
-pub struct Approval {
+struct Approval {
     // #[ink(topic)]
     owner: AccountId,
     // #[ink(topic)]
@@ -70,7 +70,7 @@ impl Into<Event> for Approval {
 }
 
 /// The ERC-20 error types.
-pub enum Error {
+enum Error {
     /// Returned if not enough balance to fulfill a request is available.
     InsufficientBalance,
     /// Returned if not enough allowance to fulfill a request is available.
@@ -78,7 +78,7 @@ pub enum Error {
 }
 
 /// The ERC-20 result type.
-pub type Result<T> = core::result::Result<T, Error>;
+type Result<T> = core::result::Result<T, Error>;
 
 impl Environment {
     fn caller(&self) -> AccountId {
@@ -103,7 +103,7 @@ impl Erc20 {
 impl Erc20 {
     /// Creates a new ERC-20 contract with the specified initial supply.
     // #[ink(constructor)]
-    pub fn new(total_supply: Balance) -> Self {
+    fn new(total_supply: Balance) -> Self {
         let mut balances = Mapping::default();
         let caller = Self::init_env().caller();
         balances.insert(caller, total_supply);
@@ -121,7 +121,7 @@ impl Erc20 {
 
     /// Returns the total token supply.
     // #[ink(message)]
-    pub fn total_supply(&self) -> Balance {
+    fn total_supply(&self) -> Balance {
         self.total_supply
     }
 
@@ -142,7 +142,7 @@ impl Erc20 {
     ///
     /// Returns `0` if the account is non-existent.
     // #[ink(message)]
-    pub fn balance_of(&self, owner: AccountId) -> Balance {
+    fn balance_of(&self, owner: AccountId) -> Balance {
         self.balance_of_impl(&owner)
     }
 
@@ -163,7 +163,7 @@ impl Erc20 {
     ///
     /// Returns `0` if no allowance has been set.
     // #[ink(message)]
-    pub fn allowance(&self, owner: AccountId, spender: AccountId) -> Balance {
+    fn allowance(&self, owner: AccountId, spender: AccountId) -> Balance {
         self.allowance_impl(&owner, &spender)
     }
 
@@ -201,7 +201,7 @@ impl Erc20 {
     /// Returns `InsufficientBalance` error if there are not enough tokens on
     /// the caller's account balance.
     // #[ink(message)]
-    pub fn transfer(&mut self, to: AccountId, value: Balance) -> Result<()> {
+    fn transfer(&mut self, to: AccountId, value: Balance) -> Result<()> {
         let from = self.env().caller();
         self.transfer_from_to(&from, &to, value)
     }
@@ -214,7 +214,7 @@ impl Erc20 {
     ///
     /// An `Approval` event is emitted.
     // #[ink(message)]
-    pub fn approve(&mut self, spender: AccountId, value: Balance) -> Result<()> {
+    fn approve(&mut self, spender: AccountId, value: Balance) -> Result<()> {
         let owner = self.env().caller();
         self.allowances.insert((owner, spender), value);
         self.env().emit_event(Approval {
@@ -240,7 +240,7 @@ impl Erc20 {
     /// Returns `InsufficientBalance` error if there are not enough tokens on
     /// the account balance of `from`.
     // #[ink(message)]
-    pub fn transfer_from(&mut self, from: AccountId, to: AccountId, value: Balance) -> Result<()> {
+    fn transfer_from(&mut self, from: AccountId, to: AccountId, value: Balance) -> Result<()> {
         let caller = self.env().caller();
         let allowance = self.allowance_impl(&from, &caller);
         if allowance < value {
