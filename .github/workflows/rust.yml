@@ -45,6 +45,13 @@ jobs:
           startGroup "Translate Rust examples"
             python run_tests.py
           endGroup
+          startGroup "Pre-process the smart contracts"
+            cd contracts
+            python source_to_generated.py
+            cd generated
+            for dir in * ; do cd $dir ; cargo check ; cd .. ; done
+            cd ../..
+          endGroup
           # We disable for now this translation as this makes a panic!
           # startGroup "Translate Ink! library"
           #   cd CoqOfRust

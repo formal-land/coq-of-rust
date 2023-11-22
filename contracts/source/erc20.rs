@@ -128,7 +128,6 @@ mod erc20 {
         /// the caller's account balance.
         #[ink(message)]
         pub fn transfer(&mut self, to: AccountId, value: Balance) -> Result<()> {
-            let foo: bool = self.env();
             let from = self.env().caller();
             self.transfer_from_to(&from, &to, value)
         }

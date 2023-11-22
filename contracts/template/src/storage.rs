@@ -9,8 +9,8 @@ use std::collections::VecDeque;
 use std::rc::Rc;
 use std::sync::Arc;
 
-#[derive(Default, Eq, PartialEq)]
-pub(crate) struct AccountId([u8; 32]);
+#[derive(Default, Eq, PartialEq, Clone, Copy)]
+pub struct AccountId([u8; 32]);
 
 impl From<[u8; 32]> for AccountId {
     fn from(value: [u8; 32]) -> Self {
@@ -18,13 +18,13 @@ impl From<[u8; 32]> for AccountId {
     }
 }
 
-pub(crate) type Balance = u128;
+pub type Balance = u128;
 
-pub(crate) trait Encode {}
+pub trait Encode {}
 
 impl<T> Encode for T {}
 
-pub(crate) trait EncodeLike<T: Encode = Self>: Sized + Encode {}
+pub trait EncodeLike<T: Encode = Self>: Sized + Encode {}
 
 impl<T: ?Sized + Encode> EncodeLike<Box<T>> for Box<T> {}
 
@@ -698,22 +698,47 @@ impl EncodeLike<Duration> for Duration {}
 impl EncodeLike<AccountId> for AccountId {}
 
 #[derive(Default)]
-pub(crate) struct Mapping<K: 'static, V: 'static>(&'static [(K, V)]);
+pub struct Mapping<K: 'static, V: 'static>(&'static [(K, V)]);
 
 impl<K, V> Mapping<K, V> {
-    pub(crate) fn insert<Q: EncodeLike<K>, R: EncodeLike<V>>(&mut self, key: Q, value: &R) {
+    pub fn insert<Q: EncodeLike<K>, R: EncodeLike<V>>(&mut self, key: Q, value: &R) {
         unimplemented!()
     }
 
-    pub(crate) fn get<Q: EncodeLike<K>>(&self, key: Q) -> Option<V> {
+    pub fn get<Q: EncodeLike<K>>(&self, key: Q) -> Option<V> {
         unimplemented!()
     }
 
-    pub(crate) fn contains<Q: EncodeLike<K>>(&self, key: Q) -> bool {
+    pub fn contains<Q: EncodeLike<K>>(&self, key: Q) -> bool {
         unimplemented!()
     }
 
-    pub(crate) fn remove<Q: EncodeLike<K>>(&self, key: Q) {
+    pub fn remove<Q: EncodeLike<K>>(&self, key: Q) {
         unimplemented!()
     }
+}
+
+pub struct Env;
+
+impl Env {
+    pub fn caller(&self) -> AccountId {
+        unimplemented!()
+    }
+
+    pub fn emit_event<A>(&self, event: A) {}
+}
+
+#[macro_export]
+macro_rules! impl_storage {
+    ($struct_name:ident) => {
+        impl $struct_name {
+            fn init_env() -> Env {
+                unimplemented!()
+            }
+
+            fn env(&self) -> Env {
+                unimplemented!()
+            }
+        }
+    };
 }

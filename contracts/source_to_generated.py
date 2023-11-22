@@ -1,4 +1,5 @@
 import os
+import re
 import shutil
 
 source_dir = 'source'
@@ -49,12 +50,28 @@ for filename in os.listdir(source_dir):
             first_line = '#![cfg_attr(not(feature = "std"), no_std, no_main)]'
             content = content.replace(
                 first_line,
-                'mod storage;'
+                '#[macro_use]\nmod storage;'
             )
 
             content = content.replace(
                 'use ink::storage::Mapping;',
                 'use crate::storage::*;',
+            )
+
+            content = content.replace(
+                'Self::env()',
+                'Self::init_env()',
+            )
+
+            storage_name = \
+                re.search(
+                    r"(\[ink\(storage\)]\s*\#\[derive\([^)]*\)]\s*)pub struct (\w+)",
+                    content,
+                ).group(2)
+            print(storage_name)
+            content = content.replace(
+                '#[ink(storage)]',
+                'impl_storage!(%s);' % storage_name,
             )
 
             macros_to_comment = [
