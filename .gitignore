@@ -21,3 +21,6 @@
 *.vok
 *.vos
 *~
+
+# Generated files for the smart contracts
+contracts/generated
