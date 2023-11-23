@@ -73,8 +73,9 @@ Module Default_instances.
   Global Instance I_unit : Default.Trait unit.
   Admitted.
 
-  Global Instance I_usize : Default.Trait usize.t.
-  Admitted.
+  Global Instance I_usize : Default.Trait usize.t := {
+    default := M.alloc 0;
+  }.
 
   Global Instance I_ref_slice {T : Set} : Default.Trait (ref (slice T)).
   Admitted.
