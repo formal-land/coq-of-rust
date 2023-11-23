@@ -35,19 +35,19 @@ Module State.
 End State.
 
 Module Run.
-  Inductive t `{State.Trait} :
+  Inductive t `{State.Trait} {Env : Set} (env : Env) :
       forall {A : Set},
       LowM A -> State -> A -> State -> Prop :=
   | Pure {A : Set} (state : State) (v : A) :
-    t (LowM.Pure v) state v state
+    t env (LowM.Pure v) state v state
   | Let {A B : Set} (e1 : LowM B) (e2 : B -> LowM A)
       (state state1 state2 : State)
       (v1 : B) (v2 : A) :
-    t e1 state v1 state1 ->
-    t (e2 v1) state1 v2 state2 ->
-    t (LowM.Let e1 e2) state v2 state2
+    t env e1 state v1 state1 ->
+    t env (e2 v1) state1 v2 state2 ->
+    t env (LowM.Let e1 e2) state v2 state2
   | CallPrimitiveStateAllocNone {A : Set} (state : State) (v : A) :
-    t (LowM.CallPrimitive (Primitive.StateAlloc v))
+    t env (LowM.CallPrimitive (Primitive.StateAlloc v))
       state
       (Ref.Imm v)
       state
@@ -56,26 +56,38 @@ Module Run.
       (state state' : State) :
     State.read address state = None ->
     State.alloc_write address state v = Some state' ->
-    t (LowM.CallPrimitive (Primitive.StateAlloc v))
+    t env (LowM.CallPrimitive (Primitive.StateAlloc v))
       state
       (Ref.MutRef (A := State.get_Set address) (B := State.get_Set address)
         address (fun full_v => full_v) (fun v _full_v => v)
       )
       state'
   | CallPrimitiveStateRead
-      (address : Address) (v : State.get_Set address) (state : State) :
+      (address : Address) (v : State.get_Set address)
+      (state : State) :
     State.read address state = Some v ->
-    t (LowM.CallPrimitive (Primitive.StateRead address))
+    t env (LowM.CallPrimitive (Primitive.StateRead address))
       state
       v
       state
   | CallPrimitiveStateWrite
-      (address : Address) (v : State.get_Set address) (state state' : State) :
+      (address : Address) (v : State.get_Set address)
+      (state state' : State) :
     State.alloc_write address state v = Some state' ->
-    t (LowM.CallPrimitive (Primitive.StateWrite address v))
+    t env (LowM.CallPrimitive (Primitive.StateWrite address v))
       state
       tt
       state'
+  | CallPrimitiveEnvRead (state : State) :
+    t env (LowM.CallPrimitive Primitive.EnvRead) state env state
   | Cast {A : Set} (state : State) (v : A) :
-    t (LowM.Cast v) state v state.
+    t env (LowM.Cast v) state v state.
 End Run.
+
+(** Simplify the usual case of read of immediate value. *)
+Lemma read_of_imm {A : Set} (v : A) :
+  M.read (Ref.Imm v) =
+  M.pure v.
+Proof.
+  reflexivity.
+Qed.

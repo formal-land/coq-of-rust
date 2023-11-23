@@ -49,7 +49,10 @@ Module Primitive.
   Inductive t : Set -> Set :=
   | StateAlloc {A : Set} : A -> t (Ref.t A)
   | StateRead {Address A : Set} : Address -> t A
-  | StateWrite {Address A : Set} : Address -> A -> t unit.
+  | StateWrite {Address A : Set} : Address -> A -> t unit
+  | EnvRead {A : Set} : t A
+  | Log {A : Set} : A -> t unit
+  .
 End Primitive.
 Definition Primitive : Set -> Set := Primitive.t.
 
@@ -174,6 +177,11 @@ Definition write {A : Set} (r : Ref A) (v : A) : M unit :=
     LowM.Pure (inl tt)
   end.
 
+Definition read_env {Env : Set} : M Env :=
+  fun _fuel =>
+  let- env := LowM.CallPrimitive Primitive.EnvRead in
+  LowM.Pure (inl env).
+
 Definition impossible {A : Set} : M A :=
   fun _fuel => LowM.Impossible.
 
@@ -192,9 +200,15 @@ Definition catch {A : Set} (body : M A) (handler : Exception -> M A) : M A :=
   | inr exception => handler exception fuel
   end.
 
-Definition function_body {A : Set} (body : M A) : M A :=
-  catch body (fun exception =>
-  match exception with
-  | Exception.Return r => cast r
-  | _ => raise exception
-  end).
+Definition function_body {A : Set} (body : M (M.Val A)) : M (M.Val A) :=
+  catch
+    (* We move the result to an immediate value. *)
+    (let* result := body in
+    let* result := read result in
+    pure (Ref.Imm result))
+    (fun exception =>
+      match exception with
+      | Exception.Return r => cast r
+      | _ => raise exception
+      end
+    ).

@@ -79,6 +79,18 @@ Module Mapping := Mapping.
         "End Impl_erc20_Mapping_t_K_V. *)",
     )
 
+    content = content.replace(
+        """Definition init_env : M (M.Val erc20.Env.t) :=
+    M.function_body
+      (let* α0 : ltac:(refine (M.Val never.t)) :=
+        core.panicking.panic (mk_str "not implemented") in
+      never_to_any α0).""",
+        """Definition init_env : M (M.Val erc20.Env.t) :=
+    M.function_body
+      (let* env := M.read_env in
+      M.alloc env)."""
+    )
+
     with open(file_name, "w") as f:
         f.write(content)
 
