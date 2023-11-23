@@ -49,7 +49,10 @@ Module Primitive.
   Inductive t : Set -> Set :=
   | StateAlloc {A : Set} : A -> t (Ref.t A)
   | StateRead {Address A : Set} : Address -> t A
-  | StateWrite {Address A : Set} : Address -> A -> t unit.
+  | StateWrite {Address A : Set} : Address -> A -> t unit
+  | EnvRead {A : Set} : t A
+  | Log {A : Set} : A -> t unit
+  .
 End Primitive.
 Definition Primitive : Set -> Set := Primitive.t.
 
@@ -173,6 +176,11 @@ Definition write {A : Set} (r : Ref A) (v : A) : M unit :=
     let- _ := LowM.CallPrimitive (Primitive.StateWrite address full_v') in
     LowM.Pure (inl tt)
   end.
+
+Definition read_env {Env : Set} : M Env :=
+  fun _fuel =>
+  let- env := LowM.CallPrimitive Primitive.EnvRead in
+  LowM.Pure (inl env).
 
 Definition impossible {A : Set} : M A :=
   fun _fuel => LowM.Impossible.

@@ -154,8 +154,17 @@ Ltac Balance := exact u128.t.
 
 Module  Env.
 Section Env.
-  Record t : Set := { }.
+  Record t : Set := {
+    caller : erc20.AccountId.t;
+  }.
   
+  Global Instance Get_caller : Notations.Dot "caller" := {
+    Notations.dot :=
+      Ref.map (fun x => x.(caller)) (fun v x => x <| caller := v |>);
+  }.
+  Global Instance Get_AF_caller : Notations.DoubleColon t "caller" := {
+    Notations.double_colon (x : M.Val t) := x.["caller"];
+  }.
 End Env.
 End Env.
 
@@ -351,7 +360,7 @@ Section Impl_erc20_Env_t.
   
   (*
       fn caller(&self) -> AccountId {
-          unimplemented!()
+          self.caller
       }
   *)
   Parameter caller : (M.Val (ref ltac:(Self))) -> M (M.Val erc20.AccountId.t).
@@ -383,7 +392,7 @@ Section Impl_erc20_Erc20_t.
   
   (*
       fn init_env() -> Env {
-          Env()
+          unimplemented!()
       }
   *)
   Parameter init_env : M (M.Val erc20.Env.t).
@@ -395,7 +404,7 @@ Section Impl_erc20_Erc20_t.
   
   (*
       fn env(&self) -> Env {
-          Env()
+          Self::init_env()
       }
   *)
   Parameter env : (M.Val (ref ltac:(Self))) -> M (M.Val erc20.Env.t).

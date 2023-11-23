@@ -19,7 +19,9 @@ struct AccountId(u128);
 
 type Balance = u128;
 
-struct Env();
+struct Env {
+    caller: AccountId,
+}
 
 struct Event(String);
 
@@ -82,7 +84,7 @@ type Result<T> = core::result::Result<T, Error>;
 
 impl Env {
     fn caller(&self) -> AccountId {
-        unimplemented!()
+        self.caller
     }
 
     /// We ignore events for now.
@@ -91,11 +93,11 @@ impl Env {
 
 impl Erc20 {
     fn init_env() -> Env {
-        Env()
+        unimplemented!()
     }
 
     fn env(&self) -> Env {
-        Env()
+        Self::init_env()
     }
 }
 

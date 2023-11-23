@@ -664,7 +664,12 @@ Module try_trait.
           Trait (core.result.Result.t T E)
             (R := core.result.Result.t core.convert.Infallible.t E) := {
         from_residual residual :=
-          axiom "from_residual";
+          let* residual := M.read residual in
+          match residual with
+          | result.Result.Ok v => match v with end
+          | result.Result.Err e =>
+            M.alloc (core.result.Result.Err e)
+          end;
       }.
     End Impl.
   End FromResidual.

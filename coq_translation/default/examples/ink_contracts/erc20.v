@@ -193,8 +193,17 @@ Ltac Balance := exact u128.t.
 
 Module  Env.
 Section Env.
-  Record t : Set := { }.
+  Record t : Set := {
+    caller : erc20.AccountId.t;
+  }.
   
+  Global Instance Get_caller : Notations.Dot "caller" := {
+    Notations.dot :=
+      Ref.map (fun x => x.(caller)) (fun v x => x <| caller := v |>);
+  }.
+  Global Instance Get_AF_caller : Notations.DoubleColon t "caller" := {
+    Notations.double_colon (x : M.Val t) := x.["caller"];
+  }.
 End Env.
 End Env.
 
@@ -427,16 +436,15 @@ Section Impl_erc20_Env_t.
   
   (*
       fn caller(&self) -> AccountId {
-          unimplemented!()
+          self.caller
       }
   *)
   Definition caller
       (self : M.Val (ref ltac:(Self)))
       : M (M.Val erc20.AccountId.t) :=
     M.function_body
-      (let* α0 : ltac:(refine (M.Val never.t)) :=
-        core.panicking.panic (mk_str "not implemented") in
-      never_to_any α0).
+      (let* α0 : ltac:(refine (M.Val erc20.Env.t)) := deref self in
+      M.pure α0.["caller"]).
   
   Global Instance AssociatedFunction_caller :
     Notations.DoubleColon ltac:(Self) "caller" := {
@@ -469,11 +477,13 @@ Section Impl_erc20_Erc20_t.
   
   (*
       fn init_env() -> Env {
-          Env()
+          unimplemented!()
       }
   *)
   Definition init_env : M (M.Val erc20.Env.t) :=
-    M.function_body (M.alloc erc20.Env.Build_t).
+    M.function_body
+      (let* env := M.read_env in
+      M.alloc env).
   
   Global Instance AssociatedFunction_init_env :
     Notations.DoubleColon ltac:(Self) "init_env" := {
@@ -482,11 +492,11 @@ Section Impl_erc20_Erc20_t.
   
   (*
       fn env(&self) -> Env {
-          Env()
+          Self::init_env()
       }
   *)
   Definition env (self : M.Val (ref ltac:(Self))) : M (M.Val erc20.Env.t) :=
-    M.function_body (M.alloc erc20.Env.Build_t).
+    M.function_body erc20.Erc20.t::["init_env"].
   
   Global Instance AssociatedFunction_env :
     Notations.DoubleColon ltac:(Self) "env" := {

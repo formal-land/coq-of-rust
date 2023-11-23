@@ -54,3 +54,45 @@ Definition transfer_from_to
       Lib.Mapping.insert to (to_balance + value)%Z storage.(erc20.Erc20.balances)
     |> in
     (result.Result.Ok tt, storage).
+
+Definition transfer
+    (env : erc20.Env.t)
+    (storage : erc20.Erc20.t)
+    (to : erc20.AccountId.t)
+    (value : ltac:(erc20.Balance)) :
+    ltac:(erc20.Result unit) * erc20.Erc20.t :=
+  transfer_from_to storage env.(erc20.Env.caller) to value.
+
+Definition approve
+    (env : erc20.Env.t)
+    (storage : erc20.Erc20.t)
+    (spender : erc20.AccountId.t)
+    (value : ltac:(erc20.Balance)) :
+    ltac:(erc20.Result unit) * erc20.Erc20.t :=
+  let owner := env.(erc20.Env.caller) in
+  let storage := storage <| erc20.Erc20.allowances :=
+    Lib.Mapping.insert (owner, spender) value storage.(erc20.Erc20.allowances)
+  |> in
+  (result.Result.Ok tt, storage).
+
+Definition transfer_from
+    (env : erc20.Env.t)
+    (storage : erc20.Erc20.t)
+    (from : erc20.AccountId.t)
+    (to : erc20.AccountId.t)
+    (value : ltac:(erc20.Balance)) :
+    ltac:(erc20.Result unit) * erc20.Erc20.t :=
+  let caller := env.(erc20.Env.caller) in
+  let allowance := allowance_impl storage from caller in
+  if (allowance <? value)%Z then
+    (result.Result.Err erc20.Error.InsufficientAllowance, storage)
+  else
+    let '(result_from_to, storage) := transfer_from_to storage from to value in
+    match result_from_to with
+    | result.Result.Err _ => (result_from_to, storage)
+    | result.Result.Ok _ =>
+      let storage := storage <| erc20.Erc20.allowances :=
+        Lib.Mapping.insert (from, caller) (allowance - value)%Z storage.(erc20.Erc20.allowances)
+      |> in
+      (result.Result.Ok tt, storage)
+    end.
