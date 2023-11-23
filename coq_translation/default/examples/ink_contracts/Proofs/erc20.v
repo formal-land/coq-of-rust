@@ -1,5 +1,6 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.Proofs.M.
+Require CoqOfRust.examples.ink_contracts.Simulations.erc20.
 Require CoqOfRust.examples.ink_contracts.erc20.
 
 Module State.
@@ -57,7 +58,7 @@ Ltac run_symbolic :=
 
 (** Starting from a state with a given [balance] for a given [owner], when we
     read that information we get the expected [balance]. *)
-Lemma run_balance_of_impl
+Lemma run_balance_of_impl'
   (owner : erc20.AccountId.t)
   (balance : Z)
   fuel :
@@ -85,6 +86,7 @@ Proof.
     rewrite Lib.Mapping.get_insert_eq.
     run_symbolic.
   }
+  { run_symbolic. }
   { run_symbolic. }
 Qed.
 
@@ -145,8 +147,119 @@ Module WriteMessage.
     end.
 End WriteMessage.
 
+(** The simulation [total_supply] is valid. *)
+Lemma run_total_supply (storage : erc20.Erc20.t) fuel :
+  let state := Some storage in
+  let self : M.Val (ref erc20.Erc20.t) := Ref.Imm (Ref.mut_ref tt) in
+  Run.t
+    (erc20.Impl_erc20_Erc20_t_2.total_supply self fuel)
+    state
+    (inl (Ref.Imm (Simulations.erc20.total_supply storage)))
+    state.
+Proof.
+  unfold erc20.Impl_erc20_Erc20_t_2.total_supply.
+  run_symbolic.
+Qed.
+
+(** The simulation [balance_of] is valid. *)
+Lemma run_balance_of_impl
+  (storage : erc20.Erc20.t)
+  (owner : erc20.AccountId.t)
+  fuel :
+  let state := Some storage in
+  let self : M.Val (ref erc20.Erc20.t) := Ref.Imm (Ref.mut_ref tt) in
+  let val_owner : M.Val (ref erc20.AccountId.t) := Ref.Imm (Ref.Imm owner) in
+  Run.t
+    (erc20.Impl_erc20_Erc20_t_2.balance_of_impl self val_owner fuel)
+    state
+    (inl (Ref.Imm (Simulations.erc20.balance_of_impl storage owner)))
+    state.
+Proof.
+  unfold erc20.Impl_erc20_Erc20_t_2.balance_of_impl,
+    Simulations.erc20.balance_of_impl.
+  destruct (Lib.Mapping.get owner storage.(erc20.Erc20.balances)) eqn:H_get;
+    repeat (
+      run_symbolic ||
+      simpl ||
+      rewrite H_get
+    ).
+Qed.
+
+(** The simulation [balance_of] is valid. *)
+Lemma run_balance_of
+  (storage : erc20.Erc20.t)
+  (owner : erc20.AccountId.t)
+  fuel :
+  let state := Some storage in
+  let self : M.Val (ref erc20.Erc20.t) := Ref.Imm (Ref.mut_ref tt) in
+  let val_owner : M.Val erc20.AccountId.t := Ref.Imm owner in
+  Run.t
+    (erc20.Impl_erc20_Erc20_t_2.balance_of self val_owner fuel)
+    state
+    (inl (Ref.Imm (Simulations.erc20.balance_of storage owner)))
+    state.
+Proof.
+  unfold erc20.Impl_erc20_Erc20_t_2.balance_of,
+    Simulations.erc20.balance_of.
+  with_strategy opaque [erc20.Impl_erc20_Erc20_t_2.balance_of_impl]
+    run_symbolic.
+  apply run_balance_of_impl.
+  all: run_symbolic.
+Qed.
+
+(** The simulation [allowance_impl] is valid. *)
+Lemma run_allowance_impl
+  (storage : erc20.Erc20.t)
+  (owner : erc20.AccountId.t)
+  (spender : erc20.AccountId.t)
+  fuel :
+  let state := Some storage in
+  let self : M.Val (ref erc20.Erc20.t) := Ref.Imm (Ref.mut_ref tt) in
+  let val_owner : M.Val (ref erc20.AccountId.t) := Ref.Imm (Ref.Imm owner) in
+  let val_spender : M.Val (ref erc20.AccountId.t) := Ref.Imm (Ref.Imm spender) in
+  Run.t
+    (erc20.Impl_erc20_Erc20_t_2.allowance_impl self val_owner val_spender fuel)
+    state
+    (inl (Ref.Imm (Simulations.erc20.allowance_impl storage owner spender)))
+    state.
+Proof.
+  unfold erc20.Impl_erc20_Erc20_t_2.allowance_impl,
+    Simulations.erc20.allowance_impl.
+  destruct (Lib.Mapping.get (owner, spender) storage.(erc20.Erc20.allowances))
+    eqn:H_get;
+    repeat (
+      run_symbolic ||
+      simpl ||
+      rewrite H_get
+    ).
+Qed.
+
+(** The simulation [allowance] is valid. *)
+Lemma run_allowance
+  (storage : erc20.Erc20.t)
+  (owner : erc20.AccountId.t)
+  (spender : erc20.AccountId.t)
+  fuel :
+  let state := Some storage in
+  let self : M.Val (ref erc20.Erc20.t) := Ref.Imm (Ref.mut_ref tt) in
+  let val_owner : M.Val erc20.AccountId.t := Ref.Imm owner in
+  let val_spender : M.Val erc20.AccountId.t := Ref.Imm spender in
+  Run.t
+    (erc20.Impl_erc20_Erc20_t_2.allowance self val_owner val_spender fuel)
+    state
+    (inl (Ref.Imm (Simulations.erc20.allowance storage owner spender)))
+    state.
+Proof.
+  unfold erc20.Impl_erc20_Erc20_t_2.allowance,
+    Simulations.erc20.allowance.
+  with_strategy opaque [erc20.Impl_erc20_Erc20_t_2.allowance_impl]
+    run_symbolic.
+  apply run_allowance_impl.
+  all: run_symbolic.
+Qed.
+
 (** There are no panics with read messages. *)
-Lemma run_read_message_no_panic
+Lemma read_message_no_panic
   (message : ReadMessage.t ltac:(erc20.Balance))
   (storage : erc20.Erc20.t)
   fuel :
@@ -162,32 +275,12 @@ Lemma run_read_message_no_panic
 Proof.
   destruct message.
   { eexists.
-    unfold ReadMessage.dispatch.
-    run_symbolic.
+    apply run_total_supply.
   }
-  { destruct (Lib.Mapping.get owner storage.(erc20.Erc20.balances)) eqn:H_get; (
-      eexists;
-      unfold ReadMessage.dispatch;
-      run_symbolic; [
-        simpl;
-        rewrite H_get;
-        run_symbolic
-      | run_symbolic
-      | run_symbolic
-      ]
-    ).
+  { eexists.
+    apply run_balance_of.
   }
-  { destruct (Lib.Mapping.get (owner, spender) storage.(erc20.Erc20.allowances))
-      eqn:H_get; (
-      eexists;
-      unfold ReadMessage.dispatch;
-      run_symbolic; [
-        simpl;
-        rewrite H_get;
-        run_symbolic
-      | run_symbolic
-      | run_symbolic
-      ]
-    ).
+  { eexists.
+    apply run_allowance.
   }
 Qed.
