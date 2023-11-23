@@ -46,11 +46,21 @@ Ltac run_symbolic_state_read :=
     clear H
   end.
 
+Ltac run_symbolic_state_write :=
+  match goal with
+  | |- Run.t (LowM.CallPrimitive (Primitive.StateWrite ?address ?value)) _ _ _ =>
+    let H := fresh "H" in
+    pose proof (H := Run.CallPrimitiveStateWrite address value);
+    apply H; reflexivity;
+    clear H
+  end.
+
 Ltac run_symbolic_one_step :=
   match goal with
   | |- Run.t _ _ _ _ =>
     econstructor ||
-    run_symbolic_state_read
+    run_symbolic_state_read ||
+    run_symbolic_state_write
   end.
 
 Ltac run_symbolic :=
@@ -283,4 +293,35 @@ Proof.
   { eexists.
     apply run_allowance.
   }
+Qed.
+
+Lemma run_transfer_from_to
+  (storage : erc20.Erc20.t)
+  (from : erc20.AccountId.t)
+  (to : erc20.AccountId.t)
+  (value : ltac:(erc20.Balance))
+  fuel :
+  let state := Some storage in
+  let self : M.Val (ref erc20.Erc20.t) := Ref.Imm (Ref.mut_ref tt) in
+  let val_from : M.Val (ref erc20.AccountId.t) := Ref.Imm (Ref.Imm from) in
+  let val_to : M.Val (ref erc20.AccountId.t) := Ref.Imm (Ref.Imm to) in
+  let val_value : M.Val ltac:(erc20.Balance) := Ref.Imm value in
+  let '(result, state') :=
+    Simulations.erc20.transfer_from_to storage from to value in
+  Run.t
+    (erc20.Impl_erc20_Erc20_t_2.transfer_from_to self val_from val_to val_value fuel)
+    state
+    (inl (Ref.Imm result))
+    (Some state').
+Proof.
+  unfold erc20.Impl_erc20_Erc20_t_2.transfer_from_to,
+    Simulations.erc20.transfer_from_to.
+  destruct (_ <? _) eqn:H_lt;
+    repeat (
+      simpl ||
+      with_strategy opaque [erc20.Impl_erc20_Erc20_t_2.balance_of_impl]
+        run_symbolic ||
+      rewrite H_lt ||
+      apply run_balance_of_impl
+    ).
 Qed.

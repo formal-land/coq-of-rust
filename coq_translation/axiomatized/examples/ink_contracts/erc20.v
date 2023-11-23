@@ -152,17 +152,12 @@ End Impl_core_marker_Copy_for_erc20_AccountId_t.
 
 Ltac Balance := exact u128.t.
 
-Module  Environment.
-Section Environment.
-  Record t : Set := {
-    x0 : alloc.string.String.t;
-  }.
+Module  Env.
+Section Env.
+  Record t : Set := { }.
   
-  Global Instance Get_0 : Notations.Dot "0" := {
-    Notations.dot := Ref.map (fun x => x.(x0)) (fun v x => x <| x0 := v |>);
-  }.
-End Environment.
-End Environment.
+End Env.
+End Env.
 
 Module  Event.
 Section Event.
@@ -350,9 +345,9 @@ End Error.
 
 Ltac Result T := exact (core.result.Result.t T erc20.Error.t).
 
-Module  Impl_erc20_Environment_t.
-Section Impl_erc20_Environment_t.
-  Ltac Self := exact erc20.Environment.t.
+Module  Impl_erc20_Env_t.
+Section Impl_erc20_Env_t.
+  Ltac Self := exact erc20.Env.t.
   
   (*
       fn caller(&self) -> AccountId {
@@ -367,9 +362,7 @@ Section Impl_erc20_Environment_t.
   }.
   
   (*
-      fn emit_event<E: Into<Event>>(&self, event: E) {
-          unimplemented!()
-      }
+      fn emit_event<E: Into<Event>>(&self, _event: E) {}
   *)
   Parameter emit_event :
       forall {E : Set} {ℋ_0 : core.convert.Into.Trait E (T := erc20.Event.t)},
@@ -381,19 +374,19 @@ Section Impl_erc20_Environment_t.
     Notations.DoubleColon ltac:(Self) "emit_event" := {
     Notations.double_colon := emit_event (E := E);
   }.
-End Impl_erc20_Environment_t.
-End Impl_erc20_Environment_t.
+End Impl_erc20_Env_t.
+End Impl_erc20_Env_t.
 
 Module  Impl_erc20_Erc20_t.
 Section Impl_erc20_Erc20_t.
   Ltac Self := exact erc20.Erc20.t.
   
   (*
-      fn init_env() -> Environment {
-          unimplemented!()
+      fn init_env() -> Env {
+          Env()
       }
   *)
-  Parameter init_env : M (M.Val erc20.Environment.t).
+  Parameter init_env : M (M.Val erc20.Env.t).
   
   Global Instance AssociatedFunction_init_env :
     Notations.DoubleColon ltac:(Self) "init_env" := {
@@ -401,11 +394,11 @@ Section Impl_erc20_Erc20_t.
   }.
   
   (*
-      fn env(&self) -> Environment {
-          unimplemented!()
+      fn env(&self) -> Env {
+          Env()
       }
   *)
-  Parameter env : (M.Val (ref ltac:(Self))) -> M (M.Val erc20.Environment.t).
+  Parameter env : (M.Val (ref ltac:(Self))) -> M (M.Val erc20.Env.t).
   
   Global Instance AssociatedFunction_env :
     Notations.DoubleColon ltac:(Self) "env" := {

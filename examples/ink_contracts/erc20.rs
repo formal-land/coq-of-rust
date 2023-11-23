@@ -19,7 +19,7 @@ struct AccountId(u128);
 
 type Balance = u128;
 
-struct Environment(String);
+struct Env();
 
 struct Event(String);
 
@@ -80,23 +80,22 @@ enum Error {
 /// The ERC-20 result type.
 type Result<T> = core::result::Result<T, Error>;
 
-impl Environment {
+impl Env {
     fn caller(&self) -> AccountId {
         unimplemented!()
     }
 
-    fn emit_event<E: Into<Event>>(&self, event: E) {
-        unimplemented!()
-    }
+    /// We ignore events for now.
+    fn emit_event<E: Into<Event>>(&self, _event: E) {}
 }
 
 impl Erc20 {
-    fn init_env() -> Environment {
-        unimplemented!()
+    fn init_env() -> Env {
+        Env()
     }
 
-    fn env(&self) -> Environment {
-        unimplemented!()
+    fn env(&self) -> Env {
+        Env()
     }
 }
 

@@ -163,8 +163,16 @@ Module UnOp.
 End UnOp.
 
 Module BinOp.
-  Parameter add : forall {A : Set}, M.Val A -> M.Val A -> M (M.Val A).
-  Parameter sub : forall {A : Set}, M.Val A -> M.Val A -> M (M.Val A).
+  Definition add (z1 z2 : M.Val Z) : M (M.Val Z) :=
+    let* z1 := M.read z1 in
+    let* z2 := M.read z2 in
+    M.alloc (z1 + z2)%Z.
+
+  Definition sub (z1 z2 : M.Val Z) : M (M.Val Z) :=
+    let* z1 := M.read z1 in
+    let* z2 := M.read z2 in
+    M.alloc (z1 - z2)%Z.
+
   Parameter mul : forall {A : Set}, M.Val A -> M.Val A -> M (M.Val A).
   Parameter div : forall {A : Set}, M.Val A -> M.Val A -> M (M.Val A).
   Parameter rem : forall {A : Set}, M.Val A -> M.Val A -> M (M.Val A).
@@ -177,7 +185,11 @@ Module BinOp.
   Parameter eq : forall {A : Set}, M.Val A -> M.Val A -> M (M.Val bool.t).
   Parameter ne : forall {A : Set}, M.Val A -> M.Val A -> M (M.Val bool.t).
 
-  Parameter lt : forall {A : Set}, M.Val A -> M.Val A -> M (M.Val bool.t).
+  Definition lt (z1 z2 : M.Val Z) : M (M.Val bool.t) :=
+    let* z1 := M.read z1 in
+    let* z2 := M.read z2 in
+    M.alloc (z1 <? z2).
+
   Parameter le : forall {A : Set}, M.Val A -> M.Val A -> M (M.Val bool.t).
   Parameter ge : forall {A : Set}, M.Val A -> M.Val A -> M (M.Val bool.t).
   Parameter gt : forall {A : Set}, M.Val A -> M.Val A -> M (M.Val bool.t).

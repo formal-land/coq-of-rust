@@ -35,3 +35,22 @@ Definition allowance
     (spender : erc20.AccountId.t) :
     ltac:(erc20.Balance) :=
   allowance_impl storage owner spender.
+
+Definition transfer_from_to
+    (storage : erc20.Erc20.t)
+    (from : erc20.AccountId.t)
+    (to : erc20.AccountId.t)
+    (value : ltac:(erc20.Balance)) :
+    ltac:(erc20.Result unit) * erc20.Erc20.t :=
+  let from_balance := balance_of_impl storage from in
+  if (from_balance <? value)%Z then
+    (result.Result.Err erc20.Error.InsufficientBalance, storage)
+  else
+    let storage := storage <| erc20.Erc20.balances :=
+      Lib.Mapping.insert from (from_balance - value) storage.(erc20.Erc20.balances)
+    |> in
+    let to_balance := balance_of_impl storage to in
+    let storage := storage <| erc20.Erc20.balances :=
+      Lib.Mapping.insert to (to_balance + value)%Z storage.(erc20.Erc20.balances)
+    |> in
+    (result.Result.Ok tt, storage).

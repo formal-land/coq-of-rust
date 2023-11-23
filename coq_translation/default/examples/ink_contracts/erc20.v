@@ -191,17 +191,12 @@ End Impl_core_marker_Copy_for_erc20_AccountId_t.
 
 Ltac Balance := exact u128.t.
 
-Module  Environment.
-Section Environment.
-  Record t : Set := {
-    x0 : alloc.string.String.t;
-  }.
+Module  Env.
+Section Env.
+  Record t : Set := { }.
   
-  Global Instance Get_0 : Notations.Dot "0" := {
-    Notations.dot := Ref.map (fun x => x.(x0)) (fun v x => x <| x0 := v |>);
-  }.
-End Environment.
-End Environment.
+End Env.
+End Env.
 
 Module  Event.
 Section Event.
@@ -426,9 +421,9 @@ End Error.
 
 Ltac Result T := exact (core.result.Result.t T erc20.Error.t).
 
-Module  Impl_erc20_Environment_t.
-Section Impl_erc20_Environment_t.
-  Ltac Self := exact erc20.Environment.t.
+Module  Impl_erc20_Env_t.
+Section Impl_erc20_Env_t.
+  Ltac Self := exact erc20.Env.t.
   
   (*
       fn caller(&self) -> AccountId {
@@ -449,20 +444,15 @@ Section Impl_erc20_Environment_t.
   }.
   
   (*
-      fn emit_event<E: Into<Event>>(&self, event: E) {
-          unimplemented!()
-      }
+      fn emit_event<E: Into<Event>>(&self, _event: E) {}
   *)
   Definition emit_event
       {E : Set}
       {ℋ_0 : core.convert.Into.Trait E (T := erc20.Event.t)}
       (self : M.Val (ref ltac:(Self)))
-      (event : M.Val E)
+      (_event : M.Val E)
       : M (M.Val unit) :=
-    M.function_body
-      (let* α0 : ltac:(refine (M.Val never.t)) :=
-        core.panicking.panic (mk_str "not implemented") in
-      never_to_any α0).
+    M.function_body (M.alloc tt).
   
   Global Instance AssociatedFunction_emit_event
       {E : Set}
@@ -470,23 +460,20 @@ Section Impl_erc20_Environment_t.
     Notations.DoubleColon ltac:(Self) "emit_event" := {
     Notations.double_colon := emit_event (E := E);
   }.
-End Impl_erc20_Environment_t.
-End Impl_erc20_Environment_t.
+End Impl_erc20_Env_t.
+End Impl_erc20_Env_t.
 
 Module  Impl_erc20_Erc20_t.
 Section Impl_erc20_Erc20_t.
   Ltac Self := exact erc20.Erc20.t.
   
   (*
-      fn init_env() -> Environment {
-          unimplemented!()
+      fn init_env() -> Env {
+          Env()
       }
   *)
-  Definition init_env : M (M.Val erc20.Environment.t) :=
-    M.function_body
-      (let* α0 : ltac:(refine (M.Val never.t)) :=
-        core.panicking.panic (mk_str "not implemented") in
-      never_to_any α0).
+  Definition init_env : M (M.Val erc20.Env.t) :=
+    M.function_body (M.alloc erc20.Env.Build_t).
   
   Global Instance AssociatedFunction_init_env :
     Notations.DoubleColon ltac:(Self) "init_env" := {
@@ -494,17 +481,12 @@ Section Impl_erc20_Erc20_t.
   }.
   
   (*
-      fn env(&self) -> Environment {
-          unimplemented!()
+      fn env(&self) -> Env {
+          Env()
       }
   *)
-  Definition env
-      (self : M.Val (ref ltac:(Self)))
-      : M (M.Val erc20.Environment.t) :=
-    M.function_body
-      (let* α0 : ltac:(refine (M.Val never.t)) :=
-        core.panicking.panic (mk_str "not implemented") in
-      never_to_any α0).
+  Definition env (self : M.Val (ref ltac:(Self))) : M (M.Val erc20.Env.t) :=
+    M.function_body (M.alloc erc20.Env.Build_t).
   
   Global Instance AssociatedFunction_env :
     Notations.DoubleColon ltac:(Self) "env" := {
@@ -544,11 +526,10 @@ Section Impl_erc20_Erc20_t_2.
           (Self := erc20.Mapping.t erc20.AccountId.t u128.t)
           (Trait := ltac:(refine _)) in
       let* caller : ltac:(refine (M.Val erc20.AccountId.t)) :=
-        let* α0 : ltac:(refine (M.Val erc20.Environment.t)) :=
+        let* α0 : ltac:(refine (M.Val erc20.Env.t)) :=
           erc20.Erc20.t::["init_env"] in
-        let* α1 : ltac:(refine (M.Val (ref erc20.Environment.t))) :=
-          borrow α0 in
-        erc20.Environment.t::["caller"] α1 in
+        let* α1 : ltac:(refine (M.Val (ref erc20.Env.t))) := borrow α0 in
+        erc20.Env.t::["caller"] α1 in
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 :
             ltac:(refine
@@ -559,10 +540,9 @@ Section Impl_erc20_Erc20_t_2.
           caller
           total_supply in
       let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val erc20.Environment.t)) :=
+        let* α0 : ltac:(refine (M.Val erc20.Env.t)) :=
           erc20.Erc20.t::["init_env"] in
-        let* α1 : ltac:(refine (M.Val (ref erc20.Environment.t))) :=
-          borrow α0 in
+        let* α1 : ltac:(refine (M.Val (ref erc20.Env.t))) := borrow α0 in
         let* α2 := M.read caller in
         let* α3 := M.read total_supply in
         let* α4 : ltac:(refine (M.Val erc20.Transfer.t)) :=
@@ -572,7 +552,7 @@ Section Impl_erc20_Erc20_t_2.
               erc20.Transfer.to := core.option.Option.Some α2;
               erc20.Transfer.value := α3;
             |} in
-        erc20.Environment.t::["emit_event"] α1 α4 in
+        erc20.Env.t::["emit_event"] α1 α4 in
       let* α0 := M.read total_supply in
       let* α1 := M.read balances in
       let* α2 :
@@ -801,10 +781,9 @@ Section Impl_erc20_Erc20_t_2.
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val erc20.Erc20.t)) := deref self in
         let* α1 : ltac:(refine (M.Val (ref erc20.Erc20.t))) := borrow α0 in
-        let* α2 : ltac:(refine (M.Val erc20.Environment.t)) :=
+        let* α2 : ltac:(refine (M.Val erc20.Env.t)) :=
           erc20.Erc20.t::["env"] α1 in
-        let* α3 : ltac:(refine (M.Val (ref erc20.Environment.t))) :=
-          borrow α2 in
+        let* α3 : ltac:(refine (M.Val (ref erc20.Env.t))) := borrow α2 in
         let* α4 : ltac:(refine (M.Val erc20.AccountId.t)) := deref from in
         let* α5 := M.read α4 in
         let* α6 : ltac:(refine (M.Val erc20.AccountId.t)) := deref to in
@@ -817,7 +796,7 @@ Section Impl_erc20_Erc20_t_2.
               erc20.Transfer.to := core.option.Option.Some α7;
               erc20.Transfer.value := α8;
             |} in
-        erc20.Environment.t::["emit_event"] α3 α9 in
+        erc20.Env.t::["emit_event"] α3 α9 in
       M.alloc (core.result.Result.Ok tt)).
   
   Global Instance AssociatedFunction_transfer_from_to :
@@ -840,11 +819,10 @@ Section Impl_erc20_Erc20_t_2.
       (let* from : ltac:(refine (M.Val erc20.AccountId.t)) :=
         let* α0 : ltac:(refine (M.Val erc20.Erc20.t)) := deref self in
         let* α1 : ltac:(refine (M.Val (ref erc20.Erc20.t))) := borrow α0 in
-        let* α2 : ltac:(refine (M.Val erc20.Environment.t)) :=
+        let* α2 : ltac:(refine (M.Val erc20.Env.t)) :=
           erc20.Erc20.t::["env"] α1 in
-        let* α3 : ltac:(refine (M.Val (ref erc20.Environment.t))) :=
-          borrow α2 in
-        erc20.Environment.t::["caller"] α3 in
+        let* α3 : ltac:(refine (M.Val (ref erc20.Env.t))) := borrow α2 in
+        erc20.Env.t::["caller"] α3 in
       let* α0 : ltac:(refine (M.Val erc20.Erc20.t)) := deref self in
       let* α1 : ltac:(refine (M.Val (mut_ref erc20.Erc20.t))) :=
         borrow_mut α0 in
@@ -878,11 +856,10 @@ Section Impl_erc20_Erc20_t_2.
       (let* owner : ltac:(refine (M.Val erc20.AccountId.t)) :=
         let* α0 : ltac:(refine (M.Val erc20.Erc20.t)) := deref self in
         let* α1 : ltac:(refine (M.Val (ref erc20.Erc20.t))) := borrow α0 in
-        let* α2 : ltac:(refine (M.Val erc20.Environment.t)) :=
+        let* α2 : ltac:(refine (M.Val erc20.Env.t)) :=
           erc20.Erc20.t::["env"] α1 in
-        let* α3 : ltac:(refine (M.Val (ref erc20.Environment.t))) :=
-          borrow α2 in
-        erc20.Environment.t::["caller"] α3 in
+        let* α3 : ltac:(refine (M.Val (ref erc20.Env.t))) := borrow α2 in
+        erc20.Env.t::["caller"] α3 in
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val erc20.Erc20.t)) := deref self in
         let* α1 :
@@ -907,10 +884,9 @@ Section Impl_erc20_Erc20_t_2.
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val erc20.Erc20.t)) := deref self in
         let* α1 : ltac:(refine (M.Val (ref erc20.Erc20.t))) := borrow α0 in
-        let* α2 : ltac:(refine (M.Val erc20.Environment.t)) :=
+        let* α2 : ltac:(refine (M.Val erc20.Env.t)) :=
           erc20.Erc20.t::["env"] α1 in
-        let* α3 : ltac:(refine (M.Val (ref erc20.Environment.t))) :=
-          borrow α2 in
+        let* α3 : ltac:(refine (M.Val (ref erc20.Env.t))) := borrow α2 in
         let* α4 := M.read owner in
         let* α5 := M.read spender in
         let* α6 := M.read value in
@@ -921,7 +897,7 @@ Section Impl_erc20_Erc20_t_2.
               erc20.Approval.spender := α5;
               erc20.Approval.value := α6;
             |} in
-        erc20.Environment.t::["emit_event"] α3 α7 in
+        erc20.Env.t::["emit_event"] α3 α7 in
       M.alloc (core.result.Result.Ok tt)).
   
   Global Instance AssociatedFunction_approve :
@@ -951,11 +927,10 @@ Section Impl_erc20_Erc20_t_2.
       (let* caller : ltac:(refine (M.Val erc20.AccountId.t)) :=
         let* α0 : ltac:(refine (M.Val erc20.Erc20.t)) := deref self in
         let* α1 : ltac:(refine (M.Val (ref erc20.Erc20.t))) := borrow α0 in
-        let* α2 : ltac:(refine (M.Val erc20.Environment.t)) :=
+        let* α2 : ltac:(refine (M.Val erc20.Env.t)) :=
           erc20.Erc20.t::["env"] α1 in
-        let* α3 : ltac:(refine (M.Val (ref erc20.Environment.t))) :=
-          borrow α2 in
-        erc20.Environment.t::["caller"] α3 in
+        let* α3 : ltac:(refine (M.Val (ref erc20.Env.t))) := borrow α2 in
+        erc20.Env.t::["caller"] α3 in
       let* allowance : ltac:(refine (M.Val u128.t)) :=
         let* α0 : ltac:(refine (M.Val erc20.Erc20.t)) := deref self in
         let* α1 : ltac:(refine (M.Val (ref erc20.Erc20.t))) := borrow α0 in
