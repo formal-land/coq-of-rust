@@ -1,7 +1,9 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.Proofs.M.
-Require CoqOfRust.examples.ink_contracts.Simulations.erc20.
-Require CoqOfRust.examples.ink_contracts.erc20.
+Require CoqOfRust.examples.default.examples.ink_contracts.Simulations.erc20.
+Require CoqOfRust.examples.default.examples.ink_contracts.erc20.
+
+(** ** Definition of state and allocation. *)
 
 Module State.
   Definition t : Set := option erc20.Erc20.t.
@@ -33,91 +35,7 @@ Module StateInstance.
   Qed.
 End StateInstance.
 
-Ltac run_symbolic_state_read :=
-  match goal with
-  | |- Run.t _ (LowM.CallPrimitive (Primitive.StateRead ?address)) _ _ _ =>
-    let H := fresh "H" in
-    epose proof (H := Run.CallPrimitiveStateRead _ address);
-    apply H; reflexivity;
-    clear H
-  end.
-
-Ltac run_symbolic_state_write :=
-  match goal with
-  | |- Run.t _ (LowM.CallPrimitive (Primitive.StateWrite ?address ?value)) _ _ _ =>
-    let H := fresh "H" in
-    epose proof (H := Run.CallPrimitiveStateWrite _ address value);
-    apply H; reflexivity;
-    clear H
-  end.
-
-Ltac run_symbolic_one_step :=
-  match goal with
-  | |- Run.t _ _ _ _ _ =>
-    econstructor ||
-    run_symbolic_state_read ||
-    run_symbolic_state_write
-  end.
-
-Ltac run_symbolic :=
-  repeat run_symbolic_one_step.
-
-Module ReadMessage.
-  (** A message that only read the store. *)
-  Inductive t : Set -> Set :=
-  | total_supply : t ltac:(erc20.Balance)
-  | balance_of (owner : erc20.AccountId.t) : t ltac:(erc20.Balance)
-  | allowance (owner : erc20.AccountId.t) (spender : erc20.AccountId.t) :
-    t ltac:(erc20.Balance)
-  .
-
-  Definition dispatch {A : Set} (message : t A) : M (M.Val A) :=
-    let self := Ref.Imm (Ref.mut_ref tt) in
-    match message with
-    | total_supply => erc20.Impl_erc20_Erc20_t_2.total_supply self
-    | balance_of owner =>
-      erc20.Impl_erc20_Erc20_t_2.balance_of self (Ref.Imm owner)
-    | allowance owner spender =>
-      erc20.Impl_erc20_Erc20_t_2.allowance
-        self
-        (Ref.Imm owner)
-        (Ref.Imm spender)
-    end.
-End ReadMessage.
-
-Module WriteMessage.
-  (** A message that can mutate the store. *)
-  Inductive t : Set :=
-  | transfer : erc20.AccountId.t -> ltac:(erc20.Balance) -> t
-  | approve : erc20.AccountId.t -> ltac:(erc20.Balance) -> t
-  | transfer_from :
-    erc20.AccountId.t ->
-    erc20.AccountId.t ->
-    ltac:(erc20.Balance) ->
-    t
-  .
-
-  Definition dispatch (message : t) : M (M.Val ltac:(erc20.Result unit)) :=
-    let self := Ref.Imm (Ref.mut_ref tt) in
-    match message with
-    | transfer to value =>
-      erc20.Impl_erc20_Erc20_t_2.transfer
-        self
-        (Ref.Imm to)
-        (Ref.Imm value)
-    | approve spender value =>
-      erc20.Impl_erc20_Erc20_t_2.approve
-        self
-        (Ref.Imm spender)
-        (Ref.Imm value)
-    | transfer_from from to value =>
-      erc20.Impl_erc20_Erc20_t_2.transfer_from
-        self
-        (Ref.Imm from)
-        (Ref.Imm to)
-        (Ref.Imm value)
-    end.
-End WriteMessage.
+(** ** Verification of the simulations. *)
 
 (** The simulation [total_supply] is valid. *)
 Lemma run_total_supply
@@ -242,35 +160,6 @@ Proof.
   all: run_symbolic.
 Qed.
 
-(** There are no panics with read messages. *)
-Lemma read_message_no_panic
-    (env : erc20.Env.t)
-    (message : ReadMessage.t ltac:(erc20.Balance))
-    (storage : erc20.Erc20.t)
-    fuel :
-    let state := Some storage in
-    exists result,
-    Run.t
-      env
-      (ReadMessage.dispatch message fuel)
-      state
-      (* no errors in the result *)
-      (inl result)
-      (* the state does not change *)
-      state.
-Proof.
-  destruct message; simpl.
-  { eexists.
-    apply run_total_supply.
-  }
-  { eexists.
-    apply run_balance_of.
-  }
-  { eexists.
-    apply run_allowance.
-  }
-Qed.
-
 (** The simulation [transfer_from_to] is valid. *)
 Lemma run_transfer_from_to
     (env : erc20.Env.t)
@@ -279,19 +168,19 @@ Lemma run_transfer_from_to
     (to : erc20.AccountId.t)
     (value : ltac:(erc20.Balance))
     fuel :
-    let state := Some storage in
-    let self := Ref.Imm (Ref.mut_ref tt) in
-    let val_from : M.Val (ref erc20.AccountId.t) := Ref.Imm (Ref.Imm from) in
-    let val_to : M.Val (ref erc20.AccountId.t) := Ref.Imm (Ref.Imm to) in
-    let val_value : M.Val ltac:(erc20.Balance) := Ref.Imm value in
-    let simulation :=
-      Simulations.erc20.transfer_from_to storage from to value in
-    Run.t
-      env
-      (erc20.Impl_erc20_Erc20_t_2.transfer_from_to self val_from val_to val_value fuel)
-      state
-      (inl (Ref.Imm (fst simulation)))
-      (Some (snd simulation)).
+  let state := Some storage in
+  let self := Ref.Imm (Ref.mut_ref tt) in
+  let val_from : M.Val (ref erc20.AccountId.t) := Ref.Imm (Ref.Imm from) in
+  let val_to : M.Val (ref erc20.AccountId.t) := Ref.Imm (Ref.Imm to) in
+  let val_value : M.Val ltac:(erc20.Balance) := Ref.Imm value in
+  let simulation :=
+    Simulations.erc20.transfer_from_to storage from to value in
+  Run.t
+    env
+    (erc20.Impl_erc20_Erc20_t_2.transfer_from_to self val_from val_to val_value fuel)
+    state
+    (inl (Ref.Imm (fst simulation)))
+    (Some (snd simulation)).
 Proof.
   unfold erc20.Impl_erc20_Erc20_t_2.transfer_from_to,
     Simulations.erc20.transfer_from_to.
@@ -312,18 +201,18 @@ Lemma run_transfer
     (to : erc20.AccountId.t)
     (value : ltac:(erc20.Balance))
     fuel :
-    let state := Some storage in
-    let self := Ref.Imm (Ref.mut_ref tt) in
-    let val_to : M.Val erc20.AccountId.t := Ref.Imm to in
-    let val_value : M.Val ltac:(erc20.Balance) := Ref.Imm value in
-    let simulation :=
-      Simulations.erc20.transfer env storage to value in
-    Run.t
-      env
-      (erc20.Impl_erc20_Erc20_t_2.transfer self val_to val_value fuel)
-      state
-      (inl (Ref.Imm (fst simulation)))
-      (Some (snd simulation)).
+  let state := Some storage in
+  let self := Ref.Imm (Ref.mut_ref tt) in
+  let val_to : M.Val erc20.AccountId.t := Ref.Imm to in
+  let val_value : M.Val ltac:(erc20.Balance) := Ref.Imm value in
+  let simulation :=
+    Simulations.erc20.transfer env storage to value in
+  Run.t
+    env
+    (erc20.Impl_erc20_Erc20_t_2.transfer self val_to val_value fuel)
+    state
+    (inl (Ref.Imm (fst simulation)))
+    (Some (snd simulation)).
 Proof.
   unfold erc20.Impl_erc20_Erc20_t_2.transfer,
     Simulations.erc20.transfer.
@@ -340,18 +229,18 @@ Lemma run_approve
     (spender : erc20.AccountId.t)
     (value : ltac:(erc20.Balance))
     fuel :
-    let state := Some storage in
-    let self := Ref.Imm (Ref.mut_ref tt) in
-    let val_spender : M.Val erc20.AccountId.t := Ref.Imm spender in
-    let val_value : M.Val ltac:(erc20.Balance) := Ref.Imm value in
-    let simulation :=
-      Simulations.erc20.approve env storage spender value in
-    Run.t
-      env
-      (erc20.Impl_erc20_Erc20_t_2.approve self val_spender val_value fuel)
-      state
-      (inl (Ref.Imm (fst simulation)))
-      (Some (snd simulation)).
+  let state := Some storage in
+  let self := Ref.Imm (Ref.mut_ref tt) in
+  let val_spender : M.Val erc20.AccountId.t := Ref.Imm spender in
+  let val_value : M.Val ltac:(erc20.Balance) := Ref.Imm value in
+  let simulation :=
+    Simulations.erc20.approve env storage spender value in
+  Run.t
+    env
+    (erc20.Impl_erc20_Erc20_t_2.approve self val_spender val_value fuel)
+    state
+    (inl (Ref.Imm (fst simulation)))
+    (Some (snd simulation)).
 Proof.
   unfold erc20.Impl_erc20_Erc20_t_2.approve,
     Simulations.erc20.approve.
@@ -366,19 +255,19 @@ Lemma run_transfer_from
     (to : erc20.AccountId.t)
     (value : ltac:(erc20.Balance))
     fuel :
-    let state := Some storage in
-    let self := Ref.Imm (Ref.mut_ref tt) in
-    let val_from : M.Val erc20.AccountId.t := Ref.Imm from in
-    let val_to : M.Val erc20.AccountId.t := Ref.Imm to in
-    let val_value : M.Val ltac:(erc20.Balance) := Ref.Imm value in
-    let simulation :=
-      Simulations.erc20.transfer_from env storage from to value in
-    Run.t
-      env
-      (erc20.Impl_erc20_Erc20_t_2.transfer_from self val_from val_to val_value fuel)
-      state
-      (inl (Ref.Imm (fst simulation)))
-      (Some (snd simulation)).
+  let state := Some storage in
+  let self := Ref.Imm (Ref.mut_ref tt) in
+  let val_from : M.Val erc20.AccountId.t := Ref.Imm from in
+  let val_to : M.Val erc20.AccountId.t := Ref.Imm to in
+  let val_value : M.Val ltac:(erc20.Balance) := Ref.Imm value in
+  let simulation :=
+    Simulations.erc20.transfer_from env storage from to value in
+  Run.t
+    env
+    (erc20.Impl_erc20_Erc20_t_2.transfer_from self val_from val_to val_value fuel)
+    state
+    (inl (Ref.Imm (fst simulation)))
+    (Some (snd simulation)).
 Proof.
   unfold erc20.Impl_erc20_Erc20_t_2.transfer_from,
     Simulations.erc20.transfer_from.
@@ -399,13 +288,15 @@ Proof.
     ).
 Qed.
 
+(** ** Standalone proofs. *)
+
 (** Starting from a state with a given [balance] for a given [owner], when we
     read that information we get the expected [balance]. *)
 Lemma balance_of_impl_read_id
-  (env : erc20.Env.t)
-  (owner : erc20.AccountId.t)
-  (balance : Z)
-  fuel :
+    (env : erc20.Env.t)
+    (owner : erc20.AccountId.t)
+    (balance : Z)
+    fuel :
   let storage := {|
     erc20.Erc20.total_supply := 0;
     erc20.Erc20.balances := Lib.Mapping.insert owner balance Lib.Mapping.empty;
@@ -432,4 +323,92 @@ Proof.
   unfold erc20.balance_of_impl.
   simpl.
   now rewrite Lib.Mapping.get_insert_eq.
+Qed.
+
+(** ** Serialization of messages and global reasoning. *)
+
+Module ReadMessage.
+  (** A message that only read the store. *)
+  Inductive t : Set -> Set :=
+  | total_supply : t ltac:(erc20.Balance)
+  | balance_of (owner : erc20.AccountId.t) : t ltac:(erc20.Balance)
+  | allowance (owner : erc20.AccountId.t) (spender : erc20.AccountId.t) :
+    t ltac:(erc20.Balance)
+  .
+
+  Definition dispatch {A : Set} (message : t A) : M (M.Val A) :=
+    let self := Ref.Imm (Ref.mut_ref tt) in
+    match message with
+    | total_supply => erc20.Impl_erc20_Erc20_t_2.total_supply self
+    | balance_of owner =>
+      erc20.Impl_erc20_Erc20_t_2.balance_of self (Ref.Imm owner)
+    | allowance owner spender =>
+      erc20.Impl_erc20_Erc20_t_2.allowance
+        self
+        (Ref.Imm owner)
+        (Ref.Imm spender)
+    end.
+End ReadMessage.
+
+Module WriteMessage.
+  (** A message that can mutate the store. *)
+  Inductive t : Set :=
+  | transfer : erc20.AccountId.t -> ltac:(erc20.Balance) -> t
+  | approve : erc20.AccountId.t -> ltac:(erc20.Balance) -> t
+  | transfer_from :
+    erc20.AccountId.t ->
+    erc20.AccountId.t ->
+    ltac:(erc20.Balance) ->
+    t
+  .
+
+  Definition dispatch (message : t) : M (M.Val ltac:(erc20.Result unit)) :=
+    let self := Ref.Imm (Ref.mut_ref tt) in
+    match message with
+    | transfer to value =>
+      erc20.Impl_erc20_Erc20_t_2.transfer
+        self
+        (Ref.Imm to)
+        (Ref.Imm value)
+    | approve spender value =>
+      erc20.Impl_erc20_Erc20_t_2.approve
+        self
+        (Ref.Imm spender)
+        (Ref.Imm value)
+    | transfer_from from to value =>
+      erc20.Impl_erc20_Erc20_t_2.transfer_from
+        self
+        (Ref.Imm from)
+        (Ref.Imm to)
+        (Ref.Imm value)
+    end.
+End WriteMessage.
+
+(** There are no panics with read messages. *)
+Lemma read_message_no_panic
+    (env : erc20.Env.t)
+    (message : ReadMessage.t ltac:(erc20.Balance))
+    (storage : erc20.Erc20.t)
+    fuel :
+  let state := Some storage in
+  exists result,
+  Run.t
+    env
+    (ReadMessage.dispatch message fuel)
+    state
+    (* no errors in the result *)
+    (inl result)
+    (* the state does not change *)
+    state.
+Proof.
+  destruct message; simpl.
+  { eexists.
+    apply run_total_supply.
+  }
+  { eexists.
+    apply run_balance_of.
+  }
+  { eexists.
+    apply run_allowance.
+  }
 Qed.

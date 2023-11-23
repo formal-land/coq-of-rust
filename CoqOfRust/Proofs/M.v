@@ -91,3 +91,32 @@ Lemma read_of_imm {A : Set} (v : A) :
 Proof.
   reflexivity.
 Qed.
+
+Ltac run_symbolic_state_read :=
+  match goal with
+  | |- Run.t _ (LowM.CallPrimitive (Primitive.StateRead ?address)) _ _ _ =>
+    let H := fresh "H" in
+    epose proof (H := Run.CallPrimitiveStateRead _ address);
+    apply H; reflexivity;
+    clear H
+  end.
+
+Ltac run_symbolic_state_write :=
+  match goal with
+  | |- Run.t _ (LowM.CallPrimitive (Primitive.StateWrite ?address ?value)) _ _ _ =>
+    let H := fresh "H" in
+    epose proof (H := Run.CallPrimitiveStateWrite _ address value);
+    apply H; reflexivity;
+    clear H
+  end.
+
+Ltac run_symbolic_one_step :=
+  match goal with
+  | |- Run.t _ _ _ _ _ =>
+    econstructor ||
+    run_symbolic_state_read ||
+    run_symbolic_state_write
+  end.
+
+Ltac run_symbolic :=
+  repeat run_symbolic_one_step.
