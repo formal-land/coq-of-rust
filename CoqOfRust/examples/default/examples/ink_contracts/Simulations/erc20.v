@@ -1,5 +1,5 @@
 Require Import CoqOfRust.CoqOfRust.
-Require CoqOfRust.examples.ink_contracts.erc20.
+Require CoqOfRust.examples.default.examples.ink_contracts.erc20.
 
 Definition total_supply (storage : erc20.Erc20.t) : ltac:(erc20.Balance) :=
   storage.(erc20.Erc20.total_supply).

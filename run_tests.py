@@ -51,8 +51,8 @@ def compile_with_option(file: str, output_path: str, is_axiomatized: bool):
 def compile(index, file):
     print()
     print(f"Translating file {index + 1}/{len(rs_files)}: {file}")
-    compile_with_option(file, "coq_translation/default/", False)
-    compile_with_option(file, "coq_translation/axiomatized/", True)
+    compile_with_option(file, "CoqOfRust/examples/default/", False)
+    compile_with_option(file, "CoqOfRust/examples/axiomatized/", True)
 
 
 # run in parallel
@@ -62,13 +62,13 @@ pool.starmap(compile, enumerate(rs_files))
 
 
 def update_erc_20():
-    file_name = "coq_translation/default/examples/ink_contracts/erc20.v"
+    file_name = "CoqOfRust/examples/default/examples/ink_contracts/erc20.v"
     with open(file_name, "r") as f:
         content = f.read()
 
     content = content.replace(
         "Module  Mapping.",
-        """Require Import CoqOfRust.examples.ink_contracts.Lib.
+        """Require Import CoqOfRust.examples.default.examples.ink_contracts.Lib.
 
 Module Mapping := Mapping.
 
