@@ -1,5 +1,6 @@
 #[ink::contract]
 pub mod flipper {
+    #[ink(storage)]
     pub struct Flipper {
         value: bool,
     }

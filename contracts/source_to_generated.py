@@ -63,12 +63,14 @@ for filename in os.listdir(source_dir):
                 'Self::init_env()',
             )
 
-            storage_name = \
-                re.search(
+            namesearch = re.search(
                     r"(\[ink\(storage\)]\s*\#\[derive\([^)]*\)]\s*)pub struct (\w+)",
                     content,
-                ).group(2)
-            print(storage_name)
+                )
+            storage_name = "DefaultName"
+            if namesearch : 
+              storage_name = namesearch.group(2)
+            print("Storage name: ", storage_name)
             content = content.replace(
                 '#[ink(storage)]',
                 'impl_storage!(%s);' % storage_name,
