@@ -63,13 +63,21 @@ for filename in os.listdir(source_dir):
                 'Self::init_env()',
             )
 
+            storage_name = "DefaultName"
             namesearch = re.search(
                     r"(\[ink\(storage\)]\s*\#\[derive\([^)]*\)]\s*)pub struct (\w+)",
                     content,
                 )
-            storage_name = "DefaultName"
-            if namesearch : 
+            if namesearch:
               storage_name = namesearch.group(2)
+            else:
+              namesearch = re.search(  # Case for flipper
+                    r"(\[ink\(storage\)]\s*)pub struct (\w+)",
+                    content,
+                )
+              if namesearch: 
+                storage_name = namesearch.group(2)
+
             print("Storage name: ", storage_name)
             content = content.replace(
                 '#[ink(storage)]',
