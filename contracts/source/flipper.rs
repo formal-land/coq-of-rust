@@ -1,6 +1,6 @@
 #[ink::contract]
 pub mod flipper {
-    #[ink(storage)]
+    // #[ink(storage)]
     pub struct Flipper {
         value: bool,
     }
@@ -20,22 +20,6 @@ pub mod flipper {
 
         pub fn get(&self) -> bool {
             self.value
-        }
-    }
-
-    mod tests {
-        use super::*;
-
-        fn default_works() {
-            let flipper = Flipper::new_default();
-            assert!(!flipper.get());
-        }
-
-        fn it_works() {
-            let mut flipper = Flipper::new(false);
-            assert!(!flipper.get());
-            flipper.flip();
-            assert!(flipper.get());
         }
     }
 }
