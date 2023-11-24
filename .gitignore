@@ -21,6 +21,7 @@
 *.vok
 *.vos
 *~
+.lia.cache
 
 # Generated files for the smart contracts
 contracts/generated

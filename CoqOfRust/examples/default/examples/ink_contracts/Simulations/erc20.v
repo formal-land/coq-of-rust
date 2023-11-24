@@ -1,6 +1,8 @@
 Require Import CoqOfRust.CoqOfRust.
 Require CoqOfRust.examples.default.examples.ink_contracts.erc20.
 
+(** ** Simulations that only read the state. *)
+
 Definition total_supply (storage : erc20.Erc20.t) : ltac:(erc20.Balance) :=
   storage.(erc20.Erc20.total_supply).
 
@@ -35,6 +37,8 @@ Definition allowance
     (spender : erc20.AccountId.t) :
     ltac:(erc20.Balance) :=
   allowance_impl storage owner spender.
+
+(** ** Simulations modifying the state. *)
 
 Definition transfer_from_to
     (storage : erc20.Erc20.t)

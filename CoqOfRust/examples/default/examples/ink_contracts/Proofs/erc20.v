@@ -1,4 +1,5 @@
 Require Import CoqOfRust.CoqOfRust.
+Require Import Lia.
 Require Import CoqOfRust.Proofs.M.
 Require CoqOfRust.examples.default.examples.ink_contracts.Simulations.erc20.
 Require CoqOfRust.examples.default.examples.ink_contracts.erc20.
@@ -348,19 +349,70 @@ Module ReadMessage.
         (Ref.Imm owner)
         (Ref.Imm spender)
     end.
+
+  Definition simulation_dispatch
+      {A : Set}
+      (env : erc20.Env.t)
+      (storage : erc20.Erc20.t)
+      (message : t A) :
+      A :=
+    match message with
+    | total_supply =>
+      Simulations.erc20.total_supply storage
+    | balance_of owner =>
+      Simulations.erc20.balance_of storage owner
+    | allowance owner spender =>
+      Simulations.erc20.allowance storage owner spender
+    end.
+
+  (** The simulation [simulation_dispatch] is valid. *)
+  Lemma run_dispatch
+      {A : Set}
+      fuel
+      (env : erc20.Env.t)
+      (storage : erc20.Erc20.t)
+      (message : t A) :
+    let simulation := simulation_dispatch env storage message in
+    Run.t
+      env
+      (dispatch message fuel)
+      (Some storage)
+      (inl (Ref.Imm simulation))
+      (Some storage).
+  Proof.
+    destruct message; simpl.
+    { apply run_total_supply. }
+    { apply run_balance_of. }
+    { apply run_allowance. }
+  Qed.
 End ReadMessage.
 
 Module WriteMessage.
   (** A message that can mutate the store. *)
   Inductive t : Set :=
-  | transfer : erc20.AccountId.t -> ltac:(erc20.Balance) -> t
-  | approve : erc20.AccountId.t -> ltac:(erc20.Balance) -> t
-  | transfer_from :
-    erc20.AccountId.t ->
-    erc20.AccountId.t ->
-    ltac:(erc20.Balance) ->
+  | transfer
+    (to : erc20.AccountId.t)
+    (value : ltac:(erc20.Balance)) :
+    t
+  | approve
+    (spender : erc20.AccountId.t)
+    (value : ltac:(erc20.Balance)) :
+    t
+  | transfer_from
+    (from : erc20.AccountId.t)
+    (to : erc20.AccountId.t)
+    (value : ltac:(erc20.Balance)) :
     t
   .
+
+  Module Valid.
+    Definition t (write_message : t) : Prop :=
+      match write_message with
+      | transfer _ value => value >= 0
+      | approve _ value => value >= 0
+      | transfer_from _ _ value => value >= 0
+      end.
+  End Valid.
 
   Definition dispatch (message : t) : M (M.Val ltac:(erc20.Result unit)) :=
     let self := Ref.Imm (Ref.mut_ref tt) in
@@ -382,6 +434,40 @@ Module WriteMessage.
         (Ref.Imm to)
         (Ref.Imm value)
     end.
+
+  Definition simulation_dispatch
+      (env : erc20.Env.t)
+      (storage : erc20.Erc20.t)
+      (message : t) :
+      ltac:(erc20.Result unit) * erc20.Erc20.t :=
+    match message with
+    | transfer to value =>
+      Simulations.erc20.transfer env storage to value
+    | approve spender value =>
+      Simulations.erc20.approve env storage spender value
+    | transfer_from from to value =>
+      Simulations.erc20.transfer_from env storage from to value
+    end.
+
+  (** The simulation [simulation_dispatch] is valid. *)
+  Lemma run_dispatch
+      fuel
+      (env : erc20.Env.t)
+      (storage : erc20.Erc20.t)
+      (message : t) :
+    let simulation := simulation_dispatch env storage message in
+    Run.t
+      env
+      (dispatch message fuel)
+      (Some storage)
+      (inl (Ref.Imm (fst simulation)))
+      (Some (snd simulation)).
+  Proof.
+    destruct message; simpl.
+    { apply run_transfer. }
+    { apply run_approve. }
+    { apply run_transfer_from. }
+  Qed.
 End WriteMessage.
 
 (** There are no panics with read messages. *)
@@ -411,4 +497,112 @@ Proof.
   { eexists.
     apply run_allowance.
   }
+Qed.
+
+Definition sum_of_money (storage : erc20.Erc20.t) : Z :=
+  Lib.Mapping.sum
+    (fun x => x)
+    storage.(erc20.Erc20.balances).
+
+Module Erc20.
+  Module Valid.
+    (** Validity predicate for the storage. *)
+    Definition t (storage : erc20.Erc20.t) : Prop :=
+      storage.(erc20.Erc20.total_supply) =
+      sum_of_money storage.
+  End Valid.
+End Erc20.
+
+Lemma account_id_eq_dec (x y : erc20.AccountId.t) :
+  {x = y} + {x <> y}.
+Proof.
+  destruct x as [x], y as [y].
+  destruct (Z.eq_dec x y); sfirstorder.
+Qed.
+
+Lemma transfer_from_to_is_valid
+    (storage : erc20.Erc20.t)
+    (from : erc20.AccountId.t)
+    (to : erc20.AccountId.t)
+    (value : ltac:(erc20.Balance))
+    (H_storage : Erc20.Valid.t storage)
+    (H_value : value >= 0) :
+  let '(result, storage) :=
+    Simulations.erc20.transfer_from_to storage from to value in
+  Erc20.Valid.t storage.
+Proof.
+  unfold Erc20.Valid.t in *.
+  unfold Simulations.erc20.transfer_from_to; simpl.
+  destruct (_ <? _) eqn:H_lt; [trivial|]; simpl.
+  unfold sum_of_money in *; simpl.
+  unfold erc20.balance_of_impl; simpl.
+  repeat rewrite Lib.Mapping.sum_insert.
+  unfold u128.t.
+  lia.
+Qed.
+
+Lemma transfer_is_valid
+    (env : erc20.Env.t)
+    (storage : erc20.Erc20.t)
+    (to : erc20.AccountId.t)
+    (value : ltac:(erc20.Balance))
+    (H_storage : Erc20.Valid.t storage)
+    (H_value : value >= 0) :
+  let '(result, storage) :=
+    Simulations.erc20.transfer env storage to value in
+  Erc20.Valid.t storage.
+Proof.
+  now apply transfer_from_to_is_valid.
+Qed.
+
+Lemma approve_is_valid
+    (env : erc20.Env.t)
+    (storage : erc20.Erc20.t)
+    (spender : erc20.AccountId.t)
+    (value : ltac:(erc20.Balance))
+    (H_storage : Erc20.Valid.t storage)
+    (H_value : value >= 0) :
+  let '(result, storage) :=
+    Simulations.erc20.approve env storage spender value in
+  Erc20.Valid.t storage.
+Proof.
+  apply H_storage.
+Qed.
+
+Lemma transfer_from_is_valid
+    (env : erc20.Env.t)
+    (storage : erc20.Erc20.t)
+    (from : erc20.AccountId.t)
+    (to : erc20.AccountId.t)
+    (value : ltac:(erc20.Balance))
+    (H_storage : Erc20.Valid.t storage)
+    (H_value : value >= 0) :
+  let '(result, storage) :=
+    Simulations.erc20.transfer_from env storage from to value in
+  Erc20.Valid.t storage.
+Proof.
+  unfold Simulations.erc20.transfer_from.
+  destruct (_ <? _) eqn:H_lt; [trivial|]; simpl.
+  pose proof (transfer_from_to_is_valid storage from to value).
+  destruct erc20.transfer_from_to as [result ?].
+  destruct result; sfirstorder.
+Qed.
+
+(** The sum of money in the storage is constant. *)
+Lemma sum_of_money_is_constant
+    (env : erc20.Env.t)
+    (storage : erc20.Erc20.t)
+    (write_message : WriteMessage.t)
+    (H_storage : Erc20.Valid.t storage)
+    (H_write_message : WriteMessage.Valid.t write_message) :
+  let state := Some storage in
+  let '(result, storage) :=
+    WriteMessage.simulation_dispatch env storage write_message in
+  Erc20.Valid.t storage.
+Proof.
+  intros.
+  destruct write_message; simpl.
+  { now apply transfer_is_valid. }
+  { now apply approve_is_valid. }
+  { now apply transfer_from_is_valid. }
 Qed.
