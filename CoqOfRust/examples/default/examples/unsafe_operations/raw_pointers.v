@@ -15,7 +15,8 @@ Definition main : M (M.Val unit) :=
   M.function_body
     (let* raw_p : ltac:(refine (M.Val (ref u32.t))) :=
       let* α0 : ltac:(refine (M.Val u32.t)) := M.alloc 10 in
-      addr_of α0 in
+      let* α1 : ltac:(refine (M.Val (ref u32.t))) := addr_of α0 in
+      M.copy α1 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* α0 : ltac:(refine (M.Val u32.t)) := deref raw_p in
       let* α1 : ltac:(refine (M.Val u32.t)) := M.alloc 10 in

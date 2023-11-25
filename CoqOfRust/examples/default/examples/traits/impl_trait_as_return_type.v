@@ -136,7 +136,10 @@ Definition main : M (M.Val unit) :=
           ltac:(refine
             (M.Val (alloc.boxed.Box.t (slice i32.t) alloc.alloc.Global.t))) :=
         pointer_coercion "Unsize" α4 in
-      (slice i32.t)::["into_vec"] α5 in
+      let* α6 :
+          ltac:(refine (M.Val (alloc.vec.Vec.t i32.t alloc.alloc.Global.t))) :=
+        (slice i32.t)::["into_vec"] α5 in
+      M.copy α6 in
     let* v2 :
         ltac:(refine (M.Val (alloc.vec.Vec.t i32.t alloc.alloc.Global.t))) :=
       let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 4 in
@@ -150,9 +153,14 @@ Definition main : M (M.Val unit) :=
           ltac:(refine
             (M.Val (alloc.boxed.Box.t (slice i32.t) alloc.alloc.Global.t))) :=
         pointer_coercion "Unsize" α3 in
-      (slice i32.t)::["into_vec"] α4 in
+      let* α5 :
+          ltac:(refine (M.Val (alloc.vec.Vec.t i32.t alloc.alloc.Global.t))) :=
+        (slice i32.t)::["into_vec"] α4 in
+      M.copy α5 in
     let* v3 : ltac:(refine (M.Val type not implemented)) :=
-      impl_trait_as_return_type.combine_vecs v1 v2 in
+      let* α0 : ltac:(refine (M.Val type not implemented)) :=
+        impl_trait_as_return_type.combine_vecs v1 v2 in
+      M.copy α0 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 1 in
       let* α1 := M.read α0 in

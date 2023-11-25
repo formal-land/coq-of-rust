@@ -144,7 +144,9 @@ fn main() {
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M (M.Val unit) :=
   M.function_body
-    (let* x : ltac:(refine (M.Val i32.t)) := M.alloc 7 in
+    (let* x : ltac:(refine (M.Val i32.t)) :=
+      let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 7 in
+      M.copy α0 in
     let* ref_x :
         ltac:(refine (M.Val (scoping_rules_lifetimes_bounds.Ref.t i32.t))) :=
       let* α0 : ltac:(refine (M.Val (ref i32.t))) := borrow x in

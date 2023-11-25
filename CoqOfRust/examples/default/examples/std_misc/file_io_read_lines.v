@@ -23,8 +23,10 @@ Definition read_lines
             (M.Val
               (core.result.Result.t std.fs.File.t std.io.error.Error.t))) :=
         std.fs.File.t::["open"] filename in
-      (core.result.Result.t std.fs.File.t std.io.error.Error.t)::["unwrap"]
-        α0 in
+      let* α1 : ltac:(refine (M.Val std.fs.File.t)) :=
+        (core.result.Result.t std.fs.File.t std.io.error.Error.t)::["unwrap"]
+          α0 in
+      M.copy α1 in
     let* _ : ltac:(refine (M.Val never.t)) :=
       let* α0 :
           ltac:(refine
@@ -68,7 +70,13 @@ Definition main : M (M.Val unit) :=
             (Self := str.t)
             (Trait := ltac:(refine _)))
           α1 in
-      file_io_read_lines.read_lines α2 in
+      let* α3 :
+          ltac:(refine
+            (M.Val
+              (std.io.Lines.t
+                (std.io.buffered.bufreader.BufReader.t std.fs.File.t)))) :=
+        file_io_read_lines.read_lines α2 in
+      M.copy α3 in
     let* α0 :
         ltac:(refine
           (M.Val

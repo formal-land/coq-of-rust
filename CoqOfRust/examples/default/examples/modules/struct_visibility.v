@@ -182,6 +182,10 @@ Definition main : M (M.Val unit) :=
       M.alloc tt in
     let* _closed_box :
         ltac:(refine (M.Val (struct_visibility.my.ClosedBox.t (ref str.t)))) :=
-      (struct_visibility.my.ClosedBox.t (ref str.t))::["new"]
-        (mk_str "classified information") in
+      let* α0 :
+          ltac:(refine
+            (M.Val (struct_visibility.my.ClosedBox.t (ref str.t)))) :=
+        (struct_visibility.my.ClosedBox.t (ref str.t))::["new"]
+          (mk_str "classified information") in
+      M.copy α0 in
     M.alloc tt).

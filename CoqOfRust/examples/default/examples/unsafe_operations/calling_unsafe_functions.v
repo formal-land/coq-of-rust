@@ -34,24 +34,32 @@ Definition main : M (M.Val unit) :=
           ltac:(refine
             (M.Val (alloc.boxed.Box.t (slice u32.t) alloc.alloc.Global.t))) :=
         pointer_coercion "Unsize" α5 in
-      (slice u32.t)::["into_vec"] α6 in
+      let* α7 :
+          ltac:(refine (M.Val (alloc.vec.Vec.t u32.t alloc.alloc.Global.t))) :=
+        (slice u32.t)::["into_vec"] α6 in
+      M.copy α7 in
     let* pointer : ltac:(refine (M.Val (ref u32.t))) :=
       let* α0 :
           ltac:(refine
             (M.Val (ref (alloc.vec.Vec.t u32.t alloc.alloc.Global.t)))) :=
         borrow some_vector in
-      (alloc.vec.Vec.t u32.t alloc.alloc.Global.t)::["as_ptr"] α0 in
+      let* α1 : ltac:(refine (M.Val (ref u32.t))) :=
+        (alloc.vec.Vec.t u32.t alloc.alloc.Global.t)::["as_ptr"] α0 in
+      M.copy α1 in
     let* length : ltac:(refine (M.Val usize.t)) :=
       let* α0 :
           ltac:(refine
             (M.Val (ref (alloc.vec.Vec.t u32.t alloc.alloc.Global.t)))) :=
         borrow some_vector in
-      (alloc.vec.Vec.t u32.t alloc.alloc.Global.t)::["len"] α0 in
+      let* α1 : ltac:(refine (M.Val usize.t)) :=
+        (alloc.vec.Vec.t u32.t alloc.alloc.Global.t)::["len"] α0 in
+      M.copy α1 in
     let* my_slice : ltac:(refine (M.Val (ref (slice u32.t)))) :=
       let* α0 : ltac:(refine (M.Val (ref (slice u32.t)))) :=
         core.slice.raw.from_raw_parts pointer length in
       let* α1 : ltac:(refine (M.Val (slice u32.t))) := deref α0 in
-      borrow α1 in
+      let* α2 : ltac:(refine (M.Val (ref (slice u32.t)))) := borrow α1 in
+      M.copy α2 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* α0 :
           ltac:(refine

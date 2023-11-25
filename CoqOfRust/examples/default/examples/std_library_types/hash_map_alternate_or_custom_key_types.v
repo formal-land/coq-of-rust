@@ -464,10 +464,18 @@ Definition main : M (M.Val unit) :=
               hash_map_alternate_or_custom_key_types.Account.t
               hash_map_alternate_or_custom_key_types.AccountInfo.t
               std.collections.hash.map.RandomState.t))) :=
-      (std.collections.hash.map.HashMap.t
-          hash_map_alternate_or_custom_key_types.Account.t
-          hash_map_alternate_or_custom_key_types.AccountInfo.t
-          std.collections.hash.map.RandomState.t)::["new"] in
+      let* α0 :
+          ltac:(refine
+            (M.Val
+              (std.collections.hash.map.HashMap.t
+                hash_map_alternate_or_custom_key_types.Account.t
+                hash_map_alternate_or_custom_key_types.AccountInfo.t
+                std.collections.hash.map.RandomState.t))) :=
+        (std.collections.hash.map.HashMap.t
+            hash_map_alternate_or_custom_key_types.Account.t
+            hash_map_alternate_or_custom_key_types.AccountInfo.t
+            std.collections.hash.map.RandomState.t)::["new"] in
+      M.copy α0 in
     let* account :
         ltac:(refine
           (M.Val hash_map_alternate_or_custom_key_types.Account.t)) :=

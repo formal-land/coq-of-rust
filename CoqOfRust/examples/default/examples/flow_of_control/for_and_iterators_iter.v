@@ -38,7 +38,11 @@ Definition main : M (M.Val unit) :=
             (M.Val
               (alloc.boxed.Box.t (slice (ref str.t)) alloc.alloc.Global.t))) :=
         pointer_coercion "Unsize" α5 in
-      (slice (ref str.t))::["into_vec"] α6 in
+      let* α7 :
+          ltac:(refine
+            (M.Val (alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t))) :=
+        (slice (ref str.t))::["into_vec"] α6 in
+      M.copy α7 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* α0 :
           ltac:(refine

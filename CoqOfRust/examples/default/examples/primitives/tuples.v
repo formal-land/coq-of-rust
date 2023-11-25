@@ -13,7 +13,8 @@ Definition reverse
     (pair : M.Val (i32.t * bool.t))
     : M (M.Val (bool.t * i32.t)) :=
   M.function_body
-    (let '(int_param, bool_param) := pair in
+    (let* '(int_param, bool_param) : ltac:(refine (M.Val (i32.t * bool.t))) :=
+      M.copy pair in
     let* α0 := M.read bool_param in
     let* α1 := M.read int_param in
     M.alloc (α0, α1)).
@@ -371,7 +372,9 @@ Definition main : M (M.Val unit) :=
       let* α5 : ltac:(refine (M.Val bool.t)) := M.alloc true in
       let* α6 := M.read α5 in
       M.alloc (α1, α2, α4, α6) in
-    let '(a, b, c, d) := tuple in
+    let* '(a, b, c, d) :
+        ltac:(refine (M.Val (((i32.t * (ref str.t)) * f64.t) * bool.t))) :=
+      M.copy tuple in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=

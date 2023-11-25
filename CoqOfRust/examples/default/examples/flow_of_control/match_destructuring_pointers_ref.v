@@ -58,7 +58,8 @@ Definition main : M (M.Val unit) :=
   M.function_body
     (let* reference : ltac:(refine (M.Val (ref i32.t))) :=
       let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 4 in
-      borrow α0 in
+      let* α1 : ltac:(refine (M.Val (ref i32.t))) := borrow α0 in
+      M.copy α1 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* α0 := M.read reference in
       match α0 with
@@ -118,10 +119,18 @@ Definition main : M (M.Val unit) :=
           std.io.stdio._print α8 in
         M.alloc tt
       end in
-    let* _not_a_reference : ltac:(refine (M.Val i32.t)) := M.alloc 3 in
-    let* _is_a_reference : ltac:(refine (M.Val i32.t)) := M.alloc 3 in
-    let* value : ltac:(refine (M.Val i32.t)) := M.alloc 5 in
-    let* mut_value : ltac:(refine (M.Val i32.t)) := M.alloc 6 in
+    let* _not_a_reference : ltac:(refine (M.Val i32.t)) :=
+      let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 3 in
+      M.copy α0 in
+    let* _is_a_reference : ltac:(refine (M.Val i32.t)) :=
+      let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 3 in
+      M.copy α0 in
+    let* value : ltac:(refine (M.Val i32.t)) :=
+      let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 5 in
+      M.copy α0 in
+    let* mut_value : ltac:(refine (M.Val i32.t)) :=
+      let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 6 in
+      M.copy α0 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* α0 := M.read value in
       match α0 with

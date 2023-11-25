@@ -38,20 +38,24 @@ Definition main : M (M.Val unit) :=
           ltac:(refine
             (M.Val (alloc.boxed.Box.t (slice i32.t) alloc.alloc.Global.t))) :=
         pointer_coercion "Unsize" α4 in
-      (slice i32.t)::["into_vec"] α5 in
-    let contains :=
-      let* α0 :
-          ltac:(refine
-            (M.Val (ref (alloc.vec.Vec.t i32.t alloc.alloc.Global.t)))) :=
-        borrow haystack in
-      let* α1 : ltac:(refine (M.Val (ref (slice i32.t)))) :=
-        (core.ops.deref.Deref.deref
-            (Self := alloc.vec.Vec.t i32.t alloc.alloc.Global.t)
-            (Trait := ltac:(refine _)))
-          α0 in
-      let* α2 : ltac:(refine (M.Val (slice i32.t))) := deref α1 in
-      let* α3 : ltac:(refine (M.Val (ref (slice i32.t)))) := borrow α2 in
-      (slice i32.t)::["contains"] α3 needle in
+      let* α6 :
+          ltac:(refine (M.Val (alloc.vec.Vec.t i32.t alloc.alloc.Global.t))) :=
+        (slice i32.t)::["into_vec"] α5 in
+      M.copy α6 in
+    let* contains : ltac:(refine (M.Val type not implemented)) :=
+      M.copy
+        (let* α0 :
+            ltac:(refine
+              (M.Val (ref (alloc.vec.Vec.t i32.t alloc.alloc.Global.t)))) :=
+          borrow haystack in
+        let* α1 : ltac:(refine (M.Val (ref (slice i32.t)))) :=
+          (core.ops.deref.Deref.deref
+              (Self := alloc.vec.Vec.t i32.t alloc.alloc.Global.t)
+              (Trait := ltac:(refine _)))
+            α0 in
+        let* α2 : ltac:(refine (M.Val (slice i32.t))) := deref α1 in
+        let* α3 : ltac:(refine (M.Val (ref (slice i32.t)))) := borrow α2 in
+        (slice i32.t)::["contains"] α3 needle) in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=

@@ -58,35 +58,27 @@ pub(crate) fn compile_expr<'a>(
 }
 
 impl Expr {
+    fn match_simple_call(&self, name_in: &[&str]) -> Option<Self> {
+        if let ExprKind::Call { func, args } = &self.kind {
+            if let ExprKind::LocalVar(func) = &func.kind {
+                if name_in.contains(&func.as_str()) && args.len() == 1 {
+                    return Some(args.get(0).unwrap().clone());
+                }
+            }
+        }
+
+        None
+    }
+
     /// Return the borrowed expression if the expression is a borrow.
     fn match_borrow(&self) -> Option<Self> {
-        match &self.kind {
-            ExprKind::Call { func, args } => {
-                if args.len() != 1 {
-                    return None;
-                }
-                let arg = args.get(0).unwrap();
-
-                if let ExprKind::LocalVar(func) = &func.kind {
-                    if func == "borrow" || func == "borrow_mut" {
-                        return Some(arg.clone());
-                    }
-                }
-
-                None
-            }
-            _ => None,
-        }
+        self.match_simple_call(&["borrow", "borrow_mut"])
     }
 
     fn read(self) -> Self {
         // If we read an allocated expression, we just return the expression.
-        if let ExprKind::Call { func, args } = &self.kind {
-            if let ExprKind::LocalVar(func) = &func.kind {
-                if func == "M.alloc" && args.len() == 1 {
-                    return args.get(0).unwrap().clone();
-                }
-            }
+        if let Some(expr) = self.match_simple_call(&["M.alloc"]) {
+            return expr;
         }
 
         Expr {
@@ -98,6 +90,23 @@ impl Expr {
                 args: vec![self],
             },
             ty: None,
+        }
+    }
+
+    fn copy(self) -> Self {
+        if self.match_simple_call(&["M.alloc"]).is_some() {
+            return self;
+        }
+
+        Expr {
+            ty: self.ty.clone(),
+            kind: ExprKind::Call {
+                func: Box::new(Expr {
+                    kind: ExprKind::LocalVar("M.copy".to_string()),
+                    ty: None,
+                }),
+                args: vec![self],
+            },
         }
     }
 }
@@ -597,7 +606,7 @@ fn compile_stmts<'a>(
                 } => {
                     let pattern = Box::new(crate::thir_pattern::compile_pattern(env, pattern));
                     let init = match initializer {
-                        Some(initializer) => Box::new(compile_expr(env, thir, initializer)),
+                        Some(initializer) => Box::new(compile_expr(env, thir, initializer).copy()),
                         None => Box::new(Expr::tt()),
                     };
                     let ty = body.ty.clone();

@@ -141,7 +141,7 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
             ltac:(refine
               (M.Val associated_functions_and_methods.Rectangle.t)) :=
           deref self in
-        M.pure α0.["p1"] in
+        M.copy α0.["p1"] in
       let* '{|
             associated_functions_and_methods.Point.x := x2;
             associated_functions_and_methods.Point.y := y2;
@@ -151,7 +151,7 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
             ltac:(refine
               (M.Val associated_functions_and_methods.Rectangle.t)) :=
           deref self in
-        M.pure α0.["p2"] in
+        M.copy α0.["p2"] in
       let* α0 : ltac:(refine (M.Val f64.t)) := BinOp.sub x1 x2 in
       let* α1 : ltac:(refine (M.Val f64.t)) := BinOp.sub y1 y2 in
       let* α2 : ltac:(refine (M.Val f64.t)) := BinOp.mul α0 α1 in
@@ -181,7 +181,7 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
             ltac:(refine
               (M.Val associated_functions_and_methods.Rectangle.t)) :=
           deref self in
-        M.pure α0.["p1"] in
+        M.copy α0.["p1"] in
       let* '{|
             associated_functions_and_methods.Point.x := x2;
             associated_functions_and_methods.Point.y := y2;
@@ -191,7 +191,7 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
             ltac:(refine
               (M.Val associated_functions_and_methods.Rectangle.t)) :=
           deref self in
-        M.pure α0.["p2"] in
+        M.copy α0.["p2"] in
       let* α0 : ltac:(refine (M.Val f64.t)) := M.alloc 2 (* 2.0 *) in
       let* α1 : ltac:(refine (M.Val f64.t)) := BinOp.sub x1 x2 in
       let* α2 : ltac:(refine (M.Val f64.t)) := f64.t::["abs"] α1 in
@@ -285,8 +285,9 @@ Section Impl_associated_functions_and_methods_Pair_t.
   *)
   Definition destroy (self : M.Val ltac:(Self)) : M (M.Val unit) :=
     M.function_body
-      (let 'associated_functions_and_methods.Pair.Build_t first second :=
-        self in
+      (let* 'associated_functions_and_methods.Pair.Build_t first second :
+          ltac:(refine (M.Val associated_functions_and_methods.Pair.t)) :=
+        M.copy self in
       let* _ : ltac:(refine (M.Val unit)) :=
         let* _ : ltac:(refine (M.Val unit)) :=
           let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=

@@ -392,8 +392,12 @@ Definition main : M (M.Val unit) :=
           core.fmt.Arguments.t::["new_v1"] α2 α5 in
         std.io.stdio._print α6 in
       M.alloc tt in
-    let* number : ltac:(refine (M.Val f64.t)) := M.alloc 1 (* 1.0 *) in
-    let* width : ltac:(refine (M.Val usize.t)) := M.alloc 5 in
+    let* number : ltac:(refine (M.Val f64.t)) :=
+      let* α0 : ltac:(refine (M.Val f64.t)) := M.alloc 1 (* 1.0 *) in
+      M.copy α0 in
+    let* width : ltac:(refine (M.Val usize.t)) :=
+      let* α0 : ltac:(refine (M.Val usize.t)) := M.alloc 5 in
+      M.copy α0 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=

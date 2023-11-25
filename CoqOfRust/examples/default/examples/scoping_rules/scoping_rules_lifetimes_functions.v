@@ -113,8 +113,12 @@ fn main() {
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M (M.Val unit) :=
   M.function_body
-    (let* x : ltac:(refine (M.Val i32.t)) := M.alloc 7 in
-    let* y : ltac:(refine (M.Val i32.t)) := M.alloc 9 in
+    (let* x : ltac:(refine (M.Val i32.t)) :=
+      let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 7 in
+      M.copy α0 in
+    let* y : ltac:(refine (M.Val i32.t)) :=
+      let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 9 in
+      M.copy α0 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* α0 : ltac:(refine (M.Val (ref i32.t))) := borrow x in
       scoping_rules_lifetimes_functions.print_one α0 in
@@ -125,12 +129,16 @@ Definition main : M (M.Val unit) :=
     let* z : ltac:(refine (M.Val (ref i32.t))) :=
       let* α0 : ltac:(refine (M.Val (ref i32.t))) := borrow x in
       let* α1 : ltac:(refine (M.Val (ref i32.t))) := borrow y in
-      scoping_rules_lifetimes_functions.pass_x α0 α1 in
+      let* α2 : ltac:(refine (M.Val (ref i32.t))) :=
+        scoping_rules_lifetimes_functions.pass_x α0 α1 in
+      M.copy α2 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* α0 : ltac:(refine (M.Val i32.t)) := deref z in
       let* α1 : ltac:(refine (M.Val (ref i32.t))) := borrow α0 in
       scoping_rules_lifetimes_functions.print_one α1 in
-    let* t : ltac:(refine (M.Val i32.t)) := M.alloc 3 in
+    let* t : ltac:(refine (M.Val i32.t)) :=
+      let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 3 in
+      M.copy α0 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* α0 : ltac:(refine (M.Val (mut_ref i32.t))) := borrow_mut t in
       scoping_rules_lifetimes_functions.add_one α0 in

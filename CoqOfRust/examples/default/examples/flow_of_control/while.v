@@ -26,7 +26,9 @@ fn main() {
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M (M.Val unit) :=
   M.function_body
-    (let* n : ltac:(refine (M.Val i32.t)) := M.alloc 1 in
+    (let* n : ltac:(refine (M.Val i32.t)) :=
+      let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 1 in
+      M.copy α0 in
     loop
       (let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 101 in
       let* α1 : ltac:(refine (M.Val bool.t)) := BinOp.lt n α0 in

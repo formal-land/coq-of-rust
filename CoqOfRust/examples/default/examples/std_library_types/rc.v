@@ -44,10 +44,12 @@ Definition main : M (M.Val unit) :=
     (let* rc_examples : ltac:(refine (M.Val alloc.string.String.t)) :=
       let* α0 : ltac:(refine (M.Val str.t)) := deref (mk_str "Rc examples") in
       let* α1 : ltac:(refine (M.Val (ref str.t))) := borrow α0 in
-      (alloc.string.ToString.to_string
-          (Self := str.t)
-          (Trait := ltac:(refine _)))
-        α1 in
+      let* α2 : ltac:(refine (M.Val alloc.string.String.t)) :=
+        (alloc.string.ToString.to_string
+            (Self := str.t)
+            (Trait := ltac:(refine _)))
+          α1 in
+      M.copy α2 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
@@ -62,7 +64,9 @@ Definition main : M (M.Val unit) :=
         std.io.stdio._print α3 in
       M.alloc tt in
     let* rc_a : ltac:(refine (M.Val (alloc.rc.Rc.t alloc.string.String.t))) :=
-      (alloc.rc.Rc.t alloc.string.String.t)::["new"] rc_examples in
+      let* α0 : ltac:(refine (M.Val (alloc.rc.Rc.t alloc.string.String.t))) :=
+        (alloc.rc.Rc.t alloc.string.String.t)::["new"] rc_examples in
+      M.copy α0 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
@@ -108,10 +112,12 @@ Definition main : M (M.Val unit) :=
         let* α0 :
             ltac:(refine (M.Val (ref (alloc.rc.Rc.t alloc.string.String.t)))) :=
           borrow rc_a in
-        (core.clone.Clone.clone
-            (Self := alloc.rc.Rc.t alloc.string.String.t)
-            (Trait := ltac:(refine _)))
-          α0 in
+        let* α1 : ltac:(refine (M.Val (alloc.rc.Rc.t alloc.string.String.t))) :=
+          (core.clone.Clone.clone
+              (Self := alloc.rc.Rc.t alloc.string.String.t)
+              (Trait := ltac:(refine _)))
+            α0 in
+        M.copy α1 in
       let* _ : ltac:(refine (M.Val unit)) :=
         let* _ : ltac:(refine (M.Val unit)) :=
           let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=

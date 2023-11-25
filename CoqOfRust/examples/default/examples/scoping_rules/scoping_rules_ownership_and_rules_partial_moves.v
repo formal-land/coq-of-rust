@@ -52,15 +52,18 @@ Definition main : M (M.Val unit) :=
             α1;
           scoping_rules_ownership_and_rules_partial_moves.main.Person.age := α4;
         |} in
-    let '{|
+    let* '{|
           scoping_rules_ownership_and_rules_partial_moves.main.Person.name
             :=
             name;
           scoping_rules_ownership_and_rules_partial_moves.main.Person.age
             :=
             age;
-        |} :=
-      person in
+        |} :
+        ltac:(refine
+          (M.Val
+            scoping_rules_ownership_and_rules_partial_moves.main.Person.t)) :=
+      M.copy person in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=

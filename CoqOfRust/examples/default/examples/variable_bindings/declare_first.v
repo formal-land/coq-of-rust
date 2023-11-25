@@ -31,7 +31,9 @@ Definition main : M (M.Val unit) :=
   M.function_body
     (let* a_binding : ltac:(refine (M.Val unit)) := M.alloc tt in
     let* _ : ltac:(refine (M.Val unit)) :=
-      let* x : ltac:(refine (M.Val i32.t)) := M.alloc 2 in
+      let* x : ltac:(refine (M.Val i32.t)) :=
+        let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 2 in
+        M.copy α0 in
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val i32.t)) := BinOp.mul x x in
         assign a_binding α0 in

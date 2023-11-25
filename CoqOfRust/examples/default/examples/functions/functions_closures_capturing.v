@@ -73,69 +73,24 @@ fn main() {
 Definition main : M (M.Val unit) :=
   M.function_body
     (let* color : ltac:(refine (M.Val alloc.string.String.t)) :=
-      (core.convert.From.from
-          (Self := alloc.string.String.t)
-          (Trait := ltac:(refine _)))
-        (mk_str "green") in
-    let print :=
-      let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
-          M.alloc [ mk_str "`color`: "; mk_str "
-" ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
-          borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
-          pointer_coercion "Unsize" α1 in
-        let* α3 : ltac:(refine (M.Val (ref alloc.string.String.t))) :=
-          borrow color in
-        let* α4 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
-          core.fmt.rt.Argument.t::["new_display"] α3 in
-        let* α5 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
-          M.alloc [ α4 ] in
-        let* α6 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
-          borrow α5 in
-        let* α7 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
-          pointer_coercion "Unsize" α6 in
-        let* α8 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-          core.fmt.Arguments.t::["new_v1"] α2 α7 in
-        std.io.stdio._print α8 in
-      M.alloc tt in
-    let* _ : ltac:(refine (M.Val unit)) :=
-      let* α0 : ltac:(refine (M.Val (ref type not implemented))) :=
-        borrow print in
-      let* α1 : ltac:(refine (M.Val unit)) := M.alloc tt in
-      (core.ops.function.Fn.call
-          (Self := type not implemented)
-          (Trait := ltac:(refine _)))
-        α0
-        α1 in
-    let* _reborrow : ltac:(refine (M.Val (ref alloc.string.String.t))) :=
-      borrow color in
-    let* _ : ltac:(refine (M.Val unit)) :=
-      let* α0 : ltac:(refine (M.Val (ref type not implemented))) :=
-        borrow print in
-      let* α1 : ltac:(refine (M.Val unit)) := M.alloc tt in
-      (core.ops.function.Fn.call
-          (Self := type not implemented)
-          (Trait := ltac:(refine _)))
-        α0
-        α1 in
-    let _color_moved := color in
-    let* count : ltac:(refine (M.Val i32.t)) := M.alloc 0 in
-    let inc :=
-      let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 1 in
-        assign_op add count α0 in
-      let* _ : ltac:(refine (M.Val unit)) :=
-        let* _ : ltac:(refine (M.Val unit)) :=
+      let* α0 : ltac:(refine (M.Val alloc.string.String.t)) :=
+        (core.convert.From.from
+            (Self := alloc.string.String.t)
+            (Trait := ltac:(refine _)))
+          (mk_str "green") in
+      M.copy α0 in
+    let* print : ltac:(refine (M.Val type not implemented)) :=
+      M.copy
+        (let* _ : ltac:(refine (M.Val unit)) :=
           let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
-            M.alloc [ mk_str "`count`: "; mk_str "
+            M.alloc [ mk_str "`color`: "; mk_str "
 " ] in
           let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
             borrow α0 in
           let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
             pointer_coercion "Unsize" α1 in
-          let* α3 : ltac:(refine (M.Val (ref i32.t))) := borrow count in
+          let* α3 : ltac:(refine (M.Val (ref alloc.string.String.t))) :=
+            borrow color in
           let* α4 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
             core.fmt.rt.Argument.t::["new_display"] α3 in
           let* α5 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
@@ -149,8 +104,64 @@ Definition main : M (M.Val unit) :=
           let* α8 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
             core.fmt.Arguments.t::["new_v1"] α2 α7 in
           std.io.stdio._print α8 in
-        M.alloc tt in
-      M.alloc tt in
+        M.alloc tt) in
+    let* _ : ltac:(refine (M.Val unit)) :=
+      let* α0 : ltac:(refine (M.Val (ref type not implemented))) :=
+        borrow print in
+      let* α1 : ltac:(refine (M.Val unit)) := M.alloc tt in
+      (core.ops.function.Fn.call
+          (Self := type not implemented)
+          (Trait := ltac:(refine _)))
+        α0
+        α1 in
+    let* _reborrow : ltac:(refine (M.Val (ref alloc.string.String.t))) :=
+      let* α0 : ltac:(refine (M.Val (ref alloc.string.String.t))) :=
+        borrow color in
+      M.copy α0 in
+    let* _ : ltac:(refine (M.Val unit)) :=
+      let* α0 : ltac:(refine (M.Val (ref type not implemented))) :=
+        borrow print in
+      let* α1 : ltac:(refine (M.Val unit)) := M.alloc tt in
+      (core.ops.function.Fn.call
+          (Self := type not implemented)
+          (Trait := ltac:(refine _)))
+        α0
+        α1 in
+    let* _color_moved : ltac:(refine (M.Val alloc.string.String.t)) :=
+      M.copy color in
+    let* count : ltac:(refine (M.Val i32.t)) :=
+      let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 0 in
+      M.copy α0 in
+    let* inc : ltac:(refine (M.Val type not implemented)) :=
+      M.copy
+        (let* _ : ltac:(refine (M.Val unit)) :=
+          let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 1 in
+          assign_op add count α0 in
+        let* _ : ltac:(refine (M.Val unit)) :=
+          let* _ : ltac:(refine (M.Val unit)) :=
+            let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
+              M.alloc [ mk_str "`count`: "; mk_str "
+" ] in
+            let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+              borrow α0 in
+            let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
+              pointer_coercion "Unsize" α1 in
+            let* α3 : ltac:(refine (M.Val (ref i32.t))) := borrow count in
+            let* α4 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
+              core.fmt.rt.Argument.t::["new_display"] α3 in
+            let* α5 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
+              M.alloc [ α4 ] in
+            let* α6 :
+                ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
+              borrow α5 in
+            let* α7 :
+                ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
+              pointer_coercion "Unsize" α6 in
+            let* α8 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
+              core.fmt.Arguments.t::["new_v1"] α2 α7 in
+            std.io.stdio._print α8 in
+          M.alloc tt in
+        M.alloc tt) in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* α0 : ltac:(refine (M.Val (mut_ref type not implemented))) :=
         borrow_mut inc in
@@ -170,41 +181,48 @@ Definition main : M (M.Val unit) :=
         α0
         α1 in
     let* _count_reborrowed : ltac:(refine (M.Val (mut_ref i32.t))) :=
-      borrow_mut count in
+      let* α0 : ltac:(refine (M.Val (mut_ref i32.t))) := borrow_mut count in
+      M.copy α0 in
     let* movable :
         ltac:(refine (M.Val (alloc.boxed.Box.t i32.t alloc.alloc.Global.t))) :=
       let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 3 in
-      (alloc.boxed.Box.t i32.t alloc.alloc.Global.t)::["new"] α0 in
-    let consume :=
-      let* _ : ltac:(refine (M.Val unit)) :=
-        let* _ : ltac:(refine (M.Val unit)) :=
-          let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
-            M.alloc [ mk_str "`movable`: "; mk_str "
+      let* α1 :
+          ltac:(refine
+            (M.Val (alloc.boxed.Box.t i32.t alloc.alloc.Global.t))) :=
+        (alloc.boxed.Box.t i32.t alloc.alloc.Global.t)::["new"] α0 in
+      M.copy α1 in
+    let* consume : ltac:(refine (M.Val type not implemented)) :=
+      M.copy
+        (let* _ : ltac:(refine (M.Val unit)) :=
+          let* _ : ltac:(refine (M.Val unit)) :=
+            let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
+              M.alloc [ mk_str "`movable`: "; mk_str "
 " ] in
-          let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
-            borrow α0 in
-          let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
-            pointer_coercion "Unsize" α1 in
-          let* α3 :
-              ltac:(refine
-                (M.Val (ref (alloc.boxed.Box.t i32.t alloc.alloc.Global.t)))) :=
-            borrow movable in
-          let* α4 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
-            core.fmt.rt.Argument.t::["new_debug"] α3 in
-          let* α5 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
-            M.alloc [ α4 ] in
-          let* α6 :
-              ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
-            borrow α5 in
-          let* α7 :
-              ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
-            pointer_coercion "Unsize" α6 in
-          let* α8 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-            core.fmt.Arguments.t::["new_v1"] α2 α7 in
-          std.io.stdio._print α8 in
-        M.alloc tt in
-      let* _ : ltac:(refine (M.Val unit)) := core.mem.drop movable in
-      M.alloc tt in
+            let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+              borrow α0 in
+            let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
+              pointer_coercion "Unsize" α1 in
+            let* α3 :
+                ltac:(refine
+                  (M.Val
+                    (ref (alloc.boxed.Box.t i32.t alloc.alloc.Global.t)))) :=
+              borrow movable in
+            let* α4 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
+              core.fmt.rt.Argument.t::["new_debug"] α3 in
+            let* α5 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
+              M.alloc [ α4 ] in
+            let* α6 :
+                ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
+              borrow α5 in
+            let* α7 :
+                ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
+              pointer_coercion "Unsize" α6 in
+            let* α8 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
+              core.fmt.Arguments.t::["new_v1"] α2 α7 in
+            std.io.stdio._print α8 in
+          M.alloc tt in
+        let* _ : ltac:(refine (M.Val unit)) := core.mem.drop movable in
+        M.alloc tt) in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* α0 : ltac:(refine (M.Val unit)) := M.alloc tt in
       (core.ops.function.FnOnce.call_once

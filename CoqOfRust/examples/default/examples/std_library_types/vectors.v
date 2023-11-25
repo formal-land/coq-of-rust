@@ -66,10 +66,13 @@ Definition main : M (M.Val unit) :=
         M.alloc
           {| core.ops.range.Range.start := α1; core.ops.range.Range.end := α3;
           |} in
-      (core.iter.traits.iterator.Iterator.collect
-          (Self := core.ops.range.Range.t i32.t)
-          (Trait := ltac:(refine _)))
-        α4 in
+      let* α5 :
+          ltac:(refine (M.Val (alloc.vec.Vec.t i32.t alloc.alloc.Global.t))) :=
+        (core.iter.traits.iterator.Iterator.collect
+            (Self := core.ops.range.Range.t i32.t)
+            (Trait := ltac:(refine _)))
+          α4 in
+      M.copy α5 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
@@ -109,7 +112,10 @@ Definition main : M (M.Val unit) :=
           ltac:(refine
             (M.Val (alloc.boxed.Box.t (slice i32.t) alloc.alloc.Global.t))) :=
         pointer_coercion "Unsize" α4 in
-      (slice i32.t)::["into_vec"] α5 in
+      let* α6 :
+          ltac:(refine (M.Val (alloc.vec.Vec.t i32.t alloc.alloc.Global.t))) :=
+        (slice i32.t)::["into_vec"] α5 in
+      M.copy α6 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=

@@ -42,7 +42,8 @@ fn main() {
 Definition main : M (M.Val unit) :=
   M.function_body
     (let* _ : ltac:(refine (M.Val unit)) :=
-      let static_string := mk_str "I'm in read-only memory" in
+      let* static_string : ltac:(refine (M.Val (ref str.t))) :=
+        M.copy (mk_str "I'm in read-only memory") in
       let* _ : ltac:(refine (M.Val unit)) :=
         let* _ : ltac:(refine (M.Val unit)) :=
           let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
@@ -70,10 +71,14 @@ Definition main : M (M.Val unit) :=
         M.alloc tt in
       M.alloc tt in
     let* _ : ltac:(refine (M.Val unit)) :=
-      let* lifetime_num : ltac:(refine (M.Val i32.t)) := M.alloc 9 in
+      let* lifetime_num : ltac:(refine (M.Val i32.t)) :=
+        let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 9 in
+        M.copy α0 in
       let* coerced_static : ltac:(refine (M.Val (ref i32.t))) :=
         let* α0 : ltac:(refine (M.Val (ref i32.t))) := borrow lifetime_num in
-        scoping_rules_lifetimes_reference_lifetime_static.coerce_static α0 in
+        let* α1 : ltac:(refine (M.Val (ref i32.t))) :=
+          scoping_rules_lifetimes_reference_lifetime_static.coerce_static α0 in
+        M.copy α1 in
       let* _ : ltac:(refine (M.Val unit)) :=
         let* _ : ltac:(refine (M.Val unit)) :=
           let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=

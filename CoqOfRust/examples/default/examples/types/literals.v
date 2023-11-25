@@ -23,11 +23,21 @@ fn main() {
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M (M.Val unit) :=
   M.function_body
-    (let* x : ltac:(refine (M.Val u8.t)) := M.alloc 1 in
-    let* y : ltac:(refine (M.Val u32.t)) := M.alloc 2 in
-    let* z : ltac:(refine (M.Val f32.t)) := M.alloc 3 (* 3 *) in
-    let* i : ltac:(refine (M.Val i32.t)) := M.alloc 1 in
-    let* f : ltac:(refine (M.Val f64.t)) := M.alloc 1 (* 1.0 *) in
+    (let* x : ltac:(refine (M.Val u8.t)) :=
+      let* α0 : ltac:(refine (M.Val u8.t)) := M.alloc 1 in
+      M.copy α0 in
+    let* y : ltac:(refine (M.Val u32.t)) :=
+      let* α0 : ltac:(refine (M.Val u32.t)) := M.alloc 2 in
+      M.copy α0 in
+    let* z : ltac:(refine (M.Val f32.t)) :=
+      let* α0 : ltac:(refine (M.Val f32.t)) := M.alloc 3 (* 3 *) in
+      M.copy α0 in
+    let* i : ltac:(refine (M.Val i32.t)) :=
+      let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 1 in
+      M.copy α0 in
+    let* f : ltac:(refine (M.Val f64.t)) :=
+      let* α0 : ltac:(refine (M.Val f64.t)) := M.alloc 1 (* 1.0 *) in
+      M.copy α0 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=

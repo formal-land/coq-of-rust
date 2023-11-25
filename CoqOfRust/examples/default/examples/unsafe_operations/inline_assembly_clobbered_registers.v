@@ -41,7 +41,8 @@ Definition main : M (M.Val unit) :=
   M.function_body
     (let* name_buf : ltac:(refine (M.Val (array u8.t))) :=
       let* α0 : ltac:(refine (M.Val u8.t)) := M.alloc 0 in
-      repeat α0 12 in
+      let* α1 : ltac:(refine (M.Val (array u8.t))) := repeat α0 12 in
+      M.copy α1 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let _ := InlineAssembly in
       M.alloc tt in
@@ -54,8 +55,12 @@ Definition main : M (M.Val unit) :=
             (M.Val
               (core.result.Result.t (ref str.t) core.str.error.Utf8Error.t))) :=
         core.str.converts.from_utf8 α1 in
-      (core.result.Result.t (ref str.t) core.str.error.Utf8Error.t)::["unwrap"]
-        α2 in
+      let* α3 : ltac:(refine (M.Val (ref str.t))) :=
+        (core.result.Result.t
+              (ref str.t)
+              core.str.error.Utf8Error.t)::["unwrap"]
+          α2 in
+      M.copy α3 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=

@@ -540,7 +540,8 @@ Section Impl_subtle_ConstantTimeEq_for_slice_T.
       (let* len : ltac:(refine (M.Val usize.t)) :=
         let* α0 : ltac:(refine (M.Val (slice T))) := deref self in
         let* α1 : ltac:(refine (M.Val (ref (slice T)))) := borrow α0 in
-        (slice T)::["len"] α1 in
+        let* α2 : ltac:(refine (M.Val usize.t)) := (slice T)::["len"] α1 in
+        M.copy α2 in
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val (slice T))) := deref _rhs in
         let* α1 : ltac:(refine (M.Val (ref (slice T)))) := borrow α0 in
@@ -561,7 +562,9 @@ Section Impl_subtle_ConstantTimeEq_for_slice_T.
           never_to_any α0
         else
           M.alloc tt in
-      let* x : ltac:(refine (M.Val u8.t)) := M.alloc 1 in
+      let* x : ltac:(refine (M.Val u8.t)) :=
+        let* α0 : ltac:(refine (M.Val u8.t)) := M.alloc 1 in
+        M.copy α0 in
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val (slice T))) := deref self in
         let* α1 : ltac:(refine (M.Val (ref (slice T)))) := borrow α0 in
@@ -725,18 +728,21 @@ Section Impl_subtle_ConstantTimeEq_for_u8_t.
       : M (M.Val subtle.Choice.t) :=
     M.function_body
       (let* x : ltac:(refine (M.Val u8.t)) :=
-        (core.ops.bit.BitXor.bitxor
-            (Self := ref u8.t)
-            (Trait := ltac:(refine _)))
-          self
-          other in
+        let* α0 : ltac:(refine (M.Val u8.t)) :=
+          (core.ops.bit.BitXor.bitxor
+              (Self := ref u8.t)
+              (Trait := ltac:(refine _)))
+            self
+            other in
+        M.copy α0 in
       let* y : ltac:(refine (M.Val u8.t)) :=
         let* α0 : ltac:(refine (M.Val u8.t)) := u8.t::["wrapping_neg"] x in
         let* α1 : ltac:(refine (M.Val u8.t)) := BinOp.bit_or x α0 in
         let* α2 : ltac:(refine (M.Val i32.t)) := M.alloc 8 in
         let* α3 : ltac:(refine (M.Val i32.t)) := M.alloc 1 in
         let* α4 : ltac:(refine (M.Val i32.t)) := BinOp.sub α2 α3 in
-        BinOp.shr α1 α4 in
+        let* α5 : ltac:(refine (M.Val u8.t)) := BinOp.shr α1 α4 in
+        M.copy α5 in
       let* α0 : ltac:(refine (M.Val u8.t)) := M.alloc 1 in
       let* α1 : ltac:(refine (M.Val u8.t)) := use α0 in
       let* α2 : ltac:(refine (M.Val u8.t)) := BinOp.bit_xor y α1 in
@@ -815,18 +821,21 @@ Section Impl_subtle_ConstantTimeEq_for_u16_t.
       : M (M.Val subtle.Choice.t) :=
     M.function_body
       (let* x : ltac:(refine (M.Val u16.t)) :=
-        (core.ops.bit.BitXor.bitxor
-            (Self := ref u16.t)
-            (Trait := ltac:(refine _)))
-          self
-          other in
+        let* α0 : ltac:(refine (M.Val u16.t)) :=
+          (core.ops.bit.BitXor.bitxor
+              (Self := ref u16.t)
+              (Trait := ltac:(refine _)))
+            self
+            other in
+        M.copy α0 in
       let* y : ltac:(refine (M.Val u16.t)) :=
         let* α0 : ltac:(refine (M.Val u16.t)) := u16.t::["wrapping_neg"] x in
         let* α1 : ltac:(refine (M.Val u16.t)) := BinOp.bit_or x α0 in
         let* α2 : ltac:(refine (M.Val i32.t)) := M.alloc 16 in
         let* α3 : ltac:(refine (M.Val i32.t)) := M.alloc 1 in
         let* α4 : ltac:(refine (M.Val i32.t)) := BinOp.sub α2 α3 in
-        BinOp.shr α1 α4 in
+        let* α5 : ltac:(refine (M.Val u16.t)) := BinOp.shr α1 α4 in
+        M.copy α5 in
       let* α0 : ltac:(refine (M.Val u16.t)) := M.alloc 1 in
       let* α1 : ltac:(refine (M.Val u16.t)) := use α0 in
       let* α2 : ltac:(refine (M.Val u16.t)) := BinOp.bit_xor y α1 in
@@ -905,18 +914,21 @@ Section Impl_subtle_ConstantTimeEq_for_u32_t.
       : M (M.Val subtle.Choice.t) :=
     M.function_body
       (let* x : ltac:(refine (M.Val u32.t)) :=
-        (core.ops.bit.BitXor.bitxor
-            (Self := ref u32.t)
-            (Trait := ltac:(refine _)))
-          self
-          other in
+        let* α0 : ltac:(refine (M.Val u32.t)) :=
+          (core.ops.bit.BitXor.bitxor
+              (Self := ref u32.t)
+              (Trait := ltac:(refine _)))
+            self
+            other in
+        M.copy α0 in
       let* y : ltac:(refine (M.Val u32.t)) :=
         let* α0 : ltac:(refine (M.Val u32.t)) := u32.t::["wrapping_neg"] x in
         let* α1 : ltac:(refine (M.Val u32.t)) := BinOp.bit_or x α0 in
         let* α2 : ltac:(refine (M.Val i32.t)) := M.alloc 32 in
         let* α3 : ltac:(refine (M.Val i32.t)) := M.alloc 1 in
         let* α4 : ltac:(refine (M.Val i32.t)) := BinOp.sub α2 α3 in
-        BinOp.shr α1 α4 in
+        let* α5 : ltac:(refine (M.Val u32.t)) := BinOp.shr α1 α4 in
+        M.copy α5 in
       let* α0 : ltac:(refine (M.Val u32.t)) := M.alloc 1 in
       let* α1 : ltac:(refine (M.Val u32.t)) := use α0 in
       let* α2 : ltac:(refine (M.Val u32.t)) := BinOp.bit_xor y α1 in
@@ -995,18 +1007,21 @@ Section Impl_subtle_ConstantTimeEq_for_u64_t.
       : M (M.Val subtle.Choice.t) :=
     M.function_body
       (let* x : ltac:(refine (M.Val u64.t)) :=
-        (core.ops.bit.BitXor.bitxor
-            (Self := ref u64.t)
-            (Trait := ltac:(refine _)))
-          self
-          other in
+        let* α0 : ltac:(refine (M.Val u64.t)) :=
+          (core.ops.bit.BitXor.bitxor
+              (Self := ref u64.t)
+              (Trait := ltac:(refine _)))
+            self
+            other in
+        M.copy α0 in
       let* y : ltac:(refine (M.Val u64.t)) :=
         let* α0 : ltac:(refine (M.Val u64.t)) := u64.t::["wrapping_neg"] x in
         let* α1 : ltac:(refine (M.Val u64.t)) := BinOp.bit_or x α0 in
         let* α2 : ltac:(refine (M.Val i32.t)) := M.alloc 64 in
         let* α3 : ltac:(refine (M.Val i32.t)) := M.alloc 1 in
         let* α4 : ltac:(refine (M.Val i32.t)) := BinOp.sub α2 α3 in
-        BinOp.shr α1 α4 in
+        let* α5 : ltac:(refine (M.Val u64.t)) := BinOp.shr α1 α4 in
+        M.copy α5 in
       let* α0 : ltac:(refine (M.Val u64.t)) := M.alloc 1 in
       let* α1 : ltac:(refine (M.Val u64.t)) := use α0 in
       let* α2 : ltac:(refine (M.Val u64.t)) := BinOp.bit_xor y α1 in
@@ -1085,11 +1100,13 @@ Section Impl_subtle_ConstantTimeEq_for_usize_t.
       : M (M.Val subtle.Choice.t) :=
     M.function_body
       (let* x : ltac:(refine (M.Val usize.t)) :=
-        (core.ops.bit.BitXor.bitxor
-            (Self := ref usize.t)
-            (Trait := ltac:(refine _)))
-          self
-          other in
+        let* α0 : ltac:(refine (M.Val usize.t)) :=
+          (core.ops.bit.BitXor.bitxor
+              (Self := ref usize.t)
+              (Trait := ltac:(refine _)))
+            self
+            other in
+        M.copy α0 in
       let* y : ltac:(refine (M.Val usize.t)) :=
         let* α0 : ltac:(refine (M.Val usize.t)) :=
           usize.t::["wrapping_neg"] x in
@@ -1099,7 +1116,8 @@ Section Impl_subtle_ConstantTimeEq_for_usize_t.
         let* α4 : ltac:(refine (M.Val usize.t)) := BinOp.mul α2 α3 in
         let* α5 : ltac:(refine (M.Val usize.t)) := M.alloc 1 in
         let* α6 : ltac:(refine (M.Val usize.t)) := BinOp.sub α4 α5 in
-        BinOp.shr α1 α6 in
+        let* α7 : ltac:(refine (M.Val usize.t)) := BinOp.shr α1 α6 in
+        M.copy α7 in
       let* α0 : ltac:(refine (M.Val usize.t)) := M.alloc 1 in
       let* α1 : ltac:(refine (M.Val usize.t)) := use α0 in
       let* α2 : ltac:(refine (M.Val usize.t)) := BinOp.bit_xor y α1 in
@@ -1194,7 +1212,8 @@ Section Impl_subtle_ConditionallySelectable_for_u8_t.
           subtle.Choice.t::["unwrap_u8"] α0 in
         let* α2 : ltac:(refine (M.Val i8.t)) := cast α1 in
         let* α3 : ltac:(refine (M.Val i8.t)) := UnOp.neg α2 in
-        cast α3 in
+        let* α4 : ltac:(refine (M.Val u8.t)) := cast α3 in
+        M.copy α4 in
       let* α0 : ltac:(refine (M.Val u8.t)) :=
         (core.ops.bit.BitXor.bitxor
             (Self := ref u8.t)
@@ -1232,7 +1251,8 @@ Section Impl_subtle_ConditionallySelectable_for_u8_t.
           subtle.Choice.t::["unwrap_u8"] α0 in
         let* α2 : ltac:(refine (M.Val i8.t)) := cast α1 in
         let* α3 : ltac:(refine (M.Val i8.t)) := UnOp.neg α2 in
-        cast α3 in
+        let* α4 : ltac:(refine (M.Val u8.t)) := cast α3 in
+        M.copy α4 in
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val u8.t)) := deref self in
         let* α1 : ltac:(refine (M.Val u8.t)) := deref self in
@@ -1270,12 +1290,14 @@ Section Impl_subtle_ConditionallySelectable_for_u8_t.
           subtle.Choice.t::["unwrap_u8"] α0 in
         let* α2 : ltac:(refine (M.Val i8.t)) := cast α1 in
         let* α3 : ltac:(refine (M.Val i8.t)) := UnOp.neg α2 in
-        cast α3 in
+        let* α4 : ltac:(refine (M.Val u8.t)) := cast α3 in
+        M.copy α4 in
       let* t : ltac:(refine (M.Val u8.t)) :=
         let* α0 : ltac:(refine (M.Val u8.t)) := deref a in
         let* α1 : ltac:(refine (M.Val u8.t)) := deref b in
         let* α2 : ltac:(refine (M.Val u8.t)) := BinOp.bit_xor α0 α1 in
-        BinOp.bit_and mask α2 in
+        let* α3 : ltac:(refine (M.Val u8.t)) := BinOp.bit_and mask α2 in
+        M.copy α3 in
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val u8.t)) := deref a in
         assign_op bitxor α0 t in
@@ -1325,7 +1347,8 @@ Section Impl_subtle_ConditionallySelectable_for_i8_t.
           subtle.Choice.t::["unwrap_u8"] α0 in
         let* α2 : ltac:(refine (M.Val i8.t)) := cast α1 in
         let* α3 : ltac:(refine (M.Val i8.t)) := UnOp.neg α2 in
-        use α3 in
+        let* α4 : ltac:(refine (M.Val i8.t)) := use α3 in
+        M.copy α4 in
       let* α0 : ltac:(refine (M.Val i8.t)) :=
         (core.ops.bit.BitXor.bitxor
             (Self := ref i8.t)
@@ -1363,7 +1386,8 @@ Section Impl_subtle_ConditionallySelectable_for_i8_t.
           subtle.Choice.t::["unwrap_u8"] α0 in
         let* α2 : ltac:(refine (M.Val i8.t)) := cast α1 in
         let* α3 : ltac:(refine (M.Val i8.t)) := UnOp.neg α2 in
-        use α3 in
+        let* α4 : ltac:(refine (M.Val i8.t)) := use α3 in
+        M.copy α4 in
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val i8.t)) := deref self in
         let* α1 : ltac:(refine (M.Val i8.t)) := deref self in
@@ -1401,12 +1425,14 @@ Section Impl_subtle_ConditionallySelectable_for_i8_t.
           subtle.Choice.t::["unwrap_u8"] α0 in
         let* α2 : ltac:(refine (M.Val i8.t)) := cast α1 in
         let* α3 : ltac:(refine (M.Val i8.t)) := UnOp.neg α2 in
-        use α3 in
+        let* α4 : ltac:(refine (M.Val i8.t)) := use α3 in
+        M.copy α4 in
       let* t : ltac:(refine (M.Val i8.t)) :=
         let* α0 : ltac:(refine (M.Val i8.t)) := deref a in
         let* α1 : ltac:(refine (M.Val i8.t)) := deref b in
         let* α2 : ltac:(refine (M.Val i8.t)) := BinOp.bit_xor α0 α1 in
-        BinOp.bit_and mask α2 in
+        let* α3 : ltac:(refine (M.Val i8.t)) := BinOp.bit_and mask α2 in
+        M.copy α3 in
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val i8.t)) := deref a in
         assign_op bitxor α0 t in
@@ -1456,7 +1482,8 @@ Section Impl_subtle_ConditionallySelectable_for_u16_t.
           subtle.Choice.t::["unwrap_u8"] α0 in
         let* α2 : ltac:(refine (M.Val i16.t)) := cast α1 in
         let* α3 : ltac:(refine (M.Val i16.t)) := UnOp.neg α2 in
-        cast α3 in
+        let* α4 : ltac:(refine (M.Val u16.t)) := cast α3 in
+        M.copy α4 in
       let* α0 : ltac:(refine (M.Val u16.t)) :=
         (core.ops.bit.BitXor.bitxor
             (Self := ref u16.t)
@@ -1496,7 +1523,8 @@ Section Impl_subtle_ConditionallySelectable_for_u16_t.
           subtle.Choice.t::["unwrap_u8"] α0 in
         let* α2 : ltac:(refine (M.Val i16.t)) := cast α1 in
         let* α3 : ltac:(refine (M.Val i16.t)) := UnOp.neg α2 in
-        cast α3 in
+        let* α4 : ltac:(refine (M.Val u16.t)) := cast α3 in
+        M.copy α4 in
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val u16.t)) := deref self in
         let* α1 : ltac:(refine (M.Val u16.t)) := deref self in
@@ -1534,12 +1562,14 @@ Section Impl_subtle_ConditionallySelectable_for_u16_t.
           subtle.Choice.t::["unwrap_u8"] α0 in
         let* α2 : ltac:(refine (M.Val i16.t)) := cast α1 in
         let* α3 : ltac:(refine (M.Val i16.t)) := UnOp.neg α2 in
-        cast α3 in
+        let* α4 : ltac:(refine (M.Val u16.t)) := cast α3 in
+        M.copy α4 in
       let* t : ltac:(refine (M.Val u16.t)) :=
         let* α0 : ltac:(refine (M.Val u16.t)) := deref a in
         let* α1 : ltac:(refine (M.Val u16.t)) := deref b in
         let* α2 : ltac:(refine (M.Val u16.t)) := BinOp.bit_xor α0 α1 in
-        BinOp.bit_and mask α2 in
+        let* α3 : ltac:(refine (M.Val u16.t)) := BinOp.bit_and mask α2 in
+        M.copy α3 in
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val u16.t)) := deref a in
         assign_op bitxor α0 t in
@@ -1589,7 +1619,8 @@ Section Impl_subtle_ConditionallySelectable_for_i16_t.
           subtle.Choice.t::["unwrap_u8"] α0 in
         let* α2 : ltac:(refine (M.Val i16.t)) := cast α1 in
         let* α3 : ltac:(refine (M.Val i16.t)) := UnOp.neg α2 in
-        use α3 in
+        let* α4 : ltac:(refine (M.Val i16.t)) := use α3 in
+        M.copy α4 in
       let* α0 : ltac:(refine (M.Val i16.t)) :=
         (core.ops.bit.BitXor.bitxor
             (Self := ref i16.t)
@@ -1629,7 +1660,8 @@ Section Impl_subtle_ConditionallySelectable_for_i16_t.
           subtle.Choice.t::["unwrap_u8"] α0 in
         let* α2 : ltac:(refine (M.Val i16.t)) := cast α1 in
         let* α3 : ltac:(refine (M.Val i16.t)) := UnOp.neg α2 in
-        use α3 in
+        let* α4 : ltac:(refine (M.Val i16.t)) := use α3 in
+        M.copy α4 in
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val i16.t)) := deref self in
         let* α1 : ltac:(refine (M.Val i16.t)) := deref self in
@@ -1667,12 +1699,14 @@ Section Impl_subtle_ConditionallySelectable_for_i16_t.
           subtle.Choice.t::["unwrap_u8"] α0 in
         let* α2 : ltac:(refine (M.Val i16.t)) := cast α1 in
         let* α3 : ltac:(refine (M.Val i16.t)) := UnOp.neg α2 in
-        use α3 in
+        let* α4 : ltac:(refine (M.Val i16.t)) := use α3 in
+        M.copy α4 in
       let* t : ltac:(refine (M.Val i16.t)) :=
         let* α0 : ltac:(refine (M.Val i16.t)) := deref a in
         let* α1 : ltac:(refine (M.Val i16.t)) := deref b in
         let* α2 : ltac:(refine (M.Val i16.t)) := BinOp.bit_xor α0 α1 in
-        BinOp.bit_and mask α2 in
+        let* α3 : ltac:(refine (M.Val i16.t)) := BinOp.bit_and mask α2 in
+        M.copy α3 in
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val i16.t)) := deref a in
         assign_op bitxor α0 t in
@@ -1722,7 +1756,8 @@ Section Impl_subtle_ConditionallySelectable_for_u32_t.
           subtle.Choice.t::["unwrap_u8"] α0 in
         let* α2 : ltac:(refine (M.Val i32.t)) := cast α1 in
         let* α3 : ltac:(refine (M.Val i32.t)) := UnOp.neg α2 in
-        cast α3 in
+        let* α4 : ltac:(refine (M.Val u32.t)) := cast α3 in
+        M.copy α4 in
       let* α0 : ltac:(refine (M.Val u32.t)) :=
         (core.ops.bit.BitXor.bitxor
             (Self := ref u32.t)
@@ -1762,7 +1797,8 @@ Section Impl_subtle_ConditionallySelectable_for_u32_t.
           subtle.Choice.t::["unwrap_u8"] α0 in
         let* α2 : ltac:(refine (M.Val i32.t)) := cast α1 in
         let* α3 : ltac:(refine (M.Val i32.t)) := UnOp.neg α2 in
-        cast α3 in
+        let* α4 : ltac:(refine (M.Val u32.t)) := cast α3 in
+        M.copy α4 in
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val u32.t)) := deref self in
         let* α1 : ltac:(refine (M.Val u32.t)) := deref self in
@@ -1800,12 +1836,14 @@ Section Impl_subtle_ConditionallySelectable_for_u32_t.
           subtle.Choice.t::["unwrap_u8"] α0 in
         let* α2 : ltac:(refine (M.Val i32.t)) := cast α1 in
         let* α3 : ltac:(refine (M.Val i32.t)) := UnOp.neg α2 in
-        cast α3 in
+        let* α4 : ltac:(refine (M.Val u32.t)) := cast α3 in
+        M.copy α4 in
       let* t : ltac:(refine (M.Val u32.t)) :=
         let* α0 : ltac:(refine (M.Val u32.t)) := deref a in
         let* α1 : ltac:(refine (M.Val u32.t)) := deref b in
         let* α2 : ltac:(refine (M.Val u32.t)) := BinOp.bit_xor α0 α1 in
-        BinOp.bit_and mask α2 in
+        let* α3 : ltac:(refine (M.Val u32.t)) := BinOp.bit_and mask α2 in
+        M.copy α3 in
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val u32.t)) := deref a in
         assign_op bitxor α0 t in
@@ -1855,7 +1893,8 @@ Section Impl_subtle_ConditionallySelectable_for_i32_t.
           subtle.Choice.t::["unwrap_u8"] α0 in
         let* α2 : ltac:(refine (M.Val i32.t)) := cast α1 in
         let* α3 : ltac:(refine (M.Val i32.t)) := UnOp.neg α2 in
-        use α3 in
+        let* α4 : ltac:(refine (M.Val i32.t)) := use α3 in
+        M.copy α4 in
       let* α0 : ltac:(refine (M.Val i32.t)) :=
         (core.ops.bit.BitXor.bitxor
             (Self := ref i32.t)
@@ -1895,7 +1934,8 @@ Section Impl_subtle_ConditionallySelectable_for_i32_t.
           subtle.Choice.t::["unwrap_u8"] α0 in
         let* α2 : ltac:(refine (M.Val i32.t)) := cast α1 in
         let* α3 : ltac:(refine (M.Val i32.t)) := UnOp.neg α2 in
-        use α3 in
+        let* α4 : ltac:(refine (M.Val i32.t)) := use α3 in
+        M.copy α4 in
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val i32.t)) := deref self in
         let* α1 : ltac:(refine (M.Val i32.t)) := deref self in
@@ -1933,12 +1973,14 @@ Section Impl_subtle_ConditionallySelectable_for_i32_t.
           subtle.Choice.t::["unwrap_u8"] α0 in
         let* α2 : ltac:(refine (M.Val i32.t)) := cast α1 in
         let* α3 : ltac:(refine (M.Val i32.t)) := UnOp.neg α2 in
-        use α3 in
+        let* α4 : ltac:(refine (M.Val i32.t)) := use α3 in
+        M.copy α4 in
       let* t : ltac:(refine (M.Val i32.t)) :=
         let* α0 : ltac:(refine (M.Val i32.t)) := deref a in
         let* α1 : ltac:(refine (M.Val i32.t)) := deref b in
         let* α2 : ltac:(refine (M.Val i32.t)) := BinOp.bit_xor α0 α1 in
-        BinOp.bit_and mask α2 in
+        let* α3 : ltac:(refine (M.Val i32.t)) := BinOp.bit_and mask α2 in
+        M.copy α3 in
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val i32.t)) := deref a in
         assign_op bitxor α0 t in
@@ -1988,7 +2030,8 @@ Section Impl_subtle_ConditionallySelectable_for_u64_t.
           subtle.Choice.t::["unwrap_u8"] α0 in
         let* α2 : ltac:(refine (M.Val i64.t)) := cast α1 in
         let* α3 : ltac:(refine (M.Val i64.t)) := UnOp.neg α2 in
-        cast α3 in
+        let* α4 : ltac:(refine (M.Val u64.t)) := cast α3 in
+        M.copy α4 in
       let* α0 : ltac:(refine (M.Val u64.t)) :=
         (core.ops.bit.BitXor.bitxor
             (Self := ref u64.t)
@@ -2028,7 +2071,8 @@ Section Impl_subtle_ConditionallySelectable_for_u64_t.
           subtle.Choice.t::["unwrap_u8"] α0 in
         let* α2 : ltac:(refine (M.Val i64.t)) := cast α1 in
         let* α3 : ltac:(refine (M.Val i64.t)) := UnOp.neg α2 in
-        cast α3 in
+        let* α4 : ltac:(refine (M.Val u64.t)) := cast α3 in
+        M.copy α4 in
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val u64.t)) := deref self in
         let* α1 : ltac:(refine (M.Val u64.t)) := deref self in
@@ -2066,12 +2110,14 @@ Section Impl_subtle_ConditionallySelectable_for_u64_t.
           subtle.Choice.t::["unwrap_u8"] α0 in
         let* α2 : ltac:(refine (M.Val i64.t)) := cast α1 in
         let* α3 : ltac:(refine (M.Val i64.t)) := UnOp.neg α2 in
-        cast α3 in
+        let* α4 : ltac:(refine (M.Val u64.t)) := cast α3 in
+        M.copy α4 in
       let* t : ltac:(refine (M.Val u64.t)) :=
         let* α0 : ltac:(refine (M.Val u64.t)) := deref a in
         let* α1 : ltac:(refine (M.Val u64.t)) := deref b in
         let* α2 : ltac:(refine (M.Val u64.t)) := BinOp.bit_xor α0 α1 in
-        BinOp.bit_and mask α2 in
+        let* α3 : ltac:(refine (M.Val u64.t)) := BinOp.bit_and mask α2 in
+        M.copy α3 in
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val u64.t)) := deref a in
         assign_op bitxor α0 t in
@@ -2121,7 +2167,8 @@ Section Impl_subtle_ConditionallySelectable_for_i64_t.
           subtle.Choice.t::["unwrap_u8"] α0 in
         let* α2 : ltac:(refine (M.Val i64.t)) := cast α1 in
         let* α3 : ltac:(refine (M.Val i64.t)) := UnOp.neg α2 in
-        use α3 in
+        let* α4 : ltac:(refine (M.Val i64.t)) := use α3 in
+        M.copy α4 in
       let* α0 : ltac:(refine (M.Val i64.t)) :=
         (core.ops.bit.BitXor.bitxor
             (Self := ref i64.t)
@@ -2161,7 +2208,8 @@ Section Impl_subtle_ConditionallySelectable_for_i64_t.
           subtle.Choice.t::["unwrap_u8"] α0 in
         let* α2 : ltac:(refine (M.Val i64.t)) := cast α1 in
         let* α3 : ltac:(refine (M.Val i64.t)) := UnOp.neg α2 in
-        use α3 in
+        let* α4 : ltac:(refine (M.Val i64.t)) := use α3 in
+        M.copy α4 in
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val i64.t)) := deref self in
         let* α1 : ltac:(refine (M.Val i64.t)) := deref self in
@@ -2199,12 +2247,14 @@ Section Impl_subtle_ConditionallySelectable_for_i64_t.
           subtle.Choice.t::["unwrap_u8"] α0 in
         let* α2 : ltac:(refine (M.Val i64.t)) := cast α1 in
         let* α3 : ltac:(refine (M.Val i64.t)) := UnOp.neg α2 in
-        use α3 in
+        let* α4 : ltac:(refine (M.Val i64.t)) := use α3 in
+        M.copy α4 in
       let* t : ltac:(refine (M.Val i64.t)) :=
         let* α0 : ltac:(refine (M.Val i64.t)) := deref a in
         let* α1 : ltac:(refine (M.Val i64.t)) := deref b in
         let* α2 : ltac:(refine (M.Val i64.t)) := BinOp.bit_xor α0 α1 in
-        BinOp.bit_and mask α2 in
+        let* α3 : ltac:(refine (M.Val i64.t)) := BinOp.bit_and mask α2 in
+        M.copy α3 in
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val i64.t)) := deref a in
         assign_op bitxor α0 t in
@@ -2307,8 +2357,10 @@ Section Impl_subtle_ConditionallyNegatable_for_T.
         let* α0 : ltac:(refine (M.Val T)) := deref self in
         let* α1 : ltac:(refine (M.Val (ref T))) := borrow α0 in
         let* α2 : ltac:(refine (M.Val (ref T))) := use α1 in
-        (core.ops.arith.Neg.neg (Self := ref T) (Trait := ltac:(refine _)))
-          α2 in
+        let* α3 : ltac:(refine (M.Val T)) :=
+          (core.ops.arith.Neg.neg (Self := ref T) (Trait := ltac:(refine _)))
+            α2 in
+        M.copy α3 in
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val T)) := deref self in
         let* α1 : ltac:(refine (M.Val (mut_ref T))) := borrow_mut α0 in
@@ -2879,11 +2931,13 @@ Section Impl_subtle_CtOption_t_T.
             self.["is_some"] in
         let* α4 := M.read α3 in
         let* α5 : ltac:(refine (M.Val T)) := M.alloc (α4) in
-        (core.ops.function.FnOnce.call_once
-            (Self := F)
-            (Trait := ltac:(refine _)))
-          f
-          α5 in
+        let* α6 : ltac:(refine (M.Val (subtle.CtOption.t U))) :=
+          (core.ops.function.FnOnce.call_once
+              (Self := F)
+              (Trait := ltac:(refine _)))
+            f
+            α5 in
+        M.copy α6 in
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val (mut_ref subtle.Choice.t))) :=
           borrow_mut tmp.["is_some"] in
@@ -2926,14 +2980,18 @@ Section Impl_subtle_CtOption_t_T.
       (let* is_none : ltac:(refine (M.Val subtle.Choice.t)) :=
         let* α0 : ltac:(refine (M.Val (ref (subtle.CtOption.t T)))) :=
           borrow self in
-        (subtle.CtOption.t T)::["is_none"] α0 in
+        let* α1 : ltac:(refine (M.Val subtle.Choice.t)) :=
+          (subtle.CtOption.t T)::["is_none"] α0 in
+        M.copy α1 in
       let* f : ltac:(refine (M.Val (subtle.CtOption.t T))) :=
         let* α0 : ltac:(refine (M.Val unit)) := M.alloc tt in
-        (core.ops.function.FnOnce.call_once
-            (Self := F)
-            (Trait := ltac:(refine _)))
-          f
-          α0 in
+        let* α1 : ltac:(refine (M.Val (subtle.CtOption.t T))) :=
+          (core.ops.function.FnOnce.call_once
+              (Self := F)
+              (Trait := ltac:(refine _)))
+            f
+            α0 in
+        M.copy α1 in
       let* α0 : ltac:(refine (M.Val (ref (subtle.CtOption.t T)))) :=
         borrow self in
       let* α1 : ltac:(refine (M.Val (ref (subtle.CtOption.t T)))) := borrow f in
@@ -3041,12 +3099,16 @@ Section Impl_subtle_ConstantTimeEq_for_subtle_CtOption_t_T.
         let* α0 : ltac:(refine (M.Val (subtle.CtOption.t T))) := deref self in
         let* α1 : ltac:(refine (M.Val (ref (subtle.CtOption.t T)))) :=
           borrow α0 in
-        (subtle.CtOption.t T)::["is_some"] α1 in
+        let* α2 : ltac:(refine (M.Val subtle.Choice.t)) :=
+          (subtle.CtOption.t T)::["is_some"] α1 in
+        M.copy α2 in
       let* b : ltac:(refine (M.Val subtle.Choice.t)) :=
         let* α0 : ltac:(refine (M.Val (subtle.CtOption.t T))) := deref rhs in
         let* α1 : ltac:(refine (M.Val (ref (subtle.CtOption.t T)))) :=
           borrow α0 in
-        (subtle.CtOption.t T)::["is_some"] α1 in
+        let* α2 : ltac:(refine (M.Val subtle.Choice.t)) :=
+          (subtle.CtOption.t T)::["is_some"] α1 in
+        M.copy α2 in
       let* α0 : ltac:(refine (M.Val subtle.Choice.t)) :=
         (core.ops.bit.BitAnd.bitand
             (Self := subtle.Choice.t)
@@ -3146,19 +3208,25 @@ Section Impl_subtle_ConstantTimeGreater_for_u8_t.
         let* α0 : ltac:(refine (M.Val u8.t)) :=
           (core.ops.bit.Not.not (Self := ref u8.t) (Trait := ltac:(refine _)))
             other in
-        (core.ops.bit.BitAnd.bitand
-            (Self := ref u8.t)
-            (Trait := ltac:(refine _)))
-          self
-          α0 in
+        let* α1 : ltac:(refine (M.Val u8.t)) :=
+          (core.ops.bit.BitAnd.bitand
+              (Self := ref u8.t)
+              (Trait := ltac:(refine _)))
+            self
+            α0 in
+        M.copy α1 in
       let* ltb : ltac:(refine (M.Val u8.t)) :=
         let* α0 : ltac:(refine (M.Val u8.t)) :=
           (core.ops.bit.Not.not (Self := ref u8.t) (Trait := ltac:(refine _)))
             self in
-        (core.ops.bit.BitAnd.bitand (Self := u8.t) (Trait := ltac:(refine _)))
-          α0
-          other in
-      let* pow : ltac:(refine (M.Val i32.t)) := M.alloc 1 in
+        let* α1 : ltac:(refine (M.Val u8.t)) :=
+          (core.ops.bit.BitAnd.bitand (Self := u8.t) (Trait := ltac:(refine _)))
+            α0
+            other in
+        M.copy α1 in
+      let* pow : ltac:(refine (M.Val i32.t)) :=
+        let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 1 in
+        M.copy α0 in
       let* _ : ltac:(refine (M.Val unit)) :=
         loop
           (let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 8 in
@@ -3179,8 +3247,11 @@ Section Impl_subtle_ConstantTimeGreater_for_u8_t.
             never_to_any α0) in
       let* bit : ltac:(refine (M.Val u8.t)) :=
         let* α0 : ltac:(refine (M.Val u8.t)) := UnOp.not ltb in
-        BinOp.bit_and gtb α0 in
-      let* pow : ltac:(refine (M.Val i32.t)) := M.alloc 1 in
+        let* α1 : ltac:(refine (M.Val u8.t)) := BinOp.bit_and gtb α0 in
+        M.copy α1 in
+      let* pow : ltac:(refine (M.Val i32.t)) :=
+        let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 1 in
+        M.copy α0 in
       let* _ : ltac:(refine (M.Val unit)) :=
         loop
           (let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 8 in
@@ -3254,19 +3325,27 @@ Section Impl_subtle_ConstantTimeGreater_for_u16_t.
         let* α0 : ltac:(refine (M.Val u16.t)) :=
           (core.ops.bit.Not.not (Self := ref u16.t) (Trait := ltac:(refine _)))
             other in
-        (core.ops.bit.BitAnd.bitand
-            (Self := ref u16.t)
-            (Trait := ltac:(refine _)))
-          self
-          α0 in
+        let* α1 : ltac:(refine (M.Val u16.t)) :=
+          (core.ops.bit.BitAnd.bitand
+              (Self := ref u16.t)
+              (Trait := ltac:(refine _)))
+            self
+            α0 in
+        M.copy α1 in
       let* ltb : ltac:(refine (M.Val u16.t)) :=
         let* α0 : ltac:(refine (M.Val u16.t)) :=
           (core.ops.bit.Not.not (Self := ref u16.t) (Trait := ltac:(refine _)))
             self in
-        (core.ops.bit.BitAnd.bitand (Self := u16.t) (Trait := ltac:(refine _)))
-          α0
-          other in
-      let* pow : ltac:(refine (M.Val i32.t)) := M.alloc 1 in
+        let* α1 : ltac:(refine (M.Val u16.t)) :=
+          (core.ops.bit.BitAnd.bitand
+              (Self := u16.t)
+              (Trait := ltac:(refine _)))
+            α0
+            other in
+        M.copy α1 in
+      let* pow : ltac:(refine (M.Val i32.t)) :=
+        let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 1 in
+        M.copy α0 in
       let* _ : ltac:(refine (M.Val unit)) :=
         loop
           (let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 16 in
@@ -3287,8 +3366,11 @@ Section Impl_subtle_ConstantTimeGreater_for_u16_t.
             never_to_any α0) in
       let* bit : ltac:(refine (M.Val u16.t)) :=
         let* α0 : ltac:(refine (M.Val u16.t)) := UnOp.not ltb in
-        BinOp.bit_and gtb α0 in
-      let* pow : ltac:(refine (M.Val i32.t)) := M.alloc 1 in
+        let* α1 : ltac:(refine (M.Val u16.t)) := BinOp.bit_and gtb α0 in
+        M.copy α1 in
+      let* pow : ltac:(refine (M.Val i32.t)) :=
+        let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 1 in
+        M.copy α0 in
       let* _ : ltac:(refine (M.Val unit)) :=
         loop
           (let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 16 in
@@ -3362,19 +3444,27 @@ Section Impl_subtle_ConstantTimeGreater_for_u32_t.
         let* α0 : ltac:(refine (M.Val u32.t)) :=
           (core.ops.bit.Not.not (Self := ref u32.t) (Trait := ltac:(refine _)))
             other in
-        (core.ops.bit.BitAnd.bitand
-            (Self := ref u32.t)
-            (Trait := ltac:(refine _)))
-          self
-          α0 in
+        let* α1 : ltac:(refine (M.Val u32.t)) :=
+          (core.ops.bit.BitAnd.bitand
+              (Self := ref u32.t)
+              (Trait := ltac:(refine _)))
+            self
+            α0 in
+        M.copy α1 in
       let* ltb : ltac:(refine (M.Val u32.t)) :=
         let* α0 : ltac:(refine (M.Val u32.t)) :=
           (core.ops.bit.Not.not (Self := ref u32.t) (Trait := ltac:(refine _)))
             self in
-        (core.ops.bit.BitAnd.bitand (Self := u32.t) (Trait := ltac:(refine _)))
-          α0
-          other in
-      let* pow : ltac:(refine (M.Val i32.t)) := M.alloc 1 in
+        let* α1 : ltac:(refine (M.Val u32.t)) :=
+          (core.ops.bit.BitAnd.bitand
+              (Self := u32.t)
+              (Trait := ltac:(refine _)))
+            α0
+            other in
+        M.copy α1 in
+      let* pow : ltac:(refine (M.Val i32.t)) :=
+        let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 1 in
+        M.copy α0 in
       let* _ : ltac:(refine (M.Val unit)) :=
         loop
           (let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 32 in
@@ -3395,8 +3485,11 @@ Section Impl_subtle_ConstantTimeGreater_for_u32_t.
             never_to_any α0) in
       let* bit : ltac:(refine (M.Val u32.t)) :=
         let* α0 : ltac:(refine (M.Val u32.t)) := UnOp.not ltb in
-        BinOp.bit_and gtb α0 in
-      let* pow : ltac:(refine (M.Val i32.t)) := M.alloc 1 in
+        let* α1 : ltac:(refine (M.Val u32.t)) := BinOp.bit_and gtb α0 in
+        M.copy α1 in
+      let* pow : ltac:(refine (M.Val i32.t)) :=
+        let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 1 in
+        M.copy α0 in
       let* _ : ltac:(refine (M.Val unit)) :=
         loop
           (let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 32 in
@@ -3470,19 +3563,27 @@ Section Impl_subtle_ConstantTimeGreater_for_u64_t.
         let* α0 : ltac:(refine (M.Val u64.t)) :=
           (core.ops.bit.Not.not (Self := ref u64.t) (Trait := ltac:(refine _)))
             other in
-        (core.ops.bit.BitAnd.bitand
-            (Self := ref u64.t)
-            (Trait := ltac:(refine _)))
-          self
-          α0 in
+        let* α1 : ltac:(refine (M.Val u64.t)) :=
+          (core.ops.bit.BitAnd.bitand
+              (Self := ref u64.t)
+              (Trait := ltac:(refine _)))
+            self
+            α0 in
+        M.copy α1 in
       let* ltb : ltac:(refine (M.Val u64.t)) :=
         let* α0 : ltac:(refine (M.Val u64.t)) :=
           (core.ops.bit.Not.not (Self := ref u64.t) (Trait := ltac:(refine _)))
             self in
-        (core.ops.bit.BitAnd.bitand (Self := u64.t) (Trait := ltac:(refine _)))
-          α0
-          other in
-      let* pow : ltac:(refine (M.Val i32.t)) := M.alloc 1 in
+        let* α1 : ltac:(refine (M.Val u64.t)) :=
+          (core.ops.bit.BitAnd.bitand
+              (Self := u64.t)
+              (Trait := ltac:(refine _)))
+            α0
+            other in
+        M.copy α1 in
+      let* pow : ltac:(refine (M.Val i32.t)) :=
+        let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 1 in
+        M.copy α0 in
       let* _ : ltac:(refine (M.Val unit)) :=
         loop
           (let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 64 in
@@ -3503,8 +3604,11 @@ Section Impl_subtle_ConstantTimeGreater_for_u64_t.
             never_to_any α0) in
       let* bit : ltac:(refine (M.Val u64.t)) :=
         let* α0 : ltac:(refine (M.Val u64.t)) := UnOp.not ltb in
-        BinOp.bit_and gtb α0 in
-      let* pow : ltac:(refine (M.Val i32.t)) := M.alloc 1 in
+        let* α1 : ltac:(refine (M.Val u64.t)) := BinOp.bit_and gtb α0 in
+        M.copy α1 in
+      let* pow : ltac:(refine (M.Val i32.t)) :=
+        let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 1 in
+        M.copy α0 in
       let* _ : ltac:(refine (M.Val unit)) :=
         loop
           (let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 64 in

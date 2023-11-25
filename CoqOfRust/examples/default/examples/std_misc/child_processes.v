@@ -39,31 +39,35 @@ Definition main : M (M.Val unit) :=
                 std.process.Output.t
                 std.io.error.Error.t))) :=
         std.process.Command.t::["output"] α4 in
-      (core.result.Result.t
-            std.process.Output.t
-            std.io.error.Error.t)::["unwrap_or_else"]
-        α5
-        (let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
-          M.alloc [ mk_str "failed to execute process: " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
-          borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
-          pointer_coercion "Unsize" α1 in
-        let* α3 : ltac:(refine (M.Val (ref std.io.error.Error.t))) :=
-          borrow e in
-        let* α4 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
-          core.fmt.rt.Argument.t::["new_display"] α3 in
-        let* α5 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
-          M.alloc [ α4 ] in
-        let* α6 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
-          borrow α5 in
-        let* α7 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
-          pointer_coercion "Unsize" α6 in
-        let* α8 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-          core.fmt.Arguments.t::["new_v1"] α2 α7 in
-        let* α9 : ltac:(refine (M.Val never.t)) :=
-          core.panicking.panic_fmt α8 in
-        never_to_any α9) in
+      let* α6 : ltac:(refine (M.Val std.process.Output.t)) :=
+        (core.result.Result.t
+              std.process.Output.t
+              std.io.error.Error.t)::["unwrap_or_else"]
+          α5
+          (let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
+            M.alloc [ mk_str "failed to execute process: " ] in
+          let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+            borrow α0 in
+          let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
+            pointer_coercion "Unsize" α1 in
+          let* α3 : ltac:(refine (M.Val (ref std.io.error.Error.t))) :=
+            borrow e in
+          let* α4 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
+            core.fmt.rt.Argument.t::["new_display"] α3 in
+          let* α5 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
+            M.alloc [ α4 ] in
+          let* α6 :
+              ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
+            borrow α5 in
+          let* α7 :
+              ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
+            pointer_coercion "Unsize" α6 in
+          let* α8 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
+            core.fmt.Arguments.t::["new_v1"] α2 α7 in
+          let* α9 : ltac:(refine (M.Val never.t)) :=
+            core.panicking.panic_fmt α8 in
+          never_to_any α9) in
+      M.copy α6 in
     let* α0 : ltac:(refine (M.Val (ref std.process.ExitStatus.t))) :=
       borrow output.["status"] in
     let* α1 : ltac:(refine (M.Val bool.t)) :=
@@ -83,7 +87,9 @@ Definition main : M (M.Val unit) :=
             α0 in
         let* α2 : ltac:(refine (M.Val (slice u8.t))) := deref α1 in
         let* α3 : ltac:(refine (M.Val (ref (slice u8.t)))) := borrow α2 in
-        alloc.string.String.t::["from_utf8_lossy"] α3 in
+        let* α4 : ltac:(refine (M.Val (alloc.borrow.Cow.t str.t))) :=
+          alloc.string.String.t::["from_utf8_lossy"] α3 in
+        M.copy α4 in
       let* _ : ltac:(refine (M.Val unit)) :=
         let* _ : ltac:(refine (M.Val unit)) :=
           let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
@@ -123,7 +129,9 @@ Definition main : M (M.Val unit) :=
             α0 in
         let* α2 : ltac:(refine (M.Val (slice u8.t))) := deref α1 in
         let* α3 : ltac:(refine (M.Val (ref (slice u8.t)))) := borrow α2 in
-        alloc.string.String.t::["from_utf8_lossy"] α3 in
+        let* α4 : ltac:(refine (M.Val (alloc.borrow.Cow.t str.t))) :=
+          alloc.string.String.t::["from_utf8_lossy"] α3 in
+        M.copy α4 in
       let* _ : ltac:(refine (M.Val unit)) :=
         let* _ : ltac:(refine (M.Val unit)) :=
           let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=

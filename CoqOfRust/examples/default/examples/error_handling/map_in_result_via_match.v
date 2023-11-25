@@ -139,7 +139,12 @@ Definition main : M (M.Val unit) :=
       let* α1 : ltac:(refine (M.Val (ref str.t))) := borrow α0 in
       let* α2 : ltac:(refine (M.Val str.t)) := deref (mk_str "2") in
       let* α3 : ltac:(refine (M.Val (ref str.t))) := borrow α2 in
-      map_in_result_via_match.multiply α1 α3 in
+      let* α4 :
+          ltac:(refine
+            (M.Val
+              (core.result.Result.t i32.t core.num.error.ParseIntError.t))) :=
+        map_in_result_via_match.multiply α1 α3 in
+      M.copy α4 in
     let* _ : ltac:(refine (M.Val unit)) :=
       map_in_result_via_match.print twenty in
     let* tt :
@@ -150,6 +155,11 @@ Definition main : M (M.Val unit) :=
       let* α1 : ltac:(refine (M.Val (ref str.t))) := borrow α0 in
       let* α2 : ltac:(refine (M.Val str.t)) := deref (mk_str "2") in
       let* α3 : ltac:(refine (M.Val (ref str.t))) := borrow α2 in
-      map_in_result_via_match.multiply α1 α3 in
+      let* α4 :
+          ltac:(refine
+            (M.Val
+              (core.result.Result.t i32.t core.num.error.ParseIntError.t))) :=
+        map_in_result_via_match.multiply α1 α3 in
+      M.copy α4 in
     let* _ : ltac:(refine (M.Val unit)) := map_in_result_via_match.print tt in
     M.alloc tt).

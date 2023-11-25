@@ -30,9 +30,16 @@ Definition main : M (M.Val unit) :=
             (alloc.vec.Vec.t
               (std.thread.JoinHandle.t unit)
               alloc.alloc.Global.t))) :=
-      (alloc.vec.Vec.t
-          (std.thread.JoinHandle.t unit)
-          alloc.alloc.Global.t)::["new"] in
+      let* α0 :
+          ltac:(refine
+            (M.Val
+              (alloc.vec.Vec.t
+                (std.thread.JoinHandle.t unit)
+                alloc.alloc.Global.t))) :=
+        (alloc.vec.Vec.t
+            (std.thread.JoinHandle.t unit)
+            alloc.alloc.Global.t)::["new"] in
+      M.copy α0 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* α0 : ltac:(refine (M.Val u32.t)) := M.alloc 0 in
       let* α1 := M.read α0 in
@@ -178,7 +185,16 @@ Definition main : M (M.Val unit) :=
                         (alloc.boxed.Box.t
                           type not implemented
                           alloc.alloc.Global.t)))) :=
-                (std.thread.JoinHandle.t unit)::["join"] child in
+                let* α0 :
+                    ltac:(refine
+                      (M.Val
+                        (core.result.Result.t
+                          unit
+                          (alloc.boxed.Box.t
+                            type not implemented
+                            alloc.alloc.Global.t)))) :=
+                  (std.thread.JoinHandle.t unit)::["join"] child in
+                M.copy α0 in
               M.alloc tt
             end in
           M.alloc tt)

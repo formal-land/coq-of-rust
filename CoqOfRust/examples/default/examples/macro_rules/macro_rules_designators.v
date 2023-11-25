@@ -129,7 +129,9 @@ Definition main : M (M.Val unit) :=
           borrow (mk_str "{ let x = 1u32; x * x + 2 * x - 1 }") in
         let* α4 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
           core.fmt.rt.Argument.t::["new_debug"] α3 in
-        let* x : ltac:(refine (M.Val u32.t)) := M.alloc 1 in
+        let* x : ltac:(refine (M.Val u32.t)) :=
+          let* α0 : ltac:(refine (M.Val u32.t)) := M.alloc 1 in
+          M.copy α0 in
         let* α0 : ltac:(refine (M.Val u32.t)) := BinOp.mul x x in
         let* α1 : ltac:(refine (M.Val u32.t)) := M.alloc 2 in
         let* α2 : ltac:(refine (M.Val u32.t)) := BinOp.mul α1 x in

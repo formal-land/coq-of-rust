@@ -33,9 +33,13 @@ fn main() {
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M (M.Val unit) :=
   M.function_body
-    (let* outer_var : ltac:(refine (M.Val i32.t)) := M.alloc 42 in
-    let closure_annotated := BinOp.add i outer_var in
-    let closure_inferred := BinOp.add i outer_var in
+    (let* outer_var : ltac:(refine (M.Val i32.t)) :=
+      let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 42 in
+      M.copy α0 in
+    let* closure_annotated : ltac:(refine (M.Val type not implemented)) :=
+      M.copy (BinOp.add i outer_var) in
+    let* closure_inferred : ltac:(refine (M.Val type not implemented)) :=
+      M.copy (BinOp.add i outer_var) in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
@@ -102,7 +106,8 @@ Definition main : M (M.Val unit) :=
           core.fmt.Arguments.t::["new_v1"] α2 α12 in
         std.io.stdio._print α13 in
       M.alloc tt in
-    let one := M.alloc 1 in
+    let* one : ltac:(refine (M.Val type not implemented)) :=
+      M.copy (M.alloc 1) in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=

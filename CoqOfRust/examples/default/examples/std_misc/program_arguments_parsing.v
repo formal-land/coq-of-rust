@@ -156,10 +156,15 @@ Definition main : M (M.Val unit) :=
           (M.Val
             (alloc.vec.Vec.t alloc.string.String.t alloc.alloc.Global.t))) :=
       let* α0 : ltac:(refine (M.Val std.env.Args.t)) := std.env.args in
-      (core.iter.traits.iterator.Iterator.collect
-          (Self := std.env.Args.t)
-          (Trait := ltac:(refine _)))
-        α0 in
+      let* α1 :
+          ltac:(refine
+            (M.Val
+              (alloc.vec.Vec.t alloc.string.String.t alloc.alloc.Global.t))) :=
+        (core.iter.traits.iterator.Iterator.collect
+            (Self := std.env.Args.t)
+            (Trait := ltac:(refine _)))
+          α0 in
+      M.copy α1 in
     let* α0 :
         ltac:(refine
           (M.Val
@@ -267,7 +272,9 @@ Definition main : M (M.Val unit) :=
             α0
             α1 in
         let* α3 : ltac:(refine (M.Val alloc.string.String.t)) := deref α2 in
-        borrow α3 in
+        let* α4 : ltac:(refine (M.Val (ref alloc.string.String.t))) :=
+          borrow α3 in
+        M.copy α4 in
       let* num : ltac:(refine (M.Val (ref alloc.string.String.t))) :=
         let* α0 :
             ltac:(refine
@@ -286,7 +293,9 @@ Definition main : M (M.Val unit) :=
             α0
             α1 in
         let* α3 : ltac:(refine (M.Val alloc.string.String.t)) := deref α2 in
-        borrow α3 in
+        let* α4 : ltac:(refine (M.Val (ref alloc.string.String.t))) :=
+          borrow α3 in
+        M.copy α4 in
       let* number : ltac:(refine (M.Val i32.t)) :=
         let* α0 : ltac:(refine (M.Val alloc.string.String.t)) := deref num in
         let* α1 : ltac:(refine (M.Val (ref alloc.string.String.t))) :=
@@ -304,32 +313,34 @@ Definition main : M (M.Val unit) :=
                 (core.result.Result.t i32.t core.num.error.ParseIntError.t))) :=
           str.t::["parse"] α4 in
         let* α6 := M.read α5 in
-        match α6 with
-        | core.result.Result.Ok n =>
-          let* n := M.alloc n in
-          M.pure n
-        | core.result.Result.Err _ =>
-          let* _ : ltac:(refine (M.Val unit)) :=
+        let* α7 : ltac:(refine (M.Val i32.t)) :=
+          match α6 with
+          | core.result.Result.Ok n =>
+            let* n := M.alloc n in
+            M.pure n
+          | core.result.Result.Err _ =>
             let* _ : ltac:(refine (M.Val unit)) :=
-              let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
-                M.alloc [ mk_str "error: second argument not an integer
+              let* _ : ltac:(refine (M.Val unit)) :=
+                let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
+                  M.alloc [ mk_str "error: second argument not an integer
 " ] in
-              let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
-                borrow α0 in
-              let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
-                pointer_coercion "Unsize" α1 in
-              let* α3 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-                core.fmt.Arguments.t::["new_const"] α2 in
-              std.io.stdio._eprint α3 in
-            M.alloc tt in
-          let* _ : ltac:(refine (M.Val unit)) :=
-            program_arguments_parsing.help in
-          let* _ : ltac:(refine (M.Val never.t)) :=
+                let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+                  borrow α0 in
+                let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
+                  pointer_coercion "Unsize" α1 in
+                let* α3 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
+                  core.fmt.Arguments.t::["new_const"] α2 in
+                std.io.stdio._eprint α3 in
+              M.alloc tt in
+            let* _ : ltac:(refine (M.Val unit)) :=
+              program_arguments_parsing.help in
+            let* _ : ltac:(refine (M.Val never.t)) :=
+              let* α0 : ltac:(refine (M.Val unit)) := M.alloc tt in
+              M.return_ α0 in
             let* α0 : ltac:(refine (M.Val unit)) := M.alloc tt in
-            M.return_ α0 in
-          let* α0 : ltac:(refine (M.Val unit)) := M.alloc tt in
-          never_to_any α0
-        end in
+            never_to_any α0
+          end in
+        M.copy α7 in
       let* α0 : ltac:(refine (M.Val alloc.string.String.t)) := deref cmd in
       let* α1 : ltac:(refine (M.Val (ref alloc.string.String.t))) :=
         borrow α0 in

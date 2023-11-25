@@ -126,7 +126,9 @@ Definition main : M (M.Val unit) :=
             std.io.stdio._print α3 in
           M.alloc tt in
         M.alloc tt in
-    let* i_like_letters : ltac:(refine (M.Val bool.t)) := M.alloc false in
+    let* i_like_letters : ltac:(refine (M.Val bool.t)) :=
+      let* α0 : ltac:(refine (M.Val bool.t)) := M.alloc false in
+      M.copy α0 in
     let* α0 : ltac:(refine (M.Val bool.t)) :=
       let_if core.option.Option.Some i := emoticon in
     let* α1 := M.read α0 in

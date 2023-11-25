@@ -26,10 +26,14 @@ fn main() {
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M (M.Val unit) :=
   M.function_body
-    (let* an_integer : ltac:(refine (M.Val u32.t)) := M.alloc 1 in
-    let* a_boolean : ltac:(refine (M.Val bool.t)) := M.alloc true in
+    (let* an_integer : ltac:(refine (M.Val u32.t)) :=
+      let* α0 : ltac:(refine (M.Val u32.t)) := M.alloc 1 in
+      M.copy α0 in
+    let* a_boolean : ltac:(refine (M.Val bool.t)) :=
+      let* α0 : ltac:(refine (M.Val bool.t)) := M.alloc true in
+      M.copy α0 in
     let* unit_ : ltac:(refine (M.Val unit)) := M.alloc tt in
-    let copied_integer := an_integer in
+    let* copied_integer : ltac:(refine (M.Val u32.t)) := M.copy an_integer in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
@@ -96,6 +100,10 @@ Definition main : M (M.Val unit) :=
           core.fmt.Arguments.t::["new_v1"] α2 α7 in
         std.io.stdio._print α8 in
       M.alloc tt in
-    let* _unused_variable : ltac:(refine (M.Val u32.t)) := M.alloc 3 in
-    let* _noisy_unused_variable : ltac:(refine (M.Val u32.t)) := M.alloc 2 in
+    let* _unused_variable : ltac:(refine (M.Val u32.t)) :=
+      let* α0 : ltac:(refine (M.Val u32.t)) := M.alloc 3 in
+      M.copy α0 in
+    let* _noisy_unused_variable : ltac:(refine (M.Val u32.t)) :=
+      let* α0 : ltac:(refine (M.Val u32.t)) := M.alloc 2 in
+      M.copy α0 in
     M.alloc tt).

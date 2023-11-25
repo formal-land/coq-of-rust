@@ -83,10 +83,18 @@ Definition main : M (M.Val unit) :=
               (ref str.t)
               (ref str.t)
               std.collections.hash.map.RandomState.t))) :=
-      (std.collections.hash.map.HashMap.t
-          (ref str.t)
-          (ref str.t)
-          std.collections.hash.map.RandomState.t)::["new"] in
+      let* α0 :
+          ltac:(refine
+            (M.Val
+              (std.collections.hash.map.HashMap.t
+                (ref str.t)
+                (ref str.t)
+                std.collections.hash.map.RandomState.t))) :=
+        (std.collections.hash.map.HashMap.t
+            (ref str.t)
+            (ref str.t)
+            std.collections.hash.map.RandomState.t)::["new"] in
+      M.copy α0 in
     let* _ : ltac:(refine (M.Val (core.option.Option.t (ref str.t)))) :=
       let* α0 :
           ltac:(refine

@@ -33,11 +33,15 @@ Definition main : M (M.Val unit) :=
     (let* path : ltac:(refine (M.Val (ref std.path.Path.t))) :=
       let* α0 : ltac:(refine (M.Val str.t)) := deref (mk_str ".") in
       let* α1 : ltac:(refine (M.Val (ref str.t))) := borrow α0 in
-      std.path.Path.t::["new"] α1 in
+      let* α2 : ltac:(refine (M.Val (ref std.path.Path.t))) :=
+        std.path.Path.t::["new"] α1 in
+      M.copy α2 in
     let* _display : ltac:(refine (M.Val std.path.Display.t)) :=
       let* α0 : ltac:(refine (M.Val std.path.Path.t)) := deref path in
       let* α1 : ltac:(refine (M.Val (ref std.path.Path.t))) := borrow α0 in
-      std.path.Path.t::["display"] α1 in
+      let* α2 : ltac:(refine (M.Val std.path.Display.t)) :=
+        std.path.Path.t::["display"] α1 in
+      M.copy α2 in
     let* new_path : ltac:(refine (M.Val std.path.PathBuf.t)) :=
       let* α0 : ltac:(refine (M.Val std.path.Path.t)) := deref path in
       let* α1 : ltac:(refine (M.Val (ref std.path.Path.t))) := borrow α0 in
@@ -51,7 +55,9 @@ Definition main : M (M.Val unit) :=
           α3 in
       let* α5 : ltac:(refine (M.Val std.path.Path.t)) := deref α4 in
       let* α6 : ltac:(refine (M.Val (ref std.path.Path.t))) := borrow α5 in
-      std.path.Path.t::["join"] α6 (mk_str "b") in
+      let* α7 : ltac:(refine (M.Val std.path.PathBuf.t)) :=
+        std.path.Path.t::["join"] α6 (mk_str "b") in
+      M.copy α7 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* α0 : ltac:(refine (M.Val (mut_ref std.path.PathBuf.t))) :=
         borrow_mut new_path in

@@ -47,7 +47,10 @@ Definition main : M (M.Val unit) :=
           ltac:(refine
             (M.Val (alloc.boxed.Box.t (slice i32.t) alloc.alloc.Global.t))) :=
         pointer_coercion "Unsize" α4 in
-      (slice i32.t)::["into_vec"] α5 in
+      let* α6 :
+          ltac:(refine (M.Val (alloc.vec.Vec.t i32.t alloc.alloc.Global.t))) :=
+        (slice i32.t)::["into_vec"] α5 in
+      M.copy α6 in
     let* vec2 :
         ltac:(refine (M.Val (alloc.vec.Vec.t i32.t alloc.alloc.Global.t))) :=
       let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 4 in
@@ -62,7 +65,10 @@ Definition main : M (M.Val unit) :=
           ltac:(refine
             (M.Val (alloc.boxed.Box.t (slice i32.t) alloc.alloc.Global.t))) :=
         pointer_coercion "Unsize" α4 in
-      (slice i32.t)::["into_vec"] α5 in
+      let* α6 :
+          ltac:(refine (M.Val (alloc.vec.Vec.t i32.t alloc.alloc.Global.t))) :=
+        (slice i32.t)::["into_vec"] α5 in
+      M.copy α6 in
     let* iter : ltac:(refine (M.Val (core.slice.iter.Iter.t i32.t))) :=
       let* α0 :
           ltac:(refine
@@ -75,15 +81,22 @@ Definition main : M (M.Val unit) :=
           α0 in
       let* α2 : ltac:(refine (M.Val (slice i32.t))) := deref α1 in
       let* α3 : ltac:(refine (M.Val (ref (slice i32.t)))) := borrow α2 in
-      (slice i32.t)::["iter"] α3 in
+      let* α4 : ltac:(refine (M.Val (core.slice.iter.Iter.t i32.t))) :=
+        (slice i32.t)::["iter"] α3 in
+      M.copy α4 in
     let* into_iter :
         ltac:(refine
           (M.Val
             (alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t))) :=
-      (core.iter.traits.collect.IntoIterator.into_iter
-          (Self := alloc.vec.Vec.t i32.t alloc.alloc.Global.t)
-          (Trait := ltac:(refine _)))
-        vec2 in
+      let* α0 :
+          ltac:(refine
+            (M.Val
+              (alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t))) :=
+        (core.iter.traits.collect.IntoIterator.into_iter
+            (Self := alloc.vec.Vec.t i32.t alloc.alloc.Global.t)
+            (Trait := ltac:(refine _)))
+          vec2 in
+      M.copy α0 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=

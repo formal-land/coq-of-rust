@@ -78,7 +78,9 @@ Definition main : M (M.Val unit) :=
 *)
 Definition sum_odd_numbers (up_to : M.Val u32.t) : M (M.Val u32.t) :=
   M.function_body
-    (let* acc : ltac:(refine (M.Val u32.t)) := M.alloc 0 in
+    (let* acc : ltac:(refine (M.Val u32.t)) :=
+      let* α0 : ltac:(refine (M.Val u32.t)) := M.alloc 0 in
+      M.copy α0 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* α0 : ltac:(refine (M.Val u32.t)) := M.alloc 0 in
       let* α1 := M.read α0 in
@@ -121,12 +123,14 @@ Definition sum_odd_numbers (up_to : M.Val u32.t) : M (M.Val u32.t) :=
                   let* α2 : ltac:(refine (M.Val u32.t)) := M.alloc 1 in
                   let* α3 : ltac:(refine (M.Val bool.t)) := BinOp.eq α1 α2 in
                   let* α4 := M.read α3 in
-                  match α4 with
-                  | _ => M.pure i
-                  | _ =>
-                    let* α0 : ltac:(refine (M.Val never.t)) := Continue in
-                    never_to_any α0
-                  end in
+                  let* α5 : ltac:(refine (M.Val u32.t)) :=
+                    match α4 with
+                    | _ => M.pure i
+                    | _ =>
+                      let* α0 : ltac:(refine (M.Val never.t)) := Continue in
+                      never_to_any α0
+                    end in
+                  M.copy α5 in
                 let* _ : ltac:(refine (M.Val unit)) :=
                   assign_op add acc addition in
                 M.alloc tt

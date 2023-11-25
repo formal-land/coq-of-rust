@@ -372,7 +372,11 @@ Definition main : M (M.Val unit) :=
           ltac:(refine
             (M.Val (core.option.Option.t combinators_map.Chopped.t))) :=
         combinators_map.chop α0 in
-      combinators_map.cook α1 in
+      let* α2 :
+          ltac:(refine
+            (M.Val (core.option.Option.t combinators_map.Cooked.t))) :=
+        combinators_map.cook α1 in
+      M.copy α2 in
     let* cooked_carrot :
         ltac:(refine (M.Val (core.option.Option.t combinators_map.Cooked.t))) :=
       let* α0 :
@@ -383,10 +387,18 @@ Definition main : M (M.Val unit) :=
           ltac:(refine
             (M.Val (core.option.Option.t combinators_map.Chopped.t))) :=
         combinators_map.chop α0 in
-      combinators_map.cook α1 in
+      let* α2 :
+          ltac:(refine
+            (M.Val (core.option.Option.t combinators_map.Cooked.t))) :=
+        combinators_map.cook α1 in
+      M.copy α2 in
     let* cooked_potato :
         ltac:(refine (M.Val (core.option.Option.t combinators_map.Cooked.t))) :=
-      combinators_map.process potato in
+      let* α0 :
+          ltac:(refine
+            (M.Val (core.option.Option.t combinators_map.Cooked.t))) :=
+        combinators_map.process potato in
+      M.copy α0 in
     let* _ : ltac:(refine (M.Val unit)) := combinators_map.eat cooked_apple in
     let* _ : ltac:(refine (M.Val unit)) := combinators_map.eat cooked_carrot in
     let* _ : ltac:(refine (M.Val unit)) := combinators_map.eat cooked_potato in

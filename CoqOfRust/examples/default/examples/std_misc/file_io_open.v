@@ -29,11 +29,15 @@ Definition main : M (M.Val unit) :=
     (let* path : ltac:(refine (M.Val (ref std.path.Path.t))) :=
       let* α0 : ltac:(refine (M.Val str.t)) := deref (mk_str "hello.txt") in
       let* α1 : ltac:(refine (M.Val (ref str.t))) := borrow α0 in
-      std.path.Path.t::["new"] α1 in
+      let* α2 : ltac:(refine (M.Val (ref std.path.Path.t))) :=
+        std.path.Path.t::["new"] α1 in
+      M.copy α2 in
     let* display : ltac:(refine (M.Val std.path.Display.t)) :=
       let* α0 : ltac:(refine (M.Val std.path.Path.t)) := deref path in
       let* α1 : ltac:(refine (M.Val (ref std.path.Path.t))) := borrow α0 in
-      std.path.Path.t::["display"] α1 in
+      let* α2 : ltac:(refine (M.Val std.path.Display.t)) :=
+        std.path.Path.t::["display"] α1 in
+      M.copy α2 in
     let* file : ltac:(refine (M.Val std.fs.File.t)) :=
       let* α0 : ltac:(refine (M.Val (ref (ref std.path.Path.t)))) :=
         borrow path in
@@ -43,40 +47,46 @@ Definition main : M (M.Val unit) :=
               (core.result.Result.t std.fs.File.t std.io.error.Error.t))) :=
         std.fs.File.t::["open"] α0 in
       let* α2 := M.read α1 in
-      match α2 with
-      | core.result.Result.Err why =>
-        let* why := M.alloc why in
-        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
-          M.alloc [ mk_str "couldn't open "; mk_str ": " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
-          borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
-          pointer_coercion "Unsize" α1 in
-        let* α3 : ltac:(refine (M.Val (ref std.path.Display.t))) :=
-          borrow display in
-        let* α4 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
-          core.fmt.rt.Argument.t::["new_display"] α3 in
-        let* α5 : ltac:(refine (M.Val (ref std.io.error.Error.t))) :=
-          borrow why in
-        let* α6 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
-          core.fmt.rt.Argument.t::["new_display"] α5 in
-        let* α7 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
-          M.alloc [ α4; α6 ] in
-        let* α8 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
-          borrow α7 in
-        let* α9 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
-          pointer_coercion "Unsize" α8 in
-        let* α10 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-          core.fmt.Arguments.t::["new_v1"] α2 α9 in
-        let* α11 : ltac:(refine (M.Val never.t)) :=
-          core.panicking.panic_fmt α10 in
-        never_to_any α11
-      | core.result.Result.Ok file =>
-        let* file := M.alloc file in
-        M.pure file
-      end in
+      let* α3 : ltac:(refine (M.Val std.fs.File.t)) :=
+        match α2 with
+        | core.result.Result.Err why =>
+          let* why := M.alloc why in
+          let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
+            M.alloc [ mk_str "couldn't open "; mk_str ": " ] in
+          let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+            borrow α0 in
+          let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
+            pointer_coercion "Unsize" α1 in
+          let* α3 : ltac:(refine (M.Val (ref std.path.Display.t))) :=
+            borrow display in
+          let* α4 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
+            core.fmt.rt.Argument.t::["new_display"] α3 in
+          let* α5 : ltac:(refine (M.Val (ref std.io.error.Error.t))) :=
+            borrow why in
+          let* α6 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
+            core.fmt.rt.Argument.t::["new_display"] α5 in
+          let* α7 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
+            M.alloc [ α4; α6 ] in
+          let* α8 :
+              ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
+            borrow α7 in
+          let* α9 :
+              ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
+            pointer_coercion "Unsize" α8 in
+          let* α10 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
+            core.fmt.Arguments.t::["new_v1"] α2 α9 in
+          let* α11 : ltac:(refine (M.Val never.t)) :=
+            core.panicking.panic_fmt α10 in
+          never_to_any α11
+        | core.result.Result.Ok file =>
+          let* file := M.alloc file in
+          M.pure file
+        end in
+      M.copy α3 in
     let* s : ltac:(refine (M.Val alloc.string.String.t)) :=
-      alloc.string.String.t::["new"] in
+      let* α0 : ltac:(refine (M.Val alloc.string.String.t)) :=
+        alloc.string.String.t::["new"] in
+      M.copy α0 in
     let* α0 : ltac:(refine (M.Val (mut_ref std.fs.File.t))) :=
       borrow_mut file in
     let* α1 : ltac:(refine (M.Val (mut_ref alloc.string.String.t))) :=

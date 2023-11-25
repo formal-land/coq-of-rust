@@ -37,7 +37,10 @@ Definition main : M (M.Val unit) :=
           ltac:(refine
             (M.Val (alloc.boxed.Box.t (slice i32.t) alloc.alloc.Global.t))) :=
         pointer_coercion "Unsize" α7 in
-      (slice i32.t)::["into_vec"] α8 in
+      let* α9 :
+          ltac:(refine (M.Val (alloc.vec.Vec.t i32.t alloc.alloc.Global.t))) :=
+        (slice i32.t)::["into_vec"] α8 in
+      M.copy α9 in
     let* index_of_first_even_number :
         ltac:(refine (M.Val (core.option.Option.t usize.t))) :=
       let* α0 :
@@ -56,14 +59,16 @@ Definition main : M (M.Val unit) :=
       let* α5 :
           ltac:(refine (M.Val (mut_ref (core.slice.iter.Iter.t i32.t)))) :=
         borrow_mut α4 in
-      (core.iter.traits.iterator.Iterator.position
-          (Self := core.slice.iter.Iter.t i32.t)
-          (Trait := ltac:(refine _)))
-        α5
-        (let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 2 in
-        let* α1 : ltac:(refine (M.Val i32.t)) := BinOp.rem x α0 in
-        let* α2 : ltac:(refine (M.Val i32.t)) := M.alloc 0 in
-        BinOp.eq α1 α2) in
+      let* α6 : ltac:(refine (M.Val (core.option.Option.t usize.t))) :=
+        (core.iter.traits.iterator.Iterator.position
+            (Self := core.slice.iter.Iter.t i32.t)
+            (Trait := ltac:(refine _)))
+          α5
+          (let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 2 in
+          let* α1 : ltac:(refine (M.Val i32.t)) := BinOp.rem x α0 in
+          let* α2 : ltac:(refine (M.Val i32.t)) := M.alloc 0 in
+          BinOp.eq α1 α2) in
+      M.copy α6 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* α0 : ltac:(refine (M.Val (ref (core.option.Option.t usize.t)))) :=
         borrow index_of_first_even_number in
@@ -146,12 +151,14 @@ Definition main : M (M.Val unit) :=
                   i32.t
                   alloc.alloc.Global.t)))) :=
         borrow_mut α0 in
-      (core.iter.traits.iterator.Iterator.position
-          (Self := alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t)
-          (Trait := ltac:(refine _)))
-        α1
-        (let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 0 in
-        BinOp.lt x α0) in
+      let* α2 : ltac:(refine (M.Val (core.option.Option.t usize.t))) :=
+        (core.iter.traits.iterator.Iterator.position
+            (Self := alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t)
+            (Trait := ltac:(refine _)))
+          α1
+          (let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 0 in
+          BinOp.lt x α0) in
+      M.copy α2 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* α0 : ltac:(refine (M.Val (ref (core.option.Option.t usize.t)))) :=
         borrow index_of_first_negative_number in

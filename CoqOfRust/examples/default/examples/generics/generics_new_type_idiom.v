@@ -112,7 +112,9 @@ Definition main : M (M.Val unit) :=
     let* age_days : ltac:(refine (M.Val generics_new_type_idiom.Days.t)) :=
       let* α0 : ltac:(refine (M.Val (ref generics_new_type_idiom.Years.t))) :=
         borrow age in
-      generics_new_type_idiom.Years.t::["to_days"] α0 in
+      let* α1 : ltac:(refine (M.Val generics_new_type_idiom.Days.t)) :=
+        generics_new_type_idiom.Years.t::["to_days"] α0 in
+      M.copy α1 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=

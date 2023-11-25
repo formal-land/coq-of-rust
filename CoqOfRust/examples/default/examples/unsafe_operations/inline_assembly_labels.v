@@ -25,7 +25,9 @@ fn main() {
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M (M.Val unit) :=
   M.function_body
-    (let* a : ltac:(refine (M.Val i32.t)) := M.alloc 0 in
+    (let* a : ltac:(refine (M.Val i32.t)) :=
+      let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 0 in
+      M.copy α0 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let _ := InlineAssembly in
       M.alloc tt in

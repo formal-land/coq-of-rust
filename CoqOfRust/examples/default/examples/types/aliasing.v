@@ -28,10 +28,12 @@ Definition main : M (M.Val unit) :=
   M.function_body
     (let* nanoseconds : ltac:(refine (M.Val u64.t)) :=
       let* α0 : ltac:(refine (M.Val u64.t)) := M.alloc 5 in
-      use α0 in
+      let* α1 : ltac:(refine (M.Val u64.t)) := use α0 in
+      M.copy α1 in
     let* inches : ltac:(refine (M.Val u64.t)) :=
       let* α0 : ltac:(refine (M.Val u64.t)) := M.alloc 2 in
-      use α0 in
+      let* α1 : ltac:(refine (M.Val u64.t)) := use α0 in
+      M.copy α1 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=

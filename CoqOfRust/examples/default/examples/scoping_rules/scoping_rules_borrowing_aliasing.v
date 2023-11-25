@@ -106,10 +106,18 @@ Definition main : M (M.Val unit) :=
         |} in
     let* borrowed_point :
         ltac:(refine (M.Val (ref scoping_rules_borrowing_aliasing.Point.t))) :=
-      borrow point in
+      let* α0 :
+          ltac:(refine
+            (M.Val (ref scoping_rules_borrowing_aliasing.Point.t))) :=
+        borrow point in
+      M.copy α0 in
     let* another_borrow :
         ltac:(refine (M.Val (ref scoping_rules_borrowing_aliasing.Point.t))) :=
-      borrow point in
+      let* α0 :
+          ltac:(refine
+            (M.Val (ref scoping_rules_borrowing_aliasing.Point.t))) :=
+        borrow point in
+      M.copy α0 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
@@ -193,7 +201,11 @@ Definition main : M (M.Val unit) :=
     let* mutable_borrow :
         ltac:(refine
           (M.Val (mut_ref scoping_rules_borrowing_aliasing.Point.t))) :=
-      borrow_mut point in
+      let* α0 :
+          ltac:(refine
+            (M.Val (mut_ref scoping_rules_borrowing_aliasing.Point.t))) :=
+        borrow_mut point in
+      M.copy α0 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* α0 :
           ltac:(refine (M.Val scoping_rules_borrowing_aliasing.Point.t)) :=
@@ -257,7 +269,11 @@ Definition main : M (M.Val unit) :=
       M.alloc tt in
     let* new_borrowed_point :
         ltac:(refine (M.Val (ref scoping_rules_borrowing_aliasing.Point.t))) :=
-      borrow point in
+      let* α0 :
+          ltac:(refine
+            (M.Val (ref scoping_rules_borrowing_aliasing.Point.t))) :=
+        borrow point in
+      M.copy α0 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=

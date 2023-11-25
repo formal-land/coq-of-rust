@@ -13,8 +13,12 @@ Definition create_fn : M (M.Val _ (* OpaqueTy *)) :=
     (let* text : ltac:(refine (M.Val alloc.string.String.t)) :=
       let* α0 : ltac:(refine (M.Val str.t)) := deref (mk_str "Fn") in
       let* α1 : ltac:(refine (M.Val (ref str.t))) := borrow α0 in
-      (alloc.borrow.ToOwned.to_owned (Self := str.t) (Trait := ltac:(refine _)))
-        α1 in
+      let* α2 : ltac:(refine (M.Val alloc.string.String.t)) :=
+        (alloc.borrow.ToOwned.to_owned
+            (Self := str.t)
+            (Trait := ltac:(refine _)))
+          α1 in
+      M.copy α2 in
     M.pure
       (let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
@@ -53,8 +57,12 @@ Definition create_fnmut : M (M.Val _ (* OpaqueTy *)) :=
     (let* text : ltac:(refine (M.Val alloc.string.String.t)) :=
       let* α0 : ltac:(refine (M.Val str.t)) := deref (mk_str "FnMut") in
       let* α1 : ltac:(refine (M.Val (ref str.t))) := borrow α0 in
-      (alloc.borrow.ToOwned.to_owned (Self := str.t) (Trait := ltac:(refine _)))
-        α1 in
+      let* α2 : ltac:(refine (M.Val alloc.string.String.t)) :=
+        (alloc.borrow.ToOwned.to_owned
+            (Self := str.t)
+            (Trait := ltac:(refine _)))
+          α1 in
+      M.copy α2 in
     M.pure
       (let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
@@ -91,8 +99,12 @@ Definition create_fnonce : M (M.Val _ (* OpaqueTy *)) :=
     (let* text : ltac:(refine (M.Val alloc.string.String.t)) :=
       let* α0 : ltac:(refine (M.Val str.t)) := deref (mk_str "FnOnce") in
       let* α1 : ltac:(refine (M.Val (ref str.t))) := borrow α0 in
-      (alloc.borrow.ToOwned.to_owned (Self := str.t) (Trait := ltac:(refine _)))
-        α1 in
+      let* α2 : ltac:(refine (M.Val alloc.string.String.t)) :=
+        (alloc.borrow.ToOwned.to_owned
+            (Self := str.t)
+            (Trait := ltac:(refine _)))
+          α1 in
+      M.copy α2 in
     M.pure
       (let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
@@ -132,11 +144,17 @@ fn main() {
 Definition main : M (M.Val unit) :=
   M.function_body
     (let* fn_plain : ltac:(refine (M.Val type not implemented)) :=
-      functions_closures_as_output_parameters.create_fn in
+      let* α0 : ltac:(refine (M.Val type not implemented)) :=
+        functions_closures_as_output_parameters.create_fn in
+      M.copy α0 in
     let* fn_mut : ltac:(refine (M.Val type not implemented)) :=
-      functions_closures_as_output_parameters.create_fnmut in
+      let* α0 : ltac:(refine (M.Val type not implemented)) :=
+        functions_closures_as_output_parameters.create_fnmut in
+      M.copy α0 in
     let* fn_once : ltac:(refine (M.Val type not implemented)) :=
-      functions_closures_as_output_parameters.create_fnonce in
+      let* α0 : ltac:(refine (M.Val type not implemented)) :=
+        functions_closures_as_output_parameters.create_fnonce in
+      M.copy α0 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* α0 : ltac:(refine (M.Val (ref type not implemented))) :=
         borrow fn_plain in

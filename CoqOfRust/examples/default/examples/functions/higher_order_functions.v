@@ -63,8 +63,12 @@ Definition main : M (M.Val unit) :=
           core.fmt.Arguments.t::["new_const"] α2 in
         std.io.stdio._print α3 in
       M.alloc tt in
-    let* upper : ltac:(refine (M.Val u32.t)) := M.alloc 1000 in
-    let* acc : ltac:(refine (M.Val u32.t)) := M.alloc 0 in
+    let* upper : ltac:(refine (M.Val u32.t)) :=
+      let* α0 : ltac:(refine (M.Val u32.t)) := M.alloc 1000 in
+      M.copy α0 in
+    let* acc : ltac:(refine (M.Val u32.t)) :=
+      let* α0 : ltac:(refine (M.Val u32.t)) := M.alloc 0 in
+      M.copy α0 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* α0 : ltac:(refine (M.Val u32.t)) := M.alloc 0 in
       let* α1 := M.read α0 in
@@ -98,7 +102,9 @@ Definition main : M (M.Val unit) :=
                 never_to_any α0
               | core.option.Option.Some n =>
                 let* n := M.alloc n in
-                let* n_squared : ltac:(refine (M.Val u32.t)) := BinOp.mul n n in
+                let* n_squared : ltac:(refine (M.Val u32.t)) :=
+                  let* α0 : ltac:(refine (M.Val u32.t)) := BinOp.mul n n in
+                  M.copy α0 in
                 let* α0 : ltac:(refine (M.Val bool.t)) :=
                   BinOp.ge n_squared upper in
                 let* α1 : ltac:(refine (M.Val bool.t)) := use α0 in
@@ -196,17 +202,19 @@ Definition main : M (M.Val unit) :=
             (Trait := ltac:(refine _)))
           α4
           (higher_order_functions.is_odd n_squared) in
-      (core.iter.traits.iterator.Iterator.sum
-          (Self :=
-            core.iter.adapters.filter.Filter.t
-              (core.iter.adapters.take_while.TakeWhile.t
-                (core.iter.adapters.map.Map.t
-                  (core.ops.range.RangeFrom.t u32.t)
+      let* α6 : ltac:(refine (M.Val u32.t)) :=
+        (core.iter.traits.iterator.Iterator.sum
+            (Self :=
+              core.iter.adapters.filter.Filter.t
+                (core.iter.adapters.take_while.TakeWhile.t
+                  (core.iter.adapters.map.Map.t
+                    (core.ops.range.RangeFrom.t u32.t)
+                    type not implemented)
                   type not implemented)
                 type not implemented)
-              type not implemented)
-          (Trait := ltac:(refine _)))
-        α5 in
+            (Trait := ltac:(refine _)))
+          α5 in
+      M.copy α6 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=

@@ -19,7 +19,8 @@ fn main() {
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M (M.Val unit) :=
   M.function_body
-    (let raw_str := mk_str "Escapes don't work here: \x3F \u{211D}" in
+    (let* raw_str : ltac:(refine (M.Val (ref str.t))) :=
+      M.copy (mk_str "Escapes don't work here: \x3F \u{211D}") in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
@@ -42,7 +43,8 @@ Definition main : M (M.Val unit) :=
           core.fmt.Arguments.t::["new_v1"] α2 α7 in
         std.io.stdio._print α8 in
       M.alloc tt in
-    let quotes := mk_str "And then I said: "There is no escape!"" in
+    let* quotes : ltac:(refine (M.Val (ref str.t))) :=
+      M.copy (mk_str "And then I said: "There is no escape!"") in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
@@ -65,7 +67,8 @@ Definition main : M (M.Val unit) :=
           core.fmt.Arguments.t::["new_v1"] α2 α7 in
         std.io.stdio._print α8 in
       M.alloc tt in
-    let longer_delimiter := mk_str "A string with "# in it. And even "##!" in
+    let* longer_delimiter : ltac:(refine (M.Val (ref str.t))) :=
+      M.copy (mk_str "A string with "# in it. And even "##!") in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=

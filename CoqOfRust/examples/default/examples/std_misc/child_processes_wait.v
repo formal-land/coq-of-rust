@@ -29,10 +29,12 @@ Definition main : M (M.Val unit) :=
                 std.process.Child.t
                 std.io.error.Error.t))) :=
         std.process.Command.t::["spawn"] α4 in
-      (core.result.Result.t
-            std.process.Child.t
-            std.io.error.Error.t)::["unwrap"]
-        α5 in
+      let* α6 : ltac:(refine (M.Val std.process.Child.t)) :=
+        (core.result.Result.t
+              std.process.Child.t
+              std.io.error.Error.t)::["unwrap"]
+          α5 in
+      M.copy α6 in
     let* _result : ltac:(refine (M.Val std.process.ExitStatus.t)) :=
       let* α0 : ltac:(refine (M.Val (mut_ref std.process.Child.t))) :=
         borrow_mut child in
@@ -43,10 +45,12 @@ Definition main : M (M.Val unit) :=
                 std.process.ExitStatus.t
                 std.io.error.Error.t))) :=
         std.process.Child.t::["wait"] α0 in
-      (core.result.Result.t
-            std.process.ExitStatus.t
-            std.io.error.Error.t)::["unwrap"]
-        α1 in
+      let* α2 : ltac:(refine (M.Val std.process.ExitStatus.t)) :=
+        (core.result.Result.t
+              std.process.ExitStatus.t
+              std.io.error.Error.t)::["unwrap"]
+          α1 in
+      M.copy α2 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=

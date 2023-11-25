@@ -26,7 +26,9 @@ fn main() {
 Definition main : M (M.Val unit) :=
   M.function_body
     (let* apple : ltac:(refine (M.Val (alloc.sync.Arc.t (ref str.t)))) :=
-      (alloc.sync.Arc.t (ref str.t))::["new"] (mk_str "the same apple") in
+      let* α0 : ltac:(refine (M.Val (alloc.sync.Arc.t (ref str.t)))) :=
+        (alloc.sync.Arc.t (ref str.t))::["new"] (mk_str "the same apple") in
+      M.copy α0 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 0 in
       let* α1 := M.read α0 in
@@ -69,10 +71,13 @@ Definition main : M (M.Val unit) :=
                       ltac:(refine
                         (M.Val (ref (alloc.sync.Arc.t (ref str.t))))) :=
                     borrow apple in
-                  (core.clone.Clone.clone
-                      (Self := alloc.sync.Arc.t (ref str.t))
-                      (Trait := ltac:(refine _)))
-                    α0 in
+                  let* α1 :
+                      ltac:(refine (M.Val (alloc.sync.Arc.t (ref str.t)))) :=
+                    (core.clone.Clone.clone
+                        (Self := alloc.sync.Arc.t (ref str.t))
+                        (Trait := ltac:(refine _)))
+                      α0 in
+                  M.copy α1 in
                 let* _ : ltac:(refine (M.Val (std.thread.JoinHandle.t unit))) :=
                   std.thread.spawn
                     (let* _ : ltac:(refine (M.Val unit)) :=

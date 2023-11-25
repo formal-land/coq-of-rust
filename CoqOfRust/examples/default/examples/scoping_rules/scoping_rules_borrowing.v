@@ -104,8 +104,14 @@ Definition main : M (M.Val unit) :=
     (let* boxed_i32 :
         ltac:(refine (M.Val (alloc.boxed.Box.t i32.t alloc.alloc.Global.t))) :=
       let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 5 in
-      (alloc.boxed.Box.t i32.t alloc.alloc.Global.t)::["new"] α0 in
-    let* stacked_i32 : ltac:(refine (M.Val i32.t)) := M.alloc 6 in
+      let* α1 :
+          ltac:(refine
+            (M.Val (alloc.boxed.Box.t i32.t alloc.alloc.Global.t))) :=
+        (alloc.boxed.Box.t i32.t alloc.alloc.Global.t)::["new"] α0 in
+      M.copy α1 in
+    let* stacked_i32 : ltac:(refine (M.Val i32.t)) :=
+      let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 6 in
+      M.copy α0 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* α0 : ltac:(refine (M.Val i32.t)) := deref boxed_i32 in
       let* α1 : ltac:(refine (M.Val (ref i32.t))) := borrow α0 in
@@ -116,7 +122,8 @@ Definition main : M (M.Val unit) :=
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ref_to_i32 : ltac:(refine (M.Val (ref i32.t))) :=
         let* α0 : ltac:(refine (M.Val i32.t)) := deref boxed_i32 in
-        borrow α0 in
+        let* α1 : ltac:(refine (M.Val (ref i32.t))) := borrow α0 in
+        M.copy α1 in
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val i32.t)) := deref _ref_to_i32 in
         let* α1 : ltac:(refine (M.Val (ref i32.t))) := borrow α0 in

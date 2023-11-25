@@ -148,10 +148,12 @@ Definition main : M (M.Val unit) :=
           ltac:(refine
             (M.Val (ref disambiguating_overlapping_traits.Form.t))) :=
         borrow form in
-      (disambiguating_overlapping_traits.UsernameWidget.get
-          (Self := disambiguating_overlapping_traits.Form.t)
-          (Trait := ltac:(refine _)))
-        α0 in
+      let* α1 : ltac:(refine (M.Val alloc.string.String.t)) :=
+        (disambiguating_overlapping_traits.UsernameWidget.get
+            (Self := disambiguating_overlapping_traits.Form.t)
+            (Trait := ltac:(refine _)))
+          α0 in
+      M.copy α1 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* α0 : ltac:(refine (M.Val str.t)) := deref (mk_str "rustacean") in
       let* α1 : ltac:(refine (M.Val (ref str.t))) := borrow α0 in
@@ -220,10 +222,12 @@ Definition main : M (M.Val unit) :=
           ltac:(refine
             (M.Val (ref disambiguating_overlapping_traits.Form.t))) :=
         borrow form in
-      (disambiguating_overlapping_traits.AgeWidget.get
-          (Self := disambiguating_overlapping_traits.Form.t)
-          (Trait := ltac:(refine _)))
-        α0 in
+      let* α1 : ltac:(refine (M.Val u8.t)) :=
+        (disambiguating_overlapping_traits.AgeWidget.get
+            (Self := disambiguating_overlapping_traits.Form.t)
+            (Trait := ltac:(refine _)))
+          α0 in
+      M.copy α1 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* α0 : ltac:(refine (M.Val u8.t)) := M.alloc 28 in
       let* α1 : ltac:(refine (M.Val (ref u8.t))) := borrow α0 in

@@ -19,7 +19,8 @@ Definition main : M (M.Val unit) :=
       let* val : ltac:(refine (M.Val usize.t)) :=
         let* α0 : ltac:(refine (M.Val usize.t)) := M.alloc 1 in
         let* α1 : ltac:(refine (M.Val usize.t)) := M.alloc 2 in
-        BinOp.add α0 α1 in
+        let* α2 : ltac:(refine (M.Val usize.t)) := BinOp.add α0 α1 in
+        M.copy α2 in
       let* _ : ltac:(refine (M.Val unit)) :=
         let* _ : ltac:(refine (M.Val unit)) :=
           let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
@@ -52,7 +53,8 @@ Definition main : M (M.Val unit) :=
       let* α3 : ltac:(refine (M.Val usize.t)) := M.alloc 3 in
       let* α4 : ltac:(refine (M.Val usize.t)) := M.alloc 4 in
       let* α5 : ltac:(refine (M.Val usize.t)) := BinOp.div α3 α4 in
-      BinOp.mul α2 α5 in
+      let* α6 : ltac:(refine (M.Val usize.t)) := BinOp.mul α2 α5 in
+      M.copy α6 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=

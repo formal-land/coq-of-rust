@@ -63,7 +63,8 @@ Definition main : M (M.Val unit) :=
         std.io.stdio._print α3 in
       M.alloc tt in
     let* secret_number : ltac:(refine (M.Val u32.t)) :=
-      guessing_game.gen_range in
+      let* α0 : ltac:(refine (M.Val u32.t)) := guessing_game.gen_range in
+      M.copy α0 in
     loop
       (let* _ : ltac:(refine (M.Val unit)) :=
         let* _ : ltac:(refine (M.Val unit)) :=
@@ -79,7 +80,9 @@ Definition main : M (M.Val unit) :=
           std.io.stdio._print α3 in
         M.alloc tt in
       let* guess : ltac:(refine (M.Val alloc.string.String.t)) :=
-        alloc.string.String.t::["new"] in
+        let* α0 : ltac:(refine (M.Val alloc.string.String.t)) :=
+          alloc.string.String.t::["new"] in
+        M.copy α0 in
       let* _ : ltac:(refine (M.Val usize.t)) :=
         let* α0 : ltac:(refine (M.Val std.io.stdio.Stdin.t)) :=
           std.io.stdio.stdin in
@@ -114,14 +117,16 @@ Definition main : M (M.Val unit) :=
                 (core.result.Result.t u32.t core.num.error.ParseIntError.t))) :=
           str.t::["parse"] α6 in
         let* α8 := M.read α7 in
-        match α8 with
-        | core.result.Result.Ok num =>
-          let* num := M.alloc num in
-          M.pure num
-        | core.result.Result.Err _ =>
-          let* α0 : ltac:(refine (M.Val never.t)) := Continue in
-          never_to_any α0
-        end in
+        let* α9 : ltac:(refine (M.Val u32.t)) :=
+          match α8 with
+          | core.result.Result.Ok num =>
+            let* num := M.alloc num in
+            M.pure num
+          | core.result.Result.Err _ =>
+            let* α0 : ltac:(refine (M.Val never.t)) := Continue in
+            never_to_any α0
+          end in
+        M.copy α9 in
       let* _ : ltac:(refine (M.Val unit)) :=
         let* _ : ltac:(refine (M.Val unit)) :=
           let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=

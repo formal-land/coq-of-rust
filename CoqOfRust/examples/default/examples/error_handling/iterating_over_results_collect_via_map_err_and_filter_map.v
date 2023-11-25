@@ -40,16 +40,27 @@ Definition main : M (M.Val unit) :=
             (M.Val
               (alloc.boxed.Box.t (slice (ref str.t)) alloc.alloc.Global.t))) :=
         pointer_coercion "Unsize" α9 in
-      (slice (ref str.t))::["into_vec"] α10 in
+      let* α11 :
+          ltac:(refine
+            (M.Val (alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t))) :=
+        (slice (ref str.t))::["into_vec"] α10 in
+      M.copy α11 in
     let* errors :
         ltac:(refine
           (M.Val
             (alloc.vec.Vec.t
               core.num.error.ParseIntError.t
               alloc.alloc.Global.t))) :=
-      (alloc.vec.Vec.t
-          core.num.error.ParseIntError.t
-          alloc.alloc.Global.t)::["new"] in
+      let* α0 :
+          ltac:(refine
+            (M.Val
+              (alloc.vec.Vec.t
+                core.num.error.ParseIntError.t
+                alloc.alloc.Global.t))) :=
+        (alloc.vec.Vec.t
+            core.num.error.ParseIntError.t
+            alloc.alloc.Global.t)::["new"] in
+      M.copy α0 in
     let* numbers :
         ltac:(refine (M.Val (alloc.vec.Vec.t u8.t alloc.alloc.Global.t))) :=
       let* α0 :
@@ -116,17 +127,20 @@ Definition main : M (M.Val unit) :=
                 α0
                 e) in
           (core.result.Result.t u8.t unit)::["ok"] α0) in
-      (core.iter.traits.iterator.Iterator.collect
-          (Self :=
-            core.iter.adapters.filter_map.FilterMap.t
-              (core.iter.adapters.map.Map.t
-                (alloc.vec.into_iter.IntoIter.t
-                  (ref str.t)
-                  alloc.alloc.Global.t)
+      let* α3 :
+          ltac:(refine (M.Val (alloc.vec.Vec.t u8.t alloc.alloc.Global.t))) :=
+        (core.iter.traits.iterator.Iterator.collect
+            (Self :=
+              core.iter.adapters.filter_map.FilterMap.t
+                (core.iter.adapters.map.Map.t
+                  (alloc.vec.into_iter.IntoIter.t
+                    (ref str.t)
+                    alloc.alloc.Global.t)
+                  type not implemented)
                 type not implemented)
-              type not implemented)
-          (Trait := ltac:(refine _)))
-        α2 in
+            (Trait := ltac:(refine _)))
+          α2 in
+      M.copy α3 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=

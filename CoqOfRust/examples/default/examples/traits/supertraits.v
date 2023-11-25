@@ -121,7 +121,9 @@ Definition comp_sci_student_greeting
         pointer_coercion "Unsize" α24 in
       let* α26 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
         core.fmt.Arguments.t::["new_v1"] α2 α25 in
-      alloc.fmt.format α26 in
+      let* α27 : ltac:(refine (M.Val alloc.string.String.t)) :=
+        alloc.fmt.format α26 in
+      M.copy α27 in
     M.pure res).
 
 (*

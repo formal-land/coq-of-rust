@@ -41,7 +41,9 @@ Definition main : M (M.Val unit) :=
           foreign_function_interface.Complex.im := α3;
         |} in
     let* z_sqrt : ltac:(refine (M.Val foreign_function_interface.Complex.t)) :=
-      "unimplemented parent_kind" z in
+      let* α0 : ltac:(refine (M.Val foreign_function_interface.Complex.t)) :=
+        "unimplemented parent_kind" z in
+      M.copy α0 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=

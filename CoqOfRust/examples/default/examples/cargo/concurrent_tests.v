@@ -89,9 +89,11 @@ Module tests.
         let* α11 : ltac:(refine (M.Val str.t)) :=
           deref (mk_str "Failed to open ferris.txt") in
         let* α12 : ltac:(refine (M.Val (ref str.t))) := borrow α11 in
-        (core.result.Result.t std.fs.File.t std.io.error.Error.t)::["expect"]
-          α10
-          α12 in
+        let* α13 : ltac:(refine (M.Val std.fs.File.t)) :=
+          (core.result.Result.t std.fs.File.t std.io.error.Error.t)::["expect"]
+            α10
+            α12 in
+        M.copy α13 in
       let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 0 in
       let* α1 := M.read α0 in
       let* α2 : ltac:(refine (M.Val i32.t)) := M.alloc 5 in
@@ -203,9 +205,11 @@ Module tests.
         let* α11 : ltac:(refine (M.Val str.t)) :=
           deref (mk_str "Failed to open ferris.txt") in
         let* α12 : ltac:(refine (M.Val (ref str.t))) := borrow α11 in
-        (core.result.Result.t std.fs.File.t std.io.error.Error.t)::["expect"]
-          α10
-          α12 in
+        let* α13 : ltac:(refine (M.Val std.fs.File.t)) :=
+          (core.result.Result.t std.fs.File.t std.io.error.Error.t)::["expect"]
+            α10
+            α12 in
+        M.copy α13 in
       let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 0 in
       let* α1 := M.read α0 in
       let* α2 : ltac:(refine (M.Val i32.t)) := M.alloc 5 in
@@ -317,9 +321,11 @@ Definition test_file : M (M.Val unit) :=
       let* α11 : ltac:(refine (M.Val str.t)) :=
         deref (mk_str "Failed to open ferris.txt") in
       let* α12 : ltac:(refine (M.Val (ref str.t))) := borrow α11 in
-      (core.result.Result.t std.fs.File.t std.io.error.Error.t)::["expect"]
-        α10
-        α12 in
+      let* α13 : ltac:(refine (M.Val std.fs.File.t)) :=
+        (core.result.Result.t std.fs.File.t std.io.error.Error.t)::["expect"]
+          α10
+          α12 in
+      M.copy α13 in
     let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 0 in
     let* α1 := M.read α0 in
     let* α2 : ltac:(refine (M.Val i32.t)) := M.alloc 5 in
@@ -430,9 +436,11 @@ Definition test_file_also : M (M.Val unit) :=
       let* α11 : ltac:(refine (M.Val str.t)) :=
         deref (mk_str "Failed to open ferris.txt") in
       let* α12 : ltac:(refine (M.Val (ref str.t))) := borrow α11 in
-      (core.result.Result.t std.fs.File.t std.io.error.Error.t)::["expect"]
-        α10
-        α12 in
+      let* α13 : ltac:(refine (M.Val std.fs.File.t)) :=
+        (core.result.Result.t std.fs.File.t std.io.error.Error.t)::["expect"]
+          α10
+          α12 in
+      M.copy α13 in
     let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 0 in
     let* α1 := M.read α0 in
     let* α2 : ltac:(refine (M.Val i32.t)) := M.alloc 5 in

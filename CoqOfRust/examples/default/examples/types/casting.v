@@ -84,9 +84,15 @@ fn main() {
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M (M.Val unit) :=
   M.function_body
-    (let* decimal : ltac:(refine (M.Val f32.t)) := M.alloc 65 (* 65.4321 *) in
-    let* integer : ltac:(refine (M.Val u8.t)) := cast decimal in
-    let* character : ltac:(refine (M.Val char.t)) := cast integer in
+    (let* decimal : ltac:(refine (M.Val f32.t)) :=
+      let* α0 : ltac:(refine (M.Val f32.t)) := M.alloc 65 (* 65.4321 *) in
+      M.copy α0 in
+    let* integer : ltac:(refine (M.Val u8.t)) :=
+      let* α0 : ltac:(refine (M.Val u8.t)) := cast decimal in
+      M.copy α0 in
+    let* character : ltac:(refine (M.Val char.t)) :=
+      let* α0 : ltac:(refine (M.Val char.t)) := cast integer in
+      M.copy α0 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=

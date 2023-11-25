@@ -46,7 +46,8 @@ fn main() {
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M (M.Val unit) :=
   M.function_body
-    (let pangram := mk_str "the quick brown fox jumps over the lazy dog" in
+    (let* pangram : ltac:(refine (M.Val (ref str.t))) :=
+      M.copy (mk_str "the quick brown fox jumps over the lazy dog") in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
@@ -174,10 +175,13 @@ Definition main : M (M.Val unit) :=
       let* α1 : ltac:(refine (M.Val (ref str.t))) := borrow α0 in
       let* α2 : ltac:(refine (M.Val core.str.iter.Chars.t)) :=
         str.t::["chars"] α1 in
-      (core.iter.traits.iterator.Iterator.collect
-          (Self := core.str.iter.Chars.t)
-          (Trait := ltac:(refine _)))
-        α2 in
+      let* α3 :
+          ltac:(refine (M.Val (alloc.vec.Vec.t char.t alloc.alloc.Global.t))) :=
+        (core.iter.traits.iterator.Iterator.collect
+            (Self := core.str.iter.Chars.t)
+            (Trait := ltac:(refine _)))
+          α2 in
+      M.copy α3 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* α0 :
           ltac:(refine
@@ -199,7 +203,9 @@ Definition main : M (M.Val unit) :=
         borrow_mut chars in
       (alloc.vec.Vec.t char.t alloc.alloc.Global.t)::["dedup"] α0 in
     let* string : ltac:(refine (M.Val alloc.string.String.t)) :=
-      alloc.string.String.t::["new"] in
+      let* α0 : ltac:(refine (M.Val alloc.string.String.t)) :=
+        alloc.string.String.t::["new"] in
+      M.copy α0 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* α0 :
           ltac:(refine
@@ -262,7 +268,9 @@ Definition main : M (M.Val unit) :=
       let* α1 : ltac:(refine (M.Val char.t)) := M.alloc ","%char in
       let* α2 : ltac:(refine (M.Val (array char.t))) := M.alloc [ α0; α1 ] in
       let* α3 : ltac:(refine (M.Val (ref (array char.t)))) := borrow α2 in
-      pointer_coercion "Unsize" α3 in
+      let* α4 : ltac:(refine (M.Val (ref (slice char.t)))) :=
+        pointer_coercion "Unsize" α3 in
+      M.copy α4 in
     let* trimmed_str : ltac:(refine (M.Val (ref str.t))) :=
       let* α0 : ltac:(refine (M.Val (ref alloc.string.String.t))) :=
         borrow string in
@@ -276,7 +284,8 @@ Definition main : M (M.Val unit) :=
       let* α4 : ltac:(refine (M.Val (ref str.t))) :=
         str.t::["trim_matches"] α3 chars_to_trim in
       let* α5 : ltac:(refine (M.Val str.t)) := deref α4 in
-      borrow α5 in
+      let* α6 : ltac:(refine (M.Val (ref str.t))) := borrow α5 in
+      M.copy α6 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
@@ -301,10 +310,12 @@ Definition main : M (M.Val unit) :=
         std.io.stdio._print α8 in
       M.alloc tt in
     let* alice : ltac:(refine (M.Val alloc.string.String.t)) :=
-      (core.convert.From.from
-          (Self := alloc.string.String.t)
-          (Trait := ltac:(refine _)))
-        (mk_str "I like dogs") in
+      let* α0 : ltac:(refine (M.Val alloc.string.String.t)) :=
+        (core.convert.From.from
+            (Self := alloc.string.String.t)
+            (Trait := ltac:(refine _)))
+          (mk_str "I like dogs") in
+      M.copy α0 in
     let* bob : ltac:(refine (M.Val alloc.string.String.t)) :=
       let* α0 : ltac:(refine (M.Val (ref alloc.string.String.t))) :=
         borrow alice in
@@ -317,7 +328,9 @@ Definition main : M (M.Val unit) :=
       let* α3 : ltac:(refine (M.Val (ref str.t))) := borrow α2 in
       let* α4 : ltac:(refine (M.Val str.t)) := deref (mk_str "cat") in
       let* α5 : ltac:(refine (M.Val (ref str.t))) := borrow α4 in
-      str.t::["replace"] α3 (mk_str "dog") α5 in
+      let* α6 : ltac:(refine (M.Val alloc.string.String.t)) :=
+        str.t::["replace"] α3 (mk_str "dog") α5 in
+      M.copy α6 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=

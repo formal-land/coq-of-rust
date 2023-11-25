@@ -99,7 +99,10 @@ Definition calculate_hash
     : M (M.Val u64.t) :=
   M.function_body
     (let* s : ltac:(refine (M.Val std.collections.hash.map.DefaultHasher.t)) :=
-      std.collections.hash.map.DefaultHasher.t::["new"] in
+      let* α0 :
+          ltac:(refine (M.Val std.collections.hash.map.DefaultHasher.t)) :=
+        std.collections.hash.map.DefaultHasher.t::["new"] in
+      M.copy α0 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* α0 : ltac:(refine (M.Val T)) := deref t in
       let* α1 : ltac:(refine (M.Val (ref T))) := borrow α0 in

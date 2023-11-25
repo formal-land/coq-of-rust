@@ -84,7 +84,9 @@ Definition drink
     : M (M.Val unit) :=
   M.function_body
     (let* inside : ltac:(refine (M.Val (ref str.t))) :=
-      (core.option.Option.t (ref str.t))::["unwrap"] drink in
+      let* α0 : ltac:(refine (M.Val (ref str.t))) :=
+        (core.option.Option.t (ref str.t))::["unwrap"] drink in
+      M.copy α0 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* α0 : ltac:(refine (M.Val (ref (ref str.t)))) := borrow inside in
       let* α1 : ltac:(refine (M.Val (ref (ref str.t)))) :=

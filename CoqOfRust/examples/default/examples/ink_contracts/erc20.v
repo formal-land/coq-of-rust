@@ -532,14 +532,19 @@ Section Impl_erc20_Erc20_t_2.
     M.function_body
       (let* balances :
           ltac:(refine (M.Val (erc20.Mapping.t erc20.AccountId.t u128.t))) :=
-        core.default.Default.default
-          (Self := erc20.Mapping.t erc20.AccountId.t u128.t)
-          (Trait := ltac:(refine _)) in
+        let* α0 :
+            ltac:(refine (M.Val (erc20.Mapping.t erc20.AccountId.t u128.t))) :=
+          core.default.Default.default
+            (Self := erc20.Mapping.t erc20.AccountId.t u128.t)
+            (Trait := ltac:(refine _)) in
+        M.copy α0 in
       let* caller : ltac:(refine (M.Val erc20.AccountId.t)) :=
         let* α0 : ltac:(refine (M.Val erc20.Env.t)) :=
           erc20.Erc20.t::["init_env"] in
         let* α1 : ltac:(refine (M.Val (ref erc20.Env.t))) := borrow α0 in
-        erc20.Env.t::["caller"] α1 in
+        let* α2 : ltac:(refine (M.Val erc20.AccountId.t)) :=
+          erc20.Env.t::["caller"] α1 in
+        M.copy α2 in
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 :
             ltac:(refine
@@ -746,7 +751,9 @@ Section Impl_erc20_Erc20_t_2.
         let* α1 : ltac:(refine (M.Val (ref erc20.Erc20.t))) := borrow α0 in
         let* α2 : ltac:(refine (M.Val erc20.AccountId.t)) := deref from in
         let* α3 : ltac:(refine (M.Val (ref erc20.AccountId.t))) := borrow α2 in
-        erc20.Erc20.t::["balance_of_impl"] α1 α3 in
+        let* α4 : ltac:(refine (M.Val u128.t)) :=
+          erc20.Erc20.t::["balance_of_impl"] α1 α3 in
+        M.copy α4 in
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val bool.t)) := BinOp.lt from_balance value in
         let* α1 : ltac:(refine (M.Val bool.t)) := use α0 in
@@ -778,7 +785,9 @@ Section Impl_erc20_Erc20_t_2.
         let* α1 : ltac:(refine (M.Val (ref erc20.Erc20.t))) := borrow α0 in
         let* α2 : ltac:(refine (M.Val erc20.AccountId.t)) := deref to in
         let* α3 : ltac:(refine (M.Val (ref erc20.AccountId.t))) := borrow α2 in
-        erc20.Erc20.t::["balance_of_impl"] α1 α3 in
+        let* α4 : ltac:(refine (M.Val u128.t)) :=
+          erc20.Erc20.t::["balance_of_impl"] α1 α3 in
+        M.copy α4 in
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val erc20.Erc20.t)) := deref self in
         let* α1 :
@@ -832,7 +841,9 @@ Section Impl_erc20_Erc20_t_2.
         let* α2 : ltac:(refine (M.Val erc20.Env.t)) :=
           erc20.Erc20.t::["env"] α1 in
         let* α3 : ltac:(refine (M.Val (ref erc20.Env.t))) := borrow α2 in
-        erc20.Env.t::["caller"] α3 in
+        let* α4 : ltac:(refine (M.Val erc20.AccountId.t)) :=
+          erc20.Env.t::["caller"] α3 in
+        M.copy α4 in
       let* α0 : ltac:(refine (M.Val erc20.Erc20.t)) := deref self in
       let* α1 : ltac:(refine (M.Val (mut_ref erc20.Erc20.t))) :=
         borrow_mut α0 in
@@ -869,7 +880,9 @@ Section Impl_erc20_Erc20_t_2.
         let* α2 : ltac:(refine (M.Val erc20.Env.t)) :=
           erc20.Erc20.t::["env"] α1 in
         let* α3 : ltac:(refine (M.Val (ref erc20.Env.t))) := borrow α2 in
-        erc20.Env.t::["caller"] α3 in
+        let* α4 : ltac:(refine (M.Val erc20.AccountId.t)) :=
+          erc20.Env.t::["caller"] α3 in
+        M.copy α4 in
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val erc20.Erc20.t)) := deref self in
         let* α1 :
@@ -940,7 +953,9 @@ Section Impl_erc20_Erc20_t_2.
         let* α2 : ltac:(refine (M.Val erc20.Env.t)) :=
           erc20.Erc20.t::["env"] α1 in
         let* α3 : ltac:(refine (M.Val (ref erc20.Env.t))) := borrow α2 in
-        erc20.Env.t::["caller"] α3 in
+        let* α4 : ltac:(refine (M.Val erc20.AccountId.t)) :=
+          erc20.Env.t::["caller"] α3 in
+        M.copy α4 in
       let* allowance : ltac:(refine (M.Val u128.t)) :=
         let* α0 : ltac:(refine (M.Val erc20.Erc20.t)) := deref self in
         let* α1 : ltac:(refine (M.Val (ref erc20.Erc20.t))) := borrow α0 in
@@ -948,7 +963,9 @@ Section Impl_erc20_Erc20_t_2.
           borrow from in
         let* α3 : ltac:(refine (M.Val (ref erc20.AccountId.t))) :=
           borrow caller in
-        erc20.Erc20.t::["allowance_impl"] α1 α2 α3 in
+        let* α4 : ltac:(refine (M.Val u128.t)) :=
+          erc20.Erc20.t::["allowance_impl"] α1 α2 α3 in
+        M.copy α4 in
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val bool.t)) := BinOp.lt allowance value in
         let* α1 : ltac:(refine (M.Val bool.t)) := use α0 in

@@ -14,7 +14,11 @@ Definition create_box : M (M.Val unit) :=
     (let* _box1 :
         ltac:(refine (M.Val (alloc.boxed.Box.t i32.t alloc.alloc.Global.t))) :=
       let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 3 in
-      (alloc.boxed.Box.t i32.t alloc.alloc.Global.t)::["new"] α0 in
+      let* α1 :
+          ltac:(refine
+            (M.Val (alloc.boxed.Box.t i32.t alloc.alloc.Global.t))) :=
+        (alloc.boxed.Box.t i32.t alloc.alloc.Global.t)::["new"] α0 in
+      M.copy α1 in
     M.alloc tt).
 
 (*
@@ -45,13 +49,21 @@ Definition main : M (M.Val unit) :=
     (let* _box2 :
         ltac:(refine (M.Val (alloc.boxed.Box.t i32.t alloc.alloc.Global.t))) :=
       let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 5 in
-      (alloc.boxed.Box.t i32.t alloc.alloc.Global.t)::["new"] α0 in
+      let* α1 :
+          ltac:(refine
+            (M.Val (alloc.boxed.Box.t i32.t alloc.alloc.Global.t))) :=
+        (alloc.boxed.Box.t i32.t alloc.alloc.Global.t)::["new"] α0 in
+      M.copy α1 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _box3 :
           ltac:(refine
             (M.Val (alloc.boxed.Box.t i32.t alloc.alloc.Global.t))) :=
         let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 4 in
-        (alloc.boxed.Box.t i32.t alloc.alloc.Global.t)::["new"] α0 in
+        let* α1 :
+            ltac:(refine
+              (M.Val (alloc.boxed.Box.t i32.t alloc.alloc.Global.t))) :=
+          (alloc.boxed.Box.t i32.t alloc.alloc.Global.t)::["new"] α0 in
+        M.copy α1 in
       M.alloc tt in
     let* α0 : ltac:(refine (M.Val u32.t)) := M.alloc 0 in
     let* α1 := M.read α0 in

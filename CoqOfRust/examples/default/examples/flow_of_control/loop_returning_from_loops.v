@@ -19,22 +19,26 @@ fn main() {
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M (M.Val unit) :=
   M.function_body
-    (let* counter : ltac:(refine (M.Val i32.t)) := M.alloc 0 in
+    (let* counter : ltac:(refine (M.Val i32.t)) :=
+      let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 0 in
+      M.copy α0 in
     let* result : ltac:(refine (M.Val i32.t)) :=
-      loop
-        (let* _ : ltac:(refine (M.Val unit)) :=
-          let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 1 in
-          assign_op add counter α0 in
-        let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 10 in
-        let* α1 : ltac:(refine (M.Val bool.t)) := BinOp.eq counter α0 in
-        let* α2 : ltac:(refine (M.Val bool.t)) := use α1 in
-        let* α3 := M.read α2 in
-        if (α3 : bool) then
-          let* _ : ltac:(refine (M.Val never.t)) := Break in
-          let* α0 : ltac:(refine (M.Val unit)) := M.alloc tt in
-          never_to_any α0
-        else
-          M.alloc tt) in
+      let* α0 : ltac:(refine (M.Val i32.t)) :=
+        loop
+          (let* _ : ltac:(refine (M.Val unit)) :=
+            let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 1 in
+            assign_op add counter α0 in
+          let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 10 in
+          let* α1 : ltac:(refine (M.Val bool.t)) := BinOp.eq counter α0 in
+          let* α2 : ltac:(refine (M.Val bool.t)) := use α1 in
+          let* α3 := M.read α2 in
+          if (α3 : bool) then
+            let* _ : ltac:(refine (M.Val never.t)) := Break in
+            let* α0 : ltac:(refine (M.Val unit)) := M.alloc tt in
+            never_to_any α0
+          else
+            M.alloc tt) in
+      M.copy α0 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* α0 : ltac:(refine (M.Val (ref i32.t))) := borrow result in
       let* α1 := M.read α0 in

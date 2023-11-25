@@ -79,8 +79,10 @@ fn main() {
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M (M.Val unit) :=
   M.function_body
-    (let* x : ltac:(refine (M.Val u32.t)) := M.alloc 5 in
-    let y := x in
+    (let* x : ltac:(refine (M.Val u32.t)) :=
+      let* α0 : ltac:(refine (M.Val u32.t)) := M.alloc 5 in
+      M.copy α0 in
+    let* y : ltac:(refine (M.Val u32.t)) := M.copy x in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
@@ -109,7 +111,11 @@ Definition main : M (M.Val unit) :=
     let* a :
         ltac:(refine (M.Val (alloc.boxed.Box.t i32.t alloc.alloc.Global.t))) :=
       let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 5 in
-      (alloc.boxed.Box.t i32.t alloc.alloc.Global.t)::["new"] α0 in
+      let* α1 :
+          ltac:(refine
+            (M.Val (alloc.boxed.Box.t i32.t alloc.alloc.Global.t))) :=
+        (alloc.boxed.Box.t i32.t alloc.alloc.Global.t)::["new"] α0 in
+      M.copy α1 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
@@ -135,7 +141,9 @@ Definition main : M (M.Val unit) :=
           core.fmt.Arguments.t::["new_v1"] α2 α7 in
         std.io.stdio._print α8 in
       M.alloc tt in
-    let b := a in
+    let* b :
+        ltac:(refine (M.Val (alloc.boxed.Box.t i32.t alloc.alloc.Global.t))) :=
+      M.copy a in
     let* _ : ltac:(refine (M.Val unit)) :=
       scoping_rules_ownership_and_rules.destroy_box b in
     M.alloc tt).

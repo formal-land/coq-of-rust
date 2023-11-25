@@ -196,11 +196,15 @@ fn main() {
 Definition main : M (M.Val unit) :=
   M.function_body
     (let* name : ltac:(refine (M.Val alloc.string.String.t)) :=
-      (core.convert.From.from
-          (Self := alloc.string.String.t)
-          (Trait := ltac:(refine _)))
-        (mk_str "Peter") in
-    let* age : ltac:(refine (M.Val u8.t)) := M.alloc 27 in
+      let* α0 : ltac:(refine (M.Val alloc.string.String.t)) :=
+        (core.convert.From.from
+            (Self := alloc.string.String.t)
+            (Trait := ltac:(refine _)))
+          (mk_str "Peter") in
+      M.copy α0 in
+    let* age : ltac:(refine (M.Val u8.t)) :=
+      let* α0 : ltac:(refine (M.Val u8.t)) := M.alloc 27 in
+      M.copy α0 in
     let* peter : ltac:(refine (M.Val structures.Person.t)) :=
       let* α0 := M.read name in
       let* α1 := M.read age in
@@ -291,9 +295,10 @@ Definition main : M (M.Val unit) :=
           core.fmt.Arguments.t::["new_v1"] α2 α9 in
         std.io.stdio._print α10 in
       M.alloc tt in
-    let '{| structures.Point.x := left_edge; structures.Point.y := top_edge;
-        |} :=
-      point in
+    let* '{| structures.Point.x := left_edge; structures.Point.y := top_edge;
+        |} :
+        ltac:(refine (M.Val structures.Point.t)) :=
+      M.copy point in
     let* _rectangle : ltac:(refine (M.Val structures.Rectangle.t)) :=
       let* α0 := M.read left_edge in
       let* α1 := M.read top_edge in
@@ -337,7 +342,9 @@ Definition main : M (M.Val unit) :=
           core.fmt.Arguments.t::["new_v1"] α2 α9 in
         std.io.stdio._print α10 in
       M.alloc tt in
-    let 'structures.Pair.Build_t integer decimal := pair in
+    let* 'structures.Pair.Build_t integer decimal :
+        ltac:(refine (M.Val structures.Pair.t)) :=
+      M.copy pair in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=

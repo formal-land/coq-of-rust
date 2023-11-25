@@ -16,7 +16,9 @@ fn main() {
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M (M.Val unit) :=
   M.function_body
-    (let* number : ltac:(refine (M.Val u8.t)) := M.alloc 4 in
+    (let* number : ltac:(refine (M.Val u8.t)) :=
+      let* α0 : ltac:(refine (M.Val u8.t)) := M.alloc 4 in
+      M.copy α0 in
     let* α0 := M.read number in
     match α0 with
     | i =>

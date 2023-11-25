@@ -44,7 +44,8 @@ Definition main : M (M.Val unit) :=
       let* α0 : ltac:(refine (M.Val (ref (array u8.t)))) :=
         [116, 104, 105, 115, 32, 105, 115, 32, 97, 32, 98, 121, 116, 101, 32, 115, 116, 114, 105, 110, 103] in
       let* α1 : ltac:(refine (M.Val (array u8.t))) := deref α0 in
-      borrow α1 in
+      let* α2 : ltac:(refine (M.Val (ref (array u8.t)))) := borrow α1 in
+      M.copy α2 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
@@ -69,7 +70,9 @@ Definition main : M (M.Val unit) :=
         std.io.stdio._print α8 in
       M.alloc tt in
     let* escaped : ltac:(refine (M.Val (ref (array u8.t)))) :=
-      [82, 117, 115, 116, 32, 97, 115, 32, 98, 121, 116, 101, 115] in
+      let* α0 : ltac:(refine (M.Val (ref (array u8.t)))) :=
+        [82, 117, 115, 116, 32, 97, 115, 32, 98, 121, 116, 101, 115] in
+      M.copy α0 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
@@ -94,7 +97,9 @@ Definition main : M (M.Val unit) :=
         std.io.stdio._print α8 in
       M.alloc tt in
     let* raw_bytestring : ltac:(refine (M.Val (ref (array u8.t)))) :=
-      [92, 117, 123, 50, 49, 49, 68, 125, 32, 105, 115, 32, 110, 111, 116, 32, 101, 115, 99, 97, 112, 101, 100, 32, 104, 101, 114, 101] in
+      let* α0 : ltac:(refine (M.Val (ref (array u8.t)))) :=
+        [92, 117, 123, 50, 49, 49, 68, 125, 32, 105, 115, 32, 110, 111, 116, 32, 101, 115, 99, 97, 112, 101, 100, 32, 104, 101, 114, 101] in
+      M.copy α0 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
@@ -161,9 +166,13 @@ Definition main : M (M.Val unit) :=
       else
         M.alloc tt in
     let* _quotes : ltac:(refine (M.Val (ref (array u8.t)))) :=
-      [89, 111, 117, 32, 99, 97, 110, 32, 97, 108, 115, 111, 32, 117, 115, 101, 32, 34, 102, 97, 110, 99, 105, 101, 114, 34, 32, 102, 111, 114, 109, 97, 116, 116, 105, 110, 103, 44, 32, 92, 10, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 108, 105, 107, 101, 32, 119, 105, 116, 104, 32, 110, 111, 114, 109, 97, 108, 32, 114, 97, 119, 32, 115, 116, 114, 105, 110, 103, 115] in
+      let* α0 : ltac:(refine (M.Val (ref (array u8.t)))) :=
+        [89, 111, 117, 32, 99, 97, 110, 32, 97, 108, 115, 111, 32, 117, 115, 101, 32, 34, 102, 97, 110, 99, 105, 101, 114, 34, 32, 102, 111, 114, 109, 97, 116, 116, 105, 110, 103, 44, 32, 92, 10, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 108, 105, 107, 101, 32, 119, 105, 116, 104, 32, 110, 111, 114, 109, 97, 108, 32, 114, 97, 119, 32, 115, 116, 114, 105, 110, 103, 115] in
+      M.copy α0 in
     let* shift_jis : ltac:(refine (M.Val (ref (array u8.t)))) :=
-      [130, 230, 130, 168, 130, 177, 130, 187] in
+      let* α0 : ltac:(refine (M.Val (ref (array u8.t)))) :=
+        [130, 230, 130, 168, 130, 177, 130, 187] in
+      M.copy α0 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* α0 : ltac:(refine (M.Val (array u8.t))) := deref shift_jis in
       let* α1 : ltac:(refine (M.Val (ref (array u8.t)))) := borrow α0 in

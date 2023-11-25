@@ -73,10 +73,17 @@ Definition main : M (M.Val unit) :=
             (Self := alloc.vec.Vec.t i32.t alloc.alloc.Global.t)
             (Trait := ltac:(refine _)))
           α6 in
-      (core.iter.traits.iterator.Iterator.collect
-          (Self := alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t)
-          (Trait := ltac:(refine _)))
-        α7 in
+      let* α8 :
+          ltac:(refine
+            (M.Val
+              (std.collections.hash.set.HashSet.t
+                i32.t
+                std.collections.hash.map.RandomState.t))) :=
+        (core.iter.traits.iterator.Iterator.collect
+            (Self := alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t)
+            (Trait := ltac:(refine _)))
+          α7 in
+      M.copy α8 in
     let* b :
         ltac:(refine
           (M.Val
@@ -106,10 +113,17 @@ Definition main : M (M.Val unit) :=
             (Self := alloc.vec.Vec.t i32.t alloc.alloc.Global.t)
             (Trait := ltac:(refine _)))
           α6 in
-      (core.iter.traits.iterator.Iterator.collect
-          (Self := alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t)
-          (Trait := ltac:(refine _)))
-        α7 in
+      let* α8 :
+          ltac:(refine
+            (M.Val
+              (std.collections.hash.set.HashSet.t
+                i32.t
+                std.collections.hash.map.RandomState.t))) :=
+        (core.iter.traits.iterator.Iterator.collect
+            (Self := alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t)
+            (Trait := ltac:(refine _)))
+          α7 in
+      M.copy α8 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* α0 :
           ltac:(refine

@@ -386,25 +386,37 @@ Definition main : M (M.Val unit) :=
           (M.Val
             (generics_phantom_type_test_case_unit_clarification.Length.t
               generics_phantom_type_test_case_unit_clarification.Inch.t))) :=
-      (core.ops.arith.Add.add
-          (Self :=
-            generics_phantom_type_test_case_unit_clarification.Length.t
-              generics_phantom_type_test_case_unit_clarification.Inch.t)
-          (Trait := ltac:(refine _)))
-        one_foot
-        one_foot in
+      let* α0 :
+          ltac:(refine
+            (M.Val
+              (generics_phantom_type_test_case_unit_clarification.Length.t
+                generics_phantom_type_test_case_unit_clarification.Inch.t))) :=
+        (core.ops.arith.Add.add
+            (Self :=
+              generics_phantom_type_test_case_unit_clarification.Length.t
+                generics_phantom_type_test_case_unit_clarification.Inch.t)
+            (Trait := ltac:(refine _)))
+          one_foot
+          one_foot in
+      M.copy α0 in
     let* two_meters :
         ltac:(refine
           (M.Val
             (generics_phantom_type_test_case_unit_clarification.Length.t
               generics_phantom_type_test_case_unit_clarification.Mm.t))) :=
-      (core.ops.arith.Add.add
-          (Self :=
-            generics_phantom_type_test_case_unit_clarification.Length.t
-              generics_phantom_type_test_case_unit_clarification.Mm.t)
-          (Trait := ltac:(refine _)))
-        one_meter
-        one_meter in
+      let* α0 :
+          ltac:(refine
+            (M.Val
+              (generics_phantom_type_test_case_unit_clarification.Length.t
+                generics_phantom_type_test_case_unit_clarification.Mm.t))) :=
+        (core.ops.arith.Add.add
+            (Self :=
+              generics_phantom_type_test_case_unit_clarification.Length.t
+                generics_phantom_type_test_case_unit_clarification.Mm.t)
+            (Trait := ltac:(refine _)))
+          one_meter
+          one_meter in
+      M.copy α0 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=

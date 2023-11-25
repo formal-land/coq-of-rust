@@ -55,16 +55,30 @@ Definition main : M (M.Val unit) :=
             ((std.sync.mpsc.Sender.t i32.t)
             *
             (std.sync.mpsc.Receiver.t i32.t)))) :=
-      std.sync.mpsc.channel in
+      let* α0 :
+          ltac:(refine
+            (M.Val
+              ((std.sync.mpsc.Sender.t i32.t)
+              *
+              (std.sync.mpsc.Receiver.t i32.t)))) :=
+        std.sync.mpsc.channel in
+      M.copy α0 in
     let* children :
         ltac:(refine
           (M.Val
             (alloc.vec.Vec.t
               (std.thread.JoinHandle.t unit)
               alloc.alloc.Global.t))) :=
-      (alloc.vec.Vec.t
-          (std.thread.JoinHandle.t unit)
-          alloc.alloc.Global.t)::["new"] in
+      let* α0 :
+          ltac:(refine
+            (M.Val
+              (alloc.vec.Vec.t
+                (std.thread.JoinHandle.t unit)
+                alloc.alloc.Global.t))) :=
+        (alloc.vec.Vec.t
+            (std.thread.JoinHandle.t unit)
+            alloc.alloc.Global.t)::["new"] in
+      M.copy α0 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 0 in
       let* α1 := M.read α0 in
@@ -108,62 +122,69 @@ Definition main : M (M.Val unit) :=
                       ltac:(refine
                         (M.Val (ref (std.sync.mpsc.Sender.t i32.t)))) :=
                     borrow tx in
-                  (core.clone.Clone.clone
-                      (Self := std.sync.mpsc.Sender.t i32.t)
-                      (Trait := ltac:(refine _)))
-                    α0 in
+                  let* α1 :
+                      ltac:(refine (M.Val (std.sync.mpsc.Sender.t i32.t))) :=
+                    (core.clone.Clone.clone
+                        (Self := std.sync.mpsc.Sender.t i32.t)
+                        (Trait := ltac:(refine _)))
+                      α0 in
+                  M.copy α1 in
                 let* child :
                     ltac:(refine (M.Val (std.thread.JoinHandle.t unit))) :=
-                  std.thread.spawn
-                    (let* _ : ltac:(refine (M.Val unit)) :=
-                      let* α0 :
-                          ltac:(refine
-                            (M.Val (ref (std.sync.mpsc.Sender.t i32.t)))) :=
-                        borrow thread_tx in
-                      let* α1 :
-                          ltac:(refine
-                            (M.Val
-                              (core.result.Result.t
-                                unit
-                                (std.sync.mpsc.SendError.t i32.t)))) :=
-                        (std.sync.mpsc.Sender.t i32.t)::["send"] α0 id in
-                      (core.result.Result.t
-                            unit
-                            (std.sync.mpsc.SendError.t i32.t))::["unwrap"]
-                        α1 in
-                    let* _ : ltac:(refine (M.Val unit)) :=
-                      let* _ : ltac:(refine (M.Val unit)) :=
-                        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
-                          M.alloc [ mk_str "thread "; mk_str " finished
-" ] in
+                  let* α0 :
+                      ltac:(refine (M.Val (std.thread.JoinHandle.t unit))) :=
+                    std.thread.spawn
+                      (let* _ : ltac:(refine (M.Val unit)) :=
+                        let* α0 :
+                            ltac:(refine
+                              (M.Val (ref (std.sync.mpsc.Sender.t i32.t)))) :=
+                          borrow thread_tx in
                         let* α1 :
-                            ltac:(refine (M.Val (ref (array (ref str.t))))) :=
-                          borrow α0 in
-                        let* α2 :
-                            ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
-                          pointer_coercion "Unsize" α1 in
-                        let* α3 : ltac:(refine (M.Val (ref i32.t))) :=
-                          borrow id in
-                        let* α4 :
-                            ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
-                          core.fmt.rt.Argument.t::["new_display"] α3 in
-                        let* α5 :
                             ltac:(refine
-                              (M.Val (array core.fmt.rt.Argument.t))) :=
-                          M.alloc [ α4 ] in
-                        let* α6 :
-                            ltac:(refine
-                              (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
-                          borrow α5 in
-                        let* α7 :
-                            ltac:(refine
-                              (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
-                          pointer_coercion "Unsize" α6 in
-                        let* α8 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-                          core.fmt.Arguments.t::["new_v1"] α2 α7 in
-                        std.io.stdio._print α8 in
-                      M.alloc tt in
-                    M.alloc tt) in
+                              (M.Val
+                                (core.result.Result.t
+                                  unit
+                                  (std.sync.mpsc.SendError.t i32.t)))) :=
+                          (std.sync.mpsc.Sender.t i32.t)::["send"] α0 id in
+                        (core.result.Result.t
+                              unit
+                              (std.sync.mpsc.SendError.t i32.t))::["unwrap"]
+                          α1 in
+                      let* _ : ltac:(refine (M.Val unit)) :=
+                        let* _ : ltac:(refine (M.Val unit)) :=
+                          let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
+                            M.alloc [ mk_str "thread "; mk_str " finished
+" ] in
+                          let* α1 :
+                              ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+                            borrow α0 in
+                          let* α2 :
+                              ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
+                            pointer_coercion "Unsize" α1 in
+                          let* α3 : ltac:(refine (M.Val (ref i32.t))) :=
+                            borrow id in
+                          let* α4 :
+                              ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
+                            core.fmt.rt.Argument.t::["new_display"] α3 in
+                          let* α5 :
+                              ltac:(refine
+                                (M.Val (array core.fmt.rt.Argument.t))) :=
+                            M.alloc [ α4 ] in
+                          let* α6 :
+                              ltac:(refine
+                                (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
+                            borrow α5 in
+                          let* α7 :
+                              ltac:(refine
+                                (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
+                            pointer_coercion "Unsize" α6 in
+                          let* α8 :
+                              ltac:(refine (M.Val core.fmt.Arguments.t)) :=
+                            core.fmt.Arguments.t::["new_v1"] α2 α7 in
+                          std.io.stdio._print α8 in
+                        M.alloc tt in
+                      M.alloc tt) in
+                  M.copy α0 in
                 let* _ : ltac:(refine (M.Val unit)) :=
                   let* α0 :
                       ltac:(refine
@@ -191,10 +212,17 @@ Definition main : M (M.Val unit) :=
               alloc.alloc.Global.t))) :=
       let* α0 : ltac:(refine (M.Val i32.t)) := deref channels.NTHREADS in
       let* α1 : ltac:(refine (M.Val usize.t)) := cast α0 in
-      (alloc.vec.Vec.t
-            (core.result.Result.t i32.t std.sync.mpsc.RecvError.t)
-            alloc.alloc.Global.t)::["with_capacity"]
-        α1 in
+      let* α2 :
+          ltac:(refine
+            (M.Val
+              (alloc.vec.Vec.t
+                (core.result.Result.t i32.t std.sync.mpsc.RecvError.t)
+                alloc.alloc.Global.t))) :=
+        (alloc.vec.Vec.t
+              (core.result.Result.t i32.t std.sync.mpsc.RecvError.t)
+              alloc.alloc.Global.t)::["with_capacity"]
+          α1 in
+      M.copy α2 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 0 in
       let* α1 := M.read α0 in

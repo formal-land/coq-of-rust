@@ -177,6 +177,10 @@ Definition write {A : Set} (r : Ref A) (v : A) : M unit :=
     LowM.Pure (inl tt)
   end.
 
+Definition copy {A : Set} (r : Ref A) : M (Ref A) :=
+  let* v := read r in
+  alloc v.
+
 Definition read_env {Env : Set} : M Env :=
   fun _fuel =>
   let- env := LowM.CallPrimitive Primitive.EnvRead in

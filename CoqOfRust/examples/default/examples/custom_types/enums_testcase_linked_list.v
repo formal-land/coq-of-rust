@@ -175,7 +175,9 @@ Section Impl_enums_testcase_linked_list_List_t.
             pointer_coercion "Unsize" α12 in
           let* α14 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
             core.fmt.Arguments.t::["new_v1"] α2 α13 in
-          alloc.fmt.format α14 in
+          let* α15 : ltac:(refine (M.Val alloc.string.String.t)) :=
+            alloc.fmt.format α14 in
+          M.copy α15 in
         M.pure res
       | enums_testcase_linked_list.List.Nil  =>
         let* res : ltac:(refine (M.Val alloc.string.String.t)) :=
@@ -187,7 +189,9 @@ Section Impl_enums_testcase_linked_list_List_t.
             pointer_coercion "Unsize" α1 in
           let* α3 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
             core.fmt.Arguments.t::["new_const"] α2 in
-          alloc.fmt.format α3 in
+          let* α4 : ltac:(refine (M.Val alloc.string.String.t)) :=
+            alloc.fmt.format α3 in
+          M.copy α4 in
         M.pure res
       end).
   
@@ -217,7 +221,9 @@ fn main() {
 Definition main : M (M.Val unit) :=
   M.function_body
     (let* list : ltac:(refine (M.Val enums_testcase_linked_list.List.t)) :=
-      enums_testcase_linked_list.List.t::["new"] in
+      let* α0 : ltac:(refine (M.Val enums_testcase_linked_list.List.t)) :=
+        enums_testcase_linked_list.List.t::["new"] in
+      M.copy α0 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* α0 : ltac:(refine (M.Val u32.t)) := M.alloc 1 in
       let* α1 : ltac:(refine (M.Val enums_testcase_linked_list.List.t)) :=

@@ -22,10 +22,15 @@ Definition main : M (M.Val unit) :=
           (M.Val
             (alloc.vec.Vec.t alloc.string.String.t alloc.alloc.Global.t))) :=
       let* α0 : ltac:(refine (M.Val std.env.Args.t)) := std.env.args in
-      (core.iter.traits.iterator.Iterator.collect
-          (Self := std.env.Args.t)
-          (Trait := ltac:(refine _)))
-        α0 in
+      let* α1 :
+          ltac:(refine
+            (M.Val
+              (alloc.vec.Vec.t alloc.string.String.t alloc.alloc.Global.t))) :=
+        (core.iter.traits.iterator.Iterator.collect
+            (Self := std.env.Args.t)
+            (Trait := ltac:(refine _)))
+          α0 in
+      M.copy α1 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=

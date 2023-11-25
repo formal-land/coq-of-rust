@@ -23,30 +23,32 @@ Definition multiply
               (core.result.Result.t i32.t core.num.error.ParseIntError.t))) :=
         str.t::["parse"] α1 in
       let* α3 := M.read α2 in
-      match α3 with
-      | core.result.Result.Ok val =>
-        let* val := M.alloc val in
-        M.pure val
-      | core.result.Result.Err err =>
-        let* err := M.alloc err in
-        let* _ : ltac:(refine (M.Val never.t)) :=
-          let* α0 : ltac:(refine (M.Val core.num.error.ParseIntError.t)) :=
-            (core.convert.From.from
-                (Self := core.num.error.ParseIntError.t)
-                (Trait := ltac:(refine _)))
-              err in
-          let* α1 := M.read α0 in
-          let* α2 :
-              ltac:(refine
-                (M.Val
-                  (core.result.Result.t
-                    i32.t
-                    core.num.error.ParseIntError.t))) :=
-            M.alloc (core.result.Result.Err α1) in
-          M.return_ α2 in
-        let* α0 : ltac:(refine (M.Val unit)) := M.alloc tt in
-        never_to_any α0
-      end in
+      let* α4 : ltac:(refine (M.Val i32.t)) :=
+        match α3 with
+        | core.result.Result.Ok val =>
+          let* val := M.alloc val in
+          M.pure val
+        | core.result.Result.Err err =>
+          let* err := M.alloc err in
+          let* _ : ltac:(refine (M.Val never.t)) :=
+            let* α0 : ltac:(refine (M.Val core.num.error.ParseIntError.t)) :=
+              (core.convert.From.from
+                  (Self := core.num.error.ParseIntError.t)
+                  (Trait := ltac:(refine _)))
+                err in
+            let* α1 := M.read α0 in
+            let* α2 :
+                ltac:(refine
+                  (M.Val
+                    (core.result.Result.t
+                      i32.t
+                      core.num.error.ParseIntError.t))) :=
+              M.alloc (core.result.Result.Err α1) in
+            M.return_ α2 in
+          let* α0 : ltac:(refine (M.Val unit)) := M.alloc tt in
+          never_to_any α0
+        end in
+      M.copy α4 in
     let* second_number : ltac:(refine (M.Val i32.t)) :=
       let* α0 : ltac:(refine (M.Val str.t)) := deref second_number_str in
       let* α1 : ltac:(refine (M.Val (ref str.t))) := borrow α0 in
@@ -56,30 +58,32 @@ Definition multiply
               (core.result.Result.t i32.t core.num.error.ParseIntError.t))) :=
         str.t::["parse"] α1 in
       let* α3 := M.read α2 in
-      match α3 with
-      | core.result.Result.Ok val =>
-        let* val := M.alloc val in
-        M.pure val
-      | core.result.Result.Err err =>
-        let* err := M.alloc err in
-        let* _ : ltac:(refine (M.Val never.t)) :=
-          let* α0 : ltac:(refine (M.Val core.num.error.ParseIntError.t)) :=
-            (core.convert.From.from
-                (Self := core.num.error.ParseIntError.t)
-                (Trait := ltac:(refine _)))
-              err in
-          let* α1 := M.read α0 in
-          let* α2 :
-              ltac:(refine
-                (M.Val
-                  (core.result.Result.t
-                    i32.t
-                    core.num.error.ParseIntError.t))) :=
-            M.alloc (core.result.Result.Err α1) in
-          M.return_ α2 in
-        let* α0 : ltac:(refine (M.Val unit)) := M.alloc tt in
-        never_to_any α0
-      end in
+      let* α4 : ltac:(refine (M.Val i32.t)) :=
+        match α3 with
+        | core.result.Result.Ok val =>
+          let* val := M.alloc val in
+          M.pure val
+        | core.result.Result.Err err =>
+          let* err := M.alloc err in
+          let* _ : ltac:(refine (M.Val never.t)) :=
+            let* α0 : ltac:(refine (M.Val core.num.error.ParseIntError.t)) :=
+              (core.convert.From.from
+                  (Self := core.num.error.ParseIntError.t)
+                  (Trait := ltac:(refine _)))
+                err in
+            let* α1 := M.read α0 in
+            let* α2 :
+                ltac:(refine
+                  (M.Val
+                    (core.result.Result.t
+                      i32.t
+                      core.num.error.ParseIntError.t))) :=
+              M.alloc (core.result.Result.Err α1) in
+            M.return_ α2 in
+          let* α0 : ltac:(refine (M.Val unit)) := M.alloc tt in
+          never_to_any α0
+        end in
+      M.copy α4 in
     let* α0 : ltac:(refine (M.Val i32.t)) :=
       BinOp.mul first_number second_number in
     let* α1 := M.read α0 in

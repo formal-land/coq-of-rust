@@ -252,23 +252,28 @@ Definition double_first
             (Trait := ltac:(refine _)))
           α6 in
       let* α8 := M.read α7 in
-      match α8 with
-      | core.ops.control_flow.ControlFlow.Break residual =>
-        let* residual := M.alloc residual in
-        let* α0 :
-            ltac:(refine
-              (M.Val
-                (core.result.Result.t i32.t wrapping_errors.DoubleError.t))) :=
-          (core.ops.try_trait.FromResidual.from_residual
-              (Self := core.result.Result.t i32.t wrapping_errors.DoubleError.t)
-              (Trait := ltac:(refine _)))
-            residual in
-        let* α1 : ltac:(refine (M.Val never.t)) := M.return_ α0 in
-        never_to_any α1
-      | core.ops.control_flow.ControlFlow.Continue val =>
-        let* val := M.alloc val in
-        M.pure val
-      end in
+      let* α9 : ltac:(refine (M.Val (ref (ref str.t)))) :=
+        match α8 with
+        | core.ops.control_flow.ControlFlow.Break residual =>
+          let* residual := M.alloc residual in
+          let* α0 :
+              ltac:(refine
+                (M.Val
+                  (core.result.Result.t
+                    i32.t
+                    wrapping_errors.DoubleError.t))) :=
+            (core.ops.try_trait.FromResidual.from_residual
+                (Self :=
+                  core.result.Result.t i32.t wrapping_errors.DoubleError.t)
+                (Trait := ltac:(refine _)))
+              residual in
+          let* α1 : ltac:(refine (M.Val never.t)) := M.return_ α0 in
+          never_to_any α1
+        | core.ops.control_flow.ControlFlow.Continue val =>
+          let* val := M.alloc val in
+          M.pure val
+        end in
+      M.copy α9 in
     let* parsed : ltac:(refine (M.Val i32.t)) :=
       let* α0 : ltac:(refine (M.Val (ref str.t))) := deref first in
       let* α1 : ltac:(refine (M.Val str.t)) := deref α0 in
@@ -291,23 +296,28 @@ Definition double_first
             (Trait := ltac:(refine _)))
           α3 in
       let* α5 := M.read α4 in
-      match α5 with
-      | core.ops.control_flow.ControlFlow.Break residual =>
-        let* residual := M.alloc residual in
-        let* α0 :
-            ltac:(refine
-              (M.Val
-                (core.result.Result.t i32.t wrapping_errors.DoubleError.t))) :=
-          (core.ops.try_trait.FromResidual.from_residual
-              (Self := core.result.Result.t i32.t wrapping_errors.DoubleError.t)
-              (Trait := ltac:(refine _)))
-            residual in
-        let* α1 : ltac:(refine (M.Val never.t)) := M.return_ α0 in
-        never_to_any α1
-      | core.ops.control_flow.ControlFlow.Continue val =>
-        let* val := M.alloc val in
-        M.pure val
-      end in
+      let* α6 : ltac:(refine (M.Val i32.t)) :=
+        match α5 with
+        | core.ops.control_flow.ControlFlow.Break residual =>
+          let* residual := M.alloc residual in
+          let* α0 :
+              ltac:(refine
+                (M.Val
+                  (core.result.Result.t
+                    i32.t
+                    wrapping_errors.DoubleError.t))) :=
+            (core.ops.try_trait.FromResidual.from_residual
+                (Self :=
+                  core.result.Result.t i32.t wrapping_errors.DoubleError.t)
+                (Trait := ltac:(refine _)))
+              residual in
+          let* α1 : ltac:(refine (M.Val never.t)) := M.return_ α0 in
+          never_to_any α1
+        | core.ops.control_flow.ControlFlow.Continue val =>
+          let* val := M.alloc val in
+          M.pure val
+        end in
+      M.copy α6 in
     let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 2 in
     let* α1 : ltac:(refine (M.Val i32.t)) := BinOp.mul α0 parsed in
     let* α2 := M.read α1 in
@@ -458,11 +468,19 @@ Definition main : M (M.Val unit) :=
             (M.Val
               (alloc.boxed.Box.t (slice (ref str.t)) alloc.alloc.Global.t))) :=
         pointer_coercion "Unsize" α5 in
-      (slice (ref str.t))::["into_vec"] α6 in
+      let* α7 :
+          ltac:(refine
+            (M.Val (alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t))) :=
+        (slice (ref str.t))::["into_vec"] α6 in
+      M.copy α7 in
     let* empty :
         ltac:(refine
           (M.Val (alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t))) :=
-      (alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t)::["new"] in
+      let* α0 :
+          ltac:(refine
+            (M.Val (alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t))) :=
+        (alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t)::["new"] in
+      M.copy α0 in
     let* strings :
         ltac:(refine
           (M.Val (alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t))) :=
@@ -482,7 +500,11 @@ Definition main : M (M.Val unit) :=
             (M.Val
               (alloc.boxed.Box.t (slice (ref str.t)) alloc.alloc.Global.t))) :=
         pointer_coercion "Unsize" α5 in
-      (slice (ref str.t))::["into_vec"] α6 in
+      let* α7 :
+          ltac:(refine
+            (M.Val (alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t))) :=
+        (slice (ref str.t))::["into_vec"] α6 in
+      M.copy α7 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* α0 :
           ltac:(refine

@@ -153,7 +153,9 @@ Section Impl_derive_Inches_t.
       (self : M.Val (ref ltac:(Self)))
       : M (M.Val derive.Centimeters.t) :=
     M.function_body
-      (let 'derive.Inches.Build_t inches := self in
+      (let* 'derive.Inches.Build_t inches :
+          ltac:(refine (M.Val (ref derive.Inches.t))) :=
+        M.copy self in
       let* α0 : ltac:(refine (M.Val f64.t)) := cast inches in
       let* α1 : ltac:(refine (M.Val f64.t)) := M.alloc 3 (* 2.54 *) in
       let* α2 : ltac:(refine (M.Val f64.t)) := BinOp.mul α0 α1 in
@@ -258,11 +260,13 @@ Definition main : M (M.Val unit) :=
           α3 in
       let* α5 : ltac:(refine (M.Val bool.t)) := use α4 in
       let* α6 := M.read α5 in
-      if (α6 : bool) then
-        M.pure (mk_str "smaller")
-      else
-        let* α0 : ltac:(refine (M.Val str.t)) := deref (mk_str "bigger") in
-        borrow α0 in
+      let* α7 : ltac:(refine (M.Val (ref str.t))) :=
+        if (α6 : bool) then
+          M.pure (mk_str "smaller")
+        else
+          let* α0 : ltac:(refine (M.Val str.t)) := deref (mk_str "bigger") in
+          borrow α0 in
+      M.copy α7 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=

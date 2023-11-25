@@ -30,7 +30,11 @@ Definition main : M (M.Val unit) :=
             (M.Val
               (alloc.boxed.Box.t (slice (ref str.t)) alloc.alloc.Global.t))) :=
         pointer_coercion "Unsize" α5 in
-      (slice (ref str.t))::["into_vec"] α6 in
+      let* α7 :
+          ltac:(refine
+            (M.Val (alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t))) :=
+        (slice (ref str.t))::["into_vec"] α6 in
+      M.copy α7 in
     let* numbers :
         ltac:(refine
           (M.Val
@@ -63,13 +67,22 @@ Definition main : M (M.Val unit) :=
           (let* α0 : ltac:(refine (M.Val str.t)) := deref s in
           let* α1 : ltac:(refine (M.Val (ref str.t))) := borrow α0 in
           str.t::["parse"] α1) in
-      (core.iter.traits.iterator.Iterator.collect
-          (Self :=
-            core.iter.adapters.map.Map.t
-              (alloc.vec.into_iter.IntoIter.t (ref str.t) alloc.alloc.Global.t)
-              type not implemented)
-          (Trait := ltac:(refine _)))
-        α1 in
+      let* α2 :
+          ltac:(refine
+            (M.Val
+              (core.result.Result.t
+                (alloc.vec.Vec.t i32.t alloc.alloc.Global.t)
+                core.num.error.ParseIntError.t))) :=
+        (core.iter.traits.iterator.Iterator.collect
+            (Self :=
+              core.iter.adapters.map.Map.t
+                (alloc.vec.into_iter.IntoIter.t
+                  (ref str.t)
+                  alloc.alloc.Global.t)
+                type not implemented)
+            (Trait := ltac:(refine _)))
+          α1 in
+      M.copy α2 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=

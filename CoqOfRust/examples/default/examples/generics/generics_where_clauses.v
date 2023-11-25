@@ -91,7 +91,10 @@ Definition main : M (M.Val unit) :=
           ltac:(refine
             (M.Val (alloc.boxed.Box.t (slice i32.t) alloc.alloc.Global.t))) :=
         pointer_coercion "Unsize" α4 in
-      (slice i32.t)::["into_vec"] α5 in
+      let* α6 :
+          ltac:(refine (M.Val (alloc.vec.Vec.t i32.t alloc.alloc.Global.t))) :=
+        (slice i32.t)::["into_vec"] α5 in
+      M.copy α6 in
     let* _ : ltac:(refine (M.Val unit)) :=
       (generics_where_clauses.PrintInOption.print_in_option
           (Self := alloc.vec.Vec.t i32.t alloc.alloc.Global.t)

@@ -294,8 +294,10 @@ fn main() {
 Definition main : M (M.Val unit) :=
   M.function_body
     (let* dolly : ltac:(refine (M.Val traits.Sheep.t)) :=
-      (traits.Animal.new (Self := traits.Sheep.t) (Trait := ltac:(refine _)))
-        (mk_str "Dolly") in
+      let* α0 : ltac:(refine (M.Val traits.Sheep.t)) :=
+        (traits.Animal.new (Self := traits.Sheep.t) (Trait := ltac:(refine _)))
+          (mk_str "Dolly") in
+      M.copy α0 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* α0 : ltac:(refine (M.Val (ref traits.Sheep.t))) := borrow dolly in
       (traits.Animal.talk (Self := traits.Sheep.t) (Trait := ltac:(refine _)))

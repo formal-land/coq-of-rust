@@ -95,40 +95,42 @@ Definition main : M (M.Val unit) :=
             (core.option.Option.t
               unpacking_options_and_defaults_via_or_else.Fruit.t))) :=
       M.alloc core.option.Option.None in
-    let get_kiwi_as_fallback :=
-      let* _ : ltac:(refine (M.Val unit)) :=
-        let* _ : ltac:(refine (M.Val unit)) :=
-          let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
-            M.alloc [ mk_str "Providing kiwi as fallback
+    let* get_kiwi_as_fallback : ltac:(refine (M.Val type not implemented)) :=
+      M.copy
+        (let* _ : ltac:(refine (M.Val unit)) :=
+          let* _ : ltac:(refine (M.Val unit)) :=
+            let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
+              M.alloc [ mk_str "Providing kiwi as fallback
 " ] in
-          let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
-            borrow α0 in
-          let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
-            pointer_coercion "Unsize" α1 in
-          let* α3 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-            core.fmt.Arguments.t::["new_const"] α2 in
-          std.io.stdio._print α3 in
-        M.alloc tt in
-      M.alloc
-        (core.option.Option.Some
-          unpacking_options_and_defaults_via_or_else.Fruit.Kiwi) in
-    let get_lemon_as_fallback :=
-      let* _ : ltac:(refine (M.Val unit)) :=
-        let* _ : ltac:(refine (M.Val unit)) :=
-          let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
-            M.alloc [ mk_str "Providing lemon as fallback
+            let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+              borrow α0 in
+            let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
+              pointer_coercion "Unsize" α1 in
+            let* α3 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
+              core.fmt.Arguments.t::["new_const"] α2 in
+            std.io.stdio._print α3 in
+          M.alloc tt in
+        M.alloc
+          (core.option.Option.Some
+            unpacking_options_and_defaults_via_or_else.Fruit.Kiwi)) in
+    let* get_lemon_as_fallback : ltac:(refine (M.Val type not implemented)) :=
+      M.copy
+        (let* _ : ltac:(refine (M.Val unit)) :=
+          let* _ : ltac:(refine (M.Val unit)) :=
+            let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
+              M.alloc [ mk_str "Providing lemon as fallback
 " ] in
-          let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
-            borrow α0 in
-          let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
-            pointer_coercion "Unsize" α1 in
-          let* α3 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-            core.fmt.Arguments.t::["new_const"] α2 in
-          std.io.stdio._print α3 in
-        M.alloc tt in
-      M.alloc
-        (core.option.Option.Some
-          unpacking_options_and_defaults_via_or_else.Fruit.Lemon) in
+            let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
+              borrow α0 in
+            let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
+              pointer_coercion "Unsize" α1 in
+            let* α3 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
+              core.fmt.Arguments.t::["new_const"] α2 in
+            std.io.stdio._print α3 in
+          M.alloc tt in
+        M.alloc
+          (core.option.Option.Some
+            unpacking_options_and_defaults_via_or_else.Fruit.Lemon)) in
     let* first_available_fruit :
         ltac:(refine
           (M.Val
@@ -143,10 +145,16 @@ Definition main : M (M.Val unit) :=
               unpacking_options_and_defaults_via_or_else.Fruit.t)::["or_else"]
           no_fruit
           get_kiwi_as_fallback in
-      (core.option.Option.t
-            unpacking_options_and_defaults_via_or_else.Fruit.t)::["or_else"]
-        α0
-        get_lemon_as_fallback in
+      let* α1 :
+          ltac:(refine
+            (M.Val
+              (core.option.Option.t
+                unpacking_options_and_defaults_via_or_else.Fruit.t))) :=
+        (core.option.Option.t
+              unpacking_options_and_defaults_via_or_else.Fruit.t)::["or_else"]
+          α0
+          get_lemon_as_fallback in
+      M.copy α1 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=

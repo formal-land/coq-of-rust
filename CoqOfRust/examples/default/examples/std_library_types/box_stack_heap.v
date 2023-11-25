@@ -226,7 +226,9 @@ fn main() {
 Definition main : M (M.Val unit) :=
   M.function_body
     (let* point : ltac:(refine (M.Val box_stack_heap.Point.t)) :=
-      box_stack_heap.origin in
+      let* α0 : ltac:(refine (M.Val box_stack_heap.Point.t)) :=
+        box_stack_heap.origin in
+      M.copy α0 in
     let* rectangle : ltac:(refine (M.Val box_stack_heap.Rectangle.t)) :=
       let* α0 : ltac:(refine (M.Val box_stack_heap.Point.t)) :=
         box_stack_heap.origin in
@@ -261,18 +263,32 @@ Definition main : M (M.Val unit) :=
             box_stack_heap.Rectangle.bottom_right :=
               {| box_stack_heap.Point.x := α3; box_stack_heap.Point.y := α5; |};
           |} in
-      (alloc.boxed.Box.t
-            box_stack_heap.Rectangle.t
-            alloc.alloc.Global.t)::["new"]
-        α6 in
+      let* α7 :
+          ltac:(refine
+            (M.Val
+              (alloc.boxed.Box.t
+                box_stack_heap.Rectangle.t
+                alloc.alloc.Global.t))) :=
+        (alloc.boxed.Box.t
+              box_stack_heap.Rectangle.t
+              alloc.alloc.Global.t)::["new"]
+          α6 in
+      M.copy α7 in
     let* boxed_point :
         ltac:(refine
           (M.Val
             (alloc.boxed.Box.t box_stack_heap.Point.t alloc.alloc.Global.t))) :=
       let* α0 : ltac:(refine (M.Val box_stack_heap.Point.t)) :=
         box_stack_heap.origin in
-      (alloc.boxed.Box.t box_stack_heap.Point.t alloc.alloc.Global.t)::["new"]
-        α0 in
+      let* α1 :
+          ltac:(refine
+            (M.Val
+              (alloc.boxed.Box.t
+                box_stack_heap.Point.t
+                alloc.alloc.Global.t))) :=
+        (alloc.boxed.Box.t box_stack_heap.Point.t alloc.alloc.Global.t)::["new"]
+          α0 in
+      M.copy α1 in
     let* box_in_a_box :
         ltac:(refine
           (M.Val
@@ -286,10 +302,17 @@ Definition main : M (M.Val unit) :=
                 box_stack_heap.Point.t
                 alloc.alloc.Global.t))) :=
         box_stack_heap.boxed_origin in
-      (alloc.boxed.Box.t
-            (alloc.boxed.Box.t box_stack_heap.Point.t alloc.alloc.Global.t)
-            alloc.alloc.Global.t)::["new"]
-        α0 in
+      let* α1 :
+          ltac:(refine
+            (M.Val
+              (alloc.boxed.Box.t
+                (alloc.boxed.Box.t box_stack_heap.Point.t alloc.alloc.Global.t)
+                alloc.alloc.Global.t))) :=
+        (alloc.boxed.Box.t
+              (alloc.boxed.Box.t box_stack_heap.Point.t alloc.alloc.Global.t)
+              alloc.alloc.Global.t)::["new"]
+          α0 in
+      M.copy α1 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
@@ -441,7 +464,9 @@ Definition main : M (M.Val unit) :=
         std.io.stdio._print α10 in
       M.alloc tt in
     let* unboxed_point : ltac:(refine (M.Val box_stack_heap.Point.t)) :=
-      deref boxed_point in
+      let* α0 : ltac:(refine (M.Val box_stack_heap.Point.t)) :=
+        deref boxed_point in
+      M.copy α0 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=

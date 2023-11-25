@@ -22,10 +22,15 @@ fn main() {
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M (M.Val unit) :=
   M.function_body
-    (let* elem : ltac:(refine (M.Val u8.t)) := M.alloc 5 in
+    (let* elem : ltac:(refine (M.Val u8.t)) :=
+      let* α0 : ltac:(refine (M.Val u8.t)) := M.alloc 5 in
+      M.copy α0 in
     let* vec :
         ltac:(refine (M.Val (alloc.vec.Vec.t u8.t alloc.alloc.Global.t))) :=
-      (alloc.vec.Vec.t u8.t alloc.alloc.Global.t)::["new"] in
+      let* α0 :
+          ltac:(refine (M.Val (alloc.vec.Vec.t u8.t alloc.alloc.Global.t))) :=
+        (alloc.vec.Vec.t u8.t alloc.alloc.Global.t)::["new"] in
+      M.copy α0 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* α0 :
           ltac:(refine

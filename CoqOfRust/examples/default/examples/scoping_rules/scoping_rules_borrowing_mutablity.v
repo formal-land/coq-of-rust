@@ -214,7 +214,9 @@ Definition main : M (M.Val unit) :=
           scoping_rules_borrowing_mutablity.Book.title := α1;
           scoping_rules_borrowing_mutablity.Book.year := α3;
         |} in
-    let mutabook := immutabook in
+    let* mutabook :
+        ltac:(refine (M.Val scoping_rules_borrowing_mutablity.Book.t)) :=
+      M.copy immutabook in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* α0 :
           ltac:(refine

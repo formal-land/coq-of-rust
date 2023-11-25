@@ -223,7 +223,7 @@ Definition main : M (M.Val unit) :=
   M.function_body
     (let* unit : ltac:(refine (M.Val clone.Unit.t)) :=
       M.alloc clone.Unit.Build_t in
-    let copied_unit := unit in
+    let* copied_unit : ltac:(refine (M.Val clone.Unit.t)) := M.copy unit in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
@@ -305,7 +305,7 @@ Definition main : M (M.Val unit) :=
           core.fmt.Arguments.t::["new_v1"] α2 α7 in
         std.io.stdio._print α8 in
       M.alloc tt in
-    let moved_pair := pair in
+    let* moved_pair : ltac:(refine (M.Val clone.Pair.t)) := M.copy pair in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
@@ -331,8 +331,12 @@ Definition main : M (M.Val unit) :=
       M.alloc tt in
     let* cloned_pair : ltac:(refine (M.Val clone.Pair.t)) :=
       let* α0 : ltac:(refine (M.Val (ref clone.Pair.t))) := borrow moved_pair in
-      (core.clone.Clone.clone (Self := clone.Pair.t) (Trait := ltac:(refine _)))
-        α0 in
+      let* α1 : ltac:(refine (M.Val clone.Pair.t)) :=
+        (core.clone.Clone.clone
+            (Self := clone.Pair.t)
+            (Trait := ltac:(refine _)))
+          α0 in
+      M.copy α1 in
     let* _ : ltac:(refine (M.Val unit)) := core.mem.drop moved_pair in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=

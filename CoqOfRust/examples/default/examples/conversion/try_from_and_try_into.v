@@ -438,8 +438,17 @@ Definition main : M (M.Val unit) :=
           (M.Val
             (core.result.Result.t try_from_and_try_into.EvenNumber.t unit))) :=
       let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 8 in
-      (core.convert.TryInto.try_into (Self := i32.t) (Trait := ltac:(refine _)))
-        α0 in
+      let* α1 :
+          ltac:(refine
+            (M.Val
+              (core.result.Result.t
+                try_from_and_try_into.EvenNumber.t
+                unit))) :=
+        (core.convert.TryInto.try_into
+            (Self := i32.t)
+            (Trait := ltac:(refine _)))
+          α0 in
+      M.copy α1 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* α0 :
           ltac:(refine
@@ -575,8 +584,17 @@ Definition main : M (M.Val unit) :=
           (M.Val
             (core.result.Result.t try_from_and_try_into.EvenNumber.t unit))) :=
       let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 5 in
-      (core.convert.TryInto.try_into (Self := i32.t) (Trait := ltac:(refine _)))
-        α0 in
+      let* α1 :
+          ltac:(refine
+            (M.Val
+              (core.result.Result.t
+                try_from_and_try_into.EvenNumber.t
+                unit))) :=
+        (core.convert.TryInto.try_into
+            (Self := i32.t)
+            (Trait := ltac:(refine _)))
+          α0 in
+      M.copy α1 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* α0 :
           ltac:(refine

@@ -25,9 +25,13 @@ fn main() {
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M (M.Val unit) :=
   M.function_body
-    (let* i : ltac:(refine (M.Val i32.t)) := M.alloc 3 in
+    (let* i : ltac:(refine (M.Val i32.t)) :=
+      let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 3 in
+      M.copy α0 in
     let* _ : ltac:(refine (M.Val unit)) :=
-      let* borrow1 : ltac:(refine (M.Val (ref i32.t))) := borrow i in
+      let* borrow1 : ltac:(refine (M.Val (ref i32.t))) :=
+        let* α0 : ltac:(refine (M.Val (ref i32.t))) := borrow i in
+        M.copy α0 in
       let* _ : ltac:(refine (M.Val unit)) :=
         let* _ : ltac:(refine (M.Val unit)) :=
           let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
@@ -53,7 +57,9 @@ Definition main : M (M.Val unit) :=
           std.io.stdio._print α8 in
         M.alloc tt in
       M.alloc tt in
-    let* borrow2 : ltac:(refine (M.Val (ref i32.t))) := borrow i in
+    let* borrow2 : ltac:(refine (M.Val (ref i32.t))) :=
+      let* α0 : ltac:(refine (M.Val (ref i32.t))) := borrow i in
+      M.copy α0 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=

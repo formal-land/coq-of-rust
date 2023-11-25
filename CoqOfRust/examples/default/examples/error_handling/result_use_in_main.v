@@ -16,7 +16,8 @@ fn main() -> Result<(), ParseIntError> {
 Definition main
     : M (M.Val (core.result.Result.t unit core.num.error.ParseIntError.t)) :=
   M.function_body
-    (let number_str := mk_str "10" in
+    (let* number_str : ltac:(refine (M.Val (ref str.t))) :=
+      M.copy (mk_str "10") in
     let* number : ltac:(refine (M.Val i32.t)) :=
       let* α0 : ltac:(refine (M.Val str.t)) := deref number_str in
       let* α1 : ltac:(refine (M.Val (ref str.t))) := borrow α0 in
@@ -26,21 +27,25 @@ Definition main
               (core.result.Result.t i32.t core.num.error.ParseIntError.t))) :=
         str.t::["parse"] α1 in
       let* α3 := M.read α2 in
-      match α3 with
-      | core.result.Result.Ok number =>
-        let* number := M.alloc number in
-        M.pure number
-      | core.result.Result.Err e =>
-        let* e := M.alloc e in
-        let* α0 := M.read e in
-        let* α1 :
-            ltac:(refine
-              (M.Val
-                (core.result.Result.t unit core.num.error.ParseIntError.t))) :=
-          M.alloc (core.result.Result.Err α0) in
-        let* α2 : ltac:(refine (M.Val never.t)) := M.return_ α1 in
-        never_to_any α2
-      end in
+      let* α4 : ltac:(refine (M.Val i32.t)) :=
+        match α3 with
+        | core.result.Result.Ok number =>
+          let* number := M.alloc number in
+          M.pure number
+        | core.result.Result.Err e =>
+          let* e := M.alloc e in
+          let* α0 := M.read e in
+          let* α1 :
+              ltac:(refine
+                (M.Val
+                  (core.result.Result.t
+                    unit
+                    core.num.error.ParseIntError.t))) :=
+            M.alloc (core.result.Result.Err α0) in
+          let* α2 : ltac:(refine (M.Val never.t)) := M.return_ α1 in
+          never_to_any α2
+        end in
+      M.copy α4 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=

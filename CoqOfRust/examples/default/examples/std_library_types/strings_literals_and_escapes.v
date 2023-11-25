@@ -26,7 +26,8 @@ fn main() {
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M (M.Val unit) :=
   M.function_body
-    (let byte_escape := mk_str "I'm writing Rust!" in
+    (let* byte_escape : ltac:(refine (M.Val (ref str.t))) :=
+      M.copy (mk_str "I'm writing Rust!") in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
@@ -51,8 +52,10 @@ Definition main : M (M.Val unit) :=
           core.fmt.Arguments.t::["new_v1"] α2 α7 in
         std.io.stdio._print α8 in
       M.alloc tt in
-    let unicode_codepoint := mk_str (String.String "29" "") in
-    let character_name := mk_str ""DOUBLE-STRUCK CAPITAL R"" in
+    let* unicode_codepoint : ltac:(refine (M.Val (ref str.t))) :=
+      M.copy (mk_str (String.String "29" "")) in
+    let* character_name : ltac:(refine (M.Val (ref str.t))) :=
+      M.copy (mk_str ""DOUBLE-STRUCK CAPITAL R"") in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
@@ -85,11 +88,12 @@ Definition main : M (M.Val unit) :=
           core.fmt.Arguments.t::["new_v1"] α2 α9 in
         std.io.stdio._print α10 in
       M.alloc tt in
-    let long_string :=
-      mk_str
-        "String literals
+    let* long_string : ltac:(refine (M.Val (ref str.t))) :=
+      M.copy
+        (mk_str
+          "String literals
                         can span multiple lines.
-                        The linebreak and indentation here -><- can be escaped too!" in
+                        The linebreak and indentation here -><- can be escaped too!") in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=

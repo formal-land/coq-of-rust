@@ -145,12 +145,18 @@ fn main() {
 Definition main : M (M.Val unit) :=
   M.function_body
     (let* random_number : ltac:(refine (M.Val f64.t)) :=
-      M.alloc 0 (* 0.234 *) in
+      let* α0 : ltac:(refine (M.Val f64.t)) := M.alloc 0 (* 0.234 *) in
+      M.copy α0 in
     let* animal :
         ltac:(refine
           (M.Val
             (alloc.boxed.Box.t type not implemented alloc.alloc.Global.t))) :=
-      returning_traits_with_dyn.random_animal random_number in
+      let* α0 :
+          ltac:(refine
+            (M.Val
+              (alloc.boxed.Box.t type not implemented alloc.alloc.Global.t))) :=
+        returning_traits_with_dyn.random_animal random_number in
+      M.copy α0 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=

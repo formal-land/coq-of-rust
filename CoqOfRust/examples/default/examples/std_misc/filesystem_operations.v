@@ -34,28 +34,34 @@ Definition cat
             (Trait := ltac:(refine _)))
           α0 in
       let* α2 := M.read α1 in
-      match α2 with
-      | core.ops.control_flow.ControlFlow.Break residual =>
-        let* residual := M.alloc residual in
-        let* α0 :
-            ltac:(refine
-              (M.Val
-                (core.result.Result.t
-                  alloc.string.String.t
-                  std.io.error.Error.t))) :=
-          (core.ops.try_trait.FromResidual.from_residual
-              (Self :=
-                core.result.Result.t alloc.string.String.t std.io.error.Error.t)
-              (Trait := ltac:(refine _)))
-            residual in
-        let* α1 : ltac:(refine (M.Val never.t)) := M.return_ α0 in
-        never_to_any α1
-      | core.ops.control_flow.ControlFlow.Continue val =>
-        let* val := M.alloc val in
-        M.pure val
-      end in
+      let* α3 : ltac:(refine (M.Val std.fs.File.t)) :=
+        match α2 with
+        | core.ops.control_flow.ControlFlow.Break residual =>
+          let* residual := M.alloc residual in
+          let* α0 :
+              ltac:(refine
+                (M.Val
+                  (core.result.Result.t
+                    alloc.string.String.t
+                    std.io.error.Error.t))) :=
+            (core.ops.try_trait.FromResidual.from_residual
+                (Self :=
+                  core.result.Result.t
+                    alloc.string.String.t
+                    std.io.error.Error.t)
+                (Trait := ltac:(refine _)))
+              residual in
+          let* α1 : ltac:(refine (M.Val never.t)) := M.return_ α0 in
+          never_to_any α1
+        | core.ops.control_flow.ControlFlow.Continue val =>
+          let* val := M.alloc val in
+          M.pure val
+        end in
+      M.copy α3 in
     let* s : ltac:(refine (M.Val alloc.string.String.t)) :=
-      alloc.string.String.t::["new"] in
+      let* α0 : ltac:(refine (M.Val alloc.string.String.t)) :=
+        alloc.string.String.t::["new"] in
+      M.copy α0 in
     let* α0 : ltac:(refine (M.Val (mut_ref std.fs.File.t))) := borrow_mut f in
     let* α1 : ltac:(refine (M.Val (mut_ref alloc.string.String.t))) :=
       borrow_mut s in
@@ -109,22 +115,24 @@ Definition echo
             (Trait := ltac:(refine _)))
           α0 in
       let* α2 := M.read α1 in
-      match α2 with
-      | core.ops.control_flow.ControlFlow.Break residual =>
-        let* residual := M.alloc residual in
-        let* α0 :
-            ltac:(refine
-              (M.Val (core.result.Result.t unit std.io.error.Error.t))) :=
-          (core.ops.try_trait.FromResidual.from_residual
-              (Self := core.result.Result.t unit std.io.error.Error.t)
-              (Trait := ltac:(refine _)))
-            residual in
-        let* α1 : ltac:(refine (M.Val never.t)) := M.return_ α0 in
-        never_to_any α1
-      | core.ops.control_flow.ControlFlow.Continue val =>
-        let* val := M.alloc val in
-        M.pure val
-      end in
+      let* α3 : ltac:(refine (M.Val std.fs.File.t)) :=
+        match α2 with
+        | core.ops.control_flow.ControlFlow.Break residual =>
+          let* residual := M.alloc residual in
+          let* α0 :
+              ltac:(refine
+                (M.Val (core.result.Result.t unit std.io.error.Error.t))) :=
+            (core.ops.try_trait.FromResidual.from_residual
+                (Self := core.result.Result.t unit std.io.error.Error.t)
+                (Trait := ltac:(refine _)))
+              residual in
+          let* α1 : ltac:(refine (M.Val never.t)) := M.return_ α0 in
+          never_to_any α1
+        | core.ops.control_flow.ControlFlow.Continue val =>
+          let* val := M.alloc val in
+          M.pure val
+        end in
+      M.copy α3 in
     let* α0 : ltac:(refine (M.Val (mut_ref std.fs.File.t))) := borrow_mut f in
     let* α1 : ltac:(refine (M.Val str.t)) := deref s in
     let* α2 : ltac:(refine (M.Val (ref str.t))) := borrow α1 in

@@ -35,7 +35,9 @@ fn main() {
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M (M.Val unit) :=
   M.function_body
-    (let* number : ltac:(refine (M.Val i32.t)) := M.alloc 13 in
+    (let* number : ltac:(refine (M.Val i32.t)) :=
+      let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 13 in
+      M.copy α0 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
@@ -114,13 +116,17 @@ Definition main : M (M.Val unit) :=
           std.io.stdio._print α3 in
         M.alloc tt
       end in
-    let* boolean : ltac:(refine (M.Val bool.t)) := M.alloc true in
+    let* boolean : ltac:(refine (M.Val bool.t)) :=
+      let* α0 : ltac:(refine (M.Val bool.t)) := M.alloc true in
+      M.copy α0 in
     let* binary : ltac:(refine (M.Val i32.t)) :=
       let* α0 := M.read boolean in
-      match α0 with
-      | _ => M.alloc 0
-      | _ => M.alloc 1
-      end in
+      let* α1 : ltac:(refine (M.Val i32.t)) :=
+        match α0 with
+        | _ => M.alloc 0
+        | _ => M.alloc 1
+        end in
+      M.copy α1 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=

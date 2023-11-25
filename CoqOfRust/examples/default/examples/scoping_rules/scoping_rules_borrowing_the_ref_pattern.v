@@ -118,9 +118,13 @@ fn main() {
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M (M.Val unit) :=
   M.function_body
-    (let* c : ltac:(refine (M.Val char.t)) := M.alloc "Q"%char in
-    let ref_c1 := c in
-    let* ref_c2 : ltac:(refine (M.Val (ref char.t))) := borrow c in
+    (let* c : ltac:(refine (M.Val char.t)) :=
+      let* α0 : ltac:(refine (M.Val char.t)) := M.alloc "Q"%char in
+      M.copy α0 in
+    let* ref_c1 : ltac:(refine (M.Val char.t)) := M.copy c in
+    let* ref_c2 : ltac:(refine (M.Val (ref char.t))) :=
+      let* α0 : ltac:(refine (M.Val (ref char.t))) := borrow c in
+      M.copy α0 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
@@ -158,19 +162,26 @@ Definition main : M (M.Val unit) :=
           scoping_rules_borrowing_the_ref_pattern.Point.y := α3;
         |} in
     let* _copy_of_x : ltac:(refine (M.Val i32.t)) :=
-      let '{|
+      let* '{|
             scoping_rules_borrowing_the_ref_pattern.Point.x := ref_to_x;
             scoping_rules_borrowing_the_ref_pattern.Point.y := _;
-          |} :=
-        point in
-      deref ref_to_x in
-    let mutable_point := point in
+          |} :
+          ltac:(refine
+            (M.Val scoping_rules_borrowing_the_ref_pattern.Point.t)) :=
+        M.copy point in
+      let* α0 : ltac:(refine (M.Val i32.t)) := deref ref_to_x in
+      M.copy α0 in
+    let* mutable_point :
+        ltac:(refine (M.Val scoping_rules_borrowing_the_ref_pattern.Point.t)) :=
+      M.copy point in
     let* _ : ltac:(refine (M.Val unit)) :=
-      let '{|
+      let* '{|
             scoping_rules_borrowing_the_ref_pattern.Point.x := _;
             scoping_rules_borrowing_the_ref_pattern.Point.y := mut_ref_to_y;
-          |} :=
-        mutable_point in
+          |} :
+          ltac:(refine
+            (M.Val scoping_rules_borrowing_the_ref_pattern.Point.t)) :=
+        M.copy mutable_point in
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val i32.t)) := deref mut_ref_to_y in
         let* α1 : ltac:(refine (M.Val i32.t)) := M.alloc 1 in
@@ -241,7 +252,10 @@ Definition main : M (M.Val unit) :=
       let* α4 := M.read α3 in
       M.alloc (α2, α4) in
     let* _ : ltac:(refine (M.Val unit)) :=
-      let '(_, last) := mutable_tuple in
+      let* '(_, last) :
+          ltac:(refine
+            (M.Val ((alloc.boxed.Box.t u32.t alloc.alloc.Global.t) * u32.t))) :=
+        M.copy mutable_tuple in
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val u32.t)) := deref last in
         let* α1 : ltac:(refine (M.Val u32.t)) := M.alloc 2 in

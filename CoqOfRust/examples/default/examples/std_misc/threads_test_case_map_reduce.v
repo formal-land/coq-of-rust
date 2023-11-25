@@ -91,29 +91,39 @@ fn main() {
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M (M.Val unit) :=
   M.function_body
-    (let data :=
-      mk_str
-        "86967897737416471853297327050364959
+    (let* data : ltac:(refine (M.Val (ref str.t))) :=
+      M.copy
+        (mk_str
+          "86967897737416471853297327050364959
 11861322575564723963297542624962850
 70856234701860851907960690014725639
 38397966707106094172783238747669219
 52380795257888236525459303330302837
 58495327135744041048897885734297812
 69920216438980873548808413720956532
-16278424637452589860345374828574668" in
+16278424637452589860345374828574668") in
     let* children :
         ltac:(refine
           (M.Val
             (alloc.vec.Vec.t
               (std.thread.JoinHandle.t u32.t)
               alloc.alloc.Global.t))) :=
-      (alloc.vec.Vec.t
-          (std.thread.JoinHandle.t u32.t)
-          alloc.alloc.Global.t)::["new"] in
+      let* α0 :
+          ltac:(refine
+            (M.Val
+              (alloc.vec.Vec.t
+                (std.thread.JoinHandle.t u32.t)
+                alloc.alloc.Global.t))) :=
+        (alloc.vec.Vec.t
+            (std.thread.JoinHandle.t u32.t)
+            alloc.alloc.Global.t)::["new"] in
+      M.copy α0 in
     let* chunked_data : ltac:(refine (M.Val core.str.iter.SplitWhitespace.t)) :=
       let* α0 : ltac:(refine (M.Val str.t)) := deref data in
       let* α1 : ltac:(refine (M.Val (ref str.t))) := borrow α0 in
-      str.t::["split_whitespace"] α1 in
+      let* α2 : ltac:(refine (M.Val core.str.iter.SplitWhitespace.t)) :=
+        str.t::["split_whitespace"] α1 in
+      M.copy α2 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* α0 :
           ltac:(refine
@@ -239,13 +249,15 @@ Definition main : M (M.Val unit) :=
                             let* α3 : ltac:(refine (M.Val (ref str.t))) :=
                               borrow α2 in
                             (core.option.Option.t u32.t)::["expect"] α1 α3) in
-                        (core.iter.traits.iterator.Iterator.sum
-                            (Self :=
-                              core.iter.adapters.map.Map.t
-                                core.str.iter.Chars.t
-                                type not implemented)
-                            (Trait := ltac:(refine _)))
-                          α3 in
+                        let* α4 : ltac:(refine (M.Val u32.t)) :=
+                          (core.iter.traits.iterator.Iterator.sum
+                              (Self :=
+                                core.iter.adapters.map.Map.t
+                                  core.str.iter.Chars.t
+                                  type not implemented)
+                              (Trait := ltac:(refine _)))
+                            α3 in
+                        M.copy α4 in
                       let* _ : ltac:(refine (M.Val unit)) :=
                         let* _ : ltac:(refine (M.Val unit)) :=
                           let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
@@ -344,15 +356,17 @@ Definition main : M (M.Val unit) :=
                   type not implemented
                   alloc.alloc.Global.t))::["unwrap"]
             α0) in
-      (core.iter.traits.iterator.Iterator.sum
-          (Self :=
-            core.iter.adapters.map.Map.t
-              (alloc.vec.into_iter.IntoIter.t
-                (std.thread.JoinHandle.t u32.t)
-                alloc.alloc.Global.t)
-              type not implemented)
-          (Trait := ltac:(refine _)))
-        α1 in
+      let* α2 : ltac:(refine (M.Val u32.t)) :=
+        (core.iter.traits.iterator.Iterator.sum
+            (Self :=
+              core.iter.adapters.map.Map.t
+                (alloc.vec.into_iter.IntoIter.t
+                  (std.thread.JoinHandle.t u32.t)
+                  alloc.alloc.Global.t)
+                type not implemented)
+            (Trait := ltac:(refine _)))
+          α1 in
+      M.copy α2 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=

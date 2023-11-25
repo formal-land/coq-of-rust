@@ -95,10 +95,16 @@ Definition main : M (M.Val unit) :=
                 (core.option.Option.t
                   unpacking_options_and_defaults_via_get_or_insert.Fruit.t)))) :=
         borrow_mut my_fruit in
-      (core.option.Option.t
-            unpacking_options_and_defaults_via_get_or_insert.Fruit.t)::["get_or_insert"]
-        α0
-        apple in
+      let* α1 :
+          ltac:(refine
+            (M.Val
+              (mut_ref
+                unpacking_options_and_defaults_via_get_or_insert.Fruit.t))) :=
+        (core.option.Option.t
+              unpacking_options_and_defaults_via_get_or_insert.Fruit.t)::["get_or_insert"]
+          α0
+          apple in
+      M.copy α1 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=

@@ -49,7 +49,11 @@ Definition main : M (M.Val unit) :=
     (let* _x :
         ltac:(refine (M.Val (alloc.boxed.Box.t i32.t alloc.alloc.Global.t))) :=
       let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 0 in
-      (alloc.boxed.Box.t i32.t alloc.alloc.Global.t)::["new"] α0 in
+      let* α1 :
+          ltac:(refine
+            (M.Val (alloc.boxed.Box.t i32.t alloc.alloc.Global.t))) :=
+        (alloc.boxed.Box.t i32.t alloc.alloc.Global.t)::["new"] α0 in
+      M.copy α1 in
     let* _ : ltac:(refine (M.Val i32.t)) :=
       let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 3 in
       let* α1 : ltac:(refine (M.Val i32.t)) := M.alloc 0 in

@@ -113,10 +113,16 @@ Definition main : M (M.Val unit) :=
               unpacking_options_and_defaults_via_or.Fruit.t)::["or"]
           no_fruit
           orange in
-      (core.option.Option.t
-            unpacking_options_and_defaults_via_or.Fruit.t)::["or"]
-        α0
-        apple in
+      let* α1 :
+          ltac:(refine
+            (M.Val
+              (core.option.Option.t
+                unpacking_options_and_defaults_via_or.Fruit.t))) :=
+        (core.option.Option.t
+              unpacking_options_and_defaults_via_or.Fruit.t)::["or"]
+          α0
+          apple in
+      M.copy α1 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=

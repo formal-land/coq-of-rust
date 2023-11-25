@@ -23,9 +23,12 @@ fn main() {
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M (M.Val unit) :=
   M.function_body
-    (let* _mutable_integer : ltac:(refine (M.Val i32.t)) := M.alloc 7 in
+    (let* _mutable_integer : ltac:(refine (M.Val i32.t)) :=
+      let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 7 in
+      M.copy α0 in
     let* _ : ltac:(refine (M.Val unit)) :=
-      let _mutable_integer := _mutable_integer in
+      let* _mutable_integer : ltac:(refine (M.Val i32.t)) :=
+        M.copy _mutable_integer in
       M.alloc tt in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 3 in
