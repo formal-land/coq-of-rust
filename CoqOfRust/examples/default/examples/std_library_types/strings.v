@@ -103,13 +103,8 @@ Definition main : M unit :=
               core.iter.adapters.rev.Rev.t core.str.iter.SplitWhitespace.t)
             (Trait := ltac:(refine _)))
           α2 in
-      let* α4 :
-          M.Val
-            (core.iter.adapters.rev.Rev.t core.str.iter.SplitWhitespace.t) :=
-        M.alloc α3 in
-      let* α5 := M.read α4 in
-      let* α6 : M.Val unit :=
-        match α5 with
+      let* α4 : M.Val unit :=
+        match α3 with
         | iter =>
           let* iter := M.alloc iter in
           loop
@@ -126,10 +121,7 @@ Definition main : M unit :=
                         core.str.iter.SplitWhitespace.t)
                     (Trait := ltac:(refine _)))
                   α0 in
-              let* α2 : M.Val (core.option.Option.t (ref str.t)) :=
-                M.alloc α1 in
-              let* α3 := M.read α2 in
-              match α3 with
+              match α1 with
               | core.option.Option.None  =>
                 let* α0 : M.Val never.t := Break in
                 never_to_any α0
@@ -167,7 +159,7 @@ Definition main : M unit :=
               end in
             M.alloc tt)
         end in
-      use α6 in
+      use α4 in
     let* chars : M.Val (alloc.vec.Vec.t char.t alloc.alloc.Global.t) :=
       let* α0 : ref str.t := M.read pangram in
       let* α1 : core.str.iter.Chars.t := str.t::["chars"] α0 in
@@ -203,12 +195,8 @@ Definition main : M unit :=
             (Self := alloc.vec.Vec.t char.t alloc.alloc.Global.t)
             (Trait := ltac:(refine _)))
           α0 in
-      let* α2 :
-          M.Val (alloc.vec.into_iter.IntoIter.t char.t alloc.alloc.Global.t) :=
-        M.alloc α1 in
-      let* α3 := M.read α2 in
-      let* α4 : M.Val unit :=
-        match α3 with
+      let* α2 : M.Val unit :=
+        match α1 with
         | iter =>
           let* iter := M.alloc iter in
           loop
@@ -227,9 +215,7 @@ Definition main : M unit :=
                         alloc.alloc.Global.t)
                     (Trait := ltac:(refine _)))
                   α0 in
-              let* α2 : M.Val (core.option.Option.t char.t) := M.alloc α1 in
-              let* α3 := M.read α2 in
-              match α3 with
+              match α1 with
               | core.option.Option.None  =>
                 let* α0 : M.Val never.t := Break in
                 never_to_any α0
@@ -251,7 +237,7 @@ Definition main : M unit :=
               end in
             M.alloc tt)
         end in
-      use α4 in
+      use α2 in
     let* chars_to_trim : M.Val (ref (slice char.t)) :=
       let* α0 : M.Val char.t := M.alloc " "%char in
       let* α1 : M.Val char.t := M.alloc ","%char in

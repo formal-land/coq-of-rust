@@ -37,7 +37,7 @@ fn inspect(event: WebEvent) {
 Definition inspect (event : enums.WebEvent.t) : M unit :=
   let* event : M.Val enums.WebEvent.t := M.alloc event in
   M.function_body
-    (let* α0 := M.read event in
+    (let* α0 : enums.WebEvent.t := M.read event in
     let* α1 : M.Val unit :=
       match α0 with
       | enums.WebEvent.PageLoad  =>

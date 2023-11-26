@@ -306,16 +306,7 @@ fn compile_expr_kind<'a>(
             ExprKind::LetIf { pat, init }
         }
         thir::ExprKind::Match { scrutinee, arms } => {
-            let scrutinee = Box::new(Expr {
-                kind: ExprKind::Call {
-                    func: Box::new(Expr {
-                        kind: ExprKind::LocalVar("M.read".to_string()),
-                        ty: None,
-                    }),
-                    args: vec![compile_expr(env, thir, scrutinee)],
-                },
-                ty: None,
-            });
+            let scrutinee = Box::new(compile_expr(env, thir, scrutinee).read());
             let arms = arms
                 .iter()
                 .map(|arm_id| {

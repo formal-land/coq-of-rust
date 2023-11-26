@@ -50,10 +50,8 @@ Definition try_division (dividend : i32.t) (divisor : i32.t) : M unit :=
     (let* α0 : i32.t := M.read dividend in
     let* α1 : i32.t := M.read divisor in
     let* α2 : core.option.Option.t i32.t := option.checked_division α0 α1 in
-    let* α3 : M.Val (core.option.Option.t i32.t) := M.alloc α2 in
-    let* α4 := M.read α3 in
-    let* α5 : M.Val unit :=
-      match α4 with
+    let* α3 : M.Val unit :=
+      match α2 with
       | core.option.Option.None  =>
         let* _ : M.Val unit :=
           let* α0 : M.Val (array (ref str.t)) :=
@@ -122,7 +120,7 @@ Definition try_division (dividend : i32.t) (divisor : i32.t) : M unit :=
           M.alloc α20 in
         M.alloc tt
       end in
-    M.read α5).
+    M.read α3).
 
 (*
 fn main() {

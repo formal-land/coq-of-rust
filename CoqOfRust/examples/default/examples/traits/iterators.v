@@ -399,10 +399,8 @@ Definition main : M unit :=
             (Trait := ltac:(refine _)))
           {| core.ops.range.Range.start := α1; core.ops.range.Range.end := α3;
           |} in
-      let* α5 : M.Val (core.ops.range.Range.t i32.t) := M.alloc α4 in
-      let* α6 := M.read α5 in
-      let* α7 : M.Val unit :=
-        match α6 with
+      let* α5 : M.Val unit :=
+        match α4 with
         | iter =>
           let* iter := M.alloc iter in
           loop
@@ -414,9 +412,7 @@ Definition main : M unit :=
                     (Self := core.ops.range.Range.t i32.t)
                     (Trait := ltac:(refine _)))
                   α0 in
-              let* α2 : M.Val (core.option.Option.t i32.t) := M.alloc α1 in
-              let* α3 := M.read α2 in
-              match α3 with
+              match α1 with
               | core.option.Option.None  =>
                 let* α0 : M.Val never.t := Break in
                 never_to_any α0
@@ -454,7 +450,7 @@ Definition main : M unit :=
               end in
             M.alloc tt)
         end in
-      use α7 in
+      use α5 in
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
         let* α0 : M.Val (array (ref str.t)) :=
@@ -487,11 +483,8 @@ Definition main : M unit :=
             (Self := core.iter.adapters.take.Take.t iterators.Fibonacci.t)
             (Trait := ltac:(refine _)))
           α3 in
-      let* α5 : M.Val (core.iter.adapters.take.Take.t iterators.Fibonacci.t) :=
-        M.alloc α4 in
-      let* α6 := M.read α5 in
-      let* α7 : M.Val unit :=
-        match α6 with
+      let* α5 : M.Val unit :=
+        match α4 with
         | iter =>
           let* iter := M.alloc iter in
           loop
@@ -506,9 +499,7 @@ Definition main : M unit :=
                       core.iter.adapters.take.Take.t iterators.Fibonacci.t)
                     (Trait := ltac:(refine _)))
                   α0 in
-              let* α2 : M.Val (core.option.Option.t u32.t) := M.alloc α1 in
-              let* α3 := M.read α2 in
-              match α3 with
+              match α1 with
               | core.option.Option.None  =>
                 let* α0 : M.Val never.t := Break in
                 never_to_any α0
@@ -546,7 +537,7 @@ Definition main : M unit :=
               end in
             M.alloc tt)
         end in
-      use α7 in
+      use α5 in
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
         let* α0 : M.Val (array (ref str.t)) :=
@@ -592,14 +583,8 @@ Definition main : M unit :=
                 (core.iter.adapters.skip.Skip.t iterators.Fibonacci.t))
             (Trait := ltac:(refine _)))
           α6 in
-      let* α8 :
-          M.Val
-            (core.iter.adapters.take.Take.t
-              (core.iter.adapters.skip.Skip.t iterators.Fibonacci.t)) :=
-        M.alloc α7 in
-      let* α9 := M.read α8 in
-      let* α10 : M.Val unit :=
-        match α9 with
+      let* α8 : M.Val unit :=
+        match α7 with
         | iter =>
           let* iter := M.alloc iter in
           loop
@@ -616,9 +601,7 @@ Definition main : M unit :=
                         (core.iter.adapters.skip.Skip.t iterators.Fibonacci.t))
                     (Trait := ltac:(refine _)))
                   α0 in
-              let* α2 : M.Val (core.option.Option.t u32.t) := M.alloc α1 in
-              let* α3 := M.read α2 in
-              match α3 with
+              match α1 with
               | core.option.Option.None  =>
                 let* α0 : M.Val never.t := Break in
                 never_to_any α0
@@ -656,7 +639,7 @@ Definition main : M unit :=
               end in
             M.alloc tt)
         end in
-      use α10 in
+      use α8 in
     let* array : M.Val (array u32.t) :=
       let* α0 : M.Val u32.t := M.alloc 1 in
       let* α1 : M.Val u32.t := M.alloc 3 in
@@ -700,10 +683,8 @@ Definition main : M unit :=
           (Self := core.slice.iter.Iter.t u32.t)
           (Trait := ltac:(refine _)))
         α4 in
-    let* α6 : M.Val (core.slice.iter.Iter.t u32.t) := M.alloc α5 in
-    let* α7 := M.read α6 in
-    let* α8 : M.Val unit :=
-      match α7 with
+    let* α6 : M.Val unit :=
+      match α5 with
       | iter =>
         let* iter := M.alloc iter in
         loop
@@ -715,9 +696,7 @@ Definition main : M unit :=
                   (Self := core.slice.iter.Iter.t u32.t)
                   (Trait := ltac:(refine _)))
                 α0 in
-            let* α2 : M.Val (core.option.Option.t (ref u32.t)) := M.alloc α1 in
-            let* α3 := M.read α2 in
-            match α3 with
+            match α1 with
             | core.option.Option.None  =>
               let* α0 : M.Val never.t := Break in
               never_to_any α0
@@ -754,5 +733,5 @@ Definition main : M unit :=
             end in
           M.alloc tt)
       end in
-    let* α0 : M.Val unit := use α8 in
+    let* α0 : M.Val unit := use α6 in
     M.read α0).

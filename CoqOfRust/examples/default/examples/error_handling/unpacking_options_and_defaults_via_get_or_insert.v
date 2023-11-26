@@ -25,7 +25,8 @@ Section Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert
     let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
     M.function_body
       (let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
-      let* α1 := M.read self in
+      let* α1 : ref unpacking_options_and_defaults_via_get_or_insert.Fruit.t :=
+        M.read self in
       let* α2 : M.Val (ref str.t) :=
         match α1 with
         | unpacking_options_and_defaults_via_get_or_insert.Fruit.Apple  =>

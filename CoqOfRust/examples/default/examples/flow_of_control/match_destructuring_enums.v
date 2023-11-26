@@ -62,7 +62,7 @@ Definition main : M unit :=
         let* α6 : unit := std.io.stdio._print α5 in
         M.alloc α6 in
       M.alloc tt in
-    let* α0 := M.read color in
+    let* α0 : match_destructuring_enums.Color.t := M.read color in
     let* α0 : M.Val unit :=
       match α0 with
       | match_destructuring_enums.Color.Red  =>

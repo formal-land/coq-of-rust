@@ -23,7 +23,7 @@ Section Impl_core_fmt_Debug_for_combinators_and_then_Food_t.
     let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
     M.function_body
       (let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
-      let* α1 := M.read self in
+      let* α1 : ref combinators_and_then.Food.t := M.read self in
       let* α2 : M.Val (ref str.t) :=
         match α1 with
         | combinators_and_then.Food.CordonBleu  =>
@@ -72,7 +72,7 @@ Section Impl_core_fmt_Debug_for_combinators_and_then_Day_t.
     let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
     M.function_body
       (let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
-      let* α1 := M.read self in
+      let* α1 : ref combinators_and_then.Day.t := M.read self in
       let* α2 : M.Val (ref str.t) :=
         match α1 with
         | combinators_and_then.Day.Monday  =>
@@ -112,7 +112,7 @@ Definition have_ingredients
     : M (core.option.Option.t combinators_and_then.Food.t) :=
   let* food : M.Val combinators_and_then.Food.t := M.alloc food in
   M.function_body
-    (let* α0 := M.read food in
+    (let* α0 : combinators_and_then.Food.t := M.read food in
     let* α1 : M.Val (core.option.Option.t combinators_and_then.Food.t) :=
       match α0 with
       | combinators_and_then.Food.Sushi  => M.alloc core.option.Option.None
@@ -135,7 +135,7 @@ Definition have_recipe
     : M (core.option.Option.t combinators_and_then.Food.t) :=
   let* food : M.Val combinators_and_then.Food.t := M.alloc food in
   M.function_body
-    (let* α0 := M.read food in
+    (let* α0 : combinators_and_then.Food.t := M.read food in
     let* α1 : M.Val (core.option.Option.t combinators_and_then.Food.t) :=
       match α0 with
       | combinators_and_then.Food.CordonBleu  => M.alloc core.option.Option.None
@@ -165,20 +165,14 @@ Definition cookable_v1
     let* α1 : core.option.Option.t combinators_and_then.Food.t :=
       combinators_and_then.have_recipe α0 in
     let* α2 : M.Val (core.option.Option.t combinators_and_then.Food.t) :=
-      M.alloc α1 in
-    let* α3 := M.read α2 in
-    let* α4 : M.Val (core.option.Option.t combinators_and_then.Food.t) :=
-      match α3 with
+      match α1 with
       | core.option.Option.None  => M.alloc core.option.Option.None
       | core.option.Option.Some food =>
         let* food := M.alloc food in
         let* α0 : combinators_and_then.Food.t := M.read food in
         let* α1 : core.option.Option.t combinators_and_then.Food.t :=
           combinators_and_then.have_ingredients α0 in
-        let* α2 : M.Val (core.option.Option.t combinators_and_then.Food.t) :=
-          M.alloc α1 in
-        let* α3 := M.read α2 in
-        match α3 with
+        match α1 with
         | core.option.Option.None  => M.alloc core.option.Option.None
         | core.option.Option.Some food =>
           let* food := M.alloc food in
@@ -186,7 +180,7 @@ Definition cookable_v1
           M.alloc (core.option.Option.Some α0)
         end
       end in
-    M.read α4).
+    M.read α2).
 
 (*
 fn cookable_v2(food: Food) -> Option<Food> {
@@ -222,11 +216,8 @@ Definition eat
     (let* α0 : combinators_and_then.Food.t := M.read food in
     let* α1 : core.option.Option.t combinators_and_then.Food.t :=
       combinators_and_then.cookable_v2 α0 in
-    let* α2 : M.Val (core.option.Option.t combinators_and_then.Food.t) :=
-      M.alloc α1 in
-    let* α3 := M.read α2 in
-    let* α4 : M.Val unit :=
-      match α3 with
+    let* α2 : M.Val unit :=
+      match α1 with
       | core.option.Option.Some food =>
         let* food := M.alloc food in
         let* _ : M.Val unit :=
@@ -286,7 +277,7 @@ Definition eat
           M.alloc α14 in
         M.alloc tt
       end in
-    M.read α4).
+    M.read α2).
 
 (*
 fn main() {

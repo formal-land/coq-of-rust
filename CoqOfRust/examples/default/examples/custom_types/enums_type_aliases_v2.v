@@ -25,7 +25,9 @@ Section Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers_t.
     let* x : M.Val i32.t := M.alloc x in
     let* y : M.Val i32.t := M.alloc y in
     M.function_body
-      (let* α0 := M.read self in
+      (let* α0 :
+          ref enums_type_aliases_v2.VeryVerboseEnumOfThingsToDoWithNumbers.t :=
+        M.read self in
       let* α1 : M.Val i32.t :=
         match α0 with
         | enums_type_aliases_v2.VeryVerboseEnumOfThingsToDoWithNumbers.Add  =>

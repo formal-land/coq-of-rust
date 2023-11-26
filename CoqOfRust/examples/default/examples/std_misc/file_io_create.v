@@ -46,12 +46,8 @@ Definition main : M unit :=
       let* α0 : ref (ref std.path.Path.t) := borrow path in
       let* α1 : core.result.Result.t std.fs.File.t std.io.error.Error.t :=
         std.fs.File.t::["create"] α0 in
-      let* α2 :
-          M.Val (core.result.Result.t std.fs.File.t std.io.error.Error.t) :=
-        M.alloc α1 in
-      let* α3 := M.read α2 in
-      let* α4 : M.Val std.fs.File.t :=
-        match α3 with
+      let* α2 : M.Val std.fs.File.t :=
+        match α1 with
         | core.result.Result.Err why =>
           let* why := M.alloc why in
           let* α0 : M.Val (array (ref str.t)) :=
@@ -86,7 +82,7 @@ Definition main : M unit :=
           let* file := M.alloc file in
           M.pure file
         end in
-      M.copy α4 in
+      M.copy α2 in
     let* α0 : mut_ref std.fs.File.t := borrow_mut file in
     let* α1 : ref (ref str.t) := M.read file_io_create.LOREM_IPSUM in
     let* α2 : M.Val (ref str.t) := deref α1 in
@@ -98,11 +94,8 @@ Definition main : M unit :=
           (Trait := ltac:(refine _)))
         α0
         α4 in
-    let* α6 : M.Val (core.result.Result.t unit std.io.error.Error.t) :=
-      M.alloc α5 in
-    let* α7 := M.read α6 in
     let* α0 : M.Val unit :=
-      match α7 with
+      match α5 with
       | core.result.Result.Err why =>
         let* why := M.alloc why in
         let* α0 : M.Val (array (ref str.t)) :=

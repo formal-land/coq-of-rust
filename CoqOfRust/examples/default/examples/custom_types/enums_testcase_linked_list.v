@@ -85,7 +85,7 @@ Section Impl_enums_testcase_linked_list_List_t.
     M.function_body
       (let* α0 : ref enums_testcase_linked_list.List.t := M.read self in
       let* α1 : M.Val enums_testcase_linked_list.List.t := deref α0 in
-      let* α2 := M.read α1 in
+      let* α2 : enums_testcase_linked_list.List.t := M.read α1 in
       let* α3 : M.Val u32.t :=
         match α2 with
         | enums_testcase_linked_list.List.Cons _ tail =>
@@ -141,7 +141,7 @@ Section Impl_enums_testcase_linked_list_List_t.
     M.function_body
       (let* α0 : ref enums_testcase_linked_list.List.t := M.read self in
       let* α1 : M.Val enums_testcase_linked_list.List.t := deref α0 in
-      let* α2 := M.read α1 in
+      let* α2 : enums_testcase_linked_list.List.t := M.read α1 in
       let* α3 : M.Val alloc.string.String.t :=
         match α2 with
         | enums_testcase_linked_list.List.Cons head tail =>

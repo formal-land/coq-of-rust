@@ -160,14 +160,7 @@ Definition main : M unit :=
           α4 in
       let* α6 : M.Val (core.option.Option.t i32.t) := M.alloc α5 in
       let* α7 : ref (core.option.Option.t i32.t) := borrow α6 in
-      let* α8 :
-          M.Val
-            ((ref (core.option.Option.t i32.t))
-            *
-            (ref (core.option.Option.t i32.t))) :=
-        M.alloc (α3, α7) in
-      let* α9 := M.read α8 in
-      match α9 with
+      match (α3, α7) with
       | (left_val, right_val) =>
         let* right_val := M.alloc right_val in
         let* left_val := M.alloc left_val in
@@ -212,14 +205,7 @@ Definition main : M unit :=
           α4 in
       let* α6 : M.Val (core.option.Option.t i32.t) := M.alloc α5 in
       let* α7 : ref (core.option.Option.t i32.t) := borrow α6 in
-      let* α8 :
-          M.Val
-            ((ref (core.option.Option.t i32.t))
-            *
-            (ref (core.option.Option.t i32.t))) :=
-        M.alloc (α3, α7) in
-      let* α9 := M.read α8 in
-      match α9 with
+      match (α3, α7) with
       | (left_val, right_val) =>
         let* right_val := M.alloc right_val in
         let* left_val := M.alloc left_val in
@@ -264,14 +250,7 @@ Definition main : M unit :=
           α4 in
       let* α6 : M.Val (core.option.Option.t i32.t) := M.alloc α5 in
       let* α7 : ref (core.option.Option.t i32.t) := borrow α6 in
-      let* α8 :
-          M.Val
-            ((ref (core.option.Option.t i32.t))
-            *
-            (ref (core.option.Option.t i32.t))) :=
-        M.alloc (α3, α7) in
-      let* α9 := M.read α8 in
-      match α9 with
+      match (α3, α7) with
       | (left_val, right_val) =>
         let* right_val := M.alloc right_val in
         let* left_val := M.alloc left_val in
@@ -316,14 +295,7 @@ Definition main : M unit :=
           α4 in
       let* α6 : M.Val (core.option.Option.t i32.t) := M.alloc α5 in
       let* α7 : ref (core.option.Option.t i32.t) := borrow α6 in
-      let* α8 :
-          M.Val
-            ((ref (core.option.Option.t i32.t))
-            *
-            (ref (core.option.Option.t i32.t))) :=
-        M.alloc (α3, α7) in
-      let* α9 := M.read α8 in
-      match α9 with
+      match (α3, α7) with
       | (left_val, right_val) =>
         let* right_val := M.alloc right_val in
         let* left_val := M.alloc left_val in
@@ -368,14 +340,7 @@ Definition main : M unit :=
           α4 in
       let* α6 : M.Val (core.option.Option.t i32.t) := M.alloc α5 in
       let* α7 : ref (core.option.Option.t i32.t) := borrow α6 in
-      let* α8 :
-          M.Val
-            ((ref (core.option.Option.t i32.t))
-            *
-            (ref (core.option.Option.t i32.t))) :=
-        M.alloc (α3, α7) in
-      let* α9 := M.read α8 in
-      match α9 with
+      match (α3, α7) with
       | (left_val, right_val) =>
         let* right_val := M.alloc right_val in
         let* left_val := M.alloc left_val in

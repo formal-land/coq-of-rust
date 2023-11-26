@@ -33,17 +33,8 @@ Definition multiply
             (Self := core.result.Result.t i32.t core.num.error.ParseIntError.t)
             (Trait := ltac:(refine _)))
           α1 in
-      let* α3 :
-          M.Val
-            (core.ops.control_flow.ControlFlow.t
-              (core.result.Result.t
-                core.convert.Infallible.t
-                core.num.error.ParseIntError.t)
-              i32.t) :=
-        M.alloc α2 in
-      let* α4 := M.read α3 in
-      let* α5 : M.Val i32.t :=
-        match α4 with
+      let* α3 : M.Val i32.t :=
+        match α2 with
         | core.ops.control_flow.ControlFlow.Break residual =>
           let* residual := M.alloc residual in
           let* α0 :
@@ -63,7 +54,7 @@ Definition multiply
           let* val := M.alloc val in
           M.pure val
         end in
-      M.copy α5 in
+      M.copy α3 in
     let* second_number : M.Val i32.t :=
       let* α0 : ref str.t := M.read second_number_str in
       let* α1 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
@@ -78,17 +69,8 @@ Definition multiply
             (Self := core.result.Result.t i32.t core.num.error.ParseIntError.t)
             (Trait := ltac:(refine _)))
           α1 in
-      let* α3 :
-          M.Val
-            (core.ops.control_flow.ControlFlow.t
-              (core.result.Result.t
-                core.convert.Infallible.t
-                core.num.error.ParseIntError.t)
-              i32.t) :=
-        M.alloc α2 in
-      let* α4 := M.read α3 in
-      let* α5 : M.Val i32.t :=
-        match α4 with
+      let* α3 : M.Val i32.t :=
+        match α2 with
         | core.ops.control_flow.ControlFlow.Break residual =>
           let* residual := M.alloc residual in
           let* α0 :
@@ -108,7 +90,7 @@ Definition multiply
           let* val := M.alloc val in
           M.pure val
         end in
-      M.copy α5 in
+      M.copy α3 in
     let* α0 : M.Val i32.t := BinOp.mul first_number second_number in
     let* α1 : i32.t := M.read α0 in
     let* α0 :
@@ -131,7 +113,8 @@ Definition print
       M.Val (core.result.Result.t i32.t core.num.error.ParseIntError.t) :=
     M.alloc result in
   M.function_body
-    (let* α0 := M.read result in
+    (let* α0 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
+      M.read result in
     let* α1 : M.Val unit :=
       match α0 with
       | core.result.Result.Ok n =>

@@ -61,7 +61,7 @@ Definition main : M unit :=
       let* α1 : ref i32.t := borrow α0 in
       M.alloc α1 in
     let* _ : M.Val unit :=
-      let* α0 := M.read reference in
+      let* α0 : ref i32.t := M.read reference in
       match α0 with
       | val =>
         let* val := M.alloc val in
@@ -93,7 +93,7 @@ Definition main : M unit :=
     let* _ : M.Val unit :=
       let* α0 : ref i32.t := M.read reference in
       let* α1 : M.Val i32.t := deref α0 in
-      let* α2 := M.read α1 in
+      let* α2 : i32.t := M.read α1 in
       match α2 with
       | val =>
         let* val := M.alloc val in
@@ -135,7 +135,7 @@ Definition main : M unit :=
       let* α0 : M.Val i32.t := M.alloc 6 in
       M.copy α0 in
     let* _ : M.Val unit :=
-      let* α0 := M.read value in
+      let* α0 : i32.t := M.read value in
       match α0 with
       | r =>
         let* r := M.alloc r in
@@ -164,7 +164,7 @@ Definition main : M unit :=
           M.alloc α14 in
         M.alloc tt
       end in
-    let* α0 := M.read mut_value in
+    let* α0 : i32.t := M.read mut_value in
     let* α0 : M.Val unit :=
       match α0 with
       | m =>

@@ -28,7 +28,7 @@ Definition main : M unit :=
   M.function_body
     (let* _ : M.Val bool.t :=
       let* α0 : M.Val i32.t := M.alloc 1 in
-      let* α1 := M.read α0 in
+      let* α1 : i32.t := M.read α0 in
       match α1 with
       | _ => M.alloc false
       | _ => M.alloc true

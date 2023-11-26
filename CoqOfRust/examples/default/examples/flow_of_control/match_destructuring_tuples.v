@@ -56,7 +56,7 @@ Definition main : M unit :=
         let* α14 : unit := std.io.stdio._print α13 in
         M.alloc α14 in
       M.alloc tt in
-    let* α0 := M.read triple in
+    let* α0 : (i32.t * i32.t) * i32.t := M.read triple in
     let* α0 : M.Val unit :=
       match α0 with
       | (_, y, z) =>

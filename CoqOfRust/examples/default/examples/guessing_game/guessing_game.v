@@ -112,13 +112,8 @@ Definition main : M unit :=
           let* α2 : ref str.t := str.t::["trim"] α1 in
           let* α3 : core.result.Result.t u32.t core.num.error.ParseIntError.t :=
             str.t::["parse"] α2 in
-          let* α4 :
-              M.Val
-                (core.result.Result.t u32.t core.num.error.ParseIntError.t) :=
-            M.alloc α3 in
-          let* α5 := M.read α4 in
-          let* α6 : M.Val u32.t :=
-            match α5 with
+          let* α4 : M.Val u32.t :=
+            match α3 with
             | core.result.Result.Ok num =>
               let* num := M.alloc num in
               M.pure num
@@ -126,7 +121,7 @@ Definition main : M unit :=
               let* α0 : M.Val never.t := Continue in
               never_to_any α0
             end in
-          M.copy α6 in
+          M.copy α4 in
         let* _ : M.Val unit :=
           let* _ : M.Val unit :=
             let* α0 : M.Val (array (ref str.t)) :=
@@ -157,9 +152,7 @@ Definition main : M unit :=
         let* α1 : ref u32.t := borrow secret_number in
         let* α2 : core.cmp.Ordering.t :=
           (core.cmp.Ord.cmp (Self := u32.t) (Trait := ltac:(refine _))) α0 α1 in
-        let* α3 : M.Val core.cmp.Ordering.t := M.alloc α2 in
-        let* α4 := M.read α3 in
-        match α4 with
+        match α2 with
         | core.cmp.Ordering.Less  =>
           let* _ : M.Val unit :=
             let* α0 : M.Val (array (ref str.t)) :=

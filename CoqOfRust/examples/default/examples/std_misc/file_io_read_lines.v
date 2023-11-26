@@ -88,14 +88,8 @@ Definition main : M unit :=
               (std.io.buffered.bufreader.BufReader.t std.fs.File.t))
           (Trait := ltac:(refine _)))
         α0 in
-    let* α2 :
-        M.Val
-          (std.io.Lines.t
-            (std.io.buffered.bufreader.BufReader.t std.fs.File.t)) :=
-      M.alloc α1 in
-    let* α3 := M.read α2 in
-    let* α4 : M.Val unit :=
-      match α3 with
+    let* α2 : M.Val unit :=
+      match α1 with
       | iter =>
         let* iter := M.alloc iter in
         loop
@@ -116,15 +110,7 @@ Definition main : M unit :=
                       (std.io.buffered.bufreader.BufReader.t std.fs.File.t))
                   (Trait := ltac:(refine _)))
                 α0 in
-            let* α2 :
-                M.Val
-                  (core.option.Option.t
-                    (core.result.Result.t
-                      alloc.string.String.t
-                      std.io.error.Error.t)) :=
-              M.alloc α1 in
-            let* α3 := M.read α2 in
-            match α3 with
+            match α1 with
             | core.option.Option.None  =>
               let* α0 : M.Val never.t := Break in
               never_to_any α0
@@ -172,5 +158,5 @@ Definition main : M unit :=
             end in
           M.alloc tt)
       end in
-    let* α0 : M.Val unit := use α4 in
+    let* α0 : M.Val unit := use α2 in
     M.read α0).

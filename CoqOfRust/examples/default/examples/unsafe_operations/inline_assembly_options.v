@@ -33,9 +33,7 @@ Definition main : M unit :=
       let* α0 : ref u64.t := borrow a in
       let* α1 : M.Val u64.t := M.alloc 8 in
       let* α2 : ref u64.t := borrow α1 in
-      let* α3 : M.Val ((ref u64.t) * (ref u64.t)) := M.alloc (α0, α2) in
-      let* α4 := M.read α3 in
-      match α4 with
+      match (α0, α2) with
       | (left_val, right_val) =>
         let* right_val := M.alloc right_val in
         let* left_val := M.alloc left_val in

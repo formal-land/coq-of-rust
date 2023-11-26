@@ -185,11 +185,7 @@ Definition main : M unit :=
       let* α3 : ref (slice u8.t) := M.read α2 in
       let* α4 : core.result.Result.t (ref str.t) core.str.error.Utf8Error.t :=
         core.str.converts.from_utf8 α3 in
-      let* α5 :
-          M.Val (core.result.Result.t (ref str.t) core.str.error.Utf8Error.t) :=
-        M.alloc α4 in
-      let* α6 := M.read α5 in
-      match α6 with
+      match α4 with
       | core.result.Result.Ok my_str =>
         let* my_str := M.alloc my_str in
         let* _ : M.Val unit :=

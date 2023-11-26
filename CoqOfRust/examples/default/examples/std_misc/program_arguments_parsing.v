@@ -180,10 +180,8 @@ Definition main : M unit :=
     let* α1 : usize.t :=
       (alloc.vec.Vec.t alloc.string.String.t alloc.alloc.Global.t)::["len"]
         α0 in
-    let* α2 : M.Val usize.t := M.alloc α1 in
-    let* α3 := M.read α2 in
     let* α0 : M.Val unit :=
-      match α3 with
+      match α1 with
       | _ =>
         let* _ : M.Val unit :=
           let* _ : M.Val unit :=
@@ -223,11 +221,7 @@ Definition main : M unit :=
             α3 in
         let* α5 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
           str.t::["parse"] α4 in
-        let* α6 :
-            M.Val (core.result.Result.t i32.t core.num.error.ParseIntError.t) :=
-          M.alloc α5 in
-        let* α7 := M.read α6 in
-        match α7 with
+        match α5 with
         | core.result.Result.Ok _ =>
           let* _ : M.Val unit :=
             let* α0 : M.Val (array (ref str.t)) :=
@@ -299,13 +293,8 @@ Definition main : M unit :=
               α0 in
           let* α2 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
             str.t::["parse"] α1 in
-          let* α3 :
-              M.Val
-                (core.result.Result.t i32.t core.num.error.ParseIntError.t) :=
-            M.alloc α2 in
-          let* α4 := M.read α3 in
-          let* α5 : M.Val i32.t :=
-            match α4 with
+          let* α3 : M.Val i32.t :=
+            match α2 with
             | core.result.Result.Ok n =>
               let* n := M.alloc n in
               M.pure n
@@ -335,7 +324,7 @@ Definition main : M unit :=
               let* α0 : M.Val unit := M.alloc tt in
               never_to_any α0
             end in
-          M.copy α5 in
+          M.copy α3 in
         let* α0 : ref alloc.string.String.t := M.read cmd in
         let* α1 : ref str.t :=
           (core.ops.index.Index.index
@@ -343,9 +332,7 @@ Definition main : M unit :=
               (Trait := ltac:(refine _)))
             α0
             core.ops.range.RangeFull.Build_t in
-        let* α2 : M.Val (ref str.t) := M.alloc α1 in
-        let* α3 := M.read α2 in
-        match α3 with
+        match α1 with
         | _ =>
           let* α0 : i32.t := M.read number in
           let* α1 : unit := program_arguments_parsing.increase α0 in

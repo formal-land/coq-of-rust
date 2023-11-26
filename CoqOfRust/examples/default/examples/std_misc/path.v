@@ -75,10 +75,8 @@ Definition main : M unit :=
         α0 in
     let* α2 : core.option.Option.t (ref str.t) :=
       std.path.Path.t::["to_str"] α1 in
-    let* α3 : M.Val (core.option.Option.t (ref str.t)) := M.alloc α2 in
-    let* α4 := M.read α3 in
     let* α0 : M.Val unit :=
-      match α4 with
+      match α2 with
       | core.option.Option.None  =>
         let* α0 : ref str.t :=
           M.read (mk_str "new path is not a valid UTF-8 sequence") in

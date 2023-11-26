@@ -51,10 +51,8 @@ Definition main : M unit :=
             (Self := core.slice.iter.Iter.t (ref str.t))
             (Trait := ltac:(refine _)))
           α2 in
-      let* α4 : M.Val (core.slice.iter.Iter.t (ref str.t)) := M.alloc α3 in
-      let* α5 := M.read α4 in
-      let* α6 : M.Val unit :=
-        match α5 with
+      let* α4 : M.Val unit :=
+        match α3 with
         | iter =>
           let* iter := M.alloc iter in
           loop
@@ -66,16 +64,13 @@ Definition main : M unit :=
                     (Self := core.slice.iter.Iter.t (ref str.t))
                     (Trait := ltac:(refine _)))
                   α0 in
-              let* α2 : M.Val (core.option.Option.t (ref (ref str.t))) :=
-                M.alloc α1 in
-              let* α3 := M.read α2 in
-              match α3 with
+              match α1 with
               | core.option.Option.None  =>
                 let* α0 : M.Val never.t := Break in
                 never_to_any α0
               | core.option.Option.Some name =>
                 let* name := M.alloc name in
-                let* α0 := M.read name in
+                let* α0 : ref (ref str.t) := M.read name in
                 match α0 with
                 | _ =>
                   let* _ : M.Val unit :=
@@ -124,7 +119,7 @@ Definition main : M unit :=
               end in
             M.alloc tt)
         end in
-      use α6 in
+      use α4 in
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
         let* α0 : M.Val (array (ref str.t)) :=

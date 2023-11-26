@@ -173,15 +173,8 @@ Section Impl_unpacking_options_via_question_mark_Person_t.
               core.option.Option.t unpacking_options_via_question_mark.Job.t)
             (Trait := ltac:(refine _)))
           α2 in
-      let* α4 :
-          M.Val
-            (core.ops.control_flow.ControlFlow.t
-              (core.option.Option.t core.convert.Infallible.t)
-              unpacking_options_via_question_mark.Job.t) :=
-        M.alloc α3 in
-      let* α5 := M.read α4 in
-      let* α6 : M.Val unpacking_options_via_question_mark.Job.t :=
-        match α5 with
+      let* α4 : M.Val unpacking_options_via_question_mark.Job.t :=
+        match α3 with
         | core.ops.control_flow.ControlFlow.Break residual =>
           let* residual := M.alloc residual in
           let* α0 : core.option.Option.t core.convert.Infallible.t :=
@@ -197,11 +190,11 @@ Section Impl_unpacking_options_via_question_mark_Person_t.
           let* val := M.alloc val in
           M.pure val
         end in
-      let* α7 :
+      let* α5 :
           core.option.Option.t
             unpacking_options_via_question_mark.PhoneNumber.t :=
-        M.read α6.["phone_number"] in
-      let* α8 :
+        M.read α4.["phone_number"] in
+      let* α6 :
           core.ops.control_flow.ControlFlow.t
             (core.option.Option.t core.convert.Infallible.t)
             unpacking_options_via_question_mark.PhoneNumber.t :=
@@ -210,16 +203,9 @@ Section Impl_unpacking_options_via_question_mark_Person_t.
               core.option.Option.t
                 unpacking_options_via_question_mark.PhoneNumber.t)
             (Trait := ltac:(refine _)))
-          α7 in
-      let* α9 :
-          M.Val
-            (core.ops.control_flow.ControlFlow.t
-              (core.option.Option.t core.convert.Infallible.t)
-              unpacking_options_via_question_mark.PhoneNumber.t) :=
-        M.alloc α8 in
-      let* α10 := M.read α9 in
-      let* α11 : M.Val unpacking_options_via_question_mark.PhoneNumber.t :=
-        match α10 with
+          α5 in
+      let* α7 : M.Val unpacking_options_via_question_mark.PhoneNumber.t :=
+        match α6 with
         | core.ops.control_flow.ControlFlow.Break residual =>
           let* residual := M.alloc residual in
           let* α0 : core.option.Option.t core.convert.Infallible.t :=
@@ -235,7 +221,7 @@ Section Impl_unpacking_options_via_question_mark_Person_t.
           let* val := M.alloc val in
           M.pure val
         end in
-      M.read α11.["area_code"]).
+      M.read α7.["area_code"]).
   
   Global Instance AssociatedFunction_work_phone_area_code :
     Notations.DoubleColon ltac:(Self) "work_phone_area_code" := {
@@ -293,14 +279,7 @@ Definition main : M unit :=
       let* α6 : M.Val (core.option.Option.t u8.t) :=
         M.alloc (core.option.Option.Some α5) in
       let* α7 : ref (core.option.Option.t u8.t) := borrow α6 in
-      let* α8 :
-          M.Val
-            ((ref (core.option.Option.t u8.t))
-            *
-            (ref (core.option.Option.t u8.t))) :=
-        M.alloc (α3, α7) in
-      let* α9 := M.read α8 in
-      match α9 with
+      match (α3, α7) with
       | (left_val, right_val) =>
         let* right_val := M.alloc right_val in
         let* left_val := M.alloc left_val in

@@ -49,13 +49,8 @@ Definition main : M unit :=
             alloc.vec.into_iter.IntoIter.t (ref str.t) alloc.alloc.Global.t)
           (Trait := ltac:(refine _)))
         α1 in
-    let* α3 :
-        M.Val
-          (alloc.vec.into_iter.IntoIter.t (ref str.t) alloc.alloc.Global.t) :=
-      M.alloc α2 in
-    let* α4 := M.read α3 in
-    let* α5 : M.Val unit :=
-      match α4 with
+    let* α3 : M.Val unit :=
+      match α2 with
       | iter =>
         let* iter := M.alloc iter in
         loop
@@ -74,15 +69,13 @@ Definition main : M unit :=
                       alloc.alloc.Global.t)
                   (Trait := ltac:(refine _)))
                 α0 in
-            let* α2 : M.Val (core.option.Option.t (ref str.t)) := M.alloc α1 in
-            let* α3 := M.read α2 in
-            match α3 with
+            match α1 with
             | core.option.Option.None  =>
               let* α0 : M.Val never.t := Break in
               never_to_any α0
             | core.option.Option.Some name =>
               let* name := M.alloc name in
-              let* α0 := M.read name in
+              let* α0 : ref str.t := M.read name in
               match α0 with
               | _ =>
                 let* _ : M.Val unit :=
@@ -130,5 +123,5 @@ Definition main : M unit :=
             end in
           M.alloc tt)
       end in
-    let* α0 : M.Val unit := use α5 in
+    let* α0 : M.Val unit := use α3 in
     M.read α0).

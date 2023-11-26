@@ -26,7 +26,7 @@ Definition main : M unit :=
       let* α1 : i32.t := M.read α0 in
       M.alloc (core.option.Option.Some α1) in
     let* _ : M.Val unit :=
-      let* α0 := M.read optional in
+      let* α0 : core.option.Option.t i32.t := M.read optional in
       match α0 with
       | core.option.Option.Some i =>
         let* i := M.alloc i in

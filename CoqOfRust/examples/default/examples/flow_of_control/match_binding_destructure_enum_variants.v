@@ -30,10 +30,8 @@ Definition main : M unit :=
   M.function_body
     (let* α0 : core.option.Option.t u32.t :=
       match_binding_destructure_enum_variants.some_number in
-    let* α1 : M.Val (core.option.Option.t u32.t) := M.alloc α0 in
-    let* α2 := M.read α1 in
-    let* α3 : M.Val unit :=
-      match α2 with
+    let* α1 : M.Val unit :=
+      match α0 with
       | core.option.Option.Some (_ as n) =>
         let* n := M.alloc n in
         let* _ : M.Val unit :=
@@ -88,4 +86,4 @@ Definition main : M unit :=
         M.alloc tt
       | _ => M.alloc tt
       end in
-    M.read α3).
+    M.read α1).

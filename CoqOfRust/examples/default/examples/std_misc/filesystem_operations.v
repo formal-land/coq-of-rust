@@ -32,17 +32,8 @@ Definition cat
             (Self := core.result.Result.t std.fs.File.t std.io.error.Error.t)
             (Trait := ltac:(refine _)))
           α1 in
-      let* α3 :
-          M.Val
-            (core.ops.control_flow.ControlFlow.t
-              (core.result.Result.t
-                core.convert.Infallible.t
-                std.io.error.Error.t)
-              std.fs.File.t) :=
-        M.alloc α2 in
-      let* α4 := M.read α3 in
-      let* α5 : M.Val std.fs.File.t :=
-        match α4 with
+      let* α3 : M.Val std.fs.File.t :=
+        match α2 with
         | core.ops.control_flow.ControlFlow.Break residual =>
           let* residual := M.alloc residual in
           let* α0 :
@@ -65,7 +56,7 @@ Definition cat
           let* val := M.alloc val in
           M.pure val
         end in
-      M.copy α5 in
+      M.copy α3 in
     let* s : M.Val alloc.string.String.t :=
       let* α0 : alloc.string.String.t := alloc.string.String.t::["new"] in
       M.alloc α0 in
@@ -77,13 +68,10 @@ Definition cat
           (Trait := ltac:(refine _)))
         α0
         α1 in
-    let* α3 : M.Val (core.result.Result.t usize.t std.io.error.Error.t) :=
-      M.alloc α2 in
-    let* α4 := M.read α3 in
     let* α0 :
         M.Val
           (core.result.Result.t alloc.string.String.t std.io.error.Error.t) :=
-      match α4 with
+      match α2 with
       | core.result.Result.Ok _ =>
         let* α0 : alloc.string.String.t := M.read s in
         M.alloc (core.result.Result.Ok α0)
@@ -123,17 +111,8 @@ Definition echo
             (Self := core.result.Result.t std.fs.File.t std.io.error.Error.t)
             (Trait := ltac:(refine _)))
           α1 in
-      let* α3 :
-          M.Val
-            (core.ops.control_flow.ControlFlow.t
-              (core.result.Result.t
-                core.convert.Infallible.t
-                std.io.error.Error.t)
-              std.fs.File.t) :=
-        M.alloc α2 in
-      let* α4 := M.read α3 in
-      let* α5 : M.Val std.fs.File.t :=
-        match α4 with
+      let* α3 : M.Val std.fs.File.t :=
+        match α2 with
         | core.ops.control_flow.ControlFlow.Break residual =>
           let* residual := M.alloc residual in
           let* α0 :
@@ -152,7 +131,7 @@ Definition echo
           let* val := M.alloc val in
           M.pure val
         end in
-      M.copy α5 in
+      M.copy α3 in
     let* α0 : mut_ref std.fs.File.t := borrow_mut f in
     let* α1 : ref str.t := M.read s in
     let* α2 : ref (slice u8.t) := str.t::["as_bytes"] α1 in
@@ -195,19 +174,15 @@ Definition touch
     let* α11 : ref std.path.Path.t := M.read path in
     let* α12 : core.result.Result.t std.fs.File.t std.io.error.Error.t :=
       std.fs.OpenOptions.t::["open"] α10 α11 in
-    let* α13 :
-        M.Val (core.result.Result.t std.fs.File.t std.io.error.Error.t) :=
-      M.alloc α12 in
-    let* α14 := M.read α13 in
-    let* α15 : M.Val (core.result.Result.t unit std.io.error.Error.t) :=
-      match α14 with
+    let* α13 : M.Val (core.result.Result.t unit std.io.error.Error.t) :=
+      match α12 with
       | core.result.Result.Ok _ => M.alloc (core.result.Result.Ok tt)
       | core.result.Result.Err e =>
         let* e := M.alloc e in
         let* α0 : std.io.error.Error.t := M.read e in
         M.alloc (core.result.Result.Err α0)
       end in
-    M.read α15).
+    M.read α13).
 
 (*
 fn main() {
@@ -295,10 +270,7 @@ Definition main : M unit :=
       let* α0 : ref str.t := M.read (mk_str "a") in
       let* α1 : core.result.Result.t unit std.io.error.Error.t :=
         std.fs.create_dir α0 in
-      let* α2 : M.Val (core.result.Result.t unit std.io.error.Error.t) :=
-        M.alloc α1 in
-      let* α3 := M.read α2 in
-      match α3 with
+      match α1 with
       | core.result.Result.Err why =>
         let* why := M.alloc why in
         let* _ : M.Val unit :=
@@ -597,12 +569,7 @@ Definition main : M unit :=
       let* α2 :
           core.result.Result.t alloc.string.String.t std.io.error.Error.t :=
         filesystem_operations.cat α1 in
-      let* α3 :
-          M.Val
-            (core.result.Result.t alloc.string.String.t std.io.error.Error.t) :=
-        M.alloc α2 in
-      let* α4 := M.read α3 in
-      match α4 with
+      match α2 with
       | core.result.Result.Err why =>
         let* why := M.alloc why in
         let* _ : M.Val unit :=
@@ -679,11 +646,7 @@ Definition main : M unit :=
       let* α0 : ref str.t := M.read (mk_str "a") in
       let* α1 : core.result.Result.t std.fs.ReadDir.t std.io.error.Error.t :=
         std.fs.read_dir α0 in
-      let* α2 :
-          M.Val (core.result.Result.t std.fs.ReadDir.t std.io.error.Error.t) :=
-        M.alloc α1 in
-      let* α3 := M.read α2 in
-      match α3 with
+      match α1 with
       | core.result.Result.Err why =>
         let* why := M.alloc why in
         let* _ : M.Val unit :=
@@ -723,10 +686,8 @@ Definition main : M unit :=
               (Self := std.fs.ReadDir.t)
               (Trait := ltac:(refine _)))
             α0 in
-        let* α2 : M.Val std.fs.ReadDir.t := M.alloc α1 in
-        let* α3 := M.read α2 in
-        let* α4 : M.Val unit :=
-          match α3 with
+        let* α2 : M.Val unit :=
+          match α1 with
           | iter =>
             let* iter := M.alloc iter in
             loop
@@ -741,15 +702,7 @@ Definition main : M unit :=
                       (Self := std.fs.ReadDir.t)
                       (Trait := ltac:(refine _)))
                     α0 in
-                let* α2 :
-                    M.Val
-                      (core.option.Option.t
-                        (core.result.Result.t
-                          std.fs.DirEntry.t
-                          std.io.error.Error.t)) :=
-                  M.alloc α1 in
-                let* α3 := M.read α2 in
-                match α3 with
+                match α1 with
                 | core.option.Option.None  =>
                   let* α0 : M.Val never.t := Break in
                   never_to_any α0
@@ -803,7 +756,7 @@ Definition main : M unit :=
                 end in
               M.alloc tt)
           end in
-        use α4
+        use α2
       end in
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=

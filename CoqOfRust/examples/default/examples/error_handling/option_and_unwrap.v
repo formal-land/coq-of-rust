@@ -14,7 +14,7 @@ fn give_adult(drink: Option<&str>) {
 Definition give_adult (drink : core.option.Option.t (ref str.t)) : M unit :=
   let* drink : M.Val (core.option.Option.t (ref str.t)) := M.alloc drink in
   M.function_body
-    (let* α0 := M.read drink in
+    (let* α0 : core.option.Option.t (ref str.t) := M.read drink in
     let* α1 : M.Val unit :=
       match α0 with
       | core.option.Option.Some _ =>

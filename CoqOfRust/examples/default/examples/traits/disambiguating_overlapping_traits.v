@@ -155,11 +155,7 @@ Definition main : M unit :=
       let* α2 : M.Val alloc.string.String.t := M.alloc α1 in
       let* α3 : ref alloc.string.String.t := borrow α2 in
       let* α4 : ref alloc.string.String.t := borrow username in
-      let* α5 :
-          M.Val ((ref alloc.string.String.t) * (ref alloc.string.String.t)) :=
-        M.alloc (α3, α4) in
-      let* α6 := M.read α5 in
-      match α6 with
+      match (α3, α4) with
       | (left_val, right_val) =>
         let* right_val := M.alloc right_val in
         let* left_val := M.alloc left_val in
@@ -202,9 +198,7 @@ Definition main : M unit :=
       let* α0 : M.Val u8.t := M.alloc 28 in
       let* α1 : ref u8.t := borrow α0 in
       let* α2 : ref u8.t := borrow age in
-      let* α3 : M.Val ((ref u8.t) * (ref u8.t)) := M.alloc (α1, α2) in
-      let* α4 := M.read α3 in
-      match α4 with
+      match (α1, α2) with
       | (left_val, right_val) =>
         let* right_val := M.alloc right_val in
         let* left_val := M.alloc left_val in

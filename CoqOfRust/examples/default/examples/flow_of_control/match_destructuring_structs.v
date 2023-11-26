@@ -57,7 +57,7 @@ Definition main : M unit :=
           match_destructuring_structs.Foo.x := (α1, α3);
           match_destructuring_structs.Foo.y := α5;
         |} in
-    let* α0 := M.read foo in
+    let* α0 : match_destructuring_structs.Foo.t := M.read foo in
     let* α0 : M.Val unit :=
       match α0 with
       |

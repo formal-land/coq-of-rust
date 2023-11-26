@@ -39,7 +39,7 @@ Definition main : M unit :=
     (let* status : M.Val enums_use.Status.t := M.alloc enums_use.Status.Poor in
     let* work : M.Val enums_use.Work.t := M.alloc enums_use.Work.Civilian in
     let* _ : M.Val unit :=
-      let* α0 := M.read status in
+      let* α0 : enums_use.Status.t := M.read status in
       match α0 with
       | enums_use.Status.Rich  =>
         let* _ : M.Val unit :=
@@ -72,7 +72,7 @@ Definition main : M unit :=
           M.alloc α6 in
         M.alloc tt
       end in
-    let* α0 := M.read work in
+    let* α0 : enums_use.Work.t := M.read work in
     let* α0 : M.Val unit :=
       match α0 with
       | enums_use.Work.Civilian  =>

@@ -23,7 +23,7 @@ Section Impl_core_fmt_Debug_for_combinators_map_Food_t.
     let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
     M.function_body
       (let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
-      let* α1 := M.read self in
+      let* α1 : ref combinators_map.Food.t := M.read self in
       let* α2 : M.Val (ref str.t) :=
         match α1 with
         | combinators_map.Food.Apple  =>
@@ -214,7 +214,7 @@ Definition peel
   let* food : M.Val (core.option.Option.t combinators_map.Food.t) :=
     M.alloc food in
   M.function_body
-    (let* α0 := M.read food in
+    (let* α0 : core.option.Option.t combinators_map.Food.t := M.read food in
     let* α1 : M.Val (core.option.Option.t combinators_map.Peeled.t) :=
       match α0 with
       | core.option.Option.Some food =>
@@ -239,7 +239,7 @@ Definition chop
   let* peeled : M.Val (core.option.Option.t combinators_map.Peeled.t) :=
     M.alloc peeled in
   M.function_body
-    (let* α0 := M.read peeled in
+    (let* α0 : core.option.Option.t combinators_map.Peeled.t := M.read peeled in
     let* α1 : M.Val (core.option.Option.t combinators_map.Chopped.t) :=
       match α0 with
       | core.option.Option.Some combinators_map.Peeled.Build_t food =>
@@ -315,7 +315,7 @@ Definition eat
   let* food : M.Val (core.option.Option.t combinators_map.Cooked.t) :=
     M.alloc food in
   M.function_body
-    (let* α0 := M.read food in
+    (let* α0 : core.option.Option.t combinators_map.Cooked.t := M.read food in
     let* α1 : M.Val unit :=
       match α0 with
       | core.option.Option.Some food =>

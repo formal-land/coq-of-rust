@@ -56,13 +56,8 @@ Definition main : M unit :=
         std.process.Command.t::["stdout"] α5 α6 in
       let* α8 : core.result.Result.t std.process.Child.t std.io.error.Error.t :=
         std.process.Command.t::["spawn"] α7 in
-      let* α9 :
-          M.Val
-            (core.result.Result.t std.process.Child.t std.io.error.Error.t) :=
-        M.alloc α8 in
-      let* α10 := M.read α9 in
-      let* α11 : M.Val std.process.Child.t :=
-        match α10 with
+      let* α9 : M.Val std.process.Child.t :=
+        match α8 with
         | core.result.Result.Err why =>
           let* why := M.alloc why in
           let* α0 : M.Val (array (ref str.t)) :=
@@ -91,7 +86,7 @@ Definition main : M unit :=
           let* process := M.alloc process in
           M.pure process
         end in
-      M.copy α11 in
+      M.copy α9 in
     let* _ : M.Val unit :=
       let* α0 : core.option.Option.t std.process.ChildStdin.t :=
         M.read process.["stdin"] in
@@ -109,10 +104,7 @@ Definition main : M unit :=
             (Trait := ltac:(refine _)))
           α3
           α7 in
-      let* α9 : M.Val (core.result.Result.t unit std.io.error.Error.t) :=
-        M.alloc α8 in
-      let* α10 := M.read α9 in
-      match α10 with
+      match α8 with
       | core.result.Result.Err why =>
         let* why := M.alloc why in
         let* α0 : M.Val (array (ref str.t)) :=
@@ -169,11 +161,8 @@ Definition main : M unit :=
           (Trait := ltac:(refine _)))
         α3
         α4 in
-    let* α6 : M.Val (core.result.Result.t usize.t std.io.error.Error.t) :=
-      M.alloc α5 in
-    let* α7 := M.read α6 in
     let* α0 : M.Val unit :=
-      match α7 with
+      match α5 with
       | core.result.Result.Err why =>
         let* why := M.alloc why in
         let* α0 : M.Val (array (ref str.t)) :=

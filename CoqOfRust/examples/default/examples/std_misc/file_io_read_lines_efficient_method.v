@@ -47,14 +47,8 @@ Definition main : M unit :=
                   (std.io.buffered.bufreader.BufReader.t std.fs.File.t))
               (Trait := ltac:(refine _)))
             α0 in
-        let* α2 :
-            M.Val
-              (std.io.Lines.t
-                (std.io.buffered.bufreader.BufReader.t std.fs.File.t)) :=
-          M.alloc α1 in
-        let* α3 := M.read α2 in
-        let* α4 : M.Val unit :=
-          match α3 with
+        let* α2 : M.Val unit :=
+          match α1 with
           | iter =>
             let* iter := M.alloc iter in
             loop
@@ -76,15 +70,7 @@ Definition main : M unit :=
                           (std.io.buffered.bufreader.BufReader.t std.fs.File.t))
                       (Trait := ltac:(refine _)))
                     α0 in
-                let* α2 :
-                    M.Val
-                      (core.option.Option.t
-                        (core.result.Result.t
-                          alloc.string.String.t
-                          std.io.error.Error.t)) :=
-                  M.alloc α1 in
-                let* α3 := M.read α2 in
-                match α3 with
+                match α1 with
                 | core.option.Option.None  =>
                   let* α0 : M.Val never.t := Break in
                   never_to_any α0
@@ -130,7 +116,7 @@ Definition main : M unit :=
                 end in
               M.alloc tt)
           end in
-        use α4
+        use α2
       else
         M.alloc tt in
     M.read α5).
@@ -175,17 +161,8 @@ Definition read_lines
             (Self := core.result.Result.t std.fs.File.t std.io.error.Error.t)
             (Trait := ltac:(refine _)))
           α1 in
-      let* α3 :
-          M.Val
-            (core.ops.control_flow.ControlFlow.t
-              (core.result.Result.t
-                core.convert.Infallible.t
-                std.io.error.Error.t)
-              std.fs.File.t) :=
-        M.alloc α2 in
-      let* α4 := M.read α3 in
-      let* α5 : M.Val std.fs.File.t :=
-        match α4 with
+      let* α3 : M.Val std.fs.File.t :=
+        match α2 with
         | core.ops.control_flow.ControlFlow.Break residual =>
           let* residual := M.alloc residual in
           let* α0 :
@@ -212,7 +189,7 @@ Definition read_lines
           let* val := M.alloc val in
           M.pure val
         end in
-      M.copy α5 in
+      M.copy α3 in
     let* α0 : std.fs.File.t := M.read file in
     let* α1 : std.io.buffered.bufreader.BufReader.t std.fs.File.t :=
       (std.io.buffered.bufreader.BufReader.t std.fs.File.t)::["new"] α0 in

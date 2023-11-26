@@ -138,14 +138,8 @@ Definition main : M unit :=
                 core.str.iter.SplitWhitespace.t)
             (Trait := ltac:(refine _)))
           α1 in
-      let* α3 :
-          M.Val
-            (core.iter.adapters.enumerate.Enumerate.t
-              core.str.iter.SplitWhitespace.t) :=
-        M.alloc α2 in
-      let* α4 := M.read α3 in
-      let* α5 : M.Val unit :=
-        match α4 with
+      let* α3 : M.Val unit :=
+        match α2 with
         | iter =>
           let* iter := M.alloc iter in
           loop
@@ -162,10 +156,7 @@ Definition main : M unit :=
                         core.str.iter.SplitWhitespace.t)
                     (Trait := ltac:(refine _)))
                   α0 in
-              let* α2 : M.Val (core.option.Option.t (usize.t * (ref str.t))) :=
-                M.alloc α1 in
-              let* α3 := M.read α2 in
-              match α3 with
+              match α1 with
               | core.option.Option.None  =>
                 let* α0 : M.Val never.t := Break in
                 never_to_any α0
@@ -307,7 +298,7 @@ Definition main : M unit :=
               end in
             M.alloc tt)
         end in
-      use α5 in
+      use α3 in
     let* final_result : M.Val u32.t :=
       let* α0 :
           alloc.vec.Vec.t

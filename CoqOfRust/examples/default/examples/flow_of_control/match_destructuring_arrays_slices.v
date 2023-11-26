@@ -48,7 +48,7 @@ Definition main : M unit :=
       let* α1 : M.Val i32.t := M.alloc (- 2) in
       let* α2 : M.Val i32.t := M.alloc 6 in
       M.alloc [ α0; α1; α2 ] in
-    let* α0 := M.read array in
+    let* α0 : array i32.t := M.read array in
     let* α0 : M.Val unit :=
       match α0 with
       | [_; second; third] =>

@@ -1019,14 +1019,7 @@ Section Impl_erc20_Erc20_t_2.
               (Self := core.result.Result.t unit erc20.Error.t)
               (Trait := ltac:(refine _)))
             α4 in
-        let* α6 :
-            M.Val
-              (core.ops.control_flow.ControlFlow.t
-                (core.result.Result.t core.convert.Infallible.t erc20.Error.t)
-                unit) :=
-          M.alloc α5 in
-        let* α7 := M.read α6 in
-        match α7 with
+        match α5 with
         | core.ops.control_flow.ControlFlow.Break residual =>
           let* residual := M.alloc residual in
           let* α0 :

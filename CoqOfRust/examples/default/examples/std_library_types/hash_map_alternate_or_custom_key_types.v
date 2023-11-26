@@ -338,14 +338,8 @@ Definition try_logon
             std.collections.hash.map.RandomState.t)::["get"]
         α0
         α1 in
-    let* α3 :
-        M.Val
-          (core.option.Option.t
-            (ref hash_map_alternate_or_custom_key_types.AccountInfo.t)) :=
-      M.alloc α2 in
-    let* α4 := M.read α3 in
     let* α0 : M.Val unit :=
-      match α4 with
+      match α2 with
       | core.option.Option.Some account_info =>
         let* account_info := M.alloc account_info in
         let* _ : M.Val unit :=

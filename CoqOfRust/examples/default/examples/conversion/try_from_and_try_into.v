@@ -193,18 +193,7 @@ Definition main : M unit :=
       let* α8 :
           ref (core.result.Result.t try_from_and_try_into.EvenNumber.t unit) :=
         borrow α7 in
-      let* α9 :
-          M.Val
-            ((ref
-              (core.result.Result.t try_from_and_try_into.EvenNumber.t unit))
-            *
-            (ref
-              (core.result.Result.t
-                try_from_and_try_into.EvenNumber.t
-                unit))) :=
-        M.alloc (α4, α8) in
-      let* α10 := M.read α9 in
-      match α10 with
+      match (α4, α8) with
       | (left_val, right_val) =>
         let* right_val := M.alloc right_val in
         let* left_val := M.alloc left_val in
@@ -274,18 +263,7 @@ Definition main : M unit :=
       let* α6 :
           ref (core.result.Result.t try_from_and_try_into.EvenNumber.t unit) :=
         borrow α5 in
-      let* α7 :
-          M.Val
-            ((ref
-              (core.result.Result.t try_from_and_try_into.EvenNumber.t unit))
-            *
-            (ref
-              (core.result.Result.t
-                try_from_and_try_into.EvenNumber.t
-                unit))) :=
-        M.alloc (α4, α6) in
-      let* α8 := M.read α7 in
-      match α8 with
+      match (α4, α6) with
       | (left_val, right_val) =>
         let* right_val := M.alloc right_val in
         let* left_val := M.alloc left_val in
@@ -358,18 +336,7 @@ Definition main : M unit :=
       let* α4 :
           ref (core.result.Result.t try_from_and_try_into.EvenNumber.t unit) :=
         borrow α3 in
-      let* α5 :
-          M.Val
-            ((ref
-              (core.result.Result.t try_from_and_try_into.EvenNumber.t unit))
-            *
-            (ref
-              (core.result.Result.t
-                try_from_and_try_into.EvenNumber.t
-                unit))) :=
-        M.alloc (α0, α4) in
-      let* α6 := M.read α5 in
-      match α6 with
+      match (α0, α4) with
       | (left_val, right_val) =>
         let* right_val := M.alloc right_val in
         let* left_val := M.alloc left_val in
@@ -438,18 +405,7 @@ Definition main : M unit :=
       let* α2 :
           ref (core.result.Result.t try_from_and_try_into.EvenNumber.t unit) :=
         borrow α1 in
-      let* α3 :
-          M.Val
-            ((ref
-              (core.result.Result.t try_from_and_try_into.EvenNumber.t unit))
-            *
-            (ref
-              (core.result.Result.t
-                try_from_and_try_into.EvenNumber.t
-                unit))) :=
-        M.alloc (α0, α2) in
-      let* α4 := M.read α3 in
-      match α4 with
+      match (α0, α2) with
       | (left_val, right_val) =>
         let* right_val := M.alloc right_val in
         let* left_val := M.alloc left_val in

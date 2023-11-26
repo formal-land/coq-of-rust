@@ -31,10 +31,8 @@ Definition main : M unit :=
           (Self := core.ops.range.RangeInclusive.t i32.t)
           (Trait := ltac:(refine _)))
         α4 in
-    let* α6 : M.Val (core.ops.range.RangeInclusive.t i32.t) := M.alloc α5 in
-    let* α7 := M.read α6 in
-    let* α8 : M.Val unit :=
-      match α7 with
+    let* α6 : M.Val unit :=
+      match α5 with
       | iter =>
         let* iter := M.alloc iter in
         loop
@@ -46,9 +44,7 @@ Definition main : M unit :=
                   (Self := core.ops.range.RangeInclusive.t i32.t)
                   (Trait := ltac:(refine _)))
                 α0 in
-            let* α2 : M.Val (core.option.Option.t i32.t) := M.alloc α1 in
-            let* α3 := M.read α2 in
-            match α3 with
+            match α1 with
             | core.option.Option.None  =>
               let* α0 : M.Val never.t := Break in
               never_to_any α0
@@ -161,5 +157,5 @@ Definition main : M unit :=
             end in
           M.alloc tt)
       end in
-    let* α9 : M.Val unit := use α8 in
-    M.read α9).
+    let* α7 : M.Val unit := use α6 in
+    M.read α7).

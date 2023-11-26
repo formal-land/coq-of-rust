@@ -44,9 +44,7 @@ Module tests.
         let* α6 : ref i32.t := borrow α5 in
         let* α7 : M.Val i32.t := M.alloc 3 in
         let* α8 : ref i32.t := borrow α7 in
-        let* α9 : M.Val ((ref i32.t) * (ref i32.t)) := M.alloc (α6, α8) in
-        let* α10 := M.read α9 in
-        match α10 with
+        match (α6, α8) with
         | (left_val, right_val) =>
           let* right_val := M.alloc right_val in
           let* left_val := M.alloc left_val in
@@ -95,9 +93,7 @@ Module tests.
         let* α6 : ref i32.t := borrow α5 in
         let* α7 : M.Val i32.t := M.alloc 3 in
         let* α8 : ref i32.t := borrow α7 in
-        let* α9 : M.Val ((ref i32.t) * (ref i32.t)) := M.alloc (α6, α8) in
-        let* α10 := M.read α9 in
-        match α10 with
+        match (α6, α8) with
         | (left_val, right_val) =>
           let* right_val := M.alloc right_val in
           let* left_val := M.alloc left_val in
@@ -145,9 +141,7 @@ Definition test_add : M unit :=
       let* α6 : ref i32.t := borrow α5 in
       let* α7 : M.Val i32.t := M.alloc 3 in
       let* α8 : ref i32.t := borrow α7 in
-      let* α9 : M.Val ((ref i32.t) * (ref i32.t)) := M.alloc (α6, α8) in
-      let* α10 := M.read α9 in
-      match α10 with
+      match (α6, α8) with
       | (left_val, right_val) =>
         let* right_val := M.alloc right_val in
         let* left_val := M.alloc left_val in
@@ -196,9 +190,7 @@ Definition test_bad_add : M unit :=
       let* α6 : ref i32.t := borrow α5 in
       let* α7 : M.Val i32.t := M.alloc 3 in
       let* α8 : ref i32.t := borrow α7 in
-      let* α9 : M.Val ((ref i32.t) * (ref i32.t)) := M.alloc (α6, α8) in
-      let* α10 := M.read α9 in
-      match α10 with
+      match (α6, α8) with
       | (left_val, right_val) =>
         let* right_val := M.alloc right_val in
         let* left_val := M.alloc left_val in

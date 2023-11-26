@@ -24,7 +24,7 @@ Module checked.
       let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
       M.function_body
         (let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
-        let* α1 := M.read self in
+        let* α1 : ref result.checked.MathError.t := M.read self in
         let* α2 : M.Val (ref str.t) :=
           match α1 with
           | result.checked.MathError.DivisionByZero  =>
@@ -160,7 +160,7 @@ Section Impl_core_fmt_Debug_for_result_checked_MathError_t.
     let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
     M.function_body
       (let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
-      let* α1 := M.read self in
+      let* α1 : ref result.checked.MathError.t := M.read self in
       let* α2 : M.Val (ref str.t) :=
         match α1 with
         | result.checked.MathError.DivisionByZero  =>
@@ -294,11 +294,8 @@ Definition op (x : f64.t) (y : f64.t) : M f64.t :=
     let* α1 : f64.t := M.read y in
     let* α2 : core.result.Result.t f64.t result.checked.MathError.t :=
       result.checked.div α0 α1 in
-    let* α3 : M.Val (core.result.Result.t f64.t result.checked.MathError.t) :=
-      M.alloc α2 in
-    let* α4 := M.read α3 in
-    let* α5 : M.Val f64.t :=
-      match α4 with
+    let* α3 : M.Val f64.t :=
+      match α2 with
       | core.result.Result.Err why =>
         let* why := M.alloc why in
         let* α0 : M.Val (array (ref str.t)) := M.alloc [ mk_str "" ] in
@@ -327,11 +324,7 @@ Definition op (x : f64.t) (y : f64.t) : M f64.t :=
         let* α0 : f64.t := M.read ratio in
         let* α1 : core.result.Result.t f64.t result.checked.MathError.t :=
           result.checked.ln α0 in
-        let* α2 :
-            M.Val (core.result.Result.t f64.t result.checked.MathError.t) :=
-          M.alloc α1 in
-        let* α3 := M.read α2 in
-        match α3 with
+        match α1 with
         | core.result.Result.Err why =>
           let* why := M.alloc why in
           let* α0 : M.Val (array (ref str.t)) := M.alloc [ mk_str "" ] in
@@ -360,11 +353,7 @@ Definition op (x : f64.t) (y : f64.t) : M f64.t :=
           let* α0 : f64.t := M.read ln in
           let* α1 : core.result.Result.t f64.t result.checked.MathError.t :=
             result.checked.sqrt α0 in
-          let* α2 :
-              M.Val (core.result.Result.t f64.t result.checked.MathError.t) :=
-            M.alloc α1 in
-          let* α3 := M.read α2 in
-          match α3 with
+          match α1 with
           | core.result.Result.Err why =>
             let* why := M.alloc why in
             let* α0 : M.Val (array (ref str.t)) := M.alloc [ mk_str "" ] in
@@ -395,7 +384,7 @@ Definition op (x : f64.t) (y : f64.t) : M f64.t :=
           end
         end
       end in
-    M.read α5).
+    M.read α3).
 
 (*
 fn main() {

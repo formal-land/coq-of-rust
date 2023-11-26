@@ -24,7 +24,8 @@ Module checked.
       let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
       M.function_body
         (let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
-        let* α1 := M.read self in
+        let* α1 : ref result_chaining_with_question_mark.checked.MathError.t :=
+          M.read self in
         let* α2 : M.Val (ref str.t) :=
           match α1 with
           |
@@ -209,17 +210,8 @@ Module checked.
                   result_chaining_with_question_mark.checked.MathError.t)
               (Trait := ltac:(refine _)))
             α2 in
-        let* α4 :
-            M.Val
-              (core.ops.control_flow.ControlFlow.t
-                (core.result.Result.t
-                  core.convert.Infallible.t
-                  result_chaining_with_question_mark.checked.MathError.t)
-                f64.t) :=
-          M.alloc α3 in
-        let* α5 := M.read α4 in
-        let* α6 : M.Val f64.t :=
-          match α5 with
+        let* α4 : M.Val f64.t :=
+          match α3 with
           | core.ops.control_flow.ControlFlow.Break residual =>
             let* residual := M.alloc residual in
             let* α0 :
@@ -244,7 +236,7 @@ Module checked.
             let* val := M.alloc val in
             M.pure val
           end in
-        M.copy α6 in
+        M.copy α4 in
       let* ln : M.Val f64.t :=
         let* α0 : f64.t := M.read ratio in
         let* α1 :
@@ -265,17 +257,8 @@ Module checked.
                   result_chaining_with_question_mark.checked.MathError.t)
               (Trait := ltac:(refine _)))
             α1 in
-        let* α3 :
-            M.Val
-              (core.ops.control_flow.ControlFlow.t
-                (core.result.Result.t
-                  core.convert.Infallible.t
-                  result_chaining_with_question_mark.checked.MathError.t)
-                f64.t) :=
-          M.alloc α2 in
-        let* α4 := M.read α3 in
-        let* α5 : M.Val f64.t :=
-          match α4 with
+        let* α3 : M.Val f64.t :=
+          match α2 with
           | core.ops.control_flow.ControlFlow.Break residual =>
             let* residual := M.alloc residual in
             let* α0 :
@@ -300,7 +283,7 @@ Module checked.
             let* val := M.alloc val in
             M.pure val
           end in
-        M.copy α5 in
+        M.copy α3 in
       let* α0 : f64.t := M.read ln in
       let* α1 :
           core.result.Result.t
@@ -341,18 +324,12 @@ Module checked.
             f64.t
             result_chaining_with_question_mark.checked.MathError.t :=
         result_chaining_with_question_mark.checked.op_ α0 α1 in
-      let* α3 :
-          M.Val
-            (core.result.Result.t
-              f64.t
-              result_chaining_with_question_mark.checked.MathError.t) :=
-        M.alloc α2 in
-      let* α4 := M.read α3 in
-      let* α5 : M.Val unit :=
-        match α4 with
+      let* α3 : M.Val unit :=
+        match α2 with
         | core.result.Result.Err why =>
           let* why := M.alloc why in
-          let* α0 := M.read why in
+          let* α0 : result_chaining_with_question_mark.checked.MathError.t :=
+            M.read why in
           let* α1 : M.Val (ref str.t) :=
             match α0 with
             |
@@ -406,7 +383,7 @@ Module checked.
             M.alloc α14 in
           M.alloc tt
         end in
-      M.read α5).
+      M.read α3).
 End checked.
 
 Module MathError.
@@ -431,7 +408,8 @@ Section Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathE
     let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
     M.function_body
       (let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
-      let* α1 := M.read self in
+      let* α1 : ref result_chaining_with_question_mark.checked.MathError.t :=
+        M.read self in
       let* α2 : M.Val (ref str.t) :=
         match α1 with
         |
@@ -615,17 +593,8 @@ Definition op_
                 result_chaining_with_question_mark.checked.MathError.t)
             (Trait := ltac:(refine _)))
           α2 in
-      let* α4 :
-          M.Val
-            (core.ops.control_flow.ControlFlow.t
-              (core.result.Result.t
-                core.convert.Infallible.t
-                result_chaining_with_question_mark.checked.MathError.t)
-              f64.t) :=
-        M.alloc α3 in
-      let* α5 := M.read α4 in
-      let* α6 : M.Val f64.t :=
-        match α5 with
+      let* α4 : M.Val f64.t :=
+        match α3 with
         | core.ops.control_flow.ControlFlow.Break residual =>
           let* residual := M.alloc residual in
           let* α0 :
@@ -650,7 +619,7 @@ Definition op_
           let* val := M.alloc val in
           M.pure val
         end in
-      M.copy α6 in
+      M.copy α4 in
     let* ln : M.Val f64.t :=
       let* α0 : f64.t := M.read ratio in
       let* α1 :
@@ -671,17 +640,8 @@ Definition op_
                 result_chaining_with_question_mark.checked.MathError.t)
             (Trait := ltac:(refine _)))
           α1 in
-      let* α3 :
-          M.Val
-            (core.ops.control_flow.ControlFlow.t
-              (core.result.Result.t
-                core.convert.Infallible.t
-                result_chaining_with_question_mark.checked.MathError.t)
-              f64.t) :=
-        M.alloc α2 in
-      let* α4 := M.read α3 in
-      let* α5 : M.Val f64.t :=
-        match α4 with
+      let* α3 : M.Val f64.t :=
+        match α2 with
         | core.ops.control_flow.ControlFlow.Break residual =>
           let* residual := M.alloc residual in
           let* α0 :
@@ -706,7 +666,7 @@ Definition op_
           let* val := M.alloc val in
           M.pure val
         end in
-      M.copy α5 in
+      M.copy α3 in
     let* α0 : f64.t := M.read ln in
     let* α1 :
         core.result.Result.t
@@ -747,18 +707,12 @@ Definition op (x : f64.t) (y : f64.t) : M unit :=
           f64.t
           result_chaining_with_question_mark.checked.MathError.t :=
       result_chaining_with_question_mark.checked.op_ α0 α1 in
-    let* α3 :
-        M.Val
-          (core.result.Result.t
-            f64.t
-            result_chaining_with_question_mark.checked.MathError.t) :=
-      M.alloc α2 in
-    let* α4 := M.read α3 in
-    let* α5 : M.Val unit :=
-      match α4 with
+    let* α3 : M.Val unit :=
+      match α2 with
       | core.result.Result.Err why =>
         let* why := M.alloc why in
-        let* α0 := M.read why in
+        let* α0 : result_chaining_with_question_mark.checked.MathError.t :=
+          M.read why in
         let* α1 : M.Val (ref str.t) :=
           match α0 with
           |
@@ -811,7 +765,7 @@ Definition op (x : f64.t) (y : f64.t) : M unit :=
           M.alloc α14 in
         M.alloc tt
       end in
-    M.read α5).
+    M.read α3).
 
 (*
 fn main() {

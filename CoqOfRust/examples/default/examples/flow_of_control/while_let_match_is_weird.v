@@ -37,7 +37,7 @@ Definition main : M unit :=
       M.alloc (core.option.Option.Some α1) in
     let* α0 : M.Val unit :=
       loop
-        (let* α0 := M.read optional in
+        (let* α0 : core.option.Option.t i32.t := M.read optional in
         match α0 with
         | core.option.Option.Some i =>
           let* i := M.alloc i in

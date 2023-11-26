@@ -38,12 +38,8 @@ Definition main : M unit :=
       let* α0 : ref (ref std.path.Path.t) := borrow path in
       let* α1 : core.result.Result.t std.fs.File.t std.io.error.Error.t :=
         std.fs.File.t::["open"] α0 in
-      let* α2 :
-          M.Val (core.result.Result.t std.fs.File.t std.io.error.Error.t) :=
-        M.alloc α1 in
-      let* α3 := M.read α2 in
-      let* α4 : M.Val std.fs.File.t :=
-        match α3 with
+      let* α2 : M.Val std.fs.File.t :=
+        match α1 with
         | core.result.Result.Err why =>
           let* why := M.alloc why in
           let* α0 : M.Val (array (ref str.t)) :=
@@ -78,7 +74,7 @@ Definition main : M unit :=
           let* file := M.alloc file in
           M.pure file
         end in
-      M.copy α4 in
+      M.copy α2 in
     let* s : M.Val alloc.string.String.t :=
       let* α0 : alloc.string.String.t := alloc.string.String.t::["new"] in
       M.alloc α0 in
@@ -90,11 +86,8 @@ Definition main : M unit :=
           (Trait := ltac:(refine _)))
         α0
         α1 in
-    let* α3 : M.Val (core.result.Result.t usize.t std.io.error.Error.t) :=
-      M.alloc α2 in
-    let* α4 := M.read α3 in
     let* α0 : M.Val unit :=
-      match α4 with
+      match α2 with
       | core.result.Result.Err why =>
         let* why := M.alloc why in
         let* α0 : M.Val (array (ref str.t)) :=

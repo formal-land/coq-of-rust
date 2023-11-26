@@ -58,10 +58,7 @@ Definition main : M unit :=
       let* α2 : M.Val (ref (slice u32.t)) := M.alloc α1 in
       let* α3 : ref (ref (slice u32.t)) := borrow α2 in
       let* α4 : ref (ref (slice u32.t)) := borrow my_slice in
-      let* α5 : M.Val ((ref (ref (slice u32.t))) * (ref (ref (slice u32.t)))) :=
-        M.alloc (α3, α4) in
-      let* α6 := M.read α5 in
-      match α6 with
+      match (α3, α4) with
       | (left_val, right_val) =>
         let* right_val := M.alloc right_val in
         let* left_val := M.alloc left_val in

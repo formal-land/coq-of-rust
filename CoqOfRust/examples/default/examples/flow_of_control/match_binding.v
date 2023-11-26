@@ -46,10 +46,8 @@ Definition main : M unit :=
         M.alloc α6 in
       M.alloc tt in
     let* α0 : u32.t := match_binding.age in
-    let* α1 : M.Val u32.t := M.alloc α0 in
-    let* α2 := M.read α1 in
     let* α0 : M.Val unit :=
-      match α2 with
+      match α0 with
       | _ =>
         let* _ : M.Val unit :=
           let* α0 : M.Val (array (ref str.t)) :=

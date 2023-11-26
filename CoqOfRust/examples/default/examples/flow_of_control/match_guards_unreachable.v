@@ -19,7 +19,7 @@ Definition main : M unit :=
     (let* number : M.Val u8.t :=
       let* α0 : M.Val u8.t := M.alloc 4 in
       M.copy α0 in
-    let* α0 := M.read number in
+    let* α0 : u8.t := M.read number in
     let* α0 : M.Val unit :=
       match α0 with
       | i =>

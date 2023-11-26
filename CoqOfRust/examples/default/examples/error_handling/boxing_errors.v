@@ -219,7 +219,11 @@ fn print(result: Result<i32>) {
 Definition print (result : ltac:(boxing_errors.Result i32.t)) : M unit :=
   let* result : M.Val ltac:(boxing_errors.Result i32.t) := M.alloc result in
   M.function_body
-    (let* α0 := M.read result in
+    (let* α0 :
+        core.result.Result.t
+          i32.t
+          (alloc.boxed.Box.t type not implemented alloc.alloc.Global.t) :=
+      M.read result in
     let* α1 : M.Val unit :=
       match α0 with
       | core.result.Result.Ok n =>

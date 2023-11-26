@@ -140,17 +140,8 @@ Definition double_first
                 other_uses_of_question_mark.EmptyVec.t)
             (Trait := ltac:(refine _)))
           α3 in
-      let* α5 :
-          M.Val
-            (core.ops.control_flow.ControlFlow.t
-              (core.result.Result.t
-                core.convert.Infallible.t
-                other_uses_of_question_mark.EmptyVec.t)
-              (ref (ref str.t))) :=
-        M.alloc α4 in
-      let* α6 := M.read α5 in
-      let* α7 : M.Val (ref (ref str.t)) :=
-        match α6 with
+      let* α5 : M.Val (ref (ref str.t)) :=
+        match α4 with
         | core.ops.control_flow.ControlFlow.Break residual =>
           let* residual := M.alloc residual in
           let* α0 :
@@ -177,7 +168,7 @@ Definition double_first
           let* val := M.alloc val in
           M.pure val
         end in
-      M.copy α7 in
+      M.copy α5 in
     let* parsed : M.Val i32.t :=
       let* α0 : ref (ref str.t) := M.read first in
       let* α1 : M.Val (ref str.t) := deref α0 in
@@ -194,17 +185,8 @@ Definition double_first
             (Self := core.result.Result.t i32.t core.num.error.ParseIntError.t)
             (Trait := ltac:(refine _)))
           α3 in
-      let* α5 :
-          M.Val
-            (core.ops.control_flow.ControlFlow.t
-              (core.result.Result.t
-                core.convert.Infallible.t
-                core.num.error.ParseIntError.t)
-              i32.t) :=
-        M.alloc α4 in
-      let* α6 := M.read α5 in
-      let* α7 : M.Val i32.t :=
-        match α6 with
+      let* α5 : M.Val i32.t :=
+        match α4 with
         | core.ops.control_flow.ControlFlow.Break residual =>
           let* residual := M.alloc residual in
           let* α0 :
@@ -231,7 +213,7 @@ Definition double_first
           let* val := M.alloc val in
           M.pure val
         end in
-      M.copy α7 in
+      M.copy α5 in
     let* α0 : M.Val i32.t := M.alloc 2 in
     let* α1 : M.Val i32.t := BinOp.mul α0 parsed in
     let* α2 : i32.t := M.read α1 in
@@ -257,7 +239,11 @@ Definition print
   let* result : M.Val ltac:(other_uses_of_question_mark.Result i32.t) :=
     M.alloc result in
   M.function_body
-    (let* α0 := M.read result in
+    (let* α0 :
+        core.result.Result.t
+          i32.t
+          (alloc.boxed.Box.t type not implemented alloc.alloc.Global.t) :=
+      M.read result in
     let* α1 : M.Val unit :=
       match α0 with
       | core.result.Result.Ok n =>

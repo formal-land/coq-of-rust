@@ -35,9 +35,7 @@ Definition main : M unit :=
       let* α2 : M.Val u64.t := M.alloc 6 in
       let* α3 : M.Val u64.t := BinOp.mul α1 α2 in
       let* α4 : ref u64.t := borrow α3 in
-      let* α5 : M.Val ((ref u64.t) * (ref u64.t)) := M.alloc (α0, α4) in
-      let* α6 := M.read α5 in
-      match α6 with
+      match (α0, α4) with
       | (left_val, right_val) =>
         let* right_val := M.alloc right_val in
         let* left_val := M.alloc left_val in

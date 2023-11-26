@@ -186,7 +186,9 @@ Definition print
   let* result : M.Val ltac:(defining_an_error_type.Result i32.t) :=
     M.alloc result in
   M.function_body
-    (let* α0 := M.read result in
+    (let* α0 :
+        core.result.Result.t i32.t defining_an_error_type.DoubleError.t :=
+      M.read result in
     let* α1 : M.Val unit :=
       match α0 with
       | core.result.Result.Ok n =>

@@ -19,7 +19,7 @@ fn call(number: &str) -> &str {
 Definition call (number : ref str.t) : M (ref str.t) :=
   let* number : M.Val (ref str.t) := M.alloc number in
   M.function_body
-    (let* α0 := M.read number in
+    (let* α0 : ref str.t := M.read number in
     let* α1 : M.Val (ref str.t) :=
       match α0 with
       | _ =>
@@ -186,9 +186,7 @@ Definition main : M unit :=
               std.collections.hash.map.RandomState.t)::["get"]
           α0
           α1 in
-      let* α3 : M.Val (core.option.Option.t (ref (ref str.t))) := M.alloc α2 in
-      let* α4 := M.read α3 in
-      match α4 with
+      match α2 with
       | core.option.Option.Some number =>
         let* number := M.alloc number in
         let* _ : M.Val unit :=
@@ -270,9 +268,7 @@ Definition main : M unit :=
               std.collections.hash.map.RandomState.t)::["get"]
           α0
           α1 in
-      let* α3 : M.Val (core.option.Option.t (ref (ref str.t))) := M.alloc α2 in
-      let* α4 := M.read α3 in
-      match α4 with
+      match α2 with
       | core.option.Option.Some number =>
         let* number := M.alloc number in
         let* _ : M.Val unit :=
@@ -354,11 +350,8 @@ Definition main : M unit :=
           (Self := std.collections.hash.map.Iter.t (ref str.t) (ref str.t))
           (Trait := ltac:(refine _)))
         α1 in
-    let* α3 : M.Val (std.collections.hash.map.Iter.t (ref str.t) (ref str.t)) :=
-      M.alloc α2 in
-    let* α4 := M.read α3 in
-    let* α5 : M.Val unit :=
-      match α4 with
+    let* α3 : M.Val unit :=
+      match α2 with
       | iter =>
         let* iter := M.alloc iter in
         loop
@@ -374,13 +367,7 @@ Definition main : M unit :=
                     std.collections.hash.map.Iter.t (ref str.t) (ref str.t))
                   (Trait := ltac:(refine _)))
                 α0 in
-            let* α2 :
-                M.Val
-                  (core.option.Option.t
-                    ((ref (ref str.t)) * (ref (ref str.t)))) :=
-              M.alloc α1 in
-            let* α3 := M.read α2 in
-            match α3 with
+            match α1 with
             | core.option.Option.None  =>
               let* α0 : M.Val never.t := Break in
               never_to_any α0
@@ -425,5 +412,5 @@ Definition main : M unit :=
             end in
           M.alloc tt)
       end in
-    let* α0 : M.Val unit := use α5 in
+    let* α0 : M.Val unit := use α3 in
     M.read α0).

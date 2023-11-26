@@ -97,10 +97,8 @@ Definition sum_odd_numbers (up_to : u32.t) : M u32.t :=
             (Trait := ltac:(refine _)))
           {| core.ops.range.Range.start := α1; core.ops.range.Range.end := α2;
           |} in
-      let* α4 : M.Val (core.ops.range.Range.t u32.t) := M.alloc α3 in
-      let* α5 := M.read α4 in
-      let* α6 : M.Val unit :=
-        match α5 with
+      let* α4 : M.Val unit :=
+        match α3 with
         | iter =>
           let* iter := M.alloc iter in
           loop
@@ -112,9 +110,7 @@ Definition sum_odd_numbers (up_to : u32.t) : M u32.t :=
                     (Self := core.ops.range.Range.t u32.t)
                     (Trait := ltac:(refine _)))
                   α0 in
-              let* α2 : M.Val (core.option.Option.t u32.t) := M.alloc α1 in
-              let* α3 := M.read α2 in
-              match α3 with
+              match α1 with
               | core.option.Option.None  =>
                 let* α0 : M.Val never.t := Break in
                 never_to_any α0
@@ -125,7 +121,7 @@ Definition sum_odd_numbers (up_to : u32.t) : M u32.t :=
                   let* α1 : M.Val u32.t := BinOp.rem i α0 in
                   let* α2 : M.Val u32.t := M.alloc 1 in
                   let* α3 : M.Val bool.t := BinOp.eq α1 α2 in
-                  let* α4 := M.read α3 in
+                  let* α4 : bool.t := M.read α3 in
                   let* α5 : M.Val u32.t :=
                     match α4 with
                     | _ => M.pure i
@@ -139,5 +135,5 @@ Definition sum_odd_numbers (up_to : u32.t) : M u32.t :=
               end in
             M.alloc tt)
         end in
-      use α6 in
+      use α4 in
     M.read acc).

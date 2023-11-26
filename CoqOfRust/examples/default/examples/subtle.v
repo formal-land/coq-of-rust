@@ -637,15 +637,8 @@ Section Impl_subtle_ConstantTimeEq_for_slice_T.
                   (core.slice.iter.Iter.t T))
               (Trait := ltac:(refine _)))
             α4 in
-        let* α6 :
-            M.Val
-              (core.iter.adapters.zip.Zip.t
-                (core.slice.iter.Iter.t T)
-                (core.slice.iter.Iter.t T)) :=
-          M.alloc α5 in
-        let* α7 := M.read α6 in
-        let* α8 : M.Val unit :=
-          match α7 with
+        let* α6 : M.Val unit :=
+          match α5 with
           | iter =>
             let* iter := M.alloc iter in
             loop
@@ -664,10 +657,7 @@ Section Impl_subtle_ConstantTimeEq_for_slice_T.
                           (core.slice.iter.Iter.t T))
                       (Trait := ltac:(refine _)))
                     α0 in
-                let* α2 : M.Val (core.option.Option.t ((ref T) * (ref T))) :=
-                  M.alloc α1 in
-                let* α3 := M.read α2 in
-                match α3 with
+                match α1 with
                 | core.option.Option.None  =>
                   let* α0 : M.Val never.t := Break in
                   never_to_any α0
@@ -692,7 +682,7 @@ Section Impl_subtle_ConstantTimeEq_for_slice_T.
                 end in
               M.alloc tt)
           end in
-        use α8 in
+        use α6 in
       let* α0 : u8.t := M.read x in
       let* α1 : subtle.Choice.t :=
         (core.convert.Into.into (Self := u8.t) (Trait := ltac:(refine _))) α0 in
@@ -2933,9 +2923,7 @@ Section Impl_subtle_CtOption_t_T.
         let* α3 : ref u8.t := borrow α2 in
         let* α4 : M.Val u8.t := M.alloc 1 in
         let* α5 : ref u8.t := borrow α4 in
-        let* α6 : M.Val ((ref u8.t) * (ref u8.t)) := M.alloc (α3, α5) in
-        let* α7 := M.read α6 in
-        match α7 with
+        match (α3, α5) with
         | (left_val, right_val) =>
           let* right_val := M.alloc right_val in
           let* left_val := M.alloc left_val in
@@ -3010,9 +2998,7 @@ Section Impl_subtle_CtOption_t_T.
         let* α3 : ref u8.t := borrow α2 in
         let* α4 : M.Val u8.t := M.alloc 1 in
         let* α5 : ref u8.t := borrow α4 in
-        let* α6 : M.Val ((ref u8.t) * (ref u8.t)) := M.alloc (α3, α5) in
-        let* α7 := M.read α6 in
-        match α7 with
+        match (α3, α5) with
         | (left_val, right_val) =>
           let* right_val := M.alloc right_val in
           let* left_val := M.alloc left_val in

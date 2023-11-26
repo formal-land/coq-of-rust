@@ -24,21 +24,13 @@ Definition multiply
       str.t::["parse"] α0 in
     let* α2 :
         M.Val (core.result.Result.t i32.t core.num.error.ParseIntError.t) :=
-      M.alloc α1 in
-    let* α3 := M.read α2 in
-    let* α4 :
-        M.Val (core.result.Result.t i32.t core.num.error.ParseIntError.t) :=
-      match α3 with
+      match α1 with
       | core.result.Result.Ok first_number =>
         let* first_number := M.alloc first_number in
         let* α0 : ref str.t := M.read second_number_str in
         let* α1 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
           str.t::["parse"] α0 in
-        let* α2 :
-            M.Val (core.result.Result.t i32.t core.num.error.ParseIntError.t) :=
-          M.alloc α1 in
-        let* α3 := M.read α2 in
-        match α3 with
+        match α1 with
         | core.result.Result.Ok second_number =>
           let* second_number := M.alloc second_number in
           let* α0 : M.Val i32.t := BinOp.mul first_number second_number in
@@ -54,7 +46,7 @@ Definition multiply
         let* α0 : core.num.error.ParseIntError.t := M.read e in
         M.alloc (core.result.Result.Err α0)
       end in
-    M.read α4).
+    M.read α2).
 
 (*
 fn print(result: Result<i32, ParseIntError>) {
@@ -71,7 +63,8 @@ Definition print
       M.Val (core.result.Result.t i32.t core.num.error.ParseIntError.t) :=
     M.alloc result in
   M.function_body
-    (let* α0 := M.read result in
+    (let* α0 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
+      M.read result in
     let* α1 : M.Val unit :=
       match α0 with
       | core.result.Result.Ok n =>

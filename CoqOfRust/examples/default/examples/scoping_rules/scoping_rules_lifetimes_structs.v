@@ -144,7 +144,7 @@ Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either_t.
     let* self : M.Val (ref ltac:(Self)) := M.alloc self in
     let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
     M.function_body
-      (let* α0 := M.read self in
+      (let* α0 : ref scoping_rules_lifetimes_structs.Either.t := M.read self in
       let* α1 : M.Val (core.result.Result.t unit core.fmt.Error.t) :=
         match α0 with
         | scoping_rules_lifetimes_structs.Either.Num __self_0 =>

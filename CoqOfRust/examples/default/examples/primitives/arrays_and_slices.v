@@ -301,10 +301,7 @@ Definition main : M unit :=
       let* α4 : ref (array u32.t) := borrow α3 in
       let* α5 : M.Val (ref (array u32.t)) := M.alloc α4 in
       let* α6 : ref (ref (array u32.t)) := borrow α5 in
-      let* α7 : M.Val ((ref (ref (array u32.t))) * (ref (ref (array u32.t)))) :=
-        M.alloc (α2, α6) in
-      let* α8 := M.read α7 in
-      match α8 with
+      match (α2, α6) with
       | (left_val, right_val) =>
         let* right_val := M.alloc right_val in
         let* left_val := M.alloc left_val in
@@ -349,10 +346,7 @@ Definition main : M unit :=
           core.ops.range.RangeFull.Build_t in
       let* α6 : M.Val (ref (slice u32.t)) := M.alloc α5 in
       let* α7 : ref (ref (slice u32.t)) := borrow α6 in
-      let* α8 : M.Val ((ref (ref (array u32.t))) * (ref (ref (slice u32.t)))) :=
-        M.alloc (α2, α7) in
-      let* α9 := M.read α8 in
-      match α9 with
+      match (α2, α7) with
       | (left_val, right_val) =>
         let* right_val := M.alloc right_val in
         let* left_val := M.alloc left_val in
@@ -400,10 +394,8 @@ Definition main : M unit :=
           (Trait := ltac:(refine _)))
         {| core.ops.range.Range.start := α1; core.ops.range.Range.end := α10;
         |} in
-    let* α12 : M.Val (core.ops.range.Range.t usize.t) := M.alloc α11 in
-    let* α13 := M.read α12 in
-    let* α14 : M.Val unit :=
-      match α13 with
+    let* α12 : M.Val unit :=
+      match α11 with
       | iter =>
         let* iter := M.alloc iter in
         loop
@@ -415,9 +407,7 @@ Definition main : M unit :=
                   (Self := core.ops.range.Range.t usize.t)
                   (Trait := ltac:(refine _)))
                 α0 in
-            let* α2 : M.Val (core.option.Option.t usize.t) := M.alloc α1 in
-            let* α3 := M.read α2 in
-            match α3 with
+            match α1 with
             | core.option.Option.None  =>
               let* α0 : M.Val never.t := Break in
               never_to_any α0
@@ -431,10 +421,7 @@ Definition main : M unit :=
               let* α4 : usize.t := M.read i in
               let* α5 : core.option.Option.t (ref i32.t) :=
                 (slice i32.t)::["get"] α3 α4 in
-              let* α6 : M.Val (core.option.Option.t (ref i32.t)) :=
-                M.alloc α5 in
-              let* α7 := M.read α6 in
-              match α7 with
+              match α5 with
               | core.option.Option.Some xval =>
                 let* xval := M.alloc xval in
                 let* _ : M.Val unit :=
@@ -498,5 +485,5 @@ Definition main : M unit :=
             end in
           M.alloc tt)
       end in
-    let* α0 : M.Val unit := use α14 in
+    let* α0 : M.Val unit := use α12 in
     M.read α0).

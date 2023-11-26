@@ -64,7 +64,7 @@ Definition main : M unit :=
         M.alloc α14 in
       M.alloc tt in
     let* _ : M.Val unit :=
-      let* α0 := M.read number in
+      let* α0 : i32.t := M.read number in
       match α0 with
       | _ =>
         let* _ : M.Val unit :=
@@ -129,7 +129,7 @@ Definition main : M unit :=
       let* α0 : M.Val bool.t := M.alloc true in
       M.copy α0 in
     let* binary : M.Val i32.t :=
-      let* α0 := M.read boolean in
+      let* α0 : bool.t := M.read boolean in
       let* α1 : M.Val i32.t :=
         match α0 with
         | _ => M.alloc 0

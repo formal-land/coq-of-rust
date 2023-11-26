@@ -29,7 +29,7 @@ Definition main : M unit :=
       let* α0 : M.Val i32.t := M.alloc 35 in
       let* α1 : i32.t := M.read α0 in
       M.alloc (match_guards.Temperature.Celsius α1) in
-    let* α0 := M.read temperature in
+    let* α0 : match_guards.Temperature.t := M.read temperature in
     let* α0 : M.Val unit :=
       match α0 with
       | match_guards.Temperature.Celsius t =>

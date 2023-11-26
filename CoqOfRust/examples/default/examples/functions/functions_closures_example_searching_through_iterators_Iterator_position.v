@@ -68,14 +68,7 @@ Definition main : M unit :=
       let* α3 : M.Val (core.option.Option.t usize.t) :=
         M.alloc (core.option.Option.Some α2) in
       let* α4 : ref (core.option.Option.t usize.t) := borrow α3 in
-      let* α5 :
-          M.Val
-            ((ref (core.option.Option.t usize.t))
-            *
-            (ref (core.option.Option.t usize.t))) :=
-        M.alloc (α0, α4) in
-      let* α6 := M.read α5 in
-      match α6 with
+      match (α0, α4) with
       | (left_val, right_val) =>
         let* right_val := M.alloc right_val in
         let* left_val := M.alloc left_val in
@@ -137,14 +130,7 @@ Definition main : M unit :=
       let* α1 : M.Val (core.option.Option.t usize.t) :=
         M.alloc core.option.Option.None in
       let* α2 : ref (core.option.Option.t usize.t) := borrow α1 in
-      let* α3 :
-          M.Val
-            ((ref (core.option.Option.t usize.t))
-            *
-            (ref (core.option.Option.t usize.t))) :=
-        M.alloc (α0, α2) in
-      let* α4 := M.read α3 in
-      match α4 with
+      match (α0, α2) with
       | (left_val, right_val) =>
         let* right_val := M.alloc right_val in
         let* left_val := M.alloc left_val in
