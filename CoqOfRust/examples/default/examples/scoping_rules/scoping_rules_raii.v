@@ -79,16 +79,14 @@ Definition main : M unit :=
           (let* _ : M.Val unit :=
             let* α0 : mut_ref (core.ops.range.Range.t u32.t) :=
               borrow_mut iter in
-            let* α1 : M.Val (core.ops.range.Range.t u32.t) := deref α0 in
-            let* α2 : mut_ref (core.ops.range.Range.t u32.t) := borrow_mut α1 in
-            let* α3 : core.option.Option.t u32.t :=
+            let* α1 : core.option.Option.t u32.t :=
               (core.iter.traits.iterator.Iterator.next
                   (Self := core.ops.range.Range.t u32.t)
                   (Trait := ltac:(refine _)))
-                α2 in
-            let* α4 : M.Val (core.option.Option.t u32.t) := M.alloc α3 in
-            let* α5 := M.read α4 in
-            match α5 with
+                α0 in
+            let* α2 : M.Val (core.option.Option.t u32.t) := M.alloc α1 in
+            let* α3 := M.read α2 in
+            match α3 with
             | core.option.Option.None  =>
               let* α0 : M.Val never.t := Break in
               never_to_any α0

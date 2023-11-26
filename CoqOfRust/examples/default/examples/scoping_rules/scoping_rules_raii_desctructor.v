@@ -25,16 +25,14 @@ Section Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop_t.
             M.alloc [ mk_str "ToDrop is being dropped
 " ] in
           let* α1 : ref (array (ref str.t)) := borrow α0 in
-          let* α2 : M.Val (array (ref str.t)) := deref α1 in
-          let* α3 : ref (array (ref str.t)) := borrow α2 in
-          let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
-          let* α5 : M.Val (ref (slice (ref str.t))) :=
-            pointer_coercion "Unsize" α4 in
-          let* α6 : ref (slice (ref str.t)) := M.read α5 in
-          let* α7 : core.fmt.Arguments.t :=
-            core.fmt.Arguments.t::["new_const"] α6 in
-          let* α8 : unit := std.io.stdio._print α7 in
-          M.alloc α8 in
+          let* α2 : M.Val (ref (array (ref str.t))) := M.alloc α1 in
+          let* α3 : M.Val (ref (slice (ref str.t))) :=
+            pointer_coercion "Unsize" α2 in
+          let* α4 : ref (slice (ref str.t)) := M.read α3 in
+          let* α5 : core.fmt.Arguments.t :=
+            core.fmt.Arguments.t::["new_const"] α4 in
+          let* α6 : unit := std.io.stdio._print α5 in
+          M.alloc α6 in
         M.alloc tt in
       let* α0 : M.Val unit := M.alloc tt in
       M.read α0).
@@ -67,16 +65,14 @@ Definition main : M unit :=
           M.alloc [ mk_str "Made a ToDrop!
 " ] in
         let* α1 : ref (array (ref str.t)) := borrow α0 in
-        let* α2 : M.Val (array (ref str.t)) := deref α1 in
-        let* α3 : ref (array (ref str.t)) := borrow α2 in
-        let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
-        let* α5 : M.Val (ref (slice (ref str.t))) :=
-          pointer_coercion "Unsize" α4 in
-        let* α6 : ref (slice (ref str.t)) := M.read α5 in
-        let* α7 : core.fmt.Arguments.t :=
-          core.fmt.Arguments.t::["new_const"] α6 in
-        let* α8 : unit := std.io.stdio._print α7 in
-        M.alloc α8 in
+        let* α2 : M.Val (ref (array (ref str.t))) := M.alloc α1 in
+        let* α3 : M.Val (ref (slice (ref str.t))) :=
+          pointer_coercion "Unsize" α2 in
+        let* α4 : ref (slice (ref str.t)) := M.read α3 in
+        let* α5 : core.fmt.Arguments.t :=
+          core.fmt.Arguments.t::["new_const"] α4 in
+        let* α6 : unit := std.io.stdio._print α5 in
+        M.alloc α6 in
       M.alloc tt in
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0).

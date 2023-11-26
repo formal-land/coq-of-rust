@@ -39,31 +39,25 @@ Section Impl_core_fmt_Display_for_converting_to_string_Circle_t.
       let* α3 : M.Val (array (ref str.t)) :=
         M.alloc [ mk_str "Circle of radius " ] in
       let* α4 : ref (array (ref str.t)) := borrow α3 in
-      let* α5 : M.Val (array (ref str.t)) := deref α4 in
-      let* α6 : ref (array (ref str.t)) := borrow α5 in
-      let* α7 : M.Val (ref (array (ref str.t))) := M.alloc α6 in
-      let* α8 : M.Val (ref (slice (ref str.t))) :=
-        pointer_coercion "Unsize" α7 in
-      let* α9 : ref (slice (ref str.t)) := M.read α8 in
-      let* α10 : ref converting_to_string.Circle.t := M.read self in
-      let* α11 : M.Val converting_to_string.Circle.t := deref α10 in
-      let* α12 : ref i32.t := borrow α11.["radius"] in
-      let* α13 : M.Val i32.t := deref α12 in
-      let* α14 : ref i32.t := borrow α13 in
-      let* α15 : core.fmt.rt.Argument.t :=
-        core.fmt.rt.Argument.t::["new_display"] α14 in
-      let* α16 : M.Val core.fmt.rt.Argument.t := M.alloc α15 in
-      let* α17 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α16 ] in
-      let* α18 : ref (array core.fmt.rt.Argument.t) := borrow α17 in
-      let* α19 : M.Val (array core.fmt.rt.Argument.t) := deref α18 in
-      let* α20 : ref (array core.fmt.rt.Argument.t) := borrow α19 in
-      let* α21 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α20 in
-      let* α22 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
-        pointer_coercion "Unsize" α21 in
-      let* α23 : ref (slice core.fmt.rt.Argument.t) := M.read α22 in
-      let* α24 : core.fmt.Arguments.t :=
-        core.fmt.Arguments.t::["new_v1"] α9 α23 in
-      core.fmt.Formatter.t::["write_fmt"] α2 α24).
+      let* α5 : M.Val (ref (array (ref str.t))) := M.alloc α4 in
+      let* α6 : M.Val (ref (slice (ref str.t))) :=
+        pointer_coercion "Unsize" α5 in
+      let* α7 : ref (slice (ref str.t)) := M.read α6 in
+      let* α8 : ref converting_to_string.Circle.t := M.read self in
+      let* α9 : M.Val converting_to_string.Circle.t := deref α8 in
+      let* α10 : ref i32.t := borrow α9.["radius"] in
+      let* α11 : core.fmt.rt.Argument.t :=
+        core.fmt.rt.Argument.t::["new_display"] α10 in
+      let* α12 : M.Val core.fmt.rt.Argument.t := M.alloc α11 in
+      let* α13 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α12 ] in
+      let* α14 : ref (array core.fmt.rt.Argument.t) := borrow α13 in
+      let* α15 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α14 in
+      let* α16 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
+        pointer_coercion "Unsize" α15 in
+      let* α17 : ref (slice core.fmt.rt.Argument.t) := M.read α16 in
+      let* α18 : core.fmt.Arguments.t :=
+        core.fmt.Arguments.t::["new_v1"] α7 α17 in
+      core.fmt.Formatter.t::["write_fmt"] α2 α18).
   
   Global Instance AssociatedFunction_fmt :
     Notations.DoubleColon ltac:(Self) "fmt" := {

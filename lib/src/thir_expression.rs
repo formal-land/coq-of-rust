@@ -162,7 +162,7 @@ fn compile_expr_kind<'a>(
             ExprKind::Call { func, args }.alloc(Some(ty))
         }
         thir::ExprKind::Deref { arg } => {
-            let arg = compile_expr(env, thir, arg);
+            let arg = compile_expr(env, thir, arg).read();
 
             if let Some(borrowed) = Expr::match_borrow(&arg) {
                 return borrowed.kind;
@@ -173,7 +173,7 @@ fn compile_expr_kind<'a>(
                     kind: ExprKind::LocalVar("deref".to_string()),
                     ty: None,
                 }),
-                args: vec![arg.read()],
+                args: vec![arg],
             }
         }
         thir::ExprKind::Binary { op, lhs, rhs } => {

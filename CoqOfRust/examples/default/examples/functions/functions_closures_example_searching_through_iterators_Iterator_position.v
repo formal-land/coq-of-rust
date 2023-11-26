@@ -105,16 +105,12 @@ Definition main : M unit :=
             let* α1 : ref (core.option.Option.t usize.t) := M.read left_val in
             let* α2 : M.Val (core.option.Option.t usize.t) := deref α1 in
             let* α3 : ref (core.option.Option.t usize.t) := borrow α2 in
-            let* α4 : M.Val (core.option.Option.t usize.t) := deref α3 in
-            let* α5 : ref (core.option.Option.t usize.t) := borrow α4 in
-            let* α6 : ref (core.option.Option.t usize.t) := M.read right_val in
-            let* α7 : M.Val (core.option.Option.t usize.t) := deref α6 in
-            let* α8 : ref (core.option.Option.t usize.t) := borrow α7 in
-            let* α9 : M.Val (core.option.Option.t usize.t) := deref α8 in
-            let* α10 : ref (core.option.Option.t usize.t) := borrow α9 in
-            let* α11 : never.t :=
-              core.panicking.assert_failed α0 α5 α10 core.option.Option.None in
-            M.alloc α11 in
+            let* α4 : ref (core.option.Option.t usize.t) := M.read right_val in
+            let* α5 : M.Val (core.option.Option.t usize.t) := deref α4 in
+            let* α6 : ref (core.option.Option.t usize.t) := borrow α5 in
+            let* α7 : never.t :=
+              core.panicking.assert_failed α0 α3 α6 core.option.Option.None in
+            M.alloc α7 in
           let* α0 : M.Val unit := M.alloc tt in
           never_to_any α0
         else
@@ -186,16 +182,12 @@ Definition main : M unit :=
             let* α1 : ref (core.option.Option.t usize.t) := M.read left_val in
             let* α2 : M.Val (core.option.Option.t usize.t) := deref α1 in
             let* α3 : ref (core.option.Option.t usize.t) := borrow α2 in
-            let* α4 : M.Val (core.option.Option.t usize.t) := deref α3 in
-            let* α5 : ref (core.option.Option.t usize.t) := borrow α4 in
-            let* α6 : ref (core.option.Option.t usize.t) := M.read right_val in
-            let* α7 : M.Val (core.option.Option.t usize.t) := deref α6 in
-            let* α8 : ref (core.option.Option.t usize.t) := borrow α7 in
-            let* α9 : M.Val (core.option.Option.t usize.t) := deref α8 in
-            let* α10 : ref (core.option.Option.t usize.t) := borrow α9 in
-            let* α11 : never.t :=
-              core.panicking.assert_failed α0 α5 α10 core.option.Option.None in
-            M.alloc α11 in
+            let* α4 : ref (core.option.Option.t usize.t) := M.read right_val in
+            let* α5 : M.Val (core.option.Option.t usize.t) := deref α4 in
+            let* α6 : ref (core.option.Option.t usize.t) := borrow α5 in
+            let* α7 : never.t :=
+              core.panicking.assert_failed α0 α3 α6 core.option.Option.None in
+            M.alloc α7 in
           let* α0 : M.Val unit := M.alloc tt in
           never_to_any α0
         else

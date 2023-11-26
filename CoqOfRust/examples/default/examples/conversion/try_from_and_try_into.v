@@ -38,13 +38,11 @@ Section Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber_t.
       let* α8 : ref i32.t := borrow α7.["0"] in
       let* α9 : M.Val (ref i32.t) := M.alloc α8 in
       let* α10 : ref (ref i32.t) := borrow α9 in
-      let* α11 : M.Val (ref i32.t) := deref α10 in
-      let* α12 : ref (ref i32.t) := borrow α11 in
-      let* α13 : M.Val (ref (ref i32.t)) := M.alloc α12 in
-      let* α14 : M.Val (ref type not implemented) :=
-        pointer_coercion "Unsize" α13 in
-      let* α15 : ref type not implemented := M.read α14 in
-      core.fmt.Formatter.t::["debug_tuple_field1_finish"] α2 α5 α15).
+      let* α11 : M.Val (ref (ref i32.t)) := M.alloc α10 in
+      let* α12 : M.Val (ref type not implemented) :=
+        pointer_coercion "Unsize" α11 in
+      let* α13 : ref type not implemented := M.read α12 in
+      core.fmt.Formatter.t::["debug_tuple_field1_finish"] α2 α5 α13).
   
   Global Instance AssociatedFunction_fmt :
     Notations.DoubleColon ltac:(Self) "fmt" := {
@@ -273,50 +271,26 @@ Definition main : M unit :=
                     unit) :=
               borrow α2 in
             let* α4 :
-                M.Val
-                  (core.result.Result.t
-                    try_from_and_try_into.EvenNumber.t
-                    unit) :=
-              deref α3 in
-            let* α5 :
-                ref
-                  (core.result.Result.t
-                    try_from_and_try_into.EvenNumber.t
-                    unit) :=
-              borrow α4 in
-            let* α6 :
                 ref
                   (core.result.Result.t
                     try_from_and_try_into.EvenNumber.t
                     unit) :=
               M.read right_val in
-            let* α7 :
+            let* α5 :
                 M.Val
                   (core.result.Result.t
                     try_from_and_try_into.EvenNumber.t
                     unit) :=
-              deref α6 in
-            let* α8 :
+              deref α4 in
+            let* α6 :
                 ref
                   (core.result.Result.t
                     try_from_and_try_into.EvenNumber.t
                     unit) :=
-              borrow α7 in
-            let* α9 :
-                M.Val
-                  (core.result.Result.t
-                    try_from_and_try_into.EvenNumber.t
-                    unit) :=
-              deref α8 in
-            let* α10 :
-                ref
-                  (core.result.Result.t
-                    try_from_and_try_into.EvenNumber.t
-                    unit) :=
-              borrow α9 in
-            let* α11 : never.t :=
-              core.panicking.assert_failed α0 α5 α10 core.option.Option.None in
-            M.alloc α11 in
+              borrow α5 in
+            let* α7 : never.t :=
+              core.panicking.assert_failed α0 α3 α6 core.option.Option.None in
+            M.alloc α7 in
           let* α0 : M.Val unit := M.alloc tt in
           never_to_any α0
         else
@@ -418,50 +392,26 @@ Definition main : M unit :=
                     unit) :=
               borrow α2 in
             let* α4 :
-                M.Val
-                  (core.result.Result.t
-                    try_from_and_try_into.EvenNumber.t
-                    unit) :=
-              deref α3 in
-            let* α5 :
-                ref
-                  (core.result.Result.t
-                    try_from_and_try_into.EvenNumber.t
-                    unit) :=
-              borrow α4 in
-            let* α6 :
                 ref
                   (core.result.Result.t
                     try_from_and_try_into.EvenNumber.t
                     unit) :=
               M.read right_val in
-            let* α7 :
+            let* α5 :
                 M.Val
                   (core.result.Result.t
                     try_from_and_try_into.EvenNumber.t
                     unit) :=
-              deref α6 in
-            let* α8 :
+              deref α4 in
+            let* α6 :
                 ref
                   (core.result.Result.t
                     try_from_and_try_into.EvenNumber.t
                     unit) :=
-              borrow α7 in
-            let* α9 :
-                M.Val
-                  (core.result.Result.t
-                    try_from_and_try_into.EvenNumber.t
-                    unit) :=
-              deref α8 in
-            let* α10 :
-                ref
-                  (core.result.Result.t
-                    try_from_and_try_into.EvenNumber.t
-                    unit) :=
-              borrow α9 in
-            let* α11 : never.t :=
-              core.panicking.assert_failed α0 α5 α10 core.option.Option.None in
-            M.alloc α11 in
+              borrow α5 in
+            let* α7 : never.t :=
+              core.panicking.assert_failed α0 α3 α6 core.option.Option.None in
+            M.alloc α7 in
           let* α0 : M.Val unit := M.alloc tt in
           never_to_any α0
         else
@@ -566,50 +516,26 @@ Definition main : M unit :=
                     unit) :=
               borrow α2 in
             let* α4 :
-                M.Val
-                  (core.result.Result.t
-                    try_from_and_try_into.EvenNumber.t
-                    unit) :=
-              deref α3 in
-            let* α5 :
-                ref
-                  (core.result.Result.t
-                    try_from_and_try_into.EvenNumber.t
-                    unit) :=
-              borrow α4 in
-            let* α6 :
                 ref
                   (core.result.Result.t
                     try_from_and_try_into.EvenNumber.t
                     unit) :=
               M.read right_val in
-            let* α7 :
+            let* α5 :
                 M.Val
                   (core.result.Result.t
                     try_from_and_try_into.EvenNumber.t
                     unit) :=
-              deref α6 in
-            let* α8 :
+              deref α4 in
+            let* α6 :
                 ref
                   (core.result.Result.t
                     try_from_and_try_into.EvenNumber.t
                     unit) :=
-              borrow α7 in
-            let* α9 :
-                M.Val
-                  (core.result.Result.t
-                    try_from_and_try_into.EvenNumber.t
-                    unit) :=
-              deref α8 in
-            let* α10 :
-                ref
-                  (core.result.Result.t
-                    try_from_and_try_into.EvenNumber.t
-                    unit) :=
-              borrow α9 in
-            let* α11 : never.t :=
-              core.panicking.assert_failed α0 α5 α10 core.option.Option.None in
-            M.alloc α11 in
+              borrow α5 in
+            let* α7 : never.t :=
+              core.panicking.assert_failed α0 α3 α6 core.option.Option.None in
+            M.alloc α7 in
           let* α0 : M.Val unit := M.alloc tt in
           never_to_any α0
         else
@@ -710,50 +636,26 @@ Definition main : M unit :=
                     unit) :=
               borrow α2 in
             let* α4 :
-                M.Val
-                  (core.result.Result.t
-                    try_from_and_try_into.EvenNumber.t
-                    unit) :=
-              deref α3 in
-            let* α5 :
-                ref
-                  (core.result.Result.t
-                    try_from_and_try_into.EvenNumber.t
-                    unit) :=
-              borrow α4 in
-            let* α6 :
                 ref
                   (core.result.Result.t
                     try_from_and_try_into.EvenNumber.t
                     unit) :=
               M.read right_val in
-            let* α7 :
+            let* α5 :
                 M.Val
                   (core.result.Result.t
                     try_from_and_try_into.EvenNumber.t
                     unit) :=
-              deref α6 in
-            let* α8 :
+              deref α4 in
+            let* α6 :
                 ref
                   (core.result.Result.t
                     try_from_and_try_into.EvenNumber.t
                     unit) :=
-              borrow α7 in
-            let* α9 :
-                M.Val
-                  (core.result.Result.t
-                    try_from_and_try_into.EvenNumber.t
-                    unit) :=
-              deref α8 in
-            let* α10 :
-                ref
-                  (core.result.Result.t
-                    try_from_and_try_into.EvenNumber.t
-                    unit) :=
-              borrow α9 in
-            let* α11 : never.t :=
-              core.panicking.assert_failed α0 α5 α10 core.option.Option.None in
-            M.alloc α11 in
+              borrow α5 in
+            let* α7 : never.t :=
+              core.panicking.assert_failed α0 α3 α6 core.option.Option.None in
+            M.alloc α7 in
           let* α0 : M.Val unit := M.alloc tt in
           never_to_any α0
         else

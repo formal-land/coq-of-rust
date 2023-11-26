@@ -68,85 +68,73 @@ Definition comp_sci_student_greeting
             mk_str ". My Git username is "
           ] in
       let* α1 : ref (array (ref str.t)) := borrow α0 in
-      let* α2 : M.Val (array (ref str.t)) := deref α1 in
-      let* α3 : ref (array (ref str.t)) := borrow α2 in
-      let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
-      let* α5 : M.Val (ref (slice (ref str.t))) :=
-        pointer_coercion "Unsize" α4 in
-      let* α6 : ref (slice (ref str.t)) := M.read α5 in
-      let* α7 : ref type not implemented := M.read student in
-      let* α8 : M.Val type not implemented := deref α7 in
-      let* α9 : ref type not implemented := borrow α8 in
-      let* α10 : alloc.string.String.t :=
+      let* α2 : M.Val (ref (array (ref str.t))) := M.alloc α1 in
+      let* α3 : M.Val (ref (slice (ref str.t))) :=
+        pointer_coercion "Unsize" α2 in
+      let* α4 : ref (slice (ref str.t)) := M.read α3 in
+      let* α5 : ref type not implemented := M.read student in
+      let* α6 : M.Val type not implemented := deref α5 in
+      let* α7 : ref type not implemented := borrow α6 in
+      let* α8 : alloc.string.String.t :=
         (supertraits.Person.name
             (Self := type not implemented)
             (Trait := ltac:(refine _)))
-          α9 in
-      let* α11 : M.Val alloc.string.String.t := M.alloc α10 in
-      let* α12 : ref alloc.string.String.t := borrow α11 in
-      let* α13 : M.Val alloc.string.String.t := deref α12 in
-      let* α14 : ref alloc.string.String.t := borrow α13 in
-      let* α15 : core.fmt.rt.Argument.t :=
-        core.fmt.rt.Argument.t::["new_display"] α14 in
-      let* α16 : M.Val core.fmt.rt.Argument.t := M.alloc α15 in
-      let* α17 : ref type not implemented := M.read student in
-      let* α18 : M.Val type not implemented := deref α17 in
-      let* α19 : ref type not implemented := borrow α18 in
-      let* α20 : alloc.string.String.t :=
+          α7 in
+      let* α9 : M.Val alloc.string.String.t := M.alloc α8 in
+      let* α10 : ref alloc.string.String.t := borrow α9 in
+      let* α11 : core.fmt.rt.Argument.t :=
+        core.fmt.rt.Argument.t::["new_display"] α10 in
+      let* α12 : M.Val core.fmt.rt.Argument.t := M.alloc α11 in
+      let* α13 : ref type not implemented := M.read student in
+      let* α14 : M.Val type not implemented := deref α13 in
+      let* α15 : ref type not implemented := borrow α14 in
+      let* α16 : alloc.string.String.t :=
         (supertraits.Student.university
             (Self := type not implemented)
             (Trait := ltac:(refine _)))
-          α19 in
-      let* α21 : M.Val alloc.string.String.t := M.alloc α20 in
-      let* α22 : ref alloc.string.String.t := borrow α21 in
-      let* α23 : M.Val alloc.string.String.t := deref α22 in
-      let* α24 : ref alloc.string.String.t := borrow α23 in
-      let* α25 : core.fmt.rt.Argument.t :=
-        core.fmt.rt.Argument.t::["new_display"] α24 in
-      let* α26 : M.Val core.fmt.rt.Argument.t := M.alloc α25 in
-      let* α27 : ref type not implemented := M.read student in
-      let* α28 : M.Val type not implemented := deref α27 in
-      let* α29 : ref type not implemented := borrow α28 in
-      let* α30 : alloc.string.String.t :=
+          α15 in
+      let* α17 : M.Val alloc.string.String.t := M.alloc α16 in
+      let* α18 : ref alloc.string.String.t := borrow α17 in
+      let* α19 : core.fmt.rt.Argument.t :=
+        core.fmt.rt.Argument.t::["new_display"] α18 in
+      let* α20 : M.Val core.fmt.rt.Argument.t := M.alloc α19 in
+      let* α21 : ref type not implemented := M.read student in
+      let* α22 : M.Val type not implemented := deref α21 in
+      let* α23 : ref type not implemented := borrow α22 in
+      let* α24 : alloc.string.String.t :=
         (supertraits.Programmer.fav_language
             (Self := type not implemented)
             (Trait := ltac:(refine _)))
-          α29 in
-      let* α31 : M.Val alloc.string.String.t := M.alloc α30 in
-      let* α32 : ref alloc.string.String.t := borrow α31 in
-      let* α33 : M.Val alloc.string.String.t := deref α32 in
+          α23 in
+      let* α25 : M.Val alloc.string.String.t := M.alloc α24 in
+      let* α26 : ref alloc.string.String.t := borrow α25 in
+      let* α27 : core.fmt.rt.Argument.t :=
+        core.fmt.rt.Argument.t::["new_display"] α26 in
+      let* α28 : M.Val core.fmt.rt.Argument.t := M.alloc α27 in
+      let* α29 : ref type not implemented := M.read student in
+      let* α30 : M.Val type not implemented := deref α29 in
+      let* α31 : ref type not implemented := borrow α30 in
+      let* α32 : alloc.string.String.t :=
+        (supertraits.CompSciStudent.git_username
+            (Self := type not implemented)
+            (Trait := ltac:(refine _)))
+          α31 in
+      let* α33 : M.Val alloc.string.String.t := M.alloc α32 in
       let* α34 : ref alloc.string.String.t := borrow α33 in
       let* α35 : core.fmt.rt.Argument.t :=
         core.fmt.rt.Argument.t::["new_display"] α34 in
       let* α36 : M.Val core.fmt.rt.Argument.t := M.alloc α35 in
-      let* α37 : ref type not implemented := M.read student in
-      let* α38 : M.Val type not implemented := deref α37 in
-      let* α39 : ref type not implemented := borrow α38 in
-      let* α40 : alloc.string.String.t :=
-        (supertraits.CompSciStudent.git_username
-            (Self := type not implemented)
-            (Trait := ltac:(refine _)))
-          α39 in
-      let* α41 : M.Val alloc.string.String.t := M.alloc α40 in
-      let* α42 : ref alloc.string.String.t := borrow α41 in
-      let* α43 : M.Val alloc.string.String.t := deref α42 in
-      let* α44 : ref alloc.string.String.t := borrow α43 in
-      let* α45 : core.fmt.rt.Argument.t :=
-        core.fmt.rt.Argument.t::["new_display"] α44 in
-      let* α46 : M.Val core.fmt.rt.Argument.t := M.alloc α45 in
-      let* α47 : M.Val (array core.fmt.rt.Argument.t) :=
-        M.alloc [ α16; α26; α36; α46 ] in
-      let* α48 : ref (array core.fmt.rt.Argument.t) := borrow α47 in
-      let* α49 : M.Val (array core.fmt.rt.Argument.t) := deref α48 in
-      let* α50 : ref (array core.fmt.rt.Argument.t) := borrow α49 in
-      let* α51 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α50 in
-      let* α52 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
-        pointer_coercion "Unsize" α51 in
-      let* α53 : ref (slice core.fmt.rt.Argument.t) := M.read α52 in
-      let* α54 : core.fmt.Arguments.t :=
-        core.fmt.Arguments.t::["new_v1"] α6 α53 in
-      let* α55 : alloc.string.String.t := alloc.fmt.format α54 in
-      M.alloc α55 in
+      let* α37 : M.Val (array core.fmt.rt.Argument.t) :=
+        M.alloc [ α12; α20; α28; α36 ] in
+      let* α38 : ref (array core.fmt.rt.Argument.t) := borrow α37 in
+      let* α39 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α38 in
+      let* α40 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
+        pointer_coercion "Unsize" α39 in
+      let* α41 : ref (slice core.fmt.rt.Argument.t) := M.read α40 in
+      let* α42 : core.fmt.Arguments.t :=
+        core.fmt.Arguments.t::["new_v1"] α4 α41 in
+      let* α43 : alloc.string.String.t := alloc.fmt.format α42 in
+      M.alloc α43 in
     M.read res).
 
 (*

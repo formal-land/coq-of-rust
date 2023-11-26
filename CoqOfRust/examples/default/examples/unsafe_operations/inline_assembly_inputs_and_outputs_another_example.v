@@ -54,16 +54,12 @@ Definition main : M unit :=
             let* α1 : ref u64.t := M.read left_val in
             let* α2 : M.Val u64.t := deref α1 in
             let* α3 : ref u64.t := borrow α2 in
-            let* α4 : M.Val u64.t := deref α3 in
-            let* α5 : ref u64.t := borrow α4 in
-            let* α6 : ref u64.t := M.read right_val in
-            let* α7 : M.Val u64.t := deref α6 in
-            let* α8 : ref u64.t := borrow α7 in
-            let* α9 : M.Val u64.t := deref α8 in
-            let* α10 : ref u64.t := borrow α9 in
-            let* α11 : never.t :=
-              core.panicking.assert_failed α0 α5 α10 core.option.Option.None in
-            M.alloc α11 in
+            let* α4 : ref u64.t := M.read right_val in
+            let* α5 : M.Val u64.t := deref α4 in
+            let* α6 : ref u64.t := borrow α5 in
+            let* α7 : never.t :=
+              core.panicking.assert_failed α0 α3 α6 core.option.Option.None in
+            M.alloc α7 in
           let* α0 : M.Val unit := M.alloc tt in
           never_to_any α0
         else

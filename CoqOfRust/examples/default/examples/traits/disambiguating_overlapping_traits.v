@@ -141,14 +141,12 @@ Definition main : M unit :=
         |} in
     let* username : M.Val alloc.string.String.t :=
       let* α0 : ref disambiguating_overlapping_traits.Form.t := borrow form in
-      let* α1 : M.Val disambiguating_overlapping_traits.Form.t := deref α0 in
-      let* α2 : ref disambiguating_overlapping_traits.Form.t := borrow α1 in
-      let* α3 : alloc.string.String.t :=
+      let* α1 : alloc.string.String.t :=
         (disambiguating_overlapping_traits.UsernameWidget.get
             (Self := disambiguating_overlapping_traits.Form.t)
             (Trait := ltac:(refine _)))
-          α2 in
-      M.alloc α3 in
+          α0 in
+      M.alloc α1 in
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "rustacean") in
       let* α1 : M.Val str.t := deref α0 in
@@ -193,16 +191,12 @@ Definition main : M unit :=
             let* α1 : ref alloc.string.String.t := M.read left_val in
             let* α2 : M.Val alloc.string.String.t := deref α1 in
             let* α3 : ref alloc.string.String.t := borrow α2 in
-            let* α4 : M.Val alloc.string.String.t := deref α3 in
-            let* α5 : ref alloc.string.String.t := borrow α4 in
-            let* α6 : ref alloc.string.String.t := M.read right_val in
-            let* α7 : M.Val alloc.string.String.t := deref α6 in
-            let* α8 : ref alloc.string.String.t := borrow α7 in
-            let* α9 : M.Val alloc.string.String.t := deref α8 in
-            let* α10 : ref alloc.string.String.t := borrow α9 in
-            let* α11 : never.t :=
-              core.panicking.assert_failed α0 α5 α10 core.option.Option.None in
-            M.alloc α11 in
+            let* α4 : ref alloc.string.String.t := M.read right_val in
+            let* α5 : M.Val alloc.string.String.t := deref α4 in
+            let* α6 : ref alloc.string.String.t := borrow α5 in
+            let* α7 : never.t :=
+              core.panicking.assert_failed α0 α3 α6 core.option.Option.None in
+            M.alloc α7 in
           let* α0 : M.Val unit := M.alloc tt in
           never_to_any α0
         else
@@ -210,14 +204,12 @@ Definition main : M unit :=
       end in
     let* age : M.Val u8.t :=
       let* α0 : ref disambiguating_overlapping_traits.Form.t := borrow form in
-      let* α1 : M.Val disambiguating_overlapping_traits.Form.t := deref α0 in
-      let* α2 : ref disambiguating_overlapping_traits.Form.t := borrow α1 in
-      let* α3 : u8.t :=
+      let* α1 : u8.t :=
         (disambiguating_overlapping_traits.AgeWidget.get
             (Self := disambiguating_overlapping_traits.Form.t)
             (Trait := ltac:(refine _)))
-          α2 in
-      M.alloc α3 in
+          α0 in
+      M.alloc α1 in
     let* _ : M.Val unit :=
       let* α0 : M.Val u8.t := M.alloc 28 in
       let* α1 : ref u8.t := borrow α0 in
@@ -244,16 +236,12 @@ Definition main : M unit :=
             let* α1 : ref u8.t := M.read left_val in
             let* α2 : M.Val u8.t := deref α1 in
             let* α3 : ref u8.t := borrow α2 in
-            let* α4 : M.Val u8.t := deref α3 in
-            let* α5 : ref u8.t := borrow α4 in
-            let* α6 : ref u8.t := M.read right_val in
-            let* α7 : M.Val u8.t := deref α6 in
-            let* α8 : ref u8.t := borrow α7 in
-            let* α9 : M.Val u8.t := deref α8 in
-            let* α10 : ref u8.t := borrow α9 in
-            let* α11 : never.t :=
-              core.panicking.assert_failed α0 α5 α10 core.option.Option.None in
-            M.alloc α11 in
+            let* α4 : ref u8.t := M.read right_val in
+            let* α5 : M.Val u8.t := deref α4 in
+            let* α6 : ref u8.t := borrow α5 in
+            let* α7 : never.t :=
+              core.panicking.assert_failed α0 α3 α6 core.option.Option.None in
+            M.alloc α7 in
           let* α0 : M.Val unit := M.alloc tt in
           never_to_any α0
         else

@@ -15,10 +15,8 @@ Definition main : M unit :=
   M.function_body
     (let* raw_p : M.Val (ref u32.t) :=
       let* α0 : M.Val u32.t := M.alloc 10 in
-      let* α1 : ref u32.t := borrow α0 in
-      let* α2 : M.Val u32.t := deref α1 in
-      let* α3 : M.Val (ref u32.t) := addr_of α2 in
-      M.copy α3 in
+      let* α1 : M.Val (ref u32.t) := addr_of α0 in
+      M.copy α1 in
     let* _ : M.Val unit :=
       let* α0 : ref u32.t := M.read raw_p in
       let* α1 : M.Val u32.t := deref α0 in

@@ -36,34 +36,28 @@ Definition main : M unit :=
             [ mk_str "Sum of odd numbers up to 9 (excluding): "; mk_str "
 " ] in
         let* α1 : ref (array (ref str.t)) := borrow α0 in
-        let* α2 : M.Val (array (ref str.t)) := deref α1 in
-        let* α3 : ref (array (ref str.t)) := borrow α2 in
-        let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
-        let* α5 : M.Val (ref (slice (ref str.t))) :=
-          pointer_coercion "Unsize" α4 in
-        let* α6 : ref (slice (ref str.t)) := M.read α5 in
-        let* α7 : M.Val u32.t := M.alloc 9 in
-        let* α8 : u32.t := M.read α7 in
-        let* α9 : u32.t := "unimplemented parent_kind" α8 in
-        let* α10 : M.Val u32.t := M.alloc α9 in
-        let* α11 : ref u32.t := borrow α10 in
-        let* α12 : M.Val u32.t := deref α11 in
-        let* α13 : ref u32.t := borrow α12 in
-        let* α14 : core.fmt.rt.Argument.t :=
-          core.fmt.rt.Argument.t::["new_display"] α13 in
-        let* α15 : M.Val core.fmt.rt.Argument.t := M.alloc α14 in
-        let* α16 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α15 ] in
-        let* α17 : ref (array core.fmt.rt.Argument.t) := borrow α16 in
-        let* α18 : M.Val (array core.fmt.rt.Argument.t) := deref α17 in
-        let* α19 : ref (array core.fmt.rt.Argument.t) := borrow α18 in
-        let* α20 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α19 in
-        let* α21 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
-          pointer_coercion "Unsize" α20 in
-        let* α22 : ref (slice core.fmt.rt.Argument.t) := M.read α21 in
-        let* α23 : core.fmt.Arguments.t :=
-          core.fmt.Arguments.t::["new_v1"] α6 α22 in
-        let* α24 : unit := std.io.stdio._print α23 in
-        M.alloc α24 in
+        let* α2 : M.Val (ref (array (ref str.t))) := M.alloc α1 in
+        let* α3 : M.Val (ref (slice (ref str.t))) :=
+          pointer_coercion "Unsize" α2 in
+        let* α4 : ref (slice (ref str.t)) := M.read α3 in
+        let* α5 : M.Val u32.t := M.alloc 9 in
+        let* α6 : u32.t := M.read α5 in
+        let* α7 : u32.t := "unimplemented parent_kind" α6 in
+        let* α8 : M.Val u32.t := M.alloc α7 in
+        let* α9 : ref u32.t := borrow α8 in
+        let* α10 : core.fmt.rt.Argument.t :=
+          core.fmt.rt.Argument.t::["new_display"] α9 in
+        let* α11 : M.Val core.fmt.rt.Argument.t := M.alloc α10 in
+        let* α12 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α11 ] in
+        let* α13 : ref (array core.fmt.rt.Argument.t) := borrow α12 in
+        let* α14 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α13 in
+        let* α15 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
+          pointer_coercion "Unsize" α14 in
+        let* α16 : ref (slice core.fmt.rt.Argument.t) := M.read α15 in
+        let* α17 : core.fmt.Arguments.t :=
+          core.fmt.Arguments.t::["new_v1"] α4 α16 in
+        let* α18 : unit := std.io.stdio._print α17 in
+        M.alloc α18 in
       M.alloc tt in
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0).
@@ -113,17 +107,14 @@ Definition sum_odd_numbers (up_to : u32.t) : M u32.t :=
             (let* _ : M.Val unit :=
               let* α0 : mut_ref (core.ops.range.Range.t u32.t) :=
                 borrow_mut iter in
-              let* α1 : M.Val (core.ops.range.Range.t u32.t) := deref α0 in
-              let* α2 : mut_ref (core.ops.range.Range.t u32.t) :=
-                borrow_mut α1 in
-              let* α3 : core.option.Option.t u32.t :=
+              let* α1 : core.option.Option.t u32.t :=
                 (core.iter.traits.iterator.Iterator.next
                     (Self := core.ops.range.Range.t u32.t)
                     (Trait := ltac:(refine _)))
-                  α2 in
-              let* α4 : M.Val (core.option.Option.t u32.t) := M.alloc α3 in
-              let* α5 := M.read α4 in
-              match α5 with
+                  α0 in
+              let* α2 : M.Val (core.option.Option.t u32.t) := M.alloc α1 in
+              let* α3 := M.read α2 in
+              match α3 with
               | core.option.Option.None  =>
                 let* α0 : M.Val never.t := Break in
                 never_to_any α0
