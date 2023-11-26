@@ -42,13 +42,16 @@ Section Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book_t.
   *)
   (* #[allow(dead_code)] - function was ignored by the compiler *)
   Definition clone
-      (self : M.Val (ref ltac:(Self)))
-      : M (M.Val scoping_rules_borrowing_mutablity.Book.t) :=
+      (self : ref ltac:(Self))
+      : M scoping_rules_borrowing_mutablity.Book.t :=
+    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
     M.function_body
-      (let* _ : ltac:(refine (M.Val unit)) := M.alloc tt in
-      let* _ : ltac:(refine (M.Val unit)) := M.alloc tt in
-      let* _ : ltac:(refine (M.Val unit)) := M.alloc tt in
-      deref self).
+      (let* _ : M.Val unit := M.alloc tt in
+      let* _ : M.Val unit := M.alloc tt in
+      let* _ : M.Val unit := M.alloc tt in
+      let* α0 : ref scoping_rules_borrowing_mutablity.Book.t := M.read self in
+      let* α0 : M.Val scoping_rules_borrowing_mutablity.Book.t := deref α0 in
+      M.read α0).
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon ltac:(Self) "clone" := {
@@ -80,44 +83,51 @@ fn borrow_book(book: &Book) {
 }
 *)
 Definition borrow_book
-    (book : M.Val (ref scoping_rules_borrowing_mutablity.Book.t))
-    : M (M.Val unit) :=
+    (book : ref scoping_rules_borrowing_mutablity.Book.t)
+    : M unit :=
+  let* book : M.Val (ref scoping_rules_borrowing_mutablity.Book.t) :=
+    M.alloc book in
   M.function_body
-    (let* _ : ltac:(refine (M.Val unit)) :=
-      let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
+    (let* _ : M.Val unit :=
+      let* _ : M.Val unit :=
+        let* α0 : M.Val (array (ref str.t)) :=
           M.alloc
             [ mk_str "I immutably borrowed "; mk_str " - "; mk_str " edition
 "
             ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
-          borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
-          pointer_coercion "Unsize" α1 in
-        let* α3 :
-            ltac:(refine (M.Val scoping_rules_borrowing_mutablity.Book.t)) :=
-          deref book in
-        let* α4 : ltac:(refine (M.Val (ref (ref str.t)))) :=
-          borrow α3.["title"] in
-        let* α5 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
-          core.fmt.rt.Argument.t::["new_display"] α4 in
-        let* α6 :
-            ltac:(refine (M.Val scoping_rules_borrowing_mutablity.Book.t)) :=
-          deref book in
-        let* α7 : ltac:(refine (M.Val (ref u32.t))) := borrow α6.["year"] in
-        let* α8 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
+        let* α1 : ref (array (ref str.t)) := borrow α0 in
+        let* α2 : M.Val (ref (array (ref str.t))) := M.alloc α1 in
+        let* α3 : M.Val (ref (slice (ref str.t))) :=
+          pointer_coercion "Unsize" α2 in
+        let* α4 : ref (slice (ref str.t)) := M.read α3 in
+        let* α5 : ref scoping_rules_borrowing_mutablity.Book.t := M.read book in
+        let* α6 : M.Val scoping_rules_borrowing_mutablity.Book.t := deref α5 in
+        let* α7 : ref (ref str.t) := borrow α6.["title"] in
+        let* α8 : core.fmt.rt.Argument.t :=
           core.fmt.rt.Argument.t::["new_display"] α7 in
-        let* α9 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
-          M.alloc [ α5; α8 ] in
-        let* α10 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
-          borrow α9 in
-        let* α11 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
-          pointer_coercion "Unsize" α10 in
-        let* α12 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-          core.fmt.Arguments.t::["new_v1"] α2 α11 in
-        std.io.stdio._print α12 in
+        let* α9 : M.Val core.fmt.rt.Argument.t := M.alloc α8 in
+        let* α10 : ref scoping_rules_borrowing_mutablity.Book.t :=
+          M.read book in
+        let* α11 : M.Val scoping_rules_borrowing_mutablity.Book.t :=
+          deref α10 in
+        let* α12 : ref u32.t := borrow α11.["year"] in
+        let* α13 : core.fmt.rt.Argument.t :=
+          core.fmt.rt.Argument.t::["new_display"] α12 in
+        let* α14 : M.Val core.fmt.rt.Argument.t := M.alloc α13 in
+        let* α15 : M.Val (array core.fmt.rt.Argument.t) :=
+          M.alloc [ α9; α14 ] in
+        let* α16 : ref (array core.fmt.rt.Argument.t) := borrow α15 in
+        let* α17 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α16 in
+        let* α18 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
+          pointer_coercion "Unsize" α17 in
+        let* α19 : ref (slice core.fmt.rt.Argument.t) := M.read α18 in
+        let* α20 : core.fmt.Arguments.t :=
+          core.fmt.Arguments.t::["new_v1"] α4 α19 in
+        let* α21 : unit := std.io.stdio._print α20 in
+        M.alloc α21 in
       M.alloc tt in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).
 
 (*
 fn new_edition(book: &mut Book) {
@@ -126,50 +136,59 @@ fn new_edition(book: &mut Book) {
 }
 *)
 Definition new_edition
-    (book : M.Val (mut_ref scoping_rules_borrowing_mutablity.Book.t))
-    : M (M.Val unit) :=
+    (book : mut_ref scoping_rules_borrowing_mutablity.Book.t)
+    : M unit :=
+  let* book : M.Val (mut_ref scoping_rules_borrowing_mutablity.Book.t) :=
+    M.alloc book in
   M.function_body
-    (let* _ : ltac:(refine (M.Val unit)) :=
-      let* α0 :
-          ltac:(refine (M.Val scoping_rules_borrowing_mutablity.Book.t)) :=
-        deref book in
-      let* α1 : ltac:(refine (M.Val u32.t)) := M.alloc 2014 in
-      assign α0.["year"] α1 in
-    let* _ : ltac:(refine (M.Val unit)) :=
-      let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
+    (let* _ : M.Val unit :=
+      let* α0 : mut_ref scoping_rules_borrowing_mutablity.Book.t :=
+        M.read book in
+      let* α1 : M.Val scoping_rules_borrowing_mutablity.Book.t := deref α0 in
+      let* α2 : M.Val u32.t := M.alloc 2014 in
+      let* α3 : u32.t := M.read α2 in
+      assign α1.["year"] α3 in
+    let* _ : M.Val unit :=
+      let* _ : M.Val unit :=
+        let* α0 : M.Val (array (ref str.t)) :=
           M.alloc
             [ mk_str "I mutably borrowed "; mk_str " - "; mk_str " edition
 "
             ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
-          borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
-          pointer_coercion "Unsize" α1 in
-        let* α3 :
-            ltac:(refine (M.Val scoping_rules_borrowing_mutablity.Book.t)) :=
-          deref book in
-        let* α4 : ltac:(refine (M.Val (ref (ref str.t)))) :=
-          borrow α3.["title"] in
-        let* α5 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
-          core.fmt.rt.Argument.t::["new_display"] α4 in
-        let* α6 :
-            ltac:(refine (M.Val scoping_rules_borrowing_mutablity.Book.t)) :=
-          deref book in
-        let* α7 : ltac:(refine (M.Val (ref u32.t))) := borrow α6.["year"] in
-        let* α8 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
+        let* α1 : ref (array (ref str.t)) := borrow α0 in
+        let* α2 : M.Val (ref (array (ref str.t))) := M.alloc α1 in
+        let* α3 : M.Val (ref (slice (ref str.t))) :=
+          pointer_coercion "Unsize" α2 in
+        let* α4 : ref (slice (ref str.t)) := M.read α3 in
+        let* α5 : mut_ref scoping_rules_borrowing_mutablity.Book.t :=
+          M.read book in
+        let* α6 : M.Val scoping_rules_borrowing_mutablity.Book.t := deref α5 in
+        let* α7 : ref (ref str.t) := borrow α6.["title"] in
+        let* α8 : core.fmt.rt.Argument.t :=
           core.fmt.rt.Argument.t::["new_display"] α7 in
-        let* α9 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
-          M.alloc [ α5; α8 ] in
-        let* α10 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
-          borrow α9 in
-        let* α11 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
-          pointer_coercion "Unsize" α10 in
-        let* α12 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-          core.fmt.Arguments.t::["new_v1"] α2 α11 in
-        std.io.stdio._print α12 in
+        let* α9 : M.Val core.fmt.rt.Argument.t := M.alloc α8 in
+        let* α10 : mut_ref scoping_rules_borrowing_mutablity.Book.t :=
+          M.read book in
+        let* α11 : M.Val scoping_rules_borrowing_mutablity.Book.t :=
+          deref α10 in
+        let* α12 : ref u32.t := borrow α11.["year"] in
+        let* α13 : core.fmt.rt.Argument.t :=
+          core.fmt.rt.Argument.t::["new_display"] α12 in
+        let* α14 : M.Val core.fmt.rt.Argument.t := M.alloc α13 in
+        let* α15 : M.Val (array core.fmt.rt.Argument.t) :=
+          M.alloc [ α9; α14 ] in
+        let* α16 : ref (array core.fmt.rt.Argument.t) := borrow α15 in
+        let* α17 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α16 in
+        let* α18 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
+          pointer_coercion "Unsize" α17 in
+        let* α19 : ref (slice core.fmt.rt.Argument.t) := M.read α18 in
+        let* α20 : core.fmt.Arguments.t :=
+          core.fmt.Arguments.t::["new_v1"] α4 α19 in
+        let* α21 : unit := std.io.stdio._print α20 in
+        M.alloc α21 in
       M.alloc tt in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).
 
 (*
 fn main() {
@@ -199,38 +218,36 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M (M.Val unit) :=
+Definition main : M unit :=
   M.function_body
-    (let* immutabook :
-        ltac:(refine (M.Val scoping_rules_borrowing_mutablity.Book.t)) :=
-      let* α0 := M.read (mk_str "Douglas Hofstadter") in
-      let* α1 :=
+    (let* immutabook : M.Val scoping_rules_borrowing_mutablity.Book.t :=
+      let* α0 : ref str.t := M.read (mk_str "Douglas Hofstadter") in
+      let* α1 : ref str.t :=
         M.read (mk_str ("G" ++ String.String "246" "del, Escher, Bach")) in
-      let* α2 : ltac:(refine (M.Val u32.t)) := M.alloc 1979 in
-      let* α3 := M.read α2 in
+      let* α2 : M.Val u32.t := M.alloc 1979 in
+      let* α3 : u32.t := M.read α2 in
       M.alloc
         {|
           scoping_rules_borrowing_mutablity.Book.author := α0;
           scoping_rules_borrowing_mutablity.Book.title := α1;
           scoping_rules_borrowing_mutablity.Book.year := α3;
         |} in
-    let mutabook := immutabook in
-    let* _ : ltac:(refine (M.Val unit)) :=
-      let* α0 :
-          ltac:(refine
-            (M.Val (ref scoping_rules_borrowing_mutablity.Book.t))) :=
+    let* mutabook : M.Val scoping_rules_borrowing_mutablity.Book.t :=
+      M.copy immutabook in
+    let* _ : M.Val unit :=
+      let* α0 : ref scoping_rules_borrowing_mutablity.Book.t :=
         borrow immutabook in
-      scoping_rules_borrowing_mutablity.borrow_book α0 in
-    let* _ : ltac:(refine (M.Val unit)) :=
-      let* α0 :
-          ltac:(refine
-            (M.Val (ref scoping_rules_borrowing_mutablity.Book.t))) :=
+      let* α1 : unit := scoping_rules_borrowing_mutablity.borrow_book α0 in
+      M.alloc α1 in
+    let* _ : M.Val unit :=
+      let* α0 : ref scoping_rules_borrowing_mutablity.Book.t :=
         borrow mutabook in
-      scoping_rules_borrowing_mutablity.borrow_book α0 in
-    let* _ : ltac:(refine (M.Val unit)) :=
-      let* α0 :
-          ltac:(refine
-            (M.Val (mut_ref scoping_rules_borrowing_mutablity.Book.t))) :=
+      let* α1 : unit := scoping_rules_borrowing_mutablity.borrow_book α0 in
+      M.alloc α1 in
+    let* _ : M.Val unit :=
+      let* α0 : mut_ref scoping_rules_borrowing_mutablity.Book.t :=
         borrow_mut mutabook in
-      scoping_rules_borrowing_mutablity.new_edition α0 in
-    M.alloc tt).
+      let* α1 : unit := scoping_rules_borrowing_mutablity.new_edition α0 in
+      M.alloc α1 in
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).

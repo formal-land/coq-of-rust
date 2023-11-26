@@ -39,7 +39,7 @@ Section Impl_core_default_Default_for_erc20_Mapping_t_K_V.
   (*
   Default
   *)
-  Parameter default : M (M.Val (erc20.Mapping.t K V)).
+  Parameter default : M (erc20.Mapping.t K V).
   
   Global Instance AssociatedFunction_default :
     Notations.DoubleColon ltac:(Self) "default" := {
@@ -63,10 +63,7 @@ Section Impl_erc20_Mapping_t_K_V.
           unimplemented!()
       }
   *)
-  Parameter get :
-      (M.Val (ref ltac:(Self))) ->
-        (M.Val (ref K)) ->
-        M (M.Val (core.option.Option.t V)).
+  Parameter get : (ref ltac:(Self)) -> (ref K) -> M (core.option.Option.t V).
   
   Global Instance AssociatedFunction_get :
     Notations.DoubleColon ltac:(Self) "get" := {
@@ -78,8 +75,7 @@ Section Impl_erc20_Mapping_t_K_V.
           unimplemented!()
       }
   *)
-  Parameter insert :
-      (M.Val (mut_ref ltac:(Self))) -> (M.Val K) -> (M.Val V) -> M (M.Val unit).
+  Parameter insert : (mut_ref ltac:(Self)) -> K -> V -> M unit.
   
   Global Instance AssociatedFunction_insert :
     Notations.DoubleColon ltac:(Self) "insert" := {
@@ -107,7 +103,7 @@ Section Impl_core_default_Default_for_erc20_AccountId_t.
   (*
   Default
   *)
-  Parameter default : M (M.Val erc20.AccountId.t).
+  Parameter default : M erc20.AccountId.t.
   
   Global Instance AssociatedFunction_default :
     Notations.DoubleColon ltac:(Self) "default" := {
@@ -127,7 +123,7 @@ Section Impl_core_clone_Clone_for_erc20_AccountId_t.
   (*
   Clone
   *)
-  Parameter clone : (M.Val (ref ltac:(Self))) -> M (M.Val erc20.AccountId.t).
+  Parameter clone : (ref ltac:(Self)) -> M erc20.AccountId.t.
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon ltac:(Self) "clone" := {
@@ -225,7 +221,7 @@ Section Impl_core_default_Default_for_erc20_Erc20_t.
   (*
   Default
   *)
-  Parameter default : M (M.Val erc20.Erc20.t).
+  Parameter default : M erc20.Erc20.t.
   
   Global Instance AssociatedFunction_default :
     Notations.DoubleColon ltac:(Self) "default" := {
@@ -277,7 +273,7 @@ Section Impl_core_convert_Into_erc20_Event_t_for_erc20_Transfer_t.
           unimplemented!()
       }
   *)
-  Parameter into : (M.Val ltac:(Self)) -> M (M.Val erc20.Event.t).
+  Parameter into : ltac:(Self) -> M erc20.Event.t.
   
   Global Instance AssociatedFunction_into :
     Notations.DoubleColon ltac:(Self) "into" := {
@@ -332,7 +328,7 @@ Section Impl_core_convert_Into_erc20_Event_t_for_erc20_Approval_t.
           unimplemented!()
       }
   *)
-  Parameter into : (M.Val ltac:(Self)) -> M (M.Val erc20.Event.t).
+  Parameter into : ltac:(Self) -> M erc20.Event.t.
   
   Global Instance AssociatedFunction_into :
     Notations.DoubleColon ltac:(Self) "into" := {
@@ -363,7 +359,7 @@ Section Impl_erc20_Env_t.
           self.caller
       }
   *)
-  Parameter caller : (M.Val (ref ltac:(Self))) -> M (M.Val erc20.AccountId.t).
+  Parameter caller : (ref ltac:(Self)) -> M erc20.AccountId.t.
   
   Global Instance AssociatedFunction_caller :
     Notations.DoubleColon ltac:(Self) "caller" := {
@@ -375,7 +371,7 @@ Section Impl_erc20_Env_t.
   *)
   Parameter emit_event :
       forall {E : Set} {ℋ_0 : core.convert.Into.Trait E (T := erc20.Event.t)},
-      (M.Val (ref ltac:(Self))) -> (M.Val E) -> M (M.Val unit).
+      (ref ltac:(Self)) -> E -> M unit.
   
   Global Instance AssociatedFunction_emit_event
       {E : Set}
@@ -395,7 +391,7 @@ Section Impl_erc20_Erc20_t.
           unimplemented!()
       }
   *)
-  Parameter init_env : M (M.Val erc20.Env.t).
+  Parameter init_env : M erc20.Env.t.
   
   Global Instance AssociatedFunction_init_env :
     Notations.DoubleColon ltac:(Self) "init_env" := {
@@ -407,7 +403,7 @@ Section Impl_erc20_Erc20_t.
           Self::init_env()
       }
   *)
-  Parameter env : (M.Val (ref ltac:(Self))) -> M (M.Val erc20.Env.t).
+  Parameter env : (ref ltac:(Self)) -> M erc20.Env.t.
   
   Global Instance AssociatedFunction_env :
     Notations.DoubleColon ltac:(Self) "env" := {
@@ -437,7 +433,7 @@ Section Impl_erc20_Erc20_t_2.
           }
       }
   *)
-  Parameter new : (M.Val ltac:(erc20.Balance)) -> M (M.Val ltac:(Self)).
+  Parameter new : ltac:(erc20.Balance) -> M ltac:(Self).
   
   Global Instance AssociatedFunction_new :
     Notations.DoubleColon ltac:(Self) "new" := {
@@ -449,8 +445,7 @@ Section Impl_erc20_Erc20_t_2.
           self.total_supply
       }
   *)
-  Parameter total_supply :
-      (M.Val (ref ltac:(Self))) -> M (M.Val ltac:(erc20.Balance)).
+  Parameter total_supply : (ref ltac:(Self)) -> M ltac:(erc20.Balance).
   
   Global Instance AssociatedFunction_total_supply :
     Notations.DoubleColon ltac:(Self) "total_supply" := {
@@ -463,9 +458,7 @@ Section Impl_erc20_Erc20_t_2.
       }
   *)
   Parameter balance_of_impl :
-      (M.Val (ref ltac:(Self))) ->
-        (M.Val (ref erc20.AccountId.t)) ->
-        M (M.Val ltac:(erc20.Balance)).
+      (ref ltac:(Self)) -> (ref erc20.AccountId.t) -> M ltac:(erc20.Balance).
   
   Global Instance AssociatedFunction_balance_of_impl :
     Notations.DoubleColon ltac:(Self) "balance_of_impl" := {
@@ -478,9 +471,7 @@ Section Impl_erc20_Erc20_t_2.
       }
   *)
   Parameter balance_of :
-      (M.Val (ref ltac:(Self))) ->
-        (M.Val erc20.AccountId.t) ->
-        M (M.Val ltac:(erc20.Balance)).
+      (ref ltac:(Self)) -> erc20.AccountId.t -> M ltac:(erc20.Balance).
   
   Global Instance AssociatedFunction_balance_of :
     Notations.DoubleColon ltac:(Self) "balance_of" := {
@@ -493,10 +484,10 @@ Section Impl_erc20_Erc20_t_2.
       }
   *)
   Parameter allowance_impl :
-      (M.Val (ref ltac:(Self))) ->
-        (M.Val (ref erc20.AccountId.t)) ->
-        (M.Val (ref erc20.AccountId.t)) ->
-        M (M.Val ltac:(erc20.Balance)).
+      (ref ltac:(Self)) ->
+        (ref erc20.AccountId.t) ->
+        (ref erc20.AccountId.t) ->
+        M ltac:(erc20.Balance).
   
   Global Instance AssociatedFunction_allowance_impl :
     Notations.DoubleColon ltac:(Self) "allowance_impl" := {
@@ -509,10 +500,10 @@ Section Impl_erc20_Erc20_t_2.
       }
   *)
   Parameter allowance :
-      (M.Val (ref ltac:(Self))) ->
-        (M.Val erc20.AccountId.t) ->
-        (M.Val erc20.AccountId.t) ->
-        M (M.Val ltac:(erc20.Balance)).
+      (ref ltac:(Self)) ->
+        erc20.AccountId.t ->
+        erc20.AccountId.t ->
+        M ltac:(erc20.Balance).
   
   Global Instance AssociatedFunction_allowance :
     Notations.DoubleColon ltac:(Self) "allowance" := {
@@ -538,11 +529,11 @@ Section Impl_erc20_Erc20_t_2.
       }
   *)
   Parameter transfer_from_to :
-      (M.Val (mut_ref ltac:(Self))) ->
-        (M.Val (ref erc20.AccountId.t)) ->
-        (M.Val (ref erc20.AccountId.t)) ->
-        (M.Val ltac:(erc20.Balance)) ->
-        M (M.Val ltac:(erc20.Result unit)).
+      (mut_ref ltac:(Self)) ->
+        (ref erc20.AccountId.t) ->
+        (ref erc20.AccountId.t) ->
+        ltac:(erc20.Balance) ->
+        M ltac:(erc20.Result unit).
   
   Global Instance AssociatedFunction_transfer_from_to :
     Notations.DoubleColon ltac:(Self) "transfer_from_to" := {
@@ -556,10 +547,10 @@ Section Impl_erc20_Erc20_t_2.
       }
   *)
   Parameter transfer :
-      (M.Val (mut_ref ltac:(Self))) ->
-        (M.Val erc20.AccountId.t) ->
-        (M.Val ltac:(erc20.Balance)) ->
-        M (M.Val ltac:(erc20.Result unit)).
+      (mut_ref ltac:(Self)) ->
+        erc20.AccountId.t ->
+        ltac:(erc20.Balance) ->
+        M ltac:(erc20.Result unit).
   
   Global Instance AssociatedFunction_transfer :
     Notations.DoubleColon ltac:(Self) "transfer" := {
@@ -579,10 +570,10 @@ Section Impl_erc20_Erc20_t_2.
       }
   *)
   Parameter approve :
-      (M.Val (mut_ref ltac:(Self))) ->
-        (M.Val erc20.AccountId.t) ->
-        (M.Val ltac:(erc20.Balance)) ->
-        M (M.Val ltac:(erc20.Result unit)).
+      (mut_ref ltac:(Self)) ->
+        erc20.AccountId.t ->
+        ltac:(erc20.Balance) ->
+        M ltac:(erc20.Result unit).
   
   Global Instance AssociatedFunction_approve :
     Notations.DoubleColon ltac:(Self) "approve" := {
@@ -602,11 +593,11 @@ Section Impl_erc20_Erc20_t_2.
       }
   *)
   Parameter transfer_from :
-      (M.Val (mut_ref ltac:(Self))) ->
-        (M.Val erc20.AccountId.t) ->
-        (M.Val erc20.AccountId.t) ->
-        (M.Val ltac:(erc20.Balance)) ->
-        M (M.Val ltac:(erc20.Result unit)).
+      (mut_ref ltac:(Self)) ->
+        erc20.AccountId.t ->
+        erc20.AccountId.t ->
+        ltac:(erc20.Balance) ->
+        M ltac:(erc20.Result unit).
   
   Global Instance AssociatedFunction_transfer_from :
     Notations.DoubleColon ltac:(Self) "transfer_from" := {

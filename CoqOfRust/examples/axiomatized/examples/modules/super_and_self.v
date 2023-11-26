@@ -6,7 +6,7 @@ fn function() {
     println!("called `function()`");
 }
 *)
-Parameter function : M (M.Val unit).
+Parameter function : M unit.
 
 Module cool.
   (*
@@ -14,7 +14,7 @@ Module cool.
           println!("called `cool::function()`");
       }
   *)
-  Parameter function : M (M.Val unit).
+  Parameter function : M unit.
 End cool.
 
 (*
@@ -22,7 +22,7 @@ End cool.
         println!("called `cool::function()`");
     }
 *)
-Parameter function : M (M.Val unit).
+Parameter function : M unit.
 
 Module my.
   (*
@@ -30,7 +30,7 @@ Module my.
           println!("called `my::function()`");
       }
   *)
-  Parameter function : M (M.Val unit).
+  Parameter function : M unit.
   
   Module cool.
     (*
@@ -38,7 +38,7 @@ Module my.
                 println!("called `my::cool::function()`");
             }
     *)
-    Parameter function : M (M.Val unit).
+    Parameter function : M unit.
   End cool.
   
   (*
@@ -66,7 +66,7 @@ Module my.
           }
       }
   *)
-  Parameter indirect_call : M (M.Val unit).
+  Parameter indirect_call : M unit.
 End my.
 
 (*
@@ -74,7 +74,7 @@ End my.
         println!("called `my::function()`");
     }
 *)
-Parameter function : M (M.Val unit).
+Parameter function : M unit.
 
 Module Wrap_cool_1.
 Module cool.
@@ -83,7 +83,7 @@ Module cool.
               println!("called `my::cool::function()`");
           }
   *)
-  Parameter function : M (M.Val unit).
+  Parameter function : M unit.
 End cool.
 End Wrap_cool_1.
 Import Wrap_cool_1.
@@ -93,7 +93,7 @@ Import Wrap_cool_1.
             println!("called `my::cool::function()`");
         }
 *)
-Parameter function : M (M.Val unit).
+Parameter function : M unit.
 
 (*
     pub fn indirect_call() {
@@ -120,7 +120,7 @@ Parameter function : M (M.Val unit).
         }
     }
 *)
-Parameter indirect_call : M (M.Val unit).
+Parameter indirect_call : M unit.
 
 (*
 fn main() {
@@ -128,4 +128,4 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : M (M.Val unit).
+Parameter main : M unit.

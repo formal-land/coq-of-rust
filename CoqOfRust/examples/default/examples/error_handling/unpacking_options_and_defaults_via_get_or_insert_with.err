@@ -22,3 +22,51 @@ type Closure(
         (),
     ],
 ) not yet handled
+type Closure(
+    DefId(0:4 ~ unpacking_options_and_defaults_via_get_or_insert_with[8b7e]::main::{closure#0}),
+    [
+        i8,
+        extern "rust-call" fn(()) -> Fruit,
+        (),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:4 ~ unpacking_options_and_defaults_via_get_or_insert_with[8b7e]::main::{closure#0}),
+    [
+        i8,
+        extern "rust-call" fn(()) -> Fruit,
+        (),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:4 ~ unpacking_options_and_defaults_via_get_or_insert_with[8b7e]::main::{closure#0}),
+    [
+        i8,
+        extern "rust-call" fn(()) -> Fruit,
+        (),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:4 ~ unpacking_options_and_defaults_via_get_or_insert_with[8b7e]::main::{closure#0}),
+    [
+        i8,
+        extern "rust-call" fn(()) -> Fruit,
+        (),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:4 ~ unpacking_options_and_defaults_via_get_or_insert_with[8b7e]::main::{closure#0}),
+    [
+        i8,
+        extern "rust-call" fn(()) -> Fruit,
+        (),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:4 ~ unpacking_options_and_defaults_via_get_or_insert_with[8b7e]::main::{closure#0}),
+    [
+        i8,
+        extern "rust-call" fn(()) -> Fruit,
+        (),
+    ],
+) not yet handled

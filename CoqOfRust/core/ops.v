@@ -612,10 +612,10 @@ Module try_trait.
     Class Trait (Self : Set) : Type := {
       Output : Set;
       Residual : Set;
-      from_output : M.Val Output -> M (M.Val Self);
+      from_output : Output -> M Self;
       branch :
-        M.Val Self ->
-        M (M.Val (control_flow.ControlFlow.t Residual Output));
+        Self ->
+        M (control_flow.ControlFlow.t Residual Output);
     }.
 
     Module Impl.
@@ -624,16 +624,14 @@ Module try_trait.
         Output := T;
         Residual := core.result.Result.t core.convert.Infallible.t E;
         from_output output :=
-          let* output := M.read output in
-          M.alloc (core.result.Result.Ok output);
+          M.pure (core.result.Result.Ok output);
         branch self :=
-          let* self := M.read self in
           match self with
           | core.result.Result.Ok v =>
-            M.alloc (control_flow.ControlFlow.Continue v)
+            M.pure (control_flow.ControlFlow.Continue v)
           | core.result.Result.Err e =>
             let result := core.result.Result.Err e in
-            M.alloc (control_flow.ControlFlow.Break result)
+            M.pure (control_flow.ControlFlow.Break result)
           end;
       }.
     End Impl.
@@ -647,7 +645,7 @@ Module try_trait.
   *)
   Module FromResidual.
     Class Trait (Self : Set) {R : Set} : Type := {
-      from_residual : M.Val R -> M (M.Val Self);
+      from_residual : R -> M Self;
     }.
 
     Module Impl.
@@ -664,11 +662,10 @@ Module try_trait.
           Trait (core.result.Result.t T E)
             (R := core.result.Result.t core.convert.Infallible.t E) := {
         from_residual residual :=
-          let* residual := M.read residual in
           match residual with
           | result.Result.Ok v => match v with end
           | result.Result.Err e =>
-            M.alloc (core.result.Result.Err e)
+            M.pure (core.result.Result.Err e)
           end;
       }.
     End Impl.

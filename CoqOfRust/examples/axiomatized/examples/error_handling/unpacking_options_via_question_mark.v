@@ -44,8 +44,7 @@ Section Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job_t.
   Clone
   *)
   Parameter clone :
-      (M.Val (ref ltac:(Self))) ->
-        M (M.Val unpacking_options_via_question_mark.Job.t).
+      (ref ltac:(Self)) -> M unpacking_options_via_question_mark.Job.t.
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon ltac:(Self) "clone" := {
@@ -100,8 +99,7 @@ Section Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumbe
   Clone
   *)
   Parameter clone :
-      (M.Val (ref ltac:(Self))) ->
-        M (M.Val unpacking_options_via_question_mark.PhoneNumber.t).
+      (ref ltac:(Self)) -> M unpacking_options_via_question_mark.PhoneNumber.t.
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon ltac:(Self) "clone" := {
@@ -137,7 +135,7 @@ Section Impl_unpacking_options_via_question_mark_Person_t.
       }
   *)
   Parameter work_phone_area_code :
-      (M.Val (ref ltac:(Self))) -> M (M.Val (core.option.Option.t u8.t)).
+      (ref ltac:(Self)) -> M (core.option.Option.t u8.t).
   
   Global Instance AssociatedFunction_work_phone_area_code :
     Notations.DoubleColon ltac:(Self) "work_phone_area_code" := {
@@ -161,4 +159,4 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : M (M.Val unit).
+Parameter main : M unit.

@@ -13,5 +13,4 @@ fn main() -> Result<(), ParseIntError> {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main :
-    M (M.Val (core.result.Result.t unit core.num.error.ParseIntError.t)).
+Parameter main : M (core.result.Result.t unit core.num.error.ParseIntError.t).

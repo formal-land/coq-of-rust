@@ -96,7 +96,7 @@ Section Impl_traits_parms_SomeTrait_for_traits_parms_SomeOtherType_t.
   (*
       fn some_fn() {}
   *)
-  Definition some_fn : M (M.Val unit) := M.function_body (M.alloc tt).
+  Definition some_fn : M unit := M.function_body (M.pure tt).
   
   Global Instance AssociatedFunction_some_fn :
     Notations.DoubleColon ltac:(Self) "some_fn" := {

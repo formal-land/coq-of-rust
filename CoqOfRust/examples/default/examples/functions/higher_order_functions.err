@@ -39,10 +39,10 @@ type Closure(
     ],
 ) not yet handled
 type Closure(
-    DefId(0:5 ~ higher_order_functions[bdbb]::main::{closure#0}),
+    DefId(0:7 ~ higher_order_functions[bdbb]::main::{closure#2}),
     [
         i16,
-        extern "rust-call" fn((u32,)) -> u32,
+        for<'a> extern "rust-call" fn((&'a u32,)) -> bool,
         (),
     ],
 ) not yet handled
@@ -51,6 +51,22 @@ type Closure(
     [
         i16,
         extern "rust-call" fn((u32,)) -> u32,
+        (),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:6 ~ higher_order_functions[bdbb]::main::{closure#1}),
+    [
+        i16,
+        for<'a> extern "rust-call" fn((&'a u32,)) -> bool,
+        (&u32,),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:7 ~ higher_order_functions[bdbb]::main::{closure#2}),
+    [
+        i16,
+        for<'a> extern "rust-call" fn((&'a u32,)) -> bool,
         (),
     ],
 ) not yet handled
@@ -84,6 +100,134 @@ type Closure(
         i16,
         for<'a> extern "rust-call" fn((&'a u32,)) -> bool,
         (&u32,),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:5 ~ higher_order_functions[bdbb]::main::{closure#0}),
+    [
+        i16,
+        extern "rust-call" fn((u32,)) -> u32,
+        (),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:6 ~ higher_order_functions[bdbb]::main::{closure#1}),
+    [
+        i16,
+        for<'a> extern "rust-call" fn((&'a u32,)) -> bool,
+        (&u32,),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:5 ~ higher_order_functions[bdbb]::main::{closure#0}),
+    [
+        i16,
+        extern "rust-call" fn((u32,)) -> u32,
+        (),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:5 ~ higher_order_functions[bdbb]::main::{closure#0}),
+    [
+        i16,
+        extern "rust-call" fn((u32,)) -> u32,
+        (),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:5 ~ higher_order_functions[bdbb]::main::{closure#0}),
+    [
+        i16,
+        extern "rust-call" fn((u32,)) -> u32,
+        (),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:5 ~ higher_order_functions[bdbb]::main::{closure#0}),
+    [
+        i16,
+        extern "rust-call" fn((u32,)) -> u32,
+        (),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:5 ~ higher_order_functions[bdbb]::main::{closure#0}),
+    [
+        i16,
+        extern "rust-call" fn((u32,)) -> u32,
+        (),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:5 ~ higher_order_functions[bdbb]::main::{closure#0}),
+    [
+        i16,
+        extern "rust-call" fn((u32,)) -> u32,
+        (),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:5 ~ higher_order_functions[bdbb]::main::{closure#0}),
+    [
+        i16,
+        extern "rust-call" fn((u32,)) -> u32,
+        (),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:6 ~ higher_order_functions[bdbb]::main::{closure#1}),
+    [
+        i16,
+        for<'a> extern "rust-call" fn((&'a u32,)) -> bool,
+        (&u32,),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:6 ~ higher_order_functions[bdbb]::main::{closure#1}),
+    [
+        i16,
+        for<'a> extern "rust-call" fn((&'a u32,)) -> bool,
+        (&u32,),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:6 ~ higher_order_functions[bdbb]::main::{closure#1}),
+    [
+        i16,
+        for<'a> extern "rust-call" fn((&'a u32,)) -> bool,
+        (&u32,),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:5 ~ higher_order_functions[bdbb]::main::{closure#0}),
+    [
+        i16,
+        extern "rust-call" fn((u32,)) -> u32,
+        (),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:6 ~ higher_order_functions[bdbb]::main::{closure#1}),
+    [
+        i16,
+        for<'a> extern "rust-call" fn((&'a u32,)) -> bool,
+        (&u32,),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:7 ~ higher_order_functions[bdbb]::main::{closure#2}),
+    [
+        i16,
+        for<'a> extern "rust-call" fn((&'a u32,)) -> bool,
+        (),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:7 ~ higher_order_functions[bdbb]::main::{closure#2}),
+    [
+        i16,
+        for<'a> extern "rust-call" fn((&'a u32,)) -> bool,
+        (),
     ],
 ) not yet handled
 type Closure(

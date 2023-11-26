@@ -43,18 +43,18 @@ End DebugTuple.
 Module Display.
   Class Trait (Self : Set) : Set := {
     fmt :
-      M.Val (ref Self) ->
-      M.Val (mut_ref Formatter.t) ->
-      M (M.Val ltac:(Result));
+      ref Self ->
+      mut_ref Formatter.t ->
+      M ltac:(Result);
   }.
 End Display.
 
 Module Debug.
   Class Trait (Self : Set) : Set := {
     fmt :
-      M.Val (ref Self) ->
-      M.Val (mut_ref Formatter.t) ->
-      M (M.Val ltac:(Result));
+      ref Self ->
+      mut_ref Formatter.t ->
+      M ltac:(Result);
   }.
 End Debug.
 

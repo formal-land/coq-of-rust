@@ -7,67 +7,75 @@ fn eat_box_i32(boxed_i32: Box<i32>) {
 }
 *)
 Definition eat_box_i32
-    (boxed_i32 : M.Val (alloc.boxed.Box.t i32.t alloc.boxed.Box.Default.A))
-    : M (M.Val unit) :=
+    (boxed_i32 : alloc.boxed.Box.t i32.t alloc.boxed.Box.Default.A)
+    : M unit :=
+  let* boxed_i32 : M.Val (alloc.boxed.Box.t i32.t alloc.boxed.Box.Default.A) :=
+    M.alloc boxed_i32 in
   M.function_body
-    (let* _ : ltac:(refine (M.Val unit)) :=
-      let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
+    (let* _ : M.Val unit :=
+      let* _ : M.Val unit :=
+        let* α0 : M.Val (array (ref str.t)) :=
           M.alloc [ mk_str "Destroying box that contains "; mk_str "
 " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
-          borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
-          pointer_coercion "Unsize" α1 in
-        let* α3 :
-            ltac:(refine
-              (M.Val (ref (alloc.boxed.Box.t i32.t alloc.alloc.Global.t)))) :=
+        let* α1 : ref (array (ref str.t)) := borrow α0 in
+        let* α2 : M.Val (ref (array (ref str.t))) := M.alloc α1 in
+        let* α3 : M.Val (ref (slice (ref str.t))) :=
+          pointer_coercion "Unsize" α2 in
+        let* α4 : ref (slice (ref str.t)) := M.read α3 in
+        let* α5 : ref (alloc.boxed.Box.t i32.t alloc.alloc.Global.t) :=
           borrow boxed_i32 in
-        let* α4 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
-          core.fmt.rt.Argument.t::["new_display"] α3 in
-        let* α5 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
-          M.alloc [ α4 ] in
-        let* α6 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
-          borrow α5 in
-        let* α7 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
-          pointer_coercion "Unsize" α6 in
-        let* α8 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-          core.fmt.Arguments.t::["new_v1"] α2 α7 in
-        std.io.stdio._print α8 in
+        let* α6 : core.fmt.rt.Argument.t :=
+          core.fmt.rt.Argument.t::["new_display"] α5 in
+        let* α7 : M.Val core.fmt.rt.Argument.t := M.alloc α6 in
+        let* α8 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α7 ] in
+        let* α9 : ref (array core.fmt.rt.Argument.t) := borrow α8 in
+        let* α10 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α9 in
+        let* α11 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
+          pointer_coercion "Unsize" α10 in
+        let* α12 : ref (slice core.fmt.rt.Argument.t) := M.read α11 in
+        let* α13 : core.fmt.Arguments.t :=
+          core.fmt.Arguments.t::["new_v1"] α4 α12 in
+        let* α14 : unit := std.io.stdio._print α13 in
+        M.alloc α14 in
       M.alloc tt in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).
 
 (*
 fn borrow_i32(borrowed_i32: &i32) {
     println!("This int is: {}", borrowed_i32);
 }
 *)
-Definition borrow_i32 (borrowed_i32 : M.Val (ref i32.t)) : M (M.Val unit) :=
+Definition borrow_i32 (borrowed_i32 : ref i32.t) : M unit :=
+  let* borrowed_i32 : M.Val (ref i32.t) := M.alloc borrowed_i32 in
   M.function_body
-    (let* _ : ltac:(refine (M.Val unit)) :=
-      let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
+    (let* _ : M.Val unit :=
+      let* _ : M.Val unit :=
+        let* α0 : M.Val (array (ref str.t)) :=
           M.alloc [ mk_str "This int is: "; mk_str "
 " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
-          borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
-          pointer_coercion "Unsize" α1 in
-        let* α3 : ltac:(refine (M.Val (ref (ref i32.t)))) :=
-          borrow borrowed_i32 in
-        let* α4 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
-          core.fmt.rt.Argument.t::["new_display"] α3 in
-        let* α5 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
-          M.alloc [ α4 ] in
-        let* α6 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
-          borrow α5 in
-        let* α7 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
-          pointer_coercion "Unsize" α6 in
-        let* α8 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-          core.fmt.Arguments.t::["new_v1"] α2 α7 in
-        std.io.stdio._print α8 in
+        let* α1 : ref (array (ref str.t)) := borrow α0 in
+        let* α2 : M.Val (ref (array (ref str.t))) := M.alloc α1 in
+        let* α3 : M.Val (ref (slice (ref str.t))) :=
+          pointer_coercion "Unsize" α2 in
+        let* α4 : ref (slice (ref str.t)) := M.read α3 in
+        let* α5 : ref (ref i32.t) := borrow borrowed_i32 in
+        let* α6 : core.fmt.rt.Argument.t :=
+          core.fmt.rt.Argument.t::["new_display"] α5 in
+        let* α7 : M.Val core.fmt.rt.Argument.t := M.alloc α6 in
+        let* α8 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α7 ] in
+        let* α9 : ref (array core.fmt.rt.Argument.t) := borrow α8 in
+        let* α10 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α9 in
+        let* α11 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
+          pointer_coercion "Unsize" α10 in
+        let* α12 : ref (slice core.fmt.rt.Argument.t) := M.read α11 in
+        let* α13 : core.fmt.Arguments.t :=
+          core.fmt.Arguments.t::["new_v1"] α4 α12 in
+        let* α14 : unit := std.io.stdio._print α13 in
+        M.alloc α14 in
       M.alloc tt in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).
 
 (*
 fn main() {
@@ -99,29 +107,44 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M (M.Val unit) :=
+Definition main : M unit :=
   M.function_body
-    (let* boxed_i32 :
-        ltac:(refine (M.Val (alloc.boxed.Box.t i32.t alloc.alloc.Global.t))) :=
-      let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 5 in
-      (alloc.boxed.Box.t i32.t alloc.alloc.Global.t)::["new"] α0 in
-    let* stacked_i32 : ltac:(refine (M.Val i32.t)) := M.alloc 6 in
-    let* _ : ltac:(refine (M.Val unit)) :=
-      let* α0 : ltac:(refine (M.Val i32.t)) := deref boxed_i32 in
-      let* α1 : ltac:(refine (M.Val (ref i32.t))) := borrow α0 in
-      scoping_rules_borrowing.borrow_i32 α1 in
-    let* _ : ltac:(refine (M.Val unit)) :=
-      let* α0 : ltac:(refine (M.Val (ref i32.t))) := borrow stacked_i32 in
-      scoping_rules_borrowing.borrow_i32 α0 in
-    let* _ : ltac:(refine (M.Val unit)) :=
-      let* _ref_to_i32 : ltac:(refine (M.Val (ref i32.t))) :=
-        let* α0 : ltac:(refine (M.Val i32.t)) := deref boxed_i32 in
-        borrow α0 in
-      let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val i32.t)) := deref _ref_to_i32 in
-        let* α1 : ltac:(refine (M.Val (ref i32.t))) := borrow α0 in
-        scoping_rules_borrowing.borrow_i32 α1 in
+    (let* boxed_i32 : M.Val (alloc.boxed.Box.t i32.t alloc.alloc.Global.t) :=
+      let* α0 : M.Val i32.t := M.alloc 5 in
+      let* α1 : i32.t := M.read α0 in
+      let* α2 : alloc.boxed.Box.t i32.t alloc.alloc.Global.t :=
+        (alloc.boxed.Box.t i32.t alloc.alloc.Global.t)::["new"] α1 in
+      M.alloc α2 in
+    let* stacked_i32 : M.Val i32.t :=
+      let* α0 : M.Val i32.t := M.alloc 6 in
+      M.copy α0 in
+    let* _ : M.Val unit :=
+      let* α0 : alloc.boxed.Box.t i32.t alloc.alloc.Global.t :=
+        M.read boxed_i32 in
+      let* α1 : M.Val i32.t := deref α0 in
+      let* α2 : ref i32.t := borrow α1 in
+      let* α3 : unit := scoping_rules_borrowing.borrow_i32 α2 in
+      M.alloc α3 in
+    let* _ : M.Val unit :=
+      let* α0 : ref i32.t := borrow stacked_i32 in
+      let* α1 : unit := scoping_rules_borrowing.borrow_i32 α0 in
+      M.alloc α1 in
+    let* _ : M.Val unit :=
+      let* _ref_to_i32 : M.Val (ref i32.t) :=
+        let* α0 : alloc.boxed.Box.t i32.t alloc.alloc.Global.t :=
+          M.read boxed_i32 in
+        let* α1 : M.Val i32.t := deref α0 in
+        let* α2 : ref i32.t := borrow α1 in
+        M.alloc α2 in
+      let* _ : M.Val unit :=
+        let* α0 : ref i32.t := M.read _ref_to_i32 in
+        let* α1 : unit := scoping_rules_borrowing.borrow_i32 α0 in
+        M.alloc α1 in
       M.alloc tt in
-    let* _ : ltac:(refine (M.Val unit)) :=
-      scoping_rules_borrowing.eat_box_i32 boxed_i32 in
-    M.alloc tt).
+    let* _ : M.Val unit :=
+      let* α0 : alloc.boxed.Box.t i32.t alloc.alloc.Global.t :=
+        M.read boxed_i32 in
+      let* α1 : unit := scoping_rules_borrowing.eat_box_i32 α0 in
+      M.alloc α1 in
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).

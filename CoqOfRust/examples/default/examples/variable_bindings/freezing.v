@@ -21,13 +21,17 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M (M.Val unit) :=
+Definition main : M unit :=
   M.function_body
-    (let* _mutable_integer : ltac:(refine (M.Val i32.t)) := M.alloc 7 in
-    let* _ : ltac:(refine (M.Val unit)) :=
-      let _mutable_integer := _mutable_integer in
+    (let* _mutable_integer : M.Val i32.t :=
+      let* α0 : M.Val i32.t := M.alloc 7 in
+      M.copy α0 in
+    let* _ : M.Val unit :=
+      let* _mutable_integer : M.Val i32.t := M.copy _mutable_integer in
       M.alloc tt in
-    let* _ : ltac:(refine (M.Val unit)) :=
-      let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 3 in
-      assign _mutable_integer α0 in
-    M.alloc tt).
+    let* _ : M.Val unit :=
+      let* α0 : M.Val i32.t := M.alloc 3 in
+      let* α1 : i32.t := M.read α0 in
+      assign _mutable_integer α1 in
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).

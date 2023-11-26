@@ -4,6 +4,7 @@ use crate::env::*;
 use crate::expression::*;
 use crate::header::*;
 use crate::path::*;
+use crate::pattern::*;
 use crate::render::*;
 use crate::reorder::*;
 use crate::ty::*;
@@ -244,11 +245,11 @@ fn compile_fn_sig_and_body(
     default: &str,
 ) -> FnSigAndBody {
     let decl = fn_sig_and_body.fn_sig.decl;
-    FnSigAndBody {
-        args: get_args(env, fn_sig_and_body.body, decl.inputs, default),
-        ret_ty: compile_fn_ret_ty(env, &decl.output),
-        body: compile_function_body(env, fn_sig_and_body.body),
-    }
+    let args = get_args(env, fn_sig_and_body.body, decl.inputs, default);
+    let ret_ty = compile_fn_ret_ty(env, &decl.output);
+    let body = compile_function_body(env, &args, fn_sig_and_body.body, ret_ty.clone());
+
+    FnSigAndBody { args, ret_ty, body }
 }
 
 /// Check if the function body is actually the main test function calling to all
@@ -735,19 +736,59 @@ fn get_body<'a>(tcx: &'a TyCtxt, body_id: &rustc_hir::BodyId) -> &'a rustc_hir::
 }
 
 // compiles the body of a function
-fn compile_function_body(env: &mut Env, body: &rustc_hir::Body) -> Option<Box<Expr>> {
+fn compile_function_body(
+    env: &mut Env,
+    args: &[(String, Rc<CoqType>)],
+    body: &rustc_hir::Body,
+    ret_ty: Rc<CoqType>,
+) -> Option<Box<Expr>> {
     if env.axiomatize {
         return None;
     }
     let body = compile_hir_id(env, body.value.hir_id);
-    let ty = body.ty.clone();
-    Some(Box::new(Expr {
+    let has_return = body.has_return();
+    let body: Box<Expr> = Box::new(Expr {
         kind: ExprKind::MonadicOperator {
             name: "M.function_body".to_string(),
-            arg: Box::new(body),
+            arg: Box::new(body.read()),
         },
-        ty,
-    }))
+        ty: None,
+    });
+    let body: Box<Expr> = args.iter().rfold(body, |body, (name, ty)| {
+        Box::new(Expr {
+            ty: body.ty.clone(),
+            kind: ExprKind::Let {
+                is_monadic: false,
+                pattern: Box::new(Pattern::Variable(name.to_string())),
+                init: Box::new(Expr {
+                    kind: ExprKind::Var(Path::local(name.to_string())).alloc(Some(ty.clone())),
+                    ty: Some(ty.clone().val()),
+                }),
+                body,
+            },
+        })
+    });
+
+    if has_return {
+        return Some(Box::new(Expr {
+            kind: ExprKind::Let {
+                is_monadic: false,
+                pattern: Box::new(Pattern::Variable("return_".to_string())),
+                init: Box::new(Expr {
+                    kind: ExprKind::VarWithTy {
+                        path: Path::local("M.return_".to_string()),
+                        ty_name: "R".to_string(),
+                        ty: ret_ty,
+                    },
+                    ty: None,
+                }),
+                body,
+            },
+            ty: None,
+        }));
+    }
+
+    Some(body)
 }
 
 /// returns a list of pairs of argument names and their types
@@ -758,7 +799,7 @@ fn get_args(
     default: &str,
 ) -> Vec<(String, Rc<CoqType>)> {
     get_arg_names(body, default)
-        .zip(inputs.iter().map(|ty| compile_type(env, ty).val()))
+        .zip(inputs.iter().map(|ty| compile_type(env, ty)))
         .collect()
 }
 
@@ -1030,11 +1071,8 @@ fn mt_impl_item(item: ImplItemKind) -> ImplItemKind {
             let body = match body {
                 None => body,
                 Some(body) => {
-                    let stmt = mt_expression(FreshVars::new(), *body).0;
-                    Some(Box::new(Expr {
-                        ty: stmt.ty.clone(),
-                        kind: ExprKind::Block(Box::new(stmt)),
-                    }))
+                    let body = mt_expression(FreshVars::new(), *body).0;
+                    Some(Box::new(body))
                 }
             };
             ImplItemKind::Const {
@@ -1054,15 +1092,12 @@ impl FnSigAndBody {
     fn mt(self) -> Self {
         FnSigAndBody {
             args: self.args,
-            ret_ty: Rc::new(CoqType::Monad(mt_ty(self.ret_ty).val())),
+            ret_ty: Rc::new(CoqType::Monad(mt_ty(self.ret_ty))),
             body: match self.body {
                 None => self.body,
                 Some(body) => {
                     let (body, _fresh_vars) = mt_expression(FreshVars::new(), *body);
-                    Some(Box::new(Expr {
-                        ty: body.ty.clone(),
-                        kind: ExprKind::Block(Box::new(body)),
-                    }))
+                    Some(Box::new(body))
                 }
             },
         }
@@ -1109,10 +1144,7 @@ fn mt_top_level_item(item: TopLevelItem) -> TopLevelItem {
                 None => value,
                 Some(value) => {
                     let (value, _fresh_vars) = mt_expression(FreshVars::new(), *value);
-                    Some(Box::new(Expr {
-                        ty: value.ty.clone(),
-                        kind: ExprKind::Block(Box::new(value)),
-                    }))
+                    Some(Box::new(value))
                 }
             },
         },

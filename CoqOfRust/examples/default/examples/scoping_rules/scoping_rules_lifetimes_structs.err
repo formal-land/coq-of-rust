@@ -58,3 +58,123 @@ type Dynamic(
     ReErased,
     Dyn,
 ) not yet handled
+type Dynamic(
+    [
+        Binder(
+            Trait(
+                std::fmt::Debug,
+            ),
+            [],
+        ),
+    ],
+    ReErased,
+    Dyn,
+) not yet handled
+type Dynamic(
+    [
+        Binder(
+            Trait(
+                std::fmt::Debug,
+            ),
+            [],
+        ),
+    ],
+    ReErased,
+    Dyn,
+) not yet handled
+type Dynamic(
+    [
+        Binder(
+            Trait(
+                std::fmt::Debug,
+            ),
+            [],
+        ),
+    ],
+    ReErased,
+    Dyn,
+) not yet handled
+type Dynamic(
+    [
+        Binder(
+            Trait(
+                std::fmt::Debug,
+            ),
+            [],
+        ),
+    ],
+    ReErased,
+    Dyn,
+) not yet handled
+type Dynamic(
+    [
+        Binder(
+            Trait(
+                std::fmt::Debug,
+            ),
+            [],
+        ),
+    ],
+    ReErased,
+    Dyn,
+) not yet handled
+type Dynamic(
+    [
+        Binder(
+            Trait(
+                std::fmt::Debug,
+            ),
+            [],
+        ),
+    ],
+    ReErased,
+    Dyn,
+) not yet handled
+type Dynamic(
+    [
+        Binder(
+            Trait(
+                std::fmt::Debug,
+            ),
+            [],
+        ),
+    ],
+    ReErased,
+    Dyn,
+) not yet handled
+type Dynamic(
+    [
+        Binder(
+            Trait(
+                std::fmt::Debug,
+            ),
+            [],
+        ),
+    ],
+    ReErased,
+    Dyn,
+) not yet handled
+type Dynamic(
+    [
+        Binder(
+            Trait(
+                std::fmt::Debug,
+            ),
+            [],
+        ),
+    ],
+    ReErased,
+    Dyn,
+) not yet handled
+type Dynamic(
+    [
+        Binder(
+            Trait(
+                std::fmt::Debug,
+            ),
+            [],
+        ),
+    ],
+    ReErased,
+    Dyn,
+) not yet handled

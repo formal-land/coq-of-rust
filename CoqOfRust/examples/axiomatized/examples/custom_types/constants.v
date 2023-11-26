@@ -11,7 +11,7 @@ fn is_big(n: i32) -> bool {
     n > THRESHOLD
 }
 *)
-Parameter is_big : (M.Val i32.t) -> M (M.Val bool.t).
+Parameter is_big : i32.t -> M bool.t.
 
 (*
 fn main() {
@@ -28,4 +28,4 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : M (M.Val unit).
+Parameter main : M unit.

@@ -44,7 +44,7 @@ Section Impl_traits_Sheep_t.
           self.naked
       }
   *)
-  Parameter is_naked : (M.Val (ref ltac:(Self))) -> M (M.Val bool.t).
+  Parameter is_naked : (ref ltac:(Self)) -> M bool.t.
   
   Global Instance AssociatedFunction_is_naked :
     Notations.DoubleColon ltac:(Self) "is_naked" := {
@@ -65,7 +65,7 @@ Section Impl_traits_Animal_for_traits_Sheep_t.
           }
       }
   *)
-  Parameter new : (M.Val (ref str.t)) -> M (M.Val traits.Sheep.t).
+  Parameter new : (ref str.t) -> M traits.Sheep.t.
   
   Global Instance AssociatedFunction_new :
     Notations.DoubleColon ltac:(Self) "new" := {
@@ -77,7 +77,7 @@ Section Impl_traits_Animal_for_traits_Sheep_t.
           self.name
       }
   *)
-  Parameter name : (M.Val (ref ltac:(Self))) -> M (M.Val (ref str.t)).
+  Parameter name : (ref ltac:(Self)) -> M (ref str.t).
   
   Global Instance AssociatedFunction_name :
     Notations.DoubleColon ltac:(Self) "name" := {
@@ -93,7 +93,7 @@ Section Impl_traits_Animal_for_traits_Sheep_t.
           }
       }
   *)
-  Parameter noise : (M.Val (ref ltac:(Self))) -> M (M.Val (ref str.t)).
+  Parameter noise : (ref ltac:(Self)) -> M (ref str.t).
   
   Global Instance AssociatedFunction_noise :
     Notations.DoubleColon ltac:(Self) "noise" := {
@@ -106,7 +106,7 @@ Section Impl_traits_Animal_for_traits_Sheep_t.
           println!("{} pauses briefly... {}", self.name, self.noise());
       }
   *)
-  Parameter talk : (M.Val (ref ltac:(Self))) -> M (M.Val unit).
+  Parameter talk : (ref ltac:(Self)) -> M unit.
   
   Global Instance AssociatedFunction_talk :
     Notations.DoubleColon ltac:(Self) "talk" := {
@@ -138,7 +138,7 @@ Section Impl_traits_Sheep_t_2.
           }
       }
   *)
-  Parameter shear : (M.Val (mut_ref ltac:(Self))) -> M (M.Val unit).
+  Parameter shear : (mut_ref ltac:(Self)) -> M unit.
   
   Global Instance AssociatedFunction_shear :
     Notations.DoubleColon ltac:(Self) "shear" := {
@@ -159,4 +159,4 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : M (M.Val unit).
+Parameter main : M unit.

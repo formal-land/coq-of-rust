@@ -51,19 +51,16 @@ Section Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating
           self.username.clone()
       }
   *)
-  Definition get
-      (self : M.Val (ref ltac:(Self)))
-      : M (M.Val alloc.string.String.t) :=
+  Definition get (self : ref ltac:(Self)) : M alloc.string.String.t :=
+    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
     M.function_body
-      (let* α0 :
-          ltac:(refine (M.Val disambiguating_overlapping_traits.Form.t)) :=
-        deref self in
-      let* α1 : ltac:(refine (M.Val (ref alloc.string.String.t))) :=
-        borrow α0.["username"] in
+      (let* α0 : ref disambiguating_overlapping_traits.Form.t := M.read self in
+      let* α1 : M.Val disambiguating_overlapping_traits.Form.t := deref α0 in
+      let* α2 : ref alloc.string.String.t := borrow α1.["username"] in
       (core.clone.Clone.clone
           (Self := alloc.string.String.t)
           (Trait := ltac:(refine _)))
-        α1).
+        α2).
   
   Global Instance AssociatedFunction_get :
     Notations.DoubleColon ltac:(Self) "get" := {
@@ -86,12 +83,12 @@ Section Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_over
           self.age
       }
   *)
-  Definition get (self : M.Val (ref ltac:(Self))) : M (M.Val u8.t) :=
+  Definition get (self : ref ltac:(Self)) : M u8.t :=
+    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
     M.function_body
-      (let* α0 :
-          ltac:(refine (M.Val disambiguating_overlapping_traits.Form.t)) :=
-        deref self in
-      M.pure α0.["age"]).
+      (let* α0 : ref disambiguating_overlapping_traits.Form.t := M.read self in
+      let* α1 : M.Val disambiguating_overlapping_traits.Form.t := deref α0 in
+      M.read α1.["age"]).
   
   Global Instance AssociatedFunction_get :
     Notations.DoubleColon ltac:(Self) "get" := {
@@ -124,141 +121,115 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M (M.Val unit) :=
+Definition main : M unit :=
   M.function_body
-    (let* form :
-        ltac:(refine (M.Val disambiguating_overlapping_traits.Form.t)) :=
-      let* α0 : ltac:(refine (M.Val str.t)) := deref (mk_str "rustacean") in
-      let* α1 : ltac:(refine (M.Val (ref str.t))) := borrow α0 in
-      let* α2 : ltac:(refine (M.Val alloc.string.String.t)) :=
+    (let* form : M.Val disambiguating_overlapping_traits.Form.t :=
+      let* α0 : ref str.t := M.read (mk_str "rustacean") in
+      let* α1 : alloc.string.String.t :=
         (alloc.borrow.ToOwned.to_owned
             (Self := str.t)
             (Trait := ltac:(refine _)))
-          α1 in
-      let* α3 := M.read α2 in
-      let* α4 : ltac:(refine (M.Val u8.t)) := M.alloc 28 in
-      let* α5 := M.read α4 in
+          α0 in
+      let* α2 : M.Val u8.t := M.alloc 28 in
+      let* α3 : u8.t := M.read α2 in
       M.alloc
         {|
-          disambiguating_overlapping_traits.Form.username := α3;
-          disambiguating_overlapping_traits.Form.age := α5;
+          disambiguating_overlapping_traits.Form.username := α1;
+          disambiguating_overlapping_traits.Form.age := α3;
         |} in
-    let* username : ltac:(refine (M.Val alloc.string.String.t)) :=
-      let* α0 :
-          ltac:(refine
-            (M.Val (ref disambiguating_overlapping_traits.Form.t))) :=
-        borrow form in
-      (disambiguating_overlapping_traits.UsernameWidget.get
-          (Self := disambiguating_overlapping_traits.Form.t)
-          (Trait := ltac:(refine _)))
-        α0 in
-    let* _ : ltac:(refine (M.Val unit)) :=
-      let* α0 : ltac:(refine (M.Val str.t)) := deref (mk_str "rustacean") in
-      let* α1 : ltac:(refine (M.Val (ref str.t))) := borrow α0 in
-      let* α2 : ltac:(refine (M.Val alloc.string.String.t)) :=
+    let* username : M.Val alloc.string.String.t :=
+      let* α0 : ref disambiguating_overlapping_traits.Form.t := borrow form in
+      let* α1 : alloc.string.String.t :=
+        (disambiguating_overlapping_traits.UsernameWidget.get
+            (Self := disambiguating_overlapping_traits.Form.t)
+            (Trait := ltac:(refine _)))
+          α0 in
+      M.alloc α1 in
+    let* _ : M.Val unit :=
+      let* α0 : ref str.t := M.read (mk_str "rustacean") in
+      let* α1 : alloc.string.String.t :=
         (alloc.string.ToString.to_string
             (Self := str.t)
             (Trait := ltac:(refine _)))
-          α1 in
-      let* α3 : ltac:(refine (M.Val (ref alloc.string.String.t))) :=
-        borrow α2 in
-      let* α4 := M.read α3 in
-      let* α5 : ltac:(refine (M.Val (ref alloc.string.String.t))) :=
-        borrow username in
-      let* α6 := M.read α5 in
-      let* α7 :
-          ltac:(refine
-            (M.Val
-              ((ref alloc.string.String.t) * (ref alloc.string.String.t)))) :=
-        M.alloc (α4, α6) in
-      let* α8 := M.read α7 in
-      match α8 with
-      | (left_val, right_val) =>
-        let* right_val := M.alloc right_val in
-        let* left_val := M.alloc left_val in
-        let* α0 : ltac:(refine (M.Val alloc.string.String.t)) :=
-          deref left_val in
-        let* α1 : ltac:(refine (M.Val (ref alloc.string.String.t))) :=
-          borrow α0 in
-        let* α2 : ltac:(refine (M.Val alloc.string.String.t)) :=
-          deref right_val in
-        let* α3 : ltac:(refine (M.Val (ref alloc.string.String.t))) :=
-          borrow α2 in
-        let* α4 : ltac:(refine (M.Val bool.t)) :=
-          (core.cmp.PartialEq.eq
-              (Self := alloc.string.String.t)
-              (Trait := ltac:(refine _)))
-            α1
-            α3 in
-        let* α5 : ltac:(refine (M.Val bool.t)) := UnOp.not α4 in
-        let* α6 : ltac:(refine (M.Val bool.t)) := use α5 in
-        let* α7 := M.read α6 in
-        if (α7 : bool) then
-          let* kind : ltac:(refine (M.Val core.panicking.AssertKind.t)) :=
-            M.alloc core.panicking.AssertKind.Eq in
-          let* _ : ltac:(refine (M.Val never.t)) :=
-            let* α0 : ltac:(refine (M.Val alloc.string.String.t)) :=
-              deref left_val in
-            let* α1 : ltac:(refine (M.Val (ref alloc.string.String.t))) :=
-              borrow α0 in
-            let* α2 : ltac:(refine (M.Val alloc.string.String.t)) :=
-              deref right_val in
-            let* α3 : ltac:(refine (M.Val (ref alloc.string.String.t))) :=
-              borrow α2 in
-            let* α4 :
-                ltac:(refine
-                  (M.Val (core.option.Option.t core.fmt.Arguments.t))) :=
-              M.alloc core.option.Option.None in
-            core.panicking.assert_failed kind α1 α3 α4 in
-          let* α0 : ltac:(refine (M.Val unit)) := M.alloc tt in
-          never_to_any α0
-        else
-          M.alloc tt
-      end in
-    let* age : ltac:(refine (M.Val u8.t)) :=
-      let* α0 :
-          ltac:(refine
-            (M.Val (ref disambiguating_overlapping_traits.Form.t))) :=
-        borrow form in
-      (disambiguating_overlapping_traits.AgeWidget.get
-          (Self := disambiguating_overlapping_traits.Form.t)
-          (Trait := ltac:(refine _)))
-        α0 in
-    let* _ : ltac:(refine (M.Val unit)) :=
-      let* α0 : ltac:(refine (M.Val u8.t)) := M.alloc 28 in
-      let* α1 : ltac:(refine (M.Val (ref u8.t))) := borrow α0 in
-      let* α2 := M.read α1 in
-      let* α3 : ltac:(refine (M.Val (ref u8.t))) := borrow age in
-      let* α4 := M.read α3 in
-      let* α5 : ltac:(refine (M.Val ((ref u8.t) * (ref u8.t)))) :=
-        M.alloc (α2, α4) in
+          α0 in
+      let* α2 : M.Val alloc.string.String.t := M.alloc α1 in
+      let* α3 : ref alloc.string.String.t := borrow α2 in
+      let* α4 : ref alloc.string.String.t := borrow username in
+      let* α5 :
+          M.Val ((ref alloc.string.String.t) * (ref alloc.string.String.t)) :=
+        M.alloc (α3, α4) in
       let* α6 := M.read α5 in
       match α6 with
       | (left_val, right_val) =>
         let* right_val := M.alloc right_val in
         let* left_val := M.alloc left_val in
-        let* α0 : ltac:(refine (M.Val u8.t)) := deref left_val in
-        let* α1 : ltac:(refine (M.Val u8.t)) := deref right_val in
-        let* α2 : ltac:(refine (M.Val bool.t)) := BinOp.eq α0 α1 in
-        let* α3 : ltac:(refine (M.Val bool.t)) := UnOp.not α2 in
-        let* α4 : ltac:(refine (M.Val bool.t)) := use α3 in
-        let* α5 := M.read α4 in
-        if (α5 : bool) then
-          let* kind : ltac:(refine (M.Val core.panicking.AssertKind.t)) :=
+        let* α0 : ref alloc.string.String.t := M.read left_val in
+        let* α1 : ref alloc.string.String.t := M.read right_val in
+        let* α2 : bool.t :=
+          (core.cmp.PartialEq.eq
+              (Self := alloc.string.String.t)
+              (Trait := ltac:(refine _)))
+            α0
+            α1 in
+        let* α3 : M.Val bool.t := M.alloc α2 in
+        let* α4 : M.Val bool.t := UnOp.not α3 in
+        let* α5 : M.Val bool.t := use α4 in
+        let* α6 : bool.t := M.read α5 in
+        if (α6 : bool) then
+          let* kind : M.Val core.panicking.AssertKind.t :=
             M.alloc core.panicking.AssertKind.Eq in
-          let* _ : ltac:(refine (M.Val never.t)) :=
-            let* α0 : ltac:(refine (M.Val u8.t)) := deref left_val in
-            let* α1 : ltac:(refine (M.Val (ref u8.t))) := borrow α0 in
-            let* α2 : ltac:(refine (M.Val u8.t)) := deref right_val in
-            let* α3 : ltac:(refine (M.Val (ref u8.t))) := borrow α2 in
-            let* α4 :
-                ltac:(refine
-                  (M.Val (core.option.Option.t core.fmt.Arguments.t))) :=
-              M.alloc core.option.Option.None in
-            core.panicking.assert_failed kind α1 α3 α4 in
-          let* α0 : ltac:(refine (M.Val unit)) := M.alloc tt in
+          let* _ : M.Val never.t :=
+            let* α0 : core.panicking.AssertKind.t := M.read kind in
+            let* α1 : ref alloc.string.String.t := M.read left_val in
+            let* α2 : ref alloc.string.String.t := M.read right_val in
+            let* α3 : never.t :=
+              core.panicking.assert_failed α0 α1 α2 core.option.Option.None in
+            M.alloc α3 in
+          let* α0 : M.Val unit := M.alloc tt in
           never_to_any α0
         else
           M.alloc tt
       end in
-    M.alloc tt).
+    let* age : M.Val u8.t :=
+      let* α0 : ref disambiguating_overlapping_traits.Form.t := borrow form in
+      let* α1 : u8.t :=
+        (disambiguating_overlapping_traits.AgeWidget.get
+            (Self := disambiguating_overlapping_traits.Form.t)
+            (Trait := ltac:(refine _)))
+          α0 in
+      M.alloc α1 in
+    let* _ : M.Val unit :=
+      let* α0 : M.Val u8.t := M.alloc 28 in
+      let* α1 : ref u8.t := borrow α0 in
+      let* α2 : ref u8.t := borrow age in
+      let* α3 : M.Val ((ref u8.t) * (ref u8.t)) := M.alloc (α1, α2) in
+      let* α4 := M.read α3 in
+      match α4 with
+      | (left_val, right_val) =>
+        let* right_val := M.alloc right_val in
+        let* left_val := M.alloc left_val in
+        let* α0 : ref u8.t := M.read left_val in
+        let* α1 : M.Val u8.t := deref α0 in
+        let* α2 : ref u8.t := M.read right_val in
+        let* α3 : M.Val u8.t := deref α2 in
+        let* α4 : M.Val bool.t := BinOp.eq α1 α3 in
+        let* α5 : M.Val bool.t := UnOp.not α4 in
+        let* α6 : M.Val bool.t := use α5 in
+        let* α7 : bool.t := M.read α6 in
+        if (α7 : bool) then
+          let* kind : M.Val core.panicking.AssertKind.t :=
+            M.alloc core.panicking.AssertKind.Eq in
+          let* _ : M.Val never.t :=
+            let* α0 : core.panicking.AssertKind.t := M.read kind in
+            let* α1 : ref u8.t := M.read left_val in
+            let* α2 : ref u8.t := M.read right_val in
+            let* α3 : never.t :=
+              core.panicking.assert_failed α0 α1 α2 core.option.Option.None in
+            M.alloc α3 in
+          let* α0 : M.Val unit := M.alloc tt in
+          never_to_any α0
+        else
+          M.alloc tt
+      end in
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).

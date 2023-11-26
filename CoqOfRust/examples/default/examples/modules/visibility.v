@@ -7,44 +7,50 @@ Module my_mod.
           println!("called `my_mod::private_function()`");
       }
   *)
-  Definition private_function : M (M.Val unit) :=
+  Definition private_function : M unit :=
     M.function_body
-      (let* _ : ltac:(refine (M.Val unit)) :=
-        let* _ : ltac:(refine (M.Val unit)) :=
-          let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
+      (let* _ : M.Val unit :=
+        let* _ : M.Val unit :=
+          let* α0 : M.Val (array (ref str.t)) :=
             M.alloc [ mk_str "called `my_mod::private_function()`
 " ] in
-          let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
-            borrow α0 in
-          let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
-            pointer_coercion "Unsize" α1 in
-          let* α3 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-            core.fmt.Arguments.t::["new_const"] α2 in
-          std.io.stdio._print α3 in
+          let* α1 : ref (array (ref str.t)) := borrow α0 in
+          let* α2 : M.Val (ref (array (ref str.t))) := M.alloc α1 in
+          let* α3 : M.Val (ref (slice (ref str.t))) :=
+            pointer_coercion "Unsize" α2 in
+          let* α4 : ref (slice (ref str.t)) := M.read α3 in
+          let* α5 : core.fmt.Arguments.t :=
+            core.fmt.Arguments.t::["new_const"] α4 in
+          let* α6 : unit := std.io.stdio._print α5 in
+          M.alloc α6 in
         M.alloc tt in
-      M.alloc tt).
+      let* α0 : M.Val unit := M.alloc tt in
+      M.read α0).
   
   (*
       pub fn function() {
           println!("called `my_mod::function()`");
       }
   *)
-  Definition function : M (M.Val unit) :=
+  Definition function : M unit :=
     M.function_body
-      (let* _ : ltac:(refine (M.Val unit)) :=
-        let* _ : ltac:(refine (M.Val unit)) :=
-          let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
+      (let* _ : M.Val unit :=
+        let* _ : M.Val unit :=
+          let* α0 : M.Val (array (ref str.t)) :=
             M.alloc [ mk_str "called `my_mod::function()`
 " ] in
-          let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
-            borrow α0 in
-          let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
-            pointer_coercion "Unsize" α1 in
-          let* α3 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-            core.fmt.Arguments.t::["new_const"] α2 in
-          std.io.stdio._print α3 in
+          let* α1 : ref (array (ref str.t)) := borrow α0 in
+          let* α2 : M.Val (ref (array (ref str.t))) := M.alloc α1 in
+          let* α3 : M.Val (ref (slice (ref str.t))) :=
+            pointer_coercion "Unsize" α2 in
+          let* α4 : ref (slice (ref str.t)) := M.read α3 in
+          let* α5 : core.fmt.Arguments.t :=
+            core.fmt.Arguments.t::["new_const"] α4 in
+          let* α6 : unit := std.io.stdio._print α5 in
+          M.alloc α6 in
         M.alloc tt in
-      M.alloc tt).
+      let* α0 : M.Val unit := M.alloc tt in
+      M.read α0).
   
   (*
       pub fn indirect_access() {
@@ -52,24 +58,28 @@ Module my_mod.
           private_function();
       }
   *)
-  Definition indirect_access : M (M.Val unit) :=
+  Definition indirect_access : M unit :=
     M.function_body
-      (let* _ : ltac:(refine (M.Val unit)) :=
-        let* _ : ltac:(refine (M.Val unit)) :=
-          let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
+      (let* _ : M.Val unit :=
+        let* _ : M.Val unit :=
+          let* α0 : M.Val (array (ref str.t)) :=
             M.alloc [ mk_str "called `my_mod::indirect_access()`, that
 > " ] in
-          let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
-            borrow α0 in
-          let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
-            pointer_coercion "Unsize" α1 in
-          let* α3 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-            core.fmt.Arguments.t::["new_const"] α2 in
-          std.io.stdio._print α3 in
+          let* α1 : ref (array (ref str.t)) := borrow α0 in
+          let* α2 : M.Val (ref (array (ref str.t))) := M.alloc α1 in
+          let* α3 : M.Val (ref (slice (ref str.t))) :=
+            pointer_coercion "Unsize" α2 in
+          let* α4 : ref (slice (ref str.t)) := M.read α3 in
+          let* α5 : core.fmt.Arguments.t :=
+            core.fmt.Arguments.t::["new_const"] α4 in
+          let* α6 : unit := std.io.stdio._print α5 in
+          M.alloc α6 in
         M.alloc tt in
-      let* _ : ltac:(refine (M.Val unit)) :=
-        visibility.my_mod.private_function in
-      M.alloc tt).
+      let* _ : M.Val unit :=
+        let* α0 : unit := visibility.my_mod.private_function in
+        M.alloc α0 in
+      let* α0 : M.Val unit := M.alloc tt in
+      M.read α0).
   
   Module nested.
     (*
@@ -77,22 +87,25 @@ Module my_mod.
                 println!("called `my_mod::nested::function()`");
             }
     *)
-    Definition function : M (M.Val unit) :=
+    Definition function : M unit :=
       M.function_body
-        (let* _ : ltac:(refine (M.Val unit)) :=
-          let* _ : ltac:(refine (M.Val unit)) :=
-            let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
+        (let* _ : M.Val unit :=
+          let* _ : M.Val unit :=
+            let* α0 : M.Val (array (ref str.t)) :=
               M.alloc [ mk_str "called `my_mod::nested::function()`
 " ] in
-            let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
-              borrow α0 in
-            let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
-              pointer_coercion "Unsize" α1 in
-            let* α3 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-              core.fmt.Arguments.t::["new_const"] α2 in
-            std.io.stdio._print α3 in
+            let* α1 : ref (array (ref str.t)) := borrow α0 in
+            let* α2 : M.Val (ref (array (ref str.t))) := M.alloc α1 in
+            let* α3 : M.Val (ref (slice (ref str.t))) :=
+              pointer_coercion "Unsize" α2 in
+            let* α4 : ref (slice (ref str.t)) := M.read α3 in
+            let* α5 : core.fmt.Arguments.t :=
+              core.fmt.Arguments.t::["new_const"] α4 in
+            let* α6 : unit := std.io.stdio._print α5 in
+            M.alloc α6 in
           M.alloc tt in
-        M.alloc tt).
+        let* α0 : M.Val unit := M.alloc tt in
+        M.read α0).
     
     (*
             fn private_function() {
@@ -100,23 +113,26 @@ Module my_mod.
             }
     *)
     (* #[allow(dead_code)] - function was ignored by the compiler *)
-    Definition private_function : M (M.Val unit) :=
+    Definition private_function : M unit :=
       M.function_body
-        (let* _ : ltac:(refine (M.Val unit)) :=
-          let* _ : ltac:(refine (M.Val unit)) :=
-            let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
+        (let* _ : M.Val unit :=
+          let* _ : M.Val unit :=
+            let* α0 : M.Val (array (ref str.t)) :=
               M.alloc
                 [ mk_str "called `my_mod::nested::private_function()`
 " ] in
-            let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
-              borrow α0 in
-            let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
-              pointer_coercion "Unsize" α1 in
-            let* α3 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-              core.fmt.Arguments.t::["new_const"] α2 in
-            std.io.stdio._print α3 in
+            let* α1 : ref (array (ref str.t)) := borrow α0 in
+            let* α2 : M.Val (ref (array (ref str.t))) := M.alloc α1 in
+            let* α3 : M.Val (ref (slice (ref str.t))) :=
+              pointer_coercion "Unsize" α2 in
+            let* α4 : ref (slice (ref str.t)) := M.read α3 in
+            let* α5 : core.fmt.Arguments.t :=
+              core.fmt.Arguments.t::["new_const"] α4 in
+            let* α6 : unit := std.io.stdio._print α5 in
+            M.alloc α6 in
           M.alloc tt in
-        M.alloc tt).
+        let* α0 : M.Val unit := M.alloc tt in
+        M.read α0).
     
     (*
             pub(in crate::my_mod) fn public_function_in_my_mod() {
@@ -124,78 +140,89 @@ Module my_mod.
                 public_function_in_nested();
             }
     *)
-    Definition public_function_in_my_mod : M (M.Val unit) :=
+    Definition public_function_in_my_mod : M unit :=
       M.function_body
-        (let* _ : ltac:(refine (M.Val unit)) :=
-          let* _ : ltac:(refine (M.Val unit)) :=
-            let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
+        (let* _ : M.Val unit :=
+          let* _ : M.Val unit :=
+            let* α0 : M.Val (array (ref str.t)) :=
               M.alloc
                 [
                   mk_str
                     "called `my_mod::nested::public_function_in_my_mod()`, that
 > "
                 ] in
-            let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
-              borrow α0 in
-            let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
-              pointer_coercion "Unsize" α1 in
-            let* α3 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-              core.fmt.Arguments.t::["new_const"] α2 in
-            std.io.stdio._print α3 in
+            let* α1 : ref (array (ref str.t)) := borrow α0 in
+            let* α2 : M.Val (ref (array (ref str.t))) := M.alloc α1 in
+            let* α3 : M.Val (ref (slice (ref str.t))) :=
+              pointer_coercion "Unsize" α2 in
+            let* α4 : ref (slice (ref str.t)) := M.read α3 in
+            let* α5 : core.fmt.Arguments.t :=
+              core.fmt.Arguments.t::["new_const"] α4 in
+            let* α6 : unit := std.io.stdio._print α5 in
+            M.alloc α6 in
           M.alloc tt in
-        let* _ : ltac:(refine (M.Val unit)) :=
-          visibility.my_mod.nested.public_function_in_nested in
-        M.alloc tt).
+        let* _ : M.Val unit :=
+          let* α0 : unit :=
+            visibility.my_mod.nested.public_function_in_nested in
+          M.alloc α0 in
+        let* α0 : M.Val unit := M.alloc tt in
+        M.read α0).
     
     (*
             pub(self) fn public_function_in_nested() {
                 println!("called `my_mod::nested::public_function_in_nested()`");
             }
     *)
-    Definition public_function_in_nested : M (M.Val unit) :=
+    Definition public_function_in_nested : M unit :=
       M.function_body
-        (let* _ : ltac:(refine (M.Val unit)) :=
-          let* _ : ltac:(refine (M.Val unit)) :=
-            let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
+        (let* _ : M.Val unit :=
+          let* _ : M.Val unit :=
+            let* α0 : M.Val (array (ref str.t)) :=
               M.alloc
                 [ mk_str "called `my_mod::nested::public_function_in_nested()`
 "
                 ] in
-            let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
-              borrow α0 in
-            let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
-              pointer_coercion "Unsize" α1 in
-            let* α3 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-              core.fmt.Arguments.t::["new_const"] α2 in
-            std.io.stdio._print α3 in
+            let* α1 : ref (array (ref str.t)) := borrow α0 in
+            let* α2 : M.Val (ref (array (ref str.t))) := M.alloc α1 in
+            let* α3 : M.Val (ref (slice (ref str.t))) :=
+              pointer_coercion "Unsize" α2 in
+            let* α4 : ref (slice (ref str.t)) := M.read α3 in
+            let* α5 : core.fmt.Arguments.t :=
+              core.fmt.Arguments.t::["new_const"] α4 in
+            let* α6 : unit := std.io.stdio._print α5 in
+            M.alloc α6 in
           M.alloc tt in
-        M.alloc tt).
+        let* α0 : M.Val unit := M.alloc tt in
+        M.read α0).
     
     (*
             pub(super) fn public_function_in_super_mod() {
                 println!("called `my_mod::nested::public_function_in_super_mod()`");
             }
     *)
-    Definition public_function_in_super_mod : M (M.Val unit) :=
+    Definition public_function_in_super_mod : M unit :=
       M.function_body
-        (let* _ : ltac:(refine (M.Val unit)) :=
-          let* _ : ltac:(refine (M.Val unit)) :=
-            let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
+        (let* _ : M.Val unit :=
+          let* _ : M.Val unit :=
+            let* α0 : M.Val (array (ref str.t)) :=
               M.alloc
                 [
                   mk_str
                     "called `my_mod::nested::public_function_in_super_mod()`
 "
                 ] in
-            let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
-              borrow α0 in
-            let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
-              pointer_coercion "Unsize" α1 in
-            let* α3 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-              core.fmt.Arguments.t::["new_const"] α2 in
-            std.io.stdio._print α3 in
+            let* α1 : ref (array (ref str.t)) := borrow α0 in
+            let* α2 : M.Val (ref (array (ref str.t))) := M.alloc α1 in
+            let* α3 : M.Val (ref (slice (ref str.t))) :=
+              pointer_coercion "Unsize" α2 in
+            let* α4 : ref (slice (ref str.t)) := M.read α3 in
+            let* α5 : core.fmt.Arguments.t :=
+              core.fmt.Arguments.t::["new_const"] α4 in
+            let* α6 : unit := std.io.stdio._print α5 in
+            M.alloc α6 in
           M.alloc tt in
-        M.alloc tt).
+        let* α0 : M.Val unit := M.alloc tt in
+        M.read α0).
   End nested.
   
   (*
@@ -206,64 +233,74 @@ Module my_mod.
           nested::public_function_in_super_mod();
       }
   *)
-  Definition call_public_function_in_my_mod : M (M.Val unit) :=
+  Definition call_public_function_in_my_mod : M unit :=
     M.function_body
-      (let* _ : ltac:(refine (M.Val unit)) :=
-        let* _ : ltac:(refine (M.Val unit)) :=
-          let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
+      (let* _ : M.Val unit :=
+        let* _ : M.Val unit :=
+          let* α0 : M.Val (array (ref str.t)) :=
             M.alloc
               [
                 mk_str
                   "called `my_mod::call_public_function_in_my_mod()`, that
 > "
               ] in
-          let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
-            borrow α0 in
-          let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
-            pointer_coercion "Unsize" α1 in
-          let* α3 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-            core.fmt.Arguments.t::["new_const"] α2 in
-          std.io.stdio._print α3 in
+          let* α1 : ref (array (ref str.t)) := borrow α0 in
+          let* α2 : M.Val (ref (array (ref str.t))) := M.alloc α1 in
+          let* α3 : M.Val (ref (slice (ref str.t))) :=
+            pointer_coercion "Unsize" α2 in
+          let* α4 : ref (slice (ref str.t)) := M.read α3 in
+          let* α5 : core.fmt.Arguments.t :=
+            core.fmt.Arguments.t::["new_const"] α4 in
+          let* α6 : unit := std.io.stdio._print α5 in
+          M.alloc α6 in
         M.alloc tt in
-      let* _ : ltac:(refine (M.Val unit)) :=
-        visibility.my_mod.nested.public_function_in_my_mod in
-      let* _ : ltac:(refine (M.Val unit)) :=
-        let* _ : ltac:(refine (M.Val unit)) :=
-          let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
-            M.alloc [ mk_str "> " ] in
-          let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
-            borrow α0 in
-          let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
-            pointer_coercion "Unsize" α1 in
-          let* α3 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-            core.fmt.Arguments.t::["new_const"] α2 in
-          std.io.stdio._print α3 in
+      let* _ : M.Val unit :=
+        let* α0 : unit := visibility.my_mod.nested.public_function_in_my_mod in
+        M.alloc α0 in
+      let* _ : M.Val unit :=
+        let* _ : M.Val unit :=
+          let* α0 : M.Val (array (ref str.t)) := M.alloc [ mk_str "> " ] in
+          let* α1 : ref (array (ref str.t)) := borrow α0 in
+          let* α2 : M.Val (ref (array (ref str.t))) := M.alloc α1 in
+          let* α3 : M.Val (ref (slice (ref str.t))) :=
+            pointer_coercion "Unsize" α2 in
+          let* α4 : ref (slice (ref str.t)) := M.read α3 in
+          let* α5 : core.fmt.Arguments.t :=
+            core.fmt.Arguments.t::["new_const"] α4 in
+          let* α6 : unit := std.io.stdio._print α5 in
+          M.alloc α6 in
         M.alloc tt in
-      let* _ : ltac:(refine (M.Val unit)) :=
-        visibility.my_mod.nested.public_function_in_super_mod in
-      M.alloc tt).
+      let* _ : M.Val unit :=
+        let* α0 : unit :=
+          visibility.my_mod.nested.public_function_in_super_mod in
+        M.alloc α0 in
+      let* α0 : M.Val unit := M.alloc tt in
+      M.read α0).
   
   (*
       pub(crate) fn public_function_in_crate() {
           println!("called `my_mod::public_function_in_crate()`");
       }
   *)
-  Definition public_function_in_crate : M (M.Val unit) :=
+  Definition public_function_in_crate : M unit :=
     M.function_body
-      (let* _ : ltac:(refine (M.Val unit)) :=
-        let* _ : ltac:(refine (M.Val unit)) :=
-          let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
+      (let* _ : M.Val unit :=
+        let* _ : M.Val unit :=
+          let* α0 : M.Val (array (ref str.t)) :=
             M.alloc [ mk_str "called `my_mod::public_function_in_crate()`
 " ] in
-          let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
-            borrow α0 in
-          let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
-            pointer_coercion "Unsize" α1 in
-          let* α3 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-            core.fmt.Arguments.t::["new_const"] α2 in
-          std.io.stdio._print α3 in
+          let* α1 : ref (array (ref str.t)) := borrow α0 in
+          let* α2 : M.Val (ref (array (ref str.t))) := M.alloc α1 in
+          let* α3 : M.Val (ref (slice (ref str.t))) :=
+            pointer_coercion "Unsize" α2 in
+          let* α4 : ref (slice (ref str.t)) := M.read α3 in
+          let* α5 : core.fmt.Arguments.t :=
+            core.fmt.Arguments.t::["new_const"] α4 in
+          let* α6 : unit := std.io.stdio._print α5 in
+          M.alloc α6 in
         M.alloc tt in
-      M.alloc tt).
+      let* α0 : M.Val unit := M.alloc tt in
+      M.read α0).
   
   Module private_nested.
     (*
@@ -272,23 +309,26 @@ Module my_mod.
             }
     *)
     (* #[allow(dead_code)] - function was ignored by the compiler *)
-    Definition function : M (M.Val unit) :=
+    Definition function : M unit :=
       M.function_body
-        (let* _ : ltac:(refine (M.Val unit)) :=
-          let* _ : ltac:(refine (M.Val unit)) :=
-            let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
+        (let* _ : M.Val unit :=
+          let* _ : M.Val unit :=
+            let* α0 : M.Val (array (ref str.t)) :=
               M.alloc
                 [ mk_str "called `my_mod::private_nested::function()`
 " ] in
-            let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
-              borrow α0 in
-            let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
-              pointer_coercion "Unsize" α1 in
-            let* α3 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-              core.fmt.Arguments.t::["new_const"] α2 in
-            std.io.stdio._print α3 in
+            let* α1 : ref (array (ref str.t)) := borrow α0 in
+            let* α2 : M.Val (ref (array (ref str.t))) := M.alloc α1 in
+            let* α3 : M.Val (ref (slice (ref str.t))) :=
+              pointer_coercion "Unsize" α2 in
+            let* α4 : ref (slice (ref str.t)) := M.read α3 in
+            let* α5 : core.fmt.Arguments.t :=
+              core.fmt.Arguments.t::["new_const"] α4 in
+            let* α6 : unit := std.io.stdio._print α5 in
+            M.alloc α6 in
           M.alloc tt in
-        M.alloc tt).
+        let* α0 : M.Val unit := M.alloc tt in
+        M.read α0).
     
     (*
             pub(crate) fn restricted_function() {
@@ -296,26 +336,29 @@ Module my_mod.
             }
     *)
     (* #[allow(dead_code)] - function was ignored by the compiler *)
-    Definition restricted_function : M (M.Val unit) :=
+    Definition restricted_function : M unit :=
       M.function_body
-        (let* _ : ltac:(refine (M.Val unit)) :=
-          let* _ : ltac:(refine (M.Val unit)) :=
-            let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
+        (let* _ : M.Val unit :=
+          let* _ : M.Val unit :=
+            let* α0 : M.Val (array (ref str.t)) :=
               M.alloc
                 [
                   mk_str
                     "called `my_mod::private_nested::restricted_function()`
 "
                 ] in
-            let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
-              borrow α0 in
-            let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
-              pointer_coercion "Unsize" α1 in
-            let* α3 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-              core.fmt.Arguments.t::["new_const"] α2 in
-            std.io.stdio._print α3 in
+            let* α1 : ref (array (ref str.t)) := borrow α0 in
+            let* α2 : M.Val (ref (array (ref str.t))) := M.alloc α1 in
+            let* α3 : M.Val (ref (slice (ref str.t))) :=
+              pointer_coercion "Unsize" α2 in
+            let* α4 : ref (slice (ref str.t)) := M.read α3 in
+            let* α5 : core.fmt.Arguments.t :=
+              core.fmt.Arguments.t::["new_const"] α4 in
+            let* α6 : unit := std.io.stdio._print α5 in
+            M.alloc α6 in
           M.alloc tt in
-        M.alloc tt).
+        let* α0 : M.Val unit := M.alloc tt in
+        M.read α0).
   End private_nested.
 End my_mod.
 
@@ -324,44 +367,50 @@ End my_mod.
         println!("called `my_mod::private_function()`");
     }
 *)
-Definition private_function : M (M.Val unit) :=
+Definition private_function : M unit :=
   M.function_body
-    (let* _ : ltac:(refine (M.Val unit)) :=
-      let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
+    (let* _ : M.Val unit :=
+      let* _ : M.Val unit :=
+        let* α0 : M.Val (array (ref str.t)) :=
           M.alloc [ mk_str "called `my_mod::private_function()`
 " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
-          borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
-          pointer_coercion "Unsize" α1 in
-        let* α3 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-          core.fmt.Arguments.t::["new_const"] α2 in
-        std.io.stdio._print α3 in
+        let* α1 : ref (array (ref str.t)) := borrow α0 in
+        let* α2 : M.Val (ref (array (ref str.t))) := M.alloc α1 in
+        let* α3 : M.Val (ref (slice (ref str.t))) :=
+          pointer_coercion "Unsize" α2 in
+        let* α4 : ref (slice (ref str.t)) := M.read α3 in
+        let* α5 : core.fmt.Arguments.t :=
+          core.fmt.Arguments.t::["new_const"] α4 in
+        let* α6 : unit := std.io.stdio._print α5 in
+        M.alloc α6 in
       M.alloc tt in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).
 
 (*
     pub fn function() {
         println!("called `my_mod::function()`");
     }
 *)
-Definition function : M (M.Val unit) :=
+Definition function : M unit :=
   M.function_body
-    (let* _ : ltac:(refine (M.Val unit)) :=
-      let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
+    (let* _ : M.Val unit :=
+      let* _ : M.Val unit :=
+        let* α0 : M.Val (array (ref str.t)) :=
           M.alloc [ mk_str "called `my_mod::function()`
 " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
-          borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
-          pointer_coercion "Unsize" α1 in
-        let* α3 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-          core.fmt.Arguments.t::["new_const"] α2 in
-        std.io.stdio._print α3 in
+        let* α1 : ref (array (ref str.t)) := borrow α0 in
+        let* α2 : M.Val (ref (array (ref str.t))) := M.alloc α1 in
+        let* α3 : M.Val (ref (slice (ref str.t))) :=
+          pointer_coercion "Unsize" α2 in
+        let* α4 : ref (slice (ref str.t)) := M.read α3 in
+        let* α5 : core.fmt.Arguments.t :=
+          core.fmt.Arguments.t::["new_const"] α4 in
+        let* α6 : unit := std.io.stdio._print α5 in
+        M.alloc α6 in
       M.alloc tt in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).
 
 (*
     pub fn indirect_access() {
@@ -369,23 +418,28 @@ Definition function : M (M.Val unit) :=
         private_function();
     }
 *)
-Definition indirect_access : M (M.Val unit) :=
+Definition indirect_access : M unit :=
   M.function_body
-    (let* _ : ltac:(refine (M.Val unit)) :=
-      let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
+    (let* _ : M.Val unit :=
+      let* _ : M.Val unit :=
+        let* α0 : M.Val (array (ref str.t)) :=
           M.alloc [ mk_str "called `my_mod::indirect_access()`, that
 > " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
-          borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
-          pointer_coercion "Unsize" α1 in
-        let* α3 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-          core.fmt.Arguments.t::["new_const"] α2 in
-        std.io.stdio._print α3 in
+        let* α1 : ref (array (ref str.t)) := borrow α0 in
+        let* α2 : M.Val (ref (array (ref str.t))) := M.alloc α1 in
+        let* α3 : M.Val (ref (slice (ref str.t))) :=
+          pointer_coercion "Unsize" α2 in
+        let* α4 : ref (slice (ref str.t)) := M.read α3 in
+        let* α5 : core.fmt.Arguments.t :=
+          core.fmt.Arguments.t::["new_const"] α4 in
+        let* α6 : unit := std.io.stdio._print α5 in
+        M.alloc α6 in
       M.alloc tt in
-    let* _ : ltac:(refine (M.Val unit)) := visibility.my_mod.private_function in
-    M.alloc tt).
+    let* _ : M.Val unit :=
+      let* α0 : unit := visibility.my_mod.private_function in
+      M.alloc α0 in
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).
 
 Module nested.
   (*
@@ -393,22 +447,25 @@ Module nested.
               println!("called `my_mod::nested::function()`");
           }
   *)
-  Definition function : M (M.Val unit) :=
+  Definition function : M unit :=
     M.function_body
-      (let* _ : ltac:(refine (M.Val unit)) :=
-        let* _ : ltac:(refine (M.Val unit)) :=
-          let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
+      (let* _ : M.Val unit :=
+        let* _ : M.Val unit :=
+          let* α0 : M.Val (array (ref str.t)) :=
             M.alloc [ mk_str "called `my_mod::nested::function()`
 " ] in
-          let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
-            borrow α0 in
-          let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
-            pointer_coercion "Unsize" α1 in
-          let* α3 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-            core.fmt.Arguments.t::["new_const"] α2 in
-          std.io.stdio._print α3 in
+          let* α1 : ref (array (ref str.t)) := borrow α0 in
+          let* α2 : M.Val (ref (array (ref str.t))) := M.alloc α1 in
+          let* α3 : M.Val (ref (slice (ref str.t))) :=
+            pointer_coercion "Unsize" α2 in
+          let* α4 : ref (slice (ref str.t)) := M.read α3 in
+          let* α5 : core.fmt.Arguments.t :=
+            core.fmt.Arguments.t::["new_const"] α4 in
+          let* α6 : unit := std.io.stdio._print α5 in
+          M.alloc α6 in
         M.alloc tt in
-      M.alloc tt).
+      let* α0 : M.Val unit := M.alloc tt in
+      M.read α0).
   
   (*
           fn private_function() {
@@ -416,22 +473,25 @@ Module nested.
           }
   *)
   (* #[allow(dead_code)] - function was ignored by the compiler *)
-  Definition private_function : M (M.Val unit) :=
+  Definition private_function : M unit :=
     M.function_body
-      (let* _ : ltac:(refine (M.Val unit)) :=
-        let* _ : ltac:(refine (M.Val unit)) :=
-          let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
+      (let* _ : M.Val unit :=
+        let* _ : M.Val unit :=
+          let* α0 : M.Val (array (ref str.t)) :=
             M.alloc [ mk_str "called `my_mod::nested::private_function()`
 " ] in
-          let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
-            borrow α0 in
-          let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
-            pointer_coercion "Unsize" α1 in
-          let* α3 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-            core.fmt.Arguments.t::["new_const"] α2 in
-          std.io.stdio._print α3 in
+          let* α1 : ref (array (ref str.t)) := borrow α0 in
+          let* α2 : M.Val (ref (array (ref str.t))) := M.alloc α1 in
+          let* α3 : M.Val (ref (slice (ref str.t))) :=
+            pointer_coercion "Unsize" α2 in
+          let* α4 : ref (slice (ref str.t)) := M.read α3 in
+          let* α5 : core.fmt.Arguments.t :=
+            core.fmt.Arguments.t::["new_const"] α4 in
+          let* α6 : unit := std.io.stdio._print α5 in
+          M.alloc α6 in
         M.alloc tt in
-      M.alloc tt).
+      let* α0 : M.Val unit := M.alloc tt in
+      M.read α0).
   
   (*
           pub(in crate::my_mod) fn public_function_in_my_mod() {
@@ -439,78 +499,88 @@ Module nested.
               public_function_in_nested();
           }
   *)
-  Definition public_function_in_my_mod : M (M.Val unit) :=
+  Definition public_function_in_my_mod : M unit :=
     M.function_body
-      (let* _ : ltac:(refine (M.Val unit)) :=
-        let* _ : ltac:(refine (M.Val unit)) :=
-          let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
+      (let* _ : M.Val unit :=
+        let* _ : M.Val unit :=
+          let* α0 : M.Val (array (ref str.t)) :=
             M.alloc
               [
                 mk_str
                   "called `my_mod::nested::public_function_in_my_mod()`, that
 > "
               ] in
-          let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
-            borrow α0 in
-          let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
-            pointer_coercion "Unsize" α1 in
-          let* α3 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-            core.fmt.Arguments.t::["new_const"] α2 in
-          std.io.stdio._print α3 in
+          let* α1 : ref (array (ref str.t)) := borrow α0 in
+          let* α2 : M.Val (ref (array (ref str.t))) := M.alloc α1 in
+          let* α3 : M.Val (ref (slice (ref str.t))) :=
+            pointer_coercion "Unsize" α2 in
+          let* α4 : ref (slice (ref str.t)) := M.read α3 in
+          let* α5 : core.fmt.Arguments.t :=
+            core.fmt.Arguments.t::["new_const"] α4 in
+          let* α6 : unit := std.io.stdio._print α5 in
+          M.alloc α6 in
         M.alloc tt in
-      let* _ : ltac:(refine (M.Val unit)) :=
-        visibility.my_mod.nested.public_function_in_nested in
-      M.alloc tt).
+      let* _ : M.Val unit :=
+        let* α0 : unit := visibility.my_mod.nested.public_function_in_nested in
+        M.alloc α0 in
+      let* α0 : M.Val unit := M.alloc tt in
+      M.read α0).
   
   (*
           pub(self) fn public_function_in_nested() {
               println!("called `my_mod::nested::public_function_in_nested()`");
           }
   *)
-  Definition public_function_in_nested : M (M.Val unit) :=
+  Definition public_function_in_nested : M unit :=
     M.function_body
-      (let* _ : ltac:(refine (M.Val unit)) :=
-        let* _ : ltac:(refine (M.Val unit)) :=
-          let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
+      (let* _ : M.Val unit :=
+        let* _ : M.Val unit :=
+          let* α0 : M.Val (array (ref str.t)) :=
             M.alloc
               [ mk_str "called `my_mod::nested::public_function_in_nested()`
 "
               ] in
-          let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
-            borrow α0 in
-          let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
-            pointer_coercion "Unsize" α1 in
-          let* α3 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-            core.fmt.Arguments.t::["new_const"] α2 in
-          std.io.stdio._print α3 in
+          let* α1 : ref (array (ref str.t)) := borrow α0 in
+          let* α2 : M.Val (ref (array (ref str.t))) := M.alloc α1 in
+          let* α3 : M.Val (ref (slice (ref str.t))) :=
+            pointer_coercion "Unsize" α2 in
+          let* α4 : ref (slice (ref str.t)) := M.read α3 in
+          let* α5 : core.fmt.Arguments.t :=
+            core.fmt.Arguments.t::["new_const"] α4 in
+          let* α6 : unit := std.io.stdio._print α5 in
+          M.alloc α6 in
         M.alloc tt in
-      M.alloc tt).
+      let* α0 : M.Val unit := M.alloc tt in
+      M.read α0).
   
   (*
           pub(super) fn public_function_in_super_mod() {
               println!("called `my_mod::nested::public_function_in_super_mod()`");
           }
   *)
-  Definition public_function_in_super_mod : M (M.Val unit) :=
+  Definition public_function_in_super_mod : M unit :=
     M.function_body
-      (let* _ : ltac:(refine (M.Val unit)) :=
-        let* _ : ltac:(refine (M.Val unit)) :=
-          let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
+      (let* _ : M.Val unit :=
+        let* _ : M.Val unit :=
+          let* α0 : M.Val (array (ref str.t)) :=
             M.alloc
               [
                 mk_str
                   "called `my_mod::nested::public_function_in_super_mod()`
 "
               ] in
-          let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
-            borrow α0 in
-          let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
-            pointer_coercion "Unsize" α1 in
-          let* α3 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-            core.fmt.Arguments.t::["new_const"] α2 in
-          std.io.stdio._print α3 in
+          let* α1 : ref (array (ref str.t)) := borrow α0 in
+          let* α2 : M.Val (ref (array (ref str.t))) := M.alloc α1 in
+          let* α3 : M.Val (ref (slice (ref str.t))) :=
+            pointer_coercion "Unsize" α2 in
+          let* α4 : ref (slice (ref str.t)) := M.read α3 in
+          let* α5 : core.fmt.Arguments.t :=
+            core.fmt.Arguments.t::["new_const"] α4 in
+          let* α6 : unit := std.io.stdio._print α5 in
+          M.alloc α6 in
         M.alloc tt in
-      M.alloc tt).
+      let* α0 : M.Val unit := M.alloc tt in
+      M.read α0).
 End nested.
 
 (*
@@ -518,22 +588,25 @@ End nested.
             println!("called `my_mod::nested::function()`");
         }
 *)
-Definition function : M (M.Val unit) :=
+Definition function : M unit :=
   M.function_body
-    (let* _ : ltac:(refine (M.Val unit)) :=
-      let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
+    (let* _ : M.Val unit :=
+      let* _ : M.Val unit :=
+        let* α0 : M.Val (array (ref str.t)) :=
           M.alloc [ mk_str "called `my_mod::nested::function()`
 " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
-          borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
-          pointer_coercion "Unsize" α1 in
-        let* α3 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-          core.fmt.Arguments.t::["new_const"] α2 in
-        std.io.stdio._print α3 in
+        let* α1 : ref (array (ref str.t)) := borrow α0 in
+        let* α2 : M.Val (ref (array (ref str.t))) := M.alloc α1 in
+        let* α3 : M.Val (ref (slice (ref str.t))) :=
+          pointer_coercion "Unsize" α2 in
+        let* α4 : ref (slice (ref str.t)) := M.read α3 in
+        let* α5 : core.fmt.Arguments.t :=
+          core.fmt.Arguments.t::["new_const"] α4 in
+        let* α6 : unit := std.io.stdio._print α5 in
+        M.alloc α6 in
       M.alloc tt in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).
 
 (*
         fn private_function() {
@@ -541,22 +614,25 @@ Definition function : M (M.Val unit) :=
         }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition private_function : M (M.Val unit) :=
+Definition private_function : M unit :=
   M.function_body
-    (let* _ : ltac:(refine (M.Val unit)) :=
-      let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
+    (let* _ : M.Val unit :=
+      let* _ : M.Val unit :=
+        let* α0 : M.Val (array (ref str.t)) :=
           M.alloc [ mk_str "called `my_mod::nested::private_function()`
 " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
-          borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
-          pointer_coercion "Unsize" α1 in
-        let* α3 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-          core.fmt.Arguments.t::["new_const"] α2 in
-        std.io.stdio._print α3 in
+        let* α1 : ref (array (ref str.t)) := borrow α0 in
+        let* α2 : M.Val (ref (array (ref str.t))) := M.alloc α1 in
+        let* α3 : M.Val (ref (slice (ref str.t))) :=
+          pointer_coercion "Unsize" α2 in
+        let* α4 : ref (slice (ref str.t)) := M.read α3 in
+        let* α5 : core.fmt.Arguments.t :=
+          core.fmt.Arguments.t::["new_const"] α4 in
+        let* α6 : unit := std.io.stdio._print α5 in
+        M.alloc α6 in
       M.alloc tt in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).
 
 (*
         pub(in crate::my_mod) fn public_function_in_my_mod() {
@@ -564,76 +640,86 @@ Definition private_function : M (M.Val unit) :=
             public_function_in_nested();
         }
 *)
-Definition public_function_in_my_mod : M (M.Val unit) :=
+Definition public_function_in_my_mod : M unit :=
   M.function_body
-    (let* _ : ltac:(refine (M.Val unit)) :=
-      let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
+    (let* _ : M.Val unit :=
+      let* _ : M.Val unit :=
+        let* α0 : M.Val (array (ref str.t)) :=
           M.alloc
             [
               mk_str
                 "called `my_mod::nested::public_function_in_my_mod()`, that
 > "
             ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
-          borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
-          pointer_coercion "Unsize" α1 in
-        let* α3 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-          core.fmt.Arguments.t::["new_const"] α2 in
-        std.io.stdio._print α3 in
+        let* α1 : ref (array (ref str.t)) := borrow α0 in
+        let* α2 : M.Val (ref (array (ref str.t))) := M.alloc α1 in
+        let* α3 : M.Val (ref (slice (ref str.t))) :=
+          pointer_coercion "Unsize" α2 in
+        let* α4 : ref (slice (ref str.t)) := M.read α3 in
+        let* α5 : core.fmt.Arguments.t :=
+          core.fmt.Arguments.t::["new_const"] α4 in
+        let* α6 : unit := std.io.stdio._print α5 in
+        M.alloc α6 in
       M.alloc tt in
-    let* _ : ltac:(refine (M.Val unit)) :=
-      visibility.my_mod.nested.public_function_in_nested in
-    M.alloc tt).
+    let* _ : M.Val unit :=
+      let* α0 : unit := visibility.my_mod.nested.public_function_in_nested in
+      M.alloc α0 in
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).
 
 (*
         pub(self) fn public_function_in_nested() {
             println!("called `my_mod::nested::public_function_in_nested()`");
         }
 *)
-Definition public_function_in_nested : M (M.Val unit) :=
+Definition public_function_in_nested : M unit :=
   M.function_body
-    (let* _ : ltac:(refine (M.Val unit)) :=
-      let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
+    (let* _ : M.Val unit :=
+      let* _ : M.Val unit :=
+        let* α0 : M.Val (array (ref str.t)) :=
           M.alloc
             [ mk_str "called `my_mod::nested::public_function_in_nested()`
 "
             ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
-          borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
-          pointer_coercion "Unsize" α1 in
-        let* α3 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-          core.fmt.Arguments.t::["new_const"] α2 in
-        std.io.stdio._print α3 in
+        let* α1 : ref (array (ref str.t)) := borrow α0 in
+        let* α2 : M.Val (ref (array (ref str.t))) := M.alloc α1 in
+        let* α3 : M.Val (ref (slice (ref str.t))) :=
+          pointer_coercion "Unsize" α2 in
+        let* α4 : ref (slice (ref str.t)) := M.read α3 in
+        let* α5 : core.fmt.Arguments.t :=
+          core.fmt.Arguments.t::["new_const"] α4 in
+        let* α6 : unit := std.io.stdio._print α5 in
+        M.alloc α6 in
       M.alloc tt in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).
 
 (*
         pub(super) fn public_function_in_super_mod() {
             println!("called `my_mod::nested::public_function_in_super_mod()`");
         }
 *)
-Definition public_function_in_super_mod : M (M.Val unit) :=
+Definition public_function_in_super_mod : M unit :=
   M.function_body
-    (let* _ : ltac:(refine (M.Val unit)) :=
-      let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
+    (let* _ : M.Val unit :=
+      let* _ : M.Val unit :=
+        let* α0 : M.Val (array (ref str.t)) :=
           M.alloc
             [ mk_str "called `my_mod::nested::public_function_in_super_mod()`
 "
             ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
-          borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
-          pointer_coercion "Unsize" α1 in
-        let* α3 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-          core.fmt.Arguments.t::["new_const"] α2 in
-        std.io.stdio._print α3 in
+        let* α1 : ref (array (ref str.t)) := borrow α0 in
+        let* α2 : M.Val (ref (array (ref str.t))) := M.alloc α1 in
+        let* α3 : M.Val (ref (slice (ref str.t))) :=
+          pointer_coercion "Unsize" α2 in
+        let* α4 : ref (slice (ref str.t)) := M.read α3 in
+        let* α5 : core.fmt.Arguments.t :=
+          core.fmt.Arguments.t::["new_const"] α4 in
+        let* α6 : unit := std.io.stdio._print α5 in
+        M.alloc α6 in
       M.alloc tt in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).
 
 (*
     pub fn call_public_function_in_my_mod() {
@@ -643,64 +729,73 @@ Definition public_function_in_super_mod : M (M.Val unit) :=
         nested::public_function_in_super_mod();
     }
 *)
-Definition call_public_function_in_my_mod : M (M.Val unit) :=
+Definition call_public_function_in_my_mod : M unit :=
   M.function_body
-    (let* _ : ltac:(refine (M.Val unit)) :=
-      let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
+    (let* _ : M.Val unit :=
+      let* _ : M.Val unit :=
+        let* α0 : M.Val (array (ref str.t)) :=
           M.alloc
             [
               mk_str
                 "called `my_mod::call_public_function_in_my_mod()`, that
 > "
             ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
-          borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
-          pointer_coercion "Unsize" α1 in
-        let* α3 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-          core.fmt.Arguments.t::["new_const"] α2 in
-        std.io.stdio._print α3 in
+        let* α1 : ref (array (ref str.t)) := borrow α0 in
+        let* α2 : M.Val (ref (array (ref str.t))) := M.alloc α1 in
+        let* α3 : M.Val (ref (slice (ref str.t))) :=
+          pointer_coercion "Unsize" α2 in
+        let* α4 : ref (slice (ref str.t)) := M.read α3 in
+        let* α5 : core.fmt.Arguments.t :=
+          core.fmt.Arguments.t::["new_const"] α4 in
+        let* α6 : unit := std.io.stdio._print α5 in
+        M.alloc α6 in
       M.alloc tt in
-    let* _ : ltac:(refine (M.Val unit)) :=
-      visibility.my_mod.nested.public_function_in_my_mod in
-    let* _ : ltac:(refine (M.Val unit)) :=
-      let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
-          M.alloc [ mk_str "> " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
-          borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
-          pointer_coercion "Unsize" α1 in
-        let* α3 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-          core.fmt.Arguments.t::["new_const"] α2 in
-        std.io.stdio._print α3 in
+    let* _ : M.Val unit :=
+      let* α0 : unit := visibility.my_mod.nested.public_function_in_my_mod in
+      M.alloc α0 in
+    let* _ : M.Val unit :=
+      let* _ : M.Val unit :=
+        let* α0 : M.Val (array (ref str.t)) := M.alloc [ mk_str "> " ] in
+        let* α1 : ref (array (ref str.t)) := borrow α0 in
+        let* α2 : M.Val (ref (array (ref str.t))) := M.alloc α1 in
+        let* α3 : M.Val (ref (slice (ref str.t))) :=
+          pointer_coercion "Unsize" α2 in
+        let* α4 : ref (slice (ref str.t)) := M.read α3 in
+        let* α5 : core.fmt.Arguments.t :=
+          core.fmt.Arguments.t::["new_const"] α4 in
+        let* α6 : unit := std.io.stdio._print α5 in
+        M.alloc α6 in
       M.alloc tt in
-    let* _ : ltac:(refine (M.Val unit)) :=
-      visibility.my_mod.nested.public_function_in_super_mod in
-    M.alloc tt).
+    let* _ : M.Val unit :=
+      let* α0 : unit := visibility.my_mod.nested.public_function_in_super_mod in
+      M.alloc α0 in
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).
 
 (*
     pub(crate) fn public_function_in_crate() {
         println!("called `my_mod::public_function_in_crate()`");
     }
 *)
-Definition public_function_in_crate : M (M.Val unit) :=
+Definition public_function_in_crate : M unit :=
   M.function_body
-    (let* _ : ltac:(refine (M.Val unit)) :=
-      let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
+    (let* _ : M.Val unit :=
+      let* _ : M.Val unit :=
+        let* α0 : M.Val (array (ref str.t)) :=
           M.alloc [ mk_str "called `my_mod::public_function_in_crate()`
 " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
-          borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
-          pointer_coercion "Unsize" α1 in
-        let* α3 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-          core.fmt.Arguments.t::["new_const"] α2 in
-        std.io.stdio._print α3 in
+        let* α1 : ref (array (ref str.t)) := borrow α0 in
+        let* α2 : M.Val (ref (array (ref str.t))) := M.alloc α1 in
+        let* α3 : M.Val (ref (slice (ref str.t))) :=
+          pointer_coercion "Unsize" α2 in
+        let* α4 : ref (slice (ref str.t)) := M.read α3 in
+        let* α5 : core.fmt.Arguments.t :=
+          core.fmt.Arguments.t::["new_const"] α4 in
+        let* α6 : unit := std.io.stdio._print α5 in
+        M.alloc α6 in
       M.alloc tt in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).
 
 Module private_nested.
   (*
@@ -709,22 +804,25 @@ Module private_nested.
           }
   *)
   (* #[allow(dead_code)] - function was ignored by the compiler *)
-  Definition function : M (M.Val unit) :=
+  Definition function : M unit :=
     M.function_body
-      (let* _ : ltac:(refine (M.Val unit)) :=
-        let* _ : ltac:(refine (M.Val unit)) :=
-          let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
+      (let* _ : M.Val unit :=
+        let* _ : M.Val unit :=
+          let* α0 : M.Val (array (ref str.t)) :=
             M.alloc [ mk_str "called `my_mod::private_nested::function()`
 " ] in
-          let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
-            borrow α0 in
-          let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
-            pointer_coercion "Unsize" α1 in
-          let* α3 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-            core.fmt.Arguments.t::["new_const"] α2 in
-          std.io.stdio._print α3 in
+          let* α1 : ref (array (ref str.t)) := borrow α0 in
+          let* α2 : M.Val (ref (array (ref str.t))) := M.alloc α1 in
+          let* α3 : M.Val (ref (slice (ref str.t))) :=
+            pointer_coercion "Unsize" α2 in
+          let* α4 : ref (slice (ref str.t)) := M.read α3 in
+          let* α5 : core.fmt.Arguments.t :=
+            core.fmt.Arguments.t::["new_const"] α4 in
+          let* α6 : unit := std.io.stdio._print α5 in
+          M.alloc α6 in
         M.alloc tt in
-      M.alloc tt).
+      let* α0 : M.Val unit := M.alloc tt in
+      M.read α0).
   
   (*
           pub(crate) fn restricted_function() {
@@ -732,24 +830,27 @@ Module private_nested.
           }
   *)
   (* #[allow(dead_code)] - function was ignored by the compiler *)
-  Definition restricted_function : M (M.Val unit) :=
+  Definition restricted_function : M unit :=
     M.function_body
-      (let* _ : ltac:(refine (M.Val unit)) :=
-        let* _ : ltac:(refine (M.Val unit)) :=
-          let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
+      (let* _ : M.Val unit :=
+        let* _ : M.Val unit :=
+          let* α0 : M.Val (array (ref str.t)) :=
             M.alloc
               [ mk_str "called `my_mod::private_nested::restricted_function()`
 "
               ] in
-          let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
-            borrow α0 in
-          let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
-            pointer_coercion "Unsize" α1 in
-          let* α3 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-            core.fmt.Arguments.t::["new_const"] α2 in
-          std.io.stdio._print α3 in
+          let* α1 : ref (array (ref str.t)) := borrow α0 in
+          let* α2 : M.Val (ref (array (ref str.t))) := M.alloc α1 in
+          let* α3 : M.Val (ref (slice (ref str.t))) :=
+            pointer_coercion "Unsize" α2 in
+          let* α4 : ref (slice (ref str.t)) := M.read α3 in
+          let* α5 : core.fmt.Arguments.t :=
+            core.fmt.Arguments.t::["new_const"] α4 in
+          let* α6 : unit := std.io.stdio._print α5 in
+          M.alloc α6 in
         M.alloc tt in
-      M.alloc tt).
+      let* α0 : M.Val unit := M.alloc tt in
+      M.read α0).
 End private_nested.
 
 (*
@@ -758,22 +859,25 @@ End private_nested.
         }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition function : M (M.Val unit) :=
+Definition function : M unit :=
   M.function_body
-    (let* _ : ltac:(refine (M.Val unit)) :=
-      let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
+    (let* _ : M.Val unit :=
+      let* _ : M.Val unit :=
+        let* α0 : M.Val (array (ref str.t)) :=
           M.alloc [ mk_str "called `my_mod::private_nested::function()`
 " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
-          borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
-          pointer_coercion "Unsize" α1 in
-        let* α3 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-          core.fmt.Arguments.t::["new_const"] α2 in
-        std.io.stdio._print α3 in
+        let* α1 : ref (array (ref str.t)) := borrow α0 in
+        let* α2 : M.Val (ref (array (ref str.t))) := M.alloc α1 in
+        let* α3 : M.Val (ref (slice (ref str.t))) :=
+          pointer_coercion "Unsize" α2 in
+        let* α4 : ref (slice (ref str.t)) := M.read α3 in
+        let* α5 : core.fmt.Arguments.t :=
+          core.fmt.Arguments.t::["new_const"] α4 in
+        let* α6 : unit := std.io.stdio._print α5 in
+        M.alloc α6 in
       M.alloc tt in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).
 
 (*
         pub(crate) fn restricted_function() {
@@ -781,46 +885,52 @@ Definition function : M (M.Val unit) :=
         }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition restricted_function : M (M.Val unit) :=
+Definition restricted_function : M unit :=
   M.function_body
-    (let* _ : ltac:(refine (M.Val unit)) :=
-      let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
+    (let* _ : M.Val unit :=
+      let* _ : M.Val unit :=
+        let* α0 : M.Val (array (ref str.t)) :=
           M.alloc
             [ mk_str "called `my_mod::private_nested::restricted_function()`
 "
             ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
-          borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
-          pointer_coercion "Unsize" α1 in
-        let* α3 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-          core.fmt.Arguments.t::["new_const"] α2 in
-        std.io.stdio._print α3 in
+        let* α1 : ref (array (ref str.t)) := borrow α0 in
+        let* α2 : M.Val (ref (array (ref str.t))) := M.alloc α1 in
+        let* α3 : M.Val (ref (slice (ref str.t))) :=
+          pointer_coercion "Unsize" α2 in
+        let* α4 : ref (slice (ref str.t)) := M.read α3 in
+        let* α5 : core.fmt.Arguments.t :=
+          core.fmt.Arguments.t::["new_const"] α4 in
+        let* α6 : unit := std.io.stdio._print α5 in
+        M.alloc α6 in
       M.alloc tt in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).
 
 (*
 fn function() {
     println!("called `function()`");
 }
 *)
-Definition function : M (M.Val unit) :=
+Definition function : M unit :=
   M.function_body
-    (let* _ : ltac:(refine (M.Val unit)) :=
-      let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
+    (let* _ : M.Val unit :=
+      let* _ : M.Val unit :=
+        let* α0 : M.Val (array (ref str.t)) :=
           M.alloc [ mk_str "called `function()`
 " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
-          borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
-          pointer_coercion "Unsize" α1 in
-        let* α3 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-          core.fmt.Arguments.t::["new_const"] α2 in
-        std.io.stdio._print α3 in
+        let* α1 : ref (array (ref str.t)) := borrow α0 in
+        let* α2 : M.Val (ref (array (ref str.t))) := M.alloc α1 in
+        let* α3 : M.Val (ref (slice (ref str.t))) :=
+          pointer_coercion "Unsize" α2 in
+        let* α4 : ref (slice (ref str.t)) := M.read α3 in
+        let* α5 : core.fmt.Arguments.t :=
+          core.fmt.Arguments.t::["new_const"] α4 in
+        let* α6 : unit := std.io.stdio._print α5 in
+        M.alloc α6 in
       M.alloc tt in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).
 
 (*
 fn main() {
@@ -863,14 +973,25 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M (M.Val unit) :=
+Definition main : M unit :=
   M.function_body
-    (let* _ : ltac:(refine (M.Val unit)) := visibility.function in
-    let* _ : ltac:(refine (M.Val unit)) := visibility.my_mod.function in
-    let* _ : ltac:(refine (M.Val unit)) := visibility.my_mod.indirect_access in
-    let* _ : ltac:(refine (M.Val unit)) := visibility.my_mod.nested.function in
-    let* _ : ltac:(refine (M.Val unit)) :=
-      visibility.my_mod.call_public_function_in_my_mod in
-    let* _ : ltac:(refine (M.Val unit)) :=
-      visibility.my_mod.public_function_in_crate in
-    M.alloc tt).
+    (let* _ : M.Val unit :=
+      let* α0 : unit := visibility.function in
+      M.alloc α0 in
+    let* _ : M.Val unit :=
+      let* α0 : unit := visibility.my_mod.function in
+      M.alloc α0 in
+    let* _ : M.Val unit :=
+      let* α0 : unit := visibility.my_mod.indirect_access in
+      M.alloc α0 in
+    let* _ : M.Val unit :=
+      let* α0 : unit := visibility.my_mod.nested.function in
+      M.alloc α0 in
+    let* _ : M.Val unit :=
+      let* α0 : unit := visibility.my_mod.call_public_function_in_my_mod in
+      M.alloc α0 in
+    let* _ : M.Val unit :=
+      let* α0 : unit := visibility.my_mod.public_function_in_crate in
+      M.alloc α0 in
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).

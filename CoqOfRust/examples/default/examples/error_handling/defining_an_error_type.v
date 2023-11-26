@@ -15,16 +15,15 @@ Section Impl_core_fmt_Debug_for_defining_an_error_type_DoubleError_t.
   Debug
   *)
   Definition fmt
-      (self : M.Val (ref ltac:(Self)))
-      (f : M.Val (mut_ref core.fmt.Formatter.t))
-      : M (M.Val ltac:(core.fmt.Result)) :=
+      (self : ref ltac:(Self))
+      (f : mut_ref core.fmt.Formatter.t)
+      : M ltac:(core.fmt.Result) :=
+    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+    let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
     M.function_body
-      (let* α0 : ltac:(refine (M.Val core.fmt.Formatter.t)) := deref f in
-      let* α1 : ltac:(refine (M.Val (mut_ref core.fmt.Formatter.t))) :=
-        borrow_mut α0 in
-      let* α2 : ltac:(refine (M.Val str.t)) := deref (mk_str "DoubleError") in
-      let* α3 : ltac:(refine (M.Val (ref str.t))) := borrow α2 in
-      core.fmt.Formatter.t::["write_str"] α1 α3).
+      (let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
+      let* α1 : ref str.t := M.read (mk_str "DoubleError") in
+      core.fmt.Formatter.t::["write_str"] α0 α1).
   
   Global Instance AssociatedFunction_fmt :
     Notations.DoubleColon ltac:(Self) "fmt" := {
@@ -45,9 +44,10 @@ Section Impl_core_clone_Clone_for_defining_an_error_type_DoubleError_t.
   Clone
   *)
   Definition clone
-      (self : M.Val (ref ltac:(Self)))
-      : M (M.Val defining_an_error_type.DoubleError.t) :=
-    M.function_body (M.alloc defining_an_error_type.DoubleError.Build_t).
+      (self : ref ltac:(Self))
+      : M defining_an_error_type.DoubleError.t :=
+    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+    M.function_body (M.pure defining_an_error_type.DoubleError.Build_t).
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon ltac:(Self) "clone" := {
@@ -74,21 +74,23 @@ Section Impl_core_fmt_Display_for_defining_an_error_type_DoubleError_t.
       }
   *)
   Definition fmt
-      (self : M.Val (ref ltac:(Self)))
-      (f : M.Val (mut_ref core.fmt.Formatter.t))
-      : M (M.Val ltac:(core.fmt.Result)) :=
+      (self : ref ltac:(Self))
+      (f : mut_ref core.fmt.Formatter.t)
+      : M ltac:(core.fmt.Result) :=
+    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+    let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
     M.function_body
-      (let* α0 : ltac:(refine (M.Val core.fmt.Formatter.t)) := deref f in
-      let* α1 : ltac:(refine (M.Val (mut_ref core.fmt.Formatter.t))) :=
-        borrow_mut α0 in
-      let* α2 : ltac:(refine (M.Val (array (ref str.t)))) :=
+      (let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
+      let* α1 : M.Val (array (ref str.t)) :=
         M.alloc [ mk_str "invalid first item to double" ] in
-      let* α3 : ltac:(refine (M.Val (ref (array (ref str.t))))) := borrow α2 in
-      let* α4 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
+      let* α2 : ref (array (ref str.t)) := borrow α1 in
+      let* α3 : M.Val (ref (array (ref str.t))) := M.alloc α2 in
+      let* α4 : M.Val (ref (slice (ref str.t))) :=
         pointer_coercion "Unsize" α3 in
-      let* α5 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-        core.fmt.Arguments.t::["new_const"] α4 in
-      core.fmt.Formatter.t::["write_fmt"] α1 α5).
+      let* α5 : ref (slice (ref str.t)) := M.read α4 in
+      let* α6 : core.fmt.Arguments.t :=
+        core.fmt.Arguments.t::["new_const"] α5 in
+      core.fmt.Formatter.t::["write_fmt"] α0 α6).
   
   Global Instance AssociatedFunction_fmt :
     Notations.DoubleColon ltac:(Self) "fmt" := {
@@ -115,56 +117,60 @@ fn double_first(vec: Vec<&str>) -> Result<i32> {
 }
 *)
 Definition double_first
-    (vec : M.Val (alloc.vec.Vec.t (ref str.t) alloc.vec.Vec.Default.A))
-    : M (M.Val ltac:(defining_an_error_type.Result i32.t)) :=
+    (vec : alloc.vec.Vec.t (ref str.t) alloc.vec.Vec.Default.A)
+    : M ltac:(defining_an_error_type.Result i32.t) :=
+  let* vec : M.Val (alloc.vec.Vec.t (ref str.t) alloc.vec.Vec.Default.A) :=
+    M.alloc vec in
   M.function_body
-    (let* α0 :
-        ltac:(refine
-          (M.Val (ref (alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t)))) :=
+    (let* α0 : ref (alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t) :=
       borrow vec in
-    let* α1 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
+    let* α1 : ref (slice (ref str.t)) :=
       (core.ops.deref.Deref.deref
           (Self := alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t)
           (Trait := ltac:(refine _)))
         α0 in
-    let* α2 : ltac:(refine (M.Val (slice (ref str.t)))) := deref α1 in
-    let* α3 : ltac:(refine (M.Val (ref (slice (ref str.t))))) := borrow α2 in
-    let* α4 : ltac:(refine (M.Val (core.option.Option.t (ref (ref str.t))))) :=
-      (slice (ref str.t))::["first"] α3 in
-    let* α5 : ltac:(refine (M.Val defining_an_error_type.DoubleError.t)) :=
-      M.alloc defining_an_error_type.DoubleError.Build_t in
-    let* α6 :
-        ltac:(refine
-          (M.Val
-            (core.result.Result.t
-              (ref (ref str.t))
-              defining_an_error_type.DoubleError.t))) :=
-      (core.option.Option.t (ref (ref str.t)))::["ok_or"] α4 α5 in
+    let* α2 : core.option.Option.t (ref (ref str.t)) :=
+      (slice (ref str.t))::["first"] α1 in
+    let* α3 :
+        core.result.Result.t
+          (ref (ref str.t))
+          defining_an_error_type.DoubleError.t :=
+      (core.option.Option.t (ref (ref str.t)))::["ok_or"]
+        α2
+        defining_an_error_type.DoubleError.Build_t in
+    let* α4 : type not implemented :=
+      M.read
+        (let* α0 : ref (ref str.t) := M.read s in
+        let* α1 : M.Val (ref str.t) := deref α0 in
+        let* α2 : ref str.t := M.read α1 in
+        let* α3 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
+          str.t::["parse"] α2 in
+        let* α4 : type not implemented :=
+          M.read (M.alloc defining_an_error_type.DoubleError.Build_t) in
+        let* α5 :
+            core.result.Result.t i32.t defining_an_error_type.DoubleError.t :=
+          (core.result.Result.t
+                i32.t
+                core.num.error.ParseIntError.t)::["map_err"]
+            α3
+            α4 in
+        let* α6 : type not implemented :=
+          M.read
+            (let* α0 : M.Val i32.t := M.alloc 2 in
+            BinOp.mul α0 i) in
+        let* α7 :
+            core.result.Result.t i32.t defining_an_error_type.DoubleError.t :=
+          (core.result.Result.t
+                i32.t
+                defining_an_error_type.DoubleError.t)::["map"]
+            α5
+            α6 in
+        M.alloc α7) in
     (core.result.Result.t
           (ref (ref str.t))
           defining_an_error_type.DoubleError.t)::["and_then"]
-      α6
-      (let* α0 : ltac:(refine (M.Val (ref str.t))) := deref s in
-      let* α1 : ltac:(refine (M.Val str.t)) := deref α0 in
-      let* α2 : ltac:(refine (M.Val (ref str.t))) := borrow α1 in
-      let* α3 :
-          ltac:(refine
-            (M.Val
-              (core.result.Result.t i32.t core.num.error.ParseIntError.t))) :=
-        str.t::["parse"] α2 in
-      let* α4 :
-          ltac:(refine
-            (M.Val
-              (core.result.Result.t
-                i32.t
-                defining_an_error_type.DoubleError.t))) :=
-        (core.result.Result.t i32.t core.num.error.ParseIntError.t)::["map_err"]
-          α3
-          (M.alloc defining_an_error_type.DoubleError.Build_t) in
-      (core.result.Result.t i32.t defining_an_error_type.DoubleError.t)::["map"]
-        α4
-        (let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 2 in
-        BinOp.mul α0 i))).
+      α3
+      α4).
 
 (*
 fn print(result: Result<i32>) {
@@ -175,60 +181,68 @@ fn print(result: Result<i32>) {
 }
 *)
 Definition print
-    (result : M.Val ltac:(defining_an_error_type.Result i32.t))
-    : M (M.Val unit) :=
+    (result : ltac:(defining_an_error_type.Result i32.t))
+    : M unit :=
+  let* result : M.Val ltac:(defining_an_error_type.Result i32.t) :=
+    M.alloc result in
   M.function_body
     (let* α0 := M.read result in
-    match α0 with
-    | core.result.Result.Ok n =>
-      let* n := M.alloc n in
-      let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
-          M.alloc [ mk_str "The first doubled is "; mk_str "
+    let* α1 : M.Val unit :=
+      match α0 with
+      | core.result.Result.Ok n =>
+        let* n := M.alloc n in
+        let* _ : M.Val unit :=
+          let* α0 : M.Val (array (ref str.t)) :=
+            M.alloc [ mk_str "The first doubled is "; mk_str "
 " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
-          borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
-          pointer_coercion "Unsize" α1 in
-        let* α3 : ltac:(refine (M.Val (ref i32.t))) := borrow n in
-        let* α4 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
-          core.fmt.rt.Argument.t::["new_display"] α3 in
-        let* α5 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
-          M.alloc [ α4 ] in
-        let* α6 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
-          borrow α5 in
-        let* α7 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
-          pointer_coercion "Unsize" α6 in
-        let* α8 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-          core.fmt.Arguments.t::["new_v1"] α2 α7 in
-        std.io.stdio._print α8 in
-      M.alloc tt
-    | core.result.Result.Err e =>
-      let* e := M.alloc e in
-      let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
-          M.alloc [ mk_str "Error: "; mk_str "
+          let* α1 : ref (array (ref str.t)) := borrow α0 in
+          let* α2 : M.Val (ref (array (ref str.t))) := M.alloc α1 in
+          let* α3 : M.Val (ref (slice (ref str.t))) :=
+            pointer_coercion "Unsize" α2 in
+          let* α4 : ref (slice (ref str.t)) := M.read α3 in
+          let* α5 : ref i32.t := borrow n in
+          let* α6 : core.fmt.rt.Argument.t :=
+            core.fmt.rt.Argument.t::["new_display"] α5 in
+          let* α7 : M.Val core.fmt.rt.Argument.t := M.alloc α6 in
+          let* α8 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α7 ] in
+          let* α9 : ref (array core.fmt.rt.Argument.t) := borrow α8 in
+          let* α10 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α9 in
+          let* α11 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
+            pointer_coercion "Unsize" α10 in
+          let* α12 : ref (slice core.fmt.rt.Argument.t) := M.read α11 in
+          let* α13 : core.fmt.Arguments.t :=
+            core.fmt.Arguments.t::["new_v1"] α4 α12 in
+          let* α14 : unit := std.io.stdio._print α13 in
+          M.alloc α14 in
+        M.alloc tt
+      | core.result.Result.Err e =>
+        let* e := M.alloc e in
+        let* _ : M.Val unit :=
+          let* α0 : M.Val (array (ref str.t)) :=
+            M.alloc [ mk_str "Error: "; mk_str "
 " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
-          borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
-          pointer_coercion "Unsize" α1 in
-        let* α3 :
-            ltac:(refine (M.Val (ref defining_an_error_type.DoubleError.t))) :=
-          borrow e in
-        let* α4 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
-          core.fmt.rt.Argument.t::["new_display"] α3 in
-        let* α5 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
-          M.alloc [ α4 ] in
-        let* α6 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
-          borrow α5 in
-        let* α7 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
-          pointer_coercion "Unsize" α6 in
-        let* α8 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-          core.fmt.Arguments.t::["new_v1"] α2 α7 in
-        std.io.stdio._print α8 in
-      M.alloc tt
-    end).
+          let* α1 : ref (array (ref str.t)) := borrow α0 in
+          let* α2 : M.Val (ref (array (ref str.t))) := M.alloc α1 in
+          let* α3 : M.Val (ref (slice (ref str.t))) :=
+            pointer_coercion "Unsize" α2 in
+          let* α4 : ref (slice (ref str.t)) := M.read α3 in
+          let* α5 : ref defining_an_error_type.DoubleError.t := borrow e in
+          let* α6 : core.fmt.rt.Argument.t :=
+            core.fmt.rt.Argument.t::["new_display"] α5 in
+          let* α7 : M.Val core.fmt.rt.Argument.t := M.alloc α6 in
+          let* α8 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α7 ] in
+          let* α9 : ref (array core.fmt.rt.Argument.t) := borrow α8 in
+          let* α10 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α9 in
+          let* α11 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
+            pointer_coercion "Unsize" α10 in
+          let* α12 : ref (slice core.fmt.rt.Argument.t) := M.read α11 in
+          let* α13 : core.fmt.Arguments.t :=
+            core.fmt.Arguments.t::["new_v1"] α4 α12 in
+          let* α14 : unit := std.io.stdio._print α13 in
+          M.alloc α14 in
+        M.alloc tt
+      end in
+    M.read α1).
 
 (*
 fn main() {
@@ -242,77 +256,70 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M (M.Val unit) :=
+Definition main : M unit :=
   M.function_body
-    (let* numbers :
-        ltac:(refine
-          (M.Val (alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t))) :=
-      let* α0 : ltac:(refine (M.Val str.t)) := deref (mk_str "93") in
-      let* α1 : ltac:(refine (M.Val (ref str.t))) := borrow α0 in
-      let* α2 : ltac:(refine (M.Val str.t)) := deref (mk_str "18") in
-      let* α3 : ltac:(refine (M.Val (ref str.t))) := borrow α2 in
-      let* α4 : ltac:(refine (M.Val (array (ref str.t)))) :=
-        M.alloc [ mk_str "42"; α1; α3 ] in
+    (let* numbers : M.Val (alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t) :=
+      let* α0 : ref str.t := M.read (mk_str "93") in
+      let* α1 : M.Val (ref str.t) := M.alloc α0 in
+      let* α2 : ref str.t := M.read (mk_str "18") in
+      let* α3 : M.Val (ref str.t) := M.alloc α2 in
+      let* α4 : M.Val (array (ref str.t)) := M.alloc [ mk_str "42"; α1; α3 ] in
       let* α5 :
-          ltac:(refine
-            (M.Val
-              (alloc.boxed.Box.t (array (ref str.t)) alloc.alloc.Global.t))) :=
+          M.Val (alloc.boxed.Box.t (array (ref str.t)) alloc.alloc.Global.t) :=
         (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α4 in
       let* α6 :
-          ltac:(refine
-            (M.Val
-              (alloc.boxed.Box.t (slice (ref str.t)) alloc.alloc.Global.t))) :=
+          M.Val (alloc.boxed.Box.t (slice (ref str.t)) alloc.alloc.Global.t) :=
         pointer_coercion "Unsize" α5 in
-      (slice (ref str.t))::["into_vec"] α6 in
-    let* empty :
-        ltac:(refine
-          (M.Val (alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t))) :=
-      (alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t)::["new"] in
-    let* strings :
-        ltac:(refine
-          (M.Val (alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t))) :=
-      let* α0 : ltac:(refine (M.Val str.t)) := deref (mk_str "93") in
-      let* α1 : ltac:(refine (M.Val (ref str.t))) := borrow α0 in
-      let* α2 : ltac:(refine (M.Val str.t)) := deref (mk_str "18") in
-      let* α3 : ltac:(refine (M.Val (ref str.t))) := borrow α2 in
-      let* α4 : ltac:(refine (M.Val (array (ref str.t)))) :=
+      let* α7 : alloc.boxed.Box.t (slice (ref str.t)) alloc.alloc.Global.t :=
+        M.read α6 in
+      let* α8 : alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t :=
+        (slice (ref str.t))::["into_vec"] α7 in
+      M.alloc α8 in
+    let* empty : M.Val (alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t) :=
+      let* α0 : alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t :=
+        (alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t)::["new"] in
+      M.alloc α0 in
+    let* strings : M.Val (alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t) :=
+      let* α0 : ref str.t := M.read (mk_str "93") in
+      let* α1 : M.Val (ref str.t) := M.alloc α0 in
+      let* α2 : ref str.t := M.read (mk_str "18") in
+      let* α3 : M.Val (ref str.t) := M.alloc α2 in
+      let* α4 : M.Val (array (ref str.t)) :=
         M.alloc [ mk_str "tofu"; α1; α3 ] in
       let* α5 :
-          ltac:(refine
-            (M.Val
-              (alloc.boxed.Box.t (array (ref str.t)) alloc.alloc.Global.t))) :=
+          M.Val (alloc.boxed.Box.t (array (ref str.t)) alloc.alloc.Global.t) :=
         (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α4 in
       let* α6 :
-          ltac:(refine
-            (M.Val
-              (alloc.boxed.Box.t (slice (ref str.t)) alloc.alloc.Global.t))) :=
+          M.Val (alloc.boxed.Box.t (slice (ref str.t)) alloc.alloc.Global.t) :=
         pointer_coercion "Unsize" α5 in
-      (slice (ref str.t))::["into_vec"] α6 in
-    let* _ : ltac:(refine (M.Val unit)) :=
-      let* α0 :
-          ltac:(refine
-            (M.Val
-              (core.result.Result.t
-                i32.t
-                defining_an_error_type.DoubleError.t))) :=
-        defining_an_error_type.double_first numbers in
-      defining_an_error_type.print α0 in
-    let* _ : ltac:(refine (M.Val unit)) :=
-      let* α0 :
-          ltac:(refine
-            (M.Val
-              (core.result.Result.t
-                i32.t
-                defining_an_error_type.DoubleError.t))) :=
-        defining_an_error_type.double_first empty in
-      defining_an_error_type.print α0 in
-    let* _ : ltac:(refine (M.Val unit)) :=
-      let* α0 :
-          ltac:(refine
-            (M.Val
-              (core.result.Result.t
-                i32.t
-                defining_an_error_type.DoubleError.t))) :=
-        defining_an_error_type.double_first strings in
-      defining_an_error_type.print α0 in
-    M.alloc tt).
+      let* α7 : alloc.boxed.Box.t (slice (ref str.t)) alloc.alloc.Global.t :=
+        M.read α6 in
+      let* α8 : alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t :=
+        (slice (ref str.t))::["into_vec"] α7 in
+      M.alloc α8 in
+    let* _ : M.Val unit :=
+      let* α0 : alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t :=
+        M.read numbers in
+      let* α1 :
+          core.result.Result.t i32.t defining_an_error_type.DoubleError.t :=
+        defining_an_error_type.double_first α0 in
+      let* α2 : unit := defining_an_error_type.print α1 in
+      M.alloc α2 in
+    let* _ : M.Val unit :=
+      let* α0 : alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t :=
+        M.read empty in
+      let* α1 :
+          core.result.Result.t i32.t defining_an_error_type.DoubleError.t :=
+        defining_an_error_type.double_first α0 in
+      let* α2 : unit := defining_an_error_type.print α1 in
+      M.alloc α2 in
+    let* _ : M.Val unit :=
+      let* α0 : alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t :=
+        M.read strings in
+      let* α1 :
+          core.result.Result.t i32.t defining_an_error_type.DoubleError.t :=
+        defining_an_error_type.double_first α0 in
+      let* α2 : unit := defining_an_error_type.print α1 in
+      M.alloc α2 in
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).

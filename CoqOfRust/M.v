@@ -177,6 +177,10 @@ Definition write {A : Set} (r : Ref A) (v : A) : M unit :=
     LowM.Pure (inl tt)
   end.
 
+Definition copy {A : Set} (r : Ref A) : M (Ref A) :=
+  let* v := read r in
+  alloc v.
+
 Definition read_env {Env : Set} : M Env :=
   fun _fuel =>
   let- env := LowM.CallPrimitive Primitive.EnvRead in
@@ -200,12 +204,9 @@ Definition catch {A : Set} (body : M A) (handler : Exception -> M A) : M A :=
   | inr exception => handler exception fuel
   end.
 
-Definition function_body {A : Set} (body : M (M.Val A)) : M (M.Val A) :=
+Definition function_body {A : Set} (body : M A) : M A :=
   catch
-    (* We move the result to an immediate value. *)
-    (let* result := body in
-    let* result := read result in
-    pure (Ref.Imm result))
+    body
     (fun exception =>
       match exception with
       | Exception.Return r => cast r

@@ -23,7 +23,7 @@ Section Impl_generics_where_clauses_PrintInOption_for_T.
           println!("{:?}", Some(self));
       }
   *)
-  Parameter print_in_option : (M.Val ltac:(Self)) -> M (M.Val unit).
+  Parameter print_in_option : ltac:(Self) -> M unit.
   
   Global Instance AssociatedFunction_print_in_option :
     Notations.DoubleColon ltac:(Self) "print_in_option" := {
@@ -45,4 +45,4 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : M (M.Val unit).
+Parameter main : M unit.

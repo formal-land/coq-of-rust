@@ -9,27 +9,25 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M (M.Val unit) :=
+Definition main : M unit :=
   M.function_body
     (let* _ :
-        ltac:(refine
-          (M.Val
-            (core.result.Result.t i32.t core.num.error.ParseIntError.t))) :=
-      let* α0 : ltac:(refine (M.Val str.t)) := deref (mk_str "12") in
-      let* α1 : ltac:(refine (M.Val (ref str.t))) := borrow α0 in
-      str.t::["parse"] α1 in
+        M.Val (core.result.Result.t i32.t core.num.error.ParseIntError.t) :=
+      let* α0 : ref str.t := M.read (mk_str "12") in
+      let* α1 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
+        str.t::["parse"] α0 in
+      M.alloc α1 in
     let* _ :
-        ltac:(refine
-          (M.Val
-            (core.result.Result.t bool.t core.str.error.ParseBoolError.t))) :=
-      let* α0 : ltac:(refine (M.Val str.t)) := deref (mk_str "true") in
-      let* α1 : ltac:(refine (M.Val (ref str.t))) := borrow α0 in
-      str.t::["parse"] α1 in
+        M.Val (core.result.Result.t bool.t core.str.error.ParseBoolError.t) :=
+      let* α0 : ref str.t := M.read (mk_str "true") in
+      let* α1 : core.result.Result.t bool.t core.str.error.ParseBoolError.t :=
+        str.t::["parse"] α0 in
+      M.alloc α1 in
     let* _ :
-        ltac:(refine
-          (M.Val
-            (core.result.Result.t u32.t core.num.error.ParseIntError.t))) :=
-      let* α0 : ltac:(refine (M.Val str.t)) := deref (mk_str "unparsable") in
-      let* α1 : ltac:(refine (M.Val (ref str.t))) := borrow α0 in
-      str.t::["parse"] α1 in
-    M.alloc tt).
+        M.Val (core.result.Result.t u32.t core.num.error.ParseIntError.t) :=
+      let* α0 : ref str.t := M.read (mk_str "unparsable") in
+      let* α1 : core.result.Result.t u32.t core.num.error.ParseIntError.t :=
+        str.t::["parse"] α0 in
+      M.alloc α1 in
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).

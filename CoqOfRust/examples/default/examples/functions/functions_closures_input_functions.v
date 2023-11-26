@@ -9,38 +9,44 @@ fn call_me<F: Fn()>(f: F) {
 Definition call_me
     {F : Set}
     {ℋ_0 : core.ops.function.Fn.Trait F (Args := unit)}
-    (f : M.Val F)
-    : M (M.Val unit) :=
+    (f : F)
+    : M unit :=
+  let* f : M.Val F := M.alloc f in
   M.function_body
-    (let* _ : ltac:(refine (M.Val unit)) :=
-      let* α0 : ltac:(refine (M.Val (ref F))) := borrow f in
-      let* α1 : ltac:(refine (M.Val unit)) := M.alloc tt in
-      (core.ops.function.Fn.call (Self := F) (Trait := ltac:(refine _)))
-        α0
-        α1 in
-    M.alloc tt).
+    (let* _ : M.Val unit :=
+      let* α0 : ref F := borrow f in
+      let* α1 : unit :=
+        (core.ops.function.Fn.call (Self := F) (Trait := ltac:(refine _)))
+          α0
+          tt in
+      M.alloc α1 in
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).
 
 (*
 fn function() {
     println!("I'm a function!");
 }
 *)
-Definition function : M (M.Val unit) :=
+Definition function : M unit :=
   M.function_body
-    (let* _ : ltac:(refine (M.Val unit)) :=
-      let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
+    (let* _ : M.Val unit :=
+      let* _ : M.Val unit :=
+        let* α0 : M.Val (array (ref str.t)) :=
           M.alloc [ mk_str "I'm a function!
 " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
-          borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
-          pointer_coercion "Unsize" α1 in
-        let* α3 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-          core.fmt.Arguments.t::["new_const"] α2 in
-        std.io.stdio._print α3 in
+        let* α1 : ref (array (ref str.t)) := borrow α0 in
+        let* α2 : M.Val (ref (array (ref str.t))) := M.alloc α1 in
+        let* α3 : M.Val (ref (slice (ref str.t))) :=
+          pointer_coercion "Unsize" α2 in
+        let* α4 : ref (slice (ref str.t)) := M.read α3 in
+        let* α5 : core.fmt.Arguments.t :=
+          core.fmt.Arguments.t::["new_const"] α4 in
+        let* α6 : unit := std.io.stdio._print α5 in
+        M.alloc α6 in
       M.alloc tt in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).
 
 (*
 fn main() {
@@ -52,24 +58,31 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M (M.Val unit) :=
+Definition main : M unit :=
   M.function_body
-    (let closure :=
-      let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
-          M.alloc [ mk_str "I'm a closure!
+    (let* closure : M.Val type not implemented :=
+      M.copy
+        (let* _ : M.Val unit :=
+          let* α0 : M.Val (array (ref str.t)) :=
+            M.alloc [ mk_str "I'm a closure!
 " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
-          borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
-          pointer_coercion "Unsize" α1 in
-        let* α3 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-          core.fmt.Arguments.t::["new_const"] α2 in
-        std.io.stdio._print α3 in
-      M.alloc tt in
-    let* _ : ltac:(refine (M.Val unit)) :=
-      functions_closures_input_functions.call_me closure in
-    let* _ : ltac:(refine (M.Val unit)) :=
-      functions_closures_input_functions.call_me
-        functions_closures_input_functions.function in
-    M.alloc tt).
+          let* α1 : ref (array (ref str.t)) := borrow α0 in
+          let* α2 : M.Val (ref (array (ref str.t))) := M.alloc α1 in
+          let* α3 : M.Val (ref (slice (ref str.t))) :=
+            pointer_coercion "Unsize" α2 in
+          let* α4 : ref (slice (ref str.t)) := M.read α3 in
+          let* α5 : core.fmt.Arguments.t :=
+            core.fmt.Arguments.t::["new_const"] α4 in
+          let* α6 : unit := std.io.stdio._print α5 in
+          M.alloc α6 in
+        M.alloc tt) in
+    let* _ : M.Val unit :=
+      let* α0 : type not implemented := M.read closure in
+      let* α1 : unit := functions_closures_input_functions.call_me α0 in
+      M.alloc α1 in
+    let* _ : M.Val unit :=
+      let* α0 : _ := M.read functions_closures_input_functions.function in
+      let* α1 : unit := functions_closures_input_functions.call_me α0 in
+      M.alloc α1 in
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).

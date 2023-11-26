@@ -6,13 +6,12 @@ fn id(x: u64) -> u64 {
     x
 }
 *)
-Parameter id : (M.Val u64.t) -> M (M.Val u64.t).
+Parameter id : u64.t -> M u64.t.
 
 (*
 fn tri(a: u64, b: u64, c: u64) {}
 *)
-Parameter tri :
-    (M.Val u64.t) -> (M.Val u64.t) -> (M.Val u64.t) -> M (M.Val unit).
+Parameter tri : u64.t -> u64.t -> u64.t -> M unit.
 
 (*
 fn main() {
@@ -24,4 +23,4 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : M (M.Val unit).
+Parameter main : M unit.

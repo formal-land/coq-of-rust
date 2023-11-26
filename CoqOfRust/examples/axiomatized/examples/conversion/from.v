@@ -26,7 +26,7 @@ Section Impl_core_convert_From_i32_t_for_from_Number_t.
           Number { value: item }
       }
   *)
-  Parameter from : (M.Val i32.t) -> M (M.Val ltac:(Self)).
+  Parameter from : i32.t -> M ltac:(Self).
   
   Global Instance AssociatedFunction_from :
     Notations.DoubleColon ltac:(Self) "from" := {
@@ -45,4 +45,4 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : M (M.Val unit).
+Parameter main : M unit.

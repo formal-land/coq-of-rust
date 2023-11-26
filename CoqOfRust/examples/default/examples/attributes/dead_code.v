@@ -4,19 +4,18 @@ Require Import CoqOfRust.CoqOfRust.
 (*
 fn used_function() {}
 *)
-Definition used_function : M (M.Val unit) := M.function_body (M.alloc tt).
+Definition used_function : M unit := M.function_body (M.pure tt).
 
 (*
 fn unused_function() {}
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition unused_function : M (M.Val unit) := M.function_body (M.alloc tt).
+Definition unused_function : M unit := M.function_body (M.pure tt).
 
 (*
 fn noisy_unused_function() {}
 *)
-Definition noisy_unused_function : M (M.Val unit) :=
-  M.function_body (M.alloc tt).
+Definition noisy_unused_function : M unit := M.function_body (M.pure tt).
 
 (*
 fn main() {
@@ -24,7 +23,10 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M (M.Val unit) :=
+Definition main : M unit :=
   M.function_body
-    (let* _ : ltac:(refine (M.Val unit)) := dead_code.used_function in
-    M.alloc tt).
+    (let* _ : M.Val unit :=
+      let* α0 : unit := dead_code.used_function in
+      M.alloc α0 in
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).

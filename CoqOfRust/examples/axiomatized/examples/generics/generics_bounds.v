@@ -19,7 +19,7 @@ Section Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle_t.
           self.length * self.height
       }
   *)
-  Parameter area : (M.Val (ref ltac:(Self))) -> M (M.Val f64.t).
+  Parameter area : (ref ltac:(Self)) -> M f64.t.
   
   Global Instance AssociatedFunction_area :
     Notations.DoubleColon ltac:(Self) "area" := {
@@ -64,9 +64,9 @@ Section Impl_core_fmt_Debug_for_generics_bounds_Rectangle_t.
   Debug
   *)
   Parameter fmt :
-      (M.Val (ref ltac:(Self))) ->
-        (M.Val (mut_ref core.fmt.Formatter.t)) ->
-        M (M.Val ltac:(core.fmt.Result)).
+      (ref ltac:(Self)) ->
+        (mut_ref core.fmt.Formatter.t) ->
+        M ltac:(core.fmt.Result).
   
   Global Instance AssociatedFunction_fmt :
     Notations.DoubleColon ltac:(Self) "fmt" := {
@@ -111,7 +111,7 @@ fn print_debug<T: Debug>(t: &T) {
 *)
 Parameter print_debug :
     forall {T : Set} {ℋ_0 : core.fmt.Debug.Trait T},
-    (M.Val (ref T)) -> M (M.Val unit).
+    (ref T) -> M unit.
 
 (*
 fn area<T: HasArea>(t: &T) -> f64 {
@@ -120,7 +120,7 @@ fn area<T: HasArea>(t: &T) -> f64 {
 *)
 Parameter area :
     forall {T : Set} {ℋ_0 : generics_bounds.HasArea.Trait T},
-    (M.Val (ref T)) -> M (M.Val f64.t).
+    (ref T) -> M f64.t.
 
 (*
 fn main() {
@@ -143,4 +143,4 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : M (M.Val unit).
+Parameter main : M unit.

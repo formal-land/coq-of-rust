@@ -21,9 +21,9 @@ Section Impl_core_fmt_Debug_for_boxing_errors_EmptyVec_t.
   Debug
   *)
   Parameter fmt :
-      (M.Val (ref ltac:(Self))) ->
-        (M.Val (mut_ref core.fmt.Formatter.t)) ->
-        M (M.Val ltac:(core.fmt.Result)).
+      (ref ltac:(Self)) ->
+        (mut_ref core.fmt.Formatter.t) ->
+        M ltac:(core.fmt.Result).
   
   Global Instance AssociatedFunction_fmt :
     Notations.DoubleColon ltac:(Self) "fmt" := {
@@ -43,8 +43,7 @@ Section Impl_core_clone_Clone_for_boxing_errors_EmptyVec_t.
   (*
   Clone
   *)
-  Parameter clone :
-      (M.Val (ref ltac:(Self))) -> M (M.Val boxing_errors.EmptyVec.t).
+  Parameter clone : (ref ltac:(Self)) -> M boxing_errors.EmptyVec.t.
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon ltac:(Self) "clone" := {
@@ -68,9 +67,9 @@ Section Impl_core_fmt_Display_for_boxing_errors_EmptyVec_t.
       }
   *)
   Parameter fmt :
-      (M.Val (ref ltac:(Self))) ->
-        (M.Val (mut_ref core.fmt.Formatter.t)) ->
-        M (M.Val ltac:(core.fmt.Result)).
+      (ref ltac:(Self)) ->
+        (mut_ref core.fmt.Formatter.t) ->
+        M ltac:(core.fmt.Result).
   
   Global Instance AssociatedFunction_fmt :
     Notations.DoubleColon ltac:(Self) "fmt" := {
@@ -109,8 +108,8 @@ fn double_first(vec: Vec<&str>) -> Result<i32> {
 }
 *)
 Parameter double_first :
-    (M.Val (alloc.vec.Vec.t (ref str.t) alloc.vec.Vec.Default.A)) ->
-      M (M.Val ltac:(boxing_errors.Result i32.t)).
+    (alloc.vec.Vec.t (ref str.t) alloc.vec.Vec.Default.A) ->
+      M ltac:(boxing_errors.Result i32.t).
 
 (*
 fn print(result: Result<i32>) {
@@ -120,7 +119,7 @@ fn print(result: Result<i32>) {
     }
 }
 *)
-Parameter print : (M.Val ltac:(boxing_errors.Result i32.t)) -> M (M.Val unit).
+Parameter print : ltac:(boxing_errors.Result i32.t) -> M unit.
 
 (*
 fn main() {
@@ -134,4 +133,4 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : M (M.Val unit).
+Parameter main : M unit.

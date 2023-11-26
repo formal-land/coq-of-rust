@@ -52,10 +52,11 @@ fn comp_sci_student_greeting(student: &dyn CompSciStudent) -> String {
 }
 *)
 Parameter comp_sci_student_greeting :
-    (M.Val (ref _ (* dyn *))) -> M (M.Val alloc.string.String.t).
+    forall {DynT : Set} {ℋ_0 : supertraits.CompSciStudent.Trait DynT},
+    (ref DynT) -> M alloc.string.String.t.
 
 (*
 fn main() {}
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : M (M.Val unit).
+Parameter main : M unit.

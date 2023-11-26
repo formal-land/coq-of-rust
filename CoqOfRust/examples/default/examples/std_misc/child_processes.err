@@ -6,3 +6,19 @@ type Closure(
         (),
     ],
 ) not yet handled
+type Closure(
+    DefId(0:5 ~ child_processes[7521]::main::{closure#0}),
+    [
+        i32,
+        extern "rust-call" fn((std::io::Error,)) -> std::process::Output,
+        (),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:5 ~ child_processes[7521]::main::{closure#0}),
+    [
+        i32,
+        extern "rust-call" fn((std::io::Error,)) -> std::process::Output,
+        (),
+    ],
+) not yet handled

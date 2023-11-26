@@ -8,7 +8,7 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : M (M.Val unit).
+Parameter main : M unit.
 
 (*
 fn is_divisible_by(lhs: u32, rhs: u32) -> bool {
@@ -21,7 +21,7 @@ fn is_divisible_by(lhs: u32, rhs: u32) -> bool {
     lhs % rhs == 0
 }
 *)
-Parameter is_divisible_by : (M.Val u32.t) -> (M.Val u32.t) -> M (M.Val bool.t).
+Parameter is_divisible_by : u32.t -> u32.t -> M bool.t.
 
 (*
 fn fizzbuzz(n: u32) -> () {
@@ -36,7 +36,7 @@ fn fizzbuzz(n: u32) -> () {
     }
 }
 *)
-Parameter fizzbuzz : (M.Val u32.t) -> M (M.Val unit).
+Parameter fizzbuzz : u32.t -> M unit.
 
 (*
 fn fizzbuzz_to(n: u32) {
@@ -45,4 +45,4 @@ fn fizzbuzz_to(n: u32) {
     }
 }
 *)
-Parameter fizzbuzz_to : (M.Val u32.t) -> M (M.Val unit).
+Parameter fizzbuzz_to : u32.t -> M unit.

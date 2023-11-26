@@ -24,41 +24,42 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M (M.Val unit) :=
+Definition main : M unit :=
   M.function_body
-    (let* _ : ltac:(refine (M.Val bool.t)) :=
-      let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 1 in
+    (let* _ : M.Val bool.t :=
+      let* α0 : M.Val i32.t := M.alloc 1 in
       let* α1 := M.read α0 in
       match α1 with
       | _ => M.alloc false
       | _ => M.alloc true
       end in
-    let* _ : ltac:(refine (M.Val i32.t)) :=
-      let* α0 : ltac:(refine (M.Val bool.t)) := M.alloc true in
-      let* α1 : ltac:(refine (M.Val bool.t)) := use α0 in
-      let* α2 := M.read α1 in
+    let* _ : M.Val i32.t :=
+      let* α0 : M.Val bool.t := M.alloc true in
+      let* α1 : M.Val bool.t := use α0 in
+      let* α2 : bool.t := M.read α1 in
       if (α2 : bool) then
         M.alloc 0
       else
         M.alloc 1 in
-    let* _ : ltac:(refine (M.Val i32.t)) :=
-      let* α0 : ltac:(refine (M.Val bool.t)) := M.alloc false in
-      let* α1 : ltac:(refine (M.Val bool.t)) := use α0 in
-      let* α2 := M.read α1 in
+    let* _ : M.Val i32.t :=
+      let* α0 : M.Val bool.t := M.alloc false in
+      let* α1 : M.Val bool.t := use α0 in
+      let* α2 : bool.t := M.read α1 in
       if (α2 : bool) then
         M.alloc 2
       else
-        let* α0 : ltac:(refine (M.Val bool.t)) := M.alloc false in
-        let* α1 : ltac:(refine (M.Val bool.t)) := use α0 in
-        let* α2 := M.read α1 in
+        let* α0 : M.Val bool.t := M.alloc false in
+        let* α1 : M.Val bool.t := use α0 in
+        let* α2 : bool.t := M.read α1 in
         if (α2 : bool) then
           M.alloc 3
         else
-          let* α0 : ltac:(refine (M.Val bool.t)) := M.alloc false in
-          let* α1 : ltac:(refine (M.Val bool.t)) := use α0 in
-          let* α2 := M.read α1 in
+          let* α0 : M.Val bool.t := M.alloc false in
+          let* α1 : M.Val bool.t := use α0 in
+          let* α2 : bool.t := M.read α1 in
           if (α2 : bool) then
             M.alloc 4
           else
             M.alloc 5 in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).

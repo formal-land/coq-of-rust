@@ -88,6 +88,13 @@ impl CoqType {
     pub(crate) fn val(self: Rc<CoqType>) -> Rc<CoqType> {
         Rc::new(CoqType::Val(self))
     }
+
+    pub(crate) fn unval(self: Rc<CoqType>) -> Option<Rc<CoqType>> {
+        match &*self {
+            CoqType::Val(ty) => Some(ty.clone()),
+            _ => None,
+        }
+    }
 }
 
 pub(crate) fn mt_ty(ty: Rc<CoqType>) -> Rc<CoqType> {

@@ -27,7 +27,7 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : M (M.Val unit).
+Parameter main : M unit.
 
 (*
     fn sum_odd_numbers(up_to: u32) -> u32 {
@@ -48,4 +48,4 @@ Parameter main : M (M.Val unit).
         acc
     }
 *)
-Parameter sum_odd_numbers : (M.Val u32.t) -> M (M.Val u32.t).
+Parameter sum_odd_numbers : u32.t -> M u32.t.

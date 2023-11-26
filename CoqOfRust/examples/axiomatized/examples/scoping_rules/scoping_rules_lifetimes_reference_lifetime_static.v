@@ -8,7 +8,7 @@ fn coerce_static<'a>(_: &'a i32) -> &'a i32 {
     &NUM
 }
 *)
-Parameter coerce_static : (M.Val (ref i32.t)) -> M (M.Val (ref i32.t)).
+Parameter coerce_static : (ref i32.t) -> M (ref i32.t).
 
 (*
 fn main() {
@@ -35,4 +35,4 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : M (M.Val unit).
+Parameter main : M unit.

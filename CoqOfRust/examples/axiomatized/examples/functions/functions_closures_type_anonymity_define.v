@@ -13,7 +13,7 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : M (M.Val unit).
+Parameter main : M unit.
 
 (*
     fn apply<F>(f: F)
@@ -25,4 +25,4 @@ Parameter main : M (M.Val unit).
 *)
 Parameter apply :
     forall {F : Set} {ℋ_0 : core.ops.function.FnOnce.Trait F (Args := unit)},
-    (M.Val F) -> M (M.Val unit).
+    F -> M unit.

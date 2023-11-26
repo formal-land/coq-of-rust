@@ -27,32 +27,35 @@ Section Impl_core_fmt_Display_for_converting_to_string_Circle_t.
       }
   *)
   Definition fmt
-      (self : M.Val (ref ltac:(Self)))
-      (f : M.Val (mut_ref core.fmt.Formatter.t))
-      : M (M.Val ltac:(core.fmt.Result)) :=
+      (self : ref ltac:(Self))
+      (f : mut_ref core.fmt.Formatter.t)
+      : M ltac:(core.fmt.Result) :=
+    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+    let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
     M.function_body
-      (let* α0 : ltac:(refine (M.Val core.fmt.Formatter.t)) := deref f in
-      let* α1 : ltac:(refine (M.Val (mut_ref core.fmt.Formatter.t))) :=
-        borrow_mut α0 in
-      let* α2 : ltac:(refine (M.Val (array (ref str.t)))) :=
+      (let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
+      let* α1 : M.Val (array (ref str.t)) :=
         M.alloc [ mk_str "Circle of radius " ] in
-      let* α3 : ltac:(refine (M.Val (ref (array (ref str.t))))) := borrow α2 in
-      let* α4 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
+      let* α2 : ref (array (ref str.t)) := borrow α1 in
+      let* α3 : M.Val (ref (array (ref str.t))) := M.alloc α2 in
+      let* α4 : M.Val (ref (slice (ref str.t))) :=
         pointer_coercion "Unsize" α3 in
-      let* α5 : ltac:(refine (M.Val converting_to_string.Circle.t)) :=
-        deref self in
-      let* α6 : ltac:(refine (M.Val (ref i32.t))) := borrow α5.["radius"] in
-      let* α7 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
-        core.fmt.rt.Argument.t::["new_display"] α6 in
-      let* α8 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
-        M.alloc [ α7 ] in
-      let* α9 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
-        borrow α8 in
-      let* α10 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
-        pointer_coercion "Unsize" α9 in
-      let* α11 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-        core.fmt.Arguments.t::["new_v1"] α4 α10 in
-      core.fmt.Formatter.t::["write_fmt"] α1 α11).
+      let* α5 : ref (slice (ref str.t)) := M.read α4 in
+      let* α6 : ref converting_to_string.Circle.t := M.read self in
+      let* α7 : M.Val converting_to_string.Circle.t := deref α6 in
+      let* α8 : ref i32.t := borrow α7.["radius"] in
+      let* α9 : core.fmt.rt.Argument.t :=
+        core.fmt.rt.Argument.t::["new_display"] α8 in
+      let* α10 : M.Val core.fmt.rt.Argument.t := M.alloc α9 in
+      let* α11 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α10 ] in
+      let* α12 : ref (array core.fmt.rt.Argument.t) := borrow α11 in
+      let* α13 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α12 in
+      let* α14 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
+        pointer_coercion "Unsize" α13 in
+      let* α15 : ref (slice core.fmt.rt.Argument.t) := M.read α14 in
+      let* α16 : core.fmt.Arguments.t :=
+        core.fmt.Arguments.t::["new_v1"] α5 α15 in
+      core.fmt.Formatter.t::["write_fmt"] α0 α16).
   
   Global Instance AssociatedFunction_fmt :
     Notations.DoubleColon ltac:(Self) "fmt" := {
@@ -72,17 +75,19 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M (M.Val unit) :=
+Definition main : M unit :=
   M.function_body
-    (let* circle : ltac:(refine (M.Val converting_to_string.Circle.t)) :=
-      let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 6 in
-      let* α1 := M.read α0 in
+    (let* circle : M.Val converting_to_string.Circle.t :=
+      let* α0 : M.Val i32.t := M.alloc 6 in
+      let* α1 : i32.t := M.read α0 in
       M.alloc {| converting_to_string.Circle.radius := α1; |} in
-    let* _ : ltac:(refine (M.Val alloc.string.String.t)) :=
-      let* α0 : ltac:(refine (M.Val (ref converting_to_string.Circle.t))) :=
-        borrow circle in
-      (alloc.string.ToString.to_string
-          (Self := converting_to_string.Circle.t)
-          (Trait := ltac:(refine _)))
-        α0 in
-    M.alloc tt).
+    let* _ : M.Val alloc.string.String.t :=
+      let* α0 : ref converting_to_string.Circle.t := borrow circle in
+      let* α1 : alloc.string.String.t :=
+        (alloc.string.ToString.to_string
+            (Self := converting_to_string.Circle.t)
+            (Trait := ltac:(refine _)))
+          α0 in
+      M.alloc α1 in
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).

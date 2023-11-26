@@ -6,7 +6,7 @@ fn some_number() -> Option<u32> {
     Some(42)
 }
 *)
-Parameter some_number : M (M.Val (core.option.Option.t u32.t)).
+Parameter some_number : M (core.option.Option.t u32.t).
 
 (*
 fn main() {
@@ -22,4 +22,4 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : M (M.Val unit).
+Parameter main : M unit.

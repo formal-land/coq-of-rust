@@ -25,7 +25,7 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M (M.Val unit) := M.function_body (M.alloc tt).
+Definition main : M unit := M.function_body (M.pure tt).
 
 (*
     fn mul(a: u64, b: u64) -> u128 {
@@ -46,15 +46,18 @@ Definition main : M (M.Val unit) := M.function_body (M.alloc tt).
         ((hi as u128) << 64) + lo as u128
     }
 *)
-Definition mul (a : M.Val u64.t) (b : M.Val u64.t) : M (M.Val u128.t) :=
+Definition mul (a : u64.t) (b : u64.t) : M u128.t :=
+  let* a : M.Val u64.t := M.alloc a in
+  let* b : M.Val u64.t := M.alloc b in
   M.function_body
-    (let* lo : ltac:(refine (M.Val unit)) := M.alloc tt in
-    let* hi : ltac:(refine (M.Val unit)) := M.alloc tt in
-    let* _ : ltac:(refine (M.Val unit)) :=
-      let _ := InlineAssembly in
+    (let* lo : M.Val unit := M.alloc tt in
+    let* hi : M.Val unit := M.alloc tt in
+    let* _ : M.Val unit :=
+      let _ : M.Val unit := InlineAssembly in
       M.alloc tt in
-    let* α0 : ltac:(refine (M.Val u128.t)) := cast hi in
-    let* α1 : ltac:(refine (M.Val i32.t)) := M.alloc 64 in
-    let* α2 : ltac:(refine (M.Val u128.t)) := BinOp.shl α0 α1 in
-    let* α3 : ltac:(refine (M.Val u128.t)) := cast lo in
-    BinOp.add α2 α3).
+    let* α0 : M.Val u128.t := cast hi in
+    let* α1 : M.Val i32.t := M.alloc 64 in
+    let* α2 : M.Val u128.t := BinOp.shl α0 α1 in
+    let* α3 : M.Val u128.t := cast lo in
+    let* α0 : M.Val u128.t := BinOp.add α2 α3 in
+    M.read α0).

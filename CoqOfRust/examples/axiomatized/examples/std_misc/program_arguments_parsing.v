@@ -6,14 +6,14 @@ fn increase(number: i32) {
     println!("{}", number + 1);
 }
 *)
-Parameter increase : (M.Val i32.t) -> M (M.Val unit).
+Parameter increase : i32.t -> M unit.
 
 (*
 fn decrease(number: i32) {
     println!("{}", number - 1);
 }
 *)
-Parameter decrease : (M.Val i32.t) -> M (M.Val unit).
+Parameter decrease : i32.t -> M unit.
 
 (*
 fn help() {
@@ -26,7 +26,7 @@ match_args {{increase|decrease}} <integer>
     );
 }
 *)
-Parameter help : M (M.Val unit).
+Parameter help : M unit.
 
 (*
 fn main() {
@@ -74,4 +74,4 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : M (M.Val unit).
+Parameter main : M unit.

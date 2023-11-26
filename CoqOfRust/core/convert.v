@@ -92,7 +92,7 @@ pub trait From<T>: Sized {
 *)
 Module From.
   Class Trait (Self : Set) {T : Set} : Set := {
-    from : M.Val T -> M (M.Val Self);
+    from : T -> M Self;
   }.
 End From.
 
@@ -104,7 +104,7 @@ pub trait Into<T>: Sized {
 *)
 Module Into.
   Class Trait (Self : Set) {T : Set } : Set := {
-    into : M.Val Self -> M (M.Val T);
+    into : Self -> M T;
   }.
 End Into.
 
@@ -115,7 +115,7 @@ Module Impl_Into_for_T.
 
     Definition Self := T.
 
-    Definition into : M.Val Self -> M (M.Val U) := From.from.
+    Definition into : Self -> M U := From.from.
 
     Global Instance Method_into : Notations.Dot "into" := {
       Notations.dot := into;

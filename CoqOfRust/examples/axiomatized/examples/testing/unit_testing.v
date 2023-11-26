@@ -6,7 +6,7 @@ pub fn add(a: i32, b: i32) -> i32 {
     a + b
 }
 *)
-Parameter add : (M.Val i32.t) -> (M.Val i32.t) -> M (M.Val i32.t).
+Parameter add : i32.t -> i32.t -> M i32.t.
 
 (*
 fn bad_add(a: i32, b: i32) -> i32 {
@@ -14,7 +14,7 @@ fn bad_add(a: i32, b: i32) -> i32 {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter bad_add : (M.Val i32.t) -> (M.Val i32.t) -> M (M.Val i32.t).
+Parameter bad_add : i32.t -> i32.t -> M i32.t.
 
 Module tests.
   (*
@@ -22,7 +22,7 @@ Module tests.
           assert_eq!(add(1, 2), 3);
       }
   *)
-  Parameter test_add : M (M.Val unit).
+  Parameter test_add : M unit.
   
   (*
       fn test_bad_add() {
@@ -31,7 +31,7 @@ Module tests.
           assert_eq!(bad_add(1, 2), 3);
       }
   *)
-  Parameter test_bad_add : M (M.Val unit).
+  Parameter test_bad_add : M unit.
 End tests.
 
 (*
@@ -39,7 +39,7 @@ End tests.
         assert_eq!(add(1, 2), 3);
     }
 *)
-Parameter test_add : M (M.Val unit).
+Parameter test_add : M unit.
 
 (*
     fn test_bad_add() {
@@ -48,4 +48,4 @@ Parameter test_add : M (M.Val unit).
         assert_eq!(bad_add(1, 2), 3);
     }
 *)
-Parameter test_bad_add : M (M.Val unit).
+Parameter test_bad_add : M unit.

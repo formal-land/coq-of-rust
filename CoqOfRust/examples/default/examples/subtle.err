@@ -34,3 +34,75 @@ type Dynamic(
     ReErased,
     Dyn,
 ) not yet handled
+type Dynamic(
+    [
+        Binder(
+            Trait(
+                core::fmt::Debug,
+            ),
+            [],
+        ),
+    ],
+    ReErased,
+    Dyn,
+) not yet handled
+type Dynamic(
+    [
+        Binder(
+            Trait(
+                core::fmt::Debug,
+            ),
+            [],
+        ),
+    ],
+    ReErased,
+    Dyn,
+) not yet handled
+type Dynamic(
+    [
+        Binder(
+            Trait(
+                core::fmt::Debug,
+            ),
+            [],
+        ),
+    ],
+    ReErased,
+    Dyn,
+) not yet handled
+type Dynamic(
+    [
+        Binder(
+            Trait(
+                core::fmt::Debug,
+            ),
+            [],
+        ),
+    ],
+    ReErased,
+    Dyn,
+) not yet handled
+type Dynamic(
+    [
+        Binder(
+            Trait(
+                core::fmt::Debug,
+            ),
+            [],
+        ),
+    ],
+    ReErased,
+    Dyn,
+) not yet handled
+type Dynamic(
+    [
+        Binder(
+            Trait(
+                core::fmt::Debug,
+            ),
+            [],
+        ),
+    ],
+    ReErased,
+    Dyn,
+) not yet handled

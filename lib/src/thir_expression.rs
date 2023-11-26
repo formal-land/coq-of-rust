@@ -3,23 +3,22 @@ use crate::expression::*;
 use crate::path::*;
 use crate::pattern::*;
 use crate::thir_ty::*;
+use crate::ty::CoqType;
 use rustc_hir::def::DefKind;
 use rustc_middle::mir::{BinOp, BorrowKind, UnOp};
 use rustc_middle::thir;
 use rustc_middle::thir::{AdtExpr, LogicalOp};
 use rustc_middle::ty::TyKind;
+use std::rc::Rc;
 
 impl ExprKind {
-    pub(crate) fn alloc(self) -> Self {
+    pub(crate) fn alloc(self, ty: Option<Rc<CoqType>>) -> Self {
         ExprKind::Call {
             func: Box::new(Expr {
                 kind: ExprKind::LocalVar("M.alloc".to_string()),
                 ty: None,
             }),
-            args: vec![Expr {
-                kind: self,
-                ty: None,
-            }],
+            args: vec![Expr { kind: self, ty }],
         }
     }
 }
@@ -58,38 +57,38 @@ pub(crate) fn compile_expr<'a>(
 }
 
 impl Expr {
-    /// Return the borrowed expression if the expression is a borrow.
-    fn match_borrow(&self) -> Option<Self> {
-        match &self.kind {
-            ExprKind::Call { func, args } => {
-                if args.len() != 1 {
-                    return None;
-                }
-                let arg = args.get(0).unwrap();
-
-                if let ExprKind::LocalVar(func) = &func.kind {
-                    if func == "borrow" || func == "borrow_mut" {
-                        return Some(arg.clone());
-                    }
-                }
-
-                None
-            }
-            _ => None,
-        }
-    }
-
-    fn read(self) -> Self {
-        // If we read an allocated expression, we just return the expression.
+    fn match_simple_call(&self, name_in: &[&str]) -> Option<Self> {
         if let ExprKind::Call { func, args } = &self.kind {
             if let ExprKind::LocalVar(func) = &func.kind {
-                if func == "M.alloc" && args.len() == 1 {
-                    return args.get(0).unwrap().clone();
+                if name_in.contains(&func.as_str()) && args.len() == 1 {
+                    return Some(args.get(0).unwrap().clone());
                 }
             }
+        }
+
+        None
+    }
+
+    /// Return the borrowed expression if the expression is a borrow.
+    fn match_borrow(&self) -> Option<Self> {
+        self.match_simple_call(&["borrow", "borrow_mut"])
+    }
+
+    fn match_deref(&self) -> Option<Self> {
+        self.match_simple_call(&["deref"])
+    }
+
+    pub(crate) fn read(self) -> Self {
+        // If we read an allocated expression, we just return the expression.
+        if let Some(expr) = self.match_simple_call(&["M.alloc"]) {
+            return expr;
         }
 
         Expr {
+            ty: match self.ty.clone() {
+                None => None,
+                Some(ty) => ty.unval(),
+            },
             kind: ExprKind::Call {
                 func: Box::new(Expr {
                     kind: ExprKind::LocalVar("M.read".to_string()),
@@ -97,8 +96,51 @@ impl Expr {
                 }),
                 args: vec![self],
             },
-            ty: None,
         }
+    }
+
+    fn copy(self) -> Self {
+        if self.match_simple_call(&["M.alloc"]).is_some() {
+            return self;
+        }
+
+        Expr {
+            ty: self.ty.clone(),
+            kind: ExprKind::Call {
+                func: Box::new(Expr {
+                    kind: ExprKind::LocalVar("M.copy".to_string()),
+                    ty: None,
+                }),
+                args: vec![self],
+            },
+        }
+    }
+}
+
+fn compile_borrow(borrow_kind: &BorrowKind, arg: Expr) -> ExprKind {
+    let func = match borrow_kind {
+        BorrowKind::Shared | BorrowKind::Shallow => "borrow".to_string(),
+        BorrowKind::Unique | BorrowKind::Mut { .. } => "borrow_mut".to_string(),
+    };
+
+    if let Some(derefed) = arg.match_deref() {
+        if let Some(ty) = derefed.ty {
+            if let Some((ref_name, _, _)) = ty.match_ref() {
+                if (func == "borrow" && ref_name == "ref")
+                    || (func == "borrow_mut" && ref_name == "mut_ref")
+                {
+                    return derefed.kind;
+                }
+            }
+        }
+    }
+
+    ExprKind::Call {
+        func: Box::new(Expr {
+            kind: ExprKind::LocalVar(func),
+            ty: None,
+        }),
+        args: vec![arg],
     }
 }
 
@@ -108,6 +150,8 @@ fn compile_expr_kind<'a>(
     expr_id: &rustc_middle::thir::ExprId,
 ) -> ExprKind {
     let expr = thir.exprs.get(*expr_id).unwrap();
+    let ty = compile_type(env, &expr.ty);
+
     match &expr.kind {
         thir::ExprKind::Scope { value, .. } => compile_expr_kind(env, thir, value),
         thir::ExprKind::Box { value } => {
@@ -144,12 +188,12 @@ fn compile_expr_kind<'a>(
             let func = Box::new(compile_expr(env, thir, fun));
             let args = args
                 .iter()
-                .map(|arg| compile_expr(env, thir, arg))
+                .map(|arg| compile_expr(env, thir, arg).read())
                 .collect();
-            ExprKind::Call { func, args }
+            ExprKind::Call { func, args }.alloc(Some(ty))
         }
         thir::ExprKind::Deref { arg } => {
-            let arg = compile_expr(env, thir, arg);
+            let arg = compile_expr(env, thir, arg).read();
 
             if let Some(borrowed) = Expr::match_borrow(&arg) {
                 return borrowed.kind;
@@ -253,12 +297,7 @@ fn compile_expr_kind<'a>(
             }
         }
         thir::ExprKind::Loop { body, .. } => {
-            let body = compile_expr(env, thir, body);
-            let ty = body.ty.clone();
-            let body = Box::new(Stmt {
-                kind: StmtKind::Expr(Box::new(body)),
-                ty,
-            });
+            let body = Box::new(compile_expr(env, thir, body));
             ExprKind::Loop { body }
         }
         thir::ExprKind::Let { expr, pat } => {
@@ -282,47 +321,38 @@ fn compile_expr_kind<'a>(
                 .map(|arm_id| {
                     let arm = thir.arms.get(*arm_id).unwrap();
                     let pat = crate::thir_pattern::compile_pattern(env, &arm.pattern);
-                    let body = compile_expr(env, thir, &arm.body);
-                    let body = Box::new(Stmt {
-                        ty: body.ty.clone(),
-                        kind: StmtKind::Expr(Box::new(body)),
-                    });
+                    let body = Box::new(compile_expr(env, thir, &arm.body));
                     let bindings = pat.get_bindings();
                     // Allocate all the bindings to [M.Val]
                     let body = bindings.iter().fold(body, |body, binding| {
-                        Box::new(Stmt {
+                        Box::new(Expr {
                             ty: body.ty.clone(),
-                            kind: StmtKind::Let {
+                            kind: ExprKind::Let {
                                 is_monadic: false,
                                 pattern: Box::new(Pattern::Variable(binding.clone())),
                                 init: Box::new(Expr {
-                                    kind: ExprKind::LocalVar(binding.clone()).alloc(),
+                                    kind: ExprKind::LocalVar(binding.clone()).alloc(None),
                                     ty: None,
                                 }),
                                 body,
                             },
                         })
                     });
-                    MatchArm {
-                        pat,
-                        body: Expr {
-                            ty: body.ty.clone(),
-                            kind: ExprKind::Block(body),
-                        },
-                    }
+                    MatchArm { pat, body: *body }
                 })
                 .collect();
             ExprKind::Match { scrutinee, arms }
         }
-        thir::ExprKind::Block { block: block_id } => {
-            ExprKind::Block(Box::new(compile_block(env, thir, block_id)))
-        }
+        thir::ExprKind::Block { block: block_id } => compile_block(env, thir, block_id).kind,
         thir::ExprKind::Assign { lhs, rhs } => {
             let func = Box::new(Expr {
                 kind: ExprKind::LocalVar("assign".to_string()),
                 ty: None,
             });
-            let args = vec![compile_expr(env, thir, lhs), compile_expr(env, thir, rhs)];
+            let args = vec![
+                compile_expr(env, thir, lhs),
+                compile_expr(env, thir, rhs).read(),
+            ];
             ExprKind::Call { func, args }
         }
         thir::ExprKind::AssignOp { op, lhs, rhs } => ExprKind::Call {
@@ -369,18 +399,9 @@ fn compile_expr_kind<'a>(
             ExprKind::LocalVar(name)
         }
         thir::ExprKind::Borrow { borrow_kind, arg } => {
-            let func = match borrow_kind {
-                BorrowKind::Shared | BorrowKind::Shallow => "borrow".to_string(),
-                BorrowKind::Unique | BorrowKind::Mut { .. } => "borrow_mut".to_string(),
-            };
             let arg = compile_expr(env, thir, arg);
-            ExprKind::Call {
-                func: Box::new(Expr {
-                    kind: ExprKind::LocalVar(func),
-                    ty: None,
-                }),
-                args: vec![arg],
-            }
+
+            compile_borrow(borrow_kind, arg).alloc(Some(ty))
         }
         thir::ExprKind::AddressOf { mutability, arg } => {
             let func = match mutability {
@@ -399,15 +420,11 @@ fn compile_expr_kind<'a>(
         thir::ExprKind::Break { .. } => ExprKind::ControlFlow(LoopControlFlow::Break),
         thir::ExprKind::Continue { .. } => ExprKind::ControlFlow(LoopControlFlow::Continue),
         thir::ExprKind::Return { value } => {
-            let func = Box::new(Expr {
-                kind: ExprKind::LocalVar("M.return_".to_string()),
-                ty: None,
-            });
-            let args = match value {
-                Some(value) => vec![compile_expr(env, thir, value)],
-                None => vec![Expr::tt()],
+            let value = match value {
+                Some(value) => compile_expr(env, thir, value).read(),
+                None => Expr::tt(),
             };
-            ExprKind::Call { func, args }
+            ExprKind::Return(Box::new(value))
         }
         thir::ExprKind::ConstBlock { did, .. } => ExprKind::Var(compile_def_id(env, *did)),
         thir::ExprKind::Repeat { value, count } => {
@@ -430,7 +447,7 @@ fn compile_expr_kind<'a>(
                 .map(|field| compile_expr(env, thir, field))
                 .collect(),
         }
-        .alloc(),
+        .alloc(Some(ty)),
         thir::ExprKind::Tuple { fields } => {
             let elements: Vec<_> = fields
                 .iter()
@@ -439,7 +456,7 @@ fn compile_expr_kind<'a>(
             if elements.is_empty() {
                 ExprKind::tt()
             } else {
-                ExprKind::Tuple { elements }.alloc()
+                ExprKind::Tuple { elements }.alloc(Some(ty))
             }
         }
         thir::ExprKind::Adt(adt_expr) => {
@@ -475,7 +492,7 @@ fn compile_expr_kind<'a>(
                     fields,
                     struct_or_variant,
                 }
-                .alloc()
+                .alloc(Some(ty))
             } else {
                 ExprKind::StructStruct {
                     path,
@@ -483,7 +500,7 @@ fn compile_expr_kind<'a>(
                     base: None,
                     struct_or_variant,
                 }
-                .alloc()
+                .alloc(Some(ty))
             }
         }
         thir::ExprKind::PlaceTypeAscription { source, .. }
@@ -573,17 +590,12 @@ fn compile_stmts<'a>(
     thir: &rustc_middle::thir::Thir<'a>,
     stmt_ids: &[rustc_middle::thir::StmtId],
     expr_id: Option<rustc_middle::thir::ExprId>,
-) -> Stmt {
+) -> Expr {
     stmt_ids.iter().rev().fold(
         {
-            let init = match &expr_id {
+            match &expr_id {
                 Some(expr_id) => compile_expr(env, thir, expr_id),
                 None => Expr::tt(),
-            };
-            let ty = init.ty.clone();
-            Stmt {
-                kind: StmtKind::Expr(Box::new(init)),
-                ty,
             }
         },
         |body, stmt_id| {
@@ -597,12 +609,12 @@ fn compile_stmts<'a>(
                 } => {
                     let pattern = Box::new(crate::thir_pattern::compile_pattern(env, pattern));
                     let init = match initializer {
-                        Some(initializer) => Box::new(compile_expr(env, thir, initializer)),
+                        Some(initializer) => Box::new(compile_expr(env, thir, initializer).copy()),
                         None => Box::new(Expr::tt()),
                     };
                     let ty = body.ty.clone();
-                    Stmt {
-                        kind: StmtKind::Let {
+                    Expr {
+                        kind: ExprKind::Let {
                             is_monadic: false,
                             pattern,
                             init,
@@ -614,8 +626,8 @@ fn compile_stmts<'a>(
                 thir::StmtKind::Expr { expr: expr_id, .. } => {
                     let init = Box::new(compile_expr(env, thir, expr_id));
                     let ty = body.ty.clone();
-                    Stmt {
-                        kind: StmtKind::Let {
+                    Expr {
+                        kind: ExprKind::Let {
                             is_monadic: false,
                             pattern: Box::new(Pattern::Wild),
                             init,
@@ -633,7 +645,7 @@ fn compile_block<'a>(
     env: &mut Env<'a>,
     thir: &rustc_middle::thir::Thir<'a>,
     block_id: &rustc_middle::thir::BlockId,
-) -> Stmt {
+) -> Expr {
     let block = thir.blocks.get(*block_id).unwrap();
     compile_stmts(env, thir, &block.stmts, block.expr)
 }

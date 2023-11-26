@@ -7,6 +7,38 @@ type Closure(
     ],
 ) not yet handled
 type Closure(
+    DefId(0:5 ~ functions_closures_example_searching_through_iterators_Iterator_position[7909]::main::{closure#1}),
+    [
+        i16,
+        extern "rust-call" fn((i32,)) -> bool,
+        (),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:5 ~ functions_closures_example_searching_through_iterators_Iterator_position[7909]::main::{closure#1}),
+    [
+        i16,
+        extern "rust-call" fn((i32,)) -> bool,
+        (),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:4 ~ functions_closures_example_searching_through_iterators_Iterator_position[7909]::main::{closure#0}),
+    [
+        i16,
+        extern "rust-call" fn((&i32,)) -> bool,
+        (),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:4 ~ functions_closures_example_searching_through_iterators_Iterator_position[7909]::main::{closure#0}),
+    [
+        i16,
+        extern "rust-call" fn((&i32,)) -> bool,
+        (),
+    ],
+) not yet handled
+type Closure(
     DefId(0:4 ~ functions_closures_example_searching_through_iterators_Iterator_position[7909]::main::{closure#0}),
     [
         i16,

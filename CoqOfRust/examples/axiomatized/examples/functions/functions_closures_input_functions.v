@@ -8,14 +8,14 @@ fn call_me<F: Fn()>(f: F) {
 *)
 Parameter call_me :
     forall {F : Set} {ℋ_0 : core.ops.function.Fn.Trait F (Args := unit)},
-    (M.Val F) -> M (M.Val unit).
+    F -> M unit.
 
 (*
 fn function() {
     println!("I'm a function!");
 }
 *)
-Parameter function : M (M.Val unit).
+Parameter function : M unit.
 
 (*
 fn main() {
@@ -27,4 +27,4 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : M (M.Val unit).
+Parameter main : M unit.

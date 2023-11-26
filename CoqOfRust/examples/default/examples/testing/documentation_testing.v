@@ -6,8 +6,12 @@ pub fn add(a: i32, b: i32) -> i32 {
     a + b
 }
 *)
-Definition add (a : M.Val i32.t) (b : M.Val i32.t) : M (M.Val i32.t) :=
-  M.function_body (BinOp.add a b).
+Definition add (a : i32.t) (b : i32.t) : M i32.t :=
+  let* a : M.Val i32.t := M.alloc a in
+  let* b : M.Val i32.t := M.alloc b in
+  M.function_body
+    (let* α0 : M.Val i32.t := BinOp.add a b in
+    M.read α0).
 
 (*
 pub fn div(a: i32, b: i32) -> i32 {
@@ -18,20 +22,24 @@ pub fn div(a: i32, b: i32) -> i32 {
     a / b
 }
 *)
-Definition div (a : M.Val i32.t) (b : M.Val i32.t) : M (M.Val i32.t) :=
+Definition div (a : i32.t) (b : i32.t) : M i32.t :=
+  let* a : M.Val i32.t := M.alloc a in
+  let* b : M.Val i32.t := M.alloc b in
   M.function_body
-    (let* _ : ltac:(refine (M.Val unit)) :=
-      let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 0 in
-      let* α1 : ltac:(refine (M.Val bool.t)) := BinOp.eq b α0 in
-      let* α2 : ltac:(refine (M.Val bool.t)) := use α1 in
-      let* α3 := M.read α2 in
+    (let* _ : M.Val unit :=
+      let* α0 : M.Val i32.t := M.alloc 0 in
+      let* α1 : M.Val bool.t := BinOp.eq b α0 in
+      let* α2 : M.Val bool.t := use α1 in
+      let* α3 : bool.t := M.read α2 in
       if (α3 : bool) then
-        let* _ : ltac:(refine (M.Val unit)) :=
-          let* α0 : ltac:(refine (M.Val never.t)) :=
-            std.panicking.begin_panic (mk_str "Divide-by-zero error") in
-          never_to_any α0 in
-        let* α0 : ltac:(refine (M.Val unit)) := M.alloc tt in
+        let* _ : M.Val unit :=
+          let* α0 : ref str.t := M.read (mk_str "Divide-by-zero error") in
+          let* α1 : never.t := std.panicking.begin_panic α0 in
+          let* α2 : M.Val never.t := M.alloc α1 in
+          never_to_any α2 in
+        let* α0 : M.Val unit := M.alloc tt in
         never_to_any α0
       else
         M.alloc tt in
-    BinOp.div a b).
+    let* α0 : M.Val i32.t := BinOp.div a b in
+    M.read α0).

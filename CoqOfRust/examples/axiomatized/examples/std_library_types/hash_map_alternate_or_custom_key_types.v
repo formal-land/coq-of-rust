@@ -42,9 +42,9 @@ Section Impl_core_cmp_PartialEq_for_hash_map_alternate_or_custom_key_types_Accou
   PartialEq
   *)
   Parameter eq :
-      (M.Val (ref ltac:(Self))) ->
-        (M.Val (ref hash_map_alternate_or_custom_key_types.Account.t)) ->
-        M (M.Val bool.t).
+      (ref ltac:(Self)) ->
+        (ref hash_map_alternate_or_custom_key_types.Account.t) ->
+        M bool.t.
   
   Global Instance AssociatedFunction_eq :
     Notations.DoubleColon ltac:(Self) "eq" := {
@@ -76,8 +76,7 @@ Section Impl_core_cmp_Eq_for_hash_map_alternate_or_custom_key_types_Account_t.
   (*
   Eq
   *)
-  Parameter assert_receiver_is_total_eq :
-      (M.Val (ref ltac:(Self))) -> M (M.Val unit).
+  Parameter assert_receiver_is_total_eq : (ref ltac:(Self)) -> M unit.
   
   Global Instance AssociatedFunction_assert_receiver_is_total_eq :
     Notations.DoubleColon ltac:(Self) "assert_receiver_is_total_eq" := {
@@ -100,7 +99,7 @@ Section Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account_t
   *)
   Parameter hash :
       forall {__H : Set} {ℋ_0 : core.hash.Hasher.Trait __H},
-      (M.Val (ref ltac:(Self))) -> (M.Val (mut_ref __H)) -> M (M.Val unit).
+      (ref ltac:(Self)) -> (mut_ref __H) -> M unit.
   
   Global Instance AssociatedFunction_hash
       {__H : Set}
@@ -166,10 +165,10 @@ fn try_logon<'a>(accounts: &Accounts<'a>, username: &'a str, password: &'a str) 
 }
 *)
 Parameter try_logon :
-    (M.Val (ref ltac:(hash_map_alternate_or_custom_key_types.Accounts))) ->
-      (M.Val (ref str.t)) ->
-      (M.Val (ref str.t)) ->
-      M (M.Val unit).
+    (ref ltac:(hash_map_alternate_or_custom_key_types.Accounts)) ->
+      (ref str.t) ->
+      (ref str.t) ->
+      M unit.
 
 (*
 fn main() {
@@ -193,4 +192,4 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : M (M.Val unit).
+Parameter main : M unit.

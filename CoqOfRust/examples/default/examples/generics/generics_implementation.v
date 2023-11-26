@@ -43,11 +43,12 @@ Section Impl_generics_implementation_Val_t.
           &self.val
       }
   *)
-  Definition value (self : M.Val (ref ltac:(Self))) : M (M.Val (ref f64.t)) :=
+  Definition value (self : ref ltac:(Self)) : M (ref f64.t) :=
+    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
     M.function_body
-      (let* α0 : ltac:(refine (M.Val generics_implementation.Val.t)) :=
-        deref self in
-      borrow α0.["val"]).
+      (let* α0 : ref generics_implementation.Val.t := M.read self in
+      let* α1 : M.Val generics_implementation.Val.t := deref α0 in
+      borrow α1.["val"]).
   
   Global Instance AssociatedFunction_value :
     Notations.DoubleColon ltac:(Self) "value" := {
@@ -67,11 +68,12 @@ Section Impl_generics_implementation_GenVal_t_T.
           &self.gen_val
       }
   *)
-  Definition value (self : M.Val (ref ltac:(Self))) : M (M.Val (ref T)) :=
+  Definition value (self : ref ltac:(Self)) : M (ref T) :=
+    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
     M.function_body
-      (let* α0 : ltac:(refine (M.Val (generics_implementation.GenVal.t T))) :=
-        deref self in
-      borrow α0.["gen_val"]).
+      (let* α0 : ref (generics_implementation.GenVal.t T) := M.read self in
+      let* α1 : M.Val (generics_implementation.GenVal.t T) := deref α0 in
+      borrow α1.["gen_val"]).
   
   Global Instance AssociatedFunction_value :
     Notations.DoubleColon ltac:(Self) "value" := {
@@ -89,49 +91,52 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M (M.Val unit) :=
+Definition main : M unit :=
   M.function_body
-    (let* x : ltac:(refine (M.Val generics_implementation.Val.t)) :=
-      let* α0 : ltac:(refine (M.Val f64.t)) := M.alloc 3 (* 3.0 *) in
-      let* α1 := M.read α0 in
+    (let* x : M.Val generics_implementation.Val.t :=
+      let* α0 : M.Val f64.t := M.alloc 3 (* 3.0 *) in
+      let* α1 : f64.t := M.read α0 in
       M.alloc {| generics_implementation.Val.val := α1; |} in
-    let* y : ltac:(refine (M.Val (generics_implementation.GenVal.t i32.t))) :=
-      let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 3 in
-      let* α1 := M.read α0 in
+    let* y : M.Val (generics_implementation.GenVal.t i32.t) :=
+      let* α0 : M.Val i32.t := M.alloc 3 in
+      let* α1 : i32.t := M.read α0 in
       M.alloc {| generics_implementation.GenVal.gen_val := α1; |} in
-    let* _ : ltac:(refine (M.Val unit)) :=
-      let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
+    let* _ : M.Val unit :=
+      let* _ : M.Val unit :=
+        let* α0 : M.Val (array (ref str.t)) :=
           M.alloc [ mk_str ""; mk_str ", "; mk_str "
 " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
-          borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
-          pointer_coercion "Unsize" α1 in
-        let* α3 : ltac:(refine (M.Val (ref generics_implementation.Val.t))) :=
-          borrow x in
-        let* α4 : ltac:(refine (M.Val (ref f64.t))) :=
-          generics_implementation.Val.t::["value"] α3 in
-        let* α5 : ltac:(refine (M.Val (ref (ref f64.t)))) := borrow α4 in
-        let* α6 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
-          core.fmt.rt.Argument.t::["new_display"] α5 in
-        let* α7 :
-            ltac:(refine
-              (M.Val (ref (generics_implementation.GenVal.t i32.t)))) :=
-          borrow y in
-        let* α8 : ltac:(refine (M.Val (ref i32.t))) :=
-          (generics_implementation.GenVal.t i32.t)::["value"] α7 in
-        let* α9 : ltac:(refine (M.Val (ref (ref i32.t)))) := borrow α8 in
-        let* α10 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
-          core.fmt.rt.Argument.t::["new_display"] α9 in
-        let* α11 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
-          M.alloc [ α6; α10 ] in
-        let* α12 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
-          borrow α11 in
-        let* α13 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
-          pointer_coercion "Unsize" α12 in
-        let* α14 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-          core.fmt.Arguments.t::["new_v1"] α2 α13 in
-        std.io.stdio._print α14 in
+        let* α1 : ref (array (ref str.t)) := borrow α0 in
+        let* α2 : M.Val (ref (array (ref str.t))) := M.alloc α1 in
+        let* α3 : M.Val (ref (slice (ref str.t))) :=
+          pointer_coercion "Unsize" α2 in
+        let* α4 : ref (slice (ref str.t)) := M.read α3 in
+        let* α5 : ref generics_implementation.Val.t := borrow x in
+        let* α6 : ref f64.t := generics_implementation.Val.t::["value"] α5 in
+        let* α7 : M.Val (ref f64.t) := M.alloc α6 in
+        let* α8 : ref (ref f64.t) := borrow α7 in
+        let* α9 : core.fmt.rt.Argument.t :=
+          core.fmt.rt.Argument.t::["new_display"] α8 in
+        let* α10 : M.Val core.fmt.rt.Argument.t := M.alloc α9 in
+        let* α11 : ref (generics_implementation.GenVal.t i32.t) := borrow y in
+        let* α12 : ref i32.t :=
+          (generics_implementation.GenVal.t i32.t)::["value"] α11 in
+        let* α13 : M.Val (ref i32.t) := M.alloc α12 in
+        let* α14 : ref (ref i32.t) := borrow α13 in
+        let* α15 : core.fmt.rt.Argument.t :=
+          core.fmt.rt.Argument.t::["new_display"] α14 in
+        let* α16 : M.Val core.fmt.rt.Argument.t := M.alloc α15 in
+        let* α17 : M.Val (array core.fmt.rt.Argument.t) :=
+          M.alloc [ α10; α16 ] in
+        let* α18 : ref (array core.fmt.rt.Argument.t) := borrow α17 in
+        let* α19 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α18 in
+        let* α20 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
+          pointer_coercion "Unsize" α19 in
+        let* α21 : ref (slice core.fmt.rt.Argument.t) := M.read α20 in
+        let* α22 : core.fmt.Arguments.t :=
+          core.fmt.Arguments.t::["new_v1"] α4 α21 in
+        let* α23 : unit := std.io.stdio._print α22 in
+        M.alloc α23 in
       M.alloc tt in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).

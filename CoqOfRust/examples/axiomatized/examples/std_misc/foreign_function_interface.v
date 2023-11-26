@@ -9,8 +9,8 @@ fn cos(z: Complex) -> Complex {
 }
 *)
 Parameter cos :
-    (M.Val foreign_function_interface.Complex.t) ->
-      M (M.Val foreign_function_interface.Complex.t).
+    foreign_function_interface.Complex.t ->
+      M foreign_function_interface.Complex.t.
 
 (*
 fn main() {
@@ -27,7 +27,7 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : M (M.Val unit).
+Parameter main : M unit.
 
 Module  Complex.
 Section Complex.
@@ -58,9 +58,7 @@ Section Impl_core_clone_Clone_for_foreign_function_interface_Complex_t.
   (*
   Clone
   *)
-  Parameter clone :
-      (M.Val (ref ltac:(Self))) ->
-        M (M.Val foreign_function_interface.Complex.t).
+  Parameter clone : (ref ltac:(Self)) -> M foreign_function_interface.Complex.t.
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon ltac:(Self) "clone" := {
@@ -97,9 +95,9 @@ Section Impl_core_fmt_Debug_for_foreign_function_interface_Complex_t.
       }
   *)
   Parameter fmt :
-      (M.Val (ref ltac:(Self))) ->
-        (M.Val (mut_ref core.fmt.Formatter.t)) ->
-        M (M.Val ltac:(core.fmt.Result)).
+      (ref ltac:(Self)) ->
+        (mut_ref core.fmt.Formatter.t) ->
+        M ltac:(core.fmt.Result).
   
   Global Instance AssociatedFunction_fmt :
     Notations.DoubleColon ltac:(Self) "fmt" := {

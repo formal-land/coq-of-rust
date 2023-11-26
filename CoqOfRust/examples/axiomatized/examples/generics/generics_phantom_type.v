@@ -45,9 +45,9 @@ Section Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_t_A_B.
   PartialEq
   *)
   Parameter eq :
-      (M.Val (ref ltac:(Self))) ->
-        (M.Val (ref (generics_phantom_type.PhantomTuple.t A B))) ->
-        M (M.Val bool.t).
+      (ref ltac:(Self)) ->
+        (ref (generics_phantom_type.PhantomTuple.t A B)) ->
+        M bool.t.
   
   Global Instance AssociatedFunction_eq :
     Notations.DoubleColon ltac:(Self) "eq" := {
@@ -115,9 +115,9 @@ Section Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_t_A_B.
   PartialEq
   *)
   Parameter eq :
-      (M.Val (ref ltac:(Self))) ->
-        (M.Val (ref (generics_phantom_type.PhantomStruct.t A B))) ->
-        M (M.Val bool.t).
+      (ref ltac:(Self)) ->
+        (ref (generics_phantom_type.PhantomStruct.t A B)) ->
+        M bool.t.
   
   Global Instance AssociatedFunction_eq :
     Notations.DoubleColon ltac:(Self) "eq" := {
@@ -162,4 +162,4 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : M (M.Val unit).
+Parameter main : M unit.

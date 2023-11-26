@@ -7,7 +7,7 @@ fn analyze_slice(slice: &[i32]) {
     println!("the slice has {} elements", slice.len());
 }
 *)
-Parameter analyze_slice : (M.Val (ref (slice i32.t))) -> M (M.Val unit).
+Parameter analyze_slice : (ref (slice i32.t)) -> M unit.
 
 (*
 fn main() {
@@ -59,4 +59,4 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : M (M.Val unit).
+Parameter main : M unit.

@@ -9,7 +9,7 @@ fn create_box() {
     // `_box1` is destroyed here, and memory gets freed
 }
 *)
-Parameter create_box : M (M.Val unit).
+Parameter create_box : M unit.
 
 (*
 fn main() {
@@ -34,4 +34,4 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : M (M.Val unit).
+Parameter main : M unit.

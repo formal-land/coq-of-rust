@@ -9,18 +9,20 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M (M.Val unit) := M.function_body (M.alloc tt).
+Definition main : M unit := M.function_body (M.pure tt).
 
 (*
     fn foo() -> ! {
         panic!("This call never returns.");
     }
 *)
-Definition foo : M (M.Val never.t) :=
+Definition foo : M never.t :=
   M.function_body
-    (let* _ : ltac:(refine (M.Val unit)) :=
-      let* α0 : ltac:(refine (M.Val never.t)) :=
-        std.panicking.begin_panic (mk_str "This call never returns.") in
-      never_to_any α0 in
-    let* α0 : ltac:(refine (M.Val unit)) := M.alloc tt in
-    never_to_any α0).
+    (let* _ : M.Val unit :=
+      let* α0 : ref str.t := M.read (mk_str "This call never returns.") in
+      let* α1 : never.t := std.panicking.begin_panic α0 in
+      let* α2 : M.Val never.t := M.alloc α1 in
+      never_to_any α2 in
+    let* α0 : M.Val unit := M.alloc tt in
+    let* α1 : M.Val never.t := never_to_any α0 in
+    M.read α1).

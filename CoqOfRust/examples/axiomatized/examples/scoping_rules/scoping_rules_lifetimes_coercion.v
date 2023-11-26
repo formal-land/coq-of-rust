@@ -6,16 +6,14 @@ fn multiply<'a>(first: &'a i32, second: &'a i32) -> i32 {
     first * second
 }
 *)
-Parameter multiply :
-    (M.Val (ref i32.t)) -> (M.Val (ref i32.t)) -> M (M.Val i32.t).
+Parameter multiply : (ref i32.t) -> (ref i32.t) -> M i32.t.
 
 (*
 fn choose_first<'a: 'b, 'b>(first: &'a i32, _: &'b i32) -> &'b i32 {
     first
 }
 *)
-Parameter choose_first :
-    (M.Val (ref i32.t)) -> (M.Val (ref i32.t)) -> M (M.Val (ref i32.t)).
+Parameter choose_first : (ref i32.t) -> (ref i32.t) -> M (ref i32.t).
 
 (*
 fn main() {
@@ -30,4 +28,4 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : M (M.Val unit).
+Parameter main : M unit.

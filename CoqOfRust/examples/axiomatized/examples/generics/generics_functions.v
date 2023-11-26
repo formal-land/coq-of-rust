@@ -36,27 +36,23 @@ End SGen.
 (*
 fn reg_fn(_s: S) {}
 *)
-Parameter reg_fn : (M.Val generics_functions.S.t) -> M (M.Val unit).
+Parameter reg_fn : generics_functions.S.t -> M unit.
 
 (*
 fn gen_spec_t(_s: SGen<A>) {}
 *)
 Parameter gen_spec_t :
-    (M.Val (generics_functions.SGen.t generics_functions.A.t)) ->
-      M (M.Val unit).
+    (generics_functions.SGen.t generics_functions.A.t) -> M unit.
 
 (*
 fn gen_spec_i32(_s: SGen<i32>) {}
 *)
-Parameter gen_spec_i32 :
-    (M.Val (generics_functions.SGen.t i32.t)) -> M (M.Val unit).
+Parameter gen_spec_i32 : (generics_functions.SGen.t i32.t) -> M unit.
 
 (*
 fn generic<T>(_s: SGen<T>) {}
 *)
-Parameter generic :
-    forall {T : Set},
-    (M.Val (generics_functions.SGen.t T)) -> M (M.Val unit).
+Parameter generic : forall {T : Set}, (generics_functions.SGen.t T) -> M unit.
 
 (*
 fn main() {
@@ -73,4 +69,4 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : M (M.Val unit).
+Parameter main : M unit.

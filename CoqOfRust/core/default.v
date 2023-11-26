@@ -14,7 +14,7 @@ pub trait Default: Sized {
 *)
 Module Default.
   Class Trait (Self : Set) : Set := {
-    default : M (M.Val Self);
+    default : M Self;
   }.
 End Default.
 
@@ -74,7 +74,7 @@ Module Default_instances.
   Admitted.
 
   Global Instance I_usize : Default.Trait usize.t := {
-    default := M.alloc 0;
+    default := M.pure 0;
   }.
 
   Global Instance I_ref_slice {T : Set} : Default.Trait (ref (slice T)).

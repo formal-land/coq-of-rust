@@ -16,7 +16,7 @@ fn call(number: &str) -> &str {
     }
 }
 *)
-Parameter call : (M.Val (ref str.t)) -> M (M.Val (ref str.t)).
+Parameter call : (ref str.t) -> M (ref str.t).
 
 (*
 fn main() {
@@ -52,4 +52,4 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : M (M.Val unit).
+Parameter main : M unit.

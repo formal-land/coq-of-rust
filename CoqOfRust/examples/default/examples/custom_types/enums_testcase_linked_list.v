@@ -24,8 +24,8 @@ Section Impl_enums_testcase_linked_list_List_t.
           Nil
       }
   *)
-  Definition new : M (M.Val enums_testcase_linked_list.List.t) :=
-    M.function_body (M.alloc enums_testcase_linked_list.List.Nil).
+  Definition new : M enums_testcase_linked_list.List.t :=
+    M.function_body (M.pure enums_testcase_linked_list.List.Nil).
   
   Global Instance AssociatedFunction_new :
     Notations.DoubleColon ltac:(Self) "new" := {
@@ -39,23 +39,23 @@ Section Impl_enums_testcase_linked_list_List_t.
       }
   *)
   Definition prepend
-      (self : M.Val ltac:(Self))
-      (elem : M.Val u32.t)
-      : M (M.Val enums_testcase_linked_list.List.t) :=
+      (self : ltac:(Self))
+      (elem : u32.t)
+      : M enums_testcase_linked_list.List.t :=
+    let* self : M.Val ltac:(Self) := M.alloc self in
+    let* elem : M.Val u32.t := M.alloc elem in
     M.function_body
-      (let* α0 := M.read elem in
-      let* α1 :
-          ltac:(refine
-            (M.Val
-              (alloc.boxed.Box.t
-                enums_testcase_linked_list.List.t
-                alloc.alloc.Global.t))) :=
+      (let* α0 : u32.t := M.read elem in
+      let* α1 : enums_testcase_linked_list.List.t := M.read self in
+      let* α2 :
+          alloc.boxed.Box.t
+            enums_testcase_linked_list.List.t
+            alloc.alloc.Global.t :=
         (alloc.boxed.Box.t
               enums_testcase_linked_list.List.t
               alloc.alloc.Global.t)::["new"]
-          self in
-      let* α2 := M.read α1 in
-      M.alloc (enums_testcase_linked_list.List.Cons α0 α2)).
+          α1 in
+      M.pure (enums_testcase_linked_list.List.Cons α0 α2)).
   
   Global Instance AssociatedFunction_prepend :
     Notations.DoubleColon ltac:(Self) "prepend" := {
@@ -80,32 +80,42 @@ Section Impl_enums_testcase_linked_list_List_t.
           }
       }
   *)
-  Definition len (self : M.Val (ref ltac:(Self))) : M (M.Val u32.t) :=
+  Definition len (self : ref ltac:(Self)) : M u32.t :=
+    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
     M.function_body
-      (let* α0 : ltac:(refine (M.Val enums_testcase_linked_list.List.t)) :=
-        deref self in
-      let* α1 := M.read α0 in
-      match α1 with
-      | enums_testcase_linked_list.List.Cons _ tail =>
-        let* tail := M.alloc tail in
-        let* α0 : ltac:(refine (M.Val u32.t)) := M.alloc 1 in
-        let* α1 :
-            ltac:(refine
-              (M.Val
+      (let* α0 : ref enums_testcase_linked_list.List.t := M.read self in
+      let* α1 : M.Val enums_testcase_linked_list.List.t := deref α0 in
+      let* α2 := M.read α1 in
+      let* α3 : M.Val u32.t :=
+        match α2 with
+        | enums_testcase_linked_list.List.Cons _ tail =>
+          let* tail := M.alloc tail in
+          let* α0 : M.Val u32.t := M.alloc 1 in
+          let* α1 :
+              ref
                 (alloc.boxed.Box.t
                   enums_testcase_linked_list.List.t
-                  alloc.alloc.Global.t))) :=
-          deref tail in
-        let* α2 : ltac:(refine (M.Val enums_testcase_linked_list.List.t)) :=
-          deref α1 in
-        let* α3 :
-            ltac:(refine (M.Val (ref enums_testcase_linked_list.List.t))) :=
-          borrow α2 in
-        let* α4 : ltac:(refine (M.Val u32.t)) :=
-          enums_testcase_linked_list.List.t::["len"] α3 in
-        BinOp.add α0 α4
-      | enums_testcase_linked_list.List.Nil  => M.alloc 0
-      end).
+                  alloc.alloc.Global.t) :=
+            M.read tail in
+          let* α2 :
+              M.Val
+                (alloc.boxed.Box.t
+                  enums_testcase_linked_list.List.t
+                  alloc.alloc.Global.t) :=
+            deref α1 in
+          let* α3 :
+              alloc.boxed.Box.t
+                enums_testcase_linked_list.List.t
+                alloc.alloc.Global.t :=
+            M.read α2 in
+          let* α4 : M.Val enums_testcase_linked_list.List.t := deref α3 in
+          let* α5 : ref enums_testcase_linked_list.List.t := borrow α4 in
+          let* α6 : u32.t := enums_testcase_linked_list.List.t::["len"] α5 in
+          let* α7 : M.Val u32.t := M.alloc α6 in
+          BinOp.add α0 α7
+        | enums_testcase_linked_list.List.Nil  => M.alloc 0
+        end in
+      M.read α3).
   
   Global Instance AssociatedFunction_len :
     Notations.DoubleColon ltac:(Self) "len" := {
@@ -126,70 +136,83 @@ Section Impl_enums_testcase_linked_list_List_t.
           }
       }
   *)
-  Definition stringify
-      (self : M.Val (ref ltac:(Self)))
-      : M (M.Val alloc.string.String.t) :=
+  Definition stringify (self : ref ltac:(Self)) : M alloc.string.String.t :=
+    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
     M.function_body
-      (let* α0 : ltac:(refine (M.Val enums_testcase_linked_list.List.t)) :=
-        deref self in
-      let* α1 := M.read α0 in
-      match α1 with
-      | enums_testcase_linked_list.List.Cons head tail =>
-        let* tail := M.alloc tail in
-        let* head := M.alloc head in
-        let* res : ltac:(refine (M.Val alloc.string.String.t)) :=
-          let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
-            M.alloc [ mk_str ""; mk_str ", " ] in
-          let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
-            borrow α0 in
-          let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
-            pointer_coercion "Unsize" α1 in
-          let* α3 : ltac:(refine (M.Val (ref u32.t))) := borrow head in
-          let* α4 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
-            core.fmt.rt.Argument.t::["new_display"] α3 in
-          let* α5 :
-              ltac:(refine
-                (M.Val
+      (let* α0 : ref enums_testcase_linked_list.List.t := M.read self in
+      let* α1 : M.Val enums_testcase_linked_list.List.t := deref α0 in
+      let* α2 := M.read α1 in
+      let* α3 : M.Val alloc.string.String.t :=
+        match α2 with
+        | enums_testcase_linked_list.List.Cons head tail =>
+          let* tail := M.alloc tail in
+          let* head := M.alloc head in
+          let* res : M.Val alloc.string.String.t :=
+            let* α0 : M.Val (array (ref str.t)) :=
+              M.alloc [ mk_str ""; mk_str ", " ] in
+            let* α1 : ref (array (ref str.t)) := borrow α0 in
+            let* α2 : M.Val (ref (array (ref str.t))) := M.alloc α1 in
+            let* α3 : M.Val (ref (slice (ref str.t))) :=
+              pointer_coercion "Unsize" α2 in
+            let* α4 : ref (slice (ref str.t)) := M.read α3 in
+            let* α5 : ref u32.t := borrow head in
+            let* α6 : core.fmt.rt.Argument.t :=
+              core.fmt.rt.Argument.t::["new_display"] α5 in
+            let* α7 : M.Val core.fmt.rt.Argument.t := M.alloc α6 in
+            let* α8 :
+                ref
                   (alloc.boxed.Box.t
                     enums_testcase_linked_list.List.t
-                    alloc.alloc.Global.t))) :=
-            deref tail in
-          let* α6 : ltac:(refine (M.Val enums_testcase_linked_list.List.t)) :=
-            deref α5 in
-          let* α7 :
-              ltac:(refine (M.Val (ref enums_testcase_linked_list.List.t))) :=
-            borrow α6 in
-          let* α8 : ltac:(refine (M.Val alloc.string.String.t)) :=
-            enums_testcase_linked_list.List.t::["stringify"] α7 in
-          let* α9 : ltac:(refine (M.Val (ref alloc.string.String.t))) :=
-            borrow α8 in
-          let* α10 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
-            core.fmt.rt.Argument.t::["new_display"] α9 in
-          let* α11 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
-            M.alloc [ α4; α10 ] in
-          let* α12 :
-              ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
-            borrow α11 in
-          let* α13 :
-              ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
-            pointer_coercion "Unsize" α12 in
-          let* α14 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-            core.fmt.Arguments.t::["new_v1"] α2 α13 in
-          alloc.fmt.format α14 in
-        M.pure res
-      | enums_testcase_linked_list.List.Nil  =>
-        let* res : ltac:(refine (M.Val alloc.string.String.t)) :=
-          let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
-            M.alloc [ mk_str "Nil" ] in
-          let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
-            borrow α0 in
-          let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
-            pointer_coercion "Unsize" α1 in
-          let* α3 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-            core.fmt.Arguments.t::["new_const"] α2 in
-          alloc.fmt.format α3 in
-        M.pure res
-      end).
+                    alloc.alloc.Global.t) :=
+              M.read tail in
+            let* α9 :
+                M.Val
+                  (alloc.boxed.Box.t
+                    enums_testcase_linked_list.List.t
+                    alloc.alloc.Global.t) :=
+              deref α8 in
+            let* α10 :
+                alloc.boxed.Box.t
+                  enums_testcase_linked_list.List.t
+                  alloc.alloc.Global.t :=
+              M.read α9 in
+            let* α11 : M.Val enums_testcase_linked_list.List.t := deref α10 in
+            let* α12 : ref enums_testcase_linked_list.List.t := borrow α11 in
+            let* α13 : alloc.string.String.t :=
+              enums_testcase_linked_list.List.t::["stringify"] α12 in
+            let* α14 : M.Val alloc.string.String.t := M.alloc α13 in
+            let* α15 : ref alloc.string.String.t := borrow α14 in
+            let* α16 : core.fmt.rt.Argument.t :=
+              core.fmt.rt.Argument.t::["new_display"] α15 in
+            let* α17 : M.Val core.fmt.rt.Argument.t := M.alloc α16 in
+            let* α18 : M.Val (array core.fmt.rt.Argument.t) :=
+              M.alloc [ α7; α17 ] in
+            let* α19 : ref (array core.fmt.rt.Argument.t) := borrow α18 in
+            let* α20 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
+              M.alloc α19 in
+            let* α21 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
+              pointer_coercion "Unsize" α20 in
+            let* α22 : ref (slice core.fmt.rt.Argument.t) := M.read α21 in
+            let* α23 : core.fmt.Arguments.t :=
+              core.fmt.Arguments.t::["new_v1"] α4 α22 in
+            let* α24 : alloc.string.String.t := alloc.fmt.format α23 in
+            M.alloc α24 in
+          M.pure res
+        | enums_testcase_linked_list.List.Nil  =>
+          let* res : M.Val alloc.string.String.t :=
+            let* α0 : M.Val (array (ref str.t)) := M.alloc [ mk_str "Nil" ] in
+            let* α1 : ref (array (ref str.t)) := borrow α0 in
+            let* α2 : M.Val (ref (array (ref str.t))) := M.alloc α1 in
+            let* α3 : M.Val (ref (slice (ref str.t))) :=
+              pointer_coercion "Unsize" α2 in
+            let* α4 : ref (slice (ref str.t)) := M.read α3 in
+            let* α5 : core.fmt.Arguments.t :=
+              core.fmt.Arguments.t::["new_const"] α4 in
+            let* α6 : alloc.string.String.t := alloc.fmt.format α5 in
+            M.alloc α6 in
+          M.pure res
+        end in
+      M.read α3).
   
   Global Instance AssociatedFunction_stringify :
     Notations.DoubleColon ltac:(Self) "stringify" := {
@@ -214,78 +237,89 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M (M.Val unit) :=
+Definition main : M unit :=
   M.function_body
-    (let* list : ltac:(refine (M.Val enums_testcase_linked_list.List.t)) :=
-      enums_testcase_linked_list.List.t::["new"] in
-    let* _ : ltac:(refine (M.Val unit)) :=
-      let* α0 : ltac:(refine (M.Val u32.t)) := M.alloc 1 in
-      let* α1 : ltac:(refine (M.Val enums_testcase_linked_list.List.t)) :=
-        enums_testcase_linked_list.List.t::["prepend"] list α0 in
-      assign list α1 in
-    let* _ : ltac:(refine (M.Val unit)) :=
-      let* α0 : ltac:(refine (M.Val u32.t)) := M.alloc 2 in
-      let* α1 : ltac:(refine (M.Val enums_testcase_linked_list.List.t)) :=
-        enums_testcase_linked_list.List.t::["prepend"] list α0 in
-      assign list α1 in
-    let* _ : ltac:(refine (M.Val unit)) :=
-      let* α0 : ltac:(refine (M.Val u32.t)) := M.alloc 3 in
-      let* α1 : ltac:(refine (M.Val enums_testcase_linked_list.List.t)) :=
-        enums_testcase_linked_list.List.t::["prepend"] list α0 in
-      assign list α1 in
-    let* _ : ltac:(refine (M.Val unit)) :=
-      let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
+    (let* list : M.Val enums_testcase_linked_list.List.t :=
+      let* α0 : enums_testcase_linked_list.List.t :=
+        enums_testcase_linked_list.List.t::["new"] in
+      M.alloc α0 in
+    let* _ : M.Val unit :=
+      let* α0 : enums_testcase_linked_list.List.t := M.read list in
+      let* α1 : M.Val u32.t := M.alloc 1 in
+      let* α2 : u32.t := M.read α1 in
+      let* α3 : enums_testcase_linked_list.List.t :=
+        enums_testcase_linked_list.List.t::["prepend"] α0 α2 in
+      assign list α3 in
+    let* _ : M.Val unit :=
+      let* α0 : enums_testcase_linked_list.List.t := M.read list in
+      let* α1 : M.Val u32.t := M.alloc 2 in
+      let* α2 : u32.t := M.read α1 in
+      let* α3 : enums_testcase_linked_list.List.t :=
+        enums_testcase_linked_list.List.t::["prepend"] α0 α2 in
+      assign list α3 in
+    let* _ : M.Val unit :=
+      let* α0 : enums_testcase_linked_list.List.t := M.read list in
+      let* α1 : M.Val u32.t := M.alloc 3 in
+      let* α2 : u32.t := M.read α1 in
+      let* α3 : enums_testcase_linked_list.List.t :=
+        enums_testcase_linked_list.List.t::["prepend"] α0 α2 in
+      assign list α3 in
+    let* _ : M.Val unit :=
+      let* _ : M.Val unit :=
+        let* α0 : M.Val (array (ref str.t)) :=
           M.alloc [ mk_str "linked list has length: "; mk_str "
 " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
-          borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
-          pointer_coercion "Unsize" α1 in
-        let* α3 :
-            ltac:(refine (M.Val (ref enums_testcase_linked_list.List.t))) :=
-          borrow list in
-        let* α4 : ltac:(refine (M.Val u32.t)) :=
-          enums_testcase_linked_list.List.t::["len"] α3 in
-        let* α5 : ltac:(refine (M.Val (ref u32.t))) := borrow α4 in
-        let* α6 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
-          core.fmt.rt.Argument.t::["new_display"] α5 in
-        let* α7 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
-          M.alloc [ α6 ] in
-        let* α8 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
-          borrow α7 in
-        let* α9 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
-          pointer_coercion "Unsize" α8 in
-        let* α10 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-          core.fmt.Arguments.t::["new_v1"] α2 α9 in
-        std.io.stdio._print α10 in
+        let* α1 : ref (array (ref str.t)) := borrow α0 in
+        let* α2 : M.Val (ref (array (ref str.t))) := M.alloc α1 in
+        let* α3 : M.Val (ref (slice (ref str.t))) :=
+          pointer_coercion "Unsize" α2 in
+        let* α4 : ref (slice (ref str.t)) := M.read α3 in
+        let* α5 : ref enums_testcase_linked_list.List.t := borrow list in
+        let* α6 : u32.t := enums_testcase_linked_list.List.t::["len"] α5 in
+        let* α7 : M.Val u32.t := M.alloc α6 in
+        let* α8 : ref u32.t := borrow α7 in
+        let* α9 : core.fmt.rt.Argument.t :=
+          core.fmt.rt.Argument.t::["new_display"] α8 in
+        let* α10 : M.Val core.fmt.rt.Argument.t := M.alloc α9 in
+        let* α11 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α10 ] in
+        let* α12 : ref (array core.fmt.rt.Argument.t) := borrow α11 in
+        let* α13 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α12 in
+        let* α14 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
+          pointer_coercion "Unsize" α13 in
+        let* α15 : ref (slice core.fmt.rt.Argument.t) := M.read α14 in
+        let* α16 : core.fmt.Arguments.t :=
+          core.fmt.Arguments.t::["new_v1"] α4 α15 in
+        let* α17 : unit := std.io.stdio._print α16 in
+        M.alloc α17 in
       M.alloc tt in
-    let* _ : ltac:(refine (M.Val unit)) :=
-      let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
+    let* _ : M.Val unit :=
+      let* _ : M.Val unit :=
+        let* α0 : M.Val (array (ref str.t)) :=
           M.alloc [ mk_str ""; mk_str "
 " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
-          borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
-          pointer_coercion "Unsize" α1 in
-        let* α3 :
-            ltac:(refine (M.Val (ref enums_testcase_linked_list.List.t))) :=
-          borrow list in
-        let* α4 : ltac:(refine (M.Val alloc.string.String.t)) :=
-          enums_testcase_linked_list.List.t::["stringify"] α3 in
-        let* α5 : ltac:(refine (M.Val (ref alloc.string.String.t))) :=
-          borrow α4 in
-        let* α6 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
-          core.fmt.rt.Argument.t::["new_display"] α5 in
-        let* α7 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
-          M.alloc [ α6 ] in
-        let* α8 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
-          borrow α7 in
-        let* α9 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
-          pointer_coercion "Unsize" α8 in
-        let* α10 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-          core.fmt.Arguments.t::["new_v1"] α2 α9 in
-        std.io.stdio._print α10 in
+        let* α1 : ref (array (ref str.t)) := borrow α0 in
+        let* α2 : M.Val (ref (array (ref str.t))) := M.alloc α1 in
+        let* α3 : M.Val (ref (slice (ref str.t))) :=
+          pointer_coercion "Unsize" α2 in
+        let* α4 : ref (slice (ref str.t)) := M.read α3 in
+        let* α5 : ref enums_testcase_linked_list.List.t := borrow list in
+        let* α6 : alloc.string.String.t :=
+          enums_testcase_linked_list.List.t::["stringify"] α5 in
+        let* α7 : M.Val alloc.string.String.t := M.alloc α6 in
+        let* α8 : ref alloc.string.String.t := borrow α7 in
+        let* α9 : core.fmt.rt.Argument.t :=
+          core.fmt.rt.Argument.t::["new_display"] α8 in
+        let* α10 : M.Val core.fmt.rt.Argument.t := M.alloc α9 in
+        let* α11 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α10 ] in
+        let* α12 : ref (array core.fmt.rt.Argument.t) := borrow α11 in
+        let* α13 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α12 in
+        let* α14 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
+          pointer_coercion "Unsize" α13 in
+        let* α15 : ref (slice core.fmt.rt.Argument.t) := M.read α14 in
+        let* α16 : core.fmt.Arguments.t :=
+          core.fmt.Arguments.t::["new_v1"] α4 α15 in
+        let* α17 : unit := std.io.stdio._print α16 in
+        M.alloc α17 in
       M.alloc tt in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).

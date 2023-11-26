@@ -59,7 +59,7 @@ Definition pointer_coercion {T : Set} (cast : string) (x : T) :
   M.pure x.
 
 (** We replace assembly blocks by a value of type unit. *)
-Parameter InlineAssembly : unit.
+Parameter InlineAssembly : M.Val unit.
 
 (** The functions on [Z] should eventually be replaced by functions on the
     corresponding integer types. *)
@@ -497,9 +497,9 @@ Module Impl_Debug_for_Result.
     Context `{core.fmt.Debug.Trait E}.
 
     Parameter fmt :
-      M.Val (ref (core.result.Result T E)) ->
-      M.Val (mut_ref core.fmt.Formatter.t) ->
-      M (M.Val ltac:(core.fmt.Result)).
+      ref (core.result.Result T E) ->
+      mut_ref core.fmt.Formatter.t ->
+      M ltac:(core.fmt.Result).
 
     Global Instance I :
         core.fmt.Debug.Trait (core.result.Result T E) := {
@@ -849,13 +849,11 @@ Global Hint Resolve existT : core.
 (* a hint for eauto to automatically solve unit goals *)
 Global Hint Resolve tt : core.
 
-Definition deref {Self : Set} (r : ref Self) : M Self :=
-  M.read r.
+Definition deref {Self : Set} (r : ref Self) : M (M.Val Self) :=
+  M.pure r.
 
-Definition borrow {A : Set} (v : M.Val A) :
-    M (ref (M.Val A)) :=
-  M.alloc v.
+Definition borrow {A : Set} (v : M.Val A) : M (ref A) :=
+  M.pure v.
 
-Definition borrow_mut {A : Set} (v : M.Val A) :
-    M (mut_ref (M.Val A)) :=
-  M.alloc v.
+Definition borrow_mut {A : Set} (v : M.Val A) : M (mut_ref A) :=
+  M.pure v.

@@ -16,9 +16,9 @@ Section Impl_core_fmt_Debug_for_combinators_map_Food_t.
   Debug
   *)
   Parameter fmt :
-      (M.Val (ref ltac:(Self))) ->
-        (M.Val (mut_ref core.fmt.Formatter.t)) ->
-        M (M.Val ltac:(core.fmt.Result)).
+      (ref ltac:(Self)) ->
+        (mut_ref core.fmt.Formatter.t) ->
+        M ltac:(core.fmt.Result).
   
   Global Instance AssociatedFunction_fmt :
     Notations.DoubleColon ltac:(Self) "fmt" := {
@@ -51,9 +51,9 @@ Section Impl_core_fmt_Debug_for_combinators_map_Peeled_t.
   Debug
   *)
   Parameter fmt :
-      (M.Val (ref ltac:(Self))) ->
-        (M.Val (mut_ref core.fmt.Formatter.t)) ->
-        M (M.Val ltac:(core.fmt.Result)).
+      (ref ltac:(Self)) ->
+        (mut_ref core.fmt.Formatter.t) ->
+        M ltac:(core.fmt.Result).
   
   Global Instance AssociatedFunction_fmt :
     Notations.DoubleColon ltac:(Self) "fmt" := {
@@ -86,9 +86,9 @@ Section Impl_core_fmt_Debug_for_combinators_map_Chopped_t.
   Debug
   *)
   Parameter fmt :
-      (M.Val (ref ltac:(Self))) ->
-        (M.Val (mut_ref core.fmt.Formatter.t)) ->
-        M (M.Val ltac:(core.fmt.Result)).
+      (ref ltac:(Self)) ->
+        (mut_ref core.fmt.Formatter.t) ->
+        M ltac:(core.fmt.Result).
   
   Global Instance AssociatedFunction_fmt :
     Notations.DoubleColon ltac:(Self) "fmt" := {
@@ -121,9 +121,9 @@ Section Impl_core_fmt_Debug_for_combinators_map_Cooked_t.
   Debug
   *)
   Parameter fmt :
-      (M.Val (ref ltac:(Self))) ->
-        (M.Val (mut_ref core.fmt.Formatter.t)) ->
-        M (M.Val ltac:(core.fmt.Result)).
+      (ref ltac:(Self)) ->
+        (mut_ref core.fmt.Formatter.t) ->
+        M ltac:(core.fmt.Result).
   
   Global Instance AssociatedFunction_fmt :
     Notations.DoubleColon ltac:(Self) "fmt" := {
@@ -145,8 +145,8 @@ fn peel(food: Option<Food>) -> Option<Peeled> {
 }
 *)
 Parameter peel :
-    (M.Val (core.option.Option.t combinators_map.Food.t)) ->
-      M (M.Val (core.option.Option.t combinators_map.Peeled.t)).
+    (core.option.Option.t combinators_map.Food.t) ->
+      M (core.option.Option.t combinators_map.Peeled.t).
 
 (*
 fn chop(peeled: Option<Peeled>) -> Option<Chopped> {
@@ -157,8 +157,8 @@ fn chop(peeled: Option<Peeled>) -> Option<Chopped> {
 }
 *)
 Parameter chop :
-    (M.Val (core.option.Option.t combinators_map.Peeled.t)) ->
-      M (M.Val (core.option.Option.t combinators_map.Chopped.t)).
+    (core.option.Option.t combinators_map.Peeled.t) ->
+      M (core.option.Option.t combinators_map.Chopped.t).
 
 (*
 fn cook(chopped: Option<Chopped>) -> Option<Cooked> {
@@ -166,8 +166,8 @@ fn cook(chopped: Option<Chopped>) -> Option<Cooked> {
 }
 *)
 Parameter cook :
-    (M.Val (core.option.Option.t combinators_map.Chopped.t)) ->
-      M (M.Val (core.option.Option.t combinators_map.Cooked.t)).
+    (core.option.Option.t combinators_map.Chopped.t) ->
+      M (core.option.Option.t combinators_map.Cooked.t).
 
 (*
 fn process(food: Option<Food>) -> Option<Cooked> {
@@ -177,8 +177,8 @@ fn process(food: Option<Food>) -> Option<Cooked> {
 }
 *)
 Parameter process :
-    (M.Val (core.option.Option.t combinators_map.Food.t)) ->
-      M (M.Val (core.option.Option.t combinators_map.Cooked.t)).
+    (core.option.Option.t combinators_map.Food.t) ->
+      M (core.option.Option.t combinators_map.Cooked.t).
 
 (*
 fn eat(food: Option<Cooked>) {
@@ -188,8 +188,7 @@ fn eat(food: Option<Cooked>) {
     }
 }
 *)
-Parameter eat :
-    (M.Val (core.option.Option.t combinators_map.Cooked.t)) -> M (M.Val unit).
+Parameter eat : (core.option.Option.t combinators_map.Cooked.t) -> M unit.
 
 (*
 fn main() {
@@ -208,4 +207,4 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : M (M.Val unit).
+Parameter main : M unit.

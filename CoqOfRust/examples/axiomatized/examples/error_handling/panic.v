@@ -11,7 +11,7 @@ fn drink(beverage: &str) {
     println!("Some refreshing {} is all I need.", beverage);
 }
 *)
-Parameter drink : (M.Val (ref str.t)) -> M (M.Val unit).
+Parameter drink : (ref str.t) -> M unit.
 
 (*
 fn main() {
@@ -20,4 +20,4 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : M (M.Val unit).
+Parameter main : M unit.

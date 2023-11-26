@@ -11,8 +11,7 @@ fn give_adult(drink: Option<&str>) {
     }
 }
 *)
-Parameter give_adult :
-    (M.Val (core.option.Option.t (ref str.t))) -> M (M.Val unit).
+Parameter give_adult : (core.option.Option.t (ref str.t)) -> M unit.
 
 (*
 fn drink(drink: Option<&str>) {
@@ -25,7 +24,7 @@ fn drink(drink: Option<&str>) {
     println!("I love {}s!!!!!", inside);
 }
 *)
-Parameter drink : (M.Val (core.option.Option.t (ref str.t))) -> M (M.Val unit).
+Parameter drink : (core.option.Option.t (ref str.t)) -> M unit.
 
 (*
 fn main() {
@@ -45,4 +44,4 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : M (M.Val unit).
+Parameter main : M unit.

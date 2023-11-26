@@ -7,14 +7,14 @@ Module my_mod.
           println!("called `my_mod::private_function()`");
       }
   *)
-  Parameter private_function : M (M.Val unit).
+  Parameter private_function : M unit.
   
   (*
       pub fn function() {
           println!("called `my_mod::function()`");
       }
   *)
-  Parameter function : M (M.Val unit).
+  Parameter function : M unit.
   
   (*
       pub fn indirect_access() {
@@ -22,7 +22,7 @@ Module my_mod.
           private_function();
       }
   *)
-  Parameter indirect_access : M (M.Val unit).
+  Parameter indirect_access : M unit.
   
   Module nested.
     (*
@@ -30,7 +30,7 @@ Module my_mod.
                 println!("called `my_mod::nested::function()`");
             }
     *)
-    Parameter function : M (M.Val unit).
+    Parameter function : M unit.
     
     (*
             fn private_function() {
@@ -38,7 +38,7 @@ Module my_mod.
             }
     *)
     (* #[allow(dead_code)] - function was ignored by the compiler *)
-    Parameter private_function : M (M.Val unit).
+    Parameter private_function : M unit.
     
     (*
             pub(in crate::my_mod) fn public_function_in_my_mod() {
@@ -46,21 +46,21 @@ Module my_mod.
                 public_function_in_nested();
             }
     *)
-    Parameter public_function_in_my_mod : M (M.Val unit).
+    Parameter public_function_in_my_mod : M unit.
     
     (*
             pub(self) fn public_function_in_nested() {
                 println!("called `my_mod::nested::public_function_in_nested()`");
             }
     *)
-    Parameter public_function_in_nested : M (M.Val unit).
+    Parameter public_function_in_nested : M unit.
     
     (*
             pub(super) fn public_function_in_super_mod() {
                 println!("called `my_mod::nested::public_function_in_super_mod()`");
             }
     *)
-    Parameter public_function_in_super_mod : M (M.Val unit).
+    Parameter public_function_in_super_mod : M unit.
   End nested.
   
   (*
@@ -71,14 +71,14 @@ Module my_mod.
           nested::public_function_in_super_mod();
       }
   *)
-  Parameter call_public_function_in_my_mod : M (M.Val unit).
+  Parameter call_public_function_in_my_mod : M unit.
   
   (*
       pub(crate) fn public_function_in_crate() {
           println!("called `my_mod::public_function_in_crate()`");
       }
   *)
-  Parameter public_function_in_crate : M (M.Val unit).
+  Parameter public_function_in_crate : M unit.
   
   Module private_nested.
     (*
@@ -87,7 +87,7 @@ Module my_mod.
             }
     *)
     (* #[allow(dead_code)] - function was ignored by the compiler *)
-    Parameter function : M (M.Val unit).
+    Parameter function : M unit.
     
     (*
             pub(crate) fn restricted_function() {
@@ -95,7 +95,7 @@ Module my_mod.
             }
     *)
     (* #[allow(dead_code)] - function was ignored by the compiler *)
-    Parameter restricted_function : M (M.Val unit).
+    Parameter restricted_function : M unit.
   End private_nested.
 End my_mod.
 
@@ -104,14 +104,14 @@ End my_mod.
         println!("called `my_mod::private_function()`");
     }
 *)
-Parameter private_function : M (M.Val unit).
+Parameter private_function : M unit.
 
 (*
     pub fn function() {
         println!("called `my_mod::function()`");
     }
 *)
-Parameter function : M (M.Val unit).
+Parameter function : M unit.
 
 (*
     pub fn indirect_access() {
@@ -119,7 +119,7 @@ Parameter function : M (M.Val unit).
         private_function();
     }
 *)
-Parameter indirect_access : M (M.Val unit).
+Parameter indirect_access : M unit.
 
 Module nested.
   (*
@@ -127,7 +127,7 @@ Module nested.
               println!("called `my_mod::nested::function()`");
           }
   *)
-  Parameter function : M (M.Val unit).
+  Parameter function : M unit.
   
   (*
           fn private_function() {
@@ -135,7 +135,7 @@ Module nested.
           }
   *)
   (* #[allow(dead_code)] - function was ignored by the compiler *)
-  Parameter private_function : M (M.Val unit).
+  Parameter private_function : M unit.
   
   (*
           pub(in crate::my_mod) fn public_function_in_my_mod() {
@@ -143,21 +143,21 @@ Module nested.
               public_function_in_nested();
           }
   *)
-  Parameter public_function_in_my_mod : M (M.Val unit).
+  Parameter public_function_in_my_mod : M unit.
   
   (*
           pub(self) fn public_function_in_nested() {
               println!("called `my_mod::nested::public_function_in_nested()`");
           }
   *)
-  Parameter public_function_in_nested : M (M.Val unit).
+  Parameter public_function_in_nested : M unit.
   
   (*
           pub(super) fn public_function_in_super_mod() {
               println!("called `my_mod::nested::public_function_in_super_mod()`");
           }
   *)
-  Parameter public_function_in_super_mod : M (M.Val unit).
+  Parameter public_function_in_super_mod : M unit.
 End nested.
 
 (*
@@ -165,7 +165,7 @@ End nested.
             println!("called `my_mod::nested::function()`");
         }
 *)
-Parameter function : M (M.Val unit).
+Parameter function : M unit.
 
 (*
         fn private_function() {
@@ -173,7 +173,7 @@ Parameter function : M (M.Val unit).
         }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter private_function : M (M.Val unit).
+Parameter private_function : M unit.
 
 (*
         pub(in crate::my_mod) fn public_function_in_my_mod() {
@@ -181,21 +181,21 @@ Parameter private_function : M (M.Val unit).
             public_function_in_nested();
         }
 *)
-Parameter public_function_in_my_mod : M (M.Val unit).
+Parameter public_function_in_my_mod : M unit.
 
 (*
         pub(self) fn public_function_in_nested() {
             println!("called `my_mod::nested::public_function_in_nested()`");
         }
 *)
-Parameter public_function_in_nested : M (M.Val unit).
+Parameter public_function_in_nested : M unit.
 
 (*
         pub(super) fn public_function_in_super_mod() {
             println!("called `my_mod::nested::public_function_in_super_mod()`");
         }
 *)
-Parameter public_function_in_super_mod : M (M.Val unit).
+Parameter public_function_in_super_mod : M unit.
 
 (*
     pub fn call_public_function_in_my_mod() {
@@ -205,14 +205,14 @@ Parameter public_function_in_super_mod : M (M.Val unit).
         nested::public_function_in_super_mod();
     }
 *)
-Parameter call_public_function_in_my_mod : M (M.Val unit).
+Parameter call_public_function_in_my_mod : M unit.
 
 (*
     pub(crate) fn public_function_in_crate() {
         println!("called `my_mod::public_function_in_crate()`");
     }
 *)
-Parameter public_function_in_crate : M (M.Val unit).
+Parameter public_function_in_crate : M unit.
 
 Module private_nested.
   (*
@@ -221,7 +221,7 @@ Module private_nested.
           }
   *)
   (* #[allow(dead_code)] - function was ignored by the compiler *)
-  Parameter function : M (M.Val unit).
+  Parameter function : M unit.
   
   (*
           pub(crate) fn restricted_function() {
@@ -229,7 +229,7 @@ Module private_nested.
           }
   *)
   (* #[allow(dead_code)] - function was ignored by the compiler *)
-  Parameter restricted_function : M (M.Val unit).
+  Parameter restricted_function : M unit.
 End private_nested.
 
 (*
@@ -238,7 +238,7 @@ End private_nested.
         }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter function : M (M.Val unit).
+Parameter function : M unit.
 
 (*
         pub(crate) fn restricted_function() {
@@ -246,14 +246,14 @@ Parameter function : M (M.Val unit).
         }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter restricted_function : M (M.Val unit).
+Parameter restricted_function : M unit.
 
 (*
 fn function() {
     println!("called `function()`");
 }
 *)
-Parameter function : M (M.Val unit).
+Parameter function : M unit.
 
 (*
 fn main() {
@@ -296,4 +296,4 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : M (M.Val unit).
+Parameter main : M unit.

@@ -51,7 +51,7 @@ Section Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating
           self.username.clone()
       }
   *)
-  Parameter get : (M.Val (ref ltac:(Self))) -> M (M.Val alloc.string.String.t).
+  Parameter get : (ref ltac:(Self)) -> M alloc.string.String.t.
   
   Global Instance AssociatedFunction_get :
     Notations.DoubleColon ltac:(Self) "get" := {
@@ -74,7 +74,7 @@ Section Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_over
           self.age
       }
   *)
-  Parameter get : (M.Val (ref ltac:(Self))) -> M (M.Val u8.t).
+  Parameter get : (ref ltac:(Self)) -> M u8.t.
   
   Global Instance AssociatedFunction_get :
     Notations.DoubleColon ltac:(Self) "get" := {
@@ -107,4 +107,4 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : M (M.Val unit).
+Parameter main : M unit.

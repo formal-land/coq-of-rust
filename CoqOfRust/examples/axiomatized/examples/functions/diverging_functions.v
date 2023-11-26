@@ -9,11 +9,11 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : M (M.Val unit).
+Parameter main : M unit.
 
 (*
     fn foo() -> ! {
         panic!("This call never returns.");
     }
 *)
-Parameter foo : M (M.Val never.t).
+Parameter foo : M never.t.

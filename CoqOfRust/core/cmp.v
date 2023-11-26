@@ -36,28 +36,27 @@ Module PartialEq.
   Module Required.
     Class Trait (Self : Set) {Rhs : Set} : Set := {
       Rhs := Rhs;
-      eq : M.Val (ref Self) -> M.Val (ref Rhs) -> M (M.Val bool);
-      ne : option (M.Val (ref Self) -> M.Val (ref Rhs) -> M (M.Val bool));
+      eq : ref Self -> ref Rhs -> M bool;
+      ne : option (ref Self -> ref Rhs -> M bool);
     }.
   End Required.
 
   Module Provided.
     Definition ne {Self Rhs : Set}
         {H0 : Required.Trait Self (Rhs := Rhs)} :
-        M.Val (ref Self) -> M.Val (ref Rhs) -> M (M.Val bool) :=
+        ref Self -> ref Rhs -> M bool :=
       match Required.ne with
       | Datatypes.Some ne => ne
       | Datatypes.None => fun self other =>
         let* is_eq := Required.eq self other in
-        let* is_eq := M.read is_eq in
-        M.alloc (negb is_eq)
+        M.pure (negb is_eq)
       end.
   End Provided.
 
   Class Trait (Self : Set) {Rhs : Set} : Set := {
     Rhs := Rhs;
-    eq : M.Val (ref Self) -> M.Val (ref Rhs) -> M (M.Val bool);
-    ne : M.Val (ref Self) -> M.Val (ref Rhs) -> M (M.Val bool);
+    eq : ref Self -> ref Rhs -> M bool;
+    ne : ref Self -> ref Rhs -> M bool;
   }.
 
   Global Instance From_Required (Self Rhs : Set)
@@ -77,7 +76,6 @@ Module PartialEq.
   Global Instance Method_ne `(Trait) : Notations.Dot "ne" := {
     Notations.dot x y :=
       let* is_eq := eq x y in
-      let* is_eq := M.read is_eq in
       M.pure (negb is_eq);
   }.
 
@@ -150,26 +148,26 @@ Module PartialOrd.
     Class Trait (Self : Set) {Rhs : Set} : Set := {
       Rhs := Rhs;
       partial_cmp :
-        M.Val (ref Self) ->
-        M.Val (ref Rhs) ->
-        M (M.Val (core.option.Option.t Ordering.t));
-      lt : Datatypes.option (M.Val (ref Self) -> M.Val (ref Rhs) -> M (M.Val bool));
-      le : Datatypes.option (M.Val (ref Self) -> M.Val (ref Rhs) -> M (M.Val bool));
-      gt : Datatypes.option (M.Val (ref Self) -> M.Val (ref Rhs) -> M (M.Val bool));
-      ge : Datatypes.option (M.Val (ref Self) -> M.Val (ref Rhs) -> M (M.Val bool));
+        ref Self ->
+        ref Rhs ->
+        M (core.option.Option.t Ordering.t);
+      lt : Datatypes.option (ref Self -> ref Rhs -> M bool);
+      le : Datatypes.option (ref Self -> ref Rhs -> M bool);
+      gt : Datatypes.option (ref Self -> ref Rhs -> M bool);
+      ge : Datatypes.option (ref Self -> ref Rhs -> M bool);
     }.
   End Required.
 
   Class Trait (Self : Set) {Rhs : Set} : Set := {
     Rhs := Rhs;
     partial_cmp :
-      M.Val (ref Self) ->
-      M.Val (ref Rhs) ->
-      M (M.Val (core.option.Option.t Ordering.t));
-    lt : M.Val (ref Self) -> M.Val (ref Rhs) -> M (M.Val bool);
-    le : M.Val (ref Self) -> M.Val (ref Rhs) -> M (M.Val bool);
-    gt : M.Val (ref Self) -> M.Val (ref Rhs) -> M (M.Val bool);
-    ge : M.Val (ref Self) -> M.Val (ref Rhs) -> M (M.Val bool);
+      ref Self ->
+      ref Rhs ->
+      M (core.option.Option.t Ordering.t);
+    lt : ref Self -> ref Rhs -> M bool;
+    le : ref Self -> ref Rhs -> M bool;
+    gt : ref Self -> ref Rhs -> M bool;
+    ge : ref Self -> ref Rhs -> M bool;
   }.
 
   Global Instance From_Required (Self Rhs : Set)
@@ -181,14 +179,13 @@ Module PartialOrd.
       | Datatypes.Some lt => lt
       | Datatypes.None => fun self other =>
         let* cmp := Required.partial_cmp self other in
-        let* cmp := M.read cmp in
         match cmp with
         | core.option.Option.Some ordering =>
           match ordering with
-          | Ordering.Less => M.alloc true
-          | _ => M.alloc false
+          | Ordering.Less => M.pure true
+          | _ => M.pure false
           end
-        | _ => M.alloc false
+        | _ => M.pure false
         end
       end;
     le :=
@@ -196,14 +193,13 @@ Module PartialOrd.
       | Datatypes.Some lt => lt
       | Datatypes.None => fun self other =>
         let* cmp := Required.partial_cmp self other in
-        let* cmp := M.read cmp in
         match cmp with
         | core.option.Option.Some ordering =>
           match ordering with
-          | Ordering.Less | Ordering.Equal => M.alloc true
-          | _ => M.alloc false
+          | Ordering.Less | Ordering.Equal => M.pure true
+          | _ => M.pure false
           end
-        | _ => M.alloc false
+        | _ => M.pure false
         end
       end;
     gt :=
@@ -211,14 +207,13 @@ Module PartialOrd.
       | Datatypes.Some lt => lt
       | Datatypes.None => fun self other =>
         let* cmp := Required.partial_cmp self other in
-        let* cmp := M.read cmp in
         match cmp with
         | core.option.Option.Some ordering =>
           match ordering with
-          | Ordering.Greater => M.alloc true
-          | _ => M.alloc false
+          | Ordering.Greater => M.pure true
+          | _ => M.pure false
           end
-        | _ => M.alloc false
+        | _ => M.pure false
         end
       end;
     ge :=
@@ -226,14 +221,13 @@ Module PartialOrd.
       | Datatypes.Some lt => lt
       | Datatypes.None => fun self other =>
         let* cmp := Required.partial_cmp self other in
-        let* cmp := M.read cmp in
         match cmp with
         | core.option.Option.Some ordering =>
           match ordering with
-          | Ordering.Greater | Ordering.Equal => M.alloc true
-          | _ => M.alloc false
+          | Ordering.Greater | Ordering.Equal => M.pure true
+          | _ => M.pure false
           end
-        | _ => M.alloc false
+        | _ => M.pure false
         end
       end;
   }.

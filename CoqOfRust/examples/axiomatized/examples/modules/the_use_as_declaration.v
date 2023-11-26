@@ -6,7 +6,7 @@ fn function() {
     println!("called `function()`");
 }
 *)
-Parameter function : M (M.Val unit).
+Parameter function : M unit.
 
 Module deeply.
   Module nested.
@@ -15,7 +15,7 @@ Module deeply.
                 println!("called `deeply::nested::function()`");
             }
     *)
-    Parameter function : M (M.Val unit).
+    Parameter function : M unit.
   End nested.
 End deeply.
 
@@ -25,7 +25,7 @@ Module nested.
               println!("called `deeply::nested::function()`");
           }
   *)
-  Parameter function : M (M.Val unit).
+  Parameter function : M unit.
 End nested.
 
 (*
@@ -33,7 +33,7 @@ End nested.
             println!("called `deeply::nested::function()`");
         }
 *)
-Parameter function : M (M.Val unit).
+Parameter function : M unit.
 
 (*
 fn main() {
@@ -57,4 +57,4 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : M (M.Val unit).
+Parameter main : M unit.

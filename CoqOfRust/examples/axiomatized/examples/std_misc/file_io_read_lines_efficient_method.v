@@ -15,7 +15,7 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : M (M.Val unit).
+Parameter main : M unit.
 
 (*
 fn read_lines<P>(filename: P) -> io::Result<io::Lines<io::BufReader<File>>>
@@ -28,9 +28,8 @@ where
 *)
 Parameter read_lines :
     forall {P : Set} {ℋ_0 : core.convert.AsRef.Trait P (T := std.path.Path.t)},
-    (M.Val P) ->
+    P ->
       M
-        (M.Val
-          ltac:(std.io.error.Result
-            (std.io.Lines.t
-              (std.io.buffered.bufreader.BufReader.t std.fs.File.t)))).
+        ltac:(std.io.error.Result
+          (std.io.Lines.t
+            (std.io.buffered.bufreader.BufReader.t std.fs.File.t))).

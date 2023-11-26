@@ -7,6 +7,22 @@ type Closure(
     ],
 ) not yet handled
 type Closure(
+    DefId(0:4 ~ unpacking_options_and_defaults_via_or_else[dcc2]::main::{closure#0}),
+    [
+        i8,
+        extern "rust-call" fn(()) -> std::option::Option<Fruit>,
+        (),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:4 ~ unpacking_options_and_defaults_via_or_else[dcc2]::main::{closure#0}),
+    [
+        i8,
+        extern "rust-call" fn(()) -> std::option::Option<Fruit>,
+        (),
+    ],
+) not yet handled
+type Closure(
     DefId(0:5 ~ unpacking_options_and_defaults_via_or_else[dcc2]::main::{closure#1}),
     [
         i8,
@@ -16,6 +32,54 @@ type Closure(
 ) not yet handled
 type Closure(
     DefId(0:5 ~ unpacking_options_and_defaults_via_or_else[dcc2]::main::{closure#1}),
+    [
+        i8,
+        extern "rust-call" fn(()) -> std::option::Option<Fruit>,
+        (),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:5 ~ unpacking_options_and_defaults_via_or_else[dcc2]::main::{closure#1}),
+    [
+        i8,
+        extern "rust-call" fn(()) -> std::option::Option<Fruit>,
+        (),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:5 ~ unpacking_options_and_defaults_via_or_else[dcc2]::main::{closure#1}),
+    [
+        i8,
+        extern "rust-call" fn(()) -> std::option::Option<Fruit>,
+        (),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:5 ~ unpacking_options_and_defaults_via_or_else[dcc2]::main::{closure#1}),
+    [
+        i8,
+        extern "rust-call" fn(()) -> std::option::Option<Fruit>,
+        (),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:5 ~ unpacking_options_and_defaults_via_or_else[dcc2]::main::{closure#1}),
+    [
+        i8,
+        extern "rust-call" fn(()) -> std::option::Option<Fruit>,
+        (),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:4 ~ unpacking_options_and_defaults_via_or_else[dcc2]::main::{closure#0}),
+    [
+        i8,
+        extern "rust-call" fn(()) -> std::option::Option<Fruit>,
+        (),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:4 ~ unpacking_options_and_defaults_via_or_else[dcc2]::main::{closure#0}),
     [
         i8,
         extern "rust-call" fn(()) -> std::option::Option<Fruit>,

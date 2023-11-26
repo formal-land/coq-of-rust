@@ -31,7 +31,7 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : M (M.Val unit).
+Parameter main : M unit.
 
 (*
     extern "C" fn foo(arg: i32) -> i32 {
@@ -39,7 +39,7 @@ Parameter main : M (M.Val unit).
         arg * 2
     }
 *)
-Parameter foo : (M.Val i32.t) -> M (M.Val i32.t).
+Parameter foo : i32.t -> M i32.t.
 
 (*
     fn call_foo(arg: i32) -> i32 {
@@ -61,4 +61,4 @@ Parameter foo : (M.Val i32.t) -> M (M.Val i32.t).
         }
     }
 *)
-Parameter call_foo : (M.Val i32.t) -> M (M.Val i32.t).
+Parameter call_foo : i32.t -> M i32.t.

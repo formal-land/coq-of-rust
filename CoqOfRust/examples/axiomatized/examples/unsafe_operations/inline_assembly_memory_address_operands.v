@@ -13,7 +13,7 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : M (M.Val unit).
+Parameter main : M unit.
 
 (*
     fn load_fpu_control_word(control: u16) {
@@ -22,4 +22,4 @@ Parameter main : M (M.Val unit).
         }
     }
 *)
-Parameter load_fpu_control_word : (M.Val u16.t) -> M (M.Val unit).
+Parameter load_fpu_control_word : u16.t -> M unit.
