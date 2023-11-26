@@ -41,7 +41,7 @@ Section Impl_generics_associated_types_problem_Contains_i32_t_i32_t_for_generics
       (self : M.Val (ref ltac:(Self)))
       (number_1 : M.Val (ref i32.t))
       (number_2 : M.Val (ref i32.t))
-      : M (M.Val bool.t) :=
+      : M bool.t :=
     M.function_body
       (let* α0 :
           ltac:(refine (M.Val generics_associated_types_problem.Container.t)) :=
@@ -49,21 +49,23 @@ Section Impl_generics_associated_types_problem_Contains_i32_t_i32_t_for_generics
       let* α1 : ltac:(refine (M.Val (ref i32.t))) := borrow α0.["0"] in
       let* α2 : ltac:(refine (M.Val (ref (ref i32.t)))) := borrow α1 in
       let* α3 : ltac:(refine (M.Val (ref (ref i32.t)))) := borrow number_1 in
-      let* α4 : ltac:(refine (M.Val bool.t)) :=
+      let* α4 :=
         (core.cmp.PartialEq.eq (Self := ref i32.t) (Trait := ltac:(refine _)))
           α2
           α3 in
-      let* α5 :
+      let* α5 : ltac:(refine (M.Val bool.t)) := M.alloc α4 in
+      let* α6 :
           ltac:(refine (M.Val generics_associated_types_problem.Container.t)) :=
         deref self in
-      let* α6 : ltac:(refine (M.Val (ref i32.t))) := borrow α5.["1"] in
-      let* α7 : ltac:(refine (M.Val (ref (ref i32.t)))) := borrow α6 in
-      let* α8 : ltac:(refine (M.Val (ref (ref i32.t)))) := borrow number_2 in
-      let* α9 : ltac:(refine (M.Val bool.t)) :=
+      let* α7 : ltac:(refine (M.Val (ref i32.t))) := borrow α6.["1"] in
+      let* α8 : ltac:(refine (M.Val (ref (ref i32.t)))) := borrow α7 in
+      let* α9 : ltac:(refine (M.Val (ref (ref i32.t)))) := borrow number_2 in
+      let* α10 :=
         (core.cmp.PartialEq.eq (Self := ref i32.t) (Trait := ltac:(refine _)))
-          α7
-          α8 in
-      BinOp.and α4 α9).
+          α8
+          α9 in
+      let* α11 : ltac:(refine (M.Val bool.t)) := M.alloc α10 in
+      BinOp.and α5 α11).
   
   Global Instance AssociatedFunction_contains :
     Notations.DoubleColon ltac:(Self) "contains" := {
@@ -75,7 +77,7 @@ Section Impl_generics_associated_types_problem_Contains_i32_t_i32_t_for_generics
           self.0
       }
   *)
-  Definition first (self : M.Val (ref ltac:(Self))) : M (M.Val i32.t) :=
+  Definition first (self : M.Val (ref ltac:(Self))) : M i32.t :=
     M.function_body
       (let* α0 :
           ltac:(refine (M.Val generics_associated_types_problem.Container.t)) :=
@@ -92,7 +94,7 @@ Section Impl_generics_associated_types_problem_Contains_i32_t_i32_t_for_generics
           self.1
       }
   *)
-  Definition last (self : M.Val (ref ltac:(Self))) : M (M.Val i32.t) :=
+  Definition last (self : M.Val (ref ltac:(Self))) : M i32.t :=
     M.function_body
       (let* α0 :
           ltac:(refine (M.Val generics_associated_types_problem.Container.t)) :=
@@ -127,23 +129,25 @@ Definition difference
     {A B C : Set}
     {ℋ_0 : generics_associated_types_problem.Contains.Trait C (A := A) (B := B)}
     (container : M.Val (ref C))
-    : M (M.Val i32.t) :=
+    : M i32.t :=
   M.function_body
     (let* α0 : ltac:(refine (M.Val C)) := deref container in
     let* α1 : ltac:(refine (M.Val (ref C))) := borrow α0 in
-    let* α2 : ltac:(refine (M.Val i32.t)) :=
+    let* α2 :=
       (generics_associated_types_problem.Contains.last
           (Self := C)
           (Trait := ltac:(refine _)))
         α1 in
-    let* α3 : ltac:(refine (M.Val C)) := deref container in
-    let* α4 : ltac:(refine (M.Val (ref C))) := borrow α3 in
-    let* α5 : ltac:(refine (M.Val i32.t)) :=
+    let* α3 : ltac:(refine (M.Val i32.t)) := M.alloc α2 in
+    let* α4 : ltac:(refine (M.Val C)) := deref container in
+    let* α5 : ltac:(refine (M.Val (ref C))) := borrow α4 in
+    let* α6 :=
       (generics_associated_types_problem.Contains.first
           (Self := C)
           (Trait := ltac:(refine _)))
-        α4 in
-    BinOp.sub α2 α5).
+        α5 in
+    let* α7 : ltac:(refine (M.Val i32.t)) := M.alloc α6 in
+    BinOp.sub α3 α7).
 
 (*
 fn main() {
@@ -165,7 +169,7 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M (M.Val unit) :=
+Definition main : M unit :=
   M.function_body
     (let* number_1 : ltac:(refine (M.Val i32.t)) :=
       let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 3 in
@@ -195,37 +199,40 @@ Definition main : M (M.Val unit) :=
           pointer_coercion "Unsize" α1 in
         let* α3 : ltac:(refine (M.Val (ref i32.t))) := borrow number_1 in
         let* α4 : ltac:(refine (M.Val (ref (ref i32.t)))) := borrow α3 in
-        let* α5 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
-          core.fmt.rt.Argument.t::["new_display"] α4 in
-        let* α6 : ltac:(refine (M.Val (ref i32.t))) := borrow number_2 in
-        let* α7 : ltac:(refine (M.Val (ref (ref i32.t)))) := borrow α6 in
-        let* α8 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
-          core.fmt.rt.Argument.t::["new_display"] α7 in
-        let* α9 :
+        let* α5 := core.fmt.rt.Argument.t::["new_display"] α4 in
+        let* α6 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) := M.alloc α5 in
+        let* α7 : ltac:(refine (M.Val (ref i32.t))) := borrow number_2 in
+        let* α8 : ltac:(refine (M.Val (ref (ref i32.t)))) := borrow α7 in
+        let* α9 := core.fmt.rt.Argument.t::["new_display"] α8 in
+        let* α10 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) := M.alloc α9 in
+        let* α11 :
             ltac:(refine
               (M.Val (ref generics_associated_types_problem.Container.t))) :=
           borrow container in
-        let* α10 : ltac:(refine (M.Val (ref i32.t))) := borrow number_1 in
-        let* α11 : ltac:(refine (M.Val (ref i32.t))) := borrow number_2 in
-        let* α12 : ltac:(refine (M.Val bool.t)) :=
+        let* α12 : ltac:(refine (M.Val (ref i32.t))) := borrow number_1 in
+        let* α13 : ltac:(refine (M.Val (ref i32.t))) := borrow number_2 in
+        let* α14 :=
           (generics_associated_types_problem.Contains.contains
               (Self := generics_associated_types_problem.Container.t)
               (Trait := ltac:(refine _)))
-            α9
-            α10
-            α11 in
-        let* α13 : ltac:(refine (M.Val (ref bool.t))) := borrow α12 in
-        let* α14 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
-          core.fmt.rt.Argument.t::["new_display"] α13 in
-        let* α15 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
-          M.alloc [ α5; α8; α14 ] in
-        let* α16 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
-          borrow α15 in
-        let* α17 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
-          pointer_coercion "Unsize" α16 in
-        let* α18 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-          core.fmt.Arguments.t::["new_v1"] α2 α17 in
-        std.io.stdio._print α18 in
+            α11
+            α12
+            α13 in
+        let* α15 : ltac:(refine (M.Val bool.t)) := M.alloc α14 in
+        let* α16 : ltac:(refine (M.Val (ref bool.t))) := borrow α15 in
+        let* α17 := core.fmt.rt.Argument.t::["new_display"] α16 in
+        let* α18 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
+          M.alloc α17 in
+        let* α19 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
+          M.alloc [ α6; α10; α18 ] in
+        let* α20 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
+          borrow α19 in
+        let* α21 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
+          pointer_coercion "Unsize" α20 in
+        let* α22 := core.fmt.Arguments.t::["new_v1"] α2 α21 in
+        let* α23 : ltac:(refine (M.Val core.fmt.Arguments.t)) := M.alloc α22 in
+        let* α24 := std.io.stdio._print α23 in
+        M.alloc α24 in
       M.alloc tt in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
@@ -240,23 +247,25 @@ Definition main : M (M.Val unit) :=
             ltac:(refine
               (M.Val (ref generics_associated_types_problem.Container.t))) :=
           borrow container in
-        let* α4 : ltac:(refine (M.Val i32.t)) :=
+        let* α4 :=
           (generics_associated_types_problem.Contains.first
               (Self := generics_associated_types_problem.Container.t)
               (Trait := ltac:(refine _)))
             α3 in
-        let* α5 : ltac:(refine (M.Val (ref i32.t))) := borrow α4 in
-        let* α6 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
-          core.fmt.rt.Argument.t::["new_display"] α5 in
-        let* α7 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
-          M.alloc [ α6 ] in
-        let* α8 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
-          borrow α7 in
-        let* α9 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
-          pointer_coercion "Unsize" α8 in
-        let* α10 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-          core.fmt.Arguments.t::["new_v1"] α2 α9 in
-        std.io.stdio._print α10 in
+        let* α5 : ltac:(refine (M.Val i32.t)) := M.alloc α4 in
+        let* α6 : ltac:(refine (M.Val (ref i32.t))) := borrow α5 in
+        let* α7 := core.fmt.rt.Argument.t::["new_display"] α6 in
+        let* α8 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) := M.alloc α7 in
+        let* α9 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
+          M.alloc [ α8 ] in
+        let* α10 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
+          borrow α9 in
+        let* α11 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
+          pointer_coercion "Unsize" α10 in
+        let* α12 := core.fmt.Arguments.t::["new_v1"] α2 α11 in
+        let* α13 : ltac:(refine (M.Val core.fmt.Arguments.t)) := M.alloc α12 in
+        let* α14 := std.io.stdio._print α13 in
+        M.alloc α14 in
       M.alloc tt in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
@@ -271,23 +280,25 @@ Definition main : M (M.Val unit) :=
             ltac:(refine
               (M.Val (ref generics_associated_types_problem.Container.t))) :=
           borrow container in
-        let* α4 : ltac:(refine (M.Val i32.t)) :=
+        let* α4 :=
           (generics_associated_types_problem.Contains.last
               (Self := generics_associated_types_problem.Container.t)
               (Trait := ltac:(refine _)))
             α3 in
-        let* α5 : ltac:(refine (M.Val (ref i32.t))) := borrow α4 in
-        let* α6 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
-          core.fmt.rt.Argument.t::["new_display"] α5 in
-        let* α7 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
-          M.alloc [ α6 ] in
-        let* α8 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
-          borrow α7 in
-        let* α9 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
-          pointer_coercion "Unsize" α8 in
-        let* α10 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-          core.fmt.Arguments.t::["new_v1"] α2 α9 in
-        std.io.stdio._print α10 in
+        let* α5 : ltac:(refine (M.Val i32.t)) := M.alloc α4 in
+        let* α6 : ltac:(refine (M.Val (ref i32.t))) := borrow α5 in
+        let* α7 := core.fmt.rt.Argument.t::["new_display"] α6 in
+        let* α8 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) := M.alloc α7 in
+        let* α9 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
+          M.alloc [ α8 ] in
+        let* α10 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
+          borrow α9 in
+        let* α11 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
+          pointer_coercion "Unsize" α10 in
+        let* α12 := core.fmt.Arguments.t::["new_v1"] α2 α11 in
+        let* α13 : ltac:(refine (M.Val core.fmt.Arguments.t)) := M.alloc α12 in
+        let* α14 := std.io.stdio._print α13 in
+        M.alloc α14 in
       M.alloc tt in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
@@ -302,19 +313,20 @@ Definition main : M (M.Val unit) :=
             ltac:(refine
               (M.Val (ref generics_associated_types_problem.Container.t))) :=
           borrow container in
-        let* α4 : ltac:(refine (M.Val i32.t)) :=
-          generics_associated_types_problem.difference α3 in
-        let* α5 : ltac:(refine (M.Val (ref i32.t))) := borrow α4 in
-        let* α6 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
-          core.fmt.rt.Argument.t::["new_display"] α5 in
-        let* α7 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
-          M.alloc [ α6 ] in
-        let* α8 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
-          borrow α7 in
-        let* α9 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
-          pointer_coercion "Unsize" α8 in
-        let* α10 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-          core.fmt.Arguments.t::["new_v1"] α2 α9 in
-        std.io.stdio._print α10 in
+        let* α4 := generics_associated_types_problem.difference α3 in
+        let* α5 : ltac:(refine (M.Val i32.t)) := M.alloc α4 in
+        let* α6 : ltac:(refine (M.Val (ref i32.t))) := borrow α5 in
+        let* α7 := core.fmt.rt.Argument.t::["new_display"] α6 in
+        let* α8 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) := M.alloc α7 in
+        let* α9 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
+          M.alloc [ α8 ] in
+        let* α10 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
+          borrow α9 in
+        let* α11 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
+          pointer_coercion "Unsize" α10 in
+        let* α12 := core.fmt.Arguments.t::["new_v1"] α2 α11 in
+        let* α13 : ltac:(refine (M.Val core.fmt.Arguments.t)) := M.alloc α12 in
+        let* α14 := std.io.stdio._print α13 in
+        M.alloc α14 in
       M.alloc tt in
     M.alloc tt).

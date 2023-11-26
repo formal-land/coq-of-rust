@@ -8,7 +8,7 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M (M.Val unit) :=
+Definition main : M unit :=
   M.function_body
     (let* _ : ltac:(refine (M.Val (((i32.t * i32.t) * i32.t) * i32.t))) :=
       let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 1 in
@@ -36,5 +36,6 @@ Definition main : M (M.Val unit) :=
           ltac:(refine
             (M.Val (alloc.boxed.Box.t (slice i32.t) alloc.alloc.Global.t))) :=
         pointer_coercion "Unsize" α5 in
-      (slice i32.t)::["into_vec"] α6 in
+      let* α7 := (slice i32.t)::["into_vec"] α6 in
+      M.alloc α7 in
     M.alloc tt).

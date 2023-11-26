@@ -45,7 +45,7 @@ Module Display.
     fmt :
       M.Val (ref Self) ->
       M.Val (mut_ref Formatter.t) ->
-      M (M.Val ltac:(Result));
+      M ltac:(Result);
   }.
 End Display.
 
@@ -54,7 +54,7 @@ Module Debug.
     fmt :
       M.Val (ref Self) ->
       M.Val (mut_ref Formatter.t) ->
-      M (M.Val ltac:(Result));
+      M ltac:(Result);
   }.
 End Debug.
 

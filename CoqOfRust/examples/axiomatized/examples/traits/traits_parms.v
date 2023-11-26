@@ -96,7 +96,7 @@ Section Impl_traits_parms_SomeTrait_for_traits_parms_SomeOtherType_t.
   (*
       fn some_fn() {}
   *)
-  Parameter some_fn : M (M.Val unit).
+  Parameter some_fn : M unit.
   
   Global Instance AssociatedFunction_some_fn :
     Notations.DoubleColon ltac:(Self) "some_fn" := {

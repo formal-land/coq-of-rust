@@ -7,7 +7,7 @@ Require Import CoqOfRust.CoqOfRust.
             println!("You called {:?}()", stringify!($func_name));
         }
 *)
-Parameter foo : M (M.Val unit).
+Parameter foo : M unit.
 
 (*
         fn $func_name() {
@@ -15,7 +15,7 @@ Parameter foo : M (M.Val unit).
             println!("You called {:?}()", stringify!($func_name));
         }
 *)
-Parameter bar : M (M.Val unit).
+Parameter bar : M unit.
 
 (*
 fn main() {
@@ -33,4 +33,4 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : M (M.Val unit).
+Parameter main : M unit.

@@ -32,7 +32,7 @@ Section Impl_associated_functions_and_methods_Point_t.
           Point { y: 0.0, x: 1.0 }
       }
   *)
-  Definition origin : M (M.Val associated_functions_and_methods.Point.t) :=
+  Definition origin : M associated_functions_and_methods.Point.t :=
     M.function_body
       (let* α0 : ltac:(refine (M.Val f64.t)) := M.alloc 0 (* 0.0 *) in
       let* α1 := M.read α0 in
@@ -57,7 +57,7 @@ Section Impl_associated_functions_and_methods_Point_t.
   Definition new
       (x : M.Val f64.t)
       (y : M.Val f64.t)
-      : M (M.Val associated_functions_and_methods.Point.t) :=
+      : M associated_functions_and_methods.Point.t :=
     M.function_body
       (let* α0 := M.read x in
       let* α1 := M.read y in
@@ -107,7 +107,7 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
   *)
   Definition get_p1
       (self : M.Val (ref ltac:(Self)))
-      : M (M.Val associated_functions_and_methods.Point.t) :=
+      : M associated_functions_and_methods.Point.t :=
     M.function_body
       (let* α0 :
           ltac:(refine (M.Val associated_functions_and_methods.Rectangle.t)) :=
@@ -130,7 +130,7 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
           ((x1 - x2) * (y1 - y2)).abs()
       }
   *)
-  Definition area (self : M.Val (ref ltac:(Self))) : M (M.Val f64.t) :=
+  Definition area (self : M.Val (ref ltac:(Self))) : M f64.t :=
     M.function_body
       (let* '{|
             associated_functions_and_methods.Point.x := x1;
@@ -155,7 +155,8 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
       let* α0 : ltac:(refine (M.Val f64.t)) := BinOp.sub x1 x2 in
       let* α1 : ltac:(refine (M.Val f64.t)) := BinOp.sub y1 y2 in
       let* α2 : ltac:(refine (M.Val f64.t)) := BinOp.mul α0 α1 in
-      f64.t::["abs"] α2).
+      let* α3 := f64.t::["abs"] α2 in
+      M.alloc α3).
   
   Global Instance AssociatedFunction_area :
     Notations.DoubleColon ltac:(Self) "area" := {
@@ -170,7 +171,7 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
           2.0 * ((x1 - x2).abs() + (y1 - y2).abs())
       }
   *)
-  Definition perimeter (self : M.Val (ref ltac:(Self))) : M (M.Val f64.t) :=
+  Definition perimeter (self : M.Val (ref ltac:(Self))) : M f64.t :=
     M.function_body
       (let* '{|
             associated_functions_and_methods.Point.x := x1;
@@ -194,11 +195,13 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
         M.copy α0.["p2"] in
       let* α0 : ltac:(refine (M.Val f64.t)) := M.alloc 2 (* 2.0 *) in
       let* α1 : ltac:(refine (M.Val f64.t)) := BinOp.sub x1 x2 in
-      let* α2 : ltac:(refine (M.Val f64.t)) := f64.t::["abs"] α1 in
-      let* α3 : ltac:(refine (M.Val f64.t)) := BinOp.sub y1 y2 in
-      let* α4 : ltac:(refine (M.Val f64.t)) := f64.t::["abs"] α3 in
-      let* α5 : ltac:(refine (M.Val f64.t)) := BinOp.add α2 α4 in
-      BinOp.mul α0 α5).
+      let* α2 := f64.t::["abs"] α1 in
+      let* α3 : ltac:(refine (M.Val f64.t)) := M.alloc α2 in
+      let* α4 : ltac:(refine (M.Val f64.t)) := BinOp.sub y1 y2 in
+      let* α5 := f64.t::["abs"] α4 in
+      let* α6 : ltac:(refine (M.Val f64.t)) := M.alloc α5 in
+      let* α7 : ltac:(refine (M.Val f64.t)) := BinOp.add α3 α6 in
+      BinOp.mul α0 α7).
   
   Global Instance AssociatedFunction_perimeter :
     Notations.DoubleColon ltac:(Self) "perimeter" := {
@@ -218,7 +221,7 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
       (self : M.Val (mut_ref ltac:(Self)))
       (x : M.Val f64.t)
       (y : M.Val f64.t)
-      : M (M.Val unit) :=
+      : M unit :=
     M.function_body
       (let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 :
@@ -283,7 +286,7 @@ Section Impl_associated_functions_and_methods_Pair_t.
           // `first` and `second` go out of scope and get freed
       }
   *)
-  Definition destroy (self : M.Val ltac:(Self)) : M (M.Val unit) :=
+  Definition destroy (self : M.Val ltac:(Self)) : M unit :=
     M.function_body
       (let* 'associated_functions_and_methods.Pair.Build_t first second :
           ltac:(refine (M.Val associated_functions_and_methods.Pair.t)) :=
@@ -301,25 +304,29 @@ Section Impl_associated_functions_and_methods_Pair_t.
               ltac:(refine
                 (M.Val (ref (alloc.boxed.Box.t i32.t alloc.alloc.Global.t)))) :=
             borrow first in
-          let* α4 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
-            core.fmt.rt.Argument.t::["new_display"] α3 in
-          let* α5 :
+          let* α4 := core.fmt.rt.Argument.t::["new_display"] α3 in
+          let* α5 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
+            M.alloc α4 in
+          let* α6 :
               ltac:(refine
                 (M.Val (ref (alloc.boxed.Box.t i32.t alloc.alloc.Global.t)))) :=
             borrow second in
-          let* α6 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
-            core.fmt.rt.Argument.t::["new_display"] α5 in
-          let* α7 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
-            M.alloc [ α4; α6 ] in
-          let* α8 :
+          let* α7 := core.fmt.rt.Argument.t::["new_display"] α6 in
+          let* α8 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
+            M.alloc α7 in
+          let* α9 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
+            M.alloc [ α5; α8 ] in
+          let* α10 :
               ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
-            borrow α7 in
-          let* α9 :
+            borrow α9 in
+          let* α11 :
               ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
-            pointer_coercion "Unsize" α8 in
-          let* α10 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-            core.fmt.Arguments.t::["new_v1"] α2 α9 in
-          std.io.stdio._print α10 in
+            pointer_coercion "Unsize" α10 in
+          let* α12 := core.fmt.Arguments.t::["new_v1"] α2 α11 in
+          let* α13 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
+            M.alloc α12 in
+          let* α14 := std.io.stdio._print α13 in
+          M.alloc α14 in
         M.alloc tt in
       M.alloc tt).
   
@@ -367,24 +374,18 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M (M.Val unit) :=
+Definition main : M unit :=
   M.function_body
     (let* rectangle :
         ltac:(refine (M.Val associated_functions_and_methods.Rectangle.t)) :=
-      let* α0 :
-          ltac:(refine (M.Val associated_functions_and_methods.Point.t)) :=
-        associated_functions_and_methods.Point.t::["origin"] in
-      let* α1 := M.read α0 in
-      let* α2 : ltac:(refine (M.Val f64.t)) := M.alloc 3 (* 3.0 *) in
-      let* α3 : ltac:(refine (M.Val f64.t)) := M.alloc 4 (* 4.0 *) in
-      let* α4 :
-          ltac:(refine (M.Val associated_functions_and_methods.Point.t)) :=
-        associated_functions_and_methods.Point.t::["new"] α2 α3 in
-      let* α5 := M.read α4 in
+      let* α0 := associated_functions_and_methods.Point.t::["origin"] in
+      let* α1 : ltac:(refine (M.Val f64.t)) := M.alloc 3 (* 3.0 *) in
+      let* α2 : ltac:(refine (M.Val f64.t)) := M.alloc 4 (* 4.0 *) in
+      let* α3 := associated_functions_and_methods.Point.t::["new"] α1 α2 in
       M.alloc
         {|
-          associated_functions_and_methods.Rectangle.p1 := α1;
-          associated_functions_and_methods.Rectangle.p2 := α5;
+          associated_functions_and_methods.Rectangle.p1 := α0;
+          associated_functions_and_methods.Rectangle.p2 := α3;
         |} in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
@@ -399,20 +400,22 @@ Definition main : M (M.Val unit) :=
             ltac:(refine
               (M.Val (ref associated_functions_and_methods.Rectangle.t))) :=
           borrow rectangle in
-        let* α4 : ltac:(refine (M.Val f64.t)) :=
+        let* α4 :=
           associated_functions_and_methods.Rectangle.t::["perimeter"] α3 in
-        let* α5 : ltac:(refine (M.Val (ref f64.t))) := borrow α4 in
-        let* α6 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
-          core.fmt.rt.Argument.t::["new_display"] α5 in
-        let* α7 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
-          M.alloc [ α6 ] in
-        let* α8 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
-          borrow α7 in
-        let* α9 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
-          pointer_coercion "Unsize" α8 in
-        let* α10 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-          core.fmt.Arguments.t::["new_v1"] α2 α9 in
-        std.io.stdio._print α10 in
+        let* α5 : ltac:(refine (M.Val f64.t)) := M.alloc α4 in
+        let* α6 : ltac:(refine (M.Val (ref f64.t))) := borrow α5 in
+        let* α7 := core.fmt.rt.Argument.t::["new_display"] α6 in
+        let* α8 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) := M.alloc α7 in
+        let* α9 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
+          M.alloc [ α8 ] in
+        let* α10 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
+          borrow α9 in
+        let* α11 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
+          pointer_coercion "Unsize" α10 in
+        let* α12 := core.fmt.Arguments.t::["new_v1"] α2 α11 in
+        let* α13 : ltac:(refine (M.Val core.fmt.Arguments.t)) := M.alloc α12 in
+        let* α14 := std.io.stdio._print α13 in
+        M.alloc α14 in
       M.alloc tt in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
@@ -427,37 +430,32 @@ Definition main : M (M.Val unit) :=
             ltac:(refine
               (M.Val (ref associated_functions_and_methods.Rectangle.t))) :=
           borrow rectangle in
-        let* α4 : ltac:(refine (M.Val f64.t)) :=
-          associated_functions_and_methods.Rectangle.t::["area"] α3 in
-        let* α5 : ltac:(refine (M.Val (ref f64.t))) := borrow α4 in
-        let* α6 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
-          core.fmt.rt.Argument.t::["new_display"] α5 in
-        let* α7 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
-          M.alloc [ α6 ] in
-        let* α8 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
-          borrow α7 in
-        let* α9 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
-          pointer_coercion "Unsize" α8 in
-        let* α10 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-          core.fmt.Arguments.t::["new_v1"] α2 α9 in
-        std.io.stdio._print α10 in
+        let* α4 := associated_functions_and_methods.Rectangle.t::["area"] α3 in
+        let* α5 : ltac:(refine (M.Val f64.t)) := M.alloc α4 in
+        let* α6 : ltac:(refine (M.Val (ref f64.t))) := borrow α5 in
+        let* α7 := core.fmt.rt.Argument.t::["new_display"] α6 in
+        let* α8 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) := M.alloc α7 in
+        let* α9 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
+          M.alloc [ α8 ] in
+        let* α10 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
+          borrow α9 in
+        let* α11 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
+          pointer_coercion "Unsize" α10 in
+        let* α12 := core.fmt.Arguments.t::["new_v1"] α2 α11 in
+        let* α13 : ltac:(refine (M.Val core.fmt.Arguments.t)) := M.alloc α12 in
+        let* α14 := std.io.stdio._print α13 in
+        M.alloc α14 in
       M.alloc tt in
     let* square :
         ltac:(refine (M.Val associated_functions_and_methods.Rectangle.t)) :=
-      let* α0 :
-          ltac:(refine (M.Val associated_functions_and_methods.Point.t)) :=
-        associated_functions_and_methods.Point.t::["origin"] in
-      let* α1 := M.read α0 in
+      let* α0 := associated_functions_and_methods.Point.t::["origin"] in
+      let* α1 : ltac:(refine (M.Val f64.t)) := M.alloc 1 (* 1.0 *) in
       let* α2 : ltac:(refine (M.Val f64.t)) := M.alloc 1 (* 1.0 *) in
-      let* α3 : ltac:(refine (M.Val f64.t)) := M.alloc 1 (* 1.0 *) in
-      let* α4 :
-          ltac:(refine (M.Val associated_functions_and_methods.Point.t)) :=
-        associated_functions_and_methods.Point.t::["new"] α2 α3 in
-      let* α5 := M.read α4 in
+      let* α3 := associated_functions_and_methods.Point.t::["new"] α1 α2 in
       M.alloc
         {|
-          associated_functions_and_methods.Rectangle.p1 := α1;
-          associated_functions_and_methods.Rectangle.p2 := α5;
+          associated_functions_and_methods.Rectangle.p1 := α0;
+          associated_functions_and_methods.Rectangle.p2 := α3;
         |} in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* α0 :
@@ -466,21 +464,16 @@ Definition main : M (M.Val unit) :=
         borrow_mut square in
       let* α1 : ltac:(refine (M.Val f64.t)) := M.alloc 1 (* 1.0 *) in
       let* α2 : ltac:(refine (M.Val f64.t)) := M.alloc 1 (* 1.0 *) in
-      associated_functions_and_methods.Rectangle.t::["translate"] α0 α1 α2 in
+      let* α3 :=
+        associated_functions_and_methods.Rectangle.t::["translate"] α0 α1 α2 in
+      M.alloc α3 in
     let* pair : ltac:(refine (M.Val associated_functions_and_methods.Pair.t)) :=
       let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 1 in
-      let* α1 :
-          ltac:(refine
-            (M.Val (alloc.boxed.Box.t i32.t alloc.alloc.Global.t))) :=
-        (alloc.boxed.Box.t i32.t alloc.alloc.Global.t)::["new"] α0 in
-      let* α2 := M.read α1 in
-      let* α3 : ltac:(refine (M.Val i32.t)) := M.alloc 2 in
-      let* α4 :
-          ltac:(refine
-            (M.Val (alloc.boxed.Box.t i32.t alloc.alloc.Global.t))) :=
-        (alloc.boxed.Box.t i32.t alloc.alloc.Global.t)::["new"] α3 in
-      let* α5 := M.read α4 in
-      M.alloc (associated_functions_and_methods.Pair.Build_t α2 α5) in
+      let* α1 := (alloc.boxed.Box.t i32.t alloc.alloc.Global.t)::["new"] α0 in
+      let* α2 : ltac:(refine (M.Val i32.t)) := M.alloc 2 in
+      let* α3 := (alloc.boxed.Box.t i32.t alloc.alloc.Global.t)::["new"] α2 in
+      M.alloc (associated_functions_and_methods.Pair.Build_t α1 α3) in
     let* _ : ltac:(refine (M.Val unit)) :=
-      associated_functions_and_methods.Pair.t::["destroy"] pair in
+      let* α0 := associated_functions_and_methods.Pair.t::["destroy"] pair in
+      M.alloc α0 in
     M.alloc tt).

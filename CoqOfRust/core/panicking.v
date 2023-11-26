@@ -2,7 +2,7 @@ Require Import CoqOfRust.lib.lib.
 Require CoqOfRust.core.fmt.
 
 (* pub fn panic(expr: &'static str) -> ! *)
-Parameter panic : M.Val (ref str.t) -> M (M.Val never.t).
+Parameter panic : M.Val (ref str.t) -> M never.t.
 
 Module AssertKind.
   Inductive t : Set :=
@@ -17,4 +17,4 @@ Parameter assert_failed :
   M.Val (ref T) ->
   M.Val (ref U) ->
   M.Val (option.Option.t fmt.Arguments.t) ->
-  M (M.Val never.t).
+  M never.t.

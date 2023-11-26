@@ -23,7 +23,7 @@ Section Impl_core_fmt_Debug_for_other_uses_of_question_mark_EmptyVec_t.
   Parameter fmt :
       (M.Val (ref ltac:(Self))) ->
         (M.Val (mut_ref core.fmt.Formatter.t)) ->
-        M (M.Val ltac:(core.fmt.Result)).
+        M ltac:(core.fmt.Result).
   
   Global Instance AssociatedFunction_fmt :
     Notations.DoubleColon ltac:(Self) "fmt" := {
@@ -48,7 +48,7 @@ Section Impl_core_fmt_Display_for_other_uses_of_question_mark_EmptyVec_t.
   Parameter fmt :
       (M.Val (ref ltac:(Self))) ->
         (M.Val (mut_ref core.fmt.Formatter.t)) ->
-        M (M.Val ltac:(core.fmt.Result)).
+        M ltac:(core.fmt.Result).
   
   Global Instance AssociatedFunction_fmt :
     Notations.DoubleColon ltac:(Self) "fmt" := {
@@ -84,7 +84,7 @@ fn double_first(vec: Vec<&str>) -> Result<i32> {
 *)
 Parameter double_first :
     (M.Val (alloc.vec.Vec.t (ref str.t) alloc.vec.Vec.Default.A)) ->
-      M (M.Val ltac:(other_uses_of_question_mark.Result i32.t)).
+      M ltac:(other_uses_of_question_mark.Result i32.t).
 
 (*
 fn print(result: Result<i32>) {
@@ -95,7 +95,7 @@ fn print(result: Result<i32>) {
 }
 *)
 Parameter print :
-    (M.Val ltac:(other_uses_of_question_mark.Result i32.t)) -> M (M.Val unit).
+    (M.Val ltac:(other_uses_of_question_mark.Result i32.t)) -> M unit.
 
 (*
 fn main() {
@@ -109,4 +109,4 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : M (M.Val unit).
+Parameter main : M unit.

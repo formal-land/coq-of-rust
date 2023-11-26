@@ -47,7 +47,7 @@ Section Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_t_A_B.
   Definition eq
       (self : M.Val (ref ltac:(Self)))
       (other : M.Val (ref (generics_phantom_type.PhantomTuple.t A B)))
-      : M (M.Val bool.t) :=
+      : M bool.t :=
     M.function_body
       (let* α0 :
           ltac:(refine (M.Val (generics_phantom_type.PhantomTuple.t A B))) :=
@@ -57,25 +57,27 @@ Section Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_t_A_B.
           ltac:(refine (M.Val (generics_phantom_type.PhantomTuple.t A B))) :=
         deref other in
       let* α3 : ltac:(refine (M.Val (ref A))) := borrow α2.["0"] in
-      let* α4 : ltac:(refine (M.Val bool.t)) :=
+      let* α4 :=
         (core.cmp.PartialEq.eq (Self := A) (Trait := ltac:(refine _))) α1 α3 in
-      let* α5 :
+      let* α5 : ltac:(refine (M.Val bool.t)) := M.alloc α4 in
+      let* α6 :
           ltac:(refine (M.Val (generics_phantom_type.PhantomTuple.t A B))) :=
         deref self in
-      let* α6 : ltac:(refine (M.Val (ref (core.marker.PhantomData.t B)))) :=
-        borrow α5.["1"] in
-      let* α7 :
+      let* α7 : ltac:(refine (M.Val (ref (core.marker.PhantomData.t B)))) :=
+        borrow α6.["1"] in
+      let* α8 :
           ltac:(refine (M.Val (generics_phantom_type.PhantomTuple.t A B))) :=
         deref other in
-      let* α8 : ltac:(refine (M.Val (ref (core.marker.PhantomData.t B)))) :=
-        borrow α7.["1"] in
-      let* α9 : ltac:(refine (M.Val bool.t)) :=
+      let* α9 : ltac:(refine (M.Val (ref (core.marker.PhantomData.t B)))) :=
+        borrow α8.["1"] in
+      let* α10 :=
         (core.cmp.PartialEq.eq
             (Self := core.marker.PhantomData.t B)
             (Trait := ltac:(refine _)))
-          α6
-          α8 in
-      BinOp.and α4 α9).
+          α7
+          α9 in
+      let* α11 : ltac:(refine (M.Val bool.t)) := M.alloc α10 in
+      BinOp.and α5 α11).
   
   Global Instance AssociatedFunction_eq :
     Notations.DoubleColon ltac:(Self) "eq" := {
@@ -145,7 +147,7 @@ Section Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_t_A_B.
   Definition eq
       (self : M.Val (ref ltac:(Self)))
       (other : M.Val (ref (generics_phantom_type.PhantomStruct.t A B)))
-      : M (M.Val bool.t) :=
+      : M bool.t :=
     M.function_body
       (let* α0 :
           ltac:(refine (M.Val (generics_phantom_type.PhantomStruct.t A B))) :=
@@ -155,25 +157,27 @@ Section Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_t_A_B.
           ltac:(refine (M.Val (generics_phantom_type.PhantomStruct.t A B))) :=
         deref other in
       let* α3 : ltac:(refine (M.Val (ref A))) := borrow α2.["first"] in
-      let* α4 : ltac:(refine (M.Val bool.t)) :=
+      let* α4 :=
         (core.cmp.PartialEq.eq (Self := A) (Trait := ltac:(refine _))) α1 α3 in
-      let* α5 :
+      let* α5 : ltac:(refine (M.Val bool.t)) := M.alloc α4 in
+      let* α6 :
           ltac:(refine (M.Val (generics_phantom_type.PhantomStruct.t A B))) :=
         deref self in
-      let* α6 : ltac:(refine (M.Val (ref (core.marker.PhantomData.t B)))) :=
-        borrow α5.["phantom"] in
-      let* α7 :
+      let* α7 : ltac:(refine (M.Val (ref (core.marker.PhantomData.t B)))) :=
+        borrow α6.["phantom"] in
+      let* α8 :
           ltac:(refine (M.Val (generics_phantom_type.PhantomStruct.t A B))) :=
         deref other in
-      let* α8 : ltac:(refine (M.Val (ref (core.marker.PhantomData.t B)))) :=
-        borrow α7.["phantom"] in
-      let* α9 : ltac:(refine (M.Val bool.t)) :=
+      let* α9 : ltac:(refine (M.Val (ref (core.marker.PhantomData.t B)))) :=
+        borrow α8.["phantom"] in
+      let* α10 :=
         (core.cmp.PartialEq.eq
             (Self := core.marker.PhantomData.t B)
             (Trait := ltac:(refine _)))
-          α6
-          α8 in
-      BinOp.and α4 α9).
+          α7
+          α9 in
+      let* α11 : ltac:(refine (M.Val bool.t)) := M.alloc α10 in
+      BinOp.and α5 α11).
   
   Global Instance AssociatedFunction_eq :
     Notations.DoubleColon ltac:(Self) "eq" := {
@@ -218,7 +222,7 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M (M.Val unit) :=
+Definition main : M unit :=
   M.function_body
     (let* _tuple1 :
         ltac:(refine

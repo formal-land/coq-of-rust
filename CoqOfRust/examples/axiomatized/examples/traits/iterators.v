@@ -45,7 +45,7 @@ Section Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci_t.
       }
   *)
   Parameter next :
-      (M.Val (mut_ref ltac:(Self))) -> M (M.Val (core.option.Option.t Item.t)).
+      (M.Val (mut_ref ltac:(Self))) -> M (core.option.Option.t Item.t).
   
   Global Instance AssociatedFunction_next :
     Notations.DoubleColon ltac:(Self) "next" := {
@@ -141,7 +141,7 @@ fn fibonacci() -> Fibonacci {
     Fibonacci { curr: 0, next: 1 }
 }
 *)
-Parameter fibonacci : M (M.Val iterators.Fibonacci.t).
+Parameter fibonacci : M iterators.Fibonacci.t.
 
 (*
 fn main() {
@@ -183,4 +183,4 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : M (M.Val unit).
+Parameter main : M unit.

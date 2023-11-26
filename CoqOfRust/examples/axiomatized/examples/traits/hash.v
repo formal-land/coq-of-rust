@@ -40,7 +40,7 @@ Section Impl_core_hash_Hash_for_hash_Person_t.
   *)
   Parameter hash :
       forall {__H : Set} {ℋ_0 : core.hash.Hasher.Trait __H},
-      (M.Val (ref ltac:(Self))) -> (M.Val (mut_ref __H)) -> M (M.Val unit).
+      (M.Val (ref ltac:(Self))) -> (M.Val (mut_ref __H)) -> M unit.
   
   Global Instance AssociatedFunction_hash
       {__H : Set}
@@ -66,7 +66,7 @@ fn calculate_hash<T: Hash>(t: &T) -> u64 {
 *)
 Parameter calculate_hash :
     forall {T : Set} {ℋ_0 : core.hash.Hash.Trait T},
-    (M.Val (ref T)) -> M (M.Val u64.t).
+    (M.Val (ref T)) -> M u64.t.
 
 (*
 fn main() {
@@ -85,4 +85,4 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : M (M.Val unit).
+Parameter main : M unit.

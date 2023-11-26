@@ -43,8 +43,8 @@ Section Impl_core_default_Default_for_lib_Mapping_t_K_V.
   
   Definition Self : Set := Mapping.t K V.
   
-  Definition default : M (M.Val (Mapping.t K V)) :=
-    M.alloc Mapping.empty.
+  Definition default : M (Mapping.t K V) :=
+    M.pure Mapping.empty.
   
   Global Instance AssociatedFunction_default :
     Notations.DoubleColon Self "default" := {
@@ -66,12 +66,12 @@ Section Impl_Mapping_t_K_V.
   Definition get
       (self : M.Val (ref Self))
       (key : M.Val (ref K))
-      : M (M.Val (core.option.Option.t V)) :=
+      : M (core.option.Option.t V) :=
     let* self : M.Val Self := deref self in
     let* self : Self := M.read self in
     let* key : M.Val K := deref key in
     let* key : K := M.read key in
-    M.alloc (Mapping.get key self).
+    M.pure (Mapping.get key self).
   
   Global Instance AssociatedFunction_get :
     Notations.DoubleColon Self "get" := {
@@ -82,13 +82,14 @@ Section Impl_Mapping_t_K_V.
       (self : M.Val (mut_ref Self))
       (key : M.Val K)
       (value : M.Val V)
-      : M (M.Val unit) :=
+      : M unit :=
     let* self := deref self in
     let* key := M.read key in
     let* value := M.read value in
     let* self_content := M.read self in
     let new_self := Ref.Imm (Mapping.insert key value self_content) in
-    assign self new_self.
+    let* _ := assign self new_self in
+    M.pure tt.
   
   Global Instance AssociatedFunction_insert :
     Notations.DoubleColon Self "insert" := {

@@ -26,7 +26,7 @@ Section Impl_core_convert_From_i32_t_for_from_Number_t.
           Number { value: item }
       }
   *)
-  Definition from (item : M.Val i32.t) : M (M.Val ltac:(Self)) :=
+  Definition from (item : M.Val i32.t) : M ltac:(Self) :=
     M.function_body
       (let* α0 := M.read item in
       M.alloc {| from.Number.value := α0; |}).
@@ -48,12 +48,14 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M (M.Val unit) :=
+Definition main : M unit :=
   M.function_body
     (let* _ : ltac:(refine (M.Val from.Number.t)) :=
       let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 30 in
-      (core.convert.From.from
-          (Self := from.Number.t)
-          (Trait := ltac:(refine _)))
-        α0 in
+      let* α1 :=
+        (core.convert.From.from
+            (Self := from.Number.t)
+            (Trait := ltac:(refine _)))
+          α0 in
+      M.alloc α1 in
     M.alloc tt).

@@ -4,6 +4,7 @@ use crate::env::*;
 use crate::expression::*;
 use crate::header::*;
 use crate::path::*;
+use crate::pattern::*;
 use crate::render::*;
 use crate::reorder::*;
 use crate::ty::*;
@@ -244,10 +245,12 @@ fn compile_fn_sig_and_body(
     default: &str,
 ) -> FnSigAndBody {
     let decl = fn_sig_and_body.fn_sig.decl;
+    let ret_ty = compile_fn_ret_ty(env, &decl.output);
+
     FnSigAndBody {
         args: get_args(env, fn_sig_and_body.body, decl.inputs, default),
-        ret_ty: compile_fn_ret_ty(env, &decl.output),
-        body: compile_function_body(env, fn_sig_and_body.body),
+        ret_ty: ret_ty.clone(),
+        body: compile_function_body(env, fn_sig_and_body.body, ret_ty),
     }
 }
 
@@ -735,19 +738,46 @@ fn get_body<'a>(tcx: &'a TyCtxt, body_id: &rustc_hir::BodyId) -> &'a rustc_hir::
 }
 
 // compiles the body of a function
-fn compile_function_body(env: &mut Env, body: &rustc_hir::Body) -> Option<Box<Expr>> {
+fn compile_function_body(
+    env: &mut Env,
+    body: &rustc_hir::Body,
+    ret_ty: Rc<CoqType>,
+) -> Option<Box<Expr>> {
     if env.axiomatize {
         return None;
     }
     let body = compile_hir_id(env, body.value.hir_id);
-    let ty = body.ty.clone();
-    Some(Box::new(Expr {
+    let has_return = body.has_return();
+    let body = Box::new(Expr {
         kind: ExprKind::MonadicOperator {
             name: "M.function_body".to_string(),
             arg: Box::new(body),
         },
-        ty,
-    }))
+        ty: None,
+    });
+
+    if has_return {
+        return Some(Box::new(
+            Stmt {
+                kind: StmtKind::Let {
+                    is_monadic: false,
+                    pattern: Box::new(Pattern::Variable("return_".to_string())),
+                    init: Box::new(Expr {
+                        kind: ExprKind::VarWithTy {
+                            path: Path::local("M.return_".to_string()),
+                            ty_name: "R".to_string(),
+                            ty: ret_ty,
+                        },
+                        ty: None,
+                    }),
+                    body: Box::new(body.stmt()),
+                },
+                ty: None,
+            }
+            .expr(),
+        ));
+    }
+    Some(body)
 }
 
 /// returns a list of pairs of argument names and their types
@@ -1054,7 +1084,7 @@ impl FnSigAndBody {
     fn mt(self) -> Self {
         FnSigAndBody {
             args: self.args,
-            ret_ty: Rc::new(CoqType::Monad(mt_ty(self.ret_ty).val())),
+            ret_ty: Rc::new(CoqType::Monad(mt_ty(self.ret_ty))),
             body: match self.body {
                 None => self.body,
                 Some(body) => {

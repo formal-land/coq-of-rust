@@ -23,7 +23,7 @@ Section Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber_t.
   Parameter fmt :
       (M.Val (ref ltac:(Self))) ->
         (M.Val (mut_ref core.fmt.Formatter.t)) ->
-        M (M.Val ltac:(core.fmt.Result)).
+        M ltac:(core.fmt.Result).
   
   Global Instance AssociatedFunction_fmt :
     Notations.DoubleColon ltac:(Self) "fmt" := {
@@ -55,7 +55,7 @@ Section Impl_core_cmp_PartialEq_for_try_from_and_try_into_EvenNumber_t.
   Parameter eq :
       (M.Val (ref ltac:(Self))) ->
         (M.Val (ref try_from_and_try_into.EvenNumber.t)) ->
-        M (M.Val bool.t).
+        M bool.t.
   
   Global Instance AssociatedFunction_eq :
     Notations.DoubleColon ltac:(Self) "eq" := {
@@ -90,7 +90,7 @@ Section Impl_core_convert_TryFrom_i32_t_for_try_from_and_try_into_EvenNumber_t.
       }
   *)
   Parameter try_from :
-      (M.Val i32.t) -> M (M.Val (core.result.Result.t ltac:(Self) Error.t)).
+      (M.Val i32.t) -> M (core.result.Result.t ltac:(Self) Error.t).
   
   Global Instance AssociatedFunction_try_from :
     Notations.DoubleColon ltac:(Self) "try_from" := {
@@ -120,4 +120,4 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : M (M.Val unit).
+Parameter main : M unit.

@@ -25,7 +25,7 @@ Section Impl_core_ops_drop_Drop_for_drop_Droppable_t.
           println!("> Dropping {}", self.name);
       }
   *)
-  Definition drop (self : M.Val (mut_ref ltac:(Self))) : M (M.Val unit) :=
+  Definition drop (self : M.Val (mut_ref ltac:(Self))) : M unit :=
     M.function_body
       (let* _ : ltac:(refine (M.Val unit)) :=
         let* _ : ltac:(refine (M.Val unit)) :=
@@ -39,19 +39,22 @@ Section Impl_core_ops_drop_Drop_for_drop_Droppable_t.
           let* α3 : ltac:(refine (M.Val drop.Droppable.t)) := deref self in
           let* α4 : ltac:(refine (M.Val (ref (ref str.t)))) :=
             borrow α3.["name"] in
-          let* α5 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
-            core.fmt.rt.Argument.t::["new_display"] α4 in
-          let* α6 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
-            M.alloc [ α5 ] in
-          let* α7 :
-              ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
-            borrow α6 in
+          let* α5 := core.fmt.rt.Argument.t::["new_display"] α4 in
+          let* α6 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
+            M.alloc α5 in
+          let* α7 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
+            M.alloc [ α6 ] in
           let* α8 :
+              ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
+            borrow α7 in
+          let* α9 :
               ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
-            pointer_coercion "Unsize" α7 in
-          let* α9 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-            core.fmt.Arguments.t::["new_v1"] α2 α8 in
-          std.io.stdio._print α9 in
+            pointer_coercion "Unsize" α8 in
+          let* α10 := core.fmt.Arguments.t::["new_v1"] α2 α9 in
+          let* α11 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
+            M.alloc α10 in
+          let* α12 := std.io.stdio._print α11 in
+          M.alloc α12 in
         M.alloc tt in
       M.alloc tt).
   
@@ -98,7 +101,7 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M (M.Val unit) :=
+Definition main : M unit :=
   M.function_body
     (let* _a : ltac:(refine (M.Val drop.Droppable.t)) :=
       let* α0 := M.read (mk_str "a") in
@@ -123,9 +126,11 @@ Definition main : M (M.Val unit) :=
               borrow α0 in
             let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
               pointer_coercion "Unsize" α1 in
-            let* α3 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-              core.fmt.Arguments.t::["new_const"] α2 in
-            std.io.stdio._print α3 in
+            let* α3 := core.fmt.Arguments.t::["new_const"] α2 in
+            let* α4 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
+              M.alloc α3 in
+            let* α5 := std.io.stdio._print α4 in
+            M.alloc α5 in
           M.alloc tt in
         M.alloc tt in
       let* _ : ltac:(refine (M.Val unit)) :=
@@ -137,9 +142,10 @@ Definition main : M (M.Val unit) :=
             borrow α0 in
           let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
             pointer_coercion "Unsize" α1 in
-          let* α3 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-            core.fmt.Arguments.t::["new_const"] α2 in
-          std.io.stdio._print α3 in
+          let* α3 := core.fmt.Arguments.t::["new_const"] α2 in
+          let* α4 : ltac:(refine (M.Val core.fmt.Arguments.t)) := M.alloc α3 in
+          let* α5 := std.io.stdio._print α4 in
+          M.alloc α5 in
         M.alloc tt in
       let* _ : ltac:(refine (M.Val unit)) :=
         let* _ : ltac:(refine (M.Val unit)) :=
@@ -150,9 +156,10 @@ Definition main : M (M.Val unit) :=
             borrow α0 in
           let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
             pointer_coercion "Unsize" α1 in
-          let* α3 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-            core.fmt.Arguments.t::["new_const"] α2 in
-          std.io.stdio._print α3 in
+          let* α3 := core.fmt.Arguments.t::["new_const"] α2 in
+          let* α4 : ltac:(refine (M.Val core.fmt.Arguments.t)) := M.alloc α3 in
+          let* α5 := std.io.stdio._print α4 in
+          M.alloc α5 in
         M.alloc tt in
       M.alloc tt in
     let* _ : ltac:(refine (M.Val unit)) :=
@@ -164,11 +171,14 @@ Definition main : M (M.Val unit) :=
           borrow α0 in
         let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
-        let* α3 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-          core.fmt.Arguments.t::["new_const"] α2 in
-        std.io.stdio._print α3 in
+        let* α3 := core.fmt.Arguments.t::["new_const"] α2 in
+        let* α4 : ltac:(refine (M.Val core.fmt.Arguments.t)) := M.alloc α3 in
+        let* α5 := std.io.stdio._print α4 in
+        M.alloc α5 in
       M.alloc tt in
-    let* _ : ltac:(refine (M.Val unit)) := core.mem.drop _a in
+    let* _ : ltac:(refine (M.Val unit)) :=
+      let* α0 := core.mem.drop _a in
+      M.alloc α0 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
@@ -178,8 +188,9 @@ Definition main : M (M.Val unit) :=
           borrow α0 in
         let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
-        let* α3 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-          core.fmt.Arguments.t::["new_const"] α2 in
-        std.io.stdio._print α3 in
+        let* α3 := core.fmt.Arguments.t::["new_const"] α2 in
+        let* α4 : ltac:(refine (M.Val core.fmt.Arguments.t)) := M.alloc α3 in
+        let* α5 := std.io.stdio._print α4 in
+        M.alloc α5 in
       M.alloc tt in
     M.alloc tt).

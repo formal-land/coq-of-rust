@@ -32,7 +32,7 @@ Section Impl_associated_functions_and_methods_Point_t.
           Point { y: 0.0, x: 1.0 }
       }
   *)
-  Parameter origin : M (M.Val associated_functions_and_methods.Point.t).
+  Parameter origin : M associated_functions_and_methods.Point.t.
   
   Global Instance AssociatedFunction_origin :
     Notations.DoubleColon ltac:(Self) "origin" := {
@@ -47,7 +47,7 @@ Section Impl_associated_functions_and_methods_Point_t.
   Parameter new :
       (M.Val f64.t) ->
         (M.Val f64.t) ->
-        M (M.Val associated_functions_and_methods.Point.t).
+        M associated_functions_and_methods.Point.t.
   
   Global Instance AssociatedFunction_new :
     Notations.DoubleColon ltac:(Self) "new" := {
@@ -88,8 +88,7 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
       }
   *)
   Parameter get_p1 :
-      (M.Val (ref ltac:(Self))) ->
-        M (M.Val associated_functions_and_methods.Point.t).
+      (M.Val (ref ltac:(Self))) -> M associated_functions_and_methods.Point.t.
   
   Global Instance AssociatedFunction_get_p1 :
     Notations.DoubleColon ltac:(Self) "get_p1" := {
@@ -107,7 +106,7 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
           ((x1 - x2) * (y1 - y2)).abs()
       }
   *)
-  Parameter area : (M.Val (ref ltac:(Self))) -> M (M.Val f64.t).
+  Parameter area : (M.Val (ref ltac:(Self))) -> M f64.t.
   
   Global Instance AssociatedFunction_area :
     Notations.DoubleColon ltac:(Self) "area" := {
@@ -122,7 +121,7 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
           2.0 * ((x1 - x2).abs() + (y1 - y2).abs())
       }
   *)
-  Parameter perimeter : (M.Val (ref ltac:(Self))) -> M (M.Val f64.t).
+  Parameter perimeter : (M.Val (ref ltac:(Self))) -> M f64.t.
   
   Global Instance AssociatedFunction_perimeter :
     Notations.DoubleColon ltac:(Self) "perimeter" := {
@@ -139,10 +138,7 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
       }
   *)
   Parameter translate :
-      (M.Val (mut_ref ltac:(Self))) ->
-        (M.Val f64.t) ->
-        (M.Val f64.t) ->
-        M (M.Val unit).
+      (M.Val (mut_ref ltac:(Self))) -> (M.Val f64.t) -> (M.Val f64.t) -> M unit.
   
   Global Instance AssociatedFunction_translate :
     Notations.DoubleColon ltac:(Self) "translate" := {
@@ -181,7 +177,7 @@ Section Impl_associated_functions_and_methods_Pair_t.
           // `first` and `second` go out of scope and get freed
       }
   *)
-  Parameter destroy : (M.Val ltac:(Self)) -> M (M.Val unit).
+  Parameter destroy : (M.Val ltac:(Self)) -> M unit.
   
   Global Instance AssociatedFunction_destroy :
     Notations.DoubleColon ltac:(Self) "destroy" := {
@@ -227,4 +223,4 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : M (M.Val unit).
+Parameter main : M unit.

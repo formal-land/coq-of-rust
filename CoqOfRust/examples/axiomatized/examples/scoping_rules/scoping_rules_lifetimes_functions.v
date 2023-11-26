@@ -6,30 +6,28 @@ fn print_one<'a>(x: &'a i32) {
     println!("`print_one`: x is {}", x);
 }
 *)
-Parameter print_one : (M.Val (ref i32.t)) -> M (M.Val unit).
+Parameter print_one : (M.Val (ref i32.t)) -> M unit.
 
 (*
 fn add_one<'a>(x: &'a mut i32) {
     *x += 1;
 }
 *)
-Parameter add_one : (M.Val (mut_ref i32.t)) -> M (M.Val unit).
+Parameter add_one : (M.Val (mut_ref i32.t)) -> M unit.
 
 (*
 fn print_multi<'a, 'b>(x: &'a i32, y: &'b i32) {
     println!("`print_multi`: x is {}, y is {}", x, y);
 }
 *)
-Parameter print_multi :
-    (M.Val (ref i32.t)) -> (M.Val (ref i32.t)) -> M (M.Val unit).
+Parameter print_multi : (M.Val (ref i32.t)) -> (M.Val (ref i32.t)) -> M unit.
 
 (*
 fn pass_x<'a, 'b>(x: &'a i32, _: &'b i32) -> &'a i32 {
     x
 }
 *)
-Parameter pass_x :
-    (M.Val (ref i32.t)) -> (M.Val (ref i32.t)) -> M (M.Val (ref i32.t)).
+Parameter pass_x : (M.Val (ref i32.t)) -> (M.Val (ref i32.t)) -> M (ref i32.t).
 
 (*
 fn main() {
@@ -48,4 +46,4 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : M (M.Val unit).
+Parameter main : M unit.

@@ -13,7 +13,7 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M (M.Val unit) :=
+Definition main : M unit :=
   M.function_body
     (let* x : ltac:(refine (M.Val u64.t)) :=
       let* α0 : ltac:(refine (M.Val u64.t)) := M.alloc 3 in
@@ -52,7 +52,8 @@ Definition main : M (M.Val unit) :=
                 ltac:(refine
                   (M.Val (core.option.Option.t core.fmt.Arguments.t))) :=
               M.alloc core.option.Option.None in
-            core.panicking.assert_failed kind α1 α3 α4 in
+            let* α5 := core.panicking.assert_failed kind α1 α3 α4 in
+            M.alloc α5 in
           let* α0 : ltac:(refine (M.Val unit)) := M.alloc tt in
           never_to_any α0
         else

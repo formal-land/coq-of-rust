@@ -25,7 +25,7 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : M (M.Val unit).
+Parameter main : M unit.
 
 (*
     fn mul(a: u64, b: u64) -> u128 {
@@ -46,4 +46,4 @@ Parameter main : M (M.Val unit).
         ((hi as u128) << 64) + lo as u128
     }
 *)
-Parameter mul : (M.Val u64.t) -> (M.Val u64.t) -> M (M.Val u128.t).
+Parameter mul : (M.Val u64.t) -> (M.Val u64.t) -> M u128.t.

@@ -19,7 +19,7 @@ Module checked.
     Parameter fmt :
         (M.Val (ref ltac:(Self))) ->
           (M.Val (mut_ref core.fmt.Formatter.t)) ->
-          M (M.Val ltac:(core.fmt.Result)).
+          M ltac:(core.fmt.Result).
     
     Global Instance AssociatedFunction_fmt :
       Notations.DoubleColon ltac:(Self) "fmt" := {
@@ -48,9 +48,7 @@ Module checked.
       }
   *)
   Parameter div :
-      (M.Val f64.t) ->
-        (M.Val f64.t) ->
-        M (M.Val ltac:(result.checked.MathResult)).
+      (M.Val f64.t) -> (M.Val f64.t) -> M ltac:(result.checked.MathResult).
   
   (*
       pub fn sqrt(x: f64) -> MathResult {
@@ -61,7 +59,7 @@ Module checked.
           }
       }
   *)
-  Parameter sqrt : (M.Val f64.t) -> M (M.Val ltac:(result.checked.MathResult)).
+  Parameter sqrt : (M.Val f64.t) -> M ltac:(result.checked.MathResult).
   
   (*
       pub fn ln(x: f64) -> MathResult {
@@ -72,7 +70,7 @@ Module checked.
           }
       }
   *)
-  Parameter ln : (M.Val f64.t) -> M (M.Val ltac:(result.checked.MathResult)).
+  Parameter ln : (M.Val f64.t) -> M ltac:(result.checked.MathResult).
 End checked.
 
 Module MathError.
@@ -92,7 +90,7 @@ Section Impl_core_fmt_Debug_for_result_checked_MathError_t.
   Parameter fmt :
       (M.Val (ref ltac:(Self))) ->
         (M.Val (mut_ref core.fmt.Formatter.t)) ->
-        M (M.Val ltac:(core.fmt.Result)).
+        M ltac:(core.fmt.Result).
   
   Global Instance AssociatedFunction_fmt :
     Notations.DoubleColon ltac:(Self) "fmt" := {
@@ -121,9 +119,7 @@ Ltac MathResult :=
     }
 *)
 Parameter div :
-    (M.Val f64.t) ->
-      (M.Val f64.t) ->
-      M (M.Val ltac:(result.checked.MathResult)).
+    (M.Val f64.t) -> (M.Val f64.t) -> M ltac:(result.checked.MathResult).
 
 (*
     pub fn sqrt(x: f64) -> MathResult {
@@ -134,7 +130,7 @@ Parameter div :
         }
     }
 *)
-Parameter sqrt : (M.Val f64.t) -> M (M.Val ltac:(result.checked.MathResult)).
+Parameter sqrt : (M.Val f64.t) -> M ltac:(result.checked.MathResult).
 
 (*
     pub fn ln(x: f64) -> MathResult {
@@ -145,7 +141,7 @@ Parameter sqrt : (M.Val f64.t) -> M (M.Val ltac:(result.checked.MathResult)).
         }
     }
 *)
-Parameter ln : (M.Val f64.t) -> M (M.Val ltac:(result.checked.MathResult)).
+Parameter ln : (M.Val f64.t) -> M ltac:(result.checked.MathResult).
 
 (*
 fn op(x: f64, y: f64) -> f64 {
@@ -162,7 +158,7 @@ fn op(x: f64, y: f64) -> f64 {
     }
 }
 *)
-Parameter op : (M.Val f64.t) -> (M.Val f64.t) -> M (M.Val f64.t).
+Parameter op : (M.Val f64.t) -> (M.Val f64.t) -> M f64.t.
 
 (*
 fn main() {
@@ -171,4 +167,4 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : M (M.Val unit).
+Parameter main : M unit.

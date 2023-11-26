@@ -13,7 +13,7 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M (M.Val unit) := M.function_body (M.alloc tt).
+Definition main : M unit := M.function_body (M.alloc tt).
 
 (*
     fn apply<F>(f: F)
@@ -27,13 +27,15 @@ Definition apply
     {F : Set}
     {ℋ_0 : core.ops.function.FnOnce.Trait F (Args := unit)}
     (f : M.Val F)
-    : M (M.Val unit) :=
+    : M unit :=
   M.function_body
     (let* _ : ltac:(refine (M.Val unit)) :=
       let* α0 : ltac:(refine (M.Val unit)) := M.alloc tt in
-      (core.ops.function.FnOnce.call_once
-          (Self := F)
-          (Trait := ltac:(refine _)))
-        f
-        α0 in
+      let* α1 :=
+        (core.ops.function.FnOnce.call_once
+            (Self := F)
+            (Trait := ltac:(refine _)))
+          f
+          α0 in
+      M.alloc α1 in
     M.alloc tt).

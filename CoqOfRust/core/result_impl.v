@@ -13,7 +13,7 @@ Module Impl_PartialEq_for_Result.
       `{core.cmp.PartialEq.Trait T} `{core.cmp.PartialEq.Trait E},
       M.Val (ref (Result T E)) ->
       M.Val (ref (Result T E)) ->
-      M (M.Val bool).
+      M bool.
 
   Global Instance I {T T_Rhs E E_Rhs : Set}
     {_ : core.cmp.PartialEq.Trait T (Rhs := T_Rhs)}

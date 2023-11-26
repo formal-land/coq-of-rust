@@ -35,7 +35,7 @@ Section Impl_generics_new_type_idiom_Years_t.
       }
   *)
   Parameter to_days :
-      (M.Val (ref ltac:(Self))) -> M (M.Val generics_new_type_idiom.Days.t).
+      (M.Val (ref ltac:(Self))) -> M generics_new_type_idiom.Days.t.
   
   Global Instance AssociatedFunction_to_days :
     Notations.DoubleColon ltac:(Self) "to_days" := {
@@ -54,7 +54,7 @@ Section Impl_generics_new_type_idiom_Days_t.
       }
   *)
   Parameter to_years :
-      (M.Val (ref ltac:(Self))) -> M (M.Val generics_new_type_idiom.Years.t).
+      (M.Val (ref ltac:(Self))) -> M generics_new_type_idiom.Years.t.
   
   Global Instance AssociatedFunction_to_years :
     Notations.DoubleColon ltac:(Self) "to_years" := {
@@ -69,7 +69,7 @@ fn old_enough(age: &Years) -> bool {
 }
 *)
 Parameter old_enough :
-    (M.Val (ref generics_new_type_idiom.Years.t)) -> M (M.Val bool.t).
+    (M.Val (ref generics_new_type_idiom.Years.t)) -> M bool.t.
 
 (*
 fn main() {
@@ -81,4 +81,4 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : M (M.Val unit).
+Parameter main : M unit.

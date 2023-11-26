@@ -49,7 +49,7 @@ Lemma run_total_supply
     env
     (erc20.Impl_erc20_Erc20_t_2.total_supply self fuel)
     state
-    (inl (Ref.Imm (Simulations.erc20.total_supply storage)))
+    (inl (Simulations.erc20.total_supply storage))
     state.
 Proof.
   unfold erc20.Impl_erc20_Erc20_t_2.total_supply.
@@ -69,7 +69,7 @@ Lemma run_balance_of_impl
     env
     (erc20.Impl_erc20_Erc20_t_2.balance_of_impl self val_owner fuel)
     state
-    (inl (Ref.Imm (Simulations.erc20.balance_of_impl storage owner)))
+    (inl (Simulations.erc20.balance_of_impl storage owner))
     state.
 Proof.
   unfold erc20.Impl_erc20_Erc20_t_2.balance_of_impl,
@@ -95,7 +95,7 @@ Lemma run_balance_of
     env
     (erc20.Impl_erc20_Erc20_t_2.balance_of self val_owner fuel)
     state
-    (inl (Ref.Imm (Simulations.erc20.balance_of storage owner)))
+    (inl (Simulations.erc20.balance_of storage owner))
     state.
 Proof.
   unfold erc20.Impl_erc20_Erc20_t_2.balance_of,
@@ -121,7 +121,7 @@ Lemma run_allowance_impl
     env
     (erc20.Impl_erc20_Erc20_t_2.allowance_impl self val_owner val_spender fuel)
     state
-    (inl (Ref.Imm (Simulations.erc20.allowance_impl storage owner spender)))
+    (inl (Simulations.erc20.allowance_impl storage owner spender))
     state.
 Proof.
   unfold erc20.Impl_erc20_Erc20_t_2.allowance_impl,
@@ -150,7 +150,7 @@ Lemma run_allowance
     env
     (erc20.Impl_erc20_Erc20_t_2.allowance self val_owner val_spender fuel)
     state
-    (inl (Ref.Imm (Simulations.erc20.allowance storage owner spender)))
+    (inl (Simulations.erc20.allowance storage owner spender))
     state.
 Proof.
   unfold erc20.Impl_erc20_Erc20_t_2.allowance,
@@ -180,7 +180,7 @@ Lemma run_transfer_from_to
     env
     (erc20.Impl_erc20_Erc20_t_2.transfer_from_to self val_from val_to val_value fuel)
     state
-    (inl (Ref.Imm (fst simulation)))
+    (inl (fst simulation))
     (Some (snd simulation)).
 Proof.
   unfold erc20.Impl_erc20_Erc20_t_2.transfer_from_to,
@@ -212,7 +212,7 @@ Lemma run_transfer
     env
     (erc20.Impl_erc20_Erc20_t_2.transfer self val_to val_value fuel)
     state
-    (inl (Ref.Imm (fst simulation)))
+    (inl (fst simulation))
     (Some (snd simulation)).
 Proof.
   unfold erc20.Impl_erc20_Erc20_t_2.transfer,
@@ -240,7 +240,7 @@ Lemma run_approve
     env
     (erc20.Impl_erc20_Erc20_t_2.approve self val_spender val_value fuel)
     state
-    (inl (Ref.Imm (fst simulation)))
+    (inl (fst simulation))
     (Some (snd simulation)).
 Proof.
   unfold erc20.Impl_erc20_Erc20_t_2.approve,
@@ -267,7 +267,7 @@ Lemma run_transfer_from
     env
     (erc20.Impl_erc20_Erc20_t_2.transfer_from self val_from val_to val_value fuel)
     state
-    (inl (Ref.Imm (fst simulation)))
+    (inl (fst simulation))
     (Some (snd simulation)).
 Proof.
   unfold erc20.Impl_erc20_Erc20_t_2.transfer_from,
@@ -314,7 +314,7 @@ Lemma balance_of_impl_read_id
     (erc20.Impl_erc20_Erc20_t_2.balance_of_impl self owner fuel)
     state
     (* expected output *)
-    (inl (Ref.Imm balance))
+    (inl balance)
     (* the state does not change *)
     state.
 Proof.
@@ -337,7 +337,7 @@ Module ReadMessage.
     t ltac:(erc20.Balance)
   .
 
-  Definition dispatch {A : Set} (message : t A) : M (M.Val A) :=
+  Definition dispatch {A : Set} (message : t A) : M A :=
     let self := Ref.Imm (Ref.mut_ref tt) in
     match message with
     | total_supply => erc20.Impl_erc20_Erc20_t_2.total_supply self
@@ -377,7 +377,7 @@ Module ReadMessage.
       env
       (dispatch message fuel)
       (Some storage)
-      (inl (Ref.Imm simulation))
+      (inl simulation)
       (Some storage).
   Proof.
     destruct message; simpl.
@@ -414,7 +414,7 @@ Module WriteMessage.
       end.
   End Valid.
 
-  Definition dispatch (message : t) : M (M.Val ltac:(erc20.Result unit)) :=
+  Definition dispatch (message : t) : M ltac:(erc20.Result unit) :=
     let self := Ref.Imm (Ref.mut_ref tt) in
     match message with
     | transfer to value =>
@@ -460,7 +460,7 @@ Module WriteMessage.
       env
       (dispatch message fuel)
       (Some storage)
-      (inl (Ref.Imm (fst simulation)))
+      (inl (fst simulation))
       (Some (snd simulation)).
   Proof.
     destruct message; simpl.

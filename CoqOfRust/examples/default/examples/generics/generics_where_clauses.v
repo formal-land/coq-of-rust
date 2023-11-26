@@ -23,7 +23,7 @@ Section Impl_generics_where_clauses_PrintInOption_for_T.
           println!("{:?}", Some(self));
       }
   *)
-  Definition print_in_option (self : M.Val ltac:(Self)) : M (M.Val unit) :=
+  Definition print_in_option (self : M.Val ltac:(Self)) : M unit :=
     M.function_body
       (let* _ : ltac:(refine (M.Val unit)) :=
         let* _ : ltac:(refine (M.Val unit)) :=
@@ -39,19 +39,22 @@ Section Impl_generics_where_clauses_PrintInOption_for_T.
             M.alloc (core.option.Option.Some α3) in
           let* α5 : ltac:(refine (M.Val (ref (core.option.Option.t T)))) :=
             borrow α4 in
-          let* α6 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
-            core.fmt.rt.Argument.t::["new_debug"] α5 in
-          let* α7 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
-            M.alloc [ α6 ] in
-          let* α8 :
-              ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
-            borrow α7 in
+          let* α6 := core.fmt.rt.Argument.t::["new_debug"] α5 in
+          let* α7 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
+            M.alloc α6 in
+          let* α8 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
+            M.alloc [ α7 ] in
           let* α9 :
+              ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
+            borrow α8 in
+          let* α10 :
               ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
-            pointer_coercion "Unsize" α8 in
-          let* α10 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-            core.fmt.Arguments.t::["new_v1"] α2 α9 in
-          std.io.stdio._print α10 in
+            pointer_coercion "Unsize" α9 in
+          let* α11 := core.fmt.Arguments.t::["new_v1"] α2 α10 in
+          let* α12 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
+            M.alloc α11 in
+          let* α13 := std.io.stdio._print α12 in
+          M.alloc α13 in
         M.alloc tt in
       M.alloc tt).
   
@@ -75,7 +78,7 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M (M.Val unit) :=
+Definition main : M unit :=
   M.function_body
     (let* vec :
         ltac:(refine (M.Val (alloc.vec.Vec.t i32.t alloc.alloc.Global.t))) :=
@@ -91,13 +94,13 @@ Definition main : M (M.Val unit) :=
           ltac:(refine
             (M.Val (alloc.boxed.Box.t (slice i32.t) alloc.alloc.Global.t))) :=
         pointer_coercion "Unsize" α4 in
-      let* α6 :
-          ltac:(refine (M.Val (alloc.vec.Vec.t i32.t alloc.alloc.Global.t))) :=
-        (slice i32.t)::["into_vec"] α5 in
-      M.copy α6 in
+      let* α6 := (slice i32.t)::["into_vec"] α5 in
+      M.alloc α6 in
     let* _ : ltac:(refine (M.Val unit)) :=
-      (generics_where_clauses.PrintInOption.print_in_option
-          (Self := alloc.vec.Vec.t i32.t alloc.alloc.Global.t)
-          (Trait := ltac:(refine _)))
-        vec in
+      let* α0 :=
+        (generics_where_clauses.PrintInOption.print_in_option
+            (Self := alloc.vec.Vec.t i32.t alloc.alloc.Global.t)
+            (Trait := ltac:(refine _)))
+          vec in
+      M.alloc α0 in
     M.alloc tt).

@@ -51,11 +51,11 @@ Module Impl_Option. Section Impl_Option.
   Definition Self : Set := Option.t T.
 
   Definition unwrap_or_default {H0 : core.default.Default.Trait T}
-      (self : M.Val Self) : M (M.Val T) :=
+      (self : M.Val Self) : M T :=
     let* self := M.read self in
     match self with
     | Option.None => core.default.Default.default (Self := T)
-    | Option.Some x => M.alloc x
+    | Option.Some x => M.pure x
     end.
 
   Global Instance AF_unwrap_or_default {H0 : core.default.Default.Trait T} :

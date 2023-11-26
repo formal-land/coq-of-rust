@@ -9,9 +9,7 @@ fn foo<A>(o: Option<A>) {
     }
 }
 *)
-Parameter foo :
-    forall {A : Set},
-    (M.Val (core.option.Option.t A)) -> M (M.Val unit).
+Parameter foo : forall {A : Set}, (M.Val (core.option.Option.t A)) -> M unit.
 
 Module tests.
   (*
@@ -30,7 +28,7 @@ Module tests.
           }
       }
   *)
-  Parameter test_file : M (M.Val unit).
+  Parameter test_file : M unit.
   
   (*
       fn test_file_also() {
@@ -48,7 +46,7 @@ Module tests.
           }
       }
   *)
-  Parameter test_file_also : M (M.Val unit).
+  Parameter test_file_also : M unit.
 End tests.
 
 (*
@@ -67,7 +65,7 @@ End tests.
         }
     }
 *)
-Parameter test_file : M (M.Val unit).
+Parameter test_file : M unit.
 
 (*
     fn test_file_also() {
@@ -85,4 +83,4 @@ Parameter test_file : M (M.Val unit).
         }
     }
 *)
-Parameter test_file_also : M (M.Val unit).
+Parameter test_file_also : M unit.

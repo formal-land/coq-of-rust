@@ -50,7 +50,7 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M (M.Val unit) :=
+Definition main : M unit :=
   M.function_body
     (let* _s : ltac:(refine (M.Val generics.Single.t)) :=
       M.alloc (generics.Single.Build_t generics.A.Build_t) in

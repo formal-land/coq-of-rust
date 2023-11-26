@@ -12,7 +12,7 @@ fn multiply(first_number_str: &str, second_number_str: &str) -> Result<i32, Pars
 Parameter multiply :
     (M.Val (ref str.t)) ->
       (M.Val (ref str.t)) ->
-      M (M.Val (core.result.Result.t i32.t core.num.error.ParseIntError.t)).
+      M (core.result.Result.t i32.t core.num.error.ParseIntError.t).
 
 (*
 fn print(result: Result<i32, ParseIntError>) {
@@ -24,7 +24,7 @@ fn print(result: Result<i32, ParseIntError>) {
 *)
 Parameter print :
     (M.Val (core.result.Result.t i32.t core.num.error.ParseIntError.t)) ->
-      M (M.Val unit).
+      M unit.
 
 (*
 fn main() {
@@ -33,4 +33,4 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : M (M.Val unit).
+Parameter main : M unit.

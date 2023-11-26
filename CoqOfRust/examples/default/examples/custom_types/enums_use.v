@@ -34,7 +34,7 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M (M.Val unit) :=
+Definition main : M unit :=
   M.function_body
     (let* status : ltac:(refine (M.Val enums_use.Status.t)) :=
       M.alloc enums_use.Status.Poor in
@@ -52,9 +52,10 @@ Definition main : M (M.Val unit) :=
             borrow α0 in
           let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
             pointer_coercion "Unsize" α1 in
-          let* α3 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-            core.fmt.Arguments.t::["new_const"] α2 in
-          std.io.stdio._print α3 in
+          let* α3 := core.fmt.Arguments.t::["new_const"] α2 in
+          let* α4 : ltac:(refine (M.Val core.fmt.Arguments.t)) := M.alloc α3 in
+          let* α5 := std.io.stdio._print α4 in
+          M.alloc α5 in
         M.alloc tt
       | enums_use.Status.Poor  =>
         let* _ : ltac:(refine (M.Val unit)) :=
@@ -65,9 +66,10 @@ Definition main : M (M.Val unit) :=
             borrow α0 in
           let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
             pointer_coercion "Unsize" α1 in
-          let* α3 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-            core.fmt.Arguments.t::["new_const"] α2 in
-          std.io.stdio._print α3 in
+          let* α3 := core.fmt.Arguments.t::["new_const"] α2 in
+          let* α4 : ltac:(refine (M.Val core.fmt.Arguments.t)) := M.alloc α3 in
+          let* α5 := std.io.stdio._print α4 in
+          M.alloc α5 in
         M.alloc tt
       end in
     let* α0 := M.read work in
@@ -81,9 +83,10 @@ Definition main : M (M.Val unit) :=
           borrow α0 in
         let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
-        let* α3 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-          core.fmt.Arguments.t::["new_const"] α2 in
-        std.io.stdio._print α3 in
+        let* α3 := core.fmt.Arguments.t::["new_const"] α2 in
+        let* α4 : ltac:(refine (M.Val core.fmt.Arguments.t)) := M.alloc α3 in
+        let* α5 := std.io.stdio._print α4 in
+        M.alloc α5 in
       M.alloc tt
     | enums_use.Work.Soldier  =>
       let* _ : ltac:(refine (M.Val unit)) :=
@@ -94,8 +97,9 @@ Definition main : M (M.Val unit) :=
           borrow α0 in
         let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
-        let* α3 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-          core.fmt.Arguments.t::["new_const"] α2 in
-        std.io.stdio._print α3 in
+        let* α3 := core.fmt.Arguments.t::["new_const"] α2 in
+        let* α4 : ltac:(refine (M.Val core.fmt.Arguments.t)) := M.alloc α3 in
+        let* α5 := std.io.stdio._print α4 in
+        M.alloc α5 in
       M.alloc tt
     end).

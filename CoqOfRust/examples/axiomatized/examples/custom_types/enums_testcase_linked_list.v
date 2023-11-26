@@ -24,7 +24,7 @@ Section Impl_enums_testcase_linked_list_List_t.
           Nil
       }
   *)
-  Parameter new : M (M.Val enums_testcase_linked_list.List.t).
+  Parameter new : M enums_testcase_linked_list.List.t.
   
   Global Instance AssociatedFunction_new :
     Notations.DoubleColon ltac:(Self) "new" := {
@@ -40,7 +40,7 @@ Section Impl_enums_testcase_linked_list_List_t.
   Parameter prepend :
       (M.Val ltac:(Self)) ->
         (M.Val u32.t) ->
-        M (M.Val enums_testcase_linked_list.List.t).
+        M enums_testcase_linked_list.List.t.
   
   Global Instance AssociatedFunction_prepend :
     Notations.DoubleColon ltac:(Self) "prepend" := {
@@ -65,7 +65,7 @@ Section Impl_enums_testcase_linked_list_List_t.
           }
       }
   *)
-  Parameter len : (M.Val (ref ltac:(Self))) -> M (M.Val u32.t).
+  Parameter len : (M.Val (ref ltac:(Self))) -> M u32.t.
   
   Global Instance AssociatedFunction_len :
     Notations.DoubleColon ltac:(Self) "len" := {
@@ -86,8 +86,7 @@ Section Impl_enums_testcase_linked_list_List_t.
           }
       }
   *)
-  Parameter stringify :
-      (M.Val (ref ltac:(Self))) -> M (M.Val alloc.string.String.t).
+  Parameter stringify : (M.Val (ref ltac:(Self))) -> M alloc.string.String.t.
   
   Global Instance AssociatedFunction_stringify :
     Notations.DoubleColon ltac:(Self) "stringify" := {
@@ -112,4 +111,4 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : M (M.Val unit).
+Parameter main : M unit.

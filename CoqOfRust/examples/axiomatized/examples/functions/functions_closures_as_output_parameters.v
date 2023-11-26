@@ -11,7 +11,7 @@ fn create_fn() -> impl Fn() {
 Parameter create_fn_ret_ty :
     Sigma (Ty : Set) `(core.ops.function.Fn.Trait Ty),
     unit.
-Parameter create_fn : M (M.Val _ (* OpaqueTy *)).
+Parameter create_fn : M _ (* OpaqueTy *).
 
 Error OpaqueTy.
 
@@ -25,7 +25,7 @@ fn create_fnmut() -> impl FnMut() {
 Parameter create_fnmut_ret_ty :
     Sigma (Ty : Set) `(core.ops.function.FnMut.Trait Ty),
     unit.
-Parameter create_fnmut : M (M.Val _ (* OpaqueTy *)).
+Parameter create_fnmut : M _ (* OpaqueTy *).
 
 (*
 fn create_fnonce() -> impl FnOnce() {
@@ -37,7 +37,7 @@ fn create_fnonce() -> impl FnOnce() {
 Parameter create_fnonce_ret_ty :
     Sigma (Ty : Set) `(core.ops.function.FnOnce.Trait Ty),
     unit.
-Parameter create_fnonce : M (M.Val _ (* OpaqueTy *)).
+Parameter create_fnonce : M _ (* OpaqueTy *).
 
 (*
 fn main() {
@@ -51,4 +51,4 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : M (M.Val unit).
+Parameter main : M unit.

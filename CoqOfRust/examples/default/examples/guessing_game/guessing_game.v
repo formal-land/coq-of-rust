@@ -6,11 +6,11 @@ fn gen_range() -> u32 {
     todo!()
 }
 *)
-Definition gen_range : M (M.Val u32.t) :=
+Definition gen_range : M u32.t :=
   M.function_body
-    (let* α0 : ltac:(refine (M.Val never.t)) :=
-      core.panicking.panic (mk_str "not yet implemented") in
-    never_to_any α0).
+    (let* α0 := core.panicking.panic (mk_str "not yet implemented") in
+    let* α1 : ltac:(refine (M.Val never.t)) := M.alloc α0 in
+    never_to_any α1).
 
 (*
 fn main() {
@@ -47,7 +47,7 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M (M.Val unit) :=
+Definition main : M unit :=
   M.function_body
     (let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
@@ -58,13 +58,14 @@ Definition main : M (M.Val unit) :=
           borrow α0 in
         let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
-        let* α3 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-          core.fmt.Arguments.t::["new_const"] α2 in
-        std.io.stdio._print α3 in
+        let* α3 := core.fmt.Arguments.t::["new_const"] α2 in
+        let* α4 : ltac:(refine (M.Val core.fmt.Arguments.t)) := M.alloc α3 in
+        let* α5 := std.io.stdio._print α4 in
+        M.alloc α5 in
       M.alloc tt in
     let* secret_number : ltac:(refine (M.Val u32.t)) :=
-      let* α0 : ltac:(refine (M.Val u32.t)) := guessing_game.gen_range in
-      M.copy α0 in
+      let* α0 := guessing_game.gen_range in
+      M.alloc α0 in
     loop
       (let* _ : ltac:(refine (M.Val unit)) :=
         let* _ : ltac:(refine (M.Val unit)) :=
@@ -75,50 +76,58 @@ Definition main : M (M.Val unit) :=
             borrow α0 in
           let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
             pointer_coercion "Unsize" α1 in
-          let* α3 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-            core.fmt.Arguments.t::["new_const"] α2 in
-          std.io.stdio._print α3 in
+          let* α3 := core.fmt.Arguments.t::["new_const"] α2 in
+          let* α4 : ltac:(refine (M.Val core.fmt.Arguments.t)) := M.alloc α3 in
+          let* α5 := std.io.stdio._print α4 in
+          M.alloc α5 in
         M.alloc tt in
       let* guess : ltac:(refine (M.Val alloc.string.String.t)) :=
-        let* α0 : ltac:(refine (M.Val alloc.string.String.t)) :=
-          alloc.string.String.t::["new"] in
-        M.copy α0 in
+        let* α0 := alloc.string.String.t::["new"] in
+        M.alloc α0 in
       let* _ : ltac:(refine (M.Val usize.t)) :=
-        let* α0 : ltac:(refine (M.Val std.io.stdio.Stdin.t)) :=
-          std.io.stdio.stdin in
-        let* α1 : ltac:(refine (M.Val (ref std.io.stdio.Stdin.t))) :=
-          borrow α0 in
-        let* α2 : ltac:(refine (M.Val (mut_ref alloc.string.String.t))) :=
+        let* α0 := std.io.stdio.stdin in
+        let* α1 : ltac:(refine (M.Val std.io.stdio.Stdin.t)) := M.alloc α0 in
+        let* α2 : ltac:(refine (M.Val (ref std.io.stdio.Stdin.t))) :=
+          borrow α1 in
+        let* α3 : ltac:(refine (M.Val (mut_ref alloc.string.String.t))) :=
           borrow_mut guess in
-        let* α3 :
+        let* α4 := std.io.stdio.Stdin.t::["read_line"] α2 α3 in
+        let* α5 :
             ltac:(refine
               (M.Val (core.result.Result.t usize.t std.io.error.Error.t))) :=
-          std.io.stdio.Stdin.t::["read_line"] α1 α2 in
-        let* α4 : ltac:(refine (M.Val str.t)) :=
+          M.alloc α4 in
+        let* α6 : ltac:(refine (M.Val str.t)) :=
           deref (mk_str "Failed to read line") in
-        let* α5 : ltac:(refine (M.Val (ref str.t))) := borrow α4 in
-        (core.result.Result.t usize.t std.io.error.Error.t)::["expect"] α3 α5 in
+        let* α7 : ltac:(refine (M.Val (ref str.t))) := borrow α6 in
+        let* α8 :=
+          (core.result.Result.t usize.t std.io.error.Error.t)::["expect"]
+            α5
+            α7 in
+        M.alloc α8 in
       let* guess : ltac:(refine (M.Val u32.t)) :=
         let* α0 : ltac:(refine (M.Val (ref alloc.string.String.t))) :=
           borrow guess in
-        let* α1 : ltac:(refine (M.Val (ref str.t))) :=
+        let* α1 :=
           (core.ops.deref.Deref.deref
               (Self := alloc.string.String.t)
               (Trait := ltac:(refine _)))
             α0 in
-        let* α2 : ltac:(refine (M.Val str.t)) := deref α1 in
-        let* α3 : ltac:(refine (M.Val (ref str.t))) := borrow α2 in
-        let* α4 : ltac:(refine (M.Val (ref str.t))) := str.t::["trim"] α3 in
-        let* α5 : ltac:(refine (M.Val str.t)) := deref α4 in
-        let* α6 : ltac:(refine (M.Val (ref str.t))) := borrow α5 in
-        let* α7 :
+        let* α2 : ltac:(refine (M.Val (ref str.t))) := M.alloc α1 in
+        let* α3 : ltac:(refine (M.Val str.t)) := deref α2 in
+        let* α4 : ltac:(refine (M.Val (ref str.t))) := borrow α3 in
+        let* α5 := str.t::["trim"] α4 in
+        let* α6 : ltac:(refine (M.Val (ref str.t))) := M.alloc α5 in
+        let* α7 : ltac:(refine (M.Val str.t)) := deref α6 in
+        let* α8 : ltac:(refine (M.Val (ref str.t))) := borrow α7 in
+        let* α9 := str.t::["parse"] α8 in
+        let* α10 :
             ltac:(refine
               (M.Val
                 (core.result.Result.t u32.t core.num.error.ParseIntError.t))) :=
-          str.t::["parse"] α6 in
-        let* α8 := M.read α7 in
-        let* α9 : ltac:(refine (M.Val u32.t)) :=
-          match α8 with
+          M.alloc α9 in
+        let* α11 := M.read α10 in
+        let* α12 : ltac:(refine (M.Val u32.t)) :=
+          match α11 with
           | core.result.Result.Ok num =>
             let* num := M.alloc num in
             M.pure num
@@ -126,7 +135,7 @@ Definition main : M (M.Val unit) :=
             let* α0 : ltac:(refine (M.Val never.t)) := Continue in
             never_to_any α0
           end in
-        M.copy α9 in
+        M.copy α12 in
       let* _ : ltac:(refine (M.Val unit)) :=
         let* _ : ltac:(refine (M.Val unit)) :=
           let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
@@ -137,26 +146,29 @@ Definition main : M (M.Val unit) :=
           let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
             pointer_coercion "Unsize" α1 in
           let* α3 : ltac:(refine (M.Val (ref u32.t))) := borrow guess in
-          let* α4 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
-            core.fmt.rt.Argument.t::["new_display"] α3 in
-          let* α5 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
-            M.alloc [ α4 ] in
-          let* α6 :
-              ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
-            borrow α5 in
+          let* α4 := core.fmt.rt.Argument.t::["new_display"] α3 in
+          let* α5 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
+            M.alloc α4 in
+          let* α6 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
+            M.alloc [ α5 ] in
           let* α7 :
+              ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
+            borrow α6 in
+          let* α8 :
               ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
-            pointer_coercion "Unsize" α6 in
-          let* α8 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-            core.fmt.Arguments.t::["new_v1"] α2 α7 in
-          std.io.stdio._print α8 in
+            pointer_coercion "Unsize" α7 in
+          let* α9 := core.fmt.Arguments.t::["new_v1"] α2 α8 in
+          let* α10 : ltac:(refine (M.Val core.fmt.Arguments.t)) := M.alloc α9 in
+          let* α11 := std.io.stdio._print α10 in
+          M.alloc α11 in
         M.alloc tt in
       let* α0 : ltac:(refine (M.Val (ref u32.t))) := borrow guess in
       let* α1 : ltac:(refine (M.Val (ref u32.t))) := borrow secret_number in
-      let* α2 : ltac:(refine (M.Val core.cmp.Ordering.t)) :=
+      let* α2 :=
         (core.cmp.Ord.cmp (Self := u32.t) (Trait := ltac:(refine _))) α0 α1 in
-      let* α3 := M.read α2 in
-      match α3 with
+      let* α3 : ltac:(refine (M.Val core.cmp.Ordering.t)) := M.alloc α2 in
+      let* α4 := M.read α3 in
+      match α4 with
       | core.cmp.Ordering.Less  =>
         let* _ : ltac:(refine (M.Val unit)) :=
           let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
@@ -166,9 +178,10 @@ Definition main : M (M.Val unit) :=
             borrow α0 in
           let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
             pointer_coercion "Unsize" α1 in
-          let* α3 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-            core.fmt.Arguments.t::["new_const"] α2 in
-          std.io.stdio._print α3 in
+          let* α3 := core.fmt.Arguments.t::["new_const"] α2 in
+          let* α4 : ltac:(refine (M.Val core.fmt.Arguments.t)) := M.alloc α3 in
+          let* α5 := std.io.stdio._print α4 in
+          M.alloc α5 in
         M.alloc tt
       | core.cmp.Ordering.Greater  =>
         let* _ : ltac:(refine (M.Val unit)) :=
@@ -179,9 +192,10 @@ Definition main : M (M.Val unit) :=
             borrow α0 in
           let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
             pointer_coercion "Unsize" α1 in
-          let* α3 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-            core.fmt.Arguments.t::["new_const"] α2 in
-          std.io.stdio._print α3 in
+          let* α3 := core.fmt.Arguments.t::["new_const"] α2 in
+          let* α4 : ltac:(refine (M.Val core.fmt.Arguments.t)) := M.alloc α3 in
+          let* α5 := std.io.stdio._print α4 in
+          M.alloc α5 in
         M.alloc tt
       | core.cmp.Ordering.Equal  =>
         let* _ : ltac:(refine (M.Val unit)) :=
@@ -193,9 +207,11 @@ Definition main : M (M.Val unit) :=
               borrow α0 in
             let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
               pointer_coercion "Unsize" α1 in
-            let* α3 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-              core.fmt.Arguments.t::["new_const"] α2 in
-            std.io.stdio._print α3 in
+            let* α3 := core.fmt.Arguments.t::["new_const"] α2 in
+            let* α4 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
+              M.alloc α3 in
+            let* α5 := std.io.stdio._print α4 in
+            M.alloc α5 in
           M.alloc tt in
         let* _ : ltac:(refine (M.Val never.t)) := Break in
         let* α0 : ltac:(refine (M.Val unit)) := M.alloc tt in

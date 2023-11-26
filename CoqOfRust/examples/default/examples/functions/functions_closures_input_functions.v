@@ -10,14 +10,16 @@ Definition call_me
     {F : Set}
     {ℋ_0 : core.ops.function.Fn.Trait F (Args := unit)}
     (f : M.Val F)
-    : M (M.Val unit) :=
+    : M unit :=
   M.function_body
     (let* _ : ltac:(refine (M.Val unit)) :=
       let* α0 : ltac:(refine (M.Val (ref F))) := borrow f in
       let* α1 : ltac:(refine (M.Val unit)) := M.alloc tt in
-      (core.ops.function.Fn.call (Self := F) (Trait := ltac:(refine _)))
-        α0
-        α1 in
+      let* α2 :=
+        (core.ops.function.Fn.call (Self := F) (Trait := ltac:(refine _)))
+          α0
+          α1 in
+      M.alloc α2 in
     M.alloc tt).
 
 (*
@@ -25,7 +27,7 @@ fn function() {
     println!("I'm a function!");
 }
 *)
-Definition function : M (M.Val unit) :=
+Definition function : M unit :=
   M.function_body
     (let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
@@ -36,9 +38,10 @@ Definition function : M (M.Val unit) :=
           borrow α0 in
         let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
-        let* α3 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-          core.fmt.Arguments.t::["new_const"] α2 in
-        std.io.stdio._print α3 in
+        let* α3 := core.fmt.Arguments.t::["new_const"] α2 in
+        let* α4 : ltac:(refine (M.Val core.fmt.Arguments.t)) := M.alloc α3 in
+        let* α5 := std.io.stdio._print α4 in
+        M.alloc α5 in
       M.alloc tt in
     M.alloc tt).
 
@@ -52,7 +55,7 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M (M.Val unit) :=
+Definition main : M unit :=
   M.function_body
     (let* closure : ltac:(refine (M.Val type not implemented)) :=
       M.copy
@@ -64,13 +67,17 @@ Definition main : M (M.Val unit) :=
             borrow α0 in
           let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
             pointer_coercion "Unsize" α1 in
-          let* α3 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-            core.fmt.Arguments.t::["new_const"] α2 in
-          std.io.stdio._print α3 in
+          let* α3 := core.fmt.Arguments.t::["new_const"] α2 in
+          let* α4 : ltac:(refine (M.Val core.fmt.Arguments.t)) := M.alloc α3 in
+          let* α5 := std.io.stdio._print α4 in
+          M.alloc α5 in
         M.alloc tt) in
     let* _ : ltac:(refine (M.Val unit)) :=
-      functions_closures_input_functions.call_me closure in
+      let* α0 := functions_closures_input_functions.call_me closure in
+      M.alloc α0 in
     let* _ : ltac:(refine (M.Val unit)) :=
-      functions_closures_input_functions.call_me
-        functions_closures_input_functions.function in
+      let* α0 :=
+        functions_closures_input_functions.call_me
+          functions_closures_input_functions.function in
+      M.alloc α0 in
     M.alloc tt).

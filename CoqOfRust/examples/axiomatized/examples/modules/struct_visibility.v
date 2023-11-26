@@ -49,7 +49,7 @@ Module my.
                 ClosedBox { contents: contents }
             }
     *)
-    Parameter new : (M.Val T) -> M (M.Val (struct_visibility.my.ClosedBox.t T)).
+    Parameter new : (M.Val T) -> M (struct_visibility.my.ClosedBox.t T).
     
     Global Instance AssociatedFunction_new :
       Notations.DoubleColon ltac:(Self) "new" := {
@@ -106,7 +106,7 @@ Section Impl_struct_visibility_my_ClosedBox_t_T_2.
               ClosedBox { contents: contents }
           }
   *)
-  Parameter new : (M.Val T) -> M (M.Val (struct_visibility.my.ClosedBox.t T)).
+  Parameter new : (M.Val T) -> M (struct_visibility.my.ClosedBox.t T).
   
   Global Instance AssociatedFunction_new :
     Notations.DoubleColon ltac:(Self) "new" := {
@@ -141,4 +141,4 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : M (M.Val unit).
+Parameter main : M unit.

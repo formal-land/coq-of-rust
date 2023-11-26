@@ -21,10 +21,7 @@ Section Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers_t.
       }
   *)
   Parameter run :
-      (M.Val (ref ltac:(Self))) ->
-        (M.Val i32.t) ->
-        (M.Val i32.t) ->
-        M (M.Val i32.t).
+      (M.Val (ref ltac:(Self))) -> (M.Val i32.t) -> (M.Val i32.t) -> M i32.t.
   
   Global Instance AssociatedFunction_run :
     Notations.DoubleColon ltac:(Self) "run" := {

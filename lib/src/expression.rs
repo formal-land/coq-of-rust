@@ -52,6 +52,11 @@ pub(crate) enum ExprKind {
     Pure(Box<Expr>),
     LocalVar(String),
     Var(Path),
+    VarWithTy {
+        path: Path,
+        ty_name: String,
+        ty: Rc<CoqType>,
+    },
     VarWithSelfTy {
         path: Path,
         self_ty: Rc<CoqType>,
@@ -136,6 +141,7 @@ pub(crate) enum ExprKind {
     StructUnit {
         path: Path,
     },
+    Return(Box<Expr>),
     /// Useful for error messages or annotations
     Message(String),
 }
@@ -187,12 +193,101 @@ impl ExprKind {
 }
 
 impl Expr {
+    pub(crate) fn stmt(self) -> Stmt {
+        Stmt {
+            ty: self.ty.clone(),
+            kind: StmtKind::Expr(Box::new(self)),
+        }
+    }
+
     /// The Coq value [tt] (the inhabitant of the [unit] type) is used as default
     /// value
     pub(crate) fn tt() -> Self {
         Expr {
             kind: ExprKind::tt(),
             ty: Some(CoqType::unit().val()),
+        }
+    }
+
+    pub(crate) fn has_return(&self) -> bool {
+        match &self.kind {
+            ExprKind::Pure(expr) => expr.has_return(),
+            ExprKind::LocalVar(_) => false,
+            ExprKind::Var(_) => false,
+            ExprKind::VarWithTy {
+                path: _,
+                ty_name: _,
+                ty: _,
+            } => false,
+            ExprKind::VarWithSelfTy {
+                path: _,
+                self_ty: _,
+            } => false,
+            ExprKind::AssociatedFunction { ty: _, func: _ } => false,
+            ExprKind::Literal { literal: _, neg: _ } => false,
+            ExprKind::NonHirLiteral(_) => false,
+            ExprKind::Call { func, args } => func.has_return() || args.iter().any(Self::has_return),
+            ExprKind::MonadicOperator { name: _, arg } => arg.has_return(),
+            ExprKind::Lambda { args: _, body } => body.has_return(),
+            ExprKind::Array { elements } => elements.iter().any(Self::has_return),
+            ExprKind::Tuple { elements } => elements.iter().any(Self::has_return),
+            ExprKind::LetIf { pat: _, init } => init.has_return(),
+            ExprKind::If {
+                condition,
+                success,
+                failure,
+            } => condition.has_return() || success.has_return() || failure.has_return(),
+            ExprKind::Loop { body } => body.has_return(),
+            ExprKind::Match { scrutinee, arms } => {
+                scrutinee.has_return()
+                    || arms
+                        .iter()
+                        .any(|MatchArm { pat: _, body }| body.has_return())
+            }
+            ExprKind::Block(stmt) => stmt.has_return(),
+            ExprKind::Assign { left, right } => left.has_return() || right.has_return(),
+            ExprKind::IndexedField { base, index: _ } => base.has_return(),
+            ExprKind::NamedField { base, name: _ } => base.has_return(),
+            ExprKind::Index { base, index } => base.has_return() || index.has_return(),
+            ExprKind::ControlFlow(_) => false,
+            ExprKind::StructStruct {
+                path: _,
+                fields,
+                base,
+                struct_or_variant: _,
+            } => {
+                fields.iter().any(|(_, field)| field.has_return())
+                    || base.iter().any(|base| base.has_return())
+            }
+            ExprKind::StructTuple {
+                path: _,
+                fields,
+                struct_or_variant: _,
+            } => fields.iter().any(Self::has_return),
+            ExprKind::StructUnit { path: _ } => false,
+            ExprKind::Return(_) => true,
+            ExprKind::Message(_) => false,
+        }
+    }
+}
+
+impl Stmt {
+    pub(crate) fn expr(self) -> Expr {
+        Expr {
+            ty: self.ty.clone(),
+            kind: ExprKind::Block(Box::new(self)),
+        }
+    }
+
+    pub(crate) fn has_return(&self) -> bool {
+        match &self.kind {
+            StmtKind::Expr(expr) => expr.has_return(),
+            StmtKind::Let {
+                is_monadic: _,
+                pattern: _,
+                init,
+                body,
+            } => init.has_return() || body.has_return(),
         }
     }
 }
@@ -321,6 +416,21 @@ pub(crate) fn mt_expression(fresh_vars: FreshVars, expr: Expr) -> (Stmt, FreshVa
         ExprKind::Pure(_) => panic!("Expressions should not be monadic yet."),
         ExprKind::LocalVar(_) => (pure(expr), fresh_vars),
         ExprKind::Var(_) => (pure(expr), fresh_vars),
+        ExprKind::VarWithTy {
+            path,
+            ty_name,
+            ty: var_ty,
+        } => (
+            pure(Expr {
+                kind: ExprKind::VarWithTy {
+                    path,
+                    ty_name,
+                    ty: mt_ty(var_ty),
+                },
+                ty,
+            }),
+            fresh_vars,
+        ),
         ExprKind::VarWithSelfTy { path, self_ty } => (
             pure(Expr {
                 kind: ExprKind::VarWithSelfTy {
@@ -640,6 +750,16 @@ pub(crate) fn mt_expression(fresh_vars: FreshVars, expr: Expr) -> (Stmt, FreshVa
             }),
         ),
         ExprKind::StructUnit { .. } => (pure(expr), fresh_vars),
+        ExprKind::Return(expr) => monadic_let(fresh_vars, *expr, |fresh_vars, expr| {
+            (
+                Expr {
+                    kind: ExprKind::Return(Box::new(expr)),
+                    ty,
+                }
+                .stmt(),
+                fresh_vars,
+            )
+        }),
         ExprKind::Message(_) => (pure(expr), fresh_vars),
     }
 }
@@ -772,6 +892,19 @@ impl ExprKind {
             ),
             ExprKind::LocalVar(ref name) => text(name),
             ExprKind::Var(path) => path.to_doc(),
+            ExprKind::VarWithTy { path, ty_name, ty } => paren(
+                with_paren,
+                nest([
+                    path.to_doc(),
+                    line(),
+                    nest([
+                        text(format!("({ty_name} :=")),
+                        line(),
+                        ty.to_coq().to_doc(false),
+                        text(")"),
+                    ]),
+                ]),
+            ),
             ExprKind::VarWithSelfTy { path, self_ty } => paren(
                 with_paren,
                 nest([
@@ -988,6 +1121,10 @@ impl ExprKind {
                 ]),
             ),
             ExprKind::StructUnit { path } => nest([path.to_doc(), text(".Build")]),
+            ExprKind::Return(value) => paren(
+                with_paren,
+                nest([text("return_"), line(), value.to_doc(true)]),
+            ),
             ExprKind::Message(message) => text(format!("\"{message}\"")),
         }
     }

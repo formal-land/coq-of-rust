@@ -6,7 +6,7 @@ fn function() {
     println!("called `function()`");
 }
 *)
-Definition function : M (M.Val unit) :=
+Definition function : M unit :=
   M.function_body
     (let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
@@ -17,9 +17,10 @@ Definition function : M (M.Val unit) :=
           borrow α0 in
         let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
-        let* α3 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-          core.fmt.Arguments.t::["new_const"] α2 in
-        std.io.stdio._print α3 in
+        let* α3 := core.fmt.Arguments.t::["new_const"] α2 in
+        let* α4 : ltac:(refine (M.Val core.fmt.Arguments.t)) := M.alloc α3 in
+        let* α5 := std.io.stdio._print α4 in
+        M.alloc α5 in
       M.alloc tt in
     M.alloc tt).
 
@@ -29,7 +30,7 @@ Module cool.
           println!("called `cool::function()`");
       }
   *)
-  Definition function : M (M.Val unit) :=
+  Definition function : M unit :=
     M.function_body
       (let* _ : ltac:(refine (M.Val unit)) :=
         let* _ : ltac:(refine (M.Val unit)) :=
@@ -40,9 +41,10 @@ Module cool.
             borrow α0 in
           let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
             pointer_coercion "Unsize" α1 in
-          let* α3 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-            core.fmt.Arguments.t::["new_const"] α2 in
-          std.io.stdio._print α3 in
+          let* α3 := core.fmt.Arguments.t::["new_const"] α2 in
+          let* α4 : ltac:(refine (M.Val core.fmt.Arguments.t)) := M.alloc α3 in
+          let* α5 := std.io.stdio._print α4 in
+          M.alloc α5 in
         M.alloc tt in
       M.alloc tt).
 End cool.
@@ -52,7 +54,7 @@ End cool.
         println!("called `cool::function()`");
     }
 *)
-Definition function : M (M.Val unit) :=
+Definition function : M unit :=
   M.function_body
     (let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
@@ -63,9 +65,10 @@ Definition function : M (M.Val unit) :=
           borrow α0 in
         let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
-        let* α3 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-          core.fmt.Arguments.t::["new_const"] α2 in
-        std.io.stdio._print α3 in
+        let* α3 := core.fmt.Arguments.t::["new_const"] α2 in
+        let* α4 : ltac:(refine (M.Val core.fmt.Arguments.t)) := M.alloc α3 in
+        let* α5 := std.io.stdio._print α4 in
+        M.alloc α5 in
       M.alloc tt in
     M.alloc tt).
 
@@ -75,7 +78,7 @@ Module my.
           println!("called `my::function()`");
       }
   *)
-  Definition function : M (M.Val unit) :=
+  Definition function : M unit :=
     M.function_body
       (let* _ : ltac:(refine (M.Val unit)) :=
         let* _ : ltac:(refine (M.Val unit)) :=
@@ -86,9 +89,10 @@ Module my.
             borrow α0 in
           let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
             pointer_coercion "Unsize" α1 in
-          let* α3 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-            core.fmt.Arguments.t::["new_const"] α2 in
-          std.io.stdio._print α3 in
+          let* α3 := core.fmt.Arguments.t::["new_const"] α2 in
+          let* α4 : ltac:(refine (M.Val core.fmt.Arguments.t)) := M.alloc α3 in
+          let* α5 := std.io.stdio._print α4 in
+          M.alloc α5 in
         M.alloc tt in
       M.alloc tt).
   
@@ -98,7 +102,7 @@ Module my.
                 println!("called `my::cool::function()`");
             }
     *)
-    Definition function : M (M.Val unit) :=
+    Definition function : M unit :=
       M.function_body
         (let* _ : ltac:(refine (M.Val unit)) :=
           let* _ : ltac:(refine (M.Val unit)) :=
@@ -109,9 +113,11 @@ Module my.
               borrow α0 in
             let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
               pointer_coercion "Unsize" α1 in
-            let* α3 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-              core.fmt.Arguments.t::["new_const"] α2 in
-            std.io.stdio._print α3 in
+            let* α3 := core.fmt.Arguments.t::["new_const"] α2 in
+            let* α4 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
+              M.alloc α3 in
+            let* α5 := std.io.stdio._print α4 in
+            M.alloc α5 in
           M.alloc tt in
         M.alloc tt).
   End cool.
@@ -141,7 +147,7 @@ Module my.
           }
       }
   *)
-  Definition indirect_call : M (M.Val unit) :=
+  Definition indirect_call : M unit :=
     M.function_body
       (let* _ : ltac:(refine (M.Val unit)) :=
         let* _ : ltac:(refine (M.Val unit)) :=
@@ -152,15 +158,26 @@ Module my.
             borrow α0 in
           let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
             pointer_coercion "Unsize" α1 in
-          let* α3 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-            core.fmt.Arguments.t::["new_const"] α2 in
-          std.io.stdio._print α3 in
+          let* α3 := core.fmt.Arguments.t::["new_const"] α2 in
+          let* α4 : ltac:(refine (M.Val core.fmt.Arguments.t)) := M.alloc α3 in
+          let* α5 := std.io.stdio._print α4 in
+          M.alloc α5 in
         M.alloc tt in
-      let* _ : ltac:(refine (M.Val unit)) := super_and_self.my.function in
-      let* _ : ltac:(refine (M.Val unit)) := super_and_self.my.function in
-      let* _ : ltac:(refine (M.Val unit)) := super_and_self.my.cool.function in
-      let* _ : ltac:(refine (M.Val unit)) := super_and_self.function in
-      let* _ : ltac:(refine (M.Val unit)) := super_and_self.cool.function in
+      let* _ : ltac:(refine (M.Val unit)) :=
+        let* α0 := super_and_self.my.function in
+        M.alloc α0 in
+      let* _ : ltac:(refine (M.Val unit)) :=
+        let* α0 := super_and_self.my.function in
+        M.alloc α0 in
+      let* _ : ltac:(refine (M.Val unit)) :=
+        let* α0 := super_and_self.my.cool.function in
+        M.alloc α0 in
+      let* _ : ltac:(refine (M.Val unit)) :=
+        let* α0 := super_and_self.function in
+        M.alloc α0 in
+      let* _ : ltac:(refine (M.Val unit)) :=
+        let* α0 := super_and_self.cool.function in
+        M.alloc α0 in
       M.alloc tt).
 End my.
 
@@ -169,7 +186,7 @@ End my.
         println!("called `my::function()`");
     }
 *)
-Definition function : M (M.Val unit) :=
+Definition function : M unit :=
   M.function_body
     (let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
@@ -180,9 +197,10 @@ Definition function : M (M.Val unit) :=
           borrow α0 in
         let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
-        let* α3 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-          core.fmt.Arguments.t::["new_const"] α2 in
-        std.io.stdio._print α3 in
+        let* α3 := core.fmt.Arguments.t::["new_const"] α2 in
+        let* α4 : ltac:(refine (M.Val core.fmt.Arguments.t)) := M.alloc α3 in
+        let* α5 := std.io.stdio._print α4 in
+        M.alloc α5 in
       M.alloc tt in
     M.alloc tt).
 
@@ -193,7 +211,7 @@ Module cool.
               println!("called `my::cool::function()`");
           }
   *)
-  Definition function : M (M.Val unit) :=
+  Definition function : M unit :=
     M.function_body
       (let* _ : ltac:(refine (M.Val unit)) :=
         let* _ : ltac:(refine (M.Val unit)) :=
@@ -204,9 +222,10 @@ Module cool.
             borrow α0 in
           let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
             pointer_coercion "Unsize" α1 in
-          let* α3 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-            core.fmt.Arguments.t::["new_const"] α2 in
-          std.io.stdio._print α3 in
+          let* α3 := core.fmt.Arguments.t::["new_const"] α2 in
+          let* α4 : ltac:(refine (M.Val core.fmt.Arguments.t)) := M.alloc α3 in
+          let* α5 := std.io.stdio._print α4 in
+          M.alloc α5 in
         M.alloc tt in
       M.alloc tt).
 End cool.
@@ -218,7 +237,7 @@ Import Wrap_cool_1.
             println!("called `my::cool::function()`");
         }
 *)
-Definition function : M (M.Val unit) :=
+Definition function : M unit :=
   M.function_body
     (let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
@@ -229,9 +248,10 @@ Definition function : M (M.Val unit) :=
           borrow α0 in
         let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
-        let* α3 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-          core.fmt.Arguments.t::["new_const"] α2 in
-        std.io.stdio._print α3 in
+        let* α3 := core.fmt.Arguments.t::["new_const"] α2 in
+        let* α4 : ltac:(refine (M.Val core.fmt.Arguments.t)) := M.alloc α3 in
+        let* α5 := std.io.stdio._print α4 in
+        M.alloc α5 in
       M.alloc tt in
     M.alloc tt).
 
@@ -260,7 +280,7 @@ Definition function : M (M.Val unit) :=
         }
     }
 *)
-Definition indirect_call : M (M.Val unit) :=
+Definition indirect_call : M unit :=
   M.function_body
     (let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
@@ -271,15 +291,26 @@ Definition indirect_call : M (M.Val unit) :=
           borrow α0 in
         let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
-        let* α3 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-          core.fmt.Arguments.t::["new_const"] α2 in
-        std.io.stdio._print α3 in
+        let* α3 := core.fmt.Arguments.t::["new_const"] α2 in
+        let* α4 : ltac:(refine (M.Val core.fmt.Arguments.t)) := M.alloc α3 in
+        let* α5 := std.io.stdio._print α4 in
+        M.alloc α5 in
       M.alloc tt in
-    let* _ : ltac:(refine (M.Val unit)) := super_and_self.my.function in
-    let* _ : ltac:(refine (M.Val unit)) := super_and_self.my.function in
-    let* _ : ltac:(refine (M.Val unit)) := super_and_self.my.cool.function in
-    let* _ : ltac:(refine (M.Val unit)) := super_and_self.function in
-    let* _ : ltac:(refine (M.Val unit)) := super_and_self.cool.function in
+    let* _ : ltac:(refine (M.Val unit)) :=
+      let* α0 := super_and_self.my.function in
+      M.alloc α0 in
+    let* _ : ltac:(refine (M.Val unit)) :=
+      let* α0 := super_and_self.my.function in
+      M.alloc α0 in
+    let* _ : ltac:(refine (M.Val unit)) :=
+      let* α0 := super_and_self.my.cool.function in
+      M.alloc α0 in
+    let* _ : ltac:(refine (M.Val unit)) :=
+      let* α0 := super_and_self.function in
+      M.alloc α0 in
+    let* _ : ltac:(refine (M.Val unit)) :=
+      let* α0 := super_and_self.cool.function in
+      M.alloc α0 in
     M.alloc tt).
 
 (*
@@ -288,7 +319,9 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M (M.Val unit) :=
+Definition main : M unit :=
   M.function_body
-    (let* _ : ltac:(refine (M.Val unit)) := super_and_self.my.indirect_call in
+    (let* _ : ltac:(refine (M.Val unit)) :=
+      let* α0 := super_and_self.my.indirect_call in
+      M.alloc α0 in
     M.alloc tt).

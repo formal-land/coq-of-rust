@@ -70,15 +70,15 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M (M.Val unit) :=
+Definition main : M unit :=
   M.function_body
     (let* color : ltac:(refine (M.Val alloc.string.String.t)) :=
-      let* α0 : ltac:(refine (M.Val alloc.string.String.t)) :=
+      let* α0 :=
         (core.convert.From.from
             (Self := alloc.string.String.t)
             (Trait := ltac:(refine _)))
           (mk_str "green") in
-      M.copy α0 in
+      M.alloc α0 in
     let* print : ltac:(refine (M.Val type not implemented)) :=
       M.copy
         (let* _ : ltac:(refine (M.Val unit)) :=
@@ -91,29 +91,33 @@ Definition main : M (M.Val unit) :=
             pointer_coercion "Unsize" α1 in
           let* α3 : ltac:(refine (M.Val (ref alloc.string.String.t))) :=
             borrow color in
-          let* α4 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
-            core.fmt.rt.Argument.t::["new_display"] α3 in
-          let* α5 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
-            M.alloc [ α4 ] in
-          let* α6 :
-              ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
-            borrow α5 in
+          let* α4 := core.fmt.rt.Argument.t::["new_display"] α3 in
+          let* α5 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
+            M.alloc α4 in
+          let* α6 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
+            M.alloc [ α5 ] in
           let* α7 :
+              ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
+            borrow α6 in
+          let* α8 :
               ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
-            pointer_coercion "Unsize" α6 in
-          let* α8 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-            core.fmt.Arguments.t::["new_v1"] α2 α7 in
-          std.io.stdio._print α8 in
+            pointer_coercion "Unsize" α7 in
+          let* α9 := core.fmt.Arguments.t::["new_v1"] α2 α8 in
+          let* α10 : ltac:(refine (M.Val core.fmt.Arguments.t)) := M.alloc α9 in
+          let* α11 := std.io.stdio._print α10 in
+          M.alloc α11 in
         M.alloc tt) in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* α0 : ltac:(refine (M.Val (ref type not implemented))) :=
         borrow print in
       let* α1 : ltac:(refine (M.Val unit)) := M.alloc tt in
-      (core.ops.function.Fn.call
-          (Self := type not implemented)
-          (Trait := ltac:(refine _)))
-        α0
-        α1 in
+      let* α2 :=
+        (core.ops.function.Fn.call
+            (Self := type not implemented)
+            (Trait := ltac:(refine _)))
+          α0
+          α1 in
+      M.alloc α2 in
     let* _reborrow : ltac:(refine (M.Val (ref alloc.string.String.t))) :=
       let* α0 : ltac:(refine (M.Val (ref alloc.string.String.t))) :=
         borrow color in
@@ -122,11 +126,13 @@ Definition main : M (M.Val unit) :=
       let* α0 : ltac:(refine (M.Val (ref type not implemented))) :=
         borrow print in
       let* α1 : ltac:(refine (M.Val unit)) := M.alloc tt in
-      (core.ops.function.Fn.call
-          (Self := type not implemented)
-          (Trait := ltac:(refine _)))
-        α0
-        α1 in
+      let* α2 :=
+        (core.ops.function.Fn.call
+            (Self := type not implemented)
+            (Trait := ltac:(refine _)))
+          α0
+          α1 in
+      M.alloc α2 in
     let* _color_moved : ltac:(refine (M.Val alloc.string.String.t)) :=
       M.copy color in
     let* count : ltac:(refine (M.Val i32.t)) :=
@@ -147,50 +153,54 @@ Definition main : M (M.Val unit) :=
             let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
               pointer_coercion "Unsize" α1 in
             let* α3 : ltac:(refine (M.Val (ref i32.t))) := borrow count in
-            let* α4 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
-              core.fmt.rt.Argument.t::["new_display"] α3 in
-            let* α5 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
-              M.alloc [ α4 ] in
-            let* α6 :
-                ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
-              borrow α5 in
+            let* α4 := core.fmt.rt.Argument.t::["new_display"] α3 in
+            let* α5 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
+              M.alloc α4 in
+            let* α6 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
+              M.alloc [ α5 ] in
             let* α7 :
+                ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
+              borrow α6 in
+            let* α8 :
                 ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
-              pointer_coercion "Unsize" α6 in
-            let* α8 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-              core.fmt.Arguments.t::["new_v1"] α2 α7 in
-            std.io.stdio._print α8 in
+              pointer_coercion "Unsize" α7 in
+            let* α9 := core.fmt.Arguments.t::["new_v1"] α2 α8 in
+            let* α10 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
+              M.alloc α9 in
+            let* α11 := std.io.stdio._print α10 in
+            M.alloc α11 in
           M.alloc tt in
         M.alloc tt) in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* α0 : ltac:(refine (M.Val (mut_ref type not implemented))) :=
         borrow_mut inc in
       let* α1 : ltac:(refine (M.Val unit)) := M.alloc tt in
-      (core.ops.function.FnMut.call_mut
-          (Self := type not implemented)
-          (Trait := ltac:(refine _)))
-        α0
-        α1 in
+      let* α2 :=
+        (core.ops.function.FnMut.call_mut
+            (Self := type not implemented)
+            (Trait := ltac:(refine _)))
+          α0
+          α1 in
+      M.alloc α2 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* α0 : ltac:(refine (M.Val (mut_ref type not implemented))) :=
         borrow_mut inc in
       let* α1 : ltac:(refine (M.Val unit)) := M.alloc tt in
-      (core.ops.function.FnMut.call_mut
-          (Self := type not implemented)
-          (Trait := ltac:(refine _)))
-        α0
-        α1 in
+      let* α2 :=
+        (core.ops.function.FnMut.call_mut
+            (Self := type not implemented)
+            (Trait := ltac:(refine _)))
+          α0
+          α1 in
+      M.alloc α2 in
     let* _count_reborrowed : ltac:(refine (M.Val (mut_ref i32.t))) :=
       let* α0 : ltac:(refine (M.Val (mut_ref i32.t))) := borrow_mut count in
       M.copy α0 in
     let* movable :
         ltac:(refine (M.Val (alloc.boxed.Box.t i32.t alloc.alloc.Global.t))) :=
       let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 3 in
-      let* α1 :
-          ltac:(refine
-            (M.Val (alloc.boxed.Box.t i32.t alloc.alloc.Global.t))) :=
-        (alloc.boxed.Box.t i32.t alloc.alloc.Global.t)::["new"] α0 in
-      M.copy α1 in
+      let* α1 := (alloc.boxed.Box.t i32.t alloc.alloc.Global.t)::["new"] α0 in
+      M.alloc α1 in
     let* consume : ltac:(refine (M.Val type not implemented)) :=
       M.copy
         (let* _ : ltac:(refine (M.Val unit)) :=
@@ -207,27 +217,34 @@ Definition main : M (M.Val unit) :=
                   (M.Val
                     (ref (alloc.boxed.Box.t i32.t alloc.alloc.Global.t)))) :=
               borrow movable in
-            let* α4 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
-              core.fmt.rt.Argument.t::["new_debug"] α3 in
-            let* α5 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
-              M.alloc [ α4 ] in
-            let* α6 :
-                ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
-              borrow α5 in
+            let* α4 := core.fmt.rt.Argument.t::["new_debug"] α3 in
+            let* α5 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
+              M.alloc α4 in
+            let* α6 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
+              M.alloc [ α5 ] in
             let* α7 :
+                ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
+              borrow α6 in
+            let* α8 :
                 ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
-              pointer_coercion "Unsize" α6 in
-            let* α8 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-              core.fmt.Arguments.t::["new_v1"] α2 α7 in
-            std.io.stdio._print α8 in
+              pointer_coercion "Unsize" α7 in
+            let* α9 := core.fmt.Arguments.t::["new_v1"] α2 α8 in
+            let* α10 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
+              M.alloc α9 in
+            let* α11 := std.io.stdio._print α10 in
+            M.alloc α11 in
           M.alloc tt in
-        let* _ : ltac:(refine (M.Val unit)) := core.mem.drop movable in
+        let* _ : ltac:(refine (M.Val unit)) :=
+          let* α0 := core.mem.drop movable in
+          M.alloc α0 in
         M.alloc tt) in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* α0 : ltac:(refine (M.Val unit)) := M.alloc tt in
-      (core.ops.function.FnOnce.call_once
-          (Self := type not implemented)
-          (Trait := ltac:(refine _)))
-        consume
-        α0 in
+      let* α1 :=
+        (core.ops.function.FnOnce.call_once
+            (Self := type not implemented)
+            (Trait := ltac:(refine _)))
+          consume
+          α0 in
+      M.alloc α1 in
     M.alloc tt).

@@ -6,7 +6,7 @@ fn is_odd(n: u32) -> bool {
     n % 2 == 1
 }
 *)
-Parameter is_odd : (M.Val u32.t) -> M (M.Val bool.t).
+Parameter is_odd : (M.Val u32.t) -> M bool.t.
 
 (*
 fn main() {
@@ -41,4 +41,4 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : M (M.Val unit).
+Parameter main : M unit.

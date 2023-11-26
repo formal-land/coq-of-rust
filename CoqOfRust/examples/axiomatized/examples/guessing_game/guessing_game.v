@@ -6,7 +6,7 @@ fn gen_range() -> u32 {
     todo!()
 }
 *)
-Parameter gen_range : M (M.Val u32.t).
+Parameter gen_range : M u32.t.
 
 (*
 fn main() {
@@ -43,4 +43,4 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : M (M.Val unit).
+Parameter main : M unit.

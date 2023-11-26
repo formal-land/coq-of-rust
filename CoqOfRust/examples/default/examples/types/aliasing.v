@@ -24,7 +24,7 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M (M.Val unit) :=
+Definition main : M unit :=
   M.function_body
     (let* nanoseconds : ltac:(refine (M.Val u64.t)) :=
       let* α0 : ltac:(refine (M.Val u64.t)) := M.alloc 5 in
@@ -50,23 +50,25 @@ Definition main : M (M.Val unit) :=
         let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
         let* α3 : ltac:(refine (M.Val (ref u64.t))) := borrow nanoseconds in
-        let* α4 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
-          core.fmt.rt.Argument.t::["new_display"] α3 in
-        let* α5 : ltac:(refine (M.Val (ref u64.t))) := borrow inches in
-        let* α6 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
-          core.fmt.rt.Argument.t::["new_display"] α5 in
-        let* α7 : ltac:(refine (M.Val u64.t)) := BinOp.add nanoseconds inches in
-        let* α8 : ltac:(refine (M.Val (ref u64.t))) := borrow α7 in
-        let* α9 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
-          core.fmt.rt.Argument.t::["new_display"] α8 in
-        let* α10 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
-          M.alloc [ α4; α6; α9 ] in
-        let* α11 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
-          borrow α10 in
-        let* α12 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
-          pointer_coercion "Unsize" α11 in
-        let* α13 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-          core.fmt.Arguments.t::["new_v1"] α2 α12 in
-        std.io.stdio._print α13 in
+        let* α4 := core.fmt.rt.Argument.t::["new_display"] α3 in
+        let* α5 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) := M.alloc α4 in
+        let* α6 : ltac:(refine (M.Val (ref u64.t))) := borrow inches in
+        let* α7 := core.fmt.rt.Argument.t::["new_display"] α6 in
+        let* α8 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) := M.alloc α7 in
+        let* α9 : ltac:(refine (M.Val u64.t)) := BinOp.add nanoseconds inches in
+        let* α10 : ltac:(refine (M.Val (ref u64.t))) := borrow α9 in
+        let* α11 := core.fmt.rt.Argument.t::["new_display"] α10 in
+        let* α12 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
+          M.alloc α11 in
+        let* α13 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
+          M.alloc [ α5; α8; α12 ] in
+        let* α14 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
+          borrow α13 in
+        let* α15 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
+          pointer_coercion "Unsize" α14 in
+        let* α16 := core.fmt.Arguments.t::["new_v1"] α2 α15 in
+        let* α17 : ltac:(refine (M.Val core.fmt.Arguments.t)) := M.alloc α16 in
+        let* α18 := std.io.stdio._print α17 in
+        M.alloc α18 in
       M.alloc tt in
     M.alloc tt).

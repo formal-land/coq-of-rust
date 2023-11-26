@@ -13,7 +13,7 @@ fn cat(path: &Path) -> io::Result<String> {
 *)
 Parameter cat :
     (M.Val (ref std.path.Path.t)) ->
-      M (M.Val ltac:(std.io.error.Result alloc.string.String.t)).
+      M ltac:(std.io.error.Result alloc.string.String.t).
 
 (*
 fn echo(s: &str, path: &Path) -> io::Result<()> {
@@ -25,7 +25,7 @@ fn echo(s: &str, path: &Path) -> io::Result<()> {
 Parameter echo :
     (M.Val (ref str.t)) ->
       (M.Val (ref std.path.Path.t)) ->
-      M (M.Val ltac:(std.io.error.Result unit)).
+      M ltac:(std.io.error.Result unit).
 
 (*
 fn touch(path: &Path) -> io::Result<()> {
@@ -36,7 +36,7 @@ fn touch(path: &Path) -> io::Result<()> {
 }
 *)
 Parameter touch :
-    (M.Val (ref std.path.Path.t)) -> M (M.Val ltac:(std.io.error.Result unit)).
+    (M.Val (ref std.path.Path.t)) -> M ltac:(std.io.error.Result unit).
 
 (*
 fn main() {
@@ -103,4 +103,4 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : M (M.Val unit).
+Parameter main : M unit.

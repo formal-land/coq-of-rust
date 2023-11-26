@@ -13,7 +13,7 @@ fn checked_division(dividend: i32, divisor: i32) -> Option<i32> {
 }
 *)
 Parameter checked_division :
-    (M.Val i32.t) -> (M.Val i32.t) -> M (M.Val (core.option.Option.t i32.t)).
+    (M.Val i32.t) -> (M.Val i32.t) -> M (core.option.Option.t i32.t).
 
 (*
 fn try_division(dividend: i32, divisor: i32) {
@@ -26,7 +26,7 @@ fn try_division(dividend: i32, divisor: i32) {
     }
 }
 *)
-Parameter try_division : (M.Val i32.t) -> (M.Val i32.t) -> M (M.Val unit).
+Parameter try_division : (M.Val i32.t) -> (M.Val i32.t) -> M unit.
 
 (*
 fn main() {
@@ -51,4 +51,4 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : M (M.Val unit).
+Parameter main : M unit.

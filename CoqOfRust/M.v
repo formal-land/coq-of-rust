@@ -204,12 +204,10 @@ Definition catch {A : Set} (body : M A) (handler : Exception -> M A) : M A :=
   | inr exception => handler exception fuel
   end.
 
-Definition function_body {A : Set} (body : M (M.Val A)) : M (M.Val A) :=
+Definition function_body {A : Set} (body : M (Val A)) : M A :=
   catch
-    (* We move the result to an immediate value. *)
     (let* result := body in
-    let* result := read result in
-    pure (Ref.Imm result))
+    read result)
     (fun exception =>
       match exception with
       | Exception.Return r => cast r

@@ -155,7 +155,7 @@ fn compile_expr_kind<'a>(
                 .iter()
                 .map(|arg| compile_expr(env, thir, arg))
                 .collect();
-            ExprKind::Call { func, args }
+            ExprKind::Call { func, args }.alloc()
         }
         thir::ExprKind::Deref { arg } => {
             let arg = compile_expr(env, thir, arg);
@@ -408,15 +408,11 @@ fn compile_expr_kind<'a>(
         thir::ExprKind::Break { .. } => ExprKind::ControlFlow(LoopControlFlow::Break),
         thir::ExprKind::Continue { .. } => ExprKind::ControlFlow(LoopControlFlow::Continue),
         thir::ExprKind::Return { value } => {
-            let func = Box::new(Expr {
-                kind: ExprKind::LocalVar("M.return_".to_string()),
-                ty: None,
-            });
-            let args = match value {
-                Some(value) => vec![compile_expr(env, thir, value)],
-                None => vec![Expr::tt()],
+            let value = match value {
+                Some(value) => compile_expr(env, thir, value).read(),
+                None => Expr::tt(),
             };
-            ExprKind::Call { func, args }
+            ExprKind::Return(Box::new(value))
         }
         thir::ExprKind::ConstBlock { did, .. } => ExprKind::Var(compile_def_id(env, *did)),
         thir::ExprKind::Repeat { value, count } => {

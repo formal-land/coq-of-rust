@@ -32,7 +32,7 @@ Section Impl_core_clone_Clone_for_scoping_rules_borrowing_the_ref_pattern_Point_
   *)
   Parameter clone :
       (M.Val (ref ltac:(Self))) ->
-        M (M.Val scoping_rules_borrowing_the_ref_pattern.Point.t).
+        M scoping_rules_borrowing_the_ref_pattern.Point.t.
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon ltac:(Self) "clone" := {
@@ -113,4 +113,4 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : M (M.Val unit).
+Parameter main : M unit.

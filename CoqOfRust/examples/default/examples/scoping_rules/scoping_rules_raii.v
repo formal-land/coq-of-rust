@@ -9,16 +9,13 @@ fn create_box() {
     // `_box1` is destroyed here, and memory gets freed
 }
 *)
-Definition create_box : M (M.Val unit) :=
+Definition create_box : M unit :=
   M.function_body
     (let* _box1 :
         ltac:(refine (M.Val (alloc.boxed.Box.t i32.t alloc.alloc.Global.t))) :=
       let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 3 in
-      let* α1 :
-          ltac:(refine
-            (M.Val (alloc.boxed.Box.t i32.t alloc.alloc.Global.t))) :=
-        (alloc.boxed.Box.t i32.t alloc.alloc.Global.t)::["new"] α0 in
-      M.copy α1 in
+      let* α1 := (alloc.boxed.Box.t i32.t alloc.alloc.Global.t)::["new"] α0 in
+      M.alloc α1 in
     M.alloc tt).
 
 (*
@@ -44,26 +41,20 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M (M.Val unit) :=
+Definition main : M unit :=
   M.function_body
     (let* _box2 :
         ltac:(refine (M.Val (alloc.boxed.Box.t i32.t alloc.alloc.Global.t))) :=
       let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 5 in
-      let* α1 :
-          ltac:(refine
-            (M.Val (alloc.boxed.Box.t i32.t alloc.alloc.Global.t))) :=
-        (alloc.boxed.Box.t i32.t alloc.alloc.Global.t)::["new"] α0 in
-      M.copy α1 in
+      let* α1 := (alloc.boxed.Box.t i32.t alloc.alloc.Global.t)::["new"] α0 in
+      M.alloc α1 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _box3 :
           ltac:(refine
             (M.Val (alloc.boxed.Box.t i32.t alloc.alloc.Global.t))) :=
         let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 4 in
-        let* α1 :
-            ltac:(refine
-              (M.Val (alloc.boxed.Box.t i32.t alloc.alloc.Global.t))) :=
-          (alloc.boxed.Box.t i32.t alloc.alloc.Global.t)::["new"] α0 in
-        M.copy α1 in
+        let* α1 := (alloc.boxed.Box.t i32.t alloc.alloc.Global.t)::["new"] α0 in
+        M.alloc α1 in
       M.alloc tt in
     let* α0 : ltac:(refine (M.Val u32.t)) := M.alloc 0 in
     let* α1 := M.read α0 in
@@ -73,14 +64,16 @@ Definition main : M (M.Val unit) :=
       M.alloc
         {| core.ops.range.Range.start := α1; core.ops.range.Range.end := α3;
         |} in
-    let* α5 : ltac:(refine (M.Val (core.ops.range.Range.t u32.t))) :=
+    let* α5 :=
       (core.iter.traits.collect.IntoIterator.into_iter
           (Self := core.ops.range.Range.t u32.t)
           (Trait := ltac:(refine _)))
         α4 in
-    let* α6 := M.read α5 in
-    let* α7 : ltac:(refine (M.Val unit)) :=
-      match α6 with
+    let* α6 : ltac:(refine (M.Val (core.ops.range.Range.t u32.t))) :=
+      M.alloc α5 in
+    let* α7 := M.read α6 in
+    let* α8 : ltac:(refine (M.Val unit)) :=
+      match α7 with
       | iter =>
         let* iter := M.alloc iter in
         loop
@@ -89,21 +82,24 @@ Definition main : M (M.Val unit) :=
                 ltac:(refine
                   (M.Val (mut_ref (core.ops.range.Range.t u32.t)))) :=
               borrow_mut iter in
-            let* α1 : ltac:(refine (M.Val (core.option.Option.t u32.t))) :=
+            let* α1 :=
               (core.iter.traits.iterator.Iterator.next
                   (Self := core.ops.range.Range.t u32.t)
                   (Trait := ltac:(refine _)))
                 α0 in
-            let* α2 := M.read α1 in
-            match α2 with
+            let* α2 : ltac:(refine (M.Val (core.option.Option.t u32.t))) :=
+              M.alloc α1 in
+            let* α3 := M.read α2 in
+            match α3 with
             | core.option.Option.None  =>
               let* α0 : ltac:(refine (M.Val never.t)) := Break in
               never_to_any α0
             | core.option.Option.Some _ =>
               let* _ : ltac:(refine (M.Val unit)) :=
-                scoping_rules_raii.create_box in
+                let* α0 := scoping_rules_raii.create_box in
+                M.alloc α0 in
               M.alloc tt
             end in
           M.alloc tt)
       end in
-    use α7).
+    use α8).

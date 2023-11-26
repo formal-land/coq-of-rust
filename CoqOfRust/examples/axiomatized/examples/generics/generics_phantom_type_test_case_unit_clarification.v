@@ -16,7 +16,7 @@ Section Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificati
   Parameter fmt :
       (M.Val (ref ltac:(Self))) ->
         (M.Val (mut_ref core.fmt.Formatter.t)) ->
-        M (M.Val ltac:(core.fmt.Result)).
+        M ltac:(core.fmt.Result).
   
   Global Instance AssociatedFunction_fmt :
     Notations.DoubleColon ltac:(Self) "fmt" := {
@@ -38,7 +38,7 @@ Section Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarifica
   *)
   Parameter clone :
       (M.Val (ref ltac:(Self))) ->
-        M (M.Val generics_phantom_type_test_case_unit_clarification.Inch.t).
+        M generics_phantom_type_test_case_unit_clarification.Inch.t.
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon ltac:(Self) "clone" := {
@@ -76,7 +76,7 @@ Section Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificati
   Parameter fmt :
       (M.Val (ref ltac:(Self))) ->
         (M.Val (mut_ref core.fmt.Formatter.t)) ->
-        M (M.Val ltac:(core.fmt.Result)).
+        M ltac:(core.fmt.Result).
   
   Global Instance AssociatedFunction_fmt :
     Notations.DoubleColon ltac:(Self) "fmt" := {
@@ -98,7 +98,7 @@ Section Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarifica
   *)
   Parameter clone :
       (M.Val (ref ltac:(Self))) ->
-        M (M.Val generics_phantom_type_test_case_unit_clarification.Mm.t).
+        M generics_phantom_type_test_case_unit_clarification.Mm.t.
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon ltac:(Self) "clone" := {
@@ -154,7 +154,7 @@ Section Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificati
   Parameter fmt :
       (M.Val (ref ltac:(Self))) ->
         (M.Val (mut_ref core.fmt.Formatter.t)) ->
-        M (M.Val ltac:(core.fmt.Result)).
+        M ltac:(core.fmt.Result).
   
   Global Instance AssociatedFunction_fmt :
     Notations.DoubleColon ltac:(Self) "fmt" := {
@@ -181,9 +181,7 @@ Section Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarifica
   *)
   Parameter clone :
       (M.Val (ref ltac:(Self))) ->
-        M
-          (M.Val
-            (generics_phantom_type_test_case_unit_clarification.Length.t Unit)).
+        M (generics_phantom_type_test_case_unit_clarification.Length.t Unit).
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon ltac:(Self) "clone" := {
@@ -235,9 +233,7 @@ Section Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarifi
         (M.Val
           (generics_phantom_type_test_case_unit_clarification.Length.t Unit))
         ->
-        M
-          (M.Val
-            (generics_phantom_type_test_case_unit_clarification.Length.t Unit)).
+        M (generics_phantom_type_test_case_unit_clarification.Length.t Unit).
   
   Global Instance AssociatedFunction_add :
     Notations.DoubleColon ltac:(Self) "add" := {
@@ -277,4 +273,4 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : M (M.Val unit).
+Parameter main : M unit.

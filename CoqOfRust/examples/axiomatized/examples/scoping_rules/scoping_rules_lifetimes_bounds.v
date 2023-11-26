@@ -29,7 +29,7 @@ Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_t_T.
   Parameter fmt :
       (M.Val (ref ltac:(Self))) ->
         (M.Val (mut_ref core.fmt.Formatter.t)) ->
-        M (M.Val ltac:(core.fmt.Result)).
+        M ltac:(core.fmt.Result).
   
   Global Instance AssociatedFunction_fmt :
     Notations.DoubleColon ltac:(Self) "fmt" := {
@@ -52,7 +52,7 @@ where
 *)
 Parameter print :
     forall {T : Set} {ℋ_0 : core.fmt.Debug.Trait T},
-    (M.Val T) -> M (M.Val unit).
+    (M.Val T) -> M unit.
 
 (*
 fn print_ref<'a, T>(t: &'a T)
@@ -64,7 +64,7 @@ where
 *)
 Parameter print_ref :
     forall {T : Set} {ℋ_0 : core.fmt.Debug.Trait T},
-    (M.Val (ref T)) -> M (M.Val unit).
+    (M.Val (ref T)) -> M unit.
 
 (*
 fn main() {
@@ -76,4 +76,4 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : M (M.Val unit).
+Parameter main : M unit.

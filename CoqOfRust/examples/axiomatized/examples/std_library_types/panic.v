@@ -11,7 +11,7 @@ fn division(dividend: i32, divisor: i32) -> i32 {
     }
 }
 *)
-Parameter division : (M.Val i32.t) -> (M.Val i32.t) -> M (M.Val i32.t).
+Parameter division : (M.Val i32.t) -> (M.Val i32.t) -> M i32.t.
 
 (*
 fn main() {
@@ -27,4 +27,4 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : M (M.Val unit).
+Parameter main : M unit.

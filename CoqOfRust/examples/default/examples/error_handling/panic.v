@@ -11,23 +11,24 @@ fn drink(beverage: &str) {
     println!("Some refreshing {} is all I need.", beverage);
 }
 *)
-Definition drink (beverage : M.Val (ref str.t)) : M (M.Val unit) :=
+Definition drink (beverage : M.Val (ref str.t)) : M unit :=
   M.function_body
     (let* _ : ltac:(refine (M.Val unit)) :=
       let* α0 : ltac:(refine (M.Val (ref (ref str.t)))) := borrow beverage in
       let* α1 : ltac:(refine (M.Val (ref (ref str.t)))) :=
         borrow (mk_str "lemonade") in
-      let* α2 : ltac:(refine (M.Val bool.t)) :=
+      let* α2 :=
         (core.cmp.PartialEq.eq (Self := ref str.t) (Trait := ltac:(refine _)))
           α0
           α1 in
-      let* α3 : ltac:(refine (M.Val bool.t)) := use α2 in
-      let* α4 := M.read α3 in
-      if (α4 : bool) then
+      let* α3 : ltac:(refine (M.Val bool.t)) := M.alloc α2 in
+      let* α4 : ltac:(refine (M.Val bool.t)) := use α3 in
+      let* α5 := M.read α4 in
+      if (α5 : bool) then
         let* _ : ltac:(refine (M.Val unit)) :=
-          let* α0 : ltac:(refine (M.Val never.t)) :=
-            std.panicking.begin_panic (mk_str "AAAaaaaa!!!!") in
-          never_to_any α0 in
+          let* α0 := std.panicking.begin_panic (mk_str "AAAaaaaa!!!!") in
+          let* α1 : ltac:(refine (M.Val never.t)) := M.alloc α0 in
+          never_to_any α1 in
         let* α0 : ltac:(refine (M.Val unit)) := M.alloc tt in
         never_to_any α0
       else
@@ -42,17 +43,18 @@ Definition drink (beverage : M.Val (ref str.t)) : M (M.Val unit) :=
         let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
         let* α3 : ltac:(refine (M.Val (ref (ref str.t)))) := borrow beverage in
-        let* α4 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
-          core.fmt.rt.Argument.t::["new_display"] α3 in
-        let* α5 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
-          M.alloc [ α4 ] in
-        let* α6 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
-          borrow α5 in
-        let* α7 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
-          pointer_coercion "Unsize" α6 in
-        let* α8 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-          core.fmt.Arguments.t::["new_v1"] α2 α7 in
-        std.io.stdio._print α8 in
+        let* α4 := core.fmt.rt.Argument.t::["new_display"] α3 in
+        let* α5 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) := M.alloc α4 in
+        let* α6 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
+          M.alloc [ α5 ] in
+        let* α7 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
+          borrow α6 in
+        let* α8 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
+          pointer_coercion "Unsize" α7 in
+        let* α9 := core.fmt.Arguments.t::["new_v1"] α2 α8 in
+        let* α10 : ltac:(refine (M.Val core.fmt.Arguments.t)) := M.alloc α9 in
+        let* α11 := std.io.stdio._print α10 in
+        M.alloc α11 in
       M.alloc tt in
     M.alloc tt).
 
@@ -63,14 +65,16 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M (M.Val unit) :=
+Definition main : M unit :=
   M.function_body
     (let* _ : ltac:(refine (M.Val unit)) :=
       let* α0 : ltac:(refine (M.Val str.t)) := deref (mk_str "water") in
       let* α1 : ltac:(refine (M.Val (ref str.t))) := borrow α0 in
-      panic.drink α1 in
+      let* α2 := panic.drink α1 in
+      M.alloc α2 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* α0 : ltac:(refine (M.Val str.t)) := deref (mk_str "lemonade") in
       let* α1 : ltac:(refine (M.Val (ref str.t))) := borrow α0 in
-      panic.drink α1 in
+      let* α2 := panic.drink α1 in
+      M.alloc α2 in
     M.alloc tt).

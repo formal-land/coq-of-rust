@@ -43,7 +43,7 @@ Section Impl_generics_implementation_Val_t.
           &self.val
       }
   *)
-  Definition value (self : M.Val (ref ltac:(Self))) : M (M.Val (ref f64.t)) :=
+  Definition value (self : M.Val (ref ltac:(Self))) : M (ref f64.t) :=
     M.function_body
       (let* α0 : ltac:(refine (M.Val generics_implementation.Val.t)) :=
         deref self in
@@ -67,7 +67,7 @@ Section Impl_generics_implementation_GenVal_t_T.
           &self.gen_val
       }
   *)
-  Definition value (self : M.Val (ref ltac:(Self))) : M (M.Val (ref T)) :=
+  Definition value (self : M.Val (ref ltac:(Self))) : M (ref T) :=
     M.function_body
       (let* α0 : ltac:(refine (M.Val (generics_implementation.GenVal.t T))) :=
         deref self in
@@ -89,7 +89,7 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M (M.Val unit) :=
+Definition main : M unit :=
   M.function_body
     (let* x : ltac:(refine (M.Val generics_implementation.Val.t)) :=
       let* α0 : ltac:(refine (M.Val f64.t)) := M.alloc 3 (* 3.0 *) in
@@ -110,28 +110,30 @@ Definition main : M (M.Val unit) :=
           pointer_coercion "Unsize" α1 in
         let* α3 : ltac:(refine (M.Val (ref generics_implementation.Val.t))) :=
           borrow x in
-        let* α4 : ltac:(refine (M.Val (ref f64.t))) :=
-          generics_implementation.Val.t::["value"] α3 in
-        let* α5 : ltac:(refine (M.Val (ref (ref f64.t)))) := borrow α4 in
-        let* α6 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
-          core.fmt.rt.Argument.t::["new_display"] α5 in
-        let* α7 :
+        let* α4 := generics_implementation.Val.t::["value"] α3 in
+        let* α5 : ltac:(refine (M.Val (ref f64.t))) := M.alloc α4 in
+        let* α6 : ltac:(refine (M.Val (ref (ref f64.t)))) := borrow α5 in
+        let* α7 := core.fmt.rt.Argument.t::["new_display"] α6 in
+        let* α8 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) := M.alloc α7 in
+        let* α9 :
             ltac:(refine
               (M.Val (ref (generics_implementation.GenVal.t i32.t)))) :=
           borrow y in
-        let* α8 : ltac:(refine (M.Val (ref i32.t))) :=
-          (generics_implementation.GenVal.t i32.t)::["value"] α7 in
-        let* α9 : ltac:(refine (M.Val (ref (ref i32.t)))) := borrow α8 in
-        let* α10 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
-          core.fmt.rt.Argument.t::["new_display"] α9 in
-        let* α11 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
-          M.alloc [ α6; α10 ] in
-        let* α12 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
-          borrow α11 in
-        let* α13 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
-          pointer_coercion "Unsize" α12 in
-        let* α14 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-          core.fmt.Arguments.t::["new_v1"] α2 α13 in
-        std.io.stdio._print α14 in
+        let* α10 := (generics_implementation.GenVal.t i32.t)::["value"] α9 in
+        let* α11 : ltac:(refine (M.Val (ref i32.t))) := M.alloc α10 in
+        let* α12 : ltac:(refine (M.Val (ref (ref i32.t)))) := borrow α11 in
+        let* α13 := core.fmt.rt.Argument.t::["new_display"] α12 in
+        let* α14 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
+          M.alloc α13 in
+        let* α15 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
+          M.alloc [ α8; α14 ] in
+        let* α16 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
+          borrow α15 in
+        let* α17 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
+          pointer_coercion "Unsize" α16 in
+        let* α18 := core.fmt.Arguments.t::["new_v1"] α2 α17 in
+        let* α19 : ltac:(refine (M.Val core.fmt.Arguments.t)) := M.alloc α18 in
+        let* α20 := std.io.stdio._print α19 in
+        M.alloc α20 in
       M.alloc tt in
     M.alloc tt).

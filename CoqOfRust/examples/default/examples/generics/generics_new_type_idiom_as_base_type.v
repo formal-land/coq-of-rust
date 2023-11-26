@@ -21,7 +21,7 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M (M.Val unit) :=
+Definition main : M unit :=
   M.function_body
     (let* years :
         ltac:(refine (M.Val generics_new_type_idiom_as_base_type.Years.t)) :=

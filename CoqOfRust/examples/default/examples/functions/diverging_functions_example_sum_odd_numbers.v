@@ -27,7 +27,7 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M (M.Val unit) :=
+Definition main : M unit :=
   M.function_body
     (let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
@@ -40,20 +40,21 @@ Definition main : M (M.Val unit) :=
         let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
         let* α3 : ltac:(refine (M.Val u32.t)) := M.alloc 9 in
-        let* α4 : ltac:(refine (M.Val u32.t)) :=
-          "unimplemented parent_kind" α3 in
-        let* α5 : ltac:(refine (M.Val (ref u32.t))) := borrow α4 in
-        let* α6 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
-          core.fmt.rt.Argument.t::["new_display"] α5 in
-        let* α7 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
-          M.alloc [ α6 ] in
-        let* α8 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
-          borrow α7 in
-        let* α9 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
-          pointer_coercion "Unsize" α8 in
-        let* α10 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-          core.fmt.Arguments.t::["new_v1"] α2 α9 in
-        std.io.stdio._print α10 in
+        let* α4 := "unimplemented parent_kind" α3 in
+        let* α5 : ltac:(refine (M.Val u32.t)) := M.alloc α4 in
+        let* α6 : ltac:(refine (M.Val (ref u32.t))) := borrow α5 in
+        let* α7 := core.fmt.rt.Argument.t::["new_display"] α6 in
+        let* α8 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) := M.alloc α7 in
+        let* α9 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
+          M.alloc [ α8 ] in
+        let* α10 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
+          borrow α9 in
+        let* α11 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
+          pointer_coercion "Unsize" α10 in
+        let* α12 := core.fmt.Arguments.t::["new_v1"] α2 α11 in
+        let* α13 : ltac:(refine (M.Val core.fmt.Arguments.t)) := M.alloc α12 in
+        let* α14 := std.io.stdio._print α13 in
+        M.alloc α14 in
       M.alloc tt in
     M.alloc tt).
 
@@ -76,7 +77,7 @@ Definition main : M (M.Val unit) :=
         acc
     }
 *)
-Definition sum_odd_numbers (up_to : M.Val u32.t) : M (M.Val u32.t) :=
+Definition sum_odd_numbers (up_to : M.Val u32.t) : M u32.t :=
   M.function_body
     (let* acc : ltac:(refine (M.Val u32.t)) :=
       let* α0 : ltac:(refine (M.Val u32.t)) := M.alloc 0 in
@@ -89,14 +90,16 @@ Definition sum_odd_numbers (up_to : M.Val u32.t) : M (M.Val u32.t) :=
         M.alloc
           {| core.ops.range.Range.start := α1; core.ops.range.Range.end := α2;
           |} in
-      let* α4 : ltac:(refine (M.Val (core.ops.range.Range.t u32.t))) :=
+      let* α4 :=
         (core.iter.traits.collect.IntoIterator.into_iter
             (Self := core.ops.range.Range.t u32.t)
             (Trait := ltac:(refine _)))
           α3 in
-      let* α5 := M.read α4 in
-      let* α6 : ltac:(refine (M.Val unit)) :=
-        match α5 with
+      let* α5 : ltac:(refine (M.Val (core.ops.range.Range.t u32.t))) :=
+        M.alloc α4 in
+      let* α6 := M.read α5 in
+      let* α7 : ltac:(refine (M.Val unit)) :=
+        match α6 with
         | iter =>
           let* iter := M.alloc iter in
           loop
@@ -105,13 +108,15 @@ Definition sum_odd_numbers (up_to : M.Val u32.t) : M (M.Val u32.t) :=
                   ltac:(refine
                     (M.Val (mut_ref (core.ops.range.Range.t u32.t)))) :=
                 borrow_mut iter in
-              let* α1 : ltac:(refine (M.Val (core.option.Option.t u32.t))) :=
+              let* α1 :=
                 (core.iter.traits.iterator.Iterator.next
                     (Self := core.ops.range.Range.t u32.t)
                     (Trait := ltac:(refine _)))
                   α0 in
-              let* α2 := M.read α1 in
-              match α2 with
+              let* α2 : ltac:(refine (M.Val (core.option.Option.t u32.t))) :=
+                M.alloc α1 in
+              let* α3 := M.read α2 in
+              match α3 with
               | core.option.Option.None  =>
                 let* α0 : ltac:(refine (M.Val never.t)) := Break in
                 never_to_any α0
@@ -137,5 +142,5 @@ Definition sum_odd_numbers (up_to : M.Val u32.t) : M (M.Val u32.t) :=
               end in
             M.alloc tt)
         end in
-      use α6 in
+      use α7 in
     M.pure acc).

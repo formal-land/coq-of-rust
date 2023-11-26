@@ -11,7 +11,7 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M (M.Val unit) :=
+Definition main : M unit :=
   M.function_body
     (let* raw_p : ltac:(refine (M.Val (ref u32.t))) :=
       let* α0 : ltac:(refine (M.Val u32.t)) := M.alloc 10 in
@@ -25,9 +25,10 @@ Definition main : M (M.Val unit) :=
       let* α4 : ltac:(refine (M.Val bool.t)) := use α3 in
       let* α5 := M.read α4 in
       if (α5 : bool) then
-        let* α0 : ltac:(refine (M.Val never.t)) :=
+        let* α0 :=
           core.panicking.panic (mk_str "assertion failed: *raw_p == 10") in
-        never_to_any α0
+        let* α1 : ltac:(refine (M.Val never.t)) := M.alloc α0 in
+        never_to_any α1
       else
         M.alloc tt in
     M.alloc tt).

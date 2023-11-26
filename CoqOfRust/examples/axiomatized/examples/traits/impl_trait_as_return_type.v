@@ -13,15 +13,14 @@ Parameter combine_vecs_explicit_return_type :
     (M.Val (alloc.vec.Vec.t i32.t alloc.vec.Vec.Default.A)) ->
       (M.Val (alloc.vec.Vec.t i32.t alloc.vec.Vec.Default.A)) ->
       M
-        (M.Val
-          (core.iter.adapters.cycle.Cycle.t
-            (core.iter.adapters.chain.Chain.t
-              (alloc.vec.into_iter.IntoIter.t
-                i32.t
-                alloc.vec.into_iter.IntoIter.Default.A)
-              (alloc.vec.into_iter.IntoIter.t
-                i32.t
-                alloc.vec.into_iter.IntoIter.Default.A)))).
+        (core.iter.adapters.cycle.Cycle.t
+          (core.iter.adapters.chain.Chain.t
+            (alloc.vec.into_iter.IntoIter.t
+              i32.t
+              alloc.vec.into_iter.IntoIter.Default.A)
+            (alloc.vec.into_iter.IntoIter.t
+              i32.t
+              alloc.vec.into_iter.IntoIter.Default.A))).
 
 (*
 fn combine_vecs(v: Vec<i32>, u: Vec<i32>) -> impl Iterator<Item = i32> {
@@ -34,7 +33,7 @@ Parameter combine_vecs_ret_ty :
 Parameter combine_vecs :
     (M.Val (alloc.vec.Vec.t i32.t alloc.vec.Vec.Default.A)) ->
       (M.Val (alloc.vec.Vec.t i32.t alloc.vec.Vec.Default.A)) ->
-      M (M.Val _ (* OpaqueTy *)).
+      M _ (* OpaqueTy *).
 
 Error OpaqueTy.
 
@@ -52,4 +51,4 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : M (M.Val unit).
+Parameter main : M unit.

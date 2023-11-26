@@ -43,7 +43,7 @@ Section Impl_generics_implementation_Val_t.
           &self.val
       }
   *)
-  Parameter value : (M.Val (ref ltac:(Self))) -> M (M.Val (ref f64.t)).
+  Parameter value : (M.Val (ref ltac:(Self))) -> M (ref f64.t).
   
   Global Instance AssociatedFunction_value :
     Notations.DoubleColon ltac:(Self) "value" := {
@@ -63,7 +63,7 @@ Section Impl_generics_implementation_GenVal_t_T.
           &self.gen_val
       }
   *)
-  Parameter value : (M.Val (ref ltac:(Self))) -> M (M.Val (ref T)).
+  Parameter value : (M.Val (ref ltac:(Self))) -> M (ref T).
   
   Global Instance AssociatedFunction_value :
     Notations.DoubleColon ltac:(Self) "value" := {
@@ -81,4 +81,4 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : M (M.Val unit).
+Parameter main : M unit.

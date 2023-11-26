@@ -9,7 +9,7 @@ fn reverse(pair: (i32, bool)) -> (bool, i32) {
     (bool_param, int_param)
 }
 *)
-Parameter reverse : (M.Val (i32.t * bool.t)) -> M (M.Val (bool.t * i32.t)).
+Parameter reverse : (M.Val (i32.t * bool.t)) -> M (bool.t * i32.t).
 
 Module  Matrix.
 Section Matrix.
@@ -45,7 +45,7 @@ Section Impl_core_fmt_Debug_for_tuples_Matrix_t.
   Parameter fmt :
       (M.Val (ref ltac:(Self))) ->
         (M.Val (mut_ref core.fmt.Formatter.t)) ->
-        M (M.Val ltac:(core.fmt.Result)).
+        M ltac:(core.fmt.Result).
   
   Global Instance AssociatedFunction_fmt :
     Notations.DoubleColon ltac:(Self) "fmt" := {
@@ -103,4 +103,4 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : M (M.Val unit).
+Parameter main : M unit.

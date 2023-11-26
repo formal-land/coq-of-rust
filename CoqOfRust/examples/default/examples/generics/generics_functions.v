@@ -36,7 +36,7 @@ End SGen.
 (*
 fn reg_fn(_s: S) {}
 *)
-Definition reg_fn (_s : M.Val generics_functions.S.t) : M (M.Val unit) :=
+Definition reg_fn (_s : M.Val generics_functions.S.t) : M unit :=
   M.function_body (M.alloc tt).
 
 (*
@@ -44,7 +44,7 @@ fn gen_spec_t(_s: SGen<A>) {}
 *)
 Definition gen_spec_t
     (_s : M.Val (generics_functions.SGen.t generics_functions.A.t))
-    : M (M.Val unit) :=
+    : M unit :=
   M.function_body (M.alloc tt).
 
 (*
@@ -52,7 +52,7 @@ fn gen_spec_i32(_s: SGen<i32>) {}
 *)
 Definition gen_spec_i32
     (_s : M.Val (generics_functions.SGen.t i32.t))
-    : M (M.Val unit) :=
+    : M unit :=
   M.function_body (M.alloc tt).
 
 (*
@@ -61,7 +61,7 @@ fn generic<T>(_s: SGen<T>) {}
 Definition generic
     {T : Set}
     (_s : M.Val (generics_functions.SGen.t T))
-    : M (M.Val unit) :=
+    : M unit :=
   M.function_body (M.alloc tt).
 
 (*
@@ -79,35 +79,40 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M (M.Val unit) :=
+Definition main : M unit :=
   M.function_body
     (let* _ : ltac:(refine (M.Val unit)) :=
       let* α0 : ltac:(refine (M.Val generics_functions.S.t)) :=
         M.alloc (generics_functions.S.Build_t generics_functions.A.Build_t) in
-      generics_functions.reg_fn α0 in
+      let* α1 := generics_functions.reg_fn α0 in
+      M.alloc α1 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* α0 :
           ltac:(refine
             (M.Val (generics_functions.SGen.t generics_functions.A.t))) :=
         M.alloc
           (generics_functions.SGen.Build_t generics_functions.A.Build_t) in
-      generics_functions.gen_spec_t α0 in
+      let* α1 := generics_functions.gen_spec_t α0 in
+      M.alloc α1 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 6 in
       let* α1 := M.read α0 in
       let* α2 : ltac:(refine (M.Val (generics_functions.SGen.t i32.t))) :=
         M.alloc (generics_functions.SGen.Build_t α1) in
-      generics_functions.gen_spec_i32 α2 in
+      let* α3 := generics_functions.gen_spec_i32 α2 in
+      M.alloc α3 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* α0 : ltac:(refine (M.Val char.t)) := M.alloc "a"%char in
       let* α1 := M.read α0 in
       let* α2 : ltac:(refine (M.Val (generics_functions.SGen.t char.t))) :=
         M.alloc (generics_functions.SGen.Build_t α1) in
-      generics_functions.generic α2 in
+      let* α3 := generics_functions.generic α2 in
+      M.alloc α3 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* α0 : ltac:(refine (M.Val char.t)) := M.alloc "c"%char in
       let* α1 := M.read α0 in
       let* α2 : ltac:(refine (M.Val (generics_functions.SGen.t char.t))) :=
         M.alloc (generics_functions.SGen.Build_t α1) in
-      generics_functions.generic α2 in
+      let* α3 := generics_functions.generic α2 in
+      M.alloc α3 in
     M.alloc tt).

@@ -15,7 +15,7 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M (M.Val unit) :=
+Definition main : M unit :=
   M.function_body
     (let* strings :
         ltac:(refine
@@ -36,11 +36,8 @@ Definition main : M (M.Val unit) :=
             (M.Val
               (alloc.boxed.Box.t (slice (ref str.t)) alloc.alloc.Global.t))) :=
         pointer_coercion "Unsize" α5 in
-      let* α7 :
-          ltac:(refine
-            (M.Val (alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t))) :=
-        (slice (ref str.t))::["into_vec"] α6 in
-      M.copy α7 in
+      let* α7 := (slice (ref str.t))::["into_vec"] α6 in
+      M.alloc α7 in
     let* '(numbers, errors) :
         ltac:(refine
           (M.Val
@@ -51,12 +48,7 @@ Definition main : M (M.Val unit) :=
             (alloc.vec.Vec.t
               (core.result.Result.t i32.t core.num.error.ParseIntError.t)
               alloc.alloc.Global.t)))) :=
-      let* α0 :
-          ltac:(refine
-            (M.Val
-              (alloc.vec.into_iter.IntoIter.t
-                (ref str.t)
-                alloc.alloc.Global.t))) :=
+      let* α0 :=
         (core.iter.traits.collect.IntoIterator.into_iter
             (Self := alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t)
             (Trait := ltac:(refine _)))
@@ -64,29 +56,30 @@ Definition main : M (M.Val unit) :=
       let* α1 :
           ltac:(refine
             (M.Val
+              (alloc.vec.into_iter.IntoIter.t
+                (ref str.t)
+                alloc.alloc.Global.t))) :=
+        M.alloc α0 in
+      let* α2 :=
+        (core.iter.traits.iterator.Iterator.map
+            (Self :=
+              alloc.vec.into_iter.IntoIter.t (ref str.t) alloc.alloc.Global.t)
+            (Trait := ltac:(refine _)))
+          α1
+          (let* α0 : ltac:(refine (M.Val str.t)) := deref s in
+          let* α1 : ltac:(refine (M.Val (ref str.t))) := borrow α0 in
+          let* α2 := str.t::["parse"] α1 in
+          M.alloc α2) in
+      let* α3 :
+          ltac:(refine
+            (M.Val
               (core.iter.adapters.map.Map.t
                 (alloc.vec.into_iter.IntoIter.t
                   (ref str.t)
                   alloc.alloc.Global.t)
                 type not implemented))) :=
-        (core.iter.traits.iterator.Iterator.map
-            (Self :=
-              alloc.vec.into_iter.IntoIter.t (ref str.t) alloc.alloc.Global.t)
-            (Trait := ltac:(refine _)))
-          α0
-          (let* α0 : ltac:(refine (M.Val str.t)) := deref s in
-          let* α1 : ltac:(refine (M.Val (ref str.t))) := borrow α0 in
-          str.t::["parse"] α1) in
-      let* α2 :
-          ltac:(refine
-            (M.Val
-              ((alloc.vec.Vec.t
-                (core.result.Result.t i32.t core.num.error.ParseIntError.t)
-                alloc.alloc.Global.t)
-              *
-              (alloc.vec.Vec.t
-                (core.result.Result.t i32.t core.num.error.ParseIntError.t)
-                alloc.alloc.Global.t)))) :=
+        M.alloc α2 in
+      let* α4 :=
         (core.iter.traits.iterator.Iterator.partition
             (Self :=
               core.iter.adapters.map.Map.t
@@ -95,19 +88,14 @@ Definition main : M (M.Val unit) :=
                   alloc.alloc.Global.t)
                 type not implemented)
             (Trait := ltac:(refine _)))
-          α1
+          α3
           (core.result.Result.t
               i32.t
               core.num.error.ParseIntError.t)::["is_ok"] in
-      M.copy α2 in
+      M.alloc α4 in
     let* numbers :
         ltac:(refine (M.Val (alloc.vec.Vec.t i32.t alloc.alloc.Global.t))) :=
-      let* α0 :
-          ltac:(refine
-            (M.Val
-              (alloc.vec.into_iter.IntoIter.t
-                (core.result.Result.t i32.t core.num.error.ParseIntError.t)
-                alloc.alloc.Global.t))) :=
+      let* α0 :=
         (core.iter.traits.collect.IntoIterator.into_iter
             (Self :=
               alloc.vec.Vec.t
@@ -118,23 +106,31 @@ Definition main : M (M.Val unit) :=
       let* α1 :
           ltac:(refine
             (M.Val
-              (core.iter.adapters.map.Map.t
-                (alloc.vec.into_iter.IntoIter.t
-                  (core.result.Result.t i32.t core.num.error.ParseIntError.t)
-                  alloc.alloc.Global.t)
-                _))) :=
+              (alloc.vec.into_iter.IntoIter.t
+                (core.result.Result.t i32.t core.num.error.ParseIntError.t)
+                alloc.alloc.Global.t))) :=
+        M.alloc α0 in
+      let* α2 :=
         (core.iter.traits.iterator.Iterator.map
             (Self :=
               alloc.vec.into_iter.IntoIter.t
                 (core.result.Result.t i32.t core.num.error.ParseIntError.t)
                 alloc.alloc.Global.t)
             (Trait := ltac:(refine _)))
-          α0
+          α1
           (core.result.Result.t
               i32.t
               core.num.error.ParseIntError.t)::["unwrap"] in
-      let* α2 :
-          ltac:(refine (M.Val (alloc.vec.Vec.t i32.t alloc.alloc.Global.t))) :=
+      let* α3 :
+          ltac:(refine
+            (M.Val
+              (core.iter.adapters.map.Map.t
+                (alloc.vec.into_iter.IntoIter.t
+                  (core.result.Result.t i32.t core.num.error.ParseIntError.t)
+                  alloc.alloc.Global.t)
+                _))) :=
+        M.alloc α2 in
+      let* α4 :=
         (core.iter.traits.iterator.Iterator.collect
             (Self :=
               core.iter.adapters.map.Map.t
@@ -143,20 +139,15 @@ Definition main : M (M.Val unit) :=
                   alloc.alloc.Global.t)
                 _)
             (Trait := ltac:(refine _)))
-          α1 in
-      M.copy α2 in
+          α3 in
+      M.alloc α4 in
     let* errors :
         ltac:(refine
           (M.Val
             (alloc.vec.Vec.t
               core.num.error.ParseIntError.t
               alloc.alloc.Global.t))) :=
-      let* α0 :
-          ltac:(refine
-            (M.Val
-              (alloc.vec.into_iter.IntoIter.t
-                (core.result.Result.t i32.t core.num.error.ParseIntError.t)
-                alloc.alloc.Global.t))) :=
+      let* α0 :=
         (core.iter.traits.collect.IntoIterator.into_iter
             (Self :=
               alloc.vec.Vec.t
@@ -167,27 +158,31 @@ Definition main : M (M.Val unit) :=
       let* α1 :
           ltac:(refine
             (M.Val
-              (core.iter.adapters.map.Map.t
-                (alloc.vec.into_iter.IntoIter.t
-                  (core.result.Result.t i32.t core.num.error.ParseIntError.t)
-                  alloc.alloc.Global.t)
-                _))) :=
+              (alloc.vec.into_iter.IntoIter.t
+                (core.result.Result.t i32.t core.num.error.ParseIntError.t)
+                alloc.alloc.Global.t))) :=
+        M.alloc α0 in
+      let* α2 :=
         (core.iter.traits.iterator.Iterator.map
             (Self :=
               alloc.vec.into_iter.IntoIter.t
                 (core.result.Result.t i32.t core.num.error.ParseIntError.t)
                 alloc.alloc.Global.t)
             (Trait := ltac:(refine _)))
-          α0
+          α1
           (core.result.Result.t
               i32.t
               core.num.error.ParseIntError.t)::["unwrap_err"] in
-      let* α2 :
+      let* α3 :
           ltac:(refine
             (M.Val
-              (alloc.vec.Vec.t
-                core.num.error.ParseIntError.t
-                alloc.alloc.Global.t))) :=
+              (core.iter.adapters.map.Map.t
+                (alloc.vec.into_iter.IntoIter.t
+                  (core.result.Result.t i32.t core.num.error.ParseIntError.t)
+                  alloc.alloc.Global.t)
+                _))) :=
+        M.alloc α2 in
+      let* α4 :=
         (core.iter.traits.iterator.Iterator.collect
             (Self :=
               core.iter.adapters.map.Map.t
@@ -196,8 +191,8 @@ Definition main : M (M.Val unit) :=
                   alloc.alloc.Global.t)
                 _)
             (Trait := ltac:(refine _)))
-          α1 in
-      M.copy α2 in
+          α3 in
+      M.alloc α4 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
@@ -211,17 +206,18 @@ Definition main : M (M.Val unit) :=
             ltac:(refine
               (M.Val (ref (alloc.vec.Vec.t i32.t alloc.alloc.Global.t)))) :=
           borrow numbers in
-        let* α4 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
-          core.fmt.rt.Argument.t::["new_debug"] α3 in
-        let* α5 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
-          M.alloc [ α4 ] in
-        let* α6 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
-          borrow α5 in
-        let* α7 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
-          pointer_coercion "Unsize" α6 in
-        let* α8 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-          core.fmt.Arguments.t::["new_v1"] α2 α7 in
-        std.io.stdio._print α8 in
+        let* α4 := core.fmt.rt.Argument.t::["new_debug"] α3 in
+        let* α5 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) := M.alloc α4 in
+        let* α6 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
+          M.alloc [ α5 ] in
+        let* α7 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
+          borrow α6 in
+        let* α8 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
+          pointer_coercion "Unsize" α7 in
+        let* α9 := core.fmt.Arguments.t::["new_v1"] α2 α8 in
+        let* α10 : ltac:(refine (M.Val core.fmt.Arguments.t)) := M.alloc α9 in
+        let* α11 := std.io.stdio._print α10 in
+        M.alloc α11 in
       M.alloc tt in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
@@ -240,16 +236,17 @@ Definition main : M (M.Val unit) :=
                     core.num.error.ParseIntError.t
                     alloc.alloc.Global.t)))) :=
           borrow errors in
-        let* α4 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
-          core.fmt.rt.Argument.t::["new_debug"] α3 in
-        let* α5 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
-          M.alloc [ α4 ] in
-        let* α6 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
-          borrow α5 in
-        let* α7 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
-          pointer_coercion "Unsize" α6 in
-        let* α8 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-          core.fmt.Arguments.t::["new_v1"] α2 α7 in
-        std.io.stdio._print α8 in
+        let* α4 := core.fmt.rt.Argument.t::["new_debug"] α3 in
+        let* α5 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) := M.alloc α4 in
+        let* α6 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
+          M.alloc [ α5 ] in
+        let* α7 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
+          borrow α6 in
+        let* α8 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
+          pointer_coercion "Unsize" α7 in
+        let* α9 := core.fmt.Arguments.t::["new_v1"] α2 α8 in
+        let* α10 : ltac:(refine (M.Val core.fmt.Arguments.t)) := M.alloc α9 in
+        let* α11 := std.io.stdio._print α10 in
+        M.alloc α11 in
       M.alloc tt in
     M.alloc tt).

@@ -29,7 +29,7 @@ Section Impl_core_fmt_Debug_for_operator_overloading_FooBar_t.
   Parameter fmt :
       (M.Val (ref ltac:(Self))) ->
         (M.Val (mut_ref core.fmt.Formatter.t)) ->
-        M (M.Val ltac:(core.fmt.Result)).
+        M ltac:(core.fmt.Result).
   
   Global Instance AssociatedFunction_fmt :
     Notations.DoubleColon ltac:(Self) "fmt" := {
@@ -58,7 +58,7 @@ Section Impl_core_fmt_Debug_for_operator_overloading_BarFoo_t.
   Parameter fmt :
       (M.Val (ref ltac:(Self))) ->
         (M.Val (mut_ref core.fmt.Formatter.t)) ->
-        M (M.Val ltac:(core.fmt.Result)).
+        M ltac:(core.fmt.Result).
   
   Global Instance AssociatedFunction_fmt :
     Notations.DoubleColon ltac:(Self) "fmt" := {
@@ -90,7 +90,7 @@ Section Impl_core_ops_arith_Add_operator_overloading_Bar_t_for_operator_overload
   Parameter add :
       (M.Val ltac:(Self)) ->
         (M.Val operator_overloading.Bar.t) ->
-        M (M.Val operator_overloading.FooBar.t).
+        M operator_overloading.FooBar.t.
   
   Global Instance AssociatedFunction_add :
     Notations.DoubleColon ltac:(Self) "add" := {
@@ -125,7 +125,7 @@ Section Impl_core_ops_arith_Add_operator_overloading_Foo_t_for_operator_overload
   Parameter add :
       (M.Val ltac:(Self)) ->
         (M.Val operator_overloading.Foo.t) ->
-        M (M.Val operator_overloading.BarFoo.t).
+        M operator_overloading.BarFoo.t.
   
   Global Instance AssociatedFunction_add :
     Notations.DoubleColon ltac:(Self) "add" := {
@@ -148,4 +148,4 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : M (M.Val unit).
+Parameter main : M unit.

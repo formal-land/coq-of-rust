@@ -60,7 +60,7 @@ Section Impl_generics_associated_types_solution_Contains_for_generics_associated
       (M.Val (ref ltac:(Self))) ->
         (M.Val (ref i32.t)) ->
         (M.Val (ref i32.t)) ->
-        M (M.Val bool.t).
+        M bool.t.
   
   Global Instance AssociatedFunction_contains :
     Notations.DoubleColon ltac:(Self) "contains" := {
@@ -72,7 +72,7 @@ Section Impl_generics_associated_types_solution_Contains_for_generics_associated
           self.0
       }
   *)
-  Parameter first : (M.Val (ref ltac:(Self))) -> M (M.Val i32.t).
+  Parameter first : (M.Val (ref ltac:(Self))) -> M i32.t.
   
   Global Instance AssociatedFunction_first :
     Notations.DoubleColon ltac:(Self) "first" := {
@@ -84,7 +84,7 @@ Section Impl_generics_associated_types_solution_Contains_for_generics_associated
           self.1
       }
   *)
-  Parameter last : (M.Val (ref ltac:(Self))) -> M (M.Val i32.t).
+  Parameter last : (M.Val (ref ltac:(Self))) -> M i32.t.
   
   Global Instance AssociatedFunction_last :
     Notations.DoubleColon ltac:(Self) "last" := {
@@ -96,7 +96,7 @@ Section Impl_generics_associated_types_solution_Contains_for_generics_associated
           self.0
       }
   *)
-  Parameter a : (M.Val (ref ltac:(Self))) -> M (M.Val i32.t).
+  Parameter a : (M.Val (ref ltac:(Self))) -> M i32.t.
   
   Global Instance AssociatedFunction_a :
     Notations.DoubleColon ltac:(Self) "a" := {
@@ -124,7 +124,7 @@ Parameter difference :
     forall
       {C : Set}
       {ℋ_0 : generics_associated_types_solution.Contains.Trait C},
-    (M.Val (ref C)) -> M (M.Val i32.t).
+    (M.Val (ref C)) -> M i32.t.
 
 (*
 fn get_a<C: Contains>(container: &C) -> C::A {
@@ -135,7 +135,7 @@ Parameter get_a :
     forall
       {C : Set}
       {ℋ_0 : generics_associated_types_solution.Contains.Trait C},
-    (M.Val (ref C)) -> M (M.Val C::type["A"].t).
+    (M.Val (ref C)) -> M C::type["A"].t.
 
 (*
 fn main() {
@@ -157,4 +157,4 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : M (M.Val unit).
+Parameter main : M unit.

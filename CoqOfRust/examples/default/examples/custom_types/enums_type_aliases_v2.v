@@ -24,7 +24,7 @@ Section Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers_t.
       (self : M.Val (ref ltac:(Self)))
       (x : M.Val i32.t)
       (y : M.Val i32.t)
-      : M (M.Val i32.t) :=
+      : M i32.t :=
     M.function_body
       (let* α0 := M.read self in
       match α0 with

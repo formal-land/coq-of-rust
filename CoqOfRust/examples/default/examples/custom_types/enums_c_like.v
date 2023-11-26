@@ -26,7 +26,7 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M (M.Val unit) :=
+Definition main : M unit :=
   M.function_body
     (let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
@@ -39,17 +39,18 @@ Definition main : M (M.Val unit) :=
           pointer_coercion "Unsize" α1 in
         let* α3 : ltac:(refine (M.Val i32.t)) := cast 0 in
         let* α4 : ltac:(refine (M.Val (ref i32.t))) := borrow α3 in
-        let* α5 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
-          core.fmt.rt.Argument.t::["new_display"] α4 in
-        let* α6 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
-          M.alloc [ α5 ] in
-        let* α7 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
-          borrow α6 in
-        let* α8 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
-          pointer_coercion "Unsize" α7 in
-        let* α9 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-          core.fmt.Arguments.t::["new_v1"] α2 α8 in
-        std.io.stdio._print α9 in
+        let* α5 := core.fmt.rt.Argument.t::["new_display"] α4 in
+        let* α6 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) := M.alloc α5 in
+        let* α7 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
+          M.alloc [ α6 ] in
+        let* α8 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
+          borrow α7 in
+        let* α9 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
+          pointer_coercion "Unsize" α8 in
+        let* α10 := core.fmt.Arguments.t::["new_v1"] α2 α9 in
+        let* α11 : ltac:(refine (M.Val core.fmt.Arguments.t)) := M.alloc α10 in
+        let* α12 := std.io.stdio._print α11 in
+        M.alloc α12 in
       M.alloc tt in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
@@ -62,17 +63,18 @@ Definition main : M (M.Val unit) :=
           pointer_coercion "Unsize" α1 in
         let* α3 : ltac:(refine (M.Val i32.t)) := cast 1 in
         let* α4 : ltac:(refine (M.Val (ref i32.t))) := borrow α3 in
-        let* α5 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
-          core.fmt.rt.Argument.t::["new_display"] α4 in
-        let* α6 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
-          M.alloc [ α5 ] in
-        let* α7 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
-          borrow α6 in
-        let* α8 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
-          pointer_coercion "Unsize" α7 in
-        let* α9 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-          core.fmt.Arguments.t::["new_v1"] α2 α8 in
-        std.io.stdio._print α9 in
+        let* α5 := core.fmt.rt.Argument.t::["new_display"] α4 in
+        let* α6 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) := M.alloc α5 in
+        let* α7 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
+          M.alloc [ α6 ] in
+        let* α8 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
+          borrow α7 in
+        let* α9 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
+          pointer_coercion "Unsize" α8 in
+        let* α10 := core.fmt.Arguments.t::["new_v1"] α2 α9 in
+        let* α11 : ltac:(refine (M.Val core.fmt.Arguments.t)) := M.alloc α10 in
+        let* α12 := std.io.stdio._print α11 in
+        M.alloc α12 in
       M.alloc tt in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
@@ -87,39 +89,43 @@ Definition main : M (M.Val unit) :=
           BinOp.add enums_c_like.Color.Red 0 in
         let* α4 : ltac:(refine (M.Val i32.t)) := cast α3 in
         let* α5 : ltac:(refine (M.Val (ref i32.t))) := borrow α4 in
-        let* α6 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
-          core.fmt.rt.Argument.t::["new_lower_hex"] α5 in
-        let* α7 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
-          M.alloc [ α6 ] in
-        let* α8 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
-          borrow α7 in
-        let* α9 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
-          pointer_coercion "Unsize" α8 in
-        let* α10 : ltac:(refine (M.Val usize.t)) := M.alloc 0 in
-        let* α11 : ltac:(refine (M.Val char.t)) := M.alloc " "%char in
-        let* α12 : ltac:(refine (M.Val core.fmt.rt.Alignment.t)) :=
+        let* α6 := core.fmt.rt.Argument.t::["new_lower_hex"] α5 in
+        let* α7 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) := M.alloc α6 in
+        let* α8 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
+          M.alloc [ α7 ] in
+        let* α9 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
+          borrow α8 in
+        let* α10 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
+          pointer_coercion "Unsize" α9 in
+        let* α11 : ltac:(refine (M.Val usize.t)) := M.alloc 0 in
+        let* α12 : ltac:(refine (M.Val char.t)) := M.alloc " "%char in
+        let* α13 : ltac:(refine (M.Val core.fmt.rt.Alignment.t)) :=
           M.alloc core.fmt.rt.Alignment.Unknown in
-        let* α13 : ltac:(refine (M.Val u32.t)) := M.alloc 8 in
-        let* α14 : ltac:(refine (M.Val core.fmt.rt.Count.t)) :=
+        let* α14 : ltac:(refine (M.Val u32.t)) := M.alloc 8 in
+        let* α15 : ltac:(refine (M.Val core.fmt.rt.Count.t)) :=
           M.alloc core.fmt.rt.Count.Implied in
-        let* α15 : ltac:(refine (M.Val usize.t)) := M.alloc 6 in
-        let* α16 : ltac:(refine (M.Val core.fmt.rt.Count.t)) :=
-          "unimplemented parent_kind" α15 in
-        let* α17 : ltac:(refine (M.Val core.fmt.rt.Placeholder.t)) :=
-          core.fmt.rt.Placeholder.t::["new"] α10 α11 α12 α13 α14 α16 in
-        let* α18 : ltac:(refine (M.Val (array core.fmt.rt.Placeholder.t))) :=
-          M.alloc [ α17 ] in
-        let* α19 :
+        let* α16 : ltac:(refine (M.Val usize.t)) := M.alloc 6 in
+        let* α17 := "unimplemented parent_kind" α16 in
+        let* α18 : ltac:(refine (M.Val core.fmt.rt.Count.t)) := M.alloc α17 in
+        let* α19 :=
+          core.fmt.rt.Placeholder.t::["new"] α11 α12 α13 α14 α15 α18 in
+        let* α20 : ltac:(refine (M.Val core.fmt.rt.Placeholder.t)) :=
+          M.alloc α19 in
+        let* α21 : ltac:(refine (M.Val (array core.fmt.rt.Placeholder.t))) :=
+          M.alloc [ α20 ] in
+        let* α22 :
             ltac:(refine (M.Val (ref (array core.fmt.rt.Placeholder.t)))) :=
-          borrow α18 in
-        let* α20 :
+          borrow α21 in
+        let* α23 :
             ltac:(refine (M.Val (ref (slice core.fmt.rt.Placeholder.t)))) :=
-          pointer_coercion "Unsize" α19 in
-        let* α21 : ltac:(refine (M.Val core.fmt.rt.UnsafeArg.t)) :=
-          core.fmt.rt.UnsafeArg.t::["new"] in
-        let* α22 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-          core.fmt.Arguments.t::["new_v1_formatted"] α2 α9 α20 α21 in
-        std.io.stdio._print α22 in
+          pointer_coercion "Unsize" α22 in
+        let* α0 := core.fmt.rt.UnsafeArg.t::["new"] in
+        let* α24 : ltac:(refine (M.Val core.fmt.rt.UnsafeArg.t)) :=
+          M.alloc α0 in
+        let* α25 := core.fmt.Arguments.t::["new_v1_formatted"] α2 α10 α23 α24 in
+        let* α26 : ltac:(refine (M.Val core.fmt.Arguments.t)) := M.alloc α25 in
+        let* α27 := std.io.stdio._print α26 in
+        M.alloc α27 in
       M.alloc tt in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
@@ -134,38 +140,42 @@ Definition main : M (M.Val unit) :=
           BinOp.add enums_c_like.Color.Blue 0 in
         let* α4 : ltac:(refine (M.Val i32.t)) := cast α3 in
         let* α5 : ltac:(refine (M.Val (ref i32.t))) := borrow α4 in
-        let* α6 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
-          core.fmt.rt.Argument.t::["new_lower_hex"] α5 in
-        let* α7 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
-          M.alloc [ α6 ] in
-        let* α8 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
-          borrow α7 in
-        let* α9 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
-          pointer_coercion "Unsize" α8 in
-        let* α10 : ltac:(refine (M.Val usize.t)) := M.alloc 0 in
-        let* α11 : ltac:(refine (M.Val char.t)) := M.alloc " "%char in
-        let* α12 : ltac:(refine (M.Val core.fmt.rt.Alignment.t)) :=
+        let* α6 := core.fmt.rt.Argument.t::["new_lower_hex"] α5 in
+        let* α7 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) := M.alloc α6 in
+        let* α8 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
+          M.alloc [ α7 ] in
+        let* α9 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
+          borrow α8 in
+        let* α10 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
+          pointer_coercion "Unsize" α9 in
+        let* α11 : ltac:(refine (M.Val usize.t)) := M.alloc 0 in
+        let* α12 : ltac:(refine (M.Val char.t)) := M.alloc " "%char in
+        let* α13 : ltac:(refine (M.Val core.fmt.rt.Alignment.t)) :=
           M.alloc core.fmt.rt.Alignment.Unknown in
-        let* α13 : ltac:(refine (M.Val u32.t)) := M.alloc 8 in
-        let* α14 : ltac:(refine (M.Val core.fmt.rt.Count.t)) :=
+        let* α14 : ltac:(refine (M.Val u32.t)) := M.alloc 8 in
+        let* α15 : ltac:(refine (M.Val core.fmt.rt.Count.t)) :=
           M.alloc core.fmt.rt.Count.Implied in
-        let* α15 : ltac:(refine (M.Val usize.t)) := M.alloc 6 in
-        let* α16 : ltac:(refine (M.Val core.fmt.rt.Count.t)) :=
-          "unimplemented parent_kind" α15 in
-        let* α17 : ltac:(refine (M.Val core.fmt.rt.Placeholder.t)) :=
-          core.fmt.rt.Placeholder.t::["new"] α10 α11 α12 α13 α14 α16 in
-        let* α18 : ltac:(refine (M.Val (array core.fmt.rt.Placeholder.t))) :=
-          M.alloc [ α17 ] in
-        let* α19 :
+        let* α16 : ltac:(refine (M.Val usize.t)) := M.alloc 6 in
+        let* α17 := "unimplemented parent_kind" α16 in
+        let* α18 : ltac:(refine (M.Val core.fmt.rt.Count.t)) := M.alloc α17 in
+        let* α19 :=
+          core.fmt.rt.Placeholder.t::["new"] α11 α12 α13 α14 α15 α18 in
+        let* α20 : ltac:(refine (M.Val core.fmt.rt.Placeholder.t)) :=
+          M.alloc α19 in
+        let* α21 : ltac:(refine (M.Val (array core.fmt.rt.Placeholder.t))) :=
+          M.alloc [ α20 ] in
+        let* α22 :
             ltac:(refine (M.Val (ref (array core.fmt.rt.Placeholder.t)))) :=
-          borrow α18 in
-        let* α20 :
+          borrow α21 in
+        let* α23 :
             ltac:(refine (M.Val (ref (slice core.fmt.rt.Placeholder.t)))) :=
-          pointer_coercion "Unsize" α19 in
-        let* α21 : ltac:(refine (M.Val core.fmt.rt.UnsafeArg.t)) :=
-          core.fmt.rt.UnsafeArg.t::["new"] in
-        let* α22 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-          core.fmt.Arguments.t::["new_v1_formatted"] α2 α9 α20 α21 in
-        std.io.stdio._print α22 in
+          pointer_coercion "Unsize" α22 in
+        let* α0 := core.fmt.rt.UnsafeArg.t::["new"] in
+        let* α24 : ltac:(refine (M.Val core.fmt.rt.UnsafeArg.t)) :=
+          M.alloc α0 in
+        let* α25 := core.fmt.Arguments.t::["new_v1_formatted"] α2 α10 α23 α24 in
+        let* α26 : ltac:(refine (M.Val core.fmt.Arguments.t)) := M.alloc α25 in
+        let* α27 := std.io.stdio._print α26 in
+        M.alloc α27 in
       M.alloc tt in
     M.alloc tt).

@@ -49,9 +49,7 @@ Section Impl_const_underscore_expression_BarTrait_for_const_underscore_expressio
               self.test
           }
   *)
-  Definition show
-      (self : M.Val ltac:(Self))
-      : M (M.Val alloc.string.String.t) :=
+  Definition show (self : M.Val ltac:(Self)) : M alloc.string.String.t :=
     M.function_body (M.pure self.["test"]).
   
   Global Instance AssociatedFunction_show :

@@ -32,7 +32,7 @@ Section Impl_functions_order_SomeType_t.
   (*
       fn meth2(self) {}
   *)
-  Definition meth2 (self : M.Val ltac:(Self)) : M (M.Val unit) :=
+  Definition meth2 (self : M.Val ltac:(Self)) : M unit :=
     M.function_body (M.alloc tt).
   
   Global Instance AssociatedFunction_meth2 :
@@ -45,10 +45,11 @@ Section Impl_functions_order_SomeType_t.
           self.meth2();
       }
   *)
-  Definition meth1 (self : M.Val ltac:(Self)) : M (M.Val unit) :=
+  Definition meth1 (self : M.Val ltac:(Self)) : M unit :=
     M.function_body
       (let* _ : ltac:(refine (M.Val unit)) :=
-        functions_order.SomeType.t::["meth2"] self in
+        let* α0 := functions_order.SomeType.t::["meth2"] self in
+        M.alloc α0 in
       M.alloc tt).
   
   Global Instance AssociatedFunction_meth1 :
@@ -75,7 +76,7 @@ Section Impl_functions_order_SomeTrait_for_functions_order_SomeType_t.
   (*
       fn some_trait_bar(&self) {}
   *)
-  Definition some_trait_bar (self : M.Val (ref ltac:(Self))) : M (M.Val unit) :=
+  Definition some_trait_bar (self : M.Val (ref ltac:(Self))) : M unit :=
     M.function_body (M.alloc tt).
   
   Global Instance AssociatedFunction_some_trait_bar :
@@ -88,16 +89,18 @@ Section Impl_functions_order_SomeTrait_for_functions_order_SomeType_t.
           self.some_trait_bar()
       }
   *)
-  Definition some_trait_foo (self : M.Val (ref ltac:(Self))) : M (M.Val unit) :=
+  Definition some_trait_foo (self : M.Val (ref ltac:(Self))) : M unit :=
     M.function_body
       (let* α0 : ltac:(refine (M.Val functions_order.SomeType.t)) :=
         deref self in
       let* α1 : ltac:(refine (M.Val (ref functions_order.SomeType.t))) :=
         borrow α0 in
-      (functions_order.SomeTrait.some_trait_bar
-          (Self := functions_order.SomeType.t)
-          (Trait := ltac:(refine _)))
-        α1).
+      let* α2 :=
+        (functions_order.SomeTrait.some_trait_bar
+            (Self := functions_order.SomeType.t)
+            (Trait := ltac:(refine _)))
+          α1 in
+      M.alloc α2).
   
   Global Instance AssociatedFunction_some_trait_foo :
     Notations.DoubleColon ltac:(Self) "some_trait_foo" := {
@@ -118,7 +121,7 @@ Section Impl_functions_order_SomeTrait_for_functions_order_OtherType_t.
   (*
       fn some_trait_foo(&self) {}
   *)
-  Definition some_trait_foo (self : M.Val (ref ltac:(Self))) : M (M.Val unit) :=
+  Definition some_trait_foo (self : M.Val (ref ltac:(Self))) : M unit :=
     M.function_body (M.alloc tt).
   
   Global Instance AssociatedFunction_some_trait_foo :
@@ -129,7 +132,7 @@ Section Impl_functions_order_SomeTrait_for_functions_order_OtherType_t.
   (*
       fn some_trait_bar(&self) {}
   *)
-  Definition some_trait_bar (self : M.Val (ref ltac:(Self))) : M (M.Val unit) :=
+  Definition some_trait_bar (self : M.Val (ref ltac:(Self))) : M unit :=
     M.function_body (M.alloc tt).
   
   Global Instance AssociatedFunction_some_trait_bar :
@@ -153,7 +156,7 @@ fn depends_on_trait_impl(u: u32, b: bool) {
 Definition depends_on_trait_impl
     (u : M.Val u32.t)
     (b : M.Val bool.t)
-    : M (M.Val unit) :=
+    : M unit :=
   M.function_body
     (let* _ : ltac:(refine (M.Val unit)) :=
       let* α0 := M.read b in
@@ -161,27 +164,31 @@ Definition depends_on_trait_impl
         M.alloc (functions_order.OtherType.Build_t α0) in
       let* α2 : ltac:(refine (M.Val (ref functions_order.OtherType.t))) :=
         borrow α1 in
-      (functions_order.SomeTrait.some_trait_foo
-          (Self := functions_order.OtherType.t)
-          (Trait := ltac:(refine _)))
-        α2 in
+      let* α3 :=
+        (functions_order.SomeTrait.some_trait_foo
+            (Self := functions_order.OtherType.t)
+            (Trait := ltac:(refine _)))
+          α2 in
+      M.alloc α3 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* α0 := M.read u in
       let* α1 : ltac:(refine (M.Val functions_order.SomeType.t)) :=
         M.alloc (functions_order.SomeType.Build_t α0) in
       let* α2 : ltac:(refine (M.Val (ref functions_order.SomeType.t))) :=
         borrow α1 in
-      (functions_order.SomeTrait.some_trait_foo
-          (Self := functions_order.SomeType.t)
-          (Trait := ltac:(refine _)))
-        α2 in
+      let* α3 :=
+        (functions_order.SomeTrait.some_trait_foo
+            (Self := functions_order.SomeType.t)
+            (Trait := ltac:(refine _)))
+          α2 in
+      M.alloc α3 in
     M.alloc tt).
 
 Module inner_mod.
   (*
       fn tar() {}
   *)
-  Definition tar : M (M.Val unit) := M.function_body (M.alloc tt).
+  Definition tar : M unit := M.function_body (M.alloc tt).
   
   (*
       pub fn bar() {
@@ -189,26 +196,29 @@ Module inner_mod.
           tar();
       }
   *)
-  Definition bar : M (M.Val unit) :=
+  Definition bar : M unit :=
     M.function_body
-      (let* _ : ltac:(refine (M.Val unit)) := functions_order.inner_mod.tar in
+      (let* _ : ltac:(refine (M.Val unit)) :=
+        let* α0 := functions_order.inner_mod.tar in
+        M.alloc α0 in
       M.alloc tt).
   
   Module nested_mod.
     (*
             fn tack() {}
     *)
-    Definition tack : M (M.Val unit) := M.function_body (M.alloc tt).
+    Definition tack : M unit := M.function_body (M.alloc tt).
     
     (*
             pub fn tick() {
                 tack();
             }
     *)
-    Definition tick : M (M.Val unit) :=
+    Definition tick : M unit :=
       M.function_body
         (let* _ : ltac:(refine (M.Val unit)) :=
-          functions_order.inner_mod.nested_mod.tack in
+          let* α0 := functions_order.inner_mod.nested_mod.tack in
+          M.alloc α0 in
         M.alloc tt).
   End nested_mod.
 End inner_mod.
@@ -219,31 +229,34 @@ End inner_mod.
         tar();
     }
 *)
-Definition bar : M (M.Val unit) :=
+Definition bar : M unit :=
   M.function_body
-    (let* _ : ltac:(refine (M.Val unit)) := functions_order.inner_mod.tar in
+    (let* _ : ltac:(refine (M.Val unit)) :=
+      let* α0 := functions_order.inner_mod.tar in
+      M.alloc α0 in
     M.alloc tt).
 
 (*
     fn tar() {}
 *)
-Definition tar : M (M.Val unit) := M.function_body (M.alloc tt).
+Definition tar : M unit := M.function_body (M.alloc tt).
 
 Module nested_mod.
   (*
           fn tack() {}
   *)
-  Definition tack : M (M.Val unit) := M.function_body (M.alloc tt).
+  Definition tack : M unit := M.function_body (M.alloc tt).
   
   (*
           pub fn tick() {
               tack();
           }
   *)
-  Definition tick : M (M.Val unit) :=
+  Definition tick : M unit :=
     M.function_body
       (let* _ : ltac:(refine (M.Val unit)) :=
-        functions_order.inner_mod.nested_mod.tack in
+        let* α0 := functions_order.inner_mod.nested_mod.tack in
+        M.alloc α0 in
       M.alloc tt).
 End nested_mod.
 
@@ -252,21 +265,22 @@ End nested_mod.
             tack();
         }
 *)
-Definition tick : M (M.Val unit) :=
+Definition tick : M unit :=
   M.function_body
     (let* _ : ltac:(refine (M.Val unit)) :=
-      functions_order.inner_mod.nested_mod.tack in
+      let* α0 := functions_order.inner_mod.nested_mod.tack in
+      M.alloc α0 in
     M.alloc tt).
 
 (*
         fn tack() {}
 *)
-Definition tack : M (M.Val unit) := M.function_body (M.alloc tt).
+Definition tack : M unit := M.function_body (M.alloc tt).
 
 (*
 fn foo() {}
 *)
-Definition foo : M (M.Val unit) := M.function_body (M.alloc tt).
+Definition foo : M unit := M.function_body (M.alloc tt).
 
 (*
 fn main() {
@@ -277,14 +291,19 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M (M.Val unit) :=
+Definition main : M unit :=
   M.function_body
-    (let* _ : ltac:(refine (M.Val unit)) := functions_order.foo in
-    let* _ : ltac:(refine (M.Val unit)) := functions_order.inner_mod.bar in
+    (let* _ : ltac:(refine (M.Val unit)) :=
+      let* α0 := functions_order.foo in
+      M.alloc α0 in
+    let* _ : ltac:(refine (M.Val unit)) :=
+      let* α0 := functions_order.inner_mod.bar in
+      M.alloc α0 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* α0 : ltac:(refine (M.Val u32.t)) := M.alloc 0 in
       let* α1 := M.read α0 in
       let* α2 : ltac:(refine (M.Val functions_order.SomeType.t)) :=
         M.alloc (functions_order.SomeType.Build_t α1) in
-      functions_order.SomeType.t::["meth1"] α2 in
+      let* α3 := functions_order.SomeType.t::["meth1"] α2 in
+      M.alloc α3 in
     M.alloc tt).

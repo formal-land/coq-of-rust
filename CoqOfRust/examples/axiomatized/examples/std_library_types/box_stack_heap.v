@@ -35,7 +35,7 @@ Section Impl_core_fmt_Debug_for_box_stack_heap_Point_t.
   Parameter fmt :
       (M.Val (ref ltac:(Self))) ->
         (M.Val (mut_ref core.fmt.Formatter.t)) ->
-        M (M.Val ltac:(core.fmt.Result)).
+        M ltac:(core.fmt.Result).
   
   Global Instance AssociatedFunction_fmt :
     Notations.DoubleColon ltac:(Self) "fmt" := {
@@ -56,8 +56,7 @@ Section Impl_core_clone_Clone_for_box_stack_heap_Point_t.
   Clone
   *)
   (* #[allow(dead_code)] - function was ignored by the compiler *)
-  Parameter clone :
-      (M.Val (ref ltac:(Self))) -> M (M.Val box_stack_heap.Point.t).
+  Parameter clone : (M.Val (ref ltac:(Self))) -> M box_stack_heap.Point.t.
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon ltac:(Self) "clone" := {
@@ -113,7 +112,7 @@ fn origin() -> Point {
     Point { x: 0.0, y: 0.0 }
 }
 *)
-Parameter origin : M (M.Val box_stack_heap.Point.t).
+Parameter origin : M box_stack_heap.Point.t.
 
 (*
 fn boxed_origin() -> Box<Point> {
@@ -122,9 +121,7 @@ fn boxed_origin() -> Box<Point> {
 }
 *)
 Parameter boxed_origin :
-    M
-        (M.Val
-          (alloc.boxed.Box.t box_stack_heap.Point.t alloc.boxed.Box.Default.A)).
+    M (alloc.boxed.Box.t box_stack_heap.Point.t alloc.boxed.Box.Default.A).
 
 (*
 fn main() {
@@ -180,4 +177,4 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : M (M.Val unit).
+Parameter main : M unit.

@@ -19,7 +19,7 @@ Section Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle_t.
           self.length * self.height
       }
   *)
-  Definition area (self : M.Val (ref ltac:(Self))) : M (M.Val f64.t) :=
+  Definition area (self : M.Val (ref ltac:(Self))) : M f64.t :=
     M.function_body
       (let* α0 : ltac:(refine (M.Val generics_bounds.Rectangle.t)) :=
         deref self in
@@ -72,7 +72,7 @@ Section Impl_core_fmt_Debug_for_generics_bounds_Rectangle_t.
   Definition fmt
       (self : M.Val (ref ltac:(Self)))
       (f : M.Val (mut_ref core.fmt.Formatter.t))
-      : M (M.Val ltac:(core.fmt.Result)) :=
+      : M ltac:(core.fmt.Result) :=
     M.function_body
       (let* α0 : ltac:(refine (M.Val core.fmt.Formatter.t)) := deref f in
       let* α1 : ltac:(refine (M.Val (mut_ref core.fmt.Formatter.t))) :=
@@ -94,7 +94,15 @@ Section Impl_core_fmt_Debug_for_generics_bounds_Rectangle_t.
       let* α13 : ltac:(refine (M.Val (ref (ref f64.t)))) := borrow α12 in
       let* α14 : ltac:(refine (M.Val (ref type not implemented))) :=
         pointer_coercion "Unsize" α13 in
-      core.fmt.Formatter.t::["debug_struct_field2_finish"] α1 α3 α5 α8 α10 α14).
+      let* α15 :=
+        core.fmt.Formatter.t::["debug_struct_field2_finish"]
+          α1
+          α3
+          α5
+          α8
+          α10
+          α14 in
+      M.alloc α15).
   
   Global Instance AssociatedFunction_fmt :
     Notations.DoubleColon ltac:(Self) "fmt" := {
@@ -141,7 +149,7 @@ Definition print_debug
     {T : Set}
     {ℋ_0 : core.fmt.Debug.Trait T}
     (t : M.Val (ref T))
-    : M (M.Val unit) :=
+    : M unit :=
   M.function_body
     (let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
@@ -153,17 +161,18 @@ Definition print_debug
         let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
           pointer_coercion "Unsize" α1 in
         let* α3 : ltac:(refine (M.Val (ref (ref T)))) := borrow t in
-        let* α4 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
-          core.fmt.rt.Argument.t::["new_debug"] α3 in
-        let* α5 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
-          M.alloc [ α4 ] in
-        let* α6 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
-          borrow α5 in
-        let* α7 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
-          pointer_coercion "Unsize" α6 in
-        let* α8 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-          core.fmt.Arguments.t::["new_v1"] α2 α7 in
-        std.io.stdio._print α8 in
+        let* α4 := core.fmt.rt.Argument.t::["new_debug"] α3 in
+        let* α5 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) := M.alloc α4 in
+        let* α6 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
+          M.alloc [ α5 ] in
+        let* α7 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
+          borrow α6 in
+        let* α8 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
+          pointer_coercion "Unsize" α7 in
+        let* α9 := core.fmt.Arguments.t::["new_v1"] α2 α8 in
+        let* α10 : ltac:(refine (M.Val core.fmt.Arguments.t)) := M.alloc α9 in
+        let* α11 := std.io.stdio._print α10 in
+        M.alloc α11 in
       M.alloc tt in
     M.alloc tt).
 
@@ -176,11 +185,14 @@ Definition area
     {T : Set}
     {ℋ_0 : generics_bounds.HasArea.Trait T}
     (t : M.Val (ref T))
-    : M (M.Val f64.t) :=
+    : M f64.t :=
   M.function_body
     (let* α0 : ltac:(refine (M.Val T)) := deref t in
     let* α1 : ltac:(refine (M.Val (ref T))) := borrow α0 in
-    (generics_bounds.HasArea.area (Self := T) (Trait := ltac:(refine _))) α1).
+    let* α2 :=
+      (generics_bounds.HasArea.area (Self := T) (Trait := ltac:(refine _)))
+        α1 in
+    M.alloc α2).
 
 (*
 fn main() {
@@ -203,7 +215,7 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M (M.Val unit) :=
+Definition main : M unit :=
   M.function_body
     (let* rectangle : ltac:(refine (M.Val generics_bounds.Rectangle.t)) :=
       let* α0 : ltac:(refine (M.Val f64.t)) := M.alloc 3 (* 3.0 *) in
@@ -228,7 +240,8 @@ Definition main : M (M.Val unit) :=
     let* _ : ltac:(refine (M.Val unit)) :=
       let* α0 : ltac:(refine (M.Val (ref generics_bounds.Rectangle.t))) :=
         borrow rectangle in
-      generics_bounds.print_debug α0 in
+      let* α1 := generics_bounds.print_debug α0 in
+      M.alloc α1 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
@@ -240,22 +253,24 @@ Definition main : M (M.Val unit) :=
           pointer_coercion "Unsize" α1 in
         let* α3 : ltac:(refine (M.Val (ref generics_bounds.Rectangle.t))) :=
           borrow rectangle in
-        let* α4 : ltac:(refine (M.Val f64.t)) :=
+        let* α4 :=
           (generics_bounds.HasArea.area
               (Self := generics_bounds.Rectangle.t)
               (Trait := ltac:(refine _)))
             α3 in
-        let* α5 : ltac:(refine (M.Val (ref f64.t))) := borrow α4 in
-        let* α6 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
-          core.fmt.rt.Argument.t::["new_display"] α5 in
-        let* α7 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
-          M.alloc [ α6 ] in
-        let* α8 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
-          borrow α7 in
-        let* α9 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
-          pointer_coercion "Unsize" α8 in
-        let* α10 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-          core.fmt.Arguments.t::["new_v1"] α2 α9 in
-        std.io.stdio._print α10 in
+        let* α5 : ltac:(refine (M.Val f64.t)) := M.alloc α4 in
+        let* α6 : ltac:(refine (M.Val (ref f64.t))) := borrow α5 in
+        let* α7 := core.fmt.rt.Argument.t::["new_display"] α6 in
+        let* α8 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) := M.alloc α7 in
+        let* α9 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
+          M.alloc [ α8 ] in
+        let* α10 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
+          borrow α9 in
+        let* α11 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
+          pointer_coercion "Unsize" α10 in
+        let* α12 := core.fmt.Arguments.t::["new_v1"] α2 α11 in
+        let* α13 : ltac:(refine (M.Val core.fmt.Arguments.t)) := M.alloc α12 in
+        let* α14 := std.io.stdio._print α13 in
+        M.alloc α14 in
       M.alloc tt in
     M.alloc tt).

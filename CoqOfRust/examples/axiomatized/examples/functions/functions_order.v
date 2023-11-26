@@ -32,7 +32,7 @@ Section Impl_functions_order_SomeType_t.
   (*
       fn meth2(self) {}
   *)
-  Parameter meth2 : (M.Val ltac:(Self)) -> M (M.Val unit).
+  Parameter meth2 : (M.Val ltac:(Self)) -> M unit.
   
   Global Instance AssociatedFunction_meth2 :
     Notations.DoubleColon ltac:(Self) "meth2" := {
@@ -44,7 +44,7 @@ Section Impl_functions_order_SomeType_t.
           self.meth2();
       }
   *)
-  Parameter meth1 : (M.Val ltac:(Self)) -> M (M.Val unit).
+  Parameter meth1 : (M.Val ltac:(Self)) -> M unit.
   
   Global Instance AssociatedFunction_meth1 :
     Notations.DoubleColon ltac:(Self) "meth1" := {
@@ -70,7 +70,7 @@ Section Impl_functions_order_SomeTrait_for_functions_order_SomeType_t.
   (*
       fn some_trait_bar(&self) {}
   *)
-  Parameter some_trait_bar : (M.Val (ref ltac:(Self))) -> M (M.Val unit).
+  Parameter some_trait_bar : (M.Val (ref ltac:(Self))) -> M unit.
   
   Global Instance AssociatedFunction_some_trait_bar :
     Notations.DoubleColon ltac:(Self) "some_trait_bar" := {
@@ -82,7 +82,7 @@ Section Impl_functions_order_SomeTrait_for_functions_order_SomeType_t.
           self.some_trait_bar()
       }
   *)
-  Parameter some_trait_foo : (M.Val (ref ltac:(Self))) -> M (M.Val unit).
+  Parameter some_trait_foo : (M.Val (ref ltac:(Self))) -> M unit.
   
   Global Instance AssociatedFunction_some_trait_foo :
     Notations.DoubleColon ltac:(Self) "some_trait_foo" := {
@@ -103,7 +103,7 @@ Section Impl_functions_order_SomeTrait_for_functions_order_OtherType_t.
   (*
       fn some_trait_foo(&self) {}
   *)
-  Parameter some_trait_foo : (M.Val (ref ltac:(Self))) -> M (M.Val unit).
+  Parameter some_trait_foo : (M.Val (ref ltac:(Self))) -> M unit.
   
   Global Instance AssociatedFunction_some_trait_foo :
     Notations.DoubleColon ltac:(Self) "some_trait_foo" := {
@@ -113,7 +113,7 @@ Section Impl_functions_order_SomeTrait_for_functions_order_OtherType_t.
   (*
       fn some_trait_bar(&self) {}
   *)
-  Parameter some_trait_bar : (M.Val (ref ltac:(Self))) -> M (M.Val unit).
+  Parameter some_trait_bar : (M.Val (ref ltac:(Self))) -> M unit.
   
   Global Instance AssociatedFunction_some_trait_bar :
     Notations.DoubleColon ltac:(Self) "some_trait_bar" := {
@@ -133,14 +133,13 @@ fn depends_on_trait_impl(u: u32, b: bool) {
     SomeType(u).some_trait_foo();
 }
 *)
-Parameter depends_on_trait_impl :
-    (M.Val u32.t) -> (M.Val bool.t) -> M (M.Val unit).
+Parameter depends_on_trait_impl : (M.Val u32.t) -> (M.Val bool.t) -> M unit.
 
 Module inner_mod.
   (*
       fn tar() {}
   *)
-  Parameter tar : M (M.Val unit).
+  Parameter tar : M unit.
   
   (*
       pub fn bar() {
@@ -148,20 +147,20 @@ Module inner_mod.
           tar();
       }
   *)
-  Parameter bar : M (M.Val unit).
+  Parameter bar : M unit.
   
   Module nested_mod.
     (*
             fn tack() {}
     *)
-    Parameter tack : M (M.Val unit).
+    Parameter tack : M unit.
     
     (*
             pub fn tick() {
                 tack();
             }
     *)
-    Parameter tick : M (M.Val unit).
+    Parameter tick : M unit.
   End nested_mod.
 End inner_mod.
 
@@ -171,25 +170,25 @@ End inner_mod.
         tar();
     }
 *)
-Parameter bar : M (M.Val unit).
+Parameter bar : M unit.
 
 (*
     fn tar() {}
 *)
-Parameter tar : M (M.Val unit).
+Parameter tar : M unit.
 
 Module nested_mod.
   (*
           fn tack() {}
   *)
-  Parameter tack : M (M.Val unit).
+  Parameter tack : M unit.
   
   (*
           pub fn tick() {
               tack();
           }
   *)
-  Parameter tick : M (M.Val unit).
+  Parameter tick : M unit.
 End nested_mod.
 
 (*
@@ -197,17 +196,17 @@ End nested_mod.
             tack();
         }
 *)
-Parameter tick : M (M.Val unit).
+Parameter tick : M unit.
 
 (*
         fn tack() {}
 *)
-Parameter tack : M (M.Val unit).
+Parameter tack : M unit.
 
 (*
 fn foo() {}
 *)
-Parameter foo : M (M.Val unit).
+Parameter foo : M unit.
 
 (*
 fn main() {
@@ -218,4 +217,4 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : M (M.Val unit).
+Parameter main : M unit.

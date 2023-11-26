@@ -16,7 +16,7 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M (M.Val unit) :=
+Definition main : M unit :=
   M.function_body
     (let* some_vector :
         ltac:(refine (M.Val (alloc.vec.Vec.t u32.t alloc.alloc.Global.t))) :=
@@ -34,50 +34,47 @@ Definition main : M (M.Val unit) :=
           ltac:(refine
             (M.Val (alloc.boxed.Box.t (slice u32.t) alloc.alloc.Global.t))) :=
         pointer_coercion "Unsize" α5 in
-      let* α7 :
-          ltac:(refine (M.Val (alloc.vec.Vec.t u32.t alloc.alloc.Global.t))) :=
-        (slice u32.t)::["into_vec"] α6 in
-      M.copy α7 in
+      let* α7 := (slice u32.t)::["into_vec"] α6 in
+      M.alloc α7 in
     let* pointer : ltac:(refine (M.Val (ref u32.t))) :=
       let* α0 :
           ltac:(refine
             (M.Val (ref (alloc.vec.Vec.t u32.t alloc.alloc.Global.t)))) :=
         borrow some_vector in
-      let* α1 : ltac:(refine (M.Val (ref u32.t))) :=
-        (alloc.vec.Vec.t u32.t alloc.alloc.Global.t)::["as_ptr"] α0 in
-      M.copy α1 in
+      let* α1 := (alloc.vec.Vec.t u32.t alloc.alloc.Global.t)::["as_ptr"] α0 in
+      M.alloc α1 in
     let* length : ltac:(refine (M.Val usize.t)) :=
       let* α0 :
           ltac:(refine
             (M.Val (ref (alloc.vec.Vec.t u32.t alloc.alloc.Global.t)))) :=
         borrow some_vector in
-      let* α1 : ltac:(refine (M.Val usize.t)) :=
-        (alloc.vec.Vec.t u32.t alloc.alloc.Global.t)::["len"] α0 in
-      M.copy α1 in
+      let* α1 := (alloc.vec.Vec.t u32.t alloc.alloc.Global.t)::["len"] α0 in
+      M.alloc α1 in
     let* my_slice : ltac:(refine (M.Val (ref (slice u32.t)))) :=
-      let* α0 : ltac:(refine (M.Val (ref (slice u32.t)))) :=
-        core.slice.raw.from_raw_parts pointer length in
-      let* α1 : ltac:(refine (M.Val (slice u32.t))) := deref α0 in
-      let* α2 : ltac:(refine (M.Val (ref (slice u32.t)))) := borrow α1 in
-      M.copy α2 in
+      let* α0 := core.slice.raw.from_raw_parts pointer length in
+      let* α1 : ltac:(refine (M.Val (ref (slice u32.t)))) := M.alloc α0 in
+      let* α2 : ltac:(refine (M.Val (slice u32.t))) := deref α1 in
+      let* α3 : ltac:(refine (M.Val (ref (slice u32.t)))) := borrow α2 in
+      M.copy α3 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* α0 :
           ltac:(refine
             (M.Val (ref (alloc.vec.Vec.t u32.t alloc.alloc.Global.t)))) :=
         borrow some_vector in
-      let* α1 : ltac:(refine (M.Val (ref (slice u32.t)))) :=
+      let* α1 :=
         (alloc.vec.Vec.t u32.t alloc.alloc.Global.t)::["as_slice"] α0 in
-      let* α2 : ltac:(refine (M.Val (ref (ref (slice u32.t))))) := borrow α1 in
-      let* α3 := M.read α2 in
-      let* α4 : ltac:(refine (M.Val (ref (ref (slice u32.t))))) :=
+      let* α2 : ltac:(refine (M.Val (ref (slice u32.t)))) := M.alloc α1 in
+      let* α3 : ltac:(refine (M.Val (ref (ref (slice u32.t))))) := borrow α2 in
+      let* α4 := M.read α3 in
+      let* α5 : ltac:(refine (M.Val (ref (ref (slice u32.t))))) :=
         borrow my_slice in
-      let* α5 := M.read α4 in
-      let* α6 :
+      let* α6 := M.read α5 in
+      let* α7 :
           ltac:(refine
             (M.Val ((ref (ref (slice u32.t))) * (ref (ref (slice u32.t)))))) :=
-        M.alloc (α3, α5) in
-      let* α7 := M.read α6 in
-      match α7 with
+        M.alloc (α4, α6) in
+      let* α8 := M.read α7 in
+      match α8 with
       | (left_val, right_val) =>
         let* right_val := M.alloc right_val in
         let* left_val := M.alloc left_val in
@@ -88,16 +85,17 @@ Definition main : M (M.Val unit) :=
           deref right_val in
         let* α3 : ltac:(refine (M.Val (ref (ref (slice u32.t))))) :=
           borrow α2 in
-        let* α4 : ltac:(refine (M.Val bool.t)) :=
+        let* α4 :=
           (core.cmp.PartialEq.eq
               (Self := ref (slice u32.t))
               (Trait := ltac:(refine _)))
             α1
             α3 in
-        let* α5 : ltac:(refine (M.Val bool.t)) := UnOp.not α4 in
-        let* α6 : ltac:(refine (M.Val bool.t)) := use α5 in
-        let* α7 := M.read α6 in
-        if (α7 : bool) then
+        let* α5 : ltac:(refine (M.Val bool.t)) := M.alloc α4 in
+        let* α6 : ltac:(refine (M.Val bool.t)) := UnOp.not α5 in
+        let* α7 : ltac:(refine (M.Val bool.t)) := use α6 in
+        let* α8 := M.read α7 in
+        if (α8 : bool) then
           let* kind : ltac:(refine (M.Val core.panicking.AssertKind.t)) :=
             M.alloc core.panicking.AssertKind.Eq in
           let* _ : ltac:(refine (M.Val never.t)) :=
@@ -113,7 +111,8 @@ Definition main : M (M.Val unit) :=
                 ltac:(refine
                   (M.Val (core.option.Option.t core.fmt.Arguments.t))) :=
               M.alloc core.option.Option.None in
-            core.panicking.assert_failed kind α1 α3 α4 in
+            let* α5 := core.panicking.assert_failed kind α1 α3 α4 in
+            M.alloc α5 in
           let* α0 : ltac:(refine (M.Val unit)) := M.alloc tt in
           never_to_any α0
         else

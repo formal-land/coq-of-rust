@@ -22,7 +22,7 @@ Section Impl_example05_Foo_t.
           self.0 + 1
       }
   *)
-  Parameter plus1 : (M.Val ltac:(Self)) -> M (M.Val u32.t).
+  Parameter plus1 : (M.Val ltac:(Self)) -> M u32.t.
   
   Global Instance AssociatedFunction_plus1 :
     Notations.DoubleColon ltac:(Self) "plus1" := {
@@ -38,4 +38,4 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : M (M.Val unit).
+Parameter main : M unit.

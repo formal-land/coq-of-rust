@@ -42,7 +42,7 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M (M.Val unit) :=
+Definition main : M unit :=
   M.function_body
     (let* a :
         ltac:(refine
@@ -62,28 +62,26 @@ Definition main : M (M.Val unit) :=
           ltac:(refine
             (M.Val (alloc.boxed.Box.t (slice i32.t) alloc.alloc.Global.t))) :=
         pointer_coercion "Unsize" α4 in
-      let* α6 :
-          ltac:(refine (M.Val (alloc.vec.Vec.t i32.t alloc.alloc.Global.t))) :=
-        (slice i32.t)::["into_vec"] α5 in
+      let* α6 := (slice i32.t)::["into_vec"] α5 in
       let* α7 :
-          ltac:(refine
-            (M.Val
-              (alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t))) :=
+          ltac:(refine (M.Val (alloc.vec.Vec.t i32.t alloc.alloc.Global.t))) :=
+        M.alloc α6 in
+      let* α8 :=
         (core.iter.traits.collect.IntoIterator.into_iter
             (Self := alloc.vec.Vec.t i32.t alloc.alloc.Global.t)
             (Trait := ltac:(refine _)))
-          α6 in
-      let* α8 :
+          α7 in
+      let* α9 :
           ltac:(refine
             (M.Val
-              (std.collections.hash.set.HashSet.t
-                i32.t
-                std.collections.hash.map.RandomState.t))) :=
+              (alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t))) :=
+        M.alloc α8 in
+      let* α10 :=
         (core.iter.traits.iterator.Iterator.collect
             (Self := alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t)
             (Trait := ltac:(refine _)))
-          α7 in
-      M.copy α8 in
+          α9 in
+      M.alloc α10 in
     let* b :
         ltac:(refine
           (M.Val
@@ -102,28 +100,26 @@ Definition main : M (M.Val unit) :=
           ltac:(refine
             (M.Val (alloc.boxed.Box.t (slice i32.t) alloc.alloc.Global.t))) :=
         pointer_coercion "Unsize" α4 in
-      let* α6 :
-          ltac:(refine (M.Val (alloc.vec.Vec.t i32.t alloc.alloc.Global.t))) :=
-        (slice i32.t)::["into_vec"] α5 in
+      let* α6 := (slice i32.t)::["into_vec"] α5 in
       let* α7 :
-          ltac:(refine
-            (M.Val
-              (alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t))) :=
+          ltac:(refine (M.Val (alloc.vec.Vec.t i32.t alloc.alloc.Global.t))) :=
+        M.alloc α6 in
+      let* α8 :=
         (core.iter.traits.collect.IntoIterator.into_iter
             (Self := alloc.vec.Vec.t i32.t alloc.alloc.Global.t)
             (Trait := ltac:(refine _)))
-          α6 in
-      let* α8 :
+          α7 in
+      let* α9 :
           ltac:(refine
             (M.Val
-              (std.collections.hash.set.HashSet.t
-                i32.t
-                std.collections.hash.map.RandomState.t))) :=
+              (alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t))) :=
+        M.alloc α8 in
+      let* α10 :=
         (core.iter.traits.iterator.Iterator.collect
             (Self := alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t)
             (Trait := ltac:(refine _)))
-          α7 in
-      M.copy α8 in
+          α9 in
+      M.alloc α10 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* α0 :
           ltac:(refine
@@ -134,19 +130,21 @@ Definition main : M (M.Val unit) :=
                   std.collections.hash.map.RandomState.t)))) :=
         borrow_mut a in
       let* α1 : ltac:(refine (M.Val i32.t)) := M.alloc 4 in
-      let* α2 : ltac:(refine (M.Val bool.t)) :=
+      let* α2 :=
         (std.collections.hash.set.HashSet.t
               i32.t
               std.collections.hash.map.RandomState.t)::["insert"]
           α0
           α1 in
-      let* α3 : ltac:(refine (M.Val bool.t)) := UnOp.not α2 in
-      let* α4 : ltac:(refine (M.Val bool.t)) := use α3 in
-      let* α5 := M.read α4 in
-      if (α5 : bool) then
-        let* α0 : ltac:(refine (M.Val never.t)) :=
+      let* α3 : ltac:(refine (M.Val bool.t)) := M.alloc α2 in
+      let* α4 : ltac:(refine (M.Val bool.t)) := UnOp.not α3 in
+      let* α5 : ltac:(refine (M.Val bool.t)) := use α4 in
+      let* α6 := M.read α5 in
+      if (α6 : bool) then
+        let* α0 :=
           core.panicking.panic (mk_str "assertion failed: a.insert(4)") in
-        never_to_any α0
+        let* α1 : ltac:(refine (M.Val never.t)) := M.alloc α0 in
+        never_to_any α1
       else
         M.alloc tt in
     let* _ : ltac:(refine (M.Val unit)) :=
@@ -160,19 +158,21 @@ Definition main : M (M.Val unit) :=
         borrow a in
       let* α1 : ltac:(refine (M.Val i32.t)) := M.alloc 4 in
       let* α2 : ltac:(refine (M.Val (ref i32.t))) := borrow α1 in
-      let* α3 : ltac:(refine (M.Val bool.t)) :=
+      let* α3 :=
         (std.collections.hash.set.HashSet.t
               i32.t
               std.collections.hash.map.RandomState.t)::["contains"]
           α0
           α2 in
-      let* α4 : ltac:(refine (M.Val bool.t)) := UnOp.not α3 in
-      let* α5 : ltac:(refine (M.Val bool.t)) := use α4 in
-      let* α6 := M.read α5 in
-      if (α6 : bool) then
-        let* α0 : ltac:(refine (M.Val never.t)) :=
+      let* α4 : ltac:(refine (M.Val bool.t)) := M.alloc α3 in
+      let* α5 : ltac:(refine (M.Val bool.t)) := UnOp.not α4 in
+      let* α6 : ltac:(refine (M.Val bool.t)) := use α5 in
+      let* α7 := M.read α6 in
+      if (α7 : bool) then
+        let* α0 :=
           core.panicking.panic (mk_str "assertion failed: a.contains(&4)") in
-        never_to_any α0
+        let* α1 : ltac:(refine (M.Val never.t)) := M.alloc α0 in
+        never_to_any α1
       else
         M.alloc tt in
     let* _ : ltac:(refine (M.Val bool.t)) :=
@@ -185,11 +185,13 @@ Definition main : M (M.Val unit) :=
                   std.collections.hash.map.RandomState.t)))) :=
         borrow_mut b in
       let* α1 : ltac:(refine (M.Val i32.t)) := M.alloc 5 in
-      (std.collections.hash.set.HashSet.t
-            i32.t
-            std.collections.hash.map.RandomState.t)::["insert"]
-        α0
-        α1 in
+      let* α2 :=
+        (std.collections.hash.set.HashSet.t
+              i32.t
+              std.collections.hash.map.RandomState.t)::["insert"]
+          α0
+          α1 in
+      M.alloc α2 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
         let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
@@ -207,17 +209,18 @@ Definition main : M (M.Val unit) :=
                     i32.t
                     std.collections.hash.map.RandomState.t)))) :=
           borrow a in
-        let* α4 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
-          core.fmt.rt.Argument.t::["new_debug"] α3 in
-        let* α5 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
-          M.alloc [ α4 ] in
-        let* α6 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
-          borrow α5 in
-        let* α7 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
-          pointer_coercion "Unsize" α6 in
-        let* α8 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-          core.fmt.Arguments.t::["new_v1"] α2 α7 in
-        std.io.stdio._print α8 in
+        let* α4 := core.fmt.rt.Argument.t::["new_debug"] α3 in
+        let* α5 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) := M.alloc α4 in
+        let* α6 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
+          M.alloc [ α5 ] in
+        let* α7 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
+          borrow α6 in
+        let* α8 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
+          pointer_coercion "Unsize" α7 in
+        let* α9 := core.fmt.Arguments.t::["new_v1"] α2 α8 in
+        let* α10 : ltac:(refine (M.Val core.fmt.Arguments.t)) := M.alloc α9 in
+        let* α11 := std.io.stdio._print α10 in
+        M.alloc α11 in
       M.alloc tt in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
@@ -236,17 +239,18 @@ Definition main : M (M.Val unit) :=
                     i32.t
                     std.collections.hash.map.RandomState.t)))) :=
           borrow b in
-        let* α4 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
-          core.fmt.rt.Argument.t::["new_debug"] α3 in
-        let* α5 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
-          M.alloc [ α4 ] in
-        let* α6 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
-          borrow α5 in
-        let* α7 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
-          pointer_coercion "Unsize" α6 in
-        let* α8 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-          core.fmt.Arguments.t::["new_v1"] α2 α7 in
-        std.io.stdio._print α8 in
+        let* α4 := core.fmt.rt.Argument.t::["new_debug"] α3 in
+        let* α5 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) := M.alloc α4 in
+        let* α6 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
+          M.alloc [ α5 ] in
+        let* α7 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
+          borrow α6 in
+        let* α8 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
+          pointer_coercion "Unsize" α7 in
+        let* α9 := core.fmt.Arguments.t::["new_v1"] α2 α8 in
+        let* α10 : ltac:(refine (M.Val core.fmt.Arguments.t)) := M.alloc α9 in
+        let* α11 := std.io.stdio._print α10 in
+        M.alloc α11 in
       M.alloc tt in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
@@ -273,12 +277,7 @@ Definition main : M (M.Val unit) :=
                     i32.t
                     std.collections.hash.map.RandomState.t)))) :=
           borrow b in
-        let* α5 :
-            ltac:(refine
-              (M.Val
-                (std.collections.hash.set.Union.t
-                  i32.t
-                  std.collections.hash.map.RandomState.t))) :=
+        let* α5 :=
           (std.collections.hash.set.HashSet.t
                 i32.t
                 std.collections.hash.map.RandomState.t)::["union"]
@@ -286,30 +285,41 @@ Definition main : M (M.Val unit) :=
             α4 in
         let* α6 :
             ltac:(refine
-              (M.Val (alloc.vec.Vec.t (ref i32.t) alloc.alloc.Global.t))) :=
+              (M.Val
+                (std.collections.hash.set.Union.t
+                  i32.t
+                  std.collections.hash.map.RandomState.t))) :=
+          M.alloc α5 in
+        let* α7 :=
           (core.iter.traits.iterator.Iterator.collect
               (Self :=
                 std.collections.hash.set.Union.t
                   i32.t
                   std.collections.hash.map.RandomState.t)
               (Trait := ltac:(refine _)))
-            α5 in
-        let* α7 :
+            α6 in
+        let* α8 :
+            ltac:(refine
+              (M.Val (alloc.vec.Vec.t (ref i32.t) alloc.alloc.Global.t))) :=
+          M.alloc α7 in
+        let* α9 :
             ltac:(refine
               (M.Val
                 (ref (alloc.vec.Vec.t (ref i32.t) alloc.alloc.Global.t)))) :=
-          borrow α6 in
-        let* α8 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
-          core.fmt.rt.Argument.t::["new_debug"] α7 in
-        let* α9 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
-          M.alloc [ α8 ] in
-        let* α10 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
-          borrow α9 in
-        let* α11 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
-          pointer_coercion "Unsize" α10 in
-        let* α12 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-          core.fmt.Arguments.t::["new_v1"] α2 α11 in
-        std.io.stdio._print α12 in
+          borrow α8 in
+        let* α10 := core.fmt.rt.Argument.t::["new_debug"] α9 in
+        let* α11 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
+          M.alloc α10 in
+        let* α12 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
+          M.alloc [ α11 ] in
+        let* α13 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
+          borrow α12 in
+        let* α14 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
+          pointer_coercion "Unsize" α13 in
+        let* α15 := core.fmt.Arguments.t::["new_v1"] α2 α14 in
+        let* α16 : ltac:(refine (M.Val core.fmt.Arguments.t)) := M.alloc α15 in
+        let* α17 := std.io.stdio._print α16 in
+        M.alloc α17 in
       M.alloc tt in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
@@ -336,12 +346,7 @@ Definition main : M (M.Val unit) :=
                     i32.t
                     std.collections.hash.map.RandomState.t)))) :=
           borrow b in
-        let* α5 :
-            ltac:(refine
-              (M.Val
-                (std.collections.hash.set.Difference.t
-                  i32.t
-                  std.collections.hash.map.RandomState.t))) :=
+        let* α5 :=
           (std.collections.hash.set.HashSet.t
                 i32.t
                 std.collections.hash.map.RandomState.t)::["difference"]
@@ -349,30 +354,41 @@ Definition main : M (M.Val unit) :=
             α4 in
         let* α6 :
             ltac:(refine
-              (M.Val (alloc.vec.Vec.t (ref i32.t) alloc.alloc.Global.t))) :=
+              (M.Val
+                (std.collections.hash.set.Difference.t
+                  i32.t
+                  std.collections.hash.map.RandomState.t))) :=
+          M.alloc α5 in
+        let* α7 :=
           (core.iter.traits.iterator.Iterator.collect
               (Self :=
                 std.collections.hash.set.Difference.t
                   i32.t
                   std.collections.hash.map.RandomState.t)
               (Trait := ltac:(refine _)))
-            α5 in
-        let* α7 :
+            α6 in
+        let* α8 :
+            ltac:(refine
+              (M.Val (alloc.vec.Vec.t (ref i32.t) alloc.alloc.Global.t))) :=
+          M.alloc α7 in
+        let* α9 :
             ltac:(refine
               (M.Val
                 (ref (alloc.vec.Vec.t (ref i32.t) alloc.alloc.Global.t)))) :=
-          borrow α6 in
-        let* α8 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
-          core.fmt.rt.Argument.t::["new_debug"] α7 in
-        let* α9 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
-          M.alloc [ α8 ] in
-        let* α10 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
-          borrow α9 in
-        let* α11 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
-          pointer_coercion "Unsize" α10 in
-        let* α12 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-          core.fmt.Arguments.t::["new_v1"] α2 α11 in
-        std.io.stdio._print α12 in
+          borrow α8 in
+        let* α10 := core.fmt.rt.Argument.t::["new_debug"] α9 in
+        let* α11 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
+          M.alloc α10 in
+        let* α12 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
+          M.alloc [ α11 ] in
+        let* α13 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
+          borrow α12 in
+        let* α14 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
+          pointer_coercion "Unsize" α13 in
+        let* α15 := core.fmt.Arguments.t::["new_v1"] α2 α14 in
+        let* α16 : ltac:(refine (M.Val core.fmt.Arguments.t)) := M.alloc α15 in
+        let* α17 := std.io.stdio._print α16 in
+        M.alloc α17 in
       M.alloc tt in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
@@ -399,12 +415,7 @@ Definition main : M (M.Val unit) :=
                     i32.t
                     std.collections.hash.map.RandomState.t)))) :=
           borrow b in
-        let* α5 :
-            ltac:(refine
-              (M.Val
-                (std.collections.hash.set.Intersection.t
-                  i32.t
-                  std.collections.hash.map.RandomState.t))) :=
+        let* α5 :=
           (std.collections.hash.set.HashSet.t
                 i32.t
                 std.collections.hash.map.RandomState.t)::["intersection"]
@@ -412,30 +423,41 @@ Definition main : M (M.Val unit) :=
             α4 in
         let* α6 :
             ltac:(refine
-              (M.Val (alloc.vec.Vec.t (ref i32.t) alloc.alloc.Global.t))) :=
+              (M.Val
+                (std.collections.hash.set.Intersection.t
+                  i32.t
+                  std.collections.hash.map.RandomState.t))) :=
+          M.alloc α5 in
+        let* α7 :=
           (core.iter.traits.iterator.Iterator.collect
               (Self :=
                 std.collections.hash.set.Intersection.t
                   i32.t
                   std.collections.hash.map.RandomState.t)
               (Trait := ltac:(refine _)))
-            α5 in
-        let* α7 :
+            α6 in
+        let* α8 :
+            ltac:(refine
+              (M.Val (alloc.vec.Vec.t (ref i32.t) alloc.alloc.Global.t))) :=
+          M.alloc α7 in
+        let* α9 :
             ltac:(refine
               (M.Val
                 (ref (alloc.vec.Vec.t (ref i32.t) alloc.alloc.Global.t)))) :=
-          borrow α6 in
-        let* α8 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
-          core.fmt.rt.Argument.t::["new_debug"] α7 in
-        let* α9 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
-          M.alloc [ α8 ] in
-        let* α10 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
-          borrow α9 in
-        let* α11 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
-          pointer_coercion "Unsize" α10 in
-        let* α12 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-          core.fmt.Arguments.t::["new_v1"] α2 α11 in
-        std.io.stdio._print α12 in
+          borrow α8 in
+        let* α10 := core.fmt.rt.Argument.t::["new_debug"] α9 in
+        let* α11 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
+          M.alloc α10 in
+        let* α12 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
+          M.alloc [ α11 ] in
+        let* α13 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
+          borrow α12 in
+        let* α14 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
+          pointer_coercion "Unsize" α13 in
+        let* α15 := core.fmt.Arguments.t::["new_v1"] α2 α14 in
+        let* α16 : ltac:(refine (M.Val core.fmt.Arguments.t)) := M.alloc α15 in
+        let* α17 := std.io.stdio._print α16 in
+        M.alloc α17 in
       M.alloc tt in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* _ : ltac:(refine (M.Val unit)) :=
@@ -462,12 +484,7 @@ Definition main : M (M.Val unit) :=
                     i32.t
                     std.collections.hash.map.RandomState.t)))) :=
           borrow b in
-        let* α5 :
-            ltac:(refine
-              (M.Val
-                (std.collections.hash.set.SymmetricDifference.t
-                  i32.t
-                  std.collections.hash.map.RandomState.t))) :=
+        let* α5 :=
           (std.collections.hash.set.HashSet.t
                 i32.t
                 std.collections.hash.map.RandomState.t)::["symmetric_difference"]
@@ -475,29 +492,40 @@ Definition main : M (M.Val unit) :=
             α4 in
         let* α6 :
             ltac:(refine
-              (M.Val (alloc.vec.Vec.t (ref i32.t) alloc.alloc.Global.t))) :=
+              (M.Val
+                (std.collections.hash.set.SymmetricDifference.t
+                  i32.t
+                  std.collections.hash.map.RandomState.t))) :=
+          M.alloc α5 in
+        let* α7 :=
           (core.iter.traits.iterator.Iterator.collect
               (Self :=
                 std.collections.hash.set.SymmetricDifference.t
                   i32.t
                   std.collections.hash.map.RandomState.t)
               (Trait := ltac:(refine _)))
-            α5 in
-        let* α7 :
+            α6 in
+        let* α8 :
+            ltac:(refine
+              (M.Val (alloc.vec.Vec.t (ref i32.t) alloc.alloc.Global.t))) :=
+          M.alloc α7 in
+        let* α9 :
             ltac:(refine
               (M.Val
                 (ref (alloc.vec.Vec.t (ref i32.t) alloc.alloc.Global.t)))) :=
-          borrow α6 in
-        let* α8 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
-          core.fmt.rt.Argument.t::["new_debug"] α7 in
-        let* α9 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
-          M.alloc [ α8 ] in
-        let* α10 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
-          borrow α9 in
-        let* α11 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
-          pointer_coercion "Unsize" α10 in
-        let* α12 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-          core.fmt.Arguments.t::["new_v1"] α2 α11 in
-        std.io.stdio._print α12 in
+          borrow α8 in
+        let* α10 := core.fmt.rt.Argument.t::["new_debug"] α9 in
+        let* α11 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
+          M.alloc α10 in
+        let* α12 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
+          M.alloc [ α11 ] in
+        let* α13 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
+          borrow α12 in
+        let* α14 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
+          pointer_coercion "Unsize" α13 in
+        let* α15 := core.fmt.Arguments.t::["new_v1"] α2 α14 in
+        let* α16 : ltac:(refine (M.Val core.fmt.Arguments.t)) := M.alloc α15 in
+        let* α17 := std.io.stdio._print α16 in
+        M.alloc α17 in
       M.alloc tt in
     M.alloc tt).

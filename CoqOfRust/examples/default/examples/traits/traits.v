@@ -44,7 +44,7 @@ Section Impl_traits_Sheep_t.
           self.naked
       }
   *)
-  Definition is_naked (self : M.Val (ref ltac:(Self))) : M (M.Val bool.t) :=
+  Definition is_naked (self : M.Val (ref ltac:(Self))) : M bool.t :=
     M.function_body
       (let* α0 : ltac:(refine (M.Val traits.Sheep.t)) := deref self in
       M.pure α0.["naked"]).
@@ -68,7 +68,7 @@ Section Impl_traits_Animal_for_traits_Sheep_t.
           }
       }
   *)
-  Definition new (name : M.Val (ref str.t)) : M (M.Val traits.Sheep.t) :=
+  Definition new (name : M.Val (ref str.t)) : M traits.Sheep.t :=
     M.function_body
       (let* α0 := M.read name in
       let* α1 : ltac:(refine (M.Val bool.t)) := M.alloc false in
@@ -85,7 +85,7 @@ Section Impl_traits_Animal_for_traits_Sheep_t.
           self.name
       }
   *)
-  Definition name (self : M.Val (ref ltac:(Self))) : M (M.Val (ref str.t)) :=
+  Definition name (self : M.Val (ref ltac:(Self))) : M (ref str.t) :=
     M.function_body
       (let* α0 : ltac:(refine (M.Val traits.Sheep.t)) := deref self in
       M.pure α0.["name"]).
@@ -104,15 +104,15 @@ Section Impl_traits_Animal_for_traits_Sheep_t.
           }
       }
   *)
-  Definition noise (self : M.Val (ref ltac:(Self))) : M (M.Val (ref str.t)) :=
+  Definition noise (self : M.Val (ref ltac:(Self))) : M (ref str.t) :=
     M.function_body
       (let* α0 : ltac:(refine (M.Val traits.Sheep.t)) := deref self in
       let* α1 : ltac:(refine (M.Val (ref traits.Sheep.t))) := borrow α0 in
-      let* α2 : ltac:(refine (M.Val bool.t)) :=
-        traits.Sheep.t::["is_naked"] α1 in
-      let* α3 : ltac:(refine (M.Val bool.t)) := use α2 in
-      let* α4 := M.read α3 in
-      if (α4 : bool) then
+      let* α2 := traits.Sheep.t::["is_naked"] α1 in
+      let* α3 : ltac:(refine (M.Val bool.t)) := M.alloc α2 in
+      let* α4 : ltac:(refine (M.Val bool.t)) := use α3 in
+      let* α5 := M.read α4 in
+      if (α5 : bool) then
         M.pure (mk_str "baaaaah?")
       else
         M.pure (mk_str "baaaaah!")).
@@ -128,7 +128,7 @@ Section Impl_traits_Animal_for_traits_Sheep_t.
           println!("{} pauses briefly... {}", self.name, self.noise());
       }
   *)
-  Definition talk (self : M.Val (ref ltac:(Self))) : M (M.Val unit) :=
+  Definition talk (self : M.Val (ref ltac:(Self))) : M unit :=
     M.function_body
       (let* _ : ltac:(refine (M.Val unit)) :=
         let* _ : ltac:(refine (M.Val unit)) :=
@@ -142,29 +142,34 @@ Section Impl_traits_Animal_for_traits_Sheep_t.
           let* α3 : ltac:(refine (M.Val traits.Sheep.t)) := deref self in
           let* α4 : ltac:(refine (M.Val (ref (ref str.t)))) :=
             borrow α3.["name"] in
-          let* α5 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
-            core.fmt.rt.Argument.t::["new_display"] α4 in
-          let* α6 : ltac:(refine (M.Val traits.Sheep.t)) := deref self in
-          let* α7 : ltac:(refine (M.Val (ref traits.Sheep.t))) := borrow α6 in
-          let* α8 : ltac:(refine (M.Val (ref str.t))) :=
+          let* α5 := core.fmt.rt.Argument.t::["new_display"] α4 in
+          let* α6 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
+            M.alloc α5 in
+          let* α7 : ltac:(refine (M.Val traits.Sheep.t)) := deref self in
+          let* α8 : ltac:(refine (M.Val (ref traits.Sheep.t))) := borrow α7 in
+          let* α9 :=
             (traits.Animal.noise
                 (Self := traits.Sheep.t)
                 (Trait := ltac:(refine _)))
-              α7 in
-          let* α9 : ltac:(refine (M.Val (ref (ref str.t)))) := borrow α8 in
-          let* α10 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
-            core.fmt.rt.Argument.t::["new_display"] α9 in
-          let* α11 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
-            M.alloc [ α5; α10 ] in
-          let* α12 :
+              α8 in
+          let* α10 : ltac:(refine (M.Val (ref str.t))) := M.alloc α9 in
+          let* α11 : ltac:(refine (M.Val (ref (ref str.t)))) := borrow α10 in
+          let* α12 := core.fmt.rt.Argument.t::["new_display"] α11 in
+          let* α13 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
+            M.alloc α12 in
+          let* α14 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
+            M.alloc [ α6; α13 ] in
+          let* α15 :
               ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
-            borrow α11 in
-          let* α13 :
+            borrow α14 in
+          let* α16 :
               ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
-            pointer_coercion "Unsize" α12 in
-          let* α14 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-            core.fmt.Arguments.t::["new_v1"] α2 α13 in
-          std.io.stdio._print α14 in
+            pointer_coercion "Unsize" α15 in
+          let* α17 := core.fmt.Arguments.t::["new_v1"] α2 α16 in
+          let* α18 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
+            M.alloc α17 in
+          let* α19 := std.io.stdio._print α18 in
+          M.alloc α19 in
         M.alloc tt in
       M.alloc tt).
   
@@ -198,15 +203,15 @@ Section Impl_traits_Sheep_t_2.
           }
       }
   *)
-  Definition shear (self : M.Val (mut_ref ltac:(Self))) : M (M.Val unit) :=
+  Definition shear (self : M.Val (mut_ref ltac:(Self))) : M unit :=
     M.function_body
       (let* α0 : ltac:(refine (M.Val traits.Sheep.t)) := deref self in
       let* α1 : ltac:(refine (M.Val (ref traits.Sheep.t))) := borrow α0 in
-      let* α2 : ltac:(refine (M.Val bool.t)) :=
-        traits.Sheep.t::["is_naked"] α1 in
-      let* α3 : ltac:(refine (M.Val bool.t)) := use α2 in
-      let* α4 := M.read α3 in
-      if (α4 : bool) then
+      let* α2 := traits.Sheep.t::["is_naked"] α1 in
+      let* α3 : ltac:(refine (M.Val bool.t)) := M.alloc α2 in
+      let* α4 : ltac:(refine (M.Val bool.t)) := use α3 in
+      let* α5 := M.read α4 in
+      if (α5 : bool) then
         let* _ : ltac:(refine (M.Val unit)) :=
           let* _ : ltac:(refine (M.Val unit)) :=
             let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
@@ -218,25 +223,29 @@ Section Impl_traits_Sheep_t_2.
               pointer_coercion "Unsize" α1 in
             let* α3 : ltac:(refine (M.Val traits.Sheep.t)) := deref self in
             let* α4 : ltac:(refine (M.Val (ref traits.Sheep.t))) := borrow α3 in
-            let* α5 : ltac:(refine (M.Val (ref str.t))) :=
+            let* α5 :=
               (traits.Animal.name
                   (Self := traits.Sheep.t)
                   (Trait := ltac:(refine _)))
                 α4 in
-            let* α6 : ltac:(refine (M.Val (ref (ref str.t)))) := borrow α5 in
-            let* α7 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
-              core.fmt.rt.Argument.t::["new_display"] α6 in
-            let* α8 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
-              M.alloc [ α7 ] in
-            let* α9 :
+            let* α6 : ltac:(refine (M.Val (ref str.t))) := M.alloc α5 in
+            let* α7 : ltac:(refine (M.Val (ref (ref str.t)))) := borrow α6 in
+            let* α8 := core.fmt.rt.Argument.t::["new_display"] α7 in
+            let* α9 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
+              M.alloc α8 in
+            let* α10 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
+              M.alloc [ α9 ] in
+            let* α11 :
                 ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
-              borrow α8 in
-            let* α10 :
+              borrow α10 in
+            let* α12 :
                 ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
-              pointer_coercion "Unsize" α9 in
-            let* α11 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-              core.fmt.Arguments.t::["new_v1"] α2 α10 in
-            std.io.stdio._print α11 in
+              pointer_coercion "Unsize" α11 in
+            let* α13 := core.fmt.Arguments.t::["new_v1"] α2 α12 in
+            let* α14 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
+              M.alloc α13 in
+            let* α15 := std.io.stdio._print α14 in
+            M.alloc α15 in
           M.alloc tt in
         M.alloc tt
       else
@@ -252,19 +261,22 @@ Section Impl_traits_Sheep_t_2.
             let* α3 : ltac:(refine (M.Val traits.Sheep.t)) := deref self in
             let* α4 : ltac:(refine (M.Val (ref (ref str.t)))) :=
               borrow α3.["name"] in
-            let* α5 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
-              core.fmt.rt.Argument.t::["new_display"] α4 in
-            let* α6 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
-              M.alloc [ α5 ] in
-            let* α7 :
-                ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
-              borrow α6 in
+            let* α5 := core.fmt.rt.Argument.t::["new_display"] α4 in
+            let* α6 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
+              M.alloc α5 in
+            let* α7 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
+              M.alloc [ α6 ] in
             let* α8 :
+                ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
+              borrow α7 in
+            let* α9 :
                 ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
-              pointer_coercion "Unsize" α7 in
-            let* α9 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-              core.fmt.Arguments.t::["new_v1"] α2 α8 in
-            std.io.stdio._print α9 in
+              pointer_coercion "Unsize" α8 in
+            let* α10 := core.fmt.Arguments.t::["new_v1"] α2 α9 in
+            let* α11 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
+              M.alloc α10 in
+            let* α12 := std.io.stdio._print α11 in
+            M.alloc α12 in
           M.alloc tt in
         let* _ : ltac:(refine (M.Val unit)) :=
           let* α0 : ltac:(refine (M.Val traits.Sheep.t)) := deref self in
@@ -291,23 +303,28 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M (M.Val unit) :=
+Definition main : M unit :=
   M.function_body
     (let* dolly : ltac:(refine (M.Val traits.Sheep.t)) :=
-      let* α0 : ltac:(refine (M.Val traits.Sheep.t)) :=
+      let* α0 :=
         (traits.Animal.new (Self := traits.Sheep.t) (Trait := ltac:(refine _)))
           (mk_str "Dolly") in
-      M.copy α0 in
+      M.alloc α0 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* α0 : ltac:(refine (M.Val (ref traits.Sheep.t))) := borrow dolly in
-      (traits.Animal.talk (Self := traits.Sheep.t) (Trait := ltac:(refine _)))
-        α0 in
+      let* α1 :=
+        (traits.Animal.talk (Self := traits.Sheep.t) (Trait := ltac:(refine _)))
+          α0 in
+      M.alloc α1 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* α0 : ltac:(refine (M.Val (mut_ref traits.Sheep.t))) :=
         borrow_mut dolly in
-      traits.Sheep.t::["shear"] α0 in
+      let* α1 := traits.Sheep.t::["shear"] α0 in
+      M.alloc α1 in
     let* _ : ltac:(refine (M.Val unit)) :=
       let* α0 : ltac:(refine (M.Val (ref traits.Sheep.t))) := borrow dolly in
-      (traits.Animal.talk (Self := traits.Sheep.t) (Trait := ltac:(refine _)))
-        α0 in
+      let* α1 :=
+        (traits.Animal.talk (Self := traits.Sheep.t) (Trait := ltac:(refine _)))
+          α0 in
+      M.alloc α1 in
     M.alloc tt).

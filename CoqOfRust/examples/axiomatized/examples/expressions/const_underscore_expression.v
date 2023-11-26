@@ -49,7 +49,7 @@ Section Impl_const_underscore_expression_BarTrait_for_const_underscore_expressio
               self.test
           }
   *)
-  Parameter show : (M.Val ltac:(Self)) -> M (M.Val alloc.string.String.t).
+  Parameter show : (M.Val ltac:(Self)) -> M alloc.string.String.t.
   
   Global Instance AssociatedFunction_show :
     Notations.DoubleColon ltac:(Self) "show" := {
