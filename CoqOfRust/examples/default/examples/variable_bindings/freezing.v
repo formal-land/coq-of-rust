@@ -31,5 +31,6 @@ Definition main : M unit :=
       M.alloc tt in
     let* _ : M.Val unit :=
       let* α0 : M.Val i32.t := M.alloc 3 in
-      assign _mutable_integer α0 in
+      let* α1 := M.read α0 in
+      assign _mutable_integer α1 in
     M.alloc tt).

@@ -57,14 +57,16 @@ Definition main : M unit :=
           let* kind : M.Val core.panicking.AssertKind.t :=
             M.alloc core.panicking.AssertKind.Eq in
           let* _ : M.Val never.t :=
-            let* α0 : M.Val u64.t := deref left_val in
-            let* α1 : M.Val (ref u64.t) := borrow α0 in
-            let* α2 : M.Val u64.t := deref right_val in
-            let* α3 : M.Val (ref u64.t) := borrow α2 in
-            let* α4 : M.Val (core.option.Option.t core.fmt.Arguments.t) :=
-              M.alloc core.option.Option.None in
-            let* α5 := core.panicking.assert_failed kind α1 α3 α4 in
-            M.alloc α5 in
+            let* α0 := M.read kind in
+            let* α1 : M.Val u64.t := deref left_val in
+            let* α2 : M.Val (ref u64.t) := borrow α1 in
+            let* α3 := M.read α2 in
+            let* α4 : M.Val u64.t := deref right_val in
+            let* α5 : M.Val (ref u64.t) := borrow α4 in
+            let* α6 := M.read α5 in
+            let* α7 :=
+              core.panicking.assert_failed α0 α3 α6 core.option.Option.None in
+            M.alloc α7 in
           let* α0 : M.Val unit := M.alloc tt in
           never_to_any α0
         else

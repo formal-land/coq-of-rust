@@ -39,7 +39,8 @@ Definition main : M unit := M.function_body (M.alloc tt).
         arg * 2
     }
 *)
-Definition foo (arg : M.Val i32.t) : M i32.t :=
+Definition foo (arg : i32.t) : M i32.t :=
+  let* arg := M.alloc arg in
   M.function_body
     (let* _ : M.Val unit :=
       let* _ : M.Val unit :=
@@ -49,17 +50,19 @@ Definition foo (arg : M.Val i32.t) : M i32.t :=
         let* α1 : M.Val (ref (array (ref str.t))) := borrow α0 in
         let* α2 : M.Val (ref (slice (ref str.t))) :=
           pointer_coercion "Unsize" α1 in
-        let* α3 : M.Val (ref i32.t) := borrow arg in
-        let* α4 := core.fmt.rt.Argument.t::["new_display"] α3 in
-        let* α5 : M.Val core.fmt.rt.Argument.t := M.alloc α4 in
-        let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
-        let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) := borrow α6 in
-        let* α8 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
-          pointer_coercion "Unsize" α7 in
-        let* α9 := core.fmt.Arguments.t::["new_v1"] α2 α8 in
-        let* α10 : M.Val core.fmt.Arguments.t := M.alloc α9 in
-        let* α11 := std.io.stdio._print α10 in
-        M.alloc α11 in
+        let* α3 := M.read α2 in
+        let* α4 : M.Val (ref i32.t) := borrow arg in
+        let* α5 := M.read α4 in
+        let* α6 := core.fmt.rt.Argument.t::["new_display"] α5 in
+        let* α7 : M.Val core.fmt.rt.Argument.t := M.alloc α6 in
+        let* α8 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α7 ] in
+        let* α9 : M.Val (ref (array core.fmt.rt.Argument.t)) := borrow α8 in
+        let* α10 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
+          pointer_coercion "Unsize" α9 in
+        let* α11 := M.read α10 in
+        let* α12 := core.fmt.Arguments.t::["new_v1"] α3 α11 in
+        let* α13 := std.io.stdio._print α12 in
+        M.alloc α13 in
       M.alloc tt in
     let* α0 : M.Val i32.t := M.alloc 2 in
     BinOp.mul arg α0).
@@ -84,7 +87,8 @@ Definition foo (arg : M.Val i32.t) : M i32.t :=
         }
     }
 *)
-Definition call_foo (arg : M.Val i32.t) : M i32.t :=
+Definition call_foo (arg : i32.t) : M i32.t :=
+  let* arg := M.alloc arg in
   M.function_body
     (let* result : M.Val unit := M.alloc tt in
     let _ := InlineAssembly in

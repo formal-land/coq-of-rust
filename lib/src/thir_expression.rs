@@ -153,7 +153,7 @@ fn compile_expr_kind<'a>(
             let func = Box::new(compile_expr(env, thir, fun));
             let args = args
                 .iter()
-                .map(|arg| compile_expr(env, thir, arg))
+                .map(|arg| compile_expr(env, thir, arg).read())
                 .collect();
             ExprKind::Call { func, args }.alloc()
         }
@@ -331,7 +331,10 @@ fn compile_expr_kind<'a>(
                 kind: ExprKind::LocalVar("assign".to_string()),
                 ty: None,
             });
-            let args = vec![compile_expr(env, thir, lhs), compile_expr(env, thir, rhs)];
+            let args = vec![
+                compile_expr(env, thir, lhs),
+                compile_expr(env, thir, rhs).read(),
+            ];
             ExprKind::Call { func, args }
         }
         thir::ExprKind::AssignOp { op, lhs, rhs } => ExprKind::Call {

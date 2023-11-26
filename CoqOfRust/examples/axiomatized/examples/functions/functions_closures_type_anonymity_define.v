@@ -25,4 +25,4 @@ Parameter main : M unit.
 *)
 Parameter apply :
     forall {F : Set} {ℋ_0 : core.ops.function.FnOnce.Trait F (Args := unit)},
-    (M.Val F) -> M unit.
+    F -> M unit.

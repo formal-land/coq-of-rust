@@ -12,7 +12,7 @@ Parameter compare_prints :
       {T : Set}
       {ℋ_0 : core.fmt.Debug.Trait T}
       {ℋ_1 : core.fmt.Display.Trait T},
-    (M.Val (ref T)) -> M unit.
+    (ref T) -> M unit.
 
 (*
 fn compare_types<T: Debug, U: Debug>(t: &T, u: &U) {
@@ -25,7 +25,7 @@ Parameter compare_types :
       {T U : Set}
       {ℋ_0 : core.fmt.Debug.Trait T}
       {ℋ_1 : core.fmt.Debug.Trait U},
-    (M.Val (ref T)) -> (M.Val (ref U)) -> M unit.
+    (ref T) -> (ref U) -> M unit.
 
 (*
 fn main() {

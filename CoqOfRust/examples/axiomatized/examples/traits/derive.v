@@ -29,10 +29,7 @@ Section Impl_core_cmp_PartialEq_for_derive_Centimeters_t.
   (*
   PartialEq
   *)
-  Parameter eq :
-      (M.Val (ref ltac:(Self))) ->
-        (M.Val (ref derive.Centimeters.t)) ->
-        M bool.t.
+  Parameter eq : (ref ltac:(Self)) -> (ref derive.Centimeters.t) -> M bool.t.
   
   Global Instance AssociatedFunction_eq :
     Notations.DoubleColon ltac:(Self) "eq" := {
@@ -56,8 +53,8 @@ Section Impl_core_cmp_PartialOrd_for_derive_Centimeters_t.
   PartialOrd
   *)
   Parameter partial_cmp :
-      (M.Val (ref ltac:(Self))) ->
-        (M.Val (ref derive.Centimeters.t)) ->
+      (ref ltac:(Self)) ->
+        (ref derive.Centimeters.t) ->
         M (core.option.Option.t core.cmp.Ordering.t).
   
   Global Instance AssociatedFunction_partial_cmp :
@@ -97,8 +94,8 @@ Section Impl_core_fmt_Debug_for_derive_Inches_t.
   Debug
   *)
   Parameter fmt :
-      (M.Val (ref ltac:(Self))) ->
-        (M.Val (mut_ref core.fmt.Formatter.t)) ->
+      (ref ltac:(Self)) ->
+        (mut_ref core.fmt.Formatter.t) ->
         M ltac:(core.fmt.Result).
   
   Global Instance AssociatedFunction_fmt :
@@ -123,8 +120,7 @@ Section Impl_derive_Inches_t.
           Centimeters(inches as f64 * 2.54)
       }
   *)
-  Parameter to_centimeters :
-      (M.Val (ref ltac:(Self))) -> M derive.Centimeters.t.
+  Parameter to_centimeters : (ref ltac:(Self)) -> M derive.Centimeters.t.
   
   Global Instance AssociatedFunction_to_centimeters :
     Notations.DoubleColon ltac:(Self) "to_centimeters" := {

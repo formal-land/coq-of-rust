@@ -31,10 +31,9 @@ Section Impl_generics_traits_DoubleDrop_T_for_U.
   (*
       fn double_drop(self, _: T) {}
   *)
-  Definition double_drop
-      (self : M.Val ltac:(Self))
-      (Pattern : M.Val T)
-      : M unit :=
+  Definition double_drop (self : ltac:(Self)) (Pattern : T) : M unit :=
+    let* self := M.alloc self in
+    let* Pattern := M.alloc Pattern in
     M.function_body (M.alloc tt).
   
   Global Instance AssociatedFunction_double_drop :
@@ -69,11 +68,13 @@ Definition main : M unit :=
     let* null : M.Val generics_traits.Null.t :=
       M.alloc generics_traits.Null.Build_t in
     let* _ : M.Val unit :=
-      let* α0 :=
+      let* α0 := M.read empty in
+      let* α1 := M.read null in
+      let* α2 :=
         (generics_traits.DoubleDrop.double_drop
             (Self := generics_traits.Empty.t)
             (Trait := ltac:(refine _)))
-          empty
-          null in
-      M.alloc α0 in
+          α0
+          α1 in
+      M.alloc α2 in
     M.alloc tt).

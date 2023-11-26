@@ -19,7 +19,8 @@ Section Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle_t.
           self.length * self.height
       }
   *)
-  Definition area (self : M.Val (ref ltac:(Self))) : M f64.t :=
+  Definition area (self : ref ltac:(Self)) : M f64.t :=
+    let* self := M.alloc self in
     M.function_body
       (let* α0 : M.Val generics_bounds.Rectangle.t := deref self in
       let* α1 : M.Val generics_bounds.Rectangle.t := deref self in
@@ -68,36 +69,44 @@ Section Impl_core_fmt_Debug_for_generics_bounds_Rectangle_t.
   Debug
   *)
   Definition fmt
-      (self : M.Val (ref ltac:(Self)))
-      (f : M.Val (mut_ref core.fmt.Formatter.t))
+      (self : ref ltac:(Self))
+      (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
+    let* self := M.alloc self in
+    let* f := M.alloc f in
     M.function_body
       (let* α0 : M.Val core.fmt.Formatter.t := deref f in
       let* α1 : M.Val (mut_ref core.fmt.Formatter.t) := borrow_mut α0 in
-      let* α2 : M.Val str.t := deref (mk_str "Rectangle") in
-      let* α3 : M.Val (ref str.t) := borrow α2 in
-      let* α4 : M.Val str.t := deref (mk_str "length") in
-      let* α5 : M.Val (ref str.t) := borrow α4 in
-      let* α6 : M.Val generics_bounds.Rectangle.t := deref self in
-      let* α7 : M.Val (ref f64.t) := borrow α6.["length"] in
-      let* α8 : M.Val (ref type not implemented) :=
-        pointer_coercion "Unsize" α7 in
-      let* α9 : M.Val str.t := deref (mk_str "height") in
-      let* α10 : M.Val (ref str.t) := borrow α9 in
-      let* α11 : M.Val generics_bounds.Rectangle.t := deref self in
-      let* α12 : M.Val (ref f64.t) := borrow α11.["height"] in
-      let* α13 : M.Val (ref (ref f64.t)) := borrow α12 in
-      let* α14 : M.Val (ref type not implemented) :=
-        pointer_coercion "Unsize" α13 in
-      let* α15 :=
+      let* α2 := M.read α1 in
+      let* α3 : M.Val str.t := deref (mk_str "Rectangle") in
+      let* α4 : M.Val (ref str.t) := borrow α3 in
+      let* α5 := M.read α4 in
+      let* α6 : M.Val str.t := deref (mk_str "length") in
+      let* α7 : M.Val (ref str.t) := borrow α6 in
+      let* α8 := M.read α7 in
+      let* α9 : M.Val generics_bounds.Rectangle.t := deref self in
+      let* α10 : M.Val (ref f64.t) := borrow α9.["length"] in
+      let* α11 : M.Val (ref type not implemented) :=
+        pointer_coercion "Unsize" α10 in
+      let* α12 := M.read α11 in
+      let* α13 : M.Val str.t := deref (mk_str "height") in
+      let* α14 : M.Val (ref str.t) := borrow α13 in
+      let* α15 := M.read α14 in
+      let* α16 : M.Val generics_bounds.Rectangle.t := deref self in
+      let* α17 : M.Val (ref f64.t) := borrow α16.["height"] in
+      let* α18 : M.Val (ref (ref f64.t)) := borrow α17 in
+      let* α19 : M.Val (ref type not implemented) :=
+        pointer_coercion "Unsize" α18 in
+      let* α20 := M.read α19 in
+      let* α21 :=
         core.fmt.Formatter.t::["debug_struct_field2_finish"]
-          α1
-          α3
+          α2
           α5
           α8
-          α10
-          α14 in
-      M.alloc α15).
+          α12
+          α15
+          α20 in
+      M.alloc α21).
   
   Global Instance AssociatedFunction_fmt :
     Notations.DoubleColon ltac:(Self) "fmt" := {
@@ -143,8 +152,9 @@ fn print_debug<T: Debug>(t: &T) {
 Definition print_debug
     {T : Set}
     {ℋ_0 : core.fmt.Debug.Trait T}
-    (t : M.Val (ref T))
+    (t : ref T)
     : M unit :=
+  let* t := M.alloc t in
   M.function_body
     (let* _ : M.Val unit :=
       let* _ : M.Val unit :=
@@ -154,17 +164,19 @@ Definition print_debug
         let* α1 : M.Val (ref (array (ref str.t))) := borrow α0 in
         let* α2 : M.Val (ref (slice (ref str.t))) :=
           pointer_coercion "Unsize" α1 in
-        let* α3 : M.Val (ref (ref T)) := borrow t in
-        let* α4 := core.fmt.rt.Argument.t::["new_debug"] α3 in
-        let* α5 : M.Val core.fmt.rt.Argument.t := M.alloc α4 in
-        let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
-        let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) := borrow α6 in
-        let* α8 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
-          pointer_coercion "Unsize" α7 in
-        let* α9 := core.fmt.Arguments.t::["new_v1"] α2 α8 in
-        let* α10 : M.Val core.fmt.Arguments.t := M.alloc α9 in
-        let* α11 := std.io.stdio._print α10 in
-        M.alloc α11 in
+        let* α3 := M.read α2 in
+        let* α4 : M.Val (ref (ref T)) := borrow t in
+        let* α5 := M.read α4 in
+        let* α6 := core.fmt.rt.Argument.t::["new_debug"] α5 in
+        let* α7 : M.Val core.fmt.rt.Argument.t := M.alloc α6 in
+        let* α8 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α7 ] in
+        let* α9 : M.Val (ref (array core.fmt.rt.Argument.t)) := borrow α8 in
+        let* α10 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
+          pointer_coercion "Unsize" α9 in
+        let* α11 := M.read α10 in
+        let* α12 := core.fmt.Arguments.t::["new_v1"] α3 α11 in
+        let* α13 := std.io.stdio._print α12 in
+        M.alloc α13 in
       M.alloc tt in
     M.alloc tt).
 
@@ -176,15 +188,17 @@ fn area<T: HasArea>(t: &T) -> f64 {
 Definition area
     {T : Set}
     {ℋ_0 : generics_bounds.HasArea.Trait T}
-    (t : M.Val (ref T))
+    (t : ref T)
     : M f64.t :=
+  let* t := M.alloc t in
   M.function_body
     (let* α0 : M.Val T := deref t in
     let* α1 : M.Val (ref T) := borrow α0 in
-    let* α2 :=
+    let* α2 := M.read α1 in
+    let* α3 :=
       (generics_bounds.HasArea.area (Self := T) (Trait := ltac:(refine _)))
-        α1 in
-    M.alloc α2).
+        α2 in
+    M.alloc α3).
 
 (*
 fn main() {
@@ -231,8 +245,9 @@ Definition main : M unit :=
         |} in
     let* _ : M.Val unit :=
       let* α0 : M.Val (ref generics_bounds.Rectangle.t) := borrow rectangle in
-      let* α1 := generics_bounds.print_debug α0 in
-      M.alloc α1 in
+      let* α1 := M.read α0 in
+      let* α2 := generics_bounds.print_debug α1 in
+      M.alloc α2 in
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
         let* α0 : M.Val (array (ref str.t)) :=
@@ -241,23 +256,26 @@ Definition main : M unit :=
         let* α1 : M.Val (ref (array (ref str.t))) := borrow α0 in
         let* α2 : M.Val (ref (slice (ref str.t))) :=
           pointer_coercion "Unsize" α1 in
-        let* α3 : M.Val (ref generics_bounds.Rectangle.t) := borrow rectangle in
-        let* α4 :=
+        let* α3 := M.read α2 in
+        let* α4 : M.Val (ref generics_bounds.Rectangle.t) := borrow rectangle in
+        let* α5 := M.read α4 in
+        let* α6 :=
           (generics_bounds.HasArea.area
               (Self := generics_bounds.Rectangle.t)
               (Trait := ltac:(refine _)))
-            α3 in
-        let* α5 : M.Val f64.t := M.alloc α4 in
-        let* α6 : M.Val (ref f64.t) := borrow α5 in
-        let* α7 := core.fmt.rt.Argument.t::["new_display"] α6 in
-        let* α8 : M.Val core.fmt.rt.Argument.t := M.alloc α7 in
-        let* α9 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α8 ] in
-        let* α10 : M.Val (ref (array core.fmt.rt.Argument.t)) := borrow α9 in
-        let* α11 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
-          pointer_coercion "Unsize" α10 in
-        let* α12 := core.fmt.Arguments.t::["new_v1"] α2 α11 in
-        let* α13 : M.Val core.fmt.Arguments.t := M.alloc α12 in
-        let* α14 := std.io.stdio._print α13 in
-        M.alloc α14 in
+            α5 in
+        let* α7 : M.Val f64.t := M.alloc α6 in
+        let* α8 : M.Val (ref f64.t) := borrow α7 in
+        let* α9 := M.read α8 in
+        let* α10 := core.fmt.rt.Argument.t::["new_display"] α9 in
+        let* α11 : M.Val core.fmt.rt.Argument.t := M.alloc α10 in
+        let* α12 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α11 ] in
+        let* α13 : M.Val (ref (array core.fmt.rt.Argument.t)) := borrow α12 in
+        let* α14 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
+          pointer_coercion "Unsize" α13 in
+        let* α15 := M.read α14 in
+        let* α16 := core.fmt.Arguments.t::["new_v1"] α3 α15 in
+        let* α17 := std.io.stdio._print α16 in
+        M.alloc α17 in
       M.alloc tt in
     M.alloc tt).

@@ -13,33 +13,28 @@ fn main() {
 Definition main : M unit :=
   M.function_body
     (let* child : M.Val std.process.Child.t :=
-      let* α0 := std.process.Command.t::["new"] (mk_str "sleep") in
-      let* α1 : M.Val std.process.Command.t := M.alloc α0 in
-      let* α2 : M.Val (mut_ref std.process.Command.t) := borrow_mut α1 in
-      let* α3 := std.process.Command.t::["arg"] α2 (mk_str "5") in
-      let* α4 : M.Val (mut_ref std.process.Command.t) := M.alloc α3 in
-      let* α5 : M.Val std.process.Command.t := deref α4 in
-      let* α6 : M.Val (mut_ref std.process.Command.t) := borrow_mut α5 in
-      let* α7 := std.process.Command.t::["spawn"] α6 in
-      let* α8 :
-          M.Val
-            (core.result.Result.t std.process.Child.t std.io.error.Error.t) :=
-        M.alloc α7 in
-      let* α9 :=
+      let* α0 := M.read (mk_str "sleep") in
+      let* α1 := std.process.Command.t::["new"] α0 in
+      let* α2 : M.Val std.process.Command.t := M.alloc α1 in
+      let* α3 : M.Val (mut_ref std.process.Command.t) := borrow_mut α2 in
+      let* α4 := M.read α3 in
+      let* α5 := M.read (mk_str "5") in
+      let* α6 := std.process.Command.t::["arg"] α4 α5 in
+      let* α7 : M.Val (mut_ref std.process.Command.t) := M.alloc α6 in
+      let* α8 : M.Val std.process.Command.t := deref α7 in
+      let* α9 : M.Val (mut_ref std.process.Command.t) := borrow_mut α8 in
+      let* α10 := M.read α9 in
+      let* α11 := std.process.Command.t::["spawn"] α10 in
+      let* α12 :=
         (core.result.Result.t
               std.process.Child.t
               std.io.error.Error.t)::["unwrap"]
-          α8 in
-      M.alloc α9 in
+          α11 in
+      M.alloc α12 in
     let* _result : M.Val std.process.ExitStatus.t :=
       let* α0 : M.Val (mut_ref std.process.Child.t) := borrow_mut child in
-      let* α1 := std.process.Child.t::["wait"] α0 in
-      let* α2 :
-          M.Val
-            (core.result.Result.t
-              std.process.ExitStatus.t
-              std.io.error.Error.t) :=
-        M.alloc α1 in
+      let* α1 := M.read α0 in
+      let* α2 := std.process.Child.t::["wait"] α1 in
       let* α3 :=
         (core.result.Result.t
               std.process.ExitStatus.t
@@ -54,8 +49,8 @@ Definition main : M unit :=
         let* α1 : M.Val (ref (array (ref str.t))) := borrow α0 in
         let* α2 : M.Val (ref (slice (ref str.t))) :=
           pointer_coercion "Unsize" α1 in
-        let* α3 := core.fmt.Arguments.t::["new_const"] α2 in
-        let* α4 : M.Val core.fmt.Arguments.t := M.alloc α3 in
+        let* α3 := M.read α2 in
+        let* α4 := core.fmt.Arguments.t::["new_const"] α3 in
         let* α5 := std.io.stdio._print α4 in
         M.alloc α5 in
       M.alloc tt in

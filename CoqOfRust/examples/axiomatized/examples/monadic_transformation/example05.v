@@ -22,7 +22,7 @@ Section Impl_example05_Foo_t.
           self.0 + 1
       }
   *)
-  Parameter plus1 : (M.Val ltac:(Self)) -> M u32.t.
+  Parameter plus1 : ltac:(Self) -> M u32.t.
   
   Global Instance AssociatedFunction_plus1 :
     Notations.DoubleColon ltac:(Self) "plus1" := {

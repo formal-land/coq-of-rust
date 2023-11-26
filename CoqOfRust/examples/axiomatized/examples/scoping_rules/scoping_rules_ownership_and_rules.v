@@ -9,7 +9,7 @@ fn destroy_box(c: Box<i32>) {
 }
 *)
 Parameter destroy_box :
-    (M.Val (alloc.boxed.Box.t i32.t alloc.boxed.Box.Default.A)) -> M unit.
+    (alloc.boxed.Box.t i32.t alloc.boxed.Box.Default.A) -> M unit.
 
 (*
 fn main() {

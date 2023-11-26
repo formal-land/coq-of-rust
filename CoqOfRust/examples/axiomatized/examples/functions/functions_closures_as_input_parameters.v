@@ -14,7 +14,7 @@ where
 *)
 Parameter apply :
     forall {F : Set} {ℋ_0 : core.ops.function.FnOnce.Trait F (Args := unit)},
-    (M.Val F) -> M unit.
+    F -> M unit.
 
 (*
 fn apply_to_3<F>(f: F) -> i32
@@ -27,7 +27,7 @@ where
 *)
 Parameter apply_to_3 :
     forall {F : Set} {ℋ_0 : core.ops.function.Fn.Trait F (Args := i32.t)},
-    (M.Val F) -> M i32.t.
+    F -> M i32.t.
 
 (*
 fn main() {

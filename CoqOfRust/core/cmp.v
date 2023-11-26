@@ -36,15 +36,15 @@ Module PartialEq.
   Module Required.
     Class Trait (Self : Set) {Rhs : Set} : Set := {
       Rhs := Rhs;
-      eq : M.Val (ref Self) -> M.Val (ref Rhs) -> M bool;
-      ne : option (M.Val (ref Self) -> M.Val (ref Rhs) -> M bool);
+      eq : ref Self -> ref Rhs -> M bool;
+      ne : option (ref Self -> ref Rhs -> M bool);
     }.
   End Required.
 
   Module Provided.
     Definition ne {Self Rhs : Set}
         {H0 : Required.Trait Self (Rhs := Rhs)} :
-        M.Val (ref Self) -> M.Val (ref Rhs) -> M bool :=
+        ref Self -> ref Rhs -> M bool :=
       match Required.ne with
       | Datatypes.Some ne => ne
       | Datatypes.None => fun self other =>
@@ -55,8 +55,8 @@ Module PartialEq.
 
   Class Trait (Self : Set) {Rhs : Set} : Set := {
     Rhs := Rhs;
-    eq : M.Val (ref Self) -> M.Val (ref Rhs) -> M bool;
-    ne : M.Val (ref Self) -> M.Val (ref Rhs) -> M bool;
+    eq : ref Self -> ref Rhs -> M bool;
+    ne : ref Self -> ref Rhs -> M bool;
   }.
 
   Global Instance From_Required (Self Rhs : Set)
@@ -148,26 +148,26 @@ Module PartialOrd.
     Class Trait (Self : Set) {Rhs : Set} : Set := {
       Rhs := Rhs;
       partial_cmp :
-        M.Val (ref Self) ->
-        M.Val (ref Rhs) ->
+        ref Self ->
+        ref Rhs ->
         M (core.option.Option.t Ordering.t);
-      lt : Datatypes.option (M.Val (ref Self) -> M.Val (ref Rhs) -> M bool);
-      le : Datatypes.option (M.Val (ref Self) -> M.Val (ref Rhs) -> M bool);
-      gt : Datatypes.option (M.Val (ref Self) -> M.Val (ref Rhs) -> M bool);
-      ge : Datatypes.option (M.Val (ref Self) -> M.Val (ref Rhs) -> M bool);
+      lt : Datatypes.option (ref Self -> ref Rhs -> M bool);
+      le : Datatypes.option (ref Self -> ref Rhs -> M bool);
+      gt : Datatypes.option (ref Self -> ref Rhs -> M bool);
+      ge : Datatypes.option (ref Self -> ref Rhs -> M bool);
     }.
   End Required.
 
   Class Trait (Self : Set) {Rhs : Set} : Set := {
     Rhs := Rhs;
     partial_cmp :
-      M.Val (ref Self) ->
-      M.Val (ref Rhs) ->
+      ref Self ->
+      ref Rhs ->
       M (core.option.Option.t Ordering.t);
-    lt : M.Val (ref Self) -> M.Val (ref Rhs) -> M bool;
-    le : M.Val (ref Self) -> M.Val (ref Rhs) -> M bool;
-    gt : M.Val (ref Self) -> M.Val (ref Rhs) -> M bool;
-    ge : M.Val (ref Self) -> M.Val (ref Rhs) -> M bool;
+    lt : ref Self -> ref Rhs -> M bool;
+    le : ref Self -> ref Rhs -> M bool;
+    gt : ref Self -> ref Rhs -> M bool;
+    ge : ref Self -> ref Rhs -> M bool;
   }.
 
   Global Instance From_Required (Self Rhs : Set)

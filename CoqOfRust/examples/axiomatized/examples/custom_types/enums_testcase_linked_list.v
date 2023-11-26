@@ -38,9 +38,7 @@ Section Impl_enums_testcase_linked_list_List_t.
       }
   *)
   Parameter prepend :
-      (M.Val ltac:(Self)) ->
-        (M.Val u32.t) ->
-        M enums_testcase_linked_list.List.t.
+      ltac:(Self) -> u32.t -> M enums_testcase_linked_list.List.t.
   
   Global Instance AssociatedFunction_prepend :
     Notations.DoubleColon ltac:(Self) "prepend" := {
@@ -65,7 +63,7 @@ Section Impl_enums_testcase_linked_list_List_t.
           }
       }
   *)
-  Parameter len : (M.Val (ref ltac:(Self))) -> M u32.t.
+  Parameter len : (ref ltac:(Self)) -> M u32.t.
   
   Global Instance AssociatedFunction_len :
     Notations.DoubleColon ltac:(Self) "len" := {
@@ -86,7 +84,7 @@ Section Impl_enums_testcase_linked_list_List_t.
           }
       }
   *)
-  Parameter stringify : (M.Val (ref ltac:(Self))) -> M alloc.string.String.t.
+  Parameter stringify : (ref ltac:(Self)) -> M alloc.string.String.t.
   
   Global Instance AssociatedFunction_stringify :
     Notations.DoubleColon ltac:(Self) "stringify" := {

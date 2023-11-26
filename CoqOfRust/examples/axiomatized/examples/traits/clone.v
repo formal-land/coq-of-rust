@@ -15,8 +15,8 @@ Section Impl_core_fmt_Debug_for_clone_Unit_t.
   Debug
   *)
   Parameter fmt :
-      (M.Val (ref ltac:(Self))) ->
-        (M.Val (mut_ref core.fmt.Formatter.t)) ->
+      (ref ltac:(Self)) ->
+        (mut_ref core.fmt.Formatter.t) ->
         M ltac:(core.fmt.Result).
   
   Global Instance AssociatedFunction_fmt :
@@ -37,7 +37,7 @@ Section Impl_core_clone_Clone_for_clone_Unit_t.
   (*
   Clone
   *)
-  Parameter clone : (M.Val (ref ltac:(Self))) -> M clone.Unit.t.
+  Parameter clone : (ref ltac:(Self)) -> M clone.Unit.t.
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon ltac:(Self) "clone" := {
@@ -83,7 +83,7 @@ Section Impl_core_clone_Clone_for_clone_Pair_t.
   (*
   Clone
   *)
-  Parameter clone : (M.Val (ref ltac:(Self))) -> M clone.Pair.t.
+  Parameter clone : (ref ltac:(Self)) -> M clone.Pair.t.
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon ltac:(Self) "clone" := {
@@ -105,8 +105,8 @@ Section Impl_core_fmt_Debug_for_clone_Pair_t.
   Debug
   *)
   Parameter fmt :
-      (M.Val (ref ltac:(Self))) ->
-        (M.Val (mut_ref core.fmt.Formatter.t)) ->
+      (ref ltac:(Self)) ->
+        (mut_ref core.fmt.Formatter.t) ->
         M ltac:(core.fmt.Result).
   
   Global Instance AssociatedFunction_fmt :

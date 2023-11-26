@@ -32,7 +32,7 @@ Section Impl_functions_order_SomeType_t.
   (*
       fn meth2(self) {}
   *)
-  Parameter meth2 : (M.Val ltac:(Self)) -> M unit.
+  Parameter meth2 : ltac:(Self) -> M unit.
   
   Global Instance AssociatedFunction_meth2 :
     Notations.DoubleColon ltac:(Self) "meth2" := {
@@ -44,7 +44,7 @@ Section Impl_functions_order_SomeType_t.
           self.meth2();
       }
   *)
-  Parameter meth1 : (M.Val ltac:(Self)) -> M unit.
+  Parameter meth1 : ltac:(Self) -> M unit.
   
   Global Instance AssociatedFunction_meth1 :
     Notations.DoubleColon ltac:(Self) "meth1" := {
@@ -70,7 +70,7 @@ Section Impl_functions_order_SomeTrait_for_functions_order_SomeType_t.
   (*
       fn some_trait_bar(&self) {}
   *)
-  Parameter some_trait_bar : (M.Val (ref ltac:(Self))) -> M unit.
+  Parameter some_trait_bar : (ref ltac:(Self)) -> M unit.
   
   Global Instance AssociatedFunction_some_trait_bar :
     Notations.DoubleColon ltac:(Self) "some_trait_bar" := {
@@ -82,7 +82,7 @@ Section Impl_functions_order_SomeTrait_for_functions_order_SomeType_t.
           self.some_trait_bar()
       }
   *)
-  Parameter some_trait_foo : (M.Val (ref ltac:(Self))) -> M unit.
+  Parameter some_trait_foo : (ref ltac:(Self)) -> M unit.
   
   Global Instance AssociatedFunction_some_trait_foo :
     Notations.DoubleColon ltac:(Self) "some_trait_foo" := {
@@ -103,7 +103,7 @@ Section Impl_functions_order_SomeTrait_for_functions_order_OtherType_t.
   (*
       fn some_trait_foo(&self) {}
   *)
-  Parameter some_trait_foo : (M.Val (ref ltac:(Self))) -> M unit.
+  Parameter some_trait_foo : (ref ltac:(Self)) -> M unit.
   
   Global Instance AssociatedFunction_some_trait_foo :
     Notations.DoubleColon ltac:(Self) "some_trait_foo" := {
@@ -113,7 +113,7 @@ Section Impl_functions_order_SomeTrait_for_functions_order_OtherType_t.
   (*
       fn some_trait_bar(&self) {}
   *)
-  Parameter some_trait_bar : (M.Val (ref ltac:(Self))) -> M unit.
+  Parameter some_trait_bar : (ref ltac:(Self)) -> M unit.
   
   Global Instance AssociatedFunction_some_trait_bar :
     Notations.DoubleColon ltac:(Self) "some_trait_bar" := {
@@ -133,7 +133,7 @@ fn depends_on_trait_impl(u: u32, b: bool) {
     SomeType(u).some_trait_foo();
 }
 *)
-Parameter depends_on_trait_impl : (M.Val u32.t) -> (M.Val bool.t) -> M unit.
+Parameter depends_on_trait_impl : u32.t -> bool.t -> M unit.
 
 Module inner_mod.
   (*

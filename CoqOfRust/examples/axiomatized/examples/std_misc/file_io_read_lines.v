@@ -10,7 +10,7 @@ fn read_lines(filename: String) -> io::Lines<BufReader<File>> {
 }
 *)
 Parameter read_lines :
-    (M.Val alloc.string.String.t) ->
+    alloc.string.String.t ->
       M (std.io.Lines.t (std.io.buffered.bufreader.BufReader.t std.fs.File.t)).
 
 (*

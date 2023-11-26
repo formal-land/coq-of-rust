@@ -9,7 +9,7 @@ fn foo<A>(o: Option<A>) {
     }
 }
 *)
-Parameter foo : forall {A : Set}, (M.Val (core.option.Option.t A)) -> M unit.
+Parameter foo : forall {A : Set}, (core.option.Option.t A) -> M unit.
 
 Module tests.
   (*

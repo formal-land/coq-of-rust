@@ -108,11 +108,6 @@ pub(crate) enum ExprKind {
     },
     Block(Box<Stmt>),
     #[allow(dead_code)]
-    Assign {
-        left: Box<Expr>,
-        right: Box<Expr>,
-    },
-    #[allow(dead_code)]
     IndexedField {
         base: Box<Expr>,
         index: u32,
@@ -245,7 +240,6 @@ impl Expr {
                         .any(|MatchArm { pat: _, body }| body.has_return())
             }
             ExprKind::Block(stmt) => stmt.has_return(),
-            ExprKind::Assign { left, right } => left.has_return() || right.has_return(),
             ExprKind::IndexedField { base, index: _ } => base.has_return(),
             ExprKind::NamedField { base, name: _ } => base.has_return(),
             ExprKind::Index { base, index } => base.has_return() || index.has_return(),
@@ -626,23 +620,6 @@ pub(crate) fn mt_expression(fresh_vars: FreshVars, expr: Expr) -> (Stmt, FreshVa
             })
         }
         ExprKind::Block(stmt) => (mt_stmt(*stmt), fresh_vars),
-        ExprKind::Assign { left, right } => monadic_let(fresh_vars, *left, |fresh_vars, left| {
-            monadic_let(fresh_vars, *right, |fresh_vars, right| {
-                (
-                    Stmt {
-                        kind: StmtKind::Expr(Box::new(Expr {
-                            kind: ExprKind::Assign {
-                                left: Box::new(left),
-                                right: Box::new(right),
-                            },
-                            ty: ty.clone(),
-                        })),
-                        ty,
-                    },
-                    fresh_vars,
-                )
-            })
-        }),
         ExprKind::IndexedField { base, index } => {
             monadic_let(fresh_vars, *base, |fresh_vars, base| {
                 (
@@ -1039,16 +1016,6 @@ impl ExprKind {
                 text("end"),
             ]),
             ExprKind::Block(stmt) => stmt.to_doc(with_paren),
-            ExprKind::Assign { left, right } => paren(
-                with_paren,
-                nest([
-                    text("assign"),
-                    line(),
-                    left.to_doc(true),
-                    line(),
-                    right.to_doc(true),
-                ]),
-            ),
             ExprKind::IndexedField { base, index } => paren(
                 with_paren,
                 nest([

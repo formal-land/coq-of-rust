@@ -127,28 +127,32 @@ Definition main : M unit :=
         let* α1 : M.Val (ref (array (ref str.t))) := borrow α0 in
         let* α2 : M.Val (ref (slice (ref str.t))) :=
           pointer_coercion "Unsize" α1 in
-        let* α3 : M.Val scoping_rules_borrowing_aliasing.Point.t :=
+        let* α3 := M.read α2 in
+        let* α4 : M.Val scoping_rules_borrowing_aliasing.Point.t :=
           deref borrowed_point in
-        let* α4 : M.Val (ref i32.t) := borrow α3.["x"] in
-        let* α5 := core.fmt.rt.Argument.t::["new_display"] α4 in
-        let* α6 : M.Val core.fmt.rt.Argument.t := M.alloc α5 in
-        let* α7 : M.Val scoping_rules_borrowing_aliasing.Point.t :=
+        let* α5 : M.Val (ref i32.t) := borrow α4.["x"] in
+        let* α6 := M.read α5 in
+        let* α7 := core.fmt.rt.Argument.t::["new_display"] α6 in
+        let* α8 : M.Val core.fmt.rt.Argument.t := M.alloc α7 in
+        let* α9 : M.Val scoping_rules_borrowing_aliasing.Point.t :=
           deref another_borrow in
-        let* α8 : M.Val (ref i32.t) := borrow α7.["y"] in
-        let* α9 := core.fmt.rt.Argument.t::["new_display"] α8 in
-        let* α10 : M.Val core.fmt.rt.Argument.t := M.alloc α9 in
-        let* α11 : M.Val (ref i32.t) := borrow point.["z"] in
+        let* α10 : M.Val (ref i32.t) := borrow α9.["y"] in
+        let* α11 := M.read α10 in
         let* α12 := core.fmt.rt.Argument.t::["new_display"] α11 in
         let* α13 : M.Val core.fmt.rt.Argument.t := M.alloc α12 in
-        let* α14 : M.Val (array core.fmt.rt.Argument.t) :=
-          M.alloc [ α6; α10; α13 ] in
-        let* α15 : M.Val (ref (array core.fmt.rt.Argument.t)) := borrow α14 in
-        let* α16 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
-          pointer_coercion "Unsize" α15 in
-        let* α17 := core.fmt.Arguments.t::["new_v1"] α2 α16 in
-        let* α18 : M.Val core.fmt.Arguments.t := M.alloc α17 in
-        let* α19 := std.io.stdio._print α18 in
-        M.alloc α19 in
+        let* α14 : M.Val (ref i32.t) := borrow point.["z"] in
+        let* α15 := M.read α14 in
+        let* α16 := core.fmt.rt.Argument.t::["new_display"] α15 in
+        let* α17 : M.Val core.fmt.rt.Argument.t := M.alloc α16 in
+        let* α18 : M.Val (array core.fmt.rt.Argument.t) :=
+          M.alloc [ α8; α13; α17 ] in
+        let* α19 : M.Val (ref (array core.fmt.rt.Argument.t)) := borrow α18 in
+        let* α20 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
+          pointer_coercion "Unsize" α19 in
+        let* α21 := M.read α20 in
+        let* α22 := core.fmt.Arguments.t::["new_v1"] α3 α21 in
+        let* α23 := std.io.stdio._print α22 in
+        M.alloc α23 in
       M.alloc tt in
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
@@ -164,28 +168,32 @@ Definition main : M unit :=
         let* α1 : M.Val (ref (array (ref str.t))) := borrow α0 in
         let* α2 : M.Val (ref (slice (ref str.t))) :=
           pointer_coercion "Unsize" α1 in
-        let* α3 : M.Val scoping_rules_borrowing_aliasing.Point.t :=
+        let* α3 := M.read α2 in
+        let* α4 : M.Val scoping_rules_borrowing_aliasing.Point.t :=
           deref borrowed_point in
-        let* α4 : M.Val (ref i32.t) := borrow α3.["x"] in
-        let* α5 := core.fmt.rt.Argument.t::["new_display"] α4 in
-        let* α6 : M.Val core.fmt.rt.Argument.t := M.alloc α5 in
-        let* α7 : M.Val scoping_rules_borrowing_aliasing.Point.t :=
+        let* α5 : M.Val (ref i32.t) := borrow α4.["x"] in
+        let* α6 := M.read α5 in
+        let* α7 := core.fmt.rt.Argument.t::["new_display"] α6 in
+        let* α8 : M.Val core.fmt.rt.Argument.t := M.alloc α7 in
+        let* α9 : M.Val scoping_rules_borrowing_aliasing.Point.t :=
           deref another_borrow in
-        let* α8 : M.Val (ref i32.t) := borrow α7.["y"] in
-        let* α9 := core.fmt.rt.Argument.t::["new_display"] α8 in
-        let* α10 : M.Val core.fmt.rt.Argument.t := M.alloc α9 in
-        let* α11 : M.Val (ref i32.t) := borrow point.["z"] in
+        let* α10 : M.Val (ref i32.t) := borrow α9.["y"] in
+        let* α11 := M.read α10 in
         let* α12 := core.fmt.rt.Argument.t::["new_display"] α11 in
         let* α13 : M.Val core.fmt.rt.Argument.t := M.alloc α12 in
-        let* α14 : M.Val (array core.fmt.rt.Argument.t) :=
-          M.alloc [ α6; α10; α13 ] in
-        let* α15 : M.Val (ref (array core.fmt.rt.Argument.t)) := borrow α14 in
-        let* α16 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
-          pointer_coercion "Unsize" α15 in
-        let* α17 := core.fmt.Arguments.t::["new_v1"] α2 α16 in
-        let* α18 : M.Val core.fmt.Arguments.t := M.alloc α17 in
-        let* α19 := std.io.stdio._print α18 in
-        M.alloc α19 in
+        let* α14 : M.Val (ref i32.t) := borrow point.["z"] in
+        let* α15 := M.read α14 in
+        let* α16 := core.fmt.rt.Argument.t::["new_display"] α15 in
+        let* α17 : M.Val core.fmt.rt.Argument.t := M.alloc α16 in
+        let* α18 : M.Val (array core.fmt.rt.Argument.t) :=
+          M.alloc [ α8; α13; α17 ] in
+        let* α19 : M.Val (ref (array core.fmt.rt.Argument.t)) := borrow α18 in
+        let* α20 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
+          pointer_coercion "Unsize" α19 in
+        let* α21 := M.read α20 in
+        let* α22 := core.fmt.Arguments.t::["new_v1"] α3 α21 in
+        let* α23 := std.io.stdio._print α22 in
+        M.alloc α23 in
       M.alloc tt in
     let* mutable_borrow :
         M.Val (mut_ref scoping_rules_borrowing_aliasing.Point.t) :=
@@ -196,17 +204,20 @@ Definition main : M unit :=
       let* α0 : M.Val scoping_rules_borrowing_aliasing.Point.t :=
         deref mutable_borrow in
       let* α1 : M.Val i32.t := M.alloc 5 in
-      assign α0.["x"] α1 in
+      let* α2 := M.read α1 in
+      assign α0.["x"] α2 in
     let* _ : M.Val unit :=
       let* α0 : M.Val scoping_rules_borrowing_aliasing.Point.t :=
         deref mutable_borrow in
       let* α1 : M.Val i32.t := M.alloc 2 in
-      assign α0.["y"] α1 in
+      let* α2 := M.read α1 in
+      assign α0.["y"] α2 in
     let* _ : M.Val unit :=
       let* α0 : M.Val scoping_rules_borrowing_aliasing.Point.t :=
         deref mutable_borrow in
       let* α1 : M.Val i32.t := M.alloc 1 in
-      assign α0.["z"] α1 in
+      let* α2 := M.read α1 in
+      assign α0.["z"] α2 in
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
         let* α0 : M.Val (array (ref str.t)) :=
@@ -221,30 +232,34 @@ Definition main : M unit :=
         let* α1 : M.Val (ref (array (ref str.t))) := borrow α0 in
         let* α2 : M.Val (ref (slice (ref str.t))) :=
           pointer_coercion "Unsize" α1 in
-        let* α3 : M.Val scoping_rules_borrowing_aliasing.Point.t :=
+        let* α3 := M.read α2 in
+        let* α4 : M.Val scoping_rules_borrowing_aliasing.Point.t :=
           deref mutable_borrow in
-        let* α4 : M.Val (ref i32.t) := borrow α3.["x"] in
-        let* α5 := core.fmt.rt.Argument.t::["new_display"] α4 in
-        let* α6 : M.Val core.fmt.rt.Argument.t := M.alloc α5 in
-        let* α7 : M.Val scoping_rules_borrowing_aliasing.Point.t :=
+        let* α5 : M.Val (ref i32.t) := borrow α4.["x"] in
+        let* α6 := M.read α5 in
+        let* α7 := core.fmt.rt.Argument.t::["new_display"] α6 in
+        let* α8 : M.Val core.fmt.rt.Argument.t := M.alloc α7 in
+        let* α9 : M.Val scoping_rules_borrowing_aliasing.Point.t :=
           deref mutable_borrow in
-        let* α8 : M.Val (ref i32.t) := borrow α7.["y"] in
-        let* α9 := core.fmt.rt.Argument.t::["new_display"] α8 in
-        let* α10 : M.Val core.fmt.rt.Argument.t := M.alloc α9 in
-        let* α11 : M.Val scoping_rules_borrowing_aliasing.Point.t :=
+        let* α10 : M.Val (ref i32.t) := borrow α9.["y"] in
+        let* α11 := M.read α10 in
+        let* α12 := core.fmt.rt.Argument.t::["new_display"] α11 in
+        let* α13 : M.Val core.fmt.rt.Argument.t := M.alloc α12 in
+        let* α14 : M.Val scoping_rules_borrowing_aliasing.Point.t :=
           deref mutable_borrow in
-        let* α12 : M.Val (ref i32.t) := borrow α11.["z"] in
-        let* α13 := core.fmt.rt.Argument.t::["new_display"] α12 in
-        let* α14 : M.Val core.fmt.rt.Argument.t := M.alloc α13 in
-        let* α15 : M.Val (array core.fmt.rt.Argument.t) :=
-          M.alloc [ α6; α10; α14 ] in
-        let* α16 : M.Val (ref (array core.fmt.rt.Argument.t)) := borrow α15 in
-        let* α17 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
-          pointer_coercion "Unsize" α16 in
-        let* α18 := core.fmt.Arguments.t::["new_v1"] α2 α17 in
-        let* α19 : M.Val core.fmt.Arguments.t := M.alloc α18 in
-        let* α20 := std.io.stdio._print α19 in
-        M.alloc α20 in
+        let* α15 : M.Val (ref i32.t) := borrow α14.["z"] in
+        let* α16 := M.read α15 in
+        let* α17 := core.fmt.rt.Argument.t::["new_display"] α16 in
+        let* α18 : M.Val core.fmt.rt.Argument.t := M.alloc α17 in
+        let* α19 : M.Val (array core.fmt.rt.Argument.t) :=
+          M.alloc [ α8; α13; α18 ] in
+        let* α20 : M.Val (ref (array core.fmt.rt.Argument.t)) := borrow α19 in
+        let* α21 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
+          pointer_coercion "Unsize" α20 in
+        let* α22 := M.read α21 in
+        let* α23 := core.fmt.Arguments.t::["new_v1"] α3 α22 in
+        let* α24 := std.io.stdio._print α23 in
+        M.alloc α24 in
       M.alloc tt in
     let* new_borrowed_point :
         M.Val (ref scoping_rules_borrowing_aliasing.Point.t) :=
@@ -265,29 +280,33 @@ Definition main : M unit :=
         let* α1 : M.Val (ref (array (ref str.t))) := borrow α0 in
         let* α2 : M.Val (ref (slice (ref str.t))) :=
           pointer_coercion "Unsize" α1 in
-        let* α3 : M.Val scoping_rules_borrowing_aliasing.Point.t :=
+        let* α3 := M.read α2 in
+        let* α4 : M.Val scoping_rules_borrowing_aliasing.Point.t :=
           deref new_borrowed_point in
-        let* α4 : M.Val (ref i32.t) := borrow α3.["x"] in
-        let* α5 := core.fmt.rt.Argument.t::["new_display"] α4 in
-        let* α6 : M.Val core.fmt.rt.Argument.t := M.alloc α5 in
-        let* α7 : M.Val scoping_rules_borrowing_aliasing.Point.t :=
+        let* α5 : M.Val (ref i32.t) := borrow α4.["x"] in
+        let* α6 := M.read α5 in
+        let* α7 := core.fmt.rt.Argument.t::["new_display"] α6 in
+        let* α8 : M.Val core.fmt.rt.Argument.t := M.alloc α7 in
+        let* α9 : M.Val scoping_rules_borrowing_aliasing.Point.t :=
           deref new_borrowed_point in
-        let* α8 : M.Val (ref i32.t) := borrow α7.["y"] in
-        let* α9 := core.fmt.rt.Argument.t::["new_display"] α8 in
-        let* α10 : M.Val core.fmt.rt.Argument.t := M.alloc α9 in
-        let* α11 : M.Val scoping_rules_borrowing_aliasing.Point.t :=
+        let* α10 : M.Val (ref i32.t) := borrow α9.["y"] in
+        let* α11 := M.read α10 in
+        let* α12 := core.fmt.rt.Argument.t::["new_display"] α11 in
+        let* α13 : M.Val core.fmt.rt.Argument.t := M.alloc α12 in
+        let* α14 : M.Val scoping_rules_borrowing_aliasing.Point.t :=
           deref new_borrowed_point in
-        let* α12 : M.Val (ref i32.t) := borrow α11.["z"] in
-        let* α13 := core.fmt.rt.Argument.t::["new_display"] α12 in
-        let* α14 : M.Val core.fmt.rt.Argument.t := M.alloc α13 in
-        let* α15 : M.Val (array core.fmt.rt.Argument.t) :=
-          M.alloc [ α6; α10; α14 ] in
-        let* α16 : M.Val (ref (array core.fmt.rt.Argument.t)) := borrow α15 in
-        let* α17 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
-          pointer_coercion "Unsize" α16 in
-        let* α18 := core.fmt.Arguments.t::["new_v1"] α2 α17 in
-        let* α19 : M.Val core.fmt.Arguments.t := M.alloc α18 in
-        let* α20 := std.io.stdio._print α19 in
-        M.alloc α20 in
+        let* α15 : M.Val (ref i32.t) := borrow α14.["z"] in
+        let* α16 := M.read α15 in
+        let* α17 := core.fmt.rt.Argument.t::["new_display"] α16 in
+        let* α18 : M.Val core.fmt.rt.Argument.t := M.alloc α17 in
+        let* α19 : M.Val (array core.fmt.rt.Argument.t) :=
+          M.alloc [ α8; α13; α18 ] in
+        let* α20 : M.Val (ref (array core.fmt.rt.Argument.t)) := borrow α19 in
+        let* α21 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
+          pointer_coercion "Unsize" α20 in
+        let* α22 := M.read α21 in
+        let* α23 := core.fmt.Arguments.t::["new_v1"] α3 α22 in
+        let* α24 := std.io.stdio._print α23 in
+        M.alloc α24 in
       M.alloc tt in
     M.alloc tt).

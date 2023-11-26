@@ -12,8 +12,7 @@ fn checked_division(dividend: i32, divisor: i32) -> Option<i32> {
     }
 }
 *)
-Parameter checked_division :
-    (M.Val i32.t) -> (M.Val i32.t) -> M (core.option.Option.t i32.t).
+Parameter checked_division : i32.t -> i32.t -> M (core.option.Option.t i32.t).
 
 (*
 fn try_division(dividend: i32, divisor: i32) {
@@ -26,7 +25,7 @@ fn try_division(dividend: i32, divisor: i32) {
     }
 }
 *)
-Parameter try_division : (M.Val i32.t) -> (M.Val i32.t) -> M unit.
+Parameter try_division : i32.t -> i32.t -> M unit.
 
 (*
 fn main() {

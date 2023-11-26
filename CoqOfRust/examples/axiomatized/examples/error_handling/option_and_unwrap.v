@@ -11,7 +11,7 @@ fn give_adult(drink: Option<&str>) {
     }
 }
 *)
-Parameter give_adult : (M.Val (core.option.Option.t (ref str.t))) -> M unit.
+Parameter give_adult : (core.option.Option.t (ref str.t)) -> M unit.
 
 (*
 fn drink(drink: Option<&str>) {
@@ -24,7 +24,7 @@ fn drink(drink: Option<&str>) {
     println!("I love {}s!!!!!", inside);
 }
 *)
-Parameter drink : (M.Val (core.option.Option.t (ref str.t))) -> M unit.
+Parameter drink : (core.option.Option.t (ref str.t)) -> M unit.
 
 (*
 fn main() {

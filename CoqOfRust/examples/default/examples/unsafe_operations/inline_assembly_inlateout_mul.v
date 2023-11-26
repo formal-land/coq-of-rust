@@ -46,7 +46,9 @@ Definition main : M unit := M.function_body (M.alloc tt).
         ((hi as u128) << 64) + lo as u128
     }
 *)
-Definition mul (a : M.Val u64.t) (b : M.Val u64.t) : M u128.t :=
+Definition mul (a : u64.t) (b : u64.t) : M u128.t :=
+  let* a := M.alloc a in
+  let* b := M.alloc b in
   M.function_body
     (let* lo : M.Val unit := M.alloc tt in
     let* hi : M.Val unit := M.alloc tt in

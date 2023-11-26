@@ -16,7 +16,8 @@ Section Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop_t.
           println!("ToDrop is being dropped");
       }
   *)
-  Definition drop (self : M.Val (mut_ref ltac:(Self))) : M unit :=
+  Definition drop (self : mut_ref ltac:(Self)) : M unit :=
+    let* self := M.alloc self in
     M.function_body
       (let* _ : M.Val unit :=
         let* _ : M.Val unit :=
@@ -26,8 +27,8 @@ Section Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop_t.
           let* α1 : M.Val (ref (array (ref str.t))) := borrow α0 in
           let* α2 : M.Val (ref (slice (ref str.t))) :=
             pointer_coercion "Unsize" α1 in
-          let* α3 := core.fmt.Arguments.t::["new_const"] α2 in
-          let* α4 : M.Val core.fmt.Arguments.t := M.alloc α3 in
+          let* α3 := M.read α2 in
+          let* α4 := core.fmt.Arguments.t::["new_const"] α3 in
           let* α5 := std.io.stdio._print α4 in
           M.alloc α5 in
         M.alloc tt in
@@ -63,8 +64,8 @@ Definition main : M unit :=
         let* α1 : M.Val (ref (array (ref str.t))) := borrow α0 in
         let* α2 : M.Val (ref (slice (ref str.t))) :=
           pointer_coercion "Unsize" α1 in
-        let* α3 := core.fmt.Arguments.t::["new_const"] α2 in
-        let* α4 : M.Val core.fmt.Arguments.t := M.alloc α3 in
+        let* α3 := M.read α2 in
+        let* α4 := core.fmt.Arguments.t::["new_const"] α3 in
         let* α5 := std.io.stdio._print α4 in
         M.alloc α5 in
       M.alloc tt in

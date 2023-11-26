@@ -42,33 +42,39 @@ Section Impl_core_cmp_PartialEq_for_hash_map_alternate_or_custom_key_types_Accou
   PartialEq
   *)
   Definition eq
-      (self : M.Val (ref ltac:(Self)))
-      (other : M.Val (ref hash_map_alternate_or_custom_key_types.Account.t))
+      (self : ref ltac:(Self))
+      (other : ref hash_map_alternate_or_custom_key_types.Account.t)
       : M bool.t :=
+    let* self := M.alloc self in
+    let* other := M.alloc other in
     M.function_body
       (let* α0 : M.Val hash_map_alternate_or_custom_key_types.Account.t :=
         deref self in
       let* α1 : M.Val (ref (ref str.t)) := borrow α0.["username"] in
-      let* α2 : M.Val hash_map_alternate_or_custom_key_types.Account.t :=
+      let* α2 := M.read α1 in
+      let* α3 : M.Val hash_map_alternate_or_custom_key_types.Account.t :=
         deref other in
-      let* α3 : M.Val (ref (ref str.t)) := borrow α2.["username"] in
-      let* α4 :=
+      let* α4 : M.Val (ref (ref str.t)) := borrow α3.["username"] in
+      let* α5 := M.read α4 in
+      let* α6 :=
         (core.cmp.PartialEq.eq (Self := ref str.t) (Trait := ltac:(refine _)))
-          α1
-          α3 in
-      let* α5 : M.Val bool.t := M.alloc α4 in
-      let* α6 : M.Val hash_map_alternate_or_custom_key_types.Account.t :=
-        deref self in
-      let* α7 : M.Val (ref (ref str.t)) := borrow α6.["password"] in
+          α2
+          α5 in
+      let* α7 : M.Val bool.t := M.alloc α6 in
       let* α8 : M.Val hash_map_alternate_or_custom_key_types.Account.t :=
-        deref other in
+        deref self in
       let* α9 : M.Val (ref (ref str.t)) := borrow α8.["password"] in
-      let* α10 :=
+      let* α10 := M.read α9 in
+      let* α11 : M.Val hash_map_alternate_or_custom_key_types.Account.t :=
+        deref other in
+      let* α12 : M.Val (ref (ref str.t)) := borrow α11.["password"] in
+      let* α13 := M.read α12 in
+      let* α14 :=
         (core.cmp.PartialEq.eq (Self := ref str.t) (Trait := ltac:(refine _)))
-          α7
-          α9 in
-      let* α11 : M.Val bool.t := M.alloc α10 in
-      BinOp.and α5 α11).
+          α10
+          α13 in
+      let* α15 : M.Val bool.t := M.alloc α14 in
+      BinOp.and α7 α15).
   
   Global Instance AssociatedFunction_eq :
     Notations.DoubleColon ltac:(Self) "eq" := {
@@ -100,9 +106,8 @@ Section Impl_core_cmp_Eq_for_hash_map_alternate_or_custom_key_types_Account_t.
   (*
   Eq
   *)
-  Definition assert_receiver_is_total_eq
-      (self : M.Val (ref ltac:(Self)))
-      : M unit :=
+  Definition assert_receiver_is_total_eq (self : ref ltac:(Self)) : M unit :=
+    let* self := M.alloc self in
     M.function_body
       (let* _ : M.Val unit := M.alloc tt in
       let* _ : M.Val unit := M.alloc tt in
@@ -130,31 +135,37 @@ Section Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account_t
   Definition hash
       {__H : Set}
       {ℋ_0 : core.hash.Hasher.Trait __H}
-      (self : M.Val (ref ltac:(Self)))
-      (state : M.Val (mut_ref __H))
+      (self : ref ltac:(Self))
+      (state : mut_ref __H)
       : M unit :=
+    let* self := M.alloc self in
+    let* state := M.alloc state in
     M.function_body
       (let* _ : M.Val unit :=
         let* α0 : M.Val hash_map_alternate_or_custom_key_types.Account.t :=
           deref self in
         let* α1 : M.Val (ref (ref str.t)) := borrow α0.["username"] in
-        let* α2 : M.Val __H := deref state in
-        let* α3 : M.Val (mut_ref __H) := borrow_mut α2 in
-        let* α4 :=
+        let* α2 := M.read α1 in
+        let* α3 : M.Val __H := deref state in
+        let* α4 : M.Val (mut_ref __H) := borrow_mut α3 in
+        let* α5 := M.read α4 in
+        let* α6 :=
           (core.hash.Hash.hash (Self := ref str.t) (Trait := ltac:(refine _)))
-            α1
-            α3 in
-        M.alloc α4 in
+            α2
+            α5 in
+        M.alloc α6 in
       let* α0 : M.Val hash_map_alternate_or_custom_key_types.Account.t :=
         deref self in
       let* α1 : M.Val (ref (ref str.t)) := borrow α0.["password"] in
-      let* α2 : M.Val __H := deref state in
-      let* α3 : M.Val (mut_ref __H) := borrow_mut α2 in
-      let* α4 :=
+      let* α2 := M.read α1 in
+      let* α3 : M.Val __H := deref state in
+      let* α4 : M.Val (mut_ref __H) := borrow_mut α3 in
+      let* α5 := M.read α4 in
+      let* α6 :=
         (core.hash.Hash.hash (Self := ref str.t) (Trait := ltac:(refine _)))
-          α1
-          α3 in
-      M.alloc α4).
+          α2
+          α5 in
+      M.alloc α6).
   
   Global Instance AssociatedFunction_hash
       {__H : Set}
@@ -220,12 +231,13 @@ fn try_logon<'a>(accounts: &Accounts<'a>, username: &'a str, password: &'a str) 
 }
 *)
 Definition try_logon
-    (accounts
-      :
-      M.Val (ref ltac:(hash_map_alternate_or_custom_key_types.Accounts)))
-    (username : M.Val (ref str.t))
-    (password : M.Val (ref str.t))
+    (accounts : ref ltac:(hash_map_alternate_or_custom_key_types.Accounts))
+    (username : ref str.t)
+    (password : ref str.t)
     : M unit :=
+  let* accounts := M.alloc accounts in
+  let* username := M.alloc username in
+  let* password := M.alloc password in
   M.function_body
     (let* _ : M.Val unit :=
       let* _ : M.Val unit :=
@@ -235,17 +247,19 @@ Definition try_logon
         let* α1 : M.Val (ref (array (ref str.t))) := borrow α0 in
         let* α2 : M.Val (ref (slice (ref str.t))) :=
           pointer_coercion "Unsize" α1 in
-        let* α3 : M.Val (ref (ref str.t)) := borrow username in
-        let* α4 := core.fmt.rt.Argument.t::["new_display"] α3 in
-        let* α5 : M.Val core.fmt.rt.Argument.t := M.alloc α4 in
-        let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
-        let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) := borrow α6 in
-        let* α8 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
-          pointer_coercion "Unsize" α7 in
-        let* α9 := core.fmt.Arguments.t::["new_v1"] α2 α8 in
-        let* α10 : M.Val core.fmt.Arguments.t := M.alloc α9 in
-        let* α11 := std.io.stdio._print α10 in
-        M.alloc α11 in
+        let* α3 := M.read α2 in
+        let* α4 : M.Val (ref (ref str.t)) := borrow username in
+        let* α5 := M.read α4 in
+        let* α6 := core.fmt.rt.Argument.t::["new_display"] α5 in
+        let* α7 : M.Val core.fmt.rt.Argument.t := M.alloc α6 in
+        let* α8 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α7 ] in
+        let* α9 : M.Val (ref (array core.fmt.rt.Argument.t)) := borrow α8 in
+        let* α10 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
+          pointer_coercion "Unsize" α9 in
+        let* α11 := M.read α10 in
+        let* α12 := core.fmt.Arguments.t::["new_v1"] α3 α11 in
+        let* α13 := std.io.stdio._print α12 in
+        M.alloc α13 in
       M.alloc tt in
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
@@ -255,17 +269,19 @@ Definition try_logon
         let* α1 : M.Val (ref (array (ref str.t))) := borrow α0 in
         let* α2 : M.Val (ref (slice (ref str.t))) :=
           pointer_coercion "Unsize" α1 in
-        let* α3 : M.Val (ref (ref str.t)) := borrow password in
-        let* α4 := core.fmt.rt.Argument.t::["new_display"] α3 in
-        let* α5 : M.Val core.fmt.rt.Argument.t := M.alloc α4 in
-        let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
-        let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) := borrow α6 in
-        let* α8 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
-          pointer_coercion "Unsize" α7 in
-        let* α9 := core.fmt.Arguments.t::["new_v1"] α2 α8 in
-        let* α10 : M.Val core.fmt.Arguments.t := M.alloc α9 in
-        let* α11 := std.io.stdio._print α10 in
-        M.alloc α11 in
+        let* α3 := M.read α2 in
+        let* α4 : M.Val (ref (ref str.t)) := borrow password in
+        let* α5 := M.read α4 in
+        let* α6 := core.fmt.rt.Argument.t::["new_display"] α5 in
+        let* α7 : M.Val core.fmt.rt.Argument.t := M.alloc α6 in
+        let* α8 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α7 ] in
+        let* α9 : M.Val (ref (array core.fmt.rt.Argument.t)) := borrow α8 in
+        let* α10 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
+          pointer_coercion "Unsize" α9 in
+        let* α11 := M.read α10 in
+        let* α12 := core.fmt.Arguments.t::["new_v1"] α3 α11 in
+        let* α13 := std.io.stdio._print α12 in
+        M.alloc α13 in
       M.alloc tt in
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
@@ -275,8 +291,8 @@ Definition try_logon
         let* α1 : M.Val (ref (array (ref str.t))) := borrow α0 in
         let* α2 : M.Val (ref (slice (ref str.t))) :=
           pointer_coercion "Unsize" α1 in
-        let* α3 := core.fmt.Arguments.t::["new_const"] α2 in
-        let* α4 : M.Val core.fmt.Arguments.t := M.alloc α3 in
+        let* α3 := M.read α2 in
+        let* α4 := core.fmt.Arguments.t::["new_const"] α3 in
         let* α5 := std.io.stdio._print α4 in
         M.alloc α5 in
       M.alloc tt in
@@ -307,22 +323,24 @@ Definition try_logon
               hash_map_alternate_or_custom_key_types.AccountInfo.t
               std.collections.hash.map.RandomState.t)) :=
       borrow α0 in
-    let* α2 : M.Val (ref hash_map_alternate_or_custom_key_types.Account.t) :=
+    let* α2 := M.read α1 in
+    let* α3 : M.Val (ref hash_map_alternate_or_custom_key_types.Account.t) :=
       borrow logon in
-    let* α3 :=
+    let* α4 := M.read α3 in
+    let* α5 :=
       (std.collections.hash.map.HashMap.t
             hash_map_alternate_or_custom_key_types.Account.t
             hash_map_alternate_or_custom_key_types.AccountInfo.t
             std.collections.hash.map.RandomState.t)::["get"]
-        α1
-        α2 in
-    let* α4 :
+        α2
+        α4 in
+    let* α6 :
         M.Val
           (core.option.Option.t
             (ref hash_map_alternate_or_custom_key_types.AccountInfo.t)) :=
-      M.alloc α3 in
-    let* α5 := M.read α4 in
-    match α5 with
+      M.alloc α5 in
+    let* α7 := M.read α6 in
+    match α7 with
     | core.option.Option.Some account_info =>
       let* account_info := M.alloc account_info in
       let* _ : M.Val unit :=
@@ -333,8 +351,8 @@ Definition try_logon
           let* α1 : M.Val (ref (array (ref str.t))) := borrow α0 in
           let* α2 : M.Val (ref (slice (ref str.t))) :=
             pointer_coercion "Unsize" α1 in
-          let* α3 := core.fmt.Arguments.t::["new_const"] α2 in
-          let* α4 : M.Val core.fmt.Arguments.t := M.alloc α3 in
+          let* α3 := M.read α2 in
+          let* α4 := core.fmt.Arguments.t::["new_const"] α3 in
           let* α5 := std.io.stdio._print α4 in
           M.alloc α5 in
         M.alloc tt in
@@ -346,20 +364,22 @@ Definition try_logon
           let* α1 : M.Val (ref (array (ref str.t))) := borrow α0 in
           let* α2 : M.Val (ref (slice (ref str.t))) :=
             pointer_coercion "Unsize" α1 in
-          let* α3 :
+          let* α3 := M.read α2 in
+          let* α4 :
               M.Val hash_map_alternate_or_custom_key_types.AccountInfo.t :=
             deref account_info in
-          let* α4 : M.Val (ref (ref str.t)) := borrow α3.["name"] in
-          let* α5 := core.fmt.rt.Argument.t::["new_display"] α4 in
-          let* α6 : M.Val core.fmt.rt.Argument.t := M.alloc α5 in
-          let* α7 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α6 ] in
-          let* α8 : M.Val (ref (array core.fmt.rt.Argument.t)) := borrow α7 in
-          let* α9 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
-            pointer_coercion "Unsize" α8 in
-          let* α10 := core.fmt.Arguments.t::["new_v1"] α2 α9 in
-          let* α11 : M.Val core.fmt.Arguments.t := M.alloc α10 in
-          let* α12 := std.io.stdio._print α11 in
-          M.alloc α12 in
+          let* α5 : M.Val (ref (ref str.t)) := borrow α4.["name"] in
+          let* α6 := M.read α5 in
+          let* α7 := core.fmt.rt.Argument.t::["new_display"] α6 in
+          let* α8 : M.Val core.fmt.rt.Argument.t := M.alloc α7 in
+          let* α9 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α8 ] in
+          let* α10 : M.Val (ref (array core.fmt.rt.Argument.t)) := borrow α9 in
+          let* α11 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
+            pointer_coercion "Unsize" α10 in
+          let* α12 := M.read α11 in
+          let* α13 := core.fmt.Arguments.t::["new_v1"] α3 α12 in
+          let* α14 := std.io.stdio._print α13 in
+          M.alloc α14 in
         M.alloc tt in
       let* _ : M.Val unit :=
         let* _ : M.Val unit :=
@@ -369,20 +389,22 @@ Definition try_logon
           let* α1 : M.Val (ref (array (ref str.t))) := borrow α0 in
           let* α2 : M.Val (ref (slice (ref str.t))) :=
             pointer_coercion "Unsize" α1 in
-          let* α3 :
+          let* α3 := M.read α2 in
+          let* α4 :
               M.Val hash_map_alternate_or_custom_key_types.AccountInfo.t :=
             deref account_info in
-          let* α4 : M.Val (ref (ref str.t)) := borrow α3.["email"] in
-          let* α5 := core.fmt.rt.Argument.t::["new_display"] α4 in
-          let* α6 : M.Val core.fmt.rt.Argument.t := M.alloc α5 in
-          let* α7 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α6 ] in
-          let* α8 : M.Val (ref (array core.fmt.rt.Argument.t)) := borrow α7 in
-          let* α9 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
-            pointer_coercion "Unsize" α8 in
-          let* α10 := core.fmt.Arguments.t::["new_v1"] α2 α9 in
-          let* α11 : M.Val core.fmt.Arguments.t := M.alloc α10 in
-          let* α12 := std.io.stdio._print α11 in
-          M.alloc α12 in
+          let* α5 : M.Val (ref (ref str.t)) := borrow α4.["email"] in
+          let* α6 := M.read α5 in
+          let* α7 := core.fmt.rt.Argument.t::["new_display"] α6 in
+          let* α8 : M.Val core.fmt.rt.Argument.t := M.alloc α7 in
+          let* α9 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α8 ] in
+          let* α10 : M.Val (ref (array core.fmt.rt.Argument.t)) := borrow α9 in
+          let* α11 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
+            pointer_coercion "Unsize" α10 in
+          let* α12 := M.read α11 in
+          let* α13 := core.fmt.Arguments.t::["new_v1"] α3 α12 in
+          let* α14 := std.io.stdio._print α13 in
+          M.alloc α14 in
         M.alloc tt in
       M.alloc tt
     | _ =>
@@ -393,8 +415,8 @@ Definition try_logon
         let* α1 : M.Val (ref (array (ref str.t))) := borrow α0 in
         let* α2 : M.Val (ref (slice (ref str.t))) :=
           pointer_coercion "Unsize" α1 in
-        let* α3 := core.fmt.Arguments.t::["new_const"] α2 in
-        let* α4 : M.Val core.fmt.Arguments.t := M.alloc α3 in
+        let* α3 := M.read α2 in
+        let* α4 := core.fmt.Arguments.t::["new_const"] α3 in
         let* α5 := std.io.stdio._print α4 in
         M.alloc α5 in
       M.alloc tt
@@ -473,15 +495,18 @@ Definition main : M unit :=
                 hash_map_alternate_or_custom_key_types.AccountInfo.t
                 std.collections.hash.map.RandomState.t)) :=
         borrow_mut accounts in
-      let* α1 :=
+      let* α1 := M.read α0 in
+      let* α2 := M.read account in
+      let* α3 := M.read account_info in
+      let* α4 :=
         (std.collections.hash.map.HashMap.t
               hash_map_alternate_or_custom_key_types.Account.t
               hash_map_alternate_or_custom_key_types.AccountInfo.t
               std.collections.hash.map.RandomState.t)::["insert"]
-          α0
-          account
-          account_info in
-      M.alloc α1 in
+          α1
+          α2
+          α3 in
+      M.alloc α4 in
     let* _ : M.Val unit :=
       let* α0 :
           M.Val
@@ -491,12 +516,15 @@ Definition main : M unit :=
                 hash_map_alternate_or_custom_key_types.AccountInfo.t
                 std.collections.hash.map.RandomState.t)) :=
         borrow accounts in
-      let* α1 : M.Val str.t := deref (mk_str "j.everyman") in
-      let* α2 : M.Val (ref str.t) := borrow α1 in
-      let* α3 : M.Val str.t := deref (mk_str "psasword123") in
-      let* α4 : M.Val (ref str.t) := borrow α3 in
-      let* α5 := hash_map_alternate_or_custom_key_types.try_logon α0 α2 α4 in
-      M.alloc α5 in
+      let* α1 := M.read α0 in
+      let* α2 : M.Val str.t := deref (mk_str "j.everyman") in
+      let* α3 : M.Val (ref str.t) := borrow α2 in
+      let* α4 := M.read α3 in
+      let* α5 : M.Val str.t := deref (mk_str "psasword123") in
+      let* α6 : M.Val (ref str.t) := borrow α5 in
+      let* α7 := M.read α6 in
+      let* α8 := hash_map_alternate_or_custom_key_types.try_logon α1 α4 α7 in
+      M.alloc α8 in
     let* _ : M.Val unit :=
       let* α0 :
           M.Val
@@ -506,10 +534,13 @@ Definition main : M unit :=
                 hash_map_alternate_or_custom_key_types.AccountInfo.t
                 std.collections.hash.map.RandomState.t)) :=
         borrow accounts in
-      let* α1 : M.Val str.t := deref (mk_str "j.everyman") in
-      let* α2 : M.Val (ref str.t) := borrow α1 in
-      let* α3 : M.Val str.t := deref (mk_str "password123") in
-      let* α4 : M.Val (ref str.t) := borrow α3 in
-      let* α5 := hash_map_alternate_or_custom_key_types.try_logon α0 α2 α4 in
-      M.alloc α5 in
+      let* α1 := M.read α0 in
+      let* α2 : M.Val str.t := deref (mk_str "j.everyman") in
+      let* α3 : M.Val (ref str.t) := borrow α2 in
+      let* α4 := M.read α3 in
+      let* α5 : M.Val str.t := deref (mk_str "password123") in
+      let* α6 : M.Val (ref str.t) := borrow α5 in
+      let* α7 := M.read α6 in
+      let* α8 := hash_map_alternate_or_custom_key_types.try_logon α1 α4 α7 in
+      M.alloc α8 in
     M.alloc tt).

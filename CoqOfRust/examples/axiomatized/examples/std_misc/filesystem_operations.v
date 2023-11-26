@@ -12,8 +12,7 @@ fn cat(path: &Path) -> io::Result<String> {
 }
 *)
 Parameter cat :
-    (M.Val (ref std.path.Path.t)) ->
-      M ltac:(std.io.error.Result alloc.string.String.t).
+    (ref std.path.Path.t) -> M ltac:(std.io.error.Result alloc.string.String.t).
 
 (*
 fn echo(s: &str, path: &Path) -> io::Result<()> {
@@ -23,9 +22,7 @@ fn echo(s: &str, path: &Path) -> io::Result<()> {
 }
 *)
 Parameter echo :
-    (M.Val (ref str.t)) ->
-      (M.Val (ref std.path.Path.t)) ->
-      M ltac:(std.io.error.Result unit).
+    (ref str.t) -> (ref std.path.Path.t) -> M ltac:(std.io.error.Result unit).
 
 (*
 fn touch(path: &Path) -> io::Result<()> {
@@ -35,8 +32,7 @@ fn touch(path: &Path) -> io::Result<()> {
     }
 }
 *)
-Parameter touch :
-    (M.Val (ref std.path.Path.t)) -> M ltac:(std.io.error.Result unit).
+Parameter touch : (ref std.path.Path.t) -> M ltac:(std.io.error.Result unit).
 
 (*
 fn main() {

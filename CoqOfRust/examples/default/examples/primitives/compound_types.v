@@ -51,13 +51,15 @@ Definition main : M unit :=
       M.copy α0 in
     let* _ : M.Val unit :=
       let* α0 : M.Val i64.t := M.alloc 4294967296 in
-      assign inferred_type α0 in
+      let* α1 := M.read α0 in
+      assign inferred_type α1 in
     let* mutable : M.Val i32.t :=
       let* α0 : M.Val i32.t := M.alloc 12 in
       M.copy α0 in
     let* _ : M.Val unit :=
       let* α0 : M.Val i32.t := M.alloc 21 in
-      assign mutable α0 in
+      let* α1 := M.read α0 in
+      assign mutable α1 in
     let* mutable : M.Val bool.t :=
       let* α0 : M.Val bool.t := M.alloc true in
       M.copy α0 in

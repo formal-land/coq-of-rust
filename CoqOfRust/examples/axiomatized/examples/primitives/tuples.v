@@ -9,7 +9,7 @@ fn reverse(pair: (i32, bool)) -> (bool, i32) {
     (bool_param, int_param)
 }
 *)
-Parameter reverse : (M.Val (i32.t * bool.t)) -> M (bool.t * i32.t).
+Parameter reverse : (i32.t * bool.t) -> M (bool.t * i32.t).
 
 Module  Matrix.
 Section Matrix.
@@ -43,8 +43,8 @@ Section Impl_core_fmt_Debug_for_tuples_Matrix_t.
   Debug
   *)
   Parameter fmt :
-      (M.Val (ref ltac:(Self))) ->
-        (M.Val (mut_ref core.fmt.Formatter.t)) ->
+      (ref ltac:(Self)) ->
+        (mut_ref core.fmt.Formatter.t) ->
         M ltac:(core.fmt.Result).
   
   Global Instance AssociatedFunction_fmt :

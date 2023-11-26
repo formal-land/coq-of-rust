@@ -42,7 +42,7 @@ Section Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book_t.
   *)
   (* #[allow(dead_code)] - function was ignored by the compiler *)
   Parameter clone :
-      (M.Val (ref ltac:(Self))) -> M scoping_rules_borrowing_mutablity.Book.t.
+      (ref ltac:(Self)) -> M scoping_rules_borrowing_mutablity.Book.t.
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon ltac:(Self) "clone" := {
@@ -74,7 +74,7 @@ fn borrow_book(book: &Book) {
 }
 *)
 Parameter borrow_book :
-    (M.Val (ref scoping_rules_borrowing_mutablity.Book.t)) -> M unit.
+    (ref scoping_rules_borrowing_mutablity.Book.t) -> M unit.
 
 (*
 fn new_edition(book: &mut Book) {
@@ -83,7 +83,7 @@ fn new_edition(book: &mut Book) {
 }
 *)
 Parameter new_edition :
-    (M.Val (mut_ref scoping_rules_borrowing_mutablity.Book.t)) -> M unit.
+    (mut_ref scoping_rules_borrowing_mutablity.Book.t) -> M unit.
 
 (*
 fn main() {

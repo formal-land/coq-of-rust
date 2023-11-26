@@ -25,10 +25,10 @@ Definition main : M unit :=
       let* α4 : M.Val bool.t := use α3 in
       let* α5 := M.read α4 in
       if (α5 : bool) then
-        let* α0 :=
-          core.panicking.panic (mk_str "assertion failed: *raw_p == 10") in
-        let* α1 : M.Val never.t := M.alloc α0 in
-        never_to_any α1
+        let* α0 := M.read (mk_str "assertion failed: *raw_p == 10") in
+        let* α1 := core.panicking.panic α0 in
+        let* α2 : M.Val never.t := M.alloc α1 in
+        never_to_any α2
       else
         M.alloc tt in
     M.alloc tt).

@@ -46,4 +46,4 @@ Parameter main : M unit.
         ((hi as u128) << 64) + lo as u128
     }
 *)
-Parameter mul : (M.Val u64.t) -> (M.Val u64.t) -> M u128.t.
+Parameter mul : u64.t -> u64.t -> M u128.t.

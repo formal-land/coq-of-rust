@@ -27,8 +27,8 @@ Section Impl_core_fmt_Debug_for_operator_overloading_FooBar_t.
   Debug
   *)
   Parameter fmt :
-      (M.Val (ref ltac:(Self))) ->
-        (M.Val (mut_ref core.fmt.Formatter.t)) ->
+      (ref ltac:(Self)) ->
+        (mut_ref core.fmt.Formatter.t) ->
         M ltac:(core.fmt.Result).
   
   Global Instance AssociatedFunction_fmt :
@@ -56,8 +56,8 @@ Section Impl_core_fmt_Debug_for_operator_overloading_BarFoo_t.
   Debug
   *)
   Parameter fmt :
-      (M.Val (ref ltac:(Self))) ->
-        (M.Val (mut_ref core.fmt.Formatter.t)) ->
+      (ref ltac:(Self)) ->
+        (mut_ref core.fmt.Formatter.t) ->
         M ltac:(core.fmt.Result).
   
   Global Instance AssociatedFunction_fmt :
@@ -88,8 +88,8 @@ Section Impl_core_ops_arith_Add_operator_overloading_Bar_t_for_operator_overload
       }
   *)
   Parameter add :
-      (M.Val ltac:(Self)) ->
-        (M.Val operator_overloading.Bar.t) ->
+      ltac:(Self) ->
+        operator_overloading.Bar.t ->
         M operator_overloading.FooBar.t.
   
   Global Instance AssociatedFunction_add :
@@ -123,8 +123,8 @@ Section Impl_core_ops_arith_Add_operator_overloading_Foo_t_for_operator_overload
       }
   *)
   Parameter add :
-      (M.Val ltac:(Self)) ->
-        (M.Val operator_overloading.Foo.t) ->
+      ltac:(Self) ->
+        operator_overloading.Foo.t ->
         M operator_overloading.BarFoo.t.
   
   Global Instance AssociatedFunction_add :

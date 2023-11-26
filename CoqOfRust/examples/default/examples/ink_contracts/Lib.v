@@ -64,12 +64,10 @@ Section Impl_Mapping_t_K_V.
   Definition Self : Set := Mapping.t K V.
   
   Definition get
-      (self : M.Val (ref Self))
-      (key : M.Val (ref K))
+      (self : ref Self)
+      (key : ref K)
       : M (core.option.Option.t V) :=
-    let* self : M.Val Self := deref self in
     let* self : Self := M.read self in
-    let* key : M.Val K := deref key in
     let* key : K := M.read key in
     M.pure (Mapping.get key self).
   
@@ -79,15 +77,12 @@ Section Impl_Mapping_t_K_V.
   }.
   
   Definition insert
-      (self : M.Val (mut_ref Self))
-      (key : M.Val K)
-      (value : M.Val V)
+      (self : mut_ref Self)
+      (key : K)
+      (value : V)
       : M unit :=
-    let* self := deref self in
-    let* key := M.read key in
-    let* value := M.read value in
     let* self_content := M.read self in
-    let new_self := Ref.Imm (Mapping.insert key value self_content) in
+    let new_self := Mapping.insert key value self_content in
     let* _ := assign self new_self in
     M.pure tt.
   

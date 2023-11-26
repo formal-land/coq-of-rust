@@ -22,4 +22,4 @@ Parameter main : M unit.
         }
     }
 *)
-Parameter load_fpu_control_word : (M.Val u16.t) -> M unit.
+Parameter load_fpu_control_word : u16.t -> M unit.

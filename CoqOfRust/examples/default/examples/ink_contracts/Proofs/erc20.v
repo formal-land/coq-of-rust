@@ -44,7 +44,7 @@ Lemma run_total_supply
     (storage : erc20.Erc20.t)
     fuel :
   let state := Some storage in
-  let self := Ref.Imm (Ref.mut_ref tt) in
+  let self := Ref.mut_ref tt in
   Run.t
     env
     (erc20.Impl_erc20_Erc20_t_2.total_supply self fuel)
@@ -63,11 +63,11 @@ Lemma run_balance_of_impl
     (owner : erc20.AccountId.t)
     fuel :
   let state := Some storage in
-  let self := Ref.Imm (Ref.mut_ref tt) in
-  let val_owner : M.Val (ref erc20.AccountId.t) := Ref.Imm (Ref.Imm owner) in
+  let self := Ref.mut_ref tt in
+  let ref_owner : ref erc20.AccountId.t := Ref.Imm owner in
   Run.t
     env
-    (erc20.Impl_erc20_Erc20_t_2.balance_of_impl self val_owner fuel)
+    (erc20.Impl_erc20_Erc20_t_2.balance_of_impl self ref_owner fuel)
     state
     (inl (Simulations.erc20.balance_of_impl storage owner))
     state.
@@ -89,11 +89,10 @@ Lemma run_balance_of
     (owner : erc20.AccountId.t)
     fuel :
   let state := Some storage in
-  let self := Ref.Imm (Ref.mut_ref tt) in
-  let val_owner : M.Val erc20.AccountId.t := Ref.Imm owner in
+  let self := Ref.mut_ref tt in
   Run.t
     env
-    (erc20.Impl_erc20_Erc20_t_2.balance_of self val_owner fuel)
+    (erc20.Impl_erc20_Erc20_t_2.balance_of self owner fuel)
     state
     (inl (Simulations.erc20.balance_of storage owner))
     state.
@@ -114,12 +113,12 @@ Lemma run_allowance_impl
     (spender : erc20.AccountId.t)
     fuel :
   let state := Some storage in
-  let self := Ref.Imm (Ref.mut_ref tt) in
-  let val_owner : M.Val (ref erc20.AccountId.t) := Ref.Imm (Ref.Imm owner) in
-  let val_spender : M.Val (ref erc20.AccountId.t) := Ref.Imm (Ref.Imm spender) in
+  let self := Ref.mut_ref tt in
+  let ref_owner : ref erc20.AccountId.t := Ref.Imm owner in
+  let ref_spender : ref erc20.AccountId.t := Ref.Imm spender in
   Run.t
     env
-    (erc20.Impl_erc20_Erc20_t_2.allowance_impl self val_owner val_spender fuel)
+    (erc20.Impl_erc20_Erc20_t_2.allowance_impl self ref_owner ref_spender fuel)
     state
     (inl (Simulations.erc20.allowance_impl storage owner spender))
     state.
@@ -143,12 +142,10 @@ Lemma run_allowance
     (spender : erc20.AccountId.t)
     fuel :
   let state := Some storage in
-  let self := Ref.Imm (Ref.mut_ref tt) in
-  let val_owner : M.Val erc20.AccountId.t := Ref.Imm owner in
-  let val_spender : M.Val erc20.AccountId.t := Ref.Imm spender in
+  let self := Ref.mut_ref tt in
   Run.t
     env
-    (erc20.Impl_erc20_Erc20_t_2.allowance self val_owner val_spender fuel)
+    (erc20.Impl_erc20_Erc20_t_2.allowance self owner spender fuel)
     state
     (inl (Simulations.erc20.allowance storage owner spender))
     state.
@@ -170,15 +167,14 @@ Lemma run_transfer_from_to
     (value : ltac:(erc20.Balance))
     fuel :
   let state := Some storage in
-  let self := Ref.Imm (Ref.mut_ref tt) in
-  let val_from : M.Val (ref erc20.AccountId.t) := Ref.Imm (Ref.Imm from) in
-  let val_to : M.Val (ref erc20.AccountId.t) := Ref.Imm (Ref.Imm to) in
-  let val_value : M.Val ltac:(erc20.Balance) := Ref.Imm value in
+  let self := Ref.mut_ref tt in
+  let ref_from : ref erc20.AccountId.t := Ref.Imm from in
+  let ref_to : ref erc20.AccountId.t := Ref.Imm to in
   let simulation :=
     Simulations.erc20.transfer_from_to storage from to value in
   Run.t
     env
-    (erc20.Impl_erc20_Erc20_t_2.transfer_from_to self val_from val_to val_value fuel)
+    (erc20.Impl_erc20_Erc20_t_2.transfer_from_to self ref_from ref_to value fuel)
     state
     (inl (fst simulation))
     (Some (snd simulation)).
@@ -203,14 +199,12 @@ Lemma run_transfer
     (value : ltac:(erc20.Balance))
     fuel :
   let state := Some storage in
-  let self := Ref.Imm (Ref.mut_ref tt) in
-  let val_to : M.Val erc20.AccountId.t := Ref.Imm to in
-  let val_value : M.Val ltac:(erc20.Balance) := Ref.Imm value in
+  let self := Ref.mut_ref tt in
   let simulation :=
     Simulations.erc20.transfer env storage to value in
   Run.t
     env
-    (erc20.Impl_erc20_Erc20_t_2.transfer self val_to val_value fuel)
+    (erc20.Impl_erc20_Erc20_t_2.transfer self to value fuel)
     state
     (inl (fst simulation))
     (Some (snd simulation)).
@@ -231,14 +225,12 @@ Lemma run_approve
     (value : ltac:(erc20.Balance))
     fuel :
   let state := Some storage in
-  let self := Ref.Imm (Ref.mut_ref tt) in
-  let val_spender : M.Val erc20.AccountId.t := Ref.Imm spender in
-  let val_value : M.Val ltac:(erc20.Balance) := Ref.Imm value in
+  let self := Ref.mut_ref tt in
   let simulation :=
     Simulations.erc20.approve env storage spender value in
   Run.t
     env
-    (erc20.Impl_erc20_Erc20_t_2.approve self val_spender val_value fuel)
+    (erc20.Impl_erc20_Erc20_t_2.approve self spender value fuel)
     state
     (inl (fst simulation))
     (Some (snd simulation)).
@@ -257,15 +249,12 @@ Lemma run_transfer_from
     (value : ltac:(erc20.Balance))
     fuel :
   let state := Some storage in
-  let self := Ref.Imm (Ref.mut_ref tt) in
-  let val_from : M.Val erc20.AccountId.t := Ref.Imm from in
-  let val_to : M.Val erc20.AccountId.t := Ref.Imm to in
-  let val_value : M.Val ltac:(erc20.Balance) := Ref.Imm value in
+  let self := Ref.mut_ref tt in
   let simulation :=
     Simulations.erc20.transfer_from env storage from to value in
   Run.t
     env
-    (erc20.Impl_erc20_Erc20_t_2.transfer_from self val_from val_to val_value fuel)
+    (erc20.Impl_erc20_Erc20_t_2.transfer_from self from to value fuel)
     state
     (inl (fst simulation))
     (Some (snd simulation)).
@@ -306,12 +295,12 @@ Lemma balance_of_impl_read_id
   (* An initial state *)
   let state := Some storage in
   (* The value [self] is allocated in the state *)
-  let self : M.Val (ref erc20.Erc20.t) := Ref.Imm (Ref.mut_ref tt) in
+  let self : ref erc20.Erc20.t := Ref.mut_ref tt in
   (* The value [owner] is an immediate value *)
-  let owner : M.Val (ref erc20.AccountId.t) := Ref.Imm (Ref.Imm owner) in
+  let ref_owner : ref erc20.AccountId.t := Ref.Imm owner in
   Run.t
     env
-    (erc20.Impl_erc20_Erc20_t_2.balance_of_impl self owner fuel)
+    (erc20.Impl_erc20_Erc20_t_2.balance_of_impl self ref_owner fuel)
     state
     (* expected output *)
     (inl balance)
@@ -338,16 +327,16 @@ Module ReadMessage.
   .
 
   Definition dispatch {A : Set} (message : t A) : M A :=
-    let self := Ref.Imm (Ref.mut_ref tt) in
+    let self := Ref.mut_ref tt in
     match message with
     | total_supply => erc20.Impl_erc20_Erc20_t_2.total_supply self
     | balance_of owner =>
-      erc20.Impl_erc20_Erc20_t_2.balance_of self (Ref.Imm owner)
+      erc20.Impl_erc20_Erc20_t_2.balance_of self owner
     | allowance owner spender =>
       erc20.Impl_erc20_Erc20_t_2.allowance
         self
-        (Ref.Imm owner)
-        (Ref.Imm spender)
+        owner
+        spender
     end.
 
   Definition simulation_dispatch
@@ -415,24 +404,24 @@ Module WriteMessage.
   End Valid.
 
   Definition dispatch (message : t) : M ltac:(erc20.Result unit) :=
-    let self := Ref.Imm (Ref.mut_ref tt) in
+    let self := Ref.mut_ref tt in
     match message with
     | transfer to value =>
       erc20.Impl_erc20_Erc20_t_2.transfer
         self
-        (Ref.Imm to)
-        (Ref.Imm value)
+        to
+        value
     | approve spender value =>
       erc20.Impl_erc20_Erc20_t_2.approve
         self
-        (Ref.Imm spender)
-        (Ref.Imm value)
+        spender
+        value
     | transfer_from from to value =>
       erc20.Impl_erc20_Erc20_t_2.transfer_from
         self
-        (Ref.Imm from)
-        (Ref.Imm to)
-        (Ref.Imm value)
+        from
+        to
+        value
     end.
 
   Definition simulation_dispatch

@@ -6,7 +6,8 @@ fn elided_input(x: &i32) {
     println!("`elided_input`: {}", x);
 }
 *)
-Definition elided_input (x : M.Val (ref i32.t)) : M unit :=
+Definition elided_input (x : ref i32.t) : M unit :=
+  let* x := M.alloc x in
   M.function_body
     (let* _ : M.Val unit :=
       let* _ : M.Val unit :=
@@ -16,17 +17,19 @@ Definition elided_input (x : M.Val (ref i32.t)) : M unit :=
         let* α1 : M.Val (ref (array (ref str.t))) := borrow α0 in
         let* α2 : M.Val (ref (slice (ref str.t))) :=
           pointer_coercion "Unsize" α1 in
-        let* α3 : M.Val (ref (ref i32.t)) := borrow x in
-        let* α4 := core.fmt.rt.Argument.t::["new_display"] α3 in
-        let* α5 : M.Val core.fmt.rt.Argument.t := M.alloc α4 in
-        let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
-        let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) := borrow α6 in
-        let* α8 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
-          pointer_coercion "Unsize" α7 in
-        let* α9 := core.fmt.Arguments.t::["new_v1"] α2 α8 in
-        let* α10 : M.Val core.fmt.Arguments.t := M.alloc α9 in
-        let* α11 := std.io.stdio._print α10 in
-        M.alloc α11 in
+        let* α3 := M.read α2 in
+        let* α4 : M.Val (ref (ref i32.t)) := borrow x in
+        let* α5 := M.read α4 in
+        let* α6 := core.fmt.rt.Argument.t::["new_display"] α5 in
+        let* α7 : M.Val core.fmt.rt.Argument.t := M.alloc α6 in
+        let* α8 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α7 ] in
+        let* α9 : M.Val (ref (array core.fmt.rt.Argument.t)) := borrow α8 in
+        let* α10 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
+          pointer_coercion "Unsize" α9 in
+        let* α11 := M.read α10 in
+        let* α12 := core.fmt.Arguments.t::["new_v1"] α3 α11 in
+        let* α13 := std.io.stdio._print α12 in
+        M.alloc α13 in
       M.alloc tt in
     M.alloc tt).
 
@@ -35,7 +38,8 @@ fn annotated_input<'a>(x: &'a i32) {
     println!("`annotated_input`: {}", x);
 }
 *)
-Definition annotated_input (x : M.Val (ref i32.t)) : M unit :=
+Definition annotated_input (x : ref i32.t) : M unit :=
+  let* x := M.alloc x in
   M.function_body
     (let* _ : M.Val unit :=
       let* _ : M.Val unit :=
@@ -45,17 +49,19 @@ Definition annotated_input (x : M.Val (ref i32.t)) : M unit :=
         let* α1 : M.Val (ref (array (ref str.t))) := borrow α0 in
         let* α2 : M.Val (ref (slice (ref str.t))) :=
           pointer_coercion "Unsize" α1 in
-        let* α3 : M.Val (ref (ref i32.t)) := borrow x in
-        let* α4 := core.fmt.rt.Argument.t::["new_display"] α3 in
-        let* α5 : M.Val core.fmt.rt.Argument.t := M.alloc α4 in
-        let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
-        let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) := borrow α6 in
-        let* α8 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
-          pointer_coercion "Unsize" α7 in
-        let* α9 := core.fmt.Arguments.t::["new_v1"] α2 α8 in
-        let* α10 : M.Val core.fmt.Arguments.t := M.alloc α9 in
-        let* α11 := std.io.stdio._print α10 in
-        M.alloc α11 in
+        let* α3 := M.read α2 in
+        let* α4 : M.Val (ref (ref i32.t)) := borrow x in
+        let* α5 := M.read α4 in
+        let* α6 := core.fmt.rt.Argument.t::["new_display"] α5 in
+        let* α7 : M.Val core.fmt.rt.Argument.t := M.alloc α6 in
+        let* α8 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α7 ] in
+        let* α9 : M.Val (ref (array core.fmt.rt.Argument.t)) := borrow α8 in
+        let* α10 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
+          pointer_coercion "Unsize" α9 in
+        let* α11 := M.read α10 in
+        let* α12 := core.fmt.Arguments.t::["new_v1"] α3 α11 in
+        let* α13 := std.io.stdio._print α12 in
+        M.alloc α13 in
       M.alloc tt in
     M.alloc tt).
 
@@ -64,7 +70,8 @@ fn elided_pass(x: &i32) -> &i32 {
     x
 }
 *)
-Definition elided_pass (x : M.Val (ref i32.t)) : M (ref i32.t) :=
+Definition elided_pass (x : ref i32.t) : M (ref i32.t) :=
+  let* x := M.alloc x in
   M.function_body (M.pure x).
 
 (*
@@ -72,7 +79,8 @@ fn annotated_pass<'a>(x: &'a i32) -> &'a i32 {
     x
 }
 *)
-Definition annotated_pass (x : M.Val (ref i32.t)) : M (ref i32.t) :=
+Definition annotated_pass (x : ref i32.t) : M (ref i32.t) :=
+  let* x := M.alloc x in
   M.function_body (M.pure x).
 
 (*
@@ -94,12 +102,14 @@ Definition main : M unit :=
       M.copy α0 in
     let* _ : M.Val unit :=
       let* α0 : M.Val (ref i32.t) := borrow x in
-      let* α1 := scoping_rules_lifetimes_elision.elided_input α0 in
-      M.alloc α1 in
+      let* α1 := M.read α0 in
+      let* α2 := scoping_rules_lifetimes_elision.elided_input α1 in
+      M.alloc α2 in
     let* _ : M.Val unit :=
       let* α0 : M.Val (ref i32.t) := borrow x in
-      let* α1 := scoping_rules_lifetimes_elision.annotated_input α0 in
-      M.alloc α1 in
+      let* α1 := M.read α0 in
+      let* α2 := scoping_rules_lifetimes_elision.annotated_input α1 in
+      M.alloc α2 in
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
         let* α0 : M.Val (array (ref str.t)) :=
@@ -108,20 +118,23 @@ Definition main : M unit :=
         let* α1 : M.Val (ref (array (ref str.t))) := borrow α0 in
         let* α2 : M.Val (ref (slice (ref str.t))) :=
           pointer_coercion "Unsize" α1 in
-        let* α3 : M.Val (ref i32.t) := borrow x in
-        let* α4 := scoping_rules_lifetimes_elision.elided_pass α3 in
-        let* α5 : M.Val (ref i32.t) := M.alloc α4 in
-        let* α6 : M.Val (ref (ref i32.t)) := borrow α5 in
-        let* α7 := core.fmt.rt.Argument.t::["new_display"] α6 in
-        let* α8 : M.Val core.fmt.rt.Argument.t := M.alloc α7 in
-        let* α9 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α8 ] in
-        let* α10 : M.Val (ref (array core.fmt.rt.Argument.t)) := borrow α9 in
-        let* α11 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
-          pointer_coercion "Unsize" α10 in
-        let* α12 := core.fmt.Arguments.t::["new_v1"] α2 α11 in
-        let* α13 : M.Val core.fmt.Arguments.t := M.alloc α12 in
-        let* α14 := std.io.stdio._print α13 in
-        M.alloc α14 in
+        let* α3 := M.read α2 in
+        let* α4 : M.Val (ref i32.t) := borrow x in
+        let* α5 := M.read α4 in
+        let* α6 := scoping_rules_lifetimes_elision.elided_pass α5 in
+        let* α7 : M.Val (ref i32.t) := M.alloc α6 in
+        let* α8 : M.Val (ref (ref i32.t)) := borrow α7 in
+        let* α9 := M.read α8 in
+        let* α10 := core.fmt.rt.Argument.t::["new_display"] α9 in
+        let* α11 : M.Val core.fmt.rt.Argument.t := M.alloc α10 in
+        let* α12 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α11 ] in
+        let* α13 : M.Val (ref (array core.fmt.rt.Argument.t)) := borrow α12 in
+        let* α14 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
+          pointer_coercion "Unsize" α13 in
+        let* α15 := M.read α14 in
+        let* α16 := core.fmt.Arguments.t::["new_v1"] α3 α15 in
+        let* α17 := std.io.stdio._print α16 in
+        M.alloc α17 in
       M.alloc tt in
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
@@ -131,19 +144,22 @@ Definition main : M unit :=
         let* α1 : M.Val (ref (array (ref str.t))) := borrow α0 in
         let* α2 : M.Val (ref (slice (ref str.t))) :=
           pointer_coercion "Unsize" α1 in
-        let* α3 : M.Val (ref i32.t) := borrow x in
-        let* α4 := scoping_rules_lifetimes_elision.annotated_pass α3 in
-        let* α5 : M.Val (ref i32.t) := M.alloc α4 in
-        let* α6 : M.Val (ref (ref i32.t)) := borrow α5 in
-        let* α7 := core.fmt.rt.Argument.t::["new_display"] α6 in
-        let* α8 : M.Val core.fmt.rt.Argument.t := M.alloc α7 in
-        let* α9 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α8 ] in
-        let* α10 : M.Val (ref (array core.fmt.rt.Argument.t)) := borrow α9 in
-        let* α11 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
-          pointer_coercion "Unsize" α10 in
-        let* α12 := core.fmt.Arguments.t::["new_v1"] α2 α11 in
-        let* α13 : M.Val core.fmt.Arguments.t := M.alloc α12 in
-        let* α14 := std.io.stdio._print α13 in
-        M.alloc α14 in
+        let* α3 := M.read α2 in
+        let* α4 : M.Val (ref i32.t) := borrow x in
+        let* α5 := M.read α4 in
+        let* α6 := scoping_rules_lifetimes_elision.annotated_pass α5 in
+        let* α7 : M.Val (ref i32.t) := M.alloc α6 in
+        let* α8 : M.Val (ref (ref i32.t)) := borrow α7 in
+        let* α9 := M.read α8 in
+        let* α10 := core.fmt.rt.Argument.t::["new_display"] α9 in
+        let* α11 : M.Val core.fmt.rt.Argument.t := M.alloc α10 in
+        let* α12 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α11 ] in
+        let* α13 : M.Val (ref (array core.fmt.rt.Argument.t)) := borrow α12 in
+        let* α14 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
+          pointer_coercion "Unsize" α13 in
+        let* α15 := M.read α14 in
+        let* α16 := core.fmt.Arguments.t::["new_v1"] α3 α15 in
+        let* α17 := std.io.stdio._print α16 in
+        M.alloc α17 in
       M.alloc tt in
     M.alloc tt).

@@ -16,15 +16,18 @@ Section Impl_core_fmt_Debug_for_combinators_and_then_Food_t.
   Debug
   *)
   Definition fmt
-      (self : M.Val (ref ltac:(Self)))
-      (f : M.Val (mut_ref core.fmt.Formatter.t))
+      (self : ref ltac:(Self))
+      (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
+    let* self := M.alloc self in
+    let* f := M.alloc f in
     M.function_body
       (let* α0 : M.Val core.fmt.Formatter.t := deref f in
       let* α1 : M.Val (mut_ref core.fmt.Formatter.t) := borrow_mut α0 in
-      let* α2 := M.read self in
-      let* α3 : M.Val (ref str.t) :=
-        match α2 with
+      let* α2 := M.read α1 in
+      let* α3 := M.read self in
+      let* α4 : M.Val (ref str.t) :=
+        match α3 with
         | combinators_and_then.Food.CordonBleu  =>
           let* α0 : M.Val str.t := deref (mk_str "CordonBleu") in
           borrow α0
@@ -35,8 +38,9 @@ Section Impl_core_fmt_Debug_for_combinators_and_then_Food_t.
           let* α0 : M.Val str.t := deref (mk_str "Sushi") in
           borrow α0
         end in
-      let* α4 := core.fmt.Formatter.t::["write_str"] α1 α3 in
-      M.alloc α4).
+      let* α5 := M.read α4 in
+      let* α6 := core.fmt.Formatter.t::["write_str"] α2 α5 in
+      M.alloc α6).
   
   Global Instance AssociatedFunction_fmt :
     Notations.DoubleColon ltac:(Self) "fmt" := {
@@ -64,15 +68,18 @@ Section Impl_core_fmt_Debug_for_combinators_and_then_Day_t.
   Debug
   *)
   Definition fmt
-      (self : M.Val (ref ltac:(Self)))
-      (f : M.Val (mut_ref core.fmt.Formatter.t))
+      (self : ref ltac:(Self))
+      (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
+    let* self := M.alloc self in
+    let* f := M.alloc f in
     M.function_body
       (let* α0 : M.Val core.fmt.Formatter.t := deref f in
       let* α1 : M.Val (mut_ref core.fmt.Formatter.t) := borrow_mut α0 in
-      let* α2 := M.read self in
-      let* α3 : M.Val (ref str.t) :=
-        match α2 with
+      let* α2 := M.read α1 in
+      let* α3 := M.read self in
+      let* α4 : M.Val (ref str.t) :=
+        match α3 with
         | combinators_and_then.Day.Monday  =>
           let* α0 : M.Val str.t := deref (mk_str "Monday") in
           borrow α0
@@ -83,8 +90,9 @@ Section Impl_core_fmt_Debug_for_combinators_and_then_Day_t.
           let* α0 : M.Val str.t := deref (mk_str "Wednesday") in
           borrow α0
         end in
-      let* α4 := core.fmt.Formatter.t::["write_str"] α1 α3 in
-      M.alloc α4).
+      let* α5 := M.read α4 in
+      let* α6 := core.fmt.Formatter.t::["write_str"] α2 α5 in
+      M.alloc α6).
   
   Global Instance AssociatedFunction_fmt :
     Notations.DoubleColon ltac:(Self) "fmt" := {
@@ -106,8 +114,9 @@ fn have_ingredients(food: Food) -> Option<Food> {
 }
 *)
 Definition have_ingredients
-    (food : M.Val combinators_and_then.Food.t)
+    (food : combinators_and_then.Food.t)
     : M (core.option.Option.t combinators_and_then.Food.t) :=
+  let* food := M.alloc food in
   M.function_body
     (let* α0 := M.read food in
     match α0 with
@@ -126,8 +135,9 @@ fn have_recipe(food: Food) -> Option<Food> {
 }
 *)
 Definition have_recipe
-    (food : M.Val combinators_and_then.Food.t)
+    (food : combinators_and_then.Food.t)
     : M (core.option.Option.t combinators_and_then.Food.t) :=
+  let* food := M.alloc food in
   M.function_body
     (let* α0 := M.read food in
     match α0 with
@@ -149,22 +159,25 @@ fn cookable_v1(food: Food) -> Option<Food> {
 }
 *)
 Definition cookable_v1
-    (food : M.Val combinators_and_then.Food.t)
+    (food : combinators_and_then.Food.t)
     : M (core.option.Option.t combinators_and_then.Food.t) :=
+  let* food := M.alloc food in
   M.function_body
-    (let* α0 := combinators_and_then.have_recipe food in
-    let* α1 : M.Val (core.option.Option.t combinators_and_then.Food.t) :=
-      M.alloc α0 in
-    let* α2 := M.read α1 in
-    match α2 with
+    (let* α0 := M.read food in
+    let* α1 := combinators_and_then.have_recipe α0 in
+    let* α2 : M.Val (core.option.Option.t combinators_and_then.Food.t) :=
+      M.alloc α1 in
+    let* α3 := M.read α2 in
+    match α3 with
     | core.option.Option.None  => M.alloc core.option.Option.None
     | core.option.Option.Some food =>
       let* food := M.alloc food in
-      let* α0 := combinators_and_then.have_ingredients food in
-      let* α1 : M.Val (core.option.Option.t combinators_and_then.Food.t) :=
-        M.alloc α0 in
-      let* α2 := M.read α1 in
-      match α2 with
+      let* α0 := M.read food in
+      let* α1 := combinators_and_then.have_ingredients α0 in
+      let* α2 : M.Val (core.option.Option.t combinators_and_then.Food.t) :=
+        M.alloc α1 in
+      let* α3 := M.read α2 in
+      match α3 with
       | core.option.Option.None  => M.alloc core.option.Option.None
       | core.option.Option.Some food =>
         let* food := M.alloc food in
@@ -179,17 +192,16 @@ fn cookable_v2(food: Food) -> Option<Food> {
 }
 *)
 Definition cookable_v2
-    (food : M.Val combinators_and_then.Food.t)
+    (food : combinators_and_then.Food.t)
     : M (core.option.Option.t combinators_and_then.Food.t) :=
+  let* food := M.alloc food in
   M.function_body
-    (let* α0 := combinators_and_then.have_recipe food in
-    let* α1 : M.Val (core.option.Option.t combinators_and_then.Food.t) :=
-      M.alloc α0 in
-    let* α2 :=
-      (core.option.Option.t combinators_and_then.Food.t)::["and_then"]
-        α1
-        combinators_and_then.have_ingredients in
-    M.alloc α2).
+    (let* α0 := M.read food in
+    let* α1 := combinators_and_then.have_recipe α0 in
+    let* α2 := M.read combinators_and_then.have_ingredients in
+    let* α3 :=
+      (core.option.Option.t combinators_and_then.Food.t)::["and_then"] α1 α2 in
+    M.alloc α3).
 
 (*
 fn eat(food: Food, day: Day) {
@@ -200,15 +212,18 @@ fn eat(food: Food, day: Day) {
 }
 *)
 Definition eat
-    (food : M.Val combinators_and_then.Food.t)
-    (day : M.Val combinators_and_then.Day.t)
+    (food : combinators_and_then.Food.t)
+    (day : combinators_and_then.Day.t)
     : M unit :=
+  let* food := M.alloc food in
+  let* day := M.alloc day in
   M.function_body
-    (let* α0 := combinators_and_then.cookable_v2 food in
-    let* α1 : M.Val (core.option.Option.t combinators_and_then.Food.t) :=
-      M.alloc α0 in
-    let* α2 := M.read α1 in
-    match α2 with
+    (let* α0 := M.read food in
+    let* α1 := combinators_and_then.cookable_v2 α0 in
+    let* α2 : M.Val (core.option.Option.t combinators_and_then.Food.t) :=
+      M.alloc α1 in
+    let* α3 := M.read α2 in
+    match α3 with
     | core.option.Option.Some food =>
       let* food := M.alloc food in
       let* _ : M.Val unit :=
@@ -219,20 +234,24 @@ Definition eat
         let* α1 : M.Val (ref (array (ref str.t))) := borrow α0 in
         let* α2 : M.Val (ref (slice (ref str.t))) :=
           pointer_coercion "Unsize" α1 in
-        let* α3 : M.Val (ref combinators_and_then.Day.t) := borrow day in
-        let* α4 := core.fmt.rt.Argument.t::["new_debug"] α3 in
-        let* α5 : M.Val core.fmt.rt.Argument.t := M.alloc α4 in
-        let* α6 : M.Val (ref combinators_and_then.Food.t) := borrow food in
-        let* α7 := core.fmt.rt.Argument.t::["new_debug"] α6 in
-        let* α8 : M.Val core.fmt.rt.Argument.t := M.alloc α7 in
-        let* α9 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5; α8 ] in
-        let* α10 : M.Val (ref (array core.fmt.rt.Argument.t)) := borrow α9 in
-        let* α11 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
-          pointer_coercion "Unsize" α10 in
-        let* α12 := core.fmt.Arguments.t::["new_v1"] α2 α11 in
-        let* α13 : M.Val core.fmt.Arguments.t := M.alloc α12 in
-        let* α14 := std.io.stdio._print α13 in
-        M.alloc α14 in
+        let* α3 := M.read α2 in
+        let* α4 : M.Val (ref combinators_and_then.Day.t) := borrow day in
+        let* α5 := M.read α4 in
+        let* α6 := core.fmt.rt.Argument.t::["new_debug"] α5 in
+        let* α7 : M.Val core.fmt.rt.Argument.t := M.alloc α6 in
+        let* α8 : M.Val (ref combinators_and_then.Food.t) := borrow food in
+        let* α9 := M.read α8 in
+        let* α10 := core.fmt.rt.Argument.t::["new_debug"] α9 in
+        let* α11 : M.Val core.fmt.rt.Argument.t := M.alloc α10 in
+        let* α12 : M.Val (array core.fmt.rt.Argument.t) :=
+          M.alloc [ α7; α11 ] in
+        let* α13 : M.Val (ref (array core.fmt.rt.Argument.t)) := borrow α12 in
+        let* α14 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
+          pointer_coercion "Unsize" α13 in
+        let* α15 := M.read α14 in
+        let* α16 := core.fmt.Arguments.t::["new_v1"] α3 α15 in
+        let* α17 := std.io.stdio._print α16 in
+        M.alloc α17 in
       M.alloc tt
     | core.option.Option.None  =>
       let* _ : M.Val unit :=
@@ -242,17 +261,19 @@ Definition eat
         let* α1 : M.Val (ref (array (ref str.t))) := borrow α0 in
         let* α2 : M.Val (ref (slice (ref str.t))) :=
           pointer_coercion "Unsize" α1 in
-        let* α3 : M.Val (ref combinators_and_then.Day.t) := borrow day in
-        let* α4 := core.fmt.rt.Argument.t::["new_debug"] α3 in
-        let* α5 : M.Val core.fmt.rt.Argument.t := M.alloc α4 in
-        let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
-        let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) := borrow α6 in
-        let* α8 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
-          pointer_coercion "Unsize" α7 in
-        let* α9 := core.fmt.Arguments.t::["new_v1"] α2 α8 in
-        let* α10 : M.Val core.fmt.Arguments.t := M.alloc α9 in
-        let* α11 := std.io.stdio._print α10 in
-        M.alloc α11 in
+        let* α3 := M.read α2 in
+        let* α4 : M.Val (ref combinators_and_then.Day.t) := borrow day in
+        let* α5 := M.read α4 in
+        let* α6 := core.fmt.rt.Argument.t::["new_debug"] α5 in
+        let* α7 : M.Val core.fmt.rt.Argument.t := M.alloc α6 in
+        let* α8 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α7 ] in
+        let* α9 : M.Val (ref (array core.fmt.rt.Argument.t)) := borrow α8 in
+        let* α10 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
+          pointer_coercion "Unsize" α9 in
+        let* α11 := M.read α10 in
+        let* α12 := core.fmt.Arguments.t::["new_v1"] α3 α11 in
+        let* α13 := std.io.stdio._print α12 in
+        M.alloc α13 in
       M.alloc tt
     end).
 
@@ -278,18 +299,16 @@ Definition main : M unit :=
           combinators_and_then.Food.Steak,
           combinators_and_then.Food.Sushi) in
     let* _ : M.Val unit :=
-      let* α0 : M.Val combinators_and_then.Day.t :=
-        M.alloc combinators_and_then.Day.Monday in
-      let* α1 := combinators_and_then.eat cordon_bleu α0 in
+      let* α0 := M.read cordon_bleu in
+      let* α1 := combinators_and_then.eat α0 combinators_and_then.Day.Monday in
       M.alloc α1 in
     let* _ : M.Val unit :=
-      let* α0 : M.Val combinators_and_then.Day.t :=
-        M.alloc combinators_and_then.Day.Tuesday in
-      let* α1 := combinators_and_then.eat steak α0 in
+      let* α0 := M.read steak in
+      let* α1 := combinators_and_then.eat α0 combinators_and_then.Day.Tuesday in
       M.alloc α1 in
     let* _ : M.Val unit :=
-      let* α0 : M.Val combinators_and_then.Day.t :=
-        M.alloc combinators_and_then.Day.Wednesday in
-      let* α1 := combinators_and_then.eat sushi α0 in
+      let* α0 := M.read sushi in
+      let* α1 :=
+        combinators_and_then.eat α0 combinators_and_then.Day.Wednesday in
       M.alloc α1 in
     M.alloc tt).

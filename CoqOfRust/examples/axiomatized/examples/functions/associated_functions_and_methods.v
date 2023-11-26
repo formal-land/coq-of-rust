@@ -44,10 +44,7 @@ Section Impl_associated_functions_and_methods_Point_t.
           Point { x: x, y: y }
       }
   *)
-  Parameter new :
-      (M.Val f64.t) ->
-        (M.Val f64.t) ->
-        M associated_functions_and_methods.Point.t.
+  Parameter new : f64.t -> f64.t -> M associated_functions_and_methods.Point.t.
   
   Global Instance AssociatedFunction_new :
     Notations.DoubleColon ltac:(Self) "new" := {
@@ -88,7 +85,7 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
       }
   *)
   Parameter get_p1 :
-      (M.Val (ref ltac:(Self))) -> M associated_functions_and_methods.Point.t.
+      (ref ltac:(Self)) -> M associated_functions_and_methods.Point.t.
   
   Global Instance AssociatedFunction_get_p1 :
     Notations.DoubleColon ltac:(Self) "get_p1" := {
@@ -106,7 +103,7 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
           ((x1 - x2) * (y1 - y2)).abs()
       }
   *)
-  Parameter area : (M.Val (ref ltac:(Self))) -> M f64.t.
+  Parameter area : (ref ltac:(Self)) -> M f64.t.
   
   Global Instance AssociatedFunction_area :
     Notations.DoubleColon ltac:(Self) "area" := {
@@ -121,7 +118,7 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
           2.0 * ((x1 - x2).abs() + (y1 - y2).abs())
       }
   *)
-  Parameter perimeter : (M.Val (ref ltac:(Self))) -> M f64.t.
+  Parameter perimeter : (ref ltac:(Self)) -> M f64.t.
   
   Global Instance AssociatedFunction_perimeter :
     Notations.DoubleColon ltac:(Self) "perimeter" := {
@@ -137,8 +134,7 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
           self.p2.y += y;
       }
   *)
-  Parameter translate :
-      (M.Val (mut_ref ltac:(Self))) -> (M.Val f64.t) -> (M.Val f64.t) -> M unit.
+  Parameter translate : (mut_ref ltac:(Self)) -> f64.t -> f64.t -> M unit.
   
   Global Instance AssociatedFunction_translate :
     Notations.DoubleColon ltac:(Self) "translate" := {
@@ -177,7 +173,7 @@ Section Impl_associated_functions_and_methods_Pair_t.
           // `first` and `second` go out of scope and get freed
       }
   *)
-  Parameter destroy : (M.Val ltac:(Self)) -> M unit.
+  Parameter destroy : ltac:(Self) -> M unit.
   
   Global Instance AssociatedFunction_destroy :
     Notations.DoubleColon ltac:(Self) "destroy" := {

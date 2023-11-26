@@ -11,7 +11,7 @@ fn division(dividend: i32, divisor: i32) -> i32 {
     }
 }
 *)
-Parameter division : (M.Val i32.t) -> (M.Val i32.t) -> M i32.t.
+Parameter division : i32.t -> i32.t -> M i32.t.
 
 (*
 fn main() {

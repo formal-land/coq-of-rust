@@ -34,8 +34,7 @@ Section Impl_generics_new_type_idiom_Years_t.
           Days(self.0 * 365)
       }
   *)
-  Parameter to_days :
-      (M.Val (ref ltac:(Self))) -> M generics_new_type_idiom.Days.t.
+  Parameter to_days : (ref ltac:(Self)) -> M generics_new_type_idiom.Days.t.
   
   Global Instance AssociatedFunction_to_days :
     Notations.DoubleColon ltac:(Self) "to_days" := {
@@ -53,8 +52,7 @@ Section Impl_generics_new_type_idiom_Days_t.
           Years(self.0 / 365)
       }
   *)
-  Parameter to_years :
-      (M.Val (ref ltac:(Self))) -> M generics_new_type_idiom.Years.t.
+  Parameter to_years : (ref ltac:(Self)) -> M generics_new_type_idiom.Years.t.
   
   Global Instance AssociatedFunction_to_years :
     Notations.DoubleColon ltac:(Self) "to_years" := {
@@ -68,8 +66,7 @@ fn old_enough(age: &Years) -> bool {
     age.0 >= 18
 }
 *)
-Parameter old_enough :
-    (M.Val (ref generics_new_type_idiom.Years.t)) -> M bool.t.
+Parameter old_enough : (ref generics_new_type_idiom.Years.t) -> M bool.t.
 
 (*
 fn main() {

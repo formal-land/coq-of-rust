@@ -8,7 +8,7 @@ fn double_first(vec: Vec<&str>) -> i32 {
 }
 *)
 Parameter double_first :
-    (M.Val (alloc.vec.Vec.t (ref str.t) alloc.vec.Vec.Default.A)) -> M i32.t.
+    (alloc.vec.Vec.t (ref str.t) alloc.vec.Vec.Default.A) -> M i32.t.
 
 (*
 fn main() {

@@ -22,7 +22,8 @@ Section Impl_example05_Foo_t.
           self.0 + 1
       }
   *)
-  Definition plus1 (self : M.Val ltac:(Self)) : M u32.t :=
+  Definition plus1 (self : ltac:(Self)) : M u32.t :=
+    let* self := M.alloc self in
     M.function_body
       (let* α0 : M.Val u32.t := M.alloc 1 in
       BinOp.add self.["0"] α0).
@@ -48,6 +49,7 @@ Definition main : M unit :=
       let* α1 := M.read α0 in
       M.alloc (example05.Foo.Build_t α1) in
     let* _ : M.Val u32.t :=
-      let* α0 := example05.Foo.t::["plus1"] foo in
-      M.alloc α0 in
+      let* α0 := M.read foo in
+      let* α1 := example05.Foo.t::["plus1"] α0 in
+      M.alloc α1 in
     M.alloc tt).

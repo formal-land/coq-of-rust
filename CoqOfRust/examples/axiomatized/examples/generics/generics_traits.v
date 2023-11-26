@@ -31,7 +31,7 @@ Section Impl_generics_traits_DoubleDrop_T_for_U.
   (*
       fn double_drop(self, _: T) {}
   *)
-  Parameter double_drop : (M.Val ltac:(Self)) -> (M.Val T) -> M unit.
+  Parameter double_drop : ltac:(Self) -> T -> M unit.
   
   Global Instance AssociatedFunction_double_drop :
     Notations.DoubleColon ltac:(Self) "double_drop" := {

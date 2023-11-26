@@ -48,4 +48,4 @@ Parameter main : M unit.
         acc
     }
 *)
-Parameter sum_odd_numbers : (M.Val u32.t) -> M u32.t.
+Parameter sum_odd_numbers : u32.t -> M u32.t.

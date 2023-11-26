@@ -11,7 +11,7 @@ fn is_big(n: i32) -> bool {
     n > THRESHOLD
 }
 *)
-Parameter is_big : (M.Val i32.t) -> M bool.t.
+Parameter is_big : i32.t -> M bool.t.
 
 (*
 fn main() {

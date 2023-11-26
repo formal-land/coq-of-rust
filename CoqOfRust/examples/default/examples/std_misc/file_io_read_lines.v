@@ -10,7 +10,7 @@ fn read_lines(filename: String) -> io::Lines<BufReader<File>> {
 }
 *)
 Definition read_lines
-    (filename : M.Val alloc.string.String.t)
+    (filename : alloc.string.String.t)
     :
       M
         (std.io.Lines.t
@@ -19,21 +19,19 @@ Definition read_lines
     M.return_
       (R :=
         std.io.Lines.t (std.io.buffered.bufreader.BufReader.t std.fs.File.t)) in
+  let* filename := M.alloc filename in
   M.function_body
     (let* file : M.Val std.fs.File.t :=
-      let* α0 := std.fs.File.t::["open"] filename in
-      let* α1 :
-          M.Val (core.result.Result.t std.fs.File.t std.io.error.Error.t) :=
-        M.alloc α0 in
+      let* α0 := M.read filename in
+      let* α1 := std.fs.File.t::["open"] α0 in
       let* α2 :=
         (core.result.Result.t std.fs.File.t std.io.error.Error.t)::["unwrap"]
           α1 in
       M.alloc α2 in
     let* _ : M.Val never.t :=
-      let* α0 :=
-        (std.io.buffered.bufreader.BufReader.t std.fs.File.t)::["new"] file in
-      let* α1 : M.Val (std.io.buffered.bufreader.BufReader.t std.fs.File.t) :=
-        M.alloc α0 in
+      let* α0 := M.read file in
+      let* α1 :=
+        (std.io.buffered.bufreader.BufReader.t std.fs.File.t)::["new"] α0 in
       let* α2 :=
         (std.io.BufRead.lines
             (Self := std.io.buffered.bufreader.BufReader.t std.fs.File.t)
@@ -62,29 +60,30 @@ Definition main : M unit :=
             (std.io.buffered.bufreader.BufReader.t std.fs.File.t)) :=
       let* α0 : M.Val str.t := deref (mk_str "./hosts") in
       let* α1 : M.Val (ref str.t) := borrow α0 in
-      let* α2 :=
+      let* α2 := M.read α1 in
+      let* α3 :=
         (alloc.string.ToString.to_string
             (Self := str.t)
             (Trait := ltac:(refine _)))
-          α1 in
-      let* α3 : M.Val alloc.string.String.t := M.alloc α2 in
+          α2 in
       let* α4 := file_io_read_lines.read_lines α3 in
       M.alloc α4 in
-    let* α0 :=
+    let* α0 := M.read lines in
+    let* α1 :=
       (core.iter.traits.collect.IntoIterator.into_iter
           (Self :=
             std.io.Lines.t
               (std.io.buffered.bufreader.BufReader.t std.fs.File.t))
           (Trait := ltac:(refine _)))
-        lines in
-    let* α1 :
+        α0 in
+    let* α2 :
         M.Val
           (std.io.Lines.t
             (std.io.buffered.bufreader.BufReader.t std.fs.File.t)) :=
-      M.alloc α0 in
-    let* α2 := M.read α1 in
-    let* α3 : M.Val unit :=
-      match α2 with
+      M.alloc α1 in
+    let* α3 := M.read α2 in
+    let* α4 : M.Val unit :=
+      match α3 with
       | iter =>
         let* iter := M.alloc iter in
         loop
@@ -95,22 +94,23 @@ Definition main : M unit :=
                     (std.io.Lines.t
                       (std.io.buffered.bufreader.BufReader.t std.fs.File.t))) :=
               borrow_mut iter in
-            let* α1 :=
+            let* α1 := M.read α0 in
+            let* α2 :=
               (core.iter.traits.iterator.Iterator.next
                   (Self :=
                     std.io.Lines.t
                       (std.io.buffered.bufreader.BufReader.t std.fs.File.t))
                   (Trait := ltac:(refine _)))
-                α0 in
-            let* α2 :
+                α1 in
+            let* α3 :
                 M.Val
                   (core.option.Option.t
                     (core.result.Result.t
                       alloc.string.String.t
                       std.io.error.Error.t)) :=
-              M.alloc α1 in
-            let* α3 := M.read α2 in
-            match α3 with
+              M.alloc α2 in
+            let* α4 := M.read α3 in
+            match α4 with
             | core.option.Option.None  =>
               let* α0 : M.Val never.t := Break in
               never_to_any α0
@@ -124,28 +124,31 @@ Definition main : M unit :=
                   let* α1 : M.Val (ref (array (ref str.t))) := borrow α0 in
                   let* α2 : M.Val (ref (slice (ref str.t))) :=
                     pointer_coercion "Unsize" α1 in
-                  let* α3 :=
+                  let* α3 := M.read α2 in
+                  let* α4 := M.read line in
+                  let* α5 :=
                     (core.result.Result.t
                           alloc.string.String.t
                           std.io.error.Error.t)::["unwrap"]
-                      line in
-                  let* α4 : M.Val alloc.string.String.t := M.alloc α3 in
-                  let* α5 : M.Val (ref alloc.string.String.t) := borrow α4 in
-                  let* α6 := core.fmt.rt.Argument.t::["new_display"] α5 in
-                  let* α7 : M.Val core.fmt.rt.Argument.t := M.alloc α6 in
-                  let* α8 : M.Val (array core.fmt.rt.Argument.t) :=
-                    M.alloc [ α7 ] in
-                  let* α9 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
-                    borrow α8 in
-                  let* α10 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
-                    pointer_coercion "Unsize" α9 in
-                  let* α11 := core.fmt.Arguments.t::["new_v1"] α2 α10 in
-                  let* α12 : M.Val core.fmt.Arguments.t := M.alloc α11 in
-                  let* α13 := std.io.stdio._print α12 in
-                  M.alloc α13 in
+                      α4 in
+                  let* α6 : M.Val alloc.string.String.t := M.alloc α5 in
+                  let* α7 : M.Val (ref alloc.string.String.t) := borrow α6 in
+                  let* α8 := M.read α7 in
+                  let* α9 := core.fmt.rt.Argument.t::["new_display"] α8 in
+                  let* α10 : M.Val core.fmt.rt.Argument.t := M.alloc α9 in
+                  let* α11 : M.Val (array core.fmt.rt.Argument.t) :=
+                    M.alloc [ α10 ] in
+                  let* α12 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
+                    borrow α11 in
+                  let* α13 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
+                    pointer_coercion "Unsize" α12 in
+                  let* α14 := M.read α13 in
+                  let* α15 := core.fmt.Arguments.t::["new_v1"] α3 α14 in
+                  let* α16 := std.io.stdio._print α15 in
+                  M.alloc α16 in
                 M.alloc tt in
               M.alloc tt
             end in
           M.alloc tt)
       end in
-    use α3).
+    use α4).

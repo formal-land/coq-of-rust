@@ -8,7 +8,8 @@ fn coerce_static<'a>(_: &'a i32) -> &'a i32 {
     &NUM
 }
 *)
-Definition coerce_static (arg : M.Val (ref i32.t)) : M (ref i32.t) :=
+Definition coerce_static (arg : ref i32.t) : M (ref i32.t) :=
+  let* arg := M.alloc arg in
   M.function_body
     (let* α0 : M.Val i32.t :=
       deref scoping_rules_lifetimes_reference_lifetime_static.NUM in
@@ -52,17 +53,19 @@ Definition main : M unit :=
           let* α1 : M.Val (ref (array (ref str.t))) := borrow α0 in
           let* α2 : M.Val (ref (slice (ref str.t))) :=
             pointer_coercion "Unsize" α1 in
-          let* α3 : M.Val (ref (ref str.t)) := borrow static_string in
-          let* α4 := core.fmt.rt.Argument.t::["new_display"] α3 in
-          let* α5 : M.Val core.fmt.rt.Argument.t := M.alloc α4 in
-          let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
-          let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) := borrow α6 in
-          let* α8 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
-            pointer_coercion "Unsize" α7 in
-          let* α9 := core.fmt.Arguments.t::["new_v1"] α2 α8 in
-          let* α10 : M.Val core.fmt.Arguments.t := M.alloc α9 in
-          let* α11 := std.io.stdio._print α10 in
-          M.alloc α11 in
+          let* α3 := M.read α2 in
+          let* α4 : M.Val (ref (ref str.t)) := borrow static_string in
+          let* α5 := M.read α4 in
+          let* α6 := core.fmt.rt.Argument.t::["new_display"] α5 in
+          let* α7 : M.Val core.fmt.rt.Argument.t := M.alloc α6 in
+          let* α8 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α7 ] in
+          let* α9 : M.Val (ref (array core.fmt.rt.Argument.t)) := borrow α8 in
+          let* α10 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
+            pointer_coercion "Unsize" α9 in
+          let* α11 := M.read α10 in
+          let* α12 := core.fmt.Arguments.t::["new_v1"] α3 α11 in
+          let* α13 := std.io.stdio._print α12 in
+          M.alloc α13 in
         M.alloc tt in
       M.alloc tt in
     let* _ : M.Val unit :=
@@ -71,9 +74,10 @@ Definition main : M unit :=
         M.copy α0 in
       let* coerced_static : M.Val (ref i32.t) :=
         let* α0 : M.Val (ref i32.t) := borrow lifetime_num in
-        let* α1 :=
-          scoping_rules_lifetimes_reference_lifetime_static.coerce_static α0 in
-        M.alloc α1 in
+        let* α1 := M.read α0 in
+        let* α2 :=
+          scoping_rules_lifetimes_reference_lifetime_static.coerce_static α1 in
+        M.alloc α2 in
       let* _ : M.Val unit :=
         let* _ : M.Val unit :=
           let* α0 : M.Val (array (ref str.t)) :=
@@ -82,17 +86,19 @@ Definition main : M unit :=
           let* α1 : M.Val (ref (array (ref str.t))) := borrow α0 in
           let* α2 : M.Val (ref (slice (ref str.t))) :=
             pointer_coercion "Unsize" α1 in
-          let* α3 : M.Val (ref (ref i32.t)) := borrow coerced_static in
-          let* α4 := core.fmt.rt.Argument.t::["new_display"] α3 in
-          let* α5 : M.Val core.fmt.rt.Argument.t := M.alloc α4 in
-          let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
-          let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) := borrow α6 in
-          let* α8 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
-            pointer_coercion "Unsize" α7 in
-          let* α9 := core.fmt.Arguments.t::["new_v1"] α2 α8 in
-          let* α10 : M.Val core.fmt.Arguments.t := M.alloc α9 in
-          let* α11 := std.io.stdio._print α10 in
-          M.alloc α11 in
+          let* α3 := M.read α2 in
+          let* α4 : M.Val (ref (ref i32.t)) := borrow coerced_static in
+          let* α5 := M.read α4 in
+          let* α6 := core.fmt.rt.Argument.t::["new_display"] α5 in
+          let* α7 : M.Val core.fmt.rt.Argument.t := M.alloc α6 in
+          let* α8 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α7 ] in
+          let* α9 : M.Val (ref (array core.fmt.rt.Argument.t)) := borrow α8 in
+          let* α10 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
+            pointer_coercion "Unsize" α9 in
+          let* α11 := M.read α10 in
+          let* α12 := core.fmt.Arguments.t::["new_v1"] α3 α11 in
+          let* α13 := std.io.stdio._print α12 in
+          M.alloc α13 in
         M.alloc tt in
       M.alloc tt in
     let* _ : M.Val unit :=
@@ -103,18 +109,20 @@ Definition main : M unit :=
         let* α1 : M.Val (ref (array (ref str.t))) := borrow α0 in
         let* α2 : M.Val (ref (slice (ref str.t))) :=
           pointer_coercion "Unsize" α1 in
-        let* α3 : M.Val i32.t :=
+        let* α3 := M.read α2 in
+        let* α4 : M.Val i32.t :=
           deref scoping_rules_lifetimes_reference_lifetime_static.NUM in
-        let* α4 : M.Val (ref i32.t) := borrow α3 in
-        let* α5 := core.fmt.rt.Argument.t::["new_display"] α4 in
-        let* α6 : M.Val core.fmt.rt.Argument.t := M.alloc α5 in
-        let* α7 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α6 ] in
-        let* α8 : M.Val (ref (array core.fmt.rt.Argument.t)) := borrow α7 in
-        let* α9 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
-          pointer_coercion "Unsize" α8 in
-        let* α10 := core.fmt.Arguments.t::["new_v1"] α2 α9 in
-        let* α11 : M.Val core.fmt.Arguments.t := M.alloc α10 in
-        let* α12 := std.io.stdio._print α11 in
-        M.alloc α12 in
+        let* α5 : M.Val (ref i32.t) := borrow α4 in
+        let* α6 := M.read α5 in
+        let* α7 := core.fmt.rt.Argument.t::["new_display"] α6 in
+        let* α8 : M.Val core.fmt.rt.Argument.t := M.alloc α7 in
+        let* α9 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α8 ] in
+        let* α10 : M.Val (ref (array core.fmt.rt.Argument.t)) := borrow α9 in
+        let* α11 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
+          pointer_coercion "Unsize" α10 in
+        let* α12 := M.read α11 in
+        let* α13 := core.fmt.Arguments.t::["new_v1"] α3 α12 in
+        let* α14 := std.io.stdio._print α13 in
+        M.alloc α14 in
       M.alloc tt in
     M.alloc tt).

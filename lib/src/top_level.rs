@@ -245,13 +245,16 @@ fn compile_fn_sig_and_body(
     default: &str,
 ) -> FnSigAndBody {
     let decl = fn_sig_and_body.fn_sig.decl;
+    let args = get_args(env, fn_sig_and_body.body, decl.inputs, default);
     let ret_ty = compile_fn_ret_ty(env, &decl.output);
+    let body = compile_function_body(
+        env,
+        args.iter().map(|(name, _)| name.to_string()).collect(),
+        fn_sig_and_body.body,
+        ret_ty.clone(),
+    );
 
-    FnSigAndBody {
-        args: get_args(env, fn_sig_and_body.body, decl.inputs, default),
-        ret_ty: ret_ty.clone(),
-        body: compile_function_body(env, fn_sig_and_body.body, ret_ty),
-    }
+    FnSigAndBody { args, ret_ty, body }
 }
 
 /// Check if the function body is actually the main test function calling to all
@@ -740,6 +743,7 @@ fn get_body<'a>(tcx: &'a TyCtxt, body_id: &rustc_hir::BodyId) -> &'a rustc_hir::
 // compiles the body of a function
 fn compile_function_body(
     env: &mut Env,
+    args: Vec<String>,
     body: &rustc_hir::Body,
     ret_ty: Rc<CoqType>,
 ) -> Option<Box<Expr>> {
@@ -748,12 +752,26 @@ fn compile_function_body(
     }
     let body = compile_hir_id(env, body.value.hir_id);
     let has_return = body.has_return();
-    let body = Box::new(Expr {
+    let body: Box<Expr> = Box::new(Expr {
         kind: ExprKind::MonadicOperator {
             name: "M.function_body".to_string(),
             arg: Box::new(body),
         },
         ty: None,
+    });
+    let body: Box<Stmt> = args.iter().rfold(Box::new(body.stmt()), |body, arg| {
+        Box::new(Stmt {
+            ty: body.ty.clone(),
+            kind: StmtKind::Let {
+                is_monadic: false,
+                pattern: Box::new(Pattern::Variable(arg.to_string())),
+                init: Box::new(Expr {
+                    kind: ExprKind::Var(Path::local(arg.to_string())).alloc(),
+                    ty: None,
+                }),
+                body,
+            },
+        })
     });
 
     if has_return {
@@ -770,14 +788,15 @@ fn compile_function_body(
                         },
                         ty: None,
                     }),
-                    body: Box::new(body.stmt()),
+                    body: Box::new(*body),
                 },
                 ty: None,
             }
             .expr(),
         ));
     }
-    Some(body)
+
+    Some(Box::new(body.expr()))
 }
 
 /// returns a list of pairs of argument names and their types
@@ -788,7 +807,7 @@ fn get_args(
     default: &str,
 ) -> Vec<(String, Rc<CoqType>)> {
     get_arg_names(body, default)
-        .zip(inputs.iter().map(|ty| compile_type(env, ty).val()))
+        .zip(inputs.iter().map(|ty| compile_type(env, ty)))
         .collect()
 }
 

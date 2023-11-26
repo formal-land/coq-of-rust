@@ -34,7 +34,7 @@ fn inspect(event: WebEvent) {
     }
 }
 *)
-Parameter inspect : (M.Val enums.WebEvent.t) -> M unit.
+Parameter inspect : enums.WebEvent.t -> M unit.
 
 (*
 fn main() {

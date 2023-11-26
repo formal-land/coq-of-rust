@@ -16,8 +16,8 @@ Section Impl_core_fmt_Debug_for_combinators_and_then_Food_t.
   Debug
   *)
   Parameter fmt :
-      (M.Val (ref ltac:(Self))) ->
-        (M.Val (mut_ref core.fmt.Formatter.t)) ->
+      (ref ltac:(Self)) ->
+        (mut_ref core.fmt.Formatter.t) ->
         M ltac:(core.fmt.Result).
   
   Global Instance AssociatedFunction_fmt :
@@ -46,8 +46,8 @@ Section Impl_core_fmt_Debug_for_combinators_and_then_Day_t.
   Debug
   *)
   Parameter fmt :
-      (M.Val (ref ltac:(Self))) ->
-        (M.Val (mut_ref core.fmt.Formatter.t)) ->
+      (ref ltac:(Self)) ->
+        (mut_ref core.fmt.Formatter.t) ->
         M ltac:(core.fmt.Result).
   
   Global Instance AssociatedFunction_fmt :
@@ -70,7 +70,7 @@ fn have_ingredients(food: Food) -> Option<Food> {
 }
 *)
 Parameter have_ingredients :
-    (M.Val combinators_and_then.Food.t) ->
+    combinators_and_then.Food.t ->
       M (core.option.Option.t combinators_and_then.Food.t).
 
 (*
@@ -82,7 +82,7 @@ fn have_recipe(food: Food) -> Option<Food> {
 }
 *)
 Parameter have_recipe :
-    (M.Val combinators_and_then.Food.t) ->
+    combinators_and_then.Food.t ->
       M (core.option.Option.t combinators_and_then.Food.t).
 
 (*
@@ -97,7 +97,7 @@ fn cookable_v1(food: Food) -> Option<Food> {
 }
 *)
 Parameter cookable_v1 :
-    (M.Val combinators_and_then.Food.t) ->
+    combinators_and_then.Food.t ->
       M (core.option.Option.t combinators_and_then.Food.t).
 
 (*
@@ -106,7 +106,7 @@ fn cookable_v2(food: Food) -> Option<Food> {
 }
 *)
 Parameter cookable_v2 :
-    (M.Val combinators_and_then.Food.t) ->
+    combinators_and_then.Food.t ->
       M (core.option.Option.t combinators_and_then.Food.t).
 
 (*
@@ -118,9 +118,7 @@ fn eat(food: Food, day: Day) {
 }
 *)
 Parameter eat :
-    (M.Val combinators_and_then.Food.t) ->
-      (M.Val combinators_and_then.Day.t) ->
-      M unit.
+    combinators_and_then.Food.t -> combinators_and_then.Day.t -> M unit.
 
 (*
 fn main() {

@@ -39,7 +39,7 @@ Parameter main : M unit.
         arg * 2
     }
 *)
-Parameter foo : (M.Val i32.t) -> M i32.t.
+Parameter foo : i32.t -> M i32.t.
 
 (*
     fn call_foo(arg: i32) -> i32 {
@@ -61,4 +61,4 @@ Parameter foo : (M.Val i32.t) -> M i32.t.
         }
     }
 *)
-Parameter call_foo : (M.Val i32.t) -> M i32.t.
+Parameter call_foo : i32.t -> M i32.t.

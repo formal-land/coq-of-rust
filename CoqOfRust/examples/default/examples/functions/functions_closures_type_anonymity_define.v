@@ -26,16 +26,17 @@ Definition main : M unit := M.function_body (M.alloc tt).
 Definition apply
     {F : Set}
     {ℋ_0 : core.ops.function.FnOnce.Trait F (Args := unit)}
-    (f : M.Val F)
+    (f : F)
     : M unit :=
+  let* f := M.alloc f in
   M.function_body
     (let* _ : M.Val unit :=
-      let* α0 : M.Val unit := M.alloc tt in
+      let* α0 := M.read f in
       let* α1 :=
         (core.ops.function.FnOnce.call_once
             (Self := F)
             (Trait := ltac:(refine _)))
-          f
-          α0 in
+          α0
+          tt in
       M.alloc α1 in
     M.alloc tt).

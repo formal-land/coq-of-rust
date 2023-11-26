@@ -7,14 +7,14 @@ fn eat_box_i32(boxed_i32: Box<i32>) {
 }
 *)
 Parameter eat_box_i32 :
-    (M.Val (alloc.boxed.Box.t i32.t alloc.boxed.Box.Default.A)) -> M unit.
+    (alloc.boxed.Box.t i32.t alloc.boxed.Box.Default.A) -> M unit.
 
 (*
 fn borrow_i32(borrowed_i32: &i32) {
     println!("This int is: {}", borrowed_i32);
 }
 *)
-Parameter borrow_i32 : (M.Val (ref i32.t)) -> M unit.
+Parameter borrow_i32 : (ref i32.t) -> M unit.
 
 (*
 fn main() {

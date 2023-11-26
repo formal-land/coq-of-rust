@@ -11,7 +11,7 @@ fn drink(beverage: &str) {
     println!("Some refreshing {} is all I need.", beverage);
 }
 *)
-Parameter drink : (M.Val (ref str.t)) -> M unit.
+Parameter drink : (ref str.t) -> M unit.
 
 (*
 fn main() {

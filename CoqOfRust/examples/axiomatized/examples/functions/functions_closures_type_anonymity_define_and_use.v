@@ -11,7 +11,7 @@ where
 *)
 Parameter apply :
     forall {F : Set} {ℋ_0 : core.ops.function.Fn.Trait F (Args := unit)},
-    (M.Val F) -> M unit.
+    F -> M unit.
 
 (*
 fn main() {

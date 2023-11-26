@@ -22,7 +22,7 @@ Section Impl_scoping_rules_lifetimes_methods_Owner_t.
           self.0 += 1;
       }
   *)
-  Parameter add_one : (M.Val (mut_ref ltac:(Self))) -> M unit.
+  Parameter add_one : (mut_ref ltac:(Self)) -> M unit.
   
   Global Instance AssociatedFunction_add_one :
     Notations.DoubleColon ltac:(Self) "add_one" := {
@@ -34,7 +34,7 @@ Section Impl_scoping_rules_lifetimes_methods_Owner_t.
           println!("`print`: {}", self.0);
       }
   *)
-  Parameter print : (M.Val (ref ltac:(Self))) -> M unit.
+  Parameter print : (ref ltac:(Self)) -> M unit.
   
   Global Instance AssociatedFunction_print :
     Notations.DoubleColon ltac:(Self) "print" := {

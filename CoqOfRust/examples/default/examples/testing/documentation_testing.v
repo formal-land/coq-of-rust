@@ -6,7 +6,9 @@ pub fn add(a: i32, b: i32) -> i32 {
     a + b
 }
 *)
-Definition add (a : M.Val i32.t) (b : M.Val i32.t) : M i32.t :=
+Definition add (a : i32.t) (b : i32.t) : M i32.t :=
+  let* a := M.alloc a in
+  let* b := M.alloc b in
   M.function_body (BinOp.add a b).
 
 (*
@@ -18,7 +20,9 @@ pub fn div(a: i32, b: i32) -> i32 {
     a / b
 }
 *)
-Definition div (a : M.Val i32.t) (b : M.Val i32.t) : M i32.t :=
+Definition div (a : i32.t) (b : i32.t) : M i32.t :=
+  let* a := M.alloc a in
+  let* b := M.alloc b in
   M.function_body
     (let* _ : M.Val unit :=
       let* α0 : M.Val i32.t := M.alloc 0 in
@@ -27,10 +31,10 @@ Definition div (a : M.Val i32.t) (b : M.Val i32.t) : M i32.t :=
       let* α3 := M.read α2 in
       if (α3 : bool) then
         let* _ : M.Val unit :=
-          let* α0 :=
-            std.panicking.begin_panic (mk_str "Divide-by-zero error") in
-          let* α1 : M.Val never.t := M.alloc α0 in
-          never_to_any α1 in
+          let* α0 := M.read (mk_str "Divide-by-zero error") in
+          let* α1 := std.panicking.begin_panic α0 in
+          let* α2 : M.Val never.t := M.alloc α1 in
+          never_to_any α2 in
         let* α0 : M.Val unit := M.alloc tt in
         never_to_any α0
       else

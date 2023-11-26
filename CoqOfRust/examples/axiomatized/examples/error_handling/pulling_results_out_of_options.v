@@ -7,7 +7,7 @@ fn double_first(vec: Vec<&str>) -> Option<Result<i32, ParseIntError>> {
 }
 *)
 Parameter double_first :
-    (M.Val (alloc.vec.Vec.t (ref str.t) alloc.vec.Vec.Default.A)) ->
+    (alloc.vec.Vec.t (ref str.t) alloc.vec.Vec.Default.A) ->
       M
         (core.option.Option.t
           (core.result.Result.t i32.t core.num.error.ParseIntError.t)).

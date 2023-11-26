@@ -6,14 +6,14 @@ fn increase(number: i32) {
     println!("{}", number + 1);
 }
 *)
-Parameter increase : (M.Val i32.t) -> M unit.
+Parameter increase : i32.t -> M unit.
 
 (*
 fn decrease(number: i32) {
     println!("{}", number - 1);
 }
 *)
-Parameter decrease : (M.Val i32.t) -> M unit.
+Parameter decrease : i32.t -> M unit.
 
 (*
 fn help() {

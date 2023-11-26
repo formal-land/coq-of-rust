@@ -10,8 +10,8 @@ fn combine_vecs_explicit_return_type(
 }
 *)
 Parameter combine_vecs_explicit_return_type :
-    (M.Val (alloc.vec.Vec.t i32.t alloc.vec.Vec.Default.A)) ->
-      (M.Val (alloc.vec.Vec.t i32.t alloc.vec.Vec.Default.A)) ->
+    (alloc.vec.Vec.t i32.t alloc.vec.Vec.Default.A) ->
+      (alloc.vec.Vec.t i32.t alloc.vec.Vec.Default.A) ->
       M
         (core.iter.adapters.cycle.Cycle.t
           (core.iter.adapters.chain.Chain.t
@@ -31,8 +31,8 @@ Parameter combine_vecs_ret_ty :
     Sigma (Ty : Set) `(core.iter.traits.iterator.Iterator.Trait Ty),
     unit.
 Parameter combine_vecs :
-    (M.Val (alloc.vec.Vec.t i32.t alloc.vec.Vec.Default.A)) ->
-      (M.Val (alloc.vec.Vec.t i32.t alloc.vec.Vec.Default.A)) ->
+    (alloc.vec.Vec.t i32.t alloc.vec.Vec.Default.A) ->
+      (alloc.vec.Vec.t i32.t alloc.vec.Vec.Default.A) ->
       M _ (* OpaqueTy *).
 
 Error OpaqueTy.

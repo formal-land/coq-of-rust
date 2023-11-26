@@ -43,7 +43,7 @@ End String.
 
 Module ToString.
   Class Trait (Self : Set) : Set := {
-    to_string : M.Val (ref Self) -> M String.t;
+    to_string : ref Self -> M String.t;
   }.
 
   Global Instance Method_to_string `(Trait) :
@@ -54,8 +54,8 @@ End ToString.
 
 (* The String type (Struct std::string::String) and it's methods  *)
 Module StringType.
-  Definition from (str_from : M.Val str.t) : M str.t :=
-    M.read str_from.
+  Definition from (str_from : str.t) : M str.t :=
+    M.pure str_from.
 
   (* The String type (Struct std::string::String) and it's methods  *)
   (* Converts a &str into a String. *)

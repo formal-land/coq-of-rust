@@ -44,8 +44,7 @@ Section Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci_t.
           Some(current)
       }
   *)
-  Parameter next :
-      (M.Val (mut_ref ltac:(Self))) -> M (core.option.Option.t Item.t).
+  Parameter next : (mut_ref ltac:(Self)) -> M (core.option.Option.t Item.t).
   
   Global Instance AssociatedFunction_next :
     Notations.DoubleColon ltac:(Self) "next" := {

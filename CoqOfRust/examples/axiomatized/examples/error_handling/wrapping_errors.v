@@ -17,8 +17,8 @@ Section Impl_core_fmt_Debug_for_wrapping_errors_DoubleError_t.
   Debug
   *)
   Parameter fmt :
-      (M.Val (ref ltac:(Self))) ->
-        (M.Val (mut_ref core.fmt.Formatter.t)) ->
+      (ref ltac:(Self)) ->
+        (mut_ref core.fmt.Formatter.t) ->
         M ltac:(core.fmt.Result).
   
   Global Instance AssociatedFunction_fmt :
@@ -47,8 +47,8 @@ Section Impl_core_fmt_Display_for_wrapping_errors_DoubleError_t.
       }
   *)
   Parameter fmt :
-      (M.Val (ref ltac:(Self))) ->
-        (M.Val (mut_ref core.fmt.Formatter.t)) ->
+      (ref ltac:(Self)) ->
+        (mut_ref core.fmt.Formatter.t) ->
         M ltac:(core.fmt.Result).
   
   Global Instance AssociatedFunction_fmt :
@@ -78,7 +78,7 @@ Section Impl_core_error_Error_for_wrapping_errors_DoubleError_t.
       }
   *)
   Parameter source :
-      (M.Val (ref ltac:(Self))) -> M (core.option.Option.t (ref _ (* dyn *))).
+      (ref ltac:(Self)) -> M (core.option.Option.t (ref _ (* dyn *))).
   
   Global Instance AssociatedFunction_source :
     Notations.DoubleColon ltac:(Self) "source" := {
@@ -105,7 +105,7 @@ Section Impl_core_convert_From_core_num_error_ParseIntError_t_for_wrapping_error
       }
   *)
   Parameter from :
-      (M.Val core.num.error.ParseIntError.t) -> M wrapping_errors.DoubleError.t.
+      core.num.error.ParseIntError.t -> M wrapping_errors.DoubleError.t.
   
   Global Instance AssociatedFunction_from :
     Notations.DoubleColon ltac:(Self) "from" := {
@@ -131,7 +131,7 @@ fn double_first(vec: Vec<&str>) -> Result<i32> {
 }
 *)
 Parameter double_first :
-    (M.Val (alloc.vec.Vec.t (ref str.t) alloc.vec.Vec.Default.A)) ->
+    (alloc.vec.Vec.t (ref str.t) alloc.vec.Vec.Default.A) ->
       M ltac:(wrapping_errors.Result i32.t).
 
 (*
@@ -147,7 +147,7 @@ fn print(result: Result<i32>) {
     }
 }
 *)
-Parameter print : (M.Val ltac:(wrapping_errors.Result i32.t)) -> M unit.
+Parameter print : ltac:(wrapping_errors.Result i32.t) -> M unit.
 
 (*
 fn main() {

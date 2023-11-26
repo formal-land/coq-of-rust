@@ -64,7 +64,7 @@ fn red<T: Red>(_: &T) -> &'static str {
 *)
 Parameter red :
     forall {T : Set} {ℋ_0 : generics_bounds_test_case_empty_bounds.Red.Trait T},
-    (M.Val (ref T)) -> M (ref str.t).
+    (ref T) -> M (ref str.t).
 
 (*
 fn blue<T: Blue>(_: &T) -> &'static str {
@@ -75,7 +75,7 @@ Parameter blue :
     forall
       {T : Set}
       {ℋ_0 : generics_bounds_test_case_empty_bounds.Blue.Trait T},
-    (M.Val (ref T)) -> M (ref str.t).
+    (ref T) -> M (ref str.t).
 
 (*
 fn main() {

@@ -17,8 +17,8 @@ Module checked.
         Debug
     *)
     Parameter fmt :
-        (M.Val (ref ltac:(Self))) ->
-          (M.Val (mut_ref core.fmt.Formatter.t)) ->
+        (ref ltac:(Self)) ->
+          (mut_ref core.fmt.Formatter.t) ->
           M ltac:(core.fmt.Result).
     
     Global Instance AssociatedFunction_fmt :
@@ -48,8 +48,8 @@ Module checked.
       }
   *)
   Parameter div :
-      (M.Val f64.t) ->
-        (M.Val f64.t) ->
+      f64.t ->
+        f64.t ->
         M ltac:(result_chaining_with_question_mark.checked.MathResult).
   
   (*
@@ -62,8 +62,7 @@ Module checked.
       }
   *)
   Parameter sqrt :
-      (M.Val f64.t) ->
-        M ltac:(result_chaining_with_question_mark.checked.MathResult).
+      f64.t -> M ltac:(result_chaining_with_question_mark.checked.MathResult).
   
   (*
       fn ln(x: f64) -> MathResult {
@@ -75,8 +74,7 @@ Module checked.
       }
   *)
   Parameter ln :
-      (M.Val f64.t) ->
-        M ltac:(result_chaining_with_question_mark.checked.MathResult).
+      f64.t -> M ltac:(result_chaining_with_question_mark.checked.MathResult).
   
   (*
       fn op_(x: f64, y: f64) -> MathResult {
@@ -90,8 +88,8 @@ Module checked.
       }
   *)
   Parameter op_ :
-      (M.Val f64.t) ->
-        (M.Val f64.t) ->
+      f64.t ->
+        f64.t ->
         M ltac:(result_chaining_with_question_mark.checked.MathResult).
   
   (*
@@ -109,7 +107,7 @@ Module checked.
           }
       }
   *)
-  Parameter op : (M.Val f64.t) -> (M.Val f64.t) -> M unit.
+  Parameter op : f64.t -> f64.t -> M unit.
 End checked.
 
 Module MathError.
@@ -127,8 +125,8 @@ Section Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathE
       Debug
   *)
   Parameter fmt :
-      (M.Val (ref ltac:(Self))) ->
-        (M.Val (mut_ref core.fmt.Formatter.t)) ->
+      (ref ltac:(Self)) ->
+        (mut_ref core.fmt.Formatter.t) ->
         M ltac:(core.fmt.Result).
   
   Global Instance AssociatedFunction_fmt :
@@ -158,8 +156,8 @@ Ltac MathResult :=
     }
 *)
 Parameter div :
-    (M.Val f64.t) ->
-      (M.Val f64.t) ->
+    f64.t ->
+      f64.t ->
       M ltac:(result_chaining_with_question_mark.checked.MathResult).
 
 (*
@@ -172,8 +170,7 @@ Parameter div :
     }
 *)
 Parameter sqrt :
-    (M.Val f64.t) ->
-      M ltac:(result_chaining_with_question_mark.checked.MathResult).
+    f64.t -> M ltac:(result_chaining_with_question_mark.checked.MathResult).
 
 (*
     fn ln(x: f64) -> MathResult {
@@ -185,8 +182,7 @@ Parameter sqrt :
     }
 *)
 Parameter ln :
-    (M.Val f64.t) ->
-      M ltac:(result_chaining_with_question_mark.checked.MathResult).
+    f64.t -> M ltac:(result_chaining_with_question_mark.checked.MathResult).
 
 (*
     fn op_(x: f64, y: f64) -> MathResult {
@@ -200,8 +196,8 @@ Parameter ln :
     }
 *)
 Parameter op_ :
-    (M.Val f64.t) ->
-      (M.Val f64.t) ->
+    f64.t ->
+      f64.t ->
       M ltac:(result_chaining_with_question_mark.checked.MathResult).
 
 (*
@@ -219,7 +215,7 @@ Parameter op_ :
         }
     }
 *)
-Parameter op : (M.Val f64.t) -> (M.Val f64.t) -> M unit.
+Parameter op : f64.t -> f64.t -> M unit.
 
 (*
 fn main() {

@@ -25,7 +25,7 @@ Section Impl_core_ops_drop_Drop_for_drop_Droppable_t.
           println!("> Dropping {}", self.name);
       }
   *)
-  Parameter drop : (M.Val (mut_ref ltac:(Self))) -> M unit.
+  Parameter drop : (mut_ref ltac:(Self)) -> M unit.
   
   Global Instance AssociatedFunction_drop :
     Notations.DoubleColon ltac:(Self) "drop" := {

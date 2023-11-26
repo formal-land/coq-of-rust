@@ -28,7 +28,7 @@ where
 *)
 Parameter read_lines :
     forall {P : Set} {ℋ_0 : core.convert.AsRef.Trait P (T := std.path.Path.t)},
-    (M.Val P) ->
+    P ->
       M
         ltac:(std.io.error.Result
           (std.io.Lines.t

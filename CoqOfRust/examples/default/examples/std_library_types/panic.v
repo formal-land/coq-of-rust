@@ -11,10 +11,9 @@ fn division(dividend: i32, divisor: i32) -> i32 {
     }
 }
 *)
-Definition division
-    (dividend : M.Val i32.t)
-    (divisor : M.Val i32.t)
-    : M i32.t :=
+Definition division (dividend : i32.t) (divisor : i32.t) : M i32.t :=
+  let* dividend := M.alloc dividend in
+  let* divisor := M.alloc divisor in
   M.function_body
     (let* α0 : M.Val i32.t := M.alloc 0 in
     let* α1 : M.Val bool.t := BinOp.eq divisor α0 in
@@ -22,9 +21,10 @@ Definition division
     let* α3 := M.read α2 in
     if (α3 : bool) then
       let* _ : M.Val unit :=
-        let* α0 := std.panicking.begin_panic (mk_str "division by zero") in
-        let* α1 : M.Val never.t := M.alloc α0 in
-        never_to_any α1 in
+        let* α0 := M.read (mk_str "division by zero") in
+        let* α1 := std.panicking.begin_panic α0 in
+        let* α2 : M.Val never.t := M.alloc α1 in
+        never_to_any α2 in
       let* α0 : M.Val unit := M.alloc tt in
       never_to_any α0
     else
@@ -48,13 +48,16 @@ Definition main : M unit :=
   M.function_body
     (let* _x : M.Val (alloc.boxed.Box.t i32.t alloc.alloc.Global.t) :=
       let* α0 : M.Val i32.t := M.alloc 0 in
-      let* α1 := (alloc.boxed.Box.t i32.t alloc.alloc.Global.t)::["new"] α0 in
-      M.alloc α1 in
+      let* α1 := M.read α0 in
+      let* α2 := (alloc.boxed.Box.t i32.t alloc.alloc.Global.t)::["new"] α1 in
+      M.alloc α2 in
     let* _ : M.Val i32.t :=
       let* α0 : M.Val i32.t := M.alloc 3 in
-      let* α1 : M.Val i32.t := M.alloc 0 in
-      let* α2 := panic.division α0 α1 in
-      M.alloc α2 in
+      let* α1 := M.read α0 in
+      let* α2 : M.Val i32.t := M.alloc 0 in
+      let* α3 := M.read α2 in
+      let* α4 := panic.division α1 α3 in
+      M.alloc α4 in
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
         let* α0 : M.Val (array (ref str.t)) :=
@@ -63,8 +66,8 @@ Definition main : M unit :=
         let* α1 : M.Val (ref (array (ref str.t))) := borrow α0 in
         let* α2 : M.Val (ref (slice (ref str.t))) :=
           pointer_coercion "Unsize" α1 in
-        let* α3 := core.fmt.Arguments.t::["new_const"] α2 in
-        let* α4 : M.Val core.fmt.Arguments.t := M.alloc α3 in
+        let* α3 := M.read α2 in
+        let* α4 := core.fmt.Arguments.t::["new_const"] α3 in
         let* α5 := std.io.stdio._print α4 in
         M.alloc α5 in
       M.alloc tt in

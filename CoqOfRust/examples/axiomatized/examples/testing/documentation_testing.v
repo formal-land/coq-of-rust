@@ -6,7 +6,7 @@ pub fn add(a: i32, b: i32) -> i32 {
     a + b
 }
 *)
-Parameter add : (M.Val i32.t) -> (M.Val i32.t) -> M i32.t.
+Parameter add : i32.t -> i32.t -> M i32.t.
 
 (*
 pub fn div(a: i32, b: i32) -> i32 {
@@ -17,4 +17,4 @@ pub fn div(a: i32, b: i32) -> i32 {
     a / b
 }
 *)
-Parameter div : (M.Val i32.t) -> (M.Val i32.t) -> M i32.t.
+Parameter div : i32.t -> i32.t -> M i32.t.

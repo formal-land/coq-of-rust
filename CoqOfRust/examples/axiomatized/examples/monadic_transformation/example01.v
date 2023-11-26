@@ -6,12 +6,12 @@ fn id(x: u64) -> u64 {
     x
 }
 *)
-Parameter id : (M.Val u64.t) -> M u64.t.
+Parameter id : u64.t -> M u64.t.
 
 (*
 fn tri(a: u64, b: u64, c: u64) {}
 *)
-Parameter tri : (M.Val u64.t) -> (M.Val u64.t) -> (M.Val u64.t) -> M unit.
+Parameter tri : u64.t -> u64.t -> u64.t -> M unit.
 
 (*
 fn main() {

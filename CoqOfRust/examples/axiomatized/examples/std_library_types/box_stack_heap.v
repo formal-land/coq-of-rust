@@ -33,8 +33,8 @@ Section Impl_core_fmt_Debug_for_box_stack_heap_Point_t.
   *)
   (* #[allow(dead_code)] - function was ignored by the compiler *)
   Parameter fmt :
-      (M.Val (ref ltac:(Self))) ->
-        (M.Val (mut_ref core.fmt.Formatter.t)) ->
+      (ref ltac:(Self)) ->
+        (mut_ref core.fmt.Formatter.t) ->
         M ltac:(core.fmt.Result).
   
   Global Instance AssociatedFunction_fmt :
@@ -56,7 +56,7 @@ Section Impl_core_clone_Clone_for_box_stack_heap_Point_t.
   Clone
   *)
   (* #[allow(dead_code)] - function was ignored by the compiler *)
-  Parameter clone : (M.Val (ref ltac:(Self))) -> M box_stack_heap.Point.t.
+  Parameter clone : (ref ltac:(Self)) -> M box_stack_heap.Point.t.
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon ltac:(Self) "clone" := {

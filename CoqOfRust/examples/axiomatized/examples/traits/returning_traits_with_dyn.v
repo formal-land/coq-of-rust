@@ -31,7 +31,7 @@ Section Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Shee
           "baaaaah!"
       }
   *)
-  Parameter noise : (M.Val (ref ltac:(Self))) -> M (ref str.t).
+  Parameter noise : (ref ltac:(Self)) -> M (ref str.t).
   
   Global Instance AssociatedFunction_noise :
     Notations.DoubleColon ltac:(Self) "noise" := {
@@ -53,7 +53,7 @@ Section Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow_
           "moooooo!"
       }
   *)
-  Parameter noise : (M.Val (ref ltac:(Self))) -> M (ref str.t).
+  Parameter noise : (ref ltac:(Self)) -> M (ref str.t).
   
   Global Instance AssociatedFunction_noise :
     Notations.DoubleColon ltac:(Self) "noise" := {
@@ -76,8 +76,7 @@ fn random_animal(random_number: f64) -> Box<dyn Animal> {
 }
 *)
 Parameter random_animal :
-    (M.Val f64.t) ->
-      M (alloc.boxed.Box.t _ (* dyn *) alloc.boxed.Box.Default.A).
+    f64.t -> M (alloc.boxed.Box.t _ (* dyn *) alloc.boxed.Box.Default.A).
 
 (*
 fn main() {

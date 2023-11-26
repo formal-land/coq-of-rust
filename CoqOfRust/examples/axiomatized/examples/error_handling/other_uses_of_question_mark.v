@@ -21,8 +21,8 @@ Section Impl_core_fmt_Debug_for_other_uses_of_question_mark_EmptyVec_t.
   Debug
   *)
   Parameter fmt :
-      (M.Val (ref ltac:(Self))) ->
-        (M.Val (mut_ref core.fmt.Formatter.t)) ->
+      (ref ltac:(Self)) ->
+        (mut_ref core.fmt.Formatter.t) ->
         M ltac:(core.fmt.Result).
   
   Global Instance AssociatedFunction_fmt :
@@ -46,8 +46,8 @@ Section Impl_core_fmt_Display_for_other_uses_of_question_mark_EmptyVec_t.
       }
   *)
   Parameter fmt :
-      (M.Val (ref ltac:(Self))) ->
-        (M.Val (mut_ref core.fmt.Formatter.t)) ->
+      (ref ltac:(Self)) ->
+        (mut_ref core.fmt.Formatter.t) ->
         M ltac:(core.fmt.Result).
   
   Global Instance AssociatedFunction_fmt :
@@ -83,7 +83,7 @@ fn double_first(vec: Vec<&str>) -> Result<i32> {
 }
 *)
 Parameter double_first :
-    (M.Val (alloc.vec.Vec.t (ref str.t) alloc.vec.Vec.Default.A)) ->
+    (alloc.vec.Vec.t (ref str.t) alloc.vec.Vec.Default.A) ->
       M ltac:(other_uses_of_question_mark.Result i32.t).
 
 (*
@@ -94,8 +94,7 @@ fn print(result: Result<i32>) {
     }
 }
 *)
-Parameter print :
-    (M.Val ltac:(other_uses_of_question_mark.Result i32.t)) -> M unit.
+Parameter print : ltac:(other_uses_of_question_mark.Result i32.t) -> M unit.
 
 (*
 fn main() {

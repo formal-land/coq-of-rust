@@ -6,7 +6,7 @@ fn is_odd(n: u32) -> bool {
     n % 2 == 1
 }
 *)
-Parameter is_odd : (M.Val u32.t) -> M bool.t.
+Parameter is_odd : u32.t -> M bool.t.
 
 (*
 fn main() {

@@ -11,8 +11,8 @@ Module Impl_PartialEq_for_Result.
   Parameter eq :
     forall {T E : Set}
       `{core.cmp.PartialEq.Trait T} `{core.cmp.PartialEq.Trait E},
-      M.Val (ref (Result T E)) ->
-      M.Val (ref (Result T E)) ->
+      ref (Result T E) ->
+      ref (Result T E) ->
       M bool.
 
   Global Instance I {T T_Rhs E E_Rhs : Set}

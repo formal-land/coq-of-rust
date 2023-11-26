@@ -30,6 +30,7 @@ Definition main : M unit :=
         (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α4 in
       let* α6 : M.Val (alloc.boxed.Box.t (slice i32.t) alloc.alloc.Global.t) :=
         pointer_coercion "Unsize" α5 in
-      let* α7 := (slice i32.t)::["into_vec"] α6 in
-      M.alloc α7 in
+      let* α7 := M.read α6 in
+      let* α8 := (slice i32.t)::["into_vec"] α7 in
+      M.alloc α8 in
     M.alloc tt).
