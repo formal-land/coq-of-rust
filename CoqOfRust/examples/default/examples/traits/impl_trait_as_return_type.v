@@ -29,9 +29,7 @@ Definition combine_vecs_explicit_return_type
           (Trait := ltac:(refine _)))
         v in
     let* α1 :
-        ltac:(refine
-          (M.Val
-            (alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t))) :=
+        M.Val (alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t) :=
       M.alloc α0 in
     let* α2 :=
       (core.iter.traits.collect.IntoIterator.into_iter
@@ -39,9 +37,7 @@ Definition combine_vecs_explicit_return_type
           (Trait := ltac:(refine _)))
         u in
     let* α3 :
-        ltac:(refine
-          (M.Val
-            (alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t))) :=
+        M.Val (alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t) :=
       M.alloc α2 in
     let* α4 :=
       (core.iter.traits.iterator.Iterator.chain
@@ -50,11 +46,10 @@ Definition combine_vecs_explicit_return_type
         α1
         α3 in
     let* α5 :
-        ltac:(refine
-          (M.Val
-            (core.iter.adapters.chain.Chain.t
-              (alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t)
-              (alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t)))) :=
+        M.Val
+          (core.iter.adapters.chain.Chain.t
+            (alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t)
+            (alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t)) :=
       M.alloc α4 in
     let* α6 :=
       (core.iter.traits.iterator.Iterator.cycle
@@ -82,9 +77,7 @@ Definition combine_vecs
           (Trait := ltac:(refine _)))
         v in
     let* α1 :
-        ltac:(refine
-          (M.Val
-            (alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t))) :=
+        M.Val (alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t) :=
       M.alloc α0 in
     let* α2 :=
       (core.iter.traits.collect.IntoIterator.into_iter
@@ -92,9 +85,7 @@ Definition combine_vecs
           (Trait := ltac:(refine _)))
         u in
     let* α3 :
-        ltac:(refine
-          (M.Val
-            (alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t))) :=
+        M.Val (alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t) :=
       M.alloc α2 in
     let* α4 :=
       (core.iter.traits.iterator.Iterator.chain
@@ -103,11 +94,10 @@ Definition combine_vecs
         α1
         α3 in
     let* α5 :
-        ltac:(refine
-          (M.Val
-            (core.iter.adapters.chain.Chain.t
-              (alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t)
-              (alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t)))) :=
+        M.Val
+          (core.iter.adapters.chain.Chain.t
+            (alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t)
+            (alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t)) :=
       M.alloc α4 in
     let* α6 :=
       (core.iter.traits.iterator.Iterator.cycle
@@ -137,426 +127,329 @@ fn main() {
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
   M.function_body
-    (let* v1 :
-        ltac:(refine (M.Val (alloc.vec.Vec.t i32.t alloc.alloc.Global.t))) :=
-      let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 1 in
-      let* α1 : ltac:(refine (M.Val i32.t)) := M.alloc 2 in
-      let* α2 : ltac:(refine (M.Val i32.t)) := M.alloc 3 in
-      let* α3 : ltac:(refine (M.Val (array i32.t))) := M.alloc [ α0; α1; α2 ] in
-      let* α4 :
-          ltac:(refine
-            (M.Val (alloc.boxed.Box.t (array i32.t) alloc.alloc.Global.t))) :=
+    (let* v1 : M.Val (alloc.vec.Vec.t i32.t alloc.alloc.Global.t) :=
+      let* α0 : M.Val i32.t := M.alloc 1 in
+      let* α1 : M.Val i32.t := M.alloc 2 in
+      let* α2 : M.Val i32.t := M.alloc 3 in
+      let* α3 : M.Val (array i32.t) := M.alloc [ α0; α1; α2 ] in
+      let* α4 : M.Val (alloc.boxed.Box.t (array i32.t) alloc.alloc.Global.t) :=
         (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α3 in
-      let* α5 :
-          ltac:(refine
-            (M.Val (alloc.boxed.Box.t (slice i32.t) alloc.alloc.Global.t))) :=
+      let* α5 : M.Val (alloc.boxed.Box.t (slice i32.t) alloc.alloc.Global.t) :=
         pointer_coercion "Unsize" α4 in
       let* α6 := (slice i32.t)::["into_vec"] α5 in
       M.alloc α6 in
-    let* v2 :
-        ltac:(refine (M.Val (alloc.vec.Vec.t i32.t alloc.alloc.Global.t))) :=
-      let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 4 in
-      let* α1 : ltac:(refine (M.Val i32.t)) := M.alloc 5 in
-      let* α2 : ltac:(refine (M.Val (array i32.t))) := M.alloc [ α0; α1 ] in
-      let* α3 :
-          ltac:(refine
-            (M.Val (alloc.boxed.Box.t (array i32.t) alloc.alloc.Global.t))) :=
+    let* v2 : M.Val (alloc.vec.Vec.t i32.t alloc.alloc.Global.t) :=
+      let* α0 : M.Val i32.t := M.alloc 4 in
+      let* α1 : M.Val i32.t := M.alloc 5 in
+      let* α2 : M.Val (array i32.t) := M.alloc [ α0; α1 ] in
+      let* α3 : M.Val (alloc.boxed.Box.t (array i32.t) alloc.alloc.Global.t) :=
         (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α2 in
-      let* α4 :
-          ltac:(refine
-            (M.Val (alloc.boxed.Box.t (slice i32.t) alloc.alloc.Global.t))) :=
+      let* α4 : M.Val (alloc.boxed.Box.t (slice i32.t) alloc.alloc.Global.t) :=
         pointer_coercion "Unsize" α3 in
       let* α5 := (slice i32.t)::["into_vec"] α4 in
       M.alloc α5 in
-    let* v3 : ltac:(refine (M.Val type not implemented)) :=
+    let* v3 : M.Val type not implemented :=
       let* α0 := impl_trait_as_return_type.combine_vecs v1 v2 in
       M.alloc α0 in
-    let* _ : ltac:(refine (M.Val unit)) :=
-      let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 1 in
+    let* _ : M.Val unit :=
+      let* α0 : M.Val i32.t := M.alloc 1 in
       let* α1 := M.read α0 in
-      let* α2 : ltac:(refine (M.Val (core.option.Option.t i32.t))) :=
+      let* α2 : M.Val (core.option.Option.t i32.t) :=
         M.alloc (core.option.Option.Some α1) in
-      let* α3 : ltac:(refine (M.Val (ref (core.option.Option.t i32.t)))) :=
-        borrow α2 in
+      let* α3 : M.Val (ref (core.option.Option.t i32.t)) := borrow α2 in
       let* α4 := M.read α3 in
-      let* α5 : ltac:(refine (M.Val (mut_ref type not implemented))) :=
-        borrow_mut v3 in
+      let* α5 : M.Val (mut_ref type not implemented) := borrow_mut v3 in
       let* α6 :=
         (core.iter.traits.iterator.Iterator.next
             (Self := type not implemented)
             (Trait := ltac:(refine _)))
           α5 in
-      let* α7 : ltac:(refine (M.Val (core.option.Option.t i32.t))) :=
-        M.alloc α6 in
-      let* α8 : ltac:(refine (M.Val (ref (core.option.Option.t i32.t)))) :=
-        borrow α7 in
+      let* α7 : M.Val (core.option.Option.t i32.t) := M.alloc α6 in
+      let* α8 : M.Val (ref (core.option.Option.t i32.t)) := borrow α7 in
       let* α9 := M.read α8 in
       let* α10 :
-          ltac:(refine
-            (M.Val
-              ((ref (core.option.Option.t i32.t))
-              *
-              (ref (core.option.Option.t i32.t))))) :=
+          M.Val
+            ((ref (core.option.Option.t i32.t))
+            *
+            (ref (core.option.Option.t i32.t))) :=
         M.alloc (α4, α9) in
       let* α11 := M.read α10 in
       match α11 with
       | (left_val, right_val) =>
         let* right_val := M.alloc right_val in
         let* left_val := M.alloc left_val in
-        let* α0 : ltac:(refine (M.Val (core.option.Option.t i32.t))) :=
-          deref left_val in
-        let* α1 : ltac:(refine (M.Val (ref (core.option.Option.t i32.t)))) :=
-          borrow α0 in
-        let* α2 : ltac:(refine (M.Val (core.option.Option.t i32.t))) :=
-          deref right_val in
-        let* α3 : ltac:(refine (M.Val (ref (core.option.Option.t i32.t)))) :=
-          borrow α2 in
+        let* α0 : M.Val (core.option.Option.t i32.t) := deref left_val in
+        let* α1 : M.Val (ref (core.option.Option.t i32.t)) := borrow α0 in
+        let* α2 : M.Val (core.option.Option.t i32.t) := deref right_val in
+        let* α3 : M.Val (ref (core.option.Option.t i32.t)) := borrow α2 in
         let* α4 :=
           (core.cmp.PartialEq.eq
               (Self := core.option.Option.t i32.t)
               (Trait := ltac:(refine _)))
             α1
             α3 in
-        let* α5 : ltac:(refine (M.Val bool.t)) := M.alloc α4 in
-        let* α6 : ltac:(refine (M.Val bool.t)) := UnOp.not α5 in
-        let* α7 : ltac:(refine (M.Val bool.t)) := use α6 in
+        let* α5 : M.Val bool.t := M.alloc α4 in
+        let* α6 : M.Val bool.t := UnOp.not α5 in
+        let* α7 : M.Val bool.t := use α6 in
         let* α8 := M.read α7 in
         if (α8 : bool) then
-          let* kind : ltac:(refine (M.Val core.panicking.AssertKind.t)) :=
+          let* kind : M.Val core.panicking.AssertKind.t :=
             M.alloc core.panicking.AssertKind.Eq in
-          let* _ : ltac:(refine (M.Val never.t)) :=
-            let* α0 : ltac:(refine (M.Val (core.option.Option.t i32.t))) :=
-              deref left_val in
-            let* α1 :
-                ltac:(refine (M.Val (ref (core.option.Option.t i32.t)))) :=
-              borrow α0 in
-            let* α2 : ltac:(refine (M.Val (core.option.Option.t i32.t))) :=
-              deref right_val in
-            let* α3 :
-                ltac:(refine (M.Val (ref (core.option.Option.t i32.t)))) :=
-              borrow α2 in
-            let* α4 :
-                ltac:(refine
-                  (M.Val (core.option.Option.t core.fmt.Arguments.t))) :=
+          let* _ : M.Val never.t :=
+            let* α0 : M.Val (core.option.Option.t i32.t) := deref left_val in
+            let* α1 : M.Val (ref (core.option.Option.t i32.t)) := borrow α0 in
+            let* α2 : M.Val (core.option.Option.t i32.t) := deref right_val in
+            let* α3 : M.Val (ref (core.option.Option.t i32.t)) := borrow α2 in
+            let* α4 : M.Val (core.option.Option.t core.fmt.Arguments.t) :=
               M.alloc core.option.Option.None in
             let* α5 := core.panicking.assert_failed kind α1 α3 α4 in
             M.alloc α5 in
-          let* α0 : ltac:(refine (M.Val unit)) := M.alloc tt in
+          let* α0 : M.Val unit := M.alloc tt in
           never_to_any α0
         else
           M.alloc tt
       end in
-    let* _ : ltac:(refine (M.Val unit)) :=
-      let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 2 in
+    let* _ : M.Val unit :=
+      let* α0 : M.Val i32.t := M.alloc 2 in
       let* α1 := M.read α0 in
-      let* α2 : ltac:(refine (M.Val (core.option.Option.t i32.t))) :=
+      let* α2 : M.Val (core.option.Option.t i32.t) :=
         M.alloc (core.option.Option.Some α1) in
-      let* α3 : ltac:(refine (M.Val (ref (core.option.Option.t i32.t)))) :=
-        borrow α2 in
+      let* α3 : M.Val (ref (core.option.Option.t i32.t)) := borrow α2 in
       let* α4 := M.read α3 in
-      let* α5 : ltac:(refine (M.Val (mut_ref type not implemented))) :=
-        borrow_mut v3 in
+      let* α5 : M.Val (mut_ref type not implemented) := borrow_mut v3 in
       let* α6 :=
         (core.iter.traits.iterator.Iterator.next
             (Self := type not implemented)
             (Trait := ltac:(refine _)))
           α5 in
-      let* α7 : ltac:(refine (M.Val (core.option.Option.t i32.t))) :=
-        M.alloc α6 in
-      let* α8 : ltac:(refine (M.Val (ref (core.option.Option.t i32.t)))) :=
-        borrow α7 in
+      let* α7 : M.Val (core.option.Option.t i32.t) := M.alloc α6 in
+      let* α8 : M.Val (ref (core.option.Option.t i32.t)) := borrow α7 in
       let* α9 := M.read α8 in
       let* α10 :
-          ltac:(refine
-            (M.Val
-              ((ref (core.option.Option.t i32.t))
-              *
-              (ref (core.option.Option.t i32.t))))) :=
+          M.Val
+            ((ref (core.option.Option.t i32.t))
+            *
+            (ref (core.option.Option.t i32.t))) :=
         M.alloc (α4, α9) in
       let* α11 := M.read α10 in
       match α11 with
       | (left_val, right_val) =>
         let* right_val := M.alloc right_val in
         let* left_val := M.alloc left_val in
-        let* α0 : ltac:(refine (M.Val (core.option.Option.t i32.t))) :=
-          deref left_val in
-        let* α1 : ltac:(refine (M.Val (ref (core.option.Option.t i32.t)))) :=
-          borrow α0 in
-        let* α2 : ltac:(refine (M.Val (core.option.Option.t i32.t))) :=
-          deref right_val in
-        let* α3 : ltac:(refine (M.Val (ref (core.option.Option.t i32.t)))) :=
-          borrow α2 in
+        let* α0 : M.Val (core.option.Option.t i32.t) := deref left_val in
+        let* α1 : M.Val (ref (core.option.Option.t i32.t)) := borrow α0 in
+        let* α2 : M.Val (core.option.Option.t i32.t) := deref right_val in
+        let* α3 : M.Val (ref (core.option.Option.t i32.t)) := borrow α2 in
         let* α4 :=
           (core.cmp.PartialEq.eq
               (Self := core.option.Option.t i32.t)
               (Trait := ltac:(refine _)))
             α1
             α3 in
-        let* α5 : ltac:(refine (M.Val bool.t)) := M.alloc α4 in
-        let* α6 : ltac:(refine (M.Val bool.t)) := UnOp.not α5 in
-        let* α7 : ltac:(refine (M.Val bool.t)) := use α6 in
+        let* α5 : M.Val bool.t := M.alloc α4 in
+        let* α6 : M.Val bool.t := UnOp.not α5 in
+        let* α7 : M.Val bool.t := use α6 in
         let* α8 := M.read α7 in
         if (α8 : bool) then
-          let* kind : ltac:(refine (M.Val core.panicking.AssertKind.t)) :=
+          let* kind : M.Val core.panicking.AssertKind.t :=
             M.alloc core.panicking.AssertKind.Eq in
-          let* _ : ltac:(refine (M.Val never.t)) :=
-            let* α0 : ltac:(refine (M.Val (core.option.Option.t i32.t))) :=
-              deref left_val in
-            let* α1 :
-                ltac:(refine (M.Val (ref (core.option.Option.t i32.t)))) :=
-              borrow α0 in
-            let* α2 : ltac:(refine (M.Val (core.option.Option.t i32.t))) :=
-              deref right_val in
-            let* α3 :
-                ltac:(refine (M.Val (ref (core.option.Option.t i32.t)))) :=
-              borrow α2 in
-            let* α4 :
-                ltac:(refine
-                  (M.Val (core.option.Option.t core.fmt.Arguments.t))) :=
+          let* _ : M.Val never.t :=
+            let* α0 : M.Val (core.option.Option.t i32.t) := deref left_val in
+            let* α1 : M.Val (ref (core.option.Option.t i32.t)) := borrow α0 in
+            let* α2 : M.Val (core.option.Option.t i32.t) := deref right_val in
+            let* α3 : M.Val (ref (core.option.Option.t i32.t)) := borrow α2 in
+            let* α4 : M.Val (core.option.Option.t core.fmt.Arguments.t) :=
               M.alloc core.option.Option.None in
             let* α5 := core.panicking.assert_failed kind α1 α3 α4 in
             M.alloc α5 in
-          let* α0 : ltac:(refine (M.Val unit)) := M.alloc tt in
+          let* α0 : M.Val unit := M.alloc tt in
           never_to_any α0
         else
           M.alloc tt
       end in
-    let* _ : ltac:(refine (M.Val unit)) :=
-      let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 3 in
+    let* _ : M.Val unit :=
+      let* α0 : M.Val i32.t := M.alloc 3 in
       let* α1 := M.read α0 in
-      let* α2 : ltac:(refine (M.Val (core.option.Option.t i32.t))) :=
+      let* α2 : M.Val (core.option.Option.t i32.t) :=
         M.alloc (core.option.Option.Some α1) in
-      let* α3 : ltac:(refine (M.Val (ref (core.option.Option.t i32.t)))) :=
-        borrow α2 in
+      let* α3 : M.Val (ref (core.option.Option.t i32.t)) := borrow α2 in
       let* α4 := M.read α3 in
-      let* α5 : ltac:(refine (M.Val (mut_ref type not implemented))) :=
-        borrow_mut v3 in
+      let* α5 : M.Val (mut_ref type not implemented) := borrow_mut v3 in
       let* α6 :=
         (core.iter.traits.iterator.Iterator.next
             (Self := type not implemented)
             (Trait := ltac:(refine _)))
           α5 in
-      let* α7 : ltac:(refine (M.Val (core.option.Option.t i32.t))) :=
-        M.alloc α6 in
-      let* α8 : ltac:(refine (M.Val (ref (core.option.Option.t i32.t)))) :=
-        borrow α7 in
+      let* α7 : M.Val (core.option.Option.t i32.t) := M.alloc α6 in
+      let* α8 : M.Val (ref (core.option.Option.t i32.t)) := borrow α7 in
       let* α9 := M.read α8 in
       let* α10 :
-          ltac:(refine
-            (M.Val
-              ((ref (core.option.Option.t i32.t))
-              *
-              (ref (core.option.Option.t i32.t))))) :=
+          M.Val
+            ((ref (core.option.Option.t i32.t))
+            *
+            (ref (core.option.Option.t i32.t))) :=
         M.alloc (α4, α9) in
       let* α11 := M.read α10 in
       match α11 with
       | (left_val, right_val) =>
         let* right_val := M.alloc right_val in
         let* left_val := M.alloc left_val in
-        let* α0 : ltac:(refine (M.Val (core.option.Option.t i32.t))) :=
-          deref left_val in
-        let* α1 : ltac:(refine (M.Val (ref (core.option.Option.t i32.t)))) :=
-          borrow α0 in
-        let* α2 : ltac:(refine (M.Val (core.option.Option.t i32.t))) :=
-          deref right_val in
-        let* α3 : ltac:(refine (M.Val (ref (core.option.Option.t i32.t)))) :=
-          borrow α2 in
+        let* α0 : M.Val (core.option.Option.t i32.t) := deref left_val in
+        let* α1 : M.Val (ref (core.option.Option.t i32.t)) := borrow α0 in
+        let* α2 : M.Val (core.option.Option.t i32.t) := deref right_val in
+        let* α3 : M.Val (ref (core.option.Option.t i32.t)) := borrow α2 in
         let* α4 :=
           (core.cmp.PartialEq.eq
               (Self := core.option.Option.t i32.t)
               (Trait := ltac:(refine _)))
             α1
             α3 in
-        let* α5 : ltac:(refine (M.Val bool.t)) := M.alloc α4 in
-        let* α6 : ltac:(refine (M.Val bool.t)) := UnOp.not α5 in
-        let* α7 : ltac:(refine (M.Val bool.t)) := use α6 in
+        let* α5 : M.Val bool.t := M.alloc α4 in
+        let* α6 : M.Val bool.t := UnOp.not α5 in
+        let* α7 : M.Val bool.t := use α6 in
         let* α8 := M.read α7 in
         if (α8 : bool) then
-          let* kind : ltac:(refine (M.Val core.panicking.AssertKind.t)) :=
+          let* kind : M.Val core.panicking.AssertKind.t :=
             M.alloc core.panicking.AssertKind.Eq in
-          let* _ : ltac:(refine (M.Val never.t)) :=
-            let* α0 : ltac:(refine (M.Val (core.option.Option.t i32.t))) :=
-              deref left_val in
-            let* α1 :
-                ltac:(refine (M.Val (ref (core.option.Option.t i32.t)))) :=
-              borrow α0 in
-            let* α2 : ltac:(refine (M.Val (core.option.Option.t i32.t))) :=
-              deref right_val in
-            let* α3 :
-                ltac:(refine (M.Val (ref (core.option.Option.t i32.t)))) :=
-              borrow α2 in
-            let* α4 :
-                ltac:(refine
-                  (M.Val (core.option.Option.t core.fmt.Arguments.t))) :=
+          let* _ : M.Val never.t :=
+            let* α0 : M.Val (core.option.Option.t i32.t) := deref left_val in
+            let* α1 : M.Val (ref (core.option.Option.t i32.t)) := borrow α0 in
+            let* α2 : M.Val (core.option.Option.t i32.t) := deref right_val in
+            let* α3 : M.Val (ref (core.option.Option.t i32.t)) := borrow α2 in
+            let* α4 : M.Val (core.option.Option.t core.fmt.Arguments.t) :=
               M.alloc core.option.Option.None in
             let* α5 := core.panicking.assert_failed kind α1 α3 α4 in
             M.alloc α5 in
-          let* α0 : ltac:(refine (M.Val unit)) := M.alloc tt in
+          let* α0 : M.Val unit := M.alloc tt in
           never_to_any α0
         else
           M.alloc tt
       end in
-    let* _ : ltac:(refine (M.Val unit)) :=
-      let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 4 in
+    let* _ : M.Val unit :=
+      let* α0 : M.Val i32.t := M.alloc 4 in
       let* α1 := M.read α0 in
-      let* α2 : ltac:(refine (M.Val (core.option.Option.t i32.t))) :=
+      let* α2 : M.Val (core.option.Option.t i32.t) :=
         M.alloc (core.option.Option.Some α1) in
-      let* α3 : ltac:(refine (M.Val (ref (core.option.Option.t i32.t)))) :=
-        borrow α2 in
+      let* α3 : M.Val (ref (core.option.Option.t i32.t)) := borrow α2 in
       let* α4 := M.read α3 in
-      let* α5 : ltac:(refine (M.Val (mut_ref type not implemented))) :=
-        borrow_mut v3 in
+      let* α5 : M.Val (mut_ref type not implemented) := borrow_mut v3 in
       let* α6 :=
         (core.iter.traits.iterator.Iterator.next
             (Self := type not implemented)
             (Trait := ltac:(refine _)))
           α5 in
-      let* α7 : ltac:(refine (M.Val (core.option.Option.t i32.t))) :=
-        M.alloc α6 in
-      let* α8 : ltac:(refine (M.Val (ref (core.option.Option.t i32.t)))) :=
-        borrow α7 in
+      let* α7 : M.Val (core.option.Option.t i32.t) := M.alloc α6 in
+      let* α8 : M.Val (ref (core.option.Option.t i32.t)) := borrow α7 in
       let* α9 := M.read α8 in
       let* α10 :
-          ltac:(refine
-            (M.Val
-              ((ref (core.option.Option.t i32.t))
-              *
-              (ref (core.option.Option.t i32.t))))) :=
+          M.Val
+            ((ref (core.option.Option.t i32.t))
+            *
+            (ref (core.option.Option.t i32.t))) :=
         M.alloc (α4, α9) in
       let* α11 := M.read α10 in
       match α11 with
       | (left_val, right_val) =>
         let* right_val := M.alloc right_val in
         let* left_val := M.alloc left_val in
-        let* α0 : ltac:(refine (M.Val (core.option.Option.t i32.t))) :=
-          deref left_val in
-        let* α1 : ltac:(refine (M.Val (ref (core.option.Option.t i32.t)))) :=
-          borrow α0 in
-        let* α2 : ltac:(refine (M.Val (core.option.Option.t i32.t))) :=
-          deref right_val in
-        let* α3 : ltac:(refine (M.Val (ref (core.option.Option.t i32.t)))) :=
-          borrow α2 in
+        let* α0 : M.Val (core.option.Option.t i32.t) := deref left_val in
+        let* α1 : M.Val (ref (core.option.Option.t i32.t)) := borrow α0 in
+        let* α2 : M.Val (core.option.Option.t i32.t) := deref right_val in
+        let* α3 : M.Val (ref (core.option.Option.t i32.t)) := borrow α2 in
         let* α4 :=
           (core.cmp.PartialEq.eq
               (Self := core.option.Option.t i32.t)
               (Trait := ltac:(refine _)))
             α1
             α3 in
-        let* α5 : ltac:(refine (M.Val bool.t)) := M.alloc α4 in
-        let* α6 : ltac:(refine (M.Val bool.t)) := UnOp.not α5 in
-        let* α7 : ltac:(refine (M.Val bool.t)) := use α6 in
+        let* α5 : M.Val bool.t := M.alloc α4 in
+        let* α6 : M.Val bool.t := UnOp.not α5 in
+        let* α7 : M.Val bool.t := use α6 in
         let* α8 := M.read α7 in
         if (α8 : bool) then
-          let* kind : ltac:(refine (M.Val core.panicking.AssertKind.t)) :=
+          let* kind : M.Val core.panicking.AssertKind.t :=
             M.alloc core.panicking.AssertKind.Eq in
-          let* _ : ltac:(refine (M.Val never.t)) :=
-            let* α0 : ltac:(refine (M.Val (core.option.Option.t i32.t))) :=
-              deref left_val in
-            let* α1 :
-                ltac:(refine (M.Val (ref (core.option.Option.t i32.t)))) :=
-              borrow α0 in
-            let* α2 : ltac:(refine (M.Val (core.option.Option.t i32.t))) :=
-              deref right_val in
-            let* α3 :
-                ltac:(refine (M.Val (ref (core.option.Option.t i32.t)))) :=
-              borrow α2 in
-            let* α4 :
-                ltac:(refine
-                  (M.Val (core.option.Option.t core.fmt.Arguments.t))) :=
+          let* _ : M.Val never.t :=
+            let* α0 : M.Val (core.option.Option.t i32.t) := deref left_val in
+            let* α1 : M.Val (ref (core.option.Option.t i32.t)) := borrow α0 in
+            let* α2 : M.Val (core.option.Option.t i32.t) := deref right_val in
+            let* α3 : M.Val (ref (core.option.Option.t i32.t)) := borrow α2 in
+            let* α4 : M.Val (core.option.Option.t core.fmt.Arguments.t) :=
               M.alloc core.option.Option.None in
             let* α5 := core.panicking.assert_failed kind α1 α3 α4 in
             M.alloc α5 in
-          let* α0 : ltac:(refine (M.Val unit)) := M.alloc tt in
+          let* α0 : M.Val unit := M.alloc tt in
           never_to_any α0
         else
           M.alloc tt
       end in
-    let* _ : ltac:(refine (M.Val unit)) :=
-      let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 5 in
+    let* _ : M.Val unit :=
+      let* α0 : M.Val i32.t := M.alloc 5 in
       let* α1 := M.read α0 in
-      let* α2 : ltac:(refine (M.Val (core.option.Option.t i32.t))) :=
+      let* α2 : M.Val (core.option.Option.t i32.t) :=
         M.alloc (core.option.Option.Some α1) in
-      let* α3 : ltac:(refine (M.Val (ref (core.option.Option.t i32.t)))) :=
-        borrow α2 in
+      let* α3 : M.Val (ref (core.option.Option.t i32.t)) := borrow α2 in
       let* α4 := M.read α3 in
-      let* α5 : ltac:(refine (M.Val (mut_ref type not implemented))) :=
-        borrow_mut v3 in
+      let* α5 : M.Val (mut_ref type not implemented) := borrow_mut v3 in
       let* α6 :=
         (core.iter.traits.iterator.Iterator.next
             (Self := type not implemented)
             (Trait := ltac:(refine _)))
           α5 in
-      let* α7 : ltac:(refine (M.Val (core.option.Option.t i32.t))) :=
-        M.alloc α6 in
-      let* α8 : ltac:(refine (M.Val (ref (core.option.Option.t i32.t)))) :=
-        borrow α7 in
+      let* α7 : M.Val (core.option.Option.t i32.t) := M.alloc α6 in
+      let* α8 : M.Val (ref (core.option.Option.t i32.t)) := borrow α7 in
       let* α9 := M.read α8 in
       let* α10 :
-          ltac:(refine
-            (M.Val
-              ((ref (core.option.Option.t i32.t))
-              *
-              (ref (core.option.Option.t i32.t))))) :=
+          M.Val
+            ((ref (core.option.Option.t i32.t))
+            *
+            (ref (core.option.Option.t i32.t))) :=
         M.alloc (α4, α9) in
       let* α11 := M.read α10 in
       match α11 with
       | (left_val, right_val) =>
         let* right_val := M.alloc right_val in
         let* left_val := M.alloc left_val in
-        let* α0 : ltac:(refine (M.Val (core.option.Option.t i32.t))) :=
-          deref left_val in
-        let* α1 : ltac:(refine (M.Val (ref (core.option.Option.t i32.t)))) :=
-          borrow α0 in
-        let* α2 : ltac:(refine (M.Val (core.option.Option.t i32.t))) :=
-          deref right_val in
-        let* α3 : ltac:(refine (M.Val (ref (core.option.Option.t i32.t)))) :=
-          borrow α2 in
+        let* α0 : M.Val (core.option.Option.t i32.t) := deref left_val in
+        let* α1 : M.Val (ref (core.option.Option.t i32.t)) := borrow α0 in
+        let* α2 : M.Val (core.option.Option.t i32.t) := deref right_val in
+        let* α3 : M.Val (ref (core.option.Option.t i32.t)) := borrow α2 in
         let* α4 :=
           (core.cmp.PartialEq.eq
               (Self := core.option.Option.t i32.t)
               (Trait := ltac:(refine _)))
             α1
             α3 in
-        let* α5 : ltac:(refine (M.Val bool.t)) := M.alloc α4 in
-        let* α6 : ltac:(refine (M.Val bool.t)) := UnOp.not α5 in
-        let* α7 : ltac:(refine (M.Val bool.t)) := use α6 in
+        let* α5 : M.Val bool.t := M.alloc α4 in
+        let* α6 : M.Val bool.t := UnOp.not α5 in
+        let* α7 : M.Val bool.t := use α6 in
         let* α8 := M.read α7 in
         if (α8 : bool) then
-          let* kind : ltac:(refine (M.Val core.panicking.AssertKind.t)) :=
+          let* kind : M.Val core.panicking.AssertKind.t :=
             M.alloc core.panicking.AssertKind.Eq in
-          let* _ : ltac:(refine (M.Val never.t)) :=
-            let* α0 : ltac:(refine (M.Val (core.option.Option.t i32.t))) :=
-              deref left_val in
-            let* α1 :
-                ltac:(refine (M.Val (ref (core.option.Option.t i32.t)))) :=
-              borrow α0 in
-            let* α2 : ltac:(refine (M.Val (core.option.Option.t i32.t))) :=
-              deref right_val in
-            let* α3 :
-                ltac:(refine (M.Val (ref (core.option.Option.t i32.t)))) :=
-              borrow α2 in
-            let* α4 :
-                ltac:(refine
-                  (M.Val (core.option.Option.t core.fmt.Arguments.t))) :=
+          let* _ : M.Val never.t :=
+            let* α0 : M.Val (core.option.Option.t i32.t) := deref left_val in
+            let* α1 : M.Val (ref (core.option.Option.t i32.t)) := borrow α0 in
+            let* α2 : M.Val (core.option.Option.t i32.t) := deref right_val in
+            let* α3 : M.Val (ref (core.option.Option.t i32.t)) := borrow α2 in
+            let* α4 : M.Val (core.option.Option.t core.fmt.Arguments.t) :=
               M.alloc core.option.Option.None in
             let* α5 := core.panicking.assert_failed kind α1 α3 α4 in
             M.alloc α5 in
-          let* α0 : ltac:(refine (M.Val unit)) := M.alloc tt in
+          let* α0 : M.Val unit := M.alloc tt in
           never_to_any α0
         else
           M.alloc tt
       end in
-    let* _ : ltac:(refine (M.Val unit)) :=
-      let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
-          M.alloc [ mk_str "all done
+    let* _ : M.Val unit :=
+      let* _ : M.Val unit :=
+        let* α0 : M.Val (array (ref str.t)) := M.alloc [ mk_str "all done
 " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
-          borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
+        let* α1 : M.Val (ref (array (ref str.t))) := borrow α0 in
+        let* α2 : M.Val (ref (slice (ref str.t))) :=
           pointer_coercion "Unsize" α1 in
         let* α3 := core.fmt.Arguments.t::["new_const"] α2 in
-        let* α4 : ltac:(refine (M.Val core.fmt.Arguments.t)) := M.alloc α3 in
+        let* α4 : M.Val core.fmt.Arguments.t := M.alloc α3 in
         let* α5 := std.io.stdio._print α4 in
         M.alloc α5 in
       M.alloc tt in

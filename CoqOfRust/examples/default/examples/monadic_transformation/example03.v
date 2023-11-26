@@ -10,31 +10,25 @@ fn main() {
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
   M.function_body
-    (let* _ : ltac:(refine (M.Val (((i32.t * i32.t) * i32.t) * i32.t))) :=
-      let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 1 in
+    (let* _ : M.Val (((i32.t * i32.t) * i32.t) * i32.t) :=
+      let* α0 : M.Val i32.t := M.alloc 1 in
       let* α1 := M.read α0 in
-      let* α2 : ltac:(refine (M.Val i32.t)) := M.alloc 2 in
+      let* α2 : M.Val i32.t := M.alloc 2 in
       let* α3 := M.read α2 in
-      let* α4 : ltac:(refine (M.Val i32.t)) := M.alloc 3 in
+      let* α4 : M.Val i32.t := M.alloc 3 in
       let* α5 := M.read α4 in
-      let* α6 : ltac:(refine (M.Val i32.t)) := M.alloc 4 in
+      let* α6 : M.Val i32.t := M.alloc 4 in
       let* α7 := M.read α6 in
       M.alloc (α1, α3, α5, α7) in
-    let* _ :
-        ltac:(refine (M.Val (alloc.vec.Vec.t i32.t alloc.alloc.Global.t))) :=
-      let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 5 in
-      let* α1 : ltac:(refine (M.Val i32.t)) := M.alloc 6 in
-      let* α2 : ltac:(refine (M.Val i32.t)) := M.alloc 7 in
-      let* α3 : ltac:(refine (M.Val i32.t)) := M.alloc 8 in
-      let* α4 : ltac:(refine (M.Val (array i32.t))) :=
-        M.alloc [ α0; α1; α2; α3 ] in
-      let* α5 :
-          ltac:(refine
-            (M.Val (alloc.boxed.Box.t (array i32.t) alloc.alloc.Global.t))) :=
+    let* _ : M.Val (alloc.vec.Vec.t i32.t alloc.alloc.Global.t) :=
+      let* α0 : M.Val i32.t := M.alloc 5 in
+      let* α1 : M.Val i32.t := M.alloc 6 in
+      let* α2 : M.Val i32.t := M.alloc 7 in
+      let* α3 : M.Val i32.t := M.alloc 8 in
+      let* α4 : M.Val (array i32.t) := M.alloc [ α0; α1; α2; α3 ] in
+      let* α5 : M.Val (alloc.boxed.Box.t (array i32.t) alloc.alloc.Global.t) :=
         (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α4 in
-      let* α6 :
-          ltac:(refine
-            (M.Val (alloc.boxed.Box.t (slice i32.t) alloc.alloc.Global.t))) :=
+      let* α6 : M.Val (alloc.boxed.Box.t (slice i32.t) alloc.alloc.Global.t) :=
         pointer_coercion "Unsize" α5 in
       let* α7 := (slice i32.t)::["into_vec"] α6 in
       M.alloc α7 in

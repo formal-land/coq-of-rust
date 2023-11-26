@@ -41,30 +41,27 @@ Definition main : M unit := M.function_body (M.alloc tt).
 *)
 Definition foo (arg : M.Val i32.t) : M i32.t :=
   M.function_body
-    (let* _ : ltac:(refine (M.Val unit)) :=
-      let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
+    (let* _ : M.Val unit :=
+      let* _ : M.Val unit :=
+        let* α0 : M.Val (array (ref str.t)) :=
           M.alloc [ mk_str "arg = "; mk_str "
 " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
-          borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
+        let* α1 : M.Val (ref (array (ref str.t))) := borrow α0 in
+        let* α2 : M.Val (ref (slice (ref str.t))) :=
           pointer_coercion "Unsize" α1 in
-        let* α3 : ltac:(refine (M.Val (ref i32.t))) := borrow arg in
+        let* α3 : M.Val (ref i32.t) := borrow arg in
         let* α4 := core.fmt.rt.Argument.t::["new_display"] α3 in
-        let* α5 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) := M.alloc α4 in
-        let* α6 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
-          M.alloc [ α5 ] in
-        let* α7 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
-          borrow α6 in
-        let* α8 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
+        let* α5 : M.Val core.fmt.rt.Argument.t := M.alloc α4 in
+        let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
+        let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) := borrow α6 in
+        let* α8 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
           pointer_coercion "Unsize" α7 in
         let* α9 := core.fmt.Arguments.t::["new_v1"] α2 α8 in
-        let* α10 : ltac:(refine (M.Val core.fmt.Arguments.t)) := M.alloc α9 in
+        let* α10 : M.Val core.fmt.Arguments.t := M.alloc α9 in
         let* α11 := std.io.stdio._print α10 in
         M.alloc α11 in
       M.alloc tt in
-    let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 2 in
+    let* α0 : M.Val i32.t := M.alloc 2 in
     BinOp.mul arg α0).
 
 (*
@@ -89,6 +86,6 @@ Definition foo (arg : M.Val i32.t) : M i32.t :=
 *)
 Definition call_foo (arg : M.Val i32.t) : M i32.t :=
   M.function_body
-    (let* result : ltac:(refine (M.Val unit)) := M.alloc tt in
+    (let* result : M.Val unit := M.alloc tt in
     let _ := InlineAssembly in
     M.pure result).

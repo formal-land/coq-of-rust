@@ -21,9 +21,7 @@ fn main() {
 Definition main : M unit :=
   M.function_body
     (let* x :
-        ltac:(refine
-          (M.Val
-            enums_type_aliases_v1.VeryVerboseEnumOfThingsToDoWithNumbers.t)) :=
+        M.Val enums_type_aliases_v1.VeryVerboseEnumOfThingsToDoWithNumbers.t :=
       M.alloc
         enums_type_aliases_v1.VeryVerboseEnumOfThingsToDoWithNumbers.Add in
     M.alloc tt).

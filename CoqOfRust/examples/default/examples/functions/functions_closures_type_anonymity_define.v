@@ -29,8 +29,8 @@ Definition apply
     (f : M.Val F)
     : M unit :=
   M.function_body
-    (let* _ : ltac:(refine (M.Val unit)) :=
-      let* α0 : ltac:(refine (M.Val unit)) := M.alloc tt in
+    (let* _ : M.Val unit :=
+      let* α0 : M.Val unit := M.alloc tt in
       let* α1 :=
         (core.ops.function.FnOnce.call_once
             (Self := F)

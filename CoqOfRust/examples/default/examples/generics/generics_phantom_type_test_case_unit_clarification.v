@@ -19,7 +19,7 @@ Section Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificati
       : M ltac:(core.fmt.Result) :=
     M.function_body
       (let* α0 := "unimplemented parent_kind" in
-      let* α1 : ltac:(refine (M.Val never.t)) := M.alloc α0 in
+      let* α1 : M.Val never.t := M.alloc α0 in
       never_to_any α1).
   
   Global Instance AssociatedFunction_fmt :
@@ -84,7 +84,7 @@ Section Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificati
       : M ltac:(core.fmt.Result) :=
     M.function_body
       (let* α0 := "unimplemented parent_kind" in
-      let* α1 : ltac:(refine (M.Val never.t)) := M.alloc α0 in
+      let* α1 : M.Val never.t := M.alloc α0 in
       never_to_any α1).
   
   Global Instance AssociatedFunction_fmt :
@@ -166,32 +166,28 @@ Section Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificati
       (f : M.Val (mut_ref core.fmt.Formatter.t))
       : M ltac:(core.fmt.Result) :=
     M.function_body
-      (let* α0 : ltac:(refine (M.Val core.fmt.Formatter.t)) := deref f in
-      let* α1 : ltac:(refine (M.Val (mut_ref core.fmt.Formatter.t))) :=
-        borrow_mut α0 in
-      let* α2 : ltac:(refine (M.Val str.t)) := deref (mk_str "Length") in
-      let* α3 : ltac:(refine (M.Val (ref str.t))) := borrow α2 in
+      (let* α0 : M.Val core.fmt.Formatter.t := deref f in
+      let* α1 : M.Val (mut_ref core.fmt.Formatter.t) := borrow_mut α0 in
+      let* α2 : M.Val str.t := deref (mk_str "Length") in
+      let* α3 : M.Val (ref str.t) := borrow α2 in
       let* α4 :
-          ltac:(refine
-            (M.Val
-              (generics_phantom_type_test_case_unit_clarification.Length.t
-                Unit))) :=
+          M.Val
+            (generics_phantom_type_test_case_unit_clarification.Length.t
+              Unit) :=
         deref self in
-      let* α5 : ltac:(refine (M.Val (ref f64.t))) := borrow α4.["0"] in
-      let* α6 : ltac:(refine (M.Val (ref type not implemented))) :=
+      let* α5 : M.Val (ref f64.t) := borrow α4.["0"] in
+      let* α6 : M.Val (ref type not implemented) :=
         pointer_coercion "Unsize" α5 in
       let* α7 :
-          ltac:(refine
-            (M.Val
-              (generics_phantom_type_test_case_unit_clarification.Length.t
-                Unit))) :=
+          M.Val
+            (generics_phantom_type_test_case_unit_clarification.Length.t
+              Unit) :=
         deref self in
-      let* α8 : ltac:(refine (M.Val (ref (core.marker.PhantomData.t Unit)))) :=
+      let* α8 : M.Val (ref (core.marker.PhantomData.t Unit)) :=
         borrow α7.["1"] in
-      let* α9 :
-          ltac:(refine (M.Val (ref (ref (core.marker.PhantomData.t Unit))))) :=
+      let* α9 : M.Val (ref (ref (core.marker.PhantomData.t Unit))) :=
         borrow α8 in
-      let* α10 : ltac:(refine (M.Val (ref type not implemented))) :=
+      let* α10 : M.Val (ref type not implemented) :=
         pointer_coercion "Unsize" α9 in
       let* α11 :=
         core.fmt.Formatter.t::["debug_tuple_field2_finish"] α1 α3 α6 α10 in
@@ -225,22 +221,20 @@ Section Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarifica
       : M (generics_phantom_type_test_case_unit_clarification.Length.t Unit) :=
     M.function_body
       (let* α0 :
-          ltac:(refine
-            (M.Val
-              (generics_phantom_type_test_case_unit_clarification.Length.t
-                Unit))) :=
+          M.Val
+            (generics_phantom_type_test_case_unit_clarification.Length.t
+              Unit) :=
         deref self in
-      let* α1 : ltac:(refine (M.Val (ref f64.t))) := borrow α0.["0"] in
+      let* α1 : M.Val (ref f64.t) := borrow α0.["0"] in
       let* α2 :=
         (core.clone.Clone.clone (Self := f64.t) (Trait := ltac:(refine _)))
           α1 in
       let* α3 :
-          ltac:(refine
-            (M.Val
-              (generics_phantom_type_test_case_unit_clarification.Length.t
-                Unit))) :=
+          M.Val
+            (generics_phantom_type_test_case_unit_clarification.Length.t
+              Unit) :=
         deref self in
-      let* α4 : ltac:(refine (M.Val (ref (core.marker.PhantomData.t Unit)))) :=
+      let* α4 : M.Val (ref (core.marker.PhantomData.t Unit)) :=
         borrow α3.["1"] in
       let* α5 :=
         (core.clone.Clone.clone
@@ -305,8 +299,7 @@ Section Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarifi
           (generics_phantom_type_test_case_unit_clarification.Length.t Unit))
       : M (generics_phantom_type_test_case_unit_clarification.Length.t Unit) :=
     M.function_body
-      (let* α0 : ltac:(refine (M.Val f64.t)) :=
-        BinOp.add self.["0"] rhs.["0"] in
+      (let* α0 : M.Val f64.t := BinOp.add self.["0"] rhs.["0"] in
       let* α1 := M.read α0 in
       M.alloc
         (generics_phantom_type_test_case_unit_clarification.Length.Build_t
@@ -354,32 +347,29 @@ fn main() {
 Definition main : M unit :=
   M.function_body
     (let* one_foot :
-        ltac:(refine
-          (M.Val
-            (generics_phantom_type_test_case_unit_clarification.Length.t
-              generics_phantom_type_test_case_unit_clarification.Inch.t))) :=
-      let* α0 : ltac:(refine (M.Val f64.t)) := M.alloc 12 (* 12.0 *) in
+        M.Val
+          (generics_phantom_type_test_case_unit_clarification.Length.t
+            generics_phantom_type_test_case_unit_clarification.Inch.t) :=
+      let* α0 : M.Val f64.t := M.alloc 12 (* 12.0 *) in
       let* α1 := M.read α0 in
       M.alloc
         (generics_phantom_type_test_case_unit_clarification.Length.Build_t
           α1
           core.marker.PhantomData.Build_t) in
     let* one_meter :
-        ltac:(refine
-          (M.Val
-            (generics_phantom_type_test_case_unit_clarification.Length.t
-              generics_phantom_type_test_case_unit_clarification.Mm.t))) :=
-      let* α0 : ltac:(refine (M.Val f64.t)) := M.alloc 1000 (* 1000.0 *) in
+        M.Val
+          (generics_phantom_type_test_case_unit_clarification.Length.t
+            generics_phantom_type_test_case_unit_clarification.Mm.t) :=
+      let* α0 : M.Val f64.t := M.alloc 1000 (* 1000.0 *) in
       let* α1 := M.read α0 in
       M.alloc
         (generics_phantom_type_test_case_unit_clarification.Length.Build_t
           α1
           core.marker.PhantomData.Build_t) in
     let* two_feet :
-        ltac:(refine
-          (M.Val
-            (generics_phantom_type_test_case_unit_clarification.Length.t
-              generics_phantom_type_test_case_unit_clarification.Inch.t))) :=
+        M.Val
+          (generics_phantom_type_test_case_unit_clarification.Length.t
+            generics_phantom_type_test_case_unit_clarification.Inch.t) :=
       let* α0 :=
         (core.ops.arith.Add.add
             (Self :=
@@ -390,10 +380,9 @@ Definition main : M unit :=
           one_foot in
       M.alloc α0 in
     let* two_meters :
-        ltac:(refine
-          (M.Val
-            (generics_phantom_type_test_case_unit_clarification.Length.t
-              generics_phantom_type_test_case_unit_clarification.Mm.t))) :=
+        M.Val
+          (generics_phantom_type_test_case_unit_clarification.Length.t
+            generics_phantom_type_test_case_unit_clarification.Mm.t) :=
       let* α0 :=
         (core.ops.arith.Add.add
             (Self :=
@@ -403,50 +392,43 @@ Definition main : M unit :=
           one_meter
           one_meter in
       M.alloc α0 in
-    let* _ : ltac:(refine (M.Val unit)) :=
-      let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
+    let* _ : M.Val unit :=
+      let* _ : M.Val unit :=
+        let* α0 : M.Val (array (ref str.t)) :=
           M.alloc [ mk_str "one foot + one_foot = "; mk_str " in
 " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
-          borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
+        let* α1 : M.Val (ref (array (ref str.t))) := borrow α0 in
+        let* α2 : M.Val (ref (slice (ref str.t))) :=
           pointer_coercion "Unsize" α1 in
-        let* α3 : ltac:(refine (M.Val (ref f64.t))) := borrow two_feet.["0"] in
+        let* α3 : M.Val (ref f64.t) := borrow two_feet.["0"] in
         let* α4 := core.fmt.rt.Argument.t::["new_debug"] α3 in
-        let* α5 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) := M.alloc α4 in
-        let* α6 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
-          M.alloc [ α5 ] in
-        let* α7 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
-          borrow α6 in
-        let* α8 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
+        let* α5 : M.Val core.fmt.rt.Argument.t := M.alloc α4 in
+        let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
+        let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) := borrow α6 in
+        let* α8 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
           pointer_coercion "Unsize" α7 in
         let* α9 := core.fmt.Arguments.t::["new_v1"] α2 α8 in
-        let* α10 : ltac:(refine (M.Val core.fmt.Arguments.t)) := M.alloc α9 in
+        let* α10 : M.Val core.fmt.Arguments.t := M.alloc α9 in
         let* α11 := std.io.stdio._print α10 in
         M.alloc α11 in
       M.alloc tt in
-    let* _ : ltac:(refine (M.Val unit)) :=
-      let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
+    let* _ : M.Val unit :=
+      let* _ : M.Val unit :=
+        let* α0 : M.Val (array (ref str.t)) :=
           M.alloc [ mk_str "one meter + one_meter = "; mk_str " mm
 " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
-          borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
+        let* α1 : M.Val (ref (array (ref str.t))) := borrow α0 in
+        let* α2 : M.Val (ref (slice (ref str.t))) :=
           pointer_coercion "Unsize" α1 in
-        let* α3 : ltac:(refine (M.Val (ref f64.t))) :=
-          borrow two_meters.["0"] in
+        let* α3 : M.Val (ref f64.t) := borrow two_meters.["0"] in
         let* α4 := core.fmt.rt.Argument.t::["new_debug"] α3 in
-        let* α5 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) := M.alloc α4 in
-        let* α6 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
-          M.alloc [ α5 ] in
-        let* α7 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
-          borrow α6 in
-        let* α8 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
+        let* α5 : M.Val core.fmt.rt.Argument.t := M.alloc α4 in
+        let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
+        let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) := borrow α6 in
+        let* α8 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
           pointer_coercion "Unsize" α7 in
         let* α9 := core.fmt.Arguments.t::["new_v1"] α2 α8 in
-        let* α10 : ltac:(refine (M.Val core.fmt.Arguments.t)) := M.alloc α9 in
+        let* α10 : M.Val core.fmt.Arguments.t := M.alloc α9 in
         let* α11 := std.io.stdio._print α10 in
         M.alloc α11 in
       M.alloc tt in

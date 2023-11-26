@@ -13,21 +13,21 @@ fn main() {
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
   M.function_body
-    (let* raw_p : ltac:(refine (M.Val (ref u32.t))) :=
-      let* α0 : ltac:(refine (M.Val u32.t)) := M.alloc 10 in
-      let* α1 : ltac:(refine (M.Val (ref u32.t))) := addr_of α0 in
+    (let* raw_p : M.Val (ref u32.t) :=
+      let* α0 : M.Val u32.t := M.alloc 10 in
+      let* α1 : M.Val (ref u32.t) := addr_of α0 in
       M.copy α1 in
-    let* _ : ltac:(refine (M.Val unit)) :=
-      let* α0 : ltac:(refine (M.Val u32.t)) := deref raw_p in
-      let* α1 : ltac:(refine (M.Val u32.t)) := M.alloc 10 in
-      let* α2 : ltac:(refine (M.Val bool.t)) := BinOp.eq α0 α1 in
-      let* α3 : ltac:(refine (M.Val bool.t)) := UnOp.not α2 in
-      let* α4 : ltac:(refine (M.Val bool.t)) := use α3 in
+    let* _ : M.Val unit :=
+      let* α0 : M.Val u32.t := deref raw_p in
+      let* α1 : M.Val u32.t := M.alloc 10 in
+      let* α2 : M.Val bool.t := BinOp.eq α0 α1 in
+      let* α3 : M.Val bool.t := UnOp.not α2 in
+      let* α4 : M.Val bool.t := use α3 in
       let* α5 := M.read α4 in
       if (α5 : bool) then
         let* α0 :=
           core.panicking.panic (mk_str "assertion failed: *raw_p == 10") in
-        let* α1 : ltac:(refine (M.Val never.t)) := M.alloc α0 in
+        let* α1 : M.Val never.t := M.alloc α0 in
         never_to_any α1
       else
         M.alloc tt in

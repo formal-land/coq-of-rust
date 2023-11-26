@@ -19,24 +19,17 @@ fn main() {
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
   M.function_body
-    (let* names :
-        ltac:(refine
-          (M.Val (alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t))) :=
-      let* α0 : ltac:(refine (M.Val str.t)) := deref (mk_str "Frank") in
-      let* α1 : ltac:(refine (M.Val (ref str.t))) := borrow α0 in
-      let* α2 : ltac:(refine (M.Val str.t)) := deref (mk_str "Ferris") in
-      let* α3 : ltac:(refine (M.Val (ref str.t))) := borrow α2 in
-      let* α4 : ltac:(refine (M.Val (array (ref str.t)))) :=
-        M.alloc [ mk_str "Bob"; α1; α3 ] in
+    (let* names : M.Val (alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t) :=
+      let* α0 : M.Val str.t := deref (mk_str "Frank") in
+      let* α1 : M.Val (ref str.t) := borrow α0 in
+      let* α2 : M.Val str.t := deref (mk_str "Ferris") in
+      let* α3 : M.Val (ref str.t) := borrow α2 in
+      let* α4 : M.Val (array (ref str.t)) := M.alloc [ mk_str "Bob"; α1; α3 ] in
       let* α5 :
-          ltac:(refine
-            (M.Val
-              (alloc.boxed.Box.t (array (ref str.t)) alloc.alloc.Global.t))) :=
+          M.Val (alloc.boxed.Box.t (array (ref str.t)) alloc.alloc.Global.t) :=
         (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α4 in
       let* α6 :
-          ltac:(refine
-            (M.Val
-              (alloc.boxed.Box.t (slice (ref str.t)) alloc.alloc.Global.t))) :=
+          M.Val (alloc.boxed.Box.t (slice (ref str.t)) alloc.alloc.Global.t) :=
         pointer_coercion "Unsize" α5 in
       let* α7 := (slice (ref str.t))::["into_vec"] α6 in
       M.alloc α7 in
@@ -46,11 +39,8 @@ Definition main : M unit :=
           (Trait := ltac:(refine _)))
         names in
     let* α1 :
-        ltac:(refine
-          (M.Val
-            (alloc.vec.into_iter.IntoIter.t
-              (ref str.t)
-              alloc.alloc.Global.t))) :=
+        M.Val
+          (alloc.vec.into_iter.IntoIter.t (ref str.t) alloc.alloc.Global.t) :=
       M.alloc α0 in
     let* α2 :=
       (core.iter.traits.collect.IntoIterator.into_iter
@@ -59,26 +49,22 @@ Definition main : M unit :=
           (Trait := ltac:(refine _)))
         α1 in
     let* α3 :
-        ltac:(refine
-          (M.Val
-            (alloc.vec.into_iter.IntoIter.t
-              (ref str.t)
-              alloc.alloc.Global.t))) :=
+        M.Val
+          (alloc.vec.into_iter.IntoIter.t (ref str.t) alloc.alloc.Global.t) :=
       M.alloc α2 in
     let* α4 := M.read α3 in
-    let* α5 : ltac:(refine (M.Val unit)) :=
+    let* α5 : M.Val unit :=
       match α4 with
       | iter =>
         let* iter := M.alloc iter in
         loop
-          (let* _ : ltac:(refine (M.Val unit)) :=
+          (let* _ : M.Val unit :=
             let* α0 :
-                ltac:(refine
-                  (M.Val
-                    (mut_ref
-                      (alloc.vec.into_iter.IntoIter.t
-                        (ref str.t)
-                        alloc.alloc.Global.t)))) :=
+                M.Val
+                  (mut_ref
+                    (alloc.vec.into_iter.IntoIter.t
+                      (ref str.t)
+                      alloc.alloc.Global.t)) :=
               borrow_mut iter in
             let* α1 :=
               (core.iter.traits.iterator.Iterator.next
@@ -88,61 +74,48 @@ Definition main : M unit :=
                       alloc.alloc.Global.t)
                   (Trait := ltac:(refine _)))
                 α0 in
-            let* α2 :
-                ltac:(refine (M.Val (core.option.Option.t (ref str.t)))) :=
-              M.alloc α1 in
+            let* α2 : M.Val (core.option.Option.t (ref str.t)) := M.alloc α1 in
             let* α3 := M.read α2 in
             match α3 with
             | core.option.Option.None  =>
-              let* α0 : ltac:(refine (M.Val never.t)) := Break in
+              let* α0 : M.Val never.t := Break in
               never_to_any α0
             | core.option.Option.Some name =>
               let* name := M.alloc name in
               let* α0 := M.read name in
               match α0 with
               | _ =>
-                let* _ : ltac:(refine (M.Val unit)) :=
-                  let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
+                let* _ : M.Val unit :=
+                  let* α0 : M.Val (array (ref str.t)) :=
                     M.alloc [ mk_str "There is a rustacean among us!
 " ] in
-                  let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
-                    borrow α0 in
-                  let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
+                  let* α1 : M.Val (ref (array (ref str.t))) := borrow α0 in
+                  let* α2 : M.Val (ref (slice (ref str.t))) :=
                     pointer_coercion "Unsize" α1 in
                   let* α3 := core.fmt.Arguments.t::["new_const"] α2 in
-                  let* α4 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-                    M.alloc α3 in
+                  let* α4 : M.Val core.fmt.Arguments.t := M.alloc α3 in
                   let* α5 := std.io.stdio._print α4 in
                   M.alloc α5 in
                 M.alloc tt
               | _ =>
-                let* _ : ltac:(refine (M.Val unit)) :=
-                  let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
+                let* _ : M.Val unit :=
+                  let* α0 : M.Val (array (ref str.t)) :=
                     M.alloc [ mk_str "Hello "; mk_str "
 " ] in
-                  let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
-                    borrow α0 in
-                  let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
+                  let* α1 : M.Val (ref (array (ref str.t))) := borrow α0 in
+                  let* α2 : M.Val (ref (slice (ref str.t))) :=
                     pointer_coercion "Unsize" α1 in
-                  let* α3 : ltac:(refine (M.Val (ref (ref str.t)))) :=
-                    borrow name in
+                  let* α3 : M.Val (ref (ref str.t)) := borrow name in
                   let* α4 := core.fmt.rt.Argument.t::["new_display"] α3 in
-                  let* α5 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
-                    M.alloc α4 in
-                  let* α6 :
-                      ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
+                  let* α5 : M.Val core.fmt.rt.Argument.t := M.alloc α4 in
+                  let* α6 : M.Val (array core.fmt.rt.Argument.t) :=
                     M.alloc [ α5 ] in
-                  let* α7 :
-                      ltac:(refine
-                        (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
+                  let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
                     borrow α6 in
-                  let* α8 :
-                      ltac:(refine
-                        (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
+                  let* α8 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
                     pointer_coercion "Unsize" α7 in
                   let* α9 := core.fmt.Arguments.t::["new_v1"] α2 α8 in
-                  let* α10 : ltac:(refine (M.Val core.fmt.Arguments.t)) :=
-                    M.alloc α9 in
+                  let* α10 : M.Val core.fmt.Arguments.t := M.alloc α9 in
                   let* α11 := std.io.stdio._print α10 in
                   M.alloc α11 in
                 M.alloc tt

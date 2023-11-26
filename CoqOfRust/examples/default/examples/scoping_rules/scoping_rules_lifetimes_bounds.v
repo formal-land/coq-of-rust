@@ -31,17 +31,14 @@ Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_t_T.
       (f : M.Val (mut_ref core.fmt.Formatter.t))
       : M ltac:(core.fmt.Result) :=
     M.function_body
-      (let* α0 : ltac:(refine (M.Val core.fmt.Formatter.t)) := deref f in
-      let* α1 : ltac:(refine (M.Val (mut_ref core.fmt.Formatter.t))) :=
-        borrow_mut α0 in
-      let* α2 : ltac:(refine (M.Val str.t)) := deref (mk_str "Ref") in
-      let* α3 : ltac:(refine (M.Val (ref str.t))) := borrow α2 in
-      let* α4 :
-          ltac:(refine (M.Val (scoping_rules_lifetimes_bounds.Ref.t T))) :=
-        deref self in
-      let* α5 : ltac:(refine (M.Val (ref (ref T)))) := borrow α4.["0"] in
-      let* α6 : ltac:(refine (M.Val (ref (ref (ref T))))) := borrow α5 in
-      let* α7 : ltac:(refine (M.Val (ref type not implemented))) :=
+      (let* α0 : M.Val core.fmt.Formatter.t := deref f in
+      let* α1 : M.Val (mut_ref core.fmt.Formatter.t) := borrow_mut α0 in
+      let* α2 : M.Val str.t := deref (mk_str "Ref") in
+      let* α3 : M.Val (ref str.t) := borrow α2 in
+      let* α4 : M.Val (scoping_rules_lifetimes_bounds.Ref.t T) := deref self in
+      let* α5 : M.Val (ref (ref T)) := borrow α4.["0"] in
+      let* α6 : M.Val (ref (ref (ref T))) := borrow α5 in
+      let* α7 : M.Val (ref type not implemented) :=
         pointer_coercion "Unsize" α6 in
       let* α8 := core.fmt.Formatter.t::["debug_tuple_field1_finish"] α1 α3 α7 in
       M.alloc α8).
@@ -71,26 +68,23 @@ Definition print
     (t : M.Val T)
     : M unit :=
   M.function_body
-    (let* _ : ltac:(refine (M.Val unit)) :=
-      let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
+    (let* _ : M.Val unit :=
+      let* _ : M.Val unit :=
+        let* α0 : M.Val (array (ref str.t)) :=
           M.alloc [ mk_str "`print`: t is "; mk_str "
 " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
-          borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
+        let* α1 : M.Val (ref (array (ref str.t))) := borrow α0 in
+        let* α2 : M.Val (ref (slice (ref str.t))) :=
           pointer_coercion "Unsize" α1 in
-        let* α3 : ltac:(refine (M.Val (ref T))) := borrow t in
+        let* α3 : M.Val (ref T) := borrow t in
         let* α4 := core.fmt.rt.Argument.t::["new_debug"] α3 in
-        let* α5 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) := M.alloc α4 in
-        let* α6 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
-          M.alloc [ α5 ] in
-        let* α7 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
-          borrow α6 in
-        let* α8 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
+        let* α5 : M.Val core.fmt.rt.Argument.t := M.alloc α4 in
+        let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
+        let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) := borrow α6 in
+        let* α8 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
           pointer_coercion "Unsize" α7 in
         let* α9 := core.fmt.Arguments.t::["new_v1"] α2 α8 in
-        let* α10 : ltac:(refine (M.Val core.fmt.Arguments.t)) := M.alloc α9 in
+        let* α10 : M.Val core.fmt.Arguments.t := M.alloc α9 in
         let* α11 := std.io.stdio._print α10 in
         M.alloc α11 in
       M.alloc tt in
@@ -110,26 +104,23 @@ Definition print_ref
     (t : M.Val (ref T))
     : M unit :=
   M.function_body
-    (let* _ : ltac:(refine (M.Val unit)) :=
-      let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
+    (let* _ : M.Val unit :=
+      let* _ : M.Val unit :=
+        let* α0 : M.Val (array (ref str.t)) :=
           M.alloc [ mk_str "`print_ref`: t is "; mk_str "
 " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
-          borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
+        let* α1 : M.Val (ref (array (ref str.t))) := borrow α0 in
+        let* α2 : M.Val (ref (slice (ref str.t))) :=
           pointer_coercion "Unsize" α1 in
-        let* α3 : ltac:(refine (M.Val (ref (ref T)))) := borrow t in
+        let* α3 : M.Val (ref (ref T)) := borrow t in
         let* α4 := core.fmt.rt.Argument.t::["new_debug"] α3 in
-        let* α5 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) := M.alloc α4 in
-        let* α6 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
-          M.alloc [ α5 ] in
-        let* α7 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
-          borrow α6 in
-        let* α8 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
+        let* α5 : M.Val core.fmt.rt.Argument.t := M.alloc α4 in
+        let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
+        let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) := borrow α6 in
+        let* α8 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
           pointer_coercion "Unsize" α7 in
         let* α9 := core.fmt.Arguments.t::["new_v1"] α2 α8 in
-        let* α10 : ltac:(refine (M.Val core.fmt.Arguments.t)) := M.alloc α9 in
+        let* α10 : M.Val core.fmt.Arguments.t := M.alloc α9 in
         let* α11 := std.io.stdio._print α10 in
         M.alloc α11 in
       M.alloc tt in
@@ -147,22 +138,19 @@ fn main() {
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
   M.function_body
-    (let* x : ltac:(refine (M.Val i32.t)) :=
-      let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 7 in
+    (let* x : M.Val i32.t :=
+      let* α0 : M.Val i32.t := M.alloc 7 in
       M.copy α0 in
-    let* ref_x :
-        ltac:(refine (M.Val (scoping_rules_lifetimes_bounds.Ref.t i32.t))) :=
-      let* α0 : ltac:(refine (M.Val (ref i32.t))) := borrow x in
+    let* ref_x : M.Val (scoping_rules_lifetimes_bounds.Ref.t i32.t) :=
+      let* α0 : M.Val (ref i32.t) := borrow x in
       let* α1 := M.read α0 in
       M.alloc (scoping_rules_lifetimes_bounds.Ref.Build_t α1) in
-    let* _ : ltac:(refine (M.Val unit)) :=
-      let* α0 :
-          ltac:(refine
-            (M.Val (ref (scoping_rules_lifetimes_bounds.Ref.t i32.t)))) :=
+    let* _ : M.Val unit :=
+      let* α0 : M.Val (ref (scoping_rules_lifetimes_bounds.Ref.t i32.t)) :=
         borrow ref_x in
       let* α1 := scoping_rules_lifetimes_bounds.print_ref α0 in
       M.alloc α1 in
-    let* _ : ltac:(refine (M.Val unit)) :=
+    let* _ : M.Val unit :=
       let* α0 := scoping_rules_lifetimes_bounds.print ref_x in
       M.alloc α0 in
     M.alloc tt).

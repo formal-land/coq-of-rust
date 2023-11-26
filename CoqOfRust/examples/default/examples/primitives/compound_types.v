@@ -31,34 +31,34 @@ fn main() {
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
   M.function_body
-    (let* logical : ltac:(refine (M.Val bool.t)) :=
-      let* α0 : ltac:(refine (M.Val bool.t)) := M.alloc true in
+    (let* logical : M.Val bool.t :=
+      let* α0 : M.Val bool.t := M.alloc true in
       M.copy α0 in
-    let* a_float : ltac:(refine (M.Val f64.t)) :=
-      let* α0 : ltac:(refine (M.Val f64.t)) := M.alloc 1 (* 1.0 *) in
+    let* a_float : M.Val f64.t :=
+      let* α0 : M.Val f64.t := M.alloc 1 (* 1.0 *) in
       M.copy α0 in
-    let* an_integer : ltac:(refine (M.Val i32.t)) :=
-      let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 5 in
+    let* an_integer : M.Val i32.t :=
+      let* α0 : M.Val i32.t := M.alloc 5 in
       M.copy α0 in
-    let* default_float : ltac:(refine (M.Val f64.t)) :=
-      let* α0 : ltac:(refine (M.Val f64.t)) := M.alloc 3 (* 3.0 *) in
+    let* default_float : M.Val f64.t :=
+      let* α0 : M.Val f64.t := M.alloc 3 (* 3.0 *) in
       M.copy α0 in
-    let* default_integer : ltac:(refine (M.Val i32.t)) :=
-      let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 7 in
+    let* default_integer : M.Val i32.t :=
+      let* α0 : M.Val i32.t := M.alloc 7 in
       M.copy α0 in
-    let* inferred_type : ltac:(refine (M.Val i64.t)) :=
-      let* α0 : ltac:(refine (M.Val i64.t)) := M.alloc 12 in
+    let* inferred_type : M.Val i64.t :=
+      let* α0 : M.Val i64.t := M.alloc 12 in
       M.copy α0 in
-    let* _ : ltac:(refine (M.Val unit)) :=
-      let* α0 : ltac:(refine (M.Val i64.t)) := M.alloc 4294967296 in
+    let* _ : M.Val unit :=
+      let* α0 : M.Val i64.t := M.alloc 4294967296 in
       assign inferred_type α0 in
-    let* mutable : ltac:(refine (M.Val i32.t)) :=
-      let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 12 in
+    let* mutable : M.Val i32.t :=
+      let* α0 : M.Val i32.t := M.alloc 12 in
       M.copy α0 in
-    let* _ : ltac:(refine (M.Val unit)) :=
-      let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 21 in
+    let* _ : M.Val unit :=
+      let* α0 : M.Val i32.t := M.alloc 21 in
       assign mutable α0 in
-    let* mutable : ltac:(refine (M.Val bool.t)) :=
-      let* α0 : ltac:(refine (M.Val bool.t)) := M.alloc true in
+    let* mutable : M.Val bool.t :=
+      let* α0 : M.Val bool.t := M.alloc true in
       M.copy α0 in
     M.alloc tt).

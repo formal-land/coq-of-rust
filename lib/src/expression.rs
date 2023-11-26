@@ -1162,17 +1162,7 @@ impl StmtKind {
                             ]),
                             pattern.to_doc(),
                             match &init.ty {
-                                Some(ty) => concat([
-                                    text(" :"),
-                                    line(),
-                                    nest([
-                                        text("ltac:("),
-                                        text("refine"),
-                                        line(),
-                                        ty.to_coq().to_doc(true),
-                                        text(")"),
-                                    ]),
-                                ]),
+                                Some(ty) => concat([text(" :"), line(), ty.to_coq().to_doc(false)]),
                                 None => nil(),
                             },
                             text(" :="),

@@ -50,8 +50,8 @@ fn main() {
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
   M.function_body
-    (let* _ : ltac:(refine (M.Val into.Number.t)) :=
-      let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 5 in
+    (let* _ : M.Val into.Number.t :=
+      let* α0 : M.Val i32.t := M.alloc 5 in
       let* α1 :=
         (core.convert.Into.into (Self := i32.t) (Trait := ltac:(refine _)))
           α0 in

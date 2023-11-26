@@ -22,26 +22,25 @@ Section Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert
       (f : M.Val (mut_ref core.fmt.Formatter.t))
       : M ltac:(core.fmt.Result) :=
     M.function_body
-      (let* α0 : ltac:(refine (M.Val core.fmt.Formatter.t)) := deref f in
-      let* α1 : ltac:(refine (M.Val (mut_ref core.fmt.Formatter.t))) :=
-        borrow_mut α0 in
+      (let* α0 : M.Val core.fmt.Formatter.t := deref f in
+      let* α1 : M.Val (mut_ref core.fmt.Formatter.t) := borrow_mut α0 in
       let* α2 := M.read self in
-      let* α3 : ltac:(refine (M.Val (ref str.t))) :=
+      let* α3 : M.Val (ref str.t) :=
         match α2 with
         | unpacking_options_and_defaults_via_get_or_insert.Fruit.Apple  =>
-          let* α0 : ltac:(refine (M.Val str.t)) := deref (mk_str "Apple") in
+          let* α0 : M.Val str.t := deref (mk_str "Apple") in
           borrow α0
         | unpacking_options_and_defaults_via_get_or_insert.Fruit.Orange  =>
-          let* α0 : ltac:(refine (M.Val str.t)) := deref (mk_str "Orange") in
+          let* α0 : M.Val str.t := deref (mk_str "Orange") in
           borrow α0
         | unpacking_options_and_defaults_via_get_or_insert.Fruit.Banana  =>
-          let* α0 : ltac:(refine (M.Val str.t)) := deref (mk_str "Banana") in
+          let* α0 : M.Val str.t := deref (mk_str "Banana") in
           borrow α0
         | unpacking_options_and_defaults_via_get_or_insert.Fruit.Kiwi  =>
-          let* α0 : ltac:(refine (M.Val str.t)) := deref (mk_str "Kiwi") in
+          let* α0 : M.Val str.t := deref (mk_str "Kiwi") in
           borrow α0
         | unpacking_options_and_defaults_via_get_or_insert.Fruit.Lemon  =>
-          let* α0 : ltac:(refine (M.Val str.t)) := deref (mk_str "Lemon") in
+          let* α0 : M.Val str.t := deref (mk_str "Lemon") in
           borrow α0
         end in
       let* α4 := core.fmt.Formatter.t::["write_str"] α1 α3 in
@@ -75,26 +74,21 @@ fn main() {
 Definition main : M unit :=
   M.function_body
     (let* my_fruit :
-        ltac:(refine
-          (M.Val
-            (core.option.Option.t
-              unpacking_options_and_defaults_via_get_or_insert.Fruit.t))) :=
+        M.Val
+          (core.option.Option.t
+            unpacking_options_and_defaults_via_get_or_insert.Fruit.t) :=
       M.alloc core.option.Option.None in
     let* apple :
-        ltac:(refine
-          (M.Val unpacking_options_and_defaults_via_get_or_insert.Fruit.t)) :=
+        M.Val unpacking_options_and_defaults_via_get_or_insert.Fruit.t :=
       M.alloc unpacking_options_and_defaults_via_get_or_insert.Fruit.Apple in
     let* first_available_fruit :
-        ltac:(refine
-          (M.Val
-            (mut_ref
-              unpacking_options_and_defaults_via_get_or_insert.Fruit.t))) :=
+        M.Val
+          (mut_ref unpacking_options_and_defaults_via_get_or_insert.Fruit.t) :=
       let* α0 :
-          ltac:(refine
-            (M.Val
-              (mut_ref
-                (core.option.Option.t
-                  unpacking_options_and_defaults_via_get_or_insert.Fruit.t)))) :=
+          M.Val
+            (mut_ref
+              (core.option.Option.t
+                unpacking_options_and_defaults_via_get_or_insert.Fruit.t)) :=
         borrow_mut my_fruit in
       let* α1 :=
         (core.option.Option.t
@@ -102,61 +96,53 @@ Definition main : M unit :=
           α0
           apple in
       M.alloc α1 in
-    let* _ : ltac:(refine (M.Val unit)) :=
-      let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
+    let* _ : M.Val unit :=
+      let* _ : M.Val unit :=
+        let* α0 : M.Val (array (ref str.t)) :=
           M.alloc [ mk_str "my_fruit is: "; mk_str "
 " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
-          borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
+        let* α1 : M.Val (ref (array (ref str.t))) := borrow α0 in
+        let* α2 : M.Val (ref (slice (ref str.t))) :=
           pointer_coercion "Unsize" α1 in
         let* α3 :
-            ltac:(refine
-              (M.Val
-                (ref
-                  (mut_ref
-                    unpacking_options_and_defaults_via_get_or_insert.Fruit.t)))) :=
+            M.Val
+              (ref
+                (mut_ref
+                  unpacking_options_and_defaults_via_get_or_insert.Fruit.t)) :=
           borrow first_available_fruit in
         let* α4 := core.fmt.rt.Argument.t::["new_debug"] α3 in
-        let* α5 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) := M.alloc α4 in
-        let* α6 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
-          M.alloc [ α5 ] in
-        let* α7 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
-          borrow α6 in
-        let* α8 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
+        let* α5 : M.Val core.fmt.rt.Argument.t := M.alloc α4 in
+        let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
+        let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) := borrow α6 in
+        let* α8 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
           pointer_coercion "Unsize" α7 in
         let* α9 := core.fmt.Arguments.t::["new_v1"] α2 α8 in
-        let* α10 : ltac:(refine (M.Val core.fmt.Arguments.t)) := M.alloc α9 in
+        let* α10 : M.Val core.fmt.Arguments.t := M.alloc α9 in
         let* α11 := std.io.stdio._print α10 in
         M.alloc α11 in
       M.alloc tt in
-    let* _ : ltac:(refine (M.Val unit)) :=
-      let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
+    let* _ : M.Val unit :=
+      let* _ : M.Val unit :=
+        let* α0 : M.Val (array (ref str.t)) :=
           M.alloc [ mk_str "first_available_fruit is: "; mk_str "
 " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
-          borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
+        let* α1 : M.Val (ref (array (ref str.t))) := borrow α0 in
+        let* α2 : M.Val (ref (slice (ref str.t))) :=
           pointer_coercion "Unsize" α1 in
         let* α3 :
-            ltac:(refine
-              (M.Val
-                (ref
-                  (mut_ref
-                    unpacking_options_and_defaults_via_get_or_insert.Fruit.t)))) :=
+            M.Val
+              (ref
+                (mut_ref
+                  unpacking_options_and_defaults_via_get_or_insert.Fruit.t)) :=
           borrow first_available_fruit in
         let* α4 := core.fmt.rt.Argument.t::["new_debug"] α3 in
-        let* α5 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) := M.alloc α4 in
-        let* α6 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
-          M.alloc [ α5 ] in
-        let* α7 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
-          borrow α6 in
-        let* α8 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
+        let* α5 : M.Val core.fmt.rt.Argument.t := M.alloc α4 in
+        let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
+        let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) := borrow α6 in
+        let* α8 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
           pointer_coercion "Unsize" α7 in
         let* α9 := core.fmt.Arguments.t::["new_v1"] α2 α8 in
-        let* α10 : ltac:(refine (M.Val core.fmt.Arguments.t)) := M.alloc α9 in
+        let* α10 : M.Val core.fmt.Arguments.t := M.alloc α9 in
         let* α11 := std.io.stdio._print α10 in
         M.alloc α11 in
       M.alloc tt in

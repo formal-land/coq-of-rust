@@ -64,11 +64,11 @@ fn main() {
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
   M.function_body
-    (let* empty : ltac:(refine (M.Val generics_traits.Empty.t)) :=
+    (let* empty : M.Val generics_traits.Empty.t :=
       M.alloc generics_traits.Empty.Build_t in
-    let* null : ltac:(refine (M.Val generics_traits.Null.t)) :=
+    let* null : M.Val generics_traits.Null.t :=
       M.alloc generics_traits.Null.Build_t in
-    let* _ : ltac:(refine (M.Val unit)) :=
+    let* _ : M.Val unit :=
       let* α0 :=
         (generics_traits.DoubleDrop.double_drop
             (Self := generics_traits.Empty.t)

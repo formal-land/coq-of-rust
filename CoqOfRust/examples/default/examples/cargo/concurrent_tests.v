@@ -15,30 +15,26 @@ Definition foo {A : Set} (o : M.Val (core.option.Option.t A)) : M unit :=
     match α0 with
     | core.option.Option.Some _a =>
       let* _a := M.alloc _a in
-      let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
-          M.alloc [ mk_str "some
+      let* _ : M.Val unit :=
+        let* α0 : M.Val (array (ref str.t)) := M.alloc [ mk_str "some
 " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
-          borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
+        let* α1 : M.Val (ref (array (ref str.t))) := borrow α0 in
+        let* α2 : M.Val (ref (slice (ref str.t))) :=
           pointer_coercion "Unsize" α1 in
         let* α3 := core.fmt.Arguments.t::["new_const"] α2 in
-        let* α4 : ltac:(refine (M.Val core.fmt.Arguments.t)) := M.alloc α3 in
+        let* α4 : M.Val core.fmt.Arguments.t := M.alloc α3 in
         let* α5 := std.io.stdio._print α4 in
         M.alloc α5 in
       M.alloc tt
     | core.option.Option.None  =>
-      let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
-          M.alloc [ mk_str "nothing
+      let* _ : M.Val unit :=
+        let* α0 : M.Val (array (ref str.t)) := M.alloc [ mk_str "nothing
 " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
-          borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
+        let* α1 : M.Val (ref (array (ref str.t))) := borrow α0 in
+        let* α2 : M.Val (ref (slice (ref str.t))) :=
           pointer_coercion "Unsize" α1 in
         let* α3 := core.fmt.Arguments.t::["new_const"] α2 in
-        let* α4 : ltac:(refine (M.Val core.fmt.Arguments.t)) := M.alloc α3 in
+        let* α4 : M.Val core.fmt.Arguments.t := M.alloc α3 in
         let* α5 := std.io.stdio._print α4 in
         M.alloc α5 in
       M.alloc tt
@@ -63,44 +59,36 @@ Module tests.
   *)
   Definition test_file : M unit :=
     M.function_body
-      (let* file : ltac:(refine (M.Val std.fs.File.t)) :=
+      (let* file : M.Val std.fs.File.t :=
         let* α0 := std.fs.OpenOptions.t::["new"] in
-        let* α1 : ltac:(refine (M.Val std.fs.OpenOptions.t)) := M.alloc α0 in
-        let* α2 : ltac:(refine (M.Val (mut_ref std.fs.OpenOptions.t))) :=
-          borrow_mut α1 in
-        let* α3 : ltac:(refine (M.Val bool.t)) := M.alloc true in
+        let* α1 : M.Val std.fs.OpenOptions.t := M.alloc α0 in
+        let* α2 : M.Val (mut_ref std.fs.OpenOptions.t) := borrow_mut α1 in
+        let* α3 : M.Val bool.t := M.alloc true in
         let* α4 := std.fs.OpenOptions.t::["append"] α2 α3 in
-        let* α5 : ltac:(refine (M.Val (mut_ref std.fs.OpenOptions.t))) :=
-          M.alloc α4 in
-        let* α6 : ltac:(refine (M.Val std.fs.OpenOptions.t)) := deref α5 in
-        let* α7 : ltac:(refine (M.Val (mut_ref std.fs.OpenOptions.t))) :=
-          borrow_mut α6 in
-        let* α8 : ltac:(refine (M.Val bool.t)) := M.alloc true in
+        let* α5 : M.Val (mut_ref std.fs.OpenOptions.t) := M.alloc α4 in
+        let* α6 : M.Val std.fs.OpenOptions.t := deref α5 in
+        let* α7 : M.Val (mut_ref std.fs.OpenOptions.t) := borrow_mut α6 in
+        let* α8 : M.Val bool.t := M.alloc true in
         let* α9 := std.fs.OpenOptions.t::["create"] α7 α8 in
-        let* α10 : ltac:(refine (M.Val (mut_ref std.fs.OpenOptions.t))) :=
-          M.alloc α9 in
-        let* α11 : ltac:(refine (M.Val std.fs.OpenOptions.t)) := deref α10 in
-        let* α12 : ltac:(refine (M.Val (ref std.fs.OpenOptions.t))) :=
-          borrow α11 in
+        let* α10 : M.Val (mut_ref std.fs.OpenOptions.t) := M.alloc α9 in
+        let* α11 : M.Val std.fs.OpenOptions.t := deref α10 in
+        let* α12 : M.Val (ref std.fs.OpenOptions.t) := borrow α11 in
         let* α13 := std.fs.OpenOptions.t::["open"] α12 (mk_str "ferris.txt") in
         let* α14 :
-            ltac:(refine
-              (M.Val
-                (core.result.Result.t std.fs.File.t std.io.error.Error.t))) :=
+            M.Val (core.result.Result.t std.fs.File.t std.io.error.Error.t) :=
           M.alloc α13 in
-        let* α15 : ltac:(refine (M.Val str.t)) :=
-          deref (mk_str "Failed to open ferris.txt") in
-        let* α16 : ltac:(refine (M.Val (ref str.t))) := borrow α15 in
+        let* α15 : M.Val str.t := deref (mk_str "Failed to open ferris.txt") in
+        let* α16 : M.Val (ref str.t) := borrow α15 in
         let* α17 :=
           (core.result.Result.t std.fs.File.t std.io.error.Error.t)::["expect"]
             α14
             α16 in
         M.alloc α17 in
-      let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 0 in
+      let* α0 : M.Val i32.t := M.alloc 0 in
       let* α1 := M.read α0 in
-      let* α2 : ltac:(refine (M.Val i32.t)) := M.alloc 5 in
+      let* α2 : M.Val i32.t := M.alloc 5 in
       let* α3 := M.read α2 in
-      let* α4 : ltac:(refine (M.Val (core.ops.range.Range.t i32.t))) :=
+      let* α4 : M.Val (core.ops.range.Range.t i32.t) :=
         M.alloc
           {| core.ops.range.Range.start := α1; core.ops.range.Range.end := α3;
           |} in
@@ -109,45 +97,37 @@ Module tests.
             (Self := core.ops.range.Range.t i32.t)
             (Trait := ltac:(refine _)))
           α4 in
-      let* α6 : ltac:(refine (M.Val (core.ops.range.Range.t i32.t))) :=
-        M.alloc α5 in
+      let* α6 : M.Val (core.ops.range.Range.t i32.t) := M.alloc α5 in
       let* α7 := M.read α6 in
-      let* α8 : ltac:(refine (M.Val unit)) :=
+      let* α8 : M.Val unit :=
         match α7 with
         | iter =>
           let* iter := M.alloc iter in
           loop
-            (let* _ : ltac:(refine (M.Val unit)) :=
-              let* α0 :
-                  ltac:(refine
-                    (M.Val (mut_ref (core.ops.range.Range.t i32.t)))) :=
+            (let* _ : M.Val unit :=
+              let* α0 : M.Val (mut_ref (core.ops.range.Range.t i32.t)) :=
                 borrow_mut iter in
               let* α1 :=
                 (core.iter.traits.iterator.Iterator.next
                     (Self := core.ops.range.Range.t i32.t)
                     (Trait := ltac:(refine _)))
                   α0 in
-              let* α2 : ltac:(refine (M.Val (core.option.Option.t i32.t))) :=
-                M.alloc α1 in
+              let* α2 : M.Val (core.option.Option.t i32.t) := M.alloc α1 in
               let* α3 := M.read α2 in
               match α3 with
               | core.option.Option.None  =>
-                let* α0 : ltac:(refine (M.Val never.t)) := Break in
+                let* α0 : M.Val never.t := Break in
                 never_to_any α0
               | core.option.Option.Some _ =>
-                let* _ : ltac:(refine (M.Val unit)) :=
-                  let* α0 : ltac:(refine (M.Val (mut_ref std.fs.File.t))) :=
-                    borrow_mut file in
-                  let* α1 : ltac:(refine (M.Val str.t)) :=
-                    deref (mk_str "Ferris
+                let* _ : M.Val unit :=
+                  let* α0 : M.Val (mut_ref std.fs.File.t) := borrow_mut file in
+                  let* α1 : M.Val str.t := deref (mk_str "Ferris
 ") in
-                  let* α2 : ltac:(refine (M.Val (ref str.t))) := borrow α1 in
+                  let* α2 : M.Val (ref str.t) := borrow α1 in
                   let* α3 := str.t::["as_bytes"] α2 in
-                  let* α4 : ltac:(refine (M.Val (ref (slice u8.t)))) :=
-                    M.alloc α3 in
-                  let* α5 : ltac:(refine (M.Val (slice u8.t))) := deref α4 in
-                  let* α6 : ltac:(refine (M.Val (ref (slice u8.t)))) :=
-                    borrow α5 in
+                  let* α4 : M.Val (ref (slice u8.t)) := M.alloc α3 in
+                  let* α5 : M.Val (slice u8.t) := deref α4 in
+                  let* α6 : M.Val (ref (slice u8.t)) := borrow α5 in
                   let* α7 :=
                     (std.io.Write.write_all
                         (Self := std.fs.File.t)
@@ -155,13 +135,11 @@ Module tests.
                       α0
                       α6 in
                   let* α8 :
-                      ltac:(refine
-                        (M.Val
-                          (core.result.Result.t unit std.io.error.Error.t))) :=
+                      M.Val (core.result.Result.t unit std.io.error.Error.t) :=
                     M.alloc α7 in
-                  let* α9 : ltac:(refine (M.Val str.t)) :=
+                  let* α9 : M.Val str.t :=
                     deref (mk_str "Could not write to ferris.txt") in
-                  let* α10 : ltac:(refine (M.Val (ref str.t))) := borrow α9 in
+                  let* α10 : M.Val (ref str.t) := borrow α9 in
                   let* α11 :=
                     (core.result.Result.t unit std.io.error.Error.t)::["expect"]
                       α8
@@ -191,44 +169,36 @@ Module tests.
   *)
   Definition test_file_also : M unit :=
     M.function_body
-      (let* file : ltac:(refine (M.Val std.fs.File.t)) :=
+      (let* file : M.Val std.fs.File.t :=
         let* α0 := std.fs.OpenOptions.t::["new"] in
-        let* α1 : ltac:(refine (M.Val std.fs.OpenOptions.t)) := M.alloc α0 in
-        let* α2 : ltac:(refine (M.Val (mut_ref std.fs.OpenOptions.t))) :=
-          borrow_mut α1 in
-        let* α3 : ltac:(refine (M.Val bool.t)) := M.alloc true in
+        let* α1 : M.Val std.fs.OpenOptions.t := M.alloc α0 in
+        let* α2 : M.Val (mut_ref std.fs.OpenOptions.t) := borrow_mut α1 in
+        let* α3 : M.Val bool.t := M.alloc true in
         let* α4 := std.fs.OpenOptions.t::["append"] α2 α3 in
-        let* α5 : ltac:(refine (M.Val (mut_ref std.fs.OpenOptions.t))) :=
-          M.alloc α4 in
-        let* α6 : ltac:(refine (M.Val std.fs.OpenOptions.t)) := deref α5 in
-        let* α7 : ltac:(refine (M.Val (mut_ref std.fs.OpenOptions.t))) :=
-          borrow_mut α6 in
-        let* α8 : ltac:(refine (M.Val bool.t)) := M.alloc true in
+        let* α5 : M.Val (mut_ref std.fs.OpenOptions.t) := M.alloc α4 in
+        let* α6 : M.Val std.fs.OpenOptions.t := deref α5 in
+        let* α7 : M.Val (mut_ref std.fs.OpenOptions.t) := borrow_mut α6 in
+        let* α8 : M.Val bool.t := M.alloc true in
         let* α9 := std.fs.OpenOptions.t::["create"] α7 α8 in
-        let* α10 : ltac:(refine (M.Val (mut_ref std.fs.OpenOptions.t))) :=
-          M.alloc α9 in
-        let* α11 : ltac:(refine (M.Val std.fs.OpenOptions.t)) := deref α10 in
-        let* α12 : ltac:(refine (M.Val (ref std.fs.OpenOptions.t))) :=
-          borrow α11 in
+        let* α10 : M.Val (mut_ref std.fs.OpenOptions.t) := M.alloc α9 in
+        let* α11 : M.Val std.fs.OpenOptions.t := deref α10 in
+        let* α12 : M.Val (ref std.fs.OpenOptions.t) := borrow α11 in
         let* α13 := std.fs.OpenOptions.t::["open"] α12 (mk_str "ferris.txt") in
         let* α14 :
-            ltac:(refine
-              (M.Val
-                (core.result.Result.t std.fs.File.t std.io.error.Error.t))) :=
+            M.Val (core.result.Result.t std.fs.File.t std.io.error.Error.t) :=
           M.alloc α13 in
-        let* α15 : ltac:(refine (M.Val str.t)) :=
-          deref (mk_str "Failed to open ferris.txt") in
-        let* α16 : ltac:(refine (M.Val (ref str.t))) := borrow α15 in
+        let* α15 : M.Val str.t := deref (mk_str "Failed to open ferris.txt") in
+        let* α16 : M.Val (ref str.t) := borrow α15 in
         let* α17 :=
           (core.result.Result.t std.fs.File.t std.io.error.Error.t)::["expect"]
             α14
             α16 in
         M.alloc α17 in
-      let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 0 in
+      let* α0 : M.Val i32.t := M.alloc 0 in
       let* α1 := M.read α0 in
-      let* α2 : ltac:(refine (M.Val i32.t)) := M.alloc 5 in
+      let* α2 : M.Val i32.t := M.alloc 5 in
       let* α3 := M.read α2 in
-      let* α4 : ltac:(refine (M.Val (core.ops.range.Range.t i32.t))) :=
+      let* α4 : M.Val (core.ops.range.Range.t i32.t) :=
         M.alloc
           {| core.ops.range.Range.start := α1; core.ops.range.Range.end := α3;
           |} in
@@ -237,45 +207,37 @@ Module tests.
             (Self := core.ops.range.Range.t i32.t)
             (Trait := ltac:(refine _)))
           α4 in
-      let* α6 : ltac:(refine (M.Val (core.ops.range.Range.t i32.t))) :=
-        M.alloc α5 in
+      let* α6 : M.Val (core.ops.range.Range.t i32.t) := M.alloc α5 in
       let* α7 := M.read α6 in
-      let* α8 : ltac:(refine (M.Val unit)) :=
+      let* α8 : M.Val unit :=
         match α7 with
         | iter =>
           let* iter := M.alloc iter in
           loop
-            (let* _ : ltac:(refine (M.Val unit)) :=
-              let* α0 :
-                  ltac:(refine
-                    (M.Val (mut_ref (core.ops.range.Range.t i32.t)))) :=
+            (let* _ : M.Val unit :=
+              let* α0 : M.Val (mut_ref (core.ops.range.Range.t i32.t)) :=
                 borrow_mut iter in
               let* α1 :=
                 (core.iter.traits.iterator.Iterator.next
                     (Self := core.ops.range.Range.t i32.t)
                     (Trait := ltac:(refine _)))
                   α0 in
-              let* α2 : ltac:(refine (M.Val (core.option.Option.t i32.t))) :=
-                M.alloc α1 in
+              let* α2 : M.Val (core.option.Option.t i32.t) := M.alloc α1 in
               let* α3 := M.read α2 in
               match α3 with
               | core.option.Option.None  =>
-                let* α0 : ltac:(refine (M.Val never.t)) := Break in
+                let* α0 : M.Val never.t := Break in
                 never_to_any α0
               | core.option.Option.Some _ =>
-                let* _ : ltac:(refine (M.Val unit)) :=
-                  let* α0 : ltac:(refine (M.Val (mut_ref std.fs.File.t))) :=
-                    borrow_mut file in
-                  let* α1 : ltac:(refine (M.Val str.t)) :=
-                    deref (mk_str "Corro
+                let* _ : M.Val unit :=
+                  let* α0 : M.Val (mut_ref std.fs.File.t) := borrow_mut file in
+                  let* α1 : M.Val str.t := deref (mk_str "Corro
 ") in
-                  let* α2 : ltac:(refine (M.Val (ref str.t))) := borrow α1 in
+                  let* α2 : M.Val (ref str.t) := borrow α1 in
                   let* α3 := str.t::["as_bytes"] α2 in
-                  let* α4 : ltac:(refine (M.Val (ref (slice u8.t)))) :=
-                    M.alloc α3 in
-                  let* α5 : ltac:(refine (M.Val (slice u8.t))) := deref α4 in
-                  let* α6 : ltac:(refine (M.Val (ref (slice u8.t)))) :=
-                    borrow α5 in
+                  let* α4 : M.Val (ref (slice u8.t)) := M.alloc α3 in
+                  let* α5 : M.Val (slice u8.t) := deref α4 in
+                  let* α6 : M.Val (ref (slice u8.t)) := borrow α5 in
                   let* α7 :=
                     (std.io.Write.write_all
                         (Self := std.fs.File.t)
@@ -283,13 +245,11 @@ Module tests.
                       α0
                       α6 in
                   let* α8 :
-                      ltac:(refine
-                        (M.Val
-                          (core.result.Result.t unit std.io.error.Error.t))) :=
+                      M.Val (core.result.Result.t unit std.io.error.Error.t) :=
                     M.alloc α7 in
-                  let* α9 : ltac:(refine (M.Val str.t)) :=
+                  let* α9 : M.Val str.t :=
                     deref (mk_str "Could not write to ferris.txt") in
-                  let* α10 : ltac:(refine (M.Val (ref str.t))) := borrow α9 in
+                  let* α10 : M.Val (ref str.t) := borrow α9 in
                   let* α11 :=
                     (core.result.Result.t unit std.io.error.Error.t)::["expect"]
                       α8
@@ -320,44 +280,36 @@ End tests.
 *)
 Definition test_file : M unit :=
   M.function_body
-    (let* file : ltac:(refine (M.Val std.fs.File.t)) :=
+    (let* file : M.Val std.fs.File.t :=
       let* α0 := std.fs.OpenOptions.t::["new"] in
-      let* α1 : ltac:(refine (M.Val std.fs.OpenOptions.t)) := M.alloc α0 in
-      let* α2 : ltac:(refine (M.Val (mut_ref std.fs.OpenOptions.t))) :=
-        borrow_mut α1 in
-      let* α3 : ltac:(refine (M.Val bool.t)) := M.alloc true in
+      let* α1 : M.Val std.fs.OpenOptions.t := M.alloc α0 in
+      let* α2 : M.Val (mut_ref std.fs.OpenOptions.t) := borrow_mut α1 in
+      let* α3 : M.Val bool.t := M.alloc true in
       let* α4 := std.fs.OpenOptions.t::["append"] α2 α3 in
-      let* α5 : ltac:(refine (M.Val (mut_ref std.fs.OpenOptions.t))) :=
-        M.alloc α4 in
-      let* α6 : ltac:(refine (M.Val std.fs.OpenOptions.t)) := deref α5 in
-      let* α7 : ltac:(refine (M.Val (mut_ref std.fs.OpenOptions.t))) :=
-        borrow_mut α6 in
-      let* α8 : ltac:(refine (M.Val bool.t)) := M.alloc true in
+      let* α5 : M.Val (mut_ref std.fs.OpenOptions.t) := M.alloc α4 in
+      let* α6 : M.Val std.fs.OpenOptions.t := deref α5 in
+      let* α7 : M.Val (mut_ref std.fs.OpenOptions.t) := borrow_mut α6 in
+      let* α8 : M.Val bool.t := M.alloc true in
       let* α9 := std.fs.OpenOptions.t::["create"] α7 α8 in
-      let* α10 : ltac:(refine (M.Val (mut_ref std.fs.OpenOptions.t))) :=
-        M.alloc α9 in
-      let* α11 : ltac:(refine (M.Val std.fs.OpenOptions.t)) := deref α10 in
-      let* α12 : ltac:(refine (M.Val (ref std.fs.OpenOptions.t))) :=
-        borrow α11 in
+      let* α10 : M.Val (mut_ref std.fs.OpenOptions.t) := M.alloc α9 in
+      let* α11 : M.Val std.fs.OpenOptions.t := deref α10 in
+      let* α12 : M.Val (ref std.fs.OpenOptions.t) := borrow α11 in
       let* α13 := std.fs.OpenOptions.t::["open"] α12 (mk_str "ferris.txt") in
       let* α14 :
-          ltac:(refine
-            (M.Val
-              (core.result.Result.t std.fs.File.t std.io.error.Error.t))) :=
+          M.Val (core.result.Result.t std.fs.File.t std.io.error.Error.t) :=
         M.alloc α13 in
-      let* α15 : ltac:(refine (M.Val str.t)) :=
-        deref (mk_str "Failed to open ferris.txt") in
-      let* α16 : ltac:(refine (M.Val (ref str.t))) := borrow α15 in
+      let* α15 : M.Val str.t := deref (mk_str "Failed to open ferris.txt") in
+      let* α16 : M.Val (ref str.t) := borrow α15 in
       let* α17 :=
         (core.result.Result.t std.fs.File.t std.io.error.Error.t)::["expect"]
           α14
           α16 in
       M.alloc α17 in
-    let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 0 in
+    let* α0 : M.Val i32.t := M.alloc 0 in
     let* α1 := M.read α0 in
-    let* α2 : ltac:(refine (M.Val i32.t)) := M.alloc 5 in
+    let* α2 : M.Val i32.t := M.alloc 5 in
     let* α3 := M.read α2 in
-    let* α4 : ltac:(refine (M.Val (core.ops.range.Range.t i32.t))) :=
+    let* α4 : M.Val (core.ops.range.Range.t i32.t) :=
       M.alloc
         {| core.ops.range.Range.start := α1; core.ops.range.Range.end := α3;
         |} in
@@ -366,45 +318,37 @@ Definition test_file : M unit :=
           (Self := core.ops.range.Range.t i32.t)
           (Trait := ltac:(refine _)))
         α4 in
-    let* α6 : ltac:(refine (M.Val (core.ops.range.Range.t i32.t))) :=
-      M.alloc α5 in
+    let* α6 : M.Val (core.ops.range.Range.t i32.t) := M.alloc α5 in
     let* α7 := M.read α6 in
-    let* α8 : ltac:(refine (M.Val unit)) :=
+    let* α8 : M.Val unit :=
       match α7 with
       | iter =>
         let* iter := M.alloc iter in
         loop
-          (let* _ : ltac:(refine (M.Val unit)) :=
-            let* α0 :
-                ltac:(refine
-                  (M.Val (mut_ref (core.ops.range.Range.t i32.t)))) :=
+          (let* _ : M.Val unit :=
+            let* α0 : M.Val (mut_ref (core.ops.range.Range.t i32.t)) :=
               borrow_mut iter in
             let* α1 :=
               (core.iter.traits.iterator.Iterator.next
                   (Self := core.ops.range.Range.t i32.t)
                   (Trait := ltac:(refine _)))
                 α0 in
-            let* α2 : ltac:(refine (M.Val (core.option.Option.t i32.t))) :=
-              M.alloc α1 in
+            let* α2 : M.Val (core.option.Option.t i32.t) := M.alloc α1 in
             let* α3 := M.read α2 in
             match α3 with
             | core.option.Option.None  =>
-              let* α0 : ltac:(refine (M.Val never.t)) := Break in
+              let* α0 : M.Val never.t := Break in
               never_to_any α0
             | core.option.Option.Some _ =>
-              let* _ : ltac:(refine (M.Val unit)) :=
-                let* α0 : ltac:(refine (M.Val (mut_ref std.fs.File.t))) :=
-                  borrow_mut file in
-                let* α1 : ltac:(refine (M.Val str.t)) :=
-                  deref (mk_str "Ferris
+              let* _ : M.Val unit :=
+                let* α0 : M.Val (mut_ref std.fs.File.t) := borrow_mut file in
+                let* α1 : M.Val str.t := deref (mk_str "Ferris
 ") in
-                let* α2 : ltac:(refine (M.Val (ref str.t))) := borrow α1 in
+                let* α2 : M.Val (ref str.t) := borrow α1 in
                 let* α3 := str.t::["as_bytes"] α2 in
-                let* α4 : ltac:(refine (M.Val (ref (slice u8.t)))) :=
-                  M.alloc α3 in
-                let* α5 : ltac:(refine (M.Val (slice u8.t))) := deref α4 in
-                let* α6 : ltac:(refine (M.Val (ref (slice u8.t)))) :=
-                  borrow α5 in
+                let* α4 : M.Val (ref (slice u8.t)) := M.alloc α3 in
+                let* α5 : M.Val (slice u8.t) := deref α4 in
+                let* α6 : M.Val (ref (slice u8.t)) := borrow α5 in
                 let* α7 :=
                   (std.io.Write.write_all
                       (Self := std.fs.File.t)
@@ -412,13 +356,11 @@ Definition test_file : M unit :=
                     α0
                     α6 in
                 let* α8 :
-                    ltac:(refine
-                      (M.Val
-                        (core.result.Result.t unit std.io.error.Error.t))) :=
+                    M.Val (core.result.Result.t unit std.io.error.Error.t) :=
                   M.alloc α7 in
-                let* α9 : ltac:(refine (M.Val str.t)) :=
+                let* α9 : M.Val str.t :=
                   deref (mk_str "Could not write to ferris.txt") in
-                let* α10 : ltac:(refine (M.Val (ref str.t))) := borrow α9 in
+                let* α10 : M.Val (ref str.t) := borrow α9 in
                 let* α11 :=
                   (core.result.Result.t unit std.io.error.Error.t)::["expect"]
                     α8
@@ -448,44 +390,36 @@ Definition test_file : M unit :=
 *)
 Definition test_file_also : M unit :=
   M.function_body
-    (let* file : ltac:(refine (M.Val std.fs.File.t)) :=
+    (let* file : M.Val std.fs.File.t :=
       let* α0 := std.fs.OpenOptions.t::["new"] in
-      let* α1 : ltac:(refine (M.Val std.fs.OpenOptions.t)) := M.alloc α0 in
-      let* α2 : ltac:(refine (M.Val (mut_ref std.fs.OpenOptions.t))) :=
-        borrow_mut α1 in
-      let* α3 : ltac:(refine (M.Val bool.t)) := M.alloc true in
+      let* α1 : M.Val std.fs.OpenOptions.t := M.alloc α0 in
+      let* α2 : M.Val (mut_ref std.fs.OpenOptions.t) := borrow_mut α1 in
+      let* α3 : M.Val bool.t := M.alloc true in
       let* α4 := std.fs.OpenOptions.t::["append"] α2 α3 in
-      let* α5 : ltac:(refine (M.Val (mut_ref std.fs.OpenOptions.t))) :=
-        M.alloc α4 in
-      let* α6 : ltac:(refine (M.Val std.fs.OpenOptions.t)) := deref α5 in
-      let* α7 : ltac:(refine (M.Val (mut_ref std.fs.OpenOptions.t))) :=
-        borrow_mut α6 in
-      let* α8 : ltac:(refine (M.Val bool.t)) := M.alloc true in
+      let* α5 : M.Val (mut_ref std.fs.OpenOptions.t) := M.alloc α4 in
+      let* α6 : M.Val std.fs.OpenOptions.t := deref α5 in
+      let* α7 : M.Val (mut_ref std.fs.OpenOptions.t) := borrow_mut α6 in
+      let* α8 : M.Val bool.t := M.alloc true in
       let* α9 := std.fs.OpenOptions.t::["create"] α7 α8 in
-      let* α10 : ltac:(refine (M.Val (mut_ref std.fs.OpenOptions.t))) :=
-        M.alloc α9 in
-      let* α11 : ltac:(refine (M.Val std.fs.OpenOptions.t)) := deref α10 in
-      let* α12 : ltac:(refine (M.Val (ref std.fs.OpenOptions.t))) :=
-        borrow α11 in
+      let* α10 : M.Val (mut_ref std.fs.OpenOptions.t) := M.alloc α9 in
+      let* α11 : M.Val std.fs.OpenOptions.t := deref α10 in
+      let* α12 : M.Val (ref std.fs.OpenOptions.t) := borrow α11 in
       let* α13 := std.fs.OpenOptions.t::["open"] α12 (mk_str "ferris.txt") in
       let* α14 :
-          ltac:(refine
-            (M.Val
-              (core.result.Result.t std.fs.File.t std.io.error.Error.t))) :=
+          M.Val (core.result.Result.t std.fs.File.t std.io.error.Error.t) :=
         M.alloc α13 in
-      let* α15 : ltac:(refine (M.Val str.t)) :=
-        deref (mk_str "Failed to open ferris.txt") in
-      let* α16 : ltac:(refine (M.Val (ref str.t))) := borrow α15 in
+      let* α15 : M.Val str.t := deref (mk_str "Failed to open ferris.txt") in
+      let* α16 : M.Val (ref str.t) := borrow α15 in
       let* α17 :=
         (core.result.Result.t std.fs.File.t std.io.error.Error.t)::["expect"]
           α14
           α16 in
       M.alloc α17 in
-    let* α0 : ltac:(refine (M.Val i32.t)) := M.alloc 0 in
+    let* α0 : M.Val i32.t := M.alloc 0 in
     let* α1 := M.read α0 in
-    let* α2 : ltac:(refine (M.Val i32.t)) := M.alloc 5 in
+    let* α2 : M.Val i32.t := M.alloc 5 in
     let* α3 := M.read α2 in
-    let* α4 : ltac:(refine (M.Val (core.ops.range.Range.t i32.t))) :=
+    let* α4 : M.Val (core.ops.range.Range.t i32.t) :=
       M.alloc
         {| core.ops.range.Range.start := α1; core.ops.range.Range.end := α3;
         |} in
@@ -494,45 +428,37 @@ Definition test_file_also : M unit :=
           (Self := core.ops.range.Range.t i32.t)
           (Trait := ltac:(refine _)))
         α4 in
-    let* α6 : ltac:(refine (M.Val (core.ops.range.Range.t i32.t))) :=
-      M.alloc α5 in
+    let* α6 : M.Val (core.ops.range.Range.t i32.t) := M.alloc α5 in
     let* α7 := M.read α6 in
-    let* α8 : ltac:(refine (M.Val unit)) :=
+    let* α8 : M.Val unit :=
       match α7 with
       | iter =>
         let* iter := M.alloc iter in
         loop
-          (let* _ : ltac:(refine (M.Val unit)) :=
-            let* α0 :
-                ltac:(refine
-                  (M.Val (mut_ref (core.ops.range.Range.t i32.t)))) :=
+          (let* _ : M.Val unit :=
+            let* α0 : M.Val (mut_ref (core.ops.range.Range.t i32.t)) :=
               borrow_mut iter in
             let* α1 :=
               (core.iter.traits.iterator.Iterator.next
                   (Self := core.ops.range.Range.t i32.t)
                   (Trait := ltac:(refine _)))
                 α0 in
-            let* α2 : ltac:(refine (M.Val (core.option.Option.t i32.t))) :=
-              M.alloc α1 in
+            let* α2 : M.Val (core.option.Option.t i32.t) := M.alloc α1 in
             let* α3 := M.read α2 in
             match α3 with
             | core.option.Option.None  =>
-              let* α0 : ltac:(refine (M.Val never.t)) := Break in
+              let* α0 : M.Val never.t := Break in
               never_to_any α0
             | core.option.Option.Some _ =>
-              let* _ : ltac:(refine (M.Val unit)) :=
-                let* α0 : ltac:(refine (M.Val (mut_ref std.fs.File.t))) :=
-                  borrow_mut file in
-                let* α1 : ltac:(refine (M.Val str.t)) :=
-                  deref (mk_str "Corro
+              let* _ : M.Val unit :=
+                let* α0 : M.Val (mut_ref std.fs.File.t) := borrow_mut file in
+                let* α1 : M.Val str.t := deref (mk_str "Corro
 ") in
-                let* α2 : ltac:(refine (M.Val (ref str.t))) := borrow α1 in
+                let* α2 : M.Val (ref str.t) := borrow α1 in
                 let* α3 := str.t::["as_bytes"] α2 in
-                let* α4 : ltac:(refine (M.Val (ref (slice u8.t)))) :=
-                  M.alloc α3 in
-                let* α5 : ltac:(refine (M.Val (slice u8.t))) := deref α4 in
-                let* α6 : ltac:(refine (M.Val (ref (slice u8.t)))) :=
-                  borrow α5 in
+                let* α4 : M.Val (ref (slice u8.t)) := M.alloc α3 in
+                let* α5 : M.Val (slice u8.t) := deref α4 in
+                let* α6 : M.Val (ref (slice u8.t)) := borrow α5 in
                 let* α7 :=
                   (std.io.Write.write_all
                       (Self := std.fs.File.t)
@@ -540,13 +466,11 @@ Definition test_file_also : M unit :=
                     α0
                     α6 in
                 let* α8 :
-                    ltac:(refine
-                      (M.Val
-                        (core.result.Result.t unit std.io.error.Error.t))) :=
+                    M.Val (core.result.Result.t unit std.io.error.Error.t) :=
                   M.alloc α7 in
-                let* α9 : ltac:(refine (M.Val str.t)) :=
+                let* α9 : M.Val str.t :=
                   deref (mk_str "Could not write to ferris.txt") in
-                let* α10 : ltac:(refine (M.Val (ref str.t))) := borrow α9 in
+                let* α10 : M.Val (ref str.t) := borrow α9 in
                 let* α11 :=
                   (core.result.Result.t unit std.io.error.Error.t)::["expect"]
                     α8

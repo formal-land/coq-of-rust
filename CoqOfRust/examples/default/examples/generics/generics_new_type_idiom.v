@@ -38,10 +38,9 @@ Section Impl_generics_new_type_idiom_Years_t.
       (self : M.Val (ref ltac:(Self)))
       : M generics_new_type_idiom.Days.t :=
     M.function_body
-      (let* α0 : ltac:(refine (M.Val generics_new_type_idiom.Years.t)) :=
-        deref self in
-      let* α1 : ltac:(refine (M.Val i64.t)) := M.alloc 365 in
-      let* α2 : ltac:(refine (M.Val i64.t)) := BinOp.mul α0.["0"] α1 in
+      (let* α0 : M.Val generics_new_type_idiom.Years.t := deref self in
+      let* α1 : M.Val i64.t := M.alloc 365 in
+      let* α2 : M.Val i64.t := BinOp.mul α0.["0"] α1 in
       let* α3 := M.read α2 in
       M.alloc (generics_new_type_idiom.Days.Build_t α3)).
   
@@ -65,10 +64,9 @@ Section Impl_generics_new_type_idiom_Days_t.
       (self : M.Val (ref ltac:(Self)))
       : M generics_new_type_idiom.Years.t :=
     M.function_body
-      (let* α0 : ltac:(refine (M.Val generics_new_type_idiom.Days.t)) :=
-        deref self in
-      let* α1 : ltac:(refine (M.Val i64.t)) := M.alloc 365 in
-      let* α2 : ltac:(refine (M.Val i64.t)) := BinOp.div α0.["0"] α1 in
+      (let* α0 : M.Val generics_new_type_idiom.Days.t := deref self in
+      let* α1 : M.Val i64.t := M.alloc 365 in
+      let* α2 : M.Val i64.t := BinOp.div α0.["0"] α1 in
       let* α3 := M.read α2 in
       M.alloc (generics_new_type_idiom.Years.Build_t α3)).
   
@@ -88,9 +86,8 @@ Definition old_enough
     (age : M.Val (ref generics_new_type_idiom.Years.t))
     : M bool.t :=
   M.function_body
-    (let* α0 : ltac:(refine (M.Val generics_new_type_idiom.Years.t)) :=
-      deref age in
-    let* α1 : ltac:(refine (M.Val i64.t)) := M.alloc 18 in
+    (let* α0 : M.Val generics_new_type_idiom.Years.t := deref age in
+    let* α1 : M.Val i64.t := M.alloc 18 in
     BinOp.ge α0.["0"] α1).
 
 (*
@@ -105,72 +102,61 @@ fn main() {
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
   M.function_body
-    (let* age : ltac:(refine (M.Val generics_new_type_idiom.Years.t)) :=
-      let* α0 : ltac:(refine (M.Val i64.t)) := M.alloc 5 in
+    (let* age : M.Val generics_new_type_idiom.Years.t :=
+      let* α0 : M.Val i64.t := M.alloc 5 in
       let* α1 := M.read α0 in
       M.alloc (generics_new_type_idiom.Years.Build_t α1) in
-    let* age_days : ltac:(refine (M.Val generics_new_type_idiom.Days.t)) :=
-      let* α0 : ltac:(refine (M.Val (ref generics_new_type_idiom.Years.t))) :=
-        borrow age in
+    let* age_days : M.Val generics_new_type_idiom.Days.t :=
+      let* α0 : M.Val (ref generics_new_type_idiom.Years.t) := borrow age in
       let* α1 := generics_new_type_idiom.Years.t::["to_days"] α0 in
       M.alloc α1 in
-    let* _ : ltac:(refine (M.Val unit)) :=
-      let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
+    let* _ : M.Val unit :=
+      let* _ : M.Val unit :=
+        let* α0 : M.Val (array (ref str.t)) :=
           M.alloc [ mk_str "Old enough "; mk_str "
 " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
-          borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
+        let* α1 : M.Val (ref (array (ref str.t))) := borrow α0 in
+        let* α2 : M.Val (ref (slice (ref str.t))) :=
           pointer_coercion "Unsize" α1 in
-        let* α3 : ltac:(refine (M.Val (ref generics_new_type_idiom.Years.t))) :=
-          borrow age in
+        let* α3 : M.Val (ref generics_new_type_idiom.Years.t) := borrow age in
         let* α4 := generics_new_type_idiom.old_enough α3 in
-        let* α5 : ltac:(refine (M.Val bool.t)) := M.alloc α4 in
-        let* α6 : ltac:(refine (M.Val (ref bool.t))) := borrow α5 in
+        let* α5 : M.Val bool.t := M.alloc α4 in
+        let* α6 : M.Val (ref bool.t) := borrow α5 in
         let* α7 := core.fmt.rt.Argument.t::["new_display"] α6 in
-        let* α8 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) := M.alloc α7 in
-        let* α9 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
-          M.alloc [ α8 ] in
-        let* α10 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
-          borrow α9 in
-        let* α11 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
+        let* α8 : M.Val core.fmt.rt.Argument.t := M.alloc α7 in
+        let* α9 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α8 ] in
+        let* α10 : M.Val (ref (array core.fmt.rt.Argument.t)) := borrow α9 in
+        let* α11 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
           pointer_coercion "Unsize" α10 in
         let* α12 := core.fmt.Arguments.t::["new_v1"] α2 α11 in
-        let* α13 : ltac:(refine (M.Val core.fmt.Arguments.t)) := M.alloc α12 in
+        let* α13 : M.Val core.fmt.Arguments.t := M.alloc α12 in
         let* α14 := std.io.stdio._print α13 in
         M.alloc α14 in
       M.alloc tt in
-    let* _ : ltac:(refine (M.Val unit)) :=
-      let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
+    let* _ : M.Val unit :=
+      let* _ : M.Val unit :=
+        let* α0 : M.Val (array (ref str.t)) :=
           M.alloc [ mk_str "Old enough "; mk_str "
 " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
-          borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
+        let* α1 : M.Val (ref (array (ref str.t))) := borrow α0 in
+        let* α2 : M.Val (ref (slice (ref str.t))) :=
           pointer_coercion "Unsize" α1 in
-        let* α3 : ltac:(refine (M.Val (ref generics_new_type_idiom.Days.t))) :=
+        let* α3 : M.Val (ref generics_new_type_idiom.Days.t) :=
           borrow age_days in
         let* α4 := generics_new_type_idiom.Days.t::["to_years"] α3 in
-        let* α5 : ltac:(refine (M.Val generics_new_type_idiom.Years.t)) :=
-          M.alloc α4 in
-        let* α6 : ltac:(refine (M.Val (ref generics_new_type_idiom.Years.t))) :=
-          borrow α5 in
+        let* α5 : M.Val generics_new_type_idiom.Years.t := M.alloc α4 in
+        let* α6 : M.Val (ref generics_new_type_idiom.Years.t) := borrow α5 in
         let* α7 := generics_new_type_idiom.old_enough α6 in
-        let* α8 : ltac:(refine (M.Val bool.t)) := M.alloc α7 in
-        let* α9 : ltac:(refine (M.Val (ref bool.t))) := borrow α8 in
+        let* α8 : M.Val bool.t := M.alloc α7 in
+        let* α9 : M.Val (ref bool.t) := borrow α8 in
         let* α10 := core.fmt.rt.Argument.t::["new_display"] α9 in
-        let* α11 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) :=
-          M.alloc α10 in
-        let* α12 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
-          M.alloc [ α11 ] in
-        let* α13 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
-          borrow α12 in
-        let* α14 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
+        let* α11 : M.Val core.fmt.rt.Argument.t := M.alloc α10 in
+        let* α12 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α11 ] in
+        let* α13 : M.Val (ref (array core.fmt.rt.Argument.t)) := borrow α12 in
+        let* α14 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
           pointer_coercion "Unsize" α13 in
         let* α15 := core.fmt.Arguments.t::["new_v1"] α2 α14 in
-        let* α16 : ltac:(refine (M.Val core.fmt.Arguments.t)) := M.alloc α15 in
+        let* α16 : M.Val core.fmt.Arguments.t := M.alloc α15 in
         let* α17 := std.io.stdio._print α16 in
         M.alloc α17 in
       M.alloc tt in

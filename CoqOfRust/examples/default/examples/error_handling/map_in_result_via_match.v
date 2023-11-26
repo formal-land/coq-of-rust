@@ -17,32 +17,27 @@ Definition multiply
     (second_number_str : M.Val (ref str.t))
     : M (core.result.Result.t i32.t core.num.error.ParseIntError.t) :=
   M.function_body
-    (let* α0 : ltac:(refine (M.Val str.t)) := deref first_number_str in
-    let* α1 : ltac:(refine (M.Val (ref str.t))) := borrow α0 in
+    (let* α0 : M.Val str.t := deref first_number_str in
+    let* α1 : M.Val (ref str.t) := borrow α0 in
     let* α2 := str.t::["parse"] α1 in
     let* α3 :
-        ltac:(refine
-          (M.Val
-            (core.result.Result.t i32.t core.num.error.ParseIntError.t))) :=
+        M.Val (core.result.Result.t i32.t core.num.error.ParseIntError.t) :=
       M.alloc α2 in
     let* α4 := M.read α3 in
     match α4 with
     | core.result.Result.Ok first_number =>
       let* first_number := M.alloc first_number in
-      let* α0 : ltac:(refine (M.Val str.t)) := deref second_number_str in
-      let* α1 : ltac:(refine (M.Val (ref str.t))) := borrow α0 in
+      let* α0 : M.Val str.t := deref second_number_str in
+      let* α1 : M.Val (ref str.t) := borrow α0 in
       let* α2 := str.t::["parse"] α1 in
       let* α3 :
-          ltac:(refine
-            (M.Val
-              (core.result.Result.t i32.t core.num.error.ParseIntError.t))) :=
+          M.Val (core.result.Result.t i32.t core.num.error.ParseIntError.t) :=
         M.alloc α2 in
       let* α4 := M.read α3 in
       match α4 with
       | core.result.Result.Ok second_number =>
         let* second_number := M.alloc second_number in
-        let* α0 : ltac:(refine (M.Val i32.t)) :=
-          BinOp.mul first_number second_number in
+        let* α0 : M.Val i32.t := BinOp.mul first_number second_number in
         let* α1 := M.read α0 in
         M.alloc (core.result.Result.Ok α1)
       | core.result.Result.Err e =>
@@ -72,50 +67,43 @@ Definition print
     match α0 with
     | core.result.Result.Ok n =>
       let* n := M.alloc n in
-      let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
+      let* _ : M.Val unit :=
+        let* α0 : M.Val (array (ref str.t)) :=
           M.alloc [ mk_str "n is "; mk_str "
 " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
-          borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
+        let* α1 : M.Val (ref (array (ref str.t))) := borrow α0 in
+        let* α2 : M.Val (ref (slice (ref str.t))) :=
           pointer_coercion "Unsize" α1 in
-        let* α3 : ltac:(refine (M.Val (ref i32.t))) := borrow n in
+        let* α3 : M.Val (ref i32.t) := borrow n in
         let* α4 := core.fmt.rt.Argument.t::["new_display"] α3 in
-        let* α5 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) := M.alloc α4 in
-        let* α6 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
-          M.alloc [ α5 ] in
-        let* α7 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
-          borrow α6 in
-        let* α8 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
+        let* α5 : M.Val core.fmt.rt.Argument.t := M.alloc α4 in
+        let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
+        let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) := borrow α6 in
+        let* α8 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
           pointer_coercion "Unsize" α7 in
         let* α9 := core.fmt.Arguments.t::["new_v1"] α2 α8 in
-        let* α10 : ltac:(refine (M.Val core.fmt.Arguments.t)) := M.alloc α9 in
+        let* α10 : M.Val core.fmt.Arguments.t := M.alloc α9 in
         let* α11 := std.io.stdio._print α10 in
         M.alloc α11 in
       M.alloc tt
     | core.result.Result.Err e =>
       let* e := M.alloc e in
-      let* _ : ltac:(refine (M.Val unit)) :=
-        let* α0 : ltac:(refine (M.Val (array (ref str.t)))) :=
+      let* _ : M.Val unit :=
+        let* α0 : M.Val (array (ref str.t)) :=
           M.alloc [ mk_str "Error: "; mk_str "
 " ] in
-        let* α1 : ltac:(refine (M.Val (ref (array (ref str.t))))) :=
-          borrow α0 in
-        let* α2 : ltac:(refine (M.Val (ref (slice (ref str.t))))) :=
+        let* α1 : M.Val (ref (array (ref str.t))) := borrow α0 in
+        let* α2 : M.Val (ref (slice (ref str.t))) :=
           pointer_coercion "Unsize" α1 in
-        let* α3 : ltac:(refine (M.Val (ref core.num.error.ParseIntError.t))) :=
-          borrow e in
+        let* α3 : M.Val (ref core.num.error.ParseIntError.t) := borrow e in
         let* α4 := core.fmt.rt.Argument.t::["new_display"] α3 in
-        let* α5 : ltac:(refine (M.Val core.fmt.rt.Argument.t)) := M.alloc α4 in
-        let* α6 : ltac:(refine (M.Val (array core.fmt.rt.Argument.t))) :=
-          M.alloc [ α5 ] in
-        let* α7 : ltac:(refine (M.Val (ref (array core.fmt.rt.Argument.t)))) :=
-          borrow α6 in
-        let* α8 : ltac:(refine (M.Val (ref (slice core.fmt.rt.Argument.t)))) :=
+        let* α5 : M.Val core.fmt.rt.Argument.t := M.alloc α4 in
+        let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
+        let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) := borrow α6 in
+        let* α8 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
           pointer_coercion "Unsize" α7 in
         let* α9 := core.fmt.Arguments.t::["new_v1"] α2 α8 in
-        let* α10 : ltac:(refine (M.Val core.fmt.Arguments.t)) := M.alloc α9 in
+        let* α10 : M.Val core.fmt.Arguments.t := M.alloc α9 in
         let* α11 := std.io.stdio._print α10 in
         M.alloc α11 in
       M.alloc tt
@@ -136,29 +124,25 @@ fn main() {
 Definition main : M unit :=
   M.function_body
     (let* twenty :
-        ltac:(refine
-          (M.Val
-            (core.result.Result.t i32.t core.num.error.ParseIntError.t))) :=
-      let* α0 : ltac:(refine (M.Val str.t)) := deref (mk_str "10") in
-      let* α1 : ltac:(refine (M.Val (ref str.t))) := borrow α0 in
-      let* α2 : ltac:(refine (M.Val str.t)) := deref (mk_str "2") in
-      let* α3 : ltac:(refine (M.Val (ref str.t))) := borrow α2 in
+        M.Val (core.result.Result.t i32.t core.num.error.ParseIntError.t) :=
+      let* α0 : M.Val str.t := deref (mk_str "10") in
+      let* α1 : M.Val (ref str.t) := borrow α0 in
+      let* α2 : M.Val str.t := deref (mk_str "2") in
+      let* α3 : M.Val (ref str.t) := borrow α2 in
       let* α4 := map_in_result_via_match.multiply α1 α3 in
       M.alloc α4 in
-    let* _ : ltac:(refine (M.Val unit)) :=
+    let* _ : M.Val unit :=
       let* α0 := map_in_result_via_match.print twenty in
       M.alloc α0 in
     let* tt :
-        ltac:(refine
-          (M.Val
-            (core.result.Result.t i32.t core.num.error.ParseIntError.t))) :=
-      let* α0 : ltac:(refine (M.Val str.t)) := deref (mk_str "t") in
-      let* α1 : ltac:(refine (M.Val (ref str.t))) := borrow α0 in
-      let* α2 : ltac:(refine (M.Val str.t)) := deref (mk_str "2") in
-      let* α3 : ltac:(refine (M.Val (ref str.t))) := borrow α2 in
+        M.Val (core.result.Result.t i32.t core.num.error.ParseIntError.t) :=
+      let* α0 : M.Val str.t := deref (mk_str "t") in
+      let* α1 : M.Val (ref str.t) := borrow α0 in
+      let* α2 : M.Val str.t := deref (mk_str "2") in
+      let* α3 : M.Val (ref str.t) := borrow α2 in
       let* α4 := map_in_result_via_match.multiply α1 α3 in
       M.alloc α4 in
-    let* _ : ltac:(refine (M.Val unit)) :=
+    let* _ : M.Val unit :=
       let* α0 := map_in_result_via_match.print tt in
       M.alloc α0 in
     M.alloc tt).

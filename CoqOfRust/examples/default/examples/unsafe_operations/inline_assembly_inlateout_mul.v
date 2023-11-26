@@ -48,13 +48,13 @@ Definition main : M unit := M.function_body (M.alloc tt).
 *)
 Definition mul (a : M.Val u64.t) (b : M.Val u64.t) : M u128.t :=
   M.function_body
-    (let* lo : ltac:(refine (M.Val unit)) := M.alloc tt in
-    let* hi : ltac:(refine (M.Val unit)) := M.alloc tt in
-    let* _ : ltac:(refine (M.Val unit)) :=
+    (let* lo : M.Val unit := M.alloc tt in
+    let* hi : M.Val unit := M.alloc tt in
+    let* _ : M.Val unit :=
       let _ := InlineAssembly in
       M.alloc tt in
-    let* α0 : ltac:(refine (M.Val u128.t)) := cast hi in
-    let* α1 : ltac:(refine (M.Val i32.t)) := M.alloc 64 in
-    let* α2 : ltac:(refine (M.Val u128.t)) := BinOp.shl α0 α1 in
-    let* α3 : ltac:(refine (M.Val u128.t)) := cast lo in
+    let* α0 : M.Val u128.t := cast hi in
+    let* α1 : M.Val i32.t := M.alloc 64 in
+    let* α2 : M.Val u128.t := BinOp.shl α0 α1 in
+    let* α3 : M.Val u128.t := cast lo in
     BinOp.add α2 α3).
