@@ -6,3 +6,19 @@ type Closure(
         (std::sync::Arc<&str>,),
     ],
 ) not yet handled
+type Closure(
+    DefId(0:7 ~ arc[f754]::main::{closure#0}),
+    [
+        i32,
+        extern "rust-call" fn(()),
+        (std::sync::Arc<&str>,),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:7 ~ arc[f754]::main::{closure#0}),
+    [
+        i32,
+        extern "rust-call" fn(()),
+        (std::sync::Arc<&str>,),
+    ],
+) not yet handled

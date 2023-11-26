@@ -61,32 +61,32 @@ Section Impl_generics_associated_types_solution_Contains_for_generics_associated
       (number_1 : ref i32.t)
       (number_2 : ref i32.t)
       : M bool.t :=
-    let* self := M.alloc self in
-    let* number_1 := M.alloc number_1 in
-    let* number_2 := M.alloc number_2 in
+    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+    let* number_1 : M.Val (ref i32.t) := M.alloc number_1 in
+    let* number_2 : M.Val (ref i32.t) := M.alloc number_2 in
     M.function_body
-      (let* α0 : M.Val generics_associated_types_solution.Container.t :=
-        deref self in
-      let* α1 : M.Val (ref i32.t) := borrow α0.["0"] in
-      let* α2 : M.Val (ref (ref i32.t)) := borrow α1 in
-      let* α3 := M.read α2 in
-      let* α4 : M.Val (ref (ref i32.t)) := borrow number_1 in
-      let* α5 := M.read α4 in
-      let* α6 :=
+      (let* α0 := M.read self in
+      let* α1 : M.Val generics_associated_types_solution.Container.t :=
+        deref α0 in
+      let* α2 : ref i32.t := borrow α1.["0"] in
+      let* α3 : M.Val (ref i32.t) := M.alloc α2 in
+      let* α4 : ref (ref i32.t) := borrow α3 in
+      let* α5 : ref (ref i32.t) := borrow number_1 in
+      let* α6 : bool.t :=
         (core.cmp.PartialEq.eq (Self := ref i32.t) (Trait := ltac:(refine _)))
-          α3
+          α4
           α5 in
       let* α7 : M.Val bool.t := M.alloc α6 in
-      let* α8 : M.Val generics_associated_types_solution.Container.t :=
-        deref self in
-      let* α9 : M.Val (ref i32.t) := borrow α8.["1"] in
-      let* α10 : M.Val (ref (ref i32.t)) := borrow α9 in
-      let* α11 := M.read α10 in
-      let* α12 : M.Val (ref (ref i32.t)) := borrow number_2 in
-      let* α13 := M.read α12 in
-      let* α14 :=
+      let* α8 := M.read self in
+      let* α9 : M.Val generics_associated_types_solution.Container.t :=
+        deref α8 in
+      let* α10 : ref i32.t := borrow α9.["1"] in
+      let* α11 : M.Val (ref i32.t) := M.alloc α10 in
+      let* α12 : ref (ref i32.t) := borrow α11 in
+      let* α13 : ref (ref i32.t) := borrow number_2 in
+      let* α14 : bool.t :=
         (core.cmp.PartialEq.eq (Self := ref i32.t) (Trait := ltac:(refine _)))
-          α11
+          α12
           α13 in
       let* α15 : M.Val bool.t := M.alloc α14 in
       BinOp.and α7 α15).
@@ -102,11 +102,12 @@ Section Impl_generics_associated_types_solution_Contains_for_generics_associated
       }
   *)
   Definition first (self : ref ltac:(Self)) : M i32.t :=
-    let* self := M.alloc self in
+    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
     M.function_body
-      (let* α0 : M.Val generics_associated_types_solution.Container.t :=
-        deref self in
-      M.pure α0.["0"]).
+      (let* α0 := M.read self in
+      let* α1 : M.Val generics_associated_types_solution.Container.t :=
+        deref α0 in
+      M.pure α1.["0"]).
   
   Global Instance AssociatedFunction_first :
     Notations.DoubleColon ltac:(Self) "first" := {
@@ -119,11 +120,12 @@ Section Impl_generics_associated_types_solution_Contains_for_generics_associated
       }
   *)
   Definition last (self : ref ltac:(Self)) : M i32.t :=
-    let* self := M.alloc self in
+    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
     M.function_body
-      (let* α0 : M.Val generics_associated_types_solution.Container.t :=
-        deref self in
-      M.pure α0.["1"]).
+      (let* α0 := M.read self in
+      let* α1 : M.Val generics_associated_types_solution.Container.t :=
+        deref α0 in
+      M.pure α1.["1"]).
   
   Global Instance AssociatedFunction_last :
     Notations.DoubleColon ltac:(Self) "last" := {
@@ -136,11 +138,12 @@ Section Impl_generics_associated_types_solution_Contains_for_generics_associated
       }
   *)
   Definition a (self : ref ltac:(Self)) : M i32.t :=
-    let* self := M.alloc self in
+    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
     M.function_body
-      (let* α0 : M.Val generics_associated_types_solution.Container.t :=
-        deref self in
-      M.pure α0.["0"]).
+      (let* α0 := M.read self in
+      let* α1 : M.Val generics_associated_types_solution.Container.t :=
+        deref α0 in
+      M.pure α1.["0"]).
   
   Global Instance AssociatedFunction_a :
     Notations.DoubleColon ltac:(Self) "a" := {
@@ -169,21 +172,21 @@ Definition difference
     {ℋ_0 : generics_associated_types_solution.Contains.Trait C}
     (container : ref C)
     : M i32.t :=
-  let* container := M.alloc container in
+  let* container : M.Val (ref C) := M.alloc container in
   M.function_body
-    (let* α0 : M.Val C := deref container in
-    let* α1 : M.Val (ref C) := borrow α0 in
-    let* α2 := M.read α1 in
-    let* α3 :=
+    (let* α0 := M.read container in
+    let* α1 : M.Val C := deref α0 in
+    let* α2 : ref C := borrow α1 in
+    let* α3 : i32.t :=
       (generics_associated_types_solution.Contains.last
           (Self := C)
           (Trait := ltac:(refine _)))
         α2 in
     let* α4 : M.Val i32.t := M.alloc α3 in
-    let* α5 : M.Val C := deref container in
-    let* α6 : M.Val (ref C) := borrow α5 in
-    let* α7 := M.read α6 in
-    let* α8 :=
+    let* α5 := M.read container in
+    let* α6 : M.Val C := deref α5 in
+    let* α7 : ref C := borrow α6 in
+    let* α8 : i32.t :=
       (generics_associated_types_solution.Contains.first
           (Self := C)
           (Trait := ltac:(refine _)))
@@ -201,12 +204,12 @@ Definition get_a
     {ℋ_0 : generics_associated_types_solution.Contains.Trait C}
     (container : ref C)
     : M C::type["A"].t :=
-  let* container := M.alloc container in
+  let* container : M.Val (ref C) := M.alloc container in
   M.function_body
-    (let* α0 : M.Val C := deref container in
-    let* α1 : M.Val (ref C) := borrow α0 in
-    let* α2 := M.read α1 in
-    let* α3 :=
+    (let* α0 := M.read container in
+    let* α1 : M.Val C := deref α0 in
+    let* α2 : ref C := borrow α1 in
+    let* α3 : type not implemented :=
       (generics_associated_types_solution.Contains.a
           (Self := C)
           (Trait := ltac:(refine _)))
@@ -256,136 +259,180 @@ Definition main : M unit :=
               mk_str "
 "
             ] in
-        let* α1 : M.Val (ref (array (ref str.t))) := borrow α0 in
-        let* α2 : M.Val (ref (slice (ref str.t))) :=
-          pointer_coercion "Unsize" α1 in
-        let* α3 := M.read α2 in
-        let* α4 : M.Val (ref i32.t) := borrow number_1 in
-        let* α5 : M.Val (ref (ref i32.t)) := borrow α4 in
+        let* α1 : ref (array (ref str.t)) := borrow α0 in
+        let* α2 : M.Val (array (ref str.t)) := deref α1 in
+        let* α3 : ref (array (ref str.t)) := borrow α2 in
+        let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
+        let* α5 : M.Val (ref (slice (ref str.t))) :=
+          pointer_coercion "Unsize" α4 in
         let* α6 := M.read α5 in
-        let* α7 := core.fmt.rt.Argument.t::["new_display"] α6 in
-        let* α8 : M.Val core.fmt.rt.Argument.t := M.alloc α7 in
-        let* α9 : M.Val (ref i32.t) := borrow number_2 in
-        let* α10 : M.Val (ref (ref i32.t)) := borrow α9 in
-        let* α11 := M.read α10 in
-        let* α12 := core.fmt.rt.Argument.t::["new_display"] α11 in
+        let* α7 : ref i32.t := borrow number_1 in
+        let* α8 : M.Val (ref i32.t) := M.alloc α7 in
+        let* α9 : ref (ref i32.t) := borrow α8 in
+        let* α10 : M.Val (ref i32.t) := deref α9 in
+        let* α11 : ref (ref i32.t) := borrow α10 in
+        let* α12 : core.fmt.rt.Argument.t :=
+          core.fmt.rt.Argument.t::["new_display"] α11 in
         let* α13 : M.Val core.fmt.rt.Argument.t := M.alloc α12 in
-        let* α14 : M.Val (ref generics_associated_types_solution.Container.t) :=
+        let* α14 : ref i32.t := borrow number_2 in
+        let* α15 : M.Val (ref i32.t) := M.alloc α14 in
+        let* α16 : ref (ref i32.t) := borrow α15 in
+        let* α17 : M.Val (ref i32.t) := deref α16 in
+        let* α18 : ref (ref i32.t) := borrow α17 in
+        let* α19 : core.fmt.rt.Argument.t :=
+          core.fmt.rt.Argument.t::["new_display"] α18 in
+        let* α20 : M.Val core.fmt.rt.Argument.t := M.alloc α19 in
+        let* α21 : ref generics_associated_types_solution.Container.t :=
           borrow container in
-        let* α15 := M.read α14 in
-        let* α16 : M.Val (ref i32.t) := borrow number_1 in
-        let* α17 := M.read α16 in
-        let* α18 : M.Val (ref i32.t) := borrow number_2 in
-        let* α19 := M.read α18 in
-        let* α20 :=
+        let* α22 : ref i32.t := borrow number_1 in
+        let* α23 : M.Val i32.t := deref α22 in
+        let* α24 : ref i32.t := borrow α23 in
+        let* α25 : ref i32.t := borrow number_2 in
+        let* α26 : M.Val i32.t := deref α25 in
+        let* α27 : ref i32.t := borrow α26 in
+        let* α28 : bool.t :=
           (generics_associated_types_solution.Contains.contains
               (Self := generics_associated_types_solution.Container.t)
               (Trait := ltac:(refine _)))
-            α15
-            α17
-            α19 in
-        let* α21 : M.Val bool.t := M.alloc α20 in
-        let* α22 : M.Val (ref bool.t) := borrow α21 in
-        let* α23 := M.read α22 in
-        let* α24 := core.fmt.rt.Argument.t::["new_display"] α23 in
-        let* α25 : M.Val core.fmt.rt.Argument.t := M.alloc α24 in
-        let* α26 : M.Val (array core.fmt.rt.Argument.t) :=
-          M.alloc [ α8; α13; α25 ] in
-        let* α27 : M.Val (ref (array core.fmt.rt.Argument.t)) := borrow α26 in
-        let* α28 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
-          pointer_coercion "Unsize" α27 in
-        let* α29 := M.read α28 in
-        let* α30 := core.fmt.Arguments.t::["new_v1"] α3 α29 in
-        let* α31 := std.io.stdio._print α30 in
-        M.alloc α31 in
+            α21
+            α24
+            α27 in
+        let* α29 : M.Val bool.t := M.alloc α28 in
+        let* α30 : ref bool.t := borrow α29 in
+        let* α31 : M.Val bool.t := deref α30 in
+        let* α32 : ref bool.t := borrow α31 in
+        let* α33 : core.fmt.rt.Argument.t :=
+          core.fmt.rt.Argument.t::["new_display"] α32 in
+        let* α34 : M.Val core.fmt.rt.Argument.t := M.alloc α33 in
+        let* α35 : M.Val (array core.fmt.rt.Argument.t) :=
+          M.alloc [ α13; α20; α34 ] in
+        let* α36 : ref (array core.fmt.rt.Argument.t) := borrow α35 in
+        let* α37 : M.Val (array core.fmt.rt.Argument.t) := deref α36 in
+        let* α38 : ref (array core.fmt.rt.Argument.t) := borrow α37 in
+        let* α39 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α38 in
+        let* α40 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
+          pointer_coercion "Unsize" α39 in
+        let* α41 := M.read α40 in
+        let* α42 : core.fmt.Arguments.t :=
+          core.fmt.Arguments.t::["new_v1"] α6 α41 in
+        let* α43 : unit := std.io.stdio._print α42 in
+        M.alloc α43 in
       M.alloc tt in
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
         let* α0 : M.Val (array (ref str.t)) :=
           M.alloc [ mk_str "First number: "; mk_str "
 " ] in
-        let* α1 : M.Val (ref (array (ref str.t))) := borrow α0 in
-        let* α2 : M.Val (ref (slice (ref str.t))) :=
-          pointer_coercion "Unsize" α1 in
-        let* α3 := M.read α2 in
-        let* α4 : M.Val (ref generics_associated_types_solution.Container.t) :=
+        let* α1 : ref (array (ref str.t)) := borrow α0 in
+        let* α2 : M.Val (array (ref str.t)) := deref α1 in
+        let* α3 : ref (array (ref str.t)) := borrow α2 in
+        let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
+        let* α5 : M.Val (ref (slice (ref str.t))) :=
+          pointer_coercion "Unsize" α4 in
+        let* α6 := M.read α5 in
+        let* α7 : ref generics_associated_types_solution.Container.t :=
           borrow container in
-        let* α5 := M.read α4 in
-        let* α6 :=
+        let* α8 : i32.t :=
           (generics_associated_types_solution.Contains.first
               (Self := generics_associated_types_solution.Container.t)
               (Trait := ltac:(refine _)))
-            α5 in
-        let* α7 : M.Val i32.t := M.alloc α6 in
-        let* α8 : M.Val (ref i32.t) := borrow α7 in
-        let* α9 := M.read α8 in
-        let* α10 := core.fmt.rt.Argument.t::["new_display"] α9 in
-        let* α11 : M.Val core.fmt.rt.Argument.t := M.alloc α10 in
-        let* α12 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α11 ] in
-        let* α13 : M.Val (ref (array core.fmt.rt.Argument.t)) := borrow α12 in
-        let* α14 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
-          pointer_coercion "Unsize" α13 in
-        let* α15 := M.read α14 in
-        let* α16 := core.fmt.Arguments.t::["new_v1"] α3 α15 in
-        let* α17 := std.io.stdio._print α16 in
-        M.alloc α17 in
+            α7 in
+        let* α9 : M.Val i32.t := M.alloc α8 in
+        let* α10 : ref i32.t := borrow α9 in
+        let* α11 : M.Val i32.t := deref α10 in
+        let* α12 : ref i32.t := borrow α11 in
+        let* α13 : core.fmt.rt.Argument.t :=
+          core.fmt.rt.Argument.t::["new_display"] α12 in
+        let* α14 : M.Val core.fmt.rt.Argument.t := M.alloc α13 in
+        let* α15 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α14 ] in
+        let* α16 : ref (array core.fmt.rt.Argument.t) := borrow α15 in
+        let* α17 : M.Val (array core.fmt.rt.Argument.t) := deref α16 in
+        let* α18 : ref (array core.fmt.rt.Argument.t) := borrow α17 in
+        let* α19 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α18 in
+        let* α20 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
+          pointer_coercion "Unsize" α19 in
+        let* α21 := M.read α20 in
+        let* α22 : core.fmt.Arguments.t :=
+          core.fmt.Arguments.t::["new_v1"] α6 α21 in
+        let* α23 : unit := std.io.stdio._print α22 in
+        M.alloc α23 in
       M.alloc tt in
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
         let* α0 : M.Val (array (ref str.t)) :=
           M.alloc [ mk_str "Last number: "; mk_str "
 " ] in
-        let* α1 : M.Val (ref (array (ref str.t))) := borrow α0 in
-        let* α2 : M.Val (ref (slice (ref str.t))) :=
-          pointer_coercion "Unsize" α1 in
-        let* α3 := M.read α2 in
-        let* α4 : M.Val (ref generics_associated_types_solution.Container.t) :=
+        let* α1 : ref (array (ref str.t)) := borrow α0 in
+        let* α2 : M.Val (array (ref str.t)) := deref α1 in
+        let* α3 : ref (array (ref str.t)) := borrow α2 in
+        let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
+        let* α5 : M.Val (ref (slice (ref str.t))) :=
+          pointer_coercion "Unsize" α4 in
+        let* α6 := M.read α5 in
+        let* α7 : ref generics_associated_types_solution.Container.t :=
           borrow container in
-        let* α5 := M.read α4 in
-        let* α6 :=
+        let* α8 : i32.t :=
           (generics_associated_types_solution.Contains.last
               (Self := generics_associated_types_solution.Container.t)
               (Trait := ltac:(refine _)))
-            α5 in
-        let* α7 : M.Val i32.t := M.alloc α6 in
-        let* α8 : M.Val (ref i32.t) := borrow α7 in
-        let* α9 := M.read α8 in
-        let* α10 := core.fmt.rt.Argument.t::["new_display"] α9 in
-        let* α11 : M.Val core.fmt.rt.Argument.t := M.alloc α10 in
-        let* α12 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α11 ] in
-        let* α13 : M.Val (ref (array core.fmt.rt.Argument.t)) := borrow α12 in
-        let* α14 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
-          pointer_coercion "Unsize" α13 in
-        let* α15 := M.read α14 in
-        let* α16 := core.fmt.Arguments.t::["new_v1"] α3 α15 in
-        let* α17 := std.io.stdio._print α16 in
-        M.alloc α17 in
+            α7 in
+        let* α9 : M.Val i32.t := M.alloc α8 in
+        let* α10 : ref i32.t := borrow α9 in
+        let* α11 : M.Val i32.t := deref α10 in
+        let* α12 : ref i32.t := borrow α11 in
+        let* α13 : core.fmt.rt.Argument.t :=
+          core.fmt.rt.Argument.t::["new_display"] α12 in
+        let* α14 : M.Val core.fmt.rt.Argument.t := M.alloc α13 in
+        let* α15 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α14 ] in
+        let* α16 : ref (array core.fmt.rt.Argument.t) := borrow α15 in
+        let* α17 : M.Val (array core.fmt.rt.Argument.t) := deref α16 in
+        let* α18 : ref (array core.fmt.rt.Argument.t) := borrow α17 in
+        let* α19 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α18 in
+        let* α20 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
+          pointer_coercion "Unsize" α19 in
+        let* α21 := M.read α20 in
+        let* α22 : core.fmt.Arguments.t :=
+          core.fmt.Arguments.t::["new_v1"] α6 α21 in
+        let* α23 : unit := std.io.stdio._print α22 in
+        M.alloc α23 in
       M.alloc tt in
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
         let* α0 : M.Val (array (ref str.t)) :=
           M.alloc [ mk_str "The difference is: "; mk_str "
 " ] in
-        let* α1 : M.Val (ref (array (ref str.t))) := borrow α0 in
-        let* α2 : M.Val (ref (slice (ref str.t))) :=
-          pointer_coercion "Unsize" α1 in
-        let* α3 := M.read α2 in
-        let* α4 : M.Val (ref generics_associated_types_solution.Container.t) :=
+        let* α1 : ref (array (ref str.t)) := borrow α0 in
+        let* α2 : M.Val (array (ref str.t)) := deref α1 in
+        let* α3 : ref (array (ref str.t)) := borrow α2 in
+        let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
+        let* α5 : M.Val (ref (slice (ref str.t))) :=
+          pointer_coercion "Unsize" α4 in
+        let* α6 := M.read α5 in
+        let* α7 : ref generics_associated_types_solution.Container.t :=
           borrow container in
-        let* α5 := M.read α4 in
-        let* α6 := generics_associated_types_solution.difference α5 in
-        let* α7 : M.Val i32.t := M.alloc α6 in
-        let* α8 : M.Val (ref i32.t) := borrow α7 in
-        let* α9 := M.read α8 in
-        let* α10 := core.fmt.rt.Argument.t::["new_display"] α9 in
-        let* α11 : M.Val core.fmt.rt.Argument.t := M.alloc α10 in
-        let* α12 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α11 ] in
-        let* α13 : M.Val (ref (array core.fmt.rt.Argument.t)) := borrow α12 in
-        let* α14 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
-          pointer_coercion "Unsize" α13 in
-        let* α15 := M.read α14 in
-        let* α16 := core.fmt.Arguments.t::["new_v1"] α3 α15 in
-        let* α17 := std.io.stdio._print α16 in
-        M.alloc α17 in
+        let* α8 : M.Val generics_associated_types_solution.Container.t :=
+          deref α7 in
+        let* α9 : ref generics_associated_types_solution.Container.t :=
+          borrow α8 in
+        let* α10 : i32.t := generics_associated_types_solution.difference α9 in
+        let* α11 : M.Val i32.t := M.alloc α10 in
+        let* α12 : ref i32.t := borrow α11 in
+        let* α13 : M.Val i32.t := deref α12 in
+        let* α14 : ref i32.t := borrow α13 in
+        let* α15 : core.fmt.rt.Argument.t :=
+          core.fmt.rt.Argument.t::["new_display"] α14 in
+        let* α16 : M.Val core.fmt.rt.Argument.t := M.alloc α15 in
+        let* α17 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α16 ] in
+        let* α18 : ref (array core.fmt.rt.Argument.t) := borrow α17 in
+        let* α19 : M.Val (array core.fmt.rt.Argument.t) := deref α18 in
+        let* α20 : ref (array core.fmt.rt.Argument.t) := borrow α19 in
+        let* α21 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α20 in
+        let* α22 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
+          pointer_coercion "Unsize" α21 in
+        let* α23 := M.read α22 in
+        let* α24 : core.fmt.Arguments.t :=
+          core.fmt.Arguments.t::["new_v1"] α6 α23 in
+        let* α25 : unit := std.io.stdio._print α24 in
+        M.alloc α25 in
       M.alloc tt in
     M.alloc tt).

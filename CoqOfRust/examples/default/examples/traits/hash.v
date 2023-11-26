@@ -44,46 +44,52 @@ Section Impl_core_hash_Hash_for_hash_Person_t.
       (self : ref ltac:(Self))
       (state : mut_ref __H)
       : M unit :=
-    let* self := M.alloc self in
-    let* state := M.alloc state in
+    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+    let* state : M.Val (mut_ref __H) := M.alloc state in
     M.function_body
       (let* _ : M.Val unit :=
-        let* α0 : M.Val hash.Person.t := deref self in
-        let* α1 : M.Val (ref u32.t) := borrow α0.["id"] in
-        let* α2 := M.read α1 in
-        let* α3 : M.Val __H := deref state in
-        let* α4 : M.Val (mut_ref __H) := borrow_mut α3 in
-        let* α5 := M.read α4 in
-        let* α6 :=
+        let* α0 := M.read self in
+        let* α1 : M.Val hash.Person.t := deref α0 in
+        let* α2 : ref u32.t := borrow α1.["id"] in
+        let* α3 : M.Val u32.t := deref α2 in
+        let* α4 : ref u32.t := borrow α3 in
+        let* α5 := M.read state in
+        let* α6 : M.Val __H := deref α5 in
+        let* α7 : mut_ref __H := borrow_mut α6 in
+        let* α8 : unit :=
           (core.hash.Hash.hash (Self := u32.t) (Trait := ltac:(refine _)))
-            α2
-            α5 in
-        M.alloc α6 in
+            α4
+            α7 in
+        M.alloc α8 in
       let* _ : M.Val unit :=
-        let* α0 : M.Val hash.Person.t := deref self in
-        let* α1 : M.Val (ref alloc.string.String.t) := borrow α0.["name"] in
-        let* α2 := M.read α1 in
-        let* α3 : M.Val __H := deref state in
-        let* α4 : M.Val (mut_ref __H) := borrow_mut α3 in
-        let* α5 := M.read α4 in
-        let* α6 :=
+        let* α0 := M.read self in
+        let* α1 : M.Val hash.Person.t := deref α0 in
+        let* α2 : ref alloc.string.String.t := borrow α1.["name"] in
+        let* α3 : M.Val alloc.string.String.t := deref α2 in
+        let* α4 : ref alloc.string.String.t := borrow α3 in
+        let* α5 := M.read state in
+        let* α6 : M.Val __H := deref α5 in
+        let* α7 : mut_ref __H := borrow_mut α6 in
+        let* α8 : unit :=
           (core.hash.Hash.hash
               (Self := alloc.string.String.t)
               (Trait := ltac:(refine _)))
-            α2
-            α5 in
-        M.alloc α6 in
-      let* α0 : M.Val hash.Person.t := deref self in
-      let* α1 : M.Val (ref u64.t) := borrow α0.["phone"] in
-      let* α2 := M.read α1 in
-      let* α3 : M.Val __H := deref state in
-      let* α4 : M.Val (mut_ref __H) := borrow_mut α3 in
-      let* α5 := M.read α4 in
-      let* α6 :=
+            α4
+            α7 in
+        M.alloc α8 in
+      let* α0 := M.read self in
+      let* α1 : M.Val hash.Person.t := deref α0 in
+      let* α2 : ref u64.t := borrow α1.["phone"] in
+      let* α3 : M.Val u64.t := deref α2 in
+      let* α4 : ref u64.t := borrow α3 in
+      let* α5 := M.read state in
+      let* α6 : M.Val __H := deref α5 in
+      let* α7 : mut_ref __H := borrow_mut α6 in
+      let* α8 : unit :=
         (core.hash.Hash.hash (Self := u64.t) (Trait := ltac:(refine _)))
-          α2
-          α5 in
-      M.alloc α6).
+          α4
+          α7 in
+      M.alloc α8).
   
   Global Instance AssociatedFunction_hash
       {__H : Set}
@@ -112,30 +118,31 @@ Definition calculate_hash
     {ℋ_0 : core.hash.Hash.Trait T}
     (t : ref T)
     : M u64.t :=
-  let* t := M.alloc t in
+  let* t : M.Val (ref T) := M.alloc t in
   M.function_body
     (let* s : M.Val std.collections.hash.map.DefaultHasher.t :=
-      let* α0 := std.collections.hash.map.DefaultHasher.t::["new"] in
+      let* α0 : std.collections.hash.map.DefaultHasher.t :=
+        std.collections.hash.map.DefaultHasher.t::["new"] in
       M.alloc α0 in
     let* _ : M.Val unit :=
-      let* α0 : M.Val T := deref t in
-      let* α1 : M.Val (ref T) := borrow α0 in
-      let* α2 := M.read α1 in
-      let* α3 : M.Val (mut_ref std.collections.hash.map.DefaultHasher.t) :=
+      let* α0 := M.read t in
+      let* α1 : M.Val T := deref α0 in
+      let* α2 : ref T := borrow α1 in
+      let* α3 : mut_ref std.collections.hash.map.DefaultHasher.t :=
         borrow_mut s in
-      let* α4 := M.read α3 in
-      let* α5 :=
-        (core.hash.Hash.hash (Self := T) (Trait := ltac:(refine _))) α2 α4 in
-      M.alloc α5 in
-    let* α0 : M.Val (ref std.collections.hash.map.DefaultHasher.t) :=
-      borrow s in
-    let* α1 := M.read α0 in
-    let* α2 :=
+      let* α4 : M.Val std.collections.hash.map.DefaultHasher.t := deref α3 in
+      let* α5 : mut_ref std.collections.hash.map.DefaultHasher.t :=
+        borrow_mut α4 in
+      let* α6 : unit :=
+        (core.hash.Hash.hash (Self := T) (Trait := ltac:(refine _))) α2 α5 in
+      M.alloc α6 in
+    let* α0 : ref std.collections.hash.map.DefaultHasher.t := borrow s in
+    let* α1 : u64.t :=
       (core.hash.Hasher.finish
           (Self := std.collections.hash.map.DefaultHasher.t)
           (Trait := ltac:(refine _)))
-        α1 in
-    M.alloc α2).
+        α0 in
+    M.alloc α1).
 
 (*
 fn main() {
@@ -159,10 +166,10 @@ Definition main : M unit :=
     (let* person1 : M.Val hash.Person.t :=
       let* α0 : M.Val u32.t := M.alloc 5 in
       let* α1 := M.read α0 in
-      let* α2 : M.Val str.t := deref (mk_str "Janet") in
-      let* α3 : M.Val (ref str.t) := borrow α2 in
-      let* α4 := M.read α3 in
-      let* α5 :=
+      let* α2 := M.read (mk_str "Janet") in
+      let* α3 : M.Val str.t := deref α2 in
+      let* α4 : ref str.t := borrow α3 in
+      let* α5 : alloc.string.String.t :=
         (alloc.string.ToString.to_string
             (Self := str.t)
             (Trait := ltac:(refine _)))
@@ -178,10 +185,10 @@ Definition main : M unit :=
     let* person2 : M.Val hash.Person.t :=
       let* α0 : M.Val u32.t := M.alloc 5 in
       let* α1 := M.read α0 in
-      let* α2 : M.Val str.t := deref (mk_str "Bob") in
-      let* α3 : M.Val (ref str.t) := borrow α2 in
-      let* α4 := M.read α3 in
-      let* α5 :=
+      let* α2 := M.read (mk_str "Bob") in
+      let* α3 : M.Val str.t := deref α2 in
+      let* α4 : ref str.t := borrow α3 in
+      let* α5 : alloc.string.String.t :=
         (alloc.string.ToString.to_string
             (Self := str.t)
             (Trait := ltac:(refine _)))
@@ -195,24 +202,26 @@ Definition main : M unit :=
           hash.Person.phone := α7;
         |} in
     let* _ : M.Val unit :=
-      let* α0 : M.Val (ref hash.Person.t) := borrow person1 in
-      let* α1 := M.read α0 in
-      let* α2 := hash.calculate_hash α1 in
-      let* α3 : M.Val u64.t := M.alloc α2 in
-      let* α4 : M.Val (ref hash.Person.t) := borrow person2 in
-      let* α5 := M.read α4 in
-      let* α6 := hash.calculate_hash α5 in
-      let* α7 : M.Val u64.t := M.alloc α6 in
-      let* α8 : M.Val bool.t := BinOp.ne α3 α7 in
-      let* α9 : M.Val bool.t := UnOp.not α8 in
-      let* α10 : M.Val bool.t := use α9 in
-      let* α11 := M.read α10 in
-      if (α11 : bool) then
+      let* α0 : ref hash.Person.t := borrow person1 in
+      let* α1 : M.Val hash.Person.t := deref α0 in
+      let* α2 : ref hash.Person.t := borrow α1 in
+      let* α3 : u64.t := hash.calculate_hash α2 in
+      let* α4 : M.Val u64.t := M.alloc α3 in
+      let* α5 : ref hash.Person.t := borrow person2 in
+      let* α6 : M.Val hash.Person.t := deref α5 in
+      let* α7 : ref hash.Person.t := borrow α6 in
+      let* α8 : u64.t := hash.calculate_hash α7 in
+      let* α9 : M.Val u64.t := M.alloc α8 in
+      let* α10 : M.Val bool.t := BinOp.ne α4 α9 in
+      let* α11 : M.Val bool.t := UnOp.not α10 in
+      let* α12 : M.Val bool.t := use α11 in
+      let* α13 := M.read α12 in
+      if (α13 : bool) then
         let* α0 :=
           M.read
             (mk_str
               "assertion failed: calculate_hash(&person1) != calculate_hash(&person2)") in
-        let* α1 := core.panicking.panic α0 in
+        let* α1 : never.t := core.panicking.panic α0 in
         let* α2 : M.Val never.t := M.alloc α1 in
         never_to_any α2
       else

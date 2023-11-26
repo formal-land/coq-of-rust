@@ -7,8 +7,8 @@ pub fn add(a: i32, b: i32) -> i32 {
 }
 *)
 Definition add (a : i32.t) (b : i32.t) : M i32.t :=
-  let* a := M.alloc a in
-  let* b := M.alloc b in
+  let* a : M.Val i32.t := M.alloc a in
+  let* b : M.Val i32.t := M.alloc b in
   M.function_body (BinOp.add a b).
 
 (*
@@ -21,8 +21,8 @@ pub fn div(a: i32, b: i32) -> i32 {
 }
 *)
 Definition div (a : i32.t) (b : i32.t) : M i32.t :=
-  let* a := M.alloc a in
-  let* b := M.alloc b in
+  let* a : M.Val i32.t := M.alloc a in
+  let* b : M.Val i32.t := M.alloc b in
   M.function_body
     (let* _ : M.Val unit :=
       let* α0 : M.Val i32.t := M.alloc 0 in
@@ -32,7 +32,7 @@ Definition div (a : i32.t) (b : i32.t) : M i32.t :=
       if (α3 : bool) then
         let* _ : M.Val unit :=
           let* α0 := M.read (mk_str "Divide-by-zero error") in
-          let* α1 := std.panicking.begin_panic α0 in
+          let* α1 : never.t := std.panicking.begin_panic α0 in
           let* α2 : M.Val never.t := M.alloc α1 in
           never_to_any α2 in
         let* α0 : M.Val unit := M.alloc tt in

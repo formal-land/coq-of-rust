@@ -21,9 +21,9 @@ Section Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers_t.
       }
   *)
   Definition run (self : ref ltac:(Self)) (x : i32.t) (y : i32.t) : M i32.t :=
-    let* self := M.alloc self in
-    let* x := M.alloc x in
-    let* y := M.alloc y in
+    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+    let* x : M.Val i32.t := M.alloc x in
+    let* y : M.Val i32.t := M.alloc y in
     M.function_body
       (let* α0 := M.read self in
       match α0 with

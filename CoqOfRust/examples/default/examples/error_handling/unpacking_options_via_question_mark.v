@@ -46,10 +46,11 @@ Section Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job_t.
   Definition clone
       (self : ref ltac:(Self))
       : M unpacking_options_via_question_mark.Job.t :=
-    let* self := M.alloc self in
+    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
     M.function_body
       (let* _ : M.Val unit := M.alloc tt in
-      deref self).
+      let* α0 := M.read self in
+      deref α0).
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon ltac:(Self) "clone" := {
@@ -106,11 +107,12 @@ Section Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumbe
   Definition clone
       (self : ref ltac:(Self))
       : M unpacking_options_via_question_mark.PhoneNumber.t :=
-    let* self := M.alloc self in
+    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
     M.function_body
       (let* _ : M.Val unit := M.alloc tt in
       let* _ : M.Val unit := M.alloc tt in
-      deref self).
+      let* α0 := M.read self in
+      deref α0).
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon ltac:(Self) "clone" := {
@@ -149,30 +151,34 @@ Section Impl_unpacking_options_via_question_mark_Person_t.
       (self : ref ltac:(Self))
       : M (core.option.Option.t u8.t) :=
     let return_ := M.return_ (R := core.option.Option.t u8.t) in
-    let* self := M.alloc self in
+    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
     M.function_body
-      (let* α0 : M.Val unpacking_options_via_question_mark.Person.t :=
-        deref self in
-      let* α1 := M.read α0.["job"] in
-      let* α2 :=
+      (let* α0 := M.read self in
+      let* α1 : M.Val unpacking_options_via_question_mark.Person.t :=
+        deref α0 in
+      let* α2 := M.read α1.["job"] in
+      let* α3 :
+          core.ops.control_flow.ControlFlow.t
+            (core.option.Option.t core.convert.Infallible.t)
+            unpacking_options_via_question_mark.Job.t :=
         (core.ops.try_trait.Try.branch
             (Self :=
               core.option.Option.t unpacking_options_via_question_mark.Job.t)
             (Trait := ltac:(refine _)))
-          α1 in
-      let* α3 :
+          α2 in
+      let* α4 :
           M.Val
             (core.ops.control_flow.ControlFlow.t
               (core.option.Option.t core.convert.Infallible.t)
               unpacking_options_via_question_mark.Job.t) :=
-        M.alloc α2 in
-      let* α4 := M.read α3 in
-      let* α5 : M.Val unpacking_options_via_question_mark.Job.t :=
-        match α4 with
+        M.alloc α3 in
+      let* α5 := M.read α4 in
+      let* α6 : M.Val unpacking_options_via_question_mark.Job.t :=
+        match α5 with
         | core.ops.control_flow.ControlFlow.Break residual =>
           let* residual := M.alloc residual in
           let* α0 := M.read residual in
-          let* α1 :=
+          let* α1 : core.option.Option.t u8.t :=
             (core.ops.try_trait.FromResidual.from_residual
                 (Self := core.option.Option.t u8.t)
                 (Trait := ltac:(refine _)))
@@ -183,27 +189,30 @@ Section Impl_unpacking_options_via_question_mark_Person_t.
           let* val := M.alloc val in
           M.pure val
         end in
-      let* α6 := M.read α5.["phone_number"] in
-      let* α7 :=
+      let* α7 := M.read α6.["phone_number"] in
+      let* α8 :
+          core.ops.control_flow.ControlFlow.t
+            (core.option.Option.t core.convert.Infallible.t)
+            unpacking_options_via_question_mark.PhoneNumber.t :=
         (core.ops.try_trait.Try.branch
             (Self :=
               core.option.Option.t
                 unpacking_options_via_question_mark.PhoneNumber.t)
             (Trait := ltac:(refine _)))
-          α6 in
-      let* α8 :
+          α7 in
+      let* α9 :
           M.Val
             (core.ops.control_flow.ControlFlow.t
               (core.option.Option.t core.convert.Infallible.t)
               unpacking_options_via_question_mark.PhoneNumber.t) :=
-        M.alloc α7 in
-      let* α9 := M.read α8 in
-      let* α10 : M.Val unpacking_options_via_question_mark.PhoneNumber.t :=
-        match α9 with
+        M.alloc α8 in
+      let* α10 := M.read α9 in
+      let* α11 : M.Val unpacking_options_via_question_mark.PhoneNumber.t :=
+        match α10 with
         | core.ops.control_flow.ControlFlow.Break residual =>
           let* residual := M.alloc residual in
           let* α0 := M.read residual in
-          let* α1 :=
+          let* α1 : core.option.Option.t u8.t :=
             (core.ops.try_trait.FromResidual.from_residual
                 (Self := core.option.Option.t u8.t)
                 (Trait := ltac:(refine _)))
@@ -214,7 +223,7 @@ Section Impl_unpacking_options_via_question_mark_Person_t.
           let* val := M.alloc val in
           M.pure val
         end in
-      M.pure α10.["area_code"]).
+      M.pure α11.["area_code"]).
   
   Global Instance AssociatedFunction_work_phone_area_code :
     Notations.DoubleColon ltac:(Self) "work_phone_area_code" := {
@@ -261,39 +270,35 @@ Definition main : M unit :=
               |};
         |} in
     let* _ : M.Val unit :=
-      let* α0 : M.Val (ref unpacking_options_via_question_mark.Person.t) :=
-        borrow p in
-      let* α1 := M.read α0 in
-      let* α2 :=
+      let* α0 : ref unpacking_options_via_question_mark.Person.t := borrow p in
+      let* α1 : core.option.Option.t u8.t :=
         unpacking_options_via_question_mark.Person.t::["work_phone_area_code"]
-          α1 in
-      let* α3 : M.Val (core.option.Option.t u8.t) := M.alloc α2 in
-      let* α4 : M.Val (ref (core.option.Option.t u8.t)) := borrow α3 in
+          α0 in
+      let* α2 : M.Val (core.option.Option.t u8.t) := M.alloc α1 in
+      let* α3 : ref (core.option.Option.t u8.t) := borrow α2 in
+      let* α4 : M.Val u8.t := M.alloc 61 in
       let* α5 := M.read α4 in
-      let* α6 : M.Val u8.t := M.alloc 61 in
-      let* α7 := M.read α6 in
-      let* α8 : M.Val (core.option.Option.t u8.t) :=
-        M.alloc (core.option.Option.Some α7) in
-      let* α9 : M.Val (ref (core.option.Option.t u8.t)) := borrow α8 in
-      let* α10 := M.read α9 in
-      let* α11 :
+      let* α6 : M.Val (core.option.Option.t u8.t) :=
+        M.alloc (core.option.Option.Some α5) in
+      let* α7 : ref (core.option.Option.t u8.t) := borrow α6 in
+      let* α8 :
           M.Val
             ((ref (core.option.Option.t u8.t))
             *
             (ref (core.option.Option.t u8.t))) :=
-        M.alloc (α5, α10) in
-      let* α12 := M.read α11 in
-      match α12 with
+        M.alloc (α3, α7) in
+      let* α9 := M.read α8 in
+      match α9 with
       | (left_val, right_val) =>
         let* right_val := M.alloc right_val in
         let* left_val := M.alloc left_val in
-        let* α0 : M.Val (core.option.Option.t u8.t) := deref left_val in
-        let* α1 : M.Val (ref (core.option.Option.t u8.t)) := borrow α0 in
-        let* α2 := M.read α1 in
-        let* α3 : M.Val (core.option.Option.t u8.t) := deref right_val in
-        let* α4 : M.Val (ref (core.option.Option.t u8.t)) := borrow α3 in
-        let* α5 := M.read α4 in
-        let* α6 :=
+        let* α0 := M.read left_val in
+        let* α1 : M.Val (core.option.Option.t u8.t) := deref α0 in
+        let* α2 : ref (core.option.Option.t u8.t) := borrow α1 in
+        let* α3 := M.read right_val in
+        let* α4 : M.Val (core.option.Option.t u8.t) := deref α3 in
+        let* α5 : ref (core.option.Option.t u8.t) := borrow α4 in
+        let* α6 : bool.t :=
           (core.cmp.PartialEq.eq
               (Self := core.option.Option.t u8.t)
               (Trait := ltac:(refine _)))
@@ -308,15 +313,19 @@ Definition main : M unit :=
             M.alloc core.panicking.AssertKind.Eq in
           let* _ : M.Val never.t :=
             let* α0 := M.read kind in
-            let* α1 : M.Val (core.option.Option.t u8.t) := deref left_val in
-            let* α2 : M.Val (ref (core.option.Option.t u8.t)) := borrow α1 in
-            let* α3 := M.read α2 in
-            let* α4 : M.Val (core.option.Option.t u8.t) := deref right_val in
-            let* α5 : M.Val (ref (core.option.Option.t u8.t)) := borrow α4 in
-            let* α6 := M.read α5 in
-            let* α7 :=
-              core.panicking.assert_failed α0 α3 α6 core.option.Option.None in
-            M.alloc α7 in
+            let* α1 := M.read left_val in
+            let* α2 : M.Val (core.option.Option.t u8.t) := deref α1 in
+            let* α3 : ref (core.option.Option.t u8.t) := borrow α2 in
+            let* α4 : M.Val (core.option.Option.t u8.t) := deref α3 in
+            let* α5 : ref (core.option.Option.t u8.t) := borrow α4 in
+            let* α6 := M.read right_val in
+            let* α7 : M.Val (core.option.Option.t u8.t) := deref α6 in
+            let* α8 : ref (core.option.Option.t u8.t) := borrow α7 in
+            let* α9 : M.Val (core.option.Option.t u8.t) := deref α8 in
+            let* α10 : ref (core.option.Option.t u8.t) := borrow α9 in
+            let* α11 : never.t :=
+              core.panicking.assert_failed α0 α5 α10 core.option.Option.None in
+            M.alloc α11 in
           let* α0 : M.Val unit := M.alloc tt in
           never_to_any α0
         else

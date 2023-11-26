@@ -31,74 +31,66 @@ fn main() {
 Definition main : M unit :=
   M.function_body
     (let* path : M.Val (ref std.path.Path.t) :=
-      let* α0 : M.Val str.t := deref (mk_str ".") in
-      let* α1 : M.Val (ref str.t) := borrow α0 in
-      let* α2 := M.read α1 in
-      let* α3 := std.path.Path.t::["new"] α2 in
+      let* α0 := M.read (mk_str ".") in
+      let* α1 : M.Val str.t := deref α0 in
+      let* α2 : ref str.t := borrow α1 in
+      let* α3 : ref std.path.Path.t := std.path.Path.t::["new"] α2 in
       M.alloc α3 in
     let* _display : M.Val std.path.Display.t :=
-      let* α0 : M.Val std.path.Path.t := deref path in
-      let* α1 : M.Val (ref std.path.Path.t) := borrow α0 in
-      let* α2 := M.read α1 in
-      let* α3 := std.path.Path.t::["display"] α2 in
+      let* α0 := M.read path in
+      let* α1 : M.Val std.path.Path.t := deref α0 in
+      let* α2 : ref std.path.Path.t := borrow α1 in
+      let* α3 : std.path.Display.t := std.path.Path.t::["display"] α2 in
       M.alloc α3 in
     let* new_path : M.Val std.path.PathBuf.t :=
-      let* α0 : M.Val std.path.Path.t := deref path in
-      let* α1 : M.Val (ref std.path.Path.t) := borrow α0 in
-      let* α2 := M.read α1 in
+      let* α0 := M.read path in
+      let* α1 : M.Val std.path.Path.t := deref α0 in
+      let* α2 : ref std.path.Path.t := borrow α1 in
       let* α3 := M.read (mk_str "a") in
-      let* α4 := std.path.Path.t::["join"] α2 α3 in
+      let* α4 : std.path.PathBuf.t := std.path.Path.t::["join"] α2 α3 in
       let* α5 : M.Val std.path.PathBuf.t := M.alloc α4 in
-      let* α6 : M.Val (ref std.path.PathBuf.t) := borrow α5 in
-      let* α7 := M.read α6 in
-      let* α8 :=
+      let* α6 : ref std.path.PathBuf.t := borrow α5 in
+      let* α7 : ref std.path.Path.t :=
         (core.ops.deref.Deref.deref
             (Self := std.path.PathBuf.t)
             (Trait := ltac:(refine _)))
-          α7 in
-      let* α9 : M.Val (ref std.path.Path.t) := M.alloc α8 in
-      let* α10 : M.Val std.path.Path.t := deref α9 in
-      let* α11 : M.Val (ref std.path.Path.t) := borrow α10 in
-      let* α12 := M.read α11 in
-      let* α13 := M.read (mk_str "b") in
-      let* α14 := std.path.Path.t::["join"] α12 α13 in
-      M.alloc α14 in
+          α6 in
+      let* α8 : M.Val std.path.Path.t := deref α7 in
+      let* α9 : ref std.path.Path.t := borrow α8 in
+      let* α10 := M.read (mk_str "b") in
+      let* α11 : std.path.PathBuf.t := std.path.Path.t::["join"] α9 α10 in
+      M.alloc α11 in
     let* _ : M.Val unit :=
-      let* α0 : M.Val (mut_ref std.path.PathBuf.t) := borrow_mut new_path in
-      let* α1 := M.read α0 in
-      let* α2 := M.read (mk_str "c") in
-      let* α3 := std.path.PathBuf.t::["push"] α1 α2 in
-      M.alloc α3 in
+      let* α0 : mut_ref std.path.PathBuf.t := borrow_mut new_path in
+      let* α1 := M.read (mk_str "c") in
+      let* α2 : unit := std.path.PathBuf.t::["push"] α0 α1 in
+      M.alloc α2 in
     let* _ : M.Val unit :=
-      let* α0 : M.Val (mut_ref std.path.PathBuf.t) := borrow_mut new_path in
-      let* α1 := M.read α0 in
-      let* α2 := M.read (mk_str "myfile.tar.gz") in
-      let* α3 := std.path.PathBuf.t::["push"] α1 α2 in
-      M.alloc α3 in
+      let* α0 : mut_ref std.path.PathBuf.t := borrow_mut new_path in
+      let* α1 := M.read (mk_str "myfile.tar.gz") in
+      let* α2 : unit := std.path.PathBuf.t::["push"] α0 α1 in
+      M.alloc α2 in
     let* _ : M.Val unit :=
-      let* α0 : M.Val (mut_ref std.path.PathBuf.t) := borrow_mut new_path in
-      let* α1 := M.read α0 in
-      let* α2 := M.read (mk_str "package.tgz") in
-      let* α3 := std.path.PathBuf.t::["set_file_name"] α1 α2 in
-      M.alloc α3 in
-    let* α0 : M.Val (ref std.path.PathBuf.t) := borrow new_path in
-    let* α1 := M.read α0 in
-    let* α2 :=
+      let* α0 : mut_ref std.path.PathBuf.t := borrow_mut new_path in
+      let* α1 := M.read (mk_str "package.tgz") in
+      let* α2 : unit := std.path.PathBuf.t::["set_file_name"] α0 α1 in
+      M.alloc α2 in
+    let* α0 : ref std.path.PathBuf.t := borrow new_path in
+    let* α1 : ref std.path.Path.t :=
       (core.ops.deref.Deref.deref
           (Self := std.path.PathBuf.t)
           (Trait := ltac:(refine _)))
-        α1 in
-    let* α3 : M.Val (ref std.path.Path.t) := M.alloc α2 in
-    let* α4 : M.Val std.path.Path.t := deref α3 in
-    let* α5 : M.Val (ref std.path.Path.t) := borrow α4 in
+        α0 in
+    let* α2 : M.Val std.path.Path.t := deref α1 in
+    let* α3 : ref std.path.Path.t := borrow α2 in
+    let* α4 : core.option.Option.t (ref str.t) :=
+      std.path.Path.t::["to_str"] α3 in
+    let* α5 : M.Val (core.option.Option.t (ref str.t)) := M.alloc α4 in
     let* α6 := M.read α5 in
-    let* α7 := std.path.Path.t::["to_str"] α6 in
-    let* α8 : M.Val (core.option.Option.t (ref str.t)) := M.alloc α7 in
-    let* α9 := M.read α8 in
-    match α9 with
+    match α6 with
     | core.option.Option.None  =>
       let* α0 := M.read (mk_str "new path is not a valid UTF-8 sequence") in
-      let* α1 := std.panicking.begin_panic α0 in
+      let* α1 : never.t := std.panicking.begin_panic α0 in
       let* α2 : M.Val never.t := M.alloc α1 in
       never_to_any α2
     | core.option.Option.Some s =>
@@ -107,21 +99,30 @@ Definition main : M unit :=
         let* α0 : M.Val (array (ref str.t)) :=
           M.alloc [ mk_str "new path is "; mk_str "
 " ] in
-        let* α1 : M.Val (ref (array (ref str.t))) := borrow α0 in
-        let* α2 : M.Val (ref (slice (ref str.t))) :=
-          pointer_coercion "Unsize" α1 in
-        let* α3 := M.read α2 in
-        let* α4 : M.Val (ref (ref str.t)) := borrow s in
-        let* α5 := M.read α4 in
-        let* α6 := core.fmt.rt.Argument.t::["new_display"] α5 in
-        let* α7 : M.Val core.fmt.rt.Argument.t := M.alloc α6 in
-        let* α8 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α7 ] in
-        let* α9 : M.Val (ref (array core.fmt.rt.Argument.t)) := borrow α8 in
-        let* α10 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
-          pointer_coercion "Unsize" α9 in
-        let* α11 := M.read α10 in
-        let* α12 := core.fmt.Arguments.t::["new_v1"] α3 α11 in
-        let* α13 := std.io.stdio._print α12 in
-        M.alloc α13 in
+        let* α1 : ref (array (ref str.t)) := borrow α0 in
+        let* α2 : M.Val (array (ref str.t)) := deref α1 in
+        let* α3 : ref (array (ref str.t)) := borrow α2 in
+        let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
+        let* α5 : M.Val (ref (slice (ref str.t))) :=
+          pointer_coercion "Unsize" α4 in
+        let* α6 := M.read α5 in
+        let* α7 : ref (ref str.t) := borrow s in
+        let* α8 : M.Val (ref str.t) := deref α7 in
+        let* α9 : ref (ref str.t) := borrow α8 in
+        let* α10 : core.fmt.rt.Argument.t :=
+          core.fmt.rt.Argument.t::["new_display"] α9 in
+        let* α11 : M.Val core.fmt.rt.Argument.t := M.alloc α10 in
+        let* α12 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α11 ] in
+        let* α13 : ref (array core.fmt.rt.Argument.t) := borrow α12 in
+        let* α14 : M.Val (array core.fmt.rt.Argument.t) := deref α13 in
+        let* α15 : ref (array core.fmt.rt.Argument.t) := borrow α14 in
+        let* α16 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α15 in
+        let* α17 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
+          pointer_coercion "Unsize" α16 in
+        let* α18 := M.read α17 in
+        let* α19 : core.fmt.Arguments.t :=
+          core.fmt.Arguments.t::["new_v1"] α6 α18 in
+        let* α20 : unit := std.io.stdio._print α19 in
+        M.alloc α20 in
       M.alloc tt
     end).

@@ -26,13 +26,17 @@ Definition main : M unit :=
       let* _ : M.Val unit :=
         let* α0 : M.Val (array (ref str.t)) := M.alloc [ mk_str "Zero
 " ] in
-        let* α1 : M.Val (ref (array (ref str.t))) := borrow α0 in
-        let* α2 : M.Val (ref (slice (ref str.t))) :=
-          pointer_coercion "Unsize" α1 in
-        let* α3 := M.read α2 in
-        let* α4 := core.fmt.Arguments.t::["new_const"] α3 in
-        let* α5 := std.io.stdio._print α4 in
-        M.alloc α5 in
+        let* α1 : ref (array (ref str.t)) := borrow α0 in
+        let* α2 : M.Val (array (ref str.t)) := deref α1 in
+        let* α3 : ref (array (ref str.t)) := borrow α2 in
+        let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
+        let* α5 : M.Val (ref (slice (ref str.t))) :=
+          pointer_coercion "Unsize" α4 in
+        let* α6 := M.read α5 in
+        let* α7 : core.fmt.Arguments.t :=
+          core.fmt.Arguments.t::["new_const"] α6 in
+        let* α8 : unit := std.io.stdio._print α7 in
+        M.alloc α8 in
       M.alloc tt
     | i =>
       let* i := M.alloc i in
@@ -40,19 +44,23 @@ Definition main : M unit :=
         let* α0 : M.Val (array (ref str.t)) :=
           M.alloc [ mk_str "Greater than zero
 " ] in
-        let* α1 : M.Val (ref (array (ref str.t))) := borrow α0 in
-        let* α2 : M.Val (ref (slice (ref str.t))) :=
-          pointer_coercion "Unsize" α1 in
-        let* α3 := M.read α2 in
-        let* α4 := core.fmt.Arguments.t::["new_const"] α3 in
-        let* α5 := std.io.stdio._print α4 in
-        M.alloc α5 in
+        let* α1 : ref (array (ref str.t)) := borrow α0 in
+        let* α2 : M.Val (array (ref str.t)) := deref α1 in
+        let* α3 : ref (array (ref str.t)) := borrow α2 in
+        let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
+        let* α5 : M.Val (ref (slice (ref str.t))) :=
+          pointer_coercion "Unsize" α4 in
+        let* α6 := M.read α5 in
+        let* α7 : core.fmt.Arguments.t :=
+          core.fmt.Arguments.t::["new_const"] α6 in
+        let* α8 : unit := std.io.stdio._print α7 in
+        M.alloc α8 in
       M.alloc tt
     | _ =>
-      let* α0 : M.Val (ref (ref str.t)) :=
-        borrow (mk_str "Should never happen.") in
-      let* α1 := M.read α0 in
-      let* α2 := core.panicking.unreachable_display α1 in
-      let* α3 : M.Val never.t := M.alloc α2 in
-      never_to_any α3
+      let* α0 : ref (ref str.t) := borrow (mk_str "Should never happen.") in
+      let* α1 : M.Val (ref str.t) := deref α0 in
+      let* α2 : ref (ref str.t) := borrow α1 in
+      let* α3 : never.t := core.panicking.unreachable_display α2 in
+      let* α4 : M.Val never.t := M.alloc α3 in
+      never_to_any α4
     end).

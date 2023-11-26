@@ -11,10 +11,10 @@ fn create_fn() -> impl Fn() {
 Definition create_fn : M _ (* OpaqueTy *) :=
   M.function_body
     (let* text : M.Val alloc.string.String.t :=
-      let* α0 : M.Val str.t := deref (mk_str "Fn") in
-      let* α1 : M.Val (ref str.t) := borrow α0 in
-      let* α2 := M.read α1 in
-      let* α3 :=
+      let* α0 := M.read (mk_str "Fn") in
+      let* α1 : M.Val str.t := deref α0 in
+      let* α2 : ref str.t := borrow α1 in
+      let* α3 : alloc.string.String.t :=
         (alloc.borrow.ToOwned.to_owned
             (Self := str.t)
             (Trait := ltac:(refine _)))
@@ -25,22 +25,31 @@ Definition create_fn : M _ (* OpaqueTy *) :=
         let* α0 : M.Val (array (ref str.t)) :=
           M.alloc [ mk_str "This is a: "; mk_str "
 " ] in
-        let* α1 : M.Val (ref (array (ref str.t))) := borrow α0 in
-        let* α2 : M.Val (ref (slice (ref str.t))) :=
-          pointer_coercion "Unsize" α1 in
-        let* α3 := M.read α2 in
-        let* α4 : M.Val (ref alloc.string.String.t) := borrow text in
-        let* α5 := M.read α4 in
-        let* α6 := core.fmt.rt.Argument.t::["new_display"] α5 in
-        let* α7 : M.Val core.fmt.rt.Argument.t := M.alloc α6 in
-        let* α8 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α7 ] in
-        let* α9 : M.Val (ref (array core.fmt.rt.Argument.t)) := borrow α8 in
-        let* α10 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
-          pointer_coercion "Unsize" α9 in
-        let* α11 := M.read α10 in
-        let* α12 := core.fmt.Arguments.t::["new_v1"] α3 α11 in
-        let* α13 := std.io.stdio._print α12 in
-        M.alloc α13 in
+        let* α1 : ref (array (ref str.t)) := borrow α0 in
+        let* α2 : M.Val (array (ref str.t)) := deref α1 in
+        let* α3 : ref (array (ref str.t)) := borrow α2 in
+        let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
+        let* α5 : M.Val (ref (slice (ref str.t))) :=
+          pointer_coercion "Unsize" α4 in
+        let* α6 := M.read α5 in
+        let* α7 : ref alloc.string.String.t := borrow text in
+        let* α8 : M.Val alloc.string.String.t := deref α7 in
+        let* α9 : ref alloc.string.String.t := borrow α8 in
+        let* α10 : core.fmt.rt.Argument.t :=
+          core.fmt.rt.Argument.t::["new_display"] α9 in
+        let* α11 : M.Val core.fmt.rt.Argument.t := M.alloc α10 in
+        let* α12 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α11 ] in
+        let* α13 : ref (array core.fmt.rt.Argument.t) := borrow α12 in
+        let* α14 : M.Val (array core.fmt.rt.Argument.t) := deref α13 in
+        let* α15 : ref (array core.fmt.rt.Argument.t) := borrow α14 in
+        let* α16 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α15 in
+        let* α17 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
+          pointer_coercion "Unsize" α16 in
+        let* α18 := M.read α17 in
+        let* α19 : core.fmt.Arguments.t :=
+          core.fmt.Arguments.t::["new_v1"] α6 α18 in
+        let* α20 : unit := std.io.stdio._print α19 in
+        M.alloc α20 in
       M.alloc tt)).
 
 Error OpaqueTy.
@@ -55,10 +64,10 @@ fn create_fnmut() -> impl FnMut() {
 Definition create_fnmut : M _ (* OpaqueTy *) :=
   M.function_body
     (let* text : M.Val alloc.string.String.t :=
-      let* α0 : M.Val str.t := deref (mk_str "FnMut") in
-      let* α1 : M.Val (ref str.t) := borrow α0 in
-      let* α2 := M.read α1 in
-      let* α3 :=
+      let* α0 := M.read (mk_str "FnMut") in
+      let* α1 : M.Val str.t := deref α0 in
+      let* α2 : ref str.t := borrow α1 in
+      let* α3 : alloc.string.String.t :=
         (alloc.borrow.ToOwned.to_owned
             (Self := str.t)
             (Trait := ltac:(refine _)))
@@ -69,22 +78,31 @@ Definition create_fnmut : M _ (* OpaqueTy *) :=
         let* α0 : M.Val (array (ref str.t)) :=
           M.alloc [ mk_str "This is a: "; mk_str "
 " ] in
-        let* α1 : M.Val (ref (array (ref str.t))) := borrow α0 in
-        let* α2 : M.Val (ref (slice (ref str.t))) :=
-          pointer_coercion "Unsize" α1 in
-        let* α3 := M.read α2 in
-        let* α4 : M.Val (ref alloc.string.String.t) := borrow text in
-        let* α5 := M.read α4 in
-        let* α6 := core.fmt.rt.Argument.t::["new_display"] α5 in
-        let* α7 : M.Val core.fmt.rt.Argument.t := M.alloc α6 in
-        let* α8 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α7 ] in
-        let* α9 : M.Val (ref (array core.fmt.rt.Argument.t)) := borrow α8 in
-        let* α10 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
-          pointer_coercion "Unsize" α9 in
-        let* α11 := M.read α10 in
-        let* α12 := core.fmt.Arguments.t::["new_v1"] α3 α11 in
-        let* α13 := std.io.stdio._print α12 in
-        M.alloc α13 in
+        let* α1 : ref (array (ref str.t)) := borrow α0 in
+        let* α2 : M.Val (array (ref str.t)) := deref α1 in
+        let* α3 : ref (array (ref str.t)) := borrow α2 in
+        let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
+        let* α5 : M.Val (ref (slice (ref str.t))) :=
+          pointer_coercion "Unsize" α4 in
+        let* α6 := M.read α5 in
+        let* α7 : ref alloc.string.String.t := borrow text in
+        let* α8 : M.Val alloc.string.String.t := deref α7 in
+        let* α9 : ref alloc.string.String.t := borrow α8 in
+        let* α10 : core.fmt.rt.Argument.t :=
+          core.fmt.rt.Argument.t::["new_display"] α9 in
+        let* α11 : M.Val core.fmt.rt.Argument.t := M.alloc α10 in
+        let* α12 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α11 ] in
+        let* α13 : ref (array core.fmt.rt.Argument.t) := borrow α12 in
+        let* α14 : M.Val (array core.fmt.rt.Argument.t) := deref α13 in
+        let* α15 : ref (array core.fmt.rt.Argument.t) := borrow α14 in
+        let* α16 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α15 in
+        let* α17 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
+          pointer_coercion "Unsize" α16 in
+        let* α18 := M.read α17 in
+        let* α19 : core.fmt.Arguments.t :=
+          core.fmt.Arguments.t::["new_v1"] α6 α18 in
+        let* α20 : unit := std.io.stdio._print α19 in
+        M.alloc α20 in
       M.alloc tt)).
 
 (*
@@ -97,10 +115,10 @@ fn create_fnonce() -> impl FnOnce() {
 Definition create_fnonce : M _ (* OpaqueTy *) :=
   M.function_body
     (let* text : M.Val alloc.string.String.t :=
-      let* α0 : M.Val str.t := deref (mk_str "FnOnce") in
-      let* α1 : M.Val (ref str.t) := borrow α0 in
-      let* α2 := M.read α1 in
-      let* α3 :=
+      let* α0 := M.read (mk_str "FnOnce") in
+      let* α1 : M.Val str.t := deref α0 in
+      let* α2 : ref str.t := borrow α1 in
+      let* α3 : alloc.string.String.t :=
         (alloc.borrow.ToOwned.to_owned
             (Self := str.t)
             (Trait := ltac:(refine _)))
@@ -111,22 +129,31 @@ Definition create_fnonce : M _ (* OpaqueTy *) :=
         let* α0 : M.Val (array (ref str.t)) :=
           M.alloc [ mk_str "This is a: "; mk_str "
 " ] in
-        let* α1 : M.Val (ref (array (ref str.t))) := borrow α0 in
-        let* α2 : M.Val (ref (slice (ref str.t))) :=
-          pointer_coercion "Unsize" α1 in
-        let* α3 := M.read α2 in
-        let* α4 : M.Val (ref alloc.string.String.t) := borrow text in
-        let* α5 := M.read α4 in
-        let* α6 := core.fmt.rt.Argument.t::["new_display"] α5 in
-        let* α7 : M.Val core.fmt.rt.Argument.t := M.alloc α6 in
-        let* α8 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α7 ] in
-        let* α9 : M.Val (ref (array core.fmt.rt.Argument.t)) := borrow α8 in
-        let* α10 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
-          pointer_coercion "Unsize" α9 in
-        let* α11 := M.read α10 in
-        let* α12 := core.fmt.Arguments.t::["new_v1"] α3 α11 in
-        let* α13 := std.io.stdio._print α12 in
-        M.alloc α13 in
+        let* α1 : ref (array (ref str.t)) := borrow α0 in
+        let* α2 : M.Val (array (ref str.t)) := deref α1 in
+        let* α3 : ref (array (ref str.t)) := borrow α2 in
+        let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
+        let* α5 : M.Val (ref (slice (ref str.t))) :=
+          pointer_coercion "Unsize" α4 in
+        let* α6 := M.read α5 in
+        let* α7 : ref alloc.string.String.t := borrow text in
+        let* α8 : M.Val alloc.string.String.t := deref α7 in
+        let* α9 : ref alloc.string.String.t := borrow α8 in
+        let* α10 : core.fmt.rt.Argument.t :=
+          core.fmt.rt.Argument.t::["new_display"] α9 in
+        let* α11 : M.Val core.fmt.rt.Argument.t := M.alloc α10 in
+        let* α12 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α11 ] in
+        let* α13 : ref (array core.fmt.rt.Argument.t) := borrow α12 in
+        let* α14 : M.Val (array core.fmt.rt.Argument.t) := deref α13 in
+        let* α15 : ref (array core.fmt.rt.Argument.t) := borrow α14 in
+        let* α16 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α15 in
+        let* α17 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
+          pointer_coercion "Unsize" α16 in
+        let* α18 := M.read α17 in
+        let* α19 : core.fmt.Arguments.t :=
+          core.fmt.Arguments.t::["new_v1"] α6 α18 in
+        let* α20 : unit := std.io.stdio._print α19 in
+        M.alloc α20 in
       M.alloc tt)).
 
 (*
@@ -144,37 +171,38 @@ fn main() {
 Definition main : M unit :=
   M.function_body
     (let* fn_plain : M.Val type not implemented :=
-      let* α0 := functions_closures_as_output_parameters.create_fn in
+      let* α0 : type not implemented :=
+        functions_closures_as_output_parameters.create_fn in
       M.alloc α0 in
     let* fn_mut : M.Val type not implemented :=
-      let* α0 := functions_closures_as_output_parameters.create_fnmut in
+      let* α0 : type not implemented :=
+        functions_closures_as_output_parameters.create_fnmut in
       M.alloc α0 in
     let* fn_once : M.Val type not implemented :=
-      let* α0 := functions_closures_as_output_parameters.create_fnonce in
+      let* α0 : type not implemented :=
+        functions_closures_as_output_parameters.create_fnonce in
       M.alloc α0 in
     let* _ : M.Val unit :=
-      let* α0 : M.Val (ref type not implemented) := borrow fn_plain in
-      let* α1 := M.read α0 in
-      let* α2 :=
+      let* α0 : ref type not implemented := borrow fn_plain in
+      let* α1 : unit :=
         (core.ops.function.Fn.call
             (Self := type not implemented)
             (Trait := ltac:(refine _)))
-          α1
+          α0
           tt in
-      M.alloc α2 in
+      M.alloc α1 in
     let* _ : M.Val unit :=
-      let* α0 : M.Val (mut_ref type not implemented) := borrow_mut fn_mut in
-      let* α1 := M.read α0 in
-      let* α2 :=
+      let* α0 : mut_ref type not implemented := borrow_mut fn_mut in
+      let* α1 : unit :=
         (core.ops.function.FnMut.call_mut
             (Self := type not implemented)
             (Trait := ltac:(refine _)))
-          α1
+          α0
           tt in
-      M.alloc α2 in
+      M.alloc α1 in
     let* _ : M.Val unit :=
       let* α0 := M.read fn_once in
-      let* α1 :=
+      let* α1 : unit :=
         (core.ops.function.FnOnce.call_once
             (Self := type not implemented)
             (Trait := ltac:(refine _)))

@@ -23,6 +23,30 @@ type Closure(
     ],
 ) not yet handled
 type Closure(
+    DefId(0:5 ~ iterating_over_results_collect_via_map_err_and_filter_map[b023]::main::{closure#1}),
+    [
+        i16,
+        extern "rust-call" fn((std::result::Result<u8, std::num::ParseIntError>,)) -> std::option::Option<u8>,
+        (&mut std::vec::Vec<std::num::ParseIntError>,),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:4 ~ iterating_over_results_collect_via_map_err_and_filter_map[b023]::main::{closure#0}),
+    [
+        i16,
+        extern "rust-call" fn((&str,)) -> std::result::Result<u8, std::num::ParseIntError>,
+        (),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:5 ~ iterating_over_results_collect_via_map_err_and_filter_map[b023]::main::{closure#1}),
+    [
+        i16,
+        extern "rust-call" fn((std::result::Result<u8, std::num::ParseIntError>,)) -> std::option::Option<u8>,
+        (&mut std::vec::Vec<std::num::ParseIntError>,),
+    ],
+) not yet handled
+type Closure(
     DefId(0:4 ~ iterating_over_results_collect_via_map_err_and_filter_map[b023]::main::{closure#0}),
     [
         i16,
@@ -36,6 +60,78 @@ type Closure(
         i16,
         extern "rust-call" fn((&str,)) -> std::result::Result<u8, std::num::ParseIntError>,
         (),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:4 ~ iterating_over_results_collect_via_map_err_and_filter_map[b023]::main::{closure#0}),
+    [
+        i16,
+        extern "rust-call" fn((&str,)) -> std::result::Result<u8, std::num::ParseIntError>,
+        (),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:4 ~ iterating_over_results_collect_via_map_err_and_filter_map[b023]::main::{closure#0}),
+    [
+        i16,
+        extern "rust-call" fn((&str,)) -> std::result::Result<u8, std::num::ParseIntError>,
+        (),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:4 ~ iterating_over_results_collect_via_map_err_and_filter_map[b023]::main::{closure#0}),
+    [
+        i16,
+        extern "rust-call" fn((&str,)) -> std::result::Result<u8, std::num::ParseIntError>,
+        (),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:4 ~ iterating_over_results_collect_via_map_err_and_filter_map[b023]::main::{closure#0}),
+    [
+        i16,
+        extern "rust-call" fn((&str,)) -> std::result::Result<u8, std::num::ParseIntError>,
+        (),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:4 ~ iterating_over_results_collect_via_map_err_and_filter_map[b023]::main::{closure#0}),
+    [
+        i16,
+        extern "rust-call" fn((&str,)) -> std::result::Result<u8, std::num::ParseIntError>,
+        (),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:5 ~ iterating_over_results_collect_via_map_err_and_filter_map[b023]::main::{closure#1}),
+    [
+        i16,
+        extern "rust-call" fn((std::result::Result<u8, std::num::ParseIntError>,)) -> std::option::Option<u8>,
+        (&mut std::vec::Vec<std::num::ParseIntError>,),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:5 ~ iterating_over_results_collect_via_map_err_and_filter_map[b023]::main::{closure#1}),
+    [
+        i16,
+        extern "rust-call" fn((std::result::Result<u8, std::num::ParseIntError>,)) -> std::option::Option<u8>,
+        (&mut std::vec::Vec<std::num::ParseIntError>,),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:6 ~ iterating_over_results_collect_via_map_err_and_filter_map[b023]::main::{closure#1}::{closure#0}),
+    [
+        i32,
+        extern "rust-call" fn((std::num::ParseIntError,)),
+        (&mut std::vec::Vec<std::num::ParseIntError>,),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:6 ~ iterating_over_results_collect_via_map_err_and_filter_map[b023]::main::{closure#1}::{closure#0}),
+    [
+        i32,
+        extern "rust-call" fn((std::num::ParseIntError,)),
+        (&mut std::vec::Vec<std::num::ParseIntError>,),
     ],
 ) not yet handled
 type Closure(

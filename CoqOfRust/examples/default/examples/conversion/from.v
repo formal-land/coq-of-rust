@@ -27,7 +27,7 @@ Section Impl_core_convert_From_i32_t_for_from_Number_t.
       }
   *)
   Definition from (item : i32.t) : M ltac:(Self) :=
-    let* item := M.alloc item in
+    let* item : M.Val i32.t := M.alloc item in
     M.function_body
       (let* α0 := M.read item in
       M.alloc {| from.Number.value := α0; |}).
@@ -54,7 +54,7 @@ Definition main : M unit :=
     (let* _ : M.Val from.Number.t :=
       let* α0 : M.Val i32.t := M.alloc 30 in
       let* α1 := M.read α0 in
-      let* α2 :=
+      let* α2 : from.Number.t :=
         (core.convert.From.from
             (Self := from.Number.t)
             (Trait := ltac:(refine _)))

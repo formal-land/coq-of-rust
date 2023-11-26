@@ -14,7 +14,8 @@ Definition create_box : M unit :=
     (let* _box1 : M.Val (alloc.boxed.Box.t i32.t alloc.alloc.Global.t) :=
       let* α0 : M.Val i32.t := M.alloc 3 in
       let* α1 := M.read α0 in
-      let* α2 := (alloc.boxed.Box.t i32.t alloc.alloc.Global.t)::["new"] α1 in
+      let* α2 : alloc.boxed.Box.t i32.t alloc.alloc.Global.t :=
+        (alloc.boxed.Box.t i32.t alloc.alloc.Global.t)::["new"] α1 in
       M.alloc α2 in
     M.alloc tt).
 
@@ -46,20 +47,22 @@ Definition main : M unit :=
     (let* _box2 : M.Val (alloc.boxed.Box.t i32.t alloc.alloc.Global.t) :=
       let* α0 : M.Val i32.t := M.alloc 5 in
       let* α1 := M.read α0 in
-      let* α2 := (alloc.boxed.Box.t i32.t alloc.alloc.Global.t)::["new"] α1 in
+      let* α2 : alloc.boxed.Box.t i32.t alloc.alloc.Global.t :=
+        (alloc.boxed.Box.t i32.t alloc.alloc.Global.t)::["new"] α1 in
       M.alloc α2 in
     let* _ : M.Val unit :=
       let* _box3 : M.Val (alloc.boxed.Box.t i32.t alloc.alloc.Global.t) :=
         let* α0 : M.Val i32.t := M.alloc 4 in
         let* α1 := M.read α0 in
-        let* α2 := (alloc.boxed.Box.t i32.t alloc.alloc.Global.t)::["new"] α1 in
+        let* α2 : alloc.boxed.Box.t i32.t alloc.alloc.Global.t :=
+          (alloc.boxed.Box.t i32.t alloc.alloc.Global.t)::["new"] α1 in
         M.alloc α2 in
       M.alloc tt in
     let* α0 : M.Val u32.t := M.alloc 0 in
     let* α1 := M.read α0 in
     let* α2 : M.Val u32.t := M.alloc 1000 in
     let* α3 := M.read α2 in
-    let* α4 :=
+    let* α4 : core.ops.range.Range.t u32.t :=
       (core.iter.traits.collect.IntoIterator.into_iter
           (Self := core.ops.range.Range.t u32.t)
           (Trait := ltac:(refine _)))
@@ -73,23 +76,24 @@ Definition main : M unit :=
         let* iter := M.alloc iter in
         loop
           (let* _ : M.Val unit :=
-            let* α0 : M.Val (mut_ref (core.ops.range.Range.t u32.t)) :=
+            let* α0 : mut_ref (core.ops.range.Range.t u32.t) :=
               borrow_mut iter in
-            let* α1 := M.read α0 in
-            let* α2 :=
+            let* α1 : M.Val (core.ops.range.Range.t u32.t) := deref α0 in
+            let* α2 : mut_ref (core.ops.range.Range.t u32.t) := borrow_mut α1 in
+            let* α3 : core.option.Option.t u32.t :=
               (core.iter.traits.iterator.Iterator.next
                   (Self := core.ops.range.Range.t u32.t)
                   (Trait := ltac:(refine _)))
-                α1 in
-            let* α3 : M.Val (core.option.Option.t u32.t) := M.alloc α2 in
-            let* α4 := M.read α3 in
-            match α4 with
+                α2 in
+            let* α4 : M.Val (core.option.Option.t u32.t) := M.alloc α3 in
+            let* α5 := M.read α4 in
+            match α5 with
             | core.option.Option.None  =>
               let* α0 : M.Val never.t := Break in
               never_to_any α0
             | core.option.Option.Some _ =>
               let* _ : M.Val unit :=
-                let* α0 := scoping_rules_raii.create_box in
+                let* α0 : unit := scoping_rules_raii.create_box in
                 M.alloc α0 in
               M.alloc tt
             end in

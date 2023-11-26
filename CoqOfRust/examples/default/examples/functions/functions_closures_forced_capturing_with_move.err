@@ -54,3 +54,67 @@ type Closure(
         (std::vec::Vec<i32>,),
     ],
 ) not yet handled
+type Closure(
+    DefId(0:4 ~ functions_closures_forced_capturing_with_move[8fd0]::main::{closure#0}),
+    [
+        i8,
+        extern "rust-call" fn((&i32,)) -> bool,
+        (std::vec::Vec<i32>,),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:4 ~ functions_closures_forced_capturing_with_move[8fd0]::main::{closure#0}),
+    [
+        i8,
+        extern "rust-call" fn((&i32,)) -> bool,
+        (std::vec::Vec<i32>,),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:4 ~ functions_closures_forced_capturing_with_move[8fd0]::main::{closure#0}),
+    [
+        i8,
+        extern "rust-call" fn((&i32,)) -> bool,
+        (std::vec::Vec<i32>,),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:4 ~ functions_closures_forced_capturing_with_move[8fd0]::main::{closure#0}),
+    [
+        i8,
+        extern "rust-call" fn((&i32,)) -> bool,
+        (std::vec::Vec<i32>,),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:4 ~ functions_closures_forced_capturing_with_move[8fd0]::main::{closure#0}),
+    [
+        i8,
+        extern "rust-call" fn((&i32,)) -> bool,
+        (std::vec::Vec<i32>,),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:4 ~ functions_closures_forced_capturing_with_move[8fd0]::main::{closure#0}),
+    [
+        i8,
+        extern "rust-call" fn((&i32,)) -> bool,
+        (std::vec::Vec<i32>,),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:4 ~ functions_closures_forced_capturing_with_move[8fd0]::main::{closure#0}),
+    [
+        i8,
+        extern "rust-call" fn((&i32,)) -> bool,
+        (std::vec::Vec<i32>,),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:4 ~ functions_closures_forced_capturing_with_move[8fd0]::main::{closure#0}),
+    [
+        i8,
+        extern "rust-call" fn((&i32,)) -> bool,
+        (std::vec::Vec<i32>,),
+    ],
+) not yet handled

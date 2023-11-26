@@ -12,8 +12,8 @@ fn division(dividend: i32, divisor: i32) -> i32 {
 }
 *)
 Definition division (dividend : i32.t) (divisor : i32.t) : M i32.t :=
-  let* dividend := M.alloc dividend in
-  let* divisor := M.alloc divisor in
+  let* dividend : M.Val i32.t := M.alloc dividend in
+  let* divisor : M.Val i32.t := M.alloc divisor in
   M.function_body
     (let* α0 : M.Val i32.t := M.alloc 0 in
     let* α1 : M.Val bool.t := BinOp.eq divisor α0 in
@@ -22,7 +22,7 @@ Definition division (dividend : i32.t) (divisor : i32.t) : M i32.t :=
     if (α3 : bool) then
       let* _ : M.Val unit :=
         let* α0 := M.read (mk_str "division by zero") in
-        let* α1 := std.panicking.begin_panic α0 in
+        let* α1 : never.t := std.panicking.begin_panic α0 in
         let* α2 : M.Val never.t := M.alloc α1 in
         never_to_any α2 in
       let* α0 : M.Val unit := M.alloc tt in
@@ -49,26 +49,31 @@ Definition main : M unit :=
     (let* _x : M.Val (alloc.boxed.Box.t i32.t alloc.alloc.Global.t) :=
       let* α0 : M.Val i32.t := M.alloc 0 in
       let* α1 := M.read α0 in
-      let* α2 := (alloc.boxed.Box.t i32.t alloc.alloc.Global.t)::["new"] α1 in
+      let* α2 : alloc.boxed.Box.t i32.t alloc.alloc.Global.t :=
+        (alloc.boxed.Box.t i32.t alloc.alloc.Global.t)::["new"] α1 in
       M.alloc α2 in
     let* _ : M.Val i32.t :=
       let* α0 : M.Val i32.t := M.alloc 3 in
       let* α1 := M.read α0 in
       let* α2 : M.Val i32.t := M.alloc 0 in
       let* α3 := M.read α2 in
-      let* α4 := panic.division α1 α3 in
+      let* α4 : i32.t := panic.division α1 α3 in
       M.alloc α4 in
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
         let* α0 : M.Val (array (ref str.t)) :=
           M.alloc [ mk_str "This point won't be reached!
 " ] in
-        let* α1 : M.Val (ref (array (ref str.t))) := borrow α0 in
-        let* α2 : M.Val (ref (slice (ref str.t))) :=
-          pointer_coercion "Unsize" α1 in
-        let* α3 := M.read α2 in
-        let* α4 := core.fmt.Arguments.t::["new_const"] α3 in
-        let* α5 := std.io.stdio._print α4 in
-        M.alloc α5 in
+        let* α1 : ref (array (ref str.t)) := borrow α0 in
+        let* α2 : M.Val (array (ref str.t)) := deref α1 in
+        let* α3 : ref (array (ref str.t)) := borrow α2 in
+        let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
+        let* α5 : M.Val (ref (slice (ref str.t))) :=
+          pointer_coercion "Unsize" α4 in
+        let* α6 := M.read α5 in
+        let* α7 : core.fmt.Arguments.t :=
+          core.fmt.Arguments.t::["new_const"] α6 in
+        let* α8 : unit := std.io.stdio._print α7 in
+        M.alloc α8 in
       M.alloc tt in
     M.alloc tt).

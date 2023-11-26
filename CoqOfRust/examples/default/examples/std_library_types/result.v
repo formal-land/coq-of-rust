@@ -20,27 +20,34 @@ Module checked.
         (self : ref ltac:(Self))
         (f : mut_ref core.fmt.Formatter.t)
         : M ltac:(core.fmt.Result) :=
-      let* self := M.alloc self in
-      let* f := M.alloc f in
+      let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+      let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
       M.function_body
-        (let* α0 : M.Val core.fmt.Formatter.t := deref f in
-        let* α1 : M.Val (mut_ref core.fmt.Formatter.t) := borrow_mut α0 in
-        let* α2 := M.read α1 in
+        (let* α0 := M.read f in
+        let* α1 : M.Val core.fmt.Formatter.t := deref α0 in
+        let* α2 : mut_ref core.fmt.Formatter.t := borrow_mut α1 in
         let* α3 := M.read self in
         let* α4 : M.Val (ref str.t) :=
           match α3 with
           | result.checked.MathError.DivisionByZero  =>
-            let* α0 : M.Val str.t := deref (mk_str "DivisionByZero") in
-            borrow α0
+            let* α0 := M.read (mk_str "DivisionByZero") in
+            let* α1 : M.Val str.t := deref α0 in
+            let* α2 : ref str.t := borrow α1 in
+            M.alloc α2
           | result.checked.MathError.NonPositiveLogarithm  =>
-            let* α0 : M.Val str.t := deref (mk_str "NonPositiveLogarithm") in
-            borrow α0
+            let* α0 := M.read (mk_str "NonPositiveLogarithm") in
+            let* α1 : M.Val str.t := deref α0 in
+            let* α2 : ref str.t := borrow α1 in
+            M.alloc α2
           | result.checked.MathError.NegativeSquareRoot  =>
-            let* α0 : M.Val str.t := deref (mk_str "NegativeSquareRoot") in
-            borrow α0
+            let* α0 := M.read (mk_str "NegativeSquareRoot") in
+            let* α1 : M.Val str.t := deref α0 in
+            let* α2 : ref str.t := borrow α1 in
+            M.alloc α2
           end in
         let* α5 := M.read α4 in
-        let* α6 := core.fmt.Formatter.t::["write_str"] α2 α5 in
+        let* α6 : core.result.Result.t unit core.fmt.Error.t :=
+          core.fmt.Formatter.t::["write_str"] α2 α5 in
         M.alloc α6).
     
     Global Instance AssociatedFunction_fmt :
@@ -70,8 +77,8 @@ Module checked.
       }
   *)
   Definition div (x : f64.t) (y : f64.t) : M ltac:(result.checked.MathResult) :=
-    let* x := M.alloc x in
-    let* y := M.alloc y in
+    let* x : M.Val f64.t := M.alloc x in
+    let* y : M.Val f64.t := M.alloc y in
     M.function_body
       (let* α0 : M.Val f64.t := M.alloc 0 (* 0.0 *) in
       let* α1 : M.Val bool.t := BinOp.eq y α0 in
@@ -94,7 +101,7 @@ Module checked.
       }
   *)
   Definition sqrt (x : f64.t) : M ltac:(result.checked.MathResult) :=
-    let* x := M.alloc x in
+    let* x : M.Val f64.t := M.alloc x in
     M.function_body
       (let* α0 : M.Val f64.t := M.alloc 0 (* 0.0 *) in
       let* α1 : M.Val bool.t := BinOp.lt x α0 in
@@ -105,7 +112,7 @@ Module checked.
           (core.result.Result.Err result.checked.MathError.NegativeSquareRoot)
       else
         let* α0 := M.read x in
-        let* α1 := f64.t::["sqrt"] α0 in
+        let* α1 : f64.t := f64.t::["sqrt"] α0 in
         M.alloc (core.result.Result.Ok α1)).
   
   (*
@@ -118,7 +125,7 @@ Module checked.
       }
   *)
   Definition ln (x : f64.t) : M ltac:(result.checked.MathResult) :=
-    let* x := M.alloc x in
+    let* x : M.Val f64.t := M.alloc x in
     M.function_body
       (let* α0 : M.Val f64.t := M.alloc 0 (* 0.0 *) in
       let* α1 : M.Val bool.t := BinOp.le x α0 in
@@ -129,7 +136,7 @@ Module checked.
           (core.result.Result.Err result.checked.MathError.NonPositiveLogarithm)
       else
         let* α0 := M.read x in
-        let* α1 := f64.t::["ln"] α0 in
+        let* α1 : f64.t := f64.t::["ln"] α0 in
         M.alloc (core.result.Result.Ok α1)).
 End checked.
 
@@ -151,27 +158,34 @@ Section Impl_core_fmt_Debug_for_result_checked_MathError_t.
       (self : ref ltac:(Self))
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    let* self := M.alloc self in
-    let* f := M.alloc f in
+    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+    let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
     M.function_body
-      (let* α0 : M.Val core.fmt.Formatter.t := deref f in
-      let* α1 : M.Val (mut_ref core.fmt.Formatter.t) := borrow_mut α0 in
-      let* α2 := M.read α1 in
+      (let* α0 := M.read f in
+      let* α1 : M.Val core.fmt.Formatter.t := deref α0 in
+      let* α2 : mut_ref core.fmt.Formatter.t := borrow_mut α1 in
       let* α3 := M.read self in
       let* α4 : M.Val (ref str.t) :=
         match α3 with
         | result.checked.MathError.DivisionByZero  =>
-          let* α0 : M.Val str.t := deref (mk_str "DivisionByZero") in
-          borrow α0
+          let* α0 := M.read (mk_str "DivisionByZero") in
+          let* α1 : M.Val str.t := deref α0 in
+          let* α2 : ref str.t := borrow α1 in
+          M.alloc α2
         | result.checked.MathError.NonPositiveLogarithm  =>
-          let* α0 : M.Val str.t := deref (mk_str "NonPositiveLogarithm") in
-          borrow α0
+          let* α0 := M.read (mk_str "NonPositiveLogarithm") in
+          let* α1 : M.Val str.t := deref α0 in
+          let* α2 : ref str.t := borrow α1 in
+          M.alloc α2
         | result.checked.MathError.NegativeSquareRoot  =>
-          let* α0 : M.Val str.t := deref (mk_str "NegativeSquareRoot") in
-          borrow α0
+          let* α0 := M.read (mk_str "NegativeSquareRoot") in
+          let* α1 : M.Val str.t := deref α0 in
+          let* α2 : ref str.t := borrow α1 in
+          M.alloc α2
         end in
       let* α5 := M.read α4 in
-      let* α6 := core.fmt.Formatter.t::["write_str"] α2 α5 in
+      let* α6 : core.result.Result.t unit core.fmt.Error.t :=
+        core.fmt.Formatter.t::["write_str"] α2 α5 in
       M.alloc α6).
   
   Global Instance AssociatedFunction_fmt :
@@ -201,8 +215,8 @@ Ltac MathResult :=
     }
 *)
 Definition div (x : f64.t) (y : f64.t) : M ltac:(result.checked.MathResult) :=
-  let* x := M.alloc x in
-  let* y := M.alloc y in
+  let* x : M.Val f64.t := M.alloc x in
+  let* y : M.Val f64.t := M.alloc y in
   M.function_body
     (let* α0 : M.Val f64.t := M.alloc 0 (* 0.0 *) in
     let* α1 : M.Val bool.t := BinOp.eq y α0 in
@@ -225,7 +239,7 @@ Definition div (x : f64.t) (y : f64.t) : M ltac:(result.checked.MathResult) :=
     }
 *)
 Definition sqrt (x : f64.t) : M ltac:(result.checked.MathResult) :=
-  let* x := M.alloc x in
+  let* x : M.Val f64.t := M.alloc x in
   M.function_body
     (let* α0 : M.Val f64.t := M.alloc 0 (* 0.0 *) in
     let* α1 : M.Val bool.t := BinOp.lt x α0 in
@@ -236,7 +250,7 @@ Definition sqrt (x : f64.t) : M ltac:(result.checked.MathResult) :=
         (core.result.Result.Err result.checked.MathError.NegativeSquareRoot)
     else
       let* α0 := M.read x in
-      let* α1 := f64.t::["sqrt"] α0 in
+      let* α1 : f64.t := f64.t::["sqrt"] α0 in
       M.alloc (core.result.Result.Ok α1)).
 
 (*
@@ -249,7 +263,7 @@ Definition sqrt (x : f64.t) : M ltac:(result.checked.MathResult) :=
     }
 *)
 Definition ln (x : f64.t) : M ltac:(result.checked.MathResult) :=
-  let* x := M.alloc x in
+  let* x : M.Val f64.t := M.alloc x in
   M.function_body
     (let* α0 : M.Val f64.t := M.alloc 0 (* 0.0 *) in
     let* α1 : M.Val bool.t := BinOp.le x α0 in
@@ -260,7 +274,7 @@ Definition ln (x : f64.t) : M ltac:(result.checked.MathResult) :=
         (core.result.Result.Err result.checked.MathError.NonPositiveLogarithm)
     else
       let* α0 := M.read x in
-      let* α1 := f64.t::["ln"] α0 in
+      let* α1 : f64.t := f64.t::["ln"] α0 in
       M.alloc (core.result.Result.Ok α1)).
 
 (*
@@ -279,12 +293,13 @@ fn op(x: f64, y: f64) -> f64 {
 }
 *)
 Definition op (x : f64.t) (y : f64.t) : M f64.t :=
-  let* x := M.alloc x in
-  let* y := M.alloc y in
+  let* x : M.Val f64.t := M.alloc x in
+  let* y : M.Val f64.t := M.alloc y in
   M.function_body
     (let* α0 := M.read x in
     let* α1 := M.read y in
-    let* α2 := result.checked.div α0 α1 in
+    let* α2 : core.result.Result.t f64.t result.checked.MathError.t :=
+      result.checked.div α0 α1 in
     let* α3 : M.Val (core.result.Result.t f64.t result.checked.MathError.t) :=
       M.alloc α2 in
     let* α4 := M.read α3 in
@@ -292,27 +307,37 @@ Definition op (x : f64.t) (y : f64.t) : M f64.t :=
     | core.result.Result.Err why =>
       let* why := M.alloc why in
       let* α0 : M.Val (array (ref str.t)) := M.alloc [ mk_str "" ] in
-      let* α1 : M.Val (ref (array (ref str.t))) := borrow α0 in
-      let* α2 : M.Val (ref (slice (ref str.t))) :=
-        pointer_coercion "Unsize" α1 in
-      let* α3 := M.read α2 in
-      let* α4 : M.Val (ref result.checked.MathError.t) := borrow why in
-      let* α5 := M.read α4 in
-      let* α6 := core.fmt.rt.Argument.t::["new_debug"] α5 in
-      let* α7 : M.Val core.fmt.rt.Argument.t := M.alloc α6 in
-      let* α8 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α7 ] in
-      let* α9 : M.Val (ref (array core.fmt.rt.Argument.t)) := borrow α8 in
-      let* α10 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
-        pointer_coercion "Unsize" α9 in
-      let* α11 := M.read α10 in
-      let* α12 := core.fmt.Arguments.t::["new_v1"] α3 α11 in
-      let* α13 := core.panicking.panic_fmt α12 in
-      let* α14 : M.Val never.t := M.alloc α13 in
-      never_to_any α14
+      let* α1 : ref (array (ref str.t)) := borrow α0 in
+      let* α2 : M.Val (array (ref str.t)) := deref α1 in
+      let* α3 : ref (array (ref str.t)) := borrow α2 in
+      let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
+      let* α5 : M.Val (ref (slice (ref str.t))) :=
+        pointer_coercion "Unsize" α4 in
+      let* α6 := M.read α5 in
+      let* α7 : ref result.checked.MathError.t := borrow why in
+      let* α8 : M.Val result.checked.MathError.t := deref α7 in
+      let* α9 : ref result.checked.MathError.t := borrow α8 in
+      let* α10 : core.fmt.rt.Argument.t :=
+        core.fmt.rt.Argument.t::["new_debug"] α9 in
+      let* α11 : M.Val core.fmt.rt.Argument.t := M.alloc α10 in
+      let* α12 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α11 ] in
+      let* α13 : ref (array core.fmt.rt.Argument.t) := borrow α12 in
+      let* α14 : M.Val (array core.fmt.rt.Argument.t) := deref α13 in
+      let* α15 : ref (array core.fmt.rt.Argument.t) := borrow α14 in
+      let* α16 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α15 in
+      let* α17 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
+        pointer_coercion "Unsize" α16 in
+      let* α18 := M.read α17 in
+      let* α19 : core.fmt.Arguments.t :=
+        core.fmt.Arguments.t::["new_v1"] α6 α18 in
+      let* α20 : never.t := core.panicking.panic_fmt α19 in
+      let* α21 : M.Val never.t := M.alloc α20 in
+      never_to_any α21
     | core.result.Result.Ok ratio =>
       let* ratio := M.alloc ratio in
       let* α0 := M.read ratio in
-      let* α1 := result.checked.ln α0 in
+      let* α1 : core.result.Result.t f64.t result.checked.MathError.t :=
+        result.checked.ln α0 in
       let* α2 : M.Val (core.result.Result.t f64.t result.checked.MathError.t) :=
         M.alloc α1 in
       let* α3 := M.read α2 in
@@ -320,27 +345,37 @@ Definition op (x : f64.t) (y : f64.t) : M f64.t :=
       | core.result.Result.Err why =>
         let* why := M.alloc why in
         let* α0 : M.Val (array (ref str.t)) := M.alloc [ mk_str "" ] in
-        let* α1 : M.Val (ref (array (ref str.t))) := borrow α0 in
-        let* α2 : M.Val (ref (slice (ref str.t))) :=
-          pointer_coercion "Unsize" α1 in
-        let* α3 := M.read α2 in
-        let* α4 : M.Val (ref result.checked.MathError.t) := borrow why in
-        let* α5 := M.read α4 in
-        let* α6 := core.fmt.rt.Argument.t::["new_debug"] α5 in
-        let* α7 : M.Val core.fmt.rt.Argument.t := M.alloc α6 in
-        let* α8 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α7 ] in
-        let* α9 : M.Val (ref (array core.fmt.rt.Argument.t)) := borrow α8 in
-        let* α10 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
-          pointer_coercion "Unsize" α9 in
-        let* α11 := M.read α10 in
-        let* α12 := core.fmt.Arguments.t::["new_v1"] α3 α11 in
-        let* α13 := core.panicking.panic_fmt α12 in
-        let* α14 : M.Val never.t := M.alloc α13 in
-        never_to_any α14
+        let* α1 : ref (array (ref str.t)) := borrow α0 in
+        let* α2 : M.Val (array (ref str.t)) := deref α1 in
+        let* α3 : ref (array (ref str.t)) := borrow α2 in
+        let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
+        let* α5 : M.Val (ref (slice (ref str.t))) :=
+          pointer_coercion "Unsize" α4 in
+        let* α6 := M.read α5 in
+        let* α7 : ref result.checked.MathError.t := borrow why in
+        let* α8 : M.Val result.checked.MathError.t := deref α7 in
+        let* α9 : ref result.checked.MathError.t := borrow α8 in
+        let* α10 : core.fmt.rt.Argument.t :=
+          core.fmt.rt.Argument.t::["new_debug"] α9 in
+        let* α11 : M.Val core.fmt.rt.Argument.t := M.alloc α10 in
+        let* α12 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α11 ] in
+        let* α13 : ref (array core.fmt.rt.Argument.t) := borrow α12 in
+        let* α14 : M.Val (array core.fmt.rt.Argument.t) := deref α13 in
+        let* α15 : ref (array core.fmt.rt.Argument.t) := borrow α14 in
+        let* α16 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α15 in
+        let* α17 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
+          pointer_coercion "Unsize" α16 in
+        let* α18 := M.read α17 in
+        let* α19 : core.fmt.Arguments.t :=
+          core.fmt.Arguments.t::["new_v1"] α6 α18 in
+        let* α20 : never.t := core.panicking.panic_fmt α19 in
+        let* α21 : M.Val never.t := M.alloc α20 in
+        never_to_any α21
       | core.result.Result.Ok ln =>
         let* ln := M.alloc ln in
         let* α0 := M.read ln in
-        let* α1 := result.checked.sqrt α0 in
+        let* α1 : core.result.Result.t f64.t result.checked.MathError.t :=
+          result.checked.sqrt α0 in
         let* α2 :
             M.Val (core.result.Result.t f64.t result.checked.MathError.t) :=
           M.alloc α1 in
@@ -349,23 +384,33 @@ Definition op (x : f64.t) (y : f64.t) : M f64.t :=
         | core.result.Result.Err why =>
           let* why := M.alloc why in
           let* α0 : M.Val (array (ref str.t)) := M.alloc [ mk_str "" ] in
-          let* α1 : M.Val (ref (array (ref str.t))) := borrow α0 in
-          let* α2 : M.Val (ref (slice (ref str.t))) :=
-            pointer_coercion "Unsize" α1 in
-          let* α3 := M.read α2 in
-          let* α4 : M.Val (ref result.checked.MathError.t) := borrow why in
-          let* α5 := M.read α4 in
-          let* α6 := core.fmt.rt.Argument.t::["new_debug"] α5 in
-          let* α7 : M.Val core.fmt.rt.Argument.t := M.alloc α6 in
-          let* α8 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α7 ] in
-          let* α9 : M.Val (ref (array core.fmt.rt.Argument.t)) := borrow α8 in
-          let* α10 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
-            pointer_coercion "Unsize" α9 in
-          let* α11 := M.read α10 in
-          let* α12 := core.fmt.Arguments.t::["new_v1"] α3 α11 in
-          let* α13 := core.panicking.panic_fmt α12 in
-          let* α14 : M.Val never.t := M.alloc α13 in
-          never_to_any α14
+          let* α1 : ref (array (ref str.t)) := borrow α0 in
+          let* α2 : M.Val (array (ref str.t)) := deref α1 in
+          let* α3 : ref (array (ref str.t)) := borrow α2 in
+          let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
+          let* α5 : M.Val (ref (slice (ref str.t))) :=
+            pointer_coercion "Unsize" α4 in
+          let* α6 := M.read α5 in
+          let* α7 : ref result.checked.MathError.t := borrow why in
+          let* α8 : M.Val result.checked.MathError.t := deref α7 in
+          let* α9 : ref result.checked.MathError.t := borrow α8 in
+          let* α10 : core.fmt.rt.Argument.t :=
+            core.fmt.rt.Argument.t::["new_debug"] α9 in
+          let* α11 : M.Val core.fmt.rt.Argument.t := M.alloc α10 in
+          let* α12 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α11 ] in
+          let* α13 : ref (array core.fmt.rt.Argument.t) := borrow α12 in
+          let* α14 : M.Val (array core.fmt.rt.Argument.t) := deref α13 in
+          let* α15 : ref (array core.fmt.rt.Argument.t) := borrow α14 in
+          let* α16 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
+            M.alloc α15 in
+          let* α17 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
+            pointer_coercion "Unsize" α16 in
+          let* α18 := M.read α17 in
+          let* α19 : core.fmt.Arguments.t :=
+            core.fmt.Arguments.t::["new_v1"] α6 α18 in
+          let* α20 : never.t := core.panicking.panic_fmt α19 in
+          let* α21 : M.Val never.t := M.alloc α20 in
+          never_to_any α21
         | core.result.Result.Ok sqrt =>
           let* sqrt := M.alloc sqrt in
           M.pure sqrt
@@ -387,27 +432,36 @@ Definition main : M unit :=
         let* α0 : M.Val (array (ref str.t)) :=
           M.alloc [ mk_str ""; mk_str "
 " ] in
-        let* α1 : M.Val (ref (array (ref str.t))) := borrow α0 in
-        let* α2 : M.Val (ref (slice (ref str.t))) :=
-          pointer_coercion "Unsize" α1 in
-        let* α3 := M.read α2 in
-        let* α4 : M.Val f64.t := M.alloc 1 (* 1.0 *) in
-        let* α5 := M.read α4 in
-        let* α6 : M.Val f64.t := M.alloc 10 (* 10.0 *) in
-        let* α7 := M.read α6 in
-        let* α8 := result.op α5 α7 in
-        let* α9 : M.Val f64.t := M.alloc α8 in
-        let* α10 : M.Val (ref f64.t) := borrow α9 in
-        let* α11 := M.read α10 in
-        let* α12 := core.fmt.rt.Argument.t::["new_display"] α11 in
-        let* α13 : M.Val core.fmt.rt.Argument.t := M.alloc α12 in
-        let* α14 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α13 ] in
-        let* α15 : M.Val (ref (array core.fmt.rt.Argument.t)) := borrow α14 in
-        let* α16 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
-          pointer_coercion "Unsize" α15 in
-        let* α17 := M.read α16 in
-        let* α18 := core.fmt.Arguments.t::["new_v1"] α3 α17 in
-        let* α19 := std.io.stdio._print α18 in
-        M.alloc α19 in
+        let* α1 : ref (array (ref str.t)) := borrow α0 in
+        let* α2 : M.Val (array (ref str.t)) := deref α1 in
+        let* α3 : ref (array (ref str.t)) := borrow α2 in
+        let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
+        let* α5 : M.Val (ref (slice (ref str.t))) :=
+          pointer_coercion "Unsize" α4 in
+        let* α6 := M.read α5 in
+        let* α7 : M.Val f64.t := M.alloc 1 (* 1.0 *) in
+        let* α8 := M.read α7 in
+        let* α9 : M.Val f64.t := M.alloc 10 (* 10.0 *) in
+        let* α10 := M.read α9 in
+        let* α11 : f64.t := result.op α8 α10 in
+        let* α12 : M.Val f64.t := M.alloc α11 in
+        let* α13 : ref f64.t := borrow α12 in
+        let* α14 : M.Val f64.t := deref α13 in
+        let* α15 : ref f64.t := borrow α14 in
+        let* α16 : core.fmt.rt.Argument.t :=
+          core.fmt.rt.Argument.t::["new_display"] α15 in
+        let* α17 : M.Val core.fmt.rt.Argument.t := M.alloc α16 in
+        let* α18 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α17 ] in
+        let* α19 : ref (array core.fmt.rt.Argument.t) := borrow α18 in
+        let* α20 : M.Val (array core.fmt.rt.Argument.t) := deref α19 in
+        let* α21 : ref (array core.fmt.rt.Argument.t) := borrow α20 in
+        let* α22 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α21 in
+        let* α23 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
+          pointer_coercion "Unsize" α22 in
+        let* α24 := M.read α23 in
+        let* α25 : core.fmt.Arguments.t :=
+          core.fmt.Arguments.t::["new_v1"] α6 α24 in
+        let* α26 : unit := std.io.stdio._print α25 in
+        M.alloc α26 in
       M.alloc tt in
     M.alloc tt).

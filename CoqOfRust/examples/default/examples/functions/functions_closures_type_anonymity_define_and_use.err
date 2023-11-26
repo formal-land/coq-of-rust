@@ -14,3 +14,35 @@ type Closure(
         (&i32,),
     ],
 ) not yet handled
+type Closure(
+    DefId(0:6 ~ functions_closures_type_anonymity_define_and_use[8905]::main::{closure#0}),
+    [
+        i8,
+        extern "rust-call" fn(()),
+        (&i32,),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:6 ~ functions_closures_type_anonymity_define_and_use[8905]::main::{closure#0}),
+    [
+        i8,
+        extern "rust-call" fn(()),
+        (&i32,),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:6 ~ functions_closures_type_anonymity_define_and_use[8905]::main::{closure#0}),
+    [
+        i8,
+        extern "rust-call" fn(()),
+        (&i32,),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:6 ~ functions_closures_type_anonymity_define_and_use[8905]::main::{closure#0}),
+    [
+        i8,
+        extern "rust-call" fn(()),
+        (&i32,),
+    ],
+) not yet handled

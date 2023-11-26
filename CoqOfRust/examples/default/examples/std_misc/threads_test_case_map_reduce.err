@@ -6,6 +6,74 @@ type Closure(
         (),
     ],
 ) not yet handled
+type Closure(
+    DefId(0:7 ~ threads_test_case_map_reduce[110a]::main::{closure#1}),
+    [
+        i16,
+        extern "rust-call" fn((std::thread::JoinHandle<u32>,)) -> u32,
+        (),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:7 ~ threads_test_case_map_reduce[110a]::main::{closure#1}),
+    [
+        i16,
+        extern "rust-call" fn((std::thread::JoinHandle<u32>,)) -> u32,
+        (),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:7 ~ threads_test_case_map_reduce[110a]::main::{closure#1}),
+    [
+        i16,
+        extern "rust-call" fn((std::thread::JoinHandle<u32>,)) -> u32,
+        (),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:7 ~ threads_test_case_map_reduce[110a]::main::{closure#1}),
+    [
+        i16,
+        extern "rust-call" fn((std::thread::JoinHandle<u32>,)) -> u32,
+        (),
+    ],
+) not yet handled
+type Dynamic(
+    [
+        Binder(
+            Trait(
+                std::any::Any,
+            ),
+            [],
+        ),
+        Binder(
+            AutoTrait(
+                DefId(2:2672 ~ core[af2a]::marker::Send),
+            ),
+            [],
+        ),
+    ],
+    ReErased,
+    Dyn,
+) not yet handled
+type Dynamic(
+    [
+        Binder(
+            Trait(
+                std::any::Any,
+            ),
+            [],
+        ),
+        Binder(
+            AutoTrait(
+                DefId(2:2672 ~ core[af2a]::marker::Send),
+            ),
+            [],
+        ),
+    ],
+    ReErased,
+    Dyn,
+) not yet handled
 type Dynamic(
     [
         Binder(
@@ -55,6 +123,54 @@ type Closure(
     [
         i16,
         extern "rust-call" fn((std::thread::JoinHandle<u32>,)) -> u32,
+        (),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:5 ~ threads_test_case_map_reduce[110a]::main::{closure#0}),
+    [
+        i32,
+        extern "rust-call" fn(()) -> u32,
+        (&str, usize),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:5 ~ threads_test_case_map_reduce[110a]::main::{closure#0}),
+    [
+        i32,
+        extern "rust-call" fn(()) -> u32,
+        (&str, usize),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:6 ~ threads_test_case_map_reduce[110a]::main::{closure#0}::{closure#0}),
+    [
+        i16,
+        extern "rust-call" fn((char,)) -> u32,
+        (),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:6 ~ threads_test_case_map_reduce[110a]::main::{closure#0}::{closure#0}),
+    [
+        i16,
+        extern "rust-call" fn((char,)) -> u32,
+        (),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:6 ~ threads_test_case_map_reduce[110a]::main::{closure#0}::{closure#0}),
+    [
+        i16,
+        extern "rust-call" fn((char,)) -> u32,
+        (),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:6 ~ threads_test_case_map_reduce[110a]::main::{closure#0}::{closure#0}),
+    [
+        i16,
+        extern "rust-call" fn((char,)) -> u32,
         (),
     ],
 ) not yet handled

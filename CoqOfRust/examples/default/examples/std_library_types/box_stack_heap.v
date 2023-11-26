@@ -36,41 +36,50 @@ Section Impl_core_fmt_Debug_for_box_stack_heap_Point_t.
       (self : ref ltac:(Self))
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    let* self := M.alloc self in
-    let* f := M.alloc f in
+    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+    let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
     M.function_body
-      (let* α0 : M.Val core.fmt.Formatter.t := deref f in
-      let* α1 : M.Val (mut_ref core.fmt.Formatter.t) := borrow_mut α0 in
-      let* α2 := M.read α1 in
-      let* α3 : M.Val str.t := deref (mk_str "Point") in
-      let* α4 : M.Val (ref str.t) := borrow α3 in
-      let* α5 := M.read α4 in
-      let* α6 : M.Val str.t := deref (mk_str "x") in
-      let* α7 : M.Val (ref str.t) := borrow α6 in
-      let* α8 := M.read α7 in
-      let* α9 : M.Val box_stack_heap.Point.t := deref self in
-      let* α10 : M.Val (ref f64.t) := borrow α9.["x"] in
-      let* α11 : M.Val (ref type not implemented) :=
-        pointer_coercion "Unsize" α10 in
-      let* α12 := M.read α11 in
-      let* α13 : M.Val str.t := deref (mk_str "y") in
-      let* α14 : M.Val (ref str.t) := borrow α13 in
-      let* α15 := M.read α14 in
-      let* α16 : M.Val box_stack_heap.Point.t := deref self in
-      let* α17 : M.Val (ref f64.t) := borrow α16.["y"] in
-      let* α18 : M.Val (ref (ref f64.t)) := borrow α17 in
-      let* α19 : M.Val (ref type not implemented) :=
-        pointer_coercion "Unsize" α18 in
-      let* α20 := M.read α19 in
-      let* α21 :=
+      (let* α0 := M.read f in
+      let* α1 : M.Val core.fmt.Formatter.t := deref α0 in
+      let* α2 : mut_ref core.fmt.Formatter.t := borrow_mut α1 in
+      let* α3 := M.read (mk_str "Point") in
+      let* α4 : M.Val str.t := deref α3 in
+      let* α5 : ref str.t := borrow α4 in
+      let* α6 := M.read (mk_str "x") in
+      let* α7 : M.Val str.t := deref α6 in
+      let* α8 : ref str.t := borrow α7 in
+      let* α9 := M.read self in
+      let* α10 : M.Val box_stack_heap.Point.t := deref α9 in
+      let* α11 : ref f64.t := borrow α10.["x"] in
+      let* α12 : M.Val f64.t := deref α11 in
+      let* α13 : ref f64.t := borrow α12 in
+      let* α14 : M.Val (ref f64.t) := M.alloc α13 in
+      let* α15 : M.Val (ref type not implemented) :=
+        pointer_coercion "Unsize" α14 in
+      let* α16 := M.read α15 in
+      let* α17 := M.read (mk_str "y") in
+      let* α18 : M.Val str.t := deref α17 in
+      let* α19 : ref str.t := borrow α18 in
+      let* α20 := M.read self in
+      let* α21 : M.Val box_stack_heap.Point.t := deref α20 in
+      let* α22 : ref f64.t := borrow α21.["y"] in
+      let* α23 : M.Val (ref f64.t) := M.alloc α22 in
+      let* α24 : ref (ref f64.t) := borrow α23 in
+      let* α25 : M.Val (ref f64.t) := deref α24 in
+      let* α26 : ref (ref f64.t) := borrow α25 in
+      let* α27 : M.Val (ref (ref f64.t)) := M.alloc α26 in
+      let* α28 : M.Val (ref type not implemented) :=
+        pointer_coercion "Unsize" α27 in
+      let* α29 := M.read α28 in
+      let* α30 : core.result.Result.t unit core.fmt.Error.t :=
         core.fmt.Formatter.t::["debug_struct_field2_finish"]
           α2
           α5
           α8
-          α12
-          α15
-          α20 in
-      M.alloc α21).
+          α16
+          α19
+          α29 in
+      M.alloc α30).
   
   Global Instance AssociatedFunction_fmt :
     Notations.DoubleColon ltac:(Self) "fmt" := {
@@ -92,10 +101,11 @@ Section Impl_core_clone_Clone_for_box_stack_heap_Point_t.
   *)
   (* #[allow(dead_code)] - function was ignored by the compiler *)
   Definition clone (self : ref ltac:(Self)) : M box_stack_heap.Point.t :=
-    let* self := M.alloc self in
+    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
     M.function_body
       (let* _ : M.Val unit := M.alloc tt in
-      deref self).
+      let* α0 := M.read self in
+      deref α0).
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon ltac:(Self) "clone" := {
@@ -172,7 +182,7 @@ Definition boxed_origin
     let* α1 := M.read α0 in
     let* α2 : M.Val f64.t := M.alloc 0 (* 0.0 *) in
     let* α3 := M.read α2 in
-    let* α4 :=
+    let* α4 : alloc.boxed.Box.t box_stack_heap.Point.t alloc.alloc.Global.t :=
       (alloc.boxed.Box.t box_stack_heap.Point.t alloc.alloc.Global.t)::["new"]
         {| box_stack_heap.Point.x := α1; box_stack_heap.Point.y := α3; |} in
     M.alloc α4).
@@ -234,10 +244,10 @@ fn main() {
 Definition main : M unit :=
   M.function_body
     (let* point : M.Val box_stack_heap.Point.t :=
-      let* α0 := box_stack_heap.origin in
+      let* α0 : box_stack_heap.Point.t := box_stack_heap.origin in
       M.alloc α0 in
     let* rectangle : M.Val box_stack_heap.Rectangle.t :=
-      let* α0 := box_stack_heap.origin in
+      let* α0 : box_stack_heap.Point.t := box_stack_heap.origin in
       let* α1 : M.Val f64.t := M.alloc 3 (* 3.0 *) in
       let* α2 := M.read α1 in
       let* α3 : M.Val f64.t := M.alloc (- 4 (* 4.0 *)) in
@@ -251,12 +261,13 @@ Definition main : M unit :=
     let* boxed_rectangle :
         M.Val
           (alloc.boxed.Box.t box_stack_heap.Rectangle.t alloc.alloc.Global.t) :=
-      let* α0 := box_stack_heap.origin in
+      let* α0 : box_stack_heap.Point.t := box_stack_heap.origin in
       let* α1 : M.Val f64.t := M.alloc 3 (* 3.0 *) in
       let* α2 := M.read α1 in
       let* α3 : M.Val f64.t := M.alloc (- 4 (* 4.0 *)) in
       let* α4 := M.read α3 in
-      let* α5 :=
+      let* α5 :
+          alloc.boxed.Box.t box_stack_heap.Rectangle.t alloc.alloc.Global.t :=
         (alloc.boxed.Box.t
               box_stack_heap.Rectangle.t
               alloc.alloc.Global.t)::["new"]
@@ -268,8 +279,8 @@ Definition main : M unit :=
       M.alloc α5 in
     let* boxed_point :
         M.Val (alloc.boxed.Box.t box_stack_heap.Point.t alloc.alloc.Global.t) :=
-      let* α0 := box_stack_heap.origin in
-      let* α1 :=
+      let* α0 : box_stack_heap.Point.t := box_stack_heap.origin in
+      let* α1 : alloc.boxed.Box.t box_stack_heap.Point.t alloc.alloc.Global.t :=
         (alloc.boxed.Box.t box_stack_heap.Point.t alloc.alloc.Global.t)::["new"]
           α0 in
       M.alloc α1 in
@@ -278,8 +289,12 @@ Definition main : M unit :=
           (alloc.boxed.Box.t
             (alloc.boxed.Box.t box_stack_heap.Point.t alloc.alloc.Global.t)
             alloc.alloc.Global.t) :=
-      let* α0 := box_stack_heap.boxed_origin in
-      let* α1 :=
+      let* α0 : alloc.boxed.Box.t box_stack_heap.Point.t alloc.alloc.Global.t :=
+        box_stack_heap.boxed_origin in
+      let* α1 :
+          alloc.boxed.Box.t
+            (alloc.boxed.Box.t box_stack_heap.Point.t alloc.alloc.Global.t)
+            alloc.alloc.Global.t :=
         (alloc.boxed.Box.t
               (alloc.boxed.Box.t box_stack_heap.Point.t alloc.alloc.Global.t)
               alloc.alloc.Global.t)::["new"]
@@ -290,26 +305,36 @@ Definition main : M unit :=
         let* α0 : M.Val (array (ref str.t)) :=
           M.alloc [ mk_str "Point occupies "; mk_str " bytes on the stack
 " ] in
-        let* α1 : M.Val (ref (array (ref str.t))) := borrow α0 in
-        let* α2 : M.Val (ref (slice (ref str.t))) :=
-          pointer_coercion "Unsize" α1 in
-        let* α3 := M.read α2 in
-        let* α4 : M.Val (ref box_stack_heap.Point.t) := borrow point in
-        let* α5 := M.read α4 in
-        let* α6 := core.mem.size_of_val α5 in
-        let* α7 : M.Val usize.t := M.alloc α6 in
-        let* α8 : M.Val (ref usize.t) := borrow α7 in
-        let* α9 := M.read α8 in
-        let* α10 := core.fmt.rt.Argument.t::["new_display"] α9 in
-        let* α11 : M.Val core.fmt.rt.Argument.t := M.alloc α10 in
-        let* α12 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α11 ] in
-        let* α13 : M.Val (ref (array core.fmt.rt.Argument.t)) := borrow α12 in
-        let* α14 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
-          pointer_coercion "Unsize" α13 in
-        let* α15 := M.read α14 in
-        let* α16 := core.fmt.Arguments.t::["new_v1"] α3 α15 in
-        let* α17 := std.io.stdio._print α16 in
-        M.alloc α17 in
+        let* α1 : ref (array (ref str.t)) := borrow α0 in
+        let* α2 : M.Val (array (ref str.t)) := deref α1 in
+        let* α3 : ref (array (ref str.t)) := borrow α2 in
+        let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
+        let* α5 : M.Val (ref (slice (ref str.t))) :=
+          pointer_coercion "Unsize" α4 in
+        let* α6 := M.read α5 in
+        let* α7 : ref box_stack_heap.Point.t := borrow point in
+        let* α8 : M.Val box_stack_heap.Point.t := deref α7 in
+        let* α9 : ref box_stack_heap.Point.t := borrow α8 in
+        let* α10 : usize.t := core.mem.size_of_val α9 in
+        let* α11 : M.Val usize.t := M.alloc α10 in
+        let* α12 : ref usize.t := borrow α11 in
+        let* α13 : M.Val usize.t := deref α12 in
+        let* α14 : ref usize.t := borrow α13 in
+        let* α15 : core.fmt.rt.Argument.t :=
+          core.fmt.rt.Argument.t::["new_display"] α14 in
+        let* α16 : M.Val core.fmt.rt.Argument.t := M.alloc α15 in
+        let* α17 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α16 ] in
+        let* α18 : ref (array core.fmt.rt.Argument.t) := borrow α17 in
+        let* α19 : M.Val (array core.fmt.rt.Argument.t) := deref α18 in
+        let* α20 : ref (array core.fmt.rt.Argument.t) := borrow α19 in
+        let* α21 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α20 in
+        let* α22 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
+          pointer_coercion "Unsize" α21 in
+        let* α23 := M.read α22 in
+        let* α24 : core.fmt.Arguments.t :=
+          core.fmt.Arguments.t::["new_v1"] α6 α23 in
+        let* α25 : unit := std.io.stdio._print α24 in
+        M.alloc α25 in
       M.alloc tt in
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
@@ -317,26 +342,36 @@ Definition main : M unit :=
           M.alloc
             [ mk_str "Rectangle occupies "; mk_str " bytes on the stack
 " ] in
-        let* α1 : M.Val (ref (array (ref str.t))) := borrow α0 in
-        let* α2 : M.Val (ref (slice (ref str.t))) :=
-          pointer_coercion "Unsize" α1 in
-        let* α3 := M.read α2 in
-        let* α4 : M.Val (ref box_stack_heap.Rectangle.t) := borrow rectangle in
-        let* α5 := M.read α4 in
-        let* α6 := core.mem.size_of_val α5 in
-        let* α7 : M.Val usize.t := M.alloc α6 in
-        let* α8 : M.Val (ref usize.t) := borrow α7 in
-        let* α9 := M.read α8 in
-        let* α10 := core.fmt.rt.Argument.t::["new_display"] α9 in
-        let* α11 : M.Val core.fmt.rt.Argument.t := M.alloc α10 in
-        let* α12 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α11 ] in
-        let* α13 : M.Val (ref (array core.fmt.rt.Argument.t)) := borrow α12 in
-        let* α14 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
-          pointer_coercion "Unsize" α13 in
-        let* α15 := M.read α14 in
-        let* α16 := core.fmt.Arguments.t::["new_v1"] α3 α15 in
-        let* α17 := std.io.stdio._print α16 in
-        M.alloc α17 in
+        let* α1 : ref (array (ref str.t)) := borrow α0 in
+        let* α2 : M.Val (array (ref str.t)) := deref α1 in
+        let* α3 : ref (array (ref str.t)) := borrow α2 in
+        let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
+        let* α5 : M.Val (ref (slice (ref str.t))) :=
+          pointer_coercion "Unsize" α4 in
+        let* α6 := M.read α5 in
+        let* α7 : ref box_stack_heap.Rectangle.t := borrow rectangle in
+        let* α8 : M.Val box_stack_heap.Rectangle.t := deref α7 in
+        let* α9 : ref box_stack_heap.Rectangle.t := borrow α8 in
+        let* α10 : usize.t := core.mem.size_of_val α9 in
+        let* α11 : M.Val usize.t := M.alloc α10 in
+        let* α12 : ref usize.t := borrow α11 in
+        let* α13 : M.Val usize.t := deref α12 in
+        let* α14 : ref usize.t := borrow α13 in
+        let* α15 : core.fmt.rt.Argument.t :=
+          core.fmt.rt.Argument.t::["new_display"] α14 in
+        let* α16 : M.Val core.fmt.rt.Argument.t := M.alloc α15 in
+        let* α17 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α16 ] in
+        let* α18 : ref (array core.fmt.rt.Argument.t) := borrow α17 in
+        let* α19 : M.Val (array core.fmt.rt.Argument.t) := deref α18 in
+        let* α20 : ref (array core.fmt.rt.Argument.t) := borrow α19 in
+        let* α21 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α20 in
+        let* α22 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
+          pointer_coercion "Unsize" α21 in
+        let* α23 := M.read α22 in
+        let* α24 : core.fmt.Arguments.t :=
+          core.fmt.Arguments.t::["new_v1"] α6 α23 in
+        let* α25 : unit := std.io.stdio._print α24 in
+        M.alloc α25 in
       M.alloc tt in
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
@@ -344,32 +379,45 @@ Definition main : M unit :=
           M.alloc
             [ mk_str "Boxed point occupies "; mk_str " bytes on the stack
 " ] in
-        let* α1 : M.Val (ref (array (ref str.t))) := borrow α0 in
-        let* α2 : M.Val (ref (slice (ref str.t))) :=
-          pointer_coercion "Unsize" α1 in
-        let* α3 := M.read α2 in
-        let* α4 :
-            M.Val
-              (ref
-                (alloc.boxed.Box.t
-                  box_stack_heap.Point.t
-                  alloc.alloc.Global.t)) :=
+        let* α1 : ref (array (ref str.t)) := borrow α0 in
+        let* α2 : M.Val (array (ref str.t)) := deref α1 in
+        let* α3 : ref (array (ref str.t)) := borrow α2 in
+        let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
+        let* α5 : M.Val (ref (slice (ref str.t))) :=
+          pointer_coercion "Unsize" α4 in
+        let* α6 := M.read α5 in
+        let* α7 :
+            ref
+              (alloc.boxed.Box.t box_stack_heap.Point.t alloc.alloc.Global.t) :=
           borrow boxed_point in
-        let* α5 := M.read α4 in
-        let* α6 := core.mem.size_of_val α5 in
-        let* α7 : M.Val usize.t := M.alloc α6 in
-        let* α8 : M.Val (ref usize.t) := borrow α7 in
-        let* α9 := M.read α8 in
-        let* α10 := core.fmt.rt.Argument.t::["new_display"] α9 in
-        let* α11 : M.Val core.fmt.rt.Argument.t := M.alloc α10 in
-        let* α12 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α11 ] in
-        let* α13 : M.Val (ref (array core.fmt.rt.Argument.t)) := borrow α12 in
-        let* α14 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
-          pointer_coercion "Unsize" α13 in
-        let* α15 := M.read α14 in
-        let* α16 := core.fmt.Arguments.t::["new_v1"] α3 α15 in
-        let* α17 := std.io.stdio._print α16 in
-        M.alloc α17 in
+        let* α8 :
+            M.Val
+              (alloc.boxed.Box.t box_stack_heap.Point.t alloc.alloc.Global.t) :=
+          deref α7 in
+        let* α9 :
+            ref
+              (alloc.boxed.Box.t box_stack_heap.Point.t alloc.alloc.Global.t) :=
+          borrow α8 in
+        let* α10 : usize.t := core.mem.size_of_val α9 in
+        let* α11 : M.Val usize.t := M.alloc α10 in
+        let* α12 : ref usize.t := borrow α11 in
+        let* α13 : M.Val usize.t := deref α12 in
+        let* α14 : ref usize.t := borrow α13 in
+        let* α15 : core.fmt.rt.Argument.t :=
+          core.fmt.rt.Argument.t::["new_display"] α14 in
+        let* α16 : M.Val core.fmt.rt.Argument.t := M.alloc α15 in
+        let* α17 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α16 ] in
+        let* α18 : ref (array core.fmt.rt.Argument.t) := borrow α17 in
+        let* α19 : M.Val (array core.fmt.rt.Argument.t) := deref α18 in
+        let* α20 : ref (array core.fmt.rt.Argument.t) := borrow α19 in
+        let* α21 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α20 in
+        let* α22 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
+          pointer_coercion "Unsize" α21 in
+        let* α23 := M.read α22 in
+        let* α24 : core.fmt.Arguments.t :=
+          core.fmt.Arguments.t::["new_v1"] α6 α23 in
+        let* α25 : unit := std.io.stdio._print α24 in
+        M.alloc α25 in
       M.alloc tt in
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
@@ -378,32 +426,51 @@ Definition main : M unit :=
             [ mk_str "Boxed rectangle occupies "; mk_str " bytes on the stack
 "
             ] in
-        let* α1 : M.Val (ref (array (ref str.t))) := borrow α0 in
-        let* α2 : M.Val (ref (slice (ref str.t))) :=
-          pointer_coercion "Unsize" α1 in
-        let* α3 := M.read α2 in
-        let* α4 :
-            M.Val
-              (ref
-                (alloc.boxed.Box.t
-                  box_stack_heap.Rectangle.t
-                  alloc.alloc.Global.t)) :=
+        let* α1 : ref (array (ref str.t)) := borrow α0 in
+        let* α2 : M.Val (array (ref str.t)) := deref α1 in
+        let* α3 : ref (array (ref str.t)) := borrow α2 in
+        let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
+        let* α5 : M.Val (ref (slice (ref str.t))) :=
+          pointer_coercion "Unsize" α4 in
+        let* α6 := M.read α5 in
+        let* α7 :
+            ref
+              (alloc.boxed.Box.t
+                box_stack_heap.Rectangle.t
+                alloc.alloc.Global.t) :=
           borrow boxed_rectangle in
-        let* α5 := M.read α4 in
-        let* α6 := core.mem.size_of_val α5 in
-        let* α7 : M.Val usize.t := M.alloc α6 in
-        let* α8 : M.Val (ref usize.t) := borrow α7 in
-        let* α9 := M.read α8 in
-        let* α10 := core.fmt.rt.Argument.t::["new_display"] α9 in
-        let* α11 : M.Val core.fmt.rt.Argument.t := M.alloc α10 in
-        let* α12 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α11 ] in
-        let* α13 : M.Val (ref (array core.fmt.rt.Argument.t)) := borrow α12 in
-        let* α14 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
-          pointer_coercion "Unsize" α13 in
-        let* α15 := M.read α14 in
-        let* α16 := core.fmt.Arguments.t::["new_v1"] α3 α15 in
-        let* α17 := std.io.stdio._print α16 in
-        M.alloc α17 in
+        let* α8 :
+            M.Val
+              (alloc.boxed.Box.t
+                box_stack_heap.Rectangle.t
+                alloc.alloc.Global.t) :=
+          deref α7 in
+        let* α9 :
+            ref
+              (alloc.boxed.Box.t
+                box_stack_heap.Rectangle.t
+                alloc.alloc.Global.t) :=
+          borrow α8 in
+        let* α10 : usize.t := core.mem.size_of_val α9 in
+        let* α11 : M.Val usize.t := M.alloc α10 in
+        let* α12 : ref usize.t := borrow α11 in
+        let* α13 : M.Val usize.t := deref α12 in
+        let* α14 : ref usize.t := borrow α13 in
+        let* α15 : core.fmt.rt.Argument.t :=
+          core.fmt.rt.Argument.t::["new_display"] α14 in
+        let* α16 : M.Val core.fmt.rt.Argument.t := M.alloc α15 in
+        let* α17 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α16 ] in
+        let* α18 : ref (array core.fmt.rt.Argument.t) := borrow α17 in
+        let* α19 : M.Val (array core.fmt.rt.Argument.t) := deref α18 in
+        let* α20 : ref (array core.fmt.rt.Argument.t) := borrow α19 in
+        let* α21 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α20 in
+        let* α22 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
+          pointer_coercion "Unsize" α21 in
+        let* α23 := M.read α22 in
+        let* α24 : core.fmt.Arguments.t :=
+          core.fmt.Arguments.t::["new_v1"] α6 α23 in
+        let* α25 : unit := std.io.stdio._print α24 in
+        M.alloc α25 in
       M.alloc tt in
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
@@ -411,38 +478,56 @@ Definition main : M unit :=
           M.alloc
             [ mk_str "Boxed box occupies "; mk_str " bytes on the stack
 " ] in
-        let* α1 : M.Val (ref (array (ref str.t))) := borrow α0 in
-        let* α2 : M.Val (ref (slice (ref str.t))) :=
-          pointer_coercion "Unsize" α1 in
-        let* α3 := M.read α2 in
-        let* α4 :
-            M.Val
-              (ref
-                (alloc.boxed.Box.t
-                  (alloc.boxed.Box.t
-                    box_stack_heap.Point.t
-                    alloc.alloc.Global.t)
-                  alloc.alloc.Global.t)) :=
+        let* α1 : ref (array (ref str.t)) := borrow α0 in
+        let* α2 : M.Val (array (ref str.t)) := deref α1 in
+        let* α3 : ref (array (ref str.t)) := borrow α2 in
+        let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
+        let* α5 : M.Val (ref (slice (ref str.t))) :=
+          pointer_coercion "Unsize" α4 in
+        let* α6 := M.read α5 in
+        let* α7 :
+            ref
+              (alloc.boxed.Box.t
+                (alloc.boxed.Box.t box_stack_heap.Point.t alloc.alloc.Global.t)
+                alloc.alloc.Global.t) :=
           borrow box_in_a_box in
-        let* α5 := M.read α4 in
-        let* α6 := core.mem.size_of_val α5 in
-        let* α7 : M.Val usize.t := M.alloc α6 in
-        let* α8 : M.Val (ref usize.t) := borrow α7 in
-        let* α9 := M.read α8 in
-        let* α10 := core.fmt.rt.Argument.t::["new_display"] α9 in
-        let* α11 : M.Val core.fmt.rt.Argument.t := M.alloc α10 in
-        let* α12 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α11 ] in
-        let* α13 : M.Val (ref (array core.fmt.rt.Argument.t)) := borrow α12 in
-        let* α14 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
-          pointer_coercion "Unsize" α13 in
-        let* α15 := M.read α14 in
-        let* α16 := core.fmt.Arguments.t::["new_v1"] α3 α15 in
-        let* α17 := std.io.stdio._print α16 in
-        M.alloc α17 in
+        let* α8 :
+            M.Val
+              (alloc.boxed.Box.t
+                (alloc.boxed.Box.t box_stack_heap.Point.t alloc.alloc.Global.t)
+                alloc.alloc.Global.t) :=
+          deref α7 in
+        let* α9 :
+            ref
+              (alloc.boxed.Box.t
+                (alloc.boxed.Box.t box_stack_heap.Point.t alloc.alloc.Global.t)
+                alloc.alloc.Global.t) :=
+          borrow α8 in
+        let* α10 : usize.t := core.mem.size_of_val α9 in
+        let* α11 : M.Val usize.t := M.alloc α10 in
+        let* α12 : ref usize.t := borrow α11 in
+        let* α13 : M.Val usize.t := deref α12 in
+        let* α14 : ref usize.t := borrow α13 in
+        let* α15 : core.fmt.rt.Argument.t :=
+          core.fmt.rt.Argument.t::["new_display"] α14 in
+        let* α16 : M.Val core.fmt.rt.Argument.t := M.alloc α15 in
+        let* α17 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α16 ] in
+        let* α18 : ref (array core.fmt.rt.Argument.t) := borrow α17 in
+        let* α19 : M.Val (array core.fmt.rt.Argument.t) := deref α18 in
+        let* α20 : ref (array core.fmt.rt.Argument.t) := borrow α19 in
+        let* α21 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α20 in
+        let* α22 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
+          pointer_coercion "Unsize" α21 in
+        let* α23 := M.read α22 in
+        let* α24 : core.fmt.Arguments.t :=
+          core.fmt.Arguments.t::["new_v1"] α6 α23 in
+        let* α25 : unit := std.io.stdio._print α24 in
+        M.alloc α25 in
       M.alloc tt in
     let* unboxed_point : M.Val box_stack_heap.Point.t :=
-      let* α0 : M.Val box_stack_heap.Point.t := deref boxed_point in
-      M.copy α0 in
+      let* α0 := M.read boxed_point in
+      let* α1 : M.Val box_stack_heap.Point.t := deref α0 in
+      M.copy α1 in
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
         let* α0 : M.Val (array (ref str.t)) :=
@@ -450,25 +535,35 @@ Definition main : M unit :=
             [ mk_str "Unboxed point occupies "; mk_str " bytes on the stack
 "
             ] in
-        let* α1 : M.Val (ref (array (ref str.t))) := borrow α0 in
-        let* α2 : M.Val (ref (slice (ref str.t))) :=
-          pointer_coercion "Unsize" α1 in
-        let* α3 := M.read α2 in
-        let* α4 : M.Val (ref box_stack_heap.Point.t) := borrow unboxed_point in
-        let* α5 := M.read α4 in
-        let* α6 := core.mem.size_of_val α5 in
-        let* α7 : M.Val usize.t := M.alloc α6 in
-        let* α8 : M.Val (ref usize.t) := borrow α7 in
-        let* α9 := M.read α8 in
-        let* α10 := core.fmt.rt.Argument.t::["new_display"] α9 in
-        let* α11 : M.Val core.fmt.rt.Argument.t := M.alloc α10 in
-        let* α12 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α11 ] in
-        let* α13 : M.Val (ref (array core.fmt.rt.Argument.t)) := borrow α12 in
-        let* α14 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
-          pointer_coercion "Unsize" α13 in
-        let* α15 := M.read α14 in
-        let* α16 := core.fmt.Arguments.t::["new_v1"] α3 α15 in
-        let* α17 := std.io.stdio._print α16 in
-        M.alloc α17 in
+        let* α1 : ref (array (ref str.t)) := borrow α0 in
+        let* α2 : M.Val (array (ref str.t)) := deref α1 in
+        let* α3 : ref (array (ref str.t)) := borrow α2 in
+        let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
+        let* α5 : M.Val (ref (slice (ref str.t))) :=
+          pointer_coercion "Unsize" α4 in
+        let* α6 := M.read α5 in
+        let* α7 : ref box_stack_heap.Point.t := borrow unboxed_point in
+        let* α8 : M.Val box_stack_heap.Point.t := deref α7 in
+        let* α9 : ref box_stack_heap.Point.t := borrow α8 in
+        let* α10 : usize.t := core.mem.size_of_val α9 in
+        let* α11 : M.Val usize.t := M.alloc α10 in
+        let* α12 : ref usize.t := borrow α11 in
+        let* α13 : M.Val usize.t := deref α12 in
+        let* α14 : ref usize.t := borrow α13 in
+        let* α15 : core.fmt.rt.Argument.t :=
+          core.fmt.rt.Argument.t::["new_display"] α14 in
+        let* α16 : M.Val core.fmt.rt.Argument.t := M.alloc α15 in
+        let* α17 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α16 ] in
+        let* α18 : ref (array core.fmt.rt.Argument.t) := borrow α17 in
+        let* α19 : M.Val (array core.fmt.rt.Argument.t) := deref α18 in
+        let* α20 : ref (array core.fmt.rt.Argument.t) := borrow α19 in
+        let* α21 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α20 in
+        let* α22 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
+          pointer_coercion "Unsize" α21 in
+        let* α23 := M.read α22 in
+        let* α24 : core.fmt.Arguments.t :=
+          core.fmt.Arguments.t::["new_v1"] α6 α23 in
+        let* α25 : unit := std.io.stdio._print α24 in
+        M.alloc α25 in
       M.alloc tt in
     M.alloc tt).

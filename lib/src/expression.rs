@@ -183,7 +183,7 @@ pub(crate) fn compile_bin_op_kind(bin_op_kind: BinOpKind) -> String {
 
 impl ExprKind {
     pub(crate) fn tt() -> Self {
-        ExprKind::LocalVar("tt".to_string()).alloc()
+        ExprKind::LocalVar("tt".to_string()).alloc(Some(CoqType::unit()))
     }
 }
 

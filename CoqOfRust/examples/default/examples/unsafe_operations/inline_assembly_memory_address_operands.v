@@ -23,7 +23,7 @@ Definition main : M unit := M.function_body (M.alloc tt).
     }
 *)
 Definition load_fpu_control_word (control : u16.t) : M unit :=
-  let* control := M.alloc control in
+  let* control : M.Val u16.t := M.alloc control in
   M.function_body
     (let _ := InlineAssembly in
     M.alloc tt).

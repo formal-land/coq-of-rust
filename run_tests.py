@@ -83,7 +83,7 @@ Module Mapping := Mapping.
         """Definition init_env : M erc20.Env.t :=
     M.function_body
       (let* α0 := M.read (mk_str "not implemented") in
-      let* α1 := core.panicking.panic α0 in
+      let* α1 : never.t := core.panicking.panic α0 in
       let* α2 : M.Val never.t := M.alloc α1 in
       never_to_any α2).""",
         """Definition init_env : M erc20.Env.t :=

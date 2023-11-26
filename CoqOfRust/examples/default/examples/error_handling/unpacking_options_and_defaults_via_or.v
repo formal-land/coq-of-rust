@@ -21,33 +21,44 @@ Section Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_Fruit_t.
       (self : ref ltac:(Self))
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    let* self := M.alloc self in
-    let* f := M.alloc f in
+    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+    let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
     M.function_body
-      (let* α0 : M.Val core.fmt.Formatter.t := deref f in
-      let* α1 : M.Val (mut_ref core.fmt.Formatter.t) := borrow_mut α0 in
-      let* α2 := M.read α1 in
+      (let* α0 := M.read f in
+      let* α1 : M.Val core.fmt.Formatter.t := deref α0 in
+      let* α2 : mut_ref core.fmt.Formatter.t := borrow_mut α1 in
       let* α3 := M.read self in
       let* α4 : M.Val (ref str.t) :=
         match α3 with
         | unpacking_options_and_defaults_via_or.Fruit.Apple  =>
-          let* α0 : M.Val str.t := deref (mk_str "Apple") in
-          borrow α0
+          let* α0 := M.read (mk_str "Apple") in
+          let* α1 : M.Val str.t := deref α0 in
+          let* α2 : ref str.t := borrow α1 in
+          M.alloc α2
         | unpacking_options_and_defaults_via_or.Fruit.Orange  =>
-          let* α0 : M.Val str.t := deref (mk_str "Orange") in
-          borrow α0
+          let* α0 := M.read (mk_str "Orange") in
+          let* α1 : M.Val str.t := deref α0 in
+          let* α2 : ref str.t := borrow α1 in
+          M.alloc α2
         | unpacking_options_and_defaults_via_or.Fruit.Banana  =>
-          let* α0 : M.Val str.t := deref (mk_str "Banana") in
-          borrow α0
+          let* α0 := M.read (mk_str "Banana") in
+          let* α1 : M.Val str.t := deref α0 in
+          let* α2 : ref str.t := borrow α1 in
+          M.alloc α2
         | unpacking_options_and_defaults_via_or.Fruit.Kiwi  =>
-          let* α0 : M.Val str.t := deref (mk_str "Kiwi") in
-          borrow α0
+          let* α0 := M.read (mk_str "Kiwi") in
+          let* α1 : M.Val str.t := deref α0 in
+          let* α2 : ref str.t := borrow α1 in
+          M.alloc α2
         | unpacking_options_and_defaults_via_or.Fruit.Lemon  =>
-          let* α0 : M.Val str.t := deref (mk_str "Lemon") in
-          borrow α0
+          let* α0 := M.read (mk_str "Lemon") in
+          let* α1 : M.Val str.t := deref α0 in
+          let* α2 : ref str.t := borrow α1 in
+          M.alloc α2
         end in
       let* α5 := M.read α4 in
-      let* α6 := core.fmt.Formatter.t::["write_str"] α2 α5 in
+      let* α6 : core.result.Result.t unit core.fmt.Error.t :=
+        core.fmt.Formatter.t::["write_str"] α2 α5 in
       M.alloc α6).
   
   Global Instance AssociatedFunction_fmt :
@@ -106,13 +117,15 @@ Definition main : M unit :=
             unpacking_options_and_defaults_via_or.Fruit.t) :=
       let* α0 := M.read no_fruit in
       let* α1 := M.read orange in
-      let* α2 :=
+      let* α2 :
+          core.option.Option.t unpacking_options_and_defaults_via_or.Fruit.t :=
         (core.option.Option.t
               unpacking_options_and_defaults_via_or.Fruit.t)::["or"]
           α0
           α1 in
       let* α3 := M.read apple in
-      let* α4 :=
+      let* α4 :
+          core.option.Option.t unpacking_options_and_defaults_via_or.Fruit.t :=
         (core.option.Option.t
               unpacking_options_and_defaults_via_or.Fruit.t)::["or"]
           α2
@@ -123,26 +136,42 @@ Definition main : M unit :=
         let* α0 : M.Val (array (ref str.t)) :=
           M.alloc [ mk_str "first_available_fruit: "; mk_str "
 " ] in
-        let* α1 : M.Val (ref (array (ref str.t))) := borrow α0 in
-        let* α2 : M.Val (ref (slice (ref str.t))) :=
-          pointer_coercion "Unsize" α1 in
-        let* α3 := M.read α2 in
-        let* α4 :
-            M.Val
-              (ref
-                (core.option.Option.t
-                  unpacking_options_and_defaults_via_or.Fruit.t)) :=
+        let* α1 : ref (array (ref str.t)) := borrow α0 in
+        let* α2 : M.Val (array (ref str.t)) := deref α1 in
+        let* α3 : ref (array (ref str.t)) := borrow α2 in
+        let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
+        let* α5 : M.Val (ref (slice (ref str.t))) :=
+          pointer_coercion "Unsize" α4 in
+        let* α6 := M.read α5 in
+        let* α7 :
+            ref
+              (core.option.Option.t
+                unpacking_options_and_defaults_via_or.Fruit.t) :=
           borrow first_available_fruit in
-        let* α5 := M.read α4 in
-        let* α6 := core.fmt.rt.Argument.t::["new_debug"] α5 in
-        let* α7 : M.Val core.fmt.rt.Argument.t := M.alloc α6 in
-        let* α8 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α7 ] in
-        let* α9 : M.Val (ref (array core.fmt.rt.Argument.t)) := borrow α8 in
-        let* α10 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
-          pointer_coercion "Unsize" α9 in
-        let* α11 := M.read α10 in
-        let* α12 := core.fmt.Arguments.t::["new_v1"] α3 α11 in
-        let* α13 := std.io.stdio._print α12 in
-        M.alloc α13 in
+        let* α8 :
+            M.Val
+              (core.option.Option.t
+                unpacking_options_and_defaults_via_or.Fruit.t) :=
+          deref α7 in
+        let* α9 :
+            ref
+              (core.option.Option.t
+                unpacking_options_and_defaults_via_or.Fruit.t) :=
+          borrow α8 in
+        let* α10 : core.fmt.rt.Argument.t :=
+          core.fmt.rt.Argument.t::["new_debug"] α9 in
+        let* α11 : M.Val core.fmt.rt.Argument.t := M.alloc α10 in
+        let* α12 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α11 ] in
+        let* α13 : ref (array core.fmt.rt.Argument.t) := borrow α12 in
+        let* α14 : M.Val (array core.fmt.rt.Argument.t) := deref α13 in
+        let* α15 : ref (array core.fmt.rt.Argument.t) := borrow α14 in
+        let* α16 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α15 in
+        let* α17 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
+          pointer_coercion "Unsize" α16 in
+        let* α18 := M.read α17 in
+        let* α19 : core.fmt.Arguments.t :=
+          core.fmt.Arguments.t::["new_v1"] α6 α18 in
+        let* α20 : unit := std.io.stdio._print α19 in
+        M.alloc α20 in
       M.alloc tt in
     M.alloc tt).

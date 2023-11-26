@@ -47,8 +47,8 @@ Definition main : M unit := M.function_body (M.alloc tt).
     }
 *)
 Definition mul (a : u64.t) (b : u64.t) : M u128.t :=
-  let* a := M.alloc a in
-  let* b := M.alloc b in
+  let* a : M.Val u64.t := M.alloc a in
+  let* b : M.Val u64.t := M.alloc b in
   M.function_body
     (let* lo : M.Val unit := M.alloc tt in
     let* hi : M.Val unit := M.alloc tt in

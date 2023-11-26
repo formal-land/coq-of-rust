@@ -849,13 +849,11 @@ Global Hint Resolve existT : core.
 (* a hint for eauto to automatically solve unit goals *)
 Global Hint Resolve tt : core.
 
-Definition deref {Self : Set} (r : ref Self) : M Self :=
-  M.read r.
+Definition deref {Self : Set} (r : ref Self) : M (M.Val Self) :=
+  M.pure r.
 
-Definition borrow {A : Set} (v : M.Val A) :
-    M (ref (M.Val A)) :=
-  M.alloc v.
+Definition borrow {A : Set} (v : M.Val A) : M (ref A) :=
+  M.pure v.
 
-Definition borrow_mut {A : Set} (v : M.Val A) :
-    M (mut_ref (M.Val A)) :=
-  M.alloc v.
+Definition borrow_mut {A : Set} (v : M.Val A) : M (mut_ref A) :=
+  M.pure v.

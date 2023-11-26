@@ -23,12 +23,13 @@ Section Impl_scoping_rules_lifetimes_methods_Owner_t.
       }
   *)
   Definition add_one (self : mut_ref ltac:(Self)) : M unit :=
-    let* self := M.alloc self in
+    let* self : M.Val (mut_ref ltac:(Self)) := M.alloc self in
     M.function_body
       (let* _ : M.Val unit :=
-        let* α0 : M.Val scoping_rules_lifetimes_methods.Owner.t := deref self in
-        let* α1 : M.Val i32.t := M.alloc 1 in
-        assign_op add α0.["0"] α1 in
+        let* α0 := M.read self in
+        let* α1 : M.Val scoping_rules_lifetimes_methods.Owner.t := deref α0 in
+        let* α2 : M.Val i32.t := M.alloc 1 in
+        assign_op add α1.["0"] α2 in
       M.alloc tt).
   
   Global Instance AssociatedFunction_add_one :
@@ -42,31 +43,41 @@ Section Impl_scoping_rules_lifetimes_methods_Owner_t.
       }
   *)
   Definition print (self : ref ltac:(Self)) : M unit :=
-    let* self := M.alloc self in
+    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
     M.function_body
       (let* _ : M.Val unit :=
         let* _ : M.Val unit :=
           let* α0 : M.Val (array (ref str.t)) :=
             M.alloc [ mk_str "`print`: "; mk_str "
 " ] in
-          let* α1 : M.Val (ref (array (ref str.t))) := borrow α0 in
-          let* α2 : M.Val (ref (slice (ref str.t))) :=
-            pointer_coercion "Unsize" α1 in
-          let* α3 := M.read α2 in
-          let* α4 : M.Val scoping_rules_lifetimes_methods.Owner.t :=
-            deref self in
-          let* α5 : M.Val (ref i32.t) := borrow α4.["0"] in
+          let* α1 : ref (array (ref str.t)) := borrow α0 in
+          let* α2 : M.Val (array (ref str.t)) := deref α1 in
+          let* α3 : ref (array (ref str.t)) := borrow α2 in
+          let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
+          let* α5 : M.Val (ref (slice (ref str.t))) :=
+            pointer_coercion "Unsize" α4 in
           let* α6 := M.read α5 in
-          let* α7 := core.fmt.rt.Argument.t::["new_display"] α6 in
-          let* α8 : M.Val core.fmt.rt.Argument.t := M.alloc α7 in
-          let* α9 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α8 ] in
-          let* α10 : M.Val (ref (array core.fmt.rt.Argument.t)) := borrow α9 in
-          let* α11 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
-            pointer_coercion "Unsize" α10 in
-          let* α12 := M.read α11 in
-          let* α13 := core.fmt.Arguments.t::["new_v1"] α3 α12 in
-          let* α14 := std.io.stdio._print α13 in
-          M.alloc α14 in
+          let* α7 := M.read self in
+          let* α8 : M.Val scoping_rules_lifetimes_methods.Owner.t := deref α7 in
+          let* α9 : ref i32.t := borrow α8.["0"] in
+          let* α10 : M.Val i32.t := deref α9 in
+          let* α11 : ref i32.t := borrow α10 in
+          let* α12 : core.fmt.rt.Argument.t :=
+            core.fmt.rt.Argument.t::["new_display"] α11 in
+          let* α13 : M.Val core.fmt.rt.Argument.t := M.alloc α12 in
+          let* α14 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α13 ] in
+          let* α15 : ref (array core.fmt.rt.Argument.t) := borrow α14 in
+          let* α16 : M.Val (array core.fmt.rt.Argument.t) := deref α15 in
+          let* α17 : ref (array core.fmt.rt.Argument.t) := borrow α16 in
+          let* α18 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
+            M.alloc α17 in
+          let* α19 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
+            pointer_coercion "Unsize" α18 in
+          let* α20 := M.read α19 in
+          let* α21 : core.fmt.Arguments.t :=
+            core.fmt.Arguments.t::["new_v1"] α6 α20 in
+          let* α22 : unit := std.io.stdio._print α21 in
+          M.alloc α22 in
         M.alloc tt in
       M.alloc tt).
   
@@ -93,15 +104,13 @@ Definition main : M unit :=
       let* α1 := M.read α0 in
       M.alloc (scoping_rules_lifetimes_methods.Owner.Build_t α1) in
     let* _ : M.Val unit :=
-      let* α0 : M.Val (mut_ref scoping_rules_lifetimes_methods.Owner.t) :=
+      let* α0 : mut_ref scoping_rules_lifetimes_methods.Owner.t :=
         borrow_mut owner in
-      let* α1 := M.read α0 in
-      let* α2 := scoping_rules_lifetimes_methods.Owner.t::["add_one"] α1 in
-      M.alloc α2 in
+      let* α1 : unit :=
+        scoping_rules_lifetimes_methods.Owner.t::["add_one"] α0 in
+      M.alloc α1 in
     let* _ : M.Val unit :=
-      let* α0 : M.Val (ref scoping_rules_lifetimes_methods.Owner.t) :=
-        borrow owner in
-      let* α1 := M.read α0 in
-      let* α2 := scoping_rules_lifetimes_methods.Owner.t::["print"] α1 in
-      M.alloc α2 in
+      let* α0 : ref scoping_rules_lifetimes_methods.Owner.t := borrow owner in
+      let* α1 : unit := scoping_rules_lifetimes_methods.Owner.t::["print"] α0 in
+      M.alloc α1 in
     M.alloc tt).

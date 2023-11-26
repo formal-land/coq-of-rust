@@ -26,6 +26,6 @@ fn main() {
 Definition main : M unit :=
   M.function_body
     (let* _ : M.Val unit :=
-      let* α0 := dead_code.used_function in
+      let* α0 : unit := dead_code.used_function in
       M.alloc α0 in
     M.alloc tt).

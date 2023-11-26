@@ -33,12 +33,14 @@ Section Impl_core_cmp_PartialEq_for_derive_Centimeters_t.
       (self : ref ltac:(Self))
       (other : ref derive.Centimeters.t)
       : M bool.t :=
-    let* self := M.alloc self in
-    let* other := M.alloc other in
+    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+    let* other : M.Val (ref derive.Centimeters.t) := M.alloc other in
     M.function_body
-      (let* α0 : M.Val derive.Centimeters.t := deref self in
-      let* α1 : M.Val derive.Centimeters.t := deref other in
-      BinOp.eq α0.["0"] α1.["0"]).
+      (let* α0 := M.read self in
+      let* α1 : M.Val derive.Centimeters.t := deref α0 in
+      let* α2 := M.read other in
+      let* α3 : M.Val derive.Centimeters.t := deref α2 in
+      BinOp.eq α1.["0"] α3.["0"]).
   
   Global Instance AssociatedFunction_eq :
     Notations.DoubleColon ltac:(Self) "eq" := {
@@ -65,22 +67,26 @@ Section Impl_core_cmp_PartialOrd_for_derive_Centimeters_t.
       (self : ref ltac:(Self))
       (other : ref derive.Centimeters.t)
       : M (core.option.Option.t core.cmp.Ordering.t) :=
-    let* self := M.alloc self in
-    let* other := M.alloc other in
+    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+    let* other : M.Val (ref derive.Centimeters.t) := M.alloc other in
     M.function_body
-      (let* α0 : M.Val derive.Centimeters.t := deref self in
-      let* α1 : M.Val (ref f64.t) := borrow α0.["0"] in
-      let* α2 := M.read α1 in
-      let* α3 : M.Val derive.Centimeters.t := deref other in
-      let* α4 : M.Val (ref f64.t) := borrow α3.["0"] in
-      let* α5 := M.read α4 in
-      let* α6 :=
+      (let* α0 := M.read self in
+      let* α1 : M.Val derive.Centimeters.t := deref α0 in
+      let* α2 : ref f64.t := borrow α1.["0"] in
+      let* α3 : M.Val f64.t := deref α2 in
+      let* α4 : ref f64.t := borrow α3 in
+      let* α5 := M.read other in
+      let* α6 : M.Val derive.Centimeters.t := deref α5 in
+      let* α7 : ref f64.t := borrow α6.["0"] in
+      let* α8 : M.Val f64.t := deref α7 in
+      let* α9 : ref f64.t := borrow α8 in
+      let* α10 : core.option.Option.t core.cmp.Ordering.t :=
         (core.cmp.PartialOrd.partial_cmp
             (Self := f64.t)
             (Trait := ltac:(refine _)))
-          α2
-          α5 in
-      M.alloc α6).
+          α4
+          α9 in
+      M.alloc α10).
   
   Global Instance AssociatedFunction_partial_cmp :
     Notations.DoubleColon ltac:(Self) "partial_cmp" := {
@@ -122,24 +128,29 @@ Section Impl_core_fmt_Debug_for_derive_Inches_t.
       (self : ref ltac:(Self))
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    let* self := M.alloc self in
-    let* f := M.alloc f in
+    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+    let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
     M.function_body
-      (let* α0 : M.Val core.fmt.Formatter.t := deref f in
-      let* α1 : M.Val (mut_ref core.fmt.Formatter.t) := borrow_mut α0 in
-      let* α2 := M.read α1 in
-      let* α3 : M.Val str.t := deref (mk_str "Inches") in
-      let* α4 : M.Val (ref str.t) := borrow α3 in
-      let* α5 := M.read α4 in
-      let* α6 : M.Val derive.Inches.t := deref self in
-      let* α7 : M.Val (ref i32.t) := borrow α6.["0"] in
-      let* α8 : M.Val (ref (ref i32.t)) := borrow α7 in
-      let* α9 : M.Val (ref type not implemented) :=
-        pointer_coercion "Unsize" α8 in
-      let* α10 := M.read α9 in
-      let* α11 :=
-        core.fmt.Formatter.t::["debug_tuple_field1_finish"] α2 α5 α10 in
-      M.alloc α11).
+      (let* α0 := M.read f in
+      let* α1 : M.Val core.fmt.Formatter.t := deref α0 in
+      let* α2 : mut_ref core.fmt.Formatter.t := borrow_mut α1 in
+      let* α3 := M.read (mk_str "Inches") in
+      let* α4 : M.Val str.t := deref α3 in
+      let* α5 : ref str.t := borrow α4 in
+      let* α6 := M.read self in
+      let* α7 : M.Val derive.Inches.t := deref α6 in
+      let* α8 : ref i32.t := borrow α7.["0"] in
+      let* α9 : M.Val (ref i32.t) := M.alloc α8 in
+      let* α10 : ref (ref i32.t) := borrow α9 in
+      let* α11 : M.Val (ref i32.t) := deref α10 in
+      let* α12 : ref (ref i32.t) := borrow α11 in
+      let* α13 : M.Val (ref (ref i32.t)) := M.alloc α12 in
+      let* α14 : M.Val (ref type not implemented) :=
+        pointer_coercion "Unsize" α13 in
+      let* α15 := M.read α14 in
+      let* α16 : core.result.Result.t unit core.fmt.Error.t :=
+        core.fmt.Formatter.t::["debug_tuple_field1_finish"] α2 α5 α15 in
+      M.alloc α16).
   
   Global Instance AssociatedFunction_fmt :
     Notations.DoubleColon ltac:(Self) "fmt" := {
@@ -164,7 +175,7 @@ Section Impl_derive_Inches_t.
       }
   *)
   Definition to_centimeters (self : ref ltac:(Self)) : M derive.Centimeters.t :=
-    let* self := M.alloc self in
+    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
     M.function_body
       (let* 'derive.Inches.Build_t inches : M.Val (ref derive.Inches.t) :=
         M.copy self in
@@ -236,72 +247,90 @@ Definition main : M unit :=
         let* α0 : M.Val (array (ref str.t)) :=
           M.alloc [ mk_str "One foot equals "; mk_str "
 " ] in
-        let* α1 : M.Val (ref (array (ref str.t))) := borrow α0 in
-        let* α2 : M.Val (ref (slice (ref str.t))) :=
-          pointer_coercion "Unsize" α1 in
-        let* α3 := M.read α2 in
-        let* α4 : M.Val (ref derive.Inches.t) := borrow foot in
-        let* α5 := M.read α4 in
-        let* α6 := core.fmt.rt.Argument.t::["new_debug"] α5 in
-        let* α7 : M.Val core.fmt.rt.Argument.t := M.alloc α6 in
-        let* α8 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α7 ] in
-        let* α9 : M.Val (ref (array core.fmt.rt.Argument.t)) := borrow α8 in
-        let* α10 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
-          pointer_coercion "Unsize" α9 in
-        let* α11 := M.read α10 in
-        let* α12 := core.fmt.Arguments.t::["new_v1"] α3 α11 in
-        let* α13 := std.io.stdio._print α12 in
-        M.alloc α13 in
+        let* α1 : ref (array (ref str.t)) := borrow α0 in
+        let* α2 : M.Val (array (ref str.t)) := deref α1 in
+        let* α3 : ref (array (ref str.t)) := borrow α2 in
+        let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
+        let* α5 : M.Val (ref (slice (ref str.t))) :=
+          pointer_coercion "Unsize" α4 in
+        let* α6 := M.read α5 in
+        let* α7 : ref derive.Inches.t := borrow foot in
+        let* α8 : M.Val derive.Inches.t := deref α7 in
+        let* α9 : ref derive.Inches.t := borrow α8 in
+        let* α10 : core.fmt.rt.Argument.t :=
+          core.fmt.rt.Argument.t::["new_debug"] α9 in
+        let* α11 : M.Val core.fmt.rt.Argument.t := M.alloc α10 in
+        let* α12 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α11 ] in
+        let* α13 : ref (array core.fmt.rt.Argument.t) := borrow α12 in
+        let* α14 : M.Val (array core.fmt.rt.Argument.t) := deref α13 in
+        let* α15 : ref (array core.fmt.rt.Argument.t) := borrow α14 in
+        let* α16 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α15 in
+        let* α17 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
+          pointer_coercion "Unsize" α16 in
+        let* α18 := M.read α17 in
+        let* α19 : core.fmt.Arguments.t :=
+          core.fmt.Arguments.t::["new_v1"] α6 α18 in
+        let* α20 : unit := std.io.stdio._print α19 in
+        M.alloc α20 in
       M.alloc tt in
     let* meter : M.Val derive.Centimeters.t :=
       let* α0 : M.Val f64.t := M.alloc 100 (* 100.0 *) in
       let* α1 := M.read α0 in
       M.alloc (derive.Centimeters.Build_t α1) in
     let* cmp : M.Val (ref str.t) :=
-      let* α0 : M.Val (ref derive.Inches.t) := borrow foot in
-      let* α1 := M.read α0 in
-      let* α2 := derive.Inches.t::["to_centimeters"] α1 in
-      let* α3 : M.Val derive.Centimeters.t := M.alloc α2 in
-      let* α4 : M.Val (ref derive.Centimeters.t) := borrow α3 in
-      let* α5 := M.read α4 in
-      let* α6 : M.Val (ref derive.Centimeters.t) := borrow meter in
-      let* α7 := M.read α6 in
-      let* α8 :=
+      let* α0 : ref derive.Inches.t := borrow foot in
+      let* α1 : derive.Centimeters.t :=
+        derive.Inches.t::["to_centimeters"] α0 in
+      let* α2 : M.Val derive.Centimeters.t := M.alloc α1 in
+      let* α3 : ref derive.Centimeters.t := borrow α2 in
+      let* α4 : ref derive.Centimeters.t := borrow meter in
+      let* α5 : bool.t :=
         (core.cmp.PartialOrd.lt
             (Self := derive.Centimeters.t)
             (Trait := ltac:(refine _)))
-          α5
-          α7 in
-      let* α9 : M.Val bool.t := M.alloc α8 in
-      let* α10 : M.Val bool.t := use α9 in
-      let* α11 := M.read α10 in
-      let* α12 : M.Val (ref str.t) :=
-        if (α11 : bool) then
+          α3
+          α4 in
+      let* α6 : M.Val bool.t := M.alloc α5 in
+      let* α7 : M.Val bool.t := use α6 in
+      let* α8 := M.read α7 in
+      let* α9 : M.Val (ref str.t) :=
+        if (α8 : bool) then
           M.pure (mk_str "smaller")
         else
-          let* α0 : M.Val str.t := deref (mk_str "bigger") in
-          borrow α0 in
-      M.copy α12 in
+          let* α0 := M.read (mk_str "bigger") in
+          let* α1 : M.Val str.t := deref α0 in
+          let* α2 : ref str.t := borrow α1 in
+          M.alloc α2 in
+      M.copy α9 in
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
         let* α0 : M.Val (array (ref str.t)) :=
           M.alloc [ mk_str "One foot is "; mk_str " than one meter.
 " ] in
-        let* α1 : M.Val (ref (array (ref str.t))) := borrow α0 in
-        let* α2 : M.Val (ref (slice (ref str.t))) :=
-          pointer_coercion "Unsize" α1 in
-        let* α3 := M.read α2 in
-        let* α4 : M.Val (ref (ref str.t)) := borrow cmp in
-        let* α5 := M.read α4 in
-        let* α6 := core.fmt.rt.Argument.t::["new_display"] α5 in
-        let* α7 : M.Val core.fmt.rt.Argument.t := M.alloc α6 in
-        let* α8 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α7 ] in
-        let* α9 : M.Val (ref (array core.fmt.rt.Argument.t)) := borrow α8 in
-        let* α10 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
-          pointer_coercion "Unsize" α9 in
-        let* α11 := M.read α10 in
-        let* α12 := core.fmt.Arguments.t::["new_v1"] α3 α11 in
-        let* α13 := std.io.stdio._print α12 in
-        M.alloc α13 in
+        let* α1 : ref (array (ref str.t)) := borrow α0 in
+        let* α2 : M.Val (array (ref str.t)) := deref α1 in
+        let* α3 : ref (array (ref str.t)) := borrow α2 in
+        let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
+        let* α5 : M.Val (ref (slice (ref str.t))) :=
+          pointer_coercion "Unsize" α4 in
+        let* α6 := M.read α5 in
+        let* α7 : ref (ref str.t) := borrow cmp in
+        let* α8 : M.Val (ref str.t) := deref α7 in
+        let* α9 : ref (ref str.t) := borrow α8 in
+        let* α10 : core.fmt.rt.Argument.t :=
+          core.fmt.rt.Argument.t::["new_display"] α9 in
+        let* α11 : M.Val core.fmt.rt.Argument.t := M.alloc α10 in
+        let* α12 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α11 ] in
+        let* α13 : ref (array core.fmt.rt.Argument.t) := borrow α12 in
+        let* α14 : M.Val (array core.fmt.rt.Argument.t) := deref α13 in
+        let* α15 : ref (array core.fmt.rt.Argument.t) := borrow α14 in
+        let* α16 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α15 in
+        let* α17 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
+          pointer_coercion "Unsize" α16 in
+        let* α18 := M.read α17 in
+        let* α19 : core.fmt.Arguments.t :=
+          core.fmt.Arguments.t::["new_v1"] α6 α18 in
+        let* α20 : unit := std.io.stdio._print α19 in
+        M.alloc α20 in
       M.alloc tt in
     M.alloc tt).

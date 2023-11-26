@@ -3,23 +3,22 @@ use crate::expression::*;
 use crate::path::*;
 use crate::pattern::*;
 use crate::thir_ty::*;
+use crate::ty::CoqType;
 use rustc_hir::def::DefKind;
 use rustc_middle::mir::{BinOp, BorrowKind, UnOp};
 use rustc_middle::thir;
 use rustc_middle::thir::{AdtExpr, LogicalOp};
 use rustc_middle::ty::TyKind;
+use std::rc::Rc;
 
 impl ExprKind {
-    pub(crate) fn alloc(self) -> Self {
+    pub(crate) fn alloc(self, ty: Option<Rc<CoqType>>) -> Self {
         ExprKind::Call {
             func: Box::new(Expr {
                 kind: ExprKind::LocalVar("M.alloc".to_string()),
                 ty: None,
             }),
-            args: vec![Expr {
-                kind: self,
-                ty: None,
-            }],
+            args: vec![Expr { kind: self, ty }],
         }
     }
 }
@@ -117,6 +116,8 @@ fn compile_expr_kind<'a>(
     expr_id: &rustc_middle::thir::ExprId,
 ) -> ExprKind {
     let expr = thir.exprs.get(*expr_id).unwrap();
+    let ty = compile_type(env, &expr.ty);
+
     match &expr.kind {
         thir::ExprKind::Scope { value, .. } => compile_expr_kind(env, thir, value),
         thir::ExprKind::Box { value } => {
@@ -155,7 +156,7 @@ fn compile_expr_kind<'a>(
                 .iter()
                 .map(|arg| compile_expr(env, thir, arg).read())
                 .collect();
-            ExprKind::Call { func, args }.alloc()
+            ExprKind::Call { func, args }.alloc(Some(ty))
         }
         thir::ExprKind::Deref { arg } => {
             let arg = compile_expr(env, thir, arg);
@@ -169,7 +170,7 @@ fn compile_expr_kind<'a>(
                     kind: ExprKind::LocalVar("deref".to_string()),
                     ty: None,
                 }),
-                args: vec![arg],
+                args: vec![arg.read()],
             }
         }
         thir::ExprKind::Binary { op, lhs, rhs } => {
@@ -305,7 +306,7 @@ fn compile_expr_kind<'a>(
                                 is_monadic: false,
                                 pattern: Box::new(Pattern::Variable(binding.clone())),
                                 init: Box::new(Expr {
-                                    kind: ExprKind::LocalVar(binding.clone()).alloc(),
+                                    kind: ExprKind::LocalVar(binding.clone()).alloc(None),
                                     ty: None,
                                 }),
                                 body,
@@ -393,6 +394,7 @@ fn compile_expr_kind<'a>(
                 }),
                 args: vec![arg],
             }
+            .alloc(Some(ty))
         }
         thir::ExprKind::AddressOf { mutability, arg } => {
             let func = match mutability {
@@ -438,7 +440,7 @@ fn compile_expr_kind<'a>(
                 .map(|field| compile_expr(env, thir, field))
                 .collect(),
         }
-        .alloc(),
+        .alloc(Some(ty)),
         thir::ExprKind::Tuple { fields } => {
             let elements: Vec<_> = fields
                 .iter()
@@ -447,7 +449,7 @@ fn compile_expr_kind<'a>(
             if elements.is_empty() {
                 ExprKind::tt()
             } else {
-                ExprKind::Tuple { elements }.alloc()
+                ExprKind::Tuple { elements }.alloc(Some(ty))
             }
         }
         thir::ExprKind::Adt(adt_expr) => {
@@ -483,7 +485,7 @@ fn compile_expr_kind<'a>(
                     fields,
                     struct_or_variant,
                 }
-                .alloc()
+                .alloc(Some(ty))
             } else {
                 ExprKind::StructStruct {
                     path,
@@ -491,7 +493,7 @@ fn compile_expr_kind<'a>(
                     base: None,
                     struct_or_variant,
                 }
-                .alloc()
+                .alloc(Some(ty))
             }
         }
         thir::ExprKind::PlaceTypeAscription { source, .. }
